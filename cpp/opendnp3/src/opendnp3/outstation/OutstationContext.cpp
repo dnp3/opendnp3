@@ -60,16 +60,20 @@ OutstationContext::OutstationContext(
 	pDatabase(&database),
 	eventBuffer(buffers),
 	isOnline(false),
-	isSending(false),	
+	transmitState(TransmitState::IDLE),
 	firstValidRequestAccepted(false),
 	pState(&OutstationStateIdle::Inst()),
 	pConfirmTimer(nullptr),
+	pUnsolTimer(nullptr),
 	rxFragCount(0),		
 	operateExpectedSeq(0),
 	operateExpectedFragCount(0),
 	solSeqN(0),
+	unsolSeqN(0),
 	expectedConfirmSeq(0),
 	unsolSeq(0),
+	completedNullUnsol(false),
+	unsolTriggered(false),
 	rspContext(&database, &eventBuffer, StaticResponseTypes(config.defaultStaticResponses), config.defaultEventResponses)	
 {
 	pDatabase->SetEventBuffer(eventBuffer);
@@ -83,6 +87,14 @@ OutstationContext::OutstationContext(
 			static_cast<unsigned int>(sizes::MIN_APDU_SIZE));
 
 		params.maxTxFragSize = sizes::MIN_APDU_SIZE;
+	}
+
+	if (params.allowUnsolicited)
+	{
+		// this will cause us to start going through the NULL unsolicited sequence
+		// this flag only clear when all the data has been reported
+		unsolTriggered = true;
+		this->OnEnterIdleState();
 	}
 	
 	// 
@@ -140,12 +152,13 @@ void OutstationContext::SetOnline()
 void OutstationContext::SetOffline()
 {
 	isOnline = false;
-	isSending = false;
+	transmitState = TransmitState::IDLE;
 	pState = &OutstationStateIdle::Inst();
 	firstValidRequestAccepted = false;	
 	eventBuffer.Reset();
 	rspContext.Reset();
 	CancelConfirmTimer();
+	CancelUnsolTimer();
 }
 
 void OutstationContext::Select()
@@ -162,15 +175,25 @@ bool OutstationContext::IsOperateSequenceValid()
 
 bool OutstationContext::IsIdle()
 {
-	return isOnline && (!isSending) && pState->IsIdle();
+	return isOnline && IsNotTransmitting() && pState->IsIdle();
 }
 
 bool OutstationContext::CancelConfirmTimer()
 {
-	if (pConfirmTimer)
+	return CancelTimer(pConfirmTimer);
+}
+
+bool OutstationContext::CancelUnsolTimer()
+{
+	return CancelTimer(pUnsolTimer);
+}
+
+bool OutstationContext::CancelTimer(openpal::ITimer*& pTimer)
+{
+	if (pTimer)
 	{
-		pConfirmTimer->Cancel();
-		pConfirmTimer = nullptr;
+		pTimer->Cancel();
+		pTimer = nullptr;
 		return true;
 	}
 	else
@@ -271,12 +294,12 @@ void OutstationContext::RespondToRequest(const APDURecord& request, const openpa
 		expectedConfirmSeq = request.control.SEQ;
 		pState = &OutstationStateSolConfirmWait::Inst();
 	}
-	this->BeginTransmission(request.control.SEQ, response.ToReadOnly());
+	this->BeginTransmission(response.ToReadOnly());
 }
 
-void OutstationContext::BeginTransmission(uint8_t seq, const ReadOnlyBuffer& response)
+void OutstationContext::BeginTransmission(const ReadOnlyBuffer& response)
 {	
-	isSending = true;	
+	this->transmitState = TransmitState::SOLICITED;
 	lastResponse = response;
 	pLower->BeginTransmit(response);	
 }
@@ -317,7 +340,7 @@ void OutstationContext::ContinueMultiFragResponse(uint8_t seq)
 		expectedConfirmSeq = seq;
 		pState = &OutstationStateSolConfirmWait::Inst();
 	}
-	this->BeginTransmission(control.SEQ, response.ToReadOnly());
+	this->BeginTransmission(response.ToReadOnly());
 }
 
 void OutstationContext::OnEnterIdleState()
@@ -327,11 +350,48 @@ void OutstationContext::OnEnterIdleState()
 	pExecutor->PostLambda(lambda);
 }
 
+bool OutstationContext::IsTransmitting() const
+{
+	return !IsNotTransmitting();
+}
+
+bool OutstationContext::IsNotTransmitting() const
+{
+	return transmitState == TransmitState::IDLE;
+}
+
 void OutstationContext::CheckForIdleState()
 {
 	if (this->IsIdle())
 	{
-		
+		this->CheckForUnsolicited();
+	}
+}
+
+void OutstationContext::OnNewEvents()
+{
+	if (params.allowUnsolicited)
+	{
+		unsolTriggered = true;
+		if (this->IsIdle())
+		{
+			this->CheckForUnsolicited();
+		}		
+	}
+}
+
+void OutstationContext::CheckForUnsolicited()
+{
+	if (params.allowUnsolicited && unsolTriggered && (pUnsolTimer == nullptr))
+	{
+		if (completedNullUnsol)
+		{
+
+		}
+		else
+		{
+
+		}
 	}
 }
 
@@ -340,18 +400,13 @@ void OutstationContext::StartConfirmTimer()
 	if (!pConfirmTimer)
 	{	
 		auto lambda = [this]() { this->OnSolConfirmTimeout(); };
-		pConfirmTimer = pExecutor->Start(TimeDuration::Milliseconds(5000), Bind(lambda)); // TOOD make this configurable		
+		pConfirmTimer = pExecutor->Start(params.solConfirmTimeout, Bind(lambda));		
 	}
 }
 
 void OutstationContext::OnSolConfirmTimeout()
 {
 	pState->OnConfirmTimeout(this);
-}
-
-void OutstationContext::OnNewEvents()
-{
-
 }
 
 IINField OutstationContext::HandleRead(const APDURecord& request, APDUResponse& response)

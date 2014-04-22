@@ -31,7 +31,10 @@ namespace opendnp3
 	OutstationParams::OutstationParams() :
 		maxControlsPerRequest(16),
 		selectTimeout(TimeDuration::Seconds(5)),
-		maxTxFragSize(sizes::DEFAULT_APDU_BUFFER_SIZE) // TODO, use another constant
+		solConfirmTimeout(TimeDuration::Seconds(3)),
+		unsolConfirmTimeout(TimeDuration::Seconds(3)),
+		maxTxFragSize(sizes::DEFAULT_APDU_BUFFER_SIZE), // TODO, use another constant
+		allowUnsolicited(false)
 	{}
 
 }

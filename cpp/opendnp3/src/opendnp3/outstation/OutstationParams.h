@@ -36,8 +36,19 @@ struct OutstationParams
 	/// How long the outstation will allow an operate to proceed after a prior select
 	openpal::TimeDuration selectTimeout;
 
-	/// The maximum fragment size the outstation will use for data it sends
+	/// Timeout for solicited confirms
+	openpal::TimeDuration solConfirmTimeout;
+
+	/// Timeout for solicited confirms
+	openpal::TimeDuration unsolConfirmTimeout;
+
+	/// The maximum fragment size the outstation will use for fragments it sends
 	uint32_t maxTxFragSize;
+
+	/// Global enable/disable for unsolicited, defaults to false
+	bool allowUnsolicited;
+
+
 };
 
 }

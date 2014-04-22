@@ -49,6 +49,13 @@ class OutstationContext
 {
 	public:
 
+	enum TransmitState
+	{
+		IDLE,
+		SOLICITED,
+		UNSOLICITED
+	};
+
 	static uint8_t NextSeq(uint8_t seq) { return (seq + 1) % 16; }
 
 	OutstationContext(	const NewOutstationConfig& config,
@@ -74,7 +81,7 @@ class OutstationContext
 	// ------ Dynamic "state", i.e. things that must be managed or cleanup on close ------
 	
 	bool isOnline;
-	bool isSending;	
+	TransmitState transmitState;
 	bool firstValidRequestAccepted;
 	OutstationStateBase* pState;
 
@@ -82,6 +89,7 @@ class OutstationContext
 	IINField staticIIN;
 
 	openpal::ITimer* pConfirmTimer;
+	openpal::ITimer* pUnsolTimer;						// gets used for both retries and "pack" timer
 	
 	uint32_t rxFragCount;
 	openpal::MonotonicTimestamp selectTime;
@@ -89,8 +97,12 @@ class OutstationContext
 	uint32_t operateExpectedFragCount;
 
 	uint8_t solSeqN;
+	uint8_t unsolSeqN;
 	uint8_t expectedConfirmSeq;
 	uint8_t unsolSeq;	
+	bool completedNullUnsol;
+	bool unsolTriggered;
+
 	openpal::ReadOnlyBuffer lastValidRequest;			// points to bytes in rxBuffer
 	openpal::ReadOnlyBuffer lastResponse;				// points to bytes in txBuffer	
 	ResponseContext rspContext;
@@ -112,7 +124,9 @@ class OutstationContext
 	bool IsOperateSequenceValid();
 	bool IsIdle();
 
-	bool CancelConfirmTimer();	
+	bool CancelConfirmTimer();
+
+	bool CancelUnsolTimer();
 	
 	void StartConfirmTimer();
 
@@ -122,7 +136,7 @@ class OutstationContext
 
 	void RespondToRequest(const APDURecord& request, const openpal::ReadOnlyBuffer& fragment);
 
-	void BeginTransmission(uint8_t seq, const openpal::ReadOnlyBuffer& response);
+	void BeginTransmission(const openpal::ReadOnlyBuffer& response);
 
 	IINField BuildResponse(const APDURecord& request, APDUResponse& response);
 
@@ -130,11 +144,22 @@ class OutstationContext
 
 	void OnEnterIdleState();
 
+	bool IsTransmitting() const;
+	bool IsNotTransmitting() const;
+	
+
 	private:
+
+	// ------ Helpers ---------
+
+	static bool CancelTimer(openpal::ITimer*& pTimer);
+	
 
 	// ------ Internal Events -------
 
 	void CheckForIdleState();
+
+	void CheckForUnsolicited();
 
 	void OnSolConfirmTimeout();
 
