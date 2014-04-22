@@ -29,12 +29,15 @@ namespace DNP3TestHarness
             private Action<LogEntry> action;
         }
 
-        public TestHarnessForm(IDNP3Manager manager)
+        public TestHarnessForm(IDNP3Manager manager, bool suppressSplash)
         {
             this.manager = manager;
+            this.suppressSplash = suppressSplash;
 
             InitializeComponent();
 
+            this.WindowState = FormWindowState.Maximized;
+            
             manager.AddLogHandler(new LogAdapter(OnLogEntry));
             manager.AddLogHandler(PrintingLogAdapter.Instance);
           
@@ -45,14 +48,50 @@ namespace DNP3TestHarness
 
         private void OnLogEntry(LogEntry entry)
         {            
-            this.BeginInvoke(new Action(() => this.listBoxLog.Items.Add(GetLogString(entry))));
+            this.BeginInvoke(new Action(() => this.AddLogEntry(entry)));
+        }
+
+        private void AddLogEntry(LogEntry entry)
+        {
+            this.listBoxLog.Items.Add(GetLogString(entry));
         }
 
         private string GetLogString(LogEntry entry)
         {
-            return entry.time.ToLongTimeString() + " - " + entry.loggerName + " - " + entry.message;
+            return entry.time.ToString("HH:mm:ss.fff") + " - " + entry.loggerName + " - " + entry.message;
         }
 
         private IDNP3Manager manager;
+        private bool suppressSplash;
+
+        private void tCPClientToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.AddLogEntry(new LogEntry(0, "name", "", "click tcp client", DateTime.Now, 0));
+        }
+
+        private void ShowAboutBox()
+        {
+            var about = new About();
+            about.ShowDialog();
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowAboutBox();  
+        }
+
+        private void TestHarnessForm_Load(object sender, EventArgs e)
+        {
+            
+            if (!suppressSplash)
+            {
+                this.BeginInvoke(new Action(() => ShowAboutBox()));
+            }
+        }
+
+        private void clearWindowToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.listBoxLog.Items.Clear();
+        }
     }
 }

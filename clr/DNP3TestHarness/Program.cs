@@ -15,12 +15,15 @@ namespace DNP3TestHarness
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
+            var suppressSplash = args.Contains("-sf");
+
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             var manager = DNP3ManagerFactory.CreateManager();
-            var form = new TestHarnessForm(manager);
+            var form = new TestHarnessForm(manager, suppressSplash);
             Application.Run(form);
         }
     }
