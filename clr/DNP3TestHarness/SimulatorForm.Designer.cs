@@ -1,6 +1,6 @@
 ﻿namespace DNP3TestHarness
 {
-    partial class TestHarnessForm
+    partial class SimulatorForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,19 +28,21 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TestHarnessForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SimulatorForm));
             this.mainMenuStrip = new System.Windows.Forms.MenuStrip();
             this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tCPClientToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tCPServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.serialToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.clearWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mainPanel = new System.Windows.Forms.Panel();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.mainTreeView = new System.Windows.Forms.TreeView();
+            this.commTreeView = new DNP3TestHarness.CommTreeView();
             this.listBoxLog = new System.Windows.Forms.ListBox();
             this.mainMenuStrip.SuspendLayout();
+            this.mainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
@@ -52,6 +54,7 @@
             this.mainMenuStrip.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.mainMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addToolStripMenuItem,
+            this.toolStripMenuItem2,
             this.toolStripMenuItem1,
             this.aboutToolStripMenuItem});
             this.mainMenuStrip.Location = new System.Drawing.Point(0, 0);
@@ -63,33 +66,33 @@
             // 
             // addToolStripMenuItem
             // 
-            this.addToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tCPClientToolStripMenuItem,
-            this.tCPServerToolStripMenuItem,
-            this.serialToolStripMenuItem});
             this.addToolStripMenuItem.Image = global::DNP3TestHarness.Properties.Resources.satellite_dish_add;
             this.addToolStripMenuItem.Name = "addToolStripMenuItem";
             this.addToolStripMenuItem.Size = new System.Drawing.Size(65, 28);
             this.addToolStripMenuItem.Text = "Add";
+            this.addToolStripMenuItem.Click += new System.EventHandler(this.addToolStripMenuItem_Click);
             // 
-            // tCPClientToolStripMenuItem
+            // toolStripMenuItem2
             // 
-            this.tCPClientToolStripMenuItem.Name = "tCPClientToolStripMenuItem";
-            this.tCPClientToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.tCPClientToolStripMenuItem.Text = "TCP Client";
-            this.tCPClientToolStripMenuItem.Click += new System.EventHandler(this.tCPClientToolStripMenuItem_Click);
+            this.toolStripMenuItem2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.loadToolStripMenuItem,
+            this.saveToolStripMenuItem});
+            this.toolStripMenuItem2.Image = global::DNP3TestHarness.Properties.Resources.folder_diskette;
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(61, 28);
+            this.toolStripMenuItem2.Text = "File";
             // 
-            // tCPServerToolStripMenuItem
+            // loadToolStripMenuItem
             // 
-            this.tCPServerToolStripMenuItem.Name = "tCPServerToolStripMenuItem";
-            this.tCPServerToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.tCPServerToolStripMenuItem.Text = "TCP Server";
+            this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
+            this.loadToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.loadToolStripMenuItem.Text = "Load";
             // 
-            // serialToolStripMenuItem
+            // saveToolStripMenuItem
             // 
-            this.serialToolStripMenuItem.Name = "serialToolStripMenuItem";
-            this.serialToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.serialToolStripMenuItem.Text = "Serial";
+            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
+            this.saveToolStripMenuItem.Text = "Save";
             // 
             // toolStripMenuItem1
             // 
@@ -103,7 +106,7 @@
             // clearWindowToolStripMenuItem
             // 
             this.clearWindowToolStripMenuItem.Name = "clearWindowToolStripMenuItem";
-            this.clearWindowToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.clearWindowToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.clearWindowToolStripMenuItem.Text = "Clear Window";
             this.clearWindowToolStripMenuItem.Click += new System.EventHandler(this.clearWindowToolStripMenuItem_Click);
             // 
@@ -116,61 +119,72 @@
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
+            // mainPanel
+            // 
+            this.mainPanel.Controls.Add(this.splitContainer2);
+            this.mainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mainPanel.Location = new System.Drawing.Point(0, 38);
+            this.mainPanel.Name = "mainPanel";
+            this.mainPanel.Padding = new System.Windows.Forms.Padding(5, 0, 5, 5);
+            this.mainPanel.Size = new System.Drawing.Size(1120, 525);
+            this.mainPanel.TabIndex = 2;
+            // 
             // splitContainer2
             // 
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer2.Location = new System.Drawing.Point(0, 38);
+            this.splitContainer2.Location = new System.Drawing.Point(5, 0);
             this.splitContainer2.Margin = new System.Windows.Forms.Padding(0);
             this.splitContainer2.Name = "splitContainer2";
             // 
             // splitContainer2.Panel1
             // 
-            this.splitContainer2.Panel1.Controls.Add(this.mainTreeView);
+            this.splitContainer2.Panel1.Controls.Add(this.commTreeView);
             // 
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.listBoxLog);
-            this.splitContainer2.Size = new System.Drawing.Size(1120, 525);
-            this.splitContainer2.SplitterDistance = 191;
-            this.splitContainer2.TabIndex = 2;
+            this.splitContainer2.Size = new System.Drawing.Size(1110, 520);
+            this.splitContainer2.SplitterDistance = 180;
+            this.splitContainer2.TabIndex = 3;
             // 
-            // mainTreeView
+            // commTreeView
             // 
-            this.mainTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mainTreeView.Location = new System.Drawing.Point(0, 0);
-            this.mainTreeView.Name = "mainTreeView";
-            this.mainTreeView.Size = new System.Drawing.Size(191, 525);
-            this.mainTreeView.TabIndex = 0;
+            this.commTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.commTreeView.Location = new System.Drawing.Point(0, 0);
+            this.commTreeView.Name = "commTreeView";
+            this.commTreeView.Size = new System.Drawing.Size(180, 520);
+            this.commTreeView.TabIndex = 0;
             // 
             // listBoxLog
             // 
             this.listBoxLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listBoxLog.Enabled = false;
             this.listBoxLog.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listBoxLog.FormattingEnabled = true;
+            this.listBoxLog.IntegralHeight = false;
             this.listBoxLog.ItemHeight = 18;
             this.listBoxLog.Location = new System.Drawing.Point(0, 0);
             this.listBoxLog.Margin = new System.Windows.Forms.Padding(0);
             this.listBoxLog.Name = "listBoxLog";
             this.listBoxLog.ScrollAlwaysVisible = true;
-            this.listBoxLog.Size = new System.Drawing.Size(925, 525);
+            this.listBoxLog.Size = new System.Drawing.Size(926, 520);
             this.listBoxLog.TabIndex = 5;
             // 
-            // TestHarnessForm
+            // SimulatorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1120, 563);
-            this.Controls.Add(this.splitContainer2);
+            this.Controls.Add(this.mainPanel);
             this.Controls.Add(this.mainMenuStrip);
             this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.mainMenuStrip;
-            this.Name = "TestHarnessForm";
-            this.Text = "DNP3 Test Harness";
+            this.Name = "SimulatorForm";
+            this.Text = "DNP3 Simulator";
             this.Load += new System.EventHandler(this.TestHarnessForm_Load);
             this.mainMenuStrip.ResumeLayout(false);
             this.mainMenuStrip.PerformLayout();
+            this.mainPanel.ResumeLayout(false);
             this.splitContainer2.Panel1.ResumeLayout(false);
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
@@ -184,15 +198,16 @@
 
         private System.Windows.Forms.MenuStrip mainMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem addToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem tCPClientToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem tCPServerToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem serialToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem clearWindowToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
+        private System.Windows.Forms.Panel mainPanel;
         private System.Windows.Forms.SplitContainer splitContainer2;
-        private System.Windows.Forms.TreeView mainTreeView;
         private System.Windows.Forms.ListBox listBoxLog;
+        private CommTreeView commTreeView;
 
     }
 }

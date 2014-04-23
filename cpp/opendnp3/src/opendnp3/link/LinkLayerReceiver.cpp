@@ -128,7 +128,19 @@ bool LinkLayerReceiver::ReadHeader()
 bool LinkLayerReceiver::ValidateBody()
 {
 	uint32_t len = mHeader.GetLength() - LS_MIN_LENGTH;
-	if(LinkFrame::ValidateBodyCRC(mBuffer.ReadBuff() + LS_HEADER_SIZE, len)) return true;
+	if (LinkFrame::ValidateBodyCRC(mBuffer.ReadBuff() + LS_HEADER_SIZE, len))
+	{
+		FORMAT_LOG_BLOCK(logger, flags::LINK_INTERPRET,
+			"Function: %s Dest: %u Source: %u Length: %u",
+			LinkFunctionToString(mHeader.GetFuncEnum()),
+			mHeader.GetDest(),
+			mHeader.GetSrc(),
+			mHeader.GetLength());
+
+		ReadOnlyBuffer buffer(mBuffer.ReadBuff(), mFrameSize);
+		FORMAT_HEX_BLOCK(logger, flags::LINK_RAW, buffer);
+		return true;
+	}
 	else
 	{
 		SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::ERR, DLERR_CRC, "CRC failure in body");

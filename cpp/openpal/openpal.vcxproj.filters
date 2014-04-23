@@ -204,5 +204,8 @@
     <ClCompile Include="src\openpal\UInt48LE.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="src\openpal\StringFormatting.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

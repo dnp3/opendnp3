@@ -23,10 +23,25 @@
 
 #include <cstdio>
 
+#include "Logger.h"
+#include "BufferWrapper.h"
+
 #ifdef WIN32
 #define SNPRINTF _snprintf_s
 #else
 #define SNPRINTF snprintf
 #endif
+
+namespace openpal
+{
+	const uint32_t MAX_LOG_ENTRY_SIZE = 80;
+	const uint32_t MAX_HEX_PER_LINE = 20;
+
+	static_assert(MAX_HEX_PER_LINE < (MAX_LOG_ENTRY_SIZE / 3), "Each hex byte takes 3 characters");
+
+
+	void LogHex(Logger& logger, const openpal::LogFilters& filters, const openpal::ReadOnlyBuffer& source);
+
+}
 
 #endif

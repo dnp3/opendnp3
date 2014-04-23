@@ -44,8 +44,9 @@ const int32_t INFO = openpal::logflags::INFO;
 const int32_t DBG = openpal::logflags::DBG;
 
 // upshift the custom dnp3 filters
-const int32_t INTERPRET = DBG << 1;
-const int32_t COMM = INTERPRET << 1;
+const int32_t LINK_INTERPRET = DBG << 1;
+const int32_t LINK_RAW = DBG << 1;
+
 }
 
 namespace levels

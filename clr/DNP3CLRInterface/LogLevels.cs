@@ -75,8 +75,9 @@ namespace DNP3.Interface
         public static readonly System.UInt32 WARNING = 1 << 2;
         public static readonly System.UInt32 INFO = 1 << 3;
         public static readonly System.UInt32 DEBUG = 1 << 4;
-        public static readonly System.UInt32 INTERPRET = 1 << 5;
-        public static readonly System.UInt32 COMM = 1 << 6;
+
+        public static readonly System.UInt32 LINK = DEBUG << 1;
+        public static readonly System.UInt32 LINK_RAW = LINK << 1;
 
         public static string GetFilterString(System.UInt32 filters)
         {
@@ -86,8 +87,6 @@ namespace DNP3.Interface
             OptionallyAppend(builder, filters, WARNING, "W");
             OptionallyAppend(builder, filters, INFO, "I");
             OptionallyAppend(builder, filters, DEBUG, "D");
-            OptionallyAppend(builder, filters, INTERPRET, "P");
-            OptionallyAppend(builder, filters, COMM, "C");
             return builder.ToString();
         }
 

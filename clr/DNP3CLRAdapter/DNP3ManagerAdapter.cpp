@@ -51,7 +51,7 @@ IChannel^ DNP3ManagerAdapter::AddTCPClient(System::String^ id, System::UInt32 fi
 	if (pChannel)
 	{
 		auto pRoot = new gcroot<ChannelAdapter^>(adapter);
-		pChannel->SetDestructorHook(openpal::CreateDelete(pRoot));
+		pChannel->SetDestructorHook(openpal::BindDelete(pRoot));
 		adapter->SetChannel(pChannel);
 		return adapter;
 	}
@@ -72,7 +72,7 @@ IChannel^ DNP3ManagerAdapter::AddTCPServer(System::String^ id, System::UInt32 fi
 	if (pChannel)
 	{
 		auto pRoot = new gcroot<ChannelAdapter^>(adapter);
-		pChannel->SetDestructorHook(openpal::CreateDelete(pRoot));
+		pChannel->SetDestructorHook(openpal::BindDelete(pRoot));
 		adapter->SetChannel(pChannel);
 		return adapter;
 	}
@@ -92,7 +92,7 @@ IChannel^ DNP3ManagerAdapter::AddSerial(System::String^ id, System::UInt32 filte
 	if (pChannel)
 	{
 		auto pRoot = new gcroot<ChannelAdapter^>(adapter);
-		pChannel->SetDestructorHook(openpal::CreateDelete(pRoot));
+		pChannel->SetDestructorHook(openpal::BindDelete(pRoot));
 		adapter->SetChannel(pChannel);
 		return adapter;
 	}

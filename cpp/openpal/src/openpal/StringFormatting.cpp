@@ -18,50 +18,34 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __OPENPAL_BIND_H_
-#define __OPENPAL_BIND_H_
 
-#include "Runnable.h"
-#include "Configure.h"
+#include "StringFormatting.h"
+
+#include "ToHex.h"
 
 namespace openpal
 {
 
-template <class Lambda>
-class LambdaRunnable : public Runnable
-{
-	static_assert(sizeof(Lambda) <= MAX_RUNNABLE_SIZE, "Lambda is too big for static buffer");
-
-	public:
-
-	LambdaRunnable(Lambda& lambda) : Runnable(&RunLambda, sizeof(Lambda))
+	void LogHex(Logger& logger, const openpal::LogFilters& filters, const openpal::ReadOnlyBuffer& source)
 	{
-		new(bytes) Lambda(lambda); // use placement new
+		char buffer[MAX_LOG_ENTRY_SIZE];
+		ReadOnlyBuffer copy(source);
+		while (copy.IsNotEmpty())
+		{
+			uint32_t min = copy.Size() < MAX_HEX_PER_LINE ? copy.Size() : MAX_HEX_PER_LINE;
+			auto region = copy.Truncate(min);
+			auto pLocation = buffer;
+			for (uint32_t pos = 0; pos < min; ++pos) {
+				pLocation[0] = toHex((region[pos] & 0xf0) >> 4);
+				pLocation[1] = toHex(region[pos] & 0xf);
+				pLocation[2] = ' ';
+				pLocation += 3;
+			}
+			buffer[3*min] = '\0';
+			copy.Advance(min);
+			logger.Log(filters, "", buffer, -1);
+		}			
 	}
-
-	private:
-
-	static void RunLambda(const uint8_t* pBuffer)
-	{
-		(*reinterpret_cast<const Lambda*>(pBuffer))();		
-	}
-};
-
-template <class T>
-Runnable BindDelete(T* pType)
-{
-	auto lambda = [pType]() { delete pType; };
-	return Bind(lambda);
+	
 }
 
-
-
-template <class Lambda>
-Runnable Bind(Lambda& lambda)
-{
-	return LambdaRunnable<Lambda>(lambda);
-}
-
-}
-
-#endif

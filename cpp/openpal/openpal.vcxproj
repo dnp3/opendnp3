@@ -82,6 +82,7 @@
     <ClCompile Include="src\openpal\MonotonicTimestamp.cpp" />
     <ClCompile Include="src\openpal\ByteSerialization.cpp" />
     <ClCompile Include="src\openpal\Runnable.cpp" />
+    <ClCompile Include="src\openpal\StringFormatting.cpp" />
     <ClCompile Include="src\openpal\TimeDuration.cpp" />
     <ClCompile Include="src\openpal\ToHex.cpp" />
     <ClCompile Include="src\openpal\UInt48LE.cpp" />

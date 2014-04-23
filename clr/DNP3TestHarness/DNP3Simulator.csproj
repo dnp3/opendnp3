@@ -50,6 +50,9 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -69,29 +72,56 @@
     <Compile Include="AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="MasterDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MasterDialog.Designer.cs">
+      <DependentUpon>MasterDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChannelDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChannelDialog.Designer.cs">
+      <DependentUpon>ChannelDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CommTreeView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CommTreeView.Designer.cs">
+      <DependentUpon>CommTreeView.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="TestHarnessForm.cs">
+    <Compile Include="SimulatorForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestHarnessForm.Designer.cs">
-      <DependentUpon>TestHarnessForm.cs</DependentUpon>
+    <Compile Include="SimulatorForm.Designer.cs">
+      <DependentUpon>SimulatorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="MasterDialog.resx">
+      <DependentUpon>MasterDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ChannelDialog.resx">
+      <DependentUpon>ChannelDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CommTreeView.resx">
+      <DependentUpon>CommTreeView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="TestHarnessForm.resx">
-      <DependentUpon>TestHarnessForm.cs</DependentUpon>
+    <EmbeddedResource Include="SimulatorForm.resx">
+      <DependentUpon>SimulatorForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -127,6 +157,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\log_gear.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resources\folder_diskette.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -19,11 +19,10 @@ namespace DNP3TestHarness
         {
             var suppressSplash = args.Contains("-sf");
 
-
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             var manager = DNP3ManagerFactory.CreateManager();
-            var form = new TestHarnessForm(manager, suppressSplash);
+            var form = new SimulatorForm(manager, suppressSplash);
             Application.Run(form);
         }
     }

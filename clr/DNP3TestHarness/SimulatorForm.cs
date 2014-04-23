@@ -12,7 +12,7 @@ using DNP3.Interface;
 
 namespace DNP3TestHarness
 {
-    public partial class TestHarnessForm : Form
+    public partial class SimulatorForm : Form
     {
         class LogAdapter : ILogHandler
         {
@@ -29,7 +29,7 @@ namespace DNP3TestHarness
             private Action<LogEntry> action;
         }
 
-        public TestHarnessForm(IDNP3Manager manager, bool suppressSplash)
+        public SimulatorForm(IDNP3Manager manager, bool suppressSplash)
         {
             this.manager = manager;
             this.suppressSplash = suppressSplash;
@@ -38,12 +38,7 @@ namespace DNP3TestHarness
 
             this.WindowState = FormWindowState.Maximized;
             
-            manager.AddLogHandler(new LogAdapter(OnLogEntry));
-            manager.AddLogHandler(PrintingLogAdapter.Instance);
-          
-            var client = manager.AddTCPClient("client", LogLevels.NORMAL, TimeSpan.FromSeconds(1), TimeSpan.FromMinutes(1), "127.0.0.1", 20000);
-            var master = client.AddMaster("master", PrintingSOEHandler.Instance, new MasterStackConfig());
-            master.Enable();
+            manager.AddLogHandler(new LogAdapter(OnLogEntry));                              
         }
 
         private void OnLogEntry(LogEntry entry)
@@ -52,27 +47,30 @@ namespace DNP3TestHarness
         }
 
         private void AddLogEntry(LogEntry entry)
-        {
+        {            
             this.listBoxLog.Items.Add(GetLogString(entry));
+            if (listBoxLog.Items.Count > 500)
+            {
+                listBoxLog.Items.RemoveAt(0);
+            }
+            listBoxLog.SelectedIndex = listBoxLog.Items.Count - 1;
+            listBoxLog.SelectedIndex = -1;
         }
 
         private string GetLogString(LogEntry entry)
         {
-            return entry.time.ToString("HH:mm:ss.fff") + " - " + entry.loggerName + " - " + entry.message;
+            return entry.time.ToString("HH:mm:ss.fff") + " - " + LogFilters.GetFilterString(entry.filter.Flags) + " - " + entry.loggerName + " - " + entry.message;
         }
 
         private IDNP3Manager manager;
-        private bool suppressSplash;
-
-        private void tCPClientToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            this.AddLogEntry(new LogEntry(0, "name", "", "click tcp client", DateTime.Now, 0));
-        }
+        private bool suppressSplash;        
 
         private void ShowAboutBox()
         {
-            var about = new About();
-            about.ShowDialog();
+            using (About about = new About())
+            {
+                about.ShowDialog();
+            }            
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -92,6 +90,18 @@ namespace DNP3TestHarness
         private void clearWindowToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.listBoxLog.Items.Clear();
+        }
+
+        private void addToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (ChannelDialog dialog = new ChannelDialog(Enumerable.Empty<string>()))
+            {
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    var channel = dialog.ChannelAction.Invoke(manager);
+                    this.commTreeView.AddChannel(dialog.ChannelId, channel);
+                }
+            }
         }
     }
 }

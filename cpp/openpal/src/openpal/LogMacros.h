@@ -38,16 +38,21 @@
 	
 #define FORMAT_LOG_BLOCK_WITH_CODE(logger, filters, code, format, ...) \
 if(logger.IsEnabled(filters)){ \
-	char message[80]; \
-	SNPRINTF(message, 80, format, ##__VA_ARGS__); \
+	char message[openpal::MAX_LOG_ENTRY_SIZE]; \
+	SNPRINTF(message, openpal::MAX_LOG_ENTRY_SIZE, format, ##__VA_ARGS__); \
 	logger.Log(filters, LOCATION, message, code); \
 }
 
 #define FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, filters, code, format, ...) \
 if(pLogger && pLogger->IsEnabled(filters)){ \
-	char message[80]; \
-	SNPRINTF(message, 80, format, ##__VA_ARGS__); \
+	char message[openpal::MAX_LOG_ENTRY_SIZE]; \
+	SNPRINTF(message, openpal::MAX_LOG_ENTRY_SIZE, format, ##__VA_ARGS__); \
 	pLogger->Log(filters, LOCATION, message, code); \
+}
+
+#define FORMAT_HEX_BLOCK(logger, filters, buffer) \
+if(logger.IsEnabled(filters)){ \
+	LogHex(logger, filters, buffer); \
 }
 
 #else
@@ -59,6 +64,8 @@ if(pLogger && pLogger->IsEnabled(filters)){ \
 #define FORMAT_LOG_BLOCK_WITH_CODE(logger, filters, code, format, ...)
 
 #define FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, filters, code, format, ...)
+
+#define FORMAT_HEX_BLOCK(logger, filters, buffer)
 
 #endif
 
