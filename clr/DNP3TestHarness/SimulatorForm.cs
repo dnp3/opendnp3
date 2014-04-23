@@ -29,16 +29,16 @@ namespace DNP3TestHarness
             private Action<LogEntry> action;
         }
 
-        public SimulatorForm(IDNP3Manager manager, bool suppressSplash)
+        public SimulatorForm(IDNP3Manager manager)
         {
             this.manager = manager;
-            this.suppressSplash = suppressSplash;
+            this.logFollowMode = true;
 
             InitializeComponent();
 
             this.WindowState = FormWindowState.Maximized;
             
-            manager.AddLogHandler(new LogAdapter(OnLogEntry));                              
+            manager.AddLogHandler(new LogAdapter(OnLogEntry));                                          
         }
 
         private void OnLogEntry(LogEntry entry)
@@ -47,23 +47,53 @@ namespace DNP3TestHarness
         }
 
         private void AddLogEntry(LogEntry entry)
-        {            
-            this.listBoxLog.Items.Add(GetLogString(entry));
+        {           
+            WriteLogMessage(entry.first, GetLogString(entry));                       
+        }
+
+        private void WriteLogMessage(bool first, String msg)
+        {
+            if (first)
+            {
+                this.listBoxLog.Items.Add("");
+            }
+
+            this.listBoxLog.Items.Add(msg);
+
             if (listBoxLog.Items.Count > 500)
             {
                 listBoxLog.Items.RemoveAt(0);
             }
-            listBoxLog.SelectedIndex = listBoxLog.Items.Count - 1;
-            listBoxLog.SelectedIndex = -1;
+
+            if (logFollowMode)
+            {
+                listBoxLog.TopIndex = listBoxLog.Items.Count - 1;
+            }
         }
 
         private string GetLogString(LogEntry entry)
-        {
-            return entry.time.ToString("HH:mm:ss.fff") + " - " + LogFilters.GetFilterString(entry.filter.Flags) + " - " + entry.loggerName + " - " + entry.message;
+        {            
+            if (entry.first)
+            {                
+                string preamble = String.Format("{0,-16}{1,-10}{2,-20}", entry.time.ToString("HH:mm:ss.fff"), LogFilters.GetFilterString(entry.filter.Flags), entry.loggerName);                
+                return String.Format("  {0}{1}", preamble, entry.message);
+            }
+            else
+            {
+                string format = "  {0}{1}";
+                return String.Format(format, new String(' ', 46), entry.message);
+            }            
+        }
+
+        private void WriteSystemLog(String message)
+        { 
+            var preamble = String.Format("{0,-16}{1,-10}{2,-20}", DateTime.Now.ToString("HH:mm:ss.fff"), LogFilters.GetFilterString(LogFilters.EVENT), "simulator");
+            var output = String.Format("  {0}{1}", preamble, message);
+            WriteLogMessage(true, output);
         }
 
         private IDNP3Manager manager;
-        private bool suppressSplash;        
+        private bool logFollowMode;
 
         private void ShowAboutBox()
         {
@@ -79,12 +109,8 @@ namespace DNP3TestHarness
         }
 
         private void TestHarnessForm_Load(object sender, EventArgs e)
-        {
-            
-            if (!suppressSplash)
-            {
-                this.BeginInvoke(new Action(() => ShowAboutBox()));
-            }
+        {                                    
+            WriteSystemLog("Add a channel or load a configuration to begin");
         }
 
         private void clearWindowToolStripMenuItem_Click(object sender, EventArgs e)
@@ -100,6 +126,24 @@ namespace DNP3TestHarness
                 {
                     var channel = dialog.ChannelAction.Invoke(manager);
                     this.commTreeView.AddChannel(dialog.ChannelId, channel);
+                }
+            }
+        }
+
+        private void pausedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (sender.GetType() == typeof(ToolStripMenuItem))
+            {
+                var item = (ToolStripMenuItem) sender;
+                if (item.Checked)
+                {
+                    item.Checked = false;
+                    this.logFollowMode = true;
+                }
+                else
+                {
+                    item.Checked = true;
+                    this.logFollowMode = false;
                 }
             }
         }

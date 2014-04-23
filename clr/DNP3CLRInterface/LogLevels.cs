@@ -70,17 +70,51 @@ namespace DNP3.Interface
     /// </summary>
     public static class LogFilters
     {
-        public static readonly System.UInt32 EVENT = 1;
-        public static readonly System.UInt32 ERROR = 1 << 1;
-        public static readonly System.UInt32 WARNING = 1 << 2;
-        public static readonly System.UInt32 INFO = 1 << 3;
-        public static readonly System.UInt32 DEBUG = 1 << 4;
+        public const System.UInt32 EVENT = 1;
+        public const System.UInt32 ERROR = 1 << 1;
+        public const System.UInt32 WARNING = 1 << 2;
+        public const System.UInt32 INFO = 1 << 3;
+        public const System.UInt32 DEBUG = 1 << 4;
 
-        public static readonly System.UInt32 LINK = DEBUG << 1;
-        public static readonly System.UInt32 LINK_RAW = LINK << 1;
+        public const System.UInt32 LINK_RX = DEBUG << 1;
+        public const System.UInt32 LINK_RX_HEX = LINK_RX << 1;
 
+        public const System.UInt32 LINK_TX = LINK_RX_HEX << 1;
+        public const System.UInt32 LINK_TX_HEX = LINK_TX << 1;
+
+        public const System.UInt32 TRANSPORT_RX = LINK_TX_HEX << 1;
+        public const System.UInt32 TRANSPORT_TX = TRANSPORT_RX << 1;
+     
         public static string GetFilterString(System.UInt32 filters)
         {
+            switch (filters)
+            { 
+                case(EVENT):
+                    return "EVENT";
+                case(ERROR):
+                    return "ERROR";
+                case(WARNING):
+                    return "WARN";
+                case(INFO):
+                    return "INFO";
+                case(DEBUG):
+                    return "DEBUG";
+                case(LINK_RX):
+                    return "<-LL-";
+                case (LINK_RX_HEX):
+                    return "<-LL-";
+                case (LINK_TX):
+                    return "-LL->";
+                case (LINK_TX_HEX):
+                    return "-LL->";
+                case (TRANSPORT_RX):
+                    return "<-TL-";
+                case (TRANSPORT_TX):
+                    return "-TL->";
+                default:
+                    return "?";
+            }
+
             var builder = new StringBuilder();
             OptionallyAppend(builder, filters, EVENT, "V");
             OptionallyAppend(builder, filters, ERROR, "E");

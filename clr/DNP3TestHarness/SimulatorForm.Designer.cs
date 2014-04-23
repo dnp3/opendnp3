@@ -36,6 +36,7 @@
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.clearWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pausedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainPanel = new System.Windows.Forms.Panel();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
@@ -97,7 +98,8 @@
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.clearWindowToolStripMenuItem});
+            this.clearWindowToolStripMenuItem,
+            this.pausedToolStripMenuItem});
             this.toolStripMenuItem1.Image = global::DNP3TestHarness.Properties.Resources.log_gear;
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(63, 28);
@@ -106,9 +108,16 @@
             // clearWindowToolStripMenuItem
             // 
             this.clearWindowToolStripMenuItem.Name = "clearWindowToolStripMenuItem";
-            this.clearWindowToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.clearWindowToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.clearWindowToolStripMenuItem.Text = "Clear Window";
             this.clearWindowToolStripMenuItem.Click += new System.EventHandler(this.clearWindowToolStripMenuItem_Click);
+            // 
+            // pausedToolStripMenuItem
+            // 
+            this.pausedToolStripMenuItem.Name = "pausedToolStripMenuItem";
+            this.pausedToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.pausedToolStripMenuItem.Text = "Pause";
+            this.pausedToolStripMenuItem.Click += new System.EventHandler(this.pausedToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
@@ -158,14 +167,15 @@
             // listBoxLog
             // 
             this.listBoxLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listBoxLog.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.listBoxLog.Font = new System.Drawing.Font("Courier New", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listBoxLog.FormattingEnabled = true;
             this.listBoxLog.IntegralHeight = false;
-            this.listBoxLog.ItemHeight = 18;
+            this.listBoxLog.ItemHeight = 17;
             this.listBoxLog.Location = new System.Drawing.Point(0, 0);
             this.listBoxLog.Margin = new System.Windows.Forms.Padding(0);
             this.listBoxLog.Name = "listBoxLog";
             this.listBoxLog.ScrollAlwaysVisible = true;
+            this.listBoxLog.SelectionMode = System.Windows.Forms.SelectionMode.None;
             this.listBoxLog.Size = new System.Drawing.Size(926, 520);
             this.listBoxLog.TabIndex = 5;
             // 
@@ -206,8 +216,9 @@
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
         private System.Windows.Forms.Panel mainPanel;
         private System.Windows.Forms.SplitContainer splitContainer2;
-        private System.Windows.Forms.ListBox listBoxLog;
         private CommTreeView commTreeView;
+        private System.Windows.Forms.ListBox listBoxLog;
+        private System.Windows.Forms.ToolStripMenuItem pausedToolStripMenuItem;
 
     }
 }

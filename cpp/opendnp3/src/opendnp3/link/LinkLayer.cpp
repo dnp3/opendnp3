@@ -204,7 +204,9 @@ openpal::ReadOnlyBuffer LinkLayer::FormatPrimaryBufferWithConfirmed(IBufferSegme
 	if (segments.HasValue())
 	{
 		auto seg = segments.GetSegment();
-		return LinkFrame::FormatConfirmedUserData(buffer, config.IsMaster, FCB, config.RemoteAddr, config.LocalAddr, seg, seg.Size());
+		auto output = LinkFrame::FormatConfirmedUserData(buffer, config.IsMaster, FCB, config.RemoteAddr, config.LocalAddr, seg, seg.Size(), &logger);		
+		FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, output, 10, 18);
+		return output;
 	}
 	else
 	{
@@ -224,7 +226,9 @@ ReadOnlyBuffer LinkLayer::FormatPrimaryBufferWithUnconfirmed(IBufferSegment& seg
 		segments.Advance();
 		if(buffer.Size() >= LinkFrame::CalcFrameSize(seg.Size()))
 		{
-			size += LinkFrame::FormatUnconfirmedUserData(buffer, config.IsMaster, config.RemoteAddr, config.LocalAddr, seg, seg.Size()).Size();
+			auto output = LinkFrame::FormatUnconfirmedUserData(buffer, config.IsMaster, config.RemoteAddr, config.LocalAddr, seg, seg.Size(), &logger);			
+			FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, output, 10, 18);
+			size += output.Size();
 		}
 		else
 		{
@@ -243,21 +247,24 @@ void LinkLayer::QueueTransmit(const ReadOnlyBuffer& buffer, bool primary)
 void LinkLayer::QueueAck()
 {
 	auto writeTo = primaryBuffer.GetWriteBuffer();
-	auto buffer = LinkFrame::FormatAck(writeTo, config.IsMaster, false, config.RemoteAddr, config.LocalAddr);
+	auto buffer = LinkFrame::FormatAck(writeTo, config.IsMaster, false, config.RemoteAddr, config.LocalAddr, &logger);
+	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, buffer, 10, 18);
 	this->QueueTransmit(buffer, false);
 }
 
 void LinkLayer::QueueLinkStatus()
 {
 	auto writeTo = primaryBuffer.GetWriteBuffer();
-	auto buffer = LinkFrame::FormatLinkStatus(writeTo, config.IsMaster, false, config.RemoteAddr, config.LocalAddr);
+	auto buffer = LinkFrame::FormatLinkStatus(writeTo, config.IsMaster, false, config.RemoteAddr, config.LocalAddr, &logger);
+	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, buffer, 10, 18);
 	this->QueueTransmit(buffer, false);
 }
 
 void LinkLayer::QueueResetLinks()
 {
 	auto writeTo = primaryBuffer.GetWriteBuffer();
-	auto buffer = LinkFrame::FormatResetLinkStates(writeTo, config.IsMaster, config.RemoteAddr, config.LocalAddr);
+	auto buffer = LinkFrame::FormatResetLinkStates(writeTo, config.IsMaster, config.RemoteAddr, config.LocalAddr, &logger);
+	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, buffer, 10, 18);
 	this->QueueTransmit(buffer, true);
 }
 

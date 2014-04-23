@@ -42,9 +42,10 @@ namespace DNP3.Interface
         /// <param name="message">Body of the message</param>
         /// <param name="time">Timestamp on the message</param>
         /// <param name="errorCode">dnp3 error code</param>
-        public LogEntry(UInt32 filters, String loggerName, String location, string message, DateTime time, int errorCode)
+        public LogEntry(UInt32 filters, bool first, String loggerName, String location, string message, DateTime time, int errorCode)
         {
             this.filter = new LogFilter(filters);
+            this.first = first;
             this.loggerName = loggerName;
             this.location = location;
             this.message = message;
@@ -57,6 +58,11 @@ namespace DNP3.Interface
         /// Level enumeration of the message
         /// </summary>
         public readonly LogFilter filter;
+        
+        /// <summary>
+        /// True if this is the first message in a sequence of messages, false otherwise
+        /// </summary>
+        public readonly bool first;
 
         /// <summary>
         /// Logger id that recorded the message

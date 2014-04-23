@@ -16,13 +16,11 @@ namespace DNP3TestHarness
         /// </summary>
         [STAThread]
         static void Main(string[] args)
-        {
-            var suppressSplash = args.Contains("-sf");
-
+        {            
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             var manager = DNP3ManagerFactory.CreateManager();
-            var form = new SimulatorForm(manager, suppressSplash);
+            var form = new SimulatorForm(manager);
             Application.Run(form);
         }
     }

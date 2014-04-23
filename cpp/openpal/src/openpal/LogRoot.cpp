@@ -35,11 +35,11 @@ LogRoot::LogRoot(ILogBase* pLog_, char const* id_, const LogFilters& filters_) :
 	strncpy(id, id_, MAX_ID_SIZE);
 }
 
-void LogRoot::Log(const LogFilters& filters, int subType, char const* location, char const* message, int errorCode)
+void LogRoot::Log(const LogFilters& filters, int subType, bool first, char const* location, char const* message, int errorCode)
 {
 	if(pLog)
 	{
-		LogEntry le(id, filters, subType, location, message, errorCode);
+		LogEntry le(id, filters, subType, first, location, message, errorCode);
 		pLog->Log(le);	
 	}	
 }

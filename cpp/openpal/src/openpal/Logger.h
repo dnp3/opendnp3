@@ -40,7 +40,7 @@ class Logger
 
 public:	
 
-	void Log(const LogFilters& filters, char const* location, char const* message, int errorCode = -1);	
+	void Log(const LogFilters& filters, bool first, char const* location, char const* message, int errorCode = -1);
 	
 	bool IsEnabled(const LogFilters& filters) const;
 

@@ -43,7 +43,8 @@ TransportLayer::TransportLayer(openpal::LogRoot& root, openpal::IExecutor* pExec
 	isSending(false),
 	pExecutor(pExecutor_),
 	M_FRAG_SIZE(maxFragSize),
-	receiver(logger, maxFragSize)
+	receiver(logger, maxFragSize),
+	transmitter(logger)
 {
 
 }

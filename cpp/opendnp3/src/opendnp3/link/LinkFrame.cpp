@@ -22,10 +22,12 @@
 
 #include "opendnp3/link/DNPCrc.h"
 #include "opendnp3/link/LinkHeader.h"
+#include "opendnp3/LogLevels.h"
 
 #include <openpal/Serialization.h>
-
+#include <openpal/LogMacros.h>
 #include <openpal/Configure.h>
+
 #include <assert.h>
 
 using namespace openpal;
@@ -97,24 +99,24 @@ uint32_t LinkFrame::CalcUserDataSize(uint8_t dataLength)
 //
 ////////////////////////////////////////////////
 
-ReadOnlyBuffer LinkFrame::FormatAck(WriteBuffer& buffer, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc)
+ReadOnlyBuffer LinkFrame::FormatAck(WriteBuffer& buffer, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger)
 {
-	return FormatHeader(buffer, 0, aIsMaster, false, aIsRcvBuffFull, LinkFunction::SEC_ACK, aDest, aSrc);
+	return FormatHeader(buffer, 0, aIsMaster, false, aIsRcvBuffFull, LinkFunction::SEC_ACK, aDest, aSrc, pLogger);
 }
 
-ReadOnlyBuffer LinkFrame::FormatNack(WriteBuffer& buffer, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc)
+ReadOnlyBuffer LinkFrame::FormatNack(WriteBuffer& buffer, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger)
 {
-	return FormatHeader(buffer, 0, aIsMaster, false, aIsRcvBuffFull, LinkFunction::SEC_NACK, aDest, aSrc);
+	return FormatHeader(buffer, 0, aIsMaster, false, aIsRcvBuffFull, LinkFunction::SEC_NACK, aDest, aSrc, pLogger);
 }
 
-ReadOnlyBuffer LinkFrame::FormatLinkStatus(WriteBuffer& buffer, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc)
+ReadOnlyBuffer LinkFrame::FormatLinkStatus(WriteBuffer& buffer, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger)
 {
-	return FormatHeader(buffer, 0, aIsMaster, false, aIsRcvBuffFull, LinkFunction::SEC_LINK_STATUS, aDest, aSrc);
+	return FormatHeader(buffer, 0, aIsMaster, false, aIsRcvBuffFull, LinkFunction::SEC_LINK_STATUS, aDest, aSrc, pLogger);
 }
 
-ReadOnlyBuffer LinkFrame::FormatNotSupported(WriteBuffer& buffer, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc)
+ReadOnlyBuffer LinkFrame::FormatNotSupported(WriteBuffer& buffer, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger)
 {
-	return FormatHeader(buffer, 0, aIsMaster, false, aIsRcvBuffFull, LinkFunction::SEC_NOT_SUPPORTED, aDest, aSrc);
+	return FormatHeader(buffer, 0, aIsMaster, false, aIsRcvBuffFull, LinkFunction::SEC_NOT_SUPPORTED, aDest, aSrc, pLogger);
 }
 
 ////////////////////////////////////////////////
@@ -123,49 +125,57 @@ ReadOnlyBuffer LinkFrame::FormatNotSupported(WriteBuffer& buffer, bool aIsMaster
 //
 ////////////////////////////////////////////////
 
-ReadOnlyBuffer LinkFrame::FormatResetLinkStates(WriteBuffer& buffer, bool aIsMaster, uint16_t aDest, uint16_t aSrc)
+ReadOnlyBuffer LinkFrame::FormatResetLinkStates(WriteBuffer& buffer, bool aIsMaster, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger)
 {
-	return FormatHeader(buffer, 0, aIsMaster, false, false, LinkFunction::PRI_RESET_LINK_STATES, aDest, aSrc);
+	return FormatHeader(buffer, 0, aIsMaster, false, false, LinkFunction::PRI_RESET_LINK_STATES, aDest, aSrc, pLogger);
 }
 
-ReadOnlyBuffer LinkFrame::FormatRequestLinkStatus(WriteBuffer& buffer, bool aIsMaster, uint16_t aDest, uint16_t aSrc)
+ReadOnlyBuffer LinkFrame::FormatRequestLinkStatus(WriteBuffer& buffer, bool aIsMaster, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger)
 {
-	return FormatHeader(buffer, 0, aIsMaster, false, false, LinkFunction::PRI_REQUEST_LINK_STATUS, aDest, aSrc);
+	return FormatHeader(buffer, 0, aIsMaster, false, false, LinkFunction::PRI_REQUEST_LINK_STATUS, aDest, aSrc, pLogger);
 }
 
-ReadOnlyBuffer LinkFrame::FormatTestLinkStatus(WriteBuffer& buffer, bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc)
+ReadOnlyBuffer LinkFrame::FormatTestLinkStatus(WriteBuffer& buffer, bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger)
 {
-	return FormatHeader(buffer, 0, aIsMaster, aFcb, true, LinkFunction::PRI_TEST_LINK_STATES, aDest, aSrc);
+	return FormatHeader(buffer, 0, aIsMaster, aFcb, true, LinkFunction::PRI_TEST_LINK_STATES, aDest, aSrc, pLogger);
 }
 
-ReadOnlyBuffer LinkFrame::FormatConfirmedUserData(WriteBuffer& buffer, bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, uint8_t dataLength)
+ReadOnlyBuffer LinkFrame::FormatConfirmedUserData(WriteBuffer& buffer, bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, uint8_t dataLength, openpal::Logger* pLogger)
 {
 	assert(dataLength > 0);
 	assert(dataLength <= 250);
 	auto userDataSize = CalcUserDataSize(dataLength);
 	auto ret = buffer.ToReadOnly().Truncate(userDataSize + LS_HEADER_SIZE);
-	FormatHeader(buffer, dataLength, aIsMaster, aFcb, true, LinkFunction::PRI_CONFIRMED_USER_DATA, aDest, aSrc);
+	FormatHeader(buffer, dataLength, aIsMaster, aFcb, true, LinkFunction::PRI_CONFIRMED_USER_DATA, aDest, aSrc, pLogger);
 	WriteUserData(apData, buffer, dataLength);
 	buffer.Advance(userDataSize);
 	return ret;
 }
 
-ReadOnlyBuffer LinkFrame::FormatUnconfirmedUserData(WriteBuffer& buffer, bool aIsMaster, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, uint8_t dataLength)
+ReadOnlyBuffer LinkFrame::FormatUnconfirmedUserData(WriteBuffer& buffer, bool aIsMaster, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, uint8_t dataLength, openpal::Logger* pLogger)
 {
 	assert(dataLength > 0);
 	assert(dataLength <= 250);
 	auto userDataSize = CalcUserDataSize(dataLength);
 	auto ret = buffer.ToReadOnly().Truncate(userDataSize + LS_HEADER_SIZE);
-	FormatHeader(buffer, dataLength, aIsMaster, false, false, LinkFunction::PRI_UNCONFIRMED_USER_DATA, aDest, aSrc);
+	FormatHeader(buffer, dataLength, aIsMaster, false, false, LinkFunction::PRI_UNCONFIRMED_USER_DATA, aDest, aSrc, pLogger);
 	WriteUserData(apData, buffer, dataLength);
 	buffer.Advance(userDataSize);
 	return ret;
 }
 
-ReadOnlyBuffer LinkFrame::FormatHeader(WriteBuffer& buffer, uint8_t aDataLength, bool aIsMaster, bool aFcb, bool aFcvDfc, LinkFunction aFuncCode, uint16_t aDest, uint16_t aSrc)
+ReadOnlyBuffer LinkFrame::FormatHeader(WriteBuffer& buffer, uint8_t aDataLength, bool aIsMaster, bool aFcb, bool aFcvDfc, LinkFunction aFuncCode, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger)
 {
-	assert(buffer.Size() >= 10);
+	assert(buffer.Size() >= 10);	
 	LinkHeader header(aDataLength + LS_MIN_LENGTH, aSrc, aDest, aIsMaster, aFcvDfc, aFcb, aFuncCode);
+		
+	FORMAT_LOGGER_BLOCK(pLogger, flags::LINK_TX,
+		"Function: %s Dest: %u Source: %u Length: %u",
+		LinkFunctionToString(aFuncCode),
+		aDest,
+		aSrc,
+		aDataLength);
+
 	header.Write(buffer);
 	auto ret = buffer.ToReadOnly().Truncate(10);
 	buffer.Advance(10);

@@ -35,9 +35,21 @@ namespace DNP3TestHarness
             if (checkBoxWarn.Checked) filters |= LogFilters.WARNING;
             if (checkBoxInfo.Checked) filters |= LogFilters.INFO;
             if (checkBoxDebug.Checked) filters |= LogFilters.DEBUG;
-            
-            if (checkBoxLink.Checked) filters |= LogFilters.LINK;
-            if (checkBoxLinkRaw.Checked) filters |= LogFilters.LINK_RAW;
+
+            if (checkBoxLink.Checked)
+            {
+                filters |= (LogFilters.LINK_RX | LogFilters.LINK_TX);
+            }
+
+            if (checkBoxLinkRaw.Checked)
+            {
+                filters |= (LogFilters.LINK_RX_HEX | LogFilters.LINK_TX_HEX);
+            }
+
+            if (checkBoxTransport.Checked)
+            {
+                filters |= (LogFilters.TRANSPORT_RX | LogFilters.TRANSPORT_TX);
+            }
 
             return filters;
         }

@@ -20,8 +20,8 @@
  */
 #include "TransportTx.h"
 
-
-#include "TransportLayer.h"
+#include "opendnp3/transport/TransportLayer.h"
+#include "opendnp3/LogLevels.h"
 
 #include <openpal/LogMacros.h>
 
@@ -34,7 +34,10 @@ using namespace openpal;
 namespace opendnp3
 {
 
-TransportTx::TransportTx() : sequence(0), tpduCount(0)
+TransportTx::TransportTx(const openpal::Logger& logger_) : 
+	logger(logger_),
+	sequence(0),
+	tpduCount(0)
 {}
 
 void TransportTx::Configure(const openpal::ReadOnlyBuffer& output)
@@ -56,6 +59,7 @@ openpal::ReadOnlyBuffer TransportTx::GetSegment()
 	bool fir = (tpduCount == 0);
 	bool fin = (numToSend == apdu.Size());
 	tpduBuffer[0] = GetHeader(fir, fin, sequence);
+	FORMAT_LOG_BLOCK(logger, flags::TRANSPORT_TX, "FIR: %d FIN: %d SEQ: %u LEN: %u", fir, fin, sequence, numToSend);
 	return ReadOnlyBuffer(tpduBuffer.Buffer(), numToSend + 1);
 }
 

@@ -48,12 +48,13 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.groupBoxLogging = new System.Windows.Forms.GroupBox();
+            this.checkBoxLinkRaw = new System.Windows.Forms.CheckBox();
+            this.checkBoxLink = new System.Windows.Forms.CheckBox();
             this.checkBoxDebug = new System.Windows.Forms.CheckBox();
             this.checkBoxInfo = new System.Windows.Forms.CheckBox();
             this.checkBoxError = new System.Windows.Forms.CheckBox();
             this.checkBoxWarn = new System.Windows.Forms.CheckBox();
-            this.checkBoxLink = new System.Windows.Forms.CheckBox();
-            this.checkBoxLinkRaw = new System.Windows.Forms.CheckBox();
+            this.checkBoxTransport = new System.Windows.Forms.CheckBox();
             this.groupBoxButtons.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -286,6 +287,7 @@
             // 
             // groupBoxLogging
             // 
+            this.groupBoxLogging.Controls.Add(this.checkBoxTransport);
             this.groupBoxLogging.Controls.Add(this.checkBoxLinkRaw);
             this.groupBoxLogging.Controls.Add(this.checkBoxLink);
             this.groupBoxLogging.Controls.Add(this.checkBoxDebug);
@@ -298,6 +300,30 @@
             this.groupBoxLogging.TabIndex = 6;
             this.groupBoxLogging.TabStop = false;
             this.groupBoxLogging.Text = "Logging";
+            // 
+            // checkBoxLinkRaw
+            // 
+            this.checkBoxLinkRaw.AutoSize = true;
+            this.checkBoxLinkRaw.Checked = true;
+            this.checkBoxLinkRaw.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxLinkRaw.Location = new System.Drawing.Point(104, 48);
+            this.checkBoxLinkRaw.Name = "checkBoxLinkRaw";
+            this.checkBoxLinkRaw.Size = new System.Drawing.Size(68, 17);
+            this.checkBoxLinkRaw.TabIndex = 8;
+            this.checkBoxLinkRaw.Text = "LinkRaw";
+            this.checkBoxLinkRaw.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxLink
+            // 
+            this.checkBoxLink.AutoSize = true;
+            this.checkBoxLink.Checked = true;
+            this.checkBoxLink.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxLink.Location = new System.Drawing.Point(104, 25);
+            this.checkBoxLink.Name = "checkBoxLink";
+            this.checkBoxLink.Size = new System.Drawing.Size(46, 17);
+            this.checkBoxLink.TabIndex = 7;
+            this.checkBoxLink.Text = "Link";
+            this.checkBoxLink.UseVisualStyleBackColor = true;
             // 
             // checkBoxDebug
             // 
@@ -345,29 +371,17 @@
             this.checkBoxWarn.Text = "Warning";
             this.checkBoxWarn.UseVisualStyleBackColor = true;
             // 
-            // checkBoxLink
+            // checkBoxTransport
             // 
-            this.checkBoxLink.AutoSize = true;
-            this.checkBoxLink.Checked = true;
-            this.checkBoxLink.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxLink.Location = new System.Drawing.Point(104, 25);
-            this.checkBoxLink.Name = "checkBoxLink";
-            this.checkBoxLink.Size = new System.Drawing.Size(46, 17);
-            this.checkBoxLink.TabIndex = 7;
-            this.checkBoxLink.Text = "Link";
-            this.checkBoxLink.UseVisualStyleBackColor = true;
-            // 
-            // checkBoxLinkRaw
-            // 
-            this.checkBoxLinkRaw.AutoSize = true;
-            this.checkBoxLinkRaw.Checked = true;
-            this.checkBoxLinkRaw.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxLinkRaw.Location = new System.Drawing.Point(104, 48);
-            this.checkBoxLinkRaw.Name = "checkBoxLinkRaw";
-            this.checkBoxLinkRaw.Size = new System.Drawing.Size(68, 17);
-            this.checkBoxLinkRaw.TabIndex = 8;
-            this.checkBoxLinkRaw.Text = "LinkRaw";
-            this.checkBoxLinkRaw.UseVisualStyleBackColor = true;
+            this.checkBoxTransport.AutoSize = true;
+            this.checkBoxTransport.Checked = true;
+            this.checkBoxTransport.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxTransport.Location = new System.Drawing.Point(104, 71);
+            this.checkBoxTransport.Name = "checkBoxTransport";
+            this.checkBoxTransport.Size = new System.Drawing.Size(71, 17);
+            this.checkBoxTransport.TabIndex = 9;
+            this.checkBoxTransport.Text = "Transport";
+            this.checkBoxTransport.UseVisualStyleBackColor = true;
             // 
             // ChannelDialog
             // 
@@ -435,5 +449,6 @@
         private System.Windows.Forms.CheckBox checkBoxWarn;
         private System.Windows.Forms.CheckBox checkBoxLink;
         private System.Windows.Forms.CheckBox checkBoxLinkRaw;
+        private System.Windows.Forms.CheckBox checkBoxTransport;
     }
 }

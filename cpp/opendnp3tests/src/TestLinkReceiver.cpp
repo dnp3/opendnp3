@@ -140,7 +140,7 @@ TEST_CASE(SUITE("ReadACK"))
 {
 	StaticBuffer<292> buffer;
 	auto writeTo = buffer.GetWriteBuffer();
-	auto frame = LinkFrame::FormatAck(writeTo, true, false, 1, 2);
+	auto frame = LinkFrame::FormatAck(writeTo, true, false, 1, 2, nullptr);
 
 	LinkReceiverTest t;
 	t.WriteData(frame);
@@ -153,7 +153,7 @@ TEST_CASE(SUITE("ReadNACK"))
 {
 	StaticBuffer<292> buffer;
 	auto writeTo = buffer.GetWriteBuffer();
-	auto frame = LinkFrame::FormatNack(writeTo, false, true, 1, 2);
+	auto frame = LinkFrame::FormatNack(writeTo, false, true, 1, 2, nullptr);
 
 	LinkReceiverTest t;
 	t.WriteData(frame);
@@ -166,7 +166,7 @@ TEST_CASE(SUITE("LinkStatus"))
 {
 	StaticBuffer<292> buffer;
 	auto writeTo = buffer.GetWriteBuffer();
-	auto frame = LinkFrame::FormatLinkStatus(writeTo, true, true, 1, 2);
+	auto frame = LinkFrame::FormatLinkStatus(writeTo, true, true, 1, 2, nullptr);
 
 	LinkReceiverTest t;
 	t.WriteData(frame);
@@ -179,7 +179,7 @@ TEST_CASE(SUITE("NotSupported"))
 {
 	StaticBuffer<292> buffer;
 	auto writeTo = buffer.GetWriteBuffer();
-	auto frame = LinkFrame::FormatNotSupported(writeTo, true, false, 1, 2);
+	auto frame = LinkFrame::FormatNotSupported(writeTo, true, false, 1, 2, nullptr);
 
 	LinkReceiverTest t;
 	t.WriteData(frame);
@@ -196,7 +196,7 @@ TEST_CASE(SUITE("TestLinkStates"))
 {
 	StaticBuffer<292> buffer;
 	auto writeTo = buffer.GetWriteBuffer();
-	auto frame = LinkFrame::FormatTestLinkStatus(writeTo, false, true, 1, 2);
+	auto frame = LinkFrame::FormatTestLinkStatus(writeTo, false, true, 1, 2, nullptr);
 
 	LinkReceiverTest t;
 	t.WriteData(frame);
@@ -209,7 +209,7 @@ TEST_CASE(SUITE("ResetLinkStates"))
 {
 	StaticBuffer<292> buffer;
 	auto writeTo = buffer.GetWriteBuffer();
-	auto frame = LinkFrame::FormatResetLinkStates(writeTo, false, 1, 2);
+	auto frame = LinkFrame::FormatResetLinkStates(writeTo, false, 1, 2, nullptr);
 
 	LinkReceiverTest t;
 	t.WriteData(frame);
@@ -222,7 +222,7 @@ TEST_CASE(SUITE("RequestLinkStatus"))
 {
 	StaticBuffer<292> buffer;
 	auto writeTo = buffer.GetWriteBuffer();
-	auto frame = LinkFrame::FormatRequestLinkStatus(writeTo, true, 1, 2);
+	auto frame = LinkFrame::FormatRequestLinkStatus(writeTo, true, 1, 2, nullptr);
 
 	LinkReceiverTest t;
 	t.WriteData(frame);
@@ -237,7 +237,7 @@ TEST_CASE(SUITE("UnconfirmedUserData"))
 
 	StaticBuffer<292> buffer;
 	auto writeTo = buffer.GetWriteBuffer();
-	auto frame = LinkFrame::FormatUnconfirmedUserData(writeTo, true, 1, 2, data, data.Size());
+	auto frame = LinkFrame::FormatUnconfirmedUserData(writeTo, true, 1, 2, data, data.Size(), nullptr);
 
 	LinkReceiverTest t;
 	t.WriteData(frame);
@@ -253,7 +253,7 @@ TEST_CASE(SUITE("ConfirmedUserData"))
 
 	StaticBuffer<292> buffer;
 	auto writeTo = buffer.GetWriteBuffer();
-	auto frame = LinkFrame::FormatConfirmedUserData(writeTo, true, true, 1, 2, data, data.Size());
+	auto frame = LinkFrame::FormatConfirmedUserData(writeTo, true, true, 1, 2, data, data.Size(), nullptr);
 
 	LinkReceiverTest t;
 	t.WriteData(frame);
@@ -302,7 +302,7 @@ TEST_CASE(SUITE("ManyReceives"))
 
 	StaticBuffer<292> buffer;
 	auto writeTo = buffer.GetWriteBuffer();
-	auto frame = LinkFrame::FormatAck(writeTo, true, false, 1, 2);
+	auto frame = LinkFrame::FormatAck(writeTo, true, false, 1, 2, nullptr);
 
 	LinkReceiverTest t;
 

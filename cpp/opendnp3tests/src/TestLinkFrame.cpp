@@ -44,11 +44,11 @@ std::string FormatUserData(bool aIsMaster, bool aIsConfirmed, int aDest, int aSr
 
 	if(aIsConfirmed)
 	{
-		return toHex(LinkFrame::FormatConfirmedUserData(wrapper, aIsMaster, aFcb, aDest, aSrc, hs, hs.Size()));
+		return toHex(LinkFrame::FormatConfirmedUserData(wrapper, aIsMaster, aFcb, aDest, aSrc, hs, hs.Size(), nullptr));
 	}
 	else
 	{
-		return toHex(LinkFrame::FormatUnconfirmedUserData(wrapper, aIsMaster, aDest, aSrc, hs, hs.Size()));
+		return toHex(LinkFrame::FormatUnconfirmedUserData(wrapper, aIsMaster, aDest, aSrc, hs, hs.Size(), nullptr));
 	}
 }
 
@@ -72,7 +72,7 @@ TEST_CASE(SUITE("ResetLinks"))
 
 	// ResetLinkStates - Master
 	auto write = buffer.GetWriteBuffer();
-	auto wrapper = LinkFrame::FormatResetLinkStates(write, true, 1, 1024);
+	auto wrapper = LinkFrame::FormatResetLinkStates(write, true, 1, 1024, nullptr);
 	REQUIRE(toHex(wrapper) == "05 64 05 C0 01 00 00 04 E9 21");
 }
 
@@ -82,7 +82,7 @@ TEST_CASE(SUITE("RequestLinkStates"))
 
 	// ResetLinkStates - Master
 	auto write = buffer.GetWriteBuffer();
-	auto wrapper = LinkFrame::FormatRequestLinkStatus(write, false, 1, 1024);
+	auto wrapper = LinkFrame::FormatRequestLinkStatus(write, false, 1, 1024, nullptr);
 	REQUIRE(toHex(wrapper) == "05 64 05 49 01 00 00 04 D2 36");
 }
 
@@ -94,7 +94,7 @@ TEST_CASE(SUITE("ACK"))
 	{
 		// ACK - Outstation (DFC = false)
 		auto writeTo = buffer.GetWriteBuffer();
-		auto wrapper = LinkFrame::FormatAck(writeTo, false, false, 1024, 1);
+		auto wrapper = LinkFrame::FormatAck(writeTo, false, false, 1024, 1, nullptr);
 		REQUIRE(toHex(wrapper) == "05 64 05 00 00 04 01 00 19 A6"); //ACK - Outstation
 	}
 
@@ -102,21 +102,21 @@ TEST_CASE(SUITE("ACK"))
 	{
 		// ACK - Outstation (DFC = true)
 		auto writeTo = buffer.GetWriteBuffer();
-		auto wrapper = LinkFrame::FormatAck(writeTo, false, true, 1024, 1);
+		auto wrapper = LinkFrame::FormatAck(writeTo, false, true, 1024, 1, nullptr);
 		REQUIRE(toHex(wrapper) == "05 64 05 10 00 04 01 00 8B 0C"); // ACK - Outstation (with DFC set)
 	}
 
 	{
 		// ACK - Master (DFC = false)
 		auto writeTo = buffer.GetWriteBuffer();
-		auto wrapper = LinkFrame::FormatAck(writeTo, true, false, 1, 1024);
+		auto wrapper = LinkFrame::FormatAck(writeTo, true, false, 1, 1024, nullptr);
 		REQUIRE(toHex(wrapper) == "05 64 05 80 01 00 00 04 53 11");
 	}
 
 	{
 		// ACK - Master (DFC = true)
 		auto writeTo = buffer.GetWriteBuffer();
-		auto wrapper = LinkFrame::FormatAck(writeTo, true, true, 1, 1024);
+		auto wrapper = LinkFrame::FormatAck(writeTo, true, true, 1, 1024, nullptr);
 		REQUIRE(toHex(wrapper) == "05 64 05 90 01 00 00 04 C1 BB");
 	}
 }
@@ -140,7 +140,7 @@ TEST_CASE(SUITE("ResetLinkStates"))
 
 	// Reset Link States - Outstation
 	auto writeTo = buffer.GetWriteBuffer();
-	auto wrapper = LinkFrame::FormatResetLinkStates(writeTo, false, 1024, 1);
+	auto wrapper = LinkFrame::FormatResetLinkStates(writeTo, false, 1024, 1, nullptr);
 	REQUIRE(toHex(wrapper) == "05 64 05 40 00 04 01 00 A3 96");
 }
 
@@ -157,7 +157,7 @@ TEST_CASE(SUITE("LinkStatus"))
 
 	// LinkStatus - Master (DFC = true)
 	auto writeTo = buffer.GetWriteBuffer();
-	auto wrapper = LinkFrame::FormatLinkStatus(writeTo, true, true, 1, 1024);
+	auto wrapper = LinkFrame::FormatLinkStatus(writeTo, true, true, 1, 1024, nullptr);
 	//take a length 10 frame, set the control to 9B and repair the CRC
 	REQUIRE(toHex(wrapper) == RepairCRC("05 64 05 9B 01 00 00 04 E9 21"));
 }
@@ -168,7 +168,7 @@ TEST_CASE(SUITE("NotSupported"))
 
 	// Not Supported - Outstation (DFC = true)
 	auto writeTo = buffer.GetWriteBuffer();
-	auto wrapper = LinkFrame::FormatNotSupported(writeTo, false, true, 1, 1024);
+	auto wrapper = LinkFrame::FormatNotSupported(writeTo, false, true, 1, 1024, nullptr);
 	REQUIRE(toHex(wrapper) == RepairCRC("05 64 05 1F 01 00 00 04 28 5A"));
 }
 

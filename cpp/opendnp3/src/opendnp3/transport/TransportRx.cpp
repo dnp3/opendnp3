@@ -70,7 +70,10 @@ ReadOnlyBuffer TransportRx::ProcessReceive(const ReadOnlyBuffer& input)
 		bool first = (hdr & TL_HDR_FIR) != 0;
 		bool last = (hdr & TL_HDR_FIN) != 0;
 		int seq = hdr & TL_HDR_SEQ;
+
 		uint32_t payloadLength = input.Size() - 1;
+
+		FORMAT_LOG_BLOCK(logger, flags::TRANSPORT_RX, "FIR: %d FIN: %d SEQ: %u LEN: %u", first, last, seq, payloadLength);
 
 		if (this->ValidateHeader(first, last, seq, payloadLength))
 		{

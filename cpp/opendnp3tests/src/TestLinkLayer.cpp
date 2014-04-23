@@ -144,7 +144,7 @@ TEST_CASE(SUITE("SecondaryResetLink"))
 
 	StaticBuffer<292> buffer;
 	auto writeTo = buffer.GetWriteBuffer();
-	auto frame = LinkFrame::FormatAck(writeTo, true, false, 1024, 1);
+	auto frame = LinkFrame::FormatAck(writeTo, true, false, 1024, 1, nullptr);
 
 	REQUIRE(t.numWrites ==  1);
 	REQUIRE(toHex(t.lastWrite) ==  toHex(frame));
@@ -169,7 +169,7 @@ TEST_CASE(SUITE("SecAckWrongFCB"))
 
 	StaticBuffer<292> buffer;
 	auto writeTo = buffer.GetWriteBuffer();
-	auto frame = LinkFrame::FormatAck(writeTo, true, false, 1024, 1);
+	auto frame = LinkFrame::FormatAck(writeTo, true, false, 1024, 1, nullptr);
 
 	REQUIRE(toHex(t.lastWrite) ==  toHex(frame));
 	REQUIRE(t.upper.receivedQueue.empty()); //data should not be passed up!
@@ -192,7 +192,7 @@ TEST_CASE(SUITE("SecondaryResetResetLinkStates"))
 
 	StaticBuffer<292> buffer;
 	auto writeTo = buffer.GetWriteBuffer();
-	auto frame = LinkFrame::FormatAck(writeTo, true, false, 1024, 1);
+	auto frame = LinkFrame::FormatAck(writeTo, true, false, 1024, 1, nullptr);
 
 	REQUIRE(t.numWrites ==  2);
 	REQUIRE(toHex(t.lastWrite) ==  toHex(frame));
@@ -231,7 +231,7 @@ TEST_CASE(SUITE("RequestStatusOfLink"))
 
 	StaticBuffer<292> buffer;
 	auto writeTo = buffer.GetWriteBuffer();
-	auto frame = LinkFrame::FormatLinkStatus(writeTo, true, false, 1024, 1);
+	auto frame = LinkFrame::FormatLinkStatus(writeTo, true, false, 1024, 1, nullptr);
 
 	REQUIRE(toHex(t.lastWrite) ==  toHex(frame));
 
@@ -259,7 +259,7 @@ TEST_CASE(SUITE("TestLinkStates"))
 	t.link.TestLinkStatus(false, true, 1, 1024);
 	StaticBuffer<292> buffer;
 	auto writeTo = buffer.GetWriteBuffer();
-	auto frame = LinkFrame::FormatAck(writeTo, true, false, 1024, 1);
+	auto frame = LinkFrame::FormatAck(writeTo, true, false, 1024, 1, nullptr);
 	REQUIRE(t.numWrites ==  2);
 	REQUIRE(toHex(t.lastWrite) ==  toHex(frame));
 }
@@ -321,7 +321,7 @@ TEST_CASE(SUITE("ResetLinkTimerExpiration"))
 
 	StaticBuffer<292> buffer;
 	auto writeTo = buffer.GetWriteBuffer();
-	auto result = LinkFrame::FormatResetLinkStates(writeTo, true, 1024, 1);
+	auto result = LinkFrame::FormatResetLinkStates(writeTo, true, 1024, 1, nullptr);
 	REQUIRE(toHex(t.lastWrite) ==  toHex(result));
 	REQUIRE(t.upper.CountersEqual(0, 0));
 
@@ -353,7 +353,7 @@ TEST_CASE(SUITE("ResetLinkTimerExpirationWithRetry"))
 	StaticBuffer<292> buffer;
 	{
 		auto writeTo = buffer.GetWriteBuffer();
-		auto result = LinkFrame::FormatResetLinkStates(writeTo, true, 1024, 1);
+		auto result = LinkFrame::FormatResetLinkStates(writeTo, true, 1024, 1, nullptr);
 		REQUIRE(toHex(t.lastWrite) == toHex(result)); // check that reset links got sent again
 	}
 	t.link.OnTransmitResult(true, true);
@@ -362,7 +362,7 @@ TEST_CASE(SUITE("ResetLinkTimerExpirationWithRetry"))
 	REQUIRE(t.numWrites == 3);
 	{
 		auto writeTo = buffer.GetWriteBuffer();
-		auto result = LinkFrame::FormatConfirmedUserData(writeTo, true, true, 1024, 1, bytes, bytes.Size());
+		auto result = LinkFrame::FormatConfirmedUserData(writeTo, true, true, 1024, 1, bytes, bytes.Size(), nullptr);
 		REQUIRE(toHex(t.lastWrite) == toHex(result)); // check that the data got sent
 	}
 	t.link.OnTransmitResult(true, true);
@@ -455,7 +455,7 @@ TEST_CASE(SUITE("ConfirmedDataRetry"))
 
 	StaticBuffer<292> buffer;
 	auto writeTo = buffer.GetWriteBuffer();
-	auto frame = LinkFrame::FormatConfirmedUserData(writeTo, true, true, 1024, 1, bytes, bytes.Size());
+	auto frame = LinkFrame::FormatConfirmedUserData(writeTo, true, true, 1024, 1, bytes, bytes.Size(), nullptr);
 
 	REQUIRE(toHex(t.lastWrite) ==  toHex(frame));
 	t.link.OnTransmitResult(true, true);
@@ -482,7 +482,7 @@ TEST_CASE(SUITE("ResetLinkRetries"))
 		REQUIRE(t.numWrites ==  i); // sends link retry
 		StaticBuffer<292> buffer;
 		auto writeTo = buffer.GetWriteBuffer();
-		auto frame = LinkFrame::FormatResetLinkStates(writeTo, true, 1024, 1);
+		auto frame = LinkFrame::FormatResetLinkStates(writeTo, true, 1024, 1, nullptr);
 		REQUIRE(toHex(t.lastWrite) == toHex(frame));
 		t.link.OnTransmitResult(true, true);
 		REQUIRE(t.mts.DispatchOne()); //timeout
@@ -535,7 +535,7 @@ TEST_CASE(SUITE("SendDataTimerExpiration"))
 	REQUIRE(t.numWrites ==  2);
 	StaticBuffer<292> buffer;
 	auto writeTo = buffer.GetWriteBuffer();
-	auto frame = LinkFrame::FormatConfirmedUserData(writeTo, true, true, 1024, 1, bytes, bytes.Size());
+	auto frame = LinkFrame::FormatConfirmedUserData(writeTo, true, true, 1024, 1, bytes, bytes.Size(), nullptr);
 	REQUIRE(t.numWrites ==  2);
 	REQUIRE(toHex(t.lastWrite) ==  toHex(frame)); // check that data was sent
 	t.link.OnTransmitResult(true, true);
@@ -566,7 +566,7 @@ TEST_CASE(SUITE("SendDataSuccess"))
 	t.link.Send(segments); // now we should be directly sending w/o having to reset, and the FCB should flip
 	StaticBuffer<292> buffer;
 	auto writeTo = buffer.GetWriteBuffer();
-	auto frame = LinkFrame::FormatConfirmedUserData(writeTo, true, false, 1024, 1, bytes, bytes.Size());
+	auto frame = LinkFrame::FormatConfirmedUserData(writeTo, true, false, 1024, 1, bytes, bytes.Size(), nullptr);
 	REQUIRE(t.numWrites ==  3);
 	REQUIRE(toHex(t.lastWrite) ==  toHex(frame));
 }

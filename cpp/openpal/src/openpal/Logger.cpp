@@ -48,11 +48,11 @@ Logger Logger::SwitchType(int subType) const
 	return Logger(pRoot, subType);
 }
 
-void Logger::Log(const LogFilters& filters, char const* location, char const* message, int errorCode)
+void Logger::Log(const LogFilters& filters, bool first, char const* location, char const* message, int errorCode)
 {
 	if (pRoot->IsEnabled(filters))
 	{		
-		pRoot->Log(filters, subType, location, message, errorCode);
+		pRoot->Log(filters, subType, first, location, message, errorCode);
 	}
 }
 

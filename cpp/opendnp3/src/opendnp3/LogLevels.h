@@ -44,8 +44,14 @@ const int32_t INFO = openpal::logflags::INFO;
 const int32_t DBG = openpal::logflags::DBG;
 
 // upshift the custom dnp3 filters
-const int32_t LINK_INTERPRET = DBG << 1;
-const int32_t LINK_RAW = DBG << 1;
+const int32_t LINK_RX = DBG << 1;
+const int32_t LINK_RX_HEX = LINK_RX << 1;
+
+const int32_t LINK_TX = LINK_RX_HEX << 1;
+const int32_t LINK_TX_HEX = LINK_TX << 1;
+
+const int32_t TRANSPORT_RX = LINK_TX_HEX << 1;
+const int32_t TRANSPORT_TX = TRANSPORT_RX << 1;
 
 }
 

@@ -116,7 +116,7 @@ int LogTester::ClearLog()
 
 void LogTester::Log(const std::string& arLocation, const std::string& arMessage)
 {
-	logger.Log(flags::EVENT, arLocation.c_str(), arMessage.c_str());
+	logger.Log(flags::EVENT, true, arLocation.c_str(), arMessage.c_str());
 }
 
 int LogTester::NextErrorCode()
@@ -150,7 +150,7 @@ void LogTester::Pop(openpal::ILogBase* pLog)
 	LogRecord record;
 	while (GetNextEntry(record))
 	{
-		LogEntry le(record.id.c_str(), record.filters, record.subType, record.location.c_str(), record.message.c_str(), record.errorCode);
+		LogEntry le(record.id.c_str(), record.filters, record.subType, true, record.location.c_str(), record.message.c_str(), record.errorCode);
 		pLog->Log(le);
 	}
 }

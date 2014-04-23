@@ -74,7 +74,7 @@ namespace DotNetMasterDemo
                     case "l":
                         // add interpretation to the current logging level
                         var filters = channel.GetLogFilters();
-                        channel.SetLogFilters(filters.Add(LogFilters.INTERPRET));
+                        channel.SetLogFilters(filters.Add(LogFilters.TRANSPORT_TX | LogFilters.TRANSPORT_RX));
                         break;
                     case "i":
                         integrityScan.Demand();

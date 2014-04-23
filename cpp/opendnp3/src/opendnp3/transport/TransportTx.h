@@ -22,6 +22,7 @@
 #define __TRANSPORT_TX_H_
 
 #include <openpal/StaticBuffer.h>
+#include <openpal/Logger.h>
 
 #include "opendnp3/IBufferSegment.h"
 #include "opendnp3/transport/TransportConstants.h"
@@ -39,7 +40,7 @@ class TransportTx : public IBufferSegment
 
 public:
 
-	TransportTx();
+	TransportTx(const openpal::Logger& logger);
 
 	void Configure(const openpal::ReadOnlyBuffer& output);
 
@@ -60,6 +61,7 @@ private:
 
 	openpal::StaticBuffer<TL_MAX_TPDU_LENGTH> tpduBuffer;
 
+	openpal::Logger logger;
 	uint8_t sequence;
 	uint32_t tpduCount;
 };

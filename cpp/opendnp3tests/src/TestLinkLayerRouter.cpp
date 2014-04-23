@@ -138,7 +138,7 @@ TEST_CASE(SUITE("ReentrantCloseWorks"))
 
 	StaticBuffer<292> buffer;
 	auto writeTo = buffer.GetWriteBuffer();
-	auto frame = LinkFrame::FormatAck(writeTo, true, false, 1024, 1);
+	auto frame = LinkFrame::FormatAck(writeTo, true, false, 1024, 1, nullptr);
 	t.phys.TriggerRead(toHex(frame));
 
 	REQUIRE(t.log.IsLogErrorFree());
@@ -210,7 +210,7 @@ TEST_CASE(SUITE("LinkLayerRouterClearsBufferOnLowerLayerDown"))
 
 	StaticBuffer<292> buffer;
 	auto writeTo = buffer.GetWriteBuffer();
-	auto frame = LinkFrame::FormatAck(writeTo, true, false, 1024, 1);
+	auto frame = LinkFrame::FormatAck(writeTo, true, false, 1024, 1, nullptr);
 	t.phys.TriggerRead(toHex(frame));
 
 	REQUIRE(1 ==  mfs.mNumFrames);

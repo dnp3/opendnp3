@@ -38,7 +38,7 @@ public:
 
 	LogEntry();
 
-	LogEntry(char const* id, const LogFilters& filters, int source, char const* location, char const* message, int errorCode);
+	LogEntry(char const* id, const LogFilters& filters, int source, bool first, char const* location, char const* message, int errorCode);
 
 	/// @return The name of the logger that recorded the message
 	char const*	GetId() const
@@ -70,6 +70,12 @@ public:
 		return filters;
 	}
 
+	/// @return true if this is the first message in a series of messages, false otherwise
+	bool IsFirstMsg() const
+	{
+		return first;
+	}
+
 	/// @return the error code associated with the message
 	int	GetErrorCode() const
 	{
@@ -81,6 +87,7 @@ private:
 	char const*		id;
 	LogFilters		filters;
 	int				source;
+	bool			first;
 	char const*		location;
 	char const*		message;
 	int				errorCode;

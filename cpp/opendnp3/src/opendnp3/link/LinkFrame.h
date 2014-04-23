@@ -27,6 +27,10 @@
 #include <openpal/BufferWrapper.h>
 #include <openpal/Uncopyable.h>
 
+namespace openpal
+{
+	class Logger;
+}
 
 namespace opendnp3
 {
@@ -40,20 +44,20 @@ public:
 	//	Functions for formatting outgoing Sec to Pri frames
 	////////////////////////////////////////////////
 
-	static openpal::ReadOnlyBuffer FormatAck(openpal::WriteBuffer& output, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc);
-	static openpal::ReadOnlyBuffer FormatNack(openpal::WriteBuffer& output, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc);
-	static openpal::ReadOnlyBuffer FormatLinkStatus(openpal::WriteBuffer& output, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc);
-	static openpal::ReadOnlyBuffer FormatNotSupported(openpal::WriteBuffer& output, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc);
+	static openpal::ReadOnlyBuffer FormatAck(openpal::WriteBuffer& output, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
+	static openpal::ReadOnlyBuffer FormatNack(openpal::WriteBuffer& output, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
+	static openpal::ReadOnlyBuffer FormatLinkStatus(openpal::WriteBuffer& output, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
+	static openpal::ReadOnlyBuffer FormatNotSupported(openpal::WriteBuffer& output, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
 
 	////////////////////////////////////////////////
 	//	Functions for formatting outgoing Pri to Sec frames
 	////////////////////////////////////////////////
 
-	static openpal::ReadOnlyBuffer FormatTestLinkStatus(openpal::WriteBuffer& output, bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc);
-	static openpal::ReadOnlyBuffer FormatResetLinkStates(openpal::WriteBuffer& output, bool aIsMaster, uint16_t aDest, uint16_t aSrc);
-	static openpal::ReadOnlyBuffer FormatRequestLinkStatus(openpal::WriteBuffer& output, bool aIsMaster, uint16_t aDest, uint16_t aSrc);
-	static openpal::ReadOnlyBuffer FormatConfirmedUserData(openpal::WriteBuffer& output, bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, uint8_t aDataLength);
-	static openpal::ReadOnlyBuffer FormatUnconfirmedUserData(openpal::WriteBuffer& output, bool aIsMaster, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, uint8_t aDataLength);
+	static openpal::ReadOnlyBuffer FormatTestLinkStatus(openpal::WriteBuffer& output, bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
+	static openpal::ReadOnlyBuffer FormatResetLinkStates(openpal::WriteBuffer& output, bool aIsMaster, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
+	static openpal::ReadOnlyBuffer FormatRequestLinkStatus(openpal::WriteBuffer& output, bool aIsMaster, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
+	static openpal::ReadOnlyBuffer FormatConfirmedUserData(openpal::WriteBuffer& output, bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, uint8_t aDataLength, openpal::Logger* pLogger);
+	static openpal::ReadOnlyBuffer FormatUnconfirmedUserData(openpal::WriteBuffer& output, bool aIsMaster, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, uint8_t aDataLength, openpal::Logger* pLogger);
 
 	////////////////////////////////////////////////
 	//	Reusable static formatting functions to any buffer
@@ -88,7 +92,7 @@ private:
 	static void WriteUserData(const uint8_t* pSrc, uint8_t* pDest, uint8_t length);
 
 	/** Write 10 header bytes to to buffer including 0x0564, all fields, and CRC */
-	static openpal::ReadOnlyBuffer FormatHeader(openpal::WriteBuffer& output, uint8_t aDataLength, bool aIsMaster, bool aFcb, bool aFcvDfc, LinkFunction aCode, uint16_t aDest, uint16_t aSrc);
+	static openpal::ReadOnlyBuffer FormatHeader(openpal::WriteBuffer& output, uint8_t aDataLength, bool aIsMaster, bool aFcb, bool aFcvDfc, LinkFunction aCode, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
 
 };
 

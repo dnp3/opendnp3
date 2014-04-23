@@ -130,7 +130,7 @@ bool LinkLayerReceiver::ValidateBody()
 	uint32_t len = mHeader.GetLength() - LS_MIN_LENGTH;
 	if (LinkFrame::ValidateBodyCRC(mBuffer.ReadBuff() + LS_HEADER_SIZE, len))
 	{
-		FORMAT_LOG_BLOCK(logger, flags::LINK_INTERPRET,
+		FORMAT_LOG_BLOCK(logger, flags::LINK_RX,
 			"Function: %s Dest: %u Source: %u Length: %u",
 			LinkFunctionToString(mHeader.GetFuncEnum()),
 			mHeader.GetDest(),
@@ -138,7 +138,8 @@ bool LinkLayerReceiver::ValidateBody()
 			mHeader.GetLength());
 
 		ReadOnlyBuffer buffer(mBuffer.ReadBuff(), mFrameSize);
-		FORMAT_HEX_BLOCK(logger, flags::LINK_RAW, buffer);
+		FORMAT_HEX_BLOCK(logger, flags::LINK_RX_HEX, buffer, 10, 18);
+
 		return true;
 	}
 	else

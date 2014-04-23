@@ -26,17 +26,19 @@ namespace openpal
 LogEntry::LogEntry() :
 	id(""),
 	source(0),
+	first(true),
 	location(""),
 	message(""),
 	errorCode(-1)
 {}
 
 
-LogEntry::LogEntry(char const* id_, const LogFilters& filters_, int source_, char const* location_, char const* message_, int errorCode_)
+LogEntry::LogEntry(char const* id_, const LogFilters& filters_, int source_, bool first_, char const* location_, char const* message_, int errorCode_)
 	:
 	id(id_),
 	filters(filters_),
 	source(source_),
+	first(first_),
 	location(location_),
 	message(message_),
 	errorCode(errorCode_)
