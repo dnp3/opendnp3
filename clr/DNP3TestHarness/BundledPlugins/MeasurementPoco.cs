@@ -27,14 +27,8 @@ namespace Automatak.DNP3.Simulator
             this.index = index;
             this.flags = meas.Quality.ToString("X2");
             this.timeStamp = meas.Timestamp;
-            this.row = row;
-            this.isValid = true;
-        }
-
-        public MeasurementPoco()
-        {
-            this.isValid = false;
-        }
+            this.row = row;          
+        }        
 
         public void Update(string sValue, MeasurementBase meas)
         {
@@ -47,19 +41,13 @@ namespace Automatak.DNP3.Simulator
         private string sValue;
         private string flags;
         private DateTime timeStamp;
-        private int row;
-        private bool isValid;
+        private int row;        
 
         public void NextRow()
         {
             ++row;
         }
-
-        public Boolean IsValid
-        {
-            get { return isValid; }
-        }
-
+     
         public UInt16 Index
         {
             get { return index; }
@@ -96,6 +84,7 @@ namespace Automatak.DNP3.Simulator
             }
         }
 
+        [Browsable(false)]
         public int Row
         {
             get { return row; }
