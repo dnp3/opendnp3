@@ -43,6 +43,8 @@ public:
 	*/
 	MeasurementHandler(const openpal::Logger& logger, ISOEHandler* pSOEHandler);
 
+	~MeasurementHandler();
+
 	void _OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override final;
 	void _OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) override final;
 	void _OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) override final;
@@ -63,7 +65,10 @@ public:
 
 
 private:
+	bool txInitiated;
 	ISOEHandler* pSOEHandler;
+
+	void CheckForTxStart();
 
 };
 

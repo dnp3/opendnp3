@@ -27,61 +27,94 @@ using namespace openpal;
 namespace opendnp3
 {
 
-MeasurementHandler::MeasurementHandler(const openpal::Logger& logger, ISOEHandler* pSOEHandler_) : APDUHandlerBase(logger), pSOEHandler(pSOEHandler_)
-{}
+MeasurementHandler::MeasurementHandler(const openpal::Logger& logger, ISOEHandler* pSOEHandler_) : 
+	APDUHandlerBase(logger),
+	txInitiated(false),
+	pSOEHandler(pSOEHandler_)
+{
+	
+}
+
+MeasurementHandler::~MeasurementHandler()
+{
+	if (txInitiated)
+	{
+		Transaction::End(pSOEHandler);
+	}
+}
+
+void MeasurementHandler::CheckForTxStart()
+{
+	if (!txInitiated)
+	{
+		txInitiated = true;
+		Transaction::Start(pSOEHandler);
+	}
+}
 
 void MeasurementHandler::_OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)
 {
+	this->CheckForTxStart();
 	pSOEHandler->LoadStatic(meas);
 }
 
 void MeasurementHandler::_OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas)
 {
+	this->CheckForTxStart();
 	pSOEHandler->LoadStatic(meas);
 }
 
 void MeasurementHandler::_OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas)
 {
+	this->CheckForTxStart();
 	pSOEHandler->LoadStatic(meas);
 }
 
 void MeasurementHandler::_OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)
 {
+	this->CheckForTxStart();
 	pSOEHandler->LoadStatic(meas);
 }
 
 void MeasurementHandler::_OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas)
 {
+	this->CheckForTxStart();
 	pSOEHandler->LoadStatic(meas);
 }
 
 void MeasurementHandler::_OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)
 {
+	this->CheckForTxStart();
 	pSOEHandler->LoadStatic(meas);
 }
 
 void MeasurementHandler::_OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas)
 {
+	this->CheckForTxStart();
 	pSOEHandler->LoadStatic(meas);
 }
 
 void MeasurementHandler::_OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas)
 {
+	this->CheckForTxStart();
 	pSOEHandler->LoadStatic(meas);
 }
 
 void MeasurementHandler::_OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)
 {
+	this->CheckForTxStart();
 	pSOEHandler->LoadEvent(meas);
 }
 
 void MeasurementHandler::_OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas)
 {
+	this->CheckForTxStart();
 	pSOEHandler->LoadEvent(meas);
 }
 
 void MeasurementHandler::_OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas)
 {
+	this->CheckForTxStart();
 	pSOEHandler->LoadEvent(meas);
 }
 
@@ -92,21 +125,25 @@ void MeasurementHandler::_OnIndexPrefix(const HeaderRecord& record, const Iterab
 
 void MeasurementHandler::_OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas)
 {
+	this->CheckForTxStart();
 	pSOEHandler->LoadEvent(meas);
 }
 
 void MeasurementHandler::_OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)
 {
+	this->CheckForTxStart();
 	pSOEHandler->LoadEvent(meas);
 }
 
 void MeasurementHandler::_OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas)
 {
+	this->CheckForTxStart();
 	pSOEHandler->LoadEvent(meas);
 }
 
 void MeasurementHandler::_OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas)
 {
+	this->CheckForTxStart();
 	pSOEHandler->LoadEvent(meas);
 }
 

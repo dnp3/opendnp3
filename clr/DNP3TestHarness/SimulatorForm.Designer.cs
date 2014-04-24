@@ -1,4 +1,4 @@
-﻿namespace DNP3TestHarness
+﻿namespace Automatak.DNP3.Simulator
 {
     partial class SimulatorForm
     {
@@ -40,7 +40,7 @@
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainPanel = new System.Windows.Forms.Panel();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.commTreeView = new DNP3TestHarness.CommTreeView();
+            this.commTreeView = new Automatak.DNP3.Simulator.CommTreeView();
             this.listBoxLog = new System.Windows.Forms.ListBox();
             this.mainMenuStrip.SuspendLayout();
             this.mainPanel.SuspendLayout();
@@ -67,7 +67,7 @@
             // 
             // addToolStripMenuItem
             // 
-            this.addToolStripMenuItem.Image = global::DNP3TestHarness.Properties.Resources.satellite_dish_add;
+            this.addToolStripMenuItem.Image = global::Automatak.DNP3.Simulator.Properties.Resources.satellite_dish_add;
             this.addToolStripMenuItem.Name = "addToolStripMenuItem";
             this.addToolStripMenuItem.Size = new System.Drawing.Size(65, 28);
             this.addToolStripMenuItem.Text = "Add";
@@ -78,7 +78,7 @@
             this.toolStripMenuItem2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.loadToolStripMenuItem,
             this.saveToolStripMenuItem});
-            this.toolStripMenuItem2.Image = global::DNP3TestHarness.Properties.Resources.folder_diskette;
+            this.toolStripMenuItem2.Image = global::Automatak.DNP3.Simulator.Properties.Resources.folder_diskette;
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
             this.toolStripMenuItem2.Size = new System.Drawing.Size(61, 28);
             this.toolStripMenuItem2.Text = "File";
@@ -100,7 +100,7 @@
             this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.clearWindowToolStripMenuItem,
             this.pausedToolStripMenuItem});
-            this.toolStripMenuItem1.Image = global::DNP3TestHarness.Properties.Resources.log_gear;
+            this.toolStripMenuItem1.Image = global::Automatak.DNP3.Simulator.Properties.Resources.log_gear;
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(63, 28);
             this.toolStripMenuItem1.Text = "Log";
@@ -122,7 +122,7 @@
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.aboutToolStripMenuItem.Image = global::DNP3TestHarness.Properties.Resources.info;
+            this.aboutToolStripMenuItem.Image = global::Automatak.DNP3.Simulator.Properties.Resources.info;
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(76, 28);
             this.aboutToolStripMenuItem.Text = "About";

@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using DNP3.Interface;
 using DNP3.Adapter;
 
-namespace DNP3TestHarness
+namespace Automatak.DNP3.Simulator
 {
     static class Program
     {
@@ -16,11 +16,13 @@ namespace DNP3TestHarness
         /// </summary>
         [STAThread]
         static void Main(string[] args)
-        {            
+        {
+            var manager = DNP3ManagerFactory.CreateManager();
+            var masterPlugins = new List<IMasterPluginFactory> { GUIMasterPluginFactory.Instance };
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            var manager = DNP3ManagerFactory.CreateManager();
-            var form = new SimulatorForm(manager);
+            var form = new SimulatorForm(manager, masterPlugins);
             Application.Run(form);
         }
     }

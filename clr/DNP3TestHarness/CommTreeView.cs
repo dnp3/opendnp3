@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 using DNP3.Interface;
 
-namespace DNP3TestHarness
+namespace Automatak.DNP3.Simulator
 {
     public partial class CommTreeView : UserControl
     {
@@ -18,28 +18,43 @@ namespace DNP3TestHarness
             InitializeComponent();                     
         }
 
-        public void AddChannel(string id, IChannel channel)
+        public void AddChannel(string id, IChannel channel, IEnumerable<IMasterPluginFactory> masters)
         {
             TreeNode node = new TreeNode(id);            
             node.ImageIndex = 0;
-            node.ContextMenuStrip = CreateChannelMenuStrip(node, channel);
+            node.ContextMenuStrip = CreateChannelMenuStrip(node, channel, masters);
             treeView.Nodes.Add(node);         
         }
 
-        ContextMenuStrip CreateChannelMenuStrip(TreeNode node, IChannel channel)
+        ContextMenuStrip CreateChannelMenuStrip(TreeNode node, IChannel channel, IEnumerable<IMasterPluginFactory> masters)
         {
             var strip = new ContextMenuStrip();
-            var addMaster = strip.Items.Add("Add Master");
-            addMaster.Click += (object sender, EventArgs e) => OnAddMaster(node, channel, sender, e);
+            var add = new ToolStripMenuItem("Add");
+            strip.Items.Add(add);
+
+            foreach(var plugin in masters)
+            {
+                var item =  add.DropDownItems.Add(plugin.Name);
+                item.Click += (object sender, EventArgs e) => OnAddMaster(plugin, node, channel, sender, e);
+            }
+                        
             strip.Items.Add(new ToolStripSeparator());
             var remove = strip.Items.Add("Remove");
             remove.Click += (object sender, EventArgs e) => OnRemoveChannel(node, channel, sender, e);                        
             return strip;
         }
 
-        ContextMenuStrip CreateMasterMenuStrip(TreeNode parent, TreeNode node, IMaster master)
+        ContextMenuStrip CreateMasterMenuStrip(IMasterPlugin plugin, TreeNode parent, TreeNode node, IMaster master)
         {
             var strip = new ContextMenuStrip();
+
+            if (plugin.PluginForm != null)
+            {
+                var open = strip.Items.Add("Open");
+                open.Click += (object sender, EventArgs e) => plugin.PluginForm.Show();
+                strip.Items.Add(new ToolStripSeparator());
+            }
+            
             var remove = strip.Items.Add("Remove");
             remove.Click += (object sender, EventArgs e) => OnRemoveMaster(parent, node, master, sender, e);
             return strip;
@@ -51,18 +66,20 @@ namespace DNP3TestHarness
             master.Shutdown();
         }
 
-        private void OnAddMaster(TreeNode node, IChannel channel, object sender, EventArgs e)
+        private void OnAddMaster(IMasterPluginFactory factory, TreeNode node, IChannel channel, object sender, EventArgs e)
         {
             using (MasterDialog dialog = new MasterDialog())
             {
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    var master = channel.AddMaster("master", PrintingSOEHandler.Instance, dialog.Configuration);
+                    var plugin = factory.Create("master");
+                    var master = channel.AddMaster("master", plugin.SOEHandler, dialog.Configuration);
+                    plugin.SetMaster(master);
                     TreeNode masterNode = new TreeNode("master");
                     masterNode.ImageIndex = 1;
                     masterNode.StateImageIndex = 1;
                     masterNode.SelectedImageIndex = 1;
-                    masterNode.ContextMenuStrip = CreateMasterMenuStrip(node, masterNode, master);
+                    masterNode.ContextMenuStrip = CreateMasterMenuStrip(plugin, node, masterNode, master);
                     node.Nodes.Add(masterNode);
                     master.Enable();
                 }

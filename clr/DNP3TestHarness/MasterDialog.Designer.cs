@@ -1,4 +1,4 @@
-﻿namespace DNP3TestHarness
+﻿namespace Automatak.DNP3.Simulator
 {
     partial class MasterDialog
     {

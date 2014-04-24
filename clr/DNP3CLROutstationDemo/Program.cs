@@ -54,14 +54,14 @@ namespace DotNetOutstationDemo
 
             Console.WriteLine("Press <Enter> to randomly change a value");
             var loader = outstation.GetLoader();
-            Random r = new Random();
+            bool value = false;
             while (true)
             {
                 Console.ReadLine();
-                int value = r.Next(UInt16.MaxValue);
-                System.Console.WriteLine("Change Analog 0 to: " + value);                
+                value = !value;
+                System.Console.WriteLine("Change Binary 1 to: " + value);                
                 loader.Start();
-                loader.Update(new Analog(value, 1, DateTime.Now), 0);
+                loader.Update(new Binary(value, 1, DateTime.Now), 0);
                 loader.End();
             }
         }

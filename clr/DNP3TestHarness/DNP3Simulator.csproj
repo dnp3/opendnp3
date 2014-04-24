@@ -7,7 +7,7 @@
     <ProjectGuid>{9850AA24-6847-4611-81DA-6F04F92B3400}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DNP3TestHarness</RootNamespace>
+    <RootNamespace>Automatak.DNP3.Simulator</RootNamespace>
     <AssemblyName>DNP3TestHarness</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -72,6 +72,15 @@
     <Compile Include="AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="BundledPlugins\GUIMasterForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BundledPlugins\GUIMasterForm.Designer.cs">
+      <DependentUpon>GUIMasterForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BundledPlugins\GUIMasterPlugin.cs" />
+    <Compile Include="BundledPlugins\GUIMasterPluginFactory.cs" />
+    <Compile Include="BundledPlugins\SOEHandler.cs" />
     <Compile Include="MasterDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -90,6 +99,7 @@
     <Compile Include="CommTreeView.Designer.cs">
       <DependentUpon>CommTreeView.cs</DependentUpon>
     </Compile>
+    <Compile Include="BundledPlugins\MeasurementPoco.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -105,6 +115,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BundledPlugins\GUIMasterForm.resx">
+      <DependentUpon>GUIMasterForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MasterDialog.resx">
       <DependentUpon>MasterDialog.cs</DependentUpon>
@@ -145,6 +158,10 @@
       <Project>{5f06c7be-3107-4b3e-8559-e5e1bb4008b5}</Project>
       <Name>DNP3CLRInterface</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DNP3SimulatorAPI\DNP3SimulatorAPI.csproj">
+      <Project>{6a19318b-8cc5-4bc8-8e80-412180c420a5}</Project>
+      <Name>DNP3SimulatorAPI</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\opendnp3.png" />
@@ -161,6 +178,7 @@
   <ItemGroup>
     <None Include="resources\folder_diskette.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace DNP3TestHarness
+namespace Automatak.DNP3.Simulator
 {
     partial class About : Form
     {

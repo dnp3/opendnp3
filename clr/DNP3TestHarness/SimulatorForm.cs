@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 using DNP3.Interface;
 
-namespace DNP3TestHarness
+namespace Automatak.DNP3.Simulator
 {
     public partial class SimulatorForm : Form
     {
@@ -29,9 +29,10 @@ namespace DNP3TestHarness
             private Action<LogEntry> action;
         }
 
-        public SimulatorForm(IDNP3Manager manager)
+        public SimulatorForm(IDNP3Manager manager, IEnumerable<IMasterPluginFactory> masterPlugins)
         {
             this.manager = manager;
+            this.masterPlugins = masterPlugins;
             this.logFollowMode = true;
 
             InitializeComponent();
@@ -93,6 +94,7 @@ namespace DNP3TestHarness
         }
 
         private IDNP3Manager manager;
+        IEnumerable<IMasterPluginFactory> masterPlugins;
         private bool logFollowMode;
 
         private void ShowAboutBox()
@@ -125,7 +127,7 @@ namespace DNP3TestHarness
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
                     var channel = dialog.ChannelAction.Invoke(manager);
-                    this.commTreeView.AddChannel(dialog.ChannelId, channel);
+                    this.commTreeView.AddChannel(dialog.ChannelId, channel, masterPlugins);
                 }
             }
         }
