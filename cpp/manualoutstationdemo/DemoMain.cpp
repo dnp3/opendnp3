@@ -70,17 +70,15 @@ int main(int argc, char* argv[])
 	LinkLayerRouter router(root, &server, TimeDuration::Seconds(1), TimeDuration::Seconds(60));
 		
 	TransportStack stack(root, &executor, LinkConfig(false, false));
-
-	//StaticallyAllocatedDatabase<5, 5, 5, 5, 5, 5, 5> staticBuffers;
-	DynamicallyAllocatedDatabase staticBuffers(DatabaseTemplate::BinaryOnly(5));
+	
+	DynamicallyAllocatedDatabase staticBuffers(DatabaseTemplate::AllTypes(10));
 	StaticallyAllocatedEventBuffer<10, 10, 10, 10, 10, 10, 10> eventBuffers;
 
 	Database database(staticBuffers.GetFacade());
 
 	SimpleCommandHandler commandHandler(CommandStatus::SUCCESS);
 
-	NewOutstationConfig config;	
-	config.params.maxTxFragSize = 10;
+	NewOutstationConfig config;		
 	config.defaultEventResponses.binary = EventBinaryResponse::Group2Var2;
 	NewOutstation outstation(config, executor, root, stack.transport, commandHandler, NullTimeWriteHandler::Inst(), database, eventBuffers.GetFacade());
 
