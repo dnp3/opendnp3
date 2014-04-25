@@ -25,6 +25,7 @@ cpp/openpal/src/openpal/Logger.cpp \
 cpp/openpal/src/openpal/LogRoot.cpp \
 cpp/openpal/src/openpal/MonotonicTimestamp.cpp \
 cpp/openpal/src/openpal/Runnable.cpp \
+cpp/openpal/src/openpal/StringFormatting.cpp \
 cpp/openpal/src/openpal/TimeDuration.cpp \
 cpp/openpal/src/openpal/ToHex.cpp \
 cpp/openpal/src/openpal/UInt48LE.cpp

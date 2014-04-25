@@ -27,10 +27,9 @@
 #ifndef OPENPAL_STRIP_LOGGING
 
 #ifdef WIN32
-//#define SNPRINTF _snprintf_s
 #define FORMAT_SAFE(dest, size, format, ...) _snprintf_s(dest, size, _TRUNCATE, format, ##__VA_ARGS__)
 #else
-#define FORMAT_SAFE(dest, size, format, ...) snprintf_s (dest, size, format, ##__VA_ARGS__)
+#define FORMAT_SAFE(dest, size, format, ...) snprintf(dest, size, format, ##__VA_ARGS__)
 #endif
 
 #define SIMPLE_LOG_BLOCK_WITH_CODE(logger, filters, code, message) \
