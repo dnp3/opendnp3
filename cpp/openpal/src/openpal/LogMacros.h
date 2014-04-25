@@ -26,6 +26,13 @@
 
 #ifndef OPENPAL_STRIP_LOGGING
 
+#ifdef WIN32
+//#define SNPRINTF _snprintf_s
+#define FORMAT_SAFE(dest, size, format, ...) _snprintf_s(dest, size, _TRUNCATE, format, ##__VA_ARGS__)
+#else
+#define FORMAT_SAFE(dest, size, format, ...) snprintf_s (dest, size, format, ##__VA_ARGS__)
+#endif
+
 #define SIMPLE_LOG_BLOCK_WITH_CODE(logger, filters, code, message) \
 	if(logger.IsEnabled(filters)){ \
 		logger.Log(filters, true, LOCATION, message, code); \
@@ -39,14 +46,14 @@
 #define FORMAT_LOG_BLOCK_WITH_CODE(logger, filters, code, format, ...) \
 if(logger.IsEnabled(filters)){ \
 	char message[openpal::MAX_LOG_ENTRY_SIZE]; \
-	SNPRINTF(message, openpal::MAX_LOG_ENTRY_SIZE, format, ##__VA_ARGS__); \
+	FORMAT_SAFE(message, openpal::MAX_LOG_ENTRY_SIZE, format, ##__VA_ARGS__); \
 	logger.Log(filters, true, LOCATION, message, code); \
 }
 
 #define FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, filters, code, format, ...) \
 if(pLogger && pLogger->IsEnabled(filters)){ \
 	char message[openpal::MAX_LOG_ENTRY_SIZE]; \
-	SNPRINTF(message, openpal::MAX_LOG_ENTRY_SIZE, format, ##__VA_ARGS__); \
+	FORMAT_SAFE(message, openpal::MAX_LOG_ENTRY_SIZE, format, ##__VA_ARGS__); \
 	pLogger->Log(filters, true, LOCATION, message, code); \
 }
 

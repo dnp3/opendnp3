@@ -57,7 +57,7 @@ private:
 		{
 			if (ec)
 			{
-				FORMAT_LOG_BLOCK(logger, openpal::logflags::WARN, "Connect error: %s", ec.message().c_str());
+				FORMAT_LOG_BLOCK(logger, openpal::logflags::WARN, "connection error: %s", ec.message().c_str());
 			}			
 			return next;
 		}

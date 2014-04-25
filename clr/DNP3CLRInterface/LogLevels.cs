@@ -113,15 +113,7 @@ namespace DNP3.Interface
                     return "-TL->";
                 default:
                     return "?";
-            }
-
-            var builder = new StringBuilder();
-            OptionallyAppend(builder, filters, EVENT, "V");
-            OptionallyAppend(builder, filters, ERROR, "E");
-            OptionallyAppend(builder, filters, WARNING, "W");
-            OptionallyAppend(builder, filters, INFO, "I");
-            OptionallyAppend(builder, filters, DEBUG, "D");
-            return builder.ToString();
+            }           
         }
 
         static void OptionallyAppend(StringBuilder builder, System.UInt32 filters, System.UInt32 flag, string s)

@@ -22,6 +22,8 @@
 
 #include <opendnp3/LogLevels.h>
 
+#include <openpal/LogMacros.h>
+
 #include "LogTester.h"
 #include "Exception.h"
 
@@ -30,14 +32,12 @@
 #include <iostream>
 #include <vector>
 
-
-using namespace std;
 using namespace opendnp3;
 using namespace openpal;
 
 #define SUITE(name) "LogTest - " name
 
-TEST_CASE(SUITE(" LogErrorCounting"))
+TEST_CASE(SUITE("LogErrorCounting"))
 {
 	LogTester log;
 	auto logger = log.GetLogger(42);
@@ -47,4 +47,20 @@ TEST_CASE(SUITE(" LogErrorCounting"))
 	REQUIRE(log.NextErrorCode() ==  -1);
 }
 
+TEST_CASE(SUITE("FORMAT_SAFE macro truncates and null terminates"))
+{
+	LogTester log;
+	auto logger = log.GetLogger();
+	char buffer[10];
+	auto text1 = "hello";
+	auto text2 = "my little friend";
+
+	FORMAT_SAFE(buffer, 10, "%s %s", text1, text2);
+
+	std::string result(buffer);
+
+	REQUIRE(result.size() == 9);
+
+	REQUIRE(result == "hello my ");
+}
 

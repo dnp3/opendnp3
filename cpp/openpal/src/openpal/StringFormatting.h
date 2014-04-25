@@ -22,15 +22,10 @@
 #define __STRING_FORMATTING_H_
 
 #include <cstdio>
+#include <cstdlib>
 
 #include "Logger.h"
 #include "BufferWrapper.h"
-
-#ifdef WIN32
-#define SNPRINTF _snprintf_s
-#else
-#define SNPRINTF snprintf
-#endif
 
 namespace openpal
 {

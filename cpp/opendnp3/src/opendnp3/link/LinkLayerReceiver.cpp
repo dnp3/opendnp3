@@ -184,7 +184,7 @@ bool LinkLayerReceiver::ValidateHeader()
 		}
 		else
 		{
-			FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::ERR, DLERR_NO_DATA, "User data packet received with zero payload. FUNCTION: %s", LinkFunctionToString(func));
+			FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::ERR, DLERR_NO_DATA, "User data with no payload. FUNCTION: %s", LinkFunctionToString(func));
 			return false;
 		}
 	}

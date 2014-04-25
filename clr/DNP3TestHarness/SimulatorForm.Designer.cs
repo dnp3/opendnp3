@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SimulatorForm));
             this.mainMenuStrip = new System.Windows.Forms.MenuStrip();
             this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -41,7 +42,8 @@
             this.mainPanel = new System.Windows.Forms.Panel();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.commTreeView = new Automatak.DNP3.Simulator.CommTreeView();
-            this.listBoxLog = new System.Windows.Forms.ListBox();
+            this.logWindow1 = new Automatak.DNP3.Simulator.LogWindow();
+            this.logFlushTimer = new System.Windows.Forms.Timer(this.components);
             this.mainMenuStrip.SuspendLayout();
             this.mainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
@@ -61,7 +63,7 @@
             this.mainMenuStrip.Location = new System.Drawing.Point(0, 0);
             this.mainMenuStrip.Name = "mainMenuStrip";
             this.mainMenuStrip.Padding = new System.Windows.Forms.Padding(5, 5, 0, 5);
-            this.mainMenuStrip.Size = new System.Drawing.Size(1120, 38);
+            this.mainMenuStrip.Size = new System.Drawing.Size(1205, 38);
             this.mainMenuStrip.TabIndex = 1;
             this.mainMenuStrip.Text = "mainMenuStrip";
             // 
@@ -108,16 +110,15 @@
             // clearWindowToolStripMenuItem
             // 
             this.clearWindowToolStripMenuItem.Name = "clearWindowToolStripMenuItem";
-            this.clearWindowToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.clearWindowToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.clearWindowToolStripMenuItem.Text = "Clear Window";
             this.clearWindowToolStripMenuItem.Click += new System.EventHandler(this.clearWindowToolStripMenuItem_Click);
             // 
             // pausedToolStripMenuItem
             // 
             this.pausedToolStripMenuItem.Name = "pausedToolStripMenuItem";
-            this.pausedToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.pausedToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.pausedToolStripMenuItem.Text = "Pause";
-            this.pausedToolStripMenuItem.Click += new System.EventHandler(this.pausedToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
@@ -135,7 +136,7 @@
             this.mainPanel.Location = new System.Drawing.Point(0, 38);
             this.mainPanel.Name = "mainPanel";
             this.mainPanel.Padding = new System.Windows.Forms.Padding(5, 0, 5, 5);
-            this.mainPanel.Size = new System.Drawing.Size(1120, 525);
+            this.mainPanel.Size = new System.Drawing.Size(1205, 581);
             this.mainPanel.TabIndex = 2;
             // 
             // splitContainer2
@@ -151,9 +152,9 @@
             // 
             // splitContainer2.Panel2
             // 
-            this.splitContainer2.Panel2.Controls.Add(this.listBoxLog);
-            this.splitContainer2.Size = new System.Drawing.Size(1110, 520);
-            this.splitContainer2.SplitterDistance = 180;
+            this.splitContainer2.Panel2.Controls.Add(this.logWindow1);
+            this.splitContainer2.Size = new System.Drawing.Size(1195, 576);
+            this.splitContainer2.SplitterDistance = 193;
             this.splitContainer2.TabIndex = 3;
             // 
             // commTreeView
@@ -161,29 +162,28 @@
             this.commTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.commTreeView.Location = new System.Drawing.Point(0, 0);
             this.commTreeView.Name = "commTreeView";
-            this.commTreeView.Size = new System.Drawing.Size(180, 520);
+            this.commTreeView.Size = new System.Drawing.Size(193, 576);
             this.commTreeView.TabIndex = 0;
             // 
-            // listBoxLog
+            // logWindow1
             // 
-            this.listBoxLog.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listBoxLog.Font = new System.Drawing.Font("Courier New", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.listBoxLog.FormattingEnabled = true;
-            this.listBoxLog.IntegralHeight = false;
-            this.listBoxLog.ItemHeight = 17;
-            this.listBoxLog.Location = new System.Drawing.Point(0, 0);
-            this.listBoxLog.Margin = new System.Windows.Forms.Padding(0);
-            this.listBoxLog.Name = "listBoxLog";
-            this.listBoxLog.ScrollAlwaysVisible = true;
-            this.listBoxLog.SelectionMode = System.Windows.Forms.SelectionMode.None;
-            this.listBoxLog.Size = new System.Drawing.Size(926, 520);
-            this.listBoxLog.TabIndex = 5;
+            this.logWindow1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.logWindow1.Location = new System.Drawing.Point(0, 0);
+            this.logWindow1.LogFont = new System.Drawing.Font("Courier New", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.logWindow1.Name = "logWindow1";
+            this.logWindow1.Size = new System.Drawing.Size(998, 576);
+            this.logWindow1.TabIndex = 0;
+            // 
+            // logFlushTimer
+            // 
+            this.logFlushTimer.Enabled = true;
+            this.logFlushTimer.Tick += new System.EventHandler(this.logFlushTimer_Tick);
             // 
             // SimulatorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1120, 563);
+            this.ClientSize = new System.Drawing.Size(1205, 619);
             this.Controls.Add(this.mainPanel);
             this.Controls.Add(this.mainMenuStrip);
             this.DoubleBuffered = true;
@@ -217,8 +217,9 @@
         private System.Windows.Forms.Panel mainPanel;
         private System.Windows.Forms.SplitContainer splitContainer2;
         private CommTreeView commTreeView;
-        private System.Windows.Forms.ListBox listBoxLog;
         private System.Windows.Forms.ToolStripMenuItem pausedToolStripMenuItem;
+        private System.Windows.Forms.Timer logFlushTimer;
+        private LogWindow logWindow1;
 
     }
 }

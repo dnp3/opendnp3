@@ -74,14 +74,17 @@ namespace Automatak.DNP3.Simulator
                 {
                     var plugin = factory.Create("master");
                     var master = channel.AddMaster("master", plugin.SOEHandler, dialog.Configuration);
-                    plugin.SetMaster(master);
-                    TreeNode masterNode = new TreeNode("master");
-                    masterNode.ImageIndex = 1;
-                    masterNode.StateImageIndex = 1;
-                    masterNode.SelectedImageIndex = 1;
-                    masterNode.ContextMenuStrip = CreateMasterMenuStrip(plugin, node, masterNode, master);
-                    node.Nodes.Add(masterNode);
-                    master.Enable();
+                    if (master != null)
+                    {
+                        plugin.SetMaster(master);
+                        TreeNode masterNode = new TreeNode("master");
+                        masterNode.ImageIndex = 1;
+                        masterNode.StateImageIndex = 1;
+                        masterNode.SelectedImageIndex = 1;
+                        masterNode.ContextMenuStrip = CreateMasterMenuStrip(plugin, node, masterNode, master);
+                        node.Nodes.Add(masterNode);
+                        master.Enable();
+                    }
                 }
             }
         }
