@@ -191,9 +191,9 @@ namespace DNP3.Interface
         {}
     }
 
-    public class OctetData
+    public class OctetData : MeasurementBase
     {
-        public OctetData(byte[] bytes)
+        public OctetData(byte[] bytes) : base(0, DateTime.Now, false)
         {
             if (bytes.Length > 255) throw new ArgumentException("byte array cannot exceed length of 255", "bytes");
             this.bytes = bytes;

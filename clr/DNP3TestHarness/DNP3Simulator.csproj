@@ -90,6 +90,12 @@
     <Compile Include="AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="BundledPlugins\DBListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="BundledPlugins\DBListView.Designer.cs">
+      <DependentUpon>DBListView.cs</DependentUpon>
+    </Compile>
     <Compile Include="BundledPlugins\GUIMasterForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -98,6 +104,14 @@
     </Compile>
     <Compile Include="BundledPlugins\GUIMasterPlugin.cs" />
     <Compile Include="BundledPlugins\GUIMasterPluginFactory.cs" />
+    <Compile Include="BundledPlugins\Measurement.cs" />
+    <Compile Include="BundledPlugins\MeasurementCollection.cs" />
+    <Compile Include="BundledPlugins\MeasurementView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BundledPlugins\MeasurementView.Designer.cs">
+      <DependentUpon>MeasurementView.cs</DependentUpon>
+    </Compile>
     <Compile Include="BundledPlugins\SOEHandler.cs" />
     <Compile Include="LogControl.cs">
       <SubType>UserControl</SubType>
@@ -149,6 +163,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="BundledPlugins\GUIMasterForm.resx">
       <DependentUpon>GUIMasterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BundledPlugins\MeasurementView.resx">
+      <DependentUpon>MeasurementView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LogControl.resx">
       <DependentUpon>LogControl.cs</DependentUpon>

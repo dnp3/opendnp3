@@ -235,7 +235,7 @@ void PhysicalLayerAsyncBase::OnOpenCallback(const std::error_code& err)
 
 		if(err)
 		{
-			SIMPLE_LOG_BLOCK(logger, logflags::WARN, err.message().c_str());
+			FORMAT_LOG_BLOCK(logger, logflags::WARN, "error: %s", err.message().c_str());
 			state.CheckForClose();
 			this->DoOpenFailure();
 			if(mpHandler)

@@ -32,6 +32,27 @@ namespace Automatak.DNP3.Simulator
             }
         }
 
+        public void SetViewport(double fraction)
+        {
+            if (fraction >= 0 && fraction <= 1.0)
+            { 
+                this.viewFraction = fraction;
+                this.Refresh();
+            }
+        }
+
+        int CalcBackRows(ICollection<string> rows)
+        {            
+            if (viewFraction >= 0 && viewFraction <= 1.0)
+            {
+                return (int)Math.Floor((1.0 - viewFraction) * rows.Count);
+            }
+            else
+            {
+                return 0;
+            }            
+        }        
+
         public void Pause()
         {
             if (!paused)
@@ -69,9 +90,9 @@ namespace Automatak.DNP3.Simulator
         {
             get
             {
-                return rows.Count;
+                return GetCurrentRows().Count;
             }
-        }
+        }        
 
         public void Clear()
         {
@@ -81,28 +102,47 @@ namespace Automatak.DNP3.Simulator
 
         protected override void OnPaint(PaintEventArgs pe)
         {           
-            base.OnPaint(pe);
-
-            if (paused)
-            { 
-            
-            }
+            base.OnPaint(pe);            
 
             PaintRows(pe.Graphics, GetViewportRows());               
         }
 
-        public IEnumerable<string> GetViewportRows()
-        {
-            var rowsVisible = this.NumRowsVisible();
-
-            if (rowsVisible < rows.Count)
+        IList<string> GetCurrentRows()
+        {            
+            if (paused)
             {
-                return rows.Skip(rows.Count - rowsVisible);
+                return snapshot;                
             }
             else
             {
                 return rows;
-            }                               
+            }
+        }
+
+        public IEnumerable<string> GetAllRows()
+        {
+            return GetCurrentRows();
+        }
+
+        public IEnumerable<string> GetViewportRows()
+        {
+            return TrimRows(GetCurrentRows());
+        }
+
+        public IEnumerable<string> TrimRows(IList<string> list)
+        {
+            var rowsVisible = this.NumRowsVisible();
+
+            if (rowsVisible < list.Count)
+            {
+                var skipCount = list.Count - rowsVisible - CalcBackRows(list);
+
+                return rows.Skip(skipCount);
+            }
+            else
+            {
+                return rows;
+            } 
         }
 
         private void PaintRows(Graphics g, IEnumerable<string> rows)
@@ -167,7 +207,8 @@ namespace Automatak.DNP3.Simulator
 
         private float spacingFactor = 0.1f;
         private int maxRows = 500;
-        private bool paused = true;
+        private double viewFraction = 1.0;
+        private bool paused = false;
         private IList<string> rows = new List<string>();
         private IList<string> snapshot = new List<string>();
     }

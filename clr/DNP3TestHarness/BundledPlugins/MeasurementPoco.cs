@@ -8,9 +8,9 @@ using System.ComponentModel;
 using DNP3.Interface;
 
 namespace Automatak.DNP3.Simulator
-{
+{    
     class MeasurementPoco : INotifyPropertyChanged
-    {
+    {        
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void NotifyPropertyChanged(string name)
@@ -21,13 +21,14 @@ namespace Automatak.DNP3.Simulator
             }
         }
 
-        public MeasurementPoco(int row, string sValue, MeasurementBase meas, UInt16 index)
+        public MeasurementPoco(int row, string sValue, MeasurementBase meas, UInt16 index, MeasType type)
         {
             this.sValue = sValue;
             this.index = index;
             this.flags = meas.Quality.ToString("X2");
             this.timeStamp = meas.Timestamp;
-            this.row = row;          
+            this.row = row;  
+            this.type = type;
         }        
 
         public void Update(string sValue, MeasurementBase meas)
@@ -41,7 +42,8 @@ namespace Automatak.DNP3.Simulator
         private string sValue;
         private string flags;
         private DateTime timeStamp;
-        private int row;        
+        private int row;
+        private MeasType type;
 
         public void NextRow()
         {
@@ -90,5 +92,12 @@ namespace Automatak.DNP3.Simulator
             get { return row; }
             set { row = value; }
         }       
+
+        [Browsable(false)]
+        public MeasType Type
+        {
+            get { return type; }
+            set { type = value; }
+        }  
     }
 }

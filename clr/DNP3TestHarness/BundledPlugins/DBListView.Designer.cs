@@ -1,6 +1,6 @@
-﻿namespace Automatak.DNP3.Simulator
+﻿namespace Automatak.DNP3.Simulator.BundledPlugins
 {
-    partial class LogControl
+    partial class DBListView
     {
         /// <summary> 
         /// Required designer variable.
@@ -28,28 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.SuspendLayout();
-            // 
-            // LogControl
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoScroll = true;
-            this.AutoScrollMinSize = new System.Drawing.Size(100, 100);
-            this.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.DoubleBuffered = true;
-            this.Margin = new System.Windows.Forms.Padding(0);
-            this.MinimumSize = new System.Drawing.Size(500, 150);
-            this.Name = "LogControl";
-            this.Size = new System.Drawing.Size(819, 527);
-            this.ResumeLayout(false);
-
+            components = new System.ComponentModel.Container();            
         }
 
         #endregion
-
-
-
     }
 }

@@ -34,7 +34,7 @@ namespace Automatak.DNP3.Simulator
 
         void UpdateStatus()
         { 
-            var format = "Capacity: {0,5} / {1,-5} View: ";
+            var format = "{0,5} / {1,-5}";
 
             this.toolStripStatusLabel.Text = String.Format(
                 format, 
@@ -44,22 +44,88 @@ namespace Automatak.DNP3.Simulator
 
         private void buttonPause_Click(object sender, EventArgs e)
         {
-            this.buttonPause.Enabled = false;
-            this.buttonPlay.Enabled = true;
-            this.logControl.Pause();            
+            this.Pause();  
         }
 
         private void buttonPlay_Click(object sender, EventArgs e)
         {
+            this.Resume();
+        }
+
+        void Pause()
+        {
+            this.buttonPause.Enabled = false;            
+            this.buttonPlay.Enabled = true;
+            this.pauseToolStripMenuItem.Enabled = false;
+            this.resumeToolStripMenuItem.Enabled = true;
+            this.logControl.Pause();    
+        }
+
+        void Resume()
+        {
             this.buttonPause.Enabled = true;
             this.buttonPlay.Enabled = false;
-            this.logControl.Resume();           
+            this.pauseToolStripMenuItem.Enabled = true;
+            this.resumeToolStripMenuItem.Enabled = false;
+            this.logControl.Resume();
         }
 
         private void buttonClipboard_Click(object sender, EventArgs e)
         {
-            var rows = this.logControl.GetViewportRows();            
+            this.CopyToClipboard();
+        }
+
+        void CopyToClipboard()
+        {
+            var rows = this.logControl.GetAllRows();
             Clipboard.SetText(String.Join(Environment.NewLine, rows.ToArray()));
+        }
+
+        private void buttonClear_Click(object sender, EventArgs e)
+        {
+            logControl.Clear();
+        }
+
+        private void vScrollBar_Scroll(object sender, ScrollEventArgs e)
+        {
+            if (e.NewValue != e.OldValue)
+            {
+                int userMax = (vScrollBar.Maximum + 1) - vScrollBar.LargeChange;
+
+                double fraction = ((double) e.NewValue) / ((double) userMax);
+
+                logControl.SetViewport(fraction);                
+            }            
+        }
+
+        private void pauseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Pause();
+        }
+
+        private void resumeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Resume();
+        }
+
+        private void pauseToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            this.Pause();
+        }
+
+        private void resumeToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            this.Resume();
+        }
+
+        private void clearToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            logControl.Clear();
+        }
+
+        private void copyToClipboardToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.CopyToClipboard();
         }
     }
 }

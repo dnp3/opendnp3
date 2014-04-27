@@ -22,9 +22,10 @@
 #define __LOG_MACROS_H_
 
 #include "Location.h"
-#include "StringFormatting.h"
 
 #ifndef OPENPAL_STRIP_LOGGING
+
+#include "StringFormatting.h"
 
 #ifdef WIN32
 #define FORMAT_SAFE(dest, size, format, ...) _snprintf_s(dest, size, _TRUNCATE, format, ##__VA_ARGS__)
@@ -71,7 +72,7 @@ if(logger.IsEnabled(filters)){ \
 
 #define FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, filters, code, format, ...)
 
-#define FORMAT_HEX_BLOCK(logger, filters, buffer)
+#define FORMAT_HEX_BLOCK(logger, filters, buffer, firstSize, otherSize)
 
 #endif
 

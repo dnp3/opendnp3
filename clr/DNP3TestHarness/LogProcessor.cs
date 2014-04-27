@@ -10,7 +10,7 @@ namespace Automatak.DNP3.Simulator
     class LogProcessor : ILogHandler
     {
         private static string timeFormat = "HH:mm:ss.fff";
-        private static string logFormat = "  {0,-16}{1,-10}{2,-20}{3}";
+        private static string logFormat = "  {0,-16}{1,-10}{2,-10}{3}";
        
         private static string GetLogString(DateTime time, uint filters, string id, string message)
         {
@@ -25,7 +25,7 @@ namespace Automatak.DNP3.Simulator
 
         private static string GetBareString(string message)
         {
-            return String.Format("  {0}{1}", new String(' ', 46), message);
+            return String.Format("  {0}{1}", new String(' ', 36), message);
         }        
 
         private static IEnumerable<string> GetLogMessages(LogEntry entry)

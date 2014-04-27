@@ -76,9 +76,9 @@ namespace Automatak.DNP3.Simulator
             FlushLogQueue(); 
         }
 
-        private void logControl_Load(object sender, EventArgs e)
+        private void logWindow1_Load(object sender, EventArgs e)
         {
 
-        }
+        }        
     }
 }
