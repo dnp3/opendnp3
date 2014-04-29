@@ -157,6 +157,7 @@
     <ClCompile Include="src\QueueAdapterTestSuite.cpp" />
     <ClCompile Include="src\RandomInsertAdapterTestSuite.cpp" />
     <ClCompile Include="src\StackAdapterTestSuite.cpp" />
+    <ClCompile Include="src\StaticPriorityQueueTestSuite.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\openpal\openpal.vcxproj">

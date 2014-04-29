@@ -18,50 +18,51 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __MASTER_CONTEXT_H_
-#define __MASTER_CONTEXT_H_
+#include <catch.hpp>
 
-#include <openpal/AsyncLayerInterfaces.h>
+#include "openpal/StaticPriorityQueue.h"
 
-#include <openpal/IExecutor.h>
-#include <openpal/LogRoot.h>
-#include <openpal/StaticPriorityQueue.h>
+using namespace openpal;
 
-#include "opendnp3/master/IMasterTask.h"
-#include "opendnp3/StaticSizeConfiguration.h"
+#define SUITE(name) "StaticProrityQueue - " name
 
-namespace opendnp3
+TEST_CASE(SUITE("Default less than works for ints"))
 {
+	StaticPriorityQueue<int, uint16_t, 3> queue;
 
-class MasterContext
+	REQUIRE(queue.IsEmpty());
+	REQUIRE(queue.Enqueue(5));
+	REQUIRE(queue.Enqueue(2));
+	REQUIRE(queue.Enqueue(7));
+	REQUIRE(!queue.Enqueue(10));
+
+	REQUIRE(queue.Size() == 3);
+	REQUIRE(queue.Pop() == 2);
+	REQUIRE(queue.Pop() == 5);
+	REQUIRE(queue.Pop() == 7);	
+}
+
+TEST_CASE(SUITE("Overriding less than works for ints"))
 {
-	struct TaskLessThan
+	struct ReverseOrder
 	{
-		static bool IsLessThan(const IMasterTask*& lhs, const IMasterTask*& rhs)
+		static bool IsLessThan(const int& lhs, const int& rhs)
 		{
-			return lhs->Priority() < rhs->Priority();
+			return rhs < lhs;
 		}
 	};
 
-	public:
+	StaticPriorityQueue<int, uint16_t, 3, ReverseOrder> queue;
 
-	MasterContext(	openpal::IExecutor& executor,
-					openpal::LogRoot& root, 
-					openpal::ILowerLayer& lower
-				);
-	
-	openpal::Logger logger;
-	openpal::IExecutor& executor;
-	openpal::ILowerLayer& lower;
+	REQUIRE(queue.IsEmpty());
+	REQUIRE(queue.Enqueue(5));
+	REQUIRE(queue.Enqueue(2));
+	REQUIRE(queue.Enqueue(7));
+	REQUIRE(!queue.Enqueue(10));
 
-	// ------- dynamic state ---------
-	bool isOnline;
-	bool isSending;
-	IMasterTask* pCurrentTask;
-	openpal::StaticPriorityQueue<IMasterTask*, uint16_t, 16, TaskLessThan> taskQueue;
-
-};
-
+	REQUIRE(queue.Size() == 3);
+	REQUIRE(queue.Pop() == 7);
+	REQUIRE(queue.Pop() == 5);
+	REQUIRE(queue.Pop() == 2);
 }
 
-#endif

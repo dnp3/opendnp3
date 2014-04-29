@@ -23,7 +23,6 @@
 
 #include "opendnp3/LogLevels.h"
 
-
 namespace opendnp3
 {
 
@@ -38,7 +37,7 @@ MasterContext::MasterContext(
 	lower(lower_),
 	isOnline(false),
 	isSending(false),
-	pCurrentTask(nullptr)
+	pCurrentTask(nullptr)	
 {}
 
 
