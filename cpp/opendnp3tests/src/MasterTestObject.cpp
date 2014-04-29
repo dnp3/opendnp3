@@ -49,7 +49,7 @@ void MasterTestObject::RespondToMaster(const std::string& arData, bool aFinal)
 {
 	HexSequence hs(arData);
 	APDUResponseRecord record;
-	if(APDUHeaderParser::ParseResponse(hs.ToReadOnly(), record) != APDUHeaderParser::Result::OK)
+	if(APDUHeaderParser::ParseResponse(hs.ToReadOnly(), record, nullptr) != APDUHeaderParser::Result::OK)
 	{
 		throw Exception("Why are you trying to send bad data?");
 	}
@@ -61,7 +61,7 @@ void MasterTestObject::SendUnsolToMaster(const std::string& arData)
 {
 	HexSequence hs(arData);
 	APDUResponseRecord record;
-	if(APDUHeaderParser::ParseResponse(hs.ToReadOnly(), record) != APDUHeaderParser::Result::OK)
+	if (APDUHeaderParser::ParseResponse(hs.ToReadOnly(), record, nullptr) != APDUHeaderParser::Result::OK)
 	{
 		throw Exception("Why are you trying to send bad data?");
 	}

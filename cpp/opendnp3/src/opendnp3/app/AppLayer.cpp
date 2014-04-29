@@ -101,7 +101,7 @@ void AppLayer::OnReceive(const ReadOnlyBuffer& apdu)
 		if (this->isMaster)
 		{
 			APDUResponseRecord record;
-			auto result = APDUHeaderParser::ParseResponse(apdu, record);
+			auto result = APDUHeaderParser::ParseResponse(apdu, record, &logger);
 			if (result == APDUHeaderParser::Result::OK)
 			{
 				switch (record.function)
@@ -125,7 +125,7 @@ void AppLayer::OnReceive(const ReadOnlyBuffer& apdu)
 		else
 		{
 			APDURecord record;
-			auto result = APDUHeaderParser::ParseRequest(apdu, record);
+			auto result = APDUHeaderParser::ParseRequest(apdu, record, &logger);
 			if (result == APDUHeaderParser::Result::OK)
 			{
 				switch (record.function)

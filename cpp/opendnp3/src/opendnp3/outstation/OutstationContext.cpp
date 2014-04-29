@@ -205,7 +205,7 @@ bool OutstationContext::CancelTimer(openpal::ITimer*& pTimer)
 void OutstationContext::ExamineAPDU(const openpal::ReadOnlyBuffer& fragment)
 {
 	APDURecord request;
-	auto result = APDUHeaderParser::ParseRequest(fragment, request);
+	auto result = APDUHeaderParser::ParseRequest(fragment, request, &logger);
 	if (result == APDUHeaderParser::Result::OK)
 	{
 		// outstations should only process single fragment messages

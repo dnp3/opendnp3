@@ -18,33 +18,37 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __APDU_HEADER_PARSER_H_
-#define __APDU_HEADER_PARSER_H_
+#ifndef __NEW_MASTER_H_
+#define __NEW_MASTER_H_
 
-#include <openpal/BufferWrapper.h>
-#include <openpal/Uncopyable.h>
-#include <openpal/Logger.h>
-
-#include "opendnp3/app/APDUHeader.h"
-
+#include "opendnp3/master/MasterContext.h"
 
 namespace opendnp3
 {
 
-class APDUHeaderParser : private openpal::PureStatic
+class NewMaster : public openpal::IUpperLayer
 {
-public:
+	public:
 
-	enum class Result
-	{
-	    OK,
-	    NOT_ENOUGH_DATA_FOR_HEADER
-	};
+	NewMaster(	openpal::IExecutor& executor, 
+				openpal::LogRoot& root, 
+				openpal::ILowerLayer& lower
+				);
+	
+	/// ----- Implement IUpperLayer ------
 
-	static Result ParseRequest(openpal::ReadOnlyBuffer apdu, APDURecord& header, openpal::Logger* pLogger = nullptr);
+	virtual void OnLowerLayerUp() override final;
+	
+	virtual void OnLowerLayerDown() override final;
 
-	static Result ParseResponse(openpal::ReadOnlyBuffer apdu, APDUResponseRecord& header, openpal::Logger* pLogger = nullptr);
+	virtual void OnReceive(const openpal::ReadOnlyBuffer&) override final;
+	
+	virtual void OnSendResult(bool isSucccess) override final;
+	
+	
+	private:
 
+	MasterContext context;
 };
 
 }

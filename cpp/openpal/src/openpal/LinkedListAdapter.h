@@ -118,7 +118,13 @@ public:
 		return Iterator(pHead);
 	}
 
+	template <class Selector>
+	ListNode<ValueType>* FindFirst(Selector select);
+
 	ListNode<ValueType>* Add(const ValueType& value);
+
+	template <class LessThan>
+	ListNode<ValueType>* Insert(const ValueType& value, LessThan lt);
 
 	void Remove(ListNode<ValueType>* apNode);
 
@@ -130,6 +136,8 @@ private:
 	ListNode<ValueType>* pFree;
 	Indexable<ListNode<ValueType>, IndexType> underlying;
 
+	ListNode<ValueType>* Insert(const ValueType& value, ListNode<ValueType>* left, ListNode<ValueType>* right);
+
 	inline static void Link(ListNode<ValueType>* prev, ListNode<ValueType>* next);
 
 	void Initialize();
@@ -138,19 +146,81 @@ private:
 template <class ValueType, class IndexType>
 ListNode<ValueType>* LinkedListAdapter<ValueType, IndexType>::Add(const ValueType& value)
 {
-	if(pFree == nullptr) return nullptr;
+	return this->Insert(value, pTail, nullptr);	
+}
+
+
+template <class ValueType, class IndexType>
+template <class LessThan>
+ListNode<ValueType>* LinkedListAdapter<ValueType, IndexType>::Insert(const ValueType& value, LessThan lt)
+{
+	if (pFree == nullptr)
+	{
+		return nullptr;
+	}
+	else
+	{		
+		auto query = [lt, value](const ValueType& v){ return lt(value, v); };
+		auto pResult = this->FindFirst(query);
+		if (pResult)
+		{
+			return Insert(value, pResult->prev, pResult);
+		}
+		else
+		{
+			return Insert(value, pTail, nullptr);
+		}
+	}
+}
+
+template <class ValueType, class IndexType>
+ListNode<ValueType>* LinkedListAdapter<ValueType, IndexType>::Insert(const ValueType& value, ListNode<ValueType>* pLeft, ListNode<ValueType>* pRight)
+{
+	if (pFree == nullptr)
+	{
+		return nullptr;
+	}
 	else
 	{
+		// initialize the new node, and increment the size
 		auto pNode = pFree;
-		pNode->value = value;
 		pFree = pFree->next;
-		pNode->next = nullptr;
-		Link(pTail, pNode);
-		pTail = pNode;
-		if(pHead == nullptr) pHead = pTail;
+		pNode->value = value;
 		++(this->size);
-		return pTail;
+
+		this->Link(pLeft, pNode);
+		this->Link(pNode, pRight);
+
+		// change of head
+		if (pLeft == nullptr)
+		{
+			pHead = pNode;
+		}
+
+		// change of tail
+		if (pRight == nullptr)
+		{
+			pTail = pNode;
+		}
+
+		return pNode;
 	}
+}
+
+template <class ValueType, class IndexType>
+template <class Selector>
+ListNode<ValueType>* LinkedListAdapter<ValueType, IndexType>::FindFirst(Selector select)
+{
+	auto iter = this->Iterate();
+	while (iter.HasNext())
+	{
+		auto pNode = iter.Next();
+		if (select(pNode->value))
+		{
+			return pNode;
+		}
+	}
+	return nullptr;
 }
 
 template <class ValueType, class IndexType>
@@ -182,6 +252,7 @@ bool LinkedListAdapter<ValueType, IndexType>::IsFull() const
 {
 	return (pFree == nullptr);
 }
+
 
 
 template <class ValueType, class IndexType>

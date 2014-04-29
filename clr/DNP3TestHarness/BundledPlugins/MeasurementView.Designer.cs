@@ -54,18 +54,22 @@
             // columnHeader1
             // 
             this.columnHeader1.Text = "Index";
+            this.columnHeader1.Width = 125;
             // 
             // columnHeader2
             // 
             this.columnHeader2.Text = "Value";
+            this.columnHeader2.Width = 143;
             // 
             // columnHeader3
             // 
             this.columnHeader3.Text = "Quality";
+            this.columnHeader3.Width = 130;
             // 
             // columnHeader4
             // 
             this.columnHeader4.Text = "Timestamp";
+            this.columnHeader4.Width = 193;
             // 
             // MeasurementView
             // 

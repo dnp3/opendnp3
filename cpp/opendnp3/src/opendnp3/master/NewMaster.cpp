@@ -18,35 +18,57 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __APDU_HEADER_PARSER_H_
-#define __APDU_HEADER_PARSER_H_
 
-#include <openpal/BufferWrapper.h>
-#include <openpal/Uncopyable.h>
-#include <openpal/Logger.h>
+#include "NewMaster.h"
 
-#include "opendnp3/app/APDUHeader.h"
-
+#include "opendnp3/app/APDUHeaderParser.h"
 
 namespace opendnp3
 {
 
-class APDUHeaderParser : private openpal::PureStatic
+NewMaster::NewMaster(
+	openpal::IExecutor& executor,
+	openpal::LogRoot& root,
+	openpal::ILowerLayer& lower
+	) : 
+	context(executor, root, lower)
+{}
+	
+void NewMaster::OnLowerLayerUp()
 {
-public:
-
-	enum class Result
+	if (!context.isOnline)
 	{
-	    OK,
-	    NOT_ENOUGH_DATA_FOR_HEADER
-	};
-
-	static Result ParseRequest(openpal::ReadOnlyBuffer apdu, APDURecord& header, openpal::Logger* pLogger = nullptr);
-
-	static Result ParseResponse(openpal::ReadOnlyBuffer apdu, APDUResponseRecord& header, openpal::Logger* pLogger = nullptr);
-
-};
-
+		context.isOnline = true;
+	}
 }
 
-#endif
+void NewMaster::OnLowerLayerDown()
+{
+	if (context.isOnline)
+	{
+		context.isOnline = false;
+	}
+}
+
+void NewMaster::OnReceive(const openpal::ReadOnlyBuffer& apdu)
+{
+	if (context.isOnline)
+	{
+		APDUResponseRecord response;
+		auto result = APDUHeaderParser::ParseResponse(apdu, response, &context.logger);
+		if (result == APDUHeaderParser::Result::OK)
+		{
+
+		}
+	}
+}
+
+void NewMaster::OnSendResult(bool isSucccess)
+{
+	if (context.isSending)
+	{
+
+	}
+}
+	
+}

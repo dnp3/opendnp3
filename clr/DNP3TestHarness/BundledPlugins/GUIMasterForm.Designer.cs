@@ -52,8 +52,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.measurementView);
-            this.splitContainer1.Size = new System.Drawing.Size(995, 422);
-            this.splitContainer1.SplitterDistance = 227;
+            this.splitContainer1.Size = new System.Drawing.Size(1048, 543);
+            this.splitContainer1.SplitterDistance = 213;
             this.splitContainer1.TabIndex = 1;
             // 
             // comboBoxTypes
@@ -63,7 +63,7 @@
             this.comboBoxTypes.FormattingEnabled = true;
             this.comboBoxTypes.Location = new System.Drawing.Point(5, 5);
             this.comboBoxTypes.Name = "comboBoxTypes";
-            this.comboBoxTypes.Size = new System.Drawing.Size(217, 21);
+            this.comboBoxTypes.Size = new System.Drawing.Size(203, 21);
             this.comboBoxTypes.TabIndex = 0;
             this.comboBoxTypes.SelectedIndexChanged += new System.EventHandler(this.comboBoxTypes_SelectedIndexChanged);
             // 
@@ -72,14 +72,14 @@
             this.measurementView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.measurementView.Location = new System.Drawing.Point(0, 0);
             this.measurementView.Name = "measurementView";
-            this.measurementView.Size = new System.Drawing.Size(764, 422);
-            this.measurementView.TabIndex = 0;
+            this.measurementView.Size = new System.Drawing.Size(831, 543);
+            this.measurementView.TabIndex = 2;
             // 
             // GUIMasterForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(995, 422);
+            this.ClientSize = new System.Drawing.Size(1048, 543);
             this.Controls.Add(this.splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "GUIMasterForm";

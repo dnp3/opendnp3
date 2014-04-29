@@ -30,6 +30,11 @@ namespace Automatak.DNP3.Simulator
             this.index = index;
         }
 
+        public string EventString()
+        {
+            return String.Format("{0} - [{1}] -> {2} 0x{3}", type.ToString(), index, sValue, flags);
+        }
+
         public ushort Index
         {
             get

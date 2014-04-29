@@ -83,21 +83,18 @@ public:
 	bool Add(const ValueType& value)
 	{
 		return (adapter.Add(value) != nullptr);
-	}
+	}	
 
 	template <class Selector>
 	ListNode<ValueType>* FindFirst(Selector select)
 	{
-		auto iter = adapter.Iterate();
-		while (iter.HasNext())
-		{
-			auto pNode = iter.Next();
-			if (select(pNode->value))
-			{
-				return pNode;
-			}
-		}
-		return nullptr;
+		return adapter.FindFirst(select);
+	}
+
+	template <class LessThan>
+	bool Insert(const ValueType& value, LessThan lt)
+	{
+		return (adapter.Insert(value, lt) != nullptr);
 	}
 
 	template <class Selector>
@@ -121,7 +118,7 @@ public:
 		return pNode;
 	}
 
-private:
+private:	
 
 	StaticArray<ListNode<ValueType>, IndexType, N> underlying;
 	LinkedListAdapter<ValueType, IndexType> adapter;

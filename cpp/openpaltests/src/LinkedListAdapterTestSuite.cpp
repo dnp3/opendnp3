@@ -136,3 +136,61 @@ TEST_CASE(SUITE("StaticLinkedList"))
 
 	REQUIRE(list.Remove(2));
 }
+
+TEST_CASE(SUITE("Insert at front of list"))
+{
+	StaticLinkedList<int, uint16_t, 10> list;
+
+	REQUIRE(list.Add(7));
+	
+	auto lessThan = [](int lhs, int rhs) { return lhs < rhs; };
+	REQUIRE(list.Insert(4, lessThan));
+
+	std::vector<int> items;
+
+	list.Foreach([&](int x) { items.push_back(x); });
+	REQUIRE(items.size() == 2);
+	REQUIRE(items[0] == 4);
+	REQUIRE(items[1] == 7);
+}
+
+TEST_CASE(SUITE("Insert in center of list"))
+{
+	StaticLinkedList<int, uint16_t, 10> list;
+
+	REQUIRE(list.Add(2));
+	REQUIRE(list.Add(7));
+
+	auto lessThan = [](int lhs, int rhs) { return lhs < rhs; };
+	REQUIRE(list.Insert(4, lessThan));
+
+	std::vector<int> items;
+
+	list.Foreach([&](int x) { items.push_back(x); });
+	REQUIRE(items.size() == 3);
+
+	REQUIRE(items[0] == 2);
+	REQUIRE(items[1] == 4);
+	REQUIRE(items[2] == 7);
+}
+
+TEST_CASE(SUITE("Insert at end of list"))
+{
+	StaticLinkedList<int, uint16_t, 10> list;
+
+	REQUIRE(list.Add(2));
+	REQUIRE(list.Add(4));
+
+	auto lessThan = [](int lhs, int rhs) { return lhs < rhs; };
+	REQUIRE(list.Insert(7, lessThan));
+
+	std::vector<int> items;
+
+	list.Foreach([&](int x) { items.push_back(x); });
+	REQUIRE(items.size() == 3);
+
+	REQUIRE(items[0] == 2);
+	REQUIRE(items[1] == 4);
+	REQUIRE(items[2] == 7);
+}
+

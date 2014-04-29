@@ -22,40 +22,47 @@
 #include "APDUHeaderParser.h"
 
 #include <openpal/Uncopyable.h>
-#include "opendnp3/app/APDUHeader.h"
-
 #include <openpal/BufferWrapper.h>
+#include <openpal/LogMacros.h>
+
+#include "opendnp3/LogLevels.h"
+#include "opendnp3/app/APDUHeader.h"
 
 namespace opendnp3
 {
 
-APDUHeaderParser::Result APDUHeaderParser::ParseRequest(openpal::ReadOnlyBuffer buffer, APDURecord& header)
+APDUHeaderParser::Result APDUHeaderParser::ParseRequest(openpal::ReadOnlyBuffer apdu, APDURecord& header, openpal::Logger* pLogger)
 {
-	if (buffer.Size() < 2)
+	if (apdu.Size() < 2)
 	{
+		FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Request fragment  with insufficient size of %u bytes", apdu.Size());
 		return Result::NOT_ENOUGH_DATA_FOR_HEADER;
 	}
 	else
 	{
-		header.control = AppControlField(buffer[0]);
-		header.function = FunctionCodeFromType(buffer[1]);
-		buffer.Advance(2);
-		header.objects = buffer;
+		header.control = AppControlField(apdu[0]);
+		header.function = FunctionCodeFromType(apdu[1]);
+		apdu.Advance(2);
+		header.objects = apdu;
 		return Result::OK;
 	}
 }
 
-APDUHeaderParser::Result APDUHeaderParser::ParseResponse(openpal::ReadOnlyBuffer buffer, APDUResponseRecord& header)
+APDUHeaderParser::Result APDUHeaderParser::ParseResponse(openpal::ReadOnlyBuffer apdu, APDUResponseRecord& header, openpal::Logger* pLogger)
 {
-	if(buffer.Size() < 4) return Result::NOT_ENOUGH_DATA_FOR_HEADER;
+	if (apdu.Size() < 4)
+	{
+		FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Response fragment with insufficient size of %u bytes", apdu.Size());
+		return Result::NOT_ENOUGH_DATA_FOR_HEADER;
+	}
 	else
 	{
-		header.control = AppControlField(buffer[0]);
-		header.function = FunctionCodeFromType(buffer[1]);
-		header.IIN.LSB = buffer[2];
-		header.IIN.MSB = buffer[3];
-		buffer.Advance(4);
-		header.objects = buffer;
+		header.control = AppControlField(apdu[0]);
+		header.function = FunctionCodeFromType(apdu[1]);
+		header.IIN.LSB = apdu[2];
+		header.IIN.MSB = apdu[3];
+		apdu.Advance(4);
+		header.objects = apdu;
 		return Result::OK;
 	}
 }

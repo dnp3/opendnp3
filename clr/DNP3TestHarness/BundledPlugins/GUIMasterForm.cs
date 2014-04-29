@@ -46,9 +46,10 @@ namespace Automatak.DNP3.Simulator
                 if (collection != null)
                 {
                     collection.Update(meas);
-                }
+                }                
             }
         }             
+     
 
         private void GUIMasterForm_FormClosing(object sender, FormClosingEventArgs e)
         {

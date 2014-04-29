@@ -18,32 +18,37 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __APDU_HEADER_PARSER_H_
-#define __APDU_HEADER_PARSER_H_
+#ifndef __MASTER_CONTEXT_H_
+#define __MASTER_CONTEXT_H_
 
-#include <openpal/BufferWrapper.h>
-#include <openpal/Uncopyable.h>
-#include <openpal/Logger.h>
+#include <openpal/AsyncLayerInterfaces.h>
 
-#include "opendnp3/app/APDUHeader.h"
+#include <openpal/IExecutor.h>
+#include <openpal/LogRoot.h>
 
 
 namespace opendnp3
 {
 
-class APDUHeaderParser : private openpal::PureStatic
+class IMasterTask;
+
+class MasterContext
 {
-public:
+	public:
 
-	enum class Result
-	{
-	    OK,
-	    NOT_ENOUGH_DATA_FOR_HEADER
-	};
+	MasterContext(	openpal::IExecutor& executor,
+					openpal::LogRoot& root, 
+					openpal::ILowerLayer& lower
+				);
+	
+	openpal::Logger logger;
+	openpal::IExecutor& executor;
+	openpal::ILowerLayer& lower;
 
-	static Result ParseRequest(openpal::ReadOnlyBuffer apdu, APDURecord& header, openpal::Logger* pLogger = nullptr);
-
-	static Result ParseResponse(openpal::ReadOnlyBuffer apdu, APDUResponseRecord& header, openpal::Logger* pLogger = nullptr);
+	// ------- dynamic state ---------
+	bool isOnline;
+	bool isSending;
+	IMasterTask* pCurrentTask;
 
 };
 
