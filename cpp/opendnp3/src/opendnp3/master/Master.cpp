@@ -60,7 +60,7 @@ Master::Master(LogRoot& root, MasterConfig aCfg, IAppLayer* apAppLayer, ISOEHand
 	mConfigureUnsol(logger),
 	mTimeSync(logger, apTimeSrc),
 	mCommandTask(logger),
-	mCommandQueue(apExecutor, mSchedule.mpCommandTask)
+	mCommandQueue(apExecutor)
 {
 
 }
@@ -106,12 +106,12 @@ void Master::ProcessCommand(ITask* apTask)
 	if(mpState == AMS_Closed::Inst())   //we're closed
 	{
 		ConstantCommandProcessor ccp(pExecutor, CommandResponse(CommandResult::NO_COMMS));
-		while(mCommandQueue.Dispatch(&ccp));
+		mCommandQueue.DispatchAll(&ccp);
 		apTask->Disable();
 	}
 	else
 	{
-		if(mCommandQueue.Dispatch(this))
+		if(mCommandQueue.DispatchOne(this))
 		{
 			mpState->StartTask(this, apTask, &mCommandTask);
 		}

@@ -49,6 +49,12 @@
     <Filter Include="Source\link">
       <UniqueIdentifier>{c4a0ef96-6633-47b7-b4fe-01d480acfe75}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header\master\tasks">
+      <UniqueIdentifier>{029b8887-bd78-4caf-8a54-771c39c6f804}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\master\tasks">
+      <UniqueIdentifier>{3c008426-fcee-4a79-b2a7-29c6163a1ffc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\opendnp3\StaticSizeConfiguration.h">
@@ -693,6 +699,24 @@
     <ClInclude Include="src\opendnp3\master\IMasterTask.h">
       <Filter>Header\master</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\master\IMasterScheduler.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\MasterScheduler.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\MasterParams.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\IntegrityPoll.h">
+      <Filter>Header\master\tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\TaskResult.h">
+      <Filter>Source\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\MasterTaskList.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\AnalogOutput.cpp">
@@ -1117,6 +1141,18 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\master\MasterContext.cpp">
       <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\MasterScheduler.cpp">
+      <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\MasterTaskList.cpp">
+      <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\MasterParams.cpp">
+      <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\IntegrityPoll.cpp">
+      <Filter>Source\master\tasks</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

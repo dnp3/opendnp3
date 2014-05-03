@@ -18,39 +18,48 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __RUNNABLE_H_
-#define __RUNNABLE_H_
+#ifndef __MASTER_PARAMS_H_
+#define __MASTER_PARAMS_H_
 
-#include "Erasure.h"
+#include <openpal/TimeDuration.h>
 
-#ifndef OPENPAL_MACRO_MAX_RUNNABLE_SIZE
-#define OPENPAL_MACRO_MAX_RUNNABLE_SIZE 128  // TODO consider reducing this size for x86 using macros
-#endif
-
-namespace openpal
+namespace opendnp3
 {
 
-// TODO define max somewhere else
-const uint32_t MAX_RUNNABLE_SIZE = OPENPAL_MACRO_MAX_RUNNABLE_SIZE;
-
-class Runnable : public Erasure<MAX_RUNNABLE_SIZE>
+/**
+Configuration information for the dnp3 master
+*/
+struct MasterParams
 {
-public:
+	/// Default constructor
+	MasterParams();
 
-	Runnable();
+	/// Maximum fragment size to use for requests
+	uint32_t fragSize;
 
-	Runnable& operator=(const Runnable& other);
+	/// If true, the master will do time syncs when it sees the time IIN bit from the outstation
+	bool autoTimeSync;
 
-	bool operator()() const;
+	/// If true, the master will enable/disable unsol on startup
+	bool doUnsolOnStartup;
 
-	void Run() const;
+	/// If doUnsolOnStartup == true, the master will use this bit to decide wether to enable (true) or disable (false)
+	bool enableUnsol;
 
-protected:
+	///	Bitwise mask used determine which classes are enabled for unsol
+	int unsolClassMask;
 
-	Runnable(Invoke pInvoke_, uint32_t size_);
+	/// Period for integrity scans (class 1/2/3/0), negative for non periodic
+	openpal::TimeDuration integrityPeriod;
 
+	/// Which classes should be requested in an integrity scan, defaults to 3/2/1/0
+	int intergrityClassMask;
+
+	/// Time delay beforce retrying a failed task
+	openpal::TimeDuration taskRetryPeriod;
 };
 
 }
 
 #endif
+

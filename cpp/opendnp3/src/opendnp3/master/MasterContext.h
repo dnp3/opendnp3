@@ -25,41 +25,45 @@
 
 #include <openpal/IExecutor.h>
 #include <openpal/LogRoot.h>
-#include <openpal/StaticPriorityQueue.h>
 
-#include "opendnp3/master/IMasterTask.h"
-#include "opendnp3/StaticSizeConfiguration.h"
+#include "opendnp3/master/MasterScheduler.h"
+#include "opendnp3/master/MasterTaskList.h"
+
 
 namespace opendnp3
 {
 
 class MasterContext
 {
-	struct TaskLessThan
-	{
-		static bool IsLessThan(const IMasterTask*& lhs, const IMasterTask*& rhs)
-		{
-			return lhs->Priority() < rhs->Priority();
-		}
-	};
-
 	public:
 
 	MasterContext(	openpal::IExecutor& executor,
 					openpal::LogRoot& root, 
-					openpal::ILowerLayer& lower
+					openpal::ILowerLayer& lower,
+					ISOEHandler* pSOEHandler,
+					const MasterParams& params
 				);
 	
 	openpal::Logger logger;
 	openpal::IExecutor& executor;
 	openpal::ILowerLayer& lower;
 
+	// ------- configuration --------
+	MasterParams params;
+
 	// ------- dynamic state ---------
 	bool isOnline;
 	bool isSending;
-	IMasterTask* pCurrentTask;
-	openpal::StaticPriorityQueue<IMasterTask*, uint16_t, 16, TaskLessThan> taskQueue;
+	uint8_t solSeq;
+	uint8_t unsolSeq;
+	IMasterTask* pActiveTask;
+	MasterScheduler scheduler;
+	MasterTaskList taskList;	
+	
+	// ------- events ----------
 
+	void OnResponse(const APDUResponseRecord& response);
+	void OnUnsolicitedResponse(const APDUResponseRecord& response);
 };
 
 }

@@ -19,39 +19,21 @@
  * to you under the terms of the License.
  */
 
-#include "Runnable.h"
+#include "MasterTaskList.h"
 
-#include <cstring>
-
-namespace openpal
+namespace opendnp3
 {
 
-Runnable::Runnable() : Erasure()
-{}
-
-void Runnable::Run() const
+MasterTaskList::MasterTaskList(ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_, const MasterParams& params) :
+	integrity(pSOEHandler_, pLogger_, params)
 {
-	this->Apply();
+	
 }
 
-bool Runnable::operator()() const
+void MasterTaskList::Initialize(IMasterScheduler& scheduler)
 {
-	return (pInvoke != nullptr);
+	scheduler.Schedule(&integrity);
 }
 
-Runnable& Runnable::operator=(const Runnable& other)
-{
-	if (this != &other)
-	{
-		this->size = other.size;
-		this->pInvoke = other.pInvoke;
-		memcpy(bytes, other.bytes, size);
-	}
-
-	return (*this);
 }
 
-Runnable::Runnable(Invoke pInvoke_, uint32_t size_) : Erasure(pInvoke_, size_)
-{}
-
-}

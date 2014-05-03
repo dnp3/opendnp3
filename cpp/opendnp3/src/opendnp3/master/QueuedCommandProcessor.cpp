@@ -25,9 +25,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-QueuedCommandProcessor::QueuedCommandProcessor(openpal::IExecutor* pExecutor_, ITask* pEnableTask_) :
-	pExecutor(pExecutor_),
-	pEnableTask(pEnableTask_)
+QueuedCommandProcessor::QueuedCommandProcessor(openpal::IExecutor* pExecutor_) :
+	pExecutor(pExecutor_)	
 {
 
 }
@@ -83,7 +82,12 @@ void QueuedCommandProcessor::DirectOperate(const AnalogOutputDouble64& command, 
 	this->DirectOperateT(command, index, pCallback);
 }
 
-bool QueuedCommandProcessor::Dispatch(ICommandProcessor* apProcessor)
+void QueuedCommandProcessor::DispatchAll(ICommandProcessor* apProcessor)
+{	
+	while (this->DispatchOne(apProcessor));
+}
+
+bool QueuedCommandProcessor::DispatchOne(ICommandProcessor* apProcessor)
 {	
 	if (requestQueue.IsEmpty())
 	{
@@ -102,7 +106,7 @@ void QueuedCommandProcessor::Enque(const CommandErasure& erasure, ICommandCallba
 {
 	if (requestQueue.Enqueue(erasure))
 	{
-		pEnableTask->Enable();
+		//pEnableTask->Enable(); TODO send notification to master
 	}
 	else
 	{

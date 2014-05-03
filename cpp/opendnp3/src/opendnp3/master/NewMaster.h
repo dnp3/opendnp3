@@ -30,9 +30,11 @@ class NewMaster : public openpal::IUpperLayer
 {
 	public:
 
-	NewMaster(	openpal::IExecutor& executor, 
+	NewMaster(	openpal::IExecutor& executor, 				
 				openpal::LogRoot& root, 
-				openpal::ILowerLayer& lower
+				openpal::ILowerLayer& lower,
+				ISOEHandler* pSOEHandler,
+				const MasterParams& params
 				);
 	
 	/// ----- Implement IUpperLayer ------

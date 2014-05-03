@@ -38,7 +38,7 @@ class QueuedCommandProcessor : public ICommandProcessor
 	
 public:
 
-	QueuedCommandProcessor(openpal::IExecutor* pExecutor_, ITask* pEnableTask_);
+	QueuedCommandProcessor(openpal::IExecutor* pExecutor_);
 
 	// Implement the ICommandProcessor interface
 
@@ -59,12 +59,13 @@ public:
 
 	// Function used to marshall calls another ICommandProcessor
 
-	bool Dispatch(ICommandProcessor* apProcessor);
+	bool DispatchOne(ICommandProcessor* pProcessor);
+
+	void DispatchAll(ICommandProcessor* pProcessor);
 
 private:
 
 	openpal::IExecutor* pExecutor;
-	ITask* pEnableTask;
 
 	openpal::StaticQueue<CommandErasure, uint8_t, sizes::MAX_COMMAND_QUEUE_SIZE> requestQueue;
 

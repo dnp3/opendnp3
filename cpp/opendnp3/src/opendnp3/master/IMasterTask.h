@@ -26,6 +26,10 @@
 #include "opendnp3/app/APDUHeader.h"
 #include "opendnp3/app/APDURequest.h"
 
+#include "opendnp3/master/MasterParams.h"
+#include "opendnp3/master/TaskResult.h"
+#include "opendnp3/master/IMasterScheduler.h"
+
 namespace opendnp3
 {
 
@@ -34,19 +38,22 @@ namespace opendnp3
  */
 class IMasterTask
 {
-	enum class Result
-	{
-		/// The task fails, further responses are ignored
-		FAIL,
-
-		/// The task is complete
-		SUCCESS,
-
-		/// The task should continue running
-		CONTINUE
-	};
 
 public:
+
+	enum class TaskPriority : int
+	{
+		POLL,
+		COMMAND		
+	};
+
+	struct Ordering
+	{
+		static bool IsLessThan(IMasterTask* lhs, IMasterTask* rhs)
+		{
+			return lhs->Priority() < rhs->Priority();
+		}
+	};
 
 	/**
 	* Returns the name of the task.
@@ -58,12 +65,13 @@ public:
 	/**
 	* The priority of the task where higher numbers have higher proiority
 	*/
-	virtual int Priority() const = 0;	
+	virtual TaskPriority Priority() const = 0;
 
 	/**
 	 * Build a request APDU.
 	 *
 	 * @param request the DNP3 message as an APDU instance
+	 * @param params The global configuration settings for the master
 	 */
 	virtual void BuildRequest(APDURequest& request) = 0;
 
@@ -75,15 +83,15 @@ public:
 	 *
 	 * @return			True if we continue, false to fail
 	 */
-	virtual Result OnResponse(const APDUResponseRecord& response) = 0;
+	virtual TaskStatus OnResponse(const APDUResponseRecord& response, IMasterScheduler& scheduler) = 0;
 	
 	/**
-	 * Called when a response times out. This fails the task.
+	 * Called when a response times out. Overridable to perform cleanup.
 	 */
-	virtual void OnResponseTimeout() = 0;
+	virtual void OnResponseTimeout(IMasterScheduler& scheduler) = 0;
 
 	/**
-	* Called when the layer closes. Overridable to perform cleanup tasks.
+	* Called when the layer closes. Overridable to perform cleanup.
 	*/
 	virtual void OnLowerLayerClose() {}
 };

@@ -23,15 +23,20 @@
 
 #include "opendnp3/app/APDUHeaderParser.h"
 
+#include "opendnp3/LogLevels.h"
+#include <openpal/LogMacros.h>
+
 namespace opendnp3
 {
 
 NewMaster::NewMaster(
 	openpal::IExecutor& executor,
 	openpal::LogRoot& root,
-	openpal::ILowerLayer& lower
+	openpal::ILowerLayer& lower,
+	ISOEHandler* pSOEHandler,
+	const MasterParams& params
 	) : 
-	context(executor, root, lower)
+	context(executor, root, lower, pSOEHandler, params)
 {}
 	
 void NewMaster::OnLowerLayerUp()
@@ -58,7 +63,18 @@ void NewMaster::OnReceive(const openpal::ReadOnlyBuffer& apdu)
 		auto result = APDUHeaderParser::ParseResponse(apdu, response, &context.logger);
 		if (result == APDUHeaderParser::Result::OK)
 		{
-
+			switch (response.function)
+			{
+				case(FunctionCode::RESPONSE) :
+					context.OnResponse(response);
+					break;
+				case(FunctionCode::UNSOLICITED_RESPONSE) :
+					context.OnUnsolicitedResponse(response);
+					break;
+				default:
+					FORMAT_LOG_BLOCK(context.logger, flags::WARN, "unsupported function code: %s", FunctionCodeToString(response.function));
+					break;
+			}
 		}
 	}
 }

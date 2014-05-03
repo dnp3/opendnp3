@@ -19,39 +19,30 @@
  * to you under the terms of the License.
  */
 
-#include "Runnable.h"
+#ifndef __MASTER_TASK_LIST_H_
+#define __MASTER_TASK_LIST_H_
 
-#include <cstring>
+#include "opendnp3/master/IntegrityPoll.h"
 
-namespace openpal
+namespace opendnp3
 {
 
-Runnable::Runnable() : Erasure()
-{}
-
-void Runnable::Run() const
+class MasterTaskList
 {
-	this->Apply();
-}
 
-bool Runnable::operator()() const
-{
-	return (pInvoke != nullptr);
-}
+public:
 
-Runnable& Runnable::operator=(const Runnable& other)
-{
-	if (this != &other)
-	{
-		this->size = other.size;
-		this->pInvoke = other.pInvoke;
-		memcpy(bytes, other.bytes, size);
-	}
+	MasterTaskList(ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_, const MasterParams& params);
 
-	return (*this);
-}
+	void Initialize(IMasterScheduler& scheduler);
+	
+private:
 
-Runnable::Runnable(Invoke pInvoke_, uint32_t size_) : Erasure(pInvoke_, size_)
-{}
+	IntegrityPoll integrity;
+};
 
 }
+
+
+
+#endif

@@ -18,40 +18,49 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef __INTEGRITY_POLL_H_
+#define __INTEGRITY_POLL_H_
 
-#include "Runnable.h"
+#include "opendnp3/master/IMasterTask.h"
 
-#include <cstring>
-
-namespace openpal
+namespace opendnp3
 {
 
-Runnable::Runnable() : Erasure()
-{}
+class ISOEHandler;
 
-void Runnable::Run() const
-{
-	this->Apply();
-}
+/**
+ * A generic interface for defining master request/response style tasks
+ */
+class IntegrityPoll : public IMasterTask
+{	
 
-bool Runnable::operator()() const
-{
-	return (pInvoke != nullptr);
-}
+public:	
 
-Runnable& Runnable::operator=(const Runnable& other)
-{
-	if (this != &other)
-	{
-		this->size = other.size;
-		this->pInvoke = other.pInvoke;
-		memcpy(bytes, other.bytes, size);
-	}
+	IntegrityPoll(ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_, const MasterParams& params);
+	
+	virtual char const* Name() const override final;
+	
+	virtual TaskPriority Priority() const override final;
+	
+	virtual void BuildRequest(APDURequest& request) override final;
+	
+	virtual TaskStatus OnResponse(const APDUResponseRecord& response, IMasterScheduler& scheduler) override final;
 
-	return (*this);
-}
+	virtual void OnResponseTimeout(IMasterScheduler& scheduler) override final;
+	
 
-Runnable::Runnable(Invoke pInvoke_, uint32_t size_) : Erasure(pInvoke_, size_)
-{}
+private:
 
-}
+	TaskStatus ProcessMeasurements(const APDUResponseRecord& response, IMasterScheduler& scheduler);
+
+	ISOEHandler* pSOEHandler;
+	openpal::Logger* pLogger;
+	const MasterParams* pParams;
+
+	uint16_t rxCount;
+};
+
+} //end ns
+
+
+#endif

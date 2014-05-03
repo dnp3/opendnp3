@@ -29,16 +29,33 @@ namespace opendnp3
 MasterContext::MasterContext(
 	openpal::IExecutor& executor_,
 	openpal::LogRoot& root,
-	openpal::ILowerLayer& lower_
+	openpal::ILowerLayer& lower_,
+	ISOEHandler* pSOEHandler,
+	const MasterParams& params_
 	) :
 
 	logger(root.GetLogger(sources::MASTER)),
 	executor(executor_),
 	lower(lower_),
+	params(params_),
 	isOnline(false),
 	isSending(false),
-	pCurrentTask(nullptr)	
+	solSeq(0),
+	unsolSeq(0),
+	pActiveTask(nullptr),
+	scheduler(executor_),
+	taskList(pSOEHandler, &logger, params)
 {}
 
+
+void MasterContext::OnResponse(const APDUResponseRecord& response)
+{
+	
+}
+
+void MasterContext::OnUnsolicitedResponse(const APDUResponseRecord& response)
+{
+
+}
 
 }

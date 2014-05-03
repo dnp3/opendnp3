@@ -19,39 +19,34 @@
  * to you under the terms of the License.
  */
 
-#include "Runnable.h"
+#ifndef __I_MASTER_SCHEDULER_H_
+#define __I_MASTER_SCHEDULER_H_
 
-#include <cstring>
+#include <openpal/TimeDuration.h>
 
-namespace openpal
+namespace opendnp3
 {
 
-Runnable::Runnable() : Erasure()
-{}
+class IMasterTask;
 
-void Runnable::Run() const
+class IMasterScheduler
 {
-	this->Apply();
-}
 
-bool Runnable::operator()() const
-{
-	return (pInvoke != nullptr);
-}
+public:
 
-Runnable& Runnable::operator=(const Runnable& other)
-{
-	if (this != &other)
-	{
-		this->size = other.size;
-		this->pInvoke = other.pInvoke;
-		memcpy(bytes, other.bytes, size);
-	}
+	/**
+	* Retry the task at a later time
+	*/
+	virtual void ScheduleLater(IMasterTask* pTask, const openpal::TimeDuration& delay) = 0;
 
-	return (*this);
-}
+	/*
+	* Run a task as soon as possible
+	*/
+	virtual void Schedule(IMasterTask* pTask) = 0;
 
-Runnable::Runnable(Invoke pInvoke_, uint32_t size_) : Erasure(pInvoke_, size_)
-{}
+
+};
 
 }
+
+#endif

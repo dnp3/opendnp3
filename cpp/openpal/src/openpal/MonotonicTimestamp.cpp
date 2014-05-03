@@ -57,5 +57,10 @@ bool operator<(const MonotonicTimestamp& first, const MonotonicTimestamp& second
 	return first.milliseconds < second.milliseconds;
 }
 
+bool operator>(const MonotonicTimestamp& first, const MonotonicTimestamp& second)
+{
+	return first.milliseconds > second.milliseconds;
+}
+
 }
 

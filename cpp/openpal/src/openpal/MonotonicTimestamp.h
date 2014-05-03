@@ -37,7 +37,7 @@ class MonotonicTimestamp
 public:
 
 	static MonotonicTimestamp Max();
-	static MonotonicTimestamp Min();
+	static MonotonicTimestamp Min();	
 
 	MonotonicTimestamp();
 	MonotonicTimestamp(int64_t aMilliseconds);
@@ -48,6 +48,7 @@ public:
 
 bool operator==(const MonotonicTimestamp& first, const MonotonicTimestamp& second);
 bool operator<(const MonotonicTimestamp& first, const MonotonicTimestamp& second);
+bool operator>(const MonotonicTimestamp& first, const MonotonicTimestamp& second);
 
 
 }

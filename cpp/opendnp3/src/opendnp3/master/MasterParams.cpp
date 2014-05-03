@@ -19,39 +19,27 @@
  * to you under the terms of the License.
  */
 
-#include "Runnable.h"
+#include "MasterParams.h"
 
-#include <cstring>
+#include "opendnp3/StaticSizeConfiguration.h"
+#include "opendnp3/app/PointClass.h"
 
-namespace openpal
+using namespace openpal;
+
+namespace opendnp3
 {
 
-Runnable::Runnable() : Erasure()
-{}
-
-void Runnable::Run() const
-{
-	this->Apply();
-}
-
-bool Runnable::operator()() const
-{
-	return (pInvoke != nullptr);
-}
-
-Runnable& Runnable::operator=(const Runnable& other)
-{
-	if (this != &other)
-	{
-		this->size = other.size;
-		this->pInvoke = other.pInvoke;
-		memcpy(bytes, other.bytes, size);
-	}
-
-	return (*this);
-}
-
-Runnable::Runnable(Invoke pInvoke_, uint32_t size_) : Erasure(pInvoke_, size_)
+MasterParams::MasterParams() :
+	fragSize(sizes::DEFAULT_APDU_BUFFER_SIZE),		
+	autoTimeSync(true),
+	doUnsolOnStartup(false),
+	enableUnsol(true),
+	unsolClassMask(CLASS_1 | CLASS_2 | CLASS_3),
+	intergrityClassMask(CLASS_0 | CLASS_1 | CLASS_2 | CLASS_3),
+	integrityPeriod(TimeDuration::Minutes(1)),
+	taskRetryPeriod(TimeDuration::Seconds(5))
 {}
 
 }
+
+

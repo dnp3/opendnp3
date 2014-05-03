@@ -18,40 +18,25 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef __TASK_RESULT_H_
+#define __TASK_RESULT_H_
 
-#include "Runnable.h"
-
-#include <cstring>
-
-namespace openpal
+namespace opendnp3
 {
 
-Runnable::Runnable() : Erasure()
-{}
-
-void Runnable::Run() const
+enum class TaskStatus
 {
-	this->Apply();
-}
+	/// The task is complete
+	SUCCESS,
 
-bool Runnable::operator()() const
-{
-	return (pInvoke != nullptr);
-}
+	/// The task fails, further responses are ignored
+	FAIL,	
 
-Runnable& Runnable::operator=(const Runnable& other)
-{
-	if (this != &other)
-	{
-		this->size = other.size;
-		this->pInvoke = other.pInvoke;
-		memcpy(bytes, other.bytes, size);
-	}
+	/// The task should continue running, restart the response timer, and increment expected SEQ#
+	CONTINUE
+};
 
-	return (*this);
-}
+} //end ns
 
-Runnable::Runnable(Invoke pInvoke_, uint32_t size_) : Erasure(pInvoke_, size_)
-{}
 
-}
+#endif

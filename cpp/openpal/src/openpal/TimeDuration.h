@@ -39,14 +39,14 @@ public:
 	{
 		return milliseconds;
 	}
+	
+	operator T() const { return milliseconds; }
 
 protected:
 	TimeDurationBase(T aMilliseconds) : milliseconds(aMilliseconds)
 	{}
 
-private:
 	T milliseconds;
-
 };
 
 
@@ -59,6 +59,8 @@ class TimeDuration : public TimeDurationBase<int64_t>
 public:
 
 	TimeDuration();
+
+	bool IsPostive() const;
 
 	static TimeDuration Min();
 
