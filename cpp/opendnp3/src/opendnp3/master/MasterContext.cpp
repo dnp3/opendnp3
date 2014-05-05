@@ -102,8 +102,7 @@ void MasterContext::CheckForTask()
 			FORMAT_LOG_BLOCK(logger, flags::INFO, "Begining task: %s", pTask->Name());
 			pActiveTask = pTask;			
 			APDURequest request(txBuffer.GetWriteBuffer());
-			pTask->BuildRequest(request);
-			request.SetControl(AppControlField::Request(solSeq));
+			pTask->BuildRequest(request, solSeq);			
 			this->Transmit(request.ToReadOnly());
 		}
 	}
@@ -118,6 +117,7 @@ void MasterContext::OnResponseTimeout()
 		{
 			pActiveTask->OnResponseTimeout(scheduler);
 			pActiveTask = nullptr;
+			solSeq = NextSeq(solSeq);
 			this->PostCheckForTask();
 		}
 	}
@@ -147,6 +147,8 @@ void MasterContext::OnResponse(const APDUResponseRecord& response)
 	{
 		if (pActiveTask && pResponseTimer && (response.control.SEQ == this->solSeq))
 		{
+			solSeq = NextSeq(solSeq);
+
 			this->CancelResponseTimer();
 
 			auto result = pActiveTask->OnResponse(response, scheduler);

@@ -21,11 +21,31 @@
 #include <catch.hpp>
 
 #include "NewMasterTestObject.h"
+#include "MeasurementComparisons.h"
+#include "HexConversions.h"
+
+#include <opendnp3/app/APDUResponse.h>
+#include <opendnp3/app/APDUBuilders.h>
 
 using namespace opendnp3;
 using namespace openpal;
 
-const std::string INTEGRITY("C0 01 3C 02 06 3C 03 06 3C 04 06 3C 01 06");
+std::string Integrity(uint8_t seq, int mask = ~0)
+{
+	StaticBuffer<100> buffer;
+	APDURequest request(buffer.GetWriteBuffer());
+	BuildIntegrity(request, mask, seq);
+	return toHex(request.ToReadOnly());
+}
+
+std::string EmptyResponse(uint8_t seq)
+{
+	StaticBuffer<4> buffer;
+	APDUResponse response(buffer.GetWriteBuffer());
+	response.SetFunction(FunctionCode::RESPONSE);
+	response.SetControl(AppControlField(true, true, false, false, seq));
+	return toHex(response.ToReadOnly());
+}
 
 #define SUITE(name) "NewMasterTestSuite - " name
 
@@ -45,8 +65,44 @@ TEST_CASE(SUITE("IntegrityOnStartup"))
 	NewMasterTestObject t(params);
 	t.master.OnLowerLayerUp();
 
-	REQUIRE(1 == t.exe.Dispatch());
-	REQUIRE(t.lower.PopWriteAsHex() == INTEGRITY);
+	REQUIRE(t.exe.Dispatch() > 0);
+	REQUIRE(t.lower.PopWriteAsHex() == Integrity(0));	
+}
+
+TEST_CASE(SUITE("IntegrityPollLoadsMeasurements"))
+{
+	MasterParams params;
+	NewMasterTestObject t(params);
+	t.master.OnLowerLayerUp();
+
+	REQUIRE(t.exe.Dispatch() > 0);
+	REQUIRE(t.lower.PopWriteAsHex() == Integrity(0));
+	REQUIRE(t.exe.NumPendingTimers() == 0);
+	t.master.OnSendResult(true);
+	REQUIRE(t.exe.NumPendingTimers() == 1);
+	t.SendToMaster("C0 81 00 00 01 02 00 00 00 81");
+	REQUIRE(t.exe.NumPendingTimers() == 1); // 2nd poll	
+	REQUIRE(t.meas.NumTotal() == 1);
+	REQUIRE(t.meas.GetBinary(0) == Binary(true));
+}
+
+TEST_CASE(SUITE("IntegrityPollCanRepeat"))
+{
+	MasterParams params;
+	NewMasterTestObject t(params);
+	t.master.OnLowerLayerUp();
+
+	REQUIRE(t.exe.Dispatch() > 0);
+	REQUIRE(t.lower.PopWriteAsHex() == Integrity(0));
+	REQUIRE(t.exe.NumPendingTimers() == 0);
+	t.master.OnSendResult(true);
+	REQUIRE(t.exe.NumPendingTimers() == 1);
+	t.SendToMaster(EmptyResponse(0));
+	REQUIRE(t.exe.NumPendingTimers() == 1); // 2nd poll	
+	t.exe.AdvanceTime(params.integrityPeriod);
+	REQUIRE(t.exe.NumPendingTimers() == 0);
+	REQUIRE(t.exe.Dispatch() > 0);
+	REQUIRE(t.lower.PopWriteAsHex() == Integrity(1));
 }
 
 /*

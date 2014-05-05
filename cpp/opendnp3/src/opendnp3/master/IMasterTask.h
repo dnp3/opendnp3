@@ -73,7 +73,7 @@ public:
 	 * @param request the DNP3 message as an APDU instance
 	 * @param params The global configuration settings for the master
 	 */
-	virtual void BuildRequest(APDURequest& request) = 0;
+	virtual void BuildRequest(APDURequest& request, uint8_t seq) = 0;
 
 	/**
 	 * Handler for responses, performs common validation and

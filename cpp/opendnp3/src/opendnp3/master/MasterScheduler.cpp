@@ -104,11 +104,11 @@ void MasterScheduler::OnTimerExpiration()
 {
 	pTimer = nullptr;
 	auto now = pExecutor->GetTime();
-	auto originalPendingSize = this->pendingQueue.Size();
+	auto wasEmpty = this->pendingQueue.IsEmpty();
 	
 
 	// move all expired tasks to the run queue
-	while (scheduledQueue.IsNotEmpty() && scheduledQueue.Peek().expiration.milliseconds < now.milliseconds)
+	while (scheduledQueue.IsNotEmpty() && scheduledQueue.Peek().expiration.milliseconds <= now.milliseconds)
 	{
 		IMasterTask* pTask = scheduledQueue.Pop().pTask;
 		pendingQueue.Enqueue(pTask);
@@ -119,11 +119,9 @@ void MasterScheduler::OnTimerExpiration()
 		auto next = scheduledQueue.Peek().expiration;
 		auto callback = [this](){ this->OnTimerExpiration(); };
 		pTimer = pExecutor->Start(next, Bind(callback));
-	}
+	}	
 
-	auto newPendingSize = this->pendingQueue.Size();
-
-	if (originalPendingSize == 0 && newPendingSize > 0)
+	if (wasEmpty && pendingQueue.IsNotEmpty())
 	{
 		this->expirationHandler.Run();
 	}

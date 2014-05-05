@@ -44,54 +44,57 @@ void MockExecutor::Resume()
 
 MockExecutor::~MockExecutor()
 {
-	for(auto pTimer : mAllTimers) delete pTimer;
+	for(auto pTimer : timers) delete pTimer;	
 }
 
 openpal::MonotonicTimestamp MockExecutor::NextTimerExpiration()
+{	
+	return MonotonicTimestamp::Min();	
+}
+
+void MockExecutor::CheckForExpiredTimers()
 {
-	if(!mTimerExpirationQueue.empty())
+	while (FindExpiredTimer());
+}
+
+bool MockExecutor::FindExpiredTimer()
+{
+	auto expired = [this](MockTimer* pTimer) { return pTimer->ExpiresAt().milliseconds <= this->mCurrentTime.milliseconds; };
+	auto iter = std::find_if(timers.begin(), timers.end(), expired);
+	if (iter == timers.end())
 	{
-		auto ret = mTimerExpirationQueue.front();
-		mTimerExpirationQueue.pop_front();
-		return ret;
+		return false;
 	}
-	else return MonotonicTimestamp::Min();
+	else
+	{
+		this->postQueue.push_back((*iter)->runnable);		
+		delete (*iter);
+		timers.erase(iter);
+		return true;
+	}
 }
 
 void MockExecutor::AdvanceTime(TimeDuration aDuration)
 {
 	mCurrentTime = mCurrentTime.Add(aDuration);
+	this->CheckForExpiredTimers();
 }
 
 bool MockExecutor::DispatchOne()
 {
-	if(mPostQueue.size() > 0)
+	this->CheckForExpiredTimers();
+
+	if(postQueue.size() > 0)
 	{
-		auto runnable = mPostQueue.front();
-		mPostQueue.pop_front();
+		auto runnable = postQueue.front();
+		postQueue.pop_front();
 		runnable.Run();
 		return true;
 	}
 	else
 	{
-		TimerMap::iterator front = mTimerMap.begin();
-
-		if(front != mTimerMap.end())
-		{
-
-			MockTimer* pTimer = front->second;
-			mIdle.push_back(pTimer);
-			mTimerMap.erase(front);
-
-			// do the callback last so that if it does something to
-			// the timer itself we're safe
-			pTimer->runnable.Run();
-
-			return true;
-		}
-	}
-
-	return false;
+		return false;
+	}	
 }
 
 size_t MockExecutor::Dispatch(size_t aMaximum)
@@ -109,7 +112,7 @@ void MockExecutor::Post(const openpal::Runnable& runnable)
 	}
 	else
 	{
-		mPostQueue.push_back(runnable);
+		postQueue.push_back(runnable);
 	}
 }
 
@@ -120,38 +123,25 @@ openpal::MonotonicTimestamp MockExecutor::GetTime()
 
 ITimer* MockExecutor::Start(const openpal::TimeDuration& aDelay, const openpal::Runnable& runnable)
 {
-	auto expiration = mCurrentTime.Add(aDelay);
-	mTimerExpirationQueue.push_back(expiration);
+	auto expiration = mCurrentTime.Add(aDelay);	
 	return Start(expiration, runnable);
 }
 
 ITimer* MockExecutor::Start(const openpal::MonotonicTimestamp& arTime, const openpal::Runnable& runnable)
 {
-	MockTimer* pTimer;
-	if(mIdle.size() > 0)
-	{
-		pTimer = mIdle.front();
-		mIdle.pop_front();
-		pTimer->runnable = runnable;
-	}
-	else
-	{
-		pTimer = new MockTimer(this, arTime, runnable);
-		mAllTimers.push_back(pTimer);
-	}
-
-	mTimerMap.insert(std::pair<openpal::MonotonicTimestamp, MockTimer*>(arTime, pTimer));
+	MockTimer* pTimer = new MockTimer(this, arTime, runnable);
+	timers.push_back(pTimer);
 	return pTimer;
 }
 
-void MockExecutor::Cancel(ITimer* apTimer)
+void MockExecutor::Cancel(ITimer* pTimer)
 {
-	for(TimerMap::iterator i = mTimerMap.begin(); i != mTimerMap.end(); ++i)
+	for (TimerVector::iterator i = timers.begin(); i != timers.end(); ++i)
 	{
-		if(i->second == apTimer)
+		if(*i == pTimer)
 		{
-			mIdle.push_back(i->second);
-			mTimerMap.erase(i);
+			delete pTimer;
+			timers.erase(i);			
 			return;
 		}
 	}

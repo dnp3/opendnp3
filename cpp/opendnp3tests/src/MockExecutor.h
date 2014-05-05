@@ -71,12 +71,12 @@ public:
 	/** @returns The number of active, pending timers and post operations */
 	size_t NumActive()
 	{
-		return mTimerMap.size() + mPostQueue.size();
+		return postQueue.size();
 	}
 
-	size_t NumActiveTimers()
+	size_t NumPendingTimers()
 	{
-		return mTimerMap.size();
+		return timers.size();
 	}
 
 	openpal::MonotonicTimestamp NextTimerExpiration();
@@ -86,22 +86,21 @@ public:
 
 private:
 
+	void CheckForExpiredTimers();
+
+	bool FindExpiredTimer();
+
 	void Cancel(openpal::ITimer* apTimer);
 
-	typedef std::deque<openpal::Runnable> PostQueue;
-	typedef std::multimap<openpal::MonotonicTimestamp, MockTimer*> TimerMap;
-	typedef std::deque<MockTimer*> TimerQueue;
-	typedef std::deque<openpal::MonotonicTimestamp> TimerExpirationQueue;
+	typedef std::deque<openpal::Runnable> PostQueue;	
+	typedef std::vector<MockTimer*> TimerVector;
 
 	bool mPostIsSynchronous;
 	bool mAutoPost;
 	openpal::MonotonicTimestamp mCurrentTime;
-	PostQueue mPostQueue;
-	TimerMap mTimerMap;
-	TimerQueue mIdle;
-	TimerQueue mAllTimers;
-	TimerExpirationQueue mTimerExpirationQueue;
-
+	
+	PostQueue postQueue;		
+	TimerVector timers;
 };
 
 /** @section desc Test timer class used in conjunction with MockExecutor */

@@ -18,49 +18,16 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __INTEGRITY_POLL_H_
-#define __INTEGRITY_POLL_H_
+#ifndef __APDU_BUILDERS_H_
+#define __APDU_BUILDERS_H_
 
-#include "opendnp3/master/IMasterTask.h"
+#include "APDURequest.h"
 
 namespace opendnp3
 {
 
-class ISOEHandler;
+	void BuildIntegrity(APDURequest& request, int classMask, uint8_t seq = 0);
 
-/**
- * A generic interface for defining master request/response style tasks
- */
-class IntegrityPoll : public IMasterTask
-{	
-
-public:	
-
-	IntegrityPoll(ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_, const MasterParams& params);
-	
-	virtual char const* Name() const override final;
-	
-	virtual TaskPriority Priority() const override final;
-	
-	virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;
-	
-	virtual TaskStatus OnResponse(const APDUResponseRecord& response, IMasterScheduler& scheduler) override final;
-
-	virtual void OnResponseTimeout(IMasterScheduler& scheduler) override final;
-	
-
-private:
-
-	TaskStatus ProcessMeasurements(const APDUResponseRecord& response, IMasterScheduler& scheduler);
-
-	ISOEHandler* pSOEHandler;
-	openpal::Logger* pLogger;
-	const MasterParams* pParams;
-
-	uint16_t rxCount;
-};
-
-} //end ns
-
+}
 
 #endif

@@ -56,7 +56,7 @@ TEST_CASE(SUITE("ReceiveNewRequestSolConfirmWait"))
 	t.SendToOutstation("C0 01 3C 02 06");
 	REQUIRE(t.lower.PopWriteAsHex() == "E0 81 80 00 02 01 28 01 00 00 00 81");
 	t.outstation.OnSendResult(true);
-	REQUIRE(1 == t.exe.NumActiveTimers());
+	REQUIRE(1 == t.exe.NumPendingTimers());
 	t.SendToOutstation("C1 01 3C 02 06");
 	REQUIRE(t.lower.PopWriteAsHex() == "E1 81 80 00 02 01 28 01 00 00 00 81");
 }

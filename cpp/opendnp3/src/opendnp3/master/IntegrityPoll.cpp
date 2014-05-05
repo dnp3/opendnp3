@@ -21,12 +21,12 @@
 
 #include "IntegrityPoll.h"
 
-#include "opendnp3/app/PointClass.h"
+
 #include "opendnp3/app/APDUParser.h"
+#include "opendnp3/app/APDUBuilders.h"
 
 #include "opendnp3/master/MeasurementHandler.h"
 
-#include "opendnp3/objects/Group60.h"
 #include "opendnp3/LogLevels.h"
 
 #include <openpal/LogMacros.h>
@@ -53,16 +53,10 @@ IMasterTask::TaskPriority IntegrityPoll::Priority() const
 	return IMasterTask::TaskPriority::POLL;
 }
 	
-void IntegrityPoll::BuildRequest(APDURequest& request)
+void IntegrityPoll::BuildRequest(APDURequest& request, uint8_t seq)
 {
 	rxCount = 0;
-
-	request.SetFunction(FunctionCode::READ);
-	auto writer = request.GetWriter();
-	if (pParams->intergrityClassMask & CLASS_1) writer.WriteHeader(Group60Var2::ID, QualifierCode::ALL_OBJECTS);
-	if (pParams->intergrityClassMask & CLASS_2) writer.WriteHeader(Group60Var3::ID, QualifierCode::ALL_OBJECTS);
-	if (pParams->intergrityClassMask & CLASS_3) writer.WriteHeader(Group60Var4::ID, QualifierCode::ALL_OBJECTS);		
-	if (pParams->intergrityClassMask & CLASS_0) writer.WriteHeader(Group60Var1::ID, QualifierCode::ALL_OBJECTS);
+	BuildIntegrity(request, pParams->intergrityClassMask, seq);
 }
 	
 TaskStatus IntegrityPoll::OnResponse(const APDUResponseRecord& response, IMasterScheduler& scheduler)

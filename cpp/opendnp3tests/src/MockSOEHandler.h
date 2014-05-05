@@ -42,6 +42,35 @@ public:
 	MockSOEHandler()
 	{}
 
+	size_t NumTotal() const
+	{
+		return NumStatic() + NumEvent();
+	}
+
+	size_t NumStatic() const
+	{
+		return mBinaryMap.size() +
+			mDoubleBinaryMap.size() +
+			mAnalogMap.size() +
+			mCounterMap.size() +
+			mFrozenCounterMap.size() +
+			mBinaryOutputStatusMap.size() +
+			mAnalogOutputStatusMap.size() +
+			mOctetStringMap.size();
+	}
+
+	size_t NumEvent() const
+	{
+		return mEventBinaryMap.size() +
+			mEventDoubleBinaryMap.size() +
+			mEventAnalogMap.size() +
+			mEventCounterMap.size() +
+			mEventFrozenCounterMap.size() +
+			mEventBinaryOutputStatusMap.size() +
+			mEventAnalogOutputStatusMap.size() +
+			mEventOctetStringMap.size();
+	}
+
 	void LoadStatic(const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override final
 	{
 		meas.foreach([this](const IndexedValue<Binary, uint16_t>& value)

@@ -18,49 +18,37 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __INTEGRITY_POLL_H_
-#define __INTEGRITY_POLL_H_
 
-#include "opendnp3/master/IMasterTask.h"
+#include "APDUBuilders.h"
+
+#include "opendnp3/app/PointClass.h"
+#include "opendnp3/objects/Group60.h"
 
 namespace opendnp3
 {
 
-class ISOEHandler;
+void BuildIntegrity(APDURequest& request, int classMask, uint8_t seq)
+{
+	request.SetControl(AppControlField(true, true, false, false, seq));
+	request.SetFunction(FunctionCode::READ);
+	auto writer = request.GetWriter();
+	if (classMask & CLASS_1)
+	{
+		writer.WriteHeader(Group60Var2::ID, QualifierCode::ALL_OBJECTS);
+	}
+	if (classMask & CLASS_2)
+	{
+		writer.WriteHeader(Group60Var3::ID, QualifierCode::ALL_OBJECTS);
+	}
+	if (classMask & CLASS_3)
+	{
+		writer.WriteHeader(Group60Var4::ID, QualifierCode::ALL_OBJECTS);
+	}
+	if (classMask & CLASS_0)
+	{
+		writer.WriteHeader(Group60Var1::ID, QualifierCode::ALL_OBJECTS);
+	}
+}
 
-/**
- * A generic interface for defining master request/response style tasks
- */
-class IntegrityPoll : public IMasterTask
-{	
+}
 
-public:	
-
-	IntegrityPoll(ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_, const MasterParams& params);
-	
-	virtual char const* Name() const override final;
-	
-	virtual TaskPriority Priority() const override final;
-	
-	virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;
-	
-	virtual TaskStatus OnResponse(const APDUResponseRecord& response, IMasterScheduler& scheduler) override final;
-
-	virtual void OnResponseTimeout(IMasterScheduler& scheduler) override final;
-	
-
-private:
-
-	TaskStatus ProcessMeasurements(const APDUResponseRecord& response, IMasterScheduler& scheduler);
-
-	ISOEHandler* pSOEHandler;
-	openpal::Logger* pLogger;
-	const MasterParams* pParams;
-
-	uint16_t rxCount;
-};
-
-} //end ns
-
-
-#endif
