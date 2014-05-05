@@ -37,6 +37,9 @@ struct MasterParams
 	/// Maximum fragment size to use for requests
 	uint32_t fragSize;
 
+	/// Application layer response timeout
+	openpal::TimeDuration responseTimeout;
+
 	/// If true, the master will do time syncs when it sees the time IIN bit from the outstation
 	bool autoTimeSync;
 

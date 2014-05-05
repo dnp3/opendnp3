@@ -30,7 +30,8 @@ namespace opendnp3
 {
 
 MasterParams::MasterParams() :
-	fragSize(sizes::DEFAULT_APDU_BUFFER_SIZE),		
+	fragSize(sizes::DEFAULT_APDU_BUFFER_SIZE),
+	responseTimeout(TimeDuration::Seconds(5)),
 	autoTimeSync(true),
 	doUnsolOnStartup(false),
 	enableUnsol(true),

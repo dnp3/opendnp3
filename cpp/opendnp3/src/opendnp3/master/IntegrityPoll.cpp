@@ -59,9 +59,9 @@ void IntegrityPoll::BuildRequest(APDURequest& request)
 
 	request.SetFunction(FunctionCode::READ);
 	auto writer = request.GetWriter();
-	if (pParams->intergrityClassMask & CLASS_3) writer.WriteHeader(Group60Var4::ID, QualifierCode::ALL_OBJECTS);
-	if (pParams->intergrityClassMask & CLASS_2) writer.WriteHeader(Group60Var3::ID, QualifierCode::ALL_OBJECTS);
 	if (pParams->intergrityClassMask & CLASS_1) writer.WriteHeader(Group60Var2::ID, QualifierCode::ALL_OBJECTS);
+	if (pParams->intergrityClassMask & CLASS_2) writer.WriteHeader(Group60Var3::ID, QualifierCode::ALL_OBJECTS);
+	if (pParams->intergrityClassMask & CLASS_3) writer.WriteHeader(Group60Var4::ID, QualifierCode::ALL_OBJECTS);		
 	if (pParams->intergrityClassMask & CLASS_0) writer.WriteHeader(Group60Var1::ID, QualifierCode::ALL_OBJECTS);
 }
 	

@@ -35,6 +35,11 @@ AppControlField::AppControlField(uint8_t byte) :
 {
 }
 
+AppControlField AppControlField::Request(uint8_t seq)
+{
+	return AppControlField(true, true, false, false, seq);
+}
+
 AppControlField::AppControlField() :
 	FIR(true),
 	FIN(true),

@@ -25,6 +25,8 @@
 
 #include <openpal/IExecutor.h>
 #include <openpal/LogRoot.h>
+#include <openpal/StaticQueue.h>
+#include <openpal/StaticBuffer.h>
 
 #include "opendnp3/master/MasterScheduler.h"
 #include "opendnp3/master/MasterTaskList.h"
@@ -35,7 +37,7 @@ namespace opendnp3
 
 class MasterContext
 {
-	public:
+	public:	
 
 	MasterContext(	openpal::IExecutor& executor,
 					openpal::LogRoot& root, 
@@ -45,8 +47,8 @@ class MasterContext
 				);
 	
 	openpal::Logger logger;
-	openpal::IExecutor& executor;
-	openpal::ILowerLayer& lower;
+	openpal::IExecutor* pExecutor;
+	openpal::ILowerLayer* pLower;
 
 	// ------- configuration --------
 	MasterParams params;
@@ -57,13 +59,43 @@ class MasterContext
 	uint8_t solSeq;
 	uint8_t unsolSeq;
 	IMasterTask* pActiveTask;
+	openpal::ITimer* pResponseTimer;
 	MasterScheduler scheduler;
-	MasterTaskList taskList;	
-	
-	// ------- events ----------
+	MasterTaskList taskList;
+	openpal::StaticQueue<APDUHeader, uint8_t, 4> confirmQueue;
 
-	void OnResponse(const APDUResponseRecord& response);
-	void OnUnsolicitedResponse(const APDUResponseRecord& response);
+	openpal::StaticBuffer<sizes::MAX_TX_APDU_SIZE> txBuffer;
+	
+	void PostCheckForTask();
+
+	// ------- events ----------
+	bool OnLayerUp();
+	bool OnLayerDown();
+	void OnSendResult(bool isSucccess);
+	void OnResponse(const APDUResponseRecord& response);	
+	void OnUnsolicitedResponse(const APDUResponseRecord& response);	
+
+	private:
+
+	void OnResponseTimeout();
+
+	void CheckForTask();
+
+	static uint8_t NextSeq(uint8_t seq) { return (seq + 1) % 16; }
+
+	// -------- helpers --------
+
+	void StartResponseTimer();
+
+	bool CancelResponseTimer();
+
+	void QueueConfirm(const APDUHeader& header);
+
+	void CheckConfirmTransmit();
+
+	void Transmit(const openpal::ReadOnlyBuffer& output);
+
+	static bool CanConfirmResponse(TaskStatus status);	
 };
 
 }

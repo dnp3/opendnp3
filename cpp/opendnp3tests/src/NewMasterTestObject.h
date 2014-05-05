@@ -18,51 +18,38 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __APP_CONTROL_FIELD_H_
-#define __APP_CONTROL_FIELD_H_
+#ifndef __NEW_MASTER_TEST_OBJECT_H_
+#define __NEW_MASTER_TEST_OBJECT_H_
 
-#include <cstdint>
+#include "MockExecutor.h"
+#include "LogTester.h"
+
+#include <opendnp3/master/NewMaster.h>
+#include <opendnp3/LogLevels.h>
+#include <deque>
+
+#include "MockSOEHandler.h"
+#include "MockLowerLayer.h"
 
 namespace opendnp3
 {
 
-/** Represents the first byte in every APDU
-*/
-struct AppControlField
-{
-
-	const static AppControlField DEFAULT;
-
-	static AppControlField Request(uint8_t seq);
-
-	AppControlField();
-
-	AppControlField(uint8_t byte);
-
-	AppControlField(bool aFIR, bool aFIN, bool aCON, bool aUNS, uint8_t aSEQ = 0);
-
-	uint8_t ToByte() const;
-
-	inline bool IsFirAndFin() const
+	class NewMasterTestObject
 	{
-		return FIR && FIN;
-	}
+	public:
 
-	bool FIR;
-	bool FIN;
-	bool CON;
-	bool UNS;
-	uint8_t  SEQ;
+		NewMasterTestObject(const MasterParams& params);
 
-private:
+		void SendToMaster(const std::string& hex);		
 
-	static const uint8_t FIR_MASK = 0x80;
-	static const uint8_t FIN_MASK = 0x40;
-	static const uint8_t CON_MASK = 0x20;
-	static const uint8_t UNS_MASK = 0x10;
-	static const uint8_t SEQ_MASK = 0x0F;
-};
+		LogTester log;
+		MockExecutor exe;
+		MockSOEHandler meas;
+		MockLowerLayer lower;
+		NewMaster master;
+	};
 
 }
 
 #endif
+

@@ -18,51 +18,27 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __APP_CONTROL_FIELD_H_
-#define __APP_CONTROL_FIELD_H_
 
-#include <cstdint>
+#include "NewMasterTestObject.h"
+
+#include "BufferHelpers.h"
 
 namespace opendnp3
 {
 
-/** Represents the first byte in every APDU
-*/
-struct AppControlField
+NewMasterTestObject::NewMasterTestObject(const MasterParams& params) :
+	log(),
+	exe(),
+	meas(),
+	lower(log.root),
+	master(exe, log.root, lower, &meas, params)
+{}
+
+void NewMasterTestObject::SendToMaster(const std::string& hex)
 {
-
-	const static AppControlField DEFAULT;
-
-	static AppControlField Request(uint8_t seq);
-
-	AppControlField();
-
-	AppControlField(uint8_t byte);
-
-	AppControlField(bool aFIR, bool aFIN, bool aCON, bool aUNS, uint8_t aSEQ = 0);
-
-	uint8_t ToByte() const;
-
-	inline bool IsFirAndFin() const
-	{
-		return FIR && FIN;
-	}
-
-	bool FIR;
-	bool FIN;
-	bool CON;
-	bool UNS;
-	uint8_t  SEQ;
-
-private:
-
-	static const uint8_t FIR_MASK = 0x80;
-	static const uint8_t FIN_MASK = 0x40;
-	static const uint8_t CON_MASK = 0x20;
-	static const uint8_t UNS_MASK = 0x10;
-	static const uint8_t SEQ_MASK = 0x0F;
-};
-
+	HexSequence hs(hex);
+	master.OnReceive(hs.ToReadOnly());
+}
+	
 }
 
-#endif

@@ -22,40 +22,232 @@
 #include "MasterContext.h"
 
 #include "opendnp3/LogLevels.h"
+#include "opendnp3/app/APDUWrapper.h"
+
+#include <openpal/LogMacros.h>
 
 namespace opendnp3
 {
 
 MasterContext::MasterContext(
-	openpal::IExecutor& executor_,
+	openpal::IExecutor& executor,
 	openpal::LogRoot& root,
-	openpal::ILowerLayer& lower_,
+	openpal::ILowerLayer& lower,
 	ISOEHandler* pSOEHandler,
 	const MasterParams& params_
 	) :
 
 	logger(root.GetLogger(sources::MASTER)),
-	executor(executor_),
-	lower(lower_),
+	pExecutor(&executor),
+	pLower(&lower),
 	params(params_),
 	isOnline(false),
 	isSending(false),
 	solSeq(0),
 	unsolSeq(0),
 	pActiveTask(nullptr),
-	scheduler(executor_),
+	pResponseTimer(nullptr),
+	scheduler(executor),
 	taskList(pSOEHandler, &logger, params)
-{}
+{
+	auto callback = [this](){ PostCheckForTask(); };
+	scheduler.SetExpirationHandler(openpal::Bind(callback));
+}
+
+bool MasterContext::OnLayerUp()
+{
+	if (isOnline)
+	{		
+		return false;
+	}
+	else
+	{
+		isOnline = true;
+		taskList.Initialize(scheduler);
+		return true;
+	}
+}
+
+bool MasterContext::OnLayerDown()
+{
+	if (isOnline)
+	{
+		pActiveTask = nullptr;
+		scheduler.Reset();
+		this->CancelResponseTimer();
+		isOnline = false;
+		solSeq = 0;
+		unsolSeq = 0;
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+void MasterContext::PostCheckForTask()
+{
+	auto callback = [this]() { this->CheckForTask(); };
+	pExecutor->PostLambda(callback);
+}
+
+void MasterContext::CheckForTask()
+{
+	if (isOnline && pActiveTask == nullptr && !isSending)
+	{
+		auto pTask = scheduler.Start();
+		if (pTask)
+		{
+			FORMAT_LOG_BLOCK(logger, flags::INFO, "Begining task: %s", pTask->Name());
+			pActiveTask = pTask;			
+			APDURequest request(txBuffer.GetWriteBuffer());
+			pTask->BuildRequest(request);
+			request.SetControl(AppControlField::Request(solSeq));
+			this->Transmit(request.ToReadOnly());
+		}
+	}
+}
+
+void MasterContext::OnResponseTimeout()
+{
+	if (pResponseTimer)
+	{
+		pResponseTimer = nullptr;
+		if (pActiveTask)
+		{
+			pActiveTask->OnResponseTimeout(scheduler);
+			pActiveTask = nullptr;
+			this->PostCheckForTask();
+		}
+	}
+}
+
+void MasterContext::OnSendResult(bool isSucccess)
+{
+	if (isSending)
+	{
+		isSending = false;
+		if (pActiveTask && pResponseTimer == nullptr)
+		{
+			this->StartResponseTimer();
+		}
+		this->CheckConfirmTransmit();
+	}
+}
 
 
 void MasterContext::OnResponse(const APDUResponseRecord& response)
-{
-	
+{	
+	if (response.control.UNS)
+	{
+		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Ignoring response with UNS bit");
+	}
+	else
+	{
+		if (pActiveTask && pResponseTimer && (response.control.SEQ == this->solSeq))
+		{
+			this->CancelResponseTimer();
+
+			auto result = pActiveTask->OnResponse(response, scheduler);
+			if (response.control.CON && CanConfirmResponse(result))
+			{
+				this->QueueConfirm(APDUHeader::SolicitedConfirm(response.control.SEQ));								
+			}
+
+			if (result == TaskStatus::CONTINUE)
+			{
+				solSeq = NextSeq(solSeq);
+				this->StartResponseTimer();
+			}
+			else
+			{
+				pActiveTask = nullptr;
+				this->PostCheckForTask();
+			}
+		}
+		else
+		{
+			FORMAT_LOG_BLOCK(logger, flags::WARN, "Unexpected response with sequence: %u", response.control.SEQ);
+		}
+	}	
 }
 
 void MasterContext::OnUnsolicitedResponse(const APDUResponseRecord& response)
 {
+	if (response.control.UNS)
+	{
+		// TODO handle the measurements
 
+		if (response.control.CON)
+		{
+			this->QueueConfirm(APDUHeader::SolicitedConfirm(response.control.SEQ));
+		}
+	}
+	else
+	{
+		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Ignoring unsolicited response with UNS bit not set");
+	}
+}
+
+void MasterContext::StartResponseTimer()
+{
+	if (pResponseTimer == nullptr)
+	{
+		auto timeout = [this](){ this->OnResponseTimeout(); };
+		pResponseTimer = pExecutor->Start(params.responseTimeout, openpal::Bind(timeout));
+	}	
+}
+
+bool MasterContext::CancelResponseTimer()
+{
+	if (pResponseTimer)
+	{
+		pResponseTimer->Cancel();
+		pResponseTimer = nullptr;
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}	
+
+void MasterContext::QueueConfirm(const APDUHeader& header)
+{
+	this->confirmQueue.Enqueue(header);
+	this->CheckConfirmTransmit();
+}
+
+void MasterContext::CheckConfirmTransmit()
+{
+	if (!isSending && confirmQueue.IsNotEmpty())
+	{
+		auto confirm = confirmQueue.Pop();
+		APDUWrapper wrapper(txBuffer.GetWriteBuffer());
+		wrapper.SetFunction(confirm.function);
+		wrapper.SetControl(confirm.control);
+		this->Transmit(wrapper.ToReadOnly());
+	}
+}
+
+void MasterContext::Transmit(const openpal::ReadOnlyBuffer& output)
+{
+	assert(!isSending);
+	isSending = true;
+	pLower->BeginTransmit(output);
+}
+
+bool MasterContext::CanConfirmResponse(TaskStatus status)
+{
+	switch (status)
+	{
+		case(TaskStatus::SUCCESS) :
+		case(TaskStatus::CONTINUE) :
+			return true;
+		default:
+			return false;
+	}
 }
 
 }

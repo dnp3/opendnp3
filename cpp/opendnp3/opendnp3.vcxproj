@@ -242,6 +242,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\AnalogOutput.cpp" />
+    <ClCompile Include="src\opendnp3\app\APDUHeader.cpp" />
     <ClCompile Include="src\opendnp3\app\APDUHeaderParser.cpp" />
     <ClCompile Include="src\opendnp3\app\APDUParser.cpp" />
     <ClCompile Include="src\opendnp3\app\APDURequest.cpp" />

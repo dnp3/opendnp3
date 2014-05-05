@@ -41,18 +41,12 @@ NewMaster::NewMaster(
 	
 void NewMaster::OnLowerLayerUp()
 {
-	if (!context.isOnline)
-	{
-		context.isOnline = true;
-	}
+	context.OnLayerUp();
 }
 
 void NewMaster::OnLowerLayerDown()
 {
-	if (context.isOnline)
-	{
-		context.isOnline = false;
-	}
+	context.OnLayerDown();
 }
 
 void NewMaster::OnReceive(const openpal::ReadOnlyBuffer& apdu)
@@ -81,9 +75,9 @@ void NewMaster::OnReceive(const openpal::ReadOnlyBuffer& apdu)
 
 void NewMaster::OnSendResult(bool isSucccess)
 {
-	if (context.isSending)
+	if (context.isOnline)
 	{
-
+		context.OnSendResult(isSucccess);
 	}
 }
 	

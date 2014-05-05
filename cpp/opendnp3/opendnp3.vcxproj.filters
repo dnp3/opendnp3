@@ -1154,5 +1154,8 @@
     <ClCompile Include="src\opendnp3\master\IntegrityPoll.cpp">
       <Filter>Source\master\tasks</Filter>
     </ClCompile>
+    <ClCompile Include="src\opendnp3\app\APDUHeader.cpp">
+      <Filter>Source\app</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

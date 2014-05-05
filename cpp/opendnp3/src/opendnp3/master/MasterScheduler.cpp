@@ -68,7 +68,7 @@ void MasterScheduler::StartTimer(const openpal::TimeDuration& timeout)
 
 void MasterScheduler::Schedule(IMasterTask* pTask)
 {
-	auto wasEmpty = this->pendingQueue.Size() > 0;
+	auto wasEmpty = this->pendingQueue.IsEmpty();
 	this->pendingQueue.Enqueue(pTask);
 	if (wasEmpty)
 	{

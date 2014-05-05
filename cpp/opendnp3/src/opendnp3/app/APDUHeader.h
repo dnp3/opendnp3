@@ -30,17 +30,24 @@
 namespace opendnp3
 {
 
-struct APDURecord
+struct APDUHeader
 {
+	static APDUHeader SolicitedConfirm(uint8_t seq);
+	static APDUHeader UnsolicitedConfirm(uint8_t seq);
+
+	static APDUHeader Confirm(uint8_t seq, bool unsolicited);
+
 	AppControlField control;
 	FunctionCode function;
+};
+
+struct APDURecord : public APDUHeader
+{
 	openpal::ReadOnlyBuffer objects;
 };
 
-struct APDUResponseRecord
+struct APDUResponseRecord : public APDUHeader
 {
-	AppControlField control;
-	FunctionCode function;
 	IINField IIN;
 	openpal::ReadOnlyBuffer objects;
 };
