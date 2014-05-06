@@ -29,33 +29,33 @@ namespace asiodnp3
 {
 
 MasterStackImpl::MasterStackImpl(	LogRoot& root,
-                                    IExecutor* apExecutor,
-                                    ISOEHandler* apPublisher,
-                                    IUTCTimeSource* apTimeSource,
-                                    AsyncTaskGroup* apTaskGroup,
+									openpal::IExecutor& executor,
+                                    ISOEHandler* pSOEHandler,
+                                    IUTCTimeSource* apTimeSource,                                    
                                     const MasterStackConfig& config,
                                     const StackActionHandler& handler) :
 
-	IMaster(root, apExecutor, config.app, config.link, handler),
-	master(root, config.master, &appStack.application, apPublisher, apTaskGroup, apExecutor, apTimeSource)
+	IMaster(root, &executor, config.link, handler),
+	master(executor, root, stack.transport, pSOEHandler, config.master)
 {
-	appStack.application.SetUser(&master);
+	stack.transport.SetAppLayer(&master);
 }
 
 ICommandProcessor* MasterStackImpl::GetCommandProcessor()
 {
-	return master.GetCommandProcessor();
+	// TODO
+	return nullptr;
 }
 
 MasterScan MasterStackImpl::AddClassScan(int aClassMask, openpal::TimeDuration aScanRate, openpal::TimeDuration aRetryRate)
 {
 	ExecutorPause pause(this->GetExecutor());
-	return master.AddClassScan(aClassMask, aScanRate, aRetryRate);
+	return MasterScan();
 }
 
 MasterScan MasterStackImpl::GetIntegrityScan()
 {
-	return master.GetIntegrityScan();
+	return MasterScan();
 }
 
 }

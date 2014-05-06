@@ -24,8 +24,10 @@
 #include "IMaster.h"
 
 #include <opendnp3/master/MasterStackConfig.h>
-#include <opendnp3/master/Master.h>
-#include <opendnp3/app/ApplicationStack.h>
+#include <opendnp3/master/NewMaster.h>
+#include <opendnp3/transport/TransportStack.h>
+
+#include <openpal/IUTCTimeSource.h>
 
 namespace asiodnp3
 {
@@ -39,10 +41,9 @@ public:
 
 	MasterStackImpl(
 		openpal::LogRoot& root,
-	    openpal::IExecutor* apExecutor,
-	    opendnp3::ISOEHandler* apPublisher,
-	    IUTCTimeSource* apTimeSource,
-		opendnp3::AsyncTaskGroup* apTaskGroup,
+	    openpal::IExecutor& executor,
+		opendnp3::ISOEHandler* pSOEHandler,
+	    openpal::IUTCTimeSource* pTimeSource,		
 		const opendnp3::MasterStackConfig& config,
 		const StackActionHandler& handler);
 
@@ -53,7 +54,7 @@ public:
 	opendnp3::MasterScan AddClassScan(int aClassMask, openpal::TimeDuration aScanRate, openpal::TimeDuration aRetryRate);
 
 private:
-	opendnp3::Master master;
+	opendnp3::NewMaster master;
 };
 
 }

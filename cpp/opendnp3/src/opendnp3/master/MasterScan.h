@@ -35,6 +35,8 @@ class AsyncTaskBase;
 class MasterScan
 {
 public:
+
+	MasterScan();
 	MasterScan(openpal::IExecutor* apExecutor, AsyncTaskBase* apTask);
 
 	// Add optional callbacks for scan status updates
@@ -44,7 +46,7 @@ public:
 	void Demand();
 
 private:
-	MasterScan();
+	
 	openpal::IExecutor* mpExecutor;
 	AsyncTaskBase* mpTask;
 };

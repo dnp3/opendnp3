@@ -26,6 +26,7 @@
 #include <opendnp3/master/MasterStackConfig.h>
 #include <opendnp3/master/ICommandProcessor.h>
 #include <opendnp3/master/ISOEHandler.h>
+#include <opendnp3/app/ClassMask.h>
 #include <opendnp3/LogLevels.h>
 
 #include <asiopal/Log.h>
@@ -75,7 +76,7 @@ int main(int argc, char* argv[])
 	// The master config object for a master. The default are
 	// useable, but understanding the options are important.
 	MasterStackConfig stackConfig;
-	stackConfig.master.IntegrityRate = TimeDuration::Minutes(1);
+	stackConfig.master.integrityPeriod = TimeDuration::Minutes(1);
 
 	// Create a new master on a previously declared port, with a
 	// name, log level, command acceptor, and config info. This

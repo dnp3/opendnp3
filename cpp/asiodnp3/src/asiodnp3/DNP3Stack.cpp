@@ -27,8 +27,8 @@ namespace asiodnp3
 {
 
 
-DNP3Stack::DNP3Stack(openpal::LogRoot& root, openpal::IExecutor* pExecutor, AppConfig appConfig, LinkConfig linkConfig, const StackActionHandler& handler_) :
-	appStack(root, pExecutor, appConfig, linkConfig),
+DNP3Stack::DNP3Stack(openpal::LogRoot& root, openpal::IExecutor* pExecutor, LinkConfig linkConfig, const StackActionHandler& handler_) :
+	stack(root, pExecutor, linkConfig),
 	handler(handler_)
 {
 
@@ -41,27 +41,27 @@ openpal::IExecutor* DNP3Stack::GetExecutor()
 
 ILinkContext* DNP3Stack::GetLinkContext()
 {
-	return &appStack.link;
+	return &stack.link;
 }
 
 void DNP3Stack::SetLinkRouter(ILinkRouter* apRouter)
 {
-	appStack.link.SetRouter(apRouter);
+	stack.link.SetRouter(apRouter);
 }
 
 void DNP3Stack::Enable()
 {
-	handler.EnableRoute(&this->appStack.link);
+	handler.EnableRoute(&this->stack.link);
 }
 
 void DNP3Stack::Disable()
 {
-	handler.DisableRoute(&this->appStack.link);
+	handler.DisableRoute(&this->stack.link);
 }
 
 void DNP3Stack::BeginShutdown()
 {
-	handler.BeginShutdown(&this->appStack.link, this);
+	handler.BeginShutdown(&this->stack.link, this);
 }
 
 

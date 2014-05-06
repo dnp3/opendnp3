@@ -157,10 +157,12 @@ void IntegrationTest::AddStackPair(uint32_t filters, uint16_t aNumPoints)
 	 */
 	{
 		MasterStackConfig cfg;
+		/* TODO 
 		cfg.app.RspTimeout = TimeDuration::Seconds(10);
 		cfg.master.IntegrityRate = TimeDuration::Min();
 		cfg.master.EnableUnsol = true;
 		cfg.master.DoUnsolOnStartup = true;
+		*/
 		auto pMaster = pClient->AddMaster("master", pMasterFDO.get(), asiopal::UTCTimeSource::Inst(), cfg);
 		pMaster->Enable();
 	}
@@ -171,9 +173,11 @@ void IntegrationTest::AddStackPair(uint32_t filters, uint16_t aNumPoints)
 	 */
 	{
 		OutstationStackConfig cfg(DatabaseTemplate(aNumPoints, aNumPoints, aNumPoints, aNumPoints));
+		/* TODO
 		cfg.app.RspTimeout = TimeDuration::Seconds(10);
 		cfg.outstation.disableUnsol = false;
 		cfg.outstation.unsolPackDelay = TimeDuration::Zero();
+		*/
 		auto pOutstation = pServer->AddOutstation("outstation", &mCmdHandler, &NullTimeWriteHandler::Inst(), cfg);
 		this->mFanout.AddObserver(pOutstation->GetLoader());
 		pOutstation->Enable();

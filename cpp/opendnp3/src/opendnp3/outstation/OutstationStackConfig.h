@@ -18,10 +18,10 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __SLAVE_STACK_CONFIG_H_
-#define __SLAVE_STACK_CONFIG_H_
+#ifndef __OUTSTATION_STACK_CONFIG_H_
+#define __OUTSTATION_STACK_CONFIG_H_
 
-#include "opendnp3/outstation/OutstationConfig.h"
+#include "opendnp3/outstation/NewOutstationConfig.h"
 #include "opendnp3/outstation/EventBufferConfig.h"
 #include "opendnp3/outstation/DatabaseTemplate.h"
 #include "opendnp3/app/AppConfig.h"
@@ -39,8 +39,7 @@ struct OutstationStackConfig
 	OutstationStackConfig(const DatabaseTemplate& dbTemplate_) :
 		dbTemplate(dbTemplate_),
 		eventBuffer(),
-		link(false, false),
-		app(false)
+		link(false, false)		
 	{
 
 	}
@@ -48,18 +47,18 @@ struct OutstationStackConfig
 	OutstationStackConfig() :
 		dbTemplate(),
 		eventBuffer(),
-		link(false, false),
-		app(false)
+		link(false, false)		
 	{}
 
 	// Configuration of the database
 	DatabaseTemplate dbTemplate;
+	
 	// Configuration of event buffer
 	EventBufferConfig eventBuffer;
+	
 	/// Outstation config
-	OutstationConfig outstation;
-	/// Application layer config
-	AppConfig app;
+	NewOutstationConfig outstation;
+	
 	/// Link layer config
 	LinkConfig link;
 

@@ -321,9 +321,11 @@ opendnp3::EventCounterResponse Conversions::convert(EventCounterResponse rsp)
 	return (opendnp3::EventCounterResponse) rsp;
 }
 
-opendnp3::OutstationConfig Conversions::convertConfig(OutstationConfig^ config)
+opendnp3::NewOutstationConfig Conversions::convertConfig(OutstationConfig^ config)
 {
-	opendnp3::OutstationConfig sc;
+	opendnp3::NewOutstationConfig op;
+
+	/* TODO
 
 	sc.disableUnsol = config->disableUnsol;
 	sc.maxControls = config->maxControls;
@@ -342,8 +344,9 @@ opendnp3::OutstationConfig Conversions::convertConfig(OutstationConfig^ config)
 	sc.eventDefaults.binary = convert(config->eventBinary);
 	sc.eventDefaults.analog = convert(config->eventAnalog);
 	sc.eventDefaults.counter = convert(config->eventCounter);
+	*/
 
-	return sc;
+	return op;
 }
 
 /*
@@ -386,9 +389,11 @@ opendnp3::DatabaseConfiguration Conversions::convertConfig(DatabaseTemplate^ con
 }
 */
 
-opendnp3::MasterConfig Conversions::convertConfig(MasterConfig^ config)
+opendnp3::MasterParams Conversions::convertConfig(MasterConfig^ config)
 {
-	opendnp3::MasterConfig mc;
+	opendnp3::MasterParams mp;
+
+	/* TODO
 	mc.FragSize = config->fragSize;
 	mc.AllowTimeSync = config->allowTimeSync;
 	mc.DoUnsolOnStartup = config->doUnsolOnStartup;
@@ -396,14 +401,15 @@ opendnp3::MasterConfig Conversions::convertConfig(MasterConfig^ config)
 	mc.UnsolClassMask = config->unsolClassMask;
 	mc.IntegrityRate = convertMilliseconds(config->integrityPeriodMs);
 	mc.TaskRetryRate = convertMilliseconds(config->taskRetryPeriodMs);
-	return mc;
+	*/
+
+	return mp;
 }
 
 opendnp3::MasterStackConfig Conversions::convertConfig(MasterStackConfig^ config)
 {
 	opendnp3::MasterStackConfig cfg;
-	cfg.master = convertConfig(config->master);
-	cfg.app = convertConfig(config->app);
+	cfg.master = convertConfig(config->master);	
 	cfg.link = convertConfig(config->link);
 	return cfg;
 }
@@ -413,8 +419,7 @@ opendnp3::OutstationStackConfig Conversions::convertConfig(OutstationStackConfig
 	//auto temp = convertConfig(config->device->);
 	opendnp3::OutstationStackConfig cfg(opendnp3::DatabaseTemplate::AllTypes(10)); // todo make .NET outstation db configurable
 	cfg.eventBuffer = convertConfig(config->buffer);
-	cfg.outstation = convertConfig(config->outstation);
-	cfg.app = convertConfig(config->app);
+	cfg.outstation = convertConfig(config->outstation);	
 	cfg.link = convertConfig(config->link);
 	return cfg;
 }

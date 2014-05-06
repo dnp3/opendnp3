@@ -24,7 +24,7 @@
 #include "IStack.h"
 #include "StackActionHandler.h"
 
-#include "opendnp3/app/ApplicationStack.h"
+#include "opendnp3/transport/TransportStack.h"
 
 namespace asiodnp3
 {
@@ -36,7 +36,7 @@ class DNP3Stack : public IStack
 {
 public:
 
-	DNP3Stack(openpal::LogRoot& root, openpal::IExecutor* pExecutor, opendnp3::AppConfig appConfig, opendnp3::LinkConfig linkConfig, const StackActionHandler& handler_);
+	DNP3Stack(openpal::LogRoot& root, openpal::IExecutor* pExecutor, opendnp3::LinkConfig linkConfig, const StackActionHandler& handler_);
 
 	virtual ~DNP3Stack() {}
 
@@ -63,7 +63,7 @@ public:
 
 protected:
 
-	opendnp3::ApplicationStack appStack;
+	opendnp3::TransportStack stack;
 
 private:
 

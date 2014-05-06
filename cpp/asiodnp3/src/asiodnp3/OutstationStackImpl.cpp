@@ -27,20 +27,20 @@ namespace asiodnp3
 
 OutstationStackImpl::OutstationStackImpl(
 	openpal::LogRoot& root,
-    openpal::IExecutor* apExecutor,
-    ITimeWriteHandler* apTimeWriteHandler,
-    ICommandHandler* apCmdHandler,
+    openpal::IExecutor& executor,
+	opendnp3::ITimeWriteHandler& timeWriteHandler,
+	opendnp3::ICommandHandler& commandHandler,
     const OutstationStackConfig& config,
     const StackActionHandler& handler) :
-	IOutstation(root, apExecutor, config.app, config.link, handler),
-	pExecutor(apExecutor),
+	IOutstation(root, &executor, config.link, handler),
+	pExecutor(&executor),
 	databaseBuffers(config.dbTemplate),
 	eventBuffers(config.eventBuffer),
 	mutex(),
 	database(databaseBuffers.GetFacade(), &mutex),
-	outstation(root, &appStack.application, apExecutor, apTimeWriteHandler, &database, eventBuffers.GetFacade(), apCmdHandler, config.outstation)
+	outstation(config.outstation, executor, root, stack.transport, commandHandler, timeWriteHandler, database, eventBuffers.GetFacade())
 {
-	appStack.application.SetUser(&outstation);	
+	stack.transport.SetAppLayer(&outstation);
 }
 
 IMeasurementLoader* OutstationStackImpl::GetLoader()
@@ -50,8 +50,10 @@ IMeasurementLoader* OutstationStackImpl::GetLoader()
 
 void OutstationStackImpl::SetNeedTimeIIN()
 {
+	/* TODO
 	auto lambda = [this]() { this->outstation.SetNeedTimeIIN(); };
 	pExecutor->PostLambda(lambda);
+	*/
 }
 
 }

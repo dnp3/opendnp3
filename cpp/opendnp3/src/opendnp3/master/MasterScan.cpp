@@ -27,6 +27,12 @@
 
 namespace opendnp3
 {
+
+MasterScan::MasterScan() :
+	mpExecutor(nullptr),
+	mpTask(nullptr)
+{}
+
 MasterScan::MasterScan(openpal::IExecutor* apExecutor, AsyncTaskBase* apTask) :
 	mpExecutor(apExecutor),
 	mpTask(apTask)
@@ -36,8 +42,11 @@ MasterScan::MasterScan(openpal::IExecutor* apExecutor, AsyncTaskBase* apTask) :
 
 void MasterScan::Demand()
 {
-	auto lambda = [this]() { mpTask->Demand(); };
-	mpExecutor->Post(openpal::Bind(lambda));
+	if (mpTask && mpExecutor)
+	{
+		auto lambda = [this]() { mpTask->Demand(); };
+		mpExecutor->Post(openpal::Bind(lambda));
+	}
 }
 
 void MasterScan::AddScanCallback(IScanListener* apListener)

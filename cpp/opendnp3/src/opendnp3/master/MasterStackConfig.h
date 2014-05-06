@@ -21,8 +21,7 @@
 #ifndef __MASTER_STACK_CONFIG_H_
 #define __MASTER_STACK_CONFIG_H_
 
-#include "opendnp3/master/MasterConfig.h"
-#include "opendnp3/app/AppConfig.h"
+#include "opendnp3/master/MasterParams.h"
 #include "opendnp3/link/LinkConfig.h"
 
 namespace opendnp3
@@ -33,21 +32,14 @@ namespace opendnp3
 */
 struct MasterStackConfig
 {
-	MasterStackConfig() :
-		link(true, false),
-		app(true)
+	MasterStackConfig() : link(true, false)		
 	{}
 
 	/// Master config
-	MasterConfig master;
-
-	/// Application layer config
-	AppConfig app;
+	MasterParams master;	
 
 	/// Link layer config
 	LinkConfig link;
-
-
 };
 
 }

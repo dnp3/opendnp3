@@ -25,6 +25,9 @@
 #include "MasterStackImpl.h"
 #include "OutstationStackImpl.h"
 
+#include <opendnp3/LogLevels.h>
+#include <openpal/LogMacros.h>
+
 
 using namespace openpal;
 using namespace opendnp3;
@@ -127,7 +130,7 @@ IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler* apPublisher, IUTCTi
 	else
 	{
 		StackActionHandler handler(&router, pPhys->GetExecutor(), this);			
-		auto pMaster = new MasterStackImpl(*pLogRoot, pPhys->GetExecutor(), apPublisher, apTimeSource, &group, config, handler);
+		auto pMaster = new MasterStackImpl(*pLogRoot, *pPhys->GetExecutor(), apPublisher, apTimeSource, config, handler);
 		pMaster->SetLinkRouter(&router);
 		stacks.insert(pMaster);
 		router.AddContext(pMaster->GetLinkContext(), route);
@@ -147,7 +150,7 @@ IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler* apCmdHa
 	else
 	{		
 		StackActionHandler handler(&router, pPhys->GetExecutor(), this);			
-		auto pOutstation = new OutstationStackImpl(*pLogRoot, pPhys->GetExecutor(), apTimeWriteHandler, apCmdHandler, arCfg, handler);
+		auto pOutstation = new OutstationStackImpl(*pLogRoot, *pPhys->GetExecutor(), *apTimeWriteHandler, *apCmdHandler, arCfg, handler);
 		pOutstation->SetLinkRouter(&router);
 		stacks.insert(pOutstation);
 		router.AddContext(pOutstation->GetLinkContext(), route);
