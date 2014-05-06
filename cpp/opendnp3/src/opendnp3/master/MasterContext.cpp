@@ -23,6 +23,7 @@
 
 #include "opendnp3/LogLevels.h"
 #include "opendnp3/app/APDUWrapper.h"
+#include "opendnp3/app/APDUHeaderParser.h"
 
 #include <openpal/LogMacros.h>
 
@@ -231,14 +232,32 @@ void MasterContext::CheckConfirmTransmit()
 		wrapper.SetFunction(confirm.function);
 		wrapper.SetControl(confirm.control);
 		this->Transmit(wrapper.ToReadOnly());
+
 	}
 }
 
 void MasterContext::Transmit(const openpal::ReadOnlyBuffer& output)
 {
+	if (logger.IsEnabled(flags::APP_HEADER_TX))
+	{
+		APDURecord record;
+		auto result = APDUHeaderParser::ParseRequest(output, record, &logger);
+		if (result == APDUHeaderParser::Result::OK)
+		{
+			FORMAT_LOG_BLOCK(logger, flags::APP_HEADER_TX,
+				"FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s",
+				record.control.FIN,
+				record.control.FIN,
+				record.control.CON,
+				record.control.UNS,
+				record.control.SEQ,
+				FunctionCodeToString(record.function));
+		}
+	}
+	
 	assert(!isSending);
 	isSending = true;
-	pLower->BeginTransmit(output);
+	pLower->BeginTransmit(output);	
 }
 
 bool MasterContext::CanConfirmResponse(TaskStatus status)

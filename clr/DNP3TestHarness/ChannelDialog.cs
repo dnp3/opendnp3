@@ -51,6 +51,11 @@ namespace Automatak.DNP3.Simulator
                 filters |= (LogFilters.TRANSPORT_RX | LogFilters.TRANSPORT_TX);
             }
 
+            if (checkBoxAppHeader.Checked)
+            {
+                filters |= (LogFilters.APP_HEADER_RX | LogFilters.APP_HEADER_TX);
+            }
+
             return filters;
         }
 

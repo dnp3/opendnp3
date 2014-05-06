@@ -55,6 +55,11 @@ const int32_t LINK_TX_HEX = LINK_TX << 1;
 const int32_t TRANSPORT_RX = LINK_TX_HEX << 1;
 const int32_t TRANSPORT_TX = TRANSPORT_RX << 1;
 
+const int32_t APP_HEADER_RX = TRANSPORT_TX << 1;
+const int32_t APP_HEADER_TX = APP_HEADER_RX << 1;
+
+
+
 }
 
 namespace levels

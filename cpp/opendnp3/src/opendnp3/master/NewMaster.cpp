@@ -56,7 +56,18 @@ void NewMaster::OnReceive(const openpal::ReadOnlyBuffer& apdu)
 		APDUResponseRecord response;
 		auto result = APDUHeaderParser::ParseResponse(apdu, response, &context.logger);
 		if (result == APDUHeaderParser::Result::OK)
-		{
+		{			
+			FORMAT_LOG_BLOCK(context.logger, flags::APP_HEADER_RX,
+				"FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s IIN: [0x%02x, 0x%02x]",
+				response.control.FIN,
+				response.control.FIN,
+				response.control.CON,
+				response.control.UNS,
+				response.control.SEQ,
+				FunctionCodeToString(response.function),
+				response.IIN.LSB,
+				response.IIN.MSB);
+
 			switch (response.function)
 			{
 				case(FunctionCode::RESPONSE) :
