@@ -19,47 +19,42 @@
  * to you under the terms of the License.
  */
 
-#include "MasterTaskList.h"
+#include "StartupIntegrityPoll.h"
+
+
+#include "opendnp3/app/APDUParser.h"
+#include "opendnp3/app/APDUBuilders.h"
+
+#include "opendnp3/master/MeasurementHandler.h"
+
+#include "opendnp3/LogLevels.h"
+
+#include <openpal/LogMacros.h>
 
 namespace opendnp3
 {
 
-MasterTaskList::MasterTaskList(ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_, const MasterParams& params) :
-	pParams(&params),
-	disableUnsol(this, pLogger_),
-	startupIntegrity(this, pSOEHandler_, pLogger_)
+StartupIntegrityPoll::StartupIntegrityPoll(ITaskList* pTaskList_, ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_) :
+	PollTaskBase(pSOEHandler_, pLogger_),
+	pTaskList(pTaskList_)
 {
 	
 }
-
-void MasterTaskList::Initialize()
+	
+void StartupIntegrityPoll::BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq)
 {
-	startupTasks.Clear();
-
-	if (pParams->disableUnsolOnStartup)
-	{
-		this->startupTasks.Enqueue(&disableUnsol);
-	}
-
-	this->startupTasks.Enqueue(&startupIntegrity);
-
-	if (pParams->enableUnsolOnStartup)
-	{
-
-	}
+	rxCount = 0;
+	build::ReadIntegrity(request, params.intergrityClassMask, seq);
 }
-
-void MasterTaskList::ScheduleNext(IMasterScheduler& scheduler)
+	
+void StartupIntegrityPoll::OnFailure(const MasterParams& params, IMasterScheduler& scheduler)
 {
-	if (startupTasks.IsEmpty())
-	{
-		// TODO - startup complete...
-	}
-	else
-	{
-		scheduler.Schedule(startupTasks.Pop());
-	}
+	scheduler.ScheduleLater(this, params.taskRetryPeriod);
 }
 
+void StartupIntegrityPoll::OnSuccess(const MasterParams&, IMasterScheduler& scheduler)
+{
+	pTaskList->ScheduleNext(scheduler);
 }
 
+} //end ns

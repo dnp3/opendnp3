@@ -18,46 +18,31 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __INTEGRITY_POLL_H_
-#define __INTEGRITY_POLL_H_
+#ifndef __SINGLE_RESPONSE_TASK_H_
+#define __SINGLE_RESPONSE_TASK_H_
 
 #include "opendnp3/master/IMasterTask.h"
 
 namespace opendnp3
 {
 
-class ISOEHandler;
-
 /**
- * A generic interface for defining master request/response style tasks
- */
-class IntegrityPoll : public IMasterTask
+* Base class for tasks that only require a single response
+*/
+class SingleResponseTask : public IMasterTask
 {	
 
 public:	
 
-	IntegrityPoll(ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_, const MasterParams& params);
+	SingleResponseTask(openpal::Logger* pLogger_);			
 	
-	virtual char const* Name() const override final;
-	
-	virtual TaskPriority Priority() const override final;
-	
-	virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;
-	
-	virtual TaskStatus OnResponse(const APDUResponseRecord& response, IMasterScheduler& scheduler) override final;
+	virtual TaskStatus OnResponse(const APDUResponseRecord& response, const MasterParams& params, IMasterScheduler& scheduler) override final;	
 
-	virtual void OnResponseTimeout(IMasterScheduler& scheduler) override final;
-	
+protected:
 
-private:
+	virtual TaskStatus OnSingleResponse(const APDUResponseRecord& response, const MasterParams& params, IMasterScheduler& scheduler) = 0;
 
-	TaskStatus ProcessMeasurements(const APDUResponseRecord& response, IMasterScheduler& scheduler);
-
-	ISOEHandler* pSOEHandler;
-	openpal::Logger* pLogger;
-	const MasterParams* pParams;
-
-	uint16_t rxCount;
+	openpal::Logger* pLogger;	
 };
 
 } //end ns

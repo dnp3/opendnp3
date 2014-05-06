@@ -18,48 +18,44 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef __DISABLE_UNSOLICITED_TASK_H_
+#define __DISABLE_UNSOLICITED_TASK_H_
 
-#include "MasterTaskList.h"
+#include "opendnp3/master/SingleResponseTask.h"
+#include "opendnp3/master/ITaskList.h"
 
 namespace opendnp3
 {
 
-MasterTaskList::MasterTaskList(ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_, const MasterParams& params) :
-	pParams(&params),
-	disableUnsol(this, pLogger_),
-	startupIntegrity(this, pSOEHandler_, pLogger_)
-{
-	
-}
+/**
+* Base class for tasks that only require a single response
+*/
+class DisableUnsolicitedTask : public SingleResponseTask
+{	
 
-void MasterTaskList::Initialize()
-{
-	startupTasks.Clear();
+public:	
 
-	if (pParams->disableUnsolOnStartup)
-	{
-		this->startupTasks.Enqueue(&disableUnsol);
-	}
+	DisableUnsolicitedTask(ITaskList* pTaskList_, openpal::Logger* pLogger_);
 
-	this->startupTasks.Enqueue(&startupIntegrity);
+	virtual char const* Name() const override final { return "Disable Unsolicited"; }
 
-	if (pParams->enableUnsolOnStartup)
-	{
+	virtual TaskPriority Priority() const override final { return TaskPriority::STARTUP; }
 
-	}
-}
+	virtual void BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq) override final;
 
-void MasterTaskList::ScheduleNext(IMasterScheduler& scheduler)
-{
-	if (startupTasks.IsEmpty())
-	{
-		// TODO - startup complete...
-	}
-	else
-	{
-		scheduler.Schedule(startupTasks.Pop());
-	}
-}
+	virtual void OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler) override final;	
 
-}
+protected:
 
+	virtual TaskStatus OnSingleResponse(const APDUResponseRecord& response, const MasterParams& params, IMasterScheduler& scheduler) override final;
+
+private:
+
+	ITaskList* pTaskList;
+
+};
+
+} //end ns
+
+
+#endif

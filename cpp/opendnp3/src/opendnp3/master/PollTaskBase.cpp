@@ -19,11 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "IntegrityPoll.h"
-
-
-#include "opendnp3/app/APDUParser.h"
-#include "opendnp3/app/APDUBuilders.h"
+#include "PollTaskBase.h"
 
 #include "opendnp3/master/MeasurementHandler.h"
 
@@ -34,80 +30,58 @@
 namespace opendnp3
 {
 
-IntegrityPoll::IntegrityPoll(ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_, const MasterParams& params) :
+PollTaskBase::PollTaskBase(ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_) :
 	pSOEHandler(pSOEHandler_),
-	pLogger(pLogger_),
-	pParams(&params),
+	pLogger(pLogger_),	
 	rxCount(0)
 {
 	
 }
-
-char const* IntegrityPoll::Name() const
-{
-	return "Integrity Poll";
-}
 	
-IMasterTask::TaskPriority IntegrityPoll::Priority() const
-{
-	return IMasterTask::TaskPriority::POLL;
-}
-	
-void IntegrityPoll::BuildRequest(APDURequest& request, uint8_t seq)
-{
-	rxCount = 0;
-	BuildIntegrity(request, pParams->intergrityClassMask, seq);
-}
-	
-TaskStatus IntegrityPoll::OnResponse(const APDUResponseRecord& response, IMasterScheduler& scheduler)
+TaskStatus PollTaskBase::OnResponse(const APDUResponseRecord& response, const MasterParams& params, IMasterScheduler& scheduler)
 {
 	if (response.control.FIR)
 	{
 		if (rxCount > 0)
 		{
 			SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Ignoring unexpected FIR frame");
-			scheduler.ScheduleLater(this, pParams->taskRetryPeriod);
+			this->OnFailure(params, scheduler);
 			return TaskStatus::FAIL;
 		}
 		else
-		{
-			return ProcessMeasurements(response, scheduler);
+		{			
+			return ProcessMeasurements(response, params, scheduler);
 		}
 	}
 	else
 	{
 		if (rxCount > 0)
-		{
-			return ProcessMeasurements(response, scheduler);
+		{			
+			return ProcessMeasurements(response, params, scheduler);
 		}
 		else
-		{			
-			scheduler.ScheduleLater(this, pParams->taskRetryPeriod);
+		{	
 			SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Ignoring unexpected non-FIR frame");
+			this->OnFailure(params, scheduler);			
 			return TaskStatus::FAIL;
 		}
 	}
 }
 
-void IntegrityPoll::OnResponseTimeout(IMasterScheduler& scheduler)
+void PollTaskBase::OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler)
 {
-	scheduler.ScheduleLater(this, pParams->taskRetryPeriod);
+	this->OnFailure(params, scheduler);
 }
 	
-TaskStatus IntegrityPoll::ProcessMeasurements(const APDUResponseRecord& response, IMasterScheduler& scheduler)
-{
+TaskStatus PollTaskBase::ProcessMeasurements(const APDUResponseRecord& response, const MasterParams& params, IMasterScheduler& scheduler)
+{	
 	++rxCount;
-	MeasurementHandler handler(*pLogger, pSOEHandler);
-	auto result = APDUParser::ParseTwoPass(response.objects, &handler, pLogger);
-	if (result == APDUParser::Result::OK)
-	{
-		if (response.control.FIN)
-		{
-			if (pParams->integrityPeriod > 0)
-			{
-				scheduler.ScheduleLater(this, pParams->integrityPeriod);
-			}
 
+	if (MeasurementHandler::ProcessMeasurements(response, pLogger, pSOEHandler))
+	{	
+		if (response.control.FIN)
+		{			
+			this->OnSuccess(params, scheduler);
 			return TaskStatus::SUCCESS;
 		}
 		else
@@ -116,8 +90,8 @@ TaskStatus IntegrityPoll::ProcessMeasurements(const APDUResponseRecord& response
 		}		
 	}
 	else
-	{
-		scheduler.ScheduleLater(this, pParams->taskRetryPeriod);
+	{	
+		this->OnFailure(params, scheduler);
 		return TaskStatus::FAIL;
 	}
 }

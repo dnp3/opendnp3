@@ -708,9 +708,6 @@
     <ClInclude Include="src\opendnp3\master\MasterParams.h">
       <Filter>Header\master</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\master\IntegrityPoll.h">
-      <Filter>Header\master\tasks</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\master\TaskResult.h">
       <Filter>Source\master</Filter>
     </ClInclude>
@@ -719,6 +716,18 @@
     </ClInclude>
     <ClInclude Include="src\opendnp3\app\APDUBuilders.h">
       <Filter>Header\app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\SingleResponseTask.h">
+      <Filter>Header\master\tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\DisableUnsolicitedTask.h">
+      <Filter>Header\master\tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\ITaskList.h">
+      <Filter>Header\master\tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\StartupIntegrityPoll.h">
+      <Filter>Header\master\tasks</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1154,14 +1163,23 @@
     <ClCompile Include="src\opendnp3\master\MasterParams.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\master\IntegrityPoll.cpp">
-      <Filter>Source\master\tasks</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\app\APDUHeader.cpp">
       <Filter>Source\app</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\app\APDUBuilders.cpp">
       <Filter>Source\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\SingleResponseTask.cpp">
+      <Filter>Source\master\tasks</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\DisableUnsolicitedTask.cpp">
+      <Filter>Source\master\tasks</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\PollTaskBase.cpp">
+      <Filter>Source\master\tasks</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\StartupIntegrityPoll.cpp">
+      <Filter>Source\master\tasks</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

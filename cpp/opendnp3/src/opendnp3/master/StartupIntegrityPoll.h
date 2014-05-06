@@ -18,48 +18,44 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef __STARTUP_INTEGRITY_POLL_H_
+#define __STARTUP_INTEGRITY_POLL_H_
 
-#include "MasterTaskList.h"
+#include "opendnp3/master/PollTaskBase.h"
+#include "opendnp3/master/ITaskList.h"
 
 namespace opendnp3
 {
 
-MasterTaskList::MasterTaskList(ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_, const MasterParams& params) :
-	pParams(&params),
-	disableUnsol(this, pLogger_),
-	startupIntegrity(this, pSOEHandler_, pLogger_)
-{
+class ISOEHandler;
+
+/**
+ * A generic interface for defining master request/response style tasks
+ */
+class StartupIntegrityPoll : public PollTaskBase
+{	
+
+public:	
+
+	StartupIntegrityPoll(ITaskList* pTaskList, ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_);
 	
-}
+	virtual char const* Name() const override final { return "Startup Integrity Poll"; }
+	
+	virtual TaskPriority Priority() const override final { return TaskPriority::STARTUP; }
+	
+	virtual void BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq) override final;	
 
-void MasterTaskList::Initialize()
-{
-	startupTasks.Clear();
+private:
 
-	if (pParams->disableUnsolOnStartup)
-	{
-		this->startupTasks.Enqueue(&disableUnsol);
-	}
+	ITaskList* pTaskList;
 
-	this->startupTasks.Enqueue(&startupIntegrity);
+	virtual void OnFailure(const MasterParams& params, IMasterScheduler& scheduler) override final;
 
-	if (pParams->enableUnsolOnStartup)
-	{
+	virtual void OnSuccess(const MasterParams& params, IMasterScheduler& scheduler) override final;
+	
+};
 
-	}
-}
+} //end ns
 
-void MasterTaskList::ScheduleNext(IMasterScheduler& scheduler)
-{
-	if (startupTasks.IsEmpty())
-	{
-		// TODO - startup complete...
-	}
-	else
-	{
-		scheduler.Schedule(startupTasks.Pop());
-	}
-}
 
-}
-
+#endif

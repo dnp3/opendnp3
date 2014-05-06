@@ -19,47 +19,30 @@
  * to you under the terms of the License.
  */
 
-#include "MasterTaskList.h"
+#include "SingleResponseTask.h"
+
+#include "opendnp3/LogLevels.h"
+
+#include <openpal/LogMacros.h>
 
 namespace opendnp3
 {
 
-MasterTaskList::MasterTaskList(ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_, const MasterParams& params) :
-	pParams(&params),
-	disableUnsol(this, pLogger_),
-	startupIntegrity(this, pSOEHandler_, pLogger_)
-{
+SingleResponseTask::SingleResponseTask(openpal::Logger* pLogger_) : pLogger(pLogger_)
+{}
 	
-}
-
-void MasterTaskList::Initialize()
+TaskStatus SingleResponseTask::OnResponse(const APDUResponseRecord& response, const MasterParams& params, IMasterScheduler& scheduler)
 {
-	startupTasks.Clear();
-
-	if (pParams->disableUnsolOnStartup)
+	if (response.control.FIR && response.control.FIN)
 	{
-		this->startupTasks.Enqueue(&disableUnsol);
-	}
-
-	this->startupTasks.Enqueue(&startupIntegrity);
-
-	if (pParams->enableUnsolOnStartup)
-	{
-
-	}
-}
-
-void MasterTaskList::ScheduleNext(IMasterScheduler& scheduler)
-{
-	if (startupTasks.IsEmpty())
-	{
-		// TODO - startup complete...
+		return this->OnSingleResponse(response, params, scheduler);
 	}
 	else
 	{
-		scheduler.Schedule(startupTasks.Pop());
+		SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Ignoring unexpected response FIR/FIN not set");
+		return TaskStatus::FAIL;
 	}
 }
 
-}
+} //end ns
 

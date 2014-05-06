@@ -18,48 +18,47 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef __POLL_TASK_BASE_H_
+#define __POLL_TASK_BASE_H_
 
-#include "MasterTaskList.h"
+#include "opendnp3/master/IMasterTask.h"
 
 namespace opendnp3
 {
 
-MasterTaskList::MasterTaskList(ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_, const MasterParams& params) :
-	pParams(&params),
-	disableUnsol(this, pLogger_),
-	startupIntegrity(this, pSOEHandler_, pLogger_)
-{
+class ISOEHandler;
+
+/**
+ * Base class for measurement polls
+ */
+class PollTaskBase : public IMasterTask
+{	
+
+public:	
+
+	PollTaskBase(ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_);				
 	
-}
+	virtual TaskStatus OnResponse(const APDUResponseRecord& response, const MasterParams& params, IMasterScheduler& scheduler) override final;
 
-void MasterTaskList::Initialize()
-{
-	startupTasks.Clear();
+	virtual void OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler) override final;
+	
+private:
 
-	if (pParams->disableUnsolOnStartup)
-	{
-		this->startupTasks.Enqueue(&disableUnsol);
-	}
+	TaskStatus ProcessMeasurements(const APDUResponseRecord& response, const MasterParams& params, IMasterScheduler& scheduler);
 
-	this->startupTasks.Enqueue(&startupIntegrity);
+	virtual void OnFailure(const MasterParams& params, IMasterScheduler& scheduler) = 0;
 
-	if (pParams->enableUnsolOnStartup)
-	{
+	virtual void OnSuccess(const MasterParams& params, IMasterScheduler& scheduler) = 0;
 
-	}
-}
+	ISOEHandler* pSOEHandler;	
+	openpal::Logger* pLogger;
 
-void MasterTaskList::ScheduleNext(IMasterScheduler& scheduler)
-{
-	if (startupTasks.IsEmpty())
-	{
-		// TODO - startup complete...
-	}
-	else
-	{
-		scheduler.Schedule(startupTasks.Pop());
-	}
-}
+protected:
 
-}
+	uint16_t rxCount;
+};
 
+} //end ns
+
+
+#endif

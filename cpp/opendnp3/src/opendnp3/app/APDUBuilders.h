@@ -25,9 +25,14 @@
 
 namespace opendnp3
 {
+namespace build 
+{
+		
+	void ReadIntegrity(APDURequest& request, int classMask, uint8_t seq = 0);
 
-	void BuildIntegrity(APDURequest& request, int classMask, uint8_t seq = 0);
-
+	void DisableUnsolicited(APDURequest& request, uint8_t seq = 0);
+	
+}	
 }
 
 #endif

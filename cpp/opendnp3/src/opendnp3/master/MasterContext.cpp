@@ -63,7 +63,8 @@ bool MasterContext::OnLayerUp()
 	else
 	{
 		isOnline = true;
-		taskList.Initialize(scheduler);
+		taskList.Initialize();
+		taskList.ScheduleNext(scheduler);
 		return true;
 	}
 }
@@ -102,7 +103,7 @@ void MasterContext::CheckForTask()
 			FORMAT_LOG_BLOCK(logger, flags::INFO, "Begining task: %s", pTask->Name());
 			pActiveTask = pTask;			
 			APDURequest request(txBuffer.GetWriteBuffer());
-			pTask->BuildRequest(request, solSeq);			
+			pTask->BuildRequest(request, params, solSeq);			
 			this->Transmit(request.ToReadOnly());
 		}
 	}
@@ -115,7 +116,7 @@ void MasterContext::OnResponseTimeout()
 		pResponseTimer = nullptr;
 		if (pActiveTask)
 		{
-			pActiveTask->OnResponseTimeout(scheduler);
+			pActiveTask->OnResponseTimeout(params, scheduler);
 			pActiveTask = nullptr;
 			solSeq = NextSeq(solSeq);
 			this->PostCheckForTask();
@@ -151,7 +152,7 @@ void MasterContext::OnResponse(const APDUResponseRecord& response)
 
 			this->CancelResponseTimer();
 
-			auto result = pActiveTask->OnResponse(response, scheduler);
+			auto result = pActiveTask->OnResponse(response, params, scheduler);
 			if (response.control.CON && CanConfirmResponse(result))
 			{
 				this->QueueConfirm(APDUHeader::SolicitedConfirm(response.control.SEQ));								
@@ -179,7 +180,7 @@ void MasterContext::OnUnsolicitedResponse(const APDUResponseRecord& response)
 {
 	if (response.control.UNS)
 	{
-		// TODO handle the measurements
+		
 
 		if (response.control.CON)
 		{

@@ -19,47 +19,37 @@
  * to you under the terms of the License.
  */
 
-#include "MasterTaskList.h"
+#include "DisableUnsolicitedTask.h"
+
+#include "opendnp3/app/APDUBuilders.h"
+
 
 namespace opendnp3
 {
 
-MasterTaskList::MasterTaskList(ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_, const MasterParams& params) :
-	pParams(&params),
-	disableUnsol(this, pLogger_),
-	startupIntegrity(this, pSOEHandler_, pLogger_)
+DisableUnsolicitedTask::DisableUnsolicitedTask(ITaskList* pTaskList_, openpal::Logger* pLogger_) :
+	SingleResponseTask(pLogger_),
+	pTaskList(pTaskList_)
 {
-	
+
 }
 
-void MasterTaskList::Initialize()
+void DisableUnsolicitedTask::BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq)
 {
-	startupTasks.Clear();
-
-	if (pParams->disableUnsolOnStartup)
-	{
-		this->startupTasks.Enqueue(&disableUnsol);
-	}
-
-	this->startupTasks.Enqueue(&startupIntegrity);
-
-	if (pParams->enableUnsolOnStartup)
-	{
-
-	}
+	build::DisableUnsolicited(request, seq);
 }
 
-void MasterTaskList::ScheduleNext(IMasterScheduler& scheduler)
+void DisableUnsolicitedTask::OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler)
 {
-	if (startupTasks.IsEmpty())
-	{
-		// TODO - startup complete...
-	}
-	else
-	{
-		scheduler.Schedule(startupTasks.Pop());
-	}
+	scheduler.ScheduleLater(this, params.taskRetryPeriod);	
 }
 
+TaskStatus DisableUnsolicitedTask::OnSingleResponse(const APDUResponseRecord& response, const MasterParams& params, IMasterScheduler& scheduler)
+{
+	pTaskList->ScheduleNext(scheduler);
+	return TaskStatus::SUCCESS;
 }
+
+
+} //end ns
 

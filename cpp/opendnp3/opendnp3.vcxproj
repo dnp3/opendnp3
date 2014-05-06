@@ -132,13 +132,15 @@
     <ClInclude Include="src\opendnp3\master\CommandTask.h" />
     <ClInclude Include="src\opendnp3\master\ConstantCommandProcessor.h" />
     <ClInclude Include="src\opendnp3\master\DataPoll.h" />
+    <ClInclude Include="src\opendnp3\master\DisableUnsolicitedTask.h" />
     <ClInclude Include="src\opendnp3\master\ICommandCallback.h" />
     <ClInclude Include="src\opendnp3\master\ICommandProcessor.h" />
     <ClInclude Include="src\opendnp3\master\IMasterScheduler.h" />
     <ClInclude Include="src\opendnp3\master\IMasterTask.h" />
-    <ClInclude Include="src\opendnp3\master\IntegrityPoll.h" />
+    <ClInclude Include="src\opendnp3\master\StartupIntegrityPoll.h" />
     <ClInclude Include="src\opendnp3\master\IScanListener.h" />
     <ClInclude Include="src\opendnp3\master\ISOEHandler.h" />
+    <ClInclude Include="src\opendnp3\master\ITaskList.h" />
     <ClInclude Include="src\opendnp3\master\Master.h" />
     <ClInclude Include="src\opendnp3\master\MasterConfig.h" />
     <ClInclude Include="src\opendnp3\master\MasterConfigTypes.h" />
@@ -155,6 +157,7 @@
     <ClInclude Include="src\opendnp3\master\NewMaster.h" />
     <ClInclude Include="src\opendnp3\master\QueuedCommandProcessor.h" />
     <ClInclude Include="src\opendnp3\master\ScanResult.h" />
+    <ClInclude Include="src\opendnp3\master\SingleResponseTask.h" />
     <ClInclude Include="src\opendnp3\master\StartupTasks.h" />
     <ClInclude Include="src\opendnp3\master\TaskResult.h" />
     <ClInclude Include="src\opendnp3\master\TaskStatus.h" />
@@ -316,7 +319,8 @@
     <ClCompile Include="src\opendnp3\master\CommandTask.cpp" />
     <ClCompile Include="src\opendnp3\master\ConstantCommandProcessor.cpp" />
     <ClCompile Include="src\opendnp3\master\DataPoll.cpp" />
-    <ClCompile Include="src\opendnp3\master\IntegrityPoll.cpp" />
+    <ClCompile Include="src\opendnp3\master\DisableUnsolicitedTask.cpp" />
+    <ClCompile Include="src\opendnp3\master\StartupIntegrityPoll.cpp" />
     <ClCompile Include="src\opendnp3\master\ISOEHandler.cpp" />
     <ClCompile Include="src\opendnp3\master\Master.cpp" />
     <ClCompile Include="src\opendnp3\master\MasterContext.cpp" />
@@ -329,7 +333,9 @@
     <ClCompile Include="src\opendnp3\master\MasterTaskList.cpp" />
     <ClCompile Include="src\opendnp3\master\MeasurementHandler.cpp" />
     <ClCompile Include="src\opendnp3\master\NewMaster.cpp" />
+    <ClCompile Include="src\opendnp3\master\PollTaskBase.cpp" />
     <ClCompile Include="src\opendnp3\master\QueuedCommandProcessor.cpp" />
+    <ClCompile Include="src\opendnp3\master\SingleResponseTask.cpp" />
     <ClCompile Include="src\opendnp3\master\StartupTasks.cpp" />
     <ClCompile Include="src\opendnp3\master\TrackingTaskGroup.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group1.cpp" />

@@ -43,11 +43,11 @@ struct MasterParams
 	/// If true, the master will do time syncs when it sees the time IIN bit from the outstation
 	bool autoTimeSync;
 
-	/// If true, the master will enable/disable unsol on startup
-	bool doUnsolOnStartup;
+	/// If true, the master will disable unsol on startup for all 3 classes
+	bool disableUnsolOnStartup;
 
-	/// If doUnsolOnStartup == true, the master will use this bit to decide wether to enable (true) or disable (false)
-	bool enableUnsol;
+	/// If true, the master will enable unsol on startup according to the unsolClassMask setting
+	bool enableUnsolOnStartup;
 
 	///	Bitwise mask used determine which classes are enabled for unsol
 	int unsolClassMask;

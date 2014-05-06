@@ -34,7 +34,7 @@ std::string Integrity(uint8_t seq, int mask = ~0)
 {
 	StaticBuffer<100> buffer;
 	APDURequest request(buffer.GetWriteBuffer());
-	BuildIntegrity(request, mask, seq);
+	build::ReadIntegrity(request, mask, seq);
 	return toHex(request.ToReadOnly());
 }
 
@@ -52,6 +52,7 @@ std::string EmptyResponse(uint8_t seq)
 TEST_CASE(SUITE("InitialState"))
 {
 	MasterParams params;
+	params.disableUnsolOnStartup = false;
 	NewMasterTestObject t(params);
 
 	t.master.OnLowerLayerUp();
@@ -61,7 +62,8 @@ TEST_CASE(SUITE("InitialState"))
 
 TEST_CASE(SUITE("IntegrityOnStartup"))
 {
-	MasterParams params;	
+	MasterParams params;
+	params.disableUnsolOnStartup = false;
 	NewMasterTestObject t(params);
 	t.master.OnLowerLayerUp();
 
@@ -72,6 +74,7 @@ TEST_CASE(SUITE("IntegrityOnStartup"))
 TEST_CASE(SUITE("IntegrityPollLoadsMeasurements"))
 {
 	MasterParams params;
+	params.disableUnsolOnStartup = false;
 	NewMasterTestObject t(params);
 	t.master.OnLowerLayerUp();
 
@@ -80,15 +83,16 @@ TEST_CASE(SUITE("IntegrityPollLoadsMeasurements"))
 	REQUIRE(t.exe.NumPendingTimers() == 0);
 	t.master.OnSendResult(true);
 	REQUIRE(t.exe.NumPendingTimers() == 1);
-	t.SendToMaster("C0 81 00 00 01 02 00 00 00 81");
-	REQUIRE(t.exe.NumPendingTimers() == 1); // 2nd poll	
+	t.SendToMaster("C0 81 00 00 01 02 00 00 00 81");	
 	REQUIRE(t.meas.NumTotal() == 1);
-	REQUIRE(t.meas.GetBinary(0) == Binary(true));
+	REQUIRE(t.meas.GetBinary(0) == Binary(true));	
 }
 
+/*
 TEST_CASE(SUITE("IntegrityPollCanRepeat"))
 {
 	MasterParams params;
+	params.disableUnsolOnStartup = false;
 	NewMasterTestObject t(params);
 	t.master.OnLowerLayerUp();
 
@@ -97,15 +101,13 @@ TEST_CASE(SUITE("IntegrityPollCanRepeat"))
 	REQUIRE(t.exe.NumPendingTimers() == 0);
 	t.master.OnSendResult(true);
 	REQUIRE(t.exe.NumPendingTimers() == 1);
-	t.SendToMaster(EmptyResponse(0));
-	REQUIRE(t.exe.NumPendingTimers() == 1); // 2nd poll	
+	t.SendToMaster(EmptyResponse(0));	
 	t.exe.AdvanceTime(params.integrityPeriod);
 	REQUIRE(t.exe.NumPendingTimers() == 0);
 	REQUIRE(t.exe.Dispatch() > 0);
 	REQUIRE(t.lower.PopWriteAsHex() == Integrity(1));
 }
 
-/*
 TEST_CASE(SUITE("UnsolDisableEnableOnStartup"))
 {
 	MasterConfig config;

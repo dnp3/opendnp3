@@ -20,12 +20,21 @@
  */
 #include "MeasurementHandler.h"
 
+#include "opendnp3/app/APDUParser.h"
+
 #include <openpal/LogMacros.h>
 
 using namespace openpal;
 
 namespace opendnp3
 {
+
+bool MeasurementHandler::ProcessMeasurements(const APDUResponseRecord& response, openpal::Logger* pLogger, ISOEHandler* pHandler)
+{
+	MeasurementHandler handler(*pLogger, pHandler);
+	auto result = APDUParser::ParseTwoPass(response.objects, &handler, pLogger);
+	return (result == APDUParser::Result::OK);
+}
 
 MeasurementHandler::MeasurementHandler(const openpal::Logger& logger, ISOEHandler* pSOEHandler_) : 
 	APDUHandlerBase(logger),

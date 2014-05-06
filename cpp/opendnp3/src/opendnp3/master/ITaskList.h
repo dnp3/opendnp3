@@ -19,47 +19,22 @@
  * to you under the terms of the License.
  */
 
-#include "MasterTaskList.h"
+#ifndef __I_TASK_LIST_H_
+#define __I_TASK_LIST_H_
+
+#include "opendnp3/master/IMasterScheduler.h"
 
 namespace opendnp3
 {
 
-MasterTaskList::MasterTaskList(ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_, const MasterParams& params) :
-	pParams(&params),
-	disableUnsol(this, pLogger_),
-	startupIntegrity(this, pSOEHandler_, pLogger_)
+class ITaskList
 {
-	
-}
 
-void MasterTaskList::Initialize()
-{
-	startupTasks.Clear();
+public:	
 
-	if (pParams->disableUnsolOnStartup)
-	{
-		this->startupTasks.Enqueue(&disableUnsol);
-	}
-
-	this->startupTasks.Enqueue(&startupIntegrity);
-
-	if (pParams->enableUnsolOnStartup)
-	{
-
-	}
-}
-
-void MasterTaskList::ScheduleNext(IMasterScheduler& scheduler)
-{
-	if (startupTasks.IsEmpty())
-	{
-		// TODO - startup complete...
-	}
-	else
-	{
-		scheduler.Schedule(startupTasks.Pop());
-	}
-}
+	virtual void ScheduleNext(IMasterScheduler& scheduler) = 0;
+};
 
 }
 
+#endif

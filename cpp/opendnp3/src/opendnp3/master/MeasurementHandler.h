@@ -25,6 +25,7 @@
 
 #include "opendnp3/master/ISOEHandler.h"
 #include "opendnp3/app/APDUHandlerBase.h"
+#include "opendnp3/app/APDUHeader.h"
 
 namespace opendnp3
 {
@@ -36,6 +37,12 @@ class MeasurementHandler : public APDUHandlerBase
 {
 
 public:
+
+	/**
+	* Static helper function for interpreting a response as a measurement response
+	*/
+	static bool ProcessMeasurements(const APDUResponseRecord& response, openpal::Logger* pLogger, ISOEHandler* pHandler);	
+
 	/**
 	* Creates a new ResponseLoader instance.
 	*
