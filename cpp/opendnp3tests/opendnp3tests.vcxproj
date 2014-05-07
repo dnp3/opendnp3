@@ -191,7 +191,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\APDUHelpers.h" />
-    <ClInclude Include="src\AppLayerTest.h" />
     <ClInclude Include="src\AsyncPhysBaseTest.h" />
     <ClInclude Include="src\AsyncPhysTestObject.h" />
     <ClInclude Include="src\AsyncSerialTestObject.h" />
@@ -255,7 +254,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\APDUHelpers.cpp" />
-    <ClCompile Include="src\AppLayerTest.cpp" />
     <ClCompile Include="src\AsyncPhysBaseTest.cpp" />
     <ClCompile Include="src\AsyncPhysTestObject.cpp" />
     <ClCompile Include="src\AsyncSerialTestObject.cpp" />
@@ -296,7 +294,6 @@
     <ClCompile Include="src\StopWatch.cpp" />
     <ClCompile Include="src\TestAPDUParsing.cpp" />
     <ClCompile Include="src\TestAPDUWriting.cpp" />
-    <ClCompile Include="src\TestAppLayer.cpp" />
     <ClCompile Include="src\TestASIO.cpp" />
     <ClCompile Include="src\TestASIOThreadPool.cpp" />
     <ClCompile Include="src\TestAsyncTask.cpp" />

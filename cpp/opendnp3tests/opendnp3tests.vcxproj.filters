@@ -14,9 +14,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\AppLayerTest.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\AsyncPhysBaseTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -202,9 +199,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\AppLayerTest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\AsyncPhysBaseTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -299,9 +293,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\TestAPDUWriting.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\TestAppLayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\TestASIO.cpp">

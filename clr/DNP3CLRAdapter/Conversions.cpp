@@ -245,7 +245,7 @@ asiopal::SerialSettings Conversions::convertSerialSettings(SerialSettings^ setti
 
 openpal::TimeDuration Conversions::convertMilliseconds(System::UInt64 ms)
 {
-	return TimeDuration::Milliseconds(ms);
+	return openpal::TimeDuration::Milliseconds(ms);
 }
 
 openpal::TimeDuration Conversions::convertTimespan(System::TimeSpan ts)
@@ -256,11 +256,6 @@ openpal::TimeDuration Conversions::convertTimespan(System::TimeSpan ts)
 opendnp3::LinkConfig Conversions::convertConfig(LinkConfig^ config)
 {
 	return opendnp3::LinkConfig(config->isMaster, config->useConfirms, config->numRetry, config->localAddr, config->remoteAddr, convertMilliseconds(config->timeoutMs));
-}
-
-opendnp3::AppConfig Conversions::convertConfig(AppConfig^ config)
-{
-	return opendnp3::AppConfig(config->isMaster, convertMilliseconds(config->rspTimeoutMs), config->numRetry, config->fragSize);
 }
 
 opendnp3::ClassMask Conversions::convertClassMask(ClassMask^ cm)

@@ -90,22 +90,7 @@
     <ClInclude Include="src\opendnp3\app\APDUWrapper.h">
       <Filter>Header\app</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\app\AppChannelStates.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\app\AppConfig.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\app\AppControlField.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\app\AppLayer.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\app\AppLayerChannel.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\app\ApplicationStack.h">
       <Filter>Header\app</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\app\BinaryWriteState.h">
@@ -181,12 +166,6 @@
       <Filter>Header\app</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\app\SequenceInfo.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\app\SolicitedChannel.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\app\UnsolicitedChannel.h">
       <Filter>Header\app</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\app\VTOData.h">
@@ -752,19 +731,7 @@
     <ClCompile Include="src\opendnp3\app\APDUWrapper.cpp">
       <Filter>Source\app</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\app\AppChannelStates.cpp">
-      <Filter>Source\app</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\app\AppControlField.cpp">
-      <Filter>Source\app</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\app\AppLayer.cpp">
-      <Filter>Source\app</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\app\AppLayerChannel.cpp">
-      <Filter>Source\app</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\app\ApplicationStack.cpp">
       <Filter>Source\app</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\app\BitReader.cpp">
@@ -789,12 +756,6 @@
       <Filter>Source\app</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\app\PointClass.cpp">
-      <Filter>Source\app</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\app\SolicitedChannel.cpp">
-      <Filter>Source\app</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\app\UnsolicitedChannel.cpp">
       <Filter>Source\app</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\gen\StaticFrozenCounterResponse.cpp">

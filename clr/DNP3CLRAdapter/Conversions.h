@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include <openpal/TimeDuration.h>
+
 #include <opendnp3/LogLevels.h>
 
 #include <opendnp3/gen/ChannelState.h>
@@ -114,8 +116,7 @@ public:
 	static opendnp3::DeadbandPointRecord<uint32_t> convertRecord(DeadbandEventPointRecord<System::UInt32>^ epr);
 	*/
 
-	static opendnp3::LinkConfig convertConfig(LinkConfig^ config);
-	static opendnp3::AppConfig convertConfig(AppConfig^ config);
+	static opendnp3::LinkConfig convertConfig(LinkConfig^ config);	
 	static opendnp3::MasterParams convertConfig(MasterConfig^ config);
 	static opendnp3::NewOutstationConfig convertConfig(OutstationConfig^ config);
 	//static opendnp3::DatabaseConfiguration convertConfig(DatabaseTemplate^ config);

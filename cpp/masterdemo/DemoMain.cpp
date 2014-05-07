@@ -41,6 +41,7 @@
 #include "PrintingCommandCallback.h"
 
 using namespace std;
+using namespace openpal;
 using namespace asiopal;
 using namespace asiodnp3;
 using namespace opendnp3;

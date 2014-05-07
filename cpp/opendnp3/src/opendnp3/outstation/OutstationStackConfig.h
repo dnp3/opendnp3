@@ -24,7 +24,6 @@
 #include "opendnp3/outstation/NewOutstationConfig.h"
 #include "opendnp3/outstation/EventBufferConfig.h"
 #include "opendnp3/outstation/DatabaseTemplate.h"
-#include "opendnp3/app/AppConfig.h"
 #include "opendnp3/link/LinkConfig.h"
 
 namespace opendnp3

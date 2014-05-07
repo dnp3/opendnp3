@@ -42,6 +42,7 @@
 #include <asio.hpp>
 
 using namespace std;
+using namespace openpal;
 using namespace asiopal;
 using namespace opendnp3;
 
@@ -64,7 +65,7 @@ IntegrationTest::IntegrationTest(uint16_t aStartPort, size_t aNumPairs, uint16_t
 
 void IntegrationTest::InitLocalObserver()
 {
-	Transaction tr(&mLocalFDO);
+	openpal::Transaction tr(&mLocalFDO);
 	for (size_t i = 0; i < NUM_POINTS; ++i)
 	{
 		//mLocalFDO.Update(Binary(false), i); TODO - redesign integration test

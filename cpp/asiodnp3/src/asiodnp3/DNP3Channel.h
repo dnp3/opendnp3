@@ -63,7 +63,7 @@ class DNP3Channel: public IChannel, private openpal::IShutdownHandler, private o
 
 public:
 	DNP3Channel(
-		LogRoot* pLogRoot_,
+		openpal::LogRoot* pLogRoot_,
 	    openpal::TimeDuration minOpenRetry,
 	    openpal::TimeDuration maxOpenRetry,
 	    opendnp3::IOpenDelayStrategy* pStrategy,
