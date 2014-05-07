@@ -42,16 +42,14 @@ namespace DNP3.Interface
         /// <param name="message">Body of the message</param>
         /// <param name="time">Timestamp on the message</param>
         /// <param name="errorCode">dnp3 error code</param>
-        public LogEntry(UInt32 filters, bool first, String loggerName, String location, string message, DateTime time, int errorCode)
+        public LogEntry(UInt32 filters, String loggerName, String location, string message, DateTime time, int errorCode)
         {
-            this.filter = new LogFilter(filters);
-            this.first = first;
+            this.filter = new LogFilter(filters);            
             this.loggerName = loggerName;
             this.location = location;
             this.message = message;
             this.time = time;
-            this.errorCode = errorCode;
-            this.keyValues = new Dictionary<string,string>();
+            this.errorCode = errorCode;            
         }
 
         /// <summary>
@@ -59,11 +57,6 @@ namespace DNP3.Interface
         /// </summary>
         public readonly LogFilter filter;
         
-        /// <summary>
-        /// True if this is the first message in a sequence of messages, false otherwise
-        /// </summary>
-        public readonly bool first;
-
         /// <summary>
         /// Logger id that recorded the message
         /// </summary>
@@ -87,12 +80,7 @@ namespace DNP3.Interface
         /// <summary>
         /// dnp3 error code
         /// </summary>
-	    public readonly int	errorCode;
-
-        /// <summary>
-        /// Free-form key-value pairs associated with the message
-        /// </summary>
-	    public readonly IDictionary<String, String> keyValues;
+	    public readonly int	errorCode;      
     }
 
     /// <summary>

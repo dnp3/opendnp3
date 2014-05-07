@@ -24,6 +24,7 @@
     <ClInclude Include="src\opendnp3\app\APDUHandlerBase.h" />
     <ClInclude Include="src\opendnp3\app\APDUHeader.h" />
     <ClInclude Include="src\opendnp3\app\APDUHeaderParser.h" />
+    <ClInclude Include="src\opendnp3\app\APDULogging.h" />
     <ClInclude Include="src\opendnp3\app\APDUParser.h" />
     <ClInclude Include="src\opendnp3\app\APDURequest.h" />
     <ClInclude Include="src\opendnp3\app\APDUResponse.h" />
@@ -249,6 +250,7 @@
     <ClCompile Include="src\opendnp3\app\APDUBuilders.cpp" />
     <ClCompile Include="src\opendnp3\app\APDUHeader.cpp" />
     <ClCompile Include="src\opendnp3\app\APDUHeaderParser.cpp" />
+    <ClCompile Include="src\opendnp3\app\APDULogging.cpp" />
     <ClCompile Include="src\opendnp3\app\APDUParser.cpp" />
     <ClCompile Include="src\opendnp3\app\APDURequest.cpp" />
     <ClCompile Include="src\opendnp3\app\APDUResponse.cpp" />

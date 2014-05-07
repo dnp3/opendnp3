@@ -28,16 +28,16 @@ namespace Automatak.DNP3.Simulator
             return String.Format("  {0}{1}", new String(' ', 36), message);
         }        
 
-        private static IEnumerable<string> GetLogMessages(LogEntry entry)
-        {
-            if (entry.first)
-            {                
-                yield return "";
-                yield return GetLogString(entry.time, entry.filter.Flags, entry.loggerName, entry.message);
+        private IEnumerable<string> GetLogMessages(LogEntry entry)
+        {            
+            if (DisplayTimestamp(entry.filter))
+            {
+               yield return "";              
+               yield return GetLogString(entry.time, entry.filter.Flags, entry.loggerName, entry.message);
             }
             else
             {                
-                yield return GetBareString(entry.message);
+               yield return GetBareString(entry.message);
             }
         }
 
@@ -60,6 +60,27 @@ namespace Automatak.DNP3.Simulator
                 var list = new List<string>(processed);
                 processed.Clear();
                 return list;
+            }
+        }
+
+        static bool DisplayTimestamp(LogFilter filter)
+        {
+            switch (filter.Flags)
+            {                                     
+                case (LogFilters.EVENT):                
+                case (LogFilters.ERROR):
+                case (LogFilters.WARNING):
+                case (LogFilters.INFO):
+                case (LogFilters.DEBUG):
+                case (LogFilters.LINK_RX):
+                case (LogFilters.LINK_TX):
+                case (LogFilters.TRANSPORT_RX):
+                case (LogFilters.TRANSPORT_TX):
+                case (LogFilters.APP_HEADER_RX):
+                case (LogFilters.APP_HEADER_TX):
+                    return true;  
+                default:
+                    return false;
             }
         }
 

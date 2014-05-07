@@ -18,7 +18,7 @@ void LogAdapter::Log( const openpal::LogEntry& entry )
 	System::String^ location = Conversions::convertString(entry.GetLocation());
 	System::String^ message = Conversions::convertString(entry.GetMessage());
 
-	DNP3::Interface::LogEntry^ le = gcnew DNP3::Interface::LogEntry(entry.GetFilters().GetBitfield(), entry.IsFirstMsg(), loggerName, location, message, System::DateTime::Now, entry.GetErrorCode());
+	DNP3::Interface::LogEntry^ le = gcnew DNP3::Interface::LogEntry(entry.GetFilters().GetBitfield(), loggerName, location, message, System::DateTime::Now, entry.GetErrorCode());
 
 	proxy->Log(le);
 }

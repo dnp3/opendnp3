@@ -76,28 +76,35 @@ public:
 			return Context();
 		}
 
-		Context(bool expectContents_ = true, uint32_t aMaxObjects = sizes::MAX_OBJECTS_PER_APDU) :
+		Context(bool expectContents_ = true, int32_t logFilters_ = flags::APP_OBJECT_RX, uint32_t aMaxObjects = sizes::MAX_OBJECTS_PER_APDU) :
 			expectContents(expectContents_),
+			logFilters(logFilters_),
 			count(0),
 			MAX_OBJECTS(aMaxObjects)
 		{}
 
-		bool ExpectsContents() const
+		inline bool ExpectsContents() const
 		{
 			return expectContents;
 		}
 
 		// return true if the count exceeds the max count
-		bool AddObjectCount(uint32_t aCount)
+		inline bool AddObjectCount(uint32_t aCount)
 		{
 			count += aCount;
 			return count > MAX_OBJECTS;
+		}
+
+		inline int32_t Filters() const
+		{
+			return logFilters;
 		}
 
 	private:
 
 
 		const bool expectContents;
+		int32_t logFilters;
 		uint32_t count;
 		const uint32_t MAX_OBJECTS;
 	};
@@ -204,6 +211,13 @@ APDUParser::Result APDUParser::ParseCountHeader(openpal::ReadOnlyBuffer& buffer,
 	auto res = ParseCount<IndexType>(buffer, pLogger, context, count);
 	if(res == Result::OK)
 	{
+		FORMAT_LOGGER_BLOCK(pLogger, context.Filters(),
+			"Group: %03u Var: %03u - %s [%u]",
+			record.group,
+			record.variation,
+			QualifierCodeToString(record.qualifier),
+			count);
+
 		if(context.ExpectsContents())
 		{
 			return ParseObjectsWithRange(buffer, pLogger, record, Range::FromCount(count), pHandler);
@@ -227,6 +241,14 @@ APDUParser::Result APDUParser::ParseRangeHeader(openpal::ReadOnlyBuffer& buffer,
 	auto res = ParseRange<ParserType, CountType>(buffer, pLogger, context, range);
 	if(res == Result::OK)
 	{
+		FORMAT_LOGGER_BLOCK(pLogger, context.Filters(),
+			"Group: %03u Var: %03u - %s [%u, %u]",
+			record.group,
+			record.variation,
+			QualifierCodeToString(record.qualifier),
+			range.start,
+			range.stop);
+
 		if(context.ExpectsContents())
 		{
 			return ParseObjectsWithRange(buffer, pLogger, record, range, pHandler);
@@ -253,6 +275,13 @@ APDUParser::Result APDUParser::ParseIndexPrefixHeader(openpal::ReadOnlyBuffer& b
 	auto res = ParseCount<IndexType>(buffer, pLogger, context, count);
 	if(res == Result::OK)
 	{
+		FORMAT_LOGGER_BLOCK(pLogger, context.Filters(),
+			"Group: %03u Var: %03u - %s [%u]",
+			record.group,
+			record.variation,
+			QualifierCodeToString(record.qualifier),
+			count);
+
 		return ParseObjectsWithIndexPrefix<IndexType>(buffer, pLogger, record, count, pHandler);
 	}
 	else

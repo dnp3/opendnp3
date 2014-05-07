@@ -37,7 +37,14 @@ APDUParser::Result APDUParser::ParseTwoPass(const openpal::ReadOnlyBuffer& buffe
 	{
 		// do a single pass without the callbacks to validate that the message is well formed
 		auto result = ParseSinglePass(buffer, pLogger, nullptr, context);
-		return (result == Result::OK) ? ParseSinglePass(buffer, nullptr, pHandler, context) : result;
+		if (result == Result::OK)
+		{
+			return ParseSinglePass(buffer, nullptr, pHandler, context);
+		}
+		else
+		{
+			return result;
+		}		
 	}
 	else
 	{
@@ -85,7 +92,17 @@ APDUParser::Result APDUParser::ParseHeader(ReadOnlyBuffer& buffer, openpal::Logg
 			{
 			case(QualifierCode::ALL_OBJECTS) :
 				{
-					if (pHandler) pHandler->AllObjects(record);
+					if (pHandler)
+					{
+						pHandler->AllObjects(record);
+					}
+					
+					FORMAT_LOGGER_BLOCK(pLogger, context.Filters(),
+						"Group: %03u Var: %03u - %s",
+						group,
+						variation,
+						QualifierCodeToString(qualifier));
+
 					return Result::OK;
 				}
 

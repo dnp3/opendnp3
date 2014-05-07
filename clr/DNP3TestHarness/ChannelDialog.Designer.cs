@@ -48,6 +48,7 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.groupBoxLogging = new System.Windows.Forms.GroupBox();
+            this.checkBoxAppHeader = new System.Windows.Forms.CheckBox();
             this.checkBoxTransport = new System.Windows.Forms.CheckBox();
             this.checkBoxLinkRaw = new System.Windows.Forms.CheckBox();
             this.checkBoxLink = new System.Windows.Forms.CheckBox();
@@ -55,7 +56,7 @@
             this.checkBoxInfo = new System.Windows.Forms.CheckBox();
             this.checkBoxError = new System.Windows.Forms.CheckBox();
             this.checkBoxWarn = new System.Windows.Forms.CheckBox();
-            this.checkBoxAppHeader = new System.Windows.Forms.CheckBox();
+            this.checkBoxAppObject = new System.Windows.Forms.CheckBox();
             this.groupBoxButtons.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -71,7 +72,7 @@
             // 
             this.groupBoxButtons.Controls.Add(this.buttonCancel);
             this.groupBoxButtons.Controls.Add(this.buttonADD);
-            this.groupBoxButtons.Location = new System.Drawing.Point(12, 332);
+            this.groupBoxButtons.Location = new System.Drawing.Point(14, 356);
             this.groupBoxButtons.Name = "groupBoxButtons";
             this.groupBoxButtons.Size = new System.Drawing.Size(450, 78);
             this.groupBoxButtons.TabIndex = 0;
@@ -176,7 +177,7 @@
             this.groupBox1.Controls.Add(this.numericUpDownMinRetryMS);
             this.groupBox1.Location = new System.Drawing.Point(12, 202);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(194, 124);
+            this.groupBox1.Size = new System.Drawing.Size(194, 148);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Settings";
@@ -274,9 +275,9 @@
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 419);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 443);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(472, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(478, 22);
             this.statusStrip1.SizingGrip = false;
             this.statusStrip1.TabIndex = 5;
             // 
@@ -288,6 +289,7 @@
             // 
             // groupBoxLogging
             // 
+            this.groupBoxLogging.Controls.Add(this.checkBoxAppObject);
             this.groupBoxLogging.Controls.Add(this.checkBoxAppHeader);
             this.groupBoxLogging.Controls.Add(this.checkBoxTransport);
             this.groupBoxLogging.Controls.Add(this.checkBoxLinkRaw);
@@ -298,10 +300,22 @@
             this.groupBoxLogging.Controls.Add(this.checkBoxWarn);
             this.groupBoxLogging.Location = new System.Drawing.Point(212, 202);
             this.groupBoxLogging.Name = "groupBoxLogging";
-            this.groupBoxLogging.Size = new System.Drawing.Size(248, 124);
+            this.groupBoxLogging.Size = new System.Drawing.Size(248, 148);
             this.groupBoxLogging.TabIndex = 6;
             this.groupBoxLogging.TabStop = false;
             this.groupBoxLogging.Text = "Logging";
+            // 
+            // checkBoxAppHeader
+            // 
+            this.checkBoxAppHeader.AutoSize = true;
+            this.checkBoxAppHeader.Checked = true;
+            this.checkBoxAppHeader.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxAppHeader.Location = new System.Drawing.Point(104, 94);
+            this.checkBoxAppHeader.Name = "checkBoxAppHeader";
+            this.checkBoxAppHeader.Size = new System.Drawing.Size(83, 17);
+            this.checkBoxAppHeader.TabIndex = 10;
+            this.checkBoxAppHeader.Text = "App Header";
+            this.checkBoxAppHeader.UseVisualStyleBackColor = true;
             // 
             // checkBoxTransport
             // 
@@ -385,17 +399,17 @@
             this.checkBoxWarn.Text = "Warning";
             this.checkBoxWarn.UseVisualStyleBackColor = true;
             // 
-            // checkBoxAppHeader
+            // checkBoxAppObject
             // 
-            this.checkBoxAppHeader.AutoSize = true;
-            this.checkBoxAppHeader.Checked = true;
-            this.checkBoxAppHeader.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxAppHeader.Location = new System.Drawing.Point(104, 94);
-            this.checkBoxAppHeader.Name = "checkBoxAppHeader";
-            this.checkBoxAppHeader.Size = new System.Drawing.Size(83, 17);
-            this.checkBoxAppHeader.TabIndex = 10;
-            this.checkBoxAppHeader.Text = "App Header";
-            this.checkBoxAppHeader.UseVisualStyleBackColor = true;
+            this.checkBoxAppObject.AutoSize = true;
+            this.checkBoxAppObject.Checked = true;
+            this.checkBoxAppObject.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxAppObject.Location = new System.Drawing.Point(104, 117);
+            this.checkBoxAppObject.Name = "checkBoxAppObject";
+            this.checkBoxAppObject.Size = new System.Drawing.Size(122, 17);
+            this.checkBoxAppObject.TabIndex = 11;
+            this.checkBoxAppObject.Text = "App Object Headers";
+            this.checkBoxAppObject.UseVisualStyleBackColor = true;
             // 
             // ChannelDialog
             // 
@@ -403,7 +417,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(472, 441);
+            this.ClientSize = new System.Drawing.Size(478, 465);
             this.Controls.Add(this.groupBoxLogging);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.groupBox1);
@@ -465,5 +479,6 @@
         private System.Windows.Forms.CheckBox checkBoxLinkRaw;
         private System.Windows.Forms.CheckBox checkBoxTransport;
         private System.Windows.Forms.CheckBox checkBoxAppHeader;
+        private System.Windows.Forms.CheckBox checkBoxAppObject;
     }
 }

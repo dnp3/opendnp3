@@ -29,7 +29,11 @@ object EnumValue {
   def apply(name: String, value: Int, comment: String): EnumValue = EnumValue(name, value, Some(comment))
 }
 
-case class EnumValue(name: String, value: Int, comment: Option[String] = None)
+case class EnumValue(name: String, value: Int, comment: Option[String] = None, strName: Option[String] = None) {
+
+  def displayName : String = strName.getOrElse(name)
+
+}
 
 object EnumModel {
 

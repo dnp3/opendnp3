@@ -87,6 +87,9 @@ namespace DNP3.Interface
 
         public const System.UInt32 APP_HEADER_RX = TRANSPORT_TX << 1;
         public const System.UInt32 APP_HEADER_TX = APP_HEADER_RX << 1;
+
+        public const System.UInt32 APP_OBJECT_RX = APP_HEADER_TX << 1;
+        public const System.UInt32 APP_OBJECT_TX = APP_OBJECT_RX << 1;
      
         public static string GetFilterString(System.UInt32 filters)
         {
@@ -117,6 +120,10 @@ namespace DNP3.Interface
                 case(APP_HEADER_RX):
                     return "<-AL-";
                 case (APP_HEADER_TX):
+                    return "-AL->";
+                case (APP_OBJECT_RX):
+                    return "<-AL-";
+                case (APP_OBJECT_TX):
                     return "-AL->";
                 default:
                     return "?";

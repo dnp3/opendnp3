@@ -58,7 +58,8 @@ const int32_t TRANSPORT_TX = TRANSPORT_RX << 1;
 const int32_t APP_HEADER_RX = TRANSPORT_TX << 1;
 const int32_t APP_HEADER_TX = APP_HEADER_RX << 1;
 
-
+const int32_t APP_OBJECT_RX = APP_HEADER_TX << 1;
+const int32_t APP_OBJECT_TX = APP_OBJECT_RX << 1;
 
 }
 
