@@ -127,10 +127,12 @@
     <ClInclude Include="src\opendnp3\master\ConstantCommandProcessor.h" />
     <ClInclude Include="src\opendnp3\master\DataPoll.h" />
     <ClInclude Include="src\opendnp3\master\DisableUnsolicitedTask.h" />
+    <ClInclude Include="src\opendnp3\master\EnableUnsolicitedTask.h" />
     <ClInclude Include="src\opendnp3\master\ICommandCallback.h" />
     <ClInclude Include="src\opendnp3\master\ICommandProcessor.h" />
     <ClInclude Include="src\opendnp3\master\IMasterScheduler.h" />
     <ClInclude Include="src\opendnp3\master\IMasterTask.h" />
+    <ClInclude Include="src\opendnp3\master\NullResponseTask.h" />
     <ClInclude Include="src\opendnp3\master\StartupIntegrityPoll.h" />
     <ClInclude Include="src\opendnp3\master\IScanListener.h" />
     <ClInclude Include="src\opendnp3\master\ISOEHandler.h" />
@@ -309,6 +311,8 @@
     <ClCompile Include="src\opendnp3\master\ConstantCommandProcessor.cpp" />
     <ClCompile Include="src\opendnp3\master\DataPoll.cpp" />
     <ClCompile Include="src\opendnp3\master\DisableUnsolicitedTask.cpp" />
+    <ClCompile Include="src\opendnp3\master\EnableUnsolicitedTask.cpp" />
+    <ClCompile Include="src\opendnp3\master\NullResponseTask.cpp" />
     <ClCompile Include="src\opendnp3\master\StartupIntegrityPoll.cpp" />
     <ClCompile Include="src\opendnp3\master\ISOEHandler.cpp" />
     <ClCompile Include="src\opendnp3\master\Master.cpp" />

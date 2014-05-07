@@ -174,15 +174,15 @@ const GroupVariationID  Group21Var9::ID(21,9);
 Group21Var9 Group21Var9::Read(ReadOnlyBuffer& buffer)
 {
   Group21Var9 obj;
-  obj.value = UInt16::Read(buffer);
-  buffer.Advance(2);
+  obj.value = UInt32::Read(buffer);
+  buffer.Advance(4);
   return obj;
 }
 
 void Group21Var9::Write(const Group21Var9& arg, openpal::WriteBuffer& buffer)
 {
-  UInt16::Write(buffer, arg.value);
-  buffer.Advance(2);
+  UInt32::Write(buffer, arg.value);
+  buffer.Advance(4);
 }
 
 Group21Var9Serializer Group21Var9Serializer::mInstance;
@@ -204,15 +204,15 @@ const GroupVariationID  Group21Var10::ID(21,10);
 Group21Var10 Group21Var10::Read(ReadOnlyBuffer& buffer)
 {
   Group21Var10 obj;
-  obj.value = UInt32::Read(buffer);
-  buffer.Advance(4);
+  obj.value = UInt16::Read(buffer);
+  buffer.Advance(2);
   return obj;
 }
 
 void Group21Var10::Write(const Group21Var10& arg, openpal::WriteBuffer& buffer)
 {
-  UInt32::Write(buffer, arg.value);
-  buffer.Advance(4);
+  UInt16::Write(buffer, arg.value);
+  buffer.Advance(2);
 }
 
 Group21Var10Serializer Group21Var10Serializer::mInstance;

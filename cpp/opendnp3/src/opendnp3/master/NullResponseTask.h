@@ -18,28 +18,32 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef __NULL_RESPONSE_TASK_H_
+#define __NULL_RESPONSE_TASK_H_
 
-#include "MasterParams.h"
-
-#include "opendnp3/StaticSizeConfiguration.h"
-#include "opendnp3/app/PointClass.h"
-
-using namespace openpal;
+#include "opendnp3/master/SingleResponseTask.h"
 
 namespace opendnp3
 {
 
-MasterParams::MasterParams() :
-	fragSize(sizes::DEFAULT_APDU_BUFFER_SIZE),
-	responseTimeout(TimeDuration::Seconds(5)),
-	autoTimeSync(true),
-	disableUnsolOnStartup(true),	
-	unsolClassMask(ALL_EVENT_CLASSES),
-	intergrityClassMask(ALL_CLASSES),
-	integrityPeriod(TimeDuration::Minutes(1)),
-	taskRetryPeriod(TimeDuration::Seconds(5))
-{}
+/**
+* Base class for tasks that only require a single response
+*/
+class NullResponseTask : public SingleResponseTask
+{	
 
-}
+public:	
+
+	NullResponseTask(openpal::Logger* pLogger_);	
+
+protected:
+
+	virtual TaskStatus OnSingleResponse(const APDUResponseRecord& response, const MasterParams& params, IMasterScheduler& scheduler) override final;
+	
+	virtual void OnSuccess(const MasterParams& params, IMasterScheduler& scheduler) = 0;
+};
+
+} //end ns
 
 
+#endif

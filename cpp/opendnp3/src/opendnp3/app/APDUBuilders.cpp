@@ -31,8 +31,13 @@ namespace build
 
 void ReadIntegrity(APDURequest& request, int classMask, uint8_t seq)
 {
+	ClassRequest(request, FunctionCode::READ, classMask, seq);
+}
+
+void ClassRequest(APDURequest& request, FunctionCode fc, int classMask, uint8_t seq)
+{
 	request.SetControl(AppControlField(true, true, false, false, seq));
-	request.SetFunction(FunctionCode::READ);
+	request.SetFunction(fc);
 	auto writer = request.GetWriter();
 	if (classMask & CLASS_1)
 	{
@@ -54,12 +59,12 @@ void ReadIntegrity(APDURequest& request, int classMask, uint8_t seq)
 
 void DisableUnsolicited(APDURequest& request, uint8_t seq)
 {
-	request.SetFunction(FunctionCode::DISABLE_UNSOLICITED);
-	request.SetControl(AppControlField(true, true, false, false, seq));
-	auto writer = request.GetWriter();
-	writer.WriteHeader(Group60Var2::ID, QualifierCode::ALL_OBJECTS);
-	writer.WriteHeader(Group60Var3::ID, QualifierCode::ALL_OBJECTS);
-	writer.WriteHeader(Group60Var4::ID, QualifierCode::ALL_OBJECTS);
+	ClassRequest(request, FunctionCode::DISABLE_UNSOLICITED, ALL_EVENT_CLASSES, seq);	
+}
+
+void EnableUnsolicited(APDURequest& request, int classMask, uint8_t seq)
+{
+	ClassRequest(request, FunctionCode::ENABLE_UNSOLICITED, ALL_EVENT_CLASSES & classMask, seq);
 }
 
 }

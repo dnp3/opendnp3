@@ -44,12 +44,9 @@ struct MasterParams
 	bool autoTimeSync;
 
 	/// If true, the master will disable unsol on startup for all 3 classes
-	bool disableUnsolOnStartup;
+	bool disableUnsolOnStartup;	
 
-	/// If true, the master will enable unsol on startup according to the unsolClassMask setting
-	bool enableUnsolOnStartup;
-
-	///	Bitwise mask used determine which classes are enabled for unsol
+	///	Bitwise mask used determine which classes are enabled for unsol, if 0 unsol is not enabled
 	int unsolClassMask;
 
 	/// Period for integrity scans (class 1/2/3/0), negative for non periodic

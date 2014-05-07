@@ -20,12 +20,14 @@
  */
 
 #include "MasterTaskList.h"
+#include "opendnp3/app/ClassMask.h"
 
 namespace opendnp3
 {
 
 MasterTaskList::MasterTaskList(ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_, const MasterParams& params) :
 	pParams(&params),
+	enableUnsol(this, pLogger_),
 	disableUnsol(this, pLogger_),
 	startupIntegrity(this, pSOEHandler_, pLogger_)
 {
@@ -43,9 +45,9 @@ void MasterTaskList::Initialize()
 
 	this->startupTasks.Enqueue(&startupIntegrity);
 
-	if (pParams->enableUnsolOnStartup)
+	if (pParams->unsolClassMask & ALL_EVENT_CLASSES)
 	{
-
+		this->startupTasks.Enqueue(&enableUnsol);
 	}
 }
 

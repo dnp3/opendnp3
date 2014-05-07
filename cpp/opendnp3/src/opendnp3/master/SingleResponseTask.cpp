@@ -44,5 +44,10 @@ TaskStatus SingleResponseTask::OnResponse(const APDUResponseRecord& response, co
 	}
 }
 
+void SingleResponseTask::OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler)
+{
+	this->OnFailure(params, scheduler);
+}
+
 } //end ns
 

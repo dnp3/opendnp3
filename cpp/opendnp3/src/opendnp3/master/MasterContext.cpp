@@ -25,6 +25,7 @@
 #include "opendnp3/app/APDUWrapper.h"
 #include "opendnp3/app/APDUHeaderParser.h"
 #include "opendnp3/app/APDULogging.h"
+#include "opendnp3/master/MeasurementHandler.h"
 
 #include <openpal/LogMacros.h>
 
@@ -35,7 +36,7 @@ MasterContext::MasterContext(
 	openpal::IExecutor& executor,
 	openpal::LogRoot& root,
 	openpal::ILowerLayer& lower,
-	ISOEHandler* pSOEHandler,
+	ISOEHandler* pSOEHandler_,
 	const MasterParams& params_
 	) :
 
@@ -43,6 +44,7 @@ MasterContext::MasterContext(
 	pExecutor(&executor),
 	pLower(&lower),
 	params(params_),
+	pSOEHandler(pSOEHandler_),
 	isOnline(false),
 	isSending(false),
 	solSeq(0),
@@ -50,7 +52,7 @@ MasterContext::MasterContext(
 	pActiveTask(nullptr),
 	pResponseTimer(nullptr),
 	scheduler(executor),
-	taskList(pSOEHandler, &logger, params)
+	taskList(pSOEHandler_, &logger, params)
 {
 	auto callback = [this](){ PostCheckForTask(); };
 	scheduler.SetExpirationHandler(openpal::Bind(callback));
@@ -131,11 +133,22 @@ void MasterContext::OnSendResult(bool isSucccess)
 	if (isSending)
 	{
 		isSending = false;
-		if (pActiveTask && pResponseTimer == nullptr)
-		{
-			this->StartResponseTimer();
-		}
 		this->CheckConfirmTransmit();
+
+		if (pActiveTask)
+		{
+			if (pResponseTimer == nullptr)
+			{
+				this->StartResponseTimer();
+			}
+		}
+		else
+		{
+			if (!isSending)
+			{
+				this->PostCheckForTask();
+			}
+		}		
 	}
 }
 
@@ -181,12 +194,12 @@ void MasterContext::OnResponse(const APDUResponseRecord& response)
 void MasterContext::OnUnsolicitedResponse(const APDUResponseRecord& response)
 {
 	if (response.control.UNS)
-	{
-		
+	{		
+		auto success = MeasurementHandler::ProcessMeasurements(response, &logger, pSOEHandler);
 
-		if (response.control.CON)
+		if (success && response.control.CON)
 		{
-			this->QueueConfirm(APDUHeader::SolicitedConfirm(response.control.SEQ));
+			this->QueueConfirm(APDUHeader::UnsolicitedConfirm(response.control.SEQ));
 		}
 	}
 	else
@@ -224,7 +237,7 @@ void MasterContext::QueueConfirm(const APDUHeader& header)
 	this->CheckConfirmTransmit();
 }
 
-void MasterContext::CheckConfirmTransmit()
+bool MasterContext::CheckConfirmTransmit()
 {
 	if (!isSending && confirmQueue.IsNotEmpty())
 	{
@@ -233,6 +246,11 @@ void MasterContext::CheckConfirmTransmit()
 		wrapper.SetFunction(confirm.function);
 		wrapper.SetControl(confirm.control);
 		this->Transmit(wrapper.ToReadOnly());
+		return true;
+	}
+	else
+	{
+		return false;
 	}
 }
 

@@ -18,28 +18,44 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef __ENABLE_UNSOLICITED_TASK_H_
+#define __ENABLE_UNSOLICITED_TASK_H_
 
-#include "MasterParams.h"
-
-#include "opendnp3/StaticSizeConfiguration.h"
-#include "opendnp3/app/PointClass.h"
-
-using namespace openpal;
+#include "opendnp3/master/NullResponseTask.h"
+#include "opendnp3/master/ITaskList.h"
 
 namespace opendnp3
 {
 
-MasterParams::MasterParams() :
-	fragSize(sizes::DEFAULT_APDU_BUFFER_SIZE),
-	responseTimeout(TimeDuration::Seconds(5)),
-	autoTimeSync(true),
-	disableUnsolOnStartup(true),	
-	unsolClassMask(ALL_EVENT_CLASSES),
-	intergrityClassMask(ALL_CLASSES),
-	integrityPeriod(TimeDuration::Minutes(1)),
-	taskRetryPeriod(TimeDuration::Seconds(5))
-{}
+/**
+* Base class for tasks that only require a single response
+*/
+class EnableUnsolicitedTask : public NullResponseTask
+{	
 
-}
+public:	
+
+	EnableUnsolicitedTask(ITaskList* pTaskList_, openpal::Logger* pLogger_);
+
+	virtual char const* Name() const override final { return "Enable Unsolicited"; }
+
+	virtual TaskPriority Priority() const override final { return TaskPriority::STARTUP; }
+
+	virtual void BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq) override final;
+		
+protected:
+
+	virtual void OnSuccess(const MasterParams& params, IMasterScheduler& scheduler) override final;
+
+	virtual void OnFailure(const MasterParams& params, IMasterScheduler& scheduler) override final;
+
+private:
+
+	ITaskList* pTaskList;
+
+};
+
+} //end ns
 
 
+#endif

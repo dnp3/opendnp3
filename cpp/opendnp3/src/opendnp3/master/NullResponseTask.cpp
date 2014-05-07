@@ -19,27 +19,34 @@
  * to you under the terms of the License.
  */
 
-#include "MasterParams.h"
+#include "NullResponseTask.h"
 
-#include "opendnp3/StaticSizeConfiguration.h"
-#include "opendnp3/app/PointClass.h"
+#include "opendnp3/LogLevels.h"
 
-using namespace openpal;
+#include <openpal/LogMacros.h>
+
+
 
 namespace opendnp3
 {
 
-MasterParams::MasterParams() :
-	fragSize(sizes::DEFAULT_APDU_BUFFER_SIZE),
-	responseTimeout(TimeDuration::Seconds(5)),
-	autoTimeSync(true),
-	disableUnsolOnStartup(true),	
-	unsolClassMask(ALL_EVENT_CLASSES),
-	intergrityClassMask(ALL_CLASSES),
-	integrityPeriod(TimeDuration::Minutes(1)),
-	taskRetryPeriod(TimeDuration::Seconds(5))
+NullResponseTask::NullResponseTask(openpal::Logger* pLogger_) : SingleResponseTask(pLogger_)
 {}
-
+	
+TaskStatus NullResponseTask::OnSingleResponse(const APDUResponseRecord& response, const MasterParams& params, IMasterScheduler& scheduler)
+{
+	if (response.objects.IsEmpty())
+	{
+		this->OnSuccess(params, scheduler);
+		return TaskStatus::SUCCESS;
+	}
+	else
+	{
+		FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Ignoring trailing objects headers for task: %s", this->Name());
+		this->OnFailure(params, scheduler);
+		return TaskStatus::FAIL;
+	}
 }
 
+} //end ns
 

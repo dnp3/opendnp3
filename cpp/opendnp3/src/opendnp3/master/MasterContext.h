@@ -52,6 +52,7 @@ class MasterContext
 
 	// ------- configuration --------
 	MasterParams params;
+	ISOEHandler* pSOEHandler;
 
 	// ------- dynamic state ---------
 	bool isOnline;
@@ -91,7 +92,7 @@ class MasterContext
 
 	void QueueConfirm(const APDUHeader& header);
 
-	void CheckConfirmTransmit();
+	bool CheckConfirmTransmit();
 
 	void Transmit(const openpal::ReadOnlyBuffer& output);
 

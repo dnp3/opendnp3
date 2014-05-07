@@ -19,27 +19,36 @@
  * to you under the terms of the License.
  */
 
-#include "MasterParams.h"
+#include "EnableUnsolicitedTask.h"
 
-#include "opendnp3/StaticSizeConfiguration.h"
-#include "opendnp3/app/PointClass.h"
+#include "opendnp3/app/APDUBuilders.h"
 
-using namespace openpal;
 
 namespace opendnp3
 {
 
-MasterParams::MasterParams() :
-	fragSize(sizes::DEFAULT_APDU_BUFFER_SIZE),
-	responseTimeout(TimeDuration::Seconds(5)),
-	autoTimeSync(true),
-	disableUnsolOnStartup(true),	
-	unsolClassMask(ALL_EVENT_CLASSES),
-	intergrityClassMask(ALL_CLASSES),
-	integrityPeriod(TimeDuration::Minutes(1)),
-	taskRetryPeriod(TimeDuration::Seconds(5))
-{}
+EnableUnsolicitedTask::EnableUnsolicitedTask(ITaskList* pTaskList_, openpal::Logger* pLogger_) :
+	NullResponseTask(pLogger_),
+	pTaskList(pTaskList_)
+{
 
 }
 
+void EnableUnsolicitedTask::BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq)
+{
+	build::EnableUnsolicited(request, params.unsolClassMask, seq);
+}
+
+void EnableUnsolicitedTask::OnSuccess(const MasterParams& params, IMasterScheduler& scheduler)
+{
+	pTaskList->ScheduleNext(scheduler);
+}
+
+void EnableUnsolicitedTask::OnFailure(const MasterParams& params, IMasterScheduler& scheduler)
+{
+	scheduler.ScheduleLater(this, params.taskRetryPeriod);
+}
+
+
+} //end ns
 

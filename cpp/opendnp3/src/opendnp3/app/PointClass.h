@@ -29,10 +29,13 @@ namespace opendnp3
 /// Bitmasks for Class1/2/3 events
 enum PointClass : uint8_t
 {
-    CLASS_0 = 0x01,
-    CLASS_1 = 0x02,
-    CLASS_2 = 0x04,
-    CLASS_3 = 0x08
+	CLASS_0 = 0x01,
+	CLASS_1 = 0x02,
+	CLASS_2 = 0x04,
+	CLASS_3 = 0x08,
+	ALL_EVENT_CLASSES = CLASS_1 | CLASS_2 | CLASS_3,
+	ALL_CLASSES = CLASS_0 | ALL_EVENT_CLASSES
+	
 };
 
 ///converts an integer to a PointClass enumeration

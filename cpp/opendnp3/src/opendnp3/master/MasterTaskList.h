@@ -22,6 +22,7 @@
 #ifndef __MASTER_TASK_LIST_H_
 #define __MASTER_TASK_LIST_H_
 
+#include "opendnp3/master/EnableUnsolicitedTask.h"
 #include "opendnp3/master/DisableUnsolicitedTask.h"
 #include "opendnp3/master/StartupIntegrityPoll.h"
 #include "opendnp3/master/ITaskList.h"
@@ -45,7 +46,8 @@ public:
 private:
 
 	const MasterParams* pParams;
-	DisableUnsolicitedTask disableUnsol;
+	EnableUnsolicitedTask enableUnsol;
+	DisableUnsolicitedTask disableUnsol;	
 	StartupIntegrityPoll startupIntegrity;
 
 	openpal::StaticQueue<IMasterTask*, uint8_t, 8> startupTasks;

@@ -28,7 +28,7 @@ namespace opendnp3
 {
 
 DisableUnsolicitedTask::DisableUnsolicitedTask(ITaskList* pTaskList_, openpal::Logger* pLogger_) :
-	SingleResponseTask(pLogger_),
+	NullResponseTask(pLogger_),
 	pTaskList(pTaskList_)
 {
 
@@ -39,15 +39,14 @@ void DisableUnsolicitedTask::BuildRequest(APDURequest& request, const MasterPara
 	build::DisableUnsolicited(request, seq);
 }
 
-void DisableUnsolicitedTask::OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler)
-{
-	scheduler.ScheduleLater(this, params.taskRetryPeriod);	
-}
-
-TaskStatus DisableUnsolicitedTask::OnSingleResponse(const APDUResponseRecord& response, const MasterParams& params, IMasterScheduler& scheduler)
+void DisableUnsolicitedTask::OnSuccess(const MasterParams& params, IMasterScheduler& scheduler)
 {
 	pTaskList->ScheduleNext(scheduler);
-	return TaskStatus::SUCCESS;
+}
+
+void DisableUnsolicitedTask::OnFailure(const MasterParams& params, IMasterScheduler& scheduler)
+{
+	scheduler.ScheduleLater(this, params.taskRetryPeriod);
 }
 
 

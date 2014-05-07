@@ -21,7 +21,7 @@
 #ifndef __DISABLE_UNSOLICITED_TASK_H_
 #define __DISABLE_UNSOLICITED_TASK_H_
 
-#include "opendnp3/master/SingleResponseTask.h"
+#include "opendnp3/master/NullResponseTask.h"
 #include "opendnp3/master/ITaskList.h"
 
 namespace opendnp3
@@ -30,7 +30,7 @@ namespace opendnp3
 /**
 * Base class for tasks that only require a single response
 */
-class DisableUnsolicitedTask : public SingleResponseTask
+class DisableUnsolicitedTask : public NullResponseTask
 {	
 
 public:	
@@ -42,12 +42,12 @@ public:
 	virtual TaskPriority Priority() const override final { return TaskPriority::STARTUP; }
 
 	virtual void BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq) override final;
-
-	virtual void OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler) override final;	
-
+		
 protected:
 
-	virtual TaskStatus OnSingleResponse(const APDUResponseRecord& response, const MasterParams& params, IMasterScheduler& scheduler) override final;
+	virtual void OnSuccess(const MasterParams& params, IMasterScheduler& scheduler) override final;
+
+	virtual void OnFailure(const MasterParams& params, IMasterScheduler& scheduler) override final;
 
 private:
 

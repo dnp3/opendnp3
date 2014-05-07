@@ -155,12 +155,12 @@ struct Group21Var9
 {
   static const GroupVariationID ID;
   typedef FrozenCounter Target;
-  static const uint32_t SIZE = 2;
+  static const uint32_t SIZE = 4;
   static Group21Var9 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group21Var9&, openpal::WriteBuffer&);
 
-  typedef uint16_t ValueType;
-  uint16_t value;
+  typedef uint32_t ValueType;
+  uint32_t value;
 };
 
 struct Group21Var9Serializer : public IDNP3Serializer<FrozenCounter>
@@ -185,12 +185,12 @@ struct Group21Var10
 {
   static const GroupVariationID ID;
   typedef FrozenCounter Target;
-  static const uint32_t SIZE = 4;
+  static const uint32_t SIZE = 2;
   static Group21Var10 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group21Var10&, openpal::WriteBuffer&);
 
-  typedef uint32_t ValueType;
-  uint32_t value;
+  typedef uint16_t ValueType;
+  uint16_t value;
 };
 
 struct Group21Var10Serializer : public IDNP3Serializer<FrozenCounter>

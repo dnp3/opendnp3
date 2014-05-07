@@ -711,6 +711,12 @@
     <ClInclude Include="src\opendnp3\app\APDULogging.h">
       <Filter>Header\app</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\master\NullResponseTask.h">
+      <Filter>Header\master\tasks</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\EnableUnsolicitedTask.h">
+      <Filter>Header\master\tasks</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\AnalogOutput.cpp">
@@ -1147,6 +1153,12 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\app\APDULogging.cpp">
       <Filter>Source\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\NullResponseTask.cpp">
+      <Filter>Source\master\tasks</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\EnableUnsolicitedTask.cpp">
+      <Filter>Source\master\tasks</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
