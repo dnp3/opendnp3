@@ -48,8 +48,7 @@ DNP3Channel::DNP3Channel(
 	logger(pLogRoot->GetLogger()),
 	state(State::READY),
 	pShutdownHandler(pShutdownHandler_),
-	router(*pLogRoot, pPhys.get(), minOpenRetry, maxOpenRetry, pStateHandler, this, pStrategy),
-	group(pPhys->GetExecutor())
+	router(*pLogRoot, pPhys.get(), minOpenRetry, maxOpenRetry, pStateHandler, this, pStrategy)	
 {
 
 }
@@ -66,9 +65,7 @@ void DNP3Channel::InitiateShutdown()
 {
 	if (state == State::READY)
 	{
-		state = State::SHUTTING_DOWN;
-
-		this->group.Shutdown();  // no more task callbacks
+		state = State::SHUTTING_DOWN;		
 
 		for (auto pStack : stacks)
 		{

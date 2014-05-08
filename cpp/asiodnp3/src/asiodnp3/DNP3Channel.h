@@ -25,7 +25,6 @@
 #include <openpal/LogRoot.h>
 
 #include <opendnp3/outstation/OutstationStackConfig.h>
-#include <opendnp3/master/AsyncTaskGroup.h>
 #include <opendnp3/link/LinkLayerRouter.h>
 
 #include "IChannel.h"
@@ -112,8 +111,7 @@ private:
 	State state;
 	openpal::ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler;
 
-	opendnp3::LinkLayerRouter router;
-	opendnp3::AsyncTaskGroup group;
+	opendnp3::LinkLayerRouter router;	
 
 	std::set<DNP3Stack*> stacks;
 

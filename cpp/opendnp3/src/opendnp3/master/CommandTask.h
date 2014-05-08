@@ -21,6 +21,7 @@
 #ifndef __COMMAND_TASK_H_
 #define __COMMAND_TASK_H_
 
+/*
 #include "MasterTaskBase.h"
 
 #include "CommandResponse.h"
@@ -100,6 +101,8 @@ private:
 	TaskResult _OnFinalResponse(const APDUResponseRecord&);
 };
 
+
 } //ens ns
+*/
 
 #endif

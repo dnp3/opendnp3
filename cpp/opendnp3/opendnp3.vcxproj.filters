@@ -282,24 +282,6 @@
     <ClInclude Include="src\opendnp3\link\ShiftableBuffer.h">
       <Filter>Header\link</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\master\AsyncTaskBase.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\AsyncTaskContinuous.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\AsyncTaskGroup.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\AsyncTaskInterfaces.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\AsyncTaskNonPeriodic.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\AsyncTaskPeriodic.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\master\CommandResponse.h">
       <Filter>Header\master</Filter>
     </ClInclude>
@@ -312,9 +294,6 @@
     <ClInclude Include="src\opendnp3\master\ConstantCommandProcessor.h">
       <Filter>Header\master</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\master\DataPoll.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\master\ICommandProcessor.h">
       <Filter>Header\master</Filter>
     </ClInclude>
@@ -322,9 +301,6 @@
       <Filter>Header\master</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\master\ISOEHandler.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\Master.h">
       <Filter>Header\master</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\master\MasterConfig.h">
@@ -336,16 +312,7 @@
     <ClInclude Include="src\opendnp3\master\MasterScan.h">
       <Filter>Header\master</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\master\MasterSchedule.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\master\MasterStackConfig.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\MasterStates.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\MasterTaskBase.h">
       <Filter>Header\master</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\master\MeasurementHandler.h">
@@ -364,9 +331,6 @@
       <Filter>Header\master</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\master\TimeSyncHandler.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\TrackingTaskGroup.h">
       <Filter>Header\master</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\objects\Group60.h">
@@ -815,21 +779,6 @@
     <ClCompile Include="src\opendnp3\gen\ChannelState.cpp">
       <Filter>Source\gen</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\master\AsyncTaskBase.cpp">
-      <Filter>Source\master</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\master\AsyncTaskContinuous.cpp">
-      <Filter>Source\master</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\master\AsyncTaskGroup.cpp">
-      <Filter>Source\master</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\master\AsyncTaskNonPeriodic.cpp">
-      <Filter>Source\master</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\master\AsyncTaskPeriodic.cpp">
-      <Filter>Source\master</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\master\CommandResponse.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
@@ -839,25 +788,10 @@
     <ClCompile Include="src\opendnp3\master\ConstantCommandProcessor.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\master\DataPoll.cpp">
-      <Filter>Source\master</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\master\ISOEHandler.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\master\Master.cpp">
-      <Filter>Source\master</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\master\MasterScan.cpp">
-      <Filter>Source\master</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\master\MasterSchedule.cpp">
-      <Filter>Source\master</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\master\MasterStates.cpp">
-      <Filter>Source\master</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\master\MasterTaskBase.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\master\MeasurementHandler.cpp">
@@ -867,9 +801,6 @@
       <Filter>Source\master</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\master\StartupTasks.cpp">
-      <Filter>Source\master</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\master\TrackingTaskGroup.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\transport\TransportLayer.cpp">

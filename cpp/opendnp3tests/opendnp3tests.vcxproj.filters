@@ -77,9 +77,6 @@
     <ClInclude Include="src\LowerLayerToPhysAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\MasterTestObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\MeasurementComparisons.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -197,6 +194,9 @@
     <ClInclude Include="src\NewOutstationTestObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\NewMasterTestObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AsyncPhysBaseTest.cpp">
@@ -250,9 +250,6 @@
     <ClCompile Include="src\LowerLayerToPhysAdapter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\MasterTestObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\MockAppLayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -301,9 +298,6 @@
     <ClCompile Include="src\TestASIOThreadPool.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\TestAsyncTask.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\TestCachedRequest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -341,9 +335,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\TestLog.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\TestMaster.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\TestOutstation.cpp">

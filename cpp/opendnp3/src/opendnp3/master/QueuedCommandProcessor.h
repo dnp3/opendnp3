@@ -23,7 +23,6 @@
 
 #include "ICommandProcessor.h"
 
-#include "opendnp3/master/AsyncTaskInterfaces.h"
 #include "opendnp3/StaticSizeConfiguration.h"
 #include "CommandAction.h"
 

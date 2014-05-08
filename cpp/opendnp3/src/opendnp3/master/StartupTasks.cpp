@@ -29,10 +29,11 @@
 
 using namespace openpal;
 
+/*
 namespace opendnp3
 {
 
-/* ------ Clear Restart ------- */
+// ------ Clear Restart ------- 
 
 ClearRestartIIN::ClearRestartIIN(openpal::Logger& arLogger) :
 	SimpleRspBase(arLogger)
@@ -48,7 +49,7 @@ void ClearRestartIIN::ConfigureRequest(APDURequest& request)
 	iter.Complete();
 }
 
-/* ------ Configure Unsol ------- */
+// ------ Configure Unsol -------
 
 ConfigureUnsol::ConfigureUnsol(openpal::Logger& arLogger) :
 	SimpleRspBase(arLogger),
@@ -73,7 +74,7 @@ void ConfigureUnsol::ConfigureRequest(APDURequest& request)
 
 }
 
-/* ------ Time Sync ------- */
+// ------ Time Sync ------- 
 
 TimeSync::TimeSync(openpal::Logger& arLogger, IUTCTimeSource* apTimeSrc) :
 	SingleRspBase(arLogger),
@@ -142,5 +143,5 @@ TaskResult TimeSync::_OnFinalResponse(const APDUResponseRecord& record)
 }
 
 } //ens ns
-
+*/
 

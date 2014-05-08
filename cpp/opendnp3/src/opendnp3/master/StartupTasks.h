@@ -24,9 +24,7 @@
 
 #include <openpal/IUTCTimeSource.h>
 
-#include "MasterTaskBase.h"
-
-
+/*
 namespace opendnp3
 {
 
@@ -93,6 +91,8 @@ private:
 };
 
 } //ens ns
+
+*/
 
 #endif
 

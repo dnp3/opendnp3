@@ -32,6 +32,7 @@
 
 using namespace openpal;
 
+/*
 namespace opendnp3
 {
 
@@ -172,3 +173,5 @@ char const* CommandTask::Name() const
 }
 
 } //ens ns
+
+*/

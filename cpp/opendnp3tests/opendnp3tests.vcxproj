@@ -212,7 +212,6 @@
     <ClInclude Include="src\LogTester.h" />
     <ClInclude Include="src\LoopbackPhysicalLayerAsync.h" />
     <ClInclude Include="src\LowerLayerToPhysAdapter.h" />
-    <ClInclude Include="src\MasterTestObject.h" />
     <ClInclude Include="src\MeasurementComparisons.h" />
     <ClInclude Include="src\MockAPDUHeaderHandler.h" />
     <ClInclude Include="src\MockAppLayer.h" />
@@ -231,6 +230,7 @@
     <ClInclude Include="src\MockTransportLayer.h" />
     <ClInclude Include="src\MockUpperLayer.h" />
     <ClInclude Include="src\MultiplexingDataObserver.h" />
+    <ClInclude Include="src\NewMasterTestObject.h" />
     <ClInclude Include="src\NewOutstationTestObject.h" />
     <ClInclude Include="src\PhysicalLayerWrapper.h" />
     <ClInclude Include="src\PhysicalLayerWrapperFactory.h" />
@@ -273,7 +273,6 @@
     <ClCompile Include="src\LogTester.cpp" />
     <ClCompile Include="src\LoopbackPhysicalLayerAsync.cpp" />
     <ClCompile Include="src\LowerLayerToPhysAdapter.cpp" />
-    <ClCompile Include="src\MasterTestObject.cpp" />
     <ClCompile Include="src\MockAppLayer.cpp" />
     <ClCompile Include="src\MockAppUser.cpp" />
     <ClCompile Include="src\MockExecutor.cpp" />
@@ -296,7 +295,6 @@
     <ClCompile Include="src\TestAPDUWriting.cpp" />
     <ClCompile Include="src\TestASIO.cpp" />
     <ClCompile Include="src\TestASIOThreadPool.cpp" />
-    <ClCompile Include="src\TestAsyncTask.cpp" />
     <ClCompile Include="src\TestCachedRequest.cpp" />
     <ClCompile Include="src\TestCastLongLongDouble.cpp" />
     <ClCompile Include="src\TestCommandTask.cpp" />
@@ -311,7 +309,6 @@
     <ClCompile Include="src\TestLinkReceiver.cpp" />
     <ClCompile Include="src\TestLinkRoute.cpp" />
     <ClCompile Include="src\TestLog.cpp" />
-    <ClCompile Include="src\TestMaster.cpp" />
     <ClCompile Include="src\TestNewMaster.cpp" />
     <ClCompile Include="src\TestNewOutstation.cpp" />
     <ClCompile Include="src\TestNewOutstationCommandResponses.cpp" />
