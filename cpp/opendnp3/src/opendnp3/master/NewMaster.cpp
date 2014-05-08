@@ -36,7 +36,8 @@ NewMaster::NewMaster(
 	ISOEHandler* pSOEHandler,
 	const MasterParams& params
 	) : 
-	context(executor, root, lower, pSOEHandler, params)
+	context(executor, root, lower, pSOEHandler, params),
+	commandMarshaller(executor, context)
 {}
 	
 void NewMaster::OnLowerLayerUp()
@@ -90,6 +91,11 @@ void NewMaster::OnSendResult(bool isSucccess)
 	{
 		context.OnSendResult(isSucccess);
 	}
+}
+
+ICommandProcessor& NewMaster::GetCommandProcessor()
+{
+	return commandMarshaller;
 }
 	
 }

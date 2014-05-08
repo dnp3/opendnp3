@@ -22,6 +22,7 @@
 #define __NEW_MASTER_H_
 
 #include "opendnp3/master/MasterContext.h"
+#include "opendnp3/master/CommandMarshaller.h"
 
 namespace opendnp3
 {
@@ -46,11 +47,15 @@ class NewMaster : public openpal::IUpperLayer
 	virtual void OnReceive(const openpal::ReadOnlyBuffer&) override final;
 	
 	virtual void OnSendResult(bool isSucccess) override final;
+
+	/// ----- Misc public members -------
 	
+	ICommandProcessor& GetCommandProcessor();
 	
 	private:
 
 	MasterContext context;
+	CommandMarshaller commandMarshaller;
 };
 
 }

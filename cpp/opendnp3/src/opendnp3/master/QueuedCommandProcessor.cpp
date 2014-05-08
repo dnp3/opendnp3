@@ -106,7 +106,7 @@ void QueuedCommandProcessor::Enque(const CommandErasure& erasure, ICommandCallba
 {
 	if (requestQueue.Enqueue(erasure))
 	{
-		//pEnableTask->Enable(); TODO send notification to master
+		
 	}
 	else
 	{

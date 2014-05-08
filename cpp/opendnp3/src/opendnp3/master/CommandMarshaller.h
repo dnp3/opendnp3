@@ -18,65 +18,27 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __MASTER_CONTEXT_H_
-#define __MASTER_CONTEXT_H_
+#ifndef __COMMAND_MARSHALLER_H_
+#define __COMMAND_MARSHALLER_H_
 
-#include <openpal/AsyncLayerInterfaces.h>
+#include "ICommandProcessor.h"
 
 #include <openpal/IExecutor.h>
-#include <openpal/LogRoot.h>
-#include <openpal/StaticQueue.h>
-#include <openpal/StaticBuffer.h>
-
-#include "opendnp3/master/MasterScheduler.h"
-#include "opendnp3/master/MasterTaskList.h"
-
 
 namespace opendnp3
 {
 
-class MasterContext : public ICommandProcessor
+/**
+* Marshalls commands from any thread to an executor
+*/
+class CommandMarshaller : public ICommandProcessor
 {
-	public:	
-
-	MasterContext(	openpal::IExecutor& executor,
-					openpal::LogRoot& root, 
-					openpal::ILowerLayer& lower,
-					ISOEHandler* pSOEHandler,
-					const MasterParams& params
-				);
 	
-	openpal::Logger logger;
-	openpal::IExecutor* pExecutor;
-	openpal::ILowerLayer* pLower;
+public:
 
-	// ------- configuration --------
-	MasterParams params;
-	ISOEHandler* pSOEHandler;
+	CommandMarshaller(openpal::IExecutor& executor, ICommandProcessor& proxyTo);
 
-	// ------- dynamic state ---------
-	bool isOnline;
-	bool isSending;
-	uint8_t solSeq;
-	uint8_t unsolSeq;
-	IMasterTask* pActiveTask;
-	openpal::ITimer* pResponseTimer;
-	MasterScheduler scheduler;
-	MasterTaskList taskList;
-	openpal::StaticQueue<APDUHeader, uint8_t, 4> confirmQueue;
-
-	openpal::StaticBuffer<sizes::MAX_TX_APDU_SIZE> txBuffer;
-	
-	void PostCheckForTask();
-
-	// ------- events ----------
-	bool OnLayerUp();
-	bool OnLayerDown();
-	void OnSendResult(bool isSucccess);
-	void OnResponse(const APDUResponseRecord& response);	
-	void OnUnsolicitedResponse(const APDUResponseRecord& response);
-
-	// ------- command events ----------
+	// Implement the ICommandProcessor interface
 
 	virtual void SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback* pCallback) override final;
 	virtual void DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback* pCallback) override final;
@@ -93,29 +55,27 @@ class MasterContext : public ICommandProcessor
 	virtual void SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback* pCallback) override final;
 	virtual void DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback* pCallback) override final;
 
-	private:		
+private:
 
-	void OnResponseTimeout();
+	openpal::IExecutor* pExecutor;
+	ICommandProcessor* pProxyTo;
+	
+	template <class T>
+	void SelectAndOperateT(const T& command, uint16_t index, ICommandCallback* pCallback)
+	{		
+		auto action = [command, index, pCallback, this] { pProxyTo->SelectAndOperate(command, index, pCallback); };
+		pExecutor->PostLambda(action);
+	}
 
-	void CheckForTask();
-
-	static uint8_t NextSeq(uint8_t seq) { return (seq + 1) % 16; }
-
-	// -------- helpers --------
-
-	void StartResponseTimer();
-
-	bool CancelResponseTimer();
-
-	void QueueConfirm(const APDUHeader& header);
-
-	bool CheckConfirmTransmit();
-
-	void Transmit(const openpal::ReadOnlyBuffer& output);
-
-	static bool CanConfirmResponse(TaskStatus status);	
+	template <class T>
+	void DirectOperateT(const T& command, uint16_t index, ICommandCallback* pCallback)
+	{		
+		auto action = [command, index, pCallback, this] { pProxyTo->DirectOperate(command, index, pCallback); };
+		pExecutor->PostLambda(action);
+	}
 };
 
 }
 
 #endif
+

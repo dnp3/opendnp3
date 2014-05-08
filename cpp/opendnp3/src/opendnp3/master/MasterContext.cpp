@@ -52,7 +52,7 @@ MasterContext::MasterContext(
 	pActiveTask(nullptr),
 	pResponseTimer(nullptr),
 	scheduler(executor),
-	taskList(pSOEHandler_, &logger, params)
+	taskList(pSOEHandler_, &logger, params)	
 {
 	auto callback = [this](){ PostCheckForTask(); };
 	scheduler.SetExpirationHandler(openpal::Bind(callback));
@@ -272,6 +272,56 @@ bool MasterContext::CanConfirmResponse(TaskStatus status)
 		default:
 			return false;
 	}
+}
+
+void MasterContext::SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback* pCallback)
+{	
+	pCallback->OnComplete(CommandResponse(CommandResult::NO_COMMS));
+}
+
+void MasterContext::DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback* pCallback)
+{
+	pCallback->OnComplete(CommandResponse(CommandResult::NO_COMMS));
+}
+
+void MasterContext::SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback* pCallback)
+{
+	pCallback->OnComplete(CommandResponse(CommandResult::NO_COMMS));
+}
+
+void MasterContext::DirectOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback* pCallback)
+{
+	pCallback->OnComplete(CommandResponse(CommandResult::NO_COMMS));
+}
+
+void MasterContext::SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback* pCallback)
+{
+	pCallback->OnComplete(CommandResponse(CommandResult::NO_COMMS));
+}
+
+void MasterContext::DirectOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback* pCallback)
+{
+	pCallback->OnComplete(CommandResponse(CommandResult::NO_COMMS));
+}
+
+void MasterContext::SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback* pCallback)
+{
+	pCallback->OnComplete(CommandResponse(CommandResult::NO_COMMS));
+}
+
+void MasterContext::DirectOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback* pCallback)
+{
+	pCallback->OnComplete(CommandResponse(CommandResult::NO_COMMS));
+}
+
+void MasterContext::SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback* pCallback)
+{
+	pCallback->OnComplete(CommandResponse(CommandResult::NO_COMMS));
+}
+
+void MasterContext::DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback* pCallback)
+{
+	pCallback->OnComplete(CommandResponse(CommandResult::NO_COMMS));
 }
 
 }
