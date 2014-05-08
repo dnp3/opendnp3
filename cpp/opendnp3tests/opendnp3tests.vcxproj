@@ -239,7 +239,6 @@
     <ClInclude Include="src\Random.h" />
     <ClInclude Include="src\RandomDouble.h" />
     <ClInclude Include="src\RandomizedBuffer.h" />
-    <ClInclude Include="src\OutstationTestObject.h" />
     <ClInclude Include="src\StopWatch.h" />
     <ClInclude Include="src\TestHelpers.h" />
     <ClInclude Include="src\TestTypedefs.h" />
@@ -285,7 +284,6 @@
     <ClCompile Include="src\MultiplexingDataObserver.cpp" />
     <ClCompile Include="src\NewMasterTestObject.cpp" />
     <ClCompile Include="src\NewOutstationTestObject.cpp" />
-    <ClCompile Include="src\OutstationTestObject.cpp" />
     <ClCompile Include="src\PhysicalLayerWrapper.cpp" />
     <ClCompile Include="src\PhysLoopback.cpp" />
     <ClCompile Include="src\ProtocolUtil.cpp" />
@@ -313,9 +311,6 @@
     <ClCompile Include="src\TestNewOutstation.cpp" />
     <ClCompile Include="src\TestNewOutstationCommandResponses.cpp" />
     <ClCompile Include="src\TestNewOutstationEventResponses.cpp" />
-    <ClCompile Include="src\TestOutstation.cpp" />
-    <ClCompile Include="src\TestOutstationCommandResponses.cpp" />
-    <ClCompile Include="src\TestOutstationEventResponses.cpp" />
     <ClCompile Include="src\TestPhysicalLayerAsyncBase.cpp" />
     <ClCompile Include="src\TestPhysicalLayerAsyncSerial.cpp" />
     <ClCompile Include="src\TestPhysicalLayerAsyncTCP.cpp" />

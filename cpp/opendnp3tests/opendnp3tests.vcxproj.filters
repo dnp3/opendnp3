@@ -182,9 +182,6 @@
     <ClInclude Include="src\MockLinkLayer.h">
       <Filter>Header Files\Mocks</Filter>
     </ClInclude>
-    <ClInclude Include="src\OutstationTestObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\MockCommandCallback.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -337,15 +334,6 @@
     <ClCompile Include="src\TestLog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\TestOutstation.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\TestOutstationCommandResponses.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\TestOutstationEventResponses.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\TestPhysicalLayerAsyncBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -431,9 +419,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\MockTransportLayer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\OutstationTestObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\HexConversions.cpp">

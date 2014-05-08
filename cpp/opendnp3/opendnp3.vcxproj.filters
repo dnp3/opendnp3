@@ -594,9 +594,6 @@
     <ClInclude Include="src\opendnp3\outstation\OutstationConfig.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\OutstationStates.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\master\ICommandCallback.h">
       <Filter>Header\master</Filter>
     </ClInclude>
@@ -1014,9 +1011,6 @@
       <Filter>Source\gen</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\OutstationConfig.cpp">
-      <Filter>Source\outstation</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\OutstationStates.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\master\CommandAction.cpp">

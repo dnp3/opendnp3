@@ -208,7 +208,6 @@
     <ClInclude Include="src\opendnp3\outstation\Outstation.h" />
     <ClInclude Include="src\opendnp3\outstation\OutstationConfig.h" />
     <ClInclude Include="src\opendnp3\outstation\OutstationStackConfig.h" />
-    <ClInclude Include="src\opendnp3\outstation\OutstationStates.h" />
     <ClInclude Include="src\opendnp3\outstation\StaticallyAllocatedDatabase.h" />
     <ClInclude Include="src\opendnp3\outstation\StaticallyAllocatedEventBuffer.h" />
     <ClInclude Include="src\opendnp3\outstation\StaticDataFacade.h" />
@@ -355,7 +354,6 @@
     <ClCompile Include="src\opendnp3\outstation\SimpleCommandHandler.cpp" />
     <ClCompile Include="src\opendnp3\outstation\Outstation.cpp" />
     <ClCompile Include="src\opendnp3\outstation\OutstationConfig.cpp" />
-    <ClCompile Include="src\opendnp3\outstation\OutstationStates.cpp" />
     <ClCompile Include="src\opendnp3\outstation\StaticResponseConfig.cpp" />
     <ClCompile Include="src\opendnp3\outstation\StaticResponseContext.cpp" />
     <ClCompile Include="src\opendnp3\outstation\StaticResponseTypes.cpp" />
