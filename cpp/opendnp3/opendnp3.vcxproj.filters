@@ -303,12 +303,6 @@
     <ClInclude Include="src\opendnp3\master\ISOEHandler.h">
       <Filter>Header\master</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\master\MasterConfig.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\MasterConfigTypes.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\master\MasterScan.h">
       <Filter>Header\master</Filter>
     </ClInclude>

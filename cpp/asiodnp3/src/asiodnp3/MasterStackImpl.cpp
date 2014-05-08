@@ -43,8 +43,7 @@ MasterStackImpl::MasterStackImpl(	LogRoot& root,
 
 ICommandProcessor* MasterStackImpl::GetCommandProcessor()
 {
-	// TODO
-	return nullptr;
+	return &master.GetCommandProcessor();
 }
 
 MasterScan MasterStackImpl::AddClassScan(int aClassMask, openpal::TimeDuration aScanRate, openpal::TimeDuration aRetryRate)
@@ -55,6 +54,7 @@ MasterScan MasterStackImpl::AddClassScan(int aClassMask, openpal::TimeDuration a
 
 MasterScan MasterStackImpl::GetIntegrityScan()
 {
+	ExecutorPause pause(this->GetExecutor());
 	return MasterScan();
 }
 
