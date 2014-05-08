@@ -119,6 +119,7 @@ TEST_CASE(SUITE("ThrowsIfEverNotExpectingOpenTimer"))
 {
 	TestObject test;
 	test.monitor.ReachInAndStartOpenTimer();
+	test.exe.AdvanceTime(TimeDuration::Seconds(1));
 	REQUIRE(test.exe.DispatchOne());
 	REQUIRE(test.log.PopOneEntry(flags::ERR));
 	REQUIRE((ChannelState::CLOSED == test.monitor.GetState()));
@@ -285,14 +286,15 @@ TEST_CASE(SUITE("OpenFailureGoesToWaitingAndExponentialBackoff"))
 	REQUIRE((ChannelState::OPENING == test.monitor.GetState()));
 	test.phys.SignalOpenFailure();
 	REQUIRE((ChannelState::WAITING == test.monitor.GetState()));
-	REQUIRE(1 ==  test.exe.NumActive());
-	REQUIRE(1000 ==  test.exe.NextTimerExpiration().milliseconds);
+	REQUIRE(1 ==  test.exe.NumPendingTimers());
+	REQUIRE(1000 == test.exe.NextTimerExpiration().milliseconds);
+	test.exe.AdvanceTime(TimeDuration::Seconds(1));
 	REQUIRE(test.exe.DispatchOne());
 	REQUIRE((ChannelState::OPENING == test.monitor.GetState()));
 	test.phys.SignalOpenFailure();
 	REQUIRE((ChannelState::WAITING == test.monitor.GetState()));
-	REQUIRE(1 ==  test.exe.NumActive());
-	REQUIRE(2000 ==  test.exe.NextTimerExpiration().milliseconds);
+	REQUIRE(1 ==  test.exe.NumPendingTimers());
+	REQUIRE(3000 ==  test.exe.NextTimerExpiration().milliseconds);
 }
 
 TEST_CASE(SUITE("OpenFailureGoesToClosedIfSuspended"))
@@ -337,6 +339,7 @@ TEST_CASE(SUITE("LayerKeepsTryingToOpen"))
 		REQUIRE((ChannelState::OPENING == test.monitor.GetState()));
 		test.phys.SignalOpenFailure();
 		REQUIRE((ChannelState::WAITING == test.monitor.GetState()));
+		test.exe.AdvanceTime(TimeDuration::Seconds(10));
 		REQUIRE(test.exe.DispatchOne());
 	}
 }
@@ -348,7 +351,7 @@ TEST_CASE(SUITE("CloseWhileWaitingDoesNothing"))
 	test.phys.SignalOpenFailure();
 	test.monitor.Close();
 	REQUIRE((ChannelState::WAITING == test.monitor.GetState()));
-	REQUIRE(1 ==  test.exe.NumActive());
+	REQUIRE(1 ==  test.exe.NumPendingTimers());
 }
 
 TEST_CASE(SUITE("LayerCloseWhileOpen"))

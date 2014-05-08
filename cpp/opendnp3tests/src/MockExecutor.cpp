@@ -49,7 +49,16 @@ MockExecutor::~MockExecutor()
 
 openpal::MonotonicTimestamp MockExecutor::NextTimerExpiration()
 {	
-	return MonotonicTimestamp::Min();	
+	auto lt = [](MockTimer* pLHS, MockTimer* pRHS) { return pLHS->ExpiresAt() < pRHS->ExpiresAt(); };
+	auto min = std::min_element(timers.begin(), timers.end(), lt);
+	if (min == timers.end())
+	{
+		return MonotonicTimestamp::Max();
+	}
+	else
+	{
+		return (*min)->ExpiresAt();
+	}	
 }
 
 void MockExecutor::CheckForExpiredTimers()

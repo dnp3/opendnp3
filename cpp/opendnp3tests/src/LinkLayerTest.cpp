@@ -27,8 +27,8 @@ namespace opendnp3
 
 LinkLayerTest::LinkLayerTest(LinkConfig config) :
 	log(),
-	mts(),
-	link(log.root, &mts, config),
+	exe(),
+	link(log.root, &exe, config),
 	upper(&link),
 	numWrites(0)
 {

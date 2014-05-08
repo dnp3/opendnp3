@@ -46,7 +46,7 @@ public:
 	static LinkConfig DefaultConfig();
 
 	LogTester log;
-	MockExecutor mts;
+	MockExecutor exe;
 	LinkLayer link;
 	MockTransportLayer upper;
 

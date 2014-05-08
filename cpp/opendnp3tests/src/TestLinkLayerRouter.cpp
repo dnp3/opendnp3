@@ -112,6 +112,7 @@ TEST_CASE(SUITE("CloseBehavior"))
 	REQUIRE_FALSE(mfs.mLowerOnline);
 
 	REQUIRE(ChannelState::WAITING == t.router.GetState());
+	t.exe.AdvanceTime(TimeDuration::Milliseconds(100));
 	REQUIRE(t.exe.DispatchOne());
 	REQUIRE(ChannelState::OPENING == t.router.GetState());
 
@@ -203,6 +204,7 @@ TEST_CASE(SUITE("LinkLayerRouterClearsBufferOnLowerLayerDown"))
 	REQUIRE(0 ==  mfs.mNumFrames);
 	t.phys.SignalReadFailure(); // closes the layer
 
+	t.exe.AdvanceTime(TimeDuration::Milliseconds(100));
 	REQUIRE(t.exe.Dispatch());
 
 	t.phys.ClearBuffer();

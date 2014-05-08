@@ -259,7 +259,7 @@ TEST_CASE(SUITE("MaxCountAccumlatesOverHeaders"))
 	HexSequence buffer("01 02 00 01 02 81 81 01 02 00 01 02 81 81"); // total of four objects
 	MockApduHeaderHandler mock;
 
-	APDUParser::Context ctx(true, 3); //maximum of the 3 objects
+	APDUParser::Context ctx(true, 0, 3); //maximum of the 3 objects
 	auto result = APDUParser::ParseTwoPass(buffer.ToReadOnly(), &mock, nullptr, ctx);
 
 	REQUIRE((result == APDUParser::Result::UNREASONABLE_OBJECT_COUNT));
