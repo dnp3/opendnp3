@@ -30,7 +30,6 @@
 #include <openpal/LogMacros.h>
 #include <openpal/IExecutor.h>
 
-#include "opendnp3/outstation/OutstationStates.h"
 #include "opendnp3/outstation/Database.h"
 #include "opendnp3/outstation/IINHelpers.h"
 #include "opendnp3/outstation/WriteHandler.h"
@@ -41,6 +40,7 @@
 
 using namespace openpal;
 
+/*
 namespace opendnp3
 {
 
@@ -74,7 +74,7 @@ Outstation::Outstation(openpal::LogRoot& root,
 
 	staticIIN.Set(IINBit::DEVICE_RESTART); // Always set on restart
 
-	/* Cause the Outstation to go through the null-unsol startup sequence */
+	// Cause the Outstation to go through the null-unsol startup sequence
 	if (!mConfig.disableUnsol)
 	{
 		mDeferredUnsol = true;
@@ -98,7 +98,7 @@ void Outstation::SetNeedTimeIIN()
 	staticIIN.Set(IINBit::NEED_TIME);
 }
 
-/* Implement IAppUser - external callbacks from the app layer */
+// Implement IAppUser - external callbacks from the app layer
 
 void Outstation::OnLowerLayerUp()
 {
@@ -137,7 +137,7 @@ void Outstation::OnRequest(const APDURecord& record, SequenceInfo aSeqInfo)
 	mpState->OnRequest(this, record, aSeqInfo);
 }
 
-/* Internally generated events */
+/ --- Internally generated events --
 
 void Outstation::OnDataUpdate()
 {
@@ -407,5 +407,7 @@ void Outstation::ResetTimeIIN()
 }
 
 } //end ns
+
+*/
 
 

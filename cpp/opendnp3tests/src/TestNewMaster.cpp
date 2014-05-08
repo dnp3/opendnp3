@@ -85,7 +85,7 @@ TEST_CASE(SUITE("IntegrityPollLoadsMeasurements"))
 	REQUIRE(t.exe.NumPendingTimers() == 1);
 	t.SendToMaster("C0 81 00 00 01 02 00 00 00 81");	
 	REQUIRE(t.meas.NumTotal() == 1);
-	REQUIRE(t.meas.GetBinary(0) == Binary(true));	
+	REQUIRE(Equals(t.meas.GetBinary(0), Binary(true)));	
 }
 
 /*
