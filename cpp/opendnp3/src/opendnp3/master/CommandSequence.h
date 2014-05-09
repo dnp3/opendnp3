@@ -38,7 +38,7 @@ public:
 	ICommandSequence(openpal::Logger logger) : APDUHandlerBase(logger) {}
 
 	// Given an APDU and function code, configure the request
-	virtual void FormatRequest(APDURequest& request, FunctionCode aCode) = 0;
+	virtual void FormatRequestHeader(APDURequest& request) = 0;
 
 	// Given the response, what's the result of the command?
 	virtual CommandResponse Validate() = 0;
@@ -56,7 +56,7 @@ public:
 	void Configure(const CommandType& value, uint16_t index)
 	{
 		this->Reset(); // resets all state inside the base class
-		response = CommandResponse(CommandResult::TIMEOUT); // todo change this to some other result like "malformed"
+		response = CommandResponse(CommandResult::BAD_RESPONSE);
 		command = IndexedValue<CommandType, uint16_t>(value, index);
 	}
 
@@ -76,9 +76,8 @@ public:
 	}
 
 
-	virtual void FormatRequest(APDURequest& request, FunctionCode code) final
-	{
-		request.SetFunction(code);
+	virtual void FormatRequestHeader(APDURequest& request) final
+	{		
 		auto writer = request.GetWriter();
 		writer.WriteSingleIndexedValue<openpal::UInt16, CommandType>(QualifierCode::UINT16_CNT_UINT16_INDEX, pSerializer, command.value, command.index);
 	}

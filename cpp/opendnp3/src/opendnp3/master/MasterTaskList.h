@@ -26,6 +26,7 @@
 #include "opendnp3/master/DisableUnsolicitedTask.h"
 #include "opendnp3/master/StartupIntegrityPoll.h"
 #include "opendnp3/master/ITaskList.h"
+#include "opendnp3/master/CommandTask.h"
 
 #include <openpal/StaticQueue.h>
 
@@ -49,6 +50,8 @@ private:
 	EnableUnsolicitedTask enableUnsol;
 	DisableUnsolicitedTask disableUnsol;	
 	StartupIntegrityPoll startupIntegrity;
+
+	CommandTask commandTask;
 
 	openpal::StaticQueue<IMasterTask*, uint8_t, 8> startupTasks;
 };

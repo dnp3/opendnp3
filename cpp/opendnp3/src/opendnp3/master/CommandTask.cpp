@@ -32,146 +32,157 @@
 
 using namespace openpal;
 
-/*
 namespace opendnp3
 {
 
-const Sequence<FunctionCode> CommandTask::Operate(FunctionCode::OPERATE);
-const Sequence<FunctionCode> CommandTask::DirectOperate(FunctionCode::DIRECT_OPERATE);
-const Sequence<FunctionCode> CommandTask::SelectAndOperate(FunctionCode::SELECT, &CommandTask::Operate);
 
-//Sequence<FunctionCode> CommandTask::selectAndOperate;
-
-CommandTask::CommandTask(Logger aLogger) :
-	MasterTaskBase(aLogger),
-	mpActiveSequence(nullptr),
-	mpCallback(nullptr),
-	mpFunctionSequence(nullptr),
-	crobSeq(aLogger, Group12Var1Serializer::Inst()),
-	analogInt32Seq(aLogger, Group41Var1Serializer::Inst()),
-	analogInt16Seq(aLogger, Group41Var2Serializer::Inst()),
-	analogFloat32Seq(aLogger, Group41Var3Serializer::Inst()),
-	analogDouble64Seq(aLogger, Group41Var4Serializer::Inst())
+CommandTask::CommandTask(openpal::Logger* pLogger_) :
+	pLogger(pLogger_),
+	pCallback(nullptr),
+	pActiveSequence(nullptr),	
+	crobSeq(*pLogger_, Group12Var1Serializer::Inst()),
+	analogInt32Seq(*pLogger_, Group41Var1Serializer::Inst()),
+	analogInt16Seq(*pLogger_, Group41Var2Serializer::Inst()),
+	analogFloat32Seq(*pLogger_, Group41Var3Serializer::Inst()),
+	analogDouble64Seq(*pLogger_, Group41Var4Serializer::Inst())
 {
 
 }
 
-void CommandTask::ConfigureSBO(const ControlRelayOutputBlock& command, uint32_t index, ICommandCallback* pCallback)
+void CommandTask::LoadSelectAndOperate()
 {
-	this->Configure(crobSeq, command, index, &SelectAndOperate, pCallback);
+	functionCodes.Clear();
+	functionCodes.Enqueue(FunctionCode::SELECT);
+	functionCodes.Enqueue(FunctionCode::OPERATE);
 }
 
-void CommandTask::ConfigureSBO(const AnalogOutputInt16& command, uint32_t index,  ICommandCallback* pCallback)
+void CommandTask::LoadDirectOperate()
 {
-	this->Configure(analogInt16Seq, command, index, &SelectAndOperate, pCallback);
+	functionCodes.Clear();
+	functionCodes.Enqueue(FunctionCode::DIRECT_OPERATE);
 }
 
-void CommandTask::ConfigureSBO(const AnalogOutputInt32& command, uint32_t index,  ICommandCallback* pCallback)
+void CommandTask::SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback* pCallback)
 {
-	this->Configure(analogInt32Seq, command, index, &SelectAndOperate, pCallback);
+	this->LoadSelectAndOperate();
+	this->Configure(crobSeq, command, index, pCallback);
 }
 
-void CommandTask::ConfigureSBO(const AnalogOutputFloat32& command, uint32_t index,  ICommandCallback* pCallback)
+void CommandTask::SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback* pCallback)
 {
-	this->Configure(analogFloat32Seq, command, index, &SelectAndOperate, pCallback);
+	this->LoadSelectAndOperate();
+	this->Configure(analogInt16Seq, command, index, pCallback);
 }
 
-void CommandTask::ConfigureSBO(const AnalogOutputDouble64& command, uint32_t index,  ICommandCallback* pCallback)
+void CommandTask::SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback* pCallback)
 {
-	this->Configure(analogDouble64Seq, command, index, &SelectAndOperate, pCallback);
+	this->LoadSelectAndOperate();
+	this->Configure(analogInt32Seq, command, index, pCallback);
 }
 
-void CommandTask::ConfigureDO(const ControlRelayOutputBlock& command, uint32_t index,  ICommandCallback* pCallback)
+void CommandTask::SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback* pCallback)
 {
-	this->Configure(crobSeq, command, index, &DirectOperate, pCallback);
+	this->LoadSelectAndOperate();
+	this->Configure(analogFloat32Seq, command, index, pCallback);
 }
 
-void CommandTask::ConfigureDO(const AnalogOutputInt16& command, uint32_t index,  ICommandCallback* pCallback)
+void CommandTask::SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback* pCallback)
 {
-	this->Configure(analogInt16Seq, command, index, &DirectOperate, pCallback);
+	this->LoadSelectAndOperate();
+	this->Configure(analogDouble64Seq, command, index, pCallback);
 }
 
-void CommandTask::ConfigureDO(const AnalogOutputInt32& command, uint32_t index,  ICommandCallback* pCallback)
+void CommandTask::DirectOperate(const ControlRelayOutputBlock& command, uint16_t index,  ICommandCallback* pCallback)
 {
-	this->Configure(analogInt32Seq, command, index, &DirectOperate, pCallback);
+	this->LoadDirectOperate();
+	this->Configure(crobSeq, command, index, pCallback);
 }
 
-void CommandTask::ConfigureDO(const AnalogOutputFloat32& command, uint32_t index,  ICommandCallback* pCallback)
+void CommandTask::DirectOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback* pCallback)
 {
-	this->Configure(analogFloat32Seq, command, index, &DirectOperate, pCallback);
+	this->LoadDirectOperate();
+	this->Configure(analogInt16Seq, command, index, pCallback);
 }
 
-void CommandTask::ConfigureDO(const AnalogOutputDouble64& command, uint32_t index,  ICommandCallback* pCallback)
+void CommandTask::DirectOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback* pCallback)
 {
-	this->Configure(analogDouble64Seq, command, index, &DirectOperate, pCallback);
+	this->LoadDirectOperate();
+	this->Configure(analogInt32Seq, command, index, pCallback);
 }
 
-void CommandTask::ConfigureRequest(APDURequest& request)
+void CommandTask::DirectOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback* pCallback)
 {
-
-	assert(mpFunctionSequence != nullptr);
-	assert(mpActiveSequence != nullptr);
-	auto code = mpFunctionSequence->Value();
-	mpFunctionSequence = mpFunctionSequence->Next();
-	mpActiveSequence->FormatRequest(request, code);
-
+	this->LoadDirectOperate();
+	this->Configure(analogFloat32Seq, command, index, pCallback);
 }
 
-void  CommandTask::Callback(const CommandResponse& cr)
+void CommandTask::DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback* pCallback)
 {
-	if (mpCallback)
+	this->LoadDirectOperate();
+	this->Configure(analogDouble64Seq, command, index, pCallback);
+}
+
+void CommandTask::BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq)
+{
+	if (functionCodes.IsNotEmpty() && pActiveSequence)
 	{
-		mpCallback->OnComplete(cr);
+		auto code = functionCodes.Pop();
+		request.SetFunction(functionCodes.Pop());
+		request.SetControl(AppControlField::Request(seq));
+		pActiveSequence->FormatRequestHeader(request);
 	}
 }
 
-void CommandTask::OnFailure()
+TaskStatus CommandTask::OnResponse(const APDUResponseRecord& response, const MasterParams& params, IMasterScheduler& scheduler)
 {
-	Callback(CommandResponse(CommandResult::TIMEOUT));
-
+	if (response.control.FIR && response.control.FIN)
+	{
+		return this->OnSingleResponse(response, params, scheduler);
+	}
+	else
+	{
+		SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Ignoring unexpected response with FIR/FIN not set");
+		pCallback->OnComplete(CommandResponse(CommandResult::BAD_RESPONSE));
+		return TaskStatus::FAIL;
+	}
 }
 
-bool CommandTask::_OnPartialResponse(const APDUResponseRecord&)
+void CommandTask::OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler)
 {
-	SIMPLE_LOG_BLOCK(logger, flags::ERR, "Non fin responses not allowed for control tasks");
-	Callback(CommandResponse(CommandResult::BAD_RESPONSE));	
-	return false;
+	pCallback->OnComplete(CommandResponse(CommandResult::TIMEOUT));
 }
 
-TaskResult CommandTask::_OnFinalResponse(const APDUResponseRecord& record)
+TaskStatus CommandTask::OnSingleResponse(const APDUResponseRecord& response, const MasterParams& params, IMasterScheduler& scheduler)
 {
-	auto result = APDUParser::ParseTwoPass(record.objects, mpActiveSequence, &logger);
+	auto result = APDUParser::ParseTwoPass(response.objects, pActiveSequence, pLogger);
 	if(result == APDUParser::Result::OK)
 	{
-		if(mpFunctionSequence == nullptr) // we're done
+		if(functionCodes.IsEmpty()) // we're done
 		{
-			auto commandResponse = mpActiveSequence->Validate();
-			Callback(commandResponse);			
-			return TaskResult::TR_SUCCESS;
+			auto commandResponse = pActiveSequence->Validate();
+			this->Callback(commandResponse);			
+			return TaskStatus::SUCCESS;
 		}
 		else // we may have more depending on response
 		{
-			auto commandResponse = mpActiveSequence->Validate();
-			if(commandResponse == CommandResponse::Success) return TaskResult::TR_CONTINUE; // more function codes
+			auto commandResponse = pActiveSequence->Validate();
+			if (commandResponse == CommandResponse::Success)
+			{
+				scheduler.Schedule(this);
+				return TaskStatus::SUCCESS;
+			}
 			else
 			{
-				Callback(commandResponse);  // something failed, end the task early				
-				return TaskResult::TR_SUCCESS;
+				pCallback->OnComplete(commandResponse);  // something failed, end the task early				
+				return TaskStatus::FAIL;
 			}
 		}
 	}
 	else
 	{		
-		Callback(CommandResponse(CommandResult::BAD_RESPONSE));
-		return TaskResult::TR_FAIL;
+		pCallback->OnComplete(CommandResponse(CommandResult::BAD_RESPONSE));
+		return TaskStatus::FAIL;
 	}
 }
 
-char const* CommandTask::Name() const
-{
-	return "CommandTask";
-}
-
 } //ens ns
-
-*/

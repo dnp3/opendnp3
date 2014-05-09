@@ -21,88 +21,86 @@
 #ifndef __COMMAND_TASK_H_
 #define __COMMAND_TASK_H_
 
-/*
-#include "MasterTaskBase.h"
-
-#include "CommandResponse.h"
-#include <openpal/Logger.h>
-#include <openpal/Sequence.h>
 
 #include "opendnp3/gen/FunctionCode.h"
-#include "opendnp3/master/ICommandCallback.h"
-#include "CommandSequence.h"
 
+#include "opendnp3/master/SingleResponseTask.h"
+#include "opendnp3/master/CommandResponse.h"
+#include "opendnp3/master/ICommandCallback.h"
+#include "opendnp3/master/ICommandProcessor.h"
+#include "opendnp3/master/CommandSequence.h"
+
+#include <openpal/Logger.h>
 #include <openpal/Configure.h>
+#include <openpal/StaticQueue.h>
 #include <assert.h>
 
 namespace opendnp3
 {
 
 // Base class with machinery for performing command operations
-class CommandTask : public MasterTaskBase
+class CommandTask : public IMasterTask, public ICommandProcessor
 {
-	// immutable sequences of function codes
-	const static openpal::Sequence<FunctionCode> Operate;
-	const static openpal::Sequence<FunctionCode> DirectOperate;
-	const static openpal::Sequence<FunctionCode> SelectAndOperate;
+	
+public:	
 
-public:
+	CommandTask(openpal::Logger* pLogger_);
 
-	CommandTask(openpal::Logger);
+	virtual void SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback* pCallback) override final;
+	virtual void DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback* pCallback) override final;
 
-	void ConfigureSBO(const ControlRelayOutputBlock& command, uint32_t index,  ICommandCallback* pCallback);
-	void ConfigureSBO(const AnalogOutputInt16& command, uint32_t index,  ICommandCallback* pCallback);
-	void ConfigureSBO(const AnalogOutputInt32& command, uint32_t index,  ICommandCallback* pCallback);
-	void ConfigureSBO(const AnalogOutputFloat32& command, uint32_t index,  ICommandCallback* pCallback);
-	void ConfigureSBO(const AnalogOutputDouble64& command, uint32_t index,  ICommandCallback* pCallback);
+	virtual void SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback* pCallback) override final;
+	virtual void DirectOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback* pCallback) override final;
 
-	void ConfigureDO(const ControlRelayOutputBlock& command, uint32_t index,  ICommandCallback* pCallback);
-	void ConfigureDO(const AnalogOutputInt16& command, uint32_t index,  ICommandCallback* pCallback);
-	void ConfigureDO(const AnalogOutputInt32& command, uint32_t index,  ICommandCallback* pCallback);
-	void ConfigureDO(const AnalogOutputFloat32& command, uint32_t index,  ICommandCallback* pCallback);
-	void ConfigureDO(const AnalogOutputDouble64& command, uint32_t index,  ICommandCallback* pCallback);
+	virtual void SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback* pCallback) override final;
+	virtual void DirectOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback* pCallback) override final;
 
-	void ConfigureRequest(APDURequest& request);
+	virtual void SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback* pCallback) override final;
+	virtual void DirectOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback* pCallback) override final;
 
-	char const* Name() const;
+	virtual void SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback* pCallback) override final;
+	virtual void DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback* pCallback) override final;
 
-protected:
+	virtual char const* Name() const override final { return "Command Task"; }
+	virtual TaskPriority Priority() const override final { return TaskPriority::COMMAND; }
 
-	// override from base class
-	void OnFailure();
+	virtual void BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq) override final;
+
+	virtual TaskStatus OnResponse(const APDUResponseRecord& response, const MasterParams& params, IMasterScheduler& scheduler) override final;
+	
+	virtual void OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler) override final;	
 
 private:
 
+	TaskStatus OnSingleResponse(const APDUResponseRecord& response, const MasterParams& params, IMasterScheduler& scheduler);
+
+	void LoadSelectAndOperate();
+	void LoadDirectOperate();
 
 	template <class T>
-	void Configure(CommandSequence<T>& sequence, const T& value, uint32_t index, const openpal::Sequence<FunctionCode>* apSequence, ICommandCallback* pCallback)
-	{
-		assert(apSequence != nullptr);
-		mpFunctionSequence = apSequence;
-		this->mpCallback = pCallback;
+	void Configure(CommandSequence<T>& sequence, const T& value, uint16_t index, ICommandCallback* pCallback_)
+	{				
+		this->pCallback = pCallback_;
 		sequence.Configure(value, index);
-		mpActiveSequence = &sequence;
+		pActiveSequence = &sequence;
 	}
 
 	void Callback(const CommandResponse& cr);
 
-	ICommandCallback* mpCallback;
-	const openpal::Sequence<FunctionCode>* mpFunctionSequence;
+	openpal::StaticQueue<FunctionCode, uint8_t, 2> functionCodes;
 
-	ICommandSequence* mpActiveSequence;
+	openpal::Logger* pLogger;
+	ICommandCallback* pCallback;	
+	ICommandSequence* pActiveSequence;
 
 	CommandSequence<ControlRelayOutputBlock> crobSeq;
 	CommandSequence<AnalogOutputInt32> analogInt32Seq;
 	CommandSequence<AnalogOutputInt16> analogInt16Seq;
 	CommandSequence<AnalogOutputFloat32> analogFloat32Seq;
 	CommandSequence<AnalogOutputDouble64> analogDouble64Seq;	
-
-	bool _OnPartialResponse(const APDUResponseRecord&);
-	TaskResult _OnFinalResponse(const APDUResponseRecord&);
 };
 
 
 } //ens ns
-*/
 
 #endif
