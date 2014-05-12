@@ -51,7 +51,7 @@ TEST_CASE(SUITE("IntegrityOnStartup"))
 	NewMasterTestObject t(params);
 	t.master.OnLowerLayerUp();
 
-	REQUIRE(t.exe.Dispatch() > 0);
+	REQUIRE(t.exe.RunMany() > 0);
 	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
 }
 
@@ -62,7 +62,7 @@ TEST_CASE(SUITE("IntegrityPollLoadsMeasurements"))
 	NewMasterTestObject t(params);
 	t.master.OnLowerLayerUp();
 
-	REQUIRE(t.exe.Dispatch() > 0);
+	REQUIRE(t.exe.RunMany() > 0);
 	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
 	REQUIRE(t.exe.NumPendingTimers() == 0);
 	t.master.OnSendResult(true);
@@ -80,7 +80,7 @@ TEST_CASE(SUITE("IntegrityPollCanRepeat"))
 	NewMasterTestObject t(params);
 	t.master.OnLowerLayerUp();
 
-	REQUIRE(t.exe.Dispatch() > 0);
+	REQUIRE(t.exe.RunMany() > 0);
 	REQUIRE(t.lower.PopWriteAsHex() == Integrity(0));
 	REQUIRE(t.exe.NumPendingTimers() == 0);
 	t.master.OnSendResult(true);
@@ -88,7 +88,7 @@ TEST_CASE(SUITE("IntegrityPollCanRepeat"))
 	t.SendToMaster(EmptyResponse(0));	
 	t.exe.AdvanceTime(params.integrityPeriod);
 	REQUIRE(t.exe.NumPendingTimers() == 0);
-	REQUIRE(t.exe.Dispatch() > 0);
+	REQUIRE(t.exe.RunMany() > 0);
 	REQUIRE(t.lower.PopWriteAsHex() == Integrity(1));
 }
 
@@ -250,7 +250,7 @@ TEST_CASE(SUITE("SolicitedResponseFailure"))
 	TestForIntegrityPoll(t, false);
 
 	t.mts.AdvanceTime(TimeDuration(config.TaskRetryRate));
-	REQUIRE(t.mts.DispatchOne());
+	REQUIRE(t.mts.RunOne());
 
 	TestForIntegrityPoll(t);
 }
@@ -317,7 +317,7 @@ TEST_CASE(SUITE("ParsesOctetStringResponseWithFiveCharacters"))
 	// Group 111 (0x6F) Variation (length), 1 byte count / 1 byte index (4), count of 1, "hello" == [0x68, 0x65, 0x6C, 0x6C, 0x6F]
 	t.SendUnsolToMaster("C0 82 00 00 6F 05 17 01 04 68 65 6C 6C 6F");
 
-	REQUIRE(t.mts.DispatchOne());
+	REQUIRE(t.mts.RunOne());
 
 	REQUIRE("68 65 6C 6C 6F" ==  toHex(t.meas.GetEventOctetString(4).ToReadOnly()));
 }

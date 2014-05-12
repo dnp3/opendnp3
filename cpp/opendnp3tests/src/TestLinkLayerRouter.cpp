@@ -113,7 +113,7 @@ TEST_CASE(SUITE("CloseBehavior"))
 
 	REQUIRE(ChannelState::WAITING == t.router.GetState());
 	t.exe.AdvanceTime(TimeDuration::Milliseconds(100));
-	REQUIRE(t.exe.DispatchOne());
+	REQUIRE(t.exe.RunOne());
 	REQUIRE(ChannelState::OPENING == t.router.GetState());
 
 	t.phys.ClearBuffer();
@@ -205,7 +205,7 @@ TEST_CASE(SUITE("LinkLayerRouterClearsBufferOnLowerLayerDown"))
 	t.phys.SignalReadFailure(); // closes the layer
 
 	t.exe.AdvanceTime(TimeDuration::Milliseconds(100));
-	REQUIRE(t.exe.Dispatch());
+	REQUIRE(t.exe.RunMany());
 
 	t.phys.ClearBuffer();
 	t.phys.SignalOpenSuccess();

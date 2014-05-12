@@ -327,7 +327,7 @@ TEST_CASE(SUITE("ResetLinkTimerExpiration"))
 
 	REQUIRE(t.log.IsLogErrorFree());
 	t.exe.AdvanceTime(cfg.Timeout);
-	REQUIRE(t.exe.DispatchOne()); // trigger the timeout callback
+	REQUIRE(t.exe.RunOne()); // trigger the timeout callback
 	REQUIRE(t.upper.CountersEqual(0, 1));
 	REQUIRE(t.log.NextErrorCode() ==  DLERR_TIMEOUT_NO_RETRY);
 }
@@ -347,7 +347,7 @@ TEST_CASE(SUITE("ResetLinkTimerExpirationWithRetry"))
 	REQUIRE(t.numWrites == 1);
 	t.link.OnTransmitResult(true, true);
 	t.exe.AdvanceTime(cfg.Timeout);
-	REQUIRE(t.exe.DispatchOne()); // timeout the wait for Ack
+	REQUIRE(t.exe.RunOne()); // timeout the wait for Ack
 
 	REQUIRE(t.log.NextErrorCode() == DLERR_TIMEOUT_RETRY);
 	REQUIRE(t.upper.CountersEqual(0, 0)); //check that the send is still occuring
@@ -370,7 +370,7 @@ TEST_CASE(SUITE("ResetLinkTimerExpirationWithRetry"))
 	t.link.OnTransmitResult(true, true);
 
 	t.exe.AdvanceTime(cfg.Timeout);
-	REQUIRE(t.exe.DispatchOne()); //timeout the ACK
+	REQUIRE(t.exe.RunOne()); //timeout the ACK
 	REQUIRE(t.log.NextErrorCode() ==  DLERR_TIMEOUT_NO_RETRY);
 	REQUIRE(t.upper.CountersEqual(0, 1));
 
@@ -382,7 +382,7 @@ TEST_CASE(SUITE("ResetLinkTimerExpirationWithRetry"))
 
 	REQUIRE(t.log.IsLogErrorFree());
 	t.exe.AdvanceTime(cfg.Timeout);
-	REQUIRE(t.exe.DispatchOne());
+	REQUIRE(t.exe.RunOne());
 	REQUIRE(t.log.NextErrorCode() ==  DLERR_TIMEOUT_RETRY);
 	REQUIRE(t.upper.CountersEqual(0, 1)); //check that the send is still occuring
 }
@@ -414,7 +414,7 @@ TEST_CASE(SUITE("ResetLinkTimerExpirationWithRetryResetState"))
 
 	REQUIRE(t.log.IsLogErrorFree());
 	t.exe.AdvanceTime(cfg.Timeout);
-	REQUIRE(t.exe.DispatchOne()); // timeout
+	REQUIRE(t.exe.RunOne()); // timeout
 	REQUIRE(t.log.NextErrorCode() ==  DLERR_TIMEOUT_RETRY);
 	REQUIRE(t.upper.CountersEqual(1, 0)); //check that the send is still occuring
 	REQUIRE(t.numWrites ==  4);
@@ -431,7 +431,7 @@ TEST_CASE(SUITE("ResetLinkTimerExpirationWithRetryResetState"))
 
 	REQUIRE(t.log.IsLogErrorFree());
 	t.exe.AdvanceTime(cfg.Timeout);
-	REQUIRE(t.exe.DispatchOne());
+	REQUIRE(t.exe.RunOne());
 	REQUIRE(t.log.NextErrorCode() ==  DLERR_TIMEOUT_RETRY);
 	REQUIRE(t.upper.CountersEqual(2, 0)); //check that the send is still occuring
 }
@@ -456,7 +456,7 @@ TEST_CASE(SUITE("ConfirmedDataRetry"))
 	t.link.OnTransmitResult(true, true);
 
 	t.exe.AdvanceTime(cfg.Timeout);
-	REQUIRE(t.exe.DispatchOne()); //timeout the ConfData, check that it retransmits
+	REQUIRE(t.exe.RunOne()); //timeout the ConfData, check that it retransmits
 	REQUIRE(t.log.NextErrorCode() ==  DLERR_TIMEOUT_RETRY);
 	REQUIRE(t.numWrites ==  3);
 
@@ -493,7 +493,7 @@ TEST_CASE(SUITE("ResetLinkRetries"))
 		REQUIRE(toHex(t.lastWrite) == toHex(frame));
 		t.link.OnTransmitResult(true, true);
 		t.exe.AdvanceTime(cfg.Timeout);
-		REQUIRE(t.exe.DispatchOne()); //timeout
+		REQUIRE(t.exe.RunOne()); //timeout
 	}
 
 	REQUIRE(t.numWrites ==  4);
@@ -549,7 +549,7 @@ TEST_CASE(SUITE("SendDataTimerExpiration"))
 	t.link.OnTransmitResult(true, true);
 
 	t.exe.AdvanceTime(cfg.Timeout);
-	REQUIRE(t.exe.DispatchOne()); //trigger the timeout callback
+	REQUIRE(t.exe.RunOne()); //trigger the timeout callback
 	REQUIRE(t.upper.CountersEqual(0, 1));
 }
 

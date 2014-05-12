@@ -254,7 +254,7 @@ TEST_CASE(SUITE("UnsolRetryDelay"))
 	// check for the startup null unsol packet, but fail the transaction
 	REQUIRE(t.lower.PopWriteAsHex() ==  "F0 82 80 00");
 	REQUIRE(t.mts.NumActive() ==  1); // this should cause a timer to become active
-	REQUIRE(t.mts.DispatchOne());
+	REQUIRE(t.mts.RunOne());
 	REQUIRE(t.lower.PopWriteAsHex() ==  "F0 82 80 00");
 }
 
@@ -273,7 +273,7 @@ TEST_CASE(SUITE("UnsolData"))
 		t.outstation.GetDataObserver()->Update(Binary(false, BQ_ONLINE), 0);
 	}
 
-	REQUIRE(t.mts.DispatchOne()); //dispatch the data update event
+	REQUIRE(t.mts.RunOne()); //dispatch the data update event
 
 	t.outstation.OnLowerLayerUp();
 	REQUIRE(t.lower.PopWriteAsHex() ==  "F0 82 80 00");
@@ -316,7 +316,7 @@ Transaction t(pObs);
 pObs->Update(Analog(0), 0);
 }
 
-REQUIRE(t.mts.Dispatch() > 0);
+REQUIRE(t.mts.RunMany() > 0);
 
 // Outstation shouldn't send an unsolicited handshake b/c unsol it disabled
 REQUIRE(t.NothingToRead());
@@ -344,7 +344,7 @@ TEST_CASE(SUITE("UnsolEventBufferOverflow"))
 		t.outstation.GetDataObserver()->Update(Binary(true, BQ_ONLINE), 0);
 	}
 
-	REQUIRE(t.mts.DispatchOne()); //dispatch the data update event
+	REQUIRE(t.mts.RunOne()); //dispatch the data update event
 
 	// should immediately try to send 2 unsol events
 	// Grp2Var1, qual 0x17, count 2, index 0
@@ -375,11 +375,11 @@ TEST_CASE(SUITE("UnsolMultiFragments"))
 		t.outstation.GetDataObserver()->Update(Binary(false, BQ_ONLINE), 0);
 	}
 
-	REQUIRE(t.mts.DispatchOne()); //dispatch the data update event
+	REQUIRE(t.mts.RunOne()); //dispatch the data update event
 
 	REQUIRE(t.mts.NumActive() ==  1); // unsol pack timer should be active
 
-	REQUIRE(t.mts.DispatchOne()); //dispatch the unsol pack timer
+	REQUIRE(t.mts.RunOne()); //dispatch the unsol pack timer
 
 	// Only enough room to in the APDU to carry a single value
 	REQUIRE(t.lower.PopWriteAsHex() ==  "F0 82 80 00 02 01 17 01 01 01");
@@ -406,7 +406,7 @@ TEST_CASE(SUITE("WriteDuringUnsol"))
 	}
 
 	t.app.DisableAutoSendCallback();
-	REQUIRE(t.mts.DispatchOne());
+	REQUIRE(t.mts.RunOne());
 	REQUIRE(t.lower.PopWriteAsHex() ==  "F0 82 80 00 02 01 17 01 00 81");
 
 	//now send a write IIN request, and test that the outstation answers immediately
@@ -434,7 +434,7 @@ TEST_CASE(SUITE("ReadDuringUnsol"))
 	}
 
 	t.app.DisableAutoSendCallback();
-	REQUIRE(t.mts.DispatchOne());
+	REQUIRE(t.mts.RunOne());
 	REQUIRE(t.lower.PopWriteAsHex() ==  "F0 82 80 00 02 01 17 01 00 81");
 
 	t.SendToOutstation("C0 01 3C 02 06");
@@ -460,7 +460,7 @@ TEST_CASE(SUITE("ReadWriteDuringUnsol"))
 	}
 
 	t.app.DisableAutoSendCallback();
-	REQUIRE(t.mts.DispatchOne());
+	REQUIRE(t.mts.RunOne());
 	REQUIRE(t.lower.PopWriteAsHex() ==  "F0 82 80 00 02 01 17 01 00 81");
 
 	t.SendToOutstation("C0 01 3C 01 06");
@@ -487,7 +487,7 @@ TEST_CASE(SUITE("UnsolEnable"))
 		t.outstation.GetDataObserver()->Update(Binary(false, BQ_ONLINE), 0);
 	}
 
-	REQUIRE(t.mts.DispatchOne()); //dispatch the data update event
+	REQUIRE(t.mts.RunOne()); //dispatch the data update event
 	REQUIRE(t.app.NumAPDU() ==  0); //check that no unsol packets are generated
 
 	t.SendToOutstation("C0 14 3C 02 06");
@@ -513,7 +513,7 @@ TEST_CASE(SUITE("UnsolEnableBadObject"))
 		t.outstation.GetDataObserver()->Update(Binary(false, BQ_ONLINE), 0);
 	}
 
-	REQUIRE(t.mts.DispatchOne()); //dispatch the data update event
+	REQUIRE(t.mts.RunOne()); //dispatch the data update event
 	REQUIRE(t.app.NumAPDU() ==  0); //check that no unsol packets are generated
 
 	t.SendToOutstation("C0 14 01 02 06");

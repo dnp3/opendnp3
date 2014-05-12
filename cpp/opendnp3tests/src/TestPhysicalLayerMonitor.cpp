@@ -120,7 +120,7 @@ TEST_CASE(SUITE("ThrowsIfEverNotExpectingOpenTimer"))
 	TestObject test;
 	test.monitor.ReachInAndStartOpenTimer();
 	test.exe.AdvanceTime(TimeDuration::Seconds(1));
-	REQUIRE(test.exe.DispatchOne());
+	REQUIRE(test.exe.RunOne());
 	REQUIRE(test.log.PopOneEntry(flags::ERR));
 	REQUIRE((ChannelState::CLOSED == test.monitor.GetState()));
 }
@@ -289,7 +289,7 @@ TEST_CASE(SUITE("OpenFailureGoesToWaitingAndExponentialBackoff"))
 	REQUIRE(1 ==  test.exe.NumPendingTimers());
 	REQUIRE(1000 == test.exe.NextTimerExpiration().milliseconds);
 	test.exe.AdvanceTime(TimeDuration::Seconds(1));
-	REQUIRE(test.exe.DispatchOne());
+	REQUIRE(test.exe.RunOne());
 	REQUIRE((ChannelState::OPENING == test.monitor.GetState()));
 	test.phys.SignalOpenFailure();
 	REQUIRE((ChannelState::WAITING == test.monitor.GetState()));
@@ -340,7 +340,7 @@ TEST_CASE(SUITE("LayerKeepsTryingToOpen"))
 		test.phys.SignalOpenFailure();
 		REQUIRE((ChannelState::WAITING == test.monitor.GetState()));
 		test.exe.AdvanceTime(TimeDuration::Seconds(10));
-		REQUIRE(test.exe.DispatchOne());
+		REQUIRE(test.exe.RunOne());
 	}
 }
 

@@ -92,7 +92,7 @@ void MockExecutor::AdvanceTime(TimeDuration aDuration)
 	this->CheckForExpiredTimers();
 }
 
-bool MockExecutor::DispatchOne()
+bool MockExecutor::RunOne()
 {
 	this->CheckForExpiredTimers();
 
@@ -109,10 +109,10 @@ bool MockExecutor::DispatchOne()
 	}	
 }
 
-size_t MockExecutor::Dispatch(size_t aMaximum)
+size_t MockExecutor::RunMany(size_t aMaximum)
 {
 	size_t num = 0;
-	while(num < aMaximum && this->DispatchOne()) ++num;
+	while(num < aMaximum && this->RunOne()) ++num;
 	return num;
 }
 

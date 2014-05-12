@@ -57,18 +57,17 @@ public:
 		this->mPostIsSynchronous = aAutoPost;
 	}
 
-	/**	Call the next (by expiration time) without caring about the time requirement.
-		@returns true if a timer was dispatched */
-	bool DispatchOne();
+	/**	@return true if an action was run. */
+	bool RunOne();
 
-	/** Calls DispatchOne() up to some maximum number of times continuing while
+	/** Calls RunOne() up to some maximum number of times continuing while
 		there are still events to dispatch
 
 		@return the number of events dispatched
 	*/
-	size_t Dispatch(size_t aMaximum = std::numeric_limits<size_t>::max());
+	size_t RunMany(size_t aMaximum = std::numeric_limits<size_t>::max());
 
-	/** @returns The number of active, pending timers and post operations */
+	/** @return The number of active, pending timers and post operations */
 	size_t NumActive()
 	{
 		return postQueue.size();
