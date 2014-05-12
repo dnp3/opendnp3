@@ -175,9 +175,8 @@ TaskStatus CommandTask::OnSingleResponse(const APDUResponseRecord& response, con
 		{
 			auto commandResponse = pActiveSequence->Validate();
 			if (commandResponse == CommandResponse::Success)
-			{
-				scheduler.Schedule(this);
-				return TaskStatus::SUCCESS;
+			{				
+				return TaskStatus::REPEAT;
 			}
 			else
 			{

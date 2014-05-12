@@ -106,12 +106,17 @@ void MasterContext::CheckForTask()
 		if (pTask)
 		{
 			FORMAT_LOG_BLOCK(logger, flags::INFO, "Begining task: %s", pTask->Name());
-			pActiveTask = pTask;			
-			APDURequest request(txBuffer.GetWriteBuffer());
-			pTask->BuildRequest(request, params, solSeq);			
-			this->Transmit(request.ToReadOnly());
+			pActiveTask = pTask;
+			this->StartTask(pTask);
 		}
 	}
+}
+
+void MasterContext::StartTask(IMasterTask* pTask)
+{	
+	APDURequest request(txBuffer.GetWriteBuffer());
+	pTask->BuildRequest(request, params, solSeq);
+	this->Transmit(request.ToReadOnly());
 }
 
 void MasterContext::QueueCommandAction(const openpal::Function1<ICommandProcessor*>& action)
@@ -187,16 +192,21 @@ void MasterContext::OnResponse(const APDUResponseRecord& response)
 				this->QueueConfirm(APDUHeader::SolicitedConfirm(response.control.SEQ));								
 			}
 
-			if (result == TaskStatus::CONTINUE)
+			switch (result)
 			{
-				solSeq = NextSeq(solSeq);
-				this->StartResponseTimer();
-			}
-			else
-			{
-				pActiveTask = nullptr;
-				this->PostCheckForTask();
-			}
+				case(TaskStatus::CONTINUE) :
+					solSeq = NextSeq(solSeq);
+					this->StartResponseTimer();
+					break;
+				case(TaskStatus::REPEAT) :
+					solSeq = NextSeq(solSeq);
+					this->StartTask(pActiveTask);
+					break;
+				default:
+					pActiveTask = nullptr;
+					this->PostCheckForTask();
+					break;
+			}			
 		}
 		else
 		{

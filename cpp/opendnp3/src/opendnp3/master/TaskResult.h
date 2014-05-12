@@ -32,6 +32,9 @@ enum class TaskStatus
 	/// The task fails, further responses are ignored
 	FAIL,	
 
+	/// The task should repeat the format, transmit, await response sequence
+	REPEAT,
+
 	/// The task should continue running, restart the response timer, and increment expected SEQ#
 	CONTINUE
 };
