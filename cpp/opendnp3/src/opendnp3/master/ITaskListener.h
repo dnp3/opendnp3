@@ -18,23 +18,22 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __I_SCAN_LISTENER_H_
-#define __I_SCAN_LISTENER_H_
+#ifndef __I_TASK_LISTENER_H_
+#define __I_TASK_LISTENER_H_
 
-#include "ScanResult.h"
+#include "TaskLifecycle.h"
 
 namespace opendnp3
 {
 
 /**
-* Interface used to dispatch scan result updates
+* Interface used to inform listeners of a task's lifecycle
 */
-class IScanListener
+class ITaskListener
 {
-public:
-	virtual ~IScanListener() {}
+public:	
 
-	virtual void OnScanUpdate(ScanResult result) = 0;
+	virtual void OnTaskUpdate(TaskLifecycle status) = 0;
 };
 
 }

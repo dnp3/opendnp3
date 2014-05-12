@@ -50,11 +50,10 @@ private:
 
 	virtual void OnSuccess(const MasterParams& params, IMasterScheduler& scheduler) = 0;
 
-	ISOEHandler* pSOEHandler;	
-	openpal::Logger* pLogger;
-
 protected:
 
+	ISOEHandler* pSOEHandler;
+	openpal::Logger* pLogger;
 	uint16_t rxCount;
 };
 

@@ -79,6 +79,15 @@ void MasterScheduler::Schedule(IMasterTask* pTask)
 	}
 }
 
+void MasterScheduler::Demand(IMasterTask* pTask)
+{
+	auto equals = [pTask](const DelayedTask& dt) { return dt.pTask == pTask; };	
+	if (scheduledQueue.RemoveFirst(equals))
+	{
+		this->Schedule(pTask);
+	}
+}
+
 IMasterTask* MasterScheduler::Start()
 {	
 	if (commandActions.IsEmpty())

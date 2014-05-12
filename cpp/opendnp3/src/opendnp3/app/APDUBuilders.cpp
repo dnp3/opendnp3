@@ -38,6 +38,11 @@ void ClassRequest(APDURequest& request, FunctionCode fc, int classMask, uint8_t 
 {
 	request.SetControl(AppControlField(true, true, false, false, seq));
 	request.SetFunction(fc);
+	WriteClassHeaders(request, classMask);
+}
+
+void WriteClassHeaders(APDURequest& request, int classMask)
+{
 	auto writer = request.GetWriter();
 	if (classMask & CLASS_1)
 	{

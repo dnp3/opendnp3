@@ -29,7 +29,7 @@ namespace openpal
 {
 
 template <class ValueType, class IndexType, IndexType N>
-class StaticQueue : private Uncopyable
+class StaticQueue
 {
 
 public:
@@ -65,6 +65,12 @@ public:
 	void Clear()
 	{
 		list.Clear();
+	}
+
+	template <class Selector>
+	void Foreach(const Selector& select) const
+	{
+		list.Foreach(select);
 	}
 
 	ValueType& Peek()

@@ -3,7 +3,7 @@
 
 using namespace System::Collections::ObjectModel;
 
-#include <opendnp3/master/IScanListener.h>
+#include <opendnp3/master/ITaskListener.h>
 #include <vcclr.h>
 
 using namespace DNP3::Interface;
@@ -13,17 +13,19 @@ namespace DNP3
 namespace Adapter
 {
 
-private class ScanListenerAdapter : public opendnp3::IScanListener
+private class ScanListenerAdapter : public opendnp3::ITaskListener
 {
 public:
 
 	ScanListenerAdapter(System::Action<ScanResult>^ callback) : myCallback(callback)
 	{}
 
-	virtual void OnScanUpdate(opendnp3::ScanResult result) final
+	virtual void OnTaskUpdate(opendnp3::TaskLifecycle status) final
 	{
+		/* TODO
 		ScanStatus status = (result.status == opendnp3::ScanStatus::SUCCESS) ? ScanStatus::SUCCESS : ScanStatus::FAILURE;
 		myCallback->Invoke(ScanResult(status));
+		*/
 	}
 
 private:

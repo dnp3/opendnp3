@@ -266,23 +266,6 @@ TEST_CASE(SUITE("Int16SetpointExecution"))
 	TestAnalogOutputExecution("29 02 28 01 00 01 00 64 00 00", AnalogOutputInt16(100));
 }
 
-TEST_CASE(SUITE("SolicitedResponseWithData"))
-{
-	MasterParams params;
-	params.disableUnsolOnStartup = false;
-	params.unsolClassMask = 0;	
-	NewMasterTestObject t(params);	
-	t.master.OnLowerLayerUp();
-
-	t.exe.RunMany();
-
-	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));	
-	t.master.OnSendResult(true);
-
-	t.SendToMaster("C0 81 00 00 01 02 00 02 02 81"); //group 2 var 1, index = 2, 0x81 = Online, true	
-
-	REQUIRE((Binary(true, BQ_ONLINE) == t.meas.GetBinary(2)));
-}
 
 
 

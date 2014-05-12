@@ -44,16 +44,12 @@ public:
 	MasterScheduler(openpal::Logger* pLogger, openpal::IExecutor& executor);
 
 	// ---------- Implement IMasterScheduler ------------
-
-	/**
-	* Retry the task at a later time
-	*/
+	
 	virtual void ScheduleLater(IMasterTask* pTask, const openpal::TimeDuration& delay) override final;
-
-	/*
-	* Run a task as soon as possible
-	*/
+	
 	virtual void Schedule(IMasterTask* pTask) override final;
+	
+	virtual void Demand(IMasterTask* pTask) override final;
 
 	// ---------- other public functions ----------------
 

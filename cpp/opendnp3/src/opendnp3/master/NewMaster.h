@@ -23,6 +23,7 @@
 
 #include "opendnp3/master/MasterContext.h"
 #include "opendnp3/master/CommandMarshaller.h"
+#include "opendnp3/master/MasterScan.h"
 
 namespace opendnp3
 {
@@ -51,6 +52,8 @@ class NewMaster : public openpal::IUpperLayer
 	/// ----- Misc public members -------
 	
 	ICommandProcessor& GetCommandProcessor();
+
+	MasterScan AddScan(openpal::TimeDuration period, const openpal::Function1<APDURequest&> builder);
 	
 	private:
 

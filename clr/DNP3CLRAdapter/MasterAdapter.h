@@ -23,11 +23,9 @@ public:
 
 	virtual void Disable();
 
-	virtual void Shutdown();
+	virtual void Shutdown();	
 
-	virtual IMasterScan^ GetIntegrityScan();
-
-	virtual IMasterScan^ AddClassScan(int aClassMask, System::TimeSpan period, System::TimeSpan taskRetryPeriod);
+	virtual IMasterScan^ AddClassScan(int aClassMask, System::TimeSpan period);
 
 private:
 	asiodnp3::IMaster* mpMaster;

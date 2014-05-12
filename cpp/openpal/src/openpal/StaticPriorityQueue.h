@@ -73,6 +73,20 @@ public:
 		list.Clear();
 	}
 
+	template <class Match>
+	bool RemoveFirst(const Match& match)
+	{
+		auto pNode = list.RemoveFirst(match);
+		if (pNode)
+		{			
+			return true;
+		}
+		else
+		{
+			return false;
+		}		
+	}
+
 	ValueType& Peek()
 	{
 		auto pNode = list.FindFirst([](const ValueType&)

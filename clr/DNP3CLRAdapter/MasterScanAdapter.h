@@ -47,7 +47,7 @@ public:
 	virtual void AddScanCallback(System::Action<ScanResult>^ callback)
 	{
 		auto pCallback = new ScanListenerAdapter(callback);
-		mpScan->AddScanCallback(pCallback);
+		//mpScan->AddScanCallback(pCallback); TODO
 		Wrapper<ScanListenerAdapter> wrapper(pCallback);
 		listeners->Add(wrapper);
 	}

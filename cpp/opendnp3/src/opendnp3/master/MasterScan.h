@@ -21,12 +21,11 @@
 #ifndef __MASTER_SCAN_H_
 #define __MASTER_SCAN_H_
 
-namespace openpal
-{
-class IExecutor;
-}
+#include <openpal/IExecutor.h>
 
-#include "IScanListener.h"
+#include "opendnp3/master/IMasterScheduler.h"
+#include "opendnp3/master/ITaskListener.h"
+#include "opendnp3/master/IMasterTask.h"
 
 namespace opendnp3
 {
@@ -36,18 +35,21 @@ class MasterScan
 public:
 
 	MasterScan();
-	MasterScan(openpal::IExecutor* apExecutor);
 
-	// Add optional callbacks for scan status updates
-	void AddScanCallback(IScanListener* apListener);
+	MasterScan(openpal::IExecutor& executor, IMasterScheduler& scheduler, IMasterTask& task);
 
-	// Request that the scan be performed ASAP
+	// Request that the scan be performed as soon as possible
 	void Demand();
+
+	bool IsDefined() const;
 
 private:
 	
-	openpal::IExecutor* mpExecutor;	
+	openpal::IExecutor* pExecutor;	
+	IMasterScheduler* pScheduler;	
+	IMasterTask* pTask;
 };
+
 }
 
 #endif

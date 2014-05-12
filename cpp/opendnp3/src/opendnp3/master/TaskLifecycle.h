@@ -18,38 +18,19 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-
-#ifndef __I_MASTER_SCHEDULER_H_
-#define __I_MASTER_SCHEDULER_H_
-
-#include <openpal/TimeDuration.h>
+#ifndef __TASK_LIFECYCLE_H_
+#define __TASK_LIFECYCLE_H_
 
 namespace opendnp3
 {
 
-class IMasterTask;
-
-class IMasterScheduler
+/// Enumeration for the events in a tasks lifecycle
+enum class TaskLifecycle : int
 {
-
-public:
-
-	/**
-	* Retry the task at a later time
-	*/
-	virtual void ScheduleLater(IMasterTask* pTask, const openpal::TimeDuration& delay) = 0;
-
-	/*
-	* Run a task as soon as possible
-	*/
-	virtual void Schedule(IMasterTask* pTask) = 0;
-
-	/*
-	* If the task is currently waiting, force it to run immediately
-	*/
-	virtual void Demand(IMasterTask* pTask) = 0;
-
-
+    /// Valid response was received
+    SUCCESS = 0,
+    /// The operation timed out without a response
+    FAILURE = 1
 };
 
 }

@@ -26,6 +26,7 @@ namespace Automatak.DNP3.Simulator
 
         private MeasurementCollection activeCollection;
         private IMaster master;
+        private IMasterScan scan;
 
         public ISOEHandler SequenceOfEvents
         {
@@ -41,6 +42,7 @@ namespace Automatak.DNP3.Simulator
         public void SetMaster(IMaster master)
         {
             this.master = master;
+            this.scan = master.AddClassScan(~0, TimeSpan.FromMinutes(1));
         }
 
         // this event comes from an non-UI thread and needs to be synchronized
@@ -126,6 +128,11 @@ namespace Automatak.DNP3.Simulator
             var cp = master.GetCommandProcessor();
             var future = cp.SelectAndOperate(new ControlRelayOutputBlock(ControlCode.LATCH_ON, 1, 100, 100), 0);
             future.Listen(rsp => this.BeginInvoke(new Action(() => OnCommandResult(rsp))));
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            this.scan.Demand();
         }
         
     }

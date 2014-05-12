@@ -85,6 +85,11 @@ public:
 		return (adapter.Add(value) != nullptr);
 	}	
 
+	openpal::ListNode<ValueType>* AddAndGetPointer(const ValueType& value)
+	{
+		return adapter.Add(value);
+	}
+
 	template <class Selector>
 	ListNode<ValueType>* FindFirst(Selector select)
 	{

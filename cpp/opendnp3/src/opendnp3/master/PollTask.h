@@ -18,52 +18,56 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef __POLL_TASK_H_
+#define __POLL_TASK_H_
 
-#ifndef __MASTER_TASK_LIST_H_
-#define __MASTER_TASK_LIST_H_
-
-#include "opendnp3/master/EnableUnsolicitedTask.h"
-#include "opendnp3/master/DisableUnsolicitedTask.h"
-#include "opendnp3/master/StartupIntegrityPoll.h"
-#include "opendnp3/master/PollTask.h"
+#include "opendnp3/master/PollTaskBase.h"
 #include "opendnp3/master/ITaskList.h"
 
-#include "opendnp3/StaticSizeConfiguration.h"
-
-
+#include <openpal/Function1.h>
 #include <openpal/StaticQueue.h>
 
 namespace opendnp3
 {
 
-class MasterTaskList : public ITaskList
-{
-	
+class ISOEHandler;
+
+/**
+ * A generic interface for defining master request/response style tasks
+ */
+class PollTask : public PollTaskBase
+{	
+
 public:
 
-	MasterTaskList(ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_, const MasterParams& params);
+	typedef openpal::Function1<APDURequest&> Builder;
 
-	void Initialize();
+	PollTask();	
 
-	virtual void ScheduleNext(IMasterScheduler& scheduler) override final;
-
-	PollTask* AddPollTask(IMasterScheduler& scheduler, const PollTask& pt);
+	PollTask(const Builder& builder, const openpal::TimeDuration& period_, ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_);
 	
+	virtual char const* Name() const override final { return "Poll Task"; }
+	
+	virtual TaskPriority Priority() const override final { return TaskPriority::POLL; }
+	
+	virtual void BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq) override final;
+
+	/// --- Public members ----
+
+	openpal::TimeDuration GetPeriod() const;
+
 private:
 
-	bool startupComplete;
+	virtual void OnFailure(const MasterParams& params, IMasterScheduler& scheduler) override final;
 
-	const MasterParams* pParams;
-	EnableUnsolicitedTask enableUnsol;
-	DisableUnsolicitedTask disableUnsol;	
-	StartupIntegrityPoll startupIntegrity;
+	virtual void OnSuccess(const MasterParams& params, IMasterScheduler& scheduler) override final;	
 
-	openpal::StaticQueue<IMasterTask*, uint8_t, sizes::MAX_MASTER_STARTUP_TASKS> startupTasks;	
-	openpal::StaticLinkedList<PollTask, uint8_t, sizes::MAX_MASTER_POLL_TASKS> pollTasks;
+	Builder builder;
+	openpal::TimeDuration period;	
 };
 
-}
 
+} //end ns
 
 
 #endif

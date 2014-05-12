@@ -55,21 +55,22 @@ TEST_CASE(SUITE("IntegrityOnStartup"))
 	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
 }
 
-TEST_CASE(SUITE("IntegrityPollLoadsMeasurements"))
+TEST_CASE(SUITE("SolicitedResponseWithData"))
 {
 	MasterParams params;
 	params.disableUnsolOnStartup = false;
+	params.unsolClassMask = 0;
 	NewMasterTestObject t(params);
 	t.master.OnLowerLayerUp();
 
-	REQUIRE(t.exe.RunMany() > 0);
+	t.exe.RunMany();
+
 	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
-	REQUIRE(t.exe.NumPendingTimers() == 0);
 	t.master.OnSendResult(true);
 	REQUIRE(t.exe.NumPendingTimers() == 1);
-	t.SendToMaster("C0 81 00 00 01 02 00 00 00 81");	
+	t.SendToMaster("C0 81 00 00 01 02 00 02 02 81"); //group 2 var 1, index = 2, 0x81 = Online, true	
 	REQUIRE(t.meas.NumTotal() == 1);
-	REQUIRE(Equals(t.meas.GetBinary(0), Binary(true)));	
+	REQUIRE((Binary(true, BQ_ONLINE) == t.meas.GetBinary(2)));
 }
 
 /*

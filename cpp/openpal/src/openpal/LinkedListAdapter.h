@@ -113,7 +113,7 @@ public:
 		return pHead;
 	}
 
-	Iterator Iterate()
+	Iterator Iterate() const
 	{
 		return Iterator(pHead);
 	}

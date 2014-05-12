@@ -53,8 +53,8 @@ namespace DotNetMasterDemo
             var master = channel.AddMaster("master", PrintingSOEHandler.Instance, config);
 
             var classMask = PointClassHelpers.GetMask(PointClass.CLASS_1, PointClass.CLASS_2, PointClass.CLASS_3);
-            var classScan = master.AddClassScan(classMask, TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5));
-            var integrityScan = master.GetIntegrityScan();
+            var classScan = master.AddClassScan(classMask, TimeSpan.FromSeconds(5));
+            var integrityScan = master.AddClassScan(~0, TimeSpan.FromMinutes(1));
 
             classScan.AddScanCallback((ScanResult result) => Console.WriteLine("class scan result: " + result.Status));
 

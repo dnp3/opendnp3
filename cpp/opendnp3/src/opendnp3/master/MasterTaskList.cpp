@@ -28,6 +28,7 @@ namespace opendnp3
 {
 
 MasterTaskList::MasterTaskList(ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_, const MasterParams& params) :
+	startupComplete(false),
 	pParams(&params),
 	enableUnsol(this, pLogger_),
 	disableUnsol(this, pLogger_),
@@ -39,6 +40,8 @@ MasterTaskList::MasterTaskList(ISOEHandler* pSOEHandler_, openpal::Logger* pLogg
 void MasterTaskList::Initialize()
 {
 	startupTasks.Clear();
+
+	startupComplete = false;
 
 	if (pParams->disableUnsolOnStartup)
 	{
@@ -58,14 +61,35 @@ void MasterTaskList::Initialize()
 
 void MasterTaskList::ScheduleNext(IMasterScheduler& scheduler)
 {
-	if (startupTasks.IsEmpty())
+	if (startupTasks.IsEmpty() && !startupComplete)
 	{
-		// TODO - startup complete...
+		startupComplete = true;
+		auto pScheduler = &scheduler;
+		auto scheduleLater = [pScheduler](PollTask& task) { pScheduler->ScheduleLater(&task, task.GetPeriod()); };
+		pollTasks.Foreach(scheduleLater);
 	}
 	else
 	{
 		scheduler.Schedule(startupTasks.Pop());
 	}
+}
+
+PollTask* MasterTaskList::AddPollTask(IMasterScheduler& scheduler, const PollTask& pt)
+{
+	auto pNode = pollTasks.AddAndGetPointer(pt);
+	if (pNode)
+	{
+		if (startupTasks.IsEmpty() && !startupComplete)
+		{
+			scheduler.ScheduleLater(&pNode->value, pt.GetPeriod());
+		}
+
+		return &pNode->value;
+	}
+	else
+	{
+		return nullptr;
+	}	
 }
 
 }

@@ -49,12 +49,6 @@
     <Filter Include="Source\link">
       <UniqueIdentifier>{c4a0ef96-6633-47b7-b4fe-01d480acfe75}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header\master\tasks">
-      <UniqueIdentifier>{029b8887-bd78-4caf-8a54-771c39c6f804}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\master\tasks">
-      <UniqueIdentifier>{3c008426-fcee-4a79-b2a7-29c6163a1ffc}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\opendnp3\StaticSizeConfiguration.h">
@@ -297,9 +291,6 @@
     <ClInclude Include="src\opendnp3\master\ICommandProcessor.h">
       <Filter>Header\master</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\master\IScanListener.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\master\ISOEHandler.h">
       <Filter>Header\master</Filter>
     </ClInclude>
@@ -319,9 +310,6 @@
       <Filter>Header\master</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\master\StartupTasks.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\TaskStatus.h">
       <Filter>Header\master</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\master\TimeSyncHandler.h">
@@ -651,28 +639,37 @@
     <ClInclude Include="src\opendnp3\app\APDUBuilders.h">
       <Filter>Header\app</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\master\SingleResponseTask.h">
-      <Filter>Header\master\tasks</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\DisableUnsolicitedTask.h">
-      <Filter>Header\master\tasks</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\ITaskList.h">
-      <Filter>Header\master\tasks</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\StartupIntegrityPoll.h">
-      <Filter>Header\master\tasks</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\app\APDULogging.h">
       <Filter>Header\app</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\master\NullResponseTask.h">
-      <Filter>Header\master\tasks</Filter>
+    <ClInclude Include="src\opendnp3\master\CommandMarshaller.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\DisableUnsolicitedTask.h">
+      <Filter>Header\master</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\master\EnableUnsolicitedTask.h">
-      <Filter>Header\master\tasks</Filter>
+      <Filter>Header\master</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\master\CommandMarshaller.h">
+    <ClInclude Include="src\opendnp3\master\ITaskList.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\NullResponseTask.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\SingleResponseTask.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\StartupIntegrityPoll.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\TaskLifecycle.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\ITaskListener.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\PollTask.h">
       <Filter>Header\master</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1061,28 +1058,31 @@
     <ClCompile Include="src\opendnp3\app\APDUBuilders.cpp">
       <Filter>Source\app</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\master\SingleResponseTask.cpp">
-      <Filter>Source\master\tasks</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\master\DisableUnsolicitedTask.cpp">
-      <Filter>Source\master\tasks</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\master\PollTaskBase.cpp">
-      <Filter>Source\master\tasks</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\master\StartupIntegrityPoll.cpp">
-      <Filter>Source\master\tasks</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\app\APDULogging.cpp">
       <Filter>Source\app</Filter>
     </ClCompile>
+    <ClCompile Include="src\opendnp3\master\CommandMarshaller.cpp">
+      <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\DisableUnsolicitedTask.cpp">
+      <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\StartupIntegrityPoll.cpp">
+      <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\SingleResponseTask.cpp">
+      <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\PollTaskBase.cpp">
+      <Filter>Source\master</Filter>
+    </ClCompile>
     <ClCompile Include="src\opendnp3\master\NullResponseTask.cpp">
-      <Filter>Source\master\tasks</Filter>
+      <Filter>Source\master</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\master\EnableUnsolicitedTask.cpp">
-      <Filter>Source\master\tasks</Filter>
+      <Filter>Source\master</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\master\CommandMarshaller.cpp">
+    <ClCompile Include="src\opendnp3\master\PollTask.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
   </ItemGroup>

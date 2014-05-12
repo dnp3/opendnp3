@@ -36,21 +36,14 @@ namespace DNP3.Interface
         /// 
         /// </summary>
         /// <returns>Interface used to dispatch command requests</returns>
-        ICommandProcessor GetCommandProcessor();
-        
-        /// <summary>
-        /// Retrieve an interface representing the integrity scan
-        /// </summary>
-        /// <returns>IMasterScan interface representing the integrity scan</returns>
-        IMasterScan GetIntegrityScan();
+        ICommandProcessor GetCommandProcessor();       
 
         /// <summary>
         /// Adds a class scan to the master
         /// </summary>
         /// <param name="aClassMask">bitfield of class values</param>
-        /// <param name="period">period, negative for non-periodic</param>
-        /// <param name="taskRetryPeriod">task retry rate on failure in milliseconds</param>
-        /// <returns></returns>
-        IMasterScan AddClassScan(int aClassMask, TimeSpan period, TimeSpan taskRetryPeriod);
+        /// <param name="period">period, negative for non-periodic</param>        
+        /// <returns>a new master scan interface</returns>
+        IMasterScan AddClassScan(int aClassMask, TimeSpan period);
     }
 }

@@ -191,8 +191,8 @@ namespace DNP3.Interface
 		CLASS_1 = 0x02,
 		CLASS_2 = 0x04,
 		CLASS_3 = 0x08,
-		PC_ALL_EVENTS = CLASS_1 | CLASS_2 | CLASS_3,
-        PC_INVALID = 0x10       
+		ALL_EVENTS = CLASS_1 | CLASS_2 | CLASS_3,
+        ALL_CLASSES = ALL_EVENTS | CLASS_0              
 	}
 
     public static class PointClassHelpers
@@ -219,7 +219,7 @@ namespace DNP3.Interface
 			allowTimeSync = true;
 			doUnsolOnStartup = false;
 			enableUnsol = true;
-			unsolClassMask = (System.Int32) (PointClass.PC_ALL_EVENTS);
+			unsolClassMask = (System.Int32) (PointClass.ALL_EVENTS);
             integrityPeriodMs = 5000;
             taskRetryPeriodMs = 5000;
 		}		

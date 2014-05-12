@@ -47,11 +47,9 @@ public:
 		const opendnp3::MasterStackConfig& config,
 		const StackActionHandler& handler);
 
-	opendnp3::ICommandProcessor* GetCommandProcessor();
+	virtual opendnp3::ICommandProcessor* GetCommandProcessor()  override final;
 
-	opendnp3::MasterScan GetIntegrityScan();
-
-	opendnp3::MasterScan AddClassScan(int aClassMask, openpal::TimeDuration aScanRate, openpal::TimeDuration aRetryRate);
+	virtual opendnp3::MasterScan AddClassScan(int classMask, openpal::TimeDuration period) override final;
 
 private:
 	opendnp3::NewMaster master;

@@ -20,6 +20,8 @@
  */
 #include "MasterStackImpl.h"
 
+#include <opendnp3/app/APDUBuilders.h>
+
 #include <openpal/IExecutor.h>
 
 using namespace openpal;
@@ -46,16 +48,11 @@ ICommandProcessor* MasterStackImpl::GetCommandProcessor()
 	return &master.GetCommandProcessor();
 }
 
-MasterScan MasterStackImpl::AddClassScan(int aClassMask, openpal::TimeDuration aScanRate, openpal::TimeDuration aRetryRate)
+MasterScan MasterStackImpl::AddClassScan(int classMask, openpal::TimeDuration period)
 {
 	ExecutorPause pause(this->GetExecutor());
-	return MasterScan();
-}
-
-MasterScan MasterStackImpl::GetIntegrityScan()
-{
-	ExecutorPause pause(this->GetExecutor());
-	return MasterScan();
+	auto configure = [classMask](APDURequest& request) { build::WriteClassHeaders(request, classMask); };
+	return master.AddScan(period, openpal::Bind1<APDURequest&>(configure));	
 }
 
 }

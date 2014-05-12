@@ -88,9 +88,11 @@ int main(int argc, char* argv[])
 	                   asiopal::UTCTimeSource::Inst(),	// system clock for time syncing
 	                   stackConfig						// stack configuration
 	               );
+	
+	
+	auto integrityScan = pMaster->AddClassScan(ALL_CLASSES, TimeDuration::Minutes(1));
+	auto exceptionScan = pMaster->AddClassScan(ALL_EVENT_CLASSES, TimeDuration::Seconds(5));
 
-	auto integrityScan = pMaster->GetIntegrityScan();
-	auto exceptionScan = pMaster->AddClassScan(CLASS_1 | CLASS_2 | CLASS_3, TimeDuration::Seconds(5), TimeDuration::Seconds(5));
 
 	// Enable the master. This will start communications.
 	pMaster->Enable();

@@ -34,14 +34,9 @@ void MasterAdapter::Shutdown()
 	mpMaster->BeginShutdown();
 }
 
-IMasterScan^ MasterAdapter::GetIntegrityScan()
+IMasterScan^ MasterAdapter::AddClassScan(int aClassMask, System::TimeSpan period)
 {
-	return gcnew MasterScanAdapter(mpMaster->GetIntegrityScan());
-}
-
-IMasterScan^ MasterAdapter::AddClassScan(int aClassMask, System::TimeSpan period, System::TimeSpan taskRetryPeriod)
-{
-	auto scan = mpMaster->AddClassScan(aClassMask, Conversions::convertTimespan(period),  Conversions::convertTimespan(taskRetryPeriod));
+	auto scan = mpMaster->AddClassScan(aClassMask, Conversions::convertTimespan(period));
 	return gcnew MasterScanAdapter(scan);
 }
 

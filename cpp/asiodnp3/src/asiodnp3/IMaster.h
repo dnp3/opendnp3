@@ -48,18 +48,13 @@ public:
 		DNP3Stack(root, pExecutor, linkConfig, handler)
 	{}
 
-	virtual ~IMaster() {}
-
-	/**
-	*  Returns a master scan object representing the configured integrity scan
-	*/
-	virtual opendnp3::MasterScan GetIntegrityScan() = 0;
+	virtual ~IMaster() {}	
 
 	/**
 	* Add a class-based scan to the master
 	* @return A proxy class used to manipulate the scan
 	*/
-	virtual opendnp3::MasterScan AddClassScan(int aClassMask, openpal::TimeDuration aScanRate, openpal::TimeDuration aRetryRate) = 0;
+	virtual opendnp3::MasterScan AddClassScan(int classMask, openpal::TimeDuration scanRate) = 0;
 
 	/**
 	* Get a command processor interface to execute controls on the master

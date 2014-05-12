@@ -18,21 +18,45 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __TASK_STATUS_H_
-#define __TASK_STATUS_H_
+
+#include "PollTask.h"
 
 namespace opendnp3
 {
 
-/// Enumeration for the asynchronous result of a task
-enum class ScanResult : int
-{
-    /// Valid response was received
-    SUCCESS = 0,
-    /// The operation timed out without a response
-    FAILURE = 1
-};
+PollTask::PollTask() : PollTaskBase(nullptr, nullptr)
+{}
 
+PollTask::PollTask(const Builder& builder_, const openpal::TimeDuration& period_, ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_) :
+	PollTaskBase(pSOEHandler_, pLogger_),
+	builder(builder_),
+	period(period_)
+{}
+		
+void PollTask::BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq)
+{		
+	rxCount = 0;
+	builder.Run(request);
+	request.SetFunction(FunctionCode::READ);
+	request.SetControl(AppControlField::Request(seq));	
 }
 
-#endif
+openpal::TimeDuration PollTask::GetPeriod() const
+{
+	return period;
+}
+
+void PollTask::OnFailure(const MasterParams& params, IMasterScheduler& scheduler)
+{
+	scheduler.ScheduleLater(this, params.taskRetryPeriod);
+}
+
+void PollTask::OnSuccess(const MasterParams& params, IMasterScheduler& scheduler)
+{
+	scheduler.ScheduleLater(this, period);
+}
+
+} //end ns
+
+
+

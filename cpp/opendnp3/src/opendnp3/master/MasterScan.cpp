@@ -26,35 +26,29 @@
 namespace opendnp3
 {
 
-MasterScan::MasterScan() : mpExecutor(nullptr)
+MasterScan::MasterScan() : pExecutor(nullptr), pScheduler(nullptr), pTask(nullptr)
 {}
 
-MasterScan::MasterScan(openpal::IExecutor* apExecutor) : mpExecutor(apExecutor)	
+MasterScan::MasterScan(openpal::IExecutor& executor, IMasterScheduler& scheduler, IMasterTask& task) :
+	pExecutor(&executor),
+	pScheduler(&scheduler),
+	pTask(&task)
 {
 
+}
+
+bool MasterScan::IsDefined() const
+{
+	return pExecutor && pScheduler && pTask;
 }
 
 void MasterScan::Demand()
 {
-	/*
-	if (mpTask && mpExecutor)
+	if (IsDefined())
 	{
-		auto lambda = [this]() { mpTask->Demand(); };
-		mpExecutor->Post(openpal::Bind(lambda));
-	}
-	*/
-}
-
-void MasterScan::AddScanCallback(IScanListener* apListener)
-{
-	/* TODO
-	mpTask->SetStatusCallback([apListener](bool success)
-	{
-		auto status = success ? ScanStatus::SUCCESS : ScanStatus::FAILURE;
-		ScanResult result = { status };
-		apListener->OnScanUpdate(result);
-	});
-	*/
+		auto action = [this](){ pScheduler->Demand(pTask); };
+		pExecutor->PostLambda(action);
+	}	
 }
 
 }

@@ -310,7 +310,7 @@
     <ClCompile Include="src\TestLinkRoute.cpp" />
     <ClCompile Include="src\TestLog.cpp" />
     <ClCompile Include="src\TestMasterCommandRequests.cpp" />
-    <ClCompile Include="src\TestNewMaster.cpp" />
+    <ClCompile Include="src\TestMaster.cpp" />
     <ClCompile Include="src\TestNewOutstation.cpp" />
     <ClCompile Include="src\TestNewOutstationCommandResponses.cpp" />
     <ClCompile Include="src\TestNewOutstationEventResponses.cpp" />
