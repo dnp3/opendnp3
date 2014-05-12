@@ -26,6 +26,7 @@
 #include "opendnp3/app/APDUHeaderParser.h"
 #include "opendnp3/app/APDULogging.h"
 #include "opendnp3/master/MeasurementHandler.h"
+#include "opendnp3/master/ConstantCommandProcessor.h"
 
 #include <openpal/LogMacros.h>
 
@@ -51,7 +52,7 @@ MasterContext::MasterContext(
 	unsolSeq(0),
 	pActiveTask(nullptr),
 	pResponseTimer(nullptr),
-	scheduler(executor),
+	scheduler(&logger, executor),
 	taskList(pSOEHandler_, &logger, params)	
 {
 	auto callback = [this](){ PostCheckForTask(); };
@@ -110,6 +111,19 @@ void MasterContext::CheckForTask()
 			pTask->BuildRequest(request, params, solSeq);			
 			this->Transmit(request.ToReadOnly());
 		}
+	}
+}
+
+void MasterContext::QueueCommandAction(const openpal::Function1<ICommandProcessor*>& action)
+{
+	if (isOnline)
+	{
+		scheduler.ScheduleCommand(action);
+	}
+	else
+	{
+		ConstantCommandProcessor processor(CommandResponse(CommandResult::NO_COMMS), nullptr);
+		action.Run(&processor);
 	}
 }
 
@@ -276,52 +290,52 @@ bool MasterContext::CanConfirmResponse(TaskStatus status)
 
 void MasterContext::SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback* pCallback)
 {	
-	pCallback->OnComplete(CommandResponse(CommandResult::NO_COMMS));
+	this->SelectAndOperateT(command, index, pCallback);
 }
 
 void MasterContext::DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback* pCallback)
 {
-	pCallback->OnComplete(CommandResponse(CommandResult::NO_COMMS));
+	this->DirectOperateT(command, index, pCallback);
 }
 
 void MasterContext::SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback* pCallback)
 {
-	pCallback->OnComplete(CommandResponse(CommandResult::NO_COMMS));
+	this->SelectAndOperateT(command, index, pCallback);
 }
 
 void MasterContext::DirectOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback* pCallback)
 {
-	pCallback->OnComplete(CommandResponse(CommandResult::NO_COMMS));
+	this->DirectOperateT(command, index, pCallback);
 }
 
 void MasterContext::SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback* pCallback)
 {
-	pCallback->OnComplete(CommandResponse(CommandResult::NO_COMMS));
+	this->SelectAndOperateT(command, index, pCallback);
 }
 
 void MasterContext::DirectOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback* pCallback)
 {
-	pCallback->OnComplete(CommandResponse(CommandResult::NO_COMMS));
+	this->DirectOperateT(command, index, pCallback);
 }
 
 void MasterContext::SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback* pCallback)
 {
-	pCallback->OnComplete(CommandResponse(CommandResult::NO_COMMS));
+	this->SelectAndOperateT(command, index, pCallback);
 }
 
 void MasterContext::DirectOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback* pCallback)
 {
-	pCallback->OnComplete(CommandResponse(CommandResult::NO_COMMS));
+	this->DirectOperateT(command, index, pCallback);
 }
 
 void MasterContext::SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback* pCallback)
 {
-	pCallback->OnComplete(CommandResponse(CommandResult::NO_COMMS));
+	this->SelectAndOperateT(command, index, pCallback);
 }
 
 void MasterContext::DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback* pCallback)
 {
-	pCallback->OnComplete(CommandResponse(CommandResult::NO_COMMS));
+	this->DirectOperateT(command, index, pCallback);
 }
 
 }

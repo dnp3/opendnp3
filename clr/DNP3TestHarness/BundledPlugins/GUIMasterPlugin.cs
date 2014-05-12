@@ -14,19 +14,14 @@ namespace Automatak.DNP3.Simulator
         public GUIMasterPlugin()
         {
             form = new GUIMasterForm();
-        }
+        }                     
 
-        public ISOEHandler SOEHandler
+        ISOEHandler IMasterPlugin.SOEHandler
         {
             get { return form.SequenceOfEvents; }
         }
-        
-        public void SetMaster(IMaster master)
-        {
-            
-        }
 
-        public System.Windows.Forms.Form PluginForm
+        System.Windows.Forms.Form IMasterPlugin.PluginForm
         {
             get
             {
@@ -34,7 +29,12 @@ namespace Automatak.DNP3.Simulator
             }
         }
 
-        public void Shutdown()
+        void IMasterPlugin.SetMaster(IMaster master)
+        {
+            form.SetMaster(master);
+        }
+
+        void IMasterPlugin.Shutdown()
         {
             
         }

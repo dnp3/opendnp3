@@ -24,7 +24,8 @@ namespace Automatak.DNP3.Simulator
         private MeasurementCollection analogOutputStatii = new MeasurementCollection();
         private MeasurementCollection octetStrings = new MeasurementCollection();
 
-        private MeasurementCollection activeCollection = null;
+        private MeasurementCollection activeCollection;
+        private IMaster master;
 
         public ISOEHandler SequenceOfEvents
         {
@@ -33,8 +34,13 @@ namespace Automatak.DNP3.Simulator
 
         public GUIMasterForm()
         {
-            InitializeComponent();     
+            InitializeComponent();            
             handler.NewMeasurements += handler_NewMeasurements;
+        }
+
+        public void SetMaster(IMaster master)
+        {
+            this.master = master;
         }
 
         // this event comes from an non-UI thread and needs to be synchronized
@@ -107,6 +113,19 @@ namespace Automatak.DNP3.Simulator
                 default:
                     return null;
             }
+        }
+
+        private void OnCommandResult(CommandResponse rsp)
+        {
+            this.button1.Enabled = true;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            button1.Enabled = false;
+            var cp = master.GetCommandProcessor();
+            var future = cp.SelectAndOperate(new ControlRelayOutputBlock(ControlCode.LATCH_ON, 1, 100, 100), 0);
+            future.Listen(rsp => this.BeginInvoke(new Action(() => OnCommandResult(rsp))));
         }
         
     }

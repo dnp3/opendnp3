@@ -37,7 +37,7 @@ class ConstantCommandProcessor : public ICommandProcessor
 {
 public:
 
-	ConstantCommandProcessor(openpal::IExecutor* apExecutor, const CommandResponse& response);
+	ConstantCommandProcessor(const CommandResponse& response, openpal::IExecutor* pExecutor_ = nullptr);
 
 	// Implement the ICommandProcessor interface
 

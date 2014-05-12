@@ -35,6 +35,11 @@ CommandResponse CommandResponse::OK(CommandStatus aStatus)
 	return CommandResponse(CommandResult::RESPONSE_OK, aStatus);
 }
 
+CommandResponse CommandResponse::NoResponse(CommandResult result)
+{
+	return CommandResponse(result);
+}
+
 CommandResult CommandResponse::GetResult() const
 {
 	return mResult;

@@ -93,7 +93,9 @@ class MasterContext : public ICommandProcessor
 	virtual void SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback* pCallback) override final;
 	virtual void DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback* pCallback) override final;
 
-	private:		
+	private:	
+
+	void QueueCommandAction(const openpal::Function1<ICommandProcessor*>& action);
 
 	void OnResponseTimeout();
 
@@ -114,7 +116,31 @@ class MasterContext : public ICommandProcessor
 	void Transmit(const openpal::ReadOnlyBuffer& output);
 
 	static bool CanConfirmResponse(TaskStatus status);	
+
+	template <class T>
+	void SelectAndOperateT(const T& command, uint16_t index, ICommandCallback* pCallback);
+
+	template <class T>
+	void DirectOperateT(const T& command, uint16_t index, ICommandCallback* pCallback);
 };
+
+template <class T>
+void MasterContext::SelectAndOperateT(const T& command, uint16_t index, ICommandCallback* pCallback)
+{
+	auto process = [command, index, pCallback](ICommandProcessor* pProcessor) {
+		pProcessor->SelectAndOperate(command, index, pCallback);
+	};
+	this->QueueCommandAction(openpal::Bind1<ICommandProcessor*>(process));
+}
+
+template <class T>
+void MasterContext::DirectOperateT(const T& command, uint16_t index, ICommandCallback* pCallback)
+{
+	auto process = [command, index, pCallback](ICommandProcessor* pProcessor) {
+		pProcessor->DirectOperate(command, index, pCallback);
+	};
+	this->QueueCommandAction(openpal::Bind1<ICommandProcessor*>(process));
+}
 
 }
 

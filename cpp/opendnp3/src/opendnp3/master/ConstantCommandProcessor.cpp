@@ -28,9 +28,9 @@ using namespace openpal;
 namespace opendnp3
 {
 
-ConstantCommandProcessor::ConstantCommandProcessor(IExecutor* pExecutor_, const CommandResponse& response_) :
-	pExecutor(pExecutor_),
-	response(response_)
+ConstantCommandProcessor::ConstantCommandProcessor(const CommandResponse& response_, openpal::IExecutor* pExecutor_) :
+	response(response_),
+	pExecutor(pExecutor_)
 {
 
 }
@@ -38,8 +38,15 @@ ConstantCommandProcessor::ConstantCommandProcessor(IExecutor* pExecutor_, const 
 void ConstantCommandProcessor::Respond(ICommandCallback* pCallback)
 {
 	CommandResponse cr(response);
-	auto lambda = [=]() { pCallback->OnComplete(cr); };
-	pExecutor->Post(Bind(lambda));
+	if (pExecutor)
+	{
+		auto lambda = [cr, pCallback]() { pCallback->OnComplete(cr); };
+		pExecutor->Post(Bind(lambda));
+	}
+	else
+	{
+		pCallback->OnComplete(cr);
+	}	
 }
 
 

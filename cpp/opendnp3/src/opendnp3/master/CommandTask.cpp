@@ -49,6 +49,14 @@ CommandTask::CommandTask(openpal::Logger* pLogger_) :
 
 }
 
+void CommandTask::Callback(const CommandResponse& cr)
+{
+	if (pCallback)
+	{
+		pCallback->OnComplete(cr);
+	}
+}
+
 void CommandTask::LoadSelectAndOperate()
 {
 	functionCodes.Clear();
@@ -127,7 +135,7 @@ void CommandTask::BuildRequest(APDURequest& request, const MasterParams& params,
 	if (functionCodes.IsNotEmpty() && pActiveSequence)
 	{
 		auto code = functionCodes.Pop();
-		request.SetFunction(functionCodes.Pop());
+		request.SetFunction(code);
 		request.SetControl(AppControlField::Request(seq));
 		pActiveSequence->FormatRequestHeader(request);
 	}
@@ -142,14 +150,14 @@ TaskStatus CommandTask::OnResponse(const APDUResponseRecord& response, const Mas
 	else
 	{
 		SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Ignoring unexpected response with FIR/FIN not set");
-		pCallback->OnComplete(CommandResponse(CommandResult::BAD_RESPONSE));
+		this->Callback(CommandResponse(CommandResult::BAD_RESPONSE));
 		return TaskStatus::FAIL;
 	}
 }
 
 void CommandTask::OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler)
 {
-	pCallback->OnComplete(CommandResponse(CommandResult::TIMEOUT));
+	this->Callback(CommandResponse(CommandResult::TIMEOUT));
 }
 
 TaskStatus CommandTask::OnSingleResponse(const APDUResponseRecord& response, const MasterParams& params, IMasterScheduler& scheduler)
@@ -173,14 +181,14 @@ TaskStatus CommandTask::OnSingleResponse(const APDUResponseRecord& response, con
 			}
 			else
 			{
-				pCallback->OnComplete(commandResponse);  // something failed, end the task early				
+				this->Callback(commandResponse);  // something failed, end the task early				
 				return TaskStatus::FAIL;
 			}
 		}
 	}
 	else
 	{		
-		pCallback->OnComplete(CommandResponse(CommandResult::BAD_RESPONSE));
+		this->Callback(CommandResponse(CommandResult::BAD_RESPONSE));
 		return TaskStatus::FAIL;
 	}
 }

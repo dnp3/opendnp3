@@ -32,6 +32,7 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.comboBoxTypes = new System.Windows.Forms.ComboBox();
             this.measurementView = new Automatak.DNP3.Simulator.MeasurementView();
+            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -46,6 +47,7 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.button1);
             this.splitContainer1.Panel1.Controls.Add(this.comboBoxTypes);
             this.splitContainer1.Panel1.Padding = new System.Windows.Forms.Padding(5);
             // 
@@ -75,6 +77,16 @@
             this.measurementView.Size = new System.Drawing.Size(831, 543);
             this.measurementView.TabIndex = 2;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(13, 76);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(192, 23);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // GUIMasterForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -99,6 +111,7 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.ComboBox comboBoxTypes;
         private MeasurementView measurementView;
+        private System.Windows.Forms.Button button1;
 
     }
 }

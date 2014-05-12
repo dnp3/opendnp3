@@ -23,6 +23,7 @@
 #define __FUNCTION1_H_
 
 #include <cstring>
+#include <cstdint>
 
 namespace openpal
 {
@@ -49,7 +50,7 @@ public:
 		return (pInvoke != nullptr);
 	}
 
-	void Run(const T& arg)
+	void Run(const T& arg) const
 	{
 		if (pInvoke)
 		{

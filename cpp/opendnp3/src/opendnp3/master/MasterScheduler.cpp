@@ -36,10 +36,13 @@ MasterScheduler::DelayedTask::DelayedTask(const openpal::MonotonicTimestamp& exp
 	pTask(pTask_)
 {}
 
-MasterScheduler::MasterScheduler(openpal::IExecutor& executor) :
+MasterScheduler::MasterScheduler(openpal::Logger* pLogger, openpal::IExecutor& executor) :
+	commandTask(pLogger),
 	pExecutor(&executor),
 	pTimer(nullptr)
-{}
+{
+
+}
 
 void MasterScheduler::ScheduleLater(IMasterTask* pTask, const openpal::TimeDuration& delay)
 {	
@@ -78,13 +81,22 @@ void MasterScheduler::Schedule(IMasterTask* pTask)
 
 IMasterTask* MasterScheduler::Start()
 {	
-	if (pendingQueue.IsEmpty())
+	if (commandActions.IsEmpty())
 	{
-		return nullptr;
+		if (pendingQueue.IsEmpty())
+		{
+			return nullptr;
+		}
+		else
+		{
+			return pendingQueue.Pop();
+		}
 	}
 	else
 	{
-		return pendingQueue.Pop();
+		// configure the command task		
+		commandActions.Pop().Run(&commandTask);
+		return &commandTask;
 	}
 }
 
@@ -93,11 +105,34 @@ void MasterScheduler::Reset()
 	this->CancelTimer();
 	this->pendingQueue.Clear();
 	this->scheduledQueue.Clear();
+	while (commandActions.IsNotEmpty())
+	{		
+		this->ReportFailure(commandActions.Pop(), CommandResult::NO_COMMS);
+	}
 }
 
 void MasterScheduler::SetExpirationHandler(const openpal::Runnable& runnable)
 {
 	this->expirationHandler = runnable;
+}
+
+void MasterScheduler::ScheduleCommand(const CommandErasure& action)
+{
+	if (commandActions.IsFull())
+	{	
+		this->ReportFailure(action, CommandResult::QUEUE_FULL);
+	}
+	else
+	{
+		commandActions.Enqueue(action);
+		this->expirationHandler.Run();
+	}
+}
+
+void MasterScheduler::ReportFailure(const CommandErasure& action, CommandResult result)
+{
+	ConstantCommandProcessor processor(CommandResponse::NoResponse(result), pExecutor);
+	action.Run(&processor);
 }
 
 void MasterScheduler::OnTimerExpiration()
@@ -106,12 +141,10 @@ void MasterScheduler::OnTimerExpiration()
 	auto now = pExecutor->GetTime();
 	auto wasEmpty = this->pendingQueue.IsEmpty();
 	
-
 	// move all expired tasks to the run queue
 	while (scheduledQueue.IsNotEmpty() && scheduledQueue.Peek().expiration.milliseconds <= now.milliseconds)
-	{
-		IMasterTask* pTask = scheduledQueue.Pop().pTask;
-		pendingQueue.Enqueue(pTask);
+	{		
+		pendingQueue.Enqueue(scheduledQueue.Pop().pTask);
 	}
 
 	if (scheduledQueue.IsNotEmpty())

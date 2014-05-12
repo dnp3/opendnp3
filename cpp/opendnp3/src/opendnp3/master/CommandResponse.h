@@ -38,9 +38,10 @@ public:
 
 	static const CommandResponse Success;
 
-	CommandResponse(CommandResult aResult = CommandResult::NO_COMMS, CommandStatus aStatus = CommandStatus::UNDEFINED);
+	CommandResponse(CommandResult result = CommandResult::NO_COMMS, CommandStatus status = CommandStatus::UNDEFINED);
 
-	static CommandResponse OK(CommandStatus aStatus);
+	static CommandResponse OK(CommandStatus status);
+	static CommandResponse NoResponse(CommandResult result);
 
 
 	///  The result of the operation, should be examined before looking at the status code

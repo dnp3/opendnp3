@@ -20,7 +20,9 @@
  */
 
 #include "MasterTaskList.h"
+
 #include "opendnp3/app/ClassMask.h"
+#include "opendnp3/master/ConstantCommandProcessor.h"
 
 namespace opendnp3
 {
@@ -29,8 +31,7 @@ MasterTaskList::MasterTaskList(ISOEHandler* pSOEHandler_, openpal::Logger* pLogg
 	pParams(&params),
 	enableUnsol(this, pLogger_),
 	disableUnsol(this, pLogger_),
-	startupIntegrity(this, pSOEHandler_, pLogger_),
-	commandTask(pLogger_)
+	startupIntegrity(this, pSOEHandler_, pLogger_)	
 {
 	
 }

@@ -26,7 +26,8 @@
 #include "opendnp3/master/DisableUnsolicitedTask.h"
 #include "opendnp3/master/StartupIntegrityPoll.h"
 #include "opendnp3/master/ITaskList.h"
-#include "opendnp3/master/CommandTask.h"
+
+#include "opendnp3/StaticSizeConfiguration.h"
 
 #include <openpal/StaticQueue.h>
 
@@ -35,14 +36,14 @@ namespace opendnp3
 
 class MasterTaskList : public ITaskList
 {
-
+	
 public:
 
 	MasterTaskList(ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_, const MasterParams& params);
 
 	void Initialize();
 
-	virtual void ScheduleNext(IMasterScheduler& scheduler) override final;
+	virtual void ScheduleNext(IMasterScheduler& scheduler) override final;	
 	
 private:
 
@@ -51,9 +52,7 @@ private:
 	DisableUnsolicitedTask disableUnsol;	
 	StartupIntegrityPoll startupIntegrity;
 
-	CommandTask commandTask;
-
-	openpal::StaticQueue<IMasterTask*, uint8_t, 8> startupTasks;
+	openpal::StaticQueue<IMasterTask*, uint8_t, 8> startupTasks;	
 };
 
 }

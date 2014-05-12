@@ -23,7 +23,9 @@
 #define __MASTER_SCHEDULER_H_
 
 #include <openpal/StaticPriorityQueue.h>
+#include <openpal/Function1.h>
 
+#include "opendnp3/master/CommandTask.h"
 #include "opendnp3/master/IMasterTask.h"
 #include "opendnp3/master/QueuedCommandProcessor.h"
 #include "opendnp3/master/IMasterScheduler.h"
@@ -37,7 +39,9 @@ class MasterScheduler : public IMasterScheduler
 
 public:
 
-	MasterScheduler(openpal::IExecutor& executor);
+	typedef openpal::Function1<ICommandProcessor*> CommandErasure;
+
+	MasterScheduler(openpal::Logger* pLogger, openpal::IExecutor& executor);
 
 	// ---------- Implement IMasterScheduler ------------
 
@@ -68,7 +72,14 @@ public:
 	*/
 	void SetExpirationHandler(const openpal::Runnable& runnable);
 
+	/*
+	* Schedule a command to run
+	*/
+	void ScheduleCommand(const CommandErasure& action);
+
 private:
+
+	void ReportFailure(const CommandErasure& action, CommandResult result);
 
 	class DelayedTask
 	{
@@ -96,11 +107,15 @@ private:
 
 	bool CancelTimer();
 
+	CommandTask commandTask;
 	openpal::IExecutor* pExecutor;
 	openpal::ITimer* pTimer;
 	openpal::Runnable expirationHandler;
 	openpal::StaticPriorityQueue<IMasterTask*, uint16_t, sizes::MAX_MASTER_TASKS, IMasterTask::Ordering> pendingQueue;
-	openpal::StaticPriorityQueue<DelayedTask, uint16_t, sizes::MAX_MASTER_TASKS, TimeBasedOrdering> scheduledQueue;	
+	openpal::StaticPriorityQueue<DelayedTask, uint16_t, sizes::MAX_MASTER_TASKS, TimeBasedOrdering> scheduledQueue;
+
+
+	openpal::StaticQueue<CommandErasure, uint8_t, sizes::MAX_COMMAND_QUEUE_SIZE> commandActions;
 };
 
 }
