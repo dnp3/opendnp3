@@ -23,12 +23,22 @@
 #include "NewMasterTestObject.h"
 #include "MeasurementComparisons.h"
 #include "HexConversions.h"
+#include "MockCommandCallback.h"
 
 #include <opendnp3/app/APDUResponse.h>
 #include <opendnp3/app/APDUBuilders.h>
 
 using namespace opendnp3;
 using namespace openpal;
+
+MasterParams NoStartupTasks()
+{
+	MasterParams params;
+	params.disableUnsolOnStartup = false;
+	params.startupIntergrityClassMask = 0;
+	params.unsolClassMask = 0;
+	return params;
+}
 
 std::string Integrity(uint8_t seq, int mask = ~0)
 {
@@ -47,7 +57,10 @@ std::string EmptyResponse(uint8_t seq)
 	return toHex(response.ToReadOnly());
 }
 
-#define SUITE(name) "NewMasterTestSuite - " name
+// Group 12 Var1, 1 byte count/index, index = 1, time on/off = 1000, CommandStatus::SUCCESS
+std::string crob = "0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 00";
+
+#define SUITE(name) "MasterTestSuite - " name
 
 TEST_CASE(SUITE("InitialState"))
 {
@@ -255,13 +268,14 @@ TEST_CASE(SUITE("RestartBadResponses"))
 
 	REQUIRE(t.app.NumAPDU() ==  0); // no more packets
 }
+*/
 
 TEST_CASE(SUITE("ControlExecutionClosedState"))
 {
-	MasterConfig config;
-	MasterTestObject t(config);
+	MasterParams params;
+	NewMasterTestObject t(params);
 
-	auto pCmdProcessor = t.master.GetCommandProcessor();
+	auto pCmdProcessor = &t.master.GetCommandProcessor();
 
 	ControlRelayOutputBlock bo(ControlCode::PULSE);
 	MockCommandCallback callback;
@@ -269,7 +283,7 @@ TEST_CASE(SUITE("ControlExecutionClosedState"))
 	for(int i = 0; i < 10; ++i)
 	{		
 		pCmdProcessor->SelectAndOperate(bo, 1, &callback);
-		t.mts.Dispatch();
+		t.exe.Dispatch();
 		REQUIRE(1 == callback.responses.size());
 		REQUIRE((CommandResponse(CommandResult::NO_COMMS) == callback.responses.front()));
 		callback.responses.pop_front();
@@ -278,56 +292,57 @@ TEST_CASE(SUITE("ControlExecutionClosedState"))
 }
 
 TEST_CASE(SUITE("SelectAndOperate"))
-{
-	MasterConfig config;
-	MasterTestObject t(config);
+{	
+	NewMasterTestObject t(NoStartupTasks());
 	t.master.OnLowerLayerUp();
 
-	TestForIntegrityPoll(t);
-	REQUIRE(t.app.NumAPDU() ==  0); // check that the master sends no more packets
-
-	ControlRelayOutputBlock bo(ControlCode::PULSE); bo.status = CommandStatus::SUCCESS;
+	ControlRelayOutputBlock bo(ControlCode::PULSE);
 
 	MockCommandCallback callback;
-	t.master.GetCommandProcessor()->SelectAndOperate(bo, 1, &callback);
-	t.mts.Dispatch();
+	t.master.GetCommandProcessor().SelectAndOperate(bo, 1, &callback);
+	t.exe.Dispatch();
 
 	// Group 12 Var1, 1 byte count/index, index = 1, time on/off = 1000, CommandStatus::SUCCESS
 	std::string crob = "0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 00";
 
-	REQUIRE(t.Read() ==  "C0 03 " + crob); // SELECT
-	t.RespondToMaster("C0 81 00 00 " + crob);
+	REQUIRE(t.lower.PopWriteAsHex() ==  "C0 03 " + crob); // SELECT
+	t.master.OnSendResult(true);
+	t.SendToMaster("C0 81 00 00 " + crob);
 
-	t.mts.DispatchOne();
+	t.exe.Dispatch();
 
-	REQUIRE(t.Read() ==  "C0 04 " + crob); // OPERATE
-	t.RespondToMaster("C0 81 00 00 " + crob);
+	REQUIRE(t.lower.PopWriteAsHex() == "C1 04 " + crob); // OPERATE
+	t.master.OnSendResult(true);
+	t.SendToMaster("C1 81 00 00 " + crob);
 
-	t.mts.DispatchOne();
+	t.exe.Dispatch();
 
-	REQUIRE(t.app.NumAPDU() ==  0); //nore more packets
+	REQUIRE(t.lower.PopWriteAsHex() == ""); //nore more packets
 	REQUIRE(1 == callback.responses.size());
 	REQUIRE((CommandResponse::OK(CommandStatus::SUCCESS) == callback.responses.front()));
 }
 
-TEST_CASE(SUITE("ControlExecutionSelectFailure"))
+TEST_CASE(SUITE("ControlExecutionSelectTimeout"))
 {
-	MasterConfig config;
-	MasterTestObject t(config);
+	auto config = NoStartupTasks();
+	NewMasterTestObject t(config);
 	t.master.OnLowerLayerUp();
 
 	MockCommandCallback callback;
+	t.master.GetCommandProcessor().SelectAndOperate(ControlRelayOutputBlock(ControlCode::PULSE), 1, &callback);
+	t.exe.Dispatch();
 
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 03 " + crob); // SELECT
+	t.master.OnSendResult(true);
 
-	DoControlSelectAndOperate(t, &callback);
-	t.master.OnSolFailure();
-
-	t.mts.DispatchOne();
+	t.exe.AdvanceTime(config.responseTimeout);
+	t.exe.Dispatch();
 
 	REQUIRE(1 == callback.responses.size());
 	REQUIRE((CommandResponse(CommandResult::TIMEOUT) == callback.responses.front()));
 }
 
+/*
 TEST_CASE(SUITE("ControlExecutionSelectLayerDown"))
 {
 	MasterConfig config;

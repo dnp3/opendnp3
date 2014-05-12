@@ -78,7 +78,12 @@ bool MasterContext::OnLayerDown()
 {
 	if (isOnline)
 	{
-		pActiveTask = nullptr;
+		if (pActiveTask)
+		{
+			pActiveTask->OnLowerLayerClose();
+			pActiveTask = nullptr;
+		}
+
 		scheduler.Reset();
 		this->CancelResponseTimer();
 		isOnline = false;
@@ -194,12 +199,10 @@ void MasterContext::OnResponse(const APDUResponseRecord& response)
 
 			switch (result)
 			{
-				case(TaskStatus::CONTINUE) :
-					solSeq = NextSeq(solSeq);
+				case(TaskStatus::CONTINUE) :					
 					this->StartResponseTimer();
 					break;
-				case(TaskStatus::REPEAT) :
-					solSeq = NextSeq(solSeq);
+				case(TaskStatus::REPEAT) :					
 					this->StartTask(pActiveTask);
 					break;
 				default:

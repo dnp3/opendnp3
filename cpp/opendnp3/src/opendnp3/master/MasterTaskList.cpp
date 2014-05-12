@@ -45,8 +45,11 @@ void MasterTaskList::Initialize()
 		this->startupTasks.Enqueue(&disableUnsol);
 	}
 
-	this->startupTasks.Enqueue(&startupIntegrity);
-
+	if (pParams->startupIntergrityClassMask != 0)
+	{
+		this->startupTasks.Enqueue(&startupIntegrity);
+	}
+	
 	if (pParams->unsolClassMask & ALL_EVENT_CLASSES)
 	{
 		this->startupTasks.Enqueue(&enableUnsol);

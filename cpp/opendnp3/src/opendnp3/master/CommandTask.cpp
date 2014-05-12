@@ -160,6 +160,11 @@ void CommandTask::OnResponseTimeout(const MasterParams& params, IMasterScheduler
 	this->Callback(CommandResponse(CommandResult::TIMEOUT));
 }
 
+void CommandTask::OnLowerLayerClose()
+{
+	this->Callback(CommandResponse::NoResponse(CommandResult::NO_COMMS));
+}
+
 TaskStatus CommandTask::OnSingleResponse(const APDUResponseRecord& response, const MasterParams& params, IMasterScheduler& scheduler)
 {
 	auto result = APDUParser::ParseTwoPass(response.objects, pActiveSequence, pLogger);

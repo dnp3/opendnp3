@@ -44,7 +44,7 @@ StartupIntegrityPoll::StartupIntegrityPoll(ITaskList* pTaskList_, ISOEHandler* p
 void StartupIntegrityPoll::BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq)
 {
 	rxCount = 0;
-	build::ReadIntegrity(request, params.intergrityClassMask, seq);
+	build::ReadIntegrity(request, params.startupIntergrityClassMask, seq);
 }
 	
 void StartupIntegrityPoll::OnFailure(const MasterParams& params, IMasterScheduler& scheduler)

@@ -68,7 +68,9 @@ public:
 
 	virtual TaskStatus OnResponse(const APDUResponseRecord& response, const MasterParams& params, IMasterScheduler& scheduler) override final;
 	
-	virtual void OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler) override final;	
+	virtual void OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler) override final;
+
+	virtual void OnLowerLayerClose() override final;
 
 private:
 

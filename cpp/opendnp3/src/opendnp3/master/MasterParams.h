@@ -52,8 +52,8 @@ struct MasterParams
 	/// Period for integrity scans (class 1/2/3/0), negative for non periodic
 	openpal::TimeDuration integrityPeriod;
 
-	/// Which classes should be requested in an integrity scan, defaults to 3/2/1/0
-	int intergrityClassMask;
+	/// Which classes should be requested in a startup integrity scan, defaults to 3/2/1/0, 0 == no scan
+	int startupIntergrityClassMask;
 
 	/// Time delay beforce retrying a failed task
 	openpal::TimeDuration taskRetryPeriod;
