@@ -28,11 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GUIMasterForm));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.comboBoxTypes = new System.Windows.Forms.ComboBox();
             this.measurementView = new Automatak.DNP3.Simulator.MeasurementView();
-            this.button1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -47,7 +48,6 @@
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.button1);
             this.splitContainer1.Panel1.Controls.Add(this.comboBoxTypes);
             this.splitContainer1.Panel1.Padding = new System.Windows.Forms.Padding(5);
             // 
@@ -55,8 +55,15 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.measurementView);
             this.splitContainer1.Size = new System.Drawing.Size(1048, 543);
-            this.splitContainer1.SplitterDistance = 213;
+            this.splitContainer1.SplitterDistance = 258;
             this.splitContainer1.TabIndex = 1;
+            // 
+            // imageList1
+            // 
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "dials.ico");
+            this.imageList1.Images.SetKeyName(1, "switch.ico");
             // 
             // comboBoxTypes
             // 
@@ -65,7 +72,7 @@
             this.comboBoxTypes.FormattingEnabled = true;
             this.comboBoxTypes.Location = new System.Drawing.Point(5, 5);
             this.comboBoxTypes.Name = "comboBoxTypes";
-            this.comboBoxTypes.Size = new System.Drawing.Size(203, 21);
+            this.comboBoxTypes.Size = new System.Drawing.Size(248, 21);
             this.comboBoxTypes.TabIndex = 0;
             this.comboBoxTypes.SelectedIndexChanged += new System.EventHandler(this.comboBoxTypes_SelectedIndexChanged);
             // 
@@ -74,18 +81,8 @@
             this.measurementView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.measurementView.Location = new System.Drawing.Point(0, 0);
             this.measurementView.Name = "measurementView";
-            this.measurementView.Size = new System.Drawing.Size(831, 543);
+            this.measurementView.Size = new System.Drawing.Size(786, 543);
             this.measurementView.TabIndex = 2;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(13, 76);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(192, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // GUIMasterForm
             // 
@@ -111,7 +108,7 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.ComboBox comboBoxTypes;
         private MeasurementView measurementView;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ImageList imageList1;
 
     }
 }

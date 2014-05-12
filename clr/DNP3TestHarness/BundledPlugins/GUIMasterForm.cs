@@ -117,12 +117,12 @@ namespace Automatak.DNP3.Simulator
 
         private void OnCommandResult(CommandResponse rsp)
         {
-            this.button1.Enabled = true;
+            //this.button1.Enabled = true;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            button1.Enabled = false;
+           // button1.Enabled = false;
             var cp = master.GetCommandProcessor();
             var future = cp.SelectAndOperate(new ControlRelayOutputBlock(ControlCode.LATCH_ON, 1, 100, 100), 0);
             future.Listen(rsp => this.BeginInvoke(new Action(() => OnCommandResult(rsp))));

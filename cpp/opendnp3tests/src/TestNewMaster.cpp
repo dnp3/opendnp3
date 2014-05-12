@@ -342,35 +342,38 @@ TEST_CASE(SUITE("ControlExecutionSelectTimeout"))
 	REQUIRE((CommandResponse(CommandResult::TIMEOUT) == callback.responses.front()));
 }
 
-/*
 TEST_CASE(SUITE("ControlExecutionSelectLayerDown"))
 {
-	MasterConfig config;
-	MasterTestObject t(config);
+	auto config = NoStartupTasks();
+	NewMasterTestObject t(config);
 	t.master.OnLowerLayerUp();
 
 	MockCommandCallback callback;
-	DoControlSelectAndOperate(t, &callback);
-	t.master.OnLowerLayerDown();
-	t.master.OnLowerLayerUp();
+	t.master.GetCommandProcessor().SelectAndOperate(ControlRelayOutputBlock(ControlCode::PULSE), 1, &callback);
+	t.exe.Dispatch();
 
-	t.mts.DispatchOne();
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 03 " + crob); // SELECT
+	t.master.OnSendResult(true);
+
+	t.master.OnLowerLayerDown();
 
 	REQUIRE(1 == callback.responses.size());
-	REQUIRE((CommandResponse(CommandResult::TIMEOUT) == callback.responses.front()));
+	REQUIRE((CommandResponse(CommandResult::NO_COMMS) == callback.responses.front()));
 }
 
 TEST_CASE(SUITE("ControlExecutionSelectErrorResponse"))
 {
-	MasterConfig config;
-	MasterTestObject t(config);
+	auto config = NoStartupTasks();
+	NewMasterTestObject t(config);
 	t.master.OnLowerLayerUp();
 
 	MockCommandCallback callback;
-	DoControlSelectAndOperate(t, &callback);
-	t.RespondToMaster("C0 81 00 00 0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 04"); // not supported
+	t.master.GetCommandProcessor().SelectAndOperate(ControlRelayOutputBlock(ControlCode::PULSE), 1, &callback);
+	t.exe.Dispatch();
+	t.master.OnSendResult(true);
+	t.SendToMaster("C0 81 00 00 0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 04"); // not supported
 
-	t.mts.DispatchOne();
+	REQUIRE(t.exe.Dispatch() > 0);
 
 	REQUIRE(1 ==  callback.responses.size());
 	REQUIRE((CommandResponse::OK(CommandStatus::NOT_SUPPORTED) == callback.responses.front()));
@@ -378,16 +381,18 @@ TEST_CASE(SUITE("ControlExecutionSelectErrorResponse"))
 
 TEST_CASE(SUITE("ControlExecutionSelectPartialResponse"))
 {
-	MasterConfig config;
-	MasterTestObject t(config);
+	auto config = NoStartupTasks();
+	NewMasterTestObject t(config);
 	t.master.OnLowerLayerUp();
 
 	MockCommandCallback callback;
-	DoControlSelectAndOperate(t, &callback);
+	t.master.GetCommandProcessor().SelectAndOperate(ControlRelayOutputBlock(ControlCode::PULSE), 1, &callback);
+	t.exe.Dispatch();
+	t.master.OnSendResult(true);
 
-	t.RespondToMaster("80 81 00 00 0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 00", false);
+	t.SendToMaster("80 81 00 00 0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 00");
 
-	REQUIRE(t.mts.DispatchOne());
+	REQUIRE(t.exe.Dispatch() > 0);
 
 	REQUIRE(1 ==  callback.responses.size());
 	REQUIRE((CommandResponse(CommandResult::BAD_RESPONSE) == callback.responses.front()));
@@ -395,50 +400,52 @@ TEST_CASE(SUITE("ControlExecutionSelectPartialResponse"))
 
 TEST_CASE(SUITE("DeferredControlExecution"))
 {
-	MasterConfig config;
-	MasterTestObject t(config);
+	MasterParams params;
+	params.disableUnsolOnStartup = false;
+	params.unsolClassMask = 0;
+	NewMasterTestObject t(params);
 	t.master.OnLowerLayerUp();
 
+	REQUIRE(t.exe.Dispatch() > 0);
+
 	// check that a read request was made on startup
-	TestForIntegrityPoll(t);
-
+	REQUIRE(t.lower.PopWriteAsHex() == Integrity(0));
+	t.master.OnSendResult(true);
+	
 	//issue a command while the master is waiting for a response from the outstation
-	ControlRelayOutputBlock bo(ControlCode::PULSE); bo.status = CommandStatus::SUCCESS;
+	ControlRelayOutputBlock bo(ControlCode::PULSE);
 	MockCommandCallback callback;
-	t.master.GetCommandProcessor()->SelectAndOperate(bo, 1, &callback);
-	REQUIRE(t.mts.DispatchOne());
+	t.master.GetCommandProcessor().SelectAndOperate(bo, 1, &callback);
+	REQUIRE(t.exe.Dispatch() > 0);
 
-	t.RespondToMaster("C0 81 00 00"); //now master gets response to integrity
-	std::string crob = "0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 00";
-	REQUIRE(t.Read() ==  "C0 03 " + crob); //select
+	t.SendToMaster("C0 81 00 00"); //now master gets response to integrity
+
+	REQUIRE(t.exe.Dispatch() > 0);
+	
+	REQUIRE(t.lower.PopWriteAsHex() == "C1 03 " + crob); //select
 }
+
 
 TEST_CASE(SUITE("CloseWhileWaitingForCommandResponse"))
 {
-	MasterConfig config;
-	MasterTestObject t(config);
-	t.master.OnLowerLayerUp();
-
-	TestForIntegrityPoll(t);
-	REQUIRE(t.app.NumAPDU() == 0); // check that the master sends no more packets
+	auto config = NoStartupTasks();
+	NewMasterTestObject t(config);
+	t.master.OnLowerLayerUp();	
 
 	AnalogOutputInt16 ao(100);
 	MockCommandCallback callback;
 
-	t.master.GetCommandProcessor()->DirectOperate(ao, 1, &callback);
-	REQUIRE(t.mts.DispatchOne());
+	t.master.GetCommandProcessor().DirectOperate(ao, 1, &callback);
+	REQUIRE(t.exe.Dispatch() > 0);
 
-	REQUIRE(t.Read() == "C0 05 29 02 28 01 00 01 00 64 00 00"); // DIRECT OPERATE
-	REQUIRE(t.app.NumAPDU() == 0); //nore more packets
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 05 29 02 28 01 00 01 00 64 00 00"); // DIRECT OPERATE
+	REQUIRE(t.lower.NumWrites() == 0); //nore more packets
 	REQUIRE(callback.responses.empty());
-
 	t.master.OnLowerLayerDown();
-	REQUIRE(1 == callback.responses.size());
-	t.master.OnLowerLayerUp();
-
-	TestForIntegrityPoll(t);
+	REQUIRE(1 == callback.responses.size());		
 }
 
+/*
 TEST_CASE(SUITE("SingleSetpointExecution"))// Group 41 Var4
 {
 	// 100.0
