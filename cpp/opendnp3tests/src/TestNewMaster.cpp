@@ -445,7 +445,34 @@ TEST_CASE(SUITE("CloseWhileWaitingForCommandResponse"))
 	REQUIRE(1 == callback.responses.size());		
 }
 
-/*
+template <class T>
+void TestAnalogOutputExecution(const std::string& hex, const T& command)
+{
+	auto config = NoStartupTasks();
+	NewMasterTestObject t(config);
+	t.master.OnLowerLayerUp();
+	
+	MockCommandCallback callback;
+
+	t.master.GetCommandProcessor().SelectAndOperate(command, 1, &callback);
+	REQUIRE(t.exe.Dispatch() > 0);
+
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 03 " + hex);
+	t.master.OnSendResult(true);	
+	REQUIRE(callback.responses.empty());
+	t.SendToMaster("C0 81 00 00 " + hex);
+
+	REQUIRE(t.lower.PopWriteAsHex() == "C1 04 " + hex);
+	t.master.OnSendResult(true);
+	REQUIRE(callback.responses.empty());
+	t.SendToMaster("C1 81 00 00 " + hex);
+
+	REQUIRE(t.exe.Dispatch() > 0);
+	REQUIRE(callback.responses.size() == 1);
+	REQUIRE(callback.responses.front() == CommandResponse::OK(CommandStatus::SUCCESS));
+}
+
+
 TEST_CASE(SUITE("SingleSetpointExecution"))// Group 41 Var4
 {
 	// 100.0
@@ -472,6 +499,7 @@ TEST_CASE(SUITE("Int16SetpointExecution"))
 	TestAnalogOutputExecution("29 02 28 01 00 01 00 64 00 00", AnalogOutputInt16(100));
 }
 
+/*
 TEST_CASE(SUITE("SolicitedResponseWithData"))
 {
 	MasterConfig config;
