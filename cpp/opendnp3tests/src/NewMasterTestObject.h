@@ -34,6 +34,8 @@
 namespace opendnp3
 {
 
+	MasterParams NoStartupTasks();
+
 	class NewMasterTestObject
 	{
 	public:

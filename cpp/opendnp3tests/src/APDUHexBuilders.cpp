@@ -19,35 +19,37 @@
  * to you under the terms of the License.
  */
 
-#include "NewMasterTestObject.h"
+#include "APDUHexBuilders.h"
 
-#include "BufferHelpers.h"
+#include <openpal/StaticBuffer.h>
+#include <opendnp3/app/APDURequest.h>
+#include <opendnp3/app/APDUResponse.h>
+#include <opendnp3/app/APDUBuilders.h>
 
-namespace opendnp3
+#include "HexConversions.h"
+
+using namespace openpal;
+using namespace opendnp3;
+
+namespace hex
 {
 
-MasterParams NoStartupTasks()
-{
-	MasterParams params;
-	params.disableUnsolOnStartup = false;
-	params.startupIntergrityClassMask = 0;
-	params.unsolClassMask = 0;
-	return params;
+	std::string IntegrityPoll(uint8_t seq, int mask)
+	{
+		StaticBuffer<100> buffer;
+		APDURequest request(buffer.GetWriteBuffer());
+		opendnp3::build::ReadIntegrity(request, mask, seq);
+		return toHex(request.ToReadOnly());
+	}
+
+	std::string EmptyResponse(uint8_t seq)
+	{
+		StaticBuffer<4> buffer;
+		APDUResponse response(buffer.GetWriteBuffer());
+		response.SetFunction(FunctionCode::RESPONSE);
+		response.SetControl(AppControlField(true, true, false, false, seq));
+		return toHex(response.ToReadOnly());
+	}
 }
 
-NewMasterTestObject::NewMasterTestObject(const MasterParams& params) :
-	log(),
-	exe(),
-	meas(),
-	lower(log.root),
-	master(exe, log.root, lower, &meas, params)
-{}
-
-void NewMasterTestObject::SendToMaster(const std::string& hex)
-{
-	HexSequence hs(hex);
-	master.OnReceive(hs.ToReadOnly());
-}
-	
-}
 

@@ -194,6 +194,9 @@
     <ClInclude Include="src\NewMasterTestObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\APDUHexBuilders.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AsyncPhysBaseTest.cpp">
@@ -443,6 +446,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\TestNewMaster.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TestMasterCommandRequests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\APDUHexBuilders.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

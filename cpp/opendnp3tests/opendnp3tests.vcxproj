@@ -191,6 +191,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\APDUHelpers.h" />
+    <ClInclude Include="src\APDUHexBuilders.h" />
     <ClInclude Include="src\AsyncPhysBaseTest.h" />
     <ClInclude Include="src\AsyncPhysTestObject.h" />
     <ClInclude Include="src\AsyncSerialTestObject.h" />
@@ -253,6 +254,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\APDUHelpers.cpp" />
+    <ClCompile Include="src\APDUHexBuilders.cpp" />
     <ClCompile Include="src\AsyncPhysBaseTest.cpp" />
     <ClCompile Include="src\AsyncPhysTestObject.cpp" />
     <ClCompile Include="src\AsyncSerialTestObject.cpp" />
@@ -307,6 +309,7 @@
     <ClCompile Include="src\TestLinkReceiver.cpp" />
     <ClCompile Include="src\TestLinkRoute.cpp" />
     <ClCompile Include="src\TestLog.cpp" />
+    <ClCompile Include="src\TestMasterCommandRequests.cpp" />
     <ClCompile Include="src\TestNewMaster.cpp" />
     <ClCompile Include="src\TestNewOutstation.cpp" />
     <ClCompile Include="src\TestNewOutstationCommandResponses.cpp" />
