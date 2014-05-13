@@ -26,12 +26,16 @@
 #include "MockCommandCallback.h"
 #include "APDUHexBuilders.h"
 
+#include <asiopal/LogToStdio.h>
+
 #include <opendnp3/app/APDUResponse.h>
 #include <opendnp3/app/APDUBuilders.h>
 #include <opendnp3/app/PointClass.h>
 
-using namespace opendnp3;
 using namespace openpal;
+using namespace asiopal;
+using namespace opendnp3;
+
 
 #define SUITE(name) "MasterTestSuite - " name
 
@@ -162,75 +166,87 @@ TEST_CASE(SUITE("SolicitedResponseLayerDown"))
 	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
 }
 
-/*
 TEST_CASE(SUITE("SolicitedMultiFragResponse"))
 {
-	MasterConfig config;
+	auto config = NoStartupTasks();
+	config.startupIntergrityClassMask = ALL_CLASSES;
 	MasterTestObject t(config);
 	t.master.OnLowerLayerUp();
 
-	REQUIRE(t.Read() ==  INTEGRITY);
+	REQUIRE(t.exe.RunMany() > 0);
 
-	t.RespondToMaster("C0 81 00 00 01 02 00 02 02 81", false); //trigger partial response
-
+	REQUIRE(t.lower.PopWriteAsHex() ==  hex::IntegrityPoll(0));
+	t.master.OnSendResult(true);
+	t.SendToMaster("80 81 00 00 01 02 00 02 02 81"); // partial response FIR = 1, FIN = 0	
+	REQUIRE(1 == t.meas.NumStatic());
 	REQUIRE((Binary(true, BQ_ONLINE) == t.meas.GetBinary(2)));
-
-	REQUIRE(0 ==  t.app.NumAPDU());
-
-	t.RespondToMaster("C0 81 00 00 01 02 00 03 03 02");
-	REQUIRE((Binary(false, BQ_RESTART) ==  t.meas.GetBinary(3)));
+	REQUIRE(0 == t.lower.NumWrites());
+	t.SendToMaster("41 81 00 00 01 02 00 03 03 02"); // final response FIR = 0, FIN = 1
+	REQUIRE(2 == t.meas.NumStatic());
+	REQUIRE((Binary(false, BQ_RESTART) == t.meas.GetBinary(3)));	
 }
 
 TEST_CASE(SUITE("EventPoll"))
-{
-	MasterConfig config;
-	MasterTestObject t(config);
+{	
+	MasterTestObject t(NoStartupTasks());
 
-	t.master.AddClassScan(CLASS_1 | CLASS_2, TimeDuration::Milliseconds(10), TimeDuration::Seconds(1));
-	t.master.AddClassScan(CLASS_3, TimeDuration::Milliseconds(10), TimeDuration::Seconds(1));
+	auto class12 = t.master.AddClassScan(CLASS_1 | CLASS_2, TimeDuration::Milliseconds(10));
+	auto class3 = t.master.AddClassScan(CLASS_3, TimeDuration::Milliseconds(20));
 
-	t.master.OnLowerLayerUp();
+	t.master.OnLowerLayerUp();	
+	
+	REQUIRE(t.exe.AdvanceToNextTimer());
+	REQUIRE(t.exe.RunMany() > 0);
 
-	TestForIntegrityAndRespond(t, "C0 81 00 00 01 02 00 02 02 81"); //group 2 var 1, index = 2, 0x81 = Online, true
+	REQUIRE(t.lower.PopWriteAsHex() ==  "C0 01 3C 02 06 3C 03 06");
+	t.master.OnSendResult(true);
+	t.SendToMaster("C0 81 00 00 02 01 17 01 02 81"); //group 2 var 1, index = 2, 0x81 = Online, true
 
-	REQUIRE(t.Read() ==  "C0 01 3C 02 06 3C 03 06");
-	t.RespondToMaster("C0 81 00 00 01 02 00 02 02 81"); //group 2 var 1, index = 2, 0x81 = Online, true
+	REQUIRE(t.meas.NumEvent() == 1);
+	REQUIRE((Binary(true, BQ_ONLINE) == t.meas.GetEventBinary(2)));
 
-	REQUIRE(t.Read() ==  "C0 01 3C 04 06");
-	t.RespondToMaster("C0 81 00 00 01 02 00 02 02 81"); //group 2 var 1, index = 2, 0x81 = Online, true
+	REQUIRE(t.exe.AdvanceToNextTimer());
+	REQUIRE(t.exe.RunMany() > 0);
 
-	REQUIRE((Binary(true, BQ_ONLINE) == t.meas.GetBinary(2)));
+	REQUIRE(t.lower.PopWriteAsHex() == "C1 01 3C 04 06");
+	t.master.OnSendResult(true);
+	t.SendToMaster("C1 81 00 00 02 01 17 01 03 01"); //group 2 var 1, index = 3, 0x81 = Online, true
+
+	REQUIRE(t.meas.NumEvent() == 2);
+	REQUIRE((Binary(false, BQ_ONLINE) == t.meas.GetEventBinary(3)));
 }
 
 TEST_CASE(SUITE("ParsesOctetStringResponseWithFiveCharacters"))
-{
-	MasterConfig config;
-	MasterTestObject t(config);
-	t.master.OnLowerLayerUp();
-
-	TestForIntegrityPoll(t);
+{	
+	MasterTestObject t(NoStartupTasks());	
+	t.master.OnLowerLayerUp();	
 
 	// Group 111 (0x6F) Variation (length), 1 byte count / 1 byte index (4), count of 1, "hello" == [0x68, 0x65, 0x6C, 0x6C, 0x6F]
-	t.SendUnsolToMaster("C0 82 00 00 6F 05 17 01 04 68 65 6C 6C 6F");
-
-	REQUIRE(t.mts.RunOne());
+	t.SendToMaster("D0 82 00 00 6F 05 17 01 04 68 65 6C 6C 6F");	
 
 	REQUIRE("68 65 6C 6C 6F" ==  toHex(t.meas.GetEventOctetString(4).ToReadOnly()));
 }
 
 TEST_CASE(SUITE("ParsesOctetStringResponseSizeOfOne"))
-{
-	MasterConfig config;
-	MasterTestObject t(config);
+{			
+	MasterTestObject t(NoStartupTasks());
+	t.master.AddClassScan(~0, TimeDuration::Seconds(1));
 	t.master.OnLowerLayerUp();
+
+	t.exe.AdvanceToNextTimer();
+	t.exe.RunMany();
+
+	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
+	t.master.OnSendResult(true);
 
 	// octet strings shouldn't be found in class 0 polls, but we'll test that we can process them anyway
 	// Group 110 (0x6E) Variation(length), start = 3, stop = 3
-	TestForIntegrityAndRespond(t, "C0 81 00 00 6E 01 00 03 03 AA");
+	t.SendToMaster("C0 81 00 00 6E 01 00 03 03 AA");
 
 	REQUIRE("AA" ==  toHex(t.meas.GetOctetString(3).ToReadOnly()));
 }
 
+/*
 TEST_CASE(SUITE("RestartAndTimeBits"))
 {
 MasterConfig config;
