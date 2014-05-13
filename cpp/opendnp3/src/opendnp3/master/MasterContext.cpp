@@ -87,6 +87,7 @@ bool MasterContext::OnLayerDown()
 		scheduler.Reset();
 		this->CancelResponseTimer();
 		isOnline = false;
+		isSending = false;
 		solSeq = 0;
 		unsolSeq = 0;
 		return true;

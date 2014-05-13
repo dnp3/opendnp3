@@ -137,29 +137,32 @@ TEST_CASE(SUITE("SolicitedResponseTimeout"))
 	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
 	t.master.OnSendResult(true);
 	REQUIRE(t.exe.AdvanceToNextTimer());
+	REQUIRE(t.exe.RunMany() > 0);
 
-	
-	/* TODO
-	t.mts.(TimeDuration(config.TaskRetryRate));
-	REQUIRE(t.mts.RunOne());
+	REQUIRE(t.exe.NumPendingTimers() == 1);
+	REQUIRE(t.exe.AdvanceToNextTimer());
+	REQUIRE(t.exe.RunMany() > 0);
+	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(1));
+}
 
-	TestForIntegrityPoll(t);
-	*/ 
+TEST_CASE(SUITE("SolicitedResponseLayerDown"))
+{
+	MasterTestObject t(NoStartupTasks());
+	auto scan = t.master.AddClassScan(ALL_CLASSES, TimeDuration::Seconds(5));
+	t.master.OnLowerLayerUp();
+
+	REQUIRE(t.exe.AdvanceToNextTimer());
+	REQUIRE(t.exe.RunMany() > 0);
+	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
+	t.master.OnLowerLayerDown();
+
+	t.master.OnLowerLayerUp();
+	REQUIRE(t.exe.AdvanceToNextTimer());
+	REQUIRE(t.exe.RunMany() > 0);
+	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
 }
 
 /*
-TEST_CASE(SUITE("SolicitedResponseLayerDown"))
-{
-	MasterConfig config;
-	MasterTestObject t(config);
-	t.master.OnLowerLayerUp();
-
-	REQUIRE(t.Read() ==  INTEGRITY);
-	t.master.OnLowerLayerDown();
-	t.master.OnLowerLayerUp();
-	REQUIRE(t.Read() ==  INTEGRITY);
-}
-
 TEST_CASE(SUITE("SolicitedMultiFragResponse"))
 {
 	MasterConfig config;
