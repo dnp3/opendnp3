@@ -24,7 +24,7 @@
 #include "IMaster.h"
 
 #include <opendnp3/master/MasterStackConfig.h>
-#include <opendnp3/master/NewMaster.h>
+#include <opendnp3/master/Master.h>
 #include <opendnp3/transport/TransportStack.h>
 
 #include <openpal/IUTCTimeSource.h>
@@ -52,7 +52,7 @@ public:
 	virtual opendnp3::MasterScan AddClassScan(int classMask, openpal::TimeDuration period) override final;
 
 private:
-	opendnp3::NewMaster master;
+	opendnp3::Master master;
 };
 
 }

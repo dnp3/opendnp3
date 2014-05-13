@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __NEW_MASTER_H_
-#define __NEW_MASTER_H_
+#ifndef __MASTER_H_
+#define __MASTER_H_
 
 #include "opendnp3/master/MasterContext.h"
 #include "opendnp3/master/CommandMarshaller.h"
@@ -28,11 +28,11 @@
 namespace opendnp3
 {
 
-class NewMaster : public openpal::IUpperLayer
+class Master : public openpal::IUpperLayer
 {
 	public:
 
-	NewMaster(	openpal::IExecutor& executor, 				
+	Master(	openpal::IExecutor& executor, 				
 				openpal::LogRoot& root, 
 				openpal::ILowerLayer& lower,
 				ISOEHandler* pSOEHandler,
@@ -54,6 +54,8 @@ class NewMaster : public openpal::IUpperLayer
 	ICommandProcessor& GetCommandProcessor();
 
 	MasterScan AddScan(openpal::TimeDuration period, const openpal::Function1<APDURequest&> builder);
+
+	MasterScan AddClassScan(int classMask, openpal::TimeDuration period);
 	
 	private:
 

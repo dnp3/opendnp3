@@ -24,7 +24,7 @@
 #include "MockExecutor.h"
 #include "LogTester.h"
 
-#include <opendnp3/master/NewMaster.h>
+#include <opendnp3/master/Master.h>
 #include <opendnp3/LogLevels.h>
 #include <deque>
 
@@ -48,7 +48,7 @@ namespace opendnp3
 		MockExecutor exe;
 		MockSOEHandler meas;
 		MockLowerLayer lower;
-		NewMaster master;
+		Master master;
 	};
 
 }

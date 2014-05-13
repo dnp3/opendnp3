@@ -76,10 +76,11 @@ TEST_CASE(SUITE("SolicitedResponseWithData"))
 /*
 TEST_CASE(SUITE("IntegrityPollCanRepeat"))
 {
-	MasterParams params;
-	params.disableUnsolOnStartup = false;
-	MasterTestObject t(params);
+	MasterParams params;	
+	MasterTestObject t(NoStartupTasks());
 	t.master.OnLowerLayerUp();
+
+	t.master.AddScan(TimeDuration::Seconds(10), )
 
 	REQUIRE(t.exe.RunMany() > 0);
 	REQUIRE(t.lower.PopWriteAsHex() == Integrity(0));

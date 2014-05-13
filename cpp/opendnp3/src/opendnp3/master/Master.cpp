@@ -19,17 +19,19 @@
  * to you under the terms of the License.
  */
 
-#include "NewMaster.h"
+#include "Master.h"
 
 #include "opendnp3/app/APDUHeaderParser.h"
-
+#include "opendnp3/app/APDUBuilders.h"
 #include "opendnp3/LogLevels.h"
+
+
 #include <openpal/LogMacros.h>
 
 namespace opendnp3
 {
 
-NewMaster::NewMaster(
+Master::Master(
 	openpal::IExecutor& executor,
 	openpal::LogRoot& root,
 	openpal::ILowerLayer& lower,
@@ -40,17 +42,17 @@ NewMaster::NewMaster(
 	commandMarshaller(executor, context)
 {}
 	
-void NewMaster::OnLowerLayerUp()
+void Master::OnLowerLayerUp()
 {
 	context.OnLayerUp();
 }
 
-void NewMaster::OnLowerLayerDown()
+void Master::OnLowerLayerDown()
 {
 	context.OnLayerDown();
 }
 
-void NewMaster::OnReceive(const openpal::ReadOnlyBuffer& apdu)
+void Master::OnReceive(const openpal::ReadOnlyBuffer& apdu)
 {
 	if (context.isOnline)
 	{
@@ -85,7 +87,7 @@ void NewMaster::OnReceive(const openpal::ReadOnlyBuffer& apdu)
 	}
 }
 
-void NewMaster::OnSendResult(bool isSucccess)
+void Master::OnSendResult(bool isSucccess)
 {
 	if (context.isOnline)
 	{
@@ -93,12 +95,12 @@ void NewMaster::OnSendResult(bool isSucccess)
 	}
 }
 
-ICommandProcessor& NewMaster::GetCommandProcessor()
+ICommandProcessor& Master::GetCommandProcessor()
 {
 	return commandMarshaller;
 }
 
-MasterScan NewMaster::AddScan(openpal::TimeDuration period, const openpal::Function1<APDURequest&> builder)
+MasterScan Master::AddScan(openpal::TimeDuration period, const openpal::Function1<APDURequest&> builder)
 {
 	PollTask task(builder, period, context.pSOEHandler, &context.logger);
 	auto pTask = context.taskList.AddPollTask(context.scheduler, task);
@@ -110,6 +112,12 @@ MasterScan NewMaster::AddScan(openpal::TimeDuration period, const openpal::Funct
 	{
 		return MasterScan();
 	}
+}
+
+MasterScan Master::AddClassScan(int classMask, openpal::TimeDuration period)
+{	
+	auto configure = [classMask](APDURequest& request) { build::WriteClassHeaders(request, classMask); };
+	return this->AddScan(period, openpal::Bind1<APDURequest&>(configure));
 }
 	
 }

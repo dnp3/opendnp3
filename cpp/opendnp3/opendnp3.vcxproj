@@ -139,7 +139,7 @@
     <ClInclude Include="src\opendnp3\master\MasterStackConfig.h" />
     <ClInclude Include="src\opendnp3\master\MasterTaskList.h" />
     <ClInclude Include="src\opendnp3\master\MeasurementHandler.h" />
-    <ClInclude Include="src\opendnp3\master\NewMaster.h" />
+    <ClInclude Include="src\opendnp3\master\Master.h" />
     <ClInclude Include="src\opendnp3\master\QueuedCommandProcessor.h" />
     <ClInclude Include="src\opendnp3\master\ScanResult.h" />
     <ClInclude Include="src\opendnp3\master\SingleResponseTask.h" />
@@ -302,7 +302,7 @@
     <ClCompile Include="src\opendnp3\master\MasterScheduler.cpp" />
     <ClCompile Include="src\opendnp3\master\MasterTaskList.cpp" />
     <ClCompile Include="src\opendnp3\master\MeasurementHandler.cpp" />
-    <ClCompile Include="src\opendnp3\master\NewMaster.cpp" />
+    <ClCompile Include="src\opendnp3\master\Master.cpp" />
     <ClCompile Include="src\opendnp3\master\PollTaskBase.cpp" />
     <ClCompile Include="src\opendnp3\master\QueuedCommandProcessor.cpp" />
     <ClCompile Include="src\opendnp3\master\SingleResponseTask.cpp" />
