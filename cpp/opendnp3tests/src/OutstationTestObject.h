@@ -18,13 +18,12 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __NEW_OUTSTATION_TEST_OBJECT_H_
-#define __NEW_OUTSTATION_TEST_OBJECT_H_
+#ifndef __OUTSTATION_TEST_OBJECT_H_
+#define __OUTSTATION_TEST_OBJECT_H_
 
 #include <opendnp3/LogLevels.h>
-#include <opendnp3/outstation/NewOutstation.h>
+#include <opendnp3/outstation/Outstation.h>
 #include <opendnp3/outstation/Database.h>
-#include <opendnp3/outstation/OutstationConfig.h>
 #include <opendnp3/outstation/DynamicallyAllocatedDatabase.h>
 #include <opendnp3/outstation/DynamicallyAllocatedEventBuffer.h>
 
@@ -43,7 +42,7 @@ class OutstationTestObject
 {
 
 public:
-	OutstationTestObject(const NewOutstationConfig& config,
+	OutstationTestObject(const OutstationConfig& config,
 							const DatabaseTemplate& dbTemplate = DatabaseTemplate(), 
 							const EventBufferConfig& ebConfig = EventBufferConfig::AllTypes(0));
 
@@ -57,7 +56,7 @@ public:
 	Database db;
 	MockCommandHandler cmdHandler;
 	MockTimeWriteHandler timeHandler;
-	NewOutstation outstation;
+	Outstation outstation;
 
 
 	void SendToOutstation(const std::string& hex);

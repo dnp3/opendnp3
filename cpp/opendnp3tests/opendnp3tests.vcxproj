@@ -306,9 +306,9 @@
     <ClCompile Include="src\TestLog.cpp" />
     <ClCompile Include="src\TestMasterCommandRequests.cpp" />
     <ClCompile Include="src\TestMaster.cpp" />
-    <ClCompile Include="src\TestNewOutstation.cpp" />
-    <ClCompile Include="src\TestNewOutstationCommandResponses.cpp" />
-    <ClCompile Include="src\TestNewOutstationEventResponses.cpp" />
+    <ClCompile Include="src\TestOutstation.cpp" />
+    <ClCompile Include="src\TestOutstationCommandResponses.cpp" />
+    <ClCompile Include="src\TestOutstationEventResponses.cpp" />
     <ClCompile Include="src\TestPhysicalLayerAsyncBase.cpp" />
     <ClCompile Include="src\TestPhysicalLayerAsyncSerial.cpp" />
     <ClCompile Include="src\TestPhysicalLayerAsyncTCP.cpp" />

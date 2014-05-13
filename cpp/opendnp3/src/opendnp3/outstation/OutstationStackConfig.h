@@ -21,7 +21,7 @@
 #ifndef __OUTSTATION_STACK_CONFIG_H_
 #define __OUTSTATION_STACK_CONFIG_H_
 
-#include "opendnp3/outstation/NewOutstationConfig.h"
+#include "opendnp3/outstation/OutstationConfig.h"
 #include "opendnp3/outstation/EventBufferConfig.h"
 #include "opendnp3/outstation/DatabaseTemplate.h"
 #include "opendnp3/link/LinkConfig.h"
@@ -56,7 +56,7 @@ struct OutstationStackConfig
 	EventBufferConfig eventBuffer;
 	
 	/// Outstation config
-	NewOutstationConfig outstation;
+	OutstationConfig outstation;
 	
 	/// Link layer config
 	LinkConfig link;

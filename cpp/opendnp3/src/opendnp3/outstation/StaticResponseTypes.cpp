@@ -20,8 +20,6 @@
  */
 #include "StaticResponseTypes.h"
 
-#include "OutstationConfig.h"
-
 #include "opendnp3/objects/Group1.h"
 #include "opendnp3/objects/Group3.h"
 #include "opendnp3/objects/Group10.h"

@@ -28,14 +28,14 @@
 
 #include "opendnp3/outstation/Database.h"
 #include "opendnp3/outstation/ResponseContext.h"
-#include "opendnp3/outstation/NewOutstationConfig.h"
+#include "opendnp3/outstation/OutstationConfig.h"
 #include "opendnp3/app/IINField.h"
 #include "opendnp3/app/ObjectWriter.h"
 #include "opendnp3/app/APDUHeader.h"
 #include "opendnp3/app/APDUResponse.h"
 #include "opendnp3/outstation/ICommandHandler.h"
 #include "opendnp3/outstation/ITimeWriteHandler.h"
-#include "opendnp3/outstation/NewOutstationStates.h"
+#include "opendnp3/outstation/OutstationStates.h"
 
 #include "opendnp3/StaticSizeConfiguration.h"
 #include "opendnp3/Settable.h"
@@ -58,7 +58,7 @@ class OutstationContext
 
 	static uint8_t NextSeq(uint8_t seq) { return (seq + 1) % 16; }
 
-	OutstationContext(	const NewOutstationConfig& config,
+	OutstationContext(	const OutstationConfig& config,
 						openpal::IExecutor& executor,
 						openpal::LogRoot& root, 
 						openpal::ILowerLayer& lower,

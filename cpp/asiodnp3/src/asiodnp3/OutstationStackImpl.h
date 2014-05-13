@@ -23,7 +23,7 @@
 
 #include <opendnp3/outstation/OutstationStackConfig.h>
 #include <opendnp3/outstation/Database.h>
-#include <opendnp3/outstation/NewOutstation.h>
+#include <opendnp3/outstation/Outstation.h>
 #include <opendnp3/outstation/DynamicallyAllocatedDatabase.h>
 #include <opendnp3/outstation/DynamicallyAllocatedEventBuffer.h>
 
@@ -61,7 +61,7 @@ private:
 	opendnp3::DynamicallyAllocatedEventBuffer eventBuffers;
 	Mutex mutex;
 	opendnp3::Database database;
-	opendnp3::NewOutstation outstation;
+	opendnp3::Outstation outstation;
 };
 
 }

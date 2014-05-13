@@ -18,15 +18,15 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __SLAVE_CONFIG_H_
-#define __SLAVE_CONFIG_H_
+#ifndef __OUTSTATION_CONFIG_H_
+#define __OUTSTATION_CONFIG_H_
 
 #include <openpal/TimeDuration.h>
 
-#include "opendnp3/app/ClassMask.h"
-
+#include "opendnp3/outstation/OutstationParams.h"
 #include "opendnp3/outstation/StaticResponseConfig.h"
 #include "opendnp3/outstation/EventResponseConfig.h"
+
 
 namespace opendnp3
 {
@@ -41,42 +41,14 @@ when the master requests class data or variation 0.
 */
 struct OutstationConfig
 {
-	OutstationConfig();
+	/// Various parameters that govern outstation behavior
+	OutstationParams params;
 
-	/// The maximum number of controls the outstation will attempt to process from a single APDU
-	uint8_t maxControls;
-
-	/// if true, fully disables unsolicited mode as if the outstation didn't support it
-	bool disableUnsol;
-
-	/// controls what unsol classes are enabled
-	ClassMask unsolMask;
-
-	/// if true, the outstation will request time synchronization on an interval
-	bool allowTimeSync;
-
-
-	/// The period of time sync interval in milliseconds
-	openpal::TimeDuration timeSyncPeriod;
-
-	/// The amount of time the outstation will wait before sending new unsolicited data ( <= 0 == immediate)
-	openpal::TimeDuration unsolPackDelay;
-
-	/// How long the outstation will wait before retrying an unsuccessful unsol response
-	openpal::TimeDuration unsolRetryDelay;
-
-	/// How long the outstation will allow an operate to proceed after a prior select
-	openpal::TimeDuration selectTimeout;
-
-	/// The maximum fragment size the outstation will use for data it sends
-	uint32_t maxFragSize;
-
-	/// Default static response types
-	StaticResponseConfig staticDefaults;
-
+	/// Default statis response types
+	StaticResponseConfig defaultStaticResponses;
+	
 	/// Default event response types
-	EventResponseConfig eventDefaults;
-
+	EventResponseConfig defaultEventResponses;
 };
 
 }

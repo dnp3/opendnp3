@@ -29,11 +29,11 @@ using namespace std;
 using namespace opendnp3;
 using namespace openpal;
 
-#define SUITE(name) "NewOutstationCommandResponsesTestSuite - " name
+#define SUITE(name) "OutstationCommandResponsesTestSuite - " name
 
 TEST_CASE(SUITE("SelectCROBNotSupported"))
 {
-	NewOutstationConfig config;
+	OutstationConfig config;
 	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
@@ -48,7 +48,7 @@ TEST_CASE(SUITE("SelectCROBNotSupported"))
 
 TEST_CASE(SUITE("SelectCROBTooMany"))
 {
-	NewOutstationConfig config;
+	OutstationConfig config;
 	config.params.maxControlsPerRequest = 1;
 	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
@@ -61,7 +61,7 @@ TEST_CASE(SUITE("SelectCROBTooMany"))
 
 TEST_CASE(SUITE("SelectOperateCROB"))
 {
-	NewOutstationConfig config;	
+	OutstationConfig config;	
 	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
@@ -76,7 +76,7 @@ TEST_CASE(SUITE("SelectOperateCROB"))
 
 TEST_CASE(SUITE("SelectOperateTimeout"))
 {
-	NewOutstationConfig config;
+	OutstationConfig config;
 	config.params.selectTimeout = TimeDuration::Seconds(5);
 	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
@@ -94,7 +94,7 @@ TEST_CASE(SUITE("SelectOperateTimeout"))
 
 TEST_CASE(SUITE("SelectOperateGapInSequenceNumber"))
 {
-	NewOutstationConfig config;	
+	OutstationConfig config;	
 	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
@@ -109,7 +109,7 @@ TEST_CASE(SUITE("SelectOperateGapInSequenceNumber"))
 
 TEST_CASE(SUITE("SelectOperateSameSequenceNumber"))
 {
-	NewOutstationConfig config;
+	OutstationConfig config;
 	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
@@ -124,7 +124,7 @@ TEST_CASE(SUITE("SelectOperateSameSequenceNumber"))
 
 TEST_CASE(SUITE("SelectOperateNonMatchingRequests"))
 {
-	NewOutstationConfig config;
+	OutstationConfig config;
 	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
@@ -139,7 +139,7 @@ TEST_CASE(SUITE("SelectOperateNonMatchingRequests"))
 
 TEST_CASE(SUITE("SelectOperateCROBSameSequenceNumber"))
 {
-	NewOutstationConfig config;
+	OutstationConfig config;
 	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
@@ -163,7 +163,7 @@ TEST_CASE(SUITE("SelectOperateCROBSameSequenceNumber"))
 
 TEST_CASE(SUITE("SelectGroup41Var1"))
 {
-	NewOutstationConfig config;
+	OutstationConfig config;
 	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
@@ -174,7 +174,7 @@ TEST_CASE(SUITE("SelectGroup41Var1"))
 
 TEST_CASE(SUITE("SelectGroup41Var2"))
 {
-	NewOutstationConfig config;
+	OutstationConfig config;
 	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
@@ -185,7 +185,7 @@ TEST_CASE(SUITE("SelectGroup41Var2"))
 
 TEST_CASE(SUITE("SelectGroup41Var3"))
 {
-	NewOutstationConfig config;
+	OutstationConfig config;
 	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
@@ -196,7 +196,7 @@ TEST_CASE(SUITE("SelectGroup41Var3"))
 
 TEST_CASE(SUITE("SelectGroup41Var4"))
 {
-	NewOutstationConfig config;
+	OutstationConfig config;
 	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
@@ -207,7 +207,7 @@ TEST_CASE(SUITE("SelectGroup41Var4"))
 
 TEST_CASE(SUITE("SelectOperateGroup41Var1"))
 {
-	NewOutstationConfig config;
+	OutstationConfig config;
 	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
@@ -223,7 +223,7 @@ TEST_CASE(SUITE("SelectOperateGroup41Var1"))
 
 TEST_CASE(SUITE("SelectOperateGroup41Var2"))
 {
-	NewOutstationConfig config;
+	OutstationConfig config;
 	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
@@ -240,7 +240,7 @@ TEST_CASE(SUITE("SelectOperateGroup41Var2"))
 
 TEST_CASE(SUITE("SelectOperateGroup41Var3"))
 {
-	NewOutstationConfig config;
+	OutstationConfig config;
 	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
@@ -255,7 +255,7 @@ TEST_CASE(SUITE("SelectOperateGroup41Var3"))
 
 TEST_CASE(SUITE("SelectOperateGroup41Var4"))
 {
-	NewOutstationConfig config;
+	OutstationConfig config;
 	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
@@ -271,7 +271,7 @@ TEST_CASE(SUITE("SelectOperateGroup41Var4"))
 
 TEST_CASE(SUITE("DirectOperateGroup41Var1"))
 {
-	NewOutstationConfig config;
+	OutstationConfig config;
 	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
@@ -282,7 +282,7 @@ TEST_CASE(SUITE("DirectOperateGroup41Var1"))
 
 TEST_CASE(SUITE("DirectOperateGroup41Var2"))
 {
-	NewOutstationConfig config;
+	OutstationConfig config;
 	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
@@ -294,7 +294,7 @@ TEST_CASE(SUITE("DirectOperateGroup41Var2"))
 
 TEST_CASE(SUITE("DirectOperateGroup41Var3"))
 {
-	NewOutstationConfig config;
+	OutstationConfig config;
 	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
@@ -306,7 +306,7 @@ TEST_CASE(SUITE("DirectOperateGroup41Var3"))
 
 TEST_CASE(SUITE("DirectOperateGroup41Var4"))
 {
-	NewOutstationConfig config;
+	OutstationConfig config;
 	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 

@@ -29,11 +29,11 @@ using namespace std;
 using namespace opendnp3;
 using namespace openpal;
 
-#define SUITE(name) "NewOutstationTestSuite - " name
+#define SUITE(name) "OutstationTestSuite - " name
 
 TEST_CASE(SUITE("InitialState"))
 {
-	NewOutstationConfig config;
+	OutstationConfig config;
 	OutstationTestObject test(config);
 	
 	test.outstation.OnLowerLayerDown();
@@ -49,7 +49,7 @@ TEST_CASE(SUITE("InitialState"))
 
 TEST_CASE(SUITE("UnsupportedFunction"))
 {
-	NewOutstationConfig config;
+	OutstationConfig config;
 	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
@@ -59,7 +59,7 @@ TEST_CASE(SUITE("UnsupportedFunction"))
 
 TEST_CASE(SUITE("WriteIIN"))
 {
-	NewOutstationConfig config;
+	OutstationConfig config;
 	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
@@ -69,7 +69,7 @@ TEST_CASE(SUITE("WriteIIN"))
 
 TEST_CASE(SUITE("WriteIINEnabled"))
 {
-	NewOutstationConfig config;
+	OutstationConfig config;
 	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
@@ -79,7 +79,7 @@ TEST_CASE(SUITE("WriteIINEnabled"))
 
 TEST_CASE(SUITE("WriteIINWrongBit"))
 {
-	NewOutstationConfig config;
+	OutstationConfig config;
 	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
@@ -89,7 +89,7 @@ TEST_CASE(SUITE("WriteIINWrongBit"))
 
 TEST_CASE(SUITE("WriteNonWriteObject"))
 {
-	NewOutstationConfig config;
+	OutstationConfig config;
 	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
@@ -99,7 +99,7 @@ TEST_CASE(SUITE("WriteNonWriteObject"))
 
 TEST_CASE(SUITE("DelayMeasure"))
 {
-	NewOutstationConfig config;
+	OutstationConfig config;
 	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
@@ -111,7 +111,7 @@ TEST_CASE(SUITE("DelayMeasure"))
 
 TEST_CASE(SUITE("DelayMeasureExtraData"))
 {
-	NewOutstationConfig config;
+	OutstationConfig config;
 	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
@@ -121,7 +121,7 @@ TEST_CASE(SUITE("DelayMeasureExtraData"))
 
 TEST_CASE(SUITE("WriteTimeDate"))
 {
-	NewOutstationConfig config;	
+	OutstationConfig config;	
 	OutstationTestObject t(config);	
 	t.outstation.OnLowerLayerUp();
 
@@ -135,7 +135,7 @@ TEST_CASE(SUITE("WriteTimeDate"))
 
 TEST_CASE(SUITE("WriteTimeDateNotAsking"))
 {
-	NewOutstationConfig config;
+	OutstationConfig config;
 	OutstationTestObject t(config);	
 	t.outstation.OnLowerLayerUp();
 
@@ -147,7 +147,7 @@ TEST_CASE(SUITE("WriteTimeDateNotAsking"))
 
 TEST_CASE(SUITE("WriteTimeDateMultipleObjects"))
 {
-	NewOutstationConfig cfg;	
+	OutstationConfig cfg;	
 	OutstationTestObject t(cfg, DatabaseTemplate());
 	t.outstation.OnLowerLayerUp();
 
@@ -158,7 +158,7 @@ TEST_CASE(SUITE("WriteTimeDateMultipleObjects"))
 
 TEST_CASE(SUITE("BlankIntegrityPoll"))
 {
-	NewOutstationConfig config;
+	OutstationConfig config;
 	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
@@ -168,7 +168,7 @@ TEST_CASE(SUITE("BlankIntegrityPoll"))
 
 TEST_CASE(SUITE("ReadClass0MultiFragAnalog"))
 {
-	NewOutstationConfig config;
+	OutstationConfig config;
 	config.params.maxTxFragSize = 20; // override to use a fragment length of 20	
 	OutstationTestObject t(config, DatabaseTemplate::AnalogOnly(8));
 	t.outstation.OnLowerLayerUp();
@@ -196,7 +196,7 @@ TEST_CASE(SUITE("ReadClass0MultiFragAnalog"))
 
 TEST_CASE(SUITE("ReadFuncNotSupported"))
 {
-	NewOutstationConfig config;
+	OutstationConfig config;
 	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
@@ -207,7 +207,7 @@ TEST_CASE(SUITE("ReadFuncNotSupported"))
 
 void NewTestStaticRead(const std::string& request, const std::string& response)
 {	
-	NewOutstationConfig config;
+	OutstationConfig config;
 	OutstationTestObject t(config, DatabaseTemplate::AllTypes(1));	
 	t.outstation.OnLowerLayerUp();
 
@@ -269,7 +269,7 @@ TEST_CASE(SUITE("ReadGrp40Var0ViaIntegrity"))
 
 TEST_CASE(SUITE("ReadByRangeHeader"))
 {
-	NewOutstationConfig config;	
+	OutstationConfig config;	
 	OutstationTestObject t(config, DatabaseTemplate::AnalogOnly(10));
 	t.outstation.OnLowerLayerUp();
 
@@ -284,7 +284,7 @@ TEST_CASE(SUITE("ReadByRangeHeader"))
 }
 
 template <class PointType>
-void TestStaticType(const NewOutstationConfig& config, const DatabaseTemplate& tmp, PointType value, const std::string& rsp)
+void TestStaticType(const OutstationConfig& config, const DatabaseTemplate& tmp, PointType value, const std::string& rsp)
 {
 	OutstationTestObject t(config, tmp);
 
@@ -302,7 +302,7 @@ void TestStaticType(const NewOutstationConfig& config, const DatabaseTemplate& t
 template <class T>
 void TestStaticCounter(StaticCounterResponse rspType, T aValue, const std::string& response)
 {
-	NewOutstationConfig cfg; cfg.defaultStaticResponses.counter = rspType;
+	OutstationConfig cfg; cfg.defaultStaticResponses.counter = rspType;
 	TestStaticType<Counter>(cfg, DatabaseTemplate::CounterOnly(1), aValue, response);
 }
 
@@ -329,7 +329,7 @@ TEST_CASE(SUITE("ReadGrp20Var6"))
 template <class T>
 void TestStaticAnalog(StaticAnalogResponse aRsp, T aVal, const std::string& arRsp)
 {
-	NewOutstationConfig cfg; cfg.defaultStaticResponses.analog = aRsp;
+	OutstationConfig cfg; cfg.defaultStaticResponses.analog = aRsp;
 	TestStaticType<Analog>(cfg, DatabaseTemplate::AnalogOnly(1), aVal, arRsp);
 }
 
@@ -361,7 +361,7 @@ TEST_CASE(SUITE("ReadGrp30Var6"))
 template <class T>
 void TestStaticBinaryOutputStatus(T aVal, const std::string& response)
 {
-	NewOutstationConfig cfg;
+	OutstationConfig cfg;
 	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOutputStatusOnly(1));
 	t.outstation.OnLowerLayerUp();
 
@@ -382,7 +382,7 @@ TEST_CASE(SUITE("ReadGrp10Var2"))
 template <class T>
 void TestStaticAnalogOutputStatus(StaticAnalogOutputStatusResponse aRsp, T aVal, const string& response)
 {
-	NewOutstationConfig cfg; cfg.defaultStaticResponses.analogOutputStatus = aRsp;
+	OutstationConfig cfg; cfg.defaultStaticResponses.analogOutputStatus = aRsp;
 	TestStaticType<AnalogOutputStatus>(cfg, DatabaseTemplate::AnalogOutputStatusOnly(1), aVal, response);
 }
 

@@ -394,15 +394,6 @@
     <ClCompile Include="src\HexConversions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\TestNewOutstation.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\TestNewOutstationCommandResponses.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\TestNewOutstationEventResponses.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\ComparingDataObserver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -441,6 +432,15 @@
     </ClCompile>
     <ClCompile Include="src\MockUpperLayer.cpp">
       <Filter>Source Files\Mocks</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TestOutstation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TestOutstationCommandResponses.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TestOutstationEventResponses.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

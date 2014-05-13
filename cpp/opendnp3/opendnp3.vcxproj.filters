@@ -552,9 +552,6 @@
     <ClInclude Include="src\opendnp3\app\EventTriggers.h">
       <Filter>Header\app</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\Outstation.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\gen\EventAnalogOutputStatusResponse.h">
       <Filter>Header\gen</Filter>
     </ClInclude>
@@ -573,9 +570,6 @@
     <ClInclude Include="src\opendnp3\outstation\OutstationStackConfig.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\OutstationConfig.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\master\ICommandCallback.h">
       <Filter>Header\master</Filter>
     </ClInclude>
@@ -584,9 +578,6 @@
     </ClInclude>
     <ClInclude Include="src\opendnp3\transport\TransportStack.h">
       <Filter>Header\transport</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\NewOutstation.h">
-      <Filter>Header\outstation</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\StaticallyAllocatedDatabase.h">
       <Filter>Header\outstation</Filter>
@@ -600,16 +591,10 @@
     <ClInclude Include="src\opendnp3\outstation\EventResponseConfig.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\NewOutstationConfig.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\OutstationParams.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\EventResponseTypes.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\NewOutstationStates.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\master\MasterContext.h">
@@ -671,6 +656,15 @@
     </ClInclude>
     <ClInclude Include="src\opendnp3\master\PollTask.h">
       <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\Outstation.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\OutstationConfig.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\OutstationStates.h">
+      <Filter>Header\outstation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -983,9 +977,6 @@
     <ClCompile Include="src\opendnp3\app\EventTriggers.cpp">
       <Filter>Source\app</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\Outstation.cpp">
-      <Filter>Source\outstation</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\EventBufferFacade.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
@@ -1003,9 +994,6 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\gen\EventAnalogOutputStatusResponse.cpp">
       <Filter>Source\gen</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\OutstationConfig.cpp">
-      <Filter>Source\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\master\CommandAction.cpp">
       <Filter>Source\master</Filter>

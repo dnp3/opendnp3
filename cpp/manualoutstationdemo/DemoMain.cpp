@@ -21,12 +21,11 @@
 
 
 #include <opendnp3/link/LinkLayerRouter.h>
-#include <opendnp3/outstation/Outstation.h>
 #include <opendnp3/transport/TransportStack.h>
 #include <opendnp3/outstation/StaticallyAllocatedDatabase.h>
 #include <opendnp3/outstation/DynamicallyAllocatedDatabase.h>
 #include <opendnp3/outstation/StaticallyAllocatedEventBuffer.h>
-#include <opendnp3/outstation/NewOutstation.h>
+#include <opendnp3/outstation/Outstation.h>
 #include <opendnp3/LogLevels.h>
 #include <opendnp3/outstation/SimpleCommandHandler.h>
 
@@ -74,9 +73,9 @@ int main(int argc, char* argv[])
 
 	SimpleCommandHandler commandHandler(CommandStatus::SUCCESS);
 
-	NewOutstationConfig config;		
+	OutstationConfig config;		
 	config.defaultEventResponses.binary = EventBinaryResponse::Group2Var2;
-	NewOutstation outstation(config, executor, root, stack.transport, commandHandler, NullTimeWriteHandler::Inst(), database, eventBuffers.GetFacade());
+	Outstation outstation(config, executor, root, stack.transport, commandHandler, NullTimeWriteHandler::Inst(), database, eventBuffers.GetFacade());
 
 	stack.transport.SetAppLayer(&outstation);
 

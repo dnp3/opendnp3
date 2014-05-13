@@ -29,11 +29,11 @@ using namespace std;
 using namespace opendnp3;
 using namespace openpal;
 
-#define SUITE(name) "NewOutstationEventResponsesTestSuite - " name
+#define SUITE(name) "OutstationEventResponsesTestSuite - " name
 
 TEST_CASE(SUITE("BlankExceptionScan"))
 {
-	NewOutstationConfig config;
+	OutstationConfig config;
 	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
@@ -43,7 +43,7 @@ TEST_CASE(SUITE("BlankExceptionScan"))
 
 TEST_CASE(SUITE("ReceiveNewRequestSolConfirmWait"))
 {
-	NewOutstationConfig config;
+	OutstationConfig config;
 	OutstationTestObject t(config, DatabaseTemplate::BinaryOnly(1), EventBufferConfig::AllTypes(10));
 	t.outstation.OnLowerLayerUp();
 
@@ -63,7 +63,7 @@ TEST_CASE(SUITE("ReceiveNewRequestSolConfirmWait"))
 
 TEST_CASE(SUITE("ReadClass1WithSOE"))
 {
-	NewOutstationConfig config;
+	OutstationConfig config;
 	OutstationTestObject t(config, DatabaseTemplate::AllTypes(100), EventBufferConfig::AllTypes(10));
 
 	t.db.staticData.binaries.metadata[0x10].clazz = CLASS_1;
@@ -91,7 +91,7 @@ TEST_CASE(SUITE("ReadClass1WithSOE"))
 
 TEST_CASE(SUITE("MultipleClasses"))
 {
-	NewOutstationConfig config;
+	OutstationConfig config;
 	OutstationTestObject t(config, DatabaseTemplate::AllTypes(1), EventBufferConfig::AllTypes(10));
 	t.outstation.OnLowerLayerUp();
 
@@ -133,7 +133,7 @@ TEST_CASE(SUITE("MultipleClasses"))
 void TestEventRead(const std::string& request, const std::string& response, const std::function<void(Database& db)>& loadFun)
 {
 
-	NewOutstationConfig config;
+	OutstationConfig config;
 	OutstationTestObject t(config, DatabaseTemplate::AllTypes(1), EventBufferConfig::AllTypes(10));
 	t.outstation.OnLowerLayerUp();
 

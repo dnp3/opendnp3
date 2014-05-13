@@ -193,9 +193,9 @@
     <ClInclude Include="src\opendnp3\outstation\IEventBuffer.h" />
     <ClInclude Include="src\opendnp3\outstation\IINHelpers.h" />
     <ClInclude Include="src\opendnp3\outstation\ITimeWriteHandler.h" />
-    <ClInclude Include="src\opendnp3\outstation\NewOutstation.h" />
-    <ClInclude Include="src\opendnp3\outstation\NewOutstationConfig.h" />
-    <ClInclude Include="src\opendnp3\outstation\NewOutstationStates.h" />
+    <ClInclude Include="src\opendnp3\outstation\Outstation.h" />
+    <ClInclude Include="src\opendnp3\outstation\OutstationConfig.h" />
+    <ClInclude Include="src\opendnp3\outstation\OutstationStates.h" />
     <ClInclude Include="src\opendnp3\outstation\OutstationContext.h" />
     <ClInclude Include="src\opendnp3\outstation\OutstationEventBuffer.h" />
     <ClInclude Include="src\opendnp3\outstation\OutstationParams.h" />
@@ -205,8 +205,6 @@
     <ClInclude Include="src\opendnp3\outstation\SelectionCriteria.h" />
     <ClInclude Include="src\opendnp3\outstation\SelectionIterator.h" />
     <ClInclude Include="src\opendnp3\outstation\SimpleCommandHandler.h" />
-    <ClInclude Include="src\opendnp3\outstation\Outstation.h" />
-    <ClInclude Include="src\opendnp3\outstation\OutstationConfig.h" />
     <ClInclude Include="src\opendnp3\outstation\OutstationStackConfig.h" />
     <ClInclude Include="src\opendnp3\outstation\StaticallyAllocatedDatabase.h" />
     <ClInclude Include="src\opendnp3\outstation\StaticallyAllocatedEventBuffer.h" />
@@ -354,8 +352,6 @@
     <ClCompile Include="src\opendnp3\outstation\SelectionCriteria.cpp" />
     <ClCompile Include="src\opendnp3\outstation\SelectionIterator.cpp" />
     <ClCompile Include="src\opendnp3\outstation\SimpleCommandHandler.cpp" />
-    <ClCompile Include="src\opendnp3\outstation\Outstation.cpp" />
-    <ClCompile Include="src\opendnp3\outstation\OutstationConfig.cpp" />
     <ClCompile Include="src\opendnp3\outstation\StaticResponseConfig.cpp" />
     <ClCompile Include="src\opendnp3\outstation\StaticResponseContext.cpp" />
     <ClCompile Include="src\opendnp3\outstation\StaticResponseTypes.cpp" />
@@ -463,7 +459,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>EnableAllWarnings</WarningLevel>
       <PrecompiledHeader>
       </PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>

@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "NewOutstation.h"
+#include "Outstation.h"
 
 #include "opendnp3/app/APDUResponse.h"
 #include "opendnp3/LogLevels.h"
@@ -31,8 +31,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-NewOutstation::NewOutstation(
-		const NewOutstationConfig& config,
+Outstation::Outstation(
+		const OutstationConfig& config,
 		IExecutor& executor,
 		openpal::LogRoot& root,
 		openpal::ILowerLayer& lower,
@@ -45,7 +45,7 @@ NewOutstation::NewOutstation(
 	
 }
 	
-void NewOutstation::OnLowerLayerUp()
+void Outstation::OnLowerLayerUp()
 {
 	if (context.isOnline)
 	{
@@ -58,7 +58,7 @@ void NewOutstation::OnLowerLayerUp()
 	}
 }
 	
-void NewOutstation::OnLowerLayerDown()
+void Outstation::OnLowerLayerDown()
 {
 	if (context.isOnline)
 	{
@@ -70,7 +70,7 @@ void NewOutstation::OnLowerLayerDown()
 	}
 }
 
-void NewOutstation::OnReceive(const openpal::ReadOnlyBuffer& fragment)
+void Outstation::OnReceive(const openpal::ReadOnlyBuffer& fragment)
 {
 	if (context.isOnline)
 	{
@@ -83,7 +83,7 @@ void NewOutstation::OnReceive(const openpal::ReadOnlyBuffer& fragment)
 	}
 }
 
-void NewOutstation::OnSendResult(bool isSuccess)
+void Outstation::OnSendResult(bool isSuccess)
 {	
 	if (context.isOnline && context.IsTransmitting())
 	{
@@ -96,12 +96,12 @@ void NewOutstation::OnSendResult(bool isSuccess)
 	}	
 }
 
-void NewOutstation::SetRequestTimeIIN()
+void Outstation::SetRequestTimeIIN()
 {
 	context.staticIIN.Set(IINBit::NEED_TIME);
 }
 
-void NewOutstation::OnReceiveSolRequest(const APDURecord& request, const openpal::ReadOnlyBuffer& fragment)
+void Outstation::OnReceiveSolRequest(const APDURecord& request, const openpal::ReadOnlyBuffer& fragment)
 {	
 	if (context.firstValidRequestAccepted)
 	{

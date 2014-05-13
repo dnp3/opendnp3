@@ -42,7 +42,7 @@ namespace opendnp3
 {
 
 OutstationContext::OutstationContext(
-		const NewOutstationConfig& config,
+		const OutstationConfig& config,
 		IExecutor& executor,
 		LogRoot& root,
 		ILowerLayer& lower,

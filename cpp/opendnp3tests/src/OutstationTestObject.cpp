@@ -27,7 +27,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-OutstationTestObject::OutstationTestObject(const NewOutstationConfig& config, const DatabaseTemplate& dbTemplate, const EventBufferConfig& ebConfig) :
+OutstationTestObject::OutstationTestObject(const OutstationConfig& config, const DatabaseTemplate& dbTemplate, const EventBufferConfig& ebConfig) :
 	log(),
 	exe(),
 	lower(log.root),

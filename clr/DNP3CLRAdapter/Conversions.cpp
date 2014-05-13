@@ -316,9 +316,9 @@ opendnp3::EventCounterResponse Conversions::convert(EventCounterResponse rsp)
 	return (opendnp3::EventCounterResponse) rsp;
 }
 
-opendnp3::NewOutstationConfig Conversions::convertConfig(OutstationConfig^ config)
+opendnp3::OutstationConfig Conversions::convertConfig(OutstationConfig^ config)
 {
-	opendnp3::NewOutstationConfig op;
+	opendnp3::OutstationConfig op;
 
 	/* TODO
 
