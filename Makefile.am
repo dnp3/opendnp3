@@ -112,6 +112,7 @@ cpp/opendnp3/src/opendnp3/link/PriLinkLayerStates.cpp \
 cpp/opendnp3/src/opendnp3/link/SecLinkLayerStates.cpp \
 cpp/opendnp3/src/opendnp3/link/ShiftableBuffer.cpp \
 cpp/opendnp3/src/opendnp3/master/CommandAction.cpp \
+cpp/opendnp3/src/opendnp3/master/CommandMarshaller.cpp \
 cpp/opendnp3/src/opendnp3/master/CommandResponse.cpp \
 cpp/opendnp3/src/opendnp3/master/CommandTask.cpp \
 cpp/opendnp3/src/opendnp3/master/ConstantCommandProcessor.cpp \
@@ -119,14 +120,15 @@ cpp/opendnp3/src/opendnp3/master/DisableUnsolicitedTask.cpp \
 cpp/opendnp3/src/opendnp3/master/EnableUnsolicitedTask.cpp \
 cpp/opendnp3/src/opendnp3/master/ISOEHandler.cpp \
 cpp/opendnp3/src/opendnp3/master/MasterContext.cpp \
+cpp/opendnp3/src/opendnp3/master/Master.cpp \
 cpp/opendnp3/src/opendnp3/master/MasterParams.cpp \
 cpp/opendnp3/src/opendnp3/master/MasterScan.cpp \
 cpp/opendnp3/src/opendnp3/master/MasterScheduler.cpp \
 cpp/opendnp3/src/opendnp3/master/MasterTaskList.cpp \
 cpp/opendnp3/src/opendnp3/master/MeasurementHandler.cpp \
-cpp/opendnp3/src/opendnp3/master/NewMaster.cpp \
 cpp/opendnp3/src/opendnp3/master/NullResponseTask.cpp \
 cpp/opendnp3/src/opendnp3/master/PollTaskBase.cpp \
+cpp/opendnp3/src/opendnp3/master/PollTask.cpp \
 cpp/opendnp3/src/opendnp3/master/QueuedCommandProcessor.cpp \
 cpp/opendnp3/src/opendnp3/master/SingleResponseTask.cpp \
 cpp/opendnp3/src/opendnp3/master/StartupIntegrityPoll.cpp \
@@ -167,9 +169,7 @@ cpp/opendnp3/src/opendnp3/outstation/IINHelpers.cpp \
 cpp/opendnp3/src/opendnp3/outstation/ITimeWriteHandler.cpp \
 cpp/opendnp3/src/opendnp3/outstation/NewOutstation.cpp \
 cpp/opendnp3/src/opendnp3/outstation/NewOutstationStates.cpp \
-cpp/opendnp3/src/opendnp3/outstation/OutstationConfig.cpp \
 cpp/opendnp3/src/opendnp3/outstation/OutstationContext.cpp \
-cpp/opendnp3/src/opendnp3/outstation/Outstation.cpp \
 cpp/opendnp3/src/opendnp3/outstation/OutstationEventBuffer.cpp \
 cpp/opendnp3/src/opendnp3/outstation/OutstationParams.cpp \
 cpp/opendnp3/src/opendnp3/outstation/ReadHandler.cpp \
@@ -187,6 +187,7 @@ cpp/opendnp3/src/opendnp3/transport/TransportLayer.cpp \
 cpp/opendnp3/src/opendnp3/transport/TransportRx.cpp \
 cpp/opendnp3/src/opendnp3/transport/TransportStack.cpp \
 cpp/opendnp3/src/opendnp3/transport/TransportTx.cpp
+
 
 #ls cpp/asiodnp3/src/asiodnp3/*.cpp -1 | awk '{print $0" \\"}'
 libasiodnp3_la_CPPFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) -I$(ASIODNP3_INCLUDE) $(ASIO_CONFIG)
@@ -238,6 +239,7 @@ dnp3test_LDFLAGS = -pthread
 dnp3test_LDADD = libopenpal.la libasiopal.la libopendnp3.la libasiodnp3.la
 dnp3test_SOURCES = \
 cpp/opendnp3tests/src/APDUHelpers.cpp \
+cpp/opendnp3tests/src/APDUHexBuilders.cpp \
 cpp/opendnp3tests/src/AsyncPhysBaseTest.cpp \
 cpp/opendnp3tests/src/AsyncPhysTestObject.cpp \
 cpp/opendnp3tests/src/AsyncSerialTestObject.cpp \
@@ -258,8 +260,7 @@ cpp/opendnp3tests/src/LinkLayerTest.cpp \
 cpp/opendnp3tests/src/LogTester.cpp \
 cpp/opendnp3tests/src/LoopbackPhysicalLayerAsync.cpp \
 cpp/opendnp3tests/src/LowerLayerToPhysAdapter.cpp \
-cpp/opendnp3tests/src/MockAppLayer.cpp \
-cpp/opendnp3tests/src/MockAppUser.cpp \
+cpp/opendnp3tests/src/MasterTestObject.cpp \
 cpp/opendnp3tests/src/MockExecutor.cpp \
 cpp/opendnp3tests/src/MockFrameSink.cpp \
 cpp/opendnp3tests/src/MockLowerLayer.cpp \
@@ -268,8 +269,7 @@ cpp/opendnp3tests/src/MockPhysicalLayerMonitor.cpp \
 cpp/opendnp3tests/src/MockTransportLayer.cpp \
 cpp/opendnp3tests/src/MockUpperLayer.cpp \
 cpp/opendnp3tests/src/MultiplexingDataObserver.cpp \
-cpp/opendnp3tests/src/NewMasterTestObject.cpp \
-cpp/opendnp3tests/src/NewOutstationTestObject.cpp \
+cpp/opendnp3tests/src/OutstationTestObject.cpp \
 cpp/opendnp3tests/src/PhysicalLayerWrapper.cpp \
 cpp/opendnp3tests/src/PhysLoopback.cpp \
 cpp/opendnp3tests/src/ProtocolUtil.cpp \
@@ -293,10 +293,11 @@ cpp/opendnp3tests/src/TestLinkLayerRouter.cpp \
 cpp/opendnp3tests/src/TestLinkReceiver.cpp \
 cpp/opendnp3tests/src/TestLinkRoute.cpp \
 cpp/opendnp3tests/src/TestLog.cpp \
-cpp/opendnp3tests/src/TestNewMaster.cpp \
-cpp/opendnp3tests/src/TestNewOutstationCommandResponses.cpp \
-cpp/opendnp3tests/src/TestNewOutstation.cpp \
-cpp/opendnp3tests/src/TestNewOutstationEventResponses.cpp \
+cpp/opendnp3tests/src/TestMasterCommandRequests.cpp \
+cpp/opendnp3tests/src/TestMaster.cpp \
+cpp/opendnp3tests/src/TestOutstationCommandResponses.cpp \
+cpp/opendnp3tests/src/TestOutstation.cpp \
+cpp/opendnp3tests/src/TestOutstationEventResponses.cpp \
 cpp/opendnp3tests/src/TestPhysicalLayerAsyncBase.cpp \
 cpp/opendnp3tests/src/TestPhysicalLayerAsyncSerial.cpp \
 cpp/opendnp3tests/src/TestPhysicalLayerAsyncTCP.cpp \
