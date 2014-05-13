@@ -12,6 +12,9 @@
     <Filter Include="Header Files\Mocks">
       <UniqueIdentifier>{827ec631-2ff6-4ce5-8d90-5a1fc891a042}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Mocks">
+      <UniqueIdentifier>{c18a444e-e1fe-45dc-b05b-7727cbe279bf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AsyncPhysBaseTest.h">
@@ -80,45 +83,6 @@
     <ClInclude Include="src\MeasurementComparisons.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\MockAPDUHeaderHandler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\MockAppLayer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\MockAppUser.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\MockCommandHandler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\MockExecutor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\MockFrameSink.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\MockLogSubscriber.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\MockLowerLayer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\MockPhysicalLayerAsync.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\MockPhysicalLayerMonitor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\MockSOEHandler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\MockTimeWriteHandler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\MockUpperLayer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\PhysicalLayerWrapper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -176,26 +140,56 @@
     <ClInclude Include="src\MultiplexingDataObserver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\MockTransportLayer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\MockLinkLayer.h">
       <Filter>Header Files\Mocks</Filter>
-    </ClInclude>
-    <ClInclude Include="src\MockCommandCallback.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\HexConversions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\NewOutstationTestObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\NewMasterTestObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\APDUHexBuilders.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MasterTestObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OutstationTestObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MockAPDUHeaderHandler.h">
+      <Filter>Header Files\Mocks</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MockCommandCallback.h">
+      <Filter>Header Files\Mocks</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MockCommandHandler.h">
+      <Filter>Header Files\Mocks</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MockExecutor.h">
+      <Filter>Header Files\Mocks</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MockFrameSink.h">
+      <Filter>Header Files\Mocks</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MockLowerLayer.h">
+      <Filter>Header Files\Mocks</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MockPhysicalLayerAsync.h">
+      <Filter>Header Files\Mocks</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MockPhysicalLayerMonitor.h">
+      <Filter>Header Files\Mocks</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MockSOEHandler.h">
+      <Filter>Header Files\Mocks</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MockTimeWriteHandler.h">
+      <Filter>Header Files\Mocks</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MockTransportLayer.h">
+      <Filter>Header Files\Mocks</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MockUpperLayer.h">
+      <Filter>Header Files\Mocks</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -248,30 +242,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\LowerLayerToPhysAdapter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\MockAppLayer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\MockAppUser.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\MockExecutor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\MockFrameSink.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\MockLowerLayer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\MockPhysicalLayerAsync.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\MockPhysicalLayerMonitor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\MockUpperLayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\PhysicalLayerWrapper.cpp">
@@ -421,13 +391,7 @@
     <ClCompile Include="src\TestLinkFrame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\MockTransportLayer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\HexConversions.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\NewOutstationTestObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\TestNewOutstation.cpp">
@@ -442,9 +406,6 @@
     <ClCompile Include="src\ComparingDataObserver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\NewMasterTestObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\TestMasterCommandRequests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -453,6 +414,33 @@
     </ClCompile>
     <ClCompile Include="src\TestMaster.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MasterTestObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OutstationTestObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MockExecutor.cpp">
+      <Filter>Source Files\Mocks</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MockFrameSink.cpp">
+      <Filter>Source Files\Mocks</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MockLowerLayer.cpp">
+      <Filter>Source Files\Mocks</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MockPhysicalLayerAsync.cpp">
+      <Filter>Source Files\Mocks</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MockPhysicalLayerMonitor.cpp">
+      <Filter>Source Files\Mocks</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MockTransportLayer.cpp">
+      <Filter>Source Files\Mocks</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MockUpperLayer.cpp">
+      <Filter>Source Files\Mocks</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

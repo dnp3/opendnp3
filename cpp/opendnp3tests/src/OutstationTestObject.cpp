@@ -18,31 +18,33 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __MOCK_LOG_SUBSCRIBER_H_
-#define __MOCK_LOG_SUBSCRIBER_H_
 
-#include <openpal/LogBase.h>
-#include <queue>
+#include "OutstationTestObject.h"
+#include "BufferHelpers.h"
+
+using namespace openpal;
 
 namespace opendnp3
 {
 
-class MockLogSubscriber : public openpal::ILogBase
+OutstationTestObject::OutstationTestObject(const NewOutstationConfig& config, const DatabaseTemplate& dbTemplate, const EventBufferConfig& ebConfig) :
+	log(),
+	exe(),
+	lower(log.root),
+	dbBuffers(dbTemplate),
+	eventBuffers(ebConfig),
+	db(dbBuffers.GetFacade()),
+	cmdHandler(CommandStatus::SUCCESS),
+	timeHandler([this](const UTCTimestamp& ts){ timestamps.push_back(ts); }),
+	outstation(config, exe, log.root, lower, cmdHandler, timeHandler, db, eventBuffers.GetFacade())
 {
-public:
-
-	void Log( const openpal::LogEntry& arEntry )
-	{
-		mEntries.push(arEntry);
-	}
-
-	// updating a variable/metric in the system
-	void SetVar(const std::string& aSource, const std::string& aVarName, int aValue) {}
-
-	std::queue<openpal::LogEntry> mEntries;
-};
-
-
+	lower.SetUpperLayer(&outstation);
 }
 
-#endif
+void OutstationTestObject::SendToOutstation(const std::string& hex)
+{
+	HexSequence hs(hex);
+	outstation.OnReceive(hs.ToReadOnly());
+}
+
+}

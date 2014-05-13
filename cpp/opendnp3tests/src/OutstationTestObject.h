@@ -18,40 +18,51 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __NEW_MASTER_TEST_OBJECT_H_
-#define __NEW_MASTER_TEST_OBJECT_H_
+#ifndef __NEW_OUTSTATION_TEST_OBJECT_H_
+#define __NEW_OUTSTATION_TEST_OBJECT_H_
+
+#include <opendnp3/LogLevels.h>
+#include <opendnp3/outstation/NewOutstation.h>
+#include <opendnp3/outstation/Database.h>
+#include <opendnp3/outstation/OutstationConfig.h>
+#include <opendnp3/outstation/DynamicallyAllocatedDatabase.h>
+#include <opendnp3/outstation/DynamicallyAllocatedEventBuffer.h>
 
 #include "MockExecutor.h"
 #include "LogTester.h"
-
-#include <opendnp3/master/NewMaster.h>
-#include <opendnp3/LogLevels.h>
-#include <deque>
-
-#include "MockSOEHandler.h"
+#include "MockCommandHandler.h"
 #include "MockLowerLayer.h"
+#include "MockTimeWriteHandler.h"
+
+#include <vector>
 
 namespace opendnp3
 {
 
-	MasterParams NoStartupTasks();
+class OutstationTestObject
+{
 
-	class NewMasterTestObject
-	{
-	public:
+public:
+	OutstationTestObject(const NewOutstationConfig& config,
+							const DatabaseTemplate& dbTemplate = DatabaseTemplate(), 
+							const EventBufferConfig& ebConfig = EventBufferConfig::AllTypes(0));
 
-		NewMasterTestObject(const MasterParams& params);
+	std::vector<openpal::UTCTimestamp> timestamps;
 
-		void SendToMaster(const std::string& hex);		
+	LogTester log;	
+	MockExecutor exe;
+	MockLowerLayer lower;
+	DynamicallyAllocatedDatabase dbBuffers;
+	DynamicallyAllocatedEventBuffer eventBuffers;
+	Database db;
+	MockCommandHandler cmdHandler;
+	MockTimeWriteHandler timeHandler;
+	NewOutstation outstation;
 
-		LogTester log;
-		MockExecutor exe;
-		MockSOEHandler meas;
-		MockLowerLayer lower;
-		NewMaster master;
-	};
+
+	void SendToOutstation(const std::string& hex);
+};
 
 }
 
 #endif
-

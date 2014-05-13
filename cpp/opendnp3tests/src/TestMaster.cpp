@@ -20,7 +20,7 @@
  */
 #include <catch.hpp>
 
-#include "NewMasterTestObject.h"
+#include "MasterTestObject.h"
 #include "MeasurementComparisons.h"
 #include "HexConversions.h"
 #include "MockCommandCallback.h"
@@ -38,7 +38,7 @@ TEST_CASE(SUITE("InitialState"))
 {
 	MasterParams params;
 	params.disableUnsolOnStartup = false;
-	NewMasterTestObject t(params);
+	MasterTestObject t(params);
 
 	t.master.OnLowerLayerUp();
 	t.master.OnLowerLayerDown();
@@ -48,7 +48,7 @@ TEST_CASE(SUITE("IntegrityOnStartup"))
 {
 	MasterParams params;
 	params.disableUnsolOnStartup = false;
-	NewMasterTestObject t(params);
+	MasterTestObject t(params);
 	t.master.OnLowerLayerUp();
 
 	REQUIRE(t.exe.RunMany() > 0);
@@ -60,7 +60,7 @@ TEST_CASE(SUITE("SolicitedResponseWithData"))
 	MasterParams params;
 	params.disableUnsolOnStartup = false;
 	params.unsolClassMask = 0;
-	NewMasterTestObject t(params);
+	MasterTestObject t(params);
 	t.master.OnLowerLayerUp();
 
 	t.exe.RunMany();
@@ -78,7 +78,7 @@ TEST_CASE(SUITE("IntegrityPollCanRepeat"))
 {
 	MasterParams params;
 	params.disableUnsolOnStartup = false;
-	NewMasterTestObject t(params);
+	MasterTestObject t(params);
 	t.master.OnLowerLayerUp();
 
 	REQUIRE(t.exe.RunMany() > 0);

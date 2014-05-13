@@ -215,14 +215,11 @@
     <ClInclude Include="src\LowerLayerToPhysAdapter.h" />
     <ClInclude Include="src\MeasurementComparisons.h" />
     <ClInclude Include="src\MockAPDUHeaderHandler.h" />
-    <ClInclude Include="src\MockAppLayer.h" />
-    <ClInclude Include="src\MockAppUser.h" />
     <ClInclude Include="src\MockCommandCallback.h" />
     <ClInclude Include="src\MockCommandHandler.h" />
     <ClInclude Include="src\MockExecutor.h" />
     <ClInclude Include="src\MockFrameSink.h" />
     <ClInclude Include="src\MockLinkLayer.h" />
-    <ClInclude Include="src\MockLogSubscriber.h" />
     <ClInclude Include="src\MockLowerLayer.h" />
     <ClInclude Include="src\MockPhysicalLayerAsync.h" />
     <ClInclude Include="src\MockPhysicalLayerMonitor.h" />
@@ -231,8 +228,8 @@
     <ClInclude Include="src\MockTransportLayer.h" />
     <ClInclude Include="src\MockUpperLayer.h" />
     <ClInclude Include="src\MultiplexingDataObserver.h" />
-    <ClInclude Include="src\NewMasterTestObject.h" />
-    <ClInclude Include="src\NewOutstationTestObject.h" />
+    <ClInclude Include="src\MasterTestObject.h" />
+    <ClInclude Include="src\OutstationTestObject.h" />
     <ClInclude Include="src\PhysicalLayerWrapper.h" />
     <ClInclude Include="src\PhysicalLayerWrapperFactory.h" />
     <ClInclude Include="src\PhysLoopback.h" />
@@ -274,8 +271,6 @@
     <ClCompile Include="src\LogTester.cpp" />
     <ClCompile Include="src\LoopbackPhysicalLayerAsync.cpp" />
     <ClCompile Include="src\LowerLayerToPhysAdapter.cpp" />
-    <ClCompile Include="src\MockAppLayer.cpp" />
-    <ClCompile Include="src\MockAppUser.cpp" />
     <ClCompile Include="src\MockExecutor.cpp" />
     <ClCompile Include="src\MockFrameSink.cpp" />
     <ClCompile Include="src\MockLowerLayer.cpp" />
@@ -284,8 +279,8 @@
     <ClCompile Include="src\MockTransportLayer.cpp" />
     <ClCompile Include="src\MockUpperLayer.cpp" />
     <ClCompile Include="src\MultiplexingDataObserver.cpp" />
-    <ClCompile Include="src\NewMasterTestObject.cpp" />
-    <ClCompile Include="src\NewOutstationTestObject.cpp" />
+    <ClCompile Include="src\MasterTestObject.cpp" />
+    <ClCompile Include="src\OutstationTestObject.cpp" />
     <ClCompile Include="src\PhysicalLayerWrapper.cpp" />
     <ClCompile Include="src\PhysLoopback.cpp" />
     <ClCompile Include="src\ProtocolUtil.cpp" />

@@ -73,6 +73,16 @@ namespace Automatak.DNP3.Simulator.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap cross {
+            get {
+                object obj = ResourceManager.GetObject("cross", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap dials {
             get {
                 object obj = ResourceManager.GetObject("dials", resourceCulture);
@@ -83,9 +93,29 @@ namespace Automatak.DNP3.Simulator.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap edit_config {
+            get {
+                object obj = ResourceManager.GetObject("edit_config", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap folder_diskette {
             get {
                 object obj = ResourceManager.GetObject("folder_diskette", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap gear_pencil {
+            get {
+                object obj = ResourceManager.GetObject("gear_pencil", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

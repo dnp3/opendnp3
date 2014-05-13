@@ -20,9 +20,7 @@
  */
 #include <catch.hpp>
 
-
-#include "MockLogSubscriber.h"
-#include "NewOutstationTestObject.h"
+#include "OutstationTestObject.h"
 
 #include <opendnp3/DNPErrorCodes.h>
 
@@ -36,7 +34,7 @@ using namespace openpal;
 TEST_CASE(SUITE("SelectCROBNotSupported"))
 {
 	NewOutstationConfig config;
-	NewOutstationTestObject t(config);
+	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
 	t.cmdHandler.SetResponse(CommandStatus::NOT_SUPPORTED);
@@ -52,7 +50,7 @@ TEST_CASE(SUITE("SelectCROBTooMany"))
 {
 	NewOutstationConfig config;
 	config.params.maxControlsPerRequest = 1;
-	NewOutstationTestObject t(config);
+	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
 	// Select group 12 Var 1, count = 2, index = 3 & 4
@@ -64,7 +62,7 @@ TEST_CASE(SUITE("SelectCROBTooMany"))
 TEST_CASE(SUITE("SelectOperateCROB"))
 {
 	NewOutstationConfig config;	
-	NewOutstationTestObject t(config);
+	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
 	// Select group 12 Var 1, count = 1, index = 3
@@ -80,7 +78,7 @@ TEST_CASE(SUITE("SelectOperateTimeout"))
 {
 	NewOutstationConfig config;
 	config.params.selectTimeout = TimeDuration::Seconds(5);
-	NewOutstationTestObject t(config);
+	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
 	// Select group 12 Var 1, count = 1, index = 3
@@ -97,7 +95,7 @@ TEST_CASE(SUITE("SelectOperateTimeout"))
 TEST_CASE(SUITE("SelectOperateGapInSequenceNumber"))
 {
 	NewOutstationConfig config;	
-	NewOutstationTestObject t(config);
+	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
 	// Select group 12 Var 1, count = 1, index = 3
@@ -112,7 +110,7 @@ TEST_CASE(SUITE("SelectOperateGapInSequenceNumber"))
 TEST_CASE(SUITE("SelectOperateSameSequenceNumber"))
 {
 	NewOutstationConfig config;
-	NewOutstationTestObject t(config);
+	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
 	// Select group 12 Var 1, count = 1, index = 3
@@ -127,7 +125,7 @@ TEST_CASE(SUITE("SelectOperateSameSequenceNumber"))
 TEST_CASE(SUITE("SelectOperateNonMatchingRequests"))
 {
 	NewOutstationConfig config;
-	NewOutstationTestObject t(config);
+	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
 	// Select group 12 Var 1, count = 1, index = 3
@@ -142,7 +140,7 @@ TEST_CASE(SUITE("SelectOperateNonMatchingRequests"))
 TEST_CASE(SUITE("SelectOperateCROBSameSequenceNumber"))
 {
 	NewOutstationConfig config;
-	NewOutstationTestObject t(config);
+	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
 	REQUIRE(0 ==  t.cmdHandler.NumInvocations());
@@ -166,7 +164,7 @@ TEST_CASE(SUITE("SelectOperateCROBSameSequenceNumber"))
 TEST_CASE(SUITE("SelectGroup41Var1"))
 {
 	NewOutstationConfig config;
-	NewOutstationTestObject t(config);
+	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
 	// Select group 41 Var 1, count = 1, index = 3
@@ -177,7 +175,7 @@ TEST_CASE(SUITE("SelectGroup41Var1"))
 TEST_CASE(SUITE("SelectGroup41Var2"))
 {
 	NewOutstationConfig config;
-	NewOutstationTestObject t(config);
+	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
 	// Select group 41 Var 2, count = 1, index = 3
@@ -188,7 +186,7 @@ TEST_CASE(SUITE("SelectGroup41Var2"))
 TEST_CASE(SUITE("SelectGroup41Var3"))
 {
 	NewOutstationConfig config;
-	NewOutstationTestObject t(config);
+	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
 	// Select group 41 Var 3, count = 1, index = 1, value = 100.0
@@ -199,7 +197,7 @@ TEST_CASE(SUITE("SelectGroup41Var3"))
 TEST_CASE(SUITE("SelectGroup41Var4"))
 {
 	NewOutstationConfig config;
-	NewOutstationTestObject t(config);
+	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
 	// Select group 41 Var 4, count = 1, index = 1, value = 100.0
@@ -210,7 +208,7 @@ TEST_CASE(SUITE("SelectGroup41Var4"))
 TEST_CASE(SUITE("SelectOperateGroup41Var1"))
 {
 	NewOutstationConfig config;
-	NewOutstationTestObject t(config);
+	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
 	// Select group 41 Var 1, count = 1, index = 3
@@ -226,7 +224,7 @@ TEST_CASE(SUITE("SelectOperateGroup41Var1"))
 TEST_CASE(SUITE("SelectOperateGroup41Var2"))
 {
 	NewOutstationConfig config;
-	NewOutstationTestObject t(config);
+	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
 	// Select group 41 Var 2, count = 1, index = 3
@@ -243,7 +241,7 @@ TEST_CASE(SUITE("SelectOperateGroup41Var2"))
 TEST_CASE(SUITE("SelectOperateGroup41Var3"))
 {
 	NewOutstationConfig config;
-	NewOutstationTestObject t(config);
+	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
 	// Select group 41 Var 3, count = 1, index = 1
@@ -258,7 +256,7 @@ TEST_CASE(SUITE("SelectOperateGroup41Var3"))
 TEST_CASE(SUITE("SelectOperateGroup41Var4"))
 {
 	NewOutstationConfig config;
-	NewOutstationTestObject t(config);
+	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
 	// Select group 41 Var 4, count = 1, index = 1
@@ -274,7 +272,7 @@ TEST_CASE(SUITE("SelectOperateGroup41Var4"))
 TEST_CASE(SUITE("DirectOperateGroup41Var1"))
 {
 	NewOutstationConfig config;
-	NewOutstationTestObject t(config);
+	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
 	// Select group 41 Var 1, count = 1, index = 3
@@ -285,7 +283,7 @@ TEST_CASE(SUITE("DirectOperateGroup41Var1"))
 TEST_CASE(SUITE("DirectOperateGroup41Var2"))
 {
 	NewOutstationConfig config;
-	NewOutstationTestObject t(config);
+	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
 	// Select group 41 Var 1, count = 1, index = 3
@@ -297,7 +295,7 @@ TEST_CASE(SUITE("DirectOperateGroup41Var2"))
 TEST_CASE(SUITE("DirectOperateGroup41Var3"))
 {
 	NewOutstationConfig config;
-	NewOutstationTestObject t(config);
+	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
 	// operate group 41 Var 3, count = 1, index = 1
@@ -309,7 +307,7 @@ TEST_CASE(SUITE("DirectOperateGroup41Var3"))
 TEST_CASE(SUITE("DirectOperateGroup41Var4"))
 {
 	NewOutstationConfig config;
-	NewOutstationTestObject t(config);
+	OutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
 	// operate group 41 Var 4, count = 1, index = 1

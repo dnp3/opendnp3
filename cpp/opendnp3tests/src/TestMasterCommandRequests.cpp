@@ -20,7 +20,7 @@
  */
 #include <catch.hpp>
 
-#include "NewMasterTestObject.h"
+#include "MasterTestObject.h"
 #include "MeasurementComparisons.h"
 #include "HexConversions.h"
 #include "MockCommandCallback.h"
@@ -40,7 +40,7 @@ std::string crob = "0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 00";
 TEST_CASE(SUITE("ControlExecutionClosedState"))
 {
 	MasterParams params;
-	NewMasterTestObject t(params);
+	MasterTestObject t(params);
 
 	auto pCmdProcessor = &t.master.GetCommandProcessor();
 
@@ -60,7 +60,7 @@ TEST_CASE(SUITE("ControlExecutionClosedState"))
 
 TEST_CASE(SUITE("SelectAndOperate"))
 {	
-	NewMasterTestObject t(NoStartupTasks());
+	MasterTestObject t(NoStartupTasks());
 	t.master.OnLowerLayerUp();
 
 	ControlRelayOutputBlock bo(ControlCode::PULSE);
@@ -92,7 +92,7 @@ TEST_CASE(SUITE("SelectAndOperate"))
 TEST_CASE(SUITE("ControlExecutionSelectTimeout"))
 {
 	auto config = NoStartupTasks();
-	NewMasterTestObject t(config);
+	MasterTestObject t(config);
 	t.master.OnLowerLayerUp();
 
 	MockCommandCallback callback;
@@ -112,7 +112,7 @@ TEST_CASE(SUITE("ControlExecutionSelectTimeout"))
 TEST_CASE(SUITE("ControlExecutionSelectLayerDown"))
 {
 	auto config = NoStartupTasks();
-	NewMasterTestObject t(config);
+	MasterTestObject t(config);
 	t.master.OnLowerLayerUp();
 
 	MockCommandCallback callback;
@@ -131,7 +131,7 @@ TEST_CASE(SUITE("ControlExecutionSelectLayerDown"))
 TEST_CASE(SUITE("ControlExecutionSelectErrorResponse"))
 {
 	auto config = NoStartupTasks();
-	NewMasterTestObject t(config);
+	MasterTestObject t(config);
 	t.master.OnLowerLayerUp();
 
 	MockCommandCallback callback;
@@ -149,7 +149,7 @@ TEST_CASE(SUITE("ControlExecutionSelectErrorResponse"))
 TEST_CASE(SUITE("ControlExecutionSelectPartialResponse"))
 {
 	auto config = NoStartupTasks();
-	NewMasterTestObject t(config);
+	MasterTestObject t(config);
 	t.master.OnLowerLayerUp();
 
 	MockCommandCallback callback;
@@ -170,7 +170,7 @@ TEST_CASE(SUITE("DeferredControlExecution"))
 	MasterParams params;
 	params.disableUnsolOnStartup = false;
 	params.unsolClassMask = 0;
-	NewMasterTestObject t(params);
+	MasterTestObject t(params);
 	t.master.OnLowerLayerUp();
 
 	REQUIRE(t.exe.RunMany() > 0);
@@ -196,7 +196,7 @@ TEST_CASE(SUITE("DeferredControlExecution"))
 TEST_CASE(SUITE("CloseWhileWaitingForCommandResponse"))
 {
 	auto config = NoStartupTasks();
-	NewMasterTestObject t(config);
+	MasterTestObject t(config);
 	t.master.OnLowerLayerUp();	
 
 	AnalogOutputInt16 ao(100);
@@ -216,7 +216,7 @@ template <class T>
 void TestAnalogOutputExecution(const std::string& hex, const T& command)
 {
 	auto config = NoStartupTasks();
-	NewMasterTestObject t(config);
+	MasterTestObject t(config);
 	t.master.OnLowerLayerUp();
 
 	MockCommandCallback callback;

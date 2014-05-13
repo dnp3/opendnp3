@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "NewMasterTestObject.h"
+#include "MasterTestObject.h"
 
 #include "BufferHelpers.h"
 
@@ -35,7 +35,7 @@ MasterParams NoStartupTasks()
 	return params;
 }
 
-NewMasterTestObject::NewMasterTestObject(const MasterParams& params) :
+MasterTestObject::MasterTestObject(const MasterParams& params) :
 	log(),
 	exe(),
 	meas(),
@@ -43,7 +43,7 @@ NewMasterTestObject::NewMasterTestObject(const MasterParams& params) :
 	master(exe, log.root, lower, &meas, params)
 {}
 
-void NewMasterTestObject::SendToMaster(const std::string& hex)
+void MasterTestObject::SendToMaster(const std::string& hex)
 {
 	HexSequence hs(hex);
 	master.OnReceive(hs.ToReadOnly());

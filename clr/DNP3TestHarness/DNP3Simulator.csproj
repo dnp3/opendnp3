@@ -104,6 +104,12 @@
     </Compile>
     <Compile Include="BundledPlugins\GUIMasterPlugin.cs" />
     <Compile Include="BundledPlugins\GUIMasterPluginFactory.cs" />
+    <Compile Include="BundledPlugins\MasterActionControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BundledPlugins\MasterActionControl.Designer.cs">
+      <DependentUpon>MasterActionControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="BundledPlugins\Measurement.cs" />
     <Compile Include="BundledPlugins\MeasurementCollection.cs" />
     <Compile Include="BundledPlugins\MeasurementView.cs">
@@ -163,6 +169,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="BundledPlugins\GUIMasterForm.resx">
       <DependentUpon>GUIMasterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BundledPlugins\MasterActionControl.resx">
+      <DependentUpon>MasterActionControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="BundledPlugins\MeasurementView.resx">
       <DependentUpon>MeasurementView.cs</DependentUpon>
@@ -237,6 +246,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\switch.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resources\cross.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resources\gear_pencil.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resources\edit_config.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

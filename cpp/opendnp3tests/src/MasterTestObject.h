@@ -18,33 +18,40 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef __MASTER_TEST_OBJECT_H_
+#define __MASTER_TEST_OBJECT_H_
 
-#include "NewOutstationTestObject.h"
-#include "BufferHelpers.h"
+#include "MockExecutor.h"
+#include "LogTester.h"
 
-using namespace openpal;
+#include <opendnp3/master/NewMaster.h>
+#include <opendnp3/LogLevels.h>
+#include <deque>
+
+#include "MockSOEHandler.h"
+#include "MockLowerLayer.h"
 
 namespace opendnp3
 {
 
-NewOutstationTestObject::NewOutstationTestObject(const NewOutstationConfig& config, const DatabaseTemplate& dbTemplate, const EventBufferConfig& ebConfig) :
-	log(),
-	exe(),
-	lower(log.root),
-	dbBuffers(dbTemplate),
-	eventBuffers(ebConfig),
-	db(dbBuffers.GetFacade()),
-	cmdHandler(CommandStatus::SUCCESS),
-	timeHandler([this](const UTCTimestamp& ts){ timestamps.push_back(ts); }),
-	outstation(config, exe, log.root, lower, cmdHandler, timeHandler, db, eventBuffers.GetFacade())
-{
-	lower.SetUpperLayer(&outstation);
-}
+	MasterParams NoStartupTasks();
 
-void NewOutstationTestObject::SendToOutstation(const std::string& hex)
-{
-	HexSequence hs(hex);
-	outstation.OnReceive(hs.ToReadOnly());
-}
+	class MasterTestObject
+	{
+	public:
+
+		MasterTestObject(const MasterParams& params);
+
+		void SendToMaster(const std::string& hex);		
+
+		LogTester log;
+		MockExecutor exe;
+		MockSOEHandler meas;
+		MockLowerLayer lower;
+		NewMaster master;
+	};
 
 }
+
+#endif
+

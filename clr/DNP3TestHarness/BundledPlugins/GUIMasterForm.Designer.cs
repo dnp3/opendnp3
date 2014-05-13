@@ -32,9 +32,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GUIMasterForm));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.comboBoxTypes = new System.Windows.Forms.ComboBox();
-            this.measurementView = new Automatak.DNP3.Simulator.MeasurementView();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.button1 = new System.Windows.Forms.Button();
+            this.measurementView = new Automatak.DNP3.Simulator.MeasurementView();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -49,7 +48,6 @@
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.button1);
             this.splitContainer1.Panel1.Controls.Add(this.comboBoxTypes);
             this.splitContainer1.Panel1.Padding = new System.Windows.Forms.Padding(5);
             // 
@@ -71,14 +69,6 @@
             this.comboBoxTypes.TabIndex = 0;
             this.comboBoxTypes.SelectedIndexChanged += new System.EventHandler(this.comboBoxTypes_SelectedIndexChanged);
             // 
-            // measurementView
-            // 
-            this.measurementView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.measurementView.Location = new System.Drawing.Point(0, 0);
-            this.measurementView.Name = "measurementView";
-            this.measurementView.Size = new System.Drawing.Size(786, 543);
-            this.measurementView.TabIndex = 2;
-            // 
             // imageList1
             // 
             this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
@@ -86,15 +76,13 @@
             this.imageList1.Images.SetKeyName(0, "dials.ico");
             this.imageList1.Images.SetKeyName(1, "switch.ico");
             // 
-            // button1
+            // measurementView
             // 
-            this.button1.Location = new System.Drawing.Point(32, 57);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(189, 27);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            this.measurementView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.measurementView.Location = new System.Drawing.Point(0, 0);
+            this.measurementView.Name = "measurementView";
+            this.measurementView.Size = new System.Drawing.Size(786, 543);
+            this.measurementView.TabIndex = 2;
             // 
             // GUIMasterForm
             // 
@@ -121,7 +109,6 @@
         private System.Windows.Forms.ComboBox comboBoxTypes;
         private MeasurementView measurementView;
         private System.Windows.Forms.ImageList imageList1;
-        private System.Windows.Forms.Button button1;
 
     }
 }
