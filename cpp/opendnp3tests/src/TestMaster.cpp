@@ -28,6 +28,7 @@
 
 #include <opendnp3/app/APDUResponse.h>
 #include <opendnp3/app/APDUBuilders.h>
+#include <opendnp3/app/PointClass.h>
 
 using namespace opendnp3;
 using namespace openpal;
@@ -73,51 +74,58 @@ TEST_CASE(SUITE("SolicitedResponseWithData"))
 	REQUIRE((Binary(true, BQ_ONLINE) == t.meas.GetBinary(2)));
 }
 
-/*
 TEST_CASE(SUITE("IntegrityPollCanRepeat"))
-{
-	MasterParams params;	
+{	
 	MasterTestObject t(NoStartupTasks());
 	t.master.OnLowerLayerUp();
 
-	t.master.AddScan(TimeDuration::Seconds(10), )
+	auto scan = t.master.AddClassScan(~0, TimeDuration::Seconds(10));
 
+	REQUIRE(t.exe.RunMany() == 0);
+	t.exe.AdvanceTime(TimeDuration::Seconds(9));
+	REQUIRE(t.exe.RunMany() == 0);
+	t.exe.AdvanceTime(TimeDuration::Seconds(1));
 	REQUIRE(t.exe.RunMany() > 0);
-	REQUIRE(t.lower.PopWriteAsHex() == Integrity(0));
-	REQUIRE(t.exe.NumPendingTimers() == 0);
+	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
 	t.master.OnSendResult(true);
+	t.SendToMaster(hex::EmptyResponse(0));
+
+	// 2nd poll
 	REQUIRE(t.exe.NumPendingTimers() == 1);
-	t.SendToMaster(EmptyResponse(0));	
-	t.exe.AdvanceTime(params.integrityPeriod);
-	REQUIRE(t.exe.NumPendingTimers() == 0);
+	REQUIRE(t.exe.NextTimerExpiration().milliseconds == 20000);
+	t.exe.AdvanceTime(TimeDuration::Seconds(10));
 	REQUIRE(t.exe.RunMany() > 0);
-	REQUIRE(t.lower.PopWriteAsHex() == Integrity(1));
+	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(1));
 }
 
 TEST_CASE(SUITE("UnsolDisableEnableOnStartup"))
 {
-	MasterConfig config;
-	config.DoUnsolOnStartup = true;
-	MasterTestObject t(config);
+	MasterParams params;
+	MasterTestObject t(params);
 	t.master.OnLowerLayerUp();
-
-	// create a generic response packet with no IIN bits set
-	std::string rsp = "C0 81 00 00";
+	
+	REQUIRE(t.exe.RunMany() > 0);
 
 	// disable unsol on grp 60 var2, var3, var4
-	REQUIRE("C0 15 3C 02 06 3C 03 06 3C 04 06" ==  t.Read());
-	t.RespondToMaster(rsp);
+	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ALL_EVENT_CLASSES));
+	t.master.OnSendResult(true);
+	t.SendToMaster(hex::EmptyResponse(0));
 
-	TestForIntegrityPoll(t);
+	REQUIRE(t.exe.RunMany() > 0);
+	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(1));
+	t.master.OnSendResult(true);
+	t.SendToMaster(hex::EmptyResponse(1));
 
-	// enable unsol
-	REQUIRE("C0 14 3C 02 06 3C 03 06 3C 04 06" ==  t.Read());
-	t.RespondToMaster(rsp);
+	REQUIRE(t.exe.RunMany() > 0);
+	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::ENABLE_UNSOLICITED, 2, ALL_EVENT_CLASSES));
+	t.master.OnSendResult(true);
+	t.SendToMaster(hex::EmptyResponse(2));
 
-	// check that the master sends no more packets
-	REQUIRE(t.app.NumAPDU() ==  0);
+	REQUIRE(t.exe.RunMany() > 0);
+	REQUIRE(t.exe.NumPendingTimers() == 0);	
 }
 
+/*
 TEST_CASE(SUITE("RestartAndTimeBits"))
 {
 	MasterConfig config;

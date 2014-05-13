@@ -25,10 +25,14 @@
 #include <string>
 #include <cstdint>
 
+#include <opendnp3/gen/FunctionCode.h>
+
 namespace hex
 {
 
 	std::string IntegrityPoll(uint8_t seq, int mask = ~0);
+
+	std::string ClassTask(opendnp3::FunctionCode fc, uint8_t seq, int mask = ~0);
 
 	std::string EmptyResponse(uint8_t seq);
 

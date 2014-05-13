@@ -51,6 +51,8 @@ public:
 	
 private:
 
+	void OnStartupComplete(IMasterScheduler& scheduler);
+
 	bool startupComplete;
 
 	const MasterParams* pParams;

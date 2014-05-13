@@ -56,17 +56,18 @@ void MasterTaskList::Initialize()
 	if (pParams->unsolClassMask & ALL_EVENT_CLASSES)
 	{
 		this->startupTasks.Enqueue(&enableUnsol);
-	}
+	}	
+	
 }
 
 void MasterTaskList::ScheduleNext(IMasterScheduler& scheduler)
 {
-	if (startupTasks.IsEmpty() && !startupComplete)
+	if (startupTasks.IsEmpty())
 	{
-		startupComplete = true;
-		auto pScheduler = &scheduler;
-		auto scheduleLater = [pScheduler](PollTask& task) { pScheduler->ScheduleLater(&task, task.GetPeriod()); };
-		pollTasks.Foreach(scheduleLater);
+		if (!startupComplete)
+		{
+			this->OnStartupComplete(scheduler);
+		}		
 	}
 	else
 	{
@@ -74,12 +75,20 @@ void MasterTaskList::ScheduleNext(IMasterScheduler& scheduler)
 	}
 }
 
+void MasterTaskList::OnStartupComplete(IMasterScheduler& scheduler)
+{
+	startupComplete = true;
+	auto pScheduler = &scheduler;
+	auto scheduleLater = [pScheduler](PollTask& task) { pScheduler->ScheduleLater(&task, task.GetPeriod()); };
+	pollTasks.Foreach(scheduleLater);
+}
+
 PollTask* MasterTaskList::AddPollTask(IMasterScheduler& scheduler, const PollTask& pt)
 {
 	auto pNode = pollTasks.AddAndGetPointer(pt);
 	if (pNode)
 	{
-		if (startupTasks.IsEmpty() && !startupComplete)
+		if (startupComplete)
 		{
 			scheduler.ScheduleLater(&pNode->value, pt.GetPeriod());
 		}

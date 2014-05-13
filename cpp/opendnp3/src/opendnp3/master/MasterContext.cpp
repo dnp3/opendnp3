@@ -68,7 +68,7 @@ bool MasterContext::OnLayerUp()
 	else
 	{
 		isOnline = true;
-		taskList.Initialize();
+		taskList.Initialize();		
 		taskList.ScheduleNext(scheduler);
 		return true;
 	}
