@@ -125,146 +125,29 @@ TEST_CASE(SUITE("UnsolDisableEnableOnStartup"))
 	REQUIRE(t.exe.NumPendingTimers() == 0);	
 }
 
-/*
-TEST_CASE(SUITE("RestartAndTimeBits"))
-{
-	MasterConfig config;
-	MasterTestObject t(config);
+TEST_CASE(SUITE("SolicitedResponseTimeout"))
+{	
+	MasterTestObject t(NoStartupTasks());
+	auto scan = t.master.AddClassScan(ALL_CLASSES, TimeDuration::Seconds(5));
 	t.master.OnLowerLayerUp();
 
-	t.fixedUTC.mTimeSinceEpoch = 100;
+	REQUIRE(t.exe.AdvanceToNextTimer());
+	t.exe.RunMany();
 
-	TestForIntegrityAndRespond(t, "C0 81 90 00"); // need time and device restart
+	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
+	t.master.OnSendResult(true);
+	REQUIRE(t.exe.AdvanceToNextTimer());
 
-	// Device restart should happen before time task
-	REQUIRE("C0 02 50 01 00 07 07 00" ==  t.Read()); //write IIN
-	t.RespondToMaster("C0 81 10 00"); // need time
-
-	REQUIRE("C0 17" ==  t.Read()); ; //Delay measure
-	t.fixedUTC.mTimeSinceEpoch += 100; //advance time by 100ms so that the master sees 100ms for a response
-	t.RespondToMaster("C0 81 10 00 34 02 07 01 0A 00"); // still need time, 52 Var 2, delay == 10ms
-
-	// Write group 50 var 1
-	// 200-100-10/2 = 45 => 45 + 200 - 0xF5
-	REQUIRE("C0 02 32 01 07 01 F5 00 00 00 00 00" ==  t.Read());
-	t.RespondToMaster("C0 81 00 00"); // time bit is now clear
-
-	REQUIRE(t.app.NumAPDU() ==  0); // no more packets
-}
-
-TEST_CASE(SUITE("RestartFailure"))
-{
-	MasterConfig config;
-	MasterTestObject t(config);
-	t.master.OnLowerLayerUp();
-
-	t.fixedUTC.mTimeSinceEpoch = 100; //100 ms since epoch
-
-	TestForIntegrityAndRespond(t, "C0 81 90 00"); // need time and device restart
-
-	REQUIRE("C0 02 50 01 00 07 07 00" ==  t.Read()); //write IIN
-
-	t.master.OnSolFailure();
-	REQUIRE("C0 02 50 01 00 07 07 00" ==  t.Read()); //write IIN
-}
-
-TEST_CASE(SUITE("RestartLayerDown"))
-{
-	MasterConfig config;
-	MasterTestObject t(config);
-	t.master.OnLowerLayerUp();
-
-	TestForIntegrityAndRespond(t, "C0 81 90 00"); // need time and device restart
-
-	// Device restart should happen before time task
-	REQUIRE("C0 02 50 01 00 07 07 00" ==  t.Read()); //write IIN
-
-	t.master.OnLowerLayerDown();
-	t.master.OnLowerLayerUp();
-	REQUIRE("C0 02 50 01 00 07 07 00" ==  t.Read()); //write IIN
-}
-
-TEST_CASE(SUITE("DelayMeasLayerDown"))
-{
-	MasterConfig config;
-	MasterTestObject t(config);
-	t.master.OnLowerLayerUp();
-
-	TestForIntegrityAndRespond(t, "C0 81 90 00"); // need time and device restart
-
-	// Device restart should happen before time task
-	REQUIRE("C0 02 50 01 00 07 07 00" ==  t.Read()); //write IIN
-	t.RespondToMaster("C0 81 10 00"); // need time
-
-	REQUIRE("C0 17" ==  t.Read()); //Delay measure
-	t.master.OnLowerLayerDown();
-	t.master.OnLowerLayerUp();
-	REQUIRE("C0 17" ==  t.Read()); //Delay measure
-}
-
-TEST_CASE(SUITE("DelayMeasFailure"))
-{
-	MasterConfig config;
-	MasterTestObject t(config);
-	t.master.OnLowerLayerUp();
-
-	TestForIntegrityAndRespond(t, "C0 81 90 00"); // need time and device restart
-
-	// Device restart should happen before time task
-	REQUIRE("C0 02 50 01 00 07 07 00" ==  t.Read()); //write IIN
-	t.RespondToMaster("C0 81 10 00"); // need time
-
-	REQUIRE("C0 17" ==  t.Read()); //Delay measure
-	t.master.OnSolFailure();
-	REQUIRE("C0 17" ==  t.Read()); //Delay measure
-}
-
-TEST_CASE(SUITE("RestartBadResponses"))
-{
-	MasterConfig config;
-	MasterTestObject t(config);
-	t.master.OnLowerLayerUp();
-
-	t.fixedUTC.mTimeSinceEpoch = 100; //100 ms since epoch
-
-	TestForIntegrityAndRespond(t, "C0 81 10 00"); //need time
-
-	REQUIRE("C0 17" ==  t.Read()); // Delay measure
-	t.RespondToMaster("C0 81 10 00"); // no header
-
-	REQUIRE("C0 17" ==  t.Read()); // retry
-	t.RespondToMaster("C0 81 10 00 3C 01 06"); // wrong header
-
-	REQUIRE("C0 17" ==  t.Read()); // retry
-	t.RespondToMaster("C0 81 10 00 34 02 07 02 0A 00 03 00"); // too many objects
-
-	REQUIRE("C0 17" ==  t.Read()); ; //Delay measure
-	t.fixedUTC.mTimeSinceEpoch += 100; //advance time by 100ms so that the master sees 100ms for a response
-	t.RespondToMaster("C0 81 10 00 34 02 07 01 90 01"); // still need time, 52 Var 2, delay == 400ms
-
-	// Write group 50 var 1
-	// 400 > 200, so delay is 0 + 200
-	REQUIRE("C0 02 32 01 07 01 C8 00 00 00 00 00" ==  t.Read());
-	t.RespondToMaster("C0 81 00 00"); // time bit is now clear
-
-	REQUIRE(t.app.NumAPDU() ==  0); // no more packets
-}
-
-TEST_CASE(SUITE("SolicitedResponseFailure"))
-{
-	MasterConfig config;
-	MasterTestObject t(config);
-	t.master.OnLowerLayerUp();
-
-
-	TestForIntegrityPoll(t, false);
-
-	t.mts.AdvanceTime(TimeDuration(config.TaskRetryRate));
+	
+	/* TODO
+	t.mts.(TimeDuration(config.TaskRetryRate));
 	REQUIRE(t.mts.RunOne());
 
 	TestForIntegrityPoll(t);
+	*/ 
 }
 
+/*
 TEST_CASE(SUITE("SolicitedResponseLayerDown"))
 {
 	MasterConfig config;
@@ -344,6 +227,131 @@ TEST_CASE(SUITE("ParsesOctetStringResponseSizeOfOne"))
 
 	REQUIRE("AA" ==  toHex(t.meas.GetOctetString(3).ToReadOnly()));
 }
+
+TEST_CASE(SUITE("RestartAndTimeBits"))
+{
+MasterConfig config;
+MasterTestObject t(config);
+t.master.OnLowerLayerUp();
+
+t.fixedUTC.mTimeSinceEpoch = 100;
+
+TestForIntegrityAndRespond(t, "C0 81 90 00"); // need time and device restart
+
+// Device restart should happen before time task
+REQUIRE("C0 02 50 01 00 07 07 00" ==  t.Read()); //write IIN
+t.RespondToMaster("C0 81 10 00"); // need time
+
+REQUIRE("C0 17" ==  t.Read()); ; //Delay measure
+t.fixedUTC.mTimeSinceEpoch += 100; //advance time by 100ms so that the master sees 100ms for a response
+t.RespondToMaster("C0 81 10 00 34 02 07 01 0A 00"); // still need time, 52 Var 2, delay == 10ms
+
+// Write group 50 var 1
+// 200-100-10/2 = 45 => 45 + 200 - 0xF5
+REQUIRE("C0 02 32 01 07 01 F5 00 00 00 00 00" ==  t.Read());
+t.RespondToMaster("C0 81 00 00"); // time bit is now clear
+
+REQUIRE(t.app.NumAPDU() ==  0); // no more packets
+}
+
+TEST_CASE(SUITE("RestartFailure"))
+{
+MasterConfig config;
+MasterTestObject t(config);
+t.master.OnLowerLayerUp();
+
+t.fixedUTC.mTimeSinceEpoch = 100; //100 ms since epoch
+
+TestForIntegrityAndRespond(t, "C0 81 90 00"); // need time and device restart
+
+REQUIRE("C0 02 50 01 00 07 07 00" ==  t.Read()); //write IIN
+
+t.master.OnSolFailure();
+REQUIRE("C0 02 50 01 00 07 07 00" ==  t.Read()); //write IIN
+}
+
+TEST_CASE(SUITE("RestartLayerDown"))
+{
+MasterConfig config;
+MasterTestObject t(config);
+t.master.OnLowerLayerUp();
+
+TestForIntegrityAndRespond(t, "C0 81 90 00"); // need time and device restart
+
+// Device restart should happen before time task
+REQUIRE("C0 02 50 01 00 07 07 00" ==  t.Read()); //write IIN
+
+t.master.OnLowerLayerDown();
+t.master.OnLowerLayerUp();
+REQUIRE("C0 02 50 01 00 07 07 00" ==  t.Read()); //write IIN
+}
+
+TEST_CASE(SUITE("DelayMeasLayerDown"))
+{
+MasterConfig config;
+MasterTestObject t(config);
+t.master.OnLowerLayerUp();
+
+TestForIntegrityAndRespond(t, "C0 81 90 00"); // need time and device restart
+
+// Device restart should happen before time task
+REQUIRE("C0 02 50 01 00 07 07 00" ==  t.Read()); //write IIN
+t.RespondToMaster("C0 81 10 00"); // need time
+
+REQUIRE("C0 17" ==  t.Read()); //Delay measure
+t.master.OnLowerLayerDown();
+t.master.OnLowerLayerUp();
+REQUIRE("C0 17" ==  t.Read()); //Delay measure
+}
+
+TEST_CASE(SUITE("DelayMeasFailure"))
+{
+MasterConfig config;
+MasterTestObject t(config);
+t.master.OnLowerLayerUp();
+
+TestForIntegrityAndRespond(t, "C0 81 90 00"); // need time and device restart
+
+// Device restart should happen before time task
+REQUIRE("C0 02 50 01 00 07 07 00" ==  t.Read()); //write IIN
+t.RespondToMaster("C0 81 10 00"); // need time
+
+REQUIRE("C0 17" ==  t.Read()); //Delay measure
+t.master.OnSolFailure();
+REQUIRE("C0 17" ==  t.Read()); //Delay measure
+}
+
+TEST_CASE(SUITE("RestartBadResponses"))
+{
+MasterConfig config;
+MasterTestObject t(config);
+t.master.OnLowerLayerUp();
+
+t.fixedUTC.mTimeSinceEpoch = 100; //100 ms since epoch
+
+TestForIntegrityAndRespond(t, "C0 81 10 00"); //need time
+
+REQUIRE("C0 17" ==  t.Read()); // Delay measure
+t.RespondToMaster("C0 81 10 00"); // no header
+
+REQUIRE("C0 17" ==  t.Read()); // retry
+t.RespondToMaster("C0 81 10 00 3C 01 06"); // wrong header
+
+REQUIRE("C0 17" ==  t.Read()); // retry
+t.RespondToMaster("C0 81 10 00 34 02 07 02 0A 00 03 00"); // too many objects
+
+REQUIRE("C0 17" ==  t.Read()); ; //Delay measure
+t.fixedUTC.mTimeSinceEpoch += 100; //advance time by 100ms so that the master sees 100ms for a response
+t.RespondToMaster("C0 81 10 00 34 02 07 01 90 01"); // still need time, 52 Var 2, delay == 400ms
+
+// Write group 50 var 1
+// 400 > 200, so delay is 0 + 200
+REQUIRE("C0 02 32 01 07 01 C8 00 00 00 00 00" ==  t.Read());
+t.RespondToMaster("C0 81 00 00"); // time bit is now clear
+
+REQUIRE(t.app.NumAPDU() ==  0); // no more packets
+}
 */
+
 
 

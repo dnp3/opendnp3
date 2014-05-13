@@ -82,6 +82,8 @@ public:
 
 	void AdvanceTime(openpal::TimeDuration aDuration);
 
+	bool AdvanceToNextTimer();
+
 
 private:
 

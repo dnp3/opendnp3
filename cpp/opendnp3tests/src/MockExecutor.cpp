@@ -92,6 +92,27 @@ void MockExecutor::AdvanceTime(TimeDuration aDuration)
 	this->CheckForExpiredTimers();
 }
 
+bool MockExecutor::AdvanceToNextTimer()
+{
+	if (timers.empty())
+	{
+		return false;
+	}
+	else
+	{
+		auto timestamp = NextTimerExpiration();
+		if (timestamp.milliseconds > mCurrentTime)
+		{
+			mCurrentTime = timestamp.milliseconds;
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+}
+
 bool MockExecutor::RunOne()
 {
 	this->CheckForExpiredTimers();
