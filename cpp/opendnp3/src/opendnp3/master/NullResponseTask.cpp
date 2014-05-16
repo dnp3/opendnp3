@@ -43,7 +43,7 @@ TaskStatus NullResponseTask::OnSingleResponse(const APDUResponseRecord& response
 	else
 	{
 		FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Ignoring trailing objects headers for task: %s", this->Name());
-		this->OnFailure(params, scheduler);
+		this->OnTimeoutOrBadControlOctet(params, scheduler);
 		return TaskStatus::FAIL;
 	}
 }

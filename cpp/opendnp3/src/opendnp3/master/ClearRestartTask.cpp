@@ -19,35 +19,48 @@
  * to you under the terms of the License.
  */
 
-#include "EnableUnsolicitedTask.h"
+#include "ClearRestartTask.h"
 
 #include "opendnp3/app/APDUBuilders.h"
+#include "opendnp3/LogLevels.h"
 
+#include <openpal/LogMacros.h>
 
 namespace opendnp3
 {
 
-EnableUnsolicitedTask::EnableUnsolicitedTask(openpal::Logger* pLogger_) :
-	NullResponseTask(pLogger_)	
+ClearRestartTask::ClearRestartTask(openpal::Logger* pLogger_) : 
+	SingleResponseTask(pLogger),
+	failed(false)
 {
 
+}	
+
+void ClearRestartTask::BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq)
+{
+	build::ClearRestartIIN(request, seq);
 }
 
-void EnableUnsolicitedTask::BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq)
+void ClearRestartTask::OnTimeoutOrBadControlOctet(const MasterParams& params, IMasterScheduler& scheduler)
 {
-	build::EnableUnsolicited(request, params.unsolClassMask, seq);
-}
-
-void EnableUnsolicitedTask::OnSuccess(const MasterParams& params, IMasterScheduler& scheduler)
-{
-	
-}
-
-void EnableUnsolicitedTask::OnTimeoutOrBadControlOctet(const MasterParams& params, IMasterScheduler& scheduler)
-{
+	// timeout or bad control octet
 	scheduler.ScheduleLater(this, params.taskRetryPeriod);
 }
-
+	
+TaskStatus ClearRestartTask::OnSingleResponse(const APDUResponseRecord& response, const MasterParams& params, IMasterScheduler& scheduler)
+{
+	if (response.IIN.IsSet(IINBit::DEVICE_RESTART))
+	{
+		// we tried to clear the restart, but the device responded with the restart still set
+		SIMPLE_LOGGER_BLOCK(pLogger, flags::ERR, "Clear restart task failed to clear restart bit");
+		failed = true;
+		return TaskStatus::FAIL;
+	}
+	else
+	{
+		return TaskStatus::SUCCESS;
+	}
+}
 
 } //end ns
 

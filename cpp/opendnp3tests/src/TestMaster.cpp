@@ -85,7 +85,8 @@ TEST_CASE(SUITE("IntegrityPollCanRepeat"))
 
 	auto scan = t.master.AddClassScan(~0, TimeDuration::Seconds(10));
 
-	REQUIRE(t.exe.RunMany() == 0);
+	REQUIRE(t.exe.RunMany() > 0);
+
 	t.exe.AdvanceTime(TimeDuration::Seconds(9));
 	REQUIRE(t.exe.RunMany() == 0);
 	t.exe.AdvanceTime(TimeDuration::Seconds(1));
@@ -135,6 +136,8 @@ TEST_CASE(SUITE("SolicitedResponseTimeout"))
 	auto scan = t.master.AddClassScan(ALL_CLASSES, TimeDuration::Seconds(5));
 	t.master.OnLowerLayerUp();
 
+	REQUIRE(t.exe.RunMany() > 0);
+
 	REQUIRE(t.exe.AdvanceToNextTimer());
 	t.exe.RunMany();
 
@@ -155,12 +158,17 @@ TEST_CASE(SUITE("SolicitedResponseLayerDown"))
 	auto scan = t.master.AddClassScan(ALL_CLASSES, TimeDuration::Seconds(5));
 	t.master.OnLowerLayerUp();
 
+	REQUIRE(t.exe.RunMany());
+
 	REQUIRE(t.exe.AdvanceToNextTimer());
 	REQUIRE(t.exe.RunMany() > 0);
 	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
 	t.master.OnLowerLayerDown();
 
 	t.master.OnLowerLayerUp();
+
+	REQUIRE(t.exe.RunMany());
+
 	REQUIRE(t.exe.AdvanceToNextTimer());
 	REQUIRE(t.exe.RunMany() > 0);
 	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
@@ -194,6 +202,8 @@ TEST_CASE(SUITE("EventPoll"))
 	auto class3 = t.master.AddClassScan(CLASS_3, TimeDuration::Milliseconds(20));
 
 	t.master.OnLowerLayerUp();	
+
+	REQUIRE(t.exe.RunMany() > 0);
 	
 	REQUIRE(t.exe.AdvanceToNextTimer());
 	REQUIRE(t.exe.RunMany() > 0);
@@ -233,8 +243,10 @@ TEST_CASE(SUITE("ParsesOctetStringResponseSizeOfOne"))
 	t.master.AddClassScan(~0, TimeDuration::Seconds(1));
 	t.master.OnLowerLayerUp();
 
-	t.exe.AdvanceToNextTimer();
-	t.exe.RunMany();
+	REQUIRE(t.exe.RunMany() > 0);
+
+	REQUIRE(t.exe.AdvanceToNextTimer());
+	REQUIRE(t.exe.RunMany() > 0);
 
 	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
 	t.master.OnSendResult(true);

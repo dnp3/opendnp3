@@ -18,54 +18,45 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef __CLEAR_RESTART_TASK_H_
+#define __CLEAR_RESTART_TASK_H_
 
-#ifndef __MASTER_TASK_LIST_H_
-#define __MASTER_TASK_LIST_H_
-
-#include "opendnp3/master/EnableUnsolicitedTask.h"
-#include "opendnp3/master/DisableUnsolicitedTask.h"
-#include "opendnp3/master/StartupIntegrityPoll.h"
-#include "opendnp3/master/PollTask.h"
+#include "opendnp3/master/NullResponseTask.h"
 #include "opendnp3/master/ITaskList.h"
-
-#include "opendnp3/StaticSizeConfiguration.h"
-
-
-#include <openpal/StaticQueue.h>
 
 namespace opendnp3
 {
 
-class MasterTaskList : public ITaskList
-{
+/**
+* Base class for tasks that only require a single response
+*/
+class ClearRestartTask : public SingleResponseTask
+{	
+
+public:	
+
+	ClearRestartTask(openpal::Logger* pLogger_);
+
+	virtual char const* Name() const override final { return "Clear Restart IIN"; }
+
+	virtual TaskPriority Priority() const override final { return TaskPriority::STARTUP; }
+
+	virtual void BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq) override final;	
+		
+protected:	
+
+	virtual void OnTimeoutOrBadControlOctet(const MasterParams& params, IMasterScheduler& scheduler) override final;
 	
-public:
+	virtual TaskStatus OnSingleResponse(const APDUResponseRecord& response, const MasterParams& params, IMasterScheduler& scheduler) override final;
 
-	MasterTaskList(ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_, const MasterParams& params);
-
-	void Initialize();
-
-	virtual void ScheduleNext(IMasterScheduler& scheduler) override final;
-
-	PollTask* AddPollTask(IMasterScheduler& scheduler, const PollTask& pt);
-	
 private:
 
-	void OnStartupComplete(IMasterScheduler& scheduler);
+	bool failed;
+	ITaskList* pTaskList;
 
-	bool startupComplete;
-
-	const MasterParams* pParams;
-	EnableUnsolicitedTask enableUnsol;
-	DisableUnsolicitedTask disableUnsol;	
-	StartupIntegrityPoll startupIntegrity;
-
-	openpal::StaticQueue<IMasterTask*, uint8_t, sizes::MAX_MASTER_STARTUP_TASKS> startupTasks;	
-	openpal::StaticLinkedList<PollTask, uint8_t, sizes::MAX_MASTER_POLL_TASKS> pollTasks;
 };
 
-}
-
+} //end ns
 
 
 #endif

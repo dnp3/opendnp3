@@ -103,7 +103,7 @@ ICommandProcessor& Master::GetCommandProcessor()
 MasterScan Master::AddScan(openpal::TimeDuration period, const openpal::Function1<APDURequest&> builder)
 {
 	PollTask task(builder, period, context.pSOEHandler, &context.logger);
-	auto pTask = context.taskList.AddPollTask(context.scheduler, task);
+	auto pTask = context.scheduler.AddPollTask(task);
 	if (pTask)
 	{
 		return MasterScan(*context.pExecutor, context.scheduler, *pTask);

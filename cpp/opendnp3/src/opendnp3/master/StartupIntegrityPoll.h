@@ -37,7 +37,7 @@ class StartupIntegrityPoll : public PollTaskBase
 
 public:	
 
-	StartupIntegrityPoll(ITaskList* pTaskList, ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_);
+	StartupIntegrityPoll(ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_);
 	
 	virtual char const* Name() const override final { return "Startup Integrity Poll"; }
 	
@@ -45,9 +45,7 @@ public:
 	
 	virtual void BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq) override final;	
 
-private:
-
-	ITaskList* pTaskList;
+private:	
 
 	virtual void OnFailure(const MasterParams& params, IMasterScheduler& scheduler) override final;
 

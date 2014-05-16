@@ -39,9 +39,9 @@ namespace opendnp3
 class IMasterTask
 {
 
-public:
+public:	
 
-	enum class TaskPriority : int
+	enum class TaskPriority
 	{
 		POLL,
 		STARTUP,
@@ -55,6 +55,7 @@ public:
 			return lhs->Priority() < rhs->Priority();
 		}
 	};
+
 
 	/**
 	* Returns the name of the task.
@@ -95,6 +96,7 @@ public:
 	* Called when the layer closes. Overridable to perform cleanup.
 	*/
 	virtual void OnLowerLayerClose() {}
+
 };
 
 } //end ns

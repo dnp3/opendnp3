@@ -23,6 +23,10 @@
 
 #include "opendnp3/app/PointClass.h"
 #include "opendnp3/objects/Group60.h"
+#include "opendnp3/app/IINField.h"
+
+#include <openpal/Serialization.h>
+
 
 namespace opendnp3
 {
@@ -70,6 +74,14 @@ void DisableUnsolicited(APDURequest& request, uint8_t seq)
 void EnableUnsolicited(APDURequest& request, int classMask, uint8_t seq)
 {
 	ClassRequest(request, FunctionCode::ENABLE_UNSOLICITED, ALL_EVENT_CLASSES & classMask, seq);
+}
+
+void ClearRestartIIN(APDURequest& request, uint8_t seq)
+{
+	auto writer = request.GetWriter();
+	auto iter = writer.IterateOverSingleBitfield<openpal::UInt8>(GroupVariationID(80, 1), QualifierCode::UINT8_START_STOP, static_cast<uint8_t>(IINBit::DEVICE_RESTART));
+	iter.Write(true);	
+	iter.Complete();
 }
 
 }

@@ -309,9 +309,6 @@
     <ClInclude Include="src\opendnp3\master\ScanResult.h">
       <Filter>Header\master</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\master\StartupTasks.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\master\TimeSyncHandler.h">
       <Filter>Header\master</Filter>
     </ClInclude>
@@ -615,9 +612,6 @@
     <ClInclude Include="src\opendnp3\master\TaskResult.h">
       <Filter>Source\master</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\master\MasterTaskList.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\app\APDUBuilders.h">
       <Filter>Header\app</Filter>
     </ClInclude>
@@ -664,6 +658,12 @@
       <Filter>Header\outstation</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\master\Master.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\ClearRestartTask.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\StartupTasksBackup.h">
       <Filter>Header\master</Filter>
     </ClInclude>
   </ItemGroup>
@@ -783,9 +783,6 @@
       <Filter>Source\master</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\master\QueuedCommandProcessor.cpp">
-      <Filter>Source\master</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\master\StartupTasks.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\transport\TransportLayer.cpp">
@@ -1031,9 +1028,6 @@
     <ClCompile Include="src\opendnp3\master\MasterScheduler.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\master\MasterTaskList.cpp">
-      <Filter>Source\master</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\master\MasterParams.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
@@ -1071,6 +1065,15 @@
       <Filter>Source\master</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\master\Master.cpp">
+      <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\ClearRestartTask.cpp">
+      <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\StartupTasksBackup.cpp">
+      <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\StartupTasks.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
   </ItemGroup>

@@ -30,13 +30,15 @@ namespace build
 	
 	void ClassRequest(APDURequest& request, FunctionCode code, int classMask, uint8_t seq);
 
-	void WriteClassHeaders(APDURequest& request, int classMask);
+	void WriteClassHeaders(APDURequest& request, int classMask);	
 
 	void ReadIntegrity(APDURequest& request, int classMask, uint8_t seq = 0);
 
 	void DisableUnsolicited(APDURequest& request, uint8_t seq = 0);
 
 	void EnableUnsolicited(APDURequest& request, int classMask, uint8_t seq = 0);
+
+	void ClearRestartIIN(APDURequest& request, uint8_t seq = 0);
 	
 }	
 }

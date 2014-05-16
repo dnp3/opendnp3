@@ -29,8 +29,6 @@
 #include <openpal/StaticBuffer.h>
 
 #include "opendnp3/master/MasterScheduler.h"
-#include "opendnp3/master/MasterTaskList.h"
-
 
 namespace opendnp3
 {
@@ -61,8 +59,7 @@ class MasterContext : public ICommandProcessor
 	uint8_t unsolSeq;
 	IMasterTask* pActiveTask;
 	openpal::ITimer* pResponseTimer;
-	MasterScheduler scheduler;
-	MasterTaskList taskList;
+	MasterScheduler scheduler;	
 	openpal::StaticQueue<APDUHeader, uint8_t, 4> confirmQueue;
 
 	openpal::StaticBuffer<sizes::MAX_TX_APDU_SIZE> txBuffer;

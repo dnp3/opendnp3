@@ -52,8 +52,7 @@ MasterContext::MasterContext(
 	unsolSeq(0),
 	pActiveTask(nullptr),
 	pResponseTimer(nullptr),
-	scheduler(&logger, executor),
-	taskList(pSOEHandler_, &logger, params)	
+	scheduler(&logger, pSOEHandler_, executor)		
 {
 	auto callback = [this](){ PostCheckForTask(); };
 	scheduler.SetExpirationHandler(openpal::Bind(callback));
@@ -68,8 +67,7 @@ bool MasterContext::OnLayerUp()
 	else
 	{
 		isOnline = true;
-		taskList.Initialize();		
-		taskList.ScheduleNext(scheduler);
+		scheduler.Startup(params);		
 		return true;
 	}
 }
@@ -84,7 +82,7 @@ bool MasterContext::OnLayerDown()
 			pActiveTask = nullptr;
 		}
 
-		scheduler.Reset();
+		scheduler.Shutdown();
 		this->CancelResponseTimer();
 		isOnline = false;
 		isSending = false;

@@ -35,7 +35,7 @@ class EnableUnsolicitedTask : public NullResponseTask
 
 public:	
 
-	EnableUnsolicitedTask(ITaskList* pTaskList_, openpal::Logger* pLogger_);
+	EnableUnsolicitedTask(openpal::Logger* pLogger_);
 
 	virtual char const* Name() const override final { return "Enable Unsolicited"; }
 
@@ -47,11 +47,7 @@ protected:
 
 	virtual void OnSuccess(const MasterParams& params, IMasterScheduler& scheduler) override final;
 
-	virtual void OnFailure(const MasterParams& params, IMasterScheduler& scheduler) override final;
-
-private:
-
-	ITaskList* pTaskList;
+	virtual void OnTimeoutOrBadControlOctet(const MasterParams& params, IMasterScheduler& scheduler) override final;
 
 };
 

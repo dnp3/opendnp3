@@ -42,7 +42,7 @@ public:
 
 protected:
 
-	virtual void OnFailure(const MasterParams& params, IMasterScheduler& scheduler) = 0;
+	virtual void OnTimeoutOrBadControlOctet(const MasterParams& params, IMasterScheduler& scheduler) = 0;
 
 	virtual TaskStatus OnSingleResponse(const APDUResponseRecord& response, const MasterParams& params, IMasterScheduler& scheduler) = 0;
 

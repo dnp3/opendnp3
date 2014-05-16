@@ -18,130 +18,21 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+
 #include "StartupTasks.h"
 
-#include "opendnp3/master/TimeSyncHandler.h"
 
-#include "opendnp3/app/APDUParser.h"
-#include "opendnp3/app/PointClass.h"
 
-#include <openpal/LogMacros.h>
-
-using namespace openpal;
-
-/*
 namespace opendnp3
 {
 
-// ------ Clear Restart ------- 
-
-ClearRestartIIN::ClearRestartIIN(openpal::Logger& arLogger) :
-	SimpleRspBase(arLogger)
-{}
-
-
-void ClearRestartIIN::ConfigureRequest(APDURequest& request)
+	StartupTasks::StartupTasks(openpal::Logger* pLogger, ISOEHandler* pSOEHandler) :
+	enableUnsol(pLogger),
+	clearRestartTask(pLogger),
+	startupIntegrity(pSOEHandler, pLogger),
+	disableUnsol(pLogger)
 {
-	request.SetFunction(FunctionCode::WRITE);
-	auto writer = request.GetWriter();
-	auto iter = writer.IterateOverSingleBitfield<UInt8>(GroupVariationID(80, 1), QualifierCode::UINT8_START_STOP, 7);
-	iter.Write(false);
-	iter.Complete();
+	
 }
 
-// ------ Configure Unsol -------
-
-ConfigureUnsol::ConfigureUnsol(openpal::Logger& arLogger) :
-	SimpleRspBase(arLogger),
-	mIsEnable(false),
-	mClassMask(0)
-{}
-
-void ConfigureUnsol::Set(bool aIsEnable, int aClassMask)
-{
-	mIsEnable = aIsEnable;
-	mClassMask = aClassMask;
 }
-
-
-void ConfigureUnsol::ConfigureRequest(APDURequest& request)
-{
-	request.SetFunction(mIsEnable ? FunctionCode::ENABLE_UNSOLICITED : FunctionCode::DISABLE_UNSOLICITED);
-	auto writer = request.GetWriter();
-	if (mClassMask & CLASS_1) writer.WriteHeader(GroupVariationID(60, 2), QualifierCode::ALL_OBJECTS);
-	if (mClassMask & CLASS_2) writer.WriteHeader(GroupVariationID(60, 3), QualifierCode::ALL_OBJECTS);
-	if (mClassMask & CLASS_3) writer.WriteHeader(GroupVariationID(60, 4), QualifierCode::ALL_OBJECTS);
-
-}
-
-// ------ Time Sync ------- 
-
-TimeSync::TimeSync(openpal::Logger& arLogger, IUTCTimeSource* apTimeSrc) :
-	SingleRspBase(arLogger),
-	mpTimeSrc(apTimeSrc),
-	mDelay(-1)
-{}
-
-void TimeSync::Init()
-{
-	mDelay = -1;
-}
-
-void TimeSync::ConfigureRequest(APDURequest& request)
-{
-	if(mDelay < 0)
-	{
-		request.SetFunction(FunctionCode::DELAY_MEASURE);
-		mStart = mpTimeSrc->Now();
-	}
-	else
-	{
-		auto now = mpTimeSrc->Now().msSinceEpoch;
-		Group50Var1 time;
-		time.time = now + mDelay;
-		request.SetFunction(FunctionCode::WRITE);
-		auto writer = request.GetWriter();
-		writer.WriteSingleValue<UInt8, Group50Var1>(QualifierCode::UINT8_CNT, time);
-	}
-
-}
-
-
-TaskResult TimeSync::_OnFinalResponse(const APDUResponseRecord& record)
-{
-	if(mDelay < 0)
-	{
-
-		TimeSyncHandler handler(logger);
-		auto result = APDUParser::ParseTwoPass(record.objects, &handler, &logger);
-		if(result == APDUParser::Result::OK)
-		{
-			uint16_t rtuTurnAroundTime;
-			if(handler.GetTimeDelay(rtuTurnAroundTime))
-			{
-				auto now = mpTimeSrc->Now();
-				auto sendReceieveTime = now.msSinceEpoch - mStart.msSinceEpoch;
-
-				// The later shouldn't happen, but could cause a negative delay which would
-				// result in a weird time setting
-				mDelay = (sendReceieveTime >= rtuTurnAroundTime) ? (sendReceieveTime - rtuTurnAroundTime) / 2 : 0;
-
-				return TR_CONTINUE;
-			}
-			else return TR_FAIL;
-		}
-		else
-		{
-			FORMAT_LOG_BLOCK(logger, flags::WARN, "Error parsing response headers: %i", result); // TODO - turn these into strings
-			return TR_FAIL;
-		}
-	}
-	else
-	{
-		return TR_SUCCESS;
-	}
-}
-
-} //ens ns
-*/
-

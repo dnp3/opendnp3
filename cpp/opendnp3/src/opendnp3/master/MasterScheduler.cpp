@@ -22,6 +22,7 @@
 #include "MasterScheduler.h"
 
 #include "opendnp3/master/ConstantCommandProcessor.h"
+#include "opendnp3/app/PointClass.h"
 
 using namespace openpal;
 
@@ -36,8 +37,10 @@ MasterScheduler::DelayedTask::DelayedTask(const openpal::MonotonicTimestamp& exp
 	pTask(pTask_)
 {}
 
-MasterScheduler::MasterScheduler(openpal::Logger* pLogger, openpal::IExecutor& executor) :
+MasterScheduler::MasterScheduler(openpal::Logger* pLogger, ISOEHandler* pSOEHandler, openpal::IExecutor& executor) :
 	commandTask(pLogger),
+	startupTasks(pLogger, pSOEHandler),
+	state(State::STARTUP),
 	pExecutor(&executor),
 	pTimer(nullptr)
 {
@@ -90,30 +93,77 @@ void MasterScheduler::Demand(IMasterTask* pTask)
 
 IMasterTask* MasterScheduler::Start()
 {	
-	if (commandActions.IsEmpty())
-	{
-		if (pendingQueue.IsEmpty())
-		{
-			return nullptr;
-		}
-		else
-		{
-			return pendingQueue.Pop();
-		}
-	}
-	else
-	{
+	if (commandActions.IsNotEmpty())
+	{		
 		// configure the command task		
 		commandActions.Pop().Run(&commandTask);
 		return &commandTask;
 	}
+	else
+	{		
+		if (pendingQueue.IsEmpty())
+		{
+			if (state == State::STARTUP && scheduledQueue.IsEmpty())
+			{
+				if (startupQueue.IsEmpty())
+				{
+					return SwitchToReadyMode();
+				}
+				else
+				{
+					return startupQueue.Pop();
+				}
+			}
+			else
+			{
+				return nullptr;
+			}
+		}
+		else
+		{
+			return pendingQueue.Pop();
+		}		
+	}
 }
 
-void MasterScheduler::Reset()
+IMasterTask* MasterScheduler::SwitchToReadyMode()
 {
-	this->CancelTimer();
+	state = State::READY;
+	auto scheduleLater = [this](PollTask& task) { this->ScheduleLater(&task, task.GetPeriod()); };
+	pollTasks.Foreach(scheduleLater);
+	return nullptr;
+}
+
+bool MasterScheduler::IsStartupComplete()
+{
+	if (state == State::STARTUP)
+	{
+		return true;
+	}
+	else
+	{
+		if (startupQueue.IsEmpty() && pendingQueue.IsEmpty() && scheduledQueue.IsEmpty())
+		{
+			state = State::READY;
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+}
+
+void MasterScheduler::Shutdown()
+{
+	state = State::STARTUP;
+
+	this->startupQueue.Clear();
 	this->pendingQueue.Clear();
 	this->scheduledQueue.Clear();
+
+	this->CancelTimer();
+	
 	while (commandActions.IsNotEmpty())
 	{		
 		this->ReportFailure(commandActions.Pop(), CommandResult::NO_COMMS);
@@ -136,6 +186,46 @@ void MasterScheduler::ScheduleCommand(const CommandErasure& action)
 		commandActions.Enqueue(action);
 		this->expirationHandler.Run();
 	}
+}
+
+PollTask* MasterScheduler::AddPollTask(const PollTask& pt)
+{
+	auto pNode = pollTasks.AddAndGetPointer(pt);
+	if (pNode)
+	{
+		if (state == State::READY)
+		{
+			this->ScheduleLater(&pNode->value, pt.GetPeriod());
+		}
+
+		return &pNode->value;
+	}
+	else
+	{
+		return nullptr;
+	}
+}
+
+void MasterScheduler::Startup(const MasterParams& params)
+{
+	startupQueue.Clear();	
+
+	if (params.disableUnsolOnStartup)
+	{
+		this->startupQueue.Enqueue(&startupTasks.disableUnsol);
+	}
+
+	if (params.startupIntergrityClassMask != 0)
+	{
+		this->startupQueue.Enqueue(&startupTasks.startupIntegrity);
+	}
+
+	if (params.unsolClassMask & ALL_EVENT_CLASSES)
+	{
+		this->startupQueue.Enqueue(&startupTasks.enableUnsol);
+	}	
+
+	this->expirationHandler.Run();
 }
 
 void MasterScheduler::ReportFailure(const CommandErasure& action, CommandResult result)

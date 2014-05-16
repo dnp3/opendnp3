@@ -40,13 +40,14 @@ TaskStatus SingleResponseTask::OnResponse(const APDUResponseRecord& response, co
 	else
 	{
 		SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Ignoring unexpected response FIR/FIN not set");
+		this->OnTimeoutOrBadControlOctet(params, scheduler);
 		return TaskStatus::FAIL;
 	}
 }
 
 void SingleResponseTask::OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler)
 {
-	this->OnFailure(params, scheduler);
+	this->OnTimeoutOrBadControlOctet(params, scheduler);
 }
 
 } //end ns

@@ -26,6 +26,8 @@
 #include <openpal/Function1.h>
 
 #include "opendnp3/master/CommandTask.h"
+#include "opendnp3/master/StartupTasks.h"
+#include "opendnp3/master/PollTask.h"
 #include "opendnp3/master/IMasterTask.h"
 #include "opendnp3/master/QueuedCommandProcessor.h"
 #include "opendnp3/master/IMasterScheduler.h"
@@ -35,13 +37,18 @@ namespace opendnp3
 {
 
 class MasterScheduler : public IMasterScheduler
-{
+{	
+	enum class State
+	{
+		STARTUP,
+		READY
+	};
 
 public:
 
 	typedef openpal::Function1<ICommandProcessor*> CommandErasure;
 
-	MasterScheduler(openpal::Logger* pLogger, openpal::IExecutor& executor);
+	MasterScheduler(openpal::Logger* pLogger, ISOEHandler* pSOEHandler, openpal::IExecutor& executor);
 
 	// ---------- Implement IMasterScheduler ------------
 	
@@ -61,7 +68,7 @@ public:
 	/**
 	* Cleanup all existing tasks & cancel any timers
 	*/
-	void Reset();
+	void Shutdown();
 
 	/**
 	* Set the action that will be called when a scheduled task is ready to run
@@ -71,9 +78,25 @@ public:
 	/*
 	* Schedule a command to run
 	*/
-	void ScheduleCommand(const CommandErasure& action);
+	void ScheduleCommand(const CommandErasure& action);	
+
+	/**
+	* Add a new poll to the scheduler
+	*/
+	PollTask* AddPollTask(const PollTask& pt);
+
+	/*
+	* Startup
+	*/
+	void Startup(const MasterParams& params);
+
 
 private:
+
+	IMasterTask* SwitchToReadyMode();
+
+	bool IsStartupComplete();
+
 
 	void ReportFailure(const CommandErasure& action, CommandResult result);
 
@@ -104,14 +127,27 @@ private:
 	bool CancelTimer();
 
 	CommandTask commandTask;
+	StartupTasks startupTasks;
+		
+	State state;
 	openpal::IExecutor* pExecutor;
 	openpal::ITimer* pTimer;
 	openpal::Runnable expirationHandler;
+
+	/// Tasks that are scheduled to execute ASAP
 	openpal::StaticPriorityQueue<IMasterTask*, uint16_t, sizes::MAX_MASTER_TASKS, IMasterTask::Ordering> pendingQueue;
+	
+	/// Tasks that are scheduled to execute sometime in the future
 	openpal::StaticPriorityQueue<DelayedTask, uint16_t, sizes::MAX_MASTER_TASKS, TimeBasedOrdering> scheduledQueue;
 
-
+	/// The dynamic list of startup tasks
+	openpal::StaticQueue<IMasterTask*, uint8_t, sizes::MAX_MASTER_STARTUP_TASKS> startupQueue;
+	
+	/// All pending command actions
 	openpal::StaticQueue<CommandErasure, uint8_t, sizes::MAX_COMMAND_QUEUE_SIZE> commandActions;
+
+	/// All poll tasks that have been configured
+	openpal::StaticLinkedList<PollTask, uint8_t, sizes::MAX_MASTER_POLL_TASKS> pollTasks;
 };
 
 }

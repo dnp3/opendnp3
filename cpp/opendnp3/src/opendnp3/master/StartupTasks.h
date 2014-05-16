@@ -18,81 +18,34 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+
 #ifndef __STARTUP_TASKS_H_
 #define __STARTUP_TASKS_H_
 
+#include "opendnp3/master/ClearRestartTask.h"
+#include "opendnp3/master/EnableUnsolicitedTask.h"
+#include "opendnp3/master/StartupIntegrityPoll.h"
+#include "opendnp3/master/DisableUnsolicitedTask.h"
 
-#include <openpal/IUTCTimeSource.h>
-
-/*
 namespace opendnp3
 {
 
-class ITimeSource;
-
-// Clears the outstation IIN restart bit
-class ClearRestartIIN : public SimpleRspBase
+class StartupTasks
 {
+
 public:
-	ClearRestartIIN(openpal::Logger& arLogger);
 
-	void ConfigureRequest(APDURequest& request);
+	StartupTasks(openpal::Logger* pLogger, ISOEHandler* pSOEHandler);
 
-	char const* Name() const
-	{
-		return "ClearRestartIIN";
-	}
+	EnableUnsolicitedTask enableUnsol;
+	ClearRestartTask clearRestartTask;
+	StartupIntegrityPoll startupIntegrity;
+	DisableUnsolicitedTask disableUnsol;
+	
 };
 
-// Enables or disables unsolicited reporting
-class ConfigureUnsol : public SimpleRspBase
-{
-public:
-	ConfigureUnsol(openpal::Logger&);
+}
 
-	void Set(bool aIsEnable, int aClassMask);
 
-	void ConfigureRequest(APDURequest& request);
-
-	char const* Name() const
-	{
-		return "ConfigureUnsol";
-	}
-
-private:
-	bool mIsEnable;
-	int mClassMask;
-};
-
-// Synchronizes the time on the outstation
-class TimeSync : public SingleRspBase
-{
-public:
-	TimeSync(openpal::Logger&, openpal::IUTCTimeSource*);
-
-	// override Init
-	void Init();
-	void ConfigureRequest(APDURequest& request);
-	TaskResult _OnFinalResponse(const APDUResponseRecord&);
-
-	char const* Name() const
-	{
-		return "TimeSync";
-	}
-
-private:
-	openpal::IUTCTimeSource* mpTimeSrc;
-
-	// < 0 implies the delay measure hasn't happened yet
-	int64_t mDelay;
-
-	// what time we sent the delay meas
-	openpal::UTCTimestamp mStart;
-};
-
-} //ens ns
-
-*/
 
 #endif
-
