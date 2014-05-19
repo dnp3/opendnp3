@@ -303,9 +303,6 @@
     <ClInclude Include="src\opendnp3\master\MeasurementHandler.h">
       <Filter>Header\master</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\master\QueuedCommandProcessor.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\master\ScanResult.h">
       <Filter>Header\master</Filter>
     </ClInclude>
@@ -570,9 +567,6 @@
     <ClInclude Include="src\opendnp3\master\ICommandCallback.h">
       <Filter>Header\master</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\master\CommandAction.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\transport\TransportStack.h">
       <Filter>Header\transport</Filter>
     </ClInclude>
@@ -782,9 +776,6 @@
     <ClCompile Include="src\opendnp3\master\MeasurementHandler.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\master\QueuedCommandProcessor.cpp">
-      <Filter>Source\master</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\transport\TransportLayer.cpp">
       <Filter>Source\transport</Filter>
     </ClCompile>
@@ -991,9 +982,6 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\gen\EventAnalogOutputStatusResponse.cpp">
       <Filter>Source\gen</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\master\CommandAction.cpp">
-      <Filter>Source\master</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\IINHelpers.cpp">
       <Filter>Source\outstation</Filter>

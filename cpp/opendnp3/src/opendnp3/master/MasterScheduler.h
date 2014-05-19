@@ -24,13 +24,14 @@
 
 #include <openpal/StaticPriorityQueue.h>
 #include <openpal/Function1.h>
+#include <openpal/IExecutor.h>
 
 #include "opendnp3/master/CommandTask.h"
 #include "opendnp3/master/StartupTasks.h"
 #include "opendnp3/master/PollTask.h"
 #include "opendnp3/master/IMasterTask.h"
-#include "opendnp3/master/QueuedCommandProcessor.h"
 #include "opendnp3/master/IMasterScheduler.h"
+
 #include "opendnp3/StaticSizeConfiguration.h"
 
 namespace opendnp3

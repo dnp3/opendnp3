@@ -115,7 +115,6 @@
     <ClInclude Include="src\opendnp3\link\ShiftableBuffer.h" />
     <ClInclude Include="src\opendnp3\LogLevels.h" />
     <ClInclude Include="src\opendnp3\master\ClearRestartTask.h" />
-    <ClInclude Include="src\opendnp3\master\CommandAction.h" />
     <ClInclude Include="src\opendnp3\master\CommandMarshaller.h" />
     <ClInclude Include="src\opendnp3\master\CommandResponse.h" />
     <ClInclude Include="src\opendnp3\master\CommandSequence.h" />
@@ -140,7 +139,6 @@
     <ClInclude Include="src\opendnp3\master\MasterStackConfig.h" />
     <ClInclude Include="src\opendnp3\master\MeasurementHandler.h" />
     <ClInclude Include="src\opendnp3\master\Master.h" />
-    <ClInclude Include="src\opendnp3\master\QueuedCommandProcessor.h" />
     <ClInclude Include="src\opendnp3\master\ScanResult.h" />
     <ClInclude Include="src\opendnp3\master\SingleResponseTask.h" />
     <ClInclude Include="src\opendnp3\master\StartupTasksBackup.h" />
@@ -286,7 +284,6 @@
     <ClCompile Include="src\opendnp3\link\SecLinkLayerStates.cpp" />
     <ClCompile Include="src\opendnp3\link\ShiftableBuffer.cpp" />
     <ClCompile Include="src\opendnp3\master\ClearRestartTask.cpp" />
-    <ClCompile Include="src\opendnp3\master\CommandAction.cpp" />
     <ClCompile Include="src\opendnp3\master\CommandMarshaller.cpp" />
     <ClCompile Include="src\opendnp3\master\CommandResponse.cpp" />
     <ClCompile Include="src\opendnp3\master\CommandTask.cpp" />
@@ -304,7 +301,6 @@
     <ClCompile Include="src\opendnp3\master\MeasurementHandler.cpp" />
     <ClCompile Include="src\opendnp3\master\Master.cpp" />
     <ClCompile Include="src\opendnp3\master\PollTaskBase.cpp" />
-    <ClCompile Include="src\opendnp3\master\QueuedCommandProcessor.cpp" />
     <ClCompile Include="src\opendnp3\master\SingleResponseTask.cpp" />
     <ClCompile Include="src\opendnp3\master\StartupTasks.cpp" />
     <ClCompile Include="src\opendnp3\master\StartupTasksBackup.cpp" />
