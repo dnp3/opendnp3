@@ -33,12 +33,12 @@ namespace asiodnp3
 MasterStackImpl::MasterStackImpl(	LogRoot& root,
 									openpal::IExecutor& executor,
                                     ISOEHandler* pSOEHandler,
-                                    IUTCTimeSource* apTimeSource,                                    
+                                    IUTCTimeSource* pTimeSource,                                    
                                     const MasterStackConfig& config,
                                     const StackActionHandler& handler) :
 
 	IMaster(root, &executor, config.link, handler),
-	master(executor, root, stack.transport, pSOEHandler, config.master)
+	master(executor, root, stack.transport, pSOEHandler, pTimeSource, config.master)
 {
 	stack.transport.SetAppLayer(&master);
 }

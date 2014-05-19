@@ -48,6 +48,7 @@ namespace opendnp3
 		MockExecutor exe;
 		MockSOEHandler meas;
 		MockLowerLayer lower;
+		openpal::FixedUTCTimeSource timeSource;
 		Master master;
 	};
 

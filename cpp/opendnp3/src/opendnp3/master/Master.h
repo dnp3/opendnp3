@@ -36,6 +36,7 @@ class Master : public openpal::IUpperLayer
 				openpal::LogRoot& root, 
 				openpal::ILowerLayer& lower,
 				ISOEHandler* pSOEHandler,
+				openpal::IUTCTimeSource* pTimeSource,
 				const MasterParams& params
 				);
 	

@@ -19,28 +19,32 @@
  * to you under the terms of the License.
  */
 
-#ifndef __STARTUP_TASKS_H_
-#define __STARTUP_TASKS_H_
+#ifndef __MASTER_TASKS_H_
+#define __MASTER_TASKS_H_
 
 #include "opendnp3/master/ClearRestartTask.h"
 #include "opendnp3/master/EnableUnsolicitedTask.h"
 #include "opendnp3/master/StartupIntegrityPoll.h"
 #include "opendnp3/master/DisableUnsolicitedTask.h"
+#include "opendnp3/master/CommandTask.h"
+#include "opendnp3/master/SerialTimeSyncTask.h"
 
 namespace opendnp3
 {
 
-class StartupTasks
+class MasterTasks
 {
 
 public:
 
-	StartupTasks(openpal::Logger* pLogger, ISOEHandler* pSOEHandler);
+	MasterTasks(openpal::Logger* pLogger, ISOEHandler* pSOEHandler, openpal::IUTCTimeSource* pTimeSource);
 
 	EnableUnsolicitedTask enableUnsol;
 	ClearRestartTask clearRestartTask;
 	StartupIntegrityPoll startupIntegrity;
 	DisableUnsolicitedTask disableUnsol;
+	CommandTask commandTask;
+	SerialTimeSyncTask serialTimeSync;
 	
 };
 

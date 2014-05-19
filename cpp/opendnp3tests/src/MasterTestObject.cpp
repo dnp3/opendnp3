@@ -40,7 +40,8 @@ MasterTestObject::MasterTestObject(const MasterParams& params) :
 	exe(),
 	meas(),
 	lower(log.root),
-	master(exe, log.root, lower, &meas, params)
+	timeSource(0),
+	master(exe, log.root, lower, &meas, &timeSource, params)
 {}
 
 void MasterTestObject::SendToMaster(const std::string& hex)

@@ -1,0 +1,104 @@
+/**
+ * Licensed to Green Energy Corp (www.greenenergycorp.com) under one or
+ * more contributor license agreements. See the NOTICE file distributed
+ * with this work for additional information regarding copyright ownership.
+ * Green Energy Corp licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except in
+ * compliance with the License.  You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * This project was forked on 01/01/2013 by Automatak, LLC and modifications
+ * may have been made to this file. Automatak, LLC licenses these modifications
+ * to you under the terms of the License.
+ */
+
+#include "SerialTimeSyncTask.h"
+
+#include "opendnp3/objects/Group50.h"
+#include "opendnp3/app/APDUParser.h"
+#include "opendnp3/master/TimeSyncHandler.h"
+
+#include <openpal/Serialization.h>
+
+using namespace openpal;
+
+namespace opendnp3
+{
+
+SerialTimeSyncTask::SerialTimeSyncTask(openpal::Logger* pLogger_, openpal::IUTCTimeSource* pTimeSource_) :
+	SingleResponseTask(pLogger_),
+	pTimeSource(pTimeSource_)
+{}
+
+void SerialTimeSyncTask::BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq)
+{
+	if (delay < 0)
+	{
+		start = pTimeSource->Now();
+		request.SetFunction(FunctionCode::DELAY_MEASURE);
+		request.SetControl(AppControlField::Request(seq));
+	}
+	else
+	{
+		auto now = pTimeSource->Now();
+		Group50Var1 time;
+		time.time = now.msSinceEpoch + delay;
+		request.SetFunction(FunctionCode::WRITE);
+		request.SetControl(AppControlField::Request(0));
+		auto writer = request.GetWriter();
+		writer.WriteSingleValue<UInt8, Group50Var1>(QualifierCode::UINT8_CNT, time);
+	}
+}
+
+void SerialTimeSyncTask::OnTimeoutOrBadControlOctet(const MasterParams& params, IMasterScheduler& scheduler)
+{
+	// don't reschedule. Seeing the NeedTime bit again will automatically re-activate the task
+}
+
+TaskStatus SerialTimeSyncTask::OnSingleResponse(const APDUResponseRecord& response, const MasterParams& params, IMasterScheduler& scheduler)
+{
+	if (delay < 0)
+	{
+		TimeSyncHandler handler(*pLogger);
+		auto result = APDUParser::ParseTwoPass(response.objects, &handler, pLogger);
+		if (result == APDUParser::Result::OK)
+		{
+			uint16_t rtuTurnAroundTime;
+			if (handler.GetTimeDelay(rtuTurnAroundTime))
+			{
+				auto now = pTimeSource->Now();
+				auto sendReceieveTime = now.msSinceEpoch - start.msSinceEpoch;
+
+				// The later shouldn't happen, but could cause a negative delay which would result in a weird time setting				
+				delay = (sendReceieveTime >= rtuTurnAroundTime) ? (sendReceieveTime - rtuTurnAroundTime) / 2 : 0;
+
+				return TaskStatus::REPEAT;
+			}
+			else
+			{
+				return TaskStatus::FAIL;
+			}
+		}
+		else
+		{			
+			return TaskStatus::FAIL;
+		}
+	}
+	else
+	{
+		return TaskStatus::SUCCESS;
+	}
+}
+
+	
+} //ens ns
+
+
+

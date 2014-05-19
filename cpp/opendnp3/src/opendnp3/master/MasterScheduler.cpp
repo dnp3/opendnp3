@@ -39,9 +39,8 @@ MasterScheduler::DelayedTask::DelayedTask(const openpal::MonotonicTimestamp& exp
 	pTask(pTask_)
 {}
 
-MasterScheduler::MasterScheduler(openpal::Logger* pLogger, ISOEHandler* pSOEHandler, openpal::IExecutor& executor) :
-	commandTask(pLogger),
-	startupTasks(pLogger, pSOEHandler),
+MasterScheduler::MasterScheduler(openpal::Logger* pLogger, ISOEHandler* pSOEHandler, IUTCTimeSource* pTimeSource, openpal::IExecutor& executor) :	
+	tasks(pLogger, pSOEHandler, pTimeSource),
 	state(State::STARTUP),
 	pExecutor(&executor),
 	pTimer(nullptr)
@@ -98,8 +97,8 @@ IMasterTask* MasterScheduler::Start()
 	if (commandActions.IsNotEmpty())
 	{		
 		// configure the command task		
-		commandActions.Pop().Run(&commandTask);
-		return &commandTask;
+		commandActions.Pop().Run(&tasks.commandTask);
+		return &tasks.commandTask;
 	}
 	else
 	{		
@@ -217,17 +216,17 @@ void MasterScheduler::Startup(const MasterParams& params)
 
 	if (params.disableUnsolOnStartup)
 	{
-		this->startupQueue.Enqueue(&startupTasks.disableUnsol);
+		this->startupQueue.Enqueue(&tasks.disableUnsol);
 	}
 
 	if (params.startupIntergrityClassMask != 0)
 	{
-		this->startupQueue.Enqueue(&startupTasks.startupIntegrity);
+		this->startupQueue.Enqueue(&tasks.startupIntegrity);
 	}
 
 	if (params.unsolClassMask & ALL_EVENT_CLASSES)
 	{
-		this->startupQueue.Enqueue(&startupTasks.enableUnsol);
+		this->startupQueue.Enqueue(&tasks.enableUnsol);
 	}	
 
 	this->expirationHandler.Run();
@@ -235,20 +234,20 @@ void MasterScheduler::Startup(const MasterParams& params)
 
 void MasterScheduler::OnRestartDetected(IMasterTask* pCurrentTask, const MasterParams& params)
 {
-	if (pCurrentTask != &startupTasks.clearRestartTask)
+	if (pCurrentTask != &tasks.clearRestartTask)
 	{
 		this->ResetToStartupState();
 
-		this->startupQueue.Enqueue(&startupTasks.clearRestartTask);
+		this->startupQueue.Enqueue(&tasks.clearRestartTask);
 		
 		if (params.startupIntergrityClassMask != 0)
 		{
-			this->startupQueue.Enqueue(&startupTasks.startupIntegrity);
+			this->startupQueue.Enqueue(&tasks.startupIntegrity);
 		}
 
 		if (params.unsolClassMask & ALL_EVENT_CLASSES)
 		{
-			this->startupQueue.Enqueue(&startupTasks.enableUnsol);
+			this->startupQueue.Enqueue(&tasks.enableUnsol);
 		}		
 	}
 	

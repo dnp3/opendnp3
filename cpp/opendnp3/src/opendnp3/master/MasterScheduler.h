@@ -26,8 +26,7 @@
 #include <openpal/Function1.h>
 #include <openpal/IExecutor.h>
 
-#include "opendnp3/master/CommandTask.h"
-#include "opendnp3/master/StartupTasks.h"
+#include "opendnp3/master/MasterTasks.h"
 #include "opendnp3/master/PollTask.h"
 #include "opendnp3/master/IMasterTask.h"
 #include "opendnp3/master/IMasterScheduler.h"
@@ -49,7 +48,7 @@ public:
 
 	typedef openpal::Function1<ICommandProcessor*> CommandErasure;
 
-	MasterScheduler(openpal::Logger* pLogger, ISOEHandler* pSOEHandler, openpal::IExecutor& executor);
+	MasterScheduler(openpal::Logger* pLogger, ISOEHandler* pSOEHandler, openpal::IUTCTimeSource* pTimeSource, openpal::IExecutor& executor);
 
 	// ---------- Implement IMasterScheduler ------------
 	
@@ -133,8 +132,8 @@ private:
 
 	bool CancelAnyTimer();
 
-	CommandTask commandTask;
-	StartupTasks startupTasks;
+	
+	MasterTasks tasks;
 		
 	State state;
 	openpal::IExecutor* pExecutor;

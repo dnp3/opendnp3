@@ -18,81 +18,46 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __STARTUP_TASKS_BACKUP_H_
-#define __STARTUP_TASKS_BACKUP_H_
-
+#ifndef __SERIAL_TIME_SYNC_TASK_H_
+#define __SERIAL_TIME_SYNC_TASK_H_
 
 #include <openpal/IUTCTimeSource.h>
 
-/*
+#include "opendnp3/master/SingleResponseTask.h"
+
 namespace opendnp3
 {
 
-class ITimeSource;
-
-// Clears the outstation IIN restart bit
-class ClearRestartIIN : public SimpleRspBase
-{
-public:
-	ClearRestartIIN(openpal::Logger& arLogger);
-
-	void ConfigureRequest(APDURequest& request);
-
-	char const* Name() const
-	{
-		return "ClearRestartIIN";
-	}
-};
-
-// Enables or disables unsolicited reporting
-class ConfigureUnsol : public SimpleRspBase
-{
-public:
-	ConfigureUnsol(openpal::Logger&);
-
-	void Set(bool aIsEnable, int aClassMask);
-
-	void ConfigureRequest(APDURequest& request);
-
-	char const* Name() const
-	{
-		return "ConfigureUnsol";
-	}
-
-private:
-	bool mIsEnable;
-	int mClassMask;
-};
-
 // Synchronizes the time on the outstation
-class TimeSync : public SingleRspBase
+class SerialTimeSyncTask : public SingleResponseTask
 {
+
 public:
-	TimeSync(openpal::Logger&, openpal::IUTCTimeSource*);
+	SerialTimeSyncTask(openpal::Logger* pLogger, openpal::IUTCTimeSource* pTimeSource_);
 
-	// override Init
-	void Init();
-	void ConfigureRequest(APDURequest& request);
-	TaskResult _OnFinalResponse(const APDUResponseRecord&);
+	virtual char const* Name() const override final { return "serial (non-LAN) time sync"; }
 
-	char const* Name() const
-	{
-		return "TimeSync";
-	}
+	virtual TaskPriority Priority() const { return TaskPriority::STARTUP; }
+
+	virtual void BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq) override final;
+
+	virtual void OnTimeoutOrBadControlOctet(const MasterParams& params, IMasterScheduler& scheduler) override final;
+
+protected:
+
+	virtual TaskStatus OnSingleResponse(const APDUResponseRecord& response, const MasterParams& params, IMasterScheduler& scheduler) override final;
 
 private:
-	openpal::IUTCTimeSource* mpTimeSrc;
+	openpal::IUTCTimeSource* pTimeSource;
 
 	// < 0 implies the delay measure hasn't happened yet
-	int64_t mDelay;
+	int64_t delay;
 
 	// what time we sent the delay meas
-	openpal::UTCTimestamp mStart;
+	openpal::UTCTimestamp start;
 };
 
 } //ens ns
-
-*/
 
 #endif
 

@@ -19,18 +19,20 @@
  * to you under the terms of the License.
  */
 
-#include "StartupTasks.h"
+#include "MasterTasks.h"
 
 
 
 namespace opendnp3
 {
 
-	StartupTasks::StartupTasks(openpal::Logger* pLogger, ISOEHandler* pSOEHandler) :
+	MasterTasks::MasterTasks(openpal::Logger* pLogger, ISOEHandler* pSOEHandler, openpal::IUTCTimeSource* pTimeSource) :
 	enableUnsol(pLogger),
 	clearRestartTask(pLogger),
 	startupIntegrity(pSOEHandler, pLogger),
-	disableUnsol(pLogger)
+	disableUnsol(pLogger),
+	commandTask(pLogger),
+	serialTimeSync(pLogger, pTimeSource)
 {
 	
 }

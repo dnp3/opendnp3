@@ -41,6 +41,7 @@ class MasterContext : public ICommandProcessor
 					openpal::LogRoot& root, 
 					openpal::ILowerLayer& lower,
 					ISOEHandler* pSOEHandler,
+					openpal::IUTCTimeSource* pTimeSource,
 					const MasterParams& params
 				);
 	

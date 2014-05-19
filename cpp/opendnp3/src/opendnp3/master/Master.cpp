@@ -25,7 +25,6 @@
 #include "opendnp3/app/APDUBuilders.h"
 #include "opendnp3/LogLevels.h"
 
-
 #include <openpal/LogMacros.h>
 
 namespace opendnp3
@@ -36,9 +35,10 @@ Master::Master(
 	openpal::LogRoot& root,
 	openpal::ILowerLayer& lower,
 	ISOEHandler* pSOEHandler,
+	openpal::IUTCTimeSource* pTimeSource,
 	const MasterParams& params
 	) : 
-	context(executor, root, lower, pSOEHandler, params),
+	context(executor, root, lower, pSOEHandler, pTimeSource, params),
 	commandMarshaller(executor, context)
 {}
 	

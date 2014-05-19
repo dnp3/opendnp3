@@ -38,6 +38,7 @@ MasterContext::MasterContext(
 	openpal::LogRoot& root,
 	openpal::ILowerLayer& lower,
 	ISOEHandler* pSOEHandler_,
+	openpal::IUTCTimeSource* pTimeSource,
 	const MasterParams& params_
 	) :
 
@@ -52,7 +53,7 @@ MasterContext::MasterContext(
 	unsolSeq(0),
 	pActiveTask(nullptr),
 	pResponseTimer(nullptr),
-	scheduler(&logger, pSOEHandler_, executor)		
+	scheduler(&logger, pSOEHandler_, pTimeSource, executor)		
 {
 	auto callback = [this](){ PostCheckForTask(); };
 	scheduler.SetExpirationHandler(openpal::Bind(callback));

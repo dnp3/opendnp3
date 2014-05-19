@@ -657,7 +657,10 @@
     <ClInclude Include="src\opendnp3\master\ClearRestartTask.h">
       <Filter>Header\master</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\master\StartupTasksBackup.h">
+    <ClInclude Include="src\opendnp3\master\SerialTimeSyncTask.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\MasterTasks.h">
       <Filter>Header\master</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1058,10 +1061,10 @@
     <ClCompile Include="src\opendnp3\master\ClearRestartTask.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\master\StartupTasksBackup.cpp">
+    <ClCompile Include="src\opendnp3\master\SerialTimeSyncTask.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\master\StartupTasks.cpp">
+    <ClCompile Include="src\opendnp3\master\MasterTasks.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
   </ItemGroup>
