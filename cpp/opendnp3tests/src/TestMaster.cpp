@@ -93,7 +93,7 @@ TEST_CASE(SUITE("IntegrityPollCanRepeat"))
 	REQUIRE(t.exe.RunMany() > 0);
 	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
 	t.master.OnSendResult(true);
-	t.SendToMaster(hex::EmptyResponse(0));
+	t.SendToMaster(hex::EmptyResponse(IINField::Empty, 0));
 
 	// 2nd poll
 	REQUIRE(t.exe.NumPendingTimers() == 1);
@@ -114,17 +114,17 @@ TEST_CASE(SUITE("UnsolDisableEnableOnStartup"))
 	// disable unsol on grp 60 var2, var3, var4
 	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ALL_EVENT_CLASSES));
 	t.master.OnSendResult(true);
-	t.SendToMaster(hex::EmptyResponse(0));
+	t.SendToMaster(hex::EmptyResponse(IINField::Empty, 0));
 
 	REQUIRE(t.exe.RunMany() > 0);
 	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(1));
 	t.master.OnSendResult(true);
-	t.SendToMaster(hex::EmptyResponse(1));
+	t.SendToMaster(hex::EmptyResponse(IINField::Empty, 1));
 
 	REQUIRE(t.exe.RunMany() > 0);
 	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::ENABLE_UNSOLICITED, 2, ALL_EVENT_CLASSES));
 	t.master.OnSendResult(true);
-	t.SendToMaster(hex::EmptyResponse(2));
+	t.SendToMaster(hex::EmptyResponse(IINField::Empty, 2));
 
 	REQUIRE(t.exe.RunMany() > 0);
 	REQUIRE(t.exe.NumPendingTimers() == 0);	
@@ -258,11 +258,38 @@ TEST_CASE(SUITE("ParsesOctetStringResponseSizeOfOne"))
 	REQUIRE("AA" ==  toHex(t.meas.GetOctetString(3).ToReadOnly()));
 }
 
+TEST_CASE(SUITE("RestartDuringStartup"))
+{
+
+	MasterParams params;
+	params.startupIntergrityClassMask = 0; //disable integrity poll
+	MasterTestObject t(params);
+	t.master.OnLowerLayerUp();	
+
+	REQUIRE(t.exe.RunMany() > 0);
+
+	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ALL_EVENT_CLASSES));
+	t.master.OnSendResult(false);
+
+	t.SendToMaster(hex::EmptyResponse(IINField(IINBit::DEVICE_RESTART), 0));
+
+	REQUIRE(t.exe.RunMany() > 0);
+
+	REQUIRE(t.lower.PopWriteAsHex() == hex::ClearRestartIIN(1));
+	t.master.OnSendResult(false);
+	t.SendToMaster(hex::EmptyResponse(IINField::Empty, 1));
+
+	REQUIRE(t.exe.RunMany() > 0);
+
+	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::ENABLE_UNSOLICITED, 2, ALL_EVENT_CLASSES));	
+}
+
 /*
 TEST_CASE(SUITE("RestartAndTimeBits"))
 {
-MasterConfig config;
-MasterTestObject t(config);
+
+MasterParams params;
+MasterTestObject t(params);
 t.master.OnLowerLayerUp();
 
 t.fixedUTC.mTimeSinceEpoch = 100;

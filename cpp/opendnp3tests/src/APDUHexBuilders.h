@@ -25,6 +25,7 @@
 #include <string>
 #include <cstdint>
 
+#include <opendnp3/app/IINField.h>
 #include <opendnp3/gen/FunctionCode.h>
 
 namespace hex
@@ -34,7 +35,9 @@ namespace hex
 
 	std::string ClassTask(opendnp3::FunctionCode fc, uint8_t seq, int mask = ~0);
 
-	std::string EmptyResponse(uint8_t seq);
+	std::string EmptyResponse(const opendnp3::IINField& iin, uint8_t seq);
+
+	std::string ClearRestartIIN(uint8_t seq);
 
 }
 

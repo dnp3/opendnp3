@@ -66,12 +66,17 @@ class MasterContext : public ICommandProcessor
 	
 	void PostCheckForTask();
 
-	// ------- events ----------
+	// ------- external events ----------
 	bool OnLayerUp();
 	bool OnLayerDown();
 	void OnSendResult(bool isSucccess);
+	void OnReceive(const openpal::ReadOnlyBuffer& apdu);
+
+	// ------- internal events -------
+
 	void OnResponse(const APDUResponseRecord& response);	
 	void OnUnsolicitedResponse(const APDUResponseRecord& response);
+	void OnReceiveIIN(const IINField& iin);
 
 	// ------- command events ----------
 

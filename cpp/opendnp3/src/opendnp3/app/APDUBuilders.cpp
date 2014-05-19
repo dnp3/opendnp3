@@ -78,6 +78,8 @@ void EnableUnsolicited(APDURequest& request, int classMask, uint8_t seq)
 
 void ClearRestartIIN(APDURequest& request, uint8_t seq)
 {
+	request.SetFunction(FunctionCode::WRITE);
+	request.SetControl(AppControlField(true, true, false, false, seq));
 	auto writer = request.GetWriter();
 	auto iter = writer.IterateOverSingleBitfield<openpal::UInt8>(GroupVariationID(80, 1), QualifierCode::UINT8_START_STOP, static_cast<uint8_t>(IINBit::DEVICE_RESTART));
 	iter.Write(true);	

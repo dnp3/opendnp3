@@ -153,7 +153,7 @@ void MasterContext::OnResponseTimeout()
 
 void MasterContext::OnSendResult(bool isSucccess)
 {
-	if (isSending)
+	if (isOnline && isSending)
 	{
 		isSending = false;
 		this->CheckConfirmTransmit();
@@ -172,6 +172,43 @@ void MasterContext::OnSendResult(bool isSucccess)
 				this->PostCheckForTask();
 			}
 		}		
+	}
+}
+
+void MasterContext::OnReceive(const openpal::ReadOnlyBuffer& apdu)
+{
+	if (isOnline)
+	{
+		APDUResponseRecord response;
+		auto result = APDUHeaderParser::ParseResponse(apdu, response, &logger);
+		if (result == APDUHeaderParser::Result::OK)
+		{
+			FORMAT_LOG_BLOCK(logger, flags::APP_HEADER_RX,
+				"FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s IIN: [0x%02x, 0x%02x]",
+				response.control.FIN,
+				response.control.FIN,
+				response.control.CON,
+				response.control.UNS,
+				response.control.SEQ,
+				FunctionCodeToString(response.function),
+				response.IIN.LSB,
+				response.IIN.MSB);
+
+			this->OnReceiveIIN(response.IIN);
+
+			switch (response.function)
+			{
+				case(FunctionCode::RESPONSE) :
+					this->OnResponse(response);
+					break;
+				case(FunctionCode::UNSOLICITED_RESPONSE) :
+					this->OnUnsolicitedResponse(response);
+					break;
+				default:
+					FORMAT_LOG_BLOCK(logger, flags::WARN, "unsupported function code: %s", FunctionCodeToString(response.function));
+					break;
+			}
+		}
 	}
 }
 
@@ -231,6 +268,14 @@ void MasterContext::OnUnsolicitedResponse(const APDUResponseRecord& response)
 	else
 	{
 		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Ignoring unsolicited response with UNS bit not set");
+	}
+}
+
+void MasterContext::OnReceiveIIN(const IINField& iin)
+{
+	if (iin.IsSet(IINBit::DEVICE_RESTART))
+	{
+		scheduler.OnRestartDetected(pActiveTask, params);
 	}
 }
 

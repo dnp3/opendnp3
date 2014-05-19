@@ -90,8 +90,14 @@ public:
 	*/
 	void Startup(const MasterParams& params);
 
+	/*
+	*
+	*/
+	void OnRestartDetected(IMasterTask* pCurrentTask, const MasterParams& params);
 
 private:
+
+	void ResetToStartupState();
 
 	IMasterTask* SwitchToReadyMode();
 
@@ -124,7 +130,7 @@ private:
 
 	void OnTimerExpiration();	
 
-	bool CancelTimer();
+	bool CancelAnyTimer();
 
 	CommandTask commandTask;
 	StartupTasks startupTasks;

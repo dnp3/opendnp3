@@ -46,13 +46,23 @@ namespace hex
 		return ClassTask(FunctionCode::READ, seq, mask);
 	}
 
-	std::string EmptyResponse(uint8_t seq)
+	std::string EmptyResponse(const IINField& iin, uint8_t seq)
 	{
-		StaticBuffer<4> buffer;
+		StaticBuffer<2048> buffer;
 		APDUResponse response(buffer.GetWriteBuffer());
 		response.SetFunction(FunctionCode::RESPONSE);
 		response.SetControl(AppControlField(true, true, false, false, seq));
+		response.SetIIN(iin);
 		return toHex(response.ToReadOnly());
+	}
+
+	std::string ClearRestartIIN(uint8_t seq)
+	{
+		StaticBuffer<2048> buffer;
+		APDURequest request(buffer.GetWriteBuffer());
+		
+		build::ClearRestartIIN(request, seq);
+		return toHex(request.ToReadOnly());
 	}
 }
 

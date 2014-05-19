@@ -54,45 +54,12 @@ void Master::OnLowerLayerDown()
 
 void Master::OnReceive(const openpal::ReadOnlyBuffer& apdu)
 {
-	if (context.isOnline)
-	{
-		APDUResponseRecord response;
-		auto result = APDUHeaderParser::ParseResponse(apdu, response, &context.logger);
-		if (result == APDUHeaderParser::Result::OK)
-		{			
-			FORMAT_LOG_BLOCK(context.logger, flags::APP_HEADER_RX,
-				"FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s IIN: [0x%02x, 0x%02x]",
-				response.control.FIN,
-				response.control.FIN,
-				response.control.CON,
-				response.control.UNS,
-				response.control.SEQ,
-				FunctionCodeToString(response.function),
-				response.IIN.LSB,
-				response.IIN.MSB);
-
-			switch (response.function)
-			{
-				case(FunctionCode::RESPONSE) :
-					context.OnResponse(response);
-					break;
-				case(FunctionCode::UNSOLICITED_RESPONSE) :
-					context.OnUnsolicitedResponse(response);
-					break;
-				default:
-					FORMAT_LOG_BLOCK(context.logger, flags::WARN, "unsupported function code: %s", FunctionCodeToString(response.function));
-					break;
-			}
-		}
-	}
+	context.OnReceive(apdu);
 }
 
 void Master::OnSendResult(bool isSucccess)
 {
-	if (context.isOnline)
-	{
-		context.OnSendResult(isSucccess);
-	}
+	context.OnSendResult(isSucccess);	
 }
 
 ICommandProcessor& Master::GetCommandProcessor()

@@ -56,7 +56,7 @@ void MasterScheduler::ScheduleLater(IMasterTask* pTask, const openpal::TimeDurat
 	{		
 		if (expiration < pTimer->ExpiresAt())
 		{
-			this->CancelTimer();
+			this->CancelAnyTimer();
 			this->StartTimer(delay);
 		}		
 	}
@@ -156,18 +156,21 @@ bool MasterScheduler::IsStartupComplete()
 
 void MasterScheduler::Shutdown()
 {
-	state = State::STARTUP;
-
-	this->startupQueue.Clear();
-	this->pendingQueue.Clear();
-	this->scheduledQueue.Clear();
-
-	this->CancelTimer();
+	this->ResetToStartupState();
 	
 	while (commandActions.IsNotEmpty())
 	{		
 		this->ReportFailure(commandActions.Pop(), CommandResult::NO_COMMS);
 	}
+}
+
+void MasterScheduler::ResetToStartupState()
+{
+	state = State::STARTUP;
+	this->CancelAnyTimer();
+	this->startupQueue.Clear();
+	this->pendingQueue.Clear();
+	this->scheduledQueue.Clear();
 }
 
 void MasterScheduler::SetExpirationHandler(const openpal::Runnable& runnable)
@@ -228,6 +231,27 @@ void MasterScheduler::Startup(const MasterParams& params)
 	this->expirationHandler.Run();
 }
 
+void MasterScheduler::OnRestartDetected(IMasterTask* pCurrentTask, const MasterParams& params)
+{
+	if (pCurrentTask != &startupTasks.clearRestartTask)
+	{
+		this->ResetToStartupState();
+
+		this->startupQueue.Enqueue(&startupTasks.clearRestartTask);
+		
+		if (params.startupIntergrityClassMask != 0)
+		{
+			this->startupQueue.Enqueue(&startupTasks.startupIntegrity);
+		}
+
+		if (params.unsolClassMask & ALL_EVENT_CLASSES)
+		{
+			this->startupQueue.Enqueue(&startupTasks.enableUnsol);
+		}		
+	}
+	
+}
+
 void MasterScheduler::ReportFailure(const CommandErasure& action, CommandResult result)
 {
 	ConstantCommandProcessor processor(CommandResponse::NoResponse(result), pExecutor);
@@ -259,7 +283,7 @@ void MasterScheduler::OnTimerExpiration()
 	}
 }
 
-bool MasterScheduler::CancelTimer()
+bool MasterScheduler::CancelAnyTimer()
 {
 	if (pTimer)
 	{
