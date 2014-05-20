@@ -42,7 +42,7 @@ namespace opendnp3
 LinkLayer::LinkLayer(openpal::LogRoot& root, openpal::IExecutor* apExecutor, const LinkConfig& config_) :
 	logger(root.GetLogger(sources::LINK_LAYER)),
 	config(config_),
-	pConfirmedSegments(nullptr),
+	pSegments(nullptr),
 	mRetryRemaining(0),
 	mpExecutor(apExecutor),
 	mpTimer(nullptr),
@@ -198,45 +198,20 @@ void LinkLayer::OnTransmitResult(bool primary, bool success)
 	}
 }
 
-openpal::ReadOnlyBuffer LinkLayer::FormatPrimaryBufferWithConfirmed(IBufferSegment& segments, bool FCB)
+openpal::ReadOnlyBuffer LinkLayer::FormatPrimaryBufferWithConfirmed(const openpal::ReadOnlyBuffer& tpdu, bool FCB)
 {
-	auto buffer = primaryBuffer.GetWriteBuffer();
-	if (segments.HasValue())
-	{
-		auto seg = segments.GetSegment();
-		auto output = LinkFrame::FormatConfirmedUserData(buffer, config.IsMaster, FCB, config.RemoteAddr, config.LocalAddr, seg, seg.Size(), &logger);		
-		FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, output, 10, 18);
-		return output;
-	}
-	else
-	{
-		return ReadOnlyBuffer();
-	}
+	auto buffer = primaryBuffer.GetWriteBuffer();	
+	auto output = LinkFrame::FormatConfirmedUserData(buffer, config.IsMaster, FCB, config.RemoteAddr, config.LocalAddr, tpdu, tpdu.Size(), &logger);
+	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, output, 10, 18);
+	return output;	
 }
 
-ReadOnlyBuffer LinkLayer::FormatPrimaryBufferWithUnconfirmed(IBufferSegment& segments)
+ReadOnlyBuffer LinkLayer::FormatPrimaryBufferWithUnconfirmed(const openpal::ReadOnlyBuffer& tpdu)
 {
 	auto buffer = primaryBuffer.GetWriteBuffer();
-
-	uint32_t size = 0;
-
-	while (segments.HasValue())
-	{
-		auto seg = segments.GetSegment();
-		segments.Advance();
-		if(buffer.Size() >= LinkFrame::CalcFrameSize(seg.Size()))
-		{
-			auto output = LinkFrame::FormatUnconfirmedUserData(buffer, config.IsMaster, config.RemoteAddr, config.LocalAddr, seg, seg.Size(), &logger);			
-			FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, output, 10, 18);
-			size += output.Size();
-		}
-		else
-		{
-			return ReadOnlyBuffer(); //can't write the full amount
-		}
-	}
-
-	return primaryBuffer.ToReadOnly().Truncate(size);
+	auto output = LinkFrame::FormatUnconfirmedUserData(buffer, config.IsMaster, config.RemoteAddr, config.LocalAddr, tpdu, tpdu.Size(), &logger);
+	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, output, 10, 18);
+	return output;
 }
 
 void LinkLayer::QueueTransmit(const ReadOnlyBuffer& buffer, bool primary)

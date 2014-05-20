@@ -71,7 +71,7 @@ static const uint32_t DEFAULT_APDU_BUFFER_SIZE = MAX_TX_APDU_SIZE;
 static const uint16_t MAX_STACKS_PER_CHANNEL = 16;
 
 // The number of bytes needed to hold an APDU fully encapsulated with TPDU/LPDU
-static const uint32_t APDU_LPDU_BUFFER_SIZE = MACRO_NUM_LINK_FRAMES(MAX_TX_APDU_SIZE) * 292;
+// static const uint32_t APDU_LPDU_BUFFER_SIZE = MACRO_NUM_LINK_FRAMES(MAX_TX_APDU_SIZE) * 292;
 
 // default sizing is big enough to receive a full APDU with full LPDU's
 static const uint32_t LINK_RECEIVER_BUFFER_SIZE = MACRO_NUM_LINK_FRAMES(MAX_RX_APDU_SIZE) * 292;

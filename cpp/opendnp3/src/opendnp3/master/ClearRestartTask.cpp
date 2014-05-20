@@ -30,7 +30,7 @@ namespace opendnp3
 {
 
 ClearRestartTask::ClearRestartTask(openpal::Logger* pLogger_) : 
-	SingleResponseTask(pLogger),
+	SingleResponseTask(pLogger_),
 	failed(false)
 {
 

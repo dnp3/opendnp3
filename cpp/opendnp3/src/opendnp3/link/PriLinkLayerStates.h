@@ -82,8 +82,16 @@ PLLS_SendUnconfirmedTransmitWait<ReturnToState> PLLS_SendUnconfirmedTransmitWait
 template <class ReturnToState>
 void PLLS_SendUnconfirmedTransmitWait<ReturnToState>::OnTransmitResult(LinkLayer* apLL, bool success)
 {
-	apLL->ChangeState(ReturnToState::Inst());
-	apLL->DoSendResult(success);
+	if (apLL->pSegments->Advance())
+	{
+		auto output = apLL->FormatPrimaryBufferWithUnconfirmed(apLL->pSegments->GetSegment());
+		apLL->QueueTransmit(output, true);		
+	}
+	else // we're done
+	{
+		apLL->ChangeState(ReturnToState::Inst());
+		apLL->DoSendResult(success);
+	}	
 }
 
 /////////////////////////////////////////////////////////////////////////////

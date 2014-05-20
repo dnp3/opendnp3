@@ -84,23 +84,17 @@ PLLS_SecNotReset PLLS_SecNotReset::mInstance;
 
 void PLLS_SecNotReset::SendUnconfirmed(LinkLayer* apLL, IBufferSegment& segments)
 {
-	auto output = apLL->FormatPrimaryBufferWithUnconfirmed(segments);
-	if (output.IsEmpty())
-	{
-		SIMPLE_LOG_BLOCK(apLL->GetLogger(), flags::ERR, "upper layer provided more data than can be transmitted");
-		apLL->PostSendResult(false);
-	}
-	else
-	{
-		apLL->QueueTransmit(output, true);
-		apLL->ChangeState(PLLS_SendUnconfirmedTransmitWait<PLLS_SecNotReset>::Inst());
-	}
+	apLL->pSegments = &segments;
+	auto first = segments.GetSegment();
+	auto output = apLL->FormatPrimaryBufferWithUnconfirmed(first);	
+	apLL->QueueTransmit(output, true);
+	apLL->ChangeState(PLLS_SendUnconfirmedTransmitWait<PLLS_SecNotReset>::Inst());	
 }
 
 void PLLS_SecNotReset::SendConfirmed(LinkLayer* apLL, IBufferSegment& segments)
 {
 	apLL->ResetRetry();
-	apLL->pConfirmedSegments = &segments;
+	apLL->pSegments = &segments;
 	apLL->QueueResetLinks();
 	apLL->ChangeState(PLLS_LinkResetTransmitWait::Inst());
 }
@@ -156,24 +150,17 @@ PLLS_SecReset PLLS_SecReset::mInstance;
 
 void PLLS_SecReset::SendUnconfirmed(LinkLayer* apLL, IBufferSegment& segments)
 {
-	auto output = apLL->FormatPrimaryBufferWithUnconfirmed(segments);
-	if (output.IsEmpty())
-	{
-		SIMPLE_LOG_BLOCK(apLL->GetLogger(), flags::ERR, "upper layer provided more data than can be transmitted");
-		apLL->PostSendResult(false);
-	}
-	else
-	{
-		apLL->QueueTransmit(output, true);
-		apLL->ChangeState(PLLS_SendUnconfirmedTransmitWait<PLLS_SecReset>::Inst());
-	}
+	apLL->pSegments = &segments;
+	auto output = apLL->FormatPrimaryBufferWithUnconfirmed(segments.GetSegment());	
+	apLL->QueueTransmit(output, true);
+	apLL->ChangeState(PLLS_SendUnconfirmedTransmitWait<PLLS_SecReset>::Inst());	
 }
 
 void PLLS_SecReset::SendConfirmed(LinkLayer* apLL, IBufferSegment& segments)
 {
 	apLL->ResetRetry();
-	apLL->pConfirmedSegments = &segments;
-	auto buffer = apLL->FormatPrimaryBufferWithConfirmed(segments, apLL->NextWriteFCB());
+	apLL->pSegments = &segments;
+	auto buffer = apLL->FormatPrimaryBufferWithConfirmed(segments.GetSegment(), apLL->NextWriteFCB());
 	apLL->QueueTransmit(buffer, true);
 	apLL->ChangeState(PLLS_ConfUserDataTransmitWait::Inst());
 
@@ -189,7 +176,7 @@ void PLLS_ResetLinkWait::Ack(LinkLayer* apLL, bool aIsRcvBuffFull)
 {
 	apLL->ResetWriteFCB();
 	apLL->CancelTimer();
-	auto buffer = apLL->FormatPrimaryBufferWithConfirmed(*apLL->pConfirmedSegments, apLL->NextWriteFCB());
+	auto buffer = apLL->FormatPrimaryBufferWithConfirmed(apLL->pSegments->GetSegment(), apLL->NextWriteFCB());
 	apLL->QueueTransmit(buffer, true);
 	apLL->ChangeState(PLLS_ConfUserDataTransmitWait::Inst());
 }
@@ -228,9 +215,9 @@ void PLLS_ConfDataWait::Ack(LinkLayer* apLL, bool aIsRcvBuffFull)
 	apLL->ToggleWriteFCB();
 	apLL->CancelTimer();
 
-	if (apLL->pConfirmedSegments->Advance())
+	if (apLL->pSegments->Advance())
 	{
-		auto buffer = apLL->FormatPrimaryBufferWithConfirmed(*apLL->pConfirmedSegments, apLL->NextWriteFCB());
+		auto buffer = apLL->FormatPrimaryBufferWithConfirmed(apLL->pSegments->GetSegment(), apLL->NextWriteFCB());
 		apLL->QueueTransmit(buffer, true);
 		apLL->ChangeState(PLLS_ConfUserDataTransmitWait::Inst());
 	}
@@ -268,7 +255,7 @@ void PLLS_ConfDataWait::OnTimeout(LinkLayer* apLL)
 	if(apLL->Retry())
 	{
 		SIMPLE_LOG_BLOCK(apLL->GetLogger(), flags::WARN, "Retry confirmed data");
-		auto buffer = apLL->FormatPrimaryBufferWithConfirmed(*apLL->pConfirmedSegments, apLL->NextWriteFCB());
+		auto buffer = apLL->FormatPrimaryBufferWithConfirmed(apLL->pSegments->GetSegment(), apLL->NextWriteFCB());
 		apLL->QueueTransmit(buffer, true);
 		apLL->ChangeState(PLLS_ConfUserDataTransmitWait::Inst());
 	}
