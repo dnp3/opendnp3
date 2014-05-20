@@ -83,9 +83,7 @@ TEST_CASE(SUITE("IntegrityPollCanRepeat"))
 	MasterTestObject t(NoStartupTasks());
 	t.master.OnLowerLayerUp();
 
-	auto scan = t.master.AddClassScan(~0, TimeDuration::Seconds(10));
-
-	REQUIRE(t.exe.RunMany() > 0);
+	auto scan = t.master.AddClassScan(~0, TimeDuration::Seconds(10));	
 
 	t.exe.AdvanceTime(TimeDuration::Seconds(9));
 	REQUIRE(t.exe.RunMany() == 0);
@@ -136,7 +134,7 @@ TEST_CASE(SUITE("SolicitedResponseTimeout"))
 	auto scan = t.master.AddClassScan(ALL_CLASSES, TimeDuration::Seconds(5));
 	t.master.OnLowerLayerUp();
 
-	REQUIRE(t.exe.RunMany() > 0);
+	
 
 	REQUIRE(t.exe.AdvanceToNextTimer());
 	t.exe.RunMany();
@@ -156,18 +154,14 @@ TEST_CASE(SUITE("SolicitedResponseLayerDown"))
 {
 	MasterTestObject t(NoStartupTasks());
 	auto scan = t.master.AddClassScan(ALL_CLASSES, TimeDuration::Seconds(5));
-	t.master.OnLowerLayerUp();
-
-	REQUIRE(t.exe.RunMany());
+	t.master.OnLowerLayerUp();	
 
 	REQUIRE(t.exe.AdvanceToNextTimer());
 	REQUIRE(t.exe.RunMany() > 0);
 	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
 	t.master.OnLowerLayerDown();
 
-	t.master.OnLowerLayerUp();
-
-	REQUIRE(t.exe.RunMany());
+	t.master.OnLowerLayerUp();	
 
 	REQUIRE(t.exe.AdvanceToNextTimer());
 	REQUIRE(t.exe.RunMany() > 0);
@@ -201,9 +195,7 @@ TEST_CASE(SUITE("EventPoll"))
 	auto class12 = t.master.AddClassScan(CLASS_1 | CLASS_2, TimeDuration::Milliseconds(10));
 	auto class3 = t.master.AddClassScan(CLASS_3, TimeDuration::Milliseconds(20));
 
-	t.master.OnLowerLayerUp();	
-
-	REQUIRE(t.exe.RunMany() > 0);
+	t.master.OnLowerLayerUp();		
 	
 	REQUIRE(t.exe.AdvanceToNextTimer());
 	REQUIRE(t.exe.RunMany() > 0);
@@ -241,9 +233,7 @@ TEST_CASE(SUITE("ParsesOctetStringResponseSizeOfOne"))
 {			
 	MasterTestObject t(NoStartupTasks());
 	t.master.AddClassScan(~0, TimeDuration::Seconds(1));
-	t.master.OnLowerLayerUp();
-
-	REQUIRE(t.exe.RunMany() > 0);
+	t.master.OnLowerLayerUp();	
 
 	REQUIRE(t.exe.AdvanceToNextTimer());
 	REQUIRE(t.exe.RunMany() > 0);
@@ -284,17 +274,32 @@ TEST_CASE(SUITE("RestartDuringStartup"))
 	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::ENABLE_UNSOLICITED, 2, ALL_EVENT_CLASSES));	
 }
 
-/*
 TEST_CASE(SUITE("RestartAndTimeBits"))
 {
+	auto params = NoStartupTasks();
+	params.timeSyncMode = TimeSyncMode::SerialTimeSync;
+	MasterTestObject t(params);
+	t.master.OnLowerLayerUp();
 
-MasterParams params;
-MasterTestObject t(params);
-t.master.OnLowerLayerUp();
+	t.timeSource.time = 100;
+	t.exe.RunMany();
 
-t.fixedUTC.mTimeSinceEpoch = 100;
+	REQUIRE(t.lower.NumWrites() == 0);
 
-TestForIntegrityAndRespond(t, "C0 81 90 00"); // need time and device restart
+	t.SendToMaster("C0 82 90 00"); // need time and device restart
+
+	REQUIRE(t.exe.RunMany() > 0);
+
+	REQUIRE(t.lower.PopWriteAsHex() == hex::ClearRestartIIN(0));
+	t.master.OnSendResult(true);
+	t.SendToMaster(hex::EmptyResponse(IINField::Empty, 0));
+
+	REQUIRE(t.exe.RunMany() > 0);
+	REQUIRE(t.lower.PopWriteAsHex() == hex::MeasureDelay(1));
+
+
+/*
+TestForIntegrityAndRespond(t, "C0 81 90 00"); 
 
 // Device restart should happen before time task
 REQUIRE("C0 02 50 01 00 07 07 00" ==  t.Read()); //write IIN
@@ -310,8 +315,10 @@ REQUIRE("C0 02 32 01 07 01 F5 00 00 00 00 00" ==  t.Read());
 t.RespondToMaster("C0 81 00 00"); // time bit is now clear
 
 REQUIRE(t.app.NumAPDU() ==  0); // no more packets
+*/
 }
 
+/*
 TEST_CASE(SUITE("RestartFailure"))
 {
 MasterConfig config;

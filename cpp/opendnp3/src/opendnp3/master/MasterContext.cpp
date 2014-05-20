@@ -68,7 +68,7 @@ bool MasterContext::OnLayerUp()
 	else
 	{
 		isOnline = true;
-		scheduler.Startup(params);		
+		scheduler.OnLowerLayerUp(params);		
 		return true;
 	}
 }
@@ -83,7 +83,7 @@ bool MasterContext::OnLayerDown()
 			pActiveTask = nullptr;
 		}
 
-		scheduler.Shutdown();
+		scheduler.OnLowerLayerDown();
 		this->CancelResponseTimer();
 		isOnline = false;
 		isSending = false;
@@ -277,6 +277,11 @@ void MasterContext::OnReceiveIIN(const IINField& iin)
 	if (iin.IsSet(IINBit::DEVICE_RESTART))
 	{
 		scheduler.OnRestartDetected(pActiveTask, params);
+	}
+
+	if (iin.IsSet(IINBit::NEED_TIME))
+	{
+		scheduler.OnNeedTimeDetected(pActiveTask, params);
 	}
 }
 

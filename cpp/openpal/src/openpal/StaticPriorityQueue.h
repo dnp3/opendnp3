@@ -77,15 +77,14 @@ public:
 	bool RemoveFirst(const Match& match)
 	{
 		auto pNode = list.RemoveFirst(match);
-		if (pNode)
-		{			
-			return true;
-		}
-		else
-		{
-			return false;
-		}		
+		return pNode ? true : false;				
 	}
+
+	template <class Match>
+	bool Contains(const Match& match)
+	{		
+		return list.FindFirst(match) ? true : false;
+	}	
 
 	ValueType& Peek()
 	{

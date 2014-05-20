@@ -39,6 +39,8 @@ namespace hex
 
 	std::string ClearRestartIIN(uint8_t seq);
 
+	std::string MeasureDelay(uint8_t seq);
+
 }
 
 #endif

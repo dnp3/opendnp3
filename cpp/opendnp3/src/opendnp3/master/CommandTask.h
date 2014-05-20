@@ -46,6 +46,7 @@ public:
 
 	CommandTask(openpal::Logger* pLogger_);
 
+
 	virtual void SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback* pCallback) override final;
 	virtual void DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback* pCallback) override final;
 
@@ -61,6 +62,7 @@ public:
 	virtual void SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback* pCallback) override final;
 	virtual void DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback* pCallback) override final;
 
+	virtual bool IsSequenced() const override final { return false; }
 	virtual char const* Name() const override final { return "Command Task"; }
 	virtual TaskPriority Priority() const override final { return TaskPriority::COMMAND; }
 

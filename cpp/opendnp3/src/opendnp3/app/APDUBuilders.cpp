@@ -86,6 +86,12 @@ void ClearRestartIIN(APDURequest& request, uint8_t seq)
 	iter.Complete();
 }
 
+void MeasureDelay(APDURequest& request, uint8_t seq)
+{	
+	request.SetFunction(FunctionCode::DELAY_MEASURE);
+	request.SetControl(AppControlField::Request(seq));
+}
+
 }
 }
 

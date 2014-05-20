@@ -32,7 +32,7 @@ namespace opendnp3
 MasterParams::MasterParams() :
 	fragSize(sizes::DEFAULT_APDU_BUFFER_SIZE),
 	responseTimeout(TimeDuration::Seconds(5)),
-	autoTimeSync(true),
+	timeSyncMode(TimeSyncMode::None),
 	disableUnsolOnStartup(true),	
 	unsolClassMask(ALL_EVENT_CLASSES),
 	startupIntergrityClassMask(ALL_CLASSES),

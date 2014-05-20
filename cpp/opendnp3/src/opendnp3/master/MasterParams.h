@@ -26,6 +26,12 @@
 namespace opendnp3
 {
 
+enum class TimeSyncMode
+{
+	None,
+	SerialTimeSync
+};
+
 /**
 Configuration information for the dnp3 master
 */
@@ -41,7 +47,7 @@ struct MasterParams
 	openpal::TimeDuration responseTimeout;
 
 	/// If true, the master will do time syncs when it sees the time IIN bit from the outstation
-	bool autoTimeSync;
+	TimeSyncMode timeSyncMode;
 
 	/// If true, the master will disable unsol on startup for all 3 classes
 	bool disableUnsolOnStartup;	

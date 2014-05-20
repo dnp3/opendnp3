@@ -39,6 +39,8 @@ namespace build
 	void EnableUnsolicited(APDURequest& request, int classMask, uint8_t seq = 0);
 
 	void ClearRestartIIN(APDURequest& request, uint8_t seq = 0);
+
+	void MeasureDelay(APDURequest& request, uint8_t seq = 0);
 	
 }	
 }

@@ -45,6 +45,8 @@ public:
 	PollTask();	
 
 	PollTask(const Builder& builder, const openpal::TimeDuration& period_, ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_);
+
+	virtual bool IsSequenced() const override final { return false; }
 	
 	virtual char const* Name() const override final { return "Poll Task"; }
 	

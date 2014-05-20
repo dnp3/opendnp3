@@ -41,11 +41,15 @@ class IMasterTask
 
 public:	
 
-	enum class TaskPriority
-	{
-		POLL,
-		STARTUP,
-		COMMAND		
+	enum class TaskPriority : int
+	{		
+		COMMAND,
+		DISABLE_UNSOL,
+		CLEAR_RESTART_IIN,
+		TIME_SYNC,
+		STARTUP_INTEGRITY,
+		ENABLE_UNSOL,
+		POLL				
 	};
 
 	struct Ordering
@@ -63,6 +67,11 @@ public:
 	* @return	the name of the task
 	*/
 	virtual char const* Name() const = 0;
+
+	/**
+	* Flag that indicates if sequencing matters for lower priority tasks
+	*/
+	virtual bool IsSequenced() const = 0;
 
 	/**
 	* The priority of the task where higher numbers have higher proiority

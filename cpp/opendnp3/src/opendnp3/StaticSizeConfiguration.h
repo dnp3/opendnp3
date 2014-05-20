@@ -51,9 +51,6 @@ static const uint32_t MAX_OBJECTS_PER_APDU = 32768;
 static const uint8_t MAX_COMMAND_QUEUE_SIZE = 16;
 
 // the maximum number of queued commands for a master
-static const uint8_t MAX_MASTER_STARTUP_TASKS = 8;
-
-// the maximum number of queued commands for a master
 static const uint8_t MAX_MASTER_POLL_TASKS = 8;
 
 static const uint8_t MAX_MASTER_TASKS = 16;

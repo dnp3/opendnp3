@@ -37,9 +37,11 @@ public:
 
 	EnableUnsolicitedTask(openpal::Logger* pLogger_);
 
+	virtual bool IsSequenced() const override final { return true; }
+
 	virtual char const* Name() const override final { return "Enable Unsolicited"; }
 
-	virtual TaskPriority Priority() const override final { return TaskPriority::STARTUP; }
+	virtual TaskPriority Priority() const override final { return TaskPriority::ENABLE_UNSOL; }
 
 	virtual void BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq) override final;
 		

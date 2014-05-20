@@ -59,11 +59,19 @@ namespace hex
 	std::string ClearRestartIIN(uint8_t seq)
 	{
 		StaticBuffer<2048> buffer;
-		APDURequest request(buffer.GetWriteBuffer());
-		
+		APDURequest request(buffer.GetWriteBuffer());		
 		build::ClearRestartIIN(request, seq);
 		return toHex(request.ToReadOnly());
 	}
+
+	std::string MeasureDelay(uint8_t seq)
+	{
+		StaticBuffer<2048> buffer;
+		APDURequest request(buffer.GetWriteBuffer());
+		build::MeasureDelay(request, seq);
+		return toHex(request.ToReadOnly());
+	}
+
 }
 
 

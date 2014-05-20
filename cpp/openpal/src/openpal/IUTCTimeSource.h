@@ -45,15 +45,15 @@ public:
 class FixedUTCTimeSource : public IUTCTimeSource
 {
 public:
-	FixedUTCTimeSource(int64_t aTimeSinceEpoch): mTimeSinceEpoch(aTimeSinceEpoch)
+	FixedUTCTimeSource(int64_t time_): time(time_)
 	{}
 
 	UTCTimestamp Now()
 	{
-		return UTCTimestamp (mTimeSinceEpoch);
+		return UTCTimestamp (time);
 	}
 
-	int64_t mTimeSinceEpoch;
+	int64_t time;
 };
 
 

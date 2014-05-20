@@ -23,6 +23,7 @@
 
 #include "opendnp3/objects/Group50.h"
 #include "opendnp3/app/APDUParser.h"
+#include "opendnp3/app/APDUBuilders.h"
 #include "opendnp3/master/TimeSyncHandler.h"
 
 #include <openpal/Serialization.h>
@@ -42,8 +43,7 @@ void SerialTimeSyncTask::BuildRequest(APDURequest& request, const MasterParams& 
 	if (delay < 0)
 	{
 		start = pTimeSource->Now();
-		request.SetFunction(FunctionCode::DELAY_MEASURE);
-		request.SetControl(AppControlField::Request(seq));
+		build::MeasureDelay(request, seq);
 	}
 	else
 	{

@@ -40,8 +40,9 @@ MasterScheduler::DelayedTask::DelayedTask(const openpal::MonotonicTimestamp& exp
 {}
 
 MasterScheduler::MasterScheduler(openpal::Logger* pLogger, ISOEHandler* pSOEHandler, IUTCTimeSource* pTimeSource, openpal::IExecutor& executor) :	
-	tasks(pLogger, pSOEHandler, pTimeSource),
-	state(State::STARTUP),
+	tasks(pLogger, pSOEHandler, pTimeSource),	
+	isOnline(false),
+	isStartupComplete(false),
 	pExecutor(&executor),
 	pTimer(nullptr)
 {
@@ -103,73 +104,24 @@ IMasterTask* MasterScheduler::Start()
 	else
 	{		
 		if (pendingQueue.IsEmpty())
-		{
-			if (state == State::STARTUP && scheduledQueue.IsEmpty())
-			{
-				if (startupQueue.IsEmpty())
-				{
-					return SwitchToReadyMode();
-				}
-				else
-				{
-					return startupQueue.Pop();
-				}
-			}
-			else
-			{
-				return nullptr;
-			}
+		{			
+			return nullptr;			
 		}
 		else
 		{
-			return pendingQueue.Pop();
+			auto pFront = pendingQueue.Peek();
+			
+			// Are there any sequenced tasks scheduled with priority >= pFront?
+			auto match = [pFront](const DelayedTask& dt) { return dt.pTask->IsSequenced() && dt.pTask->Priority() >= pFront->Priority(); };
+
+			return scheduledQueue.Contains(match) ? nullptr : pendingQueue.Pop();			
 		}		
 	}
 }
 
-IMasterTask* MasterScheduler::SwitchToReadyMode()
-{
-	state = State::READY;
-	auto scheduleLater = [this](PollTask& task) { this->ScheduleLater(&task, task.GetPeriod()); };
-	pollTasks.Foreach(scheduleLater);
-	return nullptr;
-}
-
-bool MasterScheduler::IsStartupComplete()
-{
-	if (state == State::STARTUP)
-	{
-		return true;
-	}
-	else
-	{
-		if (startupQueue.IsEmpty() && pendingQueue.IsEmpty() && scheduledQueue.IsEmpty())
-		{
-			state = State::READY;
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-}
-
-void MasterScheduler::Shutdown()
-{
-	this->ResetToStartupState();
-	
-	while (commandActions.IsNotEmpty())
-	{		
-		this->ReportFailure(commandActions.Pop(), CommandResult::NO_COMMS);
-	}
-}
-
-void MasterScheduler::ResetToStartupState()
-{
-	state = State::STARTUP;
-	this->CancelAnyTimer();
-	this->startupQueue.Clear();
+void MasterScheduler::ResetTimerAndQueues()
+{	
+	this->CancelAnyTimer();	
 	this->pendingQueue.Clear();
 	this->scheduledQueue.Clear();
 }
@@ -196,8 +148,8 @@ PollTask* MasterScheduler::AddPollTask(const PollTask& pt)
 {
 	auto pNode = pollTasks.AddAndGetPointer(pt);
 	if (pNode)
-	{
-		if (state == State::READY)
+	{		
+		if (isOnline)
 		{
 			this->ScheduleLater(&pNode->value, pt.GetPeriod());
 		}
@@ -210,47 +162,91 @@ PollTask* MasterScheduler::AddPollTask(const PollTask& pt)
 	}
 }
 
-void MasterScheduler::Startup(const MasterParams& params)
+void MasterScheduler::OnLowerLayerUp(const MasterParams& params)
 {
-	startupQueue.Clear();	
-
-	if (params.disableUnsolOnStartup)
+	if (!isOnline)
 	{
-		this->startupQueue.Enqueue(&tasks.disableUnsol);
-	}
+		isOnline = true;
 
-	if (params.startupIntergrityClassMask != 0)
-	{
-		this->startupQueue.Enqueue(&tasks.startupIntegrity);
-	}
+		if (params.disableUnsolOnStartup)
+		{
+			this->Schedule(&tasks.disableUnsol);
+		}
 
-	if (params.unsolClassMask & ALL_EVENT_CLASSES)
-	{
-		this->startupQueue.Enqueue(&tasks.enableUnsol);
+		if (params.startupIntergrityClassMask != 0)
+		{
+			this->Schedule(&tasks.startupIntegrity);
+		}
+
+		if (params.unsolClassMask & ALL_EVENT_CLASSES)
+		{
+			this->Schedule(&tasks.enableUnsol);
+		}
+
+		this->SchedulePollTasks(nullptr);
 	}	
+}
 
-	this->expirationHandler.Run();
+
+
+void MasterScheduler::OnLowerLayerDown()
+{
+	if (isOnline)
+	{
+		isOnline = false;
+
+		this->ResetTimerAndQueues();
+
+		while (commandActions.IsNotEmpty())
+		{
+			this->ReportFailure(commandActions.Pop(), CommandResult::NO_COMMS);
+		}
+	}	
+}
+
+void MasterScheduler::SchedulePollTasks(IMasterTask* pCurrent)
+{
+	auto schedule = [this, pCurrent](PollTask& pt) { 
+		if (&pt != pCurrent)
+		{
+			this->ScheduleLater(&pt, pt.GetPeriod());
+		}		
+	};
+	pollTasks.Foreach(schedule);
 }
 
 void MasterScheduler::OnRestartDetected(IMasterTask* pCurrentTask, const MasterParams& params)
 {
 	if (pCurrentTask != &tasks.clearRestartTask)
 	{
-		this->ResetToStartupState();
+		this->ResetTimerAndQueues();
 
-		this->startupQueue.Enqueue(&tasks.clearRestartTask);
+		this->Schedule(&tasks.clearRestartTask);
 		
 		if (params.startupIntergrityClassMask != 0)
 		{
-			this->startupQueue.Enqueue(&tasks.startupIntegrity);
+			this->Schedule(&tasks.startupIntegrity);
 		}
 
 		if (params.unsolClassMask & ALL_EVENT_CLASSES)
 		{
-			this->startupQueue.Enqueue(&tasks.enableUnsol);
-		}		
-	}
-	
+			this->Schedule(&tasks.enableUnsol);
+		}	
+
+		this->SchedulePollTasks(pCurrentTask);
+	}	
+}
+
+void MasterScheduler::OnNeedTimeDetected(IMasterTask* pCurrentTask, const MasterParams& params)
+{
+	if (params.timeSyncMode == TimeSyncMode::SerialTimeSync)
+	{
+		if (pCurrentTask != &tasks.serialTimeSync && !this->IsPendingOrScheduled(&tasks.serialTimeSync))
+		{
+			this->Schedule(&tasks.serialTimeSync);
+			this->expirationHandler.Run();
+		}
+	}	
 }
 
 void MasterScheduler::ReportFailure(const CommandErasure& action, CommandResult result)
@@ -296,6 +292,23 @@ bool MasterScheduler::CancelAnyTimer()
 	{
 		return false;
 	}
+}
+
+bool MasterScheduler::IsPending(IMasterTask* pTask)
+{
+	auto same = [pTask](IMasterTask* pElem) { return pTask == pElem; };
+	return this->pendingQueue.Contains(same);
+}
+
+bool MasterScheduler::IsScheduled(IMasterTask* pTask)
+{
+	auto same = [pTask](const DelayedTask& dt) { return pTask == dt.pTask; };
+	return this->scheduledQueue.Contains(same);
+}
+
+bool MasterScheduler::IsPendingOrScheduled(IMasterTask* pTask)
+{
+	return IsPending(pTask) || IsScheduled(pTask);
 }
 
 }

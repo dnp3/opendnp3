@@ -65,10 +65,15 @@ public:
 	*/
 	IMasterTask* Start();
 
+	/*
+	* Startup
+	*/
+	void OnLowerLayerUp(const MasterParams& params);
+
 	/**
 	* Cleanup all existing tasks & cancel any timers
 	*/
-	void Shutdown();
+	void OnLowerLayerDown();
 
 	/**
 	* Set the action that will be called when a scheduled task is ready to run
@@ -86,23 +91,22 @@ public:
 	PollTask* AddPollTask(const PollTask& pt);
 
 	/*
-	* Startup
-	*/
-	void Startup(const MasterParams& params);
-
-	/*
-	*
+	* Called when the master observes the IIN::DeviceRestart bit
 	*/
 	void OnRestartDetected(IMasterTask* pCurrentTask, const MasterParams& params);
 
-private:
+	/*
+	* Called when the master observes the IIN::NeedTime bit
+	*/
+	void OnNeedTimeDetected(IMasterTask* pCurrentTask, const MasterParams& params);
 
-	void ResetToStartupState();
+private:	
 
-	IMasterTask* SwitchToReadyMode();
+	void ResetTimerAndQueues();
 
 	bool IsStartupComplete();
 
+	void SchedulePollTasks(IMasterTask* pCurrent);
 
 	void ReportFailure(const CommandErasure& action, CommandResult result);
 
@@ -132,10 +136,17 @@ private:
 
 	bool CancelAnyTimer();
 
+	bool IsPendingOrScheduled(IMasterTask* pTask);
+
+	bool IsPending(IMasterTask* pTask);
+
+	bool IsScheduled(IMasterTask* pTask);
+
 	
 	MasterTasks tasks;
 		
-	State state;
+	bool isOnline;
+	bool isStartupComplete;
 	openpal::IExecutor* pExecutor;
 	openpal::ITimer* pTimer;
 	openpal::Runnable expirationHandler;
@@ -144,10 +155,7 @@ private:
 	openpal::StaticPriorityQueue<IMasterTask*, uint16_t, sizes::MAX_MASTER_TASKS, IMasterTask::Ordering> pendingQueue;
 	
 	/// Tasks that are scheduled to execute sometime in the future
-	openpal::StaticPriorityQueue<DelayedTask, uint16_t, sizes::MAX_MASTER_TASKS, TimeBasedOrdering> scheduledQueue;
-
-	/// The dynamic list of startup tasks
-	openpal::StaticQueue<IMasterTask*, uint8_t, sizes::MAX_MASTER_STARTUP_TASKS> startupQueue;
+	openpal::StaticPriorityQueue<DelayedTask, uint16_t, sizes::MAX_MASTER_TASKS, TimeBasedOrdering> scheduledQueue;	
 	
 	/// All pending command actions
 	openpal::StaticQueue<CommandErasure, uint8_t, sizes::MAX_COMMAND_QUEUE_SIZE> commandActions;
