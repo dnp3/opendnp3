@@ -24,7 +24,7 @@
 #include <openpal/StaticBuffer.h>
 #include <openpal/Logger.h>
 
-#include "opendnp3/IBufferSegment.h"
+#include "opendnp3/link/ITransportSegment.h"
 #include "opendnp3/transport/TransportConstants.h"
 
 namespace opendnp3
@@ -35,7 +35,7 @@ class TransportLayer;
 /**
 State/validation for the DNP3 transport layer's send channel.
 */
-class TransportTx : public IBufferSegment
+class TransportTx : public ITransportSegment
 {
 
 public:

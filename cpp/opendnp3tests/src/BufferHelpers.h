@@ -23,7 +23,7 @@
 
 #include "CopyableBuffer.h"
 
-#include <opendnp3/IBufferSegment.h>
+#include <opendnp3/link/ITransportSegment.h>
 
 #include <string>
 
@@ -61,7 +61,7 @@ private:
 	static uint32_t Validate(const std::string& aSequence);
 };
 
-class BufferSegment : public IBufferSegment
+class BufferSegment : public ITransportSegment
 {
 public:
 

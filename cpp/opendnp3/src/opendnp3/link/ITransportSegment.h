@@ -18,20 +18,20 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __BUFFER_SEGMENT_H_
-#define __BUFFER_SEGMENT_H_
+#ifndef __TRANSPORT_SEGMENT_H_
+#define __TRANSPORT_SEGMENT_H_
 
 #include <openpal/BufferWrapper.h>
 
 namespace opendnp3
 {
 
-class IBufferSegment
+class ITransportSegment
 {
 
 public:
 
-	virtual ~IBufferSegment() {}
+	virtual ~ITransportSegment() {}
 
 	virtual bool HasValue() const = 0;
 

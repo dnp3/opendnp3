@@ -66,12 +66,12 @@ void PriStateBase::OnTimeout(LinkLayer* apLL)
 	FORMAT_LOG_BLOCK(apLL->GetLogger(), flags::ERR, "Invalid action for state: %s", this->Name());
 }
 
-void PriStateBase::SendConfirmed(LinkLayer* apLL, IBufferSegment&)
+void PriStateBase::SendConfirmed(LinkLayer* apLL, ITransportSegment&)
 {
 	FORMAT_LOG_BLOCK(apLL->GetLogger(), flags::ERR, "Invalid action for state: %s", this->Name());
 }
 
-void PriStateBase::SendUnconfirmed(LinkLayer* apLL, IBufferSegment&)
+void PriStateBase::SendUnconfirmed(LinkLayer* apLL, ITransportSegment&)
 {
 	FORMAT_LOG_BLOCK(apLL->GetLogger(), flags::ERR, "Invalid action for state: %s", this->Name());
 }
@@ -82,7 +82,7 @@ void PriStateBase::SendUnconfirmed(LinkLayer* apLL, IBufferSegment&)
 
 PLLS_SecNotReset PLLS_SecNotReset::mInstance;
 
-void PLLS_SecNotReset::SendUnconfirmed(LinkLayer* apLL, IBufferSegment& segments)
+void PLLS_SecNotReset::SendUnconfirmed(LinkLayer* apLL, ITransportSegment& segments)
 {
 	apLL->pSegments = &segments;
 	auto first = segments.GetSegment();
@@ -91,7 +91,7 @@ void PLLS_SecNotReset::SendUnconfirmed(LinkLayer* apLL, IBufferSegment& segments
 	apLL->ChangeState(PLLS_SendUnconfirmedTransmitWait<PLLS_SecNotReset>::Inst());	
 }
 
-void PLLS_SecNotReset::SendConfirmed(LinkLayer* apLL, IBufferSegment& segments)
+void PLLS_SecNotReset::SendConfirmed(LinkLayer* apLL, ITransportSegment& segments)
 {
 	apLL->ResetRetry();
 	apLL->pSegments = &segments;
@@ -148,7 +148,7 @@ void PLLS_ConfUserDataTransmitWait::OnTransmitResult(LinkLayer* apLL, bool succe
 
 PLLS_SecReset PLLS_SecReset::mInstance;
 
-void PLLS_SecReset::SendUnconfirmed(LinkLayer* apLL, IBufferSegment& segments)
+void PLLS_SecReset::SendUnconfirmed(LinkLayer* apLL, ITransportSegment& segments)
 {
 	apLL->pSegments = &segments;
 	auto output = apLL->FormatPrimaryBufferWithUnconfirmed(segments.GetSegment());	
@@ -156,7 +156,7 @@ void PLLS_SecReset::SendUnconfirmed(LinkLayer* apLL, IBufferSegment& segments)
 	apLL->ChangeState(PLLS_SendUnconfirmedTransmitWait<PLLS_SecReset>::Inst());	
 }
 
-void PLLS_SecReset::SendConfirmed(LinkLayer* apLL, IBufferSegment& segments)
+void PLLS_SecReset::SendConfirmed(LinkLayer* apLL, ITransportSegment& segments)
 {
 	apLL->ResetRetry();
 	apLL->pSegments = &segments;

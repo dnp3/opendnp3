@@ -519,9 +519,6 @@
     <ClInclude Include="src\opendnp3\outstation\CachedRequest.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\IBufferSegment.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\link\ILinkLayer.h">
       <Filter>Header\link</Filter>
     </ClInclude>
@@ -662,6 +659,9 @@
     </ClInclude>
     <ClInclude Include="src\opendnp3\master\MasterTasks.h">
       <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\link\ITransportSegment.h">
+      <Filter>Header\link</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

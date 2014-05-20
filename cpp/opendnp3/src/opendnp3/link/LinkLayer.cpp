@@ -121,7 +121,7 @@ bool LinkLayer::Validate(bool aIsMaster, uint16_t aSrc, uint16_t aDest)
 // ILowerLayer
 ////////////////////////////////
 
-void LinkLayer::Send(IBufferSegment& segments)
+void LinkLayer::Send(ITransportSegment& segments)
 {
 	if (mIsOnline)
 	{

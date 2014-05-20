@@ -48,8 +48,8 @@ public:
 	virtual void OnTimeout(LinkLayer*);
 
 	/*Upper layer events to handle */
-	virtual void SendConfirmed(LinkLayer*, IBufferSegment& segments);
-	virtual void SendUnconfirmed(LinkLayer*, IBufferSegment& segments);
+	virtual void SendConfirmed(LinkLayer*, ITransportSegment& segments);
+	virtual void SendUnconfirmed(LinkLayer*, ITransportSegment& segments);
 
 	//every concrete state implements this for logging purposes
 	virtual char const* Name() const = 0;
@@ -59,8 +59,8 @@ public:
 class PLLS_SecNotReset : public PriStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(PLLS_SecNotReset);
-	virtual void SendUnconfirmed(LinkLayer*, IBufferSegment& segments) override final;
-	virtual void SendConfirmed(LinkLayer*, IBufferSegment& segments) override final;
+	virtual void SendUnconfirmed(LinkLayer*, ITransportSegment& segments) override final;
+	virtual void SendConfirmed(LinkLayer*, ITransportSegment& segments) override final;
 };
 
 
@@ -125,8 +125,8 @@ class PLLS_SecReset : public PriStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(PLLS_SecReset);
 
-	virtual void SendUnconfirmed(LinkLayer*, IBufferSegment& segments) override final;
-	virtual void SendConfirmed(LinkLayer*, IBufferSegment& segments) override final;
+	virtual void SendUnconfirmed(LinkLayer*, ITransportSegment& segments) override final;
+	virtual void SendConfirmed(LinkLayer*, ITransportSegment& segments) override final;
 };
 
 //	@section desc As soon as we get an ACK, send the delayed pri frame

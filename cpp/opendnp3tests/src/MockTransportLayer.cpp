@@ -34,7 +34,7 @@ namespace opendnp3
 MockTransportLayer::MockTransportLayer(ILinkLayer* pLinkLayer_) : pLinkLayer(pLinkLayer_), isOnline(false)
 {}
 
-void MockTransportLayer::SendDown(IBufferSegment& segments)
+void MockTransportLayer::SendDown(ITransportSegment& segments)
 {
 	pLinkLayer->Send(segments);
 }

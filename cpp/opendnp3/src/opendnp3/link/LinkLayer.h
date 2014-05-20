@@ -65,7 +65,7 @@ public:
 	virtual void UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const openpal::ReadOnlyBuffer& arBuffer) override final;
 
 	// ------------- ILinkLayer --------------------
-	virtual void Send(IBufferSegment& segments) override final;
+	virtual void Send(ITransportSegment& segments) override final;
 
 	// Functions called by the primary and secondary station states
 	void ChangeState(PriStateBase*);
@@ -156,7 +156,7 @@ public:
 
 	openpal::ReadOnlyBuffer FormatPrimaryBufferWithConfirmed(const openpal::ReadOnlyBuffer& tpdu, bool FCB);
 
-	IBufferSegment* pSegments;
+	ITransportSegment* pSegments;
 
 private:
 

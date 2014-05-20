@@ -37,7 +37,7 @@ class MockLinkLayer : public ILinkLayer, public openpal::HasUpperLayer
 
 public:
 
-	virtual void Send(IBufferSegment& segments) override final
+	virtual void Send(ITransportSegment& segments) override final
 	{
 		while (segments.HasValue())
 		{

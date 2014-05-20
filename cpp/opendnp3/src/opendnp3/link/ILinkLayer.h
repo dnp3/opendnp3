@@ -22,7 +22,7 @@
 #ifndef __I_LINK_LAYER_H_
 #define __I_LINK_LAYER_H_
 
-#include "opendnp3/IBufferSegment.h"
+#include "opendnp3/link/ITransportSegment.h"
 
 #include <openpal/AsyncLayerInterfaces.h>
 
@@ -39,7 +39,7 @@ public:
 	virtual ~ILinkLayer() {}
 
 	/// Transmit a buffer that can be iterated over in no greater than 250 byte segments
-	virtual void Send(IBufferSegment& segment) = 0;
+	virtual void Send(ITransportSegment& segment) = 0;
 
 };
 

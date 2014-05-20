@@ -57,7 +57,7 @@ public:
 
 	MockTransportLayer(ILinkLayer* pLinkLayer);
 
-	void SendDown(IBufferSegment& segments);
+	void SendDown(ITransportSegment& segments);
 
 	bool IsOnline() const
 	{
