@@ -35,6 +35,8 @@ class SerialTimeSyncTask : public SingleResponseTask
 public:
 	SerialTimeSyncTask(openpal::Logger* pLogger, openpal::IUTCTimeSource* pTimeSource_);
 
+	void Reset();
+
 	virtual bool IsSequenced() const override final { return true; }
 
 	virtual char const* Name() const override final { return "serial (non-LAN) time sync"; }

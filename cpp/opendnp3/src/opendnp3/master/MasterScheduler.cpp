@@ -243,6 +243,7 @@ void MasterScheduler::OnNeedTimeDetected(IMasterTask* pCurrentTask, const Master
 	{
 		if (pCurrentTask != &tasks.serialTimeSync && !this->IsPendingOrScheduled(&tasks.serialTimeSync))
 		{
+			tasks.serialTimeSync.Reset();
 			this->Schedule(&tasks.serialTimeSync);
 			this->expirationHandler.Run();
 		}

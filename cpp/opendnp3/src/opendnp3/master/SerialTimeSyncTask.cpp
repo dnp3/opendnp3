@@ -35,8 +35,14 @@ namespace opendnp3
 
 SerialTimeSyncTask::SerialTimeSyncTask(openpal::Logger* pLogger_, openpal::IUTCTimeSource* pTimeSource_) :
 	SingleResponseTask(pLogger_),
-	pTimeSource(pTimeSource_)
+	pTimeSource(pTimeSource_),
+	delay(-1)
 {}
+
+void SerialTimeSyncTask::Reset()
+{
+	delay = -1;
+}
 
 void SerialTimeSyncTask::BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq)
 {

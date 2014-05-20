@@ -111,7 +111,7 @@ cpp/opendnp3/src/opendnp3/link/PhysicalLayerMonitorStates.cpp \
 cpp/opendnp3/src/opendnp3/link/PriLinkLayerStates.cpp \
 cpp/opendnp3/src/opendnp3/link/SecLinkLayerStates.cpp \
 cpp/opendnp3/src/opendnp3/link/ShiftableBuffer.cpp \
-cpp/opendnp3/src/opendnp3/master/CommandAction.cpp \
+cpp/opendnp3/src/opendnp3/master/ClearRestartTask.cpp \
 cpp/opendnp3/src/opendnp3/master/CommandMarshaller.cpp \
 cpp/opendnp3/src/opendnp3/master/CommandResponse.cpp \
 cpp/opendnp3/src/opendnp3/master/CommandTask.cpp \
@@ -124,15 +124,14 @@ cpp/opendnp3/src/opendnp3/master/Master.cpp \
 cpp/opendnp3/src/opendnp3/master/MasterParams.cpp \
 cpp/opendnp3/src/opendnp3/master/MasterScan.cpp \
 cpp/opendnp3/src/opendnp3/master/MasterScheduler.cpp \
-cpp/opendnp3/src/opendnp3/master/MasterTaskList.cpp \
+cpp/opendnp3/src/opendnp3/master/MasterTasks.cpp \
 cpp/opendnp3/src/opendnp3/master/MeasurementHandler.cpp \
 cpp/opendnp3/src/opendnp3/master/NullResponseTask.cpp \
 cpp/opendnp3/src/opendnp3/master/PollTaskBase.cpp \
 cpp/opendnp3/src/opendnp3/master/PollTask.cpp \
-cpp/opendnp3/src/opendnp3/master/QueuedCommandProcessor.cpp \
+cpp/opendnp3/src/opendnp3/master/SerialTimeSyncTask.cpp \
 cpp/opendnp3/src/opendnp3/master/SingleResponseTask.cpp \
 cpp/opendnp3/src/opendnp3/master/StartupIntegrityPoll.cpp \
-cpp/opendnp3/src/opendnp3/master/StartupTasks.cpp \
 cpp/opendnp3/src/opendnp3/objects/Group10.cpp \
 cpp/opendnp3/src/opendnp3/objects/Group11.cpp \
 cpp/opendnp3/src/opendnp3/objects/Group12.cpp \
@@ -187,7 +186,6 @@ cpp/opendnp3/src/opendnp3/transport/TransportLayer.cpp \
 cpp/opendnp3/src/opendnp3/transport/TransportRx.cpp \
 cpp/opendnp3/src/opendnp3/transport/TransportStack.cpp \
 cpp/opendnp3/src/opendnp3/transport/TransportTx.cpp
-
 
 #ls cpp/asiodnp3/src/asiodnp3/*.cpp -1 | awk '{print $0" \\"}'
 libasiodnp3_la_CPPFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) -I$(ASIODNP3_INCLUDE) $(ASIO_CONFIG)
@@ -321,6 +319,5 @@ cpp/opendnp3tests/src/TransportScalabilityTestObject.cpp \
 cpp/opendnp3tests/src/TransportStackPair.cpp \
 cpp/opendnp3tests/src/TransportTestObject.cpp \
 cpp/opendnp3tests/src/WrappedTcpPipe.cpp
-
 
 
