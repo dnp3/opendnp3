@@ -134,8 +134,6 @@ TEST_CASE(SUITE("SolicitedResponseTimeout"))
 	auto scan = t.master.AddClassScan(ALL_CLASSES, TimeDuration::Seconds(5));
 	t.master.OnLowerLayerUp();
 
-	
-
 	REQUIRE(t.exe.AdvanceToNextTimer());
 	t.exe.RunMany();
 
@@ -286,7 +284,7 @@ TEST_CASE(SUITE("RestartAndTimeBits"))
 
 	REQUIRE(t.lower.NumWrites() == 0);
 
-	t.SendToMaster("C0 82 90 00"); // need time and device restart
+	t.SendToMaster("C0 82 90 00"); // need time and device restart via null unsol
 
 	REQUIRE(t.exe.RunMany() > 0);
 
@@ -296,26 +294,20 @@ TEST_CASE(SUITE("RestartAndTimeBits"))
 
 	REQUIRE(t.exe.RunMany() > 0);
 	REQUIRE(t.lower.PopWriteAsHex() == hex::MeasureDelay(1));
+	t.master.OnSendResult(true);
+	t.timeSource.time += 100; //advance time by 100ms so that the master sees 100ms for a response
+	t.SendToMaster("C1 81 10 00 34 02 07 01 0A 00"); // still need time, 52 Var 2, delay == 10ms
 
+	// Write group 50 var 1
+	// 200-100-10/2 = 45 => 45 + 200 - 0xF5
+	REQUIRE(t.lower.PopWriteAsHex() == "C2 02 32 01 07 01 F5 00 00 00 00 00");
+	t.master.OnSendResult(true);
+	t.SendToMaster(hex::EmptyResponse(IINField::Empty, 0)); // time bit is now clear
 
-/*
-TestForIntegrityAndRespond(t, "C0 81 90 00"); 
+	t.exe.RunMany();
 
-// Device restart should happen before time task
-REQUIRE("C0 02 50 01 00 07 07 00" ==  t.Read()); //write IIN
-t.RespondToMaster("C0 81 10 00"); // need time
+	REQUIRE(t.lower.NumWrites() ==  0); // no more packets
 
-REQUIRE("C0 17" ==  t.Read()); ; //Delay measure
-t.fixedUTC.mTimeSinceEpoch += 100; //advance time by 100ms so that the master sees 100ms for a response
-t.RespondToMaster("C0 81 10 00 34 02 07 01 0A 00"); // still need time, 52 Var 2, delay == 10ms
-
-// Write group 50 var 1
-// 200-100-10/2 = 45 => 45 + 200 - 0xF5
-REQUIRE("C0 02 32 01 07 01 F5 00 00 00 00 00" ==  t.Read());
-t.RespondToMaster("C0 81 00 00"); // time bit is now clear
-
-REQUIRE(t.app.NumAPDU() ==  0); // no more packets
-*/
 }
 
 /*

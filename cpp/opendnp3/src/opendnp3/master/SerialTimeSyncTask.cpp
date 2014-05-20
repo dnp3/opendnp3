@@ -51,7 +51,7 @@ void SerialTimeSyncTask::BuildRequest(APDURequest& request, const MasterParams& 
 		Group50Var1 time;
 		time.time = now.msSinceEpoch + delay;
 		request.SetFunction(FunctionCode::WRITE);
-		request.SetControl(AppControlField::Request(0));
+		request.SetControl(AppControlField::Request(seq));
 		auto writer = request.GetWriter();
 		writer.WriteSingleValue<UInt8, Group50Var1>(QualifierCode::UINT8_CNT, time);
 	}
