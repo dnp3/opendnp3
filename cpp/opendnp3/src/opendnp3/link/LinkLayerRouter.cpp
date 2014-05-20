@@ -276,7 +276,7 @@ void LinkLayerRouter::QueueTransmit(const openpal::ReadOnlyBuffer& buffer, ILink
 	}
 	else
 	{
-		SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::ERR, DLERR_ROUTER_OFFLINE, "Router received transmit request while offline");
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Router received transmit request while offline");
 	}
 }
 

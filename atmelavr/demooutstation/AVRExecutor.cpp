@@ -109,7 +109,7 @@ void AVRExecutor::Run()
 
 bool AVRExecutor::RunOne()
 {			
-	CriticalSection cs; // TODO release interrupts before running task
+	CriticalSection cs; // TODO release interrupts before running task	
 	if(RunOneTimer())
 	{
 		return true;
@@ -126,7 +126,7 @@ bool AVRExecutor::RunOne()
 		{
 			return false;
 		}
-	}
+	}	
 }
 
 bool AVRExecutor::RunOneTimer()

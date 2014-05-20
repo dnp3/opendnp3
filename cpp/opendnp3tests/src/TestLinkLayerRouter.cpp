@@ -69,7 +69,7 @@ TEST_CASE(SUITE("LayerNotOnline"))
 	REQUIRE(t.router.Enable(&mfs));
 	ReadOnlyBuffer buffer;
 	t.router.QueueTransmit(buffer, &mfs, false);
-	REQUIRE(t.log.NextErrorCode() ==  DLERR_ROUTER_OFFLINE);
+	REQUIRE(t.log.PopOneEntry(flags::ERR));
 }
 
 // Test that the router rejects sends until it is online

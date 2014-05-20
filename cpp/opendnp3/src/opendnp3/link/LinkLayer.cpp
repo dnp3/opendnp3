@@ -84,7 +84,7 @@ bool LinkLayer::Validate(bool aIsMaster, uint16_t aSrc, uint16_t aDest)
 	{
 		if (aIsMaster == config.IsMaster)
 		{			
-			SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, DLERR_MASTER_BIT_MATCH,
+			SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, DLERR_WRONG_MASTER_BIT,
 				(aIsMaster ? "Master frame received for master" : "Outstation frame received for outstation"));			            
 			
 			return false;

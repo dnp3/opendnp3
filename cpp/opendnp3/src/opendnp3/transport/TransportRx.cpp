@@ -120,7 +120,7 @@ bool TransportRx::ValidateHeader(bool fir, bool fin, uint8_t sequence_, uint32_t
 		if(numBytesRead > 0)
 		{
 			// drop existing received bytes from segment
-			SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, TLERR_NEW_FIR, "FIR received mid-fragment, discarding previous bytes");
+			SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, TLERR_NEW_FIR_MID_SEQUENCE, "FIR received mid-fragment, discarding previous bytes");
 			numBytesRead = 0;
 		}
 	}

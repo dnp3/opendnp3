@@ -49,12 +49,12 @@ SLLS_NotReset SLLS_NotReset::mInstance;
 
 void SLLS_NotReset::TestLinkStatus(LinkLayer* apLL, bool aFcb)
 {
-	SIMPLE_LOG_BLOCK_WITH_CODE(apLL->GetLogger(), flags::WARN, DLERR_UNEXPECTED_FRAME, "TestLinkStatus ignored");
+	SIMPLE_LOG_BLOCK_WITH_CODE(apLL->GetLogger(), flags::WARN, DLERR_UNEXPECTED_LPDU, "TestLinkStatus ignored");
 }
 
 void SLLS_NotReset::ConfirmedUserData(LinkLayer* apLL, bool aFcb, const openpal::ReadOnlyBuffer&)
 {
-	SIMPLE_LOG_BLOCK_WITH_CODE(apLL->GetLogger(), flags::WARN, DLERR_UNEXPECTED_FRAME, "ConfirmedUserData ignored");
+	SIMPLE_LOG_BLOCK_WITH_CODE(apLL->GetLogger(), flags::WARN, DLERR_UNEXPECTED_LPDU, "ConfirmedUserData ignored");
 }
 
 void SLLS_NotReset::ResetLinkStates(LinkLayer* apLL)
@@ -86,9 +86,9 @@ void SLLS_Reset::TestLinkStatus(LinkLayer* apLL, bool aFcb)
 	else
 	{
 		// "Re-transmit most recent response that contained function code 0 (ACK) or 1 (NACK)."
-		// This is a pain in the pass to implement.
+		// This is a PITA implement
 		// TODO - see if this function is deprecated or not
-		SIMPLE_LOG_BLOCK_WITH_CODE(apLL->GetLogger(), flags::WARN, DLERR_WRONG_FCB_ON_TEST, "TestLinkStatus with invalid FCB");
+		SIMPLE_LOG_BLOCK(apLL->GetLogger(), flags::WARN, "Received TestLinkStatus with invalid FCB");
 	}
 }
 
@@ -103,7 +103,7 @@ void SLLS_Reset::ConfirmedUserData(LinkLayer* apLL, bool aFcb, const openpal::Re
 	}
 	else
 	{
-		SIMPLE_LOG_BLOCK_WITH_CODE(apLL->GetLogger(), flags::WARN, DLERR_WRONG_FCB_ON_RECEIVE_DATA, "Confirmed data w/ wrong FCB");
+		SIMPLE_LOG_BLOCK(apLL->GetLogger(), flags::WARN, "Confirmed data w/ wrong FCB");
 	}
 
 	apLL->ChangeState(SLLS_TransmitWaitReset::Inst());

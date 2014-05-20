@@ -125,7 +125,7 @@ APDUParser::Result APDUParser::ParseHeader(ReadOnlyBuffer& buffer, openpal::Logg
 				return ParseIndexPrefixHeader<UInt16>(buffer, pLogger, context, record, pHandler);
 
 			default:
-				FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_UNKNOWN_GROUP_VAR, "Unknown qualifier %x", rawQualifier);
+				FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_UNKNOWN_QUALIFIER, "Unknown qualifier %x", rawQualifier);
 				return Result::UNKNOWN_QUALIFIER;
 			}
 		}

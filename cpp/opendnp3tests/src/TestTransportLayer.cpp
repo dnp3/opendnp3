@@ -171,7 +171,7 @@ TEST_CASE(SUITE("ReceiveNewFir"))
 
 	test.link.SendUp("C0 AB CD");	// FIR/FIN/0
 	REQUIRE("AB CD" ==  test.upper.GetBufferAsHexString());
-	REQUIRE(test.log.NextErrorCode() ==  TLERR_NEW_FIR); //make sure it logs the dropped frames
+	REQUIRE(test.log.NextErrorCode() == TLERR_NEW_FIR_MID_SEQUENCE); //make sure it logs the dropped frames
 }
 
 TEST_CASE(SUITE("SendArguments"))

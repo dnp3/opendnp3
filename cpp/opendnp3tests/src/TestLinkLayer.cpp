@@ -70,7 +70,7 @@ TEST_CASE(SUITE("ValidatesMasterOutstationBit"))
 {
 	LinkLayerTest t; t.link.OnLowerLayerUp();
 	t.link.Ack(true, false, 1, 1024);
-	REQUIRE(t.log.NextErrorCode() ==  DLERR_MASTER_BIT_MATCH);
+	REQUIRE(t.log.NextErrorCode() == DLERR_WRONG_MASTER_BIT);
 }
 
 // Only process frames from your designated remote address
@@ -97,22 +97,22 @@ TEST_CASE(SUITE("SecToPriNoContext"))
 
 	REQUIRE(t.log.IsLogErrorFree());
 	t.link.Ack(false, false, 1, 1024);
-	REQUIRE(t.log.NextErrorCode() ==  DLERR_UNEXPECTED_FRAME);
+	REQUIRE(t.log.NextErrorCode() ==  DLERR_UNEXPECTED_LPDU);
 
 
 	REQUIRE(t.log.IsLogErrorFree());
 	t.link.Nack(false, false, 1, 1024);
-	REQUIRE(t.log.NextErrorCode() ==  DLERR_UNEXPECTED_FRAME);
+	REQUIRE(t.log.NextErrorCode() == DLERR_UNEXPECTED_LPDU);
 
 
 	REQUIRE(t.log.IsLogErrorFree());
 	t.link.LinkStatus(false, false, 1, 1024);
-	REQUIRE(t.log.NextErrorCode() ==  DLERR_UNEXPECTED_FRAME);
+	REQUIRE(t.log.NextErrorCode() == DLERR_UNEXPECTED_LPDU);
 
 
 	REQUIRE(t.log.IsLogErrorFree());
 	t.link.NotSupported(false, false, 1, 1024);
-	REQUIRE(t.log.NextErrorCode() ==  DLERR_UNEXPECTED_FRAME);
+	REQUIRE(t.log.NextErrorCode() == DLERR_UNEXPECTED_LPDU);
 }
 
 // Show that the base state of idle forwards unconfirmed user data
@@ -132,7 +132,7 @@ TEST_CASE(SUITE("ConfirmedDataIgnoredFromIdleUnreset"))
 	ByteStr bs(250, 0);
 	t.link.ConfirmedUserData(false, false, 1, 1024, bs.ToReadOnly());
 	REQUIRE(t.upper.receivedQueue.empty());
-	REQUIRE(t.log.NextErrorCode() ==  DLERR_UNEXPECTED_FRAME);
+	REQUIRE(t.log.NextErrorCode() == DLERR_UNEXPECTED_LPDU);
 }
 
 // Secondary Reset Links
@@ -173,7 +173,7 @@ TEST_CASE(SUITE("SecAckWrongFCB"))
 
 	REQUIRE(toHex(t.lastWrite) ==  toHex(frame));
 	REQUIRE(t.upper.receivedQueue.empty()); //data should not be passed up!
-	REQUIRE(t.log.NextErrorCode() ==  DLERR_WRONG_FCB_ON_RECEIVE_DATA);
+	REQUIRE(t.log.PopOneEntry(flags::WARN));
 }
 
 // When we get another reset links when we're already reset,
@@ -218,7 +218,7 @@ TEST_CASE(SUITE("SecondaryResetConfirmedUserData"))
 	t.link.ConfirmedUserData(false, true, 1, 1024, bytes.ToReadOnly()); //send with wrong FCB
 	REQUIRE(t.numWrites ==  3); //should still get an ACK
 	REQUIRE(t.upper.receivedQueue.empty()); //but no data
-	REQUIRE(t.log.NextErrorCode() ==  DLERR_WRONG_FCB_ON_RECEIVE_DATA);
+	REQUIRE(t.log.PopOneEntry(flags::WARN));
 }
 
 TEST_CASE(SUITE("RequestStatusOfLink"))
@@ -250,7 +250,7 @@ TEST_CASE(SUITE("TestLinkStates"))
 	t.link.OnLowerLayerUp();
 	t.link.TestLinkStatus(false, false, 1, 1024);
 	REQUIRE(t.numWrites == 0);
-	REQUIRE(t.log.NextErrorCode() ==  DLERR_UNEXPECTED_FRAME);
+	REQUIRE(t.log.PopOneEntry(flags::WARN));
 
 	t.link.ResetLinkStates(false, 1, 1024);
 	REQUIRE(t.numWrites ==  1);
@@ -329,7 +329,7 @@ TEST_CASE(SUITE("ResetLinkTimerExpiration"))
 	t.exe.AdvanceTime(cfg.Timeout);
 	REQUIRE(t.exe.RunOne()); // trigger the timeout callback
 	REQUIRE(t.upper.CountersEqual(0, 1));
-	REQUIRE(t.log.NextErrorCode() ==  DLERR_TIMEOUT_NO_RETRY);
+	REQUIRE(t.log.PopOneEntry(flags::WARN));
 }
 
 TEST_CASE(SUITE("ResetLinkTimerExpirationWithRetry"))
@@ -348,8 +348,7 @@ TEST_CASE(SUITE("ResetLinkTimerExpirationWithRetry"))
 	t.link.OnTransmitResult(true, true);
 	t.exe.AdvanceTime(cfg.Timeout);
 	REQUIRE(t.exe.RunOne()); // timeout the wait for Ack
-
-	REQUIRE(t.log.NextErrorCode() == DLERR_TIMEOUT_RETRY);
+	
 	REQUIRE(t.upper.CountersEqual(0, 0)); //check that the send is still occuring
 	REQUIRE(t.numWrites == 2);
 	StaticBuffer<292> buffer;
@@ -370,8 +369,7 @@ TEST_CASE(SUITE("ResetLinkTimerExpirationWithRetry"))
 	t.link.OnTransmitResult(true, true);
 
 	t.exe.AdvanceTime(cfg.Timeout);
-	REQUIRE(t.exe.RunOne()); //timeout the ACK
-	REQUIRE(t.log.NextErrorCode() ==  DLERR_TIMEOUT_NO_RETRY);
+	REQUIRE(t.exe.RunOne()); //timeout the ACK	
 	REQUIRE(t.upper.CountersEqual(0, 1));
 
 	// Test retry reset
@@ -382,8 +380,7 @@ TEST_CASE(SUITE("ResetLinkTimerExpirationWithRetry"))
 
 	REQUIRE(t.log.IsLogErrorFree());
 	t.exe.AdvanceTime(cfg.Timeout);
-	REQUIRE(t.exe.RunOne());
-	REQUIRE(t.log.NextErrorCode() ==  DLERR_TIMEOUT_RETRY);
+	REQUIRE(t.exe.RunOne());	
 	REQUIRE(t.upper.CountersEqual(0, 1)); //check that the send is still occuring
 }
 
@@ -415,7 +412,6 @@ TEST_CASE(SUITE("ResetLinkTimerExpirationWithRetryResetState"))
 	REQUIRE(t.log.IsLogErrorFree());
 	t.exe.AdvanceTime(cfg.Timeout);
 	REQUIRE(t.exe.RunOne()); // timeout
-	REQUIRE(t.log.NextErrorCode() ==  DLERR_TIMEOUT_RETRY);
 	REQUIRE(t.upper.CountersEqual(1, 0)); //check that the send is still occuring
 	REQUIRE(t.numWrites ==  4);
 	t.link.OnTransmitResult(true, true);
@@ -431,8 +427,7 @@ TEST_CASE(SUITE("ResetLinkTimerExpirationWithRetryResetState"))
 
 	REQUIRE(t.log.IsLogErrorFree());
 	t.exe.AdvanceTime(cfg.Timeout);
-	REQUIRE(t.exe.RunOne());
-	REQUIRE(t.log.NextErrorCode() ==  DLERR_TIMEOUT_RETRY);
+	REQUIRE(t.exe.RunOne());	
 	REQUIRE(t.upper.CountersEqual(2, 0)); //check that the send is still occuring
 }
 
@@ -456,8 +451,7 @@ TEST_CASE(SUITE("ConfirmedDataRetry"))
 	t.link.OnTransmitResult(true, true);
 
 	t.exe.AdvanceTime(cfg.Timeout);
-	REQUIRE(t.exe.RunOne()); //timeout the ConfData, check that it retransmits
-	REQUIRE(t.log.NextErrorCode() ==  DLERR_TIMEOUT_RETRY);
+	REQUIRE(t.exe.RunOne()); //timeout the ConfData, check that it retransmits	
 	REQUIRE(t.numWrites ==  3);
 
 	StaticBuffer<292> buffer;

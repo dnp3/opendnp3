@@ -27,11 +27,11 @@ int main()
 	cli();
 	
 	AVRExecutor exe;
+	
 	LogRoot root(nullptr, "root", 0);
 		
 	TransportStack stack(root, &exe, LinkConfig(false, false));
-	
-	
+		
 	// 5 static binaries, 0 others
 	StaticallyAllocatedDatabase<5, 0, 0, 0, 0, 0, 0> staticBuffers;
 	
@@ -50,11 +50,12 @@ int main()
 	stack.link.SetRouter(&parser);	
 	stack.link.OnLowerLayerUp();
 	
+
 	// enable timer interrupts at 100Hz	
 	exe.Init();
 	
 	// enable usart rx & tx interrupts
-	parser.Init();
+	//parser.Init();
 	
 	// begin all interrupts
 	sei();
@@ -75,6 +76,12 @@ int main()
 
 void ToggleBinaryIndex0Every(uint16_t milliseconds, IExecutor* pExecutor, Database* pDatabase, bool value, bool update)
 {
+
+	TOGGLE_ARM_LED1();
+	auto lambda = [pExecutor, pDatabase, value, milliseconds]() { ToggleBinaryIndex0Every(milliseconds, pExecutor, pDatabase, !value, true); };
+	pExecutor->Start(TimeDuration::Milliseconds(milliseconds), Bind(lambda));
+
+	/*
 	if(update)
 	{		
 		pDatabase->Update(Binary(value, BQ_ONLINE, pExecutor->GetTime().milliseconds), 0);
@@ -82,4 +89,5 @@ void ToggleBinaryIndex0Every(uint16_t milliseconds, IExecutor* pExecutor, Databa
 	
 	auto lambda = [pExecutor, pDatabase, value, milliseconds]() { ToggleBinaryIndex0Every(milliseconds, pExecutor, pDatabase, !value, true); };
 	pExecutor->Start(TimeDuration::Milliseconds(milliseconds), Bind(lambda));
+	*/
 }
