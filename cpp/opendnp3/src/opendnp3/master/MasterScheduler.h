@@ -141,10 +141,9 @@ private:
 	bool IsPending(IMasterTask* pTask);
 
 	bool IsScheduled(IMasterTask* pTask);
-
 	
 	MasterTasks tasks;
-		
+			
 	bool isOnline;
 	bool isStartupComplete;
 	openpal::IExecutor* pExecutor;

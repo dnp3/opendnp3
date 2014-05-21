@@ -22,7 +22,6 @@
 #define __STARTUP_INTEGRITY_POLL_H_
 
 #include "opendnp3/master/PollTaskBase.h"
-#include "opendnp3/master/ITaskList.h"
 
 namespace opendnp3
 {

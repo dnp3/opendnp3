@@ -22,7 +22,6 @@
 #define __ENABLE_UNSOLICITED_TASK_H_
 
 #include "opendnp3/master/NullResponseTask.h"
-#include "opendnp3/master/ITaskList.h"
 
 namespace opendnp3
 {

@@ -41,6 +41,16 @@ void ClearRestartTask::BuildRequest(APDURequest& request, const MasterParams& pa
 	build::ClearRestartIIN(request, seq);
 }
 
+void ClearRestartTask::Reset()
+{
+	failed = false;
+}
+
+bool ClearRestartTask::IsFailed() const
+{
+	return failed;
+}
+
 void ClearRestartTask::OnTimeoutOrBadControlOctet(const MasterParams& params, IMasterScheduler& scheduler)
 {
 	// timeout or bad control octet
@@ -51,9 +61,10 @@ TaskStatus ClearRestartTask::OnSingleResponse(const APDUResponseRecord& response
 {
 	if (response.IIN.IsSet(IINBit::DEVICE_RESTART))
 	{
-		// we tried to clear the restart, but the device responded with the restart still set
-		SIMPLE_LOGGER_BLOCK(pLogger, flags::ERR, "Clear restart task failed to clear restart bit");
 		failed = true;
+
+		// we tried to clear the restart, but the device responded with the restart still set
+		SIMPLE_LOGGER_BLOCK(pLogger, flags::ERR, "Clear restart task failed to clear restart bit");		
 		return TaskStatus::FAIL;
 	}
 	else

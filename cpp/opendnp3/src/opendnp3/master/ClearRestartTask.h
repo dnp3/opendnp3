@@ -22,7 +22,6 @@
 #define __CLEAR_RESTART_TASK_H_
 
 #include "opendnp3/master/NullResponseTask.h"
-#include "opendnp3/master/ITaskList.h"
 
 namespace opendnp3
 {
@@ -43,7 +42,11 @@ public:
 
 	virtual TaskPriority Priority() const override final { return TaskPriority::CLEAR_RESTART_IIN; }
 
-	virtual void BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq) override final;	
+	virtual void BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq) override final;
+
+	void Reset();
+
+	bool IsFailed() const;
 		
 protected:	
 
@@ -54,7 +57,6 @@ protected:
 private:
 
 	bool failed;
-	ITaskList* pTaskList;
 
 };
 

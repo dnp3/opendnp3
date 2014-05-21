@@ -22,7 +22,6 @@
 #define __POLL_TASK_H_
 
 #include "opendnp3/master/PollTaskBase.h"
-#include "opendnp3/master/ITaskList.h"
 
 #include <openpal/Function1.h>
 #include <openpal/StaticQueue.h>

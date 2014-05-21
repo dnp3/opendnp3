@@ -213,12 +213,12 @@ void MasterScheduler::SchedulePollTasks(IMasterTask* pCurrent)
 
 void MasterScheduler::OnRestartDetected(IMasterTask* pCurrentTask, const MasterParams& params)
 {
-	if (pCurrentTask != &tasks.clearRestartTask)
-	{
+	if (pCurrentTask != &tasks.clearRestartTask && !tasks.clearRestartTask.IsFailed())
+	{		
 		this->ResetTimerAndQueues();
 
 		this->Schedule(&tasks.clearRestartTask);
-		
+
 		if (params.startupIntergrityClassMask != 0)
 		{
 			this->Schedule(&tasks.startupIntegrity);
@@ -227,9 +227,9 @@ void MasterScheduler::OnRestartDetected(IMasterTask* pCurrentTask, const MasterP
 		if (params.unsolClassMask & ALL_EVENT_CLASSES)
 		{
 			this->Schedule(&tasks.enableUnsol);
-		}	
+		}
 
-		this->SchedulePollTasks(pCurrentTask);
+		this->SchedulePollTasks(pCurrentTask);		
 	}	
 }
 

@@ -131,7 +131,6 @@
     <ClInclude Include="src\opendnp3\master\StartupIntegrityPoll.h" />
     <ClInclude Include="src\opendnp3\master\ITaskListener.h" />
     <ClInclude Include="src\opendnp3\master\ISOEHandler.h" />
-    <ClInclude Include="src\opendnp3\master\ITaskList.h" />
     <ClInclude Include="src\opendnp3\master\MasterContext.h" />
     <ClInclude Include="src\opendnp3\master\MasterParams.h" />
     <ClInclude Include="src\opendnp3\master\MasterScan.h" />
