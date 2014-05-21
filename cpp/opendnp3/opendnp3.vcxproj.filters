@@ -992,9 +992,6 @@
     <ClCompile Include="src\opendnp3\transport\TransportStack.cpp">
       <Filter>Header\transport</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\NewOutstation.cpp">
-      <Filter>Source\outstation</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\OutstationContext.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
@@ -1008,9 +1005,6 @@
       <Filter>Source\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\EventResponseTypes.cpp">
-      <Filter>Source\outstation</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\NewOutstationStates.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\master\MasterContext.cpp">
@@ -1066,6 +1060,12 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\master\MasterTasks.cpp">
       <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\Outstation.cpp">
+      <Filter>Source\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\OutstationStates.cpp">
+      <Filter>Source\outstation</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
