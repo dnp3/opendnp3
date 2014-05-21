@@ -426,9 +426,6 @@
     <ClInclude Include="src\opendnp3\outstation\ReadHandler.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\SelectBuffer.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\SelectionCriteria.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
@@ -810,9 +807,6 @@
       <Filter>Source\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\ReadHandler.cpp">
-      <Filter>Source\outstation</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\SelectBuffer.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\SimpleCommandHandler.cpp">
