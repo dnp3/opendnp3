@@ -128,6 +128,28 @@ TEST_CASE(SUITE("UnsolDisableEnableOnStartup"))
 	REQUIRE(t.exe.NumPendingTimers() == 0);	
 }
 
+TEST_CASE(SUITE("TimeoutDuringStartup"))
+{
+	MasterParams params;
+	MasterTestObject t(params);
+	t.master.OnLowerLayerUp();
+
+	REQUIRE(t.exe.RunMany() > 0);
+	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ALL_EVENT_CLASSES));
+	t.master.OnSendResult(true);
+
+	// timeout the task
+	REQUIRE(t.exe.AdvanceToNextTimer());
+	REQUIRE(t.exe.RunMany());
+
+	REQUIRE(t.lower.NumWrites() == 0);
+	REQUIRE(t.exe.AdvanceToNextTimer());
+	REQUIRE(t.exe.RunMany());
+
+	// repeat the disable unsol
+	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 1, ALL_EVENT_CLASSES));	
+}
+
 TEST_CASE(SUITE("SolicitedResponseTimeout"))
 {	
 	MasterTestObject t(NoStartupTasks());

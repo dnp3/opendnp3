@@ -75,13 +75,9 @@ void MasterScheduler::StartTimer(const openpal::TimeDuration& timeout)
 }
 
 void MasterScheduler::Schedule(IMasterTask* pTask)
-{
-	auto wasEmpty = this->pendingQueue.IsEmpty();
+{	
 	this->pendingQueue.Enqueue(pTask);
-	if (wasEmpty)
-	{
-		this->expirationHandler.Run();
-	}
+	this->expirationHandler.Run();	
 }
 
 void MasterScheduler::Demand(IMasterTask* pTask)
@@ -112,7 +108,7 @@ IMasterTask* MasterScheduler::Start()
 			auto pFront = pendingQueue.Peek();
 			
 			// Are there any sequenced tasks scheduled with priority >= pFront?
-			auto match = [pFront](const DelayedTask& dt) { return dt.pTask->IsSequenced() && dt.pTask->Priority() >= pFront->Priority(); };
+			auto match = [pFront](const DelayedTask& dt) { return dt.pTask->IsSequenced() && dt.pTask->Priority() <= pFront->Priority(); };
 
 			return scheduledQueue.Contains(match) ? nullptr : pendingQueue.Pop();			
 		}		
@@ -259,8 +255,7 @@ void MasterScheduler::ReportFailure(const CommandErasure& action, CommandResult 
 void MasterScheduler::OnTimerExpiration()
 {
 	pTimer = nullptr;
-	auto now = pExecutor->GetTime();
-	auto wasEmpty = this->pendingQueue.IsEmpty();
+	auto now = pExecutor->GetTime();	
 	
 	// move all expired tasks to the run queue
 	while (scheduledQueue.IsNotEmpty() && scheduledQueue.Peek().expiration.milliseconds <= now.milliseconds)
@@ -275,7 +270,7 @@ void MasterScheduler::OnTimerExpiration()
 		pTimer = pExecutor->Start(next, Bind(callback));
 	}	
 
-	if (wasEmpty && pendingQueue.IsNotEmpty())
+	if (pendingQueue.IsNotEmpty())
 	{
 		this->expirationHandler.Run();
 	}
