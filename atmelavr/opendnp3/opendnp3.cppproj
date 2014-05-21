@@ -1138,14 +1138,6 @@
       <SubType>compile</SubType>
       <Link>outstation\ResponseContext.h</Link>
     </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\SelectBuffer.cpp">
-      <SubType>compile</SubType>
-      <Link>outstation\SelectBuffer.cpp</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\SelectBuffer.h">
-      <SubType>compile</SubType>
-      <Link>outstation\SelectBuffer.h</Link>
-    </Compile>
     <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\SelectionCriteria.cpp">
       <SubType>compile</SubType>
       <Link>outstation\SelectionCriteria.cpp</Link>

@@ -37,7 +37,7 @@ int main()
 	
 	Database database(staticBuffers.GetFacade());
 	
-	// 10 binary events, 0 others
+	// 5 binary events, 0 others
 	StaticallyAllocatedEventBuffer<5, 0, 0, 0, 0, 0, 0> eventBuffers;
 	OutstationConfig config;
 	config.defaultEventResponses.binary = EventBinaryResponse::Group2Var2;
@@ -55,7 +55,7 @@ int main()
 	exe.Init();
 	
 	// enable usart rx & tx interrupts
-	//parser.Init();
+	parser.Init();
 	
 	// begin all interrupts
 	sei();
@@ -79,5 +79,8 @@ void ToggleBinaryIndex0Every(uint16_t milliseconds, IExecutor* pExecutor, Databa
 	if(update)
 	{		
 		pDatabase->Update(Binary(value, BQ_ONLINE, pExecutor->GetTime().milliseconds), 0);
-	}	
+	}
+	
+	auto lambda = [pExecutor, pDatabase, value, milliseconds]() { ToggleBinaryIndex0Every(milliseconds, pExecutor, pDatabase, !value, true); };
+	pExecutor->Start(TimeDuration::Milliseconds(milliseconds), Bind(lambda));	
 }
