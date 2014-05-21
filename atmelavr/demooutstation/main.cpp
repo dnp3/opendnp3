@@ -41,8 +41,12 @@ int main()
 	StaticallyAllocatedEventBuffer<5, 0, 0, 0, 0, 0, 0> eventBuffers;
 	OutstationConfig config;
 	config.defaultEventResponses.binary = EventBinaryResponse::Group2Var2;
+	
+	// Object that handles command (CROB / setpoint) requests
+	// This example can toggle an LED on the Arduino board				
+	AVRCommandHandler commandHandler;						
 						
-	Outstation outstation(config, exe, root, stack.transport, AVRCommandHandler::Inst(), NullTimeWriteHandler::Inst(), database, eventBuffers.GetFacade());
+	Outstation outstation(config, exe, root, stack.transport, commandHandler, NullTimeWriteHandler::Inst(), database, eventBuffers.GetFacade());
 		
 	stack.transport.SetAppLayer(&outstation);
 			
@@ -50,7 +54,6 @@ int main()
 	stack.link.SetRouter(&parser);	
 	stack.link.OnLowerLayerUp();
 	
-
 	// enable timer interrupts at 100Hz	
 	exe.Init();
 	

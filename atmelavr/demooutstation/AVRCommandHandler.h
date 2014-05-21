@@ -35,8 +35,6 @@ class AVRCommandHandler : public opendnp3::ICommandHandler, openpal::Uncopyable
 {
 public:
 
-	static opendnp3::ICommandHandler& Inst();
-
 	opendnp3::CommandStatus Supports(const opendnp3::ControlRelayOutputBlock& command, uint16_t index) override final;
 	opendnp3::CommandStatus Perform(const opendnp3::ControlRelayOutputBlock& command, uint16_t index) override final;
 
@@ -55,10 +53,6 @@ public:
 
 	opendnp3::CommandStatus Supports(const opendnp3::AnalogOutputDouble64& command, uint16_t index) override final;
 	opendnp3::CommandStatus Perform(const opendnp3::AnalogOutputDouble64& command, uint16_t index) override final;
-
-private:
-	static AVRCommandHandler instance;
-	AVRCommandHandler() {}
 	
 };
 

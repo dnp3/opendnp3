@@ -30,12 +30,7 @@
 using namespace opendnp3;
 
 namespace arduino
-{
-	AVRCommandHandler AVRCommandHandler::instance;
-	
-	ICommandHandler& AVRCommandHandler::Inst() { return instance; }
-	
-	
+{	
 	CommandStatus AVRCommandHandler::Supports(const ControlRelayOutputBlock& command, uint16_t index)
 	{
 		if(index == 0 && (command.functionCode == ControlCode::LATCH_OFF || command.functionCode == ControlCode::LATCH_ON))
