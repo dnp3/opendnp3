@@ -1,7 +1,7 @@
 
 
 #include <opendnp3/transport/TransportStack.h>
-#include <opendnp3/outstation/NewOutstation.h>
+#include <opendnp3/outstation/Outstation.h>
 #include <opendnp3/outstation/StaticallyAllocatedDatabase.h>
 #include <opendnp3/outstation/StaticallyAllocatedEventBuffer.h>
 
@@ -39,10 +39,10 @@ int main()
 	
 	// 10 binary events, 0 others
 	StaticallyAllocatedEventBuffer<5, 0, 0, 0, 0, 0, 0> eventBuffers;
-	NewOutstationConfig config;
+	OutstationConfig config;
 	config.defaultEventResponses.binary = EventBinaryResponse::Group2Var2;
 						
-	NewOutstation outstation(config, exe, root, stack.transport, AVRCommandHandler::Inst(), NullTimeWriteHandler::Inst(), database, eventBuffers.GetFacade());
+	Outstation outstation(config, exe, root, stack.transport, AVRCommandHandler::Inst(), NullTimeWriteHandler::Inst(), database, eventBuffers.GetFacade());
 		
 	stack.transport.SetAppLayer(&outstation);
 			
@@ -75,19 +75,9 @@ int main()
 }
 
 void ToggleBinaryIndex0Every(uint16_t milliseconds, IExecutor* pExecutor, Database* pDatabase, bool value, bool update)
-{
-
-	TOGGLE_ARM_LED1();
-	auto lambda = [pExecutor, pDatabase, value, milliseconds]() { ToggleBinaryIndex0Every(milliseconds, pExecutor, pDatabase, !value, true); };
-	pExecutor->Start(TimeDuration::Milliseconds(milliseconds), Bind(lambda));
-
-	/*
+{	
 	if(update)
 	{		
 		pDatabase->Update(Binary(value, BQ_ONLINE, pExecutor->GetTime().milliseconds), 0);
-	}
-	
-	auto lambda = [pExecutor, pDatabase, value, milliseconds]() { ToggleBinaryIndex0Every(milliseconds, pExecutor, pDatabase, !value, true); };
-	pExecutor->Start(TimeDuration::Milliseconds(milliseconds), Bind(lambda));
-	*/
+	}	
 }

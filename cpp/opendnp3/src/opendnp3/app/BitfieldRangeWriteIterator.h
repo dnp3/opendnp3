@@ -42,16 +42,16 @@ public:
 	BitfieldRangeWriteIterator(typename IndexType::Type start_, openpal::WriteBuffer& position_) :
 		start(start_),
 		count(0),
-		range(position_),
-		position(position_),
+		maxCount(0),
 		isNull(position_.Size() < 2 * IndexType::Size),
-		maxCount(0)
+		range(position_),
+		pPosition(&position_)				
 	{
 		if(!isNull)
 		{
 			IndexType::WriteBuffer(range, start_);
-			position.Advance(2 * IndexType::Size);
-			maxCount = position.Size() * 8;
+			pPosition->Advance(2 * IndexType::Size);
+			maxCount = pPosition->Size() * 8;
 		}
 	}
 
@@ -65,7 +65,7 @@ public:
 
 			auto num = count / 8;
 			if ((count % 8) > 0) ++num;
-			position.Advance(num);
+			pPosition->Advance(num);
 
 			return true;
 		}
@@ -81,12 +81,12 @@ public:
 
 			if (bit == 0)
 			{
-				position[byte] = 0; // initialize byte to 0
+				(*pPosition)[byte] = 0; // initialize byte to 0
 			}
 
 			if (value)
 			{
-				position[byte] = (position[byte] | 1 << bit);
+				(*pPosition)[byte] = ((*pPosition)[byte] | (1 << bit));
 			}
 
 			++count;
@@ -109,7 +109,7 @@ private:
 	bool isNull;
 
 	openpal::WriteBuffer range;  // make a copy to record where we write the range
-	openpal::WriteBuffer& position;
+	openpal::WriteBuffer* pPosition;
 };
 
 }
