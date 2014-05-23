@@ -33,13 +33,28 @@
 namespace opendnp3
 {
 
+enum class TaskState
+{
+	IDLE,
+	PENDING,
+	SCHEDULED,
+	RUNNING,
+	FAILED
+};
+
 /**
  * A generic interface for defining master request/response style tasks
  */
 class IMasterTask
 {
+	friend class MasterScheduler;
+	friend class MasterTasks;
 
-public:	
+public:
+
+	IMasterTask();
+
+	TaskState GetState() const { return state; }	
 
 	enum class TaskPriority : int
 	{		
@@ -97,14 +112,29 @@ public:
 	virtual TaskStatus OnResponse(const APDUResponseRecord& response, const MasterParams& params, IMasterScheduler& scheduler) = 0;
 	
 	/**
-	 * Called when a response times out. Overridable to perform cleanup.
+	 * Called when a response times out
 	 */
-	virtual void OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler) = 0;
+	void OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler);
+
+	/**
+	* Called when the layer closes while the task is executing
+	*/
+	void OnLowerLayerClose();
+
+	protected:
 
 	/**
 	* Called when the layer closes. Overridable to perform cleanup.
 	*/
-	virtual void OnLowerLayerClose() {}
+	virtual void _OnLowerLayerClose() {}
+
+	virtual void _OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler) = 0;
+
+
+	void SetState(TaskState state_) { state = state_; }
+
+	TaskState state;
+
 
 };
 

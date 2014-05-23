@@ -1058,5 +1058,8 @@
     <ClCompile Include="src\opendnp3\outstation\OutstationStates.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
+    <ClCompile Include="src\opendnp3\master\IMasterTask.cpp">
+      <Filter>Source\master</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

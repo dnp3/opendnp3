@@ -19,31 +19,24 @@
  * to you under the terms of the License.
  */
 
-#include "MasterTasks.h"
-
-
+#include "IMasterTask.h"
 
 namespace opendnp3
 {
 
-MasterTasks::MasterTasks(openpal::Logger* pLogger, ISOEHandler* pSOEHandler, openpal::IUTCTimeSource* pTimeSource) :
-enableUnsol(pLogger),
-clearRestartTask(pLogger),
-startupIntegrity(pSOEHandler, pLogger),
-disableUnsol(pLogger),	
-serialTimeSync(pLogger, pTimeSource),
-commandTask(pLogger)
+IMasterTask::IMasterTask() : state(TaskState::IDLE) {}
+
+void IMasterTask::OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler)
 {
-	
+	this->SetState(TaskState::IDLE);
+	this->_OnResponseTimeout(params, scheduler);
 }
 
-void MasterTasks::ResetAllTasks()
+void IMasterTask::OnLowerLayerClose()
 {
-	enableUnsol.SetState(TaskState::IDLE);
-	clearRestartTask.SetState(TaskState::IDLE);
-	startupIntegrity.SetState(TaskState::IDLE);
-	disableUnsol.SetState(TaskState::IDLE);
-	serialTimeSync.SetState(TaskState::IDLE);
+	this->SetState(TaskState::IDLE);
+	this->_OnLowerLayerClose();
 }
 
-}
+} //end ns
+

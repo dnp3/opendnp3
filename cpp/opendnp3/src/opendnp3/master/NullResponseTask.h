@@ -41,6 +41,8 @@ protected:
 	virtual TaskStatus OnSingleResponse(const APDUResponseRecord& response, const MasterParams& params, IMasterScheduler& scheduler) override final;
 	
 	virtual void OnSuccess(const MasterParams& params, IMasterScheduler& scheduler) = 0;
+
+	virtual void OnIINFailure(const MasterParams& params, IMasterScheduler& scheduler) = 0;
 };
 
 } //end ns

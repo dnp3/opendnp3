@@ -45,6 +45,7 @@ TaskStatus PollTaskBase::OnResponse(const APDUResponseRecord& response, const Ma
 		if (rxCount > 0)
 		{
 			SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Ignoring unexpected FIR frame");
+			this->SetState(TaskState::IDLE);
 			this->OnFailure(params, scheduler);
 			return TaskStatus::FAIL;
 		}
@@ -62,14 +63,15 @@ TaskStatus PollTaskBase::OnResponse(const APDUResponseRecord& response, const Ma
 		else
 		{	
 			SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Ignoring unexpected non-FIR frame");
+			this->SetState(TaskState::IDLE);
 			this->OnFailure(params, scheduler);			
 			return TaskStatus::FAIL;
 		}
 	}
 }
 
-void PollTaskBase::OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler)
-{
+void PollTaskBase::_OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler)
+{	
 	this->OnFailure(params, scheduler);
 }
 	
@@ -81,6 +83,7 @@ TaskStatus PollTaskBase::ProcessMeasurements(const APDUResponseRecord& response,
 	{	
 		if (response.control.FIN)
 		{			
+			this->SetState(TaskState::IDLE);
 			this->OnSuccess(params, scheduler);
 			return TaskStatus::SUCCESS;
 		}
@@ -91,6 +94,7 @@ TaskStatus PollTaskBase::ProcessMeasurements(const APDUResponseRecord& response,
 	}
 	else
 	{	
+		this->SetState(TaskState::IDLE);
 		this->OnFailure(params, scheduler);
 		return TaskStatus::FAIL;
 	}

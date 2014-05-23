@@ -46,7 +46,9 @@ public:
 		
 protected:
 
-	virtual void OnSuccess(const MasterParams& params, IMasterScheduler& scheduler) override final;
+	virtual void OnIINFailure(const MasterParams& params, IMasterScheduler& scheduler) override final;
+
+	virtual void OnSuccess(const MasterParams& params, IMasterScheduler& scheduler) override final {}
 
 	virtual void OnTimeoutOrBadControlOctet(const MasterParams& params, IMasterScheduler& scheduler) override final;
 

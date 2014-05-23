@@ -51,6 +51,36 @@ enum class IINBit
 class IINField
 {
 
+private:
+
+	enum class LSBMask : uint8_t
+	{
+		ALL_STATIONS = 0x01,
+		CLASS1_EVENTS = 0x02,
+		CLASS2_EVENTS = 0x04,
+		CLASS3_EVENTS = 0x08,
+		NEED_TIME = 0x10,
+		LOCAL_CONTROL = 0x20,
+		DEVICE_TROUBLE = 0x40,
+		DEVICE_RESTART = 0x80,
+	};
+
+	enum class MSBMask : uint8_t
+	{
+		FUNC_NOT_SUPPORTED = 0x01,
+		OBJECT_UNKNOWN = 0x02,
+		PARAM_ERROR = 0x04,
+		EVENT_BUFFER_OVERFLOW = 0x08,
+		ALREADY_EXECUTING = 0x10,
+		CONFIG_CORRUPT = 0x20,
+		RESERVED1 = 0x40,
+		RESERVED2 = 0x80,
+
+		//special mask that indicates if there was any error processing a request
+		REQUEST_ERROR_MASK = FUNC_NOT_SUPPORTED | OBJECT_UNKNOWN | PARAM_ERROR
+	};
+
+
 public:
 
 	static const IINField Empty;
@@ -84,6 +114,11 @@ public:
 	void Clear()
 	{
 		LSB = MSB = 0;
+	}
+
+	bool HasRequestError() const
+	{
+		return Get(MSBMask::REQUEST_ERROR_MASK);
 	}
 
 	IINField operator|(const IINField& aIIN) const
@@ -120,38 +155,17 @@ public:
 
 private:
 
-	enum class LSBMask : uint8_t
-	{
-	    ALL_STATIONS = 0x01,
-	    CLASS1_EVENTS = 0x02,
-	    CLASS2_EVENTS = 0x04,
-	    CLASS3_EVENTS = 0x08,
-	    NEED_TIME = 0x10,
-	    LOCAL_CONTROL = 0x20,
-	    DEVICE_TROUBLE = 0x40,
-	    DEVICE_RESTART = 0x80,
-	};
-
-	enum class MSBMask : uint8_t
-	{
-	    FUNC_NOT_SUPPORTED = 0x01,
-	    OBJECT_UNKNOWN = 0x02,
-	    PARAM_ERROR = 0x04,
-	    EVENT_BUFFER_OVERFLOW = 0x08,
-	    ALREADY_EXECUTING = 0x10,
-	    CONFIG_CORRUPT = 0x20,
-	    RESERVED1 = 0x40,
-	    RESERVED2 = 0x80
-	};
+	static const uint8_t REQUEST_ERROR_MASK;
 
 	inline bool Get(LSBMask bit) const
 	{
 		return (LSB & static_cast<uint8_t>(bit)) != 0;
 	}
+
 	inline bool Get(MSBMask bit) const
 	{
 		return (MSB & static_cast<uint8_t>(bit)) != 0;
-	}
+	}	
 
 	inline void Set(LSBMask bit)
 	{

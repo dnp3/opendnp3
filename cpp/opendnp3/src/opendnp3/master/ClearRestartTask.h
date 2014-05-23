@@ -42,21 +42,13 @@ public:
 
 	virtual TaskPriority Priority() const override final { return TaskPriority::CLEAR_RESTART_IIN; }
 
-	virtual void BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq) override final;
-
-	void Reset();
-
-	bool IsFailed() const;
+	virtual void BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq) override final;	
 		
 protected:	
 
 	virtual void OnTimeoutOrBadControlOctet(const MasterParams& params, IMasterScheduler& scheduler) override final;
 	
 	virtual TaskStatus OnSingleResponse(const APDUResponseRecord& response, const MasterParams& params, IMasterScheduler& scheduler) override final;
-
-private:
-
-	bool failed;
 
 };
 

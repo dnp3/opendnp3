@@ -151,17 +151,18 @@ TaskStatus CommandTask::OnResponse(const APDUResponseRecord& response, const Mas
 	{
 		SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Ignoring unexpected response with FIR/FIN not set");
 		this->Callback(CommandResponse(CommandResult::BAD_RESPONSE));
+		this->SetState(TaskState::IDLE);
 		return TaskStatus::FAIL;
 	}
 }
 
-void CommandTask::OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler)
+void CommandTask::_OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler)
 {
 	this->Callback(CommandResponse(CommandResult::TIMEOUT));
 }
 
-void CommandTask::OnLowerLayerClose()
-{
+void CommandTask::_OnLowerLayerClose()
+{	
 	this->Callback(CommandResponse::NoResponse(CommandResult::NO_COMMS));
 }
 

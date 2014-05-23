@@ -29,9 +29,7 @@
 namespace opendnp3
 {
 
-ClearRestartTask::ClearRestartTask(openpal::Logger* pLogger_) : 
-	SingleResponseTask(pLogger_),
-	failed(false)
+ClearRestartTask::ClearRestartTask(openpal::Logger* pLogger_) :  SingleResponseTask(pLogger_)	
 {
 
 }	
@@ -39,16 +37,6 @@ ClearRestartTask::ClearRestartTask(openpal::Logger* pLogger_) :
 void ClearRestartTask::BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq)
 {
 	build::ClearRestartIIN(request, seq);
-}
-
-void ClearRestartTask::Reset()
-{
-	failed = false;
-}
-
-bool ClearRestartTask::IsFailed() const
-{
-	return failed;
 }
 
 void ClearRestartTask::OnTimeoutOrBadControlOctet(const MasterParams& params, IMasterScheduler& scheduler)
@@ -61,7 +49,7 @@ TaskStatus ClearRestartTask::OnSingleResponse(const APDUResponseRecord& response
 {
 	if (response.IIN.IsSet(IINBit::DEVICE_RESTART))
 	{
-		failed = true;
+		state = TaskState::FAILED;
 
 		// we tried to clear the restart, but the device responded with the restart still set
 		SIMPLE_LOGGER_BLOCK(pLogger, flags::ERR, "Clear restart task failed to clear restart bit");		

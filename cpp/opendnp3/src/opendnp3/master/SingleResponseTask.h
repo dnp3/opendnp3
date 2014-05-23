@@ -38,9 +38,9 @@ public:
 	
 	virtual TaskStatus OnResponse(const APDUResponseRecord& response, const MasterParams& params, IMasterScheduler& scheduler) override final;	
 
-	virtual void OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler) override final;
-
 protected:
+
+	virtual void _OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler) override final;
 
 	virtual void OnTimeoutOrBadControlOctet(const MasterParams& params, IMasterScheduler& scheduler) = 0;
 

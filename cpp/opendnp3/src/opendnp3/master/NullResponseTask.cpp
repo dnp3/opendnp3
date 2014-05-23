@@ -37,12 +37,22 @@ TaskStatus NullResponseTask::OnSingleResponse(const APDUResponseRecord& response
 {
 	if (response.objects.IsEmpty())
 	{
-		this->OnSuccess(params, scheduler);
-		return TaskStatus::SUCCESS;
+		if (response.IIN.HasRequestError())
+		{
+			this->SetState(TaskState::IDLE);
+			return TaskStatus::FAIL;
+		}
+		else
+		{
+			this->SetState(TaskState::IDLE);
+			this->OnSuccess(params, scheduler);
+			return TaskStatus::SUCCESS;
+		}		
 	}
 	else
 	{
 		FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Ignoring trailing objects headers for task: %s", this->Name());
+		this->SetState(TaskState::IDLE);
 		this->OnTimeoutOrBadControlOctet(params, scheduler);
 		return TaskStatus::FAIL;
 	}

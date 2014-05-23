@@ -39,12 +39,17 @@ public:
 
 	MasterTasks(openpal::Logger* pLogger, ISOEHandler* pSOEHandler, openpal::IUTCTimeSource* pTimeSource);
 
+	void ResetAllTasks();
+
+	// master tasks (startup and in respond to IIN bits) that can be "failed"
 	EnableUnsolicitedTask enableUnsol;
 	ClearRestartTask clearRestartTask;
 	StartupIntegrityPoll startupIntegrity;
-	DisableUnsolicitedTask disableUnsol;
-	CommandTask commandTask;
+	DisableUnsolicitedTask disableUnsol;	
 	SerialTimeSyncTask serialTimeSync;
+
+	// reconfigurable task for doing commands
+	CommandTask commandTask;
 	
 };
 

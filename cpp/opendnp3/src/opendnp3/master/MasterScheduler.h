@@ -93,20 +93,24 @@ public:
 	/*
 	* Called when the master observes the IIN::DeviceRestart bit
 	*/
-	void OnRestartDetected(IMasterTask* pCurrentTask, const MasterParams& params);
+	void OnRestartDetected(const MasterParams& params);
 
 	/*
 	* Called when the master observes the IIN::NeedTime bit
 	*/
-	void OnNeedTimeDetected(IMasterTask* pCurrentTask, const MasterParams& params);
+	void OnNeedTimeDetected(const MasterParams& params);
 
 private:	
+
+	IMasterTask* FindTaskToStart();
+
+	void CheckForNotification();
 
 	void ResetTimerAndQueues();
 
 	bool IsStartupComplete();
 
-	void SchedulePollTasks(IMasterTask* pCurrent);
+	void SchedulePollTasks();
 
 	void ReportFailure(const CommandErasure& action, CommandResult result);
 
@@ -135,17 +139,12 @@ private:
 	void OnTimerExpiration();	
 
 	bool CancelAnyTimer();
-
-	bool IsPendingOrScheduled(IMasterTask* pTask);
-
-	bool IsPending(IMasterTask* pTask);
-
-	bool IsScheduled(IMasterTask* pTask);
 	
 	MasterTasks tasks;
 			
 	bool isOnline;
 	bool isStartupComplete;
+	bool modifiedSinceLastRead;
 	openpal::IExecutor* pExecutor;
 	openpal::ITimer* pTimer;
 	openpal::Runnable expirationHandler;

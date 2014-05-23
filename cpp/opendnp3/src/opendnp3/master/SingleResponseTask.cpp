@@ -35,18 +35,21 @@ TaskStatus SingleResponseTask::OnResponse(const APDUResponseRecord& response, co
 {
 	if (response.control.FIR && response.control.FIN)
 	{
+		this->SetState(TaskState::IDLE);
 		return this->OnSingleResponse(response, params, scheduler);
 	}
 	else
 	{
 		SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Ignoring unexpected response FIR/FIN not set");
+		this->SetState(TaskState::IDLE);
 		this->OnTimeoutOrBadControlOctet(params, scheduler);
 		return TaskStatus::FAIL;
 	}
 }
 
-void SingleResponseTask::OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler)
+void SingleResponseTask::_OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler)
 {
+	this->SetState(TaskState::IDLE);
 	this->OnTimeoutOrBadControlOctet(params, scheduler);
 }
 

@@ -38,9 +38,9 @@ void EnableUnsolicitedTask::BuildRequest(APDURequest& request, const MasterParam
 	build::EnableUnsolicited(request, params.unsolClassMask, seq);
 }
 
-void EnableUnsolicitedTask::OnSuccess(const MasterParams& params, IMasterScheduler& scheduler)
+void EnableUnsolicitedTask::OnIINFailure(const MasterParams& params, IMasterScheduler& scheduler)
 {
-	
+	state = TaskState::FAILED;
 }
 
 void EnableUnsolicitedTask::OnTimeoutOrBadControlOctet(const MasterParams& params, IMasterScheduler& scheduler)

@@ -195,8 +195,6 @@ void MasterContext::OnReceive(const openpal::ReadOnlyBuffer& apdu)
 				response.IIN.LSB,
 				response.IIN.MSB);
 
-			this->OnReceiveIIN(response.IIN);
-
 			switch (response.function)
 			{
 				case(FunctionCode::RESPONSE) :
@@ -209,6 +207,9 @@ void MasterContext::OnReceive(const openpal::ReadOnlyBuffer& apdu)
 					FORMAT_LOG_BLOCK(logger, flags::WARN, "unsupported function code: %s", FunctionCodeToString(response.function));
 					break;
 			}
+
+			// process the IIN bits after we've handeled the frame
+			this->OnReceiveIIN(response.IIN);
 		}
 	}
 }
@@ -276,12 +277,12 @@ void MasterContext::OnReceiveIIN(const IINField& iin)
 {
 	if (iin.IsSet(IINBit::DEVICE_RESTART))
 	{
-		scheduler.OnRestartDetected(pActiveTask, params);
+		scheduler.OnRestartDetected(params);
 	}
 
 	if (iin.IsSet(IINBit::NEED_TIME))
 	{
-		scheduler.OnNeedTimeDetected(pActiveTask, params);
+		scheduler.OnNeedTimeDetected(params);
 	}
 }
 
