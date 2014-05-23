@@ -37,13 +37,4 @@ commandTask(pLogger)
 	
 }
 
-void MasterTasks::ResetAllTasks()
-{
-	enableUnsol.SetState(TaskState::IDLE);
-	clearRestartTask.SetState(TaskState::IDLE);
-	startupIntegrity.SetState(TaskState::IDLE);
-	disableUnsol.SetState(TaskState::IDLE);
-	serialTimeSync.SetState(TaskState::IDLE);
-}
-
 }

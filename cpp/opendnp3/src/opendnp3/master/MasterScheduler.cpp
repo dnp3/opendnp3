@@ -230,9 +230,6 @@ void MasterScheduler::OnLowerLayerDown()
 
 		this->ResetTimerAndQueues();
 
-		// reset all tasks to the Idle state
-		tasks.ResetAllTasks();
-
 		while (commandActions.IsNotEmpty())
 		{
 			this->ReportFailure(commandActions.Pop(), CommandResult::NO_COMMS);
