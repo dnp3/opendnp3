@@ -118,6 +118,7 @@ cpp/opendnp3/src/opendnp3/master/CommandTask.cpp \
 cpp/opendnp3/src/opendnp3/master/ConstantCommandProcessor.cpp \
 cpp/opendnp3/src/opendnp3/master/DisableUnsolicitedTask.cpp \
 cpp/opendnp3/src/opendnp3/master/EnableUnsolicitedTask.cpp \
+cpp/opendnp3/src/opendnp3/master/IMasterTask.cpp \
 cpp/opendnp3/src/opendnp3/master/ISOEHandler.cpp \
 cpp/opendnp3/src/opendnp3/master/MasterContext.cpp \
 cpp/opendnp3/src/opendnp3/master/Master.cpp \
@@ -166,14 +167,13 @@ cpp/opendnp3/src/opendnp3/outstation/EventResponseContext.cpp \
 cpp/opendnp3/src/opendnp3/outstation/EventResponseTypes.cpp \
 cpp/opendnp3/src/opendnp3/outstation/IINHelpers.cpp \
 cpp/opendnp3/src/opendnp3/outstation/ITimeWriteHandler.cpp \
-cpp/opendnp3/src/opendnp3/outstation/NewOutstation.cpp \
-cpp/opendnp3/src/opendnp3/outstation/NewOutstationStates.cpp \
+cpp/opendnp3/src/opendnp3/outstation/Outstation.cpp \
+cpp/opendnp3/src/opendnp3/outstation/OutstationStates.cpp \
 cpp/opendnp3/src/opendnp3/outstation/OutstationContext.cpp \
 cpp/opendnp3/src/opendnp3/outstation/OutstationEventBuffer.cpp \
 cpp/opendnp3/src/opendnp3/outstation/OutstationParams.cpp \
 cpp/opendnp3/src/opendnp3/outstation/ReadHandler.cpp \
 cpp/opendnp3/src/opendnp3/outstation/ResponseContext.cpp \
-cpp/opendnp3/src/opendnp3/outstation/SelectBuffer.cpp \
 cpp/opendnp3/src/opendnp3/outstation/SelectionCriteria.cpp \
 cpp/opendnp3/src/opendnp3/outstation/SelectionIterator.cpp \
 cpp/opendnp3/src/opendnp3/outstation/SimpleCommandHandler.cpp \
