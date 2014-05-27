@@ -75,14 +75,14 @@ private:
 	friend class LRS_Body;
 
 	//actions/helpers used by the states
-	void ChangeState(LRS_Base* apState)
+	void ChangeState(LRS_Base* pState_)
 	{
-		mpState = apState;
+		pState = pState_;
 	}
 
 	bool SyncStartOctets()
 	{
-		return mBuffer.Sync();
+		return buffer.Sync();
 	}
 
 	bool ReadHeader();
@@ -95,20 +95,22 @@ private:
 
 	uint32_t NumReadBytes() const
 	{
-		return mBuffer.NumReadBytes();
+		return buffer.NumReadBytes();
 	}
 
 	openpal::Logger logger;
-	LinkHeader mHeader;
-	uint32_t mFrameSize;
+	LinkHeader header;
+	uint32_t frameSize;
 	static const uint8_t M_SYNC_PATTERN[2];
 
-	IFrameSink* mpSink;  // pointer to interface to push complete frames
-	LRS_Base* mpState;
+	IFrameSink* pSink;  // pointer to interface to push complete frames
+	LRS_Base* pState;
 
-	// Buffer to which user data is extracted, this is necessary since CRC checks are interlaced		
-	openpal::StaticBuffer<sizes::LINK_RECEIVER_BUFFER_SIZE> receiveBuffer;
-	ShiftableBuffer mBuffer; //Buffer used to cache frames data as it arrives
+	// buffer where received data is written		
+	openpal::StaticBuffer<sizes::LINK_RECEIVER_BUFFER_SIZE> rxBuffer;
+
+	// facade over the rxBuffer that provides ability to "shift" as data is read
+	ShiftableBuffer buffer;
 };
 
 }

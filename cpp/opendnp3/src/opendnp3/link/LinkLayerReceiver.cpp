@@ -35,109 +35,108 @@ namespace opendnp3
 
 const uint8_t LinkLayerReceiver::M_SYNC_PATTERN[2] = {0x05, 0x64};
 
-LinkLayerReceiver::LinkLayerReceiver(const Logger& logger_, IFrameSink* apSink) :
+LinkLayerReceiver::LinkLayerReceiver(const Logger& logger_, IFrameSink* pSink_) :
 	logger(logger_),
-	mFrameSize(0),
-	mpSink(apSink),
-	mpState(LRS_Sync::Inst()),
-	receiveBuffer(),
-	mBuffer(receiveBuffer.Buffer(), receiveBuffer.Size())
+	frameSize(0),
+	pSink(pSink_),
+	pState(LRS_Sync::Inst()),
+	rxBuffer(),
+	buffer(rxBuffer.Buffer(), rxBuffer.Size())
 {
 
 }
 
 void LinkLayerReceiver::Reset()
 {
-	mFrameSize = 0;
-	mpState = LRS_Sync::Inst();
-	mBuffer.Reset();
+	frameSize = 0;
+	pState = LRS_Sync::Inst();
+	buffer.Reset();
 }
 
 WriteBuffer LinkLayerReceiver::WriteBuff() const
 {
-	WriteBuffer b(mBuffer.WriteBuff(), mBuffer.NumWriteBytes());
-	return b;
+	return WriteBuffer(buffer.WriteBuff(), buffer.NumWriteBytes());	
 }
 
-void LinkLayerReceiver::OnRead(uint32_t aNumBytes)
+void LinkLayerReceiver::OnRead(uint32_t numBytes)
 {
 	// This is a serious condition if it occurs
 	// It indicates a possible buffer over run
-	assert(aNumBytes <= mBuffer.NumWriteBytes());
-	mBuffer.AdvanceWrite(aNumBytes);
+	assert(numBytes <= buffer.NumWriteBytes());
+	buffer.AdvanceWrite(numBytes);
 
 	// this might push frame data to the sink and will free
 	// space in the buffer
-	while(mpState->Parse(this));
+	while(pState->Parse(this));
 
 	//anytime we have a partially incomplete frame, shift the buffer
-	mBuffer.Shift();
+	buffer.Shift();
 }
 
 void LinkLayerReceiver::PushFrame()
 {
-	switch(mHeader.GetFuncEnum())
+	switch(header.GetFuncEnum())
 	{
 	case(LinkFunction::PRI_RESET_LINK_STATES):
-		mpSink->ResetLinkStates(mHeader.IsFromMaster(), mHeader.GetDest(), mHeader.GetSrc());
+		pSink->ResetLinkStates(header.IsFromMaster(), header.GetDest(), header.GetSrc());
 		break;
 	case(LinkFunction::PRI_TEST_LINK_STATES):
-		mpSink->TestLinkStatus(mHeader.IsFromMaster(), mHeader.IsFcbSet(), mHeader.GetDest(), mHeader.GetSrc());
+		pSink->TestLinkStatus(header.IsFromMaster(), header.IsFcbSet(), header.GetDest(), header.GetSrc());
 		break;
 	case(LinkFunction::PRI_CONFIRMED_USER_DATA):
-		mpSink->ConfirmedUserData(mHeader.IsFromMaster(), mHeader.IsFcbSet(), mHeader.GetDest(), mHeader.GetSrc(), TransferUserData());
+		pSink->ConfirmedUserData(header.IsFromMaster(), header.IsFcbSet(), header.GetDest(), header.GetSrc(), TransferUserData());
 		break;
 	case(LinkFunction::PRI_UNCONFIRMED_USER_DATA):
-		mpSink->UnconfirmedUserData(mHeader.IsFromMaster(), mHeader.GetDest(), mHeader.GetSrc(), TransferUserData());
+		pSink->UnconfirmedUserData(header.IsFromMaster(), header.GetDest(), header.GetSrc(), TransferUserData());
 		break;
 	case(LinkFunction::PRI_REQUEST_LINK_STATUS):
-		mpSink->RequestLinkStatus(mHeader.IsFromMaster(), mHeader.GetDest(), mHeader.GetSrc());
+		pSink->RequestLinkStatus(header.IsFromMaster(), header.GetDest(), header.GetSrc());
 		break;
 	case(LinkFunction::SEC_ACK):
-		mpSink->Ack(mHeader.IsFromMaster(), mHeader.IsFcvDfcSet(), mHeader.GetDest(), mHeader.GetSrc());
+		pSink->Ack(header.IsFromMaster(), header.IsFcvDfcSet(), header.GetDest(), header.GetSrc());
 		break;
 	case(LinkFunction::SEC_NACK):
-		mpSink->Nack(mHeader.IsFromMaster(), mHeader.IsFcvDfcSet(), mHeader.GetDest(), mHeader.GetSrc());
+		pSink->Nack(header.IsFromMaster(), header.IsFcvDfcSet(), header.GetDest(), header.GetSrc());
 		break;
 	case(LinkFunction::SEC_LINK_STATUS):
-		mpSink->LinkStatus(mHeader.IsFromMaster(), mHeader.IsFcvDfcSet(), mHeader.GetDest(), mHeader.GetSrc());
+		pSink->LinkStatus(header.IsFromMaster(), header.IsFcvDfcSet(), header.GetDest(), header.GetSrc());
 		break;
 	case(LinkFunction::SEC_NOT_SUPPORTED):
-		mpSink->NotSupported(mHeader.IsFromMaster(), mHeader.IsFcvDfcSet(), mHeader.GetDest(), mHeader.GetSrc());
+		pSink->NotSupported(header.IsFromMaster(), header.IsFcvDfcSet(), header.GetDest(), header.GetSrc());
 		break;
 	default:
 		break;
 	}
 
-	mBuffer.AdvanceRead(mFrameSize);
+	buffer.AdvanceRead(frameSize);
 }
 
 ReadOnlyBuffer LinkLayerReceiver::TransferUserData()
 {
-	uint32_t len = mHeader.GetLength() - LS_MIN_LENGTH;
-	LinkFrame::ReadUserData(mBuffer.ReadBuff() + LS_HEADER_SIZE,  receiveBuffer.Buffer(), len);
-	return receiveBuffer.ToReadOnly().Truncate(len);
+	uint32_t len = header.GetLength() - LS_MIN_LENGTH;
+	LinkFrame::ReadUserData(buffer.ReadBuff() + LS_HEADER_SIZE,  rxBuffer.Buffer(), len);
+	return rxBuffer.ToReadOnly().Truncate(len);
 }
 
 bool LinkLayerReceiver::ReadHeader()
 {
-	mHeader.Read(mBuffer.ReadBuff());
+	header.Read(buffer.ReadBuff());
 	return this->ValidateHeader();
 }
 
 bool LinkLayerReceiver::ValidateBody()
 {
-	uint32_t len = mHeader.GetLength() - LS_MIN_LENGTH;
-	if (LinkFrame::ValidateBodyCRC(mBuffer.ReadBuff() + LS_HEADER_SIZE, len))
+	uint32_t len = header.GetLength() - LS_MIN_LENGTH;
+	if (LinkFrame::ValidateBodyCRC(buffer.ReadBuff() + LS_HEADER_SIZE, len))
 	{
 		FORMAT_LOG_BLOCK(logger, flags::LINK_RX,
 			"Function: %s Dest: %u Source: %u Length: %u",
-			LinkFunctionToString(mHeader.GetFuncEnum()),
-			mHeader.GetDest(),
-			mHeader.GetSrc(),
-			mHeader.GetLength());
+			LinkFunctionToString(header.GetFuncEnum()),
+			header.GetDest(),
+			header.GetSrc(),
+			header.GetLength());
 
-		ReadOnlyBuffer buffer(mBuffer.ReadBuff(), mFrameSize);
+		ReadOnlyBuffer buffer(buffer.ReadBuff(), frameSize);
 		FORMAT_HEX_BLOCK(logger, flags::LINK_RX_HEX, buffer, 10, 18);
 
 		return true;
@@ -152,15 +151,15 @@ bool LinkLayerReceiver::ValidateBody()
 bool LinkLayerReceiver::ValidateHeader()
 {
 	//first thing to do is check the CRC
-	if(!DNPCrc::IsCorrectCRC(mBuffer.ReadBuff(), LI_CRC))
+	if(!DNPCrc::IsCorrectCRC(buffer.ReadBuff(), LI_CRC))
 	{
 		SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::ERR, DLERR_CRC, "CRC failure in header");
 		return false;
 	}
 
-	if(!mHeader.ValidLength())
+	if(!header.ValidLength())
 	{
-		FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::ERR, DLERR_INVALID_LENGTH, "LENGTH out of range [5,255]: %i", mHeader.GetLength());
+		FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::ERR, DLERR_INVALID_LENGTH, "LENGTH out of range [5,255]: %i", header.GetLength());
 		return false;
 	}	
 
@@ -170,9 +169,9 @@ bool LinkLayerReceiver::ValidateHeader()
 	//Now make sure that the function code is known and that the FCV is appropriate
 	if(!this->ValidateFunctionCode()) return false;
 
-	uint8_t user_data_length = mHeader.GetLength() - LS_MIN_LENGTH;
-	mFrameSize = LinkFrame::CalcFrameSize(user_data_length);
-	LinkFunction func = mHeader.GetFuncEnum();
+	uint8_t user_data_length = header.GetLength() - LS_MIN_LENGTH;
+	frameSize = LinkFrame::CalcFrameSize(user_data_length);
+	LinkFunction func = header.GetFuncEnum();
 
 	// make sure that the presence/absence of user data
 	// matches the function code
@@ -180,7 +179,7 @@ bool LinkLayerReceiver::ValidateHeader()
 	{
 		if(user_data_length > 0)
 		{
-			mFrameSize = LinkFrame::CalcFrameSize(user_data_length);
+			frameSize = LinkFrame::CalcFrameSize(user_data_length);
 		}
 		else
 		{
@@ -225,17 +224,17 @@ bool LinkLayerReceiver::ValidateHeader()
 void LinkLayerReceiver::FailFrame()
 {
 	// All you have to do is advance the reader by one, when the resync happens the data will disappear
-	mBuffer.AdvanceRead(1);
+	buffer.AdvanceRead(1);
 }
 
 bool LinkLayerReceiver::ValidateFunctionCode()
 {
 	//Now make sure that the function code is known and that the FCV is appropriate
-	if(mHeader.IsPriToSec())
+	if(header.IsPriToSec())
 	{
 		bool fcv_set = false;
 
-		switch(mHeader.GetFuncEnum())
+		switch(header.GetFuncEnum())
 		{
 		case(LinkFunction::PRI_CONFIRMED_USER_DATA):
 		case(LinkFunction::PRI_TEST_LINK_STATES):
@@ -247,15 +246,15 @@ bool LinkLayerReceiver::ValidateFunctionCode()
 			break;
 		default:
 			{
-				FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::WARN, DLERR_UNKNOWN_FUNC, "Unknown PriToSec FUNCTION: %s", LinkFunctionToString(mHeader.GetFuncEnum()));
+				FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::WARN, DLERR_UNKNOWN_FUNC, "Unknown PriToSec FUNCTION: %s", LinkFunctionToString(header.GetFuncEnum()));
 				return false;
 			}
 		}
 
 		//now check the fcv
-		if(fcv_set != mHeader.IsFcvDfcSet())
+		if(fcv_set != header.IsFcvDfcSet())
 		{
-			FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::WARN, DLERR_UNEXPECTED_FCV, "Bad FCV for FUNCTION: %s", LinkFunctionToString(mHeader.GetFuncEnum()));
+			FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::WARN, DLERR_UNEXPECTED_FCV, "Bad FCV for FUNCTION: %s", LinkFunctionToString(header.GetFuncEnum()));
 			return false;
 		}
 
@@ -264,7 +263,7 @@ bool LinkLayerReceiver::ValidateFunctionCode()
 	}
 	else   // SecToPri - just validate the function codes and that FCB is 0
 	{
-		switch(mHeader.GetFuncEnum())
+		switch(header.GetFuncEnum())
 		{
 		case(LinkFunction::SEC_ACK):
 		case(LinkFunction::SEC_NACK):
@@ -273,15 +272,15 @@ bool LinkLayerReceiver::ValidateFunctionCode()
 			break;
 		default:
 			{
-				FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::ERR, DLERR_UNKNOWN_FUNC, "Unknown SecToPri FUNCTION: %s", LinkFunctionToString(mHeader.GetFuncEnum()));
+				FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::ERR, DLERR_UNKNOWN_FUNC, "Unknown SecToPri FUNCTION: %s", LinkFunctionToString(header.GetFuncEnum()));
 				return false;
 			}
 		}
 
 		//now check the fcb, it should always be zero
-		if(mHeader.IsFcbSet())
+		if(header.IsFcbSet())
 		{
-			FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::ERR, DLERR_UNEXPECTED_FCB, "FCB set for SecToPri FUNCTION: %s", LinkFunctionToString(mHeader.GetFuncEnum()));
+			FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::ERR, DLERR_UNEXPECTED_FCB, "FCB set for SecToPri FUNCTION: %s", LinkFunctionToString(header.GetFuncEnum()));
 			return false;
 		}
 	}

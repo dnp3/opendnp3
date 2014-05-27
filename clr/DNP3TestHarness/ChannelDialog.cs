@@ -23,9 +23,9 @@ namespace Automatak.DNP3.Simulator
         {
             var min = TimeSpan.FromMilliseconds(Decimal.ToDouble(numericUpDownMinRetryMS.Value));
             var max = TimeSpan.FromMilliseconds(Decimal.ToDouble(numericUpDownMaxRetry.Value));
-            //create = (IDNP3Manager manager) => manager.AddTCPClient(this.textBoxID.Text, GetFilters(), min, max, textBoxHost.Text, Decimal.ToUInt16(numericUpDownPort.Value));
-            var ss = new SerialSettings("COM3", 9600, 8, 1, Parity.NONE, FlowControl.NONE);
-            create = (IDNP3Manager manager) => manager.AddSerial(this.textBoxID.Text, GetFilters(), min, max, ss);
+            create = (IDNP3Manager manager) => manager.AddTCPClient(this.textBoxID.Text, GetFilters(), min, max, textBoxHost.Text, Decimal.ToUInt16(numericUpDownPort.Value));
+            //var ss = new SerialSettings("COM3", 9600, 8, 1, Parity.NONE, FlowControl.NONE);
+            //create = (IDNP3Manager manager) => manager.AddSerial(this.textBoxID.Text, GetFilters(), min, max, ss);
             this.DialogResult = DialogResult.OK;
             this.Close();
         }

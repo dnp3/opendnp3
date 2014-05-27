@@ -70,7 +70,7 @@ LRS_Body LRS_Body::mInstance;
 
 bool LRS_Body::Parse(LinkLayerReceiver* c)
 {
-	if(c->NumReadBytes() < c->mFrameSize) return false;
+	if(c->NumReadBytes() < c->frameSize) return false;
 	else
 	{
 		if(c->ValidateBody())
