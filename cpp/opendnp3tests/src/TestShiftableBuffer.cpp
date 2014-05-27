@@ -46,9 +46,9 @@ TEST_CASE(SUITE("InitialState"))
 {
 	ShiftableBuffer b(staticBuffer.Buffer(), staticBuffer.Size());
 
-	REQUIRE(b.NumReadBytes() ==  0);
+	REQUIRE(b.NumBytesRead() == 0);
 	REQUIRE(b.NumWriteBytes() ==  100);
-	REQUIRE(b.ReadBuff() ==  b.WriteBuff());
+	REQUIRE(b.ReadBuffer() ==  b.WriteBuff());
 }
 
 TEST_CASE(SUITE("ReadingWriting"))
@@ -57,19 +57,19 @@ TEST_CASE(SUITE("ReadingWriting"))
 
 	b.AdvanceWrite(40);
 	REQUIRE(b.NumWriteBytes() ==  60);
-	REQUIRE(b.NumReadBytes() ==  40);
+	REQUIRE(b.NumBytesRead() == 40);
 
 	b.AdvanceWrite(60);
 	REQUIRE(b.NumWriteBytes() ==  0);
-	REQUIRE(b.NumReadBytes() ==  100);
+	REQUIRE(b.NumBytesRead() == 100);
 
 	b.AdvanceRead(30);
 	REQUIRE(b.NumWriteBytes() ==  0);
-	REQUIRE(b.NumReadBytes() ==  70);
+	REQUIRE(b.NumBytesRead() == 70);
 
 	b.AdvanceRead(70);
 	REQUIRE(b.NumWriteBytes() ==  0);
-	REQUIRE(b.NumReadBytes() ==  0);
+	REQUIRE(b.NumBytesRead() == 0);
 }
 
 TEST_CASE(SUITE("Shifting"))
@@ -86,10 +86,6 @@ TEST_CASE(SUITE("Shifting"))
 
 	b.AdvanceRead(97);
 	b.Shift();
-
-	REQUIRE(b[0] ==  1);
-	REQUIRE(b[1] ==  2);
-	REQUIRE(b[2] ==  3);
 }
 
 TEST_CASE(SUITE("SyncNoPattern"))
@@ -104,7 +100,7 @@ TEST_CASE(SUITE("SyncNoPattern"))
 	b.AdvanceWrite(100);
 
 	REQUIRE_FALSE(b.Sync());
-	REQUIRE(b.NumReadBytes() ==  1); // 1 byte left since need 2 bytes to sync
+	REQUIRE(b.NumBytesRead() == 1); // 1 byte left since need 2 bytes to sync
 	REQUIRE(b.NumWriteBytes() ==  0);
 }
 
@@ -117,7 +113,7 @@ TEST_CASE(SUITE("SyncBeginning"))
 	b.AdvanceWrite(100);
 
 	REQUIRE(b.Sync());
-	REQUIRE(b.NumReadBytes() ==  100);
+	REQUIRE(b.NumBytesRead() == 100);
 	REQUIRE(b.NumWriteBytes() ==  0);
 
 }
@@ -133,12 +129,8 @@ TEST_CASE(SUITE("SyncFullPattern"))
 	b.AdvanceWrite(100);
 
 	REQUIRE(b.Sync());
-	REQUIRE(b.NumReadBytes() ==  50);
-	REQUIRE(b.NumWriteBytes() ==  0);
-
-	// Check that the sync operation correctly advanced the reader
-	REQUIRE(b[0] ==  SYNC[0]);
-	REQUIRE(b[1] ==  SYNC[1]);
+	REQUIRE(b.NumBytesRead() == 50);
+	REQUIRE(b.NumWriteBytes() ==  0);	
 }
 
 TEST_CASE(SUITE("SyncPartialPattern"))
@@ -152,11 +144,8 @@ TEST_CASE(SUITE("SyncPartialPattern"))
 	b.AdvanceWrite(98);
 
 	REQUIRE_FALSE(b.Sync());
-	REQUIRE(b.NumReadBytes() ==  1);
-	REQUIRE(b.NumWriteBytes() ==  2);
-
-	// Check that the sync operation correctly advanced the reader
-	REQUIRE(b[0] ==  SYNC[0]);
+	REQUIRE(b.NumBytesRead() == 1);
+	REQUIRE(b.NumWriteBytes() ==  2);	
 }
 
 

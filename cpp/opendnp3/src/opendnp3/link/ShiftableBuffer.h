@@ -21,10 +21,7 @@
 #ifndef __SHIFTABLE_BUFFER_H_
 #define __SHIFTABLE_BUFFER_H_
 
-
-
-#include <stddef.h>
-#include <cstdint>
+#include <openpal/BufferWrapper.h>
 
 namespace opendnp3
 {
@@ -41,87 +38,53 @@ public:
 	 */
 	ShiftableBuffer(uint8_t* pBuffer_, uint32_t size);
 
-	////////////////////////////////////////////
-	// Functions related to reading
-	////////////////////////////////////////////
+	
+	// ------- Functions related to reading -----------	
 
-	/** @return Bytes available to be read */
-	uint32_t NumReadBytes() const;
+	uint32_t NumBytesRead() const { return writePos - readPos; }
 
-	/** @return the value of the ith byte in read subsequence of the buffer */
-	const uint8_t& operator[](uint32_t index) const;
+	/// @return Pointer to the next byte to be read in the buffer
+	openpal::ReadOnlyBuffer ReadBuffer() const { return openpal::ReadOnlyBuffer(pBuffer + readPos, NumBytesRead()); }
 
-	/** @return Pointer to the next byte to be read in the buffer */
-	const uint8_t* ReadBuff() const;
-
-	/** Signal that some bytes don't have to be stored any longer. They'll be recovered during the next shift operation. */
+	/// Signal that some bytes don't have to be stored any longer. They'll be recovered during the next shift operation.
 	void AdvanceRead(uint32_t aNumBytes);
 
-	////////////////////////////////////////////
-	// Functions related to writing
-	////////////////////////////////////////////
+	// ------- Functions related to writing -----------
 
-	/** Shift the buffer back to front, writing over bytes that have already been read. The objective
-		being to free space for further writing. */
+	/// Shift the buffer back to front, writing over bytes that have already been read. The objective
+	/// being to free space for further writing.
 	void Shift();
 
-	/** Reset the buffer to its initial state, empty */
+	/// Reset the buffer to its initial state, empty
 	void Reset();
 
-	/** @return Bytes of available for writing */
-	uint32_t NumWriteBytes() const;
-	/** @return Pointer to the position in the buffer available for writing */
-	uint8_t* WriteBuff() const;
-	/** Signal to the buffer bytes were written to the current write position */
-	void AdvanceWrite(uint32_t aNumBytes);
+	/// @return Bytes of available for writing 
+	uint32_t NumWriteBytes() const { return M_SIZE - writePos; }
+
+	/// @return Pointer to the position in the buffer available for writing
+	uint8_t* WriteBuff() const { return pBuffer + writePos; }
+
+	/// Signal to the buffer bytes were written to the current write position
+	void AdvanceWrite(uint32_t numBytes);
 
 	////////////////////////////////////////////
 	// Other functions
 	////////////////////////////////////////////
 
-	/**
-		Searches the read subsequence for 0x0564 sync bytes. If a match is found, the reader is advanced to the beginning of the match.
-		If a partial match is found at the end of the read subsequence, the partial match is perserved.
 
-		i.e. if the pattern is {CBC} and the unread buffer is {AACB}, the unread buffer after the sync
-		will be {CB}.
-
-		If no match is found, the reader position is advanced to the end of the read subsequence.
-
-		@return true if both sync bytes were found in the buffer.
-	*/
+	/// Searches the read subsequence for 0x0564 sync bytes
+	/// @return true if both sync bytes were found in the buffer.	
 	bool Sync();
 
 private:
+
+	
 
 	uint8_t* pBuffer;
 	const uint32_t M_SIZE;
 	uint32_t writePos;
 	uint32_t readPos;
 };
-
-inline const uint8_t& ShiftableBuffer::operator[](uint32_t i) const
-{
-	return ReadBuff()[i];
-}
-inline const uint8_t* ShiftableBuffer::ReadBuff() const
-{
-	return pBuffer + readPos;
-}
-inline uint32_t ShiftableBuffer::NumReadBytes() const
-{
-	return writePos - readPos;
-}
-
-inline uint32_t ShiftableBuffer::NumWriteBytes() const
-{
-	return M_SIZE - writePos;
-}
-inline uint8_t* ShiftableBuffer::WriteBuff() const
-{
-	return pBuffer + writePos;
-}
-
 
 }
 

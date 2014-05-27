@@ -95,7 +95,7 @@ private:
 
 	uint32_t NumReadBytes() const
 	{
-		return buffer.NumReadBytes();
+		return buffer.NumBytesRead();
 	}
 
 	openpal::Logger logger;

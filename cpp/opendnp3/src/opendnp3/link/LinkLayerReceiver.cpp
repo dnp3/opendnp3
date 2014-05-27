@@ -114,20 +114,20 @@ void LinkLayerReceiver::PushFrame()
 ReadOnlyBuffer LinkLayerReceiver::TransferUserData()
 {
 	uint32_t len = header.GetLength() - LS_MIN_LENGTH;
-	LinkFrame::ReadUserData(buffer.ReadBuff() + LS_HEADER_SIZE,  rxBuffer.Buffer(), len);
+	LinkFrame::ReadUserData(buffer.ReadBuffer() + LS_HEADER_SIZE,  rxBuffer.Buffer(), len);
 	return rxBuffer.ToReadOnly().Truncate(len);
 }
 
 bool LinkLayerReceiver::ReadHeader()
 {
-	header.Read(buffer.ReadBuff());
+	header.Read(buffer.ReadBuffer());
 	return this->ValidateHeader();
 }
 
 bool LinkLayerReceiver::ValidateBody()
 {
 	uint32_t len = header.GetLength() - LS_MIN_LENGTH;
-	if (LinkFrame::ValidateBodyCRC(buffer.ReadBuff() + LS_HEADER_SIZE, len))
+	if (LinkFrame::ValidateBodyCRC(buffer.ReadBuffer() + LS_HEADER_SIZE, len))
 	{
 		FORMAT_LOG_BLOCK(logger, flags::LINK_RX,
 			"Function: %s Dest: %u Source: %u Length: %u",
@@ -136,7 +136,7 @@ bool LinkLayerReceiver::ValidateBody()
 			header.GetSrc(),
 			header.GetLength());
 
-		ReadOnlyBuffer buffer(buffer.ReadBuff(), frameSize);
+		ReadOnlyBuffer buffer(buffer.ReadBuffer(), frameSize);
 		FORMAT_HEX_BLOCK(logger, flags::LINK_RX_HEX, buffer, 10, 18);
 
 		return true;
@@ -151,7 +151,7 @@ bool LinkLayerReceiver::ValidateBody()
 bool LinkLayerReceiver::ValidateHeader()
 {
 	//first thing to do is check the CRC
-	if(!DNPCrc::IsCorrectCRC(buffer.ReadBuff(), LI_CRC))
+	if(!DNPCrc::IsCorrectCRC(buffer.ReadBuffer(), LI_CRC))
 	{
 		SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::ERR, DLERR_CRC, "CRC failure in header");
 		return false;
