@@ -42,13 +42,12 @@ public:
 private:
 
 	uint8_t* pBuffer;
+	uint32_t capacity;
 
 	uint32_t start;
 	uint32_t nextWrite;
 	uint32_t count;
-	uint32_t capacity;
-
-
+	
 	RingBufferAdapter(const RingBufferAdapter&);
 	RingBufferAdapter& operator= (const RingBufferAdapter&);
 };

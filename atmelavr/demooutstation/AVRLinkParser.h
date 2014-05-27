@@ -20,17 +20,15 @@ class AVRLinkParser : public opendnp3::ILinkRouter
 
 	AVRLinkParser(openpal::LogRoot& root, openpal::IExecutor& exe, opendnp3::ILinkContext& context);
 	
-	virtual void QueueTransmit(const openpal::ReadOnlyBuffer& buffer, opendnp3::ILinkContext* pContext, bool primary) final override;
-		
-	void PostCheckTransmit();
+	virtual void QueueTransmit(const openpal::ReadOnlyBuffer& buffer, opendnp3::ILinkContext* pContext, bool primary) final override;	
 	
 	void Receive(uint8_t byte);
 	
 	void Init();
 	
-	private:
-	
 	void CheckTransmit();
+	
+	private:	
 	
 	struct Transmission
 	{

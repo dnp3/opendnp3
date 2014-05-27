@@ -337,6 +337,18 @@
       <SubType>compile</SubType>
       <Link>headers\RandomInsertAdapter.h</Link>
     </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\RingBuffer.h">
+      <SubType>compile</SubType>
+      <Link>headers\RingBuffer.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\RingBufferAdapter.cpp">
+      <SubType>compile</SubType>
+      <Link>sources\RingBufferAdapter.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\RingBufferAdapter.h">
+      <SubType>compile</SubType>
+      <Link>headers\RingBufferAdapter.h</Link>
+    </Compile>
     <Compile Include="..\..\cpp\openpal\src\openpal\Runnable.cpp">
       <SubType>compile</SubType>
       <Link>sources\Runnable.cpp</Link>

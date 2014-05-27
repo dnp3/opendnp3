@@ -55,33 +55,26 @@ void AVRLinkParser::Receive(uint8_t byte)
 
 void AVRLinkParser::CheckTransmit()
 {	
-	if(txQueue.IsNotEmpty()) 
-	{
-		if(UCSR0A & (1<<UDRE0)) // Can we transmit?
+	if(txQueue.IsNotEmpty() && (UCSR0A & (1<<UDRE0))) 
+	{		
+		auto& tx = txQueue.Peek();
+		UDR0 = tx.buffer[0];
+		tx.buffer.Advance(1);
+		
+		if(tx.buffer.IsEmpty())
 		{
-			auto& tx = txQueue.Peek();						
-			UDR0 = tx.buffer[0];
-			tx.buffer.Advance(1);
-			
-			if(tx.buffer.IsEmpty())
-			{
-				txQueue.Pop();
-				pContext->OnTransmitResult(tx.primary, true);			
-			}				
-		}		
+			txQueue.Pop();
+			auto pri = tx.primary;
+			auto callback = [this, pri]() { pContext->OnTransmitResult(pri, true); };
+			pExecutor->PostLambda(callback);
+		}
 	}	
 }
 	
 void AVRLinkParser::QueueTransmit(const openpal::ReadOnlyBuffer& buffer, opendnp3::ILinkContext* pContext, bool primary)
 {
 	txQueue.Enqueue(Transmission(buffer, primary));
-	this->PostCheckTransmit();
-}
-
-void AVRLinkParser::PostCheckTransmit()
-{
-	auto lambda = [this]() { this->CheckTransmit(); };
-	pExecutor->PostLambda(lambda);
+	this->CheckTransmit();
 }
 
 }
@@ -90,7 +83,7 @@ ISR(USART0_TX_vect)
 {	
 	if(gLinkParser)
 	{
-		gLinkParser->PostCheckTransmit();
+		gLinkParser->CheckTransmit();
 	}
 }
 
