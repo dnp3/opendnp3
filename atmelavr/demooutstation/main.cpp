@@ -69,9 +69,15 @@ int main()
 	ToggleBinaryIndex0Every(3000, &exe, &database, true, false);
 				
 	for (;;)
-	{ 								
-		exe.Run();	 // run all pending events		
-		exe.Sleep(); // and then sleep until an interrupt occurs
+	{ 	
+		// process any bytes that were received on the interrupt		
+		parser.ProcessRx();
+
+		// run all pending events or expired timers							
+		exe.Run();
+		
+		// sleep until an interrupt occurs
+		exe.Sleep(); 
 	}
 
 	return 0;

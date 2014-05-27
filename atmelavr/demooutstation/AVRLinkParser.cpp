@@ -1,6 +1,8 @@
 
 #include "AVRLinkParser.h"
 
+#include "CriticalSection.h"
+
 #define F_CPU 16000000UL
 #define BAUDRATE 9600
 #define BAUD_PRESCALLER (((F_CPU / (BAUDRATE * 16UL))) - 1)
@@ -18,8 +20,7 @@ arduino::AVRLinkParser* gLinkParser = nullptr;
 
 namespace arduino {
 	
-AVRLinkParser::AVRLinkParser(openpal::LogRoot& root, openpal::IExecutor& exe, opendnp3::ILinkContext& context) : 
-	txState(SendState::IDLE),
+AVRLinkParser::AVRLinkParser(openpal::LogRoot& root, openpal::IExecutor& exe, opendnp3::ILinkContext& context) : 	
 	pExecutor(&exe),
 	pContext(&context),
 	receiver(root.GetLogger(), &context)	
@@ -46,11 +47,8 @@ void AVRLinkParser::Init()
 
 void AVRLinkParser::Receive(uint8_t byte)
 {	
-	auto lambda = [this, byte] {
-		receiver.WriteBuff()[0] = byte;	
-		receiver.OnRead(1);			
-	};
-	pExecutor->PostLambda(lambda);
+	// comes in on the interrupt
+	rxBuffer.Put(byte);
 }
 
 void AVRLinkParser::CheckTransmit()
@@ -69,6 +67,23 @@ void AVRLinkParser::CheckTransmit()
 			pExecutor->PostLambda(callback);
 		}
 	}	
+}
+
+void AVRLinkParser::ProcessRx()
+{
+	auto num = CopyRxBuffer();
+	if(num > 0)
+	{
+		receiver.OnRead(num);
+	}
+}
+
+uint32_t AVRLinkParser::CopyRxBuffer()
+{	
+	// disable interrupts and copy contents of ring buffer to the receiver's write buffer
+	CriticalSection cs; 
+	auto buffer = receiver.WriteBuff();
+	return rxBuffer.Read(buffer);
 }
 	
 void AVRLinkParser::QueueTransmit(const openpal::ReadOnlyBuffer& buffer, opendnp3::ILinkContext* pContext, bool primary)

@@ -10,6 +10,7 @@
 
 #include <openpal/LogRoot.h>
 #include <openpal/StaticQueue.h>
+#include <openpal/RingBuffer.h>
 #include <openpal/IExecutor.h>
 
 namespace arduino {
@@ -28,8 +29,12 @@ class AVRLinkParser : public opendnp3::ILinkRouter
 	
 	void CheckTransmit();
 	
-	private:	
+	void ProcessRx();
 	
+	private:
+	
+	uint32_t CopyRxBuffer();
+		
 	struct Transmission
 	{
 		Transmission(const openpal::ReadOnlyBuffer& buffer_, bool primary_) :
@@ -45,21 +50,13 @@ class AVRLinkParser : public opendnp3::ILinkRouter
 	};
 	
 	openpal::StaticQueue<Transmission, uint8_t, 2> txQueue;
-	
-	enum SendState
-	{
-		IDLE,
-		PRIMARY,
-		SECONDAY
-	};
-
-	SendState txState;
+	openpal::RingBuffer<8> rxBuffer;
 	
 	opendnp3::Settable<openpal::ReadOnlyBuffer> primaryTx;
 	opendnp3::Settable<openpal::ReadOnlyBuffer> secondaryTx;
 	
 	openpal::IExecutor* pExecutor;
-	opendnp3::ILinkContext* pContext;	
+	opendnp3::ILinkContext* pContext;		
 	opendnp3::LinkLayerReceiver receiver;
 };
 
