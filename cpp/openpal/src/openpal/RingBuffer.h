@@ -18,51 +18,29 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef __RING_BUFFER_H_
+#define __RING_BUFFER_H_
 
-#include "LogRoot.h"
-
-#include "LogEntry.h"
-#include "LogMacros.h"
-
-#include <cstring>
+#include "RingBufferAdapter.h"
+#include "StaticBuffer.h"
 
 namespace openpal
 {
 
-LogRoot::LogRoot(ILogBase* pLog_, char const* id_, const LogFilters& filters_) : 
-	pLog(pLog_), filters(filters_)
-{
-	// use the string format instead of copy. strlcpy not portable.
-	strncpy(id, id_, MAX_ID_SIZE);
-}
+template <uint32_t N>
+class RingBuffer : public RingBufferAdapter
+{	
 
-void LogRoot::Log(const LogFilters& filters, int subType, bool first, char const* location, char const* message, int errorCode)
-{
-	if(pLog)
-	{
-		LogEntry le(id, filters, subType, first, location, message, errorCode);
-		pLog->Log(le);	
-	}	
-}
+public:
 
-Logger LogRoot::GetLogger(int subType)
-{
-	return Logger(this, subType);
-}
+	RingBuffer() : RingBufferAdapter(buffer, N)
+	{}
 
-bool LogRoot::IsEnabled(const LogFilters& rhs) const
-{
-	return pLog && (this->filters & rhs);
-}
+private:
+	uint8_t buffer[N];
 
-void LogRoot::SetFilters(const LogFilters& filters_)
-{
-	filters = filters_;
-}
-
-const LogFilters& LogRoot::GetFilters() const
-{
-	return filters;
-}
+};
 
 }
+
+#endif

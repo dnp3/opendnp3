@@ -68,6 +68,8 @@ public:
 	WriteBuffer(const WriteBuffer& copy);
 	WriteBuffer(uint8_t* apBuffer, uint32_t aSize);
 
+	uint32_t ReadFrom(const ReadOnlyBuffer& buffer);
+
 	void Clear();
 
 	void Advance(uint32_t aNum);

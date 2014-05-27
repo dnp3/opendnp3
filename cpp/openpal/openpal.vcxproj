@@ -53,6 +53,8 @@
     <ClInclude Include="src\openpal\LogRoot.h" />
     <ClInclude Include="src\openpal\MonotonicTimestamp.h" />
     <ClInclude Include="src\openpal\Option.h" />
+    <ClInclude Include="src\openpal\RingBuffer.h" />
+    <ClInclude Include="src\openpal\RingBufferAdapter.h" />
     <ClInclude Include="src\openpal\StaticPriorityQueue.h" />
     <ClInclude Include="src\openpal\QueueAdapter.h" />
     <ClInclude Include="src\openpal\RandomInsertAdapter.h" />
@@ -82,6 +84,7 @@
     <ClCompile Include="src\openpal\LogRoot.cpp" />
     <ClCompile Include="src\openpal\MonotonicTimestamp.cpp" />
     <ClCompile Include="src\openpal\ByteSerialization.cpp" />
+    <ClCompile Include="src\openpal\RingBufferAdapter.cpp" />
     <ClCompile Include="src\openpal\Runnable.cpp" />
     <ClCompile Include="src\openpal\StringFormatting.cpp" />
     <ClCompile Include="src\openpal\TimeDuration.cpp" />

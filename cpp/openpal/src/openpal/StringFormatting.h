@@ -21,9 +21,6 @@
 #ifndef __STRING_FORMATTING_H_
 #define __STRING_FORMATTING_H_
 
-#include <cstdio>
-#include <cstdlib>
-
 #include "Logger.h"
 #include "BufferWrapper.h"
 

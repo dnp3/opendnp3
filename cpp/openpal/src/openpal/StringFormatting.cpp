@@ -23,6 +23,9 @@
 
 #include "ToHex.h"
 
+#include <cstdio>
+#include <cstdlib>
+
 namespace openpal
 {
 

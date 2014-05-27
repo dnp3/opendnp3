@@ -18,51 +18,50 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#include <catch.hpp>
 
-#include "LogRoot.h"
+#include <openpal/StaticBuffer.h>
+#include <openpal/RingBuffer.h>
 
-#include "LogEntry.h"
-#include "LogMacros.h"
+using namespace openpal;
 
-#include <cstring>
+#define SUITE(name) "RingBuffer - " name
 
-namespace openpal
-{
+TEST_CASE(SUITE("ReadAndWriteModulo2"))
+{	
+	RingBuffer<3> rb;
 
-LogRoot::LogRoot(ILogBase* pLog_, char const* id_, const LogFilters& filters_) : 
-	pLog(pLog_), filters(filters_)
-{
-	// use the string format instead of copy. strlcpy not portable.
-	strncpy(id, id_, MAX_ID_SIZE);
-}
+	StaticBuffer<2> buffer;
 
-void LogRoot::Log(const LogFilters& filters, int subType, bool first, char const* location, char const* message, int errorCode)
-{
-	if(pLog)
+	for (int i = 0; i < 10; ++i)
 	{
-		LogEntry le(id, filters, subType, first, location, message, errorCode);
-		pLog->Log(le);	
-	}	
+		rb.Put(1);
+		rb.Put(2);
+		auto num = rb.Read(buffer.GetWriteBuffer());
+		REQUIRE(num == 2);
+		REQUIRE(buffer[0] == 1);
+		REQUIRE(buffer[1] == 2);
+	}
 }
 
-Logger LogRoot::GetLogger(int subType)
+TEST_CASE(SUITE("WriteOverflowDropsOldBytes"))
 {
-	return Logger(this, subType);
-}
+	RingBuffer<3> rb;
 
-bool LogRoot::IsEnabled(const LogFilters& rhs) const
-{
-	return pLog && (this->filters & rhs);
-}
+	StaticBuffer<3> buffer;
 
-void LogRoot::SetFilters(const LogFilters& filters_)
-{
-	filters = filters_;
-}
+	for (int i = 0; i < 10; ++i)
+	{
 
-const LogFilters& LogRoot::GetFilters() const
-{
-	return filters;
-}
+		rb.Put(1);
+		rb.Put(2);
+		rb.Put(3);
+		rb.Put(4);
 
+		auto num = rb.Read(buffer.GetWriteBuffer());
+		REQUIRE(num == 3);
+		REQUIRE(buffer[0] == 2);
+		REQUIRE(buffer[1] == 3);
+		REQUIRE(buffer[2] == 4);
+	}
 }

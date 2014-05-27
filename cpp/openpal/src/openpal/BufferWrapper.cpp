@@ -81,20 +81,28 @@ WriteBuffer WriteBuffer::Empty()
 	return WriteBuffer();
 }
 
-WriteBuffer::WriteBuffer(const WriteBuffer& copy) : HasSize(copy) , mpBuffer(copy.mpBuffer)
-{
+WriteBuffer::WriteBuffer(const WriteBuffer& copy) : 
+	HasSize(copy),
+	mpBuffer(copy.mpBuffer)
+{}
 
-}
-
-WriteBuffer::WriteBuffer(): HasSize(0), mpBuffer(nullptr)
-{
-
-}
+WriteBuffer::WriteBuffer(): 
+	HasSize(0),
+	mpBuffer(nullptr)
+{}
 
 WriteBuffer::WriteBuffer(uint8_t* apBuffer, uint32_t aSize) :
 	HasSize(aSize),
 	mpBuffer(apBuffer)
 {}
+
+uint32_t WriteBuffer::ReadFrom(const ReadOnlyBuffer& buffer)
+{
+	auto num = buffer.Size() > size ? size : buffer.Size();
+	memcpy(mpBuffer, buffer, num);
+	this->Advance(num);
+	return num;
+}
 
 void WriteBuffer::Clear()
 {

@@ -172,6 +172,12 @@
     <ClInclude Include="src\openpal\StaticPriorityQueue.h">
       <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="src\openpal\RingBufferAdapter.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\openpal\RingBuffer.h">
+      <Filter>Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\openpal\BufferWrapper.cpp">
@@ -208,6 +214,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\openpal\StringFormatting.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\openpal\RingBufferAdapter.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

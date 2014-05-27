@@ -28,9 +28,9 @@
 #include "StringFormatting.h"
 
 #ifdef WIN32
-#define FORMAT_SAFE(dest, size, format, ...) _snprintf_s(dest, size, _TRUNCATE, format, ##__VA_ARGS__)
+#define SAFE_STRING_FORMAT(dest, size, format, ...) _snprintf_s(dest, size, _TRUNCATE, format, ##__VA_ARGS__)
 #else
-#define FORMAT_SAFE(dest, size, format, ...) snprintf(dest, size, format, ##__VA_ARGS__)
+#define SAFE_STRING_FORMAT(dest, size, format, ...) snprintf(dest, size, format, ##__VA_ARGS__)
 #endif
 
 #define SIMPLE_LOG_BLOCK_WITH_CODE(logger, filters, code, message) \
@@ -46,14 +46,14 @@
 #define FORMAT_LOG_BLOCK_WITH_CODE(logger, filters, code, format, ...) \
 if(logger.IsEnabled(filters)){ \
 	char message[openpal::MAX_LOG_ENTRY_SIZE]; \
-	FORMAT_SAFE(message, openpal::MAX_LOG_ENTRY_SIZE, format, ##__VA_ARGS__); \
+	SAFE_STRING_FORMAT(message, openpal::MAX_LOG_ENTRY_SIZE, format, ##__VA_ARGS__); \
 	logger.Log(filters, true, LOCATION, message, code); \
 }
 
 #define FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, filters, code, format, ...) \
 if(pLogger && pLogger->IsEnabled(filters)){ \
 	char message[openpal::MAX_LOG_ENTRY_SIZE]; \
-	FORMAT_SAFE(message, openpal::MAX_LOG_ENTRY_SIZE, format, ##__VA_ARGS__); \
+	SAFE_STRING_FORMAT(message, openpal::MAX_LOG_ENTRY_SIZE, format, ##__VA_ARGS__); \
 	pLogger->Log(filters, true, LOCATION, message, code); \
 }
 
