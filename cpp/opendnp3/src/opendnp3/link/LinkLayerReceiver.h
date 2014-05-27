@@ -101,8 +101,7 @@ private:
 	openpal::Logger logger;
 	LinkHeader header;
 	uint32_t frameSize;
-	static const uint8_t M_SYNC_PATTERN[2];
-
+	
 	IFrameSink* pSink;  // pointer to interface to push complete frames
 	LRS_Base* pState;
 

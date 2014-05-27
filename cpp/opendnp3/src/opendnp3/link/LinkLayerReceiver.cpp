@@ -33,8 +33,6 @@ using namespace openpal;
 namespace opendnp3
 {
 
-const uint8_t LinkLayerReceiver::M_SYNC_PATTERN[2] = {0x05, 0x64};
-
 LinkLayerReceiver::LinkLayerReceiver(const Logger& logger_, IFrameSink* pSink_) :
 	logger(logger_),
 	frameSize(0),
