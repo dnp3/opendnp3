@@ -27,6 +27,8 @@
 
 #include "StringFormatting.h"
 
+#include <cstdio>
+
 #ifdef WIN32
 #define SAFE_STRING_FORMAT(dest, size, format, ...) _snprintf_s(dest, size, _TRUNCATE, format, ##__VA_ARGS__)
 #else

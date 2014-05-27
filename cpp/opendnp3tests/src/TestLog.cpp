@@ -55,7 +55,7 @@ TEST_CASE(SUITE("FORMAT_SAFE macro truncates and null terminates"))
 	auto text1 = "hello";
 	auto text2 = "my little friend";
 
-	FORMAT_SAFE(buffer, 10, "%s %s", text1, text2);
+	SAFE_STRING_FORMAT(buffer, 10, "%s %s", text1, text2);
 
 	std::string result(buffer);
 
