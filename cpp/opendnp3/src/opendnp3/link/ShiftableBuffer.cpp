@@ -30,11 +30,11 @@ namespace opendnp3
 {
 
 
-ShiftableBuffer::ShiftableBuffer(uint8_t* aBuffer, uint32_t aSize) :
-	mpBuffer(aBuffer),
-	M_SIZE(aSize),
-	mWritePos(0),
-	mReadPos(0)
+	ShiftableBuffer::ShiftableBuffer(uint8_t* pBuffer_, uint32_t size) :
+	pBuffer(pBuffer_),
+	M_SIZE(size),
+	writePos(0),
+	readPos(0)
 {
 
 }
@@ -42,28 +42,28 @@ ShiftableBuffer::ShiftableBuffer(uint8_t* aBuffer, uint32_t aSize) :
 void ShiftableBuffer::Shift()
 {
 	//copy all unread data to the front of the buffer
-	memmove(mpBuffer, this->ReadBuff(), this->NumReadBytes());
-	mWritePos = this->NumReadBytes();
-	mReadPos = 0;
+	memmove(pBuffer, this->ReadBuff(), this->NumReadBytes());
+	writePos = this->NumReadBytes();
+	readPos = 0;
 }
 
 void ShiftableBuffer::Reset()
 {
-	mWritePos = 0;
-	mReadPos = 0;
+	writePos = 0;
+	readPos = 0;
 }
 
 void ShiftableBuffer::AdvanceRead(uint32_t aNumBytes)
 {
 	assert(aNumBytes <= this->NumReadBytes());
 
-	mReadPos += aNumBytes;
+	readPos += aNumBytes;
 }
 
 void ShiftableBuffer::AdvanceWrite(uint32_t aNumBytes)
 {
 	assert(aNumBytes <= this->NumWriteBytes());
-	mWritePos += aNumBytes;
+	writePos += aNumBytes;
 }
 
 bool ShiftableBuffer::Sync()

@@ -39,7 +39,7 @@ public:
 	/**
 	 * Construct the facade over the specified underlying buffer
 	 */
-	ShiftableBuffer(uint8_t* aBuffer, uint32_t aSize);
+	ShiftableBuffer(uint8_t* pBuffer_, uint32_t size);
 
 	////////////////////////////////////////////
 	// Functions related to reading
@@ -94,10 +94,10 @@ public:
 
 private:
 
-	uint8_t* mpBuffer;
+	uint8_t* pBuffer;
 	const uint32_t M_SIZE;
-	uint32_t mWritePos;
-	uint32_t mReadPos;
+	uint32_t writePos;
+	uint32_t readPos;
 };
 
 inline const uint8_t& ShiftableBuffer::operator[](uint32_t i) const
@@ -106,20 +106,20 @@ inline const uint8_t& ShiftableBuffer::operator[](uint32_t i) const
 }
 inline const uint8_t* ShiftableBuffer::ReadBuff() const
 {
-	return mpBuffer + mReadPos;
+	return pBuffer + readPos;
 }
 inline uint32_t ShiftableBuffer::NumReadBytes() const
 {
-	return mWritePos - mReadPos;
+	return writePos - readPos;
 }
 
 inline uint32_t ShiftableBuffer::NumWriteBytes() const
 {
-	return M_SIZE - mWritePos;
+	return M_SIZE - writePos;
 }
 inline uint8_t* ShiftableBuffer::WriteBuff() const
 {
-	return mpBuffer + mWritePos;
+	return pBuffer + writePos;
 }
 
 

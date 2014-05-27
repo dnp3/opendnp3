@@ -47,19 +47,19 @@ class LinkLayerReceiver
 
 public:
 	/**
-		@param arLogger Logger that the receiver is to use.
-		@param apSink Complete frames are sent to this interface.
+		@param logger_ Logger that the receiver is to use.
+		@param pSink_ Completely parsed frames are sent to this interface.
 	*/
-	LinkLayerReceiver(const openpal::Logger& logger, IFrameSink* apSink);
+	LinkLayerReceiver(const openpal::Logger& logger_, IFrameSink* pSink_);
 
 	/**
 		Called when valid data has been written to the current buffer write position
-		@param aNumBytes Number of bytes written
+		@param numBytes Number of bytes written
 	*/
-	void OnRead(uint32_t aNumBytes);
+	void OnRead(uint32_t numBytes);
 
 	/**
-	* Buffer that can currently be used for writing
+	* @return Buffer that can currently be used for writing
 	*/
 	openpal::WriteBuffer WriteBuff() const;
 
