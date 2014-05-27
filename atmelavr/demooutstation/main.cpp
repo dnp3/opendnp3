@@ -42,7 +42,7 @@ int main()
 	OutstationConfig config;
 	config.defaultEventResponses.binary = EventBinaryResponse::Group2Var2;
 	
-	// Object that handles command (CROB / setpoint) requests
+	// Object that handles command (CROB / analog output) requests
 	// This example can toggle an LED on the Arduino board				
 	AVRCommandHandler commandHandler;						
 						
@@ -57,7 +57,7 @@ int main()
 	// enable timer interrupts at 100Hz	
 	exe.Init();
 	
-	// enable usart rx & tx interrupts
+	// enable USART RX/TX interrupts
 	parser.Init();
 	
 	// begin all interrupts

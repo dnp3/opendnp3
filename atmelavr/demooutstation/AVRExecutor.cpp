@@ -77,8 +77,9 @@ AVRExecutor::AVRExecutor() : ticks(0)
 }
 
 MonotonicTimestamp AVRExecutor::GetTime()
-{
-	//CriticalSection cs; // TODO - better way to atomic read ticks?
+{	
+	// disable interrupts to ensure atomic access to the 'ticks' variable
+	CriticalSection cs;
 	return MonotonicTimestamp(ticks*10); // every tick represents 10 milliseconds since Init()				
 }
 
@@ -108,8 +109,7 @@ void AVRExecutor::Run()
 }
 
 bool AVRExecutor::RunOne()
-{			
-	CriticalSection cs; // TODO release interrupts before running task	
+{				
 	if(RunOneTimer())
 	{
 		return true;
@@ -130,14 +130,17 @@ bool AVRExecutor::RunOne()
 }
 
 bool AVRExecutor::RunOneTimer()
-{
+{	
 	MonotonicTimestamp time = GetTime();
 	auto expired = [time](AVRTimer* pTimer) { return pTimer->ExpiresAt().milliseconds < time.milliseconds; };
 	auto pNode = activeTimers.RemoveFirst(expired);
 	if(pNode)
 	{
-		pNode->value->runnable.Run();
 		idleTimers.Enqueue(pNode->value);
+		
+		// make a copy of the task and run it
+		Runnable copy(pNode->value->runnable);
+		copy.Run();		
 		return true;
 	}
 	else
