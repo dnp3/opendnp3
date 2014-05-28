@@ -249,9 +249,6 @@
     <ClInclude Include="src\opendnp3\link\LinkLayerConstants.h">
       <Filter>Header\link</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\link\LinkLayerReceiver.h">
-      <Filter>Header\link</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\link\LinkLayerRouter.h">
       <Filter>Header\link</Filter>
     </ClInclude>
@@ -654,6 +651,9 @@
     <ClInclude Include="src\opendnp3\link\ITransportSegment.h">
       <Filter>Header\link</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\link\LinkLayerParser.h">
+      <Filter>Header\link</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\AnalogOutput.cpp">
@@ -893,9 +893,6 @@
     <ClCompile Include="src\opendnp3\link\LinkLayer.cpp">
       <Filter>Source\link</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\link\LinkLayerReceiver.cpp">
-      <Filter>Source\link</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\link\LinkLayerRouter.cpp">
       <Filter>Source\link</Filter>
     </ClCompile>
@@ -1054,6 +1051,9 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\master\IMasterTask.cpp">
       <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\link\LinkLayerParser.cpp">
+      <Filter>Source\link</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

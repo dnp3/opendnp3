@@ -18,10 +18,10 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __LINK_RECEIVER_TEST_H_
-#define __LINK_RECEIVER_TEST_H_
+#ifndef __LINK_PARSER_TEST_H_
+#define __LINK_PARSER_TEST_H_
 
-#include <opendnp3/link/LinkLayerReceiver.h>
+#include <opendnp3/link/LinkLayerParser.h>
 #include <opendnp3/LogLevels.h>
 
 #include "LogTester.h"
@@ -34,35 +34,35 @@
 namespace opendnp3
 {
 
-class LinkReceiverTest
+class LinkParserTest
 {
 public:
-	LinkReceiverTest(bool aImmediate = false) :
+	LinkParserTest(bool aImmediate = false) :
 		log(),
 		sink(),
-		receiver(log.GetLogger())
+		parser(log.GetLogger())
 	{}
 
 	void WriteData(const openpal::ReadOnlyBuffer& input)
 	{
-		auto buff = receiver.WriteBuff();
+		auto buff = parser.WriteBuff();
 		assert(input.Size() <= buff.Size());
 		input.CopyTo(buff);
-		receiver.OnRead(input.Size(), &sink);		
+		parser.OnRead(input.Size(), &sink);
 	}
 
 	void WriteData(const std::string& hex)
 	{
 		HexSequence hs(hex);
-		auto buff = receiver.WriteBuff();
+		auto buff = parser.WriteBuff();
 		assert(hs.Size() <= buff.Size());
 		memcpy(buff, hs, hs.Size());
-		receiver.OnRead(hs.Size(), &sink);		
+		parser.OnRead(hs.Size(), &sink);
 	}
 
 	LogTester log;
 	MockFrameSink sink;
-	LinkLayerReceiver receiver;
+	LinkLayerParser parser;
 };
 
 }

@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "LinkLayerReceiver.h"
+#include "LinkLayerParser.h"
 
 #include "opendnp3/link/DNPCrc.h"
 #include "opendnp3/link/IFrameSink.h"
@@ -33,7 +33,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LinkLayerReceiver::LinkLayerReceiver(const Logger& logger_) :
+LinkLayerParser::LinkLayerParser(const Logger& logger_) :
 	logger(logger_),
 	state(State::FindSync),
 	frameSize(0),		
@@ -43,19 +43,19 @@ LinkLayerReceiver::LinkLayerReceiver(const Logger& logger_) :
 
 }
 
-void LinkLayerReceiver::Reset()
+void LinkLayerParser::Reset()
 {
 	state = State::FindSync;
 	frameSize = 0;	
 	buffer.Reset();
 }
 
-WriteBuffer LinkLayerReceiver::WriteBuff() const
+WriteBuffer LinkLayerParser::WriteBuff() const
 {
 	return WriteBuffer(buffer.WriteBuff(), buffer.NumWriteBytes());	
 }
 
-void LinkLayerReceiver::OnRead(uint32_t numBytes, IFrameSink* pSink)
+void LinkLayerParser::OnRead(uint32_t numBytes, IFrameSink* pSink)
 {	
 	buffer.AdvanceWrite(numBytes);
 
@@ -68,7 +68,7 @@ void LinkLayerReceiver::OnRead(uint32_t numBytes, IFrameSink* pSink)
 	buffer.Shift();
 }
 
-LinkLayerReceiver::State LinkLayerReceiver::ParseUntilComplete()
+LinkLayerParser::State LinkLayerParser::ParseUntilComplete()
 {
 	auto lastState = this->state;
 	// continue as long as we're making progress, i.e. a state change
@@ -79,7 +79,7 @@ LinkLayerReceiver::State LinkLayerReceiver::ParseUntilComplete()
 	return state;
 }
 
-LinkLayerReceiver::State LinkLayerReceiver::ParseOneStep()
+LinkLayerParser::State LinkLayerParser::ParseOneStep()
 {
 	switch (state)
 	{
@@ -94,7 +94,7 @@ LinkLayerReceiver::State LinkLayerReceiver::ParseOneStep()
 	}
 }
 
-LinkLayerReceiver::State LinkLayerReceiver::ParseSync()
+LinkLayerParser::State LinkLayerParser::ParseSync()
 {
 	if (this->buffer.NumBytesRead() >= 10 && buffer.Sync())
 	{
@@ -106,7 +106,7 @@ LinkLayerReceiver::State LinkLayerReceiver::ParseSync()
 	}
 }
 
-LinkLayerReceiver::State LinkLayerReceiver::ParseHeader()
+LinkLayerParser::State LinkLayerParser::ParseHeader()
 {
 	if (this->buffer.NumBytesRead() >= 10)
 	{
@@ -126,7 +126,7 @@ LinkLayerReceiver::State LinkLayerReceiver::ParseHeader()
 	}
 }
 
-LinkLayerReceiver::State LinkLayerReceiver::ParseBody()
+LinkLayerParser::State LinkLayerParser::ParseBody()
 {
 	if (buffer.NumBytesRead() < this->frameSize)
 	{
@@ -149,7 +149,7 @@ LinkLayerReceiver::State LinkLayerReceiver::ParseBody()
 
 
 
-void LinkLayerReceiver::PushFrame(IFrameSink* pSink)
+void LinkLayerParser::PushFrame(IFrameSink* pSink)
 {	
 	switch(header.GetFuncEnum())
 	{
@@ -187,20 +187,20 @@ void LinkLayerReceiver::PushFrame(IFrameSink* pSink)
 	buffer.AdvanceRead(frameSize);
 }
 
-void LinkLayerReceiver::TransferUserData()
+void LinkLayerParser::TransferUserData()
 {
 	uint32_t len = header.GetLength() - LS_MIN_LENGTH;
 	LinkFrame::ReadUserData(buffer.ReadBuffer() + LS_HEADER_SIZE,  rxBuffer.Buffer(), len);
 	userData = rxBuffer.ToReadOnly().Truncate(len);
 }
 
-bool LinkLayerReceiver::ReadHeader()
+bool LinkLayerParser::ReadHeader()
 {
 	header.Read(buffer.ReadBuffer());
 	return this->ValidateHeader();
 }
 
-bool LinkLayerReceiver::ValidateBody()
+bool LinkLayerParser::ValidateBody()
 {
 	uint32_t len = header.GetLength() - LS_MIN_LENGTH;
 	if (LinkFrame::ValidateBodyCRC(buffer.ReadBuffer() + LS_HEADER_SIZE, len))
@@ -224,7 +224,7 @@ bool LinkLayerReceiver::ValidateBody()
 	}
 }
 
-bool LinkLayerReceiver::ValidateHeader()
+bool LinkLayerParser::ValidateHeader()
 {
 	//first thing to do is check the CRC
 	if(!DNPCrc::IsCorrectCRC(buffer.ReadBuffer(), LI_CRC))
@@ -297,13 +297,13 @@ bool LinkLayerReceiver::ValidateHeader()
 	return true;
 }
 
-void LinkLayerReceiver::FailFrame()
+void LinkLayerParser::FailFrame()
 {
 	// All you have to do is advance the reader by one, when the resync happens the data will disappear
 	buffer.AdvanceRead(1);
 }
 
-bool LinkLayerReceiver::ValidateFunctionCode()
+bool LinkLayerParser::ValidateFunctionCode()
 {
 	//Now make sure that the function code is known and that the FCV is appropriate
 	if(header.IsPriToSec())

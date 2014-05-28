@@ -18,8 +18,9 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __LINK_LAYER_RECEIVER_H_
-#define __LINK_LAYER_RECEIVER_H_
+
+#ifndef __LINK_LAYER_PARSER_H_
+#define __LINK_LAYER_PARSER_H_
 
 
 #include <openpal/BufferWrapper.h>
@@ -37,10 +38,9 @@ namespace opendnp3
 {
 
 class IFrameSink;
-class LRS_Base;
 
 /// Parses FT3 frames
-class LinkLayerReceiver
+class LinkLayerParser
 {
 	enum class State
 	{
@@ -54,7 +54,7 @@ public:
 	
 	/// @param logger_ Logger that the receiver is to use.
 	/// @param pSink_ Completely parsed frames are sent to this interface	
-	LinkLayerReceiver(const openpal::Logger& logger);
+	LinkLayerParser(const openpal::Logger& logger);
 	
 	/// Called when valid data has been written to the current buffer write position
 	/// Parses the new data and calls the specified frame sink

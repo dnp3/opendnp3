@@ -46,7 +46,7 @@ LinkLayerRouter::LinkLayerRouter(	openpal::LogRoot& root,
 	PhysicalLayerMonitor(root, apPhys, minOpenRetry, maxOpenRetry, pStrategy),
 	pStateHandler(pStateHandler_),
 	pShutdownHandler(pShutdownHandler_),
-	mReceiver(logger),
+	parser(logger),
 	mTransmitting(false)
 {}
 
@@ -250,10 +250,10 @@ void LinkLayerRouter::OnReceive(const openpal::ReadOnlyBuffer& input)
 {
 	// The order is important here. You must let the receiver process the byte or another read could write
 	// over the buffer before it is processed	
-	mReceiver.OnRead(input.Size(), this); //this may trigger callbacks to the local ILinkContext interface
+	parser.OnRead(input.Size(), this); //this may trigger callbacks to the local ILinkContext interface
 	if(pPhys->CanRead())   // this is required because the call above could trigger the layer to be closed
 	{
-		auto buff = mReceiver.WriteBuff();
+		auto buff = parser.WriteBuff();
 		pPhys->AsyncRead(buff); //start another read
 	}	
 }
@@ -330,7 +330,7 @@ void LinkLayerRouter::OnPhysicalLayerOpenSuccessCallback()
 {
 	if(pPhys->CanRead())
 	{		
-		auto buff = mReceiver.WriteBuff();
+		auto buff = parser.WriteBuff();
 		pPhys->AsyncRead(buff);	
 	}
 
@@ -349,21 +349,21 @@ void LinkLayerRouter::OnPhysicalLayerOpenSuccessCallback()
 void LinkLayerRouter::OnPhysicalLayerCloseCallback()
 {	
 	// reset the state of receiver
-	mReceiver.Reset();
+	parser.Reset();
 
 	// Drop frames queued for transmit and tell the contexts that the router has closed
 	mTransmitting = false;
 	transmitQueue.Clear();
 
-	records.Foreach(
-	    [](const Record & rec)
+	auto disable = [](const Record & rec)
 	{
 		if (rec.enabled)
 		{
 			rec.pContext->OnLowerLayerDown();
 		}
-	}
-	);	
+	};
+
+	records.Foreach(disable);
 }
 
 }

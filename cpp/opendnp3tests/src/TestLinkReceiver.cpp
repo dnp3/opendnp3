@@ -29,11 +29,11 @@ using namespace openpal;
 using namespace opendnp3;
 
 
-#define SUITE(name) "LinkReceiverTestSuite - " name
+#define SUITE(name) "LinkParserTestSuite - " name
 
 TEST_CASE(SUITE("InitializationState"))
 {
-	LinkReceiverTest t;
+	LinkParserTest t;
 	REQUIRE(t.sink.mNumFrames ==  0);
 }
 
@@ -43,7 +43,7 @@ TEST_CASE(SUITE("InitializationState"))
 
 TEST_CASE(SUITE("HeaderCRCError"))
 {
-	LinkReceiverTest t;
+	LinkParserTest t;
 	t.WriteData("05 64 05 C0 01 00 00 04 E9 20");
 	REQUIRE(t.sink.mNumFrames ==  0);
 	REQUIRE(t.log.NextErrorCode() ==  DLERR_CRC);
@@ -51,7 +51,7 @@ TEST_CASE(SUITE("HeaderCRCError"))
 
 TEST_CASE(SUITE("BodyCRCError"))
 {
-	LinkReceiverTest t;
+	LinkParserTest t;
 	t.WriteData("05 64 14 F3 01 00 00 04 0A 3B C0 C3 01 3C 02 06 3C 03 06 3C 04 06 3C 01 06 9A 11");
 	REQUIRE(t.sink.mNumFrames ==  0);
 	REQUIRE(t.log.NextErrorCode() ==  DLERR_CRC);
@@ -65,7 +65,7 @@ TEST_CASE(SUITE("BodyCRCError"))
 // A valid reset link states packet would be: 05 64 05 C0 01 00 00 04 E9 21
 TEST_CASE(SUITE("BadLengthError"))
 {
-	LinkReceiverTest t;
+	LinkParserTest t;
 	t.WriteData(RepairCRC("05 64 01 C0 01 00 00 04 E9 21"));
 	REQUIRE(t.sink.mNumFrames ==  0);
 	REQUIRE(t.log.NextErrorCode() ==  DLERR_INVALID_LENGTH);
@@ -74,7 +74,7 @@ TEST_CASE(SUITE("BadLengthError"))
 //Test that the presence of user data disagrees with the function code
 TEST_CASE(SUITE("UnexpectedData"))
 {
-	LinkReceiverTest t;
+	LinkParserTest t;
 	t.WriteData(RepairCRC("05 64 08 C0 01 00 00 04 E9 21"));
 	REQUIRE(t.sink.mNumFrames ==  0);
 	REQUIRE(t.log.NextErrorCode() ==  DLERR_UNEXPECTED_DATA);
@@ -84,7 +84,7 @@ TEST_CASE(SUITE("UnexpectedData"))
 // This is the first 10 bytes of an unconfirmed user data packet w/ the length set to 5
 TEST_CASE(SUITE("AbsenceOfData"))
 {
-	LinkReceiverTest t;
+	LinkParserTest t;
 	t.WriteData(RepairCRC("05 64 05 73 00 04 01 00 03 FC"));
 	REQUIRE(t.sink.mNumFrames ==  0);
 	REQUIRE(t.log.NextErrorCode() ==  DLERR_NO_DATA);
@@ -94,7 +94,7 @@ TEST_CASE(SUITE("AbsenceOfData"))
 // Reset Links w/ function code changed from 0 to 6
 TEST_CASE(SUITE("UnknownFunction"))
 {
-	LinkReceiverTest t;
+	LinkParserTest t;
 	t.WriteData(RepairCRC("05 64 05 C6 01 00 00 04 E9 21"));
 	REQUIRE(t.sink.mNumFrames ==  0);
 	REQUIRE(t.log.NextErrorCode() ==   DLERR_UNKNOWN_FUNC);
@@ -104,7 +104,7 @@ TEST_CASE(SUITE("UnknownFunction"))
 // Reset Links w/ FCV toggled on
 TEST_CASE(SUITE("UnexpectedFCV"))
 {
-	LinkReceiverTest t;
+	LinkParserTest t;
 	t.WriteData(RepairCRC("05 64 05 D0 01 00 00 04 E9 21"));
 	REQUIRE(t.sink.mNumFrames ==  0);
 	REQUIRE(t.log.NextErrorCode() ==  DLERR_UNEXPECTED_FCV);
@@ -114,7 +114,7 @@ TEST_CASE(SUITE("UnexpectedFCV"))
 // ACK w/ FCB toggled on
 TEST_CASE(SUITE("UnexpectedFCB"))
 {
-	LinkReceiverTest t;
+	LinkParserTest t;
 	t.WriteData(RepairCRC("05 64 05 20 00 04 01 00 19 A6"));
 	REQUIRE(t.sink.mNumFrames ==  0);
 	REQUIRE(t.log.NextErrorCode() ==  DLERR_UNEXPECTED_FCB);
@@ -124,7 +124,7 @@ TEST_CASE(SUITE("UnexpectedFCB"))
 // back to back errors with a single write call
 TEST_CASE(SUITE("CombinedFailures"))
 {
-	LinkReceiverTest t;
+	LinkParserTest t;
 	t.WriteData(RepairCRC("05 64 05 20 00 04 01 00 19 A6")
 	            + " " + RepairCRC("05 64 05 D0 01 00 00 04 E9 21"));
 	REQUIRE(t.sink.mNumFrames ==  0);
@@ -142,7 +142,7 @@ TEST_CASE(SUITE("ReadACK"))
 	auto writeTo = buffer.GetWriteBuffer();
 	auto frame = LinkFrame::FormatAck(writeTo, true, false, 1, 2, nullptr);
 
-	LinkReceiverTest t;
+	LinkParserTest t;
 	t.WriteData(frame);
 	REQUIRE(t.log.IsLogErrorFree());
 	REQUIRE(t.sink.mNumFrames ==  1);
@@ -155,7 +155,7 @@ TEST_CASE(SUITE("ReadNACK"))
 	auto writeTo = buffer.GetWriteBuffer();
 	auto frame = LinkFrame::FormatNack(writeTo, false, true, 1, 2, nullptr);
 
-	LinkReceiverTest t;
+	LinkParserTest t;
 	t.WriteData(frame);
 	REQUIRE(t.log.IsLogErrorFree());
 	REQUIRE(t.sink.mNumFrames ==  1);
@@ -168,7 +168,7 @@ TEST_CASE(SUITE("LinkStatus"))
 	auto writeTo = buffer.GetWriteBuffer();
 	auto frame = LinkFrame::FormatLinkStatus(writeTo, true, true, 1, 2, nullptr);
 
-	LinkReceiverTest t;
+	LinkParserTest t;
 	t.WriteData(frame);
 	REQUIRE(t.log.IsLogErrorFree());
 	REQUIRE(t.sink.mNumFrames ==  1);
@@ -181,7 +181,7 @@ TEST_CASE(SUITE("NotSupported"))
 	auto writeTo = buffer.GetWriteBuffer();
 	auto frame = LinkFrame::FormatNotSupported(writeTo, true, false, 1, 2, nullptr);
 
-	LinkReceiverTest t;
+	LinkParserTest t;
 	t.WriteData(frame);
 	REQUIRE(t.log.IsLogErrorFree());
 	REQUIRE(t.sink.mNumFrames ==  1);
@@ -198,7 +198,7 @@ TEST_CASE(SUITE("TestLinkStates"))
 	auto writeTo = buffer.GetWriteBuffer();
 	auto frame = LinkFrame::FormatTestLinkStatus(writeTo, false, true, 1, 2, nullptr);
 
-	LinkReceiverTest t;
+	LinkParserTest t;
 	t.WriteData(frame);
 	REQUIRE(t.log.IsLogErrorFree());
 	REQUIRE(t.sink.mNumFrames ==  1);
@@ -211,7 +211,7 @@ TEST_CASE(SUITE("ResetLinkStates"))
 	auto writeTo = buffer.GetWriteBuffer();
 	auto frame = LinkFrame::FormatResetLinkStates(writeTo, false, 1, 2, nullptr);
 
-	LinkReceiverTest t;
+	LinkParserTest t;
 	t.WriteData(frame);
 	REQUIRE(t.log.IsLogErrorFree());
 	REQUIRE(t.sink.mNumFrames ==  1);
@@ -224,7 +224,7 @@ TEST_CASE(SUITE("RequestLinkStatus"))
 	auto writeTo = buffer.GetWriteBuffer();
 	auto frame = LinkFrame::FormatRequestLinkStatus(writeTo, true, 1, 2, nullptr);
 
-	LinkReceiverTest t;
+	LinkParserTest t;
 	t.WriteData(frame);
 	REQUIRE(t.log.IsLogErrorFree());
 	REQUIRE(t.sink.mNumFrames ==  1);
@@ -239,7 +239,7 @@ TEST_CASE(SUITE("UnconfirmedUserData"))
 	auto writeTo = buffer.GetWriteBuffer();
 	auto frame = LinkFrame::FormatUnconfirmedUserData(writeTo, true, 1, 2, data, data.Size(), nullptr);
 
-	LinkReceiverTest t;
+	LinkParserTest t;
 	t.WriteData(frame);
 	REQUIRE(t.log.IsLogErrorFree());
 	REQUIRE(t.sink.mNumFrames ==  1);
@@ -255,7 +255,7 @@ TEST_CASE(SUITE("ConfirmedUserData"))
 	auto writeTo = buffer.GetWriteBuffer();
 	auto frame = LinkFrame::FormatConfirmedUserData(writeTo, true, true, 1, 2, data, data.Size(), nullptr);
 
-	LinkReceiverTest t;
+	LinkParserTest t;
 	t.WriteData(frame);
 	REQUIRE(t.log.IsLogErrorFree());
 	REQUIRE(t.sink.mNumFrames ==  1);
@@ -269,7 +269,7 @@ TEST_CASE(SUITE("ConfirmedUserData"))
 
 TEST_CASE(SUITE("TestTwoPackets"))
 {
-	LinkReceiverTest t;
+	LinkParserTest t;
 	// back to back reset link
 	t.WriteData("05 64 05 C0 01 00 00 04 E9 21 05 64 05 C0 01 00 00 04 E9 21");
 	REQUIRE(t.log.IsLogErrorFree());
@@ -284,7 +284,7 @@ TEST_CASE(SUITE("TestTwoPackets"))
 // Test that the parser is able to resync without discarding
 TEST_CASE(SUITE("Resync0564"))
 {
-	LinkReceiverTest t;
+	LinkParserTest t;
 	t.WriteData("05 64 05 64 05 C0 01 00 00 04 E9 21");
 	REQUIRE(t.log.NextErrorCode() ==  DLERR_CRC);
 	REQUIRE(t.sink.mNumFrames ==  1);
@@ -304,7 +304,7 @@ TEST_CASE(SUITE("ManyReceives"))
 	auto writeTo = buffer.GetWriteBuffer();
 	auto frame = LinkFrame::FormatAck(writeTo, true, false, 1, 2, nullptr);
 
-	LinkReceiverTest t;
+	LinkParserTest t;
 
 	for(size_t i = 1; i < 100; ++i)
 	{

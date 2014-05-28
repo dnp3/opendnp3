@@ -104,7 +104,7 @@
     <ClInclude Include="src\opendnp3\link\LinkHeader.h" />
     <ClInclude Include="src\opendnp3\link\LinkLayer.h" />
     <ClInclude Include="src\opendnp3\link\LinkLayerConstants.h" />
-    <ClInclude Include="src\opendnp3\link\LinkLayerReceiver.h" />
+    <ClInclude Include="src\opendnp3\link\LinkLayerParser.h" />
     <ClInclude Include="src\opendnp3\link\LinkLayerRouter.h" />
     <ClInclude Include="src\opendnp3\link\LinkRoute.h" />
     <ClInclude Include="src\opendnp3\link\PhysicalLayerMonitor.h" />
@@ -272,7 +272,7 @@
     <ClCompile Include="src\opendnp3\link\LinkFrame.cpp" />
     <ClCompile Include="src\opendnp3\link\LinkHeader.cpp" />
     <ClCompile Include="src\opendnp3\link\LinkLayer.cpp" />
-    <ClCompile Include="src\opendnp3\link\LinkLayerReceiver.cpp" />
+    <ClCompile Include="src\opendnp3\link\LinkLayerParser.cpp" />
     <ClCompile Include="src\opendnp3\link\LinkLayerRouter.cpp" />
     <ClCompile Include="src\opendnp3\link\LinkRoute.cpp" />
     <ClCompile Include="src\opendnp3\link\PhysicalLayerMonitor.cpp" />

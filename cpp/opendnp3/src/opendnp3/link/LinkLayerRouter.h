@@ -27,7 +27,7 @@
 #include <openpal/StaticQueue.h>
 
 #include "opendnp3/link/PhysicalLayerMonitor.h"
-#include "opendnp3/link/LinkLayerReceiver.h"
+#include "opendnp3/link/LinkLayerParser.h"
 #include "opendnp3/link/LinkRoute.h"
 #include "opendnp3/link/IFrameSink.h"
 #include "opendnp3/link/ILinkRouter.h"
@@ -159,7 +159,7 @@ private:
 
 	// Handles the parsing of incoming frames
 	
-	LinkLayerReceiver mReceiver;	
+	LinkLayerParser parser;
 	bool mTransmitting;
 
 	// Implement virtual AsyncPhysLayerMonitor
