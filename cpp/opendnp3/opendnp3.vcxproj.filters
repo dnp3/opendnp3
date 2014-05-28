@@ -255,9 +255,6 @@
     <ClInclude Include="src\opendnp3\link\LinkLayerRouter.h">
       <Filter>Header\link</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\link\LinkReceiverStates.h">
-      <Filter>Header\link</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\link\LinkRoute.h">
       <Filter>Header\link</Filter>
     </ClInclude>
@@ -900,9 +897,6 @@
       <Filter>Source\link</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\link\LinkLayerRouter.cpp">
-      <Filter>Source\link</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\link\LinkReceiverStates.cpp">
       <Filter>Source\link</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\link\LinkRoute.cpp">

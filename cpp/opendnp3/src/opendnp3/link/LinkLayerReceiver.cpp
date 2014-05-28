@@ -18,10 +18,10 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <assert.h>
+
+#include "LinkLayerReceiver.h"
 
 #include "opendnp3/link/DNPCrc.h"
-#include "opendnp3/link/LinkReceiverStates.h"
 #include "opendnp3/link/IFrameSink.h"
 
 #include "opendnp3/LogLevels.h"
@@ -33,11 +33,10 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LinkLayerReceiver::LinkLayerReceiver(const Logger& logger_, IFrameSink* pSink_) :
+LinkLayerReceiver::LinkLayerReceiver(const Logger& logger_) :
 	logger(logger_),
-	frameSize(0),
-	pSink(pSink_),
-	pState(LRS_Sync::Inst()),
+	state(State::FindSync),
+	frameSize(0),		
 	rxBuffer(),
 	buffer(rxBuffer.Buffer(), rxBuffer.Size())
 {
@@ -46,8 +45,8 @@ LinkLayerReceiver::LinkLayerReceiver(const Logger& logger_, IFrameSink* pSink_) 
 
 void LinkLayerReceiver::Reset()
 {
-	frameSize = 0;
-	pState = LRS_Sync::Inst();
+	state = State::FindSync;
+	frameSize = 0;	
 	buffer.Reset();
 }
 
@@ -56,64 +55,143 @@ WriteBuffer LinkLayerReceiver::WriteBuff() const
 	return WriteBuffer(buffer.WriteBuff(), buffer.NumWriteBytes());	
 }
 
-void LinkLayerReceiver::OnRead(uint32_t numBytes)
-{
-	// This is a serious condition if it occurs
-	// It indicates a possible buffer over run
-	assert(numBytes <= buffer.NumWriteBytes());
+void LinkLayerReceiver::OnRead(uint32_t numBytes, IFrameSink* pSink)
+{	
 	buffer.AdvanceWrite(numBytes);
 
-	// this might push frame data to the sink and will free
-	// space in the buffer
-	while(pState->Parse(this));
+	while (ParseUntilComplete() == State::Complete)
+	{
+		this->PushFrame(pSink);
+		state = State::FindSync;
+	}
 
-	//anytime we have a partially incomplete frame, shift the buffer
 	buffer.Shift();
 }
 
-void LinkLayerReceiver::PushFrame()
+LinkLayerReceiver::State LinkLayerReceiver::ParseUntilComplete()
 {
+	auto lastState = this->state;
+	// continue as long as we're making progress, i.e. a state change
+	while ((this->state = ParseOneStep()) != lastState)
+	{		
+		lastState = state;
+	}
+	return state;
+}
+
+LinkLayerReceiver::State LinkLayerReceiver::ParseOneStep()
+{
+	switch (state)
+	{
+		case(State::FindSync) :
+			return ParseSync();
+		case(State::ReadHeader) :
+			return ParseHeader();
+		case(State::ReadBody) :
+			return ParseBody();
+		default:
+			return state;
+	}
+}
+
+LinkLayerReceiver::State LinkLayerReceiver::ParseSync()
+{
+	if (this->buffer.NumBytesRead() >= 10 && buffer.Sync())
+	{
+		return State::ReadHeader;
+	}
+	else
+	{
+		return State::FindSync;
+	}
+}
+
+LinkLayerReceiver::State LinkLayerReceiver::ParseHeader()
+{
+	if (this->buffer.NumBytesRead() >= 10)
+	{
+		if (this->ReadHeader())
+		{
+			return State::ReadBody;
+		}
+		else
+		{
+			this->FailFrame();
+			return State::FindSync;
+		}
+	}
+	else
+	{
+		return State::ReadHeader;
+	}
+}
+
+LinkLayerReceiver::State LinkLayerReceiver::ParseBody()
+{
+	if (buffer.NumBytesRead() < this->frameSize)
+	{
+		return State::ReadBody;
+	}
+	else
+	{
+		if(this->ValidateBody())
+		{
+			this->TransferUserData();
+			return State::Complete;
+		}
+		else
+		{
+			this->FailFrame();
+			return State::FindSync;
+		}		
+	}
+}
+
+
+
+void LinkLayerReceiver::PushFrame(IFrameSink* pSink)
+{	
 	switch(header.GetFuncEnum())
 	{
-	case(LinkFunction::PRI_RESET_LINK_STATES):
-		pSink->ResetLinkStates(header.IsFromMaster(), header.GetDest(), header.GetSrc());
-		break;
-	case(LinkFunction::PRI_TEST_LINK_STATES):
-		pSink->TestLinkStatus(header.IsFromMaster(), header.IsFcbSet(), header.GetDest(), header.GetSrc());
-		break;
-	case(LinkFunction::PRI_CONFIRMED_USER_DATA):
-		pSink->ConfirmedUserData(header.IsFromMaster(), header.IsFcbSet(), header.GetDest(), header.GetSrc(), TransferUserData());
-		break;
-	case(LinkFunction::PRI_UNCONFIRMED_USER_DATA):
-		pSink->UnconfirmedUserData(header.IsFromMaster(), header.GetDest(), header.GetSrc(), TransferUserData());
-		break;
-	case(LinkFunction::PRI_REQUEST_LINK_STATUS):
-		pSink->RequestLinkStatus(header.IsFromMaster(), header.GetDest(), header.GetSrc());
-		break;
-	case(LinkFunction::SEC_ACK):
-		pSink->Ack(header.IsFromMaster(), header.IsFcvDfcSet(), header.GetDest(), header.GetSrc());
-		break;
-	case(LinkFunction::SEC_NACK):
-		pSink->Nack(header.IsFromMaster(), header.IsFcvDfcSet(), header.GetDest(), header.GetSrc());
-		break;
-	case(LinkFunction::SEC_LINK_STATUS):
-		pSink->LinkStatus(header.IsFromMaster(), header.IsFcvDfcSet(), header.GetDest(), header.GetSrc());
-		break;
-	case(LinkFunction::SEC_NOT_SUPPORTED):
-		pSink->NotSupported(header.IsFromMaster(), header.IsFcvDfcSet(), header.GetDest(), header.GetSrc());
-		break;
-	default:
-		break;
+		case(LinkFunction::PRI_RESET_LINK_STATES):
+			pSink->ResetLinkStates(header.IsFromMaster(), header.GetDest(), header.GetSrc());
+			break;
+		case(LinkFunction::PRI_TEST_LINK_STATES):
+			pSink->TestLinkStatus(header.IsFromMaster(), header.IsFcbSet(), header.GetDest(), header.GetSrc());
+			break;
+		case(LinkFunction::PRI_CONFIRMED_USER_DATA):
+			pSink->ConfirmedUserData(header.IsFromMaster(), header.IsFcbSet(), header.GetDest(), header.GetSrc(), userData);
+			break;
+		case(LinkFunction::PRI_UNCONFIRMED_USER_DATA):
+			pSink->UnconfirmedUserData(header.IsFromMaster(), header.GetDest(), header.GetSrc(), userData);
+			break;
+		case(LinkFunction::PRI_REQUEST_LINK_STATUS):
+			pSink->RequestLinkStatus(header.IsFromMaster(), header.GetDest(), header.GetSrc());
+			break;
+		case(LinkFunction::SEC_ACK):
+			pSink->Ack(header.IsFromMaster(), header.IsFcvDfcSet(), header.GetDest(), header.GetSrc());
+			break;
+		case(LinkFunction::SEC_NACK):
+			pSink->Nack(header.IsFromMaster(), header.IsFcvDfcSet(), header.GetDest(), header.GetSrc());
+			break;
+		case(LinkFunction::SEC_LINK_STATUS):
+			pSink->LinkStatus(header.IsFromMaster(), header.IsFcvDfcSet(), header.GetDest(), header.GetSrc());
+			break;
+		case(LinkFunction::SEC_NOT_SUPPORTED):
+			pSink->NotSupported(header.IsFromMaster(), header.IsFcvDfcSet(), header.GetDest(), header.GetSrc());
+			break;
+		default:
+			break;
 	}
-
+	
 	buffer.AdvanceRead(frameSize);
 }
 
-ReadOnlyBuffer LinkLayerReceiver::TransferUserData()
+void LinkLayerReceiver::TransferUserData()
 {
 	uint32_t len = header.GetLength() - LS_MIN_LENGTH;
 	LinkFrame::ReadUserData(buffer.ReadBuffer() + LS_HEADER_SIZE,  rxBuffer.Buffer(), len);
-	return rxBuffer.ToReadOnly().Truncate(len);
+	userData = rxBuffer.ToReadOnly().Truncate(len);
 }
 
 bool LinkLayerReceiver::ReadHeader()

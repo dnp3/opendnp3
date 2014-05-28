@@ -46,7 +46,7 @@ LinkLayerRouter::LinkLayerRouter(	openpal::LogRoot& root,
 	PhysicalLayerMonitor(root, apPhys, minOpenRetry, maxOpenRetry, pStrategy),
 	pStateHandler(pStateHandler_),
 	pShutdownHandler(pShutdownHandler_),
-	mReceiver(logger, this),
+	mReceiver(logger),
 	mTransmitting(false)
 {}
 
@@ -250,7 +250,7 @@ void LinkLayerRouter::OnReceive(const openpal::ReadOnlyBuffer& input)
 {
 	// The order is important here. You must let the receiver process the byte or another read could write
 	// over the buffer before it is processed	
-	mReceiver.OnRead(input.Size()); //this may trigger callbacks to the local ILinkContext interface
+	mReceiver.OnRead(input.Size(), this); //this may trigger callbacks to the local ILinkContext interface
 	if(pPhys->CanRead())   // this is required because the call above could trigger the layer to be closed
 	{
 		auto buff = mReceiver.WriteBuff();

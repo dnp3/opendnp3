@@ -39,30 +39,30 @@ class LinkReceiverTest
 public:
 	LinkReceiverTest(bool aImmediate = false) :
 		log(),
-		mSink(),
-		mRx(log.GetLogger(), &mSink)
+		sink(),
+		receiver(log.GetLogger())
 	{}
 
 	void WriteData(const openpal::ReadOnlyBuffer& input)
 	{
-		auto buff = mRx.WriteBuff();
+		auto buff = receiver.WriteBuff();
 		assert(input.Size() <= buff.Size());
 		input.CopyTo(buff);
-		mRx.OnRead(input.Size());
+		receiver.OnRead(input.Size(), &sink);		
 	}
 
 	void WriteData(const std::string& hex)
 	{
 		HexSequence hs(hex);
-		auto buff = mRx.WriteBuff();
+		auto buff = receiver.WriteBuff();
 		assert(hs.Size() <= buff.Size());
 		memcpy(buff, hs, hs.Size());
-		mRx.OnRead(hs.Size());
+		receiver.OnRead(hs.Size(), &sink);		
 	}
 
 	LogTester log;
-	MockFrameSink mSink;
-	LinkLayerReceiver mRx;
+	MockFrameSink sink;
+	LinkLayerReceiver receiver;
 };
 
 }

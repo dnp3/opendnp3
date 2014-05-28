@@ -33,77 +33,65 @@
 #include "opendnp3/link/LinkHeader.h"
 #include "opendnp3/StaticSizeConfiguration.h"
 
-
 namespace opendnp3
 {
 
 class IFrameSink;
 class LRS_Base;
 
-/** Parses incoming ft3 frames for the link layer router.
-*/
+/// Parses FT3 frames
 class LinkLayerReceiver
 {
+	enum class State
+	{
+		FindSync,
+		ReadHeader,
+		ReadBody,
+		Complete
+	};	
 
 public:
-	/**
-		@param logger_ Logger that the receiver is to use.
-		@param pSink_ Completely parsed frames are sent to this interface.
-	*/
-	LinkLayerReceiver(const openpal::Logger& logger_, IFrameSink* pSink_);
-
-	/**
-		Called when valid data has been written to the current buffer write position
-		@param numBytes Number of bytes written
-	*/
-	void OnRead(uint32_t numBytes);
-
-	/**
-	* @return Buffer that can currently be used for writing
-	*/
+	
+	/// @param logger_ Logger that the receiver is to use.
+	/// @param pSink_ Completely parsed frames are sent to this interface	
+	LinkLayerReceiver(const openpal::Logger& logger);
+	
+	/// Called when valid data has been written to the current buffer write position
+	/// Parses the new data and calls the specified frame sink
+	/// @param numBytes Number of bytes written	
+	void OnRead(uint32_t numBytes, IFrameSink* pSink);	
+	
+	/// @return Buffer that can currently be used for writing	
 	openpal::WriteBuffer WriteBuff() const;
 
-	/**
-		Resets the state of parser
-	*/
+	/// Resets the state of parser	
 	void Reset();
 
 private:
 
-	friend class LRS_Sync;
-	friend class LRS_Header;
-	friend class LRS_Body;
+	State ParseUntilComplete();
+	State ParseOneStep();
+	State ParseSync();
+	State ParseHeader();
+	State ParseBody();
 
-	//actions/helpers used by the states
-	void ChangeState(LRS_Base* pState_)
-	{
-		pState = pState_;
-	}
-
-	bool SyncStartOctets()
-	{
-		return buffer.Sync();
-	}
-
+	void PushFrame(IFrameSink* pSink);
+	
 	bool ReadHeader();
 	bool ValidateBody();
 	bool ValidateHeader();
 	bool ValidateFunctionCode();
 	void FailFrame();
-	void PushFrame();
-	openpal::ReadOnlyBuffer TransferUserData();
 
-	uint32_t NumReadBytes() const
-	{
-		return buffer.NumBytesRead();
-	}
+	void TransferUserData();
 
 	openpal::Logger logger;
-	LinkHeader header;
-	uint32_t frameSize;
 	
-	IFrameSink* pSink;  // pointer to interface to push complete frames
-	LRS_Base* pState;
+	LinkHeader header;
+
+	State state;
+	uint32_t frameSize;
+	openpal::ReadOnlyBuffer userData;
 
 	// buffer where received data is written		
 	openpal::StaticBuffer<sizes::LINK_RECEIVER_BUFFER_SIZE> rxBuffer;
