@@ -674,13 +674,13 @@
       <SubType>compile</SubType>
       <Link>link\LinkLayerConstants.h</Link>
     </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\link\LinkLayerReceiver.cpp">
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\link\LinkLayerParser.cpp">
       <SubType>compile</SubType>
-      <Link>link\LinkLayerReceiver.cpp</Link>
+      <Link>link\LinkLayerParser.cpp</Link>
     </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\link\LinkLayerReceiver.h">
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\link\LinkLayerParser.h">
       <SubType>compile</SubType>
-      <Link>link\LinkLayerReceiver.h</Link>
+      <Link>link\LinkLayerParser.h</Link>
     </Compile>
     <Compile Include="..\..\cpp\opendnp3\src\opendnp3\link\LinkLayerRouter.cpp">
       <SubType>compile</SubType>
@@ -689,14 +689,6 @@
     <Compile Include="..\..\cpp\opendnp3\src\opendnp3\link\LinkLayerRouter.h">
       <SubType>compile</SubType>
       <Link>link\LinkLayerRouter.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\link\LinkReceiverStates.cpp">
-      <SubType>compile</SubType>
-      <Link>link\LinkReceiverStates.cpp</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\link\LinkReceiverStates.h">
-      <SubType>compile</SubType>
-      <Link>link\LinkReceiverStates.h</Link>
     </Compile>
     <Compile Include="..\..\cpp\opendnp3\src\opendnp3\link\LinkRoute.cpp">
       <SubType>compile</SubType>

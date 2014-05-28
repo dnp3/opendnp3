@@ -211,9 +211,8 @@ bool LinkLayerParser::ValidateBody()
 			header.GetDest(),
 			header.GetSrc(),
 			header.GetLength());
-
-		ReadOnlyBuffer buffer(buffer.ReadBuffer(), frameSize);
-		FORMAT_HEX_BLOCK(logger, flags::LINK_RX_HEX, buffer, 10, 18);
+		
+		FORMAT_HEX_BLOCK(logger, flags::LINK_RX_HEX, buffer.ReadBuffer().Truncate(frameSize), 10, 18);
 
 		return true;
 	}

@@ -23,7 +23,7 @@ namespace arduino {
 AVRLinkParser::AVRLinkParser(openpal::LogRoot& root, openpal::IExecutor& exe, opendnp3::ILinkContext& context) : 	
 	pExecutor(&exe),
 	pContext(&context),
-	receiver(root.GetLogger(), &context)	
+	parser(root.GetLogger())
 {
 	
 }
@@ -74,7 +74,7 @@ void AVRLinkParser::ProcessRx()
 	auto num = CopyRxBuffer();
 	if(num > 0)
 	{
-		receiver.OnRead(num);
+		parser.OnRead(num, pContext);
 	}
 }
 
@@ -82,7 +82,7 @@ uint32_t AVRLinkParser::CopyRxBuffer()
 {	
 	// disable interrupts and copy contents of ring buffer to the receiver's write buffer
 	CriticalSection cs; 
-	auto buffer = receiver.WriteBuff();
+	auto buffer = parser.WriteBuff();
 	return rxBuffer.Read(buffer);
 }
 	

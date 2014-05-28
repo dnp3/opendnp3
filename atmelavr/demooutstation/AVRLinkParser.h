@@ -6,7 +6,7 @@
 #include <opendnp3/link/ILinkContext.h>
 
 #include <opendnp3/Settable.h>
-#include <opendnp3/link/LinkLayerReceiver.h>
+#include <opendnp3/link/LinkLayerParser.h>
 
 #include <openpal/LogRoot.h>
 #include <openpal/StaticQueue.h>
@@ -57,7 +57,7 @@ class AVRLinkParser : public opendnp3::ILinkRouter
 	
 	openpal::IExecutor* pExecutor;
 	opendnp3::ILinkContext* pContext;		
-	opendnp3::LinkLayerReceiver receiver;
+	opendnp3::LinkLayerParser parser;
 };
 
 }
