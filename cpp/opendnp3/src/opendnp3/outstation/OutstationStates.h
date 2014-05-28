@@ -102,7 +102,30 @@ private:
 	static OutstationStateSolConfirmWait instance;
 
 	OutstationStateSolConfirmWait() {}
+};
 
+class OutstationStateUnsolConfirmWait : public OutstationStateBase, private openpal::Uncopyable
+{
+
+public:
+
+	static OutstationStateBase& Inst();
+
+	virtual void OnNewRequest(OutstationContext* pContext, const APDURecord& request, const openpal::ReadOnlyBuffer& fragment) override final;
+
+	virtual void OnRepeatRequest(OutstationContext* pContext, const APDURecord& frag) override final;
+
+	virtual void OnSendResult(OutstationContext* pContext, bool isSucccess) override final;
+
+	virtual void OnUnsolConfirm(OutstationContext* pContext, const APDURecord& frag) override final;
+
+	virtual void OnConfirmTimeout(OutstationContext* pContext) override final;
+
+private:
+
+	static OutstationStateUnsolConfirmWait instance;
+
+	OutstationStateUnsolConfirmWait() {}
 };
 
 

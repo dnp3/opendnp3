@@ -100,39 +100,6 @@ void Outstation::SetRequestTimeIIN()
 {
 	context.staticIIN.Set(IINBit::NEED_TIME);
 }
-
-void Outstation::OnReceiveSolRequest(const APDURecord& request, const openpal::ReadOnlyBuffer& fragment)
-{	
-	if (context.firstValidRequestAccepted)
-	{
-		if (context.solSeqN == request.control.SEQ)
-		{
-			if (context.lastValidRequest.Equals(fragment))
-			{
-				context.pState->OnRepeatRequest(&context, request);
-			}
-			else // new operation with same SEQ
-			{
-				if (request.function != FunctionCode::SELECT) // TODO - Ask why select is special?
-				{
-					context.pState->OnNewRequest(&context, request, fragment);
-				}
-			}
-		}
-		else  // completely new sequence #
-		{				
-			context.solSeqN = request.control.SEQ;
-			context.pState->OnNewRequest(&context, request, fragment);
-		}
-	}
-	else
-	{
-		context.solSeqN = request.control.SEQ;
-		context.firstValidRequestAccepted = true;	
-		context.pState->OnNewRequest(&context, request, fragment);
-	}	
-	
-}
 	
 }
 

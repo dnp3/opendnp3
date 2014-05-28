@@ -144,7 +144,7 @@ void OutstationStateSolConfirmWait::OnRepeatRequest(OutstationContext* pContext,
 }
 
 void OutstationStateSolConfirmWait::OnSendResult(OutstationContext* pContext, bool isSucccess)
-{
+{	
 	// Now we can start our confirm timer
 	pContext->StartConfirmTimer();
 }
@@ -153,7 +153,7 @@ void OutstationStateSolConfirmWait::OnSolConfirm(OutstationContext* pContext, co
 {
 	if (pContext->pConfirmTimer)
 	{
-		if (confirm.control.SEQ == pContext->expectedConfirmSeq)
+		if (confirm.control.SEQ == pContext->expectedSolConfirmSeq)
 		{
 			pContext->pState = &OutstationStateIdle::Inst();
 			pContext->CancelConfirmTimer();			
@@ -188,6 +188,87 @@ void OutstationStateSolConfirmWait::OnConfirmTimeout(OutstationContext* pContext
 		pContext->rspContext.Reset();
 		pContext->pState = &OutstationStateIdle::Inst();
 		pContext->OnEnterIdleState();
+	}
+}
+
+// --------------------- OutstationStateUnsolConfirmWait ----------------------
+
+OutstationStateUnsolConfirmWait OutstationStateUnsolConfirmWait::instance;
+
+OutstationStateBase& OutstationStateUnsolConfirmWait::Inst()
+{
+	return instance;
+}
+
+void OutstationStateUnsolConfirmWait::OnNewRequest(OutstationContext* pContext, const APDURecord& request, const openpal::ReadOnlyBuffer& fragment)
+{
+	// TODO
+}
+
+void OutstationStateUnsolConfirmWait::OnRepeatRequest(OutstationContext* pContext, const APDURecord& frag)
+{
+	// TODO
+}
+
+void OutstationStateUnsolConfirmWait::OnSendResult(OutstationContext* pContext, bool isSucccess)
+{
+	if (isSucccess)
+	{
+		pContext->StartConfirmTimer();
+	}
+	else
+	{
+		pContext->StartUnsolRetryTimer();
+		pContext->pState = &OutstationStateIdle::Inst();
+	}	
+}
+
+void OutstationStateUnsolConfirmWait::OnUnsolConfirm(OutstationContext* pContext, const APDURecord& confirm)
+{
+	if (pContext->pConfirmTimer)
+	{
+		if (confirm.control.SEQ == pContext->expectedUnsolConfirmSeq)
+		{
+			pContext->CancelConfirmTimer();
+			pContext->pState = &OutstationStateIdle::Inst();
+					
+			if (pContext->completedNullUnsol)
+			{
+				pContext->eventBuffer.Clear();
+			}
+			else
+			{
+				pContext->completedNullUnsol = true;
+			}
+			
+			pContext->OnEnterIdleState();
+		}
+		else
+		{
+			FORMAT_LOG_BLOCK(pContext->logger, flags::WARN, "Unsolicited confirm with wrong seq: %u", confirm.control.SEQ);
+		}
+	}
+	else
+	{
+		// we're still sending so this can't be our confirm
+		FORMAT_LOG_BLOCK(pContext->logger, flags::WARN, "Unexpected unsol confirm with seq: %u", confirm.control.SEQ);
+	}
+}
+
+void OutstationStateUnsolConfirmWait::OnConfirmTimeout(OutstationContext* pContext)
+{
+	if (pContext->pConfirmTimer)
+	{
+		pContext->pConfirmTimer = nullptr;
+
+		if (pContext->completedNullUnsol)
+		{
+			// the unsol message contained measurements, so reset the event buffer
+			pContext->eventBuffer.Reset();			
+		}
+
+		pContext->StartUnsolRetryTimer();
+		pContext->pState = &OutstationStateIdle::Inst();		
 	}
 }
 

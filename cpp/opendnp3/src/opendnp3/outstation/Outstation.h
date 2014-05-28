@@ -58,9 +58,7 @@ class Outstation : public openpal::IUpperLayer
 	
 	private:
 
-	// ------ Internal events ------		
-
-	void OnReceiveSolRequest(const APDURecord& request, const openpal::ReadOnlyBuffer& fragment);
+	// ------ Internal events ------			
 
 	OutstationContext context;
 

@@ -21,13 +21,15 @@
 #ifndef __APDU_BUILDERS_H_
 #define __APDU_BUILDERS_H_
 
-#include "APDURequest.h"
+#include "opendnp3/app/APDURequest.h"
+#include "opendnp3/app/APDUResponse.h"
 
 namespace opendnp3
 {
 namespace build 
 {
-	
+	// -------- requests -------------
+
 	void ClassRequest(APDURequest& request, FunctionCode code, int classMask, uint8_t seq);
 
 	void WriteClassHeaders(APDURequest& request, int classMask);	
@@ -41,6 +43,10 @@ namespace build
 	void ClearRestartIIN(APDURequest& request, uint8_t seq = 0);
 
 	void MeasureDelay(APDURequest& request, uint8_t seq = 0);
+
+	// -------- responses -------------
+
+	void NullUnsolicited(APDUResponse& response, uint8_t seq, const IINField& iin);
 	
 }	
 }

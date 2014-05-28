@@ -24,6 +24,7 @@
 #include "opendnp3/StaticSizeConfiguration.h"
 #include "opendnp3/LogLevels.h"
 
+#include "opendnp3/app/APDUBuilders.h"
 #include "opendnp3/app/APDUParser.h"
 #include "opendnp3/app/APDUHeaderParser.h"
 
@@ -65,15 +66,15 @@ OutstationContext::OutstationContext(
 	pState(&OutstationStateIdle::Inst()),
 	pConfirmTimer(nullptr),
 	pUnsolTimer(nullptr),
+	unsolPackTimerExpired(false),
 	rxFragCount(0),		
 	operateExpectedSeq(0),
 	operateExpectedFragCount(0),
 	solSeqN(0),
 	unsolSeqN(0),
-	expectedConfirmSeq(0),
-	unsolSeq(0),
-	completedNullUnsol(false),
-	unsolTriggered(false),
+	expectedSolConfirmSeq(0),
+	expectedUnsolConfirmSeq(0),
+	completedNullUnsol(false),	
 	rspContext(&database, &eventBuffer, StaticResponseTypes(config.defaultStaticResponses), config.defaultEventResponses)	
 {
 	pDatabase->SetEventBuffer(eventBuffer);
@@ -91,13 +92,10 @@ OutstationContext::OutstationContext(
 
 	if (params.allowUnsolicited)
 	{
-		// this will cause us to start going through the NULL unsolicited sequence
-		// this flag only clear when all the data has been reported
-		unsolTriggered = true;
+		// this will cause us to start going through the NULL unsolicited sequence				
 		this->OnEnterIdleState();
 	}
-	
-	// 
+		
 	auto notify = [this]() { this->OnNewEvents(); };
 	auto post = [notify, this] { pExecutor->PostLambda(notify); };
 	database.SetEventHandler(Bind(post));
@@ -152,9 +150,10 @@ void OutstationContext::SetOnline()
 void OutstationContext::SetOffline()
 {
 	isOnline = false;
+	unsolPackTimerExpired = false;
 	transmitState = TransmitState::IDLE;
 	pState = &OutstationStateIdle::Inst();
-	firstValidRequestAccepted = false;	
+	firstValidRequestAccepted = false;
 	eventBuffer.Reset();
 	rspContext.Reset();
 	CancelConfirmTimer();
@@ -291,17 +290,24 @@ void OutstationContext::RespondToRequest(const APDURecord& request, const openpa
 	response.SetIIN(iin | staticIIN | GetDynamicIIN());
 	if (response.GetControl().CON)
 	{
-		expectedConfirmSeq = request.control.SEQ;
+		expectedSolConfirmSeq = request.control.SEQ;
 		pState = &OutstationStateSolConfirmWait::Inst();
 	}
-	this->BeginTransmission(response.ToReadOnly());
+	this->BeginResponseTx(response.ToReadOnly());
 }
 
-void OutstationContext::BeginTransmission(const ReadOnlyBuffer& response)
+void OutstationContext::BeginResponseTx(const ReadOnlyBuffer& response)
 {	
 	this->transmitState = TransmitState::SOLICITED;
 	lastResponse = response;
 	pLower->BeginTransmit(response);	
+}
+
+void OutstationContext::BeginUnsolTx(const ReadOnlyBuffer& response, uint8_t seq)
+{
+	this->transmitState = TransmitState::UNSOLICITED;
+	this->expectedUnsolConfirmSeq = seq;
+	pLower->BeginTransmit(response);
 }
 
 IINField OutstationContext::BuildResponse(const APDURecord& request, APDUResponse& response)
@@ -329,18 +335,18 @@ void OutstationContext::ContinueMultiFragResponse(uint8_t seq)
 {
 	auto response = this->StartNewResponse();
 	response.SetFunction(FunctionCode::RESPONSE);
-	openpal::Transaction tx(this->pDatabase);
-	this->pDatabase->DoubleBuffer();
+
+	openpal::Transaction tx(this->pDatabase);	
 	auto control = this->rspContext.Load(response);
 	control.SEQ = seq;
 	response.SetControl(control);
 	response.SetIIN(this->staticIIN | this->GetDynamicIIN());
 	if (response.GetControl().CON)
 	{
-		expectedConfirmSeq = seq;
+		expectedSolConfirmSeq = seq;
 		pState = &OutstationStateSolConfirmWait::Inst();
 	}
-	this->BeginTransmission(response.ToReadOnly());
+	this->BeginResponseTx(response.ToReadOnly());
 }
 
 void OutstationContext::OnEnterIdleState()
@@ -362,27 +368,17 @@ bool OutstationContext::IsNotTransmitting() const
 
 void OutstationContext::CheckForIdleState()
 {
-	if (this->IsIdle())
-	{
-		this->CheckForUnsolicited();
-	}
+	this->CheckForUnsolicited();	
 }
 
 void OutstationContext::OnNewEvents()
 {
-	if (params.allowUnsolicited)
-	{
-		unsolTriggered = true;
-		if (this->IsIdle())
-		{
-			this->CheckForUnsolicited();
-		}		
-	}
+	this->CheckForUnsolicited();	
 }
 
 void OutstationContext::CheckForUnsolicited()
 {
-	if (params.allowUnsolicited && unsolTriggered && (pUnsolTimer == nullptr))
+	if (this->IsIdle() && params.allowUnsolicited && (pUnsolTimer == nullptr))
 	{
 		if (completedNullUnsol)
 		{
@@ -390,23 +386,53 @@ void OutstationContext::CheckForUnsolicited()
 		}
 		else
 		{
-
+			// send a NULL unsolcited message
+			
+			pState = &OutstationStateUnsolConfirmWait::Inst();
+			auto response = this->StartNewResponse();
+			build::NullUnsolicited(response, this->unsolSeqN, this->staticIIN | this->GetDynamicIIN());
+			this->BeginUnsolTx(response.ToReadOnly(), this->unsolSeqN);
 		}
 	}
 }
 
-void OutstationContext::StartConfirmTimer()
+bool OutstationContext::StartConfirmTimer()
 {
-	if (!pConfirmTimer)
+	if (pConfirmTimer)
 	{	
-		auto lambda = [this]() { this->OnSolConfirmTimeout(); };
-		pConfirmTimer = pExecutor->Start(params.solConfirmTimeout, Bind(lambda));		
+		return false;		
+	}
+	else
+	{
+		auto timeout = [this]() { this->OnSolConfirmTimeout(); };
+		pConfirmTimer = pExecutor->Start(params.solConfirmTimeout, Bind(timeout));
+		return true;
+	}
+}
+
+bool OutstationContext::StartUnsolRetryTimer()
+{
+	if (pUnsolTimer)
+	{
+		return false;		
+	}
+	else
+	{
+		auto timeout = [this]() { this->OnUnsolRetryTimeout(); };
+		pUnsolTimer = pExecutor->Start(params.unsolRetryTimeout, Bind(timeout));
+		return true;
 	}
 }
 
 void OutstationContext::OnSolConfirmTimeout()
 {
 	pState->OnConfirmTimeout(this);
+}
+
+void OutstationContext::OnUnsolRetryTimeout()
+{
+	pUnsolTimer = nullptr;
+	this->CheckForUnsolicited();
 }
 
 IINField OutstationContext::HandleRead(const APDURecord& request, APDUResponse& response)

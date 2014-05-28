@@ -92,6 +92,13 @@ void MeasureDelay(APDURequest& request, uint8_t seq)
 	request.SetControl(AppControlField::Request(seq));
 }
 
+void NullUnsolicited(APDUResponse& response, uint8_t seq, const IINField& iin)
+{
+	response.SetControl(AppControlField(true, true, true, true, seq));
+	response.SetFunction(FunctionCode::UNSOLICITED_RESPONSE);
+	response.SetIIN(iin);
+}
+
 }
 }
 

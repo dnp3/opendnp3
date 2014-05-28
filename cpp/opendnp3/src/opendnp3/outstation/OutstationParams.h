@@ -39,14 +39,20 @@ struct OutstationParams
 	/// Timeout for solicited confirms
 	openpal::TimeDuration solConfirmTimeout;
 
-	/// Timeout for solicited confirms
+	/// Timeout for unsolicited confirms
 	openpal::TimeDuration unsolConfirmTimeout;
+
+	/// Timeout for unsolicited retries
+	openpal::TimeDuration unsolRetryTimeout;
 
 	/// The maximum fragment size the outstation will use for fragments it sends
 	uint32_t maxTxFragSize;
 
-	/// Global enable/disable for unsolicited, defaults to false
+	/// Global enabled / disable for unsolicted messages. If false, the NULL unsolicited message is not even sent
 	bool allowUnsolicited;
+
+	/// Class mask for unsolicted, default to 0 as unsolicited has to be enabled
+	uint8_t unsolClassMask;
 
 
 };

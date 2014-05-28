@@ -90,6 +90,7 @@ class OutstationContext
 
 	openpal::ITimer* pConfirmTimer;
 	openpal::ITimer* pUnsolTimer;						// gets used for both retries and "pack" timer
+	bool unsolPackTimerExpired;
 	
 	uint32_t rxFragCount;
 	openpal::MonotonicTimestamp selectTime;
@@ -98,10 +99,9 @@ class OutstationContext
 
 	uint8_t solSeqN;
 	uint8_t unsolSeqN;
-	uint8_t expectedConfirmSeq;
-	uint8_t unsolSeq;	
+	uint8_t expectedSolConfirmSeq;	
+	uint8_t expectedUnsolConfirmSeq;
 	bool completedNullUnsol;
-	bool unsolTriggered;
 
 	openpal::ReadOnlyBuffer lastValidRequest;			// points to bytes in rxBuffer
 	openpal::ReadOnlyBuffer lastResponse;				// points to bytes in txBuffer	
@@ -111,9 +111,7 @@ class OutstationContext
 
 	IINField GetDynamicIIN();
 
-	APDUResponse StartNewResponse();
-
-	//void DeferRequest(const openpal::ReadOnlyBuffer& fragment);
+	APDUResponse StartNewResponse();	
 
 	openpal::ReadOnlyBuffer RecordLastRequest(const openpal::ReadOnlyBuffer& fragment);
 
@@ -128,7 +126,9 @@ class OutstationContext
 
 	bool CancelUnsolTimer();
 	
-	void StartConfirmTimer();
+	bool StartConfirmTimer();
+
+	bool StartUnsolRetryTimer();
 
 	void ExamineAPDU(const openpal::ReadOnlyBuffer& fragment);
 
@@ -136,7 +136,9 @@ class OutstationContext
 
 	void RespondToRequest(const APDURecord& request, const openpal::ReadOnlyBuffer& fragment);
 
-	void BeginTransmission(const openpal::ReadOnlyBuffer& response);
+	void BeginResponseTx(const openpal::ReadOnlyBuffer& response);
+
+	void BeginUnsolTx(const openpal::ReadOnlyBuffer& response, uint8_t seq);
 
 	IINField BuildResponse(const APDURecord& request, APDUResponse& response);
 
@@ -162,6 +164,8 @@ class OutstationContext
 	void CheckForUnsolicited();
 
 	void OnSolConfirmTimeout();
+
+	void OnUnsolRetryTimeout();
 
 	void OnNewEvents();
 
