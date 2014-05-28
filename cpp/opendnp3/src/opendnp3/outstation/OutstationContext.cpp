@@ -306,6 +306,7 @@ void OutstationContext::BeginResponseTx(const ReadOnlyBuffer& response)
 void OutstationContext::BeginUnsolTx(const ReadOnlyBuffer& response, uint8_t seq)
 {
 	this->transmitState = TransmitState::UNSOLICITED;
+	this->unsolSeqN = OutstationContext::NextSeq(seq);
 	this->expectedUnsolConfirmSeq = seq;
 	pLower->BeginTransmit(response);
 }

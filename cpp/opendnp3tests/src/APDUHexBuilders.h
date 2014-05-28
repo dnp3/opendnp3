@@ -30,17 +30,21 @@
 
 namespace hex
 {
+	// ----------- requests --------------
 
 	std::string IntegrityPoll(uint8_t seq, int mask = ~0);
 
-	std::string ClassTask(opendnp3::FunctionCode fc, uint8_t seq, int mask = ~0);
-
-	std::string EmptyResponse(const opendnp3::IINField& iin, uint8_t seq);
+	std::string ClassTask(opendnp3::FunctionCode fc, uint8_t seq, int mask = ~0);	
 
 	std::string ClearRestartIIN(uint8_t seq);
 
 	std::string MeasureDelay(uint8_t seq);
 
+	// ----------- responses --------------
+
+	std::string EmptyResponse(const opendnp3::IINField& iin, uint8_t seq);
+
+	std::string NullUnsolicited(uint8_t seq, const opendnp3::IINField& iin);
 }
 
 #endif

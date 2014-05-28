@@ -44,17 +44,7 @@ namespace hex
 	std::string IntegrityPoll(uint8_t seq, int mask)
 	{
 		return ClassTask(FunctionCode::READ, seq, mask);
-	}
-
-	std::string EmptyResponse(const IINField& iin, uint8_t seq)
-	{
-		StaticBuffer<2048> buffer;
-		APDUResponse response(buffer.GetWriteBuffer());
-		response.SetFunction(FunctionCode::RESPONSE);
-		response.SetControl(AppControlField(true, true, false, false, seq));
-		response.SetIIN(iin);
-		return toHex(response.ToReadOnly());
-	}
+	}	
 
 	std::string ClearRestartIIN(uint8_t seq)
 	{
@@ -70,6 +60,24 @@ namespace hex
 		APDURequest request(buffer.GetWriteBuffer());
 		build::MeasureDelay(request, seq);
 		return toHex(request.ToReadOnly());
+	}
+
+	std::string EmptyResponse(const IINField& iin, uint8_t seq)
+	{
+		StaticBuffer<2048> buffer;
+		APDUResponse response(buffer.GetWriteBuffer());
+		response.SetFunction(FunctionCode::RESPONSE);
+		response.SetControl(AppControlField(true, true, false, false, seq));
+		response.SetIIN(iin);
+		return toHex(response.ToReadOnly());
+	}
+
+	std::string NullUnsolicited(uint8_t seq, const IINField& iin)
+	{
+		StaticBuffer<2048> buffer;
+		APDUResponse response(buffer.GetWriteBuffer());
+		build::NullUnsolicited(response, seq, iin);
+		return toHex(response.ToReadOnly());
 	}
 
 }

@@ -217,7 +217,7 @@ void OutstationStateUnsolConfirmWait::OnSendResult(OutstationContext* pContext, 
 		pContext->StartConfirmTimer();
 	}
 	else
-	{
+	{		
 		pContext->StartUnsolRetryTimer();
 		pContext->pState = &OutstationStateIdle::Inst();
 	}	
