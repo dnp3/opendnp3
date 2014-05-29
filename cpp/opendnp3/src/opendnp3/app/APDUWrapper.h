@@ -47,6 +47,8 @@ public:
 	AppControlField GetControl() const;
 	void SetControl(AppControlField control);
 
+	uint32_t Size() const;
+
 	openpal::ReadOnlyBuffer ToReadOnly() const;
 
 	ObjectWriter GetWriter();

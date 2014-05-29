@@ -78,10 +78,14 @@ void APDUWrapper::SetControl(AppControlField control)
 	buffer[0] = control.ToByte();
 }
 
-openpal::ReadOnlyBuffer APDUWrapper::ToReadOnly() const
+uint32_t APDUWrapper::Size() const
 {
-	uint32_t count = buffer.Size() - remaining.Size();
-	return buffer.Truncate(count).ToReadOnly();
+	return buffer.Size() - remaining.Size();
+}
+
+openpal::ReadOnlyBuffer APDUWrapper::ToReadOnly() const
+{	
+	return buffer.Truncate(this->Size()).ToReadOnly();
 }
 
 }

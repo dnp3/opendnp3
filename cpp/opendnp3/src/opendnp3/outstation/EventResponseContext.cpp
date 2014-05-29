@@ -31,14 +31,17 @@ namespace opendnp3
 {
 
 EventResponseContext::EventResponseContext(OutstationEventBuffer* pBuffer_, const EventResponseConfig& config_) : 
+	isComplete(false),
 	pBuffer(pBuffer_),
 	config(config_)
 {
+
 }
+
 
 bool EventResponseContext::IsComplete() const
 {
-	return !criteria.HasSelection();
+	return isComplete;
 }
 
 IINField EventResponseContext::ReadAll(const GroupVariationRecord& record)
@@ -79,84 +82,78 @@ IINField EventResponseContext::ReadAll(const GroupVariationRecord& record)
 
 void EventResponseContext::Reset()
 {
+	isComplete = false;
 	criteria.Clear();
 }
 
-EventResponseContext::Result EventResponseContext::Load(ObjectWriter& writer)
+bool EventResponseContext::Load(ObjectWriter& writer)
 {
-	if (criteria.HasSelection())
+	if (isComplete)
 	{
-		auto iterator = pBuffer->SelectEvents(criteria);
-		auto result = Iterate(writer, iterator, config);
-		if (result.complete)
-		{
-			criteria.Clear();
-		}
-		return result;
+		return true;
 	}
 	else
 	{
-		return Result(true, 0);
-	}
+		if (criteria.HasSelection())
+		{			
+			auto iterator = pBuffer->SelectEvents(criteria);
+			isComplete = WriteEventHeaders(writer, iterator, config);
+			return isComplete;
+		}
+		else
+		{
+			return true;
+		}
+	}	
 }
 
-EventResponseContext::Result EventResponseContext::Iterate(ObjectWriter& writer, SelectionIterator& iterator, const EventResponseConfig& config)
+bool EventResponseContext::WriteEventHeaders(ObjectWriter& writer, SelectionIterator& iterator, const EventResponseConfig& config)
 {
 	uint32_t count = 0;
 
 	while (iterator.HasValue())
 	{
-		switch (iterator.GetValue())
+		auto numWritten = WriteOneHeader(writer, iterator, config);
+		count += numWritten;		
+		if (numWritten == 0)
 		{
-		case(EventType::Binary) :
-			if (!WriteFullHeader<Binary>(writer, count, iterator, EventResponseTypes::Lookup(config.binary)))
-			{
-				return Result(false, count);
-			}
-			break;
-		case(EventType::DoubleBitBinary) :
-			if (!WriteFullHeader<DoubleBitBinary>(writer, count, iterator, EventResponseTypes::Lookup(config.doubleBinary)))
-			{
-				return Result(false, count);
-			}
-			break;
-		case(EventType::Counter) :
-			if (!WriteFullHeader<Counter>(writer, count, iterator, EventResponseTypes::Lookup(config.counter)))
-			{
-				return Result(false, count);
-			}
-			break;
-		case(EventType::FrozenCounter) :
-			if (!WriteFullHeader<FrozenCounter>(writer, count, iterator, EventResponseTypes::Lookup(config.frozenCounter)))
-			{
-				return Result(false, count);
-			}
-			break;
-		case(EventType::Analog) :
-			if (!WriteFullHeader<Analog>(writer, count, iterator, EventResponseTypes::Lookup(config.analog)))
-			{
-				return Result(false, count);
-			}
-			break;
-		case(EventType::BinaryOutputStatus) :
-			if (!WriteFullHeader<BinaryOutputStatus>(writer, count, iterator, EventResponseTypes::Lookup(config.binaryOutputStatus)))
-			{
-				return Result(false, count);
-			}
-			break;
-		case(EventType::AnalogOutputStatus) :
-			if (!WriteFullHeader<AnalogOutputStatus>(writer, count, iterator, EventResponseTypes::Lookup(config.analogOutputStatus)))
-			{
-				return Result(false, count);
-			}
-			break;
-		default:
-			iterator.SeekNext();
-			break;
-		}		
+			return false;
+		}
+		
 	}
-
-	return Result(true, count);
+	
+	return true;
 }
+
+uint32_t EventResponseContext::WriteOneHeader(ObjectWriter& writer, SelectionIterator& iterator, const EventResponseConfig& config)
+{
+	switch (iterator.GetValue())
+	{
+		case(EventType::Binary) :
+			return WriteFullHeader<Binary>(writer, iterator, EventResponseTypes::Lookup(config.binary));
+							
+		case(EventType::DoubleBitBinary) :
+			return WriteFullHeader<DoubleBitBinary>(writer, iterator, EventResponseTypes::Lookup(config.doubleBinary));
+									 
+		case(EventType::Counter) :
+			return WriteFullHeader<Counter>(writer, iterator, EventResponseTypes::Lookup(config.counter));
+							 
+		case(EventType::FrozenCounter) :
+			return WriteFullHeader<FrozenCounter>(writer, iterator, EventResponseTypes::Lookup(config.frozenCounter));
+
+		case(EventType::Analog) :
+			return WriteFullHeader<Analog>(writer, iterator, EventResponseTypes::Lookup(config.analog));
+
+		case(EventType::BinaryOutputStatus) :
+			return WriteFullHeader<BinaryOutputStatus>(writer, iterator, EventResponseTypes::Lookup(config.binaryOutputStatus));
+
+		case(EventType::AnalogOutputStatus) :
+			return WriteFullHeader<AnalogOutputStatus>(writer, iterator, EventResponseTypes::Lookup(config.analogOutputStatus));
+
+		default:			
+			return 0;
+	}
+}
+
 
 }

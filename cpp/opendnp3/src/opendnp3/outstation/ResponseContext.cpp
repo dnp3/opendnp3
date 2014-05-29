@@ -46,24 +46,28 @@ bool ResponseContext::IsComplete() const
 
 AppControlField ResponseContext::LoadSolicited(APDUResponse& response)
 {
-	auto writer = response.GetWriter();
-	auto result = eventContext.Load(writer);
-	auto count = fragmentCount;
+	auto fir = fragmentCount == 0;
 	++fragmentCount;
-	if (result.complete)
-	{
+
+	auto writer = response.GetWriter();
+	auto preLoadSize = response.Size();
+
+	auto allEventsLoaded = eventContext.Load(writer);
+	auto wereEventsWritten = response.Size() > preLoadSize;
+		
+	if (allEventsLoaded)
+	{		
 		auto complete = staticContext.Load(writer);
-		return GetControl(response, count, result.Any(), complete);		
+		return GetControl(response, fir, complete, wereEventsWritten);
 	}
 	else
-	{		
-		return GetControl(response, count, result.Any(), false);
+	{				
+		return GetControl(response, fir, false, wereEventsWritten);
 	}
 }
 
-AppControlField ResponseContext::GetControl(APDUResponse& response, uint16_t fragCount, bool hasEvents, bool fin)
-{
-	auto fir = (fragCount == 0);
+AppControlField ResponseContext::GetControl(APDUResponse& response, bool fir, bool fin, bool hasEvents)
+{	
 	auto con = (!fin) || hasEvents; // request confirmation on any non-fin fragment or if it has events
 	return AppControlField(fir, fin, con, false);		
 }
