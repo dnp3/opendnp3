@@ -21,14 +21,24 @@
 
 #include "SelectionCriteria.h"
 
+#include "opendnp3/app/PointClass.h"
+
 namespace opendnp3
 {
 
+SelectionCriteria SelectionCriteria::ForomUnsolMask(uint8_t unsolClassMask)
+{
+	SelectionCriteria sc;
+	if (unsolClassMask & CLASS_1) sc.class1 = events::ALL_TYPES;
+	if (unsolClassMask & CLASS_2) sc.class2 = events::ALL_TYPES;
+	if (unsolClassMask & CLASS_3) sc.class3 = events::ALL_TYPES;
+	return sc;
+}
 
 SelectionCriteria::SelectionCriteria() : class1(0), class2(0), class3(0)
 {}
 
-SelectionCriteria::SelectionCriteria(uint32_t clazz1, uint32_t clazz2, uint32_t clazz3) :
+SelectionCriteria::SelectionCriteria(uint16_t clazz1, uint16_t clazz2, uint16_t clazz3) :
 	class1(clazz1),
 	class2(clazz2),
 	class3(clazz3)
@@ -37,9 +47,7 @@ SelectionCriteria::SelectionCriteria(uint32_t clazz1, uint32_t clazz2, uint32_t 
 
 void SelectionCriteria::Clear()
 {
-	class1 = 0;
-	class2 = 0;
-	class3 = 0;
+	class1 = class2 = class3 = 0;	
 }
 
 bool SelectionCriteria::HasSelection() const

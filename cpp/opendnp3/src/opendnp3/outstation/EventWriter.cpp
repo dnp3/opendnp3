@@ -26,18 +26,14 @@
 namespace opendnp3
 {
 	bool EventWriter::WriteEventHeaders(ObjectWriter& writer, SelectionIterator& iterator, const EventResponseConfig& config)
-	{
-		uint32_t count = 0;
-
+	{		
 		while (iterator.HasValue())
 		{
-			auto numWritten = WriteOneHeader(writer, iterator, config);
-			count += numWritten;
+			auto numWritten = WriteOneHeader(writer, iterator, config);			
 			if (numWritten == 0)
 			{
 				return false;
 			}
-
 		}
 
 		return true;

@@ -112,7 +112,9 @@ class OutstationContext
 
 	IINField GetDynamicIIN();
 
-	APDUResponse StartNewResponse();	
+	APDUResponse StartNewResponse();
+
+	void ConfigureUnsolHeader(APDUResponse& unsol);
 
 	openpal::ReadOnlyBuffer RecordLastRequest(const openpal::ReadOnlyBuffer& fragment);
 
@@ -139,7 +141,7 @@ class OutstationContext
 
 	void BeginResponseTx(const openpal::ReadOnlyBuffer& response);
 
-	void BeginUnsolTx(const openpal::ReadOnlyBuffer& response, uint8_t seq);
+	void BeginUnsolTx(const openpal::ReadOnlyBuffer& response);
 
 	IINField BuildResponse(const APDURecord& request, APDUResponse& response);
 

@@ -29,9 +29,11 @@ namespace opendnp3
 
 struct SelectionCriteria
 {
+	static SelectionCriteria ForomUnsolMask(uint8_t unsolClassMask);
+
 	SelectionCriteria();
 
-	SelectionCriteria(uint32_t clazz1, uint32_t clazz2, uint32_t clazz3);
+	SelectionCriteria(uint16_t clazz1, uint16_t clazz2, uint16_t clazz3);
 
 	bool IsMatch(EventClass clazz, EventType type) const;
 
@@ -39,22 +41,22 @@ struct SelectionCriteria
 
 	bool HasSelection() const;
 
-	inline void AddToClass1(uint32_t types)
+	inline void AddToClass1(uint16_t types)
 	{
 		class1 |= types;
 	}
 
-	inline void AddToClass2(uint32_t types)
+	inline void AddToClass2(uint16_t types)
 	{
 		class2 |= types;
 	}
 
-	inline void AddToClass3(uint32_t types)
+	inline void AddToClass3(uint16_t types)
 	{
 		class3 |= types;
 	}
 
-	inline void AddToAllClasses(uint32_t types)
+	inline void AddToAllClasses(uint16_t types)
 	{
 		AddToClass1(types);
 		AddToClass2(types);
@@ -63,9 +65,9 @@ struct SelectionCriteria
 
 	// ----- bit masks for measurement types in each class --------
 
-	uint32_t class1;
-	uint32_t class2;
-	uint32_t class3;
+	uint16_t class1;
+	uint16_t class2;
+	uint16_t class3;
 };
 
 }

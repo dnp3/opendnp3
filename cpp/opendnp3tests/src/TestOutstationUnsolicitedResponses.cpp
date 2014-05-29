@@ -73,20 +73,11 @@ TEST_CASE(SUITE("UnsolData"))
 {
 	OutstationConfig cfg; cfg.params.allowUnsolicited = true;
 	cfg.params.unsolClassMask = ALL_CLASSES; // allows us to skip the "enable unsol" step
-	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOnly(3));
+	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOnly(3), EventBufferConfig::AllTypes(5));
 		
 	t.db.staticData.binaries.metadata[0].clazz = CLASS_1;
 	t.db.staticData.binaries.metadata[1].clazz = CLASS_2;
 	t.db.staticData.binaries.metadata[2].clazz = CLASS_3;
-	
-	// do a transaction before the layer comes online to prove that the null transaction
-	// is occuring before unsol data is sent
-	{
-		Transaction tr(t.db);
-		t.db.Update(Binary(false, BQ_ONLINE), 1);
-	}
-
-	REQUIRE(t.exe.RunMany()); //dispatch the data update event
 	
 	t.outstation.OnLowerLayerUp();
 
@@ -96,11 +87,18 @@ TEST_CASE(SUITE("UnsolData"))
 	t.outstation.OnSendResult(true);
 	t.SendToOutstation(hex::UnsolConfirm(0));
 
+	// do a transaction before the layer comes online to prove that the null transaction
+	// is occuring before unsol data is sent
+	{
+		Transaction tr(t.db);
+		t.db.Update(Binary(false, BQ_ONLINE), 2);
+	}
+
 	REQUIRE(t.exe.RunMany());	
 	
 	// should immediately try to send another unsol packet,
-	// Grp2Var1, qual 0x17, count 1, index 0, quality+val == 0x01
-	REQUIRE(t.lower.PopWriteAsHex() ==  "F1 82 80 00 02 01 17 01 00 01");
+	// Grp2Var1, qual 0x17, count 1, index 2, quality+val == 0x01
+	REQUIRE(t.lower.PopWriteAsHex() ==  "F1 82 80 00 02 01 28 01 00 02 00 01");
 	
 	/*
 	REQUIRE(t.app.NumAPDU() ==  0); //check that no more frags are sent

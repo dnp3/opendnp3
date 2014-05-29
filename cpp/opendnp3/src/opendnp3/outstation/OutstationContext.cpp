@@ -34,6 +34,7 @@
 #include "opendnp3/outstation/CommandActionAdapter.h"
 #include "opendnp3/outstation/CommandResponseHandler.h"
 #include "opendnp3/outstation/ConstantCommandAction.h"
+#include "opendnp3/outstation/EventWriter.h"
 
 #include <openpal/LogMacros.h>
 
@@ -128,6 +129,11 @@ IINField OutstationContext::GetDynamicIIN()
 APDUResponse OutstationContext::StartNewResponse()
 {	
 	return APDUResponse(txBuffer.GetWriteBuffer(params.maxTxFragSize));
+}
+
+void OutstationContext::ConfigureUnsolHeader(APDUResponse& unsol)
+{	
+	build::NullUnsolicited(unsol, this->unsolSeqN, this->staticIIN | this->GetDynamicIIN());	
 }
 
 ReadOnlyBuffer OutstationContext::RecordLastRequest(const openpal::ReadOnlyBuffer& fragment)
@@ -304,11 +310,11 @@ void OutstationContext::BeginResponseTx(const ReadOnlyBuffer& response)
 	pLower->BeginTransmit(response);	
 }
 
-void OutstationContext::BeginUnsolTx(const ReadOnlyBuffer& response, uint8_t seq)
+void OutstationContext::BeginUnsolTx(const ReadOnlyBuffer& response)
 {
 	this->transmitState = TransmitState::UNSOLICITED;
-	this->unsolSeqN = OutstationContext::NextSeq(seq);
-	this->expectedUnsolConfirmSeq = seq;
+	this->expectedUnsolConfirmSeq = unsolSeqN;
+	this->unsolSeqN = OutstationContext::NextSeq(unsolSeqN);	
 	pLower->BeginTransmit(response);
 }
 
@@ -384,19 +390,39 @@ void OutstationContext::CheckForUnsolicited()
 	{
 		if (completedNullUnsol)
 		{
-			// even though we're not loading static data, we need to lock 
-			// the database since it updates the event buffer
-			openpal::Transaction tx(pDatabase);
+			auto criteria = SelectionCriteria::ForomUnsolMask(params.unsolClassMask);
+			if (criteria.HasSelection())
+			{
+				auto unsol = this->StartNewResponse();
+				auto initialSize = unsol.Size();
+						
+				{
+					// even though we're not loading static data, we need to lock 
+					// the database since it updates the event buffer					
+					openpal::Transaction tx(pDatabase);
+					auto iterator = eventBuffer.SelectEvents(criteria);
+					EventWriter::WriteEventHeaders(unsol.GetWriter(), iterator, eventConfig);
+				}
 			
+				if (unsol.Size() > initialSize) // were any events written?
+				{
+					this->ConfigureUnsolHeader(unsol);
+					pState = &OutstationStateUnsolConfirmWait::Inst();
+					this->BeginUnsolTx(unsol.ToReadOnly());
+				}
+				else
+				{ 
+					eventBuffer.Reset();
+				}
+			}
 		}
 		else
 		{
-			// send a NULL unsolcited message
-			
+			// send a NULL unsolcited message			
 			pState = &OutstationStateUnsolConfirmWait::Inst();
-			auto response = this->StartNewResponse();
-			build::NullUnsolicited(response, this->unsolSeqN, this->staticIIN | this->GetDynamicIIN());
-			this->BeginUnsolTx(response.ToReadOnly(), this->unsolSeqN);
+			auto unsol = this->StartNewResponse();
+			this->ConfigureUnsolHeader(unsol);
+			this->BeginUnsolTx(unsol.ToReadOnly());
 		}
 	}
 }
