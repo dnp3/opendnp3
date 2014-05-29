@@ -25,6 +25,7 @@
 #include <opendnp3/outstation/TimeTransaction.h>
 #include <opendnp3/outstation/ITimeWriteHandler.h>
 #include <opendnp3/LogLevels.h>
+#include <opendnp3/app/PointClass.h>
 
 #include <asiopal/Log.h>
 #include <asiopal/LogToStdio.h>
@@ -76,7 +77,9 @@ int main(int argc, char* argv[])
 	// useable, but understanding the options are important.
 	OutstationStackConfig stackConfig;
 	stackConfig.dbTemplate = DatabaseTemplate::AllTypes(10);
-	stackConfig.outstation.params.allowUnsolicited = false;
+	stackConfig.outstation.params.allowUnsolicited = true;
+	//stackConfig.outstation.params.unsolClassMask = ALL_EVENT_CLASSES;
+	
 
 	// Create a new outstation with a log level, command handler, and
 	// config info this	returns a thread-safe interface used for

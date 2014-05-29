@@ -401,7 +401,8 @@ void OutstationContext::CheckForUnsolicited()
 					// the database since it updates the event buffer					
 					openpal::Transaction tx(pDatabase);
 					auto iterator = eventBuffer.SelectEvents(criteria);
-					EventWriter::WriteEventHeaders(unsol.GetWriter(), iterator, eventConfig);
+					auto writer = unsol.GetWriter();
+					EventWriter::WriteEventHeaders(writer, iterator, eventConfig);
 				}
 			
 				if (unsol.Size() > initialSize) // were any events written?
