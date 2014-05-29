@@ -99,10 +99,11 @@ TEST_CASE(SUITE("UnsolData"))
 	// should immediately try to send another unsol packet,
 	// Grp2Var1, qual 0x17, count 1, index 2, quality+val == 0x01
 	REQUIRE(t.lower.PopWriteAsHex() ==  "F1 82 80 00 02 01 28 01 00 02 00 01");
-	
-	/*
-	REQUIRE(t.app.NumAPDU() ==  0); //check that no more frags are sent
-	*/
+	t.outstation.OnSendResult(true);
+	t.SendToOutstation(hex::UnsolConfirm(1));
+
+	REQUIRE(t.exe.RunMany());
+	REQUIRE(t.lower.NumWrites() == 0);	
 }
 
 /*
