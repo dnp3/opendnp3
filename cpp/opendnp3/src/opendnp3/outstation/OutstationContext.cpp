@@ -338,7 +338,7 @@ void OutstationContext::ContinueMultiFragResponse(uint8_t seq)
 	response.SetFunction(FunctionCode::RESPONSE);
 
 	openpal::Transaction tx(this->pDatabase);	
-	auto control = this->rspContext.Load(response);
+	auto control = this->rspContext.LoadSolicited(response);
 	control.SEQ = seq;
 	response.SetControl(control);
 	response.SetIIN(this->staticIIN | this->GetDynamicIIN());
@@ -383,7 +383,10 @@ void OutstationContext::CheckForUnsolicited()
 	{
 		if (completedNullUnsol)
 		{
-
+			// even though we're not loading static data, we need to lock 
+			// the database since it updates the event buffer
+			openpal::Transaction tx(pDatabase);
+			
 		}
 		else
 		{
@@ -448,7 +451,7 @@ IINField OutstationContext::HandleRead(const APDURecord& request, APDUResponse& 
 		// this ensures that an multi-fragmented responses see a consistent snapshot
 		openpal::Transaction tx(pDatabase);
 		pDatabase->DoubleBuffer();
-		auto control = rspContext.Load(response);		
+		auto control = rspContext.LoadSolicited(response);		
 		control.SEQ = request.control.SEQ;
 		response.SetControl(control);
 		return handler.Errors();

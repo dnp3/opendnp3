@@ -69,35 +69,45 @@ TEST_CASE(SUITE("UnsolRetryDelay"))
 	REQUIRE(t.lower.PopWriteAsHex() == hex::NullUnsolicited(1, IINField(IINBit::DEVICE_RESTART)));
 }
 
-/*
 TEST_CASE(SUITE("UnsolData"))
 {
-	OutstationConfig cfg;
-	cfg.mUnsolMask.class1 = true; // this allows the EnableUnsol sequence to be skipped
-	OutstationTestObject t(cfg);
-	t.db.Configure(MeasurementType::BINARY, 1);
-	t.db.SetClass(MeasurementType::BINARY, CLASS_1);
-
+	OutstationConfig cfg; cfg.params.allowUnsolicited = true;
+	cfg.params.unsolClassMask = ALL_CLASSES; // allows us to skip the "enable unsol" step
+	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOnly(3));
+		
+	t.db.staticData.binaries.metadata[0].clazz = CLASS_1;
+	t.db.staticData.binaries.metadata[1].clazz = CLASS_2;
+	t.db.staticData.binaries.metadata[2].clazz = CLASS_3;
+	
 	// do a transaction before the layer comes online to prove that the null transaction
 	// is occuring before unsol data is sent
 	{
-		Transaction tr(t.outstation.GetDataObserver());
-		t.outstation.GetDataObserver()->Update(Binary(false, BQ_ONLINE), 0);
+		Transaction tr(t.db);
+		t.db.Update(Binary(false, BQ_ONLINE), 1);
 	}
 
-	REQUIRE(t.mts.RunOne()); //dispatch the data update event
-
+	REQUIRE(t.exe.RunMany()); //dispatch the data update event
+	
 	t.outstation.OnLowerLayerUp();
-	REQUIRE(t.lower.PopWriteAsHex() ==  "F0 82 80 00");
 
+	REQUIRE(t.exe.RunMany());
+	
+	REQUIRE(t.lower.PopWriteAsHex() ==  hex::NullUnsolicited(0, IINField(IINBit::DEVICE_RESTART)));
+	t.outstation.OnSendResult(true);
+	t.SendToOutstation(hex::UnsolConfirm(0));
+
+	REQUIRE(t.exe.RunMany());	
+	
 	// should immediately try to send another unsol packet,
 	// Grp2Var1, qual 0x17, count 1, index 0, quality+val == 0x01
-	REQUIRE(t.lower.PopWriteAsHex() ==  "F0 82 80 00 02 01 17 01 00 01");
-
+	REQUIRE(t.lower.PopWriteAsHex() ==  "F1 82 80 00 02 01 17 01 00 01");
+	
+	/*
 	REQUIRE(t.app.NumAPDU() ==  0); //check that no more frags are sent
+	*/
 }
 
-
+/*
 TEST_CASE(SUITE("UnsolicitedStaysDisabledEvenIfDataAreLoadedPriorToOpen"))
 {
 OutstationConfig cfg; cfg.disableUnsol = true;

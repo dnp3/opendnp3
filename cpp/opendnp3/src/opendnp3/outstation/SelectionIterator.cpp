@@ -33,33 +33,39 @@ SelectionIterator::SelectionIterator(OutstationEventBuffer* pBuffer_, const Sele
 	criteria(criteria_),
 	pCurrent(nullptr),
 	iterator(iterator_)
-{}
+{
+	pCurrent = SeekNextNode();
+}
 
-Option<EventType> SelectionIterator::SeekNext()
+bool SelectionIterator::HasValue() const
+{
+	return pCurrent != nullptr;
+}
+
+EventType SelectionIterator::GetValue()
+{
+	assert(pCurrent);
+	return pCurrent->value.type;
+}
+
+bool SelectionIterator::SeekNext()
+{
+	pCurrent = this->SeekNextNode();
+	return pCurrent != nullptr;
+}
+
+openpal::ListNode<SequenceRecord>* SelectionIterator::SeekNextNode()
 {
 	while (iterator.HasNext())
 	{
-		pCurrent = iterator.Next();
-		if (!pCurrent->value.selected && criteria.IsMatch(pCurrent->value.clazz, pCurrent->value.type))
+		auto pNode = iterator.Next();
+		if (pNode && !pNode->value.selected && criteria.IsMatch(pNode->value.clazz, pNode->value.type))
 		{
-			return Option<EventType>::Some(pCurrent->value.type);
+			return pNode;
 		}
 	}
 
-	pCurrent = nullptr;
-	return Option<EventType>::None();
-}
-
-openpal::Option<EventType> SelectionIterator::Current()
-{
-	if (pCurrent)
-	{
-		return Option<EventType>::Some(pCurrent->value.type);
-	}
-	else
-	{
-		return Option<EventType>::None();
-	}
+	return nullptr;
 }
 
 void SelectionIterator::SelectCurrent()

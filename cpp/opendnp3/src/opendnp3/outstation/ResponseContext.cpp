@@ -44,7 +44,7 @@ bool ResponseContext::IsComplete() const
 	return eventContext.IsComplete() && staticContext.IsComplete();
 }
 
-AppControlField ResponseContext::Load(APDUResponse& response)
+AppControlField ResponseContext::LoadSolicited(APDUResponse& response)
 {
 	auto writer = response.GetWriter();
 	auto result = eventContext.Load(writer);
@@ -72,12 +72,12 @@ IINField ResponseContext::ReadAllObjects(const GroupVariationRecord& record)
 {
 	switch (record.type)
 	{
-	case(GroupVariationType::STATIC) :
-		return staticContext.ReadAll(record);
-	case(GroupVariationType::EVENT) :
-		return eventContext.ReadAll(record);
-	default:
-		return IINField(IINBit::FUNC_NOT_SUPPORTED);
+		case(GroupVariationType::STATIC) :
+			return staticContext.ReadAll(record);
+		case(GroupVariationType::EVENT) :
+			return eventContext.ReadAll(record);
+		default:
+			return IINField(IINBit::FUNC_NOT_SUPPORTED);
 	}
 }
 

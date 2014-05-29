@@ -78,6 +78,15 @@ namespace hex
 		APDUResponse response(buffer.GetWriteBuffer());
 		build::NullUnsolicited(response, seq, iin);
 		return toHex(response.ToReadOnly());
+	}	
+
+	std::string UnsolConfirm(uint8_t seq)
+	{
+		StaticBuffer<2048> buffer;
+		APDURequest apdu(buffer.GetWriteBuffer());
+		apdu.SetControl(AppControlField(true, true, false, true, seq));
+		apdu.SetFunction(FunctionCode::CONFIRM);		
+		return toHex(apdu.ToReadOnly());
 	}
 
 }

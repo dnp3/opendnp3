@@ -38,13 +38,14 @@ class SelectionIterator
 {
 	friend class OutstationEventBuffer;
 
-public:
+public:	
 
-	//bool HasMore() const;
+	bool HasValue() const;
 
-	openpal::Option<EventType> Current();
-	openpal::Option<EventType> SeekNext();
-
+	EventType GetValue();
+	
+	bool SeekNext();	
+	
 	void SelectCurrent();
 
 	bool Read(Event<Binary>& evt);
@@ -57,6 +58,8 @@ public:
 
 
 private:
+
+	openpal::ListNode<SequenceRecord>* SeekNextNode();
 
 	SelectionIterator(OutstationEventBuffer* pBuffer_,
 	                  const SelectionCriteria& criteria_,

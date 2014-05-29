@@ -45,6 +45,10 @@ namespace hex
 	std::string EmptyResponse(const opendnp3::IINField& iin, uint8_t seq);
 
 	std::string NullUnsolicited(uint8_t seq, const opendnp3::IINField& iin);
+
+	// ----------- confirms --------------
+
+	std::string UnsolConfirm(uint8_t seq);
 }
 
 #endif

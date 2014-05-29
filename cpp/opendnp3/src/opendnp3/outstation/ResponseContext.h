@@ -52,7 +52,7 @@ public:
 
 	bool IsComplete() const;
 
-	AppControlField Load(APDUResponse& response);
+	AppControlField LoadSolicited(APDUResponse& response);
 
 private:
 

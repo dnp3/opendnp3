@@ -102,13 +102,11 @@ EventResponseContext::Result EventResponseContext::Load(ObjectWriter& writer)
 
 EventResponseContext::Result EventResponseContext::Iterate(ObjectWriter& writer, SelectionIterator& iterator)
 {
-	auto current = iterator.SeekNext();
-
 	uint32_t count = 0;
 
-	while (current.HasValue())
+	while (iterator.HasValue())
 	{
-		switch (current.Get())
+		switch (iterator.GetValue())
 		{
 		case(EventType::Binary) :
 			if (!this->WriteFullHeader<Binary>(writer, count, iterator, EventResponseTypes::Lookup(config.binary)))
@@ -155,9 +153,7 @@ EventResponseContext::Result EventResponseContext::Iterate(ObjectWriter& writer,
 		default:
 			iterator.SeekNext();
 			break;
-		}
-
-		current = iterator.Current();
+		}		
 	}
 
 	return Result(true, count);

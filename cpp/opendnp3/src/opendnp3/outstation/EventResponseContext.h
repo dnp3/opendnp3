@@ -62,7 +62,7 @@ public:
 
 	bool IsComplete() const;
 
-	IINField ReadAll(const GroupVariationRecord& record);
+	IINField ReadAll(const GroupVariationRecord& record);	
 
 	void Reset();
 
@@ -78,9 +78,11 @@ private:
 	// true if the event buffer was exhausted, false if apdu is full
 	Result Iterate(ObjectWriter& writer, SelectionIterator& iterator);
 
+	static Result WriteOneHeader(ObjectWriter& writer, SelectionIterator& iterator);
+
 	// return true true, if there is still room in APDU, false otherwise
 	template <class T>
-	bool WriteFullHeader(ObjectWriter& writer, uint32_t& count, SelectionIterator& iterator, IDNP3Serializer<T>* pSerializer);
+	static bool WriteFullHeader(ObjectWriter& writer, uint32_t& count, SelectionIterator& iterator, IDNP3Serializer<T>* pSerializer);
 };
 
 template <class T>
