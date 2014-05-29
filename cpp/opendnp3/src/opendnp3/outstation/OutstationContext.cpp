@@ -53,6 +53,7 @@ OutstationContext::OutstationContext(
 		const EventBufferFacade& buffers) :
 	
 	params(config.params),
+	eventConfig(config.defaultEventResponses),
 	logger(root.GetLogger()),	
 	pExecutor(&executor),
 	pLower(&lower),
@@ -75,7 +76,7 @@ OutstationContext::OutstationContext(
 	expectedSolConfirmSeq(0),
 	expectedUnsolConfirmSeq(0),
 	completedNullUnsol(false),	
-	rspContext(&database, &eventBuffer, StaticResponseTypes(config.defaultStaticResponses), config.defaultEventResponses)	
+	rspContext(&database, &eventBuffer, StaticResponseTypes(config.defaultStaticResponses))	
 {
 	pDatabase->SetEventBuffer(eventBuffer);
 	staticIIN.Set(IINBit::DEVICE_RESTART);
@@ -338,7 +339,7 @@ void OutstationContext::ContinueMultiFragResponse(uint8_t seq)
 	response.SetFunction(FunctionCode::RESPONSE);
 
 	openpal::Transaction tx(this->pDatabase);	
-	auto control = this->rspContext.LoadSolicited(response);
+	auto control = this->rspContext.LoadSolicited(response, eventConfig);
 	control.SEQ = seq;
 	response.SetControl(control);
 	response.SetIIN(this->staticIIN | this->GetDynamicIIN());
@@ -448,10 +449,10 @@ IINField OutstationContext::HandleRead(const APDURecord& request, APDUResponse& 
 	{
 		// Do a transaction on the database (lock) for multi-threaded environments
 		// if the request contained static variations, we double buffer (copy) the entire static database.
-		// this ensures that an multi-fragmented responses see a consistent snapshot
+		// this ensures that multi-fragmented responses see a consistent snapshot of the state
 		openpal::Transaction tx(pDatabase);
 		pDatabase->DoubleBuffer();
-		auto control = rspContext.LoadSolicited(response);		
+		auto control = rspContext.LoadSolicited(response, eventConfig);
 		control.SEQ = request.control.SEQ;
 		response.SetControl(control);
 		return handler.Errors();

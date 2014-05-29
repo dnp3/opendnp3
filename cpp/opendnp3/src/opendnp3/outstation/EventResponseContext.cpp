@@ -30,10 +30,9 @@ using namespace openpal;
 namespace opendnp3
 {
 
-EventResponseContext::EventResponseContext(OutstationEventBuffer* pBuffer_, const EventResponseConfig& config_) : 
+EventResponseContext::EventResponseContext(OutstationEventBuffer* pBuffer_) : 
 	isComplete(false),
-	pBuffer(pBuffer_),
-	config(config_)
+	pBuffer(pBuffer_)	
 {
 
 }
@@ -86,7 +85,7 @@ void EventResponseContext::Reset()
 	criteria.Clear();
 }
 
-bool EventResponseContext::Load(ObjectWriter& writer)
+bool EventResponseContext::Load(ObjectWriter& writer, const EventResponseConfig& config)
 {
 	if (isComplete)
 	{

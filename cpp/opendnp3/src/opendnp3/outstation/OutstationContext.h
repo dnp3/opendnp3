@@ -70,6 +70,7 @@ class OutstationContext
 	// ------ Unchanging variables and self managing variables -------
 
 	OutstationParams params;
+	EventResponseConfig eventConfig;
 	openpal::Logger logger;
 	openpal::IExecutor* pExecutor;
 	openpal::ILowerLayer* pLower;

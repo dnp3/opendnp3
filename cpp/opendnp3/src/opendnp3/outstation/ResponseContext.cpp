@@ -24,10 +24,10 @@
 namespace opendnp3
 {
 
-ResponseContext::ResponseContext(Database* pDatabase, OutstationEventBuffer* pBuffer, const StaticResponseTypes& rspTypes, const EventResponseConfig& config) :
+ResponseContext::ResponseContext(Database* pDatabase, OutstationEventBuffer* pBuffer, const StaticResponseTypes& rspTypes) :
 	fragmentCount(0),
 	staticContext(pDatabase, rspTypes),
-	eventContext(pBuffer, config)
+	eventContext(pBuffer)
 {
 
 }
@@ -44,7 +44,7 @@ bool ResponseContext::IsComplete() const
 	return eventContext.IsComplete() && staticContext.IsComplete();
 }
 
-AppControlField ResponseContext::LoadSolicited(APDUResponse& response)
+AppControlField ResponseContext::LoadSolicited(APDUResponse& response, const EventResponseConfig& config)
 {
 	auto fir = fragmentCount == 0;
 	++fragmentCount;
@@ -52,7 +52,7 @@ AppControlField ResponseContext::LoadSolicited(APDUResponse& response)
 	auto writer = response.GetWriter();
 	auto preLoadSize = response.Size();
 
-	auto allEventsLoaded = eventContext.Load(writer);
+	auto allEventsLoaded = eventContext.Load(writer, config);
 	auto wereEventsWritten = response.Size() > preLoadSize;
 		
 	if (allEventsLoaded)
