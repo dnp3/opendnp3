@@ -36,6 +36,8 @@
 #include "opendnp3/outstation/ConstantCommandAction.h"
 #include "opendnp3/outstation/EventWriter.h"
 
+#include "opendnp3/outstation/ClassBasedRequestHandler.h"
+
 #include <openpal/LogMacros.h>
 
 using namespace openpal;
@@ -333,7 +335,11 @@ IINField OutstationContext::BuildResponse(const APDURecord& request, APDURespons
 		case(FunctionCode::DIRECT_OPERATE) :
 			return HandleDirectOperate(request, response);
 		case(FunctionCode::DELAY_MEASURE) :
-			return HandleDelayMeasure(request, response);		
+			return HandleDelayMeasure(request, response);
+		case(FunctionCode::DISABLE_UNSOLICITED) :
+			return HandleDisableUnsolicited(request, response);
+		case(FunctionCode::ENABLE_UNSOLICITED) :
+			return HandleEnableUnsolicited(request, response);
 		default:
 			return IINField(IINBit::FUNC_NOT_SUPPORTED);
 	}
@@ -616,6 +622,36 @@ IINField OutstationContext::HandleDelayMeasure(const APDURecord& request, APDURe
 	{
 		// there shouldn't be any trailing headers in delay measure request, no need to even parse
 		return IINField(IINBit::FUNC_NOT_SUPPORTED);
+	}
+}
+
+IINField OutstationContext::HandleDisableUnsolicited(const APDURecord& request, APDUResponse& response)
+{
+	ClassBasedRequestHandler handler(logger);
+	auto result = APDUParser::ParseTwoPass(request.objects, &handler, &logger);
+	if (result == APDUParser::Result::OK)
+	{
+		params.unsolClassMask &= ~handler.GetClassMask();
+		return handler.Errors();
+	}
+	else
+	{
+		return IINFromParseResult(result);
+	}
+}
+
+IINField OutstationContext::HandleEnableUnsolicited(const APDURecord& request, APDUResponse& response)
+{
+	ClassBasedRequestHandler handler(logger);
+	auto result = APDUParser::ParseTwoPass(request.objects, &handler, &logger);
+	if (result == APDUParser::Result::OK)
+	{
+		params.unsolClassMask |= handler.GetClassMask();
+		return handler.Errors();
+	}
+	else
+	{
+		return IINFromParseResult(result);
 	}
 }
 

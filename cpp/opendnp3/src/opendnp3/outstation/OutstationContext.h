@@ -180,6 +180,8 @@ class OutstationContext
 	IINField HandleOperate(const APDURecord& request, APDUResponse& response);
 	IINField HandleDirectOperate(const APDURecord& request, APDUResponse& response);
 	IINField HandleDelayMeasure(const APDURecord& request, APDUResponse& response);
+	IINField HandleDisableUnsolicited(const APDURecord& request, APDUResponse& response);
+	IINField HandleEnableUnsolicited(const APDURecord& request, APDUResponse& response);
 
 	IINField HandleCommandWithConstant(const APDURecord& request, APDUResponse& response, CommandStatus status);
 

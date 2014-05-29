@@ -914,6 +914,14 @@
       <SubType>compile</SubType>
       <Link>outstation\CachedRequest.h</Link>
     </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\ClassBasedRequestHandler.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\ClassBasedRequestHandler.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\ClassBasedRequestHandler.h">
+      <SubType>compile</SubType>
+      <Link>outstation\ClassBasedRequestHandler.h</Link>
+    </Compile>
     <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\CommandActionAdapter.cpp">
       <SubType>compile</SubType>
       <Link>outstation\CommandActionAdapter.cpp</Link>

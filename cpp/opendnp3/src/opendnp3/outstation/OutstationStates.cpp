@@ -99,7 +99,7 @@ void OutstationStateIdle::OnRepeatRequest(OutstationContext* pContext, const APD
 }
 
 void OutstationStateIdle::OnSendResult(OutstationContext* pContext, bool isSucccess)
-{
+{	
 	pContext->OnEnterIdleState();
 }
 
@@ -145,8 +145,14 @@ void OutstationStateSolConfirmWait::OnRepeatRequest(OutstationContext* pContext,
 
 void OutstationStateSolConfirmWait::OnSendResult(OutstationContext* pContext, bool isSucccess)
 {	
-	// Now we can start our confirm timer
-	pContext->StartConfirmTimer();
+	if (isSucccess)
+	{
+		pContext->StartConfirmTimer();
+	}
+	else
+	{		
+		pContext->pState = &OutstationStateIdle::Inst();
+	}	
 }
 
 void OutstationStateSolConfirmWait::OnSolConfirm(OutstationContext* pContext, const APDURecord& confirm)

@@ -657,6 +657,9 @@
     <ClInclude Include="src\opendnp3\outstation\EventWriter.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\ClassBasedRequestHandler.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\AnalogOutput.cpp">
@@ -1059,6 +1062,9 @@
       <Filter>Source\link</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\EventWriter.cpp">
+      <Filter>Source\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\ClassBasedRequestHandler.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
   </ItemGroup>
