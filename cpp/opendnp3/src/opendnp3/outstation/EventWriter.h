@@ -18,16 +18,15 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __EVENT_RESPONSE_CONTEXT_H_
-#define __EVENT_RESPONSE_CONTEXT_H_
+#ifndef __EVENT_WRITER_H_
+#define __EVENT_WRITER_H_
+
+#include "opendnp3/app/APDUResponse.h"
+#include "opendnp3/outstation/EventResponseConfig.h"
+#include "opendnp3/outstation/SelectionIterator.h"
 
 #include <openpal/Uncopyable.h>
 #include <openpal/Serialization.h>
-
-#include "opendnp3/app/APDUResponse.h"
-#include "opendnp3/outstation/OutstationEventBuffer.h"
-#include "opendnp3/outstation/EventResponseConfig.h"
-#include "opendnp3/outstation/SelectionCriteria.h"
 
 namespace opendnp3
 {
@@ -36,29 +35,49 @@ namespace opendnp3
  * Builds and tracks the state of multi-fragmented event responses to READ requests,
  * coordinating with the event buffer
  */
-class EventResponseContext : private openpal::Uncopyable
+class EventWriter : private openpal::PureStatic
 {
 
 public:
 
-	EventResponseContext(OutstationEventBuffer* pBuffer_, const EventResponseConfig& config_);
-
-	bool IsComplete() const;
-
-	IINField ReadAll(const GroupVariationRecord& record);	
-
-	void Reset();
-	
-	bool Load(ObjectWriter& writer);
+	static bool WriteEventHeaders(ObjectWriter& writer, SelectionIterator& iterator, const EventResponseConfig& config);
 
 private:
+	
+	static uint32_t WriteOneHeader(ObjectWriter& writer, SelectionIterator& iterator, const EventResponseConfig& config);
 
-	bool isComplete;
-	SelectionCriteria criteria;
-	OutstationEventBuffer* pBuffer;	
-	EventResponseConfig config;
-
+	// return the number of events written in the header
+	template <class T>
+	static uint32_t WriteFullHeader(ObjectWriter& writer, SelectionIterator& iterator, IDNP3Serializer<T>* pSerializer);
 };
+
+template <class T>
+uint32_t EventWriter::WriteFullHeader(ObjectWriter& ow, SelectionIterator& iterator, IDNP3Serializer<T>* pSerializer)
+{
+	uint32_t count = 0;
+
+	auto writer = ow.IterateOverCountWithPrefix<openpal::UInt16, T>(QualifierCode::UINT16_CNT_UINT16_INDEX, pSerializer);
+	
+	Event<T> evt;
+	while (iterator.Read(evt))
+	{
+		if (writer.Write(evt.value, evt.index))
+		{
+			++count;
+			iterator.SelectCurrent();
+			iterator.SeekNext();
+		}
+		else
+		{
+			writer.Complete();
+			return count;
+		}
+	}
+
+	writer.Complete();
+	return count;
+	
+}
 
 }
 

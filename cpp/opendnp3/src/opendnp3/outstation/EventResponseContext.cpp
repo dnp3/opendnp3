@@ -23,7 +23,7 @@
 
 #include <openpal/Serialization.h>
 
-#include "EventResponseTypes.h"
+#include "opendnp3/outstation/EventWriter.h"
 
 using namespace openpal;
 
@@ -97,7 +97,7 @@ bool EventResponseContext::Load(ObjectWriter& writer)
 		if (criteria.HasSelection())
 		{			
 			auto iterator = pBuffer->SelectEvents(criteria);
-			isComplete = WriteEventHeaders(writer, iterator, config);
+			isComplete = EventWriter::WriteEventHeaders(writer, iterator, config);
 			return isComplete;
 		}
 		else
@@ -106,54 +106,5 @@ bool EventResponseContext::Load(ObjectWriter& writer)
 		}
 	}	
 }
-
-bool EventResponseContext::WriteEventHeaders(ObjectWriter& writer, SelectionIterator& iterator, const EventResponseConfig& config)
-{
-	uint32_t count = 0;
-
-	while (iterator.HasValue())
-	{
-		auto numWritten = WriteOneHeader(writer, iterator, config);
-		count += numWritten;		
-		if (numWritten == 0)
-		{
-			return false;
-		}
-		
-	}
-	
-	return true;
-}
-
-uint32_t EventResponseContext::WriteOneHeader(ObjectWriter& writer, SelectionIterator& iterator, const EventResponseConfig& config)
-{
-	switch (iterator.GetValue())
-	{
-		case(EventType::Binary) :
-			return WriteFullHeader<Binary>(writer, iterator, EventResponseTypes::Lookup(config.binary));
-							
-		case(EventType::DoubleBitBinary) :
-			return WriteFullHeader<DoubleBitBinary>(writer, iterator, EventResponseTypes::Lookup(config.doubleBinary));
-									 
-		case(EventType::Counter) :
-			return WriteFullHeader<Counter>(writer, iterator, EventResponseTypes::Lookup(config.counter));
-							 
-		case(EventType::FrozenCounter) :
-			return WriteFullHeader<FrozenCounter>(writer, iterator, EventResponseTypes::Lookup(config.frozenCounter));
-
-		case(EventType::Analog) :
-			return WriteFullHeader<Analog>(writer, iterator, EventResponseTypes::Lookup(config.analog));
-
-		case(EventType::BinaryOutputStatus) :
-			return WriteFullHeader<BinaryOutputStatus>(writer, iterator, EventResponseTypes::Lookup(config.binaryOutputStatus));
-
-		case(EventType::AnalogOutputStatus) :
-			return WriteFullHeader<AnalogOutputStatus>(writer, iterator, EventResponseTypes::Lookup(config.analogOutputStatus));
-
-		default:			
-			return 0;
-	}
-}
-
 
 }
