@@ -76,7 +76,7 @@ private:
 	EventResponseConfig config;
 
 	// true if the event buffer was exhausted, false if apdu is full
-	Result Iterate(ObjectWriter& writer, SelectionIterator& iterator);
+	static Result Iterate(ObjectWriter& writer, SelectionIterator& iterator, const EventResponseConfig& config);
 
 	static Result WriteOneHeader(ObjectWriter& writer, SelectionIterator& iterator);
 

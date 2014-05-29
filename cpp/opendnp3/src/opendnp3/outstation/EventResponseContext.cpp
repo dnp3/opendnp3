@@ -87,7 +87,7 @@ EventResponseContext::Result EventResponseContext::Load(ObjectWriter& writer)
 	if (criteria.HasSelection())
 	{
 		auto iterator = pBuffer->SelectEvents(criteria);
-		auto result = Iterate(writer, iterator);
+		auto result = Iterate(writer, iterator, config);
 		if (result.complete)
 		{
 			criteria.Clear();
@@ -100,7 +100,7 @@ EventResponseContext::Result EventResponseContext::Load(ObjectWriter& writer)
 	}
 }
 
-EventResponseContext::Result EventResponseContext::Iterate(ObjectWriter& writer, SelectionIterator& iterator)
+EventResponseContext::Result EventResponseContext::Iterate(ObjectWriter& writer, SelectionIterator& iterator, const EventResponseConfig& config)
 {
 	uint32_t count = 0;
 
@@ -109,43 +109,43 @@ EventResponseContext::Result EventResponseContext::Iterate(ObjectWriter& writer,
 		switch (iterator.GetValue())
 		{
 		case(EventType::Binary) :
-			if (!this->WriteFullHeader<Binary>(writer, count, iterator, EventResponseTypes::Lookup(config.binary)))
+			if (!WriteFullHeader<Binary>(writer, count, iterator, EventResponseTypes::Lookup(config.binary)))
 			{
 				return Result(false, count);
 			}
 			break;
 		case(EventType::DoubleBitBinary) :
-			if (!this->WriteFullHeader<DoubleBitBinary>(writer, count, iterator, EventResponseTypes::Lookup(config.doubleBinary)))
+			if (!WriteFullHeader<DoubleBitBinary>(writer, count, iterator, EventResponseTypes::Lookup(config.doubleBinary)))
 			{
 				return Result(false, count);
 			}
 			break;
 		case(EventType::Counter) :
-			if (!this->WriteFullHeader<Counter>(writer, count, iterator, EventResponseTypes::Lookup(config.counter)))
+			if (!WriteFullHeader<Counter>(writer, count, iterator, EventResponseTypes::Lookup(config.counter)))
 			{
 				return Result(false, count);
 			}
 			break;
 		case(EventType::FrozenCounter) :
-			if (!this->WriteFullHeader<FrozenCounter>(writer, count, iterator, EventResponseTypes::Lookup(config.frozenCounter)))
+			if (!WriteFullHeader<FrozenCounter>(writer, count, iterator, EventResponseTypes::Lookup(config.frozenCounter)))
 			{
 				return Result(false, count);
 			}
 			break;
 		case(EventType::Analog) :
-			if (!this->WriteFullHeader<Analog>(writer, count, iterator, EventResponseTypes::Lookup(config.analog)))
+			if (!WriteFullHeader<Analog>(writer, count, iterator, EventResponseTypes::Lookup(config.analog)))
 			{
 				return Result(false, count);
 			}
 			break;
 		case(EventType::BinaryOutputStatus) :
-			if (!this->WriteFullHeader<BinaryOutputStatus>(writer, count, iterator, EventResponseTypes::Lookup(config.binaryOutputStatus)))
+			if (!WriteFullHeader<BinaryOutputStatus>(writer, count, iterator, EventResponseTypes::Lookup(config.binaryOutputStatus)))
 			{
 				return Result(false, count);
 			}
 			break;
 		case(EventType::AnalogOutputStatus) :
-			if (!this->WriteFullHeader<AnalogOutputStatus>(writer, count, iterator, EventResponseTypes::Lookup(config.analogOutputStatus)))
+			if (!WriteFullHeader<AnalogOutputStatus>(writer, count, iterator, EventResponseTypes::Lookup(config.analogOutputStatus)))
 			{
 				return Result(false, count);
 			}
