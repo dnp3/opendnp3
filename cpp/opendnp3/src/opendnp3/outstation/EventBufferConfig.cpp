@@ -29,16 +29,6 @@ EventBufferConfig EventBufferConfig::AllTypes(uint32_t sizes)
 	return EventBufferConfig(sizes, sizes, sizes, sizes, sizes, sizes, sizes);
 }
 
-EventBufferConfig::EventBufferConfig() :
-	maxBinaryEvents(1000),
-	maxDoubleBinaryEvents(1000),
-	maxAnalogEvents(1000),
-	maxCounterEvents(1000),
-	maxFrozenCounterEvents(1000),
-	maxBinaryOutputStatusEvents(1000),
-	maxAnalogOutputStatusEvents(1000)
-{}
-
 EventBufferConfig::EventBufferConfig(
     uint32_t maxBinaryEvents_,
     uint32_t maxDoubleBinaryEvents_,

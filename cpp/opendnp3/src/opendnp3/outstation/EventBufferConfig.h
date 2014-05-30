@@ -29,11 +29,17 @@ namespace opendnp3
 /// Configuration of max event counts
 struct EventBufferConfig
 {
-	static EventBufferConfig AllTypes(uint32_t sizes);
+	static EventBufferConfig AllTypes(uint32_t sizes);	
 
-	EventBufferConfig();
-
-	EventBufferConfig(uint32_t, uint32_t, uint32_t, uint32_t, uint32_t, uint32_t, uint32_t);
+	EventBufferConfig(
+		uint32_t maxBinaryEvents_ = 0,
+		uint32_t maxDoubleBinaryEvents_ = 0,
+		uint32_t maxAnalogEvents_ = 0,
+		uint32_t maxCounterEvents_ = 0,
+		uint32_t maxFrozenCounterEvents_ = 0,
+		uint32_t maxBinaryOutputStatusEvents_ = 0,
+		uint32_t maxAnalogOutputStatusEvents_ = 0
+		);
 
 	uint32_t TotalEvents() const;
 

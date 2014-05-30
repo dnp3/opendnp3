@@ -106,76 +106,46 @@ TEST_CASE(SUITE("UnsolData"))
 	REQUIRE(t.lower.NumWrites() == 0);	
 }
 
-/*
-TEST_CASE(SUITE("UnsolicitedStaysDisabledEvenIfDataAreLoadedPriorToOpen"))
-{
-OutstationConfig cfg; cfg.disableUnsol = true;
-OutstationTestObject t(cfg, DatabaseTemplate::AnalogOnly(1));
-
-{
-Transaction tx(&t.db);
-t.db.Update(Analog(0), 0);
-}
-
-t.outstation.OnLowerLayerUp();
-
-// Outstation shouldn't send an unsolicited handshake b/c unsol it disabled
-REQUIRE(t.NothingToRead());
-}
-
-TEST_CASE(SUITE("UnsolicitedStaysDisabledEvenIfDataAreLoadedAfterOpen"))
-{
-OutstationConfig cfg; cfg.disableUnsol = true;
-OutstationTestObject t(cfg, DatabaseTemplate::AnalogOnly(1));
-
-auto pObs = t.outstation.GetDataObserver();
-
-t.outstation.OnLowerLayerUp();
-
-{
-Transaction t(pObs);
-pObs->Update(Analog(0), 0);
-}
-
-REQUIRE(t.mts.RunMany() > 0);
-
-// Outstation shouldn't send an unsolicited handshake b/c unsol it disabled
-REQUIRE(t.NothingToRead());
-}
-
 TEST_CASE(SUITE("UnsolEventBufferOverflow"))
 {
 	OutstationConfig cfg;
-	cfg.mUnsolMask.class1 = true; // this allows the EnableUnsol sequence to be skipped
-	cfg.mEventMaxConfig.mMaxBinaryEvents = 2; // set the max to 2 to make testing easy
-	cfg.mUnsolPackDelay = TimeDuration::Milliseconds(0);
-	OutstationTestObject t(cfg);
-	t.db.Configure(MeasurementType::BINARY, 1);
-	t.db.SetClass(MeasurementType::BINARY, CLASS_1);
+	cfg.params.allowUnsolicited = true;
+	cfg.params.unsolClassMask = CLASS_1;	
+	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOnly(1), EventBufferConfig(2));
 
+	t.db.staticData.binaries.metadata[0].clazz = CLASS_1;
+	
 	// null unsol
 	t.outstation.OnLowerLayerUp();
-	REQUIRE(t.lower.PopWriteAsHex() ==  "F0 82 80 00");
+
+	REQUIRE(t.exe.RunMany());
+
+	REQUIRE(t.lower.PopWriteAsHex() == hex::NullUnsolicited(0, IINField(IINBit::DEVICE_RESTART)));
+	t.outstation.OnSendResult(true);
+	t.SendToOutstation(hex::UnsolConfirm(0));
+
 
 	// this transaction will overflow the event buffer
 	{
-		Transaction tr(t.outstation.GetDataObserver());
-		t.outstation.GetDataObserver()->Update(Binary(true, BQ_ONLINE), 0);
-		t.outstation.GetDataObserver()->Update(Binary(false, BQ_ONLINE), 0);
-		t.outstation.GetDataObserver()->Update(Binary(true, BQ_ONLINE), 0);
+		Transaction tr(t.db);
+		t.db.Update(Binary(true, BQ_ONLINE), 0);
+		t.db.Update(Binary(false, BQ_ONLINE), 0);
+		t.db.Update(Binary(true, BQ_ONLINE), 0);
 	}
 
-	REQUIRE(t.mts.RunOne()); //dispatch the data update event
+	REQUIRE(t.exe.RunMany());
+
 
 	// should immediately try to send 2 unsol events
 	// Grp2Var1, qual 0x17, count 2, index 0
 	// The last two values should be published, 0x01 and 0x81 (false and true)
 	// the first value is lost off the front of the buffer
-	REQUIRE(t.lower.PopWriteAsHex() ==  "F0 82 80 00 02 01 17 02 00 01 00 81");
+	REQUIRE(t.lower.PopWriteAsHex() ==  "F1 82 80 08 02 01 28 02 00 00 00 01 00 00 81");
 
-	REQUIRE(t.app.NumAPDU() ==  0); //check that no more frags are sent
+	//REQUIRE(t.lower.NumWrites() ==  0); //check that no more frags are sent
 }
 
+/*
 TEST_CASE(SUITE("UnsolMultiFragments"))
 {
 	OutstationConfig cfg;
