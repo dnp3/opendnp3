@@ -23,60 +23,32 @@
 #define __EVENT_COUNT_H_
 
 #include <cstdint>
+
 #include "EventType.h"
 
 namespace opendnp3
 {
 
-class ClassCount
-{
-	static const uint8_t NUM_TYPES = 7;
-
-public:
-
-	ClassCount()
-	{
-		Clear();
-	}
-
-	ClassCount Subtract(const ClassCount& rhs) const;
-
-	void Increment(EventType type);
-
-	bool HasEvents() const;
-	bool IsEmpty() const;
-	uint32_t Total() const;
-
-	uint32_t CountOf(uint32_t eventTypeMask) const;
-
-	void Clear();
-
-private:
-
-	static uint32_t IndexOf(EventType type);
-	static uint32_t MaskForIndex(uint32_t index);
-
-	uint32_t counts[NUM_TYPES];
-};
-
-
-class EventTracker
+class EventCount
 {
 public:
 
-	void Increment(EventType type, EventClass clazz);
-	void Decrement(EventType type, EventClass clazz);
+	EventCount();
 
-	EventTracker Subtract(const EventTracker& rhs) const;
+	EventCount(uint32_t numClass1, uint32_t numClass2, uint32_t numClass3);
 
-	bool IsEmpty() const;
-	uint32_t Total() const;
+	EventCount Subtract(const EventCount& rhs) const;
+
+	void Increment(EventClass clazz);
+	void Decrement(EventClass clazz);	
+
+	bool IsEmpty() const;	
 
 	void Clear();
 
-	ClassCount class1;
-	ClassCount class2;
-	ClassCount class3;
+	uint32_t numClass1;
+	uint32_t numClass2;
+	uint32_t numClass3;
 };
 
 }

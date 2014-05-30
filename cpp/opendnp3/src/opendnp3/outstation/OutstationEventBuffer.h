@@ -68,23 +68,23 @@ public:
 	void Reset(); // called when a transmission fails
 	void Clear(); // called when a transmission succeeds
 
-	SelectionIterator SelectEvents(const SelectionCriteria& criteria);
+	SelectionIterator SelectEvents(const SelectionCriteria& criteria);	
 
-	// returns how many events are *unselected* that match the criteria specified
-	uint32_t NumUnselectedMatching(const SelectionCriteria&) const;
-
-	EventTracker TotalEvents() const;
-	EventTracker SelectedEvents() const;
-	EventTracker UnselectedEvents() const;
+	EventCount TotalEvents() const;
+	EventCount SelectedEvents() const;
+	EventCount UnselectedEvents() const;
 	bool IsOverflown();
 
 
 private:
 
+	void ReleaseFromTypedStorage(const SequenceRecord& record);
+
 	bool overflow;
 	EventBufferFacade facade;
-	EventTracker totalTracker;
-	EventTracker selectedTracker;
+
+	EventCount totalTracker;
+	EventCount selectedTracker;
 
 	template <class T>
 	static bool HasSpace(const T& buffer);
@@ -117,16 +117,27 @@ void OutstationEventBuffer::InsertEvent(const T& aEvent, EventType eventType, op
 		{
 			this->overflow = true;
 			// find the first event of this type in the SOE, and discard it
-			//auto 
-			//facade.sequenceOfEvents.FindFirst()
+			auto isMatch = [eventType](const SequenceRecord& rec) { return rec.type == eventType; };
+			auto pNode = facade.sequenceOfEvents.FindFirst(isMatch);
+			if (pNode)
+			{
+				totalTracker.Decrement(aEvent.clazz);
+				this->ReleaseFromTypedStorage(pNode->value);
+
+				if (pNode->value.selected)
+				{
+					pNode->value.selected = false;
+					selectedTracker.Decrement(aEvent.clazz);
+				}
+				
+				facade.sequenceOfEvents.Remove(pNode);
+			}
 		}
-		else
-		{
-			totalTracker.Increment(eventType, aEvent.clazz);
-			auto index = buffer.Add(aEvent);
-			SequenceRecord record(eventType, index, aEvent.clazz, false);
-			facade.sequenceOfEvents.Add(record);
-		}
+		
+		totalTracker.Increment(aEvent.clazz);
+		auto index = buffer.Add(aEvent);
+		SequenceRecord record(eventType, index, aEvent.clazz, false);
+		facade.sequenceOfEvents.Add(record);		
 	}
 }
 

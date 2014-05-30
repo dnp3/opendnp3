@@ -135,14 +135,11 @@ TEST_CASE(SUITE("UnsolEventBufferOverflow"))
 
 	REQUIRE(t.exe.RunMany());
 
-
 	// should immediately try to send 2 unsol events
 	// Grp2Var1, qual 0x17, count 2, index 0
 	// The last two values should be published, 0x01 and 0x81 (false and true)
 	// the first value is lost off the front of the buffer
-	REQUIRE(t.lower.PopWriteAsHex() ==  "F1 82 80 08 02 01 28 02 00 00 00 01 00 00 81");
-
-	//REQUIRE(t.lower.NumWrites() ==  0); //check that no more frags are sent
+	REQUIRE(t.lower.PopWriteAsHex() ==  "F1 82 80 08 02 01 28 02 00 00 00 01 00 00 81");	
 }
 
 /*

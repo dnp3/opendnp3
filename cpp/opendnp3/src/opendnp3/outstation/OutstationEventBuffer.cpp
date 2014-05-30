@@ -55,50 +55,58 @@ bool OutstationEventBuffer::IsOverflown()
 void OutstationEventBuffer::Clear()
 {
 	while(facade.selectedEvents.IsNotEmpty())
-	{
+	{		
 		auto pNode = facade.selectedEvents.Pop();
-		switch(pNode->value.type)
+		if (pNode->value.selected) // could have been removed due to buffer overflow
 		{
-		case(EventType::Binary):
-			facade.binaryEvents.Release(pNode->value.index);
-			break;
-		case(EventType::DoubleBitBinary) :
-			facade.doubleBinaryEvents.Release(pNode->value.index);
-			break;
-		case(EventType::Analog):
-			facade.analogEvents.Release(pNode->value.index);
-			break;
-		case(EventType::Counter):
-			facade.counterEvents.Release(pNode->value.index);
-			break;
-		case(EventType::FrozenCounter) :
-			facade.frozenCounterEvents.Release(pNode->value.index);
-			break;
-		case(EventType::BinaryOutputStatus) :
-			facade.binaryOutputStatusEvents.Release(pNode->value.index);
-			break;
-		case(EventType::AnalogOutputStatus) :
-			facade.analogOutputStatusEvents.Release(pNode->value.index);
-			break;
+			this->ReleaseFromTypedStorage(pNode->value);
+			facade.sequenceOfEvents.Remove(pNode); // O(1) from SOE
+			totalTracker.Decrement(pNode->value.clazz);
 		}
-		facade.sequenceOfEvents.Remove(pNode); // O(1) from SOE
 	}
-
-	totalTracker = totalTracker.Subtract(selectedTracker);
+	
 	selectedTracker.Clear();
 }
 
-EventTracker OutstationEventBuffer::TotalEvents() const
+void OutstationEventBuffer::ReleaseFromTypedStorage(const SequenceRecord& record)
+{
+	switch (record.type)
+	{
+		case(EventType::Binary) :
+			facade.binaryEvents.Release(record.index);
+			break;
+		case(EventType::DoubleBitBinary) :
+			facade.doubleBinaryEvents.Release(record.index);
+			break;
+		case(EventType::Analog) :
+			facade.analogEvents.Release(record.index);
+			break;
+		case(EventType::Counter) :
+			facade.counterEvents.Release(record.index);
+			break;
+		case(EventType::FrozenCounter) :
+			facade.frozenCounterEvents.Release(record.index);
+			break;
+		case(EventType::BinaryOutputStatus) :
+			facade.binaryOutputStatusEvents.Release(record.index);
+			break;
+		case(EventType::AnalogOutputStatus) :
+			facade.analogOutputStatusEvents.Release(record.index);
+			break;
+	}
+}
+
+EventCount OutstationEventBuffer::TotalEvents() const
 {
 	return totalTracker;
 }
 
-EventTracker OutstationEventBuffer::UnselectedEvents() const
+EventCount OutstationEventBuffer::UnselectedEvents() const
 {
 	return totalTracker.Subtract(selectedTracker);
 }
 
-EventTracker OutstationEventBuffer::SelectedEvents() const
+EventCount OutstationEventBuffer::SelectedEvents() const
 {
 	return selectedTracker;
 }
@@ -148,17 +156,6 @@ bool OutstationEventBuffer::HasEnoughSpaceToClearOverflow() const
 	        HasSpace(facade.doubleBinaryEvents) &&
 	        HasSpace(facade.frozenCounterEvents) &&
 	        HasSpace(facade.sequenceOfEvents);
-}
-
-
-uint32_t OutstationEventBuffer::NumUnselectedMatching(const SelectionCriteria& criteria) const
-{
-	uint32_t count = 0;
-	auto unselected = this->UnselectedEvents();
-	count += unselected.class1.CountOf(criteria.class1);
-	count += unselected.class2.CountOf(criteria.class2);
-	count += unselected.class3.CountOf(criteria.class3);
-	return count;
 }
 
 SelectionIterator OutstationEventBuffer::SelectEvents(const SelectionCriteria& criteria)

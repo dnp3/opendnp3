@@ -72,7 +72,7 @@ void SelectionIterator::SelectCurrent()
 {
 	assert(pCurrent);
 	pCurrent->value.selected = true;
-	pBuffer->selectedTracker.Increment(pCurrent->value.type, pCurrent->value.clazz);
+	pBuffer->selectedTracker.Increment(pCurrent->value.clazz);
 	pBuffer->facade.selectedEvents.Push(pCurrent);
 	pCurrent = nullptr;
 }

@@ -108,16 +108,16 @@ OutstationContext::OutstationContext(
 IINField OutstationContext::GetDynamicIIN()
 {
 	IINField ret;
-	auto tracker = eventBuffer.UnselectedEvents();
-	if (tracker.class1.HasEvents())
+	auto count = eventBuffer.UnselectedEvents();
+	if (count.numClass1)
 	{
 		ret.Set(IINBit::CLASS1_EVENTS);
 	}
-	if (tracker.class2.HasEvents())
+	if (count.numClass2)
 	{
 		ret.Set(IINBit::CLASS2_EVENTS);
 	}
-	if (tracker.class3.HasEvents())
+	if (count.numClass3)
 	{
 		ret.Set(IINBit::CLASS3_EVENTS);
 	}

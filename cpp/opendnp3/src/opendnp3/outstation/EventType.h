@@ -40,11 +40,11 @@ enum class EventType : uint16_t
     AnalogOutputStatus = 64
 };
 
-enum class EventClass
+enum class EventClass: uint8_t
 {
     EC1 = 1,
-    EC2 = 1 << 1,
-    EC3 = 1 << 2
+    EC2 = 2,
+    EC3 = 4
 };
 
 namespace events
