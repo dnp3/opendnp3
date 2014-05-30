@@ -91,8 +91,8 @@ private:
 
 	bool HasEnoughSpaceToClearOverflow() const;
 
-	template <class T, class EnumType>
-	void InsertEvent(const T& aEvent, EnumType eventType, openpal::RandomInsertAdapter<T, uint16_t>& buffer);
+	template <class T>
+	void InsertEvent(const T& aEvent, EventType eventType, openpal::RandomInsertAdapter<T, uint16_t>& buffer);
 };
 
 template <class T>
@@ -108,14 +108,17 @@ bool OutstationEventBuffer::HasSpace(const T& buffer)
 	}
 }
 
-template <class T, class EnumType>
-void OutstationEventBuffer::InsertEvent(const T& aEvent, EnumType eventType, openpal::RandomInsertAdapter<T, uint16_t>& buffer)
+template <class T>
+void OutstationEventBuffer::InsertEvent(const T& aEvent, EventType eventType, openpal::RandomInsertAdapter<T, uint16_t>& buffer)
 {
 	if(buffer.Capacity() > 0)
 	{
 		if (buffer.IsFull() || facade.sequenceOfEvents.IsFull())
 		{
 			this->overflow = true;
+			// find the first event of this type in the SOE, and discard it
+			//auto 
+			//facade.sequenceOfEvents.FindFirst()
 		}
 		else
 		{
