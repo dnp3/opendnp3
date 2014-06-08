@@ -55,7 +55,6 @@
     <ClInclude Include="src\openpal\RingBuffer.h" />
     <ClInclude Include="src\openpal\RingBufferAdapter.h" />
     <ClInclude Include="src\openpal\StaticPriorityQueue.h" />
-    <ClInclude Include="src\openpal\QueueAdapter.h" />
     <ClInclude Include="src\openpal\RandomInsertAdapter.h" />
     <ClInclude Include="src\openpal\UInt48LE.h" />
     <ClInclude Include="src\openpal\Runnable.h" />
