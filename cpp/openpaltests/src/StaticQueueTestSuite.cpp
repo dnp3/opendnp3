@@ -24,11 +24,11 @@
 
 using namespace openpal;
 
-#define SUITE(name) "QueueAdapter - " name
+#define SUITE(name) "StaticQueue - " name
 
 TEST_CASE(SUITE("StaticQueueCompiles"))
 {
-	StaticQueue<char*, int, 4> queue;
+	StaticQueue<char, int, 4> queue;
 }
 
 TEST_CASE(SUITE("CorrectInitialState"))
