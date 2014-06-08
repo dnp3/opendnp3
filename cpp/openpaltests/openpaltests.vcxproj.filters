@@ -13,9 +13,6 @@
     <ClCompile Include="src\CatchTestStart.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ListAdapterTestSuite.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\QueueAdapterTestSuite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

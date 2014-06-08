@@ -41,7 +41,6 @@
     <ClInclude Include="src\openpal\ITimer.h" />
     <ClInclude Include="src\openpal\ITransactable.h" />
     <ClInclude Include="src\openpal\IUTCTimeSource.h" />
-    <ClInclude Include="src\openpal\ListAdapter.h" />
     <ClInclude Include="src\openpal\Location.h" />
     <ClInclude Include="src\openpal\LogBase.h" />
     <ClInclude Include="src\openpal\LogEntry.h" />
@@ -67,7 +66,6 @@
     <ClInclude Include="src\openpal\StaticArray.h" />
     <ClInclude Include="src\openpal\StaticBuffer.h" />
     <ClInclude Include="src\openpal\StaticLinkedList.h" />
-    <ClInclude Include="src\openpal\StaticList.h" />
     <ClInclude Include="src\openpal\StaticQueue.h" />
     <ClInclude Include="src\openpal\StringFormatting.h" />
     <ClInclude Include="src\openpal\TimeDuration.h" />

@@ -21,7 +21,6 @@
 #ifndef __DATABASE_H_
 #define __DATABASE_H_
 
-#include <openpal/StaticList.h>
 #include <openpal/IMutex.h>
 #include <openpal/Runnable.h>
 

@@ -28,8 +28,6 @@
 #include "EventCount.h"
 #include "SelectionIterator.h"
 
-#include <openpal/ListAdapter.h>
-
 namespace opendnp3
 {
 
