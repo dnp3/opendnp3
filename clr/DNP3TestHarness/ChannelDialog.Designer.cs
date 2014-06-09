@@ -32,8 +32,8 @@
             this.groupBoxButtons = new System.Windows.Forms.GroupBox();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.buttonADD = new System.Windows.Forms.Button();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabControlChannelType = new System.Windows.Forms.TabControl();
+            this.tabPageTCPClient = new System.Windows.Forms.TabPage();
             this.label5 = new System.Windows.Forms.Label();
             this.numericUpDownPort = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
@@ -48,6 +48,7 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.groupBoxLogging = new System.Windows.Forms.GroupBox();
+            this.checkBoxAppObject = new System.Windows.Forms.CheckBox();
             this.checkBoxAppHeader = new System.Windows.Forms.CheckBox();
             this.checkBoxTransport = new System.Windows.Forms.CheckBox();
             this.checkBoxLinkRaw = new System.Windows.Forms.CheckBox();
@@ -56,16 +57,19 @@
             this.checkBoxInfo = new System.Windows.Forms.CheckBox();
             this.checkBoxError = new System.Windows.Forms.CheckBox();
             this.checkBoxWarn = new System.Windows.Forms.CheckBox();
-            this.checkBoxAppObject = new System.Windows.Forms.CheckBox();
+            this.tabPageSerial = new System.Windows.Forms.TabPage();
+            this.comboBoxSerialDeviceName = new System.Windows.Forms.ComboBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.groupBoxButtons.SuspendLayout();
-            this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
+            this.tabControlChannelType.SuspendLayout();
+            this.tabPageTCPClient.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPort)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxRetry)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMinRetryMS)).BeginInit();
             this.statusStrip1.SuspendLayout();
             this.groupBoxLogging.SuspendLayout();
+            this.tabPageSerial.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBoxButtons
@@ -101,28 +105,29 @@
             this.buttonADD.UseVisualStyleBackColor = true;
             this.buttonADD.Click += new System.EventHandler(this.buttonADD_Click);
             // 
-            // tabControl1
+            // tabControlChannelType
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Location = new System.Drawing.Point(14, 12);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(450, 184);
-            this.tabControl1.TabIndex = 2;
+            this.tabControlChannelType.Controls.Add(this.tabPageTCPClient);
+            this.tabControlChannelType.Controls.Add(this.tabPageSerial);
+            this.tabControlChannelType.Location = new System.Drawing.Point(14, 12);
+            this.tabControlChannelType.Name = "tabControlChannelType";
+            this.tabControlChannelType.SelectedIndex = 0;
+            this.tabControlChannelType.Size = new System.Drawing.Size(450, 184);
+            this.tabControlChannelType.TabIndex = 2;
             // 
-            // tabPage1
+            // tabPageTCPClient
             // 
-            this.tabPage1.Controls.Add(this.label5);
-            this.tabPage1.Controls.Add(this.numericUpDownPort);
-            this.tabPage1.Controls.Add(this.label4);
-            this.tabPage1.Controls.Add(this.textBoxHost);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(442, 158);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "TCP Client";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.tabPageTCPClient.Controls.Add(this.label5);
+            this.tabPageTCPClient.Controls.Add(this.numericUpDownPort);
+            this.tabPageTCPClient.Controls.Add(this.label4);
+            this.tabPageTCPClient.Controls.Add(this.textBoxHost);
+            this.tabPageTCPClient.Location = new System.Drawing.Point(4, 22);
+            this.tabPageTCPClient.Name = "tabPageTCPClient";
+            this.tabPageTCPClient.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageTCPClient.Size = new System.Drawing.Size(442, 158);
+            this.tabPageTCPClient.TabIndex = 0;
+            this.tabPageTCPClient.Text = "TCP Client";
+            this.tabPageTCPClient.UseVisualStyleBackColor = true;
             // 
             // label5
             // 
@@ -305,6 +310,18 @@
             this.groupBoxLogging.TabStop = false;
             this.groupBoxLogging.Text = "Logging";
             // 
+            // checkBoxAppObject
+            // 
+            this.checkBoxAppObject.AutoSize = true;
+            this.checkBoxAppObject.Checked = true;
+            this.checkBoxAppObject.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBoxAppObject.Location = new System.Drawing.Point(104, 117);
+            this.checkBoxAppObject.Name = "checkBoxAppObject";
+            this.checkBoxAppObject.Size = new System.Drawing.Size(122, 17);
+            this.checkBoxAppObject.TabIndex = 11;
+            this.checkBoxAppObject.Text = "App Object Headers";
+            this.checkBoxAppObject.UseVisualStyleBackColor = true;
+            // 
             // checkBoxAppHeader
             // 
             this.checkBoxAppHeader.AutoSize = true;
@@ -399,17 +416,34 @@
             this.checkBoxWarn.Text = "Warning";
             this.checkBoxWarn.UseVisualStyleBackColor = true;
             // 
-            // checkBoxAppObject
+            // tabPageSerial
             // 
-            this.checkBoxAppObject.AutoSize = true;
-            this.checkBoxAppObject.Checked = true;
-            this.checkBoxAppObject.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxAppObject.Location = new System.Drawing.Point(104, 117);
-            this.checkBoxAppObject.Name = "checkBoxAppObject";
-            this.checkBoxAppObject.Size = new System.Drawing.Size(122, 17);
-            this.checkBoxAppObject.TabIndex = 11;
-            this.checkBoxAppObject.Text = "App Object Headers";
-            this.checkBoxAppObject.UseVisualStyleBackColor = true;
+            this.tabPageSerial.Controls.Add(this.label6);
+            this.tabPageSerial.Controls.Add(this.comboBoxSerialDeviceName);
+            this.tabPageSerial.Location = new System.Drawing.Point(4, 22);
+            this.tabPageSerial.Name = "tabPageSerial";
+            this.tabPageSerial.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageSerial.Size = new System.Drawing.Size(442, 158);
+            this.tabPageSerial.TabIndex = 1;
+            this.tabPageSerial.Text = "Serial";
+            this.tabPageSerial.UseVisualStyleBackColor = true;
+            // 
+            // comboBoxSerialDeviceName
+            // 
+            this.comboBoxSerialDeviceName.FormattingEnabled = true;
+            this.comboBoxSerialDeviceName.Location = new System.Drawing.Point(10, 15);
+            this.comboBoxSerialDeviceName.Name = "comboBoxSerialDeviceName";
+            this.comboBoxSerialDeviceName.Size = new System.Drawing.Size(148, 21);
+            this.comboBoxSerialDeviceName.TabIndex = 0;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(164, 18);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(72, 13);
+            this.label6.TabIndex = 1;
+            this.label6.Text = "Device Name";
             // 
             // ChannelDialog
             // 
@@ -421,7 +455,7 @@
             this.Controls.Add(this.groupBoxLogging);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.tabControlChannelType);
             this.Controls.Add(this.groupBoxButtons);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -433,9 +467,9 @@
             this.Text = "Add Channel";
             this.TopMost = true;
             this.groupBoxButtons.ResumeLayout(false);
-            this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
+            this.tabControlChannelType.ResumeLayout(false);
+            this.tabPageTCPClient.ResumeLayout(false);
+            this.tabPageTCPClient.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPort)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -445,6 +479,8 @@
             this.statusStrip1.PerformLayout();
             this.groupBoxLogging.ResumeLayout(false);
             this.groupBoxLogging.PerformLayout();
+            this.tabPageSerial.ResumeLayout(false);
+            this.tabPageSerial.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -455,8 +491,8 @@
         private System.Windows.Forms.GroupBox groupBoxButtons;
         private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.Button buttonADD;
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabControl tabControlChannelType;
+        private System.Windows.Forms.TabPage tabPageTCPClient;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.NumericUpDown numericUpDownMinRetryMS;
         private System.Windows.Forms.NumericUpDown numericUpDownMaxRetry;
@@ -480,5 +516,8 @@
         private System.Windows.Forms.CheckBox checkBoxTransport;
         private System.Windows.Forms.CheckBox checkBoxAppHeader;
         private System.Windows.Forms.CheckBox checkBoxAppObject;
+        private System.Windows.Forms.TabPage tabPageSerial;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.ComboBox comboBoxSerialDeviceName;
     }
 }
