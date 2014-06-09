@@ -288,6 +288,33 @@ BOOST_AUTO_TEST_CASE(ResponseWithDataAndFlags)
 	BOOST_REQUIRE_EQUAL(hdr_count, 8);
 }
 
+BOOST_AUTO_TEST_CASE(CorrectlyThrowsOnMaxUInt32CountHeader)
+{
+	APDU frag;
+	// 20 Var 5 has a size of 4 - Qualifer 0x09 = 4 byte count, 0x40000000 = 2^32 / 4
+	HexSequence hs("C0 81 00 00 14 05 09 00 00 00 40");
+	frag.Write(hs, hs.Size());
+	BOOST_REQUIRE_THROW(frag.Interpret(), Exception);	
+}
+
+BOOST_AUTO_TEST_CASE(CorrectlyThrowsOnMaxUInt32RangeHeader)
+{
+	APDU frag;
+	// 20 Var 5 has a size of 4 - Qualifer 0x02 = 4 byte start/stop, 0x3F000000 = 2^32 / 4 - 1 
+	HexSequence hs("C0 81 00 00 14 05 02 00 00 00 00 00 00 00 3F");
+	frag.Write(hs, hs.Size());
+	BOOST_REQUIRE_THROW(frag.Interpret(), Exception);
+}
+
+BOOST_AUTO_TEST_CASE(CorrectlyThrowsOnMaxUInt32FFFFFFFF)
+{
+	APDU frag;
+	// 20 Var 5 has a size of 4 - Qualifer 0x02 = 4 byte start/stop
+	HexSequence hs("C0 81 00 00 14 05 02 00 00 00 00 FF FF FF FF");
+	frag.Write(hs, hs.Size());
+	BOOST_REQUIRE_THROW(frag.Interpret(), Exception);
+}
+
 BOOST_AUTO_TEST_CASE(Confirm)
 {
 	APDU frag;

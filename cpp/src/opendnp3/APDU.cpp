@@ -222,9 +222,7 @@ size_t APDU::ReadObjectHeader(size_t aOffset, size_t aRemainder)
 	size_t prefixSize = this->GetPrefixSizeAndValidate(hdrData.Qualifier, pObj->GetType());
 	size_t objCount = this->GetNumObjects(pHdr, pStart);
 
-	//pStart += pHdr->GetSize(); //move the reading position to the first object
-
-	size_t data_size = 0;
+	uint64_t data_size = 0;
 
 	//Some function codes, aka read implicitly do not carry data, only indices
 	bool has_data = APDU::HasData(this->GetFunction());
@@ -248,13 +246,14 @@ size_t APDU::ReadObjectHeader(size_t aOffset, size_t aRemainder)
 		MACRO_THROW_EXCEPTION(Exception, "Unknown object type");
 	}
 
-	if(data_size > aRemainder) {
+	if (data_size > aRemainder || data_size > std::numeric_limits<size_t>::max()) 
+	{
 		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "", ALERR_INSUFFICIENT_DATA_FOR_OBJECTS);
 	}
 
-	mObjectHeaders.push_back(HeaderInfo(hdrData, objCount, prefixSize, pHdr, pObj, aOffset));
+	mObjectHeaders.push_back(HeaderInfo(hdrData, objCount, prefixSize, pHdr, pObj, aOffset));	
 
-	return pHdr->GetSize() + data_size;
+	return pHdr->GetSize() + static_cast<size_t>(data_size);
 }
 
 IObjectHeader* APDU::GetObjectHeader(QualifierCode aCode)
@@ -293,12 +292,19 @@ size_t APDU::GetNumObjects(const IObjectHeader* apHeader, const uint8_t* apStart
 	case(OHT_RANGED_2_OCTET):
 	case(OHT_RANGED_4_OCTET):
 	case(OHT_RANGED_8_OCTET):
+	{
 		RangeInfo info;
 		static_cast<const IRangeHeader*>(apHeader)->GetRange(apStart, info);
-		if(info.Start > info.Stop) {
+		if (info.Start > info.Stop) {
 			MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "", ALERR_START_STOP_MISMATCH);
 		}
-		return (info.Stop - info.Start + 1); //indices are inclusive
+		uint64_t count = static_cast<uint64_t>(info.Stop) - static_cast<uint64_t>(info.Start) + 1; //indices are inclusive
+		if (count > std::numeric_limits<size_t>::max())
+		{
+			MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "", ALERR_INSUFFICIENT_DATA_FOR_OBJECTS);
+		}
+		return static_cast<size_t>(count);
+	}
 	case(OHT_COUNT_1_OCTET):
 	case(OHT_COUNT_2_OCTET):
 	case(OHT_COUNT_4_OCTET):
