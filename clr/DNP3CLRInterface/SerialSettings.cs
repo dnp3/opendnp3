@@ -43,7 +43,18 @@ namespace DNP3.Interface
 	    NONE,
 	    HARDWARE,
 	    XONXOFF
-    }    
+    }
+    
+    /// <summary>
+    /// Serial port stop bits enumeration
+    /// </summary>
+    public enum StopBits
+    {
+	    NONE,
+	    ONE,
+	    ONE_POINT_FIVE,
+	    TWO
+    };
 
     /// <summary>
     /// Settings class for  serial port
@@ -59,7 +70,7 @@ namespace DNP3.Interface
         /// <param name="stopBits"> Stop bits, typically 1</param>
         /// <param name="parity"> Parity, typically none</param>
         /// <param name="flowControl">Flow control, typically none</param>
-        public SerialSettings(String port, int baud, int dataBits, int stopBits, Parity parity, FlowControl flowControl)
+        public SerialSettings(String port, int baud, int dataBits, StopBits stopBits, Parity parity, FlowControl flowControl)
         {
             this.port = port;
             this.baud = baud;
@@ -72,7 +83,7 @@ namespace DNP3.Interface
         public readonly String port;
         public readonly int baud;
         public readonly int dataBits;
-        public readonly int stopBits;
+        public readonly StopBits stopBits;
         public readonly Parity parity;
         public readonly FlowControl flowControl;
 

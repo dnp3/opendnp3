@@ -237,7 +237,7 @@ asiopal::SerialSettings Conversions::convertSerialSettings(SerialSettings^ setti
 	s.deviceName = convertString(settings->port);
 	s.baud = settings->baud;
 	s.dataBits = settings->dataBits;
-	s.stopBits = settings->stopBits;
+	s.stopBits = (asiopal::StopBits) settings->stopBits;
 	s.parity = (asiopal::ParityType) settings->parity;
 	s.flowType = (asiopal::FlowType) settings->flowControl;
 	return s;

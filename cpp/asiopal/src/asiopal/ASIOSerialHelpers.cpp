@@ -36,16 +36,19 @@ namespace asiopal
 //////////////////////////////////////////////
 //	Private Helpers
 //////////////////////////////////////////////
-serial_port_base::stop_bits ConvertStopBits(int aStopBits)
+serial_port_base::stop_bits ConvertStopBits(StopBits aStopBits)
 {
 	serial_port_base::stop_bits::type t = serial_port_base::stop_bits::one;
 
 	switch(aStopBits)
 	{
-	case(1):
+	case(StopBits::ONE):
 		t = serial_port_base::stop_bits::one;
 		break;
-	case(2):
+	case(StopBits::ONE_POINT_FIVE) :
+		t = serial_port_base::stop_bits::onepointfive;
+		break;
+	case(StopBits::TWO) :
 		t = serial_port_base::stop_bits::two;
 		break;
 	default:
@@ -61,17 +64,17 @@ serial_port_base::flow_control ConvertFlow(FlowType aFlowType)
 
 	switch(aFlowType)
 	{
-	case(FLOW_NONE):
-		t = serial_port_base::flow_control::none;
-		break;
-	case(FLOW_XONXOFF):
-		t = serial_port_base::flow_control::software;
-		break;
-	case(FLOW_HARDWARE):
-		t = serial_port_base::flow_control::hardware;
-		break;
-	default:
-		break;
+		case(FlowType::NONE):
+			t = serial_port_base::flow_control::none;
+			break;
+		case(FlowType::XONXOFF) :
+			t = serial_port_base::flow_control::software;
+			break;
+		case(FlowType::HARDWARE) :
+			t = serial_port_base::flow_control::hardware;
+			break;
+		default:
+			break;
 	}
 
 	return serial_port_base::flow_control(t);
@@ -93,10 +96,10 @@ serial_port_base::parity ConvertParity(ParityType aParity)
 
 	switch(aParity)
 	{
-	case(PAR_EVEN):
+	case(ParityType::EVEN):
 		t = serial_port_base::parity::even;
 		break;
-	case(PAR_ODD):
+	case(ParityType::ODD) :
 		t = serial_port_base::parity::odd;
 		break;
 	default:

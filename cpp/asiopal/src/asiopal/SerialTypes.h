@@ -29,19 +29,28 @@ namespace asiopal
 {
 
 /// Enumeration for setting serial port parity
-enum ParityType
+enum class ParityType
 {
-    PAR_NONE = 0,
-    PAR_EVEN = 1,
-    PAR_ODD = 2
+    NONE,
+    EVEN,
+    ODD
 };
 
 /// Enumeration for setting serial port flow control
-enum FlowType
+enum class FlowType
 {
-    FLOW_NONE = 0,
-    FLOW_HARDWARE = 1,
-    FLOW_XONXOFF = 2
+    NONE,
+    HARDWARE,
+    XONXOFF
+};
+
+/// Enumeration for stop bits
+enum class StopBits
+{
+	NONE,
+	ONE,
+	ONE_POINT_FIVE,
+	TWO
 };
 
 ParityType GetParityFromInt(int parity);
@@ -55,9 +64,9 @@ struct SerialSettings
 	SerialSettings() :
 		baud(9600),
 		dataBits(8),
-		stopBits(1),
-		parity(PAR_NONE),
-		flowType(FLOW_NONE),
+		stopBits(StopBits::ONE),
+		parity(ParityType::NONE),
+		flowType(FlowType::NONE),
 		asyncOpenDelay(openpal::TimeDuration::Milliseconds(500))
 	{}
 
@@ -71,7 +80,7 @@ struct SerialSettings
 	int dataBits;
 	
 	/// Stop bits, usually set to 1
-	int stopBits;
+	StopBits stopBits;
 	
 	/// Parity setting for the port, usually PAR_NONE
 	ParityType parity;

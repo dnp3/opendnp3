@@ -19,13 +19,24 @@ namespace Automatak.DNP3.Simulator
             InitializeComponent();
             this.takenNames = takenNames;
             this.comboBoxSerialDeviceName.Items.AddRange(System.IO.Ports.SerialPort.GetPortNames());
+            this.comboBoxParity.DataSource = Enum.GetValues(typeof(Parity));
+            this.comboBoxStopBits.DataSource = Enum.GetValues(typeof(StopBits));
+            this.comboBoxFlowControl.DataSource = Enum.GetValues(typeof(FlowControl));
+
+            this.comboBoxParity.SelectedItem = Parity.NONE;
+            this.comboBoxStopBits.SelectedItem = StopBits.ONE;
+            this.comboBoxFlowControl.SelectedItem = FlowControl.NONE;
         }
 
         private void buttonADD_Click(object sender, EventArgs e)
         {            
             create = GetCreateFunctorMaybeNull();
-            if (create != null)
+            if (create == null)
             {
+                statusStrip.Text = "Unable to create channel";
+            }
+            else
+            { 
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }            
@@ -34,7 +45,7 @@ namespace Automatak.DNP3.Simulator
         private Func<IDNP3Manager, IChannel> GetCreateFunctorMaybeNull()
         {
             var min = TimeSpan.FromMilliseconds(Decimal.ToDouble(numericUpDownMinRetryMS.Value));
-            var max = TimeSpan.FromMilliseconds(Decimal.ToDouble(numericUpDownMaxRetry.Value));
+            var max = TimeSpan.FromMilliseconds(Decimal.ToDouble(numericUpDownMaxRetryMS.Value));
 
             switch (tabControlChannelType.SelectedIndex)
             { 
@@ -50,7 +61,14 @@ namespace Automatak.DNP3.Simulator
         private Func<IDNP3Manager, IChannel> GetSerialFunctor(TimeSpan min, TimeSpan max)
         {
             var name = this.comboBoxSerialDeviceName.Text;
-            var ss = new SerialSettings(name, 9600, 8, 1, Parity.NONE, FlowControl.NONE);
+            var baud = Decimal.ToInt32(this.numericUpDownBaud.Value);
+            
+            var dataBits = Decimal.ToInt32(this.numericUpDownDataBits.Value);
+            var parity = (Parity) comboBoxParity.SelectedValue;
+            var flow = (FlowControl) comboBoxFlowControl.SelectedValue;
+            var stopBits = (StopBits) comboBoxStopBits.SelectedValue;
+
+            var ss = new SerialSettings(name, baud, dataBits, stopBits, parity, flow);
             return (IDNP3Manager manager) => manager.AddSerial(this.textBoxID.Text, GetFilters(), min, max, ss);
         }
 
