@@ -269,8 +269,8 @@ StaticLoadResult StaticResponseContext::LoadStaticData(ObjectWriter& writer)
 {
 	while(!staticResponseQueue.IsEmpty())
 	{
-		auto& front = staticResponseQueue.Peek();
-		auto result = (*front.pLoadFun)(writer, front, *pDatabase);
+		auto pFront = staticResponseQueue.Peek();
+		auto result = (*pFront->pLoadFun)(writer, *pFront, *pDatabase);
 		if(result == StaticLoadResult::COMPLETED)
 		{
 			staticResponseQueue.Pop();

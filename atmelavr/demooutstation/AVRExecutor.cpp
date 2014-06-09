@@ -118,7 +118,7 @@ bool AVRExecutor::RunOne()
 	{
 		if(work.IsNotEmpty())
 		{
-			work.Peek().Run();
+			work.Peek()->Run();
 			work.Pop();
 			return true;
 		}

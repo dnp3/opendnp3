@@ -67,7 +67,7 @@ int main()
 	// Set LED as output
 	SET(DDRB, BIT(7));	
 	
-	ToggleBinaryIndex0Every(50, &exe, &database, true, false);
+	ToggleBinaryIndex0Every(3000, &exe, &database, true, false);
 				
 	for (;;)
 	{ 	

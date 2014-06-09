@@ -66,10 +66,16 @@ public:
 		count = first = nextInsert = 0;
 	}	
 
-	ValueType& Peek()
+	ValueType* Peek()
 	{
-		assert(IsNotEmpty());
-		return array[first];
+		if (IsEmpty())
+		{
+			return nullptr;
+		}
+		else
+		{
+			return &array[first];
+		}		
 	}
 
 	ValueType& Pop()

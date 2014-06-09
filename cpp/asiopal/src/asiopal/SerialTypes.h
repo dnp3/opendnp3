@@ -23,6 +23,8 @@
 
 #include <string>
 
+#include <openpal/TimeDuration.h>
+
 namespace asiopal
 {
 
@@ -51,25 +53,34 @@ struct SerialSettings
 
 	/// Defaults to the familiar 9600 8/N/1, no flow control
 	SerialSettings() :
-		mBaud(9600),
-		mDataBits(8),
-		mStopBits(1),
-		mParity(PAR_NONE),
-		mFlowType(FLOW_NONE)
+		baud(9600),
+		dataBits(8),
+		stopBits(1),
+		parity(PAR_NONE),
+		flowType(FLOW_NONE),
+		asyncOpenDelay(openpal::TimeDuration::Milliseconds(10))
 	{}
 
 	/// name of the port, i.e. "COM1" or "/dev/tty0"
-	std::string mDevice;
+	std::string deviceName;
+	
 	/// Baud rate of the port, i.e. 9600 or 57600
-	int mBaud;
+	int baud;
+	
 	/// Data bits, usually 8
-	int mDataBits;
+	int dataBits;
+	
 	/// Stop bits, usually set to 1
-	int mStopBits;
+	int stopBits;
+	
 	/// Parity setting for the port, usually PAR_NONE
-	ParityType mParity;
+	ParityType parity;
+
 	/// Flow control setting, usually FLOW_NONE
-	FlowType mFlowType;
+	FlowType flowType;
+
+	/// Some physical layers need time to "settle" so that the first tx isn't lost
+	openpal::TimeDuration asyncOpenDelay;
 };
 
 }

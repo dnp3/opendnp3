@@ -55,7 +55,7 @@ PhysicalLayerAsyncSerial::PhysicalLayerAsyncSerial(
 void PhysicalLayerAsyncSerial::DoOpen()
 {
 	std::error_code ec;
-	port.open(settings.mDevice, ec);
+	port.open(settings.deviceName, ec);
 
 	if (!ec)
 	{
@@ -67,9 +67,16 @@ void PhysicalLayerAsyncSerial::DoOpen()
 		}
 	}
 
-	//use post to simulate an async open operation
 	auto lambda = [this, ec]() { this->OnOpenCallback(ec); };
-	executor.PostLambda(lambda);
+
+	if (settings.asyncOpenDelay.GetMilliseconds() > 0)
+	{
+		executor.Start(settings.asyncOpenDelay, openpal::Bind(lambda));
+	}
+	else
+	{				
+		executor.PostLambda(lambda);
+	}	
 }
 
 void PhysicalLayerAsyncSerial::DoClose()

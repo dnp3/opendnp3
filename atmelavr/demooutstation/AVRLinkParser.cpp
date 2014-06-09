@@ -55,14 +55,14 @@ void AVRLinkParser::CheckTransmit()
 {	
 	if(txQueue.IsNotEmpty() && (UCSR0A & (1<<UDRE0))) 
 	{		
-		auto& tx = txQueue.Peek();
-		UDR0 = tx.buffer[0];
-		tx.buffer.Advance(1);
+		auto pTx = txQueue.Peek();
+		UDR0 = pTx->buffer[0];
+		pTx->buffer.Advance(1);
 		
-		if(tx.buffer.IsEmpty())
+		if(pTx->buffer.IsEmpty())
 		{
 			txQueue.Pop();
-			auto pri = tx.primary;
+			auto pri = pTx->primary;
 			auto callback = [this, pri]() { pContext->OnTransmitResult(pri, true); };
 			pExecutor->PostLambda(callback);
 		}

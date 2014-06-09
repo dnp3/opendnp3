@@ -320,9 +320,9 @@ void LinkLayerRouter::CheckForSend()
 {
 	if(transmitQueue.IsNotEmpty() && !mTransmitting && pPhys->CanWrite())
 	{
-		mTransmitting = true;
-		auto& transmission = transmitQueue.Peek();
-		pPhys->AsyncWrite(transmission.buffer);
+		auto pTransmission = transmitQueue.Peek();
+		mTransmitting = true;		
+		pPhys->AsyncWrite(pTransmission->buffer);
 	}
 }
 
