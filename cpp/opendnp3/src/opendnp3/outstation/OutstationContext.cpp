@@ -239,13 +239,18 @@ void OutstationContext::ExamineAPDU(const openpal::ReadOnlyBuffer& fragment)
 void OutstationContext::OnReceiveSolRequest(const APDURecord& request, const openpal::ReadOnlyBuffer& fragment)
 {
 	// analyze this request to see how it compares to the last request
-	auto firstValidRequestAccepted = lastValidRequest.IsNotEmpty();	
+	auto firstRequest = lastValidRequest.IsEmpty();
 	auto equality = APDURequest::Compare(fragment, lastValidRequest);
 	auto dest = rxBuffer.GetWriteBuffer();
 	this->lastValidRequest = fragment.CopyTo(dest);
 
-	if (firstValidRequestAccepted)
+	if (firstRequest)
 	{	
+		this->solSeqN = request.control.SEQ;
+		this->pState->OnNewRequest(this, request, APDUEquality::NONE);
+	}
+	else
+	{		
 		if (this->solSeqN == request.control.SEQ)
 		{
 			if (equality == APDUEquality::FULL_EQUALITY)
@@ -258,14 +263,9 @@ void OutstationContext::OnReceiveSolRequest(const APDURecord& request, const ope
 			}
 		}
 		else  // completely new sequence #
-		{			
+		{
 			this->pState->OnNewRequest(this, request, equality);
 		}
-	}
-	else
-	{		
-		this->solSeqN = request.control.SEQ;				
-		this->pState->OnNewRequest(this, request, APDUEquality::NONE);
 	}
 
 }

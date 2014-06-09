@@ -966,22 +966,6 @@
       <SubType>compile</SubType>
       <Link>outstation\DualValue.h</Link>
     </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\DynamicallyAllocatedDatabase.cpp">
-      <SubType>compile</SubType>
-      <Link>outstation\DynamicallyAllocatedDatabase.cpp</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\DynamicallyAllocatedDatabase.h">
-      <SubType>compile</SubType>
-      <Link>outstation\DynamicallyAllocatedDatabase.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\DynamicallyAllocatedEventBuffer.cpp">
-      <SubType>compile</SubType>
-      <Link>outstation\DynamicallyAllocatedEventBuffer.cpp</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\DynamicallyAllocatedEventBuffer.h">
-      <SubType>compile</SubType>
-      <Link>outstation\DynamicallyAllocatedEventBuffer.h</Link>
-    </Compile>
     <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\Event.h">
       <SubType>compile</SubType>
       <Link>outstation\Event.h</Link>
