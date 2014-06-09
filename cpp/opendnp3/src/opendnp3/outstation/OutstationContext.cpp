@@ -241,7 +241,8 @@ void OutstationContext::OnReceiveSolRequest(const APDURecord& request, const ope
 	// analyze this request to see how it compares to the last request
 	auto firstValidRequestAccepted = lastValidRequest.IsNotEmpty();	
 	auto equality = APDURequest::Compare(fragment, lastValidRequest);
-	this->lastValidRequest = fragment.CopyTo(rxBuffer.GetWriteBuffer());
+	auto dest = rxBuffer.GetWriteBuffer();
+	this->lastValidRequest = fragment.CopyTo(dest);
 
 	if (firstValidRequestAccepted)
 	{	
