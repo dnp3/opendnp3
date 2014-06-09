@@ -21,7 +21,6 @@
 #ifndef __STATIC_QUEUE_H_
 #define __STATIC_QUEUE_H_
 
-#include "StaticLinkedList.h"
 #include "Configure.h"
 #include <assert.h>
 
@@ -34,73 +33,77 @@ class StaticQueue
 
 public:
 
-	StaticQueue()
+	StaticQueue() : count(0), first(0), nextInsert(0)
 	{}
 
 	IndexType Size() const
 	{
-		return list.Size();
-	}
+		return count;
+	}	
 
 	IndexType Capacity() const
 	{
-		return list.Capacity();
+		return N;
 	}
 
 	bool IsEmpty() const
 	{
-		return list.IsEmpty();
+		return count == 0;
 	}
 
 	bool IsNotEmpty() const
 	{
-		return list.IsNotEmpty();
+		return count > 0;
 	}
 
 	bool IsFull() const
 	{
-		return list.IsFull();
+		return count == N;
 	}
 
 	void Clear()
 	{
-		list.Clear();
-	}
-
-	template <class Selector>
-	void Foreach(const Selector& select) const
-	{
-		list.Foreach(select);
-	}
+		count = first = nextInsert = 0;
+	}	
 
 	ValueType& Peek()
 	{
-		auto pNode = list.FindFirst([](const ValueType&)
-		{
-			return true;
-		});
-		assert(pNode);
-		return (pNode->value);
+		assert(IsNotEmpty());
+		return array[first];
 	}
 
 	ValueType& Pop()
 	{
-		auto pNode = list.RemoveFirst([](const ValueType&)
-		{
-			return true;
-		});
-		assert(pNode);
-		return (pNode->value);
+		assert(IsNotEmpty());
+		IndexType ret = first;
+		first = (first + 1) % N;
+		--count;
+		return array[ret];
 	}
 
 	bool Enqueue(const ValueType& value)
 	{
-		return list.Add(value);
+		if (IsFull())
+		{
+			return false;
+		}
+		else
+		{
+			array[nextInsert] = value;
+			nextInsert = (nextInsert + 1) % N;
+			++count;
+			return true;
+		}
 	}
 
 private:
 
-	StaticLinkedList<ValueType, IndexType, N> list;
+	IndexType count;
+	IndexType first;
+	IndexType nextInsert;
+	
+
+	ValueType array[N];
 };
 
 }

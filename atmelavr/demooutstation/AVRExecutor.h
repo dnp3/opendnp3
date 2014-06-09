@@ -4,6 +4,7 @@
 #include <openpal/IExecutor.h>
 #include <openpal/StaticQueue.h>
 #include <openpal/StaticArray.h>
+#include <openpal/StaticLinkedList.h>
 
 #include "AVRTimer.h"
 
