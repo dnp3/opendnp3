@@ -29,6 +29,12 @@ namespace openpal
 {
 
 template <class T>
+T MinimumOf(const T& value1, const T& value2)
+{
+	return value1 < value2 ? value1 : value2;
+}
+
+template <class T>
 T MinValue();
 
 template <class T>

@@ -31,5 +31,10 @@ APDURequest::APDURequest(const openpal::WriteBuffer& aBuffer) : APDUWrapper(aBuf
 
 }
 
+APDUEquality APDURequest::Compare(const openpal::ReadOnlyBuffer& lhs, const openpal::ReadOnlyBuffer& rhs)
+{
+	return APDUWrapper::Compare(2, lhs, rhs);
+}
+
 }
 

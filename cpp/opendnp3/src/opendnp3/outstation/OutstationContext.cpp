@@ -245,7 +245,7 @@ void OutstationContext::ExamineAPDU(const openpal::ReadOnlyBuffer& fragment)
 		else
 		{
 			FORMAT_LOG_BLOCK(logger, flags::WARN,
-				"Ignoring fragment with FIR: %u FIN: %u CON: %u",
+				"Ignoring fragment with unexpected control field - FIR: %u FIN: %u CON: %u",
 				request.control.FIN,
 				request.control.FIN,
 				request.control.CON);
@@ -261,6 +261,9 @@ void OutstationContext::OnReceiveSolRequest(const APDURecord& request, const ope
 {
 	if (this->firstValidRequestAccepted)
 	{
+		// analyze this request to see how it compares to the last request
+		// auto comparison = APDURequest::Compare(fragment, )
+
 		if (this->solSeqN == request.control.SEQ)
 		{
 			if (this->lastValidRequest.Equals(fragment))
@@ -269,10 +272,10 @@ void OutstationContext::OnReceiveSolRequest(const APDURecord& request, const ope
 			}
 			else // new operation with same SEQ
 			{
-				if (request.function != FunctionCode::SELECT) // TODO - Ask why select is special?
-				{
-					this->pState->OnNewRequest(this, request, fragment);
-				}
+
+
+				this->pState->OnNewRequest(this, request, fragment);
+				
 			}
 		}
 		else  // completely new sequence #

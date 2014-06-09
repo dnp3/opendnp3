@@ -51,7 +51,7 @@ namespace openpal
 					rowSize = otherRowSize;
 				}
 			}
-			auto region = copy.Truncate(rowSize);
+			auto region = copy.Take(rowSize);
 			auto pLocation = buffer;
 			for (uint32_t pos = 0; pos < rowSize; ++pos) {
 				pLocation[0] = toHex((region[pos] & 0xf0) >> 4);

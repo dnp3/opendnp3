@@ -61,7 +61,7 @@ int main()
 	// enable USART RX/TX interrupts
 	parser.Init();
 	
-	// begin all interrupts
+	// enable all interrupts
 	sei();
 	
 	// Set LED as output

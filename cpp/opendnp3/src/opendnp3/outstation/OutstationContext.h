@@ -157,8 +157,7 @@ class OutstationContext
 
 	// ------ Helpers ---------
 
-	static bool CancelTimer(openpal::ITimer*& pTimer);
-	
+	static bool CancelTimer(openpal::ITimer*& pTimer);	
 
 	// ------ Internal Events -------
 

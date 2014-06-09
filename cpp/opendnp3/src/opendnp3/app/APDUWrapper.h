@@ -30,10 +30,17 @@
 namespace opendnp3
 {
 
+enum class APDUEquality
+{
+	FULL_EQUALITY,
+	OBJECT_HEADERS_EQUAL,
+	NONE
+};
+
 // This class is used to write to an underlying buffer
 class APDUWrapper
 {
-public:
+public:	
 
 	APDUWrapper();
 
@@ -56,6 +63,8 @@ public:
 	uint32_t Remaining() const;
 
 protected:
+
+	static APDUEquality Compare(uint32_t headerSize, const openpal::ReadOnlyBuffer& lhs, const openpal::ReadOnlyBuffer& rhs);
 
 	bool valid;
 	openpal::WriteBuffer buffer;

@@ -21,6 +21,8 @@
 #include "BufferWrapper.h"
 
 #include "Configure.h"
+#include "Limits.h"
+
 #include <cstring>
 #include <assert.h>
 
@@ -32,24 +34,29 @@ ReadOnlyBuffer ReadOnlyBuffer::Empty()
 	return ReadOnlyBuffer();
 }
 
-ReadOnlyBuffer::ReadOnlyBuffer(): HasSize(0), mpBuffer(nullptr)
+ReadOnlyBuffer::ReadOnlyBuffer(): HasSize(0), pBuffer(nullptr)
 {}
 
-ReadOnlyBuffer::ReadOnlyBuffer(uint8_t const* apBuffer, uint32_t aSize) :
-	HasSize(aSize),
-	mpBuffer(apBuffer)
+ReadOnlyBuffer::ReadOnlyBuffer(uint8_t const* pBuffer, uint32_t size) :
+	HasSize(size),
+	pBuffer(pBuffer)
 {}
 
-ReadOnlyBuffer ReadOnlyBuffer::CopyTo(uint8_t* apDest) const
+ReadOnlyBuffer ReadOnlyBuffer::CopyTo(uint8_t* pDest) const
 {
-	memcpy(apDest, mpBuffer, size);
-	return ReadOnlyBuffer(apDest, size);
+	memcpy(pDest, pBuffer, size);
+	return ReadOnlyBuffer(pDest, size);
 }
 
-ReadOnlyBuffer ReadOnlyBuffer::Truncate(uint32_t aSize) const
+ReadOnlyBuffer ReadOnlyBuffer::Take(uint32_t count) const
+{	
+	return ReadOnlyBuffer(pBuffer, openpal::MinimumOf(size, count));
+}
+
+ReadOnlyBuffer ReadOnlyBuffer::Skip(uint32_t count) const
 {
-	assert(aSize <= size);
-	return ReadOnlyBuffer(mpBuffer, aSize);
+	auto num = openpal::MinimumOf(size, count);
+	return ReadOnlyBuffer(pBuffer + num, size - num);
 }
 
 void ReadOnlyBuffer::ZeroSize()
@@ -61,7 +68,7 @@ bool ReadOnlyBuffer::Equals(const ReadOnlyBuffer& rhs) const
 {
 	if (this->Size() == rhs.Size())
 	{
-		return memcmp(mpBuffer, rhs.mpBuffer, Size()) == 0;
+		return memcmp(pBuffer, rhs.pBuffer, Size()) == 0;
 	}
 	else
 	{
@@ -71,9 +78,9 @@ bool ReadOnlyBuffer::Equals(const ReadOnlyBuffer& rhs) const
 
 void ReadOnlyBuffer::Advance(uint32_t count)
 {
-	assert(count <= size);
-	mpBuffer += count;
-	size -= count;
+	auto num = openpal::MinimumOf(size, count);
+	pBuffer += num;
+	size -= num;
 }
 
 WriteBuffer WriteBuffer::Empty()

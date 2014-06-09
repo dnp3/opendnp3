@@ -145,7 +145,7 @@ ReadOnlyBuffer LinkFrame::FormatConfirmedUserData(WriteBuffer& buffer, bool aIsM
 	assert(dataLength > 0);
 	assert(dataLength <= 250);
 	auto userDataSize = CalcUserDataSize(dataLength);
-	auto ret = buffer.ToReadOnly().Truncate(userDataSize + LS_HEADER_SIZE);
+	auto ret = buffer.ToReadOnly().Take(userDataSize + LS_HEADER_SIZE);
 	FormatHeader(buffer, dataLength, aIsMaster, aFcb, true, LinkFunction::PRI_CONFIRMED_USER_DATA, aDest, aSrc, pLogger);
 	WriteUserData(apData, buffer, dataLength);
 	buffer.Advance(userDataSize);
@@ -157,7 +157,7 @@ ReadOnlyBuffer LinkFrame::FormatUnconfirmedUserData(WriteBuffer& buffer, bool aI
 	assert(dataLength > 0);
 	assert(dataLength <= 250);
 	auto userDataSize = CalcUserDataSize(dataLength);
-	auto ret = buffer.ToReadOnly().Truncate(userDataSize + LS_HEADER_SIZE);
+	auto ret = buffer.ToReadOnly().Take(userDataSize + LS_HEADER_SIZE);
 	FormatHeader(buffer, dataLength, aIsMaster, false, false, LinkFunction::PRI_UNCONFIRMED_USER_DATA, aDest, aSrc, pLogger);
 	WriteUserData(apData, buffer, dataLength);
 	buffer.Advance(userDataSize);
@@ -177,7 +177,7 @@ ReadOnlyBuffer LinkFrame::FormatHeader(WriteBuffer& buffer, uint8_t aDataLength,
 		aDataLength);
 
 	header.Write(buffer);
-	auto ret = buffer.ToReadOnly().Truncate(10);
+	auto ret = buffer.ToReadOnly().Take(10);
 	buffer.Advance(10);
 	return ret;
 }

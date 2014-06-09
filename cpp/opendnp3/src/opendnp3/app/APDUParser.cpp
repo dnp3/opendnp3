@@ -279,7 +279,7 @@ APDUParser::Result APDUParser::ParseRangeOfOctetData(
 			{
 				auto collection = CreateLazyIterable<IndexedValue<OctetString, uint16_t>>(buffer, range.Count(), [record, range](ReadOnlyBuffer & buff, uint32_t pos)
 				{
-					OctetString octets(buff.Truncate(record.variation));
+					OctetString octets(buff.Take(record.variation));
 					IndexedValue<OctetString, uint16_t> value(octets, range.start + pos);
 					buff.Advance(record.variation);
 					return value;

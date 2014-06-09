@@ -26,12 +26,36 @@
 
 #include "AppControlField.h"
 
+using namespace openpal;
+
 namespace opendnp3
 {
 
 APDUWrapper::APDUWrapper() : valid(false)
 {
 
+}
+
+APDUEquality APDUWrapper::Compare(uint32_t headerSize, const ReadOnlyBuffer& lhs, const ReadOnlyBuffer& rhs)
+{
+	if (lhs.Size() < headerSize || rhs.Size() < headerSize)
+	{
+		return APDUEquality::NONE;
+	}
+	else
+	{
+		
+		auto bodyEqual = lhs.Skip(headerSize).Equals(rhs.Skip(headerSize));
+		if (bodyEqual)
+		{
+			auto headerEqual = lhs.Take(headerSize).Equals(rhs.Take(headerSize));
+			return headerEqual ? APDUEquality::FULL_EQUALITY : APDUEquality::OBJECT_HEADERS_EQUAL;
+		}
+		else
+		{
+			return APDUEquality::NONE;
+		}
+	}
 }
 
 APDUWrapper::APDUWrapper(const openpal::WriteBuffer& buffer_) : valid(true), buffer(buffer_), remaining(buffer_)

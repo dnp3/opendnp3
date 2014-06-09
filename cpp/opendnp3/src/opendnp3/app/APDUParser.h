@@ -370,7 +370,7 @@ APDUParser::Result APDUParser::ParseIndexPrefixedOctetData(
 				                [record](openpal::ReadOnlyBuffer & buff, uint32_t position)
 				{
 					auto index = IndexType::ReadBuffer(buff);
-					OctetString octets(buff.Truncate(record.variation));
+					OctetString octets(buff.Take(record.variation));
 					buff.Advance(record.variation);
 					return IndexedValue<OctetString, uint16_t>(octets, index);
 				}

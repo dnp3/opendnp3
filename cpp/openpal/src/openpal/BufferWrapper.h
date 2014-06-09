@@ -36,25 +36,27 @@ public:
 	static ReadOnlyBuffer Empty();
 
 	ReadOnlyBuffer();
-	ReadOnlyBuffer(uint8_t const* apBuffer, uint32_t aSize);
+	ReadOnlyBuffer(uint8_t const* pBuffer, uint32_t size);
 
-	ReadOnlyBuffer CopyTo(uint8_t* apDest) const;
+	ReadOnlyBuffer CopyTo(uint8_t* pDest) const;
 
-	ReadOnlyBuffer Truncate(uint32_t aSize) const;
+	ReadOnlyBuffer Take(uint32_t count) const;
+
+	ReadOnlyBuffer Skip(uint32_t count) const;
 
 	void ZeroSize();
 
 	bool Equals(const ReadOnlyBuffer& rhs) const;
 
-	void Advance(uint32_t aNum);
+	void Advance(uint32_t count);
 
 	operator uint8_t const* () const
 	{
-		return mpBuffer;
+		return pBuffer;
 	};
 
 private:
-	uint8_t const* mpBuffer;
+	uint8_t const* pBuffer;
 
 };
 

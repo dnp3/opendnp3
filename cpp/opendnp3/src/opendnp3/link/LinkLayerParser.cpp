@@ -191,7 +191,7 @@ void LinkLayerParser::TransferUserData()
 {
 	uint32_t len = header.GetLength() - LS_MIN_LENGTH;
 	LinkFrame::ReadUserData(buffer.ReadBuffer() + LS_HEADER_SIZE,  rxBuffer.Buffer(), len);
-	userData = rxBuffer.ToReadOnly().Truncate(len);
+	userData = rxBuffer.ToReadOnly().Take(len);
 }
 
 bool LinkLayerParser::ReadHeader()
@@ -212,7 +212,7 @@ bool LinkLayerParser::ValidateBody()
 			header.GetSrc(),
 			header.GetLength());
 		
-		FORMAT_HEX_BLOCK(logger, flags::LINK_RX_HEX, buffer.ReadBuffer().Truncate(frameSize), 10, 18);
+		FORMAT_HEX_BLOCK(logger, flags::LINK_RX_HEX, buffer.ReadBuffer().Take(frameSize), 10, 18);
 
 		return true;
 	}

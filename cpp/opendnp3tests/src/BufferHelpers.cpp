@@ -134,7 +134,7 @@ bool BufferSegment::HasValue() const
 openpal::ReadOnlyBuffer BufferSegment::GetSegment()
 {
 	auto size = std::min(segmentSize, remainder.Size());
-	auto chunk = remainder.Truncate(size);
+	auto chunk = remainder.Take(size);
 	return chunk;
 }
 
