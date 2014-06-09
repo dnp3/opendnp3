@@ -8,14 +8,13 @@
 
 #include <openpal/LogRoot.h>
 
-#define F_CPU 16000000UL
-
 #include <avr/io.h> 
 #include <avr/interrupt.h>
 
 #include "AVRExecutor.h"
 #include "AVRLinkParser.h"
 #include "AVRCommandHandler.h"
+#include "Macros.h"
 
 using namespace opendnp3;
 using namespace arduino;
@@ -66,7 +65,7 @@ int main()
 	sei();
 	
 	// Set LED as output
-	DDRB |= (7 << 0);
+	SET(DDRB, BIT(7));	
 	
 	ToggleBinaryIndex0Every(3000, &exe, &database, true, false);
 				

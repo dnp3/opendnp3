@@ -265,10 +265,6 @@
       <SubType>compile</SubType>
       <Link>headers\LinkedListAdapter.h</Link>
     </Compile>
-    <Compile Include="..\..\cpp\openpal\src\openpal\ListAdapter.h">
-      <SubType>compile</SubType>
-      <Link>headers\ListAdapter.h</Link>
-    </Compile>
     <Compile Include="..\..\cpp\openpal\src\openpal\Location.h">
       <SubType>compile</SubType>
       <Link>headers\Location.h</Link>
@@ -329,10 +325,6 @@
       <SubType>compile</SubType>
       <Link>headers\Option.h</Link>
     </Compile>
-    <Compile Include="..\..\cpp\openpal\src\openpal\QueueAdapter.h">
-      <SubType>compile</SubType>
-      <Link>headers\QueueAdapter.h</Link>
-    </Compile>
     <Compile Include="..\..\cpp\openpal\src\openpal\RandomInsertAdapter.h">
       <SubType>compile</SubType>
       <Link>headers\RandomInsertAdapter.h</Link>
@@ -388,10 +380,6 @@
     <Compile Include="..\..\cpp\openpal\src\openpal\StaticLinkedList.h">
       <SubType>compile</SubType>
       <Link>headers\StaticLinkedList.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\openpal\src\openpal\StaticList.h">
-      <SubType>compile</SubType>
-      <Link>headers\StaticList.h</Link>
     </Compile>
     <Compile Include="..\..\cpp\openpal\src\openpal\StaticQueue.h">
       <SubType>compile</SubType>

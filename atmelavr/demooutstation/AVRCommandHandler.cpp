@@ -23,9 +23,7 @@
 
 #include <avr/io.h>
 
-#define BIT(x)	(1<<x)
-#define SET(reg, bits) reg |= bits
-#define CLEAR(reg, bits) reg &= ~bits
+#include "Macros.h"
 
 using namespace opendnp3;
 
