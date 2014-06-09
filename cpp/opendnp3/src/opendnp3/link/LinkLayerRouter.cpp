@@ -311,8 +311,8 @@ void LinkLayerRouter::OnSendResult(bool result)
 	assert(mTransmitting);
 	mTransmitting = false;
 
-	auto& transmission = transmitQueue.Pop();
-	transmission.pContext->OnTransmitResult(transmission.primary, result);
+	auto pTx = transmitQueue.Pop();
+	pTx->pContext->OnTransmitResult(pTx->primary, result);
 	this->CheckForSend();
 }
 

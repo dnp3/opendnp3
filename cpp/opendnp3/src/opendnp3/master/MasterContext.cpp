@@ -319,10 +319,10 @@ bool MasterContext::CheckConfirmTransmit()
 {
 	if (!isSending && confirmQueue.IsNotEmpty())
 	{
-		auto confirm = confirmQueue.Pop();
+		auto pConfirm = confirmQueue.Pop();
 		APDUWrapper wrapper(txBuffer.GetWriteBuffer());
-		wrapper.SetFunction(confirm.function);
-		wrapper.SetControl(confirm.control);
+		wrapper.SetFunction(pConfirm->function);
+		wrapper.SetControl(pConfirm->control);
 		this->Transmit(wrapper.ToReadOnly());
 		return true;
 	}

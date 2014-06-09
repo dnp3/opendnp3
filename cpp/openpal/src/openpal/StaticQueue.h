@@ -78,13 +78,19 @@ public:
 		}		
 	}
 
-	ValueType& Pop()
+	ValueType* Pop()
 	{
-		assert(IsNotEmpty());
-		IndexType ret = first;
-		first = (first + 1) % N;
-		--count;
-		return array[ret];
+		if (IsEmpty())
+		{
+			return nullptr;
+		}
+		else
+		{
+			IndexType ret = first;
+			first = (first + 1) % N;
+			--count;
+			return &array[ret];
+		}		
 	}
 
 	bool Enqueue(const ValueType& value)

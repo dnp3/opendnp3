@@ -114,7 +114,7 @@ IMasterTask* MasterScheduler::FindTaskToStart()
 	if (commandActions.IsNotEmpty())
 	{		
 		// configure the command task		
-		commandActions.Pop().Run(&tasks.commandTask);		
+		commandActions.Pop()->Run(&tasks.commandTask);		
 		return &tasks.commandTask;
 	}
 	else
@@ -232,7 +232,7 @@ void MasterScheduler::OnLowerLayerDown()
 
 		while (commandActions.IsNotEmpty())
 		{
-			this->ReportFailure(commandActions.Pop(), CommandResult::NO_COMMS);
+			this->ReportFailure(*commandActions.Pop(), CommandResult::NO_COMMS);
 		}
 	}	
 }

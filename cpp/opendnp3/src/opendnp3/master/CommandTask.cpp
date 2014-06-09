@@ -134,8 +134,8 @@ void CommandTask::BuildRequest(APDURequest& request, const MasterParams& params,
 {
 	if (functionCodes.IsNotEmpty() && pActiveSequence)
 	{
-		auto code = functionCodes.Pop();
-		request.SetFunction(code);
+		auto pCode = functionCodes.Pop();
+		request.SetFunction(*pCode);
 		request.SetControl(AppControlField::Request(seq));
 		pActiveSequence->FormatRequestHeader(request);
 	}

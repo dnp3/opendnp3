@@ -91,10 +91,10 @@ ITimer* AVRExecutor::Start(const TimeDuration& duration, const Runnable& runnabl
 ITimer* AVRExecutor::Start(const MonotonicTimestamp& ts, const Runnable& runnable)
 {
 	assert(idleTimers.IsNotEmpty());
-	AVRTimer* pTimer = idleTimers.Pop();
-	pTimer->Set(this, runnable, ts);
-	this->activeTimers.Add(pTimer);
-	return pTimer;
+	AVRTimer** pTimer = idleTimers.Pop();
+	(*pTimer)->Set(this, runnable, ts);
+	this->activeTimers.Add(*pTimer);
+	return *pTimer;
 }
 	
 void AVRExecutor::Post(const Runnable& runnable)

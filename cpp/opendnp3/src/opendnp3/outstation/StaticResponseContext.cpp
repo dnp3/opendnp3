@@ -222,10 +222,10 @@ IINField StaticResponseContext::QueueStaticIntegrity()
 
 	while(values.IsNotEmpty())
 	{
-		auto loader = values.Pop();
-		if(loader.IsDefined())
+		auto pLoader = values.Pop();
+		if (pLoader->IsDefined())
 		{
-			auto iin = QueueReadRange(loader);
+			auto iin = QueueReadRange(*pLoader);
 			if (iin.Any())
 			{
 				return iin;

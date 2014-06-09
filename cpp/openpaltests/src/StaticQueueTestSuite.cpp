@@ -41,7 +41,7 @@ TEST_CASE(SUITE("CorrectInitialState"))
 	REQUIRE(3 == queue.Capacity());
 }
 
-TEST_CASE(SUITE("PushesAndPopsCorrectly"))
+TEST_CASE(SUITE("PushesUntilFullAndPopsCorrectly"))
 {
 	StaticQueue<int, uint16_t, 3> queue;
 
@@ -49,10 +49,28 @@ TEST_CASE(SUITE("PushesAndPopsCorrectly"))
 	REQUIRE(queue.Enqueue(2));
 	REQUIRE(queue.Enqueue(3));
 	REQUIRE(queue.IsFull());
-	REQUIRE(1 == queue.Pop());
-	REQUIRE(2 == queue.Pop());
-	REQUIRE(3 == queue.Pop());
+	REQUIRE(1 == *queue.Pop());
+	REQUIRE(2 == *queue.Pop());
+	REQUIRE(3 == *queue.Pop());
 	REQUIRE(0 == queue.Size());
+}
+
+TEST_CASE(SUITE("PushesAndPopsInRing"))
+{
+	StaticQueue<int, uint16_t, 3> queue;
+
+	REQUIRE(queue.Enqueue(1));
+	REQUIRE(queue.Enqueue(2));
+	REQUIRE(queue.Enqueue(3));
+	REQUIRE(queue.IsFull());
+
+	for (int i = 1; i < 100; ++i)
+	{
+		auto pValue = queue.Pop();
+		REQUIRE(pValue);
+		REQUIRE(*pValue == i);
+		REQUIRE(queue.Enqueue(i + 3));
+	}
 }
 
 TEST_CASE(SUITE("QueueCanBeClearedWhileNeitherFullNorEmpty"))

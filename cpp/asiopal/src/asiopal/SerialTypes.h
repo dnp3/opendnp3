@@ -58,7 +58,7 @@ struct SerialSettings
 		stopBits(1),
 		parity(PAR_NONE),
 		flowType(FLOW_NONE),
-		asyncOpenDelay(openpal::TimeDuration::Milliseconds(10))
+		asyncOpenDelay(openpal::TimeDuration::Milliseconds(500))
 	{}
 
 	/// name of the port, i.e. "COM1" or "/dev/tty0"
