@@ -49,6 +49,8 @@ public:
 
 	MasterSchedule(AsyncTaskGroup* apGroup, Master* apMaster, const MasterConfig& arCfg);
 
+    AsyncTaskBase* mpIntegrity;
+
 	/**
 	 * A task to read the Master::mCommandQueue and pass objects to
 	 * Master::ProcessControl.

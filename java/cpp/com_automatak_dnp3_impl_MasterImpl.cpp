@@ -22,6 +22,13 @@
 
 using namespace opendnp3;
 
+JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_perform_1integrity_1scan_1native
+(JNIEnv *, jobject, jlong ptr)
+{
+	auto pMaster = (IMaster*) ptr;
+	pMaster->PerformIntegrityScan();
+}
+
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_shutdown_1native
 (JNIEnv*, jobject, jlong ptr)
 {

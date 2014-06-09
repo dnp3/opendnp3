@@ -40,11 +40,18 @@ class MasterImpl extends StackBase implements Master {
     }
 
     @Override
+    public void performIntegrityScan()
+    {
+        perform_integrity_scan_native(nativePointer);
+    }
+
+    @Override
     public void shutdown()
     {
         shutdown_native(nativePointer);
     }
 
     private native long get_native_command_processor(long nativePointer);
+    private native void perform_integrity_scan_native(long nativePointer);
     private native void shutdown_native(long nativePointer);
 }

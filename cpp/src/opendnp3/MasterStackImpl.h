@@ -66,6 +66,8 @@ public:
 
 	void Shutdown();
 
+    void PerformIntegrityScan();
+
 protected:
 
 	IVtoWriter* GetVtoWriter();

@@ -76,10 +76,10 @@ int main(int argc, char* argv[])
 	// name, log level, command acceptor, and config info. This
 	// returns a thread-safe interface used for sending commands.
 	auto pMaster = pClient->AddMaster(
-	                       "master",						// stack name
-	                       LOG_LEVEL,						// log filter level
-	                       PrintingDataObserver::Inst(),	// callback for data processing
-	                       stackConfig						// stack configuration
+	                       "master",                       // stack name
+	                       LOG_LEVEL,                      // log filter level
+	                       PrintingDataObserver::Inst(),   // callback for data processing
+	                       stackConfig                     // stack configuration
 	               );
 
 	// You can optionally add a listener to the stack to observer communicate health. You
@@ -94,8 +94,11 @@ int main(int argc, char* argv[])
 	do {
 		std::cout << "Enter something to perform a SELECT/OPERATE sequence, or type exit" << std::endl;
 		std::cin >> cmd;
-		if(cmd == "exit") break;
-		else {
+		if(cmd == "poll") {
+			pMaster->PerformIntegrityScan();
+		} else if(cmd == "exit") {
+			break;
+		} else {
 			ControlRelayOutputBlock crob(CC_LATCH_ON);
 
 			promise<CommandResponse> selectResult;

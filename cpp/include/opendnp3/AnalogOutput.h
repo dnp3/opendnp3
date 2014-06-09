@@ -47,13 +47,13 @@ public:
 	 * Creates a new instance with underlying type T
 	*/
 	AnalogOutput(T aValue) :
-		mValue(aValue),
-		mStatus(CommandStatus::CS_SUCCESS)
+		mStatus(CommandStatus::CS_SUCCESS),
+		mValue(aValue)
 	{}
 
 	AnalogOutput() :
-		mValue(0),
-		mStatus(CommandStatus::CS_SUCCESS)
+		mStatus(CommandStatus::CS_SUCCESS),
+		mValue(0)
 	{}
 
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES
@@ -149,7 +149,6 @@ public:
 #endif
 
 };
-
 
 }
 

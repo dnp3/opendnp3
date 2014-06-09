@@ -58,14 +58,14 @@ void MasterSchedule::ResetStartupTasks()
 
 void MasterSchedule::Init(const MasterConfig& arCfg, Master* apMaster)
 {
-	AsyncTaskBase* pIntegrity = mTracking.Add(
-	                                    arCfg.IntegrityRate,
-	                                    arCfg.TaskRetryRate,
-	                                    AMP_POLL,
-	                                    bind(&Master::IntegrityPoll, apMaster, _1),
-	                                    "Integrity Poll");
+	mpIntegrity = mTracking.Add(
+	                            arCfg.IntegrityRate,
+	                            arCfg.TaskRetryRate,
+	                            AMP_POLL,
+	                            bind(&Master::IntegrityPoll, apMaster, _1),
+	                            "Integrity Poll");
 
-	pIntegrity->SetFlags(ONLINE_ONLY_TASKS | START_UP_TASKS);
+	mpIntegrity->SetFlags(ONLINE_ONLY_TASKS | START_UP_TASKS);
 
 	if (arCfg.DoUnsolOnStartup) {
 		/*
@@ -86,7 +86,7 @@ void MasterSchedule::Init(const MasterConfig& arCfg, Master* apMaster)
 		                                       "Unsol Disable");
 
 		pUnsolDisable->SetFlags(ONLINE_ONLY_TASKS | START_UP_TASKS);
-		pIntegrity->AddDependency(pUnsolDisable);
+		mpIntegrity->AddDependency(pUnsolDisable);
 
 		if (arCfg.EnableUnsol) {
 			TaskHandler handler = bind(
@@ -104,7 +104,7 @@ void MasterSchedule::Init(const MasterConfig& arCfg, Master* apMaster)
 			                                      "Unsol Enable");
 
 			pUnsolEnable->SetFlags(ONLINE_ONLY_TASKS | START_UP_TASKS);
-			pUnsolEnable->AddDependency(pIntegrity);
+			pUnsolEnable->AddDependency(mpIntegrity);
 		}
 	}
 
@@ -112,7 +112,7 @@ void MasterSchedule::Init(const MasterConfig& arCfg, Master* apMaster)
 	 * Load any exception scans and make them dependent on the
 	 * integrity poll.
 	 */
-for(ExceptionScan e: arCfg.mScans) {
+	for(ExceptionScan e: arCfg.mScans) {
 		AsyncTaskBase* pEventScan = mTracking.Add(
 		                                    e.ScanRate,
 		                                    arCfg.TaskRetryRate,
@@ -121,7 +121,7 @@ for(ExceptionScan e: arCfg.mScans) {
 		                                    "Event Scan");
 
 		pEventScan->SetFlags(ONLINE_ONLY_TASKS);
-		pEventScan->AddDependency(pIntegrity);
+		pEventScan->AddDependency(mpIntegrity);
 	}
 
 	/* Tasks are executed when the master is is idle */

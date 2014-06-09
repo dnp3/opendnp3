@@ -22,12 +22,10 @@
 
 #include "AsyncTaskBase.h"
 
-
 #include <opendnp3/Exception.h>
 #include <opendnp3/Location.h>
 
 #include "AsyncTaskGroup.h"
-
 
 namespace opendnp3
 {
@@ -180,7 +178,13 @@ bool AsyncTaskBase::LessThanGroupLevel(const AsyncTaskBase* l, const AsyncTaskBa
 	return LessThanGroupLevelNoString(l, r);
 }
 
-
+void AsyncTaskBase::Demand()
+{
+	if (!IsExpired() && !IsRunning()) {
+		Reset();
+	    mpGroup->CheckState();
+    }
+}
 
 } //end ns
 

@@ -82,5 +82,10 @@ IVtoReader* MasterStackImpl::GetVtoReader()
 	return mMaster.GetVtoReader();
 }
 
+void MasterStackImpl::PerformIntegrityScan()
+{
+    mMaster.PerformIntegrityScan();
+}
+
 }
 
