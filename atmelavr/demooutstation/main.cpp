@@ -20,7 +20,7 @@ using namespace opendnp3;
 using namespace arduino;
 using namespace openpal;
 
-void ToggleBinaryIndex0Every(uint16_t milliseconds, IExecutor* pExecutor, Database* pDatabase, bool value, bool update);
+void ToggleBinaryIndex0Every(uint16_t milliseconds, IExecutor* pExecutor, Database* pDatabase, bool value = true, bool update = false);
 
 int main()
 {	
@@ -67,7 +67,7 @@ int main()
 	// Set LED as output
 	SET(DDRB, BIT(7));	
 	
-	ToggleBinaryIndex0Every(3000, &exe, &database, true, false);
+	ToggleBinaryIndex0Every(3000, &exe, &database);
 				
 	for (;;)
 	{ 	
