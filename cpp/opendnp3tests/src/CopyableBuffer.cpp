@@ -49,11 +49,12 @@ CopyableBuffer::CopyableBuffer(uint32_t aSize) :
 	this->Zero();
 }
 
-CopyableBuffer::CopyableBuffer(const openpal::ReadOnlyBuffer& arBuffer) :
-	mpBuff(new uint8_t[arBuffer.Size()]),
-	mSize(arBuffer.Size())
+CopyableBuffer::CopyableBuffer(const openpal::ReadOnlyBuffer& buffer) :
+	mpBuff(new uint8_t[buffer.Size()]),
+	mSize(buffer.Size())
 {
-	arBuffer.CopyTo(mpBuff);
+	openpal::WriteBuffer dest(mpBuff, mSize);
+	buffer.CopyTo(dest);
 }
 
 CopyableBuffer::CopyableBuffer(const uint8_t* apBuff, uint32_t aSize) :

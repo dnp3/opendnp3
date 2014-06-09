@@ -82,8 +82,7 @@ class OutstationContext
 	// ------ Dynamic "state", i.e. things that must be managed or cleanup on close ------
 	
 	bool isOnline;
-	TransmitState transmitState;
-	bool firstValidRequestAccepted;
+	TransmitState transmitState;	
 	OutstationStateBase* pState;
 
 
@@ -114,9 +113,7 @@ class OutstationContext
 
 	APDUResponse StartNewResponse();
 
-	void ConfigureUnsolHeader(APDUResponse& unsol);
-
-	openpal::ReadOnlyBuffer RecordLastRequest(const openpal::ReadOnlyBuffer& fragment);
+	void ConfigureUnsolHeader(APDUResponse& unsol);	
 
 	void SetOnline();
 	void SetOffline();

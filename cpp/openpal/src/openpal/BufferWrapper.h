@@ -28,6 +28,8 @@
 namespace openpal
 {
 
+class WriteBuffer;
+
 class ReadOnlyBuffer : public HasSize<uint32_t>
 {
 
@@ -38,13 +40,13 @@ public:
 	ReadOnlyBuffer();
 	ReadOnlyBuffer(uint8_t const* pBuffer, uint32_t size);
 
-	ReadOnlyBuffer CopyTo(uint8_t* pDest) const;
+	ReadOnlyBuffer CopyTo(WriteBuffer&) const;
 
 	ReadOnlyBuffer Take(uint32_t count) const;
 
 	ReadOnlyBuffer Skip(uint32_t count) const;
 
-	void ZeroSize();
+	void Clear();
 
 	bool Equals(const ReadOnlyBuffer& rhs) const;
 

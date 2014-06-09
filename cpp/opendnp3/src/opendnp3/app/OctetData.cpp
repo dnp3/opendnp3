@@ -38,7 +38,8 @@ OctetData::OctetData(const ReadOnlyBuffer& buffer)
 void OctetData::Initialize(const ReadOnlyBuffer& buffer)
 {
 	size = static_cast<uint8_t>((buffer.Size() > MAX_SIZE) ? MAX_SIZE : buffer.Size());
-	buffer.Take(size).CopyTo(pData);
+	WriteBuffer dest(pData, MAX_SIZE);
+	buffer.Take(size).CopyTo(dest);
 }
 
 OctetData& OctetData::operator=( const OctetData& rhs )

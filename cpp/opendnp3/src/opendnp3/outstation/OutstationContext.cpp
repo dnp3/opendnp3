@@ -66,7 +66,6 @@ OutstationContext::OutstationContext(
 	eventBuffer(buffers),
 	isOnline(false),
 	transmitState(TransmitState::IDLE),
-	firstValidRequestAccepted(false),
 	pState(&OutstationStateIdle::Inst()),
 	pConfirmTimer(nullptr),
 	pUnsolTimer(nullptr),
@@ -138,19 +137,6 @@ void OutstationContext::ConfigureUnsolHeader(APDUResponse& unsol)
 	build::NullUnsolicited(unsol, this->unsolSeqN, this->staticIIN | this->GetDynamicIIN());	
 }
 
-ReadOnlyBuffer OutstationContext::RecordLastRequest(const openpal::ReadOnlyBuffer& fragment)
-{
-	if (fragment.Size() <= rxBuffer.Size())
-	{
-		lastValidRequest = fragment.CopyTo(rxBuffer.Buffer());
-		return lastValidRequest;
-	}
-	else
-	{
-		return ReadOnlyBuffer::Empty();
-	}
-}
-
 void OutstationContext::SetOnline()
 {
 	isOnline = true;
@@ -162,7 +148,7 @@ void OutstationContext::SetOffline()
 	unsolPackTimerExpired = false;
 	transmitState = TransmitState::IDLE;
 	pState = &OutstationStateIdle::Inst();
-	firstValidRequestAccepted = false;
+	lastValidRequest.Clear();
 	eventBuffer.Reset();
 	rspContext.Reset();
 	CancelConfirmTimer();
@@ -252,12 +238,13 @@ void OutstationContext::ExamineAPDU(const openpal::ReadOnlyBuffer& fragment)
 
 void OutstationContext::OnReceiveSolRequest(const APDURecord& request, const openpal::ReadOnlyBuffer& fragment)
 {
-	if (this->firstValidRequestAccepted)
-	{
-		// analyze this request to see how it compares to the last request
-		auto equality = APDURequest::Compare(fragment, lastValidRequest);
-		this->RecordLastRequest(fragment);
+	// analyze this request to see how it compares to the last request
+	auto firstValidRequestAccepted = lastValidRequest.IsNotEmpty();	
+	auto equality = APDURequest::Compare(fragment, lastValidRequest);
+	this->lastValidRequest = fragment.CopyTo(rxBuffer.GetWriteBuffer());
 
+	if (firstValidRequestAccepted)
+	{	
 		if (this->solSeqN == request.control.SEQ)
 		{
 			if (equality == APDUEquality::FULL_EQUALITY)
@@ -275,10 +262,8 @@ void OutstationContext::OnReceiveSolRequest(const APDURecord& request, const ope
 		}
 	}
 	else
-	{
-		this->firstValidRequestAccepted = true;
-		this->solSeqN = request.control.SEQ;		
-		this->RecordLastRequest(fragment);
+	{		
+		this->solSeqN = request.control.SEQ;				
 		this->pState->OnNewRequest(this, request, APDUEquality::NONE);
 	}
 

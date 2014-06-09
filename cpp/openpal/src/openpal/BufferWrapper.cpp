@@ -42,10 +42,17 @@ ReadOnlyBuffer::ReadOnlyBuffer(uint8_t const* pBuffer, uint32_t size) :
 	pBuffer(pBuffer)
 {}
 
-ReadOnlyBuffer ReadOnlyBuffer::CopyTo(uint8_t* pDest) const
+ReadOnlyBuffer ReadOnlyBuffer::CopyTo(WriteBuffer& dest) const
 {
-	memcpy(pDest, pBuffer, size);
-	return ReadOnlyBuffer(pDest, size);
+	if (dest.Size() < size)
+	{
+		return ReadOnlyBuffer::Empty();
+	}
+	else
+	{
+		memcpy(dest, pBuffer, size);
+		return ReadOnlyBuffer(dest, size);
+	}
 }
 
 ReadOnlyBuffer ReadOnlyBuffer::Take(uint32_t count) const
@@ -59,8 +66,9 @@ ReadOnlyBuffer ReadOnlyBuffer::Skip(uint32_t count) const
 	return ReadOnlyBuffer(pBuffer + num, size - num);
 }
 
-void ReadOnlyBuffer::ZeroSize()
+void ReadOnlyBuffer::Clear()
 {
+	pBuffer = nullptr;
 	size = 0;
 }
 
