@@ -169,13 +169,6 @@ void OutstationContext::SetOffline()
 	CancelUnsolTimer();
 }
 
-void OutstationContext::Select()
-{
-	operateExpectedFragCount = rxFragCount + 1;
-	operateExpectedSeq = NextSeq(solSeqN);
-	selectTime = pExecutor->GetTime();
-}
-
 bool OutstationContext::IsOperateSequenceValid()
 {	
 	return (rxFragCount == operateExpectedFragCount) && (solSeqN == operateExpectedSeq);	
@@ -262,43 +255,41 @@ void OutstationContext::OnReceiveSolRequest(const APDURecord& request, const ope
 	if (this->firstValidRequestAccepted)
 	{
 		// analyze this request to see how it compares to the last request
-		// auto comparison = APDURequest::Compare(fragment, )
+		auto equality = APDURequest::Compare(fragment, lastValidRequest);
+		this->RecordLastRequest(fragment);
 
 		if (this->solSeqN == request.control.SEQ)
 		{
-			if (this->lastValidRequest.Equals(fragment))
+			if (equality == APDUEquality::FULL_EQUALITY)
 			{
 				this->pState->OnRepeatRequest(this, request);
 			}
 			else // new operation with same SEQ
 			{
-
-
-				this->pState->OnNewRequest(this, request, fragment);
-				
+				this->pState->OnNewRequest(this, request, equality);
 			}
 		}
 		else  // completely new sequence #
 		{			
-			this->pState->OnNewRequest(this, request, fragment);
+			this->pState->OnNewRequest(this, request, equality);
 		}
 	}
 	else
 	{
-		this->solSeqN = request.control.SEQ;
 		this->firstValidRequestAccepted = true;
-		this->pState->OnNewRequest(this, request, fragment);
+		this->solSeqN = request.control.SEQ;		
+		this->RecordLastRequest(fragment);
+		this->pState->OnNewRequest(this, request, APDUEquality::NONE);
 	}
 
 }
 
-void OutstationContext::RespondToRequest(const APDURecord& request, const openpal::ReadOnlyBuffer& fragment)
+void OutstationContext::RespondToRequest(const APDURecord& request, APDUEquality equality)
 {
 	auto response = StartNewResponse();
 	response.SetFunction(FunctionCode::RESPONSE);
 	response.SetControl(request.control);
-	IINField iin = BuildResponse(request, response);
-	RecordLastRequest(fragment);
+	IINField iin = BuildResponse(request, response, equality);	
 	response.SetIIN(iin | staticIIN | GetDynamicIIN());
 	if (response.GetControl().CON)
 	{
@@ -323,7 +314,7 @@ void OutstationContext::BeginUnsolTx(const ReadOnlyBuffer& response)
 	pLower->BeginTransmit(response);
 }
 
-IINField OutstationContext::BuildResponse(const APDURecord& request, APDUResponse& response)
+IINField OutstationContext::BuildResponse(const APDURecord& request, APDUResponse& response, APDUEquality equality)
 {
 	switch (request.function)
 	{		
@@ -334,7 +325,7 @@ IINField OutstationContext::BuildResponse(const APDURecord& request, APDURespons
 		case(FunctionCode::SELECT) :
 			return HandleSelect(request, response);
 		case(FunctionCode::OPERATE) :
-			return HandleOperate(request, response);
+			return HandleOperate(request, response, equality);
 		case(FunctionCode::DIRECT_OPERATE) :
 			return HandleDirectOperate(request, response);
 		case(FunctionCode::DELAY_MEASURE) :
@@ -547,8 +538,10 @@ IINField OutstationContext::HandleSelect(const APDURecord& request, APDUResponse
 		if (result == APDUParser::Result::OK)
 		{
 			if (handler.AllCommandsSuccessful())
-			{
-				this->Select();
+			{				
+				operateExpectedFragCount = rxFragCount + 1;
+				operateExpectedSeq = NextSeq(solSeqN);
+				selectTime = pExecutor->GetTime();
 				return IINField::Empty;
 			}
 			else
@@ -563,7 +556,7 @@ IINField OutstationContext::HandleSelect(const APDURecord& request, APDUResponse
 	}
 }
 
-IINField OutstationContext::HandleOperate(const APDURecord& request, APDUResponse& response)
+IINField OutstationContext::HandleOperate(const APDURecord& request, APDUResponse& response, APDUEquality equality)
 {
 	// since we're echoing, make sure there's enough size before beginning
 	if (request.objects.Size() > response.Remaining())
@@ -578,21 +571,12 @@ IINField OutstationContext::HandleOperate(const APDURecord& request, APDURespons
 			auto elapsed = pExecutor->GetTime().milliseconds - selectTime.milliseconds;
 			if (elapsed < params.selectTimeout.GetMilliseconds())
 			{
-				if (lastValidRequest.Size() >= 2)
-				{
-					ReadOnlyBuffer copy(lastValidRequest);
-					copy.Advance(2);
-					if (copy.Equals(request.objects))
-					{
-						CommandActionAdapter adapter(pCommandHandler, false);
-						CommandResponseHandler handler(logger, params.maxControlsPerRequest, &adapter, response);
-						auto result = APDUParser::ParseTwoPass(request.objects, &handler, &logger);
-						return IINFromParseResult(result);
-					}
-					else
-					{
-						return HandleCommandWithConstant(request, response, CommandStatus::NO_SELECT);
-					}
+				if (equality == APDUEquality::OBJECT_HEADERS_EQUAL)
+				{					
+					CommandActionAdapter adapter(pCommandHandler, false);
+					CommandResponseHandler handler(logger, params.maxControlsPerRequest, &adapter, response);
+					auto result = APDUParser::ParseTwoPass(request.objects, &handler, &logger);
+					return IINFromParseResult(result);					
 				}
 				else
 				{

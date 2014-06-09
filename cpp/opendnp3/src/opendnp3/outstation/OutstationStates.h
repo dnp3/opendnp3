@@ -22,6 +22,7 @@
 #define __OUTSTATION_STATES_H_
 
 #include "opendnp3/app/APDUHeader.h"
+#include "opendnp3/app/APDUWrapper.h"
 
 #include <openpal/Uncopyable.h>
 
@@ -47,7 +48,7 @@ public:
 
 	virtual void OnConfirmTimeout(OutstationContext*);
 
-	virtual void OnNewRequest(OutstationContext*, const APDURecord& request, const openpal::ReadOnlyBuffer& fragment) = 0;
+	virtual void OnNewRequest(OutstationContext*, const APDURecord& request, APDUEquality equality) = 0;
 
 	virtual void OnRepeatRequest(OutstationContext*, const APDURecord& frag) = 0;
 
@@ -66,7 +67,7 @@ public:
 
 	virtual bool IsIdle() override final;
 
-	virtual void OnNewRequest(OutstationContext*, const APDURecord& request, const openpal::ReadOnlyBuffer& fragment) override final;
+	virtual void OnNewRequest(OutstationContext*, const APDURecord& request, APDUEquality equality) override final;
 
 	virtual void OnRepeatRequest(OutstationContext*, const APDURecord& frag) override final;
 
@@ -87,7 +88,7 @@ public:
 
 	static OutstationStateBase& Inst();
 
-	virtual void OnNewRequest(OutstationContext* pContext, const APDURecord& request, const openpal::ReadOnlyBuffer& fragment) override final;
+	virtual void OnNewRequest(OutstationContext* pContext, const APDURecord& request, APDUEquality equality) override final;
 
 	virtual void OnRepeatRequest(OutstationContext* pContext, const APDURecord& frag) override final;
 
@@ -111,7 +112,7 @@ public:
 
 	static OutstationStateBase& Inst();
 
-	virtual void OnNewRequest(OutstationContext* pContext, const APDURecord& request, const openpal::ReadOnlyBuffer& fragment) override final;
+	virtual void OnNewRequest(OutstationContext* pContext, const APDURecord& request, APDUEquality equality) override final;
 
 	virtual void OnRepeatRequest(OutstationContext* pContext, const APDURecord& frag) override final;
 

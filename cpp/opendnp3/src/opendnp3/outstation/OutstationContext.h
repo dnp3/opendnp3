@@ -120,8 +120,7 @@ class OutstationContext
 
 	void SetOnline();
 	void SetOffline();
-
-	void Select();
+	
 	bool IsOperateSequenceValid();
 	bool IsIdle();
 
@@ -137,13 +136,13 @@ class OutstationContext
 
 	void OnReceiveSolRequest(const APDURecord& request, const openpal::ReadOnlyBuffer& fragment);
 
-	void RespondToRequest(const APDURecord& request, const openpal::ReadOnlyBuffer& fragment);
+	void RespondToRequest(const APDURecord& request, APDUEquality equality);
 
 	void BeginResponseTx(const openpal::ReadOnlyBuffer& response);
 
 	void BeginUnsolTx(const openpal::ReadOnlyBuffer& response);
 
-	IINField BuildResponse(const APDURecord& request, APDUResponse& response);
+	IINField BuildResponse(const APDURecord& request, APDUResponse& response, APDUEquality equality);
 
 	void ContinueMultiFragResponse(uint8_t seq);
 
@@ -176,7 +175,7 @@ class OutstationContext
 	IINField HandleWrite(const APDURecord& request);
 	IINField HandleRead(const APDURecord& request, APDUResponse& response);	
 	IINField HandleSelect(const APDURecord& request, APDUResponse& response);
-	IINField HandleOperate(const APDURecord& request, APDUResponse& response);
+	IINField HandleOperate(const APDURecord& request, APDUResponse& response, APDUEquality equality);
 	IINField HandleDirectOperate(const APDURecord& request, APDUResponse& response);
 	IINField HandleDelayMeasure(const APDURecord& request, APDUResponse& response);
 	IINField HandleDisableUnsolicited(const APDURecord& request, APDUResponse& response);

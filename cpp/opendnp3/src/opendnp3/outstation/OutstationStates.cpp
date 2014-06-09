@@ -72,7 +72,7 @@ bool OutstationStateIdle::IsIdle()
 	return true;
 }
 
-void OutstationStateIdle::OnNewRequest(OutstationContext* pContext, const APDURecord& request, const openpal::ReadOnlyBuffer& fragment)
+void OutstationStateIdle::OnNewRequest(OutstationContext* pContext, const APDURecord& request, APDUEquality equality)
 {
 	if (pContext->IsTransmitting())
 	{
@@ -81,7 +81,7 @@ void OutstationStateIdle::OnNewRequest(OutstationContext* pContext, const APDURe
 	else
 	{
 		pContext->solSeqN = request.control.SEQ;
-		pContext->RespondToRequest(request, fragment);
+		pContext->RespondToRequest(request, equality);
 	}
 }
 
@@ -112,7 +112,7 @@ OutstationStateBase& OutstationStateSolConfirmWait::Inst()
 	return instance;
 }
 
-void OutstationStateSolConfirmWait::OnNewRequest(OutstationContext* pContext, const APDURecord& request, const openpal::ReadOnlyBuffer& fragment)
+void OutstationStateSolConfirmWait::OnNewRequest(OutstationContext* pContext, const APDURecord& request, APDUEquality equality)
 {
 	if (pContext->IsTransmitting())
 	{
@@ -125,7 +125,7 @@ void OutstationStateSolConfirmWait::OnNewRequest(OutstationContext* pContext, co
 		pContext->pState = &OutstationStateIdle::Inst();
 		pContext->rspContext.Reset();
 		pContext->eventBuffer.Reset();
-		pContext->RespondToRequest(request, fragment);
+		pContext->RespondToRequest(request, equality);
 	}	
 }
 
@@ -206,7 +206,7 @@ OutstationStateBase& OutstationStateUnsolConfirmWait::Inst()
 	return instance;
 }
 
-void OutstationStateUnsolConfirmWait::OnNewRequest(OutstationContext* pContext, const APDURecord& request, const openpal::ReadOnlyBuffer& fragment)
+void OutstationStateUnsolConfirmWait::OnNewRequest(OutstationContext* pContext, const APDURecord& request, APDUEquality equality)
 {
 	// TODO
 }
