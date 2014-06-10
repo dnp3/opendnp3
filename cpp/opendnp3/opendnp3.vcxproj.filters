@@ -108,19 +108,10 @@
     <ClInclude Include="src\opendnp3\app\DownSampling.h">
       <Filter>Header\app</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\app\FunctionCodeHelpers.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\app\GroupVariation.h">
       <Filter>Header\app</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\app\IAPDUHandler.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\app\IAppLayer.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\app\IAppUser.h">
       <Filter>Header\app</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\app\IINField.h">
@@ -689,22 +680,13 @@
     <ClCompile Include="src\opendnp3\app\ControlRelayOutputBlock.cpp">
       <Filter>Source\app</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\app\FunctionCodeHelpers.cpp">
-      <Filter>Source\app</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\app\GroupVariation.cpp">
-      <Filter>Source\app</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\app\IAppUser.cpp">
       <Filter>Source\app</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\app\IINField.cpp">
       <Filter>Source\app</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\app\OctetData.cpp">
-      <Filter>Source\app</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\app\PointClass.cpp">
       <Filter>Source\app</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\gen\StaticFrozenCounterResponse.cpp">

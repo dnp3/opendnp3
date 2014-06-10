@@ -203,7 +203,6 @@
     <ClInclude Include="src\CopyableBuffer.h" />
     <ClInclude Include="src\DatabaseTestObject.h" />
     <ClInclude Include="src\DNPHelpers.h" />
-    <ClInclude Include="src\Exception.h" />
     <ClInclude Include="src\FanoutDataObserver.h" />
     <ClInclude Include="src\FlexibleDataObserver.h" />
     <ClInclude Include="src\IntegrationTest.h" />
@@ -263,7 +262,6 @@
     <ClCompile Include="src\ComparingDataObserver.cpp" />
     <ClCompile Include="src\CopyableBuffer.cpp" />
     <ClCompile Include="src\DNPHelpers.cpp" />
-    <ClCompile Include="src\Exception.cpp" />
     <ClCompile Include="src\FlexibleDataObserver.cpp" />
     <ClCompile Include="src\IntegrationTest.cpp" />
     <ClCompile Include="src\LinkLayerRouterTest.cpp" />
