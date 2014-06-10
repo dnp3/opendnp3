@@ -37,7 +37,8 @@ TEST_CASE(SUITE("ReadAndWriteModulo2"))
 	{
 		rb.Put(1);
 		rb.Put(2);
-		auto num = rb.Read(buffer.GetWriteBuffer());
+		auto wb = buffer.GetWriteBuffer();
+		auto num = rb.Read(wb);
 		REQUIRE(num == 2);
 		REQUIRE(buffer[0] == 1);
 		REQUIRE(buffer[1] == 2);
@@ -58,7 +59,9 @@ TEST_CASE(SUITE("WriteOverflowDropsOldBytes"))
 		rb.Put(3);
 		rb.Put(4);
 
-		auto num = rb.Read(buffer.GetWriteBuffer());
+		auto wb = buffer.GetWriteBuffer();
+		auto num = rb.Read(wb);
+
 		REQUIRE(num == 3);
 		REQUIRE(buffer[0] == 2);
 		REQUIRE(buffer[1] == 3);

@@ -19,16 +19,19 @@ libopenpal_la_LDFLAGS = -version-info 1:1:0
 libopenpal_la_CXXFLAGS = -I$(OPENPAL_INCLUDE)
 libopenpal_la_SOURCES = \
 cpp/openpal/src/openpal/BufferWrapper.cpp \
+cpp/openpal/src/openpal/ByteSerialization.cpp \
 cpp/openpal/src/openpal/Limits.cpp \
 cpp/openpal/src/openpal/LogEntry.cpp \
 cpp/openpal/src/openpal/Logger.cpp \
 cpp/openpal/src/openpal/LogRoot.cpp \
 cpp/openpal/src/openpal/MonotonicTimestamp.cpp \
+cpp/openpal/src/openpal/RingBufferAdapter.cpp \
 cpp/openpal/src/openpal/Runnable.cpp \
 cpp/openpal/src/openpal/StringFormatting.cpp \
 cpp/openpal/src/openpal/TimeDuration.cpp \
 cpp/openpal/src/openpal/ToHex.cpp \
 cpp/openpal/src/openpal/UInt48LE.cpp
+
 
 #ls cpp/asiopal/src/asiopal/*.cpp -1 | awk '{print $0" \\"}'
 libasiopal_la_LDFLAGS = -version-info 1:1:0
@@ -102,9 +105,8 @@ cpp/opendnp3/src/opendnp3/link/IOpenDelayStrategy.cpp \
 cpp/opendnp3/src/opendnp3/link/LinkFrame.cpp \
 cpp/opendnp3/src/opendnp3/link/LinkHeader.cpp \
 cpp/opendnp3/src/opendnp3/link/LinkLayer.cpp \
-cpp/opendnp3/src/opendnp3/link/LinkLayerReceiver.cpp \
+cpp/opendnp3/src/opendnp3/link/LinkLayerParser.cpp \
 cpp/opendnp3/src/opendnp3/link/LinkLayerRouter.cpp \
-cpp/opendnp3/src/opendnp3/link/LinkReceiverStates.cpp \
 cpp/opendnp3/src/opendnp3/link/LinkRoute.cpp \
 cpp/opendnp3/src/opendnp3/link/PhysicalLayerMonitor.cpp \
 cpp/opendnp3/src/opendnp3/link/PhysicalLayerMonitorStates.cpp \
@@ -154,6 +156,7 @@ cpp/opendnp3/src/opendnp3/objects/Group51.cpp \
 cpp/opendnp3/src/opendnp3/objects/Group52.cpp \
 cpp/opendnp3/src/opendnp3/objects/Group60.cpp \
 cpp/opendnp3/src/opendnp3/outstation/CachedRequest.cpp \
+cpp/opendnp3/src/opendnp3/outstation/ClassBasedRequestHandler.cpp \
 cpp/opendnp3/src/opendnp3/outstation/CommandActionAdapter.cpp \
 cpp/opendnp3/src/opendnp3/outstation/CommandResponseHandler.cpp \
 cpp/opendnp3/src/opendnp3/outstation/Database.cpp \
@@ -165,6 +168,7 @@ cpp/opendnp3/src/opendnp3/outstation/EventCount.cpp \
 cpp/opendnp3/src/opendnp3/outstation/EventResponseConfig.cpp \
 cpp/opendnp3/src/opendnp3/outstation/EventResponseContext.cpp \
 cpp/opendnp3/src/opendnp3/outstation/EventResponseTypes.cpp \
+cpp/opendnp3/src/opendnp3/outstation/EventWriter.cpp \
 cpp/opendnp3/src/opendnp3/outstation/IINHelpers.cpp \
 cpp/opendnp3/src/opendnp3/outstation/ITimeWriteHandler.cpp \
 cpp/opendnp3/src/opendnp3/outstation/Outstation.cpp \
@@ -225,11 +229,11 @@ openpaltest_LDADD = libopenpal.la
 openpaltest_SOURCES = \
 cpp/openpaltests/src/CatchTestStart.cpp \
 cpp/openpaltests/src/LinkedListAdapterTestSuite.cpp \
-cpp/openpaltests/src/ListAdapterTestSuite.cpp \
-cpp/openpaltests/src/QueueAdapterTestSuite.cpp \
 cpp/openpaltests/src/RandomInsertAdapterTestSuite.cpp \
+cpp/openpaltests/src/RingBufferTestSuite.cpp \
 cpp/openpaltests/src/StackAdapterTestSuite.cpp \
-cpp/openpaltests/src/StaticPriorityQueueTestSuite.cpp
+cpp/openpaltests/src/StaticPriorityQueueTestSuite.cpp \
+cpp/openpaltests/src/StaticQueueTestSuite.cpp 
 
 #ls cpp/opendnp3tests/src/*.cpp -1 | awk '{print $0" \\"}'
 dnp3test_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) -I$(ASIODNP3_INCLUDE) -I$(CATCH_INCLUDE) $(ASIO_CONFIG)
@@ -296,6 +300,7 @@ cpp/opendnp3tests/src/TestMaster.cpp \
 cpp/opendnp3tests/src/TestOutstationCommandResponses.cpp \
 cpp/opendnp3tests/src/TestOutstation.cpp \
 cpp/opendnp3tests/src/TestOutstationEventResponses.cpp \
+cpp/opendnp3tests/src/TestOutstationUnsolicitedResponses.cpp \
 cpp/opendnp3tests/src/TestPhysicalLayerAsyncBase.cpp \
 cpp/opendnp3tests/src/TestPhysicalLayerAsyncSerial.cpp \
 cpp/opendnp3tests/src/TestPhysicalLayerAsyncTCP.cpp \
@@ -319,5 +324,4 @@ cpp/opendnp3tests/src/TransportScalabilityTestObject.cpp \
 cpp/opendnp3tests/src/TransportStackPair.cpp \
 cpp/opendnp3tests/src/TransportTestObject.cpp \
 cpp/opendnp3tests/src/WrappedTcpPipe.cpp
-
 
