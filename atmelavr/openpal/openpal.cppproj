@@ -161,14 +161,6 @@
       <SubType>compile</SubType>
       <Link>headers\Bind.h</Link>
     </Compile>
-    <Compile Include="..\..\cpp\openpal\src\openpal\BufferWrapper.cpp">
-      <SubType>compile</SubType>
-      <Link>sources\BufferWrapper.cpp</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\openpal\src\openpal\BufferWrapper.h">
-      <SubType>compile</SubType>
-      <Link>headers\BufferWrapper.h</Link>
-    </Compile>
     <Compile Include="..\..\cpp\openpal\src\openpal\ByteSerialization.cpp">
       <SubType>compile</SubType>
       <Link>sources\ByteSerialization.cpp</Link>
@@ -329,6 +321,14 @@
       <SubType>compile</SubType>
       <Link>headers\RandomInsertAdapter.h</Link>
     </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\ReadOnlyBuffer.cpp">
+      <SubType>compile</SubType>
+      <Link>sources\ReadOnlyBuffer.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\ReadOnlyBuffer.h">
+      <SubType>compile</SubType>
+      <Link>headers\ReadOnlyBuffer.h</Link>
+    </Compile>
     <Compile Include="..\..\cpp\openpal\src\openpal\RingBuffer.h">
       <SubType>compile</SubType>
       <Link>headers\RingBuffer.h</Link>
@@ -420,6 +420,14 @@
     <Compile Include="..\..\cpp\openpal\src\openpal\UTCTimestamp.h">
       <SubType>compile</SubType>
       <Link>headers\UTCTimestamp.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\WriteBuffer.cpp">
+      <SubType>compile</SubType>
+      <Link>sources\WriteBuffer.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\WriteBuffer.h">
+      <SubType>compile</SubType>
+      <Link>headers\WriteBuffer.h</Link>
     </Compile>
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
