@@ -73,7 +73,6 @@ cpp/opendnp3/src/opendnp3/app/GroupVariation.cpp \
 cpp/opendnp3/src/opendnp3/app/IINField.cpp \
 cpp/opendnp3/src/opendnp3/app/ObjectWriter.cpp \
 cpp/opendnp3/src/opendnp3/app/OctetData.cpp \
-cpp/opendnp3/src/opendnp3/app/PointClass.cpp \
 cpp/opendnp3/src/opendnp3/app/StaticRange.cpp \
 cpp/opendnp3/src/opendnp3/gen/ChannelState.cpp \
 cpp/opendnp3/src/opendnp3/gen/CommandResult.cpp \

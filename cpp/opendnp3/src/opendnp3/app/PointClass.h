@@ -38,9 +38,6 @@ enum PointClass : uint8_t
 	
 };
 
-///converts an integer to a PointClass enumeration
-PointClass IntToPointClass(uint8_t clazz);
-
 }
 
 #endif
