@@ -61,9 +61,6 @@
     <ClInclude Include="src\openpal\RandomInsertAdapter.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\openpal\Sequence.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\openpal\Serialization.h">
       <Filter>Header</Filter>
     </ClInclude>

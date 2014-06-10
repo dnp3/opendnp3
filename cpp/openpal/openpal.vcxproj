@@ -58,7 +58,6 @@
     <ClInclude Include="src\openpal\RandomInsertAdapter.h" />
     <ClInclude Include="src\openpal\UInt48LE.h" />
     <ClInclude Include="src\openpal\Runnable.h" />
-    <ClInclude Include="src\openpal\Sequence.h" />
     <ClInclude Include="src\openpal\Serialization.h" />
     <ClInclude Include="src\openpal\SerializationTemplatesLE.h" />
     <ClInclude Include="src\openpal\StackAdapter.h" />
