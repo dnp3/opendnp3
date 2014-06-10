@@ -21,7 +21,8 @@
 #ifndef __ASYNC_LAYER_INTERFACES_H_
 #define __ASYNC_LAYER_INTERFACES_H_
 
-#include "openpal/BufferWrapper.h"
+#include "ReadOnlyBuffer.h"
+#include "WriteBuffer.h"
 
 #include "Configure.h"
 

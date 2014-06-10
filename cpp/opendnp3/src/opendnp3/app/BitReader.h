@@ -21,7 +21,7 @@
 #ifndef __BIT_READER_H_
 #define __BIT_READER_H_
 
-#include <openpal/BufferWrapper.h>
+#include <openpal/ReadOnlyBuffer.h>
 
 #include "opendnp3/gen/DoubleBit.h"
 

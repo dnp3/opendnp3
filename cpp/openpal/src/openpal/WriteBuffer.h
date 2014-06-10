@@ -18,51 +18,51 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __BYTE_SERIALIZATION_H_
-#define __BYTE_SERIALIZATION_H_
+#ifndef __WRITE_BUFFER_H_
+#define __WRITE_BUFFER_H_
+
+#include "HasSize.h"
 
 #include <cstdint>
-#include <cstring>
-
-#include "WriteBuffer.h"
-#include "ReadOnlyBuffer.h"
 
 namespace openpal
 {
 
-class UInt8Simple
+class ReadOnlyBuffer;
+
+class WriteBuffer : public HasSize<uint32_t>
 {
 public:
 
-	inline static uint8_t Read(const uint8_t* apStart)
+	static WriteBuffer Empty();
+
+	WriteBuffer();
+	WriteBuffer(const WriteBuffer& copy);
+	WriteBuffer(uint8_t* pBuffer, uint32_t size);
+
+	uint32_t ReadFrom(const ReadOnlyBuffer& buffer);
+
+	void Clear();
+
+	uint32_t Advance(uint32_t count);
+
+	ReadOnlyBuffer ToReadOnly() const;
+
+	operator uint8_t* ()
 	{
-		return (*apStart);
-	}
+		return pBuffer;
+	};
 
-	inline static uint8_t ReadBuffer(ReadOnlyBuffer& arBuffer)
+	operator uint8_t const* () const
 	{
-		auto ret = Read(arBuffer);
-		arBuffer.Advance(Size);
-		return ret;
-	}
+		return pBuffer;
+	};
 
-	static void WriteBuffer(WriteBuffer& buffer, uint8_t aValue)
-	{
-		Write(buffer, aValue);
-		buffer.Advance(Size);
-	}
+private:
 
-	inline static void Write(uint8_t* apStart, uint8_t aValue)
-	{
-		*(apStart) = aValue;
-	}
-
-	const static size_t Size = 1;
-	const static uint8_t Max;
-	const static uint8_t Min;
-
-	typedef uint8_t Type;
+	uint8_t* pBuffer;
 };
+
 
 }
 

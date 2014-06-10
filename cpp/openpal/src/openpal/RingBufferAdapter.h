@@ -21,10 +21,12 @@
 #ifndef __RING_BUFFER_ADAPTER_H_
 #define __RING_BUFFER_ADAPTER_H_
 
-#include "BufferWrapper.h"
+#include <cstdint>
 
 namespace openpal
 {
+
+class WriteBuffer;
 
 /// A circular buffer
 class RingBufferAdapter

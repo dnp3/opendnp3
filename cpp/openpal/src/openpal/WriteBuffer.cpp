@@ -18,52 +18,63 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __BYTE_SERIALIZATION_H_
-#define __BYTE_SERIALIZATION_H_
-
-#include <cstdint>
-#include <cstring>
-
 #include "WriteBuffer.h"
+
+#include "Comparisons.h"
 #include "ReadOnlyBuffer.h"
+
+#include <cstring>
 
 namespace openpal
 {
 
-class UInt8Simple
+WriteBuffer WriteBuffer::Empty()
 {
-public:
+	return WriteBuffer();
+}
 
-	inline static uint8_t Read(const uint8_t* apStart)
-	{
-		return (*apStart);
-	}
+WriteBuffer::WriteBuffer(const WriteBuffer& copy) : 
+	HasSize(copy),
+	pBuffer(copy.pBuffer)
+{}
 
-	inline static uint8_t ReadBuffer(ReadOnlyBuffer& arBuffer)
-	{
-		auto ret = Read(arBuffer);
-		arBuffer.Advance(Size);
-		return ret;
-	}
+WriteBuffer::WriteBuffer(): 
+	HasSize(0),
+	pBuffer(nullptr)
+{}
 
-	static void WriteBuffer(WriteBuffer& buffer, uint8_t aValue)
-	{
-		Write(buffer, aValue);
-		buffer.Advance(Size);
-	}
+WriteBuffer::WriteBuffer(uint8_t* pBuffer_, uint32_t size) :
+	HasSize(size),
+	pBuffer(pBuffer_)
+{}
 
-	inline static void Write(uint8_t* apStart, uint8_t aValue)
-	{
-		*(apStart) = aValue;
-	}
+uint32_t WriteBuffer::ReadFrom(const ReadOnlyBuffer& buffer)
+{
+	auto num = openpal::Min(buffer.Size(), size);
+	memcpy(pBuffer, buffer, num);
+	this->Advance(num);
+	return num;
+}
 
-	const static size_t Size = 1;
-	const static uint8_t Max;
-	const static uint8_t Min;
+void WriteBuffer::Clear()
+{
+	pBuffer = nullptr;
+	size = 0;
+}
 
-	typedef uint8_t Type;
-};
+uint32_t WriteBuffer::Advance(uint32_t count)
+{
+	auto num = openpal::Min(count, size);
+	pBuffer += num;
+	size -= num;
+	return num;
+}
+
+ReadOnlyBuffer WriteBuffer::ToReadOnly() const
+{
+	return ReadOnlyBuffer(pBuffer, size);
+}
 
 }
 
-#endif
+

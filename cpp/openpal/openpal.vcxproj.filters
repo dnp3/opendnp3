@@ -10,9 +10,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\openpal\BufferWrapper.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\openpal\DynamicArray.h">
       <Filter>Header</Filter>
     </ClInclude>
@@ -166,11 +163,14 @@
     <ClInclude Include="src\openpal\RingBuffer.h">
       <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="src\openpal\ReadOnlyBuffer.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\openpal\WriteBuffer.h">
+      <Filter>Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\openpal\BufferWrapper.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="src\openpal\LogEntry.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -205,6 +205,12 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\openpal\RingBufferAdapter.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\openpal\ReadOnlyBuffer.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\openpal\WriteBuffer.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

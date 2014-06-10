@@ -21,18 +21,8 @@
 #ifndef __OPENPAL_LIMITS_H_
 #define __OPENPAL_LIMITS_H_
 
-#include <cstdint>
-
-#include "Uncopyable.h"
-
 namespace openpal
 {
-
-template <class T>
-T MinimumOf(const T& value1, const T& value2)
-{
-	return value1 < value2 ? value1 : value2;
-}
 
 template <class T>
 T MinValue();

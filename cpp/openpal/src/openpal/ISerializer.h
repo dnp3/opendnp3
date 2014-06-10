@@ -22,7 +22,9 @@
 #define __I_SERIALIZER_H_
 
 #include <cstdint>
-#include "BufferWrapper.h"
+
+#include "ReadOnlyBuffer.h"
+#include "WriteBuffer.h"
 
 namespace openpal
 {

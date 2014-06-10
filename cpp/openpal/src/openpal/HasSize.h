@@ -30,7 +30,7 @@ class HasSize
 
 public:
 
-	HasSize(SizeType aSize) : size(aSize)
+	HasSize(SizeType size_) : size(size_)
 	{}
 
 	SizeType Size() const

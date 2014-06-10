@@ -18,13 +18,12 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "BufferWrapper.h"
+#include "ReadOnlyBuffer.h"
 
-#include "Configure.h"
-#include "Limits.h"
+#include "Comparisons.h"
+#include "WriteBuffer.h"
 
 #include <cstring>
-#include <assert.h>
 
 namespace openpal
 {
@@ -57,12 +56,12 @@ ReadOnlyBuffer ReadOnlyBuffer::CopyTo(WriteBuffer& dest) const
 
 ReadOnlyBuffer ReadOnlyBuffer::Take(uint32_t count) const
 {	
-	return ReadOnlyBuffer(pBuffer, openpal::MinimumOf(size, count));
+	return ReadOnlyBuffer(pBuffer, openpal::Min(size, count));
 }
 
 ReadOnlyBuffer ReadOnlyBuffer::Skip(uint32_t count) const
 {
-	auto num = openpal::MinimumOf(size, count);
+	auto num = openpal::Min(size, count);
 	return ReadOnlyBuffer(pBuffer + num, size - num);
 }
 
@@ -86,63 +85,9 @@ bool ReadOnlyBuffer::Equals(const ReadOnlyBuffer& rhs) const
 
 void ReadOnlyBuffer::Advance(uint32_t count)
 {
-	auto num = openpal::MinimumOf(size, count);
+	auto num = openpal::Min(size, count);
 	pBuffer += num;
 	size -= num;
 }
 
-WriteBuffer WriteBuffer::Empty()
-{
-	return WriteBuffer();
 }
-
-WriteBuffer::WriteBuffer(const WriteBuffer& copy) : 
-	HasSize(copy),
-	mpBuffer(copy.mpBuffer)
-{}
-
-WriteBuffer::WriteBuffer(): 
-	HasSize(0),
-	mpBuffer(nullptr)
-{}
-
-WriteBuffer::WriteBuffer(uint8_t* apBuffer, uint32_t aSize) :
-	HasSize(aSize),
-	mpBuffer(apBuffer)
-{}
-
-uint32_t WriteBuffer::ReadFrom(const ReadOnlyBuffer& buffer)
-{
-	auto num = buffer.Size() > size ? size : buffer.Size();
-	memcpy(mpBuffer, buffer, num);
-	this->Advance(num);
-	return num;
-}
-
-void WriteBuffer::Clear()
-{
-	mpBuffer = nullptr;
-	size = 0;
-}
-
-WriteBuffer WriteBuffer::Truncate(uint32_t aNum) const
-{
-	assert(aNum <= size);
-	return WriteBuffer(mpBuffer, aNum);
-}
-
-void WriteBuffer::Advance(uint32_t aNum)
-{
-	assert(aNum <= size);
-	mpBuffer += aNum;
-	size -= aNum;
-}
-
-ReadOnlyBuffer WriteBuffer::ToReadOnly() const
-{
-	return ReadOnlyBuffer(mpBuffer, size);
-}
-
-}
-
-

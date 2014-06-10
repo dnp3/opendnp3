@@ -21,8 +21,7 @@
 #ifndef __I_FRAME_SINK_H_
 #define __I_FRAME_SINK_H_
 
-
-#include <openpal/BufferWrapper.h>
+#include <openpal/ReadOnlyBuffer.h>
 
 #include <stddef.h>
 #include <cstdint>

@@ -23,7 +23,7 @@
 #define __LINK_LAYER_PARSER_H_
 
 
-#include <openpal/BufferWrapper.h>
+#include <openpal/WriteBuffer.h>
 #include <openpal/StaticBuffer.h>
 #include <openpal/Logger.h>
 

@@ -21,6 +21,9 @@
 
 #include "RingBufferAdapter.h"
 
+#include "WriteBuffer.h"
+#include "ReadOnlyBuffer.h"
+
 namespace openpal
 {
 

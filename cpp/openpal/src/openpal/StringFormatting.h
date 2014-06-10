@@ -22,10 +22,11 @@
 #define __STRING_FORMATTING_H_
 
 #include "Logger.h"
-#include "BufferWrapper.h"
 
 namespace openpal
 {
+	class ReadOnlyBuffer;
+
 	const uint32_t MAX_LOG_ENTRY_SIZE = 80;
 	const uint32_t MAX_HEX_PER_LINE = 20;
 

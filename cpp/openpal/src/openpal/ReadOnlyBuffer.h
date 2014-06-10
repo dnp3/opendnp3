@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __BUFFER_WRAPPER_H_
-#define __BUFFER_WRAPPER_H_
+#ifndef __READ_ONLY_BUFFER_H_
+#define __READ_ONLY_BUFFER_H_
 
 #include "HasSize.h"
 
@@ -38,15 +38,16 @@ public:
 	static ReadOnlyBuffer Empty();
 
 	ReadOnlyBuffer();
+
 	ReadOnlyBuffer(uint8_t const* pBuffer, uint32_t size);
+
+	void Clear();
 
 	ReadOnlyBuffer CopyTo(WriteBuffer&) const;
 
 	ReadOnlyBuffer Take(uint32_t count) const;
 
-	ReadOnlyBuffer Skip(uint32_t count) const;
-
-	void Clear();
+	ReadOnlyBuffer Skip(uint32_t count) const;	
 
 	bool Equals(const ReadOnlyBuffer& rhs) const;
 
@@ -61,42 +62,6 @@ private:
 	uint8_t const* pBuffer;
 
 };
-
-class WriteBuffer : public HasSize<uint32_t>
-{
-public:
-
-	static WriteBuffer Empty();
-
-	WriteBuffer();
-	WriteBuffer(const WriteBuffer& copy);
-	WriteBuffer(uint8_t* apBuffer, uint32_t aSize);
-
-	uint32_t ReadFrom(const ReadOnlyBuffer& buffer);
-
-	void Clear();
-
-	void Advance(uint32_t aNum);
-
-	WriteBuffer Truncate(uint32_t aNum) const;
-
-	ReadOnlyBuffer ToReadOnly() const;
-
-	operator uint8_t* ()
-	{
-		return mpBuffer;
-	};
-
-	operator uint8_t const* () const
-	{
-		return mpBuffer;
-	};
-
-private:
-
-	uint8_t* mpBuffer;
-};
-
 
 }
 

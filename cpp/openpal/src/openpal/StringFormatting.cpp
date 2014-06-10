@@ -26,6 +26,8 @@
 #include <cstdio>
 #include <cstdlib>
 
+#include "ReadOnlyBuffer.h"
+
 namespace openpal
 {
 

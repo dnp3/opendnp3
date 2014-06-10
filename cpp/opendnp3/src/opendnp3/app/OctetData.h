@@ -21,10 +21,9 @@
 #ifndef __OCTET_DATA_H_
 #define __OCTET_DATA_H_
 
-
 #include <cstdint>
 
-#include <openpal/BufferWrapper.h>
+#include <openpal/ReadOnlyBuffer.h>
 
 namespace opendnp3
 {

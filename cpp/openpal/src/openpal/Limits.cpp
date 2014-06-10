@@ -22,6 +22,7 @@
 #include "Limits.h"
 
 #include <float.h>
+#include <cstdint>
 
 namespace openpal
 {

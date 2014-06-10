@@ -24,7 +24,7 @@
 #include "opendnp3/transport/TransportConstants.h"
 #include "opendnp3/StaticSizeConfiguration.h"
 
-#include <openpal/BufferWrapper.h>
+#include <openpal/ReadOnlyBuffer.h>
 #include <openpal/StaticBuffer.h>
 #include <openpal/Logger.h>
 

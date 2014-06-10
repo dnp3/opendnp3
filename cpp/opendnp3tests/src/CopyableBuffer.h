@@ -25,7 +25,7 @@
 #include <memory>
 #include <sstream>
 
-#include <openpal/BufferWrapper.h>
+#include <openpal/ReadOnlyBuffer.h>
 
 namespace opendnp3
 {

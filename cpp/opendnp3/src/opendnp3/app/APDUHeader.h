@@ -21,7 +21,7 @@
 #ifndef __APDU_HEADER_H_
 #define __APDU_HEADER_H_
 
-#include <openpal/BufferWrapper.h>
+#include <openpal/ReadOnlyBuffer.h>
 
 #include "opendnp3/gen/FunctionCode.h"
 #include "opendnp3/app/AppControlField.h"

@@ -24,7 +24,8 @@
 #include "opendnp3/gen/FunctionCode.h"
 #include "opendnp3/gen/LinkFunction.h"
 
-#include <openpal/BufferWrapper.h>
+#include <openpal/ReadOnlyBuffer.h>
+#include <openpal/WriteBuffer.h>
 #include <openpal/Uncopyable.h>
 
 namespace openpal

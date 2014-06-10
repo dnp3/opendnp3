@@ -18,12 +18,13 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef _I_PHYSICAL_LAYER_ASYNC_H_
-#define _I_PHYSICAL_LAYER_ASYNC_H_
+#ifndef _I_PHYSICAL_LAYER_H_
+#define _I_PHYSICAL_LAYER_H_
 
 #include "AsyncLayerInterfaces.h"
 
-#include "BufferWrapper.h"
+#include "ReadOnlyBuffer.h"
+#include "WriteBuffer.h"
 
 namespace openpal
 {

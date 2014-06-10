@@ -22,7 +22,7 @@
 #ifndef __I_LINK_ROUTER_H_
 #define __I_LINK_ROUTER_H_
 
-#include <openpal/BufferWrapper.h>
+#include <openpal/ReadOnlyBuffer.h>
 
 #include "opendnp3/link/ILinkContext.h"
 

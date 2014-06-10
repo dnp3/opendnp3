@@ -22,7 +22,8 @@
 #define __STATIC_BUFFER_H_
 
 #include "StaticArray.h"
-#include "BufferWrapper.h"
+#include "WriteBuffer.h"
+#include "ReadOnlyBuffer.h"
 #include <cstdint>
 
 namespace openpal

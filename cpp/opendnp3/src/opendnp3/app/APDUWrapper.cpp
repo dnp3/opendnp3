@@ -109,7 +109,7 @@ uint32_t APDUWrapper::Size() const
 
 openpal::ReadOnlyBuffer APDUWrapper::ToReadOnly() const
 {	
-	return buffer.Truncate(this->Size()).ToReadOnly();
+	return buffer.ToReadOnly().Take(this->Size());
 }
 
 }

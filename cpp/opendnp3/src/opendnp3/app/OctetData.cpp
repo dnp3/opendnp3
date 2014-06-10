@@ -20,6 +20,8 @@
  */
 #include "OctetData.h"
 
+#include <openpal/WriteBuffer.h>
+
 using namespace openpal;
 
 namespace opendnp3

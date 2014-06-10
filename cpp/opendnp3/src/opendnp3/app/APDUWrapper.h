@@ -21,7 +21,8 @@
 #ifndef __APDU_WRAPPER__H_
 #define __APDU_WRAPPER__H_
 
-#include <openpal/BufferWrapper.h>
+#include <openpal/ReadOnlyBuffer.h>
+#include <openpal/WriteBuffer.h>
 
 #include "opendnp3/gen/FunctionCode.h"
 #include "opendnp3/app/AppControlField.h"
