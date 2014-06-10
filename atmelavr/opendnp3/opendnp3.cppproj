@@ -274,14 +274,6 @@
       <SubType>compile</SubType>
       <Link>app\EventTriggers.h</Link>
     </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\app\FunctionCodeHelpers.cpp">
-      <SubType>compile</SubType>
-      <Link>app\FunctionCodeHelpers.cpp</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\app\FunctionCodeHelpers.h">
-      <SubType>compile</SubType>
-      <Link>app\FunctionCodeHelpers.h</Link>
-    </Compile>
     <Compile Include="..\..\cpp\opendnp3\src\opendnp3\app\GroupVariation.cpp">
       <SubType>compile</SubType>
       <Link>app\GroupVariation.cpp</Link>
@@ -297,18 +289,6 @@
     <Compile Include="..\..\cpp\opendnp3\src\opendnp3\app\IAPDUHandler.h">
       <SubType>compile</SubType>
       <Link>app\IAPDUHandler.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\app\IAppLayer.h">
-      <SubType>compile</SubType>
-      <Link>app\IAppLayer.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\app\IAppUser.cpp">
-      <SubType>compile</SubType>
-      <Link>app\IAppUser.cpp</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\app\IAppUser.h">
-      <SubType>compile</SubType>
-      <Link>app\IAppUser.h</Link>
     </Compile>
     <Compile Include="..\..\cpp\opendnp3\src\opendnp3\app\IDNP3Serializer.h">
       <SubType>compile</SubType>
@@ -373,10 +353,6 @@
     <Compile Include="..\..\cpp\opendnp3\src\opendnp3\app\OctetString.h">
       <SubType>compile</SubType>
       <Link>app\OctetString.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\app\PointClass.cpp">
-      <SubType>compile</SubType>
-      <Link>app\PointClass.cpp</Link>
     </Compile>
     <Compile Include="..\..\cpp\opendnp3\src\opendnp3\app\PointClass.h">
       <SubType>compile</SubType>
