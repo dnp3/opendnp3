@@ -120,6 +120,12 @@
       <DependentUpon>MeasurementView.cs</DependentUpon>
     </Compile>
     <Compile Include="BundledPlugins\SOEHandler.cs" />
+    <Compile Include="Components\LinkConfigControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\LinkConfigControl.Designer.cs">
+      <DependentUpon>LinkConfigControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="LogControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -176,6 +182,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="BundledPlugins\MeasurementView.resx">
       <DependentUpon>MeasurementView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\LinkConfigControl.resx">
+      <DependentUpon>LinkConfigControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LogControl.resx">
       <DependentUpon>LogControl.cs</DependentUpon>

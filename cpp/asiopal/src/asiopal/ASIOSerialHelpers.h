@@ -35,7 +35,7 @@ namespace asiopal
 {
 
 // Serial port configuration functions "free" to keep the classes simple.
-void Configure(SerialSettings& arSettings, asio::serial_port& arPort, std::error_code& ec);
+bool Configure(SerialSettings& arSettings, asio::serial_port& arPort, std::error_code& ec);
 
 }
 

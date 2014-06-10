@@ -36,8 +36,7 @@ public:
 
 	static WriteBuffer Empty();
 
-	WriteBuffer();
-	WriteBuffer(const WriteBuffer& copy);
+	WriteBuffer();	
 	WriteBuffer(uint8_t* pBuffer, uint32_t size);
 
 	uint32_t ReadFrom(const ReadOnlyBuffer& buffer);

@@ -33,11 +33,6 @@ WriteBuffer WriteBuffer::Empty()
 	return WriteBuffer();
 }
 
-WriteBuffer::WriteBuffer(const WriteBuffer& copy) : 
-	HasSize(copy),
-	pBuffer(copy.pBuffer)
-{}
-
 WriteBuffer::WriteBuffer(): 
 	HasSize(0),
 	pBuffer(nullptr)

@@ -15,7 +15,9 @@ namespace Automatak.DNP3.Simulator
     {
         public MasterDialog()
         {
-            InitializeComponent();            
+            InitializeComponent();
+
+            this.linkListView1.IsMaster = true;
         }
 
         private void buttonADD_Click(object sender, EventArgs e)
@@ -29,8 +31,7 @@ namespace Automatak.DNP3.Simulator
             get
             {
                 var config = new MasterStackConfig();
-                config.link.localAddr = Decimal.ToUInt16(numericUpDownSource.Value);
-                config.link.remoteAddr = Decimal.ToUInt16(numericUpDownDest.Value);
+                config.link = this.linkListView1.Configuration;
                 return config;
             }
         }

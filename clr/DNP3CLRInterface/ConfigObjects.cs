@@ -45,6 +45,16 @@ namespace DNP3.Interface
             }
         }
 
+        public static System.UInt16 GetDefaultSourceAddress(bool isMaster)
+        {
+            return isMaster ? DefaultMasterAddress : DefaultOutstationAddress;
+        }
+
+        public static System.UInt16 GetDefaultDestinationAddress(bool isMaster)
+        {
+            return isMaster ? DefaultOutstationAddress : DefaultMasterAddress;
+        }
+
         public static System.UInt16 GetDefaultAddress(bool isMaster)
         {
             return isMaster ? DefaultMasterAddress : DefaultOutstationAddress;

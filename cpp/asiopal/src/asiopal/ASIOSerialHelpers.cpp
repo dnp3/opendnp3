@@ -109,29 +109,22 @@ serial_port_base::parity ConvertParity(ParityType aParity)
 	return serial_port_base::parity(t);
 }
 
-void Configure(SerialSettings& settings, asio::serial_port& port, error_code& ec)
-{
+bool Configure(SerialSettings& settings, asio::serial_port& port, error_code& ec)
+{	
 	//Set all the various options
 	port.set_option(ConvertBaud(settings.baud), ec);
-	if (!ec)
-	{
-		if (!ec)
-		{
-			port.set_option(ConvertDataBits(settings.dataBits), ec);
-			if (!ec)
-			{
-				port.set_option(ConvertParity(settings.parity), ec);
-				if (!ec)
-				{
-					port.set_option(ConvertStopBits(settings.stopBits), ec);
-					if (!ec)
-					{
-						port.set_option(ConvertFlow(settings.flowType), ec);
-					}
-				}
-			}
-		}
-	}
+	if (ec) return false;
+
+	port.set_option(ConvertDataBits(settings.dataBits), ec);
+	if (ec) return false;
+
+	port.set_option(ConvertParity(settings.parity), ec);
+	if (ec) return false;
+
+	port.set_option(ConvertStopBits(settings.stopBits), ec);
+	if (ec) return false;
+
+	return true;
 }
 
 }
