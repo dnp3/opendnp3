@@ -47,14 +47,7 @@ namespace opendnp3
 /// Represent all of the "state" and configuration for an outstation
 class OutstationContext
 {
-	public:
-
-	enum TransmitState
-	{
-		IDLE,
-		SOLICITED,
-		UNSOLICITED
-	};
+	public:	
 
 	static uint8_t NextSeq(uint8_t seq) { return (seq + 1) % 16; }
 
@@ -82,9 +75,8 @@ class OutstationContext
 	// ------ Dynamic "state", i.e. things that must be managed or cleanup on close ------
 	
 	bool isOnline;
-	TransmitState transmitState;	
+	bool isTransmitting;
 	OutstationStateBase* pState;
-
 
 	IINField staticIIN;
 
@@ -107,9 +99,7 @@ class OutstationContext
 	openpal::ReadOnlyBuffer lastResponse;				// points to bytes in txBuffer	
 	ResponseContext rspContext;
 
-	// ------ Helper methods for dealing with state ------
-
-	IINField GetDynamicIIN();
+	// ------ Helper methods for dealing with state ------	
 
 	APDUResponse StartNewResponse();
 
@@ -144,16 +134,16 @@ class OutstationContext
 	void ContinueMultiFragResponse(uint8_t seq);
 
 	void OnEnterIdleState();
-
-	bool IsTransmitting() const;
-	bool IsNotTransmitting() const;
 	
-
 	private:
 
 	// ------ Helpers ---------
 
 	static bool CancelTimer(openpal::ITimer*& pTimer);	
+
+	IINField GetDynamicIIN();
+
+	IINField GetResponseIIN();
 
 	// ------ Internal Events -------
 

@@ -65,7 +65,7 @@ OutstationContext::OutstationContext(
 	pDatabase(&database),
 	eventBuffer(buffers),
 	isOnline(false),
-	transmitState(TransmitState::IDLE),
+	isTransmitting(false),
 	pState(&OutstationStateIdle::Inst()),
 	pConfirmTimer(nullptr),
 	pUnsolTimer(nullptr),
@@ -127,6 +127,11 @@ IINField OutstationContext::GetDynamicIIN()
 	return ret;
 }
 
+IINField OutstationContext::GetResponseIIN()
+{
+	return this->staticIIN | GetDynamicIIN();
+}
+
 APDUResponse OutstationContext::StartNewResponse()
 {	
 	return APDUResponse(txBuffer.GetWriteBuffer(params.maxTxFragSize));
@@ -134,7 +139,7 @@ APDUResponse OutstationContext::StartNewResponse()
 
 void OutstationContext::ConfigureUnsolHeader(APDUResponse& unsol)
 {	
-	build::NullUnsolicited(unsol, this->unsolSeqN, this->staticIIN | this->GetDynamicIIN());	
+	build::NullUnsolicited(unsol, this->unsolSeqN, this->GetResponseIIN());	
 }
 
 void OutstationContext::SetOnline()
@@ -146,7 +151,7 @@ void OutstationContext::SetOffline()
 {
 	isOnline = false;
 	unsolPackTimerExpired = false;
-	transmitState = TransmitState::IDLE;
+	isTransmitting = false;
 	pState = &OutstationStateIdle::Inst();
 	lastValidRequest.Clear();
 	eventBuffer.Reset();
@@ -162,7 +167,7 @@ bool OutstationContext::IsOperateSequenceValid()
 
 bool OutstationContext::IsIdle()
 {
-	return isOnline && IsNotTransmitting() && pState->IsIdle();
+	return isOnline && !isTransmitting && pState == &OutstationStateIdle::Inst();
 }
 
 bool OutstationContext::CancelConfirmTimer()
@@ -245,7 +250,7 @@ void OutstationContext::OnReceiveSolRequest(const APDURecord& request, const ope
 	this->lastValidRequest = fragment.CopyTo(dest);
 
 	if (firstRequest)
-	{	
+	{			
 		this->solSeqN = request.control.SEQ;
 		this->pState->OnNewRequest(this, request, APDUEquality::NONE);
 	}
@@ -276,7 +281,7 @@ void OutstationContext::RespondToRequest(const APDURecord& request, APDUEquality
 	response.SetFunction(FunctionCode::RESPONSE);
 	response.SetControl(request.control);
 	IINField iin = BuildResponse(request, response, equality);	
-	response.SetIIN(iin | staticIIN | GetDynamicIIN());
+	response.SetIIN(iin | this->GetResponseIIN());
 	if (response.GetControl().CON)
 	{
 		expectedSolConfirmSeq = request.control.SEQ;
@@ -287,14 +292,14 @@ void OutstationContext::RespondToRequest(const APDURecord& request, APDUEquality
 
 void OutstationContext::BeginResponseTx(const ReadOnlyBuffer& response)
 {	
-	this->transmitState = TransmitState::SOLICITED;
+	isTransmitting = true;
 	lastResponse = response;
 	pLower->BeginTransmit(response);	
 }
 
 void OutstationContext::BeginUnsolTx(const ReadOnlyBuffer& response)
 {
-	this->transmitState = TransmitState::UNSOLICITED;
+	isTransmitting = true;
 	this->expectedUnsolConfirmSeq = unsolSeqN;
 	this->unsolSeqN = OutstationContext::NextSeq(unsolSeqN);	
 	pLower->BeginTransmit(response);
@@ -348,16 +353,6 @@ void OutstationContext::OnEnterIdleState()
 	// post these calls so the stack can unwind
 	auto lambda = [this]() { this->CheckForIdleState(); };
 	pExecutor->PostLambda(lambda);
-}
-
-bool OutstationContext::IsTransmitting() const
-{
-	return !IsNotTransmitting();
-}
-
-bool OutstationContext::IsNotTransmitting() const
-{
-	return transmitState == TransmitState::IDLE;
 }
 
 void OutstationContext::CheckForIdleState()

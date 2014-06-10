@@ -74,7 +74,7 @@ bool OutstationStateIdle::IsIdle()
 
 void OutstationStateIdle::OnNewRequest(OutstationContext* pContext, const APDURecord& request, APDUEquality equality)
 {
-	if (pContext->IsTransmitting())
+	if (pContext->isTransmitting)
 	{
 		SIMPLE_LOG_BLOCK(pContext->logger, flags::WARN, "IdleTransmitting - Received new request while transmitting response, remote is flooding");
 	}
@@ -87,13 +87,13 @@ void OutstationStateIdle::OnNewRequest(OutstationContext* pContext, const APDURe
 
 void OutstationStateIdle::OnRepeatRequest(OutstationContext* pContext, const APDURecord& frag)
 {
-	if (pContext->IsTransmitting())
+	if (pContext->isTransmitting)
 	{
 		SIMPLE_LOG_BLOCK(pContext->logger, flags::WARN, "IdleTransmitting - Received repeat request while transmitting response, remote is flooding");
 	}
 	else
 	{
-		pContext->transmitState = OutstationContext::TransmitState::SOLICITED;		
+		pContext->isTransmitting = true;
 		pContext->pLower->BeginTransmit(pContext->lastResponse);
 	}
 }
@@ -114,7 +114,7 @@ OutstationStateBase& OutstationStateSolConfirmWait::Inst()
 
 void OutstationStateSolConfirmWait::OnNewRequest(OutstationContext* pContext, const APDURecord& request, APDUEquality equality)
 {
-	if (pContext->IsTransmitting())
+	if (pContext->isTransmitting)
 	{
 		SIMPLE_LOG_BLOCK(pContext->logger, flags::WARN, "SolConfirmWait - Received new request while transmitting response, remote is flooding");
 	}
@@ -131,14 +131,14 @@ void OutstationStateSolConfirmWait::OnNewRequest(OutstationContext* pContext, co
 
 void OutstationStateSolConfirmWait::OnRepeatRequest(OutstationContext* pContext, const APDURecord& frag)
 {
-	if (pContext->IsTransmitting())
+	if (pContext->isTransmitting)
 	{
 		SIMPLE_LOG_BLOCK(pContext->logger, flags::WARN, "SolConfirmWait - Received repeat request while transmitting response, remote is flooding");
 	}
 	else
 	{
 		pContext->CancelConfirmTimer();
-		pContext->transmitState = OutstationContext::TransmitState::SOLICITED;
+		pContext->isTransmitting = true;
 		pContext->pLower->BeginTransmit(pContext->lastResponse);
 	}
 }

@@ -85,9 +85,9 @@ void Outstation::OnReceive(const openpal::ReadOnlyBuffer& fragment)
 
 void Outstation::OnSendResult(bool isSuccess)
 {	
-	if (context.isOnline && context.IsTransmitting())
+	if (context.isOnline && context.isTransmitting)
 	{
-		context.transmitState = OutstationContext::TransmitState::IDLE;
+		context.isTransmitting = false;
 		context.pState->OnSendResult(&context, isSuccess);		
 	}
 	else
