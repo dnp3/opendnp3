@@ -47,9 +47,7 @@ namespace opendnp3
 /// Represent all of the "state" and configuration for an outstation
 class OutstationContext
 {
-	public:	
-
-	static uint8_t NextSeq(uint8_t seq) { return (seq + 1) % 16; }
+	public:		
 
 	OutstationContext(	const OutstationConfig& config,
 						openpal::IExecutor& executor,

@@ -104,9 +104,7 @@ class MasterContext : public ICommandProcessor
 
 	void CheckForTask();
 
-	void StartTask(IMasterTask* pTask);
-
-	static uint8_t NextSeq(uint8_t seq) { return (seq + 1) % 16; }
+	void StartTask(IMasterTask* pTask);	
 
 	// -------- helpers --------
 

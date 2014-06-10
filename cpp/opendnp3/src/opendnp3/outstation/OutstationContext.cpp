@@ -301,7 +301,7 @@ void OutstationContext::BeginUnsolTx(const ReadOnlyBuffer& response)
 {
 	isTransmitting = true;
 	this->expectedUnsolConfirmSeq = unsolSeqN;
-	this->unsolSeqN = OutstationContext::NextSeq(unsolSeqN);	
+	this->unsolSeqN = AppControlField::NextSeq(unsolSeqN);
 	pLower->BeginTransmit(response);
 }
 
@@ -521,7 +521,7 @@ IINField OutstationContext::HandleSelect(const APDURecord& request, APDUResponse
 			if (handler.AllCommandsSuccessful())
 			{				
 				operateExpectedFragCount = rxFragCount + 1;
-				operateExpectedSeq = NextSeq(solSeqN);
+				operateExpectedSeq = AppControlField::NextSeq(solSeqN);
 				selectTime = pExecutor->GetTime();
 				return IINField::Empty;
 			}

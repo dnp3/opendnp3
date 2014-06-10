@@ -146,7 +146,7 @@ void MasterContext::OnResponseTimeout()
 		{
 			pActiveTask->OnResponseTimeout(params, scheduler);
 			pActiveTask = nullptr;
-			solSeq = NextSeq(solSeq);
+			solSeq = AppControlField::NextSeq(solSeq);
 			this->PostCheckForTask();
 		}
 	}
@@ -225,7 +225,7 @@ void MasterContext::OnResponse(const APDUResponseRecord& response)
 	{
 		if (pActiveTask && pResponseTimer && (response.control.SEQ == this->solSeq))
 		{
-			solSeq = NextSeq(solSeq);
+			this->solSeq = AppControlField::NextSeq(solSeq);
 
 			this->CancelResponseTimer();
 

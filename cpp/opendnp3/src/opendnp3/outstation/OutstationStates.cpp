@@ -170,7 +170,7 @@ void OutstationStateSolConfirmWait::OnSolConfirm(OutstationContext* pContext, co
 			}
 			else // Continue response
 			{
-				pContext->ContinueMultiFragResponse(OutstationContext::NextSeq(confirm.control.SEQ));
+				pContext->ContinueMultiFragResponse(AppControlField::NextSeq(confirm.control.SEQ));
 			}
 		}
 		else

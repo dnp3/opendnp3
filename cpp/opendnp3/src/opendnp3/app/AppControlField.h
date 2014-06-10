@@ -33,6 +33,8 @@ struct AppControlField
 
 	const static AppControlField DEFAULT;
 
+	static uint8_t NextSeq(uint8_t seq) { return (seq + 1) % 16; }
+
 	static AppControlField Request(uint8_t seq);
 
 	AppControlField();
