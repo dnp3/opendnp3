@@ -24,7 +24,6 @@
 
 #include <memory>
 
-#include "Exception.h"
 #include "HexConversions.h"
 
 #include <openpal/Location.h>
@@ -109,7 +108,7 @@ void BufferTestObject::WriteToBuffer(const ReadOnlyBuffer& input)
 {
 	if((mBuffer.size() + input.Size()) > MAX_SIZE )
 	{
-		throw Exception(LOCATION, "Max size exceeded");
+		throw std::invalid_argument("Max size exceeded");
 	}
 	else
 	{

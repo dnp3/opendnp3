@@ -28,7 +28,6 @@
 
 #include <asio.hpp>
 
-#include "Exception.h"
 #include "IntegrationTest.h"
 
 #define OUTPUT_PERF_NUMBERS	(0)

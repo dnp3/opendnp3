@@ -23,9 +23,7 @@
 #include <asio.hpp>
 #include <catch.hpp>
 
-
 #include "BufferHelpers.h"
-#include "Exception.h"
 
 #include <functional>
 

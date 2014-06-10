@@ -20,9 +20,6 @@
  */
 #include <catch.hpp>
 
-
-#include "Exception.h"
-
 #include <openpal/Location.h>
 #include <openpal/LogRoot.h>
 

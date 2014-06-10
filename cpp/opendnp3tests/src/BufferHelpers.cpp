@@ -24,12 +24,12 @@
 #include <openpal/ToHex.h>
 
 #include "HexConversions.h"
-#include "Exception.h"
 
 #include <memory.h>
 #include <sstream>
 #include <assert.h>
 #include <algorithm>
+#include <exception>
 
 using namespace std;
 using namespace openpal;
@@ -80,7 +80,7 @@ HexSequence::HexSequence( const std::string& aSequence) :
 		ss << std::hex << s.substr(pos, 2);
 		if((ss >> val).fail())
 		{
-			throw ArgumentException(LOCATION, aSequence);
+			throw std::invalid_argument(aSequence);
 		}
 		mpBuff[index] = static_cast<uint8_t>(val);
 	}
@@ -106,10 +106,16 @@ void HexSequence::RemoveSpacesInPlace(std::string& s)
 uint32_t HexSequence::Validate(const std::string& s)
 {
 	//annoying when you accidentally put an 'O' instead of zero '0'
-	if(s.find_first_of( "oO") != string::npos)
-		throw ArgumentException(LOCATION, "Sequence contains 'o' or 'O'");
+	if(s.find_first_of( "oO") != string::npos)	
+	{
+		throw std::invalid_argument("Sequence contains 'o' or 'O'");
+	}
 
-	if(s.size() % 2 != 0) throw ArgumentException(LOCATION, s);
+	if(s.size() % 2 != 0) 
+	{
+		throw std::invalid_argument(s);	
+	}
+
 	return static_cast<uint32_t>(s.size() / 2);
 }
 

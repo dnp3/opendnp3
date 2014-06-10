@@ -250,7 +250,6 @@ cpp/opendnp3tests/src/CatchTestStart.cpp \
 cpp/opendnp3tests/src/ComparingDataObserver.cpp \
 cpp/opendnp3tests/src/CopyableBuffer.cpp \
 cpp/opendnp3tests/src/DNPHelpers.cpp \
-cpp/opendnp3tests/src/Exception.cpp \
 cpp/opendnp3tests/src/FlexibleDataObserver.cpp \
 cpp/opendnp3tests/src/HexConversions.cpp \
 cpp/opendnp3tests/src/IntegrationTest.cpp \

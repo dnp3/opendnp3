@@ -20,7 +20,6 @@
  */
 #include <catch.hpp>
 
-#include "Exception.h"
 #include "ProtocolUtil.h"
 #include "TransportTestObject.h"
 

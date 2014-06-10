@@ -27,7 +27,6 @@
 #include "MockExecutor.h"
 #include "MockPhysicalLayerAsync.h"
 
-#include "Exception.h"
 #include "LogTester.h"
 
 using namespace opendnp3;

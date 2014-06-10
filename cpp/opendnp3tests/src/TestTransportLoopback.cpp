@@ -28,7 +28,6 @@
 #include <asiopal/LogToStdio.h>
 #include <asiopal/PhysicalLayerAsyncSerial.h>
 
-#include "Exception.h"
 #include "ProtocolUtil.h"
 #include "BufferHelpers.h"
 #include "LoopbackPhysicalLayerAsync.h"

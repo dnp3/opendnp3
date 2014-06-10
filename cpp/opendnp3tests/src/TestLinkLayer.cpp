@@ -26,8 +26,6 @@
 #include <openpal/ToHex.h>
 #include <openpal/StaticBuffer.h>
 
-#include "Exception.h"
-
 #include "BufferHelpers.h"
 #include "LinkLayerTest.h"
 #include "HexConversions.h"

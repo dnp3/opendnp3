@@ -29,8 +29,6 @@
 
 #include <opendnp3/LogLevels.h>
 
-#include "Exception.h"
-
 #include <sstream>
 
 using namespace openpal;
@@ -77,7 +75,7 @@ void MockPhysicalLayerMonitor::_OnReceive(const uint8_t* apData, size_t aNumByte
 	// we should never receive more than we're expecting
 	if(mExpectReadBuffer.Size() < mBytesRead + aNumBytes)
 	{
-		throw Exception("Read more data than expected");
+		throw std::invalid_argument("Read more data than expected");
 	}
 	CopyableBuffer expecting(mExpectReadBuffer + mBytesRead, static_cast<uint32_t>(aNumBytes));
 	CopyableBuffer read(apData, static_cast<uint32_t>(aNumBytes));
@@ -86,7 +84,7 @@ void MockPhysicalLayerMonitor::_OnReceive(const uint8_t* apData, size_t aNumByte
 	{
 		std::ostringstream oss;
 		oss << "Data corruption on receive, " << read << " != " << expecting;
-		throw Exception(oss.str());
+		throw std::invalid_argument(oss.str());
 	}
 	mBytesRead += static_cast<uint32_t>(aNumBytes);	
 	WriteBuffer buffer(mReadBuffer, mReadBuffer.Size());

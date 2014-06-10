@@ -28,8 +28,6 @@
 
 #include <opendnp3/LogLevels.h>
 
-#include "Exception.h"
-
 #include <thread>
 
 using namespace std;

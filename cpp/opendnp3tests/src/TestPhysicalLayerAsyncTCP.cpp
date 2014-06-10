@@ -28,7 +28,6 @@
 
 #include <openpal/LogRoot.h>
 
-#include "Exception.h"
 #include "RandomizedBuffer.h"
 #include "PhysLoopback.h"
 

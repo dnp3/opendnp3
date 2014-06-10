@@ -20,9 +20,7 @@
  */
 #include <catch.hpp>
 
-
 #include "AsyncPhysBaseTest.h"
-#include "Exception.h"
 
 using namespace opendnp3;
 using namespace openpal;

@@ -20,8 +20,6 @@
  */
 #include <catch.hpp>
 
-#include "Exception.h"
-
 #include <opendnp3/link/ShiftableBuffer.h>
 
 #include <openpal/StaticBuffer.h>

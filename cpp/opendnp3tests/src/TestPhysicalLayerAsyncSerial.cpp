@@ -20,9 +20,7 @@
  */
 #include "AsyncSerialTestObject.h"
 
-
 #include "BufferHelpers.h"
-#include "Exception.h"
 
 #include <asio.hpp>
 #include <catch.hpp>

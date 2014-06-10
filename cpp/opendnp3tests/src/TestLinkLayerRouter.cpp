@@ -27,8 +27,6 @@
 
 #include <opendnp3/link/LinkRoute.h>
 
-#include "Exception.h"
-
 #include "LinkLayerRouterTest.h"
 #include "MockFrameSink.h"
 #include "BufferHelpers.h"

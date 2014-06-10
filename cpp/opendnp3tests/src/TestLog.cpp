@@ -25,7 +25,6 @@
 #include <openpal/LogMacros.h>
 
 #include "LogTester.h"
-#include "Exception.h"
 
 #include <asiopal/Log.h>
 
