@@ -69,9 +69,7 @@ cpp/opendnp3/src/opendnp3/app/AppControlField.cpp \
 cpp/opendnp3/src/opendnp3/app/BitReader.cpp \
 cpp/opendnp3/src/opendnp3/app/ControlRelayOutputBlock.cpp \
 cpp/opendnp3/src/opendnp3/app/EventTriggers.cpp \
-cpp/opendnp3/src/opendnp3/app/FunctionCodeHelpers.cpp \
 cpp/opendnp3/src/opendnp3/app/GroupVariation.cpp \
-cpp/opendnp3/src/opendnp3/app/IAppUser.cpp \
 cpp/opendnp3/src/opendnp3/app/IINField.cpp \
 cpp/opendnp3/src/opendnp3/app/ObjectWriter.cpp \
 cpp/opendnp3/src/opendnp3/app/OctetData.cpp \
