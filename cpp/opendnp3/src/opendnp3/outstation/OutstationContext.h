@@ -46,13 +46,6 @@
 namespace opendnp3
 {
 
-enum class TxState
-{
-	SOLICITED,
-	UNSOLICITED,
-	IDLE
-};
-
 /// Represent all of the "state" and configuration for an outstation
 class OutstationContext
 {
@@ -81,8 +74,7 @@ class OutstationContext
 
 	// ------ Dynamic "state", i.e. things that must be managed or cleanup on close ------
 	
-	bool isOnline;
-	TxState txState;
+	bool isOnline;	
 	OutstationSolicitedStateBase* pSolicitedState;
 
 	IINField staticIIN;

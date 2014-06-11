@@ -64,7 +64,6 @@ OutstationContext::OutstationContext(
 	pDatabase(&database),
 	eventBuffer(buffers),
 	isOnline(false),
-	txState(TxState::IDLE),
 	pSolicitedState(&OutstationSolicitedStateIdle::Inst()),
 	pConfirmTimer(nullptr),
 	pUnsolTimer(nullptr),
@@ -151,7 +150,6 @@ void OutstationContext::SetOffline()
 {
 	isOnline = false;
 	unsolPackTimerExpired = false;
-	txState = TxState::IDLE;
 	pSolicitedState = &OutstationSolicitedStateIdle::Inst();
 	lastValidRequest.Clear();
 	deferredRequest.Clear();
@@ -168,7 +166,7 @@ bool OutstationContext::IsOperateSequenceValid()
 
 bool OutstationContext::IsIdle()
 {
-	return isOnline && (txState == TxState::IDLE) && pSolicitedState == &OutstationSolicitedStateIdle::Inst();
+	return isOnline && pSolicitedState == &OutstationSolicitedStateIdle::Inst();
 }
 
 bool OutstationContext::CancelConfirmTimer()
@@ -238,10 +236,8 @@ void OutstationContext::OnReceiveAPDU(const openpal::ReadOnlyBuffer& apdu)
 
 void OutstationContext::OnSendResult(bool isSuccess)
 {
-	auto state = txState;
-	txState = TxState::IDLE;
-	if (state == TxState::SOLICITED)
-	{		
+	if (pSolicitedState->IsTransmitting())
+	{
 		pSolicitedState->OnSendResult(this, isSuccess);
 	}
 }
@@ -321,15 +317,13 @@ OutstationSolicitedStateBase* OutstationContext::RespondToReadRequest(uint8_t se
 }
 
 void OutstationContext::BeginResponseTx(const ReadOnlyBuffer& response)
-{	
-	txState = TxState::SOLICITED;
+{		
 	lastResponse = response;
 	pLower->BeginTransmit(response);	
 }
 
 void OutstationContext::BeginUnsolTx(const ReadOnlyBuffer& response)
-{
-	txState = TxState::UNSOLICITED;
+{	
 	this->expectedUnsolConfirmSeq = unsolSeqN;
 	this->unsolSeqN = AppControlField::NextSeq(unsolSeqN);
 	pLower->BeginTransmit(response);

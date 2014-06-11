@@ -36,7 +36,9 @@ class OutstationContext;
  */
 class OutstationSolicitedStateBase
 {
-public:	
+public:
+
+	virtual bool IsTransmitting() { return false; }
 
 	virtual void OnConfirm(OutstationContext*, const APDUHeader& frag);	
 
@@ -80,6 +82,8 @@ public:
 
 	static OutstationSolicitedStateBase& Inst();
 
+	virtual bool IsTransmitting() override final { return true; }
+
 	virtual void OnSendResult(OutstationContext*, bool isSucccess) override final;
 
 	virtual void OnNewRequest(OutstationContext*, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, APDUEquality equality) override final;
@@ -102,6 +106,8 @@ class OutstationSolicitedStateTransmitThenConfirm : public OutstationSolicitedSt
 public:
 
 	static OutstationSolicitedStateBase& Inst();
+
+	virtual bool IsTransmitting() override final { return true; }
 
 	virtual void OnSendResult(OutstationContext*, bool isSucccess) override final;
 
@@ -140,35 +146,6 @@ private:
 
 	OutstationStateSolicitedConfirmWait() {}
 };
-
-/*
-class OutstationStateUnsolConfirmWait : public OutstationStateBase, private openpal::Uncopyable
-{
-
-public:
-
-	static OutstationStateBase& Inst();
-
-	virtual void OnNewRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, APDUEquality equality) override final;
-
-	virtual void OnRepeatRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects) override final;
-
-	virtual void OnSendResult(OutstationContext* pContext, bool isSucccess) override final;
-
-	virtual void OnUnsolConfirm(OutstationContext* pContext, const APDUHeader& frag) override final;
-
-	virtual void OnConfirmTimeout(OutstationContext* pContext) override final;
-
-private:
-
-	static OutstationStateUnsolConfirmWait instance;
-
-	OutstationStateUnsolConfirmWait() {}
-};
-*/
-
-
-
 
 } //ens ns
 
