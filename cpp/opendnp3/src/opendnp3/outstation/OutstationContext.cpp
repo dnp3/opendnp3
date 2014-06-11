@@ -279,7 +279,19 @@ void OutstationContext::OnReceiveSolRequest(const APDUHeader& header, const open
 			this->pSolicitedState->OnNewRequest(this, header, objects, equality);
 		}
 	}
+}
 
+OutstationSolicitedStateBase* OutstationContext::RespondToRequest(const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, bool objectsEqualToLastRequest)
+{
+	if (header.function == FunctionCode::READ)
+	{
+		return RespondToReadRequest(header.control.SEQ, objects);
+	}
+	else
+	{
+		RespondToNonReadRequest(header, objects, objectsEqualToLastRequest);
+		return &OutstationSolicitedStateTransmitNoConfirm::Inst();
+	}
 }
 
 void OutstationContext::RespondToNonReadRequest(const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, bool objectsEqualToLastRequest)
@@ -291,6 +303,21 @@ void OutstationContext::RespondToNonReadRequest(const APDUHeader& header, const 
 	auto iin = this->BuildNonReadResponse(header, objects, writer, objectsEqualToLastRequest);
 	response.SetIIN(iin | this->GetResponseIIN());		
 	this->BeginResponseTx(response.ToReadOnly());
+}
+
+OutstationSolicitedStateBase* OutstationContext::RespondToReadRequest(uint8_t seq, const openpal::ReadOnlyBuffer& objects)
+{
+	auto response = StartNewResponse();
+	auto writer = response.GetWriter();
+	response.SetFunction(FunctionCode::RESPONSE);	
+	auto result = this->HandleRead(objects, writer);
+	result.second.SEQ = seq;
+	expectedSolConfirmSeq = seq;
+	response.SetControl(result.second);
+	response.SetIIN(result.first | this->GetResponseIIN());
+	this->BeginResponseTx(response.ToReadOnly());
+	// todo make this return a transmit confirm state
+	return result.second.CON ? &OutstationSolicitedStateTransmitThenConfirm::Inst() : &OutstationSolicitedStateTransmitNoConfirm::Inst();
 }
 
 void OutstationContext::BeginResponseTx(const ReadOnlyBuffer& response)
@@ -331,23 +358,19 @@ IINField OutstationContext::BuildNonReadResponse(const APDUHeader& header, const
 	}
 }
 
-void OutstationContext::ContinueMultiFragResponse(uint8_t seq)
+OutstationSolicitedStateBase* OutstationContext::ContinueMultiFragResponse(uint8_t seq)
 {
 	auto response = this->StartNewResponse();
 	auto writer = response.GetWriter();
-	response.SetFunction(FunctionCode::RESPONSE);
-
+	response.SetFunction(FunctionCode::RESPONSE);	
 	openpal::Transaction tx(this->pDatabase);	
 	auto control = this->rspContext.LoadSolicited(writer, eventConfig);
 	control.SEQ = seq;
+	expectedSolConfirmSeq = seq;
 	response.SetControl(control);
-	response.SetIIN(this->staticIIN | this->GetDynamicIIN());
-	if (response.GetControl().CON)
-	{
-		expectedSolConfirmSeq = seq;
-		this->pSolicitedState = &OutstationStateSolicitedConfirmWait::Inst();
-	}
+	response.SetIIN(this->staticIIN | this->GetDynamicIIN());	
 	this->BeginResponseTx(response.ToReadOnly());
+	return control.CON ? &OutstationSolicitedStateTransmitThenConfirm::Inst() : &OutstationSolicitedStateTransmitNoConfirm::Inst();
 }
 
 void OutstationContext::OnEnterIdleState()
@@ -431,7 +454,7 @@ void OutstationContext::CheckForUnsolicited()
 	*/
 }
 
-bool OutstationContext::StartConfirmTimer()
+bool OutstationContext::StartSolicitedConfirmTimer()
 {
 	if (pConfirmTimer)
 	{	
@@ -470,7 +493,7 @@ void OutstationContext::OnUnsolRetryTimeout()
 	this->CheckForUnsolicited();
 }
 
-APDUResponseHeader OutstationContext::HandleRead(const openpal::ReadOnlyBuffer& objects, ObjectWriter& writer)
+Pair<IINField, AppControlField> OutstationContext::HandleRead(const openpal::ReadOnlyBuffer& objects, ObjectWriter& writer)
 {
 	rspContext.Reset();
 	ReadHandler handler(logger, rspContext);
@@ -483,12 +506,12 @@ APDUResponseHeader OutstationContext::HandleRead(const openpal::ReadOnlyBuffer& 
 		openpal::Transaction tx(pDatabase);
 		pDatabase->DoubleBuffer();
 		auto control = rspContext.LoadSolicited(writer, eventConfig);		
-		return APDUResponseHeader(control, handler.Errors());
+		return Pair<IINField, AppControlField>(handler.Errors(), control);
 	}
 	else
 	{
 		rspContext.Reset();
-		return IINField(IINBit::PARAM_ERROR);
+		return Pair<IINField, AppControlField>(IINField(IINBit::PARAM_ERROR), AppControlField(true, true, false, false));
 	}
 }
 
@@ -511,7 +534,7 @@ IINField OutstationContext::HandleDirectOperate(const openpal::ReadOnlyBuffer& o
 	// since we're echoing, make sure there's enough size before beginning
 	if (objects.Size() > writer.Remaining())
 	{
-		FORMAT_LOG_BLOCK(logger, flags::WARN, "Igonring command request due to payload size of %i", objects.Size());
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "Igonring command request due to oversized payload size of %u", objects.Size());
 		return IINField(IINBit::PARAM_ERROR);
 	}
 	else
@@ -528,7 +551,7 @@ IINField OutstationContext::HandleSelect(const openpal::ReadOnlyBuffer& objects,
 	// since we're echoing, make sure there's enough size before beginning
 	if (objects.Size() > writer.Remaining())
 	{
-		FORMAT_LOG_BLOCK(logger, flags::WARN, "Igonring command request due to payload size of %i", objects.Size());
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "Igonring command request due to oversized payload size of %i", objects.Size());
 		return IINField(IINBit::PARAM_ERROR);
 	}
 	else
@@ -562,7 +585,7 @@ IINField OutstationContext::HandleOperate(const openpal::ReadOnlyBuffer& objects
 	// since we're echoing, make sure there's enough size before beginning
 	if (objects.Size() > writer.Remaining())
 	{
-		FORMAT_LOG_BLOCK(logger, flags::WARN, "Igonring command request due to payload size of %i", objects.Size());
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "Igonring command request due to oversized payload size of %i", objects.Size());
 		return IINField(IINBit::PARAM_ERROR);
 	}
 	else

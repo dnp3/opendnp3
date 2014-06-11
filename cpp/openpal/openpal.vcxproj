@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="src\openpal\AsyncLayerInterfaces.h" />
     <ClInclude Include="src\openpal\Bind.h" />
+    <ClInclude Include="src\openpal\Pair.h" />
     <ClInclude Include="src\openpal\WriteBuffer.h" />
     <ClInclude Include="src\openpal\Erasure.h" />
     <ClInclude Include="src\openpal\FloatSerializationTemplates.h" />

@@ -25,6 +25,7 @@
 #include <openpal/IExecutor.h>
 #include <openpal/LogRoot.h>
 #include <openpal/AsyncLayerInterfaces.h>
+#include <openpal/Pair.h>
 
 #include "opendnp3/outstation/Database.h"
 #include "opendnp3/outstation/ResponseContext.h"
@@ -123,7 +124,7 @@ class OutstationContext
 
 	bool CancelUnsolTimer();
 	
-	bool StartConfirmTimer();
+	bool StartSolicitedConfirmTimer();
 
 	bool StartUnsolRetryTimer();
 
@@ -133,9 +134,7 @@ class OutstationContext
 
 	void OnReceiveSolRequest(const APDUHeader& header, const openpal::ReadOnlyBuffer& apdu);
 
-	void RespondToNonReadRequest(const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, bool objectsEqualToLastRequest);
-
-	void RespondToReadRequest(const openpal::ReadOnlyBuffer& objects);
+	OutstationSolicitedStateBase* RespondToRequest(const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, bool objectsEqualToLastRequest);
 
 	void BeginResponseTx(const openpal::ReadOnlyBuffer& response);
 
@@ -143,11 +142,15 @@ class OutstationContext
 
 	IINField BuildNonReadResponse(const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, ObjectWriter& writer, bool objectsEqualToLastRequest);
 
-	void ContinueMultiFragResponse(uint8_t seq);
+	OutstationSolicitedStateBase* ContinueMultiFragResponse(uint8_t seq);
 
 	void OnEnterIdleState();
 	
 	private:
+
+	void RespondToNonReadRequest(const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, bool objectsEqualToLastRequest);
+
+	OutstationSolicitedStateBase* RespondToReadRequest(uint8_t seq, const openpal::ReadOnlyBuffer& objects);
 
 	// private variables not available from the states
 
@@ -178,10 +181,10 @@ class OutstationContext
 	// ------ Function Handlers ------
 
 	// reads are special due to multi-frag
-	APDUResponseHeader HandleRead(const openpal::ReadOnlyBuffer& objects, ObjectWriter& writer);
+	// returns an IIN field and a partial AppControlField (missing sequence info)
+	openpal::Pair<IINField, AppControlField> HandleRead(const openpal::ReadOnlyBuffer& objects, ObjectWriter& writer);
 
-	IINField HandleWrite(const openpal::ReadOnlyBuffer& objects);
-	
+	IINField HandleWrite(const openpal::ReadOnlyBuffer& objects);	
 	IINField HandleSelect(const openpal::ReadOnlyBuffer& objects, ObjectWriter& writer);
 	IINField HandleOperate(const openpal::ReadOnlyBuffer& objects, ObjectWriter& writer, bool objectsEqualToLastRequest);
 	IINField HandleDirectOperate(const openpal::ReadOnlyBuffer& objects, ObjectWriter& writer);

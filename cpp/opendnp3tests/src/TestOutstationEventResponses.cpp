@@ -55,8 +55,13 @@ TEST_CASE(SUITE("ReceiveNewRequestSolConfirmWait"))
 	t.SendToOutstation("C0 01 3C 02 06");
 	REQUIRE(t.lower.PopWriteAsHex() == "E0 81 80 00 02 01 28 01 00 00 00 81");
 	t.outstation.OnSendResult(true);
+
 	REQUIRE(1 == t.exe.NumPendingTimers());
 	t.SendToOutstation("C1 01 3C 02 06");
+	REQUIRE(0 == t.exe.NumPendingTimers());
+	t.exe.RunMany();
+
+
 	REQUIRE(t.lower.PopWriteAsHex() == "E1 81 80 00 02 01 28 01 00 00 00 81");
 }
 
@@ -80,9 +85,8 @@ TEST_CASE(SUITE("ReadClass1WithSOE"))
 	}
 
 	t.SendToOutstation("C0 01 3C 02 06");
-
 	REQUIRE(t.lower.PopWriteAsHex() == "E0 81 80 00 20 01 28 01 00 17 00 01 34 12 00 00 02 01 28 01 00 10 00 81 20 01 28 01 00 17 00 01 22 22 00 00");
-
+	t.outstation.OnSendResult(true);
 	t.SendToOutstation("C0 00");
 
 	t.SendToOutstation("C1 01 3C 02 06");		// Repeat read class 1
@@ -108,22 +112,23 @@ TEST_CASE(SUITE("MultipleClasses"))
 
 	t.SendToOutstation("C0 01"); // empty READ
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 8E 00"); // all event bits set + restart
+	t.outstation.OnSendResult(true);
 
 	// ------ read 1 event at a time by class, until all events are gone ----
 
 	t.SendToOutstation("C1 01 3C 03 06"); // Class 2
 	REQUIRE(t.lower.PopWriteAsHex() == "E1 81 8A 00 20 01 28 01 00 00 00 01 03 00 00 00"); // restart + Class 1/3
-
+	t.outstation.OnSendResult(true);
 	t.SendToOutstation("C1 00");
 
 	t.SendToOutstation("C2 01 3C 04 06"); // Class 3
 	REQUIRE(t.lower.PopWriteAsHex() == "E2 81 82 00 16 01 28 01 00 00 00 01 07 00 00 00"); // restart + Class 1/3
-
+	t.outstation.OnSendResult(true);
 	t.SendToOutstation("C2 00");
 
 	t.SendToOutstation("C3 01 3C 02 06"); // Class 1
 	REQUIRE(t.lower.PopWriteAsHex() == "E3 81 80 00 02 01 28 01 00 00 00 81"); // restart only
-
+	t.outstation.OnSendResult(true);
 	t.SendToOutstation("C3 00");
 
 	t.SendToOutstation("C4 01"); // empty READ

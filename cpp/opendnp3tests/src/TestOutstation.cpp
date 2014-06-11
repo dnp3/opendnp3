@@ -186,10 +186,13 @@ TEST_CASE(SUITE("ReadClass0MultiFragAnalog"))
 	// Response should be (30,1)x2 per fragment, quality ONLINE, value 0
 	// 4 fragment response, first 3 fragments should be confirmed, last one shouldn't be
 	REQUIRE(t.lower.PopWriteAsHex() == "A0 81 80 00 1E 01 00 00 01 01 00 00 00 00 01 00 00 00 00");
+	t.outstation.OnSendResult(true);
 	t.SendToOutstation("C0 00");
 	REQUIRE(t.lower.PopWriteAsHex() == "21 81 80 00 1E 01 00 02 03 01 00 00 00 00 01 00 00 00 00");
+	t.outstation.OnSendResult(true);
 	t.SendToOutstation("C1 00");
 	REQUIRE(t.lower.PopWriteAsHex() == "22 81 80 00 1E 01 00 04 05 01 00 00 00 00 01 00 00 00 00");
+	t.outstation.OnSendResult(true);
 	t.SendToOutstation("C2 00");
 	REQUIRE(t.lower.PopWriteAsHex() == "43 81 80 00 1E 01 00 06 07 01 00 00 00 00 01 00 00 00 00");	
 }

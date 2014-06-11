@@ -61,9 +61,7 @@ public:
 
 	virtual void OnNewRequest(OutstationContext*, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, APDUEquality equality) override final;
 
-	virtual void OnRepeatRequest(OutstationContext*, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects) override final;
-
-	virtual void OnSendResult(OutstationContext*, bool isSucccess) override final;
+	virtual void OnRepeatRequest(OutstationContext*, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects) override final;	
 
 private:
 
@@ -73,6 +71,54 @@ private:
 
 };
 
+/**
+* transmitting a response, no confirmation is necessary
+*/
+class OutstationSolicitedStateTransmitNoConfirm : public OutstationSolicitedStateBase, private openpal::Uncopyable
+{
+public:
+
+	static OutstationSolicitedStateBase& Inst();
+
+	virtual void OnSendResult(OutstationContext*, bool isSucccess) override final;
+
+	virtual void OnNewRequest(OutstationContext*, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, APDUEquality equality) override final;
+
+	virtual void OnRepeatRequest(OutstationContext*, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects) override final;
+
+private:
+
+	static OutstationSolicitedStateTransmitNoConfirm instance;
+
+	OutstationSolicitedStateTransmitNoConfirm() {}
+
+};
+
+/**
+* transmitting a response to a read, confirmation is necessary
+*/
+class OutstationSolicitedStateTransmitThenConfirm : public OutstationSolicitedStateBase, private openpal::Uncopyable
+{
+public:
+
+	static OutstationSolicitedStateBase& Inst();
+
+	virtual void OnSendResult(OutstationContext*, bool isSucccess) override final;
+
+	virtual void OnNewRequest(OutstationContext*, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, APDUEquality equality) override final;
+
+	virtual void OnRepeatRequest(OutstationContext*, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects) override final;
+
+private:
+
+	static OutstationSolicitedStateTransmitThenConfirm instance;
+
+	OutstationSolicitedStateTransmitThenConfirm() {}
+};
+
+/*
+* waiting for a confirm to a solicited read response
+*/
 class OutstationStateSolicitedConfirmWait : public OutstationSolicitedStateBase, private openpal::Uncopyable
 {
 
@@ -82,9 +128,7 @@ public:
 
 	virtual void OnNewRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, APDUEquality equality) override final;
 
-	virtual void OnRepeatRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects) override final;
-
-	virtual void OnSendResult(OutstationContext* pContext, bool isSucccess) override final;
+	virtual void OnRepeatRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects) override final;	
 
 	virtual void OnConfirm(OutstationContext* pContext, const APDUHeader& frag) override final;
 

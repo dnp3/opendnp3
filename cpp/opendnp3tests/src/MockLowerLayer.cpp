@@ -31,23 +31,9 @@ namespace opendnp3
 {
 
 MockLowerLayer::MockLowerLayer(openpal::LogRoot& root) :
-	logger(root.GetLogger()),
-	mAutoSendCallback(true),
-	mIsSuccess(true)
+	logger(root.GetLogger())	
 {
 
-}
-
-
-void MockLowerLayer::EnableAutoSendCallback(bool aIsSuccess)
-{
-	mAutoSendCallback = true;
-	mIsSuccess = aIsSuccess;
-}
-
-void MockLowerLayer::DisableAutoSendCallback()
-{
-	mAutoSendCallback = false;
 }
 
 size_t MockLowerLayer::NumWrites() const
@@ -78,12 +64,7 @@ std::string MockLowerLayer::PopWriteAsHex()
 
 void MockLowerLayer::BeginTransmit(const openpal::ReadOnlyBuffer& output)
 {
-	this->sendQueue.push(output);
-
-	if(mAutoSendCallback && pUpperLayer)
-	{
-		pUpperLayer->OnSendResult(mIsSuccess);
-	}
+	this->sendQueue.push(output);	
 }
 
 void MockLowerLayer::SendUp(const openpal::ReadOnlyBuffer& arBuffer)

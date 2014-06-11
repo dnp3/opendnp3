@@ -18,44 +18,23 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __MOCK_LOWER_LAYER_H_
-#define __MOCK_LOWER_LAYER_H_
+#ifndef __PAIR_H_
+#define __PAIR_H_
 
-#include <queue>
-#include <string>
-
-#include <openpal/LogRoot.h>
-#include <openpal/AsyncLayerInterfaces.h>
-
-namespace opendnp3
+namespace openpal
 {
 
-class MockLowerLayer : public openpal::ILowerLayer, public openpal::HasUpperLayer
+template <class A, class B>
+class Pair
 {
+
 public:
-	MockLowerLayer(openpal::LogRoot& root);
 
-	void SendUp(const openpal::ReadOnlyBuffer& arBuffer);
-	void SendUp(const std::string&);
-	void SendSuccess();
-	void SendFailure();
-	void ThisLayerUp();
-	void ThisLayerDown();
+	Pair(const A& first_, const B& second_) : first(first_), second(second_)
+	{}
 
-	void EnableAutoSendCallback(bool aIsSuccess);
-	void DisableAutoSendCallback();
-
-	size_t NumWrites() const;
-	openpal::ReadOnlyBuffer PopWrite();
-	std::string PopWriteAsHex();
-
-	virtual void BeginTransmit(const openpal::ReadOnlyBuffer& arBuffer) override final;
-
-private:
-
-	openpal::Logger logger;	
-
-	std::queue<openpal::ReadOnlyBuffer> sendQueue;
+	A first;
+	B second;
 };
 
 }

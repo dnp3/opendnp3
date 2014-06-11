@@ -59,27 +59,76 @@ OutstationSolicitedStateBase& OutstationSolicitedStateIdle::Inst()
 
 void OutstationSolicitedStateIdle::OnNewRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, APDUEquality equality)
 {
-	if (pContext->txState == TxState::IDLE)
-	{				
-		pContext->RespondToNonReadRequest(header, objects, equality == APDUEquality::OBJECT_HEADERS_EQUAL);
-	}
-	else
-	{	
-		pContext->deferredRequest.Set(DeferredRequest(header, equality));		
-	}
+	pContext->pSolicitedState = pContext->RespondToRequest(header, objects, equality == APDUEquality::OBJECT_HEADERS_EQUAL);
 }
 
 void OutstationSolicitedStateIdle::OnRepeatRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects)
 {
-	if (pContext->txState == TxState::IDLE)
+	pContext->pSolicitedState = &OutstationSolicitedStateTransmitNoConfirm::Inst();
+	pContext->BeginResponseTx(pContext->lastResponse);	
+}
+
+// --------------------- OutstationSolicitedStateTransmitNoConfirm ----------------------
+
+OutstationSolicitedStateTransmitNoConfirm OutstationSolicitedStateTransmitNoConfirm::instance;
+
+OutstationSolicitedStateBase& OutstationSolicitedStateTransmitNoConfirm::Inst()
+{
+	return instance;
+}
+
+void OutstationSolicitedStateTransmitNoConfirm::OnSendResult(OutstationContext* pContext, bool)
+{
+	// this transition will pick up any deferred requests
+	pContext->pSolicitedState = &OutstationSolicitedStateIdle::Inst();
+	pContext->OnEnterIdleState();
+}
+
+void OutstationSolicitedStateTransmitNoConfirm::OnNewRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, APDUEquality equality)
+{
+	pContext->deferredRequest.Set(DeferredRequest(header, equality));
+}
+
+void OutstationSolicitedStateTransmitNoConfirm::OnRepeatRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects)
+{
+	pContext->deferredRequest.Set(DeferredRequest(header, APDUEquality::FULL_EQUALITY));
+}
+
+// --------------------- OutstationSolicitedStateTransmitThenConfirm ----------------------
+
+OutstationSolicitedStateTransmitThenConfirm OutstationSolicitedStateTransmitThenConfirm::instance;
+
+OutstationSolicitedStateBase& OutstationSolicitedStateTransmitThenConfirm::Inst()
+{
+	return instance;
+}
+
+void OutstationSolicitedStateTransmitThenConfirm::OnSendResult(OutstationContext* pContext, bool isSucccess)
+{
+	if (isSucccess && !pContext->deferredRequest.IsSet())
 	{
-		pContext->BeginResponseTx(pContext->lastResponse);		
+		pContext->StartSolicitedConfirmTimer();
+		pContext->pSolicitedState = &OutstationStateSolicitedConfirmWait::Inst();
+	}
+	else
+	{
+		// if the transmit failed or we have a deferred request, 
+		// then we have no reason to expect a confirm so got back to Idle
+		pContext->rspContext.Reset();
+		pContext->eventBuffer.Reset();		
+		pContext->pSolicitedState = &OutstationSolicitedStateIdle::Inst();
+		pContext->OnEnterIdleState();
 	}
 }
 
-void OutstationSolicitedStateIdle::OnSendResult(OutstationContext* pContext, bool isSucccess)
-{	
-	pContext->OnEnterIdleState();
+void OutstationSolicitedStateTransmitThenConfirm::OnNewRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, APDUEquality equality)
+{
+	pContext->deferredRequest.Set(DeferredRequest(header, equality));
+}
+
+void OutstationSolicitedStateTransmitThenConfirm::OnRepeatRequest(OutstationContext*, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects)
+{
+	//ignore repeat request while transmitting
 }
 
 // --------------------- OutstationStateSolConfirmWait ----------------------
@@ -93,82 +142,54 @@ OutstationSolicitedStateBase& OutstationStateSolicitedConfirmWait::Inst()
 
 void OutstationStateSolicitedConfirmWait::OnNewRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, APDUEquality equality)
 {
-	if (pContext->txState == TxState::IDLE)
-	{
-		pContext->CancelConfirmTimer();		
-		pContext->rspContext.Reset();
-		pContext->eventBuffer.Reset();
-		pContext->deferredRequest.Set(DeferredRequest(header, equality));
-		pContext->pSolicitedState = &OutstationSolicitedStateIdle::Inst();
-		pContext->OnEnterIdleState();
-	}
-	else
-	{	
-		pContext->deferredRequest.Set(DeferredRequest(header, equality));		
-	}	
+	//defer the request
+	pContext->deferredRequest.Set(DeferredRequest(header, equality));
+
+	// abandon the confirmed response sequence
+	pContext->CancelConfirmTimer();		
+	pContext->rspContext.Reset();
+	pContext->eventBuffer.Reset();	
+	pContext->pSolicitedState = &OutstationSolicitedStateIdle::Inst();
+	pContext->OnEnterIdleState();		
 }
 
 void OutstationStateSolicitedConfirmWait::OnRepeatRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects)
-{
-	if (pContext->txState == TxState::IDLE)
-	{
-		pContext->CancelConfirmTimer();
-		pContext->BeginResponseTx(pContext->lastResponse);
-	}
-}
-
-void OutstationStateSolicitedConfirmWait::OnSendResult(OutstationContext* pContext, bool isSucccess)
 {	
-	if (isSucccess)
-	{
-		pContext->StartConfirmTimer();
-	}
-	else
-	{
-		pContext->pSolicitedState = &OutstationSolicitedStateIdle::Inst();
-	}		
+	// ignore repeats from this state. Echoed responses don't work for multi-frag responses.
 }
 
 void OutstationStateSolicitedConfirmWait::OnConfirm(OutstationContext* pContext, const APDUHeader& header)
-{
-	if (pContext->pConfirmTimer)
+{	
+	if (header.control.SEQ == pContext->expectedSolConfirmSeq)
 	{
-		if (header.control.SEQ == pContext->expectedSolConfirmSeq)
+		// clear the event buffer and cancel confirm timer
+		pContext->CancelConfirmTimer();			
+		pContext->eventBuffer.Clear();
+
+		if (pContext->rspContext.IsComplete())
 		{
 			pContext->pSolicitedState = &OutstationSolicitedStateIdle::Inst();
-			pContext->CancelConfirmTimer();			
-			pContext->eventBuffer.Clear();
-			if (pContext->rspContext.IsComplete())
-			{
-				pContext->OnEnterIdleState();
-			}
-			else // Continue response
-			{
-				pContext->ContinueMultiFragResponse(AppControlField::NextSeq(header.control.SEQ));
-			}
+			pContext->OnEnterIdleState();
 		}
-		else
+		else 
 		{
-			FORMAT_LOG_BLOCK(pContext->logger, flags::WARN, "Confirm with wrong seq: %u", header.control.SEQ);
-		}		
+			// Continue response - next state depends on if there are more confirms or not
+			pContext->pSolicitedState = pContext->ContinueMultiFragResponse(AppControlField::NextSeq(header.control.SEQ));
+		}
 	}
 	else
 	{
-		// we're still sending so this can't be our confirm
-		FORMAT_LOG_BLOCK(pContext->logger, flags::WARN, "Unexpected confirm with seq: %u", header.control.SEQ);
-	}	
+		FORMAT_LOG_BLOCK(pContext->logger, flags::WARN, "Confirm with wrong seq: %u", header.control.SEQ);
+	}			
 }
 
 void OutstationStateSolicitedConfirmWait::OnConfirmTimeout(OutstationContext* pContext)
-{
-	if (pContext->pConfirmTimer)
-	{
-		pContext->pConfirmTimer = nullptr;		
-		pContext->eventBuffer.Reset();
-		pContext->rspContext.Reset();
-		pContext->pSolicitedState = &OutstationSolicitedStateIdle::Inst();
-		pContext->OnEnterIdleState();
-	}
+{	
+	pContext->pConfirmTimer = nullptr;		
+	pContext->eventBuffer.Reset();
+	pContext->rspContext.Reset();
+	pContext->pSolicitedState = &OutstationSolicitedStateIdle::Inst();
+	pContext->OnEnterIdleState();	
 }
 
 /*
