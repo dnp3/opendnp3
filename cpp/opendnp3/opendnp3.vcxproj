@@ -161,7 +161,6 @@
     <ClInclude Include="src\opendnp3\objects\Group51.h" />
     <ClInclude Include="src\opendnp3\objects\Group52.h" />
     <ClInclude Include="src\opendnp3\objects\Group60.h" />
-    <ClInclude Include="src\opendnp3\outstation\DeferredRequest.h" />
     <ClInclude Include="src\opendnp3\outstation\ClassBasedRequestHandler.h" />
     <ClInclude Include="src\opendnp3\outstation\CommandActionAdapter.h" />
     <ClInclude Include="src\opendnp3\outstation\CommandResponseHandler.h" />
@@ -169,6 +168,7 @@
     <ClInclude Include="src\opendnp3\outstation\CountOf.h" />
     <ClInclude Include="src\opendnp3\outstation\Database.h" />
     <ClInclude Include="src\opendnp3\outstation\DatabaseTemplate.h" />
+    <ClInclude Include="src\opendnp3\outstation\DeferredRequest.h" />
     <ClInclude Include="src\opendnp3\outstation\DeviceTemplateTypes.h" />
     <ClInclude Include="src\opendnp3\outstation\DualValue.h" />
     <ClInclude Include="src\opendnp3\outstation\DynamicallyAllocatedDatabase.h" />

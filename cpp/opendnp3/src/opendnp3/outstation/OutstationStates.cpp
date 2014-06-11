@@ -76,11 +76,7 @@ void OutstationStateIdle::OnNewRequest(OutstationContext* pContext, const APDUHe
 
 void OutstationStateIdle::OnRepeatRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects)
 {
-	if (pContext->isTransmitting)
-	{
-		pContext->deferredRequest.Set(DeferredRequest(header, APDUEquality::FULL_EQUALITY));		
-	}
-	else
+	if (!pContext->isTransmitting)	
 	{
 		pContext->isTransmitting = true;
 		pContext->pLower->BeginTransmit(pContext->lastResponse);
@@ -119,11 +115,7 @@ void OutstationStateSolConfirmWait::OnNewRequest(OutstationContext* pContext, co
 
 void OutstationStateSolConfirmWait::OnRepeatRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects)
 {
-	if (pContext->isTransmitting)
-	{
-		SIMPLE_LOG_BLOCK(pContext->logger, flags::WARN, "Discarding repeat request while transmitting");
-	}
-	else
+	if (!pContext->isTransmitting)
 	{
 		pContext->CancelConfirmTimer();
 		pContext->isTransmitting = true;
@@ -196,12 +188,32 @@ OutstationStateBase& OutstationStateUnsolConfirmWait::Inst()
 
 void OutstationStateUnsolConfirmWait::OnNewRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, APDUEquality equality)
 {
-	// TODO
+	if (pContext->isTransmitting)
+	{
+		pContext->deferredRequest.Set(DeferredRequest(header, equality));
+	}
+	else
+	{
+		if (header.function == FunctionCode::READ)
+		{
+			// read requests are deferred until we re-enter the idle state
+			pContext->deferredRequest.Set(DeferredRequest(header, equality));
+		}
+		else
+		{
+			// non-read requests are responded to immediately
+			pContext->RespondToRequest(header, objects, equality);
+		}
+	}
 }
 
 void OutstationStateUnsolConfirmWait::OnRepeatRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects)
 {
-	// TODO
+	if (!pContext->isTransmitting && header.function != FunctionCode::READ)	
+	{
+		pContext->isTransmitting = true;
+		pContext->pLower->BeginTransmit(pContext->lastResponse);
+	}
 }
 
 void OutstationStateUnsolConfirmWait::OnSendResult(OutstationContext* pContext, bool isSucccess)

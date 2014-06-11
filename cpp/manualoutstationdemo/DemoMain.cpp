@@ -74,6 +74,7 @@ int main(int argc, char* argv[])
 	SimpleCommandHandler commandHandler(CommandStatus::SUCCESS);
 
 	OutstationConfig config;		
+	config.params.allowUnsolicited = true;
 	config.defaultEventResponses.binary = EventBinaryResponse::Group2Var2;
 	Outstation outstation(config, executor, root, stack.transport, commandHandler, NullTimeWriteHandler::Inst(), database, eventBuffers.GetFacade());
 
