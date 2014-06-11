@@ -52,7 +52,7 @@ AppControlField ResponseContext::LoadSolicited(ObjectWriter& writer, const Event
 	auto preLoadSize = writer.Remaining();
 
 	auto allEventsLoaded = eventContext.Load(writer, config);
-	auto wereEventsWritten = writer.Remaining() > preLoadSize;
+	auto wereEventsWritten = writer.Remaining() < preLoadSize;
 		
 	if (allEventsLoaded)
 	{		
