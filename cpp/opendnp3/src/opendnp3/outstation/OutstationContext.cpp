@@ -366,30 +366,25 @@ void OutstationContext::OnEnterIdleState()
 
 void OutstationContext::PerformTaskFromIdleState()
 {	
+	this->CheckDeferredRequest();
+
 	this->CheckForUnsolicited();	
 }
 
-bool OutstationContext::CheckDeferredRequest()
+void OutstationContext::CheckDeferredRequest()
 {
 	DeferredRequest request;
 	if (this->IsIdle() && deferredRequest.Pop(request))
 	{
-
-
 		if (request.lastEquality == APDUEquality::FULL_EQUALITY) // it was a repeat
 		{
-			pState->OnRepeatRequest(this, request.header, lastValidRequest);
+			pState->OnRepeatRequest(this, request.header, lastValidRequest.Skip(APDU_HEADER_SIZE));
 		}
 		else
 		{
-
-		}
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+			pState->OnNewRequest(this, request.header, lastValidRequest.Skip(APDU_HEADER_SIZE), request.lastEquality);
+		}		
+	}	
 }
 
 void OutstationContext::OnNewEvents()

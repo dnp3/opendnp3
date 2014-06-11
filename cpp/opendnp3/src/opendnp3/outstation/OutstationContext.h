@@ -150,7 +150,7 @@ class OutstationContext
 
 	void PerformTaskFromIdleState();
 
-	bool CheckDeferredRequest();
+	void CheckDeferredRequest();
 
 	void CheckForUnsolicited();
 
