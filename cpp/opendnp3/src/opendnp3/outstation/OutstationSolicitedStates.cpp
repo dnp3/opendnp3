@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "OutstationStates.h"
+#include "OutstationSolicitedStates.h"
 
 #include "opendnp3/LogLevels.h"
 #include "opendnp3/outstation/OutstationContext.h"

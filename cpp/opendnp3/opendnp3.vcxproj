@@ -191,7 +191,7 @@
     <ClInclude Include="src\opendnp3\outstation\ITimeWriteHandler.h" />
     <ClInclude Include="src\opendnp3\outstation\Outstation.h" />
     <ClInclude Include="src\opendnp3\outstation\OutstationConfig.h" />
-    <ClInclude Include="src\opendnp3\outstation\OutstationStates.h" />
+    <ClInclude Include="src\opendnp3\outstation\OutstationSolicitedStates.h" />
     <ClInclude Include="src\opendnp3\outstation\OutstationContext.h" />
     <ClInclude Include="src\opendnp3\outstation\OutstationEventBuffer.h" />
     <ClInclude Include="src\opendnp3\outstation\OutstationParams.h" />
@@ -337,7 +337,7 @@
     <ClCompile Include="src\opendnp3\outstation\OutstationContext.cpp" />
     <ClCompile Include="src\opendnp3\outstation\OutstationEventBuffer.cpp" />
     <ClCompile Include="src\opendnp3\outstation\OutstationParams.cpp" />
-    <ClCompile Include="src\opendnp3\outstation\OutstationStates.cpp" />
+    <ClCompile Include="src\opendnp3\outstation\OutstationSolicitedStates.cpp" />
     <ClCompile Include="src\opendnp3\outstation\ReadHandler.cpp" />
     <ClCompile Include="src\opendnp3\outstation\ResponseContext.cpp" />
     <ClCompile Include="src\opendnp3\outstation\SelectionCriteria.cpp" />

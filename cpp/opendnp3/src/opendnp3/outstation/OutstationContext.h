@@ -36,7 +36,7 @@
 #include "opendnp3/app/APDUResponse.h"
 #include "opendnp3/outstation/ICommandHandler.h"
 #include "opendnp3/outstation/ITimeWriteHandler.h"
-#include "opendnp3/outstation/OutstationStates.h"
+#include "opendnp3/outstation/OutstationSolicitedStates.h"
 #include "opendnp3/outstation/DeferredRequest.h"
 
 #include "opendnp3/StaticSizeConfiguration.h"
