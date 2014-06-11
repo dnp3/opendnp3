@@ -65,6 +65,7 @@ OutstationContext::OutstationContext(
 	eventBuffer(buffers),
 	isOnline(false),
 	pSolicitedState(&OutstationSolicitedStateIdle::Inst()),
+	pUnsolcitedState(&OutstationUnsolicitedStateIdle::Inst()),
 	pConfirmTimer(nullptr),
 	pUnsolTimer(nullptr),
 	unsolPackTimerExpired(false),
@@ -151,6 +152,7 @@ void OutstationContext::SetOffline()
 	isOnline = false;
 	unsolPackTimerExpired = false;
 	pSolicitedState = &OutstationSolicitedStateIdle::Inst();
+	pUnsolcitedState = &OutstationUnsolicitedStateIdle::Inst();
 	lastValidRequest.Clear();
 	deferredRequest.Clear();
 	eventBuffer.Reset();

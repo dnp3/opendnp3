@@ -37,6 +37,7 @@
 #include "opendnp3/outstation/ICommandHandler.h"
 #include "opendnp3/outstation/ITimeWriteHandler.h"
 #include "opendnp3/outstation/OutstationSolicitedStates.h"
+#include "opendnp3/outstation/OutstationUnsolicitedStates.h"
 #include "opendnp3/outstation/DeferredRequest.h"
 
 #include "opendnp3/StaticSizeConfiguration.h"
@@ -75,7 +76,8 @@ class OutstationContext
 	// ------ Dynamic "state", i.e. things that must be managed or cleanup on close ------
 	
 	bool isOnline;	
-	OutstationSolicitedStateBase* pSolicitedState;
+	OutstationSolicitedStateBase*	pSolicitedState;
+	OutstationUnsolicitedStateBase*	pUnsolcitedState;
 
 	IINField staticIIN;
 
