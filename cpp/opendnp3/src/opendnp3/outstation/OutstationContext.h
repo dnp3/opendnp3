@@ -75,7 +75,7 @@ class OutstationContext
 	
 	bool isOnline;
 	bool isTransmitting;
-	OutstationStateBase* pState;
+	OutstationSolicitedStateBase* pSolicitedState;
 
 	IINField staticIIN;
 

@@ -30,24 +30,19 @@
 namespace opendnp3
 {
 
-// --------------------- OutstationStateBase ----------------------
+// --------------------- OutstationSolicitedStateBase ----------------------
 
-void OutstationStateBase::OnSolConfirm(OutstationContext* pContext, const APDUHeader& header)
+void OutstationSolicitedStateBase::OnConfirm(OutstationContext* pContext, const APDUHeader& header)
 {
-	FORMAT_LOG_BLOCK(pContext->logger, flags::WARN, "Unexpected sol confirm with sequence: %u", header.control.SEQ);
+	FORMAT_LOG_BLOCK(pContext->logger, flags::WARN, "Unexpected solicted confirm with sequence: %u", header.control.SEQ);
 }
 
-void OutstationStateBase::OnUnsolConfirm(OutstationContext* pContext, const APDUHeader& header)
-{
-	FORMAT_LOG_BLOCK(pContext->logger, flags::WARN, "Unexpected unsol confirm with sequence: %u", header.control.SEQ);
-}
-
-void OutstationStateBase::OnSendResult(OutstationContext* pContext, bool isSucccess)
+void OutstationSolicitedStateBase::OnSendResult(OutstationContext* pContext, bool isSucccess)
 {
 	SIMPLE_LOG_BLOCK(pContext->logger, flags::WARN, "Unexpected send result callback");
 }
 
-void OutstationStateBase::OnConfirmTimeout(OutstationContext* pContext)
+void OutstationSolicitedStateBase::OnConfirmTimeout(OutstationContext* pContext)
 {
 	SIMPLE_LOG_BLOCK(pContext->logger, flags::WARN, "Unexpected confirm timeout");
 }
@@ -55,14 +50,14 @@ void OutstationStateBase::OnConfirmTimeout(OutstationContext* pContext)
 // --------------------- OutstationStateIdle ----------------------
 
 
-OutstationStateIdle OutstationStateIdle::instance;
+OutstationSolicitedStateIdle OutstationSolicitedStateIdle::instance;
 
-OutstationStateBase& OutstationStateIdle::Inst()
+OutstationSolicitedStateBase& OutstationSolicitedStateIdle::Inst()
 {
 	return instance;
 }
 
-void OutstationStateIdle::OnNewRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, APDUEquality equality)
+void OutstationSolicitedStateIdle::OnNewRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, APDUEquality equality)
 {
 	if (pContext->isTransmitting)
 	{		
@@ -74,7 +69,7 @@ void OutstationStateIdle::OnNewRequest(OutstationContext* pContext, const APDUHe
 	}
 }
 
-void OutstationStateIdle::OnRepeatRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects)
+void OutstationSolicitedStateIdle::OnRepeatRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects)
 {
 	if (!pContext->isTransmitting)	
 	{
@@ -83,21 +78,21 @@ void OutstationStateIdle::OnRepeatRequest(OutstationContext* pContext, const APD
 	}
 }
 
-void OutstationStateIdle::OnSendResult(OutstationContext* pContext, bool isSucccess)
+void OutstationSolicitedStateIdle::OnSendResult(OutstationContext* pContext, bool isSucccess)
 {	
 	pContext->OnEnterIdleState();
 }
 
 // --------------------- OutstationStateSolConfirmWait ----------------------
 
-OutstationStateSolConfirmWait OutstationStateSolConfirmWait::instance;
+OutstationStateSolicitedConfirmWait OutstationStateSolicitedConfirmWait::instance;
 
-OutstationStateBase& OutstationStateSolConfirmWait::Inst()
+OutstationSolicitedStateBase& OutstationStateSolicitedConfirmWait::Inst()
 {
 	return instance;
 }
 
-void OutstationStateSolConfirmWait::OnNewRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, APDUEquality equality)
+void OutstationStateSolicitedConfirmWait::OnNewRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, APDUEquality equality)
 {
 	if (pContext->isTransmitting)
 	{
@@ -106,14 +101,14 @@ void OutstationStateSolConfirmWait::OnNewRequest(OutstationContext* pContext, co
 	else
 	{				
 		pContext->CancelConfirmTimer();
-		pContext->pState = &OutstationStateIdle::Inst();
+		pContext->pSolicitedState = &OutstationSolicitedStateIdle::Inst();
 		pContext->rspContext.Reset();
 		pContext->eventBuffer.Reset();
 		pContext->RespondToRequest(header, objects, equality);
 	}	
 }
 
-void OutstationStateSolConfirmWait::OnRepeatRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects)
+void OutstationStateSolicitedConfirmWait::OnRepeatRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects)
 {
 	if (!pContext->isTransmitting)
 	{
@@ -123,7 +118,7 @@ void OutstationStateSolConfirmWait::OnRepeatRequest(OutstationContext* pContext,
 	}
 }
 
-void OutstationStateSolConfirmWait::OnSendResult(OutstationContext* pContext, bool isSucccess)
+void OutstationStateSolicitedConfirmWait::OnSendResult(OutstationContext* pContext, bool isSucccess)
 {	
 	if (isSucccess)
 	{
@@ -131,17 +126,17 @@ void OutstationStateSolConfirmWait::OnSendResult(OutstationContext* pContext, bo
 	}
 	else
 	{
-		pContext->pState = &OutstationStateIdle::Inst();
+		pContext->pSolicitedState = &OutstationSolicitedStateIdle::Inst();
 	}		
 }
 
-void OutstationStateSolConfirmWait::OnSolConfirm(OutstationContext* pContext, const APDUHeader& header)
+void OutstationStateSolicitedConfirmWait::OnConfirm(OutstationContext* pContext, const APDUHeader& header)
 {
 	if (pContext->pConfirmTimer)
 	{
 		if (header.control.SEQ == pContext->expectedSolConfirmSeq)
 		{
-			pContext->pState = &OutstationStateIdle::Inst();
+			pContext->pSolicitedState = &OutstationSolicitedStateIdle::Inst();
 			pContext->CancelConfirmTimer();			
 			pContext->eventBuffer.Clear();
 			if (pContext->rspContext.IsComplete())
@@ -165,18 +160,19 @@ void OutstationStateSolConfirmWait::OnSolConfirm(OutstationContext* pContext, co
 	}	
 }
 
-void OutstationStateSolConfirmWait::OnConfirmTimeout(OutstationContext* pContext)
+void OutstationStateSolicitedConfirmWait::OnConfirmTimeout(OutstationContext* pContext)
 {
 	if (pContext->pConfirmTimer)
 	{
 		pContext->pConfirmTimer = nullptr;		
 		pContext->eventBuffer.Reset();
 		pContext->rspContext.Reset();
-		pContext->pState = &OutstationStateIdle::Inst();
+		pContext->pSolicitedState = &OutstationSolicitedStateIdle::Inst();
 		pContext->OnEnterIdleState();
 	}
 }
 
+/*
 // --------------------- OutstationStateUnsolConfirmWait ----------------------
 
 OutstationStateUnsolConfirmWait OutstationStateUnsolConfirmWait::instance;
@@ -277,5 +273,6 @@ void OutstationStateUnsolConfirmWait::OnConfirmTimeout(OutstationContext* pConte
 		pContext->pState = &OutstationStateIdle::Inst();		
 	}
 }
+*/
 
 }

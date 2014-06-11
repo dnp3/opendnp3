@@ -32,6 +32,7 @@ using namespace openpal;
 
 #define SUITE(name) "OutstationUnsolicitedTestSuite - " name
 
+/*
 TEST_CASE(SUITE("NullUnsolOnStartup"))
 {
 	OutstationConfig cfg;  cfg.params.allowUnsolicited = true;
@@ -141,6 +142,7 @@ TEST_CASE(SUITE("UnsolEventBufferOverflow"))
 	// the first value is lost off the front of the buffer
 	REQUIRE(t.lower.PopWriteAsHex() ==  "F1 82 80 08 02 01 28 02 00 00 00 01 00 00 81");	
 }
+*/
 
 /*
 TEST_CASE(SUITE("UnsolMultiFragments"))

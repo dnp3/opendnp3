@@ -34,13 +34,11 @@ class OutstationContext;
 /**
  * Base class for various outstation states
  */
-class OutstationStateBase
+class OutstationSolicitedStateBase
 {
 public:	
 
-	virtual void OnSolConfirm(OutstationContext*, const APDUHeader& frag);
-
-	virtual void OnUnsolConfirm(OutstationContext*, const APDUHeader& frag);
+	virtual void OnConfirm(OutstationContext*, const APDUHeader& frag);	
 
 	virtual void OnSendResult(OutstationContext*, bool isSucccess);
 
@@ -52,16 +50,14 @@ public:
 
 protected:
 
-
-
 };
 
-class OutstationStateIdle : public OutstationStateBase, private openpal::Uncopyable
+class OutstationSolicitedStateIdle : public OutstationSolicitedStateBase, private openpal::Uncopyable
 {
 
 public:
 
-	static OutstationStateBase& Inst();	
+	static OutstationSolicitedStateBase& Inst();
 
 	virtual void OnNewRequest(OutstationContext*, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, APDUEquality equality) override final;
 
@@ -71,18 +67,18 @@ public:
 
 private:
 
-	static OutstationStateIdle instance;
+	static OutstationSolicitedStateIdle instance;
 
-	OutstationStateIdle() {}
+	OutstationSolicitedStateIdle() {}
 
 };
 
-class OutstationStateSolConfirmWait : public OutstationStateBase, private openpal::Uncopyable
+class OutstationStateSolicitedConfirmWait : public OutstationSolicitedStateBase, private openpal::Uncopyable
 {
 
 public:
 
-	static OutstationStateBase& Inst();
+	static OutstationSolicitedStateBase& Inst();
 
 	virtual void OnNewRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, APDUEquality equality) override final;
 
@@ -90,17 +86,18 @@ public:
 
 	virtual void OnSendResult(OutstationContext* pContext, bool isSucccess) override final;
 
-	virtual void OnSolConfirm(OutstationContext* pContext, const APDUHeader& frag) override final;
+	virtual void OnConfirm(OutstationContext* pContext, const APDUHeader& frag) override final;
 
 	virtual void OnConfirmTimeout(OutstationContext* pContext) override final;
 
 private:
 
-	static OutstationStateSolConfirmWait instance;
+	static OutstationStateSolicitedConfirmWait instance;
 
-	OutstationStateSolConfirmWait() {}
+	OutstationStateSolicitedConfirmWait() {}
 };
 
+/*
 class OutstationStateUnsolConfirmWait : public OutstationStateBase, private openpal::Uncopyable
 {
 
@@ -124,6 +121,7 @@ private:
 
 	OutstationStateUnsolConfirmWait() {}
 };
+*/
 
 
 

@@ -66,7 +66,7 @@ OutstationContext::OutstationContext(
 	eventBuffer(buffers),
 	isOnline(false),
 	isTransmitting(false),
-	pState(&OutstationStateIdle::Inst()),
+	pSolicitedState(&OutstationSolicitedStateIdle::Inst()),
 	pConfirmTimer(nullptr),
 	pUnsolTimer(nullptr),
 	unsolPackTimerExpired(false),
@@ -152,7 +152,7 @@ void OutstationContext::SetOffline()
 	isOnline = false;
 	unsolPackTimerExpired = false;
 	isTransmitting = false;
-	pState = &OutstationStateIdle::Inst();
+	pSolicitedState = &OutstationSolicitedStateIdle::Inst();
 	lastValidRequest.Clear();
 	deferredRequest.Clear();
 	eventBuffer.Reset();
@@ -168,7 +168,7 @@ bool OutstationContext::IsOperateSequenceValid()
 
 bool OutstationContext::IsIdle()
 {
-	return isOnline && !isTransmitting && pState == &OutstationStateIdle::Inst();
+	return isOnline && !isTransmitting && pSolicitedState == &OutstationSolicitedStateIdle::Inst();
 }
 
 bool OutstationContext::CancelConfirmTimer()
@@ -207,20 +207,13 @@ void OutstationContext::OnReceiveAPDU(const openpal::ReadOnlyBuffer& apdu)
 		{
 			if (header.control.UNS)
 			{
-				if (header.function == FunctionCode::CONFIRM)
-				{
-					pState->OnUnsolConfirm(this, header);
-				}
-				else
-				{
-					SIMPLE_LOG_BLOCK(logger, flags::WARN, "Received non-confirm unsol message");
-				}
+				SIMPLE_LOG_BLOCK(logger, flags::WARN, "Ignoring unsol message");
 			}
 			else
 			{
 				if (header.function == FunctionCode::CONFIRM)
 				{
-					pState->OnSolConfirm(this, header);
+					pSolicitedState->OnConfirm(this, header);
 				}
 				else
 				{
@@ -248,16 +241,7 @@ void OutstationContext::OnSendResult(bool isSuccess)
 	if (isTransmitting)
 	{
 		isTransmitting = false;
-
-		DeferredRequest request;
-		if (deferredRequest.Pop(request))
-		{			
-			pState->OnNewRequest(this, request.header, lastValidRequest.Skip(APDU_HEADER_SIZE), APDUEquality::NONE);		
-		}
-		else
-		{
-			pState->OnSendResult(this, isSuccess);
-		}
+		pSolicitedState->OnSendResult(this, isSuccess);
 	}
 }
 
@@ -273,7 +257,7 @@ void OutstationContext::OnReceiveSolRequest(const APDUHeader& header, const open
 	if (firstRequest)
 	{			
 		this->solSeqN = header.control.SEQ;
-		this->pState->OnNewRequest(this, header, objects, APDUEquality::NONE);
+		this->pSolicitedState->OnNewRequest(this, header, objects, APDUEquality::NONE);
 	}
 	else
 	{		
@@ -281,17 +265,17 @@ void OutstationContext::OnReceiveSolRequest(const APDUHeader& header, const open
 		{
 			if (equality == APDUEquality::FULL_EQUALITY)
 			{
-				this->pState->OnRepeatRequest(this, header, objects);
+				this->pSolicitedState->OnRepeatRequest(this, header, objects);
 			}
 			else // new operation with same SEQ
 			{
-				this->pState->OnNewRequest(this, header, objects, equality);
+				this->pSolicitedState->OnNewRequest(this, header, objects, equality);
 			}
 		}
 		else  // completely new sequence #
 		{
 			this->solSeqN = header.control.SEQ;
-			this->pState->OnNewRequest(this, header, objects, equality);
+			this->pSolicitedState->OnNewRequest(this, header, objects, equality);
 		}
 	}
 
@@ -311,7 +295,7 @@ void OutstationContext::RespondToRequest(const APDUHeader& header, const openpal
 	if (rspHeader.control.CON)
 	{
 		expectedSolConfirmSeq = header.control.SEQ;
-		pState = &OutstationStateSolConfirmWait::Inst();
+		this->pSolicitedState = &OutstationStateSolicitedConfirmWait::Inst();
 	}
 	this->BeginResponseTx(response.ToReadOnly());
 }
@@ -370,7 +354,7 @@ void OutstationContext::ContinueMultiFragResponse(uint8_t seq)
 	if (response.GetControl().CON)
 	{
 		expectedSolConfirmSeq = seq;
-		pState = &OutstationStateSolConfirmWait::Inst();
+		this->pSolicitedState = &OutstationStateSolicitedConfirmWait::Inst();
 	}
 	this->BeginResponseTx(response.ToReadOnly());
 }
@@ -396,11 +380,11 @@ void OutstationContext::CheckDeferredRequest()
 	{
 		if (request.lastEquality == APDUEquality::FULL_EQUALITY) // it was a repeat
 		{
-			pState->OnRepeatRequest(this, request.header, lastValidRequest.Skip(APDU_HEADER_SIZE));
+			this->pSolicitedState->OnRepeatRequest(this, request.header, lastValidRequest.Skip(APDU_HEADER_SIZE));
 		}
 		else
 		{
-			pState->OnNewRequest(this, request.header, lastValidRequest.Skip(APDU_HEADER_SIZE), request.lastEquality);
+			this->pSolicitedState->OnNewRequest(this, request.header, lastValidRequest.Skip(APDU_HEADER_SIZE), request.lastEquality);
 		}		
 	}	
 }
@@ -412,6 +396,7 @@ void OutstationContext::OnNewEvents()
 
 void OutstationContext::CheckForUnsolicited()
 {
+	/*
 	if (this->IsIdle() && params.allowUnsolicited && (pUnsolTimer == nullptr))
 	{
 		if (completedNullUnsol)
@@ -434,7 +419,7 @@ void OutstationContext::CheckForUnsolicited()
 				if (unsol.Size() > initialSize) // were any events written?
 				{
 					this->ConfigureUnsolHeader(unsol);
-					pState = &OutstationStateUnsolConfirmWait::Inst();
+					this->pSolicitedState = &OutstationStateUnsolConfirmWait::Inst();
 					this->BeginUnsolTx(unsol.ToReadOnly());
 				}
 				else
@@ -452,6 +437,7 @@ void OutstationContext::CheckForUnsolicited()
 			this->BeginUnsolTx(unsol.ToReadOnly());
 		}
 	}
+	*/
 }
 
 bool OutstationContext::StartConfirmTimer()
@@ -484,7 +470,7 @@ bool OutstationContext::StartUnsolRetryTimer()
 
 void OutstationContext::OnSolConfirmTimeout()
 {
-	pState->OnConfirmTimeout(this);
+	this->pSolicitedState->OnConfirmTimeout(this);
 }
 
 void OutstationContext::OnUnsolRetryTimeout()
