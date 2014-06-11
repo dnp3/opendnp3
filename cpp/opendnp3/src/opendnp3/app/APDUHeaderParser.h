@@ -33,17 +33,12 @@ namespace opendnp3
 
 class APDUHeaderParser : private openpal::PureStatic
 {
+
 public:
+	
+	static bool ParseRequest(const openpal::ReadOnlyBuffer& apdu, APDUHeader& header, openpal::Logger* pLogger = nullptr);
 
-	enum class Result
-	{
-	    OK,
-	    NOT_ENOUGH_DATA_FOR_HEADER
-	};
-
-	static Result ParseRequest(openpal::ReadOnlyBuffer apdu, APDURecord& header, openpal::Logger* pLogger = nullptr);
-
-	static Result ParseResponse(openpal::ReadOnlyBuffer apdu, APDUResponseRecord& header, openpal::Logger* pLogger = nullptr);
+	static bool ParseResponse(const openpal::ReadOnlyBuffer& apdu, APDUResponseHeader& header, openpal::Logger* pLogger = nullptr);
 
 };
 

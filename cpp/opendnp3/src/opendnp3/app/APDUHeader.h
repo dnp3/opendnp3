@@ -21,8 +21,6 @@
 #ifndef __APDU_HEADER_H_
 #define __APDU_HEADER_H_
 
-#include <openpal/ReadOnlyBuffer.h>
-
 #include "opendnp3/gen/FunctionCode.h"
 #include "opendnp3/app/AppControlField.h"
 #include "opendnp3/app/IINField.h"
@@ -30,26 +28,37 @@
 namespace opendnp3
 {
 
+const uint32_t APDU_HEADER_SIZE = 2;
+const uint32_t APDU_RESPONSE_HEADER_SIZE = 4;
+
 struct APDUHeader
 {
 	static APDUHeader SolicitedConfirm(uint8_t seq);
 	static APDUHeader UnsolicitedConfirm(uint8_t seq);
-
 	static APDUHeader Confirm(uint8_t seq, bool unsolicited);
+
+	APDUHeader() : function(FunctionCode::UNKNOWN), control(true, true, false, false)
+	{}
+
+	APDUHeader(const AppControlField& control_) : function(FunctionCode::UNKNOWN), control(control_)
+	{}
 
 	AppControlField control;
 	FunctionCode function;
 };
 
-struct APDURecord : public APDUHeader
-{
-	openpal::ReadOnlyBuffer objects;
-};
+struct APDUResponseHeader : public APDUHeader
+{	
+	APDUResponseHeader(const AppControlField control_, const IINField& iin) : APDUHeader(control_), IIN(iin)
+	{}
 
-struct APDUResponseRecord : public APDUHeader
-{
-	IINField IIN;
-	openpal::ReadOnlyBuffer objects;
+	APDUResponseHeader(const IINField& iin) : IIN(iin)
+	{}
+
+	APDUResponseHeader()
+	{}
+
+	IINField IIN;	
 };
 
 }

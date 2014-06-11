@@ -41,7 +41,7 @@ public:
 	/**
 	* Static helper function for interpreting a response as a measurement response
 	*/
-	static bool ProcessMeasurements(const APDUResponseRecord& response, openpal::Logger* pLogger, ISOEHandler* pHandler);	
+	static bool ProcessMeasurements(const openpal::ReadOnlyBuffer& objects, openpal::Logger* pLogger, ISOEHandler* pHandler);	
 
 	/**
 	* Creates a new ResponseLoader instance.

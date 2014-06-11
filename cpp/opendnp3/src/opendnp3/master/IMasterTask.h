@@ -95,21 +95,15 @@ public:
 
 	/**
 	 * Build a request APDU.
-	 *
-	 * @param request the DNP3 message as an APDU instance
-	 * @param params The global configuration settings for the master
+	 *	
 	 */
 	virtual void BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq) = 0;
 
 	/**
-	 * Handler for responses, performs common validation and
-	 * delegates to _OnPartialResponse().
-	 *
-	 * @param aRecord	unparsed record
-	 *
-	 * @return			True if we continue, false to fail
+	 * Handler for responses
+	 *	 	 	
 	 */
-	virtual TaskStatus OnResponse(const APDUResponseRecord& response, const MasterParams& params, IMasterScheduler& scheduler) = 0;
+	virtual TaskStatus OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler) = 0;
 	
 	/**
 	 * Called when a response times out

@@ -29,30 +29,29 @@ namespace opendnp3
 namespace logging
 {
 
-void ParseAndLogRequestTx(openpal::Logger* pLogger, const openpal::ReadOnlyBuffer& output)
+void ParseAndLogRequestTx(openpal::Logger* pLogger, const openpal::ReadOnlyBuffer& apdu)
 {
 
 #ifndef OPENPAL_STRIP_LOGGING
 
 	if (pLogger && pLogger->IsEnabled(flags::APP_HEADER_TX))
 	{
-		APDURecord record;
-		auto result = APDUHeaderParser::ParseRequest(output, record, pLogger);
-		if (result == APDUHeaderParser::Result::OK)
+		APDUHeader header;		
+		if (APDUHeaderParser::ParseRequest(apdu, header, pLogger))
 		{
 			FORMAT_LOGGER_BLOCK(pLogger, flags::APP_HEADER_TX,
 				"FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s",
-				record.control.FIN,
-				record.control.FIN,
-				record.control.CON,
-				record.control.UNS,
-				record.control.SEQ,
-				FunctionCodeToString(record.function));
+				header.control.FIN,
+				header.control.FIN,
+				header.control.CON,
+				header.control.UNS,
+				header.control.SEQ,
+				FunctionCodeToString(header.function));
 
 			if (pLogger->IsEnabled(flags::APP_OBJECT_TX))
 			{
-				auto expectsContents = record.function != FunctionCode::READ;
-				APDUParser::ParseTwoPass(record.objects, nullptr, pLogger, APDUParser::Context(expectsContents, flags::APP_OBJECT_TX));
+				auto expectsContents = header.function != FunctionCode::READ;
+				APDUParser::ParseTwoPass(apdu.Skip(APDU_HEADER_SIZE), nullptr, pLogger, APDUParser::Context(expectsContents, flags::APP_OBJECT_TX));
 			}
 		}
 	}

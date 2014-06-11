@@ -29,15 +29,15 @@
 namespace opendnp3
 {
 
-CommandResponseHandler::CommandResponseHandler(openpal::Logger logger, uint8_t maxCommands_, ICommandAction* pCommandAction_, APDUResponse& response_) :
+	CommandResponseHandler::CommandResponseHandler(openpal::Logger logger, uint8_t maxCommands_, ICommandAction* pCommandAction_, ObjectWriter& writer) :
 	APDUHandlerBase(logger),
 	pCommandAction(pCommandAction_),
 	numRequests(0),
 	numSuccess(0),
 	maxCommands(maxCommands_),
-	writer(response_.GetWriter())
+	pWriter(&writer)
 {
-	writer.Mark();
+	
 }
 
 void CommandResponseHandler::_OnIndexPrefix(const HeaderRecord&, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint16_t>>& meas)

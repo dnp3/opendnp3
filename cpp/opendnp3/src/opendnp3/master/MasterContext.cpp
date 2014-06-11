@@ -180,59 +180,58 @@ void MasterContext::OnReceive(const openpal::ReadOnlyBuffer& apdu)
 {
 	if (isOnline)
 	{
-		APDUResponseRecord response;
-		auto result = APDUHeaderParser::ParseResponse(apdu, response, &logger);
-		if (result == APDUHeaderParser::Result::OK)
+		APDUResponseHeader header;		
+		if (APDUHeaderParser::ParseResponse(apdu, header, &logger))
 		{
 			FORMAT_LOG_BLOCK(logger, flags::APP_HEADER_RX,
 				"FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s IIN: [0x%02x, 0x%02x]",
-				response.control.FIN,
-				response.control.FIN,
-				response.control.CON,
-				response.control.UNS,
-				response.control.SEQ,
-				FunctionCodeToString(response.function),
-				response.IIN.LSB,
-				response.IIN.MSB);
+				header.control.FIN,
+				header.control.FIN,
+				header.control.CON,
+				header.control.UNS,
+				header.control.SEQ,
+				FunctionCodeToString(header.function),
+				header.IIN.LSB,
+				header.IIN.MSB);
 
-			switch (response.function)
+			switch (header.function)
 			{
 				case(FunctionCode::RESPONSE) :
-					this->OnResponse(response);
+					this->OnResponse(header, apdu.Skip(APDU_RESPONSE_HEADER_SIZE));
 					break;
 				case(FunctionCode::UNSOLICITED_RESPONSE) :
-					this->OnUnsolicitedResponse(response);
+					this->OnUnsolicitedResponse(header, apdu.Skip(APDU_RESPONSE_HEADER_SIZE));
 					break;
 				default:
-					FORMAT_LOG_BLOCK(logger, flags::WARN, "unsupported function code: %s", FunctionCodeToString(response.function));
+					FORMAT_LOG_BLOCK(logger, flags::WARN, "unsupported function code: %s", FunctionCodeToString(header.function));
 					break;
 			}
 
 			// process the IIN bits after we've handeled the frame
-			this->OnReceiveIIN(response.IIN);
+			this->OnReceiveIIN(header.IIN);
 		}
 	}
 }
 
 
-void MasterContext::OnResponse(const APDUResponseRecord& response)
+void MasterContext::OnResponse(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects)
 {	
-	if (response.control.UNS)
+	if (header.control.UNS)
 	{
 		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Ignoring response with UNS bit");
 	}
 	else
 	{
-		if (pActiveTask && pResponseTimer && (response.control.SEQ == this->solSeq))
+		if (pActiveTask && pResponseTimer && (header.control.SEQ == this->solSeq))
 		{
 			this->solSeq = AppControlField::NextSeq(solSeq);
 
 			this->CancelResponseTimer();
 
-			auto result = pActiveTask->OnResponse(response, params, scheduler);
-			if (response.control.CON && CanConfirmResponse(result))
+			auto result = pActiveTask->OnResponse(header, objects, params, scheduler);
+			if (header.control.CON && CanConfirmResponse(result))
 			{
-				this->QueueConfirm(APDUHeader::SolicitedConfirm(response.control.SEQ));								
+				this->QueueConfirm(APDUHeader::SolicitedConfirm(header.control.SEQ));
 			}
 
 			switch (result)
@@ -251,20 +250,20 @@ void MasterContext::OnResponse(const APDUResponseRecord& response)
 		}
 		else
 		{
-			FORMAT_LOG_BLOCK(logger, flags::WARN, "Unexpected response with sequence: %u", response.control.SEQ);
+			FORMAT_LOG_BLOCK(logger, flags::WARN, "Unexpected response with sequence: %u", header.control.SEQ);
 		}
 	}	
 }
 
-void MasterContext::OnUnsolicitedResponse(const APDUResponseRecord& response)
+void MasterContext::OnUnsolicitedResponse(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects)
 {
-	if (response.control.UNS)
+	if (header.control.UNS)
 	{		
-		auto success = MeasurementHandler::ProcessMeasurements(response, &logger, pSOEHandler);
+		auto success = MeasurementHandler::ProcessMeasurements(objects, &logger, pSOEHandler);
 
-		if (success && response.control.CON)
+		if (success && header.control.CON)
 		{
-			this->QueueConfirm(APDUHeader::UnsolicitedConfirm(response.control.SEQ));
+			this->QueueConfirm(APDUHeader::UnsolicitedConfirm(header.control.SEQ));
 		}
 	}
 	else

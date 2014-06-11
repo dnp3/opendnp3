@@ -38,9 +38,9 @@ PollTaskBase::PollTaskBase(ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_)
 	
 }
 	
-TaskStatus PollTaskBase::OnResponse(const APDUResponseRecord& response, const MasterParams& params, IMasterScheduler& scheduler)
+TaskStatus PollTaskBase::OnResponse(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler)
 {
-	if (response.control.FIR)
+	if (header.control.FIR)
 	{
 		if (rxCount > 0)
 		{
@@ -51,14 +51,14 @@ TaskStatus PollTaskBase::OnResponse(const APDUResponseRecord& response, const Ma
 		}
 		else
 		{			
-			return ProcessMeasurements(response, params, scheduler);
+			return ProcessMeasurements(header, objects, params, scheduler);
 		}
 	}
 	else
 	{
 		if (rxCount > 0)
 		{			
-			return ProcessMeasurements(response, params, scheduler);
+			return ProcessMeasurements(header, objects, params, scheduler);
 		}
 		else
 		{	
@@ -75,13 +75,13 @@ void PollTaskBase::_OnResponseTimeout(const MasterParams& params, IMasterSchedul
 	this->OnFailure(params, scheduler);
 }
 	
-TaskStatus PollTaskBase::ProcessMeasurements(const APDUResponseRecord& response, const MasterParams& params, IMasterScheduler& scheduler)
+TaskStatus PollTaskBase::ProcessMeasurements(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler)
 {	
 	++rxCount;
 
-	if (MeasurementHandler::ProcessMeasurements(response, pLogger, pSOEHandler))
+	if (MeasurementHandler::ProcessMeasurements(objects, pLogger, pSOEHandler))
 	{	
-		if (response.control.FIN)
+		if (header.control.FIN)
 		{			
 			this->SetState(TaskState::IDLE);
 			this->OnSuccess(params, scheduler);

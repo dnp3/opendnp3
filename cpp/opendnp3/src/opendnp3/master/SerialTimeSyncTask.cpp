@@ -68,12 +68,12 @@ void SerialTimeSyncTask::OnTimeoutOrBadControlOctet(const MasterParams& params, 
 	// don't reschedule. Seeing the NeedTime bit again will automatically re-activate the task
 }
 
-TaskStatus SerialTimeSyncTask::OnSingleResponse(const APDUResponseRecord& response, const MasterParams& params, IMasterScheduler& scheduler)
+TaskStatus SerialTimeSyncTask::OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler)
 {
 	if (delay < 0)
 	{
 		TimeSyncHandler handler(*pLogger);
-		auto result = APDUParser::ParseTwoPass(response.objects, &handler, pLogger);
+		auto result = APDUParser::ParseTwoPass(objects, &handler, pLogger);
 		if (result == APDUParser::Result::OK)
 		{
 			uint16_t rtuTurnAroundTime;

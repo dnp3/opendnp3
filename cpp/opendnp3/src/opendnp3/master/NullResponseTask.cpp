@@ -33,9 +33,9 @@ namespace opendnp3
 NullResponseTask::NullResponseTask(openpal::Logger* pLogger_) : SingleResponseTask(pLogger_)
 {}
 	
-TaskStatus NullResponseTask::OnSingleResponse(const APDUResponseRecord& response, const MasterParams& params, IMasterScheduler& scheduler)
+TaskStatus NullResponseTask::OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler)
 {
-	if (response.objects.IsEmpty())
+	if (objects.IsEmpty())
 	{
 		if (response.IIN.HasRequestError())
 		{

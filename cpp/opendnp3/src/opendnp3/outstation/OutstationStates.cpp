@@ -32,14 +32,14 @@ namespace opendnp3
 
 // --------------------- OutstationStateBase ----------------------
 
-void OutstationStateBase::OnSolConfirm(OutstationContext* pContext, const APDURecord& frag)
+void OutstationStateBase::OnSolConfirm(OutstationContext* pContext, const APDUHeader& header)
 {
-	FORMAT_LOG_BLOCK(pContext->logger, flags::WARN, "Unexpected sol confirm with sequence: %u", frag.control.SEQ);
+	FORMAT_LOG_BLOCK(pContext->logger, flags::WARN, "Unexpected sol confirm with sequence: %u", header.control.SEQ);
 }
 
-void OutstationStateBase::OnUnsolConfirm(OutstationContext* pContext, const APDURecord& frag)
+void OutstationStateBase::OnUnsolConfirm(OutstationContext* pContext, const APDUHeader& header)
 {
-	FORMAT_LOG_BLOCK(pContext->logger, flags::WARN, "Unexpected unsol confirm with sequence: %u", frag.control.SEQ);
+	FORMAT_LOG_BLOCK(pContext->logger, flags::WARN, "Unexpected unsol confirm with sequence: %u", header.control.SEQ);
 }
 
 void OutstationStateBase::OnSendResult(OutstationContext* pContext, bool isSucccess)
@@ -62,24 +62,23 @@ OutstationStateBase& OutstationStateIdle::Inst()
 	return instance;
 }
 
-void OutstationStateIdle::OnNewRequest(OutstationContext* pContext, const APDURecord& request, APDUEquality equality)
+void OutstationStateIdle::OnNewRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, APDUEquality equality)
 {
 	if (pContext->isTransmitting)
-	{
-		SIMPLE_LOG_BLOCK(pContext->logger, flags::WARN, "IdleTransmitting - Received new request while transmitting response, remote is flooding");
+	{		
+		pContext->deferredRequest.Set(DeferredRequest(header, equality));		
 	}
 	else
-	{
-		pContext->solSeqN = request.control.SEQ;
-		pContext->RespondToRequest(request, equality);
+	{		
+		pContext->RespondToRequest(header, objects, equality);
 	}
 }
 
-void OutstationStateIdle::OnRepeatRequest(OutstationContext* pContext, const APDURecord& frag)
+void OutstationStateIdle::OnRepeatRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects)
 {
 	if (pContext->isTransmitting)
 	{
-		SIMPLE_LOG_BLOCK(pContext->logger, flags::WARN, "IdleTransmitting - Received repeat request while transmitting response, remote is flooding");
+		pContext->deferredRequest.Set(DeferredRequest(header, APDUEquality::FULL_EQUALITY));		
 	}
 	else
 	{
@@ -102,24 +101,23 @@ OutstationStateBase& OutstationStateSolConfirmWait::Inst()
 	return instance;
 }
 
-void OutstationStateSolConfirmWait::OnNewRequest(OutstationContext* pContext, const APDURecord& request, APDUEquality equality)
+void OutstationStateSolConfirmWait::OnNewRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, APDUEquality equality)
 {
 	if (pContext->isTransmitting)
 	{
 		SIMPLE_LOG_BLOCK(pContext->logger, flags::WARN, "SolConfirmWait - Received new request while transmitting response, remote is flooding");
 	}
 	else
-	{
-		pContext->solSeqN = request.control.SEQ;
+	{		
 		pContext->CancelConfirmTimer();
 		pContext->pState = &OutstationStateIdle::Inst();
 		pContext->rspContext.Reset();
 		pContext->eventBuffer.Reset();
-		pContext->RespondToRequest(request, equality);
+		pContext->RespondToRequest(header, objects, equality);
 	}	
 }
 
-void OutstationStateSolConfirmWait::OnRepeatRequest(OutstationContext* pContext, const APDURecord& frag)
+void OutstationStateSolConfirmWait::OnRepeatRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects)
 {
 	if (pContext->isTransmitting)
 	{
@@ -145,11 +143,11 @@ void OutstationStateSolConfirmWait::OnSendResult(OutstationContext* pContext, bo
 	}	
 }
 
-void OutstationStateSolConfirmWait::OnSolConfirm(OutstationContext* pContext, const APDURecord& confirm)
+void OutstationStateSolConfirmWait::OnSolConfirm(OutstationContext* pContext, const APDUHeader& header)
 {
 	if (pContext->pConfirmTimer)
 	{
-		if (confirm.control.SEQ == pContext->expectedSolConfirmSeq)
+		if (header.control.SEQ == pContext->expectedSolConfirmSeq)
 		{
 			pContext->pState = &OutstationStateIdle::Inst();
 			pContext->CancelConfirmTimer();			
@@ -160,18 +158,18 @@ void OutstationStateSolConfirmWait::OnSolConfirm(OutstationContext* pContext, co
 			}
 			else // Continue response
 			{
-				pContext->ContinueMultiFragResponse(AppControlField::NextSeq(confirm.control.SEQ));
+				pContext->ContinueMultiFragResponse(AppControlField::NextSeq(header.control.SEQ));
 			}
 		}
 		else
 		{
-			FORMAT_LOG_BLOCK(pContext->logger, flags::WARN, "Confirm with wrong seq: %u", confirm.control.SEQ);
+			FORMAT_LOG_BLOCK(pContext->logger, flags::WARN, "Confirm with wrong seq: %u", header.control.SEQ);
 		}		
 	}
 	else
 	{
 		// we're still sending so this can't be our confirm
-		FORMAT_LOG_BLOCK(pContext->logger, flags::WARN, "Unexpected confirm with seq: %u", confirm.control.SEQ);
+		FORMAT_LOG_BLOCK(pContext->logger, flags::WARN, "Unexpected confirm with seq: %u", header.control.SEQ);
 	}	
 }
 
@@ -196,12 +194,12 @@ OutstationStateBase& OutstationStateUnsolConfirmWait::Inst()
 	return instance;
 }
 
-void OutstationStateUnsolConfirmWait::OnNewRequest(OutstationContext* pContext, const APDURecord& request, APDUEquality equality)
+void OutstationStateUnsolConfirmWait::OnNewRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, APDUEquality equality)
 {
 	// TODO
 }
 
-void OutstationStateUnsolConfirmWait::OnRepeatRequest(OutstationContext* pContext, const APDURecord& frag)
+void OutstationStateUnsolConfirmWait::OnRepeatRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects)
 {
 	// TODO
 }
@@ -219,11 +217,11 @@ void OutstationStateUnsolConfirmWait::OnSendResult(OutstationContext* pContext, 
 	}	
 }
 
-void OutstationStateUnsolConfirmWait::OnUnsolConfirm(OutstationContext* pContext, const APDURecord& confirm)
+void OutstationStateUnsolConfirmWait::OnUnsolConfirm(OutstationContext* pContext, const APDUHeader& header)
 {
 	if (pContext->pConfirmTimer)
 	{
-		if (confirm.control.SEQ == pContext->expectedUnsolConfirmSeq)
+		if (header.control.SEQ == pContext->expectedUnsolConfirmSeq)
 		{
 			pContext->CancelConfirmTimer();
 			pContext->pState = &OutstationStateIdle::Inst();
@@ -241,13 +239,13 @@ void OutstationStateUnsolConfirmWait::OnUnsolConfirm(OutstationContext* pContext
 		}
 		else
 		{
-			FORMAT_LOG_BLOCK(pContext->logger, flags::WARN, "Unsolicited confirm with wrong seq: %u", confirm.control.SEQ);
+			FORMAT_LOG_BLOCK(pContext->logger, flags::WARN, "Unsolicited confirm with wrong seq: %u", header.control.SEQ);
 		}
 	}
 	else
 	{
 		// we're still sending so this can't be our confirm
-		FORMAT_LOG_BLOCK(pContext->logger, flags::WARN, "Unexpected unsol confirm with seq: %u", confirm.control.SEQ);
+		FORMAT_LOG_BLOCK(pContext->logger, flags::WARN, "Unexpected unsol confirm with seq: %u", header.control.SEQ);
 	}
 }
 

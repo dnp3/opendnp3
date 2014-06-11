@@ -195,22 +195,21 @@ bool OutstationContext::CancelTimer(openpal::ITimer*& pTimer)
 	}
 }
 
-void OutstationContext::OnReceiveAPDU(const openpal::ReadOnlyBuffer& fragment)
+void OutstationContext::OnReceiveAPDU(const openpal::ReadOnlyBuffer& apdu)
 {
 	++rxFragCount;
 
-	APDURecord request;
-	auto result = APDUHeaderParser::ParseRequest(fragment, request, &logger);
-	if (result == APDUHeaderParser::Result::OK)
+	APDUHeader header;	
+	if (APDUHeaderParser::ParseRequest(apdu, header, &logger))
 	{
 		// outstations should only process single fragment messages
-		if ((request.control.FIR && request.control.FIN) && !request.control.CON)
+		if ((header.control.FIR && header.control.FIN) && !header.control.CON)
 		{
-			if (request.control.UNS)
+			if (header.control.UNS)
 			{
-				if (request.function == FunctionCode::CONFIRM)
+				if (header.function == FunctionCode::CONFIRM)
 				{
-					pState->OnUnsolConfirm(this, request);
+					pState->OnUnsolConfirm(this, header);
 				}
 				else
 				{
@@ -219,13 +218,13 @@ void OutstationContext::OnReceiveAPDU(const openpal::ReadOnlyBuffer& fragment)
 			}
 			else
 			{
-				if (request.function == FunctionCode::CONFIRM)
+				if (header.function == FunctionCode::CONFIRM)
 				{
-					pState->OnSolConfirm(this, request);
+					pState->OnSolConfirm(this, header);
 				}
 				else
 				{
-					this->OnReceiveSolRequest(request, fragment);
+					this->OnReceiveSolRequest(header, apdu);
 				}
 			}
 		}
@@ -233,9 +232,9 @@ void OutstationContext::OnReceiveAPDU(const openpal::ReadOnlyBuffer& fragment)
 		{
 			FORMAT_LOG_BLOCK(logger, flags::WARN,
 				"Ignoring fragment with unexpected control field - FIR: %u FIN: %u CON: %u",
-				request.control.FIN,
-				request.control.FIN,
-				request.control.CON);
+				header.control.FIN,
+				header.control.FIN,
+				header.control.CON);
 		}
 	}
 	else
@@ -244,50 +243,56 @@ void OutstationContext::OnReceiveAPDU(const openpal::ReadOnlyBuffer& fragment)
 	}
 }
 
-void OutstationContext::OnReceiveSolRequest(const APDURecord& request, const openpal::ReadOnlyBuffer& fragment)
+void OutstationContext::OnReceiveSolRequest(const APDUHeader& header, const openpal::ReadOnlyBuffer& apdu)
 {
 	// analyze this request to see how it compares to the last request
 	auto firstRequest = lastValidRequest.IsEmpty();
-	auto equality = APDURequest::Compare(fragment, lastValidRequest);
+	auto equality = APDURequest::Compare(apdu, lastValidRequest);
 	auto dest = rxBuffer.GetWriteBuffer();
-	this->lastValidRequest = fragment.CopyTo(dest);
+	this->lastValidRequest = apdu.CopyTo(dest);
+	auto objects = apdu.Skip(APDU_HEADER_SIZE);
 
 	if (firstRequest)
 	{			
-		this->solSeqN = request.control.SEQ;
-		this->pState->OnNewRequest(this, request, APDUEquality::NONE);
+		this->solSeqN = header.control.SEQ;
+		this->pState->OnNewRequest(this, header, objects, APDUEquality::NONE);
 	}
 	else
 	{		
-		if (this->solSeqN == request.control.SEQ)
+		if (this->solSeqN == header.control.SEQ)
 		{
 			if (equality == APDUEquality::FULL_EQUALITY)
 			{
-				this->pState->OnRepeatRequest(this, request);
+				this->pState->OnRepeatRequest(this, header, objects);
 			}
 			else // new operation with same SEQ
 			{
-				this->pState->OnNewRequest(this, request, equality);
+				this->pState->OnNewRequest(this, header, objects, equality);
 			}
 		}
 		else  // completely new sequence #
 		{
-			this->pState->OnNewRequest(this, request, equality);
+			this->solSeqN = header.control.SEQ;
+			this->pState->OnNewRequest(this, header, objects, equality);
 		}
 	}
 
 }
 
-void OutstationContext::RespondToRequest(const APDURecord& request, APDUEquality equality)
+void OutstationContext::RespondToRequest(const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, APDUEquality equality)
 {
 	auto response = StartNewResponse();
-	response.SetFunction(FunctionCode::RESPONSE);
-	response.SetControl(request.control);
-	IINField iin = BuildResponse(request, response, equality);	
-	response.SetIIN(iin | this->GetResponseIIN());
-	if (response.GetControl().CON)
+	auto writer = response.GetWriter();
+	response.SetFunction(FunctionCode::RESPONSE);	
+	auto rspHeader = BuildResponse(header, objects, writer, equality);
+	rspHeader.control.SEQ = header.control.SEQ;
+
+	response.SetIIN(rspHeader.IIN | this->GetResponseIIN());		
+	response.SetControl(rspHeader.control);
+	
+	if (rspHeader.control.CON)
 	{
-		expectedSolConfirmSeq = request.control.SEQ;
+		expectedSolConfirmSeq = header.control.SEQ;
 		pState = &OutstationStateSolConfirmWait::Inst();
 	}
 	this->BeginResponseTx(response.ToReadOnly());
@@ -308,38 +313,39 @@ void OutstationContext::BeginUnsolTx(const ReadOnlyBuffer& response)
 	pLower->BeginTransmit(response);
 }
 
-IINField OutstationContext::BuildResponse(const APDURecord& request, APDUResponse& response, APDUEquality equality)
+APDUResponseHeader OutstationContext::BuildResponse(const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, ObjectWriter& writer, APDUEquality equality)
 {
-	switch (request.function)
+	switch (header.function)
 	{		
 		case(FunctionCode::READ) :
-			return HandleRead(request, response);		
+			return HandleRead(objects, writer);		
 		case(FunctionCode::WRITE) :
-			return HandleWrite(request);	
+			return HandleWrite(objects);
 		case(FunctionCode::SELECT) :
-			return HandleSelect(request, response);
+			return HandleSelect(objects, writer);
 		case(FunctionCode::OPERATE) :
-			return HandleOperate(request, response, equality);
+			return HandleOperate(objects, writer, equality);
 		case(FunctionCode::DIRECT_OPERATE) :
-			return HandleDirectOperate(request, response);
+			return HandleDirectOperate(objects, writer);
 		case(FunctionCode::DELAY_MEASURE) :
-			return HandleDelayMeasure(request, response);
+			return HandleDelayMeasure(objects, writer);
 		case(FunctionCode::DISABLE_UNSOLICITED) :
-			return HandleDisableUnsolicited(request, response);
+			return HandleDisableUnsolicited(objects, writer);
 		case(FunctionCode::ENABLE_UNSOLICITED) :
-			return HandleEnableUnsolicited(request, response);
+			return HandleEnableUnsolicited(objects, writer);
 		default:
-			return IINField(IINBit::FUNC_NOT_SUPPORTED);
+			return APDUResponseHeader(IINField(IINBit::FUNC_NOT_SUPPORTED));
 	}
 }
 
 void OutstationContext::ContinueMultiFragResponse(uint8_t seq)
 {
 	auto response = this->StartNewResponse();
+	auto writer = response.GetWriter();
 	response.SetFunction(FunctionCode::RESPONSE);
 
 	openpal::Transaction tx(this->pDatabase);	
-	auto control = this->rspContext.LoadSolicited(response, eventConfig);
+	auto control = this->rspContext.LoadSolicited(writer, eventConfig);
 	control.SEQ = seq;
 	response.SetControl(control);
 	response.SetIIN(this->staticIIN | this->GetDynamicIIN());
@@ -354,13 +360,36 @@ void OutstationContext::ContinueMultiFragResponse(uint8_t seq)
 void OutstationContext::OnEnterIdleState()
 {
 	// post these calls so the stack can unwind
-	auto lambda = [this]() { this->CheckForIdleState(); };
+	auto lambda = [this]() { this->PerformTaskFromIdleState(); };
 	pExecutor->PostLambda(lambda);
 }
 
-void OutstationContext::CheckForIdleState()
-{
+void OutstationContext::PerformTaskFromIdleState()
+{	
 	this->CheckForUnsolicited();	
+}
+
+bool OutstationContext::CheckDeferredRequest()
+{
+	DeferredRequest request;
+	if (this->IsIdle() && deferredRequest.Pop(request))
+	{
+
+
+		if (request.lastEquality == APDUEquality::FULL_EQUALITY) // it was a repeat
+		{
+			pState->OnRepeatRequest(this, request.header, lastValidRequest);
+		}
+		else
+		{
+
+		}
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 void OutstationContext::OnNewEvents()
@@ -451,11 +480,11 @@ void OutstationContext::OnUnsolRetryTimeout()
 	this->CheckForUnsolicited();
 }
 
-IINField OutstationContext::HandleRead(const APDURecord& request, APDUResponse& response)
+APDUResponseHeader OutstationContext::HandleRead(const openpal::ReadOnlyBuffer& objects, ObjectWriter& writer)
 {
 	rspContext.Reset();
 	ReadHandler handler(logger, rspContext);
-	auto result = APDUParser::ParseTwoPass(request.objects, &handler, &logger, APDUParser::Context(false)); // don't expect range/count context on a READ
+	auto result = APDUParser::ParseTwoPass(objects, &handler, &logger, APDUParser::Context(false)); // don't expect range/count context on a READ
 	if (result == APDUParser::Result::OK)
 	{
 		// Do a transaction on the database (lock) for multi-threaded environments
@@ -463,10 +492,8 @@ IINField OutstationContext::HandleRead(const APDURecord& request, APDUResponse& 
 		// this ensures that multi-fragmented responses see a consistent snapshot of the state
 		openpal::Transaction tx(pDatabase);
 		pDatabase->DoubleBuffer();
-		auto control = rspContext.LoadSolicited(response, eventConfig);
-		control.SEQ = request.control.SEQ;
-		response.SetControl(control);
-		return handler.Errors();
+		auto control = rspContext.LoadSolicited(writer, eventConfig);		
+		return APDUResponseHeader(control, handler.Errors());
 	}
 	else
 	{
@@ -475,10 +502,10 @@ IINField OutstationContext::HandleRead(const APDURecord& request, APDUResponse& 
 	}
 }
 
-IINField OutstationContext::HandleWrite(const APDURecord& request)
+APDUResponseHeader OutstationContext::HandleWrite(const openpal::ReadOnlyBuffer& objects)
 {
 	WriteHandler handler(logger, pTimeWriteHandler, &staticIIN);
-	auto result = APDUParser::ParseTwoPass(request.objects, &handler, &logger);
+	auto result = APDUParser::ParseTwoPass(objects, &handler, &logger);
 	if (result == APDUParser::Result::OK)
 	{
 		return handler.Errors();
@@ -489,36 +516,36 @@ IINField OutstationContext::HandleWrite(const APDURecord& request)
 	}
 }
 
-IINField OutstationContext::HandleDirectOperate(const APDURecord& request, APDUResponse& response)
+APDUResponseHeader OutstationContext::HandleDirectOperate(const openpal::ReadOnlyBuffer& objects, ObjectWriter& writer)
 {
 	// since we're echoing, make sure there's enough size before beginning
-	if (request.objects.Size() > response.Remaining())
+	if (objects.Size() > writer.Remaining())
 	{
-		FORMAT_LOG_BLOCK(logger, flags::WARN, "Igonring command request due to payload size of %i", request.objects.Size());
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "Igonring command request due to payload size of %i", objects.Size());
 		return IINField(IINBit::PARAM_ERROR);
 	}
 	else
 	{
 		CommandActionAdapter adapter(pCommandHandler, false);
-		CommandResponseHandler handler(logger, params.maxControlsPerRequest, &adapter, response);
-		auto result = APDUParser::ParseTwoPass(request.objects, &handler, &logger);
+		CommandResponseHandler handler(logger, params.maxControlsPerRequest, &adapter, writer);
+		auto result = APDUParser::ParseTwoPass(objects, &handler, &logger);
 		return IINFromParseResult(result);
 	}
 }
 
-IINField OutstationContext::HandleSelect(const APDURecord& request, APDUResponse& response)
+APDUResponseHeader OutstationContext::HandleSelect(const openpal::ReadOnlyBuffer& objects, ObjectWriter& writer)
 {
 	// since we're echoing, make sure there's enough size before beginning
-	if (request.objects.Size() > response.Remaining())
+	if (objects.Size() > writer.Remaining())
 	{
-		FORMAT_LOG_BLOCK(logger, flags::WARN, "Igonring command request due to payload size of %i", request.objects.Size());
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "Igonring command request due to payload size of %i", objects.Size());
 		return IINField(IINBit::PARAM_ERROR);
 	}
 	else
 	{
 		CommandActionAdapter adapter(pCommandHandler, true);
-		CommandResponseHandler handler(logger, params.maxControlsPerRequest, &adapter, response);
-		auto result = APDUParser::ParseTwoPass(request.objects, &handler, &logger);
+		CommandResponseHandler handler(logger, params.maxControlsPerRequest, &adapter, writer);
+		auto result = APDUParser::ParseTwoPass(objects, &handler, &logger);
 		if (result == APDUParser::Result::OK)
 		{
 			if (handler.AllCommandsSuccessful())
@@ -540,12 +567,12 @@ IINField OutstationContext::HandleSelect(const APDURecord& request, APDUResponse
 	}
 }
 
-IINField OutstationContext::HandleOperate(const APDURecord& request, APDUResponse& response, APDUEquality equality)
+APDUResponseHeader OutstationContext::HandleOperate(const openpal::ReadOnlyBuffer& objects, ObjectWriter& writer, APDUEquality equality)
 {
 	// since we're echoing, make sure there's enough size before beginning
-	if (request.objects.Size() > response.Remaining())
+	if (objects.Size() > writer.Remaining())
 	{
-		FORMAT_LOG_BLOCK(logger, flags::WARN, "Igonring command request due to payload size of %i", request.objects.Size());
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "Igonring command request due to payload size of %i", objects.Size());
 		return IINField(IINBit::PARAM_ERROR);
 	}
 	else
@@ -558,33 +585,32 @@ IINField OutstationContext::HandleOperate(const APDURecord& request, APDURespons
 				if (equality == APDUEquality::OBJECT_HEADERS_EQUAL)
 				{					
 					CommandActionAdapter adapter(pCommandHandler, false);
-					CommandResponseHandler handler(logger, params.maxControlsPerRequest, &adapter, response);
-					auto result = APDUParser::ParseTwoPass(request.objects, &handler, &logger);
+					CommandResponseHandler handler(logger, params.maxControlsPerRequest, &adapter, writer);
+					auto result = APDUParser::ParseTwoPass(objects, &handler, &logger);
 					return IINFromParseResult(result);					
 				}
 				else
 				{
-					return HandleCommandWithConstant(request, response, CommandStatus::NO_SELECT);
+					return HandleCommandWithConstant(objects, writer, CommandStatus::NO_SELECT);
 				}
 			}
 			else
 			{
-				return HandleCommandWithConstant(request, response, CommandStatus::TIMEOUT);
+				return HandleCommandWithConstant(objects, writer, CommandStatus::TIMEOUT);
 
 			}
 		}
 		else
 		{
-			return HandleCommandWithConstant(request, response, CommandStatus::NO_SELECT);
+			return HandleCommandWithConstant(objects, writer, CommandStatus::NO_SELECT);
 		}
 	}
 }
 
-IINField OutstationContext::HandleDelayMeasure(const APDURecord& request, APDUResponse& response)
+APDUResponseHeader OutstationContext::HandleDelayMeasure(const openpal::ReadOnlyBuffer& objects, ObjectWriter& writer)
 {
-	if (request.objects.IsEmpty())
-	{
-		auto writer = response.GetWriter();
+	if (objects.IsEmpty())
+	{		
 		Group52Var2 value = { 0 }; 	// respond with 0 time delay
 		writer.WriteSingleValue<UInt8, Group52Var2>(QualifierCode::UINT8_CNT, value);
 		return IINField::Empty;
@@ -596,10 +622,10 @@ IINField OutstationContext::HandleDelayMeasure(const APDURecord& request, APDURe
 	}
 }
 
-IINField OutstationContext::HandleDisableUnsolicited(const APDURecord& request, APDUResponse& response)
+APDUResponseHeader OutstationContext::HandleDisableUnsolicited(const openpal::ReadOnlyBuffer& objects, ObjectWriter& writer)
 {
 	ClassBasedRequestHandler handler(logger);
-	auto result = APDUParser::ParseTwoPass(request.objects, &handler, &logger);
+	auto result = APDUParser::ParseTwoPass(objects, &handler, &logger);
 	if (result == APDUParser::Result::OK)
 	{
 		params.unsolClassMask &= ~handler.GetClassMask();
@@ -611,10 +637,10 @@ IINField OutstationContext::HandleDisableUnsolicited(const APDURecord& request, 
 	}
 }
 
-IINField OutstationContext::HandleEnableUnsolicited(const APDURecord& request, APDUResponse& response)
+APDUResponseHeader OutstationContext::HandleEnableUnsolicited(const openpal::ReadOnlyBuffer& objects, ObjectWriter& writer)
 {
 	ClassBasedRequestHandler handler(logger);
-	auto result = APDUParser::ParseTwoPass(request.objects, &handler, &logger);
+	auto result = APDUParser::ParseTwoPass(objects, &handler, &logger);
 	if (result == APDUParser::Result::OK)
 	{
 		params.unsolClassMask |= handler.GetClassMask();
@@ -626,11 +652,11 @@ IINField OutstationContext::HandleEnableUnsolicited(const APDURecord& request, A
 	}
 }
 
-IINField OutstationContext::HandleCommandWithConstant(const APDURecord& request, APDUResponse& response, CommandStatus status)
+APDUResponseHeader OutstationContext::HandleCommandWithConstant(const openpal::ReadOnlyBuffer& objects, ObjectWriter& writer, CommandStatus status)
 {
 	ConstantCommandAction constant(status);
-	CommandResponseHandler handler(logger, params.maxControlsPerRequest, &constant, response);
-	auto result = APDUParser::ParseTwoPass(request.objects, &handler, &logger);
+	CommandResponseHandler handler(logger, params.maxControlsPerRequest, &constant, writer);
+	auto result = APDUParser::ParseTwoPass(objects, &handler, &logger);
 	return IINFromParseResult(result);
 }
 

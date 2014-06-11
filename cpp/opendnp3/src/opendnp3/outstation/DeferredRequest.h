@@ -37,15 +37,15 @@ class DeferredRequest
 
 	public:
 
-	DeferredRequest() : functionCode(FunctionCode::UNKNOWN), lastEquality(APDUEquality::NONE)
+	DeferredRequest() : lastEquality(APDUEquality::NONE)
 	{}
 
-	DeferredRequest(FunctionCode functionCode_, APDUEquality lastEquality_) :
-		functionCode(functionCode_),
+	DeferredRequest(APDUHeader header_, APDUEquality lastEquality_) :
+		header(header_),
 		lastEquality(lastEquality_)
 	{}
 
-	FunctionCode functionCode;
+	APDUHeader header;
 	APDUEquality lastEquality;
 };
 

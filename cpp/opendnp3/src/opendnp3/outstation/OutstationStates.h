@@ -38,17 +38,17 @@ class OutstationStateBase
 {
 public:	
 
-	virtual void OnSolConfirm(OutstationContext*, const APDURecord& frag);
+	virtual void OnSolConfirm(OutstationContext*, const APDUHeader& frag);
 
-	virtual void OnUnsolConfirm(OutstationContext*, const APDURecord& frag);
+	virtual void OnUnsolConfirm(OutstationContext*, const APDUHeader& frag);
 
 	virtual void OnSendResult(OutstationContext*, bool isSucccess);
 
 	virtual void OnConfirmTimeout(OutstationContext*);
 
-	virtual void OnNewRequest(OutstationContext*, const APDURecord& request, APDUEquality equality) = 0;
+	virtual void OnNewRequest(OutstationContext*, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, APDUEquality equality) = 0;
 
-	virtual void OnRepeatRequest(OutstationContext*, const APDURecord& frag) = 0;
+	virtual void OnRepeatRequest(OutstationContext*, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects) = 0;
 
 protected:
 
@@ -63,9 +63,9 @@ public:
 
 	static OutstationStateBase& Inst();	
 
-	virtual void OnNewRequest(OutstationContext*, const APDURecord& request, APDUEquality equality) override final;
+	virtual void OnNewRequest(OutstationContext*, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, APDUEquality equality) override final;
 
-	virtual void OnRepeatRequest(OutstationContext*, const APDURecord& frag) override final;
+	virtual void OnRepeatRequest(OutstationContext*, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects) override final;
 
 	virtual void OnSendResult(OutstationContext*, bool isSucccess) override final;
 
@@ -84,13 +84,13 @@ public:
 
 	static OutstationStateBase& Inst();
 
-	virtual void OnNewRequest(OutstationContext* pContext, const APDURecord& request, APDUEquality equality) override final;
+	virtual void OnNewRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, APDUEquality equality) override final;
 
-	virtual void OnRepeatRequest(OutstationContext* pContext, const APDURecord& frag) override final;
+	virtual void OnRepeatRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects) override final;
 
 	virtual void OnSendResult(OutstationContext* pContext, bool isSucccess) override final;
 
-	virtual void OnSolConfirm(OutstationContext* pContext, const APDURecord& frag) override final;
+	virtual void OnSolConfirm(OutstationContext* pContext, const APDUHeader& frag) override final;
 
 	virtual void OnConfirmTimeout(OutstationContext* pContext) override final;
 
@@ -108,13 +108,13 @@ public:
 
 	static OutstationStateBase& Inst();
 
-	virtual void OnNewRequest(OutstationContext* pContext, const APDURecord& request, APDUEquality equality) override final;
+	virtual void OnNewRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, APDUEquality equality) override final;
 
-	virtual void OnRepeatRequest(OutstationContext* pContext, const APDURecord& frag) override final;
+	virtual void OnRepeatRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects) override final;
 
 	virtual void OnSendResult(OutstationContext* pContext, bool isSucccess) override final;
 
-	virtual void OnUnsolConfirm(OutstationContext* pContext, const APDURecord& frag) override final;
+	virtual void OnUnsolConfirm(OutstationContext* pContext, const APDUHeader& frag) override final;
 
 	virtual void OnConfirmTimeout(OutstationContext* pContext) override final;
 

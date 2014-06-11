@@ -45,7 +45,7 @@ void ClearRestartTask::OnTimeoutOrBadControlOctet(const MasterParams& params, IM
 	scheduler.ScheduleLater(this, params.taskRetryPeriod);
 }
 	
-TaskStatus ClearRestartTask::OnSingleResponse(const APDUResponseRecord& response, const MasterParams& params, IMasterScheduler& scheduler)
+TaskStatus ClearRestartTask::OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler)
 {
 	if (response.IIN.IsSet(IINBit::DEVICE_RESTART))
 	{

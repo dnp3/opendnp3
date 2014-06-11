@@ -75,8 +75,8 @@ class MasterContext : public ICommandProcessor
 
 	// ------- internal events -------
 
-	void OnResponse(const APDUResponseRecord& response);	
-	void OnUnsolicitedResponse(const APDUResponseRecord& response);
+	void OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects);
+	void OnUnsolicitedResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects);
 	void OnReceiveIIN(const IINField& iin);
 
 	// ------- command events ----------

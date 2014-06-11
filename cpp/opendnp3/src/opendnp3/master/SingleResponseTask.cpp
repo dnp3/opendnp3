@@ -31,12 +31,12 @@ namespace opendnp3
 SingleResponseTask::SingleResponseTask(openpal::Logger* pLogger_) : pLogger(pLogger_)
 {}
 	
-TaskStatus SingleResponseTask::OnResponse(const APDUResponseRecord& response, const MasterParams& params, IMasterScheduler& scheduler)
+TaskStatus SingleResponseTask::OnResponse(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler)
 {
-	if (response.control.FIR && response.control.FIN)
+	if (header.control.FIR && header.control.FIN)
 	{
 		this->SetState(TaskState::IDLE);
-		return this->OnSingleResponse(response, params, scheduler);
+		return this->OnSingleResponse(header, objects, params, scheduler);
 	}
 	else
 	{

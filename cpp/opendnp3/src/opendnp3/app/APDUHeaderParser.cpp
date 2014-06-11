@@ -31,29 +31,27 @@
 namespace opendnp3
 {
 
-APDUHeaderParser::Result APDUHeaderParser::ParseRequest(openpal::ReadOnlyBuffer apdu, APDURecord& header, openpal::Logger* pLogger)
+bool APDUHeaderParser::ParseRequest(const openpal::ReadOnlyBuffer& apdu, APDUHeader& header, openpal::Logger* pLogger)
 {
-	if (apdu.Size() < 2)
+	if (apdu.Size() < APDU_HEADER_SIZE)
 	{
 		FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Request fragment  with insufficient size of %u bytes", apdu.Size());
-		return Result::NOT_ENOUGH_DATA_FOR_HEADER;
+		return false;
 	}
 	else
 	{
 		header.control = AppControlField(apdu[0]);
-		header.function = FunctionCodeFromType(apdu[1]);
-		apdu.Advance(2);
-		header.objects = apdu;
-		return Result::OK;
+		header.function = FunctionCodeFromType(apdu[1]);		
+		return true;
 	}
 }
 
-APDUHeaderParser::Result APDUHeaderParser::ParseResponse(openpal::ReadOnlyBuffer apdu, APDUResponseRecord& header, openpal::Logger* pLogger)
+bool APDUHeaderParser::ParseResponse(const openpal::ReadOnlyBuffer& apdu, APDUResponseHeader& header, openpal::Logger* pLogger)
 {
-	if (apdu.Size() < 4)
+	if (apdu.Size() < APDU_RESPONSE_HEADER_SIZE)
 	{
 		FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Response fragment with insufficient size of %u bytes", apdu.Size());
-		return Result::NOT_ENOUGH_DATA_FOR_HEADER;
+		return false;
 	}
 	else
 	{
@@ -61,9 +59,7 @@ APDUHeaderParser::Result APDUHeaderParser::ParseResponse(openpal::ReadOnlyBuffer
 		header.function = FunctionCodeFromType(apdu[1]);
 		header.IIN.LSB = apdu[2];
 		header.IIN.MSB = apdu[3];
-		apdu.Advance(4);
-		header.objects = apdu;
-		return Result::OK;
+		return true;
 	}
 }
 

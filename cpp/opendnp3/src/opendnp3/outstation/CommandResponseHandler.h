@@ -36,7 +36,7 @@ class CommandResponseHandler : public APDUHandlerBase
 {
 public:
 
-	CommandResponseHandler(openpal::Logger logger, uint8_t maxCommands_, ICommandAction* pCommandAction_, APDUResponse& response_);
+	CommandResponseHandler(openpal::Logger logger, uint8_t maxCommands_, ICommandAction* pCommandAction_, ObjectWriter& writer);
 
 	virtual void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint16_t>>& meas) override final;
 	virtual void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint16_t>>& meas) override final;
@@ -61,7 +61,7 @@ private:
 	uint32_t numRequests;
 	uint32_t numSuccess;
 	const uint8_t maxCommands;
-	ObjectWriter writer;
+	ObjectWriter* pWriter;
 
 	template <class Target, class IndexType>
 	void RespondToHeader(QualifierCode qualifier, IDNP3Serializer<Target>* pSerializer, const IterableBuffer<IndexedValue<Target, typename IndexType::Type>>& meas);
@@ -71,7 +71,7 @@ private:
 template <class Target, class IndexType>
 void CommandResponseHandler::RespondToHeader(QualifierCode qualifier, IDNP3Serializer<Target>* pSerializer, const IterableBuffer<IndexedValue<Target, typename IndexType::Type>>& meas)
 {
-	auto iter = writer.IterateOverCountWithPrefix<IndexType, Target>(qualifier, pSerializer);
+	auto iter = pWriter->IterateOverCountWithPrefix<IndexType, Target>(qualifier, pSerializer);
 
 	auto commands = meas.Iterate();
 	while (commands.HasNext())

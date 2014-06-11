@@ -72,6 +72,8 @@ public:
 	// roll back to the last mark
 	bool Rollback();
 
+	uint32_t Remaining() const;
+
 private:
 
 	ObjectWriter(openpal::WriteBuffer* position_);

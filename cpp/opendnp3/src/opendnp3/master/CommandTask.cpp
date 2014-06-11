@@ -141,11 +141,11 @@ void CommandTask::BuildRequest(APDURequest& request, const MasterParams& params,
 	}
 }
 
-TaskStatus CommandTask::OnResponse(const APDUResponseRecord& response, const MasterParams& params, IMasterScheduler& scheduler)
+TaskStatus CommandTask::OnResponse(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler)
 {
-	if (response.control.FIR && response.control.FIN)
+	if (header.control.FIR && header.control.FIN)
 	{
-		return this->OnSingleResponse(response, params, scheduler);
+		return this->OnSingleResponse(header, objects, params, scheduler);
 	}
 	else
 	{
@@ -166,9 +166,9 @@ void CommandTask::_OnLowerLayerClose()
 	this->Callback(CommandResponse::NoResponse(CommandResult::NO_COMMS));
 }
 
-TaskStatus CommandTask::OnSingleResponse(const APDUResponseRecord& response, const MasterParams& params, IMasterScheduler& scheduler)
+TaskStatus CommandTask::OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler)
 {
-	auto result = APDUParser::ParseTwoPass(response.objects, pActiveSequence, pLogger);
+	auto result = APDUParser::ParseTwoPass(objects, pActiveSequence, pLogger);
 	if(result == APDUParser::Result::OK)
 	{
 		if(functionCodes.IsEmpty()) // we're done

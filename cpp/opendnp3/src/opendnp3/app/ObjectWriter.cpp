@@ -33,6 +33,11 @@ namespace opendnp3
 ObjectWriter::ObjectWriter(openpal::WriteBuffer* position_) : position(position_)
 {}
 
+uint32_t  ObjectWriter::Remaining() const
+{
+	return position->Size();
+}
+
 void ObjectWriter::Mark()
 {
 	mark.Set(*position);

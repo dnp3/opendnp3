@@ -78,36 +78,36 @@ std::string BufferToString(const ReadOnlyBuffer& buff)
 TEST_CASE(SUITE("HeaderParsingEmptySring"))
 {
 	HexSequence buffer("");
-	APDURecord rec;
-	REQUIRE((APDUHeaderParser::Result::NOT_ENOUGH_DATA_FOR_HEADER == APDUHeaderParser::ParseRequest(buffer.ToReadOnly(), rec)));
+	APDUHeader header;
+	REQUIRE(!APDUHeaderParser::ParseRequest(buffer.ToReadOnly(), header));
 }
 
 TEST_CASE(SUITE("HeaderParsesReqeust"))
 {
 	HexSequence buffer("C0 02 AB CD");
-	APDURecord rec;
-	REQUIRE((APDUHeaderParser::Result::OK == APDUHeaderParser::ParseRequest(buffer.ToReadOnly(), rec)));
-	REQUIRE(rec.control.ToByte() == AppControlField(true, true, false, false, 0).ToByte());
-	REQUIRE((rec.function == FunctionCode::WRITE));
-	REQUIRE("AB CD" ==  toHex(rec.objects));
+	APDUHeader header;
+	REQUIRE(APDUHeaderParser::ParseRequest(buffer.ToReadOnly(), header));
+	REQUIRE(header.control.ToByte() == AppControlField(true, true, false, false, 0).ToByte());
+	REQUIRE(header.function == FunctionCode::WRITE);
+	REQUIRE("AB CD" ==  toHex(buffer.ToReadOnly().Skip(2)));
 }
 
 TEST_CASE(SUITE("ResponseLessThanFour"))
 {
 	HexSequence buffer("C0 02 01");
-	APDUResponseRecord rec;
-	REQUIRE((APDUHeaderParser::Result::NOT_ENOUGH_DATA_FOR_HEADER == APDUHeaderParser::ParseResponse(buffer.ToReadOnly(), rec)));
+	APDUResponseHeader header;
+	REQUIRE(!APDUHeaderParser::ParseResponse(buffer.ToReadOnly(), header));
 }
 
 TEST_CASE(SUITE("HeaderParsesResponse"))
 {
 	HexSequence buffer("C0 02 01 02 BE EF");
-	APDUResponseRecord rec;
-	REQUIRE((APDUHeaderParser::Result::OK == APDUHeaderParser::ParseResponse(buffer.ToReadOnly(), rec)));
-	REQUIRE(rec.control.ToByte() == AppControlField(true, true, false, false, 0).ToByte());
-	REQUIRE((rec.function == FunctionCode::WRITE));
-	REQUIRE((rec.IIN == IINField(01, 02)));
-	REQUIRE("BE EF" ==  toHex(rec.objects));
+	APDUResponseHeader header;
+	REQUIRE(APDUHeaderParser::ParseResponse(buffer.ToReadOnly(), header));
+	REQUIRE(header.control.ToByte() == AppControlField(true, true, false, false, 0).ToByte());
+	REQUIRE(header.function == FunctionCode::WRITE);
+	REQUIRE(header.IIN == IINField(01, 02));
+	REQUIRE("BE EF" ==  toHex(buffer.ToReadOnly().Skip(4)));
 }
 
 

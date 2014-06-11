@@ -120,17 +120,17 @@ class OutstationContext
 
 	bool StartUnsolRetryTimer();
 
-	void OnReceiveAPDU(const openpal::ReadOnlyBuffer& fragment);
+	void OnReceiveAPDU(const openpal::ReadOnlyBuffer& apdu);
 
-	void OnReceiveSolRequest(const APDURecord& request, const openpal::ReadOnlyBuffer& fragment);
+	void OnReceiveSolRequest(const APDUHeader& header, const openpal::ReadOnlyBuffer& apdu);
 
-	void RespondToRequest(const APDURecord& request, APDUEquality equality);
+	void RespondToRequest(const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, APDUEquality equality);
 
 	void BeginResponseTx(const openpal::ReadOnlyBuffer& response);
 
 	void BeginUnsolTx(const openpal::ReadOnlyBuffer& response);
 
-	IINField BuildResponse(const APDURecord& request, APDUResponse& response, APDUEquality equality);
+	APDUResponseHeader BuildResponse(const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, ObjectWriter& writer, APDUEquality equality);
 
 	void ContinueMultiFragResponse(uint8_t seq);
 
@@ -148,7 +148,9 @@ class OutstationContext
 
 	// ------ Internal Events -------
 
-	void CheckForIdleState();
+	void PerformTaskFromIdleState();
+
+	bool CheckDeferredRequest();
 
 	void CheckForUnsolicited();
 
@@ -160,16 +162,16 @@ class OutstationContext
 
 	// ------ Function Handlers ------
 
-	IINField HandleWrite(const APDURecord& request);
-	IINField HandleRead(const APDURecord& request, APDUResponse& response);	
-	IINField HandleSelect(const APDURecord& request, APDUResponse& response);
-	IINField HandleOperate(const APDURecord& request, APDUResponse& response, APDUEquality equality);
-	IINField HandleDirectOperate(const APDURecord& request, APDUResponse& response);
-	IINField HandleDelayMeasure(const APDURecord& request, APDUResponse& response);
-	IINField HandleDisableUnsolicited(const APDURecord& request, APDUResponse& response);
-	IINField HandleEnableUnsolicited(const APDURecord& request, APDUResponse& response);
+	APDUResponseHeader HandleWrite(const openpal::ReadOnlyBuffer& objects);
+	APDUResponseHeader HandleRead(const openpal::ReadOnlyBuffer& objects, ObjectWriter& writer);
+	APDUResponseHeader HandleSelect(const openpal::ReadOnlyBuffer& objects, ObjectWriter& writer);
+	APDUResponseHeader HandleOperate(const openpal::ReadOnlyBuffer& objects, ObjectWriter& writer, APDUEquality equality);
+	APDUResponseHeader HandleDirectOperate(const openpal::ReadOnlyBuffer& objects, ObjectWriter& writer);
+	APDUResponseHeader HandleDelayMeasure(const openpal::ReadOnlyBuffer& objects, ObjectWriter& writer);
+	APDUResponseHeader HandleDisableUnsolicited(const openpal::ReadOnlyBuffer& objects, ObjectWriter& writer);
+	APDUResponseHeader HandleEnableUnsolicited(const openpal::ReadOnlyBuffer& objects, ObjectWriter& writer);
 
-	IINField HandleCommandWithConstant(const APDURecord& request, APDUResponse& response, CommandStatus status);
+	APDUResponseHeader HandleCommandWithConstant(const openpal::ReadOnlyBuffer& objects, ObjectWriter& writer, CommandStatus status);
 
 	// ------ Static bufers -------
 

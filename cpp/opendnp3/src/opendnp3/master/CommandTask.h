@@ -68,7 +68,7 @@ public:
 
 	virtual void BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq) override final;
 
-	virtual TaskStatus OnResponse(const APDUResponseRecord& response, const MasterParams& params, IMasterScheduler& scheduler) override final;
+	virtual TaskStatus OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler) override final;
 	
 protected:
 
@@ -78,7 +78,7 @@ protected:
 
 private:
 
-	TaskStatus OnSingleResponse(const APDUResponseRecord& response, const MasterParams& params, IMasterScheduler& scheduler);
+	TaskStatus OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler);
 
 	void LoadSelectAndOperate();
 	void LoadDirectOperate();
