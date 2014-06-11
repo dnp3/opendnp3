@@ -31,10 +31,7 @@ class Settable
 public:
 
 	Settable() : valueIsSet(false)
-	{}
-
-	Settable(const T& default) : valueIsSet(false), value(default)
-	{}
+	{}	
 
 	bool IsSet() const
 	{

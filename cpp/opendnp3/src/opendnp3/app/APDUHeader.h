@@ -42,9 +42,9 @@ struct APDUHeader
 
 	APDUHeader(const AppControlField& control_) : function(FunctionCode::UNKNOWN), control(control_)
 	{}
-
-	AppControlField control;
+	
 	FunctionCode function;
+	AppControlField control;
 };
 
 struct APDUResponseHeader : public APDUHeader
