@@ -243,6 +243,24 @@ void OutstationContext::OnReceiveAPDU(const openpal::ReadOnlyBuffer& apdu)
 	}
 }
 
+void OutstationContext::OnSendResult(bool isSuccess)
+{
+	if (isTransmitting)
+	{
+		isTransmitting = false;
+
+		DeferredRequest request;
+		if (deferredRequest.Pop(request))
+		{			
+			pState->OnNewRequest(this, request.header, lastValidRequest.Skip(APDU_HEADER_SIZE), APDUEquality::NONE);		
+		}
+		else
+		{
+			pState->OnSendResult(this, isSuccess);
+		}
+	}
+}
+
 void OutstationContext::OnReceiveSolRequest(const APDUHeader& header, const openpal::ReadOnlyBuffer& apdu)
 {
 	// analyze this request to see how it compares to the last request

@@ -105,10 +105,10 @@ void OutstationStateSolConfirmWait::OnNewRequest(OutstationContext* pContext, co
 {
 	if (pContext->isTransmitting)
 	{
-		SIMPLE_LOG_BLOCK(pContext->logger, flags::WARN, "SolConfirmWait - Received new request while transmitting response, remote is flooding");
+		pContext->deferredRequest.Set(DeferredRequest(header, equality));
 	}
 	else
-	{		
+	{				
 		pContext->CancelConfirmTimer();
 		pContext->pState = &OutstationStateIdle::Inst();
 		pContext->rspContext.Reset();
@@ -121,7 +121,7 @@ void OutstationStateSolConfirmWait::OnRepeatRequest(OutstationContext* pContext,
 {
 	if (pContext->isTransmitting)
 	{
-		SIMPLE_LOG_BLOCK(pContext->logger, flags::WARN, "SolConfirmWait - Received repeat request while transmitting response, remote is flooding");
+		SIMPLE_LOG_BLOCK(pContext->logger, flags::WARN, "Discarding repeat request while transmitting");
 	}
 	else
 	{
@@ -138,9 +138,9 @@ void OutstationStateSolConfirmWait::OnSendResult(OutstationContext* pContext, bo
 		pContext->StartConfirmTimer();
 	}
 	else
-	{		
+	{
 		pContext->pState = &OutstationStateIdle::Inst();
-	}	
+	}		
 }
 
 void OutstationStateSolConfirmWait::OnSolConfirm(OutstationContext* pContext, const APDUHeader& header)
