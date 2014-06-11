@@ -58,14 +58,13 @@ OutstationContext::OutstationContext(
 	params(config.params),
 	eventConfig(config.defaultEventResponses),
 	logger(root.GetLogger()),	
-	pExecutor(&executor),
-	pLower(&lower),
+	pExecutor(&executor),	
 	pCommandHandler(&commandHandler),
 	pTimeWriteHandler(&timeWriteHandler),
 	pDatabase(&database),
 	eventBuffer(buffers),
 	isOnline(false),
-	isTransmitting(false),
+	txState(TxState::IDLE),
 	pSolicitedState(&OutstationSolicitedStateIdle::Inst()),
 	pConfirmTimer(nullptr),
 	pUnsolTimer(nullptr),
@@ -78,7 +77,8 @@ OutstationContext::OutstationContext(
 	expectedSolConfirmSeq(0),
 	expectedUnsolConfirmSeq(0),
 	completedNullUnsol(false),	
-	rspContext(&database, &eventBuffer, StaticResponseTypes(config.defaultStaticResponses))	
+	rspContext(&database, &eventBuffer, StaticResponseTypes(config.defaultStaticResponses)),
+	pLower(&lower)
 {
 	pDatabase->SetEventBuffer(eventBuffer);
 	staticIIN.Set(IINBit::DEVICE_RESTART);
@@ -151,7 +151,7 @@ void OutstationContext::SetOffline()
 {
 	isOnline = false;
 	unsolPackTimerExpired = false;
-	isTransmitting = false;
+	txState = TxState::IDLE;
 	pSolicitedState = &OutstationSolicitedStateIdle::Inst();
 	lastValidRequest.Clear();
 	deferredRequest.Clear();
@@ -168,7 +168,7 @@ bool OutstationContext::IsOperateSequenceValid()
 
 bool OutstationContext::IsIdle()
 {
-	return isOnline && !isTransmitting && pSolicitedState == &OutstationSolicitedStateIdle::Inst();
+	return isOnline && (txState == TxState::IDLE) && pSolicitedState == &OutstationSolicitedStateIdle::Inst();
 }
 
 bool OutstationContext::CancelConfirmTimer()
@@ -238,9 +238,10 @@ void OutstationContext::OnReceiveAPDU(const openpal::ReadOnlyBuffer& apdu)
 
 void OutstationContext::OnSendResult(bool isSuccess)
 {
-	if (isTransmitting)
-	{
-		isTransmitting = false;
+	auto state = txState;
+	txState = TxState::IDLE;
+	if (state == TxState::SOLICITED)
+	{		
 		pSolicitedState->OnSendResult(this, isSuccess);
 	}
 }
@@ -302,14 +303,14 @@ void OutstationContext::RespondToRequest(const APDUHeader& header, const openpal
 
 void OutstationContext::BeginResponseTx(const ReadOnlyBuffer& response)
 {	
-	isTransmitting = true;
+	txState = TxState::SOLICITED;
 	lastResponse = response;
 	pLower->BeginTransmit(response);	
 }
 
 void OutstationContext::BeginUnsolTx(const ReadOnlyBuffer& response)
 {
-	isTransmitting = true;
+	txState = TxState::UNSOLICITED;
 	this->expectedUnsolConfirmSeq = unsolSeqN;
 	this->unsolSeqN = AppControlField::NextSeq(unsolSeqN);
 	pLower->BeginTransmit(response);

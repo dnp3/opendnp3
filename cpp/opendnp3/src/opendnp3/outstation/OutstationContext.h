@@ -45,9 +45,17 @@
 namespace opendnp3
 {
 
+enum class TxState
+{
+	SOLICITED,
+	UNSOLICITED,
+	IDLE
+};
+
 /// Represent all of the "state" and configuration for an outstation
 class OutstationContext
 {
+	
 	public:		
 
 	OutstationContext(	const OutstationConfig& config,
@@ -64,8 +72,7 @@ class OutstationContext
 	OutstationParams params;
 	EventResponseConfig eventConfig;
 	openpal::Logger logger;
-	openpal::IExecutor* pExecutor;
-	openpal::ILowerLayer* pLower;
+	openpal::IExecutor* pExecutor;	
 	ICommandHandler* pCommandHandler;
 	ITimeWriteHandler* pTimeWriteHandler;
 	Database* pDatabase;
@@ -74,7 +81,7 @@ class OutstationContext
 	// ------ Dynamic "state", i.e. things that must be managed or cleanup on close ------
 	
 	bool isOnline;
-	bool isTransmitting;
+	TxState txState;
 	OutstationSolicitedStateBase* pSolicitedState;
 
 	IINField staticIIN;
@@ -139,6 +146,10 @@ class OutstationContext
 	void OnEnterIdleState();
 	
 	private:
+
+	// private variables not available from the states
+
+	openpal::ILowerLayer* pLower;
 
 	// ------ Helpers ---------
 

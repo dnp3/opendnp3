@@ -59,22 +59,21 @@ OutstationSolicitedStateBase& OutstationSolicitedStateIdle::Inst()
 
 void OutstationSolicitedStateIdle::OnNewRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, APDUEquality equality)
 {
-	if (pContext->isTransmitting)
-	{		
-		pContext->deferredRequest.Set(DeferredRequest(header, equality));		
-	}
-	else
+	if (pContext->txState == TxState::IDLE)
 	{		
 		pContext->RespondToRequest(header, objects, equality);
+	}
+	else
+	{	
+		pContext->deferredRequest.Set(DeferredRequest(header, equality));		
 	}
 }
 
 void OutstationSolicitedStateIdle::OnRepeatRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects)
 {
-	if (!pContext->isTransmitting)	
+	if (pContext->txState == TxState::IDLE)
 	{
-		pContext->isTransmitting = true;
-		pContext->pLower->BeginTransmit(pContext->lastResponse);
+		pContext->BeginResponseTx(pContext->lastResponse);		
 	}
 }
 
@@ -94,27 +93,26 @@ OutstationSolicitedStateBase& OutstationStateSolicitedConfirmWait::Inst()
 
 void OutstationStateSolicitedConfirmWait::OnNewRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, APDUEquality equality)
 {
-	if (pContext->isTransmitting)
+	if (pContext->txState == TxState::IDLE)
 	{
-		pContext->deferredRequest.Set(DeferredRequest(header, equality));
-	}
-	else
-	{				
 		pContext->CancelConfirmTimer();
 		pContext->pSolicitedState = &OutstationSolicitedStateIdle::Inst();
 		pContext->rspContext.Reset();
 		pContext->eventBuffer.Reset();
 		pContext->RespondToRequest(header, objects, equality);
+	}
+	else
+	{	
+		pContext->deferredRequest.Set(DeferredRequest(header, equality));		
 	}	
 }
 
 void OutstationStateSolicitedConfirmWait::OnRepeatRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects)
 {
-	if (!pContext->isTransmitting)
+	if (pContext->txState == TxState::IDLE)
 	{
 		pContext->CancelConfirmTimer();
-		pContext->isTransmitting = true;
-		pContext->pLower->BeginTransmit(pContext->lastResponse);
+		pContext->BeginResponseTx(pContext->lastResponse);
 	}
 }
 
