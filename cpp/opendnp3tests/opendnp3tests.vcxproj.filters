@@ -262,9 +262,6 @@
     <ClCompile Include="src\TestASIOThreadPool.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\TestCachedRequest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\TestCastLongLongDouble.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

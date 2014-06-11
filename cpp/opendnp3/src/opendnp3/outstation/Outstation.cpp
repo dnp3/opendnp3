@@ -74,8 +74,7 @@ void Outstation::OnReceive(const openpal::ReadOnlyBuffer& fragment)
 {
 	if (context.isOnline)
 	{
-		++context.rxFragCount;
-		context.ExamineAPDU(fragment);		
+		context.OnReceiveAPDU(fragment);		
 	}
 	else
 	{

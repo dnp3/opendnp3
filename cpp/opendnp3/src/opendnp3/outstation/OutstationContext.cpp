@@ -154,6 +154,7 @@ void OutstationContext::SetOffline()
 	isTransmitting = false;
 	pState = &OutstationStateIdle::Inst();
 	lastValidRequest.Clear();
+	deferredRequest.Clear();
 	eventBuffer.Reset();
 	rspContext.Reset();
 	CancelConfirmTimer();
@@ -194,8 +195,10 @@ bool OutstationContext::CancelTimer(openpal::ITimer*& pTimer)
 	}
 }
 
-void OutstationContext::ExamineAPDU(const openpal::ReadOnlyBuffer& fragment)
+void OutstationContext::OnReceiveAPDU(const openpal::ReadOnlyBuffer& fragment)
 {
+	++rxFragCount;
+
 	APDURecord request;
 	auto result = APDUHeaderParser::ParseRequest(fragment, request, &logger);
 	if (result == APDUHeaderParser::Result::OK)

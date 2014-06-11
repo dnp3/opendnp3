@@ -32,11 +32,6 @@ namespace opendnp3
 
 // --------------------- OutstationStateBase ----------------------
 
-bool OutstationStateBase::IsIdle()
-{
-	return false;
-}
-
 void OutstationStateBase::OnSolConfirm(OutstationContext* pContext, const APDURecord& frag)
 {
 	FORMAT_LOG_BLOCK(pContext->logger, flags::WARN, "Unexpected sol confirm with sequence: %u", frag.control.SEQ);
@@ -65,11 +60,6 @@ OutstationStateIdle OutstationStateIdle::instance;
 OutstationStateBase& OutstationStateIdle::Inst()
 {
 	return instance;
-}
-
-bool OutstationStateIdle::IsIdle()
-{
-	return true;
 }
 
 void OutstationStateIdle::OnNewRequest(OutstationContext* pContext, const APDURecord& request, APDUEquality equality)

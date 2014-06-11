@@ -19,66 +19,35 @@
  * to you under the terms of the License.
  */
 
-#ifndef __CACHED_REQUEST_H_
-#define __CACHED_REQUEST_H_
+#ifndef __DEFERRED_REQUEST_H_
+#define __DEFERRED_REQUEST_H_
 
-#include <openpal/Uncopyable.h>
-#include <openpal/StaticBuffer.h>
+#include "opendnp3/gen/FunctionCode.h"
+#include "opendnp3/app/APDUWrapper.h"
 
-#include "opendnp3/StaticSizeConfiguration.h"
-#include "opendnp3/app/APDUHeader.h"
-#include "opendnp3/app/SequenceInfo.h"
-#include "opendnp3/Settable.h"
-
-#include <assert.h>
 
 namespace opendnp3
 {
 
 /**
-* Used to efficiently cache requests that the outstation can't process immediately
+* Records metadata about deferred requests
 */
-class CachedRequest : private openpal::Uncopyable
+class DeferredRequest
 {
-public:
 
-	CachedRequest();
+	public:
 
-	void Set(const APDURecord& record, SequenceInfo sequence);
+	DeferredRequest() : functionCode(FunctionCode::UNKNOWN), lastEquality(APDUEquality::NONE)
+	{}
 
-	void Clear()
-	{
-		record.Clear();
-	}
+	DeferredRequest(FunctionCode functionCode_, APDUEquality lastEquality_) :
+		functionCode(functionCode_),
+		lastEquality(lastEquality_)
+	{}
 
-	bool IsSet() const
-	{
-		return record.IsSet();
-	}
-
-	template <class ApplyFun>
-	bool Apply(const ApplyFun& fun);
-
-private:
-
-	Settable<APDURecord> record;
-	SequenceInfo sequence;
-	openpal::StaticBuffer<sizes::MAX_RX_APDU_SIZE> buffer;
+	FunctionCode functionCode;
+	APDUEquality lastEquality;
 };
-
-template <class ApplyFun>
-bool CachedRequest::Apply(const ApplyFun& fun)
-{
-	if (record.IsSet())
-	{
-		fun(record.GetAndClear(), sequence);
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
 
 }
 

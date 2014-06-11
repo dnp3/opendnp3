@@ -33,7 +33,7 @@ public:
 	Settable() : valueIsSet(false)
 	{}
 
-	Settable(const T& aDefault) : valueIsSet(false), value(aDefault)
+	Settable(const T& default) : valueIsSet(false), value(default)
 	{}
 
 	bool IsSet() const
@@ -46,11 +46,18 @@ public:
 		return value;
 	}
 
-	T GetAndClear()
+	bool Pop(T& output)
 	{
-		auto ret = value;
-		Clear();
-		return ret;
+		if (valueIsSet)
+		{
+			valueIsSet = false;
+			output = value;
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	void Clear()
@@ -58,13 +65,10 @@ public:
 		valueIsSet = false;
 	}
 
-	void Set(const T& aValue)
-	{
-		if(!valueIsSet)
-		{
-			value = aValue;
-			valueIsSet = true;
-		}
+	void Set(const T& value_)
+	{		
+		value = value_;
+		valueIsSet = true;		
 	}
 
 	template <class Action>

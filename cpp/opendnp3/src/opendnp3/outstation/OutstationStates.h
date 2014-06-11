@@ -36,9 +36,7 @@ class OutstationContext;
  */
 class OutstationStateBase
 {
-public:
-
-	virtual bool IsIdle();
+public:	
 
 	virtual void OnSolConfirm(OutstationContext*, const APDURecord& frag);
 
@@ -63,9 +61,7 @@ class OutstationStateIdle : public OutstationStateBase, private openpal::Uncopya
 
 public:
 
-	static OutstationStateBase& Inst();
-
-	virtual bool IsIdle() override final;
+	static OutstationStateBase& Inst();	
 
 	virtual void OnNewRequest(OutstationContext*, const APDURecord& request, APDUEquality equality) override final;
 

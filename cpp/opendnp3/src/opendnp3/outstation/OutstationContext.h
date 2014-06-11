@@ -36,13 +36,14 @@
 #include "opendnp3/outstation/ICommandHandler.h"
 #include "opendnp3/outstation/ITimeWriteHandler.h"
 #include "opendnp3/outstation/OutstationStates.h"
+#include "opendnp3/outstation/DeferredRequest.h"
 
 #include "opendnp3/StaticSizeConfiguration.h"
 #include "opendnp3/Settable.h"
 
+
 namespace opendnp3
 {
-
 
 /// Represent all of the "state" and configuration for an outstation
 class OutstationContext
@@ -94,7 +95,9 @@ class OutstationContext
 	bool completedNullUnsol;
 
 	openpal::ReadOnlyBuffer lastValidRequest;			// points to bytes in rxBuffer
-	openpal::ReadOnlyBuffer lastResponse;				// points to bytes in txBuffer	
+	openpal::ReadOnlyBuffer lastResponse;				// points to bytes in txBuffer
+	Settable<DeferredRequest> deferredRequest;			// 
+
 	ResponseContext rspContext;
 
 	// ------ Helper methods for dealing with state ------	
@@ -117,7 +120,7 @@ class OutstationContext
 
 	bool StartUnsolRetryTimer();
 
-	void ExamineAPDU(const openpal::ReadOnlyBuffer& fragment);
+	void OnReceiveAPDU(const openpal::ReadOnlyBuffer& fragment);
 
 	void OnReceiveSolRequest(const APDURecord& request, const openpal::ReadOnlyBuffer& fragment);
 
