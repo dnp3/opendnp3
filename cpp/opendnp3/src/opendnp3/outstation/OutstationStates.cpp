@@ -60,8 +60,8 @@ OutstationSolicitedStateBase& OutstationSolicitedStateIdle::Inst()
 void OutstationSolicitedStateIdle::OnNewRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, APDUEquality equality)
 {
 	if (pContext->txState == TxState::IDLE)
-	{		
-		pContext->RespondToRequest(header, objects, equality);
+	{				
+		pContext->RespondToNonReadRequest(header, objects, equality == APDUEquality::OBJECT_HEADERS_EQUAL);
 	}
 	else
 	{	
@@ -95,11 +95,12 @@ void OutstationStateSolicitedConfirmWait::OnNewRequest(OutstationContext* pConte
 {
 	if (pContext->txState == TxState::IDLE)
 	{
-		pContext->CancelConfirmTimer();
-		pContext->pSolicitedState = &OutstationSolicitedStateIdle::Inst();
+		pContext->CancelConfirmTimer();		
 		pContext->rspContext.Reset();
 		pContext->eventBuffer.Reset();
-		pContext->RespondToRequest(header, objects, equality);
+		pContext->deferredRequest.Set(DeferredRequest(header, equality));
+		pContext->pSolicitedState = &OutstationSolicitedStateIdle::Inst();
+		pContext->OnEnterIdleState();
 	}
 	else
 	{	
