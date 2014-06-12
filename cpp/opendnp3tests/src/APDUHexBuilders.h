@@ -44,7 +44,7 @@ namespace hex
 
 	std::string EmptyResponse(const opendnp3::IINField& iin, uint8_t seq);
 
-	std::string NullUnsolicited(uint8_t seq, const opendnp3::IINField& iin);
+	std::string NullUnsolicited(uint8_t seq, const opendnp3::IINField& iin = opendnp3::IINField(opendnp3::IINBit::DEVICE_RESTART));
 
 	// ----------- confirms --------------
 

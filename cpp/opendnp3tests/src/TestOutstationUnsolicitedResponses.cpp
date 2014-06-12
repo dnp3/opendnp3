@@ -234,33 +234,50 @@ TEST_CASE(SUITE("WriteDuringUnsol"))
 	t.exe.RunMany();	
 }
 
-/*
 TEST_CASE(SUITE("ReadDuringUnsol"))
 {
-	OutstationConfig cfg; cfg.mUnsolPackDelay = TimeDuration::Zero();
-	cfg.mUnsolMask.class1 = true; //allows us to skip this step
-	OutstationTestObject t(cfg);
-	t.db.Configure(MeasurementType::BINARY, 1);
-	t.db.SetClass(MeasurementType::BINARY, CLASS_1);
+	OutstationConfig cfg;
+	cfg.params.allowUnsolicited = true;
+	cfg.params.unsolClassMask = ALL_EVENT_CLASSES;
+	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOnly(5), EventBufferConfig(5));	
+	
 	t.outstation.OnLowerLayerUp();
+	t.exe.RunMany();
 
-	REQUIRE(t.lower.PopWriteAsHex() ==  "F0 82 80 00");
+	REQUIRE(t.lower.PopWriteAsHex() == hex::NullUnsolicited(0));
+	t.outstation.OnSendResult(true);
+	t.SendToOutstation(hex::UnsolConfirm(0));
 
 	{
-		Transaction tr(t.outstation.GetDataObserver());
-		t.outstation.GetDataObserver()->Update(Binary(true, BQ_ONLINE), 0);
+		Transaction tr(t.db);
+		t.db.Update(Binary(true, BQ_ONLINE), 0);
 	}
 
-	t.app.DisableAutoSendCallback();
-	REQUIRE(t.mts.RunOne());
-	REQUIRE(t.lower.PopWriteAsHex() ==  "F0 82 80 00 02 01 17 01 00 81");
+	t.exe.RunMany();
+		
+	REQUIRE(t.lower.PopWriteAsHex() ==  "F1 82 80 00 02 01 28 01 00 00 00 81");
 
-	t.SendToOutstation("C0 01 3C 02 06");
+	auto readClass1 = "C0 01 3C 02 06";
 
-	t.outstation.OnUnsolSendSuccess();
+	if (true)
+	{
+		t.outstation.OnSendResult(true);
+		t.SendToOutstation(readClass1);
+	}
+	else
+	{
+		t.SendToOutstation(readClass1);
+		t.outstation.OnSendResult(true);
+	}
+
+	t.exe.RunMany();
+	t.SendToOutstation(hex::UnsolConfirm(1));
+	t.exe.RunMany();
+	
 	REQUIRE(t.lower.PopWriteAsHex() ==  "C0 81 80 00");
 }
 
+/*
 TEST_CASE(SUITE("ReadWriteDuringUnsol"))
 {
 	OutstationConfig cfg; cfg.mUnsolPackDelay = TimeDuration::Zero();
