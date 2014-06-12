@@ -37,16 +37,18 @@ class DeferredRequest
 
 	public:
 
-	DeferredRequest() : lastEquality(APDUEquality::NONE)
+	DeferredRequest() : isRepeat(false), objectsEqualToLast(false)
 	{}
 
-	DeferredRequest(APDUHeader header_, APDUEquality lastEquality_) :
+	DeferredRequest(APDUHeader header_, bool isRepeat_, bool objectsEqualToLast_) :
 		header(header_),
-		lastEquality(lastEquality_)
+		isRepeat(isRepeat_),
+		objectsEqualToLast(objectsEqualToLast_)
 	{}
 
-	APDUHeader header;
-	APDUEquality lastEquality;
+	APDUHeader header;	
+	bool isRepeat;
+	bool objectsEqualToLast;
 };
 
 }

@@ -209,7 +209,7 @@ TEST_CASE(SUITE("WriteDuringUnsol"))
 	
 	REQUIRE(t.lower.PopWriteAsHex() ==  "F1 82 80 00 02 01 28 01 00 00 00 81");
 
-	auto write = hex::ClearRestartIIN(1);
+	auto write = hex::ClearRestartIIN(0);
 
 	if (true)
 	{
@@ -226,9 +226,12 @@ TEST_CASE(SUITE("WriteDuringUnsol"))
 
 	// TODO - change whether it receives the request during or after tranmission
 
-	// now send a write IIN request, and test that the outstation answers immediately
-	
-	REQUIRE(t.lower.PopWriteAsHex() == hex::EmptyResponse(IINField::Empty, 0));	
+	// check that we get a response to this immediately without the confirm
+	REQUIRE(t.lower.PopWriteAsHex() == hex::EmptyResponse(IINField::Empty, 0));
+
+	// now send the confirm to the outstation
+	t.SendToOutstation(hex::UnsolConfirm(1));
+	t.exe.RunMany();	
 }
 
 /*

@@ -264,13 +264,13 @@ OutstationSolicitedStateBase* OutstationContext::OnReceiveSolRequest(const APDUH
 	auto firstRequest = lastValidRequest.IsEmpty();
 	auto equality = APDURequest::Compare(apdu, lastValidRequest);
 	auto dest = rxBuffer.GetWriteBuffer();
+	this->deferredRequest.Clear();
 	this->lastValidRequest = apdu.CopyTo(dest);
-	auto objects = apdu.Skip(APDU_HEADER_SIZE);
+	auto objects = apdu.Skip(APDU_HEADER_SIZE);	
 
 	if (firstRequest)
 	{			
-		this->solSeqN = header.control.SEQ;
-		return this->pSolicitedState->OnNewRequest(this, header, objects, APDUEquality::NONE);		
+		return ProcessNewRequest(header, objects, equality == APDUEquality::OBJECT_HEADERS_EQUAL);
 	}
 	else
 	{		
@@ -278,35 +278,42 @@ OutstationSolicitedStateBase* OutstationContext::OnReceiveSolRequest(const APDUH
 		{
 			if (equality == APDUEquality::FULL_EQUALITY)
 			{
-				return this->pSolicitedState->OnRepeatRequest(this, header, objects);				
+				if (header.function == FunctionCode::READ)
+				{
+					SIMPLE_LOG_BLOCK(logger, flags::WARN, "Ignoring repeat read request");
+					return pSolicitedState;
+				}
+				else
+				{
+					return this->pSolicitedState->OnRepeatNonReadRequest(this, header, objects);
+				}				
 			}
 			else // new operation with same SEQ
 			{
-				return this->pSolicitedState->OnNewRequest(this, header, objects, equality);				
+				return ProcessNewRequest(header, objects, equality == APDUEquality::OBJECT_HEADERS_EQUAL);
 			}
 		}
 		else  // completely new sequence #
 		{
-			this->solSeqN = header.control.SEQ;
-			return this->pSolicitedState->OnNewRequest(this, header, objects, equality);			
+			return ProcessNewRequest(header, objects, equality == APDUEquality::OBJECT_HEADERS_EQUAL);
 		}		
 	}	
 }
 
-OutstationSolicitedStateBase* OutstationContext::RespondToRequest(const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, bool objectsEqualToLastRequest)
+OutstationSolicitedStateBase* OutstationContext::ProcessNewRequest(const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, bool objectsEqualToLastRequest)
 {
+	this->solSeqN = header.control.SEQ;
 	if (header.function == FunctionCode::READ)
 	{
-		return RespondToReadRequest(header.control.SEQ, objects);
+		return this->pSolicitedState->OnNewReadRequest(this, header, objects);
 	}
 	else
 	{
-		RespondToNonReadRequest(header, objects, objectsEqualToLastRequest);
-		return &OutstationSolicitedStateTransmitNoConfirm::Inst();
+		return this->pSolicitedState->OnNewNonReadRequest(this, header, objects, objectsEqualToLastRequest);
 	}
 }
 
-void OutstationContext::RespondToNonReadRequest(const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, bool objectsEqualToLastRequest)
+OutstationSolicitedStateBase* OutstationContext::RespondToNonReadRequest(const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, bool objectsEqualToLastRequest)
 {
 	auto response = StartNewResponse();
 	auto writer = response.GetWriter();
@@ -315,6 +322,7 @@ void OutstationContext::RespondToNonReadRequest(const APDUHeader& header, const 
 	auto iin = this->BuildNonReadResponse(header, objects, writer, objectsEqualToLastRequest);
 	response.SetIIN(iin | this->GetResponseIIN());		
 	this->BeginResponseTx(response.ToReadOnly());
+	return &OutstationSolicitedStateTransmitNoConfirm::Inst();
 }
 
 OutstationSolicitedStateBase* OutstationContext::RespondToReadRequest(uint8_t seq, const openpal::ReadOnlyBuffer& objects)
@@ -404,20 +412,20 @@ void OutstationContext::CheckForTaskStart()
 				if (pUnsolicitedState == &OutstationUnsolicitedStateIdle::Inst())
 				{
 					deferredRequest.Clear();
-					pSolicitedState->OnNewRequest(this, dr.header, lastValidRequest.Skip(APDU_HEADER_SIZE), dr.lastEquality);
+					pSolicitedState = pSolicitedState->OnNewReadRequest(this, dr.header, lastValidRequest.Skip(APDU_HEADER_SIZE));
 				}
 			}
 			else
 			{
 				//non-read
 				deferredRequest.Clear();
-				if (dr.lastEquality == APDUEquality::FULL_EQUALITY)
+				if (dr.isRepeat)
 				{
-					pSolicitedState->OnRepeatRequest(this, dr.header, lastValidRequest.Skip(APDU_HEADER_SIZE));
+					pSolicitedState = pSolicitedState->OnRepeatNonReadRequest(this, dr.header, lastValidRequest.Skip(APDU_HEADER_SIZE));
 				}
 				else
 				{
-					pSolicitedState->OnNewRequest(this, dr.header, lastValidRequest.Skip(APDU_HEADER_SIZE), dr.lastEquality);
+					pSolicitedState = pSolicitedState->OnNewNonReadRequest(this, dr.header, lastValidRequest.Skip(APDU_HEADER_SIZE), dr.objectsEqualToLast);
 				}				
 			}
 		}

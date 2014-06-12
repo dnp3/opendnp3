@@ -50,6 +50,24 @@ OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnConfirmTimeout(Out
 	return this;
 }
 
+OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnNewReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects)
+{
+	pContext->deferredRequest.Set(DeferredRequest(header, false, false));
+	return this;
+}
+
+OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnNewNonReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, bool headersEqualToLast)
+{
+	pContext->deferredRequest.Set(DeferredRequest(header, false, headersEqualToLast));
+	return this;
+}
+
+OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnRepeatNonReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects)
+{
+	pContext->deferredRequest.Set(DeferredRequest(header, true, false));
+	return this;
+}
+
 // --------------------- OutstationStateIdle ----------------------
 
 
@@ -60,30 +78,43 @@ OutstationSolicitedStateBase& OutstationSolicitedStateIdle::Inst()
 	return instance;
 }
 
-OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, APDUEquality equality)
+OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects)
 {
 	if (pContext->pUnsolicitedState == &OutstationUnsolicitedStateIdle::Inst())
 	{
-		return pContext->RespondToRequest(header, objects, equality == APDUEquality::OBJECT_HEADERS_EQUAL);
+		return pContext->RespondToReadRequest(header.control.SEQ, objects);
 	}
 	else
 	{
-		pContext->deferredRequest.Set(DeferredRequest(header, equality));
+		pContext->deferredRequest.Set(DeferredRequest(header, false, false));
 		return this;
 	}
 }
 
-OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnRepeatRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects)
+OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewNonReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, bool lastHeadersEqual)
 {
-	if (pContext->pUnsolicitedState == &OutstationUnsolicitedStateIdle::Inst())
+	if (pContext->pUnsolicitedState->IsTransmitting())
 	{
-		pContext->BeginResponseTx(pContext->lastResponse);
-		return &OutstationSolicitedStateTransmitNoConfirm::Inst();
+		pContext->deferredRequest.Set(DeferredRequest(header, false, false));
+		return this;		
 	}
 	else
 	{
-		pContext->deferredRequest.Set(DeferredRequest(header, APDUEquality::FULL_EQUALITY));
-		return this;
+		return pContext->RespondToNonReadRequest(header, objects, false);
+	}
+}
+
+OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnRepeatNonReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects)
+{
+	if (pContext->pUnsolicitedState->IsTransmitting())
+	{
+		pContext->deferredRequest.Set(DeferredRequest(header, true, false));
+		return this;		
+	}
+	else
+	{
+		pContext->BeginResponseTx(pContext->lastResponse);
+		return &OutstationSolicitedStateTransmitNoConfirm::Inst();
 	}
 	
 }
@@ -100,18 +131,6 @@ OutstationSolicitedStateBase& OutstationSolicitedStateTransmitNoConfirm::Inst()
 OutstationSolicitedStateBase* OutstationSolicitedStateTransmitNoConfirm::OnSendResult(OutstationContext* pContext, bool)
 {	
 	return &OutstationSolicitedStateIdle::Inst();	
-}
-
-OutstationSolicitedStateBase* OutstationSolicitedStateTransmitNoConfirm::OnNewRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, APDUEquality equality)
-{
-	pContext->deferredRequest.Set(DeferredRequest(header, equality));
-	return this;
-}
-
-OutstationSolicitedStateBase* OutstationSolicitedStateTransmitNoConfirm::OnRepeatRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects)
-{
-	pContext->deferredRequest.Set(DeferredRequest(header, APDUEquality::FULL_EQUALITY));
-	return this;
 }
 
 // --------------------- OutstationSolicitedStateTransmitThenConfirm ----------------------
@@ -140,18 +159,6 @@ OutstationSolicitedStateBase* OutstationSolicitedStateTransmitThenConfirm::OnSen
 	}
 }
 
-OutstationSolicitedStateBase* OutstationSolicitedStateTransmitThenConfirm::OnNewRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, APDUEquality equality)
-{
-	pContext->deferredRequest.Set(DeferredRequest(header, equality));
-	return this;
-}
-
-OutstationSolicitedStateBase* OutstationSolicitedStateTransmitThenConfirm::OnRepeatRequest(OutstationContext*, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects)
-{
-	//ignore repeat request while transmitting
-	return this;
-}
-
 // --------------------- OutstationStateSolConfirmWait ----------------------
 
 OutstationStateSolicitedConfirmWait OutstationStateSolicitedConfirmWait::instance;
@@ -161,23 +168,26 @@ OutstationSolicitedStateBase& OutstationStateSolicitedConfirmWait::Inst()
 	return instance;
 }
 
-OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnNewRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, APDUEquality equality)
-{
-	//defer the request
-	pContext->deferredRequest.Set(DeferredRequest(header, equality));
-
-	// abandon the confirmed response sequence
-	pContext->CancelConfirmTimer();		
-	pContext->rspContext.Reset();
-	pContext->eventBuffer.Reset();	
-
-	return &OutstationSolicitedStateIdle::Inst();		
+OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnNewReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects)
+{	
+	pContext->deferredRequest.Set(DeferredRequest(header, false, false));
+	return Abort(pContext);
+			
 }
 
-OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnRepeatRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects)
-{	
-	// ignore repeats from this state. Echoed responses don't work for multi-frag responses.
-	return this;
+OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnNewNonReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, bool headersEqual)
+{
+	pContext->deferredRequest.Set(DeferredRequest(header, false, headersEqual));
+	return Abort(pContext);
+}
+
+OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::Abort(OutstationContext* pContext)
+{
+	// abandon the confirmed response sequence
+	pContext->CancelConfirmTimer();
+	pContext->rspContext.Reset();
+	pContext->eventBuffer.Reset();
+	return &OutstationSolicitedStateIdle::Inst();
 }
 
 OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnConfirm(OutstationContext* pContext, const APDUHeader& header)

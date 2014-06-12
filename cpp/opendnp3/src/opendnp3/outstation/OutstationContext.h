@@ -128,9 +128,7 @@ class OutstationContext
 
 	void OnSendResult(bool isSuccess);
 
-	OutstationSolicitedStateBase* OnReceiveSolRequest(const APDUHeader& header, const openpal::ReadOnlyBuffer& apdu);
-
-	OutstationSolicitedStateBase* RespondToRequest(const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, bool objectsEqualToLastRequest);
+	OutstationSolicitedStateBase* OnReceiveSolRequest(const APDUHeader& header, const openpal::ReadOnlyBuffer& apdu);	
 
 	void BeginResponseTx(const openpal::ReadOnlyBuffer& response);
 
@@ -140,13 +138,15 @@ class OutstationContext
 
 	OutstationSolicitedStateBase* ContinueMultiFragResponse(uint8_t seq);
 	
+	OutstationSolicitedStateBase* RespondToNonReadRequest(const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, bool objectsEqualToLastRequest);
+
+	OutstationSolicitedStateBase* RespondToReadRequest(uint8_t seq, const openpal::ReadOnlyBuffer& objects);
+
 	private:
 
 	void PostCheckForActions();
 
-	void RespondToNonReadRequest(const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, bool objectsEqualToLastRequest);
-
-	OutstationSolicitedStateBase* RespondToReadRequest(uint8_t seq, const openpal::ReadOnlyBuffer& objects);
+	OutstationSolicitedStateBase* ProcessNewRequest(const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, bool objectsEqualToLastRequest);
 
 	// private variables not available from the states
 
