@@ -18,19 +18,20 @@ lib_LTLIBRARIES = libopenpal.la libasiopal.la libopendnp3.la libasiodnp3.la
 libopenpal_la_LDFLAGS = -version-info 1:1:0
 libopenpal_la_CXXFLAGS = -I$(OPENPAL_INCLUDE)
 libopenpal_la_SOURCES = \
-cpp/openpal/src/openpal/BufferWrapper.cpp \
 cpp/openpal/src/openpal/ByteSerialization.cpp \
 cpp/openpal/src/openpal/Limits.cpp \
 cpp/openpal/src/openpal/LogEntry.cpp \
 cpp/openpal/src/openpal/Logger.cpp \
 cpp/openpal/src/openpal/LogRoot.cpp \
 cpp/openpal/src/openpal/MonotonicTimestamp.cpp \
+cpp/openpal/src/openpal/ReadOnlyBuffer.cpp \
 cpp/openpal/src/openpal/RingBufferAdapter.cpp \
 cpp/openpal/src/openpal/Runnable.cpp \
 cpp/openpal/src/openpal/StringFormatting.cpp \
 cpp/openpal/src/openpal/TimeDuration.cpp \
 cpp/openpal/src/openpal/ToHex.cpp \
-cpp/openpal/src/openpal/UInt48LE.cpp
+cpp/openpal/src/openpal/UInt48LE.cpp \
+cpp/openpal/src/openpal/WriteBuffer.cpp
 
 
 #ls cpp/asiopal/src/asiopal/*.cpp -1 | awk '{print $0" \\"}'
@@ -152,7 +153,6 @@ cpp/opendnp3/src/opendnp3/objects/Group50.cpp \
 cpp/opendnp3/src/opendnp3/objects/Group51.cpp \
 cpp/opendnp3/src/opendnp3/objects/Group52.cpp \
 cpp/opendnp3/src/opendnp3/objects/Group60.cpp \
-cpp/opendnp3/src/opendnp3/outstation/CachedRequest.cpp \
 cpp/opendnp3/src/opendnp3/outstation/ClassBasedRequestHandler.cpp \
 cpp/opendnp3/src/opendnp3/outstation/CommandActionAdapter.cpp \
 cpp/opendnp3/src/opendnp3/outstation/CommandResponseHandler.cpp \
@@ -168,11 +168,12 @@ cpp/opendnp3/src/opendnp3/outstation/EventResponseTypes.cpp \
 cpp/opendnp3/src/opendnp3/outstation/EventWriter.cpp \
 cpp/opendnp3/src/opendnp3/outstation/IINHelpers.cpp \
 cpp/opendnp3/src/opendnp3/outstation/ITimeWriteHandler.cpp \
-cpp/opendnp3/src/opendnp3/outstation/Outstation.cpp \
-cpp/opendnp3/src/opendnp3/outstation/OutstationStates.cpp \
 cpp/opendnp3/src/opendnp3/outstation/OutstationContext.cpp \
+cpp/opendnp3/src/opendnp3/outstation/Outstation.cpp \
 cpp/opendnp3/src/opendnp3/outstation/OutstationEventBuffer.cpp \
 cpp/opendnp3/src/opendnp3/outstation/OutstationParams.cpp \
+cpp/opendnp3/src/opendnp3/outstation/OutstationSolicitedStates.cpp \
+cpp/opendnp3/src/opendnp3/outstation/OutstationUnsolicitedStates.cpp \
 cpp/opendnp3/src/opendnp3/outstation/ReadHandler.cpp \
 cpp/opendnp3/src/opendnp3/outstation/ResponseContext.cpp \
 cpp/opendnp3/src/opendnp3/outstation/SelectionCriteria.cpp \
@@ -277,7 +278,6 @@ cpp/opendnp3tests/src/TestAPDUParsing.cpp \
 cpp/opendnp3tests/src/TestAPDUWriting.cpp \
 cpp/opendnp3tests/src/TestASIO.cpp \
 cpp/opendnp3tests/src/TestASIOThreadPool.cpp \
-cpp/opendnp3tests/src/TestCachedRequest.cpp \
 cpp/opendnp3tests/src/TestCastLongLongDouble.cpp \
 cpp/opendnp3tests/src/TestCommandTask.cpp \
 cpp/opendnp3tests/src/TestCRC.cpp \
@@ -320,4 +320,3 @@ cpp/opendnp3tests/src/TransportScalabilityTestObject.cpp \
 cpp/opendnp3tests/src/TransportStackPair.cpp \
 cpp/opendnp3tests/src/TransportTestObject.cpp \
 cpp/opendnp3tests/src/WrappedTcpPipe.cpp
-
