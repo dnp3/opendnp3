@@ -95,12 +95,12 @@ OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewNonReadRequest(
 {
 	if (pContext->pUnsolicitedState->IsTransmitting())
 	{
-		pContext->deferredRequest.Set(DeferredRequest(header, false, false));
+		pContext->deferredRequest.Set(DeferredRequest(header, false, lastHeadersEqual));
 		return this;		
 	}
 	else
 	{
-		return pContext->RespondToNonReadRequest(header, objects, false);
+		return pContext->RespondToNonReadRequest(header, objects, lastHeadersEqual);
 	}
 }
 
