@@ -40,7 +40,7 @@ int main()
 	// 5 binary events, 0 others
 	StaticallyAllocatedEventBuffer<5, 0, 0, 0, 0, 0, 0> eventBuffers;
 	OutstationConfig config;
-	//config.params.allowUnsolicited = true;	
+	config.params.allowUnsolicited = true;	
 	config.defaultEventResponses.binary = EventBinaryResponse::Group2Var2;
 	
 	// Object that handles command (CROB / analog output) requests

@@ -349,10 +349,6 @@
       <SubType>compile</SubType>
       <Link>headers\Runnable.h</Link>
     </Compile>
-    <Compile Include="..\..\cpp\openpal\src\openpal\Sequence.h">
-      <SubType>compile</SubType>
-      <Link>headers\Sequence.h</Link>
-    </Compile>
     <Compile Include="..\..\cpp\openpal\src\openpal\Serialization.h">
       <SubType>compile</SubType>
       <Link>headers\Serialization.h</Link>

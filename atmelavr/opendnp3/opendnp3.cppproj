@@ -1070,17 +1070,25 @@
       <SubType>compile</SubType>
       <Link>outstation\OutstationParams.h</Link>
     </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\OutstationSolicitedStates.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\OutstationSolicitedStates.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\OutstationSolicitedStates.h">
+      <SubType>compile</SubType>
+      <Link>outstation\OutstationSolicitedStates.h</Link>
+    </Compile>
     <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\OutstationStackConfig.h">
       <SubType>compile</SubType>
       <Link>outstation\OutstationStackConfig.h</Link>
     </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\OutstationStates.cpp">
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\OutstationUnsolicitedStates.cpp">
       <SubType>compile</SubType>
-      <Link>outstation\OutstationStates.cpp</Link>
+      <Link>outstation\OutstationUnsolicitedStates.cpp</Link>
     </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\OutstationStates.h">
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\OutstationUnsolicitedStates.h">
       <SubType>compile</SubType>
-      <Link>outstation\OutstationStates.h</Link>
+      <Link>outstation\OutstationUnsolicitedStates.h</Link>
     </Compile>
     <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\ReadHandler.cpp">
       <SubType>compile</SubType>
