@@ -78,7 +78,14 @@ OutstationUnsolicitedStateBase* OutstationUnsolicitedStateConfirmWait::OnConfirm
 	if (header.control.SEQ == pContext->expectedUnsolConfirmSeq)
 	{
 		pContext->CancelConfirmTimer();
-		pContext->eventBuffer.Clear();
+		if (pContext->completedNullUnsol)
+		{			
+			pContext->eventBuffer.Clear();
+		}
+		else
+		{
+			pContext->completedNullUnsol = true;
+		}		
 		return &OutstationUnsolicitedStateIdle::Inst();
 	}
 	else
@@ -91,6 +98,7 @@ OutstationUnsolicitedStateBase* OutstationUnsolicitedStateConfirmWait::OnConfirm
 {
 	pContext->pConfirmTimer = nullptr;
 	pContext->eventBuffer.Reset();
+	pContext->StartUnsolRetryTimer();
 	return &OutstationUnsolicitedStateIdle::Inst();
 }
 

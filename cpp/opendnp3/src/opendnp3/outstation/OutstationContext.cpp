@@ -93,7 +93,7 @@ OutstationContext::OutstationContext(
 		params.maxTxFragSize = sizes::MIN_APDU_SIZE;
 	}	
 		
-	auto notify = [this]() { this->OnNewEvents(); };
+	auto notify = [this]() { this->CheckForTaskStart(); };
 	auto post = [notify, this] { pExecutor->PostLambda(notify); };
 	database.SetEventHandler(Bind(post));
 }
@@ -386,50 +386,63 @@ OutstationSolicitedStateBase* OutstationContext::ContinueMultiFragResponse(uint8
 void OutstationContext::PostCheckForActions()
 {
 	// post these calls so the stack can unwind
-	auto lambda = [this]() { this->PerformTaskFromIdleState(); };
+	auto lambda = [this]() { this->CheckForTaskStart(); };
 	pExecutor->PostLambda(lambda);
 }
 
-void OutstationContext::PerformTaskFromIdleState()
+void OutstationContext::CheckForTaskStart()
 {	
-	this->CheckDeferredRequest();
-
-	this->CheckForUnsolicited();	
-}
-
-void OutstationContext::CheckDeferredRequest()
-{
-	DeferredRequest request;
-	if (this->IsIdle() && deferredRequest.Pop(request))
+	// if we're online, the solicited state is idle, and the unsolicited state 
+	// is not transmitting we may be able to do a task
+	if (isOnline && pSolicitedState == &OutstationSolicitedStateIdle::Inst() && !pUnsolicitedState->IsTransmitting())
 	{
-		if (request.lastEquality == APDUEquality::FULL_EQUALITY) // it was a repeat
+		if (deferredRequest.IsSet())
 		{
-			this->pSolicitedState->OnRepeatRequest(this, request.header, lastValidRequest.Skip(APDU_HEADER_SIZE));
+			DeferredRequest dr = deferredRequest.Get();
+			if (dr.header.function == FunctionCode::READ)
+			{
+				if (pUnsolicitedState == &OutstationUnsolicitedStateIdle::Inst())
+				{
+					deferredRequest.Clear();
+					pSolicitedState->OnNewRequest(this, dr.header, lastValidRequest.Skip(APDU_HEADER_SIZE), dr.lastEquality);
+				}
+			}
+			else
+			{
+				//non-read
+				deferredRequest.Clear();
+				if (dr.lastEquality == APDUEquality::FULL_EQUALITY)
+				{
+					pSolicitedState->OnRepeatRequest(this, dr.header, lastValidRequest.Skip(APDU_HEADER_SIZE));
+				}
+				else
+				{
+					pSolicitedState->OnNewRequest(this, dr.header, lastValidRequest.Skip(APDU_HEADER_SIZE), dr.lastEquality);
+				}				
+			}
 		}
 		else
 		{
-			this->pSolicitedState->OnNewRequest(this, request.header, lastValidRequest.Skip(APDU_HEADER_SIZE), request.lastEquality);
-		}		
+			if (pUnsolicitedState == &OutstationUnsolicitedStateIdle::Inst())
+			{
+				this->CheckForUnsolicited();
+			}
+		}
 	}	
-}
-
-void OutstationContext::OnNewEvents()
-{
-	this->CheckForUnsolicited();	
 }
 
 void OutstationContext::CheckForUnsolicited()
 {
-	/*
-	if (this->IsIdle() && params.allowUnsolicited && (pUnsolTimer == nullptr))
+
+	if(params.allowUnsolicited && (pUnsolTimer == nullptr))
 	{
 		if (completedNullUnsol)
-		{
-			auto criteria = SelectionCriteria::ForomUnsolMask(params.unsolClassMask);
-			if (criteria.HasSelection())
+		{										
+			// are there events to be reported?
+			if (eventBuffer.TotalEvents().Intersects(params.unsolClassMask))
 			{
-				auto unsol = this->StartNewResponse();
-				auto initialSize = unsol.Size();
+				auto criteria = SelectionCriteria::FromUnsolMask(params.unsolClassMask);
+				auto unsol = this->StartNewResponse();				
 						
 				{
 					// even though we're not loading static data, we need to lock 
@@ -440,28 +453,21 @@ void OutstationContext::CheckForUnsolicited()
 					EventWriter::WriteEventHeaders(writer, iterator, eventConfig);
 				}
 			
-				if (unsol.Size() > initialSize) // were any events written?
-				{
-					this->ConfigureUnsolHeader(unsol);
-					this->pSolicitedState = &OutstationStateUnsolConfirmWait::Inst();
-					this->BeginUnsolTx(unsol.ToReadOnly());
-				}
-				else
-				{ 
-					eventBuffer.Reset();
-				}
+				
+				this->ConfigureUnsolHeader(unsol);
+				this->pUnsolicitedState = &OutstationUnsolicitedStateTransmitting::Inst();
+				this->BeginUnsolTx(unsol.ToReadOnly());				
 			}
 		}
 		else
 		{
 			// send a NULL unsolcited message			
-			pState = &OutstationStateUnsolConfirmWait::Inst();
+			this->pUnsolicitedState = &OutstationUnsolicitedStateTransmitting::Inst();
 			auto unsol = this->StartNewResponse();
 			this->ConfigureUnsolHeader(unsol);
 			this->BeginUnsolTx(unsol.ToReadOnly());
 		}
-	}
-	*/
+	}	
 }
 
 bool OutstationContext::StartSolicitedConfirmTimer()

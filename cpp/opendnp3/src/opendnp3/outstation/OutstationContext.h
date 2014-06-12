@@ -98,6 +98,7 @@ class OutstationContext
 
 	openpal::ReadOnlyBuffer lastValidRequest;			// points to bytes in rxBuffer
 	openpal::ReadOnlyBuffer lastResponse;				// points to bytes in txBuffer
+
 	Settable<DeferredRequest> deferredRequest;			// 
 
 	ResponseContext rspContext;
@@ -161,7 +162,7 @@ class OutstationContext
 
 	// ------ Internal Events -------
 
-	void PerformTaskFromIdleState();
+	void CheckForTaskStart();
 
 	void CheckDeferredRequest();
 
@@ -171,9 +172,7 @@ class OutstationContext
 
 	void OnUnsolConfirmTimeout();
 
-	void OnUnsolRetryTimeout();
-
-	void OnNewEvents();
+	void OnUnsolRetryTimeout();	
 
 	// ------ Function Handlers ------
 

@@ -26,7 +26,7 @@
 namespace opendnp3
 {
 
-SelectionCriteria SelectionCriteria::ForomUnsolMask(uint8_t unsolClassMask)
+SelectionCriteria SelectionCriteria::FromUnsolMask(uint8_t unsolClassMask)
 {
 	SelectionCriteria sc;
 	if (unsolClassMask & CLASS_1) sc.class1 = events::ALL_TYPES;
@@ -43,7 +43,6 @@ SelectionCriteria::SelectionCriteria(uint16_t clazz1, uint16_t clazz2, uint16_t 
 	class2(clazz2),
 	class3(clazz3)
 {}
-
 
 void SelectionCriteria::Clear()
 {

@@ -23,13 +23,14 @@
 #define __SELECTION_CRITERIA_H_
 
 #include "EventType.h"
+#include "EventCount.h"
 
 namespace opendnp3
 {
 
 struct SelectionCriteria
 {
-	static SelectionCriteria ForomUnsolMask(uint8_t unsolClassMask);
+	static SelectionCriteria FromUnsolMask(uint8_t unsolClassMask);
 
 	SelectionCriteria();
 

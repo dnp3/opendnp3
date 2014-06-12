@@ -37,6 +37,8 @@ public:
 
 	EventCount(uint32_t numClass1, uint32_t numClass2, uint32_t numClass3);
 
+	bool Intersects(uint8_t classMask) const;
+
 	EventCount Subtract(const EventCount& rhs) const;
 
 	void Increment(EventClass clazz);

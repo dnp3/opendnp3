@@ -21,6 +21,8 @@
 
 #include "EventCount.h"
 
+#include "opendnp3/app/PointClass.h"
+
 namespace opendnp3
 {
 
@@ -36,6 +38,12 @@ EventCount::EventCount(uint32_t numClass1_, uint32_t numClass2_, uint32_t numCla
 void EventCount::Clear()
 {
 	numClass1 = numClass2 = numClass3 = 0;	
+}
+
+bool EventCount::Intersects(uint8_t classMask) const
+{
+	uint8_t mask = ((numClass1 > 0) ? CLASS_1 : 0) | ((numClass2 > 0) ? CLASS_2 : 0) | ((numClass3 > 0) ? CLASS_3 : 0);	
+	return (mask & classMask) > 0;
 }
 
 EventCount EventCount::Subtract(const EventCount& rhs) const
