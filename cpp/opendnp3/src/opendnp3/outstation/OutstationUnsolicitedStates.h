@@ -35,7 +35,7 @@ class OutstationContext;
 class OutstationUnsolicitedStateBase : openpal::Uncopyable
 {
 
-public:
+public:	
 
 	virtual bool IsTransmitting() { return false; }
 

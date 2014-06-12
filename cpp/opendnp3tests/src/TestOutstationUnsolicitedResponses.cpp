@@ -142,69 +142,96 @@ TEST_CASE(SUITE("UnsolEventBufferOverflow"))
 	REQUIRE(t.lower.PopWriteAsHex() ==  "F1 82 80 08 02 01 28 02 00 00 00 01 00 00 81");	
 }
 
-/*
 TEST_CASE(SUITE("UnsolMultiFragments"))
 {
 	OutstationConfig cfg;
-	cfg.mMaxFragSize = 10; //this will cause the unsol response to get fragmented
-	cfg.mUnsolMask.class1 = true; // this allows the EnableUnsol sequence to be skipped
-	OutstationTestObject t(cfg);
-	t.db.Configure(MeasurementType::BINARY, 2);
-	t.db.SetClass(MeasurementType::BINARY, CLASS_1);
+	cfg.params.allowUnsolicited = true;
+	cfg.params.maxTxFragSize = 20; //this will cause the unsol response to get fragmented
+	cfg.params.unsolClassMask = ALL_EVENT_CLASSES; // this allows the EnableUnsol sequence to be skipped
+	OutstationTestObject t(cfg, DatabaseTemplate::AnalogOnly(5), EventBufferConfig(0, 0, 5));
 
 	t.outstation.OnLowerLayerUp();
-	REQUIRE(t.lower.PopWriteAsHex() ==  "F0 82 80 00");
+	t.exe.RunMany();
+	
+	
+	REQUIRE(t.lower.PopWriteAsHex() ==  hex::NullUnsolicited(0, IINField(IINBit::DEVICE_RESTART)));
+	t.outstation.OnSendResult(true);
+	t.SendToOutstation(hex::UnsolConfirm(0));
 
-	REQUIRE(t.app.NumAPDU() ==  0); //check that no more frags are sent
+	t.exe.RunMany();
+	REQUIRE(t.lower.PopWriteAsHex() ==  "");
 
 	{
-		Transaction tr(t.outstation.GetDataObserver());
-		t.outstation.GetDataObserver()->Update(Binary(false, BQ_ONLINE), 1);
-		t.outstation.GetDataObserver()->Update(Binary(false, BQ_ONLINE), 0);
+		Transaction tr(t.db);
+		t.db.Update(Analog(7, AQ_ONLINE), 1);
+		t.db.Update(Analog(13, AQ_ONLINE), 3);
 	}
 
-	REQUIRE(t.mts.RunOne()); //dispatch the data update event
-
-	REQUIRE(t.mts.NumActive() ==  1); // unsol pack timer should be active
-
-	REQUIRE(t.mts.RunOne()); //dispatch the unsol pack timer
+	REQUIRE(t.exe.RunMany()); //dispatch the data update event	
 
 	// Only enough room to in the APDU to carry a single value
-	REQUIRE(t.lower.PopWriteAsHex() ==  "F0 82 80 00 02 01 17 01 01 01");
+	REQUIRE(t.lower.PopWriteAsHex() ==  "F1 82 82 00 20 01 28 01 00 01 00 01 07 00 00 00");
+	t.outstation.OnSendResult(true);
+	t.SendToOutstation(hex::UnsolConfirm(1));
+	t.exe.RunMany();
+	
 	// should immediately try to send another unsol packet
-	REQUIRE(t.lower.PopWriteAsHex() ==  "F0 82 80 00 02 01 17 01 00 01");
+	REQUIRE(t.lower.PopWriteAsHex() ==  "F2 82 80 00 20 01 28 01 00 03 00 01 0D 00 00 00");
+	t.outstation.OnSendResult(true);
+	t.SendToOutstation(hex::UnsolConfirm(2));
+	t.exe.RunMany();
+
+	REQUIRE(t.lower.PopWriteAsHex() == "");
 }
 
-// Test that non-read fragments are immediately responded to while waiting for a
-// response to unsolicited data
+// Test that non-read fragments are immediately responded to while 
+// waiting for a response to unsolicited data
 TEST_CASE(SUITE("WriteDuringUnsol"))
 {
-	OutstationConfig cfg; cfg.mUnsolPackDelay = TimeDuration::Zero();
-	cfg.mUnsolMask.class1 = true; //allows us to skip this step
-	OutstationTestObject t(cfg);
-	t.db.Configure(MeasurementType::BINARY, 1);
-	t.db.SetClass(MeasurementType::BINARY, CLASS_1);
+	OutstationConfig cfg; 
+	cfg.params.allowUnsolicited = true;
+	cfg.params.unsolClassMask = ALL_EVENT_CLASSES;
+	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOnly(5), EventBufferConfig(5));
+	
 	t.outstation.OnLowerLayerUp();
+	t.exe.RunMany();
 
-	REQUIRE(t.lower.PopWriteAsHex() ==  "F0 82 80 00");
+	REQUIRE(t.lower.PopWriteAsHex() == hex::NullUnsolicited(0, IINField(IINBit::DEVICE_RESTART)));
+	t.outstation.OnSendResult(true);
+	t.SendToOutstation(hex::UnsolConfirm(0));
 
 	{
-		Transaction tr(t.outstation.GetDataObserver());
-		t.outstation.GetDataObserver()->Update(Binary(true, BQ_ONLINE), 0);
+		Transaction tr(t.db);
+		t.db.Update(Binary(true, BQ_ONLINE), 0);
+	}
+	
+	t.exe.RunMany();
+	
+	REQUIRE(t.lower.PopWriteAsHex() ==  "F1 82 80 00 02 01 28 01 00 00 00 81");
+
+	auto write = hex::ClearRestartIIN(1);
+
+	if (true)
+	{
+		t.SendToOutstation(write);
+		t.outstation.OnSendResult(true);		
+	}
+	else
+	{
+		t.outstation.OnSendResult(true);
+		t.SendToOutstation(write);		
 	}
 
-	t.app.DisableAutoSendCallback();
-	REQUIRE(t.mts.RunOne());
-	REQUIRE(t.lower.PopWriteAsHex() ==  "F0 82 80 00 02 01 17 01 00 81");
+	t.exe.RunMany();
 
-	//now send a write IIN request, and test that the outstation answers immediately
-	t.SendToOutstation("C0 02 50 01 00 07 07 00");
-	REQUIRE(t.lower.PopWriteAsHex() ==  "C0 81 00 00");
+	// TODO - change whether it receives the request during or after tranmission
 
-	t.outstation.OnUnsolSendSuccess();
-	REQUIRE(t.Count() ==  0);
+	// now send a write IIN request, and test that the outstation answers immediately
+	
+	REQUIRE(t.lower.PopWriteAsHex() == hex::EmptyResponse(IINField::Empty, 0));	
 }
 
+/*
 TEST_CASE(SUITE("ReadDuringUnsol"))
 {
 	OutstationConfig cfg; cfg.mUnsolPackDelay = TimeDuration::Zero();

@@ -62,13 +62,30 @@ OutstationSolicitedStateBase& OutstationSolicitedStateIdle::Inst()
 
 OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, APDUEquality equality)
 {
-	return pContext->RespondToRequest(header, objects, equality == APDUEquality::OBJECT_HEADERS_EQUAL);
+	if (pContext->pUnsolicitedState == &OutstationUnsolicitedStateIdle::Inst())
+	{
+		return pContext->RespondToRequest(header, objects, equality == APDUEquality::OBJECT_HEADERS_EQUAL);
+	}
+	else
+	{
+		pContext->deferredRequest.Set(DeferredRequest(header, equality));
+		return this;
+	}
 }
 
 OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnRepeatRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects)
 {
-	pContext->BeginResponseTx(pContext->lastResponse);
-	return &OutstationSolicitedStateTransmitNoConfirm::Inst();	
+	if (pContext->pUnsolicitedState == &OutstationUnsolicitedStateIdle::Inst())
+	{
+		pContext->BeginResponseTx(pContext->lastResponse);
+		return &OutstationSolicitedStateTransmitNoConfirm::Inst();
+	}
+	else
+	{
+		pContext->deferredRequest.Set(DeferredRequest(header, APDUEquality::FULL_EQUALITY));
+		return this;
+	}
+	
 }
 
 // --------------------- OutstationSolicitedStateTransmitNoConfirm ----------------------
