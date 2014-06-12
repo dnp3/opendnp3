@@ -65,7 +65,7 @@ OutstationContext::OutstationContext(
 	eventBuffer(buffers),
 	isOnline(false),
 	pSolicitedState(&OutstationSolicitedStateIdle::Inst()),
-	pUnsolcitedState(&OutstationUnsolicitedStateIdle::Inst()),
+	pUnsolicitedState(&OutstationUnsolicitedStateIdle::Inst()),
 	pConfirmTimer(nullptr),
 	pUnsolTimer(nullptr),
 	unsolPackTimerExpired(false),
@@ -91,13 +91,7 @@ OutstationContext::OutstationContext(
 			static_cast<unsigned int>(sizes::MIN_APDU_SIZE));
 
 		params.maxTxFragSize = sizes::MIN_APDU_SIZE;
-	}
-
-	if (params.allowUnsolicited)
-	{
-		// this will cause us to start going through the NULL unsolicited sequence				
-		this->OnEnterIdleState();
-	}
+	}	
 		
 	auto notify = [this]() { this->OnNewEvents(); };
 	auto post = [notify, this] { pExecutor->PostLambda(notify); };
@@ -145,6 +139,7 @@ void OutstationContext::ConfigureUnsolHeader(APDUResponse& unsol)
 void OutstationContext::SetOnline()
 {
 	isOnline = true;
+	this->PostCheckForActions();
 }
 
 void OutstationContext::SetOffline()
@@ -152,7 +147,7 @@ void OutstationContext::SetOffline()
 	isOnline = false;
 	unsolPackTimerExpired = false;
 	pSolicitedState = &OutstationSolicitedStateIdle::Inst();
-	pUnsolcitedState = &OutstationUnsolicitedStateIdle::Inst();
+	pUnsolicitedState = &OutstationUnsolicitedStateIdle::Inst();
 	lastValidRequest.Clear();
 	deferredRequest.Clear();
 	eventBuffer.Reset();
@@ -168,7 +163,9 @@ bool OutstationContext::IsOperateSequenceValid()
 
 bool OutstationContext::IsIdle()
 {
-	return isOnline && pSolicitedState == &OutstationSolicitedStateIdle::Inst();
+	return isOnline &&
+		pSolicitedState == &OutstationSolicitedStateIdle::Inst() &&
+		pUnsolicitedState == &OutstationUnsolicitedStateIdle::Inst();
 }
 
 bool OutstationContext::CancelConfirmTimer()
@@ -207,18 +204,25 @@ void OutstationContext::OnReceiveAPDU(const openpal::ReadOnlyBuffer& apdu)
 		{
 			if (header.control.UNS)
 			{
-				SIMPLE_LOG_BLOCK(logger, flags::WARN, "Ignoring unsol message");
+				if (header.function == FunctionCode::CONFIRM)
+				{
+					pUnsolicitedState = pUnsolicitedState->OnConfirm(this, header);					
+				}
+				else
+				{
+					FORMAT_LOG_BLOCK(logger, flags::WARN, "Ignoring unsol with invalid function code: %s", FunctionCodeToString(header.function));
+				}				
 			}
 			else
 			{
 				if (header.function == FunctionCode::CONFIRM)
 				{
-					pSolicitedState->OnConfirm(this, header);
+					pSolicitedState = pSolicitedState->OnConfirm(this, header);					
 				}
 				else
 				{
-					this->OnReceiveSolRequest(header, apdu);
-				}
+					pSolicitedState = this->OnReceiveSolRequest(header, apdu);
+				}				
 			}
 		}
 		else
@@ -234,17 +238,27 @@ void OutstationContext::OnReceiveAPDU(const openpal::ReadOnlyBuffer& apdu)
 	{
 		SIMPLE_LOG_BLOCK(logger, flags::ERR, "ignoring malformed request header");
 	}
+
+
+	//regardless of what the event is, see if we need to schedule an action
+	this->PostCheckForActions();
 }
 
 void OutstationContext::OnSendResult(bool isSuccess)
 {
 	if (pSolicitedState->IsTransmitting())
 	{
-		pSolicitedState->OnSendResult(this, isSuccess);
+		pSolicitedState = pSolicitedState->OnSendResult(this, isSuccess);
+		this->PostCheckForActions();
+	}
+	else if (pUnsolicitedState->IsTransmitting())
+	{
+		pUnsolicitedState = pUnsolicitedState->OnSendResult(this, isSuccess);
+		this->PostCheckForActions();
 	}
 }
 
-void OutstationContext::OnReceiveSolRequest(const APDUHeader& header, const openpal::ReadOnlyBuffer& apdu)
+OutstationSolicitedStateBase* OutstationContext::OnReceiveSolRequest(const APDUHeader& header, const openpal::ReadOnlyBuffer& apdu)
 {
 	// analyze this request to see how it compares to the last request
 	auto firstRequest = lastValidRequest.IsEmpty();
@@ -256,7 +270,7 @@ void OutstationContext::OnReceiveSolRequest(const APDUHeader& header, const open
 	if (firstRequest)
 	{			
 		this->solSeqN = header.control.SEQ;
-		this->pSolicitedState->OnNewRequest(this, header, objects, APDUEquality::NONE);
+		return this->pSolicitedState->OnNewRequest(this, header, objects, APDUEquality::NONE);		
 	}
 	else
 	{		
@@ -264,19 +278,19 @@ void OutstationContext::OnReceiveSolRequest(const APDUHeader& header, const open
 		{
 			if (equality == APDUEquality::FULL_EQUALITY)
 			{
-				this->pSolicitedState->OnRepeatRequest(this, header, objects);
+				return this->pSolicitedState->OnRepeatRequest(this, header, objects);				
 			}
 			else // new operation with same SEQ
 			{
-				this->pSolicitedState->OnNewRequest(this, header, objects, equality);
+				return this->pSolicitedState->OnNewRequest(this, header, objects, equality);				
 			}
 		}
 		else  // completely new sequence #
 		{
 			this->solSeqN = header.control.SEQ;
-			this->pSolicitedState->OnNewRequest(this, header, objects, equality);
-		}
-	}
+			return this->pSolicitedState->OnNewRequest(this, header, objects, equality);			
+		}		
+	}	
 }
 
 OutstationSolicitedStateBase* OutstationContext::RespondToRequest(const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, bool objectsEqualToLastRequest)
@@ -369,7 +383,7 @@ OutstationSolicitedStateBase* OutstationContext::ContinueMultiFragResponse(uint8
 	return control.CON ? &OutstationSolicitedStateTransmitThenConfirm::Inst() : &OutstationSolicitedStateTransmitNoConfirm::Inst();
 }
 
-void OutstationContext::OnEnterIdleState()
+void OutstationContext::PostCheckForActions()
 {
 	// post these calls so the stack can unwind
 	auto lambda = [this]() { this->PerformTaskFromIdleState(); };
@@ -464,6 +478,20 @@ bool OutstationContext::StartSolicitedConfirmTimer()
 	}
 }
 
+bool OutstationContext::StartUnsolicitedConfirmTimer()
+{
+	if (pConfirmTimer)
+	{
+		return false;
+	}
+	else
+	{
+		auto timeout = [this]() { this->OnUnsolConfirmTimeout(); };
+		pConfirmTimer = pExecutor->Start(params.unsolConfirmTimeout, Bind(timeout));
+		return true;
+	}
+}
+
 bool OutstationContext::StartUnsolRetryTimer()
 {
 	if (pUnsolTimer)
@@ -481,6 +509,12 @@ bool OutstationContext::StartUnsolRetryTimer()
 void OutstationContext::OnSolConfirmTimeout()
 {
 	this->pSolicitedState->OnConfirmTimeout(this);
+}
+
+void OutstationContext::OnUnsolConfirmTimeout()
+{
+	pUnsolicitedState = this->pUnsolicitedState->OnConfirmTimeout(this);
+	this->PostCheckForActions();
 }
 
 void OutstationContext::OnUnsolRetryTimeout()

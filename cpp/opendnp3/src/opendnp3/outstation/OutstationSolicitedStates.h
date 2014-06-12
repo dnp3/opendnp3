@@ -40,15 +40,15 @@ public:
 
 	virtual bool IsTransmitting() { return false; }
 
-	virtual void OnConfirm(OutstationContext*, const APDUHeader& frag);	
+	virtual OutstationSolicitedStateBase* OnConfirm(OutstationContext*, const APDUHeader& frag);
 
-	virtual void OnSendResult(OutstationContext*, bool isSucccess);
+	virtual OutstationSolicitedStateBase* OnSendResult(OutstationContext*, bool isSucccess);
 
-	virtual void OnConfirmTimeout(OutstationContext*);
+	virtual OutstationSolicitedStateBase* OnConfirmTimeout(OutstationContext*);
 
-	virtual void OnNewRequest(OutstationContext*, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, APDUEquality equality) = 0;
+	virtual OutstationSolicitedStateBase* OnNewRequest(OutstationContext*, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, APDUEquality equality) = 0;
 
-	virtual void OnRepeatRequest(OutstationContext*, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects) = 0;
+	virtual OutstationSolicitedStateBase* OnRepeatRequest(OutstationContext*, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects) = 0;
 
 protected:
 
@@ -61,9 +61,9 @@ public:
 
 	static OutstationSolicitedStateBase& Inst();
 
-	virtual void OnNewRequest(OutstationContext*, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, APDUEquality equality) override final;
+	virtual OutstationSolicitedStateBase* OnNewRequest(OutstationContext*, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, APDUEquality equality) override final;
 
-	virtual void OnRepeatRequest(OutstationContext*, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects) override final;	
+	virtual OutstationSolicitedStateBase* OnRepeatRequest(OutstationContext*, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects) override final;
 
 private:
 
@@ -84,11 +84,11 @@ public:
 
 	virtual bool IsTransmitting() override final { return true; }
 
-	virtual void OnSendResult(OutstationContext*, bool isSucccess) override final;
+	virtual OutstationSolicitedStateBase* OnSendResult(OutstationContext*, bool isSucccess) override final;
 
-	virtual void OnNewRequest(OutstationContext*, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, APDUEquality equality) override final;
+	virtual OutstationSolicitedStateBase* OnNewRequest(OutstationContext*, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, APDUEquality equality) override final;
 
-	virtual void OnRepeatRequest(OutstationContext*, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects) override final;
+	virtual OutstationSolicitedStateBase* OnRepeatRequest(OutstationContext*, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects) override final;
 
 private:
 
@@ -109,11 +109,11 @@ public:
 
 	virtual bool IsTransmitting() override final { return true; }
 
-	virtual void OnSendResult(OutstationContext*, bool isSucccess) override final;
+	virtual OutstationSolicitedStateBase* OnSendResult(OutstationContext*, bool isSucccess) override final;
 
-	virtual void OnNewRequest(OutstationContext*, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, APDUEquality equality) override final;
+	virtual OutstationSolicitedStateBase* OnNewRequest(OutstationContext*, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, APDUEquality equality) override final;
 
-	virtual void OnRepeatRequest(OutstationContext*, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects) override final;
+	virtual OutstationSolicitedStateBase* OnRepeatRequest(OutstationContext*, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects) override final;
 
 private:
 
@@ -132,13 +132,13 @@ public:
 
 	static OutstationSolicitedStateBase& Inst();
 
-	virtual void OnNewRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, APDUEquality equality) override final;
+	virtual OutstationSolicitedStateBase* OnNewRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, APDUEquality equality) override final;
 
-	virtual void OnRepeatRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects) override final;	
+	virtual OutstationSolicitedStateBase* OnRepeatRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects) override final;
 
-	virtual void OnConfirm(OutstationContext* pContext, const APDUHeader& frag) override final;
+	virtual OutstationSolicitedStateBase* OnConfirm(OutstationContext* pContext, const APDUHeader& frag) override final;
 
-	virtual void OnConfirmTimeout(OutstationContext* pContext) override final;
+	virtual OutstationSolicitedStateBase* OnConfirmTimeout(OutstationContext* pContext) override final;
 
 private:
 

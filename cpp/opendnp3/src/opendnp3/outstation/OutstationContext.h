@@ -77,7 +77,7 @@ class OutstationContext
 	
 	bool isOnline;	
 	OutstationSolicitedStateBase*	pSolicitedState;
-	OutstationUnsolicitedStateBase*	pUnsolcitedState;
+	OutstationUnsolicitedStateBase*	pUnsolicitedState;
 
 	IINField staticIIN;
 
@@ -119,6 +119,7 @@ class OutstationContext
 	bool CancelUnsolTimer();
 	
 	bool StartSolicitedConfirmTimer();
+	bool StartUnsolicitedConfirmTimer();
 
 	bool StartUnsolRetryTimer();
 
@@ -126,7 +127,7 @@ class OutstationContext
 
 	void OnSendResult(bool isSuccess);
 
-	void OnReceiveSolRequest(const APDUHeader& header, const openpal::ReadOnlyBuffer& apdu);
+	OutstationSolicitedStateBase* OnReceiveSolRequest(const APDUHeader& header, const openpal::ReadOnlyBuffer& apdu);
 
 	OutstationSolicitedStateBase* RespondToRequest(const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, bool objectsEqualToLastRequest);
 
@@ -137,10 +138,10 @@ class OutstationContext
 	IINField BuildNonReadResponse(const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, ObjectWriter& writer, bool objectsEqualToLastRequest);
 
 	OutstationSolicitedStateBase* ContinueMultiFragResponse(uint8_t seq);
-
-	void OnEnterIdleState();
 	
 	private:
+
+	void PostCheckForActions();
 
 	void RespondToNonReadRequest(const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, bool objectsEqualToLastRequest);
 
@@ -167,6 +168,8 @@ class OutstationContext
 	void CheckForUnsolicited();
 
 	void OnSolConfirmTimeout();
+
+	void OnUnsolConfirmTimeout();
 
 	void OnUnsolRetryTimeout();
 

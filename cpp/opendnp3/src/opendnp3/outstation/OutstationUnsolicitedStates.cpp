@@ -29,23 +29,70 @@
 namespace opendnp3
 {
 
-// --------------------- OutstationStateIdle ----------------------
+// --------------------- OutstationUnsolicitedStateIdle ----------------------
 
 OutstationUnsolicitedStateIdle OutstationUnsolicitedStateIdle::instance;
 
-void OutstationUnsolicitedStateIdle::OnConfirm(OutstationContext* pContext, const APDUHeader& header)
+OutstationUnsolicitedStateBase* OutstationUnsolicitedStateIdle::OnConfirm(OutstationContext* pContext, const APDUHeader& header)
 {
 	FORMAT_LOG_BLOCK(pContext->logger, flags::WARN, "Unexpected unsolicted confirm with sequence: %u", header.control.SEQ);
+	return this;
 }
 
-void OutstationUnsolicitedStateIdle::OnSendResult(OutstationContext* pContext, bool isSucccess)
+OutstationUnsolicitedStateBase* OutstationUnsolicitedStateIdle::OnSendResult(OutstationContext* pContext, bool isSucccess)
 {
 	SIMPLE_LOG_BLOCK(pContext->logger, flags::WARN, "Unexpected unsolcitied send result callback");
+	return this;
 }
 
-void OutstationUnsolicitedStateIdle::OnConfirmTimeout(OutstationContext* pContext)
+OutstationUnsolicitedStateBase* OutstationUnsolicitedStateIdle::OnConfirmTimeout(OutstationContext* pContext)
 {
 	SIMPLE_LOG_BLOCK(pContext->logger, flags::WARN, "Unexpected unsolicited confirm timeout");
+	return this;
+}
+
+// --------------------- OutstationUnsolicitedStateTransmitting ----------------
+
+OutstationUnsolicitedStateTransmitting OutstationUnsolicitedStateTransmitting::instance;
+
+OutstationUnsolicitedStateBase* OutstationUnsolicitedStateTransmitting::OnSendResult(OutstationContext* pContext, bool isSucccess)
+{
+	if (isSucccess)
+	{		
+		pContext->StartUnsolicitedConfirmTimer();
+		return &OutstationUnsolicitedStateConfirmWait::Inst();
+	}
+	else
+	{
+		pContext->eventBuffer.Reset();
+		return &OutstationUnsolicitedStateIdle::Inst();		
+	}	
+}
+
+// --------------------- OutstationUnsolicitedStateConfirmWait ----------------
+
+OutstationUnsolicitedStateConfirmWait OutstationUnsolicitedStateConfirmWait::instance;
+
+OutstationUnsolicitedStateBase* OutstationUnsolicitedStateConfirmWait::OnConfirm(OutstationContext* pContext, const APDUHeader& header)
+{
+	if (header.control.SEQ == pContext->expectedUnsolConfirmSeq)
+	{
+		pContext->CancelConfirmTimer();
+		pContext->eventBuffer.Clear();
+		return &OutstationUnsolicitedStateIdle::Inst();
+	}
+	else
+	{
+		return this;
+	}
+}
+
+OutstationUnsolicitedStateBase* OutstationUnsolicitedStateConfirmWait::OnConfirmTimeout(OutstationContext* pContext)
+{
+	pContext->pConfirmTimer = nullptr;
+	pContext->eventBuffer.Reset();
+	return &OutstationUnsolicitedStateIdle::Inst();
 }
 
 } //ens ns
+

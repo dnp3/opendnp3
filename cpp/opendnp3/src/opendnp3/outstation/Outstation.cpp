@@ -53,8 +53,7 @@ void Outstation::OnLowerLayerUp()
 	}
 	else
 	{
-		context.SetOnline();
-		context.OnEnterIdleState();
+		context.SetOnline();		
 	}
 }
 	

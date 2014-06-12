@@ -37,35 +37,77 @@ class OutstationUnsolicitedStateBase : openpal::Uncopyable
 
 public:
 
-	virtual void OnConfirm(OutstationContext*, const APDUHeader& header) = 0;
+	virtual bool IsTransmitting() { return false; }
 
-	virtual void OnSendResult(OutstationContext*, bool isSucccess) = 0;
+	virtual OutstationUnsolicitedStateBase* OnConfirm(OutstationContext*, const APDUHeader& header) = 0;
 
-	virtual void OnConfirmTimeout(OutstationContext*) = 0;
+	virtual OutstationUnsolicitedStateBase* OnSendResult(OutstationContext*, bool isSucccess) = 0;
+
+	virtual OutstationUnsolicitedStateBase* OnConfirmTimeout(OutstationContext*) = 0;
 
 };
 
 /**
  * Idle state does nothing but log unexpected events
  */
-class OutstationUnsolicitedStateIdle : OutstationUnsolicitedStateBase
+class OutstationUnsolicitedStateIdle : public OutstationUnsolicitedStateBase
 {
 
 public:
 
 	static OutstationUnsolicitedStateBase& Inst() { return instance;  }
 
-	virtual void OnConfirm(OutstationContext*, const APDUHeader& header) override final;
+	virtual OutstationUnsolicitedStateBase* OnConfirm(OutstationContext*, const APDUHeader& header) override;
 
-	virtual void OnSendResult(OutstationContext*, bool isSucccess) override final;
+	virtual OutstationUnsolicitedStateBase* OnSendResult(OutstationContext*, bool isSucccess) override;
 
-	virtual void OnConfirmTimeout(OutstationContext*) override final;
+	virtual OutstationUnsolicitedStateBase* OnConfirmTimeout(OutstationContext*) override;
+
+protected:
+
+	OutstationUnsolicitedStateIdle() {}
 
 private:
 
-	OutstationUnsolicitedStateIdle() {}
-	
 	static OutstationUnsolicitedStateIdle instance;
+
+};
+
+class OutstationUnsolicitedStateTransmitting : public OutstationUnsolicitedStateIdle
+{
+
+public:
+
+	virtual bool IsTransmitting() override final { return true; }
+
+	static OutstationUnsolicitedStateBase& Inst() { return instance; }
+
+	virtual OutstationUnsolicitedStateBase* OnSendResult(OutstationContext*, bool isSucccess) override final;
+
+private:
+
+	OutstationUnsolicitedStateTransmitting() {}
+
+	static OutstationUnsolicitedStateTransmitting instance;
+
+};
+
+class OutstationUnsolicitedStateConfirmWait : public OutstationUnsolicitedStateIdle
+{
+
+public:
+
+	static OutstationUnsolicitedStateBase& Inst() { return instance; }
+
+	virtual OutstationUnsolicitedStateBase* OnConfirm(OutstationContext*, const APDUHeader& header) override;
+
+	virtual OutstationUnsolicitedStateBase* OnConfirmTimeout(OutstationContext*) override;
+
+private:
+
+	OutstationUnsolicitedStateConfirmWait() {}
+
+	static OutstationUnsolicitedStateConfirmWait instance;
 
 };
 

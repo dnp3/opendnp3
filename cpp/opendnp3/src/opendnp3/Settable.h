@@ -69,7 +69,10 @@ public:
 	}
 
 	template <class Action>
-	bool Foreach(Action action);
+	bool IsSetAnd(Action action);
+
+	template <class Action>
+	void Foreach(Action action);
 
 
 private:
@@ -80,17 +83,26 @@ private:
 
 template <class T>
 template <class Action>
-bool Settable<T>::Foreach(Action action)
+bool Settable<T>::IsSetAnd(Action action)
 {
 	if (valueIsSet)
 	{
-		action(value);
-		return true;
+		return action(value);		
 	}
 	else
 	{
 		return false;
 	}
+}
+
+template <class T>
+template <class Action>
+void Settable<T>::Foreach(Action action)
+{
+	if (valueIsSet)
+	{
+		action(value);
+	}	
 }
 
 }
