@@ -46,21 +46,60 @@ public:
 							const DatabaseTemplate& dbTemplate = DatabaseTemplate(), 
 							const EventBufferConfig& ebConfig = EventBufferConfig::AllTypes(0));
 
+	
+	uint32_t SendToOutstation(const std::string& hex);
+
+	uint32_t LowerLayerUp();
+
+	uint32_t LowerLayerDown();	
+
+	uint32_t OnSendResult(bool isSuccess);
+
+	size_t NumPendingTimers() const;
+	
+	void SetRequestTimeIIN();
+
+
+	bool AdvanceToNextTimer();
+
+	uint32_t AdvanceTime(const openpal::TimeDuration& td);
+
 	std::vector<openpal::UTCTimestamp> timestamps;
 
-	LogTester log;	
+	LogTester log;
+
+	template <class Apply>
+	uint32_t Transaction(const Apply& apply)
+	{
+		{
+			openpal::Transaction tx(db);
+			apply(db);
+		}
+		return exe.RunMany();
+	}
+
+private:
+
 	MockExecutor exe;
+
+public:
+
 	MockLowerLayer lower;
+
+private:
+
 	DynamicallyAllocatedDatabase dbBuffers;
 	DynamicallyAllocatedEventBuffer eventBuffers;
 	Database db;
+
+public:
 	MockCommandHandler cmdHandler;
 	MockTimeWriteHandler timeHandler;
-	Outstation outstation;
 
-
-	void SendToOutstation(const std::string& hex);
+private:
+	Outstation outstation;	
 };
+
 
 }
 

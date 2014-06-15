@@ -126,9 +126,14 @@ IINField OutstationContext::GetResponseIIN()
 	return this->staticIIN | GetDynamicIIN();
 }
 
-APDUResponse OutstationContext::StartNewResponse()
+APDUResponse OutstationContext::StartNewSolicitedResponse()
 {	
-	return APDUResponse(txBuffer.GetWriteBuffer(params.maxTxFragSize));
+	return APDUResponse(solTxBuffer.GetWriteBuffer(params.maxTxFragSize));
+}
+
+APDUResponse OutstationContext::StartNewUnsolicitedResponse()
+{
+	return APDUResponse(unsolTxBuffer.GetWriteBuffer(params.maxTxFragSize));
 }
 
 void OutstationContext::ConfigureUnsolHeader(APDUResponse& unsol)
@@ -315,7 +320,7 @@ OutstationSolicitedStateBase* OutstationContext::ProcessNewRequest(const APDUHea
 
 OutstationSolicitedStateBase* OutstationContext::RespondToNonReadRequest(const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, bool objectsEqualToLastRequest)
 {
-	auto response = StartNewResponse();
+	auto response = StartNewSolicitedResponse();
 	auto writer = response.GetWriter();
 	response.SetFunction(FunctionCode::RESPONSE);
 	response.SetControl(AppControlField(true, true, false, false, header.control.SEQ));
@@ -327,7 +332,7 @@ OutstationSolicitedStateBase* OutstationContext::RespondToNonReadRequest(const A
 
 OutstationSolicitedStateBase* OutstationContext::RespondToReadRequest(uint8_t seq, const openpal::ReadOnlyBuffer& objects)
 {
-	auto response = StartNewResponse();
+	auto response = StartNewSolicitedResponse();
 	auto writer = response.GetWriter();
 	response.SetFunction(FunctionCode::RESPONSE);	
 	auto result = this->HandleRead(objects, writer);
@@ -368,9 +373,9 @@ IINField OutstationContext::BuildNonReadResponse(const APDUHeader& header, const
 		case(FunctionCode::DELAY_MEASURE) :
 			return HandleDelayMeasure(objects, writer);
 		case(FunctionCode::DISABLE_UNSOLICITED) :
-			return HandleDisableUnsolicited(objects, writer);
+			return params.allowUnsolicited ? HandleDisableUnsolicited(objects, writer) : IINField(IINBit::FUNC_NOT_SUPPORTED);
 		case(FunctionCode::ENABLE_UNSOLICITED) :
-			return HandleEnableUnsolicited(objects, writer);
+			return params.allowUnsolicited ? HandleEnableUnsolicited(objects, writer) : IINField(IINBit::FUNC_NOT_SUPPORTED);
 		default:
 			return	IINField(IINBit::FUNC_NOT_SUPPORTED);
 	}
@@ -378,7 +383,7 @@ IINField OutstationContext::BuildNonReadResponse(const APDUHeader& header, const
 
 OutstationSolicitedStateBase* OutstationContext::ContinueMultiFragResponse(uint8_t seq)
 {
-	auto response = this->StartNewResponse();
+	auto response = this->StartNewSolicitedResponse();
 	auto writer = response.GetWriter();
 	response.SetFunction(FunctionCode::RESPONSE);	
 	openpal::Transaction tx(this->pDatabase);	
@@ -450,7 +455,7 @@ void OutstationContext::CheckForUnsolicited()
 			if (eventBuffer.TotalEvents().Intersects(params.unsolClassMask))
 			{
 				auto criteria = SelectionCriteria::FromUnsolMask(params.unsolClassMask);
-				auto unsol = this->StartNewResponse();				
+				auto unsol = this->StartNewUnsolicitedResponse();				
 						
 				{
 					// even though we're not loading static data, we need to lock 
@@ -471,7 +476,7 @@ void OutstationContext::CheckForUnsolicited()
 		{
 			// send a NULL unsolcited message			
 			this->pUnsolicitedState = &OutstationUnsolicitedStateTransmitting::Inst();
-			auto unsol = this->StartNewResponse();
+			auto unsol = this->StartNewUnsolicitedResponse();
 			this->ConfigureUnsolHeader(unsol);
 			this->BeginUnsolTx(unsol.ToReadOnly());
 		}
@@ -695,7 +700,7 @@ IINField OutstationContext::HandleDisableUnsolicited(const openpal::ReadOnlyBuff
 }
 
 IINField OutstationContext::HandleEnableUnsolicited(const openpal::ReadOnlyBuffer& objects, ObjectWriter& writer)
-{
+{	
 	ClassBasedRequestHandler handler(logger);
 	auto result = APDUParser::ParseTwoPass(objects, &handler, &logger);
 	if (result == APDUParser::Result::OK)

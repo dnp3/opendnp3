@@ -105,7 +105,8 @@ class OutstationContext
 
 	// ------ Helper methods for dealing with state ------	
 
-	APDUResponse StartNewResponse();
+	APDUResponse StartNewSolicitedResponse();
+	APDUResponse StartNewUnsolicitedResponse();
 
 	void ConfigureUnsolHeader(APDUResponse& unsol);	
 
@@ -193,7 +194,8 @@ class OutstationContext
 	// ------ Static bufers -------
 
 	openpal::StaticBuffer<sizes::MAX_RX_APDU_SIZE> rxBuffer;
-	openpal::StaticBuffer<sizes::MAX_TX_APDU_SIZE> txBuffer;
+	openpal::StaticBuffer<sizes::MAX_TX_APDU_SIZE> solTxBuffer;
+	openpal::StaticBuffer<sizes::MAX_TX_APDU_SIZE> unsolTxBuffer;
 };
 
 

@@ -36,10 +36,8 @@ TEST_CASE(SUITE("NullUnsolOnStartup"))
 {
 	OutstationConfig cfg;  cfg.params.allowUnsolicited = true;
 	OutstationTestObject t(cfg);
-	t.outstation.OnLowerLayerUp();
-
-	REQUIRE(t.exe.RunMany());
-
+	t.LowerLayerUp();
+	
 	// Null UNSOL, FIR, FIN, CON, UNS, w/ restart and need-time IIN
 	REQUIRE(t.lower.PopWriteAsHex() == hex::NullUnsolicited(0, IINField(IINBit::DEVICE_RESTART)));
 }
@@ -48,23 +46,21 @@ TEST_CASE(SUITE("UnsolRetryDelay"))
 {
 	OutstationConfig cfg; cfg.params.allowUnsolicited = true;
 	OutstationTestObject t(cfg);	
-	t.outstation.OnLowerLayerUp();
+	
+	t.LowerLayerUp();
 
-	REQUIRE(t.exe.RunMany());
 
 	// check for the startup null unsol packet, but fail the transaction
 	REQUIRE(t.lower.PopWriteAsHex() == hex::NullUnsolicited(0, IINField(IINBit::DEVICE_RESTART)));
-	t.outstation.OnSendResult(true);
+	t.OnSendResult(true);
 
-	REQUIRE(t.exe.NumPendingTimers() ==  1); // confirm timer
-	REQUIRE(t.exe.AdvanceToNextTimer());
-	REQUIRE(t.exe.RunMany()); // expire the timer
+	REQUIRE(t.NumPendingTimers() ==  1); // confirm timer
+	REQUIRE(t.AdvanceToNextTimer());
 
 	REQUIRE(t.lower.NumWrites() == 0);
-	REQUIRE(t.exe.NumPendingTimers() == 1); // unsol retry timer
-	REQUIRE(t.exe.AdvanceToNextTimer());
-	REQUIRE(t.exe.RunMany()); // expire the timer
-
+	REQUIRE(t.NumPendingTimers() == 1); // unsol retry timer
+	REQUIRE(t.AdvanceToNextTimer());
+	
 	// repeats the null unsol packet with the next sequence #
 	REQUIRE(t.lower.PopWriteAsHex() == hex::NullUnsolicited(1, IINField(IINBit::DEVICE_RESTART)));
 }
@@ -74,35 +70,29 @@ TEST_CASE(SUITE("UnsolData"))
 	OutstationConfig cfg; cfg.params.allowUnsolicited = true;
 	cfg.params.unsolClassMask = ALL_CLASSES; // allows us to skip the "enable unsol" step
 	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOnly(3), EventBufferConfig::AllTypes(5));
-		
-	t.db.staticData.binaries.metadata[0].clazz = CLASS_1;
-	t.db.staticData.binaries.metadata[1].clazz = CLASS_2;
-	t.db.staticData.binaries.metadata[2].clazz = CLASS_3;
+			
+	t.Transaction([](Database& db) {
+		db.staticData.binaries.metadata[0].clazz = CLASS_1;
+		db.staticData.binaries.metadata[1].clazz = CLASS_2;
+		db.staticData.binaries.metadata[2].clazz = CLASS_3;
+	});
 	
-	t.outstation.OnLowerLayerUp();
-
-	REQUIRE(t.exe.RunMany());
+	t.LowerLayerUp();	
 	
 	REQUIRE(t.lower.PopWriteAsHex() ==  hex::NullUnsolicited(0, IINField(IINBit::DEVICE_RESTART)));
-	t.outstation.OnSendResult(true);
+	t.OnSendResult(true);
 	t.SendToOutstation(hex::UnsolConfirm(0));
 
 	// do a transaction before the layer comes online to prove that the null transaction
-	// is occuring before unsol data is sent
-	{
-		Transaction tr(t.db);
-		t.db.Update(Binary(false, BQ_ONLINE), 2);
-	}
-
-	REQUIRE(t.exe.RunMany());	
+	// is occuring before unsol data is sent	
+	t.Transaction([](Database& db) { db.Update(Binary(false, BQ_ONLINE), 2); });
+	
 	
 	// should immediately try to send another unsol packet,
 	// Grp2Var1, qual 0x17, count 1, index 2, quality+val == 0x01
 	REQUIRE(t.lower.PopWriteAsHex() ==  "F1 82 80 00 02 01 28 01 00 02 00 01");
-	t.outstation.OnSendResult(true);
-	t.SendToOutstation(hex::UnsolConfirm(1));
-
-	REQUIRE(t.exe.RunMany());
+	t.OnSendResult(true);
+	t.SendToOutstation(hex::UnsolConfirm(1));	
 	REQUIRE(t.lower.PopWriteAsHex() == "");
 }
 
@@ -111,35 +101,28 @@ TEST_CASE(SUITE("UnsolEventBufferOverflow"))
 	OutstationConfig cfg;
 	cfg.params.allowUnsolicited = true;
 	cfg.params.unsolClassMask = CLASS_1;	
-	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOnly(1), EventBufferConfig(2));
-
-	t.db.staticData.binaries.metadata[0].clazz = CLASS_1;
-	
-	// null unsol
-	t.outstation.OnLowerLayerUp();
-
-	REQUIRE(t.exe.RunMany());
-
+	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOnly(1), EventBufferConfig(2));	
+		
+	t.LowerLayerUp();
 	REQUIRE(t.lower.PopWriteAsHex() == hex::NullUnsolicited(0, IINField(IINBit::DEVICE_RESTART)));
-	t.outstation.OnSendResult(true);
+	t.OnSendResult(true);
 	t.SendToOutstation(hex::UnsolConfirm(0));
-
-
-	// this transaction will overflow the event buffer
-	{
-		Transaction tr(t.db);
-		t.db.Update(Binary(true, BQ_ONLINE), 0);
-		t.db.Update(Binary(false, BQ_ONLINE), 0);
-		t.db.Update(Binary(true, BQ_ONLINE), 0);
-	}
-
-	REQUIRE(t.exe.RunMany());
-
+	
+	t.Transaction([](Database& db){
+		db.Update(Binary(true, BQ_ONLINE), 0);
+		db.Update(Binary(false, BQ_ONLINE), 0);
+		db.Update(Binary(true, BQ_ONLINE), 0);
+	});
+		
 	// should immediately try to send 2 unsol events
 	// Grp2Var1, qual 0x17, count 2, index 0
 	// The last two values should be published, 0x01 and 0x81 (false and true)
 	// the first value is lost off the front of the buffer
-	REQUIRE(t.lower.PopWriteAsHex() ==  "F1 82 80 08 02 01 28 02 00 00 00 01 00 00 81");	
+	REQUIRE(t.lower.PopWriteAsHex() ==  "F1 82 80 08 02 01 28 02 00 00 00 01 00 00 81");
+	t.OnSendResult(true);
+	t.SendToOutstation(hex::UnsolConfirm(1));
+
+	REQUIRE(t.lower.PopWriteAsHex() == "");
 }
 
 TEST_CASE(SUITE("UnsolMultiFragments"))
@@ -150,89 +133,81 @@ TEST_CASE(SUITE("UnsolMultiFragments"))
 	cfg.params.unsolClassMask = ALL_EVENT_CLASSES; // this allows the EnableUnsol sequence to be skipped
 	OutstationTestObject t(cfg, DatabaseTemplate::AnalogOnly(5), EventBufferConfig(0, 0, 5));
 
-	t.outstation.OnLowerLayerUp();
-	t.exe.RunMany();
-	
-	
-	REQUIRE(t.lower.PopWriteAsHex() ==  hex::NullUnsolicited(0, IINField(IINBit::DEVICE_RESTART)));
-	t.outstation.OnSendResult(true);
+	t.LowerLayerUp();
+		
+	REQUIRE(t.lower.PopWriteAsHex() ==  hex::NullUnsolicited(0));
+	t.OnSendResult(true);
 	t.SendToOutstation(hex::UnsolConfirm(0));
-
-	t.exe.RunMany();
 	REQUIRE(t.lower.PopWriteAsHex() ==  "");
-
-	{
-		Transaction tr(t.db);
-		t.db.Update(Analog(7, AQ_ONLINE), 1);
-		t.db.Update(Analog(13, AQ_ONLINE), 3);
-	}
-
-	REQUIRE(t.exe.RunMany()); //dispatch the data update event	
+	
+	t.Transaction([](Database& db) {
+		db.Update(Analog(7, AQ_ONLINE), 1);
+		db.Update(Analog(13, AQ_ONLINE), 3);
+	});
+	
 
 	// Only enough room to in the APDU to carry a single value
 	REQUIRE(t.lower.PopWriteAsHex() ==  "F1 82 82 00 20 01 28 01 00 01 00 01 07 00 00 00");
-	t.outstation.OnSendResult(true);
-	t.SendToOutstation(hex::UnsolConfirm(1));
-	t.exe.RunMany();
+	t.OnSendResult(true);
+	t.SendToOutstation(hex::UnsolConfirm(1));	
 	
 	// should immediately try to send another unsol packet
 	REQUIRE(t.lower.PopWriteAsHex() ==  "F2 82 80 00 20 01 28 01 00 03 00 01 0D 00 00 00");
-	t.outstation.OnSendResult(true);
-	t.SendToOutstation(hex::UnsolConfirm(2));
-	t.exe.RunMany();
+	t.OnSendResult(true);
+	t.SendToOutstation(hex::UnsolConfirm(2));	
 
 	REQUIRE(t.lower.PopWriteAsHex() == "");
 }
 
-// Test that non-read fragments are immediately responded to while 
-// waiting for a response to unsolicited data
-TEST_CASE(SUITE("WriteDuringUnsol"))
+void WriteDuringUnsol(bool beforeTx)
 {
-	OutstationConfig cfg; 
+	OutstationConfig cfg;
 	cfg.params.allowUnsolicited = true;
 	cfg.params.unsolClassMask = ALL_EVENT_CLASSES;
 	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOnly(5), EventBufferConfig(5));
-	
-	t.outstation.OnLowerLayerUp();
-	t.exe.RunMany();
 
-	REQUIRE(t.lower.PopWriteAsHex() == hex::NullUnsolicited(0, IINField(IINBit::DEVICE_RESTART)));
-	t.outstation.OnSendResult(true);
+	t.LowerLayerUp();
+
+	REQUIRE(t.lower.PopWriteAsHex() == hex::NullUnsolicited(0));
+	t.OnSendResult(true);
 	t.SendToOutstation(hex::UnsolConfirm(0));
 
-	{
-		Transaction tr(t.db);
-		t.db.Update(Binary(true, BQ_ONLINE), 0);
-	}
-	
-	t.exe.RunMany();
-	
-	REQUIRE(t.lower.PopWriteAsHex() ==  "F1 82 80 00 02 01 28 01 00 00 00 81");
+	t.Transaction([](Database& db){ db.Update(Binary(true, BQ_ONLINE), 0); });
 
-	auto write = hex::ClearRestartIIN(0);
+	REQUIRE(t.lower.PopWriteAsHex() == "F1 82 80 00 02 01 28 01 00 00 00 81");
 
-	if (true)
+	// TODO - change whether it receives the request during or after tranmission
+	if (beforeTx)
 	{
-		t.SendToOutstation(write);
-		t.outstation.OnSendResult(true);		
+		t.SendToOutstation(hex::ClearRestartIIN(0));
+		t.OnSendResult(true);
 	}
 	else
 	{
-		t.outstation.OnSendResult(true);
-		t.SendToOutstation(write);		
+		t.OnSendResult(true);
+		t.SendToOutstation(hex::ClearRestartIIN(0));
 	}
-
-	t.exe.RunMany();
-
-	// TODO - change whether it receives the request during or after tranmission
 
 	// check that we get a response to this immediately without the confirm
 	REQUIRE(t.lower.PopWriteAsHex() == hex::EmptyResponse(IINField::Empty, 0));
 
 	// now send the confirm to the outstation
 	t.SendToOutstation(hex::UnsolConfirm(1));
-	t.exe.RunMany();	
+	REQUIRE(t.lower.PopWriteAsHex() == "");
 }
+
+// Test that non-read fragments are immediately responded to while 
+// waiting for a response to unsolicited data
+TEST_CASE(SUITE("WriteDuringUnsolBeforeTx"))
+{
+	WriteDuringUnsol(true);
+}
+
+TEST_CASE(SUITE("WriteDuringUnsolAfterTx"))
+{
+	WriteDuringUnsol(false);
+}
+
 
 TEST_CASE(SUITE("ReadDuringUnsol"))
 {
@@ -241,132 +216,127 @@ TEST_CASE(SUITE("ReadDuringUnsol"))
 	cfg.params.unsolClassMask = ALL_EVENT_CLASSES;
 	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOnly(5), EventBufferConfig(5));	
 	
-	t.outstation.OnLowerLayerUp();
-	t.exe.RunMany();
+	t.LowerLayerUp();	
 
 	REQUIRE(t.lower.PopWriteAsHex() == hex::NullUnsolicited(0));
-	t.outstation.OnSendResult(true);
+	t.OnSendResult(true);
 	t.SendToOutstation(hex::UnsolConfirm(0));
-
-	{
-		Transaction tr(t.db);
-		t.db.Update(Binary(true, BQ_ONLINE), 0);
-	}
-
-	t.exe.RunMany();
-		
+	
+	t.Transaction([](Database& db) { db.Update(Binary(true, BQ_ONLINE), 0); });
+			
 	REQUIRE(t.lower.PopWriteAsHex() ==  "F1 82 80 00 02 01 28 01 00 00 00 81");
 
 	auto readClass1 = "C0 01 3C 02 06";
 
 	if (true)
 	{
-		t.outstation.OnSendResult(true);
+		t.OnSendResult(true);
 		t.SendToOutstation(readClass1);
 	}
 	else
 	{
 		t.SendToOutstation(readClass1);
-		t.outstation.OnSendResult(true);
+		t.OnSendResult(true);
 	}
-
-	t.exe.RunMany();
-	t.SendToOutstation(hex::UnsolConfirm(1));
-	t.exe.RunMany();
 	
+	t.SendToOutstation(hex::UnsolConfirm(1));
+		
 	REQUIRE(t.lower.PopWriteAsHex() ==  "C0 81 80 00");
 }
 
-/*
+
 TEST_CASE(SUITE("ReadWriteDuringUnsol"))
 {
-	OutstationConfig cfg; cfg.mUnsolPackDelay = TimeDuration::Zero();
-	cfg.mUnsolMask.class1 = true; //allows us to skip this step
-	OutstationTestObject t(cfg);
-	t.db.Configure(MeasurementType::BINARY, 1);
-	t.db.SetClass(MeasurementType::BINARY, CLASS_1);
-	t.outstation.OnLowerLayerUp();
+	OutstationConfig cfg;
+	cfg.params.allowUnsolicited = true;
+	cfg.params.unsolClassMask = ALL_EVENT_CLASSES;
+	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOnly(5), EventBufferConfig(5));
+
+	t.LowerLayerUp();
 
 	REQUIRE(t.lower.PopWriteAsHex() ==  "F0 82 80 00");
+	t.OnSendResult(true);
+	t.SendToOutstation(hex::UnsolConfirm(0));
 
-	{
-		Transaction tr(t.outstation.GetDataObserver());
-		t.outstation.GetDataObserver()->Update(Binary(true, BQ_ONLINE), 0);
-	}
+	t.Transaction([](Database& db) { db.Update(Binary(true, BQ_ONLINE), 0); });
+	
+	REQUIRE(t.lower.PopWriteAsHex() ==  "F1 82 80 00 02 01 28 01 00 00 00 81");
+	t.OnSendResult(true);
 
-	t.app.DisableAutoSendCallback();
-	REQUIRE(t.mts.RunOne());
-	REQUIRE(t.lower.PopWriteAsHex() ==  "F0 82 80 00 02 01 17 01 00 81");
-
+	// send a read request that will be overwritten
 	t.SendToOutstation("C0 01 3C 01 06");
 
 	//now send a write IIN request, and test that the outstation answers immediately
 	t.SendToOutstation("C0 02 50 01 00 07 07 00");
-	t.outstation.OnUnsolSendSuccess();
+	
 	REQUIRE(t.lower.PopWriteAsHex() ==  "C0 81 00 00");
 }
 
+TEST_CASE(SUITE("RepeatRequestDuringUnsol"))
+{
+	OutstationConfig cfg;
+	cfg.params.allowUnsolicited = true;
+	cfg.params.unsolClassMask = ALL_EVENT_CLASSES;
+	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOnly(5), EventBufferConfig(5));
+
+	t.LowerLayerUp();
+
+	REQUIRE(t.lower.PopWriteAsHex() == "F0 82 80 00");
+	t.OnSendResult(true);
+	t.SendToOutstation(hex::UnsolConfirm(0));
+
+	t.SendToOutstation(hex::ClearRestartIIN(0));
+	REQUIRE(t.lower.PopWriteAsHex() == hex::EmptyResponse(IINField::Empty, 0));
+	t.OnSendResult(true);
+
+	t.Transaction([](Database& db) { db.Update(Binary(true, BQ_ONLINE), 1); });
+	REQUIRE(t.lower.PopWriteAsHex() == "F1 82 00 00 02 01 28 01 00 01 00 81");
+	t.OnSendResult(true);
+	
+	// while waiting for a confirm, repeat the previous request, byte-for-byte
+	t.SendToOutstation(hex::ClearRestartIIN(0));
+	REQUIRE(t.lower.PopWriteAsHex() == hex::EmptyResponse(IINField::Empty, 0));
+	t.OnSendResult(true);
+
+}
+
+
 TEST_CASE(SUITE("UnsolEnable"))
 {
-	OutstationConfig cfg; cfg.mUnsolPackDelay = TimeDuration::Zero(); cfg.mUnsolMask = ClassMask(false, false, false);
-	OutstationTestObject t(cfg);
-	t.db.Configure(MeasurementType::BINARY, 1);
-	t.db.SetClass(MeasurementType::BINARY, CLASS_1);
-	t.outstation.OnLowerLayerUp();
+	OutstationConfig cfg;
+	cfg.params.allowUnsolicited = true;
+	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOnly(5), EventBufferConfig(5));
+	
+	t.LowerLayerUp();
 
-	REQUIRE(t.lower.PopWriteAsHex() ==  "F0 82 80 00"); //Null UNSOL
+	REQUIRE(t.lower.PopWriteAsHex() ==  hex::NullUnsolicited(0));
+	t.OnSendResult(true);
+	t.SendToOutstation(hex::UnsolConfirm(0));
 
 	// do a transaction to show that unsol data is not being reported yet
-	{
-		Transaction tr(t.outstation.GetDataObserver());
-		t.outstation.GetDataObserver()->Update(Binary(false, BQ_ONLINE), 0);
-	}
-
-	REQUIRE(t.mts.RunOne()); //dispatch the data update event
-	REQUIRE(t.app.NumAPDU() ==  0); //check that no unsol packets are generated
-
+	t.Transaction([](Database& db) { db.Update(Binary(false, BQ_ONLINE), 0); });
+	
+	REQUIRE(t.lower.PopWriteAsHex() == "");
+	
+	// Enable unsol class 1
 	t.SendToOutstation("C0 14 3C 02 06");
-	REQUIRE(t.lower.PopWriteAsHex() ==  "C0 81 80 00");
+	REQUIRE(t.lower.PopWriteAsHex() ==  "C0 81 82 00");
+	t.OnSendResult(true);
 
 	// should automatically send the previous data as unsol
-	REQUIRE(t.lower.PopWriteAsHex() ==  "F0 82 80 00 02 01 17 01 00 01");
+	REQUIRE(t.lower.PopWriteAsHex() ==  "F1 82 80 00 02 01 28 01 00 00 00 01");
 }
 
-TEST_CASE(SUITE("UnsolEnableBadObject"))
-{
-	OutstationConfig cfg; cfg.mUnsolPackDelay = TimeDuration::Zero(); cfg.mUnsolMask = ClassMask(false, false, false);
-	OutstationTestObject t(cfg);
-	t.db.Configure(MeasurementType::BINARY, 1);
-	t.db.SetClass(MeasurementType::BINARY, CLASS_1);
-	t.outstation.OnLowerLayerUp();
-
-	REQUIRE(t.lower.PopWriteAsHex() ==  "F0 82 80 00"); //Null UNSOL
-
-	// do a transaction to show that unsol data is not being reported yet
-	{
-		Transaction tr(t.outstation.GetDataObserver());
-		t.outstation.GetDataObserver()->Update(Binary(false, BQ_ONLINE), 0);
-	}
-
-	REQUIRE(t.mts.RunOne()); //dispatch the data update event
-	REQUIRE(t.app.NumAPDU() ==  0); //check that no unsol packets are generated
-
-	t.SendToOutstation("C0 14 01 02 06");
-	REQUIRE(t.lower.PopWriteAsHex() ==  "C0 81 80 01");
-}
 
 TEST_CASE(SUITE("UnsolEnableDisableFailure"))
 {
-	OutstationConfig cfg; cfg.disableUnsol = true;
-	OutstationTestObject t(cfg);
-	t.db.Configure(MeasurementType::BINARY, 1);
-	t.db.SetClass(MeasurementType::BINARY, CLASS_1);
-	t.outstation.OnLowerLayerUp();
-
+	OutstationConfig cfg;
+	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOnly(5), EventBufferConfig(5));
+	
+	t.LowerLayerUp();
 	t.SendToOutstation("C0 14 3C 02 06");
 	REQUIRE(t.lower.PopWriteAsHex() ==  "C0 81 80 01"); //FUNC_NOT_SUPPORTED
 }
-*/
 
 
 

@@ -41,10 +41,58 @@ OutstationTestObject::OutstationTestObject(const OutstationConfig& config, const
 	lower.SetUpperLayer(&outstation);
 }
 
-void OutstationTestObject::SendToOutstation(const std::string& hex)
+uint32_t OutstationTestObject::LowerLayerUp()
+{
+	outstation.OnLowerLayerUp();
+	return exe.RunMany();
+}
+
+uint32_t OutstationTestObject::LowerLayerDown()
+{
+	outstation.OnLowerLayerDown();
+	return exe.RunMany();
+}
+
+uint32_t OutstationTestObject::OnSendResult(bool isSuccess)
+{
+	outstation.OnSendResult(isSuccess);
+	return exe.RunMany();
+}
+
+uint32_t OutstationTestObject::SendToOutstation(const std::string& hex)
 {
 	HexSequence hs(hex);
 	outstation.OnReceive(hs.ToReadOnly());
+	return exe.RunMany();
 }
+
+size_t OutstationTestObject::NumPendingTimers() const
+{
+	return exe.NumPendingTimers();
+}
+
+void OutstationTestObject::SetRequestTimeIIN()
+{
+	outstation.SetRequestTimeIIN();
+}
+
+bool OutstationTestObject::AdvanceToNextTimer()
+{
+	if (exe.AdvanceToNextTimer())
+	{
+		return exe.RunMany() > 0;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+uint32_t OutstationTestObject::AdvanceTime(const openpal::TimeDuration& td)
+{
+	exe.AdvanceTime(td);
+	return exe.RunMany();
+}
+
 
 }

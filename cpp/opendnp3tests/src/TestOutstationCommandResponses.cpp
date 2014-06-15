@@ -35,7 +35,7 @@ TEST_CASE(SUITE("SelectCROBNotSupported"))
 {
 	OutstationConfig config;
 	OutstationTestObject t(config);
-	t.outstation.OnLowerLayerUp();
+	t.LowerLayerUp();
 
 	t.cmdHandler.SetResponse(CommandStatus::NOT_SUPPORTED);
 
@@ -50,7 +50,7 @@ TEST_CASE(SUITE("SelectCROBTooMany"))
 	OutstationConfig config;
 	config.params.maxControlsPerRequest = 1;
 	OutstationTestObject t(config);
-	t.outstation.OnLowerLayerUp();
+	t.LowerLayerUp();
 
 	// Select group 12 Var 1, count = 2, index = 3 & 4
 	t.SendToOutstation("C0 03 0C 01 17 02 03 01 01 01 00 00 00 01 00 00 00 00 04 01 01 01 00 00 00 01 00 00 00 00");
@@ -62,17 +62,17 @@ TEST_CASE(SUITE("SelectOperateCROB"))
 {
 	OutstationConfig config;	
 	OutstationTestObject t(config);
-	t.outstation.OnLowerLayerUp();
+	t.LowerLayerUp();
 
 	// Select group 12 Var 1, count = 1, index = 3
 	t.SendToOutstation("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
 	REQUIRE(t.lower.PopWriteAsHex() ==  "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
-	t.outstation.OnSendResult(true);
+	t.OnSendResult(true);
 
 	// operate
 	t.SendToOutstation("C1 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
 	REQUIRE(t.lower.PopWriteAsHex() == "C1 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
-	t.outstation.OnSendResult(true);
+	t.OnSendResult(true);
 }
 
 TEST_CASE(SUITE("SelectOperateTimeout"))
@@ -80,77 +80,77 @@ TEST_CASE(SUITE("SelectOperateTimeout"))
 	OutstationConfig config;
 	config.params.selectTimeout = TimeDuration::Seconds(5);
 	OutstationTestObject t(config);
-	t.outstation.OnLowerLayerUp();
+	t.LowerLayerUp();
 
 	// Select group 12 Var 1, count = 1, index = 3
 	t.SendToOutstation("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
-	t.outstation.OnSendResult(true);
+	t.OnSendResult(true);
 
-	t.exe.AdvanceTime(TimeDuration::Milliseconds(5001));
+	t.AdvanceTime(TimeDuration::Milliseconds(5001));
 
 	// operate
 	t.SendToOutstation("C1 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
 	REQUIRE(t.lower.PopWriteAsHex() == "C1 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 01"); // 0x01 timeout
-	t.outstation.OnSendResult(true);
+	t.OnSendResult(true);
 }
 
 TEST_CASE(SUITE("SelectOperateGapInSequenceNumber"))
 {
 	OutstationConfig config;	
 	OutstationTestObject t(config);
-	t.outstation.OnLowerLayerUp();
+	t.LowerLayerUp();
 
 	// Select group 12 Var 1, count = 1, index = 3
 	t.SendToOutstation("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00"); // 0x00 status == CommandStatus::SUCCESS	
-	t.outstation.OnSendResult(true);
+	t.OnSendResult(true);
 
 	// operate
 	t.SendToOutstation("C2 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
 	REQUIRE(t.lower.PopWriteAsHex() == "C2 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 02"); // 0x02 no select
-	t.outstation.OnSendResult(true);
+	t.OnSendResult(true);
 }
 
 TEST_CASE(SUITE("SelectOperateSameSequenceNumber"))
 {
 	OutstationConfig config;
 	OutstationTestObject t(config);
-	t.outstation.OnLowerLayerUp();
+	t.LowerLayerUp();
 
 	// Select group 12 Var 1, count = 1, index = 3
 	t.SendToOutstation("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00"); // 0x00 status == CommandStatus::SUCCESS	
-	t.outstation.OnSendResult(true);
+	t.OnSendResult(true);
 
 	// operate
 	t.SendToOutstation("C0 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 02"); // 0x02 no select
-	t.outstation.OnSendResult(true);
+	t.OnSendResult(true);
 }
 
 TEST_CASE(SUITE("SelectOperateNonMatchingRequests"))
 {
 	OutstationConfig config;
 	OutstationTestObject t(config);
-	t.outstation.OnLowerLayerUp();
+	t.LowerLayerUp();
 
 	// Select group 12 Var 1, count = 1, index = 3
 	t.SendToOutstation("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00"); // 0x00 status == CommandStatus::SUCCESS	
-	t.outstation.OnSendResult(true);
+	t.OnSendResult(true);
 
 	// operate
 	t.SendToOutstation("C1 04 0C 01 17 01 04 01 01 01 00 00 00 01 00 00 00 00");
 	REQUIRE(t.lower.PopWriteAsHex() == "C1 81 80 00 0C 01 17 01 04 01 01 01 00 00 00 01 00 00 00 02"); // 0x02 no select
-	t.outstation.OnSendResult(true);
+	t.OnSendResult(true);
 }
 
 TEST_CASE(SUITE("SelectOperateCROBSameSequenceNumber"))
 {
 	OutstationConfig config;
 	OutstationTestObject t(config);
-	t.outstation.OnLowerLayerUp();
+	t.LowerLayerUp();
 
 	REQUIRE(0 ==  t.cmdHandler.NumInvocations());
 
@@ -158,26 +158,26 @@ TEST_CASE(SUITE("SelectOperateCROBSameSequenceNumber"))
 	t.SendToOutstation("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
 	REQUIRE(t.lower.PopWriteAsHex() ==  "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
 	REQUIRE(1 == t.cmdHandler.NumInvocations());
-	t.outstation.OnSendResult(true);
+	t.OnSendResult(true);
 
 	// operate the first time with correct sequence #
 	t.SendToOutstation("C1 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
 	REQUIRE(t.lower.PopWriteAsHex() == "C1 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
 	REQUIRE(2 == t.cmdHandler.NumInvocations());
-	t.outstation.OnSendResult(true);
+	t.OnSendResult(true);
 	
 	// operate again with same sequence number, should respond success but not really do an operation
 	t.SendToOutstation("C1 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
 	REQUIRE(t.lower.PopWriteAsHex() == "C1 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
 	REQUIRE(2 == t.cmdHandler.NumInvocations());
-	t.outstation.OnSendResult(true);
+	t.OnSendResult(true);
 }
 
 TEST_CASE(SUITE("SelectGroup41Var1"))
 {
 	OutstationConfig config;
 	OutstationTestObject t(config);
-	t.outstation.OnLowerLayerUp();
+	t.LowerLayerUp();
 
 	// Select group 41 Var 1, count = 1, index = 3
 	t.SendToOutstation("C0 03 29 01 17 01 03 00 00 00 00 00");
@@ -188,7 +188,7 @@ TEST_CASE(SUITE("SelectGroup41Var2"))
 {
 	OutstationConfig config;
 	OutstationTestObject t(config);
-	t.outstation.OnLowerLayerUp();
+	t.LowerLayerUp();
 
 	// Select group 41 Var 2, count = 1, index = 3
 	t.SendToOutstation("C0 03 29 02 17 01 03 00 00 00");
@@ -199,7 +199,7 @@ TEST_CASE(SUITE("SelectGroup41Var3"))
 {
 	OutstationConfig config;
 	OutstationTestObject t(config);
-	t.outstation.OnLowerLayerUp();
+	t.LowerLayerUp();
 
 	// Select group 41 Var 3, count = 1, index = 1, value = 100.0
 	t.SendToOutstation("C0 03 29 03 17 01 01 00 00 C8 42 00");
@@ -210,7 +210,7 @@ TEST_CASE(SUITE("SelectGroup41Var4"))
 {
 	OutstationConfig config;
 	OutstationTestObject t(config);
-	t.outstation.OnLowerLayerUp();
+	t.LowerLayerUp();
 
 	// Select group 41 Var 4, count = 1, index = 1, value = 100.0
 	t.SendToOutstation("C0 03 29 04 17 01 01 00 00 00 00 00 00 59 40 00");
@@ -221,17 +221,17 @@ TEST_CASE(SUITE("SelectOperateGroup41Var1"))
 {
 	OutstationConfig config;
 	OutstationTestObject t(config);
-	t.outstation.OnLowerLayerUp();
+	t.LowerLayerUp();
 
 	// Select group 41 Var 1, count = 1, index = 3
 	t.SendToOutstation("C0 03 29 01 17 01 03 00 00 00 00 00");
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00 29 01 17 01 03 00 00 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
-	t.outstation.OnSendResult(true);
+	t.OnSendResult(true);
 
 	// Select group 41 Var 1, count = 1, index = 3
 	t.SendToOutstation("C1 04 29 01 17 01 03 00 00 00 00 00");
 	REQUIRE(t.lower.PopWriteAsHex() == "C1 81 80 00 29 01 17 01 03 00 00 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
-	t.outstation.OnSendResult(true);
+	t.OnSendResult(true);
 
 }
 
@@ -239,18 +239,18 @@ TEST_CASE(SUITE("SelectOperateGroup41Var2"))
 {
 	OutstationConfig config;
 	OutstationTestObject t(config);
-	t.outstation.OnLowerLayerUp();
+	t.LowerLayerUp();
 
 	// Select group 41 Var 2, count = 1, index = 3
 	t.SendToOutstation("C0 03 29 02 17 01 03 00 00 00");
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00 29 02 17 01 03 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
-	t.outstation.OnSendResult(true);
+	t.OnSendResult(true);
 
 
 	// Select group 41 Var 1, count = 1, index = 3
 	t.SendToOutstation("C1 04 29 02 17 01 03 00 00 00");
 	REQUIRE(t.lower.PopWriteAsHex() == "C1 81 80 00 29 02 17 01 03 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
-	t.outstation.OnSendResult(true);
+	t.OnSendResult(true);
 
 }
 
@@ -258,42 +258,42 @@ TEST_CASE(SUITE("SelectOperateGroup41Var3"))
 {
 	OutstationConfig config;
 	OutstationTestObject t(config);
-	t.outstation.OnLowerLayerUp();
+	t.LowerLayerUp();
 
 	// Select group 41 Var 3, count = 1, index = 1
 	t.SendToOutstation("C0 03 29 03 17 01 01 00 00 C8 42 00");
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00 29 03 17 01 01 00 00 C8 42 00"); // 0x00 status == CommandStatus::SUCCESS
-	t.outstation.OnSendResult(true);
+	t.OnSendResult(true);
 
 	// operate group 41 Var 3, count = 1, index = 1
 	t.SendToOutstation("C1 04 29 03 17 01 01 00 00 C8 42 00");
 	REQUIRE(t.lower.PopWriteAsHex() == "C1 81 80 00 29 03 17 01 01 00 00 C8 42 00"); // 0x00 status == CommandStatus::SUCCESS
-	t.outstation.OnSendResult(true);
+	t.OnSendResult(true);
 }
 
 TEST_CASE(SUITE("SelectOperateGroup41Var4"))
 {
 	OutstationConfig config;
 	OutstationTestObject t(config);
-	t.outstation.OnLowerLayerUp();
+	t.LowerLayerUp();
 
 	// Select group 41 Var 4, count = 1, index = 1
 	t.SendToOutstation("C0 03 29 04 17 01 01 00 00 00 00 00 00 59 40 00");
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00 29 04 17 01 01 00 00 00 00 00 00 59 40 00"); // 0x00 status == CommandStatus::SUCCESS
-	t.outstation.OnSendResult(true);
+	t.OnSendResult(true);
 
 
 	// operate group 41 Var 4, count = 1, index = 1
 	t.SendToOutstation("C1 04 29 04 17 01 01 00 00 00 00 00 00 59 40 00");
 	REQUIRE(t.lower.PopWriteAsHex() == "C1 81 80 00 29 04 17 01 01 00 00 00 00 00 00 59 40 00"); // 0x00 status == CommandStatus::SUCCESS
-	t.outstation.OnSendResult(true);
+	t.OnSendResult(true);
 }
 
 TEST_CASE(SUITE("DirectOperateGroup41Var1"))
 {
 	OutstationConfig config;
 	OutstationTestObject t(config);
-	t.outstation.OnLowerLayerUp();
+	t.LowerLayerUp();
 
 	// Select group 41 Var 1, count = 1, index = 3
 	t.SendToOutstation("C1 05 29 01 17 01 03 00 00 00 00 00");
@@ -304,7 +304,7 @@ TEST_CASE(SUITE("DirectOperateGroup41Var2"))
 {
 	OutstationConfig config;
 	OutstationTestObject t(config);
-	t.outstation.OnLowerLayerUp();
+	t.LowerLayerUp();
 
 	// Select group 41 Var 1, count = 1, index = 3
 	t.SendToOutstation("C1 05 29 02 17 01 03 00 00 00");
@@ -316,7 +316,7 @@ TEST_CASE(SUITE("DirectOperateGroup41Var3"))
 {
 	OutstationConfig config;
 	OutstationTestObject t(config);
-	t.outstation.OnLowerLayerUp();
+	t.LowerLayerUp();
 
 	// operate group 41 Var 3, count = 1, index = 1
 	t.SendToOutstation("C1 05 29 03 17 01 01 00 00 C8 42 00");
@@ -328,9 +328,10 @@ TEST_CASE(SUITE("DirectOperateGroup41Var4"))
 {
 	OutstationConfig config;
 	OutstationTestObject t(config);
-	t.outstation.OnLowerLayerUp();
+	t.LowerLayerUp();
 
 	// operate group 41 Var 4, count = 1, index = 1
 	t.SendToOutstation("C1 05 29 04 17 01 01 00 00 00 00 00 00 59 40 00");
 	REQUIRE(t.lower.PopWriteAsHex() == "C1 81 80 00 29 04 17 01 01 00 00 00 00 00 00 59 40 00"); // 0x00 status == CommandStatus::SUCCESS
 }
+

@@ -68,12 +68,12 @@ public:
 	size_t RunMany(size_t aMaximum = std::numeric_limits<size_t>::max());
 
 	/** @return The number of active, pending timers and post operations */
-	size_t NumActive()
+	size_t NumActive() const
 	{
 		return postQueue.size();
 	}
 
-	size_t NumPendingTimers()
+	size_t NumPendingTimers() const
 	{
 		return timers.size();
 	}

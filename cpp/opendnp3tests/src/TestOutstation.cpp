@@ -22,6 +22,7 @@
 
 
 #include "OutstationTestObject.h"
+#include "APDUHexBuilders.h"
 
 #include <opendnp3/DNPErrorCodes.h>
 
@@ -36,13 +37,13 @@ TEST_CASE(SUITE("InitialState"))
 	OutstationConfig config;
 	OutstationTestObject test(config);
 	
-	test.outstation.OnLowerLayerDown();
+	test.LowerLayerDown();
 	REQUIRE(flags::ERR == test.log.PopFilter());
 
-	test.outstation.OnReceive(ReadOnlyBuffer());
+	test.SendToOutstation("");
 	REQUIRE(flags::ERR == test.log.PopFilter());
 
-	test.outstation.OnSendResult(true);
+	test.OnSendResult(true);
 	REQUIRE(flags::ERR == test.log.PopFilter());
 }
 
@@ -51,7 +52,7 @@ TEST_CASE(SUITE("UnsupportedFunction"))
 {
 	OutstationConfig config;
 	OutstationTestObject t(config);
-	t.outstation.OnLowerLayerUp();
+	t.LowerLayerUp();
 
 	t.SendToOutstation("C0 10"); // func = initialize application (16)
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 01"); // IIN = device restart + func not supported
@@ -61,17 +62,17 @@ TEST_CASE(SUITE("WriteIIN"))
 {
 	OutstationConfig config;
 	OutstationTestObject t(config);
-	t.outstation.OnLowerLayerUp();
+	t.LowerLayerUp();
 
-	t.SendToOutstation("C0 02 50 01 00 07 07 00");
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 00 00");
+	t.SendToOutstation(hex::ClearRestartIIN(0));
+	REQUIRE(t.lower.PopWriteAsHex() == hex::EmptyResponse(IINField::Empty, 0));
 }
 
 TEST_CASE(SUITE("WriteIINEnabled"))
 {
 	OutstationConfig config;
 	OutstationTestObject t(config);
-	t.outstation.OnLowerLayerUp();
+	t.LowerLayerUp();
 
 	t.SendToOutstation("C0 02 50 01 00 07 07 01");
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 04");
@@ -81,7 +82,7 @@ TEST_CASE(SUITE("WriteIINWrongBit"))
 {
 	OutstationConfig config;
 	OutstationTestObject t(config);
-	t.outstation.OnLowerLayerUp();
+	t.LowerLayerUp();
 
 	t.SendToOutstation("C0 02 50 01 00 04 04 01");
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 04");
@@ -91,7 +92,7 @@ TEST_CASE(SUITE("WriteNonWriteObject"))
 {
 	OutstationConfig config;
 	OutstationTestObject t(config);
-	t.outstation.OnLowerLayerUp();
+	t.LowerLayerUp();
 
 	t.SendToOutstation("C0 02 01 02 00 07 07 00");
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 01");
@@ -101,9 +102,9 @@ TEST_CASE(SUITE("DelayMeasure"))
 {
 	OutstationConfig config;
 	OutstationTestObject t(config);
-	t.outstation.OnLowerLayerUp();
+	t.LowerLayerUp();
 
-	t.outstation.SetRequestTimeIIN();
+	t.SetRequestTimeIIN();
 
 	t.SendToOutstation("C0 17"); //delay measure
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 90 00 34 02 07 01 00 00"); // response, Grp51Var2, count 1, value == 00 00
@@ -113,7 +114,7 @@ TEST_CASE(SUITE("DelayMeasureExtraData"))
 {
 	OutstationConfig config;
 	OutstationTestObject t(config);
-	t.outstation.OnLowerLayerUp();
+	t.LowerLayerUp();
 
 	t.SendToOutstation("C0 17 DE AD BE EF"); //delay measure
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 01"); // Func not supported
@@ -123,7 +124,7 @@ TEST_CASE(SUITE("WriteTimeDate"))
 {
 	OutstationConfig config;	
 	OutstationTestObject t(config);	
-	t.outstation.OnLowerLayerUp();
+	t.LowerLayerUp();
 
 
 	t.SendToOutstation("C1 02 32 01 07 01 D2 04 00 00 00 00"); // write Grp50Var1, value = 1234 ms after epoch
@@ -137,7 +138,7 @@ TEST_CASE(SUITE("WriteTimeDateNotAsking"))
 {
 	OutstationConfig config;
 	OutstationTestObject t(config);	
-	t.outstation.OnLowerLayerUp();
+	t.LowerLayerUp();
 
 	t.timeHandler.isEnabled = false; // reject the time write from user code
 	t.SendToOutstation("C0 02 32 01 07 01 D2 04 00 00 00 00"); //write Grp50Var1, value = 1234 ms after epoch
@@ -149,7 +150,7 @@ TEST_CASE(SUITE("WriteTimeDateMultipleObjects"))
 {
 	OutstationConfig cfg;	
 	OutstationTestObject t(cfg, DatabaseTemplate());
-	t.outstation.OnLowerLayerUp();
+	t.LowerLayerUp();
 
 	t.SendToOutstation("C0 02 32 01 07 02 D2 04 00 00 00 00 D2 04 00 00 00 00"); //write Grp50Var1, value = 1234 ms after epoch
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 04"); // param error +  need time still set	
@@ -160,7 +161,7 @@ TEST_CASE(SUITE("BlankIntegrityPoll"))
 {
 	OutstationConfig config;
 	OutstationTestObject t(config);
-	t.outstation.OnLowerLayerUp();
+	t.LowerLayerUp();
 
 	t.SendToOutstation("C0 01 3C 01 06"); // Read class 0
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00");
@@ -171,37 +172,42 @@ TEST_CASE(SUITE("ReadClass0MultiFragAnalog"))
 	OutstationConfig config;
 	config.params.maxTxFragSize = 20; // override to use a fragment length of 20	
 	OutstationTestObject t(config, DatabaseTemplate::AnalogOnly(8));
-	t.outstation.OnLowerLayerUp();
+	t.LowerLayerUp();
 
-	{
-		Transaction tr(&t.db);
+	
+	t.Transaction([](Database& db) {
 		for (uint16_t i = 0; i < 8; i++)
 		{
-			t.db.Update(Analog(0, AQ_ONLINE), i);
+			db.Update(Analog(0, AQ_ONLINE), i);
 		}
-	}
+	});
+	
 
 	t.SendToOutstation("C0 01 3C 01 06"); // Read class 0
 
 	// Response should be (30,1)x2 per fragment, quality ONLINE, value 0
 	// 4 fragment response, first 3 fragments should be confirmed, last one shouldn't be
 	REQUIRE(t.lower.PopWriteAsHex() == "A0 81 80 00 1E 01 00 00 01 01 00 00 00 00 01 00 00 00 00");
-	t.outstation.OnSendResult(true);
+	t.OnSendResult(true);
 	t.SendToOutstation("C0 00");
 	REQUIRE(t.lower.PopWriteAsHex() == "21 81 80 00 1E 01 00 02 03 01 00 00 00 00 01 00 00 00 00");
-	t.outstation.OnSendResult(true);
+	t.OnSendResult(true);
 	t.SendToOutstation("C1 00");
 	REQUIRE(t.lower.PopWriteAsHex() == "22 81 80 00 1E 01 00 04 05 01 00 00 00 00 01 00 00 00 00");
-	t.outstation.OnSendResult(true);
+	t.OnSendResult(true);
 	t.SendToOutstation("C2 00");
 	REQUIRE(t.lower.PopWriteAsHex() == "43 81 80 00 1E 01 00 06 07 01 00 00 00 00 01 00 00 00 00");	
+	t.OnSendResult(true);
+	t.SendToOutstation("C3 00");
+
+	REQUIRE(t.lower.PopWriteAsHex() == "");
 }
 
 TEST_CASE(SUITE("ReadFuncNotSupported"))
 {
 	OutstationConfig config;
 	OutstationTestObject t(config);
-	t.outstation.OnLowerLayerUp();
+	t.LowerLayerUp();
 
 	t.SendToOutstation("C0 01 0C 01 06"); //try to read 12/1 (control block)
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 01"); //restart/func not supported
@@ -212,7 +218,7 @@ void NewTestStaticRead(const std::string& request, const std::string& response)
 {	
 	OutstationConfig config;
 	OutstationTestObject t(config, DatabaseTemplate::AllTypes(1));	
-	t.outstation.OnLowerLayerUp();
+	t.LowerLayerUp();
 
 	t.SendToOutstation(request);
 	REQUIRE(t.lower.PopWriteAsHex() == response);
@@ -274,13 +280,12 @@ TEST_CASE(SUITE("ReadByRangeHeader"))
 {
 	OutstationConfig config;	
 	OutstationTestObject t(config, DatabaseTemplate::AnalogOnly(10));
-	t.outstation.OnLowerLayerUp();
+	t.LowerLayerUp();
 
-	{
-		Transaction tr(&t.db);
-		t.db.Update(Analog(42, AQ_ONLINE), 5);
-		t.db.Update(Analog(41, AQ_ONLINE), 6);
-	}
+	t.Transaction([](Database& db){
+		db.Update(Analog(42, AQ_ONLINE), 5);
+		db.Update(Analog(41, AQ_ONLINE), 6);
+	});	
 
 	t.SendToOutstation("C2 01 1E 02 00 05 06"); // read 30 var 2, [05 : 06]
 	REQUIRE(t.lower.PopWriteAsHex() == "C2 81 80 00 1E 02 00 05 06 01 2A 00 01 29 00");
@@ -291,12 +296,9 @@ void TestStaticType(const OutstationConfig& config, const DatabaseTemplate& tmp,
 {
 	OutstationTestObject t(config, tmp);
 
-	t.outstation.OnLowerLayerUp();
+	t.LowerLayerUp();
 
-	{
-		Transaction tr(&t.db);
-		t.db.Update(PointType(value), 0);
-	}
+	t.Transaction([value](Database& db) { db.Update(PointType(value), 0); });
 
 	t.SendToOutstation("C0 01 3C 01 06"); // Read class 0
 	REQUIRE(t.lower.PopWriteAsHex() == rsp);
@@ -330,10 +332,10 @@ TEST_CASE(SUITE("ReadGrp20Var6"))
 }
 
 template <class T>
-void TestStaticAnalog(StaticAnalogResponse aRsp, T aVal, const std::string& arRsp)
+void TestStaticAnalog(StaticAnalogResponse rspType, T aVal, const std::string& response)
 {
-	OutstationConfig cfg; cfg.defaultStaticResponses.analog = aRsp;
-	TestStaticType<Analog>(cfg, DatabaseTemplate::AnalogOnly(1), aVal, arRsp);
+	OutstationConfig cfg; cfg.defaultStaticResponses.analog = rspType;
+	TestStaticType<Analog>(cfg, DatabaseTemplate::AnalogOnly(1), aVal, response);
 }
 
 TEST_CASE(SUITE("ReadGrp30Var2"))
@@ -362,16 +364,13 @@ TEST_CASE(SUITE("ReadGrp30Var6"))
 }
 
 template <class T>
-void TestStaticBinaryOutputStatus(T aVal, const std::string& response)
+void TestStaticBinaryOutputStatus(T value, const std::string& response)
 {
 	OutstationConfig cfg;
 	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOutputStatusOnly(1));
-	t.outstation.OnLowerLayerUp();
+	t.LowerLayerUp();
 
-	{
-		Transaction tr(&t.db);
-		t.db.Update(BinaryOutputStatus(aVal, TQ_ONLINE), 0);
-	}
+	t.Transaction([value](Database& db) { db.Update(BinaryOutputStatus(value, TQ_ONLINE), 0); });
 
 	t.SendToOutstation("C0 01 3C 01 06"); // Read class 0
 	REQUIRE(t.lower.PopWriteAsHex() == response);
@@ -408,4 +407,3 @@ TEST_CASE(SUITE("ReadGrp40Var4"))
 {
 	TestStaticAnalogOutputStatus(StaticAnalogOutputStatusResponse::Group40Var4, -20.0, "C0 81 80 00 28 04 00 00 00 01 00 00 00 00 00 00 34 C0");
 }
-
