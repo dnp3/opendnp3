@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __ASYNC_TEST_OBJECT_ASIO_H_
-#define __ASYNC_TEST_OBJECT_ASIO_H_
+#ifndef __TEST_OBJECT_ASIO_H_
+#define __TEST_OBJECT_ASIO_H_
 
 #include "TestObject.h"
 

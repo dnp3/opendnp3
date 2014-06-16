@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __ASYNC_PHYS_TEST_OBJECT_H_
-#define __ASYNC_PHYS_TEST_OBJECT_H_
+#ifndef __PHYS_TEST_OBJECT_H_
+#define __PHYS_TEST_OBJECT_H_
 
 #include "TestObjectASIO.h"
 #include "MockUpperLayer.h"

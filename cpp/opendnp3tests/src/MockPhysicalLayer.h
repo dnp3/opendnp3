@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __MOCK_PHYSICAL_LAYER_ASYNC_H_
-#define __MOCK_PHYSICAL_LAYER_ASYNC_H_
+#ifndef __MOCK_PHYSICAL_LAYER_H_
+#define __MOCK_PHYSICAL_LAYER_H_
 
 #include <asiopal/PhysicalLayerBase.h>
 
