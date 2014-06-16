@@ -45,5 +45,17 @@ namespace DNP3.Interface
         /// <param name="period">period, negative for non-periodic</param>        
         /// <returns>a new master scan interface</returns>
         IMasterScan AddClassScan(int aClassMask, TimeSpan period);
+
+       /// <summary>        
+       /// Adds a range-based (start/stop) scan to the master
+       /// </summary>        
+       /// </summary>
+       /// <param name="group"></param>
+       /// <param name="variation"></param>
+       /// <param name="start"></param>
+       /// <param name="stop"></param>
+       /// <param name="period"></param>
+       /// <returns></returns>
+       IMasterScan AddRangeScan(byte group, byte variation, System.UInt16 start, System.UInt16 stop, TimeSpan period);
     }
 }

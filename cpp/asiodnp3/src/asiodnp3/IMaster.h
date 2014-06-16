@@ -54,7 +54,13 @@ public:
 	* Add a class-based scan to the master
 	* @return A proxy class used to manipulate the scan
 	*/
-	virtual opendnp3::MasterScan AddClassScan(int classMask, openpal::TimeDuration scanRate) = 0;
+	virtual opendnp3::MasterScan AddClassScan(uint8_t classMask, openpal::TimeDuration scanRate) = 0;
+
+	/**
+	* Add a start/stop rnage scan to the master
+	* @return A proxy class used to manipulate the scan
+	*/
+	virtual opendnp3::MasterScan  AddRangeScan(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period) = 0;
 
 	/**
 	* Get a command processor interface to execute controls on the master

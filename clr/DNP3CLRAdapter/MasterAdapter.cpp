@@ -10,33 +10,40 @@ namespace Adapter
 {
 
 MasterAdapter::MasterAdapter(asiodnp3::IMaster* apMaster) :
-	mpMaster(apMaster),
-	mCommandAdapter(gcnew CommandProcessorAdapter(apMaster->GetCommandProcessor()))
+	pMaster(apMaster),
+	commandAdapter(gcnew CommandProcessorAdapter(apMaster->GetCommandProcessor()))
 {}
 
 ICommandProcessor^ MasterAdapter::GetCommandProcessor()
 {
-	return mCommandAdapter;
+	return commandAdapter;
 }
 
 void MasterAdapter::Enable()
 {
-	mpMaster->Enable();
+	pMaster->Enable();
 }
 
 void MasterAdapter::Disable()
 {
-	mpMaster->Disable();
+	pMaster->Disable();
 }
 
 void MasterAdapter::Shutdown()
 {
-	mpMaster->BeginShutdown();
+	pMaster->BeginShutdown();
 }
 
 IMasterScan^ MasterAdapter::AddClassScan(int aClassMask, System::TimeSpan period)
 {
-	auto scan = mpMaster->AddClassScan(aClassMask, Conversions::convertTimespan(period));
+	auto scan = pMaster->AddClassScan(aClassMask, Conversions::convertTimespan(period));
+	return gcnew MasterScanAdapter(scan);
+}
+
+IMasterScan^ MasterAdapter::AddRangeScan(System::Byte group, System::Byte variation, System::UInt16 start, System::UInt16 stop, System::TimeSpan period)
+{
+	opendnp3::GroupVariationID gvid(group, variation);
+	auto scan = pMaster->AddRangeScan(gvid, start, stop, Conversions::convertTimespan(period));
 	return gcnew MasterScanAdapter(scan);
 }
 

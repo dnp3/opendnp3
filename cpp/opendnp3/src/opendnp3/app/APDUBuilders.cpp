@@ -33,19 +33,19 @@ namespace opendnp3
 namespace build
 {
 
-void ReadIntegrity(APDURequest& request, int classMask, uint8_t seq)
+void ReadIntegrity(APDURequest& request, uint8_t classMask, uint8_t seq)
 {
 	ClassRequest(request, FunctionCode::READ, classMask, seq);
 }
 
-void ClassRequest(APDURequest& request, FunctionCode fc, int classMask, uint8_t seq)
+void ClassRequest(APDURequest& request, FunctionCode fc, uint8_t classMask, uint8_t seq)
 {
 	request.SetControl(AppControlField(true, true, false, false, seq));
 	request.SetFunction(fc);
 	WriteClassHeaders(request, classMask);
 }
 
-void WriteClassHeaders(APDURequest& request, int classMask)
+void WriteClassHeaders(APDURequest& request, uint8_t classMask)
 {
 	auto writer = request.GetWriter();
 	if (classMask & CLASS_1)
@@ -71,7 +71,7 @@ void DisableUnsolicited(APDURequest& request, uint8_t seq)
 	ClassRequest(request, FunctionCode::DISABLE_UNSOLICITED, ALL_EVENT_CLASSES, seq);	
 }
 
-void EnableUnsolicited(APDURequest& request, int classMask, uint8_t seq)
+void EnableUnsolicited(APDURequest& request, uint8_t classMask, uint8_t seq)
 {
 	ClassRequest(request, FunctionCode::ENABLE_UNSOLICITED, ALL_EVENT_CLASSES & classMask, seq);
 }

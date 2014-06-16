@@ -81,9 +81,17 @@ MasterScan Master::AddScan(openpal::TimeDuration period, const openpal::Function
 	}
 }
 
-MasterScan Master::AddClassScan(int classMask, openpal::TimeDuration period)
+MasterScan Master::AddClassScan(uint8_t classMask, openpal::TimeDuration period)
 {	
 	auto configure = [classMask](APDURequest& request) { build::WriteClassHeaders(request, classMask); };
+	return this->AddScan(period, openpal::Bind1<APDURequest&>(configure));
+}
+
+MasterScan Master::AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period)
+{
+	auto configure = [gvId, start, stop](APDURequest& request) {
+		request.GetWriter().WriteRangeHeader<openpal::UInt16>(QualifierCode::UINT16_START_STOP, gvId, start, stop);		
+	};
 	return this->AddScan(period, openpal::Bind1<APDURequest&>(configure));
 }
 	

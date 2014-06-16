@@ -48,6 +48,9 @@ public:
 	template <class IndexType, class WriteType>
 	RangeWriteIterator<IndexType, WriteType> IterateOverRange(QualifierCode qc, IDNP3Serializer<WriteType>* pSerializer, typename IndexType::Type start);
 
+	template <class IndexType>
+	bool WriteRangeHeader(QualifierCode qc, GroupVariationID gvId, typename IndexType::Type start, typename IndexType::Type stop);
+
 	template <class CountType, class WriteType>
 	CountWriteIterator<CountType, WriteType> IterateOverCount(QualifierCode qc, IDNP3Serializer<WriteType>* pSerializer);
 
@@ -84,6 +87,21 @@ private:
 
 	Settable<openpal::WriteBuffer> mark;
 };
+
+template <class IndexType>
+bool ObjectWriter::WriteRangeHeader(QualifierCode qc, GroupVariationID gvId, typename IndexType::Type start, typename IndexType::Type stop)
+{
+	if (WriteHeaderWithReserve(gvId, qc, 2 * IndexType::Size))
+	{
+		IndexType::WriteBuffer(*position, start);
+		IndexType::WriteBuffer(*position, stop);
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
 
 template <class CountType, class ValueType>
 bool ObjectWriter::WriteSingleValue(QualifierCode qc, IDNP3Serializer<ValueType>* pSerializer, const ValueType& value)

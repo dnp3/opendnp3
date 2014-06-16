@@ -48,11 +48,16 @@ ICommandProcessor* MasterStackImpl::GetCommandProcessor()
 	return &master.GetCommandProcessor();
 }
 
-MasterScan MasterStackImpl::AddClassScan(int classMask, openpal::TimeDuration period)
+MasterScan MasterStackImpl::AddClassScan(uint8_t classMask, openpal::TimeDuration period)
 {
 	ExecutorPause pause(this->GetExecutor());
 	return master.AddClassScan(classMask, period);
 }
 
+MasterScan  MasterStackImpl::AddRangeScan(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period)
+{
+	ExecutorPause pause(this->GetExecutor());
+	return master.AddRangeScan(gvId, start, stop, period);
 }
 
+}

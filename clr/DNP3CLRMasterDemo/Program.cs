@@ -55,6 +55,7 @@ namespace DotNetMasterDemo
             var classMask = PointClassHelpers.GetMask(PointClass.CLASS_1, PointClass.CLASS_2, PointClass.CLASS_3);
             var classScan = master.AddClassScan(classMask, TimeSpan.FromSeconds(5));
             var integrityScan = master.AddClassScan(~0, TimeSpan.FromMinutes(1));
+            var rangeScan = master.AddRangeScan(30, 2, 5, 7, TimeSpan.FromSeconds(20));
 
             classScan.AddScanCallback((ScanResult result) => Console.WriteLine("class scan result: " + result.Status));
 
@@ -78,6 +79,9 @@ namespace DotNetMasterDemo
                         break;
                     case "i":
                         integrityScan.Demand();
+                        break;
+                    case "r":
+                        rangeScan.Demand();
                         break;
                     case "e":
                         classScan.Demand();                        

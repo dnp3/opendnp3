@@ -174,6 +174,7 @@ TEST_CASE(SUITE("ReadGrp2Var1"))
 	TestEventRead("C0 01 02 01 06", "E0 81 80 00 02 01 17 01 00 01", update); // 1 byte count == 1, ONLINE quality
 }
 
+
 TEST_CASE(SUITE("ReadGrp2Var2"))
 {
 	TestEventRead("C0 01 02 02 06", "E0 81 80 00 02 02 17 01 00 01 00 00 00 00 00 00"); // 1 byte count == 1, ONLINE quality

@@ -49,7 +49,9 @@ public:
 
 	virtual opendnp3::ICommandProcessor* GetCommandProcessor()  override final;
 
-	virtual opendnp3::MasterScan AddClassScan(int classMask, openpal::TimeDuration period) override final;
+	virtual opendnp3::MasterScan AddClassScan(uint8_t classMask, openpal::TimeDuration period) override final;
+
+	virtual opendnp3::MasterScan  AddRangeScan(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period) override final;
 
 private:
 	opendnp3::Master master;
