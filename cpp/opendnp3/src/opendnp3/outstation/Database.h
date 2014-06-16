@@ -23,8 +23,7 @@
 
 #include <openpal/IMutex.h>
 #include <openpal/Runnable.h>
-
-#include "opendnp3/Settable.h"
+#include <openpal/Settable.h>
 
 #include "opendnp3/app/StaticRange.h"
 #include "opendnp3/outstation/IEventBuffer.h"
@@ -124,7 +123,7 @@ private:
 	IEventBuffer* pEventBuffer;
 
 	openpal::IMutex* pMutex;
-	opendnp3::Settable<openpal::Runnable> onEventAction;
+	openpal::Settable<openpal::Runnable> onEventAction;
 
 	bool transactionHasEvents;
 

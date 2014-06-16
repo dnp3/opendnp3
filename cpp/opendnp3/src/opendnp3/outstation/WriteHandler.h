@@ -21,7 +21,6 @@
 #ifndef __WRITE_HANDLER_H_
 #define __WRITE_HANDLER_H_
 
-#include "opendnp3/Settable.h"
 #include "opendnp3/app/APDUHandlerBase.h"
 #include "opendnp3/app/IINField.h"
 

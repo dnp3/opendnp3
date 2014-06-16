@@ -21,7 +21,6 @@
 #ifndef __CLASS_BASED_REQUEST_HANDLER_H_
 #define __CLASS_BASED_REQUEST_HANDLER_H_
 
-#include "opendnp3/Settable.h"
 #include "opendnp3/app/APDUHandlerBase.h"
 #include "opendnp3/app/IINField.h"
 

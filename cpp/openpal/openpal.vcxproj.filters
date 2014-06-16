@@ -172,6 +172,9 @@
     <ClInclude Include="src\openpal\Pair.h">
       <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="src\openpal\Settable.h">
+      <Filter>Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\openpal\LogEntry.cpp">

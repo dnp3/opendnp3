@@ -26,6 +26,7 @@
 #include <openpal/LogRoot.h>
 #include <openpal/AsyncLayerInterfaces.h>
 #include <openpal/Pair.h>
+#include <openpal/Settable.h>
 
 #include "opendnp3/outstation/Database.h"
 #include "opendnp3/outstation/ResponseContext.h"
@@ -41,7 +42,6 @@
 #include "opendnp3/outstation/DeferredRequest.h"
 
 #include "opendnp3/StaticSizeConfiguration.h"
-#include "opendnp3/Settable.h"
 
 
 namespace opendnp3
@@ -99,7 +99,7 @@ class OutstationContext
 	openpal::ReadOnlyBuffer lastValidRequest;			// points to bytes in rxBuffer
 	openpal::ReadOnlyBuffer lastResponse;				// points to bytes in txBuffer
 
-	Settable<DeferredRequest> deferredRequest;			// 
+	openpal::Settable<DeferredRequest> deferredRequest;
 
 	ResponseContext rspContext;
 

@@ -21,7 +21,6 @@
 #ifndef __OBJECT_WRITER_H_
 #define __OBJECT_WRITER_H_
 
-#include "opendnp3/Settable.h"
 #include "GroupVariation.h"
 #include "opendnp3/gen/QualifierCode.h"
 
@@ -32,6 +31,8 @@
 
 #include "opendnp3/app/IDNP3Serializer.h"
 #include "opendnp3/app/GroupVariationID.h"
+
+#include <openpal/Settable.h>
 
 namespace opendnp3
 {
@@ -85,7 +86,7 @@ private:
 
 	openpal::WriteBuffer* position;
 
-	Settable<openpal::WriteBuffer> mark;
+	openpal::Settable<openpal::WriteBuffer> mark;
 };
 
 template <class IndexType>

@@ -21,7 +21,7 @@
 #ifndef __SETTABLE_H_
 #define __SETTABLE_H_
 
-namespace opendnp3
+namespace openpal
 {
 
 // utility class for representing a value that may or may not be set
