@@ -30,7 +30,7 @@ namespace DNP3.Interface
        /// <summary>
        /// The number of bytes transmitted
        /// </summary>
-       System.UInt32 NumNytesTx { get; }
+       System.UInt32 NumBytesTx { get; }
 
        /// <summary>
        /// Number of frames discared due to CRC errors
@@ -40,6 +40,6 @@ namespace DNP3.Interface
        /// <summary>
        /// Number of frames detected with bad / malformed contents
        /// </summary>
-       System.UInt32 NumBadLinkFrame { get; }      
+       System.UInt32 NumBadLinkFrame { get; }       
    }
 }

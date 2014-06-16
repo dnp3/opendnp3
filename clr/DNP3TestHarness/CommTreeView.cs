@@ -23,7 +23,8 @@ namespace Automatak.DNP3.Simulator
             TreeNode node = new TreeNode(id);            
             node.ImageIndex = 0;
             node.ContextMenuStrip = CreateChannelMenuStrip(node, channel, masters);
-            treeView.Nodes.Add(node);         
+            node.Tag = channel;
+            treeView.Nodes.Add(node);            
         }
 
         ContextMenuStrip CreateChannelMenuStrip(TreeNode node, IChannel channel, IEnumerable<IMasterPluginFactory> masters)
@@ -93,6 +94,18 @@ namespace Automatak.DNP3.Simulator
         {
             treeView.Nodes.Remove(node);
             channel.Shutdown();           
+        }      
+
+        private IEnumerable<string> ToLines(IChannelStatistics stats)
+        {
+            yield return "Num bytes rx: " + stats.NumBytesRx;
+            yield return "Num bytes tx: " + stats.NumBytesTx;
+            yield return "Num open: " + stats.NumOpen;
+            yield return "Num open fail: " + stats.NumOpenFail;
+            yield return "Num close: " + stats.NumClose;
+            yield return "Num crc error: " + stats.NumCrcError;
+            yield return "Num bad lpdu: " + stats.NumBadLinkFrame;
+
         }
     }
 }

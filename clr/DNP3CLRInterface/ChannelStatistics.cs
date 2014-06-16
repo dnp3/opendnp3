@@ -62,7 +62,7 @@ namespace DNP3.Interface
            get { return numBytesRx; }
        }
 
-       uint IChannelStatistics.NumNytesTx
+       uint IChannelStatistics.NumBytesTx
        {
            get { return numBytesTx; }
        }

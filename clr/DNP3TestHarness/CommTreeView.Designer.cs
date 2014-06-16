@@ -30,9 +30,16 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CommTreeView));
-            this.treeView = new System.Windows.Forms.TreeView();
             this.imageListMain = new System.Windows.Forms.ImageList(this.components);
+            this.treeView = new System.Windows.Forms.TreeView();
             this.SuspendLayout();
+            // 
+            // imageListMain
+            // 
+            this.imageListMain.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListMain.ImageStream")));
+            this.imageListMain.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageListMain.Images.SetKeyName(0, "satellite_dish.ico");
+            this.imageListMain.Images.SetKeyName(1, "network_monitor.ico");
             // 
             // treeView
             // 
@@ -43,14 +50,7 @@
             this.treeView.Name = "treeView";
             this.treeView.SelectedImageIndex = 0;
             this.treeView.Size = new System.Drawing.Size(497, 409);
-            this.treeView.TabIndex = 0;
-            // 
-            // imageListMain
-            // 
-            this.imageListMain.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListMain.ImageStream")));
-            this.imageListMain.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageListMain.Images.SetKeyName(0, "satellite_dish.ico");
-            this.imageListMain.Images.SetKeyName(1, "network_monitor.ico");
+            this.treeView.TabIndex = 2;
             // 
             // CommTreeView
             // 
@@ -65,7 +65,7 @@
 
         #endregion
 
-        private System.Windows.Forms.TreeView treeView;
         private System.Windows.Forms.ImageList imageListMain;
+        private System.Windows.Forms.TreeView treeView;
     }
 }
