@@ -36,6 +36,12 @@ LogFilter ChannelAdapter::GetLogFilters()
 	return LogFilter(pChannel->GetLogFilters().GetBitfield());
 }
 
+IChannelStatistics^ ChannelAdapter::GetChannelStatistics()
+{
+	auto stats = pChannel->ReadStatistics();
+	return Conversions::convertChannelStats(stats);	
+}
+
 void ChannelAdapter::SetLogFilters(LogFilter filters)
 {
 	openpal::LogFilters flags(filters.Flags);

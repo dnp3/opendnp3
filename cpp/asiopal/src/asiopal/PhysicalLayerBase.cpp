@@ -302,7 +302,7 @@ void PhysicalLayerBase::OnReadCallback(const std::error_code& err, uint8_t* pBuf
 		{
 			if (pChannelStatistics)
 			{
-				pChannelStatistics->bytesRx += numRead;
+				pChannelStatistics->numBytesRx += numRead;
 			}
 
 			if (!state.isClosing)
@@ -335,7 +335,7 @@ void PhysicalLayerBase::OnWriteCallback(const std::error_code& err, uint32_t num
 		{
 			if (pChannelStatistics)
 			{
-				pChannelStatistics->bytesTx += numWritten;
+				pChannelStatistics->numBytesTx += numWritten;
 			}
 
 			if (!state.isClosing)

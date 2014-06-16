@@ -28,12 +28,14 @@ namespace opendnp3
 {
 	struct DNP3ChannelStatistics : openpal::ChannelStatistics
 	{
-		DNP3ChannelStatistics() : numCrcError(0), numBadLinkFrame(0), numUnexpectedFrame(0)
+		DNP3ChannelStatistics() : numCrcError(0), numBadLinkFrame(0)
 		{}
 		
+		/// Number of frames discared due to CRC errors
 		uint32_t numCrcError;
-		uint32_t numBadLinkFrame;
-		uint32_t numUnexpectedFrame;
+		
+		/// Number of frames detected with bad / malformed contents
+		uint32_t numBadLinkFrame;		
 	};
 }
 

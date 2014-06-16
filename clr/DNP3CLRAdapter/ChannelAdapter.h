@@ -29,6 +29,8 @@ public:
 
 	virtual LogFilter GetLogFilters();
 
+	virtual IChannelStatistics^ GetChannelStatistics();
+
 	virtual void SetLogFilters(LogFilter filters);
 
 	virtual void AddStateListener(System::Action<ChannelState>^ listener);

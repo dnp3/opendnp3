@@ -27,6 +27,19 @@ ChannelState Conversions::convertChannelState(opendnp3::ChannelState aState)
 	return (ChannelState) aState;
 }
 
+IChannelStatistics^ Conversions::convertChannelStats(const opendnp3::DNP3ChannelStatistics& stats)
+{
+	ChannelStatistics^ ret = gcnew ChannelStatistics();
+	ret->numBytesRx = stats.numBytesRx;
+	ret->numBytesTx = stats.numBytesTx;
+	ret->numOpen = stats.numOpen;
+	ret->numOpenFail = stats.numOpenFail;
+	ret->numClose = stats.numClose;
+	ret->numBadLinkFrame = stats.numBadLinkFrame;
+	ret->numCrcError = stats.numCrcError;
+	return ret;
+}
+
 CommandResponse Conversions::convertCommandResponse(opendnp3::CommandResponse response)
 {
 	auto result = convertCommandResult(response.GetResult());

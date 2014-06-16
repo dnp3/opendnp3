@@ -38,11 +38,17 @@ namespace DNP3.Interface
         /// <returns>A structure representing the currently enabled filters</returns>
         LogFilter GetLogFilters();
 
-       /// <summary>
-       /// Set the log filters to a new value
-       /// </summary>
-       /// <param name="filters">A structure representing the new set of enabled filters</param>
-       void SetLogFilters(LogFilter filters);
+        /// <summary>
+        /// Set the log filters to a new value
+        /// </summary>
+        /// <param name="filters">A structure representing the new set of enabled filters</param>
+        void SetLogFilters(LogFilter filters);
+
+        /// <summary>
+        /// Read the channel statistics
+        /// </summary>
+        /// <returns>The current statistics for the channel</returns>
+        IChannelStatistics GetChannelStatistics();
 
         /// <summary>
         /// Adds a master stack to the channel

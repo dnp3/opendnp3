@@ -45,6 +45,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseMeasurementTypes.cs" />
+    <Compile Include="ChannelStatistics.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="CommandTypes.cs" />
     <Compile Include="ConfigObjects.cs" />
     <Compile Include="Conversions.cs" />
@@ -68,6 +71,7 @@
     <Compile Include="gen\StaticAnalogOutputStatusResponse.cs" />
     <Compile Include="gen\StaticDoubleBinaryResponse.cs" />
     <Compile Include="gen\StaticFrozenCounterResponse.cs" />
+    <Compile Include="IChannelStatistics.cs" />
     <Compile Include="ICommandHandler.cs">
       <SubType>Code</SubType>
     </Compile>
