@@ -49,7 +49,7 @@ DNP3Channel::DNP3Channel(
 	logger(pLogRoot->GetLogger()),
 	state(State::READY),
 	pShutdownHandler(pShutdownHandler_),
-	router(*pLogRoot, pPhys.get(), minOpenRetry, maxOpenRetry, pStateHandler, this, pStrategy)	
+	router(*pLogRoot, pPhys.get(), minOpenRetry, maxOpenRetry, pStateHandler, this, pStrategy, &statistics)	
 {
 	pPhys->SetChannelStatistics(&statistics);
 }

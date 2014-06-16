@@ -28,9 +28,12 @@ namespace opendnp3
 {
 	struct DNP3ChannelStatistics : openpal::ChannelStatistics
 	{
-		DNP3ChannelStatistics()
+		DNP3ChannelStatistics() : numCrcError(0), numBadLinkFrame(0), numUnexpectedFrame(0)
 		{}
 		
+		uint32_t numCrcError;
+		uint32_t numBadLinkFrame;
+		uint32_t numUnexpectedFrame;
 	};
 }
 

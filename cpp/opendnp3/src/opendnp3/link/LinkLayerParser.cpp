@@ -33,8 +33,9 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LinkLayerParser::LinkLayerParser(const Logger& logger_) :
+LinkLayerParser::LinkLayerParser(const Logger& logger_, DNP3ChannelStatistics* pStatistics_) :
 	logger(logger_),
+	pStatistics(pStatistics_),
 	state(State::FindSync),
 	frameSize(0),		
 	rxBuffer(),
@@ -197,7 +198,24 @@ void LinkLayerParser::TransferUserData()
 bool LinkLayerParser::ReadHeader()
 {
 	header.Read(buffer.ReadBuffer());
-	return this->ValidateHeader();
+	if (DNPCrc::IsCorrectCRC(buffer.ReadBuffer(), LI_CRC))
+	{
+		if (ValidateHeaderParameters())
+		{			
+			return true;
+		}
+		else
+		{
+			if (pStatistics) ++pStatistics->numBadLinkFrame;
+			return false;
+		}
+	}
+	else 
+	{
+		if (pStatistics) ++pStatistics->numCrcError;
+		SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::ERR, DLERR_CRC, "CRC failure in header");
+		return false;
+	}	
 }
 
 bool LinkLayerParser::ValidateBody()
@@ -219,21 +237,18 @@ bool LinkLayerParser::ValidateBody()
 	else
 	{
 		SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::ERR, DLERR_CRC, "CRC failure in body");
+		if (pStatistics)
+		{
+			++pStatistics->numCrcError;
+		}
 		return false;
 	}
 }
 
-bool LinkLayerParser::ValidateHeader()
-{
-	//first thing to do is check the CRC
-	if(!DNPCrc::IsCorrectCRC(buffer.ReadBuffer(), LI_CRC))
-	{
-		SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::ERR, DLERR_CRC, "CRC failure in header");
-		return false;
-	}
-
+bool LinkLayerParser::ValidateHeaderParameters()
+{	
 	if(!header.ValidLength())
-	{
+	{		
 		FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::ERR, DLERR_INVALID_LENGTH, "LENGTH out of range [5,255]: %i", header.GetLength());
 		return false;
 	}	
@@ -242,7 +257,10 @@ bool LinkLayerParser::ValidateHeader()
 	// check for them here
 
 	//Now make sure that the function code is known and that the FCV is appropriate
-	if(!this->ValidateFunctionCode()) return false;
+	if (!this->ValidateFunctionCode())
+	{
+		return false;
+	}
 
 	uint8_t user_data_length = header.GetLength() - LS_MIN_LENGTH;
 	frameSize = LinkFrame::CalcFrameSize(user_data_length);

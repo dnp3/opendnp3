@@ -58,8 +58,9 @@ public:
 	                openpal::TimeDuration minOpenRetry,
 	                openpal::TimeDuration maxOpenRetry,
 	                openpal::IEventHandler<ChannelState>* pStateHandler = nullptr,
-	                openpal::IShutdownHandler* pShutdownHandler = nullptr,
-	                IOpenDelayStrategy* pStrategy = ExponentialBackoffStrategy::Inst());
+	                openpal::IShutdownHandler* pShutdownHandler = nullptr,				
+	                IOpenDelayStrategy* pStrategy = ExponentialBackoffStrategy::Inst(),
+					DNP3ChannelStatistics* pStatistics = nullptr);
 
 	// Query to see if a route is in use
 	bool IsRouteInUse(const LinkRoute& route);

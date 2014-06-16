@@ -108,16 +108,15 @@ private:
 
 	void CheckForFinalShutdown();
 
+	opendnp3::DNP3ChannelStatistics statistics;
 	std::unique_ptr<openpal::IPhysicalLayer> pPhys;
 	std::unique_ptr<openpal::LogRoot> pLogRoot;
 	openpal::Logger logger;
 
 	State state;
 	openpal::ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler;
-
-	opendnp3::DNP3ChannelStatistics statistics;
+	
 	opendnp3::LinkLayerRouter router;	
-
 	std::set<DNP3Stack*> stacks;
 
 };
