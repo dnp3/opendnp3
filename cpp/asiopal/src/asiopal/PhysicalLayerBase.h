@@ -40,11 +40,11 @@ class PhysicalLayerBase : public openpal::IPhysicalLayer
 	public:
 		State();
 
-		bool mOpen;
-		bool mOpening;
-		bool mReading;
-		bool mWriting;
-		bool mClosing;
+		bool isOpen;
+		bool isOpening;
+		bool isReading;
+		bool isWriting;
+		bool isClosing;
 
 		bool IsOpen() const;
 		bool IsOpening() const;
@@ -158,7 +158,7 @@ protected:
 	openpal::Logger logger;
 
 	// "user" object that recieves the callbacks
-	openpal::IPhysicalLayerCallbacks* mpHandler;
+	openpal::IPhysicalLayerCallbacks* pCallbacks;
 
 	// State object that tracks the activities of the class, state pattern too heavy
 	PhysicalLayerBase::State state;
@@ -170,9 +170,9 @@ private:
 
 inline void PhysicalLayerBase::SetHandler(openpal::IPhysicalLayerCallbacks* apHandler)
 {
-	assert(mpHandler == nullptr);
+	assert(pCallbacks == nullptr);
 	assert(apHandler != nullptr);
-	this->mpHandler = apHandler;
+	this->pCallbacks = apHandler;
 }
 
 }

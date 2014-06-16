@@ -40,41 +40,41 @@ namespace asiopal
 ///////////////////////////////////
 
 PhysicalLayerBase::State::State() :
-	mOpen(false),
-	mOpening(false),
-	mReading(false),
-	mWriting(false),
-	mClosing(false)
+	isOpen(false),
+	isOpening(false),
+	isReading(false),
+	isWriting(false),
+	isClosing(false)
 {}
 
 bool PhysicalLayerBase::State::IsOpen() const
 {
-	return mOpen;
+	return isOpen;
 }
 
 bool PhysicalLayerBase::State::IsOpening() const
 {
-	return mOpening;
+	return isOpening;
 }
 
 bool PhysicalLayerBase::State::IsReading() const
 {
-	return mReading;
+	return isReading;
 }
 
 bool PhysicalLayerBase::State::IsWriting() const
 {
-	return mWriting;
+	return isWriting;
 }
 
 bool PhysicalLayerBase::State::IsClosing() const
 {
-	return mClosing;
+	return isClosing;
 }
 
 bool PhysicalLayerBase::State::IsClosed() const
 {
-	return !(mOpening || mOpen || mClosing || mReading || mWriting);
+	return !(isOpening || isOpen || isClosing || isReading || isWriting);
 }
 
 bool PhysicalLayerBase::State::CanOpen() const
@@ -84,29 +84,29 @@ bool PhysicalLayerBase::State::CanOpen() const
 
 bool PhysicalLayerBase::State::CanClose() const
 {
-	return (mOpen || mOpening) && !mClosing;
+	return (isOpen || isOpening) && !isClosing;
 }
 
 bool PhysicalLayerBase::State::CanRead() const
 {
-	return mOpen && !mClosing && !mReading;
+	return isOpen && !isClosing && !isReading;
 }
 
 bool PhysicalLayerBase::State::CanWrite() const
 {
-	return mOpen && !mClosing && !mWriting;
+	return isOpen && !isClosing && !isWriting;
 }
 
 bool PhysicalLayerBase::State::CallbacksPending() const
 {
-	return mOpening || mReading || mWriting;
+	return isOpening || isReading || isWriting;
 }
 
 bool PhysicalLayerBase::State::CheckForClose()
 {
-	if(mClosing && !this->CallbacksPending())
+	if (isClosing && !this->CallbacksPending())
 	{
-		mClosing = mOpen = false;
+		isClosing = isOpen = false;
 		return true;
 	}
 	else return false;
@@ -118,7 +118,7 @@ bool PhysicalLayerBase::State::CheckForClose()
 
 PhysicalLayerBase::PhysicalLayerBase(openpal::LogRoot& root) :	
 	logger(root.GetLogger()),
-	mpHandler(nullptr)
+	pCallbacks(nullptr)
 {
 
 }
@@ -131,7 +131,7 @@ void PhysicalLayerBase::BeginOpen()
 {
 	if(state.CanOpen())
 	{
-		state.mOpening = true;
+		state.isOpening = true;
 		this->DoOpen();
 	}
 	else
@@ -159,9 +159,9 @@ void PhysicalLayerBase::StartClose()
 	{
 		if(state.CanClose())
 		{
-			state.mClosing = true;
+			state.isClosing = true;
 
-			if(state.mOpening) this->DoOpeningClose();
+			if (state.isOpening) this->DoOpeningClose();
 			else this->DoClose();
 		}
 		else
@@ -177,7 +177,7 @@ void PhysicalLayerBase::BeginWrite(const openpal::ReadOnlyBuffer& buffer)
 	{
 		if (buffer.Size() > 0)
 		{
-			state.mWriting = true;
+			state.isWriting = true;
 			this->DoWrite(buffer);
 		}
 		else
@@ -202,7 +202,7 @@ void PhysicalLayerBase::BeginRead(WriteBuffer& buffer)
 	{
 		if (buffer.Size() > 0)
 		{
-			state.mReading = true;
+			state.isReading = true;
 			this->DoRead(buffer);
 		}
 		else
@@ -227,9 +227,9 @@ void PhysicalLayerBase::BeginRead(WriteBuffer& buffer)
 
 void PhysicalLayerBase::OnOpenCallback(const std::error_code& err)
 {
-	if(state.mOpening)
+	if (state.isOpening)
 	{
-		state.mOpening = false;
+		state.isOpening = false;
 
 		this->DoOpenCallback();
 
@@ -238,9 +238,9 @@ void PhysicalLayerBase::OnOpenCallback(const std::error_code& err)
 			FORMAT_LOG_BLOCK(logger, logflags::WARN, "error: %s", err.message().c_str());
 			state.CheckForClose();
 			this->DoOpenFailure();
-			if(mpHandler)
+			if (pCallbacks)
 			{
-				mpHandler->OnOpenFailure();
+				pCallbacks->OnOpenFailure();
 			}
 		}
 		else   // successful connection
@@ -249,18 +249,18 @@ void PhysicalLayerBase::OnOpenCallback(const std::error_code& err)
 			{
 				state.CheckForClose();
 				this->DoClose();
-				if(mpHandler)
+				if (pCallbacks)
 				{
-					mpHandler->OnOpenFailure();
+					pCallbacks->OnOpenFailure();
 				}
 			}
 			else
 			{
-				state.mOpen = true;
+				state.isOpen = true;
 				this->DoOpenSuccess();
-				if(mpHandler)
+				if (pCallbacks)
 				{
-					mpHandler->OnLowerLayerUp();
+					pCallbacks->OnLowerLayerUp();
 				}
 			}
 		}
@@ -273,9 +273,9 @@ void PhysicalLayerBase::OnOpenCallback(const std::error_code& err)
 
 void PhysicalLayerBase::OnReadCallback(const std::error_code& err, uint8_t* apBuffer, uint32_t aNumRead)
 {
-	if(state.mReading)
+	if (state.isReading)
 	{
-		state.mReading = false;
+		state.isReading = false;
 
 		if(err)
 		{
@@ -284,7 +284,7 @@ void PhysicalLayerBase::OnReadCallback(const std::error_code& err, uint8_t* apBu
 		}
 		else
 		{
-			if(!state.mClosing)			
+			if (!state.isClosing)
 			{
 				ReadOnlyBuffer buffer(apBuffer, aNumRead);
 				this->DoReadCallback(buffer);
@@ -301,9 +301,9 @@ void PhysicalLayerBase::OnReadCallback(const std::error_code& err, uint8_t* apBu
 
 void PhysicalLayerBase::OnWriteCallback(const std::error_code& arErr, uint32_t  aNumBytes)
 {
-	if(state.mWriting)
+	if (state.isWriting)
 	{
-		state.mWriting = false;
+		state.isWriting = false;
 
 		if(arErr)
 		{
@@ -312,7 +312,7 @@ void PhysicalLayerBase::OnWriteCallback(const std::error_code& arErr, uint32_t  
 		}
 		else
 		{
-			if(!state.mClosing)
+			if (!state.isClosing)
 			{			
 				this->DoWriteSuccess();
 			}
@@ -332,25 +332,25 @@ void PhysicalLayerBase::OnWriteCallback(const std::error_code& arErr, uint32_t  
 
 void PhysicalLayerBase::DoWriteSuccess()
 {
-	if (mpHandler)
+	if (pCallbacks)
 	{
-		mpHandler->OnSendResult(true);
+		pCallbacks->OnSendResult(true);
 	}
 }
 
 void PhysicalLayerBase::DoThisLayerDown()
 {
-	if (mpHandler)
+	if (pCallbacks)
 	{
-		mpHandler->OnLowerLayerDown();
+		pCallbacks->OnLowerLayerDown();
 	}
 }
 
 void PhysicalLayerBase::DoReadCallback(const ReadOnlyBuffer& arBuffer)
 {
-	if (mpHandler)
+	if (pCallbacks)
 	{
-		mpHandler->OnReceive(arBuffer);
+		pCallbacks->OnReceive(arBuffer);
 	}
 }
 
