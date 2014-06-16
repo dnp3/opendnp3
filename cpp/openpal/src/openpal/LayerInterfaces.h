@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __ASYNC_LAYER_INTERFACES_H_
-#define __ASYNC_LAYER_INTERFACES_H_
+#ifndef __LAYER_INTERFACES_H_
+#define __LAYER_INTERFACES_H_
 
 #include "ReadOnlyBuffer.h"
 #include "WriteBuffer.h"

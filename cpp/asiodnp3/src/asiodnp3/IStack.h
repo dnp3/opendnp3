@@ -51,7 +51,7 @@ public:
 	virtual void Disable() = 0;
 
 	/**
-	* Asynchronously shutdown the endpoint. No more calls are allowed after this call.
+	* hronously shutdown the endpoint. No more calls are allowed after this call.
 	*/
 	virtual void BeginShutdown() = 0;
 

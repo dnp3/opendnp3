@@ -21,8 +21,8 @@
 #ifndef __PHYSICAL_LAYER_WRAPPER_H_
 #define __PHYSICAL_LAYER_WRAPPER_H_
 
-#include <openpal/IPhysicalLayerAsync.h>
-#include <openpal/IHandlerAsync.h>
+#include <openpal/IPhysicalLayer.h>
+#include <openpal/IPhysicalLayerCallbacks.h>
 #include <openpal/Logger.h>
 
 #include "RandomDouble.h"
@@ -30,11 +30,11 @@
 namespace opendnp3
 {
 
-class PhysicalLayerWrapper : public openpal::IPhysicalLayerAsync, public openpal::IHandlerAsync
+class PhysicalLayerWrapper : public openpal::IPhysicalLayer, public openpal::IPhysicalLayerCallbacks
 {
 public:
 
-	PhysicalLayerWrapper(const openpal::Logger& logger, openpal::IPhysicalLayerAsync* apProxy);
+	PhysicalLayerWrapper(const openpal::Logger& logger, openpal::IPhysicalLayer* apProxy);
 
 	openpal::IExecutor* GetExecutor()
 	{
@@ -83,12 +83,12 @@ public:
 		return mpProxy->IsOpen();
 	}	
 
-	void AsyncOpen();
-	void AsyncClose();
-	void AsyncWrite(const openpal::ReadOnlyBuffer&);
-	void AsyncRead(openpal::WriteBuffer&);
+	virtual void BeginOpen() override final;
+	virtual void BeginClose() override final;
+	virtual void BeginWrite(const openpal::ReadOnlyBuffer&) override final;
+	virtual void BeginRead(openpal::WriteBuffer&) override final;
 
-	void SetHandler(openpal::IHandlerAsync* apHandler);
+	void SetHandler(openpal::IPhysicalLayerCallbacks* apHandler);
 
 	// testing helpers
 	void SetCorruptionProbability(double aProbability);
@@ -104,8 +104,8 @@ private:
 	openpal::Logger logger;
 	double mCorruptionProbability;
 	RandomDouble mRandom;
-	openpal::IPhysicalLayerAsync* mpProxy;
-	openpal::IHandlerAsync* mpHandler;
+	openpal::IPhysicalLayer* mpProxy;
+	openpal::IPhysicalLayerCallbacks* mpHandler;
 };
 
 }

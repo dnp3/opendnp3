@@ -18,25 +18,54 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __I_HANDLER_ASYNC_H_
-#define __I_HANDLER_ASYNC_H_
+#include "TestObjectASIO.h"
 
-#include "AsyncLayerInterfaces.h"
+#include <asio.hpp>
 
-namespace openpal
+#include <openpal/Location.h>
+
+#include <thread>
+#include <chrono>
+
+using namespace openpal;
+
+namespace opendnp3
 {
 
-class IHandlerAsync : public IUpperLayer
+TestObjectASIO::TestObjectASIO() :
+	mpTestObjectService(new asio::io_service()),
+	mOwner(true)
+{}
+
+TestObjectASIO::TestObjectASIO(asio::io_service* apService) :
+	mpTestObjectService(apService),
+	mOwner(false)
 {
-
-public:
-	virtual ~IHandlerAsync() {}
-
-	// In addition to all of the IUpperLayer functions, provide a mechanism to receive open failures
-	// For consistency sake, use NVII pattern in case we want pre/post conditions in the future
-	virtual void OnOpenFailure() = 0;
-};
 
 }
 
-#endif
+TestObjectASIO::~TestObjectASIO()
+{
+	if(mOwner) delete mpTestObjectService;
+}
+
+void TestObjectASIO::Next()
+{
+	Next(this->GetService(), TimeDuration::Milliseconds(10));
+}
+
+void TestObjectASIO::Next(asio::io_service* apSrv, openpal::TimeDuration aSleep)
+{
+	std::error_code ec;
+	size_t num = apSrv->poll_one(ec);
+	if(ec) throw std::logic_error(ec.message());
+	if(num == 0)
+	{
+		std::this_thread::sleep_for(std::chrono::milliseconds(aSleep.GetMilliseconds()));
+	}
+	apSrv->reset();
+}
+
+
+
+}

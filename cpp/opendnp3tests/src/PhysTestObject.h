@@ -18,26 +18,40 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "AsyncPhysTestObject.h"
+#ifndef __ASYNC_PHYS_TEST_OBJECT_H_
+#define __ASYNC_PHYS_TEST_OBJECT_H_
 
-using namespace openpal;
+#include "TestObjectASIO.h"
+#include "MockUpperLayer.h"
+#include "LogTester.h"
+
+#include <asiopal/PhysicalLayerTCPClient.h>
+#include <asiopal/PhysicalLayerTCPServer.h>
+
+#include <opendnp3/LogLevels.h>
+
+#include "LowerLayerToPhysAdapter.h"
 
 namespace opendnp3
 {
 
-AsyncPhysTestObject::AsyncPhysTestObject(uint32_t filters, bool aAutoRead) :
-	AsyncTestObjectASIO(),
-	log(),
-	mTCPClient(log.root, this->GetService(), "127.0.0.1", 50000),
-	mTCPServer(log.root, this->GetService(), "127.0.0.1", 50000),
-	mClientAdapter(log.GetLogger(), &mTCPClient, aAutoRead),
-	mServerAdapter(log.GetLogger(), &mTCPServer, aAutoRead)
+class PhysTestObject : public TestObjectASIO
 {
-	mClientAdapter.SetUpperLayer(&mClientUpper);
-	mServerAdapter.SetUpperLayer(&mServerUpper);
+public:
+	PhysTestObject(uint32_t levels = levels::NORMAL, bool aAutoRead = true);
 
-	mClientUpper.SetLowerLayer(&mClientAdapter);
-	mServerUpper.SetLowerLayer(&mServerAdapter);
+	LogTester log;
+
+	asiopal::PhysicalLayerTCPClient mTCPClient;
+	asiopal::PhysicalLayerTCPServer mTCPServer;
+
+	LowerLayerToPhysAdapter mClientAdapter;
+	LowerLayerToPhysAdapter mServerAdapter;
+
+	MockUpperLayer mClientUpper;
+	MockUpperLayer mServerUpper;
+};
+
 }
 
-}
+#endif

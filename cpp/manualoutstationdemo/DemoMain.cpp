@@ -33,7 +33,7 @@
 #include <asiopal/LogToStdio.h>
 #include <asiopal/IOServiceThreadPool.h>
 #include <asiopal/UTCTimeSource.h>
-#include <asiopal/PhysicalLayerAsyncTCPServer.h>
+#include <asiopal/PhysicalLayerTCPServer.h>
 
 #include <openpal/Logger.h>
 
@@ -61,7 +61,7 @@ int main(int argc, char* argv[])
 	asio::io_service::strand strand(service);
 	asiopal::ASIOExecutor executor(&strand);
 
-	PhysicalLayerAsyncTCPServer server(root, &service, "0.0.0.0", 20000);
+	PhysicalLayerTCPServer server(root, &service, "0.0.0.0", 20000);
 	LinkLayerRouter router(root, &server, TimeDuration::Seconds(1), TimeDuration::Seconds(60));
 		
 	TransportStack stack(root, &executor, LinkConfig(false, false));

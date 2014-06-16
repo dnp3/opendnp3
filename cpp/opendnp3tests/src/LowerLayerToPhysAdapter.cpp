@@ -20,14 +20,14 @@
  */
 #include "LowerLayerToPhysAdapter.h"
 
-#include <openpal/IPhysicalLayerAsync.h>
+#include <openpal/IPhysicalLayer.h>
 
 using namespace openpal;
 
 namespace opendnp3
 {
 
-LowerLayerToPhysAdapter::LowerLayerToPhysAdapter(const openpal::Logger& logger_, IPhysicalLayerAsync* apPhys, bool aAutoRead) :
+LowerLayerToPhysAdapter::LowerLayerToPhysAdapter(const openpal::Logger& logger_, IPhysicalLayer* apPhys, bool aAutoRead) :
 	logger(logger_),
 	mAutoRead(aAutoRead),
 	mNumOpenFailure(0),
@@ -39,10 +39,10 @@ LowerLayerToPhysAdapter::LowerLayerToPhysAdapter(const openpal::Logger& logger_,
 void LowerLayerToPhysAdapter::StartRead()
 {
 	WriteBuffer buffer(mpBuff, BUFFER_SIZE);
-	mpPhys->AsyncRead(buffer);
+	mpPhys->BeginRead(buffer);
 }
 
-/* Implement IAsyncHandler */
+/* Implement IHandler */
 void LowerLayerToPhysAdapter::OnOpenFailure()
 {
 	++mNumOpenFailure;
@@ -96,7 +96,7 @@ void LowerLayerToPhysAdapter::OnLowerLayerDown()
 
 void LowerLayerToPhysAdapter::BeginTransmit(const openpal::ReadOnlyBuffer& buffer)
 {
-	mpPhys->AsyncWrite(buffer);
+	mpPhys->BeginWrite(buffer);
 }
 
 }//end namespace

@@ -20,7 +20,7 @@
  */
 #include "DNP3Channel.h"
 
-#include <asiopal/PhysicalLayerAsyncBase.h>
+#include <asiopal/PhysicalLayerBase.h>
 
 #include "MasterStackImpl.h"
 #include "OutstationStackImpl.h"
@@ -40,7 +40,7 @@ DNP3Channel::DNP3Channel(
     openpal::TimeDuration minOpenRetry,
     openpal::TimeDuration maxOpenRetry,
     IOpenDelayStrategy* pStrategy,
-    openpal::IPhysicalLayerAsync* pPhys_,
+    openpal::IPhysicalLayer* pPhys_,
     openpal::ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler_,
     openpal::IEventHandler<ChannelState>* pStateHandler) :
 	pPhys(pPhys_),

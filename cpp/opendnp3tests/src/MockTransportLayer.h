@@ -22,7 +22,7 @@
 #ifndef __MOCK_LINK_LAYER_USER_H_
 #define __MOCK_LINK_LAYER_USER_H_
 
-#include <openpal/AsyncLayerInterfaces.h>
+#include <openpal/LayerInterfaces.h>
 #include <opendnp3/link/ILinkLayer.h>
 
 #include <deque>

@@ -21,8 +21,8 @@
 #ifndef __WRAPPED_TCP_PIPE_H_
 #define __WRAPPED_TCP_PIPE_H_
 
-#include <asiopal/PhysicalLayerAsyncTCPClient.h>
-#include <asiopal/PhysicalLayerAsyncTCPServer.h>
+#include <asiopal/PhysicalLayerTCPClient.h>
+#include <asiopal/PhysicalLayerTCPServer.h>
 
 #include "PhysicalLayerWrapper.h"
 
@@ -43,8 +43,8 @@ public:
 	WrappedTcpPipe(openpal::LogRoot& root, asio::io_service*, uint16_t aPort);
 
 private:
-	asiopal::PhysicalLayerAsyncTCPClient clientTcp;
-	asiopal::PhysicalLayerAsyncTCPServer serverTcp;
+	asiopal::PhysicalLayerTCPClient clientTcp;
+	asiopal::PhysicalLayerTCPServer serverTcp;
 
 public:
 	PhysicalLayerWrapper client;

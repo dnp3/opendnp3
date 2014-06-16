@@ -31,7 +31,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-PhysicalLayerWrapper::PhysicalLayerWrapper(const openpal::Logger& logger_, IPhysicalLayerAsync* apProxy) :
+PhysicalLayerWrapper::PhysicalLayerWrapper(const openpal::Logger& logger_, IPhysicalLayer* apProxy) :
 	logger(logger_),
 	mCorruptionProbability(-1.0),
 	mpProxy(apProxy),
@@ -40,31 +40,31 @@ PhysicalLayerWrapper::PhysicalLayerWrapper(const openpal::Logger& logger_, IPhys
 	mpProxy->SetHandler(this);
 }
 
-void PhysicalLayerWrapper::SetHandler(IHandlerAsync* apHandler)
+void PhysicalLayerWrapper::SetHandler(IPhysicalLayerCallbacks* apHandler)
 {
 	assert(apHandler != nullptr);
 	assert(mpHandler == nullptr);
 	mpHandler = apHandler;
 }
 
-void PhysicalLayerWrapper::AsyncOpen()
+void PhysicalLayerWrapper::BeginOpen()
 {
-	return mpProxy->AsyncOpen();
+	return mpProxy->BeginOpen();
 }
 
-void PhysicalLayerWrapper::AsyncClose()
+void PhysicalLayerWrapper::BeginClose()
 {
-	return mpProxy->AsyncClose();
+	return mpProxy->BeginClose();
 }
 
-void PhysicalLayerWrapper::AsyncWrite(const openpal::ReadOnlyBuffer&  arBuffer)
+void PhysicalLayerWrapper::BeginWrite(const openpal::ReadOnlyBuffer&  arBuffer)
 {
-	return mpProxy->AsyncWrite(arBuffer);
+	return mpProxy->BeginWrite(arBuffer);
 }
 
-void PhysicalLayerWrapper::AsyncRead(WriteBuffer& arBuffer)
+void PhysicalLayerWrapper::BeginRead(WriteBuffer& arBuffer)
 {
-	return mpProxy->AsyncRead(arBuffer);
+	return mpProxy->BeginRead(arBuffer);
 }
 
 void PhysicalLayerWrapper::OnLowerLayerUp()

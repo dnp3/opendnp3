@@ -18,7 +18,7 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "LoopbackPhysicalLayerAsync.h"
+#include "LoopbackPhysicalLayer.h"
 
 #include <asio.hpp>
 
@@ -32,13 +32,13 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LoopbackPhysicalLayerAsync::LoopbackPhysicalLayerAsync(openpal::LogRoot& root, asio::io_service* apSrv) :
-	PhysicalLayerAsyncASIO(root, apSrv)
+LoopbackPhysicalLayer::LoopbackPhysicalLayer(openpal::LogRoot& root, asio::io_service* apSrv) :
+	PhysicalLayerASIO(root, apSrv)
 {
 
 }
 
-void LoopbackPhysicalLayerAsync::DoOpen()
+void LoopbackPhysicalLayer::DoOpen()
 {
 	//always open successfully
 	auto lambda = [this]() {
@@ -47,12 +47,12 @@ void LoopbackPhysicalLayerAsync::DoOpen()
 	executor.PostLambda(lambda);
 }
 
-void LoopbackPhysicalLayerAsync::DoOpenSuccess()
+void LoopbackPhysicalLayer::DoOpenSuccess()
 {
 	
 }
 
-void LoopbackPhysicalLayerAsync::DoClose()
+void LoopbackPhysicalLayer::DoClose()
 {
 	//empty any remaining written data
 	mWritten.erase(mWritten.begin(), mWritten.end());
@@ -69,14 +69,14 @@ void LoopbackPhysicalLayerAsync::DoClose()
 	}
 }
 
-void LoopbackPhysicalLayerAsync::DoAsyncRead(openpal::WriteBuffer& arBuffer)
+void LoopbackPhysicalLayer::DoRead(openpal::WriteBuffer& arBuffer)
 {
 	assert(mBytesForReading.IsEmpty());
 	mBytesForReading = arBuffer;
 	this->CheckForReadDispatch();
 }
 
-void LoopbackPhysicalLayerAsync::DoAsyncWrite(const openpal::ReadOnlyBuffer& arBuffer)
+void LoopbackPhysicalLayer::DoWrite(const openpal::ReadOnlyBuffer& arBuffer)
 {
 	for(size_t i = 0; i < arBuffer.Size(); ++i) mWritten.push_back(arBuffer[i]);
 
@@ -95,7 +95,7 @@ void LoopbackPhysicalLayerAsync::DoAsyncWrite(const openpal::ReadOnlyBuffer& arB
 	this->CheckForReadDispatch();
 }
 
-void LoopbackPhysicalLayerAsync::CheckForReadDispatch()
+void LoopbackPhysicalLayer::CheckForReadDispatch()
 {
 	if(!mBytesForReading.IsEmpty() && mWritten.size() > 0)
 	{

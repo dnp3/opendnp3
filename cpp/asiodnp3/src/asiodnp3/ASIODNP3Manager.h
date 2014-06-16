@@ -38,7 +38,7 @@
 namespace openpal
 {
 class ILogBase;
-class IPhysicalLayerAsync;
+class IPhysicalLayer;
 }
 
 namespace asiopal

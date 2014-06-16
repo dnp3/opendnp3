@@ -37,7 +37,7 @@ TransportScalabilityTestObject::TransportScalabilityTestObject(
     uint32_t filters,
     bool aImmediate) :
 
-	AsyncTestObjectASIO(),
+	TestObjectASIO(),
 	log()
 {
 	const uint16_t START = aPortStart;

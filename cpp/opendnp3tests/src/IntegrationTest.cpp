@@ -23,9 +23,9 @@
 #include <sstream>
 #include <thread>
 
-#include "AsyncTestObjectASIO.h"
+#include "TestObjectASIO.h"
 
-#include <openpal/IPhysicalLayerAsync.h>
+#include <openpal/IPhysicalLayer.h>
 
 #include <asiodnp3/IMaster.h>
 #include <asiodnp3/IChannel.h>
@@ -35,8 +35,8 @@
 #include <opendnp3/outstation/OutstationStackConfig.h>
 #include <opendnp3/outstation/ITimeWriteHandler.h>
 
-#include <asiopal/PhysicalLayerAsyncTCPClient.h>
-#include <asiopal/PhysicalLayerAsyncTCPServer.h>
+#include <asiopal/PhysicalLayerTCPClient.h>
+#include <asiopal/PhysicalLayerTCPServer.h>
 #include <asiopal/UTCTimeSource.h>
 
 #include <asio.hpp>
@@ -145,11 +145,11 @@ void IntegrationTest::AddStackPair(uint32_t filters, uint16_t aNumPoints)
 	mMasterObservers.push_back(pMasterFDO);
 
 	auto pClientRoot = new LogRoot(&mLog, "client", filters);
-	auto pClientPhys = new PhysicalLayerAsyncTCPClient(*pClientRoot, mPool.GetIOService(), "127.0.0.1", port);
+	auto pClientPhys = new PhysicalLayerTCPClient(*pClientRoot, mPool.GetIOService(), "127.0.0.1", port);
 	auto pClient = this->mMgr.CreateChannel(pClientRoot, TimeDuration::Seconds(1), TimeDuration::Seconds(1), pClientPhys);
 
 	auto pServerRoot = new LogRoot(&mLog, "server", filters);
-	auto pServerPhys = new PhysicalLayerAsyncTCPServer(*pServerRoot, mPool.GetIOService(), "127.0.0.1", port);
+	auto pServerPhys = new PhysicalLayerTCPServer(*pServerRoot, mPool.GetIOService(), "127.0.0.1", port);
 	auto pServer = this->mMgr.CreateChannel(pServerRoot, TimeDuration::Seconds(1), TimeDuration::Seconds(1), pServerPhys);
 
 	/*

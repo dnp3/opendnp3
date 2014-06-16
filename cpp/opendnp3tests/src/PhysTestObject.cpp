@@ -18,45 +18,26 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __LOOP_BACK_PHYSICAL_LAYER_ASYNC_H_
-#define __LOOP_BACK_PHYSICAL_LAYER_ASYNC_H_
+#include "PhysTestObject.h"
 
-#include <asiopal/PhysicalLayerAsyncASIO.h>
-
-#include <openpal/IHandlerAsync.h>
-
-#include <queue>
-
-namespace asio
-{
-class io_service;
-}
+using namespace openpal;
 
 namespace opendnp3
 {
 
-// Provides a backend for testing physical layers
-class LoopbackPhysicalLayerAsync : public asiopal::PhysicalLayerAsyncASIO
+PhysTestObject::PhysTestObject(uint32_t filters, bool aAutoRead) :
+	TestObjectASIO(),
+	log(),
+	mTCPClient(log.root, this->GetService(), "127.0.0.1", 50000),
+	mTCPServer(log.root, this->GetService(), "127.0.0.1", 50000),
+	mClientAdapter(log.GetLogger(), &mTCPClient, aAutoRead),
+	mServerAdapter(log.GetLogger(), &mTCPServer, aAutoRead)
 {
-public:
-	LoopbackPhysicalLayerAsync(openpal::LogRoot& root, asio::io_service* apSrv);
+	mClientAdapter.SetUpperLayer(&mClientUpper);
+	mServerAdapter.SetUpperLayer(&mServerUpper);
 
-
-private:
-
-	void DoOpen();
-	void DoClose();
-	void DoOpenSuccess();
-	void DoAsyncRead(openpal::WriteBuffer&);
-	void DoAsyncWrite(const openpal::ReadOnlyBuffer&);
-
-
-	void CheckForReadDispatch();
-
-	std::deque<uint8_t> mWritten;
-
-	openpal::WriteBuffer mBytesForReading;
-};
+	mClientUpper.SetLowerLayer(&mClientAdapter);
+	mServerUpper.SetLowerLayer(&mServerAdapter);
 }
 
-#endif
+}

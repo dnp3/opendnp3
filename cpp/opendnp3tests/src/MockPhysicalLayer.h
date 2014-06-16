@@ -21,9 +21,9 @@
 #ifndef __MOCK_PHYSICAL_LAYER_ASYNC_H_
 #define __MOCK_PHYSICAL_LAYER_ASYNC_H_
 
-#include <asiopal/PhysicalLayerAsyncBase.h>
+#include <asiopal/PhysicalLayerBase.h>
 
-#include <openpal/IHandlerAsync.h>
+#include <openpal/IPhysicalLayerCallbacks.h>
 
 #include "BufferTestObject.h"
 
@@ -37,10 +37,10 @@ namespace opendnp3
 
 
 // Provides a backend for testing physical layers
-class MockPhysicalLayerAsync : public asiopal::PhysicalLayerAsyncBase, public BufferTestObject
+class MockPhysicalLayer : public asiopal::PhysicalLayerBase, public BufferTestObject
 {
 public:
-	MockPhysicalLayerAsync(openpal::LogRoot& root, openpal::IExecutor*);
+	MockPhysicalLayer(openpal::LogRoot& root, openpal::IExecutor*);
 
 	openpal::IExecutor* GetExecutor()
 	{
@@ -91,13 +91,13 @@ private:
 		++mNumOpenFailure;
 	}
 
-	void DoAsyncRead(openpal::WriteBuffer& arBuffer)
+	void DoRead(openpal::WriteBuffer& arBuffer)
 	{
 		mpWriteBuff = arBuffer;
 		mNumToRead = arBuffer.Size();
 	}
 
-	void DoAsyncWrite(const openpal::ReadOnlyBuffer& arBuffer)
+	void DoWrite(const openpal::ReadOnlyBuffer& arBuffer)
 	{
 		mNumToWrite = arBuffer.Size();
 		++mNumWrites;

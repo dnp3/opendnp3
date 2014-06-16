@@ -18,40 +18,45 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __ASYNC_PHYS_TEST_OBJECT_H_
-#define __ASYNC_PHYS_TEST_OBJECT_H_
+#ifndef __PHYSICAL_LAYER_ASYNC_TCP_SERVER_H_
+#define __PHYSICAL_LAYER_ASYNC_TCP_SERVER_H_
 
-#include "AsyncTestObjectASIO.h"
-#include "MockUpperLayer.h"
-#include "LogTester.h"
+#include "PhysicalLayerBaseTCP.h"
 
-#include <asiopal/PhysicalLayerAsyncTCPClient.h>
-#include <asiopal/PhysicalLayerAsyncTCPServer.h>
+#include <openpal/Location.h>
 
-#include <opendnp3/LogLevels.h>
+#include <asio.hpp>
+#include <asio/ip/tcp.hpp>
 
-#include "LowerLayerToPhysAdapter.h"
-
-namespace opendnp3
+namespace asiopal
 {
 
-class AsyncPhysTestObject : public AsyncTestObjectASIO
+class PhysicalLayerTCPServer : public PhysicalLayerBaseTCP
 {
 public:
-	AsyncPhysTestObject(uint32_t levels = levels::NORMAL, bool aAutoRead = true);
+	PhysicalLayerTCPServer(
+		openpal::LogRoot& root,
+	    asio::io_service* pIOService,
+	    const std::string& endpoint,
+	    uint16_t port,
+		std::function<void (asio::ip::tcp::socket&)> configure = [](asio::ip::tcp::socket&) {});
 
-	LogTester log;
+	/* Implement the remainging actions */
+	void DoOpen();
+	void DoOpeningClose(); //override this to cancel the acceptor instead of the socket
+	void DoOpenSuccess();
+	void DoOpenCallback();
 
-	asiopal::PhysicalLayerAsyncTCPClient mTCPClient;
-	asiopal::PhysicalLayerAsyncTCPServer mTCPServer;
+private:
 
-	LowerLayerToPhysAdapter mClientAdapter;
-	LowerLayerToPhysAdapter mServerAdapter;
+	void CloseAcceptor();
 
-	MockUpperLayer mClientUpper;
-	MockUpperLayer mServerUpper;
+	std::string localEndpointString;
+	asio::ip::tcp::endpoint localEndpoint;
+	asio::ip::tcp::endpoint remoteEndpoint;
+	asio::ip::tcp::acceptor acceptor;
+	std::function<void (asio::ip::tcp::socket&)> configure;
 };
-
 }
 
 #endif

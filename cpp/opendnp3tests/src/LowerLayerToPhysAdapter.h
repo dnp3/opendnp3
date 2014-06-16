@@ -21,13 +21,13 @@
 #ifndef __LOWER_LAYER_TO_PHYS_ADAPTER_H_
 #define __LOWER_LAYER_TO_PHYS_ADAPTER_H_
 
-#include <openpal/IHandlerAsync.h>
-#include <openpal/AsyncLayerInterfaces.h>
+#include <openpal/IPhysicalLayerCallbacks.h>
+#include <openpal/LayerInterfaces.h>
 #include <openpal/Logger.h>
 
 namespace openpal
 {
-class IPhysicalLayerAsync;
+class IPhysicalLayer;
 }
 
 namespace opendnp3
@@ -35,11 +35,11 @@ namespace opendnp3
 
 /** Class for turning an async physical layer into an ILowerLayer
 */
-class LowerLayerToPhysAdapter : public openpal::IHandlerAsync, public openpal::ILowerLayer, public openpal::HasUpperLayer
+class LowerLayerToPhysAdapter : public openpal::IPhysicalLayerCallbacks, public openpal::ILowerLayer, public openpal::HasUpperLayer
 {
 
 public:
-	LowerLayerToPhysAdapter(const openpal::Logger& logger, openpal::IPhysicalLayerAsync*, bool aAutoRead = true);
+	LowerLayerToPhysAdapter(const openpal::Logger& logger, openpal::IPhysicalLayer*, bool aAutoRead = true);
 
 	uint32_t GetNumOpenFailure()
 	{
@@ -53,7 +53,7 @@ public:
 
 	void StartRead();
 
-	// -------- IAsyncHandler --------
+	// -------- IHandler --------
 	virtual void OnOpenFailure() override final;
 
 	// --------  IUpperLayer ---------
@@ -75,9 +75,9 @@ private:
 
 	static const uint32_t BUFFER_SIZE = 1 << 16; // 65,536
 
-	uint8_t mpBuff[BUFFER_SIZE]; // Temporary buffer since IPhysicalLayerAsync now directly supports a read operation
+	uint8_t mpBuff[BUFFER_SIZE]; // Temporary buffer since IPhysicalLayer now directly supports a read operation
 
-	openpal::IPhysicalLayerAsync* mpPhys;
+	openpal::IPhysicalLayer* mpPhys;
 };
 
 }

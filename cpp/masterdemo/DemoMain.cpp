@@ -32,8 +32,8 @@
 #include <asiopal/Log.h>
 #include <asiopal/LogToStdio.h>
 #include <asiopal/UTCTimeSource.h>
-#include <asiopal/PhysicalLayerAsyncTCPClient.h>
-#include <asiopal/PhysicalLayerAsyncSerial.h>
+#include <asiopal/PhysicalLayerTCPClient.h>
+#include <asiopal/PhysicalLayerSerial.h>
 #include <asiopal/IOServiceThreadPool.h>
 
 #include <iostream>
@@ -71,11 +71,11 @@ int main(int argc, char* argv[])
 
 	// Connect via a TCPClient socket to a outstation
 	auto pClientRoot = new LogRoot(&iologger, "client", FILTERS);
-	auto pClientPhys = new PhysicalLayerAsyncTCPClient(*pClientRoot, pool.GetIOService(), "127.0.0.1", 20000, configure);
+	auto pClientPhys = new PhysicalLayerTCPClient(*pClientRoot, pool.GetIOService(), "127.0.0.1", 20000, configure);
 	/*
 	SerialSettings ss;
 	ss.mDevice = "COM3";
-	auto pClientPhys = new PhysicalLayerAsyncSerial(*pClientRoot, pool.GetIOService(), ss);
+	auto pClientPhys = new PhysicalLayerSerial(*pClientRoot, pool.GetIOService(), ss);
 	*/
 	// wait 3000 ms in between failed connect calls
 	auto pClient = mgr.CreateChannel(pClientRoot, TimeDuration::Seconds(2), TimeDuration::Minutes(1), pClientPhys);

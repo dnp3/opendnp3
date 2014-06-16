@@ -192,11 +192,11 @@
   <ItemGroup>
     <ClInclude Include="src\APDUHelpers.h" />
     <ClInclude Include="src\APDUHexBuilders.h" />
-    <ClInclude Include="src\AsyncPhysBaseTest.h" />
-    <ClInclude Include="src\AsyncPhysTestObject.h" />
-    <ClInclude Include="src\AsyncSerialTestObject.h" />
-    <ClInclude Include="src\AsyncTestObject.h" />
-    <ClInclude Include="src\AsyncTestObjectASIO.h" />
+    <ClInclude Include="src\PhysBaseTest.h" />
+    <ClInclude Include="src\PhysTestObject.h" />
+    <ClInclude Include="src\SerialTestObject.h" />
+    <ClInclude Include="src\TestObject.h" />
+    <ClInclude Include="src\TestObjectASIO.h" />
     <ClInclude Include="src\BufferHelpers.h" />
     <ClInclude Include="src\BufferTestObject.h" />
     <ClInclude Include="src\ComparingDataObserver.h" />
@@ -210,7 +210,7 @@
     <ClInclude Include="src\LinkLayerTest.h" />
     <ClInclude Include="src\LinkReceiverTest.h" />
     <ClInclude Include="src\LogTester.h" />
-    <ClInclude Include="src\LoopbackPhysicalLayerAsync.h" />
+    <ClInclude Include="src\LoopbackPhysicalLayer.h" />
     <ClInclude Include="src\LowerLayerToPhysAdapter.h" />
     <ClInclude Include="src\MeasurementComparisons.h" />
     <ClInclude Include="src\MockAPDUHeaderHandler.h" />
@@ -220,7 +220,7 @@
     <ClInclude Include="src\MockFrameSink.h" />
     <ClInclude Include="src\MockLinkLayer.h" />
     <ClInclude Include="src\MockLowerLayer.h" />
-    <ClInclude Include="src\MockPhysicalLayerAsync.h" />
+    <ClInclude Include="src\MockPhysicalLayer.h" />
     <ClInclude Include="src\MockPhysicalLayerMonitor.h" />
     <ClInclude Include="src\MockSOEHandler.h" />
     <ClInclude Include="src\MockTimeWriteHandler.h" />
@@ -251,11 +251,11 @@
   <ItemGroup>
     <ClCompile Include="src\APDUHelpers.cpp" />
     <ClCompile Include="src\APDUHexBuilders.cpp" />
-    <ClCompile Include="src\AsyncPhysBaseTest.cpp" />
-    <ClCompile Include="src\AsyncPhysTestObject.cpp" />
-    <ClCompile Include="src\AsyncSerialTestObject.cpp" />
-    <ClCompile Include="src\AsyncTestObject.cpp" />
-    <ClCompile Include="src\AsyncTestObjectASIO.cpp" />
+    <ClCompile Include="src\PhysBaseTest.cpp" />
+    <ClCompile Include="src\PhysTestObject.cpp" />
+    <ClCompile Include="src\SerialTestObject.cpp" />
+    <ClCompile Include="src\TestObject.cpp" />
+    <ClCompile Include="src\TestObjectASIO.cpp" />
     <ClCompile Include="src\BufferHelpers.cpp" />
     <ClCompile Include="src\BufferTestObject.cpp" />
     <ClCompile Include="src\CatchTestStart.cpp" />
@@ -267,12 +267,12 @@
     <ClCompile Include="src\LinkLayerRouterTest.cpp" />
     <ClCompile Include="src\LinkLayerTest.cpp" />
     <ClCompile Include="src\LogTester.cpp" />
-    <ClCompile Include="src\LoopbackPhysicalLayerAsync.cpp" />
+    <ClCompile Include="src\LoopbackPhysicalLayer.cpp" />
     <ClCompile Include="src\LowerLayerToPhysAdapter.cpp" />
     <ClCompile Include="src\MockExecutor.cpp" />
     <ClCompile Include="src\MockFrameSink.cpp" />
     <ClCompile Include="src\MockLowerLayer.cpp" />
-    <ClCompile Include="src\MockPhysicalLayerAsync.cpp" />
+    <ClCompile Include="src\MockPhysicalLayer.cpp" />
     <ClCompile Include="src\MockPhysicalLayerMonitor.cpp" />
     <ClCompile Include="src\MockTransportLayer.cpp" />
     <ClCompile Include="src\MockUpperLayer.cpp" />

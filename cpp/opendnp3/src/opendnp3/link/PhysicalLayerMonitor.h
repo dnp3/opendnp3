@@ -21,7 +21,7 @@
 #ifndef __PHYSICAL_LAYER_MONITOR_H_
 #define __PHYSICAL_LAYER_MONITOR_H_
 
-#include <openpal/IHandlerAsync.h>
+#include <openpal/IPhysicalLayerCallbacks.h>
 #include <openpal/IExecutor.h>
 #include <openpal/TimeDuration.h>
 #include <openpal/LogRoot.h>
@@ -31,7 +31,7 @@
 
 namespace openpal
 {
-class IPhysicalLayerAsync;
+class IPhysicalLayer;
 }
 
 
@@ -42,14 +42,14 @@ class IMonitorState;
 
 /** Manages the lifecycle of a physical layer
   */
-class PhysicalLayerMonitor : public openpal::IHandlerAsync
+class PhysicalLayerMonitor : public openpal::IPhysicalLayerCallbacks
 {
 	friend class MonitorStateActions;
 
 public:
 
 	PhysicalLayerMonitor(	openpal::LogRoot& root,
-	                        openpal::IPhysicalLayerAsync*,
+	                        openpal::IPhysicalLayer*,
 	                        openpal::TimeDuration minOpenRetry_,
 	                        openpal::TimeDuration maxOpenRetry_,
 	                        opendnp3::IOpenDelayStrategy* pOpenStrategy_ = ExponentialBackoffStrategy::Inst());
@@ -77,7 +77,7 @@ public:
 		return logger;
 	}
 
-	// Implement from IHandlerAsync - Try to reconnect using a timer
+	// Implement from IHandler - Try to reconnect using a timer
 
 	virtual void OnOpenFailure() override final;
 	virtual void OnLowerLayerUp() override final;
@@ -98,7 +98,7 @@ protected:
 	// called when the router shuts down permanently
 	virtual void OnShutdown() {}
 
-	openpal::IPhysicalLayerAsync* pPhys;
+	openpal::IPhysicalLayer* pPhys;
 
 	bool IsOnline() const
 	{

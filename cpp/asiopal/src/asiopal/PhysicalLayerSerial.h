@@ -22,7 +22,7 @@
 #define __PHYSICAL_LAYER_ASYNC_SERIAL_H_
 
 #include "SerialTypes.h"
-#include "PhysicalLayerAsyncASIO.h"
+#include "PhysicalLayerASIO.h"
 
 #include <openpal/Location.h>
 
@@ -33,18 +33,18 @@
 namespace asiopal
 {
 
-/** Serial implementation of PhysicalLayerAsyncASIO
+/** Serial implementation of PhysicalLayerASIO
 */
-class PhysicalLayerAsyncSerial : public PhysicalLayerAsyncASIO
+class PhysicalLayerSerial : public PhysicalLayerASIO
 {
 public:
-	PhysicalLayerAsyncSerial(openpal::LogRoot& root, asio::io_service* apIOService, const SerialSettings& settings);
+	PhysicalLayerSerial(openpal::LogRoot& root, asio::io_service* apIOService, const SerialSettings& settings);
 
 	/* Implement the shared client/server actions */
 	void DoClose();
 	void DoOpenSuccess();
-	void DoAsyncRead(openpal::WriteBuffer&);
-	void DoAsyncWrite(const openpal::ReadOnlyBuffer&);
+	void DoRead(openpal::WriteBuffer&);
+	void DoWrite(const openpal::ReadOnlyBuffer&);
 
 	void DoOpen();
 

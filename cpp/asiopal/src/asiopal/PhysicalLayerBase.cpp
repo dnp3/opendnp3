@@ -18,9 +18,9 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "PhysicalLayerAsyncBase.h"
+#include "PhysicalLayerBase.h"
 
-#include <openpal/IHandlerAsync.h>
+#include <openpal/IPhysicalLayerCallbacks.h>
 #include <openpal/LogMacros.h>
 #include <openpal/LogMessages.h>
 #include <openpal/IExecutor.h>
@@ -39,7 +39,7 @@ namespace asiopal
 // State object
 ///////////////////////////////////
 
-PhysicalLayerAsyncBase::State::State() :
+PhysicalLayerBase::State::State() :
 	mOpen(false),
 	mOpening(false),
 	mReading(false),
@@ -47,62 +47,62 @@ PhysicalLayerAsyncBase::State::State() :
 	mClosing(false)
 {}
 
-bool PhysicalLayerAsyncBase::State::IsOpen() const
+bool PhysicalLayerBase::State::IsOpen() const
 {
 	return mOpen;
 }
 
-bool PhysicalLayerAsyncBase::State::IsOpening() const
+bool PhysicalLayerBase::State::IsOpening() const
 {
 	return mOpening;
 }
 
-bool PhysicalLayerAsyncBase::State::IsReading() const
+bool PhysicalLayerBase::State::IsReading() const
 {
 	return mReading;
 }
 
-bool PhysicalLayerAsyncBase::State::IsWriting() const
+bool PhysicalLayerBase::State::IsWriting() const
 {
 	return mWriting;
 }
 
-bool PhysicalLayerAsyncBase::State::IsClosing() const
+bool PhysicalLayerBase::State::IsClosing() const
 {
 	return mClosing;
 }
 
-bool PhysicalLayerAsyncBase::State::IsClosed() const
+bool PhysicalLayerBase::State::IsClosed() const
 {
 	return !(mOpening || mOpen || mClosing || mReading || mWriting);
 }
 
-bool PhysicalLayerAsyncBase::State::CanOpen() const
+bool PhysicalLayerBase::State::CanOpen() const
 {
 	return this->IsClosed();
 }
 
-bool PhysicalLayerAsyncBase::State::CanClose() const
+bool PhysicalLayerBase::State::CanClose() const
 {
 	return (mOpen || mOpening) && !mClosing;
 }
 
-bool PhysicalLayerAsyncBase::State::CanRead() const
+bool PhysicalLayerBase::State::CanRead() const
 {
 	return mOpen && !mClosing && !mReading;
 }
 
-bool PhysicalLayerAsyncBase::State::CanWrite() const
+bool PhysicalLayerBase::State::CanWrite() const
 {
 	return mOpen && !mClosing && !mWriting;
 }
 
-bool PhysicalLayerAsyncBase::State::CallbacksPending() const
+bool PhysicalLayerBase::State::CallbacksPending() const
 {
 	return mOpening || mReading || mWriting;
 }
 
-bool PhysicalLayerAsyncBase::State::CheckForClose()
+bool PhysicalLayerBase::State::CheckForClose()
 {
 	if(mClosing && !this->CallbacksPending())
 	{
@@ -113,10 +113,10 @@ bool PhysicalLayerAsyncBase::State::CheckForClose()
 }
 
 ///////////////////////////////////
-// PhysicalLayerAsyncBase
+// PhysicalLayerBase
 ///////////////////////////////////
 
-PhysicalLayerAsyncBase::PhysicalLayerAsyncBase(openpal::LogRoot& root) :	
+PhysicalLayerBase::PhysicalLayerBase(openpal::LogRoot& root) :	
 	logger(root.GetLogger()),
 	mpHandler(nullptr)
 {
@@ -127,7 +127,7 @@ PhysicalLayerAsyncBase::PhysicalLayerAsyncBase(openpal::LogRoot& root) :
 // External Events
 ////////////////////////////////////
 
-void PhysicalLayerAsyncBase::AsyncOpen()
+void PhysicalLayerBase::BeginOpen()
 {
 	if(state.CanOpen())
 	{
@@ -144,7 +144,7 @@ void PhysicalLayerAsyncBase::AsyncOpen()
 so that all upward OnLowerLayerDown calls are made directly
 from the io_service.
 */
-void PhysicalLayerAsyncBase::AsyncClose()
+void PhysicalLayerBase::BeginClose()
 {
 	this->StartClose();
 	if (state.CheckForClose())
@@ -153,7 +153,7 @@ void PhysicalLayerAsyncBase::AsyncClose()
 	}
 }
 
-void PhysicalLayerAsyncBase::StartClose()
+void PhysicalLayerBase::StartClose()
 {
 	if(!state.IsClosing())   //TODO - kind of hack as it deviates from the current model.
 	{
@@ -171,14 +171,14 @@ void PhysicalLayerAsyncBase::StartClose()
 	}
 }
 
-void PhysicalLayerAsyncBase::AsyncWrite(const openpal::ReadOnlyBuffer& buffer)
+void PhysicalLayerBase::BeginWrite(const openpal::ReadOnlyBuffer& buffer)
 {
 	if (state.CanWrite())
 	{
 		if (buffer.Size() > 0)
 		{
 			state.mWriting = true;
-			this->DoAsyncWrite(buffer);
+			this->DoWrite(buffer);
 		}
 		else
 		{
@@ -196,14 +196,14 @@ void PhysicalLayerAsyncBase::AsyncWrite(const openpal::ReadOnlyBuffer& buffer)
 	}
 }
 
-void PhysicalLayerAsyncBase::AsyncRead(WriteBuffer& buffer)
+void PhysicalLayerBase::BeginRead(WriteBuffer& buffer)
 {
 	if(state.CanRead())
 	{
 		if (buffer.Size() > 0)
 		{
 			state.mReading = true;
-			this->DoAsyncRead(buffer);
+			this->DoRead(buffer);
 		}
 		else
 		{
@@ -225,7 +225,7 @@ void PhysicalLayerAsyncBase::AsyncRead(WriteBuffer& buffer)
 // Internal events
 ///////////////////////////////////////
 
-void PhysicalLayerAsyncBase::OnOpenCallback(const std::error_code& err)
+void PhysicalLayerBase::OnOpenCallback(const std::error_code& err)
 {
 	if(state.mOpening)
 	{
@@ -271,7 +271,7 @@ void PhysicalLayerAsyncBase::OnOpenCallback(const std::error_code& err)
 	}
 }
 
-void PhysicalLayerAsyncBase::OnReadCallback(const std::error_code& err, uint8_t* apBuffer, uint32_t aNumRead)
+void PhysicalLayerBase::OnReadCallback(const std::error_code& err, uint8_t* apBuffer, uint32_t aNumRead)
 {
 	if(state.mReading)
 	{
@@ -299,7 +299,7 @@ void PhysicalLayerAsyncBase::OnReadCallback(const std::error_code& err, uint8_t*
 	}
 }
 
-void PhysicalLayerAsyncBase::OnWriteCallback(const std::error_code& arErr, uint32_t  aNumBytes)
+void PhysicalLayerBase::OnWriteCallback(const std::error_code& arErr, uint32_t  aNumBytes)
 {
 	if(state.mWriting)
 	{
@@ -330,7 +330,7 @@ void PhysicalLayerAsyncBase::OnWriteCallback(const std::error_code& arErr, uint3
 // Actions
 ////////////////////////////////////
 
-void PhysicalLayerAsyncBase::DoWriteSuccess()
+void PhysicalLayerBase::DoWriteSuccess()
 {
 	if (mpHandler)
 	{
@@ -338,7 +338,7 @@ void PhysicalLayerAsyncBase::DoWriteSuccess()
 	}
 }
 
-void PhysicalLayerAsyncBase::DoThisLayerDown()
+void PhysicalLayerBase::DoThisLayerDown()
 {
 	if (mpHandler)
 	{
@@ -346,7 +346,7 @@ void PhysicalLayerAsyncBase::DoThisLayerDown()
 	}
 }
 
-void PhysicalLayerAsyncBase::DoReadCallback(const ReadOnlyBuffer& arBuffer)
+void PhysicalLayerBase::DoReadCallback(const ReadOnlyBuffer& arBuffer)
 {
 	if (mpHandler)
 	{

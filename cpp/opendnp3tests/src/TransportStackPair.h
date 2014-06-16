@@ -26,8 +26,8 @@ namespace asio
 class io_service;
 }
 
-#include <asiopal/PhysicalLayerAsyncTCPClient.h>
-#include <asiopal/PhysicalLayerAsyncTCPServer.h>
+#include <asiopal/PhysicalLayerTCPClient.h>
+#include <asiopal/PhysicalLayerTCPServer.h>
 
 #include <openpal/IExecutor.h>
 
@@ -52,8 +52,8 @@ public:
 	bool BothLayersUp();
 
 public:
-	asiopal::PhysicalLayerAsyncTCPClient mClient;
-	asiopal::PhysicalLayerAsyncTCPServer mServer;
+	asiopal::PhysicalLayerTCPClient mClient;
+	asiopal::PhysicalLayerTCPServer mServer;
 
 	TransportIntegrationStack mClientStack;
 	TransportIntegrationStack mServerStack;

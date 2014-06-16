@@ -18,24 +18,45 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "AsyncPhysBaseTest.h"
+#ifndef __LOOP_BACK_PHYSICAL_LAYER_ASYNC_H_
+#define __LOOP_BACK_PHYSICAL_LAYER_ASYNC_H_
 
-using namespace openpal;
+#include <asiopal/PhysicalLayerASIO.h>
+
+#include <openpal/IPhysicalLayerCallbacks.h>
+
+#include <queue>
+
+namespace asio
+{
+class io_service;
+}
 
 namespace opendnp3
 {
 
-AsyncPhysBaseTest::AsyncPhysBaseTest(uint32_t filters, bool aImmediate) :
-	log(),
-	exe(),
-	phys(log.root, &exe),
-	adapter(log.GetLogger(), &phys, false)
+// Provides a backend for testing physical layers
+class LoopbackPhysicalLayer : public asiopal::PhysicalLayerASIO
 {
-	adapter.SetUpperLayer(&upper);
-	upper.SetLowerLayer(&adapter);
+public:
+	LoopbackPhysicalLayer(openpal::LogRoot& root, asio::io_service* apSrv);
+
+
+private:
+
+	void DoOpen();
+	void DoClose();
+	void DoOpenSuccess();
+	void DoRead(openpal::WriteBuffer&);
+	void DoWrite(const openpal::ReadOnlyBuffer&);
+
+
+	void CheckForReadDispatch();
+
+	std::deque<uint8_t> mWritten;
+
+	openpal::WriteBuffer mBytesForReading;
+};
 }
 
-
-}
-
-
+#endif

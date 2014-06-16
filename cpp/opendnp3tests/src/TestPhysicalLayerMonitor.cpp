@@ -25,7 +25,7 @@
 #include <opendnp3/LogLevels.h>
 
 #include "MockExecutor.h"
-#include "MockPhysicalLayerAsync.h"
+#include "MockPhysicalLayer.h"
 
 #include "LogTester.h"
 
@@ -36,7 +36,7 @@ class ConcretePhysicalLayerMonitor : public PhysicalLayerMonitor
 {
 public:
 
-	ConcretePhysicalLayerMonitor(openpal::LogRoot& root, IPhysicalLayerAsync* apPhys) :
+	ConcretePhysicalLayerMonitor(openpal::LogRoot& root, IPhysicalLayer* apPhys) :
 		PhysicalLayerMonitor(root, apPhys, TimeDuration::Seconds(1), TimeDuration::Seconds(10)),
 		mOpenCallbackCount(0),
 		mCloseCallbackCount(0),
@@ -92,7 +92,7 @@ public:
 
 	LogTester log;
 	MockExecutor exe;
-	MockPhysicalLayerAsync phys;
+	MockPhysicalLayer phys;
 	ConcretePhysicalLayerMonitor monitor;
 };
 
@@ -187,7 +187,7 @@ TEST_CASE(SUITE("LayerCloseAfterStartOneDoesNotRetry"))
 	test.monitor.StartOne();
 	test.phys.SignalOpenSuccess();
 	REQUIRE((ChannelState::OPEN == test.monitor.GetState()));
-	test.phys.AsyncClose();
+	test.phys.BeginClose();
 	REQUIRE((ChannelState::CLOSED == test.monitor.GetState()));
 }
 
@@ -358,7 +358,7 @@ TEST_CASE(SUITE("LayerCloseWhileOpen"))
 	TestObject test;
 	test.monitor.Start();
 	test.phys.SignalOpenSuccess();
-	test.phys.AsyncClose();
+	test.phys.BeginClose();
 	REQUIRE((ChannelState::WAITING == test.monitor.GetState()));
 }
 

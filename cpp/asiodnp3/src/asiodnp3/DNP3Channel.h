@@ -34,7 +34,7 @@
 
 namespace openpal
 {
-	class IPhysicalLayerAsync;
+	class IPhysicalLayer;
 }
 
 namespace opendnp3
@@ -66,7 +66,7 @@ public:
 	    openpal::TimeDuration minOpenRetry,
 	    openpal::TimeDuration maxOpenRetry,
 	    opendnp3::IOpenDelayStrategy* pStrategy,
-		openpal::IPhysicalLayerAsync* pPhys_,
+		openpal::IPhysicalLayer* pPhys_,
 	    openpal::ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler_,
 		openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler_
 	);
@@ -104,7 +104,7 @@ private:
 
 	void CheckForFinalShutdown();
 
-	std::unique_ptr<openpal::IPhysicalLayerAsync> pPhys;
+	std::unique_ptr<openpal::IPhysicalLayer> pPhys;
 	std::unique_ptr<openpal::LogRoot> pLogRoot;
 	openpal::Logger logger;
 

@@ -19,8 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\openpal\AsyncLayerInterfaces.h" />
+    <ClInclude Include="src\openpal\LayerInterfaces.h" />
     <ClInclude Include="src\openpal\Bind.h" />
+    <ClInclude Include="src\openpal\ChannelStatistics.h" />
     <ClInclude Include="src\openpal\Pair.h" />
     <ClInclude Include="src\openpal\Settable.h" />
     <ClInclude Include="src\openpal\WriteBuffer.h" />
@@ -35,10 +36,10 @@
     <ClInclude Include="src\openpal\DynamicArray.h" />
     <ClInclude Include="src\openpal\HasSize.h" />
     <ClInclude Include="src\openpal\IExecutor.h" />
-    <ClInclude Include="src\openpal\IHandlerAsync.h" />
+    <ClInclude Include="src\openpal\IPhysicalLayerCallbacks.h" />
     <ClInclude Include="src\openpal\Indexable.h" />
     <ClInclude Include="src\openpal\IndexableIterator.h" />
-    <ClInclude Include="src\openpal\IPhysicalLayerAsync.h" />
+    <ClInclude Include="src\openpal\IPhysicalLayer.h" />
     <ClInclude Include="src\openpal\ISerializer.h" />
     <ClInclude Include="src\openpal\ITimer.h" />
     <ClInclude Include="src\openpal\ITransactable.h" />

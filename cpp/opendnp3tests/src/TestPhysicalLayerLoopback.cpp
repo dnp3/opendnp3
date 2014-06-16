@@ -26,7 +26,7 @@
 
 #include "PhysLoopback.h"
 #include "MockExecutor.h"
-#include "MockPhysicalLayerAsync.h"
+#include "MockPhysicalLayer.h"
 
 #include <opendnp3/LogLevels.h>
 
@@ -52,7 +52,7 @@ public:
 	asiopal::EventLog log;
 	openpal::LogRoot root;
 	MockExecutor exe;
-	MockPhysicalLayerAsync phys;
+	MockPhysicalLayer phys;
 	PhysLoopback loopback;
 };
 

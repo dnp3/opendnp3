@@ -20,24 +20,24 @@
  */
 #include <catch.hpp>
 
-#include "AsyncPhysBaseTest.h"
+#include "PhysBaseTest.h"
 
 using namespace opendnp3;
 using namespace openpal;
 
-#define SUITE(name) "PhysicalLayerAsyncBaseSuite - " name
+#define SUITE(name) "PhysicalLayerBaseSuite - " name
 
 TEST_CASE(SUITE("ClosedState"))
 {
-	AsyncPhysBaseTest t;
+	PhysBaseTest t;
 	uint8_t buff;
 	WriteBuffer wb(&buff, 1);
 
-	t.phys.AsyncClose();
+	t.phys.BeginClose();
 	REQUIRE(t.log.PopOneEntry(flags::ERR));
 	t.upper.SendDown("00");
 	REQUIRE(t.log.PopOneEntry(flags::ERR));
-	t.phys.AsyncRead(wb);
+	t.phys.BeginRead(wb);
 	REQUIRE(t.log.PopOneEntry(flags::ERR));
 	t.phys.SignalOpenFailure();
 	REQUIRE(t.log.PopOneEntry(flags::ERR));
@@ -52,15 +52,15 @@ TEST_CASE(SUITE("ClosedState"))
 
 TEST_CASE(SUITE("OpenCloseNotification"))
 {
-	AsyncPhysBaseTest t;
+	PhysBaseTest t;
 	const size_t NUM = 3;
 
 	for(size_t i = 1; i <= NUM; ++i)
 	{
-		t.phys.AsyncOpen();
+		t.phys.BeginOpen();
 		t.phys.SignalOpenSuccess();
 		REQUIRE(t.upper.GetState().mNumLayerUp ==  i);
-		t.phys.AsyncClose();
+		t.phys.BeginClose();
 
 		t.phys.SignalOpenFailure();
 		REQUIRE(t.log.PopOneEntry(flags::ERR));
@@ -78,8 +78,8 @@ TEST_CASE(SUITE("OpenCloseNotification"))
 
 TEST_CASE(SUITE("ReadState"))
 {
-	AsyncPhysBaseTest t;
-	t.phys.AsyncOpen();
+	PhysBaseTest t;
+	t.phys.BeginOpen();
 	t.phys.SignalOpenSuccess();
 	t.adapter.StartRead(); //start a read
 
@@ -98,12 +98,12 @@ TEST_CASE(SUITE("ReadState"))
 
 TEST_CASE(SUITE("CloseWhileReading"))
 {
-	AsyncPhysBaseTest t;
-	t.phys.AsyncOpen();
+	PhysBaseTest t;
+	t.phys.BeginOpen();
 	t.phys.SignalOpenSuccess();
 	t.adapter.StartRead();
 
-	t.phys.AsyncClose();
+	t.phys.BeginClose();
 	REQUIRE(t.phys.NumClose() ==  1);
 	REQUIRE(t.upper.GetState().mNumLayerDown ==  0); //layer shouldn't go down until the outstanding read comes back
 	t.phys.SignalReadFailure();
@@ -112,8 +112,8 @@ TEST_CASE(SUITE("CloseWhileReading"))
 
 TEST_CASE(SUITE("WriteState"))
 {
-	AsyncPhysBaseTest t;
-	t.phys.AsyncOpen();
+	PhysBaseTest t;
+	t.phys.BeginOpen();
 	t.phys.SignalOpenSuccess();
 
 	t.upper.SendDown("00");
@@ -131,12 +131,12 @@ TEST_CASE(SUITE("WriteState"))
 
 TEST_CASE(SUITE("CloseWhileWriting"))
 {
-	AsyncPhysBaseTest t;
-	t.phys.AsyncOpen();
+	PhysBaseTest t;
+	t.phys.BeginOpen();
 	t.phys.SignalOpenSuccess();
 
 	t.upper.SendDown("00");
-	t.phys.AsyncClose();
+	t.phys.BeginClose();
 	REQUIRE(t.phys.NumClose() ==  1);
 	REQUIRE(t.upper.GetState().mNumLayerDown ==  0); //layer shouldn't go down until the outstanding write comes back
 	t.phys.SignalSendFailure();
@@ -145,13 +145,13 @@ TEST_CASE(SUITE("CloseWhileWriting"))
 
 TEST_CASE(SUITE("CloseWhileReadingWriting"))
 {
-	AsyncPhysBaseTest t;
-	t.phys.AsyncOpen();
+	PhysBaseTest t;
+	t.phys.BeginOpen();
 	t.phys.SignalOpenSuccess();
 
 	t.upper.SendDown("00");
 	t.adapter.StartRead();
-	t.phys.AsyncClose();
+	t.phys.BeginClose();
 	REQUIRE(t.phys.NumClose() ==  1);
 	REQUIRE(t.upper.GetState().mNumLayerDown ==  0);
 	t.phys.SignalSendFailure();
@@ -162,13 +162,13 @@ TEST_CASE(SUITE("CloseWhileReadingWriting"))
 
 TEST_CASE(SUITE("CloseWhileWritingReading"))
 {
-	AsyncPhysBaseTest t;
-	t.phys.AsyncOpen();
+	PhysBaseTest t;
+	t.phys.BeginOpen();
 	t.phys.SignalOpenSuccess();
 
 	t.upper.SendDown("00");
 	t.adapter.StartRead();
-	t.phys.AsyncClose();
+	t.phys.BeginClose();
 	REQUIRE(t.phys.NumClose() ==  1);
 	REQUIRE(t.upper.GetState().mNumLayerDown ==  0);
 	t.phys.SignalReadFailure();
@@ -179,10 +179,10 @@ TEST_CASE(SUITE("CloseWhileWritingReading"))
 
 TEST_CASE(SUITE("CloseWhileOpening"))
 {
-	AsyncPhysBaseTest t;
+	PhysBaseTest t;
 
-	t.phys.AsyncOpen();
-	t.phys.AsyncClose();
+	t.phys.BeginOpen();
+	t.phys.BeginClose();
 	REQUIRE(t.phys.IsOpening());
 	REQUIRE(t.phys.IsClosing());
 

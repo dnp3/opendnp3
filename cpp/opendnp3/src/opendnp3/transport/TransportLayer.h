@@ -26,7 +26,7 @@
 
 #include <openpal/IExecutor.h>
 #include <openpal/LogRoot.h>
-#include <openpal/AsyncLayerInterfaces.h>
+#include <openpal/LayerInterfaces.h>
 
 #include "opendnp3/link/ILinkLayer.h"
 #include "opendnp3/StaticSizeConfiguration.h"

@@ -69,8 +69,8 @@ public:
 	static void ChangeState(PhysicalLayerMonitor* apContext, IMonitorState* apState);
 	static void StartOpenTimer(PhysicalLayerMonitor* apContext);
 	static void CancelOpenTimer(PhysicalLayerMonitor* apContext);
-	static void AsyncClose(PhysicalLayerMonitor* apContext);
-	static void AsyncOpen(PhysicalLayerMonitor* apContext);
+	static void Close(PhysicalLayerMonitor* apContext);
+	static void Open(PhysicalLayerMonitor* apContext);
 };
 
 class CannotOpen : public virtual IMonitorState

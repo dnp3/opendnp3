@@ -74,7 +74,7 @@ public:
 	virtual ~IChannel() {}
 
 	/**
-	* Asynchronously shutdown the channel
+	* hronously shutdown the channel
 	*/
 	virtual void BeginShutdown() = 0;
 

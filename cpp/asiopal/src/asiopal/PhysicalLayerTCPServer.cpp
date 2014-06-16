@@ -18,7 +18,7 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "PhysicalLayerAsyncTCPServer.h"
+#include "PhysicalLayerTCPServer.h"
 
 #include <asio.hpp>
 
@@ -26,7 +26,7 @@
 #include <string>
 
 #include <openpal/LogMacros.h>
-#include <openpal/IHandlerAsync.h>
+#include <openpal/IPhysicalLayerCallbacks.h>
 #include <openpal/LogLevels.h>
 
 using namespace asio;
@@ -36,14 +36,14 @@ using namespace std;
 namespace asiopal
 {
 
-PhysicalLayerAsyncTCPServer::PhysicalLayerAsyncTCPServer(
+PhysicalLayerTCPServer::PhysicalLayerTCPServer(
 	openpal::LogRoot& root,
     asio::io_service* pIOService,
     const std::string& endpoint,
     uint16_t port,
     std::function<void (asio::ip::tcp::socket&)> configure_) :
 
-	PhysicalLayerAsyncBaseTCP(root, pIOService),
+	PhysicalLayerBaseTCP(root, pIOService),
 	localEndpointString(endpoint),
 	localEndpoint(ip::tcp::v4(), port),
 	acceptor(*pIOService),
@@ -53,7 +53,7 @@ PhysicalLayerAsyncTCPServer::PhysicalLayerAsyncTCPServer(
 }
 
 /* Implement the actions */
-void PhysicalLayerAsyncTCPServer::DoOpen()
+void PhysicalLayerTCPServer::DoOpen()
 {
 	if (!acceptor.is_open())
 	{
@@ -114,7 +114,7 @@ void PhysicalLayerAsyncTCPServer::DoOpen()
 	}
 }
 
-void PhysicalLayerAsyncTCPServer::CloseAcceptor()
+void PhysicalLayerTCPServer::CloseAcceptor()
 {
 	std::error_code ec;
 	acceptor.close(ec);
@@ -124,17 +124,17 @@ void PhysicalLayerAsyncTCPServer::CloseAcceptor()
 	}
 }
 
-void PhysicalLayerAsyncTCPServer::DoOpenCallback()
+void PhysicalLayerTCPServer::DoOpenCallback()
 {
 	this->CloseAcceptor();
 }
 
-void PhysicalLayerAsyncTCPServer::DoOpeningClose()
+void PhysicalLayerTCPServer::DoOpeningClose()
 {
 	this->CloseAcceptor();
 }
 
-void PhysicalLayerAsyncTCPServer::DoOpenSuccess()
+void PhysicalLayerTCPServer::DoOpenSuccess()
 {
 	FORMAT_LOG_BLOCK(logger, logflags::INFO, "Accepted connection from: %s", remoteEndpoint.address().to_string().c_str());
 	configure(mSocket);

@@ -23,7 +23,7 @@
 
 #include "LogTester.h"
 #include "MockExecutor.h"
-#include "MockPhysicalLayerAsync.h"
+#include "MockPhysicalLayer.h"
 
 #include <opendnp3/link/LinkLayerRouter.h>
 #include <opendnp3/LogLevels.h>
@@ -38,7 +38,7 @@ public:
 
 	LogTester log;
 	MockExecutor exe;
-	MockPhysicalLayerAsync phys;
+	MockPhysicalLayer phys;
 	LinkLayerRouter router;
 };
 

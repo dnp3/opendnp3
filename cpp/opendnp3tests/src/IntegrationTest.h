@@ -30,7 +30,7 @@
 
 #include "Random.h"
 #include "FlexibleDataObserver.h"
-#include "AsyncTestObjectASIO.h"
+#include "TestObjectASIO.h"
 #include "LogTester.h"
 #include "FanoutDataObserver.h"
 #include "MockCommandHandler.h"

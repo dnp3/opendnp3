@@ -24,7 +24,7 @@
 
 #include "opendnp3/LogLevels.h"
 
-#include <openpal/IPhysicalLayerAsync.h>
+#include <openpal/IPhysicalLayer.h>
 #include <openpal/LogMacros.h>
 #include <openpal/Bind.h>
 
@@ -37,7 +37,7 @@ namespace opendnp3
 
 PhysicalLayerMonitor::PhysicalLayerMonitor(
 	openpal::LogRoot& root,
-    IPhysicalLayerAsync* pPhys_,
+    IPhysicalLayer* pPhys_,
     TimeDuration minOpenRetry_,
     TimeDuration maxOpenRetry_,
     IOpenDelayStrategy* pOpenStrategy_) :
@@ -79,7 +79,7 @@ void PhysicalLayerMonitor::ChangeState(IMonitorState* apState)
 }
 
 
-/// ------- IHandlerAsync -------
+/// ------- IHandler -------
 
 void PhysicalLayerMonitor::OnOpenFailure()
 {

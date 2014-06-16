@@ -34,14 +34,14 @@ class PhysicalLayerWrapperFactory
 {
 public:
 
-	static IPhysicalLayerAsyncFactory GetSerialAsync(SerialSettings s);
-	static IPhysicalLayerAsyncFactory GetTCPClientAsync(std::string aAddress, uint16_t aPort);
-	static IPhysicalLayerAsyncFactory GetTCPServerAsync(std::string aEndpoint, uint16_t aPort);
+	static IPhysicalLayerFactory GetSerial(SerialSettings s);
+	static IPhysicalLayerFactory GetTCPClient(std::string aAddress, uint16_t aPort);
+	static IPhysicalLayerFactory GetTCPServer(std::string aEndpoint, uint16_t aPort);
 
 	//normal factory functions
-	static IPhysicalLayerWrapper* FGetSerialAsync(SerialSettings s, asio::io_service* apSrv, openpal::Logger& arLogger);
-	static IPhysicalLayerAsync* FGetTCPClientAsync(std::string aAddress, uint16_t aPort, asio::io_service* apSrv, openpal::Logger& arLogger);
-	static IPhysicalLayerAsync* FGetTCPServerAsync(std::string aEndpoint, uint16_t aPort, asio::io_service* apSrv, openpal::Logger& arLogger);
+	static IPhysicalLayerWrapper* FGetSerial(SerialSettings s, asio::io_service* apSrv, openpal::Logger& arLogger);
+	static IPhysicalLayer* FGetTCPClient(std::string aAddress, uint16_t aPort, asio::io_service* apSrv, openpal::Logger& arLogger);
+	static IPhysicalLayer* FGetTCPServer(std::string aEndpoint, uint16_t aPort, asio::io_service* apSrv, openpal::Logger& arLogger);
 };
 }
 

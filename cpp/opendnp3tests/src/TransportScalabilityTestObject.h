@@ -22,7 +22,7 @@
 #define __TRANSPORT_SCALABILITY_TEST_OBJECT_H_
 
 #include "TransportStackPair.h"
-#include "AsyncTestObjectASIO.h"
+#include "TestObjectASIO.h"
 #include "LogTester.h"
 
 #include <opendnp3/LogLevels.h>
@@ -31,7 +31,7 @@
 namespace opendnp3
 {
 
-class TransportScalabilityTestObject : public AsyncTestObjectASIO
+class TransportScalabilityTestObject : public TestObjectASIO
 {
 public:
 	TransportScalabilityTestObject(

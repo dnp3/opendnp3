@@ -18,41 +18,44 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "AsyncTestObject.h"
+#ifndef __PHYSICAL_LAYER_ASYNC_ASIO_H_
+#define __PHYSICAL_LAYER_ASYNC_ASIO_H_
 
-#include "Timeout.h"
+#include "PhysicalLayerBase.h"
 
-#include <functional>
-#include <chrono>
+#include "ASIOExecutor.h"
 
-using namespace openpal;
-using namespace std;
+namespace asio
+{
+class io_service;
+}
 
-namespace opendnp3
+namespace asiopal
 {
 
-bool AsyncTestObject::ProceedUntil(const EvalFunc& arFunc, openpal::TimeDuration aTimeout)
-{
-	Timeout to(std::chrono::milliseconds(aTimeout.GetMilliseconds()));
+// This is the base class for the new async physical layers. It assumes that all of the functions
+// are called from a single thread.
 
-	do
+class PhysicalLayerASIO : public PhysicalLayerBase
+{
+public:
+	PhysicalLayerASIO(openpal::LogRoot& root, asio::io_service* apService) :
+		PhysicalLayerBase(root),
+		strand(*apService),
+		executor(&strand)
+	{}
+
+	virtual ~PhysicalLayerASIO() {}
+
+	openpal::IExecutor* GetExecutor()
 	{
-		if(arFunc()) return true;
-		else this->Next();
+		return &executor;
 	}
-	while(!to.IsExpired());
 
-	return false;
-}
-
-void AsyncTestObject::ProceedForTime(openpal::TimeDuration aTimeout)
-{
-	ProceedUntil(std::bind(&AsyncTestObject::AlwaysBoolean, false), aTimeout);
-}
-
-bool AsyncTestObject::ProceedUntilFalse(const EvalFunc& arFunc, openpal::TimeDuration aTimeout)
-{
-	return ProceedUntil(std::bind(&AsyncTestObject::Negate, std::cref(arFunc)), aTimeout);
-}
+protected:
+	asio::strand strand;
+	ASIOExecutor executor;
+};
 
 }
+#endif

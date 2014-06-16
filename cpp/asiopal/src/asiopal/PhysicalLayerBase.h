@@ -18,10 +18,10 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __PHYSICAL_LAYER_ASYNC_BASE_H_
-#define __PHYSICAL_LAYER_ASYNC_BASE_H_
+#ifndef __PHYSICAL_LAYER_BASE_H_
+#define __PHYSICAL_LAYER_BASE_H_
 
-#include <openpal/IPhysicalLayerAsync.h>
+#include <openpal/IPhysicalLayer.h>
 #include <openpal/LogRoot.h>
 
 #include <system_error>
@@ -33,7 +33,7 @@ class PLAS_Base;
 
 // This is the base class for the new async physical layers. It assumes that all of the functions
 // are called from a single thread.
-class PhysicalLayerAsyncBase : public openpal::IPhysicalLayerAsync
+class PhysicalLayerBase : public openpal::IPhysicalLayer
 {
 	class State : public  openpal::IChannelState
 	{
@@ -64,13 +64,13 @@ class PhysicalLayerAsyncBase : public openpal::IPhysicalLayerAsync
 	};
 
 public:
-	PhysicalLayerAsyncBase(openpal::LogRoot& root);
+	PhysicalLayerBase(openpal::LogRoot& root);
 
 	// destructor should only be called once the object is totally finished with all of its async operations
 	// to avoid segfaulting. There are a # of asserts that make sure the object has been shutdown properly.
-	virtual ~PhysicalLayerAsyncBase() {}
+	virtual ~PhysicalLayerBase() {}
 
-	/* Implement IChannelState */
+	// Implement IChannelState
 	bool IsOpen() const
 	{
 		return state.IsOpen();
@@ -113,14 +113,14 @@ public:
 		return state.CanWrite();
 	}	
 
-	/* Implement IPhysicalLayerAsync - Events from the outside */
-	void AsyncOpen();
-	void AsyncClose();
-	void AsyncWrite(const  openpal::ReadOnlyBuffer&);
-	void AsyncRead(openpal::WriteBuffer&);
+	/* Implement IPhysicalLayer - Events from the outside */
+	virtual void BeginOpen() override final;
+	virtual void BeginClose() override final;
+	virtual void BeginWrite(const  openpal::ReadOnlyBuffer&) override final;
+	virtual void BeginRead(openpal::WriteBuffer&) override final;
 
 	// Not an event delegated to the states
-	void SetHandler(openpal::IHandlerAsync* apHandler);
+	void SetHandler(openpal::IPhysicalLayerCallbacks* apHandler);
 
 	/* Actions taken by the states - These must be implemented by the concrete
 	classes inherited from this class */
@@ -130,8 +130,8 @@ public:
 	{
 		DoClose();    //optionally override this action
 	}
-	virtual void DoAsyncRead(openpal::WriteBuffer&) = 0;
-	virtual void DoAsyncWrite(const  openpal::ReadOnlyBuffer&) = 0;
+	virtual void DoRead(openpal::WriteBuffer&) = 0;
+	virtual void DoWrite(const  openpal::ReadOnlyBuffer&) = 0;
 
 	// These can be optionally overriden to do something more interesting, i.e. specific logging
 	virtual void DoOpenCallback() {}
@@ -158,17 +158,17 @@ protected:
 	openpal::Logger logger;
 
 	// "user" object that recieves the callbacks
-	openpal::IHandlerAsync* mpHandler;
+	openpal::IPhysicalLayerCallbacks* mpHandler;
 
 	// State object that tracks the activities of the class, state pattern too heavy
-	PhysicalLayerAsyncBase::State state;
+	PhysicalLayerBase::State state;
 
 private:
 
 	void StartClose();
 };
 
-inline void PhysicalLayerAsyncBase::SetHandler(openpal::IHandlerAsync* apHandler)
+inline void PhysicalLayerBase::SetHandler(openpal::IPhysicalLayerCallbacks* apHandler)
 {
 	assert(mpHandler == nullptr);
 	assert(apHandler != nullptr);

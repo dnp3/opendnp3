@@ -23,7 +23,7 @@
 #include <assert.h>
 
 #include <openpal/LogMacros.h>
-#include <openpal/IPhysicalLayerAsync.h>
+#include <openpal/IPhysicalLayer.h>
 #include <openpal/Bind.h>
 
 #include "opendnp3/LogLevels.h"
@@ -37,7 +37,7 @@ namespace opendnp3
 {
 
 LinkLayerRouter::LinkLayerRouter(	openpal::LogRoot& root,
-                                    IPhysicalLayerAsync* apPhys,
+                                    IPhysicalLayer* apPhys,
                                     openpal::TimeDuration minOpenRetry,
                                     openpal::TimeDuration maxOpenRetry,
                                     openpal::IEventHandler<ChannelState>* pStateHandler_,
@@ -254,7 +254,7 @@ void LinkLayerRouter::OnReceive(const openpal::ReadOnlyBuffer& input)
 	if(pPhys->CanRead())   // this is required because the call above could trigger the layer to be closed
 	{
 		auto buff = parser.WriteBuff();
-		pPhys->AsyncRead(buff); //start another read
+		pPhys->BeginRead(buff); //start another read
 	}	
 }
 
@@ -322,7 +322,7 @@ void LinkLayerRouter::CheckForSend()
 	{
 		auto pTransmission = transmitQueue.Peek();
 		mTransmitting = true;		
-		pPhys->AsyncWrite(pTransmission->buffer);
+		pPhys->BeginWrite(pTransmission->buffer);
 	}
 }
 
@@ -331,7 +331,7 @@ void LinkLayerRouter::OnPhysicalLayerOpenSuccessCallback()
 	if(pPhys->CanRead())
 	{		
 		auto buff = parser.WriteBuff();
-		pPhys->AsyncRead(buff);	
+		pPhys->BeginRead(buff);
 	}
 
 	records.Foreach(

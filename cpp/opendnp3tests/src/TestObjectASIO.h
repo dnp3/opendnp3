@@ -18,45 +18,40 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __PHYSICAL_LAYER_ASYNC_TCP_SERVER_H_
-#define __PHYSICAL_LAYER_ASYNC_TCP_SERVER_H_
+#ifndef __ASYNC_TEST_OBJECT_ASIO_H_
+#define __ASYNC_TEST_OBJECT_ASIO_H_
 
-#include "PhysicalLayerAsyncBaseTCP.h"
+#include "TestObject.h"
 
-#include <openpal/Location.h>
+namespace asio
+{
+class io_service;
+}
 
-#include <asio.hpp>
-#include <asio/ip/tcp.hpp>
-
-namespace asiopal
+namespace opendnp3
 {
 
-class PhysicalLayerAsyncTCPServer : public PhysicalLayerAsyncBaseTCP
+class TestObjectASIO : public TestObject
 {
 public:
-	PhysicalLayerAsyncTCPServer(
-		openpal::LogRoot& root,
-	    asio::io_service* pIOService,
-	    const std::string& endpoint,
-	    uint16_t port,
-		std::function<void (asio::ip::tcp::socket&)> configure = [](asio::ip::tcp::socket&) {});
+	TestObjectASIO();
+	TestObjectASIO(asio::io_service*);
+	virtual ~TestObjectASIO();
 
-	/* Implement the remainging actions */
-	void DoOpen();
-	void DoOpeningClose(); //override this to cancel the acceptor instead of the socket
-	void DoOpenSuccess();
-	void DoOpenCallback();
+	asio::io_service* GetService()
+	{
+		return mpTestObjectService;
+	}
+
+	static void Next(asio::io_service* apSrv, openpal::TimeDuration aSleep);
 
 private:
+	asio::io_service* mpTestObjectService;
+	bool mOwner;
+	void Next();
 
-	void CloseAcceptor();
-
-	std::string localEndpointString;
-	asio::ip::tcp::endpoint localEndpoint;
-	asio::ip::tcp::endpoint remoteEndpoint;
-	asio::ip::tcp::acceptor acceptor;
-	std::function<void (asio::ip::tcp::socket&)> configure;
 };
+
 }
 
 #endif

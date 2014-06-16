@@ -30,7 +30,7 @@
 using namespace std;
 using namespace opendnp3;
 
-#define SUITE(name) "AsyncTransportScalability - " name
+#define SUITE(name) "TransportScalability - " name
 
 
 TEST_CASE(SUITE("TestSimpleSend"))

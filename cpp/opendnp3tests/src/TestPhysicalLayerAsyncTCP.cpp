@@ -32,8 +32,8 @@
 #include "PhysLoopback.h"
 
 #include "BufferHelpers.h"
-#include "AsyncTestObjectASIO.h"
-#include "AsyncPhysTestObject.h"
+#include "TestObjectASIO.h"
+#include "PhysTestObject.h"
 
 #include <iostream>
 
@@ -43,50 +43,50 @@ using namespace openpal;
 using namespace asiopal;
 
 
-#define SUITE(name) "PhysicalLayerAsyncTCPSuite - " name
+#define SUITE(name) "PhysicalLayerTCPSuite - " name
 
 TEST_CASE(SUITE("TestStateClosed"))
 {
-	AsyncPhysTestObject t;
+	PhysTestObject t;
 
 	uint8_t b[100];
 	WriteBuffer buff(b, 100);
 	WriteBuffer empty;
 
-	t.mTCPClient.AsyncWrite(empty.ToReadOnly());
+	t.mTCPClient.BeginWrite(empty.ToReadOnly());
 	REQUIRE(t.log.PopOneEntry(flags::ERR));
-	t.mTCPClient.AsyncRead(empty);
+	t.mTCPClient.BeginRead(empty);
 	REQUIRE(t.log.PopOneEntry(flags::ERR));
 
-	t.mTCPClient.AsyncWrite(buff.ToReadOnly());
+	t.mTCPClient.BeginWrite(buff.ToReadOnly());
 	REQUIRE(t.log.PopOneEntry(flags::ERR));
-	t.mTCPClient.AsyncRead(buff);
+	t.mTCPClient.BeginRead(buff);
 	REQUIRE(t.log.PopOneEntry(flags::ERR));
-	t.mTCPClient.AsyncClose();
+	t.mTCPClient.BeginClose();
 	REQUIRE(t.log.PopOneEntry(flags::ERR));
 }
 
 TEST_CASE(SUITE("ClientConnectionRejected"))
 {
-	AsyncPhysTestObject t;
+	PhysTestObject t;
 
 	REQUIRE(t.mClientAdapter.GetNumOpenFailure() ==  0);
 
 	for(size_t i = 0; i < 2; ++i)
 	{
-		t.mTCPClient.AsyncOpen();
+		t.mTCPClient.BeginOpen();
 		REQUIRE(t.ProceedUntil(std::bind(&LowerLayerToPhysAdapter::OpenFailureEquals, &t.mClientAdapter, i + 1)));
 	}
 }
 
 TEST_CASE(SUITE("ClientConnectionCanceled"))
 {
-	AsyncPhysTestObject t;
+	PhysTestObject t;
 
 	for(size_t i = 0; i < 2; ++i)
 	{
-		t.mTCPClient.AsyncOpen();
-		t.mTCPClient.AsyncClose();
+		t.mTCPClient.BeginOpen();
+		t.mTCPClient.BeginClose();
 
 		REQUIRE(t.ProceedUntil(std::bind(&LowerLayerToPhysAdapter::OpenFailureEquals, &t.mClientAdapter, i + 1)));
 	}
@@ -94,12 +94,12 @@ TEST_CASE(SUITE("ClientConnectionCanceled"))
 
 TEST_CASE(SUITE("ServerAcceptCanceled"))
 {
-	AsyncPhysTestObject t;
+	PhysTestObject t;
 
 	for(size_t i = 0; i < 2; ++i)
 	{
-		t.mTCPServer.AsyncOpen();
-		t.mTCPServer.AsyncClose();
+		t.mTCPServer.BeginOpen();
+		t.mTCPServer.BeginClose();
 
 		REQUIRE(t.ProceedUntil(std::bind(&LowerLayerToPhysAdapter::OpenFailureEquals, &t.mServerAdapter, i + 1)));
 	}
@@ -107,19 +107,19 @@ TEST_CASE(SUITE("ServerAcceptCanceled"))
 
 TEST_CASE(SUITE("ConnectDisconnect"))
 {
-	AsyncPhysTestObject t;
+	PhysTestObject t;
 
 	for(size_t i = 0; i < 10; ++i)
 	{
 
-		t.mTCPServer.AsyncOpen();
-		t.mTCPClient.AsyncOpen();
+		t.mTCPServer.BeginOpen();
+		t.mTCPClient.BeginOpen();
 		REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::IsOnline, &t.mServerUpper)));
 		REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::IsOnline, &t.mClientUpper)));
 
 		//Check that since reads are outstanding, you only have to stop 1/2 of the connection
-		if( (i % 2) == 0 ) t.mTCPServer.AsyncClose();
-		else t.mTCPClient.AsyncClose();
+		if ((i % 2) == 0) t.mTCPServer.BeginClose();
+		else t.mTCPClient.BeginClose();
 		REQUIRE(t.ProceedUntilFalse(std::bind(&MockUpperLayer::IsOnline, &t.mServerUpper)));
 		REQUIRE(t.ProceedUntilFalse(std::bind(&MockUpperLayer::IsOnline, &t.mClientUpper)));
 	}
@@ -127,17 +127,17 @@ TEST_CASE(SUITE("ConnectDisconnect"))
 
 TEST_CASE(SUITE("TestSendShutdown"))
 {
-	AsyncPhysTestObject t;
+	PhysTestObject t;
 
-	t.mTCPServer.AsyncOpen();
-	t.mTCPClient.AsyncOpen();
+	t.mTCPServer.BeginOpen();
+	t.mTCPClient.BeginOpen();
 	REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::IsOnline, &t.mServerUpper)));
 	REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::IsOnline, &t.mClientUpper)));
 
 	ByteStr bs(1024, 77); //give some interesting seed value to make sure bytes are correctly written
 	t.mClientUpper.SendDown(bs.ToReadOnly());
 
-	t.mTCPClient.AsyncClose();
+	t.mTCPClient.BeginClose();
 	REQUIRE(t.ProceedUntilFalse(std::bind(&MockUpperLayer::IsOnline, &t.mServerUpper)));
 	REQUIRE(t.ProceedUntilFalse(std::bind(&MockUpperLayer::IsOnline, &t.mClientUpper)));
 }
@@ -146,10 +146,10 @@ TEST_CASE(SUITE("TwoWaySend"))
 {
 	const size_t SEND_SIZE = 1 << 20; // 1 MB
 
-	AsyncPhysTestObject t;
+	PhysTestObject t;
 
-	t.mTCPServer.AsyncOpen();
-	t.mTCPClient.AsyncOpen();
+	t.mTCPServer.BeginOpen();
+	t.mTCPClient.BeginOpen();
 	REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::IsOnline, &t.mServerUpper)));
 	REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::IsOnline, &t.mClientUpper)));
 
@@ -164,52 +164,52 @@ TEST_CASE(SUITE("TwoWaySend"))
 	REQUIRE(t.mClientUpper.BufferEquals(bs.ToReadOnly()));
 	REQUIRE(t.mServerUpper.BufferEquals(bs.ToReadOnly()));
 
-	t.mTCPServer.AsyncClose(); //stop one side
+	t.mTCPServer.BeginClose(); //stop one side
 	REQUIRE(t.ProceedUntilFalse(std::bind(&MockUpperLayer::IsOnline, &t.mServerUpper)));
 	REQUIRE(t.ProceedUntilFalse(std::bind(&MockUpperLayer::IsOnline, &t.mClientUpper)));
 }
 
-TEST_CASE(SUITE("ServerAsyncCloseWhileOpeningKillsAcceptor"))
+TEST_CASE(SUITE("ServerCloseWhileOpeningKillsAcceptor"))
 {
-	AsyncPhysTestObject t;
+	PhysTestObject t;
 
 	REQUIRE(0 ==  t.mClientAdapter.GetNumOpenFailure());
 
 	for(size_t i = 0; i < 5; ++i)
 	{
-		t.mTCPServer.AsyncOpen();
-		t.mTCPServer.AsyncClose();
+		t.mTCPServer.BeginOpen();
+		t.mTCPServer.BeginClose();
 
 		REQUIRE(t.ProceedUntil(std::bind(&LowerLayerToPhysAdapter::OpenFailureEquals, &t.mServerAdapter, i + 1)));
 
 		// since we closed the server socket we shouldn't be able to connect now
-		t.mTCPClient.AsyncOpen();
+		t.mTCPClient.BeginOpen();
 
 		REQUIRE(t.ProceedUntil(std::bind(&LowerLayerToPhysAdapter::OpenFailureEquals, &t.mClientAdapter, i + 1)));
 	}
 }
 
-TEST_CASE(SUITE("ServerAsyncCloseAfterOpeningKillsAcceptor"))
+TEST_CASE(SUITE("ServerCloseAfterOpeningKillsAcceptor"))
 {
-	AsyncPhysTestObject t;
+	PhysTestObject t;
 
 	REQUIRE(t.mClientAdapter.GetNumOpenFailure() ==  0);
 
 	for(size_t i = 0; i < 5; ++i)
 	{
-		t.mTCPServer.AsyncOpen();
-		t.mTCPClient.AsyncOpen();
+		t.mTCPServer.BeginOpen();
+		t.mTCPClient.BeginOpen();
 
 		REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::IsOnline, &t.mServerUpper)));
 		REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::IsOnline, &t.mClientUpper)));
 
-		t.mTCPServer.AsyncClose();
+		t.mTCPServer.BeginClose();
 
 		REQUIRE(t.ProceedUntilFalse(std::bind(&MockUpperLayer::IsOnline, &t.mServerUpper)));
 		REQUIRE(t.ProceedUntilFalse(std::bind(&MockUpperLayer::IsOnline, &t.mClientUpper)));
 
 		// since we closed the server socket we shouldn't be able to connect now
-		t.mTCPClient.AsyncOpen();
+		t.mTCPClient.BeginOpen();
 
 		REQUIRE(t.ProceedUntil(std::bind(&LowerLayerToPhysAdapter::OpenFailureEquals, &t.mClientAdapter, i + 1)));
 	}
@@ -230,18 +230,18 @@ TEST_CASE(SUITE("Loopback"))
 
 	EventLog log;
 	LogRoot root(&log, "test", levels::NORMAL);
-	AsyncTestObjectASIO test;
-	PhysicalLayerAsyncTCPServer server(root, test.GetService(), "127.0.0.1", 30000);
+	TestObjectASIO test;
+	PhysicalLayerTCPServer server(root, test.GetService(), "127.0.0.1", 30000);
 	PhysLoopback loopback(root, &server);
 	loopback.Start();
 
-	PhysicalLayerAsyncTCPClient client(root, test.GetService(), "127.0.0.1", 30000);
+	PhysicalLayerTCPClient client(root, test.GetService(), "127.0.0.1", 30000);
 	LowerLayerToPhysAdapter adapter(root.GetLogger(), &client);
 	MockUpperLayer upper;
 	adapter.SetUpperLayer(&upper);
 	upper.SetLowerLayer(&adapter);
 
-	client.AsyncOpen();
+	client.BeginOpen();
 	REQUIRE(test.ProceedUntil(std::bind(&MockUpperLayer::IsOnline, &upper)));
 
 	RandomizedBuffer rb(SIZE);

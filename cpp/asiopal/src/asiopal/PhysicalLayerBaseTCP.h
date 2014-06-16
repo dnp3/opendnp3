@@ -18,32 +18,46 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __ASYNC_PHYS_BASE_TEST_H_
-#define __ASYNC_PHYS_BASE_TEST_H_
+#ifndef __PHYSICAL_LAYER_BASE_TCP_H_
+#define __PHYSICAL_LAYER_BASE_TCP_H_
 
-#include "LowerLayerToPhysAdapter.h"
-#include "LogTester.h"
-#include "MockUpperLayer.h"
-#include "MockPhysicalLayerAsync.h"
-#include "MockExecutor.h"
+#include "PhysicalLayerASIO.h"
 
-#include <opendnp3/LogLevels.h>
+#include <openpal/Location.h>
 
-namespace opendnp3
+#include <asio.hpp>
+#include <asio/ip/tcp.hpp>
+
+#include <memory>
+
+namespace asiopal
 {
 
-class AsyncPhysBaseTest
+/**
+Common socket object and some shared implementations for server/client.
+*/
+class PhysicalLayerBaseTCP : public PhysicalLayerASIO
 {
 public:
-	AsyncPhysBaseTest(uint32_t filter = levels::NORMAL, bool aImmediate = false);
+	PhysicalLayerBaseTCP(openpal::LogRoot& root, asio::io_service* apIOService);
 
-	LogTester log;
-	MockExecutor exe;
-	MockPhysicalLayerAsync phys;
-	LowerLayerToPhysAdapter adapter;
-	MockUpperLayer upper;
+	virtual ~PhysicalLayerBaseTCP() {}
+
+	/* Implement the shared client/server actions */
+	void DoClose();
+	void DoRead(openpal::WriteBuffer&);
+	void DoWrite(const openpal::ReadOnlyBuffer&);
+	void DoOpenFailure();
+
+protected:
+
+	asio::ip::tcp::socket mSocket;
+	void CloseSocket();
+
+private:
+	void ShutdownSocket();
+
 };
-
 }
 
 #endif

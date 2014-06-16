@@ -18,44 +18,25 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __PHYSICAL_LAYER_ASYNC_ASIO_H_
-#define __PHYSICAL_LAYER_ASYNC_ASIO_H_
+#ifndef __I_PHYSICAL_LAYER_CALLBACKS_H_
+#define __I_PHYSICAL_LAYER_CALLBACKS_H_
 
-#include "PhysicalLayerAsyncBase.h"
+#include "LayerInterfaces.h"
 
-#include "ASIOExecutor.h"
-
-namespace asio
-{
-class io_service;
-}
-
-namespace asiopal
+namespace openpal
 {
 
-// This is the base class for the new async physical layers. It assumes that all of the functions
-// are called from a single thread.
-
-class PhysicalLayerAsyncASIO : public PhysicalLayerAsyncBase
+class IPhysicalLayerCallbacks : public IUpperLayer
 {
+
 public:
-	PhysicalLayerAsyncASIO(openpal::LogRoot& root, asio::io_service* apService) :
-		PhysicalLayerAsyncBase(root),
-		strand(*apService),
-		executor(&strand)
-	{}
+	virtual ~IPhysicalLayerCallbacks() {}
 
-	virtual ~PhysicalLayerAsyncASIO() {}
-
-	openpal::IExecutor* GetExecutor()
-	{
-		return &executor;
-	}
-
-protected:
-	asio::strand strand;
-	ASIOExecutor executor;
+	// In addition to all of the IUpperLayer functions, provide a mechanism to receive open failures
+	// For consistency sake, use NVII pattern in case we want pre/post conditions in the future
+	virtual void OnOpenFailure() = 0;
 };
 
 }
+
 #endif

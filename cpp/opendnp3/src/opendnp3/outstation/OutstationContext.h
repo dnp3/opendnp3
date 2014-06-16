@@ -24,7 +24,7 @@
 #include <openpal/StaticBuffer.h>
 #include <openpal/IExecutor.h>
 #include <openpal/LogRoot.h>
-#include <openpal/AsyncLayerInterfaces.h>
+#include <openpal/LayerInterfaces.h>
 #include <openpal/Pair.h>
 #include <openpal/Settable.h>
 

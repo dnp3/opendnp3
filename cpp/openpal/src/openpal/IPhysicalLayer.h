@@ -21,7 +21,7 @@
 #ifndef _I_PHYSICAL_LAYER_H_
 #define _I_PHYSICAL_LAYER_H_
 
-#include "AsyncLayerInterfaces.h"
+#include "LayerInterfaces.h"
 
 #include "ReadOnlyBuffer.h"
 #include "WriteBuffer.h"
@@ -30,7 +30,7 @@ namespace openpal
 {
 
 class IExecutor;
-class IHandlerAsync;
+class IPhysicalLayerCallbacks;
 
 class IChannelState
 {
@@ -68,11 +68,11 @@ public:
 /**
  * Defines an asynchronous interface for serial/tcp/?
  */
-class IPhysicalLayerAsync : public IChannelState
+class IPhysicalLayer : public IChannelState
 {
 public:
 
-	virtual ~IPhysicalLayerAsync() {}
+	virtual ~IPhysicalLayer() {}
 
 	/**
 	* @return the executor associated with this layer
@@ -82,25 +82,25 @@ public:
 	/**
 	 * Starts an open operation.
 	 *
-	 * Callback is either IHandlerAsync::OnLowerLayerUp or
-	 * IHandlerAsync::OnOpenFailure.
+	 * Callback is either IHandler::OnLowerLayerUp or
+	 * IHandler::OnOpenFailure.
 	 */
-	virtual void AsyncOpen() = 0;
+	virtual void BeginOpen() = 0;
 
 	/**
 	 * Starts a close operation.
 	 *
-	 * Callback is IHandlerAsync::OnLowerLayerDown.  Callback occurs
-	 * after all Asynchronous operations have occured.  If the user
+	 * Callback is IHandler::OnLowerLayerDown.  Callback occurs
+	 * after all hronous operations have occured.  If the user
 	 * code has an outstanding read or write, those handlers will not
 	 * be called.
 	 */
-	virtual void AsyncClose() = 0;
+	virtual void BeginClose() = 0;
 
 	/**
 	 * Starts a send operation.
 	 *
-	 * Callback is IHandlerAsync::OnSendSuccess or a failure will
+	 * Callback is IHandler::OnSendSuccess or a failure will
 	 * result in the layer closing.
 	 *
 	 * @param arBuffer		The buffer from which the write operation
@@ -108,7 +108,7 @@ public:
 	 *						remain available until the write callback or
 	 *                      close occurs.
 	 */
-	virtual void AsyncWrite(const ReadOnlyBuffer& arBuffer) = 0;
+	virtual void BeginWrite(const ReadOnlyBuffer& arBuffer) = 0;
 
 	/**
 	 * Starts a read operation.
@@ -121,7 +121,7 @@ public:
 	 *                      defined by the wrapper.  The underlying buffer
 	 *                      must remain available until the read callback
 	 */
-	virtual void AsyncRead(WriteBuffer& arBuffer) = 0;
+	virtual void BeginRead(WriteBuffer& arBuffer) = 0;
 
 	/**
 	 * Set the handler interface for callbacks. A read interface has
@@ -130,7 +130,7 @@ public:
 	 * @param apHandler		Class that will process asynchronous
 	 * 						callbacks
 	 */
-	virtual void SetHandler(IHandlerAsync* apHandler) = 0;
+	virtual void SetHandler(IPhysicalLayerCallbacks* apHandler) = 0;
 };
 
 };

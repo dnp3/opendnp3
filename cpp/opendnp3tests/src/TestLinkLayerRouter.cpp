@@ -99,7 +99,7 @@ TEST_CASE(SUITE("CloseBehavior"))
 	t.router.QueueTransmit(buffer.ToReadOnly(), &mfs, false); // puts the router in the send state
 
 	REQUIRE(t.phys.NumWrites() ==  1);
-	t.phys.AsyncClose(); //we're both reading and writing so this doesn't trigger a callback yet
+	t.phys.BeginClose(); //we're both reading and writing so this doesn't trigger a callback yet
 	REQUIRE(mfs.mLowerOnline);
 	t.phys.SignalSendFailure();
 	REQUIRE(mfs.mLowerOnline);

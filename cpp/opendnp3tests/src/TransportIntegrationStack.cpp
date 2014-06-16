@@ -22,14 +22,14 @@
 
 #include <opendnp3/link/LinkRoute.h>
 
-#include <openpal/IPhysicalLayerAsync.h>
+#include <openpal/IPhysicalLayer.h>
 
 using namespace openpal;
 
 namespace opendnp3
 {
 
-TransportIntegrationStack::TransportIntegrationStack(openpal::LogRoot& root, IPhysicalLayerAsync* apPhys, LinkConfig aCfg) :
+TransportIntegrationStack::TransportIntegrationStack(openpal::LogRoot& root, IPhysicalLayer* apPhys, LinkConfig aCfg) :
 	mRouter(root, apPhys, TimeDuration::Seconds(1), TimeDuration::Seconds(1)),
 	mLink(root, apPhys->GetExecutor(), aCfg),
 	mTransport(root, apPhys->GetExecutor())

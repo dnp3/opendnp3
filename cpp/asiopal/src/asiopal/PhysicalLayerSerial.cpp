@@ -18,7 +18,7 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "PhysicalLayerAsyncSerial.h"
+#include "PhysicalLayerSerial.h"
 
 #include <asio.hpp>
 
@@ -26,7 +26,7 @@
 #include <string>
 
 #include <openpal/LogMacros.h>
-#include <openpal/IHandlerAsync.h>
+#include <openpal/IPhysicalLayerCallbacks.h>
 #include <openpal/LogLevels.h>
 
 #include "ASIOSerialHelpers.h"
@@ -38,12 +38,12 @@ using namespace openpal;
 namespace asiopal
 {
 
-PhysicalLayerAsyncSerial::PhysicalLayerAsyncSerial(
+PhysicalLayerSerial::PhysicalLayerSerial(
 	openpal::LogRoot& root,
     asio::io_service* apIOService,
     const SerialSettings& settings) :
 
-	PhysicalLayerAsyncASIO(root, apIOService),
+	PhysicalLayerASIO(root, apIOService),
 	settings(settings),
 	port(*apIOService)
 {
@@ -52,7 +52,7 @@ PhysicalLayerAsyncSerial::PhysicalLayerAsyncSerial(
 
 /* Implement the actions */
 
-void PhysicalLayerAsyncSerial::DoOpen()
+void PhysicalLayerSerial::DoOpen()
 {
 	std::error_code ec;
 	port.open(settings.deviceName, ec);
@@ -79,7 +79,7 @@ void PhysicalLayerAsyncSerial::DoOpen()
 	}	
 }
 
-void PhysicalLayerAsyncSerial::DoClose()
+void PhysicalLayerSerial::DoClose()
 {
 	std::error_code ec;
 	port.close(ec);
@@ -89,12 +89,12 @@ void PhysicalLayerAsyncSerial::DoClose()
 	}
 }
 
-void PhysicalLayerAsyncSerial::DoOpenSuccess()
+void PhysicalLayerSerial::DoOpenSuccess()
 {
 	
 }
 
-void PhysicalLayerAsyncSerial::DoAsyncRead(openpal::WriteBuffer& buff)
+void PhysicalLayerSerial::DoRead(openpal::WriteBuffer& buff)
 {
 	uint8_t* pBuffer = buff;
 	port.async_read_some(buffer(pBuffer, buff.Size()),
@@ -107,11 +107,11 @@ void PhysicalLayerAsyncSerial::DoAsyncRead(openpal::WriteBuffer& buff)
 	                     );
 }
 
-void PhysicalLayerAsyncSerial::DoAsyncWrite(const ReadOnlyBuffer& buff)
+void PhysicalLayerSerial::DoWrite(const ReadOnlyBuffer& buff)
 {
 	async_write(port, buffer(buff, buff.Size()),
 	            strand.wrap(
-	                std::bind(&PhysicalLayerAsyncSerial::OnWriteCallback,
+	                std::bind(&PhysicalLayerSerial::OnWriteCallback,
 	                          this,
 	                          std::placeholders::_1,
 	                          buff.Size())

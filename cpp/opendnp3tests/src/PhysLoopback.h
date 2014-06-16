@@ -33,7 +33,7 @@ namespace opendnp3
 class PhysLoopback : public PhysicalLayerMonitor
 {
 public:
-	PhysLoopback(openpal::LogRoot& root, openpal::IPhysicalLayerAsync*);
+	PhysLoopback(openpal::LogRoot& root, openpal::IPhysicalLayer*);
 
 	virtual void OnReceive(const openpal::ReadOnlyBuffer&) override final;
 	virtual void OnSendResult(bool isSuccess) override final;

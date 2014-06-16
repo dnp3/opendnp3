@@ -18,7 +18,7 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "AsyncSerialTestObject.h"
+#include "SerialTestObject.h"
 #include <asio.hpp>
 
 using namespace openpal;
@@ -27,8 +27,8 @@ using namespace asiopal;
 namespace opendnp3
 {
 
-AsyncSerialTestObject::AsyncSerialTestObject(SerialSettings cfg, uint32_t filters, bool aImmediate) :
-	AsyncTestObjectASIO(),
+SerialTestObject::SerialTestObject(SerialSettings cfg, uint32_t filters, bool aImmediate) :
+	TestObjectASIO(),
 	log(),
 	mPort(log.root, this->GetService(), cfg),
 	mAdapter(log.GetLogger(), &mPort, true)

@@ -26,11 +26,11 @@
 
 #include <asiopal/Log.h>
 #include <asiopal/LogToStdio.h>
-#include <asiopal/PhysicalLayerAsyncSerial.h>
+#include <asiopal/PhysicalLayerSerial.h>
 
 #include "ProtocolUtil.h"
 #include "BufferHelpers.h"
-#include "LoopbackPhysicalLayerAsync.h"
+#include "LoopbackPhysicalLayer.h"
 
 using namespace std;
 using namespace opendnp3;
@@ -72,7 +72,7 @@ TEST_CASE(SUITE("TestTransportWithMockLoopback"))
 	EventLog log;
 	LogRoot root(&log, "test", level);
 	asio::io_service service;
-	LoopbackPhysicalLayerAsync phys(root, &service);
+	LoopbackPhysicalLayer phys(root, &service);
 	TransportLoopbackTestObject t(root, &service, &phys, cfgA, cfgB);
 
 	TestLoopback(&t, sizes::DEFAULT_APDU_BUFFER_SIZE);
@@ -97,7 +97,7 @@ TEST_CASE(SUITE("TestTransportWithSerialLoopback"))
 
 	EventLog log;
 	asio::io_service service;
-	PhysicalLayerAsyncSerial phys(log.GetLogger(flags::WARN, "serial"), &service, s);
+	PhysicalLayerSerial phys(log.GetLogger(flags::WARN, "serial"), &service, s);
 	TransportLoopbackTestObject t(&service, &phys, cfgA, cfgB);
 
 	TestLoopback(&t, DEFAULT_FRAG_SIZE);

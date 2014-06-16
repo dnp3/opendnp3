@@ -40,7 +40,7 @@
 
 namespace asiopal
 {
-	class PhysicalLayerAsyncBase;
+	class PhysicalLayerBase;
 }
 
 namespace asiodnp3
@@ -60,7 +60,7 @@ public:
 	IChannel* CreateChannel(	openpal::LogRoot* pRoot,
 	                            openpal::TimeDuration minOpenRetry,
 	                            openpal::TimeDuration maxOpenRetry,
-								asiopal::PhysicalLayerAsyncBase* pPhys,
+								asiopal::PhysicalLayerBase* pPhys,
 	                            openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler = nullptr,
 								opendnp3::IOpenDelayStrategy* pOpenStrategy = opendnp3::ExponentialBackoffStrategy::Inst());
 

@@ -18,7 +18,7 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "PhysicalLayerAsyncBaseTCP.h"
+#include "PhysicalLayerBaseTCP.h"
 
 #include <string>
 #include <functional>
@@ -27,7 +27,7 @@
 #include <asio/ip/tcp.hpp>
 
 #include <openpal/LogMacros.h>
-#include <openpal/IHandlerAsync.h>
+#include <openpal/IPhysicalLayerCallbacks.h>
 #include <openpal/LogLevels.h>
 
 using namespace asio;
@@ -38,8 +38,8 @@ using namespace openpal;
 namespace asiopal
 {
 
-PhysicalLayerAsyncBaseTCP::PhysicalLayerAsyncBaseTCP(openpal::LogRoot& root, asio::io_service* apIOService) :
-	PhysicalLayerAsyncASIO(root, apIOService),
+PhysicalLayerBaseTCP::PhysicalLayerBaseTCP(openpal::LogRoot& root, asio::io_service* apIOService) :
+	PhysicalLayerASIO(root, apIOService),
 	mSocket(*apIOService)
 {
 	
@@ -47,13 +47,13 @@ PhysicalLayerAsyncBaseTCP::PhysicalLayerAsyncBaseTCP(openpal::LogRoot& root, asi
 
 /* Implement the actions */
 
-void PhysicalLayerAsyncBaseTCP::DoClose()
+void PhysicalLayerBaseTCP::DoClose()
 {
 	this->ShutdownSocket();
 	this->CloseSocket();
 }
 
-void PhysicalLayerAsyncBaseTCP::DoAsyncRead(WriteBuffer& buff)
+void PhysicalLayerBaseTCP::DoRead(WriteBuffer& buff)
 {
 	uint8_t* pBuff = buff;
 	mSocket.async_read_some(buffer(pBuff, buff.Size()),
@@ -63,7 +63,7 @@ void PhysicalLayerAsyncBaseTCP::DoAsyncRead(WriteBuffer& buff)
 	}));
 }
 
-void PhysicalLayerAsyncBaseTCP::DoAsyncWrite(const ReadOnlyBuffer& buff)
+void PhysicalLayerBaseTCP::DoWrite(const ReadOnlyBuffer& buff)
 {
 	async_write(mSocket, buffer(buff, buff.Size()),
 	            strand.wrap([this](const std::error_code & code, size_t  numWritten)
@@ -72,13 +72,13 @@ void PhysicalLayerAsyncBaseTCP::DoAsyncWrite(const ReadOnlyBuffer& buff)
 	}));
 }
 
-void PhysicalLayerAsyncBaseTCP::DoOpenFailure()
+void PhysicalLayerBaseTCP::DoOpenFailure()
 {
 	SIMPLE_LOG_BLOCK(logger, logflags::DBG, "Failed socket open, closing socket");
 	this->CloseSocket();
 }
 
-void PhysicalLayerAsyncBaseTCP::CloseSocket()
+void PhysicalLayerBaseTCP::CloseSocket()
 {
 	std::error_code ec;
 
@@ -89,7 +89,7 @@ void PhysicalLayerAsyncBaseTCP::CloseSocket()
 	}
 }
 
-void PhysicalLayerAsyncBaseTCP::ShutdownSocket()
+void PhysicalLayerBaseTCP::ShutdownSocket()
 {
 	std::error_code ec;
 

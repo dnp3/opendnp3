@@ -18,54 +18,33 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "AsyncTestObjectASIO.h"
+#ifndef __ASYNC_SERIAL_TEST_OBJECT_H_
+#define __ASYNC_SERIAL_TEST_OBJECT_H_
 
-#include <asio.hpp>
+#include <asiopal/PhysicalLayerSerial.h>
 
-#include <openpal/Location.h>
+#include "LowerLayerToPhysAdapter.h"
+#include "TestObjectASIO.h"
+#include "LogTester.h"
+#include "MockUpperLayer.h"
 
-#include <thread>
-#include <chrono>
-
-using namespace openpal;
+#include <opendnp3/LogLevels.h>
 
 namespace opendnp3
 {
 
-AsyncTestObjectASIO::AsyncTestObjectASIO() :
-	mpTestObjectService(new asio::io_service()),
-	mOwner(true)
-{}
-
-AsyncTestObjectASIO::AsyncTestObjectASIO(asio::io_service* apService) :
-	mpTestObjectService(apService),
-	mOwner(false)
+class SerialTestObject : public TestObjectASIO
 {
+public:
+	SerialTestObject(asiopal::SerialSettings cfg, uint32_t filters = levels::NORMAL, bool aImmediate = false);
+	virtual ~SerialTestObject() {}
+
+	LogTester log;
+	asiopal::PhysicalLayerSerial mPort;
+	LowerLayerToPhysAdapter mAdapter;
+	MockUpperLayer mUpper;
+};
 
 }
 
-AsyncTestObjectASIO::~AsyncTestObjectASIO()
-{
-	if(mOwner) delete mpTestObjectService;
-}
-
-void AsyncTestObjectASIO::Next()
-{
-	Next(this->GetService(), TimeDuration::Milliseconds(10));
-}
-
-void AsyncTestObjectASIO::Next(asio::io_service* apSrv, openpal::TimeDuration aSleep)
-{
-	std::error_code ec;
-	size_t num = apSrv->poll_one(ec);
-	if(ec) throw std::logic_error(ec.message());
-	if(num == 0)
-	{
-		std::this_thread::sleep_for(std::chrono::milliseconds(aSleep.GetMilliseconds()));
-	}
-	apSrv->reset();
-}
-
-
-
-}
+#endif

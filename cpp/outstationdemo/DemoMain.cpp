@@ -31,7 +31,7 @@
 #include <asiopal/LogToStdio.h>
 #include <asiopal/IOServiceThreadPool.h>
 #include <asiopal/UTCTimeSource.h>
-#include <asiopal/PhysicalLayerAsyncTCPServer.h>
+#include <asiopal/PhysicalLayerTCPServer.h>
 
 #include <asiodnp3/IChannel.h>
 #include <asiodnp3/IOutstation.h>
@@ -69,7 +69,7 @@ int main(int argc, char* argv[])
 
 	// Create the raw physical layer
 	auto pServerRoot = new LogRoot(&iologger, "server", FILTERS);
-	auto pServerPhys = new PhysicalLayerAsyncTCPServer(*pServerRoot, pool.GetIOService(), "0.0.0.0", 20000, configure);
+	auto pServerPhys = new PhysicalLayerTCPServer(*pServerRoot, pool.GetIOService(), "0.0.0.0", 20000, configure);
 	// Wrap the physical layer in a DNP channel
 	auto pServer = mgr.CreateChannel(pServerRoot, TimeDuration::Seconds(5), TimeDuration::Seconds(5), pServerPhys);
 

@@ -25,7 +25,7 @@
 #include <string>
 
 #include <openpal/LogRoot.h>
-#include <openpal/AsyncLayerInterfaces.h>
+#include <openpal/LayerInterfaces.h>
 
 namespace opendnp3
 {

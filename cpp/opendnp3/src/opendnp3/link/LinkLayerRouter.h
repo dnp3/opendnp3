@@ -37,7 +37,7 @@
 
 namespace openpal
 {
-class IPhysicalLayerAsync;
+class IPhysicalLayer;
 }
 
 namespace opendnp3
@@ -48,13 +48,13 @@ class LinkFrame;
 
 // Implements the parsing and de-multiplexing portion of
 // of DNP 3 Data Link Layer. PhysicalLayerMonitor inherits
-// from IHandlerAsync, which inherits from IUpperLayer
+// from IHandler, which inherits from IUpperLayer
 class LinkLayerRouter : public PhysicalLayerMonitor, public ILinkRouter, private IFrameSink
 {
 public:
 
 	LinkLayerRouter(openpal::LogRoot&,
-	                openpal::IPhysicalLayerAsync*,
+	                openpal::IPhysicalLayer*,
 	                openpal::TimeDuration minOpenRetry,
 	                openpal::TimeDuration maxOpenRetry,
 	                openpal::IEventHandler<ChannelState>* pStateHandler = nullptr,
@@ -162,7 +162,7 @@ private:
 	LinkLayerParser parser;
 	bool mTransmitting;
 
-	// Implement virtual AsyncPhysLayerMonitor
+	// Implement virtual PhysLayerMonitor
 	void OnPhysicalLayerOpenSuccessCallback();
 	void OnPhysicalLayerOpenFailureCallback() {}
 	void OnPhysicalLayerCloseCallback();

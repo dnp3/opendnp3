@@ -18,7 +18,7 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "MockPhysicalLayerAsync.h"
+#include "MockPhysicalLayer.h"
 
 #include "BufferHelpers.h"
 #include <openpal/IExecutor.h>
@@ -31,8 +31,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-MockPhysicalLayerAsync::MockPhysicalLayerAsync(openpal::LogRoot& root, openpal::IExecutor* apExecutor) :
-	PhysicalLayerAsyncBase(root),
+MockPhysicalLayer::MockPhysicalLayer(openpal::LogRoot& root, openpal::IExecutor* apExecutor) :
+	PhysicalLayerBase(root),
 	mpWriteBuff(nullptr),
 	mNumToRead(0),
 	mNumToWrite(0),
@@ -49,34 +49,34 @@ MockPhysicalLayerAsync::MockPhysicalLayerAsync(openpal::LogRoot& root, openpal::
 
 }
 
-void MockPhysicalLayerAsync::DoOpeningClose()
+void MockPhysicalLayer::DoOpeningClose()
 {
 	++mNumOpeningClose;
 }
 
-void MockPhysicalLayerAsync::DoOpen()
+void MockPhysicalLayer::DoOpen()
 {
 	++mNumOpen;
 }
 
-void MockPhysicalLayerAsync::DoClose()
+void MockPhysicalLayer::DoClose()
 {
 	++mNumClose;
 }
 
-void MockPhysicalLayerAsync::SignalOpenSuccess()
+void MockPhysicalLayer::SignalOpenSuccess()
 {
 	std::error_code ec;
 	this->OnOpenCallback(ec);
 }
 
-void MockPhysicalLayerAsync::SignalOpenFailure()
+void MockPhysicalLayer::SignalOpenFailure()
 {
 	std::error_code ec(1, std::generic_category());
 	this->OnOpenCallback(ec);
 }
 
-void MockPhysicalLayerAsync::SignalSendSuccess()
+void MockPhysicalLayer::SignalSendSuccess()
 {
 	uint32_t num = mNumToWrite;
 	mNumToWrite = 0;
@@ -84,21 +84,21 @@ void MockPhysicalLayerAsync::SignalSendSuccess()
 	this->OnWriteCallback(ec, num);
 }
 
-void MockPhysicalLayerAsync::SignalSendFailure()
+void MockPhysicalLayer::SignalSendFailure()
 {
 	mNumToWrite = 0;
 	std::error_code ec(1, std::generic_category());
 	this->OnWriteCallback(ec, 0);
 }
 
-void MockPhysicalLayerAsync::SignalReadFailure()
+void MockPhysicalLayer::SignalReadFailure()
 {
 	mNumToRead = 0;
 	std::error_code ec(1, std::generic_category());
 	this->OnReadCallback(ec, mpWriteBuff, 0);
 }
 
-void MockPhysicalLayerAsync::TriggerRead(const std::string& arData)
+void MockPhysicalLayer::TriggerRead(const std::string& arData)
 {
 	HexSequence hs(arData);
 	assert(hs.Size() <= this->mNumToRead);
@@ -108,7 +108,7 @@ void MockPhysicalLayerAsync::TriggerRead(const std::string& arData)
 	this->OnReadCallback(ec, mpWriteBuff, hs.Size());
 }
 
-void MockPhysicalLayerAsync::TriggerClose()
+void MockPhysicalLayer::TriggerClose()
 {
 	std::error_code ec(1, std::generic_category());
 	this->OnReadCallback(ec, mpWriteBuff, 0);

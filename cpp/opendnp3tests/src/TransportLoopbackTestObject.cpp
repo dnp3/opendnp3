@@ -22,7 +22,7 @@
 
 #include <opendnp3/link/LinkRoute.h>
 
-#include <openpal/IPhysicalLayerAsync.h>
+#include <openpal/IPhysicalLayer.h>
 
 #include <asio.hpp>
 #include <sstream>
@@ -36,12 +36,12 @@ namespace opendnp3
 TransportLoopbackTestObject::TransportLoopbackTestObject(
 	openpal::LogRoot& root,
     asio::io_service* apService,
-    IPhysicalLayerAsync* apPhys,
+    IPhysicalLayer* apPhys,
     LinkConfig aCfgA,
     LinkConfig aCfgB,
     uint32_t filters) :
 
-	AsyncTestObjectASIO(apService),
+	TestObjectASIO(apService),
 	mCfgA(aCfgA),
 	mCfgB(aCfgB),
 	mLinkA(root, apPhys->GetExecutor(), aCfgA),

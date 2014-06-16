@@ -18,33 +18,41 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __ASYNC_SERIAL_TEST_OBJECT_H_
-#define __ASYNC_SERIAL_TEST_OBJECT_H_
+#include "TestObject.h"
 
-#include <asiopal/PhysicalLayerAsyncSerial.h>
+#include "Timeout.h"
 
-#include "LowerLayerToPhysAdapter.h"
-#include "AsyncTestObjectASIO.h"
-#include "LogTester.h"
-#include "MockUpperLayer.h"
+#include <functional>
+#include <chrono>
 
-#include <opendnp3/LogLevels.h>
+using namespace openpal;
+using namespace std;
 
 namespace opendnp3
 {
 
-class AsyncSerialTestObject : public AsyncTestObjectASIO
+bool TestObject::ProceedUntil(const EvalFunc& arFunc, openpal::TimeDuration aTimeout)
 {
-public:
-	AsyncSerialTestObject(asiopal::SerialSettings cfg, uint32_t filters = levels::NORMAL, bool aImmediate = false);
-	virtual ~AsyncSerialTestObject() {}
+	Timeout to(std::chrono::milliseconds(aTimeout.GetMilliseconds()));
 
-	LogTester log;
-	asiopal::PhysicalLayerAsyncSerial mPort;
-	LowerLayerToPhysAdapter mAdapter;
-	MockUpperLayer mUpper;
-};
+	do
+	{
+		if(arFunc()) return true;
+		else this->Next();
+	}
+	while(!to.IsExpired());
 
+	return false;
 }
 
-#endif
+void TestObject::ProceedForTime(openpal::TimeDuration aTimeout)
+{
+	ProceedUntil(std::bind(&TestObject::AlwaysBoolean, false), aTimeout);
+}
+
+bool TestObject::ProceedUntilFalse(const EvalFunc& arFunc, openpal::TimeDuration aTimeout)
+{
+	return ProceedUntil(std::bind(&TestObject::Negate, std::cref(arFunc)), aTimeout);
+}
+
+}

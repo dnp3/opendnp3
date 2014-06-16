@@ -21,7 +21,7 @@
 #ifndef __OUTSTATION_H_
 #define __OUTSTATION_H_
 
-#include <openpal/AsyncLayerInterfaces.h>
+#include <openpal/LayerInterfaces.h>
 
 #include "opendnp3/outstation/OutstationContext.h"
 

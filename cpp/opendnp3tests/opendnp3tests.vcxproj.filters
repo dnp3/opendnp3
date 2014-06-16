@@ -17,21 +17,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\AsyncPhysBaseTest.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\AsyncPhysTestObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\AsyncSerialTestObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\AsyncTestObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\AsyncTestObjectASIO.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\BufferHelpers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -69,9 +54,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\LogTester.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\LoopbackPhysicalLayerAsync.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\LowerLayerToPhysAdapter.h">
@@ -170,9 +152,6 @@
     <ClInclude Include="src\MockLowerLayer.h">
       <Filter>Header Files\Mocks</Filter>
     </ClInclude>
-    <ClInclude Include="src\MockPhysicalLayerAsync.h">
-      <Filter>Header Files\Mocks</Filter>
-    </ClInclude>
     <ClInclude Include="src\MockPhysicalLayerMonitor.h">
       <Filter>Header Files\Mocks</Filter>
     </ClInclude>
@@ -188,23 +167,29 @@
     <ClInclude Include="src\MockUpperLayer.h">
       <Filter>Header Files\Mocks</Filter>
     </ClInclude>
+    <ClInclude Include="src\PhysBaseTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\PhysTestObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\SerialTestObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TestObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TestObjectASIO.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LoopbackPhysicalLayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MockPhysicalLayer.h">
+      <Filter>Header Files\Mocks</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\AsyncPhysBaseTest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\AsyncPhysTestObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\AsyncSerialTestObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\AsyncTestObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\AsyncTestObjectASIO.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\BufferHelpers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -230,9 +215,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\LogTester.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LoopbackPhysicalLayerAsync.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\LowerLayerToPhysAdapter.cpp">
@@ -412,9 +394,6 @@
     <ClCompile Include="src\MockLowerLayer.cpp">
       <Filter>Source Files\Mocks</Filter>
     </ClCompile>
-    <ClCompile Include="src\MockPhysicalLayerAsync.cpp">
-      <Filter>Source Files\Mocks</Filter>
-    </ClCompile>
     <ClCompile Include="src\MockPhysicalLayerMonitor.cpp">
       <Filter>Source Files\Mocks</Filter>
     </ClCompile>
@@ -435,6 +414,27 @@
     </ClCompile>
     <ClCompile Include="src\TestOutstationUnsolicitedResponses.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PhysBaseTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PhysTestObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SerialTestObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TestObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TestObjectASIO.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LoopbackPhysicalLayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MockPhysicalLayer.cpp">
+      <Filter>Source Files\Mocks</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

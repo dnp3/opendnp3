@@ -21,7 +21,7 @@
 #ifndef __TRANSPORT_LOOPBACK_TEST_OBJECT_H_
 #define __TRANSPORT_LOOPBACK_TEST_OBJECT_H_
 
-#include "AsyncTestObjectASIO.h"
+#include "TestObjectASIO.h"
 #include "LogTester.h"
 #include "MockUpperLayer.h"
 
@@ -33,13 +33,13 @@
 namespace opendnp3
 {
 
-class TransportLoopbackTestObject :  public AsyncTestObjectASIO
+class TransportLoopbackTestObject :  public TestObjectASIO
 {
 public:
 	TransportLoopbackTestObject(
 	    openpal::LogRoot& root,
 	    asio::io_service*,
-	    openpal::IPhysicalLayerAsync*,
+	    openpal::IPhysicalLayer*,
 	    LinkConfig,
 	    LinkConfig,
 	    uint32_t filters = flags::INFO);

@@ -21,7 +21,7 @@
 #ifndef __MASTER_CONTEXT_H_
 #define __MASTER_CONTEXT_H_
 
-#include <openpal/AsyncLayerInterfaces.h>
+#include <openpal/LayerInterfaces.h>
 
 #include <openpal/IExecutor.h>
 #include <openpal/LogRoot.h>

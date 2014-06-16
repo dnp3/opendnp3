@@ -20,14 +20,14 @@
  */
 #include "PhysLoopback.h"
 
-#include <openpal/IPhysicalLayerAsync.h>
+#include <openpal/IPhysicalLayer.h>
 
 using namespace openpal;
 
 namespace opendnp3
 {
 
-PhysLoopback::PhysLoopback(openpal::LogRoot& root, openpal::IPhysicalLayerAsync* apPhys) :
+PhysLoopback::PhysLoopback(openpal::LogRoot& root, openpal::IPhysicalLayer* apPhys) :
 	PhysicalLayerMonitor(root, apPhys, openpal::TimeDuration::Seconds(5), openpal::TimeDuration::Seconds(5)),
 	mBytesReadWritten(0),
 	mBuffer(1024)
@@ -38,13 +38,13 @@ PhysLoopback::PhysLoopback(openpal::LogRoot& root, openpal::IPhysicalLayerAsync*
 void PhysLoopback::StartRead()
 {
 	WriteBuffer buffer(mBuffer, mBuffer.Size());
-	pPhys->AsyncRead(buffer);
+	pPhys->BeginRead(buffer);
 }
 
 void PhysLoopback::OnReceive(const openpal::ReadOnlyBuffer& buffer)
 {
 	mBytesReadWritten += buffer.Size();
-	pPhys->AsyncWrite(buffer);
+	pPhys->BeginWrite(buffer);
 }
 
 void PhysLoopback::OnSendResult(bool isSuccess)

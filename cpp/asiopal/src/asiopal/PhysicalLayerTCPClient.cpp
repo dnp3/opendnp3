@@ -18,14 +18,14 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "PhysicalLayerAsyncTCPClient.h"
+#include "PhysicalLayerTCPClient.h"
 
 #include <asio.hpp>
 
 #include <functional>
 #include <string>
 
-#include <openpal/IHandlerAsync.h>
+#include <openpal/IPhysicalLayerCallbacks.h>
 #include <openpal/LogLevels.h>
 
 using namespace asio;
@@ -35,14 +35,14 @@ using namespace openpal;
 namespace asiopal
 {
 
-PhysicalLayerAsyncTCPClient::PhysicalLayerAsyncTCPClient(
+PhysicalLayerTCPClient::PhysicalLayerTCPClient(
 	openpal::LogRoot& root,
     asio::io_service* pIOService,
     const std::string& host_,
     uint16_t port,
     std::function<void (asio::ip::tcp::socket&)> aConfigure) :
 
-	PhysicalLayerAsyncBaseTCP(root, pIOService),
+	PhysicalLayerBaseTCP(root, pIOService),
 	condition(logger),
 	host(host_),
 	remoteEndpoint(ip::tcp::v4(), port),
@@ -53,7 +53,7 @@ PhysicalLayerAsyncTCPClient::PhysicalLayerAsyncTCPClient(
 }
 
 /* Implement the actions */
-void PhysicalLayerAsyncTCPClient::DoOpen()
+void PhysicalLayerTCPClient::DoOpen()
 {
 	std::error_code ec;
 	auto address = asio::ip::address::from_string(host, ec);
@@ -79,7 +79,7 @@ void PhysicalLayerAsyncTCPClient::DoOpen()
 	}
 }
 
-void PhysicalLayerAsyncTCPClient::HandleResolve(const std::error_code& code, asio::ip::tcp::resolver::iterator endpoints)
+void PhysicalLayerTCPClient::HandleResolve(const std::error_code& code, asio::ip::tcp::resolver::iterator endpoints)
 {
 	if (code)
 	{
@@ -97,12 +97,12 @@ void PhysicalLayerAsyncTCPClient::HandleResolve(const std::error_code& code, asi
 	}
 }
 
-void PhysicalLayerAsyncTCPClient::DoOpeningClose()
+void PhysicalLayerTCPClient::DoOpeningClose()
 {
 	this->CloseSocket();
 }
 
-void PhysicalLayerAsyncTCPClient::DoOpenSuccess()
+void PhysicalLayerTCPClient::DoOpenSuccess()
 {
 	SIMPLE_LOG_BLOCK(logger, logflags::INFO, "Connected to host");
 	configure(mSocket);

@@ -18,7 +18,7 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "AsyncSerialTestObject.h"
+#include "SerialTestObject.h"
 
 #include "BufferHelpers.h"
 
@@ -43,9 +43,9 @@ TEST_CASE(SUITE("TestSendReceiveLoopback"))
 	s.mParity = PAR_NONE;
 	s.mFlowType = FLOW_NONE;
 
-	AsyncSerialTestObject t(s);
+	SerialTestObject t(s);
 
-	t.mPort.AsyncOpen();
+	t.mPort.Open();
 	REQUIRE(t.ProceedUntil(bind(&MockUpperLayer::IsLowerLayerUp, &t.mUpper)));
 
 	ByteStr b(4096, 0);

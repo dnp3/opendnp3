@@ -18,10 +18,10 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __PHYSICAL_LAYER_ASYNC_TCP_CLIENT_H_
-#define __PHYSICAL_LAYER_ASYNC_TCP_CLIENT_H_
+#ifndef __PHYSICAL_LAYER_TCP_CLIENT_H_
+#define __PHYSICAL_LAYER_TCP_CLIENT_H_
 
-#include "PhysicalLayerAsyncBaseTCP.h"
+#include "PhysicalLayerBaseTCP.h"
 
 #include <openpal/LogMacros.h>
 #include <openpal/Location.h>
@@ -30,10 +30,10 @@
 namespace asiopal
 {
 
-class PhysicalLayerAsyncTCPClient : public PhysicalLayerAsyncBaseTCP
+class PhysicalLayerTCPClient : public PhysicalLayerBaseTCP
 {
 public:
-	PhysicalLayerAsyncTCPClient(
+	PhysicalLayerTCPClient(
 		openpal::LogRoot& root,
 	    asio::io_service* pIOService,
 	    const std::string& host_,

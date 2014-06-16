@@ -23,7 +23,7 @@
 #include <catch.hpp>
 
 #include <openpal/LogMacros.h>
-#include <openpal/IPhysicalLayerAsync.h>
+#include <openpal/IPhysicalLayer.h>
 #include <openpal/ToHex.h>
 #include <openpal/Comparisons.h>
 
@@ -38,7 +38,7 @@ namespace opendnp3
 
 MockPhysicalLayerMonitor::MockPhysicalLayerMonitor(
 	openpal::LogRoot& root,
-    IPhysicalLayerAsync* apPhys,
+    IPhysicalLayer* apPhys,
     TimeDuration aMinOpenRetry,
     TimeDuration aMaxOpenRetry
 ) :
@@ -61,7 +61,7 @@ void MockPhysicalLayerMonitor::OnPhysicalLayerOpenSuccessCallback()
 {
 	mOpens++;
 	WriteBuffer buffer(mReadBuffer, mReadBuffer.Size());
-	pPhys->AsyncRead(buffer);
+	pPhys->BeginRead(buffer);
 }
 
 void MockPhysicalLayerMonitor::OnPhysicalLayerCloseCallback()
@@ -88,7 +88,7 @@ void MockPhysicalLayerMonitor::_OnReceive(const uint8_t* apData, size_t aNumByte
 	}
 	mBytesRead += static_cast<uint32_t>(aNumBytes);	
 	WriteBuffer buffer(mReadBuffer, mReadBuffer.Size());
-	pPhys->AsyncRead(buffer);
+	pPhys->BeginRead(buffer);
 }
 
 void MockPhysicalLayerMonitor::ExpectData(const CopyableBuffer& arData)
@@ -145,7 +145,7 @@ void MockPhysicalLayerMonitor::TransmitNext()
 		uint32_t remaining = mWriteBuffer.Size() - mBytesWritten;
 		uint32_t toWrite = Min<uint32_t>(4096, remaining);
 		ReadOnlyBuffer buff(mWriteBuffer + mBytesWritten, toWrite);
-		pPhys->AsyncWrite(buff);
+		pPhys->BeginWrite(buff);
 		this->mLastWriteSize = toWrite;
 	}
 }

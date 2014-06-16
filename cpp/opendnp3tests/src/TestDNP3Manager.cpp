@@ -33,8 +33,8 @@
 #include <asiopal/Log.h>
 #include <asiopal/LogToStdio.h>
 #include <asiopal/IOServiceThreadPool.h>
-#include <asiopal/PhysicalLayerAsyncTCPClient.h>
-#include <asiopal/PhysicalLayerAsyncTCPServer.h>
+#include <asiopal/PhysicalLayerTCPClient.h>
+#include <asiopal/PhysicalLayerTCPServer.h>
 
 #include <asiopal/UTCTimeSource.h>
 #include <asiopal/ShutdownHandler.h>
@@ -64,11 +64,11 @@ TEST_CASE(SUITE("ConstructionDestruction"))
 		DNP3Manager mgr;
 
 		auto pClientRoot = new LogRoot(&log, "client", levels::NORMAL);
-		auto pClientPhys = new PhysicalLayerAsyncTCPClient(*pClientRoot, pool.GetIOService(), "127.0.0.1", 20000);
+		auto pClientPhys = new PhysicalLayerTCPClient(*pClientRoot, pool.GetIOService(), "127.0.0.1", 20000);
 		auto pClient = mgr.CreateChannel(pClientRoot, TimeDuration::Seconds(5), TimeDuration::Seconds(5), pClientPhys);
 
 		auto pServerRoot = new LogRoot(&log, "server", levels::NORMAL);
-		auto pServerPhys = new PhysicalLayerAsyncTCPServer(*pServerRoot, pool.GetIOService(), "127.0.0.1", 20000);
+		auto pServerPhys = new PhysicalLayerTCPServer(*pServerRoot, pool.GetIOService(), "127.0.0.1", 20000);
 		auto pServer = mgr.CreateChannel(pServerRoot, TimeDuration::Seconds(5), TimeDuration::Seconds(5), pServerPhys);
 
 		auto pMaster = pClient->AddMaster("master", NullSOEHandler::Inst(), UTCTimeSource::Inst(), MasterStackConfig());
@@ -90,11 +90,11 @@ TEST_CASE(SUITE("ManualStackShutdown"))
 		DNP3Manager mgr;
 
 		auto pClientRoot = new LogRoot(&log, "client", levels::NORMAL);
-		auto pClientPhys = new PhysicalLayerAsyncTCPClient(*pClientRoot, pool.GetIOService(), "127.0.0.1", 20000);
+		auto pClientPhys = new PhysicalLayerTCPClient(*pClientRoot, pool.GetIOService(), "127.0.0.1", 20000);
 		auto pClient = mgr.CreateChannel(pClientRoot, TimeDuration::Seconds(5), TimeDuration::Seconds(5), pClientPhys);
 
 		auto pServerRoot = new LogRoot(&log, "server", levels::NORMAL);
-		auto pServerPhys = new PhysicalLayerAsyncTCPServer(*pServerRoot, pool.GetIOService(), "127.0.0.1", 20000);
+		auto pServerPhys = new PhysicalLayerTCPServer(*pServerRoot, pool.GetIOService(), "127.0.0.1", 20000);
 		auto pServer = mgr.CreateChannel(pServerRoot, TimeDuration::Seconds(5), TimeDuration::Seconds(5), pServerPhys);
 
 		auto pOutstation = pServer->AddOutstation("outstation", SuccessCommandHandler::Inst(), &NullTimeWriteHandler::Inst(), OutstationStackConfig(DatabaseTemplate()));
@@ -118,11 +118,11 @@ TEST_CASE(SUITE("ManualChannelShutdownWithStacks"))
 		DNP3Manager mgr;
 
 		auto pClientRoot = new LogRoot(&log, "client", levels::NORMAL);
-		auto pClientPhys = new PhysicalLayerAsyncTCPClient(*pClientRoot, pool.GetIOService(), "127.0.0.1", 20000);
+		auto pClientPhys = new PhysicalLayerTCPClient(*pClientRoot, pool.GetIOService(), "127.0.0.1", 20000);
 		auto pClient = mgr.CreateChannel(pClientRoot, TimeDuration::Seconds(5), TimeDuration::Seconds(5), pClientPhys);
 
 		auto pServerRoot = new LogRoot(&log, "server", levels::NORMAL);
-		auto pServerPhys = new PhysicalLayerAsyncTCPServer(*pServerRoot, pool.GetIOService(), "127.0.0.1", 20000);
+		auto pServerPhys = new PhysicalLayerTCPServer(*pServerRoot, pool.GetIOService(), "127.0.0.1", 20000);
 		auto pServer = mgr.CreateChannel(pServerRoot, TimeDuration::Seconds(5), TimeDuration::Seconds(5), pServerPhys);
 
 		auto pOutstation = pServer->AddOutstation("outstation", SuccessCommandHandler::Inst(), &NullTimeWriteHandler::Inst(), OutstationStackConfig(DatabaseTemplate()));
@@ -145,7 +145,7 @@ TEST_CASE(SUITE("ManualChannelShutdown"))
 		DNP3Manager mgr;
 
 		auto pClientRoot = new LogRoot(&log, "client", levels::NORMAL);
-		auto pClientPhys = new PhysicalLayerAsyncTCPClient(*pClientRoot, pool.GetIOService(), "127.0.0.1", 20000);
+		auto pClientPhys = new PhysicalLayerTCPClient(*pClientRoot, pool.GetIOService(), "127.0.0.1", 20000);
 		auto pChannel = mgr.CreateChannel(pClientRoot, TimeDuration::Seconds(5), TimeDuration::Seconds(5), pClientPhys);
 
 		pChannel->BeginShutdown();

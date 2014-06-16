@@ -19,16 +19,10 @@
     <ClInclude Include="src\openpal\IExecutor.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\openpal\IHandlerAsync.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\openpal\Indexable.h">
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="src\openpal\IndexableIterator.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="src\openpal\IPhysicalLayerAsync.h">
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="src\openpal\ISerializer.h">
@@ -106,9 +100,6 @@
     <ClInclude Include="src\openpal\StaticQueue.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\openpal\AsyncLayerInterfaces.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\openpal\LogLevels.h">
       <Filter>Header</Filter>
     </ClInclude>
@@ -173,6 +164,18 @@
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="src\openpal\Settable.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\openpal\ChannelStatistics.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\openpal\IPhysicalLayer.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\openpal\IPhysicalLayerCallbacks.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\openpal\LayerInterfaces.h">
       <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>

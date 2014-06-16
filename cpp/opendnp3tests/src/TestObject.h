@@ -26,7 +26,7 @@
 namespace opendnp3
 {
 
-class AsyncTestObject
+class TestObject
 {
 	static bool AlwaysBoolean(bool aAlwaysThis)
 	{
@@ -34,7 +34,7 @@ class AsyncTestObject
 	}
 
 public:
-	AsyncTestObject() {}
+	TestObject() {}
 
 	void ProceedForTime(openpal::TimeDuration aTimeout);
 	bool ProceedUntil(const EvalFunc& arFunc, openpal::TimeDuration aTimeout = G_TEST_TIMEOUT);
