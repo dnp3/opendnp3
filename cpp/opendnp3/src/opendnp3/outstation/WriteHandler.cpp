@@ -23,7 +23,7 @@
 
 #include <openpal/LogMacros.h>
 
-#include "opendnp3/DNPErrorCodes.h"
+#include "opendnp3/LogErrorCodes.h"
 
 using namespace openpal;
 

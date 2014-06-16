@@ -20,7 +20,7 @@
  */
 #include <catch.hpp>
 
-#include <opendnp3/DNPErrorCodes.h>
+#include <opendnp3/LogErrorCodes.h>
 #include <opendnp3/link/LinkFrame.h>
 
 #include <openpal/ToHex.h>

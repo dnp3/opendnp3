@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __STATE_SINGLETON_H_
-#define __STATE_SINGLETON_H_
+#ifndef __SINGLETON_MACROS_H_
+#define __SINGLETON_MACROS_H_
 
 #define MACRO_SINGLETON_INSTANCE(type) \
 	private:\
