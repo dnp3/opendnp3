@@ -26,6 +26,7 @@
 
 #include <opendnp3/outstation/OutstationStackConfig.h>
 #include <opendnp3/link/LinkLayerRouter.h>
+#include <opendnp3/link/DNP3ChannelStatistics.h>
 
 #include "IChannel.h"
 
@@ -61,6 +62,7 @@ class DNP3Channel: public IChannel, private openpal::IShutdownHandler, private o
 	};
 
 public:
+
 	DNP3Channel(
 		openpal::LogRoot* pLogRoot_,
 	    openpal::TimeDuration minOpenRetry,
@@ -71,6 +73,8 @@ public:
 		openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler_
 	);
 
+	virtual opendnp3::DNP3ChannelStatistics ReadStatistics() override final;
+
 	// public interface, callable only from outside
 	void BeginShutdown() override final;
 
@@ -80,15 +84,15 @@ public:
 
 	virtual void SetLogFilters(const openpal::LogFilters& filters) override final;
 
-	IMaster* AddMaster(		char const* id,
-							opendnp3::ISOEHandler* pPublisher,
-	                        openpal::IUTCTimeSource* pTimeSource,
-							const opendnp3::MasterStackConfig& cfg);
+	virtual IMaster* AddMaster(	char const* id,
+								opendnp3::ISOEHandler* pPublisher,
+								openpal::IUTCTimeSource* pTimeSource,
+								const opendnp3::MasterStackConfig& cfg) override final;
 
-	IOutstation* AddOutstation( char const* id,
+	virtual IOutstation* AddOutstation(char const* id,
 								opendnp3::ICommandHandler* pCmdHandler,
 								opendnp3::ITimeWriteHandler* pTimeWriteHandler,
-								const opendnp3::OutstationStackConfig& cfg);
+								const opendnp3::OutstationStackConfig& cfg) override final;
 
 	// Helper functions only available inside DNP3Manager
 
@@ -111,6 +115,7 @@ private:
 	State state;
 	openpal::ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler;
 
+	opendnp3::DNP3ChannelStatistics statistics;
 	opendnp3::LinkLayerRouter router;	
 
 	std::set<DNP3Stack*> stacks;

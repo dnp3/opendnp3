@@ -151,9 +151,9 @@ public:
 protected:
 
 	//Internally produced events
-	void OnOpenCallback(const std::error_code& error);
-	void OnReadCallback(const std::error_code& error, uint8_t* apBuffer, uint32_t  aNumRead);
-	void OnWriteCallback(const std::error_code& rrror, uint32_t  aNumBytes);
+	void OnOpenCallback(const std::error_code& err);
+	void OnReadCallback(const std::error_code& err, uint8_t* pBuffer, uint32_t numRead);
+	void OnWriteCallback(const std::error_code& errr, uint32_t  numWritten);
 	
 	openpal::Logger logger;
 

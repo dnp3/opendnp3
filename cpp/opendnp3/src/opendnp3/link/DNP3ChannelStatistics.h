@@ -19,32 +19,18 @@
 * to you under the terms of the License.
 */
 
-#ifndef __OPENPAL_CHANNEL_STATISTICS_H_
-#define __OPENPAL_CHANNEL_STATISTICS_H_
+#ifndef __DNP3_CHANNEL_STATISTICS_H_
+#define __DNP3_CHANNEL_STATISTICS_H_
 
-#include <cstdint>
+#include <openpal/ChannelStatistics.h>
 
-namespace openpal
+namespace opendnp3
 {
-	struct ChannelStatistics
+	struct DNP3ChannelStatistics : openpal::ChannelStatistics
 	{
-		ChannelStatistics() : numOpen(0), numOpenFail(0), numClose(0), bytesRx(0), bytesTx(0)
+		DNP3ChannelStatistics()
 		{}
-
-		/// The number of times the channel has successfully opened
-		uint32_t numOpen;
-
-		/// The number of times the channel has failed to open
-		uint32_t numOpenFail;
-
-		/// The number of times the channel has closed either due to user intervention or an error
-		uint32_t numClose;
-
-		/// The number of bytes received
-		uint32_t bytesRx;
-
-		/// The number of bytes transmitted
-		uint32_t bytesTx;		
+		
 	};
 }
 

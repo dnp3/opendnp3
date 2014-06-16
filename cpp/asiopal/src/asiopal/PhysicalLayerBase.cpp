@@ -159,6 +159,11 @@ void PhysicalLayerBase::StartClose()
 	{
 		if(state.CanClose())
 		{
+			if (pChannelStatistics)
+			{
+				++pChannelStatistics->numClose;
+			}
+
 			state.isClosing = true;
 
 			if (state.isOpening) this->DoOpeningClose();
@@ -236,6 +241,12 @@ void PhysicalLayerBase::OnOpenCallback(const std::error_code& err)
 		if(err)
 		{
 			FORMAT_LOG_BLOCK(logger, logflags::WARN, "error: %s", err.message().c_str());
+
+			if (pChannelStatistics)
+			{
+				++pChannelStatistics->numOpenFail;
+			}
+
 			state.CheckForClose();
 			this->DoOpenFailure();
 			if (pCallbacks)
@@ -256,6 +267,11 @@ void PhysicalLayerBase::OnOpenCallback(const std::error_code& err)
 			}
 			else
 			{
+				if (pChannelStatistics)
+				{
+					++pChannelStatistics->numOpen;
+				}
+
 				state.isOpen = true;
 				this->DoOpenSuccess();
 				if (pCallbacks)
@@ -271,7 +287,7 @@ void PhysicalLayerBase::OnOpenCallback(const std::error_code& err)
 	}
 }
 
-void PhysicalLayerBase::OnReadCallback(const std::error_code& err, uint8_t* apBuffer, uint32_t aNumRead)
+void PhysicalLayerBase::OnReadCallback(const std::error_code& err, uint8_t* pBuffer, uint32_t numRead)
 {
 	if (state.isReading)
 	{
@@ -284,9 +300,14 @@ void PhysicalLayerBase::OnReadCallback(const std::error_code& err, uint8_t* apBu
 		}
 		else
 		{
+			if (pChannelStatistics)
+			{
+				pChannelStatistics->bytesRx += numRead;
+			}
+
 			if (!state.isClosing)
 			{
-				ReadOnlyBuffer buffer(apBuffer, aNumRead);
+				ReadOnlyBuffer buffer(pBuffer, numRead);
 				this->DoReadCallback(buffer);
 			}
 		}
@@ -299,19 +320,24 @@ void PhysicalLayerBase::OnReadCallback(const std::error_code& err, uint8_t* apBu
 	}
 }
 
-void PhysicalLayerBase::OnWriteCallback(const std::error_code& arErr, uint32_t  aNumBytes)
+void PhysicalLayerBase::OnWriteCallback(const std::error_code& err, uint32_t numWritten)
 {
 	if (state.isWriting)
 	{
 		state.isWriting = false;
 
-		if(arErr)
+		if(err)
 		{
-			SIMPLE_LOG_BLOCK(logger, logflags::WARN, arErr.message().c_str());
+			SIMPLE_LOG_BLOCK(logger, logflags::WARN, err.message().c_str());
 			if(state.CanClose()) this->StartClose();
 		}
 		else
 		{
+			if (pChannelStatistics)
+			{
+				pChannelStatistics->bytesTx += numWritten;
+			}
+
 			if (!state.isClosing)
 			{			
 				this->DoWriteSuccess();

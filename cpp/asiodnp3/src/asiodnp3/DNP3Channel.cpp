@@ -28,6 +28,7 @@
 #include <opendnp3/LogLevels.h>
 #include <openpal/LogMacros.h>
 
+#include <future>
 
 using namespace openpal;
 using namespace opendnp3;
@@ -50,7 +51,7 @@ DNP3Channel::DNP3Channel(
 	pShutdownHandler(pShutdownHandler_),
 	router(*pLogRoot, pPhys.get(), minOpenRetry, maxOpenRetry, pStateHandler, this, pStrategy)	
 {
-
+	pPhys->SetChannelStatistics(&statistics);
 }
 
 // comes from the outside, so we need to synchronize
@@ -58,6 +59,13 @@ void DNP3Channel::BeginShutdown()
 {
 	auto lambda = [this]() { this->InitiateShutdown(); };
 	pPhys->GetExecutor()->PostLambda(lambda);
+}
+
+DNP3ChannelStatistics DNP3Channel::ReadStatistics()
+{
+	std::promise<DNP3ChannelStatistics> p;
+	pPhys->GetExecutor()->PostLambda([&]() { p.set_value(statistics); });
+	return p.get_future().get();	
 }
 
 // can only run on the executor itself

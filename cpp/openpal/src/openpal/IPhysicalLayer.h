@@ -25,6 +25,7 @@
 
 #include "ReadOnlyBuffer.h"
 #include "WriteBuffer.h"
+#include "ChannelStatistics.h"
 
 namespace openpal
 {
@@ -72,7 +73,18 @@ class IPhysicalLayer : public IChannelState
 {
 public:
 
+	IPhysicalLayer() : pChannelStatistics(nullptr)
+	{}
+
 	virtual ~IPhysicalLayer() {}
+
+	/**
+	* Tell the layer where to update its channel statistics
+	*/
+	void SetChannelStatistics(ChannelStatistics* pChannelStatistics_)
+	{		
+		pChannelStatistics = pChannelStatistics_;
+	}
 
 	/**
 	* @return the executor associated with this layer
@@ -131,6 +143,11 @@ public:
 	 * 						callbacks
 	 */
 	virtual void SetHandler(IPhysicalLayerCallbacks* apHandler) = 0;
+
+protected:
+
+	ChannelStatistics* pChannelStatistics;
+
 };
 
 };
