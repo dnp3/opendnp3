@@ -92,6 +92,7 @@
     <Compile Include="IStack.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="IStackStatistics.cs" />
     <Compile Include="ITimeWriteHandler.cs" />
     <Compile Include="IMasterScan.cs" />
     <Compile Include="LogLevels.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="ScanResult.cs" />
     <Compile Include="SerialSettings.cs" />
     <Compile Include="SimpleCommandHandler.cs" />
+    <Compile Include="StackStatistics.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

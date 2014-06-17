@@ -42,6 +42,15 @@ IChannelStatistics^ Conversions::convertChannelStats(const opendnp3::LinkChannel
 	return ret;
 }
 
+IStackStatistics^ Conversions::convertStackStats(const opendnp3::StackStatistics& statistics)
+{
+	StackStatistics^ ret = gcnew StackStatistics();
+	ret->numTransportErrorRx = statistics.numTransportErrorRx;
+	ret->numTransportRx = statistics.numTransportRx;
+	ret->numTransportTx = statistics.numTransportTx;
+	return ret;
+}
+
 CommandResponse Conversions::convertCommandResponse(opendnp3::CommandResponse response)
 {
 	auto result = convertCommandResult(response.GetResult());

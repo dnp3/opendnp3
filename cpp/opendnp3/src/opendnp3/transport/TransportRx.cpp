@@ -58,13 +58,13 @@ ReadOnlyBuffer TransportRx::ProcessReceive(const ReadOnlyBuffer& input)
 	if (input.Size() < 2)
 	{
 		FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::WARN, TLERR_NO_PAYLOAD, "Received tpdu with no payload, size: %u", static_cast<unsigned int>(input.Size()));
-		if (pStatistics) ++pStatistics->numTransportMalformedRx;
+		if (pStatistics) ++pStatistics->numTransportErrorRx;
 		return ReadOnlyBuffer::Empty();
 	}
 	else if (input.Size() > TL_MAX_TPDU_LENGTH)
 	{
 		FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::WARN, TLERR_TOO_MUCH_DATA, "Illegal arg: %i exceeds max tpdu size of %u", static_cast<unsigned int>(input.Size()), TL_MAX_TPDU_LENGTH);
-		if (pStatistics) ++pStatistics->numTransportMalformedRx;
+		if (pStatistics) ++pStatistics->numTransportErrorRx;
 		return ReadOnlyBuffer::Empty();
 	}
 	else
@@ -82,10 +82,10 @@ ReadOnlyBuffer TransportRx::ProcessReceive(const ReadOnlyBuffer& input)
 		{
 			if (BufferRemaining() < payloadLength)
 			{
-				if (pStatistics) ++pStatistics->numTransportMalformedRx;
+				if (pStatistics) ++pStatistics->numTransportErrorRx;
 				SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, TLERR_BUFFER_FULL, "Exceeded the buffer size before a complete fragment was read");
 				numBytesRead = 0;
-				if (pStatistics) ++pStatistics->numTransportOverflowRx;
+				if (pStatistics) ++pStatistics->numTransportErrorRx;
 				return ReadOnlyBuffer::Empty();
 			}
 			else   //passed all validation
@@ -110,7 +110,7 @@ ReadOnlyBuffer TransportRx::ProcessReceive(const ReadOnlyBuffer& input)
 		}
 		else
 		{
-			if (pStatistics) ++pStatistics->numTransportBadSeq;
+			if (pStatistics) ++pStatistics->numTransportErrorRx;
 			return ReadOnlyBuffer::Empty();
 		}
 	}

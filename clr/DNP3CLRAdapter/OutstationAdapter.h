@@ -27,6 +27,8 @@ public:
 
 	virtual void Disable();
 
+	virtual IStackStatistics^ GetStackStatistics();
+
 private:
 	asiodnp3::IOutstation* mpOutstation;
 	DNP3::Interface::IMeasurementLoader^ mLoaderAdapter;

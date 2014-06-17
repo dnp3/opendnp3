@@ -5,6 +5,7 @@
 
 #include <openpal/TimeDuration.h>
 
+#include <opendnp3/StackStatistics.h>
 #include <opendnp3/LogLevels.h>
 
 #include <opendnp3/gen/ChannelState.h>
@@ -48,6 +49,8 @@ public:
 	static ChannelState convertChannelState(opendnp3::ChannelState aState);
 
 	static IChannelStatistics^ convertChannelStats(const opendnp3::LinkChannelStatistics& statistics);
+
+	static IStackStatistics^ convertStackStats(const opendnp3::StackStatistics& statistics);
 
 	// Convert the command status enumeration
 	static CommandStatus convertCommandStatus(opendnp3::CommandStatus status);

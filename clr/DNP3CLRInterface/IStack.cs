@@ -33,6 +33,12 @@ namespace DNP3.Interface
     public interface IStack
     {
         /// <summary>
+        /// Retrieves stack statistic information
+        /// </summary>
+        /// <returns></returns>
+        IStackStatistics GetStackStatistics();
+
+        /// <summary>
         /// Permanently shutdown the stack and any child objects
         /// </summary>
         void Shutdown();

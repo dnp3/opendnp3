@@ -19,6 +19,8 @@ public:
 
 	virtual ICommandProcessor^ GetCommandProcessor();
 
+	virtual IStackStatistics^ GetStackStatistics();
+
 	virtual void Enable();
 
 	virtual void Disable();

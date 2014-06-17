@@ -19,6 +19,12 @@ ICommandProcessor^ MasterAdapter::GetCommandProcessor()
 	return commandAdapter;
 }
 
+IStackStatistics^ MasterAdapter::GetStackStatistics()
+{
+	auto stats = pMaster->GetStackStatistics();
+	return Conversions::convertStackStats(stats);
+}
+
 void MasterAdapter::Enable()
 {
 	pMaster->Enable();

@@ -2,6 +2,8 @@
 #include "OutstationLoaderAdapter.h"
 #include "DeleteAnything.h"
 
+#include "Conversions.h"
+
 namespace DNP3
 {
 namespace Adapter
@@ -37,6 +39,12 @@ void OutstationAdapter::Enable()
 void OutstationAdapter::Disable()
 {
 	mpOutstation->Disable();
+}
+
+IStackStatistics^ OutstationAdapter::GetStackStatistics()
+{
+	auto stats = mpOutstation->GetStackStatistics();
+	return Conversions::convertStackStats(stats);
 }
 
 }

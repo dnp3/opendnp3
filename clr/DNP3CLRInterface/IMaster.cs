@@ -35,7 +35,7 @@ namespace DNP3.Interface
         /// <summary>
         /// 
         /// </summary>
-        /// <returns>Interface used to dispatch command requests</returns>
+        /// <returns> Interface used to dispatch command requests </returns>
         ICommandProcessor GetCommandProcessor();       
 
         /// <summary>
