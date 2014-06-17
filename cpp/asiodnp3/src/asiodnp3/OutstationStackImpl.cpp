@@ -31,9 +31,10 @@ OutstationStackImpl::OutstationStackImpl(
 	opendnp3::ITimeWriteHandler& timeWriteHandler,
 	opendnp3::ICommandHandler& commandHandler,
     const OutstationStackConfig& config,
-    const StackActionHandler& handler) :
-	IOutstation(root, &executor, config.link, handler),
+    const StackActionHandler& handler_) :	
 	pExecutor(&executor),
+	handler(handler_),
+	stack(root, pExecutor, config.link),
 	databaseBuffers(config.dbTemplate),
 	eventBuffers(config.eventBuffer),
 	mutex(),
@@ -48,12 +49,35 @@ IMeasurementLoader* OutstationStackImpl::GetLoader()
 	return &database;
 }
 
-void OutstationStackImpl::SetNeedTimeIIN()
+void OutstationStackImpl::Enable()
 {
-	/* TODO
-	auto lambda = [this]() { this->outstation.SetNeedTimeIIN(); };
+	handler.EnableRoute(&stack.link);
+}
+
+void OutstationStackImpl::Disable()
+{
+	handler.DisableRoute(&stack.link);
+}
+
+void OutstationStackImpl::BeginShutdown()
+{
+	handler.BeginShutdown(&stack.link, this);
+}
+
+void OutstationStackImpl::SetNeedTimeIIN()
+{	
+	auto lambda = [this]() { this->outstation.SetRequestTimeIIN(); };
 	pExecutor->PostLambda(lambda);
-	*/
+}
+
+void OutstationStackImpl::SetLinkRouter(opendnp3::ILinkRouter* pRouter)
+{
+	stack.link.SetRouter(pRouter);
+}
+
+opendnp3::ILinkContext* OutstationStackImpl::GetLinkContext()
+{
+	return &stack.link;
 }
 
 }

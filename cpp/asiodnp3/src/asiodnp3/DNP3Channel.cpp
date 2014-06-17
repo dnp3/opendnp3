@@ -164,7 +164,7 @@ IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler* apCmdHa
 }
 
 // these always happen on the strand
-void DNP3Channel::OnShutdown(DNP3Stack* pStack)
+void DNP3Channel::OnShutdown(IStack* pStack)
 {
 	stacks.erase(pStack);
 	delete pStack;

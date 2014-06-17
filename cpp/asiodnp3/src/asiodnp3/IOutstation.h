@@ -40,15 +40,15 @@ namespace asiodnp3
 	IMeasurementLoader* pDataObserver = pOutstation->GetDataObserver()
 \endcode
 */
-class IOutstation : public DNP3Stack
+class IOutstation : public IStack
 {
-public:
-	IOutstation(openpal::LogRoot& root, openpal::IExecutor* pExecutor, opendnp3::LinkConfig linkConfig, const StackActionHandler& handler) :
-		DNP3Stack(root, pExecutor, linkConfig, handler)
-	{}
+	public:
+		
+	virtual ~IOutstation() {}	
 
-	virtual ~IOutstation() {}
-
+	/*
+	* Set the NeedTime bit in outstation
+	*/
 	virtual void SetNeedTimeIIN() = 0;
 
 	/**

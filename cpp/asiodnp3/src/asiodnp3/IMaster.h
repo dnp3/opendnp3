@@ -21,7 +21,7 @@
 #ifndef __I_MASTER_H_
 #define __I_MASTER_H_
 
-#include "DNP3Stack.h"
+#include "IStack.h"
 #include "StackActionHandler.h"
 
 #include <opendnp3/master/MasterScan.h>
@@ -41,12 +41,9 @@ namespace asiodnp3
 	ICommandProcessor* pCmdProcessor = pMaster->GetCommandProcessor();
 \endcode
 */
-class IMaster : public DNP3Stack
+class IMaster : public IStack
 {
-public:
-	IMaster(openpal::LogRoot& root, openpal::IExecutor* pExecutor, opendnp3::LinkConfig linkConfig, const StackActionHandler& handler) :
-		DNP3Stack(root, pExecutor, linkConfig, handler)
-	{}
+public:	
 
 	virtual ~IMaster() {}	
 

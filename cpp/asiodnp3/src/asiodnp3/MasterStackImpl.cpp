@@ -35,9 +35,10 @@ MasterStackImpl::MasterStackImpl(	LogRoot& root,
                                     ISOEHandler* pSOEHandler,
                                     IUTCTimeSource* pTimeSource,                                    
                                     const MasterStackConfig& config,
-                                    const StackActionHandler& handler) :
+                                    const StackActionHandler& handler_) :
 
-	IMaster(root, &executor, config.link, handler),
+	handler(handler_),
+	stack(root, &executor, config.link),
 	master(executor, root, stack.transport, pSOEHandler, pTimeSource, config.master)
 {
 	stack.transport.SetAppLayer(&master);
@@ -46,6 +47,31 @@ MasterStackImpl::MasterStackImpl(	LogRoot& root,
 ICommandProcessor* MasterStackImpl::GetCommandProcessor()
 {
 	return &master.GetCommandProcessor();
+}
+
+void MasterStackImpl::Enable()
+{
+	handler.EnableRoute(&stack.link);
+}
+
+void MasterStackImpl::Disable()
+{
+	handler.DisableRoute(&stack.link);
+}
+
+void MasterStackImpl::BeginShutdown()
+{
+	handler.BeginShutdown(&stack.link, this);
+}
+
+void MasterStackImpl::SetLinkRouter(opendnp3::ILinkRouter* pRouter)
+{
+	stack.link.SetRouter(pRouter);
+}
+
+opendnp3::ILinkContext* MasterStackImpl::GetLinkContext()
+{
+	return &stack.link;
 }
 
 MasterScan MasterStackImpl::AddClassScan(uint8_t classMask, openpal::TimeDuration period)

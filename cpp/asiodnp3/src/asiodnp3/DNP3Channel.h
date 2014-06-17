@@ -49,10 +49,9 @@ namespace asiodnp3
 {
 
 class IStack;
-class DNP3Stack;
 class IOutstation;
 
-class DNP3Channel: public IChannel, private openpal::IShutdownHandler, private openpal::ITypedShutdownHandler<DNP3Stack*>
+class DNP3Channel: public IChannel, private openpal::IShutdownHandler, private openpal::ITypedShutdownHandler<IStack*>
 {
 	enum class State
 	{
@@ -104,7 +103,7 @@ private:
 	void OnShutdown() override final;
 
 	// shutdown from the stack
-	void OnShutdown(DNP3Stack* apStack) override final;
+	void OnShutdown(IStack* apStack) override final;
 
 	void CheckForFinalShutdown();
 
@@ -117,7 +116,7 @@ private:
 	openpal::ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler;
 	
 	opendnp3::LinkLayerRouter router;	
-	std::set<DNP3Stack*> stacks;
+	std::set<IStack*> stacks;
 
 };
 

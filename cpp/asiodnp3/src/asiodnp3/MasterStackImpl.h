@@ -47,13 +47,32 @@ public:
 		const opendnp3::MasterStackConfig& config,
 		const StackActionHandler& handler);
 
+	virtual void Enable() override final;
+
+	virtual void Disable() override final;
+
+	virtual void BeginShutdown() override final;
+
+	virtual openpal::IExecutor* GetExecutor() override final { return handler.GetExecutor(); };	
+
 	virtual opendnp3::ICommandProcessor* GetCommandProcessor()  override final;
+
+	// ------- Scan handlers ---------
 
 	virtual opendnp3::MasterScan AddClassScan(uint8_t classMask, openpal::TimeDuration period) override final;
 
 	virtual opendnp3::MasterScan  AddRangeScan(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period) override final;
 
+	// ------- Non-interface public members ---------
+
+	void SetLinkRouter(opendnp3::ILinkRouter* pRouter);
+
+	opendnp3::ILinkContext* GetLinkContext();
+
+
 private:
+	StackActionHandler handler;
+	opendnp3::TransportStack stack;
 	opendnp3::Master master;
 };
 

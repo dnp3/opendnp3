@@ -32,7 +32,7 @@ using namespace opendnp3;
 namespace asiodnp3
 {
 
-StackActionHandler::StackActionHandler(LinkLayerRouter* pRouter_, openpal::IExecutor* pExecutor_, openpal::ITypedShutdownHandler<DNP3Stack*>* pHandler_) :
+StackActionHandler::StackActionHandler(LinkLayerRouter* pRouter_, openpal::IExecutor* pExecutor_, openpal::ITypedShutdownHandler<IStack*>* pHandler_) :
 	pRouter(pRouter_),
 	pExecutor(pExecutor_),
 	pHandler(pHandler_)
@@ -57,7 +57,7 @@ void StackActionHandler::DisableRoute(ILinkContext* pContext)
 	pExecutor->Post(Bind(lambda));
 }
 
-void StackActionHandler::BeginShutdown(ILinkContext* pContext, DNP3Stack* pStack)
+void StackActionHandler::BeginShutdown(ILinkContext* pContext, IStack* pStack)
 {
 	{
 		// The pause has no affect if it's running on the executor

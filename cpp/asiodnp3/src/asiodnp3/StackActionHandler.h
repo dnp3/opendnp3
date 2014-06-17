@@ -38,13 +38,13 @@ namespace opendnp3
 namespace asiodnp3
 {
 
-class DNP3Stack;
+class IStack;
 
 class StackActionHandler
 {
 public:
 
-	StackActionHandler(opendnp3::LinkLayerRouter* pRouter_, openpal::IExecutor* pExecutor_, openpal::ITypedShutdownHandler<DNP3Stack*>* pHandler_);
+	StackActionHandler(opendnp3::LinkLayerRouter* pRouter_, openpal::IExecutor* pExecutor_, openpal::ITypedShutdownHandler<IStack*>* pHandler_);
 
 	openpal::IExecutor* GetExecutor();
 
@@ -52,13 +52,13 @@ public:
 
 	void DisableRoute(opendnp3::ILinkContext*);
 
-	void BeginShutdown(opendnp3::ILinkContext* pContext, DNP3Stack* pStack);
+	void BeginShutdown(opendnp3::ILinkContext* pContext, IStack* pStack);
 
 private:
 
 	opendnp3::LinkLayerRouter* pRouter;
 	openpal::IExecutor* pExecutor;
-	openpal::ITypedShutdownHandler<DNP3Stack*>* pHandler;
+	openpal::ITypedShutdownHandler<IStack*>* pHandler;
 };
 
 }

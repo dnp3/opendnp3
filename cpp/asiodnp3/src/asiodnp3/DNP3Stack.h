@@ -63,6 +63,7 @@ public:
 
 protected:
 
+
 	opendnp3::TransportStack stack;
 
 private:

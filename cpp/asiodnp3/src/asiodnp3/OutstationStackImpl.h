@@ -53,10 +53,24 @@ public:
 
 	opendnp3::IMeasurementLoader* GetLoader();
 
-	void SetNeedTimeIIN();
+	virtual void SetNeedTimeIIN() override final;
+	
+	virtual void Enable() override final;
+	
+	virtual void Disable() override final;
+
+	virtual void BeginShutdown() override final;
+
+	virtual openpal::IExecutor* GetExecutor() override final { return pExecutor; };
+
+	void SetLinkRouter(opendnp3::ILinkRouter* pRouter);
+
+	opendnp3::ILinkContext* GetLinkContext();
 
 private:
 	openpal::IExecutor* pExecutor;
+	StackActionHandler handler;
+	opendnp3::TransportStack stack;
 	opendnp3::DynamicallyAllocatedDatabase databaseBuffers;
 	opendnp3::DynamicallyAllocatedEventBuffer eventBuffers;
 	Mutex mutex;
