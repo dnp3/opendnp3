@@ -64,6 +64,11 @@ void MasterStackImpl::BeginShutdown()
 	handler.BeginShutdown(&stack.link, this);
 }
 
+openpal::IExecutor* MasterStackImpl::GetExecutor() 
+{ 
+	return handler.GetExecutor();
+}
+
 void MasterStackImpl::SetLinkRouter(opendnp3::ILinkRouter* pRouter)
 {
 	stack.link.SetRouter(pRouter);

@@ -31,9 +31,7 @@ using namespace std;
 namespace openpal
 {
 
-Logger::Logger(LogRoot* pRoot_, int subType_) :
-pRoot(pRoot_),
-subType(subType_)
+Logger::Logger(LogRoot* pRoot_) : pRoot(pRoot_)
 {
 	
 }
@@ -43,16 +41,11 @@ bool Logger::IsEnabled(const LogFilters& filters) const
 	return pRoot->IsEnabled(filters);
 }
 
-Logger Logger::SwitchType(int subType) const
-{
-	return Logger(pRoot, subType);
-}
-
-void Logger::Log(const LogFilters& filters, bool first, char const* location, char const* message, int errorCode)
+void Logger::Log(const LogFilters& filters, char const* location, char const* message, int errorCode)
 {
 	if (pRoot->IsEnabled(filters))
 	{		
-		pRoot->Log(filters, subType, first, location, message, errorCode);
+		pRoot->Log(filters, location, message, errorCode);
 	}
 }
 

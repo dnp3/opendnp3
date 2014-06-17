@@ -32,7 +32,7 @@ namespace asiopal
 {
 
 
-LogToStdio::LogToStdio() : pLevelToString(&BasicFlags), pSourceToString(&BasicSource), printLocation(false)
+LogToStdio::LogToStdio() : pLevelToString(&BasicFlags), printLocation(false)
 {
 
 }
@@ -40,12 +40,6 @@ LogToStdio::LogToStdio() : pLevelToString(&BasicFlags), pSourceToString(&BasicSo
 std::ostringstream& LogToStdio::BasicFlags(std::ostringstream& ss, const openpal::LogFilters& filters)
 {
 	ss << filters.GetBitfield();
-	return ss;
-}
-
-std::ostringstream& LogToStdio::BasicSource(std::ostringstream& ss, int source)
-{
-	ss << source;
 	return ss;
 }
 
@@ -60,12 +54,6 @@ void LogToStdio::SetFilterInterpreter(LevelToString pLevelToString_)
 	pLevelToString = pLevelToString_;
 }
 
-void LogToStdio::SetSourceInterpreter(SourceToString pSourceToString_)
-{
-	assert(pSourceToString_ != nullptr);
-	pSourceToString = pSourceToString_;
-}
-
 void LogToStdio::Log(const openpal::LogEntry& entry)
 {
 	auto time = std::chrono::high_resolution_clock::now();
@@ -75,8 +63,7 @@ void LogToStdio::Log(const openpal::LogEntry& entry)
 
 	oss << "ms(" << num << ") - [";
 	pLevelToString(oss, entry.GetFilters());
-	oss << "] - " << entry.GetId() << " - ";
-	pSourceToString(oss, entry.GetSource());
+	oss << "] - " << entry.GetId() << " - ";	
 	if (printLocation)
 	{
 		oss << " - " << entry.GetLocation();

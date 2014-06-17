@@ -42,7 +42,7 @@ namespace DNP3.Interface
         /// <param name="message">Body of the message</param>
         /// <param name="time">Timestamp on the message</param>
         /// <param name="errorCode">dnp3 error code</param>
-        public LogEntry(UInt32 filters, String loggerName, String location, string message, DateTime time, int errorCode)
+        public LogEntry(UInt32 filters, String loggerName, String location, String message, DateTime time, int errorCode)
         {
             this.filter = new LogFilter(filters);            
             this.loggerName = loggerName;

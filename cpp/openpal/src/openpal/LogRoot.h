@@ -41,9 +41,9 @@ public:
 
 	LogRoot(ILogBase* apLog, char const* id_, const LogFilters& filters);	
 
-	void Log(const LogFilters& filters, int subType, bool first, char const* location, char const* message, int errorCode);
+	void Log(const LogFilters& filters, char const* location, char const* message, int errorCode);
 
-	Logger GetLogger(int subType = -1);
+	Logger GetLogger();
 
 	bool IsEnabled(const LogFilters& rhs) const;
 

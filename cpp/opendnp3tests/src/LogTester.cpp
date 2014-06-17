@@ -29,20 +29,18 @@ namespace opendnp3
 
 LogRecord::LogRecord() :
 	id(),
-	filters(0),
-	subType(-1),
+	filters(0),	
 	location(),
 	message(),
 	errorCode(-1)
 {}
 
 LogRecord::LogRecord(const LogEntry& entry) : 
-id(entry.GetId()), 
-filters(entry.GetFilters()), 
-subType(entry.GetSource()),
-location(entry.GetLocation()),
-message(entry.GetMessage()),
-errorCode(entry.GetErrorCode())
+	id(entry.GetId()), 
+	filters(entry.GetFilters()), 
+	location(entry.GetLocation()),
+	message(entry.GetMessage()),
+	errorCode(entry.GetErrorCode())
 {
 
 }
@@ -114,9 +112,9 @@ int LogTester::ClearLog()
 	return max;
 }
 
-void LogTester::Log(const std::string& arLocation, const std::string& arMessage)
+void LogTester::Log(const std::string& location, const std::string& message)
 {
-	logger.Log(flags::EVENT, true, arLocation.c_str(), arMessage.c_str());
+	logger.Log(flags::EVENT, location.c_str(), message.c_str());
 }
 
 int LogTester::NextErrorCode()
@@ -150,14 +148,14 @@ void LogTester::Pop(openpal::ILogBase* pLog)
 	LogRecord record;
 	while (GetNextEntry(record))
 	{
-		LogEntry le(record.id.c_str(), record.filters, record.subType, true, record.location.c_str(), record.message.c_str(), record.errorCode);
+		LogEntry le(record.id.c_str(), record.filters, record.location.c_str(), record.message.c_str(), record.errorCode);
 		pLog->Log(le);
 	}
 }
 
-openpal::Logger LogTester::GetLogger(int source)
+openpal::Logger LogTester::GetLogger()
 {
-	return root.GetLogger(source);
+	return root.GetLogger();
 }
 
 bool LogTester::IsLogErrorFree()

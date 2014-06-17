@@ -42,7 +42,7 @@ MasterContext::MasterContext(
 	const MasterParams& params_
 	) :
 
-	logger(root.GetLogger(sources::MASTER)),
+	logger(root.GetLogger()),
 	pExecutor(&executor),
 	pLower(&lower),
 	params(params_),

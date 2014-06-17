@@ -63,7 +63,7 @@ namespace openpal
 			}
 			buffer[3 * rowSize] = '\0';
 			copy.Advance(rowSize);
-			logger.Log(filters, false, "", buffer, -1);
+			logger.Log(filters, "", buffer, -1);
 			++rowCount;
 		}			
 	}

@@ -38,20 +38,14 @@ public:
 
 	LogEntry();
 
-	LogEntry(char const* id, const LogFilters& filters, int source, bool first, char const* location, char const* message, int errorCode);
+	LogEntry(char const* id, const LogFilters& filters, char const* location, char const* message, int errorCode);
 
 	/// @return The name of the logger that recorded the message
 	char const*	GetId() const
 	{
 		return id;
 	}
-
-	/// @return The application specific sub-type
-	int GetSource() const
-	{
-		return source;
-	}
-
+	
 	/// @return The place in the source code where the message was recorded
 	char const*	GetLocation() const
 	{
@@ -69,13 +63,7 @@ public:
 	{
 		return filters;
 	}
-
-	/// @return true if this is the first message in a series of messages, false otherwise
-	bool IsFirstMsg() const
-	{
-		return first;
-	}
-
+	
 	/// @return the error code associated with the message
 	int	GetErrorCode() const
 	{
@@ -85,9 +73,7 @@ public:
 private:
 
 	char const*		id;
-	LogFilters		filters;
-	int				source;
-	bool			first;
+	LogFilters		filters;		
 	char const*		location;
 	char const*		message;
 	int				errorCode;

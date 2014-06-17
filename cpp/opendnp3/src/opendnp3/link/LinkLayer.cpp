@@ -40,7 +40,7 @@ namespace opendnp3
 {
 
 LinkLayer::LinkLayer(openpal::LogRoot& root, openpal::IExecutor* apExecutor, const LinkConfig& config_) :
-	logger(root.GetLogger(sources::LINK_LAYER)),
+	logger(root.GetLogger()),
 	config(config_),
 	pSegments(nullptr),
 	mRetryRemaining(0),

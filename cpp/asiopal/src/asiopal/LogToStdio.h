@@ -51,13 +51,11 @@ public:
 
 private:
 
-	static std::ostringstream& BasicFlags(std::ostringstream& ss, const openpal::LogFilters& filters);
-	static std::ostringstream& BasicSource(std::ostringstream& ss, int source);
+	static std::ostringstream& BasicFlags(std::ostringstream& ss, const openpal::LogFilters& filters);	
 
 	static LogToStdio instance;
 
-	LevelToString pLevelToString;
-	SourceToString pSourceToString;
+	LevelToString pLevelToString;	
 
 	bool printLocation;
 	std::mutex mutex;

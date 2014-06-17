@@ -27,17 +27,9 @@
 namespace opendnp3
 {
 
-namespace sources
-{
-	const int LINK_LAYER = 1;
-	const int APP_LAYER = 2;
-	const int TRANSPORT_LAYER = 3;	
-	const int MASTER = 4;
-	const int OUTSTATION = 5;
-}
-
 namespace flags
 {
+
 // define most of these in terms of the base openpal filters
 const int32_t EVENT = openpal::logflags::EVENT;
 const int32_t ERR = openpal::logflags::ERR;

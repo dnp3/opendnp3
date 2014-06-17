@@ -37,8 +37,7 @@ class LogRecord
 	LogRecord(const openpal::LogEntry& entry);
 
 	std::string		id;
-	openpal::LogFilters		filters;
-	int				subType;
+	openpal::LogFilters		filters;	
 	std::string		location;
 	std::string		message;
 	int				errorCode;
@@ -67,7 +66,7 @@ public:
 
 	void Pop(openpal::ILogBase* pLog);
 
-	openpal::Logger GetLogger(int source = -1);
+	openpal::Logger GetLogger();
 
 	openpal::LogRoot root;
 
