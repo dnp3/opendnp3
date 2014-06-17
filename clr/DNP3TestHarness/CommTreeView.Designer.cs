@@ -65,7 +65,7 @@
             // 
             this.splitContainer.Panel2.Controls.Add(this.listViewStats);
             this.splitContainer.Size = new System.Drawing.Size(497, 409);
-            this.splitContainer.SplitterDistance = 318;
+            this.splitContainer.SplitterDistance = 219;
             this.splitContainer.TabIndex = 0;
             // 
             // treeView
@@ -76,7 +76,7 @@
             this.treeView.Location = new System.Drawing.Point(0, 0);
             this.treeView.Name = "treeView";
             this.treeView.SelectedImageIndex = 0;
-            this.treeView.Size = new System.Drawing.Size(497, 318);
+            this.treeView.Size = new System.Drawing.Size(497, 219);
             this.treeView.TabIndex = 3;
             this.treeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView_AfterSelect);
             // 
@@ -87,8 +87,9 @@
             this.columnHeader2});
             this.listViewStats.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listViewStats.Location = new System.Drawing.Point(0, 0);
+            this.listViewStats.MultiSelect = false;
             this.listViewStats.Name = "listViewStats";
-            this.listViewStats.Size = new System.Drawing.Size(497, 87);
+            this.listViewStats.Size = new System.Drawing.Size(497, 186);
             this.listViewStats.TabIndex = 0;
             this.listViewStats.UseCompatibleStateImageBehavior = false;
             this.listViewStats.View = System.Windows.Forms.View.Details;

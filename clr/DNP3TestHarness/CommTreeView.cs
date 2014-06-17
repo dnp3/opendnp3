@@ -127,13 +127,15 @@ namespace Automatak.DNP3.Simulator
         private void UpdateStatistics(TreeNode node)
         {           
             var stats = GetNodeStats(node);
+            this.listViewStats.BeginUpdate();
             this.listViewStats.Items.Clear();
             foreach (var s in stats)
             {
                 var strings = new string[2] { s.Id, s.Count.ToString() };
-                var item = new ListViewItem(strings);
+                var item = new ListViewItem(strings);                      
                 listViewStats.Items.Add(item);
-            }           
+            }
+            this.listViewStats.EndUpdate();
         }
 
         private IEnumerable<CommCounter> ConvertChannelStats(IChannelStatistics stats)
