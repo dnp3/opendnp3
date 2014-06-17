@@ -22,7 +22,6 @@
 #define __I_OUTSTATION_H_
 
 #include "IStack.h"
-#include <opendnp3/StackStatistics.h>
 
 namespace opendnp3
 {
@@ -50,12 +49,7 @@ class IOutstation : public IStack
 	/**
 	* Set the NeedTime bit in outstation
 	*/
-	virtual void SetNeedTimeIIN() = 0;
-
-	/**
-	* @return stack statistics counters
-	*/
-	virtual opendnp3::StackStatistics GetStackStatistics() = 0;
+	virtual void SetNeedTimeIIN() = 0;	
 
 	/**
 	* Get a the measurement loader interface to load measurements on the outstation

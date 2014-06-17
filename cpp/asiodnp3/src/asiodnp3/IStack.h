@@ -22,6 +22,7 @@
 #define __I_STACK_H_
 
 #include "DestructorHook.h"
+#include <opendnp3/StackStatistics.h>
 
 namespace asiodnp3
 {
@@ -34,6 +35,11 @@ class IStack : public DestructorHook
 public:
 
 	virtual ~IStack() {}
+
+	/**
+	* @return stack statistics counters
+	*/
+	virtual opendnp3::StackStatistics GetStackStatistics() = 0;
 
 	/**
 	* Returns the stack's executor

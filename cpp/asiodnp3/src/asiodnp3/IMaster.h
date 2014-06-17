@@ -24,7 +24,6 @@
 #include "IStack.h"
 #include "StackActionHandler.h"
 
-#include <opendnp3/StackStatistics.h>
 #include <opendnp3/master/MasterScan.h>
 #include <openpal/TimeDuration.h>
 
@@ -52,12 +51,7 @@ public:
 	* Add a class-based scan to the master
 	* @return A proxy class used to manipulate the scan
 	*/
-	virtual opendnp3::MasterScan AddClassScan(uint8_t classMask, openpal::TimeDuration scanRate) = 0;
-
-	/**
-	* @return stack statistics counters
-	*/
-	virtual opendnp3::StackStatistics GetStackStatistics() = 0;
+	virtual opendnp3::MasterScan AddClassScan(uint8_t classMask, openpal::TimeDuration scanRate) = 0;	
 
 	/**
 	* Add a start/stop rnage scan to the master
