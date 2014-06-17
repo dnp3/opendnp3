@@ -61,7 +61,7 @@ void DNP3Channel::BeginShutdown()
 	pPhys->GetExecutor()->PostLambda(lambda);
 }
 
-LinkChannelStatistics DNP3Channel::ReadStatistics()
+LinkChannelStatistics DNP3Channel::GetChannelStatistics()
 {
 	std::promise<LinkChannelStatistics> p;
 	pPhys->GetExecutor()->PostLambda([&]() { p.set_value(statistics); });

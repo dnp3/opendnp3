@@ -72,7 +72,7 @@ public:
 		openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler_
 	);
 
-	virtual opendnp3::LinkChannelStatistics ReadStatistics() override final;
+	virtual opendnp3::LinkChannelStatistics GetChannelStatistics() override final;
 
 	// public interface, callable only from outside
 	void BeginShutdown() override final;

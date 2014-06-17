@@ -77,7 +77,7 @@ public:
 	/**
 	* Synchronously read the channel statistics
 	*/
-	virtual opendnp3::LinkChannelStatistics ReadStatistics() = 0;
+	virtual opendnp3::LinkChannelStatistics GetChannelStatistics() = 0;
 	
 	/**
 	* sychronously shutdown the channel

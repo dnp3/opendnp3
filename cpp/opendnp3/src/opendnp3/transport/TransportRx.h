@@ -23,6 +23,7 @@
 
 #include "opendnp3/transport/TransportConstants.h"
 #include "opendnp3/StaticSizeConfiguration.h"
+#include "opendnp3/StackStatistics.h"
 
 #include <openpal/ReadOnlyBuffer.h>
 #include <openpal/StaticBuffer.h>
@@ -40,7 +41,7 @@ class TransportRx
 {
 
 public:
-	TransportRx(const openpal::Logger&, uint32_t fragSize);	
+	TransportRx(const openpal::Logger&, StackStatistics* pStatistics, uint32_t fragSize);	
 
 	openpal::ReadOnlyBuffer ProcessReceive(const openpal::ReadOnlyBuffer& input);
 
@@ -51,6 +52,7 @@ private:
 	bool ValidateHeader(bool fir, bool fin, uint8_t sequence, uint32_t payloadSize);
 
 	openpal::Logger logger;
+	StackStatistics* pStatistics;
 	
 	openpal::StaticBuffer<sizes::MAX_RX_APDU_SIZE> rxBuffer;
 	uint32_t numBytesRead;

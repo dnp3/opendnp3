@@ -38,7 +38,7 @@ LogFilter ChannelAdapter::GetLogFilters()
 
 IChannelStatistics^ ChannelAdapter::GetChannelStatistics()
 {
-	auto stats = pChannel->ReadStatistics();
+	auto stats = pChannel->GetChannelStatistics();
 	return Conversions::convertChannelStats(stats);	
 }
 

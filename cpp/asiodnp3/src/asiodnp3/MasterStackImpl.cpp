@@ -24,6 +24,8 @@
 
 #include <openpal/IExecutor.h>
 
+#include <future>
+
 using namespace openpal;
 using namespace opendnp3;
 
@@ -62,6 +64,13 @@ void MasterStackImpl::Disable()
 void MasterStackImpl::BeginShutdown()
 {
 	handler.BeginShutdown(&stack.link, this);
+}
+
+StackStatistics MasterStackImpl::GetStackStatistics()
+{
+	std::promise<StackStatistics> p;
+	handler.GetExecutor()->PostLambda([&]() { p.set_value(statistics); });
+	return p.get_future().get();
 }
 
 openpal::IExecutor* MasterStackImpl::GetExecutor() 

@@ -20,6 +20,8 @@
  */
 #include "OutstationStackImpl.h"
 
+#include <future>
+
 using namespace opendnp3;
 
 namespace asiodnp3
@@ -62,6 +64,13 @@ void OutstationStackImpl::Disable()
 void OutstationStackImpl::BeginShutdown()
 {
 	handler.BeginShutdown(&stack.link, this);
+}
+
+StackStatistics OutstationStackImpl::GetStackStatistics()
+{
+	std::promise<StackStatistics> p;
+	handler.GetExecutor()->PostLambda([&]() { p.set_value(statistics); });
+	return p.get_future().get();
 }
 
 openpal::IExecutor* OutstationStackImpl::GetExecutor()

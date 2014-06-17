@@ -33,8 +33,9 @@ using namespace openpal;
 namespace opendnp3
 {
 
-TransportRx::TransportRx(const Logger& logger_, uint32_t fragSize) :
+	TransportRx::TransportRx(const Logger& logger_, StackStatistics* pStatistics_, uint32_t fragSize) :
 	logger(logger_),	
+	pStatistics(pStatistics_),
 	numBytesRead(0),
 	sequence(0),
 	maxFragSize(fragSize)
@@ -57,16 +58,18 @@ ReadOnlyBuffer TransportRx::ProcessReceive(const ReadOnlyBuffer& input)
 	if (input.Size() < 2)
 	{
 		FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::WARN, TLERR_NO_PAYLOAD, "Received tpdu with no payload, size: %u", static_cast<unsigned int>(input.Size()));
+		if (pStatistics) ++pStatistics->numTransportMalformedRx;
 		return ReadOnlyBuffer::Empty();
 	}
 	else if (input.Size() > TL_MAX_TPDU_LENGTH)
 	{
 		FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::WARN, TLERR_TOO_MUCH_DATA, "Illegal arg: %i exceeds max tpdu size of %u", static_cast<unsigned int>(input.Size()), TL_MAX_TPDU_LENGTH);
+		if (pStatistics) ++pStatistics->numTransportMalformedRx;
 		return ReadOnlyBuffer::Empty();
 	}
 	else
 	{
-		uint8_t hdr = input[0];		
+		uint8_t hdr = input[0];
 		bool first = (hdr & TL_HDR_FIR) != 0;
 		bool last = (hdr & TL_HDR_FIN) != 0;
 		int seq = hdr & TL_HDR_SEQ;
@@ -79,12 +82,16 @@ ReadOnlyBuffer TransportRx::ProcessReceive(const ReadOnlyBuffer& input)
 		{
 			if (BufferRemaining() < payloadLength)
 			{
+				if (pStatistics) ++pStatistics->numTransportMalformedRx;
 				SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, TLERR_BUFFER_FULL, "Exceeded the buffer size before a complete fragment was read");
 				numBytesRead = 0;
+				if (pStatistics) ++pStatistics->numTransportOverflowRx;
 				return ReadOnlyBuffer::Empty();
 			}
 			else   //passed all validation
 			{
+				if (pStatistics) ++pStatistics->numTransportRx;
+
 				memcpy(rxBuffer.Buffer() + numBytesRead, input + 1, payloadLength);
 				numBytesRead += payloadLength;
 				sequence = (sequence + 1) % 64;
@@ -92,7 +99,7 @@ ReadOnlyBuffer TransportRx::ProcessReceive(const ReadOnlyBuffer& input)
 				if(last)
 				{				
 					ReadOnlyBuffer ret(rxBuffer.Buffer(), numBytesRead);
-					numBytesRead = 0;
+					numBytesRead = 0;					
 					return ret;
 				}
 				else
@@ -103,6 +110,7 @@ ReadOnlyBuffer TransportRx::ProcessReceive(const ReadOnlyBuffer& input)
 		}
 		else
 		{
+			if (pStatistics) ++pStatistics->numTransportBadSeq;
 			return ReadOnlyBuffer::Empty();
 		}
 	}

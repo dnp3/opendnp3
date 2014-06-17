@@ -24,6 +24,7 @@
 #include <openpal/StaticBuffer.h>
 #include <openpal/Logger.h>
 
+#include "opendnp3/StackStatistics.h"
 #include "opendnp3/link/ITransportSegment.h"
 #include "opendnp3/transport/TransportConstants.h"
 
@@ -40,7 +41,7 @@ class TransportTx : public ITransportSegment
 
 public:
 
-	TransportTx(const openpal::Logger& logger);
+	TransportTx(const openpal::Logger& logger, StackStatistics* pStatistics);
 
 	void Configure(const openpal::ReadOnlyBuffer& output);
 
@@ -62,6 +63,7 @@ private:
 	openpal::StaticBuffer<TL_MAX_TPDU_LENGTH> tpduBuffer;
 
 	openpal::Logger logger;
+	StackStatistics* pStatistics;
 	uint8_t sequence;
 	uint32_t tpduCount;
 };
