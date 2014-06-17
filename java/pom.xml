@@ -4,7 +4,7 @@
 
     <groupId>com.automatak.dnp3</groupId>
     <artifactId>opendnp3-parent</artifactId>
-    <version>1.1.1.RC4</version>
+    <version>1.1.1.RC5</version>
     <packaging>pom</packaging>
 
     <name>opendnp3</name>
