@@ -105,7 +105,54 @@ namespace Automatak.DNP3.Simulator
             yield return "Num close: " + stats.NumClose;
             yield return "Num crc error: " + stats.NumCrcError;
             yield return "Num bad lpdu: " + stats.NumBadLinkFrame;
+        }
 
+        private IEnumerable<CommCounter> GetNodeStats(TreeNode node)
+        {
+            if (node != null && node.Tag != null)
+            {
+                if (node.Tag is IChannel)
+                {
+                    var channel = node.Tag as IChannel;
+                    var stats = channel.GetChannelStatistics();
+                    return ConvertChannelStats(stats);
+                }
+            }
+
+            return Enumerable.Empty<CommCounter>();
+        }
+
+        private void treeView_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            UpdateStatistics(e.Node);
+        }
+
+        private void UpdateStatistics(TreeNode node)
+        {           
+            var stats = GetNodeStats(node);
+            this.listViewStats.Items.Clear();
+            foreach (var s in stats)
+            {
+                var strings = new string[2] { s.Id, s.Count.ToString() };
+                var item = new ListViewItem(strings);
+                listViewStats.Items.Add(item);
+            }           
+        }
+
+        private IEnumerable<CommCounter> ConvertChannelStats(IChannelStatistics stats)
+        {
+            yield return new CommCounter("bytes rx", stats.NumBytesRx);
+            yield return new CommCounter("bytes tx", stats.NumBytesTx);
+            yield return new CommCounter("crc errors", stats.NumCrcError);
+            yield return new CommCounter("open count", stats.NumOpen);
+            yield return new CommCounter("num close", stats.NumClose);
+            yield return new CommCounter("open fail count", stats.NumOpenFail);
+            yield return new CommCounter("bad link frames", stats.NumBadLinkFrame);                        
+        }
+
+        private void timerStats_Tick(object sender, EventArgs e)
+        {
+            UpdateStatistics(treeView.SelectedNode);            
         }
     }
 }

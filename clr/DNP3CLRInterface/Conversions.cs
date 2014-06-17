@@ -36,6 +36,11 @@ namespace DNP3.Interface
         /// dnp3 uses a different epoch than .NET
         /// </summary>
         private static readonly DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc);
+
+        /// <summary>
+        /// Maximum timestamp value that can be added to the epoch
+        /// </summary>
+        private static readonly TimeSpan max = DateTime.MaxValue - epoch;
        
         /// <summary>
         /// Converts a dnp3 timestamp to a .NET DateTime
@@ -44,7 +49,15 @@ namespace DNP3.Interface
         /// <returns>.NET DateTime</returns>
         public static DateTime Convert(Int64 time)        
 	    {
-            return epoch.Add(TimeSpan.FromMilliseconds(time));           
+            var ms = TimeSpan.FromMilliseconds(time);
+            if(ms > max)
+            {
+                return DateTime.MaxValue;                       
+            }
+            else
+            {
+                return epoch.Add(ms);    
+            }                       
 	    }
 
         /// <summary>
@@ -54,7 +67,7 @@ namespace DNP3.Interface
         /// <returns>dnp3 milliseconds since unix epoch</returns>
         public static Int64 Convert(DateTime time)
 	    {
-            return (long) time.Subtract(epoch).TotalMilliseconds;
+            return (Int64) time.Subtract(epoch).TotalMilliseconds;
 	    }        
     }
 }

@@ -120,6 +120,7 @@
       <DependentUpon>MeasurementView.cs</DependentUpon>
     </Compile>
     <Compile Include="BundledPlugins\SOEHandler.cs" />
+    <Compile Include="CommCounter.cs" />
     <Compile Include="Components\LinkConfigControl.cs">
       <SubType>UserControl</SubType>
     </Compile>

@@ -13,26 +13,18 @@ namespace Automatak.DNP3.Simulator
         public delegate void OnMeasurements(IEnumerable<Measurement> measurements);
         public event OnMeasurements NewMeasurements;
 
-        IList<Measurement> measurements = new List<Measurement>();
+        IList<Measurement> measurements = null;
         
         void ISOEHandler.Start()
         {
-            if (measurements == null)
-            {
-                measurements = new List<Measurement>();
-            }
+            measurements = new List<Measurement>();            
         }
 
         void ISOEHandler.End()
         {
-            if (measurements.Any())
+            if (measurements.Any() && NewMeasurements != null)
             {               
-                if (NewMeasurements != null)
-                {
-                    NewMeasurements(measurements);
-                }
-
-                measurements = null;
+               NewMeasurements(measurements);                
             }           
         }
 
