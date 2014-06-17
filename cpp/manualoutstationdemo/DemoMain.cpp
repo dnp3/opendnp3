@@ -64,7 +64,7 @@ int main(int argc, char* argv[])
 	PhysicalLayerTCPServer server(root, &service, "0.0.0.0", 20000);
 	LinkLayerRouter router(root, &server, TimeDuration::Seconds(1), TimeDuration::Seconds(60));
 		
-	TransportStack stack(root, &executor, LinkConfig(false, false));
+	TransportStack stack(root, &executor, nullptr, LinkConfig(false, false));
 	
 	DynamicallyAllocatedDatabase staticBuffers(DatabaseTemplate::AllTypes(10));
 	StaticallyAllocatedEventBuffer<10, 10, 10, 10, 10, 10, 10> eventBuffers;

@@ -28,6 +28,7 @@
 #include <openpal/LogRoot.h>
 #include <openpal/LayerInterfaces.h>
 
+#include "opendnp3/StackStatistics.h"
 #include "opendnp3/link/ILinkLayer.h"
 #include "opendnp3/StaticSizeConfiguration.h"
 
@@ -43,7 +44,7 @@ class TransportLayer : public openpal::IUpperLayer, public openpal::ILowerLayer
 
 public:
 
-	TransportLayer(openpal::LogRoot& root, openpal::IExecutor* pExecutor_, uint32_t maxFragSize = sizes::DEFAULT_APDU_BUFFER_SIZE);	
+	TransportLayer(openpal::LogRoot& root, openpal::IExecutor* pExecutor_, StackStatistics* pStatistics_ = nullptr, uint32_t maxFragSize = sizes::DEFAULT_APDU_BUFFER_SIZE);
 
 	/// ILowerLayer	
 
@@ -60,7 +61,7 @@ public:
 	void SetLinkLayer(ILinkLayer* pLinkLayer_);
 
 private:
-
+	
 	openpal::Logger logger;
 	openpal::IUpperLayer* pUpperLayer;
 	ILinkLayer* pLinkLayer;	

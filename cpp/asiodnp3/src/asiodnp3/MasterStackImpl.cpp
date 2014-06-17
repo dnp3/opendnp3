@@ -38,7 +38,7 @@ MasterStackImpl::MasterStackImpl(	LogRoot& root,
                                     const StackActionHandler& handler_) :
 
 	handler(handler_),
-	stack(root, &executor, config.link),
+	stack(root, &executor, &statistics, config.link),
 	master(executor, root, stack.transport, pSOEHandler, pTimeSource, config.master)
 {
 	stack.transport.SetAppLayer(&master);

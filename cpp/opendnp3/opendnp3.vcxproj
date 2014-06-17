@@ -214,6 +214,7 @@
     <ClInclude Include="src\opendnp3\outstation\ValueMetadataPair.h" />
     <ClInclude Include="src\opendnp3\outstation\WriteHandler.h" />
     <ClInclude Include="src\opendnp3\Singleton.h" />
+    <ClInclude Include="src\opendnp3\StackStatistics.h" />
     <ClInclude Include="src\opendnp3\StaticSizeConfiguration.h" />
     <ClInclude Include="src\opendnp3\transport\TransportConstants.h" />
     <ClInclude Include="src\opendnp3\transport\TransportLayer.h" />

@@ -32,9 +32,9 @@ OutstationStackImpl::OutstationStackImpl(
 	opendnp3::ICommandHandler& commandHandler,
     const OutstationStackConfig& config,
     const StackActionHandler& handler_) :	
-	pExecutor(&executor),
+
 	handler(handler_),
-	stack(root, pExecutor, config.link),
+	stack(root, &executor, &statistics, config.link),
 	databaseBuffers(config.dbTemplate),
 	eventBuffers(config.eventBuffer),
 	mutex(),
@@ -64,10 +64,15 @@ void OutstationStackImpl::BeginShutdown()
 	handler.BeginShutdown(&stack.link, this);
 }
 
+openpal::IExecutor* OutstationStackImpl::GetExecutor()
+{
+	return handler.GetExecutor();
+}
+
 void OutstationStackImpl::SetNeedTimeIIN()
 {	
 	auto lambda = [this]() { this->outstation.SetRequestTimeIIN(); };
-	pExecutor->PostLambda(lambda);
+	handler.GetExecutor()->PostLambda(lambda);
 }
 
 void OutstationStackImpl::SetLinkRouter(opendnp3::ILinkRouter* pRouter)

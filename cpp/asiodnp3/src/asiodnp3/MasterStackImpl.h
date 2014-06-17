@@ -71,6 +71,7 @@ public:
 
 
 private:
+	opendnp3::StackStatistics statistics;
 	StackActionHandler handler;
 	opendnp3::TransportStack stack;
 	opendnp3::Master master;
