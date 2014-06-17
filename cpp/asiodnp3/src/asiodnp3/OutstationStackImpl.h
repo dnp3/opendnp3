@@ -26,6 +26,8 @@
 #include <opendnp3/outstation/Outstation.h>
 #include <opendnp3/outstation/DynamicallyAllocatedDatabase.h>
 #include <opendnp3/outstation/DynamicallyAllocatedEventBuffer.h>
+#include <opendnp3/link/ILinkRouter.h>
+#include <opendnp3/transport/TransportStack.h>
 
 #include <openpal/Location.h>
 

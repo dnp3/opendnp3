@@ -23,7 +23,6 @@
     <ClCompile Include="src\asiodnp3\DestructorHook.cpp" />
     <ClCompile Include="src\asiodnp3\DNP3Channel.cpp" />
     <ClCompile Include="src\asiodnp3\DNP3Manager.cpp" />
-    <ClCompile Include="src\asiodnp3\DNP3Stack.cpp" />
     <ClCompile Include="src\asiodnp3\MasterStackImpl.cpp" />
     <ClCompile Include="src\asiodnp3\OutstationStackImpl.cpp" />
     <ClCompile Include="src\asiodnp3\PrintingSOEHandler.cpp" />
@@ -34,7 +33,6 @@
     <ClInclude Include="src\asiodnp3\DestructorHook.h" />
     <ClInclude Include="src\asiodnp3\DNP3Channel.h" />
     <ClInclude Include="src\asiodnp3\DNP3Manager.h" />
-    <ClInclude Include="src\asiodnp3\DNP3Stack.h" />
     <ClInclude Include="src\asiodnp3\IChannel.h" />
     <ClInclude Include="src\asiodnp3\IMaster.h" />
     <ClInclude Include="src\asiodnp3\IOutstation.h" />

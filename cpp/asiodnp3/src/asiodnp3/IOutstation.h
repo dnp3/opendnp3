@@ -21,7 +21,7 @@
 #ifndef __I_OUTSTATION_H_
 #define __I_OUTSTATION_H_
 
-#include "DNP3Stack.h"
+#include "IStack.h"
 
 namespace opendnp3
 {
