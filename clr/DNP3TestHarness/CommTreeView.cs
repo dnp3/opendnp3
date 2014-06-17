@@ -79,6 +79,7 @@ namespace Automatak.DNP3.Simulator
                     {
                         plugin.SetMaster(master);
                         TreeNode masterNode = new TreeNode("master");
+                        masterNode.Tag = master;
                         masterNode.ImageIndex = 1;
                         masterNode.StateImageIndex = 1;
                         masterNode.SelectedImageIndex = 1;
@@ -95,20 +96,8 @@ namespace Automatak.DNP3.Simulator
             treeView.Nodes.Remove(node);
             channel.Shutdown();           
         }      
-
-        private IEnumerable<string> ToLines(IChannelStatistics stats)
-        {
-            yield return "Num bytes rx: " + stats.NumBytesRx;
-            yield return "Num bytes tx: " + stats.NumBytesTx;
-            yield return "Num open: " + stats.NumOpen;
-            yield return "Num open fail: " + stats.NumOpenFail;
-            yield return "Num close: " + stats.NumClose;
-            yield return "Num crc error: " + stats.NumCrcError;
-            yield return "Num LPDU rx: " + stats.NumLinkFrameRx;
-            yield return "Num LPDU tx: " + stats.NumLinkFrameTx;
-            yield return "Num bad lpdu rx: " + stats.NumBadLinkFrameRx;
-
-        }
+      
+       
 
         private IEnumerable<CommCounter> GetNodeStats(TreeNode node)
         {
@@ -119,6 +108,13 @@ namespace Automatak.DNP3.Simulator
                     var channel = node.Tag as IChannel;
                     var stats = channel.GetChannelStatistics();
                     return ConvertChannelStats(stats);
+                }
+
+                if (node.Tag is IStack)
+                {
+                    var stack = node.Tag as IStack;
+                    var stats = stack.GetStackStatistics();
+                    return ConvertStackStats(stats);
                 }
             }
 
@@ -153,6 +149,13 @@ namespace Automatak.DNP3.Simulator
             yield return new CommCounter("link frames rx", stats.NumLinkFrameRx);
             yield return new CommCounter("link frames tx", stats.NumLinkFrameTx);
             yield return new CommCounter("bad link frames rx", stats.NumBadLinkFrameRx);            
+        }
+
+        private IEnumerable<CommCounter> ConvertStackStats(IStackStatistics stats)
+        {
+            yield return new CommCounter("Num transport rx", stats.NumTransportRx);
+            yield return new CommCounter("Num transport tx", stats.NumTransportTx);
+            yield return new CommCounter("Num transport error rx", stats.NumTransportErrorRx);
         }
 
         private void timerStats_Tick(object sender, EventArgs e)
