@@ -106,19 +106,17 @@ namespace Automatak.DNP3.Simulator
                 if (node.Tag is IChannel)
                 {
                     var channel = node.Tag as IChannel;
-                    var stats = channel.GetChannelStatistics();
-                    return ConvertChannelStats(stats);
+                    var stats = ConvertChannelStats(channel.GetChannelStatistics());
+                    foreach (var c in stats) yield return c;
                 }
 
                 if (node.Tag is IStack)
                 {
                     var stack = node.Tag as IStack;
-                    var stats = stack.GetStackStatistics();
-                    return ConvertStackStats(stats);
+                    var stats = ConvertStackStats(stack.GetStackStatistics());
+                    foreach (var c in stats) yield return c;
                 }
-            }
-
-            return Enumerable.Empty<CommCounter>();
+            }            
         }
 
         private void treeView_AfterSelect(object sender, TreeViewEventArgs e)
