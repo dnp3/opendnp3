@@ -19,16 +19,16 @@
 * to you under the terms of the License.
 */
 
-#ifndef __DNP3_CHANNEL_STATISTICS_H_
-#define __DNP3_CHANNEL_STATISTICS_H_
+#ifndef __LINK_CHANNEL_STATISTICS_H_
+#define __LINK_CHANNEL_STATISTICS_H_
 
 #include <openpal/ChannelStatistics.h>
 
 namespace opendnp3
 {
-	struct DNP3ChannelStatistics : openpal::ChannelStatistics
+	struct LinkChannelStatistics : openpal::ChannelStatistics
 	{
-		DNP3ChannelStatistics() : numCrcError(0), numBadLinkFrame(0)
+		LinkChannelStatistics() : numCrcError(0), numBadLinkFrame(0)
 		{}
 		
 		/// Number of frames discared due to CRC errors

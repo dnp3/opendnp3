@@ -24,7 +24,7 @@
 #include <opendnp3/gen/ChannelState.h>
 #include <opendnp3/master/MasterStackConfig.h>
 #include <opendnp3/outstation/OutstationStackConfig.h>
-#include <opendnp3/link/DNP3ChannelStatistics.h>
+#include <opendnp3/link/LinkChannelStatistics.h>
 
 #include "DestructorHook.h"
 
@@ -77,7 +77,7 @@ public:
 	/**
 	* Synchronously read the channel statistics
 	*/
-	virtual opendnp3::DNP3ChannelStatistics ReadStatistics() = 0;
+	virtual opendnp3::LinkChannelStatistics ReadStatistics() = 0;
 	
 	/**
 	* sychronously shutdown the channel

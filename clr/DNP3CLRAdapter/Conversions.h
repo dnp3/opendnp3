@@ -19,7 +19,7 @@
 #include <opendnp3/master/MasterStackConfig.h>
 
 #include <opendnp3/outstation/OutstationStackConfig.h>
-#include <opendnp3/link/DNP3ChannelStatistics.h>
+#include <opendnp3/link/LinkChannelStatistics.h>
 
 
 
@@ -47,7 +47,7 @@ public:
 	// Converting channel state enumeration
 	static ChannelState convertChannelState(opendnp3::ChannelState aState);
 
-	static IChannelStatistics^ convertChannelStats(const opendnp3::DNP3ChannelStatistics& statistics);
+	static IChannelStatistics^ convertChannelStats(const opendnp3::LinkChannelStatistics& statistics);
 
 	// Convert the command status enumeration
 	static CommandStatus convertCommandStatus(opendnp3::CommandStatus status);

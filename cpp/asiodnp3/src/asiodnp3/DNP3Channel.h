@@ -26,7 +26,7 @@
 
 #include <opendnp3/outstation/OutstationStackConfig.h>
 #include <opendnp3/link/LinkLayerRouter.h>
-#include <opendnp3/link/DNP3ChannelStatistics.h>
+#include <opendnp3/link/LinkChannelStatistics.h>
 
 #include "IChannel.h"
 
@@ -73,7 +73,7 @@ public:
 		openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler_
 	);
 
-	virtual opendnp3::DNP3ChannelStatistics ReadStatistics() override final;
+	virtual opendnp3::LinkChannelStatistics ReadStatistics() override final;
 
 	// public interface, callable only from outside
 	void BeginShutdown() override final;
@@ -108,7 +108,7 @@ private:
 
 	void CheckForFinalShutdown();
 
-	opendnp3::DNP3ChannelStatistics statistics;
+	opendnp3::LinkChannelStatistics statistics;
 	std::unique_ptr<openpal::IPhysicalLayer> pPhys;
 	std::unique_ptr<openpal::LogRoot> pLogRoot;
 	openpal::Logger logger;

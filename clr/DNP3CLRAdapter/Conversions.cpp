@@ -27,7 +27,7 @@ ChannelState Conversions::convertChannelState(opendnp3::ChannelState aState)
 	return (ChannelState) aState;
 }
 
-IChannelStatistics^ Conversions::convertChannelStats(const opendnp3::DNP3ChannelStatistics& stats)
+IChannelStatistics^ Conversions::convertChannelStats(const opendnp3::LinkChannelStatistics& stats)
 {
 	ChannelStatistics^ ret = gcnew ChannelStatistics();
 	ret->numBytesRx = stats.numBytesRx;

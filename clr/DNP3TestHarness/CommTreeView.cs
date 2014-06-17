@@ -83,7 +83,7 @@ namespace Automatak.DNP3.Simulator
                         masterNode.StateImageIndex = 1;
                         masterNode.SelectedImageIndex = 1;
                         masterNode.ContextMenuStrip = CreateMasterMenuStrip(plugin, node, masterNode, master);
-                        node.Nodes.Add(masterNode);
+                        node.Nodes.Add(masterNode);                                             
                         master.Enable();
                     }
                 }

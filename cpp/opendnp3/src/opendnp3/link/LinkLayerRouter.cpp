@@ -43,7 +43,7 @@ LinkLayerRouter::LinkLayerRouter(	openpal::LogRoot& root,
                                     openpal::IEventHandler<ChannelState>* pStateHandler_,
                                     openpal::IShutdownHandler* pShutdownHandler_,
                                     IOpenDelayStrategy* pStrategy,
-									DNP3ChannelStatistics* pStatistics) :
+									LinkChannelStatistics* pStatistics) :
 
 	PhysicalLayerMonitor(root, apPhys, minOpenRetry, maxOpenRetry, pStrategy),
 	pStateHandler(pStateHandler_),

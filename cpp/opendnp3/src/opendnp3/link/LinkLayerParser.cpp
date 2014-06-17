@@ -33,7 +33,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LinkLayerParser::LinkLayerParser(const Logger& logger_, DNP3ChannelStatistics* pStatistics_) :
+LinkLayerParser::LinkLayerParser(const Logger& logger_, LinkChannelStatistics* pStatistics_) :
 	logger(logger_),
 	pStatistics(pStatistics_),
 	state(State::FindSync),
