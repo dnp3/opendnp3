@@ -27,14 +27,14 @@ AC_ARG_ENABLE([java],
 if test "$opendnp3_use_java" = yes; then
     opendnp3_jni_found=no
     AC_ARG_WITH([jni-include-path],
-        AS_HELP_STRING([--with-java-include-path=/path/to/java/include], [Use the specified path to find jni.h]),
+        AS_HELP_STRING([--with-jni-include-path=/path/to/java/include], [Use the specified path to find jni.h]),
         [
             case "$withval" in
                 yes)
-                    AC_MSG_ERROR([--with-java-include-path specified without defining a path])
+                    AC_MSG_ERROR([--with-jni-include-path specified without defining a path])
                     ;;
                 no)
-                    AC_MSG_ERROR([--with-java-include-path=no is an invalid choice])
+                    AC_MSG_ERROR([--with-jni-include-path=no is an invalid choice])
                     ;;
                 *)
                     AC_MSG_CHECKING([for jni.h]);
