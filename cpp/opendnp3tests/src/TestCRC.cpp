@@ -23,7 +23,7 @@
 
 #include "BufferHelpers.h"
 
-#include <opendnp3/link/DNPCrc.h>
+#include <opendnp3/link/CRC.h>
 
 #include <iostream>
 #include <vector>
@@ -39,7 +39,7 @@ TEST_CASE(SUITE("CrcTest"))
 {
 	HexSequence hs("05 64 05 C0 01 00 00 04 E9 21");
 	REQUIRE(hs.Size() ==  10);
-	REQUIRE(DNPCrc::CalcCrc(hs, 8) ==  0x21E9);
+	REQUIRE(CRC::CalcCrc(hs, 8) == 0x21E9);
 }
 
 

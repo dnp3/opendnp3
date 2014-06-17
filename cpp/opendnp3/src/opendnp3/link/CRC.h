@@ -18,15 +18,15 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __DNP_CRC_H_
-#define __DNP_CRC_H_
+#ifndef __OPENDNP3_CRC_H_
+#define __OPENDNP3_CRC_H_
 
 #include <cstdint>
 
 namespace opendnp3
 {
 
-class DNPCrc
+class CRC
 {
 public:
 

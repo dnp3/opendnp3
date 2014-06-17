@@ -21,7 +21,7 @@
 #include <catch.hpp>
 
 #include <opendnp3/link/LinkFrame.h>
-#include <opendnp3/link/DNPCrc.h>
+#include <opendnp3/link/CRC.h>
 #include <opendnp3/link/LinkHeader.h>
 
 #include <openpal/ToHex.h>

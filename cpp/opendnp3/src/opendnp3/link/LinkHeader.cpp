@@ -20,7 +20,7 @@
  */
 #include "LinkHeader.h"
 
-#include "DNPCrc.h"
+#include "CRC.h"
 
 #include <openpal/Serialization.h>
 
@@ -88,32 +88,8 @@ void LinkHeader::Write(uint8_t* apBuff) const
 	openpal::UInt16::Write(apBuff + LI_SOURCE, src);
 	apBuff[LI_CONTROL] = ctrl;
 
-	DNPCrc::AddCrc(apBuff, LI_CRC);
+	CRC::AddCrc(apBuff, LI_CRC);
 }
-
-/* TODO
-std::string LinkHeader::ToString() const
-{
-	ostringstream oss;
-	oss << "DL " << this->GetSrc() << " to " << this->GetDest();
-	oss << " : " << LinkFunctionToString(this->GetFuncEnum());
-	oss << " PayloadSize: " << (this->GetLength() - 5);
-	oss << ((this->IsFromMaster()) ? " From Master" : " From Outstation");
-	if(this->IsPriToSec())
-	{
-		oss << " Pri->Sec";
-		oss << " FCB=" << this->IsFcbSet() << " FCV=" << this->IsFcvDfcSet();
-	}
-	else
-	{
-		oss << " Sec->Pri";
-		if(this->IsFcbSet()) oss << " ERROR: FCB not Blank!!";
-		oss << " DFC=" << this->IsFcvDfcSet();
-	}
-
-	return oss.str();
-}
-*/
 
 }
 

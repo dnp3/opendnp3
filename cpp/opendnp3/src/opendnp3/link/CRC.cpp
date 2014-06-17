@@ -18,14 +18,14 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "DNPCrc.h"
+#include "CRC.h"
 
 #include <openpal/Serialization.h>
 
 namespace opendnp3
 {
 
-uint16_t DNPCrc::crcTable[256] = {
+uint16_t CRC::crcTable[256] = {
 	0x0000, 0x365E, 0x6CBC, 0x5AE2, 0xD978, 0xEF26, 0xB5C4, 0x839A,
 	0xFF89, 0xC9D7, 0x9335, 0xA56B, 0x26F1, 0x10AF, 0x4A4D, 0x7C13,
 	0xB26B, 0x8435, 0xDED7, 0xE889, 0x6B13, 0x5D4D, 0x07AF, 0x31F1,
@@ -59,7 +59,7 @@ uint16_t DNPCrc::crcTable[256] = {
 	0x6E26, 0x5878, 0x029A, 0x34C4, 0xB75E, 0x8100, 0xDBE2, 0xEDBC,
 	0x91AF, 0xA7F1, 0xFD13, 0xCB4D, 0x48D7, 0x7E89, 0x246B, 0x1235};
 
-uint16_t DNPCrc::CalcCrc(const uint8_t* input, uint32_t length)
+uint16_t CRC::CalcCrc(const uint8_t* input, uint32_t length)
 {
 	uint8_t index;
 
@@ -74,35 +74,16 @@ uint16_t DNPCrc::CalcCrc(const uint8_t* input, uint32_t length)
 	return ~CRC;
 }
 
-void DNPCrc::AddCrc(uint8_t* input, uint32_t length)
+void CRC::AddCrc(uint8_t* input, uint32_t length)
 {
-	uint16_t crc = DNPCrc::CalcCrc(input, length);
+	uint16_t crc = CRC::CalcCrc(input, length);
 	openpal::UInt16::Write(input+length, crc);
 }
 
-bool DNPCrc::IsCorrectCRC(const uint8_t* input, uint32_t length)
+bool CRC::IsCorrectCRC(const uint8_t* input, uint32_t length)
 {
-	return CalcCrc(input, length) == openpal::UInt16::Read(input + length);
+	return CRC::CalcCrc(input, length) == openpal::UInt16::Read(input + length);
 }
-
-/*
-bool DNPCrc::InitCrcTable()
-{
-	uint16_t i, j, CRC;
-
-	for (i = 0; i < 256; i++)
-	{
-		CRC = i;
-		for (j = 0; j < 8; ++j)
-		{
-			if (CRC & 0x0001) CRC = (CRC >> 1) ^ 0xA6BC;
-			else CRC >>= 1;
-		}
-		crcTable[i] = CRC;
-	}
-	return true;
-}
-*/
 
 }
 

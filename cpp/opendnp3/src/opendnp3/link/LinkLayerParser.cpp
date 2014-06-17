@@ -21,7 +21,7 @@
 
 #include "LinkLayerParser.h"
 
-#include "opendnp3/link/DNPCrc.h"
+#include "opendnp3/link/CRC.h"
 #include "opendnp3/link/IFrameSink.h"
 
 #include "opendnp3/LogLevels.h"
@@ -202,7 +202,7 @@ void LinkLayerParser::TransferUserData()
 bool LinkLayerParser::ReadHeader()
 {
 	header.Read(buffer.ReadBuffer());
-	if (DNPCrc::IsCorrectCRC(buffer.ReadBuffer(), LI_CRC))
+	if (CRC::IsCorrectCRC(buffer.ReadBuffer(), LI_CRC))
 	{
 		if (ValidateHeaderParameters())
 		{			

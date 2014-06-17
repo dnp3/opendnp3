@@ -20,7 +20,7 @@
  */
 #include "LinkFrame.h"
 
-#include "opendnp3/link/DNPCrc.h"
+#include "opendnp3/link/CRC.h"
 #include "opendnp3/link/LinkHeader.h"
 #include "opendnp3/LogLevels.h"
 
@@ -61,7 +61,7 @@ bool LinkFrame::ValidateBodyCRC(const uint8_t* pBody, uint32_t length)
 		uint32_t max = LS_DATA_BLOCK_SIZE;
 		uint32_t num = (length <= max) ? length : max;
 
-		if (DNPCrc::IsCorrectCRC(pBody, num))
+		if (CRC::IsCorrectCRC(pBody, num))
 		{
 			pBody += (num + 2);
 			length -= num;
@@ -189,7 +189,7 @@ void LinkFrame::WriteUserData(const uint8_t* pSrc, uint8_t* pDest, uint8_t lengt
 		uint8_t max = LS_DATA_BLOCK_SIZE;
 		uint8_t num = length > max ? max : length;
 		memcpy(pDest, pSrc, num);
-		DNPCrc::AddCrc(pDest, num);
+		CRC::AddCrc(pDest, num);
 		pSrc += num;
 		pDest += (num + 2);
 		length -= num;

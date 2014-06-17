@@ -22,7 +22,7 @@
 
 #include <catch.hpp>
 
-#include <opendnp3/link/DNPCrc.h>
+#include <opendnp3/link/CRC.h>
 #include <opendnp3/link/LinkFrame.h>
 
 #include <openpal/ToHex.h>
@@ -53,19 +53,19 @@ std::string RepairCRC(const std::string& arData)
 	}
 
 	//repair the header crc
-	DNPCrc::AddCrc(hs, 8);
+	CRC::AddCrc(hs, 8);
 
 	uint8_t* ptr = hs + 10;
 
 	// repair the full blocks
 	for(size_t i = 0; i < full_blocks; i++)
 	{
-		DNPCrc::AddCrc(ptr, 16);
+		CRC::AddCrc(ptr, 16);
 		ptr += 18;
 	}
 
 	//repair the partial block
-	if(partial_size > 0) DNPCrc::AddCrc(ptr, partial_size - 2);
+	if (partial_size > 0) CRC::AddCrc(ptr, partial_size - 2);
 
 	return toHex(hs.ToReadOnly(), true);
 }

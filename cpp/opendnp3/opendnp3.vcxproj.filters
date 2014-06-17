@@ -210,9 +210,6 @@
     <ClInclude Include="src\opendnp3\gen\ChannelState.h">
       <Filter>Header\gen</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\link\DNPCrc.h">
-      <Filter>Header\link</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\link\IFrameSink.h">
       <Filter>Header\link</Filter>
     </ClInclude>
@@ -654,6 +651,9 @@
     <ClInclude Include="src\opendnp3\link\LinkChannelStatistics.h">
       <Filter>Header\link</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\link\CRC.h">
+      <Filter>Header\link</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\AnalogOutput.cpp">
@@ -872,9 +872,6 @@
     <ClCompile Include="src\opendnp3\outstation\CommandResponseHandler.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\link\DNPCrc.cpp">
-      <Filter>Source\link</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\link\LinkFrame.cpp">
       <Filter>Source\link</Filter>
     </ClCompile>
@@ -1051,6 +1048,9 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\OutstationUnsolicitedStates.cpp">
       <Filter>Source\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\link\CRC.cpp">
+      <Filter>Source\link</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
