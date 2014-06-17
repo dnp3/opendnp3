@@ -33,14 +33,24 @@ namespace DNP3.Interface
        public System.UInt32 numBytesTx = 0;
 
        /// <summary>
-       /// Number of frames discared due to CRC errors
+       /// Number of LPDUs discared due to CRC errors
        /// </summary>
        public System.UInt32 numCrcError = 0;
 
        /// <summary>
-       /// Number of frames detected with bad / malformed contents
+       /// Number of valid LPDUs received
        /// </summary>
-       public System.UInt32 numBadLinkFrame = 0;     
+       public System.UInt32 numLinkFrameRx = 0;
+
+       /// <summary>
+       /// Number of LPDUs transmitted
+       /// </summary>
+       public System.UInt32 numLinkFrameTx = 0;
+
+       /// <summary>
+       /// Number of LPDUs detected with bad / malformed contents
+       /// </summary>
+       public System.UInt32 numBadLinkFrameRx = 0;     
 
        uint IChannelStatistics.NumOpen
        {
@@ -72,9 +82,19 @@ namespace DNP3.Interface
            get { return numCrcError; }
        }
 
-       uint IChannelStatistics.NumBadLinkFrame
+       uint IChannelStatistics.NumLinkFrameRx
        {
-           get { return numBadLinkFrame; }
+           get { return numLinkFrameRx; }
+       }
+
+       uint IChannelStatistics.NumLinkFrameTx
+       {
+           get { return numLinkFrameTx; }
+       }
+
+       uint IChannelStatistics.NumBadLinkFrameRx
+       {
+           get { return numBadLinkFrameRx; }
        }      
    }
 }

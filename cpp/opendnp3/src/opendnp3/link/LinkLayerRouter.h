@@ -160,6 +160,7 @@ private:
 
 	// Handles the parsing of incoming frames
 	
+	LinkChannelStatistics* pStatistics;
 	LinkLayerParser parser;
 	bool mTransmitting;
 

@@ -62,6 +62,10 @@ void LinkLayerParser::OnRead(uint32_t numBytes, IFrameSink* pSink)
 
 	while (ParseUntilComplete() == State::Complete)
 	{
+		if (pStatistics)
+		{
+			++pStatistics->numLinkFrameRx;
+		}
 		this->PushFrame(pSink);
 		state = State::FindSync;
 	}
@@ -206,7 +210,7 @@ bool LinkLayerParser::ReadHeader()
 		}
 		else
 		{
-			if (pStatistics) ++pStatistics->numBadLinkFrame;
+			if (pStatistics) ++pStatistics->numBadLinkFrameRx;
 			return false;
 		}
 	}

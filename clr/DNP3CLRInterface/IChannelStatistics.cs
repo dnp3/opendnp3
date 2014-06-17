@@ -38,8 +38,18 @@ namespace DNP3.Interface
        System.UInt32 NumCrcError { get; }
 
        /// <summary>
-       /// Number of frames detected with bad / malformed contents
+       /// Number of valid LPDUs received
        /// </summary>
-       System.UInt32 NumBadLinkFrame { get; }       
+       System.UInt32 NumLinkFrameRx { get; }
+
+       /// <summary>
+       /// Number of valid LPDUs transmitted
+       /// </summary>
+       System.UInt32 NumLinkFrameTx { get; }
+
+       /// <summary>
+       /// Number of LPDUs detected with bad / malformed contents
+       /// </summary>
+       System.UInt32 NumBadLinkFrameRx { get; }       
    }
 }

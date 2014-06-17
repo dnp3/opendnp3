@@ -43,12 +43,13 @@ LinkLayerRouter::LinkLayerRouter(	openpal::LogRoot& root,
                                     openpal::IEventHandler<ChannelState>* pStateHandler_,
                                     openpal::IShutdownHandler* pShutdownHandler_,
                                     IOpenDelayStrategy* pStrategy,
-									LinkChannelStatistics* pStatistics) :
+									LinkChannelStatistics* pStatistics_) :
 
 	PhysicalLayerMonitor(root, apPhys, minOpenRetry, maxOpenRetry, pStrategy),
 	pStateHandler(pStateHandler_),
 	pShutdownHandler(pShutdownHandler_),
-	parser(logger, pStatistics),
+	pStatistics(pStatistics_),
+	parser(logger, pStatistics_),
 	mTransmitting(false)
 {}
 
@@ -322,8 +323,9 @@ void LinkLayerRouter::CheckForSend()
 {
 	if(transmitQueue.IsNotEmpty() && !mTransmitting && pPhys->CanWrite())
 	{
+		if (pStatistics) ++pStatistics->numLinkFrameTx;
 		auto pTransmission = transmitQueue.Peek();
-		mTransmitting = true;		
+		mTransmitting = true;				
 		pPhys->BeginWrite(pTransmission->buffer);
 	}
 }

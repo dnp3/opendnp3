@@ -104,7 +104,10 @@ namespace Automatak.DNP3.Simulator
             yield return "Num open fail: " + stats.NumOpenFail;
             yield return "Num close: " + stats.NumClose;
             yield return "Num crc error: " + stats.NumCrcError;
-            yield return "Num bad lpdu: " + stats.NumBadLinkFrame;
+            yield return "Num LPDU rx: " + stats.NumLinkFrameRx;
+            yield return "Num LPDU tx: " + stats.NumLinkFrameTx;
+            yield return "Num bad lpdu rx: " + stats.NumBadLinkFrameRx;
+
         }
 
         private IEnumerable<CommCounter> GetNodeStats(TreeNode node)
@@ -147,7 +150,9 @@ namespace Automatak.DNP3.Simulator
             yield return new CommCounter("open count", stats.NumOpen);
             yield return new CommCounter("num close", stats.NumClose);
             yield return new CommCounter("open fail count", stats.NumOpenFail);
-            yield return new CommCounter("bad link frames", stats.NumBadLinkFrame);                        
+            yield return new CommCounter("link frames rx", stats.NumLinkFrameRx);
+            yield return new CommCounter("link frames tx", stats.NumLinkFrameTx);
+            yield return new CommCounter("bad link frames rx", stats.NumBadLinkFrameRx);            
         }
 
         private void timerStats_Tick(object sender, EventArgs e)

@@ -35,7 +35,9 @@ IChannelStatistics^ Conversions::convertChannelStats(const opendnp3::LinkChannel
 	ret->numOpen = stats.numOpen;
 	ret->numOpenFail = stats.numOpenFail;
 	ret->numClose = stats.numClose;
-	ret->numBadLinkFrame = stats.numBadLinkFrame;
+	ret->numLinkFrameRx = stats.numLinkFrameRx;
+	ret->numLinkFrameTx = stats.numLinkFrameTx;
+	ret->numBadLinkFrameRx = stats.numBadLinkFrameRx;
 	ret->numCrcError = stats.numCrcError;
 	return ret;
 }
