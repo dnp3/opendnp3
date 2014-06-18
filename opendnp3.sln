@@ -18,6 +18,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "openpal", "cpp\libs\openpal
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "opendnp3", "cpp\libs\opendnp3\opendnp3.vcxproj", "{E6404405-BA2D-4F95-A268-D467783D0433}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "asiopal", "cpp\libs\asiopal\asiopal.vcxproj", "{3807677B-061A-4D15-AA03-65E944864384}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -68,6 +70,24 @@ Global
 		{E6404405-BA2D-4F95-A268-D467783D0433}.Release|x64.Build.0 = Release|x64
 		{E6404405-BA2D-4F95-A268-D467783D0433}.Release|x86.ActiveCfg = Release|Win32
 		{E6404405-BA2D-4F95-A268-D467783D0433}.Release|x86.Build.0 = Release|Win32
+		{3807677B-061A-4D15-AA03-65E944864384}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{3807677B-061A-4D15-AA03-65E944864384}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{3807677B-061A-4D15-AA03-65E944864384}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{3807677B-061A-4D15-AA03-65E944864384}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3807677B-061A-4D15-AA03-65E944864384}.Debug|Win32.Build.0 = Debug|Win32
+		{3807677B-061A-4D15-AA03-65E944864384}.Debug|x64.ActiveCfg = Debug|x64
+		{3807677B-061A-4D15-AA03-65E944864384}.Debug|x64.Build.0 = Debug|x64
+		{3807677B-061A-4D15-AA03-65E944864384}.Debug|x86.ActiveCfg = Debug|Win32
+		{3807677B-061A-4D15-AA03-65E944864384}.Debug|x86.Build.0 = Debug|Win32
+		{3807677B-061A-4D15-AA03-65E944864384}.Release|Any CPU.ActiveCfg = Release|Win32
+		{3807677B-061A-4D15-AA03-65E944864384}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{3807677B-061A-4D15-AA03-65E944864384}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{3807677B-061A-4D15-AA03-65E944864384}.Release|Win32.ActiveCfg = Release|Win32
+		{3807677B-061A-4D15-AA03-65E944864384}.Release|Win32.Build.0 = Release|Win32
+		{3807677B-061A-4D15-AA03-65E944864384}.Release|x64.ActiveCfg = Release|x64
+		{3807677B-061A-4D15-AA03-65E944864384}.Release|x64.Build.0 = Release|x64
+		{3807677B-061A-4D15-AA03-65E944864384}.Release|x86.ActiveCfg = Release|Win32
+		{3807677B-061A-4D15-AA03-65E944864384}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -76,5 +96,6 @@ Global
 		{2D704312-6653-4338-A589-03F509718D12} = {E52D8660-095E-45AD-AF11-9B43E53DDBF5}
 		{ABF09BDA-75A5-47D7-9F15-D7B7EC69F1E7} = {2D704312-6653-4338-A589-03F509718D12}
 		{E6404405-BA2D-4F95-A268-D467783D0433} = {2D704312-6653-4338-A589-03F509718D12}
+		{3807677B-061A-4D15-AA03-65E944864384} = {2D704312-6653-4338-A589-03F509718D12}
 	EndGlobalSection
 EndGlobal
