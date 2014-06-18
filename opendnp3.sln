@@ -28,6 +28,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{A0
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "opendnp3tests", "cpp\tests\opendnp3tests\opendnp3tests.vcxproj", "{48FCDDA5-D113-4A14-8C00-C3E33C89ACD7}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "openpaltests", "cpp\tests\openpaltests\openpaltests.vcxproj", "{3F37F3EB-7DF9-47BA-A490-85932F38F6C7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -132,6 +134,24 @@ Global
 		{48FCDDA5-D113-4A14-8C00-C3E33C89ACD7}.Release|x64.Build.0 = Release|x64
 		{48FCDDA5-D113-4A14-8C00-C3E33C89ACD7}.Release|x86.ActiveCfg = Release|Win32
 		{48FCDDA5-D113-4A14-8C00-C3E33C89ACD7}.Release|x86.Build.0 = Release|Win32
+		{3F37F3EB-7DF9-47BA-A490-85932F38F6C7}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{3F37F3EB-7DF9-47BA-A490-85932F38F6C7}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{3F37F3EB-7DF9-47BA-A490-85932F38F6C7}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{3F37F3EB-7DF9-47BA-A490-85932F38F6C7}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3F37F3EB-7DF9-47BA-A490-85932F38F6C7}.Debug|Win32.Build.0 = Debug|Win32
+		{3F37F3EB-7DF9-47BA-A490-85932F38F6C7}.Debug|x64.ActiveCfg = Debug|x64
+		{3F37F3EB-7DF9-47BA-A490-85932F38F6C7}.Debug|x64.Build.0 = Debug|x64
+		{3F37F3EB-7DF9-47BA-A490-85932F38F6C7}.Debug|x86.ActiveCfg = Debug|Win32
+		{3F37F3EB-7DF9-47BA-A490-85932F38F6C7}.Debug|x86.Build.0 = Debug|Win32
+		{3F37F3EB-7DF9-47BA-A490-85932F38F6C7}.Release|Any CPU.ActiveCfg = Release|Win32
+		{3F37F3EB-7DF9-47BA-A490-85932F38F6C7}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{3F37F3EB-7DF9-47BA-A490-85932F38F6C7}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{3F37F3EB-7DF9-47BA-A490-85932F38F6C7}.Release|Win32.ActiveCfg = Release|Win32
+		{3F37F3EB-7DF9-47BA-A490-85932F38F6C7}.Release|Win32.Build.0 = Release|Win32
+		{3F37F3EB-7DF9-47BA-A490-85932F38F6C7}.Release|x64.ActiveCfg = Release|x64
+		{3F37F3EB-7DF9-47BA-A490-85932F38F6C7}.Release|x64.Build.0 = Release|x64
+		{3F37F3EB-7DF9-47BA-A490-85932F38F6C7}.Release|x86.ActiveCfg = Release|Win32
+		{3F37F3EB-7DF9-47BA-A490-85932F38F6C7}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -145,5 +165,6 @@ Global
 		{3807677B-061A-4D15-AA03-65E944864384} = {2D704312-6653-4338-A589-03F509718D12}
 		{65495BE1-485C-4A8C-8C58-06C9A532D9CE} = {2D704312-6653-4338-A589-03F509718D12}
 		{48FCDDA5-D113-4A14-8C00-C3E33C89ACD7} = {A8B11537-25B4-4893-9444-BC5C0D213157}
+		{3F37F3EB-7DF9-47BA-A490-85932F38F6C7} = {A8B11537-25B4-4893-9444-BC5C0D213157}
 	EndGlobalSection
 EndGlobal
