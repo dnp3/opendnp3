@@ -33,25 +33,28 @@
 #include <opendnp3/gen/ChannelState.h>
 #include <opendnp3/link/IOpenDelayStrategy.h>
 
+#include <asiodnp3/IChannel.h>
+#include <asiodnp3/IMaster.h>
+#include <asiodnp3/IOutstation.h>
+
 #include "DestructorHook.h"
 
 namespace openpal
 {
-class ILogBase;
-class IPhysicalLayer;
+	class ILogBase;
+	class IPhysicalLayer;
 }
 
 namespace asiopal
 {
-class EventLog;
-class IOServiceThreadPool;
+	class EventLog;
+	class IOServiceThreadPool;
 }
 
 
 namespace asiodnp3
 {
 
-class IChannel;
 class DNP3Channel;
 class DNP3Manager;
 
@@ -99,7 +102,7 @@ public:
 	    openpal::TimeDuration maxOpenRetry,
 	    const std::string& host,
 	    uint16_t port,
-	    openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler,
+	    openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler = nullptr,
 	    opendnp3::IOpenDelayStrategy* pStrategy = opendnp3::ExponentialBackoffStrategy::Inst());
 
 	/**
@@ -119,7 +122,7 @@ public:
 	    openpal::TimeDuration maxOpenRetry,
 	    const std::string& endpoint,
 	    uint16_t port,
-	    openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler,
+		openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler = nullptr,
 	    opendnp3::IOpenDelayStrategy* pStrategy = opendnp3::ExponentialBackoffStrategy::Inst());
 
 	/**
@@ -137,7 +140,7 @@ public:
 	    openpal::TimeDuration minOpenRetry,
 	    openpal::TimeDuration maxOpenRetry,
 	    asiopal::SerialSettings settings,
-	    openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler,
+		openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler = nullptr,
 	    opendnp3::IOpenDelayStrategy* pStrategy = opendnp3::ExponentialBackoffStrategy::Inst());
 
 private:

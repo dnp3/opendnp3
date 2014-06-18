@@ -20,26 +20,14 @@
  */
 #include <catch.hpp>
 
-#include <asiodnp3/DNP3Manager.h>
-#include <asiodnp3/IChannel.h>
-#include <asiodnp3/IMaster.h>
-#include <asiodnp3/IOutstation.h>
+#include <asiodnp3/ASIODNP3Manager.h>
 
 #include <opendnp3/LogLevels.h>
 #include <opendnp3/outstation/SimpleCommandHandler.h>
 #include <opendnp3/outstation/ITimeWriteHandler.h>
 #include <opendnp3/master/ISOEHandler.h>
 
-#include <asiopal/Log.h>
-#include <asiopal/LogToStdio.h>
-#include <asiopal/IOServiceThreadPool.h>
-#include <asiopal/PhysicalLayerTCPClient.h>
-#include <asiopal/PhysicalLayerTCPServer.h>
-
 #include <asiopal/UTCTimeSource.h>
-#include <asiopal/ShutdownHandler.h>
-
-#include <openpal/LogRoot.h>
 
 #include <thread>
 
@@ -57,19 +45,10 @@ TEST_CASE(SUITE("ConstructionDestruction"))
 	for(int i = 0; i < ITERATIONS; ++i)
 	{
 
-		EventLog log;
-		openpal::LogRoot root(&log, "id", levels::NORMAL);
-		IOServiceThreadPool pool(&log, levels::NORMAL, std::thread::hardware_concurrency());
-
-		DNP3Manager mgr;
-
-		auto pClientRoot = new LogRoot(&log, "client", levels::NORMAL);
-		auto pClientPhys = new PhysicalLayerTCPClient(*pClientRoot, pool.GetIOService(), "127.0.0.1", 20000);
-		auto pClient = mgr.CreateChannel(pClientRoot, TimeDuration::Seconds(5), TimeDuration::Seconds(5), pClientPhys);
-
-		auto pServerRoot = new LogRoot(&log, "server", levels::NORMAL);
-		auto pServerPhys = new PhysicalLayerTCPServer(*pServerRoot, pool.GetIOService(), "127.0.0.1", 20000);
-		auto pServer = mgr.CreateChannel(pServerRoot, TimeDuration::Seconds(5), TimeDuration::Seconds(5), pServerPhys);
+		ASIODNP3Manager manager(std::thread::hardware_concurrency());
+		
+		auto pClient = manager.AddTCPClient("client", levels::NORMAL, TimeDuration::Seconds(5), TimeDuration::Seconds(5), "127.0.0.1", 20000);		
+		auto pServer = manager.AddTCPServer("server", levels::NORMAL, TimeDuration::Seconds(5), TimeDuration::Seconds(5), "0.0.0.0", 20000);
 
 		auto pMaster = pClient->AddMaster("master", NullSOEHandler::Inst(), UTCTimeSource::Inst(), MasterStackConfig());
 		auto pOutstation = pServer->AddOutstation("outstation", SuccessCommandHandler::Inst(), &NullTimeWriteHandler::Inst(), OutstationStackConfig(DatabaseTemplate()));
@@ -83,19 +62,10 @@ TEST_CASE(SUITE("ManualStackShutdown"))
 {
 	for(int i = 0; i < ITERATIONS; ++i)
 	{
-		EventLog log;
-		
-		IOServiceThreadPool pool(&log, levels::NORMAL, std::thread::hardware_concurrency());
+		ASIODNP3Manager manager(std::thread::hardware_concurrency());
 
-		DNP3Manager mgr;
-
-		auto pClientRoot = new LogRoot(&log, "client", levels::NORMAL);
-		auto pClientPhys = new PhysicalLayerTCPClient(*pClientRoot, pool.GetIOService(), "127.0.0.1", 20000);
-		auto pClient = mgr.CreateChannel(pClientRoot, TimeDuration::Seconds(5), TimeDuration::Seconds(5), pClientPhys);
-
-		auto pServerRoot = new LogRoot(&log, "server", levels::NORMAL);
-		auto pServerPhys = new PhysicalLayerTCPServer(*pServerRoot, pool.GetIOService(), "127.0.0.1", 20000);
-		auto pServer = mgr.CreateChannel(pServerRoot, TimeDuration::Seconds(5), TimeDuration::Seconds(5), pServerPhys);
+		auto pClient = manager.AddTCPClient("client", levels::NORMAL, TimeDuration::Seconds(5), TimeDuration::Seconds(5), "127.0.0.1", 20000);
+		auto pServer = manager.AddTCPServer("server", levels::NORMAL, TimeDuration::Seconds(5), TimeDuration::Seconds(5), "0.0.0.0", 20000);
 
 		auto pOutstation = pServer->AddOutstation("outstation", SuccessCommandHandler::Inst(), &NullTimeWriteHandler::Inst(), OutstationStackConfig(DatabaseTemplate()));
 		auto pMaster = pClient->AddMaster("master", NullSOEHandler::Inst(), UTCTimeSource::Inst(), MasterStackConfig());
@@ -113,17 +83,10 @@ TEST_CASE(SUITE("ManualChannelShutdownWithStacks"))
 {
 	for(int i = 0; i < ITERATIONS; ++i)
 	{
-		EventLog log;
-		IOServiceThreadPool pool(&log, levels::NORMAL, std::thread::hardware_concurrency());
-		DNP3Manager mgr;
+		ASIODNP3Manager manager(std::thread::hardware_concurrency());
 
-		auto pClientRoot = new LogRoot(&log, "client", levels::NORMAL);
-		auto pClientPhys = new PhysicalLayerTCPClient(*pClientRoot, pool.GetIOService(), "127.0.0.1", 20000);
-		auto pClient = mgr.CreateChannel(pClientRoot, TimeDuration::Seconds(5), TimeDuration::Seconds(5), pClientPhys);
-
-		auto pServerRoot = new LogRoot(&log, "server", levels::NORMAL);
-		auto pServerPhys = new PhysicalLayerTCPServer(*pServerRoot, pool.GetIOService(), "127.0.0.1", 20000);
-		auto pServer = mgr.CreateChannel(pServerRoot, TimeDuration::Seconds(5), TimeDuration::Seconds(5), pServerPhys);
+		auto pClient = manager.AddTCPClient("client", levels::NORMAL, TimeDuration::Seconds(5), TimeDuration::Seconds(5), "127.0.0.1", 20000);
+		auto pServer = manager.AddTCPServer("server", levels::NORMAL, TimeDuration::Seconds(5), TimeDuration::Seconds(5), "0.0.0.0", 20000);
 
 		auto pOutstation = pServer->AddOutstation("outstation", SuccessCommandHandler::Inst(), &NullTimeWriteHandler::Inst(), OutstationStackConfig(DatabaseTemplate()));
 		auto pMaster = pClient->AddMaster("master", NullSOEHandler::Inst(), UTCTimeSource::Inst(), MasterStackConfig());
@@ -140,18 +103,16 @@ TEST_CASE(SUITE("ManualChannelShutdown"))
 {
 	for(int i = 0; i < ITERATIONS; ++i)
 	{
-		EventLog log;
-		IOServiceThreadPool pool(&log, levels::NORMAL, std::thread::hardware_concurrency());
-		DNP3Manager mgr;
+		ASIODNP3Manager manager(std::thread::hardware_concurrency());
 
-		auto pClientRoot = new LogRoot(&log, "client", levels::NORMAL);
-		auto pClientPhys = new PhysicalLayerTCPClient(*pClientRoot, pool.GetIOService(), "127.0.0.1", 20000);
-		auto pChannel = mgr.CreateChannel(pClientRoot, TimeDuration::Seconds(5), TimeDuration::Seconds(5), pClientPhys);
+		auto pClient = manager.AddTCPClient("client", levels::NORMAL, TimeDuration::Seconds(5), TimeDuration::Seconds(5), "127.0.0.1", 20000);
+		auto pServer = manager.AddTCPServer("server", levels::NORMAL, TimeDuration::Seconds(5), TimeDuration::Seconds(5), "0.0.0.0", 20000);		
 
-		pChannel->BeginShutdown();
-
+		pClient->BeginShutdown();
+		pServer->BeginShutdown();	
 	}
 }
+
 
 
 
