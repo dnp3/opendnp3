@@ -48,7 +48,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DNP3CLRInterface\DNP3CLRInterface.csproj">
+    <ProjectReference Include="..\..\bindings\CLRInterface\DNP3CLRInterface.csproj">
       <Project>{5f06c7be-3107-4b3e-8559-e5e1bb4008b5}</Project>
       <Name>DNP3CLRInterface</Name>
     </ProjectReference>
