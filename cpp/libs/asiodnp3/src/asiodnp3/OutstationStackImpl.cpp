@@ -69,7 +69,8 @@ void OutstationStackImpl::BeginShutdown()
 StackStatistics OutstationStackImpl::GetStackStatistics()
 {
 	std::promise<StackStatistics> p;
-	handler.GetExecutor()->PostLambda([&]() { p.set_value(statistics); });
+	auto lambda = [&]() { p.set_value(statistics); };
+	handler.GetExecutor()->PostLambda(lambda);
 	return p.get_future().get();
 }
 

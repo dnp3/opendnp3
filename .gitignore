@@ -28,6 +28,7 @@ stamp-h1
 INSTALL
 cpp/demos/INSTALL
 
+apdufuzzer
 outstationdemo
 masterdemo
 dnp3test
