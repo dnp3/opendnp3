@@ -47,9 +47,11 @@ public:
 
 	void SetSourceInterpreter(SourceToString pInterpreter);
 
-	LogToStdio();
+	static openpal::ILogBase& Instance() { return instance; };
 
 private:
+
+	LogToStdio();
 
 	static std::ostringstream& BasicFlags(std::ostringstream& ss, const openpal::LogFilters& filters);	
 

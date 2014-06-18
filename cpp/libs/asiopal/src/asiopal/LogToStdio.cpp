@@ -31,6 +31,7 @@ using namespace std::chrono;
 namespace asiopal
 {
 
+LogToStdio LogToStdio::instance;
 
 LogToStdio::LogToStdio() : pLevelToString(&BasicFlags), printLocation(false)
 {

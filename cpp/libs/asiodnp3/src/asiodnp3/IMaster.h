@@ -25,12 +25,8 @@
 #include "StackActionHandler.h"
 
 #include <opendnp3/master/MasterScan.h>
+#include <opendnp3/master/ICommandProcessor.h>
 #include <openpal/TimeDuration.h>
-
-namespace opendnp3
-{
-	class ICommandProcessor;
-}
 
 namespace asiodnp3
 {

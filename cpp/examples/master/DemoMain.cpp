@@ -18,28 +18,19 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <asiodnp3/DNP3Manager.h>
-#include <asiodnp3/IChannel.h>
-#include <asiodnp3/IMaster.h>
+#include <asiodnp3/ASIODNP3Manager.h>
 #include <asiodnp3/PrintingSOEHandler.h>
 
-#include <opendnp3/master/MasterStackConfig.h>
-#include <opendnp3/master/ICommandProcessor.h>
-#include <opendnp3/master/ISOEHandler.h>
-#include <opendnp3/app/ClassMask.h>
-#include <opendnp3/LogLevels.h>
-
-#include <asiopal/Log.h>
 #include <asiopal/LogToStdio.h>
 #include <asiopal/UTCTimeSource.h>
-#include <asiopal/PhysicalLayerTCPClient.h>
-#include <asiopal/PhysicalLayerSerial.h>
-#include <asiopal/IOServiceThreadPool.h>
 
-#include <iostream>
-#include <future>
+#include <opendnp3/LogLevels.h>
+#include <opendnp3/app/PointClass.h>
+#include <opendnp3/app/ControlRelayOutputBlock.h>
 
 #include "PrintingCommandCallback.h"
+
+#include <thread>
 
 using namespace std;
 using namespace openpal;
@@ -50,35 +41,17 @@ using namespace opendnp3;
 int main(int argc, char* argv[])
 {
 
-	// Specify a LogLevel for the stack/physical layer to use.
-	// Log statements with a lower priority will not be logged.
-	const uint32_t FILTERS = levels::NORMAL;
-	
-	LogToStdio iologger;
-
-	// asio thread pool that drives the stack
-	IOServiceThreadPool pool(&iologger, FILTERS, 1); // 1 stack only needs 1 thread
+	// Specify what log levels to use. NORMAL is warning and above
+	const uint32_t FILTERS = levels::NORMAL;	
 
 	// This is the main point of interaction with the stack
-	DNP3Manager mgr;
+	ASIODNP3Manager manager(std::thread::hardware_concurrency());
 
-	// you can optionally pass a function into the client constructor to configure your socket
-	// using platform specific options
-	auto configure = [](asio::ip::tcp::socket & socket)
-	{
-		// platfrom specific socket configuration here
-	};
+	// send log messages to the console
+	manager.AddLogSubscriber(&LogToStdio::Instance());	
 
-	// Connect via a TCPClient socket to a outstation
-	auto pClientRoot = new LogRoot(&iologger, "client", FILTERS);
-	auto pClientPhys = new PhysicalLayerTCPClient(*pClientRoot, pool.GetIOService(), "127.0.0.1", 20000, configure);
-	/*
-	SerialSettings ss;
-	ss.mDevice = "COM3";
-	auto pClientPhys = new PhysicalLayerSerial(*pClientRoot, pool.GetIOService(), ss);
-	*/
-	// wait 3000 ms in between failed connect calls
-	auto pClient = mgr.CreateChannel(pClientRoot, TimeDuration::Seconds(2), TimeDuration::Minutes(1), pClientPhys);
+	// Connect via a TCPClient socket to a outstation	
+	auto pClient = manager.AddTCPClient("tcpclient", FILTERS, TimeDuration::Seconds(2), TimeDuration::Minutes(1), "127.0.0.1", 20000);
 
 	// The master config object for a master. The default are
 	// useable, but understanding the options are important.
@@ -103,32 +76,37 @@ int main(int argc, char* argv[])
 	// Enable the master. This will start communications.
 	pMaster->Enable();
 
-	auto pCmdProcessor = pMaster->GetCommandProcessor();
+	auto pCommandProcessor = pMaster->GetCommandProcessor();
 
 	do
 	{
 
-		std::cout << "Enter a command {x == exit, d == demand scan, c == control}" << std::endl;
+		std::cout << "Enter a command" << std::endl;
+		std::cout << "x - exits program" << std::endl;
+		std::cout << "i - integrity demand scan" << std::endl;
+		std::cout << "e - exception demand scan" << std::endl;
+		std::cout << "c - send crob" << std::endl;
+	
 		char cmd;
 		std::cin >> cmd;
 		switch(cmd)
 		{
-		case('x'):
-			return 0;
-		case('i'):
-			integrityScan.Demand();
-			break;
-		case('e'):
-			exceptionScan.Demand();
-			break;
-		case('c'):
-			{
-				ControlRelayOutputBlock crob(ControlCode::LATCH_ON);								
-				pCmdProcessor->SelectAndOperate(crob, 0, &PrintingCommandCallback::Inst());
+			case('x'):
+				return 0;
+			case('i'):
+				integrityScan.Demand();
 				break;
-			}
-		default:
-			break;
+			case('e'):
+				exceptionScan.Demand();
+				break;
+			case('c'):
+				{
+					ControlRelayOutputBlock crob(ControlCode::LATCH_ON);								
+					pCommandProcessor->SelectAndOperate(crob, 0, &PrintingCommandCallback::Inst());
+					break;
+				}
+			default:
+				break;
 		}
 	}
 	while(true);
