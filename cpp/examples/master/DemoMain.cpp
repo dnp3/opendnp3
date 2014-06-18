@@ -42,7 +42,7 @@ int main(int argc, char* argv[])
 {
 
 	// Specify what log levels to use. NORMAL is warning and above
-	const uint32_t FILTERS = levels::NORMAL;	
+	const uint32_t FILTERS = levels::NORMAL | levels::ALL_COMMS;
 
 	// This is the main point of interaction with the stack
 	ASIODNP3Manager manager(std::thread::hardware_concurrency());

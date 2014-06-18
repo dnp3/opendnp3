@@ -18,25 +18,22 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <asiodnp3/DNP3Manager.h>
 
-#include <opendnp3/outstation/OutstationStackConfig.h>
-#include <opendnp3/outstation/SimpleCommandHandler.h>
-#include <opendnp3/outstation/TimeTransaction.h>
-#include <opendnp3/outstation/ITimeWriteHandler.h>
-#include <opendnp3/LogLevels.h>
-#include <opendnp3/app/PointClass.h>
+#include <asiodnp3/ASIODNP3Manager.h>
+#include <asiodnp3/PrintingSOEHandler.h>
 
-#include <asiopal/Log.h>
 #include <asiopal/LogToStdio.h>
-#include <asiopal/IOServiceThreadPool.h>
 #include <asiopal/UTCTimeSource.h>
-#include <asiopal/PhysicalLayerTCPServer.h>
 
-#include <asiodnp3/IChannel.h>
-#include <asiodnp3/IOutstation.h>
+#include <opendnp3/outstation/ICommandHandler.h>
+#include <opendnp3/outstation/TimeTransaction.h>
+#include <opendnp3/outstation/SimpleCommandHandler.h>
+#include <opendnp3/outstation/ITimeWriteHandler.h>
+
+#include <opendnp3/LogLevels.h>
 
 #include <string>
+#include <thread>
 #include <iostream>
 
 using namespace std;
@@ -48,49 +45,34 @@ using namespace asiodnp3;
 int main(int argc, char* argv[])
 {
 
-	// Specify a LogLevel for the stack/physical layer to use.
-	// Log statements with a lower priority will not be logged.
-	const uint32_t FILTERS = levels::NORMAL;
-
-	//A default logging backend that can proxy to multiple other backends	
-	LogToStdio iologger;
-
-	IOServiceThreadPool pool(&iologger, FILTERS, 1); // only 1 thread is needed for a single stack
+	// Specify what log levels to use. NORMAL is warning and above
+	const uint32_t FILTERS = levels::NORMAL | levels::ALL_COMMS;
 
 	// This is the main point of interaction with the stack
-	DNP3Manager mgr;
+	ASIODNP3Manager manager(std::thread::hardware_concurrency());
 
-	// you can optionally pass a function into the client constructor to configure your socket
-	// using platform specific options
-	auto configure = [](asio::ip::tcp::socket & socket)
-	{
-		// platfrom specific socket configuration here
-	};
+	// send log messages to the console
+	manager.AddLogSubscriber(&LogToStdio::Instance());
 
-	// Create the raw physical layer
-	auto pServerRoot = new LogRoot(&iologger, "server", FILTERS);
-	auto pServerPhys = new PhysicalLayerTCPServer(*pServerRoot, pool.GetIOService(), "0.0.0.0", 20000, configure);
-	// Wrap the physical layer in a DNP channel
-	auto pServer = mgr.CreateChannel(pServerRoot, TimeDuration::Seconds(5), TimeDuration::Seconds(5), pServerPhys);
+	// Create a TCP server (listener)
+	auto pServer = manager.AddTCPServer("server", FILTERS, TimeDuration::Seconds(5), TimeDuration::Seconds(5), "0.0.0.0", 20000);
 
-	// The master config object for a outstation. The default are
-	// useable, but understanding the options are important.
+	// The main object for a outstation. The defaults are useable, 
+	// but understanding the options are important.
 	OutstationStackConfig stackConfig;
 	stackConfig.dbTemplate = DatabaseTemplate::AllTypes(10);
-	stackConfig.outstation.params.allowUnsolicited = true;
-	//stackConfig.outstation.params.unsolClassMask = ALL_EVENT_CLASSES;
+	stackConfig.eventBuffer = EventBufferConfig::AllTypes(10);
+	stackConfig.outstation.params.allowUnsolicited = true;	
 	
-
 	// Create a new outstation with a log level, command handler, and
 	// config info this	returns a thread-safe interface used for
 	// updating the outstation's database.
-	auto pOutstation = pServer->AddOutstation("outstation", SuccessCommandHandler::Inst(), &NullTimeWriteHandler::Inst(), stackConfig);
-
-	// TODO - reach in and configure the database here before it is enabled
+	auto pOutstation = pServer->AddOutstation("outstation", SuccessCommandHandler::Inst(), &NullTimeWriteHandler::Inst(), stackConfig);	
 
 	// Enable the outstation and start communications
 	pOutstation->Enable();
 
+	// Get the interface used to load measurements into the outstation
 	auto pLoader = pOutstation->GetLoader();
 
 	// variables used in example loop
