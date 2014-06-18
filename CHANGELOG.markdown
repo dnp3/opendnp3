@@ -3,6 +3,7 @@ Change Log
 
 ### 1.1.1-RC5 ###
 - Fixed reference to --with-jni-include-path in configure.ac
+- Fixed a non-exploitable integer overflow vulnerability in the application layer parser. A specially crafted DNP3 message can be sent to cause a read-access error and crash. The 2.0.x parser is not affected and the Aegis fuzzer has been improved to test for this type of overflow.
 
 ### 1.1.1-RC4 ###
 - Added on-demand integrity scans to C++ and Java API
