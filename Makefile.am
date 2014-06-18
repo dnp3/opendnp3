@@ -10,7 +10,7 @@ ASIOPAL_INCLUDE = $(top_srcdir)/cpp/libs/asiopal/src
 ASIODNP3_INCLUDE = $(top_srcdir)/cpp/libs/asiodnp3/src
 CATCH_INCLUDE = $(top_srcdir)/cpp/tests/catch
 
-bin_PROGRAMS = masterdemo outstationdemo apdufuzzer
+bin_PROGRAMS = masterdemo outstationdemo
 
 lib_LTLIBRARIES = libopenpal.la libasiopal.la libopendnp3.la libasiodnp3.la
 
@@ -220,102 +220,103 @@ apdufuzzer_SOURCES = cpp/tests/apdufuzzer/ApduFuzzer.cpp
 check_PROGRAMS = openpaltest dnp3test apdufuzzer
 #TESTS = openpaltest dnp3test
 
-#ls cpp/openpaltests/src/*.cpp -1 | awk '{print $0" \\"}'
+#ls cpp/tests/openpaltests/src/*.cpp -1 | awk '{print $0" \\"}'
 openpaltest_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(CATCH_INCLUDE)
 openpaltest_LDADD = libopenpal.la
 openpaltest_SOURCES = \
-cpp/openpaltests/src/CatchTestStart.cpp \
-cpp/openpaltests/src/LinkedListAdapterTestSuite.cpp \
-cpp/openpaltests/src/RandomInsertAdapterTestSuite.cpp \
-cpp/openpaltests/src/RingBufferTestSuite.cpp \
-cpp/openpaltests/src/StackAdapterTestSuite.cpp \
-cpp/openpaltests/src/StaticPriorityQueueTestSuite.cpp \
-cpp/openpaltests/src/StaticQueueTestSuite.cpp 
+cpp/tests/openpaltests/src/CatchTestStart.cpp \
+cpp/tests/openpaltests/src/LinkedListAdapterTestSuite.cpp \
+cpp/tests/openpaltests/src/RandomInsertAdapterTestSuite.cpp \
+cpp/tests/openpaltests/src/RingBufferTestSuite.cpp \
+cpp/tests/openpaltests/src/StackAdapterTestSuite.cpp \
+cpp/tests/openpaltests/src/StaticPriorityQueueTestSuite.cpp \
+cpp/tests/openpaltests/src/StaticQueueTestSuite.cpp
 
-#ls cpp/opendnp3tests/src/*.cpp -1 | awk '{print $0" \\"}'
+#ls cpp/tests/opendnp3tests/src/*.cpp -1 | awk '{print $0" \\"}'
 dnp3test_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) -I$(ASIODNP3_INCLUDE) -I$(CATCH_INCLUDE) $(ASIO_CONFIG)
 dnp3test_LDFLAGS = -pthread
 dnp3test_LDADD = libopenpal.la libasiopal.la libopendnp3.la libasiodnp3.la
 dnp3test_SOURCES = \
-cpp/opendnp3tests/src/APDUHelpers.cpp \
-cpp/opendnp3tests/src/APDUHexBuilders.cpp \
-cpp/opendnp3tests/src/AsyncPhysBaseTest.cpp \
-cpp/opendnp3tests/src/AsyncPhysTestObject.cpp \
-cpp/opendnp3tests/src/AsyncSerialTestObject.cpp \
-cpp/opendnp3tests/src/AsyncTestObjectASIO.cpp \
-cpp/opendnp3tests/src/AsyncTestObject.cpp \
-cpp/opendnp3tests/src/BufferHelpers.cpp \
-cpp/opendnp3tests/src/BufferTestObject.cpp \
-cpp/opendnp3tests/src/CatchTestStart.cpp \
-cpp/opendnp3tests/src/ComparingDataObserver.cpp \
-cpp/opendnp3tests/src/CopyableBuffer.cpp \
-cpp/opendnp3tests/src/DNPHelpers.cpp \
-cpp/opendnp3tests/src/FlexibleDataObserver.cpp \
-cpp/opendnp3tests/src/HexConversions.cpp \
-cpp/opendnp3tests/src/IntegrationTest.cpp \
-cpp/opendnp3tests/src/LinkLayerRouterTest.cpp \
-cpp/opendnp3tests/src/LinkLayerTest.cpp \
-cpp/opendnp3tests/src/LogTester.cpp \
-cpp/opendnp3tests/src/LoopbackPhysicalLayerAsync.cpp \
-cpp/opendnp3tests/src/LowerLayerToPhysAdapter.cpp \
-cpp/opendnp3tests/src/MasterTestObject.cpp \
-cpp/opendnp3tests/src/MockExecutor.cpp \
-cpp/opendnp3tests/src/MockFrameSink.cpp \
-cpp/opendnp3tests/src/MockLowerLayer.cpp \
-cpp/opendnp3tests/src/MockPhysicalLayerAsync.cpp \
-cpp/opendnp3tests/src/MockPhysicalLayerMonitor.cpp \
-cpp/opendnp3tests/src/MockTransportLayer.cpp \
-cpp/opendnp3tests/src/MockUpperLayer.cpp \
-cpp/opendnp3tests/src/MultiplexingDataObserver.cpp \
-cpp/opendnp3tests/src/OutstationTestObject.cpp \
-cpp/opendnp3tests/src/PhysicalLayerWrapper.cpp \
-cpp/opendnp3tests/src/PhysLoopback.cpp \
-cpp/opendnp3tests/src/ProtocolUtil.cpp \
-cpp/opendnp3tests/src/RandomizedBuffer.cpp \
-cpp/opendnp3tests/src/StopWatch.cpp \
-cpp/opendnp3tests/src/TestAPDUParsing.cpp \
-cpp/opendnp3tests/src/TestAPDUWriting.cpp \
-cpp/opendnp3tests/src/TestASIO.cpp \
-cpp/opendnp3tests/src/TestASIOThreadPool.cpp \
-cpp/opendnp3tests/src/TestCastLongLongDouble.cpp \
-cpp/opendnp3tests/src/TestCommandTask.cpp \
-cpp/opendnp3tests/src/TestCRC.cpp \
-cpp/opendnp3tests/src/TestDatabase.cpp \
-cpp/opendnp3tests/src/TestDNP3Manager.cpp \
-cpp/opendnp3tests/src/TestIntegration.cpp \
-cpp/opendnp3tests/src/TestLazyCollection.cpp \
-cpp/opendnp3tests/src/TestLinkFrame.cpp \
-cpp/opendnp3tests/src/TestLinkLayer.cpp \
-cpp/opendnp3tests/src/TestLinkLayerRouter.cpp \
-cpp/opendnp3tests/src/TestLinkReceiver.cpp \
-cpp/opendnp3tests/src/TestLinkRoute.cpp \
-cpp/opendnp3tests/src/TestLog.cpp \
-cpp/opendnp3tests/src/TestMasterCommandRequests.cpp \
-cpp/opendnp3tests/src/TestMaster.cpp \
-cpp/opendnp3tests/src/TestOutstationCommandResponses.cpp \
-cpp/opendnp3tests/src/TestOutstation.cpp \
-cpp/opendnp3tests/src/TestOutstationEventResponses.cpp \
-cpp/opendnp3tests/src/TestOutstationUnsolicitedResponses.cpp \
-cpp/opendnp3tests/src/TestPhysicalLayerAsyncBase.cpp \
-cpp/opendnp3tests/src/TestPhysicalLayerAsyncSerial.cpp \
-cpp/opendnp3tests/src/TestPhysicalLayerAsyncTCP.cpp \
-cpp/opendnp3tests/src/TestPhysicalLayerLoopback.cpp \
-cpp/opendnp3tests/src/TestPhysicalLayerMonitor.cpp \
-cpp/opendnp3tests/src/TestSerialization.cpp \
-cpp/opendnp3tests/src/TestShiftableBuffer.cpp \
-cpp/opendnp3tests/src/TestStaticResponseContext.cpp \
-cpp/opendnp3tests/src/TestTime.cpp \
-cpp/opendnp3tests/src/TestTimers.cpp \
-cpp/opendnp3tests/src/TestTransportLayer.cpp \
-cpp/opendnp3tests/src/TestTransportLoopback.cpp \
-cpp/opendnp3tests/src/TestTransportScalability.cpp \
-cpp/opendnp3tests/src/TestTypes.cpp \
-cpp/opendnp3tests/src/TestUtil.cpp \
-cpp/opendnp3tests/src/TestWriteConversions.cpp \
-cpp/opendnp3tests/src/Timeout.cpp \
-cpp/opendnp3tests/src/TransportIntegrationStack.cpp \
-cpp/opendnp3tests/src/TransportLoopbackTestObject.cpp \
-cpp/opendnp3tests/src/TransportScalabilityTestObject.cpp \
-cpp/opendnp3tests/src/TransportStackPair.cpp \
-cpp/opendnp3tests/src/TransportTestObject.cpp \
-cpp/opendnp3tests/src/WrappedTcpPipe.cpp
+cpp/tests/opendnp3tests/src/APDUHelpers.cpp \
+cpp/tests/opendnp3tests/src/APDUHexBuilders.cpp \
+cpp/tests/opendnp3tests/src/BufferHelpers.cpp \
+cpp/tests/opendnp3tests/src/BufferTestObject.cpp \
+cpp/tests/opendnp3tests/src/CatchTestStart.cpp \
+cpp/tests/opendnp3tests/src/ComparingDataObserver.cpp \
+cpp/tests/opendnp3tests/src/CopyableBuffer.cpp \
+cpp/tests/opendnp3tests/src/DNPHelpers.cpp \
+cpp/tests/opendnp3tests/src/FlexibleDataObserver.cpp \
+cpp/tests/opendnp3tests/src/HexConversions.cpp \
+cpp/tests/opendnp3tests/src/IntegrationTest.cpp \
+cpp/tests/opendnp3tests/src/LinkLayerRouterTest.cpp \
+cpp/tests/opendnp3tests/src/LinkLayerTest.cpp \
+cpp/tests/opendnp3tests/src/LogTester.cpp \
+cpp/tests/opendnp3tests/src/LoopbackPhysicalLayer.cpp \
+cpp/tests/opendnp3tests/src/LowerLayerToPhysAdapter.cpp \
+cpp/tests/opendnp3tests/src/MasterTestObject.cpp \
+cpp/tests/opendnp3tests/src/MockExecutor.cpp \
+cpp/tests/opendnp3tests/src/MockFrameSink.cpp \
+cpp/tests/opendnp3tests/src/MockLowerLayer.cpp \
+cpp/tests/opendnp3tests/src/MockPhysicalLayer.cpp \
+cpp/tests/opendnp3tests/src/MockPhysicalLayerMonitor.cpp \
+cpp/tests/opendnp3tests/src/MockTransportLayer.cpp \
+cpp/tests/opendnp3tests/src/MockUpperLayer.cpp \
+cpp/tests/opendnp3tests/src/MultiplexingDataObserver.cpp \
+cpp/tests/opendnp3tests/src/OutstationTestObject.cpp \
+cpp/tests/opendnp3tests/src/PhysBaseTest.cpp \
+cpp/tests/opendnp3tests/src/PhysicalLayerWrapper.cpp \
+cpp/tests/opendnp3tests/src/PhysLoopback.cpp \
+cpp/tests/opendnp3tests/src/PhysTestObject.cpp \
+cpp/tests/opendnp3tests/src/ProtocolUtil.cpp \
+cpp/tests/opendnp3tests/src/RandomizedBuffer.cpp \
+cpp/tests/opendnp3tests/src/SerialTestObject.cpp \
+cpp/tests/opendnp3tests/src/StopWatch.cpp \
+cpp/tests/opendnp3tests/src/TestAPDUParsing.cpp \
+cpp/tests/opendnp3tests/src/TestAPDUWriting.cpp \
+cpp/tests/opendnp3tests/src/TestASIO.cpp \
+cpp/tests/opendnp3tests/src/TestASIOThreadPool.cpp \
+cpp/tests/opendnp3tests/src/TestCastLongLongDouble.cpp \
+cpp/tests/opendnp3tests/src/TestCommandTask.cpp \
+cpp/tests/opendnp3tests/src/TestCRC.cpp \
+cpp/tests/opendnp3tests/src/TestDatabase.cpp \
+cpp/tests/opendnp3tests/src/TestDNP3Manager.cpp \
+cpp/tests/opendnp3tests/src/TestIntegration.cpp \
+cpp/tests/opendnp3tests/src/TestLazyCollection.cpp \
+cpp/tests/opendnp3tests/src/TestLinkFrame.cpp \
+cpp/tests/opendnp3tests/src/TestLinkLayer.cpp \
+cpp/tests/opendnp3tests/src/TestLinkLayerRouter.cpp \
+cpp/tests/opendnp3tests/src/TestLinkReceiver.cpp \
+cpp/tests/opendnp3tests/src/TestLinkRoute.cpp \
+cpp/tests/opendnp3tests/src/TestLog.cpp \
+cpp/tests/opendnp3tests/src/TestMasterCommandRequests.cpp \
+cpp/tests/opendnp3tests/src/TestMaster.cpp \
+cpp/tests/opendnp3tests/src/TestObjectASIO.cpp \
+cpp/tests/opendnp3tests/src/TestObject.cpp \
+cpp/tests/opendnp3tests/src/TestOutstationCommandResponses.cpp \
+cpp/tests/opendnp3tests/src/TestOutstation.cpp \
+cpp/tests/opendnp3tests/src/TestOutstationEventResponses.cpp \
+cpp/tests/opendnp3tests/src/TestOutstationUnsolicitedResponses.cpp \
+cpp/tests/opendnp3tests/src/TestPhysicalLayerAsyncBase.cpp \
+cpp/tests/opendnp3tests/src/TestPhysicalLayerAsyncSerial.cpp \
+cpp/tests/opendnp3tests/src/TestPhysicalLayerAsyncTCP.cpp \
+cpp/tests/opendnp3tests/src/TestPhysicalLayerLoopback.cpp \
+cpp/tests/opendnp3tests/src/TestPhysicalLayerMonitor.cpp \
+cpp/tests/opendnp3tests/src/TestSerialization.cpp \
+cpp/tests/opendnp3tests/src/TestShiftableBuffer.cpp \
+cpp/tests/opendnp3tests/src/TestStaticResponseContext.cpp \
+cpp/tests/opendnp3tests/src/TestTime.cpp \
+cpp/tests/opendnp3tests/src/TestTimers.cpp \
+cpp/tests/opendnp3tests/src/TestTransportLayer.cpp \
+cpp/tests/opendnp3tests/src/TestTransportLoopback.cpp \
+cpp/tests/opendnp3tests/src/TestTransportScalability.cpp \
+cpp/tests/opendnp3tests/src/TestTypes.cpp \
+cpp/tests/opendnp3tests/src/TestUtil.cpp \
+cpp/tests/opendnp3tests/src/TestWriteConversions.cpp \
+cpp/tests/opendnp3tests/src/Timeout.cpp \
+cpp/tests/opendnp3tests/src/TransportIntegrationStack.cpp \
+cpp/tests/opendnp3tests/src/TransportLoopbackTestObject.cpp \
+cpp/tests/opendnp3tests/src/TransportScalabilityTestObject.cpp \
+cpp/tests/opendnp3tests/src/TransportStackPair.cpp \
+cpp/tests/opendnp3tests/src/TransportTestObject.cpp \
+cpp/tests/opendnp3tests/src/WrappedTcpPipe.cpp
+

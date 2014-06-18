@@ -52,8 +52,7 @@ void TestComplex(const std::string& hex, APDUParser::Result expected, size_t num
 
 	if (result != expected)
 	{
-		LogToStdio iologger;
-		mock.Pop(&iologger);
+		mock.Pop(&LogToStdio::Instance());
 	}
 
 	REQUIRE((result == expected));
