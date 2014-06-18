@@ -90,16 +90,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DNP3CLRAdapter\DNP3CLRAdapter.vcxproj">
-      <Project>{d2119bee-135f-422c-8166-26d73113d689}</Project>
-      <Name>DNP3CLRAdapter</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DNP3CLRInterface\DNP3CLRInterface.csproj">
-      <Project>{5f06c7be-3107-4b3e-8559-e5e1bb4008b5}</Project>
-      <Name>DNP3CLRInterface</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
