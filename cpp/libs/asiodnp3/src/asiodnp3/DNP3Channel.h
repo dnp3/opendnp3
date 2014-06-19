@@ -114,10 +114,10 @@ private:
 
 	State state;
 	openpal::ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler;
-	
-	opendnp3::LinkLayerRouter router;	
+		
 	std::set<IStack*> stacks;
-
+	
+	opendnp3::LinkLayerRouter router;
 };
 
 }

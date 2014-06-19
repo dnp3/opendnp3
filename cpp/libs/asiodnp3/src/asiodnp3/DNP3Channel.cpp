@@ -44,12 +44,13 @@ DNP3Channel::DNP3Channel(
     openpal::IPhysicalLayer* pPhys_,
     openpal::ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler_,
     openpal::IEventHandler<ChannelState>* pStateHandler) :
-	pPhys(pPhys_),
-	pLogRoot(pLogRoot_),
-	logger(pLogRoot->GetLogger()),
-	state(State::READY),
-	pShutdownHandler(pShutdownHandler_),
-	router(*pLogRoot, pPhys.get(), minOpenRetry, maxOpenRetry, pStateHandler, this, pStrategy, &statistics)	
+		
+		pPhys(pPhys_),
+		pLogRoot(pLogRoot_),
+		logger(pLogRoot->GetLogger()),
+		state(State::READY),
+		pShutdownHandler(pShutdownHandler_),
+		router(*pLogRoot, pPhys.get(), minOpenRetry, maxOpenRetry, pStateHandler, this, pStrategy, &statistics)	
 {
 	pPhys->SetChannelStatistics(&statistics);
 }

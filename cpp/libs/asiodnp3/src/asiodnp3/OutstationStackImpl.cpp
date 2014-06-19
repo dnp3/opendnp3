@@ -34,7 +34,7 @@ OutstationStackImpl::OutstationStackImpl(
 	opendnp3::ICommandHandler& commandHandler,
     const OutstationStackConfig& config,
     const StackActionHandler& handler_) :	
-
+	
 	handler(handler_),
 	stack(root, &executor, &statistics, config.link),
 	databaseBuffers(config.dbTemplate),

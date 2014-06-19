@@ -50,8 +50,8 @@ IChannel^ DNP3ManagerAdapter::AddTCPClient(System::String^ id, System::UInt32 fi
 	auto pChannel = mpMgr->AddTCPClient(stdName.c_str(), filters, Conversions::ConvertTimespan(minRetryDelay), Conversions::ConvertTimespan(maxRetryDelay), stdAddress, stdPort, adapter->GetEventHandler());
 	if (pChannel)
 	{
-		auto pRoot = new gcroot<ChannelAdapter^>(adapter);
-		pChannel->SetDestructorHook(openpal::BindDelete(pRoot));
+		// tie the GC lifecycle of the channel adapter to the lifecycle of the C++ channel
+		pChannel->DeleteOnDestruct(new gcroot<ChannelAdapter^>(adapter));
 		adapter->SetChannel(pChannel);
 		return adapter;
 	}
@@ -71,8 +71,8 @@ IChannel^ DNP3ManagerAdapter::AddTCPServer(System::String^ id, System::UInt32 fi
 	auto pChannel = mpMgr->AddTCPServer(stdName.c_str(), filters, Conversions::ConvertTimespan(minRetryDelay), Conversions::ConvertTimespan(maxRetryDelay), stdEndpoint, stdPort, adapter->GetEventHandler());
 	if (pChannel)
 	{
-		auto pRoot = new gcroot<ChannelAdapter^>(adapter);
-		pChannel->SetDestructorHook(openpal::BindDelete(pRoot));
+		// tie the GC lifecycle of the channel adapter to the lifecycle of the C++ channel		
+		pChannel->DeleteOnDestruct(new gcroot<ChannelAdapter^>(adapter));
 		adapter->SetChannel(pChannel);
 		return adapter;
 	}
@@ -91,8 +91,8 @@ IChannel^ DNP3ManagerAdapter::AddSerial(System::String^ id, System::UInt32 filte
 	auto pChannel = mpMgr->AddSerial(stdName.c_str(), filters, Conversions::ConvertTimespan(minRetryDelay), Conversions::ConvertTimespan(maxRetryDelay), s, adapter->GetEventHandler());
 	if (pChannel)
 	{
-		auto pRoot = new gcroot<ChannelAdapter^>(adapter);
-		pChannel->SetDestructorHook(openpal::BindDelete(pRoot));
+		// tie the GC lifecycle of the channel adapter to the lifecycle of the C++ channel
+		pChannel->DeleteOnDestruct(new gcroot<ChannelAdapter^>(adapter));
 		adapter->SetChannel(pChannel);
 		return adapter;
 	}

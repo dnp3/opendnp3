@@ -25,34 +25,20 @@
 namespace asiodnp3
 {
 
-DestructorHook::DestructorHook(openpal::IExecutor* apExecutor) : mpExecutor(apExecutor)
-{
-
-}
-
-DestructorHook::DestructorHook() : mpExecutor(nullptr)
-{
-
-}
+DestructorHook::DestructorHook()
+{}
 
 DestructorHook::~DestructorHook()
 {
-	if (runnable.IsSet())
+	for (auto& action : actions)
 	{
-		if (mpExecutor)
-		{
-			mpExecutor->Post(runnable);			
-		}
-		else
-		{
-			runnable.Run();
-		}
+		action();		
 	}
 }
 
-void DestructorHook::SetDestructorHook(const openpal::Runnable& runnable_)
+void DestructorHook::AddDestructorHook(const std::function<void()>& action)
 {
-	runnable = runnable_;
+	this->actions.push_back(action);
 }
 
 }

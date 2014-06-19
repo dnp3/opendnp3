@@ -22,7 +22,11 @@
 #define __I_STACK_H_
 
 #include "DestructorHook.h"
+
+#include <openpal/IExecutor.h>
+
 #include <opendnp3/StackStatistics.h>
+
 
 namespace asiodnp3
 {
@@ -32,7 +36,7 @@ namespace asiodnp3
 */
 class IStack : public DestructorHook
 {
-public:
+public:	
 
 	virtual ~IStack() {}
 

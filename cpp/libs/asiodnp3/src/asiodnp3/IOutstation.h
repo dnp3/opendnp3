@@ -42,7 +42,7 @@ namespace asiodnp3
 */
 class IOutstation : public IStack
 {
-	public:
+	public:	
 		
 	virtual ~IOutstation() {}	
 

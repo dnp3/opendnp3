@@ -63,7 +63,7 @@ public:
 
 	virtual void BeginShutdown() override final;
 
-	virtual opendnp3::StackStatistics GetStackStatistics() override final;
+	virtual opendnp3::StackStatistics GetStackStatistics() override final;	
 
 	virtual openpal::IExecutor* GetExecutor() override final;
 

@@ -30,6 +30,7 @@
 
 #include <openpal/IUTCTimeSource.h>
 #include <openpal/LogFilters.h>
+#include <openpal/IExecutor.h>
 
 namespace opendnp3
 {
@@ -71,7 +72,7 @@ class IOutstation;
 class IChannel : public DestructorHook
 {
 public:
-
+	
 	virtual ~IChannel() {}
 	
 	/**

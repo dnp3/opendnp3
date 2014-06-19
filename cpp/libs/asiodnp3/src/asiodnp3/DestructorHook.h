@@ -21,37 +21,46 @@
 #ifndef __DESTRUCTOR_HOOK_H_
 #define __DESTRUCTOR_HOOK_H_
 
-#include <openpal/Runnable.h>
-
-namespace openpal
-{
-class IExecutor;
-}
+#include <vector>
+#include <functional>
 
 namespace asiodnp3
 {
 
 /**
 * Provides callback capabilities upon destruction. Useful for tying the lifecycle of some resource
-* to the lifecycle of this object.
+* to the lifecycle of the inherited object
 */
 class DestructorHook
 {
-public:
+
+	public:
+
+	typedef std::function<void()> Action;
+	
 	DestructorHook();
-	DestructorHook(openpal::IExecutor*);
 
 	virtual ~DestructorHook();
 
 	/**
-	* Adds a destructor callback
-	* @param aHook Callback that will be invoked when this class's destructor is called.
+	* Adds a destructor callback that get dispatched to the executor
+	* @param action Callback that will be invoked on the executor
 	*/
-	void SetDestructorHook(const openpal::Runnable& runnable);
+	
 
-private:
-	openpal::IExecutor* mpExecutor;
-	openpal::Runnable runnable;
+	template <class T>
+	void DeleteOnDestruct(T* pPointer)
+	{
+		auto lambda = [pPointer]() { delete pPointer; };
+		this->AddDestructorHook(lambda);
+	}
+
+	protected:
+
+	void AddDestructorHook(const std::function<void()>& action);	
+
+	private:
+	std::vector<std::function<void()>> actions;
 };
 
 }

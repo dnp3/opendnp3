@@ -38,8 +38,6 @@
 #include <asiodnp3/IMaster.h>
 #include <asiodnp3/IOutstation.h>
 
-#include "DestructorHook.h"
-
 namespace asiopal
 {
 	class EventLog;
@@ -53,7 +51,7 @@ namespace asiodnp3
 class DNP3Channel;
 class ChannelSet;
 
-class DNP3Manager : public DestructorHook
+class DNP3Manager
 {
 
 public:

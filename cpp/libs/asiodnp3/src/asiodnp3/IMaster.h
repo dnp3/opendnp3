@@ -39,7 +39,7 @@ namespace asiodnp3
 */
 class IMaster : public IStack
 {
-public:	
+public:		
 
 	virtual ~IMaster() {}	
 

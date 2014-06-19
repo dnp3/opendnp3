@@ -74,8 +74,8 @@ StackStatistics MasterStackImpl::GetStackStatistics()
 	return p.get_future().get();
 }
 
-openpal::IExecutor* MasterStackImpl::GetExecutor() 
-{ 
+openpal::IExecutor* MasterStackImpl::GetExecutor()
+{
 	return handler.GetExecutor();
 }
 
