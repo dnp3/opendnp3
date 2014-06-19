@@ -42,7 +42,6 @@ cpp/libs/asiopal/src/asiopal/ASIOExecutor.cpp \
 cpp/libs/asiopal/src/asiopal/ASIOSerialHelpers.cpp \
 cpp/libs/asiopal/src/asiopal/IOServiceThreadPool.cpp \
 cpp/libs/asiopal/src/asiopal/Log.cpp \
-cpp/libs/asiopal/src/asiopal/LogToStdio.cpp \
 cpp/libs/asiopal/src/asiopal/PhysicalLayerBase.cpp \
 cpp/libs/asiopal/src/asiopal/PhysicalLayerBaseTCP.cpp \
 cpp/libs/asiopal/src/asiopal/PhysicalLayerSerial.cpp \
@@ -193,10 +192,11 @@ cpp/libs/opendnp3/src/opendnp3/transport/TransportTx.cpp
 libasiodnp3_la_CPPFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) -I$(ASIODNP3_INCLUDE) $(ASIO_CONFIG)
 libasiodnp3_la_LDFLAGS = -version-info 1:1:0
 libasiodnp3_la_SOURCES = \
-cpp/libs/asiodnp3/src/asiodnp3/ASIODNP3Manager.cpp \
+cpp/libs/asiodnp3/src/asiodnp3/ChannelSet.cpp \
+cpp/libs/asiodnp3/src/asiodnp3/ConsoleLogger.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/DestructorHook.cpp \
-cpp/libs/asiodnp3/src/asiodnp3/DNP3Channel.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/DNP3Manager.cpp \
+cpp/libs/asiodnp3/src/asiodnp3/DNP3Channel.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/MasterStackImpl.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/OutstationStackImpl.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/PrintingSOEHandler.cpp \
@@ -247,7 +247,6 @@ cpp/tests/opendnp3tests/src/CopyableBuffer.cpp \
 cpp/tests/opendnp3tests/src/DNPHelpers.cpp \
 cpp/tests/opendnp3tests/src/FlexibleDataObserver.cpp \
 cpp/tests/opendnp3tests/src/HexConversions.cpp \
-cpp/tests/opendnp3tests/src/IntegrationTest.cpp \
 cpp/tests/opendnp3tests/src/LinkLayerRouterTest.cpp \
 cpp/tests/opendnp3tests/src/LinkLayerTest.cpp \
 cpp/tests/opendnp3tests/src/LogTester.cpp \
@@ -280,7 +279,6 @@ cpp/tests/opendnp3tests/src/TestCommandTask.cpp \
 cpp/tests/opendnp3tests/src/TestCRC.cpp \
 cpp/tests/opendnp3tests/src/TestDatabase.cpp \
 cpp/tests/opendnp3tests/src/TestDNP3Manager.cpp \
-cpp/tests/opendnp3tests/src/TestIntegration.cpp \
 cpp/tests/opendnp3tests/src/TestLazyCollection.cpp \
 cpp/tests/opendnp3tests/src/TestLinkFrame.cpp \
 cpp/tests/opendnp3tests/src/TestLinkLayer.cpp \
