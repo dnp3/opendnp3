@@ -47,7 +47,7 @@ private:
 	{
 		meas.foreach([this](const opendnp3::IndexedValue<T, uint16_t>& pair)
 		{
-			proxy->LoadStatic(Conversions::convertMeas(pair.value), pair.index);
+			proxy->LoadStatic(Conversions::ConvertMeas(pair.value), pair.index);
 		});
 	}
 
@@ -56,7 +56,7 @@ private:
 	{
 		meas.foreach([this](const opendnp3::IndexedValue<T, uint16_t>& pair)
 		{
-			proxy->LoadEvent(Conversions::convertMeas(pair.value), pair.index);
+			proxy->LoadEvent(Conversions::ConvertMeas(pair.value), pair.index);
 		});
 	}
 

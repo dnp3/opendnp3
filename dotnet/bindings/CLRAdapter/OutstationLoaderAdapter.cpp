@@ -18,32 +18,32 @@ void OutstationLoaderAdapter::Start()
 
 void OutstationLoaderAdapter::Update(Binary^ meas, System::UInt32 index)
 {
-	proxy->Update(Conversions::convertMeas(meas), index);
+	proxy->Update(Conversions::ConvertMeas(meas), index);
 }
 
 void OutstationLoaderAdapter::Update(Analog^ meas, System::UInt32 index)
 {
-	proxy->Update(Conversions::convertMeas(meas), index);
+	proxy->Update(Conversions::ConvertMeas(meas), index);
 }
 
 void OutstationLoaderAdapter::Update(Counter^ meas, System::UInt32 index)
 {
-	proxy->Update(Conversions::convertMeas(meas), index);
+	proxy->Update(Conversions::ConvertMeas(meas), index);
 }
 
 void OutstationLoaderAdapter::Update(FrozenCounter^ meas, System::UInt32 index)
 {
-	proxy->Update(Conversions::convertMeas(meas), index);
+	proxy->Update(Conversions::ConvertMeas(meas), index);
 }
 
 void OutstationLoaderAdapter::Update(BinaryOutputStatus^ meas, System::UInt32 index)
 {
-	proxy->Update(Conversions::convertMeas(meas), index);
+	proxy->Update(Conversions::ConvertMeas(meas), index);
 }
 
 void OutstationLoaderAdapter::Update(AnalogOutputStatus^ meas, System::UInt32 index)
 {
-	proxy->Update(Conversions::convertMeas(meas), index);
+	proxy->Update(Conversions::ConvertMeas(meas), index);
 }
 
 void OutstationLoaderAdapter::End()

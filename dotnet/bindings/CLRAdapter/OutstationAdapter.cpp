@@ -44,7 +44,7 @@ void OutstationAdapter::Disable()
 IStackStatistics^ OutstationAdapter::GetStackStatistics()
 {
 	auto stats = mpOutstation->GetStackStatistics();
-	return Conversions::convertStackStats(stats);
+	return Conversions::ConvertStackStats(stats);
 }
 
 }

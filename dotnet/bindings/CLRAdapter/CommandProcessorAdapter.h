@@ -25,7 +25,7 @@ class CommandCallbackAdapter : public opendnp3::ICommandCallback, openpal::Uncop
 
 	virtual void OnComplete(const opendnp3::CommandResponse& response)
 	{
-		auto result = Conversions::convertCommandResponse(response);
+		auto result = Conversions::ConvertCommandResponse(response);
 
 		root->Set(result);
 		if (autoDelete)
@@ -62,7 +62,7 @@ private:
 	IFuture<CommandResponse>^ SelectAndOperateT(T^ command, System::UInt32 index)
 	{
 		auto future = gcnew Future<CommandResponse>();
-		auto cmd = Conversions::convertCommand(command);
+		auto cmd = Conversions::ConvertCommand(command);
 		auto pCallback = new CommandCallbackAdapter(future, true);		
 		mpProxy->SelectAndOperate(cmd, index, pCallback);
 		return future;
@@ -72,7 +72,7 @@ private:
 	IFuture<CommandResponse>^ DirectOperateT(T^ command, System::UInt32 index)
 	{
 		auto future = gcnew Future<CommandResponse>();
-		auto cmd = Conversions::convertCommand(command);
+		auto cmd = Conversions::ConvertCommand(command);
 		auto pCallback = new CommandCallbackAdapter(future, true);
 		mpProxy->DirectOperate(cmd, index, pCallback);
 		return future;

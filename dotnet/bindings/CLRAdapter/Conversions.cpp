@@ -12,22 +12,22 @@ namespace DNP3
 namespace Adapter
 {
 
-std::string Conversions::convertString(System::String^ s)
+std::string Conversions::ConvertString(System::String^ s)
 {
 	return msclr::interop::marshal_as<std::string>(s);
 }
 
-System::String^ Conversions::convertString(const std::string& s)
+System::String^ Conversions::ConvertString(const std::string& s)
 {
 	return gcnew System::String(s.c_str());
 }
 
-ChannelState Conversions::convertChannelState(opendnp3::ChannelState aState)
+ChannelState Conversions::ConvertChannelState(opendnp3::ChannelState aState)
 {
 	return (ChannelState) aState;
 }
 
-IChannelStatistics^ Conversions::convertChannelStats(const opendnp3::LinkChannelStatistics& stats)
+IChannelStatistics^ Conversions::ConvertChannelStats(const opendnp3::LinkChannelStatistics& stats)
 {
 	ChannelStatistics^ ret = gcnew ChannelStatistics();
 	ret->numBytesRx = stats.numBytesRx;
@@ -42,7 +42,7 @@ IChannelStatistics^ Conversions::convertChannelStats(const opendnp3::LinkChannel
 	return ret;
 }
 
-IStackStatistics^ Conversions::convertStackStats(const opendnp3::StackStatistics& statistics)
+IStackStatistics^ Conversions::ConvertStackStats(const opendnp3::StackStatistics& statistics)
 {
 	StackStatistics^ ret = gcnew StackStatistics();
 	ret->numTransportErrorRx = statistics.numTransportErrorRx;
@@ -51,89 +51,89 @@ IStackStatistics^ Conversions::convertStackStats(const opendnp3::StackStatistics
 	return ret;
 }
 
-CommandResponse Conversions::convertCommandResponse(opendnp3::CommandResponse response)
+CommandResponse Conversions::ConvertCommandResponse(opendnp3::CommandResponse response)
 {
-	auto result = convertCommandResult(response.GetResult());
-	auto status = convertCommandStatus(response.GetStatus());
+	auto result = ConvertCommandResult(response.GetResult());
+	auto status = ConvertCommandStatus(response.GetStatus());
 	return CommandResponse(result, status);
 }
 
-CommandResult Conversions::convertCommandResult(opendnp3::CommandResult result)
+CommandResult Conversions::ConvertCommandResult(opendnp3::CommandResult result)
 {
 	return (CommandResult) result;
 }
 
-CommandStatus Conversions::convertCommandStatus(opendnp3::CommandStatus status)
+CommandStatus Conversions::ConvertCommandStatus(opendnp3::CommandStatus status)
 {
 	return (CommandStatus) status;
 }
 
-opendnp3::CommandStatus Conversions::convertCommandStatus(CommandStatus status)
+opendnp3::CommandStatus Conversions::ConvertCommandStatus(CommandStatus status)
 {
 	return (opendnp3::CommandStatus) status;
 }
 
-ControlCode Conversions::convertControlCode(opendnp3::ControlCode code)
+ControlCode Conversions::ConvertControlCode(opendnp3::ControlCode code)
 {
 	return (ControlCode) ControlCodeToType(code);
 }
 
-opendnp3::ControlCode Conversions::convertControlCode(ControlCode code)
+opendnp3::ControlCode Conversions::ConvertControlCode(ControlCode code)
 {
 	return (opendnp3::ControlCode) code;
 }
 
-ControlRelayOutputBlock^ Conversions::convertCommand(const opendnp3::ControlRelayOutputBlock& bo)
+ControlRelayOutputBlock^ Conversions::ConvertCommand(const opendnp3::ControlRelayOutputBlock& bo)
 {
-	return gcnew ControlRelayOutputBlock(convertControlCode(bo.functionCode), bo.count, bo.onTimeMS, bo.offTimeMS);
+	return gcnew ControlRelayOutputBlock(ConvertControlCode(bo.functionCode), bo.count, bo.onTimeMS, bo.offTimeMS);
 }
 
-opendnp3::ControlRelayOutputBlock Conversions::convertCommand(ControlRelayOutputBlock^ bo)
+opendnp3::ControlRelayOutputBlock Conversions::ConvertCommand(ControlRelayOutputBlock^ bo)
 {
-	return opendnp3::ControlRelayOutputBlock(convertControlCode(bo->code), bo->count, bo->onTime, bo->offTime);
+	return opendnp3::ControlRelayOutputBlock(ConvertControlCode(bo->code), bo->count, bo->onTime, bo->offTime);
 }
 
-opendnp3::AnalogOutputInt32 Conversions::convertCommand(AnalogOutputInt32^ sp)
+opendnp3::AnalogOutputInt32 Conversions::ConvertCommand(AnalogOutputInt32^ sp)
 {
 	return opendnp3::AnalogOutputInt32(sp->value);
 }
 
-AnalogOutputInt32^ Conversions::convertCommand(const opendnp3::AnalogOutputInt32& sp)
+AnalogOutputInt32^ Conversions::ConvertCommand(const opendnp3::AnalogOutputInt32& sp)
 {
 	return gcnew AnalogOutputInt32(sp.value);
 }
 
-opendnp3::AnalogOutputInt16 Conversions::convertCommand(AnalogOutputInt16^ sp)
+opendnp3::AnalogOutputInt16 Conversions::ConvertCommand(AnalogOutputInt16^ sp)
 {
 	return opendnp3::AnalogOutputInt16(sp->value);
 }
 
-AnalogOutputInt16^ Conversions::convertCommand(const opendnp3::AnalogOutputInt16& sp)
+AnalogOutputInt16^ Conversions::ConvertCommand(const opendnp3::AnalogOutputInt16& sp)
 {
 	return gcnew AnalogOutputInt16(sp.value);
 }
 
-opendnp3::AnalogOutputFloat32 Conversions::convertCommand(AnalogOutputFloat32^ sp)
+opendnp3::AnalogOutputFloat32 Conversions::ConvertCommand(AnalogOutputFloat32^ sp)
 {
 	return opendnp3::AnalogOutputFloat32(sp->value);
 }
 
-AnalogOutputFloat32^ Conversions::convertCommand(const opendnp3::AnalogOutputFloat32& sp)
+AnalogOutputFloat32^ Conversions::ConvertCommand(const opendnp3::AnalogOutputFloat32& sp)
 {
 	return gcnew AnalogOutputFloat32(sp.value);
 }
 
-opendnp3::AnalogOutputDouble64 Conversions::convertCommand(AnalogOutputDouble64^ sp)
+opendnp3::AnalogOutputDouble64 Conversions::ConvertCommand(AnalogOutputDouble64^ sp)
 {
 	return opendnp3::AnalogOutputDouble64(sp->value);
 }
 
-AnalogOutputDouble64^ Conversions::convertCommand(const opendnp3::AnalogOutputDouble64& sp)
+AnalogOutputDouble64^ Conversions::ConvertCommand(const opendnp3::AnalogOutputDouble64& sp)
 {
 	return gcnew AnalogOutputDouble64(sp.value);
 }
 
-Binary^ Conversions::convertMeas(opendnp3::Binary meas)
+Binary^ Conversions::ConvertMeas(opendnp3::Binary meas)
 {
 	if (meas.IsTimeValid())
 	{
@@ -145,7 +145,7 @@ Binary^ Conversions::convertMeas(opendnp3::Binary meas)
 	}
 }
 
-DoubleBitBinary^ Conversions::convertMeas(opendnp3::DoubleBitBinary meas)
+DoubleBitBinary^ Conversions::ConvertMeas(opendnp3::DoubleBitBinary meas)
 {
 	if (meas.IsTimeValid())
 	{
@@ -157,7 +157,7 @@ DoubleBitBinary^ Conversions::convertMeas(opendnp3::DoubleBitBinary meas)
 	}
 }
 
-Analog^ Conversions::convertMeas(opendnp3::Analog meas)
+Analog^ Conversions::ConvertMeas(opendnp3::Analog meas)
 {
 	if (meas.IsTimeValid())
 	{
@@ -169,7 +169,7 @@ Analog^ Conversions::convertMeas(opendnp3::Analog meas)
 	}
 }
 
-Counter^ Conversions::convertMeas(opendnp3::Counter meas)
+Counter^ Conversions::ConvertMeas(opendnp3::Counter meas)
 {
 	if (meas.IsTimeValid())
 	{
@@ -181,7 +181,7 @@ Counter^ Conversions::convertMeas(opendnp3::Counter meas)
 	}
 }
 
-FrozenCounter^ Conversions::convertMeas(opendnp3::FrozenCounter meas)
+FrozenCounter^ Conversions::ConvertMeas(opendnp3::FrozenCounter meas)
 {
 	if (meas.IsTimeValid())
 	{
@@ -193,7 +193,7 @@ FrozenCounter^ Conversions::convertMeas(opendnp3::FrozenCounter meas)
 	}
 }
 
-AnalogOutputStatus^ Conversions::convertMeas(opendnp3::AnalogOutputStatus meas)
+AnalogOutputStatus^ Conversions::ConvertMeas(opendnp3::AnalogOutputStatus meas)
 {
 	if (meas.IsTimeValid())
 	{
@@ -205,7 +205,7 @@ AnalogOutputStatus^ Conversions::convertMeas(opendnp3::AnalogOutputStatus meas)
 	}
 }
 
-BinaryOutputStatus^ Conversions::convertMeas(opendnp3::BinaryOutputStatus meas)
+BinaryOutputStatus^ Conversions::ConvertMeas(opendnp3::BinaryOutputStatus meas)
 {
 	if (meas.IsTimeValid())
 	{
@@ -217,7 +217,7 @@ BinaryOutputStatus^ Conversions::convertMeas(opendnp3::BinaryOutputStatus meas)
 	}
 }
 
-OctetString^ Conversions::convertMeas(const opendnp3::OctetString& arMeas)
+OctetString^ Conversions::ConvertMeas(const opendnp3::OctetString& arMeas)
 {
 	auto buffer = arMeas.ToReadOnly();
 	array<System::Byte>^ bytes = gcnew array<System::Byte>(buffer.Size());
@@ -225,40 +225,40 @@ OctetString^ Conversions::convertMeas(const opendnp3::OctetString& arMeas)
 	return gcnew OctetString(bytes);
 }
 
-opendnp3::Binary Conversions::convertMeas(Binary^ meas)
+opendnp3::Binary Conversions::ConvertMeas(Binary^ meas)
 {
 	return opendnp3::Binary(meas->Value, meas->Quality, TimeStamp::Convert(meas->Timestamp));
 }
 
-opendnp3::Analog Conversions::convertMeas(Analog^ meas)
+opendnp3::Analog Conversions::ConvertMeas(Analog^ meas)
 {
 	return opendnp3::Analog(meas->Value, meas->Quality, TimeStamp::Convert(meas->Timestamp));
 }
 
-opendnp3::Counter Conversions::convertMeas(Counter^ meas)
+opendnp3::Counter Conversions::ConvertMeas(Counter^ meas)
 {
 	return opendnp3::Counter(meas->Value, meas->Quality, TimeStamp::Convert(meas->Timestamp));
 }
 
-opendnp3::FrozenCounter Conversions::convertMeas(FrozenCounter^ meas)
+opendnp3::FrozenCounter Conversions::ConvertMeas(FrozenCounter^ meas)
 {
 	return opendnp3::FrozenCounter(meas->Value, meas->Quality, TimeStamp::Convert(meas->Timestamp));
 }
 
-opendnp3::AnalogOutputStatus Conversions::convertMeas(AnalogOutputStatus^ meas)
+opendnp3::AnalogOutputStatus Conversions::ConvertMeas(AnalogOutputStatus^ meas)
 {
 	return opendnp3::AnalogOutputStatus(meas->Value, meas->Quality, TimeStamp::Convert(meas->Timestamp));
 }
 
-opendnp3::BinaryOutputStatus Conversions::convertMeas(BinaryOutputStatus^ meas)
+opendnp3::BinaryOutputStatus Conversions::ConvertMeas(BinaryOutputStatus^ meas)
 {
 	return opendnp3::BinaryOutputStatus(meas->Value, meas->Quality, TimeStamp::Convert(meas->Timestamp));
 }
 
-asiopal::SerialSettings Conversions::convertSerialSettings(SerialSettings^ settings)
+asiopal::SerialSettings Conversions::ConvertSerialSettings(SerialSettings^ settings)
 {
 	asiopal::SerialSettings s;
-	s.deviceName = convertString(settings->port);
+	s.deviceName = ConvertString(settings->port);
 	s.baud = settings->baud;
 	s.dataBits = settings->dataBits;
 	s.stopBits = (asiopal::StopBits) settings->stopBits;
@@ -267,27 +267,27 @@ asiopal::SerialSettings Conversions::convertSerialSettings(SerialSettings^ setti
 	return s;
 }
 
-openpal::TimeDuration Conversions::convertMilliseconds(System::UInt64 ms)
+openpal::TimeDuration Conversions::ConvertMilliseconds(System::UInt64 ms)
 {
 	return openpal::TimeDuration::Milliseconds(ms);
 }
 
-openpal::TimeDuration Conversions::convertTimespan(System::TimeSpan ts)
+openpal::TimeDuration Conversions::ConvertTimespan(System::TimeSpan ts)
 {
-	return convertMilliseconds(ts.Ticks / System::TimeSpan::TicksPerMillisecond);
+	return ConvertMilliseconds(ts.Ticks / System::TimeSpan::TicksPerMillisecond);
 }
 
-opendnp3::LinkConfig Conversions::convertConfig(LinkConfig^ config)
+opendnp3::LinkConfig Conversions::ConvertConfig(LinkConfig^ config)
 {
-	return opendnp3::LinkConfig(config->isMaster, config->useConfirms, config->numRetry, config->localAddr, config->remoteAddr, convertMilliseconds(config->timeoutMs));
+	return opendnp3::LinkConfig(config->isMaster, config->useConfirms, config->numRetry, config->localAddr, config->remoteAddr, ConvertMilliseconds(config->timeoutMs));
 }
 
-opendnp3::ClassMask Conversions::convertClassMask(ClassMask^ cm)
+opendnp3::ClassMask Conversions::ConvertClassMask(ClassMask^ cm)
 {
 	return opendnp3::ClassMask(cm->class1, cm->class2, cm->class3);
 }
 
-opendnp3::EventBufferConfig Conversions::convertConfig(EventBufferConfig^ cm)
+opendnp3::EventBufferConfig Conversions::ConvertConfig(EventBufferConfig^ cm)
 {
 	opendnp3::EventBufferConfig config;
 	config.maxBinaryEvents = cm->maxBinaryEvents;
@@ -300,47 +300,47 @@ opendnp3::EventBufferConfig Conversions::convertConfig(EventBufferConfig^ cm)
 	return config;
 }
 
-opendnp3::StaticBinaryResponse Conversions::convert(StaticBinaryResponse rsp)
+opendnp3::StaticBinaryResponse Conversions::Convert(StaticBinaryResponse rsp)
 {
 	return (opendnp3::StaticBinaryResponse) rsp;
 }
 
-opendnp3::StaticAnalogResponse Conversions::convert(StaticAnalogResponse rsp)
+opendnp3::StaticAnalogResponse Conversions::Convert(StaticAnalogResponse rsp)
 {
 	return (opendnp3::StaticAnalogResponse) rsp;
 }
 
-opendnp3::StaticCounterResponse Conversions::convert(StaticCounterResponse rsp)
+opendnp3::StaticCounterResponse Conversions::Convert(StaticCounterResponse rsp)
 {
 	return (opendnp3::StaticCounterResponse) rsp;
 }
 
-opendnp3::StaticFrozenCounterResponse Conversions::convert(StaticFrozenCounterResponse rsp)
+opendnp3::StaticFrozenCounterResponse Conversions::Convert(StaticFrozenCounterResponse rsp)
 {
 	return (opendnp3::StaticFrozenCounterResponse) rsp;
 }
 
-opendnp3::StaticAnalogOutputStatusResponse Conversions::convert(StaticAnalogOutputStatusResponse rsp)
+opendnp3::StaticAnalogOutputStatusResponse Conversions::Convert(StaticAnalogOutputStatusResponse rsp)
 {
 	return (opendnp3::StaticAnalogOutputStatusResponse) rsp;
 }
 
-opendnp3::EventBinaryResponse Conversions::convert(EventBinaryResponse rsp)
+opendnp3::EventBinaryResponse Conversions::Convert(EventBinaryResponse rsp)
 {
 	return (opendnp3::EventBinaryResponse) rsp;
 }
 
-opendnp3::EventAnalogResponse Conversions::convert(EventAnalogResponse rsp)
+opendnp3::EventAnalogResponse Conversions::Convert(EventAnalogResponse rsp)
 {
 	return (opendnp3::EventAnalogResponse) rsp;
 }
 
-opendnp3::EventCounterResponse Conversions::convert(EventCounterResponse rsp)
+opendnp3::EventCounterResponse Conversions::Convert(EventCounterResponse rsp)
 {
 	return (opendnp3::EventCounterResponse) rsp;
 }
 
-opendnp3::OutstationConfig Conversions::convertConfig(OutstationConfig^ config)
+opendnp3::OutstationConfig Conversions::ConvertConfig(OutstationConfig^ config)
 {
 	opendnp3::OutstationConfig op;
 
@@ -348,44 +348,44 @@ opendnp3::OutstationConfig Conversions::convertConfig(OutstationConfig^ config)
 
 	sc.disableUnsol = config->disableUnsol;
 	sc.maxControls = config->maxControls;
-	sc.unsolMask = convertClassMask(config->unsolMask);
+	sc.unsolMask = ConvertClassMask(config->unsolMask);
 	sc.allowTimeSync = config->allowTimeSync;
-	sc.timeSyncPeriod = convertMilliseconds(config->timeSyncPeriodMs);
-	sc.unsolPackDelay = convertMilliseconds(config->unsolPackDelayMs);
-	sc.unsolRetryDelay = convertMilliseconds(config->unsolRetryDelayMs);
-	sc.selectTimeout = convertMilliseconds(config->selectTimeoutMs);
+	sc.timeSyncPeriod = ConvertMilliseconds(config->timeSyncPeriodMs);
+	sc.unsolPackDelay = ConvertMilliseconds(config->unsolPackDelayMs);
+	sc.unsolRetryDelay = ConvertMilliseconds(config->unsolRetryDelayMs);
+	sc.selectTimeout = ConvertMilliseconds(config->selectTimeoutMs);
 	sc.maxFragSize = config->maxFragSize;
-	sc.staticDefaults.binary = convert(config->staticBinary);
-	sc.staticDefaults.analog = convert(config->staticAnalog);
-	sc.staticDefaults.counter = convert(config->staticCounter);
-	sc.staticDefaults.frozenCounter = convert(config->staticFrozenCounter);
-	sc.staticDefaults.analogOutputStatus = convert(config->staticAnalogOutputStatus);
-	sc.eventDefaults.binary = convert(config->eventBinary);
-	sc.eventDefaults.analog = convert(config->eventAnalog);
-	sc.eventDefaults.counter = convert(config->eventCounter);
+	sc.staticDefaults.binary = Convert(config->staticBinary);
+	sc.staticDefaults.analog = Convert(config->staticAnalog);
+	sc.staticDefaults.counter = Convert(config->staticCounter);
+	sc.staticDefaults.frozenCounter = Convert(config->staticFrozenCounter);
+	sc.staticDefaults.analogOutputStatus = Convert(config->staticAnalogOutputStatus);
+	sc.eventDefaults.binary = Convert(config->eventBinary);
+	sc.eventDefaults.analog = Convert(config->eventAnalog);
+	sc.eventDefaults.counter = Convert(config->eventCounter);
 	*/
 
 	return op;
 }
 
 /*
-opendnp3::EventPointRecord Conversions::convertRecord(EventPointRecord^ epr)
+opendnp3::EventPointRecord Conversions::ConvertRecord(EventPointRecord^ epr)
 {
 	return opendnp3::EventPointRecord(static_cast<opendnp3::PointClass>(epr->pointClass));
 }
 
-opendnp3::DeadbandPointRecord<double> Conversions::convertRecord(DeadbandEventPointRecord<double>^ epr)
+opendnp3::DeadbandPointRecord<double> Conversions::ConvertRecord(DeadbandEventPointRecord<double>^ epr)
 {
 	return opendnp3::DeadbandPointRecord<double>(static_cast<opendnp3::PointClass>(epr->pointClass), epr->deadband);
 }
 
-opendnp3::DeadbandPointRecord<uint32_t> Conversions::convertRecord(DeadbandEventPointRecord<System::UInt32>^ epr)
+opendnp3::DeadbandPointRecord<uint32_t> Conversions::ConvertRecord(DeadbandEventPointRecord<System::UInt32>^ epr)
 {
 	return opendnp3::DeadbandPointRecord<uint32_t>(static_cast<opendnp3::PointClass>(epr->pointClass), epr->deadband);
 }
 
 
-opendnp3::DatabaseConfiguration Conversions::convertConfig(DatabaseTemplate^ config)
+opendnp3::DatabaseConfiguration Conversions::ConvertConfig(DatabaseTemplate^ config)
 {
 	opendnp3::DatabaseTemplate tmp(config->binaries->Count,
 	                               config->doubleBinaries->Count,
@@ -397,18 +397,18 @@ opendnp3::DatabaseConfiguration Conversions::convertConfig(DatabaseTemplate^ con
 
 	opendnp3::DatabaseConfiguration dev(tmp);
 
-	// TODO - finish converting data.
+	// TODO - finish Converting data.
 
-	for(int i = 0; i < config->binaries->Count; ++i) dev.binaryMetadata[i] = convertRecord(config->binaries[i]);
-	for(int i = 0; i < config->analogs->Count; ++i) dev.analogMetadata[i] = convertRecord(config->analogs[i]);
-	for(int i = 0; i < config->counters->Count; ++i) dev.counterMetadata[i] = convertRecord(config->counters[i]);
-	for(int i = 0; i < config->counters->Count; ++i) dev.frozenCounterMetadata[i] = convertRecord(config->frozenCounters[i]);
+	for(int i = 0; i < config->binaries->Count; ++i) dev.binaryMetadata[i] = ConvertRecord(config->binaries[i]);
+	for(int i = 0; i < config->analogs->Count; ++i) dev.analogMetadata[i] = ConvertRecord(config->analogs[i]);
+	for(int i = 0; i < config->counters->Count; ++i) dev.counterMetadata[i] = ConvertRecord(config->counters[i]);
+	for(int i = 0; i < config->counters->Count; ++i) dev.frozenCounterMetadata[i] = ConvertRecord(config->frozenCounters[i]);
 
 	return dev;
 }
 */
 
-opendnp3::MasterParams Conversions::convertConfig(MasterConfig^ config)
+opendnp3::MasterParams Conversions::ConvertConfig(MasterConfig^ config)
 {
 	opendnp3::MasterParams mp;
 
@@ -418,28 +418,28 @@ opendnp3::MasterParams Conversions::convertConfig(MasterConfig^ config)
 	mc.DoUnsolOnStartup = config->doUnsolOnStartup;
 	mc.EnableUnsol = config->enableUnsol;
 	mc.UnsolClassMask = config->unsolClassMask;
-	mc.IntegrityRate = convertMilliseconds(config->integrityPeriodMs);
-	mc.TaskRetryRate = convertMilliseconds(config->taskRetryPeriodMs);
+	mc.IntegrityRate = ConvertMilliseconds(config->integrityPeriodMs);
+	mc.TaskRetryRate = ConvertMilliseconds(config->taskRetryPeriodMs);
 	*/
 
 	return mp;
 }
 
-opendnp3::MasterStackConfig Conversions::convertConfig(MasterStackConfig^ config)
+opendnp3::MasterStackConfig Conversions::ConvertConfig(MasterStackConfig^ config)
 {
 	opendnp3::MasterStackConfig cfg;
-	cfg.master = convertConfig(config->master);	
-	cfg.link = convertConfig(config->link);
+	cfg.master = ConvertConfig(config->master);	
+	cfg.link = ConvertConfig(config->link);
 	return cfg;
 }
 
-opendnp3::OutstationStackConfig Conversions::convertConfig(OutstationStackConfig^ config)
+opendnp3::OutstationStackConfig Conversions::ConvertConfig(OutstationStackConfig^ config)
 {
-	//auto temp = convertConfig(config->device->);
+	//auto temp = ConvertConfig(config->device->);
 	opendnp3::OutstationStackConfig cfg(opendnp3::DatabaseTemplate::AllTypes(10)); // todo make .NET outstation db configurable
-	cfg.eventBuffer = convertConfig(config->buffer);
-	cfg.outstation = convertConfig(config->outstation);	
-	cfg.link = convertConfig(config->link);
+	cfg.eventBuffer = ConvertConfig(config->buffer);
+	cfg.outstation = ConvertConfig(config->outstation);	
+	cfg.link = ConvertConfig(config->link);
 	return cfg;
 }
 }

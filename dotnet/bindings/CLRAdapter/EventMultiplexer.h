@@ -21,9 +21,7 @@ public:
 
 
 	EventMultiplexer(const std::function<U (T)>& convert_) : convert(convert_)
-	{
-
-	}
+	{}
 
 	~EventMultiplexer()
 	{

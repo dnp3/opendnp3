@@ -22,7 +22,7 @@ ICommandProcessor^ MasterAdapter::GetCommandProcessor()
 IStackStatistics^ MasterAdapter::GetStackStatistics()
 {
 	auto stats = pMaster->GetStackStatistics();
-	return Conversions::convertStackStats(stats);
+	return Conversions::ConvertStackStats(stats);
 }
 
 void MasterAdapter::Enable()
@@ -42,14 +42,14 @@ void MasterAdapter::Shutdown()
 
 IMasterScan^ MasterAdapter::AddClassScan(int aClassMask, System::TimeSpan period)
 {
-	auto scan = pMaster->AddClassScan(aClassMask, Conversions::convertTimespan(period));
+	auto scan = pMaster->AddClassScan(aClassMask, Conversions::ConvertTimespan(period));
 	return gcnew MasterScanAdapter(scan);
 }
 
 IMasterScan^ MasterAdapter::AddRangeScan(System::Byte group, System::Byte variation, System::UInt16 start, System::UInt16 stop, System::TimeSpan period)
 {
 	opendnp3::GroupVariationID gvid(group, variation);
-	auto scan = pMaster->AddRangeScan(gvid, start, stop, Conversions::convertTimespan(period));
+	auto scan = pMaster->AddRangeScan(gvid, start, stop, Conversions::ConvertTimespan(period));
 	return gcnew MasterScanAdapter(scan);
 }
 

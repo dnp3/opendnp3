@@ -18,7 +18,7 @@ namespace Adapter
 
 ChannelAdapter::ChannelAdapter()
 {
-	pMultiplexer = new EventMultiplexer<opendnp3::ChannelState, DNP3::Interface::ChannelState>(std::bind(&Conversions::convertChannelState, std::placeholders::_1));
+	pMultiplexer = new EventMultiplexer<opendnp3::ChannelState, DNP3::Interface::ChannelState>(std::bind(&Conversions::ConvertChannelState, std::placeholders::_1));
 }
 
 ChannelAdapter::~ChannelAdapter()
@@ -39,7 +39,7 @@ LogFilter ChannelAdapter::GetLogFilters()
 IChannelStatistics^ ChannelAdapter::GetChannelStatistics()
 {
 	auto stats = pChannel->GetChannelStatistics();
-	return Conversions::convertChannelStats(stats);	
+	return Conversions::ConvertChannelStats(stats);	
 }
 
 void ChannelAdapter::SetLogFilters(LogFilter filters)
@@ -55,16 +55,16 @@ void ChannelAdapter::AddStateListener(System::Action<ChannelState>^ listener)
 
 void CallbackListener(gcroot < System::Action<ChannelState> ^ >* listener, opendnp3::ChannelState aState)
 {
-	ChannelState state = Conversions::convertChannelState(aState);
+	ChannelState state = Conversions::ConvertChannelState(aState);
 	(*listener)->Invoke(state);
 }
 
 IMaster^ ChannelAdapter::AddMaster(System::String^ loggerId, ISOEHandler^ publisher, MasterStackConfig^ config)
 {
-	std::string stdLoggerId = Conversions::convertString(loggerId);
+	std::string stdLoggerId = Conversions::ConvertString(loggerId);
 
 	MasterMeasurementHandlerWrapper^ wrapper = gcnew MasterMeasurementHandlerWrapper(publisher);
-	opendnp3::MasterStackConfig cfg = Conversions::convertConfig(config);
+	opendnp3::MasterStackConfig cfg = Conversions::ConvertConfig(config);
 
 	auto pMaster = pChannel->AddMaster(stdLoggerId.c_str(), wrapper->Get(), asiopal::UTCTimeSource::Inst(), cfg); // TODO expose time source
 	if (pMaster == nullptr)
@@ -79,14 +79,14 @@ IMaster^ ChannelAdapter::AddMaster(System::String^ loggerId, ISOEHandler^ publis
 
 IOutstation^ ChannelAdapter::AddOutstation(System::String^ loggerId, ICommandHandler^ cmdHandler, ITimeWriteHandler^ timeHandler, OutstationStackConfig^ config)
 {
-	std::string stdLoggerId = Conversions::convertString(loggerId);
+	std::string stdLoggerId = Conversions::ConvertString(loggerId);
 
 	OutstationCommandHandlerWrapper^ cmdWrapper = gcnew OutstationCommandHandlerWrapper(cmdHandler);
 	OutstationTimeWriteWrapper^ timeWrapper = gcnew OutstationTimeWriteWrapper(timeHandler);
 
-	opendnp3::OutstationStackConfig cfg = Conversions::convertConfig(config);
+	opendnp3::OutstationStackConfig cfg = Conversions::ConvertConfig(config);
 
-	auto pOutstation = pChannel->AddOutstation(stdLoggerId.c_str(), cmdWrapper->Get(), timeWrapper->Get(), Conversions::convertConfig(config));
+	auto pOutstation = pChannel->AddOutstation(stdLoggerId.c_str(), cmdWrapper->Get(), timeWrapper->Get(), Conversions::ConvertConfig(config));
 	if (pOutstation == nullptr)
 	{
 		return nullptr;
