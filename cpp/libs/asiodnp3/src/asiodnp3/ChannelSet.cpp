@@ -54,12 +54,11 @@ IChannel* ChannelSet::CreateChannel(
 	openpal::LogRoot* pLogRoot,
     openpal::TimeDuration minOpenRetry,
     openpal::TimeDuration maxOpenRetry,
-	PhysicalLayerBase* apPhys,
-    IEventHandler<ChannelState>* pStateHandler,
+	PhysicalLayerBase* apPhys,    
     IOpenDelayStrategy* pOpenStrategy)
 {
 	std::unique_lock<std::mutex> lock(mutex);
-	auto pChannel = new DNP3Channel(pLogRoot, minOpenRetry, maxOpenRetry, pOpenStrategy, apPhys, this, pStateHandler);
+	auto pChannel = new DNP3Channel(pLogRoot, minOpenRetry, maxOpenRetry, pOpenStrategy, apPhys, this);
 	channels.insert(pChannel);
 	return pChannel;
 }

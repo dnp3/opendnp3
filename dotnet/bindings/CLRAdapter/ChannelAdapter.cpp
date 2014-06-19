@@ -29,6 +29,7 @@ ChannelAdapter::~ChannelAdapter()
 void ChannelAdapter::SetChannel(asiodnp3::IChannel* pChannel_)
 {
 	pChannel = pChannel_;
+	pChannel->AddStateChangeCallback(pMultiplexer->GetEventTrigger());
 }
 
 LogFilter ChannelAdapter::GetLogFilters()
@@ -100,11 +101,6 @@ IOutstation^ ChannelAdapter::AddOutstation(System::String^ loggerId, ICommandHan
 void ChannelAdapter::Shutdown()
 {
 	pChannel->BeginShutdown();
-}
-
-openpal::IEventHandler<opendnp3::ChannelState>* ChannelAdapter::GetEventHandler()
-{
-	return this->pMultiplexer;
 }
 
 }

@@ -68,13 +68,12 @@ IChannel* DNP3Manager::AddTCPClient(
     openpal::TimeDuration minOpenRetry,
     openpal::TimeDuration maxOpenRetry,
     const std::string& host,
-    uint16_t port,
-    openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler,
+    uint16_t port,    
     opendnp3::IOpenDelayStrategy* pStrategy)
 {
 	auto pRoot = new LogRoot(pLog.get(), id, levels);
 	auto pPhys = new asiopal::PhysicalLayerTCPClient(*pRoot, pThreadPool->GetIOService(), host, port);
-	return pChannelSet->CreateChannel(pRoot, minOpenRetry, maxOpenRetry, pPhys, pStateHandler, pStrategy);
+	return pChannelSet->CreateChannel(pRoot, minOpenRetry, maxOpenRetry, pPhys, pStrategy);
 }
 
 IChannel* DNP3Manager::AddTCPServer(
@@ -83,13 +82,12 @@ IChannel* DNP3Manager::AddTCPServer(
     openpal::TimeDuration minOpenRetry,
     openpal::TimeDuration maxOpenRetry,
     const std::string& endpoint,
-    uint16_t port,
-    openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler,
+    uint16_t port,    
     opendnp3::IOpenDelayStrategy* pStrategy)
 {
 	auto pRoot = new LogRoot(pLog.get(), id, levels);
 	auto pPhys = new asiopal::PhysicalLayerTCPServer(*pRoot, pThreadPool->GetIOService(), endpoint, port);
-	return pChannelSet->CreateChannel(pRoot, minOpenRetry, maxOpenRetry, pPhys, pStateHandler, pStrategy);
+	return pChannelSet->CreateChannel(pRoot, minOpenRetry, maxOpenRetry, pPhys, pStrategy);
 }
 
 IChannel* DNP3Manager::AddSerial(
@@ -97,13 +95,12 @@ IChannel* DNP3Manager::AddSerial(
     uint32_t levels,
     openpal::TimeDuration minOpenRetry,
     openpal::TimeDuration maxOpenRetry,
-    asiopal::SerialSettings aSettings,
-    openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler,
+    asiopal::SerialSettings aSettings,    
     opendnp3::IOpenDelayStrategy* pStrategy)
 {
 	auto pRoot = new LogRoot(pLog.get(), id, levels);
 	auto pPhys = new asiopal::PhysicalLayerSerial(*pRoot, pThreadPool->GetIOService(), aSettings);
-	return pChannelSet->CreateChannel(pRoot, minOpenRetry, maxOpenRetry, pPhys, pStateHandler, pStrategy);
+	return pChannelSet->CreateChannel(pRoot, minOpenRetry, maxOpenRetry, pPhys, pStrategy);
 }
 
 }

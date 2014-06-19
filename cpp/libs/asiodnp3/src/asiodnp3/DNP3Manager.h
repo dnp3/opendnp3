@@ -94,8 +94,7 @@ public:
 	    openpal::TimeDuration minOpenRetry,
 	    openpal::TimeDuration maxOpenRetry,
 	    const std::string& host,
-	    uint16_t port,
-	    openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler = nullptr,
+	    uint16_t port,	    
 	    opendnp3::IOpenDelayStrategy* pStrategy = opendnp3::ExponentialBackoffStrategy::Inst());
 
 	/**
@@ -114,8 +113,7 @@ public:
 	    openpal::TimeDuration minOpenRetry,
 	    openpal::TimeDuration maxOpenRetry,
 	    const std::string& endpoint,
-	    uint16_t port,
-		openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler = nullptr,
+	    uint16_t port,		
 	    opendnp3::IOpenDelayStrategy* pStrategy = opendnp3::ExponentialBackoffStrategy::Inst());
 
 	/**
@@ -132,8 +130,7 @@ public:
 	    uint32_t levels,
 	    openpal::TimeDuration minOpenRetry,
 	    openpal::TimeDuration maxOpenRetry,
-	    asiopal::SerialSettings settings,
-		openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler = nullptr,
+	    asiopal::SerialSettings settings,		
 	    opendnp3::IOpenDelayStrategy* pStrategy = opendnp3::ExponentialBackoffStrategy::Inst());
 
 private:

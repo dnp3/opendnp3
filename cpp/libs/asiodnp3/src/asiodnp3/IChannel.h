@@ -26,11 +26,11 @@
 #include <opendnp3/outstation/OutstationStackConfig.h>
 #include <opendnp3/link/LinkChannelStatistics.h>
 
-#include "DestructorHook.h"
-
 #include <openpal/IUTCTimeSource.h>
 #include <openpal/LogFilters.h>
 #include <openpal/IExecutor.h>
+
+#include "DestructorHook.h"
 
 namespace opendnp3
 {
@@ -72,8 +72,16 @@ class IOutstation;
 class IChannel : public DestructorHook
 {
 public:
+
+	typedef std::function<void(opendnp3::ChannelState)> StateChangeCallback;
 	
 	virtual ~IChannel() {}
+
+	/*
+	* Receive callbacks for state transitions on the channels executor
+	* You'll receive one callback immediately with the current state
+	*/
+	virtual void AddStateChangeCallback(const StateChangeCallback& callback) = 0;
 	
 	/**
 	* Synchronously read the channel statistics

@@ -59,8 +59,7 @@ public:
 	IChannel* CreateChannel(	openpal::LogRoot* pRoot,
 	                            openpal::TimeDuration minOpenRetry,
 	                            openpal::TimeDuration maxOpenRetry,
-								asiopal::PhysicalLayerBase* pPhys,
-	                            openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler = nullptr,
+								asiopal::PhysicalLayerBase* pPhys,	                            
 								opendnp3::IOpenDelayStrategy* pOpenStrategy = opendnp3::ExponentialBackoffStrategy::Inst());
 
 	/// Synchronously shutdown all channels. Block until complete.

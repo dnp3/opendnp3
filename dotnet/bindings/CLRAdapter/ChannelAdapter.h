@@ -39,9 +39,7 @@ public:
 
 	virtual IOutstation^ AddOutstation(System::String^ loggerId, ICommandHandler^ cmdHandler, ITimeWriteHandler^ timeHandler, OutstationStackConfig^ config);
 
-	virtual void Shutdown();
-
-	openpal::IEventHandler<opendnp3::ChannelState>* GetEventHandler();
+	virtual void Shutdown();	
 
 private:
 

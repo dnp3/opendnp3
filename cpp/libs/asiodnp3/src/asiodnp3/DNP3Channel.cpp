@@ -42,17 +42,31 @@ DNP3Channel::DNP3Channel(
     openpal::TimeDuration maxOpenRetry,
     IOpenDelayStrategy* pStrategy,
     openpal::IPhysicalLayer* pPhys_,
-    openpal::ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler_,
-    openpal::IEventHandler<ChannelState>* pStateHandler) :
+    openpal::ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler_) :
 		
 		pPhys(pPhys_),
 		pLogRoot(pLogRoot_),
 		logger(pLogRoot->GetLogger()),
 		state(State::READY),
 		pShutdownHandler(pShutdownHandler_),
-		router(*pLogRoot, pPhys.get(), minOpenRetry, maxOpenRetry, pStateHandler, this, pStrategy, &statistics)	
+		channelState(ChannelState::CLOSED),
+		router(*pLogRoot, pPhys.get(), minOpenRetry, maxOpenRetry, this, this, pStrategy, &statistics)	
 {
 	pPhys->SetChannelStatistics(&statistics);
+}
+
+void DNP3Channel::OnEvent(ChannelState state)
+{
+	channelState = state;
+	for (auto& cb : callbacks) cb(state);
+}
+
+void DNP3Channel::AddStateChangeCallback(const StateChangeCallback& callback)
+{
+	auto lambda = [this, callback]() {
+		this->callbacks.push_back(callback);
+		callback(channelState);
+	};
 }
 
 // comes from the outside, so we need to synchronize

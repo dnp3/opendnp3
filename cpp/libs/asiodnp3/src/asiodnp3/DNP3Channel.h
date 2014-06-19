@@ -51,7 +51,7 @@ namespace asiodnp3
 class IStack;
 class IOutstation;
 
-class DNP3Channel: public IChannel, private openpal::IShutdownHandler, private openpal::ITypedShutdownHandler<IStack*>
+class DNP3Channel: public IChannel, private openpal::IShutdownHandler, private openpal::ITypedShutdownHandler<IStack*>, private openpal::IEventHandler<opendnp3::ChannelState>
 {
 	enum class State
 	{
@@ -68,8 +68,7 @@ public:
 	    openpal::TimeDuration maxOpenRetry,
 	    opendnp3::IOpenDelayStrategy* pStrategy,
 		openpal::IPhysicalLayer* pPhys_,
-	    openpal::ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler_,
-		openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler_
+	    openpal::ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler_		
 	);
 
 	virtual opendnp3::LinkChannelStatistics GetChannelStatistics() override final;
@@ -82,6 +81,8 @@ public:
 	virtual openpal::LogFilters GetLogFilters() const override final;
 
 	virtual void SetLogFilters(const openpal::LogFilters& filters) override final;
+
+	virtual void AddStateChangeCallback(const StateChangeCallback& callback) override final;
 
 	virtual IMaster* AddMaster(	char const* id,
 								opendnp3::ISOEHandler* pPublisher,
@@ -98,6 +99,8 @@ public:
 private:
 
 	void InitiateShutdown();
+
+	virtual void OnEvent(opendnp3::ChannelState state) override final;
 
 	// shutdown call for the router
 	void OnShutdown() override final;
@@ -116,8 +119,13 @@ private:
 	openpal::ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler;
 		
 	std::set<IStack*> stacks;
+
+	opendnp3::ChannelState channelState;
+	std::vector<StateChangeCallback> callbacks;
 	
 	opendnp3::LinkLayerRouter router;
+
+	
 };
 
 }

@@ -3,8 +3,6 @@
 
 using namespace System::Collections::ObjectModel;
 
-#include <openpal/IEventHandler.h>
-
 #include <vector>
 #include <functional>
 
@@ -14,7 +12,7 @@ namespace Adapter
 {
 
 template <class T, class U>
-private class EventMultiplexer : public openpal::IEventHandler<T>
+private class EventMultiplexer
 {
 
 public:
@@ -31,14 +29,14 @@ public:
 		}
 	}
 
-	virtual void OnEvent(T value) override final
+	/// Event trigger for the native side
+	std::function<void(T)> GetEventTrigger()
 	{
-		for (auto cb : callbacks)
-		{
-			(*cb)->Invoke(convert(value));
-		}
-	}
+		auto lambda = [this](T value) { this->OnEvent(value);  };
+		return lambda;
+	}	
 
+	/// How to subscribe on the managed side
 	void AddListener(System::Action<U>^ listener)
 	{
 		auto pRoot = new gcroot < System::Action<U> ^ >(listener);
@@ -46,6 +44,14 @@ public:
 	}
 
 private:
+
+	void OnEvent(T value)
+	{
+		for (auto cb : callbacks)
+		{
+			(*cb)->Invoke(convert(value));
+		}
+	}
 
 	std::function<U (T)> convert;
 	std::vector<gcroot < System::Action<U> ^ >*> callbacks;
