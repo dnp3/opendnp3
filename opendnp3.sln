@@ -35,17 +35,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{7A
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "simulator", "simulator", "{BE0A78BD-F016-43F8-9B22-ECB5A01E8B3E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DNP3CLRInterface", "dotnet\bindings\CLRInterface\DNP3CLRInterface.csproj", "{5F06C7BE-3107-4B3E-8559-E5E1BB4008B5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CLRInterface", "dotnet\bindings\CLRInterface\CLRInterface.csproj", "{5F06C7BE-3107-4B3E-8559-E5E1BB4008B5}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DNP3CLRAdapter", "dotnet\bindings\CLRAdapter\DNP3CLRAdapter.vcxproj", "{D2119BEE-135F-422C-8166-26D73113D689}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CLRAdapter", "dotnet\bindings\CLRAdapter\DNP3CLRAdapter.vcxproj", "{D2119BEE-135F-422C-8166-26D73113D689}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DNP3CLRMasterDemo", "dotnet\examples\master\DNP3CLRMasterDemo.csproj", "{791073B4-2132-4588-AFA7-3A9728D444B4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CLRMasterDemo", "dotnet\examples\master\CLRMasterDemo.csproj", "{791073B4-2132-4588-AFA7-3A9728D444B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DNP3CLROutstationDemo", "dotnet\examples\outstation\DNP3CLROutstationDemo.csproj", "{3E8C9DE9-9626-4FC6-90A2-802DEFC1A39D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CLROutstationDemo", "dotnet\examples\outstation\CLROutstationDemo.csproj", "{3E8C9DE9-9626-4FC6-90A2-802DEFC1A39D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DNP3SimulatorAPI", "dotnet\simulator\simulatorAPI\DNP3SimulatorAPI.csproj", "{6A19318B-8CC5-4BC8-8E80-412180C420A5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimulatorAPI", "dotnet\simulator\simulatorAPI\SimulatorAPI.csproj", "{6A19318B-8CC5-4BC8-8E80-412180C420A5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DNP3Simulator", "dotnet\simulator\simulator\DNP3Simulator.csproj", "{9850AA24-6847-4611-81DA-6F04F92B3400}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simulator", "dotnet\simulator\simulator\Simulator.csproj", "{9850AA24-6847-4611-81DA-6F04F92B3400}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "apdufuzzer", "cpp\tests\apdufuzzer\apdufuzzer.vcxproj", "{8A27E03D-8D08-441A-92E4-6FC614FDA5D0}"
 EndProject

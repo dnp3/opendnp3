@@ -23,6 +23,7 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <Keyword>ManagedCProj</Keyword>
     <RootNamespace>DNP3CLRAdapter</RootNamespace>
+    <ProjectName>CLRAdapter</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -210,7 +211,7 @@
     <ProjectReference Include="..\..\..\cpp\libs\openpal\openpal.vcxproj">
       <Project>{abf09bda-75a5-47d7-9f15-d7b7ec69f1e7}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\CLRInterface\DNP3CLRInterface.csproj">
+    <ProjectReference Include="..\CLRInterface\CLRInterface.csproj">
       <Project>{5f06c7be-3107-4b3e-8559-e5e1bb4008b5}</Project>
     </ProjectReference>
   </ItemGroup>
