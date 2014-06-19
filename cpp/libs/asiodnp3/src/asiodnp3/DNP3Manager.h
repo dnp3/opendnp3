@@ -21,60 +21,128 @@
 #ifndef __DNP3_MANAGER_H_
 #define __DNP3_MANAGER_H_
 
-#include <set>
-
-#include <stdint.h>
+#include <cstdint>
+#include <functional>
 #include <memory>
 
-#include <mutex>
-#include <condition_variable>
+#include <asiopal/SerialTypes.h>
 
-#include <openpal/Logger.h>
+#include <openpal/LogBase.h>
 #include <openpal/TimeDuration.h>
-#include <openpal/IMutex.h>
-#include <openpal/IShutdownHandler.h>
 #include <openpal/IEventHandler.h>
 
-#include "opendnp3/gen/ChannelState.h"
-#include "opendnp3/link/IOpenDelayStrategy.h"
+#include <opendnp3/gen/ChannelState.h>
+#include <opendnp3/link/IOpenDelayStrategy.h>
+
+#include <asiodnp3/IChannel.h>
+#include <asiodnp3/IMaster.h>
+#include <asiodnp3/IOutstation.h>
+
+#include "DestructorHook.h"
 
 namespace asiopal
 {
-	class PhysicalLayerBase;
+	class EventLog;
+	class IOServiceThreadPool;
 }
+
 
 namespace asiodnp3
 {
 
-class IChannel;
 class DNP3Channel;
+class ChannelSet;
 
-class DNP3Manager : private openpal::ITypedShutdownHandler<DNP3Channel*>
+class DNP3Manager : public DestructorHook
 {
 
 public:
 
-	DNP3Manager();
+	DNP3Manager(
+	    uint32_t aConcurrency,
+	std::function<void()> aOnThreadStart = []() {},
+	std::function<void()> aOnThreadExit = []() {}
+	);
+
 	~DNP3Manager();
 
-	IChannel* CreateChannel(	openpal::LogRoot* pRoot,
-	                            openpal::TimeDuration minOpenRetry,
-	                            openpal::TimeDuration maxOpenRetry,
-								asiopal::PhysicalLayerBase* pPhys,
-	                            openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler = nullptr,
-								opendnp3::IOpenDelayStrategy* pOpenStrategy = opendnp3::ExponentialBackoffStrategy::Inst());
+	/**
+	* Add a callback to receive log messages
+	* @param apLog Pointer to a callback object
+	*/
+	void AddLogSubscriber(openpal::ILogBase* apLog);
 
-	/// Synchronously shutdown all channels. Block until complete.
+	openpal::ILogBase* GetLog();
+
+	/**
+	* Permanently shutdown the manager and all sub-objects that have been created. Stop
+	* the thead pool.
+	*/
 	void Shutdown();
+
+	/**
+	* Add a tcp client channel
+	*
+	* @param logger Logger that will be used for all log messages
+	* @param minOpenRetry minimum connection retry interval on failure in milliseconds
+	* @param maxOpenRetry minimum connection retry interval on failure in milliseconds
+	* @param host IP address of remote outstation (i.e. 127.0.0.1 or www.google.com)
+	* @param port Port of remote outstation is listening on
+	* @param pStrategy Reconnection delay strategy, default to exponential
+	*/
+	IChannel* AddTCPClient(
+		char const* id,
+	    uint32_t levels,
+	    openpal::TimeDuration minOpenRetry,
+	    openpal::TimeDuration maxOpenRetry,
+	    const std::string& host,
+	    uint16_t port,
+	    openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler = nullptr,
+	    opendnp3::IOpenDelayStrategy* pStrategy = opendnp3::ExponentialBackoffStrategy::Inst());
+
+	/**
+	* Add a tcp server channel
+	*
+	* @param logger Logger that will be used for all log messages
+	* @param minOpenRetry minimum connection retry interval on failure in milliseconds
+	* @param maxOpenRetry minimum connection retry interval on failure in milliseconds
+	* @param endpoint Network adapter to listen on, i.e. 127.0.0.1 or 0.0.0.0
+	* @param port Port to listen on
+	* @param pStrategy Reconnection delay strategy, default to exponential
+	*/
+	IChannel* AddTCPServer(
+		char const* id,
+	    uint32_t levels,
+	    openpal::TimeDuration minOpenRetry,
+	    openpal::TimeDuration maxOpenRetry,
+	    const std::string& endpoint,
+	    uint16_t port,
+		openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler = nullptr,
+	    opendnp3::IOpenDelayStrategy* pStrategy = opendnp3::ExponentialBackoffStrategy::Inst());
+
+	/**
+	* Add a serial channel
+	*
+	* @param logger Logger that will be used for all log messages
+	* @param minOpenRetry minimum connection retry interval on failure in milliseconds
+	* @param maxOpenRetry minimum connection retry interval on failure in milliseconds
+	* @param settings settings object that fully parameterizes the serial port
+	* @param pStrategy Reconnection delay strategy, default to exponential
+	*/
+	IChannel* AddSerial(
+		char const* id,
+	    uint32_t levels,
+	    openpal::TimeDuration minOpenRetry,
+	    openpal::TimeDuration maxOpenRetry,
+	    asiopal::SerialSettings settings,
+		openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler = nullptr,
+	    opendnp3::IOpenDelayStrategy* pStrategy = opendnp3::ExponentialBackoffStrategy::Inst());
 
 private:
 
-	std::mutex mutex;
-	std::condition_variable condition;
-
-	std::set<DNP3Channel*> channels;
-
-	void OnShutdown(DNP3Channel* apChannel) override final;
+	std::unique_ptr<asiopal::EventLog> pLog;
+	std::unique_ptr<asiopal::IOServiceThreadPool> pThreadPool;
+	std::unique_ptr<ChannelSet> pChannelSet;
 };
 
 }

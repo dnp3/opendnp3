@@ -18,7 +18,7 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <asiodnp3/ASIODNP3Manager.h>
+#include <asiodnp3/DNP3Manager.h>
 #include <asiodnp3/PrintingSOEHandler.h>
 
 #include <asiopal/LogToStdio.h>
@@ -45,7 +45,7 @@ int main(int argc, char* argv[])
 	const uint32_t FILTERS = levels::NORMAL | levels::ALL_COMMS;
 
 	// This is the main point of interaction with the stack
-	ASIODNP3Manager manager(std::thread::hardware_concurrency());
+	DNP3Manager manager(std::thread::hardware_concurrency());
 
 	// send log messages to the console
 	manager.AddLogSubscriber(&LogToStdio::Instance());	

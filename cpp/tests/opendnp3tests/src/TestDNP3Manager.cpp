@@ -20,7 +20,7 @@
  */
 #include <catch.hpp>
 
-#include <asiodnp3/ASIODNP3Manager.h>
+#include <asiodnp3/DNP3Manager.h>
 
 #include <opendnp3/LogLevels.h>
 #include <opendnp3/outstation/SimpleCommandHandler.h>
@@ -45,7 +45,7 @@ TEST_CASE(SUITE("ConstructionDestruction"))
 	for(int i = 0; i < ITERATIONS; ++i)
 	{
 
-		ASIODNP3Manager manager(std::thread::hardware_concurrency());
+		DNP3Manager manager(std::thread::hardware_concurrency());
 		
 		auto pClient = manager.AddTCPClient("client", levels::NORMAL, TimeDuration::Seconds(5), TimeDuration::Seconds(5), "127.0.0.1", 20000);		
 		auto pServer = manager.AddTCPServer("server", levels::NORMAL, TimeDuration::Seconds(5), TimeDuration::Seconds(5), "0.0.0.0", 20000);
@@ -62,7 +62,7 @@ TEST_CASE(SUITE("ManualStackShutdown"))
 {
 	for(int i = 0; i < ITERATIONS; ++i)
 	{
-		ASIODNP3Manager manager(std::thread::hardware_concurrency());
+		DNP3Manager manager(std::thread::hardware_concurrency());
 
 		auto pClient = manager.AddTCPClient("client", levels::NORMAL, TimeDuration::Seconds(5), TimeDuration::Seconds(5), "127.0.0.1", 20000);
 		auto pServer = manager.AddTCPServer("server", levels::NORMAL, TimeDuration::Seconds(5), TimeDuration::Seconds(5), "0.0.0.0", 20000);
@@ -83,7 +83,7 @@ TEST_CASE(SUITE("ManualChannelShutdownWithStacks"))
 {
 	for(int i = 0; i < ITERATIONS; ++i)
 	{
-		ASIODNP3Manager manager(std::thread::hardware_concurrency());
+		DNP3Manager manager(std::thread::hardware_concurrency());
 
 		auto pClient = manager.AddTCPClient("client", levels::NORMAL, TimeDuration::Seconds(5), TimeDuration::Seconds(5), "127.0.0.1", 20000);
 		auto pServer = manager.AddTCPServer("server", levels::NORMAL, TimeDuration::Seconds(5), TimeDuration::Seconds(5), "0.0.0.0", 20000);
@@ -103,7 +103,7 @@ TEST_CASE(SUITE("ManualChannelShutdown"))
 {
 	for(int i = 0; i < ITERATIONS; ++i)
 	{
-		ASIODNP3Manager manager(std::thread::hardware_concurrency());
+		DNP3Manager manager(std::thread::hardware_concurrency());
 
 		auto pClient = manager.AddTCPClient("client", levels::NORMAL, TimeDuration::Seconds(5), TimeDuration::Seconds(5), "127.0.0.1", 20000);
 		auto pServer = manager.AddTCPServer("server", levels::NORMAL, TimeDuration::Seconds(5), TimeDuration::Seconds(5), "0.0.0.0", 20000);		

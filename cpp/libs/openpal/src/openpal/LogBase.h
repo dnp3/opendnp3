@@ -38,7 +38,7 @@ public:
 	* Callback function for log messages
 	* @param arEntry the log message
 	*/
-	virtual void Log( const LogEntry& arEntry ) = 0;
+	virtual void Log( const LogEntry& entry ) = 0;
 };
 
 }

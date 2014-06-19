@@ -41,9 +41,6 @@
     <ClInclude Include="src\FlexibleDataObserver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\IntegrationTest.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\LinkLayerRouterTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -205,9 +202,6 @@
     <ClCompile Include="src\FlexibleDataObserver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\IntegrationTest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\LinkLayerRouterTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -257,9 +251,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\TestDNP3Manager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\TestIntegration.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\TestLazyCollection.cpp">

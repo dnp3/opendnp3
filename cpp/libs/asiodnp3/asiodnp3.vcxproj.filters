@@ -11,16 +11,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\asiodnp3\ASIODNP3Manager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\asiodnp3\DestructorHook.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\asiodnp3\DNP3Channel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\asiodnp3\DNP3Manager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\asiodnp3\StackActionHandler.cpp">
@@ -35,18 +29,18 @@
     <ClCompile Include="src\asiodnp3\PrintingSOEHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\asiodnp3\ChannelSet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\asiodnp3\DNP3Manager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\asiodnp3\ASIODNP3Manager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\asiodnp3\DestructorHook.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\asiodnp3\DNP3Channel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\asiodnp3\DNP3Manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\asiodnp3\IMaster.h">
@@ -74,6 +68,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\asiodnp3\PrintingSOEHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\asiodnp3\ChannelSet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\asiodnp3\DNP3Manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

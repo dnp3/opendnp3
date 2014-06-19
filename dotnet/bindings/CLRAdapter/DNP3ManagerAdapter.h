@@ -6,7 +6,7 @@ using namespace DNP3::Interface;
 
 namespace asiodnp3
 {
-class ASIODNP3Manager;
+	class DNP3Manager;
 }
 
 namespace DNP3
@@ -50,7 +50,7 @@ public:
 	virtual void AddLogHandler(ILogHandler^ logHandler);
 
 private:
-	asiodnp3::ASIODNP3Manager* mpMgr;
+	asiodnp3::DNP3Manager* mpMgr;
 };
 
 }

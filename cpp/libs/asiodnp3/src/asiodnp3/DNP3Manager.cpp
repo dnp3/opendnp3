@@ -18,69 +18,93 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+
 #include "DNP3Manager.h"
 
-#include "DNP3Channel.h"
 
-#include <asiopal/PhysicalLayerBase.h>
+#include "ChannelSet.h"
+
+#include <asiopal/Log.h>
+#include <asiopal/IOServiceThreadPool.h>
+
+#include <opendnp3/LogLevels.h>
+
+#include <asiopal/PhysicalLayerSerial.h>
+#include <asiopal/PhysicalLayerTCPClient.h>
+#include <asiopal/PhysicalLayerTCPServer.h>
 
 using namespace openpal;
-using namespace asiopal;
-using namespace opendnp3;
 
 namespace asiodnp3
 {
 
-DNP3Manager::DNP3Manager()
+
+DNP3Manager::DNP3Manager(uint32_t concurrency, std::function<void()> onThreadStart, std::function<void()> onThreadExit) :
+	pLog(new asiopal::EventLog()),
+	pThreadPool(new asiopal::IOServiceThreadPool(pLog.get(), opendnp3::flags::INFO, concurrency, onThreadStart, onThreadExit)),
+	pChannelSet(new ChannelSet())
 {
 
 }
 
 DNP3Manager::~DNP3Manager()
 {
-	this->Shutdown();
+
+}
+
+void DNP3Manager::AddLogSubscriber(openpal::ILogBase* apLog)
+{
+	pLog->AddLogSubscriber(apLog);
 }
 
 void DNP3Manager::Shutdown()
 {
-	std::unique_lock<std::mutex> lock(mutex);
-	for (auto pChannel : channels)
-	{
-		pChannel->BeginShutdown();
-	}
-	condition.wait(lock, [this]()
-	{
-		return this->channels.empty();
-	});
+	pChannelSet->Shutdown();
 }
 
-IChannel* DNP3Manager::CreateChannel(
-	openpal::LogRoot* pLogRoot,
+IChannel* DNP3Manager::AddTCPClient(
+	char const* id,
+    uint32_t levels,
     openpal::TimeDuration minOpenRetry,
     openpal::TimeDuration maxOpenRetry,
-	PhysicalLayerBase* apPhys,
-    IEventHandler<ChannelState>* pStateHandler,
-    IOpenDelayStrategy* pOpenStrategy)
+    const std::string& host,
+    uint16_t port,
+    openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler,
+    opendnp3::IOpenDelayStrategy* pStrategy)
 {
-	std::unique_lock<std::mutex> lock(mutex);
-	auto pChannel = new DNP3Channel(pLogRoot, minOpenRetry, maxOpenRetry, pOpenStrategy, apPhys, this, pStateHandler);
-	channels.insert(pChannel);
-	return pChannel;
+	auto pRoot = new LogRoot(pLog.get(), id, levels);
+	auto pPhys = new asiopal::PhysicalLayerTCPClient(*pRoot, pThreadPool->GetIOService(), host, port);
+	return pChannelSet->CreateChannel(pRoot, minOpenRetry, maxOpenRetry, pPhys, pStateHandler, pStrategy);
 }
 
-void DNP3Manager::OnShutdown(DNP3Channel* pChannel)
+IChannel* DNP3Manager::AddTCPServer(
+	char const* id,
+    uint32_t levels,
+    openpal::TimeDuration minOpenRetry,
+    openpal::TimeDuration maxOpenRetry,
+    const std::string& endpoint,
+    uint16_t port,
+    openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler,
+    opendnp3::IOpenDelayStrategy* pStrategy)
 {
-	std::unique_lock<std::mutex> lock(mutex);
-	delete pChannel;
-	channels.erase(pChannel);
-	if (channels.empty())
-	{
-		condition.notify_one();
-	}
+	auto pRoot = new LogRoot(pLog.get(), id, levels);
+	auto pPhys = new asiopal::PhysicalLayerTCPServer(*pRoot, pThreadPool->GetIOService(), endpoint, port);
+	return pChannelSet->CreateChannel(pRoot, minOpenRetry, maxOpenRetry, pPhys, pStateHandler, pStrategy);
 }
 
-
-
+IChannel* DNP3Manager::AddSerial(
+	char const* id,
+    uint32_t levels,
+    openpal::TimeDuration minOpenRetry,
+    openpal::TimeDuration maxOpenRetry,
+    asiopal::SerialSettings aSettings,
+    openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler,
+    opendnp3::IOpenDelayStrategy* pStrategy)
+{
+	auto pRoot = new LogRoot(pLog.get(), id, levels);
+	auto pPhys = new asiopal::PhysicalLayerSerial(*pRoot, pThreadPool->GetIOService(), aSettings);
+	return pChannelSet->CreateChannel(pRoot, minOpenRetry, maxOpenRetry, pPhys, pStateHandler, pStrategy);
 }
 
+}
 

@@ -7,7 +7,7 @@
 
 #include <openpal/Bind.h>
 
-#include <asiodnp3/ASIODNP3Manager.h>
+#include <asiodnp3/DNP3Manager.h>
 
 using namespace asiopal;
 
@@ -28,7 +28,7 @@ IDNP3Manager^ DNP3ManagerFactory::CreateManager()
 
 
 DNP3ManagerAdapter::DNP3ManagerAdapter(System::Int32 aConcurrency) :
-	mpMgr(new asiodnp3::ASIODNP3Manager(aConcurrency))
+	mpMgr(new asiodnp3::DNP3Manager(aConcurrency))
 {
 
 }
