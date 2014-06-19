@@ -20,8 +20,8 @@
  */
 #include <asiodnp3/DNP3Manager.h>
 #include <asiodnp3/PrintingSOEHandler.h>
+#include <asiodnp3/ConsoleLogger.h>
 
-#include <asiopal/LogToStdio.h>
 #include <asiopal/UTCTimeSource.h>
 
 #include <opendnp3/LogLevels.h>
@@ -48,7 +48,7 @@ int main(int argc, char* argv[])
 	DNP3Manager manager(std::thread::hardware_concurrency());
 
 	// send log messages to the console
-	manager.AddLogSubscriber(&LogToStdio::Instance());	
+	manager.AddLogSubscriber(&ConsoleLogger::Instance());	
 
 	// Connect via a TCPClient socket to a outstation	
 	auto pClient = manager.AddTCPClient("tcpclient", FILTERS, TimeDuration::Seconds(2), TimeDuration::Minutes(1), "127.0.0.1", 20000);

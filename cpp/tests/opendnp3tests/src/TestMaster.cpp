@@ -26,14 +26,11 @@
 #include "MockCommandCallback.h"
 #include "APDUHexBuilders.h"
 
-#include <asiopal/LogToStdio.h>
-
 #include <opendnp3/app/APDUResponse.h>
 #include <opendnp3/app/APDUBuilders.h>
 #include <opendnp3/app/PointClass.h>
 
 using namespace openpal;
-using namespace asiopal;
 using namespace opendnp3;
 
 

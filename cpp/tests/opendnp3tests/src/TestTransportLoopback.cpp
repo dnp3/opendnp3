@@ -25,7 +25,6 @@
 #include <functional>
 
 #include <asiopal/Log.h>
-#include <asiopal/LogToStdio.h>
 #include <asiopal/PhysicalLayerSerial.h>
 
 #include "ProtocolUtil.h"

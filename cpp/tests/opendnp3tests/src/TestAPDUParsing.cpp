@@ -34,13 +34,13 @@
 #include <opendnp3/app/ControlRelayOutputBlock.h>
 #include <opendnp3/app/IndexedValue.h>
 
-#include <asiopal/LogToStdio.h>
+#include <asiodnp3/ConsoleLogger.h>
 
 #include <functional>
 
 using namespace std;
-using namespace asiopal;
 using namespace openpal;
+using namespace asiodnp3;
 using namespace opendnp3;
 
 void TestComplex(const std::string& hex, APDUParser::Result expected, size_t numCalls, std::function<void (MockApduHeaderHandler&)> validate)
@@ -52,7 +52,7 @@ void TestComplex(const std::string& hex, APDUParser::Result expected, size_t num
 
 	if (result != expected)
 	{
-		mock.Pop(&LogToStdio::Instance());
+		mock.Pop(&ConsoleLogger::Instance());
 	}
 
 	REQUIRE((result == expected));

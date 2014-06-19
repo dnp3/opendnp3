@@ -21,8 +21,8 @@
 
 #include <asiodnp3/DNP3Manager.h>
 #include <asiodnp3/PrintingSOEHandler.h>
+#include <asiodnp3/ConsoleLogger.h>
 
-#include <asiopal/LogToStdio.h>
 #include <asiopal/UTCTimeSource.h>
 
 #include <opendnp3/outstation/ICommandHandler.h>
@@ -52,14 +52,14 @@ int main(int argc, char* argv[])
 	DNP3Manager manager(std::thread::hardware_concurrency());
 
 	// send log messages to the console
-	manager.AddLogSubscriber(&LogToStdio::Instance());
+	manager.AddLogSubscriber(&ConsoleLogger::Instance());
 
 	// Create a TCP server (listener)
 	auto pServer = manager.AddTCPServer("server", FILTERS, TimeDuration::Seconds(5), TimeDuration::Seconds(5), "0.0.0.0", 20000);
 
 	// The main object for a outstation. The defaults are useable, 
 	// but understanding the options are important.
-	OutstationStackConfig stackConfig;
+	OutstationStackConfig stackConfig;	
 	stackConfig.dbTemplate = DatabaseTemplate::AllTypes(10);
 	stackConfig.eventBuffer = EventBufferConfig::AllTypes(10);
 	stackConfig.outstation.params.allowUnsolicited = true;	

@@ -18,7 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "LogToStdio.h"
+
+#include "ConsoleLogger.h"
 
 #include <chrono>
 #include <sstream>
@@ -28,34 +29,34 @@
 using namespace std;
 using namespace std::chrono;
 
-namespace asiopal
+namespace asiodnp3
 {
 
-LogToStdio LogToStdio::instance;
+ConsoleLogger ConsoleLogger::instance;
 
-LogToStdio::LogToStdio() : pLevelToString(&BasicFlags), printLocation(false)
+ConsoleLogger::ConsoleLogger() : pLevelToString(&BasicFlags), printLocation(false)
 {
 
 }
 
-std::ostringstream& LogToStdio::BasicFlags(std::ostringstream& ss, const openpal::LogFilters& filters)
+std::ostringstream& ConsoleLogger::BasicFlags(std::ostringstream& ss, const openpal::LogFilters& filters)
 {
 	ss << filters.GetBitfield();
 	return ss;
 }
 
-void LogToStdio::SetPrintLocation(bool printLocation_)
+void ConsoleLogger::SetPrintLocation(bool printLocation_)
 {
 	printLocation = printLocation_;
 }
 
-void LogToStdio::SetFilterInterpreter(LevelToString pLevelToString_)
+void ConsoleLogger::SetFilterInterpreter(LevelToString pLevelToString_)
 {
 	assert(pLevelToString_ != nullptr);
 	pLevelToString = pLevelToString_;
 }
 
-void LogToStdio::Log(const openpal::LogEntry& entry)
+void ConsoleLogger::Log(const openpal::LogEntry& entry)
 {
 	auto time = std::chrono::high_resolution_clock::now();
 	auto num = duration_cast<milliseconds>(time.time_since_epoch()).count();

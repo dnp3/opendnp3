@@ -23,7 +23,6 @@
     <ClInclude Include="src\asiopal\ASIOSerialHelpers.h" />
     <ClInclude Include="src\asiopal\IOServiceThreadPool.h" />
     <ClInclude Include="src\asiopal\Log.h" />
-    <ClInclude Include="src\asiopal\LogToStdio.h" />
     <ClInclude Include="src\asiopal\PhysicalLayerASIO.h" />
     <ClInclude Include="src\asiopal\PhysicalLayerBase.h" />
     <ClInclude Include="src\asiopal\PhysicalLayerBaseTCP.h" />
@@ -40,7 +39,6 @@
     <ClCompile Include="src\asiopal\ASIOSerialHelpers.cpp" />
     <ClCompile Include="src\asiopal\IOServiceThreadPool.cpp" />
     <ClCompile Include="src\asiopal\Log.cpp" />
-    <ClCompile Include="src\asiopal\LogToStdio.cpp" />
     <ClCompile Include="src\asiopal\PhysicalLayerBase.cpp" />
     <ClCompile Include="src\asiopal\PhysicalLayerBaseTCP.cpp" />
     <ClCompile Include="src\asiopal\PhysicalLayerSerial.cpp" />

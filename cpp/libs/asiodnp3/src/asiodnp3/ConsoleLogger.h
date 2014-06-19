@@ -18,13 +18,13 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __LOG_TO_STDIO_H_
-#define __LOG_TO_STDIO_H_
+#ifndef __CONSOLE_LOGGER_H_
+#define __CONSOLE_LOGGER_H_
 
 #include <mutex>
 #include <openpal/LogBase.h>
 
-namespace asiopal
+namespace asiodnp3
 {
 
 /**
@@ -32,7 +32,7 @@ namespace asiopal
 *
 *
 */
-class LogToStdio : public openpal::ILogBase
+class ConsoleLogger : public openpal::ILogBase
 {
 
 public:
@@ -51,11 +51,11 @@ public:
 
 private:
 
-	LogToStdio();
+	ConsoleLogger();
 
 	static std::ostringstream& BasicFlags(std::ostringstream& ss, const openpal::LogFilters& filters);	
 
-	static LogToStdio instance;
+	static ConsoleLogger instance;
 
 	LevelToString pLevelToString;	
 
