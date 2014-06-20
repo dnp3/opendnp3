@@ -18,51 +18,29 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __OPENPAL_BIND_H_
-#define __OPENPAL_BIND_H_
+#ifndef __OPENPAL_STATIC_SIZE_CONFIGURATION_
+#define __OPENPAL_STATIC_SIZE_CONFIGURATION_
 
-#include "Runnable.h"
-#include "Configure.h"
-#include "StaticSizeConfiguration.h"
+
+#include <cstdint>
+
+// Default configurations for static sizes. 
+// They are liberally set by default for x64 
+// but can be reduced for embedded systems.
+
+#ifndef OPENPAL_MACRO_MAX_FUNCTION0_SIZE
+#define OPENPAL_MACRO_MAX_FUNCTION0_SIZE 128
+#endif
 
 namespace openpal
 {
-
-template <class Lambda>
-class LambdaRunnable : public Runnable
+namespace sizes
 {
-	static_assert(sizeof(Lambda) <= sizes::MAX_FUNCTIONZERO_SIZE, "Lambda is too big for static buffer");
 
-	public:
+// the maximum number of static read object/variation records that can be in any READ request
+static const uint16_t MAX_FUNCTIONZERO_SIZE = OPENPAL_MACRO_MAX_FUNCTION0_SIZE;
 
-	LambdaRunnable(Lambda& lambda) : Runnable(&RunLambda, sizeof(Lambda))
-	{
-		new(bytes) Lambda(lambda); // use placement new
-	}
-
-	private:
-
-	static void RunLambda(const uint8_t* pBuffer)
-	{
-		(*reinterpret_cast<const Lambda*>(pBuffer))();		
-	}
-};
-
-template <class T>
-Runnable BindDelete(T* pType)
-{
-	auto lambda = [pType]() { delete pType; };
-	return Bind(lambda);
 }
-
-
-
-template <class Lambda>
-Runnable Bind(Lambda& lambda)
-{
-	return LambdaRunnable<Lambda>(lambda);
-}
-
 }
 
 #endif

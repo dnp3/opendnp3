@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\openpal\StaticSizeConfiguration.h" />
+    <ClInclude Include="src\openpal\Configure.h" />
     <ClInclude Include="src\openpal\ILogHandler.h" />
     <ClInclude Include="src\openpal\LayerInterfaces.h" />
     <ClInclude Include="src\openpal\Bind.h" />

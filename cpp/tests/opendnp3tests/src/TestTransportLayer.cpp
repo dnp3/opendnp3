@@ -128,8 +128,8 @@ TEST_CASE(SUITE("ReceiveLargestPossibleAPDU"))
 {
 	TransportTestObject test(true);
 
-	uint32_t num_packets = CalcMaxPackets(sizes::DEFAULT_APDU_BUFFER_SIZE, TL_MAX_TPDU_PAYLOAD);
-	uint32_t last_packet_length = CalcLastPacketSize(sizes::DEFAULT_APDU_BUFFER_SIZE, TL_MAX_TPDU_PAYLOAD);
+	uint32_t num_packets = CalcMaxPackets(opendnp3::sizes::DEFAULT_APDU_BUFFER_SIZE, TL_MAX_TPDU_PAYLOAD);
+	uint32_t last_packet_length = CalcLastPacketSize(opendnp3::sizes::DEFAULT_APDU_BUFFER_SIZE, TL_MAX_TPDU_PAYLOAD);
 
 	vector<string> packets;
 	string apdu = test.GeneratePacketSequence(packets, num_packets, last_packet_length);
@@ -146,8 +146,8 @@ TEST_CASE(SUITE("ReceiveBufferOverflow"))
 {
 	TransportTestObject test(true);
 
-	uint32_t num_packets = CalcMaxPackets(sizes::DEFAULT_APDU_BUFFER_SIZE, TL_MAX_TPDU_PAYLOAD);
-	uint32_t last_packet_length = CalcLastPacketSize(sizes::DEFAULT_APDU_BUFFER_SIZE, TL_MAX_TPDU_PAYLOAD);
+	uint32_t num_packets = CalcMaxPackets(opendnp3::sizes::DEFAULT_APDU_BUFFER_SIZE, TL_MAX_TPDU_PAYLOAD);
+	uint32_t last_packet_length = CalcLastPacketSize(opendnp3::sizes::DEFAULT_APDU_BUFFER_SIZE, TL_MAX_TPDU_PAYLOAD);
 
 	//send 1 more packet than possible
 	vector<string> packets;
@@ -256,8 +256,8 @@ TEST_CASE(SUITE("SendFullAPDU"))
 {
 	TransportTestObject test(true);
 
-	uint32_t numPackets = CalcMaxPackets(sizes::DEFAULT_APDU_BUFFER_SIZE, TL_MAX_TPDU_PAYLOAD);
-	uint32_t lastPacketLength = CalcLastPacketSize(sizes::DEFAULT_APDU_BUFFER_SIZE, TL_MAX_TPDU_PAYLOAD);
+	uint32_t numPackets = CalcMaxPackets(opendnp3::sizes::DEFAULT_APDU_BUFFER_SIZE, TL_MAX_TPDU_PAYLOAD);
+	uint32_t lastPacketLength = CalcLastPacketSize(opendnp3::sizes::DEFAULT_APDU_BUFFER_SIZE, TL_MAX_TPDU_PAYLOAD);
 
 	vector<string> packets;
 	std::string apdu = test.GeneratePacketSequence(packets, numPackets, lastPacketLength);

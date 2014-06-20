@@ -22,18 +22,12 @@
 #define __RUNNABLE_H_
 
 #include "Erasure.h"
-
-#ifndef OPENPAL_MACRO_MAX_RUNNABLE_SIZE
-#define OPENPAL_MACRO_MAX_RUNNABLE_SIZE 128  // TODO consider reducing this size for x86 using macros
-#endif
+#include "StaticSizeConfiguration.h"
 
 namespace openpal
 {
 
-// TODO define max somewhere else
-const uint32_t MAX_RUNNABLE_SIZE = OPENPAL_MACRO_MAX_RUNNABLE_SIZE;
-
-class Runnable : public Erasure<MAX_RUNNABLE_SIZE>
+class Runnable : public Erasure<sizes::MAX_FUNCTIONZERO_SIZE>
 {
 public:
 
