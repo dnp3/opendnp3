@@ -28,8 +28,12 @@
 // They are liberally set by default for x64 
 // but can be reduced for embedded systems.
 
-#ifndef OPENPAL_MACRO_MAX_FUNCTION0_SIZE
-#define OPENPAL_MACRO_MAX_FUNCTION0_SIZE 128
+#ifndef OPENPAL_MACRO_MAX_FUNCTION_ZERO_SIZE
+#define OPENPAL_MACRO_MAX_FUNCTION_ZERO_SIZE 128
+#endif
+
+#ifndef OPENPAL_MACRO_MAX_FUNCTION_ONE_SIZE
+#define OPENPAL_MACRO_MAX_FUNCTION_ONE_SIZE 128
 #endif
 
 namespace openpal
@@ -37,8 +41,9 @@ namespace openpal
 namespace sizes
 {
 
-// the maximum number of static read object/variation records that can be in any READ request
-static const uint16_t MAX_FUNCTIONZERO_SIZE = OPENPAL_MACRO_MAX_FUNCTION0_SIZE;
+static const uint16_t MAX_FUNCTION_ZERO_SIZE = OPENPAL_MACRO_MAX_FUNCTION_ZERO_SIZE;
+
+static const uint16_t MAX_FUNCTION_ONE_SIZE = OPENPAL_MACRO_MAX_FUNCTION_ONE_SIZE;
 
 }
 }

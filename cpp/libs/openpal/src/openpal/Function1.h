@@ -25,10 +25,10 @@
 #include <cstring>
 #include <cstdint>
 
+#include "StaticSizeConfiguration.h"
+
 namespace openpal
 {
-
-const uint32_t MAX_FUNCTION1_SIZE = 64;
 
 template <class T>
 class Function1
@@ -77,13 +77,13 @@ protected:
 
 	Invoke pInvoke;
 	uint32_t size;
-	uint8_t bytes[MAX_FUNCTION1_SIZE];
+	uint8_t bytes[sizes::MAX_FUNCTION_ONE_SIZE];
 };
 
 template <class T, class Lambda>
 class LambdaFunction1 : public Function1<T>
 {
-	static_assert(sizeof(Lambda) <= MAX_FUNCTION1_SIZE, "Lambda is too big for static buffer");
+	static_assert(sizeof(Lambda) <= sizes::MAX_FUNCTION_ONE_SIZE, "Lambda is too big for static buffer");
 
 public:
 

@@ -27,7 +27,7 @@
 namespace openpal
 {
 
-class Runnable : public Erasure<sizes::MAX_FUNCTIONZERO_SIZE>
+class Runnable : public Erasure<sizes::MAX_FUNCTION_ZERO_SIZE>
 {
 public:
 
