@@ -41,7 +41,7 @@ libasiopal_la_SOURCES = \
 cpp/libs/asiopal/src/asiopal/ASIOExecutor.cpp \
 cpp/libs/asiopal/src/asiopal/ASIOSerialHelpers.cpp \
 cpp/libs/asiopal/src/asiopal/IOServiceThreadPool.cpp \
-cpp/libs/asiopal/src/asiopal/Log.cpp \
+cpp/libs/asiopal/src/asiopal/LogFanoutHandler.cpp \
 cpp/libs/asiopal/src/asiopal/PhysicalLayerBase.cpp \
 cpp/libs/asiopal/src/asiopal/PhysicalLayerBaseTCP.cpp \
 cpp/libs/asiopal/src/asiopal/PhysicalLayerSerial.cpp \
@@ -275,7 +275,6 @@ cpp/tests/opendnp3tests/src/TestAPDUWriting.cpp \
 cpp/tests/opendnp3tests/src/TestASIO.cpp \
 cpp/tests/opendnp3tests/src/TestASIOThreadPool.cpp \
 cpp/tests/opendnp3tests/src/TestCastLongLongDouble.cpp \
-cpp/tests/opendnp3tests/src/TestCommandTask.cpp \
 cpp/tests/opendnp3tests/src/TestCRC.cpp \
 cpp/tests/opendnp3tests/src/TestDatabase.cpp \
 cpp/tests/opendnp3tests/src/TestDNP3Manager.cpp \
