@@ -23,7 +23,7 @@
 #include "BufferHelpers.h"
 
 #include <openpal/ToHex.h>
-#include <openpal/LogMacros.h>
+#include <openpal/logging/LogMacros.h>
 
 #include <memory>
 

@@ -22,7 +22,9 @@
 #define __STATIC_PRIORITY_QUEUE_H_
 
 #include "StaticLinkedList.h"
-#include "Configure.h"
+
+#include "openpal/Configure.h"
+
 #include <assert.h>
 
 namespace openpal

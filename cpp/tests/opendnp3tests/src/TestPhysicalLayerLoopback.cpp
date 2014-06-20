@@ -22,7 +22,7 @@
 
 #include <asiopal/LogFanoutHandler.h>
 
-#include <openpal/LogRoot.h>
+#include <openpal/logging/LogRoot.h>
 
 #include "PhysLoopback.h"
 #include "MockExecutor.h"

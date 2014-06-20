@@ -20,8 +20,7 @@
  */
 #include <catch.hpp>
 
-#include <openpal/Location.h>
-#include <openpal/LogRoot.h>
+#include <openpal/logging/LogRoot.h>
 
 #include <asiopal/LogFanoutHandler.h>
 #include <asiopal/ASIOExecutor.h>

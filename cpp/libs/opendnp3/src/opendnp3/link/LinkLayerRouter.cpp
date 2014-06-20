@@ -22,9 +22,9 @@
 
 #include <assert.h>
 
-#include <openpal/LogMacros.h>
-#include <openpal/IPhysicalLayer.h>
-#include <openpal/Bind.h>
+#include <openpal/logging/LogMacros.h>
+#include <openpal/channel/IPhysicalLayer.h>
+#include <openpal/executor/Bind.h>
 
 #include "opendnp3/LogLevels.h"
 #include "ILinkContext.h"

@@ -25,7 +25,7 @@
 
 #include <chrono>
 
-#include <openpal/IExecutor.h>
+#include <openpal/executor/IExecutor.h>
 
 namespace asiopal
 {

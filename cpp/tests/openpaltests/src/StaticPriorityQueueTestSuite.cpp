@@ -20,7 +20,7 @@
  */
 #include <catch.hpp>
 
-#include "openpal/StaticPriorityQueue.h"
+#include <openpal/container/StaticPriorityQueue.h>
 
 using namespace openpal;
 

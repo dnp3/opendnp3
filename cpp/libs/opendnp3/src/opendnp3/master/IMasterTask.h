@@ -21,7 +21,7 @@
 #ifndef __I_MASTER_TASK_H_
 #define __I_MASTER_TASK_H_
 
-#include <openpal/Logger.h>
+#include <openpal/logging/Logger.h>
 
 #include "opendnp3/app/APDUHeader.h"
 #include "opendnp3/app/APDURequest.h"

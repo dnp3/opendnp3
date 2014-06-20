@@ -23,7 +23,7 @@
 
 #include "ICommandProcessor.h"
 
-#include <openpal/IExecutor.h>
+#include <openpal/executor/IExecutor.h>
 
 namespace opendnp3
 {

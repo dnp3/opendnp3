@@ -4,7 +4,7 @@
 using namespace System::Collections::ObjectModel;
 
 #include <vcclr.h>
-#include <openpal/ILogHandler.h>
+#include <openpal/logging/ILogHandler.h>
 
 using namespace DNP3::Interface;
 

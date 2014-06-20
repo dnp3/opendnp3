@@ -18,31 +18,41 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __RUNNABLE_H_
-#define __RUNNABLE_H_
+#ifndef __UINT8LE_H_
+#define __UINT8LE_H_
 
-#include "Erasure.h"
-#include "StaticSizeConfiguration.h"
+#include <cstdint>
+#include <cstring>
+
+#include "openpal/WriteBuffer.h"
+#include "openpal/ReadOnlyBuffer.h"
 
 namespace openpal
 {
 
-class Runnable : public Erasure<sizes::MAX_FUNCTION_ZERO_SIZE>
+class UInt48LE
 {
 public:
 
-	Runnable();
+	static int64_t Read(const uint8_t* apStart);
+	static void Write(uint8_t* apStart, int64_t aValue);
 
-	Runnable& operator=(const Runnable& other);
+	inline static int64_t ReadBuffer(ReadOnlyBuffer& buffer)
+	{
+		auto ret = Read(buffer);
+		buffer.Advance(Size);
+		return ret;
+	}
 
-	bool operator()() const;
+	static void WriteBuffer(WriteBuffer& buffer, int64_t aValue)
+	{
+		Write(buffer, aValue);
+		buffer.Advance(Size);
+	}
 
-	void Run() const;
-
-protected:
-
-	Runnable(Invoke pInvoke_, uint32_t size_);
-
+	const static int64_t MAX = 281474976710655ULL; // 2^48 -1
+	const static size_t Size = 6;
+	typedef int64_t Type;
 };
 
 }

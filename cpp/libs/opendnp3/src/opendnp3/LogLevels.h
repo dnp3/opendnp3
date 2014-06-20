@@ -22,7 +22,7 @@
 #ifndef __OPENDNP3_LOG_LEVELS_H_
 #define __OPENDNP3_LOG_LEVELS_H_
 
-#include <openpal/LogLevels.h>
+#include <openpal/logging/LogLevels.h>
 
 namespace opendnp3
 {

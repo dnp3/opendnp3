@@ -24,9 +24,9 @@
 #include "TransportRx.h"
 #include "TransportTx.h"
 
-#include <openpal/IExecutor.h>
-#include <openpal/LogRoot.h>
-#include <openpal/LayerInterfaces.h>
+#include <openpal/executor/IExecutor.h>
+#include <openpal/logging/LogRoot.h>
+#include <openpal/channel/LayerInterfaces.h>
 
 #include "opendnp3/StackStatistics.h"
 #include "opendnp3/link/ILinkLayer.h"

@@ -22,8 +22,8 @@
 
 #include <catch.hpp>
 
-#include <openpal/LogMacros.h>
-#include <openpal/IPhysicalLayer.h>
+#include <openpal/logging/LogMacros.h>
+#include <openpal/channel/IPhysicalLayer.h>
 #include <openpal/ToHex.h>
 #include <openpal/Comparisons.h>
 

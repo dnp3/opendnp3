@@ -24,9 +24,9 @@
 
 #include "EventBufferFacade.h"
 
-#include <openpal/RandomInsertAdapter.h>
-#include <openpal/StaticArray.h>
-#include <openpal/StaticArray.h>
+#include <openpal/container/RandomInsertAdapter.h>
+#include <openpal/container/StaticArray.h>
+#include <openpal/container/StaticArray.h>
 
 namespace opendnp3
 {

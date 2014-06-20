@@ -24,7 +24,8 @@
 #include "LogEntry.h"
 #include "Logger.h"
 #include "ILogHandler.h"
-#include "Uncopyable.h"
+
+#include "openpal/Uncopyable.h"
 
 namespace openpal
 {

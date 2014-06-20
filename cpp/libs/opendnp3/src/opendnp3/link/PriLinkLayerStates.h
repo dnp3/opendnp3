@@ -21,10 +21,6 @@
 #ifndef __PRI_LINK_LAYER_STATES_H_
 #define __PRI_LINK_LAYER_STATES_H_
 
-
-
-#include <openpal/Location.h>
-
 #include "opendnp3/Singleton.h"
 #include "opendnp3/link/LinkLayer.h"
 

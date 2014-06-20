@@ -22,8 +22,8 @@
 #define __DATABASE_H_
 
 #include <openpal/IMutex.h>
-#include <openpal/Runnable.h>
-#include <openpal/Settable.h>
+#include <openpal/executor/Runnable.h>
+#include <openpal/container/Settable.h>
 
 #include "opendnp3/app/StaticRange.h"
 #include "opendnp3/outstation/IEventBuffer.h"

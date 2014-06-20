@@ -22,7 +22,7 @@
 #define __CONSOLE_LOGGER_H_
 
 #include <mutex>
-#include <openpal/ILogHandler.h>
+#include <openpal/logging/ILogHandler.h>
 
 namespace asiodnp3
 {

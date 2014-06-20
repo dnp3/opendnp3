@@ -26,7 +26,7 @@
 #include <asiopal/ASIOExecutor.h>
 #include <asiopal/LogFanoutHandler.h>
 
-#include <openpal/LogRoot.h>
+#include <openpal/logging/LogRoot.h>
 
 #include "RandomizedBuffer.h"
 #include "PhysLoopback.h"

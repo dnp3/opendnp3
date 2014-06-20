@@ -26,7 +26,7 @@
 #include "OutstationStackImpl.h"
 
 #include <opendnp3/LogLevels.h>
-#include <openpal/LogMacros.h>
+#include <openpal/logging/LogMacros.h>
 
 #include <future>
 

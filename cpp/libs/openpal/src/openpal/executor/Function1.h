@@ -25,7 +25,7 @@
 #include <cstring>
 #include <cstdint>
 
-#include "StaticSizeConfiguration.h"
+#include "openpal/StaticSizeConfiguration.h"
 
 namespace openpal
 {

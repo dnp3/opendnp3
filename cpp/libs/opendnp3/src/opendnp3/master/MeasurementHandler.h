@@ -21,7 +21,7 @@
 #ifndef __MEASUREMENT_HANDLER_H_
 #define __MEASUREMENT_HANDLER_H_
 
-#include <openpal/Logger.h>
+#include <openpal/logging/Logger.h>
 
 #include "opendnp3/master/ISOEHandler.h"
 #include "opendnp3/app/APDUHandlerBase.h"

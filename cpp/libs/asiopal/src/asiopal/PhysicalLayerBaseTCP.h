@@ -23,8 +23,6 @@
 
 #include "PhysicalLayerASIO.h"
 
-#include <openpal/Location.h>
-
 #include <asio.hpp>
 #include <asio/ip/tcp.hpp>
 

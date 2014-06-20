@@ -21,8 +21,8 @@
 
 #include <catch.hpp>
 
-#include <openpal/DynamicArray.h>
-#include <openpal/RandomInsertAdapter.h>
+#include <openpal/container/DynamicArray.h>
+#include <openpal/container/RandomInsertAdapter.h>
 
 using namespace openpal;
 

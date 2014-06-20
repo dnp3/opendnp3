@@ -22,7 +22,7 @@
 #define __VALUE_METADATA_PAIR_H_
 
 #include <assert.h>
-#include <openpal/Indexable.h>
+#include <openpal/container/Indexable.h>
 
 namespace opendnp3
 {

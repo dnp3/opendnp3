@@ -21,7 +21,7 @@
 #ifndef __OUTSTATION_CONFIG_H_
 #define __OUTSTATION_CONFIG_H_
 
-#include <openpal/TimeDuration.h>
+#include <openpal/executor/TimeDuration.h>
 
 #include "opendnp3/outstation/OutstationParams.h"
 #include "opendnp3/outstation/StaticResponseConfig.h"

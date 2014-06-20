@@ -20,8 +20,6 @@
  */
 #include "ShiftableBuffer.h"
 
-#include <openpal/Location.h>
-
 #include <openpal/Configure.h>
 #include <assert.h>
 #include <cstring>

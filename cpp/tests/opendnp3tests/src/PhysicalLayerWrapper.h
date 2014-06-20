@@ -21,9 +21,9 @@
 #ifndef __PHYSICAL_LAYER_WRAPPER_H_
 #define __PHYSICAL_LAYER_WRAPPER_H_
 
-#include <openpal/IPhysicalLayer.h>
-#include <openpal/IPhysicalLayerCallbacks.h>
-#include <openpal/Logger.h>
+#include <openpal/channel/IPhysicalLayer.h>
+#include <openpal/channel/IPhysicalLayerCallbacks.h>
+#include <openpal/logging/Logger.h>
 
 #include "RandomDouble.h"
 

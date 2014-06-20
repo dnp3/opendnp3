@@ -22,7 +22,7 @@
 #define __DNP3_CHANNEL_H_
 
 #include <openpal/IShutdownHandler.h>
-#include <openpal/LogRoot.h>
+#include <openpal/logging/LogRoot.h>
 
 #include <opendnp3/outstation/OutstationStackConfig.h>
 #include <opendnp3/link/LinkLayerRouter.h>

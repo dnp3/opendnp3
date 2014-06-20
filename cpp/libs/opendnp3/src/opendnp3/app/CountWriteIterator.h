@@ -23,7 +23,7 @@
 
 
 #include <openpal/WriteBuffer.h>
-#include <openpal/ISerializer.h>
+#include <openpal/serialization/ISerializer.h>
 
 namespace opendnp3
 {

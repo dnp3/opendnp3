@@ -24,7 +24,7 @@
 #include "opendnp3/outstation/StaticDataFacade.h"
 #include "opendnp3/outstation/DatabaseTemplate.h"
 
-#include <openpal/DynamicArray.h>
+#include <openpal/container/DynamicArray.h>
 
 namespace opendnp3
 {

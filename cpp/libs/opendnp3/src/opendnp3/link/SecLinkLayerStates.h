@@ -27,7 +27,7 @@
 #include "opendnp3/Singleton.h"
 #include "opendnp3/link/LinkLayer.h"
 
-#include <openpal/LogMacros.h>
+#include <openpal/logging/LogMacros.h>
 
 namespace opendnp3
 {

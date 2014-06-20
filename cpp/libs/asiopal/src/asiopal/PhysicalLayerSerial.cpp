@@ -25,9 +25,9 @@
 #include <functional>
 #include <string>
 
-#include <openpal/LogMacros.h>
-#include <openpal/IPhysicalLayerCallbacks.h>
-#include <openpal/LogLevels.h>
+#include <openpal/logging/LogMacros.h>
+#include <openpal/channel/IPhysicalLayerCallbacks.h>
+#include <openpal/logging/LogLevels.h>
 
 #include "ASIOSerialHelpers.h"
 

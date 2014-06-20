@@ -24,7 +24,7 @@
 #include <opendnp3/link/LinkFrame.h>
 
 #include <openpal/ToHex.h>
-#include <openpal/StaticBuffer.h>
+#include <openpal/container/StaticBuffer.h>
 
 #include "BufferHelpers.h"
 #include "LinkLayerTest.h"

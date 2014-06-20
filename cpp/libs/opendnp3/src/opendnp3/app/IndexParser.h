@@ -22,7 +22,7 @@
 #define __INDEX_PARSER_H_
 
 #include <openpal/ReadOnlyBuffer.h>
-#include <openpal/Serialization.h>
+#include <openpal/serialization/Serialization.h>
 
 namespace opendnp3
 {

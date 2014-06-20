@@ -21,7 +21,8 @@
 #ifndef __INDEXABLE_H_
 #define __INDEXABLE_H_
 
-#include "HasSize.h"
+#include "openpal/HasSize.h"
+
 #include "IndexableIterator.h"
 
 namespace openpal

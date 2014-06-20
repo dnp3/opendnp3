@@ -22,7 +22,7 @@
 
 #include <opendnp3/link/LinkRoute.h>
 
-#include <openpal/IPhysicalLayer.h>
+#include <openpal/channel/IPhysicalLayer.h>
 
 using namespace openpal;
 

@@ -20,9 +20,8 @@
  */
 #include "PhysicalLayerMonitorStates.h"
 
-#include <openpal/Location.h>
-#include <openpal/IPhysicalLayer.h>
-#include <openpal/LogMacros.h>
+#include <openpal/channel/IPhysicalLayer.h>
+#include <openpal/logging/LogMacros.h>
 
 #include "opendnp3/LogLevels.h"
 

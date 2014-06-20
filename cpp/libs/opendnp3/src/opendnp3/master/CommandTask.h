@@ -30,9 +30,9 @@
 #include "opendnp3/master/ICommandProcessor.h"
 #include "opendnp3/master/CommandSequence.h"
 
-#include <openpal/Logger.h>
+#include <openpal/logging/Logger.h>
 #include <openpal/Configure.h>
-#include <openpal/StaticQueue.h>
+#include <openpal/container/StaticQueue.h>
 #include <assert.h>
 
 namespace opendnp3

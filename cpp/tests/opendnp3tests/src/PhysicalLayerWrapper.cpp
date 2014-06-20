@@ -20,7 +20,7 @@
  */
 #include "PhysicalLayerWrapper.h"
 
-#include <openpal/LogMacros.h>
+#include <openpal/logging/LogMacros.h>
 
 #include <opendnp3/LogLevels.h>
 

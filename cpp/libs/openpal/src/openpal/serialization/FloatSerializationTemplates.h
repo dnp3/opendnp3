@@ -18,42 +18,62 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __UINT8LE_H_
-#define __UINT8LE_H_
+#ifndef __FLOAT_SERIALIZATION_TEMPLATES_H_
+#define __FLOAT_SERIALIZATION_TEMPLATES_H_
 
 #include <cstdint>
 #include <cstring>
 
-#include "WriteBuffer.h"
-#include "ReadOnlyBuffer.h"
+#include "openpal/ReadOnlyBuffer.h"
+#include "openpal/WriteBuffer.h"
+#include "openpal/Limits.h"
 
 namespace openpal
 {
 
-class UInt48LE
+template <class T>
+class Float
 {
 public:
+	typedef T Type;
 
-	static int64_t Read(const uint8_t* apStart);
-	static void Write(uint8_t* apStart, int64_t aValue);
+	const static size_t Size = sizeof(T);
+	const static T Max;
+	const static T Min;
 
-	inline static int64_t ReadBuffer(ReadOnlyBuffer& buffer)
+	inline static T ReadBuffer(ReadOnlyBuffer& arBuffer)
 	{
-		auto ret = Read(buffer);
-		buffer.Advance(Size);
+		auto ret = Read(arBuffer);
+		arBuffer.Advance(Size);
 		return ret;
 	}
 
-	static void WriteBuffer(WriteBuffer& buffer, int64_t aValue)
+	static void WriteBuffer(WriteBuffer& buffer, T aValue)
 	{
 		Write(buffer, aValue);
 		buffer.Advance(Size);
 	}
 
-	const static int64_t MAX = 281474976710655ULL; // 2^48 -1
-	const static size_t Size = 6;
-	typedef int64_t Type;
+	// Some platforms like ARM have WORD alignment issue when using reinterpret cast.
+	// The float/double read routines use intermediate buffer that the compiler word aligns
+	inline static T Read(const uint8_t* apStart)
+	{
+		T d;
+		memcpy(&d, apStart, Size);
+		return d;
+	}
+
+	inline static void Write(uint8_t* apStart, T aValue)
+	{
+		memcpy(apStart, &aValue, Size);
+	}
 };
+
+template <class T>
+const T Float<T>::Max = openpal::MaxValue<T>();
+
+template <class T>
+const T Float<T>::Min = openpal::MinValue<T>();
 
 }
 

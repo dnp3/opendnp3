@@ -22,7 +22,7 @@
 
 #include <opendnp3/link/ShiftableBuffer.h>
 
-#include <openpal/StaticBuffer.h>
+#include <openpal/container/StaticBuffer.h>
 
 #include <cstring>
 

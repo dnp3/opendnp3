@@ -20,7 +20,7 @@
  */
 #include "CRC.h"
 
-#include <openpal/Serialization.h>
+#include <openpal/serialization/Serialization.h>
 
 namespace opendnp3
 {

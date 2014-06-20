@@ -20,7 +20,6 @@
  */
 #include "BufferHelpers.h"
 
-#include <openpal/Location.h>
 #include <openpal/ToHex.h>
 
 #include "HexConversions.h"

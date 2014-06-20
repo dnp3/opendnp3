@@ -21,7 +21,7 @@
 #ifndef __IO_SERVICE_THREAD_POOL_
 #define __IO_SERVICE_THREAD_POOL_
 
-#include <openpal/LogRoot.h>
+#include <openpal/logging/LogRoot.h>
 
 #include <asio.hpp>
 

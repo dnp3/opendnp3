@@ -18,39 +18,52 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __LOGGER_H_
-#define __LOGGER_H_
+#ifndef __OPENPAL_BIND_H_
+#define __OPENPAL_BIND_H_
 
-#include "LogEntry.h"
-#include "Uncopyable.h"
-#include "LogFilters.h"
+#include "Runnable.h"
+
+#include "openpal/Configure.h"
+#include "openpal/StaticSizeConfiguration.h"
 
 namespace openpal
 {
 
-class LogRoot;
-
-/**
-* Interface that represents a distinct logger with a name and running level
-*/
-class Logger
+template <class Lambda>
+class LambdaRunnable : public Runnable
 {
-	friend class LogRoot;
+	static_assert(sizeof(Lambda) <= sizes::MAX_FUNCTION_ZERO_SIZE, "Lambda is too big for static buffer");
 
-public:	
+	public:
 
-	void Log(const LogFilters& filters, char const* location, char const* message, int errorCode = -1);
-	
-	bool IsEnabled(const LogFilters& filters) const;	
+	LambdaRunnable(Lambda& lambda) : Runnable(&RunLambda, sizeof(Lambda))
+	{
+		new(bytes) Lambda(lambda); // use placement new
+	}
 
-private:
+	private:
 
-	Logger(LogRoot* pRoot);
-
-	LogRoot* pRoot;	
+	static void RunLambda(const uint8_t* pBuffer)
+	{
+		(*reinterpret_cast<const Lambda*>(pBuffer))();		
+	}
 };
+
+template <class T>
+Runnable BindDelete(T* pType)
+{
+	auto lambda = [pType]() { delete pType; };
+	return Bind(lambda);
+}
+
+
+
+template <class Lambda>
+Runnable Bind(Lambda& lambda)
+{
+	return LambdaRunnable<Lambda>(lambda);
+}
 
 }
 
 #endif
-

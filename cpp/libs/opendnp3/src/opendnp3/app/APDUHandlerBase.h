@@ -26,8 +26,8 @@
 #include "opendnp3/app/IterableTransforms.h"
 
 #include "opendnp3/LogLevels.h"
-#include <openpal/LogMacros.h>
-#include <openpal/Logger.h>
+#include <openpal/logging/LogMacros.h>
+#include <openpal/logging/Logger.h>
 
 namespace opendnp3
 {

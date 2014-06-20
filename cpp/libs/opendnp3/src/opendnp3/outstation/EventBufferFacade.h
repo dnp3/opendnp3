@@ -22,8 +22,8 @@
 #ifndef __EVENT_BUFFER_FACADE_H_
 #define __EVENT_BUFFER_FACADE_H_
 
-#include <openpal/RandomInsertAdapter.h>
-#include <openpal/StaticLinkedList.h>
+#include <openpal/container/RandomInsertAdapter.h>
+#include <openpal/container/StaticLinkedList.h>
 
 #include "opendnp3/app/MeasurementTypes.h"
 

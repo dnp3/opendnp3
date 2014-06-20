@@ -27,8 +27,8 @@
 #include <opendnp3/link/LinkChannelStatistics.h>
 
 #include <openpal/IUTCTimeSource.h>
-#include <openpal/LogFilters.h>
-#include <openpal/IExecutor.h>
+#include <openpal/logging/LogFilters.h>
+#include <openpal/executor/IExecutor.h>
 
 #include "DestructorHook.h"
 

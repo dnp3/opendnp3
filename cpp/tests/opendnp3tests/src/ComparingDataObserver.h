@@ -25,7 +25,7 @@
 
 #include <opendnp3/app/MeasurementHelpers.h>
 
-#include <openpal/TimeDuration.h>
+#include <openpal/executor/TimeDuration.h>
 
 #include "FlexibleDataObserver.h"
 #include "MeasurementComparisons.h"

@@ -26,7 +26,7 @@
 
 #include "opendnp3/outstation/EventBufferConfig.h"
 
-#include <openpal/DynamicArray.h>
+#include <openpal/container/DynamicArray.h>
 
 namespace opendnp3
 {

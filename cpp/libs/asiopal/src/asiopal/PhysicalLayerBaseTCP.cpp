@@ -26,9 +26,9 @@
 #include <asio.hpp>
 #include <asio/ip/tcp.hpp>
 
-#include <openpal/LogMacros.h>
-#include <openpal/IPhysicalLayerCallbacks.h>
-#include <openpal/LogLevels.h>
+#include <openpal/logging/LogMacros.h>
+#include <openpal/channel/IPhysicalLayerCallbacks.h>
+#include <openpal/logging/LogLevels.h>
 
 using namespace asio;
 

@@ -18,55 +18,51 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef __STATIC_BUFFER_H_
+#define __STATIC_BUFFER_H_
 
-#include "StringFormatting.h"
+#include "StaticArray.h"
 
-#include "ToHex.h"
+#include "openpal/WriteBuffer.h"
+#include "openpal/ReadOnlyBuffer.h"
 
-#include <cstdio>
-#include <cstdlib>
-
-#include "ReadOnlyBuffer.h"
+#include <cstdint>
 
 namespace openpal
 {
 
-	void LogHex(Logger& logger, const openpal::LogFilters& filters, const openpal::ReadOnlyBuffer& source, uint32_t firstRowSize, uint32_t otherRowSize)
+template <uint32_t N>
+class StaticBuffer : public StaticArray<uint8_t, uint32_t, N>
+{
+
+public:
+
+	StaticBuffer() : StaticArray<uint8_t, uint32_t, N>()
+	{}
+
+	ReadOnlyBuffer ToReadOnly() const
 	{
-		char buffer[MAX_LOG_ENTRY_SIZE];
-		ReadOnlyBuffer copy(source);
-		uint32_t rowCount = 0;
-		while (copy.IsNotEmpty())
-		{
-			uint32_t rowSize = (copy.Size() < MAX_HEX_PER_LINE) ? copy.Size() : MAX_HEX_PER_LINE;
-			if (rowCount == 0)
-			{
-				if (firstRowSize < rowSize)
-				{
-					rowSize = firstRowSize;
-				}
-			}
-			else
-			{
-				if (otherRowSize < rowSize)
-				{
-					rowSize = otherRowSize;
-				}
-			}
-			auto region = copy.Take(rowSize);
-			auto pLocation = buffer;
-			for (uint32_t pos = 0; pos < rowSize; ++pos) {
-				pLocation[0] = toHex((region[pos] & 0xf0) >> 4);
-				pLocation[1] = toHex(region[pos] & 0xf);
-				pLocation[2] = ' ';
-				pLocation += 3;
-			}
-			buffer[3 * rowSize] = '\0';
-			copy.Advance(rowSize);
-			logger.Log(filters, "", buffer, -1);
-			++rowCount;
-		}			
+		return ReadOnlyBuffer(this->buffer, this->size);
 	}
-	
+
+	WriteBuffer GetWriteBuffer()
+	{
+		return WriteBuffer(this->buffer, this->Size());
+	}
+
+	WriteBuffer GetWriteBuffer(uint32_t maxSize)
+	{		
+		if (maxSize <= this->Size())
+		{
+			return WriteBuffer(this->buffer, maxSize);
+		}
+		else
+		{
+			return GetWriteBuffer();
+		}
+	}
+};
+
 }
 
+#endif

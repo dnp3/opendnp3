@@ -21,9 +21,9 @@
 #ifndef __LOWER_LAYER_TO_PHYS_ADAPTER_H_
 #define __LOWER_LAYER_TO_PHYS_ADAPTER_H_
 
-#include <openpal/IPhysicalLayerCallbacks.h>
-#include <openpal/LayerInterfaces.h>
-#include <openpal/Logger.h>
+#include <openpal/channel/IPhysicalLayerCallbacks.h>
+#include <openpal/channel/LayerInterfaces.h>
+#include <openpal/logging/Logger.h>
 
 namespace openpal
 {

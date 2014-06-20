@@ -28,7 +28,7 @@
 #include "opendnp3/master/MeasurementHandler.h"
 #include "opendnp3/master/ConstantCommandProcessor.h"
 
-#include <openpal/LogMacros.h>
+#include <openpal/logging/LogMacros.h>
 
 namespace opendnp3
 {

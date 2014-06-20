@@ -22,7 +22,7 @@
 #ifndef __I_MASTER_SCHEDULER_H_
 #define __I_MASTER_SCHEDULER_H_
 
-#include <openpal/TimeDuration.h>
+#include <openpal/executor/TimeDuration.h>
 
 namespace opendnp3
 {

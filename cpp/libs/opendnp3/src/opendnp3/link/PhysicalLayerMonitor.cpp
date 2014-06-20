@@ -24,9 +24,9 @@
 
 #include "opendnp3/LogLevels.h"
 
-#include <openpal/IPhysicalLayer.h>
-#include <openpal/LogMacros.h>
-#include <openpal/Bind.h>
+#include <openpal/channel/IPhysicalLayer.h>
+#include <openpal/logging/LogMacros.h>
+#include <openpal/executor/Bind.h>
 
 #include <assert.h>
 

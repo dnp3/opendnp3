@@ -24,8 +24,6 @@
 #include <opendnp3/master/ISOEHandler.h>
 #include <opendnp3/app/OctetString.h>
 
-#include <openpal/Location.h>
-
 #include <map>
 
 

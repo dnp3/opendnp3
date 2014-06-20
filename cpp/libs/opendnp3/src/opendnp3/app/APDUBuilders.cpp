@@ -25,7 +25,7 @@
 #include "opendnp3/objects/Group60.h"
 #include "opendnp3/app/IINField.h"
 
-#include <openpal/Serialization.h>
+#include <openpal/serialization/Serialization.h>
 
 
 namespace opendnp3

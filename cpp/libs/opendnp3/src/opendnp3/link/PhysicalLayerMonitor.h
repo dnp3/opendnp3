@@ -21,10 +21,10 @@
 #ifndef __PHYSICAL_LAYER_MONITOR_H_
 #define __PHYSICAL_LAYER_MONITOR_H_
 
-#include <openpal/IPhysicalLayerCallbacks.h>
-#include <openpal/IExecutor.h>
-#include <openpal/TimeDuration.h>
-#include <openpal/LogRoot.h>
+#include <openpal/channel/IPhysicalLayerCallbacks.h>
+#include <openpal/executor/IExecutor.h>
+#include <openpal/executor/TimeDuration.h>
+#include <openpal/logging/LogRoot.h>
 
 #include "opendnp3/gen/ChannelState.h"
 #include "opendnp3/link/IOpenDelayStrategy.h"

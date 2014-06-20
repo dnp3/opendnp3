@@ -19,7 +19,7 @@
 
 #include "opendnp3/app/MeasurementFactory.h"
 #include "opendnp3/app/WriteConversions.h"
-#include <openpal/Serialization.h>
+#include <openpal/serialization/Serialization.h>
 
 using namespace openpal;
 

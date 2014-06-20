@@ -27,8 +27,8 @@
 
 #include <asiopal/SerialTypes.h>
 
-#include <openpal/ILogHandler.h>
-#include <openpal/TimeDuration.h>
+#include <openpal/logging/ILogHandler.h>
+#include <openpal/executor/TimeDuration.h>
 #include <openpal/IEventHandler.h>
 
 #include <opendnp3/gen/ChannelState.h>

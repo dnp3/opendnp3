@@ -20,7 +20,7 @@
  */
 #include "PhysLoopback.h"
 
-#include <openpal/IPhysicalLayer.h>
+#include <openpal/channel/IPhysicalLayer.h>
 
 using namespace openpal;
 

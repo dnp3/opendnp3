@@ -21,7 +21,7 @@
 #ifndef __OUTSTATION_PARAMS_H_
 #define __OUTSTATION_PARAMS_H_
 
-#include <openpal/TimeDuration.h>
+#include <openpal/executor/TimeDuration.h>
 
 namespace opendnp3
 {

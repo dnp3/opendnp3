@@ -20,8 +20,8 @@
  */
 #include <catch.hpp>
 
-#include <openpal/StaticBuffer.h>
-#include <openpal/RingBuffer.h>
+#include <openpal/container/StaticBuffer.h>
+#include <openpal/container/RingBuffer.h>
 
 using namespace openpal;
 

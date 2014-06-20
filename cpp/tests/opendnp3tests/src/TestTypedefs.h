@@ -21,7 +21,7 @@
 #ifndef __TEST_TYPEDEFS_H_
 #define __TEST_TYPEDEFS_H_
 
-#include <openpal/TimeDuration.h>
+#include <openpal/executor/TimeDuration.h>
 #include <functional>
 
 namespace opendnp3

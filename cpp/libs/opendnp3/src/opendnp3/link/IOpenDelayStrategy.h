@@ -21,7 +21,7 @@
 #ifndef __I_OPEN_DELAY_STRATEGY_H_
 #define __I_OPEN_DELAY_STRATEGY_H_
 
-#include <openpal/TimeDuration.h>
+#include <openpal/executor/TimeDuration.h>
 
 #include <openpal/Uncopyable.h>
 

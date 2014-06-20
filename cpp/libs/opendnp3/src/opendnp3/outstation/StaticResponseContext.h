@@ -21,8 +21,8 @@
 #ifndef __STATIC_RESPONSE_CONTEXT_H_
 #define __STATIC_RESPONSE_CONTEXT_H_
 
-#include <openpal/StaticQueue.h>
-#include <openpal/Serialization.h>
+#include <openpal/container/StaticQueue.h>
+#include <openpal/serialization/Serialization.h>
 
 #include <openpal/Uncopyable.h>
 #include "opendnp3/StaticSizeConfiguration.h"

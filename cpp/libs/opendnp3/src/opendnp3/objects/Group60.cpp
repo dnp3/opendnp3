@@ -17,7 +17,7 @@
 
 #include "Group60.h"
 
-#include <openpal/Serialization.h>
+#include <openpal/serialization/Serialization.h>
 
 using namespace openpal;
 

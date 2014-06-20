@@ -26,7 +26,7 @@
 #include "opendnp3/app/ObjectWriter.h"
 #include "opendnp3/outstation/Database.h"
 
-#include <openpal/Serialization.h>
+#include <openpal/serialization/Serialization.h>
 
 
 namespace opendnp3

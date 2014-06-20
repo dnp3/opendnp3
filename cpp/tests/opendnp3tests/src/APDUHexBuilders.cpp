@@ -21,7 +21,7 @@
 
 #include "APDUHexBuilders.h"
 
-#include <openpal/StaticBuffer.h>
+#include <openpal/container/StaticBuffer.h>
 #include <opendnp3/app/APDURequest.h>
 #include <opendnp3/app/APDUResponse.h>
 #include <opendnp3/app/APDUBuilders.h>

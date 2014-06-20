@@ -23,7 +23,7 @@
 
 #include "DestructorHook.h"
 
-#include <openpal/IExecutor.h>
+#include <openpal/executor/IExecutor.h>
 
 #include <opendnp3/StackStatistics.h>
 

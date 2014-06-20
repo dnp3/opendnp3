@@ -23,7 +23,7 @@
 
 #include <openpal/ReadOnlyBuffer.h>
 #include <openpal/Uncopyable.h>
-#include <openpal/Logger.h>
+#include <openpal/logging/Logger.h>
 
 #include "opendnp3/app/APDUHeader.h"
 

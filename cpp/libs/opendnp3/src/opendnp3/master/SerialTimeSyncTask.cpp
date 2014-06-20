@@ -26,7 +26,7 @@
 #include "opendnp3/app/APDUBuilders.h"
 #include "opendnp3/master/TimeSyncHandler.h"
 
-#include <openpal/Serialization.h>
+#include <openpal/serialization/Serialization.h>
 
 using namespace openpal;
 

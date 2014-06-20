@@ -22,7 +22,7 @@
 #ifndef __LINK_CHANNEL_STATISTICS_H_
 #define __LINK_CHANNEL_STATISTICS_H_
 
-#include <openpal/ChannelStatistics.h>
+#include <openpal/channel/ChannelStatistics.h>
 
 namespace opendnp3
 {

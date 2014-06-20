@@ -21,7 +21,8 @@
 #ifndef __STATIC_QUEUE_H_
 #define __STATIC_QUEUE_H_
 
-#include "Configure.h"
+#include "openpal/Configure.h"
+
 #include <assert.h>
 
 namespace openpal

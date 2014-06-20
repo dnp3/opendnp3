@@ -22,7 +22,7 @@
 
 #include <opendnp3/app/APDUBuilders.h>
 
-#include <openpal/IExecutor.h>
+#include <openpal/executor/IExecutor.h>
 
 #include <future>
 

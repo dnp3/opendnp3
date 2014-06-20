@@ -24,8 +24,6 @@
 #include "SerialTypes.h"
 #include "PhysicalLayerASIO.h"
 
-#include <openpal/Location.h>
-
 #include <asio/serial_port.hpp>
 
 #include <memory>

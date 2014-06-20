@@ -22,8 +22,8 @@
 
 #include <assert.h>
 
-#include <openpal/LogMacros.h>
-#include <openpal/Bind.h>
+#include <openpal/logging/LogMacros.h>
+#include <openpal/executor/Bind.h>
 
 #include "opendnp3/LogErrorCodes.h"
 #include "opendnp3/link/ILinkRouter.h"

@@ -22,8 +22,7 @@
 #ifndef __SELECTION_ITERATOR_H_
 #define __SELECTION_ITERATOR_H_
 
-#include <openpal/LinkedListAdapter.h>
-#include <openpal/Option.h>
+#include <openpal/container/LinkedListAdapter.h>
 
 #include "opendnp3/outstation/EventType.h"
 #include "opendnp3/outstation/EventBufferFacade.h"

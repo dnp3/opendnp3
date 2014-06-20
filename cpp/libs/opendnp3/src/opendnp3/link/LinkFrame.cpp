@@ -24,8 +24,8 @@
 #include "opendnp3/link/LinkHeader.h"
 #include "opendnp3/LogLevels.h"
 
-#include <openpal/Serialization.h>
-#include <openpal/LogMacros.h>
+#include <openpal/serialization/Serialization.h>
+#include <openpal/logging/LogMacros.h>
 #include <openpal/Configure.h>
 
 #include <assert.h>

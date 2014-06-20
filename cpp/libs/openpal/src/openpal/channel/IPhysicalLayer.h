@@ -22,10 +22,10 @@
 #define _I_PHYSICAL_LAYER_H_
 
 #include "LayerInterfaces.h"
-
-#include "ReadOnlyBuffer.h"
-#include "WriteBuffer.h"
 #include "ChannelStatistics.h"
+
+#include "openpal/ReadOnlyBuffer.h"
+#include "openpal/WriteBuffer.h"
 
 namespace openpal
 {

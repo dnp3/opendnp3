@@ -22,9 +22,8 @@
 
 #include <sstream>
 
-#include <openpal/Location.h>
-#include <openpal/Logger.h>
-#include <openpal/LogMacros.h>
+#include <openpal/logging/Logger.h>
+#include <openpal/logging/LogMacros.h>
 
 #include <asio.hpp>
 

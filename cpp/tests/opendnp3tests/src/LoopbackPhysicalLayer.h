@@ -23,7 +23,7 @@
 
 #include <asiopal/PhysicalLayerASIO.h>
 
-#include <openpal/IPhysicalLayerCallbacks.h>
+#include <openpal/channel/IPhysicalLayerCallbacks.h>
 
 #include <queue>
 

@@ -24,9 +24,9 @@
 #include <cstdint>
 #include <cstring>
 
-#include "ReadOnlyBuffer.h"
-#include "WriteBuffer.h"
-#include "Limits.h"
+#include "openpal/ReadOnlyBuffer.h"
+#include "openpal/WriteBuffer.h"
+#include "openpal/Limits.h"
 
 namespace openpal
 {

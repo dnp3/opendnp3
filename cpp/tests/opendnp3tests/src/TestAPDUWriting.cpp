@@ -24,8 +24,8 @@
 #include <opendnp3/app/APDUResponse.h>
 
 #include <openpal/ToHex.h>
-#include <openpal/Serialization.h>
-#include <openpal/StaticArray.h>
+#include <openpal/serialization/Serialization.h>
+#include <openpal/container/StaticArray.h>
 
 #include <opendnp3/objects/Group12.h>
 #include <opendnp3/objects/Group20.h>

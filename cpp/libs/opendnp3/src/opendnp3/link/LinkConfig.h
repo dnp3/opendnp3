@@ -21,7 +21,7 @@
 #ifndef __LINK_CONFIG_H_
 #define __LINK_CONFIG_H_
 
-#include <openpal/TimeDuration.h>
+#include <openpal/executor/TimeDuration.h>
 
 namespace opendnp3
 {

@@ -20,12 +20,13 @@
  */
 #include "PhysicalLayerBase.h"
 
-#include <openpal/IPhysicalLayerCallbacks.h>
-#include <openpal/LogMacros.h>
-#include <openpal/LogMessages.h>
-#include <openpal/IExecutor.h>
-#include <openpal/LogLevels.h>
-#include <openpal/Bind.h>
+#include <openpal/channel/IPhysicalLayerCallbacks.h>
+
+#include <openpal/logging/LogMacros.h>
+#include <openpal/logging/LogLevels.h>
+
+#include <openpal/executor/IExecutor.h>
+#include <openpal/executor/Bind.h>
 
 #include <sstream>
 
@@ -136,7 +137,7 @@ void PhysicalLayerBase::BeginOpen()
 	}
 	else
 	{
-		SIMPLE_LOG_BLOCK(logger, logflags::ERR, msgs::INVALID_OP_FOR_STATE);
+		SIMPLE_LOG_BLOCK(logger, logflags::ERR, "Invalid operation for state");
 	}
 }
 
@@ -171,7 +172,7 @@ void PhysicalLayerBase::StartClose()
 		}
 		else
 		{
-			SIMPLE_LOG_BLOCK(logger, logflags::ERR, msgs::INVALID_OP_FOR_STATE);
+			SIMPLE_LOG_BLOCK(logger, logflags::ERR, "Invalid operation for state");
 		}
 	}
 }
@@ -197,7 +198,7 @@ void PhysicalLayerBase::BeginWrite(const openpal::ReadOnlyBuffer& buffer)
 	}
 	else
 	{
-		SIMPLE_LOG_BLOCK(logger, logflags::ERR, msgs::INVALID_OP_FOR_STATE);
+		SIMPLE_LOG_BLOCK(logger, logflags::ERR, "Invalid operation for state");
 	}
 }
 
@@ -222,7 +223,7 @@ void PhysicalLayerBase::BeginRead(WriteBuffer& buffer)
 	}
 	else
 	{
-		SIMPLE_LOG_BLOCK(logger, logflags::ERR, msgs::INVALID_OP_FOR_STATE);
+		SIMPLE_LOG_BLOCK(logger, logflags::ERR, "Invalid operation for state");
 	}
 }
 
@@ -283,7 +284,7 @@ void PhysicalLayerBase::OnOpenCallback(const std::error_code& err)
 	}
 	else
 	{
-		SIMPLE_LOG_BLOCK(logger, logflags::ERR, msgs::INVALID_OP_FOR_STATE);
+		SIMPLE_LOG_BLOCK(logger, logflags::ERR, "Invalid operation for state");
 	}
 }
 
@@ -316,7 +317,7 @@ void PhysicalLayerBase::OnReadCallback(const std::error_code& err, uint8_t* pBuf
 	}
 	else
 	{
-		SIMPLE_LOG_BLOCK(logger, logflags::ERR, msgs::INVALID_OP_FOR_STATE);
+		SIMPLE_LOG_BLOCK(logger, logflags::ERR, "Invalid operation for state");
 	}
 }
 
@@ -348,7 +349,7 @@ void PhysicalLayerBase::OnWriteCallback(const std::error_code& err, uint32_t num
 	}
 	else
 	{
-		SIMPLE_LOG_BLOCK(logger, logflags::ERR, msgs::INVALID_OP_FOR_STATE);
+		SIMPLE_LOG_BLOCK(logger, logflags::ERR, "Invalid operation for state");
 	}
 }
 

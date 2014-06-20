@@ -21,12 +21,14 @@
 #ifndef __OUTSTATION_CONTEXT_H_
 #define __OUTSTATION_CONTEXT_H_
 
-#include <openpal/StaticBuffer.h>
-#include <openpal/IExecutor.h>
-#include <openpal/LogRoot.h>
-#include <openpal/LayerInterfaces.h>
-#include <openpal/Pair.h>
-#include <openpal/Settable.h>
+#include <openpal/logging/LogRoot.h>
+#include <openpal/executor/IExecutor.h>
+
+#include <openpal/channel/LayerInterfaces.h>
+
+#include <openpal/container/StaticBuffer.h>
+#include <openpal/container/Pair.h>
+#include <openpal/container/Settable.h>
 
 #include "opendnp3/outstation/Database.h"
 #include "opendnp3/outstation/ResponseContext.h"

@@ -23,7 +23,7 @@
 
 #include "opendnp3/app/APDUHandlerBase.h"
 
-#include <openpal/Serialization.h>
+#include <openpal/serialization/Serialization.h>
 
 namespace opendnp3
 {

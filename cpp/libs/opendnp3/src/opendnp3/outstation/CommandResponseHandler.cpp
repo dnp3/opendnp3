@@ -21,7 +21,7 @@
 
 #include "CommandResponseHandler.h"
 
-#include <openpal/Serialization.h>
+#include <openpal/serialization/Serialization.h>
 
 #include "opendnp3/objects/Group12.h"
 #include "opendnp3/objects/Group41.h"

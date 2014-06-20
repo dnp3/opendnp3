@@ -29,8 +29,8 @@
 #include <mutex>
 #include <condition_variable>
 
-#include <openpal/Logger.h>
-#include <openpal/TimeDuration.h>
+#include <openpal/logging/Logger.h>
+#include <openpal/executor/TimeDuration.h>
 #include <openpal/IMutex.h>
 #include <openpal/IShutdownHandler.h>
 #include <openpal/IEventHandler.h>

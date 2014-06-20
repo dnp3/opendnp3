@@ -24,7 +24,7 @@
 #include "opendnp3/master/ConstantCommandProcessor.h"
 #include "opendnp3/app/PointClass.h"
 
-#include <openpal/MonotonicTimestamp.h>
+#include <openpal/executor/MonotonicTimestamp.h>
 
 using namespace openpal;
 

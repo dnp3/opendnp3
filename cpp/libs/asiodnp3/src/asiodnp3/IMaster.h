@@ -26,7 +26,7 @@
 
 #include <opendnp3/master/MasterScan.h>
 #include <opendnp3/master/ICommandProcessor.h>
-#include <openpal/TimeDuration.h>
+#include <openpal/executor/TimeDuration.h>
 
 namespace asiodnp3
 {

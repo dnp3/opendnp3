@@ -18,17 +18,40 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __LOG_MESSAGES_H_
-#define __LOG_MESSAGES_H_
+#ifndef __LOGGER_H_
+#define __LOGGER_H_
 
-#include <cstdint>
+#include "LogEntry.h"
+#include "LogFilters.h"
+
+#include "openpal/Uncopyable.h"
 
 namespace openpal
 {
-namespace msgs
+
+class LogRoot;
+
+/**
+* Interface that represents a distinct logger with a name and running level
+*/
+class Logger
 {
-	const char* INVALID_OP_FOR_STATE = "Invalid operation for state";
-}
+	friend class LogRoot;
+
+public:	
+
+	void Log(const LogFilters& filters, char const* location, char const* message, int errorCode = -1);
+	
+	bool IsEnabled(const LogFilters& filters) const;	
+
+private:
+
+	Logger(LogRoot* pRoot);
+
+	LogRoot* pRoot;	
+};
+
 }
 
 #endif
+

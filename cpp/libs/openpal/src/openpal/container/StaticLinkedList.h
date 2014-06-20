@@ -21,7 +21,8 @@
 #ifndef __STATIC_LINKED_LIST_H_
 #define __STATIC_LINKED_LIST_H_
 
-#include "Uncopyable.h"
+#include "openpal/Uncopyable.h"
+
 #include "LinkedListAdapter.h"
 #include "StaticArray.h"
 

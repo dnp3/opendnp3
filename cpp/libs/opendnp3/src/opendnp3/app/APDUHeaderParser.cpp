@@ -23,7 +23,7 @@
 
 #include <openpal/Uncopyable.h>
 #include <openpal/ReadOnlyBuffer.h>
-#include <openpal/LogMacros.h>
+#include <openpal/logging/LogMacros.h>
 
 #include "opendnp3/LogLevels.h"
 #include "opendnp3/app/APDUHeader.h"

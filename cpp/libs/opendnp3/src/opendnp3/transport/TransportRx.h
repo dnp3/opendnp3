@@ -26,8 +26,8 @@
 #include "opendnp3/StackStatistics.h"
 
 #include <openpal/ReadOnlyBuffer.h>
-#include <openpal/StaticBuffer.h>
-#include <openpal/Logger.h>
+#include <openpal/container/StaticBuffer.h>
+#include <openpal/logging/Logger.h>
 
 namespace opendnp3
 {

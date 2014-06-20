@@ -23,7 +23,7 @@
 #include <functional>
 
 #include <openpal/ToHex.h>
-#include <openpal/StaticBuffer.h>
+#include <openpal/container/StaticBuffer.h>
 
 #include <opendnp3/link/LinkRoute.h>
 

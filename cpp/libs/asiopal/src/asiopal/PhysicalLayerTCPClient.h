@@ -23,9 +23,8 @@
 
 #include "PhysicalLayerBaseTCP.h"
 
-#include <openpal/LogMacros.h>
-#include <openpal/Location.h>
-#include <openpal/LogLevels.h>
+#include <openpal/logging/LogMacros.h>
+#include <openpal/logging/LogLevels.h>
 
 namespace asiopal
 {

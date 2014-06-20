@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include <openpal/TimeDuration.h>
+#include <openpal/executor/TimeDuration.h>
 
 #include <opendnp3/StackStatistics.h>
 #include <opendnp3/LogLevels.h>

@@ -20,9 +20,9 @@
  */
 #include <catch.hpp>
 
-#include <openpal/DynamicArray.h>
-#include <openpal/LinkedListAdapter.h>
-#include <openpal/StaticLinkedList.h>
+#include <openpal/container/DynamicArray.h>
+#include <openpal/container/LinkedListAdapter.h>
+#include <openpal/container/StaticLinkedList.h>
 
 using namespace openpal;
 

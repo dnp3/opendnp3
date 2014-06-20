@@ -21,7 +21,7 @@
 #include "MockPhysicalLayer.h"
 
 #include "BufferHelpers.h"
-#include <openpal/IExecutor.h>
+#include <openpal/executor/IExecutor.h>
 
 #include <memory.h>
 #include <functional>

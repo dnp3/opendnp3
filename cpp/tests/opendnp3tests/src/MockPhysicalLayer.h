@@ -23,7 +23,7 @@
 
 #include <asiopal/PhysicalLayerBase.h>
 
-#include <openpal/IPhysicalLayerCallbacks.h>
+#include <openpal/channel/IPhysicalLayerCallbacks.h>
 
 #include "BufferTestObject.h"
 

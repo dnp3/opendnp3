@@ -23,8 +23,8 @@
 
 #include "opendnp3/master/PollTaskBase.h"
 
-#include <openpal/Function1.h>
-#include <openpal/StaticQueue.h>
+#include <openpal/executor/Function1.h>
+#include <openpal/container/StaticQueue.h>
 
 namespace opendnp3
 {

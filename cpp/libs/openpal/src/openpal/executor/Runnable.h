@@ -18,47 +18,31 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __STATIC_BUFFER_H_
-#define __STATIC_BUFFER_H_
+#ifndef __RUNNABLE_H_
+#define __RUNNABLE_H_
 
-#include "StaticArray.h"
-#include "WriteBuffer.h"
-#include "ReadOnlyBuffer.h"
-#include <cstdint>
+#include "Erasure.h"
+#include "openpal/StaticSizeConfiguration.h"
 
 namespace openpal
 {
 
-template <uint32_t N>
-class StaticBuffer : public StaticArray<uint8_t, uint32_t, N>
+class Runnable : public Erasure<sizes::MAX_FUNCTION_ZERO_SIZE>
 {
-
 public:
 
-	StaticBuffer() : StaticArray<uint8_t, uint32_t, N>()
-	{}
+	Runnable();
 
-	ReadOnlyBuffer ToReadOnly() const
-	{
-		return ReadOnlyBuffer(this->buffer, this->size);
-	}
+	Runnable& operator=(const Runnable& other);
 
-	WriteBuffer GetWriteBuffer()
-	{
-		return WriteBuffer(this->buffer, this->Size());
-	}
+	bool operator()() const;
 
-	WriteBuffer GetWriteBuffer(uint32_t maxSize)
-	{		
-		if (maxSize <= this->Size())
-		{
-			return WriteBuffer(this->buffer, maxSize);
-		}
-		else
-		{
-			return GetWriteBuffer();
-		}
-	}
+	void Run() const;
+
+protected:
+
+	Runnable(Invoke pInvoke_, uint32_t size_);
+
 };
 
 }

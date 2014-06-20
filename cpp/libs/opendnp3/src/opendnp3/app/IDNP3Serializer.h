@@ -21,7 +21,7 @@
 #ifndef __I_DNP3_SERIALIZER_H_
 #define __I_DNP3_SERIALIZER_H_
 
-#include <openpal/ISerializer.h>
+#include <openpal/serialization/ISerializer.h>
 
 #include "GroupVariationID.h"
 

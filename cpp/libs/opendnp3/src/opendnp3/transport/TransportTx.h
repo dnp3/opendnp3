@@ -21,8 +21,8 @@
 #ifndef __TRANSPORT_TX_H_
 #define __TRANSPORT_TX_H_
 
-#include <openpal/StaticBuffer.h>
-#include <openpal/Logger.h>
+#include <openpal/container/StaticBuffer.h>
+#include <openpal/logging/Logger.h>
 
 #include "opendnp3/StackStatistics.h"
 #include "opendnp3/link/ITransportSegment.h"

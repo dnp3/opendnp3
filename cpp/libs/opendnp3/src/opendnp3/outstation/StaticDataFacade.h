@@ -21,7 +21,7 @@
 #ifndef __STATIC_DATA_FACADE_H_
 #define __STATIC_DATA_FACADE_H_
 
-#include <openpal/Indexable.h>
+#include <openpal/container/Indexable.h>
 
 #include "opendnp3/app/MeasurementTypes.h"
 

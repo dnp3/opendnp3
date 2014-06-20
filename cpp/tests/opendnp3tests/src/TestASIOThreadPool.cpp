@@ -25,7 +25,7 @@
 #include <asiopal/ASIOExecutor.h>
 #include <asiodnp3/ConsoleLogger.h>
 
-#include <openpal/LogRoot.h>
+#include <openpal/logging/LogRoot.h>
 
 #include <opendnp3/LogLevels.h>
 

@@ -29,8 +29,6 @@
 #include <opendnp3/link/ILinkRouter.h>
 #include <opendnp3/transport/TransportStack.h>
 
-#include <openpal/Location.h>
-
 #include "IOutstation.h"
 #include "Mutex.h"
 #include "StackActionHandler.h"

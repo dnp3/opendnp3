@@ -22,7 +22,7 @@
 #define __STATICALLY_ALLOCATED_DATABASE_H_
 
 #include "opendnp3/outstation/StaticDataFacade.h"
-#include <openpal/StaticArray.h>
+#include <openpal/container/StaticArray.h>
 
 namespace opendnp3
 {

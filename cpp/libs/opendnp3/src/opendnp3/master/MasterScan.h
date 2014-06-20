@@ -21,7 +21,7 @@
 #ifndef __MASTER_SCAN_H_
 #define __MASTER_SCAN_H_
 
-#include <openpal/IExecutor.h>
+#include <openpal/executor/IExecutor.h>
 
 #include "opendnp3/master/IMasterScheduler.h"
 #include "opendnp3/master/ITaskListener.h"

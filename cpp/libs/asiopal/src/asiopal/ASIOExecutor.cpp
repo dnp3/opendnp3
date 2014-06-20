@@ -22,8 +22,6 @@
 
 #include "TimerASIO.h"
 
-#include <openpal/Location.h>
-
 #include <asio.hpp>
 #include <functional>
 

@@ -38,7 +38,7 @@
 
 #include "opendnp3/outstation/ClassBasedRequestHandler.h"
 
-#include <openpal/LogMacros.h>
+#include <openpal/logging/LogMacros.h>
 
 using namespace openpal;
 

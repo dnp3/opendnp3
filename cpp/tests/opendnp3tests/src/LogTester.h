@@ -21,7 +21,7 @@
 #ifndef __LOG_TESTER_H_
 #define __LOG_TESTER_H_
 
-#include <openpal/LogRoot.h>
+#include <openpal/logging/LogRoot.h>
 
 #include <string>
 #include <queue>

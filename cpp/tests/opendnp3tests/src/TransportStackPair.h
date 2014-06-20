@@ -29,7 +29,7 @@ class io_service;
 #include <asiopal/PhysicalLayerTCPClient.h>
 #include <asiopal/PhysicalLayerTCPServer.h>
 
-#include <openpal/IExecutor.h>
+#include <openpal/executor/IExecutor.h>
 
 #include "TransportIntegrationStack.h"
 

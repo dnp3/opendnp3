@@ -26,7 +26,7 @@
 
 #include "opendnp3/outstation/ITimeWriteHandler.h"
 
-#include <openpal/Logger.h>
+#include <openpal/logging/Logger.h>
 
 namespace opendnp3
 {

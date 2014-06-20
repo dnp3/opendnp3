@@ -25,7 +25,7 @@
 #include "opendnp3/outstation/OutstationContext.h"
 
 
-#include <openpal/LogMacros.h>
+#include <openpal/logging/LogMacros.h>
 
 namespace opendnp3
 {

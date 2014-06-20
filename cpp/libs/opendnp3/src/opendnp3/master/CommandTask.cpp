@@ -21,7 +21,7 @@
 #include "CommandTask.h"
 
 
-#include <openpal/LogMacros.h>
+#include <openpal/logging/LogMacros.h>
 
 #include "opendnp3/app/APDUParser.h"
 

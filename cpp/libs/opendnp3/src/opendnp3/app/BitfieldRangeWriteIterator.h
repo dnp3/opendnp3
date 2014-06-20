@@ -22,7 +22,7 @@
 #define __BITFIELD_RANGE_WRITE_ITERATOR_H_
 
 #include <openpal/WriteBuffer.h>
-#include <openpal/ISerializer.h>
+#include <openpal/serialization/ISerializer.h>
 
 namespace opendnp3
 {

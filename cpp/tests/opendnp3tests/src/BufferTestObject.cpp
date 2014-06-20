@@ -26,7 +26,6 @@
 
 #include "HexConversions.h"
 
-#include <openpal/Location.h>
 #include <openpal/ToHex.h>
 
 using namespace openpal;

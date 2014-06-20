@@ -23,8 +23,8 @@
 
 #include <openpal/IShutdownHandler.h>
 #include <openpal/IEventHandler.h>
-#include <openpal/StaticLinkedList.h>
-#include <openpal/StaticQueue.h>
+#include <openpal/container/StaticLinkedList.h>
+#include <openpal/container/StaticQueue.h>
 
 #include "opendnp3/link/PhysicalLayerMonitor.h"
 #include "opendnp3/link/LinkLayerParser.h"

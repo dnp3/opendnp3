@@ -20,7 +20,7 @@
  */
 #include "StaticResponseContext.h"
 
-#include <openpal/Serialization.h>
+#include <openpal/serialization/Serialization.h>
 
 #include "opendnp3/app/WriteConversions.h"
 

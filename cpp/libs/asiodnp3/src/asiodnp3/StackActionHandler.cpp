@@ -21,8 +21,8 @@
 
 #include "StackActionHandler.h"
 
-#include <openpal/IExecutor.h>
-#include <openpal/Bind.h>
+#include <openpal/executor/IExecutor.h>
+#include <openpal/executor/Bind.h>
 
 #include "opendnp3/link/LinkLayerRouter.h"
 

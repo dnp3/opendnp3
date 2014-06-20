@@ -18,51 +18,46 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __OPENPAL_BIND_H_
-#define __OPENPAL_BIND_H_
+#include "TimeDuration.h"
 
-#include "Runnable.h"
-#include "Configure.h"
-#include "StaticSizeConfiguration.h"
+#include "openpal/Limits.h"
 
 namespace openpal
 {
 
-template <class Lambda>
-class LambdaRunnable : public Runnable
+TimeDuration TimeDuration::Min()
 {
-	static_assert(sizeof(Lambda) <= sizes::MAX_FUNCTION_ZERO_SIZE, "Lambda is too big for static buffer");
-
-	public:
-
-	LambdaRunnable(Lambda& lambda) : Runnable(&RunLambda, sizeof(Lambda))
-	{
-		new(bytes) Lambda(lambda); // use placement new
-	}
-
-	private:
-
-	static void RunLambda(const uint8_t* pBuffer)
-	{
-		(*reinterpret_cast<const Lambda*>(pBuffer))();		
-	}
-};
-
-template <class T>
-Runnable BindDelete(T* pType)
-{
-	auto lambda = [pType]() { delete pType; };
-	return Bind(lambda);
+	return TimeDuration(openpal::MinValue<int64_t>());
 }
 
-
-
-template <class Lambda>
-Runnable Bind(Lambda& lambda)
+TimeDuration TimeDuration::Zero()
 {
-	return LambdaRunnable<Lambda>(lambda);
+	return TimeDuration(0);
+}
+
+TimeDuration TimeDuration::Milliseconds(int64_t aMilliseconds)
+{
+	return TimeDuration(aMilliseconds);
+}
+
+TimeDuration TimeDuration::Seconds(int64_t aSeconds)
+{
+	return TimeDuration(1000 * aSeconds);
+}
+
+TimeDuration TimeDuration::Minutes(int64_t aMinutes)
+{
+	return TimeDuration(static_cast<int64_t>(1000) * static_cast<int64_t>(60) * aMinutes);
+}
+
+TimeDuration::TimeDuration() : TimeDurationBase(0) {}
+
+TimeDuration::TimeDuration(int64_t aMilliseconds) : TimeDurationBase(aMilliseconds)
+{}
+
+bool operator==(const TimeDuration& lhs, const TimeDuration& rhs)
+{
+	return lhs.GetMilliseconds() == rhs.GetMilliseconds();
 }
 
 }
-
-#endif

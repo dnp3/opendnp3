@@ -23,7 +23,7 @@
 
 #include <string>
 
-#include <openpal/TimeDuration.h>
+#include <openpal/executor/TimeDuration.h>
 
 namespace asiopal
 {

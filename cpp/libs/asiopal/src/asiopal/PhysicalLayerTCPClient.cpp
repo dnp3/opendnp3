@@ -25,8 +25,8 @@
 #include <functional>
 #include <string>
 
-#include <openpal/IPhysicalLayerCallbacks.h>
-#include <openpal/LogLevels.h>
+#include <openpal/channel/IPhysicalLayerCallbacks.h>
+#include <openpal/logging/LogLevels.h>
 
 using namespace asio;
 using namespace std;

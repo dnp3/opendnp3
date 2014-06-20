@@ -20,8 +20,8 @@
  */
 #include <catch.hpp>
 
-#include <openpal/StaticArray.h>
-#include <openpal/StackAdapter.h>
+#include <openpal/container/StaticArray.h>
+#include <openpal/container/StackAdapter.h>
 
 using namespace openpal;
 

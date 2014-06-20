@@ -24,8 +24,8 @@
 
 
 #include <openpal/WriteBuffer.h>
-#include <openpal/StaticBuffer.h>
-#include <openpal/Logger.h>
+#include <openpal/container/StaticBuffer.h>
+#include <openpal/logging/Logger.h>
 
 #include "opendnp3/LogErrorCodes.h"
 

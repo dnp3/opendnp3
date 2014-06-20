@@ -23,7 +23,7 @@
 #include "opendnp3/transport/TransportLayer.h"
 #include "opendnp3/LogLevels.h"
 
-#include <openpal/LogMacros.h>
+#include <openpal/logging/LogMacros.h>
 
 #include <assert.h>
 

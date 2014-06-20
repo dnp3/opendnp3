@@ -21,7 +21,7 @@
 #ifndef __MOCK_EXECUTOR_H_
 #define __MOCK_EXECUTOR_H_
 
-#include <openpal/IExecutor.h>
+#include <openpal/executor/IExecutor.h>
 
 #include <map>
 #include <queue>

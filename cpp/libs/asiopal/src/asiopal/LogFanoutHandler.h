@@ -24,7 +24,7 @@
 #include <mutex>
 #include <vector>
 
-#include <openpal/ILogHandler.h>
+#include <openpal/logging/ILogHandler.h>
 #include <openpal/Uncopyable.h>
 
 namespace asiopal

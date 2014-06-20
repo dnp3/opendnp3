@@ -23,7 +23,7 @@
 #include "LinkReceiverTest.h"
 #include "DNPHelpers.h"
 
-#include <openpal/StaticBuffer.h>
+#include <openpal/container/StaticBuffer.h>
 
 using namespace openpal;
 using namespace opendnp3;

@@ -21,12 +21,12 @@
 #ifndef __MASTER_CONTEXT_H_
 #define __MASTER_CONTEXT_H_
 
-#include <openpal/LayerInterfaces.h>
+#include <openpal/channel/LayerInterfaces.h>
 
-#include <openpal/IExecutor.h>
-#include <openpal/LogRoot.h>
-#include <openpal/StaticQueue.h>
-#include <openpal/StaticBuffer.h>
+#include <openpal/executor/IExecutor.h>
+#include <openpal/logging/LogRoot.h>
+#include <openpal/container/StaticQueue.h>
+#include <openpal/container/StaticBuffer.h>
 
 #include "opendnp3/master/MasterScheduler.h"
 

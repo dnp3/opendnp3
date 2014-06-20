@@ -20,8 +20,8 @@
  */
 #include "ConstantCommandProcessor.h"
 
-#include <openpal/IExecutor.h>
-#include <openpal/Bind.h>
+#include <openpal/executor/IExecutor.h>
+#include <openpal/executor/Bind.h>
 
 using namespace openpal;
 

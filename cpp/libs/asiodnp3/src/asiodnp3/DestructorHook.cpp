@@ -20,7 +20,7 @@
  */
 #include "DestructorHook.h"
 
-#include <openpal/IExecutor.h>
+#include <openpal/executor/IExecutor.h>
 
 namespace asiodnp3
 {

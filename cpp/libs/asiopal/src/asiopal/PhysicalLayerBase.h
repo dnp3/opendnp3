@@ -21,8 +21,8 @@
 #ifndef __PHYSICAL_LAYER_BASE_H_
 #define __PHYSICAL_LAYER_BASE_H_
 
-#include <openpal/IPhysicalLayer.h>
-#include <openpal/LogRoot.h>
+#include <openpal/channel/IPhysicalLayer.h>
+#include <openpal/logging/LogRoot.h>
 
 #include <system_error>
 

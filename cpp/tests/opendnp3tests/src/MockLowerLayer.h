@@ -24,8 +24,8 @@
 #include <queue>
 #include <string>
 
-#include <openpal/LogRoot.h>
-#include <openpal/LayerInterfaces.h>
+#include <openpal/logging/LogRoot.h>
+#include <openpal/channel/LayerInterfaces.h>
 
 namespace opendnp3
 {

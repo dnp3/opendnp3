@@ -22,9 +22,9 @@
 #ifndef __MASTER_SCHEDULER_H_
 #define __MASTER_SCHEDULER_H_
 
-#include <openpal/StaticPriorityQueue.h>
-#include <openpal/Function1.h>
-#include <openpal/IExecutor.h>
+#include <openpal/container/StaticPriorityQueue.h>
+#include <openpal/executor/Function1.h>
+#include <openpal/executor/IExecutor.h>
 
 #include "opendnp3/master/MasterTasks.h"
 #include "opendnp3/master/PollTask.h"

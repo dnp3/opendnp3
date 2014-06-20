@@ -22,7 +22,7 @@
 #define __MOCK_UPPER_LAYER_H_
 
 
-#include <openpal/LayerInterfaces.h>
+#include <openpal/channel/LayerInterfaces.h>
 
 #include <functional>
 
