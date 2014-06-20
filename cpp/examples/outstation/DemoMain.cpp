@@ -46,7 +46,8 @@ int main(int argc, char* argv[])
 {
 
 	// Specify what log levels to use. NORMAL is warning and above
-	const uint32_t FILTERS = levels::NORMAL | levels::ALL_COMMS;
+	// You can add all the comms logging by uncommenting below.
+	const uint32_t FILTERS = levels::NORMAL; // | levels::ALL_COMMS;
 
 	// This is the main point of interaction with the stack
 	DNP3Manager manager(std::thread::hardware_concurrency());

@@ -26,7 +26,10 @@
 #include <iostream>
 #include <assert.h>
 
+#include <opendnp3/LogLevels.h>
+
 using namespace std;
+using namespace opendnp3;
 using namespace std::chrono;
 
 namespace asiodnp3
@@ -34,26 +37,14 @@ namespace asiodnp3
 
 ConsoleLogger ConsoleLogger::instance;
 
-ConsoleLogger::ConsoleLogger() : pLevelToString(&BasicFlags), printLocation(false)
+ConsoleLogger::ConsoleLogger() : printLocation(false)
 {
 
-}
-
-std::ostringstream& ConsoleLogger::BasicFlags(std::ostringstream& ss, const openpal::LogFilters& filters)
-{
-	ss << filters.GetBitfield();
-	return ss;
 }
 
 void ConsoleLogger::SetPrintLocation(bool printLocation_)
 {
 	printLocation = printLocation_;
-}
-
-void ConsoleLogger::SetFilterInterpreter(LevelToString pLevelToString_)
-{
-	assert(pLevelToString_ != nullptr);
-	pLevelToString = pLevelToString_;
 }
 
 void ConsoleLogger::Log(const openpal::LogEntry& entry)
@@ -63,9 +54,8 @@ void ConsoleLogger::Log(const openpal::LogEntry& entry)
 
 	ostringstream oss;
 
-	oss << "ms(" << num << ") - [";
-	pLevelToString(oss, entry.GetFilters());
-	oss << "] - " << entry.GetId() << " - ";	
+	oss << "ms(" << num << ") " << FilterToString(entry.GetFilters());
+	oss << " " << entry.GetId();
 	if (printLocation)
 	{
 		oss << " - " << entry.GetLocation();
@@ -79,6 +69,42 @@ void ConsoleLogger::Log(const openpal::LogEntry& entry)
 
 	std::unique_lock<std::mutex> lock(mutex);
 	std::cout << oss.str() << std::endl;
+}
+
+std::string ConsoleLogger::FilterToString(const openpal::LogFilters& filters)
+{
+	switch (filters.GetBitfield())
+	{
+		
+		case(flags::EVENT) :
+			return "EVENT";
+		case(flags::ERR) :
+			return "ERROR";
+		case(flags::WARN) :
+			return "WARN";
+		case(flags::INFO) :
+			return "INFO";
+		case(flags::DBG) :
+			return "DEBUG";
+		case(flags::LINK_RX) :			
+		case(flags::LINK_RX_HEX) :
+			return "<--LINK-";
+		case(flags::LINK_TX) :			
+		case(flags::LINK_TX_HEX) :
+			return "-LINK-->";
+		case(flags::TRANSPORT_RX) :
+			return "<--TRANS-";
+		case(flags::TRANSPORT_TX) :
+			return "-TRANS-->";
+		case(flags::APP_HEADER_RX) :
+		case(flags::APP_OBJECT_RX) :
+			return "<--APP-";
+		case(flags::APP_HEADER_TX) :
+		case(flags::APP_OBJECT_TX) :
+			return "-APP-->";		
+		default:
+			return "UNKNOWN";
+	}
 }
 
 } //end ns

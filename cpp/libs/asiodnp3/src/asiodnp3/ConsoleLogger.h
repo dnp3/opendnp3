@@ -27,6 +27,8 @@
 namespace asiodnp3
 {
 
+std::ostringstream& operator<<(std::ostringstream& ss, const openpal::LogFilters& filters);
+
 /**
 * Singleton class that prints all log messages to the console
 *
@@ -35,29 +37,21 @@ namespace asiodnp3
 class ConsoleLogger : public openpal::ILogBase
 {
 
-public:
-	typedef std::ostringstream& (*LevelToString)(std::ostringstream& ss, const openpal::LogFilters& filters);
-	typedef std::ostringstream& (*SourceToString)(std::ostringstream& ss, int source);
+public:	
 
 	void Log( const openpal::LogEntry& entry );
 	
 	void SetPrintLocation(bool printLocation);
 
-	void SetFilterInterpreter(LevelToString pInterpreter);
-
-	void SetSourceInterpreter(SourceToString pInterpreter);
-
 	static openpal::ILogBase& Instance() { return instance; };
 
 private:
 
-	ConsoleLogger();
+	static std::string FilterToString(const openpal::LogFilters& filters);
 
-	static std::ostringstream& BasicFlags(std::ostringstream& ss, const openpal::LogFilters& filters);	
+	ConsoleLogger();	
 
-	static ConsoleLogger instance;
-
-	LevelToString pLevelToString;	
+	static ConsoleLogger instance;	
 
 	bool printLocation;
 	std::mutex mutex;
