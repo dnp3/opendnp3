@@ -21,7 +21,8 @@
 #ifndef __TIME_TRANSACTION_H_
 #define	__TIME_TRANSACTION_H_
 
-#include <openpal/ITransactable.h>
+#include "opendnp3/ITransactable.h"
+
 #include <openpal/executor/UTCTimestamp.h>
 
 #include "opendnp3/outstation/IMeasurementLoader.h"
@@ -29,7 +30,7 @@
 namespace opendnp3
 {
 
-class TimeTransaction : private openpal::Transaction
+class TimeTransaction : private Transaction
 {
 public:
 	TimeTransaction(IMeasurementLoader* pObserver_, openpal::UTCTimestamp timestamp_);

@@ -21,8 +21,7 @@
 #ifndef __I_MEASUREMENT_LOADER_H_
 #define	__I_MEASUREMENT_LOADER_H_
 
-#include <openpal/ITransactable.h>
-
+#include "opendnp3/ITransactable.h"
 #include "opendnp3/app/MeasurementTypes.h"
 
 
@@ -46,7 +45,7 @@ exception-safe Transaction object.
 \endcode
 
 */
-class IMeasurementLoader : public openpal::ITransactable
+class IMeasurementLoader : public ITransactable
 {
 public:
 

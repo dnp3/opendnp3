@@ -44,12 +44,12 @@ void MultiplexingDataObserver :: AddObserver(IMeasurementLoader* apObserver)
 
 void MultiplexingDataObserver::Start()
 {
-	for (auto pObs : mObservers) openpal::Transaction::Start(pObs);
+	for (auto pObs : mObservers) Transaction::Start(pObs);
 }
 
 void MultiplexingDataObserver::End()
 {
-	for (auto pObs : mObservers) openpal::Transaction::End(pObs);
+	for (auto pObs : mObservers) Transaction::End(pObs);
 }
 
 void MultiplexingDataObserver :: Update(const Binary& arPoint, uint16_t aIndex)

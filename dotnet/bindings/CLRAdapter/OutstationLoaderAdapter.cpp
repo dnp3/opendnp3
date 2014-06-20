@@ -13,7 +13,7 @@ OutstationLoaderAdapter::OutstationLoaderAdapter(opendnp3::IMeasurementLoader* p
 
 void OutstationLoaderAdapter::Start()
 {
-	openpal::Transaction::Start(proxy);
+	opendnp3::Transaction::Start(proxy);
 }
 
 void OutstationLoaderAdapter::Update(Binary^ meas, System::UInt32 index)
@@ -48,7 +48,7 @@ void OutstationLoaderAdapter::Update(AnalogOutputStatus^ meas, System::UInt32 in
 
 void OutstationLoaderAdapter::End()
 {
-	openpal::Transaction::End(proxy);
+	opendnp3::Transaction::End(proxy);
 }
 
 

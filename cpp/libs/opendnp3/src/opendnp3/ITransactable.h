@@ -21,12 +21,9 @@
 #ifndef __I_TRANSACTABLE_H_
 #define	__I_TRANSACTABLE_H_
 
-#include "Configure.h"
-#include <assert.h>
+#include <openpal/Uncopyable.h>
 
-#include "Uncopyable.h"
-
-namespace openpal
+namespace opendnp3
 {
 
 /**
@@ -52,20 +49,25 @@ class Transaction : private openpal::Uncopyable
 {
 public:
 
-	Transaction(ITransactable& arTransactable) : mpTransactable(&arTransactable)
+	Transaction(ITransactable& transactable) : pTransactable(&transactable)
 	{
-		mpTransactable->Start();
+		pTransactable->Start();
 	}
 
-	Transaction(ITransactable* apTransactable) : mpTransactable(apTransactable)
+	Transaction(ITransactable* pTransactable_) : pTransactable(pTransactable_)
 	{
-		assert(mpTransactable != nullptr);
-		mpTransactable->Start();
+		if (pTransactable)
+		{
+			pTransactable->Start();
+		}				
 	}
 
 	~Transaction()
 	{
-		mpTransactable->End();
+		if (pTransactable)
+		{
+			pTransactable->End();
+		}		
 	}
 
 	static void Start(ITransactable* t)
@@ -91,7 +93,7 @@ public:
 	}
 
 private:
-	ITransactable* mpTransactable;
+	ITransactable* pTransactable;
 
 };
 

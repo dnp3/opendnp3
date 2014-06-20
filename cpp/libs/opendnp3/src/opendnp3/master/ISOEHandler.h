@@ -21,7 +21,7 @@
 #ifndef __I_SOE_HANDLER_H_
 #define	__I_SOE_HANDLER_H_
 
-#include <openpal/ITransactable.h>
+#include "opendnp3/ITransactable.h"
 #include "opendnp3/app/IterableBuffer.h"
 #include "opendnp3/app/IndexedValue.h"
 #include "opendnp3/app/MeasurementTypes.h"
@@ -37,7 +37,7 @@ namespace opendnp3
 * A call is made to the appropriate member method for every header in a APDU
 *
 */
-class ISOEHandler : public openpal::ITransactable
+class ISOEHandler : public ITransactable
 {
 public:
 

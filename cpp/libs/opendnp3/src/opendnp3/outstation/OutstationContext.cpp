@@ -386,7 +386,7 @@ OutstationSolicitedStateBase* OutstationContext::ContinueMultiFragResponse(uint8
 	auto response = this->StartNewSolicitedResponse();
 	auto writer = response.GetWriter();
 	response.SetFunction(FunctionCode::RESPONSE);	
-	openpal::Transaction tx(this->pDatabase);	
+	Transaction tx(this->pDatabase);	
 	auto control = this->rspContext.LoadSolicited(writer, eventConfig);
 	control.SEQ = seq;
 	expectedSolConfirmSeq = seq;
@@ -460,7 +460,7 @@ void OutstationContext::CheckForUnsolicited()
 				{
 					// even though we're not loading static data, we need to lock 
 					// the database since it updates the event buffer					
-					openpal::Transaction tx(pDatabase);
+					Transaction tx(pDatabase);
 					auto iterator = eventBuffer.SelectEvents(criteria);
 					auto writer = unsol.GetWriter();
 					EventWriter::WriteEventHeaders(writer, iterator, eventConfig);
@@ -552,7 +552,7 @@ Pair<IINField, AppControlField> OutstationContext::HandleRead(const openpal::Rea
 		// Do a transaction on the database (lock) for multi-threaded environments
 		// if the request contained static variations, we double buffer (copy) the entire static database.
 		// this ensures that multi-fragmented responses see a consistent snapshot of the state
-		openpal::Transaction tx(pDatabase);
+		Transaction tx(pDatabase);
 		pDatabase->DoubleBuffer();
 		auto control = rspContext.LoadSolicited(writer, eventConfig);		
 		return Pair<IINField, AppControlField>(handler.Errors(), control);
