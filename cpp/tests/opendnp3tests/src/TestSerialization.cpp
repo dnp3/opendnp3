@@ -23,7 +23,7 @@
 #include "BufferHelpers.h"
 
 #include <openpal/serialization/Serialization.h>
-#include <openpal/Comparisons.h>
+#include <openpal/util/Comparisons.h>
 
 #include <memory>
 

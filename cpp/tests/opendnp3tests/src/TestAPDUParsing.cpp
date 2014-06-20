@@ -26,7 +26,7 @@
 #include "MeasurementComparisons.h"
 #include "HexConversions.h"
 
-#include <openpal/ToHex.h>
+#include <openpal/util/ToHex.h>
 
 #include <opendnp3/LogLevels.h>
 #include <opendnp3/app/APDUParser.h>

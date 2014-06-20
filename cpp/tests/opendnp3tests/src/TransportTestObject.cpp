@@ -22,7 +22,7 @@
 
 #include "BufferHelpers.h"
 
-#include <openpal/ToHex.h>
+#include <openpal/util/ToHex.h>
 
 #include <memory>
 #include <sstream>

@@ -22,7 +22,7 @@
 
 #include <cstring>
 
-#include "openpal/Limits.h"
+#include "openpal/util/Limits.h"
 
 namespace openpal
 {

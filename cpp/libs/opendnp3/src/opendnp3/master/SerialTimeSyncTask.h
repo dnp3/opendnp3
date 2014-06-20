@@ -21,7 +21,7 @@
 #ifndef __SERIAL_TIME_SYNC_TASK_H_
 #define __SERIAL_TIME_SYNC_TASK_H_
 
-#include <openpal/IUTCTimeSource.h>
+#include <openpal/executor/IUTCTimeSource.h>
 
 #include "opendnp3/master/SingleResponseTask.h"
 

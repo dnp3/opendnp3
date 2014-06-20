@@ -20,7 +20,8 @@
  */
 #include "ReadOnlyBuffer.h"
 
-#include "Comparisons.h"
+#include "openpal/util/Comparisons.h"
+
 #include "WriteBuffer.h"
 
 #include <cstring>

@@ -21,7 +21,7 @@
 
 #include "StaticRange.h"
 
-#include <openpal/Limits.h>
+#include <openpal/util/Limits.h>
 
 namespace opendnp3
 {

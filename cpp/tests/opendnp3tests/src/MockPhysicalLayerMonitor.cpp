@@ -24,8 +24,8 @@
 
 #include <openpal/logging/LogMacros.h>
 #include <openpal/channel/IPhysicalLayer.h>
-#include <openpal/ToHex.h>
-#include <openpal/Comparisons.h>
+#include <openpal/util/ToHex.h>
+#include <openpal/util/Comparisons.h>
 
 #include <opendnp3/LogLevels.h>
 

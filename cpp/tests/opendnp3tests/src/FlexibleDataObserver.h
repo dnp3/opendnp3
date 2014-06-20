@@ -24,7 +24,7 @@
 #include <opendnp3/outstation/IMeasurementLoader.h>
 #include <opendnp3/master/ISOEHandler.h>
 
-#include <openpal/Comparisons.h>
+#include <openpal/util/Comparisons.h>
 
 #include <iostream>
 #include <map>

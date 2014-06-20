@@ -21,7 +21,7 @@
 #ifndef __UTC_TIME_SOURCE_H_
 #define __UTC_TIME_SOURCE_H_
 
-#include <openpal/IUTCTimeSource.h>
+#include <openpal/executor/IUTCTimeSource.h>
 
 namespace asiopal
 {

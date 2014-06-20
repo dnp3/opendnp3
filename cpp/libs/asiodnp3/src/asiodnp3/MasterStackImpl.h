@@ -27,7 +27,7 @@
 #include <opendnp3/master/Master.h>
 #include <opendnp3/transport/TransportStack.h>
 
-#include <openpal/IUTCTimeSource.h>
+#include <openpal/executor/IUTCTimeSource.h>
 
 namespace asiodnp3
 {

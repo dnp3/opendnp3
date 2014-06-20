@@ -38,11 +38,14 @@
     <Filter Include="Source\serialization">
       <UniqueIdentifier>{4a10c1bd-a770-42cb-8568-c723583e5687}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header\util">
+      <UniqueIdentifier>{76e774fb-2301-4a9a-a314-83d71ba8d86d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\util">
+      <UniqueIdentifier>{008ecbbf-559a-4d65-a31f-0d13eaf5ec92}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\openpal\Comparisons.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\openpal\Configure.h">
       <Filter>Header</Filter>
     </ClInclude>
@@ -58,31 +61,13 @@
     <ClInclude Include="src\openpal\ITransactable.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\openpal\IUTCTimeSource.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="src\openpal\Limits.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="src\openpal\Location.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="src\openpal\LogFilters.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\openpal\ReadOnlyBuffer.h">
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="src\openpal\StaticSizeConfiguration.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\openpal\ToHex.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\openpal\Uncopyable.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="src\openpal\UTCTimestamp.h">
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="src\openpal\WriteBuffer.h">
@@ -223,15 +208,24 @@
     <ClInclude Include="src\openpal\serialization\UInt48LE.h">
       <Filter>Header\serialization</Filter>
     </ClInclude>
+    <ClInclude Include="src\openpal\executor\IUTCTimeSource.h">
+      <Filter>Header\executor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\openpal\executor\UTCTimestamp.h">
+      <Filter>Header\executor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\openpal\util\Comparisons.h">
+      <Filter>Header\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\openpal\util\Limits.h">
+      <Filter>Header\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\openpal\util\ToHex.h">
+      <Filter>Header\util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\openpal\Limits.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="src\openpal\ReadOnlyBuffer.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="src\openpal\ToHex.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\openpal\WriteBuffer.cpp">
@@ -266,6 +260,12 @@
     </ClCompile>
     <ClCompile Include="src\openpal\serialization\UInt48LE.cpp">
       <Filter>Source\serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="src\openpal\util\Limits.cpp">
+      <Filter>Source\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\openpal\util\ToHex.cpp">
+      <Filter>Source\util</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

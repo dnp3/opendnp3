@@ -22,7 +22,7 @@
 #include "StringFormatting.h"
 
 
-#include "openpal/ToHex.h"
+#include "openpal/util/ToHex.h"
 #include "openpal/ReadOnlyBuffer.h"
 
 #include <cstdio>

@@ -23,7 +23,7 @@
 #include <opendnp3/LogErrorCodes.h>
 #include <opendnp3/link/LinkFrame.h>
 
-#include <openpal/ToHex.h>
+#include <openpal/util/ToHex.h>
 #include <openpal/container/StaticBuffer.h>
 
 #include "BufferHelpers.h"

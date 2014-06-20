@@ -23,7 +23,7 @@
 
 #include <vector>
 
-#include <openpal/ToHex.h>
+#include <openpal/util/ToHex.h>
 #include <opendnp3/link/ILinkLayer.h>
 
 #include "BufferHelpers.h"

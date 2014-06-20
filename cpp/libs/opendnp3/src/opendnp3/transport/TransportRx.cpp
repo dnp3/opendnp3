@@ -23,7 +23,7 @@
 #include "opendnp3/LogLevels.h"
 
 #include <openpal/logging/LogMacros.h>
-#include <openpal/ToHex.h>
+#include <openpal/util/ToHex.h>
 
 #include <cstring>
 

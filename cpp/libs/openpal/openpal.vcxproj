@@ -23,7 +23,6 @@
     <ClInclude Include="src\openpal\channel\IPhysicalLayer.h" />
     <ClInclude Include="src\openpal\channel\IPhysicalLayerCallbacks.h" />
     <ClInclude Include="src\openpal\channel\LayerInterfaces.h" />
-    <ClInclude Include="src\openpal\Comparisons.h" />
     <ClInclude Include="src\openpal\Configure.h" />
     <ClInclude Include="src\openpal\container\DynamicArray.h" />
     <ClInclude Include="src\openpal\container\Indexable.h" />
@@ -46,18 +45,16 @@
     <ClInclude Include="src\openpal\executor\Function1.h" />
     <ClInclude Include="src\openpal\executor\IExecutor.h" />
     <ClInclude Include="src\openpal\executor\ITimer.h" />
+    <ClInclude Include="src\openpal\executor\IUTCTimeSource.h" />
     <ClInclude Include="src\openpal\executor\MonotonicTimestamp.h" />
     <ClInclude Include="src\openpal\executor\Runnable.h" />
     <ClInclude Include="src\openpal\executor\TimeDuration.h" />
+    <ClInclude Include="src\openpal\executor\UTCTimestamp.h" />
     <ClInclude Include="src\openpal\HasSize.h" />
     <ClInclude Include="src\openpal\IEventHandler.h" />
     <ClInclude Include="src\openpal\IMutex.h" />
     <ClInclude Include="src\openpal\IShutdownHandler.h" />
     <ClInclude Include="src\openpal\ITransactable.h" />
-    <ClInclude Include="src\openpal\IUTCTimeSource.h" />
-    <ClInclude Include="src\openpal\Limits.h" />
-    <ClInclude Include="src\openpal\Location.h" />
-    <ClInclude Include="src\openpal\LogFilters.h" />
     <ClInclude Include="src\openpal\logging\ILogHandler.h" />
     <ClInclude Include="src\openpal\logging\Location.h" />
     <ClInclude Include="src\openpal\logging\LogEntry.h" />
@@ -76,9 +73,10 @@
     <ClInclude Include="src\openpal\serialization\SerializationTemplatesLE.h" />
     <ClInclude Include="src\openpal\serialization\UInt48LE.h" />
     <ClInclude Include="src\openpal\StaticSizeConfiguration.h" />
-    <ClInclude Include="src\openpal\ToHex.h" />
     <ClInclude Include="src\openpal\Uncopyable.h" />
-    <ClInclude Include="src\openpal\UTCTimestamp.h" />
+    <ClInclude Include="src\openpal\util\Comparisons.h" />
+    <ClInclude Include="src\openpal\util\Limits.h" />
+    <ClInclude Include="src\openpal\util\ToHex.h" />
     <ClInclude Include="src\openpal\WriteBuffer.h" />
   </ItemGroup>
   <ItemGroup>
@@ -86,7 +84,6 @@
     <ClCompile Include="src\openpal\executor\MonotonicTimestamp.cpp" />
     <ClCompile Include="src\openpal\executor\Runnable.cpp" />
     <ClCompile Include="src\openpal\executor\TimeDuration.cpp" />
-    <ClCompile Include="src\openpal\Limits.cpp" />
     <ClCompile Include="src\openpal\logging\LogEntry.cpp" />
     <ClCompile Include="src\openpal\logging\Logger.cpp" />
     <ClCompile Include="src\openpal\logging\LogRoot.cpp" />
@@ -94,7 +91,8 @@
     <ClCompile Include="src\openpal\ReadOnlyBuffer.cpp" />
     <ClCompile Include="src\openpal\serialization\ByteSerialization.cpp" />
     <ClCompile Include="src\openpal\serialization\UInt48LE.cpp" />
-    <ClCompile Include="src\openpal\ToHex.cpp" />
+    <ClCompile Include="src\openpal\util\Limits.cpp" />
+    <ClCompile Include="src\openpal\util\ToHex.cpp" />
     <ClCompile Include="src\openpal\WriteBuffer.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

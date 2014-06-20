@@ -26,7 +26,7 @@
 #include <opendnp3/outstation/OutstationStackConfig.h>
 #include <opendnp3/link/LinkChannelStatistics.h>
 
-#include <openpal/IUTCTimeSource.h>
+#include <openpal/executor/IUTCTimeSource.h>
 #include <openpal/logging/LogFilters.h>
 #include <openpal/executor/IExecutor.h>
 

@@ -21,7 +21,7 @@
 #ifndef __I_TIME_WRITE_HANDLER_H_
 #define __I_TIME_WRITE_HANDLER_H_
 
-#include <openpal/UTCTimestamp.h>
+#include <openpal/executor/UTCTimestamp.h>
 
 namespace opendnp3
 {

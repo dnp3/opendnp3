@@ -22,7 +22,7 @@
 #define	__TIME_TRANSACTION_H_
 
 #include <openpal/ITransactable.h>
-#include <openpal/UTCTimestamp.h>
+#include <openpal/executor/UTCTimestamp.h>
 
 #include "opendnp3/outstation/IMeasurementLoader.h"
 

@@ -26,7 +26,7 @@
 #include <opendnp3/app/APDURequest.h>
 #include <opendnp3/app/APDUResponse.h>
 
-#include <openpal/ToHex.h>
+#include <openpal/util/ToHex.h>
 
 #include "APDUHelpers.h"
 

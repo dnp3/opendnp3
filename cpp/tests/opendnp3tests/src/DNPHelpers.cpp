@@ -25,7 +25,7 @@
 #include <opendnp3/link/CRC.h>
 #include <opendnp3/link/LinkFrame.h>
 
-#include <openpal/ToHex.h>
+#include <openpal/util/ToHex.h>
 
 #include "BufferHelpers.h"
 #include "HexConversions.h"

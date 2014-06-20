@@ -24,7 +24,7 @@
 #include <opendnp3/link/CRC.h>
 #include <opendnp3/link/LinkHeader.h>
 
-#include <openpal/ToHex.h>
+#include <openpal/util/ToHex.h>
 #include <openpal/container/StaticBuffer.h>
 
 #include "BufferHelpers.h"

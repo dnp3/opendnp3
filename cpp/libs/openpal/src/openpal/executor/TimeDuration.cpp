@@ -20,7 +20,7 @@
  */
 #include "TimeDuration.h"
 
-#include "openpal/Limits.h"
+#include "openpal/util/Limits.h"
 
 namespace openpal
 {
