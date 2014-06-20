@@ -241,9 +241,6 @@
     <ClCompile Include="src\TestCastLongLongDouble.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\TestCommandTask.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\TestCRC.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

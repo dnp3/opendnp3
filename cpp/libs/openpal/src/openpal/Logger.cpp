@@ -20,7 +20,6 @@
  */
 #include "Logger.h"
 
-#include "LogBase.h"
 #include "LogRoot.h"
 
 #include <assert.h>

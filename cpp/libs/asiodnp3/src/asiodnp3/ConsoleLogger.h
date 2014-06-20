@@ -22,7 +22,7 @@
 #define __CONSOLE_LOGGER_H_
 
 #include <mutex>
-#include <openpal/LogBase.h>
+#include <openpal/ILogHandler.h>
 
 namespace asiodnp3
 {
@@ -34,16 +34,16 @@ std::ostringstream& operator<<(std::ostringstream& ss, const openpal::LogFilters
 *
 *
 */
-class ConsoleLogger : public openpal::ILogBase
+class ConsoleLogger : public openpal::ILogHandler
 {
 
 public:	
 
-	void Log( const openpal::LogEntry& entry );
+	virtual void Log(const openpal::LogEntry& entry) override final;
 	
 	void SetPrintLocation(bool printLocation);
 
-	static openpal::ILogBase& Instance() { return instance; };
+	static openpal::ILogHandler& Instance() { return instance; };
 
 private:
 
@@ -54,6 +54,7 @@ private:
 	static ConsoleLogger instance;	
 
 	bool printLocation;
+
 	std::mutex mutex;
 };
 

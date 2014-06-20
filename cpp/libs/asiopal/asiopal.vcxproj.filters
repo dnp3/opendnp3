@@ -20,9 +20,6 @@
     <ClInclude Include="src\asiopal\IOServiceThreadPool.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\asiopal\Log.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\asiopal\SerialTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -53,6 +50,9 @@
     <ClInclude Include="src\asiopal\PhysicalLayerTCPServer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\asiopal\LogFanoutHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\asiopal\ASIOExecutor.cpp">
@@ -62,9 +62,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\asiopal\IOServiceThreadPool.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\asiopal\Log.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\asiopal\SerialTypes.cpp">
@@ -89,6 +86,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\asiopal\PhysicalLayerTCPServer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\asiopal\LogFanoutHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -8,7 +8,7 @@ namespace Adapter
 {
 
 
-LogAdapter::LogAdapter(ILogHandler^ proxy) : proxy(proxy)
+LogAdapter::LogAdapter(DNP3::Interface::ILogHandler^ proxy) : proxy(proxy)
 {}
 
 // logging error messages, etc

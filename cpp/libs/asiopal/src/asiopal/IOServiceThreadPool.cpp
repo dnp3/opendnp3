@@ -38,12 +38,12 @@ namespace asiopal
 {
 
 IOServiceThreadPool::IOServiceThreadPool(
-    ILogBase* pLog,
+	openpal::ILogHandler* pHandler,
     uint32_t levels,	
     uint32_t aConcurrency,
     std::function<void()> onThreadStart_,
     std::function<void()> onThreadExit_) :
-	root(pLog, "pool", levels),
+	root(pHandler, "pool", levels),
 	logger(root.GetLogger()),
 	onThreadStart(onThreadStart_),
 	onThreadExit(onThreadExit_),

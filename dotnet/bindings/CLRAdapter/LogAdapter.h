@@ -4,7 +4,7 @@
 using namespace System::Collections::ObjectModel;
 
 #include <vcclr.h>
-#include <openpal/LogBase.h>
+#include <openpal/ILogHandler.h>
 
 using namespace DNP3::Interface;
 
@@ -12,17 +12,18 @@ namespace DNP3
 {
 namespace Adapter
 {
-private class LogAdapter : public openpal::ILogBase
+
+private class LogAdapter : public openpal::ILogHandler
 {
 public:
 
-	LogAdapter(ILogHandler^ proxy);
+	LogAdapter(DNP3::Interface::ILogHandler^ proxy);
 
 	// logging error messages, etc
-	void Log( const openpal::LogEntry& arEntry );
+	virtual void Log(const openpal::LogEntry& Entry) override final;
 
 private:
-	gcroot < ILogHandler^ > proxy;
+	gcroot < DNP3::Interface::ILogHandler^ > proxy;
 };
 
 private ref class LogAdapterWrapper
@@ -31,7 +32,7 @@ public:
 	LogAdapterWrapper(ILogHandler^ proxy) : mpAdapter(new LogAdapter(proxy))
 	{}
 
-	openpal::ILogBase* GetLogAdapter()
+	openpal::ILogHandler* GetLogAdapter()
 	{
 		return mpAdapter;
 	}

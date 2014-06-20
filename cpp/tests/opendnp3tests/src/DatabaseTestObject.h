@@ -27,8 +27,6 @@
 #include <opendnp3/outstation/Database.h>
 #include <opendnp3/outstation/DynamicallyAllocatedDatabase.h>
 
-#include <asiopal/Log.h>
-
 
 namespace opendnp3
 {

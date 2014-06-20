@@ -20,7 +20,7 @@
  */
 #include <catch.hpp>
 
-#include <asiopal/Log.h>
+#include <asiopal/LogFanoutHandler.h>
 
 #include <openpal/LogRoot.h>
 
@@ -49,7 +49,7 @@ public:
 		loopback.Start();
 	}
 
-	asiopal::EventLog log;
+	asiopal::LogFanoutHandler log;
 	openpal::LogRoot root;
 	MockExecutor exe;
 	MockPhysicalLayer phys;

@@ -21,14 +21,12 @@
 
 #include "DNP3Manager.h"
 
-
 #include "ChannelSet.h"
-
-#include <asiopal/Log.h>
-#include <asiopal/IOServiceThreadPool.h>
 
 #include <opendnp3/LogLevels.h>
 
+#include <asiopal/LogFanoutHandler.h>
+#include <asiopal/IOServiceThreadPool.h>
 #include <asiopal/PhysicalLayerSerial.h>
 #include <asiopal/PhysicalLayerTCPClient.h>
 #include <asiopal/PhysicalLayerTCPServer.h>
@@ -39,9 +37,9 @@ namespace asiodnp3
 {
 
 
-DNP3Manager::DNP3Manager(uint32_t concurrency, std::function<void()> onThreadStart, std::function<void()> onThreadExit) :
-	pLog(new asiopal::EventLog()),
-	pThreadPool(new asiopal::IOServiceThreadPool(pLog.get(), opendnp3::flags::INFO, concurrency, onThreadStart, onThreadExit)),
+DNP3Manager::DNP3Manager(uint32_t concurrencyHint, std::function<void()> onThreadStart, std::function<void()> onThreadExit) :
+	pFanoutHandler(new asiopal::LogFanoutHandler()),
+	pThreadPool(new asiopal::IOServiceThreadPool(pFanoutHandler.get(), opendnp3::flags::INFO, concurrencyHint, onThreadStart, onThreadExit)),
 	pChannelSet(new ChannelSet())
 {
 
@@ -49,12 +47,12 @@ DNP3Manager::DNP3Manager(uint32_t concurrency, std::function<void()> onThreadSta
 
 DNP3Manager::~DNP3Manager()
 {
-
+	
 }
 
-void DNP3Manager::AddLogSubscriber(openpal::ILogBase* apLog)
+void DNP3Manager::AddLogSubscriber(openpal::ILogHandler* pHandler)
 {
-	pLog->AddLogSubscriber(apLog);
+	pFanoutHandler->Subscribe(pHandler);
 }
 
 void DNP3Manager::Shutdown()
@@ -71,7 +69,7 @@ IChannel* DNP3Manager::AddTCPClient(
     uint16_t port,    
     opendnp3::IOpenDelayStrategy* pStrategy)
 {
-	auto pRoot = new LogRoot(pLog.get(), id, levels);
+	auto pRoot = new LogRoot(pFanoutHandler.get(), id, levels);
 	auto pPhys = new asiopal::PhysicalLayerTCPClient(*pRoot, pThreadPool->GetIOService(), host, port);
 	return pChannelSet->CreateChannel(pRoot, minOpenRetry, maxOpenRetry, pPhys, pStrategy);
 }
@@ -85,7 +83,7 @@ IChannel* DNP3Manager::AddTCPServer(
     uint16_t port,    
     opendnp3::IOpenDelayStrategy* pStrategy)
 {
-	auto pRoot = new LogRoot(pLog.get(), id, levels);
+	auto pRoot = new LogRoot(pFanoutHandler.get(), id, levels);
 	auto pPhys = new asiopal::PhysicalLayerTCPServer(*pRoot, pThreadPool->GetIOService(), endpoint, port);
 	return pChannelSet->CreateChannel(pRoot, minOpenRetry, maxOpenRetry, pPhys, pStrategy);
 }
@@ -98,7 +96,7 @@ IChannel* DNP3Manager::AddSerial(
     asiopal::SerialSettings aSettings,    
     opendnp3::IOpenDelayStrategy* pStrategy)
 {
-	auto pRoot = new LogRoot(pLog.get(), id, levels);
+	auto pRoot = new LogRoot(pFanoutHandler.get(), id, levels);
 	auto pPhys = new asiopal::PhysicalLayerSerial(*pRoot, pThreadPool->GetIOService(), aSettings);
 	return pChannelSet->CreateChannel(pRoot, minOpenRetry, maxOpenRetry, pPhys, pStrategy);
 }

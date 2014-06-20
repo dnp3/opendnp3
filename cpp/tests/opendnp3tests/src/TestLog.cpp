@@ -26,8 +26,6 @@
 
 #include "LogTester.h"
 
-#include <asiopal/Log.h>
-
 #include <iostream>
 #include <vector>
 

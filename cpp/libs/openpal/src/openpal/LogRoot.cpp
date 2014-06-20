@@ -23,25 +23,27 @@
 
 #include "LogEntry.h"
 #include "LogMacros.h"
+#include "ILogHandler.h"
+#include "LogMacros.h"
 
 #include <cstring>
 
 namespace openpal
 {
 
-LogRoot::LogRoot(ILogBase* pLog_, char const* id_, const LogFilters& filters_) : 
-	pLog(pLog_), filters(filters_)
-{
-	// use the string format instead of copy. strlcpy not portable.
-	strncpy(id, id_, MAX_ID_SIZE);
+LogRoot::LogRoot(ILogHandler* pHandler_, char const* id_, const LogFilters& filters_) :
+	pHandler(pHandler_), 
+	filters(filters_)
+{	
+	SAFE_STRING_FORMAT(id, MAX_ID_SIZE, "%s", id_);	
 }
 
 void LogRoot::Log(const LogFilters& filters, char const* location, char const* message, int errorCode)
 {
-	if(pLog)
+	if (pHandler)
 	{
 		LogEntry le(id, filters, location, message, errorCode);
-		pLog->Log(le);	
+		pHandler->Log(le);
 	}	
 }
 
@@ -52,7 +54,7 @@ Logger LogRoot::GetLogger()
 
 bool LogRoot::IsEnabled(const LogFilters& rhs) const
 {
-	return pLog && (this->filters & rhs);
+	return pHandler && (this->filters & rhs);
 }
 
 void LogRoot::SetFilters(const LogFilters& filters_)

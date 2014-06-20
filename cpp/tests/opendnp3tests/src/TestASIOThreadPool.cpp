@@ -20,9 +20,10 @@
  */
 #include <catch.hpp>
 
-#include <asiopal/Log.h>
+#include <asiopal/LogFanoutHandler.h>
 #include <asiopal/IOServiceThreadPool.h>
 #include <asiopal/ASIOExecutor.h>
+#include <asiodnp3/ConsoleLogger.h>
 
 #include <openpal/LogRoot.h>
 
@@ -37,28 +38,26 @@ using namespace asio;
 using namespace opendnp3;
 using namespace openpal;
 using namespace asiopal;
+using namespace asiodnp3;
 
 
 #define SUITE(name) "ASIOThreadPoolTestSuite - " name
 
 TEST_CASE(SUITE("CleanConstructionDestruction"))
-{
-	EventLog log;
-	IOServiceThreadPool pool(&log, levels::NORMAL, 4);
+{	
+	IOServiceThreadPool pool(&ConsoleLogger::Instance(), levels::NORMAL, 4);
 }
 
 TEST_CASE(SUITE("ThreadPoolShutsdownCleanlyEvenIfALotOfWorkIsSubmitted"))
-{
-	EventLog log;
-	IOServiceThreadPool pool(&log, levels::NORMAL, 4);
+{	
+	IOServiceThreadPool pool(&ConsoleLogger::Instance(), levels::NORMAL, 4);
 	for(size_t i = 0; i < 100000; ++i) pool.GetIOService()->post([]() {});
 }
 
 
 TEST_CASE(SUITE("StrandsSequenceCallbacksViaStrandPost"))
-{
-	EventLog log;
-	IOServiceThreadPool pool(&log, levels::NORMAL, 8);
+{	
+	IOServiceThreadPool pool(&ConsoleLogger::Instance(), levels::NORMAL, 8);
 
 	size_t iterations = 100000;
 
@@ -76,9 +75,8 @@ TEST_CASE(SUITE("StrandsSequenceCallbacksViaStrandPost"))
 }
 
 TEST_CASE(SUITE("StrandsSequenceCallbacksViaStrandWrap"))
-{
-	EventLog log;
-	IOServiceThreadPool pool(&log, levels::NORMAL, 8);
+{	
+	IOServiceThreadPool pool(&ConsoleLogger::Instance(), levels::NORMAL, 8);
 	size_t iterations = 100000;
 
 	io_service* pService = pool.GetIOService();
@@ -105,9 +103,8 @@ struct Count
 };
 
 TEST_CASE(SUITE("ExecutorPauseGuardsRaceConditions"))
-{
-	EventLog log;
-	IOServiceThreadPool pool(&log, levels::NORMAL, 8);
+{	
+	IOServiceThreadPool pool(&ConsoleLogger::Instance(), levels::NORMAL, 8);
 	size_t iterations = 100000;
 
 	asio::strand strand(*pool.GetIOService());
@@ -139,9 +136,8 @@ TEST_CASE(SUITE("ExecutorPauseGuardsRaceConditions"))
 }
 
 TEST_CASE(SUITE("ExecutorPauseIsIgnoredIfOnStrand"))
-{
-	EventLog log;
-	IOServiceThreadPool pool(&log, levels::NORMAL, 1);
+{	
+	IOServiceThreadPool pool(&ConsoleLogger::Instance(), levels::NORMAL, 1);
 	uint32_t iterations = 10;
 
 	asio::strand strand(*pool.GetIOService());

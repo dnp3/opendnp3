@@ -24,7 +24,7 @@
 #include <catch.hpp>
 #include <functional>
 
-#include <asiopal/Log.h>
+#include <asiopal/LogFanoutHandler.h>
 #include <asiopal/PhysicalLayerSerial.h>
 
 #include "ProtocolUtil.h"
@@ -68,7 +68,7 @@ TEST_CASE(SUITE("TestTransportWithMockLoopback"))
 	LinkConfig cfgA(true, true);
 	LinkConfig cfgB(false, true);
 
-	EventLog log;
+	LogFanoutHandler log;
 	LogRoot root(&log, "test", level);
 	asio::io_service service;
 	LoopbackPhysicalLayer phys(root, &service);

@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\openpal\ILogHandler.h" />
     <ClInclude Include="src\openpal\LayerInterfaces.h" />
     <ClInclude Include="src\openpal\Bind.h" />
     <ClInclude Include="src\openpal\ChannelStatistics.h" />
@@ -45,7 +46,6 @@
     <ClInclude Include="src\openpal\ITransactable.h" />
     <ClInclude Include="src\openpal\IUTCTimeSource.h" />
     <ClInclude Include="src\openpal\Location.h" />
-    <ClInclude Include="src\openpal\LogBase.h" />
     <ClInclude Include="src\openpal\LogEntry.h" />
     <ClInclude Include="src\openpal\LogFilters.h" />
     <ClInclude Include="src\openpal\LogMacros.h" />

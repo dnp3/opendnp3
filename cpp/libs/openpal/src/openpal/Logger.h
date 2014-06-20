@@ -22,7 +22,6 @@
 #define __LOGGER_H_
 
 #include "LogEntry.h"
-#include "LogBase.h"
 #include "Uncopyable.h"
 #include "LogFilters.h"
 

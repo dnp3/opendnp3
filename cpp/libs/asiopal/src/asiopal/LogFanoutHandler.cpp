@@ -18,48 +18,31 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <catch.hpp>
 
+#include "LogFanoutHandler.h"
 
-#include "BufferHelpers.h"
-
-#include <opendnp3/master/CommandTask.h>
-#include <asiopal/Log.h>
-
-using namespace opendnp3;
+using namespace std;
 using namespace openpal;
-using namespace asiopal;
 
-#define SUITE(name) "CommandTaskTestSuite - " name
-
-TEST_CASE(SUITE("FullSequence"))
+namespace asiopal
 {
-	/* TODO - renable tests
 
-	EventLog log;
-	CommandTask ct(Logger(&log, flags::INFO, "task"));
-	CommandResponse rsp;
-	auto formatter = [](APDU & arAPDU, FunctionCode aCode) {
-		return CommandHelpers::ConfigureRequest(arAPDU, aCode, ControlRelayOutputBlock(ControlCode::LATCH_ON), 0, Group12Var1::Inst());
-	};
-	auto responder = [&rsp](CommandResponse aRsp) {
-		rsp = aRsp;
-	};
-
-
-	ct.Configure(formatter, responder);
-	ct.AddCommandCode(FunctionCode::SELECT);
-
-	APDU frag;
-	ct.ConfigureRequest(frag);
-	HexSequence hs("C0 81 00 00 0C 01 17 01 00 03 01 64 00 00 00 64 00 00 00 00");
-	frag.Reset();
-	frag.Write(hs);
-	frag.Interpret();
-	auto result = ct.OnFinalResponse(frag);
-	REQUIRE(TR_SUCCESS ==  result);
-	REQUIRE((CommandResponse::OK(CommandStatus::SUCCESS) == rsp));
-	*/
+void LogFanoutHandler::Log(const LogEntry& entry)
+{
+	unique_lock<mutex> lock(callbackMutex);
+	for(auto callback : subscribers)
+	{
+		callback->Log(entry);
+	}
 }
+
+void LogFanoutHandler::Subscribe(ILogHandler* pHandler)
+{
+	unique_lock<mutex> lock(callbackMutex);
+	this->subscribers.push_back(pHandler);
+}
+
+}
+
 
 

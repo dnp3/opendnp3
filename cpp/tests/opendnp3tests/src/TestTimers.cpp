@@ -23,9 +23,9 @@
 #include <openpal/Location.h>
 #include <openpal/LogRoot.h>
 
+#include <asiopal/LogFanoutHandler.h>
 #include <asiopal/ASIOExecutor.h>
 #include <asiopal/IOServiceThreadPool.h>
-#include <asiopal/Log.h>
 
 #include <opendnp3/LogLevels.h>
 
@@ -73,7 +73,7 @@ public:
 	}
 
 private:
-	EventLog log;
+	asiopal::LogFanoutHandler log;
 	asiopal::IOServiceThreadPool pool;
 	asio::strand strand;
 

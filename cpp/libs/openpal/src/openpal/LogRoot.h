@@ -23,23 +23,23 @@
 
 #include "LogEntry.h"
 #include "Logger.h"
+#include "ILogHandler.h"
 #include "Uncopyable.h"
 
 namespace openpal
 {
 
-class ILogBase;
 
 /**
 * Interface that represents a distinct logger with a name and running level
 */
-class LogRoot : Uncopyable
+class LogRoot : private Uncopyable
 {
 	static const uint8_t MAX_ID_SIZE = 20;
 
 public:
 
-	LogRoot(ILogBase* apLog, char const* id_, const LogFilters& filters);	
+	LogRoot(ILogHandler* pHandler_, char const* id_, const LogFilters& filters);	
 
 	void Log(const LogFilters& filters, char const* location, char const* message, int errorCode);
 
@@ -53,7 +53,7 @@ public:
 
 private:
 	
-	ILogBase*		pLog;
+	ILogHandler*	pHandler;
 	char			id[MAX_ID_SIZE];
 	LogFilters		filters;   // bit field describing what is being logged
 	

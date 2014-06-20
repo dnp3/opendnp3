@@ -18,52 +18,37 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __EVENT_LOG_H_
-#define __EVENT_LOG_H_
+#ifndef __LOG_FANOUT_HANDLER_H_
+#define __LOG_FANOUT_HANDLER_H_
 
-
-#include <assert.h>
-#include <map>
-#include <vector>
 #include <mutex>
-#include <set>
+#include <vector>
 
-#include <openpal/LogBase.h>
-
+#include <openpal/ILogHandler.h>
+#include <openpal/Uncopyable.h>
 
 namespace asiopal
 {
 
-class EventLog : public openpal::ILogBase
+/**
+	A simple proxy that fans out log messages to multiple subscribers
+*/
+class LogFanoutHandler : public openpal::ILogHandler, private openpal::Uncopyable
 {
-public:
+public:	
 
 	/**
 	* Binds a listener to ALL log messages
 	*/
-	void AddLogSubscriber(ILogBase* apSubscriber);
+	void Subscribe(openpal::ILogHandler* pHandler);	
 
-	/**
-	* Binds a listener to only certain error messages
-	*/
-	void AddLogSubscriber(ILogBase* apSubscriber, int aErrorCode);
+	// implement the log function from ILogHandler
+	virtual void Log(const openpal::LogEntry& entry) override final;
 
-	/**
-	* Cancels a previous binding
-	*/
-	void RemoveLogSubscriber(ILogBase* apBase);
+private:	
 
-	//implement the log function from ILogBase
-	void Log( const openpal::LogEntry& arEntry );
-
-private:
-
-	bool SetContains(const std::set<int>& arSet, int aValue);
-
-	std::mutex mMutex;
-	typedef std::map<ILogBase*, std::set<int> > SubscriberMap;
-	SubscriberMap mSubscribers;
-
+	std::mutex callbackMutex;
+	std::vector<openpal::ILogHandler*> subscribers;
 };
 
 

@@ -27,7 +27,7 @@
 
 #include <asiopal/SerialTypes.h>
 
-#include <openpal/LogBase.h>
+#include <openpal/ILogHandler.h>
 #include <openpal/TimeDuration.h>
 #include <openpal/IEventHandler.h>
 
@@ -41,9 +41,9 @@
 namespace asiopal
 {
 	class EventLog;
+	class LogFanoutHandler;
 	class IOServiceThreadPool;
 }
-
 
 namespace asiodnp3
 {
@@ -57,20 +57,19 @@ class DNP3Manager
 public:
 
 	DNP3Manager(
-	    uint32_t aConcurrency,
-	std::function<void()> aOnThreadStart = []() {},
-	std::function<void()> aOnThreadExit = []() {}
-	);
+	    uint32_t concurrencyHint,
+		std::function<void()> onThreadStart = []() {},
+		std::function<void()> onThreadExit = []() {}
+	);	
 
 	~DNP3Manager();
 
 	/**
 	* Add a callback to receive log messages
-	* @param apLog Pointer to a callback object
+	* @param pHandler Pointer to a callback object
 	*/
-	void AddLogSubscriber(openpal::ILogBase* apLog);
-
-	openpal::ILogBase* GetLog();
+	void AddLogSubscriber(openpal::ILogHandler* pHandler);
+	
 
 	/**
 	* Permanently shutdown the manager and all sub-objects that have been created. Stop
@@ -135,7 +134,7 @@ public:
 
 private:
 
-	std::unique_ptr<asiopal::EventLog> pLog;
+	std::unique_ptr<asiopal::LogFanoutHandler> pFanoutHandler;
 	std::unique_ptr<asiopal::IOServiceThreadPool> pThreadPool;
 	std::unique_ptr<ChannelSet> pChannelSet;
 };

@@ -143,7 +143,7 @@ bool LogTester::GetNextEntry(LogRecord& record)
 	}
 }
 
-void LogTester::Pop(openpal::ILogBase* pLog)
+void LogTester::Pop(openpal::ILogHandler* pLog)
 {
 	LogRecord record;
 	while (GetNextEntry(record))

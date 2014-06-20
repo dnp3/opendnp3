@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __LOG_BASE_H_
-#define __LOG_BASE_H_
+#ifndef __ILOG_HANDLER_
+#define __ILOG_HANDLER_
 
 #include "LogEntry.h"
 
@@ -29,10 +29,10 @@ namespace openpal
 /**
 * Callback interface for log messages
 */
-class ILogBase
+class ILogHandler
 {
 public:
-	virtual ~ILogBase() {}
+	virtual ~ILogHandler() {}
 
 	/**
 	* Callback function for log messages

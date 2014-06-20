@@ -37,9 +37,6 @@
     <ClInclude Include="src\openpal\Location.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\openpal\LogBase.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\openpal\LogEntry.h">
       <Filter>Header</Filter>
     </ClInclude>
@@ -176,6 +173,9 @@
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="src\openpal\LayerInterfaces.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\openpal\ILogHandler.h">
       <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>

@@ -43,7 +43,7 @@ class LogRecord
 	int				errorCode;
 };
 
-class LogTester : public openpal::ILogBase
+class LogTester : public openpal::ILogHandler
 {
 
 public:
@@ -64,7 +64,7 @@ public:
 	bool GetNextEntry(LogRecord& record);
 	bool IsLogErrorFree();
 
-	void Pop(openpal::ILogBase* pLog);
+	void Pop(openpal::ILogHandler* pLog);
 
 	openpal::Logger GetLogger();
 

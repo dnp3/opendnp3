@@ -273,7 +273,6 @@
     <ClCompile Include="src\TestASIO.cpp" />
     <ClCompile Include="src\TestASIOThreadPool.cpp" />
     <ClCompile Include="src\TestCastLongLongDouble.cpp" />
-    <ClCompile Include="src\TestCommandTask.cpp" />
     <ClCompile Include="src\TestCRC.cpp" />
     <ClCompile Include="src\TestDatabase.cpp" />
     <ClCompile Include="src\TestDNP3Manager.cpp" />
