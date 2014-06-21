@@ -639,9 +639,6 @@
     <ClInclude Include="src\opendnp3\outstation\EventResponseConfig.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\LogErrorCodes.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\link\LinkChannelStatistics.h">
       <Filter>Header\link</Filter>
     </ClInclude>
@@ -658,6 +655,9 @@
       <Filter>Header\app</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\Configure.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\ErrorCodes.h">
       <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>

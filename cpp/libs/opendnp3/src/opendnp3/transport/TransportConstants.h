@@ -21,7 +21,7 @@
 #ifndef __TRANSPORT_CONSTANTS_H_
 #define __TRANSPORT_CONSTANTS_H_
 
-#include "opendnp3/LogErrorCodes.h"
+#include "opendnp3/ErrorCodes.h"
 
 #include <cstdint>
 

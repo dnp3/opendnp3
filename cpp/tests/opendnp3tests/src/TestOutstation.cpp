@@ -24,7 +24,7 @@
 #include "OutstationTestObject.h"
 #include "APDUHexBuilders.h"
 
-#include <opendnp3/LogErrorCodes.h>
+#include <opendnp3/ErrorCodes.h>
 
 using namespace std;
 using namespace opendnp3;

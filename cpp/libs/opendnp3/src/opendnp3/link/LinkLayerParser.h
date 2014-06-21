@@ -27,7 +27,7 @@
 #include <openpal/container/StaticBuffer.h>
 #include <openpal/logging/Logger.h>
 
-#include "opendnp3/LogErrorCodes.h"
+#include "opendnp3/ErrorCodes.h"
 
 #include "opendnp3/link/ShiftableBuffer.h"
 #include "opendnp3/link/LinkFrame.h"

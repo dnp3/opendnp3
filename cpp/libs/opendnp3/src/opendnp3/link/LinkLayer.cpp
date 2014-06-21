@@ -24,7 +24,7 @@
 
 #include <openpal/logging/LogMacros.h>
 
-#include "opendnp3/LogErrorCodes.h"
+#include "opendnp3/ErrorCodes.h"
 #include "opendnp3/link/ILinkRouter.h"
 #include "opendnp3/link/LinkFrame.h"
 #include "opendnp3/LogLevels.h"

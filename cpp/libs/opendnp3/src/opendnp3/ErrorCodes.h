@@ -18,14 +18,14 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __LOG_ERROR_CODES_H_
-#define __LOG_ERROR_CODES_H_
+#ifndef __ERROR_CODES_H_
+#define __ERROR_CODES_H_
 
 namespace opendnp3
 {
 
 /// Error codes returned in log messages
-enum DNPErrorCodes
+enum ErrorCodes
 {  
 	
     // Application Layer Parsing       

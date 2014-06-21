@@ -23,7 +23,7 @@
 #include <openpal/logging/LogMacros.h>
 
 #include "opendnp3/app/MeasurementHelpers.h"
-#include "opendnp3/LogErrorCodes.h"
+#include "opendnp3/ErrorCodes.h"
 
 #include <assert.h>
 
