@@ -50,9 +50,12 @@ DNP3Channel::DNP3Channel(
 		state(State::READY),
 		pShutdownHandler(pShutdownHandler_),
 		channelState(ChannelState::CLOSED),
-		router(*pLogRoot, pPhys.get(), minOpenRetry, maxOpenRetry, this, this, pStrategy, &statistics)	
+		router(*pLogRoot, pPhys.get(), minOpenRetry, maxOpenRetry, this, pStrategy, &statistics)	
 {
 	pPhys->SetChannelStatistics(&statistics);
+
+	auto onShutdown = [this]() { this->CheckForFinalShutdown(); };
+	router.SetShutdownHandler(Runnable::Bind(onShutdown));
 }
 
 void DNP3Channel::OnStateChange(ChannelState state)
@@ -100,12 +103,6 @@ void DNP3Channel::InitiateShutdown()
 	}
 }
 
-// called by the router when it's shutdown is complete
-void DNP3Channel::OnShutdown()
-{
-	this->CheckForFinalShutdown();
-}
-
 void DNP3Channel::CheckForFinalShutdown()
 {
 	// The router is offline. The stacks are shutdown
@@ -118,8 +115,7 @@ void DNP3Channel::CheckForFinalShutdown()
 			this->pShutdownHandler->OnShutdown(this);
 		};
 
-		pPhys->GetExecutor()->Start(TimeDuration::Zero(), Runnable::Bind(lambda));
-		                           		                           
+		pPhys->GetExecutor()->Start(TimeDuration::Zero(), Runnable::Bind(lambda));		                           		                           
 	}
 }
 

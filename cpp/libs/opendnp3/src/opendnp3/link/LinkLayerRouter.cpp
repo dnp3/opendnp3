@@ -39,18 +39,21 @@ LinkLayerRouter::LinkLayerRouter(	openpal::LogRoot& root,
                                     IPhysicalLayer* apPhys,
                                     openpal::TimeDuration minOpenRetry,
                                     openpal::TimeDuration maxOpenRetry,
-									IChannelStateListener* pStateHandler_,
-                                    openpal::IShutdownHandler* pShutdownHandler_,
+									IChannelStateListener* pStateHandler_,                                    
                                     IOpenDelayStrategy* pStrategy,
 									LinkChannelStatistics* pStatistics_) :
 
 	PhysicalLayerMonitor(root, apPhys, minOpenRetry, maxOpenRetry, pStrategy),
-	pStateHandler(pStateHandler_),
-	pShutdownHandler(pShutdownHandler_),
+	pStateHandler(pStateHandler_),	
 	pStatistics(pStatistics_),
 	parser(logger, pStatistics_),
 	mTransmitting(false)
 {}
+
+void LinkLayerRouter::SetShutdownHandler(const Runnable& action)
+{
+	this->shutdownHandler = action;
+}
 
 bool LinkLayerRouter::IsRouteInUse(const LinkRoute& route)
 {
@@ -292,10 +295,7 @@ void LinkLayerRouter::OnStateChange(ChannelState state)
 
 void LinkLayerRouter::OnShutdown()
 {
-	if (pShutdownHandler)
-	{
-		pShutdownHandler->OnShutdown();
-	}
+	shutdownHandler.Apply();	
 }
 
 bool LinkLayerRouter::HasEnabledContext()

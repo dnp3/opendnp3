@@ -57,10 +57,12 @@ public:
 	                openpal::IPhysicalLayer*,
 	                openpal::TimeDuration minOpenRetry,
 	                openpal::TimeDuration maxOpenRetry,
-	                IChannelStateListener* pStateHandler = nullptr,
-	                openpal::IShutdownHandler* pShutdownHandler = nullptr,				
+	                IChannelStateListener* pStateHandler = nullptr,	                
 	                IOpenDelayStrategy* pStrategy = ExponentialBackoffStrategy::Inst(),
 					LinkChannelStatistics* pStatistics = nullptr);
+
+	// called when the router shuts down
+	void SetShutdownHandler(const openpal::Runnable& action);
 
 	// Query to see if a route is in use
 	bool IsRouteInUse(const LinkRoute& route);
@@ -153,7 +155,7 @@ private:
 	void CheckForSend();
 
 	IChannelStateListener* pStateHandler;
-	openpal::IShutdownHandler* pShutdownHandler;
+	openpal::Runnable shutdownHandler;
 
 	openpal::StaticLinkedList<Record, uint16_t, sizes::MAX_STACKS_PER_CHANNEL> records;
 	openpal::StaticQueue<Transmission, uint16_t, sizes::MAX_STACKS_PER_CHANNEL> transmitQueue;
