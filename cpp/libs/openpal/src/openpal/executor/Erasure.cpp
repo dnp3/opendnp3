@@ -18,25 +18,30 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __OPENPAL_STATIC_SIZE_CONFIGURATION_
-#define __OPENPAL_STATIC_SIZE_CONFIGURATION_
 
+#include "Erasure.h"
 
-#include <cstdint>
+#include <cstring>
 
-// Default configurations for the static erasure size.
-// They are liberally set by default for x64 
-// but can be reduced for embedded systems.
+namespace openpal
+{
 
-#ifndef OPENPAL_MACRO_MAX_ERASURE_SIZE
-#define OPENPAL_MACRO_MAX_ERASURE_SIZE 128
-#endif
+Erasure::Erasure() : size(0)
+{
 
-namespace openpal { namespace sizes {
+}	
 
-static const uint16_t MAX_ERASURE_SIZE = OPENPAL_MACRO_MAX_ERASURE_SIZE;
+Erasure::Erasure(uint32_t size_) : size(size_)
+{
 
-}}
+}
 
-#endif
+void Erasure::CopyErasure(const Erasure& erasure)
+{
+	this->size = erasure.size;
+	memcpy(bytes, erasure.bytes, size);
+}	
+	
+}
+
 

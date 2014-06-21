@@ -261,5 +261,8 @@
     <ClCompile Include="src\openpal\container\WriteBuffer.cpp">
       <Filter>Source\container</Filter>
     </ClCompile>
+    <ClCompile Include="src\openpal\executor\Erasure.cpp">
+      <Filter>Source\executor</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

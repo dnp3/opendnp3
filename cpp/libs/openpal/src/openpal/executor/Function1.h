@@ -34,7 +34,6 @@ template <class T>
 class Function1
 {
 	
-
 public:
 
 	Function1() : pInvoke(nullptr), size(0)
@@ -77,13 +76,13 @@ protected:
 
 	Invoke pInvoke;
 	uint32_t size;
-	uint8_t bytes[sizes::MAX_FUNCTION_ONE_SIZE];
+	uint8_t bytes[sizes::MAX_ERASURE_SIZE];
 };
 
 template <class T, class Lambda>
 class LambdaFunction1 : public Function1<T>
 {
-	static_assert(sizeof(Lambda) <= sizes::MAX_FUNCTION_ONE_SIZE, "Lambda is too big for static buffer");
+	static_assert(sizeof(Lambda) <= sizes::MAX_ERASURE_SIZE, "Lambda is too big for static buffer");
 
 public:
 

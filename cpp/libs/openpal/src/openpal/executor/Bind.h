@@ -32,7 +32,7 @@ namespace openpal
 template <class Lambda>
 class LambdaRunnable : public Runnable
 {
-	static_assert(sizeof(Lambda) <= sizes::MAX_FUNCTION_ZERO_SIZE, "Lambda is too big for static buffer");
+	static_assert(sizeof(Lambda) <= sizes::MAX_ERASURE_SIZE, "Lambda is too big for static buffer");
 
 	public:
 

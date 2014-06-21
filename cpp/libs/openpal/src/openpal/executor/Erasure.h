@@ -21,34 +21,25 @@
 #ifndef __OPENPAL_ERASURE_H_
 #define __OPENPAL_ERASURE_H_
 
-#include <cstdint>
+#include "openpal/StaticSizeConfiguration.h"
 
 namespace openpal
 {
 
-template <uint32_t SIZE>
 class Erasure
 {
 
 protected:
 
-	Erasure() : size(0)
-	{}	
+	Erasure();
 
-	Erasure(uint32_t size_) : size(size_)
-	{}
+	Erasure(uint32_t size_);
 
-	void CopyErasure(const Erasure& erasure)
-	{
-		this->size = erasure.size;
-		memcpy(bytes, erasure.bytes, size);
-	}	
+	void CopyErasure(const Erasure& erasure);
 	
 	uint32_t size;
-	uint8_t bytes[SIZE];
+	uint8_t bytes[sizes::MAX_ERASURE_SIZE];
 };
-
-
 
 }
 

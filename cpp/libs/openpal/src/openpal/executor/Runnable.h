@@ -22,12 +22,11 @@
 #define __FUNCTION_ZERO_H_
 
 #include "Erasure.h"
-#include "openpal/StaticSizeConfiguration.h"
 
 namespace openpal
 {
 
-class Runnable : public Erasure<sizes::MAX_FUNCTION_ZERO_SIZE>
+class Runnable : public Erasure
 {
 
 public:

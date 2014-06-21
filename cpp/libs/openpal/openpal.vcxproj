@@ -81,6 +81,7 @@
     <ClCompile Include="src\openpal\container\ReadOnlyBuffer.cpp" />
     <ClCompile Include="src\openpal\container\RingBufferAdapter.cpp" />
     <ClCompile Include="src\openpal\container\WriteBuffer.cpp" />
+    <ClCompile Include="src\openpal\executor\Erasure.cpp" />
     <ClCompile Include="src\openpal\executor\MonotonicTimestamp.cpp" />
     <ClCompile Include="src\openpal\executor\Runnable.cpp" />
     <ClCompile Include="src\openpal\executor\TimeDuration.cpp" />
