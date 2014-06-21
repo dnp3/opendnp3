@@ -82,5 +82,8 @@
     <ClInclude Include="src\asiodnp3\ConsoleLogger.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\asiodnp3\IShutdownHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -21,6 +21,21 @@
 #ifndef __OPENPAL_CONFIGURE_H_
 #define __OPENPAL_CONFIGURE_H_
 
+#include <cstdint>
+
+// Default configurations for the static erasure size.
+// They are liberally set by default for x64 
+// but can be reduced for embedded systems.
+
+#ifndef OPENPAL_MACRO_MAX_ERASURE_SIZE
+#define OPENPAL_MACRO_MAX_ERASURE_SIZE 128
+#endif
+
+namespace openpal { namespace sizes {
+
+	static const uint16_t MAX_ERASURE_SIZE = OPENPAL_MACRO_MAX_ERASURE_SIZE;
+
+}}
 
 #ifdef AVR
 

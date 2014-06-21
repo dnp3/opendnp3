@@ -31,7 +31,7 @@ using namespace opendnp3;
 namespace asiodnp3
 {
 
-StackActionHandler::StackActionHandler(LinkLayerRouter* pRouter_, openpal::IExecutor* pExecutor_, openpal::ITypedShutdownHandler<IStack*>* pHandler_) :
+StackActionHandler::StackActionHandler(LinkLayerRouter* pRouter_, openpal::IExecutor* pExecutor_, ITypedShutdownHandler<IStack*>* pHandler_) :
 	pRouter(pRouter_),
 	pExecutor(pExecutor_),
 	pHandler(pHandler_)

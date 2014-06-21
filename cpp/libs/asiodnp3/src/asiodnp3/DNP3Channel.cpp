@@ -42,7 +42,7 @@ DNP3Channel::DNP3Channel(
     openpal::TimeDuration maxOpenRetry,
     IOpenDelayStrategy* pStrategy,
     openpal::IPhysicalLayer* pPhys_,
-    openpal::ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler_) :
+    ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler_) :
 		
 		pPhys(pPhys_),
 		pLogRoot(pLogRoot_),

@@ -51,8 +51,6 @@
     <ClInclude Include="src\openpal\executor\Runnable.h" />
     <ClInclude Include="src\openpal\executor\TimeDuration.h" />
     <ClInclude Include="src\openpal\executor\UTCTimestamp.h" />
-    <ClInclude Include="src\openpal\IMutex.h" />
-    <ClInclude Include="src\openpal\IShutdownHandler.h" />
     <ClInclude Include="src\openpal\logging\ILogHandler.h" />
     <ClInclude Include="src\openpal\logging\Location.h" />
     <ClInclude Include="src\openpal\logging\LogEntry.h" />
@@ -69,7 +67,6 @@
     <ClInclude Include="src\openpal\serialization\SerializationTemplatesBE.h" />
     <ClInclude Include="src\openpal\serialization\SerializationTemplatesLE.h" />
     <ClInclude Include="src\openpal\serialization\UInt48LE.h" />
-    <ClInclude Include="src\openpal\StaticSizeConfiguration.h" />
     <ClInclude Include="src\openpal\util\Comparisons.h" />
     <ClInclude Include="src\openpal\util\Limits.h" />
     <ClInclude Include="src\openpal\util\ToHex.h" />

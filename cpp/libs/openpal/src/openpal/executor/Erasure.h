@@ -21,7 +21,7 @@
 #ifndef __OPENPAL_ERASURE_H_
 #define __OPENPAL_ERASURE_H_
 
-#include "openpal/StaticSizeConfiguration.h"
+#include "openpal/Configure.h"
 
 namespace openpal
 {

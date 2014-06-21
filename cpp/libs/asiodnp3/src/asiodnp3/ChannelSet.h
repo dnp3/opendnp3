@@ -32,9 +32,10 @@
 #include <openpal/logging/Logger.h>
 #include <openpal/executor/TimeDuration.h>
 #include <openpal/IMutex.h>
-#include <openpal/IShutdownHandler.h>
 
 #include <opendnp3/link/IOpenDelayStrategy.h>
+
+#include "IShutdownHandler.h"
 
 namespace asiopal
 {
@@ -47,7 +48,7 @@ namespace asiodnp3
 class IChannel;
 class DNP3Channel;
 
-class ChannelSet : private openpal::ITypedShutdownHandler<DNP3Channel*>
+class ChannelSet : private ITypedShutdownHandler<DNP3Channel*>
 {
 
 public:

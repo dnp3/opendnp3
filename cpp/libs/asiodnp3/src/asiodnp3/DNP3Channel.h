@@ -21,7 +21,6 @@
 #ifndef __DNP3_CHANNEL_H_
 #define __DNP3_CHANNEL_H_
 
-#include <openpal/IShutdownHandler.h>
 #include <openpal/logging/LogRoot.h>
 
 #include <opendnp3/outstation/OutstationStackConfig.h>
@@ -29,6 +28,7 @@
 #include <opendnp3/link/LinkChannelStatistics.h>
 
 #include "IChannel.h"
+#include "IShutdownHandler.h"
 
 #include <memory>
 #include <set>
@@ -51,7 +51,7 @@ namespace asiodnp3
 class IStack;
 class IOutstation;
 
-class DNP3Channel : public IChannel, private openpal::ITypedShutdownHandler<IStack*>, private opendnp3::IChannelStateListener
+class DNP3Channel : public IChannel, private ITypedShutdownHandler<IStack*>, private opendnp3::IChannelStateListener
 {
 	enum class State
 	{
@@ -68,7 +68,7 @@ public:
 	    openpal::TimeDuration maxOpenRetry,
 	    opendnp3::IOpenDelayStrategy* pStrategy,
 		openpal::IPhysicalLayer* pPhys_,
-	    openpal::ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler_		
+	    ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler_		
 	);
 
 	virtual opendnp3::LinkChannelStatistics GetChannelStatistics() override final;
@@ -113,7 +113,7 @@ private:
 	openpal::Logger logger;
 
 	State state;
-	openpal::ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler;
+	ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler;
 		
 	std::set<IStack*> stacks;
 

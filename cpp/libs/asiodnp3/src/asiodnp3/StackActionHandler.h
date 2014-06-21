@@ -22,7 +22,7 @@
 #define __STACK_ACTION_HANDLER_H_
 
 
-#include <openpal/IShutdownHandler.h>
+#include "IShutdownHandler.h"
 
 namespace openpal
 {
@@ -44,7 +44,7 @@ class StackActionHandler
 {
 public:
 
-	StackActionHandler(opendnp3::LinkLayerRouter* pRouter_, openpal::IExecutor* pExecutor_, openpal::ITypedShutdownHandler<IStack*>* pHandler_);
+	StackActionHandler(opendnp3::LinkLayerRouter* pRouter_, openpal::IExecutor* pExecutor_, ITypedShutdownHandler<IStack*>* pHandler_);
 
 	openpal::IExecutor* GetExecutor();
 
@@ -58,7 +58,7 @@ private:
 
 	opendnp3::LinkLayerRouter* pRouter;
 	openpal::IExecutor* pExecutor;
-	openpal::ITypedShutdownHandler<IStack*>* pHandler;
+	ITypedShutdownHandler<IStack*>* pHandler;
 };
 
 }

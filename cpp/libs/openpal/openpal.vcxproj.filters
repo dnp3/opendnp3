@@ -46,15 +46,6 @@
     <ClInclude Include="src\openpal\Configure.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\openpal\IMutex.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="src\openpal\IShutdownHandler.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="src\openpal\StaticSizeConfiguration.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\openpal\channel\ChannelStatistics.h">
       <Filter>Header\channel</Filter>
     </ClInclude>

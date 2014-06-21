@@ -18,25 +18,25 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __OPENPAL_STATIC_SIZE_CONFIGURATION_
-#define __OPENPAL_STATIC_SIZE_CONFIGURATION_
+#ifndef __I_SHUTDOWN_HANDLER_
+#define __I_SHUTDOWN_HANDLER_
 
+namespace asiodnp3
+{
 
-#include <cstdint>
+template <class T>
+class ITypedShutdownHandler
+{
+public:
 
-// Default configurations for the static erasure size.
-// They are liberally set by default for x64 
-// but can be reduced for embedded systems.
+	virtual ~ITypedShutdownHandler() {}
 
-#ifndef OPENPAL_MACRO_MAX_ERASURE_SIZE
-#define OPENPAL_MACRO_MAX_ERASURE_SIZE 128
+	/// Called when the corresponding component
+	/// shuts down and resources can be freed
+	virtual void OnShutdown(T value) = 0;
+
+};
+
+}
+
 #endif
-
-namespace openpal { namespace sizes {
-
-static const uint16_t MAX_ERASURE_SIZE = OPENPAL_MACRO_MAX_ERASURE_SIZE;
-
-}}
-
-#endif
-
