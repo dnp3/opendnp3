@@ -88,9 +88,6 @@
     <ClInclude Include="src\openpal\container\IndexableIterator.h">
       <Filter>Header\container</Filter>
     </ClInclude>
-    <ClInclude Include="src\openpal\container\Option.h">
-      <Filter>Header\container</Filter>
-    </ClInclude>
     <ClInclude Include="src\openpal\container\Pair.h">
       <Filter>Header\container</Filter>
     </ClInclude>
