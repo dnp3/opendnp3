@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __RUNNABLE_H_
-#define __RUNNABLE_H_
+#ifndef __FUNCTION_ZERO_H_
+#define __FUNCTION_ZERO_H_
 
 #include "Erasure.h"
 #include "openpal/StaticSizeConfiguration.h"
@@ -29,20 +29,28 @@ namespace openpal
 
 class Runnable : public Erasure<sizes::MAX_FUNCTION_ZERO_SIZE>
 {
+
 public:
+
+	typedef void(*Invoke)(const uint8_t* pBuffer);
 
 	Runnable();
 
-	Runnable& operator=(const Runnable& other);
+	Runnable(const Runnable& other);
 
-	bool operator()() const;
+	Runnable& operator=(const Runnable& other);
 
 	void Run() const;
 
-protected:
+	bool operator()() const;	
+	
+	bool IsSet() const;
+
+protected:	
 
 	Runnable(Invoke pInvoke_, uint32_t size_);
 
+	Invoke pInvoke;
 };
 
 }

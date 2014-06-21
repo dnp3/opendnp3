@@ -18,11 +18,10 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __ERASURE_H_
-#define __ERASURE_H_
+#ifndef __OPENPAL_ERASURE_H_
+#define __OPENPAL_ERASURE_H_
 
 #include <cstdint>
-#include <cstring>
 
 namespace openpal
 {
@@ -31,39 +30,20 @@ template <uint32_t SIZE>
 class Erasure
 {
 
-public:
-
-	Erasure() : pInvoke(nullptr), size(0)
-	{}
-
-	Erasure(const Erasure& other) : pInvoke(other.pInvoke), size(other.size)
-	{
-		memcpy(bytes, other.bytes, size);
-	}
-
-	bool IsSet() const
-	{
-		return (pInvoke != nullptr);
-	}
-
 protected:
 
-	typedef void(*Invoke)(const uint8_t* pBuffer);
+	Erasure() : size(0)
+	{}	
 
-	void Apply() const
+	Erasure(uint32_t size_) : size(size_)
+	{}
+
+	void CopyErasure(const Erasure& erasure)
 	{
-		if (pInvoke)
-		{
-			(*pInvoke)(bytes);
-		}
+		this->size = erasure.size;
+		memcpy(bytes, erasure.bytes, size);
 	}	
-
-	Erasure(Invoke pInvoke_, uint32_t size_) : pInvoke(pInvoke_), size(size_)
-	{
-		
-	}
-
-	Invoke pInvoke;
+	
 	uint32_t size;
 	uint8_t bytes[SIZE];
 };

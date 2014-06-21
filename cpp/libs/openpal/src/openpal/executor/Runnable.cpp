@@ -26,12 +26,15 @@
 namespace openpal
 {
 
-Runnable::Runnable() : Erasure()
+Runnable::Runnable() : pInvoke(nullptr)
 {}
 
-void Runnable::Run() const
+Runnable::Runnable(Invoke pInvoke_, uint32_t size_) : Erasure(size_), pInvoke(pInvoke_)
+{}
+
+bool Runnable::IsSet() const
 {
-	this->Apply();
+	return (pInvoke != nullptr);
 }
 
 bool Runnable::operator()() const
@@ -42,16 +45,25 @@ bool Runnable::operator()() const
 Runnable& Runnable::operator=(const Runnable& other)
 {
 	if (this != &other)
-	{
-		this->size = other.size;
+	{		
 		this->pInvoke = other.pInvoke;
-		memcpy(bytes, other.bytes, size);
+		this->CopyErasure(other);
 	}
 
 	return (*this);
 }
 
-Runnable::Runnable(Invoke pInvoke_, uint32_t size_) : Erasure(pInvoke_, size_)
-{}
+Runnable::Runnable(const Runnable& other)
+{
+	*this = other;
+}
+
+void Runnable::Run() const
+{
+	if (pInvoke)
+	{
+		(*pInvoke)(bytes);
+	}
+}
 
 }
