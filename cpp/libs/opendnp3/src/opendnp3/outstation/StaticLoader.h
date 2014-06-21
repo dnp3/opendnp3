@@ -21,7 +21,7 @@
 #ifndef __STATIC_LOADER_H_
 #define __STATIC_LOADER_H_
 
-#include <openpal/Uncopyable.h>
+#include <openpal/util/Uncopyable.h>
 #include "opendnp3/app/StaticRange.h"
 #include "opendnp3/app/ObjectWriter.h"
 #include "opendnp3/outstation/Database.h"

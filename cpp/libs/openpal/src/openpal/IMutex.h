@@ -23,7 +23,7 @@
 
 #include <assert.h>
 
-#include "Uncopyable.h"
+#include "openpal/util/Uncopyable.h"
 
 namespace openpal
 {

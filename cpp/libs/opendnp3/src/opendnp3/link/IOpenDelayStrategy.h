@@ -23,7 +23,7 @@
 
 #include <openpal/executor/TimeDuration.h>
 
-#include <openpal/Uncopyable.h>
+#include <openpal/util/Uncopyable.h>
 
 namespace opendnp3
 {

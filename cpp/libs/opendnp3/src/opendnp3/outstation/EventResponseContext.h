@@ -21,7 +21,7 @@
 #ifndef __EVENT_RESPONSE_CONTEXT_H_
 #define __EVENT_RESPONSE_CONTEXT_H_
 
-#include <openpal/Uncopyable.h>
+#include <openpal/util/Uncopyable.h>
 #include <openpal/serialization/Serialization.h>
 
 #include "opendnp3/app/APDUResponse.h"

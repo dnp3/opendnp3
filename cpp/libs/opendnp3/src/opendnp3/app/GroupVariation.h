@@ -23,7 +23,7 @@
 
 #include <cstdint>
 
-#include <openpal/Uncopyable.h>
+#include <openpal/util/Uncopyable.h>
 
 #include "opendnp3/gen/QualifierCode.h"
 

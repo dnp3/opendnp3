@@ -24,7 +24,7 @@
 
 #include <opendnp3/app/APDURequest.h>
 #include <opendnp3/app/APDUResponse.h>
-#include <openpal/Uncopyable.h>
+#include <openpal/util/Uncopyable.h>
 
 #include <assert.h>
 

@@ -21,7 +21,7 @@
 #ifndef __MEASUREMENT_FACTORY_H_
 #define __MEASUREMENT_FACTORY_H_
 
-#include <openpal/Uncopyable.h>
+#include <openpal/util/Uncopyable.h>
 #include "opendnp3/app/MeasurementTypes.h"
 #include "opendnp3/app/ControlRelayOutputBlock.h"
 #include "opendnp3/app/AnalogOutput.h"

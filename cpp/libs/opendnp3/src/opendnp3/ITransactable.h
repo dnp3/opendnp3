@@ -21,7 +21,7 @@
 #ifndef __I_TRANSACTABLE_H_
 #define	__I_TRANSACTABLE_H_
 
-#include <openpal/Uncopyable.h>
+#include <openpal/util/Uncopyable.h>
 
 namespace opendnp3
 {

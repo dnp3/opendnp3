@@ -5,7 +5,7 @@ using namespace System::Collections::ObjectModel;
 
 #include <vcclr.h>
 
-#include <openpal/Uncopyable.h>
+#include <openpal/util/Uncopyable.h>
 #include <opendnp3/master/ICommandProcessor.h>
 
 #include "Conversions.h"

@@ -25,7 +25,7 @@
 #include <vector>
 
 #include <openpal/logging/ILogHandler.h>
-#include <openpal/Uncopyable.h>
+#include <openpal/util/Uncopyable.h>
 
 namespace asiopal
 {

@@ -21,7 +21,7 @@
 
 #include "APDUHeaderParser.h"
 
-#include <openpal/Uncopyable.h>
+#include <openpal/util/Uncopyable.h>
 #include <openpal/ReadOnlyBuffer.h>
 #include <openpal/logging/LogMacros.h>
 

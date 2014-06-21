@@ -24,7 +24,7 @@
 #include <openpal/container/StaticQueue.h>
 #include <openpal/serialization/Serialization.h>
 
-#include <openpal/Uncopyable.h>
+#include <openpal/util/Uncopyable.h>
 #include "opendnp3/StaticSizeConfiguration.h"
 
 #include "opendnp3/app/StaticRange.h"

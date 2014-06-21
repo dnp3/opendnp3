@@ -27,7 +27,7 @@
 #include <openpal/serialization/ISerializer.h>
 #include <openpal/serialization/Serialization.h>
 
-#include <openpal/Uncopyable.h>
+#include <openpal/util/Uncopyable.h>
 
 #include "opendnp3/LogLevels.h"
 #include "opendnp3/LogErrorCodes.h"

@@ -21,7 +21,7 @@
 #ifndef __WRITE_CONVERSION_TEMPLATES_H_
 #define __WRITE_CONVERSION_TEMPLATES_H_
 
-#include <openpal/Uncopyable.h>
+#include <openpal/util/Uncopyable.h>
 
 #include "opendnp3/app/DownSampling.h"
 

@@ -32,7 +32,7 @@
 #include "opendnp3/app/IDNP3Serializer.h"
 #include "opendnp3/app/MeasurementTypes.h"
 
-#include <openpal/Uncopyable.h>
+#include <openpal/util/Uncopyable.h>
 
 namespace opendnp3
 {

@@ -22,7 +22,7 @@
 #define __APDU_HEADER_PARSER_H_
 
 #include <openpal/ReadOnlyBuffer.h>
-#include <openpal/Uncopyable.h>
+#include <openpal/util/Uncopyable.h>
 #include <openpal/logging/Logger.h>
 
 #include "opendnp3/app/APDUHeader.h"

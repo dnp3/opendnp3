@@ -58,16 +58,10 @@
     <ClInclude Include="src\openpal\IShutdownHandler.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\openpal\ITransactable.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\openpal\ReadOnlyBuffer.h">
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="src\openpal\StaticSizeConfiguration.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="src\openpal\Uncopyable.h">
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="src\openpal\WriteBuffer.h">
@@ -221,6 +215,9 @@
       <Filter>Header\util</Filter>
     </ClInclude>
     <ClInclude Include="src\openpal\util\ToHex.h">
+      <Filter>Header\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\openpal\util\Uncopyable.h">
       <Filter>Header\util</Filter>
     </ClInclude>
   </ItemGroup>

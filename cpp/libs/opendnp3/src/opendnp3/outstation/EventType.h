@@ -22,7 +22,7 @@
 #ifndef __EVENT_TYPE_H_
 #define __EVENT_TYPE_H_
 
-#include <openpal/Uncopyable.h>
+#include <openpal/util/Uncopyable.h>
 
 #include <cstdint>
 

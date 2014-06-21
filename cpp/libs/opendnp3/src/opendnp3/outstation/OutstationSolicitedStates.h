@@ -24,7 +24,7 @@
 #include "opendnp3/app/APDUHeader.h"
 #include "opendnp3/app/APDUWrapper.h"
 
-#include <openpal/Uncopyable.h>
+#include <openpal/util/Uncopyable.h>
 
 namespace opendnp3
 {

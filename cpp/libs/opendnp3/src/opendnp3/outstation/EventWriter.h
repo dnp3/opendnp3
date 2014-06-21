@@ -25,7 +25,7 @@
 #include "opendnp3/outstation/EventResponseConfig.h"
 #include "opendnp3/outstation/SelectionIterator.h"
 
-#include <openpal/Uncopyable.h>
+#include <openpal/util/Uncopyable.h>
 #include <openpal/serialization/Serialization.h>
 
 namespace opendnp3

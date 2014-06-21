@@ -21,7 +21,7 @@
 #ifndef __DOWN_SAMPLING_H_
 #define __DOWN_SAMPLING_H_
 
-#include <openpal/Uncopyable.h>
+#include <openpal/util/Uncopyable.h>
 #include <openpal/util/Limits.h>
 
 #include <cstdint>

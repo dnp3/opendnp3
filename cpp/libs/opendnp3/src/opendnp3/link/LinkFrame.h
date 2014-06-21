@@ -26,7 +26,7 @@
 
 #include <openpal/ReadOnlyBuffer.h>
 #include <openpal/WriteBuffer.h>
-#include <openpal/Uncopyable.h>
+#include <openpal/util/Uncopyable.h>
 
 namespace openpal
 {

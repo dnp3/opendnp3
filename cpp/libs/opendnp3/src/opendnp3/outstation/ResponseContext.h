@@ -21,7 +21,7 @@
 #ifndef __RESPONSE_CONTEXT_H_
 #define __RESPONSE_CONTEXT_H_
 
-#include <openpal/Uncopyable.h>
+#include <openpal/util/Uncopyable.h>
 
 #include "opendnp3/app/StaticRange.h"
 #include "opendnp3/app/APDUResponse.h"
