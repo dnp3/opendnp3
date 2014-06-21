@@ -46,9 +46,6 @@
     <ClInclude Include="src\openpal\Configure.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\openpal\IEventHandler.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\openpal\IMutex.h">
       <Filter>Header</Filter>
     </ClInclude>

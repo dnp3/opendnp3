@@ -66,6 +66,7 @@
     <ClInclude Include="src\opendnp3\app\WriteConversions.h" />
     <ClInclude Include="src\opendnp3\app\WriteConversionTemplates.h" />
     <ClInclude Include="src\opendnp3\ITransactable.h" />
+    <ClInclude Include="src\opendnp3\link\IChannelStateListener.h" />
     <ClInclude Include="src\opendnp3\link\LinkChannelStatistics.h" />
     <ClInclude Include="src\opendnp3\LogErrorCodes.h" />
     <ClInclude Include="src\opendnp3\gen\ChannelState.h" />

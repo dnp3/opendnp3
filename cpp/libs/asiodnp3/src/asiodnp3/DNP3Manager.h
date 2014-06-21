@@ -29,7 +29,6 @@
 
 #include <openpal/logging/ILogHandler.h>
 #include <openpal/executor/TimeDuration.h>
-#include <openpal/IEventHandler.h>
 
 #include <opendnp3/gen/ChannelState.h>
 #include <opendnp3/link/IOpenDelayStrategy.h>

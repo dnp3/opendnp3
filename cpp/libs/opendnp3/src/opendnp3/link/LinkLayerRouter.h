@@ -22,7 +22,6 @@
 #define __LINK_LAYER_ROUTER_H_
 
 #include <openpal/IShutdownHandler.h>
-#include <openpal/IEventHandler.h>
 #include <openpal/container/StaticLinkedList.h>
 #include <openpal/container/StaticQueue.h>
 
@@ -32,6 +31,7 @@
 #include "opendnp3/link/IFrameSink.h"
 #include "opendnp3/link/ILinkRouter.h"
 #include "opendnp3/link/IOpenDelayStrategy.h"
+#include "opendnp3/link/IChannelStateListener.h"
 
 #include "opendnp3/StaticSizeConfiguration.h"
 
@@ -57,7 +57,7 @@ public:
 	                openpal::IPhysicalLayer*,
 	                openpal::TimeDuration minOpenRetry,
 	                openpal::TimeDuration maxOpenRetry,
-	                openpal::IEventHandler<ChannelState>* pStateHandler = nullptr,
+	                IChannelStateListener* pStateHandler = nullptr,
 	                openpal::IShutdownHandler* pShutdownHandler = nullptr,				
 	                IOpenDelayStrategy* pStrategy = ExponentialBackoffStrategy::Inst(),
 					LinkChannelStatistics* pStatistics = nullptr);
@@ -152,7 +152,7 @@ private:
 
 	void CheckForSend();
 
-	openpal::IEventHandler<ChannelState>* pStateHandler;
+	IChannelStateListener* pStateHandler;
 	openpal::IShutdownHandler* pShutdownHandler;
 
 	openpal::StaticLinkedList<Record, uint16_t, sizes::MAX_STACKS_PER_CHANNEL> records;

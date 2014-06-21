@@ -18,21 +18,20 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __I_EVENT_HANDLER_H_
-#define __I_EVENT_HANDLER_H_
+#ifndef __I_CHANNEL_STATE_LISTENER_H_
+#define __I_CHANNEL_STATE_LISTENER_H_
 
-namespace openpal
+#include "opendnp3/gen/ChannelState.h"
+
+namespace opendnp3
 {
 
-template <class T>
-class IEventHandler
+class IChannelStateListener
 {
-public:
-
-	virtual ~IEventHandler() {}
+	public:	
 
 	// called when the registered event fires
-	virtual void OnEvent(T value) = 0;
+	virtual void OnStateChange(ChannelState value) = 0;
 
 };
 

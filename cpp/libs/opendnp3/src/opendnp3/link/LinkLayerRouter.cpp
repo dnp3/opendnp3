@@ -39,7 +39,7 @@ LinkLayerRouter::LinkLayerRouter(	openpal::LogRoot& root,
                                     IPhysicalLayer* apPhys,
                                     openpal::TimeDuration minOpenRetry,
                                     openpal::TimeDuration maxOpenRetry,
-                                    openpal::IEventHandler<ChannelState>* pStateHandler_,
+									IChannelStateListener* pStateHandler_,
                                     openpal::IShutdownHandler* pShutdownHandler_,
                                     IOpenDelayStrategy* pStrategy,
 									LinkChannelStatistics* pStatistics_) :
@@ -286,7 +286,7 @@ void LinkLayerRouter::OnStateChange(ChannelState state)
 {
 	if (this->pStateHandler)
 	{
-		pStateHandler->OnEvent(state);
+		pStateHandler->OnStateChange(state);
 	}
 }
 

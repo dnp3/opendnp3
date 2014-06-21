@@ -6,8 +6,6 @@ using namespace System::Collections::ObjectModel;
 #include <asiodnp3/IChannel.h>
 #include <vcclr.h>
 
-#include <openpal/IEventHandler.h>
-
 #include "EventMultiplexer.h"
 
 using namespace DNP3::Interface;

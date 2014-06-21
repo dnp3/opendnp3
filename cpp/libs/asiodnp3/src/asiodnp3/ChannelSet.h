@@ -33,10 +33,8 @@
 #include <openpal/executor/TimeDuration.h>
 #include <openpal/IMutex.h>
 #include <openpal/IShutdownHandler.h>
-#include <openpal/IEventHandler.h>
 
-#include "opendnp3/gen/ChannelState.h"
-#include "opendnp3/link/IOpenDelayStrategy.h"
+#include <opendnp3/link/IOpenDelayStrategy.h>
 
 namespace asiopal
 {

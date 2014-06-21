@@ -55,7 +55,7 @@ DNP3Channel::DNP3Channel(
 	pPhys->SetChannelStatistics(&statistics);
 }
 
-void DNP3Channel::OnEvent(ChannelState state)
+void DNP3Channel::OnStateChange(ChannelState state)
 {
 	channelState = state;
 	for (auto& cb : callbacks) cb(state);
