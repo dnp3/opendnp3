@@ -51,7 +51,7 @@ void Database::End()
 	if (transactionHasEvents)
 	{
 		transactionHasEvents = false;
-		onEventAction.Foreach([](const Runnable& runnable) { runnable.Run(); });
+		onEventAction.Foreach([](const Runnable& runnable) { runnable.Apply(); });
 	}
 	openpal::CriticalSection::Unlock(pMutex);
 }

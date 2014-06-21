@@ -58,7 +58,7 @@ Runnable::Runnable(const Runnable& other) : pInvoke(other.pInvoke)
 	this->CopyErasure(other);
 }
 
-void Runnable::Run() const
+void Runnable::Apply() const
 {
 	if (pInvoke)
 	{

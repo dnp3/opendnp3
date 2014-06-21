@@ -135,7 +135,7 @@ void MasterContext::QueueCommandAction(const Function1<ICommandProcessor*>& acti
 	else
 	{
 		ConstantCommandProcessor processor(CommandResponse(CommandResult::NO_COMMS), nullptr);
-		action.Run(&processor);
+		action.Apply(&processor);
 	}
 }
 

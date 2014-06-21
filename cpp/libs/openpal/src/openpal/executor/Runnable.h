@@ -40,7 +40,7 @@ public:
 
 	Runnable& operator=(const Runnable& other);
 
-	void Run() const;
+	void Apply() const;
 
 	bool operator()() const;	
 	

@@ -71,7 +71,7 @@ openpal::ITimer* ASIOExecutor::Start(const openpal::MonotonicTimestamp& arTime, 
 
 void ASIOExecutor::Post(const openpal::Runnable& runnable)
 {
-	mpStrand->post([runnable]() { runnable.Run(); });
+	mpStrand->post([runnable]() { runnable.Apply(); });
 }
 
 void ASIOExecutor::Pause()
@@ -156,7 +156,7 @@ void ASIOExecutor::OnTimerCallback(const std::error_code& ec, TimerASIO* apTimer
 	mIdleTimers.push_back(apTimer);
 	if (!(ec || apTimer->canceled))
 	{
-		runnable.Run();
+		runnable.Apply();
 	}
 }
 

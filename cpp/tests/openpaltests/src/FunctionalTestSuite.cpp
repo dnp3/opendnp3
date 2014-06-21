@@ -21,25 +21,40 @@
 #include <catch.hpp>
 
 #include <openpal/executor/Runnable.h>
+#include <openpal/executor/Function1.h>
 
 using namespace openpal;
 
 #define SUITE(name) "FunctionalTestSuite - " name
 
-TEST_CASE(SUITE("ReadAndWriteModulo2"))
+TEST_CASE(SUITE("RunnableBindWorksAsExpected"))
 {	
 	int a = 1;
 	int b = 2;
 
-	auto pInt1 = &a;
-	auto pInt2 = &b;
+	auto pA = &a;
+	auto pB = &b;
 
-	auto add = [=]() { *pInt1 += *pInt2;  };
+	auto add = [=]() { *pA += *pB;  };
 
 	auto bound = Runnable::Bind(add);
 
-	bound.Run();
+	bound.Apply();
 
 	REQUIRE(a == 3);
+}
+
+TEST_CASE(SUITE("Function1BindWorksAsExpected"))
+{
+	int a = 1;
+	auto pA = &a;	
+
+	auto add = [=](int b) { *pA += b; };
+
+	auto bound = Function1<int>::Bind(add);
+
+	bound.Apply(4);
+
+	REQUIRE(a == 5);
 }
 

@@ -11,9 +11,6 @@
     <Filter Include="Header\channel">
       <UniqueIdentifier>{50455ec0-501a-49bf-82e0-c0128e5b6d4b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\channel">
-      <UniqueIdentifier>{be3377b5-13fe-4f6c-a892-84d548fe450d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header\container">
       <UniqueIdentifier>{9b5c8d78-88a8-4d00-b391-1c846622360a}</UniqueIdentifier>
     </Filter>

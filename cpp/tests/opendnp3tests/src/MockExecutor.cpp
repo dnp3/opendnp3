@@ -121,7 +121,7 @@ bool MockExecutor::RunOne()
 	{
 		auto runnable = postQueue.front();
 		postQueue.pop_front();
-		runnable.Run();
+		runnable.Apply();
 		return true;
 	}
 	else
@@ -141,7 +141,7 @@ void MockExecutor::Post(const openpal::Runnable& runnable)
 {
 	if (mPostIsSynchronous)
 	{
-		runnable.Run();
+		runnable.Apply();
 	}
 	else
 	{

@@ -133,7 +133,7 @@ void MasterContext::SelectAndOperateT(const T& command, uint16_t index, ICommand
 	auto process = [command, index, pCallback](ICommandProcessor* pProcessor) {
 		pProcessor->SelectAndOperate(command, index, pCallback);
 	};
-	this->QueueCommandAction(openpal::Bind1<ICommandProcessor*>(process));
+	this->QueueCommandAction(openpal::Function1<ICommandProcessor*>::Bind(process));
 }
 
 template <class T>
@@ -142,7 +142,7 @@ void MasterContext::DirectOperateT(const T& command, uint16_t index, ICommandCal
 	auto process = [command, index, pCallback](ICommandProcessor* pProcessor) {
 		pProcessor->DirectOperate(command, index, pCallback);
 	};
-	this->QueueCommandAction(openpal::Bind1<ICommandProcessor*>(process));
+	this->QueueCommandAction(openpal::Function1<ICommandProcessor*>::Bind(process));
 }
 
 }

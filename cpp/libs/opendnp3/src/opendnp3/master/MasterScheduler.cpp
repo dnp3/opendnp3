@@ -114,7 +114,7 @@ IMasterTask* MasterScheduler::FindTaskToStart()
 	if (commandActions.IsNotEmpty())
 	{		
 		// configure the command task		
-		commandActions.Pop()->Run(&tasks.commandTask);		
+		commandActions.Pop()->Apply(&tasks.commandTask);
 		return &tasks.commandTask;
 	}
 	else
@@ -155,7 +155,7 @@ void MasterScheduler::CheckForNotification()
 	if (!modifiedSinceLastRead)
 	{
 		modifiedSinceLastRead = true;
-		expirationHandler.Run();
+		expirationHandler.Apply();
 	}
 }
 
@@ -173,7 +173,7 @@ void MasterScheduler::ScheduleCommand(const CommandErasure& action)
 	else
 	{
 		commandActions.Enqueue(action);
-		this->expirationHandler.Run();
+		this->expirationHandler.Apply();
 	}
 }
 
@@ -281,7 +281,7 @@ void MasterScheduler::OnNeedTimeDetected(const MasterParams& params)
 void MasterScheduler::ReportFailure(const CommandErasure& action, CommandResult result)
 {
 	ConstantCommandProcessor processor(CommandResponse::NoResponse(result), pExecutor);
-	action.Run(&processor);
+	action.Apply(&processor);
 }
 
 void MasterScheduler::OnTimerExpiration()
@@ -306,7 +306,7 @@ void MasterScheduler::OnTimerExpiration()
 
 	if (pendingQueue.IsNotEmpty())
 	{
-		this->expirationHandler.Run();
+		this->expirationHandler.Apply();
 	}
 }
 

@@ -22,44 +22,50 @@
 #ifndef __FUNCTION1_H_
 #define __FUNCTION1_H_
 
-#include <cstring>
-#include <cstdint>
-
-#include "openpal/StaticSizeConfiguration.h"
+#include "Erasure.h"
 
 namespace openpal
 {
 
 template <class T>
-class Function1
+class Function1 : private Erasure
 {
-	
+	typedef void(*Invoke)(const uint8_t* pBuffer, const T& arg);
+
 public:
 
-	Function1() : pInvoke(nullptr), size(0)
+	Function1() : pInvoke(nullptr)
 	{}
 
-	Function1(const Function1& other) : pInvoke(other.pInvoke), size(other.size)
+	Function1(const Function1& other) : pInvoke(other.pInvoke)
 	{
-		memcpy(bytes, other.bytes, size);
+		this->CopyErasure(other);
 	}
 
-	bool IsSet() const
+	Function1& operator=(const Function1& other)
+	{
+		if (this != &other)
+		{
+			this->pInvoke = other.pInvoke;
+			this->CopyErasure(other);
+		}
+
+		return *this;
+	}
+
+	template <class Lambda>
+	static Function1<T> Bind(Lambda& lambda)
+	{
+		static_assert(sizeof(Lambda) <= sizes::MAX_ERASURE_SIZE, "Lambda is too big for erasure");		
+		Function1<T> function(&RunLambda<Lambda>, sizeof(lambda));
+		new(function.bytes) Lambda(lambda); // use placement new
+		return  function;
+	}
+
+	bool operator()() const
 	{
 		return (pInvoke != nullptr);
 	}
-
-	void Run(const T& arg) const
-	{
-		if (pInvoke)
-		{
-			(*pInvoke)(bytes, arg);
-		}
-	}
-
-protected:
-
-	typedef void(*Invoke)(const uint8_t* pBuffer, const T& arg);
 
 	void Apply(const T& arg) const
 	{
@@ -67,45 +73,21 @@ protected:
 		{
 			(*pInvoke)(bytes, arg);
 		}
-	}	
-
-	Function1(Invoke pInvoke_, uint32_t size_) : pInvoke(pInvoke_), size(size_)
-	{
-		
-	}
-
-	Invoke pInvoke;
-	uint32_t size;
-	uint8_t bytes[sizes::MAX_ERASURE_SIZE];
-};
-
-template <class T, class Lambda>
-class LambdaFunction1 : public Function1<T>
-{
-	static_assert(sizeof(Lambda) <= sizes::MAX_ERASURE_SIZE, "Lambda is too big for static buffer");
-
-public:
-
-	LambdaFunction1(Lambda& lambda) : Function1<T>(&RunLambda, sizeof(Lambda))
-	{
-		new (this->bytes) Lambda(lambda);
 	}
 
 private:
 
+	template <class Lambda>
 	static void RunLambda(const uint8_t* pBuffer, const T& arg)
 	{
-		auto pLambda = reinterpret_cast<const Lambda*>(pBuffer);
-		(*pLambda)(arg);
+		(*reinterpret_cast<const Lambda*>(pBuffer))(arg);		
 	}
+
+	Function1(Invoke pInvoke_, uint32_t size_) : Erasure(size_), pInvoke(pInvoke_)
+	{}
+
+	Invoke pInvoke;	
 };
-
-template <class T, class Lambda>
-Function1<T> Bind1(Lambda& lambda)
-{
-	return LambdaFunction1<T, Lambda>(lambda);
-}
-
 
 }
 
