@@ -21,7 +21,7 @@
 
 #include "OutstationParams.h"
 
-#include "opendnp3/StaticSizeConfiguration.h"
+#include "opendnp3/Configure.h"
 
 using namespace openpal;
 

@@ -38,6 +38,7 @@
     <ClInclude Include="src\opendnp3\app\ControlRelayOutputBlock.h" />
     <ClInclude Include="src\opendnp3\app\CountWriteIterator.h" />
     <ClInclude Include="src\opendnp3\app\EventTriggers.h" />
+    <ClInclude Include="src\opendnp3\app\ITransactable.h" />
     <ClInclude Include="src\opendnp3\app\MeasurementTypes.h" />
     <ClInclude Include="src\opendnp3\app\DownSampling.h" />
     <ClInclude Include="src\opendnp3\app\GroupVariation.h" />
@@ -65,7 +66,6 @@
     <ClInclude Include="src\opendnp3\app\VTOData.h" />
     <ClInclude Include="src\opendnp3\app\WriteConversions.h" />
     <ClInclude Include="src\opendnp3\app\WriteConversionTemplates.h" />
-    <ClInclude Include="src\opendnp3\ITransactable.h" />
     <ClInclude Include="src\opendnp3\link\IChannelStateListener.h" />
     <ClInclude Include="src\opendnp3\link\LinkChannelStatistics.h" />
     <ClInclude Include="src\opendnp3\LogErrorCodes.h" />
@@ -217,7 +217,7 @@
     <ClInclude Include="src\opendnp3\outstation\WriteHandler.h" />
     <ClInclude Include="src\opendnp3\Singleton.h" />
     <ClInclude Include="src\opendnp3\StackStatistics.h" />
-    <ClInclude Include="src\opendnp3\StaticSizeConfiguration.h" />
+    <ClInclude Include="src\opendnp3\Configure.h" />
     <ClInclude Include="src\opendnp3\transport\TransportConstants.h" />
     <ClInclude Include="src\opendnp3\transport\TransportLayer.h" />
     <ClInclude Include="src\opendnp3\transport\TransportRx.h" />

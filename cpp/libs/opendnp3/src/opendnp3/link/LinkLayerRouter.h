@@ -32,7 +32,7 @@
 #include "opendnp3/link/IOpenDelayStrategy.h"
 #include "opendnp3/link/IChannelStateListener.h"
 
-#include "opendnp3/StaticSizeConfiguration.h"
+#include "opendnp3/Configure.h"
 
 namespace openpal
 {

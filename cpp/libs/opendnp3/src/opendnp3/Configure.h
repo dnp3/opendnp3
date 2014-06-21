@@ -18,13 +18,15 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __STATIC_SIZE_CONFIGURATION_H_
-#define __STATIC_SIZE_CONFIGURATION_H_
+
+#ifndef __OPENDNP3_CONFIGURE_H_
+#define __OPENDNP3_CONFIGURE_H_
 
 #include <cstdint>
 
-// Default configurations for statically allocated buffers int the stack
-// They are liberally set by default, but can be reduced for embedded systems
+// Default configurations for statically allocated buffers in the stack
+// They are set to the default maximum of 2K by default, but can be reduced 
+// for embedded systems
 
 #ifndef OPENDNP3_MAX_TX_APDU_SIZE
 #define OPENDNP3_MAX_TX_APDU_SIZE 2048

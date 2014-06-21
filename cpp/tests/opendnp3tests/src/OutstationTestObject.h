@@ -22,7 +22,7 @@
 #define __OUTSTATION_TEST_OBJECT_H_
 
 #include <opendnp3/LogLevels.h>
-#include <opendnp3/ITransactable.h>
+#include <opendnp3/app/ITransactable.h>
 #include <opendnp3/outstation/Outstation.h>
 #include <opendnp3/outstation/Database.h>
 #include <opendnp3/outstation/DynamicallyAllocatedDatabase.h>

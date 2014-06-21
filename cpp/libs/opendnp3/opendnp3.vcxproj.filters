@@ -51,9 +51,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\opendnp3\StaticSizeConfiguration.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\Singleton.h">
       <Filter>Header</Filter>
     </ClInclude>
@@ -657,11 +654,14 @@
     <ClInclude Include="src\opendnp3\StackStatistics.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\ITransactable.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\link\IChannelStateListener.h">
       <Filter>Header\link</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\app\ITransactable.h">
+      <Filter>Header\app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\Configure.h">
+      <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

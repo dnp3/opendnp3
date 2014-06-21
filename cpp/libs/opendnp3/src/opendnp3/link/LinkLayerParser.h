@@ -33,7 +33,7 @@
 #include "opendnp3/link/LinkFrame.h"
 #include "opendnp3/link/LinkHeader.h"
 #include "opendnp3/link/LinkChannelStatistics.h"
-#include "opendnp3/StaticSizeConfiguration.h"
+#include "opendnp3/Configure.h"
 
 namespace opendnp3
 {

@@ -21,7 +21,7 @@
 #ifndef __TIME_TRANSACTION_H_
 #define	__TIME_TRANSACTION_H_
 
-#include "opendnp3/ITransactable.h"
+#include "opendnp3/app/ITransactable.h"
 
 #include <openpal/executor/UTCTimestamp.h>
 

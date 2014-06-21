@@ -21,7 +21,7 @@
 #ifndef __COMMAND_RESPONSE_HANDLER_H_
 #define __COMMAND_RESPONSE_HANDLER_H_
 
-#include "opendnp3/StaticSizeConfiguration.h"
+#include "opendnp3/Configure.h"
 #include "opendnp3/app/APDUHandlerBase.h"
 #include "opendnp3/app/APDUResponse.h"
 #include "opendnp3/outstation/ICommandAction.h"

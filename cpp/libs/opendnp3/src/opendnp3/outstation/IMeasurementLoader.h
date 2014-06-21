@@ -21,7 +21,7 @@
 #ifndef __I_MEASUREMENT_LOADER_H_
 #define	__I_MEASUREMENT_LOADER_H_
 
-#include "opendnp3/ITransactable.h"
+#include "opendnp3/app/ITransactable.h"
 #include "opendnp3/app/MeasurementTypes.h"
 
 

@@ -31,7 +31,7 @@
 #include "opendnp3/master/IMasterTask.h"
 #include "opendnp3/master/IMasterScheduler.h"
 
-#include "opendnp3/StaticSizeConfiguration.h"
+#include "opendnp3/Configure.h"
 
 namespace opendnp3
 {

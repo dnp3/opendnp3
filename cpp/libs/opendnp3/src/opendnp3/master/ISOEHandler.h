@@ -21,7 +21,7 @@
 #ifndef __I_SOE_HANDLER_H_
 #define	__I_SOE_HANDLER_H_
 
-#include "opendnp3/ITransactable.h"
+#include "opendnp3/app/ITransactable.h"
 #include "opendnp3/app/IterableBuffer.h"
 #include "opendnp3/app/IndexedValue.h"
 #include "opendnp3/app/MeasurementTypes.h"

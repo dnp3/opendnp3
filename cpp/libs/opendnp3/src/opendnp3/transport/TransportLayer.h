@@ -30,7 +30,7 @@
 
 #include "opendnp3/StackStatistics.h"
 #include "opendnp3/link/ILinkLayer.h"
-#include "opendnp3/StaticSizeConfiguration.h"
+#include "opendnp3/Configure.h"
 
 namespace opendnp3
 {
