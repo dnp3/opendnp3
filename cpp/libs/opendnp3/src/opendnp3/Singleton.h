@@ -23,11 +23,11 @@
 
 #define MACRO_SINGLETON_INSTANCE(type) \
 	private:\
-		static type mInstance;\
+		static type instance;\
 	protected: \
 		type(){}; \
 	public:\
-		static type* Inst(){ return &mInstance; }
+		static type* Inst(){ return &instance; }
 
 #define MACRO_NAME_SINGLETON_INSTANCE(type) \
 	MACRO_SINGLETON_INSTANCE(type) \

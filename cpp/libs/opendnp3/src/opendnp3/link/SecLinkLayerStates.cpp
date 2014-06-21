@@ -45,7 +45,7 @@ void SecStateBase::OnTransmitResult(LinkLayer* apLL, bool success)
 ////////////////////////////////////////////////////////
 //	Class SLLS_NotReset
 ////////////////////////////////////////////////////////
-SLLS_NotReset SLLS_NotReset::mInstance;
+SLLS_NotReset SLLS_NotReset::instance;
 
 void SLLS_NotReset::TestLinkStatus(LinkLayer* apLL, bool aFcb)
 {
@@ -73,7 +73,7 @@ void SLLS_NotReset::RequestLinkStatus(LinkLayer* apLL)
 ////////////////////////////////////////////////////////
 //	Class SLLS_Reset
 ////////////////////////////////////////////////////////
-SLLS_Reset SLLS_Reset::mInstance;
+SLLS_Reset SLLS_Reset::instance;
 
 void SLLS_Reset::TestLinkStatus(LinkLayer* apLL, bool aFcb)
 {
@@ -125,12 +125,12 @@ void SLLS_Reset::RequestLinkStatus(LinkLayer* apLL)
 ////////////////////////////////////////////////////////
 //	Class SLLS_TransmitWaitReset
 ////////////////////////////////////////////////////////
-SLLS_TransmitWaitReset SLLS_TransmitWaitReset::mInstance;
+SLLS_TransmitWaitReset SLLS_TransmitWaitReset::instance;
 
 ////////////////////////////////////////////////////////
 //	Class SLLS_TransmitWaitNotReset
 ////////////////////////////////////////////////////////
-SLLS_TransmitWaitNotReset SLLS_TransmitWaitNotReset::mInstance;
+SLLS_TransmitWaitNotReset SLLS_TransmitWaitNotReset::instance;
 
 } //end namepsace
 

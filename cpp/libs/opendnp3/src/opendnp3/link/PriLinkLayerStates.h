@@ -73,7 +73,7 @@ class PLLS_SendUnconfirmedTransmitWait : public PriStateBase
 };
 
 template <class ReturnToState>
-PLLS_SendUnconfirmedTransmitWait<ReturnToState> PLLS_SendUnconfirmedTransmitWait<ReturnToState>::mInstance;
+PLLS_SendUnconfirmedTransmitWait<ReturnToState> PLLS_SendUnconfirmedTransmitWait<ReturnToState>::instance;
 
 template <class ReturnToState>
 void PLLS_SendUnconfirmedTransmitWait<ReturnToState>::OnTransmitResult(LinkLayer* apLL, bool success)

@@ -161,15 +161,15 @@ void MonitorStateWaitingBase::OnShutdownRequest(PhysicalLayerMonitor* apContext)
 
 /* --- Shutdown --- */
 
-MonitorStateShutdown MonitorStateShutdown::mInstance;
+MonitorStateShutdown MonitorStateShutdown::instance;
 
 /* --- Suspended --- */
 
-MonitorStateSuspended MonitorStateSuspended::mInstance;
+MonitorStateSuspended MonitorStateSuspended::instance;
 
 /* --- Init --- */
 
-MonitorStateInit MonitorStateInit::mInstance;
+MonitorStateInit MonitorStateInit::instance;
 
 /* ---- SuspendedBase --- */
 void MonitorStateSuspendedBase::OnStartRequest(PhysicalLayerMonitor* apContext)
@@ -205,7 +205,7 @@ void MonitorStateOpeningBase::OnSuspendRequest(PhysicalLayerMonitor* apContext)
 
 /* --- Opening --- */
 
-MonitorStateOpening MonitorStateOpening::mInstance;
+MonitorStateOpening MonitorStateOpening::instance;
 
 void MonitorStateOpening::OnStartOneRequest(PhysicalLayerMonitor* apContext)
 {
@@ -226,7 +226,7 @@ bool MonitorStateOpening::OnLayerOpen(PhysicalLayerMonitor* apContext)
 
 /* --- OpeningOne --- */
 
-MonitorStateOpeningOne MonitorStateOpeningOne::mInstance;
+MonitorStateOpeningOne MonitorStateOpeningOne::instance;
 
 bool MonitorStateOpeningOne::OnOpenFailure(PhysicalLayerMonitor* apContext)
 {
@@ -253,7 +253,7 @@ bool MonitorStateOpeningOne::OnLayerOpen(PhysicalLayerMonitor* apContext)
 
 /* --- OpeningClosing --- */
 
-MonitorStateOpeningClosing MonitorStateOpeningClosing::mInstance;
+MonitorStateOpeningClosing MonitorStateOpeningClosing::instance;
 
 void MonitorStateOpeningClosing::OnStartOneRequest(PhysicalLayerMonitor* apContext)
 {
@@ -272,11 +272,11 @@ void MonitorStateOpeningClosing::OnSuspendRequest(PhysicalLayerMonitor* apContex
 
 /* --- OpeningStopping --- */
 
-MonitorStateOpeningStopping MonitorStateOpeningStopping::mInstance;
+MonitorStateOpeningStopping MonitorStateOpeningStopping::instance;
 
 /* --- OpeningSuspending --- */
 
-MonitorStateOpeningSuspending MonitorStateOpeningSuspending::mInstance;
+MonitorStateOpeningSuspending MonitorStateOpeningSuspending::instance;
 
 void MonitorStateOpeningSuspending::OnStartRequest(PhysicalLayerMonitor* apContext)
 {
@@ -290,7 +290,7 @@ void MonitorStateOpeningSuspending::OnShutdownRequest(PhysicalLayerMonitor* apCo
 
 /* --- Open --- */
 
-MonitorStateOpen MonitorStateOpen::mInstance;
+MonitorStateOpen MonitorStateOpen::instance;
 
 void MonitorStateOpen::OnStartOneRequest(PhysicalLayerMonitor* apContext)
 {
@@ -317,7 +317,7 @@ void MonitorStateOpen::OnShutdownRequest(PhysicalLayerMonitor* apContext)
 
 /* --- OpenOne --- */
 
-MonitorStateOpenOne MonitorStateOpenOne::mInstance;
+MonitorStateOpenOne MonitorStateOpenOne::instance;
 
 void MonitorStateOpenOne::OnStartRequest(PhysicalLayerMonitor* apContext)
 {
@@ -350,7 +350,7 @@ bool MonitorStateOpenOne::OnLayerClose(PhysicalLayerMonitor* apContext)
 
 /* --- Waiting --- */
 
-MonitorStateWaiting MonitorStateWaiting::mInstance;
+MonitorStateWaiting MonitorStateWaiting::instance;
 
 void MonitorStateWaiting::OnStartOneRequest(PhysicalLayerMonitor* apContext)
 {
@@ -366,7 +366,7 @@ bool MonitorStateWaiting::OnOpenTimeout(PhysicalLayerMonitor* apContext)
 
 /* --- WaitingOne --- */
 
-MonitorStateWaitingOne MonitorStateWaitingOne::mInstance;
+MonitorStateWaitingOne MonitorStateWaitingOne::instance;
 
 void MonitorStateWaitingOne::OnStartRequest(PhysicalLayerMonitor* apContext)
 {
@@ -382,7 +382,7 @@ bool MonitorStateWaitingOne::OnOpenTimeout(PhysicalLayerMonitor* apContext)
 
 /* --- Closing --- */
 
-MonitorStateClosing MonitorStateClosing::mInstance;
+MonitorStateClosing MonitorStateClosing::instance;
 
 void MonitorStateClosing::OnStartOneRequest(PhysicalLayerMonitor* apContext)
 {
@@ -401,7 +401,7 @@ void MonitorStateClosing::OnSuspendRequest(PhysicalLayerMonitor* apContext)
 
 /* --- Suspending --- */
 
-MonitorStateSuspending MonitorStateSuspending::mInstance;
+MonitorStateSuspending MonitorStateSuspending::instance;
 
 bool MonitorStateSuspending::OnLayerClose(PhysicalLayerMonitor* apContext)
 {
@@ -421,7 +421,7 @@ void MonitorStateSuspending::OnShutdownRequest(PhysicalLayerMonitor* apContext)
 
 /* --- Stopping --- */
 
-MonitorStateShutingDown MonitorStateShutingDown::mInstance;
+MonitorStateShutingDown MonitorStateShutingDown::instance;
 
 bool MonitorStateShutingDown::OnLayerClose(PhysicalLayerMonitor* apContext)
 {

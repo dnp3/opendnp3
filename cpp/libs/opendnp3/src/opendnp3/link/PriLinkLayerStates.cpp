@@ -80,7 +80,7 @@ void PriStateBase::SendUnconfirmed(LinkLayer* apLL, ITransportSegment&)
 //	Class PLLS_SecNotResetIdle
 ////////////////////////////////////////////////////////
 
-PLLS_SecNotReset PLLS_SecNotReset::mInstance;
+PLLS_SecNotReset PLLS_SecNotReset::instance;
 
 void PLLS_SecNotReset::SendUnconfirmed(LinkLayer* apLL, ITransportSegment& segments)
 {
@@ -103,7 +103,7 @@ void PLLS_SecNotReset::SendConfirmed(LinkLayer* apLL, ITransportSegment& segment
 //  Wait for the link layer to transmit the reset links
 /////////////////////////////////////////////////////////////////////////////
 
-PLLS_LinkResetTransmitWait PLLS_LinkResetTransmitWait::mInstance;
+PLLS_LinkResetTransmitWait PLLS_LinkResetTransmitWait::instance;
 
 void PLLS_LinkResetTransmitWait::OnTransmitResult(LinkLayer* apLL, bool success)
 {
@@ -124,7 +124,7 @@ void PLLS_LinkResetTransmitWait::OnTransmitResult(LinkLayer* apLL, bool success)
 //  Wait for the link layer to transmit confirmed user data
 /////////////////////////////////////////////////////////////////////////////
 
-PLLS_ConfUserDataTransmitWait PLLS_ConfUserDataTransmitWait::mInstance;
+PLLS_ConfUserDataTransmitWait PLLS_ConfUserDataTransmitWait::instance;
 
 void PLLS_ConfUserDataTransmitWait::OnTransmitResult(LinkLayer* apLL, bool success)
 {
@@ -146,7 +146,7 @@ void PLLS_ConfUserDataTransmitWait::OnTransmitResult(LinkLayer* apLL, bool succe
 //	Class PLLS_SecReset
 ////////////////////////////////////////////////////////
 
-PLLS_SecReset PLLS_SecReset::mInstance;
+PLLS_SecReset PLLS_SecReset::instance;
 
 void PLLS_SecReset::SendUnconfirmed(LinkLayer* apLL, ITransportSegment& segments)
 {
@@ -170,7 +170,7 @@ void PLLS_SecReset::SendConfirmed(LinkLayer* apLL, ITransportSegment& segments)
 //	Class PLLS_ResetLinkWait
 ////////////////////////////////////////////////////////
 
-PLLS_ResetLinkWait PLLS_ResetLinkWait::mInstance;
+PLLS_ResetLinkWait PLLS_ResetLinkWait::instance;
 
 void PLLS_ResetLinkWait::Ack(LinkLayer* apLL, bool aIsRcvBuffFull)
 {
@@ -208,7 +208,7 @@ void PLLS_ResetLinkWait::Failure(LinkLayer* apLL)
 //	Class PLLS_ConfDataWait
 ////////////////////////////////////////////////////////
 
-PLLS_ConfDataWait PLLS_ConfDataWait::mInstance;
+PLLS_ConfDataWait PLLS_ConfDataWait::instance;
 
 void PLLS_ConfDataWait::Ack(LinkLayer* apLL, bool aIsRcvBuffFull)
 {
