@@ -21,10 +21,8 @@
 #ifndef __SEC_LINK_LAYER_STATES_H_
 #define __SEC_LINK_LAYER_STATES_H_
 
-
-
 #include "opendnp3/LogLevels.h"
-#include "opendnp3/Singleton.h"
+#include "opendnp3/link/Singleton.h"
 #include "opendnp3/link/LinkLayer.h"
 
 #include <openpal/logging/LogMacros.h>

@@ -21,7 +21,7 @@
 #ifndef __PRI_LINK_LAYER_STATES_H_
 #define __PRI_LINK_LAYER_STATES_H_
 
-#include "opendnp3/Singleton.h"
+#include "opendnp3/link/Singleton.h"
 #include "opendnp3/link/LinkLayer.h"
 
 namespace opendnp3
@@ -33,7 +33,7 @@ class PriStateBase
 {
 public:
 
-	/* Incoming messages for primary station */
+	// Incoming messages for primary station
 	virtual void Ack(LinkLayer*, bool aIsRcvBuffFull);
 	virtual void Nack(LinkLayer*, bool aIsRcvBuffFull);
 	virtual void LinkStatus(LinkLayer*, bool aIsRcvBuffFull);

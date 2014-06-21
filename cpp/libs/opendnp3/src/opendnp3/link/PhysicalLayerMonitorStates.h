@@ -21,9 +21,8 @@
 #ifndef __PHYS_LAYER_MONITOR_STATES_H_
 #define __PHYS_LAYER_MONITOR_STATES_H_
 
-#include "opendnp3/Singleton.h"
+#include "opendnp3/link/Singleton.h"
 #include "opendnp3/gen/ChannelState.h"
-
 
 #include "opendnp3/link/PhysicalLayerMonitor.h"
 

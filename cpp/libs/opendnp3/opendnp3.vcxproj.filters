@@ -51,9 +51,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\opendnp3\Singleton.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\app\AnalogOutput.h">
       <Filter>Header\app</Filter>
     </ClInclude>
