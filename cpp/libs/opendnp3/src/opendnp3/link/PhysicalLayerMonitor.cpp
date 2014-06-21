@@ -26,7 +26,6 @@
 
 #include <openpal/channel/IPhysicalLayer.h>
 #include <openpal/logging/LogMacros.h>
-#include <openpal/executor/Bind.h>
 
 #include <assert.h>
 
@@ -153,7 +152,7 @@ void PhysicalLayerMonitor::StartOpenTimer()
 {
 	assert(mpOpenTimer == nullptr);
 	auto lambda = [this]() { this->OnOpenTimerExpiration(); };
-	mpOpenTimer = pPhys->GetExecutor()->Start(currentRetry, Bind(lambda));
+	mpOpenTimer = pPhys->GetExecutor()->Start(currentRetry, Runnable::Bind(lambda));
 }
 
 void PhysicalLayerMonitor::CancelOpenTimer()

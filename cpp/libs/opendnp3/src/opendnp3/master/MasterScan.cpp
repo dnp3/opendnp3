@@ -21,7 +21,6 @@
 #include "MasterScan.h"
 
 #include <openpal/executor/IExecutor.h>
-#include <openpal/executor/Bind.h>
 
 namespace opendnp3
 {

@@ -26,7 +26,6 @@
 #include <openpal/logging/LogLevels.h>
 
 #include <openpal/executor/IExecutor.h>
-#include <openpal/executor/Bind.h>
 
 #include <sstream>
 
@@ -193,7 +192,7 @@ void PhysicalLayerBase::BeginWrite(const openpal::ReadOnlyBuffer& buffer)
 			{
 				this->DoWriteSuccess();
 			};
-			this->GetExecutor()->Post(Bind(callback));
+			this->GetExecutor()->PostLambda(callback);
 		}
 	}
 	else
@@ -218,7 +217,7 @@ void PhysicalLayerBase::BeginRead(WriteBuffer& buffer)
 			{
 				this->DoReadCallback(ReadOnlyBuffer());
 			};
-			this->GetExecutor()->Post(Bind(callback));
+			this->GetExecutor()->PostLambda(callback);
 		}
 	}
 	else

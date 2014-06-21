@@ -139,7 +139,7 @@ TEST_CASE(SUITE("ExpirationAndReuse"))
 	ASIOExecutor exe(&strand);
 
 	auto lambda = [pTimerHandler]() { pTimerHandler->OnExpiration(); };
-	auto runnable = Bind(lambda);
+	auto runnable = Runnable::Bind(lambda);
 	ITimer* pT1 = exe.Start(TimeDuration::Milliseconds(1), runnable);
 	REQUIRE(1 ==  srv.run_one());
 	REQUIRE(1 ==  mth.GetCount());
@@ -157,11 +157,11 @@ TEST_CASE(SUITE("Cancelation"))
 	asio::strand strand(srv);
 	ASIOExecutor exe(&strand);
 	auto lambda = [pTimerHandler](){ pTimerHandler->OnExpiration(); };
-	ITimer* pT1 = exe.Start(TimeDuration::Milliseconds(1), Bind(lambda));
+	ITimer* pT1 = exe.Start(TimeDuration::Milliseconds(1), Runnable::Bind(lambda));
 	pT1->Cancel();
 	REQUIRE(1 ==  srv.run_one());
 	REQUIRE(0 ==  mth.GetCount());
-	ITimer* pT2 = exe.Start(TimeDuration::Milliseconds(1), Bind(lambda));
+	ITimer* pT2 = exe.Start(TimeDuration::Milliseconds(1), Runnable::Bind(lambda));
 	srv.reset();
 	REQUIRE(1 ==  srv.run_one());
 	REQUIRE(pT1 ==  pT2);
@@ -184,8 +184,8 @@ TEST_CASE(SUITE("MultipleOutstanding"))
 	auto lambda2 = [pTimerHandler2](){ pTimerHandler2->OnExpiration(); };
 
 
-	ITimer* pT1 = ts.Start(TimeDuration::Milliseconds(0), Bind(lambda1));
-	ITimer* pT2 = ts.Start(TimeDuration::Milliseconds(100), Bind(lambda2));
+	ITimer* pT1 = ts.Start(TimeDuration::Milliseconds(0), Runnable::Bind(lambda1));
+	ITimer* pT2 = ts.Start(TimeDuration::Milliseconds(100), Runnable::Bind(lambda2));
 
 	REQUIRE(pT1 != pT2);
 

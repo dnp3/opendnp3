@@ -95,7 +95,7 @@ OutstationContext::OutstationContext(
 		
 	auto notify = [this]() { this->CheckForTaskStart(); };
 	auto post = [notify, this] { pExecutor->PostLambda(notify); };
-	database.SetEventHandler(Bind(post));
+	database.SetEventHandler(Runnable::Bind(post));
 }
 
 IINField OutstationContext::GetDynamicIIN()
@@ -492,7 +492,7 @@ bool OutstationContext::StartSolicitedConfirmTimer()
 	else
 	{
 		auto timeout = [this]() { this->OnSolConfirmTimeout(); };
-		pConfirmTimer = pExecutor->Start(params.solConfirmTimeout, Bind(timeout));
+		pConfirmTimer = pExecutor->Start(params.solConfirmTimeout, Runnable::Bind(timeout));
 		return true;
 	}
 }
@@ -506,7 +506,7 @@ bool OutstationContext::StartUnsolicitedConfirmTimer()
 	else
 	{
 		auto timeout = [this]() { this->OnUnsolConfirmTimeout(); };
-		pConfirmTimer = pExecutor->Start(params.unsolConfirmTimeout, Bind(timeout));
+		pConfirmTimer = pExecutor->Start(params.unsolConfirmTimeout, Runnable::Bind(timeout));
 		return true;
 	}
 }
@@ -520,7 +520,7 @@ bool OutstationContext::StartUnsolRetryTimer()
 	else
 	{
 		auto timeout = [this]() { this->OnUnsolRetryTimeout(); };
-		pUnsolTimer = pExecutor->Start(params.unsolRetryTimeout, Bind(timeout));
+		pUnsolTimer = pExecutor->Start(params.unsolRetryTimeout, Runnable::Bind(timeout));
 		return true;
 	}
 }

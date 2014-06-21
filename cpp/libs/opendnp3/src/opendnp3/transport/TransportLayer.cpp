@@ -21,7 +21,6 @@
 #include "TransportLayer.h"
 
 #include <openpal/logging/LogMacros.h>
-#include <openpal/executor/Bind.h>
 
 #include "TransportConstants.h"
 
@@ -61,7 +60,7 @@ void TransportLayer::BeginTransmit(const ReadOnlyBuffer& apdu)
 		{
 			FORMAT_LOG_BLOCK(logger, flags::ERR, "Illegal arg: %i, Array length must be in the range [1, %i]", apdu.Size(), M_FRAG_SIZE);
 			auto lambda = [this]() { this->OnSendResult(false); };
-			pExecutor->Post(Bind(lambda));
+			pExecutor->PostLambda(lambda);
 		}
 		else
 		{			
@@ -82,7 +81,7 @@ void TransportLayer::BeginTransmit(const ReadOnlyBuffer& apdu)
 				{	
 					SIMPLE_LOG_BLOCK(logger, flags::ERR, "Can't send without an attached link layer");
 					auto lambda = [this]() { this->OnSendResult(false); };
-					pExecutor->Post(Bind(lambda));
+					pExecutor->PostLambda(lambda);
 				}
 			}
 		}

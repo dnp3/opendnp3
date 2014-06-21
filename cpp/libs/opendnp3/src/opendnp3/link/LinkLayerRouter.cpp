@@ -24,7 +24,6 @@
 
 #include <openpal/logging/LogMacros.h>
 #include <openpal/channel/IPhysicalLayer.h>
-#include <openpal/executor/Bind.h>
 
 #include "opendnp3/LogLevels.h"
 #include "ILinkContext.h"
@@ -274,7 +273,7 @@ void LinkLayerRouter::QueueTransmit(const openpal::ReadOnlyBuffer& buffer, ILink
 		else
 		{
 			auto lambda = [pContext, primary]() { pContext->OnTransmitResult(primary, false); };
-			this->pPhys->GetExecutor()->Post(Bind(lambda));
+			this->pPhys->GetExecutor()->PostLambda(lambda);
 		}
 	}
 	else

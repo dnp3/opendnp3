@@ -30,15 +30,17 @@
 
 #include <openpal/logging/LogMacros.h>
 
+using namespace openpal;
+
 namespace opendnp3
 {
 
 MasterContext::MasterContext(
-	openpal::IExecutor& executor,
-	openpal::LogRoot& root,
-	openpal::ILowerLayer& lower,
+	IExecutor& executor,
+	LogRoot& root,
+	ILowerLayer& lower,
 	ISOEHandler* pSOEHandler_,
-	openpal::IUTCTimeSource* pTimeSource,
+	IUTCTimeSource* pTimeSource,
 	const MasterParams& params_
 	) :
 
@@ -56,7 +58,7 @@ MasterContext::MasterContext(
 	scheduler(&logger, pSOEHandler_, pTimeSource, executor)		
 {
 	auto callback = [this](){ PostCheckForTask(); };
-	scheduler.SetExpirationHandler(openpal::Bind(callback));
+	scheduler.SetExpirationHandler(Runnable::Bind(callback));
 }
 
 bool MasterContext::OnLayerUp()
@@ -124,7 +126,7 @@ void MasterContext::StartTask(IMasterTask* pTask)
 	this->Transmit(request.ToReadOnly());
 }
 
-void MasterContext::QueueCommandAction(const openpal::Function1<ICommandProcessor*>& action)
+void MasterContext::QueueCommandAction(const Function1<ICommandProcessor*>& action)
 {
 	if (isOnline)
 	{
@@ -176,7 +178,7 @@ void MasterContext::OnSendResult(bool isSucccess)
 	}
 }
 
-void MasterContext::OnReceive(const openpal::ReadOnlyBuffer& apdu)
+void MasterContext::OnReceive(const ReadOnlyBuffer& apdu)
 {
 	if (isOnline)
 	{
@@ -214,7 +216,7 @@ void MasterContext::OnReceive(const openpal::ReadOnlyBuffer& apdu)
 }
 
 
-void MasterContext::OnResponse(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects)
+void MasterContext::OnResponse(const APDUResponseHeader& header, const ReadOnlyBuffer& objects)
 {	
 	if (header.control.UNS)
 	{
@@ -255,7 +257,7 @@ void MasterContext::OnResponse(const APDUResponseHeader& header, const openpal::
 	}	
 }
 
-void MasterContext::OnUnsolicitedResponse(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects)
+void MasterContext::OnUnsolicitedResponse(const APDUResponseHeader& header, const ReadOnlyBuffer& objects)
 {
 	if (header.control.UNS)
 	{		
@@ -290,7 +292,7 @@ void MasterContext::StartResponseTimer()
 	if (pResponseTimer == nullptr)
 	{
 		auto timeout = [this](){ this->OnResponseTimeout(); };
-		pResponseTimer = pExecutor->Start(params.responseTimeout, openpal::Bind(timeout));
+		pResponseTimer = pExecutor->Start(params.responseTimeout, Runnable::Bind(timeout));
 	}	
 }
 
@@ -331,7 +333,7 @@ bool MasterContext::CheckConfirmTransmit()
 	}
 }
 
-void MasterContext::Transmit(const openpal::ReadOnlyBuffer& output)
+void MasterContext::Transmit(const ReadOnlyBuffer& output)
 {
 	logging::ParseAndLogRequestTx(&logger, output);	
 	assert(!isSending);

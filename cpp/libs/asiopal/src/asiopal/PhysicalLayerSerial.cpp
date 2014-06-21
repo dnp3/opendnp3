@@ -71,7 +71,7 @@ void PhysicalLayerSerial::DoOpen()
 
 	if (settings.asyncOpenDelay.GetMilliseconds() > 0)
 	{
-		executor.Start(settings.asyncOpenDelay, openpal::Bind(lambda));
+		executor.Start(settings.asyncOpenDelay, Runnable::Bind(lambda));
 	}
 	else
 	{				

@@ -5,8 +5,6 @@
 #include "ChannelAdapter.h"
 #include "DeleteAnything.h"
 
-#include <openpal/executor/Bind.h>
-
 #include <asiodnp3/DNP3Manager.h>
 
 using namespace asiopal;

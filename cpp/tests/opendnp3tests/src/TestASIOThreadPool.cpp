@@ -121,7 +121,7 @@ TEST_CASE(SUITE("ExecutorPauseGuardsRaceConditions"))
 		*pCount = value + 1;
 	};
 
-	auto runnable = Bind(increment);
+	auto runnable = Runnable::Bind(increment);
 
 	for(size_t i = 0; i < 100; ++i)   //try to cause a race condition between the Post and the Pause
 	{

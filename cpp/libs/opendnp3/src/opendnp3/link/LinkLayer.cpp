@@ -23,7 +23,6 @@
 #include <assert.h>
 
 #include <openpal/logging/LogMacros.h>
-#include <openpal/executor/Bind.h>
 
 #include "opendnp3/LogErrorCodes.h"
 #include "opendnp3/link/ILinkRouter.h"
@@ -75,7 +74,7 @@ void LinkLayer::ChangeState(SecStateBase* apState)
 void LinkLayer::PostSendResult(bool isSuccess)
 {
 	auto lambda = [this, isSuccess]() { this->DoSendResult(isSuccess); };
-	mpExecutor->Post(openpal::Bind(lambda));
+	mpExecutor->PostLambda(lambda);
 }
 
 bool LinkLayer::Validate(bool aIsMaster, uint16_t aSrc, uint16_t aDest)
@@ -247,7 +246,7 @@ void LinkLayer::StartTimer()
 {
 	assert(mpTimer == nullptr);
 	auto lambda = [this]() { this->OnTimeout(); };
-	mpTimer = this->mpExecutor->Start(TimeDuration(config.Timeout), Bind(lambda));
+	mpTimer = this->mpExecutor->Start(TimeDuration(config.Timeout), Runnable::Bind(lambda));
 }
 
 void LinkLayer::CancelTimer()

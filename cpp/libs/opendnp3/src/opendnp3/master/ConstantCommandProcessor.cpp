@@ -21,7 +21,6 @@
 #include "ConstantCommandProcessor.h"
 
 #include <openpal/executor/IExecutor.h>
-#include <openpal/executor/Bind.h>
 
 using namespace openpal;
 
@@ -41,7 +40,7 @@ void ConstantCommandProcessor::Respond(ICommandCallback* pCallback)
 	if (pExecutor)
 	{
 		auto lambda = [cr, pCallback]() { pCallback->OnComplete(cr); };
-		pExecutor->Post(Bind(lambda));
+		pExecutor->Post(Runnable::Bind(lambda));
 	}
 	else
 	{

@@ -118,7 +118,7 @@ void DNP3Channel::CheckForFinalShutdown()
 			this->pShutdownHandler->OnShutdown(this);
 		};
 
-		pPhys->GetExecutor()->Start(TimeDuration::Zero(), Bind(lambda));
+		pPhys->GetExecutor()->Start(TimeDuration::Zero(), Runnable::Bind(lambda));
 		                           		                           
 	}
 }
@@ -136,7 +136,7 @@ openpal::LogFilters DNP3Channel::GetLogFilters() const
 void DNP3Channel::SetLogFilters(const openpal::LogFilters& filters)
 {	
 	auto lambda = [this, filters]() { this->pLogRoot->SetFilters(filters); };
-	pPhys->GetExecutor()->Post(Bind(lambda));
+	pPhys->GetExecutor()->PostLambda(lambda);
 }
 
 IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler* apPublisher, IUTCTimeSource* apTimeSource, const MasterStackConfig& config)

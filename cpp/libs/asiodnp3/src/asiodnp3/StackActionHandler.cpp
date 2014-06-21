@@ -22,7 +22,6 @@
 #include "StackActionHandler.h"
 
 #include <openpal/executor/IExecutor.h>
-#include <openpal/executor/Bind.h>
 
 #include "opendnp3/link/LinkLayerRouter.h"
 
@@ -48,13 +47,13 @@ openpal::IExecutor* StackActionHandler::GetExecutor()
 void StackActionHandler::EnableRoute(ILinkContext* pContext)
 {
 	auto lambda = [=]() { pRouter->Enable(pContext); };
-	pExecutor->Post(Bind(lambda));
+	pExecutor->PostLambda(lambda);
 }
 
 void StackActionHandler::DisableRoute(ILinkContext* pContext)
 {
 	auto lambda = [=]() { pRouter->Disable(pContext); };
-	pExecutor->Post(Bind(lambda));
+	pExecutor->PostLambda(lambda);
 }
 
 void StackActionHandler::BeginShutdown(ILinkContext* pContext, IStack* pStack)
@@ -66,7 +65,7 @@ void StackActionHandler::BeginShutdown(ILinkContext* pContext, IStack* pStack)
 	}
 
 	auto lambda = [this, pStack]() { pHandler->OnShutdown(pStack); };
-	pExecutor->Post(Bind(lambda));
+	pExecutor->PostLambda(lambda);
 }
 
 }

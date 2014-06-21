@@ -22,6 +22,7 @@
 #define __FUNCTION_ZERO_H_
 
 #include "Erasure.h"
+#include "openpal/Configure.h"
 
 namespace openpal
 {

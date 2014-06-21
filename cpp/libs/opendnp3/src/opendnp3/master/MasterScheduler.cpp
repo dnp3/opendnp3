@@ -76,7 +76,7 @@ void MasterScheduler::ScheduleLater(IMasterTask* pTask, const openpal::TimeDurat
 void MasterScheduler::StartTimer(const openpal::TimeDuration& timeout)
 {
 	auto callback = [this](){ this->OnTimerExpiration(); };
-	pTimer = pExecutor->Start(timeout, Bind(callback));
+	pTimer = pExecutor->Start(timeout, Runnable::Bind(callback));
 }
 
 void MasterScheduler::Schedule(IMasterTask* pTask)
@@ -301,7 +301,7 @@ void MasterScheduler::OnTimerExpiration()
 	{
 		auto next = scheduledQueue.Peek().expiration;
 		auto callback = [this](){ this->OnTimerExpiration(); };
-		pTimer = pExecutor->Start(next, Bind(callback));
+		pTimer = pExecutor->Start(next, Runnable::Bind(callback));
 	}	
 
 	if (pendingQueue.IsNotEmpty())

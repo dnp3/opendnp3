@@ -63,14 +63,14 @@ private:
 	template <class T>
 	void SelectAndOperateT(const T& command, uint16_t index, ICommandCallback* pCallback)
 	{		
-		auto action = [command, index, pCallback, this] { pProxyTo->SelectAndOperate(command, index, pCallback); };
+		auto action = [command, index, pCallback, this]() { pProxyTo->SelectAndOperate(command, index, pCallback); };
 		pExecutor->PostLambda(action);
 	}
 
 	template <class T>
 	void DirectOperateT(const T& command, uint16_t index, ICommandCallback* pCallback)
 	{		
-		auto action = [command, index, pCallback, this] { pProxyTo->DirectOperate(command, index, pCallback); };
+		auto action = [command, index, pCallback, this]() { pProxyTo->DirectOperate(command, index, pCallback); };
 		pExecutor->PostLambda(action);
 	}
 };

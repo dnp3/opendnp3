@@ -25,7 +25,6 @@
 #include "TimeDuration.h"
 #include "MonotonicTimestamp.h"
 #include "Runnable.h"
-#include "Bind.h"
 
 namespace openpal
 {
@@ -59,7 +58,7 @@ public:
 	template <class Lambda>
 	void PostLambda(Lambda& lambda)
 	{
-		this->Post(Bind(lambda));
+		this->Post(Runnable::Bind<Lambda>(lambda));
 	}
 
 protected:
