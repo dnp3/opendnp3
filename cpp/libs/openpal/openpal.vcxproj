@@ -25,11 +25,13 @@
     <ClInclude Include="src\openpal\channel\LayerInterfaces.h" />
     <ClInclude Include="src\openpal\Configure.h" />
     <ClInclude Include="src\openpal\container\DynamicArray.h" />
+    <ClInclude Include="src\openpal\container\HasSize.h" />
     <ClInclude Include="src\openpal\container\Indexable.h" />
     <ClInclude Include="src\openpal\container\IndexableIterator.h" />
     <ClInclude Include="src\openpal\container\LinkedListAdapter.h" />
     <ClInclude Include="src\openpal\container\Pair.h" />
     <ClInclude Include="src\openpal\container\RandomInsertAdapter.h" />
+    <ClInclude Include="src\openpal\container\ReadOnlyBuffer.h" />
     <ClInclude Include="src\openpal\container\RingBuffer.h" />
     <ClInclude Include="src\openpal\container\RingBufferAdapter.h" />
     <ClInclude Include="src\openpal\container\Settable.h" />
@@ -39,6 +41,7 @@
     <ClInclude Include="src\openpal\container\StaticLinkedList.h" />
     <ClInclude Include="src\openpal\container\StaticPriorityQueue.h" />
     <ClInclude Include="src\openpal\container\StaticQueue.h" />
+    <ClInclude Include="src\openpal\container\WriteBuffer.h" />
     <ClInclude Include="src\openpal\executor\Bind.h" />
     <ClInclude Include="src\openpal\executor\Erasure.h" />
     <ClInclude Include="src\openpal\executor\Function1.h" />
@@ -49,7 +52,6 @@
     <ClInclude Include="src\openpal\executor\Runnable.h" />
     <ClInclude Include="src\openpal\executor\TimeDuration.h" />
     <ClInclude Include="src\openpal\executor\UTCTimestamp.h" />
-    <ClInclude Include="src\openpal\HasSize.h" />
     <ClInclude Include="src\openpal\IEventHandler.h" />
     <ClInclude Include="src\openpal\IMutex.h" />
     <ClInclude Include="src\openpal\IShutdownHandler.h" />
@@ -62,7 +64,6 @@
     <ClInclude Include="src\openpal\logging\LogMacros.h" />
     <ClInclude Include="src\openpal\logging\LogRoot.h" />
     <ClInclude Include="src\openpal\logging\StringFormatting.h" />
-    <ClInclude Include="src\openpal\ReadOnlyBuffer.h" />
     <ClInclude Include="src\openpal\serialization\ByteSerialization.h" />
     <ClInclude Include="src\openpal\serialization\FloatSerializationTemplates.h" />
     <ClInclude Include="src\openpal\serialization\ISerializer.h" />
@@ -75,10 +76,11 @@
     <ClInclude Include="src\openpal\util\Limits.h" />
     <ClInclude Include="src\openpal\util\ToHex.h" />
     <ClInclude Include="src\openpal\util\Uncopyable.h" />
-    <ClInclude Include="src\openpal\WriteBuffer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\openpal\container\ReadOnlyBuffer.cpp" />
     <ClCompile Include="src\openpal\container\RingBufferAdapter.cpp" />
+    <ClCompile Include="src\openpal\container\WriteBuffer.cpp" />
     <ClCompile Include="src\openpal\executor\MonotonicTimestamp.cpp" />
     <ClCompile Include="src\openpal\executor\Runnable.cpp" />
     <ClCompile Include="src\openpal\executor\TimeDuration.cpp" />
@@ -86,12 +88,10 @@
     <ClCompile Include="src\openpal\logging\Logger.cpp" />
     <ClCompile Include="src\openpal\logging\LogRoot.cpp" />
     <ClCompile Include="src\openpal\logging\StringFormatting.cpp" />
-    <ClCompile Include="src\openpal\ReadOnlyBuffer.cpp" />
     <ClCompile Include="src\openpal\serialization\ByteSerialization.cpp" />
     <ClCompile Include="src\openpal\serialization\UInt48LE.cpp" />
     <ClCompile Include="src\openpal\util\Limits.cpp" />
     <ClCompile Include="src\openpal\util\ToHex.cpp" />
-    <ClCompile Include="src\openpal\WriteBuffer.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{ABF09BDA-75A5-47D7-9F15-D7B7EC69F1E7}</ProjectGuid>

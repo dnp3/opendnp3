@@ -21,8 +21,8 @@
 #ifndef __SHIFTABLE_BUFFER_H_
 #define __SHIFTABLE_BUFFER_H_
 
-#include <openpal/WriteBuffer.h>
-#include <openpal/ReadOnlyBuffer.h>
+#include <openpal/container/WriteBuffer.h>
+#include <openpal/container/ReadOnlyBuffer.h>
 
 namespace opendnp3
 {

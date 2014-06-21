@@ -24,8 +24,8 @@
 #include "LayerInterfaces.h"
 #include "ChannelStatistics.h"
 
-#include "openpal/ReadOnlyBuffer.h"
-#include "openpal/WriteBuffer.h"
+#include "openpal/container/ReadOnlyBuffer.h"
+#include "openpal/container/WriteBuffer.h"
 
 namespace openpal
 {

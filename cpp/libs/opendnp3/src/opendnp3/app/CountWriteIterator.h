@@ -22,7 +22,7 @@
 #define __COUNT_WRITE_ITERATOR_H_
 
 
-#include <openpal/WriteBuffer.h>
+#include <openpal/container/WriteBuffer.h>
 #include <openpal/serialization/ISerializer.h>
 
 namespace opendnp3

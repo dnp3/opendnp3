@@ -23,8 +23,8 @@
 
 #include <cstdint>
 
-#include "openpal/ReadOnlyBuffer.h"
-#include "openpal/WriteBuffer.h"
+#include "openpal/container/ReadOnlyBuffer.h"
+#include "openpal/container/WriteBuffer.h"
 
 namespace openpal
 {

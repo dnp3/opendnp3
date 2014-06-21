@@ -25,7 +25,7 @@
 #include <vector>
 #include <cstdint>
 
-#include <openpal/ReadOnlyBuffer.h>
+#include <openpal/container/ReadOnlyBuffer.h>
 
 namespace opendnp3
 {

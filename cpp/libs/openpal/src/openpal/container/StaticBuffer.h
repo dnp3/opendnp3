@@ -23,8 +23,8 @@
 
 #include "StaticArray.h"
 
-#include "openpal/WriteBuffer.h"
-#include "openpal/ReadOnlyBuffer.h"
+#include "openpal/container/WriteBuffer.h"
+#include "openpal/container/ReadOnlyBuffer.h"
 
 #include <cstdint>
 

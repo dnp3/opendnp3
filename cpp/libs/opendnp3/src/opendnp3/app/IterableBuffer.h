@@ -21,7 +21,7 @@
 #ifndef __ITERABLE_BUFFER_H_
 #define __ITERABLE_BUFFER_H_
 
-#include <openpal/ReadOnlyBuffer.h>
+#include <openpal/container/ReadOnlyBuffer.h>
 
 #include <assert.h>
 

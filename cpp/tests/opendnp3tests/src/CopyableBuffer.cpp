@@ -25,7 +25,7 @@
 #include <memory.h>
 
 #include <openpal/util/ToHex.h>
-#include <openpal/WriteBuffer.h>
+#include <openpal/container/WriteBuffer.h>
 
 namespace opendnp3
 {

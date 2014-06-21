@@ -21,8 +21,8 @@
 #ifndef __LAYER_INTERFACES_H_
 #define __LAYER_INTERFACES_H_
 
-#include "openpal/ReadOnlyBuffer.h"
-#include "openpal/WriteBuffer.h"
+#include "openpal/container/ReadOnlyBuffer.h"
+#include "openpal/container/WriteBuffer.h"
 #include "openpal/Configure.h"
 
 #include <assert.h>

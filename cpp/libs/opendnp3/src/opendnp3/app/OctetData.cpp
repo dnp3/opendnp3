@@ -20,7 +20,7 @@
  */
 #include "OctetData.h"
 
-#include <openpal/WriteBuffer.h>
+#include <openpal/container/WriteBuffer.h>
 
 using namespace openpal;
 

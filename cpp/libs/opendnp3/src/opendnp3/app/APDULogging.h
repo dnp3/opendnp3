@@ -23,7 +23,7 @@
 #define __APDU_LOGGING_H_
 
 #include <openpal/logging/LogFilters.h>
-#include <openpal/ReadOnlyBuffer.h>
+#include <openpal/container/ReadOnlyBuffer.h>
 #include <openpal/logging/Logger.h>
 
 namespace opendnp3

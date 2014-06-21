@@ -21,7 +21,7 @@
 #ifndef __APDU_PARSER_H_
 #define __APDU_PARSER_H_
 
-#include <openpal/ReadOnlyBuffer.h>
+#include <openpal/container/ReadOnlyBuffer.h>
 #include <openpal/logging/Logger.h>
 #include <openpal/logging/LogMacros.h>
 #include <openpal/serialization/ISerializer.h>

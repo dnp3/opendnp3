@@ -18,8 +18,8 @@
 #ifndef __OPENDNP3_GENERATED_GROUP12_H_
 #define __OPENDNP3_GENERATED_GROUP12_H_
 
-#include <openpal/ReadOnlyBuffer.h>
-#include <openpal/WriteBuffer.h>
+#include <openpal/container/ReadOnlyBuffer.h>
+#include <openpal/container/WriteBuffer.h>
 #include "opendnp3/app/GroupVariationID.h"
 #include "opendnp3/gen/ControlCode.h"
 #include "opendnp3/gen/CommandStatus.h"

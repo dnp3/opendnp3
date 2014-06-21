@@ -21,7 +21,7 @@
 #ifndef __APDU_HEADER_PARSER_H_
 #define __APDU_HEADER_PARSER_H_
 
-#include <openpal/ReadOnlyBuffer.h>
+#include <openpal/container/ReadOnlyBuffer.h>
 #include <openpal/util/Uncopyable.h>
 #include <openpal/logging/Logger.h>
 

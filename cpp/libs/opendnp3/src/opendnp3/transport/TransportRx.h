@@ -25,7 +25,7 @@
 #include "opendnp3/StaticSizeConfiguration.h"
 #include "opendnp3/StackStatistics.h"
 
-#include <openpal/ReadOnlyBuffer.h>
+#include <openpal/container/ReadOnlyBuffer.h>
 #include <openpal/container/StaticBuffer.h>
 #include <openpal/logging/Logger.h>
 

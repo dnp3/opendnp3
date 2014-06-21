@@ -21,7 +21,7 @@
 #ifndef __TRANSPORT_SEGMENT_H_
 #define __TRANSPORT_SEGMENT_H_
 
-#include <openpal/ReadOnlyBuffer.h>
+#include <openpal/container/ReadOnlyBuffer.h>
 
 namespace opendnp3
 {
