@@ -31,12 +31,10 @@
 namespace openpal
 {
 
-/*
-Users should only use these typedefs. This will allow these to be switched
-if we ever need to support other systems
-*/
+// Opendnp3 parsing only uses these aliases. This allows
+// the endianess to be switched via the macro below
 
-#ifdef FLIP_ENDIAN
+#ifdef OPENDNP3_FLIP_ENDIAN
 
 typedef Bit16BE<int16_t>	Int16;
 typedef Bit16BE<uint16_t>	UInt16;
