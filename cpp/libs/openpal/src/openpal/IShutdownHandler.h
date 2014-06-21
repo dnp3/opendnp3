@@ -24,19 +24,6 @@
 namespace openpal
 {
 
-
-class IShutdownHandler
-{
-public:
-
-	virtual ~IShutdownHandler() {}
-
-	/// Called when the corresponding component
-	/// shuts down and resources can be freed
-	virtual void OnShutdown() = 0;
-
-};
-
 template <class T>
 class ITypedShutdownHandler
 {
