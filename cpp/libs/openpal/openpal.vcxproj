@@ -45,6 +45,7 @@
     <ClInclude Include="src\openpal\executor\Erasure.h" />
     <ClInclude Include="src\openpal\executor\Function1.h" />
     <ClInclude Include="src\openpal\executor\IExecutor.h" />
+    <ClInclude Include="src\openpal\executor\IMutex.h" />
     <ClInclude Include="src\openpal\executor\ITimer.h" />
     <ClInclude Include="src\openpal\executor\IUTCTimeSource.h" />
     <ClInclude Include="src\openpal\executor\MonotonicTimestamp.h" />

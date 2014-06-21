@@ -21,7 +21,7 @@
 #ifndef __DATABASE_H_
 #define __DATABASE_H_
 
-#include <openpal/IMutex.h>
+#include <openpal/executor/IMutex.h>
 #include <openpal/executor/Runnable.h>
 #include <openpal/container/Settable.h>
 

@@ -31,7 +31,7 @@
 
 #include <openpal/logging/Logger.h>
 #include <openpal/executor/TimeDuration.h>
-#include <openpal/IMutex.h>
+#include <openpal/executor/IMutex.h>
 
 #include <opendnp3/link/IOpenDelayStrategy.h>
 

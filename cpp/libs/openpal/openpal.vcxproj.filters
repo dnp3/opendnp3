@@ -199,6 +199,9 @@
     <ClInclude Include="src\openpal\container\WriteBuffer.h">
       <Filter>Header\container</Filter>
     </ClInclude>
+    <ClInclude Include="src\openpal\executor\IMutex.h">
+      <Filter>Header\executor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\openpal\container\RingBufferAdapter.cpp">

@@ -23,7 +23,7 @@
 
 #include <mutex>
 
-#include <openpal/IMutex.h>
+#include <openpal/executor/IMutex.h>
 
 namespace asiodnp3
 {
