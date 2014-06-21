@@ -45,7 +45,29 @@ public:
 	
 	bool IsSet() const;
 
+	template <class Lambda>
+	static Runnable Bind(Lambda& lambda)
+	{
+		static_assert(sizeof(Lambda) <= sizes::MAX_ERASURE_SIZE, "Lambda is too big for erasure");
+		Runnable runnable(&Runnable::RunLambda<Lambda>, sizeof(lambda));
+		new(runnable.bytes) Lambda(lambda); // use placement new
+		return runnable;
+	}
+
+	template <class T>
+	static Runnable BindDelete(T* pPointer)
+	{
+		auto lambda = [pPointer]() { delete pPointer; };
+		return Bind(lambda);
+	}
+
 protected:	
+
+	template <class Lambda>
+	static void RunLambda(const uint8_t* pBuffer)
+	{
+		(*reinterpret_cast<const Lambda*>(pBuffer))();
+	}
 
 	Runnable(Invoke pInvoke_, uint32_t size_);
 

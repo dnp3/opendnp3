@@ -152,6 +152,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\CatchTestStart.cpp" />
+    <ClCompile Include="src\FunctionalTestSuite.cpp" />
     <ClCompile Include="src\LinkedListAdapterTestSuite.cpp" />
     <ClCompile Include="src\StaticQueueTestSuite.cpp" />
     <ClCompile Include="src\RandomInsertAdapterTestSuite.cpp" />

@@ -18,52 +18,28 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#include <catch.hpp>
 
-#include "Runnable.h"
+#include <openpal/executor/Runnable.h>
 
-#include <cstring>
+using namespace openpal;
 
-namespace openpal
-{
+#define SUITE(name) "FunctionalTestSuite - " name
 
-Runnable::Runnable() : pInvoke(nullptr)
-{}
+TEST_CASE(SUITE("ReadAndWriteModulo2"))
+{	
+	int a = 1;
+	int b = 2;
 
-Runnable::Runnable(Invoke pInvoke_, uint32_t size_) : Erasure(size_), pInvoke(pInvoke_)
-{}
+	auto pInt1 = &a;
+	auto pInt2 = &b;
 
-bool Runnable::IsSet() const
-{
-	return (pInvoke != nullptr);
+	auto add = [=]() { *pInt1 += *pInt2;  };
+
+	auto bound = Runnable::Bind(add);
+
+	bound.Run();
+
+	REQUIRE(a == 3);
 }
 
-bool Runnable::operator()() const
-{
-	return (pInvoke != nullptr);
-}
-
-Runnable& Runnable::operator=(const Runnable& other)
-{
-	if (this != &other)
-	{		
-		this->pInvoke = other.pInvoke;
-		this->CopyErasure(other);
-	}
-
-	return (*this);
-}
-
-Runnable::Runnable(const Runnable& other) : pInvoke(other.pInvoke)
-{
-	this->CopyErasure(other);
-}
-
-void Runnable::Run() const
-{
-	if (pInvoke)
-	{
-		(*pInvoke)(bytes);
-	}
-}
-
-}
