@@ -175,8 +175,7 @@ void WriteDuringUnsol(bool beforeTx)
 	t.Transaction([](Database& db){ db.Update(Binary(true, BQ_ONLINE), 0); });
 
 	REQUIRE(t.lower.PopWriteAsHex() == "F1 82 80 00 02 01 28 01 00 00 00 81");
-
-	// TODO - change whether it receives the request during or after tranmission
+	
 	if (beforeTx)
 	{
 		t.SendToOutstation(hex::ClearRestartIIN(0));

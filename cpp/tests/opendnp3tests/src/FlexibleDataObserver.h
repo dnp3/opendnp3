@@ -231,8 +231,7 @@ private:
 	{
 		bool notify = mNewData;
 		mNewData = false;
-		mMutex.unlock();
-		// if(notify) this->NotifyObservers(); TODO
+		mMutex.unlock();		
 	}
 
 	template <class T, class U>

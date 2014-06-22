@@ -28,16 +28,16 @@ using namespace openpal;
 namespace opendnp3
 {
 
-	OutstationParams::OutstationParams() :
-		maxControlsPerRequest(16),
-		selectTimeout(TimeDuration::Seconds(10)),
-		solConfirmTimeout(TimeDuration::Seconds(5)),
-		unsolConfirmTimeout(TimeDuration::Seconds(5)),
-		unsolRetryTimeout(TimeDuration::Seconds(5)),
-		maxTxFragSize(sizes::DEFAULT_APDU_BUFFER_SIZE), // TODO, use another constant
-		allowUnsolicited(false),
-		unsolClassMask(0)
-	{}
+OutstationParams::OutstationParams() :
+	maxControlsPerRequest(16),
+	selectTimeout(TimeDuration::Seconds(10)),
+	solConfirmTimeout(TimeDuration::Seconds(5)),
+	unsolConfirmTimeout(TimeDuration::Seconds(5)),
+	unsolRetryTimeout(TimeDuration::Seconds(5)),
+	maxTxFragSize(sizes::DEFAULT_APDU_BUFFER_SIZE),
+	allowUnsolicited(false),
+	unsolClassMask(0)
+{}
 
 }
 

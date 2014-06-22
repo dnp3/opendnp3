@@ -55,17 +55,4 @@ bool CommandResponse::operator==(const CommandResponse& arRHS) const
 	return (mResult == arRHS.mResult) && (mStatus == arRHS.mStatus);
 }
 
-/* TODO
-std::string CommandResponse::ToString() const
-{
-	std::ostringstream oss;
-	if(mResult == CommandResult::RESPONSE_OK) oss << "Response: " << CommandStatusToString(mStatus);
-	else oss << "Failure: " << CommandResultToString(mResult);
-	return oss.str();
 }
-*/
-
-}
-
-
-

@@ -155,7 +155,7 @@ void PhysicalLayerBase::BeginClose()
 
 void PhysicalLayerBase::StartClose()
 {
-	if(!state.IsClosing())   //TODO - kind of hack as it deviates from the current model.
+	if(!state.IsClosing())
 	{
 		if(state.CanClose())
 		{

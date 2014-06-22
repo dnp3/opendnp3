@@ -289,9 +289,6 @@
     <ClCompile Include="src\TestShiftableBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\TestStaticResponseContext.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\TestTime.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

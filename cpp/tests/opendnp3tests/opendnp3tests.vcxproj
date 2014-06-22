@@ -296,7 +296,6 @@
     <ClCompile Include="src\TestPhysicalLayerMonitor.cpp" />
     <ClCompile Include="src\TestSerialization.cpp" />
     <ClCompile Include="src\TestShiftableBuffer.cpp" />
-    <ClCompile Include="src\TestStaticResponseContext.cpp" />
     <ClCompile Include="src\TestTime.cpp" />
     <ClCompile Include="src\TestTimers.cpp" />
     <ClCompile Include="src\TestTransportLayer.cpp" />
