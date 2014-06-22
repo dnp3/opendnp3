@@ -20,10 +20,6 @@
  */
 #include "UInt48LE.h"
 
-#include <cstring>
-
-#include "Limits.h"
-
 namespace openpal
 {
 
@@ -52,3 +48,4 @@ void UInt48LE::Write(uint8_t* apStart, int64_t aValue)
 }
 
 }
+

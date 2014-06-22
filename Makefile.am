@@ -14,25 +14,25 @@ bin_PROGRAMS = masterdemo outstationdemo
 
 lib_LTLIBRARIES = libopenpal.la libasiopal.la libopendnp3.la libasiodnp3.la
 
-# ls cpp/libs/openpal/src/openpal/*.cpp -1 | awk '{print $0" \\"}'
+# ls cpp/libs/openpal/src/openpal/**/*.cpp -1 | awk '{print $0" \\"}'
 libopenpal_la_LDFLAGS = -version-info 1:1:0
 libopenpal_la_CXXFLAGS = -I$(OPENPAL_INCLUDE)
 libopenpal_la_SOURCES = \
-cpp/libs/openpal/src/openpal/ByteSerialization.cpp \
-cpp/libs/openpal/src/openpal/Limits.cpp \
-cpp/libs/openpal/src/openpal/LogEntry.cpp \
-cpp/libs/openpal/src/openpal/Logger.cpp \
-cpp/libs/openpal/src/openpal/LogRoot.cpp \
-cpp/libs/openpal/src/openpal/MonotonicTimestamp.cpp \
-cpp/libs/openpal/src/openpal/ReadOnlyBuffer.cpp \
-cpp/libs/openpal/src/openpal/RingBufferAdapter.cpp \
-cpp/libs/openpal/src/openpal/Runnable.cpp \
-cpp/libs/openpal/src/openpal/StringFormatting.cpp \
-cpp/libs/openpal/src/openpal/TimeDuration.cpp \
-cpp/libs/openpal/src/openpal/ToHex.cpp \
-cpp/libs/openpal/src/openpal/UInt48LE.cpp \
-cpp/libs/openpal/src/openpal/WriteBuffer.cpp
-
+cpp/libs/openpal/src/openpal/container/ReadOnlyBuffer.cpp \
+cpp/libs/openpal/src/openpal/container/RingBufferAdapter.cpp \
+cpp/libs/openpal/src/openpal/container/WriteBuffer.cpp \
+cpp/libs/openpal/src/openpal/executor/Erasure.cpp \
+cpp/libs/openpal/src/openpal/executor/MonotonicTimestamp.cpp \
+cpp/libs/openpal/src/openpal/executor/Runnable.cpp \
+cpp/libs/openpal/src/openpal/executor/TimeDuration.cpp \
+cpp/libs/openpal/src/openpal/logging/LogEntry.cpp \
+cpp/libs/openpal/src/openpal/logging/Logger.cpp \
+cpp/libs/openpal/src/openpal/logging/LogRoot.cpp \
+cpp/libs/openpal/src/openpal/logging/StringFormatting.cpp \
+cpp/libs/openpal/src/openpal/serialization/ByteSerialization.cpp \
+cpp/libs/openpal/src/openpal/serialization/UInt48LE.cpp \
+cpp/libs/openpal/src/openpal/util/Limits.cpp \
+cpp/libs/openpal/src/openpal/util/ToHex.cpp
 
 #ls cpp/libs/asiopal/src/asiopal/*.cpp -1 | awk '{print $0" \\"}'
 libasiopal_la_LDFLAGS = -version-info 1:1:0
@@ -51,7 +51,7 @@ cpp/libs/asiopal/src/asiopal/SerialTypes.cpp \
 cpp/libs/asiopal/src/asiopal/TimerASIO.cpp \
 cpp/libs/asiopal/src/asiopal/UTCTimeSource.cpp
 
-#ls cpp/libs/opendnp3/src/opendnp3/**/*.cpp -1 | awk '{print $0" \\"}'
+# ls cpp/libs/opendnp3/src/opendnp3/**/*.cpp -1 | awk '{print $0" \\"}'
 libopendnp3_la_LDFLAGS = -version-info 2:0:0
 libopendnp3_la_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I $(OPENDNP3_INCLUDE)
 libopendnp3_la_SOURCES = \
@@ -188,6 +188,7 @@ cpp/libs/opendnp3/src/opendnp3/transport/TransportRx.cpp \
 cpp/libs/opendnp3/src/opendnp3/transport/TransportStack.cpp \
 cpp/libs/opendnp3/src/opendnp3/transport/TransportTx.cpp
 
+
 #ls cpp/libs/asiodnp3/src/asiodnp3/*.cpp -1 | awk '{print $0" \\"}'
 libasiodnp3_la_CPPFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) -I$(ASIODNP3_INCLUDE) $(ASIO_CONFIG)
 libasiodnp3_la_LDFLAGS = -version-info 1:1:0
@@ -300,7 +301,6 @@ cpp/tests/opendnp3tests/src/TestPhysicalLayerLoopback.cpp \
 cpp/tests/opendnp3tests/src/TestPhysicalLayerMonitor.cpp \
 cpp/tests/opendnp3tests/src/TestSerialization.cpp \
 cpp/tests/opendnp3tests/src/TestShiftableBuffer.cpp \
-cpp/tests/opendnp3tests/src/TestStaticResponseContext.cpp \
 cpp/tests/opendnp3tests/src/TestTime.cpp \
 cpp/tests/opendnp3tests/src/TestTimers.cpp \
 cpp/tests/opendnp3tests/src/TestTransportLayer.cpp \

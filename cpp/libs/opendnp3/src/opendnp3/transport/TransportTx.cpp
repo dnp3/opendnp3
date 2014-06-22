@@ -26,6 +26,7 @@
 #include <openpal/logging/LogMacros.h>
 
 #include <assert.h>
+#include <cstring>
 
 
 using namespace std;
