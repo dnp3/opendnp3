@@ -88,8 +88,14 @@ public:
 		auto numHeaders = this->GetCurrentHeader();
 		auto singleHeader = (numHeaders == 1);
 		this->Reset();
-		if(singleHeader) return response;
-		else return CommandResponse(CommandResult::TIMEOUT); // TODO - better error code
+		if (singleHeader)
+		{
+			return response;
+		}
+		else
+		{
+			return CommandResponse(CommandResult::BAD_RESPONSE);
+		}
 	}
 
 private:

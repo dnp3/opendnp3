@@ -130,10 +130,10 @@ typedef ConvertQV<Group32Var6, Analog> ConvertGroup32Var6;
 typedef ConvertQVTRangeCheck<Group32Var7, Analog, AnalogQuality::AQ_OVERRANGE> ConvertGroup32Var7;
 typedef ConvertQVT<Group32Var8, Analog> ConvertGroup32Var8;
 
-// Group 40
-typedef ConvertQVRangeCheck<Group40Var1, AnalogOutputStatus, 0> ConvertGroup40Var1; // TODO - strange to have no flag
-typedef ConvertQVRangeCheck<Group40Var2, AnalogOutputStatus, 0> ConvertGroup40Var2; // TODO - strange to have no flag
-typedef ConvertQVRangeCheck<Group40Var3, AnalogOutputStatus, 0> ConvertGroup40Var3; // TODO - strange to have no flag
+// Group 40 - TODO - strange to have no flag
+typedef ConvertQVRangeCheck<Group40Var1, AnalogOutputStatus, 0> ConvertGroup40Var1;
+typedef ConvertQVRangeCheck<Group40Var2, AnalogOutputStatus, 0> ConvertGroup40Var2;
+typedef ConvertQVRangeCheck<Group40Var3, AnalogOutputStatus, 0> ConvertGroup40Var3;
 typedef ConvertQV<Group40Var4, AnalogOutputStatus> ConvertGroup40Var4;
 
 // Group 41

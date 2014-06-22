@@ -23,8 +23,6 @@
 
 #include <opendnp3/outstation/IMeasurementLoader.h>
 
-#include <opendnp3/app/MeasurementHelpers.h>
-
 #include <openpal/executor/TimeDuration.h>
 
 #include "FlexibleDataObserver.h"

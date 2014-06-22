@@ -459,9 +459,6 @@
     <ClInclude Include="src\opendnp3\app\StaticRange.h">
       <Filter>Header\app</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\app\MeasurementHelpers.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\CommandResponseHandler.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
