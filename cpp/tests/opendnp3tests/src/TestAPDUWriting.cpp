@@ -77,11 +77,11 @@ TEST_CASE(SUITE("RangeWriteIteratorStartStop"))
 	APDUResponse response(APDUHelpers::Response());
 	auto writer = response.GetWriter();
 
-	auto iterator = writer.IterateOverRange<UInt8, Counter>(QualifierCode::UINT8_START_STOP, Group20Var6Serializer::Inst(), 2);
-
-	REQUIRE(iterator.Write(Counter(9)));
-	REQUIRE(iterator.Write(Counter(7)));
-	REQUIRE(iterator.Complete());
+	{
+		auto iterator = writer.IterateOverRange<UInt8, Counter>(QualifierCode::UINT8_START_STOP, Group20Var6Serializer::Inst(), 2);
+		REQUIRE(iterator.Write(Counter(9)));
+		REQUIRE(iterator.Write(Counter(7)));
+	}
 
 	REQUIRE("C0 81 00 00 14 06 00 02 03 09 00 07 00" ==  toHex(response.ToReadOnly()));
 }
@@ -93,7 +93,7 @@ TEST_CASE(SUITE("EmptyHeadersWhenNotEnoughSpaceForSingleValue"))
 
 	auto iterator = writer.IterateOverRange<UInt8, Counter>(QualifierCode::UINT8_START_STOP, Group20Var6Serializer::Inst(), 2);
 
-	REQUIRE(iterator.IsNull());
+	REQUIRE(!iterator.IsValid());
 
 	REQUIRE("C0 81 00 00" ==  toHex(response.ToReadOnly()));
 }
@@ -102,10 +102,8 @@ TEST_CASE(SUITE("CountWriteIteratorAllowsCountOfZero"))
 {
 	APDUResponse response(APDUHelpers::Response());
 	auto writer = response.GetWriter();
-
-	auto iter = writer.IterateOverCount<UInt16, Analog>(QualifierCode::UINT16_CNT, Group30Var1Serializer::Inst());
-	REQUIRE(!iter.IsNull());
-	REQUIRE(iter.Complete());
+	
+	writer.IterateOverCount<UInt16, Analog>(QualifierCode::UINT16_CNT, Group30Var1Serializer::Inst());	
 
 	REQUIRE("C0 81 00 00 1E 01 08 00 00" ==  toHex(response.ToReadOnly()));
 
@@ -116,12 +114,13 @@ TEST_CASE(SUITE("CountWriteIteratorFillsUpCorrectly"))
 	APDUResponse response(APDUHelpers::Response(15));
 	auto writer = response.GetWriter();
 
-	auto iter = writer.IterateOverCount<UInt8, Analog>(QualifierCode::UINT8_CNT, Group30Var2Serializer::Inst());
+	{
+		auto iter = writer.IterateOverCount<UInt8, Analog>(QualifierCode::UINT8_CNT, Group30Var2Serializer::Inst());
 
-	REQUIRE(iter.Write(Analog(9, 0xFF)));
-	REQUIRE(iter.Write(Analog(7, 0xFF)));
-	REQUIRE(!iter.Write(Analog(7, 0xFF))); //we're full
-	REQUIRE(iter.Complete());
+		REQUIRE(iter.Write(Analog(9, 0xFF)));
+		REQUIRE(iter.Write(Analog(7, 0xFF)));
+		REQUIRE(!iter.Write(Analog(7, 0xFF))); //we're full	
+	}
 
 	REQUIRE("C0 81 00 00 1E 02 07 02 FF 09 00 FF 07 00" ==  toHex(response.ToReadOnly()));
 }
@@ -131,13 +130,12 @@ TEST_CASE(SUITE("PrefixWriteIteratorWithSingleCROB"))
 	APDUResponse response(APDUHelpers::Response());
 	auto writer = response.GetWriter();
 
-	auto iter = writer.IterateOverCountWithPrefix<UInt8, ControlRelayOutputBlock>(QualifierCode::UINT8_CNT_UINT8_INDEX, Group12Var1Serializer::Inst());
-	REQUIRE(!iter.IsNull());
-
-	ControlRelayOutputBlock crob(ControlCode::LATCH_ON, 0x1F, 0x10, 0xAA, CommandStatus::LOCAL);
-
-	REQUIRE(iter.Write(crob, 0x21));
-	REQUIRE(iter.Complete());
+	{
+		auto iter = writer.IterateOverCountWithPrefix<UInt8, ControlRelayOutputBlock>(QualifierCode::UINT8_CNT_UINT8_INDEX, Group12Var1Serializer::Inst());
+		REQUIRE(iter.IsValid());
+		ControlRelayOutputBlock crob(ControlCode::LATCH_ON, 0x1F, 0x10, 0xAA, CommandStatus::LOCAL);
+		REQUIRE(iter.Write(crob, 0x21));
+	}
 
 	REQUIRE("C0 81 00 00 0C 01 17 01 21 03 1F 10 00 00 00 AA 00 00 00 07" ==  toHex(response.ToReadOnly()));
 }

@@ -90,15 +90,17 @@ StaticLoadResult StaticLoader::LoadFixedSizeStartStopWithIterator(const openpal:
 				range.Advance();
 			}
 			else
-			{
-				iterator.Complete();
+			{				
 				return StaticLoadResult::FULL;
 			}
 		}
-		iterator.Complete();
+		
 		return StaticLoadResult::COMPLETED;
 	}
-	else return StaticLoadResult::FULL;
+	else
+	{
+		return StaticLoadResult::FULL;
+	}
 }
 
 }

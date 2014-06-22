@@ -91,7 +91,6 @@ void CommandResponseHandler::RespondToHeader(QualifierCode qualifier, IDNP3Seria
 		iter.Write(response, command.index);
 		++numRequests;
 	}	
-	iter.Complete();
 }
 
 }

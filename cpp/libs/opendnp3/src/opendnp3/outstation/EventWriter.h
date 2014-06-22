@@ -69,12 +69,10 @@ uint32_t EventWriter::WriteFullHeader(ObjectWriter& ow, SelectionIterator& itera
 		}
 		else
 		{
-			writer.Complete();
 			return count;
 		}
 	}
-
-	writer.Complete();
+	
 	return count;
 	
 }

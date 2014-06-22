@@ -34,51 +34,54 @@ class RangeWriteIterator
 public:
 
 	static RangeWriteIterator Null()
-	{
-		auto buffer = openpal::WriteBuffer::Empty();
-		return RangeWriteIterator(0, nullptr, buffer);
+	{		
+		return RangeWriteIterator();
 	}
 
-	RangeWriteIterator(typename IndexType::Type aStart, openpal::ISerializer<WriteType>* pSerializer_, openpal::WriteBuffer& position) :
-		start(aStart),
+	RangeWriteIterator() : start(0), pSerializer(nullptr), count(0), isValid(false), pPosition(nullptr)
+	{}
+
+	RangeWriteIterator(typename IndexType::Type start_, openpal::ISerializer<WriteType>* pSerializer_, openpal::WriteBuffer& position) :
+		start(start_),
 		pSerializer(pSerializer_),
 		count(0),				
-		isNull(position.Size() < 2 * IndexType::Size || pSerializer == nullptr),
+		isValid(position.Size() >= 2 * IndexType::Size && pSerializer),
 		range(position),
 		pPosition(&position)
 	{
-		if(!isNull)
+		if (isValid)
 		{
-			IndexType::WriteBuffer(range, aStart);
+			IndexType::WriteBuffer(range, start);
 			pPosition->Advance(2 * IndexType::Size);
 		}
 	}
 
-	bool Complete()
+	~RangeWriteIterator()
 	{
-		if(isNull || count == 0) return false;
-		else
+		if (isValid && count > 0)
 		{
 			auto stop = start + count - 1;
-			IndexType::Write(range, stop);
-			return true;
-		}
-	}
+			IndexType::Write(range, stop);					
+		}		
+	}	
 
 	bool Write(const WriteType& value)
 	{
-		if(isNull || pPosition->Size() < pSerializer->Size()) return false;
-		else
+		if (isValid && pPosition->Size() >= pSerializer->Size())
 		{
 			pSerializer->Write(value, *pPosition);
 			++count;
-			return true;
+			return true;			
+		}
+		else
+		{
+			return false;
 		}
 	}
 
-	bool IsNull() const
+	bool IsValid() const
 	{
-		return isNull;
+		return isValid;
 	}
 
 private:
@@ -87,7 +90,7 @@ private:
 	openpal::ISerializer<WriteType>* pSerializer;
 	typename IndexType::Type count;
 
-	bool isNull;
+	bool isValid;
 
 	openpal::WriteBuffer range;  // make a copy to record where we write the range
 	openpal::WriteBuffer* pPosition;

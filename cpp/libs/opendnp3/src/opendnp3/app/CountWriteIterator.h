@@ -35,48 +35,51 @@ class CountWriteIterator
 public:
 
 	static CountWriteIterator Null()
-	{
-		auto buffer = openpal::WriteBuffer::Empty();
-		return CountWriteIterator(nullptr, buffer); // TODO - this should be a pointer
+	{		
+		return CountWriteIterator();
 	}
 
-	CountWriteIterator(openpal::ISerializer<WriteType>* pSerializer_, openpal::WriteBuffer& aPosition) :
+	CountWriteIterator() : count(0), pSerializer(nullptr), pPosition(nullptr), isValid(false)
+	{}
+
+	CountWriteIterator(openpal::ISerializer<WriteType>* pSerializer_, openpal::WriteBuffer& position) :
 		count(0),
 		pSerializer(pSerializer_),
-		countPosition(aPosition),
-		position(aPosition),
-		isNull(aPosition.Size() < CountType::Size || pSerializer == nullptr)
+		countPosition(position),
+		pPosition(&position),
+		isValid(position.Size() >= CountType::Size || pSerializer == nullptr)
 	{
-		if(!isNull)
+		if(isValid)
 		{
 			position.Advance(CountType::Size);
 		}
 	}
 
-	bool Complete()
+	~CountWriteIterator()
 	{
-		if(isNull) return false;
-		else
+		if (isValid)
 		{
-			CountType::Write(countPosition, count);
-			return true;
-		}
-	}
+			CountType::Write(countPosition, count);			
+		}		
+	}	
 
 	bool Write(const WriteType& value)
 	{
-		if(isNull || position.Size() < pSerializer->Size()) return false;
+		if (isValid && pPosition->Size() >= pSerializer->Size())
+		{
+			pSerializer->Write(value, *this->pPosition);
+			++count;
+			return true;			
+		}
 		else
 		{
-			pSerializer->Write(value, position);
-			++count;
-			return true;
+			return false;
 		}
 	}
 
-	bool IsNull() const
+	bool IsValid() const
 	{
-		return isNull;
+		return isValid;
 	}
 
 private:
@@ -84,10 +87,10 @@ private:
 	typename CountType::Type count;
 	openpal::ISerializer<WriteType>* pSerializer;
 
-	bool isNull;
+	bool isValid;
 
 	openpal::WriteBuffer countPosition;  // make a copy to record where we write the count
-	openpal::WriteBuffer& position;
+	openpal::WriteBuffer* pPosition;
 };
 
 }

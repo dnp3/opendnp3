@@ -33,16 +33,15 @@ class PrefixedWriteIterator
 public:
 
 	static PrefixedWriteIterator Null()
-	{
-		PrefixedWriteIterator ret;
-		return ret;
+	{		
+		return PrefixedWriteIterator();
 	}
 
 	PrefixedWriteIterator() :
 		pSerializer(nullptr),
 		sizeOfTypePlusIndex(0),
 		count(0),		
-		isNull(true),
+		isValid(false),
 		pPosition(nullptr)
 	{}
 
@@ -50,47 +49,42 @@ public:
 		pSerializer(pSerializer_),
 		sizeOfTypePlusIndex(pSerializer_->Size() + PrefixType::Size),
 		count(0),		
-		isNull(position.Size() < PrefixType::Size),
+		isValid(position.Size() >= PrefixType::Size),
 		countPosition(position),		
 		pPosition(&position)
 	{
-		if(!isNull)
+		if(isValid)
 		{
 			pPosition->Advance(PrefixType::Size);
 		}
 	}
 
-	bool Complete()
+	~PrefixedWriteIterator()
 	{
-		if(isNull)
+		if (isValid)
 		{
-			return false;
+			PrefixType::Write(countPosition, count);			
 		}
-		else
-		{
-			PrefixType::Write(countPosition, count);
-			return true;
-		}
-	}
+	}	
 
 	bool Write(WriteType& value, typename PrefixType::Type index)
 	{
-		if(isNull || (pPosition->Size() < sizeOfTypePlusIndex) )
-		{
-			return false;
-		}
-		else
+		if (isValid && (pPosition->Size() >= sizeOfTypePlusIndex))
 		{
 			PrefixType::WriteBuffer(*pPosition, index);
 			pSerializer->Write(value, *pPosition);
 			++count;
-			return true;
+			return true;			
+		}
+		else
+		{
+			return false;
 		}
 	}
 
-	bool IsNull() const
+	bool IsValid() const
 	{
-		return isNull;
+		return isValid;
 	}
 
 private:
@@ -100,7 +94,7 @@ private:
 
 	typename PrefixType::Type count;
 
-	bool isNull;
+	bool isValid;
 
 	openpal::WriteBuffer countPosition;  // make a copy to record where we write the count
 	openpal::WriteBuffer* pPosition;
