@@ -79,9 +79,7 @@ private:
 	typedef std::deque<TimerASIO*> TimerQueue;
 
 	TimerQueue allTimers;
-	TimerQueue idleTimers;
-
-	size_t numActiveTimers;	
+	TimerQueue idleTimers;	
 
 	void OnTimerCallback(const std::error_code&, TimerASIO*, const openpal::Runnable& runnable);
 };

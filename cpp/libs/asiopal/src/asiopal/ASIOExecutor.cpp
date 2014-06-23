@@ -31,8 +31,7 @@ namespace asiopal
 {
 
 ASIOExecutor::ASIOExecutor(asio::io_service& service) :
-	strand(service),
-	numActiveTimers(0),	
+	strand(service),	
 	paused(false),
 	resumed(false)
 {
@@ -49,18 +48,18 @@ openpal::MonotonicTimestamp ASIOExecutor::GetTime()
 	return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
 }
 
-openpal::ITimer* ASIOExecutor::Start(const openpal::TimeDuration& arDelay, const openpal::Runnable& runnable)
+openpal::ITimer* ASIOExecutor::Start(const openpal::TimeDuration& delay, const openpal::Runnable& runnable)
 {	
 	TimerASIO* pTimer = GetTimer();
-	pTimer->timer.expires_from_now(std::chrono::milliseconds(arDelay.GetMilliseconds()));
+	pTimer->timer.expires_from_now(std::chrono::milliseconds(delay.GetMilliseconds()));
 	this->StartTimer(pTimer, runnable);
 	return pTimer;
 }
 
-openpal::ITimer* ASIOExecutor::Start(const openpal::MonotonicTimestamp& arTime, const openpal::Runnable& runnable)
+openpal::ITimer* ASIOExecutor::Start(const openpal::MonotonicTimestamp& time, const openpal::Runnable& runnable)
 {	
 	TimerASIO* pTimer = GetTimer();
-	pTimer->timer.expires_at(std::chrono::steady_clock::time_point(std::chrono::milliseconds(arTime.milliseconds)));
+	pTimer->timer.expires_at(std::chrono::steady_clock::time_point(std::chrono::milliseconds(time.milliseconds)));
 	this->StartTimer(pTimer, runnable);
 	return pTimer;
 }
@@ -142,18 +141,13 @@ TimerASIO* ASIOExecutor::GetTimer()
 }
 
 void ASIOExecutor::StartTimer(TimerASIO* pTimer, const openpal::Runnable& runnable)
-{
-	++numActiveTimers;
-	pTimer->timer.async_wait(
-	    strand.wrap(
-			[runnable, this, pTimer](const std::error_code& ec){ this->OnTimerCallback(ec, pTimer, runnable); }	        
-	    )
-	);
+{	
+	auto callback = [runnable, this, pTimer](const std::error_code& ec){ this->OnTimerCallback(ec, pTimer, runnable); };
+	pTimer->timer.async_wait(strand.wrap(callback));
 }
 
 void ASIOExecutor::OnTimerCallback(const std::error_code& ec, TimerASIO* pTimer, const openpal::Runnable& runnable)
-{
-	--numActiveTimers;
+{	
 	idleTimers.push_back(pTimer);
 	if (!(ec || pTimer->canceled))
 	{
