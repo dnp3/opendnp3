@@ -93,7 +93,7 @@ void PhysicalLayerTCPServer::DoOpen()
 					else
 					{
 						auto acceptCallback = [this](const std::error_code & code) { this->OnOpenCallback(code); };
-						acceptor.async_accept(socket, remoteEndpoint, executor.strand.wrap(acceptCallback));
+						acceptor.async_accept(socket, remoteEndpoint, executor.Wrap<const std::error_code &>(acceptCallback));
 					}
 				}
 			}
@@ -102,7 +102,7 @@ void PhysicalLayerTCPServer::DoOpen()
 	else
 	{
 		auto acceptCallback = [this](const std::error_code & code) { this->OnOpenCallback(code); };
-		acceptor.async_accept(socket, remoteEndpoint, executor.strand.wrap(acceptCallback));
+		acceptor.async_accept(socket, remoteEndpoint, executor.Wrap<const std::error_code &>(acceptCallback));
 	}
 }
 

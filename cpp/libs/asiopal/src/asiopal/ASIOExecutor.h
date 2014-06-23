@@ -39,6 +39,7 @@ class ASIOExecutor : public openpal::IExecutor
 {
 
 public:
+
 	ASIOExecutor(asio::io_service& service);
 	~ASIOExecutor();
 
@@ -46,6 +47,14 @@ public:
 	virtual openpal::ITimer* Start(const openpal::TimeDuration&, const openpal::Runnable& runnable)  override final;
 	virtual openpal::ITimer* Start(const openpal::MonotonicTimestamp&, const openpal::Runnable& runnable)  override final;
 	virtual void Post(const openpal::Runnable& runnable) override final;
+	
+	std::function<void()> Wrap(const std::function<void()>& handler);
+	
+	template <class A>
+	std::function<void (A)> Wrap(const std::function<void(A)>& handler);
+
+	template <class A, class B>
+	std::function<void(A, B)> Wrap(const std::function<void(A, B)>& handler);
 
 protected:
 
@@ -65,22 +74,31 @@ private:
 	bool paused;
 	bool resumed;
 
-public:
-
 	asio::strand strand;
-
-private:
 
 	typedef std::deque<TimerASIO*> TimerQueue;
 
 	TimerQueue allTimers;
 	TimerQueue idleTimers;
 
-	size_t numActiveTimers;
-	//bool isShuttingDown;
+	size_t numActiveTimers;	
 
 	void OnTimerCallback(const std::error_code&, TimerASIO*, const openpal::Runnable& runnable);
 };
+
+template <class A>
+std::function<void(A)> ASIOExecutor::Wrap(const std::function<void(A)>& handler)
+{
+	return strand.wrap(handler);
+}
+
+template <class A, class B>
+std::function<void(A, B)> ASIOExecutor::Wrap(const std::function<void(A, B)>& handler)
+{
+	return strand.wrap(handler);
+}
+
+
 }
 
 #endif

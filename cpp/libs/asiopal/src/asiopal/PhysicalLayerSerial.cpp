@@ -97,25 +97,22 @@ void PhysicalLayerSerial::DoOpenSuccess()
 void PhysicalLayerSerial::DoRead(openpal::WriteBuffer& buff)
 {
 	uint8_t* pBuffer = buff;
-	port.async_read_some(buffer(pBuffer, buff.Size()),
-							executor.strand.wrap(
-	                          [this, pBuffer](const std::error_code & error, size_t numRead)
+	
+	auto callback = [this, pBuffer](const std::error_code & error, size_t numRead)	
 	{
 		this->OnReadCallback(error, pBuffer, static_cast<uint32_t>(numRead));
-	}
-	                      )
-	                     );
+	};
+
+	auto wrapped = executor.Wrap<const std::error_code&, size_t>(callback);
+	
+	port.async_read_some(buffer(pBuffer, buff.Size()), wrapped);
 }
 
 void PhysicalLayerSerial::DoWrite(const ReadOnlyBuffer& buff)
-{
-	async_write(port, buffer(buff, buff.Size()),
-		executor.strand.wrap(
-	                std::bind(&PhysicalLayerSerial::OnWriteCallback,
-	                          this,
-	                          std::placeholders::_1,
-	                          buff.Size())
-	            ));
+{	
+	auto callback = [this](const std::error_code& error, size_t size) { this->OnWriteCallback(error, static_cast<uint32_t>(size));  };
+
+	async_write(port, buffer(buff, buff.Size()), executor.Wrap<const std::error_code&, size_t>(callback));
 }
 
 }

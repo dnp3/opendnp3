@@ -70,6 +70,11 @@ void ASIOExecutor::Post(const openpal::Runnable& runnable)
 	strand.post([runnable]() { runnable.Apply(); });
 }
 
+std::function<void()> ASIOExecutor::Wrap(const std::function<void()>& handler)
+{
+	return strand.wrap(handler);
+}
+
 void ASIOExecutor::Pause()
 {
 	if (!strand.running_in_this_thread())
