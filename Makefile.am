@@ -265,7 +265,6 @@ cpp/tests/opendnp3tests/src/MockUpperLayer.cpp \
 cpp/tests/opendnp3tests/src/MultiplexingDataObserver.cpp \
 cpp/tests/opendnp3tests/src/OutstationTestObject.cpp \
 cpp/tests/opendnp3tests/src/PhysBaseTest.cpp \
-cpp/tests/opendnp3tests/src/PhysicalLayerWrapper.cpp \
 cpp/tests/opendnp3tests/src/PhysLoopback.cpp \
 cpp/tests/opendnp3tests/src/PhysTestObject.cpp \
 cpp/tests/opendnp3tests/src/ProtocolUtil.cpp \
@@ -315,6 +314,5 @@ cpp/tests/opendnp3tests/src/TransportIntegrationStack.cpp \
 cpp/tests/opendnp3tests/src/TransportLoopbackTestObject.cpp \
 cpp/tests/opendnp3tests/src/TransportScalabilityTestObject.cpp \
 cpp/tests/opendnp3tests/src/TransportStackPair.cpp \
-cpp/tests/opendnp3tests/src/TransportTestObject.cpp \
-cpp/tests/opendnp3tests/src/WrappedTcpPipe.cpp
+cpp/tests/opendnp3tests/src/TransportTestObject.cpp
 
