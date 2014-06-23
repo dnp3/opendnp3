@@ -32,8 +32,7 @@ namespace asiopal
 
 ASIOExecutor::ASIOExecutor(asio::strand* apStrand) :
 	pStrand(apStrand),
-	numActiveTimers(0),
-	isShuttingDown(false),
+	numActiveTimers(0),	
 	paused(false),
 	resumed(false)
 {
@@ -51,8 +50,7 @@ openpal::MonotonicTimestamp ASIOExecutor::GetTime()
 }
 
 openpal::ITimer* ASIOExecutor::Start(const openpal::TimeDuration& arDelay, const openpal::Runnable& runnable)
-{
-	assert(!isShuttingDown);
+{	
 	TimerASIO* pTimer = GetTimer();
 	pTimer->timer.expires_from_now(std::chrono::milliseconds(arDelay.GetMilliseconds()));
 	this->StartTimer(pTimer, runnable);
@@ -60,8 +58,7 @@ openpal::ITimer* ASIOExecutor::Start(const openpal::TimeDuration& arDelay, const
 }
 
 openpal::ITimer* ASIOExecutor::Start(const openpal::MonotonicTimestamp& arTime, const openpal::Runnable& runnable)
-{
-	assert(!isShuttingDown);
+{	
 	TimerASIO* pTimer = GetTimer();
 	pTimer->timer.expires_at(std::chrono::steady_clock::time_point(std::chrono::milliseconds(arTime.milliseconds)));
 	this->StartTimer(pTimer, runnable);

@@ -73,7 +73,7 @@ private:
 	TimerQueue idleTimers;
 
 	size_t numActiveTimers;
-	bool isShuttingDown;
+	//bool isShuttingDown;
 
 	void OnTimerCallback(const std::error_code&, TimerASIO*, const openpal::Runnable& runnable);
 };
