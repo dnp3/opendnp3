@@ -84,7 +84,7 @@ TaskStatus SerialTimeSyncTask::OnSingleResponse(const APDUResponseHeader& respon
 
 				// The later shouldn't happen, but could cause a negative delay which would result in a weird time setting				
 				delay = (sendReceieveTime >= rtuTurnAroundTime) ? (sendReceieveTime - rtuTurnAroundTime) / 2 : 0;
-
+				this->SetState(TaskState::RUNNING);
 				return TaskStatus::REPEAT;
 			}
 			else

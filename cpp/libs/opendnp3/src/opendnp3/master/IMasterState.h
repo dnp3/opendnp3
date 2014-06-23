@@ -47,7 +47,9 @@ class MasterStateIdle : public IMasterState
 {
 	public:
 
-	static IMasterState& Instance() { return instance; }	
+	static IMasterState& Instance() { return instance; }
+
+	virtual IMasterState* OnStart(MasterContext*pContext);
 
 	private:
 

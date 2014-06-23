@@ -303,9 +303,11 @@ TEST_CASE(SUITE("RestartAndTimeBits"))
 
 	REQUIRE(t.lower.NumWrites() == 0);
 
-	t.SendToMaster("C0 82 90 00"); // need time and device restart via null unsol
+	t.SendToMaster(hex::NullUnsolicited(0, IINField(IINBit::DEVICE_RESTART) | IINField(IINBit::NEED_TIME)));
 
 	REQUIRE(t.exe.RunMany() > 0);
+	REQUIRE(t.lower.PopWriteAsHex() == hex::UnsolConfirm(0));
+	t.master.OnSendResult(true);	
 
 	REQUIRE(t.lower.PopWriteAsHex() == hex::ClearRestartIIN(0));
 	t.master.OnSendResult(true);
@@ -316,6 +318,8 @@ TEST_CASE(SUITE("RestartAndTimeBits"))
 	t.master.OnSendResult(true);
 	t.timeSource.time += 100; //advance time by 100ms so that the master sees 100ms for a response
 	t.SendToMaster("C1 81 10 00 34 02 07 01 0A 00"); // still need time, 52 Var 2, delay == 10ms
+
+	t.exe.RunMany();
 
 	// Write group 50 var 1
 	// 200-100-10/2 = 45 => 45 + 200 - 0xF5

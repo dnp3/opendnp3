@@ -48,20 +48,43 @@ IMasterState* IMasterState::OnResponseTimeout(MasterContext* pContext)
 
 MasterStateIdle MasterStateIdle::instance;
 
+IMasterState* MasterStateIdle::OnStart(MasterContext* pContext)
+{
+	if (pContext->isSending)
+	{
+		return this;
+	}
+	else
+	{
+		auto pTask = pContext->scheduler.Start();
+		if (pTask)
+		{
+			FORMAT_LOG_BLOCK(pContext->logger, flags::INFO, "Begining task: %s", pTask->Name());
+			pContext->pActiveTask = pTask;
+			pContext->StartTask(pTask);
+			return &MasterStateWaitForResponse::Instance();
+		}
+		else
+		{
+			return this;
+		}
+	}
+}
+
 // --------- READY -------------
 
 MasterStateTaskReady MasterStateTaskReady::instance;
 
 IMasterState* MasterStateTaskReady::OnStart(MasterContext*pContext)
 {
-	if (pContext->pActiveTask)
+	if (pContext->isSending)
 	{
-		pContext->StartTask(pContext->pActiveTask);
-		return &MasterStateWaitForResponse::Instance();
+		return this;
 	}
 	else
 	{
-		return this;
+		pContext->StartTask(pContext->pActiveTask);
+		return &MasterStateWaitForResponse::Instance();
 	}	
 }
 
@@ -90,6 +113,7 @@ IMasterState* MasterStateWaitForResponse::OnResponse(MasterContext* pContext, co
 				pContext->StartResponseTimer();
 				return this;
 			case(TaskStatus::REPEAT) :
+				pContext->PostCheckForTask();
 				return &MasterStateTaskReady::Instance();
 			default:
 				pContext->pActiveTask = nullptr;
@@ -106,6 +130,7 @@ IMasterState* MasterStateWaitForResponse::OnResponse(MasterContext* pContext, co
 
 IMasterState* MasterStateWaitForResponse::OnResponseTimeout(MasterContext* pContext)
 {	
+	pContext->pResponseTimer = nullptr;
 	pContext->pActiveTask->OnResponseTimeout(pContext->params, pContext->scheduler);
 	pContext->pActiveTask = nullptr;
 	pContext->solSeq = AppControlField::NextSeq(pContext->solSeq);

@@ -229,6 +229,8 @@ void TestAnalogOutputExecution(const std::string& hex, const T& command)
 	REQUIRE(callback.responses.empty());
 	t.SendToMaster("C0 81 00 00 " + hex);
 
+	t.exe.RunMany();
+
 	REQUIRE(t.lower.PopWriteAsHex() == "C1 04 " + hex);
 	t.master.OnSendResult(true);
 	REQUIRE(callback.responses.empty());

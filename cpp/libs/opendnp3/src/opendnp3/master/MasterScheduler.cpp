@@ -270,7 +270,7 @@ void MasterScheduler::OnNeedTimeDetected(const MasterParams& params)
 	if (params.timeSyncMode == TimeSyncMode::SerialTimeSync)
 	{
 		if (tasks.serialTimeSync.GetState() == TaskState::IDLE)
-		{
+		{			
 			tasks.serialTimeSync.Reset();
 			this->Schedule(&tasks.serialTimeSync);
 			this->CheckForNotification();

@@ -54,6 +54,7 @@ MasterContext::MasterContext(
 	solSeq(0),
 	unsolSeq(0),
 	pActiveTask(nullptr),
+	pState(&MasterStateIdle::Instance()),
 	pResponseTimer(nullptr),
 	scheduler(&logger, pSOEHandler_, pTimeSource, executor)		
 {
@@ -85,12 +86,14 @@ bool MasterContext::OnLayerDown()
 			pActiveTask = nullptr;
 		}
 
+		pState = &MasterStateIdle::Instance();
+
 		scheduler.OnLowerLayerDown();
+
 		this->CancelResponseTimer();
-		isOnline = false;
-		isSending = false;
-		solSeq = 0;
-		unsolSeq = 0;
+
+		solSeq = unsolSeq = 0;
+		isOnline = isSending = false;		 		
 		return true;
 	}
 	else
@@ -107,15 +110,9 @@ void MasterContext::PostCheckForTask()
 
 void MasterContext::CheckForTask()
 {
-	if (isOnline && !pActiveTask && !isSending)
+	if (isOnline)
 	{
-		auto pTask = scheduler.Start();
-		if (pTask)
-		{
-			FORMAT_LOG_BLOCK(logger, flags::INFO, "Begining task: %s", pTask->Name());
-			pActiveTask = pTask;
-			this->StartTask(pTask);
-		}
+		pState = pState->OnStart(this);		
 	}
 }
 
@@ -142,17 +139,7 @@ void MasterContext::QueueCommandAction(const Function1<ICommandProcessor*>& acti
 
 void MasterContext::OnResponseTimeout()
 {
-	if (pResponseTimer)
-	{
-		pResponseTimer = nullptr;
-		if (pActiveTask)
-		{
-			pActiveTask->OnResponseTimeout(params, scheduler);
-			pActiveTask = nullptr;
-			solSeq = AppControlField::NextSeq(solSeq);
-			this->PostCheckForTask();
-		}
-	}
+	pState = pState->OnResponseTimeout(this);
 }
 
 void MasterContext::OnSendResult(bool isSucccess)
@@ -161,10 +148,8 @@ void MasterContext::OnSendResult(bool isSucccess)
 	{
 		isSending = false;
 
-		if (!(this->CheckConfirmTransmit() || pActiveTask))
-		{
-			this->PostCheckForTask();
-		}				
+		this->CheckConfirmTransmit();
+		this->CheckForTask();						
 	}
 }
 
@@ -202,7 +187,7 @@ void MasterContext::OnReceive(const ReadOnlyBuffer& apdu)
 			{
 				if (header.function == FunctionCode::RESPONSE)
 				{
-					this->OnResponse(header, apdu.Skip(APDU_RESPONSE_HEADER_SIZE));
+					this->pState = pState->OnResponse(this, header, apdu.Skip(APDU_RESPONSE_HEADER_SIZE));
 					this->OnReceiveIIN(header.IIN);
 				}
 				else
@@ -214,43 +199,6 @@ void MasterContext::OnReceive(const ReadOnlyBuffer& apdu)
 	}
 }
 
-
-void MasterContext::OnResponse(const APDUResponseHeader& header, const ReadOnlyBuffer& objects)
-{	
-	
-	if (pActiveTask && (header.control.SEQ == this->solSeq))
-	{
-		this->CancelResponseTimer();
-			
-		this->solSeq = AppControlField::NextSeq(solSeq);
-
-		auto result = pActiveTask->OnResponse(header, objects, params, scheduler);
-
-		if (header.control.CON && CanConfirmResponse(result))
-		{
-			this->QueueConfirm(APDUHeader::SolicitedConfirm(header.control.SEQ));
-		}
-
-		switch (result)
-		{
-			case(TaskStatus::CONTINUE) :
-				this->StartResponseTimer();
-				break;
-			case(TaskStatus::REPEAT) :					
-				this->StartTask(pActiveTask);
-				break;
-			default:
-				pActiveTask = nullptr;
-				this->PostCheckForTask();
-				break;
-		}			
-	}
-	else
-	{
-		FORMAT_LOG_BLOCK(logger, flags::WARN, "Unexpected response with sequence: %u", header.control.SEQ);
-	}
-	
-}
 
 void MasterContext::OnUnsolicitedResponse(const APDUResponseHeader& header, const ReadOnlyBuffer& objects)
 {
@@ -275,9 +223,9 @@ void MasterContext::OnReceiveIIN(const IINField& iin)
 	{
 		scheduler.OnRestartDetected(params);
 	}
-
+	
 	if (iin.IsSet(IINBit::NEED_TIME))
-	{
+	{		
 		scheduler.OnNeedTimeDetected(params);
 	}
 }

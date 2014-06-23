@@ -29,6 +29,7 @@
 #include <openpal/container/StaticBuffer.h>
 
 #include "opendnp3/master/MasterScheduler.h"
+#include "opendnp3/master/IMasterState.h"
 
 namespace opendnp3
 {
@@ -59,6 +60,7 @@ class MasterContext : public ICommandProcessor
 	uint8_t solSeq;
 	uint8_t unsolSeq;
 	IMasterTask* pActiveTask;
+	IMasterState* pState;
 	openpal::ITimer* pResponseTimer;
 	MasterScheduler scheduler;	
 	openpal::StaticQueue<APDUHeader, uint8_t, 4> confirmQueue;
@@ -74,8 +76,7 @@ class MasterContext : public ICommandProcessor
 	void OnReceive(const openpal::ReadOnlyBuffer& apdu);
 
 	// ------- internal events -------
-
-	void OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects);
+	
 	void OnUnsolicitedResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects);
 	void OnReceiveIIN(const IINField& iin);
 
@@ -114,15 +115,9 @@ class MasterContext : public ICommandProcessor
 
 	// -------- helpers --------
 
-	
-
-	
-
 	bool CheckConfirmTransmit();
 
-	void Transmit(const openpal::ReadOnlyBuffer& output);
-
-	
+	void Transmit(const openpal::ReadOnlyBuffer& output);	
 
 	template <class T>
 	void SelectAndOperateT(const T& command, uint16_t index, ICommandCallback* pCallback);
