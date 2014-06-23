@@ -92,6 +92,7 @@ class OutstationContext
 	uint8_t operateExpectedSeq;
 	uint32_t operateExpectedFragCount;
 
+	bool isTransmitting;
 	uint8_t solSeqN;
 	uint8_t unsolSeqN;
 	uint8_t expectedSolConfirmSeq;	

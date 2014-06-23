@@ -35,9 +35,7 @@ class OutstationContext;
 class OutstationUnsolicitedStateBase : openpal::Uncopyable
 {
 
-public:	
-
-	virtual bool IsTransmitting() { return false; }
+public:		
 
 	virtual OutstationUnsolicitedStateBase* OnConfirm(OutstationContext*, const APDUHeader& header) = 0;
 
@@ -70,25 +68,6 @@ protected:
 private:
 
 	static OutstationUnsolicitedStateIdle instance;
-
-};
-
-class OutstationUnsolicitedStateTransmitting : public OutstationUnsolicitedStateIdle
-{
-
-public:
-
-	virtual bool IsTransmitting() override final { return true; }
-
-	static OutstationUnsolicitedStateBase& Inst() { return instance; }
-
-	virtual OutstationUnsolicitedStateBase* OnSendResult(OutstationContext*, bool isSucccess) override final;
-
-private:
-
-	OutstationUnsolicitedStateTransmitting() {}
-
-	static OutstationUnsolicitedStateTransmitting instance;
 
 };
 

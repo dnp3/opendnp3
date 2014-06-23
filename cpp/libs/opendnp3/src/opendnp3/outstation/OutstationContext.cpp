@@ -72,6 +72,7 @@ OutstationContext::OutstationContext(
 	rxFragCount(0),		
 	operateExpectedSeq(0),
 	operateExpectedFragCount(0),
+	isTransmitting(false),
 	solSeqN(0),
 	unsolSeqN(0),
 	expectedSolConfirmSeq(0),
@@ -150,6 +151,7 @@ void OutstationContext::SetOnline()
 void OutstationContext::SetOffline()
 {
 	isOnline = false;
+	isTransmitting = false;
 	unsolPackTimerExpired = false;
 	pSolicitedState = &OutstationSolicitedStateIdle::Inst();
 	pUnsolicitedState = &OutstationUnsolicitedStateIdle::Inst();
@@ -251,16 +253,11 @@ void OutstationContext::OnReceiveAPDU(const openpal::ReadOnlyBuffer& apdu)
 
 void OutstationContext::OnSendResult(bool isSuccess)
 {
-	if (pSolicitedState->IsTransmitting())
+	if (isOnline && isTransmitting)
 	{
-		pSolicitedState = pSolicitedState->OnSendResult(this, isSuccess);
+		isTransmitting = false;		
 		this->PostCheckForActions();
-	}
-	else if (pUnsolicitedState->IsTransmitting())
-	{
-		pUnsolicitedState = pUnsolicitedState->OnSendResult(this, isSuccess);
-		this->PostCheckForActions();
-	}
+	}	
 }
 
 OutstationSolicitedStateBase* OutstationContext::OnReceiveSolRequest(const APDUHeader& header, const openpal::ReadOnlyBuffer& apdu)
@@ -327,7 +324,7 @@ OutstationSolicitedStateBase* OutstationContext::RespondToNonReadRequest(const A
 	auto iin = this->BuildNonReadResponse(header, objects, writer, objectsEqualToLastRequest);
 	response.SetIIN(iin | this->GetResponseIIN());		
 	this->BeginResponseTx(response.ToReadOnly());
-	return &OutstationSolicitedStateTransmitNoConfirm::Inst();
+	return &OutstationSolicitedStateIdle::Inst();
 }
 
 OutstationSolicitedStateBase* OutstationContext::RespondToReadRequest(uint8_t seq, const openpal::ReadOnlyBuffer& objects)
@@ -341,18 +338,28 @@ OutstationSolicitedStateBase* OutstationContext::RespondToReadRequest(uint8_t se
 	response.SetControl(result.second);
 	response.SetIIN(result.first | this->GetResponseIIN());
 	this->BeginResponseTx(response.ToReadOnly());
-	// todo make this return a transmit confirm state
-	return result.second.CON ? &OutstationSolicitedStateTransmitThenConfirm::Inst() : &OutstationSolicitedStateTransmitNoConfirm::Inst();
+	
+	if (result.second.CON)
+	{
+		this->StartSolicitedConfirmTimer();
+		return &OutstationStateSolicitedConfirmWait::Inst();
+	}
+	else
+	{
+		return  &OutstationSolicitedStateIdle::Inst();
+	}	
 }
 
 void OutstationContext::BeginResponseTx(const ReadOnlyBuffer& response)
 {		
+	this->isTransmitting = true;
 	lastResponse = response;
 	pLower->BeginTransmit(response);	
 }
 
 void OutstationContext::BeginUnsolTx(const ReadOnlyBuffer& response)
 {	
+	this->isTransmitting = true;
 	this->expectedUnsolConfirmSeq = unsolSeqN;
 	this->unsolSeqN = AppControlField::NextSeq(unsolSeqN);
 	pLower->BeginTransmit(response);
@@ -393,7 +400,16 @@ OutstationSolicitedStateBase* OutstationContext::ContinueMultiFragResponse(uint8
 	response.SetControl(control);
 	response.SetIIN(this->staticIIN | this->GetDynamicIIN());	
 	this->BeginResponseTx(response.ToReadOnly());
-	return control.CON ? &OutstationSolicitedStateTransmitThenConfirm::Inst() : &OutstationSolicitedStateTransmitNoConfirm::Inst();
+	
+	if (control.CON)
+	{
+		this->StartSolicitedConfirmTimer();
+		return &OutstationStateSolicitedConfirmWait::Inst();
+	}
+	else
+	{
+		return &OutstationSolicitedStateIdle::Inst();
+	}	
 }
 
 void OutstationContext::PostCheckForActions()
@@ -407,7 +423,7 @@ void OutstationContext::CheckForTaskStart()
 {	
 	// if we're online, the solicited state is idle, and the unsolicited state 
 	// is not transmitting we may be able to do a task
-	if (isOnline && pSolicitedState == &OutstationSolicitedStateIdle::Inst() && !pUnsolicitedState->IsTransmitting())
+	if (isOnline && !isTransmitting && pSolicitedState == &OutstationSolicitedStateIdle::Inst())
 	{
 		if (deferredRequest.IsSet())
 		{
@@ -468,16 +484,19 @@ void OutstationContext::CheckForUnsolicited()
 			
 				
 				this->ConfigureUnsolHeader(unsol);
-				this->pUnsolicitedState = &OutstationUnsolicitedStateTransmitting::Inst();
+				this->StartUnsolicitedConfirmTimer();
+				this->pUnsolicitedState = &OutstationUnsolicitedStateConfirmWait::Inst();
 				this->BeginUnsolTx(unsol.ToReadOnly());				
 			}
 		}
 		else
 		{
 			// send a NULL unsolcited message			
-			this->pUnsolicitedState = &OutstationUnsolicitedStateTransmitting::Inst();
+			
 			auto unsol = this->StartNewUnsolicitedResponse();
 			this->ConfigureUnsolHeader(unsol);
+			this->StartUnsolicitedConfirmTimer();
+			this->pUnsolicitedState = &OutstationUnsolicitedStateConfirmWait::Inst();
 			this->BeginUnsolTx(unsol.ToReadOnly());
 		}
 	}	

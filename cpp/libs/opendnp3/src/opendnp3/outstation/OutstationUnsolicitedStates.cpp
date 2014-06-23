@@ -51,24 +51,6 @@ OutstationUnsolicitedStateBase* OutstationUnsolicitedStateIdle::OnConfirmTimeout
 	return this;
 }
 
-// --------------------- OutstationUnsolicitedStateTransmitting ----------------
-
-OutstationUnsolicitedStateTransmitting OutstationUnsolicitedStateTransmitting::instance;
-
-OutstationUnsolicitedStateBase* OutstationUnsolicitedStateTransmitting::OnSendResult(OutstationContext* pContext, bool isSucccess)
-{
-	if (isSucccess)
-	{		
-		pContext->StartUnsolicitedConfirmTimer();
-		return &OutstationUnsolicitedStateConfirmWait::Inst();
-	}
-	else
-	{
-		pContext->eventBuffer.Reset();
-		return &OutstationUnsolicitedStateIdle::Inst();		
-	}	
-}
-
 // --------------------- OutstationUnsolicitedStateConfirmWait ----------------
 
 OutstationUnsolicitedStateConfirmWait OutstationUnsolicitedStateConfirmWait::instance;

@@ -93,7 +93,7 @@ OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewReadRequest(Out
 
 OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewNonReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, bool lastHeadersEqual)
 {
-	if (pContext->pUnsolicitedState->IsTransmitting())
+	if (pContext->isTransmitting)
 	{
 		pContext->deferredRequest.Set(DeferredRequest(header, false, lastHeadersEqual));
 		return this;		
@@ -106,57 +106,16 @@ OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewNonReadRequest(
 
 OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnRepeatNonReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects)
 {
-	if (pContext->pUnsolicitedState->IsTransmitting())
+	if (pContext->isTransmitting)
 	{
 		pContext->deferredRequest.Set(DeferredRequest(header, true, false));
 		return this;		
 	}
 	else
 	{
-		pContext->BeginResponseTx(pContext->lastResponse);
-		return &OutstationSolicitedStateTransmitNoConfirm::Inst();
+		pContext->BeginResponseTx(pContext->lastResponse);				
 	}
 	
-}
-
-// --------------------- OutstationSolicitedStateTransmitNoConfirm ----------------------
-
-OutstationSolicitedStateTransmitNoConfirm OutstationSolicitedStateTransmitNoConfirm::instance;
-
-OutstationSolicitedStateBase& OutstationSolicitedStateTransmitNoConfirm::Inst()
-{
-	return instance;
-}
-
-OutstationSolicitedStateBase* OutstationSolicitedStateTransmitNoConfirm::OnSendResult(OutstationContext* pContext, bool)
-{	
-	return &OutstationSolicitedStateIdle::Inst();	
-}
-
-// --------------------- OutstationSolicitedStateTransmitThenConfirm ----------------------
-
-OutstationSolicitedStateTransmitThenConfirm OutstationSolicitedStateTransmitThenConfirm::instance;
-
-OutstationSolicitedStateBase& OutstationSolicitedStateTransmitThenConfirm::Inst()
-{
-	return instance;
-}
-
-OutstationSolicitedStateBase* OutstationSolicitedStateTransmitThenConfirm::OnSendResult(OutstationContext* pContext, bool isSucccess)
-{
-	if (isSucccess && !pContext->deferredRequest.IsSet())
-	{
-		pContext->StartSolicitedConfirmTimer();
-		return &OutstationStateSolicitedConfirmWait::Inst();
-	}
-	else
-	{
-		// if the transmit failed or we have a deferred request, 
-		// then we have no reason to expect a confirm so got back to Idle
-		pContext->rspContext.Reset();
-		pContext->eventBuffer.Reset();		
-		return &OutstationSolicitedStateIdle::Inst();
-	}
 }
 
 // --------------------- OutstationStateSolConfirmWait ----------------------
