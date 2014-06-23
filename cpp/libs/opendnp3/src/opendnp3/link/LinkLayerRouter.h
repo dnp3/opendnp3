@@ -163,7 +163,7 @@ private:
 	
 	LinkChannelStatistics* pStatistics;
 	LinkLayerParser parser;
-	bool mTransmitting;
+	bool isTransmitting;
 
 	// Implement virtual PhysLayerMonitor
 	void OnPhysicalLayerOpenSuccessCallback();

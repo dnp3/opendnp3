@@ -36,18 +36,18 @@ namespace opendnp3
 {
 
 LinkLayerRouter::LinkLayerRouter(	openpal::LogRoot& root,
-                                    IPhysicalLayer* apPhys,
+                                    IPhysicalLayer* pPhys,
                                     openpal::TimeDuration minOpenRetry,
                                     openpal::TimeDuration maxOpenRetry,
 									IChannelStateListener* pStateHandler_,                                    
                                     IOpenDelayStrategy* pStrategy,
 									LinkChannelStatistics* pStatistics_) :
 
-	PhysicalLayerMonitor(root, apPhys, minOpenRetry, maxOpenRetry, pStrategy),
+	PhysicalLayerMonitor(root, pPhys, minOpenRetry, maxOpenRetry, pStrategy),
 	pStateHandler(pStateHandler_),	
 	pStatistics(pStatistics_),
 	parser(logger, pStatistics_),
-	mTransmitting(false)
+	isTransmitting(false)
 {}
 
 void LinkLayerRouter::SetShutdownHandler(const Runnable& action)
@@ -310,8 +310,8 @@ bool LinkLayerRouter::HasEnabledContext()
 void LinkLayerRouter::OnSendResult(bool result)
 {
 	assert(transmitQueue.IsNotEmpty());
-	assert(mTransmitting);
-	mTransmitting = false;
+	assert(isTransmitting);
+	isTransmitting = false;
 
 	auto pTx = transmitQueue.Pop();
 	pTx->pContext->OnTransmitResult(pTx->primary, result);
@@ -320,11 +320,11 @@ void LinkLayerRouter::OnSendResult(bool result)
 
 void LinkLayerRouter::CheckForSend()
 {
-	if(transmitQueue.IsNotEmpty() && !mTransmitting && pPhys->CanWrite())
+	if (transmitQueue.IsNotEmpty() && !isTransmitting && pPhys->CanWrite())
 	{
 		if (pStatistics) ++pStatistics->numLinkFrameTx;
 		auto pTransmission = transmitQueue.Peek();
-		mTransmitting = true;				
+		isTransmitting = true;
 		pPhys->BeginWrite(pTransmission->buffer);
 	}
 }
@@ -355,7 +355,7 @@ void LinkLayerRouter::OnPhysicalLayerCloseCallback()
 	parser.Reset();
 
 	// Drop frames queued for transmit and tell the contexts that the router has closed
-	mTransmitting = false;
+	isTransmitting = false;
 	transmitQueue.Clear();
 
 	auto disable = [](const Record & rec)
