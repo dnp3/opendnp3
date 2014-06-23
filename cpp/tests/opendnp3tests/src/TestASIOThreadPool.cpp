@@ -104,9 +104,8 @@ TEST_CASE(SUITE("ExecutorPauseGuardsRaceConditions"))
 {	
 	IOServiceThreadPool pool(&ConsoleLogger::Instance(), levels::NORMAL, 8);
 	size_t iterations = 100000;
-
-	asio::strand strand(pool.GetIOService());
-	ASIOExecutor exe(&strand);
+	
+	ASIOExecutor exe(pool.GetIOService());
 
 	int count = 0;
 	auto pCount = &count;
@@ -137,9 +136,8 @@ TEST_CASE(SUITE("ExecutorPauseIsIgnoredIfOnStrand"))
 {	
 	IOServiceThreadPool pool(&ConsoleLogger::Instance(), levels::NORMAL, 1);
 	uint32_t iterations = 10;
-
-	asio::strand strand(pool.GetIOService());
-	ASIOExecutor exe(&strand);
+	
+	ASIOExecutor exe(pool.GetIOService());
 
 	uint32_t count = 0;
 	auto pCount = &count;

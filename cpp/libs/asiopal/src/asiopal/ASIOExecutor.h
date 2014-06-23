@@ -39,7 +39,7 @@ class ASIOExecutor : public openpal::IExecutor
 {
 
 public:
-	ASIOExecutor(asio::strand*);
+	ASIOExecutor(asio::io_service& service);
 	~ASIOExecutor();
 
 	virtual openpal::MonotonicTimestamp GetTime() override final;
@@ -65,7 +65,11 @@ private:
 	bool paused;
 	bool resumed;
 
-	asio::strand* pStrand;
+public:
+
+	asio::strand strand;
+
+private:
 
 	typedef std::deque<TimerASIO*> TimerQueue;
 

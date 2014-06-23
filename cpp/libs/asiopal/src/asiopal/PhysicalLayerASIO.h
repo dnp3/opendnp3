@@ -38,12 +38,12 @@ namespace asiopal
 
 class PhysicalLayerASIO : public PhysicalLayerBase
 {
+
 public:
 	
 	PhysicalLayerASIO(openpal::LogRoot& root, asio::io_service& service) :
-		PhysicalLayerBase(root),
-		strand(service),
-		executor(&strand)
+		PhysicalLayerBase(root),		
+		executor(service)
 	{
 	
 	}
@@ -54,9 +54,7 @@ public:
 	{
 		return &executor;
 	}
-
-protected:
-	asio::strand strand;
+	
 	ASIOExecutor executor;
 };
 

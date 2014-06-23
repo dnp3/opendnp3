@@ -49,7 +49,7 @@ class TimerASIO : public openpal::ITimer
 	friend class ASIOExecutor;
 
 public:
-	TimerASIO(asio::strand* apStrand);
+	TimerASIO(asio::strand& strand);
 
 	// Implement ITimer
 	void Cancel();

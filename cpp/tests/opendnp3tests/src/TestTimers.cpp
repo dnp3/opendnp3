@@ -44,9 +44,8 @@ class TimerTestObject
 public:
 	TimerTestObject() :
 		log(),
-		pool(&log, levels::NORMAL, 1),
-		strand(pool.GetIOService()),
-		exe(&strand),
+		pool(&log, levels::NORMAL, 1),		
+		exe(pool.GetIOService()),
 		mLast(-1),
 		mNum(0),
 		mMonotonic(true)
@@ -73,8 +72,7 @@ public:
 
 private:
 	asiopal::LogFanoutHandler log;
-	asiopal::IOServiceThreadPool pool;
-	asio::strand strand;
+	asiopal::IOServiceThreadPool pool;	
 
 public:
 	asiopal::ASIOExecutor exe;
@@ -134,18 +132,17 @@ TEST_CASE(SUITE("ExpirationAndReuse"))
 {
 	MockTimerHandler mth;
 	auto pTimerHandler = &mth;
-	asio::io_service srv;
-	asio::strand strand(srv);
-	ASIOExecutor exe(&strand);
+	asio::io_service service;	
+	ASIOExecutor exe(service);
 
 	auto lambda = [pTimerHandler]() { pTimerHandler->OnExpiration(); };
 	auto runnable = Runnable::Bind(lambda);
 	ITimer* pT1 = exe.Start(TimeDuration::Milliseconds(1), runnable);
-	REQUIRE(1 ==  srv.run_one());
+	REQUIRE(1 ==  service.run_one());
 	REQUIRE(1 ==  mth.GetCount());
 	ITimer* pT2 = exe.Start(TimeDuration::Milliseconds(1), runnable);
-	srv.reset();
-	REQUIRE(1 ==  srv.run_one());
+	service.reset();
+	REQUIRE(1 ==  service.run_one());
 	REQUIRE(pT1 ==  pT2); //The ASIO implementation should reuse timers
 }
 
@@ -153,17 +150,16 @@ TEST_CASE(SUITE("Cancelation"))
 {
 	MockTimerHandler mth;
 	auto pTimerHandler = &mth;
-	asio::io_service srv;
-	asio::strand strand(srv);
-	ASIOExecutor exe(&strand);
+	asio::io_service service;	
+	ASIOExecutor exe(service);
 	auto lambda = [pTimerHandler](){ pTimerHandler->OnExpiration(); };
 	ITimer* pT1 = exe.Start(TimeDuration::Milliseconds(1), Runnable::Bind(lambda));
 	pT1->Cancel();
-	REQUIRE(1 ==  srv.run_one());
+	REQUIRE(1 ==  service.run_one());
 	REQUIRE(0 ==  mth.GetCount());
 	ITimer* pT2 = exe.Start(TimeDuration::Milliseconds(1), Runnable::Bind(lambda));
-	srv.reset();
-	REQUIRE(1 ==  srv.run_one());
+	service.reset();
+	REQUIRE(1 ==  service.run_one());
 	REQUIRE(pT1 ==  pT2);
 }
 
@@ -175,9 +171,8 @@ TEST_CASE(SUITE("MultipleOutstanding"))
 	auto pTimerHandler1 = &mth1;
 	auto pTimerHandler2 = &mth2;
 	
-	asio::io_service srv;
-	asio::strand strand(srv);
-	ASIOExecutor ts(&strand);
+	asio::io_service service;	
+	ASIOExecutor ts(service);
 
 
 	auto lambda1 = [pTimerHandler1](){ pTimerHandler1->OnExpiration(); };
@@ -189,11 +184,11 @@ TEST_CASE(SUITE("MultipleOutstanding"))
 
 	REQUIRE(pT1 != pT2);
 
-	REQUIRE(1 ==  srv.run_one());
+	REQUIRE(1 ==  service.run_one());
 	REQUIRE(1 ==  mth1.GetCount());
 	REQUIRE(0 ==  mth2.GetCount());
 
-	REQUIRE(1 ==  srv.run_one());
+	REQUIRE(1 ==  service.run_one());
 	REQUIRE(1 ==  mth1.GetCount());
 	REQUIRE(1 ==  mth2.GetCount());
 }

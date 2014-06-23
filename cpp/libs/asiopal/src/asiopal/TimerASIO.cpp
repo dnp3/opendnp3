@@ -27,9 +27,9 @@ using namespace openpal;
 namespace asiopal
 {
 
-TimerASIO::TimerASIO(asio::strand* apStrand) :
+TimerASIO::TimerASIO(asio::strand& strand) :
 	canceled(false),
-	timer(apStrand->get_io_service())
+	timer(strand.get_io_service())
 {
 
 }

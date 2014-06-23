@@ -64,13 +64,13 @@ void PhysicalLayerTCPClient::DoOpen()
 			this->HandleResolve(code, endpoints);
 		};
 		ip::tcp::resolver::query query(host, "20000");
-		resolver.async_resolve(query, strand.wrap(resolveCallback));		                           		                       
+		resolver.async_resolve(query, executor.strand.wrap(resolveCallback));
 	}
 	else
 	{
 		remoteEndpoint.address(address);
 		auto openCallback = [this](const std::error_code & code) { this->OnOpenCallback(code); };
-		socket.async_connect(remoteEndpoint, strand.wrap(openCallback));
+		socket.async_connect(remoteEndpoint, executor.strand.wrap(openCallback));
 	}
 }
 
@@ -88,7 +88,7 @@ void PhysicalLayerTCPClient::HandleResolve(const std::error_code& code, asio::ip
 			this->OnOpenCallback(code);
 		};
 
-		asio::async_connect(socket, endpoints, condition, strand.wrap(callback));
+		asio::async_connect(socket, endpoints, condition, executor.strand.wrap(callback));
 	}
 }
 

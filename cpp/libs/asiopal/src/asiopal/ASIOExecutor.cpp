@@ -30,8 +30,8 @@ using namespace std;
 namespace asiopal
 {
 
-ASIOExecutor::ASIOExecutor(asio::strand* apStrand) :
-	pStrand(apStrand),
+ASIOExecutor::ASIOExecutor(asio::io_service& service) :
+	strand(service),
 	numActiveTimers(0),	
 	paused(false),
 	resumed(false)
@@ -67,16 +67,16 @@ openpal::ITimer* ASIOExecutor::Start(const openpal::MonotonicTimestamp& arTime, 
 
 void ASIOExecutor::Post(const openpal::Runnable& runnable)
 {
-	pStrand->post([runnable]() { runnable.Apply(); });
+	strand.post([runnable]() { runnable.Apply(); });
 }
 
 void ASIOExecutor::Pause()
 {
-	if (!pStrand->running_in_this_thread())
+	if (!strand.running_in_this_thread())
 	{
-		assert(!pStrand->running_in_this_thread());
+		assert(!strand.running_in_this_thread());
 		std::unique_lock<std::mutex> lock(mutex);
-		pStrand->post([this]()
+		strand.post([this]()
 		{
 			this->OnPause();
 		});
@@ -89,7 +89,7 @@ void ASIOExecutor::Pause()
 
 void ASIOExecutor::Resume()
 {
-	if (!pStrand->running_in_this_thread())
+	if (!strand.running_in_this_thread())
 	{
 		std::unique_lock<std::mutex> lock(mutex);
 		this->resumed = true;
@@ -103,7 +103,7 @@ void ASIOExecutor::Resume()
 
 void ASIOExecutor::OnPause()
 {
-	assert(pStrand->running_in_this_thread());
+	assert(strand.running_in_this_thread());
 	std::unique_lock<std::mutex> lock(mutex);
 	this->paused = true;
 	condition.notify_one();
@@ -123,7 +123,7 @@ TimerASIO* ASIOExecutor::GetTimer()
 	TimerASIO* pTimer;
 	if(idleTimers.size() == 0)
 	{
-		pTimer = new TimerASIO(pStrand);
+		pTimer = new TimerASIO(strand);
 		allTimers.push_back(pTimer);
 	}
 	else
@@ -140,7 +140,7 @@ void ASIOExecutor::StartTimer(TimerASIO* pTimer, const openpal::Runnable& runnab
 {
 	++numActiveTimers;
 	pTimer->timer.async_wait(
-	    pStrand->wrap(
+	    strand.wrap(
 			[runnable, this, pTimer](const std::error_code& ec){ this->OnTimerCallback(ec, pTimer, runnable); }	        
 	    )
 	);
