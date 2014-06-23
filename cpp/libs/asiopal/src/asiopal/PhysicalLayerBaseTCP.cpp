@@ -38,9 +38,9 @@ using namespace openpal;
 namespace asiopal
 {
 
-PhysicalLayerBaseTCP::PhysicalLayerBaseTCP(openpal::LogRoot& root, asio::io_service* apIOService) :
-	PhysicalLayerASIO(root, apIOService),
-	socket(*apIOService)
+PhysicalLayerBaseTCP::PhysicalLayerBaseTCP(openpal::LogRoot& root, asio::io_service& service) :
+	PhysicalLayerASIO(root, service),
+	socket(service)
 {
 	
 }

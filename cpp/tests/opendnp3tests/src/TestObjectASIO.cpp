@@ -35,8 +35,8 @@ TestObjectASIO::TestObjectASIO() :
 	mOwner(true)
 {}
 
-TestObjectASIO::TestObjectASIO(asio::io_service* apService) :
-	mpTestObjectService(apService),
+TestObjectASIO::TestObjectASIO(asio::io_service& service) :
+	mpTestObjectService(&service),
 	mOwner(false)
 {
 
@@ -52,16 +52,16 @@ void TestObjectASIO::Next()
 	Next(this->GetService(), TimeDuration::Milliseconds(10));
 }
 
-void TestObjectASIO::Next(asio::io_service* apSrv, openpal::TimeDuration aSleep)
+void TestObjectASIO::Next(asio::io_service& service, openpal::TimeDuration aSleep)
 {
 	std::error_code ec;
-	size_t num = apSrv->poll_one(ec);
+	size_t num = service.poll_one(ec);
 	if(ec) throw std::logic_error(ec.message());
 	if(num == 0)
 	{
 		std::this_thread::sleep_for(std::chrono::milliseconds(aSleep.GetMilliseconds()));
 	}
-	apSrv->reset();
+	service.reset();
 }
 
 

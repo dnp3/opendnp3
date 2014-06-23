@@ -39,11 +39,14 @@ namespace asiopal
 class PhysicalLayerASIO : public PhysicalLayerBase
 {
 public:
-	PhysicalLayerASIO(openpal::LogRoot& root, asio::io_service* apService) :
+	
+	PhysicalLayerASIO(openpal::LogRoot& root, asio::io_service& service) :
 		PhysicalLayerBase(root),
-		strand(*apService),
+		strand(service),
 		executor(&strand)
-	{}
+	{
+	
+	}
 
 	virtual ~PhysicalLayerASIO() {}
 

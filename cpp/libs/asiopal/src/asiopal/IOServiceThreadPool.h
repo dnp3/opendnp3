@@ -45,7 +45,7 @@ public:
 
 	~IOServiceThreadPool();
 
-	asio::io_service* GetIOService();
+	asio::io_service& GetIOService();
 
 	void Shutdown();
 

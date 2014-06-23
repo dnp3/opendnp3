@@ -45,7 +45,7 @@ public:
 	TimerTestObject() :
 		log(),
 		pool(&log, levels::NORMAL, 1),
-		strand(*pool.GetIOService()),
+		strand(pool.GetIOService()),
 		exe(&strand),
 		mLast(-1),
 		mNum(0),

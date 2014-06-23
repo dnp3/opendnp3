@@ -59,7 +59,7 @@ TransportScalabilityTestObject::~TransportScalabilityTestObject()
 		pPair->mClientStack.mRouter.Shutdown();
 		pPair->mServerStack.mRouter.Shutdown();
 	}
-	this->GetService()->run();
+	this->GetService().run();
 	for(auto pPair : mPairs) delete pPair;
 }
 

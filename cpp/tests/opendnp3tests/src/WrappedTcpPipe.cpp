@@ -25,9 +25,9 @@ using namespace openpal;
 namespace opendnp3
 {
 
-WrappedTcpPipe::WrappedTcpPipe(openpal::LogRoot& root, asio::io_service* apService, uint16_t aPort) :
-	clientTcp(root, apService, "127.0.0.1", aPort),
-	serverTcp(root, apService, "127.0.0.1", aPort),
+WrappedTcpPipe::WrappedTcpPipe(openpal::LogRoot& root, asio::io_service& service, uint16_t aPort) :
+	clientTcp(root, service, "127.0.0.1", aPort),
+	serverTcp(root, service, "127.0.0.1", aPort),
 	client(root.GetLogger(), &clientTcp),
 	server(root.GetLogger(), &serverTcp)
 {

@@ -35,13 +35,13 @@ namespace opendnp3
 
 TransportLoopbackTestObject::TransportLoopbackTestObject(
 	openpal::LogRoot& root,
-    asio::io_service* apService,
+	asio::io_service& service,
     IPhysicalLayer* apPhys,
     LinkConfig aCfgA,
     LinkConfig aCfgB,
     uint32_t filters) :
 
-	TestObjectASIO(apService),
+	TestObjectASIO(service),
 	mCfgA(aCfgA),
 	mCfgB(aCfgB),
 	mLinkA(root, apPhys->GetExecutor(), aCfgA),
@@ -77,7 +77,7 @@ TransportLoopbackTestObject::TransportLoopbackTestObject(
 TransportLoopbackTestObject::~TransportLoopbackTestObject()
 {
 	mRouter.Shutdown();
-	this->GetService()->run();
+	this->GetService().run();
 }
 
 bool TransportLoopbackTestObject::LayersUp()

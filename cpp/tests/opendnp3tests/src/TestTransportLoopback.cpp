@@ -71,8 +71,8 @@ TEST_CASE(SUITE("TestTransportWithMockLoopback"))
 	LogFanoutHandler log;
 	LogRoot root(&log, "test", level);
 	asio::io_service service;
-	LoopbackPhysicalLayer phys(root, &service);
-	TransportLoopbackTestObject t(root, &service, &phys, cfgA, cfgB);
+	LoopbackPhysicalLayer phys(root, service);
+	TransportLoopbackTestObject t(root, service, &phys, cfgA, cfgB);
 
 	TestLoopback(&t, opendnp3::sizes::DEFAULT_APDU_BUFFER_SIZE);
 }

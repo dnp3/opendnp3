@@ -34,7 +34,7 @@ class PhysicalLayerTCPServer : public PhysicalLayerBaseTCP
 public:
 	PhysicalLayerTCPServer(
 		openpal::LogRoot& root,
-	    asio::io_service* pIOService,
+		asio::io_service& service,
 	    const std::string& endpoint,
 	    uint16_t port,
 		std::function<void (asio::ip::tcp::socket&)> configure = [](asio::ip::tcp::socket&) {});

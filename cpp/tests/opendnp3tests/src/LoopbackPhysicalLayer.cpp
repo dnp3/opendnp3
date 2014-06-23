@@ -32,8 +32,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LoopbackPhysicalLayer::LoopbackPhysicalLayer(openpal::LogRoot& root, asio::io_service* apSrv) :
-	PhysicalLayerASIO(root, apSrv)
+LoopbackPhysicalLayer::LoopbackPhysicalLayer(openpal::LogRoot& root, asio::io_service& service) :
+	PhysicalLayerASIO(root, service)
 {
 
 }

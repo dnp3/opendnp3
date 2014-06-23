@@ -37,7 +37,7 @@ Common socket object and some shared implementations for server/client.
 class PhysicalLayerBaseTCP : public PhysicalLayerASIO
 {
 public:
-	PhysicalLayerBaseTCP(openpal::LogRoot& root, asio::io_service* apIOService);
+	PhysicalLayerBaseTCP(openpal::LogRoot& root, asio::io_service& service);
 
 	virtual ~PhysicalLayerBaseTCP() {}
 

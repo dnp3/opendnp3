@@ -40,12 +40,12 @@ namespace asiopal
 
 PhysicalLayerSerial::PhysicalLayerSerial(
 	openpal::LogRoot& root,
-    asio::io_service* apIOService,
+    asio::io_service& service,
     const SerialSettings& settings) :
 
-	PhysicalLayerASIO(root, apIOService),
+	PhysicalLayerASIO(root, service),
 	settings(settings),
-	port(*apIOService)
+	port(service)
 {
 
 }

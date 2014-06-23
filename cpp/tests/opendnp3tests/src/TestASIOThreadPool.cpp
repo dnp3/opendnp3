@@ -51,7 +51,7 @@ TEST_CASE(SUITE("CleanConstructionDestruction"))
 TEST_CASE(SUITE("ThreadPoolShutsdownCleanlyEvenIfALotOfWorkIsSubmitted"))
 {	
 	IOServiceThreadPool pool(&ConsoleLogger::Instance(), levels::NORMAL, 4);
-	for(size_t i = 0; i < 100000; ++i) pool.GetIOService()->post([]() {});
+	for(size_t i = 0; i < 100000; ++i) pool.GetIOService().post([]() {});
 }
 
 
@@ -61,7 +61,7 @@ TEST_CASE(SUITE("StrandsSequenceCallbacksViaStrandPost"))
 
 	size_t iterations = 100000;
 
-	strand s1(*pool.GetIOService());
+	strand s1(pool.GetIOService());
 
 	int count1 = 0;
 
@@ -79,13 +79,11 @@ TEST_CASE(SUITE("StrandsSequenceCallbacksViaStrandWrap"))
 	IOServiceThreadPool pool(&ConsoleLogger::Instance(), levels::NORMAL, 8);
 	size_t iterations = 100000;
 
-	io_service* pService = pool.GetIOService();
-
-	strand s1(*pService);
+	strand s1(pool.GetIOService());
 
 	int count1 = 0;
 
-	for(size_t i = 0; i < iterations; ++i) pService->post(s1.wrap([&count1]()
+	for (size_t i = 0; i < iterations; ++i) pool.GetIOService().post(s1.wrap([&count1]()
 	{
 		++count1;
 	}));
@@ -107,7 +105,7 @@ TEST_CASE(SUITE("ExecutorPauseGuardsRaceConditions"))
 	IOServiceThreadPool pool(&ConsoleLogger::Instance(), levels::NORMAL, 8);
 	size_t iterations = 100000;
 
-	asio::strand strand(*pool.GetIOService());
+	asio::strand strand(pool.GetIOService());
 	ASIOExecutor exe(&strand);
 
 	int count = 0;
@@ -140,7 +138,7 @@ TEST_CASE(SUITE("ExecutorPauseIsIgnoredIfOnStrand"))
 	IOServiceThreadPool pool(&ConsoleLogger::Instance(), levels::NORMAL, 1);
 	uint32_t iterations = 10;
 
-	asio::strand strand(*pool.GetIOService());
+	asio::strand strand(pool.GetIOService());
 	ASIOExecutor exe(&strand);
 
 	uint32_t count = 0;

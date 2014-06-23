@@ -31,11 +31,11 @@ TransportStackPair::TransportStackPair(
     LinkConfig aClientCfg,
     LinkConfig aServerCfg,
 	openpal::LogRoot& root,
-    asio::io_service* apService,
+	asio::io_service& service,
     uint16_t aPort) :
 
-	mClient(root, apService, "127.0.0.1", aPort),
-	mServer(root, apService, "127.0.0.1", aPort),
+	mClient(root, service, "127.0.0.1", aPort),
+	mServer(root, service, "127.0.0.1", aPort),
 	mClientStack(root, &mClient, aClientCfg),
 	mServerStack(root, &mServer, aServerCfg)
 {

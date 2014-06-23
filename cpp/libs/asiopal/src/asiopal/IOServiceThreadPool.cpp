@@ -86,9 +86,9 @@ void IOServiceThreadPool::Shutdown()
 	}
 }
 
-asio::io_service* IOServiceThreadPool::GetIOService()
+asio::io_service& IOServiceThreadPool::GetIOService()
 {
-	return &ioservice;
+	return ioservice;
 }
 
 void IOServiceThreadPool::Run()

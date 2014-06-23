@@ -35,15 +35,15 @@ class TestObjectASIO : public TestObject
 {
 public:
 	TestObjectASIO();
-	TestObjectASIO(asio::io_service*);
+	TestObjectASIO(asio::io_service& service);
 	virtual ~TestObjectASIO();
 
-	asio::io_service* GetService()
+	asio::io_service& GetService()
 	{
-		return mpTestObjectService;
+		return *mpTestObjectService;
 	}
 
-	static void Next(asio::io_service* apSrv, openpal::TimeDuration aSleep);
+	static void Next(asio::io_service& service, openpal::TimeDuration aSleep);
 
 private:
 	asio::io_service* mpTestObjectService;
