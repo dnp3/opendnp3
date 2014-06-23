@@ -107,7 +107,7 @@ void MasterContext::PostCheckForTask()
 
 void MasterContext::CheckForTask()
 {
-	if (isOnline && pActiveTask == nullptr && !isSending)
+	if (isOnline && !pActiveTask && !isSending)
 	{
 		auto pTask = scheduler.Start();
 		if (pTask)
@@ -121,8 +121,9 @@ void MasterContext::CheckForTask()
 
 void MasterContext::StartTask(IMasterTask* pTask)
 {	
-	APDURequest request(txBuffer.GetWriteBuffer());
+	APDURequest request(txBuffer.GetWriteBuffer());	
 	pTask->BuildRequest(request, params, solSeq);
+	this->StartResponseTimer();
 	this->Transmit(request.ToReadOnly());
 }
 
@@ -159,22 +160,11 @@ void MasterContext::OnSendResult(bool isSucccess)
 	if (isOnline && isSending)
 	{
 		isSending = false;
-		this->CheckConfirmTransmit();
 
-		if (pActiveTask)
+		if (!(this->CheckConfirmTransmit() || pActiveTask))
 		{
-			if (pResponseTimer == nullptr)
-			{
-				this->StartResponseTimer();
-			}
-		}
-		else
-		{
-			if (!isSending)
-			{
-				this->PostCheckForTask();
-			}
-		}		
+			this->PostCheckForTask();
+		}				
 	}
 }
 
@@ -224,13 +214,14 @@ void MasterContext::OnResponse(const APDUResponseHeader& header, const ReadOnlyB
 	}
 	else
 	{
-		if (pActiveTask && pResponseTimer && (header.control.SEQ == this->solSeq))
+		if (pActiveTask && (header.control.SEQ == this->solSeq))
 		{
+			this->CancelResponseTimer();
+			
 			this->solSeq = AppControlField::NextSeq(solSeq);
 
-			this->CancelResponseTimer();
-
 			auto result = pActiveTask->OnResponse(header, objects, params, scheduler);
+
 			if (header.control.CON && CanConfirmResponse(result))
 			{
 				this->QueueConfirm(APDUHeader::SolicitedConfirm(header.control.SEQ));
