@@ -29,7 +29,6 @@
 #include <mutex>
 #include <condition_variable>
 
-#include <openpal/executor/IExecutor.h>
 #include <openpal/logging/Logger.h>
 #include <openpal/executor/TimeDuration.h>
 #include <openpal/executor/IMutex.h>
@@ -41,6 +40,7 @@
 namespace asiopal
 {
 	class PhysicalLayerBase;
+	class ASIOExecutor;
 }
 
 namespace asiodnp3
@@ -57,7 +57,7 @@ public:
 	~ChannelSet();
 
 	IChannel* CreateChannel(	openpal::LogRoot* pRoot,
-								openpal::IExecutor& executor,
+								asiopal::ASIOExecutor& executor,
 	                            openpal::TimeDuration minOpenRetry,
 	                            openpal::TimeDuration maxOpenRetry,
 								asiopal::PhysicalLayerBase* pPhys,	                            

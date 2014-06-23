@@ -22,6 +22,8 @@
 
 #include <future>
 
+#include <asiopal/ASIOExecutor.h>
+
 using namespace opendnp3;
 
 namespace asiodnp3

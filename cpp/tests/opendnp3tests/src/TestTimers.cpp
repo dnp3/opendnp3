@@ -120,7 +120,7 @@ TEST_CASE(SUITE("TestOrderedDispatch"))
 	}
 
 	{
-		ExecutorPause p(&test.exe);
+		ExecutorPause p(test.exe);
 	}
 
 	REQUIRE(NUM ==  test.Num());

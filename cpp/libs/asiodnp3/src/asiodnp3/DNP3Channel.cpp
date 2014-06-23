@@ -38,7 +38,7 @@ namespace asiodnp3
 
 DNP3Channel::DNP3Channel(
 	LogRoot* pLogRoot_,
-	openpal::IExecutor& executor,
+	asiopal::ASIOExecutor& executor,
     openpal::TimeDuration minOpenRetry,
     openpal::TimeDuration maxOpenRetry,
     IOpenDelayStrategy* pStrategy,
@@ -140,7 +140,7 @@ void DNP3Channel::SetLogFilters(const openpal::LogFilters& filters)
 IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler* apPublisher, IUTCTimeSource* apTimeSource, const MasterStackConfig& config)
 {
 	LinkRoute route(config.link.RemoteAddr, config.link.LocalAddr);
-	ExecutorPause p(pExecutor);
+	asiopal::ExecutorPause p(*pExecutor);
 	if(router.IsRouteInUse(route))
 	{
 		FORMAT_LOG_BLOCK(logger, flags::ERR, "Route already in use: %i -> %i", route.remote, route.local);
@@ -148,7 +148,7 @@ IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler* apPublisher, IUTCTi
 	}
 	else
 	{
-		StackActionHandler handler(&router, pExecutor, this);
+		StackActionHandler handler(&router, *pExecutor, this);
 		auto pMaster = new MasterStackImpl(*pLogRoot, *pExecutor, apPublisher, apTimeSource, config, handler);
 		pMaster->SetLinkRouter(&router);
 		stacks.insert(pMaster);
@@ -160,7 +160,7 @@ IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler* apPublisher, IUTCTi
 IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler* apCmdHandler, ITimeWriteHandler* apTimeWriteHandler, const OutstationStackConfig& arCfg)
 {
 	LinkRoute route(arCfg.link.RemoteAddr, arCfg.link.LocalAddr);
-	ExecutorPause p(pExecutor);
+	asiopal::ExecutorPause p(*pExecutor);
 	if(router.IsRouteInUse(route))
 	{
 		FORMAT_LOG_BLOCK(logger, flags::ERR, "Route already in use: %i -> %i", route.remote, route.local);
@@ -168,7 +168,7 @@ IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler* apCmdHa
 	}
 	else
 	{		
-		StackActionHandler handler(&router, pExecutor, this);
+		StackActionHandler handler(&router, *pExecutor, this);
 		auto pOutstation = new OutstationStackImpl(*pLogRoot, *pExecutor, *apTimeWriteHandler, *apCmdHandler, arCfg, handler);
 		pOutstation->SetLinkRouter(&router);
 		stacks.insert(pOutstation);

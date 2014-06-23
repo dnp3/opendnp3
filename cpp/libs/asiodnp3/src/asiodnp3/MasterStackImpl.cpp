@@ -22,7 +22,7 @@
 
 #include <opendnp3/app/APDUBuilders.h>
 
-#include <openpal/executor/IExecutor.h>
+#include <asiopal/ASIOExecutor.h>
 
 #include <future>
 
@@ -33,7 +33,7 @@ namespace asiodnp3
 {
 
 MasterStackImpl::MasterStackImpl(	LogRoot& root,
-									openpal::IExecutor& executor,
+									asiopal::ASIOExecutor& executor,
                                     ISOEHandler* pSOEHandler,
                                     IUTCTimeSource* pTimeSource,                                    
                                     const MasterStackConfig& config,
@@ -91,13 +91,13 @@ opendnp3::ILinkContext* MasterStackImpl::GetLinkContext()
 
 MasterScan MasterStackImpl::AddClassScan(uint8_t classMask, openpal::TimeDuration period)
 {
-	ExecutorPause pause(this->GetExecutor());
+	asiopal::ExecutorPause pause(*handler.GetExecutor());
 	return master.AddClassScan(classMask, period);
 }
 
 MasterScan  MasterStackImpl::AddRangeScan(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period)
 {
-	ExecutorPause pause(this->GetExecutor());
+	asiopal::ExecutorPause pause(*handler.GetExecutor());
 	return master.AddRangeScan(gvId, start, stop, period);
 }
 

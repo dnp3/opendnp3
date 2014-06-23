@@ -37,7 +37,6 @@ namespace openpal
  */
 class IExecutor
 {
-	friend class ExecutorPause;
 
 public:
 
@@ -60,38 +59,7 @@ public:
 	{
 		this->Post(Runnable::Bind<Lambda>(lambda));
 	}
-
-protected:
-
-	// Pause the executor in a state where it is not running any tasks
-	virtual void Pause() = 0;
-
-	// Resume execution after a pause
-	virtual void Resume() = 0;
 };
-
-
-class ExecutorPause
-{
-public:
-
-	ExecutorPause(openpal::IExecutor* pExecutor_) : pExecutor(pExecutor_)
-	{
-		pExecutor->Pause();
-	}
-
-	~ExecutorPause()
-	{
-		pExecutor->Resume();
-	}
-
-private:
-
-	openpal::IExecutor* pExecutor;
-};
-
-
-
 
 }
 

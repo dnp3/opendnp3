@@ -22,6 +22,7 @@
 #include "StackActionHandler.h"
 
 #include <openpal/executor/IExecutor.h>
+#include <asiopal/ASIOExecutor.h>
 
 #include "opendnp3/link/LinkLayerRouter.h"
 
@@ -31,15 +32,15 @@ using namespace opendnp3;
 namespace asiodnp3
 {
 
-StackActionHandler::StackActionHandler(LinkLayerRouter* pRouter_, openpal::IExecutor* pExecutor_, ITypedShutdownHandler<IStack*>* pHandler_) :
+StackActionHandler::StackActionHandler(LinkLayerRouter* pRouter_, asiopal::ASIOExecutor& executor, ITypedShutdownHandler<IStack*>* pHandler_) :
 	pRouter(pRouter_),
-	pExecutor(pExecutor_),
+	pExecutor(&executor),
 	pHandler(pHandler_)
 {
 
 }
 
-openpal::IExecutor* StackActionHandler::GetExecutor()
+asiopal::ASIOExecutor* StackActionHandler::GetExecutor()
 {
 	return pExecutor;
 }
@@ -60,7 +61,7 @@ void StackActionHandler::BeginShutdown(ILinkContext* pContext, IStack* pStack)
 {
 	{
 		// The pause has no affect if it's running on the executor
-		openpal::ExecutorPause pause(pExecutor);
+		asiopal::ExecutorPause pause(*pExecutor);
 		pRouter->Remove(pContext);
 	}
 

@@ -52,7 +52,7 @@ void ChannelSet::Shutdown()
 
 IChannel* ChannelSet::CreateChannel(
 	openpal::LogRoot* pLogRoot,
-	openpal::IExecutor& executor,
+	asiopal::ASIOExecutor& executor,
     openpal::TimeDuration minOpenRetry,
     openpal::TimeDuration maxOpenRetry,
 	PhysicalLayerBase* apPhys,    

@@ -35,16 +35,6 @@ MockExecutor::MockExecutor() :
 
 }
 
-void MockExecutor::Pause()
-{
-
-}
-
-void MockExecutor::Resume()
-{
-
-}
-
 MockExecutor::~MockExecutor()
 {
 	for(auto pTimer : timers) delete pTimer;	

@@ -24,15 +24,15 @@
 
 #include "IShutdownHandler.h"
 
-namespace openpal
-{
-class IExecutor;
-}
-
 namespace opendnp3
 {
 	class LinkLayerRouter;	
 	class ILinkContext;
+}
+
+namespace asiopal
+{
+	class ASIOExecutor;
 }
 
 namespace asiodnp3
@@ -44,9 +44,9 @@ class StackActionHandler
 {
 public:
 
-	StackActionHandler(opendnp3::LinkLayerRouter* pRouter_, openpal::IExecutor* pExecutor_, ITypedShutdownHandler<IStack*>* pHandler_);
+	StackActionHandler(opendnp3::LinkLayerRouter* pRouter_, asiopal::ASIOExecutor& executor, ITypedShutdownHandler<IStack*>* pHandler_);
 
-	openpal::IExecutor* GetExecutor();
+	asiopal::ASIOExecutor* GetExecutor();
 
 	void EnableRoute(opendnp3::ILinkContext*);
 
@@ -57,7 +57,7 @@ public:
 private:
 
 	opendnp3::LinkLayerRouter* pRouter;
-	openpal::IExecutor* pExecutor;
+	asiopal::ASIOExecutor* pExecutor;
 	ITypedShutdownHandler<IStack*>* pHandler;
 };
 

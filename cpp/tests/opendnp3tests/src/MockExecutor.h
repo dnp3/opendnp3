@@ -40,10 +40,7 @@ class MockExecutor : public openpal::IExecutor
 
 public:
 	MockExecutor();
-	~MockExecutor();
-
-	virtual void Pause() override;
-	virtual void Resume() override;
+	~MockExecutor();	
 
 	// Implement IExecutor
 	virtual openpal::ITimer* Start(const openpal::MonotonicTimestamp&, const openpal::Runnable& runnable) override;

@@ -123,7 +123,7 @@ TEST_CASE(SUITE("ExecutorPauseGuardsRaceConditions"))
 	for(size_t i = 0; i < 100; ++i)   //try to cause a race condition between the Post and the Pause
 	{
 		exe.Post(runnable);
-		ExecutorPause p1(&exe);
+		ExecutorPause p1(exe);
 		increment();
 	}
 
@@ -145,7 +145,7 @@ TEST_CASE(SUITE("ExecutorPauseIsIgnoredIfOnStrand"))
 
 	auto pause = [pCount, pExe]()
 	{
-		ExecutorPause pause(pExe);
+		ExecutorPause pause(*pExe);
 		++(*pCount);
 	};
 

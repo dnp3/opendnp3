@@ -37,6 +37,7 @@ class TimerASIO;
 
 class ASIOExecutor : public openpal::IExecutor
 {
+	friend class ExecutorPause;
 
 public:
 
@@ -58,8 +59,8 @@ public:
 
 protected:
 
-	virtual void Pause() override final;
-	virtual void Resume() override final;
+	void Pause();
+	void Resume();
 
 private:
 
@@ -96,6 +97,24 @@ std::function<void(A, B)> ASIOExecutor::Wrap(const std::function<void(A, B)>& ha
 	return strand.wrap(handler);
 }
 
+class ExecutorPause
+{
+public:
+
+	ExecutorPause(ASIOExecutor& executor) : pExecutor(&executor)
+	{
+		pExecutor->Pause();
+	}
+
+	~ExecutorPause()
+	{
+		pExecutor->Resume();
+	}
+
+private:
+
+	ASIOExecutor* pExecutor;
+};
 
 }
 
