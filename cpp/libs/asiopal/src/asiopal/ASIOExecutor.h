@@ -65,15 +65,15 @@ private:
 	bool paused;
 	bool resumed;
 
-	asio::strand* mpStrand;
+	asio::strand* pStrand;
 
 	typedef std::deque<TimerASIO*> TimerQueue;
 
-	TimerQueue mAllTimers;
-	TimerQueue mIdleTimers;
+	TimerQueue allTimers;
+	TimerQueue idleTimers;
 
-	size_t mNumActiveTimers;
-	bool mIsShuttingDown;
+	size_t numActiveTimers;
+	bool isShuttingDown;
 
 	void OnTimerCallback(const std::error_code&, TimerASIO*, const openpal::Runnable& runnable);
 };

@@ -31,9 +31,9 @@ namespace asiopal
 {
 
 ASIOExecutor::ASIOExecutor(asio::strand* apStrand) :
-	mpStrand(apStrand),
-	mNumActiveTimers(0),
-	mIsShuttingDown(false),
+	pStrand(apStrand),
+	numActiveTimers(0),
+	isShuttingDown(false),
 	paused(false),
 	resumed(false)
 {
@@ -42,8 +42,7 @@ ASIOExecutor::ASIOExecutor(asio::strand* apStrand) :
 
 ASIOExecutor::~ASIOExecutor()
 {
-	//this->Shutdown();
-	for(auto pTimer : mAllTimers) delete pTimer;
+	for(auto pTimer : allTimers) delete pTimer;
 }
 
 openpal::MonotonicTimestamp ASIOExecutor::GetTime()
@@ -53,7 +52,7 @@ openpal::MonotonicTimestamp ASIOExecutor::GetTime()
 
 openpal::ITimer* ASIOExecutor::Start(const openpal::TimeDuration& arDelay, const openpal::Runnable& runnable)
 {
-	assert(!mIsShuttingDown);
+	assert(!isShuttingDown);
 	TimerASIO* pTimer = GetTimer();
 	pTimer->timer.expires_from_now(std::chrono::milliseconds(arDelay.GetMilliseconds()));
 	this->StartTimer(pTimer, runnable);
@@ -62,7 +61,7 @@ openpal::ITimer* ASIOExecutor::Start(const openpal::TimeDuration& arDelay, const
 
 openpal::ITimer* ASIOExecutor::Start(const openpal::MonotonicTimestamp& arTime, const openpal::Runnable& runnable)
 {
-	assert(!mIsShuttingDown);
+	assert(!isShuttingDown);
 	TimerASIO* pTimer = GetTimer();
 	pTimer->timer.expires_at(std::chrono::steady_clock::time_point(std::chrono::milliseconds(arTime.milliseconds)));
 	this->StartTimer(pTimer, runnable);
@@ -71,16 +70,16 @@ openpal::ITimer* ASIOExecutor::Start(const openpal::MonotonicTimestamp& arTime, 
 
 void ASIOExecutor::Post(const openpal::Runnable& runnable)
 {
-	mpStrand->post([runnable]() { runnable.Apply(); });
+	pStrand->post([runnable]() { runnable.Apply(); });
 }
 
 void ASIOExecutor::Pause()
 {
-	if (!mpStrand->running_in_this_thread())
+	if (!pStrand->running_in_this_thread())
 	{
-		assert(!mpStrand->running_in_this_thread());
+		assert(!pStrand->running_in_this_thread());
 		std::unique_lock<std::mutex> lock(mutex);
-		mpStrand->post([this]()
+		pStrand->post([this]()
 		{
 			this->OnPause();
 		});
@@ -93,7 +92,7 @@ void ASIOExecutor::Pause()
 
 void ASIOExecutor::Resume()
 {
-	if (!mpStrand->running_in_this_thread())
+	if (!pStrand->running_in_this_thread())
 	{
 		std::unique_lock<std::mutex> lock(mutex);
 		this->resumed = true;
@@ -107,7 +106,7 @@ void ASIOExecutor::Resume()
 
 void ASIOExecutor::OnPause()
 {
-	assert(mpStrand->running_in_this_thread());
+	assert(pStrand->running_in_this_thread());
 	std::unique_lock<std::mutex> lock(mutex);
 	this->paused = true;
 	condition.notify_one();
@@ -125,15 +124,15 @@ void ASIOExecutor::OnPause()
 TimerASIO* ASIOExecutor::GetTimer()
 {
 	TimerASIO* pTimer;
-	if(mIdleTimers.size() == 0)
+	if(idleTimers.size() == 0)
 	{
-		pTimer = new TimerASIO(mpStrand);
-		mAllTimers.push_back(pTimer);
+		pTimer = new TimerASIO(pStrand);
+		allTimers.push_back(pTimer);
 	}
 	else
 	{
-		pTimer = mIdleTimers.front();
-		mIdleTimers.pop_front();
+		pTimer = idleTimers.front();
+		idleTimers.pop_front();
 	}
 
 	pTimer->canceled = false;
@@ -142,19 +141,19 @@ TimerASIO* ASIOExecutor::GetTimer()
 
 void ASIOExecutor::StartTimer(TimerASIO* pTimer, const openpal::Runnable& runnable)
 {
-	++mNumActiveTimers;
+	++numActiveTimers;
 	pTimer->timer.async_wait(
-	    mpStrand->wrap(
+	    pStrand->wrap(
 			[runnable, this, pTimer](const std::error_code& ec){ this->OnTimerCallback(ec, pTimer, runnable); }	        
 	    )
 	);
 }
 
-void ASIOExecutor::OnTimerCallback(const std::error_code& ec, TimerASIO* apTimer, const openpal::Runnable& runnable)
+void ASIOExecutor::OnTimerCallback(const std::error_code& ec, TimerASIO* pTimer, const openpal::Runnable& runnable)
 {
-	--mNumActiveTimers;
-	mIdleTimers.push_back(apTimer);
-	if (!(ec || apTimer->canceled))
+	--numActiveTimers;
+	idleTimers.push_back(pTimer);
+	if (!(ec || pTimer->canceled))
 	{
 		runnable.Apply();
 	}
