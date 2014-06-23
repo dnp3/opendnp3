@@ -117,6 +117,7 @@ cpp/libs/opendnp3/src/opendnp3/master/CommandTask.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/ConstantCommandProcessor.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/DisableUnsolicitedTask.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/EnableUnsolicitedTask.cpp \
+cpp/libs/opendnp3/src/opendnp3/master/IMasterState.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/IMasterTask.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/ISOEHandler.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/MasterContext.cpp \
