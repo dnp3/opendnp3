@@ -120,7 +120,7 @@ void MasterContext::CheckForTask()
 }
 
 void MasterContext::StartTask(IMasterTask* pTask)
-{	
+{		
 	APDURequest request(txBuffer.GetWriteBuffer());	
 	pTask->BuildRequest(request, params, solSeq);
 	this->StartResponseTimer();
@@ -186,21 +186,30 @@ void MasterContext::OnReceive(const ReadOnlyBuffer& apdu)
 				header.IIN.LSB,
 				header.IIN.MSB);
 
-			switch (header.function)
+			if (header.control.UNS)
 			{
-				case(FunctionCode::RESPONSE) :
-					this->OnResponse(header, apdu.Skip(APDU_RESPONSE_HEADER_SIZE));
-					break;
-				case(FunctionCode::UNSOLICITED_RESPONSE) :
+				if (header.function == FunctionCode::UNSOLICITED_RESPONSE)
+				{
 					this->OnUnsolicitedResponse(header, apdu.Skip(APDU_RESPONSE_HEADER_SIZE));
-					break;
-				default:
-					FORMAT_LOG_BLOCK(logger, flags::WARN, "unsupported function code: %s", FunctionCodeToString(header.function));
-					break;
+					this->OnReceiveIIN(header.IIN);
+				}
+				else
+				{
+					FORMAT_LOG_BLOCK(logger, flags::WARN, "Ignoring unsupported function with UNS bit set: %s", FunctionCodeToString(header.function));
+				}
 			}
-
-			// process the IIN bits after we've handeled the frame
-			this->OnReceiveIIN(header.IIN);
+			else
+			{
+				if (header.function == FunctionCode::RESPONSE)
+				{
+					this->OnResponse(header, apdu.Skip(APDU_RESPONSE_HEADER_SIZE));
+					this->OnReceiveIIN(header.IIN);
+				}
+				else
+				{
+					FORMAT_LOG_BLOCK(logger, flags::WARN, "Ignoring unsupported solicited function code: %s", FunctionCodeToString(header.function));
+				}
+			}						
 		}
 	}
 }
@@ -208,44 +217,39 @@ void MasterContext::OnReceive(const ReadOnlyBuffer& apdu)
 
 void MasterContext::OnResponse(const APDUResponseHeader& header, const ReadOnlyBuffer& objects)
 {	
-	if (header.control.UNS)
+	
+	if (pActiveTask && (header.control.SEQ == this->solSeq))
 	{
-		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Ignoring response with UNS bit");
+		this->CancelResponseTimer();
+			
+		this->solSeq = AppControlField::NextSeq(solSeq);
+
+		auto result = pActiveTask->OnResponse(header, objects, params, scheduler);
+
+		if (header.control.CON && CanConfirmResponse(result))
+		{
+			this->QueueConfirm(APDUHeader::SolicitedConfirm(header.control.SEQ));
+		}
+
+		switch (result)
+		{
+			case(TaskStatus::CONTINUE) :
+				this->StartResponseTimer();
+				break;
+			case(TaskStatus::REPEAT) :					
+				this->StartTask(pActiveTask);
+				break;
+			default:
+				pActiveTask = nullptr;
+				this->PostCheckForTask();
+				break;
+		}			
 	}
 	else
 	{
-		if (pActiveTask && (header.control.SEQ == this->solSeq))
-		{
-			this->CancelResponseTimer();
-			
-			this->solSeq = AppControlField::NextSeq(solSeq);
-
-			auto result = pActiveTask->OnResponse(header, objects, params, scheduler);
-
-			if (header.control.CON && CanConfirmResponse(result))
-			{
-				this->QueueConfirm(APDUHeader::SolicitedConfirm(header.control.SEQ));
-			}
-
-			switch (result)
-			{
-				case(TaskStatus::CONTINUE) :					
-					this->StartResponseTimer();
-					break;
-				case(TaskStatus::REPEAT) :					
-					this->StartTask(pActiveTask);
-					break;
-				default:
-					pActiveTask = nullptr;
-					this->PostCheckForTask();
-					break;
-			}			
-		}
-		else
-		{
-			FORMAT_LOG_BLOCK(logger, flags::WARN, "Unexpected response with sequence: %u", header.control.SEQ);
-		}
-	}	
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "Unexpected response with sequence: %u", header.control.SEQ);
+	}
+	
 }
 
 void MasterContext::OnUnsolicitedResponse(const APDUResponseHeader& header, const ReadOnlyBuffer& objects)
@@ -261,7 +265,7 @@ void MasterContext::OnUnsolicitedResponse(const APDUResponseHeader& header, cons
 	}
 	else
 	{
-		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Ignoring unsolicited response with UNS bit not set");
+		
 	}
 }
 

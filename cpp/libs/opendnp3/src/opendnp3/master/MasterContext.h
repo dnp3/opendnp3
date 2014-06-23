@@ -96,29 +96,33 @@ class MasterContext : public ICommandProcessor
 	virtual void SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback* pCallback) override final;
 	virtual void DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback* pCallback) override final;
 
+	// ----- Helpers accessible by the state objects -----
+	void StartTask(IMasterTask* pTask);
+	bool CancelResponseTimer();
+	void QueueConfirm(const APDUHeader& header);
+	void StartResponseTimer();
+
+	static bool CanConfirmResponse(TaskStatus status);
+
 	private:	
 
 	void QueueCommandAction(const openpal::Function1<ICommandProcessor*>& action);
 
 	void OnResponseTimeout();
 
-	void CheckForTask();
-
-	void StartTask(IMasterTask* pTask);	
+	void CheckForTask();	
 
 	// -------- helpers --------
 
-	void StartResponseTimer();
+	
 
-	bool CancelResponseTimer();
-
-	void QueueConfirm(const APDUHeader& header);
+	
 
 	bool CheckConfirmTransmit();
 
 	void Transmit(const openpal::ReadOnlyBuffer& output);
 
-	static bool CanConfirmResponse(TaskStatus status);	
+	
 
 	template <class T>
 	void SelectAndOperateT(const T& command, uint16_t index, ICommandCallback* pCallback);

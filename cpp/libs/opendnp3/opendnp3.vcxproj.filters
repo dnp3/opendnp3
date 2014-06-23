@@ -657,6 +657,12 @@
     <ClInclude Include="src\opendnp3\ErrorCodes.h">
       <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="IMasterState.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\IMasterState.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\AnalogOutput.cpp">
@@ -1054,6 +1060,9 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\link\CRC.cpp">
       <Filter>Source\link</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\IMasterState.cpp">
+      <Filter>Source\master</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
