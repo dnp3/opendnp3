@@ -52,13 +52,14 @@ void ChannelSet::Shutdown()
 
 IChannel* ChannelSet::CreateChannel(
 	openpal::LogRoot* pLogRoot,
+	openpal::IExecutor& executor,
     openpal::TimeDuration minOpenRetry,
     openpal::TimeDuration maxOpenRetry,
 	PhysicalLayerBase* apPhys,    
     IOpenDelayStrategy* pOpenStrategy)
 {
 	std::unique_lock<std::mutex> lock(mutex);
-	auto pChannel = new DNP3Channel(pLogRoot, minOpenRetry, maxOpenRetry, pOpenStrategy, apPhys, this);
+	auto pChannel = new DNP3Channel(pLogRoot, executor, minOpenRetry, maxOpenRetry, pOpenStrategy, apPhys, this);
 	channels.insert(pChannel);
 	return pChannel;
 }

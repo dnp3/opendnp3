@@ -25,8 +25,6 @@
 #include <openpal/logging/LogMacros.h>
 #include <openpal/logging/LogLevels.h>
 
-#include <openpal/executor/IExecutor.h>
-
 #include <sstream>
 
 using namespace std;
@@ -116,8 +114,9 @@ bool PhysicalLayerBase::State::CheckForClose()
 // PhysicalLayerBase
 ///////////////////////////////////
 
-PhysicalLayerBase::PhysicalLayerBase(openpal::LogRoot& root) :	
+PhysicalLayerBase::PhysicalLayerBase(openpal::LogRoot& root, openpal::IExecutor& executor) :
 	logger(root.GetLogger()),
+	pExecutor(&executor),
 	pCallbacks(nullptr)
 {
 
@@ -192,7 +191,7 @@ void PhysicalLayerBase::BeginWrite(const openpal::ReadOnlyBuffer& buffer)
 			{
 				this->DoWriteSuccess();
 			};
-			this->GetExecutor()->PostLambda(callback);
+			pExecutor->PostLambda(callback);
 		}
 	}
 	else
@@ -217,7 +216,7 @@ void PhysicalLayerBase::BeginRead(WriteBuffer& buffer)
 			{
 				this->DoReadCallback(ReadOnlyBuffer());
 			};
-			this->GetExecutor()->PostLambda(callback);
+			pExecutor->PostLambda(callback);
 		}
 	}
 	else

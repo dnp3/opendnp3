@@ -36,8 +36,8 @@ class ConcretePhysicalLayerMonitor : public PhysicalLayerMonitor
 {
 public:
 
-	ConcretePhysicalLayerMonitor(openpal::LogRoot& root, IPhysicalLayer* apPhys) :
-		PhysicalLayerMonitor(root, apPhys, TimeDuration::Seconds(1), TimeDuration::Seconds(10)),
+	ConcretePhysicalLayerMonitor(openpal::LogRoot& root, openpal::IExecutor& executor, IPhysicalLayer* apPhys) :
+		PhysicalLayerMonitor(root, executor, apPhys, TimeDuration::Seconds(1), TimeDuration::Seconds(10)),
 		mOpenCallbackCount(0),
 		mCloseCallbackCount(0),
 		mShutdownCallbackCount(0)
@@ -86,8 +86,8 @@ public:
 	TestObject(uint32_t filters = levels::NORMAL) :
 		log(),
 		exe(),
-		phys(log.root, &exe),
-		monitor(log.root, &phys)
+		phys(log.root, exe),
+		monitor(log.root, exe, &phys)
 	{}
 
 	LogTester log;

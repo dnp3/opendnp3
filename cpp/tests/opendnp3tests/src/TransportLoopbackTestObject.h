@@ -39,6 +39,7 @@ public:
 	TransportLoopbackTestObject(
 	    openpal::LogRoot& root,
 		asio::io_service& service,
+		openpal::IExecutor& executor,
 	    openpal::IPhysicalLayer*,
 	    LinkConfig,
 	    LinkConfig,

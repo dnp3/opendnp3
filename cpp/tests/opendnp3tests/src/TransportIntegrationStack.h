@@ -38,7 +38,7 @@ namespace opendnp3
 class TransportIntegrationStack
 {
 public:
-	TransportIntegrationStack(openpal::LogRoot& root, openpal::IPhysicalLayer*, LinkConfig);
+	TransportIntegrationStack(openpal::LogRoot& root, openpal::IExecutor& executor, openpal::IPhysicalLayer*, LinkConfig);
 
 	LinkLayerRouter mRouter;
 	LinkLayer mLink;

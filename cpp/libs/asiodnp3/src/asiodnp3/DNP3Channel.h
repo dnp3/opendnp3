@@ -64,6 +64,7 @@ public:
 
 	DNP3Channel(
 		openpal::LogRoot* pLogRoot_,
+		openpal::IExecutor& executor,
 	    openpal::TimeDuration minOpenRetry,
 	    openpal::TimeDuration maxOpenRetry,
 	    opendnp3::IOpenDelayStrategy* pStrategy,
@@ -110,6 +111,7 @@ private:
 	opendnp3::LinkChannelStatistics statistics;
 	std::unique_ptr<openpal::IPhysicalLayer> pPhys;
 	std::unique_ptr<openpal::LogRoot> pLogRoot;
+	openpal::IExecutor* pExecutor;
 	openpal::Logger logger;
 
 	State state;

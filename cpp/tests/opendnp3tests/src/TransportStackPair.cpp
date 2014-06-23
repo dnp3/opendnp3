@@ -36,8 +36,8 @@ TransportStackPair::TransportStackPair(
 
 	mClient(root, service, "127.0.0.1", aPort),
 	mServer(root, service, "127.0.0.1", aPort),
-	mClientStack(root, &mClient, aClientCfg),
-	mServerStack(root, &mServer, aServerCfg)
+	mClientStack(root, mClient.executor, &mClient, aClientCfg),
+	mServerStack(root, mServer.executor, &mServer, aServerCfg)
 {
 
 }

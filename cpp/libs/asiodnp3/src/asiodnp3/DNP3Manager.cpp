@@ -71,7 +71,7 @@ IChannel* DNP3Manager::AddTCPClient(
 {
 	auto pRoot = new LogRoot(pFanoutHandler.get(), id, levels);
 	auto pPhys = new asiopal::PhysicalLayerTCPClient(*pRoot, pThreadPool->GetIOService(), host, port);
-	return pChannelSet->CreateChannel(pRoot, minOpenRetry, maxOpenRetry, pPhys, pStrategy);
+	return pChannelSet->CreateChannel(pRoot, pPhys->executor, minOpenRetry, maxOpenRetry, pPhys, pStrategy);
 }
 
 IChannel* DNP3Manager::AddTCPServer(
@@ -85,7 +85,7 @@ IChannel* DNP3Manager::AddTCPServer(
 {
 	auto pRoot = new LogRoot(pFanoutHandler.get(), id, levels);
 	auto pPhys = new asiopal::PhysicalLayerTCPServer(*pRoot, pThreadPool->GetIOService(), endpoint, port);
-	return pChannelSet->CreateChannel(pRoot, minOpenRetry, maxOpenRetry, pPhys, pStrategy);
+	return pChannelSet->CreateChannel(pRoot, pPhys->executor, minOpenRetry, maxOpenRetry, pPhys, pStrategy);
 }
 
 IChannel* DNP3Manager::AddSerial(
@@ -98,7 +98,7 @@ IChannel* DNP3Manager::AddSerial(
 {
 	auto pRoot = new LogRoot(pFanoutHandler.get(), id, levels);
 	auto pPhys = new asiopal::PhysicalLayerSerial(*pRoot, pThreadPool->GetIOService(), aSettings);
-	return pChannelSet->CreateChannel(pRoot, minOpenRetry, maxOpenRetry, pPhys, pStrategy);
+	return pChannelSet->CreateChannel(pRoot, pPhys->executor, minOpenRetry, maxOpenRetry, pPhys, pStrategy);
 }
 
 }

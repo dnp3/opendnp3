@@ -62,7 +62,7 @@ void PhysicalLayerTCPServer::DoOpen()
 		if (ec)
 		{
 			auto lambda = [this, ec]() { this->OnOpenCallback(ec); };
-			this->GetExecutor()->PostLambda(lambda);
+			pExecutor->PostLambda(lambda);
 		}
 		else
 		{
@@ -71,7 +71,7 @@ void PhysicalLayerTCPServer::DoOpen()
 			if (ec)
 			{
 				auto lambda = [this, ec]() { this->OnOpenCallback(ec); };
-				this->GetExecutor()->PostLambda(lambda);
+				pExecutor->PostLambda(lambda);
 			}
 			else
 			{
@@ -80,7 +80,7 @@ void PhysicalLayerTCPServer::DoOpen()
 				if (ec)
 				{
 					auto lambda = [this, ec]() { this->OnOpenCallback(ec); };
-					this->GetExecutor()->PostLambda(lambda);
+					pExecutor->PostLambda(lambda);
 				}
 				else
 				{
@@ -88,7 +88,7 @@ void PhysicalLayerTCPServer::DoOpen()
 					if (ec)
 					{
 						auto lambda = [this, ec]() { this->OnOpenCallback(ec); };
-						this->GetExecutor()->PostLambda(lambda);
+						pExecutor->PostLambda(lambda);
 					}
 					else
 					{

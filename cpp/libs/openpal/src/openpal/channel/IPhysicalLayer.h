@@ -30,7 +30,6 @@
 namespace openpal
 {
 
-class IExecutor;
 class IPhysicalLayerCallbacks;
 
 class IChannelState
@@ -84,12 +83,7 @@ public:
 	void SetChannelStatistics(ChannelStatistics* pChannelStatistics_)
 	{		
 		pChannelStatistics = pChannelStatistics_;
-	}
-
-	/**
-	* @return the executor associated with this layer
-	*/
-	virtual openpal::IExecutor* GetExecutor() = 0;
+	}	
 
 	/**
 	 * Starts an open operation.

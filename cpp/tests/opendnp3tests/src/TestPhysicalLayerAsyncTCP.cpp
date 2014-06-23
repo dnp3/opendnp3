@@ -232,7 +232,7 @@ TEST_CASE(SUITE("Loopback"))
 	LogRoot root(&log, "test", levels::NORMAL);
 	TestObjectASIO test;
 	PhysicalLayerTCPServer server(root, test.GetService(), "127.0.0.1", 30000);
-	PhysLoopback loopback(root, &server);
+	PhysLoopback loopback(root, server.executor, &server);
 	loopback.Start();
 
 	PhysicalLayerTCPClient client(root, test.GetService(), "127.0.0.1", 30000);

@@ -36,12 +36,14 @@ namespace opendnp3
 
 PhysicalLayerMonitor::PhysicalLayerMonitor(
 	openpal::LogRoot& root,
+	openpal::IExecutor& executor,
     IPhysicalLayer* pPhys_,
     TimeDuration minOpenRetry_,
     TimeDuration maxOpenRetry_,
     IOpenDelayStrategy* pOpenStrategy_) :
 	logger(root.GetLogger()),
 	pPhys(pPhys_),
+	pExecutor(&executor),
 	isOnline(false),
 	mpOpenTimer(nullptr),
 	mpState(MonitorStateInit::Inst()),
@@ -152,7 +154,7 @@ void PhysicalLayerMonitor::StartOpenTimer()
 {
 	assert(mpOpenTimer == nullptr);
 	auto lambda = [this]() { this->OnOpenTimerExpiration(); };
-	mpOpenTimer = pPhys->GetExecutor()->Start(currentRetry, Runnable::Bind(lambda));
+	mpOpenTimer = pExecutor->Start(currentRetry, Runnable::Bind(lambda));
 }
 
 void PhysicalLayerMonitor::CancelOpenTimer()

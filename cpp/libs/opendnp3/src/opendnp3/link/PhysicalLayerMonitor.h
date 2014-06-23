@@ -49,6 +49,7 @@ class PhysicalLayerMonitor : public openpal::IPhysicalLayerCallbacks
 public:
 
 	PhysicalLayerMonitor(	openpal::LogRoot& root,
+							openpal::IExecutor& executor,
 	                        openpal::IPhysicalLayer*,
 	                        openpal::TimeDuration minOpenRetry_,
 	                        openpal::TimeDuration maxOpenRetry_,
@@ -99,6 +100,7 @@ protected:
 	virtual void OnShutdown() {}
 
 	openpal::IPhysicalLayer* pPhys;
+	openpal::IExecutor* pExecutor;
 
 	bool IsOnline() const
 	{

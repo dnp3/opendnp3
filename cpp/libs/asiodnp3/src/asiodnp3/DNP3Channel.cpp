@@ -38,6 +38,7 @@ namespace asiodnp3
 
 DNP3Channel::DNP3Channel(
 	LogRoot* pLogRoot_,
+	openpal::IExecutor& executor,
     openpal::TimeDuration minOpenRetry,
     openpal::TimeDuration maxOpenRetry,
     IOpenDelayStrategy* pStrategy,
@@ -46,11 +47,12 @@ DNP3Channel::DNP3Channel(
 		
 		pPhys(pPhys_),
 		pLogRoot(pLogRoot_),
+		pExecutor(&executor),
 		logger(pLogRoot->GetLogger()),
 		state(State::READY),
 		pShutdownHandler(pShutdownHandler_),
 		channelState(ChannelState::CLOSED),
-		router(*pLogRoot, pPhys.get(), minOpenRetry, maxOpenRetry, this, pStrategy, &statistics)	
+		router(*pLogRoot, executor, pPhys.get(), minOpenRetry, maxOpenRetry, this, pStrategy, &statistics)	
 {
 	pPhys->SetChannelStatistics(&statistics);
 
@@ -76,14 +78,14 @@ void DNP3Channel::AddStateChangeCallback(const StateChangeCallback& callback)
 void DNP3Channel::BeginShutdown()
 {
 	auto lambda = [this]() { this->InitiateShutdown(); };
-	pPhys->GetExecutor()->PostLambda(lambda);
+	pExecutor->PostLambda(lambda);
 }
 
 LinkChannelStatistics DNP3Channel::GetChannelStatistics()
 {
 	std::promise<LinkChannelStatistics> p;
 	auto lambda = [&]() { p.set_value(statistics); };
-	pPhys->GetExecutor()->PostLambda(lambda);
+	pExecutor->PostLambda(lambda);
 	return p.get_future().get();	
 }
 
@@ -115,13 +117,13 @@ void DNP3Channel::CheckForFinalShutdown()
 			this->pShutdownHandler->OnShutdown(this);
 		};
 
-		pPhys->GetExecutor()->Start(TimeDuration::Zero(), Runnable::Bind(lambda));		                           		                           
+		pExecutor->Start(TimeDuration::Zero(), Runnable::Bind(lambda));
 	}
 }
 
 openpal::IExecutor* DNP3Channel::GetExecutor()
 {
-	return pPhys->GetExecutor();
+	return pExecutor;
 }
 
 openpal::LogFilters DNP3Channel::GetLogFilters() const
@@ -132,13 +134,13 @@ openpal::LogFilters DNP3Channel::GetLogFilters() const
 void DNP3Channel::SetLogFilters(const openpal::LogFilters& filters)
 {	
 	auto lambda = [this, filters]() { this->pLogRoot->SetFilters(filters); };
-	pPhys->GetExecutor()->PostLambda(lambda);
+	pExecutor->PostLambda(lambda);
 }
 
 IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler* apPublisher, IUTCTimeSource* apTimeSource, const MasterStackConfig& config)
 {
 	LinkRoute route(config.link.RemoteAddr, config.link.LocalAddr);
-	ExecutorPause p(pPhys->GetExecutor());
+	ExecutorPause p(pExecutor);
 	if(router.IsRouteInUse(route))
 	{
 		FORMAT_LOG_BLOCK(logger, flags::ERR, "Route already in use: %i -> %i", route.remote, route.local);
@@ -146,8 +148,8 @@ IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler* apPublisher, IUTCTi
 	}
 	else
 	{
-		StackActionHandler handler(&router, pPhys->GetExecutor(), this);			
-		auto pMaster = new MasterStackImpl(*pLogRoot, *pPhys->GetExecutor(), apPublisher, apTimeSource, config, handler);
+		StackActionHandler handler(&router, pExecutor, this);
+		auto pMaster = new MasterStackImpl(*pLogRoot, *pExecutor, apPublisher, apTimeSource, config, handler);
 		pMaster->SetLinkRouter(&router);
 		stacks.insert(pMaster);
 		router.AddContext(pMaster->GetLinkContext(), route);
@@ -158,7 +160,7 @@ IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler* apPublisher, IUTCTi
 IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler* apCmdHandler, ITimeWriteHandler* apTimeWriteHandler, const OutstationStackConfig& arCfg)
 {
 	LinkRoute route(arCfg.link.RemoteAddr, arCfg.link.LocalAddr);
-	ExecutorPause p(pPhys->GetExecutor());
+	ExecutorPause p(pExecutor);
 	if(router.IsRouteInUse(route))
 	{
 		FORMAT_LOG_BLOCK(logger, flags::ERR, "Route already in use: %i -> %i", route.remote, route.local);
@@ -166,8 +168,8 @@ IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler* apCmdHa
 	}
 	else
 	{		
-		StackActionHandler handler(&router, pPhys->GetExecutor(), this);			
-		auto pOutstation = new OutstationStackImpl(*pLogRoot, *pPhys->GetExecutor(), *apTimeWriteHandler, *apCmdHandler, arCfg, handler);
+		StackActionHandler handler(&router, pExecutor, this);
+		auto pOutstation = new OutstationStackImpl(*pLogRoot, *pExecutor, *apTimeWriteHandler, *apCmdHandler, arCfg, handler);
 		pOutstation->SetLinkRouter(&router);
 		stacks.insert(pOutstation);
 		router.AddContext(pOutstation->GetLinkContext(), route);

@@ -33,6 +33,7 @@ class MockPhysicalLayerMonitor : public PhysicalLayerMonitor
 public:
 	MockPhysicalLayerMonitor(
 		openpal::LogRoot& root,
+		openpal::IExecutor& executor,
 	    openpal::IPhysicalLayer* apPhys,
 	    openpal::TimeDuration aMinOpenRetry,
 	    openpal::TimeDuration aMaxOpenRetry

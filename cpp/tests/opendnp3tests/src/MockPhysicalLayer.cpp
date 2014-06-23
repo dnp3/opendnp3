@@ -31,8 +31,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-MockPhysicalLayer::MockPhysicalLayer(openpal::LogRoot& root, openpal::IExecutor* apExecutor) :
-	PhysicalLayerBase(root),
+MockPhysicalLayer::MockPhysicalLayer(openpal::LogRoot& root, openpal::IExecutor& executor) :
+	PhysicalLayerBase(root, executor),
 	mpWriteBuff(nullptr),
 	mNumToRead(0),
 	mNumToWrite(0),
@@ -44,7 +44,7 @@ MockPhysicalLayer::MockPhysicalLayer(openpal::LogRoot& root, openpal::IExecutor*
 	mNumOpeningClose(0),
 
 	mIsAutoOpenSuccess(true),
-	mpExecutor(apExecutor)
+	mpExecutor(&executor)
 {
 
 }

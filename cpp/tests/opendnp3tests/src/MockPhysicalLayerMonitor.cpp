@@ -38,11 +38,12 @@ namespace opendnp3
 
 MockPhysicalLayerMonitor::MockPhysicalLayerMonitor(
 	openpal::LogRoot& root,
+	openpal::IExecutor& executor,
     IPhysicalLayer* apPhys,
     TimeDuration aMinOpenRetry,
     TimeDuration aMaxOpenRetry
 ) :
-	PhysicalLayerMonitor(root, apPhys, aMinOpenRetry, aMaxOpenRetry),
+	PhysicalLayerMonitor(root, executor, apPhys, aMinOpenRetry, aMaxOpenRetry),
 	mOpens(0),
 	mCloses(0),
 	mNumReads(0),

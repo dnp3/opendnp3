@@ -36,6 +36,7 @@ namespace opendnp3
 {
 
 LinkLayerRouter::LinkLayerRouter(	openpal::LogRoot& root,
+									openpal::IExecutor& executor,
                                     IPhysicalLayer* pPhys,
                                     openpal::TimeDuration minOpenRetry,
                                     openpal::TimeDuration maxOpenRetry,
@@ -43,7 +44,7 @@ LinkLayerRouter::LinkLayerRouter(	openpal::LogRoot& root,
                                     IOpenDelayStrategy* pStrategy,
 									LinkChannelStatistics* pStatistics_) :
 
-	PhysicalLayerMonitor(root, pPhys, minOpenRetry, maxOpenRetry, pStrategy),
+	PhysicalLayerMonitor(root, executor, pPhys, minOpenRetry, maxOpenRetry, pStrategy),
 	pStateHandler(pStateHandler_),	
 	pStatistics(pStatistics_),
 	parser(logger, pStatistics_),
@@ -276,7 +277,7 @@ void LinkLayerRouter::QueueTransmit(const openpal::ReadOnlyBuffer& buffer, ILink
 		else
 		{
 			auto lambda = [pContext, primary]() { pContext->OnTransmitResult(primary, false); };
-			this->pPhys->GetExecutor()->PostLambda(lambda);
+			pExecutor->PostLambda(lambda);
 		}
 	}
 	else

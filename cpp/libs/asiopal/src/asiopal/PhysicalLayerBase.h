@@ -21,6 +21,7 @@
 #ifndef __PHYSICAL_LAYER_BASE_H_
 #define __PHYSICAL_LAYER_BASE_H_
 
+#include <openpal/executor/IExecutor.h>
 #include <openpal/channel/IPhysicalLayer.h>
 #include <openpal/logging/LogRoot.h>
 
@@ -64,7 +65,7 @@ class PhysicalLayerBase : public openpal::IPhysicalLayer
 	};
 
 public:
-	PhysicalLayerBase(openpal::LogRoot& root);
+	PhysicalLayerBase(openpal::LogRoot& root, openpal::IExecutor& executor);
 
 	// destructor should only be called once the object is totally finished with all of its async operations
 	// to avoid segfaulting. There are a # of asserts that make sure the object has been shutdown properly.
@@ -156,6 +157,7 @@ protected:
 	void OnWriteCallback(const std::error_code& errr, uint32_t  numWritten);
 	
 	openpal::Logger logger;
+	openpal::IExecutor* pExecutor;
 
 	// "user" object that recieves the callbacks
 	openpal::IPhysicalLayerCallbacks* pCallbacks;

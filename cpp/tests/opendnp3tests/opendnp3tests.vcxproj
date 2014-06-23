@@ -214,7 +214,6 @@
     <ClInclude Include="src\MultiplexingDataObserver.h" />
     <ClInclude Include="src\MasterTestObject.h" />
     <ClInclude Include="src\OutstationTestObject.h" />
-    <ClInclude Include="src\PhysicalLayerWrapper.h" />
     <ClInclude Include="src\PhysicalLayerWrapperFactory.h" />
     <ClInclude Include="src\PhysLoopback.h" />
     <ClInclude Include="src\ProtocolUtil.h" />
@@ -231,7 +230,6 @@
     <ClInclude Include="src\TransportScalabilityTestObject.h" />
     <ClInclude Include="src\TransportStackPair.h" />
     <ClInclude Include="src\TransportTestObject.h" />
-    <ClInclude Include="src\WrappedTcpPipe.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\APDUHelpers.cpp" />
@@ -263,7 +261,6 @@
     <ClCompile Include="src\MultiplexingDataObserver.cpp" />
     <ClCompile Include="src\MasterTestObject.cpp" />
     <ClCompile Include="src\OutstationTestObject.cpp" />
-    <ClCompile Include="src\PhysicalLayerWrapper.cpp" />
     <ClCompile Include="src\PhysLoopback.cpp" />
     <ClCompile Include="src\ProtocolUtil.cpp" />
     <ClCompile Include="src\RandomizedBuffer.cpp" />
@@ -311,7 +308,6 @@
     <ClCompile Include="src\TransportScalabilityTestObject.cpp" />
     <ClCompile Include="src\TransportStackPair.cpp" />
     <ClCompile Include="src\TransportTestObject.cpp" />
-    <ClCompile Include="src\WrappedTcpPipe.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\libs\asiodnp3\asiodnp3.vcxproj">
