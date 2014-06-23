@@ -80,7 +80,7 @@ OutstationSolicitedStateBase& OutstationSolicitedStateIdle::Inst()
 
 OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects)
 {
-	if (pContext->pUnsolicitedState == &OutstationUnsolicitedStateIdle::Inst())
+	if (!pContext->isTransmitting && pContext->pUnsolicitedState == &OutstationUnsolicitedStateIdle::Inst())
 	{
 		return pContext->RespondToReadRequest(header.control.SEQ, objects);
 	}
@@ -113,7 +113,8 @@ OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnRepeatNonReadReque
 	}
 	else
 	{
-		pContext->BeginResponseTx(pContext->lastResponse);				
+		pContext->BeginResponseTx(pContext->lastResponse);
+		return this;
 	}
 	
 }
