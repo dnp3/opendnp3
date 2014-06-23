@@ -49,7 +49,7 @@ public:
 
 protected:
 
-	asio::ip::tcp::socket mSocket;
+	asio::ip::tcp::socket socket;
 	void CloseSocket();
 
 private:

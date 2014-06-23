@@ -59,23 +59,18 @@ void PhysicalLayerTCPClient::DoOpen()
 	auto address = asio::ip::address::from_string(host, ec);
 	if (ec)
 	{
-		ip::tcp::resolver::query query(host, "20000");
-		resolver.async_resolve(query, strand.wrap(
-		                           [this](const std::error_code & code, ip::tcp::resolver::iterator endpoints)
+		auto resolveCallback = [this](const std::error_code & code, ip::tcp::resolver::iterator endpoints)
 		{
 			this->HandleResolve(code, endpoints);
-		}
-		                       ));
+		};
+		ip::tcp::resolver::query query(host, "20000");
+		resolver.async_resolve(query, strand.wrap(resolveCallback));		                           		                       
 	}
 	else
 	{
 		remoteEndpoint.address(address);
-		mSocket.async_connect(remoteEndpoint, strand.wrap(
-		                          [this](const std::error_code & code)
-		{
-			this->OnOpenCallback(code);
-		}
-		                      ));
+		auto openCallback = [this](const std::error_code & code) { this->OnOpenCallback(code); };
+		socket.async_connect(remoteEndpoint, strand.wrap(openCallback));
 	}
 }
 
@@ -93,7 +88,7 @@ void PhysicalLayerTCPClient::HandleResolve(const std::error_code& code, asio::ip
 			this->OnOpenCallback(code);
 		};
 
-		asio::async_connect(mSocket, endpoints, condition, strand.wrap(callback));
+		asio::async_connect(socket, endpoints, condition, strand.wrap(callback));
 	}
 }
 
@@ -105,7 +100,7 @@ void PhysicalLayerTCPClient::DoOpeningClose()
 void PhysicalLayerTCPClient::DoOpenSuccess()
 {
 	SIMPLE_LOG_BLOCK(logger, logflags::INFO, "Connected to host");
-	configure(mSocket);
+	configure(socket);
 }
 
 }

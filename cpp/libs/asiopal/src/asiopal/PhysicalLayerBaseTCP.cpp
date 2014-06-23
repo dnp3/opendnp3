@@ -40,7 +40,7 @@ namespace asiopal
 
 PhysicalLayerBaseTCP::PhysicalLayerBaseTCP(openpal::LogRoot& root, asio::io_service* apIOService) :
 	PhysicalLayerASIO(root, apIOService),
-	mSocket(*apIOService)
+	socket(*apIOService)
 {
 	
 }
@@ -55,21 +55,24 @@ void PhysicalLayerBaseTCP::DoClose()
 
 void PhysicalLayerBaseTCP::DoRead(WriteBuffer& buff)
 {
-	uint8_t* pBuff = buff;
-	mSocket.async_read_some(buffer(pBuff, buff.Size()),
-	                        strand.wrap([this, pBuff](const std::error_code & code, size_t  numRead)
+	uint8_t* pBuff = buff;	
+	
+	auto callback = [this, pBuff](const std::error_code & code, size_t  numRead) 
 	{
 		this->OnReadCallback(code, pBuff, static_cast<uint32_t>(numRead));
-	}));
+	};
+
+	socket.async_read_some(buffer(pBuff, buff.Size()), strand.wrap(callback));
 }
 
 void PhysicalLayerBaseTCP::DoWrite(const ReadOnlyBuffer& buff)
 {
-	async_write(mSocket, buffer(buff, buff.Size()),
-	            strand.wrap([this](const std::error_code & code, size_t  numWritten)
+	auto callback = [this](const std::error_code & code, size_t  numWritten)
 	{
 		this->OnWriteCallback(code, static_cast<uint32_t>(numWritten));
-	}));
+	};
+
+	async_write(socket, buffer(buff, buff.Size()), strand.wrap(callback));
 }
 
 void PhysicalLayerBaseTCP::DoOpenFailure()
@@ -82,7 +85,7 @@ void PhysicalLayerBaseTCP::CloseSocket()
 {
 	std::error_code ec;
 
-	mSocket.close(ec);
+	socket.close(ec);
 	if (ec)
 	{
 		FORMAT_LOG_BLOCK(logger, logflags::WARN, "Error while closing socket: %s", ec.message().c_str());
@@ -93,7 +96,7 @@ void PhysicalLayerBaseTCP::ShutdownSocket()
 {
 	std::error_code ec;
 
-	mSocket.shutdown(ip::tcp::socket::shutdown_both, ec);
+	socket.shutdown(ip::tcp::socket::shutdown_both, ec);
 	if (ec)
 	{
 		FORMAT_LOG_BLOCK(logger, logflags::WARN, "Error while shutting down socket: %s", ec.message().c_str());

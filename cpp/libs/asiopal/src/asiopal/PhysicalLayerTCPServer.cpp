@@ -92,12 +92,8 @@ void PhysicalLayerTCPServer::DoOpen()
 					}
 					else
 					{
-						acceptor.async_accept(mSocket,
-						                      remoteEndpoint,
-						                      strand.wrap([this](const std::error_code & code)
-						{
-							this->OnOpenCallback(code);
-						}));
+						auto acceptCallback = [this](const std::error_code & code) { this->OnOpenCallback(code); };
+						acceptor.async_accept(socket, remoteEndpoint, strand.wrap(acceptCallback));
 					}
 				}
 			}
@@ -105,12 +101,8 @@ void PhysicalLayerTCPServer::DoOpen()
 	}
 	else
 	{
-		acceptor.async_accept(mSocket,
-		                      remoteEndpoint,
-		                      strand.wrap([this](const std::error_code & code)
-		{
-			this->OnOpenCallback(code);
-		}));
+		auto acceptCallback = [this](const std::error_code & code) { this->OnOpenCallback(code); };
+		acceptor.async_accept(socket, remoteEndpoint, strand.wrap(acceptCallback));
 	}
 }
 
@@ -137,7 +129,7 @@ void PhysicalLayerTCPServer::DoOpeningClose()
 void PhysicalLayerTCPServer::DoOpenSuccess()
 {
 	FORMAT_LOG_BLOCK(logger, logflags::INFO, "Accepted connection from: %s", remoteEndpoint.address().to_string().c_str());
-	configure(mSocket);
+	configure(socket);
 }
 
 }
