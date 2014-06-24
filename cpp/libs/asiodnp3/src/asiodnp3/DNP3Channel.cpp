@@ -83,11 +83,9 @@ void DNP3Channel::BeginShutdown()
 }
 
 LinkChannelStatistics DNP3Channel::GetChannelStatistics()
-{
-	std::promise<LinkChannelStatistics> p;
-	auto lambda = [&]() { p.set_value(statistics); };
-	pExecutor->PostLambda(lambda);
-	return p.get_future().get();	
+{	
+	auto getter = [this]() { return statistics; };
+	return asiopal::SynchronouslyGet<LinkChannelStatistics>(pExecutor->strand, getter);	
 }
 
 // can only run on the executor itself

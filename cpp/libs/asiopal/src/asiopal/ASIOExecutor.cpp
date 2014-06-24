@@ -63,7 +63,8 @@ openpal::ITimer* ASIOExecutor::Start(const openpal::MonotonicTimestamp& time, co
 
 void ASIOExecutor::Post(const openpal::Runnable& runnable)
 {
-	strand.post([runnable]() { runnable.Apply(); });
+	auto captured = [runnable]() { runnable.Apply(); };
+	strand.post(captured);
 }
 
 TimerASIO* ASIOExecutor::GetTimer()

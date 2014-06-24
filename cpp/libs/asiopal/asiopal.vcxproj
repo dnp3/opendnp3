@@ -32,6 +32,7 @@
     <ClInclude Include="src\asiopal\PhysicalLayerTCPServer.h" />
     <ClInclude Include="src\asiopal\SerialTypes.h" />
     <ClInclude Include="src\asiopal\ShutdownHandler.h" />
+    <ClInclude Include="src\asiopal\Synchronized.h" />
     <ClInclude Include="src\asiopal\TimerASIO.h" />
     <ClInclude Include="src\asiopal\UTCTimeSource.h" />
   </ItemGroup>

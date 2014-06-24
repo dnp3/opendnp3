@@ -25,6 +25,7 @@
 #include <asiopal/LogFanoutHandler.h>
 #include <asiopal/ASIOExecutor.h>
 #include <asiopal/IOServiceThreadPool.h>
+#include <asiopal/StrandGetters.h>
 
 #include <opendnp3/LogLevels.h>
 
@@ -38,51 +39,6 @@ using namespace std::chrono;
 using namespace openpal;
 using namespace opendnp3;
 using namespace asiopal;
-
-class TimerTestObject
-{
-public:
-	TimerTestObject() :
-		log(),
-		pool(&log, levels::NORMAL, 1),		
-		exe(pool.GetIOService()),
-		mLast(-1),
-		mNum(0),
-		mMonotonic(true)
-	{
-
-	}
-
-	void Receive(int aVal)
-	{
-		if(aVal <= mLast) mMonotonic = false;
-		++mNum;
-		mLast = aVal;
-	}
-
-	bool IsMonotonic()
-	{
-		return mMonotonic;
-	}
-
-	int Num()
-	{
-		return mNum;
-	}
-
-private:
-	asiopal::LogFanoutHandler log;
-	asiopal::IOServiceThreadPool pool;	
-
-public:
-	asiopal::ASIOExecutor exe;
-
-private:
-
-	int mLast;
-	int mNum;
-	bool mMonotonic;
-};
 
 class MockTimerHandler
 {
@@ -105,22 +61,39 @@ private:
 
 #define SUITE(name) "TimersTestSuite - " name
 
-
 TEST_CASE(SUITE("TestOrderedDispatch"))
 {
 	const int NUM = 10000;
 
-	TimerTestObject test;
-	auto pTest = &test;
+	asiopal::LogFanoutHandler log;
+	asiopal::IOServiceThreadPool pool(&log, levels::NORMAL, 4);
+	asiopal::ASIOExecutor executor(pool.GetIOService());
 
-	for(int i = 0; i < NUM; ++i)
+	bool monotonic = true;
+	int count = 0;
+	int last = 0;
+
+	for(int i = 1; i <= NUM; ++i)
 	{		
-		auto lambda = [pTest, i]() { pTest->Receive(i); };
-		test.exe.PostLambda(lambda);
-	}	
+		auto lambda = [i, &count, &last, &monotonic]() 
+		{ 
+			++count;
+			if (i != (last + 1))
+			{
+				monotonic = false;
+			}
+			last = i;
+		};
 
-	REQUIRE(NUM ==  test.Num());
-	REQUIRE(test.IsMonotonic());
+		executor.PostLambda(lambda);
+	}
+
+	// post a null event to flush all prior posts
+	auto nothing = []() { };
+	asiopal::SynchronouslyExecute(executor.strand, nothing);
+
+	REQUIRE(count ==  NUM);
+	REQUIRE(monotonic);
 }
 
 

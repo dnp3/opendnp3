@@ -19,58 +19,54 @@
  * to you under the terms of the License.
  */
 
-#ifndef __STRAND_GETTERS_H_
-#define __STRAND_GETTERS_H_
+#ifndef __SYNCHRONIZED_H_
+#define __SYNCHRONIZED_H_
 
 #include <asio.hpp>
-
-#include "Synchronized.h"
+#include <mutex>
+#include <condition_variable>
 
 namespace asiopal
 {
 
-	template <class T, class Action>
-	T SynchronouslyGet(asio::strand& strand, const Action& action)
+template <class T>
+class Synchronized
+{
+	public:
+
+	Synchronized() : value(), isSet(false)
+	{}
+
+	T WaitForValue()
 	{
-		if (strand.running_in_this_thread())
+		std::unique_lock<std::mutex> lock(mutex);
+		while (!isSet)
 		{
-			return action();
+			auto complete = [this]() { return isSet; };
+			condition.wait(lock, complete);
 		}
-		else
+		return value;
+	}
+	
+	void SetValue(T value_)
+	{
 		{
-			Synchronized<T> sync;
-			auto pointer = &sync;
-			auto lambda = [action, pointer]()
-			{
-				T tmp = action();
-				pointer->SetValue(tmp);
-			};
-			strand.post(lambda);
-			return sync.WaitForValue();
+			std::unique_lock<std::mutex> lock(mutex);
+			this->value = value_;
+			isSet = true;
 		}
+		condition.notify_all();
 	}
 
-	template <class Action>
-	void SynchronouslyExecute(asio::strand& strand, const Action& action)
-	{
-		if (strand.running_in_this_thread())
-		{
-			action();
-		}
-		else
-		{
-			Synchronized<bool> sync;
-			auto pointer = &sync;
-			auto lambda = [action, pointer]()
-			{
-				action();
-				pointer->SetValue(true);
-			};
-			strand.post(lambda);
-			sync.WaitForValue();
-		}
-	}
+	private:
 
+	T value;
+	bool isSet;
+
+	std::mutex mutex;
+	std::condition_variable condition;
+};
+	
 }
 
 #endif
