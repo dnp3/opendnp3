@@ -37,7 +37,8 @@ class Master : public openpal::IUpperLayer
 				openpal::ILowerLayer& lower,
 				ISOEHandler* pSOEHandler,
 				openpal::IUTCTimeSource* pTimeSource,
-				const MasterParams& params
+				const MasterParams& params,
+				ITaskLock* pTaskLock = nullptr
 				);
 	
 	/// ----- Implement IUpperLayer ------

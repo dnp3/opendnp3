@@ -41,7 +41,8 @@ MasterContext::MasterContext(
 	ILowerLayer& lower,
 	ISOEHandler* pSOEHandler_,
 	IUTCTimeSource* pTimeSource,
-	const MasterParams& params_
+	const MasterParams& params_,
+	ITaskLock* pTaskLock_
 	) :
 
 	logger(root.GetLogger()),
@@ -49,6 +50,7 @@ MasterContext::MasterContext(
 	pLower(&lower),
 	params(params_),
 	pSOEHandler(pSOEHandler_),
+	pTaskLock(pTaskLock_),
 	isOnline(false),
 	isSending(false),
 	solSeq(0),

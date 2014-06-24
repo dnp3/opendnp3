@@ -126,6 +126,7 @@
     <ClInclude Include="src\opendnp3\master\IMasterScheduler.h" />
     <ClInclude Include="src\opendnp3\master\IMasterState.h" />
     <ClInclude Include="src\opendnp3\master\IMasterTask.h" />
+    <ClInclude Include="src\opendnp3\master\ITaskLock.h" />
     <ClInclude Include="src\opendnp3\master\NullResponseTask.h" />
     <ClInclude Include="src\opendnp3\master\PollTask.h" />
     <ClInclude Include="src\opendnp3\master\StartupIntegrityPoll.h" />

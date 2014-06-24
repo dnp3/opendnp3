@@ -55,7 +55,7 @@ int main(int argc, char* argv[])
 	// send log messages to the console
 	manager.AddLogSubscriber(&ConsoleLogger::Instance());
 
-	// Create a TCP server (listener)
+	// Create a TCP server (listener)	
 	auto pServer = manager.AddTCPServer("server", FILTERS, TimeDuration::Seconds(5), TimeDuration::Seconds(5), "0.0.0.0", 20000);
 
 	// The main object for a outstation. The defaults are useable, 
