@@ -27,6 +27,7 @@
 
 #include <asio.hpp>
 #include <queue>
+#include <set>
 
 namespace asiopal
 {
@@ -65,9 +66,11 @@ private:
 	void StartTimer(TimerASIO*, const openpal::Runnable& runnable);	
 
 	typedef std::deque<TimerASIO*> TimerQueue;
+	typedef std::set<TimerASIO*> TimerMap;
 
 	TimerQueue allTimers;
 	TimerQueue idleTimers;	
+	TimerMap activeTimers;
 
 	void OnTimerCallback(const std::error_code&, TimerASIO*, const openpal::Runnable& runnable);
 };

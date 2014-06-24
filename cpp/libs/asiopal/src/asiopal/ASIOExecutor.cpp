@@ -53,7 +53,7 @@ void ASIOExecutor::WaitForShutdown()
 }
 
 void ASIOExecutor::InitiateShutdown(Synchronized<bool>& handler)
-{	
+{		
 	pShutdownSignal = &handler;	
 }
 
@@ -61,7 +61,7 @@ void ASIOExecutor::CheckForShutdown()
 {
 	if (pShutdownSignal)
 	{
-		if (idleTimers.size() == allTimers.size()) // no outstanding timers
+		if (activeTimers.empty())
 		{
 			// send the final shutdown signal via the strand to ensure all post events are flushed
 			auto finalpost = [this]() { this->pShutdownSignal->SetValue(true); };
@@ -110,7 +110,8 @@ TimerASIO* ASIOExecutor::GetTimer()
 		pTimer = idleTimers.front();
 		idleTimers.pop_front();
 	}
-
+	
+	activeTimers.insert(pTimer);
 	pTimer->canceled = false;
 	return pTimer;
 }
@@ -123,11 +124,13 @@ void ASIOExecutor::StartTimer(TimerASIO* pTimer, const openpal::Runnable& runnab
 
 void ASIOExecutor::OnTimerCallback(const std::error_code& ec, TimerASIO* pTimer, const openpal::Runnable& runnable)
 {	
+	activeTimers.erase(pTimer);
 	idleTimers.push_back(pTimer);
 	if (!(ec || pTimer->canceled))
 	{
 		runnable.Apply();
 	}
+	this->CheckForShutdown();
 }
 
 } //end namespace

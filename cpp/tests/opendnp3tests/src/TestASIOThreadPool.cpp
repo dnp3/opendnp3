@@ -92,14 +92,6 @@ TEST_CASE(SUITE("StrandsSequenceCallbacksViaStrandWrap"))
 	REQUIRE(iterations ==  count1);
 }
 
-struct Count
-{
-	Count() : count(0)
-	{}	
-
-	uint32_t count;
-};
-
 
 
 
