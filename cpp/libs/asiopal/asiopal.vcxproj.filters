@@ -29,9 +29,6 @@
     <ClInclude Include="src\asiopal\UTCTimeSource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\asiopal\ShutdownHandler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\asiopal\PhysicalLayerASIO.h">
       <Filter>Header Files</Filter>
     </ClInclude>
