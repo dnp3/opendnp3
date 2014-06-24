@@ -37,17 +37,14 @@ ChannelSet::~ChannelSet()
 }
 
 void ChannelSet::Shutdown()
-{
-	std::unique_lock<std::mutex> lock(mutex);
+{	
+	std::vector<DNP3Channel*> channelscopy;
+
+	for (auto pChannel : channels) channelscopy.push_back(pChannel);
 	
-	for (auto pChannel : channels)
-	{
-		pChannel->BeginShutdown();
-	}
+	for (auto pChannel : channelscopy) pChannel->Shutdown();
 
-	auto isComplete = [this]() { return this->channels.empty(); };
-
-	condition.wait(lock, isComplete);
+	assert(channels.empty());
 }
 
 IChannel* ChannelSet::CreateChannel(
@@ -57,22 +54,18 @@ IChannel* ChannelSet::CreateChannel(
     openpal::TimeDuration maxOpenRetry,
 	PhysicalLayerBase* apPhys,    
     IOpenDelayStrategy* pOpenStrategy)
-{
-	std::unique_lock<std::mutex> lock(mutex);
-	auto pChannel = new DNP3Channel(pLogRoot, executor, minOpenRetry, maxOpenRetry, pOpenStrategy, apPhys, this);
+{	
+	auto pChannel = new DNP3Channel(pLogRoot, executor, minOpenRetry, maxOpenRetry, pOpenStrategy, apPhys);
+	auto onShutdown = [this, pChannel]() { this->OnShutdown(pChannel); };
+	pChannel->SetShutdownHandler(Runnable::Bind(onShutdown));
 	channels.insert(pChannel);
 	return pChannel;
 }
 
 void ChannelSet::OnShutdown(DNP3Channel* pChannel)
-{
-	std::unique_lock<std::mutex> lock(mutex);
+{	
 	delete pChannel;
-	channels.erase(pChannel);
-	if (channels.empty())
-	{
-		condition.notify_one();
-	}
+	channels.erase(pChannel);	
 }
 
 

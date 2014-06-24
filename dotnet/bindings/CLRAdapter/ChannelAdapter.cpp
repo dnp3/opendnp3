@@ -100,7 +100,7 @@ IOutstation^ ChannelAdapter::AddOutstation(System::String^ loggerId, ICommandHan
 
 void ChannelAdapter::Shutdown()
 {
-	pChannel->BeginShutdown();
+	pChannel->Shutdown();
 }
 
 }

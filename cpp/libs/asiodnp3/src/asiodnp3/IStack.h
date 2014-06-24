@@ -46,19 +46,19 @@ public:
 	virtual opendnp3::StackStatistics GetStackStatistics() = 0;	
 
 	/**
-	* Enable communications
+	* Synchronously enable communications
 	*/
 	virtual bool Enable() = 0;
 
 	/**
-	* Enable communications
+	* Synchronously disable communications
 	*/
 	virtual bool Disable() = 0;
 
 	/**
-	* hronously shutdown the endpoint. No more calls are allowed after this call.
+	* Synchronously shutdown the endpoint. No more calls are allowed after this call.
 	*/
-	virtual void BeginShutdown() = 0;
+	virtual void Shutdown() = 0;
 
 };
 

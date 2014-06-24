@@ -49,12 +49,14 @@ void ASIOExecutor::WaitForShutdown()
 {
 	Synchronized<bool> sync;
 	auto initiate = [this, &sync]() { this->InitiateShutdown(sync); };
+	strand.post(initiate);
 	sync.WaitForValue();
 }
 
 void ASIOExecutor::InitiateShutdown(Synchronized<bool>& handler)
 {		
-	pShutdownSignal = &handler;	
+	pShutdownSignal = &handler;
+	this->CheckForShutdown();
 }
 
 void ASIOExecutor::CheckForShutdown()
@@ -64,7 +66,11 @@ void ASIOExecutor::CheckForShutdown()
 		if (activeTimers.empty())
 		{
 			// send the final shutdown signal via the strand to ensure all post events are flushed
-			auto finalpost = [this]() { this->pShutdownSignal->SetValue(true); };
+			auto finalpost = [this]() 
+			{ 
+				this->pShutdownSignal->SetValue(true); 
+			};
+
 			strand.post(finalpost);
 		}
 	}

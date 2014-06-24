@@ -74,8 +74,8 @@ TEST_CASE(SUITE("ManualStackShutdown"))
 		pOutstation->Enable();
 		pMaster->Enable();
 
-		pOutstation->BeginShutdown();
-		pMaster->BeginShutdown();
+		pOutstation->Shutdown();
+		pMaster->Shutdown();
 	}
 
 }
@@ -95,8 +95,8 @@ TEST_CASE(SUITE("ManualChannelShutdownWithStacks"))
 		pMaster->Enable();
 		pOutstation->Enable();
 
-		pClient->BeginShutdown();
-		pServer->BeginShutdown();
+		pClient->Shutdown();
+		pServer->Shutdown();
 	}
 }
 
@@ -109,8 +109,8 @@ TEST_CASE(SUITE("ManualChannelShutdown"))
 		auto pClient = manager.AddTCPClient("client", levels::NORMAL, TimeDuration::Seconds(5), TimeDuration::Seconds(5), "127.0.0.1", 20000);
 		auto pServer = manager.AddTCPServer("server", levels::NORMAL, TimeDuration::Seconds(5), TimeDuration::Seconds(5), "0.0.0.0", 20000);		
 
-		pClient->BeginShutdown();
-		pServer->BeginShutdown();	
+		pClient->Shutdown();
+		pServer->Shutdown();
 	}
 }
 

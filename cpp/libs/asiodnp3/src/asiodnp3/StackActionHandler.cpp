@@ -33,10 +33,9 @@ using namespace opendnp3;
 namespace asiodnp3
 {
 
-StackActionHandler::StackActionHandler(LinkLayerRouter* pRouter_, asiopal::ASIOExecutor& executor, ITypedShutdownHandler<IStack*>* pHandler_) :
+StackActionHandler::StackActionHandler(LinkLayerRouter* pRouter_, asiopal::ASIOExecutor& executor) :
 	pRouter(pRouter_),
-	pExecutor(&executor),
-	pHandler(pHandler_)
+	pExecutor(&executor)	
 {
 
 }
@@ -58,13 +57,10 @@ bool StackActionHandler::DisableRoute(ILinkContext* pContext)
 	return asiopal::SynchronouslyGet<bool>(pExecutor->strand, disable);
 }
 
-void StackActionHandler::BeginShutdown(ILinkContext* pContext, IStack* pStack)
+void StackActionHandler::Shutdown(ILinkContext* pContext, IStack* pStack)
 {
 	auto action = [this, pContext](){ pRouter->Remove(pContext); };
 	asiopal::SynchronouslyExecute(pExecutor->strand, action);
-
-	auto lambda = [this, pStack]() { pHandler->OnShutdown(pStack); };
-	pExecutor->strand.post(lambda);
 }
 
 }

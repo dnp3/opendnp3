@@ -37,7 +37,7 @@ void MasterAdapter::Disable()
 
 void MasterAdapter::Shutdown()
 {
-	pMaster->BeginShutdown();
+	pMaster->Shutdown();
 }
 
 IMasterScan^ MasterAdapter::AddClassScan(int aClassMask, System::TimeSpan period)

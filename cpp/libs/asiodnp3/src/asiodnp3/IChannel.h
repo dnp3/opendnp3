@@ -91,7 +91,7 @@ public:
 	/**
 	* sychronously shutdown the channel
 	*/
-	virtual void BeginShutdown() = 0;
+	virtual void Shutdown() = 0;
 
 	/**
 	* @return The execution context associated with the channel

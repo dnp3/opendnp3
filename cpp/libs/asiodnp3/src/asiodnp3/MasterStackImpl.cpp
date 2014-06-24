@@ -60,9 +60,10 @@ bool MasterStackImpl::Disable()
 	return handler.DisableRoute(&stack.link);
 }
 
-void MasterStackImpl::BeginShutdown()
+void MasterStackImpl::Shutdown()
 {
-	handler.BeginShutdown(&stack.link, this);
+	handler.Shutdown(&stack.link, this);
+	shutdownAction.Apply();
 }
 
 StackStatistics MasterStackImpl::GetStackStatistics()
@@ -74,6 +75,11 @@ StackStatistics MasterStackImpl::GetStackStatistics()
 void MasterStackImpl::SetLinkRouter(opendnp3::ILinkRouter* pRouter)
 {
 	stack.link.SetRouter(pRouter);
+}
+
+void MasterStackImpl::SetShutdownAction(const openpal::Runnable& action)
+{
+	shutdownAction = action;
 }
 
 opendnp3::ILinkContext* MasterStackImpl::GetLinkContext()

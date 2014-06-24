@@ -62,9 +62,10 @@ bool OutstationStackImpl::Disable()
 	return handler.DisableRoute(&stack.link);
 }
 
-void OutstationStackImpl::BeginShutdown()
+void OutstationStackImpl::Shutdown()
 {
-	handler.BeginShutdown(&stack.link, this);
+	handler.Shutdown(&stack.link, this);
+	shutdownAction.Apply();
 }
 
 StackStatistics OutstationStackImpl::GetStackStatistics()
@@ -82,6 +83,11 @@ void OutstationStackImpl::SetNeedTimeIIN()
 void OutstationStackImpl::SetLinkRouter(opendnp3::ILinkRouter* pRouter)
 {
 	stack.link.SetRouter(pRouter);
+}
+
+void OutstationStackImpl::SetShutdownAction(const openpal::Runnable& action)
+{
+	shutdownAction = action;
 }
 
 opendnp3::ILinkContext* OutstationStackImpl::GetLinkContext()

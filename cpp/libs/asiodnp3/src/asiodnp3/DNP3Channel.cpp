@@ -41,15 +41,13 @@ DNP3Channel::DNP3Channel(
     openpal::TimeDuration minOpenRetry,
     openpal::TimeDuration maxOpenRetry,
     IOpenDelayStrategy* pStrategy,
-    openpal::IPhysicalLayer* pPhys_,
-    ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler_) :
+    openpal::IPhysicalLayer* pPhys_) :
 		
 		pPhys(pPhys_),
 		pLogRoot(pLogRoot_),
 		pExecutor(&executor),
-		logger(pLogRoot->GetLogger()),
-		state(State::READY),
-		pShutdownHandler(pShutdownHandler_),
+		logger(pLogRoot->GetLogger()),		
+		pShutdownHandler(nullptr),
 		channelState(ChannelState::CLOSED),
 		router(*pLogRoot, executor, pPhys.get(), minOpenRetry, maxOpenRetry, this, pStrategy, &statistics)	
 {
@@ -62,7 +60,11 @@ DNP3Channel::DNP3Channel(
 void DNP3Channel::OnStateChange(ChannelState state)
 {
 	channelState = state;
-	for (auto& cb : callbacks) cb(state);
+	for (auto& cb : callbacks)
+	{
+		cb(state);
+	}
+	this->CheckForFinalShutdown();
 }
 
 void DNP3Channel::AddStateChangeCallback(const StateChangeCallback& callback)
@@ -76,10 +78,29 @@ void DNP3Channel::AddStateChangeCallback(const StateChangeCallback& callback)
 }
 
 // comes from the outside, so we need to synchronize
-void DNP3Channel::BeginShutdown()
+void DNP3Channel::Shutdown()
 {
-	auto lambda = [this]() { this->InitiateShutdown(); };
-	pExecutor->PostLambda(lambda);
+	// make a copy of all the stacks
+	std::vector<IStack*> stackscopy;
+	
+	for (auto pStack : stacks) stackscopy.push_back(pStack);
+	
+	for (auto pStack : stackscopy)
+	{
+		pStack->Shutdown();
+	}
+
+	assert(stacks.empty());
+
+	asiopal::Synchronized<bool> blocking;
+	auto initiate = [this, &blocking]() { this->InitiateShutdown(blocking); };
+	pExecutor->strand.post(initiate);
+	blocking.WaitForValue();
+
+	// With the router shutdown, wait for any remaining timers
+	pExecutor->WaitForShutdown();
+
+	shutdownHandler.Apply();
 }
 
 LinkChannelStatistics DNP3Channel::GetChannelStatistics()
@@ -88,35 +109,18 @@ LinkChannelStatistics DNP3Channel::GetChannelStatistics()
 	return asiopal::SynchronouslyGet<LinkChannelStatistics>(pExecutor->strand, getter);	
 }
 
-// can only run on the executor itself
-void DNP3Channel::InitiateShutdown()
+void DNP3Channel::InitiateShutdown(asiopal::Synchronized<bool>& handler)
 {
-	if (state == State::READY)
-	{
-		state = State::SHUTTING_DOWN;		
-
-		for (auto pStack : stacks)
-		{
-			pStack->BeginShutdown();
-		}		
-		
-		router.Shutdown();
-	}
+	this->pShutdownHandler = &handler;
+	router.Shutdown();
+	this->CheckForFinalShutdown();	
 }
 
 void DNP3Channel::CheckForFinalShutdown()
-{
-	// The router is offline. The stacks are shutdown
-	if ((state == State::SHUTTING_DOWN) && (router.GetState() == ChannelState::SHUTDOWN) && stacks.empty())
+{	
+	if (pShutdownHandler && (router.GetState() == ChannelState::SHUTDOWN))
 	{
-		state = State::SHUTDOWN;		
-
-		auto lambda = [this]()
-		{
-			this->pShutdownHandler->OnShutdown(this);
-		};
-
-		pExecutor->Start(TimeDuration::Zero(), Runnable::Bind(lambda));
+		pShutdownHandler->SetValue(true);
 	}
 }
 
@@ -155,6 +159,11 @@ IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler* pCmdHan
 	return asiopal::SynchronouslyGet<IOutstation*>(pExecutor->strand, add);
 }
 
+void DNP3Channel::SetShutdownHandler(const openpal::Runnable& action)
+{
+	shutdownHandler = action;
+}
+
 IMaster* DNP3Channel::_AddMaster(char const* id,
 	opendnp3::ISOEHandler* pPublisher,
 	openpal::IUTCTimeSource* pTimeSource,
@@ -168,8 +177,10 @@ IMaster* DNP3Channel::_AddMaster(char const* id,
 	}
 	else
 	{
-		StackActionHandler handler(&router, *pExecutor, this);
+		StackActionHandler handler(&router, *pExecutor);
 		auto pMaster = new MasterStackImpl(*pLogRoot, *pExecutor, pPublisher, pTimeSource, config, handler);
+		auto onShutdown = [this, pMaster](){ this->OnShutdown(pMaster); };
+		pMaster->SetShutdownAction(Runnable::Bind(onShutdown));
 		pMaster->SetLinkRouter(&router);
 		stacks.insert(pMaster);
 		router.AddContext(pMaster->GetLinkContext(), route);
@@ -190,8 +201,10 @@ IOutstation* DNP3Channel::_AddOutstation(char const* id,
 	}
 	else
 	{
-		StackActionHandler handler(&router, *pExecutor, this);
+		StackActionHandler handler(&router, *pExecutor);
 		auto pOutstation = new OutstationStackImpl(*pLogRoot, *pExecutor, *pTimeWriteHandler, *pCmdHandler, config, handler);
+		auto onShutdown = [this, pOutstation](){ this->OnShutdown(pOutstation); };
+		pOutstation->SetShutdownAction(Runnable::Bind(onShutdown));
 		pOutstation->SetLinkRouter(&router);
 		stacks.insert(pOutstation);
 		router.AddContext(pOutstation->GetLinkContext(), route);
@@ -203,8 +216,7 @@ IOutstation* DNP3Channel::_AddOutstation(char const* id,
 void DNP3Channel::OnShutdown(IStack* pStack)
 {
 	stacks.erase(pStack);
-	delete pStack;
-	this->CheckForFinalShutdown();
+	delete pStack;	
 }
 
 }

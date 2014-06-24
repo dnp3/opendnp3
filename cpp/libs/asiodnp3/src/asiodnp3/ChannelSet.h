@@ -26,16 +26,11 @@
 #include <cstdint>
 #include <memory>
 
-#include <mutex>
-#include <condition_variable>
-
 #include <openpal/logging/Logger.h>
 #include <openpal/executor/TimeDuration.h>
 #include <openpal/executor/IMutex.h>
 
 #include <opendnp3/link/IOpenDelayStrategy.h>
-
-#include "IShutdownHandler.h"
 
 namespace asiopal
 {
@@ -49,7 +44,7 @@ namespace asiodnp3
 class IChannel;
 class DNP3Channel;
 
-class ChannelSet : private ITypedShutdownHandler<DNP3Channel*>
+class ChannelSet
 {
 
 public:
@@ -67,13 +62,10 @@ public:
 	void Shutdown();
 
 private:
-
-	std::mutex mutex;
-	std::condition_variable condition;
-
+	
 	std::set<DNP3Channel*> channels;
 
-	void OnShutdown(DNP3Channel* apChannel) override final;
+	void OnShutdown(DNP3Channel* pChannel);
 };
 
 }

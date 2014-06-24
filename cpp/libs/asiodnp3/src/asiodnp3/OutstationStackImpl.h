@@ -59,15 +59,20 @@ public:
 	
 	virtual bool Disable() override final;
 
-	virtual void BeginShutdown() override final;
+	virtual void Shutdown() override final;
 
 	virtual opendnp3::StackStatistics GetStackStatistics() override final;	
 
+	// ------- Non-interface public members ---------
+
 	void SetLinkRouter(opendnp3::ILinkRouter* pRouter);
+
+	void SetShutdownAction(const openpal::Runnable& action);
 
 	opendnp3::ILinkContext* GetLinkContext();
 
 private:
+	openpal::Runnable shutdownAction;
 	opendnp3::StackStatistics statistics;	
 	StackActionHandler handler;
 	opendnp3::TransportStack stack;

@@ -27,10 +27,10 @@
 #include <opendnp3/link/LinkLayerRouter.h>
 #include <opendnp3/link/LinkChannelStatistics.h>
 
-#include "IChannel.h"
-#include "IShutdownHandler.h"
-
 #include <asiopal/ASIOExecutor.h>
+#include <asiopal/Synchronized.h>
+
+#include "IChannel.h"
 
 #include <memory>
 #include <set>
@@ -53,15 +53,9 @@ namespace asiodnp3
 class IStack;
 class IOutstation;
 
-class DNP3Channel : public IChannel, private ITypedShutdownHandler<IStack*>, private opendnp3::IChannelStateListener
+class DNP3Channel : public IChannel, private opendnp3::IChannelStateListener
 {
-	enum class State
-	{
-	    READY,
-	    SHUTTING_DOWN,
-	    SHUTDOWN
-	};
-
+	
 public:
 
 	DNP3Channel(
@@ -70,14 +64,12 @@ public:
 	    openpal::TimeDuration minOpenRetry,
 	    openpal::TimeDuration maxOpenRetry,
 	    opendnp3::IOpenDelayStrategy* pStrategy,
-		openpal::IPhysicalLayer* pPhys_,
-	    ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler_		
+		openpal::IPhysicalLayer* pPhys_	    	
 	);
 
 	virtual opendnp3::LinkChannelStatistics GetChannelStatistics() override final;
-
-	// public interface, callable only from outside
-	void BeginShutdown() override final;
+	
+	void Shutdown() override final;
 
 	openpal::IExecutor* GetExecutor();
 
@@ -98,6 +90,8 @@ public:
 								const opendnp3::OutstationStackConfig& config) override final;
 
 	// Helper functions only available inside DNP3Manager
+	void SetShutdownHandler(const openpal::Runnable& action);
+
 
 private:
 
@@ -111,23 +105,23 @@ private:
 		opendnp3::ITimeWriteHandler* pTimeWriteHandler,
 		const opendnp3::OutstationStackConfig& config);
 
-	void InitiateShutdown();
+	void InitiateShutdown(asiopal::Synchronized<bool>& handler);
 
 	virtual void OnStateChange(opendnp3::ChannelState state) override final;	
 
 	// shutdown from the stack
-	void OnShutdown(IStack* apStack) override final;
+	void OnShutdown(IStack* apStack);
 
 	void CheckForFinalShutdown();
 
+	openpal::Runnable shutdownHandler;
 	opendnp3::LinkChannelStatistics statistics;
 	std::unique_ptr<openpal::IPhysicalLayer> pPhys;
 	std::unique_ptr<openpal::LogRoot> pLogRoot;
 	asiopal::ASIOExecutor* pExecutor;
 	openpal::Logger logger;
-
-	State state;
-	ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler;
+	
+	asiopal::Synchronized<bool>* pShutdownHandler;
 		
 	std::set<IStack*> stacks;
 

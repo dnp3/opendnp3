@@ -9,7 +9,6 @@ namespace DNP3
 namespace Adapter
 {
 
-
 OutstationAdapter::OutstationAdapter(asiodnp3::IOutstation* apOutstation) :
 	mpOutstation(apOutstation),
 	mLoaderAdapter(gcnew OutstationLoaderAdapter(apOutstation->GetLoader()))
@@ -27,7 +26,7 @@ void OutstationAdapter::SetNeedTimeIIN()
 
 void OutstationAdapter::Shutdown()
 {
-	mpOutstation->BeginShutdown();
+	mpOutstation->Shutdown();
 }
 
 
