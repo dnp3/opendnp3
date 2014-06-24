@@ -73,11 +73,6 @@ StackStatistics OutstationStackImpl::GetStackStatistics()
 	return asiopal::SynchronouslyGet<StackStatistics>(handler.GetExecutor()->strand, getter);
 }
 
-openpal::IExecutor* OutstationStackImpl::GetExecutor()
-{
-	return handler.GetExecutor();
-}
-
 void OutstationStackImpl::SetNeedTimeIIN()
 {	
 	auto lambda = [this]() { this->outstation.SetRequestTimeIIN(); };

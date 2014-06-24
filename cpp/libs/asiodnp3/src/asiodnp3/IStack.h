@@ -43,12 +43,7 @@ public:
 	/**
 	* @return stack statistics counters
 	*/
-	virtual opendnp3::StackStatistics GetStackStatistics() = 0;
-
-	/**
-	* Returns the stack's executor
-	*/
-	virtual openpal::IExecutor* GetExecutor() = 0;
+	virtual opendnp3::StackStatistics GetStackStatistics() = 0;	
 
 	/**
 	* Enable communications
