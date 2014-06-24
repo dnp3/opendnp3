@@ -117,11 +117,7 @@ TEST_CASE(SUITE("TestOrderedDispatch"))
 	{		
 		auto lambda = [pTest, i]() { pTest->Receive(i); };
 		test.exe.PostLambda(lambda);
-	}
-
-	{
-		ExecutorPause p(test.exe);
-	}
+	}	
 
 	REQUIRE(NUM ==  test.Num());
 	REQUIRE(test.IsMonotonic());

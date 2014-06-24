@@ -30,10 +30,7 @@ using namespace std;
 namespace asiopal
 {
 
-ASIOExecutor::ASIOExecutor(asio::io_service& service) :
-	strand(service),	
-	paused(false),
-	resumed(false)
+ASIOExecutor::ASIOExecutor(asio::io_service& service) : strand(service)
 {
 
 }
@@ -69,57 +66,14 @@ void ASIOExecutor::Post(const openpal::Runnable& runnable)
 	strand.post([runnable]() { runnable.Apply(); });
 }
 
+void ASIOExecutor::PostFunctor(const std::function<void()>& action)
+{
+	strand.post(action);
+}
+
 std::function<void()> ASIOExecutor::Wrap(const std::function<void()>& handler)
 {
 	return strand.wrap(handler);
-}
-
-void ASIOExecutor::Pause()
-{
-	if (!strand.running_in_this_thread())
-	{
-		assert(!strand.running_in_this_thread());
-		std::unique_lock<std::mutex> lock(mutex);
-		strand.post([this]()
-		{
-			this->OnPause();
-		});
-		condition.wait(lock, [this]()
-		{
-			return this->paused;
-		});
-	}
-}
-
-void ASIOExecutor::Resume()
-{
-	if (!strand.running_in_this_thread())
-	{
-		std::unique_lock<std::mutex> lock(mutex);
-		this->resumed = true;
-		condition.notify_one();
-		condition.wait(lock, [this]()
-		{
-			return !this->paused;
-		});
-	}
-}
-
-void ASIOExecutor::OnPause()
-{
-	assert(strand.running_in_this_thread());
-	std::unique_lock<std::mutex> lock(mutex);
-	this->paused = true;
-	condition.notify_one();
-	condition.wait(lock, [this]()
-	{
-		return this->resumed;
-	});
-
-	// reset the state here, and tell pausing thread we're done
-	this->paused = false;
-	this->resumed = false;
-	condition.notify_one();
 }
 
 TimerASIO* ASIOExecutor::GetTimer()

@@ -90,15 +90,15 @@ opendnp3::ILinkContext* MasterStackImpl::GetLinkContext()
 }
 
 MasterScan MasterStackImpl::AddClassScan(uint8_t classMask, openpal::TimeDuration period)
-{
-	asiopal::ExecutorPause pause(*handler.GetExecutor());
-	return master.AddClassScan(classMask, period);
+{	
+	auto add = [this, classMask, period]() { return master.AddClassScan(classMask, period); };
+	return handler.GetExecutor()->Get<MasterScan>(add);
 }
 
 MasterScan  MasterStackImpl::AddRangeScan(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period)
-{
-	asiopal::ExecutorPause pause(*handler.GetExecutor());
-	return master.AddRangeScan(gvId, start, stop, period);
+{	
+	auto add = [this, gvId, start, stop, period]() { return master.AddRangeScan(gvId, start, stop, period); };
+	return handler.GetExecutor()->Get<MasterScan>(add);
 }
 
 }

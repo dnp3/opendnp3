@@ -28,7 +28,7 @@
 #include <asio.hpp>
 #include <mutex>
 #include <condition_variable>
-
+#include <future>
 
 namespace asiopal
 {
@@ -37,8 +37,7 @@ class TimerASIO;
 
 class ASIOExecutor : public openpal::IExecutor
 {
-	friend class ExecutorPause;
-
+	
 public:
 
 	ASIOExecutor(asio::io_service& service);
@@ -57,24 +56,19 @@ public:
 	template <class A, class B>
 	std::function<void(A, B)> Wrap(const std::function<void(A, B)>& handler);
 
-protected:
+	template <class T, class Action>
+	T Get(const Action& action);
 
-	void Pause();
-	void Resume();
+	template <class Action>
+	void Synchronized(const Action& action);
 
 private:
 
-	void OnPause();
+	void PostFunctor(const std::function<void()>& action);
 
 	TimerASIO* GetTimer();
 	void StartTimer(TimerASIO*, const openpal::Runnable& runnable);
-
-	std::mutex mutex;
-	std::condition_variable condition;
-
-	bool paused;
-	bool resumed;
-
+		
 	asio::strand strand;
 
 	typedef std::deque<TimerASIO*> TimerQueue;
@@ -84,6 +78,47 @@ private:
 
 	void OnTimerCallback(const std::error_code&, TimerASIO*, const openpal::Runnable& runnable);
 };
+
+template <class T, class Action>
+T ASIOExecutor::Get(const Action& action)
+{
+	if (strand.running_in_this_thread())
+	{
+		return action();
+	}
+	else
+	{
+		std::promise<T> promise;
+		auto pointer = &promise;
+		auto lambda = [action, pointer](){
+			T value = action();
+			pointer->set_value(value);
+		};
+		this->PostFunctor(lambda);
+		return promise.get_future().get();
+	}	
+}
+
+template <class Action>
+void ASIOExecutor::Synchronized(const Action& action)
+{
+	if (strand.running_in_this_thread())
+	{
+		action();		
+	}
+	else
+	{
+		std::promise<bool> promise;
+		auto pointer = &promise;
+		auto lambda = [action, pointer]()
+		{
+			action();
+			pointer->set_value(true);
+		};
+		this->PostFunctor(lambda);
+		promise.get_future().get();
+	}	
+}
 
 template <class A>
 std::function<void(A)> ASIOExecutor::Wrap(const std::function<void(A)>& handler)
@@ -96,25 +131,6 @@ std::function<void(A, B)> ASIOExecutor::Wrap(const std::function<void(A, B)>& ha
 {
 	return strand.wrap(handler);
 }
-
-class ExecutorPause
-{
-public:
-
-	ExecutorPause(ASIOExecutor& executor) : pExecutor(&executor)
-	{
-		pExecutor->Pause();
-	}
-
-	~ExecutorPause()
-	{
-		pExecutor->Resume();
-	}
-
-private:
-
-	ASIOExecutor* pExecutor;
-};
 
 }
 

@@ -137,11 +137,31 @@ void DNP3Channel::SetLogFilters(const openpal::LogFilters& filters)
 	pExecutor->PostLambda(lambda);
 }
 
-IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler* apPublisher, IUTCTimeSource* apTimeSource, const MasterStackConfig& config)
+IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler* pPublisher, IUTCTimeSource* pTimeSource, const MasterStackConfig& config)
+{
+	auto add = [this, id, pPublisher, pTimeSource, config]() 
+	{ 
+		return this->_AddMaster(id, pPublisher, pTimeSource, config); 
+	};
+	return pExecutor->Get<IMaster*>(add);
+}
+
+IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler* pCmdHandler, ITimeWriteHandler* pTimeWriteHandler, const OutstationStackConfig& config)
+{
+	auto add = [this, id, pCmdHandler, pTimeWriteHandler, config]() 
+	{ 
+		return this->_AddOutstation(id, pCmdHandler, pTimeWriteHandler, config);
+	};
+	return pExecutor->Get<IOutstation*>(add);
+}
+
+IMaster* DNP3Channel::_AddMaster(char const* id,
+	opendnp3::ISOEHandler* pPublisher,
+	openpal::IUTCTimeSource* pTimeSource,
+	const opendnp3::MasterStackConfig& config)
 {
 	LinkRoute route(config.link.RemoteAddr, config.link.LocalAddr);
-	asiopal::ExecutorPause p(*pExecutor);
-	if(router.IsRouteInUse(route))
+	if (router.IsRouteInUse(route))
 	{
 		FORMAT_LOG_BLOCK(logger, flags::ERR, "Route already in use: %i -> %i", route.remote, route.local);
 		return nullptr;
@@ -149,31 +169,33 @@ IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler* apPublisher, IUTCTi
 	else
 	{
 		StackActionHandler handler(&router, *pExecutor, this);
-		auto pMaster = new MasterStackImpl(*pLogRoot, *pExecutor, apPublisher, apTimeSource, config, handler);
+		auto pMaster = new MasterStackImpl(*pLogRoot, *pExecutor, pPublisher, pTimeSource, config, handler);
 		pMaster->SetLinkRouter(&router);
 		stacks.insert(pMaster);
 		router.AddContext(pMaster->GetLinkContext(), route);
-		return pMaster;				
+		return pMaster;
 	}
 }
 
-IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler* apCmdHandler, ITimeWriteHandler* apTimeWriteHandler, const OutstationStackConfig& arCfg)
+IOutstation* DNP3Channel::_AddOutstation(char const* id,
+	opendnp3::ICommandHandler* pCmdHandler,
+	opendnp3::ITimeWriteHandler* pTimeWriteHandler,
+	const opendnp3::OutstationStackConfig& config)
 {
-	LinkRoute route(arCfg.link.RemoteAddr, arCfg.link.LocalAddr);
-	asiopal::ExecutorPause p(*pExecutor);
-	if(router.IsRouteInUse(route))
+	LinkRoute route(config.link.RemoteAddr, config.link.LocalAddr);
+	if (router.IsRouteInUse(route))
 	{
 		FORMAT_LOG_BLOCK(logger, flags::ERR, "Route already in use: %i -> %i", route.remote, route.local);
 		return nullptr;
 	}
 	else
-	{		
+	{
 		StackActionHandler handler(&router, *pExecutor, this);
-		auto pOutstation = new OutstationStackImpl(*pLogRoot, *pExecutor, *apTimeWriteHandler, *apCmdHandler, arCfg, handler);
+		auto pOutstation = new OutstationStackImpl(*pLogRoot, *pExecutor, *pTimeWriteHandler, *pCmdHandler, config, handler);
 		pOutstation->SetLinkRouter(&router);
 		stacks.insert(pOutstation);
 		router.AddContext(pOutstation->GetLinkContext(), route);
-		return pOutstation;		
+		return pOutstation;
 	}
 }
 

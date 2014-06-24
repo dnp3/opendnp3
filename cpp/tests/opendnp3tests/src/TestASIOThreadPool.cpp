@@ -100,64 +100,6 @@ struct Count
 	uint32_t count;
 };
 
-TEST_CASE(SUITE("ExecutorPauseGuardsRaceConditions"))
-{	
-	IOServiceThreadPool pool(&ConsoleLogger::Instance(), levels::NORMAL, 8);
-	size_t iterations = 100000;
-	
-	ASIOExecutor exe(pool.GetIOService());
-
-	int count = 0;
-	auto pCount = &count;
-	
-
-	auto increment = [pCount]()
-	{
-		uint32_t value = *pCount;
-		std::this_thread::sleep_for(std::chrono::milliseconds(1));
-		*pCount = value + 1;
-	};
-
-	auto runnable = Runnable::Bind(increment);
-
-	for(size_t i = 0; i < 100; ++i)   //try to cause a race condition between the Post and the Pause
-	{
-		exe.Post(runnable);
-		ExecutorPause p1(exe);
-		increment();
-	}
-
-	pool.Shutdown();
-
-	REQUIRE(200 ==  count);
-}
-
-TEST_CASE(SUITE("ExecutorPauseIsIgnoredIfOnStrand"))
-{	
-	IOServiceThreadPool pool(&ConsoleLogger::Instance(), levels::NORMAL, 1);
-	uint32_t iterations = 10;
-	
-	ASIOExecutor exe(pool.GetIOService());
-
-	uint32_t count = 0;
-	auto pCount = &count;
-	auto pExe = &exe;
-
-	auto pause = [pCount, pExe]()
-	{
-		ExecutorPause pause(*pExe);
-		++(*pCount);
-	};
-
-	for (uint32_t i = 0; i < iterations; ++i)
-	{
-		exe.PostLambda(pause);
-	}
-
-	pool.Shutdown();
-
-	REQUIRE(count == iterations);
-}
 
 
 

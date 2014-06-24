@@ -90,16 +90,26 @@ public:
 	virtual IMaster* AddMaster(	char const* id,
 								opendnp3::ISOEHandler* pPublisher,
 								openpal::IUTCTimeSource* pTimeSource,
-								const opendnp3::MasterStackConfig& cfg) override final;
+								const opendnp3::MasterStackConfig& config) override final;
 
 	virtual IOutstation* AddOutstation(char const* id,
 								opendnp3::ICommandHandler* pCmdHandler,
 								opendnp3::ITimeWriteHandler* pTimeWriteHandler,
-								const opendnp3::OutstationStackConfig& cfg) override final;
+								const opendnp3::OutstationStackConfig& config) override final;
 
 	// Helper functions only available inside DNP3Manager
 
 private:
+
+	IMaster* _AddMaster(char const* id,
+		opendnp3::ISOEHandler* pPublisher,
+		openpal::IUTCTimeSource* pTimeSource,
+		const opendnp3::MasterStackConfig& config);
+
+	IOutstation* _AddOutstation(char const* id,
+		opendnp3::ICommandHandler* pCmdHandler,
+		opendnp3::ITimeWriteHandler* pTimeWriteHandler,
+		const opendnp3::OutstationStackConfig& config);
 
 	void InitiateShutdown();
 

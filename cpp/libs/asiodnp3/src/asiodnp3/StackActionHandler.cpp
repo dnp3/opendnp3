@@ -59,11 +59,8 @@ void StackActionHandler::DisableRoute(ILinkContext* pContext)
 
 void StackActionHandler::BeginShutdown(ILinkContext* pContext, IStack* pStack)
 {
-	{
-		// The pause has no affect if it's running on the executor
-		asiopal::ExecutorPause pause(*pExecutor);
-		pRouter->Remove(pContext);
-	}
+	auto action = [this, pContext](){ pRouter->Remove(pContext); };
+	pExecutor->Synchronized(action);
 
 	auto lambda = [this, pStack]() { pHandler->OnShutdown(pStack); };
 	pExecutor->PostLambda(lambda);
