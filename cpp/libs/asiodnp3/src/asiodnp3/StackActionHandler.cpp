@@ -23,6 +23,7 @@
 
 #include <openpal/executor/IExecutor.h>
 #include <asiopal/ASIOExecutor.h>
+#include <asiopal/StrandGetters.h>
 
 #include "opendnp3/link/LinkLayerRouter.h"
 
@@ -45,25 +46,25 @@ asiopal::ASIOExecutor* StackActionHandler::GetExecutor()
 	return pExecutor;
 }
 
-void StackActionHandler::EnableRoute(ILinkContext* pContext)
+bool StackActionHandler::EnableRoute(ILinkContext* pContext)
 {
-	auto lambda = [=]() { pRouter->Enable(pContext); };
-	pExecutor->PostLambda(lambda);
+	auto enable = [=]() { return pRouter->Enable(pContext); };
+	return asiopal::SynchronouslyGet<bool>(pExecutor->strand, enable);
 }
 
-void StackActionHandler::DisableRoute(ILinkContext* pContext)
+bool StackActionHandler::DisableRoute(ILinkContext* pContext)
 {
-	auto lambda = [=]() { pRouter->Disable(pContext); };
-	pExecutor->PostLambda(lambda);
+	auto disable = [=]() { return pRouter->Disable(pContext); };
+	return asiopal::SynchronouslyGet<bool>(pExecutor->strand, disable);
 }
 
 void StackActionHandler::BeginShutdown(ILinkContext* pContext, IStack* pStack)
 {
 	auto action = [this, pContext](){ pRouter->Remove(pContext); };
-	pExecutor->Synchronized(action);
+	asiopal::SynchronouslyExecute(pExecutor->strand, action);
 
 	auto lambda = [this, pStack]() { pHandler->OnShutdown(pStack); };
-	pExecutor->PostLambda(lambda);
+	pExecutor->strand.post(lambda);
 }
 
 }

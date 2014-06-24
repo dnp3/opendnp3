@@ -23,8 +23,7 @@
 #include <opendnp3/app/APDUBuilders.h>
 
 #include <asiopal/ASIOExecutor.h>
-
-#include <future>
+#include <asiopal/StrandGetters.h>
 
 using namespace openpal;
 using namespace opendnp3;
@@ -51,14 +50,14 @@ ICommandProcessor* MasterStackImpl::GetCommandProcessor()
 	return &master.GetCommandProcessor();
 }
 
-void MasterStackImpl::Enable()
+bool MasterStackImpl::Enable()
 {
-	handler.EnableRoute(&stack.link);
+	return handler.EnableRoute(&stack.link);
 }
 
-void MasterStackImpl::Disable()
+bool MasterStackImpl::Disable()
 {
-	handler.DisableRoute(&stack.link);
+	return handler.DisableRoute(&stack.link);
 }
 
 void MasterStackImpl::BeginShutdown()
@@ -67,11 +66,9 @@ void MasterStackImpl::BeginShutdown()
 }
 
 StackStatistics MasterStackImpl::GetStackStatistics()
-{
-	std::promise<StackStatistics> p;
-	auto lambda = [&]() { p.set_value(statistics); };
-	handler.GetExecutor()->PostLambda(lambda);
-	return p.get_future().get();
+{	
+	auto get = [this]() { return this->statistics; };
+	return asiopal::SynchronouslyGet<StackStatistics>(handler.GetExecutor()->strand, get);
 }
 
 openpal::IExecutor* MasterStackImpl::GetExecutor()
@@ -92,13 +89,13 @@ opendnp3::ILinkContext* MasterStackImpl::GetLinkContext()
 MasterScan MasterStackImpl::AddClassScan(uint8_t classMask, openpal::TimeDuration period)
 {	
 	auto add = [this, classMask, period]() { return master.AddClassScan(classMask, period); };
-	return handler.GetExecutor()->Get<MasterScan>(add);
+	return asiopal::SynchronouslyGet<MasterScan>(handler.GetExecutor()->strand, add);
 }
 
 MasterScan  MasterStackImpl::AddRangeScan(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period)
 {	
 	auto add = [this, gvId, start, stop, period]() { return master.AddRangeScan(gvId, start, stop, period); };
-	return handler.GetExecutor()->Get<MasterScan>(add);
+	return asiopal::SynchronouslyGet<MasterScan>(handler.GetExecutor()->strand, add);
 }
 
 }

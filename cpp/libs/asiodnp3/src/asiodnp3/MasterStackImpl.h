@@ -47,9 +47,9 @@ public:
 		const opendnp3::MasterStackConfig& config,
 		const StackActionHandler& handler);
 
-	virtual void Enable() override final;
+	virtual bool Enable() override final;
 
-	virtual void Disable() override final;
+	virtual bool Disable() override final;
 
 	virtual void BeginShutdown() override final;
 

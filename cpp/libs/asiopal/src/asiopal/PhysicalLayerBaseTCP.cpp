@@ -60,11 +60,9 @@ void PhysicalLayerBaseTCP::DoRead(WriteBuffer& buff)
 	auto callback = [this, pBuff](const std::error_code & code, size_t  numRead) 
 	{
 		this->OnReadCallback(code, pBuff, static_cast<uint32_t>(numRead));
-	};
+	};	
 
-	auto wrapped = executor.Wrap<const std::error_code&, size_t>(callback);
-
-	socket.async_read_some(buffer(pBuff, buff.Size()), wrapped);
+	socket.async_read_some(buffer(pBuff, buff.Size()), executor.strand.wrap(callback));
 }
 
 void PhysicalLayerBaseTCP::DoWrite(const ReadOnlyBuffer& buff)
@@ -74,7 +72,7 @@ void PhysicalLayerBaseTCP::DoWrite(const ReadOnlyBuffer& buff)
 		this->OnWriteCallback(code, static_cast<uint32_t>(numWritten));
 	};
 
-	async_write(socket, buffer(buff, buff.Size()), executor.Wrap<const std::error_code&, size_t>(callback));
+	async_write(socket, buffer(buff, buff.Size()), executor.strand.wrap(callback));
 }
 
 void PhysicalLayerBaseTCP::DoOpenFailure()

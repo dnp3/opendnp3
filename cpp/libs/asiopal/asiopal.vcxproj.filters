@@ -53,6 +53,9 @@
     <ClInclude Include="src\asiopal\LogFanoutHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\asiopal\StrandGetters.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\asiopal\ASIOExecutor.cpp">

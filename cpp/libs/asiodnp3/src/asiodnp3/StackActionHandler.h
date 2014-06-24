@@ -48,9 +48,9 @@ public:
 
 	asiopal::ASIOExecutor* GetExecutor();
 
-	void EnableRoute(opendnp3::ILinkContext*);
+	bool EnableRoute(opendnp3::ILinkContext*);
 
-	void DisableRoute(opendnp3::ILinkContext*);
+	bool DisableRoute(opendnp3::ILinkContext*);
 
 	void BeginShutdown(opendnp3::ILinkContext* pContext, IStack* pStack);
 

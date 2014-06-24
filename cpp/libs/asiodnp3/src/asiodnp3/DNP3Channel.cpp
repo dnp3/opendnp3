@@ -21,14 +21,13 @@
 #include "DNP3Channel.h"
 
 #include <asiopal/PhysicalLayerBase.h>
+#include <asiopal/StrandGetters.h>
 
 #include "MasterStackImpl.h"
 #include "OutstationStackImpl.h"
 
 #include <opendnp3/LogLevels.h>
 #include <openpal/logging/LogMacros.h>
-
-#include <future>
 
 using namespace openpal;
 using namespace opendnp3;
@@ -68,10 +67,12 @@ void DNP3Channel::OnStateChange(ChannelState state)
 
 void DNP3Channel::AddStateChangeCallback(const StateChangeCallback& callback)
 {
-	auto lambda = [this, callback]() {
+	auto lambda = [this, callback]()
+	{
 		this->callbacks.push_back(callback);
 		callback(channelState);
 	};
+	pExecutor->strand.post(lambda);
 }
 
 // comes from the outside, so we need to synchronize
@@ -143,7 +144,8 @@ IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler* pPublisher, IUTCTim
 	{ 
 		return this->_AddMaster(id, pPublisher, pTimeSource, config); 
 	};
-	return pExecutor->Get<IMaster*>(add);
+
+	return  asiopal::SynchronouslyGet<IMaster*>(pExecutor->strand, add);
 }
 
 IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler* pCmdHandler, ITimeWriteHandler* pTimeWriteHandler, const OutstationStackConfig& config)
@@ -152,7 +154,7 @@ IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler* pCmdHan
 	{ 
 		return this->_AddOutstation(id, pCmdHandler, pTimeWriteHandler, config);
 	};
-	return pExecutor->Get<IOutstation*>(add);
+	return asiopal::SynchronouslyGet<IOutstation*>(pExecutor->strand, add);
 }
 
 IMaster* DNP3Channel::_AddMaster(char const* id,

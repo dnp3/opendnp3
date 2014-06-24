@@ -59,18 +59,18 @@ void PhysicalLayerTCPClient::DoOpen()
 	auto address = asio::ip::address::from_string(host, ec);
 	if (ec)
 	{
-		auto resolveCallback = [this](const std::error_code & code, ip::tcp::resolver::iterator endpoints)
+		auto callback = [this](const std::error_code & code, ip::tcp::resolver::iterator endpoints)
 		{
 			this->HandleResolve(code, endpoints);
 		};
 		ip::tcp::resolver::query query(host, "20000");
-		resolver.async_resolve(query, executor.Wrap<const std::error_code&, ip::tcp::resolver::iterator>(resolveCallback));
+		resolver.async_resolve(query, executor.strand.wrap(callback));
 	}
 	else
 	{
 		remoteEndpoint.address(address);
-		auto openCallback = [this](const std::error_code & code) { this->OnOpenCallback(code); };
-		socket.async_connect(remoteEndpoint, executor.Wrap<const std::error_code &>(openCallback));
+		auto callback = [this](const std::error_code & code) { this->OnOpenCallback(code); };
+		socket.async_connect(remoteEndpoint, executor.strand.wrap(callback));
 	}
 }
 
@@ -86,11 +86,9 @@ void PhysicalLayerTCPClient::HandleResolve(const std::error_code& code, asio::ip
 		auto callback = [this](const std::error_code & code, ip::tcp::resolver::iterator endpoints)
 		{
 			this->OnOpenCallback(code);
-		};
+		};		
 
-		auto wrapped = executor.Wrap<const std::error_code &, ip::tcp::resolver::iterator>(callback);
-
-		asio::async_connect(socket, endpoints, condition, wrapped);
+		asio::async_connect(socket, endpoints, condition, executor.strand.wrap(callback));
 	}
 }
 

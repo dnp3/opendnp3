@@ -20,9 +20,8 @@
  */
 #include "OutstationStackImpl.h"
 
-#include <future>
-
 #include <asiopal/ASIOExecutor.h>
+#include <asiopal/StrandGetters.h>
 
 using namespace opendnp3;
 
@@ -53,14 +52,14 @@ IMeasurementLoader* OutstationStackImpl::GetLoader()
 	return &database;
 }
 
-void OutstationStackImpl::Enable()
+bool OutstationStackImpl::Enable()
 {
-	handler.EnableRoute(&stack.link);
+	return handler.EnableRoute(&stack.link);
 }
 
-void OutstationStackImpl::Disable()
+bool OutstationStackImpl::Disable()
 {
-	handler.DisableRoute(&stack.link);
+	return handler.DisableRoute(&stack.link);
 }
 
 void OutstationStackImpl::BeginShutdown()
@@ -69,11 +68,9 @@ void OutstationStackImpl::BeginShutdown()
 }
 
 StackStatistics OutstationStackImpl::GetStackStatistics()
-{
-	std::promise<StackStatistics> p;
-	auto lambda = [&]() { p.set_value(statistics); };
-	handler.GetExecutor()->PostLambda(lambda);
-	return p.get_future().get();
+{	
+	auto getter = [this]() { return statistics; };
+	return asiopal::SynchronouslyGet<StackStatistics>(handler.GetExecutor()->strand, getter);
 }
 
 openpal::IExecutor* OutstationStackImpl::GetExecutor()

@@ -23,12 +23,8 @@
 
 #include <openpal/executor/IExecutor.h>
 
-#include <queue>
-
 #include <asio.hpp>
-#include <mutex>
-#include <condition_variable>
-#include <future>
+#include <queue>
 
 namespace asiopal
 {
@@ -46,30 +42,16 @@ public:
 	virtual openpal::MonotonicTimestamp GetTime() override final;
 	virtual openpal::ITimer* Start(const openpal::TimeDuration&, const openpal::Runnable& runnable)  override final;
 	virtual openpal::ITimer* Start(const openpal::MonotonicTimestamp&, const openpal::Runnable& runnable)  override final;
-	virtual void Post(const openpal::Runnable& runnable) override final;
-	
-	std::function<void()> Wrap(const std::function<void()>& handler);
-	
-	template <class A>
-	std::function<void (A)> Wrap(const std::function<void(A)>& handler);
+	virtual void Post(const openpal::Runnable& runnable) override final;			
 
-	template <class A, class B>
-	std::function<void(A, B)> Wrap(const std::function<void(A, B)>& handler);
+	// access to the underlying strand is provided for wrapping callbacks
+	asio::strand strand;
 
-	template <class T, class Action>
-	T Get(const Action& action);
-
-	template <class Action>
-	void Synchronized(const Action& action);
-
-private:
-
-	void PostFunctor(const std::function<void()>& action);
+private:	
 
 	TimerASIO* GetTimer();
-	void StartTimer(TimerASIO*, const openpal::Runnable& runnable);
-		
-	asio::strand strand;
+
+	void StartTimer(TimerASIO*, const openpal::Runnable& runnable);	
 
 	typedef std::deque<TimerASIO*> TimerQueue;
 
@@ -78,59 +60,6 @@ private:
 
 	void OnTimerCallback(const std::error_code&, TimerASIO*, const openpal::Runnable& runnable);
 };
-
-template <class T, class Action>
-T ASIOExecutor::Get(const Action& action)
-{
-	if (strand.running_in_this_thread())
-	{
-		return action();
-	}
-	else
-	{
-		std::promise<T> promise;
-		auto pointer = &promise;
-		auto lambda = [action, pointer](){
-			T value = action();
-			pointer->set_value(value);
-		};
-		this->PostFunctor(lambda);
-		return promise.get_future().get();
-	}	
-}
-
-template <class Action>
-void ASIOExecutor::Synchronized(const Action& action)
-{
-	if (strand.running_in_this_thread())
-	{
-		action();		
-	}
-	else
-	{
-		std::promise<bool> promise;
-		auto pointer = &promise;
-		auto lambda = [action, pointer]()
-		{
-			action();
-			pointer->set_value(true);
-		};
-		this->PostFunctor(lambda);
-		promise.get_future().get();
-	}	
-}
-
-template <class A>
-std::function<void(A)> ASIOExecutor::Wrap(const std::function<void(A)>& handler)
-{
-	return strand.wrap(handler);
-}
-
-template <class A, class B>
-std::function<void(A, B)> ASIOExecutor::Wrap(const std::function<void(A, B)>& handler)
-{
-	return strand.wrap(handler);
-}
 
 }
 

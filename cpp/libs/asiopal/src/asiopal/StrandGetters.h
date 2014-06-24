@@ -18,55 +18,60 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __I_STACK_H_
-#define __I_STACK_H_
 
-#include "DestructorHook.h"
+#ifndef __STRAND_GETTERS_H_
+#define __STRAND_GETTERS_H_
 
-#include <openpal/executor/IExecutor.h>
+#include <asio.hpp>
+#include <future>
 
-#include <opendnp3/StackStatistics.h>
-
-
-namespace asiodnp3
+namespace asiopal
 {
 
-/**
-* Base class for masters or outstations
-*/
-class IStack : public DestructorHook
-{
-public:	
+	template <class T, class Action>
+	T SynchronouslyGet(asio::strand& strand, const Action& action)
+	{
+		if (strand.running_in_this_thread())
+		{
+			return action();
+		}
+		else
+		{
+			std::promise<T> promise;
+			auto pointer = &promise;
+			auto lambda = [action, pointer](){
+				T value = action();
+				pointer->set_value(value);
+			};
+			strand.post(lambda);
+			return promise.get_future().get();
+		}
+	}
 
-	virtual ~IStack() {}
-
-	/**
-	* @return stack statistics counters
-	*/
-	virtual opendnp3::StackStatistics GetStackStatistics() = 0;
-
-	/**
-	* Returns the stack's executor
-	*/
-	virtual openpal::IExecutor* GetExecutor() = 0;
-
-	/**
-	* Enable communications
-	*/
-	virtual bool Enable() = 0;
-
-	/**
-	* Enable communications
-	*/
-	virtual bool Disable() = 0;
-
-	/**
-	* hronously shutdown the endpoint. No more calls are allowed after this call.
-	*/
-	virtual void BeginShutdown() = 0;
-
-};
+	template <class Action>
+	void SynchronouslyExecute(asio::strand& strand, const Action& action)
+	{
+		if (strand.running_in_this_thread())
+		{
+			action();
+		}
+		else
+		{
+			std::promise<bool> promise;
+			auto pointer = &promise;
+			auto lambda = [action, pointer]()
+			{
+				action();
+				pointer->set_value(true);
+			};
+			strand.post(lambda);
+			promise.get_future().get();
+		}
+	}
 
 }
 
 #endif
+
+
+

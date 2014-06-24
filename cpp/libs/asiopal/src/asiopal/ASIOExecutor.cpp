@@ -66,16 +66,6 @@ void ASIOExecutor::Post(const openpal::Runnable& runnable)
 	strand.post([runnable]() { runnable.Apply(); });
 }
 
-void ASIOExecutor::PostFunctor(const std::function<void()>& action)
-{
-	strand.post(action);
-}
-
-std::function<void()> ASIOExecutor::Wrap(const std::function<void()>& handler)
-{
-	return strand.wrap(handler);
-}
-
 TimerASIO* ASIOExecutor::GetTimer()
 {
 	TimerASIO* pTimer;
