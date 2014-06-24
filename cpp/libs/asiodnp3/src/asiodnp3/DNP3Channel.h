@@ -69,9 +69,7 @@ public:
 
 	virtual opendnp3::LinkChannelStatistics GetChannelStatistics() override final;
 	
-	void Shutdown() override final;
-
-	openpal::IExecutor* GetExecutor();
+	void Shutdown() override final;	
 
 	virtual openpal::LogFilters GetLogFilters() const override final;
 

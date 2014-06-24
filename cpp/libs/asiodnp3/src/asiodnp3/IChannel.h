@@ -91,12 +91,7 @@ public:
 	/**
 	* sychronously shutdown the channel
 	*/
-	virtual void Shutdown() = 0;
-
-	/**
-	* @return The execution context associated with the channel
-	*/
-	virtual openpal::IExecutor* GetExecutor() = 0;
+	virtual void Shutdown() = 0;	
 
 	/**
 	*  @return The current logger settings for this channel

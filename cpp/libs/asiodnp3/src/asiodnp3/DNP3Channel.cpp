@@ -124,11 +124,6 @@ void DNP3Channel::CheckForFinalShutdown()
 	}
 }
 
-openpal::IExecutor* DNP3Channel::GetExecutor()
-{
-	return pExecutor;
-}
-
 openpal::LogFilters DNP3Channel::GetLogFilters() const
 {
 	return pLogRoot->GetFilters();
@@ -216,7 +211,8 @@ IOutstation* DNP3Channel::_AddOutstation(char const* id,
 void DNP3Channel::OnShutdown(IStack* pStack)
 {
 	stacks.erase(pStack);
-	delete pStack;	
+	auto deleteStack = [pStack]() { delete pStack; };
+	pExecutor->strand.post(deleteStack);	
 }
 
 }

@@ -38,14 +38,12 @@ using namespace openpal;
 
 #define SUITE(name) "DNP3ManagerTestSuite - " name
 
-const size_t ITERATIONS = 10000;
+const size_t ITERATIONS = 100;
 
 TEST_CASE(SUITE("ConstructionDestruction"))
 {
 	for(int i = 0; i < ITERATIONS; ++i)
-	{
-		std::cout << i << std::endl;
-
+	{		
 		DNP3Manager manager(std::thread::hardware_concurrency());
 		
 		auto pClient = manager.AddTCPClient("client", levels::NORMAL, TimeDuration::Seconds(5), TimeDuration::Seconds(5), "127.0.0.1", 20000);		

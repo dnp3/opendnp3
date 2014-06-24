@@ -63,9 +63,9 @@ IChannel* ChannelSet::CreateChannel(
 }
 
 void ChannelSet::OnShutdown(DNP3Channel* pChannel)
-{	
-	delete pChannel;
+{		
 	channels.erase(pChannel);	
+	delete pChannel;
 }
 
 
