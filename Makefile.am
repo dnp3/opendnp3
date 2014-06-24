@@ -207,7 +207,7 @@ cpp/libs/asiodnp3/src/asiodnp3/StackActionHandler.cpp
 masterdemo_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) -I$(ASIODNP3_INCLUDE) $(ASIO_CONFIG) -Wl,--no-as-needed
 masterdemo_LDFLAGS = -pthread
 masterdemo_LDADD = libopenpal.la libasiopal.la libopendnp3.la libasiodnp3.la
-masterdemo_SOURCES = cpp/examples/master/DemoMain.cpp cpp/examples/master/PrintingCommandCallback.cpp
+masterdemo_SOURCES = cpp/examples/master/DemoMain.cpp cpp/examples/master/BlockingCommandCallback.cpp
 
 outstationdemo_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) -I$(ASIODNP3_INCLUDE) $(ASIO_CONFIG) -Wl,--no-as-needed
 outstationdemo_LDFLAGS = -pthread
