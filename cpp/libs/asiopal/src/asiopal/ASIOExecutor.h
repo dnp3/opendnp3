@@ -23,6 +23,8 @@
 
 #include <openpal/executor/IExecutor.h>
 
+#include "Synchronized.h"
+
 #include <asio.hpp>
 #include <queue>
 
@@ -42,12 +44,21 @@ public:
 	virtual openpal::MonotonicTimestamp GetTime() override final;
 	virtual openpal::ITimer* Start(const openpal::TimeDuration&, const openpal::Runnable& runnable)  override final;
 	virtual openpal::ITimer* Start(const openpal::MonotonicTimestamp&, const openpal::Runnable& runnable)  override final;
-	virtual void Post(const openpal::Runnable& runnable) override final;			
+	virtual void Post(const openpal::Runnable& runnable) override final;
+
+	// Gracefully wait for all timers to finish
+	void WaitForShutdown();
 
 	// access to the underlying strand is provided for wrapping callbacks
 	asio::strand strand;
 
-private:	
+private:
+
+	void InitiateShutdown(Synchronized<bool>& handler);
+
+	void CheckForShutdown();
+
+	Synchronized<bool>* pShutdownSignal;
 
 	TimerASIO* GetTimer();
 

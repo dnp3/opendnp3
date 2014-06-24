@@ -109,7 +109,7 @@ void DNP3Channel::CheckForFinalShutdown()
 	// The router is offline. The stacks are shutdown
 	if ((state == State::SHUTTING_DOWN) && (router.GetState() == ChannelState::SHUTDOWN) && stacks.empty())
 	{
-		state = State::SHUTDOWN;
+		state = State::SHUTDOWN;		
 
 		auto lambda = [this]()
 		{

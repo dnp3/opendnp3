@@ -30,14 +30,44 @@ using namespace std;
 namespace asiopal
 {
 
-ASIOExecutor::ASIOExecutor(asio::io_service& service) : strand(service)
+ASIOExecutor::ASIOExecutor(asio::io_service& service) : 
+	strand(service),
+	pShutdownSignal(nullptr)
 {
 
 }
 
 ASIOExecutor::~ASIOExecutor()
 {
-	for(auto pTimer : allTimers) delete pTimer;
+	for (auto pTimer : allTimers)
+	{
+		delete pTimer;
+	}
+}
+
+void ASIOExecutor::WaitForShutdown()
+{
+	Synchronized<bool> sync;
+	auto initiate = [this, &sync]() { this->InitiateShutdown(sync); };
+	sync.WaitForValue();
+}
+
+void ASIOExecutor::InitiateShutdown(Synchronized<bool>& handler)
+{	
+	pShutdownSignal = &handler;	
+}
+
+void ASIOExecutor::CheckForShutdown()
+{
+	if (pShutdownSignal)
+	{
+		if (idleTimers.size() == allTimers.size()) // no outstanding timers
+		{
+			// send the final shutdown signal via the strand to ensure all post events are flushed
+			auto finalpost = [this]() { this->pShutdownSignal->SetValue(true); };
+			strand.post(finalpost);
+		}
+	}
 }
 
 openpal::MonotonicTimestamp ASIOExecutor::GetTime()
