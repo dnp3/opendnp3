@@ -19,29 +19,19 @@
  * to you under the terms of the License.
  */
 
-#include "PrintingCommandCallback.h"
-
-#include <iostream>
+#include "BlockingCommandCallback.h"
 
 namespace opendnp3
 {
-
-PrintingCommandCallback PrintingCommandCallback::mInstance;
 	
-PrintingCommandCallback::PrintingCommandCallback() 
-{}
-
-ICommandCallback& PrintingCommandCallback::Inst()
+CommandResponse BlockingCommandCallback::WaitForResult()
 {
-	return mInstance;
+	return response.WaitForValue();
 }
 
-void PrintingCommandCallback::OnComplete(const CommandResponse& response)
+void BlockingCommandCallback::OnComplete(const CommandResponse& response)
 {
-	std::cout << 
-	"Result: " << CommandResultToString(response.GetResult()) <<
-	"Status: " << CommandStatusToString(response.GetStatus()) <<
-	std::endl;
+	this->response.SetValue(response);
 }
 
 }

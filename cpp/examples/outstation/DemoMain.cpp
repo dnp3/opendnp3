@@ -61,9 +61,20 @@ int main(int argc, char* argv[])
 	// The main object for a outstation. The defaults are useable, 
 	// but understanding the options are important.
 	OutstationStackConfig stackConfig;	
+	
+	// You must specify the shape of your database and the size of the event buffers
 	stackConfig.dbTemplate = DatabaseTemplate::AllTypes(10);
 	stackConfig.eventBuffer = EventBufferConfig::AllTypes(10);
+	
+	// you can override an default outstation parameters here
+	// in this example, we've enabled the oustation to use unsolicted reporting
+	// if the master enables it
 	stackConfig.outstation.params.allowUnsolicited = true;	
+
+	// You can override the default link layer settings here
+	// in this example we've changed the default link layer addressing
+	stackConfig.link.LocalAddr = 10;
+	stackConfig.link.RemoteAddr = 1;
 	
 	// Create a new outstation with a log level, command handler, and
 	// config info this	returns a thread-safe interface used for

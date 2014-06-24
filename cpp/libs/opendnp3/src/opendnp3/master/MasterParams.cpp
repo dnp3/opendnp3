@@ -35,8 +35,7 @@ MasterParams::MasterParams() :
 	timeSyncMode(TimeSyncMode::None),
 	disableUnsolOnStartup(true),	
 	unsolClassMask(ALL_EVENT_CLASSES),
-	startupIntergrityClassMask(ALL_CLASSES),
-	integrityPeriod(TimeDuration::Minutes(1)),
+	startupIntergrityClassMask(ALL_CLASSES),	
 	taskRetryPeriod(TimeDuration::Seconds(5))
 {}
 

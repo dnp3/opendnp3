@@ -18,13 +18,14 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __PRINTING_COMMAND_CALLBACK_H_
-#define __PRINTING_COMMAND_CALLBACK_H_
+#ifndef __BLOCKING_COMMAND_CALLBACK_H_
+#define __BLOCKING_COMMAND_CALLBACK_H_
 
+#include <openpal/util/Uncopyable.h>
 #include <opendnp3/master/CommandResponse.h>
 #include <opendnp3/master/ICommandCallback.h>
 
-#include <iostream>
+#include <asiopal/Synchronized.h>
 
 namespace opendnp3
 {
@@ -32,17 +33,18 @@ namespace opendnp3
 /**
 * Callback when a command finishes or fails
 */
-class PrintingCommandCallback : public ICommandCallback
-{
-	static PrintingCommandCallback mInstance;
+class BlockingCommandCallback : public ICommandCallback, private openpal::Uncopyable
+{	
 	
-	PrintingCommandCallback();
-
-public:
-
-	static ICommandCallback& Inst();
+public:	
 	
 	virtual void OnComplete(const CommandResponse& response) override final;
+
+	CommandResponse WaitForResult();
+
+private:
+
+	asiopal::Synchronized<CommandResponse> response;
 };
 
 }

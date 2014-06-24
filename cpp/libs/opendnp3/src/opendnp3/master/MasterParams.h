@@ -55,9 +55,6 @@ struct MasterParams
 	///	Bitwise mask used determine which classes are enabled for unsol, if 0 unsol is not enabled
 	int unsolClassMask;
 
-	/// Period for integrity scans (class 1/2/3/0), negative for non periodic
-	openpal::TimeDuration integrityPeriod;
-
 	/// Which classes should be requested in a startup integrity scan, defaults to 3/2/1/0, 0 == no scan
 	int startupIntergrityClassMask;
 

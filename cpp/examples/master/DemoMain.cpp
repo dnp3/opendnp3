@@ -28,7 +28,7 @@
 #include <opendnp3/app/PointClass.h>
 #include <opendnp3/app/ControlRelayOutputBlock.h>
 
-#include "PrintingCommandCallback.h"
+#include "BlockingCommandCallback.h"
 
 #include <thread>
 
@@ -57,7 +57,15 @@ int main(int argc, char* argv[])
 	// The master config object for a master. The default are
 	// useable, but understanding the options are important.
 	MasterStackConfig stackConfig;
-	stackConfig.master.integrityPeriod = TimeDuration::Minutes(1);
+
+	// you can override application layer settings for the master here
+	// in this example, we've change the application layer timeout to 2 seconds
+	stackConfig.master.responseTimeout = TimeDuration::Seconds(2);
+	
+	// You can override the default link layer settings here
+	// in this example we've changed the default link layer addressing
+	stackConfig.link.LocalAddr = 1;
+	stackConfig.link.RemoteAddr = 10;
 
 	// Create a new master on a previously declared port, with a
 	// name, log level, command acceptor, and config info. This
@@ -70,9 +78,11 @@ int main(int argc, char* argv[])
 	               );
 	
 	
+	// do an integrity poll (Class 3/2/1/0) once per minute
 	auto integrityScan = pMaster->AddClassScan(ALL_CLASSES, TimeDuration::Minutes(1));
-	auto exceptionScan = pMaster->AddClassScan(ALL_EVENT_CLASSES, TimeDuration::Seconds(5));
 
+	// do a Class 1 exception poll every 5 seconds
+	auto exceptionScan = pMaster->AddClassScan(CLASS_1, TimeDuration::Seconds(5));
 
 	// Enable the master. This will start communications.
 	pMaster->Enable();
@@ -93,6 +103,7 @@ int main(int argc, char* argv[])
 		switch(cmd)
 		{
 			case('x'):
+				// C++ destructor on DNP3Manager cleans everything up for you
 				return 0;
 			case('i'):
 				integrityScan.Demand();
@@ -102,11 +113,17 @@ int main(int argc, char* argv[])
 				break;
 			case('c'):
 				{
-					ControlRelayOutputBlock crob(ControlCode::LATCH_ON);								
-					pCommandProcessor->SelectAndOperate(crob, 0, &PrintingCommandCallback::Inst());
+					// This is an example of synchronously doing a control operation
+					ControlRelayOutputBlock crob(ControlCode::LATCH_ON);
+					BlockingCommandCallback handler;
+					pCommandProcessor->SelectAndOperate(crob, 0, &handler);
+					auto response = handler.WaitForResult();
+					std::cout << "Result: " << CommandResultToString(response.GetResult()) <<
+								 " Status: " << CommandStatusToString(response.GetStatus()) << std::endl;
 					break;
 				}
 			default:
+				std::cout << "Unknown action: " << cmd << std::endl;
 				break;
 		}
 	}
