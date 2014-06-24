@@ -33,13 +33,13 @@ class Master : public openpal::IUpperLayer
 	public:
 
 	Master(	openpal::IExecutor& executor, 				
-				openpal::LogRoot& root, 
-				openpal::ILowerLayer& lower,
-				ISOEHandler* pSOEHandler,
-				openpal::IUTCTimeSource* pTimeSource,
-				const MasterParams& params,
-				ITaskLock* pTaskLock = nullptr
-				);
+			openpal::LogRoot& root, 
+			openpal::ILowerLayer& lower,
+			ISOEHandler* pSOEHandler,
+			openpal::IUTCTimeSource* pTimeSource,
+			const MasterParams& params,
+			ITaskLock& taskLock = NullTaskLock::Instance()
+			);
 	
 	/// ----- Implement IUpperLayer ------
 

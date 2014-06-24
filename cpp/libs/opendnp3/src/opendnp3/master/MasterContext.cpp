@@ -42,7 +42,7 @@ MasterContext::MasterContext(
 	ISOEHandler* pSOEHandler_,
 	IUTCTimeSource* pTimeSource,
 	const MasterParams& params_,
-	ITaskLock* pTaskLock_
+	ITaskLock& taskLock
 	) :
 
 	logger(root.GetLogger()),
@@ -50,7 +50,7 @@ MasterContext::MasterContext(
 	pLower(&lower),
 	params(params_),
 	pSOEHandler(pSOEHandler_),
-	pTaskLock(pTaskLock_),
+	pTaskLock(&taskLock),
 	isOnline(false),
 	isSending(false),
 	solSeq(0),

@@ -657,9 +657,6 @@
     <ClInclude Include="src\opendnp3\ErrorCodes.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="IMasterState.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\master\IMasterState.h">
       <Filter>Header\master</Filter>
     </ClInclude>
@@ -1065,6 +1062,9 @@
       <Filter>Source\link</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\master\IMasterState.cpp">
+      <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\ITaskLock.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
   </ItemGroup>

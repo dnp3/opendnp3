@@ -57,8 +57,9 @@ IMasterState* MasterStateIdle::OnStart(MasterContext* pContext)
 	else
 	{
 		auto pTask = pContext->scheduler.Start();
+		
 		if (pTask)
-		{
+		{			
 			FORMAT_LOG_BLOCK(pContext->logger, flags::INFO, "Begining task: %s", pTask->Name());
 			pContext->pActiveTask = pTask;
 			pContext->StartTask(pTask);

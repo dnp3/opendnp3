@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="IMasterState.h" />
     <ClInclude Include="src\opendnp3\app\AnalogOutput.h" />
     <ClInclude Include="src\opendnp3\app\APDUBuilders.h" />
     <ClInclude Include="src\opendnp3\app\APDUHandlerBase.h" />
@@ -290,6 +289,7 @@
     <ClCompile Include="src\opendnp3\master\EnableUnsolicitedTask.cpp" />
     <ClCompile Include="src\opendnp3\master\IMasterState.cpp" />
     <ClCompile Include="src\opendnp3\master\IMasterTask.cpp" />
+    <ClCompile Include="src\opendnp3\master\ITaskLock.cpp" />
     <ClCompile Include="src\opendnp3\master\NullResponseTask.cpp" />
     <ClCompile Include="src\opendnp3\master\PollTask.cpp" />
     <ClCompile Include="src\opendnp3\master\SerialTimeSyncTask.cpp" />

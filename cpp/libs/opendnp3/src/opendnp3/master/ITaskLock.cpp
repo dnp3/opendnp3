@@ -19,58 +19,40 @@
  * to you under the terms of the License.
  */
 
-#ifndef __I_TASK_LOCK_H_
-#define __I_TASK_LOCK_H_
-
-#include <openpal/util/Uncopyable.h>
+#include "ITaskLock.h"
 
 namespace opendnp3
 {
 
-class MasterContext;
+NullTaskLock NullTaskLock::instance;
 
-/**
-	Interface used in multi-drop configurations (multiple masters on same channel) 
-	to control task execution such that only 1 master is running a task at a time.	
-*/
-class ITaskLock
+ITaskLock& NullTaskLock::Instance()
 {
-	public:
+	return instance;
+}
+
+NullTaskLock::NullTaskLock()
+{}
+
+bool NullTaskLock::Acquire(MasterContext&)
+{
+	return true;
+}
 	
-		/// Acquire a lock
-		virtual bool Acquire(MasterContext&) = 0;
-
-		/// Release a lock
-		virtual void Release(MasterContext&) = 0;
-
-		/// channel online
-		virtual void OnLayerUp() = 0;
-
-		/// channel offline
-		virtual void OnLayerDown() = 0;
-};
-
-class NullTaskLock : public ITaskLock, private openpal::Uncopyable
-{	
-	public:
-
-	virtual bool Acquire(MasterContext&) override final;
+void NullTaskLock::Release(MasterContext&)
+{ 
 	
-	virtual void Release(MasterContext&) override final;
+}
 
-	virtual void OnLayerUp() override final;
-	
-	virtual void OnLayerDown() override final;
-
-	static ITaskLock& Instance();
-
-	private:
-
-	NullTaskLock();
-
-	static NullTaskLock instance;
-};
+void NullTaskLock::OnLayerUp()
+{
 
 }
 
-#endif
+void NullTaskLock::OnLayerDown()
+{
+
+}
+
+}
+

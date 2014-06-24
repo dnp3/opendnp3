@@ -45,7 +45,7 @@ class MasterContext : public ICommandProcessor
 					ISOEHandler* pSOEHandler,
 					openpal::IUTCTimeSource* pTimeSource,
 					const MasterParams& params,
-					ITaskLock* pTaskLock
+					ITaskLock& taskLock
 				);
 	
 	openpal::Logger logger;
