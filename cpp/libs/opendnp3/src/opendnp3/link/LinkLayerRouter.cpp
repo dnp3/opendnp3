@@ -96,14 +96,17 @@ bool LinkLayerRouter::AddContext(ILinkContext* pContext, const LinkRoute& route)
 
 bool LinkLayerRouter::Enable(ILinkContext* pContext)
 {
-	auto pNode = records.FindFirst([pContext](const Record & rec)
-	{
-		return rec.pContext == pContext;
-	});
+	auto isMatch = [pContext](const Record & rec) { return rec.pContext == pContext; };
+	auto pNode = records.FindFirst(isMatch);
 
 	if(pNode)
 	{
-		if(!(pNode->value.enabled))
+		if(pNode->value.enabled)
+		{
+			// already enabled
+			return true;			
+		}
+		else
 		{
 			pNode->value.enabled = true;
 
@@ -111,9 +114,12 @@ bool LinkLayerRouter::Enable(ILinkContext* pContext)
 			{
 				pNode->value.pContext->OnLowerLayerUp();
 			}
+
 			this->Start(); // idempotent call to start router
+
+			return true;
 		}
-		return true; // already enabled
+		
 	}
 	else
 	{
