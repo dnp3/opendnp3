@@ -75,7 +75,7 @@ namespace Automatak.DNP3.Simulator
 
         void ISOEHandler.LoadEvent(DoubleBitBinary meas, ushort index)
         {
-            this.measurements.Add(new Measurement(meas.Value.ToString(), meas, MeasType.Analog, index));
+            this.measurements.Add(new Measurement(meas.Value.ToString(), meas, MeasType.DoubleBitBinary, index));
         }
 
         void ISOEHandler.LoadEvent(Analog meas, ushort index)
