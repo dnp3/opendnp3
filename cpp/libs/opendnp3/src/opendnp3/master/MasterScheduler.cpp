@@ -42,35 +42,79 @@ MasterScheduler::MasterScheduler(	openpal::Logger* pLogger,
 	isOnline(false),	
 	modifiedSinceLastRead(false),
 	pTimer(nullptr),
-	pCurrentTask(nullptr)
+	pCurrentTask(nullptr),
+	pStartupTask(nullptr)
 {
 
 }
 
-void MasterScheduler::ScheduleLater(IMasterTask* pTask, const openpal::TimeDuration& delay)
+void MasterScheduler::Schedule(IMasterTask& task, const openpal::TimeDuration& delay)
 {	
-	
+	// TODO
 }
 
-void MasterScheduler::Schedule(IMasterTask* pTask)
-{	
-}
-
-void MasterScheduler::Demand(IMasterTask* pTask)
+void MasterScheduler::SetBlocking(IMasterTask& task, const openpal::TimeDuration& delay)
 {
-	
+	auto expiration = pExecutor->GetTime().Add(delay);
+	this->blockingTask.Set(TaskRecord(task, expiration));
+	this->CancelScheduleTimer();
+	this->StartTimer(expiration);
 }
 
-IMasterTask* MasterScheduler::Start()
+bool MasterScheduler::Demand(IMasterTask& task)
+{
+	// TODO
+	return false;
+}
+
+IMasterTask* MasterScheduler::Start(const MasterParams& params)
 {
 	modifiedSinceLastRead = false;
-	return FindTaskToStart();	 
+	auto pTask = FindTaskToStart(params);
+	this->pCurrentTask = pTask;
+	return pTask;
 }
 
-IMasterTask* MasterScheduler::FindTaskToStart()
+IMasterTask* MasterScheduler::FindTaskToStart(const MasterParams& params)
 {		
-	// TODO
-	return nullptr;
+	auto now = pExecutor->GetTime();	
+	if (blockingTask.IsSet())
+	{
+		auto record = blockingTask.Get();		
+		if (record.expiration.milliseconds < now.milliseconds)
+		{
+			blockingTask.Clear();
+			return record.pTask;
+		}
+		else
+		{
+			this->StartOrRestartTimer(record.expiration);
+			return nullptr;
+		}
+	}
+	else
+	{
+		// nothing blocking, so look at the startup sequence next
+		if (pStartupTask)
+		{
+			auto pTask = pStartupTask->Next(false, params, *(this->pStaticTasks));
+			if (pTask)
+			{
+				pStartupTask = pTask->Next(true, params, *(this->pStaticTasks));
+				return pTask;
+			}
+			else
+			{
+				pStartupTask = nullptr;
+				return nullptr;
+			}						
+		}
+		else
+		{
+			// TODO consider polls here
+			return nullptr;
+		}
+	}
 }
 
 void MasterScheduler::CheckForNotification()
@@ -110,6 +154,9 @@ void MasterScheduler::OnLowerLayerUp(const MasterParams& params)
 	if (!isOnline)
 	{
 		isOnline = true;
+		pStartupTask = &pStaticTasks->disableUnsol;
+
+
 		pCallback->OnPendingTask();
 	}	
 }
@@ -121,6 +168,7 @@ void MasterScheduler::OnLowerLayerDown()
 	if (isOnline)
 	{
 		isOnline = false;
+		blockingTask.Clear();
 				
 	}	
 }
@@ -133,13 +181,36 @@ void MasterScheduler::ReportFailure(const CommandErasure& action, CommandResult 
 
 void MasterScheduler::OnTimerExpiration()
 {
-	// TODO
+	pTimer = nullptr;
+	pCallback->OnPendingTask();
+}
+
+void MasterScheduler::StartOrRestartTimer(const openpal::MonotonicTimestamp& expiration)
+{
+	if (pTimer)
+	{
+		if (pTimer->ExpiresAt() > expiration)
+		{
+			this->CancelScheduleTimer();
+			this->StartTimer(expiration);
+		}
+	}
+	else
+	{
+		this->StartTimer(expiration);
+	}
 }
 
 void MasterScheduler::StartTimer(const openpal::TimeDuration& timeout)
 {
 	auto callback = [this](){ this->OnTimerExpiration(); };
 	pTimer = pExecutor->Start(timeout, Runnable::Bind(callback));
+}
+
+void MasterScheduler::StartTimer(const openpal::MonotonicTimestamp& expiration)
+{
+	auto callback = [this](){ this->OnTimerExpiration(); };
+	pTimer = pExecutor->Start(expiration, Runnable::Bind(callback));
 }
 
 

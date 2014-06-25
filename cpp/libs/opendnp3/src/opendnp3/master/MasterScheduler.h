@@ -52,18 +52,18 @@ public:
 
 	// ---------- Implement IMasterScheduler ----------- 
 	
-	virtual void ScheduleLater(IMasterTask* pTask, const openpal::TimeDuration& delay) override final;
+	virtual void Schedule(IMasterTask& task, const openpal::TimeDuration& delay) override final;
+
+	virtual void SetBlocking(IMasterTask& task, const openpal::TimeDuration& delay) override final;
 	
-	virtual void Schedule(IMasterTask* pTask) override final;
-	
-	virtual void Demand(IMasterTask* pTask) override final;
+	virtual bool Demand(IMasterTask& task) override final;
 
 	// ---------- other public functions ----------------
 
 	/**
 	* @return Task to start or nullptr if no tasks are available
 	*/
-	IMasterTask* Start();
+	IMasterTask* Start(const MasterParams& params);
 
 	/*
 	* Startup
@@ -97,15 +97,21 @@ public:
 
 private:	
 
-	IMasterTask* FindTaskToStart();
+	IMasterTask* FindTaskToStart(const MasterParams& params);
 
 	void CheckForNotification();
 
 	void ReportFailure(const CommandErasure& action, CommandResult result);	
+	
+	void StartOrRestartTimer(const openpal::MonotonicTimestamp& expiration);
 
 	void StartTimer(const openpal::TimeDuration& timeout);
 
-	void OnTimerExpiration();	
+	void StartTimer(const openpal::MonotonicTimestamp& expiration);
+
+	void OnTimerExpiration();
+
+	
 
 	bool CancelScheduleTimer();	
 
@@ -121,6 +127,7 @@ private:
 	bool modifiedSinceLastRead;
 	openpal::ITimer* pTimer;
 	IMasterTask* pCurrentTask;
+	IMasterTask* pStartupTask;
 	openpal::Settable<TaskRecord> blockingTask;
 	
 	

@@ -56,7 +56,7 @@ IMasterState* MasterStateIdle::OnStart(MasterContext* pContext)
 	}
 	else
 	{
-		auto pTask = pContext->scheduler.Start();
+		auto pTask = pContext->scheduler.Start(pContext->params);
 		
 		if (pTask)
 		{			

@@ -24,25 +24,25 @@
 
 #include <openpal/executor/MonotonicTimestamp.h>
 
-#include "IMasterTask.h"
-
 namespace opendnp3
 {
+
+class IMasterTask;
 
 class TaskRecord
 {
 	public:
 
-	struct TimeBasedOrdering
+	struct TimeLessThan
 	{
-		static bool IsLessThan(const TaskRecord& lhs, const TaskRecord& rhs);
+		static bool lt(const TaskRecord& lhs, const TaskRecord& rhs);
 	};
 
 	TaskRecord();
 
-	TaskRecord(IMasterTask* pTask_);
+	TaskRecord(IMasterTask& task);
 
-	TaskRecord(IMasterTask* pTask_, const openpal::MonotonicTimestamp& expiration_);
+	TaskRecord(IMasterTask& task, const openpal::MonotonicTimestamp& expiration_);
 
 	IMasterTask* pTask;
 	openpal::MonotonicTimestamp expiration;

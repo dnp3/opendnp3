@@ -48,12 +48,12 @@ openpal::TimeDuration PollTask::GetPeriod() const
 
 void PollTask::OnFailure(const MasterParams& params, IMasterScheduler& scheduler)
 {
-	scheduler.ScheduleLater(this, params.taskRetryPeriod);
+	scheduler.Schedule(*this, params.taskRetryPeriod);
 }
 
 void PollTask::OnSuccess(const MasterParams& params, IMasterScheduler& scheduler)
 {
-	scheduler.ScheduleLater(this, period);
+	scheduler.Schedule(*this, period);
 }
 
 } //end ns

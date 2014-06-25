@@ -27,8 +27,6 @@
 namespace opendnp3
 {
 
-class IMasterTask;
-
 class IScheduleCallback
 {
 	public:
@@ -36,25 +34,27 @@ class IScheduleCallback
 	virtual void OnPendingTask() = 0;
 };
 
+class IMasterTask;
+
 class IMasterScheduler
 {
 
 public:
 
 	/**
-	* Retry the task at a later time
+	* Schedule the task to run now or in the future
 	*/
-	virtual void ScheduleLater(IMasterTask* pTask, const openpal::TimeDuration& delay) = 0;
+	virtual void Schedule(IMasterTask& task, const openpal::TimeDuration& delay = openpal::TimeDuration::Min()) = 0;
+
+	/**
+	* Set the scheduler to block until the duration elapses and then run the task
+	*/
+	virtual void SetBlocking(IMasterTask& task, const openpal::TimeDuration& delay) = 0;
 
 	/*
-	* Run a task as soon as possible
+	* If the task is currently waiting, set it to run ASAP
 	*/
-	virtual void Schedule(IMasterTask* pTask) = 0;
-
-	/*
-	* If the task is currently waiting, force it to run immediately
-	*/
-	virtual void Demand(IMasterTask* pTask) = 0;
+	virtual bool Demand(IMasterTask& task) = 0;
 
 };
 

@@ -65,6 +65,7 @@ void SerialTimeSyncTask::BuildRequest(APDURequest& request, const MasterParams& 
 
 void SerialTimeSyncTask::OnTimeoutOrBadControlOctet(const MasterParams& params, IMasterScheduler& scheduler)
 {
+	// TODO - some kind of logging?
 	// don't reschedule. Seeing the NeedTime bit again will automatically re-activate the task
 }
 

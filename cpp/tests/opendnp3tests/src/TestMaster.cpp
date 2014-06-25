@@ -54,6 +54,7 @@ TEST_CASE(SUITE("IntegrityOnStartup"))
 	t.master.OnLowerLayerUp();
 
 	REQUIRE(t.exe.RunMany() > 0);
+
 	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
 }
 

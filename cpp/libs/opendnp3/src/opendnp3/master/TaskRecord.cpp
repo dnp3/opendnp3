@@ -26,7 +26,7 @@ using namespace openpal;
 namespace opendnp3
 {	
 
-bool TaskRecord::TimeBasedOrdering::IsLessThan(const TaskRecord& lhs, const TaskRecord& rhs)
+bool TaskRecord::TimeLessThan::lt(const TaskRecord& lhs, const TaskRecord& rhs)
 {
 	return lhs.expiration.milliseconds < rhs.expiration.milliseconds;
 }
@@ -36,12 +36,12 @@ TaskRecord::TaskRecord() : pTask(nullptr), expiration(MonotonicTimestamp::Max())
 
 }
 
-TaskRecord::TaskRecord(IMasterTask* pTask_) : pTask(pTask_), expiration(MonotonicTimestamp::Min())
+TaskRecord::TaskRecord(IMasterTask& task) : pTask(&task), expiration(MonotonicTimestamp::Min())
 {
 
 }
 
-TaskRecord::TaskRecord(IMasterTask* pTask_, const openpal::MonotonicTimestamp& expiration_) : pTask(pTask_), expiration(expiration_)
+TaskRecord::TaskRecord(IMasterTask& task, const openpal::MonotonicTimestamp& expiration_) : pTask(&task), expiration(expiration_)
 {
 
 }

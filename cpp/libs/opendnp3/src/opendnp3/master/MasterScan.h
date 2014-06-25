@@ -39,7 +39,7 @@ public:
 	MasterScan(openpal::IExecutor& executor, IMasterScheduler& scheduler, IMasterTask& task);
 
 	// Request that the scan be performed as soon as possible
-	void Demand();
+	bool Demand();
 
 	bool IsDefined() const;
 

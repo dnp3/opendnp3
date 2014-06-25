@@ -51,7 +51,7 @@ IMasterTask* EnableUnsolicitedTask::Next(bool skipCurrent, const MasterParams& p
 
 void EnableUnsolicitedTask::OnTimeoutOrBadControlOctet(const MasterParams& params, IMasterScheduler& scheduler)
 {
-	scheduler.ScheduleLater(this, params.taskRetryPeriod);
+	scheduler.SetBlocking(*this, params.taskRetryPeriod);
 }
 
 

@@ -61,7 +61,7 @@ IMasterTask* StartupIntegrityPoll::Next(bool skipCurrent, const MasterParams& pa
 	
 void StartupIntegrityPoll::OnFailure(const MasterParams& params, IMasterScheduler& scheduler)
 {
-	scheduler.ScheduleLater(this, params.taskRetryPeriod);
+	scheduler.SetBlocking(*this, params.taskRetryPeriod);
 }
 
 void StartupIntegrityPoll::OnSuccess(const MasterParams&, IMasterScheduler& scheduler)

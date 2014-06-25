@@ -42,7 +42,7 @@ void ClearRestartTask::BuildRequest(APDURequest& request, const MasterParams& pa
 void ClearRestartTask::OnTimeoutOrBadControlOctet(const MasterParams& params, IMasterScheduler& scheduler)
 {
 	// timeout or bad control octet
-	scheduler.ScheduleLater(this, params.taskRetryPeriod);
+	scheduler.Schedule(*this, params.taskRetryPeriod);
 }
 	
 TaskStatus ClearRestartTask::OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler)
