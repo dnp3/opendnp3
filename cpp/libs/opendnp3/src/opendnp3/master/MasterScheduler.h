@@ -37,12 +37,7 @@ namespace opendnp3
 {
 
 class MasterScheduler : public IMasterScheduler
-{	
-	enum class State
-	{
-		STARTUP,
-		READY
-	};
+{		
 
 public:
 
