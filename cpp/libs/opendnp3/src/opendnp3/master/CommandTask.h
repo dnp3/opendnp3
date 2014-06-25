@@ -47,20 +47,20 @@ public:
 	CommandTask(openpal::Logger* pLogger_);
 
 
-	virtual void SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback* pCallback) override final;
-	virtual void DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback* pCallback) override final;
+	virtual void SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback& callback) override final;
+	virtual void DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback& callback) override final;
 
-	virtual void SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback* pCallback) override final;
-	virtual void DirectOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback* pCallback) override final;
+	virtual void SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback& callback) override final;
+	virtual void DirectOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback& callback) override final;
 
-	virtual void SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback* pCallback) override final;
-	virtual void DirectOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback* pCallback) override final;
+	virtual void SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback& callback) override final;
+	virtual void DirectOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback& callback) override final;
 
-	virtual void SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback* pCallback) override final;
-	virtual void DirectOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback* pCallback) override final;
+	virtual void SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback& callback) override final;
+	virtual void DirectOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback& callback) override final;
 
-	virtual void SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback* pCallback) override final;
-	virtual void DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback* pCallback) override final;
+	virtual void SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback) override final;
+	virtual void DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback) override final;
 
 	virtual bool IsSequenced() const override final { return false; }
 	virtual char const* Name() const override final { return "Command Task"; }
@@ -81,9 +81,9 @@ private:
 	void LoadDirectOperate();
 
 	template <class T>
-	void Configure(CommandSequence<T>& sequence, const T& value, uint16_t index, ICommandCallback* pCallback_)
+	void Configure(CommandSequence<T>& sequence, const T& value, uint16_t index, ICommandCallback& callback)
 	{				
-		this->pCallback = pCallback_;
+		this->pCallback = &callback;
 		sequence.Configure(value, index);
 		pActiveSequence = &sequence;
 	}

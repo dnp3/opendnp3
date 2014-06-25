@@ -34,69 +34,70 @@ ConstantCommandProcessor::ConstantCommandProcessor(const CommandResponse& respon
 
 }
 
-void ConstantCommandProcessor::Respond(ICommandCallback* pCallback)
+void ConstantCommandProcessor::Respond(ICommandCallback& callback)
 {
 	CommandResponse cr(response);
 	if (pExecutor)
 	{
+		auto pCallback = &callback;
 		auto lambda = [cr, pCallback]() { pCallback->OnComplete(cr); };
 		pExecutor->Post(Runnable::Bind(lambda));
 	}
 	else
 	{
-		pCallback->OnComplete(cr);
+		callback.OnComplete(cr);
 	}	
 }
 
 
-void ConstantCommandProcessor::SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback* pCallback)
+void ConstantCommandProcessor::SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback& callback)
 {
-	this->Respond(pCallback);
+	this->Respond(callback);
 }
 
-void ConstantCommandProcessor::DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback* pCallback)
+void ConstantCommandProcessor::DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback& callback)
 {
-	this->Respond(pCallback);
+	this->Respond(callback);
 }
 
-void ConstantCommandProcessor::SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback* pCallback)
+void ConstantCommandProcessor::SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback& callback)
 {
-	this->Respond(pCallback);
+	this->Respond(callback);
 }
 
-void ConstantCommandProcessor::DirectOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback* pCallback)
+void ConstantCommandProcessor::DirectOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback& callback)
 {
-	this->Respond(pCallback);
+	this->Respond(callback);
 }
 
-void ConstantCommandProcessor::SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback* pCallback)
+void ConstantCommandProcessor::SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback& callback)
 {
-	this->Respond(pCallback);
+	this->Respond(callback);
 }
 
-void ConstantCommandProcessor::DirectOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback* pCallback)
+void ConstantCommandProcessor::DirectOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback& callback)
 {
-	this->Respond(pCallback);
+	this->Respond(callback);
 }
 
-void ConstantCommandProcessor::SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback* pCallback)
+void ConstantCommandProcessor::SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback& callback)
 {
-	this->Respond(pCallback);
+	this->Respond(callback);
 }
 
-void ConstantCommandProcessor::DirectOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback* pCallback)
+void ConstantCommandProcessor::DirectOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback& callback)
 {
-	this->Respond(pCallback);
+	this->Respond(callback);
 }
 
-void ConstantCommandProcessor::SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback* pCallback)
+void ConstantCommandProcessor::SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback)
 {
-	this->Respond(pCallback);
+	this->Respond(callback);
 }
 
-void ConstantCommandProcessor::DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback* pCallback)
+void ConstantCommandProcessor::DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback)
 {
-	this->Respond(pCallback);
+	this->Respond(callback);
 }
 
 }

@@ -40,7 +40,7 @@ class MasterScheduler : public IMasterScheduler
 
 public:
 
-	typedef openpal::Function1<ICommandProcessor*> CommandErasure;
+	typedef openpal::Function1<ICommandProcessor&> CommandErasure;
 
 	MasterScheduler(	openpal::Logger* pLogger,
 						ISOEHandler* pSOEHandler,
@@ -107,14 +107,15 @@ private:
 
 	bool CancelScheduleTimer();
 	
-	MasterTasks tasks;
+	MasterTasks staticTasks;
 			
 	bool isOnline;	
 	bool modifiedSinceLastRead;
 
+	openpal::ITimer* pTimer;
 	openpal::IExecutor* pExecutor;
 	IScheduleCallback* pCallback;
-	openpal::ITimer* pTimer;	
+	
 	
 };
 

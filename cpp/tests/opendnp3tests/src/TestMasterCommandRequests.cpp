@@ -49,7 +49,7 @@ TEST_CASE(SUITE("ControlExecutionClosedState"))
 
 	for(int i = 0; i < 10; ++i)
 	{		
-		pCmdProcessor->SelectAndOperate(bo, 1, &callback);
+		pCmdProcessor->SelectAndOperate(bo, 1, callback);
 		t.exe.RunMany();
 		REQUIRE(1 == callback.responses.size());
 		REQUIRE((CommandResponse(CommandResult::NO_COMMS) == callback.responses.front()));
@@ -66,7 +66,7 @@ TEST_CASE(SUITE("SelectAndOperate"))
 	ControlRelayOutputBlock bo(ControlCode::PULSE);
 
 	MockCommandCallback callback;
-	t.master.GetCommandProcessor().SelectAndOperate(bo, 1, &callback);
+	t.master.GetCommandProcessor().SelectAndOperate(bo, 1, callback);
 	t.exe.RunMany();
 
 	// Group 12 Var1, 1 byte count/index, index = 1, time on/off = 1000, CommandStatus::SUCCESS
@@ -96,7 +96,7 @@ TEST_CASE(SUITE("ControlExecutionSelectTimeout"))
 	t.master.OnLowerLayerUp();
 
 	MockCommandCallback callback;
-	t.master.GetCommandProcessor().SelectAndOperate(ControlRelayOutputBlock(ControlCode::PULSE), 1, &callback);
+	t.master.GetCommandProcessor().SelectAndOperate(ControlRelayOutputBlock(ControlCode::PULSE), 1, callback);
 	t.exe.RunMany();
 
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 03 " + crob); // SELECT
@@ -116,7 +116,7 @@ TEST_CASE(SUITE("ControlExecutionSelectLayerDown"))
 	t.master.OnLowerLayerUp();
 
 	MockCommandCallback callback;
-	t.master.GetCommandProcessor().SelectAndOperate(ControlRelayOutputBlock(ControlCode::PULSE), 1, &callback);
+	t.master.GetCommandProcessor().SelectAndOperate(ControlRelayOutputBlock(ControlCode::PULSE), 1, callback);
 	t.exe.RunMany();
 
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 03 " + crob); // SELECT
@@ -135,7 +135,7 @@ TEST_CASE(SUITE("ControlExecutionSelectErrorResponse"))
 	t.master.OnLowerLayerUp();
 
 	MockCommandCallback callback;
-	t.master.GetCommandProcessor().SelectAndOperate(ControlRelayOutputBlock(ControlCode::PULSE), 1, &callback);
+	t.master.GetCommandProcessor().SelectAndOperate(ControlRelayOutputBlock(ControlCode::PULSE), 1, callback);
 	t.exe.RunMany();
 	t.master.OnSendResult(true);
 	t.SendToMaster("C0 81 00 00 0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 04"); // not supported
@@ -153,7 +153,7 @@ TEST_CASE(SUITE("ControlExecutionSelectPartialResponse"))
 	t.master.OnLowerLayerUp();
 
 	MockCommandCallback callback;
-	t.master.GetCommandProcessor().SelectAndOperate(ControlRelayOutputBlock(ControlCode::PULSE), 1, &callback);
+	t.master.GetCommandProcessor().SelectAndOperate(ControlRelayOutputBlock(ControlCode::PULSE), 1, callback);
 	t.exe.RunMany();
 	t.master.OnSendResult(true);
 
@@ -182,7 +182,7 @@ TEST_CASE(SUITE("DeferredControlExecution"))
 	//issue a command while the master is waiting for a response from the outstation
 	ControlRelayOutputBlock bo(ControlCode::PULSE);
 	MockCommandCallback callback;
-	t.master.GetCommandProcessor().SelectAndOperate(bo, 1, &callback);
+	t.master.GetCommandProcessor().SelectAndOperate(bo, 1, callback);
 	REQUIRE(t.exe.RunMany() > 0);
 
 	t.SendToMaster("C0 81 00 00"); //now master gets response to integrity
@@ -202,7 +202,7 @@ TEST_CASE(SUITE("CloseWhileWaitingForCommandResponse"))
 	AnalogOutputInt16 ao(100);
 	MockCommandCallback callback;
 
-	t.master.GetCommandProcessor().DirectOperate(ao, 1, &callback);
+	t.master.GetCommandProcessor().DirectOperate(ao, 1, callback);
 	REQUIRE(t.exe.RunMany() > 0);
 
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 05 29 02 28 01 00 01 00 64 00 00"); // DIRECT OPERATE
@@ -221,7 +221,7 @@ void TestAnalogOutputExecution(const std::string& hex, const T& command)
 
 	MockCommandCallback callback;
 
-	t.master.GetCommandProcessor().SelectAndOperate(command, 1, &callback);
+	t.master.GetCommandProcessor().SelectAndOperate(command, 1, callback);
 	REQUIRE(t.exe.RunMany() > 0);
 
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 03 " + hex);

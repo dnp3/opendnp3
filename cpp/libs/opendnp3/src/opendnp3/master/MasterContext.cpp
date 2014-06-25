@@ -130,7 +130,7 @@ void MasterContext::OnPendingTask()
 	this->PostCheckForTask();
 }
 
-void MasterContext::QueueCommandAction(const Function1<ICommandProcessor*>& action)
+void MasterContext::QueueCommandAction(const Function1<ICommandProcessor&>& action)
 {
 	if (isOnline)
 	{
@@ -139,7 +139,7 @@ void MasterContext::QueueCommandAction(const Function1<ICommandProcessor*>& acti
 	else
 	{
 		ConstantCommandProcessor processor(CommandResponse(CommandResult::NO_COMMS), nullptr);
-		action.Apply(&processor);
+		action.Apply(processor);
 	}
 }
 
@@ -302,54 +302,54 @@ bool MasterContext::CanConfirmResponse(TaskStatus status)
 	}
 }
 
-void MasterContext::SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback* pCallback)
+void MasterContext::SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback& callback)
 {	
-	this->SelectAndOperateT(command, index, pCallback);
+	this->SelectAndOperateT(command, index, callback);
 }
 
-void MasterContext::DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback* pCallback)
+void MasterContext::DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback& callback)
 {
-	this->DirectOperateT(command, index, pCallback);
+	this->DirectOperateT(command, index, callback);
 }
 
-void MasterContext::SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback* pCallback)
+void MasterContext::SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback& callback)
 {
-	this->SelectAndOperateT(command, index, pCallback);
+	this->SelectAndOperateT(command, index, callback);
 }
 
-void MasterContext::DirectOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback* pCallback)
+void MasterContext::DirectOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback& callback)
 {
-	this->DirectOperateT(command, index, pCallback);
+	this->DirectOperateT(command, index, callback);
 }
 
-void MasterContext::SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback* pCallback)
+void MasterContext::SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback& callback)
 {
-	this->SelectAndOperateT(command, index, pCallback);
+	this->SelectAndOperateT(command, index, callback);
 }
 
-void MasterContext::DirectOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback* pCallback)
+void MasterContext::DirectOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback& callback)
 {
-	this->DirectOperateT(command, index, pCallback);
+	this->DirectOperateT(command, index, callback);
 }
 
-void MasterContext::SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback* pCallback)
+void MasterContext::SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback& callback)
 {
-	this->SelectAndOperateT(command, index, pCallback);
+	this->SelectAndOperateT(command, index, callback);
 }
 
-void MasterContext::DirectOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback* pCallback)
+void MasterContext::DirectOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback& callback)
 {
-	this->DirectOperateT(command, index, pCallback);
+	this->DirectOperateT(command, index, callback);
 }
 
-void MasterContext::SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback* pCallback)
+void MasterContext::SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback)
 {
-	this->SelectAndOperateT(command, index, pCallback);
+	this->SelectAndOperateT(command, index, callback);
 }
 
-void MasterContext::DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback* pCallback)
+void MasterContext::DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback)
 {
-	this->DirectOperateT(command, index, pCallback);
+	this->DirectOperateT(command, index, callback);
 }
 
 }

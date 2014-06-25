@@ -116,7 +116,7 @@ int main(int argc, char* argv[])
 					// This is an example of synchronously doing a control operation
 					ControlRelayOutputBlock crob(ControlCode::LATCH_ON);
 					BlockingCommandCallback handler;
-					pCommandProcessor->SelectAndOperate(crob, 0, &handler);
+					pCommandProcessor->SelectAndOperate(crob, 0, handler);
 					auto response = handler.WaitForResult();
 					std::cout << "Result: " << CommandResultToString(response.GetResult()) <<
 								 " Status: " << CommandStatusToString(response.GetStatus()) << std::endl;

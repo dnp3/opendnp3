@@ -85,20 +85,20 @@ class MasterContext : public ICommandProcessor, private IScheduleCallback
 
 	// ------- command events ----------
 
-	virtual void SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback* pCallback) override final;
-	virtual void DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback* pCallback) override final;
+	virtual void SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback& callback) override final;
+	virtual void DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback& callback) override final;
 
-	virtual void SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback* pCallback) override final;
-	virtual void DirectOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback* pCallback) override final;
+	virtual void SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback& callback) override final;
+	virtual void DirectOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback& callback) override final;
 
-	virtual void SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback* pCallback) override final;
-	virtual void DirectOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback* pCallback) override final;
+	virtual void SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback& callback) override final;
+	virtual void DirectOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback& callback) override final;
 
-	virtual void SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback* pCallback) override final;
-	virtual void DirectOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback* pCallback) override final;
+	virtual void SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback& callback) override final;
+	virtual void DirectOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback& callback) override final;
 
-	virtual void SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback* pCallback) override final;
-	virtual void DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback* pCallback) override final;
+	virtual void SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback) override final;
+	virtual void DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback) override final;
 
 	// ----- Helpers accessible by the state objects -----
 	void StartTask(IMasterTask* pTask);
@@ -113,7 +113,7 @@ class MasterContext : public ICommandProcessor, private IScheduleCallback
 	// callback from the scheduler that a task is ready to run	
 	virtual void OnPendingTask() override final;
 
-	void QueueCommandAction(const openpal::Function1<ICommandProcessor*>& action);
+	void QueueCommandAction(const openpal::Function1<ICommandProcessor&>& action);
 
 	void OnResponseTimeout();
 
@@ -126,28 +126,32 @@ class MasterContext : public ICommandProcessor, private IScheduleCallback
 	void Transmit(const openpal::ReadOnlyBuffer& output);	
 
 	template <class T>
-	void SelectAndOperateT(const T& command, uint16_t index, ICommandCallback* pCallback);
+	void SelectAndOperateT(const T& command, uint16_t index, ICommandCallback& callback);
 
 	template <class T>
-	void DirectOperateT(const T& command, uint16_t index, ICommandCallback* pCallback);
+	void DirectOperateT(const T& command, uint16_t index, ICommandCallback& callback);
 };
 
 template <class T>
-void MasterContext::SelectAndOperateT(const T& command, uint16_t index, ICommandCallback* pCallback)
+void MasterContext::SelectAndOperateT(const T& command, uint16_t index, ICommandCallback& callback)
 {
-	auto process = [command, index, pCallback](ICommandProcessor* pProcessor) {
-		pProcessor->SelectAndOperate(command, index, pCallback);
+	auto pCallback = &callback;
+	auto process = [command, index, pCallback](ICommandProcessor& processor) 
+	{
+		processor.SelectAndOperate(command, index, *pCallback);
 	};
-	this->QueueCommandAction(openpal::Function1<ICommandProcessor*>::Bind(process));
+	this->QueueCommandAction(openpal::Function1<ICommandProcessor&>::Bind(process));
 }
 
 template <class T>
-void MasterContext::DirectOperateT(const T& command, uint16_t index, ICommandCallback* pCallback)
+void MasterContext::DirectOperateT(const T& command, uint16_t index, ICommandCallback& callback)
 {
-	auto process = [command, index, pCallback](ICommandProcessor* pProcessor) {
-		pProcessor->DirectOperate(command, index, pCallback);
+	auto pCallback = &callback;
+	auto process = [command, index, pCallback](ICommandProcessor& processor) 
+	{
+		processor.DirectOperate(command, index, *pCallback);
 	};
-	this->QueueCommandAction(openpal::Function1<ICommandProcessor*>::Bind(process));
+	this->QueueCommandAction(openpal::Function1<ICommandProcessor&>::Bind(process));
 }
 
 }

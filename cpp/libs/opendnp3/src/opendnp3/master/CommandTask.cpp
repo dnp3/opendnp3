@@ -70,64 +70,64 @@ void CommandTask::LoadDirectOperate()
 	functionCodes.Enqueue(FunctionCode::DIRECT_OPERATE);
 }
 
-void CommandTask::SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback* pCallback)
+void CommandTask::SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback& callback)
 {
 	this->LoadSelectAndOperate();
-	this->Configure(crobSeq, command, index, pCallback);
+	this->Configure(crobSeq, command, index, callback);
 }
 
-void CommandTask::SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback* pCallback)
+void CommandTask::SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback& callback)
 {
 	this->LoadSelectAndOperate();
-	this->Configure(analogInt16Seq, command, index, pCallback);
+	this->Configure(analogInt16Seq, command, index, callback);
 }
 
-void CommandTask::SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback* pCallback)
+void CommandTask::SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback& callback)
 {
 	this->LoadSelectAndOperate();
-	this->Configure(analogInt32Seq, command, index, pCallback);
+	this->Configure(analogInt32Seq, command, index, callback);
 }
 
-void CommandTask::SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback* pCallback)
+void CommandTask::SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback& callback)
 {
 	this->LoadSelectAndOperate();
-	this->Configure(analogFloat32Seq, command, index, pCallback);
+	this->Configure(analogFloat32Seq, command, index, callback);
 }
 
-void CommandTask::SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback* pCallback)
+void CommandTask::SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback)
 {
 	this->LoadSelectAndOperate();
-	this->Configure(analogDouble64Seq, command, index, pCallback);
+	this->Configure(analogDouble64Seq, command, index, callback);
 }
 
-void CommandTask::DirectOperate(const ControlRelayOutputBlock& command, uint16_t index,  ICommandCallback* pCallback)
+void CommandTask::DirectOperate(const ControlRelayOutputBlock& command, uint16_t index,  ICommandCallback& callback)
 {
 	this->LoadDirectOperate();
-	this->Configure(crobSeq, command, index, pCallback);
+	this->Configure(crobSeq, command, index, callback);
 }
 
-void CommandTask::DirectOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback* pCallback)
+void CommandTask::DirectOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback& callback)
 {
 	this->LoadDirectOperate();
-	this->Configure(analogInt16Seq, command, index, pCallback);
+	this->Configure(analogInt16Seq, command, index, callback);
 }
 
-void CommandTask::DirectOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback* pCallback)
+void CommandTask::DirectOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback& callback)
 {
 	this->LoadDirectOperate();
-	this->Configure(analogInt32Seq, command, index, pCallback);
+	this->Configure(analogInt32Seq, command, index, callback);
 }
 
-void CommandTask::DirectOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback* pCallback)
+void CommandTask::DirectOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback& callback)
 {
 	this->LoadDirectOperate();
-	this->Configure(analogFloat32Seq, command, index, pCallback);
+	this->Configure(analogFloat32Seq, command, index, callback);
 }
 
-void CommandTask::DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback* pCallback)
+void CommandTask::DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback)
 {
 	this->LoadDirectOperate();
-	this->Configure(analogDouble64Seq, command, index, pCallback);
+	this->Configure(analogDouble64Seq, command, index, callback);
 }
 
 void CommandTask::BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq)

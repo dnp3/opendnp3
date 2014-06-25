@@ -41,7 +41,7 @@ public:
 	* @param index index of the command
 	* @param pCallback callback that will be invoked upon completion or failure
 	*/
-	virtual void SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback* pCallback) = 0;
+	virtual void SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback& callback) = 0;
 
 	/**
 	* Direct operate a ControlRelayOutputBlock
@@ -49,7 +49,7 @@ public:
 	* @param index index of the command
 	* @param aCallback callback that will be invoked upon completion or failure
 	*/
-	virtual void DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback* pCallback) = 0;
+	virtual void DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback& callback) = 0;
 
 	/**
 	* Select and operate a 16 bit analog output
@@ -57,7 +57,7 @@ public:
 	* @param index index of the command
 	* @param aCallback callback that will be invoked upon completion or failure
 	*/
-	virtual void SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback* pCallback) = 0;
+	virtual void SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback& callback) = 0;
 
 	/**
 	* Direct operate a 16 bit analog output
@@ -65,7 +65,7 @@ public:
 	* @param index index of the command
 	* @param aCallback callback that will be invoked upon completion or failure
 	*/
-	virtual void DirectOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback* pCallback) = 0;
+	virtual void DirectOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback& callback) = 0;
 
 	/**
 	* Select and operate a 32 bit analog output
@@ -73,7 +73,7 @@ public:
 	* @param index index of the command
 	* @param aCallback callback that will be invoked upon completion or failure
 	*/
-	virtual void SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback* pCallback) = 0;
+	virtual void SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback& callback) = 0;
 
 	/**
 	* Direct operate a 32 bit analog output
@@ -81,7 +81,7 @@ public:
 	* @param index index of the command
 	* @param aCallback callback that will be invoked upon completion or failure
 	*/
-	virtual void DirectOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback* pCallback) = 0;
+	virtual void DirectOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback& callback) = 0;
 
 	/**
 	* Select and operate a single precision analog output
@@ -89,7 +89,7 @@ public:
 	* @param index index of the command
 	* @param aCallback callback that will be invoked upon completion or failure
 	*/
-	virtual void SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback* pCallback) = 0;
+	virtual void SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback& callback) = 0;
 
 	/**
 	* Direct operate a single precision analog output
@@ -97,7 +97,7 @@ public:
 	* @param index index of the command
 	* @param aCallback callback that will be invoked upon completion or failure
 	*/
-	virtual void DirectOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback* pCallback) = 0;
+	virtual void DirectOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback& callback) = 0;
 
 	/**
 	* Select and operate a double precision analog output
@@ -105,7 +105,7 @@ public:
 	* @param index index of the command
 	* @param aCallback callback that will be invoked upon completion or failure
 	*/
-	virtual void SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback* pCallback) = 0;
+	virtual void SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback) = 0;
 
 	/**
 	* Direct operate a double precision analog output
@@ -113,7 +113,7 @@ public:
 	* @param index index of the command
 	* @param aCallback callback that will be invoked upon completion or failure
 	*/
-	virtual void DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback* pCallback) = 0;
+	virtual void DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback) = 0;
 };
 
 }

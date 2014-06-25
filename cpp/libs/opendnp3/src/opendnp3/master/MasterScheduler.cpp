@@ -37,12 +37,13 @@ MasterScheduler::MasterScheduler(	openpal::Logger* pLogger,
 									openpal::IExecutor& executor,
 									IScheduleCallback& callback
 									) :
-	tasks(pLogger, pSOEHandler, pTimeSource),	
+
+	staticTasks(pLogger, pSOEHandler, pTimeSource),
 	isOnline(false),	
 	modifiedSinceLastRead(false),
+	pTimer(nullptr),
 	pExecutor(&executor),
-	pCallback(&callback),
-	pTimer(nullptr)
+	pCallback(&callback)	
 {
 
 }
@@ -91,27 +92,11 @@ void MasterScheduler::CheckForNotification()
 void MasterScheduler::ScheduleCommand(const CommandErasure& action)
 {
 	// TODO
+	this->ReportFailure(action, CommandResult::NO_COMMS);
 }
 
 PollTask* MasterScheduler::AddPollTask(const PollTask& pt)
-{
-	/* TODO
-	auto pNode = pollTasks.AddAndGetPointer(pt);
-	if (pNode)
-	{		
-		if (isOnline)
-		{
-			this->ScheduleLater(&pNode->value, pt.GetPeriod());
-		}
-
-		return &pNode->value;
-	}
-	else
-	{
-		return nullptr;
-	}
-	*/
-
+{	
 	return nullptr;
 }
 
@@ -131,8 +116,7 @@ void MasterScheduler::OnLowerLayerUp(const MasterParams& params)
 	if (!isOnline)
 	{
 		isOnline = true;
-
-		// TODO
+		pCallback->OnPendingTask();
 	}	
 }
 
@@ -143,15 +127,14 @@ void MasterScheduler::OnLowerLayerDown()
 	if (isOnline)
 	{
 		isOnline = false;
-
-		// TODO
+				
 	}	
 }
 
 void MasterScheduler::ReportFailure(const CommandErasure& action, CommandResult result)
 {
 	ConstantCommandProcessor processor(CommandResponse::NoResponse(result), pExecutor);
-	action.Apply(&processor);
+	action.Apply(processor);
 }
 
 void MasterScheduler::OnTimerExpiration()

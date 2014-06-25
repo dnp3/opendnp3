@@ -64,7 +64,7 @@ private:
 		auto future = gcnew Future<CommandResponse>();
 		auto cmd = Conversions::ConvertCommand(command);
 		auto pCallback = new CommandCallbackAdapter(future, true);		
-		mpProxy->SelectAndOperate(cmd, index, pCallback);
+		mpProxy->SelectAndOperate(cmd, index, *pCallback);
 		return future;
 	}
 
@@ -74,7 +74,7 @@ private:
 		auto future = gcnew Future<CommandResponse>();
 		auto cmd = Conversions::ConvertCommand(command);
 		auto pCallback = new CommandCallbackAdapter(future, true);
-		mpProxy->DirectOperate(cmd, index, pCallback);
+		mpProxy->DirectOperate(cmd, index, *pCallback);
 		return future;
 	}
 
