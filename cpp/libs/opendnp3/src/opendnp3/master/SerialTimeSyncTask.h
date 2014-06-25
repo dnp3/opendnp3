@@ -41,8 +41,6 @@ public:
 
 	virtual char const* Name() const override final { return "serial (non-LAN) time sync"; }
 
-	virtual TaskPriority Priority() const { return TaskPriority::TIME_SYNC; }
-
 	virtual void BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq) override final;
 
 	virtual void OnTimeoutOrBadControlOctet(const MasterParams& params, IMasterScheduler& scheduler) override final;

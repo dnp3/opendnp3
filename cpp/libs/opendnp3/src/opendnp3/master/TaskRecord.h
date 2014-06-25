@@ -19,43 +19,34 @@
  * to you under the terms of the License.
  */
 
-#ifndef __I_MASTER_SCHEDULER_H_
-#define __I_MASTER_SCHEDULER_H_
+#ifndef __TASK_RECORD_H_
+#define __TASK_RECORD_H_
 
-#include <openpal/executor/TimeDuration.h>
+#include <openpal/executor/MonotonicTimestamp.h>
+
+#include "IMasterTask.h"
 
 namespace opendnp3
 {
 
-class IMasterTask;
-
-class IScheduleCallback
+class TaskRecord
 {
 	public:
 
-	virtual void OnPendingTask() = 0;
-};
+	struct TimeBasedOrdering
+	{
+		static bool IsLessThan(const TaskRecord& lhs, const TaskRecord& rhs);
+	};
 
-class IMasterScheduler
-{
+	TaskRecord();
 
-public:
+	TaskRecord(IMasterTask* pTask_);
 
-	/**
-	* Retry the task at a later time
-	*/
-	virtual void ScheduleLater(IMasterTask* pTask, const openpal::TimeDuration& delay) = 0;
+	TaskRecord(IMasterTask* pTask_, const openpal::MonotonicTimestamp& expiration_);
 
-	/*
-	* Run a task as soon as possible
-	*/
-	virtual void Schedule(IMasterTask* pTask) = 0;
-
-	/*
-	* If the task is currently waiting, force it to run immediately
-	*/
-	virtual void Demand(IMasterTask* pTask) = 0;
-
+	IMasterTask* pTask;
+	openpal::MonotonicTimestamp expiration;
+	
 };
 
 }

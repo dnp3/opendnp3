@@ -38,9 +38,7 @@ public:
 
 	virtual bool IsSequenced() const override final { return true; }
 
-	virtual char const* Name() const override final { return "Clear Restart IIN"; }
-
-	virtual TaskPriority Priority() const override final { return TaskPriority::CLEAR_RESTART_IIN; }
+	virtual char const* Name() const override final { return "Clear Restart IIN"; }	
 
 	virtual void BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq) override final;	
 		

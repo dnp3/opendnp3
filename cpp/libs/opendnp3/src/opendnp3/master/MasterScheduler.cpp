@@ -31,14 +31,6 @@ using namespace openpal;
 namespace opendnp3
 {
 
-MasterScheduler::DelayedTask::DelayedTask() : expiration(MonotonicTimestamp::Max()), pTask(nullptr)
-{}
-
-MasterScheduler::DelayedTask::DelayedTask(const openpal::MonotonicTimestamp& expiration_, IMasterTask* pTask_) :
-	expiration(expiration_),
-	pTask(pTask_)
-{}
-
 MasterScheduler::MasterScheduler(	openpal::Logger* pLogger, 
 									ISOEHandler* pSOEHandler,
 									IUTCTimeSource* pTimeSource,
@@ -46,8 +38,7 @@ MasterScheduler::MasterScheduler(	openpal::Logger* pLogger,
 									IScheduleCallback& callback
 									) :
 	tasks(pLogger, pSOEHandler, pTimeSource),	
-	isOnline(false),
-	isStartupComplete(false),
+	isOnline(false),	
 	modifiedSinceLastRead(false),
 	pExecutor(&executor),
 	pCallback(&callback),
@@ -93,7 +84,7 @@ void MasterScheduler::CheckForNotification()
 	if (!modifiedSinceLastRead)
 	{
 		modifiedSinceLastRead = true;
-		// TODO 
+		pCallback->OnPendingTask();
 	}
 }
 

@@ -40,8 +40,6 @@ public:
 
 	virtual char const* Name() const override final { return "Disable Unsolicited"; }
 
-	virtual TaskPriority Priority() const override final { return TaskPriority::DISABLE_UNSOL; }
-
 	virtual void BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq) override final;
 		
 protected:

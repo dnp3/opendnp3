@@ -40,7 +40,7 @@ void EnableUnsolicitedTask::BuildRequest(APDURequest& request, const MasterParam
 
 void EnableUnsolicitedTask::OnIINFailure(const MasterParams& params, IMasterScheduler& scheduler)
 {
-	state = TaskState::FAILED;
+	
 }
 
 void EnableUnsolicitedTask::OnTimeoutOrBadControlOctet(const MasterParams& params, IMasterScheduler& scheduler)

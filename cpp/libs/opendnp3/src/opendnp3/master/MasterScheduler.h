@@ -22,7 +22,6 @@
 #ifndef __MASTER_SCHEDULER_H_
 #define __MASTER_SCHEDULER_H_
 
-#include <openpal/container/StaticPriorityQueue.h>
 #include <openpal/executor/Function1.h>
 #include <openpal/executor/IExecutor.h>
 
@@ -43,11 +42,11 @@ public:
 
 	typedef openpal::Function1<ICommandProcessor*> CommandErasure;
 
-	MasterScheduler( openpal::Logger* pLogger, 
-					ISOEHandler* pSOEHandler,
-					openpal::IUTCTimeSource* pTimeSource, 
-					openpal::IExecutor& executor,
-					IScheduleCallback& callback);
+	MasterScheduler(	openpal::Logger* pLogger,
+						ISOEHandler* pSOEHandler,
+						openpal::IUTCTimeSource* pTimeSource, 
+						openpal::IExecutor& executor,
+						IScheduleCallback& callback);
 
 	// ---------- Implement IMasterScheduler ----------- 
 	
@@ -98,35 +97,9 @@ private:
 
 	IMasterTask* FindTaskToStart();
 
-	void CheckForNotification();
+	void CheckForNotification();	
 
-	void ResetTimerAndQueues();
-
-	bool IsStartupComplete();
-
-	void SchedulePollTasks();
-
-	void ReportFailure(const CommandErasure& action, CommandResult result);
-
-	class DelayedTask
-	{
-	public:
-
-		DelayedTask();
-
-		DelayedTask(const openpal::MonotonicTimestamp& expiration_, IMasterTask* pTask_);
-
-		openpal::MonotonicTimestamp expiration;
-		IMasterTask* pTask;
-	};
-
-	struct TimeBasedOrdering
-	{
-		static bool IsLessThan(const DelayedTask& lhs, const DelayedTask& rhs)
-		{
-			return lhs.expiration.milliseconds < rhs.expiration.milliseconds;
-		}
-	};
+	void ReportFailure(const CommandErasure& action, CommandResult result);	
 
 	void StartTimer(const openpal::TimeDuration& timeout);
 
@@ -136,8 +109,7 @@ private:
 	
 	MasterTasks tasks;
 			
-	bool isOnline;
-	bool isStartupComplete;
+	bool isOnline;	
 	bool modifiedSinceLastRead;
 
 	openpal::IExecutor* pExecutor;

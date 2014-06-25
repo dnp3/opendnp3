@@ -33,47 +33,13 @@
 namespace opendnp3
 {
 
-enum class TaskState
-{
-	IDLE,
-	PENDING,
-	SCHEDULED,
-	RUNNING,
-	FAILED
-};
-
 /**
  * A generic interface for defining master request/response style tasks
  */
 class IMasterTask
 {
-	friend class MasterScheduler;
-	friend class MasterTasks;
-
+	
 public:
-
-	IMasterTask();
-
-	TaskState GetState() const { return state; }	
-
-	enum class TaskPriority : int
-	{		
-		COMMAND,
-		DISABLE_UNSOL,
-		CLEAR_RESTART_IIN,
-		TIME_SYNC,
-		STARTUP_INTEGRITY,
-		ENABLE_UNSOL,
-		POLL				
-	};
-
-	struct Ordering
-	{
-		static bool IsLessThan(IMasterTask* lhs, IMasterTask* rhs)
-		{
-			return lhs->Priority() < rhs->Priority();
-		}
-	};
 
 
 	/**
@@ -86,12 +52,7 @@ public:
 	/**
 	* Flag that indicates if sequencing matters for lower priority tasks
 	*/
-	virtual bool IsSequenced() const = 0;
-
-	/**
-	* The priority of the task where higher numbers have higher proiority
-	*/
-	virtual TaskPriority Priority() const = 0;
+	virtual bool IsSequenced() const = 0;	
 
 	/**
 	 * Build a request APDU.
@@ -108,31 +69,15 @@ public:
 	/**
 	 * Called when a response times out
 	 */
-	void OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler);
+	virtual void OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler) = 0;
 
 	/**
 	* Called when the layer closes while the task is executing
 	*/
-	void OnLowerLayerClose();
-
-	protected:
-
-	/**
-	* Called when the layer closes. Overridable to perform cleanup.
-	*/
-	virtual void _OnLowerLayerClose() {}
-
-	virtual void _OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler) = 0;
-
-
-	void SetState(TaskState state_) { state = state_; }
-
-	TaskState state;
-
+	virtual void OnLowerLayerClose() {}
 
 };
 
-} //end ns
-
+}
 
 #endif

@@ -34,22 +34,19 @@ SingleResponseTask::SingleResponseTask(openpal::Logger* pLogger_) : pLogger(pLog
 TaskStatus SingleResponseTask::OnResponse(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler)
 {
 	if (header.control.FIR && header.control.FIN)
-	{
-		this->SetState(TaskState::IDLE);
+	{		
 		return this->OnSingleResponse(header, objects, params, scheduler);
 	}
 	else
 	{
-		SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Ignoring unexpected response FIR/FIN not set");
-		this->SetState(TaskState::IDLE);
+		SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Ignoring unexpected response FIR/FIN not set");		
 		this->OnTimeoutOrBadControlOctet(params, scheduler);
 		return TaskStatus::FAIL;
 	}
 }
 
-void SingleResponseTask::_OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler)
-{
-	this->SetState(TaskState::IDLE);
+void SingleResponseTask::OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler)
+{	
 	this->OnTimeoutOrBadControlOctet(params, scheduler);
 }
 

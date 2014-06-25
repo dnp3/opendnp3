@@ -64,17 +64,14 @@ public:
 
 	virtual bool IsSequenced() const override final { return false; }
 	virtual char const* Name() const override final { return "Command Task"; }
-	virtual TaskPriority Priority() const override final { return TaskPriority::COMMAND; }
-
+	
 	virtual void BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq) override final;
 
 	virtual TaskStatus OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler) override final;
-	
-protected:
 
-	virtual void _OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler) override final;
+	virtual void OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler) override final;
 
-	virtual void _OnLowerLayerClose() override final;
+	virtual void OnLowerLayerClose() override final;
 
 private:
 

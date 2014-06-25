@@ -40,9 +40,9 @@ public:
 	
 	virtual TaskStatus OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler) override final;
 	
-protected:
+	virtual void OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler) override final;
 
-	virtual void _OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler) override final;
+protected:
 
 	TaskStatus ProcessMeasurements(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler);
 

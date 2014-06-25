@@ -83,8 +83,7 @@ TaskStatus SerialTimeSyncTask::OnSingleResponse(const APDUResponseHeader& respon
 				auto sendReceieveTime = now.msSinceEpoch - start.msSinceEpoch;
 
 				// The later shouldn't happen, but could cause a negative delay which would result in a weird time setting				
-				delay = (sendReceieveTime >= rtuTurnAroundTime) ? (sendReceieveTime - rtuTurnAroundTime) / 2 : 0;
-				this->SetState(TaskState::RUNNING);
+				delay = (sendReceieveTime >= rtuTurnAroundTime) ? (sendReceieveTime - rtuTurnAroundTime) / 2 : 0;				
 				return TaskStatus::REPEAT;
 			}
 			else

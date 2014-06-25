@@ -39,7 +39,7 @@ void DisableUnsolicitedTask::BuildRequest(APDURequest& request, const MasterPara
 
 void DisableUnsolicitedTask::OnIINFailure(const MasterParams& params, IMasterScheduler& scheduler)
 {
-	state = TaskState::FAILED;
+	
 }
 
 void DisableUnsolicitedTask::OnTimeoutOrBadControlOctet(const MasterParams& params, IMasterScheduler& scheduler)

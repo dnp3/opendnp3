@@ -19,24 +19,31 @@
  * to you under the terms of the License.
  */
 
-#include "IMasterTask.h"
+#include "TaskRecord.h"
+
+using namespace openpal;
 
 namespace opendnp3
+{	
+
+bool TaskRecord::TimeBasedOrdering::IsLessThan(const TaskRecord& lhs, const TaskRecord& rhs)
+{
+	return lhs.expiration.milliseconds < rhs.expiration.milliseconds;
+}
+	
+TaskRecord::TaskRecord() : pTask(nullptr), expiration(MonotonicTimestamp::Max())
 {
 
-IMasterTask::IMasterTask() : state(TaskState::IDLE) {}
-
-void IMasterTask::OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler)
-{
-	this->SetState(TaskState::IDLE);
-	this->_OnResponseTimeout(params, scheduler);
 }
 
-void IMasterTask::OnLowerLayerClose()
+TaskRecord::TaskRecord(IMasterTask* pTask_) : pTask(pTask_), expiration(MonotonicTimestamp::Min())
 {
-	this->SetState(TaskState::IDLE);
-	this->_OnLowerLayerClose();
+
 }
 
-} //end ns
+TaskRecord::TaskRecord(IMasterTask* pTask_, const openpal::MonotonicTimestamp& expiration_) : pTask(pTask_), expiration(expiration_)
+{
 
+}
+
+}

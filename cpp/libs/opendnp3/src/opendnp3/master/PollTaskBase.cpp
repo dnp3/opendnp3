@@ -45,7 +45,6 @@ TaskStatus PollTaskBase::OnResponse(const APDUResponseHeader& header, const open
 		if (rxCount > 0)
 		{
 			SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Ignoring unexpected FIR frame");
-			this->SetState(TaskState::IDLE);
 			this->OnFailure(params, scheduler);
 			return TaskStatus::FAIL;
 		}
@@ -62,15 +61,14 @@ TaskStatus PollTaskBase::OnResponse(const APDUResponseHeader& header, const open
 		}
 		else
 		{	
-			SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Ignoring unexpected non-FIR frame");
-			this->SetState(TaskState::IDLE);
+			SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Ignoring unexpected non-FIR frame");			
 			this->OnFailure(params, scheduler);			
 			return TaskStatus::FAIL;
 		}
 	}
 }
 
-void PollTaskBase::_OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler)
+void PollTaskBase::OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler)
 {	
 	this->OnFailure(params, scheduler);
 }
@@ -82,8 +80,7 @@ TaskStatus PollTaskBase::ProcessMeasurements(const APDUResponseHeader& header, c
 	if (MeasurementHandler::ProcessMeasurements(objects, pLogger, pSOEHandler))
 	{	
 		if (header.control.FIN)
-		{			
-			this->SetState(TaskState::IDLE);
+		{						
 			this->OnSuccess(params, scheduler);
 			return TaskStatus::SUCCESS;
 		}
@@ -93,8 +90,7 @@ TaskStatus PollTaskBase::ProcessMeasurements(const APDUResponseHeader& header, c
 		}		
 	}
 	else
-	{	
-		this->SetState(TaskState::IDLE);
+	{			
 		this->OnFailure(params, scheduler);
 		return TaskStatus::FAIL;
 	}

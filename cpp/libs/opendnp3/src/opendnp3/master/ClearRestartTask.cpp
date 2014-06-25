@@ -49,8 +49,6 @@ TaskStatus ClearRestartTask::OnSingleResponse(const APDUResponseHeader& response
 {
 	if (response.IIN.IsSet(IINBit::DEVICE_RESTART))
 	{
-		state = TaskState::FAILED;
-
 		// we tried to clear the restart, but the device responded with the restart still set
 		SIMPLE_LOGGER_BLOCK(pLogger, flags::ERR, "Clear restart task failed to clear restart bit");		
 		return TaskStatus::FAIL;
