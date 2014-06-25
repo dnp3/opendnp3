@@ -23,6 +23,7 @@
 
 #include "opendnp3/app/APDUBuilders.h"
 
+#include "MasterTasks.h"
 
 namespace opendnp3
 {
@@ -37,9 +38,16 @@ void DisableUnsolicitedTask::BuildRequest(APDURequest& request, const MasterPara
 	build::DisableUnsolicited(request, seq);
 }
 
-void DisableUnsolicitedTask::OnIINFailure(const MasterParams& params, IMasterScheduler& scheduler)
+IMasterTask* DisableUnsolicitedTask::Next(bool skipCurrent, const MasterParams& params, MasterTasks& tasks)
 {
-	
+	if (!skipCurrent && params.disableUnsolOnStartup)
+	{
+		return this;
+	}
+	else
+	{
+		return tasks.startupIntegrity.Next(false, params, tasks);
+	}
 }
 
 void DisableUnsolicitedTask::OnTimeoutOrBadControlOctet(const MasterParams& params, IMasterScheduler& scheduler)

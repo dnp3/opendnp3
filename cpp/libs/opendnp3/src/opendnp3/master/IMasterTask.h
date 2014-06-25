@@ -33,6 +33,8 @@
 namespace opendnp3
 {
 
+class MasterTasks;
+
 /**
  * A generic interface for defining master request/response style tasks
  */
@@ -45,7 +47,18 @@ public:
 	*
 	* @return	the name of the task
 	*/
-	virtual char const* Name() const = 0;	
+	virtual char const* Name() const = 0;
+
+	/**	
+	* Return the current task if enabled by configuration or the next in the chain if it is not
+    *
+	* @param skipCurrent Don't return the current task, only consider the next one in the chain
+	* @param params Master configuration
+	* @tasks Master All the tasks available for sequenced operations
+	*
+	* @return the next task in startup mode or nullptr
+	*/
+	virtual IMasterTask* Next(bool skipCurrent, const MasterParams& params, MasterTasks& tasks) { return nullptr; }
 
 	/**
 	 * Build a request APDU.

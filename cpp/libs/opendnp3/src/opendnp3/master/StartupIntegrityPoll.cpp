@@ -21,6 +21,7 @@
 
 #include "StartupIntegrityPoll.h"
 
+#include "MasterTasks.h"
 
 #include "opendnp3/app/APDUParser.h"
 #include "opendnp3/app/APDUBuilders.h"
@@ -44,6 +45,18 @@ void StartupIntegrityPoll::BuildRequest(APDURequest& request, const MasterParams
 {
 	rxCount = 0;
 	build::ReadIntegrity(request, params.startupIntergrityClassMask, seq);
+}
+
+IMasterTask* StartupIntegrityPoll::Next(bool skipCurrent, const MasterParams& params, MasterTasks& tasks)
+{
+	if (!skipCurrent && params.startupIntergrityClassMask)
+	{
+		return this;
+	}
+	else
+	{
+		return tasks.enableUnsol.Next(false, params, tasks);
+	}
 }
 	
 void StartupIntegrityPoll::OnFailure(const MasterParams& params, IMasterScheduler& scheduler)

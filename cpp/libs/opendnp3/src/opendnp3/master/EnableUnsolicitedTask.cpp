@@ -20,8 +20,10 @@
  */
 
 #include "EnableUnsolicitedTask.h"
+#include "MasterTasks.h"
 
 #include "opendnp3/app/APDUBuilders.h"
+
 
 
 namespace opendnp3
@@ -38,9 +40,16 @@ void EnableUnsolicitedTask::BuildRequest(APDURequest& request, const MasterParam
 	build::EnableUnsolicited(request, params.unsolClassMask, seq);
 }
 
-void EnableUnsolicitedTask::OnIINFailure(const MasterParams& params, IMasterScheduler& scheduler)
+IMasterTask* EnableUnsolicitedTask::Next(bool skipCurrent, const MasterParams& params, MasterTasks& tasks)
 {
-	
+	if (!skipCurrent && params.unsolClassMask)
+	{
+		return this;
+	}
+	else
+	{
+		return nullptr;
+	}
 }
 
 void EnableUnsolicitedTask::OnTimeoutOrBadControlOctet(const MasterParams& params, IMasterScheduler& scheduler)
