@@ -58,7 +58,7 @@ public:
 	*
 	* @return the next task in startup mode or nullptr
 	*/
-	virtual IMasterTask* Next(bool skipCurrent, const MasterParams& params, MasterTasks& tasks) { return nullptr; }
+	IMasterTask* Next(bool skipCurrent, const MasterParams& params, MasterTasks& tasks);
 
 	/**
 	 * Build a request APDU.
@@ -82,6 +82,11 @@ public:
 	*/
 	virtual void OnLowerLayerClose() {}
 
+protected:
+
+	virtual bool Enabled(const MasterParams& params) { return false; }
+
+	virtual IMasterTask* Next(MasterTasks& tasks) { return nullptr; }
 };
 
 }

@@ -19,29 +19,31 @@
  * to you under the terms of the License.
  */
 
-#include "EnableUnsolicitedTask.h"
-#include "MasterTasks.h"
-
-#include "opendnp3/app/APDUBuilders.h"
+#include "IMasterTask.h"
 
 namespace opendnp3
 {
 
-EnableUnsolicitedTask::EnableUnsolicitedTask(openpal::Logger* pLogger_) : NullResponseTask(pLogger_)	
+IMasterTask* IMasterTask::Next(bool skipCurrent, const MasterParams& params, MasterTasks& tasks)
 {
+	if (this->Enabled(params) && !skipCurrent)
+	{
+		return this;
+	}
+	else
+	{
+		auto pNext = this->Next(tasks);
+		if (pNext)
+		{
+			return pNext->Next(false, params, tasks);
+		}
+		else
+		{
+			return nullptr;
+		}
+	}
+}
 
 }
 
-void EnableUnsolicitedTask::BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq)
-{
-	build::EnableUnsolicited(request, params.unsolClassMask, seq);
-}
-
-void EnableUnsolicitedTask::OnTimeoutOrBadControlOctet(const MasterParams& params, IMasterScheduler& scheduler)
-{
-	scheduler.SetBlocking(*this, params.taskRetryPeriod);
-}
-
-
-} //end ns
 

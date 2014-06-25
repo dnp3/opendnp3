@@ -257,6 +257,7 @@ void MasterScheduler::OnLowerLayerDown()
 		blockingTask.Clear();
 		pCurrentTask = nullptr;
 		periodicTasks.Clear();
+		this->CancelScheduleTimer();
 	}	
 }
 

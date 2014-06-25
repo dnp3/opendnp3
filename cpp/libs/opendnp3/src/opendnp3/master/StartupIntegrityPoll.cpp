@@ -47,16 +47,14 @@ void StartupIntegrityPoll::BuildRequest(APDURequest& request, const MasterParams
 	build::ReadIntegrity(request, params.startupIntergrityClassMask, seq);
 }
 
-IMasterTask* StartupIntegrityPoll::Next(bool skipCurrent, const MasterParams& params, MasterTasks& tasks)
+IMasterTask* StartupIntegrityPoll::Next(MasterTasks& tasks)
 {
-	if (!skipCurrent && params.startupIntergrityClassMask)
-	{
-		return this;
-	}
-	else
-	{
-		return tasks.enableUnsol.Next(false, params, tasks);
-	}
+	return &tasks.enableUnsol;
+}
+
+bool StartupIntegrityPoll::Enabled(const MasterParams& params)
+{
+	return params.startupIntergrityClassMask != 0;
 }
 	
 void StartupIntegrityPoll::OnFailure(const MasterParams& params, IMasterScheduler& scheduler)

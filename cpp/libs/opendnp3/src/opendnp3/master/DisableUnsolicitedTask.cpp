@@ -38,16 +38,14 @@ void DisableUnsolicitedTask::BuildRequest(APDURequest& request, const MasterPara
 	build::DisableUnsolicited(request, seq);
 }
 
-IMasterTask* DisableUnsolicitedTask::Next(bool skipCurrent, const MasterParams& params, MasterTasks& tasks)
+IMasterTask* DisableUnsolicitedTask::Next(MasterTasks& tasks)
 {
-	if (!skipCurrent && params.disableUnsolOnStartup)
-	{
-		return this;
-	}
-	else
-	{
-		return tasks.startupIntegrity.Next(false, params, tasks);
-	}
+	return &tasks.startupIntegrity;
+}
+
+bool DisableUnsolicitedTask::Enabled(const MasterParams& params)
+{
+	return params.disableUnsolOnStartup;
 }
 
 void DisableUnsolicitedTask::OnTimeoutOrBadControlOctet(const MasterParams& params, IMasterScheduler& scheduler)
