@@ -50,7 +50,12 @@ MasterScheduler::MasterScheduler(	openpal::Logger* pLogger,
 
 void MasterScheduler::Schedule(IMasterTask& task, const openpal::TimeDuration& delay)
 {	
-	// TODO
+	auto expiration = pExecutor->GetTime().Add(delay);
+	this->periodicTasks.Add(TaskRecord(task, expiration));
+	if (blockingTask.IsEmpty() && !this->pCurrentTask)
+	{
+		this->StartOrRestartTimer(expiration);
+	}	
 }
 
 void MasterScheduler::SetBlocking(IMasterTask& task, const openpal::TimeDuration& delay)
@@ -78,10 +83,11 @@ IMasterTask* MasterScheduler::Start(const MasterParams& params)
 IMasterTask* MasterScheduler::FindTaskToStart(const MasterParams& params)
 {		
 	auto now = pExecutor->GetTime();	
+
 	if (blockingTask.IsSet())
 	{
 		auto record = blockingTask.Get();		
-		if (record.expiration.milliseconds < now.milliseconds)
+		if (record.expiration.milliseconds <= now.milliseconds)
 		{
 			blockingTask.Clear();
 			return record.pTask;
@@ -95,26 +101,84 @@ IMasterTask* MasterScheduler::FindTaskToStart(const MasterParams& params)
 	else
 	{
 		// nothing blocking, so look at the startup sequence next
-		if (pStartupTask)
+		auto startup = GetStartupTask(params);		
+		if (startup)
 		{
-			auto pTask = pStartupTask->Next(false, params, *(this->pStaticTasks));
-			if (pTask)
-			{
-				pStartupTask = pTask->Next(true, params, *(this->pStaticTasks));
-				return pTask;
-			}
-			else
-			{
-				pStartupTask = nullptr;
-				return nullptr;
-			}						
+			return startup;
 		}
 		else
 		{
-			// TODO consider polls here
+			// consider other options
+			return GetPeriodicTask(params, now);
+		}
+	}
+}
+
+IMasterTask* MasterScheduler::GetStartupTask(const MasterParams& params)
+{
+	if (pStartupTask)
+	{
+		auto pTask = pStartupTask->Next(false, params, *(this->pStaticTasks));
+		if (pTask)
+		{
+			pStartupTask = pTask->Next(true, params, *(this->pStaticTasks));
+			return pTask;
+		}
+		else
+		{
+			pStartupTask = nullptr;
 			return nullptr;
 		}
 	}
+	else
+	{
+		return nullptr;
+	}
+}
+
+IMasterTask* MasterScheduler::GetPeriodicTask(const MasterParams& params, const openpal::MonotonicTimestamp& now)
+{
+	auto pNode = this->GetEarliestExpirationTime();
+	if (pNode)
+	{
+		if (pNode->value.expiration.milliseconds <= now.milliseconds)
+		{
+			periodicTasks.Adapter().Remove(pNode);
+			return pNode->value.pTask;
+		}
+		else
+		{
+			this->StartOrRestartTimer(pNode->value.expiration);
+			return nullptr;
+		}
+	}
+	else
+	{
+		return nullptr;
+	}
+}
+
+ListNode<TaskRecord>* MasterScheduler::GetEarliestExpirationTime()
+{
+	openpal::ListNode<TaskRecord>* pNode = nullptr;
+	// TODO - turn this min function into a reusable algo.
+	auto iterator = periodicTasks.Adapter().Iterate();
+	while (iterator.HasNext())
+	{
+		auto pCurrent = iterator.Next();
+		if (pNode)
+		{
+			if (pCurrent->value.expiration < pNode->value.expiration)
+			{
+				pNode = pCurrent;
+			}
+		}
+		else
+		{
+			pNode = pCurrent;
+		}
+	}
+	return pNode;
 }
 
 void MasterScheduler::CheckForNotification()
@@ -133,9 +197,27 @@ void MasterScheduler::ScheduleCommand(const CommandErasure& action)
 }
 
 PollTask* MasterScheduler::AddPollTask(const PollTask& pt)
-{	
-	// TODO
-	return nullptr;
+{		
+	if (periodicTasks.IsFull())
+	{
+		return nullptr;
+	}
+	else
+	{		
+		auto result = pollTasks.AddAndGetPointer(pt);
+		if (result)
+		{
+			if (isOnline)
+			{
+				this->Schedule(result->value, pt.GetPeriod());
+			}			
+			return &result->value;
+		}
+		else
+		{
+			return nullptr;
+		}		
+	}	
 }
 
 
@@ -155,8 +237,12 @@ void MasterScheduler::OnLowerLayerUp(const MasterParams& params)
 	{
 		isOnline = true;
 		pStartupTask = &pStaticTasks->disableUnsol;
-
-
+		auto now = pExecutor->GetTime();
+		auto addToPeriodic = [this, now](PollTask& pt) 
+		{ 
+			this->periodicTasks.Add(TaskRecord(pt, now.Add(pt.GetPeriod()))); 
+		};
+		pollTasks.Foreach(addToPeriodic);
 		pCallback->OnPendingTask();
 	}	
 }
@@ -169,7 +255,8 @@ void MasterScheduler::OnLowerLayerDown()
 	{
 		isOnline = false;
 		blockingTask.Clear();
-				
+		pCurrentTask = nullptr;
+		periodicTasks.Clear();
 	}	
 }
 

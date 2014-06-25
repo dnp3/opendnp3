@@ -122,7 +122,9 @@ public:
 			adapter.Remove(pNode);
 		}
 		return pNode;
-	}
+	}	
+
+	LinkedListAdapter<ValueType, IndexType>& Adapter() { return adapter; }
 
 private:	
 

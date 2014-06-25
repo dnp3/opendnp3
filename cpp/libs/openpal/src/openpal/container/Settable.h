@@ -38,6 +38,11 @@ public:
 		return valueIsSet;
 	}
 
+	bool IsEmpty() const
+	{
+		return !valueIsSet;
+	}
+
 	T Get() const
 	{
 		return value;

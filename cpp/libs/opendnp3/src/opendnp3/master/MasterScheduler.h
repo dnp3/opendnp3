@@ -25,6 +25,7 @@
 #include <openpal/executor/Function1.h>
 #include <openpal/executor/IExecutor.h>
 #include <openpal/container/Settable.h>
+#include <openpal/container/StaticLinkedList.h>
 
 #include "opendnp3/master/MasterTasks.h"
 #include "opendnp3/master/PollTask.h"
@@ -97,7 +98,13 @@ public:
 
 private:	
 
-	IMasterTask* FindTaskToStart(const MasterParams& params);
+	IMasterTask* FindTaskToStart(const MasterParams& params);	
+
+	IMasterTask* GetStartupTask(const MasterParams& params);
+
+	IMasterTask* GetPeriodicTask(const MasterParams& params, const openpal::MonotonicTimestamp& now);
+
+	openpal::ListNode<TaskRecord>* GetEarliestExpirationTime();
 
 	void CheckForNotification();
 
@@ -129,7 +136,10 @@ private:
 	IMasterTask* pCurrentTask;
 	IMasterTask* pStartupTask;
 	openpal::Settable<TaskRecord> blockingTask;
-	
+
+	openpal::StaticLinkedList<TaskRecord, uint16_t, sizes::MAX_MASTER_POLL_TASKS> periodicTasks;
+
+	openpal::StaticLinkedList<PollTask, uint16_t, sizes::MAX_MASTER_POLL_TASKS> pollTasks;
 	
 };
 

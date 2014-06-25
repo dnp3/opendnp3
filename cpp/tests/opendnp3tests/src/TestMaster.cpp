@@ -76,29 +76,6 @@ TEST_CASE(SUITE("SolicitedResponseWithData"))
 	REQUIRE((Binary(true, BQ_ONLINE) == t.meas.GetBinary(2)));
 }
 
-TEST_CASE(SUITE("IntegrityPollCanRepeat"))
-{	
-	MasterTestObject t(NoStartupTasks());
-	t.master.OnLowerLayerUp();
-
-	auto scan = t.master.AddClassScan(~0, TimeDuration::Seconds(10));	
-
-	t.exe.AdvanceTime(TimeDuration::Seconds(9));
-	REQUIRE(t.exe.RunMany() == 0);
-	t.exe.AdvanceTime(TimeDuration::Seconds(1));
-	REQUIRE(t.exe.RunMany() > 0);
-	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
-	t.master.OnSendResult(true);
-	t.SendToMaster(hex::EmptyResponse(0));
-
-	// 2nd poll
-	REQUIRE(t.exe.NumPendingTimers() == 1);
-	REQUIRE(t.exe.NextTimerExpiration().milliseconds == 20000);
-	t.exe.AdvanceTime(TimeDuration::Seconds(10));
-	REQUIRE(t.exe.RunMany() > 0);
-	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(1));
-}
-
 TEST_CASE(SUITE("UnsolDisableEnableOnStartup"))
 {
 	MasterParams params;
@@ -156,7 +133,8 @@ TEST_CASE(SUITE("SolicitedResponseTimeout"))
 	MasterTestObject t(NoStartupTasks());
 	auto scan = t.master.AddClassScan(ALL_CLASSES, TimeDuration::Seconds(5));
 	t.master.OnLowerLayerUp();
-
+	
+	t.exe.RunMany();
 	REQUIRE(t.exe.AdvanceToNextTimer());
 	t.exe.RunMany();
 
@@ -171,18 +149,48 @@ TEST_CASE(SUITE("SolicitedResponseTimeout"))
 	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(1));
 }
 
+TEST_CASE(SUITE("ClassScanCanRepeat"))
+{
+	MasterTestObject t(NoStartupTasks());
+	t.master.OnLowerLayerUp();
+	
+	t.exe.RunMany();
+
+	auto scan = t.master.AddClassScan(~0, TimeDuration::Seconds(10));
+	
+	t.exe.AdvanceTime(TimeDuration::Seconds(9));
+	REQUIRE(t.exe.RunMany() == 0);
+	t.exe.AdvanceTime(TimeDuration::Seconds(1));
+
+	REQUIRE(t.exe.RunMany() > 0);
+
+	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
+	t.master.OnSendResult(true);
+	t.SendToMaster(hex::EmptyResponse(0));
+
+	// 2nd poll
+	REQUIRE(t.exe.NumPendingTimers() == 1);
+	REQUIRE(t.exe.NextTimerExpiration().milliseconds == 20000);
+	t.exe.AdvanceTime(TimeDuration::Seconds(10));
+	REQUIRE(t.exe.RunMany() > 0);
+	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(1));
+}
+
 TEST_CASE(SUITE("SolicitedResponseLayerDown"))
 {
 	MasterTestObject t(NoStartupTasks());
 	auto scan = t.master.AddClassScan(ALL_CLASSES, TimeDuration::Seconds(5));
 	t.master.OnLowerLayerUp();	
+	
+	t.exe.RunMany();
 
 	REQUIRE(t.exe.AdvanceToNextTimer());
 	REQUIRE(t.exe.RunMany() > 0);
 	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
 	t.master.OnLowerLayerDown();
 
-	t.master.OnLowerLayerUp();	
+	t.master.OnLowerLayerUp();
+	t.exe.RunMany();
 
 	REQUIRE(t.exe.AdvanceToNextTimer());
 	REQUIRE(t.exe.RunMany() > 0);
@@ -217,6 +225,9 @@ TEST_CASE(SUITE("EventPoll"))
 	auto class3 = t.master.AddClassScan(CLASS_3, TimeDuration::Milliseconds(20));
 
 	t.master.OnLowerLayerUp();		
+	t.exe.RunMany();
+
+	REQUIRE(t.lower.PopWriteAsHex() == "");
 	
 	REQUIRE(t.exe.AdvanceToNextTimer());
 	REQUIRE(t.exe.RunMany() > 0);
@@ -242,7 +253,7 @@ TEST_CASE(SUITE("EventPoll"))
 TEST_CASE(SUITE("ParsesOctetStringResponseWithFiveCharacters"))
 {	
 	MasterTestObject t(NoStartupTasks());	
-	t.master.OnLowerLayerUp();	
+	t.master.OnLowerLayerUp();
 
 	// Group 111 (0x6F) Variation (length), 1 byte count / 1 byte index (4), count of 1, "hello" == [0x68, 0x65, 0x6C, 0x6C, 0x6F]
 	t.SendToMaster("D0 82 00 00 6F 05 17 01 04 68 65 6C 6C 6F");	
@@ -254,7 +265,9 @@ TEST_CASE(SUITE("ParsesOctetStringResponseSizeOfOne"))
 {			
 	MasterTestObject t(NoStartupTasks());
 	t.master.AddClassScan(~0, TimeDuration::Seconds(1));
-	t.master.OnLowerLayerUp();	
+	t.master.OnLowerLayerUp();
+
+	t.exe.RunMany();
 
 	REQUIRE(t.exe.AdvanceToNextTimer());
 	REQUIRE(t.exe.RunMany() > 0);
