@@ -58,10 +58,9 @@ MasterContext::MasterContext(
 	pActiveTask(nullptr),
 	pState(&MasterStateIdle::Instance()),
 	pResponseTimer(nullptr),
-	scheduler(&logger, pSOEHandler_, pTimeSource, executor)		
+	scheduler(&logger, pSOEHandler_, pTimeSource, executor, *this)		
 {
-	auto callback = [this](){ PostCheckForTask(); };
-	scheduler.SetExpirationHandler(Runnable::Bind(callback));
+	
 }
 
 bool MasterContext::OnLayerUp()
@@ -124,6 +123,11 @@ void MasterContext::StartTask(IMasterTask* pTask)
 	pTask->BuildRequest(request, params, solSeq);
 	this->StartResponseTimer();
 	this->Transmit(request.ToReadOnly());
+}
+
+void MasterContext::OnPendingTask()
+{
+	this->PostCheckForTask();
 }
 
 void MasterContext::QueueCommandAction(const Function1<ICommandProcessor*>& action)

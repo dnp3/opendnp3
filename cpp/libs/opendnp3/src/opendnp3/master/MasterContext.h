@@ -35,7 +35,7 @@
 namespace opendnp3
 {
 
-class MasterContext : public ICommandProcessor
+class MasterContext : public ICommandProcessor, private IScheduleCallback
 {
 	public:	
 
@@ -108,7 +108,10 @@ class MasterContext : public ICommandProcessor
 
 	static bool CanConfirmResponse(TaskStatus status);
 
-	private:	
+	private:
+	
+	// callback from the scheduler that a task is ready to run	
+	virtual void OnPendingTask() override final;
 
 	void QueueCommandAction(const openpal::Function1<ICommandProcessor*>& action);
 

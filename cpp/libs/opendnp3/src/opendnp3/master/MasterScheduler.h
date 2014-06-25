@@ -43,9 +43,13 @@ public:
 
 	typedef openpal::Function1<ICommandProcessor*> CommandErasure;
 
-	MasterScheduler(openpal::Logger* pLogger, ISOEHandler* pSOEHandler, openpal::IUTCTimeSource* pTimeSource, openpal::IExecutor& executor);
+	MasterScheduler( openpal::Logger* pLogger, 
+					ISOEHandler* pSOEHandler,
+					openpal::IUTCTimeSource* pTimeSource, 
+					openpal::IExecutor& executor,
+					IScheduleCallback& callback);
 
-	// ---------- Implement IMasterScheduler ------------
+	// ---------- Implement IMasterScheduler ----------- 
 	
 	virtual void ScheduleLater(IMasterTask* pTask, const openpal::TimeDuration& delay) override final;
 	
@@ -68,12 +72,7 @@ public:
 	/**
 	* Cleanup all existing tasks & cancel any timers
 	*/
-	void OnLowerLayerDown();
-
-	/**
-	* Set the action that will be called when a scheduled task is ready to run
-	*/
-	void SetExpirationHandler(const openpal::Runnable& runnable);
+	void OnLowerLayerDown();	
 
 	/*
 	* Schedule a command to run
@@ -133,28 +132,18 @@ private:
 
 	void OnTimerExpiration();	
 
-	bool CancelAnyTimer();
+	bool CancelScheduleTimer();
 	
 	MasterTasks tasks;
 			
 	bool isOnline;
 	bool isStartupComplete;
 	bool modifiedSinceLastRead;
+
 	openpal::IExecutor* pExecutor;
-	openpal::ITimer* pTimer;
-	openpal::Runnable expirationHandler;
-
-	/// Tasks that are scheduled to execute ASAP
-	openpal::StaticPriorityQueue<IMasterTask*, uint16_t, sizes::MAX_MASTER_TASKS, IMasterTask::Ordering> pendingQueue;
+	IScheduleCallback* pCallback;
+	openpal::ITimer* pTimer;	
 	
-	/// Tasks that are scheduled to execute sometime in the future
-	openpal::StaticPriorityQueue<DelayedTask, uint16_t, sizes::MAX_MASTER_TASKS, TimeBasedOrdering> scheduledQueue;	
-	
-	/// All pending command actions
-	openpal::StaticQueue<CommandErasure, uint8_t, sizes::MAX_COMMAND_QUEUE_SIZE> commandActions;
-
-	/// All poll tasks that have been configured
-	openpal::StaticLinkedList<PollTask, uint8_t, sizes::MAX_MASTER_POLL_TASKS> pollTasks;
 };
 
 }

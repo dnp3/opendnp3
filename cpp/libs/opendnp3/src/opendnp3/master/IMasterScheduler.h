@@ -29,6 +29,11 @@ namespace opendnp3
 
 class IMasterTask;
 
+class IScheduleCallback
+{
+	virtual void OnPendingTask() = 0;
+};
+
 class IMasterScheduler
 {
 
@@ -48,7 +53,6 @@ public:
 	* If the task is currently waiting, force it to run immediately
 	*/
 	virtual void Demand(IMasterTask* pTask) = 0;
-
 
 };
 

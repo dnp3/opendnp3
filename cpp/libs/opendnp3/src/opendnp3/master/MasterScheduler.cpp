@@ -39,12 +39,18 @@ MasterScheduler::DelayedTask::DelayedTask(const openpal::MonotonicTimestamp& exp
 	pTask(pTask_)
 {}
 
-MasterScheduler::MasterScheduler(openpal::Logger* pLogger, ISOEHandler* pSOEHandler, IUTCTimeSource* pTimeSource, openpal::IExecutor& executor) :	
+MasterScheduler::MasterScheduler(	openpal::Logger* pLogger, 
+									ISOEHandler* pSOEHandler,
+									IUTCTimeSource* pTimeSource,
+									openpal::IExecutor& executor,
+									IScheduleCallback& callback
+									) :
 	tasks(pLogger, pSOEHandler, pTimeSource),	
 	isOnline(false),
 	isStartupComplete(false),
 	modifiedSinceLastRead(false),
 	pExecutor(&executor),
+	pCallback(&callback),
 	pTimer(nullptr)
 {
 
@@ -52,25 +58,7 @@ MasterScheduler::MasterScheduler(openpal::Logger* pLogger, ISOEHandler* pSOEHand
 
 void MasterScheduler::ScheduleLater(IMasterTask* pTask, const openpal::TimeDuration& delay)
 {	
-	if (pTask->GetState() == TaskState::IDLE)
-	{
-		auto expiration = pExecutor->GetTime().Add(delay);
-		scheduledQueue.Enqueue(DelayedTask(expiration, pTask));
-		pTask->SetState(TaskState::SCHEDULED);
-
-		if (pTimer)
-		{
-			if (expiration < pTimer->ExpiresAt())
-			{
-				this->CancelAnyTimer();
-				this->StartTimer(delay);
-			}
-		}
-		else
-		{
-			this->StartTimer(delay);
-		}
-	}	
+	
 }
 
 void MasterScheduler::StartTimer(const openpal::TimeDuration& timeout)
@@ -81,73 +69,23 @@ void MasterScheduler::StartTimer(const openpal::TimeDuration& timeout)
 
 void MasterScheduler::Schedule(IMasterTask* pTask)
 {	
-	if (pTask->GetState() != TaskState::RUNNING)
-	{		
-		this->pendingQueue.Enqueue(pTask);
-		pTask->SetState(TaskState::SCHEDULED);
-		this->CheckForNotification();
-	}	
 }
 
 void MasterScheduler::Demand(IMasterTask* pTask)
 {
-	auto equals = [pTask](const DelayedTask& dt) { return dt.pTask == pTask; };	
-	if (scheduledQueue.RemoveFirst(equals))
-	{
-		this->Schedule(pTask);
-	}
+	
 }
 
 IMasterTask* MasterScheduler::Start()
 {
 	modifiedSinceLastRead = false;
-	auto pTask = FindTaskToStart();
-	if (pTask)
-	{
-		pTask->SetState(TaskState::RUNNING);
-	}
-	return pTask;
+	return FindTaskToStart();	 
 }
 
 IMasterTask* MasterScheduler::FindTaskToStart()
 {		
-	if (commandActions.IsNotEmpty())
-	{		
-		// configure the command task		
-		commandActions.Pop()->Apply(&tasks.commandTask);
-		return &tasks.commandTask;
-	}
-	else
-	{		
-		if (pendingQueue.IsEmpty())
-		{			
-			return nullptr;			
-		}
-		else
-		{
-			auto pFront = pendingQueue.Peek();
-			
-			// Are there any sequenced tasks scheduled with priority >= pFront?
-			auto match = [pFront](const DelayedTask& dt) { return dt.pTask->IsSequenced() && dt.pTask->Priority() <= pFront->Priority(); };
-
-			return scheduledQueue.Contains(match) ? nullptr : pendingQueue.Pop();			
-		}		
-	}
-}
-
-void MasterScheduler::ResetTimerAndQueues()
-{	
-	this->CancelAnyTimer();
-
-	while (pendingQueue.IsNotEmpty())
-	{
-		pendingQueue.Pop()->SetState(TaskState::IDLE);
-	}
-
-	while (scheduledQueue.IsNotEmpty())
-	{
-		scheduledQueue.Pop().pTask->SetState(TaskState::IDLE);
-	}	
+	// TODO
+	return nullptr;
 }
 
 void MasterScheduler::CheckForNotification()
@@ -155,30 +93,18 @@ void MasterScheduler::CheckForNotification()
 	if (!modifiedSinceLastRead)
 	{
 		modifiedSinceLastRead = true;
-		expirationHandler.Apply();
+		// TODO 
 	}
-}
-
-void MasterScheduler::SetExpirationHandler(const openpal::Runnable& runnable)
-{
-	this->expirationHandler = runnable;
 }
 
 void MasterScheduler::ScheduleCommand(const CommandErasure& action)
 {
-	if (commandActions.IsFull())
-	{	
-		this->ReportFailure(action, CommandResult::QUEUE_FULL);
-	}
-	else
-	{
-		commandActions.Enqueue(action);
-		this->expirationHandler.Apply();
-	}
+	// TODO
 }
 
 PollTask* MasterScheduler::AddPollTask(const PollTask& pt)
 {
+	/* TODO
 	auto pNode = pollTasks.AddAndGetPointer(pt);
 	if (pNode)
 	{		
@@ -193,6 +119,20 @@ PollTask* MasterScheduler::AddPollTask(const PollTask& pt)
 	{
 		return nullptr;
 	}
+	*/
+
+	return nullptr;
+}
+
+
+void MasterScheduler::OnRestartDetected(const MasterParams& params)
+{
+	// TODO
+}
+
+void MasterScheduler::OnNeedTimeDetected(const MasterParams& params)
+{
+	// TODO
 }
 
 void MasterScheduler::OnLowerLayerUp(const MasterParams& params)
@@ -201,22 +141,7 @@ void MasterScheduler::OnLowerLayerUp(const MasterParams& params)
 	{
 		isOnline = true;
 
-		if (params.disableUnsolOnStartup)
-		{
-			this->Schedule(&tasks.disableUnsol);
-		}
-
-		if (params.startupIntergrityClassMask != 0)
-		{
-			this->Schedule(&tasks.startupIntegrity);
-		}
-
-		if (params.unsolClassMask & ALL_EVENT_CLASSES)
-		{
-			this->Schedule(&tasks.enableUnsol);
-		}
-
-		this->SchedulePollTasks();
+		// TODO
 	}	
 }
 
@@ -228,53 +153,7 @@ void MasterScheduler::OnLowerLayerDown()
 	{
 		isOnline = false;
 
-		this->ResetTimerAndQueues();
-
-		while (commandActions.IsNotEmpty())
-		{
-			this->ReportFailure(*commandActions.Pop(), CommandResult::NO_COMMS);
-		}
-	}	
-}
-
-void MasterScheduler::SchedulePollTasks()
-{
-	auto schedule = [this](PollTask& pt) { this->ScheduleLater(&pt, pt.GetPeriod()); };
-	pollTasks.Foreach(schedule);
-}
-
-void MasterScheduler::OnRestartDetected(const MasterParams& params)
-{
-	if (tasks.clearRestartTask.GetState() == TaskState::IDLE)
-	{		
-		this->ResetTimerAndQueues();
-
-		this->Schedule(&tasks.clearRestartTask);
-
-		if (params.startupIntergrityClassMask != 0)
-		{
-			this->Schedule(&tasks.startupIntegrity);
-		}
-
-		if (params.unsolClassMask & ALL_EVENT_CLASSES)
-		{
-			this->Schedule(&tasks.enableUnsol);
-		}
-
-		this->SchedulePollTasks();		
-	}	
-}
-
-void MasterScheduler::OnNeedTimeDetected(const MasterParams& params)
-{
-	if (params.timeSyncMode == TimeSyncMode::SerialTimeSync)
-	{
-		if (tasks.serialTimeSync.GetState() == TaskState::IDLE)
-		{			
-			tasks.serialTimeSync.Reset();
-			this->Schedule(&tasks.serialTimeSync);
-			this->CheckForNotification();
-		}
+		// TODO
 	}	
 }
 
@@ -286,31 +165,10 @@ void MasterScheduler::ReportFailure(const CommandErasure& action, CommandResult 
 
 void MasterScheduler::OnTimerExpiration()
 {
-	pTimer = nullptr;
-	auto now = pExecutor->GetTime();	
 	
-	// move all expired tasks to the run queue
-	while (scheduledQueue.IsNotEmpty() && scheduledQueue.Peek().expiration.milliseconds <= now.milliseconds)
-	{		
-		auto pTask = scheduledQueue.Pop().pTask;
-		pTask->SetState(TaskState::PENDING);
-		pendingQueue.Enqueue(pTask);
-	}
-
-	if (scheduledQueue.IsNotEmpty())
-	{
-		auto next = scheduledQueue.Peek().expiration;
-		auto callback = [this](){ this->OnTimerExpiration(); };
-		pTimer = pExecutor->Start(next, Runnable::Bind(callback));
-	}	
-
-	if (pendingQueue.IsNotEmpty())
-	{
-		this->expirationHandler.Apply();
-	}
 }
 
-bool MasterScheduler::CancelAnyTimer()
+bool MasterScheduler::CancelScheduleTimer()
 {
 	if (pTimer)
 	{
