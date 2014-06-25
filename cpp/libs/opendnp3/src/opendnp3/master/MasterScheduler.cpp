@@ -32,18 +32,17 @@ namespace opendnp3
 {
 
 MasterScheduler::MasterScheduler(	openpal::Logger* pLogger, 
-									ISOEHandler* pSOEHandler,
-									IUTCTimeSource* pTimeSource,
+									MasterTasks& tasks,
 									openpal::IExecutor& executor,
 									IScheduleCallback& callback
-									) :
-
-	staticTasks(pLogger, pSOEHandler, pTimeSource),
+									) :	
+	pExecutor(&executor),
+	pCallback(&callback),
+	pStaticTasks(&tasks),
 	isOnline(false),	
 	modifiedSinceLastRead(false),
 	pTimer(nullptr),
-	pExecutor(&executor),
-	pCallback(&callback)	
+	pCurrentTask(nullptr)
 {
 
 }

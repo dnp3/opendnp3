@@ -24,13 +24,10 @@
 
 #include "opendnp3/app/APDUBuilders.h"
 
-
-
 namespace opendnp3
 {
 
-EnableUnsolicitedTask::EnableUnsolicitedTask(openpal::Logger* pLogger_) :
-	NullResponseTask(pLogger_)	
+EnableUnsolicitedTask::EnableUnsolicitedTask(openpal::Logger* pLogger_) : NullResponseTask(pLogger_)	
 {
 
 }

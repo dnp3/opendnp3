@@ -65,7 +65,8 @@ class MasterContext : public ICommandProcessor, private IScheduleCallback
 	IMasterTask* pActiveTask;
 	IMasterState* pState;
 	openpal::ITimer* pResponseTimer;
-	MasterScheduler scheduler;	
+	MasterTasks staticTasks;
+	MasterScheduler scheduler;
 	openpal::StaticQueue<APDUHeader, uint8_t, 4> confirmQueue;
 
 	openpal::StaticBuffer<sizes::MAX_TX_APDU_SIZE> txBuffer;

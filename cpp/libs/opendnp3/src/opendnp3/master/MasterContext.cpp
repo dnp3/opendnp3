@@ -58,7 +58,8 @@ MasterContext::MasterContext(
 	pActiveTask(nullptr),
 	pState(&MasterStateIdle::Instance()),
 	pResponseTimer(nullptr),
-	scheduler(&logger, pSOEHandler_, pTimeSource, executor, *this)		
+	staticTasks(&logger, pSOEHandler, pTimeSource),
+	scheduler(&logger, staticTasks, executor, *this)
 {
 	
 }

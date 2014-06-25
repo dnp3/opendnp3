@@ -24,11 +24,13 @@
 
 #include <openpal/executor/Function1.h>
 #include <openpal/executor/IExecutor.h>
+#include <openpal/container/Settable.h>
 
 #include "opendnp3/master/MasterTasks.h"
 #include "opendnp3/master/PollTask.h"
 #include "opendnp3/master/IMasterTask.h"
 #include "opendnp3/master/IMasterScheduler.h"
+#include "opendnp3/master/TaskRecord.h"
 
 #include "opendnp3/Configure.h"
 
@@ -43,10 +45,10 @@ public:
 	typedef openpal::Function1<ICommandProcessor&> CommandErasure;
 
 	MasterScheduler(	openpal::Logger* pLogger,
-						ISOEHandler* pSOEHandler,
-						openpal::IUTCTimeSource* pTimeSource, 
-						openpal::IExecutor& executor,
-						IScheduleCallback& callback);
+						MasterTasks& tasks,
+						openpal::IExecutor& executor,			
+						IScheduleCallback& callback
+					);
 
 	// ---------- Implement IMasterScheduler ----------- 
 	
@@ -97,7 +99,7 @@ private:
 
 	IMasterTask* FindTaskToStart();
 
-	void CheckForNotification();	
+	void CheckForNotification();
 
 	void ReportFailure(const CommandErasure& action, CommandResult result);	
 
@@ -105,16 +107,21 @@ private:
 
 	void OnTimerExpiration();	
 
-	bool CancelScheduleTimer();
-	
-	MasterTasks staticTasks;
-			
-	bool isOnline;	
-	bool modifiedSinceLastRead;
+	bool CancelScheduleTimer();	
 
-	openpal::ITimer* pTimer;
+	// ----------- static configuration ---------
+
 	openpal::IExecutor* pExecutor;
 	IScheduleCallback* pCallback;
+	MasterTasks* pStaticTasks;
+
+	// ----------- dynamic state -----------
+
+	bool isOnline;
+	bool modifiedSinceLastRead;
+	openpal::ITimer* pTimer;
+	IMasterTask* pCurrentTask;
+	openpal::Settable<TaskRecord> blockingTask;
 	
 	
 };
