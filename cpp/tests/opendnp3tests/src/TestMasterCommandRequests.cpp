@@ -140,7 +140,7 @@ TEST_CASE(SUITE("ControlExecutionSelectErrorResponse"))
 	t.master.OnSendResult(true);
 	t.SendToMaster("C0 81 00 00 0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 04"); // not supported
 
-	REQUIRE(t.exe.RunMany() > 0);
+	t.exe.RunMany();
 
 	REQUIRE(1 ==  callback.responses.size());
 	REQUIRE((CommandResponse::OK(CommandStatus::NOT_SUPPORTED) == callback.responses.front()));
@@ -159,7 +159,7 @@ TEST_CASE(SUITE("ControlExecutionSelectPartialResponse"))
 
 	t.SendToMaster("80 81 00 00 0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 00");
 
-	REQUIRE(t.exe.RunMany() > 0);
+	t.exe.RunMany();
 
 	REQUIRE(1 ==  callback.responses.size());
 	REQUIRE((CommandResponse(CommandResult::BAD_RESPONSE) == callback.responses.front()));
@@ -173,7 +173,7 @@ TEST_CASE(SUITE("DeferredControlExecution"))
 	MasterTestObject t(params);
 	t.master.OnLowerLayerUp();
 
-	REQUIRE(t.exe.RunMany() > 0);
+	t.exe.RunMany();
 
 	// check that a read request was made on startup
 	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
@@ -187,7 +187,7 @@ TEST_CASE(SUITE("DeferredControlExecution"))
 
 	t.SendToMaster("C0 81 00 00"); //now master gets response to integrity
 
-	REQUIRE(t.exe.RunMany() > 0);
+	t.exe.RunMany();
 	
 	REQUIRE(t.lower.PopWriteAsHex() == "C1 03 " + crob); //select
 }
@@ -236,7 +236,8 @@ void TestAnalogOutputExecution(const std::string& hex, const T& command)
 	REQUIRE(callback.responses.empty());
 	t.SendToMaster("C1 81 00 00 " + hex);
 
-	REQUIRE(t.exe.RunMany() > 0);
+	t.exe.RunMany();
+
 	REQUIRE(callback.responses.size() == 1);
 	REQUIRE(callback.responses.front() == CommandResponse::OK(CommandStatus::SUCCESS));
 }

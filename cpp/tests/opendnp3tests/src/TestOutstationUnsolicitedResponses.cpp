@@ -188,7 +188,7 @@ void WriteDuringUnsol(bool beforeTx)
 	}
 
 	// check that we get a response to this immediately without the confirm
-	REQUIRE(t.lower.PopWriteAsHex() == hex::EmptyResponse(IINField::Empty, 0));
+	REQUIRE(t.lower.PopWriteAsHex() == hex::EmptyResponse(0));
 
 	// now send the confirm to the outstation
 	t.SendToOutstation(hex::UnsolConfirm(1));
@@ -285,7 +285,7 @@ TEST_CASE(SUITE("RepeatRequestDuringUnsol"))
 	t.SendToOutstation(hex::UnsolConfirm(0));
 
 	t.SendToOutstation(hex::ClearRestartIIN(0));
-	REQUIRE(t.lower.PopWriteAsHex() == hex::EmptyResponse(IINField::Empty, 0));
+	REQUIRE(t.lower.PopWriteAsHex() == hex::EmptyResponse(0));
 	t.OnSendResult(true);
 
 	t.Transaction([](Database& db) { db.Update(Binary(true, BQ_ONLINE), 1); });
@@ -294,7 +294,7 @@ TEST_CASE(SUITE("RepeatRequestDuringUnsol"))
 	
 	// while waiting for a confirm, repeat the previous request, byte-for-byte
 	t.SendToOutstation(hex::ClearRestartIIN(0));
-	REQUIRE(t.lower.PopWriteAsHex() == hex::EmptyResponse(IINField::Empty, 0));
+	REQUIRE(t.lower.PopWriteAsHex() == hex::EmptyResponse(0));
 	t.OnSendResult(true);
 
 }

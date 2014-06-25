@@ -65,7 +65,7 @@ TEST_CASE(SUITE("WriteIIN"))
 	t.LowerLayerUp();
 
 	t.SendToOutstation(hex::ClearRestartIIN(0));
-	REQUIRE(t.lower.PopWriteAsHex() == hex::EmptyResponse(IINField::Empty, 0));
+	REQUIRE(t.lower.PopWriteAsHex() == hex::EmptyResponse(0));
 }
 
 TEST_CASE(SUITE("WriteIINEnabled"))

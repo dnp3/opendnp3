@@ -88,7 +88,7 @@ TEST_CASE(SUITE("IntegrityPollCanRepeat"))
 	REQUIRE(t.exe.RunMany() > 0);
 	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
 	t.master.OnSendResult(true);
-	t.SendToMaster(hex::EmptyResponse(IINField::Empty, 0));
+	t.SendToMaster(hex::EmptyResponse(0));
 
 	// 2nd poll
 	REQUIRE(t.exe.NumPendingTimers() == 1);
@@ -109,19 +109,22 @@ TEST_CASE(SUITE("UnsolDisableEnableOnStartup"))
 	// disable unsol on grp 60 var2, var3, var4
 	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ALL_EVENT_CLASSES));
 	t.master.OnSendResult(true);
-	t.SendToMaster(hex::EmptyResponse(IINField::Empty, 0));
+	t.SendToMaster(hex::EmptyResponse(0));
 
-	REQUIRE(t.exe.RunMany() > 0);
+	t.exe.RunMany();
+
 	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(1));
 	t.master.OnSendResult(true);
-	t.SendToMaster(hex::EmptyResponse(IINField::Empty, 1));
+	t.SendToMaster(hex::EmptyResponse(1));
 
-	REQUIRE(t.exe.RunMany() > 0);
+	t.exe.RunMany();
+
 	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::ENABLE_UNSOLICITED, 2, ALL_EVENT_CLASSES));
 	t.master.OnSendResult(true);
-	t.SendToMaster(hex::EmptyResponse(IINField::Empty, 2));
+	t.SendToMaster(hex::EmptyResponse(2));
 
-	REQUIRE(t.exe.RunMany() > 0);
+	t.exe.RunMany();
+
 	REQUIRE(t.exe.NumPendingTimers() == 0);	
 }
 
@@ -278,13 +281,13 @@ TEST_CASE(SUITE("RestartDuringStartup"))
 	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ALL_EVENT_CLASSES));
 	t.master.OnSendResult(false);
 
-	t.SendToMaster(hex::EmptyResponse(IINField(IINBit::DEVICE_RESTART), 0));
+	t.SendToMaster(hex::EmptyResponse(0, IINField(IINBit::DEVICE_RESTART)));
 
 	REQUIRE(t.exe.RunMany() > 0);
 
 	REQUIRE(t.lower.PopWriteAsHex() == hex::ClearRestartIIN(1));
 	t.master.OnSendResult(false);
-	t.SendToMaster(hex::EmptyResponse(IINField::Empty, 1));
+	t.SendToMaster(hex::EmptyResponse(1));
 
 	REQUIRE(t.exe.RunMany() > 0);
 
@@ -311,9 +314,10 @@ TEST_CASE(SUITE("RestartAndTimeBits"))
 
 	REQUIRE(t.lower.PopWriteAsHex() == hex::ClearRestartIIN(0));
 	t.master.OnSendResult(true);
-	t.SendToMaster(hex::EmptyResponse(IINField::Empty, 0));
+	t.SendToMaster(hex::EmptyResponse(0, IINField::Empty));
 
-	REQUIRE(t.exe.RunMany() > 0);
+	t.exe.RunMany();
+
 	REQUIRE(t.lower.PopWriteAsHex() == hex::MeasureDelay(1));
 	t.master.OnSendResult(true);
 	t.timeSource.time += 100; //advance time by 100ms so that the master sees 100ms for a response
@@ -325,7 +329,7 @@ TEST_CASE(SUITE("RestartAndTimeBits"))
 	// 200-100-10/2 = 45 => 45 + 200 - 0xF5
 	REQUIRE(t.lower.PopWriteAsHex() == "C2 02 32 01 07 01 F5 00 00 00 00 00");
 	t.master.OnSendResult(true);
-	t.SendToMaster(hex::EmptyResponse(IINField::Empty, 0)); // time bit is now clear
+	t.SendToMaster(hex::EmptyResponse(0, IINField::Empty)); // time bit is now clear
 
 	t.exe.RunMany();
 

@@ -62,7 +62,7 @@ namespace hex
 		return toHex(request.ToReadOnly());
 	}
 
-	std::string EmptyResponse(const IINField& iin, uint8_t seq)
+	std::string EmptyResponse(uint8_t seq, const opendnp3::IINField& iin)
 	{
 		StaticBuffer<2048> buffer;
 		APDUResponse response(buffer.GetWriteBuffer());

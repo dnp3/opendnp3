@@ -113,13 +113,11 @@ IMasterState* MasterStateWaitForResponse::OnResponse(MasterContext* pContext, co
 			case(TaskStatus::CONTINUE) :
 				pContext->StartResponseTimer();
 				return this;
-			case(TaskStatus::REPEAT) :
-				pContext->PostCheckForTask();
-				return &MasterStateTaskReady::Instance();
+			case(TaskStatus::REPEAT) :				
+				return MasterStateTaskReady::Instance().OnStart(pContext);
 			default:
-				pContext->pActiveTask = nullptr;
-				pContext->PostCheckForTask();
-				return &MasterStateIdle::Instance();
+				pContext->pActiveTask = nullptr;				
+				return MasterStateIdle::Instance().OnStart(pContext);
 		}
 	}
 	else
@@ -134,9 +132,8 @@ IMasterState* MasterStateWaitForResponse::OnResponseTimeout(MasterContext* pCont
 	pContext->pResponseTimer = nullptr;
 	pContext->pActiveTask->OnResponseTimeout(pContext->params, pContext->scheduler);
 	pContext->pActiveTask = nullptr;
-	pContext->solSeq = AppControlField::NextSeq(pContext->solSeq);
-	pContext->PostCheckForTask();
-	return &MasterStateIdle::Instance();
+	pContext->solSeq = AppControlField::NextSeq(pContext->solSeq);	
+	return MasterStateIdle::Instance().OnStart(pContext);
 }
 
 }
