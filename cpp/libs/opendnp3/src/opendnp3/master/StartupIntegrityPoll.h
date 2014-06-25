@@ -39,8 +39,6 @@ public:
 	StartupIntegrityPoll(ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_);
 	
 	virtual char const* Name() const override final { return "Startup Integrity Poll"; }
-
-	virtual bool IsSequenced() const override final { return true; }
 	
 	virtual void BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq) override final;	
 

@@ -62,7 +62,6 @@ public:
 	virtual void SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback) override final;
 	virtual void DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback) override final;
 
-	virtual bool IsSequenced() const override final { return false; }
 	virtual char const* Name() const override final { return "Command Task"; }
 	
 	virtual void BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq) override final;

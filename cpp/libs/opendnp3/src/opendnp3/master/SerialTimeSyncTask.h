@@ -37,8 +37,6 @@ public:
 
 	void Reset();
 
-	virtual bool IsSequenced() const override final { return true; }
-
 	virtual char const* Name() const override final { return "serial (non-LAN) time sync"; }
 
 	virtual void BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq) override final;

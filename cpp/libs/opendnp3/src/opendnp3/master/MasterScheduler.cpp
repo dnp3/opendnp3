@@ -53,12 +53,6 @@ void MasterScheduler::ScheduleLater(IMasterTask* pTask, const openpal::TimeDurat
 	
 }
 
-void MasterScheduler::StartTimer(const openpal::TimeDuration& timeout)
-{
-	auto callback = [this](){ this->OnTimerExpiration(); };
-	pTimer = pExecutor->Start(timeout, Runnable::Bind(callback));
-}
-
 void MasterScheduler::Schedule(IMasterTask* pTask)
 {	
 }
@@ -97,6 +91,7 @@ void MasterScheduler::ScheduleCommand(const CommandErasure& action)
 
 PollTask* MasterScheduler::AddPollTask(const PollTask& pt)
 {	
+	// TODO
 	return nullptr;
 }
 
@@ -139,8 +134,15 @@ void MasterScheduler::ReportFailure(const CommandErasure& action, CommandResult 
 
 void MasterScheduler::OnTimerExpiration()
 {
-	
+	// TODO
 }
+
+void MasterScheduler::StartTimer(const openpal::TimeDuration& timeout)
+{
+	auto callback = [this](){ this->OnTimerExpiration(); };
+	pTimer = pExecutor->Start(timeout, Runnable::Bind(callback));
+}
+
 
 bool MasterScheduler::CancelScheduleTimer()
 {

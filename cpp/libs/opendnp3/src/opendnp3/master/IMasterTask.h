@@ -41,18 +41,11 @@ class IMasterTask
 	
 public:
 
-
-	/**
-	* Returns the name of the task.
+	/**	
 	*
 	* @return	the name of the task
 	*/
-	virtual char const* Name() const = 0;
-
-	/**
-	* Flag that indicates if sequencing matters for lower priority tasks
-	*/
-	virtual bool IsSequenced() const = 0;	
+	virtual char const* Name() const = 0;	
 
 	/**
 	 * Build a request APDU.
