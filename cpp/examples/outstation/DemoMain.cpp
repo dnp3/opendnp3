@@ -97,9 +97,8 @@ int main(int argc, char* argv[])
 	double value = 0;
 	bool binary = false;
 	DoubleBit dbit = DoubleBit::DETERMINED_OFF;
-	bool run = true;
-
-	while(run)
+	
+	while (true)
 	{
 		std::cout << "Enter one or more measurement changes then press <enter>" << std::endl;
 		std::cout << "c = counter, b = binary, d = doublebit, a = analog, x = exit" << std::endl;
@@ -135,10 +134,10 @@ int main(int argc, char* argv[])
 					break;
 				}
 				case('x') :
-				{
-					run = false;
-					break;
-				}
+
+					// DNP3Manager destructor cleanups up everything automagically
+					return 0;
+
 				default:
 					std::cout << "No action registered for: " << c << std::endl;
 					break;
