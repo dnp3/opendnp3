@@ -22,7 +22,7 @@ object CppEnumGenerator {
 
     def includeEnums = List(
       EnumConfig(DoubleBit(), true, true),
-      EnumConfig(ScanStatus(), false, true),
+      EnumConfig(PollState(), false, true),
       EnumConfig(CommandStatus(), true, true),
       EnumConfig(CommandResult(), false, true),
       EnumConfig(ControlCode(), true, true),

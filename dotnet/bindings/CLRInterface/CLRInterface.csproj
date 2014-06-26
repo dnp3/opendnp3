@@ -65,7 +65,7 @@
     <Compile Include="gen\EventCounterResponse.cs" />
     <Compile Include="gen\EventDoubleBinaryResponse.cs" />
     <Compile Include="gen\EventFrozenCounterResponse.cs" />
-    <Compile Include="gen\ScanStatus.cs" />
+    <Compile Include="gen\PollState.cs" />
     <Compile Include="gen\StaticAnalogResponse.cs" />
     <Compile Include="gen\StaticBinaryOutputStatusResponse.cs" />
     <Compile Include="gen\StaticBinaryResponse.cs" />
@@ -107,7 +107,6 @@
     <Compile Include="PrintingSOEHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QualityMasks.cs" />
-    <Compile Include="ScanResult.cs" />
     <Compile Include="SerialSettings.cs" />
     <Compile Include="SimpleCommandHandler.cs" />
     <Compile Include="StackStatistics.cs" />

@@ -171,9 +171,6 @@
     <ClInclude Include="src\opendnp3\gen\StaticAnalogOutputStatusResponse.h">
       <Filter>Header\gen</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\ScanStatus.h">
-      <Filter>Header\gen</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\gen\QualifierCode.h">
       <Filter>Header\gen</Filter>
     </ClInclude>
@@ -663,6 +660,12 @@
     <ClInclude Include="src\opendnp3\master\IScheduleCallback.h">
       <Filter>Header\master</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\master\IPollListener.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\PollState.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\AnalogOutput.cpp">
@@ -717,9 +720,6 @@
       <Filter>Source\gen</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\gen\StaticAnalogOutputStatusResponse.cpp">
-      <Filter>Source\gen</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\gen\ScanStatus.cpp">
       <Filter>Source\gen</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\gen\QualifierCode.cpp">
@@ -1066,6 +1066,9 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\master\TaskRecord.cpp">
       <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\gen\PollState.cpp">
+      <Filter>Source\gen</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -18,17 +18,21 @@
 namespace DNP3.Interface
 {
   /// <summary>
-  /// Enumeration for the asynchronous result of a scan (poll)
+  /// Enumeration for the state of a poll
   /// </summary>
-  public enum ScanStatus : int
+  public enum PollState : int
   {
     /// <summary>
     /// Valid response was received
     /// </summary>
-    SUCCESS = 0,
+    RUNNING = 0,
+    /// <summary>
+    /// Valid response was received
+    /// </summary>
+    SUCCESS = 1,
     /// <summary>
     /// The operation timed out or explicitly failed
     /// </summary>
-    FAILURE = 1
+    FAILURE = 2
   }
 }

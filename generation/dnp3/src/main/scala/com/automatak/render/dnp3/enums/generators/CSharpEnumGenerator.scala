@@ -20,7 +20,7 @@ object CSharpEnumGenerator {
 
     def enums : List[EnumConfig] = List(
       DoubleBit(),
-      ScanStatus(),
+      PollState(),
       CommandStatus(),
       CommandResult(),
       ControlCode(),

@@ -26,6 +26,7 @@
 #include <openpal/executor/Action1.h>
 #include <openpal/container/StaticQueue.h>
 
+
 namespace opendnp3
 {
 
@@ -61,6 +62,7 @@ private:
 
 	Builder builder;
 	openpal::TimeDuration period;	
+
 };
 
 

@@ -36,6 +36,13 @@ MasterScan::MasterScan(openpal::IExecutor& executor, IMasterScheduler& scheduler
 
 }
 
+void MasterScan::SetStateListener(IPollListener& listener)
+{
+	auto pListener = &listener;
+	auto action = [this, pListener]() { pTask->SetStateListener(*pListener); };
+	pExecutor->PostLambda(action);
+}
+
 bool MasterScan::IsDefined() const
 {
 	return pExecutor && pScheduler && pTask;

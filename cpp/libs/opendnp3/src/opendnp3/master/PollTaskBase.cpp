@@ -30,12 +30,24 @@
 namespace opendnp3
 {
 
+PollTaskBase::PollTaskBase() : pSOEHandler(nullptr), pLogger(nullptr), rxCount(0), pPollListener(nullptr)
+{}
+
 PollTaskBase::PollTaskBase(ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_) :
 	pSOEHandler(pSOEHandler_),
-	pLogger(pLogger_),	
-	rxCount(0)
+	pLogger(pLogger_),
+	rxCount(0),
+	pPollListener(nullptr)
 {
 	
+}
+
+void PollTaskBase::NotifyState(PollState state)
+{
+	if (pPollListener)
+	{
+		pPollListener->OnStateChange(state);
+	}
 }
 	
 TaskStatus PollTaskBase::OnResponse(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler)
@@ -71,6 +83,11 @@ TaskStatus PollTaskBase::OnResponse(const APDUResponseHeader& header, const open
 void PollTaskBase::OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler)
 {	
 	this->OnFailure(params, scheduler);
+}
+
+void PollTaskBase::SetStateListener(IPollListener& listener)
+{
+	pPollListener = &listener;
 }
 	
 TaskStatus PollTaskBase::ProcessMeasurements(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler)

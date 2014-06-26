@@ -18,38 +18,24 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __MASTER_SCAN_H_
-#define __MASTER_SCAN_H_
+#ifndef __I_POLL_LISTENER_H_
+#define __I_POLL_LISTENER_H_
 
-#include <openpal/executor/IExecutor.h>
-
-#include "opendnp3/master/IMasterScheduler.h"
-#include "opendnp3/master/PollTask.h"
+#include "opendnp3/gen/PollState.h"
 
 namespace opendnp3
 {
 
-class MasterScan
-{
+/// Receives event about the status of a poll task
+class IPollListener
+{	
+
 public:
 
-	MasterScan();
-
-	MasterScan(openpal::IExecutor& executor, IMasterScheduler& scheduler, PollTask& task);
-
-	void SetStateListener(IPollListener& listener);
-
-	// Request that the scan be performed as soon as possible
-	bool Demand();
-
-	bool IsDefined() const;
-
-private:
+	virtual void OnStateChange(PollState state) = 0;
 	
-	openpal::IExecutor* pExecutor;	
-	IMasterScheduler* pScheduler;	
-	PollTask* pTask;
 };
+
 
 }
 

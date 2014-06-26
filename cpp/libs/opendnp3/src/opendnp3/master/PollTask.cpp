@@ -24,7 +24,7 @@
 namespace opendnp3
 {
 
-PollTask::PollTask() : PollTaskBase(nullptr, nullptr)
+PollTask::PollTask()
 {}
 
 PollTask::PollTask(const Builder& builder_, const openpal::TimeDuration& period_, ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_) :
@@ -38,7 +38,9 @@ void PollTask::BuildRequest(APDURequest& request, const MasterParams& params, ui
 	rxCount = 0;
 	builder.Apply(request);
 	request.SetFunction(FunctionCode::READ);
-	request.SetControl(AppControlField::Request(seq));	
+	request.SetControl(AppControlField::Request(seq));
+
+	this->NotifyState(PollState::RUNNING);
 }
 
 openpal::TimeDuration PollTask::GetPeriod() const
@@ -48,11 +50,13 @@ openpal::TimeDuration PollTask::GetPeriod() const
 
 void PollTask::OnFailure(const MasterParams& params, IMasterScheduler& scheduler)
 {
+	this->NotifyState(PollState::FAILURE);
 	scheduler.Schedule(*this, params.taskRetryPeriod);
 }
 
 void PollTask::OnSuccess(const MasterParams& params, IMasterScheduler& scheduler)
 {
+	this->NotifyState(PollState::SUCCESS);
 	scheduler.Schedule(*this, period);
 }
 

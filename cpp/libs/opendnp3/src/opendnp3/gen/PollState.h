@@ -15,20 +15,28 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#include "ScanStatus.h"
+#ifndef __OPENDNP3_GENERATED_POLLSTATE_H_
+#define __OPENDNP3_GENERATED_POLLSTATE_H_
+
+#include <cstdint>
 
 namespace opendnp3 {
 
-char const* ScanStatusToString(ScanStatus arg)
+/**
+  Enumeration for the state of a poll
+*/
+enum class PollState : int
 {
-  switch(arg)
-  {
-    case(ScanStatus::SUCCESS):
-      return "SUCCESS";
-    case(ScanStatus::FAILURE):
-      return "FAILURE";
-  }
-  return "FAILURE";
-}
+  /// Valid response was received
+  RUNNING = 0,
+  /// Valid response was received
+  SUCCESS = 1,
+  /// The operation timed out or explicitly failed
+  FAILURE = 2
+};
+
+char const* PollStateToString(PollState arg);
 
 }
+
+#endif

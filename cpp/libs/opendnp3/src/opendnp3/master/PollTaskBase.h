@@ -22,6 +22,7 @@
 #define __POLL_TASK_BASE_H_
 
 #include "opendnp3/master/IMasterTask.h"
+#include "opendnp3/master/IPollListener.h"
 
 namespace opendnp3
 {
@@ -34,13 +35,17 @@ class ISOEHandler;
 class PollTaskBase : public IMasterTask
 {	
 
-public:	
+public:
+
+	PollTaskBase();
 
 	PollTaskBase(ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_);				
 	
 	virtual TaskStatus OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler) override final;
 	
 	virtual void OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler) override final;
+
+	void SetStateListener(IPollListener& listener);
 
 protected:
 
@@ -50,9 +55,15 @@ protected:
 
 	virtual void OnSuccess(const MasterParams& params, IMasterScheduler& scheduler) = 0;
 
+	void NotifyState(PollState state);
+
 	ISOEHandler* pSOEHandler;
 	openpal::Logger* pLogger;
 	uint16_t rxCount;
+
+private:
+
+	IPollListener* pPollListener;
 };
 
 } //end ns

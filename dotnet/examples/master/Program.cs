@@ -58,11 +58,16 @@ namespace DotNetMasterDemo
             var master = channel.AddMaster("master", PrintingSOEHandler.Instance, config);
 
             var classMask = PointClassHelpers.GetMask(PointClass.CLASS_1, PointClass.CLASS_2, PointClass.CLASS_3);
-            var classScan = master.AddClassScan(classMask, TimeSpan.FromSeconds(5));
-            var integrityScan = master.AddClassScan(~0, TimeSpan.FromMinutes(1));
-            var rangeScan = master.AddRangeScan(30, 2, 5, 7, TimeSpan.FromSeconds(20));
 
-            classScan.AddScanCallback((ScanResult result) => Console.WriteLine("class scan result: " + result.Status));
+            // you a can optionally add various kinds of polls
+            var integrityPoll = master.AddClassScan(~0, TimeSpan.FromMinutes(1));
+            var rangePoll = master.AddRangeScan(30, 2, 5, 7, TimeSpan.FromSeconds(20));
+            var classPoll = master.AddClassScan(classMask, TimeSpan.FromSeconds(5));
+
+            // you a can optionally add state callbacks for monitoring these polls
+            integrityPoll.AddScanCallback((PollState state) => Console.WriteLine("integrity poll state change: " + state));
+            classPoll.AddScanCallback((PollState state) => Console.WriteLine("class poll state change: " + state));
+            rangePoll.AddScanCallback((PollState state) => Console.WriteLine("range poll state change: " + state));
 
             master.Enable(); // enable communications
 
@@ -83,13 +88,13 @@ namespace DotNetMasterDemo
                         channel.SetLogFilters(filters.Add(LogFilters.TRANSPORT_TX | LogFilters.TRANSPORT_RX));
                         break;
                     case "i":
-                        integrityScan.Demand();
+                        integrityPoll.Demand();
                         break;
                     case "r":
-                        rangeScan.Demand();
+                        rangePoll.Demand();
                         break;
                     case "e":
-                        classScan.Demand();                        
+                        classPoll.Demand();                        
                         break;
                     case "x":
                         return 0;                        

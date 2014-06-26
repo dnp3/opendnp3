@@ -9,6 +9,7 @@ namespace DNP3.Interface
     public interface IMasterScan
     {        
         void Demand();
-        void AddScanCallback(Action<ScanResult> callback);
+
+        void AddScanCallback(Action<PollState> callback);
     }
 }

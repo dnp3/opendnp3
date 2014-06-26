@@ -3,8 +3,10 @@
 
 using namespace System::Collections::ObjectModel;
 
-//#include <opendnp3/master/ITaskListener.h>
+#include <opendnp3/master/IPollListener.h>
 #include <vcclr.h>
+
+#include "MasterScanAdapter.h"
 
 using namespace DNP3::Interface;
 
@@ -13,24 +15,22 @@ namespace DNP3
 namespace Adapter
 {
 
-private class ScanListenerAdapter// : public opendnp3::ITaskListener
+private class ScanListenerAdapter : public opendnp3::IPollListener
 {
 public:
 
-	ScanListenerAdapter(System::Action<ScanResult>^ callback) : myCallback(callback)
+	ScanListenerAdapter(MasterScanAdapter^ adapter) : root(adapter)
 	{}
 
-	/* TODO
-	virtual void OnTaskUpdate(opendnp3::TaskLifecycle status) final
+	
+	virtual void OnStateChange(opendnp3::PollState state)
 	{		
-		ScanStatus status = (result.status == opendnp3::ScanStatus::SUCCESS) ? ScanStatus::SUCCESS : ScanStatus::FAILURE;
-		myCallback->Invoke(ScanResult(status));	
+		root->OnStateChane((PollState)state);
 	}
-	*/
 
 private:
 
-	gcroot<System::Action<ScanResult>^> myCallback;
+	gcroot<MasterScanAdapter^> root;
 };
 
 }

@@ -65,6 +65,7 @@
     <ClInclude Include="src\opendnp3\app\VTOData.h" />
     <ClInclude Include="src\opendnp3\app\WriteConversions.h" />
     <ClInclude Include="src\opendnp3\app\WriteConversionTemplates.h" />
+    <ClInclude Include="src\opendnp3\gen\PollState.h" />
     <ClInclude Include="src\opendnp3\link\IChannelStateListener.h" />
     <ClInclude Include="src\opendnp3\link\LinkChannelStatistics.h" />
     <ClInclude Include="src\opendnp3\ErrorCodes.h" />
@@ -83,7 +84,6 @@
     <ClInclude Include="src\opendnp3\gen\FunctionCode.h" />
     <ClInclude Include="src\opendnp3\gen\LinkFunction.h" />
     <ClInclude Include="src\opendnp3\gen\QualifierCode.h" />
-    <ClInclude Include="src\opendnp3\gen\ScanStatus.h" />
     <ClInclude Include="src\opendnp3\gen\StaticAnalogOutputStatusResponse.h" />
     <ClInclude Include="src\opendnp3\gen\StaticAnalogResponse.h" />
     <ClInclude Include="src\opendnp3\gen\StaticBinaryOutputStatusResponse.h" />
@@ -125,6 +125,7 @@
     <ClInclude Include="src\opendnp3\master\IMasterScheduler.h" />
     <ClInclude Include="src\opendnp3\master\IMasterState.h" />
     <ClInclude Include="src\opendnp3\master\IMasterTask.h" />
+    <ClInclude Include="src\opendnp3\master\IPollListener.h" />
     <ClInclude Include="src\opendnp3\master\IScheduleCallback.h" />
     <ClInclude Include="src\opendnp3\master\ITaskLock.h" />
     <ClInclude Include="src\opendnp3\master\NullResponseTask.h" />
@@ -258,8 +259,8 @@
     <ClCompile Include="src\opendnp3\gen\EventFrozenCounterResponse.cpp" />
     <ClCompile Include="src\opendnp3\gen\FunctionCode.cpp" />
     <ClCompile Include="src\opendnp3\gen\LinkFunction.cpp" />
+    <ClCompile Include="src\opendnp3\gen\PollState.cpp" />
     <ClCompile Include="src\opendnp3\gen\QualifierCode.cpp" />
-    <ClCompile Include="src\opendnp3\gen\ScanStatus.cpp" />
     <ClCompile Include="src\opendnp3\gen\StaticAnalogOutputStatusResponse.cpp" />
     <ClCompile Include="src\opendnp3\gen\StaticAnalogResponse.cpp" />
     <ClCompile Include="src\opendnp3\gen\StaticBinaryOutputStatusResponse.cpp" />
