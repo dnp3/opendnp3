@@ -92,7 +92,7 @@ int main(int argc, char* argv[])
 	auto pLoader = pOutstation->GetLoader();
 
 	// variables used in example loop
-	char input;
+	string input;
 	uint32_t count = 0;
 	double value = 0;
 	bool binary = false;
@@ -101,47 +101,50 @@ int main(int argc, char* argv[])
 
 	while(run)
 	{
+		std::cout << "Enter one or more measurement changes then press <enter>" << std::endl;
 		std::cout << "c = counter, b = binary, d = doublebit, a = analog, x = exit" << std::endl;
 		std::cin >> input;
-		switch (input)
+
+		TimeTransaction tx(pLoader, UTCTimeSource::Inst()->Now());
+		for (char& c : input)
 		{
-		case('c'):
+			switch (c)
 			{
-				TimeTransaction tx(pLoader, UTCTimeSource::Inst()->Now());
-				tx.Update(Counter(count, CQ_ONLINE), 0);
-				++count;
-				break;
+				case('c') :
+				{				
+					tx.Update(Counter(count, CQ_ONLINE), 0);
+					++count;
+					break;
+				}
+				case('a') :
+				{				
+					tx.Update(Analog(value, AQ_ONLINE), 0);
+					value += 1.75;
+					break;
+				}
+				case('b') :
+				{				
+					tx.Update(Binary(binary), 0);
+					binary = !binary;
+					break;
+				}
+				case('d') :
+				{				
+					tx.Update(DoubleBitBinary(dbit), 0);
+					dbit = (dbit == DoubleBit::DETERMINED_OFF) ? DoubleBit::DETERMINED_ON : DoubleBit::DETERMINED_OFF;
+					break;
+				}
+				case('x') :
+				{
+					run = false;
+					break;
+				}
+				default:
+					std::cout << "No action registered for: " << c << std::endl;
+					break;
 			}
-		case('a') :
-			{
-				TimeTransaction tx(pLoader, UTCTimeSource::Inst()->Now());
-				tx.Update(Analog(value, AQ_ONLINE), 0);
-				value += 1.75;
-				break;
-			}
-		case('b') :
-			{
-				TimeTransaction tx(pLoader, UTCTimeSource::Inst()->Now());
-				tx.Update(Binary(binary), 0);
-				binary = !binary;
-				break;
-			}
-		case('d') :
-			{
-				TimeTransaction tx(pLoader, UTCTimeSource::Inst()->Now());
-				tx.Update(DoubleBitBinary(dbit), 0);
-				dbit = (dbit == DoubleBit::DETERMINED_OFF) ? DoubleBit::DETERMINED_ON : DoubleBit::DETERMINED_OFF;
-				break;
-			}
-		case('x') :
-			{
-				run = false;
-				break;
-			}
-		default:
-			std::cout << "No action registered for: " << input << std::endl;
-			break;
 		}
+		
 	}
 
 	return 0;
