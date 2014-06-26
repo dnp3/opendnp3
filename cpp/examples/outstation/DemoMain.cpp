@@ -75,6 +75,10 @@ int main(int argc, char* argv[])
 	// in this example we've changed the default link layer addressing
 	stackConfig.link.LocalAddr = 10;
 	stackConfig.link.RemoteAddr = 1;
+
+	// You can optionally change the default reporting variations
+	stackConfig.outstation.defaultEventResponses.binary = EventBinaryResponse::Group2Var2;
+	stackConfig.outstation.defaultEventResponses.analog = EventAnalogResponse::Group32Var3;
 	
 	// Create a new outstation with a log level, command handler, and
 	// config info this	returns a thread-safe interface used for
