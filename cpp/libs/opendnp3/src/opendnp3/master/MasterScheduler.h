@@ -32,6 +32,7 @@
 #include "opendnp3/master/IMasterTask.h"
 #include "opendnp3/master/IMasterScheduler.h"
 #include "opendnp3/master/TaskRecord.h"
+#include "opendnp3/master/IScheduleCallback.h"
 
 #include "opendnp3/Configure.h"
 

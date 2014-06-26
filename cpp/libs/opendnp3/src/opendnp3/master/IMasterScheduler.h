@@ -27,13 +27,6 @@
 namespace opendnp3
 {
 
-class IScheduleCallback
-{
-	public:
-
-	virtual void OnPendingTask() = 0;
-};
-
 class IMasterTask;
 
 class IMasterScheduler

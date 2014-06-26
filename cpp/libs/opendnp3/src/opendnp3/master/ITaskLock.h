@@ -24,10 +24,10 @@
 
 #include <openpal/util/Uncopyable.h>
 
+#include "opendnp3/master/IScheduleCallback.h"
+
 namespace opendnp3
 {
-
-class MasterContext;
 
 /**
 	Interface used in multi-drop configurations (multiple masters on same channel) 
@@ -38,10 +38,10 @@ class ITaskLock
 	public:
 	
 		/// Acquire a lock
-		virtual bool Acquire(MasterContext&) = 0;
+		virtual bool Acquire(IScheduleCallback&) = 0;
 
 		/// Release a lock
-		virtual void Release(MasterContext&) = 0;
+		virtual void Release(IScheduleCallback&) = 0;
 
 		/// channel online
 		virtual void OnLayerUp() = 0;
@@ -54,9 +54,9 @@ class NullTaskLock : public ITaskLock, private openpal::Uncopyable
 {	
 	public:
 
-	virtual bool Acquire(MasterContext&) override final;
+	virtual bool Acquire(IScheduleCallback&) override final;
 	
-	virtual void Release(MasterContext&) override final;
+	virtual void Release(IScheduleCallback&) override final;
 
 	virtual void OnLayerUp() override final;
 	

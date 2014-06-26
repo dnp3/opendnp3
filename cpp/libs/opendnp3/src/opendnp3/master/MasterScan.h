@@ -24,7 +24,6 @@
 #include <openpal/executor/IExecutor.h>
 
 #include "opendnp3/master/IMasterScheduler.h"
-#include "opendnp3/master/ITaskListener.h"
 #include "opendnp3/master/IMasterTask.h"
 
 namespace opendnp3

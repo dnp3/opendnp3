@@ -32,14 +32,16 @@ ITaskLock& NullTaskLock::Instance()
 }
 
 NullTaskLock::NullTaskLock()
-{}
+{
 
-bool NullTaskLock::Acquire(MasterContext&)
+}
+
+bool NullTaskLock::Acquire(IScheduleCallback&)
 {
 	return true;
 }
 	
-void NullTaskLock::Release(MasterContext&)
+void NullTaskLock::Release(IScheduleCallback&)
 { 
 	
 }

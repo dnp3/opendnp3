@@ -125,11 +125,11 @@
     <ClInclude Include="src\opendnp3\master\IMasterScheduler.h" />
     <ClInclude Include="src\opendnp3\master\IMasterState.h" />
     <ClInclude Include="src\opendnp3\master\IMasterTask.h" />
+    <ClInclude Include="src\opendnp3\master\IScheduleCallback.h" />
     <ClInclude Include="src\opendnp3\master\ITaskLock.h" />
     <ClInclude Include="src\opendnp3\master\NullResponseTask.h" />
     <ClInclude Include="src\opendnp3\master\PollTask.h" />
     <ClInclude Include="src\opendnp3\master\StartupIntegrityPoll.h" />
-    <ClInclude Include="src\opendnp3\master\ITaskListener.h" />
     <ClInclude Include="src\opendnp3\master\ISOEHandler.h" />
     <ClInclude Include="src\opendnp3\master\MasterContext.h" />
     <ClInclude Include="src\opendnp3\master\MasterParams.h" />
@@ -144,7 +144,6 @@
     <ClInclude Include="src\opendnp3\master\MasterTasks.h" />
     <ClInclude Include="src\opendnp3\master\TaskRecord.h" />
     <ClInclude Include="src\opendnp3\master\TaskResult.h" />
-    <ClInclude Include="src\opendnp3\master\TaskLifecycle.h" />
     <ClInclude Include="src\opendnp3\master\TimeSyncHandler.h" />
     <ClInclude Include="src\opendnp3\objects\Group1.h" />
     <ClInclude Include="src\opendnp3\objects\Group10.h" />
