@@ -149,12 +149,12 @@ void MasterContext::SelectAndOperateT(const T& command, uint16_t index, ICommand
 
 		if (!QueueUserTask(openpal::Function0<IMasterTask*>::Bind(userTask)))
 		{
-			callback.OnComplete(CommandResponse::CommandResponse(CommandResult::QUEUE_FULL));
+			callback.OnComplete(CommandResponse(CommandResult::QUEUE_FULL));
 		}
 	}
 	else
 	{
-		callback.OnComplete(CommandResponse::CommandResponse(CommandResult::NO_COMMS));
+		callback.OnComplete(CommandResponse(CommandResult::NO_COMMS));
 	}
 
 	
@@ -176,12 +176,12 @@ void MasterContext::DirectOperateT(const T& command, uint16_t index, ICommandCal
 
 		if (!QueueUserTask(openpal::Function0<IMasterTask*>::Bind(userTask)))
 		{
-			callback.OnComplete(CommandResponse::CommandResponse(CommandResult::QUEUE_FULL));
+			callback.OnComplete(CommandResponse(CommandResult::QUEUE_FULL));
 		}
 	}
 	else
 	{
-		callback.OnComplete(CommandResponse::CommandResponse(CommandResult::NO_COMMS));
+		callback.OnComplete(CommandResponse(CommandResult::NO_COMMS));
 	}
 }
 
