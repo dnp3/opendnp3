@@ -50,12 +50,7 @@ static const uint16_t MAX_READ_REQUESTS = 8;
 static const uint32_t MAX_OBJECTS_PER_APDU = 32768;
 
 // the maximum number of queued commands for a master
-static const uint8_t MAX_COMMAND_QUEUE_SIZE = 16;
-
-// the maximum number of queued commands for a master
 static const uint8_t MAX_MASTER_POLL_TASKS = 8;
-
-static const uint8_t MAX_MASTER_TASKS = 16;
 
 /// The miniumum allowed size for rx and tx APDUs
 static const uint32_t MIN_APDU_SIZE = 20;
@@ -75,8 +70,6 @@ static const uint16_t MAX_STACKS_PER_CHANNEL = 16;
 // default sizing is big enough to receive a full APDU with full LPDU's
 static const uint32_t LINK_RECEIVER_BUFFER_SIZE = MACRO_NUM_LINK_FRAMES(MAX_RX_APDU_SIZE) * 292;
 
-static_assert(MAX_MASTER_TASKS >= 8, "Minimum number of master tasks is 8");
-static_assert(MAX_COMMAND_QUEUE_SIZE >= 4, "Minimum command queue size if 4");
 static_assert(MAX_TX_APDU_SIZE >= MIN_APDU_SIZE, "APDU tx buffer size must be at least the minimum size");
 static_assert(MAX_RX_APDU_SIZE >= MIN_APDU_SIZE, "APDU rx buffer size must be at least the minimum size");
 static_assert(DEFAULT_APDU_BUFFER_SIZE <= MAX_TX_APDU_SIZE, "default buffer size must be less than the maximum");
