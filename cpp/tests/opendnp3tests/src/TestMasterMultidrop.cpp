@@ -18,37 +18,56 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#include <catch.hpp>
 
 #include "MasterTestObject.h"
+#include "HexConversions.h"
+#include "APDUHexBuilders.h"
 
-#include "BufferHelpers.h"
+#include <asiodnp3/MultidropTaskLock.h>
 
-namespace opendnp3
+using namespace openpal;
+using namespace opendnp3;
+using namespace asiodnp3;
+
+#define SUITE(name) "MasterMultidropTestSuite - " name
+
+TEST_CASE(SUITE("MultidropRoundRobinStartupSequence"))
 {
+	MultidropTaskLock taskLock;
 
-MasterParams NoStartupTasks()
-{
 	MasterParams params;
 	params.disableUnsolOnStartup = false;
-	params.startupIntergrityClassMask = 0;
-	params.unsolClassMask = 0;
-	return params;
-}
 
-MasterTestObject::MasterTestObject(const MasterParams& params, ITaskLock& lock) :
-	log(),
-	exe(),
-	meas(),
-	lower(log.root),
-	timeSource(0),
-	master(exe, log.root, lower, &meas, &timeSource, params, lock)
-{}
+	MasterTestObject t1(params, taskLock);
+	MasterTestObject t2(params, taskLock);
 
-void MasterTestObject::SendToMaster(const std::string& hex)
-{
-	HexSequence hs(hex);
-	master.OnReceive(hs.ToReadOnly());
-}
-	
+	t1.master.OnLowerLayerUp();
+	t2.master.OnLowerLayerUp();
+
+	t1.exe.RunMany();
+	t2.exe.RunMany();
+
+	REQUIRE(t1.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
+	REQUIRE(t2.lower.PopWriteAsHex() == "");
+
+	t1.master.OnSendResult(true);
+	t1.SendToMaster(hex::EmptyResponse(0, IINField(IINBit::DEVICE_RESTART)));
+
+	t1.exe.RunMany();
+	t2.exe.RunMany();
+
+	REQUIRE(t1.lower.PopWriteAsHex() == "");
+	REQUIRE(t2.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
+
+	t2.master.OnSendResult(true);
+	t2.SendToMaster(hex::EmptyResponse(0));
+
+	t1.exe.RunMany();
+	t2.exe.RunMany();
+
+	REQUIRE(t1.lower.PopWriteAsHex() == hex::ClearRestartIIN(1));
+	REQUIRE(t2.lower.PopWriteAsHex() == "");
+
 }
 

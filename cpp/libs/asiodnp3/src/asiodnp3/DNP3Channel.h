@@ -31,6 +31,7 @@
 #include <asiopal/Synchronized.h>
 
 #include "IChannel.h"
+#include "MultidropTaskLock.h"
 
 #include <memory>
 #include <set>
@@ -111,6 +112,8 @@ private:
 	void OnShutdown(IStack* apStack);
 
 	void CheckForFinalShutdown();
+
+	MultidropTaskLock taskLock;
 
 	openpal::Action0 shutdownHandler;
 	opendnp3::LinkChannelStatistics statistics;

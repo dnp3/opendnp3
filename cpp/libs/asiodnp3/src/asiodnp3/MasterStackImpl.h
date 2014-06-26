@@ -45,7 +45,8 @@ public:
 		opendnp3::ISOEHandler* pSOEHandler,
 	    openpal::IUTCTimeSource* pTimeSource,		
 		const opendnp3::MasterStackConfig& config,
-		const StackActionHandler& handler);
+		const StackActionHandler& handler,
+		opendnp3::ITaskLock& taskLock);
 
 	virtual bool Enable() override final;
 

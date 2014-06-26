@@ -173,7 +173,7 @@ IMaster* DNP3Channel::_AddMaster(char const* id,
 	else
 	{
 		StackActionHandler handler(&router, *pExecutor);
-		auto pMaster = new MasterStackImpl(*pLogRoot, *pExecutor, pPublisher, pTimeSource, config, handler);
+		auto pMaster = new MasterStackImpl(*pLogRoot, *pExecutor, pPublisher, pTimeSource, config, handler, taskLock);
 		auto onShutdown = [this, pMaster](){ this->OnShutdown(pMaster); };
 		pMaster->SetShutdownAction(Action0::Bind(onShutdown));
 		pMaster->SetLinkRouter(&router);

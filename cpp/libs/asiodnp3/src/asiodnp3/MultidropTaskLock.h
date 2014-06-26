@@ -18,41 +18,49 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __MASTER_TEST_OBJECT_H_
-#define __MASTER_TEST_OBJECT_H_
 
-#include "MockExecutor.h"
-#include "LogTester.h"
+#ifndef __MULTIDROP_TASK_LOCK_H_
+#define __MULTIDROP_TASK_LOCK_H_
 
-#include <opendnp3/master/Master.h>
-#include <opendnp3/LogLevels.h>
+#include <opendnp3/master/ITaskLock.h>
+
+#include <set>
 #include <deque>
 
-#include "MockSOEHandler.h"
-#include "MockLowerLayer.h"
-
-namespace opendnp3
+namespace asiodnp3
 {
 
-	MasterParams NoStartupTasks();
-
-	class MasterTestObject
-	{
+class MultidropTaskLock: public opendnp3::ITaskLock
+{
 	public:
 
-		MasterTestObject(const MasterParams& params, ITaskLock& lock = NullTaskLock::Instance());
+	MultidropTaskLock();
 
-		void SendToMaster(const std::string& hex);		
+	
+	virtual bool Acquire(opendnp3::IScheduleCallback&) override final;
 
-		LogTester log;
-		MockExecutor exe;
-		MockSOEHandler meas;
-		MockLowerLayer lower;
-		openpal::FixedUTCTimeSource timeSource;
-		Master master;
-	};
+	
+	virtual void Release(opendnp3::IScheduleCallback&) override final;
+
+	
+	virtual void OnLayerUp() override final;
+
+	
+	virtual void OnLayerDown() override final;
+
+
+	private:
+
+	bool AddIfNotContained(opendnp3::IScheduleCallback&);
+
+	std::set<opendnp3::IScheduleCallback*> callbackSet;
+	std::deque<opendnp3::IScheduleCallback*> callbackQueue;
+
+	bool isOnline;
+
+	opendnp3::IScheduleCallback* pActive;
+};
 
 }
 
 #endif
-

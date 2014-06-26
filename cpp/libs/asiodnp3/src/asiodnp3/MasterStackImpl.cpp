@@ -36,11 +36,12 @@ MasterStackImpl::MasterStackImpl(	LogRoot& root,
                                     ISOEHandler* pSOEHandler,
                                     IUTCTimeSource* pTimeSource,                                    
                                     const MasterStackConfig& config,
-                                    const StackActionHandler& handler_) :
+                                    const StackActionHandler& handler_,									
+									opendnp3::ITaskLock& taskLock) :
 
 	handler(handler_),
 	stack(root, &executor, &statistics, config.link),
-	master(executor, root, stack.transport, pSOEHandler, pTimeSource, config.master)
+	master(executor, root, stack.transport, pSOEHandler, pTimeSource, config.master, taskLock)
 {
 	stack.transport.SetAppLayer(&master);
 }

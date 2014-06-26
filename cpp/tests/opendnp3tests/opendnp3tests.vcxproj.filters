@@ -409,5 +409,8 @@
     <ClCompile Include="src\MockPhysicalLayer.cpp">
       <Filter>Source Files\Mocks</Filter>
     </ClCompile>
+    <ClCompile Include="src\TestMasterMultidrop.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
