@@ -111,7 +111,7 @@ bool ObjectWriter::WriteSingleValue(QualifierCode qc, IDNP3Serializer<ValueType>
 	if(this->WriteHeaderWithReserve(ValueType::ID, qc, reserveSize))
 	{
 		CountType::WriteBuffer(*position, 1); //write the count
-		pSerializer->Write(value, *position);
+		serializer.Write(value, *position);
 		return true;
 	}
 	else return false;

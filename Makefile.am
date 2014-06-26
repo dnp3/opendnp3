@@ -201,6 +201,7 @@ cpp/libs/asiodnp3/src/asiodnp3/DestructorHook.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/DNP3Manager.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/DNP3Channel.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/MasterStackImpl.cpp \
+cpp/libs/asiodnp3/src/asiodnp3/MultidropTaskLock.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/OutstationStackImpl.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/PrintingSOEHandler.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/StackActionHandler.cpp
@@ -289,6 +290,8 @@ cpp/tests/opendnp3tests/src/TestLinkRoute.cpp \
 cpp/tests/opendnp3tests/src/TestLog.cpp \
 cpp/tests/opendnp3tests/src/TestMasterCommandRequests.cpp \
 cpp/tests/opendnp3tests/src/TestMaster.cpp \
+cpp/tests/opendnp3tests/src/TestMasterMultidrop.cpp \
+cpp/tests/opendnp3tests/src/TestMasterUnsolBehaviors.cpp \
 cpp/tests/opendnp3tests/src/TestObjectASIO.cpp \
 cpp/tests/opendnp3tests/src/TestObject.cpp \
 cpp/tests/opendnp3tests/src/TestOutstationCommandResponses.cpp \
