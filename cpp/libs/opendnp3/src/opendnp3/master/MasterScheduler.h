@@ -22,7 +22,7 @@
 #ifndef __MASTER_SCHEDULER_H_
 #define __MASTER_SCHEDULER_H_
 
-#include <openpal/executor/Action1.h>
+#include <openpal/executor/Function0.h>
 #include <openpal/executor/IExecutor.h>
 #include <openpal/container/Settable.h>
 #include <openpal/container/StaticLinkedList.h>
@@ -79,7 +79,7 @@ public:
 	/*
 	* Schedule a command to run
 	*/
-	void ScheduleCommand(const CommandErasure& action);	
+	bool ScheduleUserTask(const openpal::Function0<IMasterTask*>& task);
 
 	/**
 	* Add a new poll to the scheduler
@@ -126,6 +126,8 @@ private:
 
 	bool IsTaskActive(IMasterTask* pTask);
 
+	bool IsAnyTaskActive() const;
+
 	// ----------- static configuration ---------
 
 	openpal::IExecutor* pExecutor;
@@ -143,9 +145,11 @@ private:
 
 	openpal::Settable<TaskRecord> blockingTask;
 
-	openpal::StaticLinkedList<TaskRecord, uint16_t, sizes::MAX_MASTER_POLL_TASKS> periodicTasks;
-
 	openpal::StaticLinkedList<PollTask, uint16_t, sizes::MAX_MASTER_POLL_TASKS> pollTasks;
+	
+	openpal::StaticLinkedList<TaskRecord, uint16_t, sizes::MAX_MASTER_POLL_TASKS> periodicTasks;	
+
+	openpal::StaticQueue<openpal::Function0<IMasterTask*>, uint16_t, sizes::MAX_MASTER_USERS_TASKS> userTasks;
 	
 };
 

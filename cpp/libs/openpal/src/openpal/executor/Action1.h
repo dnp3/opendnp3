@@ -19,8 +19,8 @@
  * to you under the terms of the License.
  */
 
-#ifndef __ACTION1_H_
-#define __ACTION1_H_
+#ifndef __ACTION_ONE_H_
+#define __ACTION_ONE_H_
 
 #include "Erasure.h"
 
@@ -60,12 +60,7 @@ public:
 		Action1<T> function(&RunLambda<Lambda>, sizeof(lambda));
 		new(function.bytes) Lambda(lambda); // use placement new
 		return  function;
-	}
-
-	bool operator()() const
-	{
-		return (pInvoke != nullptr);
-	}
+	}	
 
 	void Apply(const T& arg) const
 	{

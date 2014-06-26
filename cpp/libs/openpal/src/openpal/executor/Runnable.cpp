@@ -37,11 +37,6 @@ bool Action0::IsSet() const
 	return (pInvoke != nullptr);
 }
 
-bool Action0::operator()() const
-{
-	return (pInvoke != nullptr);
-}
-
 Action0& Action0::operator=(const Action0& other)
 {
 	if (this != &other)

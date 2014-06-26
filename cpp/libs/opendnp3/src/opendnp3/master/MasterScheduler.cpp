@@ -121,7 +121,15 @@ IMasterTask* MasterScheduler::FindTaskToStart(const MasterParams& params)
 			}
 			else
 			{
-				return GetPeriodicTask(params, now);
+				if (userTasks.IsNotEmpty())
+				{
+					return userTasks.Pop()->Apply();
+				}
+				else
+				{
+					//finally check for periodic tasks
+					return GetPeriodicTask(params, now);
+				}				
 			}			
 		}
 	}
@@ -246,10 +254,22 @@ ListNode<TaskRecord>* MasterScheduler::GetEarliestExpirationTime()
 	return pNode;
 }
 
-void MasterScheduler::ScheduleCommand(const CommandErasure& action)
+bool MasterScheduler::ScheduleUserTask(const openpal::Function0<IMasterTask*>& task)
 {
-	// TODO
-	this->ReportFailure(action, CommandResult::NO_COMMS);
+	if (this->userTasks.Enqueue(task))
+	{
+		if (!IsAnyTaskActive())
+		{
+			this->CancelScheduleTimer();
+			this->pCallback->OnPendingTask();
+		}
+
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 PollTask* MasterScheduler::AddPollTask(const PollTask& pt)
@@ -310,6 +330,11 @@ bool MasterScheduler::IsTaskActive(IMasterTask* pTask)
 	}	
 }
 
+bool MasterScheduler::IsAnyTaskActive() const
+{
+	return pCurrentTask || blockingTask.IsSet();
+}
+
 void MasterScheduler::OnLowerLayerUp(const MasterParams& params)
 {
 	if (!isOnline)
@@ -333,10 +358,22 @@ void MasterScheduler::OnLowerLayerDown()
 	if (isOnline)
 	{
 		isOnline = false;
-		blockingTask.Clear();
-		pCurrentTask = nullptr;
-		periodicTasks.Clear();
 		this->CancelScheduleTimer();
+		periodicTasks.Clear();	
+		pCurrentTask = nullptr;
+
+		if (blockingTask.IsSet())
+		{
+			blockingTask.Get().pTask->OnLowerLayerClose();
+			blockingTask.Clear();
+		}
+
+		while (userTasks.IsNotEmpty())
+		{
+			auto pFun = userTasks.Pop();
+			auto pTask = pFun->Apply();
+			pTask->OnLowerLayerClose();
+		}		
 	}	
 }
 

@@ -18,59 +18,77 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __ACTION_ZERO_H_
-#define __ACTION_ZERO_H_
+
+#ifndef __FUNCTION_ZERO_H_
+#define __FUNCTION_ZERO_H_
 
 #include "Erasure.h"
+
 #include "openpal/Configure.h"
+
+#include <assert.h>
 
 namespace openpal
 {
 
-class Action0 : public Erasure
+template <class T>
+class Function0 : private Erasure
 {
+	typedef T (*Invoke)(const uint8_t* pBuffer);
 
 public:
 
-	typedef void(*Invoke)(const uint8_t* pBuffer);
+	Function0() : pInvoke(nullptr)
+	{}
 
-	Action0();
+	Function0(const Function0& other) : pInvoke(other.pInvoke)
+	{
+		this->CopyErasure(other);
+	}
 
-	Action0(const Action0& other);
+	Function0& operator=(const Function0& other)
+	{
+		if (this != &other)
+		{
+			this->pInvoke = other.pInvoke;
+			this->CopyErasure(other);
+		}
 
-	Action0& operator=(const Action0& other);
-
-	void Apply() const;	
-	
-	bool IsSet() const;
+		return *this;
+	}
 
 	template <class Lambda>
-	static Action0 Bind(Lambda& lambda)
+	static Function0<T> Bind(Lambda& lambda)
 	{
-		static_assert(sizeof(Lambda) <= sizes::MAX_ERASURE_SIZE, "Lambda is too big for erasure");
-		Action0 runnable(&Action0::RunLambda<Lambda>, sizeof(lambda));
-		new(runnable.bytes) Lambda(lambda); // use placement new
-		return runnable;
+		static_assert(sizeof(Lambda) <= sizes::MAX_ERASURE_SIZE, "Lambda is too big for erasure");		
+		Function0<T> function(&RunLambda<Lambda>, sizeof(lambda));
+		new(function.bytes) Lambda(lambda); // use placement new
+		return  function;
 	}
 
-	template <class T>
-	static Action0 BindDelete(T* pPointer)
+	bool IsSet() const
 	{
-		auto lambda = [pPointer]() { delete pPointer; };
-		return Bind(lambda);
+		return (pInvoke != nullptr);
 	}
 
-protected:	
+	T Apply() const
+	{
+		assert(pInvoke);
+		return (*pInvoke)(bytes);
+	}
+
+private:
 
 	template <class Lambda>
-	static void RunLambda(const uint8_t* pBuffer)
+	static T RunLambda(const uint8_t* pBuffer)
 	{
-		(*reinterpret_cast<const Lambda*>(pBuffer))();
+		return (*reinterpret_cast<const Lambda*>(pBuffer))();		
 	}
 
-	Action0(Invoke pInvoke_, uint32_t size_);
+	Function0(Invoke pInvoke_, uint32_t size_) : Erasure(size_), pInvoke(pInvoke_)
+	{}
 
-	Invoke pInvoke;
+	Invoke pInvoke;	
 };
 
 }

@@ -131,16 +131,15 @@ void MasterContext::OnPendingTask()
 	this->PostCheckForTask();
 }
 
-void MasterContext::QueueCommandAction(const Action1<ICommandProcessor&>& action)
+bool MasterContext::QueueUserTask(const openpal::Function0<IMasterTask*>& action)
 {
 	if (isOnline)
 	{
-		scheduler.ScheduleCommand(action);
+		return scheduler.ScheduleUserTask(action);
 	}
 	else
 	{
-		ConstantCommandProcessor processor(CommandResponse(CommandResult::NO_COMMS), nullptr);
-		action.Apply(processor);
+		return false;
 	}
 }
 
