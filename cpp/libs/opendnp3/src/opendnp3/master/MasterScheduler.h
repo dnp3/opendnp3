@@ -22,7 +22,7 @@
 #ifndef __MASTER_SCHEDULER_H_
 #define __MASTER_SCHEDULER_H_
 
-#include <openpal/executor/Function1.h>
+#include <openpal/executor/Action1.h>
 #include <openpal/executor/IExecutor.h>
 #include <openpal/container/Settable.h>
 #include <openpal/container/StaticLinkedList.h>
@@ -43,7 +43,7 @@ class MasterScheduler : public IMasterScheduler
 
 public:
 
-	typedef openpal::Function1<ICommandProcessor&> CommandErasure;
+	typedef openpal::Action1<ICommandProcessor&> CommandErasure;
 
 	MasterScheduler(	openpal::Logger* pLogger,
 						MasterTasks& tasks,
@@ -140,6 +140,7 @@ private:
 	openpal::ITimer* pTimer;
 	IMasterTask* pCurrentTask;
 	IMasterTask* pStartupTask;
+
 	openpal::Settable<TaskRecord> blockingTask;
 
 	openpal::StaticLinkedList<TaskRecord, uint16_t, sizes::MAX_MASTER_POLL_TASKS> periodicTasks;

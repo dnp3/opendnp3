@@ -103,9 +103,6 @@
     <ClInclude Include="src\openpal\executor\Erasure.h">
       <Filter>Header\executor</Filter>
     </ClInclude>
-    <ClInclude Include="src\openpal\executor\Function1.h">
-      <Filter>Header\executor</Filter>
-    </ClInclude>
     <ClInclude Include="src\openpal\executor\IExecutor.h">
       <Filter>Header\executor</Filter>
     </ClInclude>
@@ -200,6 +197,9 @@
       <Filter>Header\container</Filter>
     </ClInclude>
     <ClInclude Include="src\openpal\executor\IMutex.h">
+      <Filter>Header\executor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\openpal\executor\Action1.h">
       <Filter>Header\executor</Filter>
     </ClInclude>
   </ItemGroup>

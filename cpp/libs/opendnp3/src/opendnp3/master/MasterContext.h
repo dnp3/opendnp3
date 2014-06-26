@@ -114,7 +114,7 @@ class MasterContext : public ICommandProcessor, private IScheduleCallback
 	// callback from the scheduler that a task is ready to run	
 	virtual void OnPendingTask() override final;
 
-	void QueueCommandAction(const openpal::Function1<ICommandProcessor&>& action);
+	void QueueCommandAction(const openpal::Action1<ICommandProcessor&>& action);
 
 	void OnResponseTimeout();
 
@@ -136,12 +136,12 @@ class MasterContext : public ICommandProcessor, private IScheduleCallback
 template <class T>
 void MasterContext::SelectAndOperateT(const T& command, uint16_t index, ICommandCallback& callback)
 {
-	auto pCallback = &callback;
+	auto pCallback = &callback;	
 	auto process = [command, index, pCallback](ICommandProcessor& processor) 
 	{
 		processor.SelectAndOperate(command, index, *pCallback);
 	};
-	this->QueueCommandAction(openpal::Function1<ICommandProcessor&>::Bind(process));
+	this->QueueCommandAction(openpal::Action1<ICommandProcessor&>::Bind(process));
 }
 
 template <class T>
@@ -152,7 +152,7 @@ void MasterContext::DirectOperateT(const T& command, uint16_t index, ICommandCal
 	{
 		processor.DirectOperate(command, index, *pCallback);
 	};
-	this->QueueCommandAction(openpal::Function1<ICommandProcessor&>::Bind(process));
+	this->QueueCommandAction(openpal::Action1<ICommandProcessor&>::Bind(process));
 }
 
 }

@@ -131,7 +131,7 @@ void MasterContext::OnPendingTask()
 	this->PostCheckForTask();
 }
 
-void MasterContext::QueueCommandAction(const Function1<ICommandProcessor&>& action)
+void MasterContext::QueueCommandAction(const Action1<ICommandProcessor&>& action)
 {
 	if (isOnline)
 	{

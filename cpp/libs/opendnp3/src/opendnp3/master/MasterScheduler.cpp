@@ -68,8 +68,15 @@ void MasterScheduler::SetBlocking(IMasterTask& task, const openpal::TimeDuration
 
 bool MasterScheduler::Demand(IMasterTask& task)
 {
-	// TODO
-	return false;
+	if (this->IsTaskActive(&task))
+	{
+		return true;
+	}
+	else
+	{
+		// TODO
+		return false;
+	}
 }
 
 IMasterTask* MasterScheduler::Start(const MasterParams& params)

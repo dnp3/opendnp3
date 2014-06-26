@@ -68,7 +68,7 @@ ICommandProcessor& Master::GetCommandProcessor()
 	return commandMarshaller;
 }
 
-MasterScan Master::AddScan(openpal::TimeDuration period, const openpal::Function1<APDURequest&> builder)
+MasterScan Master::AddScan(openpal::TimeDuration period, const openpal::Action1<APDURequest&> builder)
 {
 	PollTask task(builder, period, context.pSOEHandler, &context.logger);
 	auto pTask = context.scheduler.AddPollTask(task);
@@ -85,7 +85,7 @@ MasterScan Master::AddScan(openpal::TimeDuration period, const openpal::Function
 MasterScan Master::AddClassScan(uint8_t classMask, openpal::TimeDuration period)
 {	
 	auto configure = [classMask](APDURequest& request) { build::WriteClassHeaders(request, classMask); };
-	return this->AddScan(period, openpal::Function1<APDURequest&>::Bind(configure));
+	return this->AddScan(period, openpal::Action1<APDURequest&>::Bind(configure));
 }
 
 MasterScan Master::AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period)
@@ -93,7 +93,7 @@ MasterScan Master::AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t 
 	auto configure = [gvId, start, stop](APDURequest& request) {
 		request.GetWriter().WriteRangeHeader<openpal::UInt16>(QualifierCode::UINT16_START_STOP, gvId, start, stop);		
 	};
-	return this->AddScan(period, openpal::Function1<APDURequest&>::Bind(configure));
+	return this->AddScan(period, openpal::Action1<APDURequest&>::Bind(configure));
 }
 	
 }

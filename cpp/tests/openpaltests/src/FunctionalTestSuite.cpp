@@ -21,7 +21,7 @@
 #include <catch.hpp>
 
 #include <openpal/executor/Runnable.h>
-#include <openpal/executor/Function1.h>
+#include <openpal/executor/Action1.h>
 
 using namespace openpal;
 
@@ -44,14 +44,14 @@ TEST_CASE(SUITE("RunnableBindWorksAsExpected"))
 	REQUIRE(a == 3);
 }
 
-TEST_CASE(SUITE("Function1BindWorksAsExpected"))
+TEST_CASE(SUITE("Action1BindWorksAsExpected"))
 {
 	int a = 1;
 	auto pA = &a;	
 
 	auto add = [=](int b) { *pA += b; };
 
-	auto bound = Function1<int>::Bind(add);
+	auto bound = Action1<int>::Bind(add);
 
 	bound.Apply(4);
 

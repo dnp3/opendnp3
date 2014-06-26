@@ -23,7 +23,7 @@
 
 #include "opendnp3/master/PollTaskBase.h"
 
-#include <openpal/executor/Function1.h>
+#include <openpal/executor/Action1.h>
 #include <openpal/container/StaticQueue.h>
 
 namespace opendnp3
@@ -39,7 +39,7 @@ class PollTask : public PollTaskBase
 
 public:
 
-	typedef openpal::Function1<APDURequest&> Builder;
+	typedef openpal::Action1<APDURequest&> Builder;
 
 	PollTask();	
 

@@ -19,8 +19,8 @@
  * to you under the terms of the License.
  */
 
-#ifndef __FUNCTION1_H_
-#define __FUNCTION1_H_
+#ifndef __ACTION1_H_
+#define __ACTION1_H_
 
 #include "Erasure.h"
 
@@ -28,21 +28,21 @@ namespace openpal
 {
 
 template <class T>
-class Function1 : private Erasure
+class Action1 : private Erasure
 {
-	typedef void(*Invoke)(const uint8_t* pBuffer, const T& arg);
+	typedef void (*Invoke)(const uint8_t* pBuffer, const T& arg);
 
 public:
 
-	Function1() : pInvoke(nullptr)
+	Action1() : pInvoke(nullptr)
 	{}
 
-	Function1(const Function1& other) : pInvoke(other.pInvoke)
+	Action1(const Action1& other) : pInvoke(other.pInvoke)
 	{
 		this->CopyErasure(other);
 	}
 
-	Function1& operator=(const Function1& other)
+	Action1& operator=(const Action1& other)
 	{
 		if (this != &other)
 		{
@@ -54,10 +54,10 @@ public:
 	}
 
 	template <class Lambda>
-	static Function1<T> Bind(Lambda& lambda)
+	static Action1<T> Bind(Lambda& lambda)
 	{
 		static_assert(sizeof(Lambda) <= sizes::MAX_ERASURE_SIZE, "Lambda is too big for erasure");		
-		Function1<T> function(&RunLambda<Lambda>, sizeof(lambda));
+		Action1<T> function(&RunLambda<Lambda>, sizeof(lambda));
 		new(function.bytes) Lambda(lambda); // use placement new
 		return  function;
 	}
@@ -83,7 +83,7 @@ private:
 		(*reinterpret_cast<const Lambda*>(pBuffer))(arg);		
 	}
 
-	Function1(Invoke pInvoke_, uint32_t size_) : Erasure(size_), pInvoke(pInvoke_)
+	Action1(Invoke pInvoke_, uint32_t size_) : Erasure(size_), pInvoke(pInvoke_)
 	{}
 
 	Invoke pInvoke;	
