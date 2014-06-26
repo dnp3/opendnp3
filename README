@@ -6,13 +6,10 @@ Licensed under the terms of the Apache Public License v2.0.
 Documentation
 =============
 
-Links to code documentation can be found on the sidebar of:
+All document is indexed here:
   
-http://www.automatak.com/opendnp3
+http://dnp3.github.io
 
-Companion documentation is hosted here:
-
-http://www.automatak.com/opendnp3/docs/1.1.x/index.html
 
 Overview
 ========
@@ -26,12 +23,3 @@ embedded linux ARM in a single outstation configuration.
 Custom written, idiomatic bindings are available for the 
 Microsoft CLR family of languages (C#, VB.NET, F#, etc) and JVM-based
 languages (Java, Scala, Clojure, etc).
-
-
-History
-=======
-
-This is a fork of the project originally located here:
-
-www.github.com/gec/dnp3
-
