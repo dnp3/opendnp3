@@ -88,8 +88,8 @@ cpp/libs/opendnp3/src/opendnp3/gen/EventDoubleBinaryResponse.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/EventFrozenCounterResponse.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/FunctionCode.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/LinkFunction.cpp \
+cpp/libs/opendnp3/src/opendnp3/gen/PollState.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/QualifierCode.cpp \
-cpp/libs/opendnp3/src/opendnp3/gen/ScanStatus.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/StaticAnalogOutputStatusResponse.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/StaticAnalogResponse.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/StaticBinaryOutputStatusResponse.cpp \
