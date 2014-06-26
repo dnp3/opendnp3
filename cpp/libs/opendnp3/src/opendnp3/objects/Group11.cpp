@@ -41,7 +41,7 @@ void Group11Var1::Write(const Group11Var1& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(1);
 }
 
-Group11Var1Serializer Group11Var1Serializer::mInstance;
+Group11Var1Serializer Group11Var1Serializer::instance;
 
 BinaryOutputStatus Group11Var1Serializer::Read(ReadOnlyBuffer& buff) const
 {
@@ -75,7 +75,7 @@ void Group11Var2::Write(const Group11Var2& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(6);
 }
 
-Group11Var2Serializer Group11Var2Serializer::mInstance;
+Group11Var2Serializer Group11Var2Serializer::instance;
 
 BinaryOutputStatus Group11Var2Serializer::Read(ReadOnlyBuffer& buff) const
 {

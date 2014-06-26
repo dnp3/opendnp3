@@ -45,7 +45,7 @@ struct Group2Var1
 struct Group2Var1Serializer : public IDNP3Serializer<Binary>
 {
 
-  static IDNP3Serializer<Binary>* Inst() { return &mInstance; }
+  static IDNP3Serializer<Binary>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group2Var1::ID; }
 
@@ -57,7 +57,7 @@ struct Group2Var1Serializer : public IDNP3Serializer<Binary>
 
   private:
 
-  static Group2Var1Serializer mInstance;
+  static Group2Var1Serializer instance;
 };
 
 struct Group2Var2
@@ -75,7 +75,7 @@ struct Group2Var2
 struct Group2Var2Serializer : public IDNP3Serializer<Binary>
 {
 
-  static IDNP3Serializer<Binary>* Inst() { return &mInstance; }
+  static IDNP3Serializer<Binary>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group2Var2::ID; }
 
@@ -87,7 +87,7 @@ struct Group2Var2Serializer : public IDNP3Serializer<Binary>
 
   private:
 
-  static Group2Var2Serializer mInstance;
+  static Group2Var2Serializer instance;
 };
 
 struct Group2Var3
@@ -105,7 +105,7 @@ struct Group2Var3
 struct Group2Var3Serializer : public IDNP3Serializer<Binary>
 {
 
-  static IDNP3Serializer<Binary>* Inst() { return &mInstance; }
+  static IDNP3Serializer<Binary>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group2Var3::ID; }
 
@@ -117,7 +117,7 @@ struct Group2Var3Serializer : public IDNP3Serializer<Binary>
 
   private:
 
-  static Group2Var3Serializer mInstance;
+  static Group2Var3Serializer instance;
 };
 
 

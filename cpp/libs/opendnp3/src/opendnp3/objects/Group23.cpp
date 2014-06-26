@@ -45,7 +45,7 @@ void Group23Var1::Write(const Group23Var1& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(4);
 }
 
-Group23Var1Serializer Group23Var1Serializer::mInstance;
+Group23Var1Serializer Group23Var1Serializer::instance;
 
 FrozenCounter Group23Var1Serializer::Read(ReadOnlyBuffer& buff) const
 {
@@ -79,7 +79,7 @@ void Group23Var2::Write(const Group23Var2& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(2);
 }
 
-Group23Var2Serializer Group23Var2Serializer::mInstance;
+Group23Var2Serializer Group23Var2Serializer::instance;
 
 FrozenCounter Group23Var2Serializer::Read(ReadOnlyBuffer& buff) const
 {
@@ -117,7 +117,7 @@ void Group23Var5::Write(const Group23Var5& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(6);
 }
 
-Group23Var5Serializer Group23Var5Serializer::mInstance;
+Group23Var5Serializer Group23Var5Serializer::instance;
 
 FrozenCounter Group23Var5Serializer::Read(ReadOnlyBuffer& buff) const
 {
@@ -155,7 +155,7 @@ void Group23Var6::Write(const Group23Var6& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(6);
 }
 
-Group23Var6Serializer Group23Var6Serializer::mInstance;
+Group23Var6Serializer Group23Var6Serializer::instance;
 
 FrozenCounter Group23Var6Serializer::Read(ReadOnlyBuffer& buff) const
 {

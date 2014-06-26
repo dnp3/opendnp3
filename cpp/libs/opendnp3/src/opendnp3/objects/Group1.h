@@ -45,7 +45,7 @@ struct Group1Var2
 struct Group1Var2Serializer : public IDNP3Serializer<Binary>
 {
 
-  static IDNP3Serializer<Binary>* Inst() { return &mInstance; }
+  static IDNP3Serializer<Binary>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group1Var2::ID; }
 
@@ -57,7 +57,7 @@ struct Group1Var2Serializer : public IDNP3Serializer<Binary>
 
   private:
 
-  static Group1Var2Serializer mInstance;
+  static Group1Var2Serializer instance;
 };
 
 struct Group1Var1

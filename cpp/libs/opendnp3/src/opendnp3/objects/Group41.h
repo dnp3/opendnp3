@@ -43,7 +43,7 @@ struct Group41Var1
 struct Group41Var1Serializer : public IDNP3Serializer<AnalogOutputInt32>
 {
 
-  static IDNP3Serializer<AnalogOutputInt32>* Inst() { return &mInstance; }
+  static IDNP3Serializer<AnalogOutputInt32>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group41Var1::ID; }
 
@@ -55,7 +55,7 @@ struct Group41Var1Serializer : public IDNP3Serializer<AnalogOutputInt32>
 
   private:
 
-  static Group41Var1Serializer mInstance;
+  static Group41Var1Serializer instance;
 };
 
 struct Group41Var2
@@ -74,7 +74,7 @@ struct Group41Var2
 struct Group41Var2Serializer : public IDNP3Serializer<AnalogOutputInt16>
 {
 
-  static IDNP3Serializer<AnalogOutputInt16>* Inst() { return &mInstance; }
+  static IDNP3Serializer<AnalogOutputInt16>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group41Var2::ID; }
 
@@ -86,7 +86,7 @@ struct Group41Var2Serializer : public IDNP3Serializer<AnalogOutputInt16>
 
   private:
 
-  static Group41Var2Serializer mInstance;
+  static Group41Var2Serializer instance;
 };
 
 struct Group41Var3
@@ -105,7 +105,7 @@ struct Group41Var3
 struct Group41Var3Serializer : public IDNP3Serializer<AnalogOutputFloat32>
 {
 
-  static IDNP3Serializer<AnalogOutputFloat32>* Inst() { return &mInstance; }
+  static IDNP3Serializer<AnalogOutputFloat32>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group41Var3::ID; }
 
@@ -117,7 +117,7 @@ struct Group41Var3Serializer : public IDNP3Serializer<AnalogOutputFloat32>
 
   private:
 
-  static Group41Var3Serializer mInstance;
+  static Group41Var3Serializer instance;
 };
 
 struct Group41Var4
@@ -136,7 +136,7 @@ struct Group41Var4
 struct Group41Var4Serializer : public IDNP3Serializer<AnalogOutputDouble64>
 {
 
-  static IDNP3Serializer<AnalogOutputDouble64>* Inst() { return &mInstance; }
+  static IDNP3Serializer<AnalogOutputDouble64>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group41Var4::ID; }
 
@@ -148,7 +148,7 @@ struct Group41Var4Serializer : public IDNP3Serializer<AnalogOutputDouble64>
 
   private:
 
-  static Group41Var4Serializer mInstance;
+  static Group41Var4Serializer instance;
 };
 
 

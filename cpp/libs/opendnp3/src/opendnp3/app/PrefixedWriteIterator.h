@@ -45,9 +45,9 @@ public:
 		pPosition(nullptr)
 	{}
 
-	PrefixedWriteIterator(IDNP3Serializer<WriteType>* pSerializer_, openpal::WriteBuffer& position) :
-		pSerializer(pSerializer_),
-		sizeOfTypePlusIndex(pSerializer_->Size() + PrefixType::Size),
+	PrefixedWriteIterator(IDNP3Serializer<WriteType>& serializer, openpal::WriteBuffer& position) :
+		pSerializer(&serializer),
+		sizeOfTypePlusIndex(serializer.Size() + PrefixType::Size),
 		count(0),		
 		isValid(position.Size() >= PrefixType::Size),
 		countPosition(position),		

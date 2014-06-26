@@ -32,7 +32,7 @@
 
 namespace opendnp3
 {	
-	IDNP3Serializer<Binary>* EventResponseTypes::Lookup(EventBinaryResponse enumeration)
+	IDNP3Serializer<Binary>& EventResponseTypes::Lookup(EventBinaryResponse enumeration)
 	{
 		switch (enumeration)
 		{
@@ -45,7 +45,7 @@ namespace opendnp3
 		}
 	}
 
-	IDNP3Serializer<DoubleBitBinary>* EventResponseTypes::Lookup(EventDoubleBinaryResponse enumeration)
+	IDNP3Serializer<DoubleBitBinary>& EventResponseTypes::Lookup(EventDoubleBinaryResponse enumeration)
 	{
 		switch (enumeration)
 		{
@@ -58,7 +58,7 @@ namespace opendnp3
 		}
 	}
 
-	IDNP3Serializer<Counter>* EventResponseTypes::Lookup(EventCounterResponse enumeration)
+	IDNP3Serializer<Counter>& EventResponseTypes::Lookup(EventCounterResponse enumeration)
 	{
 		switch (enumeration)
 		{
@@ -75,7 +75,7 @@ namespace opendnp3
 		}
 	}
 
-	IDNP3Serializer<FrozenCounter>* EventResponseTypes::Lookup(EventFrozenCounterResponse enumeration)
+	IDNP3Serializer<FrozenCounter>& EventResponseTypes::Lookup(EventFrozenCounterResponse enumeration)
 	{
 		switch (enumeration)
 		{
@@ -92,7 +92,7 @@ namespace opendnp3
 		}
 	}
 
-	IDNP3Serializer<Analog>* EventResponseTypes::Lookup(EventAnalogResponse enumeration)
+	IDNP3Serializer<Analog>& EventResponseTypes::Lookup(EventAnalogResponse enumeration)
 	{
 		switch (enumeration)
 		{
@@ -117,7 +117,7 @@ namespace opendnp3
 		}
 	}
 
-	IDNP3Serializer<BinaryOutputStatus>* EventResponseTypes::Lookup(EventBinaryOutputStatusResponse enumeration)
+	IDNP3Serializer<BinaryOutputStatus>& EventResponseTypes::Lookup(EventBinaryOutputStatusResponse enumeration)
 	{
 		switch (enumeration)
 		{
@@ -130,7 +130,7 @@ namespace opendnp3
 		}
 	}
 
-	IDNP3Serializer<AnalogOutputStatus>* EventResponseTypes::Lookup(EventAnalogOutputStatusResponse enumeration)
+	IDNP3Serializer<AnalogOutputStatus>& EventResponseTypes::Lookup(EventAnalogOutputStatusResponse enumeration)
 	{
 		switch (enumeration)
 		{

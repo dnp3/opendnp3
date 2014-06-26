@@ -40,7 +40,7 @@ struct Group11Var1
 struct Group11Var1Serializer : public IDNP3Serializer<BinaryOutputStatus>
 {
 
-  static IDNP3Serializer<BinaryOutputStatus>* Inst() { return &mInstance; }
+  static IDNP3Serializer<BinaryOutputStatus>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group11Var1::ID; }
 
@@ -52,7 +52,7 @@ struct Group11Var1Serializer : public IDNP3Serializer<BinaryOutputStatus>
 
   private:
 
-  static Group11Var1Serializer mInstance;
+  static Group11Var1Serializer instance;
 };
 
 struct Group11Var2
@@ -70,7 +70,7 @@ struct Group11Var2
 struct Group11Var2Serializer : public IDNP3Serializer<BinaryOutputStatus>
 {
 
-  static IDNP3Serializer<BinaryOutputStatus>* Inst() { return &mInstance; }
+  static IDNP3Serializer<BinaryOutputStatus>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group11Var2::ID; }
 
@@ -82,7 +82,7 @@ struct Group11Var2Serializer : public IDNP3Serializer<BinaryOutputStatus>
 
   private:
 
-  static Group11Var2Serializer mInstance;
+  static Group11Var2Serializer instance;
 };
 
 

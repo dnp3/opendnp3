@@ -45,7 +45,7 @@ void Group10Var2::Write(const Group10Var2& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(1);
 }
 
-Group10Var2Serializer Group10Var2Serializer::mInstance;
+Group10Var2Serializer Group10Var2Serializer::instance;
 
 BinaryOutputStatus Group10Var2Serializer::Read(ReadOnlyBuffer& buff) const
 {

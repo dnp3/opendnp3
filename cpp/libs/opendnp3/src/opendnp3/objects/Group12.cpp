@@ -57,7 +57,7 @@ void Group12Var1::Write(const Group12Var1& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(1);
 }
 
-Group12Var1Serializer Group12Var1Serializer::mInstance;
+Group12Var1Serializer Group12Var1Serializer::instance;
 
 ControlRelayOutputBlock Group12Var1Serializer::Read(ReadOnlyBuffer& buff) const
 {

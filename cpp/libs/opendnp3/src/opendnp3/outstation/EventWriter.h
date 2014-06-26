@@ -48,15 +48,15 @@ private:
 
 	// return the number of events written in the header
 	template <class T>
-	static uint32_t WriteFullHeader(ObjectWriter& writer, SelectionIterator& iterator, IDNP3Serializer<T>* pSerializer);
+	static uint32_t WriteFullHeader(ObjectWriter& writer, SelectionIterator& iterator, IDNP3Serializer<T>& serializer);
 };
 
 template <class T>
-uint32_t EventWriter::WriteFullHeader(ObjectWriter& ow, SelectionIterator& iterator, IDNP3Serializer<T>* pSerializer)
+uint32_t EventWriter::WriteFullHeader(ObjectWriter& ow, SelectionIterator& iterator, IDNP3Serializer<T>& serializer)
 {
 	uint32_t count = 0;
 
-	auto writer = ow.IterateOverCountWithPrefix<openpal::UInt16, T>(QualifierCode::UINT16_CNT_UINT16_INDEX, pSerializer);
+	auto writer = ow.IterateOverCountWithPrefix<openpal::UInt16, T>(QualifierCode::UINT16_CNT_UINT16_INDEX, serializer);
 	
 	Event<T> evt;
 	while (iterator.Read(evt))

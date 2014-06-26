@@ -42,7 +42,7 @@ struct Group23Var1
 struct Group23Var1Serializer : public IDNP3Serializer<FrozenCounter>
 {
 
-  static IDNP3Serializer<FrozenCounter>* Inst() { return &mInstance; }
+  static IDNP3Serializer<FrozenCounter>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group23Var1::ID; }
 
@@ -54,7 +54,7 @@ struct Group23Var1Serializer : public IDNP3Serializer<FrozenCounter>
 
   private:
 
-  static Group23Var1Serializer mInstance;
+  static Group23Var1Serializer instance;
 };
 
 struct Group23Var2
@@ -73,7 +73,7 @@ struct Group23Var2
 struct Group23Var2Serializer : public IDNP3Serializer<FrozenCounter>
 {
 
-  static IDNP3Serializer<FrozenCounter>* Inst() { return &mInstance; }
+  static IDNP3Serializer<FrozenCounter>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group23Var2::ID; }
 
@@ -85,7 +85,7 @@ struct Group23Var2Serializer : public IDNP3Serializer<FrozenCounter>
 
   private:
 
-  static Group23Var2Serializer mInstance;
+  static Group23Var2Serializer instance;
 };
 
 struct Group23Var5
@@ -105,7 +105,7 @@ struct Group23Var5
 struct Group23Var5Serializer : public IDNP3Serializer<FrozenCounter>
 {
 
-  static IDNP3Serializer<FrozenCounter>* Inst() { return &mInstance; }
+  static IDNP3Serializer<FrozenCounter>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group23Var5::ID; }
 
@@ -117,7 +117,7 @@ struct Group23Var5Serializer : public IDNP3Serializer<FrozenCounter>
 
   private:
 
-  static Group23Var5Serializer mInstance;
+  static Group23Var5Serializer instance;
 };
 
 struct Group23Var6
@@ -137,7 +137,7 @@ struct Group23Var6
 struct Group23Var6Serializer : public IDNP3Serializer<FrozenCounter>
 {
 
-  static IDNP3Serializer<FrozenCounter>* Inst() { return &mInstance; }
+  static IDNP3Serializer<FrozenCounter>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group23Var6::ID; }
 
@@ -149,7 +149,7 @@ struct Group23Var6Serializer : public IDNP3Serializer<FrozenCounter>
 
   private:
 
-  static Group23Var6Serializer mInstance;
+  static Group23Var6Serializer instance;
 };
 
 

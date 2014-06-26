@@ -42,7 +42,7 @@ struct Group22Var1
 struct Group22Var1Serializer : public IDNP3Serializer<Counter>
 {
 
-  static IDNP3Serializer<Counter>* Inst() { return &mInstance; }
+  static IDNP3Serializer<Counter>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group22Var1::ID; }
 
@@ -54,7 +54,7 @@ struct Group22Var1Serializer : public IDNP3Serializer<Counter>
 
   private:
 
-  static Group22Var1Serializer mInstance;
+  static Group22Var1Serializer instance;
 };
 
 struct Group22Var2
@@ -73,7 +73,7 @@ struct Group22Var2
 struct Group22Var2Serializer : public IDNP3Serializer<Counter>
 {
 
-  static IDNP3Serializer<Counter>* Inst() { return &mInstance; }
+  static IDNP3Serializer<Counter>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group22Var2::ID; }
 
@@ -85,7 +85,7 @@ struct Group22Var2Serializer : public IDNP3Serializer<Counter>
 
   private:
 
-  static Group22Var2Serializer mInstance;
+  static Group22Var2Serializer instance;
 };
 
 struct Group22Var5
@@ -105,7 +105,7 @@ struct Group22Var5
 struct Group22Var5Serializer : public IDNP3Serializer<Counter>
 {
 
-  static IDNP3Serializer<Counter>* Inst() { return &mInstance; }
+  static IDNP3Serializer<Counter>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group22Var5::ID; }
 
@@ -117,7 +117,7 @@ struct Group22Var5Serializer : public IDNP3Serializer<Counter>
 
   private:
 
-  static Group22Var5Serializer mInstance;
+  static Group22Var5Serializer instance;
 };
 
 struct Group22Var6
@@ -137,7 +137,7 @@ struct Group22Var6
 struct Group22Var6Serializer : public IDNP3Serializer<Counter>
 {
 
-  static IDNP3Serializer<Counter>* Inst() { return &mInstance; }
+  static IDNP3Serializer<Counter>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group22Var6::ID; }
 
@@ -149,7 +149,7 @@ struct Group22Var6Serializer : public IDNP3Serializer<Counter>
 
   private:
 
-  static Group22Var6Serializer mInstance;
+  static Group22Var6Serializer instance;
 };
 
 

@@ -41,11 +41,11 @@ public:
 	RangeWriteIterator() : start(0), pSerializer(nullptr), count(0), isValid(false), pPosition(nullptr)
 	{}
 
-	RangeWriteIterator(typename IndexType::Type start_, openpal::ISerializer<WriteType>* pSerializer_, openpal::WriteBuffer& position) :
+	RangeWriteIterator(typename IndexType::Type start_, openpal::ISerializer<WriteType>& serializer, openpal::WriteBuffer& position) :
 		start(start_),
-		pSerializer(pSerializer_),
+		pSerializer(&serializer),
 		count(0),				
-		isValid(position.Size() >= 2 * IndexType::Size && pSerializer),
+		isValid(position.Size() >= 2 * IndexType::Size),
 		range(position),
 		pPosition(&position)
 	{

@@ -45,13 +45,13 @@ class EventResponseTypes : openpal::PureStatic
 
 public:
 
-	static IDNP3Serializer<Binary>* Lookup(EventBinaryResponse enumeration);
-	static IDNP3Serializer<DoubleBitBinary>* Lookup(EventDoubleBinaryResponse enumeration);
-	static IDNP3Serializer<Counter>* Lookup(EventCounterResponse enumeration);
-	static IDNP3Serializer<FrozenCounter>* Lookup(EventFrozenCounterResponse enumeration);
-	static IDNP3Serializer<Analog>* Lookup(EventAnalogResponse enumeration);
-	static IDNP3Serializer<BinaryOutputStatus>* Lookup(EventBinaryOutputStatusResponse enumeration);
-	static IDNP3Serializer<AnalogOutputStatus>* Lookup(EventAnalogOutputStatusResponse enumeration);
+	static IDNP3Serializer<Binary>& Lookup(EventBinaryResponse enumeration);
+	static IDNP3Serializer<DoubleBitBinary>& Lookup(EventDoubleBinaryResponse enumeration);
+	static IDNP3Serializer<Counter>& Lookup(EventCounterResponse enumeration);
+	static IDNP3Serializer<FrozenCounter>& Lookup(EventFrozenCounterResponse enumeration);
+	static IDNP3Serializer<Analog>& Lookup(EventAnalogResponse enumeration);
+	static IDNP3Serializer<BinaryOutputStatus>& Lookup(EventBinaryOutputStatusResponse enumeration);
+	static IDNP3Serializer<AnalogOutputStatus>& Lookup(EventAnalogOutputStatusResponse enumeration);
 	
 };
 

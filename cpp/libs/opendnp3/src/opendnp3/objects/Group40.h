@@ -42,7 +42,7 @@ struct Group40Var1
 struct Group40Var1Serializer : public IDNP3Serializer<AnalogOutputStatus>
 {
 
-  static IDNP3Serializer<AnalogOutputStatus>* Inst() { return &mInstance; }
+  static IDNP3Serializer<AnalogOutputStatus>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group40Var1::ID; }
 
@@ -54,7 +54,7 @@ struct Group40Var1Serializer : public IDNP3Serializer<AnalogOutputStatus>
 
   private:
 
-  static Group40Var1Serializer mInstance;
+  static Group40Var1Serializer instance;
 };
 
 struct Group40Var2
@@ -73,7 +73,7 @@ struct Group40Var2
 struct Group40Var2Serializer : public IDNP3Serializer<AnalogOutputStatus>
 {
 
-  static IDNP3Serializer<AnalogOutputStatus>* Inst() { return &mInstance; }
+  static IDNP3Serializer<AnalogOutputStatus>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group40Var2::ID; }
 
@@ -85,7 +85,7 @@ struct Group40Var2Serializer : public IDNP3Serializer<AnalogOutputStatus>
 
   private:
 
-  static Group40Var2Serializer mInstance;
+  static Group40Var2Serializer instance;
 };
 
 struct Group40Var3
@@ -104,7 +104,7 @@ struct Group40Var3
 struct Group40Var3Serializer : public IDNP3Serializer<AnalogOutputStatus>
 {
 
-  static IDNP3Serializer<AnalogOutputStatus>* Inst() { return &mInstance; }
+  static IDNP3Serializer<AnalogOutputStatus>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group40Var3::ID; }
 
@@ -116,7 +116,7 @@ struct Group40Var3Serializer : public IDNP3Serializer<AnalogOutputStatus>
 
   private:
 
-  static Group40Var3Serializer mInstance;
+  static Group40Var3Serializer instance;
 };
 
 struct Group40Var4
@@ -135,7 +135,7 @@ struct Group40Var4
 struct Group40Var4Serializer : public IDNP3Serializer<AnalogOutputStatus>
 {
 
-  static IDNP3Serializer<AnalogOutputStatus>* Inst() { return &mInstance; }
+  static IDNP3Serializer<AnalogOutputStatus>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group40Var4::ID; }
 
@@ -147,7 +147,7 @@ struct Group40Var4Serializer : public IDNP3Serializer<AnalogOutputStatus>
 
   private:
 
-  static Group40Var4Serializer mInstance;
+  static Group40Var4Serializer instance;
 };
 
 

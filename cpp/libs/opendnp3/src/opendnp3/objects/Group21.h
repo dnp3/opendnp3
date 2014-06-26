@@ -42,7 +42,7 @@ struct Group21Var1
 struct Group21Var1Serializer : public IDNP3Serializer<FrozenCounter>
 {
 
-  static IDNP3Serializer<FrozenCounter>* Inst() { return &mInstance; }
+  static IDNP3Serializer<FrozenCounter>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group21Var1::ID; }
 
@@ -54,7 +54,7 @@ struct Group21Var1Serializer : public IDNP3Serializer<FrozenCounter>
 
   private:
 
-  static Group21Var1Serializer mInstance;
+  static Group21Var1Serializer instance;
 };
 
 struct Group21Var2
@@ -73,7 +73,7 @@ struct Group21Var2
 struct Group21Var2Serializer : public IDNP3Serializer<FrozenCounter>
 {
 
-  static IDNP3Serializer<FrozenCounter>* Inst() { return &mInstance; }
+  static IDNP3Serializer<FrozenCounter>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group21Var2::ID; }
 
@@ -85,7 +85,7 @@ struct Group21Var2Serializer : public IDNP3Serializer<FrozenCounter>
 
   private:
 
-  static Group21Var2Serializer mInstance;
+  static Group21Var2Serializer instance;
 };
 
 struct Group21Var5
@@ -105,7 +105,7 @@ struct Group21Var5
 struct Group21Var5Serializer : public IDNP3Serializer<FrozenCounter>
 {
 
-  static IDNP3Serializer<FrozenCounter>* Inst() { return &mInstance; }
+  static IDNP3Serializer<FrozenCounter>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group21Var5::ID; }
 
@@ -117,7 +117,7 @@ struct Group21Var5Serializer : public IDNP3Serializer<FrozenCounter>
 
   private:
 
-  static Group21Var5Serializer mInstance;
+  static Group21Var5Serializer instance;
 };
 
 struct Group21Var6
@@ -137,7 +137,7 @@ struct Group21Var6
 struct Group21Var6Serializer : public IDNP3Serializer<FrozenCounter>
 {
 
-  static IDNP3Serializer<FrozenCounter>* Inst() { return &mInstance; }
+  static IDNP3Serializer<FrozenCounter>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group21Var6::ID; }
 
@@ -149,7 +149,7 @@ struct Group21Var6Serializer : public IDNP3Serializer<FrozenCounter>
 
   private:
 
-  static Group21Var6Serializer mInstance;
+  static Group21Var6Serializer instance;
 };
 
 struct Group21Var9
@@ -167,7 +167,7 @@ struct Group21Var9
 struct Group21Var9Serializer : public IDNP3Serializer<FrozenCounter>
 {
 
-  static IDNP3Serializer<FrozenCounter>* Inst() { return &mInstance; }
+  static IDNP3Serializer<FrozenCounter>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group21Var9::ID; }
 
@@ -179,7 +179,7 @@ struct Group21Var9Serializer : public IDNP3Serializer<FrozenCounter>
 
   private:
 
-  static Group21Var9Serializer mInstance;
+  static Group21Var9Serializer instance;
 };
 
 struct Group21Var10
@@ -197,7 +197,7 @@ struct Group21Var10
 struct Group21Var10Serializer : public IDNP3Serializer<FrozenCounter>
 {
 
-  static IDNP3Serializer<FrozenCounter>* Inst() { return &mInstance; }
+  static IDNP3Serializer<FrozenCounter>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group21Var10::ID; }
 
@@ -209,7 +209,7 @@ struct Group21Var10Serializer : public IDNP3Serializer<FrozenCounter>
 
   private:
 
-  static Group21Var10Serializer mInstance;
+  static Group21Var10Serializer instance;
 };
 
 

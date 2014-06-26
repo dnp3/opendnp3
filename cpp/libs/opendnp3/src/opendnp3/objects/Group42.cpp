@@ -45,7 +45,7 @@ void Group42Var1::Write(const Group42Var1& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(4);
 }
 
-Group42Var1Serializer Group42Var1Serializer::mInstance;
+Group42Var1Serializer Group42Var1Serializer::instance;
 
 AnalogOutputStatus Group42Var1Serializer::Read(ReadOnlyBuffer& buff) const
 {
@@ -79,7 +79,7 @@ void Group42Var2::Write(const Group42Var2& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(2);
 }
 
-Group42Var2Serializer Group42Var2Serializer::mInstance;
+Group42Var2Serializer Group42Var2Serializer::instance;
 
 AnalogOutputStatus Group42Var2Serializer::Read(ReadOnlyBuffer& buff) const
 {
@@ -117,7 +117,7 @@ void Group42Var3::Write(const Group42Var3& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(6);
 }
 
-Group42Var3Serializer Group42Var3Serializer::mInstance;
+Group42Var3Serializer Group42Var3Serializer::instance;
 
 AnalogOutputStatus Group42Var3Serializer::Read(ReadOnlyBuffer& buff) const
 {
@@ -155,7 +155,7 @@ void Group42Var4::Write(const Group42Var4& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(6);
 }
 
-Group42Var4Serializer Group42Var4Serializer::mInstance;
+Group42Var4Serializer Group42Var4Serializer::instance;
 
 AnalogOutputStatus Group42Var4Serializer::Read(ReadOnlyBuffer& buff) const
 {
@@ -189,7 +189,7 @@ void Group42Var5::Write(const Group42Var5& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(4);
 }
 
-Group42Var5Serializer Group42Var5Serializer::mInstance;
+Group42Var5Serializer Group42Var5Serializer::instance;
 
 AnalogOutputStatus Group42Var5Serializer::Read(ReadOnlyBuffer& buff) const
 {
@@ -223,7 +223,7 @@ void Group42Var6::Write(const Group42Var6& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(8);
 }
 
-Group42Var6Serializer Group42Var6Serializer::mInstance;
+Group42Var6Serializer Group42Var6Serializer::instance;
 
 AnalogOutputStatus Group42Var6Serializer::Read(ReadOnlyBuffer& buff) const
 {
@@ -261,7 +261,7 @@ void Group42Var7::Write(const Group42Var7& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(6);
 }
 
-Group42Var7Serializer Group42Var7Serializer::mInstance;
+Group42Var7Serializer Group42Var7Serializer::instance;
 
 AnalogOutputStatus Group42Var7Serializer::Read(ReadOnlyBuffer& buff) const
 {
@@ -299,7 +299,7 @@ void Group42Var8::Write(const Group42Var8& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(6);
 }
 
-Group42Var8Serializer Group42Var8Serializer::mInstance;
+Group42Var8Serializer Group42Var8Serializer::instance;
 
 AnalogOutputStatus Group42Var8Serializer::Read(ReadOnlyBuffer& buff) const
 {

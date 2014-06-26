@@ -45,7 +45,7 @@ void Group3Var2::Write(const Group3Var2& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(1);
 }
 
-Group3Var2Serializer Group3Var2Serializer::mInstance;
+Group3Var2Serializer Group3Var2Serializer::instance;
 
 DoubleBitBinary Group3Var2Serializer::Read(ReadOnlyBuffer& buff) const
 {

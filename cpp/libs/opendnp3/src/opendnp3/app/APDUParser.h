@@ -186,7 +186,7 @@ private:
 	    IAPDUHandler* pHandler);
 
 	template <class Target>
-	static Result ParseRangeFixedSize(const HeaderRecord& record, openpal::ISerializer<Target>* pSerializer, openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, const Range& range, IAPDUHandler* pHandler);
+	static Result ParseRangeFixedSize(const HeaderRecord& record, openpal::ISerializer<Target>& serializer, openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, const Range& range, IAPDUHandler* pHandler);
 
 	template <class Descriptor>
 	static Result ParseCountOf(openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, const HeaderRecord& record, uint32_t count, IAPDUHandler* pHandler);
@@ -197,7 +197,7 @@ private:
 	    openpal::ReadOnlyBuffer& buffer,
 	    openpal::Logger* pLogger,
 	    uint32_t count,
-	    openpal::ISerializer<Target>* pSerializer,
+	    openpal::ISerializer<Target>& serializer,
 	    IAPDUHandler* pHandler);
 
 	static IndexedValue<Binary, uint16_t> BoolToBinary(const IndexedValue<bool, uint16_t>& v);
@@ -538,9 +538,9 @@ APDUParser::Result APDUParser::ParseCount(openpal::ReadOnlyBuffer& buffer, openp
 }
 
 template <class Target>
-APDUParser::Result APDUParser::ParseRangeFixedSize(const HeaderRecord& record, openpal::ISerializer<Target>* pSerializer, openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, const Range& range, IAPDUHandler* pHandler)
+APDUParser::Result APDUParser::ParseRangeFixedSize(const HeaderRecord& record, openpal::ISerializer<Target>& serializer, openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, const Range& range, IAPDUHandler* pHandler)
 {
-	uint32_t size = range.Count() * pSerializer->Size();
+	uint32_t size = range.Count() * serializer.Size();
 	if (buffer.Size() < size)
 	{
 		SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified objects");
@@ -551,6 +551,7 @@ APDUParser::Result APDUParser::ParseRangeFixedSize(const HeaderRecord& record, o
 
 		if(pHandler)
 		{
+			auto pSerializer = &serializer;
 			auto collection = CreateLazyIterable<IndexedValue<Target, uint16_t>>(buffer, range.Count(), [range, pSerializer](openpal::ReadOnlyBuffer & buffer, uint32_t pos)
 			{
 				return IndexedValue<Target, uint16_t>(pSerializer->Read(buffer), range.start + pos);
@@ -592,10 +593,10 @@ APDUParser::Result APDUParser::ParseCountFixedSizeWithIndex(
     openpal::ReadOnlyBuffer& buffer,
     openpal::Logger* pLogger,
     uint32_t count,
-    openpal::ISerializer<Target>* pSerializer,
+    openpal::ISerializer<Target>& serializer,
     IAPDUHandler* pHandler)
 {
-	uint32_t size = count * (IndexType::Size + pSerializer->Size());
+	uint32_t size = count * (IndexType::Size + serializer.Size());
 	if (buffer.Size() < size)
 	{
 		SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified objects");
@@ -605,6 +606,7 @@ APDUParser::Result APDUParser::ParseCountFixedSizeWithIndex(
 	{
 		if(pHandler)
 		{
+			auto pSerializer = &serializer;
 			auto collection = CreateLazyIterable<IndexedValue<Target, typename IndexType::Type>>(buffer, count,
 			                  [pSerializer](openpal::ReadOnlyBuffer & buffer, uint32_t)
 			{

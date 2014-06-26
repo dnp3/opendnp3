@@ -42,7 +42,7 @@ struct Group42Var1
 struct Group42Var1Serializer : public IDNP3Serializer<AnalogOutputStatus>
 {
 
-  static IDNP3Serializer<AnalogOutputStatus>* Inst() { return &mInstance; }
+  static IDNP3Serializer<AnalogOutputStatus>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group42Var1::ID; }
 
@@ -54,7 +54,7 @@ struct Group42Var1Serializer : public IDNP3Serializer<AnalogOutputStatus>
 
   private:
 
-  static Group42Var1Serializer mInstance;
+  static Group42Var1Serializer instance;
 };
 
 struct Group42Var2
@@ -73,7 +73,7 @@ struct Group42Var2
 struct Group42Var2Serializer : public IDNP3Serializer<AnalogOutputStatus>
 {
 
-  static IDNP3Serializer<AnalogOutputStatus>* Inst() { return &mInstance; }
+  static IDNP3Serializer<AnalogOutputStatus>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group42Var2::ID; }
 
@@ -85,7 +85,7 @@ struct Group42Var2Serializer : public IDNP3Serializer<AnalogOutputStatus>
 
   private:
 
-  static Group42Var2Serializer mInstance;
+  static Group42Var2Serializer instance;
 };
 
 struct Group42Var3
@@ -105,7 +105,7 @@ struct Group42Var3
 struct Group42Var3Serializer : public IDNP3Serializer<AnalogOutputStatus>
 {
 
-  static IDNP3Serializer<AnalogOutputStatus>* Inst() { return &mInstance; }
+  static IDNP3Serializer<AnalogOutputStatus>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group42Var3::ID; }
 
@@ -117,7 +117,7 @@ struct Group42Var3Serializer : public IDNP3Serializer<AnalogOutputStatus>
 
   private:
 
-  static Group42Var3Serializer mInstance;
+  static Group42Var3Serializer instance;
 };
 
 struct Group42Var4
@@ -137,7 +137,7 @@ struct Group42Var4
 struct Group42Var4Serializer : public IDNP3Serializer<AnalogOutputStatus>
 {
 
-  static IDNP3Serializer<AnalogOutputStatus>* Inst() { return &mInstance; }
+  static IDNP3Serializer<AnalogOutputStatus>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group42Var4::ID; }
 
@@ -149,7 +149,7 @@ struct Group42Var4Serializer : public IDNP3Serializer<AnalogOutputStatus>
 
   private:
 
-  static Group42Var4Serializer mInstance;
+  static Group42Var4Serializer instance;
 };
 
 struct Group42Var5
@@ -168,7 +168,7 @@ struct Group42Var5
 struct Group42Var5Serializer : public IDNP3Serializer<AnalogOutputStatus>
 {
 
-  static IDNP3Serializer<AnalogOutputStatus>* Inst() { return &mInstance; }
+  static IDNP3Serializer<AnalogOutputStatus>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group42Var5::ID; }
 
@@ -180,7 +180,7 @@ struct Group42Var5Serializer : public IDNP3Serializer<AnalogOutputStatus>
 
   private:
 
-  static Group42Var5Serializer mInstance;
+  static Group42Var5Serializer instance;
 };
 
 struct Group42Var6
@@ -199,7 +199,7 @@ struct Group42Var6
 struct Group42Var6Serializer : public IDNP3Serializer<AnalogOutputStatus>
 {
 
-  static IDNP3Serializer<AnalogOutputStatus>* Inst() { return &mInstance; }
+  static IDNP3Serializer<AnalogOutputStatus>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group42Var6::ID; }
 
@@ -211,7 +211,7 @@ struct Group42Var6Serializer : public IDNP3Serializer<AnalogOutputStatus>
 
   private:
 
-  static Group42Var6Serializer mInstance;
+  static Group42Var6Serializer instance;
 };
 
 struct Group42Var7
@@ -231,7 +231,7 @@ struct Group42Var7
 struct Group42Var7Serializer : public IDNP3Serializer<AnalogOutputStatus>
 {
 
-  static IDNP3Serializer<AnalogOutputStatus>* Inst() { return &mInstance; }
+  static IDNP3Serializer<AnalogOutputStatus>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group42Var7::ID; }
 
@@ -243,7 +243,7 @@ struct Group42Var7Serializer : public IDNP3Serializer<AnalogOutputStatus>
 
   private:
 
-  static Group42Var7Serializer mInstance;
+  static Group42Var7Serializer instance;
 };
 
 struct Group42Var8
@@ -263,7 +263,7 @@ struct Group42Var8
 struct Group42Var8Serializer : public IDNP3Serializer<AnalogOutputStatus>
 {
 
-  static IDNP3Serializer<AnalogOutputStatus>* Inst() { return &mInstance; }
+  static IDNP3Serializer<AnalogOutputStatus>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group42Var8::ID; }
 
@@ -275,7 +275,7 @@ struct Group42Var8Serializer : public IDNP3Serializer<AnalogOutputStatus>
 
   private:
 
-  static Group42Var8Serializer mInstance;
+  static Group42Var8Serializer instance;
 };
 
 

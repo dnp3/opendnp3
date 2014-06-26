@@ -50,7 +50,7 @@ struct Group10Var2
 struct Group10Var2Serializer : public IDNP3Serializer<BinaryOutputStatus>
 {
 
-  static IDNP3Serializer<BinaryOutputStatus>* Inst() { return &mInstance; }
+  static IDNP3Serializer<BinaryOutputStatus>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group10Var2::ID; }
 
@@ -62,7 +62,7 @@ struct Group10Var2Serializer : public IDNP3Serializer<BinaryOutputStatus>
 
   private:
 
-  static Group10Var2Serializer mInstance;
+  static Group10Var2Serializer instance;
 };
 
 

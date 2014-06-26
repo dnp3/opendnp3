@@ -64,14 +64,14 @@ private:
 	ObjectWriter* pWriter;
 
 	template <class Target, class IndexType>
-	void RespondToHeader(QualifierCode qualifier, IDNP3Serializer<Target>* pSerializer, const IterableBuffer<IndexedValue<Target, typename IndexType::Type>>& meas);
+	void RespondToHeader(QualifierCode qualifier, IDNP3Serializer<Target>& serializer, const IterableBuffer<IndexedValue<Target, typename IndexType::Type>>& meas);
 
 };
 
 template <class Target, class IndexType>
-void CommandResponseHandler::RespondToHeader(QualifierCode qualifier, IDNP3Serializer<Target>* pSerializer, const IterableBuffer<IndexedValue<Target, typename IndexType::Type>>& meas)
+void CommandResponseHandler::RespondToHeader(QualifierCode qualifier, IDNP3Serializer<Target>& serializer, const IterableBuffer<IndexedValue<Target, typename IndexType::Type>>& meas)
 {
-	auto iter = pWriter->IterateOverCountWithPrefix<IndexType, Target>(qualifier, pSerializer);
+	auto iter = pWriter->IterateOverCountWithPrefix<IndexType, Target>(qualifier, serializer);
 
 	auto commands = meas.Iterate();
 	while (commands.HasNext())

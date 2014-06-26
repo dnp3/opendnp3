@@ -45,7 +45,7 @@ void Group40Var1::Write(const Group40Var1& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(4);
 }
 
-Group40Var1Serializer Group40Var1Serializer::mInstance;
+Group40Var1Serializer Group40Var1Serializer::instance;
 
 AnalogOutputStatus Group40Var1Serializer::Read(ReadOnlyBuffer& buff) const
 {
@@ -79,7 +79,7 @@ void Group40Var2::Write(const Group40Var2& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(2);
 }
 
-Group40Var2Serializer Group40Var2Serializer::mInstance;
+Group40Var2Serializer Group40Var2Serializer::instance;
 
 AnalogOutputStatus Group40Var2Serializer::Read(ReadOnlyBuffer& buff) const
 {
@@ -113,7 +113,7 @@ void Group40Var3::Write(const Group40Var3& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(4);
 }
 
-Group40Var3Serializer Group40Var3Serializer::mInstance;
+Group40Var3Serializer Group40Var3Serializer::instance;
 
 AnalogOutputStatus Group40Var3Serializer::Read(ReadOnlyBuffer& buff) const
 {
@@ -147,7 +147,7 @@ void Group40Var4::Write(const Group40Var4& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(8);
 }
 
-Group40Var4Serializer Group40Var4Serializer::mInstance;
+Group40Var4Serializer Group40Var4Serializer::instance;
 
 AnalogOutputStatus Group40Var4Serializer::Read(ReadOnlyBuffer& buff) const
 {

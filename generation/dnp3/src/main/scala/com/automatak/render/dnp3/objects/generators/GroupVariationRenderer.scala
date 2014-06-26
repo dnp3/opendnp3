@@ -67,12 +67,12 @@ object GroupVariationHeaderRenderer extends ModelRenderer[GroupVariation]{
         val structName = x.name+"Serializer"
         val baseClass = "IDNP3Serializer<"+conv.target+">"
         space ++ struct(structName, Some(baseClass)) {
-          space ++ Iterator("static " + baseClass + "* Inst() { return &mInstance; }") ++
+          space ++ Iterator("static " + baseClass + "& Inst() { return instance; }") ++
           space ++ Iterator("GroupVariationID ID() const { return " + x.name + "::ID; }") ++
           space ++ Iterator("uint32_t Size() const { return " + x.name + "::SIZE; }") ++
           space ++ conv.signatures ++ space ++
           privateSection {
-            Iterator("static " + structName + " mInstance;")
+            Iterator("static " + structName + " instance;")
           }
         }
     }

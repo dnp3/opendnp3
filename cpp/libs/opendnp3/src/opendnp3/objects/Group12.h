@@ -46,7 +46,7 @@ struct Group12Var1
 struct Group12Var1Serializer : public IDNP3Serializer<ControlRelayOutputBlock>
 {
 
-  static IDNP3Serializer<ControlRelayOutputBlock>* Inst() { return &mInstance; }
+  static IDNP3Serializer<ControlRelayOutputBlock>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group12Var1::ID; }
 
@@ -58,7 +58,7 @@ struct Group12Var1Serializer : public IDNP3Serializer<ControlRelayOutputBlock>
 
   private:
 
-  static Group12Var1Serializer mInstance;
+  static Group12Var1Serializer instance;
 };
 
 

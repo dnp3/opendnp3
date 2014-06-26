@@ -42,12 +42,12 @@ public:
 	CountWriteIterator() : count(0), pSerializer(nullptr), pPosition(nullptr), isValid(false)
 	{}
 
-	CountWriteIterator(openpal::ISerializer<WriteType>* pSerializer_, openpal::WriteBuffer& position) :
+	CountWriteIterator(openpal::ISerializer<WriteType>& serializer, openpal::WriteBuffer& position) :
 		count(0),
-		pSerializer(pSerializer_),
+		pSerializer(&serializer),
 		countPosition(position),
 		pPosition(&position),
-		isValid(position.Size() >= CountType::Size || pSerializer == nullptr)
+		isValid(position.Size() >= CountType::Size)
 	{
 		if(isValid)
 		{

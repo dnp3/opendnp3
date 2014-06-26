@@ -42,7 +42,7 @@ struct Group32Var1
 struct Group32Var1Serializer : public IDNP3Serializer<Analog>
 {
 
-  static IDNP3Serializer<Analog>* Inst() { return &mInstance; }
+  static IDNP3Serializer<Analog>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group32Var1::ID; }
 
@@ -54,7 +54,7 @@ struct Group32Var1Serializer : public IDNP3Serializer<Analog>
 
   private:
 
-  static Group32Var1Serializer mInstance;
+  static Group32Var1Serializer instance;
 };
 
 struct Group32Var2
@@ -73,7 +73,7 @@ struct Group32Var2
 struct Group32Var2Serializer : public IDNP3Serializer<Analog>
 {
 
-  static IDNP3Serializer<Analog>* Inst() { return &mInstance; }
+  static IDNP3Serializer<Analog>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group32Var2::ID; }
 
@@ -85,7 +85,7 @@ struct Group32Var2Serializer : public IDNP3Serializer<Analog>
 
   private:
 
-  static Group32Var2Serializer mInstance;
+  static Group32Var2Serializer instance;
 };
 
 struct Group32Var3
@@ -105,7 +105,7 @@ struct Group32Var3
 struct Group32Var3Serializer : public IDNP3Serializer<Analog>
 {
 
-  static IDNP3Serializer<Analog>* Inst() { return &mInstance; }
+  static IDNP3Serializer<Analog>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group32Var3::ID; }
 
@@ -117,7 +117,7 @@ struct Group32Var3Serializer : public IDNP3Serializer<Analog>
 
   private:
 
-  static Group32Var3Serializer mInstance;
+  static Group32Var3Serializer instance;
 };
 
 struct Group32Var4
@@ -137,7 +137,7 @@ struct Group32Var4
 struct Group32Var4Serializer : public IDNP3Serializer<Analog>
 {
 
-  static IDNP3Serializer<Analog>* Inst() { return &mInstance; }
+  static IDNP3Serializer<Analog>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group32Var4::ID; }
 
@@ -149,7 +149,7 @@ struct Group32Var4Serializer : public IDNP3Serializer<Analog>
 
   private:
 
-  static Group32Var4Serializer mInstance;
+  static Group32Var4Serializer instance;
 };
 
 struct Group32Var5
@@ -168,7 +168,7 @@ struct Group32Var5
 struct Group32Var5Serializer : public IDNP3Serializer<Analog>
 {
 
-  static IDNP3Serializer<Analog>* Inst() { return &mInstance; }
+  static IDNP3Serializer<Analog>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group32Var5::ID; }
 
@@ -180,7 +180,7 @@ struct Group32Var5Serializer : public IDNP3Serializer<Analog>
 
   private:
 
-  static Group32Var5Serializer mInstance;
+  static Group32Var5Serializer instance;
 };
 
 struct Group32Var6
@@ -199,7 +199,7 @@ struct Group32Var6
 struct Group32Var6Serializer : public IDNP3Serializer<Analog>
 {
 
-  static IDNP3Serializer<Analog>* Inst() { return &mInstance; }
+  static IDNP3Serializer<Analog>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group32Var6::ID; }
 
@@ -211,7 +211,7 @@ struct Group32Var6Serializer : public IDNP3Serializer<Analog>
 
   private:
 
-  static Group32Var6Serializer mInstance;
+  static Group32Var6Serializer instance;
 };
 
 struct Group32Var7
@@ -231,7 +231,7 @@ struct Group32Var7
 struct Group32Var7Serializer : public IDNP3Serializer<Analog>
 {
 
-  static IDNP3Serializer<Analog>* Inst() { return &mInstance; }
+  static IDNP3Serializer<Analog>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group32Var7::ID; }
 
@@ -243,7 +243,7 @@ struct Group32Var7Serializer : public IDNP3Serializer<Analog>
 
   private:
 
-  static Group32Var7Serializer mInstance;
+  static Group32Var7Serializer instance;
 };
 
 struct Group32Var8
@@ -263,7 +263,7 @@ struct Group32Var8
 struct Group32Var8Serializer : public IDNP3Serializer<Analog>
 {
 
-  static IDNP3Serializer<Analog>* Inst() { return &mInstance; }
+  static IDNP3Serializer<Analog>& Inst() { return instance; }
 
   GroupVariationID ID() const { return Group32Var8::ID; }
 
@@ -275,7 +275,7 @@ struct Group32Var8Serializer : public IDNP3Serializer<Analog>
 
   private:
 
-  static Group32Var8Serializer mInstance;
+  static Group32Var8Serializer instance;
 };
 
 

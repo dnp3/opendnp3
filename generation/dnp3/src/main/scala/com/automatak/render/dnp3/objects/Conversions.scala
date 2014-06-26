@@ -25,7 +25,7 @@ class ArbitraryConversion(name: String, incHeaders: List[String], cppHeaders: Li
 
     val serializer = fs.name + "Serializer"
 
-    def singleton = Iterator(serializer + " " + serializer + "::mInstance;")
+    def singleton = Iterator(serializer + " " + serializer + "::instance;")
 
     def func1 = {
       Iterator(name + " " + serializer + "::Read(ReadOnlyBuffer& buff) const") ++ bracket {

@@ -68,8 +68,8 @@ object GroupVariationFileGenerator {
     def headerFile(group: ObjectGroup): Iterator[String] = {
       commented(LicenseHeader()) ++ space ++
       includeGuards(group.name.toUpperCase) {
-          Iterator("#include <openpal/ReadOnlyBuffer.h>") ++
-          Iterator("#include <openpal/WriteBuffer.h>") ++
+          Iterator("#include <openpal/container/ReadOnlyBuffer.h>") ++
+          Iterator("#include <openpal/container/WriteBuffer.h>") ++
           Iterator("#include \"opendnp3/app/GroupVariationID.h\"") ++
         optionalIncludes(group) ++ space ++
         namespace("opendnp3") {
