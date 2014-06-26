@@ -59,11 +59,19 @@ IMasterState* MasterStateIdle::OnStart(MasterContext* pContext)
 		auto pTask = pContext->scheduler.Start(pContext->params);
 		
 		if (pTask)
-		{			
-			FORMAT_LOG_BLOCK(pContext->logger, flags::INFO, "Begining task: %s", pTask->Name());
-			pContext->pActiveTask = pTask;
-			pContext->StartTask(pTask);
-			return &MasterStateWaitForResponse::Instance();
+		{		
+			if (pContext->pTaskLock->Acquire(*pContext))
+			{
+				FORMAT_LOG_BLOCK(pContext->logger, flags::INFO, "Begining task: %s", pTask->Name());
+				pContext->pActiveTask = pTask;
+				pContext->StartTask(pTask);
+				return &MasterStateWaitForResponse::Instance();
+			}
+			else
+			{
+				pContext->pActiveTask = pTask;
+				return &MasterStateTaskReady::Instance();
+			}
 		}
 		else
 		{
@@ -84,8 +92,15 @@ IMasterState* MasterStateTaskReady::OnStart(MasterContext*pContext)
 	}
 	else
 	{
-		pContext->StartTask(pContext->pActiveTask);
-		return &MasterStateWaitForResponse::Instance();
+		if (pContext->pTaskLock->Acquire(*pContext))
+		{
+			pContext->StartTask(pContext->pActiveTask);
+			return &MasterStateWaitForResponse::Instance();
+		}
+		else
+		{
+			return this;
+		}
 	}	
 }
 
@@ -117,6 +132,7 @@ IMasterState* MasterStateWaitForResponse::OnResponse(MasterContext* pContext, co
 				return MasterStateTaskReady::Instance().OnStart(pContext);
 			default:
 				pContext->pActiveTask = nullptr;
+				pContext->pTaskLock->Release(*pContext);
 				pContext->PostCheckForTask();
 				return &MasterStateIdle::Instance();
 		}
@@ -133,8 +149,10 @@ IMasterState* MasterStateWaitForResponse::OnResponseTimeout(MasterContext* pCont
 	pContext->pResponseTimer = nullptr;
 	pContext->pActiveTask->OnResponseTimeout(pContext->params, pContext->scheduler);
 	pContext->pActiveTask = nullptr;
-	pContext->solSeq = AppControlField::NextSeq(pContext->solSeq);	
-	return MasterStateIdle::Instance().OnStart(pContext);
+	pContext->pTaskLock->Release(*pContext);
+	pContext->solSeq = AppControlField::NextSeq(pContext->solSeq);
+	pContext->PostCheckForTask();
+	return &MasterStateIdle::Instance();
 }
 
 }

@@ -35,7 +35,7 @@
 namespace opendnp3
 {
 
-class MasterContext : public ICommandProcessor, private IScheduleCallback
+class MasterContext : public ICommandProcessor, public IScheduleCallback
 {
 	public:	
 
