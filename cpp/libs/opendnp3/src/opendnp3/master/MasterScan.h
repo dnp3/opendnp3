@@ -24,7 +24,7 @@
 #include <openpal/executor/IExecutor.h>
 
 #include "opendnp3/master/IMasterScheduler.h"
-#include "opendnp3/master/IMasterTask.h"
+#include "opendnp3/master/PollTask.h"
 
 namespace opendnp3
 {
@@ -35,7 +35,7 @@ public:
 
 	MasterScan();
 
-	MasterScan(openpal::IExecutor& executor, IMasterScheduler& scheduler, IMasterTask& task);
+	MasterScan(openpal::IExecutor& executor, IMasterScheduler& scheduler, PollTask& task);
 
 	// Request that the scan be performed as soon as possible
 	bool Demand();
@@ -46,7 +46,7 @@ private:
 	
 	openpal::IExecutor* pExecutor;	
 	IMasterScheduler* pScheduler;	
-	IMasterTask* pTask;
+	PollTask* pTask;
 };
 
 }

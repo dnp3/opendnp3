@@ -28,7 +28,7 @@ namespace opendnp3
 MasterScan::MasterScan() : pExecutor(nullptr), pScheduler(nullptr), pTask(nullptr)
 {}
 
-MasterScan::MasterScan(openpal::IExecutor& executor, IMasterScheduler& scheduler, IMasterTask& task) :
+MasterScan::MasterScan(openpal::IExecutor& executor, IMasterScheduler& scheduler, PollTask& task) :
 	pExecutor(&executor),
 	pScheduler(&scheduler),
 	pTask(&task)
