@@ -289,7 +289,6 @@
     <ClCompile Include="src\opendnp3\master\DisableUnsolicitedTask.cpp" />
     <ClCompile Include="src\opendnp3\master\EnableUnsolicitedTask.cpp" />
     <ClCompile Include="src\opendnp3\master\IMasterState.cpp" />
-    <ClCompile Include="src\opendnp3\master\IMasterTask.cpp" />
     <ClCompile Include="src\opendnp3\master\ITaskLock.cpp" />
     <ClCompile Include="src\opendnp3\master\NullResponseTask.cpp" />
     <ClCompile Include="src\opendnp3\master\PollTask.cpp" />

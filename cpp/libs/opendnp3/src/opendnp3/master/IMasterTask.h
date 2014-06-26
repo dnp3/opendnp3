@@ -47,18 +47,7 @@ public:
 	*
 	* @return	the name of the task
 	*/
-	virtual char const* Name() const = 0;
-
-	/**	
-	* Return the current task if enabled by configuration or the next in the chain if it is not
-    *
-	* @param skipCurrent Don't return the current task, only consider the next one in the chain
-	* @param params Master configuration
-	* @tasks Master All the tasks available for sequenced operations
-	*
-	* @return the next task in startup mode or nullptr
-	*/
-	IMasterTask* Next(bool skipCurrent, const MasterParams& params, MasterTasks& tasks);
+	virtual char const* Name() const = 0;	
 
 	/**
 	 * Build a request APDU.
@@ -82,11 +71,21 @@ public:
 	*/
 	virtual void OnLowerLayerClose() {}
 
-protected:
-
+	/**
+	* Check if the task is enabled. Used for sequenced (startup) tasks.
+	*
+	* @return true if the task is enabled with the specified settings
+	*/
 	virtual bool Enabled(const MasterParams& params) { return false; }
 
+	
+	/**
+	* Check if the task is enabled. Used for sequenced (startup) tasks.
+	*
+	* @return The next task or nullptr if nothing is next
+	*/
 	virtual IMasterTask* Next(MasterTasks& tasks) { return nullptr; }
+
 };
 
 }

@@ -23,6 +23,7 @@
 
 #include "opendnp3/app/APDUBuilders.h"
 #include "opendnp3/LogLevels.h"
+#include "opendnp3/master/MasterTasks.h"
 
 #include <openpal/logging/LogMacros.h>
 
@@ -39,10 +40,20 @@ void ClearRestartTask::BuildRequest(APDURequest& request, const MasterParams& pa
 	build::ClearRestartIIN(request, seq);
 }
 
+IMasterTask* ClearRestartTask::Next(MasterTasks& tasks)
+{
+	return &tasks.startupIntegrity;
+}
+
+bool ClearRestartTask::Enabled(const MasterParams& params)
+{
+	return true;
+}
+
 void ClearRestartTask::OnTimeoutOrBadControlOctet(const MasterParams& params, IMasterScheduler& scheduler)
 {
 	// timeout or bad control octet
-	scheduler.Schedule(*this, params.taskRetryPeriod);
+	scheduler.SetBlocking(*this, params.taskRetryPeriod);
 }
 	
 TaskStatus ClearRestartTask::OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler)
@@ -50,7 +61,8 @@ TaskStatus ClearRestartTask::OnSingleResponse(const APDUResponseHeader& response
 	if (response.IIN.IsSet(IINBit::DEVICE_RESTART))
 	{
 		// we tried to clear the restart, but the device responded with the restart still set
-		SIMPLE_LOGGER_BLOCK(pLogger, flags::ERR, "Clear restart task failed to clear restart bit");		
+		SIMPLE_LOGGER_BLOCK(pLogger, flags::ERR, "Clear restart task failed to clear restart bit");	
+		scheduler.SetBlocking(*this, params.taskRetryPeriod);
 		return TaskStatus::FAIL;
 	}
 	else

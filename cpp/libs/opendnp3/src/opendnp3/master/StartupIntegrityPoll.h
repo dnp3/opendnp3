@@ -42,11 +42,11 @@ public:
 	
 	virtual void BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq) override final;	
 
-private:	
-
 	virtual IMasterTask* Next(MasterTasks& tasks) override final;
 	
 	virtual bool Enabled(const MasterParams& params) override final;
+
+private:
 
 	virtual void OnFailure(const MasterParams& params, IMasterScheduler& scheduler) override final;
 

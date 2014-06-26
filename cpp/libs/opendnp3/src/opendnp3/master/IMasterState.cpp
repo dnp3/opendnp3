@@ -116,8 +116,9 @@ IMasterState* MasterStateWaitForResponse::OnResponse(MasterContext* pContext, co
 			case(TaskStatus::REPEAT) :				
 				return MasterStateTaskReady::Instance().OnStart(pContext);
 			default:
-				pContext->pActiveTask = nullptr;				
-				return MasterStateIdle::Instance().OnStart(pContext);
+				pContext->pActiveTask = nullptr;
+				pContext->PostCheckForTask();
+				return &MasterStateIdle::Instance();
 		}
 	}
 	else

@@ -118,23 +118,55 @@ IMasterTask* MasterScheduler::GetStartupTask(const MasterParams& params)
 {
 	if (pStartupTask)
 	{
-		auto pTask = pStartupTask->Next(false, params, *(this->pStaticTasks));
-		if (pTask)
-		{
-			pStartupTask = pTask->Next(true, params, *(this->pStaticTasks));
-			return pTask;
-		}
-		else
-		{
-			pStartupTask = nullptr;
-			return nullptr;
-		}
+		auto pTask = CurrentOrNextEnabledTask(pStartupTask, params, *(this->pStaticTasks));		
+		
+		// advance by a single node, as the config may change dynamically
+		pStartupTask = pTask ? pTask->Next(*(this->pStaticTasks)) : nullptr;
+		return pTask;
 	}
 	else
 	{
 		return nullptr;
 	}
 }
+
+
+IMasterTask* MasterScheduler::CurrentOrNextEnabledTask(IMasterTask* pCurrent, const MasterParams& params, MasterTasks& tasks)
+{
+	if (pCurrent && pCurrent->Enabled(params))
+	{
+		return pCurrent;
+	}
+	else
+	{
+		return NextEnabledTask(pCurrent, params, tasks);
+	}		
+}
+
+IMasterTask* MasterScheduler::NextEnabledTask(IMasterTask* pCurrent, const MasterParams& params, MasterTasks& tasks)
+{	 
+	if (pCurrent)
+	{
+		auto pNode = pCurrent->Next(tasks);
+		
+		while (pNode)
+		{
+			if (pNode->Enabled(params))
+			{
+				return pNode;
+			}
+
+			pNode = pNode->Next(tasks);
+		}
+
+		return pNode;
+	}
+	else
+	{
+		return nullptr;
+	}	
+}
+
 
 IMasterTask* MasterScheduler::GetPeriodicTask(const MasterParams& params, const openpal::MonotonicTimestamp& now)
 {
@@ -223,7 +255,17 @@ PollTask* MasterScheduler::AddPollTask(const PollTask& pt)
 
 void MasterScheduler::OnRestartDetected(const MasterParams& params)
 {
-	// TODO
+	auto pRestartTask = &pStaticTasks->clearRestartTask;
+	auto isRestartTask = [pRestartTask](const TaskRecord& tr) { return tr.pTask == pRestartTask; };
+
+	auto restartIsNotActive = pCurrentTask != pRestartTask;	
+	auto restartIsNotBlocking = !blockingTask.IsSetAnd(isRestartTask);
+
+	if (restartIsNotActive && restartIsNotBlocking)
+	{
+		pStartupTask = pRestartTask;
+		this->CancelScheduleTimer(); // we have an active task now		
+	}
 }
 
 void MasterScheduler::OnNeedTimeDetected(const MasterParams& params)

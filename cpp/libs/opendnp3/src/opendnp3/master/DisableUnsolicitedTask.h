@@ -39,12 +39,12 @@ public:
 	virtual char const* Name() const override final { return "Disable Unsolicited"; }
 
 	virtual void BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq) override final;	
-		
-protected:	
 
 	virtual IMasterTask* Next(MasterTasks& tasks) override final;
 
 	virtual bool Enabled(const MasterParams& params) override final;
+
+private:
 
 	virtual void OnSuccess(const MasterParams& params, IMasterScheduler& scheduler) override final {}
 

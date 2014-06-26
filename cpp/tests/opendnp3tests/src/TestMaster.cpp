@@ -168,6 +168,8 @@ TEST_CASE(SUITE("ClassScanCanRepeat"))
 	t.master.OnSendResult(true);
 	t.SendToMaster(hex::EmptyResponse(0));
 
+	t.exe.RunMany();
+
 	// 2nd poll
 	REQUIRE(t.exe.NumPendingTimers() == 1);
 	REQUIRE(t.exe.NextTimerExpiration().milliseconds == 20000);
@@ -239,6 +241,8 @@ TEST_CASE(SUITE("EventPoll"))
 	REQUIRE(t.meas.NumEvent() == 1);
 	REQUIRE((Binary(true, BQ_ONLINE) == t.meas.GetEventBinary(2)));
 
+	t.exe.RunMany();
+
 	REQUIRE(t.exe.AdvanceToNextTimer());
 	REQUIRE(t.exe.RunMany() > 0);
 
@@ -297,7 +301,7 @@ TEST_CASE(SUITE("RestartDuringStartup"))
 
 	t.SendToMaster(hex::EmptyResponse(0, IINField(IINBit::DEVICE_RESTART)));
 
-	REQUIRE(t.exe.RunMany() > 0);
+	t.exe.RunMany();
 
 	REQUIRE(t.lower.PopWriteAsHex() == hex::ClearRestartIIN(1));
 	t.master.OnSendResult(false);

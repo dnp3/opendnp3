@@ -26,8 +26,8 @@
 #include "opendnp3/master/EnableUnsolicitedTask.h"
 #include "opendnp3/master/StartupIntegrityPoll.h"
 #include "opendnp3/master/DisableUnsolicitedTask.h"
-#include "opendnp3/master/CommandTask.h"
 #include "opendnp3/master/SerialTimeSyncTask.h"
+#include "opendnp3/master/CommandTask.h"
 
 namespace opendnp3
 {

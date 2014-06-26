@@ -96,7 +96,10 @@ public:
 	*/
 	void OnNeedTimeDetected(const MasterParams& params);
 
-private:	
+private:
+
+	static IMasterTask* NextEnabledTask(IMasterTask* pCurrent, const MasterParams& params, MasterTasks& tasks);
+	static IMasterTask* CurrentOrNextEnabledTask(IMasterTask* pCurrent, const MasterParams& params, MasterTasks& tasks);
 
 	IMasterTask* FindTaskToStart(const MasterParams& params);	
 
