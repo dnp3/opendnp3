@@ -67,12 +67,12 @@ public:
 
 	void SetLinkRouter(opendnp3::ILinkRouter* pRouter);
 
-	void SetShutdownAction(const openpal::Runnable& action);
+	void SetShutdownAction(const openpal::Action0& action);
 
 	opendnp3::ILinkContext* GetLinkContext();
 
 private:
-	openpal::Runnable shutdownAction;
+	openpal::Action0 shutdownAction;
 	opendnp3::StackStatistics statistics;	
 	StackActionHandler handler;
 	opendnp3::TransportStack stack;

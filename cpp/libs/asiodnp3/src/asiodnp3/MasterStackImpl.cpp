@@ -77,7 +77,7 @@ void MasterStackImpl::SetLinkRouter(opendnp3::ILinkRouter* pRouter)
 	stack.link.SetRouter(pRouter);
 }
 
-void MasterStackImpl::SetShutdownAction(const openpal::Runnable& action)
+void MasterStackImpl::SetShutdownAction(const openpal::Action0& action)
 {
 	shutdownAction = action;
 }

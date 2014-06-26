@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __FUNCTION_ZERO_H_
-#define __FUNCTION_ZERO_H_
+#ifndef __ACTION_ZERO_H_
+#define __ACTION_ZERO_H_
 
 #include "Erasure.h"
 #include "openpal/Configure.h"
@@ -27,18 +27,18 @@
 namespace openpal
 {
 
-class Runnable : public Erasure
+class Action0 : public Erasure
 {
 
 public:
 
 	typedef void(*Invoke)(const uint8_t* pBuffer);
 
-	Runnable();
+	Action0();
 
-	Runnable(const Runnable& other);
+	Action0(const Action0& other);
 
-	Runnable& operator=(const Runnable& other);
+	Action0& operator=(const Action0& other);
 
 	void Apply() const;
 
@@ -47,16 +47,16 @@ public:
 	bool IsSet() const;
 
 	template <class Lambda>
-	static Runnable Bind(Lambda& lambda)
+	static Action0 Bind(Lambda& lambda)
 	{
 		static_assert(sizeof(Lambda) <= sizes::MAX_ERASURE_SIZE, "Lambda is too big for erasure");
-		Runnable runnable(&Runnable::RunLambda<Lambda>, sizeof(lambda));
+		Action0 runnable(&Action0::RunLambda<Lambda>, sizeof(lambda));
 		new(runnable.bytes) Lambda(lambda); // use placement new
 		return runnable;
 	}
 
 	template <class T>
-	static Runnable BindDelete(T* pPointer)
+	static Action0 BindDelete(T* pPointer)
 	{
 		auto lambda = [pPointer]() { delete pPointer; };
 		return Bind(lambda);
@@ -70,7 +70,7 @@ protected:
 		(*reinterpret_cast<const Lambda*>(pBuffer))();
 	}
 
-	Runnable(Invoke pInvoke_, uint32_t size_);
+	Action0(Invoke pInvoke_, uint32_t size_);
 
 	Invoke pInvoke;
 };

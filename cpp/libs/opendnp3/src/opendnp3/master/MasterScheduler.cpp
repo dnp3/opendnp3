@@ -371,13 +371,13 @@ void MasterScheduler::StartOrRestartTimer(const openpal::MonotonicTimestamp& exp
 void MasterScheduler::StartTimer(const openpal::TimeDuration& timeout)
 {
 	auto callback = [this](){ this->OnTimerExpiration(); };
-	pTimer = pExecutor->Start(timeout, Runnable::Bind(callback));
+	pTimer = pExecutor->Start(timeout, Action0::Bind(callback));
 }
 
 void MasterScheduler::StartTimer(const openpal::MonotonicTimestamp& expiration)
 {
 	auto callback = [this](){ this->OnTimerExpiration(); };
-	pTimer = pExecutor->Start(expiration, Runnable::Bind(callback));
+	pTimer = pExecutor->Start(expiration, Action0::Bind(callback));
 }
 
 

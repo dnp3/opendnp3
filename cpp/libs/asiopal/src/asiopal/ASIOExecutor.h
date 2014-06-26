@@ -43,9 +43,9 @@ public:
 	~ASIOExecutor();
 
 	virtual openpal::MonotonicTimestamp GetTime() override final;
-	virtual openpal::ITimer* Start(const openpal::TimeDuration&, const openpal::Runnable& runnable)  override final;
-	virtual openpal::ITimer* Start(const openpal::MonotonicTimestamp&, const openpal::Runnable& runnable)  override final;
-	virtual void Post(const openpal::Runnable& runnable) override final;
+	virtual openpal::ITimer* Start(const openpal::TimeDuration&, const openpal::Action0& runnable)  override final;
+	virtual openpal::ITimer* Start(const openpal::MonotonicTimestamp&, const openpal::Action0& runnable)  override final;
+	virtual void Post(const openpal::Action0& runnable) override final;
 
 	// Gracefully wait for all timers to finish
 	void WaitForShutdown();
@@ -63,7 +63,7 @@ private:
 
 	TimerASIO* GetTimer();
 
-	void StartTimer(TimerASIO*, const openpal::Runnable& runnable);	
+	void StartTimer(TimerASIO*, const openpal::Action0& runnable);	
 
 	typedef std::deque<TimerASIO*> TimerQueue;
 	typedef std::set<TimerASIO*> TimerMap;
@@ -72,7 +72,7 @@ private:
 	TimerQueue idleTimers;	
 	TimerMap activeTimers;
 
-	void OnTimerCallback(const std::error_code&, TimerASIO*, const openpal::Runnable& runnable);
+	void OnTimerCallback(const std::error_code&, TimerASIO*, const openpal::Action0& runnable);
 };
 
 }

@@ -49,7 +49,7 @@
     <ClInclude Include="src\openpal\executor\ITimer.h" />
     <ClInclude Include="src\openpal\executor\IUTCTimeSource.h" />
     <ClInclude Include="src\openpal\executor\MonotonicTimestamp.h" />
-    <ClInclude Include="src\openpal\executor\Runnable.h" />
+    <ClInclude Include="src\openpal\executor\Action0.h" />
     <ClInclude Include="src\openpal\executor\TimeDuration.h" />
     <ClInclude Include="src\openpal\executor\UTCTimestamp.h" />
     <ClInclude Include="src\openpal\logging\ILogHandler.h" />

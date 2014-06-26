@@ -20,14 +20,14 @@
  */
 #include <catch.hpp>
 
-#include <openpal/executor/Runnable.h>
+#include <openpal/executor/Action0.h>
 #include <openpal/executor/Action1.h>
 
 using namespace openpal;
 
 #define SUITE(name) "FunctionalTestSuite - " name
 
-TEST_CASE(SUITE("RunnableBindWorksAsExpected"))
+TEST_CASE(SUITE("Action0BindWorksAsExpected"))
 {	
 	int a = 1;
 	int b = 2;
@@ -37,7 +37,7 @@ TEST_CASE(SUITE("RunnableBindWorksAsExpected"))
 
 	auto add = [=]() { *pA += *pB;  };
 
-	auto bound = Runnable::Bind(add);
+	auto bound = Action0::Bind(add);
 
 	bound.Apply();
 

@@ -62,7 +62,7 @@ public:
 					LinkChannelStatistics* pStatistics = nullptr);
 
 	// called when the router shuts down
-	void SetShutdownHandler(const openpal::Runnable& action);
+	void SetShutdownHandler(const openpal::Action0& action);
 
 	// Query to see if a route is in use
 	bool IsRouteInUse(const LinkRoute& route);
@@ -155,7 +155,7 @@ private:
 	void CheckForSend();
 
 	IChannelStateListener* pStateHandler;
-	openpal::Runnable shutdownHandler;
+	openpal::Action0 shutdownHandler;
 
 	openpal::StaticLinkedList<Record, uint16_t, sizes::MAX_STACKS_PER_CHANNEL> records;
 	openpal::StaticQueue<Transmission, uint16_t, sizes::MAX_STACKS_PER_CHANNEL> transmitQueue;

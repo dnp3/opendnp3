@@ -154,7 +154,7 @@ void PhysicalLayerMonitor::StartOpenTimer()
 {
 	assert(mpOpenTimer == nullptr);
 	auto lambda = [this]() { this->OnOpenTimerExpiration(); };
-	mpOpenTimer = pExecutor->Start(currentRetry, Runnable::Bind(lambda));
+	mpOpenTimer = pExecutor->Start(currentRetry, Action0::Bind(lambda));
 }
 
 void PhysicalLayerMonitor::CancelOpenTimer()

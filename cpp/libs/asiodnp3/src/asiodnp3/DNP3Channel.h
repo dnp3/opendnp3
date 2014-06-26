@@ -88,7 +88,7 @@ public:
 								const opendnp3::OutstationStackConfig& config) override final;
 
 	// Helper functions only available inside DNP3Manager
-	void SetShutdownHandler(const openpal::Runnable& action);
+	void SetShutdownHandler(const openpal::Action0& action);
 
 
 private:
@@ -112,7 +112,7 @@ private:
 
 	void CheckForFinalShutdown();
 
-	openpal::Runnable shutdownHandler;
+	openpal::Action0 shutdownHandler;
 	opendnp3::LinkChannelStatistics statistics;
 	std::unique_ptr<openpal::IPhysicalLayer> pPhys;
 	std::unique_ptr<openpal::LogRoot> pLogRoot;

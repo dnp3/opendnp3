@@ -22,7 +22,7 @@
 #define __DATABASE_H_
 
 #include <openpal/executor/IMutex.h>
-#include <openpal/executor/Runnable.h>
+#include <openpal/executor/Action0.h>
 #include <openpal/container/Settable.h>
 
 #include "opendnp3/app/StaticRange.h"
@@ -85,7 +85,7 @@ public:
 
 	StaticDataFacade staticData;
 	
-	void SetEventHandler(const openpal::Runnable& callback);
+	void SetEventHandler(const openpal::Action0& callback);
 
 private:
 
@@ -123,7 +123,7 @@ private:
 	IEventBuffer* pEventBuffer;
 
 	openpal::IMutex* pMutex;
-	openpal::Settable<openpal::Runnable> onEventAction;
+	openpal::Settable<openpal::Action0> onEventAction;
 
 	bool transactionHasEvents;
 

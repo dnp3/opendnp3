@@ -242,7 +242,7 @@ void MasterContext::StartResponseTimer()
 	if (pResponseTimer == nullptr)
 	{
 		auto timeout = [this](){ this->OnResponseTimeout(); };
-		pResponseTimer = pExecutor->Start(params.responseTimeout, Runnable::Bind(timeout));
+		pResponseTimer = pExecutor->Start(params.responseTimeout, Action0::Bind(timeout));
 	}	
 }
 

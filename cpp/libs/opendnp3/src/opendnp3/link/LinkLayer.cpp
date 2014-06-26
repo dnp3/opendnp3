@@ -246,7 +246,7 @@ void LinkLayer::StartTimer()
 {
 	assert(mpTimer == nullptr);
 	auto lambda = [this]() { this->OnTimeout(); };
-	mpTimer = this->mpExecutor->Start(TimeDuration(config.Timeout), Runnable::Bind(lambda));
+	mpTimer = this->mpExecutor->Start(TimeDuration(config.Timeout), Action0::Bind(lambda));
 }
 
 void LinkLayer::CancelTimer()

@@ -127,7 +127,7 @@ size_t MockExecutor::RunMany(size_t aMaximum)
 	return num;
 }
 
-void MockExecutor::Post(const openpal::Runnable& runnable)
+void MockExecutor::Post(const openpal::Action0& runnable)
 {
 	if (mPostIsSynchronous)
 	{
@@ -144,13 +144,13 @@ openpal::MonotonicTimestamp MockExecutor::GetTime()
 	return mCurrentTime;
 }
 
-ITimer* MockExecutor::Start(const openpal::TimeDuration& aDelay, const openpal::Runnable& runnable)
+ITimer* MockExecutor::Start(const openpal::TimeDuration& aDelay, const openpal::Action0& runnable)
 {
 	auto expiration = mCurrentTime.Add(aDelay);	
 	return Start(expiration, runnable);
 }
 
-ITimer* MockExecutor::Start(const openpal::MonotonicTimestamp& arTime, const openpal::Runnable& runnable)
+ITimer* MockExecutor::Start(const openpal::MonotonicTimestamp& arTime, const openpal::Action0& runnable)
 {
 	MockTimer* pTimer = new MockTimer(this, arTime, runnable);
 	timers.push_back(pTimer);
@@ -170,7 +170,7 @@ void MockExecutor::Cancel(ITimer* pTimer)
 	}
 }
 
-MockTimer::MockTimer(MockExecutor* apSource, const openpal::MonotonicTimestamp& arTime, const openpal::Runnable& runnable_) :
+MockTimer::MockTimer(MockExecutor* apSource, const openpal::MonotonicTimestamp& arTime, const openpal::Action0& runnable_) :
 	mTime(arTime),
 	mpSource(apSource),
 	runnable(runnable_)

@@ -57,7 +57,7 @@ IChannel* ChannelSet::CreateChannel(
 {	
 	auto pChannel = new DNP3Channel(pLogRoot, executor, minOpenRetry, maxOpenRetry, pOpenStrategy, apPhys);
 	auto onShutdown = [this, pChannel]() { this->OnShutdown(pChannel); };
-	pChannel->SetShutdownHandler(Runnable::Bind(onShutdown));
+	pChannel->SetShutdownHandler(Action0::Bind(onShutdown));
 	channels.insert(pChannel);
 	return pChannel;
 }

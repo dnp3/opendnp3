@@ -81,7 +81,7 @@ openpal::MonotonicTimestamp ASIOExecutor::GetTime()
 	return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
 }
 
-openpal::ITimer* ASIOExecutor::Start(const openpal::TimeDuration& delay, const openpal::Runnable& runnable)
+openpal::ITimer* ASIOExecutor::Start(const openpal::TimeDuration& delay, const openpal::Action0& runnable)
 {	
 	TimerASIO* pTimer = GetTimer();
 	pTimer->timer.expires_from_now(std::chrono::milliseconds(delay.GetMilliseconds()));
@@ -89,7 +89,7 @@ openpal::ITimer* ASIOExecutor::Start(const openpal::TimeDuration& delay, const o
 	return pTimer;
 }
 
-openpal::ITimer* ASIOExecutor::Start(const openpal::MonotonicTimestamp& time, const openpal::Runnable& runnable)
+openpal::ITimer* ASIOExecutor::Start(const openpal::MonotonicTimestamp& time, const openpal::Action0& runnable)
 {	
 	TimerASIO* pTimer = GetTimer();
 	pTimer->timer.expires_at(std::chrono::steady_clock::time_point(std::chrono::milliseconds(time.milliseconds)));
@@ -97,7 +97,7 @@ openpal::ITimer* ASIOExecutor::Start(const openpal::MonotonicTimestamp& time, co
 	return pTimer;
 }
 
-void ASIOExecutor::Post(const openpal::Runnable& runnable)
+void ASIOExecutor::Post(const openpal::Action0& runnable)
 {
 	auto captured = [runnable]() { runnable.Apply(); };
 	strand.post(captured);
@@ -122,13 +122,13 @@ TimerASIO* ASIOExecutor::GetTimer()
 	return pTimer;
 }
 
-void ASIOExecutor::StartTimer(TimerASIO* pTimer, const openpal::Runnable& runnable)
+void ASIOExecutor::StartTimer(TimerASIO* pTimer, const openpal::Action0& runnable)
 {	
 	auto callback = [runnable, this, pTimer](const std::error_code& ec){ this->OnTimerCallback(ec, pTimer, runnable); };
 	pTimer->timer.async_wait(strand.wrap(callback));
 }
 
-void ASIOExecutor::OnTimerCallback(const std::error_code& ec, TimerASIO* pTimer, const openpal::Runnable& runnable)
+void ASIOExecutor::OnTimerCallback(const std::error_code& ec, TimerASIO* pTimer, const openpal::Action0& runnable)
 {	
 	activeTimers.erase(pTimer);
 	idleTimers.push_back(pTimer);

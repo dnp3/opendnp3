@@ -41,7 +41,7 @@ void ConstantCommandProcessor::Respond(ICommandCallback& callback)
 	{
 		auto pCallback = &callback;
 		auto lambda = [cr, pCallback]() { pCallback->OnComplete(cr); };
-		pExecutor->Post(Runnable::Bind(lambda));
+		pExecutor->Post(Action0::Bind(lambda));
 	}
 	else
 	{

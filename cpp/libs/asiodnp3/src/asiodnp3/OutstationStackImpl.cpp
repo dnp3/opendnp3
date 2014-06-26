@@ -85,7 +85,7 @@ void OutstationStackImpl::SetLinkRouter(opendnp3::ILinkRouter* pRouter)
 	stack.link.SetRouter(pRouter);
 }
 
-void OutstationStackImpl::SetShutdownAction(const openpal::Runnable& action)
+void OutstationStackImpl::SetShutdownAction(const openpal::Action0& action)
 {
 	shutdownAction = action;
 }

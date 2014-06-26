@@ -50,7 +50,7 @@ void Database::End()
 	if (transactionHasEvents)
 	{
 		transactionHasEvents = false;
-		onEventAction.Foreach([](const Runnable& runnable) { runnable.Apply(); });
+		onEventAction.Foreach([](const Action0& runnable) { runnable.Apply(); });
 	}
 	openpal::CriticalSection::Unlock(pMutex);
 }
@@ -225,7 +225,7 @@ uint16_t Database::NumValues<AnalogOutputStatus>() const
 	return staticData.analogOutputStatii.values.Size();
 }
 
-void Database::SetEventHandler(const Runnable& callback)
+void Database::SetEventHandler(const Action0& callback)
 {
 	onEventAction.Set(callback);
 }

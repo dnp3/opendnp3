@@ -51,7 +51,7 @@ LinkLayerRouter::LinkLayerRouter(	openpal::LogRoot& root,
 	isTransmitting(false)
 {}
 
-void LinkLayerRouter::SetShutdownHandler(const Runnable& action)
+void LinkLayerRouter::SetShutdownHandler(const Action0& action)
 {
 	this->shutdownHandler = action;
 }

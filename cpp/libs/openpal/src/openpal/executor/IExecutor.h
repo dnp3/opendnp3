@@ -24,7 +24,7 @@
 #include "ITimer.h"
 #include "TimeDuration.h"
 #include "MonotonicTimestamp.h"
-#include "Runnable.h"
+#include "Action0.h"
 
 namespace openpal
 {
@@ -42,22 +42,22 @@ public:
 
 	virtual ~IExecutor() {}
 
-	/** A non-absolute timestamp for the monotonic time source */
+	/// @return a non-absolute timestamp for the monotonic time source
 	virtual MonotonicTimestamp GetTime() = 0;
 
-	/** Returns a new timer based on a relative time duration */
-	virtual ITimer* Start(const TimeDuration& arDuration, const Runnable& runnable) = 0;
+	/// @return a new timer based on a relative time duration
+	virtual ITimer* Start(const TimeDuration& arDuration, const Action0& action) = 0;
 
-	/** Returns a new timer based on an absolute timestamp of the monotonic clock */
-	virtual ITimer* Start(const MonotonicTimestamp&, const Runnable& runnable) = 0;
+	/// @return a new timer based on an absolute timestamp of the monotonic clock
+	virtual ITimer* Start(const MonotonicTimestamp&, const Action0& action) = 0;
 
-	/** Thread-safe way to post an event to be handled asynchronously */
-	virtual void Post(const Runnable& runnable) = 0;
+	/// @return Thread-safe way to post an event to be handled asynchronously
+	virtual void Post(const Action0& runnable) = 0;
 
 	template <class Lambda>
 	void PostLambda(Lambda& lambda)
 	{
-		this->Post(Runnable::Bind<Lambda>(lambda));
+		this->Post(Action0::Bind<Lambda>(lambda));
 	}
 };
 

@@ -19,30 +19,30 @@
  * to you under the terms of the License.
  */
 
-#include "Runnable.h"
+#include "Action0.h"
 
 #include <cstring>
 
 namespace openpal
 {
 
-Runnable::Runnable() : pInvoke(nullptr)
+Action0::Action0() : pInvoke(nullptr)
 {}
 
-Runnable::Runnable(Invoke pInvoke_, uint32_t size_) : Erasure(size_), pInvoke(pInvoke_)
+Action0::Action0(Invoke pInvoke_, uint32_t size_) : Erasure(size_), pInvoke(pInvoke_)
 {}
 
-bool Runnable::IsSet() const
+bool Action0::IsSet() const
 {
 	return (pInvoke != nullptr);
 }
 
-bool Runnable::operator()() const
+bool Action0::operator()() const
 {
 	return (pInvoke != nullptr);
 }
 
-Runnable& Runnable::operator=(const Runnable& other)
+Action0& Action0::operator=(const Action0& other)
 {
 	if (this != &other)
 	{		
@@ -53,12 +53,12 @@ Runnable& Runnable::operator=(const Runnable& other)
 	return (*this);
 }
 
-Runnable::Runnable(const Runnable& other) : pInvoke(other.pInvoke)
+Action0::Action0(const Action0& other) : pInvoke(other.pInvoke)
 {
 	this->CopyErasure(other);
 }
 
-void Runnable::Apply() const
+void Action0::Apply() const
 {
 	if (pInvoke)
 	{
