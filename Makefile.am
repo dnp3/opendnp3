@@ -118,8 +118,8 @@ cpp/libs/opendnp3/src/opendnp3/master/ConstantCommandProcessor.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/DisableUnsolicitedTask.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/EnableUnsolicitedTask.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/IMasterState.cpp \
-cpp/libs/opendnp3/src/opendnp3/master/IMasterTask.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/ISOEHandler.cpp \
+cpp/libs/opendnp3/src/opendnp3/master/ITaskLock.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/MasterContext.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/Master.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/MasterParams.cpp \
@@ -133,6 +133,7 @@ cpp/libs/opendnp3/src/opendnp3/master/PollTask.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/SerialTimeSyncTask.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/SingleResponseTask.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/StartupIntegrityPoll.cpp \
+cpp/libs/opendnp3/src/opendnp3/master/TaskRecord.cpp \
 cpp/libs/opendnp3/src/opendnp3/objects/Group10.cpp \
 cpp/libs/opendnp3/src/opendnp3/objects/Group11.cpp \
 cpp/libs/opendnp3/src/opendnp3/objects/Group12.cpp \

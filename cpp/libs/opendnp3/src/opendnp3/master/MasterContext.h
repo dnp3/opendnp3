@@ -147,7 +147,7 @@ void MasterContext::SelectAndOperateT(const T& command, uint16_t index, ICommand
 			return pCommandTask;
 		};
 
-		if (!QueueUserTask(Function0<IMasterTask*>::Bind(userTask)))
+		if (!QueueUserTask(openpal::Function0<IMasterTask*>::Bind(userTask)))
 		{
 			callback.OnComplete(CommandResponse::CommandResponse(CommandResult::QUEUE_FULL));
 		}
@@ -174,7 +174,7 @@ void MasterContext::DirectOperateT(const T& command, uint16_t index, ICommandCal
 			return pCommandTask;
 		};
 
-		if (!QueueUserTask(Function0<IMasterTask*>::Bind(userTask)))
+		if (!QueueUserTask(openpal::Function0<IMasterTask*>::Bind(userTask)))
 		{
 			callback.OnComplete(CommandResponse::CommandResponse(CommandResult::QUEUE_FULL));
 		}
