@@ -39,8 +39,8 @@ MasterScheduler::MasterScheduler(	openpal::Logger* pLogger,
 	pExecutor(&executor),
 	pCallback(&callback),
 	pStaticTasks(&tasks),
-	isOnline(false),	
-	modifiedSinceLastRead(false),
+	isOnline(false),
+	outstationNeedsTime(false),
 	pTimer(nullptr),
 	pCurrentTask(nullptr),
 	pStartupTask(nullptr)
@@ -73,8 +73,7 @@ bool MasterScheduler::Demand(IMasterTask& task)
 }
 
 IMasterTask* MasterScheduler::Start(const MasterParams& params)
-{
-	modifiedSinceLastRead = false;
+{	
 	auto pTask = FindTaskToStart(params);
 	this->pCurrentTask = pTask;
 	return pTask;
@@ -107,9 +106,16 @@ IMasterTask* MasterScheduler::FindTaskToStart(const MasterParams& params)
 			return startup;
 		}
 		else
-		{
-			// consider other options
-			return GetPeriodicTask(params, now);
+		{			
+			auto time = GetTimeSyncTask(params);
+			if (time)
+			{
+				return time;
+			}
+			else
+			{
+				return GetPeriodicTask(params, now);
+			}			
 		}
 	}
 }
@@ -123,6 +129,26 @@ IMasterTask* MasterScheduler::GetStartupTask(const MasterParams& params)
 		// advance by a single node, as the config may change dynamically
 		pStartupTask = pTask ? pTask->Next(*(this->pStaticTasks)) : nullptr;
 		return pTask;
+	}
+	else
+	{
+		return nullptr;
+	}
+}
+
+IMasterTask* MasterScheduler::GetTimeSyncTask(const MasterParams& params)
+{
+	if (outstationNeedsTime)
+	{
+		switch (params.timeSyncMode)
+		{
+			case(TimeSyncMode::SerialTimeSync) :
+				outstationNeedsTime = false;
+				return &pStaticTasks->serialTimeSync;
+				break;
+			default:
+				return nullptr;
+		}
 	}
 	else
 	{
@@ -213,15 +239,6 @@ ListNode<TaskRecord>* MasterScheduler::GetEarliestExpirationTime()
 	return pNode;
 }
 
-void MasterScheduler::CheckForNotification()
-{
-	if (!modifiedSinceLastRead)
-	{
-		modifiedSinceLastRead = true;
-		pCallback->OnPendingTask();
-	}
-}
-
 void MasterScheduler::ScheduleCommand(const CommandErasure& action)
 {
 	// TODO
@@ -256,12 +273,7 @@ PollTask* MasterScheduler::AddPollTask(const PollTask& pt)
 void MasterScheduler::OnRestartDetected(const MasterParams& params)
 {
 	auto pRestartTask = &pStaticTasks->clearRestartTask;
-	auto isRestartTask = [pRestartTask](const TaskRecord& tr) { return tr.pTask == pRestartTask; };
-
-	auto restartIsNotActive = pCurrentTask != pRestartTask;	
-	auto restartIsNotBlocking = !blockingTask.IsSetAnd(isRestartTask);
-
-	if (restartIsNotActive && restartIsNotBlocking)
+	if (!this->IsTaskActive(pRestartTask))
 	{
 		pStartupTask = pRestartTask;
 		this->CancelScheduleTimer(); // we have an active task now		
@@ -270,7 +282,25 @@ void MasterScheduler::OnRestartDetected(const MasterParams& params)
 
 void MasterScheduler::OnNeedTimeDetected(const MasterParams& params)
 {
-	// TODO
+	auto pTime1 = &pStaticTasks->serialTimeSync;
+
+	if (!IsTaskActive(pTime1))
+	{
+		outstationNeedsTime = true;
+	}
+}
+
+bool MasterScheduler::IsTaskActive(IMasterTask* pTask)
+{
+	auto isEqual = [pTask] (const TaskRecord& tr) { return tr.pTask == pTask; };
+	if (blockingTask.IsSetAnd(isEqual))
+	{
+		return true;
+	}
+	else
+	{
+		return pCurrentTask == pTask;
+	}	
 }
 
 void MasterScheduler::OnLowerLayerUp(const MasterParams& params)

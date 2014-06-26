@@ -99,17 +99,18 @@ public:
 private:
 
 	static IMasterTask* NextEnabledTask(IMasterTask* pCurrent, const MasterParams& params, MasterTasks& tasks);
+
 	static IMasterTask* CurrentOrNextEnabledTask(IMasterTask* pCurrent, const MasterParams& params, MasterTasks& tasks);
 
 	IMasterTask* FindTaskToStart(const MasterParams& params);	
 
 	IMasterTask* GetStartupTask(const MasterParams& params);
 
+	IMasterTask* GetTimeSyncTask(const MasterParams& params);
+
 	IMasterTask* GetPeriodicTask(const MasterParams& params, const openpal::MonotonicTimestamp& now);
 
-	openpal::ListNode<TaskRecord>* GetEarliestExpirationTime();
-
-	void CheckForNotification();
+	openpal::ListNode<TaskRecord>* GetEarliestExpirationTime();	
 
 	void ReportFailure(const CommandErasure& action, CommandResult result);	
 	
@@ -119,11 +120,11 @@ private:
 
 	void StartTimer(const openpal::MonotonicTimestamp& expiration);
 
-	void OnTimerExpiration();
-
-	
+	void OnTimerExpiration();	
 
 	bool CancelScheduleTimer();	
+
+	bool IsTaskActive(IMasterTask* pTask);
 
 	// ----------- static configuration ---------
 
@@ -134,7 +135,8 @@ private:
 	// ----------- dynamic state -----------
 
 	bool isOnline;
-	bool modifiedSinceLastRead;
+	bool outstationNeedsTime;
+
 	openpal::ITimer* pTimer;
 	IMasterTask* pCurrentTask;
 	IMasterTask* pStartupTask;

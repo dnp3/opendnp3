@@ -326,7 +326,8 @@ TEST_CASE(SUITE("RestartAndTimeBits"))
 
 	t.SendToMaster(hex::NullUnsolicited(0, IINField(IINBit::DEVICE_RESTART) | IINField(IINBit::NEED_TIME)));
 
-	REQUIRE(t.exe.RunMany() > 0);
+	t.exe.RunMany();
+
 	REQUIRE(t.lower.PopWriteAsHex() == hex::UnsolConfirm(0));
 	t.master.OnSendResult(true);	
 
