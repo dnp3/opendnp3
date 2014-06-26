@@ -48,8 +48,13 @@ namespace DotNetMasterDemo
             channel.AddStateListener(state => Console.WriteLine("Client state: " + state));
 
             var config = new MasterStackConfig();
+            
             config.master.integrityPeriodMs = 60*1000;
-            config.link.useConfirms = true; //setup your stack configuration here.
+
+            //setup your stack configuration here.
+            config.link.localAddr = 1;
+            config.link.remoteAddr = 10;
+
             var master = channel.AddMaster("master", PrintingSOEHandler.Instance, config);
 
             var classMask = PointClassHelpers.GetMask(PointClass.CLASS_1, PointClass.CLASS_2, PointClass.CLASS_3);

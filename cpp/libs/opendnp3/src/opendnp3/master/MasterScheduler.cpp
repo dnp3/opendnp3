@@ -68,15 +68,37 @@ void MasterScheduler::SetBlocking(IMasterTask& task, const openpal::TimeDuration
 
 bool MasterScheduler::Demand(IMasterTask& task)
 {
-	if (this->IsTaskActive(&task))
+	if (isOnline)
 	{
-		return true;
+		auto pTask = &task;
+		if (this->IsTaskActive(pTask))
+		{
+			return true;
+		}
+		else
+		{
+			auto equals = [pTask](const TaskRecord& tr) { return tr.pTask == pTask; };
+			auto pNode = periodicTasks.FindFirst(equals);
+			if (pNode)
+			{
+				pNode->value.expiration = MonotonicTimestamp::Min();
+				if (!IsAnyTaskActive())
+				{
+					this->CancelScheduleTimer();
+					this->pCallback->OnPendingTask();
+				}
+				return true;
+			}
+			else
+			{				
+				return false;
+			}
+		}
 	}
 	else
 	{
-		// TODO
 		return false;
-	}
+	}	
 }
 
 IMasterTask* MasterScheduler::Start(const MasterParams& params)
