@@ -20,7 +20,7 @@ using namespace opendnp3;
 using namespace arduino;
 using namespace openpal;
 
-void ToggleBinaryIndex0Every(uint16_t milliseconds, IExecutor* pExecutor, Database* pDatabase, bool value = true, bool update = false);
+void ToggleBinaryEvery3Seconds(IExecutor* pExecutor, Database* pDatabase, uint8_t index = 0, bool value = true);
 
 int main()
 {	
@@ -67,7 +67,7 @@ int main()
 	// Set LED as output
 	SET(DDRB, BIT(7));	
 	
-	ToggleBinaryIndex0Every(3000, &exe, &database);
+	ToggleBinaryEvery3Seconds(&exe, &database);
 				
 	for (;;)
 	{ 	
@@ -84,14 +84,15 @@ int main()
 	return 0;
 }
 
-void ToggleBinaryIndex0Every(uint16_t milliseconds, IExecutor* pExecutor, Database* pDatabase, bool value, bool update)
+void ToggleBinaryEvery3Seconds(IExecutor* pExecutor, Database* pDatabase, uint8_t index, bool value)
 {	
-	if(update)
-	{	
+	uint16_t next = ((index + 1) % 5);
+		
+	{
 		Transaction tx(pDatabase);
-		pDatabase->Update(Binary(value, BQ_ONLINE, pExecutor->GetTime().milliseconds), 0);
-	}
-	
-	auto lambda = [pExecutor, pDatabase, value, milliseconds]() { ToggleBinaryIndex0Every(milliseconds, pExecutor, pDatabase, !value, true); };
-	pExecutor->Start(TimeDuration::Milliseconds(milliseconds), Action0::Bind(lambda));	
+		pDatabase->Update(Binary(value, BQ_ONLINE, pExecutor->GetTime().milliseconds), index);	
+	}	
+		
+	auto lambda = [pExecutor, pDatabase, value, next]() { ToggleBinaryEvery3Seconds(pExecutor, pDatabase, next, !value); };
+	pExecutor->Start(TimeDuration::Seconds(3), Action0::Bind(lambda));	
 }
