@@ -66,6 +66,8 @@ if(logger.IsEnabled(filters)){ \
 
 #else
 
+#define SAFE_STRING_FORMAT(dest, size, format, ...)
+
 #define SIMPLE_LOG_BLOCK_WITH_CODE(logger, filters, code, message)
 
 #define SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, filters, code, message)

@@ -83,24 +83,24 @@ MonotonicTimestamp AVRExecutor::GetTime()
 	return MonotonicTimestamp(ticks*10); // every tick represents 10 milliseconds since Init()				
 }
 
-ITimer* AVRExecutor::Start(const TimeDuration& duration, const Runnable& runnable)
+ITimer* AVRExecutor::Start(const TimeDuration& duration, const Action0& action)
 {	
-	return Start(GetTime().Add(duration), runnable);
+	return Start(GetTime().Add(duration), action);
 }
 	
-ITimer* AVRExecutor::Start(const MonotonicTimestamp& ts, const Runnable& runnable)
+ITimer* AVRExecutor::Start(const MonotonicTimestamp& ts, const Action0& action)
 {
 	assert(idleTimers.IsNotEmpty());
 	AVRTimer** pTimer = idleTimers.Pop();
-	(*pTimer)->Set(this, runnable, ts);
+	(*pTimer)->Set(this, action, ts);
 	this->activeTimers.Add(*pTimer);
 	return *pTimer;
 }
 	
-void AVRExecutor::Post(const Runnable& runnable)
+void AVRExecutor::Post(const Action0& action)
 {	
 	assert(!work.IsFull());
-	work.Enqueue(runnable);
+	work.Enqueue(action);
 }
 
 void AVRExecutor::Run()
@@ -118,7 +118,7 @@ bool AVRExecutor::RunOne()
 	{
 		if(work.IsNotEmpty())
 		{
-			work.Peek()->Run();
+			work.Peek()->Apply();
 			work.Pop();
 			return true;
 		}
@@ -139,8 +139,8 @@ bool AVRExecutor::RunOneTimer()
 		idleTimers.Enqueue(pNode->value);
 		
 		// make a copy of the task and run it
-		Runnable copy(pNode->value->runnable);
-		copy.Run();		
+		Action0 copy(pNode->value->action);
+		copy.Apply();		
 		return true;
 	}
 	else

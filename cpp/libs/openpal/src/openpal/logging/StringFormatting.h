@@ -24,7 +24,7 @@
 #include "Logger.h"
 
 namespace openpal
-{
+{	
 	class ReadOnlyBuffer;
 
 	const uint32_t MAX_LOG_ENTRY_SIZE = 80;

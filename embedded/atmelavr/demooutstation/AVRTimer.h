@@ -1,8 +1,8 @@
 #ifndef __AVR_TIMER_H_
 #define __AVR_TIMER_H_
 
-#include <openpal/ITimer.h>
-#include <openpal/Runnable.h>
+#include <openpal/executor/ITimer.h>
+#include <openpal/executor/Action0.h>
 
 class AVRExecutor;
 
@@ -12,13 +12,13 @@ class AVRTimer : public openpal::ITimer
 	
 	AVRTimer();
 	
-	void Set(AVRExecutor* pExecutor, const openpal::Runnable runnable, const openpal::MonotonicTimestamp& expirationTime_);
+	void Set(AVRExecutor* pExecutor, const openpal::Action0 action, const openpal::MonotonicTimestamp& expirationTime_);
 		
 	virtual void Cancel() override final;
 	virtual openpal::MonotonicTimestamp ExpiresAt() override final;
 	
 	AVRExecutor* pExecutor;
-	openpal::Runnable runnable;
+	openpal::Action0 action;
 	openpal::MonotonicTimestamp expirationTime;
 };
 

@@ -6,7 +6,7 @@
 #include <opendnp3/outstation/StaticallyAllocatedDatabase.h>
 #include <opendnp3/outstation/StaticallyAllocatedEventBuffer.h>
 
-#include <openpal/LogRoot.h>
+#include <openpal/logging/LogRoot.h>
 
 #include <avr/io.h> 
 #include <avr/interrupt.h>
@@ -30,7 +30,7 @@ int main()
 	
 	LogRoot root(nullptr, "root", 0);
 		
-	TransportStack stack(root, &exe, LinkConfig(false, false));
+	TransportStack stack(root, &exe, nullptr, LinkConfig(false, false));
 		
 	// 5 static binaries, 0 others
 	StaticallyAllocatedDatabase<5, 0, 0, 0, 0, 0, 0> staticBuffers;
@@ -93,5 +93,5 @@ void ToggleBinaryIndex0Every(uint16_t milliseconds, IExecutor* pExecutor, Databa
 	}
 	
 	auto lambda = [pExecutor, pDatabase, value, milliseconds]() { ToggleBinaryIndex0Every(milliseconds, pExecutor, pDatabase, !value, true); };
-	pExecutor->Start(TimeDuration::Milliseconds(milliseconds), Bind(lambda));	
+	pExecutor->Start(TimeDuration::Milliseconds(milliseconds), Action0::Bind(lambda));	
 }

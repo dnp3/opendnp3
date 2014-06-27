@@ -21,7 +21,7 @@
 #ifndef __AVR_COMMAND_HANDLER_H_
 #define __AVR_COMMAND_HANDLER_H_
 
-#include <openpal/Uncopyable.h>
+#include <openpal/util/Uncopyable.h>
 
 #include "opendnp3/outstation/ICommandHandler.h"
 

@@ -8,10 +8,10 @@ using namespace openpal;
 AVRTimer::AVRTimer() : pExecutor(nullptr), expirationTime(MonotonicTimestamp::Min())
 {}
 
-void AVRTimer::Set(AVRExecutor* pExeuctor_, const openpal::Runnable runnable_, const openpal::MonotonicTimestamp& expirationTime_)
+void AVRTimer::Set(AVRExecutor* pExeuctor_, const openpal::Action0 action_, const openpal::MonotonicTimestamp& expirationTime_)
 {
 	pExecutor = pExeuctor_;
-	runnable = runnable_;
+	action = action_;
 	expirationTime = expirationTime_;
 }
 

@@ -5,13 +5,15 @@
 #include <opendnp3/link/ILinkRouter.h>
 #include <opendnp3/link/ILinkContext.h>
 
-#include <opendnp3/Settable.h>
+
 #include <opendnp3/link/LinkLayerParser.h>
 
-#include <openpal/LogRoot.h>
-#include <openpal/StaticQueue.h>
-#include <openpal/RingBuffer.h>
-#include <openpal/IExecutor.h>
+#include <openpal/logging/LogRoot.h>
+
+#include <openpal/container/Settable.h>
+#include <openpal/container/StaticQueue.h>
+#include <openpal/container/RingBuffer.h>
+#include <openpal/executor/IExecutor.h>
 
 namespace arduino {
 
@@ -52,8 +54,8 @@ class AVRLinkParser : public opendnp3::ILinkRouter
 	openpal::StaticQueue<Transmission, uint8_t, 2> txQueue;
 	openpal::RingBuffer<8> rxBuffer;
 	
-	opendnp3::Settable<openpal::ReadOnlyBuffer> primaryTx;
-	opendnp3::Settable<openpal::ReadOnlyBuffer> secondaryTx;
+	openpal::Settable<openpal::ReadOnlyBuffer> primaryTx;
+	openpal::Settable<openpal::ReadOnlyBuffer> secondaryTx;
 	
 	openpal::IExecutor* pExecutor;
 	opendnp3::ILinkContext* pContext;		

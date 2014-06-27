@@ -21,7 +21,6 @@
 
 #include "StringFormatting.h"
 
-
 #include "openpal/util/ToHex.h"
 #include "openpal/container/ReadOnlyBuffer.h"
 
