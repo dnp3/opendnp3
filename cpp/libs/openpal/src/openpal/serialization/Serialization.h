@@ -34,7 +34,7 @@ namespace openpal
 // Opendnp3 parsing only uses these aliases. This allows
 // the endianess to be switched via the macro below
 
-#ifdef OPENDNP3_FLIP_ENDIAN
+#ifdef OPENPAL_FLIP_ENDIAN
 
 typedef Bit16BE<int16_t>	Int16;
 typedef Bit16BE<uint16_t>	UInt16;
