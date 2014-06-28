@@ -67,8 +67,7 @@ public:
 	* Add a callback to receive log messages
 	* @param pHandler Pointer to a callback object
 	*/
-	void AddLogSubscriber(openpal::ILogHandler* pHandler);
-	
+	void AddLogSubscriber(openpal::ILogHandler* pHandler);	
 
 	/**
 	* Permanently shutdown the manager and all sub-objects that have been created. Stop

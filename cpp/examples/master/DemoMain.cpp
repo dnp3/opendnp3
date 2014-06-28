@@ -54,6 +54,13 @@ int main(int argc, char* argv[])
 	// Connect via a TCPClient socket to a outstation	
 	auto pClient = manager.AddTCPClient("tcpclient", FILTERS, TimeDuration::Seconds(2), TimeDuration::Minutes(1), "127.0.0.1", 20000);
 
+	// Optionally, you can bind listeners to the channel to get state change notifications
+	// This listener just prints the changes to the console
+	pClient->AddStateListener([](ChannelState state) 
+	{
+		std::cout << "channel state: " << ChannelStateToString(state) << std::endl;
+	});
+
 	// The master config object for a master. The default are
 	// useable, but understanding the options are important.
 	MasterStackConfig stackConfig;

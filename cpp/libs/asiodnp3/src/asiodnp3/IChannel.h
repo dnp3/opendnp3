@@ -73,7 +73,7 @@ class IChannel : public DestructorHook
 {
 public:
 
-	typedef std::function<void(opendnp3::ChannelState)> StateChangeCallback;
+	typedef std::function<void(opendnp3::ChannelState)> StateListener;
 	
 	virtual ~IChannel() {}
 
@@ -81,7 +81,7 @@ public:
 	* Receive callbacks for state transitions on the channels executor
 	* You'll receive one callback immediately with the current state
 	*/
-	virtual void AddStateChangeCallback(const StateChangeCallback& callback) = 0;
+	virtual void AddStateListener(const StateListener& listener) = 0;
 	
 	/**
 	* Synchronously read the channel statistics

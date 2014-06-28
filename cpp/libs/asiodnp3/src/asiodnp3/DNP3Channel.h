@@ -76,7 +76,7 @@ public:
 
 	virtual void SetLogFilters(const openpal::LogFilters& filters) override final;
 
-	virtual void AddStateChangeCallback(const StateChangeCallback& callback) override final;
+	virtual void AddStateListener(const StateListener& listener) override final;
 
 	virtual IMaster* AddMaster(	char const* id,
 								opendnp3::ISOEHandler* pPublisher,
@@ -127,7 +127,7 @@ private:
 	std::set<IStack*> stacks;
 
 	opendnp3::ChannelState channelState;
-	std::vector<StateChangeCallback> callbacks;
+	std::vector<StateListener> callbacks;
 	
 	opendnp3::LinkLayerRouter router;
 

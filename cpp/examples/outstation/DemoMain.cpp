@@ -58,6 +58,13 @@ int main(int argc, char* argv[])
 	// Create a TCP server (listener)	
 	auto pServer = manager.AddTCPServer("server", FILTERS, TimeDuration::Seconds(5), TimeDuration::Seconds(5), "0.0.0.0", 20000);
 
+	// Optionally, you can bind listeners to the channel to get state change notifications
+	// This listener just prints the changes to the console
+	pServer->AddStateListener([](ChannelState state)
+	{
+		std::cout << "channel state: " << ChannelStateToString(state) << std::endl;
+	});
+
 	// The main object for a outstation. The defaults are useable, 
 	// but understanding the options are important.
 	OutstationStackConfig stackConfig;	

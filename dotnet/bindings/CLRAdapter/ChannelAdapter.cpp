@@ -29,7 +29,7 @@ ChannelAdapter::~ChannelAdapter()
 void ChannelAdapter::SetChannel(asiodnp3::IChannel* pChannel_)
 {
 	pChannel = pChannel_;
-	pChannel->AddStateChangeCallback(pMultiplexer->GetEventTrigger());
+	pChannel->AddStateListener(pMultiplexer->GetEventTrigger());
 }
 
 LogFilter ChannelAdapter::GetLogFilters()

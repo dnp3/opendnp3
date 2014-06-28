@@ -67,12 +67,12 @@ void DNP3Channel::OnStateChange(ChannelState state)
 	this->CheckForFinalShutdown();
 }
 
-void DNP3Channel::AddStateChangeCallback(const StateChangeCallback& callback)
+void DNP3Channel::AddStateListener(const StateListener& listener)
 {
-	auto lambda = [this, callback]()
+	auto lambda = [this, listener]()
 	{
-		this->callbacks.push_back(callback);
-		callback(channelState);
+		this->callbacks.push_back(listener);
+		listener(channelState);
 	};
 	pExecutor->strand.post(lambda);
 }

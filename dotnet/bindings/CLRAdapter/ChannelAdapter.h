@@ -14,7 +14,7 @@ namespace DNP3
 {
 namespace Adapter
 {
-void CallbackListener(gcroot < System::Action<ChannelState> ^ >* listener, opendnp3::ChannelState);
+//void CallbackListener(gcroot < System::Action<ChannelState> ^ >* listener, opendnp3::ChannelState);
 
 private ref class ChannelAdapter : IChannel
 {
