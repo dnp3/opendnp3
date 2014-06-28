@@ -45,7 +45,7 @@ namespace DotNetMasterDemo
             var channel = mgr.AddTCPClient("client", LogLevels.NORMAL, TimeSpan.FromSeconds(5), TimeSpan.FromMinutes(2), "127.0.0.1", 20000);
             
             //optionally, add a listener for the channel state
-            channel.AddStateListener(state => Console.WriteLine("Client state: " + state));
+            channel.AddStateListener(state => Console.WriteLine("channel state: " + state));            
 
             var config = new MasterStackConfig();
             
@@ -55,14 +55,12 @@ namespace DotNetMasterDemo
             config.link.localAddr = 1;
             config.link.remoteAddr = 10;
 
-            var master = channel.AddMaster("master", PrintingSOEHandler.Instance, config);
-
-            var classMask = PointClassHelpers.GetMask(PointClass.CLASS_1, PointClass.CLASS_2, PointClass.CLASS_3);
+            var master = channel.AddMaster("master", PrintingSOEHandler.Instance, config);            
 
             // you a can optionally add various kinds of polls
-            var integrityPoll = master.AddClassScan(~0, TimeSpan.FromMinutes(1));
+            var integrityPoll = master.AddClassScan(PointClass.ALL_CLASSES.GetMask(), TimeSpan.FromMinutes(1));
             var rangePoll = master.AddRangeScan(30, 2, 5, 7, TimeSpan.FromSeconds(20));
-            var classPoll = master.AddClassScan(classMask, TimeSpan.FromSeconds(5));
+            var classPoll = master.AddClassScan(PointClass.ALL_EVENTS.GetMask(), TimeSpan.FromSeconds(5));
 
             // you a can optionally add state callbacks for monitoring these polls
             integrityPoll.AddScanCallback((PollState state) => Console.WriteLine("integrity poll state change: " + state));

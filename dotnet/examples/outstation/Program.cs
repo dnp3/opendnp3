@@ -44,11 +44,19 @@ namespace DotNetOutstationDemo
             mgr.AddLogHandler(PrintingLogAdapter.Instance); //this is optional
             var channel = mgr.AddTCPServer("server", LogLevels.NORMAL, TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5), "0.0.0.0", 20000);
 
-            //optionally, add a listener for the channel state
-            channel.AddStateListener(state => Console.WriteLine("Server state: " + state));
+            // Optional: add a listener for the channel state
+            channel.AddStateListener(state => Console.WriteLine("channel state: " + state));     
 
             var config = new OutstationStackConfig();
-            var outstation = channel.AddOutstation("outstation", RejectingCommandHandler.Instance, PrintingTimeWriteHandler.Instance, config);                    
+
+            // Optional: overide the default reporting variations
+            config.outstation.eventBinary = EventBinaryResponse.Group2Var2;
+
+            // Optional: setup your stack configuration here
+            config.link.localAddr = 10;
+            config.link.remoteAddr = 1;
+
+            var outstation = channel.AddOutstation("outstation", RejectingCommandHandler.Instance, PrintingTimeWriteHandler.Instance, config);
 
             outstation.Enable(); // enable communications
 

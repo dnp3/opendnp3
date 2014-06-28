@@ -212,7 +212,12 @@ namespace DNP3.Interface
             var i = 0;
             foreach(var e in values) i |= (int) e;
             return i;
-        }        
+        }
+
+        public static int GetMask(this PointClass value)
+        {
+            return (int) value;
+        } 
     }
 
 	/// <summary>
