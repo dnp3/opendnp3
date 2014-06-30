@@ -91,12 +91,7 @@ public:
 	/*
 	* Called when the master observes the IIN::DeviceRestart bit
 	*/
-	void OnRestartDetected(const MasterParams& params);
-
-	/*
-	* Called when the master observes the IIN::NeedTime bit
-	*/
-	void OnNeedTimeDetected(const MasterParams& params);
+	void ProcessRxIIN(const IINField& iin, const MasterParams& params);	
 
 private:	
 

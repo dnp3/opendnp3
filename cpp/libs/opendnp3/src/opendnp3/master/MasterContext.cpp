@@ -228,15 +228,7 @@ void MasterContext::OnUnsolicitedResponse(const APDUResponseHeader& header, cons
 
 void MasterContext::OnReceiveIIN(const IINField& iin)
 {
-	if (iin.IsSet(IINBit::DEVICE_RESTART))
-	{
-		scheduler.OnRestartDetected(params);
-	}
-	
-	if (iin.IsSet(IINBit::NEED_TIME))
-	{		
-		scheduler.OnNeedTimeDetected(params);
-	}
+	scheduler.ProcessRxIIN(iin, params);
 }
 
 void MasterContext::StartResponseTimer()

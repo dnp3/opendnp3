@@ -279,23 +279,35 @@ PollTask* MasterScheduler::AddPollTask(const PollTask& pt)
 }
 
 
-void MasterScheduler::OnRestartDetected(const MasterParams& params)
+void MasterScheduler::ProcessRxIIN(const IINField& iin, const MasterParams& params)
 {
-	auto pRestartTask = &pStaticTasks->clearRestartTask;
-	if (!this->IsTaskActive(pRestartTask))
-	{
-		scheduledTaskMask |= tasks::CLEAR_RESTART_SEQUENCE;
-		this->CancelScheduleTimer(); // we have an active task now		
+	if (iin.IsSet(IINBit::DEVICE_RESTART))
+	{		
+		if (!this->IsTaskActive(&pStaticTasks->clearRestartTask))
+		{
+			scheduledTaskMask |= tasks::CLEAR_RESTART_SEQUENCE;				
+		}
 	}
-}
 
-void MasterScheduler::OnNeedTimeDetected(const MasterParams& params)
-{
-	auto pTime1 = &pStaticTasks->serialTimeSync;
+	if (iin.IsSet(IINBit::EVENT_BUFFER_OVERFLOW) && params.integrityOnEventOverflowIIN)
+	{		
+		if (!this->IsTaskActive(&pStaticTasks->startupIntegrity))
+		{
+			scheduledTaskMask |= tasks::STARTUP_INTEGRITY;
+		}
+	}
 
-	if (!IsTaskActive(pTime1))
+	if (iin.IsSet(IINBit::NEED_TIME))
+	{		
+		if (!this->IsTaskActive(&pStaticTasks->serialTimeSync))
+		{
+			scheduledTaskMask |= tasks::TIME_SYNC;
+		}
+	}
+	
+	if (scheduledTaskMask)
 	{
-		scheduledTaskMask |= tasks::TIME_SYNC;
+		this->CancelScheduleTimer();
 	}
 }
 

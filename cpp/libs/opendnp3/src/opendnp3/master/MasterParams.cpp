@@ -35,6 +35,7 @@ MasterParams::MasterParams() :
 	disableUnsolOnStartup(true),	
 	unsolClassMask(ALL_EVENT_CLASSES),
 	startupIntergrityClassMask(ALL_CLASSES),	
+	integrityOnEventOverflowIIN(true),
 	taskRetryPeriod(TimeDuration::Seconds(5))
 {}
 

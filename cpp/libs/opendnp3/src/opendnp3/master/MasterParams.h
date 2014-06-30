@@ -52,8 +52,12 @@ struct MasterParams
 	///	Bitwise mask used determine which classes are enabled for unsol, if 0 unsol is not enabled
 	int unsolClassMask;
 
-	/// Which classes should be requested in a startup integrity scan, defaults to 3/2/1/0, 0 == no scan
+	/// Which classes should be requested in a startup integrity scan, defaults to 3/2/1/0
+	/// A mask equal to 0 means no startup integrity scan will be performed
 	int startupIntergrityClassMask;
+
+	/// Defines whether an integrity scan will be performed when the EventBufferOverflow IIN is detected
+	bool integrityOnEventOverflowIIN;
 
 	/// Time delay beforce retrying a failed task
 	openpal::TimeDuration taskRetryPeriod;
