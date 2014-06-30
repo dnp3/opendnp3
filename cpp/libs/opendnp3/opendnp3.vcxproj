@@ -177,7 +177,6 @@
     <ClInclude Include="src\opendnp3\outstation\Database.h" />
     <ClInclude Include="src\opendnp3\outstation\DatabaseTemplate.h" />
     <ClInclude Include="src\opendnp3\outstation\DeferredRequest.h" />
-    <ClInclude Include="src\opendnp3\outstation\DeviceTemplateTypes.h" />
     <ClInclude Include="src\opendnp3\outstation\DualValue.h" />
     <ClInclude Include="src\opendnp3\outstation\DynamicallyAllocatedDatabase.h" />
     <ClInclude Include="src\opendnp3\outstation\DynamicallyAllocatedEventBuffer.h" />

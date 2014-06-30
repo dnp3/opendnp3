@@ -342,9 +342,6 @@
     <ClInclude Include="src\opendnp3\outstation\DatabaseTemplate.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\DeviceTemplateTypes.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\DualValue.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
