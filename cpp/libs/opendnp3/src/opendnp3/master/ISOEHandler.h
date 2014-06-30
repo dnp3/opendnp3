@@ -68,9 +68,9 @@ class NullSOEHandler : public ISOEHandler
 
 public:
 
-	static ISOEHandler* Inst()
+	static ISOEHandler& Inst()
 	{
-		return &msInstance;
+		return instance;
 	}
 
 	void LoadStatic(const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override final {}
@@ -100,7 +100,7 @@ private:
 	NullSOEHandler()
 	{}
 
-	static NullSOEHandler msInstance;
+	static NullSOEHandler instance;
 };
 
 }

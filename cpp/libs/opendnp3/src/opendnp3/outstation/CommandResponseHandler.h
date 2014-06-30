@@ -64,19 +64,20 @@ private:
 	ObjectWriter* pWriter;
 
 	template <class Target, class IndexType>
-	void RespondToHeader(QualifierCode qualifier, IDNP3Serializer<Target>& serializer, const IterableBuffer<IndexedValue<Target, typename IndexType::Type>>& meas);
+	void RespondToHeader(QualifierCode qualifier, IDNP3Serializer<Target>& serializer, const IterableBuffer<IndexedValue<Target, typename IndexType::Type>>& values);
 
 };
 
 template <class Target, class IndexType>
-void CommandResponseHandler::RespondToHeader(QualifierCode qualifier, IDNP3Serializer<Target>& serializer, const IterableBuffer<IndexedValue<Target, typename IndexType::Type>>& meas)
+void CommandResponseHandler::RespondToHeader(QualifierCode qualifier, IDNP3Serializer<Target>& serializer, const IterableBuffer<IndexedValue<Target, typename IndexType::Type>>& values)
 {
 	auto iter = pWriter->IterateOverCountWithPrefix<IndexType, Target>(qualifier, serializer);
 
-	auto commands = meas.Iterate();
-	while (commands.HasNext())
+	auto commands = values.Iterate();
+
+	do
 	{
-		auto command = commands.Next();
+		auto command = commands.Current();
 		auto result = CommandStatus::TOO_MANY_OPS;
 		if (numRequests < maxCommands)
 		{
@@ -90,7 +91,9 @@ void CommandResponseHandler::RespondToHeader(QualifierCode qualifier, IDNP3Seria
 		response.status = result;
 		iter.Write(response, command.index);
 		++numRequests;
-	}	
+	} 
+	while (commands.MoveNext());
+
 }
 
 }

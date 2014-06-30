@@ -68,23 +68,36 @@ public:
 	class Iterator
 	{
 		public:
-			Iterator(const IterableBuffer& ib) : pos(0), copy(ib.buffer), pIB(&ib)
+			Iterator(const IterableBuffer& ib) : pos(0), copy(ib.buffer), pBuffer(&ib)
 			{}
 
-			bool HasNext() const
+			void Reset()
 			{
-				return pos < pIB->Count();
+				pos = 0;
 			}
 
-			T Next()
+			bool MoveNext()
+			{
+				if ((pos+1) < pBuffer->Count())
+				{
+					++pos;
+					return true;
+				}
+				else
+				{
+					return false;
+				}			
+			}
+
+			T Current()
 			{				
-				return pIB->ValueAt(copy, pos++);				
+				return pBuffer->ValueAt(copy, pos);
 			}
 
 		private:
 			uint32_t pos;
 			openpal::ReadOnlyBuffer copy;
-			const IterableBuffer* pIB;
+			const IterableBuffer* pBuffer;
 	};
 
 	friend class Iterator;
