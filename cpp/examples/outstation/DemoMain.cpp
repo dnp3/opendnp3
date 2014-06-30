@@ -109,7 +109,7 @@ int main(int argc, char* argv[])
 		std::cout << "c = counter, b = binary, d = doublebit, a = analog, x = exit" << std::endl;
 		std::cin >> input;
 
-		TimeTransaction tx(pOutstation->GetDatabase(), UTCTimeSource::Inst()->Now());
+		TimeTransaction tx(pOutstation->GetDatabase(), UTCTimeSource::Instance().Now());
 		for (char& c : input)
 		{
 			switch (c)

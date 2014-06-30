@@ -34,14 +34,14 @@ namespace asiodnp3
 MasterStackImpl::MasterStackImpl(	LogRoot& root,
 									asiopal::ASIOExecutor& executor,
                                     ISOEHandler* pSOEHandler,
-                                    IUTCTimeSource* pTimeSource,                                    
+                                    IUTCTimeSource& timeSource,                                    
                                     const MasterStackConfig& config,
                                     const StackActionHandler& handler_,									
 									opendnp3::ITaskLock& taskLock) :
 
 	handler(handler_),
 	stack(root, &executor, &statistics, config.link),
-	master(executor, root, stack.transport, pSOEHandler, pTimeSource, config.master, taskLock)
+	master(executor, root, stack.transport, pSOEHandler, timeSource, config.master, taskLock)
 {
 	stack.transport.SetAppLayer(&master);
 }

@@ -41,7 +41,7 @@ MasterTestObject::MasterTestObject(const MasterParams& params, ITaskLock& lock) 
 	meas(),
 	lower(log.root),
 	timeSource(0),
-	master(exe, log.root, lower, &meas, &timeSource, params, lock)
+	master(exe, log.root, lower, &meas, timeSource, params, lock)
 {}
 
 void MasterTestObject::SendToMaster(const std::string& hex)

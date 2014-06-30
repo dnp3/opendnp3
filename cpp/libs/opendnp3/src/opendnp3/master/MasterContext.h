@@ -43,7 +43,7 @@ class MasterContext : public ICommandProcessor, public IScheduleCallback
 					openpal::LogRoot& root, 
 					openpal::ILowerLayer& lower,
 					ISOEHandler* pSOEHandler,
-					openpal::IUTCTimeSource* pTimeSource,
+					openpal::IUTCTimeSource& timeSource,
 					const MasterParams& params,
 					ITaskLock& taskLock
 				);

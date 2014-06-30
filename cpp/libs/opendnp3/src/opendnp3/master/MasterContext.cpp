@@ -40,7 +40,7 @@ MasterContext::MasterContext(
 	LogRoot& root,
 	ILowerLayer& lower,
 	ISOEHandler* pSOEHandler_,
-	IUTCTimeSource* pTimeSource,
+	IUTCTimeSource& timeSource,
 	const MasterParams& params_,
 	ITaskLock& taskLock
 	) :
@@ -58,7 +58,7 @@ MasterContext::MasterContext(
 	pActiveTask(nullptr),
 	pState(&MasterStateIdle::Instance()),
 	pResponseTimer(nullptr),
-	staticTasks(&logger, pSOEHandler, pTimeSource),
+	staticTasks(&logger, pSOEHandler, &timeSource),
 	scheduler(&logger, staticTasks, executor, *this)
 {
 	

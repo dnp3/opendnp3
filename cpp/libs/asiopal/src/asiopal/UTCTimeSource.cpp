@@ -25,11 +25,11 @@
 namespace asiopal
 {
 
-UTCTimeSource UTCTimeSource::mInstance;
+UTCTimeSource UTCTimeSource::instance;
 
-openpal::IUTCTimeSource* UTCTimeSource::Inst()
+openpal::IUTCTimeSource& UTCTimeSource::Instance()
 {
-	return &mInstance;
+	return instance;
 }
 
 openpal::UTCTimestamp UTCTimeSource::Now()

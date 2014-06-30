@@ -33,12 +33,12 @@ class UTCTimeSource : public openpal::IUTCTimeSource
 {
 
 public:
-	static openpal::IUTCTimeSource* Inst();
+	static openpal::IUTCTimeSource& Instance();
 	openpal::UTCTimestamp Now();
 
 private:
 	UTCTimeSource() {}
-	static UTCTimeSource mInstance;
+	static UTCTimeSource instance;
 };
 
 

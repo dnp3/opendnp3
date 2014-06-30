@@ -64,7 +64,8 @@ IMaster^ ChannelAdapter::AddMaster(System::String^ loggerId, ISOEHandler^ publis
 	MasterMeasurementHandlerWrapper^ wrapper = gcnew MasterMeasurementHandlerWrapper(publisher);
 	opendnp3::MasterStackConfig cfg = Conversions::ConvertConfig(config);
 
-	auto pMaster = pChannel->AddMaster(stdLoggerId.c_str(), wrapper->Get(), asiopal::UTCTimeSource::Inst(), cfg); // TODO expose time source
+	// TODO expose time source via wrapper
+	auto pMaster = pChannel->AddMaster(stdLoggerId.c_str(), wrapper->Get(), asiopal::UTCTimeSource::Instance(), cfg); 
 	if (pMaster == nullptr)
 	{
 		return nullptr;
