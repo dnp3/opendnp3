@@ -33,7 +33,7 @@ namespace asiodnp3
 
 MasterStackImpl::MasterStackImpl(	LogRoot& root,
 									asiopal::ASIOExecutor& executor,
-                                    ISOEHandler* pSOEHandler,
+									opendnp3::ISOEHandler& SOEHandler,
                                     IUTCTimeSource& timeSource,                                    
                                     const MasterStackConfig& config,
                                     const StackActionHandler& handler_,									
@@ -41,7 +41,7 @@ MasterStackImpl::MasterStackImpl(	LogRoot& root,
 
 	handler(handler_),
 	stack(root, &executor, &statistics, config.link),
-	master(executor, root, stack.transport, pSOEHandler, timeSource, config.master, taskLock)
+	master(executor, root, stack.transport, SOEHandler, timeSource, config.master, taskLock)
 {
 	stack.transport.SetAppLayer(&master);
 }

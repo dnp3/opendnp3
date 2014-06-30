@@ -39,7 +39,7 @@ MasterContext::MasterContext(
 	IExecutor& executor,
 	LogRoot& root,
 	ILowerLayer& lower,
-	ISOEHandler* pSOEHandler_,
+	ISOEHandler& SOEHandler,
 	IUTCTimeSource& timeSource,
 	const MasterParams& params_,
 	ITaskLock& taskLock
@@ -49,7 +49,7 @@ MasterContext::MasterContext(
 	pExecutor(&executor),
 	pLower(&lower),
 	params(params_),
-	pSOEHandler(pSOEHandler_),
+	pSOEHandler(&SOEHandler),
 	pTaskLock(&taskLock),
 	isOnline(false),
 	isSending(false),

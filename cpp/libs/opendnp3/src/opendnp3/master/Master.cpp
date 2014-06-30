@@ -34,12 +34,12 @@ Master::Master(
 	openpal::IExecutor& executor,
 	openpal::LogRoot& root,
 	openpal::ILowerLayer& lower,
-	ISOEHandler* pSOEHandler,
+	ISOEHandler& SOEHandler,
 	openpal::IUTCTimeSource& timeSource,
 	const MasterParams& params,
 	ITaskLock& taskLock
 	) : 
-	context(executor, root, lower, pSOEHandler, timeSource, params, taskLock),
+	context(executor, root, lower, SOEHandler, timeSource, params, taskLock),
 	commandMarshaller(executor, context)
 {}
 	

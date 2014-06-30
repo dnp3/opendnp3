@@ -50,7 +50,7 @@ TEST_CASE(SUITE("ConstructionDestruction"))
 		auto pServer = manager.AddTCPServer("server", levels::NORMAL, TimeDuration::Seconds(5), TimeDuration::Seconds(5), "0.0.0.0", 20000);
 
 		auto pOutstation = pServer->AddOutstation("outstation", SuccessCommandHandler::Inst(), &NullTimeWriteHandler::Inst(), OutstationStackConfig(DatabaseTemplate()));
-		auto pMaster = pClient->AddMaster("master", &NullSOEHandler::Inst(), UTCTimeSource::Instance(), MasterStackConfig());
+		auto pMaster = pClient->AddMaster("master", NullSOEHandler::Instance(), UTCTimeSource::Instance(), MasterStackConfig());
 		
 		pOutstation->Enable();
 		pMaster->Enable();		
@@ -67,7 +67,7 @@ TEST_CASE(SUITE("ManualStackShutdown"))
 		auto pServer = manager.AddTCPServer("server", levels::NORMAL, TimeDuration::Seconds(5), TimeDuration::Seconds(5), "0.0.0.0", 20000);
 
 		auto pOutstation = pServer->AddOutstation("outstation", SuccessCommandHandler::Inst(), &NullTimeWriteHandler::Inst(), OutstationStackConfig(DatabaseTemplate()));
-		auto pMaster = pClient->AddMaster("master", &NullSOEHandler::Inst(), UTCTimeSource::Instance(), MasterStackConfig());
+		auto pMaster = pClient->AddMaster("master", NullSOEHandler::Instance(), UTCTimeSource::Instance(), MasterStackConfig());
 
 		pOutstation->Enable();
 		pMaster->Enable();
@@ -88,7 +88,7 @@ TEST_CASE(SUITE("ManualChannelShutdownWithStacks"))
 		auto pServer = manager.AddTCPServer("server", levels::NORMAL, TimeDuration::Seconds(5), TimeDuration::Seconds(5), "0.0.0.0", 20000);
 
 		auto pOutstation = pServer->AddOutstation("outstation", SuccessCommandHandler::Inst(), &NullTimeWriteHandler::Inst(), OutstationStackConfig(DatabaseTemplate()));
-		auto pMaster = pClient->AddMaster("master", &NullSOEHandler::Inst(), UTCTimeSource::Instance(), MasterStackConfig());
+		auto pMaster = pClient->AddMaster("master", NullSOEHandler::Instance(), UTCTimeSource::Instance(), MasterStackConfig());
 
 		pMaster->Enable();
 		pOutstation->Enable();

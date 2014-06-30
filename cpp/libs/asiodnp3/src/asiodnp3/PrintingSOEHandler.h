@@ -33,9 +33,9 @@ class PrintingSOEHandler : public ISOEHandler
 {
 
 public:
-	static ISOEHandler* Inst()
+	static ISOEHandler& Instance()
 	{
-		return &instance;
+		return instance;
 	}
 
 	void LoadStatic(const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override final;

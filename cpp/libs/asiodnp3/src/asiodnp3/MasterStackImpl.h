@@ -42,7 +42,7 @@ public:
 	MasterStackImpl(
 		openpal::LogRoot& root,
 	    asiopal::ASIOExecutor& executor,
-		opendnp3::ISOEHandler* pSOEHandler,
+		opendnp3::ISOEHandler& SOEHandler,
 	    openpal::IUTCTimeSource& timeSource,		
 		const opendnp3::MasterStackConfig& config,
 		const StackActionHandler& handler,

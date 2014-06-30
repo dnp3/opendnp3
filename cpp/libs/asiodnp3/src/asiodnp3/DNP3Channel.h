@@ -79,7 +79,7 @@ public:
 	virtual void AddStateListener(const std::function<void(opendnp3::ChannelState)>& listener) override final;
 
 	virtual IMaster* AddMaster(	char const* id,
-								opendnp3::ISOEHandler* pPublisher,
+								opendnp3::ISOEHandler& SOEHandler,
 								openpal::IUTCTimeSource& timeSource,
 								const opendnp3::MasterStackConfig& config) override final;
 
@@ -95,7 +95,7 @@ public:
 private:
 
 	IMaster* _AddMaster(char const* id,
-		opendnp3::ISOEHandler* pPublisher,
+		opendnp3::ISOEHandler& SOEHandler,
 		openpal::IUTCTimeSource& timeSource,
 		const opendnp3::MasterStackConfig& config);
 

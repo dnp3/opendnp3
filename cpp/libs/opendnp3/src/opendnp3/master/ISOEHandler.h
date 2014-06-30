@@ -68,7 +68,7 @@ class NullSOEHandler : public ISOEHandler
 
 public:
 
-	static ISOEHandler& Inst()
+	static ISOEHandler& Instance()
 	{
 		return instance;
 	}

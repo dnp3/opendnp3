@@ -35,7 +35,7 @@ class Master : public openpal::IUpperLayer
 	Master(	openpal::IExecutor& executor, 				
 			openpal::LogRoot& root, 
 			openpal::ILowerLayer& lower,
-			ISOEHandler* pSOEHandler,
+			ISOEHandler& SOEHandler,
 			openpal::IUTCTimeSource& timeSource,
 			const MasterParams& params,
 			ITaskLock& taskLock = NullTaskLock::Instance()

@@ -85,13 +85,14 @@ public:
 	* Add a master to the channel
 	*
 	* @param id An ID that gets used for logging
-	* @param pPublisher Callback object for all received measurements
-	* @param pTimeSource The interface that is used for outstation time synchronization
+	* @param SOEHandler Callback object for all received measurements
+	* @param timeSource The interface that is used for outstation time synchronization
 	* @param config Configuration object that controls how the master behaves
+	*
 	* @return interface representing the running master
 	*/
 	virtual IMaster* AddMaster(char const* id,
-	                           opendnp3::ISOEHandler* pPublisher,
+							   opendnp3::ISOEHandler& SOEHandler,
 							   openpal::IUTCTimeSource& timeSource,
 							   const opendnp3::MasterStackConfig& config) = 0;
 

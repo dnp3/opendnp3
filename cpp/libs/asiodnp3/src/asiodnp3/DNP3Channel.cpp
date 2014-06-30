@@ -135,11 +135,11 @@ void DNP3Channel::SetLogFilters(const openpal::LogFilters& filters)
 	pExecutor->PostLambda(lambda);
 }
 
-IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler* pPublisher, IUTCTimeSource& timeSource, const MasterStackConfig& config)
+IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler& SOEHandler, IUTCTimeSource& timeSource, const MasterStackConfig& config)
 {
-	auto add = [this, id, pPublisher, &timeSource, config]() 
+	auto add = [this, id, &SOEHandler, &timeSource, config]()
 	{ 
-		return this->_AddMaster(id, pPublisher, timeSource, config); 
+		return this->_AddMaster(id, SOEHandler, timeSource, config);
 	};
 
 	return  asiopal::SynchronouslyGet<IMaster*>(pExecutor->strand, add);
@@ -160,7 +160,7 @@ void DNP3Channel::SetShutdownHandler(const openpal::Action0& action)
 }
 
 IMaster* DNP3Channel::_AddMaster(char const* id,
-	opendnp3::ISOEHandler* pPublisher,
+	ISOEHandler& SOEHandler,
 	openpal::IUTCTimeSource& timeSource,
 	const opendnp3::MasterStackConfig& config)
 {
@@ -173,7 +173,7 @@ IMaster* DNP3Channel::_AddMaster(char const* id,
 	else
 	{
 		StackActionHandler handler(&router, *pExecutor);
-		auto pMaster = new MasterStackImpl(*pLogRoot, *pExecutor, pPublisher, timeSource, config, handler, taskLock);
+		auto pMaster = new MasterStackImpl(*pLogRoot, *pExecutor, SOEHandler, timeSource, config, handler, taskLock);
 		auto onShutdown = [this, pMaster](){ this->OnShutdown(pMaster); };
 		pMaster->SetShutdownAction(Action0::Bind(onShutdown));
 		pMaster->SetLinkRouter(&router);

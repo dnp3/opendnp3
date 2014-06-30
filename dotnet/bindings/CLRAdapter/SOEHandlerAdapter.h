@@ -76,9 +76,9 @@ public:
 		delete mpAdapter;
 	}
 
-	opendnp3::ISOEHandler* Get()
+	opendnp3::ISOEHandler& Get()
 	{
-		return mpAdapter;
+		return *mpAdapter;
 	}
 
 private:
