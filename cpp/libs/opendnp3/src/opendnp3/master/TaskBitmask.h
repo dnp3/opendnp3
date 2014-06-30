@@ -18,39 +18,28 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __DISABLE_UNSOLICITED_TASK_H_
-#define __DISABLE_UNSOLICITED_TASK_H_
+#ifndef __TASK_BITMASK_H_
+#define __TASK_BITMASK_H_
 
-#include "opendnp3/master/NullResponseTask.h"
+#include <cstdint>
 
-namespace opendnp3
+namespace opendnp3 { namespace tasks {
+
+enum TaskBitmask : int32_t
 {
+	DISABLE_UNSOLCITED = 0x01,
+	CLEAR_RESTART_IIN = 0x02,
+	STARTUP_INTEGRITY = 0x04,
+	TIME_SYNC = 0x08,
+	ENABLE_UNSOLCITED = 0x10,
 
-/**
-* Base class for tasks that only require a single response
-*/
-class DisableUnsolicitedTask : public NullResponseTask
-{	
+	// aggregate masks for startup sequences
+	STARTUP_TASK_SEQUENCE = DISABLE_UNSOLCITED | STARTUP_INTEGRITY | ENABLE_UNSOLCITED,
+	CLEAR_RESTART_SEQUENCE = CLEAR_RESTART_IIN | STARTUP_INTEGRITY | ENABLE_UNSOLCITED
 
-public:	
-
-	DisableUnsolicitedTask(openpal::Logger* pLogger_);
-
-	virtual char const* Name() const override final { return "Disable Unsolicited"; }
-
-	virtual void BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq) override final;	
-
-	virtual bool Enabled(const MasterParams& params) override final;
-
-private:
-
-	virtual void OnSuccess(const MasterParams& params, IMasterScheduler& scheduler) override final {}
-
-	virtual void OnTimeoutOrBadControlOctet(const MasterParams& params, IMasterScheduler& scheduler) override final;
 
 };
 
-} //end ns
-
+}}
 
 #endif

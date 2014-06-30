@@ -47,11 +47,6 @@ void StartupIntegrityPoll::BuildRequest(APDURequest& request, const MasterParams
 	build::ReadIntegrity(request, params.startupIntergrityClassMask, seq);
 }
 
-IMasterTask* StartupIntegrityPoll::Next(MasterTasks& tasks)
-{
-	return &tasks.enableUnsol;
-}
-
 bool StartupIntegrityPoll::Enabled(const MasterParams& params)
 {
 	return params.startupIntergrityClassMask != 0;

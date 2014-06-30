@@ -38,11 +38,6 @@ void DisableUnsolicitedTask::BuildRequest(APDURequest& request, const MasterPara
 	build::DisableUnsolicited(request, seq);
 }
 
-IMasterTask* DisableUnsolicitedTask::Next(MasterTasks& tasks)
-{
-	return &tasks.startupIntegrity;
-}
-
 bool DisableUnsolicitedTask::Enabled(const MasterParams& params)
 {
 	return params.disableUnsolOnStartup;

@@ -40,11 +40,6 @@ void ClearRestartTask::BuildRequest(APDURequest& request, const MasterParams& pa
 	build::ClearRestartIIN(request, seq);
 }
 
-IMasterTask* ClearRestartTask::Next(MasterTasks& tasks)
-{
-	return &tasks.startupIntegrity;
-}
-
 bool ClearRestartTask::Enabled(const MasterParams& params)
 {
 	return true;

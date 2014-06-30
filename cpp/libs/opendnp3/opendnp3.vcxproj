@@ -143,6 +143,7 @@
     <ClInclude Include="src\opendnp3\master\SingleResponseTask.h" />
     <ClInclude Include="src\opendnp3\master\SerialTimeSyncTask.h" />
     <ClInclude Include="src\opendnp3\master\MasterTasks.h" />
+    <ClInclude Include="src\opendnp3\master\TaskBitmask.h" />
     <ClInclude Include="src\opendnp3\master\TaskRecord.h" />
     <ClInclude Include="src\opendnp3\master\TaskResult.h" />
     <ClInclude Include="src\opendnp3\master\TimeSyncHandler.h" />

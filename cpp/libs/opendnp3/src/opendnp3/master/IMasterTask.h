@@ -76,15 +76,7 @@ public:
 	*
 	* @return true if the task is enabled with the specified settings
 	*/
-	virtual bool Enabled(const MasterParams& params) { return false; }
-
-	
-	/**
-	* Check if the task is enabled. Used for sequenced (startup) tasks.
-	*
-	* @return The next task or nullptr if nothing is next
-	*/
-	virtual IMasterTask* Next(MasterTasks& tasks) { return nullptr; }
+	virtual bool Enabled(const MasterParams& params) { return false; }	
 
 };
 

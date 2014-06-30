@@ -33,6 +33,7 @@
 #include "opendnp3/master/IMasterScheduler.h"
 #include "opendnp3/master/TaskRecord.h"
 #include "opendnp3/master/IScheduleCallback.h"
+#include "opendnp3/master/TaskBitmask.h"
 
 #include "opendnp3/Configure.h"
 
@@ -97,17 +98,13 @@ public:
 	*/
 	void OnNeedTimeDetected(const MasterParams& params);
 
-private:
-
-	static IMasterTask* NextEnabledTask(IMasterTask* pCurrent, const MasterParams& params, MasterTasks& tasks);
-
-	static IMasterTask* CurrentOrNextEnabledTask(IMasterTask* pCurrent, const MasterParams& params, MasterTasks& tasks);
+private:	
 
 	IMasterTask* FindTaskToStart(const MasterParams& params);	
 
-	IMasterTask* GetStartupTask(const MasterParams& params);
+	IMasterTask* GetScheduledTask(const MasterParams& params);
 
-	IMasterTask* GetTimeSyncTask(const MasterParams& params);
+	bool CanTaskRun(IMasterTask& task, tasks::TaskBitmask bitmask, const MasterParams& params);
 
 	IMasterTask* GetPeriodicTask(const MasterParams& params, const openpal::MonotonicTimestamp& now);
 
@@ -137,12 +134,11 @@ private:
 
 	// ----------- dynamic state -----------
 
-	bool isOnline;
-	bool outstationNeedsTime;
+	bool isOnline;	
+	int32_t scheduledTaskMask;
 
 	openpal::ITimer* pTimer;
-	IMasterTask* pCurrentTask;
-	IMasterTask* pStartupTask;
+	IMasterTask* pCurrentTask;	
 
 	openpal::Settable<TaskRecord> blockingTask;
 

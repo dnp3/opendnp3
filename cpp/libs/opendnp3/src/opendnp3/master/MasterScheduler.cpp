@@ -40,10 +40,9 @@ MasterScheduler::MasterScheduler(	openpal::Logger* pLogger,
 	pCallback(&callback),
 	pStaticTasks(&tasks),
 	isOnline(false),
-	outstationNeedsTime(false),
+	scheduledTaskMask(0),
 	pTimer(nullptr),
-	pCurrentTask(nullptr),
-	pStartupTask(nullptr)
+	pCurrentTask(nullptr)	
 {
 
 }
@@ -129,107 +128,68 @@ IMasterTask* MasterScheduler::FindTaskToStart(const MasterParams& params)
 	else
 	{
 		// nothing blocking, so look at the startup sequence next
-		auto startup = GetStartupTask(params);		
-		if (startup)
+		auto scheduled = this->GetScheduledTask(params);
+		if (scheduled)
 		{
-			return startup;
+			return scheduled;
 		}
 		else
-		{			
-			auto time = GetTimeSyncTask(params);
-			if (time)
+		{						
+			if (userTasks.IsNotEmpty())
 			{
-				return time;
+				return userTasks.Pop()->Apply();
 			}
 			else
 			{
-				if (userTasks.IsNotEmpty())
-				{
-					return userTasks.Pop()->Apply();
-				}
-				else
-				{
-					//finally check for periodic tasks
-					return GetPeriodicTask(params, now);
-				}				
-			}			
+				//finally check for periodic tasks
+				return GetPeriodicTask(params, now);
+			}										
 		}
 	}
 }
 
-IMasterTask* MasterScheduler::GetStartupTask(const MasterParams& params)
+IMasterTask* MasterScheduler::GetScheduledTask(const MasterParams& params)
 {
-	if (pStartupTask)
+	if (CanTaskRun(pStaticTasks->disableUnsol, tasks::DISABLE_UNSOLCITED, params))
 	{
-		auto pTask = CurrentOrNextEnabledTask(pStartupTask, params, *(this->pStaticTasks));		
-		
-		// advance by a single node, as the config may change dynamically
-		pStartupTask = pTask ? pTask->Next(*(this->pStaticTasks)) : nullptr;
-		return pTask;
+		return &pStaticTasks->disableUnsol;
+	}
+
+	if (CanTaskRun(pStaticTasks->clearRestartTask, tasks::CLEAR_RESTART_IIN, params))
+	{
+		return &pStaticTasks->clearRestartTask;
+	}
+
+	if (CanTaskRun(pStaticTasks->startupIntegrity, tasks::STARTUP_INTEGRITY, params))
+	{
+		return &pStaticTasks->startupIntegrity;
+	}
+
+	if (CanTaskRun(pStaticTasks->serialTimeSync, tasks::TIME_SYNC, params))
+	{
+		return &pStaticTasks->serialTimeSync;
+	}
+
+	if (CanTaskRun(pStaticTasks->enableUnsol, tasks::ENABLE_UNSOLCITED, params))
+	{
+		return &pStaticTasks->enableUnsol;
+	}
+	
+	return nullptr;
+}
+
+bool MasterScheduler::CanTaskRun(IMasterTask& task, tasks::TaskBitmask bitmask, const MasterParams& params)
+{
+	if (scheduledTaskMask & bitmask)
+	{
+		scheduledTaskMask &= ~bitmask; // clear this bit
+		return task.Enabled(params);
 	}
 	else
-	{
+	{ 
 		return nullptr;
 	}
 }
-
-IMasterTask* MasterScheduler::GetTimeSyncTask(const MasterParams& params)
-{
-	if (outstationNeedsTime)
-	{
-		switch (params.timeSyncMode)
-		{
-			case(TimeSyncMode::SerialTimeSync) :
-				outstationNeedsTime = false;
-				return &pStaticTasks->serialTimeSync;
-				break;
-			default:
-				return nullptr;
-		}
-	}
-	else
-	{
-		return nullptr;
-	}
-}
-
-
-IMasterTask* MasterScheduler::CurrentOrNextEnabledTask(IMasterTask* pCurrent, const MasterParams& params, MasterTasks& tasks)
-{
-	if (pCurrent && pCurrent->Enabled(params))
-	{
-		return pCurrent;
-	}
-	else
-	{
-		return NextEnabledTask(pCurrent, params, tasks);
-	}		
-}
-
-IMasterTask* MasterScheduler::NextEnabledTask(IMasterTask* pCurrent, const MasterParams& params, MasterTasks& tasks)
-{	 
-	if (pCurrent)
-	{
-		auto pNode = pCurrent->Next(tasks);
-		
-		while (pNode)
-		{
-			if (pNode->Enabled(params))
-			{
-				return pNode;
-			}
-
-			pNode = pNode->Next(tasks);
-		}
-
-		return pNode;
-	}
-	else
-	{
-		return nullptr;
-	}	
-}
-
 
 IMasterTask* MasterScheduler::GetPeriodicTask(const MasterParams& params, const openpal::MonotonicTimestamp& now)
 {
@@ -324,7 +284,7 @@ void MasterScheduler::OnRestartDetected(const MasterParams& params)
 	auto pRestartTask = &pStaticTasks->clearRestartTask;
 	if (!this->IsTaskActive(pRestartTask))
 	{
-		pStartupTask = pRestartTask;
+		scheduledTaskMask |= tasks::CLEAR_RESTART_SEQUENCE;
 		this->CancelScheduleTimer(); // we have an active task now		
 	}
 }
@@ -335,7 +295,7 @@ void MasterScheduler::OnNeedTimeDetected(const MasterParams& params)
 
 	if (!IsTaskActive(pTime1))
 	{
-		outstationNeedsTime = true;
+		scheduledTaskMask |= tasks::TIME_SYNC;
 	}
 }
 
@@ -362,7 +322,9 @@ void MasterScheduler::OnLowerLayerUp(const MasterParams& params)
 	if (!isOnline)
 	{
 		isOnline = true;
-		pStartupTask = &pStaticTasks->disableUnsol;
+		
+		this->scheduledTaskMask = tasks::STARTUP_TASK_SEQUENCE;
+
 		auto now = pExecutor->GetTime();
 		auto addToPeriodic = [this, now](PollTask& pt) 
 		{ 
@@ -381,7 +343,10 @@ void MasterScheduler::OnLowerLayerDown()
 	{
 		isOnline = false;
 		this->CancelScheduleTimer();
-		periodicTasks.Clear();	
+		periodicTasks.Clear();
+
+		this->scheduledTaskMask = 0;
+
 		pCurrentTask = nullptr;
 
 		if (blockingTask.IsSet())

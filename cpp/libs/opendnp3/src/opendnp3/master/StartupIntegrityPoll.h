@@ -41,8 +41,6 @@ public:
 	virtual char const* Name() const override final { return "Startup Integrity Poll"; }
 	
 	virtual void BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq) override final;	
-
-	virtual IMasterTask* Next(MasterTasks& tasks) override final;
 	
 	virtual bool Enabled(const MasterParams& params) override final;
 
