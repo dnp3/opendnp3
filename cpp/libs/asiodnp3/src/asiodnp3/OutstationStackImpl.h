@@ -51,7 +51,7 @@ public:
 		const opendnp3::OutstationStackConfig& config,
 	    const StackActionHandler& handler);
 
-	opendnp3::IMeasurementLoader* GetLoader();
+	virtual opendnp3::IDatabase& GetDatabase() override final;
 
 	virtual void SetNeedTimeIIN() override final;
 	

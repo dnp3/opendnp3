@@ -21,7 +21,7 @@
 #ifndef __MULTIPLEXING_DATA_OBSERVER_H_
 #define __MULTIPLEXING_DATA_OBSERVER_H_
 
-#include <opendnp3/outstation/IMeasurementLoader.h>
+#include <opendnp3/outstation/IDatabase.h>
 
 #include <vector>
 
@@ -30,15 +30,15 @@ namespace opendnp3
 
 /** DataObserver for sending updates to multiple data observers.
 */
-class MultiplexingDataObserver : public IMeasurementLoader
+class MultiplexingDataObserver : public IDatabase
 {
 public:
 
 	MultiplexingDataObserver();
-	MultiplexingDataObserver(IMeasurementLoader* apObserver1);
-	MultiplexingDataObserver(IMeasurementLoader* apObserver1, IMeasurementLoader* apObserver2);
+	MultiplexingDataObserver(IDatabase* apObserver1);
+	MultiplexingDataObserver(IDatabase* apObserver1, IDatabase* apObserver2);
 
-	void AddObserver(IMeasurementLoader* apObserver1);
+	void AddObserver(IDatabase* apObserver1);
 
 	void Update(const Binary& arPoint, uint16_t aIndex);
 	void Update(const Analog& arPoint, uint16_t aIndex);
@@ -48,7 +48,7 @@ public:
 
 private:
 
-	std::vector<IMeasurementLoader*> mObservers;
+	std::vector<IDatabase*> mObservers;
 
 	void Start();
 	void End();

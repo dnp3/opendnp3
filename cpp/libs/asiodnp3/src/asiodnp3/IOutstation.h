@@ -23,15 +23,11 @@
 
 #include "IStack.h"
 
-namespace opendnp3
-{
-	class IMeasurementLoader;
-}
+#include <opendnp3/outstation/IDatabase.h>
+
 
 namespace asiodnp3
 {
-
-
 
 /**
 * Interface representing a running outstation.
@@ -52,10 +48,10 @@ class IOutstation : public IStack
 	virtual void SetNeedTimeIIN() = 0;	
 
 	/**
-	* Get a the measurement loader interface to load measurements on the outstation
-	* @return Inteface used to load measurements into the outstation
+	* Get a the database interface to load measurements into the outstation
+	* @return Database inteface used to load measurements into the outstation
 	*/
-	virtual opendnp3::IMeasurementLoader* GetLoader() = 0;
+	virtual opendnp3::IDatabase& GetDatabase() = 0;
 };
 
 }

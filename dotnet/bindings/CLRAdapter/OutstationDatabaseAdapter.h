@@ -1,7 +1,7 @@
-#ifndef __OUTSTATION_LOADER_ADAPTER_H_
-#define __OUTSTATION_LOADER_ADAPTER_H_
+#ifndef __OUTSTATION_DATABASE_ADAPTER_H_
+#define __OUTSTATION_DATABASE_ADAPTER_H_
 
-#include <opendnp3/outstation/IMeasurementLoader.h>
+#include <opendnp3/outstation/IDatabase.h>
 
 using namespace DNP3::Interface;
 
@@ -9,11 +9,11 @@ namespace DNP3
 {
 namespace Adapter
 {
-private ref class OutstationLoaderAdapter : DNP3::Interface::IMeasurementLoader
+private ref class OutstationDatabaseAdapter : DNP3::Interface::IDatabase
 {
 public:
 
-	OutstationLoaderAdapter(opendnp3::IMeasurementLoader* proxy);
+	OutstationDatabaseAdapter(opendnp3::IDatabase& proxy);
 
 	virtual void Start();
 	virtual void Update(DNP3::Interface::Binary^ meas, System::UInt32 index);
@@ -26,7 +26,7 @@ public:
 
 private:
 
-	opendnp3::IMeasurementLoader* proxy;
+	opendnp3::IDatabase* pProxy;
 };
 
 }

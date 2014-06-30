@@ -47,9 +47,9 @@ OutstationStackImpl::OutstationStackImpl(
 	stack.transport.SetAppLayer(&outstation);
 }
 
-IMeasurementLoader* OutstationStackImpl::GetLoader()
+opendnp3::IDatabase& OutstationStackImpl::GetDatabase()
 {
-	return &database;
+	return database;
 }
 
 bool OutstationStackImpl::Enable()

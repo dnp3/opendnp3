@@ -27,7 +27,7 @@
 
 #include "opendnp3/app/StaticRange.h"
 #include "opendnp3/outstation/IEventBuffer.h"
-#include "opendnp3/outstation/IMeasurementLoader.h"
+#include "opendnp3/outstation/IDatabase.h"
 #include "opendnp3/outstation/StaticDataFacade.h"
 
 namespace opendnp3
@@ -40,7 +40,7 @@ Manages the static data model of a DNP3 outstation. Dual-interface to update dat
 
 Passes data updates to an associated event buffer for event generation/management.
 */
-class Database : public IMeasurementLoader
+class Database : public IDatabase
 {
 public:
 

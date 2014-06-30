@@ -93,10 +93,7 @@ int main(int argc, char* argv[])
 	auto pOutstation = pServer->AddOutstation("outstation", SuccessCommandHandler::Inst(), &NullTimeWriteHandler::Inst(), stackConfig);	
 
 	// Enable the outstation and start communications
-	pOutstation->Enable();
-
-	// Get the interface used to load measurements into the outstation
-	auto pLoader = pOutstation->GetLoader();
+	pOutstation->Enable();	
 
 	// variables used in example loop
 	string input;
@@ -111,7 +108,7 @@ int main(int argc, char* argv[])
 		std::cout << "c = counter, b = binary, d = doublebit, a = analog, x = exit" << std::endl;
 		std::cin >> input;
 
-		TimeTransaction tx(pLoader, UTCTimeSource::Inst()->Now());
+		TimeTransaction tx(pOutstation->GetDatabase(), UTCTimeSource::Inst()->Now());
 		for (char& c : input)
 		{
 			switch (c)

@@ -480,9 +480,6 @@
     <ClInclude Include="src\opendnp3\outstation\SelectionIterator.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\IMeasurementLoader.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\EventBufferConfig.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
@@ -674,6 +671,9 @@
     </ClInclude>
     <ClInclude Include="src\opendnp3\gen\PointClass.h">
       <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\IDatabase.h">
+      <Filter>Header\outstation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -24,9 +24,9 @@ using namespace openpal;
 
 namespace opendnp3
 {
-TimeTransaction::TimeTransaction(IMeasurementLoader* pObserver_, UTCTimestamp timestamp_) :
-	Transaction(pObserver_),
-	pObserver(pObserver_),
+TimeTransaction::TimeTransaction(IDatabase& database, UTCTimestamp timestamp_) :
+	Transaction(database),
+	pDatabase(&database),
 	timestamp(timestamp_)
 {
 

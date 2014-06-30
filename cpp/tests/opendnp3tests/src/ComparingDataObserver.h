@@ -21,7 +21,7 @@
 #ifndef __COMPARING_DATA_OBSERVER_H_
 #define __COMPARING_DATA_OBSERVER_H_
 
-#include <opendnp3/outstation/IMeasurementLoader.h>
+#include <opendnp3/outstation/IDatabase.h>
 
 #include <openpal/executor/TimeDuration.h>
 

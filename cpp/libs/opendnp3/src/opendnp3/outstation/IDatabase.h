@@ -29,7 +29,7 @@ namespace opendnp3
 {
 
 /**
-@desc IMeasurementLoader*is the interface used to load measurements into an outstation.
+@desc IDatabase is the interface used to load measurements into an outstation.
 
 The outstation application is responsible for measuring or
 calculating data and then pushing it into this interface when it is ready
@@ -38,18 +38,18 @@ exception-safe Transaction object.
 
 \code
 {
-	Transaction t(pLoader);
+	Transaction t(pDatabase);
 	pLoader->Update(Analog(12), 3);
 	pLoader->Update(Binary(true), 1);
 }
 \endcode
 
 */
-class IMeasurementLoader : public ITransactable
+class IDatabase : public ITransactable
 {
 public:
 
-	virtual ~IMeasurementLoader() {}
+	virtual ~IDatabase() {}
 
 	/**
 	* Update a Binary measurement, must have transaction started

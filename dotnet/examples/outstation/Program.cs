@@ -61,16 +61,16 @@ namespace DotNetOutstationDemo
             outstation.Enable(); // enable communications
 
             Console.WriteLine("Press <Enter> to randomly change a value");
-            var loader = outstation.GetLoader();
+            var database = outstation.GetDatabase();
             bool value = false;
             while (true)
             {
                 Console.ReadLine();
                 value = !value;
-                System.Console.WriteLine("Change Binary 1 to: " + value);                
-                loader.Start();
-                loader.Update(new Binary(value, 1, DateTime.Now), 0);
-                loader.End();
+                System.Console.WriteLine("Change Binary 1 to: " + value);
+                database.Start();
+                database.Update(new Binary(value, 1, DateTime.Now), 0);
+                database.End();
             }
         }
     }

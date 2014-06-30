@@ -17,7 +17,7 @@ public:
 
 	OutstationAdapter(asiodnp3::IOutstation* apOutstation);
 
-	virtual DNP3::Interface::IMeasurementLoader^ GetLoader();
+	virtual DNP3::Interface::IDatabase^ GetDatabase();
 
 	virtual void SetNeedTimeIIN();
 
@@ -30,8 +30,8 @@ public:
 	virtual IStackStatistics^ GetStackStatistics();
 
 private:
-	asiodnp3::IOutstation* mpOutstation;
-	DNP3::Interface::IMeasurementLoader^ mLoaderAdapter;
+	asiodnp3::IOutstation* pOutstation;
+	DNP3::Interface::IDatabase^ databaseAdapter;
 };
 
 }

@@ -80,7 +80,7 @@
     <Compile Include="ICommandHandler.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IMeasurementLoader.cs">
+    <Compile Include="IDatabase.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="IDNP3Manager.cs" />
@@ -114,6 +114,9 @@
     <Compile Include="SerialSettings.cs" />
     <Compile Include="SimpleCommandHandler.cs" />
     <Compile Include="StackStatistics.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="api\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

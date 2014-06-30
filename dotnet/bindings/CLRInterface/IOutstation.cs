@@ -36,7 +36,7 @@ namespace DNP3.Interface
         /// Retrieve the interface used to load measurements
         /// </summary>
         /// <returns>Interface used to load data into the outstation</returns>
-        IMeasurementLoader GetLoader();
+        IDatabase GetDatabase();
 
         /// <summary>
         /// Sets the outstation need time IIN bit

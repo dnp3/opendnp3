@@ -1,5 +1,7 @@
+
 #include "OutstationAdapter.h"
-#include "OutstationLoaderAdapter.h"
+
+#include "OutstationDatabaseAdapter.h"
 #include "DeleteAnything.h"
 
 #include "Conversions.h"
@@ -9,40 +11,40 @@ namespace DNP3
 namespace Adapter
 {
 
-OutstationAdapter::OutstationAdapter(asiodnp3::IOutstation* apOutstation) :
-	mpOutstation(apOutstation),
-	mLoaderAdapter(gcnew OutstationLoaderAdapter(apOutstation->GetLoader()))
+OutstationAdapter::OutstationAdapter(asiodnp3::IOutstation* pOutstation_) :
+	pOutstation(pOutstation_),
+	databaseAdapter(gcnew OutstationDatabaseAdapter(pOutstation->GetDatabase()))
 {}
 
-DNP3::Interface::IMeasurementLoader^ OutstationAdapter::GetLoader()
+DNP3::Interface::IDatabase^ OutstationAdapter::GetDatabase()
 {
-	return mLoaderAdapter;
+	return databaseAdapter;
 }
 
 void OutstationAdapter::SetNeedTimeIIN()
 {
-	mpOutstation->SetNeedTimeIIN();
+	pOutstation->SetNeedTimeIIN();
 }
 
 void OutstationAdapter::Shutdown()
 {
-	mpOutstation->Shutdown();
+	pOutstation->Shutdown();
 }
 
 
 void OutstationAdapter::Enable()
 {
-	mpOutstation->Enable();
+	pOutstation->Enable();
 }
 
 void OutstationAdapter::Disable()
 {
-	mpOutstation->Disable();
+	pOutstation->Disable();
 }
 
 IStackStatistics^ OutstationAdapter::GetStackStatistics()
 {
-	auto stats = mpOutstation->GetStackStatistics();
+	auto stats = pOutstation->GetStackStatistics();
 	return Conversions::ConvertStackStats(stats);
 }
 

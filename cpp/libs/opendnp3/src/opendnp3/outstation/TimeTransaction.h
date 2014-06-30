@@ -25,7 +25,7 @@
 
 #include <openpal/executor/UTCTimestamp.h>
 
-#include "opendnp3/outstation/IMeasurementLoader.h"
+#include "opendnp3/outstation/IDatabase.h"
 
 namespace opendnp3
 {
@@ -33,7 +33,7 @@ namespace opendnp3
 class TimeTransaction : private Transaction
 {
 public:
-	TimeTransaction(IMeasurementLoader* pObserver_, openpal::UTCTimestamp timestamp_);
+	TimeTransaction(IDatabase& database, openpal::UTCTimestamp timestamp_);
 
 	void Update(const Binary& meas, uint16_t index);
 	void Update(const DoubleBitBinary& meas, uint16_t index);
@@ -49,10 +49,10 @@ private:
 	void Load(T meas, uint16_t index)
 	{
 		meas.SetTime(timestamp.msSinceEpoch);
-		pObserver->Update(meas, index);
+		pDatabase->Update(meas, index);
 	}
 
-	IMeasurementLoader* pObserver;
+	IDatabase* pDatabase;
 	openpal::UTCTimestamp timestamp;
 };
 
