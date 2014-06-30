@@ -23,8 +23,11 @@
 
 #include "IStack.h"
 
-#include <opendnp3/outstation/IDatabase.h>
 
+namespace opendnp3
+{
+	class Database;
+}
 
 namespace asiodnp3
 {
@@ -51,7 +54,7 @@ class IOutstation : public IStack
 	* Get a the database interface to load measurements into the outstation
 	* @return Database inteface used to load measurements into the outstation
 	*/
-	virtual opendnp3::IDatabase& GetDatabase() = 0;
+	virtual opendnp3::Database& GetDatabase() = 0;
 };
 
 }

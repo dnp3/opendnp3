@@ -6,6 +6,8 @@
 
 #include "Conversions.h"
 
+#include <opendnp3/outstation/Database.h>
+
 namespace DNP3
 {
 namespace Adapter

@@ -6,6 +6,8 @@ using namespace System::Collections::ObjectModel;
 #include <asiodnp3/IChannel.h>
 #include <vcclr.h>
 
+#include <opendnp3/outstation/Database.h>
+
 using namespace DNP3::Interface;
 
 namespace DNP3
@@ -37,6 +39,8 @@ public:
 	virtual void Shutdown();	
 
 private:
+
+	static void ApplyDatabaseSettings(opendnp3::Database& database, DatabaseTemplate^ dbTemplate);
 
 	asiodnp3::IChannel* pChannel;	
 };

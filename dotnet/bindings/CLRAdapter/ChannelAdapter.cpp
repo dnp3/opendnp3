@@ -8,6 +8,8 @@
 #include "DeleteAnything.h"
 #include "EventConverter.h"
 
+#include <opendnp3/outstation/Database.h>
+
 #include <asiopal/UTCTimeSource.h>
 #include <functional>
 
@@ -93,9 +95,15 @@ IOutstation^ ChannelAdapter::AddOutstation(System::String^ loggerId, ICommandHan
 		return nullptr;
 	}
 	else
-	{
+	{		
+		ApplyDatabaseSettings(pOutstation->GetDatabase(), config->databaseTemplate);
 		return gcnew OutstationAdapter(pOutstation);
 	}
+}
+
+void ChannelAdapter::ApplyDatabaseSettings(opendnp3::Database& database, DatabaseTemplate^ dbTemplate)
+{
+
 }
 
 void ChannelAdapter::Shutdown()

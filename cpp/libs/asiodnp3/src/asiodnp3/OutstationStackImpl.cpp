@@ -47,7 +47,7 @@ OutstationStackImpl::OutstationStackImpl(
 	stack.transport.SetAppLayer(&outstation);
 }
 
-opendnp3::IDatabase& OutstationStackImpl::GetDatabase()
+opendnp3::Database& OutstationStackImpl::GetDatabase()
 {
 	return database;
 }
