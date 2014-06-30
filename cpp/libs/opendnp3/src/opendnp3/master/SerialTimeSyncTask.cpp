@@ -69,6 +69,11 @@ void SerialTimeSyncTask::OnTimeoutOrBadControlOctet(const MasterParams& params, 
 	// don't reschedule. Seeing the NeedTime bit again will automatically re-activate the task
 }
 
+bool SerialTimeSyncTask::Enabled(const MasterParams& params)
+{
+	return params.timeSyncMode == TimeSyncMode::SerialTimeSync;	
+}
+
 TaskStatus SerialTimeSyncTask::OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler)
 {
 	if (delay < 0)

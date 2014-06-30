@@ -43,6 +43,8 @@ public:
 
 	virtual void OnTimeoutOrBadControlOctet(const MasterParams& params, IMasterScheduler& scheduler) override final;
 
+	virtual bool Enabled(const MasterParams& params) override final;
+
 protected:
 
 	virtual TaskStatus OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler) override final;
