@@ -35,8 +35,7 @@ OutstationParams::OutstationParams() :
 	unsolConfirmTimeout(TimeDuration::Seconds(5)),
 	unsolRetryTimeout(TimeDuration::Seconds(5)),
 	maxTxFragSize(sizes::DEFAULT_APDU_BUFFER_SIZE),
-	allowUnsolicited(false),
-	unsolClassMask(0)
+	allowUnsolicited(false)	
 {}
 
 }

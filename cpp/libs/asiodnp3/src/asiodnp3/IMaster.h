@@ -24,6 +24,7 @@
 #include "IStack.h"
 #include "StackActionHandler.h"
 
+#include <opendnp3/app/ClassField.h>
 #include <opendnp3/master/MasterScan.h>
 #include <opendnp3/master/ICommandProcessor.h>
 #include <openpal/executor/TimeDuration.h>
@@ -47,7 +48,7 @@ public:
 	* Add a class-based scan to the master
 	* @return A proxy class used to manipulate the scan
 	*/
-	virtual opendnp3::MasterScan AddClassScan(uint8_t classMask, openpal::TimeDuration scanRate) = 0;	
+	virtual opendnp3::MasterScan AddClassScan(const opendnp3::ClassField& field, openpal::TimeDuration scanRate) = 0;
 
 	/**
 	* Add a start/stop rnage scan to the master

@@ -34,7 +34,7 @@
     <ClInclude Include="src\opendnp3\app\BinaryWriteState.h" />
     <ClInclude Include="src\opendnp3\app\BitfieldRangeWriteIterator.h" />
     <ClInclude Include="src\opendnp3\app\BitReader.h" />
-    <ClInclude Include="src\opendnp3\app\ClassMask.h" />
+    <ClInclude Include="src\opendnp3\app\ClassField.h" />
     <ClInclude Include="src\opendnp3\app\ControlRelayOutputBlock.h" />
     <ClInclude Include="src\opendnp3\app\CountWriteIterator.h" />
     <ClInclude Include="src\opendnp3\app\EventTriggers.h" />
@@ -55,7 +55,7 @@
     <ClInclude Include="src\opendnp3\app\ObjectWriter.h" />
     <ClInclude Include="src\opendnp3\app\OctetData.h" />
     <ClInclude Include="src\opendnp3\app\OctetString.h" />
-    <ClInclude Include="src\opendnp3\app\PointClass.h" />
+    <ClInclude Include="src\opendnp3\app\ClassMash.h" />
     <ClInclude Include="src\opendnp3\app\PrefixedWriteIterator.h" />
     <ClInclude Include="src\opendnp3\app\QualityMasks.h" />
     <ClInclude Include="src\opendnp3\app\Range.h" />
@@ -65,6 +65,7 @@
     <ClInclude Include="src\opendnp3\app\VTOData.h" />
     <ClInclude Include="src\opendnp3\app\WriteConversions.h" />
     <ClInclude Include="src\opendnp3\app\WriteConversionTemplates.h" />
+    <ClInclude Include="src\opendnp3\gen\PointClass.h" />
     <ClInclude Include="src\opendnp3\gen\PollState.h" />
     <ClInclude Include="src\opendnp3\gen\TimeSyncMode.h" />
     <ClInclude Include="src\opendnp3\link\IChannelStateListener.h" />
@@ -239,6 +240,7 @@
     <ClCompile Include="src\opendnp3\app\APDUWrapper.cpp" />
     <ClCompile Include="src\opendnp3\app\AppControlField.cpp" />
     <ClCompile Include="src\opendnp3\app\BitReader.cpp" />
+    <ClCompile Include="src\opendnp3\app\ClassField.cpp" />
     <ClCompile Include="src\opendnp3\app\ControlRelayOutputBlock.cpp" />
     <ClCompile Include="src\opendnp3\app\GroupVariation.cpp" />
     <ClCompile Include="src\opendnp3\app\APDUHandlerBase.cpp" />
@@ -261,6 +263,7 @@
     <ClCompile Include="src\opendnp3\gen\EventFrozenCounterResponse.cpp" />
     <ClCompile Include="src\opendnp3\gen\FunctionCode.cpp" />
     <ClCompile Include="src\opendnp3\gen\LinkFunction.cpp" />
+    <ClCompile Include="src\opendnp3\gen\PointClass.cpp" />
     <ClCompile Include="src\opendnp3\gen\PollState.cpp" />
     <ClCompile Include="src\opendnp3\gen\QualifierCode.cpp" />
     <ClCompile Include="src\opendnp3\gen\StaticAnalogOutputStatusResponse.cpp" />

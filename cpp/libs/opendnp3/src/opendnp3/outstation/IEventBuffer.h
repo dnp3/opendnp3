@@ -22,7 +22,6 @@
 #define __I_EVENT_BUFFER_H_
 
 #include "opendnp3/app/MeasurementTypes.h"
-#include "opendnp3/app/PointClass.h"
 
 #include "opendnp3/outstation/Event.h"
 

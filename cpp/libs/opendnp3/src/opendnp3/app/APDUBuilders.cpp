@@ -21,7 +21,6 @@
 
 #include "APDUBuilders.h"
 
-#include "opendnp3/app/PointClass.h"
 #include "opendnp3/objects/Group60.h"
 #include "opendnp3/app/IINField.h"
 
@@ -33,34 +32,34 @@ namespace opendnp3
 namespace build
 {
 
-void ReadIntegrity(APDURequest& request, uint8_t classMask, uint8_t seq)
+void ReadIntegrity(APDURequest& request, const ClassField& classes, uint8_t seq)
 {
-	ClassRequest(request, FunctionCode::READ, classMask, seq);
+	ClassRequest(request, FunctionCode::READ, classes, seq);
 }
 
-void ClassRequest(APDURequest& request, FunctionCode fc, uint8_t classMask, uint8_t seq)
+void ClassRequest(APDURequest& request, FunctionCode fc, const ClassField& classes, uint8_t seq)
 {
 	request.SetControl(AppControlField(true, true, false, false, seq));
 	request.SetFunction(fc);
-	WriteClassHeaders(request, classMask);
+	WriteClassHeaders(request, classes);
 }
 
-void WriteClassHeaders(APDURequest& request, uint8_t classMask)
+void WriteClassHeaders(APDURequest& request, const ClassField& classes)
 {
 	auto writer = request.GetWriter();
-	if (classMask & CLASS_1)
+	if (classes.HasClass1())
 	{
 		writer.WriteHeader(Group60Var2::ID, QualifierCode::ALL_OBJECTS);
 	}
-	if (classMask & CLASS_2)
+	if (classes.HasClass2())
 	{
 		writer.WriteHeader(Group60Var3::ID, QualifierCode::ALL_OBJECTS);
 	}
-	if (classMask & CLASS_3)
+	if (classes.HasClass3())
 	{
 		writer.WriteHeader(Group60Var4::ID, QualifierCode::ALL_OBJECTS);
 	}
-	if (classMask & CLASS_0)
+	if (classes.HasClass0())
 	{
 		writer.WriteHeader(Group60Var1::ID, QualifierCode::ALL_OBJECTS);
 	}
@@ -68,12 +67,12 @@ void WriteClassHeaders(APDURequest& request, uint8_t classMask)
 
 void DisableUnsolicited(APDURequest& request, uint8_t seq)
 {
-	ClassRequest(request, FunctionCode::DISABLE_UNSOLICITED, ALL_EVENT_CLASSES, seq);	
+	ClassRequest(request, FunctionCode::DISABLE_UNSOLICITED, ClassField::AllEventClasses(), seq);	
 }
 
-void EnableUnsolicited(APDURequest& request, uint8_t classMask, uint8_t seq)
+void EnableUnsolicited(APDURequest& request, const ClassField& classes, uint8_t seq)
 {
-	ClassRequest(request, FunctionCode::ENABLE_UNSOLICITED, ALL_EVENT_CLASSES & classMask, seq);
+	ClassRequest(request, FunctionCode::ENABLE_UNSOLICITED, classes, seq);
 }
 
 void ClearRestartIIN(APDURequest& request, uint8_t seq)

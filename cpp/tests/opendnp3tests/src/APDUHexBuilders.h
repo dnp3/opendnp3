@@ -27,14 +27,15 @@
 
 #include <opendnp3/app/IINField.h>
 #include <opendnp3/gen/FunctionCode.h>
+#include <opendnp3/app/ClassField.h>
 
 namespace hex
 {
 	// ----------- requests --------------
 
-	std::string IntegrityPoll(uint8_t seq, int mask = ~0);
+	std::string IntegrityPoll(uint8_t seq, const opendnp3::ClassField& field = opendnp3::ClassField::AllClasses());
 
-	std::string ClassTask(opendnp3::FunctionCode fc, uint8_t seq, int mask = ~0);	
+	std::string ClassTask(opendnp3::FunctionCode fc, uint8_t seq, const opendnp3::ClassField& field = opendnp3::ClassField::AllClasses());
 
 	std::string ClearRestartIIN(uint8_t seq);
 

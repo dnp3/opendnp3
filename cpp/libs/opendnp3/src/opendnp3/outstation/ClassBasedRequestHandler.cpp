@@ -21,12 +21,10 @@
 
 #include "ClassBasedRequestHandler.h"
 
-#include "opendnp3/app/PointClass.h"
-
 namespace opendnp3
 {
 
-ClassBasedRequestHandler::ClassBasedRequestHandler(openpal::Logger& logger) : APDUHandlerBase(logger), classMask(0)
+ClassBasedRequestHandler::ClassBasedRequestHandler(openpal::Logger& logger) : APDUHandlerBase(logger)
 {
 
 }
@@ -36,13 +34,13 @@ void ClassBasedRequestHandler::_AllObjects(const HeaderRecord& record)
 	switch (record.enumeration)
 	{
 		case(GroupVariation::Group60Var2) :
-			classMask |= CLASS_1;
+			classField.Set(PointClass::Class1);
 			break;
 		case(GroupVariation::Group60Var3) :
-			classMask |= CLASS_2;
+			classField.Set(PointClass::Class2);
 			break;
 		case(GroupVariation::Group60Var4) :
-			classMask |= CLASS_3;
+			classField.Set(PointClass::Class3);
 			break;
 		default:
 			errors |= IINField(IINBit::FUNC_NOT_SUPPORTED);

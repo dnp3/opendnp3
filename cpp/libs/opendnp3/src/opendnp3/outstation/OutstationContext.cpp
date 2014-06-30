@@ -470,7 +470,7 @@ void OutstationContext::CheckForUnsolicited()
 			// are there events to be reported?
 			if (eventBuffer.TotalEvents().Intersects(params.unsolClassMask))
 			{
-				auto criteria = SelectionCriteria::FromUnsolMask(params.unsolClassMask);
+				auto criteria = SelectionCriteria::FromClassField(params.unsolClassMask);
 				auto unsol = this->StartNewUnsolicitedResponse();				
 						
 				{
@@ -709,7 +709,7 @@ IINField OutstationContext::HandleDisableUnsolicited(const openpal::ReadOnlyBuff
 	auto result = APDUParser::ParseTwoPass(objects, &handler, &logger);
 	if (result == APDUParser::Result::OK)
 	{
-		params.unsolClassMask &= ~handler.GetClassMask();
+		params.unsolClassMask.Clear(handler.GetClassField());
 		return handler.Errors();
 	}
 	else
@@ -724,7 +724,7 @@ IINField OutstationContext::HandleEnableUnsolicited(const openpal::ReadOnlyBuffe
 	auto result = APDUParser::ParseTwoPass(objects, &handler, &logger);
 	if (result == APDUParser::Result::OK)
 	{
-		params.unsolClassMask |= handler.GetClassMask();
+		params.unsolClassMask.Set(handler.GetClassField());
 		return handler.Errors();
 	}
 	else

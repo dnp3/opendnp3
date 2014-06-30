@@ -23,6 +23,8 @@
 
 #include <openpal/executor/TimeDuration.h>
 
+#include "opendnp3/app/ClassField.h"
+
 namespace opendnp3
 {
 
@@ -52,7 +54,7 @@ struct OutstationParams
 	bool allowUnsolicited;
 
 	/// Class mask for unsolicted, default to 0 as unsolicited has to be enabled
-	uint8_t unsolClassMask;
+	ClassField unsolClassMask;
 
 
 };

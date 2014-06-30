@@ -40,9 +40,9 @@ void MasterAdapter::Shutdown()
 	pMaster->Shutdown();
 }
 
-IMasterScan^ MasterAdapter::AddClassScan(int aClassMask, System::TimeSpan period)
-{
-	auto scan = pMaster->AddClassScan(aClassMask, Conversions::ConvertTimespan(period));
+IMasterScan^ MasterAdapter::AddClassScan(ClassField field, System::TimeSpan period)
+{	
+	auto scan = pMaster->AddClassScan(Conversions::ConvertClassField(field), Conversions::ConvertTimespan(period));
 	return gcnew MasterScanAdapter(scan);
 }
 

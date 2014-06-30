@@ -50,6 +50,7 @@
     <Compile Include="ChannelStatistics.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ClassField.cs" />
     <Compile Include="CommandTypes.cs" />
     <Compile Include="ConfigObjects.cs" />
     <Compile Include="Conversions.cs" />
@@ -65,6 +66,7 @@
     <Compile Include="gen\EventCounterResponse.cs" />
     <Compile Include="gen\EventDoubleBinaryResponse.cs" />
     <Compile Include="gen\EventFrozenCounterResponse.cs" />
+    <Compile Include="gen\PointClass.cs" />
     <Compile Include="gen\PollState.cs" />
     <Compile Include="gen\StaticAnalogResponse.cs" />
     <Compile Include="gen\StaticBinaryOutputStatusResponse.cs" />

@@ -23,6 +23,7 @@
 
 #include "opendnp3/app/APDURequest.h"
 #include "opendnp3/app/APDUResponse.h"
+#include "opendnp3/app/ClassField.h"
 
 namespace opendnp3
 {
@@ -30,15 +31,15 @@ namespace build
 {
 	// -------- requests -------------
 
-	void ClassRequest(APDURequest& request, FunctionCode code, uint8_t classMask, uint8_t seq);
+	void ClassRequest(APDURequest& request, FunctionCode code, const ClassField& classes, uint8_t seq);
 
-	void WriteClassHeaders(APDURequest& request, uint8_t classMask);
+	void WriteClassHeaders(APDURequest& request, const ClassField& classes);
 
-	void ReadIntegrity(APDURequest& request, uint8_t classMask, uint8_t seq = 0);
+	void ReadIntegrity(APDURequest& request, const ClassField& classes, uint8_t seq = 0);
 
 	void DisableUnsolicited(APDURequest& request, uint8_t seq = 0);
 
-	void EnableUnsolicited(APDURequest& request, uint8_t classMask, uint8_t seq = 0);
+	void EnableUnsolicited(APDURequest& request, const ClassField& classes, uint8_t seq = 0);
 
 	void ClearRestartIIN(APDURequest& request, uint8_t seq = 0);
 

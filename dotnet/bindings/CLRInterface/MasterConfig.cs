@@ -20,8 +20,8 @@ namespace DNP3.Interface
             responseTimeout = TimeSpan.FromSeconds(5);
             timeSyncMode = TimeSyncMode.None;
             disableUnsolOnStartup = true;
-            unsolClassMask = 0;
-            startupIntergrityClassMask = ~0;
+            unsolClassMask = ClassField.AllEventClasses;
+            startupIntergrityClassMask = ClassField.AllClasses;
             integrityOnEventOverflowIIN = true;
             taskRetryPeriod = TimeSpan.FromSeconds(5);
         }
@@ -44,13 +44,13 @@ namespace DNP3.Interface
         /// <summary>
         /// Bitwise mask used determine which classes are enabled for unsol, if 0 unsol is not enabled
         /// </summary>
-        public int unsolClassMask;
+        public ClassField unsolClassMask;
 
         /// <summary>
         /// Which classes should be requested in a startup integrity scan, defaults to 3/2/1/0
         /// A mask equal to 0 means no startup integrity scan will be performed
         /// </summary>
-        public int startupIntergrityClassMask;
+        public ClassField startupIntergrityClassMask;
 
         /// <summary>
         /// Defines whether an integrity scan will be performed when the EventBufferOverflow IIN is detected

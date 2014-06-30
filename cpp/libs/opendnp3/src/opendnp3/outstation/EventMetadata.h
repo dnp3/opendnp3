@@ -21,9 +21,8 @@
 #ifndef __EVENT_METADATA_H_
 #define __EVENT_METADATA_H_
 
-#include "opendnp3/app/PointClass.h"
-
 #include "opendnp3/outstation/EventType.h"
+#include "opendnp3/gen/PointClass.h"
 
 namespace opendnp3
 {
@@ -32,20 +31,20 @@ namespace opendnp3
 class EventMetadata
 {
 public:
-	EventMetadata() : clazz(CLASS_1)
+	EventMetadata() : clazz(PointClass::Class1)
 	{}
 
 	inline bool GetEventClass(EventClass& eventClass) const
 	{
 		switch (clazz)
 		{
-		case(PointClass::CLASS_1) :
+		case(PointClass::Class1) :
 			eventClass = EventClass::EC1;
 			return true;
-		case(PointClass::CLASS_2) :
+		case(PointClass::Class2) :
 			eventClass = EventClass::EC2;
 			return true;
-		case(PointClass::CLASS_3) :
+		case(PointClass::Class3) :
 			eventClass = EventClass::EC3;
 			return true;
 		default:

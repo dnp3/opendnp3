@@ -24,6 +24,7 @@
 #include <openpal/executor/TimeDuration.h>
 
 #include "opendnp3/gen/TimeSyncMode.h"
+#include "opendnp3/app/ClassField.h"
 
 namespace opendnp3
 {
@@ -46,11 +47,11 @@ struct MasterParams
 	bool disableUnsolOnStartup;	
 
 	///	Bitwise mask used determine which classes are enabled for unsol, if 0 unsol is not enabled
-	int unsolClassMask;
+	ClassField unsolClassMask;
 
 	/// Which classes should be requested in a startup integrity scan, defaults to 3/2/1/0
 	/// A mask equal to 0 means no startup integrity scan will be performed
-	int startupIntergrityClassMask;
+	ClassField startupIntergrityClassMask;
 
 	/// Defines whether an integrity scan will be performed when the EventBufferOverflow IIN is detected
 	bool integrityOnEventOverflowIIN;

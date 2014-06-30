@@ -44,7 +44,7 @@ namespace DNP3.Interface
         /// <param name="aClassMask">bitfield of class values</param>
         /// <param name="period">period, negative for non-periodic</param>        
         /// <returns>a new master scan interface</returns>
-        IMasterScan AddClassScan(int aClassMask, TimeSpan period);
+        IMasterScan AddClassScan(ClassField field, TimeSpan period);
 
        /// <summary>        
        /// Adds a range-based (start/stop) scan to the master

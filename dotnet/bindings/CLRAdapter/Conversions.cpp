@@ -277,15 +277,22 @@ openpal::TimeDuration Conversions::ConvertTimespan(System::TimeSpan ts)
 	return ConvertMilliseconds(ts.Ticks / System::TimeSpan::TicksPerMillisecond);
 }
 
+opendnp3::ClassField Conversions::ConvertClassField(ClassField classField)
+{
+	return opendnp3::ClassField(classField.ClassMask);
+}
+
 opendnp3::LinkConfig Conversions::ConvertConfig(LinkConfig^ config)
 {
 	return opendnp3::LinkConfig(config->isMaster, config->useConfirms, config->numRetry, config->localAddr, config->remoteAddr, ConvertMilliseconds(config->timeoutMs));
 }
 
+/*
 opendnp3::ClassMask Conversions::ConvertClassMask(ClassMask^ cm)
 {
 	return opendnp3::ClassMask(cm->class1, cm->class2, cm->class3);
 }
+*/
 
 opendnp3::EventBufferConfig Conversions::ConvertConfig(EventBufferConfig^ cm)
 {
@@ -415,10 +422,10 @@ opendnp3::MasterParams Conversions::ConvertConfig(MasterConfig^ config)
 	mp.disableUnsolOnStartup = config->disableUnsolOnStartup;
 	mp.integrityOnEventOverflowIIN = config->integrityOnEventOverflowIIN;
 	mp.responseTimeout = ConvertTimespan(config->responseTimeout);
-	mp.startupIntergrityClassMask = config->startupIntergrityClassMask;
+	mp.startupIntergrityClassMask = ConvertClassField(config->startupIntergrityClassMask);
 	mp.taskRetryPeriod = ConvertTimespan(config->taskRetryPeriod);
 	mp.timeSyncMode = (opendnp3::TimeSyncMode) config->timeSyncMode;
-	mp.unsolClassMask = config->unsolClassMask;
+	mp.unsolClassMask = ConvertClassField(config->unsolClassMask);
 
 	return mp;
 }

@@ -56,9 +56,9 @@ namespace DotNetMasterDemo
             var master = channel.AddMaster("master", PrintingSOEHandler.Instance, config);            
 
             // you a can optionally add various kinds of polls
-            var integrityPoll = master.AddClassScan(PointClass.ALL_CLASSES.GetMask(), TimeSpan.FromMinutes(1));
+            var integrityPoll = master.AddClassScan(ClassField.AllClasses, TimeSpan.FromMinutes(1));
             var rangePoll = master.AddRangeScan(30, 2, 5, 7, TimeSpan.FromSeconds(20));
-            var classPoll = master.AddClassScan(PointClass.ALL_EVENTS.GetMask(), TimeSpan.FromSeconds(5));
+            var classPoll = master.AddClassScan(ClassField.AllEventClasses, TimeSpan.FromSeconds(5));
 
             // you a can optionally add state callbacks for monitoring these polls
             integrityPoll.AddScanCallback((PollState state) => Console.WriteLine("integrity poll state change: " + state));

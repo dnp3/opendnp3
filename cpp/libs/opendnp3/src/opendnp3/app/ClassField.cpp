@@ -19,52 +19,76 @@
  * to you under the terms of the License.
  */
 
-#include "SelectionCriteria.h"
+#include "ClassField.h"
 
 namespace opendnp3
 {
 
-SelectionCriteria SelectionCriteria::FromClassField(const ClassField& field)
+ClassField ClassField::AllClasses()
 {
-	SelectionCriteria sc;
-	if (field.HasClass1()) sc.class1 = events::ALL_TYPES;
-	if (field.HasClass2()) sc.class2 = events::ALL_TYPES;
-	if (field.HasClass3()) sc.class3 = events::ALL_TYPES;
-	return sc;
+	return ClassField(ALL_CLASSES);
+}
+	
+ClassField ClassField::AllEventClasses()
+{
+	return ClassField(EVENT_CLASSES);
 }
 
-SelectionCriteria::SelectionCriteria() : class1(0), class2(0), class3(0)
+ClassField::ClassField() : bitfield(0)
 {}
 
-SelectionCriteria::SelectionCriteria(uint16_t clazz1, uint16_t clazz2, uint16_t clazz3) :
-	class1(clazz1),
-	class2(clazz2),
-	class3(clazz3)
+ClassField::ClassField(PointClass pc) : bitfield(static_cast<uint8_t>(pc))
 {}
 
-void SelectionCriteria::Clear()
+ClassField::ClassField(uint8_t mask_) : bitfield(mask_ & ALL_CLASSES)
+{}
+
+void ClassField::Set(PointClass pc)
 {
-	class1 = class2 = class3 = 0;	
+	bitfield |= static_cast<uint8_t>(pc);
 }
 
-bool SelectionCriteria::HasSelection() const
+void ClassField::Clear(const ClassField& field)
 {
-	return (class1 | class2 | class3) > 0;
+	bitfield &= ~(field.bitfield);
 }
 
-bool SelectionCriteria::IsMatch(EventClass clazz, EventType type) const
+void ClassField::Set(const ClassField& field)
 {
-	switch(clazz)
-	{
-	case(EventClass::EC1):
-		return (class1 & static_cast<uint32_t>(type)) != 0;
-	case(EventClass::EC2):
-		return (class2 & static_cast<uint32_t>(type)) != 0;
-	case(EventClass::EC3):
-		return (class3 & static_cast<uint32_t>(type)) != 0;
-	default:
-		return false;
-	}
+	bitfield |= field.bitfield;
+}
+
+bool ClassField::HasClass0() const
+{
+	return (bitfield & CLASS_0) != 0;
+}
+
+bool ClassField::HasClass1() const
+{
+	return (bitfield & CLASS_1) != 0;
+}
+
+bool ClassField::HasClass2() const
+{
+	return (bitfield & CLASS_2) != 0;
+}
+
+bool ClassField::HasClass3() const
+{
+	return (bitfield & CLASS_3) != 0;
+}
+
+bool ClassField::HasEventClass() const
+{
+	return (bitfield & EVENT_CLASSES) != 0;
+}
+
+bool ClassField::HasAnyClass() const
+{
+	return bitfield != 0;
 }
 
 }
+
+
+

@@ -49,7 +49,7 @@ void StartupIntegrityPoll::BuildRequest(APDURequest& request, const MasterParams
 
 bool StartupIntegrityPoll::Enabled(const MasterParams& params)
 {
-	return params.startupIntergrityClassMask != 0;
+	return params.startupIntergrityClassMask.HasAnyClass();
 }
 	
 void StartupIntegrityPoll::OnFailure(const MasterParams& params, IMasterScheduler& scheduler)

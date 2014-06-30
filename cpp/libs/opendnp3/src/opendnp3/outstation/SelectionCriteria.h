@@ -30,7 +30,7 @@ namespace opendnp3
 
 struct SelectionCriteria
 {
-	static SelectionCriteria FromUnsolMask(uint8_t unsolClassMask);
+	static SelectionCriteria FromClassField(const ClassField& field);
 
 	SelectionCriteria();
 

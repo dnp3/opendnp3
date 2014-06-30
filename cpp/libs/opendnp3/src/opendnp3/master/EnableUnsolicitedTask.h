@@ -40,7 +40,7 @@ public:
 
 	virtual void BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq) override final;				
 
-	virtual bool Enabled(const MasterParams& params) { return params.unsolClassMask != 0; }
+	virtual bool Enabled(const MasterParams& params) { return params.unsolClassMask.HasEventClass(); }
 
 private:
 

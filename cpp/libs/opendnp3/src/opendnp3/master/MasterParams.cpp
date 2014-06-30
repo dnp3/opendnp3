@@ -22,7 +22,6 @@
 #include "MasterParams.h"
 
 #include "opendnp3/Configure.h"
-#include "opendnp3/app/PointClass.h"
 
 using namespace openpal;
 
@@ -33,8 +32,8 @@ MasterParams::MasterParams() :
 	responseTimeout(TimeDuration::Seconds(5)),
 	timeSyncMode(TimeSyncMode::None),
 	disableUnsolOnStartup(true),	
-	unsolClassMask(ALL_EVENT_CLASSES),
-	startupIntergrityClassMask(ALL_CLASSES),	
+	unsolClassMask(ClassField::AllEventClasses()),
+	startupIntergrityClassMask(ClassField::AllClasses()),
 	integrityOnEventOverflowIIN(true),
 	taskRetryPeriod(TimeDuration::Seconds(5))
 {}

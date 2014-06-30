@@ -57,7 +57,7 @@ class Master : public openpal::IUpperLayer
 
 	MasterScan AddScan(openpal::TimeDuration period, const openpal::Action1<APDURequest&> builder);
 
-	MasterScan AddClassScan(uint8_t classMask, openpal::TimeDuration period);
+	MasterScan AddClassScan(const ClassField& field, openpal::TimeDuration period);
 
 	MasterScan AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period);
 	

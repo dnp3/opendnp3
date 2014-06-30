@@ -187,61 +187,7 @@ namespace DNP3.Interface
 		/// The maximum size of received application layer fragments
 		/// </summary>
         public System.Int32 fragSize;
-	}
-	
-    /// <summary>
-    /// Enumeration for controlling class based scanning / eventing
-    /// CLASS 0 corresponds to Group 60 Variation 1
-    /// CLASS 1 corresponds to Group 60 Variation 2
-    /// CLASS 2 corresponds to Group 60 Variation 3
-    /// CLASS 3 corresponds to Group 60 Variation 4
-    /// </summary>
-	public enum PointClass {
-		CLASS_0 = 0x01,
-		CLASS_1 = 0x02,
-		CLASS_2 = 0x04,
-		CLASS_3 = 0x08,
-		ALL_EVENTS = CLASS_1 | CLASS_2 | CLASS_3,
-        ALL_CLASSES = ALL_EVENTS | CLASS_0              
-	}
-
-    public static class PointClassHelpers
-    {
-        public static int GetMask(params PointClass[] values)
-        {
-            var i = 0;
-            foreach(var e in values) i |= (int) e;
-            return i;
-        }
-
-        public static int GetMask(this PointClass value)
-        {
-            return (int) value;
-        } 
-    }
-
-    /// <summary>
-    /// Structure that records which events are scanned / evented
-    /// </summary>
-    public struct ClassMask 
-    {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="class1">true for Class1</param>
-        /// <param name="class2">true for Class2</param>
-        /// <param name="class3">true for Class3</param>
-	    public ClassMask(bool class1, bool class2, bool class3)
-        {
-            this.class1 = class1;
-            this.class2 = class2;
-            this.class3 = class3;
-	    }        
-
-	    public bool class1;
-	    public bool class2;
-	    public bool class3;	   
-    }   
+	}           
 
     /// <summary>
     /// Class that defines how many events an outstation will before losing events
@@ -314,7 +260,7 @@ namespace DNP3.Interface
         {
             this.maxControls = 1;
             this.disableUnsol = false;
-            this.unsolMask = new ClassMask(true, true, true);
+            this.unsolMask = new ClassField(0);
             this.allowTimeSync = false;
             this.timeSyncPeriodMs = 10*60000;
             this.unsolPackDelayMs = 200;
@@ -343,7 +289,7 @@ namespace DNP3.Interface
 	    /// <summary>
         /// controls what unsol classes are enabled
 	    /// </summary>
-        public ClassMask unsolMask;
+        public ClassField unsolMask;
 
 	    /// <summary>
         /// if true, the outstation will request time synchronization on an interval
@@ -427,7 +373,7 @@ namespace DNP3.Interface
         }
 
         public EventPointRecord()
-            : this(PointClass.CLASS_0)
+            : this(PointClass.Class0)
         { 
         
         }
@@ -453,7 +399,7 @@ namespace DNP3.Interface
         /// <summary>
         /// Default constructor with Class 0 and 0.1 tolerance
         /// </summary>
-        public DeadbandEventPointRecord(): base(PointClass.CLASS_0)
+        public DeadbandEventPointRecord(): base(PointClass.Class0)
         {
             this.deadband = default(T);
         }
@@ -486,13 +432,13 @@ namespace DNP3.Interface
                                   System.UInt16 numBinaryOutputStatus,
                                   System.UInt16 numAnalogOutputStatus)
         {
-            binaries = Enumerable.Range(0, numBinary).Select(i => new EventPointRecord(PointClass.CLASS_1)).ToList();
-            doubleBinaries = Enumerable.Range(0, numDoubleBinary).Select(i => new EventPointRecord(PointClass.CLASS_1)).ToList();
-            counters = Enumerable.Range(0, numCounter).Select(i => new DeadbandEventPointRecord<System.UInt32>(PointClass.CLASS_1, 0)).ToList();
-            frozenCounters = Enumerable.Range(0, numFrozenCounter).Select(i => new DeadbandEventPointRecord<System.UInt32>(PointClass.CLASS_1, 0)).ToList();
-            analogs = Enumerable.Range(0, numAnalog).Select(i => new DeadbandEventPointRecord<double>(PointClass.CLASS_1, 0.0)).ToList();
-            binaryOutputStatii = Enumerable.Range(0, numBinaryOutputStatus).Select(i => new EventPointRecord(PointClass.CLASS_1)).ToList();
-            analogs = Enumerable.Range(0, numAnalogOutputStatus).Select(i => new DeadbandEventPointRecord<double>(PointClass.CLASS_1, 0.0)).ToList();
+            binaries = Enumerable.Range(0, numBinary).Select(i => new EventPointRecord(PointClass.Class1)).ToList();
+            doubleBinaries = Enumerable.Range(0, numDoubleBinary).Select(i => new EventPointRecord(PointClass.Class1)).ToList();
+            counters = Enumerable.Range(0, numCounter).Select(i => new DeadbandEventPointRecord<System.UInt32>(PointClass.Class1, 0)).ToList();
+            frozenCounters = Enumerable.Range(0, numFrozenCounter).Select(i => new DeadbandEventPointRecord<System.UInt32>(PointClass.Class1, 0)).ToList();
+            analogs = Enumerable.Range(0, numAnalog).Select(i => new DeadbandEventPointRecord<double>(PointClass.Class1, 0.0)).ToList();
+            binaryOutputStatii = Enumerable.Range(0, numBinaryOutputStatus).Select(i => new EventPointRecord(PointClass.Class1)).ToList();
+            analogs = Enumerable.Range(0, numAnalogOutputStatus).Select(i => new DeadbandEventPointRecord<double>(PointClass.Class1, 0.0)).ToList();
         }
 
         /// <summary>

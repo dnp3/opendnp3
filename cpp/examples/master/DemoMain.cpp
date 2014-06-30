@@ -25,7 +25,6 @@
 #include <asiopal/UTCTimeSource.h>
 
 #include <opendnp3/LogLevels.h>
-#include <opendnp3/app/PointClass.h>
 #include <opendnp3/app/ControlRelayOutputBlock.h>
 
 #include "BlockingCommandCallback.h"
@@ -86,10 +85,10 @@ int main(int argc, char* argv[])
 	
 	
 	// do an integrity poll (Class 3/2/1/0) once per minute
-	auto integrityScan = pMaster->AddClassScan(ALL_CLASSES, TimeDuration::Minutes(1));
+	auto integrityScan = pMaster->AddClassScan(ClassField::AllClasses(), TimeDuration::Minutes(1));
 
 	// do a Class 1 exception poll every 5 seconds
-	auto exceptionScan = pMaster->AddClassScan(CLASS_1, TimeDuration::Seconds(5));
+	auto exceptionScan = pMaster->AddClassScan(ClassField(ClassField::CLASS_1), TimeDuration::Seconds(5));
 
 	// Enable the master. This will start communications.
 	pMaster->Enable();

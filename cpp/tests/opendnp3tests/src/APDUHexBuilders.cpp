@@ -33,17 +33,17 @@ using namespace opendnp3;
 
 namespace hex
 {
-	std::string ClassTask(FunctionCode fc, uint8_t seq, int mask)
+	std::string ClassTask(FunctionCode fc, uint8_t seq, const ClassField& field)
 	{
 		StaticBuffer<2048> buffer;
 		APDURequest request(buffer.GetWriteBuffer());
-		opendnp3::build::ClassRequest(request, fc, mask, seq);
+		opendnp3::build::ClassRequest(request, fc, field, seq);
 		return toHex(request.ToReadOnly());
 	}
 
-	std::string IntegrityPoll(uint8_t seq, int mask)
+	std::string IntegrityPoll(uint8_t seq, const ClassField& field)
 	{
-		return ClassTask(FunctionCode::READ, seq, mask);
+		return ClassTask(FunctionCode::READ, seq, field);
 	}	
 
 	std::string ClearRestartIIN(uint8_t seq)

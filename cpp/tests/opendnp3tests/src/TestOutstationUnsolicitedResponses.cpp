@@ -68,13 +68,13 @@ TEST_CASE(SUITE("UnsolRetryDelay"))
 TEST_CASE(SUITE("UnsolData"))
 {
 	OutstationConfig cfg; cfg.params.allowUnsolicited = true;
-	cfg.params.unsolClassMask = ALL_CLASSES; // allows us to skip the "enable unsol" step
+	cfg.params.unsolClassMask = ClassField::AllEventClasses(); // allows us to skip the "enable unsol" step
 	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOnly(3), EventBufferConfig::AllTypes(5));
 			
 	t.Transaction([](Database& db) {
-		db.staticData.binaries.metadata[0].clazz = CLASS_1;
-		db.staticData.binaries.metadata[1].clazz = CLASS_2;
-		db.staticData.binaries.metadata[2].clazz = CLASS_3;
+		db.staticData.binaries.metadata[0].clazz = PointClass::Class1;
+		db.staticData.binaries.metadata[1].clazz = PointClass::Class2;
+		db.staticData.binaries.metadata[2].clazz = PointClass::Class3;
 	});
 	
 	t.LowerLayerUp();	
@@ -100,7 +100,7 @@ TEST_CASE(SUITE("UnsolEventBufferOverflow"))
 {
 	OutstationConfig cfg;
 	cfg.params.allowUnsolicited = true;
-	cfg.params.unsolClassMask = CLASS_1;	
+	cfg.params.unsolClassMask = ClassField(PointClass::Class1);
 	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOnly(1), EventBufferConfig(2));	
 		
 	t.LowerLayerUp();
@@ -130,7 +130,7 @@ TEST_CASE(SUITE("UnsolMultiFragments"))
 	OutstationConfig cfg;
 	cfg.params.allowUnsolicited = true;
 	cfg.params.maxTxFragSize = 20; //this will cause the unsol response to get fragmented
-	cfg.params.unsolClassMask = ALL_EVENT_CLASSES; // this allows the EnableUnsol sequence to be skipped
+	cfg.params.unsolClassMask = ClassField::AllEventClasses(); // this allows the EnableUnsol sequence to be skipped
 	OutstationTestObject t(cfg, DatabaseTemplate::AnalogOnly(5), EventBufferConfig(0, 0, 5));
 
 	t.LowerLayerUp();
@@ -163,7 +163,7 @@ void WriteDuringUnsol(bool beforeTx)
 {
 	OutstationConfig cfg;
 	cfg.params.allowUnsolicited = true;
-	cfg.params.unsolClassMask = ALL_EVENT_CLASSES;
+	cfg.params.unsolClassMask = ClassField::AllEventClasses();
 	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOnly(5), EventBufferConfig(5));
 
 	t.LowerLayerUp();
@@ -212,7 +212,7 @@ TEST_CASE(SUITE("ReadDuringUnsol"))
 {
 	OutstationConfig cfg;
 	cfg.params.allowUnsolicited = true;
-	cfg.params.unsolClassMask = ALL_EVENT_CLASSES;
+	cfg.params.unsolClassMask = ClassField::AllEventClasses();
 	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOnly(5), EventBufferConfig(5));	
 	
 	t.LowerLayerUp();	
@@ -248,7 +248,7 @@ TEST_CASE(SUITE("ReadWriteDuringUnsol"))
 {
 	OutstationConfig cfg;
 	cfg.params.allowUnsolicited = true;
-	cfg.params.unsolClassMask = ALL_EVENT_CLASSES;
+	cfg.params.unsolClassMask = ClassField::AllEventClasses();
 	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOnly(5), EventBufferConfig(5));
 
 	t.LowerLayerUp();
@@ -275,7 +275,7 @@ TEST_CASE(SUITE("RepeatRequestDuringUnsol"))
 {
 	OutstationConfig cfg;
 	cfg.params.allowUnsolicited = true;
-	cfg.params.unsolClassMask = ALL_EVENT_CLASSES;
+	cfg.params.unsolClassMask = ClassField::AllEventClasses();
 	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOnly(5), EventBufferConfig(5));
 
 	t.LowerLayerUp();

@@ -28,7 +28,6 @@
 
 #include <opendnp3/app/APDUResponse.h>
 #include <opendnp3/app/APDUBuilders.h>
-#include <opendnp3/app/PointClass.h>
 
 using namespace openpal;
 using namespace opendnp3;
@@ -85,7 +84,7 @@ TEST_CASE(SUITE("UnsolDisableEnableOnStartup"))
 	REQUIRE(t.exe.RunMany() > 0);
 
 	// disable unsol on grp 60 var2, var3, var4
-	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ALL_EVENT_CLASSES));
+	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ClassField::AllEventClasses()));
 	t.master.OnSendResult(true);
 	t.SendToMaster(hex::EmptyResponse(0));
 
@@ -97,7 +96,7 @@ TEST_CASE(SUITE("UnsolDisableEnableOnStartup"))
 
 	t.exe.RunMany();
 
-	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::ENABLE_UNSOLICITED, 2, ALL_EVENT_CLASSES));
+	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::ENABLE_UNSOLICITED, 2, ClassField::AllEventClasses()));
 	t.master.OnSendResult(true);
 	t.SendToMaster(hex::EmptyResponse(2));
 
@@ -113,7 +112,7 @@ TEST_CASE(SUITE("TimeoutDuringStartup"))
 	t.master.OnLowerLayerUp();
 
 	REQUIRE(t.exe.RunMany() > 0);
-	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ALL_EVENT_CLASSES));
+	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ClassField::AllEventClasses()));
 	t.master.OnSendResult(true);
 
 	// timeout the task
@@ -125,13 +124,13 @@ TEST_CASE(SUITE("TimeoutDuringStartup"))
 	REQUIRE(t.exe.RunMany());
 
 	// repeat the disable unsol
-	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 1, ALL_EVENT_CLASSES));	
+	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 1, ClassField::AllEventClasses()));	
 }
 
 TEST_CASE(SUITE("SolicitedResponseTimeout"))
 {	
 	MasterTestObject t(NoStartupTasks());
-	auto scan = t.master.AddClassScan(ALL_CLASSES, TimeDuration::Seconds(5));
+	auto scan = t.master.AddClassScan(ClassField::AllClasses(), TimeDuration::Seconds(5));
 	t.master.OnLowerLayerUp();
 	
 	t.exe.RunMany();
@@ -181,7 +180,7 @@ TEST_CASE(SUITE("ClassScanCanRepeat"))
 TEST_CASE(SUITE("SolicitedResponseLayerDown"))
 {
 	MasterTestObject t(NoStartupTasks());
-	auto scan = t.master.AddClassScan(ALL_CLASSES, TimeDuration::Seconds(5));
+	auto scan = t.master.AddClassScan(ClassField::AllClasses(), TimeDuration::Seconds(5));
 	t.master.OnLowerLayerUp();	
 	
 	t.exe.RunMany();
@@ -202,7 +201,7 @@ TEST_CASE(SUITE("SolicitedResponseLayerDown"))
 TEST_CASE(SUITE("SolicitedMultiFragResponse"))
 {
 	auto config = NoStartupTasks();
-	config.startupIntergrityClassMask = ALL_CLASSES;
+	config.startupIntergrityClassMask = ClassField::AllClasses();
 	MasterTestObject t(config);
 	t.master.OnLowerLayerUp();
 
@@ -223,8 +222,8 @@ TEST_CASE(SUITE("EventPoll"))
 {	
 	MasterTestObject t(NoStartupTasks());
 
-	auto class12 = t.master.AddClassScan(CLASS_1 | CLASS_2, TimeDuration::Milliseconds(10));
-	auto class3 = t.master.AddClassScan(CLASS_3, TimeDuration::Milliseconds(20));
+	auto class12 = t.master.AddClassScan(ClassField(ClassField::CLASS_1 | ClassField::CLASS_2), TimeDuration::Milliseconds(10));
+	auto class3 = t.master.AddClassScan(ClassField(ClassField::CLASS_3), TimeDuration::Milliseconds(20));
 
 	t.master.OnLowerLayerUp();		
 	t.exe.RunMany();
@@ -296,7 +295,7 @@ TEST_CASE(SUITE("RestartDuringStartup"))
 
 	REQUIRE(t.exe.RunMany() > 0);
 
-	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ALL_EVENT_CLASSES));
+	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ClassField::AllEventClasses()));
 	t.master.OnSendResult(false);
 
 	t.SendToMaster(hex::EmptyResponse(0, IINField(IINBit::DEVICE_RESTART)));
@@ -309,7 +308,7 @@ TEST_CASE(SUITE("RestartDuringStartup"))
 
 	REQUIRE(t.exe.RunMany() > 0);
 
-	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::ENABLE_UNSOLICITED, 2, ALL_EVENT_CLASSES));	
+	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::ENABLE_UNSOLICITED, 2, ClassField::AllEventClasses()));	
 }
 
 TEST_CASE(SUITE("RestartAndTimeBits"))

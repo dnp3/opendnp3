@@ -21,7 +21,7 @@
 
 #include "EventCount.h"
 
-#include "opendnp3/app/PointClass.h"
+#include "opendnp3/gen/PointClass.h"
 
 namespace opendnp3
 {
@@ -40,10 +40,15 @@ void EventCount::Clear()
 	numClass1 = numClass2 = numClass3 = 0;	
 }
 
-bool EventCount::Intersects(uint8_t classMask) const
+bool EventCount::Intersects(const ClassField& field) const
 {
-	uint8_t mask = ((numClass1 > 0) ? CLASS_1 : 0) | ((numClass2 > 0) ? CLASS_2 : 0) | ((numClass3 > 0) ? CLASS_3 : 0);	
-	return (mask & classMask) > 0;
+	uint8_t mask = 0;
+
+	if (numClass1)  mask |= ClassField::CLASS_1;
+	if (numClass2)  mask |= ClassField::CLASS_2;
+	if (numClass3)  mask |= ClassField::CLASS_3;
+
+	return (field.GetBitfield() & mask) != 0;	
 }
 
 EventCount EventCount::Subtract(const EventCount& rhs) const

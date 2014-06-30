@@ -86,9 +86,9 @@ TEST_CASE(SUITE("MultipleClasses"))
 	t.LowerLayerUp();
 
 	t.Transaction([](Database& db) {
-		db.staticData.binaries.metadata[0].clazz = PointClass::CLASS_1;
-		db.staticData.analogs.metadata[0].clazz = PointClass::CLASS_2;
-		db.staticData.counters.metadata[0].clazz = PointClass::CLASS_3;
+		db.staticData.binaries.metadata[0].clazz = PointClass::Class1;
+		db.staticData.analogs.metadata[0].clazz = PointClass::Class2;
+		db.staticData.counters.metadata[0].clazz = PointClass::Class3;
 
 		db.Update(Binary(true), 0);
 		db.Update(Analog(3), 0);
@@ -195,7 +195,7 @@ const size_t NUM = 4;
 OutstationConfig config; cfg.disableUnsol = true;
 OutstationTestObject t(cfg);
 t.db.Configure(MeasurementType::BINARY, NUM);
-t.db.SetClass(MeasurementType::BINARY, CLASS_1);
+t.db.SetClass(MeasurementType::BINARY, PointClass::Class1);
 t.outstation.OnLowerLayerUp();
 
 {

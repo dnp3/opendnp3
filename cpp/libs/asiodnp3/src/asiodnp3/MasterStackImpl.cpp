@@ -88,9 +88,9 @@ opendnp3::ILinkContext* MasterStackImpl::GetLinkContext()
 	return &stack.link;
 }
 
-MasterScan MasterStackImpl::AddClassScan(uint8_t classMask, openpal::TimeDuration period)
+MasterScan MasterStackImpl::AddClassScan(const ClassField& field, openpal::TimeDuration period)
 {	
-	auto add = [this, classMask, period]() { return master.AddClassScan(classMask, period); };
+	auto add = [this, field, period]() { return master.AddClassScan(field, period); };
 	return asiopal::SynchronouslyGet<MasterScan>(handler.GetExecutor()->strand, add);
 }
 

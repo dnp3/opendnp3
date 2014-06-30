@@ -10,7 +10,6 @@
 
 #include <opendnp3/gen/ChannelState.h>
 
-#include <opendnp3/app/ClassMask.h>
 #include <opendnp3/app/MeasurementTypes.h>
 #include <opendnp3/app/ControlRelayOutputBlock.h>
 #include <opendnp3/app/AnalogOutput.h>
@@ -40,6 +39,8 @@ public:
 	static openpal::TimeDuration ConvertMilliseconds(System::UInt64 ms);
 
 	static openpal::TimeDuration ConvertTimespan(System::TimeSpan ts);
+
+	static opendnp3::ClassField ConvertClassField(ClassField classField);
 
 	// Convert a .NET string to a C++ string
 	static std::string ConvertString(System::String^ s);
@@ -103,7 +104,7 @@ public:
 
 	//Convert the configuration types
 	static asiopal::SerialSettings ConvertSerialSettings(SerialSettings^ settings);
-	static opendnp3::ClassMask ConvertClassMask(ClassMask^ cm);
+	//static opendnp3::ClassMask ConvertClassMask(ClassMask^ cm);
 	static opendnp3::EventBufferConfig ConvertConfig(EventBufferConfig^ cm);
 
 	static opendnp3::StaticBinaryResponse Convert(StaticBinaryResponse rsp);

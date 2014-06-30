@@ -82,9 +82,9 @@ MasterScan Master::AddScan(openpal::TimeDuration period, const openpal::Action1<
 	}
 }
 
-MasterScan Master::AddClassScan(uint8_t classMask, openpal::TimeDuration period)
+MasterScan Master::AddClassScan(const ClassField& field, openpal::TimeDuration period)
 {	
-	auto configure = [classMask](APDURequest& request) { build::WriteClassHeaders(request, classMask); };
+	auto configure = [field](APDURequest& request) { build::WriteClassHeaders(request, field); };
 	return this->AddScan(period, openpal::Action1<APDURequest&>::Bind(configure));
 }
 

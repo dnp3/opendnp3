@@ -25,6 +25,7 @@
 #include <cstdint>
 
 #include "EventType.h"
+#include "opendnp3/app/ClassField.h"
 
 namespace opendnp3
 {
@@ -37,7 +38,7 @@ public:
 
 	EventCount(uint32_t numClass1, uint32_t numClass2, uint32_t numClass3);
 
-	bool Intersects(uint8_t classMask) const;
+	bool Intersects(const ClassField& field) const;
 
 	EventCount Subtract(const EventCount& rhs) const;
 

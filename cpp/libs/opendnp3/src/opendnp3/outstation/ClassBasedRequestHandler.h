@@ -25,6 +25,7 @@
 #include "opendnp3/app/IINField.h"
 
 #include "opendnp3/outstation/ITimeWriteHandler.h"
+#include "opendnp3/app/ClassField.h"
 
 #include <openpal/logging/Logger.h>
 
@@ -39,11 +40,11 @@ public:
 
 	virtual void _AllObjects(const HeaderRecord& record) override final;
 
-	uint8_t GetClassMask() const { return classMask; }
+	ClassField GetClassField() const { return classField; }
 
 private:
 
-	uint8_t classMask;
+	ClassField classField;
 };
 
 }

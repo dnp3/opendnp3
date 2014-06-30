@@ -18,25 +18,56 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __POINT_CLASS_H_
-#define __POINT_CLASS_H_
+#ifndef __CLASS_FIELD_H_
+#define __CLASS_FIELD_H_
 
 #include <cstdint>
+
+#include "opendnp3/gen/PointClass.h"
 
 namespace opendnp3
 {
 
-/// Bitmasks for Class1/2/3 events
-enum PointClass : uint8_t
+class ClassField
 {
-	CLASS_0 = 0x01,
-	CLASS_1 = 0x02,
-	CLASS_2 = 0x04,
-	CLASS_3 = 0x08,
-	ALL_EVENT_CLASSES = CLASS_1 | CLASS_2 | CLASS_3,
-	ALL_CLASSES = CLASS_0 | ALL_EVENT_CLASSES
+	public:
+
+	ClassField();
+
+	ClassField(PointClass pc);
+
+	ClassField(uint8_t mask_);
+
+	uint8_t GetBitfield() const { return bitfield; };
+
+	void Clear(const ClassField& field);
+
+	void Set(const ClassField& field);
+
+	void Set(PointClass pc);
+
+	static const uint8_t CLASS_0 = static_cast<uint8_t>(PointClass::Class0);
+	static const uint8_t CLASS_1 = static_cast<uint8_t>(PointClass::Class1);
+	static const uint8_t CLASS_2 = static_cast<uint8_t>(PointClass::Class2);
+	static const uint8_t CLASS_3 = static_cast<uint8_t>(PointClass::Class3);
+	static const uint8_t EVENT_CLASSES = CLASS_1 | CLASS_2 | CLASS_3;
+	static const uint8_t ALL_CLASSES = EVENT_CLASSES | CLASS_0;
+
+	bool HasClass0() const;
+	bool HasClass1() const;
+	bool HasClass2() const;
+	bool HasClass3() const;
+
+	bool HasEventClass() const;
+	bool HasAnyClass() const;
+
+	static ClassField AllClasses();
+	static ClassField AllEventClasses();	
 	
+	private:
+	uint8_t bitfield;
 };
+
 
 }
 

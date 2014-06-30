@@ -27,7 +27,7 @@ public:
 
 	virtual void Shutdown();	
 
-	virtual IMasterScan^ AddClassScan(int aClassMask, System::TimeSpan period);
+	virtual IMasterScan^ AddClassScan(ClassField field, System::TimeSpan period);
 
 	virtual IMasterScan^ AddRangeScan(System::Byte group, System::Byte variation, System::UInt16 start, System::UInt16 stop, System::TimeSpan period);
 
