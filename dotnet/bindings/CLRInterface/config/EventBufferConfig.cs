@@ -11,19 +11,27 @@ namespace DNP3.Interface
     /// </summary>
     public class EventBufferConfig
     {
+        /// <summary>
+        /// All events set to same count
+        /// </summary>
+        public EventBufferConfig(uint count)
+        {
+            this.maxBinaryEvents = count;
+            this.maxDoubleBinaryEvents = count;
+            this.maxAnalogEvents = count;
+            this.maxCounterEvents = count;
+            this.maxFrozenCounterEvents = count;
+            this.maxBinaryOutputStatusEvents = count;
+            this.maxAnalogOutputStatusEvents = count;
+        }
+
 
         /// <summary>
-        /// All events set to 1000
+        /// All events set to 100
         /// </summary>
-        public EventBufferConfig()
+        public EventBufferConfig() : this(100)
         {
-            this.maxBinaryEvents = 1000;
-            this.maxDoubleBinaryEvents = 1000;
-            this.maxAnalogEvents = 1000;
-            this.maxCounterEvents = 1000;
-            this.maxFrozenCounterEvents = 1000;
-            this.maxBinaryOutputStatusEvents = 1000;
-            this.maxAnalogOutputStatusEvents = 1000;
+           
         }
 
         /// <summary>

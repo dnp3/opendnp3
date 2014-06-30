@@ -103,25 +103,19 @@ public:
 	static opendnp3::BinaryOutputStatus ConvertMeas(BinaryOutputStatus^ meas);
 
 	//Convert the configuration types
-	static asiopal::SerialSettings ConvertSerialSettings(SerialSettings^ settings);
-	//static opendnp3::ClassMask ConvertClassMask(ClassMask^ cm);
-	static opendnp3::EventBufferConfig ConvertConfig(EventBufferConfig^ cm);
-
-	static opendnp3::StaticBinaryResponse Convert(StaticBinaryResponse rsp);
-	static opendnp3::StaticAnalogResponse Convert(StaticAnalogResponse rsp);
-	static opendnp3::StaticCounterResponse Convert(StaticCounterResponse rsp);
-	static opendnp3::StaticFrozenCounterResponse Convert(StaticFrozenCounterResponse rsp);
-	static opendnp3::StaticAnalogOutputStatusResponse Convert(StaticAnalogOutputStatusResponse rsp);
-
-	static opendnp3::EventBinaryResponse Convert(EventBinaryResponse rsp);
-	static opendnp3::EventAnalogResponse Convert(EventAnalogResponse rsp);
-	static opendnp3::EventCounterResponse Convert(EventCounterResponse rsp);	
+	static asiopal::SerialSettings ConvertSerialSettings(SerialSettings^ settings);	
+	static opendnp3::EventBufferConfig ConvertConfig(EventBufferConfig^ cm);	
 
 	static opendnp3::LinkConfig ConvertConfig(LinkConfig^ config);	
 	static opendnp3::MasterParams ConvertConfig(MasterConfig^ config);
 	static opendnp3::OutstationConfig ConvertConfig(OutstationConfig^ config);	
+	static opendnp3::OutstationParams ConvertConfig(OutstationParams^ config);
+	static opendnp3::StaticResponseConfig ConvertConfig(StaticResponseConfig^ config);
+	static opendnp3::EventResponseConfig ConvertConfig(EventResponseConfig^ config);
 	static opendnp3::MasterStackConfig ConvertConfig(MasterStackConfig^ config);
 	static opendnp3::OutstationStackConfig ConvertConfig(OutstationStackConfig^ config);
+
+	static opendnp3::DatabaseTemplate ConvertConfig(DatabaseTemplate^ config);
 };
 
 }

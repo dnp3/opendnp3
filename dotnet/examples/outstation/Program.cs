@@ -49,6 +49,11 @@ namespace DotNetOutstationDemo
 
             var config = new OutstationStackConfig();
 
+            // configure the various measurements in our database
+            config.databaseTemplate = new DatabaseTemplate(4, 1, 1, 1, 1, 1, 1);
+            config.databaseTemplate.binaries[0].pointClass = PointClass.Class2;
+            // ....
+
             // Optional: overide the default reporting variations
             config.defaultEventResponses.binary = EventBinaryResponse.Group2Var2;
             config.defaultStaticResponses.analog = StaticAnalogResponse.Group30Var5;

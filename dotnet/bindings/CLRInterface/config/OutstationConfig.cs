@@ -11,10 +11,19 @@ namespace DNP3.Interface
     /// </summary>
     public class OutstationConfig
     {      
-        OutstationParams config = new OutstationParams();
+        /// <summary>
+        /// Operational settings for the outstation
+        /// </summary>
+        public OutstationParams config = new OutstationParams();
 
-        StaticResponseConfig staticConfig = new StaticResponseConfig();
+        /// <summary>
+        /// Default static responses
+        /// </summary>
+        public StaticResponseConfig staticConfig = new StaticResponseConfig();
 
-        EventResponseConfig eventConfig = new EventResponseConfig();         
+        /// <summary>
+        /// Default event responses
+        /// </summary>
+        public EventResponseConfig eventConfig = new EventResponseConfig();         
     }  
 }

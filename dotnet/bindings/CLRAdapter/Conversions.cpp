@@ -287,13 +287,6 @@ opendnp3::LinkConfig Conversions::ConvertConfig(LinkConfig^ config)
 	return opendnp3::LinkConfig(config->isMaster, config->useConfirms, config->numRetry, config->localAddr, config->remoteAddr, ConvertMilliseconds(config->timeoutMs));
 }
 
-/*
-opendnp3::ClassMask Conversions::ConvertClassMask(ClassMask^ cm)
-{
-	return opendnp3::ClassMask(cm->class1, cm->class2, cm->class3);
-}
-*/
-
 opendnp3::EventBufferConfig Conversions::ConvertConfig(EventBufferConfig^ cm)
 {
 	opendnp3::EventBufferConfig config;
@@ -307,72 +300,61 @@ opendnp3::EventBufferConfig Conversions::ConvertConfig(EventBufferConfig^ cm)
 	return config;
 }
 
-opendnp3::StaticBinaryResponse Conversions::Convert(StaticBinaryResponse rsp)
-{
-	return (opendnp3::StaticBinaryResponse) rsp;
-}
-
-opendnp3::StaticAnalogResponse Conversions::Convert(StaticAnalogResponse rsp)
-{
-	return (opendnp3::StaticAnalogResponse) rsp;
-}
-
-opendnp3::StaticCounterResponse Conversions::Convert(StaticCounterResponse rsp)
-{
-	return (opendnp3::StaticCounterResponse) rsp;
-}
-
-opendnp3::StaticFrozenCounterResponse Conversions::Convert(StaticFrozenCounterResponse rsp)
-{
-	return (opendnp3::StaticFrozenCounterResponse) rsp;
-}
-
-opendnp3::StaticAnalogOutputStatusResponse Conversions::Convert(StaticAnalogOutputStatusResponse rsp)
-{
-	return (opendnp3::StaticAnalogOutputStatusResponse) rsp;
-}
-
-opendnp3::EventBinaryResponse Conversions::Convert(EventBinaryResponse rsp)
-{
-	return (opendnp3::EventBinaryResponse) rsp;
-}
-
-opendnp3::EventAnalogResponse Conversions::Convert(EventAnalogResponse rsp)
-{
-	return (opendnp3::EventAnalogResponse) rsp;
-}
-
-opendnp3::EventCounterResponse Conversions::Convert(EventCounterResponse rsp)
-{
-	return (opendnp3::EventCounterResponse) rsp;
-}
-
 opendnp3::OutstationConfig Conversions::ConvertConfig(OutstationConfig^ config)
 {
-	opendnp3::OutstationConfig op;
+	opendnp3::OutstationConfig oc;
+	
+	oc.params = ConvertConfig(config->config);
+	oc.defaultStaticResponses = ConvertConfig(config->staticConfig);
+	oc.defaultEventResponses = ConvertConfig(config->eventConfig);
 
-	/* TODO
+	return oc;
+}
 
-	sc.disableUnsol = config->disableUnsol;
-	sc.maxControls = config->maxControls;
-	sc.unsolMask = ConvertClassMask(config->unsolMask);
-	sc.allowTimeSync = config->allowTimeSync;
-	sc.timeSyncPeriod = ConvertMilliseconds(config->timeSyncPeriodMs);
-	sc.unsolPackDelay = ConvertMilliseconds(config->unsolPackDelayMs);
-	sc.unsolRetryDelay = ConvertMilliseconds(config->unsolRetryDelayMs);
-	sc.selectTimeout = ConvertMilliseconds(config->selectTimeoutMs);
-	sc.maxFragSize = config->maxFragSize;
-	sc.staticDefaults.binary = Convert(config->staticBinary);
-	sc.staticDefaults.analog = Convert(config->staticAnalog);
-	sc.staticDefaults.counter = Convert(config->staticCounter);
-	sc.staticDefaults.frozenCounter = Convert(config->staticFrozenCounter);
-	sc.staticDefaults.analogOutputStatus = Convert(config->staticAnalogOutputStatus);
-	sc.eventDefaults.binary = Convert(config->eventBinary);
-	sc.eventDefaults.analog = Convert(config->eventAnalog);
-	sc.eventDefaults.counter = Convert(config->eventCounter);
-	*/
+opendnp3::StaticResponseConfig Conversions::ConvertConfig(StaticResponseConfig^ config)
+{
+	opendnp3::StaticResponseConfig ret;
 
-	return op;
+	ret.analog = (opendnp3::StaticAnalogResponse) config->analog;
+	ret.analogOutputStatus = (opendnp3::StaticAnalogOutputStatusResponse) config->analogOutputStatus;
+	ret.binary = (opendnp3::StaticBinaryResponse) config->binary;
+	ret.binaryOutputStatus = (opendnp3::StaticBinaryOutputStatusResponse) config->binaryOutputStatus;
+	ret.counter = (opendnp3::StaticCounterResponse) config->counter;
+	ret.doubleBinary = (opendnp3::StaticDoubleBinaryResponse) config->doubleBinary;
+	ret.frozenCounter = (opendnp3::StaticFrozenCounterResponse) config->frozenCounter;
+
+	return ret;
+}
+
+opendnp3::EventResponseConfig Conversions::ConvertConfig(EventResponseConfig^ config)
+{
+	opendnp3::EventResponseConfig ret;
+
+	ret.analog = (opendnp3::EventAnalogResponse) config->analog;
+	ret.analogOutputStatus = (opendnp3::EventAnalogOutputStatusResponse) config->analogOutputStatus;
+	ret.binary = (opendnp3::EventBinaryResponse) config->binary;
+	ret.binaryOutputStatus = (opendnp3::EventBinaryOutputStatusResponse) config->binaryOutputStatus;
+	ret.counter = (opendnp3::EventCounterResponse) config->counter;
+	ret.doubleBinary = (opendnp3::EventDoubleBinaryResponse) config->doubleBinary;
+	ret.frozenCounter = (opendnp3::EventFrozenCounterResponse) config->frozenCounter;
+
+	return ret;
+}
+
+opendnp3::OutstationParams Conversions::ConvertConfig(OutstationParams^ config)
+{
+	opendnp3::OutstationParams params;
+
+	params.allowUnsolicited = config->allowUnsolicited;
+	params.maxControlsPerRequest = config->maxControlsPerRequest;
+	params.maxTxFragSize = config->maxTxFragSize;
+	params.selectTimeout = ConvertTimespan(config->selectTimeout);
+	params.solConfirmTimeout = ConvertTimespan(config->solicitedConfirmTimeout);
+	params.unsolClassMask = ConvertClassField(config->unsolClassMask);
+	params.unsolConfirmTimeout = ConvertTimespan(config->unsolicitedConfirmTimeout);
+	params.unsolRetryTimeout = ConvertTimespan(config->unsolicitedRetryPeriod);
+	
+	return params;
 }
 
 /*
@@ -439,13 +421,29 @@ opendnp3::MasterStackConfig Conversions::ConvertConfig(MasterStackConfig^ config
 }
 
 opendnp3::OutstationStackConfig Conversions::ConvertConfig(OutstationStackConfig^ config)
-{
-	//auto temp = ConvertConfig(config->device->);
-	opendnp3::OutstationStackConfig cfg(opendnp3::DatabaseTemplate::AllTypes(10)); // todo make .NET outstation db configurable
+{	
+	opendnp3::OutstationStackConfig cfg;
+	cfg.dbTemplate = ConvertConfig(config->databaseTemplate);
 	cfg.eventBuffer = ConvertConfig(config->buffer);
 	cfg.outstation = ConvertConfig(config->outstation);	
 	cfg.link = ConvertConfig(config->link);
 	return cfg;
 }
+
+opendnp3::DatabaseTemplate Conversions::ConvertConfig(DatabaseTemplate^ config)
+{
+	opendnp3::DatabaseTemplate dbTemplate;
+	
+	dbTemplate.numAnalog = config->analogs->Count;
+	dbTemplate.numAnalogOutputStatus = config->analogOutputStatii->Count;
+	dbTemplate.numBinary = config->binaries->Count;
+	dbTemplate.numBinaryOutputStatus = config->binaryOutputStatii->Count;
+	dbTemplate.numCounter = config->counters->Count;
+	dbTemplate.numDoubleBinary = config->doubleBinaries->Count;
+	dbTemplate.numFrozenCounter = config->frozenCounters->Count;
+
+	return dbTemplate;
+}
+
 }
 }

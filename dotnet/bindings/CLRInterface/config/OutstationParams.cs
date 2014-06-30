@@ -47,11 +47,11 @@ namespace DNP3.Interface
         /// <summary>
         /// Global enabled / disable for unsolicted messages. If false, the NULL unsolicited message is not even sent
         /// </summary>
-        bool allowUnsolicited = false;
+        public bool allowUnsolicited = false;
        
         /// <summary>
         /// Class mask for unsolicted, default to 0 as unsolicited has to be enabled by master
         /// </summary>
-        ClassField unsolClassMask = ClassField.None;
+        public ClassField unsolClassMask = ClassField.None;
     }  
 }
