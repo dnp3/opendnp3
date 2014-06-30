@@ -23,14 +23,10 @@
 
 #include <openpal/executor/TimeDuration.h>
 
+#include "opendnp3/gen/TimeSyncMode.h"
+
 namespace opendnp3
 {
-
-enum class TimeSyncMode
-{
-	None,
-	SerialTimeSync
-};
 
 /**
 Configuration information for the dnp3 master

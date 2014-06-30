@@ -26,7 +26,8 @@ object CppEnumGenerator {
       EnumConfig(CommandStatus(), true, true),
       EnumConfig(CommandResult(), false, true),
       EnumConfig(ControlCode(), true, true),
-      EnumConfig(ChannelState(), false, true)
+      EnumConfig(ChannelState(), false, true),
+      EnumConfig(TimeSyncMode(), false, false)
     ) ::: EventTypes.enums.map(m => EnumConfig(m, true, false))
 
     // list of all enumerations that we want to generate

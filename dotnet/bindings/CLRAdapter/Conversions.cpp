@@ -412,15 +412,13 @@ opendnp3::MasterParams Conversions::ConvertConfig(MasterConfig^ config)
 {
 	opendnp3::MasterParams mp;
 
-	/* TODO
-	mc.FragSize = config->fragSize;
-	mc.AllowTimeSync = config->allowTimeSync;
-	mc.DoUnsolOnStartup = config->doUnsolOnStartup;
-	mc.EnableUnsol = config->enableUnsol;
-	mc.UnsolClassMask = config->unsolClassMask;
-	mc.IntegrityRate = ConvertMilliseconds(config->integrityPeriodMs);
-	mc.TaskRetryRate = ConvertMilliseconds(config->taskRetryPeriodMs);
-	*/
+	mp.disableUnsolOnStartup = config->disableUnsolOnStartup;
+	mp.integrityOnEventOverflowIIN = config->integrityOnEventOverflowIIN;
+	mp.responseTimeout = ConvertTimespan(config->responseTimeout);
+	mp.startupIntergrityClassMask = config->startupIntergrityClassMask;
+	mp.taskRetryPeriod = ConvertTimespan(config->taskRetryPeriod);
+	mp.timeSyncMode = (opendnp3::TimeSyncMode) config->timeSyncMode;
+	mp.unsolClassMask = config->unsolClassMask;
 
 	return mp;
 }

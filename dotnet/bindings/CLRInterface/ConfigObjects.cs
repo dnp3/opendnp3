@@ -220,61 +220,6 @@ namespace DNP3.Interface
         } 
     }
 
-	/// <summary>
-    /// Configuration information for the dnp3 master
-	/// </summary>
-	public class MasterConfig {
-		
-		/// <summary>
-		/// Constructor with reasonable defaults
-		/// </summary>
-		public MasterConfig()
-        {
-			fragSize = 2048;
-			allowTimeSync = true;
-			doUnsolOnStartup = false;
-			enableUnsol = true;
-			unsolClassMask = (System.Int32) (PointClass.ALL_EVENTS);
-            integrityPeriodMs = 5000;
-            taskRetryPeriodMs = 5000;
-		}		
-
-		/// <summary>
-        /// Maximum fragment size to use for requests
-		/// </summary>
-		public System.Int32 fragSize;	
-
-		/// <summary>
-        /// If true, the master will do time syncs when it sees the time IIN bit from the outstation
-		/// </summary>
-		public System.Boolean allowTimeSync;
-
-		/// <summary>
-        /// If true, the master will enable/disable unsol on startup
-		/// </summary>
-		public System.Boolean doUnsolOnStartup;
-
-		/// <summary>
-        /// If DoUnsolOnStartup == true, the master will use this bit to decide wether to enable (true) or disable (false)
-		/// </summary>
-		public System.Boolean enableUnsol;
-
-		/// <summary>
-        /// Bitwise mask used determine which classes are enabled/disabled for unsol
-		/// </summary>
-		public System.Int32 unsolClassMask;
-
-		/// <summary>
-        /// Period for integrity scans (class 0), -1 for non periodic
-		/// </summary>
-        public System.UInt32 integrityPeriodMs;
-
-		/// <summary>
-        /// Time delay between task retries
-		/// </summary>
-        public System.UInt32 taskRetryPeriodMs;	
-	}
-
     /// <summary>
     /// Structure that records which events are scanned / evented
     /// </summary>

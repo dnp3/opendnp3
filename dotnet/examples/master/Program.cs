@@ -47,9 +47,7 @@ namespace DotNetMasterDemo
             //optionally, add a listener for the channel state
             channel.AddStateListener(state => Console.WriteLine("channel state: " + state));            
 
-            var config = new MasterStackConfig();
-            
-            config.master.integrityPeriodMs = 60*1000;
+            var config = new MasterStackConfig();                      
 
             //setup your stack configuration here.
             config.link.localAddr = 1;
