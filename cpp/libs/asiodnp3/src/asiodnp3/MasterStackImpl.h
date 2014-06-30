@@ -43,7 +43,8 @@ public:
 		openpal::LogRoot& root,
 	    asiopal::ASIOExecutor& executor,
 		opendnp3::ISOEHandler& SOEHandler,
-	    openpal::IUTCTimeSource& timeSource,		
+	    openpal::IUTCTimeSource& timeSource,	
+		opendnp3::IMasterApplication& application,
 		const opendnp3::MasterStackConfig& config,
 		const StackActionHandler& handler,
 		opendnp3::ITaskLock& taskLock);

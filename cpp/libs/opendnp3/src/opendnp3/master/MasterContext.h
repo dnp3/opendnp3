@@ -31,6 +31,7 @@
 #include "opendnp3/master/MasterScheduler.h"
 #include "opendnp3/master/IMasterState.h"
 #include "opendnp3/master/ITaskLock.h"
+#include "opendnp3/master/IMasterApplication.h"
 
 namespace opendnp3
 {
@@ -44,6 +45,7 @@ class MasterContext : public ICommandProcessor, public IScheduleCallback
 					openpal::ILowerLayer& lower,
 					ISOEHandler& SOEHandler,
 					openpal::IUTCTimeSource& timeSource,
+					opendnp3::IMasterApplication& application,
 					const MasterParams& params,
 					ITaskLock& taskLock
 				);
@@ -56,6 +58,7 @@ class MasterContext : public ICommandProcessor, public IScheduleCallback
 	MasterParams params;
 	ISOEHandler* pSOEHandler;
 	ITaskLock* pTaskLock;
+	opendnp3::IMasterApplication* pApplication;
 
 	// ------- dynamic state ---------
 	bool isOnline;

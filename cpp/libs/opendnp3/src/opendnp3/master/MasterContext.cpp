@@ -41,6 +41,7 @@ MasterContext::MasterContext(
 	ILowerLayer& lower,
 	ISOEHandler& SOEHandler,
 	IUTCTimeSource& timeSource,
+	IMasterApplication& application,
 	const MasterParams& params_,
 	ITaskLock& taskLock
 	) :
@@ -51,6 +52,7 @@ MasterContext::MasterContext(
 	params(params_),
 	pSOEHandler(&SOEHandler),
 	pTaskLock(&taskLock),
+	pApplication(&application),
 	isOnline(false),
 	isSending(false),
 	solSeq(0),

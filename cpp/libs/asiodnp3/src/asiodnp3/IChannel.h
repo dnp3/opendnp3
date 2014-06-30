@@ -22,29 +22,27 @@
 #define __I_CHANNEL_H_
 
 #include <opendnp3/gen/ChannelState.h>
-#include <opendnp3/master/MasterStackConfig.h>
-#include <opendnp3/outstation/OutstationStackConfig.h>
 #include <opendnp3/link/LinkChannelStatistics.h>
+
+#include <opendnp3/master/MasterStackConfig.h>
+#include <opendnp3/master/ISOEHandler.h>
+#include <opendnp3/master/IMasterApplication.h>
+
+#include <opendnp3/outstation/OutstationStackConfig.h>
+#include <opendnp3/outstation/ICommandHandler.h>
+#include <opendnp3/outstation/ITimeWriteHandler.h>
 
 #include <openpal/executor/IUTCTimeSource.h>
 #include <openpal/logging/LogFilters.h>
 #include <openpal/executor/IExecutor.h>
 
-#include "DestructorHook.h"
+#include "IMaster.h"
+#include "IOutstation.h"
 
-namespace opendnp3
-{
-	class ISOEHandler;
-	class ICommandHandler;
-	class ITimeWriteHandler;
-}
+#include "DestructorHook.h"
 
 namespace asiodnp3
 {
-
-class IMaster;
-class IOutstation;
-
 
 /**
 * Represents a communication channel upon which masters and outstations can be bound.
@@ -94,6 +92,7 @@ public:
 	virtual IMaster* AddMaster(char const* id,
 							   opendnp3::ISOEHandler& SOEHandler,
 							   openpal::IUTCTimeSource& timeSource,
+							   opendnp3::IMasterApplication& application,
 							   const opendnp3::MasterStackConfig& config) = 0;
 
 	/**

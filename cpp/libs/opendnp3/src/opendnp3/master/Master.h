@@ -24,6 +24,7 @@
 #include "opendnp3/master/MasterContext.h"
 #include "opendnp3/master/CommandMarshaller.h"
 #include "opendnp3/master/MasterScan.h"
+#include "opendnp3/master/IMasterApplication.h"
 
 namespace opendnp3
 {
@@ -37,6 +38,7 @@ class Master : public openpal::IUpperLayer
 			openpal::ILowerLayer& lower,
 			ISOEHandler& SOEHandler,
 			openpal::IUTCTimeSource& timeSource,
+			opendnp3::IMasterApplication& application,
 			const MasterParams& params,
 			ITaskLock& taskLock = NullTaskLock::Instance()
 			);

@@ -81,6 +81,7 @@ public:
 	virtual IMaster* AddMaster(	char const* id,
 								opendnp3::ISOEHandler& SOEHandler,
 								openpal::IUTCTimeSource& timeSource,
+								opendnp3::IMasterApplication& application,
 								const opendnp3::MasterStackConfig& config) override final;
 
 	virtual IOutstation* AddOutstation(char const* id,
@@ -97,6 +98,7 @@ private:
 	IMaster* _AddMaster(char const* id,
 		opendnp3::ISOEHandler& SOEHandler,
 		openpal::IUTCTimeSource& timeSource,
+		opendnp3::IMasterApplication& application,
 		const opendnp3::MasterStackConfig& config);
 
 	IOutstation* _AddOutstation(char const* id,
