@@ -29,8 +29,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-MasterParams::MasterParams() :
-	fragSize(sizes::DEFAULT_APDU_BUFFER_SIZE),
+MasterParams::MasterParams() :	
 	responseTimeout(TimeDuration::Seconds(5)),
 	timeSyncMode(TimeSyncMode::None),
 	disableUnsolOnStartup(true),	

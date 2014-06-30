@@ -38,10 +38,7 @@ Configuration information for the dnp3 master
 struct MasterParams
 {
 	/// Default constructor
-	MasterParams();
-
-	/// Maximum fragment size to use for requests
-	uint32_t fragSize;
+	MasterParams();	
 
 	/// Application layer response timeout
 	openpal::TimeDuration responseTimeout;
