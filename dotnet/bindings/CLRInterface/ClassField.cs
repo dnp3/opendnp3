@@ -16,6 +16,14 @@ namespace DNP3.Interface
             this.bitfield =  mask;
         }
 
+        public static ClassField None
+        {
+            get
+            {
+                return new ClassField(0);
+            }
+        }
+
         public static ClassField From(params PointClass[] classes)
         {
             byte mask = 0;
