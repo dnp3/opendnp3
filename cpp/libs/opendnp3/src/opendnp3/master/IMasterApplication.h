@@ -19,18 +19,18 @@
  * to you under the terms of the License.
  */
 
-#ifndef __I_OUTSTATION_APPLICATION_H_
-#define __I_OUTSTATION_APPLICATION_H_
+#ifndef __I_MASTER_APPLICATION_H_
+#define __I_MASTER_APPLICATION_H_
 
 
 namespace opendnp3
 {
 
-class IOutstationApplication
+class IMasterApplication
 {
 	public:
 	
-	virtual ~IOutstationApplication() {}	
+	virtual ~IMasterApplication() {}
 };
 
 }
