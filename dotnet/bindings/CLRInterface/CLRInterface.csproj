@@ -91,7 +91,6 @@
     <Compile Include="IMaster.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IMeasurementCollection.cs" />
     <Compile Include="ISOEHandler.cs" />
     <Compile Include="IOutstation.cs" />
     <Compile Include="IStack.cs">
