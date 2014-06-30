@@ -20,11 +20,6 @@ namespace DNP3
 namespace Adapter
 {
 
-ChannelAdapter::ChannelAdapter()
-{
-	
-}
-
 void ChannelAdapter::SetChannel(asiodnp3::IChannel* pChannel_)
 {
 	pChannel = pChannel_;	
@@ -103,6 +98,14 @@ IOutstation^ ChannelAdapter::AddOutstation(System::String^ loggerId, ICommandHan
 
 void ChannelAdapter::ApplyDatabaseSettings(opendnp3::Database& database, DatabaseTemplate^ dbTemplate)
 {
+	ApplyClassSettings(dbTemplate->binaries, database.staticData.binaries.metadata);
+	ApplyClassSettings(dbTemplate->binaryOutputStatii, database.staticData.binaryOutputStatii.metadata);
+	ApplyClassSettings(dbTemplate->doubleBinaries, database.staticData.doubleBinaries.metadata);
+
+	ApplyClassAndDeadbandSettings(dbTemplate->analogs, database.staticData.analogs.metadata);
+	ApplyClassAndDeadbandSettings(dbTemplate->counters, database.staticData.counters.metadata);
+	ApplyClassAndDeadbandSettings(dbTemplate->frozenCounters, database.staticData.frozenCounters.metadata);
+	ApplyClassAndDeadbandSettings(dbTemplate->analogOutputStatii, database.staticData.analogOutputStatii.metadata);
 
 }
 

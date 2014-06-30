@@ -20,8 +20,6 @@ private ref class ChannelAdapter : IChannel
 {
 public:
 
-	ChannelAdapter();	
-
 	void SetChannel(asiodnp3::IChannel* pChannel_);
 
 	virtual LogFilter GetLogFilters();
@@ -40,9 +38,36 @@ public:
 
 private:
 
-	static void ApplyDatabaseSettings(opendnp3::Database& database, DatabaseTemplate^ dbTemplate);
+	
 
 	asiodnp3::IChannel* pChannel;	
+
+	static void ApplyDatabaseSettings(opendnp3::Database& database, DatabaseTemplate^ dbTemplate);
+
+	template <class Source, class Target>
+	static void ApplyClassSettings(Source^ source, Target& target)
+	{
+		for (int i = 0; i < source->Count; ++i)
+		{
+			if (target.Contains(i))
+			{
+				target[i].clazz = (opendnp3::PointClass) source[i]->pointClass;
+			}			 
+		}
+	}
+
+	template <class Source, class Target>
+	static void ApplyClassAndDeadbandSettings(Source^ source, Target& target)
+	{
+		for (int i = 0; i < source->Count; ++i)
+		{
+			if (target.Contains(i))
+			{
+				target[i].clazz = (opendnp3::PointClass) source[i]->pointClass;
+				target[i].deadband = source[i]->deadband;
+			}
+		}
+	}
 };
 
 }

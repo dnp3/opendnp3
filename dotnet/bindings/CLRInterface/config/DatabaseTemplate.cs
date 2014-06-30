@@ -97,19 +97,30 @@ namespace DNP3.Interface
                                   System.UInt16 numAnalogOutputStatus)
         {
             binaries = Enumerable.Range(0, numBinary).Select(i => new EventPointRecord(PointClass.Class1)).ToList();
+
             doubleBinaries = Enumerable.Range(0, numDoubleBinary).Select(i => new EventPointRecord(PointClass.Class1)).ToList();
+            
             counters = Enumerable.Range(0, numCounter).Select(i => new DeadbandEventPointRecord<System.UInt32>(PointClass.Class1, 0)).ToList();
+            
             frozenCounters = Enumerable.Range(0, numFrozenCounter).Select(i => new DeadbandEventPointRecord<System.UInt32>(PointClass.Class1, 0)).ToList();
+            
             analogs = Enumerable.Range(0, numAnalog).Select(i => new DeadbandEventPointRecord<double>(PointClass.Class1, 0.0)).ToList();
+            
             binaryOutputStatii = Enumerable.Range(0, numBinaryOutputStatus).Select(i => new EventPointRecord(PointClass.Class1)).ToList();
-            analogs = Enumerable.Range(0, numAnalogOutputStatus).Select(i => new DeadbandEventPointRecord<double>(PointClass.Class1, 0.0)).ToList();
+            
+            analogOutputStatii = Enumerable.Range(0, numAnalogOutputStatus).Select(i => new DeadbandEventPointRecord<double>(PointClass.Class1, 0.0)).ToList();
         }
+
+        /// <summary>
+        /// Default constructor that sets every value to the same count
+        /// </summary>
+        public DatabaseTemplate(System.UInt16 count) : this(count, count, count, count, count, count, count)
+        { }
 
         /// <summary>
         /// Default constructor that sets up 10 of every type
         /// </summary>
-        public DatabaseTemplate()
-            : this(10, 10, 10, 10, 10, 10, 10)
+        public DatabaseTemplate() : this(10)
         { }
 
         /// <summary>

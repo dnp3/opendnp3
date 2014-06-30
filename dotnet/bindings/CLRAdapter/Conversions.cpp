@@ -357,46 +357,6 @@ opendnp3::OutstationParams Conversions::ConvertConfig(OutstationParams^ config)
 	return params;
 }
 
-/*
-opendnp3::EventPointRecord Conversions::ConvertRecord(EventPointRecord^ epr)
-{
-	return opendnp3::EventPointRecord(static_cast<opendnp3::PointClass>(epr->pointClass));
-}
-
-opendnp3::DeadbandPointRecord<double> Conversions::ConvertRecord(DeadbandEventPointRecord<double>^ epr)
-{
-	return opendnp3::DeadbandPointRecord<double>(static_cast<opendnp3::PointClass>(epr->pointClass), epr->deadband);
-}
-
-opendnp3::DeadbandPointRecord<uint32_t> Conversions::ConvertRecord(DeadbandEventPointRecord<System::UInt32>^ epr)
-{
-	return opendnp3::DeadbandPointRecord<uint32_t>(static_cast<opendnp3::PointClass>(epr->pointClass), epr->deadband);
-}
-
-
-opendnp3::DatabaseConfiguration Conversions::ConvertConfig(DatabaseTemplate^ config)
-{
-	opendnp3::DatabaseTemplate tmp(config->binaries->Count,
-	                               config->doubleBinaries->Count,
-	                               config->analogs->Count,
-	                               config->counters->Count,
-	                               config->frozenCounters->Count,
-	                               config->binaryOutputStatii->Count,
-	                               config->analogOutputStatii->Count);
-
-	opendnp3::DatabaseConfiguration dev(tmp);
-
-	// TODO - finish Converting data.
-
-	for(int i = 0; i < config->binaries->Count; ++i) dev.binaryMetadata[i] = ConvertRecord(config->binaries[i]);
-	for(int i = 0; i < config->analogs->Count; ++i) dev.analogMetadata[i] = ConvertRecord(config->analogs[i]);
-	for(int i = 0; i < config->counters->Count; ++i) dev.counterMetadata[i] = ConvertRecord(config->counters[i]);
-	for(int i = 0; i < config->counters->Count; ++i) dev.frozenCounterMetadata[i] = ConvertRecord(config->frozenCounters[i]);
-
-	return dev;
-}
-*/
-
 opendnp3::MasterParams Conversions::ConvertConfig(MasterConfig^ config)
 {
 	opendnp3::MasterParams mp;
