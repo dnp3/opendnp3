@@ -6,8 +6,10 @@
 #include "MasterAdapter.h"
 #include "OutstationAdapter.h"
 #include "DeleteAnything.h"
+#include "EventConverter.h"
 
 #include <asiopal/UTCTimeSource.h>
+#include <functional>
 
 using namespace System::Collections::Generic;
 
@@ -18,18 +20,12 @@ namespace Adapter
 
 ChannelAdapter::ChannelAdapter()
 {
-	pMultiplexer = new EventMultiplexer<opendnp3::ChannelState, DNP3::Interface::ChannelState>(std::bind(&Conversions::ConvertChannelState, std::placeholders::_1));
-}
-
-ChannelAdapter::~ChannelAdapter()
-{
-	delete pMultiplexer;
+	
 }
 
 void ChannelAdapter::SetChannel(asiodnp3::IChannel* pChannel_)
 {
-	pChannel = pChannel_;
-	pChannel->AddStateListener(pMultiplexer->GetEventTrigger());
+	pChannel = pChannel_;	
 }
 
 LogFilter ChannelAdapter::GetLogFilters()
@@ -51,7 +47,11 @@ void ChannelAdapter::SetLogFilters(LogFilter filters)
 
 void ChannelAdapter::AddStateListener(System::Action<ChannelState>^ listener)
 {
-	pMultiplexer->AddListener(listener);
+	auto convert = std::bind(&Conversions::ConvertChannelState, std::placeholders::_1);
+	auto pConverter = new EventConverter<opendnp3::ChannelState, DNP3::Interface::ChannelState>(convert, listener);
+	std::function<void (opendnp3::ChannelState)> trigger = pConverter->GetTrigger();
+	pChannel->AddStateListener(trigger);
+	pChannel->DeleteOnDestruct(pConverter);
 }
 
 void CallbackListener(gcroot < System::Action<ChannelState> ^ >* listener, opendnp3::ChannelState aState)

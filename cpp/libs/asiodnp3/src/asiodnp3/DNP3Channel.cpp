@@ -67,7 +67,7 @@ void DNP3Channel::OnStateChange(ChannelState state)
 	this->CheckForFinalShutdown();
 }
 
-void DNP3Channel::AddStateListener(const StateListener& listener)
+void DNP3Channel::AddStateListener(const std::function<void(opendnp3::ChannelState)>& listener)
 {
 	auto lambda = [this, listener]()
 	{

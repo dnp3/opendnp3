@@ -6,8 +6,6 @@ using namespace System::Collections::ObjectModel;
 #include <asiodnp3/IChannel.h>
 #include <vcclr.h>
 
-#include "EventMultiplexer.h"
-
 using namespace DNP3::Interface;
 
 namespace DNP3
@@ -20,8 +18,7 @@ private ref class ChannelAdapter : IChannel
 {
 public:
 
-	ChannelAdapter();
-	~ChannelAdapter();
+	ChannelAdapter();	
 
 	void SetChannel(asiodnp3::IChannel* pChannel_);
 
@@ -41,8 +38,7 @@ public:
 
 private:
 
-	asiodnp3::IChannel* pChannel;
-	EventMultiplexer<opendnp3::ChannelState, ChannelState>* pMultiplexer;
+	asiodnp3::IChannel* pChannel;	
 };
 
 }
