@@ -1082,5 +1082,11 @@
     <ClCompile Include="src\opendnp3\gen\PointClass.cpp">
       <Filter>Source\gen</Filter>
     </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\IOutstationApplication.cpp">
+      <Filter>Source\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\IMasterApplication.cpp">
+      <Filter>Source\master</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

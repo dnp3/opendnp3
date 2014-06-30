@@ -19,34 +19,16 @@
  * to you under the terms of the License.
  */
 
-#ifndef __I_MASTER_APPLICATION_H_
-#define __I_MASTER_APPLICATION_H_
+#include "IOutstationApplication.h"
 
 namespace opendnp3
 {
 
-///
-/// @summary Interface for all master application callback info except for measurements
-///
-class IMasterApplication
+DefaultOutstationApplication DefaultOutstationApplication::instance;
+
+IOutstationApplication& DefaultOutstationApplication::Instance()
 {
-	public:
-	
-	virtual ~IMasterApplication() {}
-};
-
-class DefaultMasterApplication : public IMasterApplication
-{
-public:
-
-	static IMasterApplication& Instance();
-
-private:
-	DefaultMasterApplication() {}
-
-	static DefaultMasterApplication instance;
-};
-
+	return instance;
 }
 
-#endif
+}

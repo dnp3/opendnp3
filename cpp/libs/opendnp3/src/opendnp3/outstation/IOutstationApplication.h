@@ -22,15 +22,29 @@
 #ifndef __I_OUTSTATION_APPLICATION_H_
 #define __I_OUTSTATION_APPLICATION_H_
 
-
 namespace opendnp3
 {
 
+///
+/// @summary Interface for all outstation application callback info except for control requests
+///
 class IOutstationApplication
 {
 	public:
 	
 	virtual ~IOutstationApplication() {}	
+};
+
+class DefaultOutstationApplication : public IOutstationApplication
+{
+	public:
+
+	static IOutstationApplication& Instance();
+	
+	private:
+	DefaultOutstationApplication() {}
+
+	static DefaultOutstationApplication instance;
 };
 
 }
