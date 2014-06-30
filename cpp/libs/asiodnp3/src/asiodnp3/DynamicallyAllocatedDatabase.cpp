@@ -21,7 +21,9 @@
 
 #include "DynamicallyAllocatedDatabase.h"
 
-namespace opendnp3
+using namespace opendnp3;
+
+namespace asiodnp3
 {
 
 DynamicallyAllocatedDatabase::DynamicallyAllocatedDatabase(const DatabaseTemplate& databaseTemplate):

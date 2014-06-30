@@ -25,7 +25,7 @@
 
 #include <opendnp3/outstation/Event.h>
 #include <opendnp3/outstation/Database.h>
-#include <opendnp3/outstation/DynamicallyAllocatedDatabase.h>
+#include <asiodnp3/DynamicallyAllocatedDatabase.h>
 
 
 namespace opendnp3
@@ -90,7 +90,7 @@ public:
 	}
 
 private:
-	DynamicallyAllocatedDatabase buffers;
+	asiodnp3::DynamicallyAllocatedDatabase buffers;
 
 public:
 	MockEventBuffer buffer;

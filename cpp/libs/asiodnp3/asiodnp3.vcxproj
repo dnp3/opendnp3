@@ -24,6 +24,8 @@
     <ClCompile Include="src\asiodnp3\DestructorHook.cpp" />
     <ClCompile Include="src\asiodnp3\DNP3Channel.cpp" />
     <ClCompile Include="src\asiodnp3\ChannelSet.cpp" />
+    <ClCompile Include="src\asiodnp3\DynamicallyAllocatedDatabase.cpp" />
+    <ClCompile Include="src\asiodnp3\DynamicallyAllocatedEventBuffer.cpp" />
     <ClCompile Include="src\asiodnp3\MasterStackImpl.cpp" />
     <ClCompile Include="src\asiodnp3\MultidropTaskLock.cpp" />
     <ClCompile Include="src\asiodnp3\OutstationStackImpl.cpp" />
@@ -36,6 +38,8 @@
     <ClInclude Include="src\asiodnp3\DestructorHook.h" />
     <ClInclude Include="src\asiodnp3\DNP3Channel.h" />
     <ClInclude Include="src\asiodnp3\ChannelSet.h" />
+    <ClInclude Include="src\asiodnp3\DynamicallyAllocatedDatabase.h" />
+    <ClInclude Include="src\asiodnp3\DynamicallyAllocatedEventBuffer.h" />
     <ClInclude Include="src\asiodnp3\IChannel.h" />
     <ClInclude Include="src\asiodnp3\IMaster.h" />
     <ClInclude Include="src\asiodnp3\IOutstation.h" />

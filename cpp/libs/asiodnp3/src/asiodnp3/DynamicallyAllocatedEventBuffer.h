@@ -19,50 +19,49 @@
  * to you under the terms of the License.
  */
 
-#ifndef __DYNAMICALLY_ALLOCATED_EVENT_BUFFER_
-#define __DYNAMICALLY_ALLOCATED_EVENT_BUFFER_
+#ifndef __DYNAMICALLY_ALLOCATED_EVENT_BUFFER_H_
+#define __DYNAMICALLY_ALLOCATED_EVENT_BUFFER_H_
 
-#include "EventBufferFacade.h"
-
-#include "opendnp3/outstation/EventBufferConfig.h"
+#include <opendnp3/outstation/EventBufferConfig.h>
+#include <opendnp3/outstation/EventBufferFacade.h>
 
 #include <openpal/container/DynamicArray.h>
 
-namespace opendnp3
+namespace asiodnp3
 {
 
 class DynamicallyAllocatedEventBuffer : openpal::Uncopyable
 {
 
 public:
-	DynamicallyAllocatedEventBuffer(const EventBufferConfig& config);
+	DynamicallyAllocatedEventBuffer(const opendnp3::EventBufferConfig& config);
 
-	EventBufferFacade GetFacade();
+	opendnp3::EventBufferFacade GetFacade();
 
 private:
 	openpal::DynamicArray<uint16_t, uint16_t> binaryStack;
-	openpal::DynamicArray<Event<Binary>, uint16_t> binaryArray;
+	openpal::DynamicArray<opendnp3::Event<opendnp3::Binary>, uint16_t> binaryArray;
 
 	openpal::DynamicArray<uint16_t, uint16_t> doubleBinaryStack;
-	openpal::DynamicArray<Event<DoubleBitBinary>, uint16_t> doubleBinaryArray;
+	openpal::DynamicArray<opendnp3::Event<opendnp3::DoubleBitBinary>, uint16_t> doubleBinaryArray;
 
 	openpal::DynamicArray<uint16_t, uint16_t> analogStack;
-	openpal::DynamicArray<Event<Analog>, uint16_t> analogArray;
+	openpal::DynamicArray<opendnp3::Event<opendnp3::Analog>, uint16_t> analogArray;
 
 	openpal::DynamicArray<uint16_t, uint16_t> counterStack;
-	openpal::DynamicArray<Event<Counter>, uint16_t> counterArray;
+	openpal::DynamicArray<opendnp3::Event<opendnp3::Counter>, uint16_t> counterArray;
 
 	openpal::DynamicArray<uint16_t, uint16_t> frozenCounterStack;
-	openpal::DynamicArray<Event<FrozenCounter>, uint16_t> frozenCounterArray;
+	openpal::DynamicArray<opendnp3::Event<opendnp3::FrozenCounter>, uint16_t> frozenCounterArray;
 
 	openpal::DynamicArray<uint16_t, uint16_t> binaryOutputStatusStack;
-	openpal::DynamicArray<Event<BinaryOutputStatus>, uint16_t> binaryOutputStatusArray;
+	openpal::DynamicArray<opendnp3::Event<opendnp3::BinaryOutputStatus>, uint16_t> binaryOutputStatusArray;
 
 	openpal::DynamicArray<uint16_t, uint16_t> analogOutputStatusStack;
-	openpal::DynamicArray<Event<AnalogOutputStatus>, uint16_t> analogOutputStatusArray;
+	openpal::DynamicArray<opendnp3::Event<opendnp3::AnalogOutputStatus>, uint16_t> analogOutputStatusArray;
 
-	openpal::DynamicArray<openpal::ListNode<SequenceRecord>, uint16_t> sequenceOfEvents;
-	openpal::DynamicArray<openpal::ListNode<SequenceRecord>*, uint16_t> selectedEvents;
+	openpal::DynamicArray<openpal::ListNode<opendnp3::SequenceRecord>, uint16_t> sequenceOfEvents;
+	openpal::DynamicArray<openpal::ListNode<opendnp3::SequenceRecord>*, uint16_t> selectedEvents;
 };
 
 }

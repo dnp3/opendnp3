@@ -178,8 +178,6 @@
     <ClInclude Include="src\opendnp3\outstation\DatabaseTemplate.h" />
     <ClInclude Include="src\opendnp3\outstation\DeferredRequest.h" />
     <ClInclude Include="src\opendnp3\outstation\DualValue.h" />
-    <ClInclude Include="src\opendnp3\outstation\DynamicallyAllocatedDatabase.h" />
-    <ClInclude Include="src\opendnp3\outstation\DynamicallyAllocatedEventBuffer.h" />
     <ClInclude Include="src\opendnp3\outstation\Event.h" />
     <ClInclude Include="src\opendnp3\outstation\EventBufferConfig.h" />
     <ClInclude Include="src\opendnp3\outstation\EventBufferFacade.h" />
@@ -195,6 +193,7 @@
     <ClInclude Include="src\opendnp3\outstation\IDatabase.h" />
     <ClInclude Include="src\opendnp3\outstation\IEventBuffer.h" />
     <ClInclude Include="src\opendnp3\outstation\IINHelpers.h" />
+    <ClInclude Include="src\opendnp3\outstation\IOutstationApplication.h" />
     <ClInclude Include="src\opendnp3\outstation\ITimeWriteHandler.h" />
     <ClInclude Include="src\opendnp3\outstation\Outstation.h" />
     <ClInclude Include="src\opendnp3\outstation\OutstationConfig.h" />
@@ -334,8 +333,6 @@
     <ClCompile Include="src\opendnp3\outstation\CommandActionAdapter.cpp" />
     <ClCompile Include="src\opendnp3\outstation\CommandResponseHandler.cpp" />
     <ClCompile Include="src\opendnp3\outstation\Database.cpp" />
-    <ClCompile Include="src\opendnp3\outstation\DynamicallyAllocatedDatabase.cpp" />
-    <ClCompile Include="src\opendnp3\outstation\DynamicallyAllocatedEventBuffer.cpp" />
     <ClCompile Include="src\opendnp3\outstation\EventBufferConfig.cpp" />
     <ClCompile Include="src\opendnp3\outstation\EventBufferFacade.cpp" />
     <ClCompile Include="src\opendnp3\outstation\EventCount.cpp" />
