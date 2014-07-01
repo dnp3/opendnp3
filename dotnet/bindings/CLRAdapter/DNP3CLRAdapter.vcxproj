@@ -180,7 +180,7 @@
     <ClInclude Include="SOEHandlerAdapter.h" />
     <ClInclude Include="MasterScanAdapter.h" />
     <ClInclude Include="OutstationAdapter.h" />
-    <ClInclude Include="OutstationTimeWriteAdapter.h" />
+    <ClInclude Include="OutstationApplicationAdapter.h" />
     <ClInclude Include="ScanListenerAdapter.h" />
     <ClInclude Include="OutstationCommandHandlerAdapter.h" />
     <ClInclude Include="OutstationDatabaseAdapter.h" />
@@ -195,7 +195,7 @@
     <ClCompile Include="MasterScanAdapter.cpp" />
     <ClCompile Include="SOEHandlerAdapter.cpp" />
     <ClCompile Include="OutstationAdapter.cpp" />
-    <ClCompile Include="OutstationTimeWriteAdapter.cpp" />
+    <ClCompile Include="OutstationApplicationAdapter.cpp" />
     <ClCompile Include="OutstationCommandHandlerAdapter.cpp" />
     <ClCompile Include="OutstationDatabaseAdapter.cpp" />
   </ItemGroup>

@@ -24,6 +24,7 @@
 #include <opendnp3/outstation/OutstationStackConfig.h>
 #include <opendnp3/outstation/Database.h>
 #include <opendnp3/outstation/Outstation.h>
+#include <opendnp3/outstation/IOutstationApplication.h>
 #include <opendnp3/link/ILinkRouter.h>
 #include <opendnp3/transport/TransportStack.h>
 
@@ -46,9 +47,9 @@ public:
 
 	OutstationStackImpl(
 	    openpal::LogRoot&,
-		openpal::IExecutor& executor,
-		opendnp3::ITimeWriteHandler& timeWriteHandler,
+		openpal::IExecutor& executor,		
 		opendnp3::ICommandHandler& commandHandler,
+		opendnp3::IOutstationApplication& application,
 		const opendnp3::OutstationStackConfig& config,
 	    const StackActionHandler& handler);
 

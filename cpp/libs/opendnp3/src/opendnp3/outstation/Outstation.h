@@ -37,7 +37,7 @@ class Outstation : public openpal::IUpperLayer
 					openpal::LogRoot& root, 
 					openpal::ILowerLayer& lower,
 					ICommandHandler& commandHandler,
-					ITimeWriteHandler& timeWriteHandler,
+					IOutstationApplication& application,
 					Database& database, 
 					const EventBufferFacade& buffers);
 	

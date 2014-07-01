@@ -32,7 +32,7 @@
 #include "LogTester.h"
 #include "MockCommandHandler.h"
 #include "MockLowerLayer.h"
-#include "MockTimeWriteHandler.h"
+#include "MockOutstationApplication.h"
 
 #include <vector>
 
@@ -95,7 +95,7 @@ private:
 
 public:
 	MockCommandHandler cmdHandler;
-	MockTimeWriteHandler timeHandler;
+	MockOutstationApplication application;
 
 private:
 	Outstation outstation;	

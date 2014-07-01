@@ -36,10 +36,10 @@ public:
 	UTCTimestamp() : msSinceEpoch(0)
 	{}
 
-	UTCTimestamp(int64_t aMsSinceEpoch) : msSinceEpoch(aMsSinceEpoch)
+	UTCTimestamp(uint64_t msSinceEpoch_) : msSinceEpoch(msSinceEpoch_)
 	{}
 
-	int64_t msSinceEpoch;
+	uint64_t msSinceEpoch;
 
 };
 

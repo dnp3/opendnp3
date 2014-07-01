@@ -85,8 +85,8 @@ public:
 								const opendnp3::MasterStackConfig& config) override final;
 
 	virtual IOutstation* AddOutstation(char const* id,
-								opendnp3::ICommandHandler* pCmdHandler,
-								opendnp3::ITimeWriteHandler* pTimeWriteHandler,
+								opendnp3::ICommandHandler& commandHandler,
+								opendnp3::IOutstationApplication& application,
 								const opendnp3::OutstationStackConfig& config) override final;
 
 	// Helper functions only available inside DNP3Manager
@@ -102,8 +102,8 @@ private:
 		const opendnp3::MasterStackConfig& config);
 
 	IOutstation* _AddOutstation(char const* id,
-		opendnp3::ICommandHandler* pCmdHandler,
-		opendnp3::ITimeWriteHandler* pTimeWriteHandler,
+		opendnp3::ICommandHandler& commandHandler,
+		opendnp3::IOutstationApplication& application,
 		const opendnp3::OutstationStackConfig& config);
 
 	void InitiateShutdown(asiopal::Synchronized<bool>& handler);

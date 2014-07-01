@@ -22,6 +22,8 @@
 #ifndef __I_OUTSTATION_APPLICATION_H_
 #define __I_OUTSTATION_APPLICATION_H_
 
+#include <openpal/executor/UTCTimestamp.h>
+
 namespace opendnp3
 {
 
@@ -31,6 +33,10 @@ namespace opendnp3
 class IOutstationApplication
 {
 	public:
+
+	virtual bool SupportsWriteAbsoluteTime() = 0;
+
+	virtual bool WriteAbsoluteTime(const openpal::UTCTimestamp& timestamp) = 0;	
 	
 	virtual ~IOutstationApplication() {}	
 };
@@ -39,9 +45,14 @@ class DefaultOutstationApplication : public IOutstationApplication
 {
 	public:
 
+	virtual bool SupportsWriteAbsoluteTime() override final { return false; }
+
+	virtual bool WriteAbsoluteTime(const openpal::UTCTimestamp& timestamp) override final { return false; }
+
 	static IOutstationApplication& Instance();
 	
 	private:
+
 	DefaultOutstationApplication() {}
 
 	static DefaultOutstationApplication instance;

@@ -30,9 +30,9 @@ using namespace openpal;
 namespace opendnp3
 {
 
-WriteHandler::WriteHandler(openpal::Logger& aLogger, ITimeWriteHandler* pTimeWriteHandler_, IINField* pWriteIIN_) :
+WriteHandler::WriteHandler(openpal::Logger& aLogger, IOutstationApplication& application, IINField* pWriteIIN_) :
 	APDUHandlerBase(aLogger),
-	pTimeWriteHandler(pTimeWriteHandler_),
+	pApplication(&application),
 	pWriteIIN(pWriteIIN_),
 	wroteTime(false),
 	wroteIIN(false)
@@ -63,19 +63,29 @@ void WriteHandler::_OnIIN(const HeaderRecord&, const IterableBuffer<IndexedValue
 
 void WriteHandler::_OnCountOf(const HeaderRecord&, const IterableBuffer<Group50Var1>& times)
 {
-	if (wroteTime) errors.Set(IINBit::PARAM_ERROR);
+	if (wroteTime)
+	{
+		errors.Set(IINBit::PARAM_ERROR);
+	}
 	else
 	{		
 		Group50Var1 time;
 		if (times.ReadOnlyValue(time))
 		{
-			wroteTime = true;
-			pWriteIIN->Clear(IINBit::NEED_TIME);
-			bool accepted = pTimeWriteHandler->WriteAbsoluteTime(UTCTimestamp(time.time));
-			if (!accepted)
+			if (pApplication->SupportsWriteAbsoluteTime())
 			{
-				errors.Set(IINBit::PARAM_ERROR);
-			}			
+				wroteTime = true;
+				pWriteIIN->Clear(IINBit::NEED_TIME);
+				bool accepted = pApplication->WriteAbsoluteTime(UTCTimestamp(time.time));
+				if (!accepted)
+				{
+					errors.Set(IINBit::PARAM_ERROR);
+				}
+			}
+			else
+			{
+				errors.Set(IINBit::FUNC_NOT_SUPPORTED);
+			}
 		}
 		else
 		{

@@ -30,16 +30,18 @@ namespace DNP3.Interface
     /// <summary>
     /// Outstation application code implements this interface to handle time write requests from the master
     /// </summary>
-    public interface ITimeWriteHandler
+    public interface IOutstationApplication
     {
-        bool WriteAbsoluteTime(Int64 millisecSinceEpoch);
+        bool SupportsWriteAbsoluteTime();
+
+        bool WriteAbsoluteTime(UInt64 millisecSinceEpoch);
     }
 
-    public class PrintingTimeWriteHandler : ITimeWriteHandler
+    public class PrintingOutstationApplication : IOutstationApplication
     {
-        private static ITimeWriteHandler instance = new PrintingTimeWriteHandler();
+        private static IOutstationApplication instance = new PrintingOutstationApplication();
 
-        public static ITimeWriteHandler Instance
+        public static IOutstationApplication Instance
         {
             get
             {
@@ -47,9 +49,14 @@ namespace DNP3.Interface
             }
         }
 
-        private PrintingTimeWriteHandler() {}
+        private PrintingOutstationApplication() { }
 
-        public bool WriteAbsoluteTime(Int64 millisecSinceEpoch)
+        bool IOutstationApplication.SupportsWriteAbsoluteTime()
+        {
+            return true;
+        }
+
+        bool IOutstationApplication.WriteAbsoluteTime(UInt64 millisecSinceEpoch)
         {
             Console.WriteLine("Time write: " + millisecSinceEpoch);
             return true;

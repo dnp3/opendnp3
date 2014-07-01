@@ -25,10 +25,12 @@
 
 #include <asiopal/UTCTimeSource.h>
 
-#include <opendnp3/outstation/ICommandHandler.h>
+
 #include <opendnp3/outstation/TimeTransaction.h>
+
+//#include <opendnp3/outstation/ICommandHandler.h>
 #include <opendnp3/outstation/SimpleCommandHandler.h>
-#include <opendnp3/outstation/ITimeWriteHandler.h>
+
 #include <opendnp3/outstation/Database.h>
 
 #include <opendnp3/LogLevels.h>
@@ -91,7 +93,7 @@ int main(int argc, char* argv[])
 	// Create a new outstation with a log level, command handler, and
 	// config info this	returns a thread-safe interface used for
 	// updating the outstation's database.
-	auto pOutstation = pServer->AddOutstation("outstation", SuccessCommandHandler::Inst(), &NullTimeWriteHandler::Inst(), stackConfig);	
+	auto pOutstation = pServer->AddOutstation("outstation", SuccessCommandHandler::Instance(), DefaultOutstationApplication::Instance(), stackConfig);
 
 	// Enable the outstation and start communications
 	pOutstation->Enable();	

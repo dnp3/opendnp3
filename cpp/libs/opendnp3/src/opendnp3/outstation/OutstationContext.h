@@ -38,7 +38,7 @@
 #include "opendnp3/app/APDUHeader.h"
 #include "opendnp3/app/APDUResponse.h"
 #include "opendnp3/outstation/ICommandHandler.h"
-#include "opendnp3/outstation/ITimeWriteHandler.h"
+#include "opendnp3/outstation/IOutstationApplication.h"
 #include "opendnp3/outstation/OutstationSolicitedStates.h"
 #include "opendnp3/outstation/OutstationUnsolicitedStates.h"
 #include "opendnp3/outstation/DeferredRequest.h"
@@ -60,7 +60,7 @@ class OutstationContext
 						openpal::LogRoot& root, 
 						openpal::ILowerLayer& lower,
 						ICommandHandler& commandHandler,
-						ITimeWriteHandler& timeWriteHandler,
+						IOutstationApplication& application,
 						Database& database, 
 						const EventBufferFacade& buffers);
 
@@ -71,7 +71,7 @@ class OutstationContext
 	openpal::Logger logger;
 	openpal::IExecutor* pExecutor;	
 	ICommandHandler* pCommandHandler;
-	ITimeWriteHandler* pTimeWriteHandler;
+	IOutstationApplication* pApplication;
 	Database* pDatabase;
 	OutstationEventBuffer eventBuffer;
 

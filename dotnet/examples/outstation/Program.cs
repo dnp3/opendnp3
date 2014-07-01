@@ -62,7 +62,7 @@ namespace DotNetOutstationDemo
             config.link.localAddr = 10;
             config.link.remoteAddr = 1;
 
-            var outstation = channel.AddOutstation("outstation", RejectingCommandHandler.Instance, PrintingTimeWriteHandler.Instance, config);
+            var outstation = channel.AddOutstation("outstation", RejectingCommandHandler.Instance, PrintingOutstationApplication.Instance, config);
 
             outstation.Enable(); // enable communications
 

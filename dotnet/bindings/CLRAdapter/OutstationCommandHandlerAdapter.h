@@ -36,27 +36,6 @@ private:
 	gcroot < DNP3::Interface::ICommandHandler^ > proxy;
 };
 
-private ref class OutstationCommandHandlerWrapper
-{
-public:
-
-	OutstationCommandHandlerWrapper(DNP3::Interface::ICommandHandler^ proxy) :
-		mpAdapter(new OutstationCommandHandlerAdapter(proxy))
-	{}
-
-	~OutstationCommandHandlerWrapper()
-	{
-		delete mpAdapter;
-	}
-
-	opendnp3::ICommandHandler* Get()
-	{
-		return mpAdapter;
-	}
-
-private:
-	OutstationCommandHandlerAdapter* mpAdapter;
-};
 }
 }
 

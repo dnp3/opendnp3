@@ -24,6 +24,8 @@
 
 #include <opendnp3/ErrorCodes.h>
 
+#include <functional>
+
 
 using namespace std;
 using namespace opendnp3;

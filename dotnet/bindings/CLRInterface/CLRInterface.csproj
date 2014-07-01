@@ -106,7 +106,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="IStackStatistics.cs" />
-    <Compile Include="ITimeWriteHandler.cs" />
+    <Compile Include="IOutstationApplication.cs" />
     <Compile Include="IMasterScan.cs" />
     <Compile Include="config\LinkConfig.cs" />
     <Compile Include="LogLevels.cs" />

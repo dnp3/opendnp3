@@ -24,7 +24,7 @@
 #include "opendnp3/app/APDUHandlerBase.h"
 #include "opendnp3/app/IINField.h"
 
-#include "opendnp3/outstation/ITimeWriteHandler.h"
+#include "opendnp3/outstation/IOutstationApplication.h"
 
 #include <openpal/logging/Logger.h>
 
@@ -35,7 +35,7 @@ class WriteHandler : public APDUHandlerBase
 {
 public:
 
-	WriteHandler(openpal::Logger& logger, ITimeWriteHandler* pTimeWriteHandler_, IINField* pWriteIIN_);
+	WriteHandler(openpal::Logger& logger, IOutstationApplication& application, IINField* pWriteIIN_);
 
 	virtual void _OnIIN(const HeaderRecord& record, const IterableBuffer<IndexedValue<bool, uint16_t>>& meas) override final;
 
@@ -43,7 +43,7 @@ public:
 
 private:
 
-	ITimeWriteHandler* pTimeWriteHandler;
+	IOutstationApplication* pApplication;
 	IINField* pWriteIIN;
 
 	bool wroteTime;

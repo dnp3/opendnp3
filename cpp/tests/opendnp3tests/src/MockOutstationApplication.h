@@ -18,18 +18,52 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "ITimeWriteHandler.h"
+#ifndef __MOCK_OUTSTATION_APPLICATION_H_
+#define __MOCK_OUTSTATION_APPLICATION_H_
+
+#include <opendnp3/outstation/IOutstationApplication.h>
+
+#include <deque>
 
 namespace opendnp3
 {
 
-NullTimeWriteHandler NullTimeWriteHandler::instance;
-
-ITimeWriteHandler& NullTimeWriteHandler::Inst()
+class MockOutstationApplication : public IOutstationApplication
 {
-	return instance;
-}
+public:
+	
+	MockOutstationApplication() :		
+		supportsTimeWrite(true),
+		allowTimeWrite(true)
+	{}
+
+	virtual bool SupportsWriteAbsoluteTime() override final
+	{
+		return supportsTimeWrite;
+	}
+
+	virtual bool WriteAbsoluteTime(const openpal::UTCTimestamp& timestamp) override final
+	{
+		if (allowTimeWrite)
+		{
+			timestamps.push_back(timestamp);
+			return true;
+		}
+		else
+		{
+			return false;
+		}		
+	}
+	
+	bool supportsTimeWrite;
+	bool allowTimeWrite;
+
+	std::deque<openpal::UTCTimestamp> timestamps;
+
+
+};
 
 }
 
+#endif
 

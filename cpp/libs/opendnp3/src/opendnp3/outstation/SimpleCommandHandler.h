@@ -67,9 +67,9 @@ protected:
 class SuccessCommandHandler : public SimpleCommandHandler
 {
 public:
-	static SuccessCommandHandler* Inst()
+	static SuccessCommandHandler& Instance()
 	{
-		return &handler;
+		return handler;
 	}
 
 private:

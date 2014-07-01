@@ -66,7 +66,7 @@ namespace DNP3.Interface
         /// <param name="commandHandler">where command requests are sent to be handled in application code</param>
         /// <param name="config">configuration information for the outstation stack</param>
         /// <returns>reference to the created master</returns>
-		IOutstation AddOutstation(String id, ICommandHandler commandHandler, ITimeWriteHandler timeHandler, OutstationStackConfig config);
+		IOutstation AddOutstation(String id, ICommandHandler commandHandler, IOutstationApplication timeHandler, OutstationStackConfig config);
 
         /// <summary>
         /// Add a listener for changes to the channel state. All callbacks come from the thread pool.

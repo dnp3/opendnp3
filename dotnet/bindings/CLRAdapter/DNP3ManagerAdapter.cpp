@@ -43,14 +43,11 @@ IChannel^ DNP3ManagerAdapter::AddTCPClient(System::String^ id, System::UInt32 fi
 	std::string stdAddress = Conversions::ConvertString(address);
 	uint16_t stdPort = port;
 
-	auto adapter = gcnew ChannelAdapter();
-
 	auto pChannel = mpMgr->AddTCPClient(stdName.c_str(), filters, Conversions::ConvertTimespan(minRetryDelay), Conversions::ConvertTimespan(maxRetryDelay), stdAddress, stdPort);
 	if (pChannel)
 	{		
-		// tie the GC lifecycle of the channel adapter to the lifecycle of the C++ channel
-		pChannel->DeleteOnDestruct(new gcroot<ChannelAdapter^>(adapter));
-		adapter->SetChannel(pChannel);
+		auto adapter = gcnew ChannelAdapter(pChannel);
+		pChannel->DeleteOnDestruct(new gcroot<ChannelAdapter^>(adapter));		
 		return adapter;
 	}
 	else
@@ -64,14 +61,12 @@ IChannel^ DNP3ManagerAdapter::AddTCPServer(System::String^ id, System::UInt32 fi
 	std::string stdName = Conversions::ConvertString(id);
 	std::string stdEndpoint = Conversions::ConvertString(endpoint);
 	uint16_t stdPort = port;
-
-	auto adapter = gcnew ChannelAdapter();
+	
 	auto pChannel = mpMgr->AddTCPServer(stdName.c_str(), filters, Conversions::ConvertTimespan(minRetryDelay), Conversions::ConvertTimespan(maxRetryDelay), stdEndpoint, stdPort);
 	if (pChannel)
 	{
-		// tie the GC lifecycle of the channel adapter to the lifecycle of the C++ channel		
-		pChannel->DeleteOnDestruct(new gcroot<ChannelAdapter^>(adapter));
-		adapter->SetChannel(pChannel);
+		auto adapter = gcnew ChannelAdapter(pChannel);
+		pChannel->DeleteOnDestruct(new gcroot<ChannelAdapter^>(adapter));		
 		return adapter;
 	}
 	else
@@ -84,14 +79,12 @@ IChannel^ DNP3ManagerAdapter::AddSerial(System::String^ id, System::UInt32 filte
 {
 	std::string stdName = Conversions::ConvertString(id);
 	auto s = Conversions::ConvertSerialSettings(settings);
-
-	auto adapter = gcnew ChannelAdapter();
+	
 	auto pChannel = mpMgr->AddSerial(stdName.c_str(), filters, Conversions::ConvertTimespan(minRetryDelay), Conversions::ConvertTimespan(maxRetryDelay), s);
 	if (pChannel)
 	{
-		// tie the GC lifecycle of the channel adapter to the lifecycle of the C++ channel
-		pChannel->DeleteOnDestruct(new gcroot<ChannelAdapter^>(adapter));
-		adapter->SetChannel(pChannel);
+		auto adapter = gcnew ChannelAdapter(pChannel);
+		pChannel->DeleteOnDestruct(new gcroot<ChannelAdapter^>(adapter));		
 		return adapter;
 	}
 	else

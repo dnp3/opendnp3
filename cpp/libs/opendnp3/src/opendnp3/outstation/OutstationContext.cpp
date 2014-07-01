@@ -51,7 +51,7 @@ OutstationContext::OutstationContext(
 		LogRoot& root,
 		ILowerLayer& lower,
 		ICommandHandler& commandHandler,
-		ITimeWriteHandler& timeWriteHandler,
+		IOutstationApplication& application,
 		Database& database,
 		const EventBufferFacade& buffers) :
 	
@@ -60,7 +60,7 @@ OutstationContext::OutstationContext(
 	logger(root.GetLogger()),	
 	pExecutor(&executor),	
 	pCommandHandler(&commandHandler),
-	pTimeWriteHandler(&timeWriteHandler),
+	pApplication(&application),
 	pDatabase(&database),
 	eventBuffer(buffers),
 	isOnline(false),
@@ -585,7 +585,7 @@ Pair<IINField, AppControlField> OutstationContext::HandleRead(const openpal::Rea
 
 IINField OutstationContext::HandleWrite(const openpal::ReadOnlyBuffer& objects)
 {
-	WriteHandler handler(logger, pTimeWriteHandler, &staticIIN);
+	WriteHandler handler(logger, *pApplication, &staticIIN);
 	auto result = APDUParser::ParseTwoPass(objects, &handler, &logger);
 	if (result == APDUParser::Result::OK)
 	{

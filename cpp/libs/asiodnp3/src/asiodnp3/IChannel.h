@@ -30,7 +30,7 @@
 
 #include <opendnp3/outstation/OutstationStackConfig.h>
 #include <opendnp3/outstation/ICommandHandler.h>
-#include <opendnp3/outstation/ITimeWriteHandler.h>
+#include <opendnp3/outstation/IOutstationApplication.h>
 
 #include <openpal/executor/IUTCTimeSource.h>
 #include <openpal/logging/LogFilters.h>
@@ -105,8 +105,8 @@ public:
 	* @return interface representing the running outstations
 	*/
 	virtual IOutstation* AddOutstation( char const* id,
-										opendnp3::ICommandHandler* pCmdHandler,
-										opendnp3::ITimeWriteHandler* pTimeWriteHandler,
+										opendnp3::ICommandHandler& commandHandler,
+										opendnp3::IOutstationApplication& application,
 										const opendnp3::OutstationStackConfig& config) = 0;
 };
 

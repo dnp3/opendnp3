@@ -140,7 +140,7 @@ TEST_CASE(SUITE("WriteTimeDateNotAsking"))
 	OutstationTestObject t(config);	
 	t.LowerLayerUp();
 
-	t.timeHandler.isEnabled = false; // reject the time write from user code
+	t.application.allowTimeWrite = false;
 	t.SendToOutstation("C0 02 32 01 07 01 D2 04 00 00 00 00"); //write Grp50Var1, value = 1234 ms after epoch
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 04"); // param error	
 	REQUIRE(t.timestamps.size() == 0);

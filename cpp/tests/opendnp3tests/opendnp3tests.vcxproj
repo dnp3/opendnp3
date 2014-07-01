@@ -208,7 +208,7 @@
     <ClInclude Include="src\MockPhysicalLayer.h" />
     <ClInclude Include="src\MockPhysicalLayerMonitor.h" />
     <ClInclude Include="src\MockSOEHandler.h" />
-    <ClInclude Include="src\MockTimeWriteHandler.h" />
+    <ClInclude Include="src\MockOutstationApplication.h" />
     <ClInclude Include="src\MockTransportLayer.h" />
     <ClInclude Include="src\MockUpperLayer.h" />
     <ClInclude Include="src\MultiplexingDataObserver.h" />

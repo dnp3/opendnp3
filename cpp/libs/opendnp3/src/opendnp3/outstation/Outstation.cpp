@@ -37,10 +37,10 @@ Outstation::Outstation(
 		openpal::LogRoot& root,
 		openpal::ILowerLayer& lower,
 		ICommandHandler& commandHandler,
-		ITimeWriteHandler& timeWriteHandler,
+		IOutstationApplication& application,
 		Database& database,
 		const EventBufferFacade& buffers) :
-		context(config, executor, root, lower, commandHandler, timeWriteHandler, database, buffers)
+		context(config, executor, root, lower, commandHandler, application, database, buffers)
 {
 	
 }

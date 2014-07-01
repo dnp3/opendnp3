@@ -30,9 +30,9 @@ namespace asiodnp3
 
 OutstationStackImpl::OutstationStackImpl(
 	openpal::LogRoot& root,
-    openpal::IExecutor& executor,
-	opendnp3::ITimeWriteHandler& timeWriteHandler,
+    openpal::IExecutor& executor,	
 	opendnp3::ICommandHandler& commandHandler,
+	IOutstationApplication& application,
     const OutstationStackConfig& config,
     const StackActionHandler& handler_) :	
 	
@@ -42,7 +42,7 @@ OutstationStackImpl::OutstationStackImpl(
 	eventBuffers(config.eventBuffer),
 	mutex(),
 	database(databaseBuffers.GetFacade(), &mutex),
-	outstation(config.outstation, executor, root, stack.transport, commandHandler, timeWriteHandler, database, eventBuffers.GetFacade())
+	outstation(config.outstation, executor, root, stack.transport, commandHandler, application, database, eventBuffers.GetFacade())
 {
 	stack.transport.SetAppLayer(&outstation);
 }

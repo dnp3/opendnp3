@@ -145,11 +145,11 @@ IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler& SOEHandler, IUTCTim
 	return  asiopal::SynchronouslyGet<IMaster*>(pExecutor->strand, add);
 }
 
-IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler* pCmdHandler, ITimeWriteHandler* pTimeWriteHandler, const OutstationStackConfig& config)
+IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler& commandHandler, IOutstationApplication& application, const OutstationStackConfig& config)
 {
-	auto add = [this, id, pCmdHandler, pTimeWriteHandler, config]() 
+	auto add = [this, id, &commandHandler, &application, config]() 
 	{ 
-		return this->_AddOutstation(id, pCmdHandler, pTimeWriteHandler, config);
+		return this->_AddOutstation(id, commandHandler, application, config);
 	};
 	return asiopal::SynchronouslyGet<IOutstation*>(pExecutor->strand, add);
 }
@@ -185,8 +185,8 @@ IMaster* DNP3Channel::_AddMaster(char const* id,
 }
 
 IOutstation* DNP3Channel::_AddOutstation(char const* id,
-	opendnp3::ICommandHandler* pCmdHandler,
-	opendnp3::ITimeWriteHandler* pTimeWriteHandler,
+	opendnp3::ICommandHandler& commandHandler,
+	opendnp3::IOutstationApplication& application,
 	const opendnp3::OutstationStackConfig& config)
 {
 	LinkRoute route(config.link.RemoteAddr, config.link.LocalAddr);
@@ -198,7 +198,7 @@ IOutstation* DNP3Channel::_AddOutstation(char const* id,
 	else
 	{
 		StackActionHandler handler(&router, *pExecutor);
-		auto pOutstation = new OutstationStackImpl(*pLogRoot, *pExecutor, *pTimeWriteHandler, *pCmdHandler, config, handler);
+		auto pOutstation = new OutstationStackImpl(*pLogRoot, *pExecutor, commandHandler, application, config, handler);
 		auto onShutdown = [this, pOutstation](){ this->OnShutdown(pOutstation); };
 		pOutstation->SetShutdownAction(Action0::Bind(onShutdown));
 		pOutstation->SetLinkRouter(&router);

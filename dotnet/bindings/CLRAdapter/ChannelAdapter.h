@@ -14,13 +14,13 @@ namespace DNP3
 {
 namespace Adapter
 {
-//void CallbackListener(gcroot < System::Action<ChannelState> ^ >* listener, opendnp3::ChannelState);
 
 private ref class ChannelAdapter : IChannel
 {
 public:
 
-	void SetChannel(asiodnp3::IChannel* pChannel_);
+	ChannelAdapter(asiodnp3::IChannel* pChannel_) : pChannel(pChannel_)
+	{}	
 
 	virtual LogFilter GetLogFilters();
 
@@ -32,13 +32,11 @@ public:
 
 	virtual IMaster^ AddMaster(System::String^ loggerId, ISOEHandler^ publisher, MasterStackConfig^ config);
 
-	virtual IOutstation^ AddOutstation(System::String^ loggerId, ICommandHandler^ cmdHandler, ITimeWriteHandler^ timeHandler, OutstationStackConfig^ config);
+	virtual IOutstation^ AddOutstation(System::String^ loggerId, ICommandHandler^ cmdHandler, IOutstationApplication^ application, OutstationStackConfig^ config);
 
 	virtual void Shutdown();	
 
 private:
-
-	
 
 	asiodnp3::IChannel* pChannel;	
 

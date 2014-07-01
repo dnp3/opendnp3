@@ -63,28 +63,6 @@ private:
 	gcroot < DNP3::Interface::ISOEHandler^ > proxy;
 };
 
-private ref class MasterMeasurementHandlerWrapper
-{
-public:
-
-	MasterMeasurementHandlerWrapper(DNP3::Interface::ISOEHandler^ proxy) :
-		mpAdapter(new SOEHandlerAdapter(proxy))
-	{}
-
-	~MasterMeasurementHandlerWrapper()
-	{
-		delete mpAdapter;
-	}
-
-	opendnp3::ISOEHandler& Get()
-	{
-		return *mpAdapter;
-	}
-
-private:
-	SOEHandlerAdapter* mpAdapter;
-};
-
 }
 }
 

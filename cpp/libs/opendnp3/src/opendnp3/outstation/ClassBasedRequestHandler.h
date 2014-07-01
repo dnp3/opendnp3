@@ -22,9 +22,8 @@
 #define __CLASS_BASED_REQUEST_HANDLER_H_
 
 #include "opendnp3/app/APDUHandlerBase.h"
-#include "opendnp3/app/IINField.h"
 
-#include "opendnp3/outstation/ITimeWriteHandler.h"
+#include "opendnp3/app/IINField.h"
 #include "opendnp3/app/ClassField.h"
 
 #include <openpal/logging/Logger.h>

@@ -24,7 +24,6 @@
 
 #include "opendnp3/app/APDUHandlerBase.h"
 
-#include "opendnp3/outstation/ITimeWriteHandler.h"
 #include "opendnp3/outstation/ResponseContext.h"
 
 namespace opendnp3

@@ -35,8 +35,8 @@ OutstationTestObject::OutstationTestObject(const OutstationConfig& config, const
 	eventBuffers(ebConfig),
 	db(dbBuffers.GetFacade()),
 	cmdHandler(CommandStatus::SUCCESS),
-	timeHandler([this](const UTCTimestamp& ts){ timestamps.push_back(ts); }),
-	outstation(config, exe, log.root, lower, cmdHandler, timeHandler, db, eventBuffers.GetFacade())
+	application(),
+	outstation(config, exe, log.root, lower, cmdHandler, application, db, eventBuffers.GetFacade())
 {
 	lower.SetUpperLayer(&outstation);
 }

@@ -2,7 +2,7 @@
 #include "Conversions.h"
 #include "SOEHandlerAdapter.h"
 #include "OutstationCommandHandlerAdapter.h"
-#include "OutstationTimeWriteAdapter.h"
+#include "OutstationApplicationAdapter.h"
 #include "MasterAdapter.h"
 #include "OutstationAdapter.h"
 #include "DeleteAnything.h"
@@ -19,11 +19,6 @@ namespace DNP3
 {
 namespace Adapter
 {
-
-void ChannelAdapter::SetChannel(asiodnp3::IChannel* pChannel_)
-{
-	pChannel = pChannel_;	
-}
 
 LogFilter ChannelAdapter::GetLogFilters()
 {
@@ -57,41 +52,48 @@ void CallbackListener(gcroot < System::Action<ChannelState> ^ >* listener, opend
 	(*listener)->Invoke(state);
 }
 
-IMaster^ ChannelAdapter::AddMaster(System::String^ loggerId, ISOEHandler^ publisher, MasterStackConfig^ config)
+IMaster^ ChannelAdapter::AddMaster(System::String^ loggerId, ISOEHandler^ handler, MasterStackConfig^ config)
 {
 	std::string stdLoggerId = Conversions::ConvertString(loggerId);
 
-	MasterMeasurementHandlerWrapper^ wrapper = gcnew MasterMeasurementHandlerWrapper(publisher);
+	auto pSOEHandler = new SOEHandlerAdapter(handler);
 	opendnp3::MasterStackConfig cfg = Conversions::ConvertConfig(config);
 
 	// TODO expose time source via wrapper
-	auto pMaster = pChannel->AddMaster(stdLoggerId.c_str(), wrapper->Get(), asiopal::UTCTimeSource::Instance(), opendnp3::DefaultMasterApplication::Instance(), cfg);
+	auto pMaster = pChannel->AddMaster(stdLoggerId.c_str(), *pSOEHandler, asiopal::UTCTimeSource::Instance(), opendnp3::DefaultMasterApplication::Instance(), cfg);
 	if (pMaster == nullptr)
 	{
+		delete pSOEHandler;
 		return nullptr;
 	}
 	else
 	{
+		pMaster->DeleteOnDestruct(pSOEHandler);
 		return gcnew MasterAdapter(pMaster);
 	}
 }
 
-IOutstation^ ChannelAdapter::AddOutstation(System::String^ loggerId, ICommandHandler^ cmdHandler, ITimeWriteHandler^ timeHandler, OutstationStackConfig^ config)
+IOutstation^ ChannelAdapter::AddOutstation(System::String^ loggerId, ICommandHandler^ cmdHandler, IOutstationApplication^ application, OutstationStackConfig^ config)
 {
 	std::string stdLoggerId = Conversions::ConvertString(loggerId);
 
-	OutstationCommandHandlerWrapper^ cmdWrapper = gcnew OutstationCommandHandlerWrapper(cmdHandler);
-	OutstationTimeWriteWrapper^ timeWrapper = gcnew OutstationTimeWriteWrapper(timeHandler);
+	auto pCommand = new OutstationCommandHandlerAdapter(cmdHandler);
+	auto pApplication = new OutstationApplicationAdapter(application);
 
 	opendnp3::OutstationStackConfig cfg = Conversions::ConvertConfig(config);
 
-	auto pOutstation = pChannel->AddOutstation(stdLoggerId.c_str(), cmdWrapper->Get(), timeWrapper->Get(), Conversions::ConvertConfig(config));
+	auto pOutstation = pChannel->AddOutstation(stdLoggerId.c_str(), *pCommand, *pApplication, Conversions::ConvertConfig(config));
 	if (pOutstation == nullptr)
 	{
+		delete pCommand;
+		delete pApplication;
 		return nullptr;
 	}
 	else
-	{		
+	{	
+		pOutstation->DeleteOnDestruct(pCommand);
+		pOutstation->DeleteOnDestruct(pApplication);
+
 		ApplyDatabaseSettings(pOutstation->GetDatabase(), config->databaseTemplate);
 		return gcnew OutstationAdapter(pOutstation);
 	}
