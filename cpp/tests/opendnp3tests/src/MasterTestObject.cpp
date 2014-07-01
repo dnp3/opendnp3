@@ -21,6 +21,8 @@
 
 #include "MasterTestObject.h"
 
+#include <asiodnp3/DefaultMasterApplication.h>
+
 #include "BufferHelpers.h"
 
 namespace opendnp3
@@ -41,7 +43,7 @@ MasterTestObject::MasterTestObject(const MasterParams& params, ITaskLock& lock) 
 	meas(),
 	lower(log.root),
 	timeSource(0),
-	master(exe, log.root, lower, meas, timeSource, DefaultMasterApplication::Instance(), params, lock)
+	master(exe, log.root, lower, meas, timeSource, asiodnp3::DefaultMasterApplication::Instance(), params, lock)
 {}
 
 void MasterTestObject::SendToMaster(const std::string& hex)

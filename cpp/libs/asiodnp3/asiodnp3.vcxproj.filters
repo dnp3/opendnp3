@@ -47,6 +47,9 @@
     <ClCompile Include="src\asiodnp3\DynamicallyAllocatedEventBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\asiodnp3\DefaultMasterApplication.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\asiodnp3\DestructorHook.h">
@@ -101,6 +104,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\asiodnp3\DynamicallyAllocatedEventBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\asiodnp3\DefaultMasterApplication.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

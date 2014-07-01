@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\asiodnp3\ConsoleLogger.cpp" />
+    <ClCompile Include="src\asiodnp3\DefaultMasterApplication.cpp" />
     <ClCompile Include="src\asiodnp3\DNP3Manager.cpp" />
     <ClCompile Include="src\asiodnp3\DestructorHook.cpp" />
     <ClCompile Include="src\asiodnp3\DNP3Channel.cpp" />
@@ -34,6 +35,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\asiodnp3\ConsoleLogger.h" />
+    <ClInclude Include="src\asiodnp3\DefaultMasterApplication.h" />
     <ClInclude Include="src\asiodnp3\DNP3Manager.h" />
     <ClInclude Include="src\asiodnp3\DestructorHook.h" />
     <ClInclude Include="src\asiodnp3\DNP3Channel.h" />

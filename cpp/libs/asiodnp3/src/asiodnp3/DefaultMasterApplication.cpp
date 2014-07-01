@@ -19,24 +19,26 @@
  * to you under the terms of the License.
  */
 
-#ifndef __I_MASTER_APPLICATION_H_
-#define __I_MASTER_APPLICATION_H_
+#include "DefaultMasterApplication.h"
 
-#include <openpal/executor/IUTCTimeSource.h>
+using namespace opendnp3;
 
-namespace opendnp3
+#include <chrono>
+
+namespace asiodnp3
 {
 
-///
-/// @summary Interface for all master application callback info except for measurements
-///
-class IMasterApplication : openpal::IUTCTimeSource
-{
-	public:
-	
-	virtual ~IMasterApplication() {}
-};
+DefaultMasterApplication DefaultMasterApplication::instance;
 
+IMasterApplication& DefaultMasterApplication::Instance()
+{
+	return instance;
 }
 
-#endif
+openpal::UTCTimestamp DefaultMasterApplication::Now()
+{
+	auto time = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+	return openpal::UTCTimestamp(time);
+}
+
+}

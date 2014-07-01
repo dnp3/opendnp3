@@ -292,7 +292,6 @@
     <ClCompile Include="src\opendnp3\master\ConstantCommandProcessor.cpp" />
     <ClCompile Include="src\opendnp3\master\DisableUnsolicitedTask.cpp" />
     <ClCompile Include="src\opendnp3\master\EnableUnsolicitedTask.cpp" />
-    <ClCompile Include="src\opendnp3\master\IMasterApplication.cpp" />
     <ClCompile Include="src\opendnp3\master\IMasterState.cpp" />
     <ClCompile Include="src\opendnp3\master\ITaskLock.cpp" />
     <ClCompile Include="src\opendnp3\master\NullResponseTask.cpp" />

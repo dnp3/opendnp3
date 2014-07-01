@@ -10,6 +10,8 @@
 
 #include <opendnp3/outstation/Database.h>
 
+#include <asiodnp3/DefaultMasterApplication.h>
+
 #include <asiopal/UTCTimeSource.h>
 #include <functional>
 
@@ -60,7 +62,7 @@ IMaster^ ChannelAdapter::AddMaster(System::String^ loggerId, ISOEHandler^ handle
 	opendnp3::MasterStackConfig cfg = Conversions::ConvertConfig(config);
 
 	// TODO expose time source via wrapper
-	auto pMaster = pChannel->AddMaster(stdLoggerId.c_str(), *pSOEHandler, asiopal::UTCTimeSource::Instance(), opendnp3::DefaultMasterApplication::Instance(), cfg);
+	auto pMaster = pChannel->AddMaster(stdLoggerId.c_str(), *pSOEHandler, asiopal::UTCTimeSource::Instance(), asiodnp3::DefaultMasterApplication::Instance(), cfg);
 	if (pMaster == nullptr)
 	{
 		delete pSOEHandler;

@@ -19,16 +19,28 @@
  * to you under the terms of the License.
  */
 
-#include "IMasterApplication.h"
+#ifndef __DEFAULT_MASTER_APPLICATION_H_
+#define __DEFAULT_MASTER_APPLICATION_H_
 
-namespace opendnp3
+#include <opendnp3/master/IMasterApplication.h>
+
+namespace asiodnp3
 {
 
-DefaultMasterApplication DefaultMasterApplication::instance;
-
-IMasterApplication& DefaultMasterApplication::Instance()
+class DefaultMasterApplication : public opendnp3::IMasterApplication
 {
-	return instance;
-}
+public:
+
+	static IMasterApplication& Instance();
+
+	virtual openpal::UTCTimestamp Now() override final;
+
+private:
+	DefaultMasterApplication() {}
+
+	static DefaultMasterApplication instance;
+};
 
 }
+
+#endif
