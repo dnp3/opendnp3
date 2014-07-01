@@ -26,11 +26,6 @@
 
 #include "SerialTypes.h"
 
-namespace asio
-{
-typedef basic_serial_port<> serial_port;
-}
-
 namespace asiopal
 {
 

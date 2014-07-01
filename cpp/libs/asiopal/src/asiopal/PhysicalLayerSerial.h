@@ -49,7 +49,7 @@ public:
 protected:
 
 	SerialSettings settings;
-	asio::serial_port port;
+	asio::basic_serial_port<> port;
 };
 }
 
