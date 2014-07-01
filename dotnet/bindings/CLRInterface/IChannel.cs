@@ -55,18 +55,20 @@ namespace DNP3.Interface
         /// </summary>
         /// <param name="id">name of the logger that will be assigned to this stack</param>        
         /// <param name="publisher">Where measurements will be sent as they are received from the outstation</param>
+        /// <param name="application">master application instance</param>
         /// <param name="config">configuration information for the master stack</param>
         /// <returns>reference to the created master</returns>
-		IMaster AddMaster(String id, ISOEHandler publisher, MasterStackConfig config);
+		IMaster AddMaster(String id, ISOEHandler publisher, IMasterApplication application, MasterStackConfig config);
 
         /// <summary>
         /// Adds an outstation to the channel
         /// </summary>
         /// <param name="id">name of the logger that will be assigned to this stack</param>        
         /// <param name="commandHandler">where command requests are sent to be handled in application code</param>
+        /// <param name="application">outstation application instance</param>
         /// <param name="config">configuration information for the outstation stack</param>
         /// <returns>reference to the created master</returns>
-		IOutstation AddOutstation(String id, ICommandHandler commandHandler, IOutstationApplication timeHandler, OutstationStackConfig config);
+		IOutstation AddOutstation(String id, ICommandHandler commandHandler, IOutstationApplication application, OutstationStackConfig config);
 
         /// <summary>
         /// Add a listener for changes to the channel state. All callbacks come from the thread pool.

@@ -74,7 +74,7 @@ namespace Automatak.DNP3.Simulator
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
                     var plugin = factory.Create("master");
-                    var master = channel.AddMaster("master", plugin.SOEHandler, dialog.Configuration);
+                    var master = channel.AddMaster("master", plugin.SOEHandler, DefaultMasterApplication.Instance, dialog.Configuration);
                     if (master != null)
                     {
                         plugin.SetMaster(master);

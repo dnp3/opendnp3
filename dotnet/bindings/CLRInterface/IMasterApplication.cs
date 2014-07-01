@@ -28,20 +28,23 @@ using System.Text;
 namespace DNP3.Interface
 {
     /// <summary>
-    /// Outstation application code implements this interface to interface with the stack
+    /// Master application code implements this interface to interface with stack
     /// </summary>
-    public interface IOutstationApplication
+    public interface IMasterApplication
     {
-        bool SupportsWriteAbsoluteTime();
-
-        bool WriteAbsoluteTime(UInt64 millisecSinceEpoch);
+        UInt64 GetMillisecondsSinceEpoch();
     }
 
-    public class PrintingOutstationApplication : IOutstationApplication
+    /// <summary>
+    /// A default master application instance for demo purposes
+    /// </summary>
+    public class DefaultMasterApplication : IMasterApplication
     {
-        private static IOutstationApplication instance = new PrintingOutstationApplication();
+        private static IMasterApplication instance = new DefaultMasterApplication();
 
-        public static IOutstationApplication Instance
+        private static DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+
+        public static IMasterApplication Instance
         {
             get
             {
@@ -49,17 +52,12 @@ namespace DNP3.Interface
             }
         }
 
-        private PrintingOutstationApplication() { }
+        private DefaultMasterApplication() { }
 
-        bool IOutstationApplication.SupportsWriteAbsoluteTime()
+        UInt64 IMasterApplication.GetMillisecondsSinceEpoch()
         {
-            return true;
-        }
-
-        bool IOutstationApplication.WriteAbsoluteTime(UInt64 millisecSinceEpoch)
-        {
-            Console.WriteLine("Time write: " + millisecSinceEpoch);
-            return true;
+            var ticks = DateTime.Now.ToUniversalTime().Subtract(epoch).Ticks;
+            return (UInt64) (ticks / TimeSpan.TicksPerMillisecond);
         }
     }
 }

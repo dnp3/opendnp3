@@ -1,16 +1,16 @@
 #include "ChannelAdapter.h"
+
 #include "Conversions.h"
 #include "SOEHandlerAdapter.h"
 #include "OutstationCommandHandlerAdapter.h"
 #include "OutstationApplicationAdapter.h"
+#include "MasterApplicationAdapter.h"
 #include "MasterAdapter.h"
 #include "OutstationAdapter.h"
 #include "DeleteAnything.h"
 #include "EventConverter.h"
 
 #include <opendnp3/outstation/Database.h>
-
-#include <asiodnp3/DefaultMasterApplication.h>
 
 #include <asiopal/UTCTimeSource.h>
 #include <functional>
@@ -54,23 +54,26 @@ void CallbackListener(gcroot < System::Action<ChannelState> ^ >* listener, opend
 	(*listener)->Invoke(state);
 }
 
-IMaster^ ChannelAdapter::AddMaster(System::String^ loggerId, ISOEHandler^ handler, MasterStackConfig^ config)
+IMaster^ ChannelAdapter::AddMaster(System::String^ loggerId, ISOEHandler^ handler, IMasterApplication^ application, MasterStackConfig^ config)
 {
 	std::string stdLoggerId = Conversions::ConvertString(loggerId);
 
-	auto pSOEHandler = new SOEHandlerAdapter(handler);
 	opendnp3::MasterStackConfig cfg = Conversions::ConvertConfig(config);
 
-	// TODO expose IMasterApplication via wrapper
-	auto pMaster = pChannel->AddMaster(stdLoggerId.c_str(), *pSOEHandler, asiodnp3::DefaultMasterApplication::Instance(), cfg);
+	auto pSOEHandler = new SOEHandlerAdapter(handler);
+	auto pApplication = new MasterApplicationAdapter(application);
+	
+	auto pMaster = pChannel->AddMaster(stdLoggerId.c_str(), *pSOEHandler, *pApplication, cfg);
 	if (pMaster == nullptr)
 	{
 		delete pSOEHandler;
+		delete pApplication;
 		return nullptr;
 	}
 	else
 	{
 		pMaster->DeleteOnDestruct(pSOEHandler);
+		pMaster->DeleteOnDestruct(pApplication);
 		return gcnew MasterAdapter(pMaster);
 	}
 }
@@ -79,11 +82,11 @@ IOutstation^ ChannelAdapter::AddOutstation(System::String^ loggerId, ICommandHan
 {
 	std::string stdLoggerId = Conversions::ConvertString(loggerId);
 
-	auto pCommand = new OutstationCommandHandlerAdapter(cmdHandler);
-	auto pApplication = new OutstationApplicationAdapter(application);
-
 	opendnp3::OutstationStackConfig cfg = Conversions::ConvertConfig(config);
 
+	auto pCommand = new OutstationCommandHandlerAdapter(cmdHandler);
+	auto pApplication = new OutstationApplicationAdapter(application);
+	
 	auto pOutstation = pChannel->AddOutstation(stdLoggerId.c_str(), *pCommand, *pApplication, Conversions::ConvertConfig(config));
 	if (pOutstation == nullptr)
 	{

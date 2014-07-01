@@ -177,6 +177,7 @@
     <ClInclude Include="Lock.h" />
     <ClInclude Include="LogAdapter.h" />
     <ClInclude Include="MasterAdapter.h" />
+    <ClInclude Include="MasterApplicationAdapter.h" />
     <ClInclude Include="SOEHandlerAdapter.h" />
     <ClInclude Include="MasterScanAdapter.h" />
     <ClInclude Include="OutstationAdapter.h" />
@@ -192,6 +193,7 @@
     <ClCompile Include="DNP3ManagerAdapter.cpp" />
     <ClCompile Include="LogAdapter.cpp" />
     <ClCompile Include="MasterAdapter.cpp" />
+    <ClCompile Include="MasterApplicationAdapter.cpp" />
     <ClCompile Include="MasterScanAdapter.cpp" />
     <ClCompile Include="SOEHandlerAdapter.cpp" />
     <ClCompile Include="OutstationAdapter.cpp" />

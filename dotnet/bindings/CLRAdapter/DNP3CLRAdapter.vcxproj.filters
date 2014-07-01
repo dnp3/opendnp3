@@ -59,6 +59,9 @@
     <ClInclude Include="OutstationApplicationAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MasterApplicationAdapter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ChannelAdapter.cpp">
@@ -95,6 +98,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="OutstationApplicationAdapter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MasterApplicationAdapter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

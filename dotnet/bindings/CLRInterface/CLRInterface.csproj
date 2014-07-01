@@ -100,13 +100,16 @@
     <Compile Include="IMaster.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="IMasterApplication.cs" />
+    <Compile Include="IOutstationApplication.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ISOEHandler.cs" />
     <Compile Include="IOutstation.cs" />
     <Compile Include="IStack.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="IStackStatistics.cs" />
-    <Compile Include="IOutstationApplication.cs" />
     <Compile Include="IMasterScan.cs" />
     <Compile Include="config\LinkConfig.cs" />
     <Compile Include="LogLevels.cs" />
