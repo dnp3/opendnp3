@@ -318,7 +318,7 @@ TEST_CASE(SUITE("RestartAndTimeBits"))
 	MasterTestObject t(params);
 	t.master.OnLowerLayerUp();
 
-	t.timeSource.time = 100;
+	t.application.time = 100;
 	t.exe.RunMany();
 
 	REQUIRE(t.lower.NumWrites() == 0);
@@ -338,7 +338,7 @@ TEST_CASE(SUITE("RestartAndTimeBits"))
 
 	REQUIRE(t.lower.PopWriteAsHex() == hex::MeasureDelay(1));
 	t.master.OnSendResult(true);
-	t.timeSource.time += 100; //advance time by 100ms so that the master sees 100ms for a response
+	t.application.time += 100; //advance time by 100ms so that the master sees 100ms for a response
 	t.SendToMaster("C1 81 10 00 34 02 07 01 0A 00"); // still need time, 52 Var 2, delay == 10ms
 
 	t.exe.RunMany();

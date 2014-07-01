@@ -42,8 +42,8 @@ MasterTestObject::MasterTestObject(const MasterParams& params, ITaskLock& lock) 
 	exe(),
 	meas(),
 	lower(log.root),
-	timeSource(0),
-	master(exe, log.root, lower, meas, timeSource, asiodnp3::DefaultMasterApplication::Instance(), params, lock)
+	application(),
+	master(exe, log.root, lower, meas, application, params, lock)
 {}
 
 void MasterTestObject::SendToMaster(const std::string& hex)

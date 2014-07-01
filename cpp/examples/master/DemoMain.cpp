@@ -79,8 +79,7 @@ int main(int argc, char* argv[])
 	// returns a thread-safe interface used for sending commands.
 	auto pMaster = pClient->AddMaster(
 	                   "master",										// id for logging
-	                   PrintingSOEHandler::Instance(),					// callback for data processing
-	                   asiopal::UTCTimeSource::Instance(),				// system clock for time syncing
+	                   PrintingSOEHandler::Instance(),					// callback for data processing	                   
 					   asiodnp3::DefaultMasterApplication::Instance(),	// master application instance
 	                   stackConfig										// stack configuration
 	               );

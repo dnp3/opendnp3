@@ -84,14 +84,13 @@ public:
 	*
 	* @param id An ID that gets used for logging
 	* @param SOEHandler Callback object for all received measurements
-	* @param timeSource The interface that is used for outstation time synchronization
+	* @param application The master application bound to the master session
 	* @param config Configuration object that controls how the master behaves
 	*
 	* @return interface representing the running master
 	*/
 	virtual IMaster* AddMaster(char const* id,
-							   opendnp3::ISOEHandler& SOEHandler,
-							   openpal::IUTCTimeSource& timeSource,
+							   opendnp3::ISOEHandler& SOEHandler,							   
 							   opendnp3::IMasterApplication& application,
 							   const opendnp3::MasterStackConfig& config) = 0;
 

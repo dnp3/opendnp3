@@ -51,7 +51,7 @@ TEST_CASE(SUITE("ConstructionDestruction"))
 		auto pServer = manager.AddTCPServer("server", levels::NORMAL, TimeDuration::Seconds(5), TimeDuration::Seconds(5), "0.0.0.0", 20000);
 
 		auto pOutstation = pServer->AddOutstation("outstation", SuccessCommandHandler::Instance(), DefaultOutstationApplication::Instance(), OutstationStackConfig(DatabaseTemplate()));
-		auto pMaster = pClient->AddMaster("master", NullSOEHandler::Instance(), UTCTimeSource::Instance(), asiodnp3::DefaultMasterApplication::Instance(), MasterStackConfig());
+		auto pMaster = pClient->AddMaster("master", NullSOEHandler::Instance(), asiodnp3::DefaultMasterApplication::Instance(), MasterStackConfig());
 		
 		pOutstation->Enable();
 		pMaster->Enable();		
@@ -68,7 +68,7 @@ TEST_CASE(SUITE("ManualStackShutdown"))
 		auto pServer = manager.AddTCPServer("server", levels::NORMAL, TimeDuration::Seconds(5), TimeDuration::Seconds(5), "0.0.0.0", 20000);
 
 		auto pOutstation = pServer->AddOutstation("outstation", SuccessCommandHandler::Instance(), DefaultOutstationApplication::Instance(), OutstationStackConfig(DatabaseTemplate()));
-		auto pMaster = pClient->AddMaster("master", NullSOEHandler::Instance(), UTCTimeSource::Instance(), asiodnp3::DefaultMasterApplication::Instance(), MasterStackConfig());
+		auto pMaster = pClient->AddMaster("master", NullSOEHandler::Instance(), asiodnp3::DefaultMasterApplication::Instance(), MasterStackConfig());
 
 		pOutstation->Enable();
 		pMaster->Enable();
@@ -89,7 +89,7 @@ TEST_CASE(SUITE("ManualChannelShutdownWithStacks"))
 		auto pServer = manager.AddTCPServer("server", levels::NORMAL, TimeDuration::Seconds(5), TimeDuration::Seconds(5), "0.0.0.0", 20000);
 
 		auto pOutstation = pServer->AddOutstation("outstation", SuccessCommandHandler::Instance(), DefaultOutstationApplication::Instance(), OutstationStackConfig(DatabaseTemplate()));
-		auto pMaster = pClient->AddMaster("master", NullSOEHandler::Instance(), UTCTimeSource::Instance(), asiodnp3::DefaultMasterApplication::Instance(), MasterStackConfig());
+		auto pMaster = pClient->AddMaster("master", NullSOEHandler::Instance(), asiodnp3::DefaultMasterApplication::Instance(), MasterStackConfig());
 
 		pMaster->Enable();
 		pOutstation->Enable();

@@ -37,7 +37,7 @@ class MasterTasks
 
 public:
 
-	MasterTasks(openpal::Logger* pLogger, ISOEHandler* pSOEHandler, openpal::IUTCTimeSource* pTimeSource);
+	MasterTasks(openpal::Logger* pLogger, ISOEHandler& SOEHandler, openpal::IUTCTimeSource& timeSource);
 
 	// reconfigurable task for doing commands
 	CommandTask commandTask;	

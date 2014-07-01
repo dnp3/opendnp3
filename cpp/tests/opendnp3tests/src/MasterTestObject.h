@@ -30,6 +30,7 @@
 
 #include "MockSOEHandler.h"
 #include "MockLowerLayer.h"
+#include "MockMasterApplication.h"
 
 namespace opendnp3
 {
@@ -48,7 +49,7 @@ namespace opendnp3
 		MockExecutor exe;
 		MockSOEHandler meas;
 		MockLowerLayer lower;
-		openpal::FixedUTCTimeSource timeSource;
+		MockMasterApplication application;
 		Master master;
 	};
 

@@ -18,23 +18,32 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef __MOCK_MASTER_APPLICATION_H_
+#define __MOCK_MASTER_APPLICATION_H_
 
-#include "MasterTasks.h"
-
-
+#include <opendnp3/master/IMasterApplication.h>
 
 namespace opendnp3
 {
 
-MasterTasks::MasterTasks(openpal::Logger* pLogger, ISOEHandler& SOEHandler, openpal::IUTCTimeSource& timeSource) :
-enableUnsol(pLogger),
-clearRestartTask(pLogger),
-startupIntegrity(&SOEHandler, pLogger),
-disableUnsol(pLogger),	
-serialTimeSync(pLogger, &timeSource),
-commandTask(pLogger)
+class MockMasterApplication : public IMasterApplication
 {
-	
-}
+
+public:
+
+	MockMasterApplication() : time(0)
+	{}
+
+	virtual openpal::UTCTimestamp Now() override final
+	{
+		return openpal::UTCTimestamp(time);
+	}
+
+	uint64_t time;
+};
+
 
 }
+
+#endif
+

@@ -34,8 +34,6 @@
 #include "MockLowerLayer.h"
 #include "MockOutstationApplication.h"
 
-#include <vector>
-
 namespace opendnp3
 {
 
@@ -60,12 +58,9 @@ public:
 	
 	void SetRequestTimeIIN();
 
-
 	bool AdvanceToNextTimer();
 
-	uint32_t AdvanceTime(const openpal::TimeDuration& td);
-
-	std::vector<openpal::UTCTimestamp> timestamps;
+	uint32_t AdvanceTime(const openpal::TimeDuration& td);	
 
 	LogTester log;
 

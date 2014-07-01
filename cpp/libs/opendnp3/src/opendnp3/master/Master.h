@@ -36,8 +36,7 @@ class Master : public openpal::IUpperLayer
 	Master(	openpal::IExecutor& executor, 				
 			openpal::LogRoot& root, 
 			openpal::ILowerLayer& lower,
-			ISOEHandler& SOEHandler,
-			openpal::IUTCTimeSource& timeSource,
+			ISOEHandler& SOEHandler,			
 			opendnp3::IMasterApplication& application,
 			const MasterParams& params,
 			ITaskLock& taskLock = NullTaskLock::Instance()

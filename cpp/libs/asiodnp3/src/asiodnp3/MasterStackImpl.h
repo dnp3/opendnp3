@@ -23,6 +23,7 @@
 
 #include "IMaster.h"
 
+#include <opendnp3/link/ILinkContext.h>
 #include <opendnp3/master/MasterStackConfig.h>
 #include <opendnp3/master/Master.h>
 #include <opendnp3/transport/TransportStack.h>
@@ -32,7 +33,6 @@
 namespace asiodnp3
 {
 
-class ILinkContext;
 
 /** @section desc A stack object for a master */
 class MasterStackImpl : public IMaster
@@ -42,8 +42,7 @@ public:
 	MasterStackImpl(
 		openpal::LogRoot& root,
 	    asiopal::ASIOExecutor& executor,
-		opendnp3::ISOEHandler& SOEHandler,
-	    openpal::IUTCTimeSource& timeSource,	
+		opendnp3::ISOEHandler& SOEHandler,	    
 		opendnp3::IMasterApplication& application,
 		const opendnp3::MasterStackConfig& config,
 		const StackActionHandler& handler,

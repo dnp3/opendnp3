@@ -61,8 +61,8 @@ IMaster^ ChannelAdapter::AddMaster(System::String^ loggerId, ISOEHandler^ handle
 	auto pSOEHandler = new SOEHandlerAdapter(handler);
 	opendnp3::MasterStackConfig cfg = Conversions::ConvertConfig(config);
 
-	// TODO expose time source via wrapper
-	auto pMaster = pChannel->AddMaster(stdLoggerId.c_str(), *pSOEHandler, asiopal::UTCTimeSource::Instance(), asiodnp3::DefaultMasterApplication::Instance(), cfg);
+	// TODO expose IMasterApplication via wrapper
+	auto pMaster = pChannel->AddMaster(stdLoggerId.c_str(), *pSOEHandler, asiodnp3::DefaultMasterApplication::Instance(), cfg);
 	if (pMaster == nullptr)
 	{
 		delete pSOEHandler;

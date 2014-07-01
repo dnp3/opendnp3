@@ -129,8 +129,8 @@ TEST_CASE(SUITE("WriteTimeDate"))
 
 	t.SendToOutstation("C1 02 32 01 07 01 D2 04 00 00 00 00"); // write Grp50Var1, value = 1234 ms after epoch
 	REQUIRE(t.lower.PopWriteAsHex() == "C1 81 80 00");
-	REQUIRE(t.timestamps.size() == 1);
-	REQUIRE(t.timestamps.front().msSinceEpoch == 1234);
+	REQUIRE(t.application.timestamps.size() == 1);
+	REQUIRE(t.application.timestamps.front().msSinceEpoch == 1234);
 
 }
 
@@ -143,7 +143,7 @@ TEST_CASE(SUITE("WriteTimeDateNotAsking"))
 	t.application.allowTimeWrite = false;
 	t.SendToOutstation("C0 02 32 01 07 01 D2 04 00 00 00 00"); //write Grp50Var1, value = 1234 ms after epoch
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 04"); // param error	
-	REQUIRE(t.timestamps.size() == 0);
+	REQUIRE(t.application.timestamps.size() == 0);
 }
 
 TEST_CASE(SUITE("WriteTimeDateMultipleObjects"))
@@ -154,7 +154,7 @@ TEST_CASE(SUITE("WriteTimeDateMultipleObjects"))
 
 	t.SendToOutstation("C0 02 32 01 07 02 D2 04 00 00 00 00 D2 04 00 00 00 00"); //write Grp50Var1, value = 1234 ms after epoch
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 04"); // param error +  need time still set	
-	REQUIRE(t.timestamps.empty());
+	REQUIRE(t.application.timestamps.empty());
 }
 
 TEST_CASE(SUITE("BlankIntegrityPoll"))

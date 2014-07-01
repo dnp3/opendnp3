@@ -178,6 +178,7 @@
   <ItemGroup>
     <ClInclude Include="src\APDUHelpers.h" />
     <ClInclude Include="src\APDUHexBuilders.h" />
+    <ClInclude Include="src\MockMasterApplication.h" />
     <ClInclude Include="src\PhysBaseTest.h" />
     <ClInclude Include="src\PhysTestObject.h" />
     <ClInclude Include="src\SerialTestObject.h" />

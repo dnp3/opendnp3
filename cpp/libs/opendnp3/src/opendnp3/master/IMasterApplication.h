@@ -30,7 +30,7 @@ namespace opendnp3
 ///
 /// @summary Interface for all master application callback info except for measurements
 ///
-class IMasterApplication : openpal::IUTCTimeSource
+class IMasterApplication : public openpal::IUTCTimeSource
 {
 	public:
 	

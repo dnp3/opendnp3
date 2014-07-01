@@ -179,6 +179,9 @@
     <ClInclude Include="src\MockOutstationApplication.h">
       <Filter>Header Files\Mocks</Filter>
     </ClInclude>
+    <ClInclude Include="src\MockMasterApplication.h">
+      <Filter>Header Files\Mocks</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BufferHelpers.cpp">
