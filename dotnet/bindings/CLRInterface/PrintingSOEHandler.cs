@@ -52,124 +52,148 @@ namespace DNP3.Interface
         void ISOEHandler.End()
         {}
 
-        void ISOEHandler.LoadStatic(Binary meas, UInt16 index)
+        void ISOEHandler.LoadStatic(IEnumerable<IndexedValue<Binary>> values)
         {
-            Print("Static", meas, index);
+            Print("Static", values);
         }
 
-        void ISOEHandler.LoadStatic(DoubleBitBinary meas, UInt16 index)
+        void ISOEHandler.LoadStatic(IEnumerable<IndexedValue<DoubleBitBinary>> values)
         {
-            Print("Static", meas, index);
+            Print("Static", values);
         }
 
-        void ISOEHandler.LoadStatic(Analog meas, UInt16 index)
+        void ISOEHandler.LoadStatic(IEnumerable<IndexedValue<Analog>> values)
         {
-            Print("Static", meas, index);
+            Print("Static", values);
         }
 
-        void ISOEHandler.LoadStatic(Counter meas, UInt16 index)
+        void ISOEHandler.LoadStatic(IEnumerable<IndexedValue<Counter>> values)
         {
-            Print("Static", meas, index);
+            Print("Static", values);
         }
 
-        void ISOEHandler.LoadStatic(FrozenCounter meas, UInt16 index)
+        void ISOEHandler.LoadStatic(IEnumerable<IndexedValue<FrozenCounter>> values)
         {
-            Print("Static", meas, index);
+            Print("Static", values);
         }
 
-        void ISOEHandler.LoadStatic(BinaryOutputStatus meas, UInt16 index)
+        void ISOEHandler.LoadStatic(IEnumerable<IndexedValue<BinaryOutputStatus>> values)
         {
-            Print("Static", meas, index);
+            Print("Static", values);
         }
 
-        void ISOEHandler.LoadStatic(AnalogOutputStatus meas, UInt16 index)
+        void ISOEHandler.LoadStatic(IEnumerable<IndexedValue<AnalogOutputStatus>> values)
         {
-            Print("Static", meas, index);
+            Print("Static", values);
         }
 
-        void ISOEHandler.LoadStatic(OctetString meas, UInt16 index)
+        void ISOEHandler.LoadStatic(IEnumerable<IndexedValue<OctetString>> values)
         {
-            Print("Static", meas, index);
+            Print("Static", values);
         }
 
-        void ISOEHandler.LoadEvent(Binary meas, UInt16 index)
+        void ISOEHandler.LoadEvent(IEnumerable<IndexedValue<Binary>> values)
         {
-            Print("Event", meas, index);
+            Print("Event", values);
         }
 
-        void ISOEHandler.LoadEvent(DoubleBitBinary meas, UInt16 index)
+        void ISOEHandler.LoadEvent(IEnumerable<IndexedValue<DoubleBitBinary>> values)
         {
-            Print("Event", meas, index);
+            Print("Event", values);
         }
 
-        void ISOEHandler.LoadEvent(Analog meas, UInt16 index)
+        void ISOEHandler.LoadEvent(IEnumerable<IndexedValue<Analog>> values)
         {
-            Print("Event", meas, index);
+            Print("Event", values);
         }
 
-        void ISOEHandler.LoadEvent(Counter meas, UInt16 index)
+        void ISOEHandler.LoadEvent(IEnumerable<IndexedValue<Counter>> values)
         {
-            Print("Event", meas, index);
+            Print("Event", values);
         }
 
-        void ISOEHandler.LoadEvent(FrozenCounter meas, UInt16 index)
+        void ISOEHandler.LoadEvent(IEnumerable<IndexedValue<FrozenCounter>> values)
         {
-            Print("Event", meas, index);
+            Print("Event", values);
         }
 
-        void ISOEHandler.LoadEvent(BinaryOutputStatus meas, UInt16 index)
+        void ISOEHandler.LoadEvent(IEnumerable<IndexedValue<BinaryOutputStatus>> values)
         {
-            Print("Event", meas, index);
+            Print("Event", values);
         }
 
-        void ISOEHandler.LoadEvent(AnalogOutputStatus meas, UInt16 index)
+        void ISOEHandler.LoadEvent(IEnumerable<IndexedValue<AnalogOutputStatus>> values)
         {
-            Print("Event", meas, index);
+            Print("Event", values);
         }
 
-        void ISOEHandler.LoadEvent(OctetString meas, UInt16 index)
+        void ISOEHandler.LoadEvent(IEnumerable<IndexedValue<OctetString>> values)
         {
-            Print("Event", meas, index);
+            Print("Event", values);
         }
 
-        private void Print(string header, Binary meas, UInt16 index)
+        private void Print(string header, IEnumerable<IndexedValue<Binary>> values)
         {
-           Console.WriteLine(header + " Binary[" + index + "] " + meas.ToString());            
+            foreach (var pair in values)
+            {
+                Console.WriteLine(header + " Binary[" + pair.Index + "] " + pair.Value.ToString());             
+            }           
         }
 
-        private void Print(string header, DoubleBitBinary meas, UInt16 index)
+        private void Print(string header, IEnumerable<IndexedValue<DoubleBitBinary>> values)
         {
-            Console.WriteLine(header + " DoubleBit[" + index + "] " + meas.ToString());                        
+            foreach (var pair in values)
+            {
+                Console.WriteLine(header + " DoubleBit[" + pair.Index + "] " + pair.Value.ToString());
+            }
         }
 
-        private void Print(string header, Analog meas, UInt16 index)
+        private void Print(string header, IEnumerable<IndexedValue<Analog>> values)
         {
-            Console.WriteLine(header + " Analog[" + index + "] " + meas.ToString()); 
+            foreach (var pair in values)
+            {
+                Console.WriteLine(header + " Analog[" + pair.Index + "] " + pair.Value.ToString());
+            }
         }
 
-        private void Print(string header, Counter meas, UInt16 index)
+        private void Print(string header, IEnumerable<IndexedValue<Counter>> values)
         {
-            Console.WriteLine(header + " Counter[" + index + "] " + meas.ToString());            
+            foreach (var pair in values)
+            {
+                Console.WriteLine(header + " Counter[" + pair.Index + "] " + pair.Value.ToString());
+            }
         }
 
-        private void Print(string header, FrozenCounter meas, UInt16 index)
+        private void Print(string header, IEnumerable<IndexedValue<FrozenCounter>> values)
         {
-            Console.WriteLine(header + " FrozenCounter[" + index + "] " + meas.ToString());            
+            foreach (var pair in values)
+            {
+                Console.WriteLine(header + " FrozenCounter[" + pair.Index + "] " + pair.Value.ToString());
+            }
         }
 
-        private void Print(string header, BinaryOutputStatus meas, UInt16 index)
+        private void Print(string header, IEnumerable<IndexedValue<BinaryOutputStatus>> values)
         {
-            Console.WriteLine(header + " BinaryOutputStatus[" + index + "] " + meas.ToString());            
+            foreach (var pair in values)
+            {
+                Console.WriteLine(header + " BinaryOutputStatus[" + pair.Index + "] " + pair.Value.ToString());
+            }
         }
 
-        private void Print(string header, AnalogOutputStatus meas, UInt16 index)
+        private void Print(string header, IEnumerable<IndexedValue<AnalogOutputStatus>> values)
         {
-            Console.WriteLine(header + " AnalogOutputStatus[" + index + "] " + meas.ToString());            
+            foreach (var pair in values)
+            {
+                Console.WriteLine(header + " AnalogOutputStatus[" + pair.Index + "] " + pair.Value.ToString());
+            }
         }
 
-        private void Print(string header, OctetString meas, UInt16 index)
+        private void Print(string header, IEnumerable<IndexedValue<OctetString>> values)
         {
-            Console.WriteLine(header + " OctetString[" + index + "] lemgth: " + meas.Bytes.Length);
+            foreach (var pair in values)
+            {
+                Console.WriteLine(header + " OctetString[" + pair.Index + "] lemgth: " + pair.Value.Bytes.Length);
+            }
         }
     }    
 }

@@ -14,6 +14,7 @@
 #include <opendnp3/app/ControlRelayOutputBlock.h>
 #include <opendnp3/app/AnalogOutput.h>
 #include <opendnp3/app/OctetString.h>
+#include <opendnp3/app/IndexedValue.h>
 
 #include <opendnp3/master/CommandResponse.h>
 #include <opendnp3/master/MasterStackConfig.h>
@@ -116,6 +117,14 @@ public:
 	static opendnp3::OutstationStackConfig ConvertConfig(OutstationStackConfig^ config);
 
 	static opendnp3::DatabaseTemplate ConvertConfig(DatabaseTemplate^ config);
+
+
+	template <class Target, class Source>
+	static IndexedValue<Target^>^ ConvertIndexValue(const opendnp3::IndexedValue<Source, uint16_t>& pair)
+	{
+		return gcnew IndexedValue<Target^>(ConvertMeas(pair.value), pair.index);
+	}
+
 };
 
 }

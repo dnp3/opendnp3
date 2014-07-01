@@ -22,82 +22,98 @@ void SOEHandlerAdapter::End()
 
 void SOEHandlerAdapter::LoadStatic(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::Binary, uint16_t>>& meas)
 {
-	this->DispatchStatic(meas);
+	auto enumerable = ToEnumerable<Binary^>(meas);
+	proxy->LoadStatic(enumerable);
 }
 
 void SOEHandlerAdapter::LoadStatic(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::DoubleBitBinary, uint16_t>>& meas)
 {
-	this->DispatchStatic(meas);
+	auto enumerable = ToEnumerable<DoubleBitBinary^>(meas);
+	proxy->LoadStatic(enumerable);
 }
 
 void SOEHandlerAdapter::LoadStatic(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::Analog, uint16_t>>& meas)
 {
-	this->DispatchStatic(meas);
+	auto enumerable = ToEnumerable<Analog^>(meas);
+	proxy->LoadStatic(enumerable);
 }
 
 void SOEHandlerAdapter::LoadStatic(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::Counter, uint16_t>>& meas)
 {
-	this->DispatchStatic(meas);
+	auto enumerable = ToEnumerable<Counter^>(meas);
+	proxy->LoadStatic(enumerable);
 }
 
 void SOEHandlerAdapter::LoadStatic(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::FrozenCounter, uint16_t>>& meas)
 {
-	this->DispatchStatic(meas);
+	auto enumerable = ToEnumerable<FrozenCounter^>(meas);
+	proxy->LoadStatic(enumerable);
 }
 
 void SOEHandlerAdapter::LoadStatic(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::BinaryOutputStatus, uint16_t>>& meas)
 {
-	this->DispatchStatic(meas);
+	auto enumerable = ToEnumerable<BinaryOutputStatus^>(meas);
+	proxy->LoadStatic(enumerable);
 }
 
 void SOEHandlerAdapter::LoadStatic(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::AnalogOutputStatus, uint16_t>>& meas)
 {
-	this->DispatchStatic(meas);
+	auto enumerable = ToEnumerable<AnalogOutputStatus^>(meas);
+	proxy->LoadStatic(enumerable);
 }
 
 void SOEHandlerAdapter::LoadStatic(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::OctetString, uint16_t>>& meas)
 {
-	this->DispatchEvent(meas);
+	auto enumerable = ToEnumerable<OctetString^>(meas);
+	proxy->LoadStatic(enumerable);
 }
 
 void SOEHandlerAdapter::LoadEvent(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::Binary, uint16_t>>& meas)
 {
-	this->DispatchEvent(meas);
+	auto enumerable = ToEnumerable<Binary^>(meas);
+	proxy->LoadEvent(enumerable);
 }
 
 void SOEHandlerAdapter::LoadEvent(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::DoubleBitBinary, uint16_t>>& meas)
 {
-	this->DispatchEvent(meas);
+	auto enumerable = ToEnumerable<DoubleBitBinary^>(meas);
+	proxy->LoadEvent(enumerable);
 }
 
 void SOEHandlerAdapter::LoadEvent(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::Analog, uint16_t>>& meas)
 {
-	this->DispatchEvent(meas);
+	auto enumerable = ToEnumerable<Analog^>(meas);
+	proxy->LoadEvent(enumerable);
 }
 
 void SOEHandlerAdapter::LoadEvent(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::Counter, uint16_t>>& meas)
 {
-	this->DispatchEvent(meas);
+	auto enumerable = ToEnumerable<Counter^>(meas);
+	proxy->LoadEvent(enumerable);
 }
 
 void SOEHandlerAdapter::LoadEvent(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::FrozenCounter, uint16_t>>& meas)
 {
-	this->DispatchEvent(meas);
+	auto enumerable = ToEnumerable<FrozenCounter^>(meas);
+	proxy->LoadEvent(enumerable);
 }
 
 void SOEHandlerAdapter::LoadEvent(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::BinaryOutputStatus, uint16_t>>& meas)
 {
-	this->DispatchEvent(meas);
+	auto enumerable = ToEnumerable<BinaryOutputStatus^>(meas);
+	proxy->LoadEvent(enumerable);
 }
 
 void SOEHandlerAdapter::LoadEvent(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::AnalogOutputStatus, uint16_t>>& meas)
 {
-	this->DispatchEvent(meas);
+	auto enumerable = ToEnumerable<AnalogOutputStatus^>(meas);
+	proxy->LoadEvent(enumerable);
 }
 
 void SOEHandlerAdapter::LoadEvent(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::OctetString, uint16_t>>& meas)
 {
-	this->DispatchEvent(meas);
+	auto enumerable = ToEnumerable<OctetString^>(meas);
+	proxy->LoadEvent(enumerable);
 }
 
 

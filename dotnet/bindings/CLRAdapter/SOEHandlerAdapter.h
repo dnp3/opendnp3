@@ -42,23 +42,22 @@ public:
 
 private:
 
-	template <class T>
-	void DispatchStatic(const opendnp3::IterableBuffer<opendnp3::IndexedValue<T, uint16_t>>& meas)
+	template <class Target, class Source>
+	static System::Collections::Generic::IEnumerable<IndexedValue<Target>^>^ ToEnumerable(const opendnp3::IterableBuffer<opendnp3::IndexedValue<Source, uint16_t>>& meas)
 	{
-		meas.foreach([this](const opendnp3::IndexedValue<T, uint16_t>& pair)
+		auto list = gcnew System::Collections::Generic::List<IndexedValue<Target>^> ();
+		auto iterator = meas.Iterate();
+		
+		do
 		{
-			proxy->LoadStatic(Conversions::ConvertMeas(pair.value), pair.index);
-		});
-	}
+			auto current = iterator.Current();
+			auto value = gcnew IndexedValue<Target>(Conversions::ConvertMeas(current.value), current.index);
+			list->Add(value);
+		} 
+		while (iterator.MoveNext());
 
-	template <class T>
-	void DispatchEvent(const opendnp3::IterableBuffer<opendnp3::IndexedValue<T, uint16_t>>& meas)
-	{
-		meas.foreach([this](const opendnp3::IndexedValue<T, uint16_t>& pair)
-		{
-			proxy->LoadEvent(Conversions::ConvertMeas(pair.value), pair.index);
-		});
-	}
+		return list;
+	}	
 
 	gcroot < DNP3::Interface::ISOEHandler^ > proxy;
 };

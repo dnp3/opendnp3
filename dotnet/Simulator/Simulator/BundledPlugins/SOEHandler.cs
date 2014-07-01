@@ -20,6 +20,15 @@ namespace Automatak.DNP3.Simulator
             measurements = new List<Measurement>();            
         }
 
+        void Add<T>(IEnumerable<T> values, Func<T, Measurement> convert)
+        {
+            var converted = values.Select(convert);
+            foreach (var v in converted)
+            {
+                measurements.Add(v);
+            }   
+        }
+        
         void ISOEHandler.End()
         {
             if (measurements.Any() && NewMeasurements != null)
@@ -28,84 +37,84 @@ namespace Automatak.DNP3.Simulator
             }           
         }
 
-        void ISOEHandler.LoadStatic(Binary meas, ushort index)
+        void ISOEHandler.LoadStatic(IEnumerable<IndexedValue<Binary>> values)
         {
-            this.measurements.Add(new Measurement(meas.Value.ToString(), meas, MeasType.Binary, index));
+            Add(values, m => new Measurement(m.Value.Value.ToString(), m.Value, MeasType.Binary, m.Index));           
         }
 
-        void ISOEHandler.LoadStatic(DoubleBitBinary meas, ushort index)
+        void ISOEHandler.LoadStatic(IEnumerable<IndexedValue<DoubleBitBinary>> values)
         {
-            this.measurements.Add(new Measurement(meas.Value.ToString(), meas, MeasType.DoubleBitBinary, index));
+            Add(values, m => new Measurement(m.Value.Value.ToString(), m.Value, MeasType.DoubleBitBinary, m.Index));
         }
 
-        void ISOEHandler.LoadStatic(Analog meas, ushort index)
+        void ISOEHandler.LoadStatic(IEnumerable<IndexedValue<Analog>> values)
         {
-            this.measurements.Add(new Measurement(meas.Value.ToString(), meas, MeasType.Analog, index));
+            Add(values, m => new Measurement(m.Value.Value.ToString(), m.Value, MeasType.Analog, m.Index));
         }
 
-        void ISOEHandler.LoadStatic(Counter meas, ushort index)
+        void ISOEHandler.LoadStatic(IEnumerable<IndexedValue<Counter>> values)
         {
-            this.measurements.Add(new Measurement(meas.Value.ToString(), meas, MeasType.Counter, index));
+            Add(values, m => new Measurement(m.Value.Value.ToString(), m.Value, MeasType.Counter, m.Index));
         }
 
-        void ISOEHandler.LoadStatic(FrozenCounter meas, ushort index)
+        void ISOEHandler.LoadStatic(IEnumerable<IndexedValue<FrozenCounter>> values)
         {
-            this.measurements.Add(new Measurement(meas.Value.ToString(), meas, MeasType.FrozenCounter, index));
+            Add(values, m => new Measurement(m.Value.Value.ToString(), m.Value, MeasType.FrozenCounter, m.Index));
         }
 
-        void ISOEHandler.LoadStatic(BinaryOutputStatus meas, ushort index)
+        void ISOEHandler.LoadStatic(IEnumerable<IndexedValue<BinaryOutputStatus>> values)
         {
-            this.measurements.Add(new Measurement(meas.Value.ToString(), meas, MeasType.BinaryOutputStatus, index));
+            Add(values, m => new Measurement(m.Value.Value.ToString(), m.Value, MeasType.BinaryOutputStatus, m.Index));
         }
 
-        void ISOEHandler.LoadStatic(AnalogOutputStatus meas, ushort index)
+        void ISOEHandler.LoadStatic(IEnumerable<IndexedValue<AnalogOutputStatus>> values)
         {
-            this.measurements.Add(new Measurement(meas.Value.ToString(), meas, MeasType.AnalogOutputStatus, index));
+            Add(values, m => new Measurement(m.Value.Value.ToString(), m.Value, MeasType.AnalogOutputStatus, m.Index));
         }
 
-        void ISOEHandler.LoadStatic(OctetString meas, ushort index)
+        void ISOEHandler.LoadStatic(IEnumerable<IndexedValue<OctetString>> values)
         {
-            this.measurements.Add(new Measurement(meas.AsString(), meas, MeasType.OctetString, index));
+            Add(values, m => new Measurement(m.Value.AsString(), m.Value, MeasType.OctetString, m.Index));
         }
 
-        void ISOEHandler.LoadEvent(Binary meas, ushort index)
+        void ISOEHandler.LoadEvent(IEnumerable<IndexedValue<Binary>> values)
         {
-            this.measurements.Add(new Measurement(meas.Value.ToString(), meas, MeasType.Binary, index));
+            Add(values, m => new Measurement(m.Value.Value.ToString(), m.Value, MeasType.Binary, m.Index));
         }
 
-        void ISOEHandler.LoadEvent(DoubleBitBinary meas, ushort index)
+        void ISOEHandler.LoadEvent(IEnumerable<IndexedValue<DoubleBitBinary>> values)
         {
-            this.measurements.Add(new Measurement(meas.Value.ToString(), meas, MeasType.DoubleBitBinary, index));
+            Add(values, m => new Measurement(m.Value.Value.ToString(), m.Value, MeasType.DoubleBitBinary, m.Index));
         }
 
-        void ISOEHandler.LoadEvent(Analog meas, ushort index)
+        void ISOEHandler.LoadEvent(IEnumerable<IndexedValue<Analog>> values)
         {
-            this.measurements.Add(new Measurement(meas.Value.ToString(), meas, MeasType.Analog, index));
+            Add(values, m => new Measurement(m.Value.Value.ToString(), m.Value, MeasType.Analog, m.Index));
         }
 
-        void ISOEHandler.LoadEvent(Counter meas, ushort index)
+        void ISOEHandler.LoadEvent(IEnumerable<IndexedValue<Counter>> values)
         {
-            this.measurements.Add(new Measurement(meas.Value.ToString(), meas, MeasType.Counter, index));
+            Add(values, m => new Measurement(m.Value.Value.ToString(), m.Value, MeasType.Counter, m.Index));
         }
 
-        void ISOEHandler.LoadEvent(FrozenCounter meas, ushort index)
+        void ISOEHandler.LoadEvent(IEnumerable<IndexedValue<FrozenCounter>> values)
         {
-            this.measurements.Add(new Measurement(meas.Value.ToString(), meas, MeasType.FrozenCounter, index));
+            Add(values, m => new Measurement(m.Value.Value.ToString(), m.Value, MeasType.FrozenCounter, m.Index));
         }
 
-        void ISOEHandler.LoadEvent(BinaryOutputStatus meas, ushort index)
+        void ISOEHandler.LoadEvent(IEnumerable<IndexedValue<BinaryOutputStatus>> values)
         {
-            this.measurements.Add(new Measurement(meas.Value.ToString(), meas, MeasType.BinaryOutputStatus, index));
+            Add(values, m => new Measurement(m.Value.ToString(), m.Value, MeasType.BinaryOutputStatus, m.Index));
         }
 
-        void ISOEHandler.LoadEvent(AnalogOutputStatus meas, ushort index)
+        void ISOEHandler.LoadEvent(IEnumerable<IndexedValue<AnalogOutputStatus>> values)
         {
-            this.measurements.Add(new Measurement(meas.Value.ToString(), meas, MeasType.AnalogOutputStatus, index));
+            Add(values, m => new Measurement(m.Value.Value.ToString(), m.Value, MeasType.AnalogOutputStatus, m.Index));
         }
 
-        void ISOEHandler.LoadEvent(OctetString meas, ushort index)
+        void ISOEHandler.LoadEvent(IEnumerable<IndexedValue<OctetString>> values)
         {
-            this.measurements.Add(new Measurement(meas.AsString(), meas, MeasType.OctetString, index));
+            Add(values, m => new Measurement(m.Value.AsString(), m.Value, MeasType.OctetString, m.Index));
         }
     }
 }

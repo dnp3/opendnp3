@@ -61,22 +61,22 @@ namespace DNP3.Interface
             void Start();
             void End();
 
-            void LoadStatic(Binary meas, UInt16 index);
-            void LoadStatic(DoubleBitBinary meas, UInt16 index);
-            void LoadStatic(Analog meas, UInt16 index);
-            void LoadStatic(Counter meas, UInt16 index);
-            void LoadStatic(FrozenCounter meas, UInt16 index);
-            void LoadStatic(BinaryOutputStatus meas, UInt16 index);
-            void LoadStatic(AnalogOutputStatus meas, UInt16 index);
-            void LoadStatic(OctetString meas, UInt16 index);
+            void LoadStatic(IEnumerable<IndexedValue<Binary>> values);
+            void LoadStatic(IEnumerable<IndexedValue<DoubleBitBinary>> values);
+            void LoadStatic(IEnumerable<IndexedValue<Analog>> values);
+            void LoadStatic(IEnumerable<IndexedValue<Counter>> values);
+            void LoadStatic(IEnumerable<IndexedValue<FrozenCounter>> values);
+            void LoadStatic(IEnumerable<IndexedValue<BinaryOutputStatus>> values);
+            void LoadStatic(IEnumerable<IndexedValue<AnalogOutputStatus>> values);
+            void LoadStatic(IEnumerable<IndexedValue<OctetString>> values);
 
-	        void LoadEvent(Binary meas, UInt16 index);
-	        void LoadEvent(DoubleBitBinary meas, UInt16 index);
-	        void LoadEvent(Analog meas, UInt16 index);
-	        void LoadEvent(Counter meas, UInt16 index);
-	        void LoadEvent(FrozenCounter meas, UInt16 index);
-	        void LoadEvent(BinaryOutputStatus meas, UInt16 index);
-	        void LoadEvent(AnalogOutputStatus meas, UInt16 index);
-	        void LoadEvent(OctetString meas, UInt16 index);
+	        void LoadEvent(IEnumerable<IndexedValue<Binary>> values);
+	        void LoadEvent(IEnumerable<IndexedValue<DoubleBitBinary>> values);
+	        void LoadEvent(IEnumerable<IndexedValue<Analog>> values);
+	        void LoadEvent(IEnumerable<IndexedValue<Counter>> values);
+	        void LoadEvent(IEnumerable<IndexedValue<FrozenCounter>> values);
+	        void LoadEvent(IEnumerable<IndexedValue<BinaryOutputStatus>> values);
+	        void LoadEvent(IEnumerable<IndexedValue<AnalogOutputStatus>> values);
+            void LoadEvent(IEnumerable<IndexedValue<OctetString>> values);
 	}
 }
