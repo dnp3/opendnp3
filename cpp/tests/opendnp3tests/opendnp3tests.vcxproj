@@ -239,6 +239,7 @@
     <ClCompile Include="src\PhysTestObject.cpp" />
     <ClCompile Include="src\SerialTestObject.cpp" />
     <ClCompile Include="src\TestMasterMultidrop.cpp" />
+    <ClCompile Include="src\TestMasterUnsolBehaviors.cpp" />
     <ClCompile Include="src\TestObject.cpp" />
     <ClCompile Include="src\TestObjectASIO.cpp" />
     <ClCompile Include="src\BufferHelpers.cpp" />

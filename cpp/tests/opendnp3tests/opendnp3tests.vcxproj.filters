@@ -415,5 +415,8 @@
     <ClCompile Include="src\TestMasterMultidrop.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\TestMasterUnsolBehaviors.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
