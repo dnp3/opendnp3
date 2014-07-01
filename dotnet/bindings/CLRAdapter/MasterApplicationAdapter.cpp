@@ -1,5 +1,5 @@
 
-
+#include "Stdafx.h"
 #include "MasterApplicationAdapter.h"
 
 namespace DNP3

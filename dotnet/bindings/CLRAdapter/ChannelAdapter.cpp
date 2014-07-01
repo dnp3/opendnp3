@@ -1,3 +1,5 @@
+
+#include "Stdafx.h"
 #include "ChannelAdapter.h"
 
 #include "Conversions.h"

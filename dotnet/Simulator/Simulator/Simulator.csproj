@@ -261,7 +261,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\bindings\CLRAdapter\DNP3CLRAdapter.vcxproj">
-      <Project>{d2119bee-135f-422c-8166-26d73113d689}</Project>
+      <Project>{7ce83e8a-7dd6-4731-9024-967df7cf60af}</Project>
       <Name>CLRAdapter</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\bindings\CLRInterface\CLRInterface.csproj">

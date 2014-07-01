@@ -1,3 +1,5 @@
+
+#include "Stdafx.h"
 #include "MasterAdapter.h"
 #include "CommandProcessorAdapter.h"
 #include "DeleteAnything.h"

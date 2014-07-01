@@ -1,4 +1,5 @@
 
+#include "Stdafx.h"
 #include "MasterScanAdapter.h"
 
 #include "ScanListenerAdapter.h"

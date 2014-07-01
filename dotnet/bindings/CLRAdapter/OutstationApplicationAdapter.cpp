@@ -1,5 +1,5 @@
 
-
+#include "Stdafx.h"
 #include "OutstationApplicationAdapter.h"
 
 using namespace DNP3::Interface;

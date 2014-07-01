@@ -1,9 +1,8 @@
+
+#include "Stdafx.h"
 #include "CommandProcessorAdapter.h"
 #include "Conversions.h"
 #include "Lock.h"
-
-
-
 
 using namespace System::Threading;
 

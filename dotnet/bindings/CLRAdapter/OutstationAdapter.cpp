@@ -1,4 +1,5 @@
 
+#include "Stdafx.h"
 #include "OutstationAdapter.h"
 
 #include "OutstationDatabaseAdapter.h"

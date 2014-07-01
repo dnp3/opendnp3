@@ -1,3 +1,5 @@
+
+#include "Stdafx.h"
 #include "OutstationDatabaseAdapter.h"
 #include "Conversions.h"
 

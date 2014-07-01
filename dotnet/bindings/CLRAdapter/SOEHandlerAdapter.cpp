@@ -1,5 +1,6 @@
-#include "SOEHandlerAdapter.h"
 
+#include "Stdafx.h"
+#include "SOEHandlerAdapter.h"
 #include "Conversions.h"
 
 namespace DNP3
