@@ -96,6 +96,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <TargetName>DNP3CLRAdapter</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -103,6 +104,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <TargetName>DNP3CLRAdapter</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -161,7 +163,6 @@
     <ClInclude Include="ChannelAdapter.h" />
     <ClInclude Include="CommandProcessorAdapter.h" />
     <ClInclude Include="Conversions.h" />
-    <ClInclude Include="DeleteAnything.h" />
     <ClInclude Include="DNP3ManagerAdapter.h" />
     <ClInclude Include="EnumerableAdapter.h" />
     <ClInclude Include="EventConverter.h" />

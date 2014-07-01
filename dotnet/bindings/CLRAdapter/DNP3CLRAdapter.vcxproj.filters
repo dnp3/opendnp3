@@ -30,9 +30,6 @@
     <ClInclude Include="Conversions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DeleteAnything.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="DNP3ManagerAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>

@@ -32,7 +32,10 @@ namespace DNP3.Interface
     /// </summary>
     public interface IDNP3Manager
     {
-     
+        /// <summary>
+        /// Force a blocking shutdown. All channels and stacks are invalidated.
+        /// </summary>
+        void Shutdown();
 
 		/// <summary>
         /// Add a TCP client channel. The channel does not try to connect until you add a stack.

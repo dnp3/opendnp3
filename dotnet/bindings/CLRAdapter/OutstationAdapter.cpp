@@ -3,8 +3,6 @@
 #include "OutstationAdapter.h"
 
 #include "OutstationDatabaseAdapter.h"
-#include "DeleteAnything.h"
-
 #include "Conversions.h"
 
 #include <opendnp3/outstation/Database.h>

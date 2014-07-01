@@ -15,26 +15,26 @@ namespace DNP3
 namespace Adapter
 {
 
-private ref class ChannelAdapter : IChannel
+ref class ChannelAdapter : IChannel
 {
 public:
 
 	ChannelAdapter(asiodnp3::IChannel* pChannel_) : pChannel(pChannel_)
 	{}	
 
-	virtual LogFilter GetLogFilters();
+	virtual LogFilter GetLogFilters() sealed;
 
-	virtual IChannelStatistics^ GetChannelStatistics();
+	virtual IChannelStatistics^ GetChannelStatistics() sealed;
 
-	virtual void SetLogFilters(LogFilter filters);
+	virtual void SetLogFilters(LogFilter filters) sealed;
 
-	virtual void AddStateListener(System::Action<ChannelState>^ listener);
+	virtual void AddStateListener(System::Action<ChannelState>^ listener) sealed;
 
-	virtual IMaster^ AddMaster(System::String^ loggerId, ISOEHandler^ publisher, IMasterApplication^ application, MasterStackConfig^ config);
+	virtual IMaster^ AddMaster(System::String^ loggerId, ISOEHandler^ publisher, IMasterApplication^ application, MasterStackConfig^ config) sealed;
 
-	virtual IOutstation^ AddOutstation(System::String^ loggerId, ICommandHandler^ cmdHandler, IOutstationApplication^ application, OutstationStackConfig^ config);
+	virtual IOutstation^ AddOutstation(System::String^ loggerId, ICommandHandler^ cmdHandler, IOutstationApplication^ application, OutstationStackConfig^ config) sealed;
 
-	virtual void Shutdown();	
+	virtual void Shutdown() sealed;
 
 private:
 

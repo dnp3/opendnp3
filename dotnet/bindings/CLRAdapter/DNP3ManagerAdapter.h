@@ -43,14 +43,16 @@ public:
 	DNP3ManagerAdapter(System::Int32 aConcurrency);
 	~DNP3ManagerAdapter();
 
-	virtual IChannel^ AddTCPClient(System::String^ id, System::UInt32 filters, System::TimeSpan minRetryDelay, System::TimeSpan maxRetryDelay, System::String^ address, System::UInt16 port);
-	virtual IChannel^ AddTCPServer(System::String^ id, System::UInt32 filters, System::TimeSpan minRetryDelay, System::TimeSpan maxRetryDelay, System::String^ endpoint, System::UInt16 port);
-	virtual IChannel^ AddSerial(System::String^ id, System::UInt32 filters, System::TimeSpan minRetryDelay, System::TimeSpan maxRetryDelay, DNP3::Interface::SerialSettings^ settings);
+	virtual void Shutdown() sealed;
+
+	virtual IChannel^ AddTCPClient(System::String^ id, System::UInt32 filters, System::TimeSpan minRetryDelay, System::TimeSpan maxRetryDelay, System::String^ address, System::UInt16 port)  sealed;
+	virtual IChannel^ AddTCPServer(System::String^ id, System::UInt32 filters, System::TimeSpan minRetryDelay, System::TimeSpan maxRetryDelay, System::String^ endpoint, System::UInt16 port) sealed;
+	virtual IChannel^ AddSerial(System::String^ id, System::UInt32 filters, System::TimeSpan minRetryDelay, System::TimeSpan maxRetryDelay, DNP3::Interface::SerialSettings^ settings)  sealed;
 
 	virtual void AddLogHandler(ILogHandler^ logHandler);
 
 private:
-	asiodnp3::DNP3Manager* mpMgr;
+	asiodnp3::DNP3Manager* pManager;
 };
 
 }

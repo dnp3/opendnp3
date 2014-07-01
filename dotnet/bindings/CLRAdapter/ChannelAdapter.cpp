@@ -9,7 +9,6 @@
 #include "MasterApplicationAdapter.h"
 #include "MasterAdapter.h"
 #include "OutstationAdapter.h"
-#include "DeleteAnything.h"
 #include "EventConverter.h"
 
 #include <opendnp3/outstation/Database.h>

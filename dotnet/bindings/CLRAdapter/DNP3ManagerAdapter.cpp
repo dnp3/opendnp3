@@ -5,7 +5,6 @@
 #include "Conversions.h"
 #include "LogAdapter.h"
 #include "ChannelAdapter.h"
-#include "DeleteAnything.h"
 
 #include <asiodnp3/DNP3Manager.h>
 
@@ -27,15 +26,19 @@ IDNP3Manager^ DNP3ManagerFactory::CreateManager()
 }
 
 
-DNP3ManagerAdapter::DNP3ManagerAdapter(System::Int32 aConcurrency) :
-	mpMgr(new asiodnp3::DNP3Manager(aConcurrency))
+DNP3ManagerAdapter::DNP3ManagerAdapter(System::Int32 aConcurrency) : pManager(new asiodnp3::DNP3Manager(aConcurrency))
 {
 
 }
 
 DNP3ManagerAdapter::~DNP3ManagerAdapter()
 {
-	delete mpMgr;
+	delete pManager;
+}
+
+void DNP3ManagerAdapter::Shutdown()
+{
+	pManager->Shutdown();
 }
 
 IChannel^ DNP3ManagerAdapter::AddTCPClient(System::String^ id, System::UInt32 filters, System::TimeSpan minRetryDelay, System::TimeSpan maxRetryDelay, System::String^ address, System::UInt16 port)
@@ -45,7 +48,7 @@ IChannel^ DNP3ManagerAdapter::AddTCPClient(System::String^ id, System::UInt32 fi
 	std::string stdAddress = Conversions::ConvertString(address);
 	uint16_t stdPort = port;
 
-	auto pChannel = mpMgr->AddTCPClient(stdName.c_str(), filters, Conversions::ConvertTimespan(minRetryDelay), Conversions::ConvertTimespan(maxRetryDelay), stdAddress, stdPort);
+	auto pChannel = pManager->AddTCPClient(stdName.c_str(), filters, Conversions::ConvertTimespan(minRetryDelay), Conversions::ConvertTimespan(maxRetryDelay), stdAddress, stdPort);
 	if (pChannel)
 	{		
 		auto adapter = gcnew ChannelAdapter(pChannel);
@@ -64,7 +67,7 @@ IChannel^ DNP3ManagerAdapter::AddTCPServer(System::String^ id, System::UInt32 fi
 	std::string stdEndpoint = Conversions::ConvertString(endpoint);
 	uint16_t stdPort = port;
 	
-	auto pChannel = mpMgr->AddTCPServer(stdName.c_str(), filters, Conversions::ConvertTimespan(minRetryDelay), Conversions::ConvertTimespan(maxRetryDelay), stdEndpoint, stdPort);
+	auto pChannel = pManager->AddTCPServer(stdName.c_str(), filters, Conversions::ConvertTimespan(minRetryDelay), Conversions::ConvertTimespan(maxRetryDelay), stdEndpoint, stdPort);
 	if (pChannel)
 	{
 		auto adapter = gcnew ChannelAdapter(pChannel);
@@ -82,7 +85,7 @@ IChannel^ DNP3ManagerAdapter::AddSerial(System::String^ id, System::UInt32 filte
 	std::string stdName = Conversions::ConvertString(id);
 	auto s = Conversions::ConvertSerialSettings(settings);
 	
-	auto pChannel = mpMgr->AddSerial(stdName.c_str(), filters, Conversions::ConvertTimespan(minRetryDelay), Conversions::ConvertTimespan(maxRetryDelay), s);
+	auto pChannel = pManager->AddSerial(stdName.c_str(), filters, Conversions::ConvertTimespan(minRetryDelay), Conversions::ConvertTimespan(maxRetryDelay), s);
 	if (pChannel)
 	{
 		auto adapter = gcnew ChannelAdapter(pChannel);
@@ -98,7 +101,7 @@ IChannel^ DNP3ManagerAdapter::AddSerial(System::String^ id, System::UInt32 filte
 void DNP3ManagerAdapter::AddLogHandler(ILogHandler^ logHandler)
 {
 	LogAdapterWrapper^ wrapper = gcnew LogAdapterWrapper(logHandler);
-	mpMgr->AddLogSubscriber(wrapper->GetLogAdapter());
+	pManager->AddLogSubscriber(wrapper->GetLogAdapter());
 }
 
 }

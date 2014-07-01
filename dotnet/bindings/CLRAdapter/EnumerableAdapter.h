@@ -12,19 +12,19 @@ namespace Adapter
 {
 
 template <typename Target, typename Source>
-public ref class EnumerableAdapter : System::Collections::Generic::IEnumerable<IndexedValue<Target>>
+ref class EnumerableAdapter : System::Collections::Generic::IEnumerable<IndexedValue<Target>>
 {
 	public:
 
 	EnumerableAdapter(const opendnp3::IterableBuffer<Source>& buffer) : pBuffer(&buffer)
 	{}
 		
-	virtual System::Collections::IEnumerator^ GetEnumeratorNonGeneric() = System::Collections::IEnumerable::GetEnumerator
+	virtual System::Collections::IEnumerator^ GetEnumeratorNonGeneric() sealed = System::Collections::IEnumerable::GetEnumerator
 	{
 		return GetEnumerator();
 	}
 
-	virtual System::Collections::Generic::IEnumerator<IndexedValue<Target>>^ GetEnumerator()
+	virtual System::Collections::Generic::IEnumerator<IndexedValue<Target>>^ GetEnumerator() sealed
 	{
 		return gcnew EnumeratorAdapter<opendnp3::IterableBuffer<Source>::Iterator>(pBuffer->Iterate());
 	}
@@ -46,17 +46,17 @@ public ref class EnumerableAdapter : System::Collections::Generic::IEnumerable<I
 			delete pIterator;
 		}
 
-		virtual bool MoveNext()
+		virtual bool MoveNext() sealed
 		{
 			return pIterator->MoveNext();
 		}
 
-		virtual void Reset()
+		virtual void Reset() sealed
 		{
 			return pIterator->Reset();
 		}
 
-		virtual property IndexedValue<Target> Current //= System::Collections::Generic::IEnumerator<Target>::Current
+		virtual property IndexedValue<Target> Current
 		{			
 			IndexedValue<Target> get() sealed = System::Collections::Generic::IEnumerator<IndexedValue<Target>>::Current::get
 			{

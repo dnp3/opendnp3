@@ -23,7 +23,7 @@ class CommandCallbackAdapter : public opendnp3::ICommandCallback, openpal::Uncop
 	CommandCallbackAdapter(Future<CommandResponse>^ future, bool autoDelete_) : autoDelete(autoDelete_), root(future)
 	{}
 
-	virtual void OnComplete(const opendnp3::CommandResponse& response)
+	virtual void OnComplete(const opendnp3::CommandResponse& response) sealed
 	{
 		auto result = Conversions::ConvertCommandResponse(response);
 
@@ -44,17 +44,17 @@ public:
 
 	CommandProcessorAdapter(opendnp3::ICommandProcessor* apProxy);
 
-	virtual IFuture<CommandResponse>^ SelectAndOperate(ControlRelayOutputBlock^ command, System::UInt32 index);
-	virtual IFuture<CommandResponse>^ SelectAndOperate(AnalogOutputInt32^ command, System::UInt32 index);
-	virtual IFuture<CommandResponse>^ SelectAndOperate(AnalogOutputInt16^ command, System::UInt32 index);
-	virtual IFuture<CommandResponse>^ SelectAndOperate(AnalogOutputFloat32^ command, System::UInt32 index);
-	virtual IFuture<CommandResponse>^ SelectAndOperate(AnalogOutputDouble64^ command, System::UInt32 index);
+	virtual IFuture<CommandResponse>^ SelectAndOperate(ControlRelayOutputBlock^ command, System::UInt32 index) sealed;
+	virtual IFuture<CommandResponse>^ SelectAndOperate(AnalogOutputInt32^ command, System::UInt32 index) sealed;
+	virtual IFuture<CommandResponse>^ SelectAndOperate(AnalogOutputInt16^ command, System::UInt32 index) sealed;
+	virtual IFuture<CommandResponse>^ SelectAndOperate(AnalogOutputFloat32^ command, System::UInt32 index) sealed;
+	virtual IFuture<CommandResponse>^ SelectAndOperate(AnalogOutputDouble64^ command, System::UInt32 index) sealed;
 
-	virtual IFuture<CommandResponse>^ DirectOperate(ControlRelayOutputBlock^ command, System::UInt32 index);
-	virtual IFuture<CommandResponse>^ DirectOperate(AnalogOutputInt32^ command, System::UInt32 index);
-	virtual IFuture<CommandResponse>^ DirectOperate(AnalogOutputInt16^ command, System::UInt32 index);
-	virtual IFuture<CommandResponse>^ DirectOperate(AnalogOutputFloat32^ command, System::UInt32 index);
-	virtual IFuture<CommandResponse>^ DirectOperate(AnalogOutputDouble64^ command, System::UInt32 index);
+	virtual IFuture<CommandResponse>^ DirectOperate(ControlRelayOutputBlock^ command, System::UInt32 index) sealed;
+	virtual IFuture<CommandResponse>^ DirectOperate(AnalogOutputInt32^ command, System::UInt32 index) sealed;
+	virtual IFuture<CommandResponse>^ DirectOperate(AnalogOutputInt16^ command, System::UInt32 index) sealed;
+	virtual IFuture<CommandResponse>^ DirectOperate(AnalogOutputFloat32^ command, System::UInt32 index) sealed;
+	virtual IFuture<CommandResponse>^ DirectOperate(AnalogOutputDouble64^ command, System::UInt32 index) sealed;
 
 private:
 
