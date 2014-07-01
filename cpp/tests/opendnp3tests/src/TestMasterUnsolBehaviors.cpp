@@ -28,7 +28,6 @@
 
 #include <opendnp3/app/APDUResponse.h>
 #include <opendnp3/app/APDUBuilders.h>
-#include <opendnp3/app/PointClass.h>
 
 using namespace openpal;
 using namespace opendnp3;

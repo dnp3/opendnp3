@@ -67,6 +67,7 @@ cpp/libs/opendnp3/src/opendnp3/app/APDUResponse.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/APDUWrapper.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/AppControlField.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/BitReader.cpp \
+cpp/libs/opendnp3/src/opendnp3/app/ClassField.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/ControlRelayOutputBlock.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/EventTriggers.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/GroupVariation.cpp \
@@ -88,6 +89,7 @@ cpp/libs/opendnp3/src/opendnp3/gen/EventDoubleBinaryResponse.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/EventFrozenCounterResponse.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/FunctionCode.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/LinkFunction.cpp \
+cpp/libs/opendnp3/src/opendnp3/gen/PointClass.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/PollState.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/QualifierCode.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/StaticAnalogOutputStatusResponse.cpp \
@@ -97,6 +99,7 @@ cpp/libs/opendnp3/src/opendnp3/gen/StaticBinaryResponse.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/StaticCounterResponse.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/StaticDoubleBinaryResponse.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/StaticFrozenCounterResponse.cpp \
+cpp/libs/opendnp3/src/opendnp3/gen/TimeSyncMode.cpp \
 cpp/libs/opendnp3/src/opendnp3/link/CRC.cpp \
 cpp/libs/opendnp3/src/opendnp3/link/IOpenDelayStrategy.cpp \
 cpp/libs/opendnp3/src/opendnp3/link/LinkFrame.cpp \
@@ -158,8 +161,6 @@ cpp/libs/opendnp3/src/opendnp3/outstation/ClassBasedRequestHandler.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/CommandActionAdapter.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/CommandResponseHandler.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/Database.cpp \
-cpp/libs/opendnp3/src/opendnp3/outstation/DynamicallyAllocatedDatabase.cpp \
-cpp/libs/opendnp3/src/opendnp3/outstation/DynamicallyAllocatedEventBuffer.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/EventBufferConfig.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/EventBufferFacade.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/EventCount.cpp \
@@ -168,7 +169,7 @@ cpp/libs/opendnp3/src/opendnp3/outstation/EventResponseContext.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/EventResponseTypes.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/EventWriter.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/IINHelpers.cpp \
-cpp/libs/opendnp3/src/opendnp3/outstation/ITimeWriteHandler.cpp \
+cpp/libs/opendnp3/src/opendnp3/outstation/IOutstationApplication.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/OutstationContext.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/Outstation.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/OutstationEventBuffer.cpp \
@@ -197,14 +198,18 @@ libasiodnp3_la_LDFLAGS = -version-info 1:1:0
 libasiodnp3_la_SOURCES = \
 cpp/libs/asiodnp3/src/asiodnp3/ChannelSet.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/ConsoleLogger.cpp \
+cpp/libs/asiodnp3/src/asiodnp3/DefaultMasterApplication.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/DestructorHook.cpp \
-cpp/libs/asiodnp3/src/asiodnp3/DNP3Manager.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/DNP3Channel.cpp \
+cpp/libs/asiodnp3/src/asiodnp3/DNP3Manager.cpp \
+cpp/libs/asiodnp3/src/asiodnp3/DynamicallyAllocatedDatabase.cpp \
+cpp/libs/asiodnp3/src/asiodnp3/DynamicallyAllocatedEventBuffer.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/MasterStackImpl.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/MultidropTaskLock.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/OutstationStackImpl.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/PrintingSOEHandler.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/StackActionHandler.cpp
+
 
 masterdemo_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) -I$(ASIODNP3_INCLUDE) $(ASIO_CONFIG) -Wl,--no-as-needed
 masterdemo_LDFLAGS = -pthread
