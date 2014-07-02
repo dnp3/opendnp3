@@ -42,7 +42,7 @@ class StackActionHandler
 {
 public:
 
-	StackActionHandler(opendnp3::LinkLayerRouter* pRouter_, asiopal::ASIOExecutor& executor);
+	StackActionHandler(opendnp3::LinkLayerRouter& router, asiopal::ASIOExecutor& executor);
 
 	asiopal::ASIOExecutor* GetExecutor();
 
@@ -50,7 +50,7 @@ public:
 
 	bool DisableRoute(opendnp3::ILinkContext*);
 
-	void Shutdown(opendnp3::ILinkContext* pContext, IStack* pStack);
+	void Shutdown(opendnp3::ILinkContext* pContext);
 
 private:
 

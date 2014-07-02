@@ -63,7 +63,7 @@ bool MasterStackImpl::Disable()
 
 void MasterStackImpl::Shutdown()
 {
-	handler.Shutdown(&stack.link, this);
+	handler.Shutdown(&stack.link);
 	shutdownAction.Apply();
 }
 
