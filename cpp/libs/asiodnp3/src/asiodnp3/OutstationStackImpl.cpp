@@ -29,13 +29,15 @@ namespace asiodnp3
 {
 
 OutstationStackImpl::OutstationStackImpl(
-	openpal::LogRoot& root,
+	const char* id,
+	openpal::LogRoot& root_,
     openpal::IExecutor& executor,	
 	opendnp3::ICommandHandler& commandHandler,
 	IOutstationApplication& application,
     const OutstationStackConfig& config,
     const StackActionHandler& handler_) :	
 	
+	root(root_, id),
 	handler(handler_),
 	stack(root, &executor, &statistics, config.link),
 	databaseBuffers(config.dbTemplate),

@@ -31,14 +31,15 @@ using namespace opendnp3;
 namespace asiodnp3
 {
 
-MasterStackImpl::MasterStackImpl(	LogRoot& root,
+MasterStackImpl::MasterStackImpl(   const char* id,
+									LogRoot& root_,
 									asiopal::ASIOExecutor& executor,
 									opendnp3::ISOEHandler& SOEHandler,                                    
 									opendnp3::IMasterApplication& application,
                                     const MasterStackConfig& config,
                                     const StackActionHandler& handler_,									
 									opendnp3::ITaskLock& taskLock) :
-
+	root(root_, id),
 	handler(handler_),
 	stack(root, &executor, &statistics, config.link),
 	master(executor, root, stack.transport, SOEHandler, application, config.master, taskLock)

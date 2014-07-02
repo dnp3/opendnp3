@@ -40,6 +40,8 @@ class LogRoot : private Uncopyable
 
 public:
 
+	LogRoot(const LogRoot&, char const* alias_);
+
 	LogRoot(ILogHandler* pHandler_, char const* alias_, const LogFilters& filters);
 
 	void Log(const LogFilters& filters, char const* location, char const* message, int errorCode);

@@ -173,7 +173,7 @@ IMaster* DNP3Channel::_AddMaster(char const* id,
 	else
 	{
 		StackActionHandler handler(router, *pExecutor);
-		auto pMaster = new MasterStackImpl(*pLogRoot, *pExecutor, SOEHandler, application, config, handler, taskLock);
+		auto pMaster = new MasterStackImpl(id, *pLogRoot, *pExecutor, SOEHandler, application, config, handler, taskLock);
 		auto onShutdown = [this, pMaster](){ this->OnShutdown(pMaster); };
 		pMaster->SetShutdownAction(Action0::Bind(onShutdown));
 		pMaster->SetLinkRouter(&router);
@@ -197,7 +197,7 @@ IOutstation* DNP3Channel::_AddOutstation(char const* id,
 	else
 	{
 		StackActionHandler handler(router, *pExecutor);
-		auto pOutstation = new OutstationStackImpl(*pLogRoot, *pExecutor, commandHandler, application, config, handler);
+		auto pOutstation = new OutstationStackImpl(id, *pLogRoot, *pExecutor, commandHandler, application, config, handler);
 		auto onShutdown = [this, pOutstation](){ this->OnShutdown(pOutstation); };
 		pOutstation->SetShutdownAction(Action0::Bind(onShutdown));
 		pOutstation->SetLinkRouter(&router);

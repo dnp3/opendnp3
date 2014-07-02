@@ -46,6 +46,7 @@ class OutstationStackImpl : public IOutstation
 public:
 
 	OutstationStackImpl(
+		const char* id,
 	    openpal::LogRoot&,
 		openpal::IExecutor& executor,		
 		opendnp3::ICommandHandler& commandHandler,
@@ -74,6 +75,7 @@ public:
 	opendnp3::ILinkContext* GetLinkContext();
 
 private:
+	openpal::LogRoot root;
 	openpal::Action0 shutdownAction;
 	opendnp3::StackStatistics statistics;	
 	StackActionHandler handler;

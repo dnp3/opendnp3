@@ -31,10 +31,19 @@
 namespace openpal
 {
 
-	LogRoot::LogRoot(ILogHandler* pHandler_, char const* alias_, const LogFilters& filters_) :
+LogRoot::LogRoot(ILogHandler* pHandler_, char const* alias_, const LogFilters& filters_) :
 	pHandler(pHandler_), 
 	filters(filters_)
 {		
+	#ifndef OPENPAL_STRIP_LOGGING
+	SAFE_STRING_FORMAT(alias, MAX_ID_SIZE, "%s", alias_);
+	#endif
+}
+
+LogRoot::LogRoot(const LogRoot& copy, char const* alias_) : 
+	pHandler(copy.pHandler),
+	filters(copy.filters)
+{
 	#ifndef OPENPAL_STRIP_LOGGING
 	SAFE_STRING_FORMAT(alias, MAX_ID_SIZE, "%s", alias_);
 	#endif

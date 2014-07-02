@@ -40,6 +40,7 @@ class MasterStackImpl : public IMaster
 public:
 
 	MasterStackImpl(
+		const char* id,
 		openpal::LogRoot& root,
 	    asiopal::ASIOExecutor& executor,
 		opendnp3::ISOEHandler& SOEHandler,	    
@@ -74,6 +75,7 @@ public:
 
 
 private:
+	openpal::LogRoot root;
 	openpal::Action0 shutdownAction;
 	opendnp3::StackStatistics statistics;
 	StackActionHandler handler;
