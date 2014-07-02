@@ -40,11 +40,11 @@ public:
 
 class ExponentialBackoffStrategy : public IOpenDelayStrategy, private openpal::Uncopyable
 {
-	static ExponentialBackoffStrategy mInstance;
+	static ExponentialBackoffStrategy instance;
 
 public:
 
-	static IOpenDelayStrategy* Inst();
+	static IOpenDelayStrategy& Instance();
 
 	virtual openpal::TimeDuration GetNextDelay(const openpal::TimeDuration& current, const openpal::TimeDuration& max) const override final;
 };

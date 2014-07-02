@@ -64,7 +64,7 @@ public:
 		asiopal::ASIOExecutor& executor,
 	    openpal::TimeDuration minOpenRetry,
 	    openpal::TimeDuration maxOpenRetry,
-	    opendnp3::IOpenDelayStrategy* pStrategy,
+		opendnp3::IOpenDelayStrategy& strategy,
 		openpal::IPhysicalLayer* pPhys_	    	
 	);
 

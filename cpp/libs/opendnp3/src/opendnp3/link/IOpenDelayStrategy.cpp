@@ -26,11 +26,11 @@
 namespace opendnp3
 {
 
-ExponentialBackoffStrategy ExponentialBackoffStrategy::mInstance;
+ExponentialBackoffStrategy ExponentialBackoffStrategy::instance;
 
-IOpenDelayStrategy* ExponentialBackoffStrategy::Inst()
+IOpenDelayStrategy& ExponentialBackoffStrategy::Instance()
 {
-	return &mInstance;
+	return instance;
 }
 
 openpal::TimeDuration ExponentialBackoffStrategy::GetNextDelay(const openpal::TimeDuration& current, const openpal::TimeDuration& max) const

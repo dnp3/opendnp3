@@ -57,8 +57,8 @@ public:
 	                openpal::IPhysicalLayer*,
 	                openpal::TimeDuration minOpenRetry,
 	                openpal::TimeDuration maxOpenRetry,
-	                IChannelStateListener* pStateHandler = nullptr,	                
-	                IOpenDelayStrategy* pStrategy = ExponentialBackoffStrategy::Inst(),
+	                IChannelStateListener* pStateHandler = nullptr,
+					IOpenDelayStrategy& strategy = ExponentialBackoffStrategy::Instance(),
 					LinkChannelStatistics* pStatistics = nullptr);
 
 	// called when the router shuts down

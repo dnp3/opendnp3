@@ -83,7 +83,7 @@ public:
 	* @param maxOpenRetry minimum connection retry interval on failure in milliseconds
 	* @param host IP address of remote outstation (i.e. 127.0.0.1 or www.google.com)
 	* @param port Port of remote outstation is listening on
-	* @param pStrategy Reconnection delay strategy, default to exponential
+	* @param strategy Reconnection delay strategy, default to exponential
 	*/
 	IChannel* AddTCPClient(
 		char const* id,
@@ -92,7 +92,7 @@ public:
 	    openpal::TimeDuration maxOpenRetry,
 	    const std::string& host,
 	    uint16_t port,	    
-	    opendnp3::IOpenDelayStrategy* pStrategy = opendnp3::ExponentialBackoffStrategy::Inst());
+	    opendnp3::IOpenDelayStrategy& strategy = opendnp3::ExponentialBackoffStrategy::Instance());
 
 	/**
 	* Add a tcp server channel
@@ -102,7 +102,7 @@ public:
 	* @param maxOpenRetry minimum connection retry interval on failure in milliseconds
 	* @param endpoint Network adapter to listen on, i.e. 127.0.0.1 or 0.0.0.0
 	* @param port Port to listen on
-	* @param pStrategy Reconnection delay strategy, default to exponential
+	* @param strategy Reconnection delay strategy, default to exponential
 	*/
 	IChannel* AddTCPServer(
 		char const* id,
@@ -111,7 +111,7 @@ public:
 	    openpal::TimeDuration maxOpenRetry,
 	    const std::string& endpoint,
 	    uint16_t port,		
-	    opendnp3::IOpenDelayStrategy* pStrategy = opendnp3::ExponentialBackoffStrategy::Inst());
+	    opendnp3::IOpenDelayStrategy& strategy = opendnp3::ExponentialBackoffStrategy::Instance());
 
 	/**
 	* Add a serial channel
@@ -120,7 +120,7 @@ public:
 	* @param minOpenRetry minimum connection retry interval on failure in milliseconds
 	* @param maxOpenRetry minimum connection retry interval on failure in milliseconds
 	* @param settings settings object that fully parameterizes the serial port
-	* @param pStrategy Reconnection delay strategy, default to exponential
+	* @param strategy Reconnection delay strategy, default to exponential
 	*/
 	IChannel* AddSerial(
 		char const* id,
@@ -128,7 +128,7 @@ public:
 	    openpal::TimeDuration minOpenRetry,
 	    openpal::TimeDuration maxOpenRetry,
 	    asiopal::SerialSettings settings,		
-	    opendnp3::IOpenDelayStrategy* pStrategy = opendnp3::ExponentialBackoffStrategy::Inst());
+	    opendnp3::IOpenDelayStrategy& strategy = opendnp3::ExponentialBackoffStrategy::Instance());
 
 private:
 

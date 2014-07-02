@@ -56,7 +56,7 @@ public:
 	                            openpal::TimeDuration minOpenRetry,
 	                            openpal::TimeDuration maxOpenRetry,
 								asiopal::PhysicalLayerBase* pPhys,	                            
-								opendnp3::IOpenDelayStrategy* pOpenStrategy = opendnp3::ExponentialBackoffStrategy::Inst());
+								opendnp3::IOpenDelayStrategy& strategy = opendnp3::ExponentialBackoffStrategy::Instance());
 
 	/// Synchronously shutdown all channels. Block until complete.
 	void Shutdown();

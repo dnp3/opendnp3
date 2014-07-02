@@ -40,7 +40,7 @@ DNP3Channel::DNP3Channel(
 	asiopal::ASIOExecutor& executor,
     openpal::TimeDuration minOpenRetry,
     openpal::TimeDuration maxOpenRetry,
-    IOpenDelayStrategy* pStrategy,
+    IOpenDelayStrategy& strategy,
     openpal::IPhysicalLayer* pPhys_) :
 		
 		pPhys(pPhys_),
@@ -49,7 +49,7 @@ DNP3Channel::DNP3Channel(
 		logger(pLogRoot->GetLogger()),		
 		pShutdownHandler(nullptr),
 		channelState(ChannelState::CLOSED),
-		router(*pLogRoot, executor, pPhys.get(), minOpenRetry, maxOpenRetry, this, pStrategy, &statistics)	
+		router(*pLogRoot, executor, pPhys.get(), minOpenRetry, maxOpenRetry, this, strategy, &statistics)	
 {
 	pPhys->SetChannelStatistics(&statistics);
 

@@ -53,7 +53,7 @@ public:
 	                        openpal::IPhysicalLayer*,
 	                        openpal::TimeDuration minOpenRetry_,
 	                        openpal::TimeDuration maxOpenRetry_,
-	                        opendnp3::IOpenDelayStrategy* pOpenStrategy_ = ExponentialBackoffStrategy::Inst());
+							IOpenDelayStrategy& strategy = ExponentialBackoffStrategy::Instance());
 
 	/** Begin monitor execution, retry indefinitely on failure - Idempotent*/
 	void Start();

@@ -41,10 +41,10 @@ LinkLayerRouter::LinkLayerRouter(	openpal::LogRoot& root,
                                     openpal::TimeDuration minOpenRetry,
                                     openpal::TimeDuration maxOpenRetry,
 									IChannelStateListener* pStateHandler_,                                    
-                                    IOpenDelayStrategy* pStrategy,
+									IOpenDelayStrategy& strategy,
 									LinkChannelStatistics* pStatistics_) :
 
-	PhysicalLayerMonitor(root, executor, pPhys, minOpenRetry, maxOpenRetry, pStrategy),
+	PhysicalLayerMonitor(root, executor, pPhys, minOpenRetry, maxOpenRetry, strategy),
 	pStateHandler(pStateHandler_),	
 	pStatistics(pStatistics_),
 	parser(logger, pStatistics_),

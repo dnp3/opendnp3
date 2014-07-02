@@ -40,7 +40,7 @@ PhysicalLayerMonitor::PhysicalLayerMonitor(
     IPhysicalLayer* pPhys_,
     TimeDuration minOpenRetry_,
     TimeDuration maxOpenRetry_,
-    IOpenDelayStrategy* pOpenStrategy_) :
+	IOpenDelayStrategy& strategy) :
 	logger(root.GetLogger()),
 	pPhys(pPhys_),
 	pExecutor(&executor),
@@ -51,7 +51,7 @@ PhysicalLayerMonitor::PhysicalLayerMonitor(
 	minOpenRetry(minOpenRetry_),
 	maxOpenRetry(maxOpenRetry_),
 	currentRetry(minOpenRetry_),
-	pOpenStrategy(pOpenStrategy_)
+	pOpenStrategy(&strategy)
 {
 	assert(pPhys != nullptr);
 	pPhys->SetHandler(this);
