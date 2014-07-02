@@ -126,13 +126,14 @@ void DNP3Channel::CheckForFinalShutdown()
 
 openpal::LogFilters DNP3Channel::GetLogFilters() const
 {
-	return pLogRoot->GetFilters();
+	auto get = [this](){ return pLogRoot->GetFilters(); };
+	return asiopal::SynchronouslyGet<LogFilters>(pExecutor->strand, get);	
 }
 
 void DNP3Channel::SetLogFilters(const openpal::LogFilters& filters)
 {	
-	auto lambda = [this, filters]() { this->pLogRoot->SetFilters(filters); };
-	pExecutor->PostLambda(lambda);
+	auto set = [this, filters]() { this->pLogRoot->SetFilters(filters); };
+	asiopal::SynchronouslyExecute(pExecutor->strand, set);
 }
 
 IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler& SOEHandler, IMasterApplication& application, const MasterStackConfig& config)
@@ -142,7 +143,7 @@ IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler& SOEHandler, IMaster
 		return this->_AddMaster(id, SOEHandler, application, config);
 	};
 
-	return  asiopal::SynchronouslyGet<IMaster*>(pExecutor->strand, add);
+	return asiopal::SynchronouslyGet<IMaster*>(pExecutor->strand, add);
 }
 
 IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler& commandHandler, IOutstationApplication& application, const OutstationStackConfig& config)
