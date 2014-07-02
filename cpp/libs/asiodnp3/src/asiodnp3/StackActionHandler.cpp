@@ -47,13 +47,13 @@ asiopal::ASIOExecutor* StackActionHandler::GetExecutor()
 
 bool StackActionHandler::EnableRoute(ILinkContext* pContext)
 {
-	auto enable = [=]() { return pRouter->Enable(pContext); };
+	auto enable = [this, pContext]() { return pRouter->Enable(pContext); };
 	return asiopal::SynchronouslyGet<bool>(pExecutor->strand, enable);
 }
 
 bool StackActionHandler::DisableRoute(ILinkContext* pContext)
 {
-	auto disable = [=]() { return pRouter->Disable(pContext); };
+	auto disable = [this, pContext]() { return pRouter->Disable(pContext); };
 	return asiopal::SynchronouslyGet<bool>(pExecutor->strand, disable);
 }
 

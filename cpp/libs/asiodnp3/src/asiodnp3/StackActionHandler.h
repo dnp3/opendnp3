@@ -22,8 +22,6 @@
 #define __STACK_ACTION_HANDLER_H_
 
 
-#include "IShutdownHandler.h"
-
 namespace opendnp3
 {
 	class LinkLayerRouter;	
