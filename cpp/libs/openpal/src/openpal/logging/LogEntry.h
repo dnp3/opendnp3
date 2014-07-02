@@ -38,12 +38,12 @@ public:
 
 	LogEntry();
 
-	LogEntry(char const* id, const LogFilters& filters, char const* location, char const* message, int errorCode);
+	LogEntry(char const* alias, const LogFilters& filters, char const* location, char const* message, int errorCode);
 
-	/// @return The name of the logger that recorded the message
-	char const*	GetId() const
+	/// @return The alias of the logger that recorded the message
+	char const*	GetAlias() const
 	{
-		return id;
+		return alias;
 	}
 	
 	/// @return The place in the source code where the message was recorded
@@ -72,7 +72,7 @@ public:
 
 private:
 
-	char const*		id;
+	char const*		alias;
 	LogFilters		filters;		
 	char const*		location;
 	char const*		message;

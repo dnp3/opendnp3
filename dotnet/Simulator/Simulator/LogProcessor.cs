@@ -33,7 +33,7 @@ namespace Automatak.DNP3.Simulator
             if (DisplayTimestamp(entry.filter))
             {
                yield return "";              
-               yield return GetLogString(entry.time, entry.filter.Flags, entry.loggerName, entry.message);
+               yield return GetLogString(DateTime.Now, entry.filter.Flags, entry.alias, entry.message);
             }
             else
             {                

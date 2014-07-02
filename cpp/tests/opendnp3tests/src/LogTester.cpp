@@ -36,7 +36,7 @@ LogRecord::LogRecord() :
 {}
 
 LogRecord::LogRecord(const LogEntry& entry) : 
-	id(entry.GetId()), 
+	id(entry.GetAlias()), 
 	filters(entry.GetFilters()), 
 	location(entry.GetLocation()),
 	message(entry.GetMessage()),

@@ -31,12 +31,12 @@
 namespace openpal
 {
 
-LogRoot::LogRoot(ILogHandler* pHandler_, char const* id_, const LogFilters& filters_) :
+	LogRoot::LogRoot(ILogHandler* pHandler_, char const* alias_, const LogFilters& filters_) :
 	pHandler(pHandler_), 
 	filters(filters_)
 {		
 	#ifndef OPENPAL_STRIP_LOGGING
-	SAFE_STRING_FORMAT(id, MAX_ID_SIZE, "%s", id_);
+	SAFE_STRING_FORMAT(alias, MAX_ID_SIZE, "%s", alias_);
 	#endif
 }
 
@@ -44,7 +44,7 @@ void LogRoot::Log(const LogFilters& filters, char const* location, char const* m
 {
 	if (pHandler)
 	{
-		LogEntry le(id, filters, location, message, errorCode);
+		LogEntry le(alias, filters, location, message, errorCode);
 		pHandler->Log(le);
 	}	
 }

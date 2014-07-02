@@ -37,18 +37,16 @@ namespace DNP3.Interface
         /// Constructor
         /// </summary>
         /// <param name="filters">Bitfield for the message</param>
-        /// <param name="loggerName">Logger id that recorded the message</param>
+        /// <param name="alias">Logger alias that recorded the message</param>
         /// <param name="location">Location in the code</param>
-        /// <param name="message">Body of the message</param>
-        /// <param name="time">Timestamp on the message</param>
+        /// <param name="message">Body of the message</param>        
         /// <param name="errorCode">dnp3 error code</param>
-        public LogEntry(UInt32 filters, String loggerName, String location, String message, DateTime time, int errorCode)
+        public LogEntry(UInt32 filters, String alias, String location, String message, int errorCode)
         {
-            this.filter = new LogFilter(filters);            
-            this.loggerName = loggerName;
+            this.filter = new LogFilter(filters);
+            this.alias = alias;
             this.location = location;
-            this.message = message;
-            this.time = time;
+            this.message = message;            
             this.errorCode = errorCode;            
         }
 
@@ -58,9 +56,9 @@ namespace DNP3.Interface
         public readonly LogFilter filter;
         
         /// <summary>
-        /// Logger id that recorded the message
+        /// Logger alias that recorded the message
         /// </summary>
-	    public readonly String loggerName;
+        public readonly String alias;
 
         /// <summary>
         /// Location in the code
@@ -71,11 +69,6 @@ namespace DNP3.Interface
         /// Body of the message
         /// </summary>
 	    public readonly String message;
-
-        /// <summary>
-        /// Timestamp on the message
-        /// </summary>
-	    public readonly DateTime time;
 
         /// <summary>
         /// dnp3 error code

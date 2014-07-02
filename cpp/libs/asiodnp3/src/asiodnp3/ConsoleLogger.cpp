@@ -55,7 +55,7 @@ void ConsoleLogger::Log(const openpal::LogEntry& entry)
 	ostringstream oss;
 
 	oss << "ms(" << num << ") " << FilterToString(entry.GetFilters());
-	oss << " " << entry.GetId();
+	oss << " " << entry.GetAlias();
 	if (printLocation)
 	{
 		oss << " - " << entry.GetLocation();

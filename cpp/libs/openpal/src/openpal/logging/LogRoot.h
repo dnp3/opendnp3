@@ -40,7 +40,7 @@ class LogRoot : private Uncopyable
 
 public:
 
-	LogRoot(ILogHandler* pHandler_, char const* id_, const LogFilters& filters);	
+	LogRoot(ILogHandler* pHandler_, char const* alias_, const LogFilters& filters);
 
 	void Log(const LogFilters& filters, char const* location, char const* message, int errorCode);
 
@@ -55,7 +55,7 @@ public:
 private:
 	
 	ILogHandler*	pHandler;
-	char			id[MAX_ID_SIZE];
+	char			alias[MAX_ID_SIZE];
 	LogFilters		filters;   // bit field describing what is being logged
 	
 };
