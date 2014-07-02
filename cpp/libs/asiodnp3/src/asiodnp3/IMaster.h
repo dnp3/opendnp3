@@ -42,7 +42,12 @@ class IMaster : public IStack
 {
 public:		
 
-	virtual ~IMaster() {}	
+	virtual ~IMaster() {}
+
+	/**
+	* @return stack statistics counters
+	*/
+	virtual opendnp3::StackStatistics GetStackStatistics() = 0;
 
 	/**
 	* Add a class-based scan to the master

@@ -38,12 +38,7 @@ class IStack : public DestructorHook
 {
 public:	
 
-	virtual ~IStack() {}
-
-	/**
-	* @return stack statistics counters
-	*/
-	virtual opendnp3::StackStatistics GetStackStatistics() = 0;	
+	virtual ~IStack() {}	
 
 	/**
 	* Synchronously enable communications

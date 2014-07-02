@@ -43,7 +43,12 @@ class IOutstation : public IStack
 {
 	public:	
 		
-	virtual ~IOutstation() {}	
+	virtual ~IOutstation() {}
+
+	/**
+	* @return stack statistics counters
+	*/
+	virtual opendnp3::StackStatistics GetStackStatistics() = 0;
 
 	/**
 	* Set the NeedTime bit in outstation
