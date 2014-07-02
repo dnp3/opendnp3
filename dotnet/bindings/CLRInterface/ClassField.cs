@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace DNP3.Interface
 {
     /// <summary>
     /// Structure that records which events are scanned / evented
     /// </summary>
+    [Serializable]
     public struct ClassField
-    {      
+    {       
         public ClassField(byte mask)
         {
             this.bitfield =  mask;
@@ -20,7 +22,7 @@ namespace DNP3.Interface
         {
             get
             {
-                return new ClassField(0);
+                return new ClassField();
             }
         }
 
@@ -58,38 +60,87 @@ namespace DNP3.Interface
             }
         }
 
-        public  bool HasClass0
+        [XmlElement("Class0")]
+        public  bool Class0
         {
             get
             {
                 return (((byte)PointClass.Class0) & bitfield) != 0;
             }
+            set
+            {
+                if (value)
+                {
+                    bitfield |= (byte) PointClass.Class0;
+                }
+                else
+                {
+                    bitfield &= (~(byte)(PointClass.Class0)) & 0xFF;
+                }
+            }
         }
 
-        public bool HasClass1
+        [XmlElement("Class1")]
+        public bool Class1
         {
             get
             {
                 return (((byte)PointClass.Class1) & bitfield) != 0;
             }
+            set
+            {
+                if (value)
+                {
+                    bitfield |= (byte)PointClass.Class1;
+                }
+                else
+                {
+                    bitfield &= (~(byte)(PointClass.Class1)) & 0xFF;
+                }
+            }
         }
 
-        public bool HasClass2
+        [XmlElement("Class2")]
+        public bool Class2
         {
             get
             {
                 return (((byte)PointClass.Class2) & bitfield) != 0;
             }
+            set
+            {
+                if (value)
+                {
+                    bitfield |= (byte)PointClass.Class2;
+                }
+                else
+                {
+                    bitfield &= (~(byte)(PointClass.Class2)) & 0xFF;
+                }
+            }
         }
 
+        [XmlElement("Class3")]
         public bool HasClass3
         {
             get
             {
                 return (((byte)PointClass.Class3) & bitfield) != 0;
             }
+            set
+            {
+                if (value)
+                {
+                    bitfield |= (byte)PointClass.Class3;
+                }
+                else
+                {
+                    bitfield &= (~(byte)(PointClass.Class3)) & 0xFF;
+                }
+            }
         }
 
+        [XmlIgnore]
         private byte bitfield;
     }   
 }
