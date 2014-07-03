@@ -52,8 +52,8 @@ int main(int argc, char* argv[])
 	manager.AddLogSubscriber(&ConsoleLogger::Instance());	
 
 	// Connect via a TCPClient socket to a outstation	
-	//auto pChannel = manager.AddTCPClient("tcpclient", FILTERS, TimeDuration::Seconds(2), TimeDuration::Minutes(1), "127.0.0.1", 20000);
-	auto pChannel = manager.AddTCPClient("tcpclient", FILTERS, TimeDuration::Seconds(2), TimeDuration::Minutes(1), "192.168.0.48", 14642);
+	auto pChannel = manager.AddTCPClient("tcpclient", FILTERS, TimeDuration::Seconds(2), TimeDuration::Minutes(1), "127.0.0.1", 20000);	
+	
 	// Optionally, you can bind listeners to the channel to get state change notifications
 	// This listener just prints the changes to the console
 	pChannel->AddStateListener([](ChannelState state) 
@@ -72,8 +72,8 @@ int main(int argc, char* argv[])
 
 	// You can override the default link layer settings here
 	// in this example we've changed the default link layer addressing
-	stackConfig.link.LocalAddr = 100;
-	stackConfig.link.RemoteAddr = 101;
+	stackConfig.link.LocalAddr = 1;
+	stackConfig.link.RemoteAddr = 10;
 
 	// Create a new master on a previously declared port, with a
 	// name, log level, command acceptor, and config info. This

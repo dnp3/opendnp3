@@ -88,21 +88,23 @@ APDUParser::Result APDUParser::ParseHeader(ReadOnlyBuffer& buffer, openpal::Logg
 			uint8_t rawQualifier = UInt8::ReadBuffer(buffer);
 			QualifierCode qualifier = QualifierCodeFromType(rawQualifier);
 			HeaderRecord record(gv, qualifier);
+
+			FORMAT_LOGGER_BLOCK(pLogger, context.Filters(),
+				"[%03u , %03u] - %s - %s",
+				group,
+				variation,
+				GroupVariationToString(gv.enumeration),
+				QualifierCodeToString(qualifier));
+
 			switch (qualifier)
 			{
+
 			case(QualifierCode::ALL_OBJECTS) :
 				{
 					if (pHandler)
 					{
 						pHandler->AllObjects(record);
-					}
-					
-					FORMAT_LOGGER_BLOCK(pLogger, context.Filters(),
-						"Group: %03u Var: %03u - %s",
-						group,
-						variation,
-						QualifierCodeToString(qualifier));
-
+					}					
 					return Result::OK;
 				}
 
