@@ -10,9 +10,9 @@ object PollState {
   def apply(): EnumModel = EnumModel("PollState", comments, EnumModel.Integer, codes, Base10)
 
   private val codes = List(
-       EnumValue("RUNNING", 0, None,  "Valid response was received"),
-       EnumValue("SUCCESS", 1, None,  "Valid response was received"),
-       EnumValue("FAILURE", 2, None,  "The operation timed out or explicitly failed")
+       EnumValue("RUNNING", 0, "Valid response was received"),
+       EnumValue("SUCCESS", 1, "Valid response was received"),
+       EnumValue("FAILURE", 2, "The operation timed out or explicitly failed")
   )
 
 }

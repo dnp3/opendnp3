@@ -27,7 +27,7 @@ namespace DNP3.Interface
     /// </summary>
     None = 0,
     /// <summary>
-    /// Synchronize the outstation's time using the serial time sync procedure
+    /// synchronize the outstation's time using the serial time sync procedure
     /// </summary>
     SerialTimeSync = 1
   }

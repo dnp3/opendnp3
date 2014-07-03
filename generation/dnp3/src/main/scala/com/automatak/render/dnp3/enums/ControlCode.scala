@@ -19,13 +19,13 @@ object ControlCode {
   def apply(): EnumModel = EnumModel("ControlCode", comments, EnumModel.UInt8, codes, Hex)
 
   private val codes = List(
-    EnumValue("NUL", 0x00, None, "illegal command code (used internally)"),
-    EnumValue("PULSE", 0x01, None, "a 'push-button' interface, can only be pressed one way (reset button on pedometer)"),
-    EnumValue("LATCH_ON", 0x03, None, "a 'light-switch' moved to the ON position"),
-    EnumValue("LATCH_OFF", 0x04, None, "a 'light-switch' moved to the OFF position"),
-    EnumValue("PULSE_CLOSE", 0x41, None, " a 'doorbell' that rings while the button is depressed"),
-    EnumValue("PULSE_TRIP", 0x81, None, " a 'doorbell' that stops ringing (is normally on) while depressed"),
-    EnumValue("UNDEFINED", 0xFF, None, " undefined command (used by DNP standard)")
+    EnumValue("NUL", 0x00, "illegal command code (used internally)"),
+    EnumValue("PULSE", 0x01, "a 'push-button' interface, can only be pressed one way (reset button on pedometer)"),
+    EnumValue("LATCH_ON", 0x03, "a 'light-switch' moved to the ON position"),
+    EnumValue("LATCH_OFF", 0x04, "a 'light-switch' moved to the OFF position"),
+    EnumValue("PULSE_CLOSE", 0x41, " a 'doorbell' that rings while the button is depressed"),
+    EnumValue("PULSE_TRIP", 0x81, " a 'doorbell' that stops ringing (is normally on) while depressed"),
+    EnumValue("UNDEFINED", 0xFF, " undefined command (used by DNP standard)")
   )
 
 }

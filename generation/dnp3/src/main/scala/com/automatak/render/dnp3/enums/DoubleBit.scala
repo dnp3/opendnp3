@@ -9,10 +9,10 @@ object DoubleBit {
   def apply(): EnumModel = EnumModel("DoubleBit", comments, EnumModel.UInt8, codes, Hex)
 
   private val codes = List(
-    EnumValue("INTERMEDIATE", 0, None, "Transitioning between end conditions"),
-    EnumValue("DETERMINED_OFF", 1, None, "End condition, determined to be OFF"),
-    EnumValue("DETERMINED_ON", 2, None, "End condition, determined to be ON"),
-    EnumValue("INDETERMINATE", 3, None, "Abnormal or custom condition")
+    EnumValue("INTERMEDIATE", 0, "Transitioning between end conditions"),
+    EnumValue("DETERMINED_OFF", 1, "End condition, determined to be OFF"),
+    EnumValue("DETERMINED_ON", 2, "End condition, determined to be ON"),
+    EnumValue("INDETERMINATE", 3, "Abnormal or custom condition")
   )
 
 }

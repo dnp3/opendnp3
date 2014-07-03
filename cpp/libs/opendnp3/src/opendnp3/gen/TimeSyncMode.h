@@ -29,7 +29,7 @@ enum class TimeSyncMode : uint8_t
 {
   /// don't perform a time-sync
   None = 0,
-  /// Synchronize the outstation's time using the serial time sync procedure
+  /// synchronize the outstation's time using the serial time sync procedure
   SerialTimeSync = 1
 };
 
