@@ -65,6 +65,7 @@
     <ClInclude Include="src\opendnp3\app\VTOData.h" />
     <ClInclude Include="src\opendnp3\app\WriteConversions.h" />
     <ClInclude Include="src\opendnp3\app\WriteConversionTemplates.h" />
+    <ClInclude Include="src\opendnp3\gen\GroupVar.h" />
     <ClInclude Include="src\opendnp3\gen\PointClass.h" />
     <ClInclude Include="src\opendnp3\gen\PollState.h" />
     <ClInclude Include="src\opendnp3\gen\TimeSyncMode.h" />
@@ -260,6 +261,7 @@
     <ClCompile Include="src\opendnp3\gen\EventDoubleBinaryResponse.cpp" />
     <ClCompile Include="src\opendnp3\gen\EventFrozenCounterResponse.cpp" />
     <ClCompile Include="src\opendnp3\gen\FunctionCode.cpp" />
+    <ClCompile Include="src\opendnp3\gen\GroupVar.cpp" />
     <ClCompile Include="src\opendnp3\gen\LinkFunction.cpp" />
     <ClCompile Include="src\opendnp3\gen\PointClass.cpp" />
     <ClCompile Include="src\opendnp3\gen\PollState.cpp" />

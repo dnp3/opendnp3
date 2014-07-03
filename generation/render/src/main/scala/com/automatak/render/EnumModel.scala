@@ -39,6 +39,7 @@ object EnumModel {
 
   sealed trait Type
   case object UInt8 extends Type
+  case object UInt16 extends Type
   case object UInt32 extends Type
   case object Integer extends Type
 

@@ -672,6 +672,9 @@
     <ClInclude Include="src\opendnp3\master\IMasterApplication.h">
       <Filter>Header\master</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\GroupVar.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\AnalogOutput.cpp">
@@ -1078,6 +1081,9 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\IOutstationApplication.cpp">
       <Filter>Source\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\gen\GroupVar.cpp">
+      <Filter>Source\gen</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
