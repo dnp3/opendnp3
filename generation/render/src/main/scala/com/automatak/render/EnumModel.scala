@@ -26,7 +26,7 @@ object EnumValues {
 }
 
 object EnumValue {
-  def apply(name: String, value: Int, comment: String): EnumValue = EnumValue(name, value, Some(comment))
+  def apply(name: String, value: Int, stringName: Option[String], comment: String): EnumValue = EnumValue(name, value, Some(comment))
 }
 
 case class EnumValue(name: String, value: Int, comment: Option[String] = None, strName: Option[String] = None) {
