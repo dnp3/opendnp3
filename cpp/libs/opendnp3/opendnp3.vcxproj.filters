@@ -99,9 +99,6 @@
     <ClInclude Include="src\opendnp3\app\DownSampling.h">
       <Filter>Header\app</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\app\GroupVariation.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\app\IAPDUHandler.h">
       <Filter>Header\app</Filter>
     </ClInclude>
@@ -672,8 +669,11 @@
     <ClInclude Include="src\opendnp3\master\IMasterApplication.h">
       <Filter>Header\master</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\GroupVar.h">
+    <ClInclude Include="src\opendnp3\gen\GroupVariation.h">
       <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\app\GroupVariationRecord.h">
+      <Filter>Header\app</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -702,9 +702,6 @@
       <Filter>Source\app</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\app\ControlRelayOutputBlock.cpp">
-      <Filter>Source\app</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\app\GroupVariation.cpp">
       <Filter>Source\app</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\app\IINField.cpp">
@@ -1082,8 +1079,11 @@
     <ClCompile Include="src\opendnp3\outstation\IOutstationApplication.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\gen\GroupVar.cpp">
+    <ClCompile Include="src\opendnp3\gen\GroupVariation.cpp">
       <Filter>Source\gen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\app\GroupVariationRecord.cpp">
+      <Filter>Source\app</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

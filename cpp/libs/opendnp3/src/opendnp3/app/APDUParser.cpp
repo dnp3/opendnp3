@@ -23,7 +23,7 @@
 
 #include "opendnp3/gen/QualifierCode.h"
 #include "opendnp3/LogLevels.h"
-#include "opendnp3/app/GroupVariation.h"
+#include "opendnp3/app/GroupVariationRecord.h"
 #include "opendnp3/app/MeasurementFactory.h"
 
 using namespace openpal;

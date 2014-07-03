@@ -9,9 +9,11 @@ object GroupVariation {
 
   private def value(g: Int, v: Int) : Int = g*256 + v
 
-  private def gv(g: Int, v: Int)(desc: String, subdesc: String): EnumValue = EnumValue(name(g,v), value(g,v), None, Some(desc + " - " + subdesc))
+  private def gvsub(g: Int, v: Int)(desc: String, subdesc: String): EnumValue = gv(g,v)(desc + " - " + subdesc)
 
-  private def group(g: Int, desc: String, objects: List[(Int, String)]) : List[EnumValue] = objects.map(pair => gv(g,pair._1)(desc, pair._2))
+  private def gv(g: Int, v: Int)(desc: String): EnumValue = EnumValue(name(g,v), value(g,v), None, Some(desc))
+
+  private def group(g: Int, desc: String, objects: List[(Int, String)]) : List[EnumValue] = objects.map(pair => gvsub(g,pair._1)(desc, pair._2))
 
   private val anyVariation = 0 -> "Any Variation"
   private val packedFormat = "Packed Format"
@@ -44,7 +46,7 @@ object GroupVariation {
 
   private val group4 = List(anyVariation, 1 -> withoutTime, 2 -> withAbsoluteTime, 3 -> withRelativeTime)
 
-  private val group10 = List(anyVariation, 2 -> outputStatusWithFlags)
+  private val group10 = List(anyVariation, 1 -> packedFormat, 2 -> outputStatusWithFlags)
 
   private val group11 = List(anyVariation, 1 -> outputStatusWithoutTime, 2-> outputStatusWithTime)
 
@@ -54,7 +56,7 @@ object GroupVariation {
 
   private val group21 = List(anyVariation, 1 -> bit32WithFlag, 2-> bit16WithFlag, 5 -> bit32WithFlagTime, 6 -> bit16WithFlagTime, 9->bit32WithoutFlag, 10->bit16WithoutFlag)
 
-  private val group22 = List(anyVariation, 1 -> bit32WithFlag, 2-> bit16WithFlag)
+  private val group22 = List(anyVariation, 1 -> bit32WithFlag, 2-> bit16WithFlag, 5 -> bit32WithFlagTime, 6 -> bit16WithFlagTime)
 
   private val group23 = List(anyVariation, 1 -> bit32WithFlag, 2-> bit16WithFlag, 5 -> bit32WithFlagTime, 6 -> bit16WithFlagTime)
 
@@ -87,7 +89,7 @@ object GroupVariation {
     8 -> doublePrecisionWithFlagTime
   )
 
-  private val group60 = List(0 -> "Class 0 data", 1 -> "Class 1 data", 2 -> "Class 2 data", 3 -> "Class 3 data")
+  private val group60 = List(1 -> "Class 0 data", 2 -> "Class 1 data", 3 -> "Class 2 data", 4 -> "Class 3 data")
 
   // defined using syntactic sugar above
   private def values : List[EnumValue] = List(
@@ -117,13 +119,17 @@ object GroupVariation {
 
     group(80, "Internal Indications", List(1 -> packedFormat)),
 
-    List(EnumValue("Undefined", value(0xFF, 0xFF)))
+    List(EnumValue("Group110AnyVar", value(110,0), None, Some("Octet String"))),
+
+    List(EnumValue("Group111AnyVar", value(111,0), None, Some("Octet String Event"))),
+
+    List(EnumValue("UNKNOWN", value(0xFF, 0xFF)))
 
   ).flatten
 
 
   def apply() : EnumModel = EnumModel(
-    "GroupVar",
+    "GroupVariation",
     List("Comprehensive list of supported groups and variations"),
     EnumModel.UInt16,
     values,

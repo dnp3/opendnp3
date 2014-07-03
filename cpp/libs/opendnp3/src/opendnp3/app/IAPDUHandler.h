@@ -21,7 +21,7 @@
 #ifndef __I_APDU_HANDLER_H_
 #define __I_APDU_HANDLER_H_
 
-#include "opendnp3/app/GroupVariation.h"
+#include "opendnp3/app/GroupVariationRecord.h"
 
 #include "opendnp3/app/IterableBuffer.h"
 #include "opendnp3/app/MeasurementTypes.h"

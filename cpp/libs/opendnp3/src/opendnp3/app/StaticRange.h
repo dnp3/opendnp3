@@ -23,7 +23,7 @@
 #define __STATIC_RANGE_H_
 
 #include <cstdint>
-#include "GroupVariation.h"
+#include "GroupVariationRecord.h"
 
 namespace opendnp3
 {

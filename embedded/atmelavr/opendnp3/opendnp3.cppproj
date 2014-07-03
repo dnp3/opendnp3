@@ -238,10 +238,6 @@
       <SubType>compile</SubType>
       <Link>app\BaseMeasurementTypes.h</Link>
     </Compile>
-    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\BinaryWriteState.h">
-      <SubType>compile</SubType>
-      <Link>app\BinaryWriteState.h</Link>
-    </Compile>
     <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\BitfieldRangeWriteIterator.h">
       <SubType>compile</SubType>
       <Link>app\BitfieldRangeWriteIterator.h</Link>
@@ -286,17 +282,17 @@
       <SubType>compile</SubType>
       <Link>app\EventTriggers.h</Link>
     </Compile>
-    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\GroupVariation.cpp">
-      <SubType>compile</SubType>
-      <Link>app\GroupVariation.cpp</Link>
-    </Compile>
-    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\GroupVariation.h">
-      <SubType>compile</SubType>
-      <Link>app\GroupVariation.h</Link>
-    </Compile>
     <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\GroupVariationID.h">
       <SubType>compile</SubType>
       <Link>app\GroupVariationID.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\GroupVariationRecord.cpp">
+      <SubType>compile</SubType>
+      <Link>app\GroupVariationRecord.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\GroupVariationRecord.h">
+      <SubType>compile</SubType>
+      <Link>app\GroupVariationRecord.h</Link>
     </Compile>
     <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\IAPDUHandler.h">
       <SubType>compile</SubType>
@@ -518,6 +514,14 @@
       <SubType>compile</SubType>
       <Link>gen\FunctionCode.h</Link>
     </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\GroupVariation.cpp">
+      <SubType>compile</SubType>
+      <Link>gen\GroupVariation.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\GroupVariation.h">
+      <SubType>compile</SubType>
+      <Link>gen\GroupVariation.h</Link>
+    </Compile>
     <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\LinkFunction.cpp">
       <SubType>compile</SubType>
       <Link>gen\LinkFunction.cpp</Link>
@@ -605,6 +609,14 @@
     <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\StaticFrozenCounterResponse.h">
       <SubType>compile</SubType>
       <Link>gen\StaticFrozenCounterResponse.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\TimeSyncMode.cpp">
+      <SubType>compile</SubType>
+      <Link>gen\TimeSyncMode.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\TimeSyncMode.h">
+      <SubType>compile</SubType>
+      <Link>gen\TimeSyncMode.h</Link>
     </Compile>
     <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\link\CRC.cpp">
       <SubType>compile</SubType>

@@ -21,7 +21,7 @@
 #ifndef __OBJECT_WRITER_H_
 #define __OBJECT_WRITER_H_
 
-#include "GroupVariation.h"
+#include "opendnp3/app/GroupVariationRecord.h"
 #include "opendnp3/gen/QualifierCode.h"
 
 #include "opendnp3/app/RangeWriteIterator.h"

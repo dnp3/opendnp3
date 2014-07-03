@@ -15,8 +15,8 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef __OPENDNP3_GENERATED_GROUPVAR_H_
-#define __OPENDNP3_GENERATED_GROUPVAR_H_
+#ifndef __OPENDNP3_GENERATED_GROUPVARIATION_H_
+#define __OPENDNP3_GENERATED_GROUPVARIATION_H_
 
 #include <cstdint>
 
@@ -25,7 +25,7 @@ namespace opendnp3 {
 /**
   Comprehensive list of supported groups and variations
 */
-enum class GroupVar : uint16_t
+enum class GroupVariation : uint16_t
 {
   Group1Var0 = 0x100,
   Group1Var1 = 0x101,
@@ -42,6 +42,7 @@ enum class GroupVar : uint16_t
   Group4Var2 = 0x402,
   Group4Var3 = 0x403,
   Group10Var0 = 0xA00,
+  Group10Var1 = 0xA01,
   Group10Var2 = 0xA02,
   Group11Var0 = 0xB00,
   Group11Var1 = 0xB01,
@@ -63,6 +64,8 @@ enum class GroupVar : uint16_t
   Group22Var0 = 0x1600,
   Group22Var1 = 0x1601,
   Group22Var2 = 0x1602,
+  Group22Var5 = 0x1605,
+  Group22Var6 = 0x1606,
   Group23Var0 = 0x1700,
   Group23Var1 = 0x1701,
   Group23Var2 = 0x1702,
@@ -108,17 +111,19 @@ enum class GroupVar : uint16_t
   Group51Var2 = 0x3302,
   Group52Var1 = 0x3401,
   Group52Var2 = 0x3402,
-  Group60Var0 = 0x3C00,
   Group60Var1 = 0x3C01,
   Group60Var2 = 0x3C02,
   Group60Var3 = 0x3C03,
+  Group60Var4 = 0x3C04,
   Group80Var1 = 0x5001,
-  Undefined = 0xFFFF
+  Group110AnyVar = 0x6E00,
+  Group111AnyVar = 0x6F00,
+  UNKNOWN = 0xFFFF
 };
 
-uint16_t GroupVarToType(GroupVar arg);
-GroupVar GroupVarFromType(uint16_t arg);
-char const* GroupVarToString(GroupVar arg);
+uint16_t GroupVariationToType(GroupVariation arg);
+GroupVariation GroupVariationFromType(uint16_t arg);
+char const* GroupVariationToString(GroupVariation arg);
 
 }
 
