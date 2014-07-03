@@ -51,7 +51,7 @@ struct MasterParams
 
 	/// Which classes should be requested in a startup integrity scan, defaults to 3/2/1/0
 	/// A mask equal to 0 means no startup integrity scan will be performed
-	ClassField startupIntergrityClassMask;
+	ClassField startupIntegrityClassMask;
 
 	/// Defines whether an integrity scan will be performed when the EventBufferOverflow IIN is detected
 	bool integrityOnEventOverflowIIN;

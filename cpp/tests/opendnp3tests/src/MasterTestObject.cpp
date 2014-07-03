@@ -32,7 +32,7 @@ MasterParams NoStartupTasks()
 {
 	MasterParams params;
 	params.disableUnsolOnStartup = false;
-	params.startupIntergrityClassMask = 0;
+	params.startupIntegrityClassMask = 0;
 	params.unsolClassMask = 0;
 	return params;
 }
