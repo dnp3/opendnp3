@@ -59,11 +59,12 @@ int main(int argc, char* argv[])
 	manager.AddLogSubscriber(&ConsoleLogger::Instance());
 
 	// Create a TCP server (listener)	
-	auto pServer = manager.AddTCPServer("server", FILTERS, TimeDuration::Seconds(5), TimeDuration::Seconds(5), "0.0.0.0", 20000);
-
+	//auto pChannel= manager.AddTCPServer("server", FILTERS, TimeDuration::Seconds(5), TimeDuration::Seconds(5), "0.0.0.0", 20000);
+	auto pChannel= manager.AddTCPClient("client", FILTERS, TimeDuration::Seconds(5), TimeDuration::Minutes(1), "192.168.0.48", 14641);
+	
 	// Optionally, you can bind listeners to the channel to get state change notifications
 	// This listener just prints the changes to the console
-	pServer->AddStateListener([](ChannelState state)
+	pChannel->AddStateListener([](ChannelState state)
 	{
 		std::cout << "channel state: " << ChannelStateToString(state) << std::endl;
 	});
@@ -79,13 +80,15 @@ int main(int argc, char* argv[])
 	// you can override an default outstation parameters here
 	// in this example, we've enabled the oustation to use unsolicted reporting
 	// if the master enables it
-	stackConfig.outstation.params.allowUnsolicited = true;	
+	stackConfig.outstation.params.allowUnsolicited = false;	
 
 	// You can override the default link layer settings here
 	// in this example we've changed the default link layer addressing
-	stackConfig.link.LocalAddr = 10;
-	stackConfig.link.RemoteAddr = 1;
+	stackConfig.link.LocalAddr = 101;
+	stackConfig.link.RemoteAddr = 100;
 
+
+	
 	// You can optionally change the default reporting variations
 	stackConfig.outstation.defaultEventResponses.binary = EventBinaryResponse::Group2Var2;
 	stackConfig.outstation.defaultEventResponses.analog = EventAnalogResponse::Group32Var3;
@@ -93,7 +96,7 @@ int main(int argc, char* argv[])
 	// Create a new outstation with a log level, command handler, and
 	// config info this	returns a thread-safe interface used for
 	// updating the outstation's database.
-	auto pOutstation = pServer->AddOutstation("outstation", SuccessCommandHandler::Instance(), DefaultOutstationApplication::Instance(), stackConfig);
+	auto pOutstation = pChannel->AddOutstation("outstation", SuccessCommandHandler::Instance(), DefaultOutstationApplication::Instance(), stackConfig);
 
 	// Enable the outstation and start communications
 	pOutstation->Enable();	

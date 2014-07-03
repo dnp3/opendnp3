@@ -52,11 +52,11 @@ int main(int argc, char* argv[])
 	manager.AddLogSubscriber(&ConsoleLogger::Instance());	
 
 	// Connect via a TCPClient socket to a outstation	
-	auto pClient = manager.AddTCPClient("tcpclient", FILTERS, TimeDuration::Seconds(2), TimeDuration::Minutes(1), "127.0.0.1", 20000);
-
+	//auto pChannel = manager.AddTCPClient("tcpclient", FILTERS, TimeDuration::Seconds(2), TimeDuration::Minutes(1), "127.0.0.1", 20000);
+	auto pChannel = manager.AddTCPClient("tcpclient", FILTERS, TimeDuration::Seconds(2), TimeDuration::Minutes(1), "192.168.0.48", 14642);
 	// Optionally, you can bind listeners to the channel to get state change notifications
 	// This listener just prints the changes to the console
-	pClient->AddStateListener([](ChannelState state) 
+	pChannel->AddStateListener([](ChannelState state) 
 	{
 		std::cout << "channel state: " << ChannelStateToString(state) << std::endl;
 	});
@@ -68,16 +68,17 @@ int main(int argc, char* argv[])
 	// you can override application layer settings for the master here
 	// in this example, we've change the application layer timeout to 2 seconds
 	stackConfig.master.responseTimeout = TimeDuration::Seconds(2);
-	
+	stackConfig.master.disableUnsolOnStartup = false;
+
 	// You can override the default link layer settings here
 	// in this example we've changed the default link layer addressing
-	stackConfig.link.LocalAddr = 1;
-	stackConfig.link.RemoteAddr = 10;
+	stackConfig.link.LocalAddr = 100;
+	stackConfig.link.RemoteAddr = 101;
 
 	// Create a new master on a previously declared port, with a
 	// name, log level, command acceptor, and config info. This
 	// returns a thread-safe interface used for sending commands.
-	auto pMaster = pClient->AddMaster(
+	auto pMaster = pChannel->AddMaster(
 	                   "master",										// id for logging
 	                   PrintingSOEHandler::Instance(),					// callback for data processing                
 					   asiodnp3::DefaultMasterApplication::Instance(),	// master application instance
@@ -87,7 +88,7 @@ int main(int argc, char* argv[])
 	
 	// do an integrity poll (Class 3/2/1/0) once per minute
 	auto integrityScan = pMaster->AddClassScan(ClassField::AllClasses(), TimeDuration::Minutes(1));
-
+	
 	// do a Class 1 exception poll every 5 seconds
 	auto exceptionScan = pMaster->AddClassScan(ClassField(ClassField::CLASS_1), TimeDuration::Seconds(5));
 

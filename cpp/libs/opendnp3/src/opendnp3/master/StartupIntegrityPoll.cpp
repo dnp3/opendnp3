@@ -44,12 +44,12 @@ StartupIntegrityPoll::StartupIntegrityPoll(ISOEHandler* pSOEHandler_, openpal::L
 void StartupIntegrityPoll::BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq)
 {
 	rxCount = 0;
-	build::ReadIntegrity(request, params.startupIntergrityClassMask, seq);
+	build::ReadIntegrity(request, params.startupIntegrityClassMask, seq);
 }
 
 bool StartupIntegrityPoll::Enabled(const MasterParams& params)
 {
-	return params.startupIntergrityClassMask.HasAnyClass();
+	return params.startupIntegrityClassMask.HasAnyClass();
 }
 	
 void StartupIntegrityPoll::OnFailure(const MasterParams& params, IMasterScheduler& scheduler)

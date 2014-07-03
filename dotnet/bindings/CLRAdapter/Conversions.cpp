@@ -366,7 +366,7 @@ opendnp3::MasterParams Conversions::ConvertConfig(MasterConfig^ config)
 	mp.disableUnsolOnStartup = config->disableUnsolOnStartup;
 	mp.integrityOnEventOverflowIIN = config->integrityOnEventOverflowIIN;
 	mp.responseTimeout = ConvertTimespan(config->responseTimeout);
-	mp.startupIntergrityClassMask = ConvertClassField(config->startupIntergrityClassMask);
+	mp.startupIntegrityClassMask = ConvertClassField(config->startupIntegrityClassMask);
 	mp.taskRetryPeriod = ConvertTimespan(config->taskRetryPeriod);
 	mp.timeSyncMode = (opendnp3::TimeSyncMode) config->timeSyncMode;
 	mp.unsolClassMask = ConvertClassField(config->unsolClassMask);

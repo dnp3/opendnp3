@@ -201,7 +201,7 @@ TEST_CASE(SUITE("SolicitedResponseLayerDown"))
 TEST_CASE(SUITE("SolicitedMultiFragResponse"))
 {
 	auto config = NoStartupTasks();
-	config.startupIntergrityClassMask = ClassField::AllClasses();
+	config.startupIntegrityClassMask = ClassField::AllClasses();
 	MasterTestObject t(config);
 	t.master.OnLowerLayerUp();
 
@@ -289,7 +289,7 @@ TEST_CASE(SUITE("RestartDuringStartup"))
 {
 
 	MasterParams params;
-	params.startupIntergrityClassMask = 0; //disable integrity poll
+	params.startupIntegrityClassMask = 0; //disable integrity poll
 	MasterTestObject t(params);
 	t.master.OnLowerLayerUp();	
 
