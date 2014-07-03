@@ -84,8 +84,8 @@ int main(int argc, char* argv[])
 
 	// You can override the default link layer settings here
 	// in this example we've changed the default link layer addressing
-	stackConfig.link.LocalAddr = 101;
-	stackConfig.link.RemoteAddr = 100;
+	stackConfig.link.LocalAddr = 10;
+	stackConfig.link.RemoteAddr = 1;
 
 
 	
