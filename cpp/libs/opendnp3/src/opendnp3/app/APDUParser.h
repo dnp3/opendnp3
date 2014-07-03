@@ -211,7 +211,13 @@ APDUParser::Result APDUParser::ParseCountHeader(openpal::ReadOnlyBuffer& buffer,
 	auto res = ParseCount<IndexType>(buffer, pLogger, context, count);
 	if(res == Result::OK)
 	{
-		FORMAT_LOGGER_BLOCK(pLogger, context.Filters(), "Count of %u", count);
+		FORMAT_LOGGER_BLOCK(pLogger, context.Filters(),
+			"%03u,%03u %s, %s [%u]",
+			record.group,
+			record.variation,
+			GroupVariationToString(record.enumeration),			
+			QualifierCodeToString(record.qualifier),
+			count);		
 
 		if(context.ExpectsContents())
 		{
@@ -236,7 +242,14 @@ APDUParser::Result APDUParser::ParseRangeHeader(openpal::ReadOnlyBuffer& buffer,
 	auto res = ParseRange<ParserType, CountType>(buffer, pLogger, context, range);
 	if(res == Result::OK)
 	{
-		FORMAT_LOGGER_BLOCK(pLogger, context.Filters(), "start: %u, stop: %u", range.start, range.stop);
+		FORMAT_LOGGER_BLOCK(pLogger, context.Filters(),
+			"%03u,%03u %s, %s [%u, %u]",
+			record.group,
+			record.variation,
+			GroupVariationToString(record.enumeration),
+			QualifierCodeToString(record.qualifier),
+			range.start,
+			range.stop);		
 
 		if(context.ExpectsContents())
 		{
@@ -264,7 +277,14 @@ APDUParser::Result APDUParser::ParseIndexPrefixHeader(openpal::ReadOnlyBuffer& b
 	auto res = ParseCount<IndexType>(buffer, pLogger, context, count);
 	if(res == Result::OK)
 	{
-		FORMAT_LOGGER_BLOCK(pLogger, context.Filters(), "Count of %u", count);
+
+		FORMAT_LOGGER_BLOCK(pLogger, context.Filters(),
+			"%03u,%03u %s, %s [%u]",
+			record.group,
+			record.variation,
+			GroupVariationToString(record.enumeration),
+			QualifierCodeToString(record.qualifier),
+			count);
 
 		return ParseObjectsWithIndexPrefix<IndexType>(buffer, pLogger, record, count, pHandler);
 	}

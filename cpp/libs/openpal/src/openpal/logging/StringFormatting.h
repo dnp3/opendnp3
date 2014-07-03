@@ -27,7 +27,7 @@ namespace openpal
 {	
 	class ReadOnlyBuffer;
 
-	const uint32_t MAX_LOG_ENTRY_SIZE = 80;
+	const uint32_t MAX_LOG_ENTRY_SIZE = 120;
 	const uint32_t MAX_HEX_PER_LINE = 20;
 
 	static_assert(MAX_HEX_PER_LINE < (MAX_LOG_ENTRY_SIZE / 3), "Each hex byte takes 3 characters");
