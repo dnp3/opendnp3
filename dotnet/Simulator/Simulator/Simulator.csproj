@@ -111,12 +111,6 @@
     </Compile>
     <Compile Include="BundledPlugins\GUIMasterPlugin.cs" />
     <Compile Include="BundledPlugins\GUIMasterPluginFactory.cs" />
-    <Compile Include="BundledPlugins\MasterActionControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="BundledPlugins\MasterActionControl.Designer.cs">
-      <DependentUpon>MasterActionControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="BundledPlugins\Measurement.cs" />
     <Compile Include="BundledPlugins\MeasurementCollection.cs" />
     <Compile Include="BundledPlugins\MeasurementView.cs">
@@ -184,9 +178,6 @@
     <EmbeddedResource Include="BundledPlugins\GUIMasterForm.resx">
       <DependentUpon>GUIMasterForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="BundledPlugins\MasterActionControl.resx">
-      <DependentUpon>MasterActionControl.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="BundledPlugins\MeasurementView.resx">
       <DependentUpon>MeasurementView.cs</DependentUpon>
     </EmbeddedResource>
@@ -230,36 +221,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="resources\opendnp3.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="resources\satellite_dish_add.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="resources\info.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="resources\log_gear.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="resources\folder_diskette.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="resources\dials.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="resources\switch.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="resources\cross.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="resources\gear_pencil.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="resources\edit_config.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\bindings\CLRAdapter\DNP3CLRAdapter.vcxproj">
       <Project>{7ce83e8a-7dd6-4731-9024-967df7cf60af}</Project>
       <Name>CLRAdapter</Name>
@@ -276,6 +237,9 @@
       <Project>{428ddb1f-13f8-401c-aa0e-f0b80af1fc00}</Project>
       <Name>SimulatorUI</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="resources\opendnp3.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
