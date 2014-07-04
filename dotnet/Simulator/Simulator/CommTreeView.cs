@@ -18,6 +18,7 @@ namespace Automatak.DNP3.Simulator
             InitializeComponent();                     
         }
 
+        /*
         public void AddChannel(string id, IChannel channel, IEnumerable<IMasterPluginFactory> masters)
         {
             TreeNode node = new TreeNode(id);            
@@ -162,5 +163,6 @@ namespace Automatak.DNP3.Simulator
         {
             UpdateStatistics(treeView.SelectedNode);            
         }
+        */
     }
 }

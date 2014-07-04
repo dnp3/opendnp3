@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CommTreeView));
             this.imageListMain = new System.Windows.Forms.ImageList(this.components);
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.treeView = new System.Windows.Forms.TreeView();
@@ -45,10 +44,9 @@
             // 
             // imageListMain
             // 
-            this.imageListMain.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListMain.ImageStream")));
+            this.imageListMain.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            this.imageListMain.ImageSize = new System.Drawing.Size(16, 16);
             this.imageListMain.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageListMain.Images.SetKeyName(0, "satellite_dish.png");
-            this.imageListMain.Images.SetKeyName(1, "network_monitor.png");
             // 
             // splitContainer
             // 
@@ -64,8 +62,8 @@
             // splitContainer.Panel2
             // 
             this.splitContainer.Panel2.Controls.Add(this.listViewStats);
-            this.splitContainer.Size = new System.Drawing.Size(497, 409);
-            this.splitContainer.SplitterDistance = 219;
+            this.splitContainer.Size = new System.Drawing.Size(308, 498);
+            this.splitContainer.SplitterDistance = 266;
             this.splitContainer.TabIndex = 0;
             // 
             // treeView
@@ -76,9 +74,9 @@
             this.treeView.Location = new System.Drawing.Point(0, 0);
             this.treeView.Name = "treeView";
             this.treeView.SelectedImageIndex = 0;
-            this.treeView.Size = new System.Drawing.Size(497, 219);
+            this.treeView.Size = new System.Drawing.Size(308, 266);
             this.treeView.TabIndex = 3;
-            this.treeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView_AfterSelect);
+            
             // 
             // listViewStats
             // 
@@ -89,7 +87,7 @@
             this.listViewStats.Location = new System.Drawing.Point(0, 0);
             this.listViewStats.MultiSelect = false;
             this.listViewStats.Name = "listViewStats";
-            this.listViewStats.Size = new System.Drawing.Size(497, 186);
+            this.listViewStats.Size = new System.Drawing.Size(308, 228);
             this.listViewStats.TabIndex = 0;
             this.listViewStats.UseCompatibleStateImageBehavior = false;
             this.listViewStats.View = System.Windows.Forms.View.Details;
@@ -103,12 +101,7 @@
             // 
             this.columnHeader2.Text = "Value";
             this.columnHeader2.Width = 231;
-            // 
-            // timerStats
-            // 
-            this.timerStats.Enabled = true;
-            this.timerStats.Interval = 1000;
-            this.timerStats.Tick += new System.EventHandler(this.timerStats_Tick);
+            
             // 
             // CommTreeView
             // 
@@ -116,7 +109,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.splitContainer);
             this.Name = "CommTreeView";
-            this.Size = new System.Drawing.Size(497, 409);
+            this.Size = new System.Drawing.Size(308, 498);
             this.splitContainer.Panel1.ResumeLayout(false);
             this.splitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();

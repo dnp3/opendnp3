@@ -65,7 +65,7 @@
             // 
             // addToolStripMenuItem
             // 
-            this.addToolStripMenuItem.Image = global::Automatak.DNP3.Simulator.Properties.Resources.satellite_dish_add;
+            this.addToolStripMenuItem.Image = global::Automatak.Simulator.Application.Properties.Resources.satellite_dish_add;
             this.addToolStripMenuItem.Name = "addToolStripMenuItem";
             this.addToolStripMenuItem.Size = new System.Drawing.Size(65, 28);
             this.addToolStripMenuItem.Text = "Add";
@@ -76,7 +76,7 @@
             this.toolStripMenuItem2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.loadToolStripMenuItem,
             this.saveToolStripMenuItem});
-            this.toolStripMenuItem2.Image = global::Automatak.DNP3.Simulator.Properties.Resources.folder_diskette;
+            this.toolStripMenuItem2.Image = global::Automatak.Simulator.Application.Properties.Resources.folder_diskette;
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
             this.toolStripMenuItem2.Size = new System.Drawing.Size(61, 28);
             this.toolStripMenuItem2.Text = "File";
@@ -96,7 +96,7 @@
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.aboutToolStripMenuItem.Image = global::Automatak.DNP3.Simulator.Properties.Resources.info;
+            this.aboutToolStripMenuItem.Image = global::Automatak.Simulator.Application.Properties.Resources.info;
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(76, 28);
             this.aboutToolStripMenuItem.Text = "About";

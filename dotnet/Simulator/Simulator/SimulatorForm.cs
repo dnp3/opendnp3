@@ -61,6 +61,7 @@ namespace Automatak.DNP3.Simulator
 
         private void addToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            /*
             using (ChannelDialog dialog = new ChannelDialog(Enumerable.Empty<string>()))
             {
                 if (dialog.ShowDialog() == DialogResult.OK)
@@ -69,6 +70,7 @@ namespace Automatak.DNP3.Simulator
                     this.commTreeView.AddChannel(dialog.ChannelId, channel, masterPlugins);
                 }
             }
+            */
         }       
 
         private void logFlushTimer_Tick(object sender, EventArgs e)

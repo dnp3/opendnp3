@@ -7,8 +7,8 @@
     <ProjectGuid>{9850AA24-6847-4611-81DA-6F04F92B3400}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Automatak.DNP3.Simulator</RootNamespace>
-    <AssemblyName>DNP3TestHarness</AssemblyName>
+    <RootNamespace>Automatak.Simulator.Application</RootNamespace>
+    <AssemblyName>SimulatorApplication</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
