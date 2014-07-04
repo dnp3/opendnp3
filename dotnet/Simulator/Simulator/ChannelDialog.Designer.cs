@@ -39,6 +39,16 @@
             this.label4 = new System.Windows.Forms.Label();
             this.textBoxHost = new System.Windows.Forms.TextBox();
             this.tabPageSerial = new System.Windows.Forms.TabPage();
+            this.label11 = new System.Windows.Forms.Label();
+            this.comboBoxFlowControl = new System.Windows.Forms.ComboBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.comboBoxParity = new System.Windows.Forms.ComboBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.comboBoxStopBits = new System.Windows.Forms.ComboBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.numericUpDownDataBits = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownBaud = new System.Windows.Forms.NumericUpDown();
+            this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.comboBoxSerialDeviceName = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -60,28 +70,18 @@
             this.checkBoxInfo = new System.Windows.Forms.CheckBox();
             this.checkBoxError = new System.Windows.Forms.CheckBox();
             this.checkBoxWarn = new System.Windows.Forms.CheckBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.numericUpDownBaud = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownDataBits = new System.Windows.Forms.NumericUpDown();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.comboBoxStopBits = new System.Windows.Forms.ComboBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.comboBoxParity = new System.Windows.Forms.ComboBox();
-            this.comboBoxFlowControl = new System.Windows.Forms.ComboBox();
-            this.label11 = new System.Windows.Forms.Label();
             this.groupBoxButtons.SuspendLayout();
             this.tabControlChannelType.SuspendLayout();
             this.tabPageTCPClient.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPort)).BeginInit();
             this.tabPageSerial.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDataBits)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownBaud)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxRetryMS)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMinRetryMS)).BeginInit();
             this.statusStrip.SuspendLayout();
             this.groupBoxLogging.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownBaud)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDataBits)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBoxButtons
@@ -206,21 +206,143 @@
             this.tabPageSerial.Text = "Serial";
             this.tabPageSerial.UseVisualStyleBackColor = true;
             // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(336, 131);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(65, 13);
+            this.label11.TabIndex = 12;
+            this.label11.Text = "Flow Control";
+            // 
+            // comboBoxFlowControl
+            // 
+            this.comboBoxFlowControl.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxFlowControl.FormattingEnabled = true;
+            this.comboBoxFlowControl.Location = new System.Drawing.Point(233, 127);
+            this.comboBoxFlowControl.Name = "comboBoxFlowControl";
+            this.comboBoxFlowControl.Size = new System.Drawing.Size(96, 21);
+            this.comboBoxFlowControl.TabIndex = 11;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(335, 75);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(33, 13);
+            this.label10.TabIndex = 10;
+            this.label10.Text = "Parity";
+            // 
+            // comboBoxParity
+            // 
+            this.comboBoxParity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxParity.FormattingEnabled = true;
+            this.comboBoxParity.Location = new System.Drawing.Point(233, 71);
+            this.comboBoxParity.Name = "comboBoxParity";
+            this.comboBoxParity.Size = new System.Drawing.Size(96, 21);
+            this.comboBoxParity.TabIndex = 9;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(335, 102);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(49, 13);
+            this.label9.TabIndex = 8;
+            this.label9.Text = "Stop Bits";
+            // 
+            // comboBoxStopBits
+            // 
+            this.comboBoxStopBits.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxStopBits.FormattingEnabled = true;
+            this.comboBoxStopBits.Location = new System.Drawing.Point(233, 98);
+            this.comboBoxStopBits.Name = "comboBoxStopBits";
+            this.comboBoxStopBits.Size = new System.Drawing.Size(96, 21);
+            this.comboBoxStopBits.TabIndex = 7;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(335, 43);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(50, 13);
+            this.label8.TabIndex = 6;
+            this.label8.Text = "Data Bits";
+            // 
+            // numericUpDownDataBits
+            // 
+            this.numericUpDownDataBits.Location = new System.Drawing.Point(233, 41);
+            this.numericUpDownDataBits.Maximum = new decimal(new int[] {
+            8,
+            0,
+            0,
+            0});
+            this.numericUpDownDataBits.Minimum = new decimal(new int[] {
+            6,
+            0,
+            0,
+            0});
+            this.numericUpDownDataBits.Name = "numericUpDownDataBits";
+            this.numericUpDownDataBits.Size = new System.Drawing.Size(96, 20);
+            this.numericUpDownDataBits.TabIndex = 5;
+            this.numericUpDownDataBits.Value = new decimal(new int[] {
+            8,
+            0,
+            0,
+            0});
+            // 
+            // numericUpDownBaud
+            // 
+            this.numericUpDownBaud.Increment = new decimal(new int[] {
+            1200,
+            0,
+            0,
+            0});
+            this.numericUpDownBaud.Location = new System.Drawing.Point(233, 15);
+            this.numericUpDownBaud.Maximum = new decimal(new int[] {
+            115200,
+            0,
+            0,
+            0});
+            this.numericUpDownBaud.Minimum = new decimal(new int[] {
+            1200,
+            0,
+            0,
+            0});
+            this.numericUpDownBaud.Name = "numericUpDownBaud";
+            this.numericUpDownBaud.Size = new System.Drawing.Size(96, 20);
+            this.numericUpDownBaud.TabIndex = 4;
+            this.numericUpDownBaud.Value = new decimal(new int[] {
+            9600,
+            0,
+            0,
+            0});
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(335, 18);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(58, 13);
+            this.label7.TabIndex = 3;
+            this.label7.Text = "Baud Rate";
+            // 
             // label6
             // 
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(145, 18);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(72, 13);
+            this.label6.Size = new System.Drawing.Size(26, 13);
             this.label6.TabIndex = 1;
-            this.label6.Text = "Device Name";
+            this.label6.Text = "Port";
             // 
             // comboBoxSerialDeviceName
             // 
+            this.comboBoxSerialDeviceName.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxSerialDeviceName.FormattingEnabled = true;
             this.comboBoxSerialDeviceName.Location = new System.Drawing.Point(10, 15);
             this.comboBoxSerialDeviceName.Name = "comboBoxSerialDeviceName";
-            this.comboBoxSerialDeviceName.Size = new System.Drawing.Size(123, 21);
+            this.comboBoxSerialDeviceName.Size = new System.Drawing.Size(129, 21);
             this.comboBoxSerialDeviceName.TabIndex = 0;
             // 
             // groupBox1
@@ -467,124 +589,6 @@
             this.checkBoxWarn.Text = "Warning";
             this.checkBoxWarn.UseVisualStyleBackColor = true;
             // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(335, 18);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(58, 13);
-            this.label7.TabIndex = 3;
-            this.label7.Text = "Baud Rate";
-            // 
-            // numericUpDownBaud
-            // 
-            this.numericUpDownBaud.Increment = new decimal(new int[] {
-            1200,
-            0,
-            0,
-            0});
-            this.numericUpDownBaud.Location = new System.Drawing.Point(233, 15);
-            this.numericUpDownBaud.Maximum = new decimal(new int[] {
-            115200,
-            0,
-            0,
-            0});
-            this.numericUpDownBaud.Minimum = new decimal(new int[] {
-            1200,
-            0,
-            0,
-            0});
-            this.numericUpDownBaud.Name = "numericUpDownBaud";
-            this.numericUpDownBaud.Size = new System.Drawing.Size(96, 20);
-            this.numericUpDownBaud.TabIndex = 4;
-            this.numericUpDownBaud.Value = new decimal(new int[] {
-            9600,
-            0,
-            0,
-            0});
-            // 
-            // numericUpDownDataBits
-            // 
-            this.numericUpDownDataBits.Location = new System.Drawing.Point(233, 41);
-            this.numericUpDownDataBits.Maximum = new decimal(new int[] {
-            8,
-            0,
-            0,
-            0});
-            this.numericUpDownDataBits.Minimum = new decimal(new int[] {
-            6,
-            0,
-            0,
-            0});
-            this.numericUpDownDataBits.Name = "numericUpDownDataBits";
-            this.numericUpDownDataBits.Size = new System.Drawing.Size(96, 20);
-            this.numericUpDownDataBits.TabIndex = 5;
-            this.numericUpDownDataBits.Value = new decimal(new int[] {
-            8,
-            0,
-            0,
-            0});
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(335, 43);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(50, 13);
-            this.label8.TabIndex = 6;
-            this.label8.Text = "Data Bits";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(335, 102);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(49, 13);
-            this.label9.TabIndex = 8;
-            this.label9.Text = "Stop Bits";
-            // 
-            // comboBoxStopBits
-            // 
-            this.comboBoxStopBits.FormattingEnabled = true;
-            this.comboBoxStopBits.Location = new System.Drawing.Point(233, 98);
-            this.comboBoxStopBits.Name = "comboBoxStopBits";
-            this.comboBoxStopBits.Size = new System.Drawing.Size(96, 21);
-            this.comboBoxStopBits.TabIndex = 7;
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(335, 75);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(33, 13);
-            this.label10.TabIndex = 10;
-            this.label10.Text = "Parity";
-            // 
-            // comboBoxParity
-            // 
-            this.comboBoxParity.FormattingEnabled = true;
-            this.comboBoxParity.Location = new System.Drawing.Point(233, 71);
-            this.comboBoxParity.Name = "comboBoxParity";
-            this.comboBoxParity.Size = new System.Drawing.Size(96, 21);
-            this.comboBoxParity.TabIndex = 9;
-            // 
-            // comboBoxFlowControl
-            // 
-            this.comboBoxFlowControl.FormattingEnabled = true;
-            this.comboBoxFlowControl.Location = new System.Drawing.Point(233, 127);
-            this.comboBoxFlowControl.Name = "comboBoxFlowControl";
-            this.comboBoxFlowControl.Size = new System.Drawing.Size(96, 21);
-            this.comboBoxFlowControl.TabIndex = 11;
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(336, 131);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(65, 13);
-            this.label11.TabIndex = 12;
-            this.label11.Text = "Flow Control";
-            // 
             // ChannelDialog
             // 
             this.AcceptButton = this.buttonADD;
@@ -613,6 +617,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPort)).EndInit();
             this.tabPageSerial.ResumeLayout(false);
             this.tabPageSerial.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDataBits)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownBaud)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxRetryMS)).EndInit();
@@ -621,8 +627,6 @@
             this.statusStrip.PerformLayout();
             this.groupBoxLogging.ResumeLayout(false);
             this.groupBoxLogging.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownBaud)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownDataBits)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

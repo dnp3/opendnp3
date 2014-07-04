@@ -121,7 +121,7 @@ namespace DNP3.Interface
         }
 
         [XmlElement("Class3")]
-        public bool HasClass3
+        public bool Class3
         {
             get
             {

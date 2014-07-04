@@ -64,7 +64,7 @@ namespace Automatak.DNP3.Simulator
             var baud = Decimal.ToInt32(this.numericUpDownBaud.Value);
             
             var dataBits = Decimal.ToInt32(this.numericUpDownDataBits.Value);
-            var parity = (Parity) comboBoxParity.SelectedValue;
+            var parity = (Parity)comboBoxParity.SelectedValue;
             var flow = (FlowControl) comboBoxFlowControl.SelectedValue;
             var stopBits = (StopBits) comboBoxStopBits.SelectedValue;
 

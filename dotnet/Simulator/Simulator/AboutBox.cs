@@ -15,11 +15,14 @@ namespace Automatak.DNP3.Simulator
             InitializeComponent();
 
             string[] lines = {
+                 
+                 "Opendnp3 - The de facto reference implementation of IEEE 1815 (DNP3)",
+                 "",
                  "This software licensed to you under the Apache 2.0 license:",
                  "",
                  "http://www.apache.org/licenses/LICENSE-2.0",
                  "",
-                 "This software contains softwre written by:",
+                 "Contains software written by:",
                  "",
                  "Automatak LLC - http://www.automatak.com",
                  "Green Enery Corp - http://www.greenenergycorp.com",

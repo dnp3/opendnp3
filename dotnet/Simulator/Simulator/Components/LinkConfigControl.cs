@@ -23,6 +23,7 @@ namespace Automatak.DNP3.Simulator.Components
             set
             {
                 isMaster = value;
+                this.Configure();
             }
         }
 
@@ -30,21 +31,36 @@ namespace Automatak.DNP3.Simulator.Components
         {
             get
             {
-                var config = new LinkConfig(isMaster, false);
+                var config = new LinkConfig(isMaster, this.checkBoxConfirmed.Checked);
                 config.localAddr = Decimal.ToUInt16(this.numericUpDownSource.Value);
                 config.remoteAddr = Decimal.ToUInt16(this.numericUpDownDest.Value);
-                config.useConfirms = this.checkBoxConfirmed.Checked;
+                config.numRetry = Decimal.ToUInt32(this.numericUpDownRetries.Value);
+                config.timeoutMs = Decimal.ToUInt32(this.numericUpDownTimeout.Value);
                 return config;
             }
+        }
+
+        private void SetState()
+        {
+            this.groupBoxConfirmed.Enabled = this.checkBoxConfirmed.Checked;            
         }
 
         private void Configure()
         {
             this.numericUpDownSource.Value = LinkConfig.GetDefaultSourceAddress(isMaster);
             this.numericUpDownDest.Value = LinkConfig.GetDefaultDestinationAddress(isMaster);
+            this.numericUpDownTimeout.Value = LinkConfig.DefaultTimeoutMillisconds;
+            this.numericUpDownRetries.Value = LinkConfig.DefaultNumRetries;
             this.checkBoxConfirmed.Checked = false;
+
+            this.SetState();
         }
 
         private bool isMaster = false;
+
+        private void checkBoxConfirmed_CheckedChanged(object sender, EventArgs e)
+        {
+            this.SetState();
+        }     
     }
 }

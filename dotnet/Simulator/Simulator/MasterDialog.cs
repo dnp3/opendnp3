@@ -17,7 +17,7 @@ namespace Automatak.DNP3.Simulator
         {
             InitializeComponent();
 
-            this.linkListView1.IsMaster = true;
+            this.linkConfigControl.IsMaster = true;
         }
 
         private void buttonADD_Click(object sender, EventArgs e)
@@ -31,7 +31,8 @@ namespace Automatak.DNP3.Simulator
             get
             {
                 var config = new MasterStackConfig();
-                config.link = this.linkListView1.Configuration;
+                config.link = this.linkConfigControl.Configuration;
+                config.master = this.masterConfigControl.Configuration;
                 return config;
             }
         }

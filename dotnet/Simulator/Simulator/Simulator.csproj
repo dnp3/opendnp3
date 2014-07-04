@@ -127,11 +127,23 @@
     </Compile>
     <Compile Include="BundledPlugins\SOEHandler.cs" />
     <Compile Include="CommCounter.cs" />
+    <Compile Include="Components\ClassFieldControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\ClassFieldControl.Designer.cs">
+      <DependentUpon>ClassFieldControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Components\LinkConfigControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Components\LinkConfigControl.Designer.cs">
       <DependentUpon>LinkConfigControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\MasterConfigControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\MasterConfigControl.Designer.cs">
+      <DependentUpon>MasterConfigControl.cs</DependentUpon>
     </Compile>
     <Compile Include="LogControl.cs">
       <SubType>UserControl</SubType>
@@ -190,8 +202,14 @@
     <EmbeddedResource Include="BundledPlugins\MeasurementView.resx">
       <DependentUpon>MeasurementView.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Components\ClassFieldControl.resx">
+      <DependentUpon>ClassFieldControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Components\LinkConfigControl.resx">
       <DependentUpon>LinkConfigControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\MasterConfigControl.resx">
+      <DependentUpon>MasterConfigControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LogControl.resx">
       <DependentUpon>LogControl.cs</DependentUpon>

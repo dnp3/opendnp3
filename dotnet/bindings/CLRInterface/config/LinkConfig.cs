@@ -10,37 +10,7 @@ namespace DNP3.Interface
     /// Configuration class for the link layer
     /// </summary>
     public class LinkConfig
-    {
-        public static System.UInt16 DefaultOutstationAddress
-        {
-            get
-            {
-                return 1024;
-            }
-        }
-        public static System.UInt16 DefaultMasterAddress
-        {
-            get
-            {
-                return 1;
-            }
-        }
-
-        public static System.UInt16 GetDefaultSourceAddress(bool isMaster)
-        {
-            return isMaster ? DefaultMasterAddress : DefaultOutstationAddress;
-        }
-
-        public static System.UInt16 GetDefaultDestinationAddress(bool isMaster)
-        {
-            return isMaster ? DefaultOutstationAddress : DefaultMasterAddress;
-        }
-
-        public static System.UInt16 GetDefaultAddress(bool isMaster)
-        {
-            return isMaster ? DefaultMasterAddress : DefaultOutstationAddress;
-        }
-
+    {       
         /// <summary>
         /// Full constructor
         /// </summary>
@@ -50,7 +20,7 @@ namespace DNP3.Interface
         /// <param name="localAddr">dnp3 address of the local device</param>
         /// <param name="remoteAddr">dnp3 address of the remote device</param>
         /// <param name="timeout">the response timeout in milliseconds for confirmed requests</param>
-        public LinkConfig(bool isMaster,
+        public LinkConfig(  bool isMaster,
                             bool useConfirms,
                             System.UInt32 numRetry,
                             System.UInt16 localAddr,
@@ -71,7 +41,7 @@ namespace DNP3.Interface
         /// <param name="isMaster">true if this layer will be used with a master, false otherwise</param>
         /// <param name="useConfirms">true to use link layer confirmations for all data, false otherwise</param>
         public LinkConfig(bool isMaster, bool useConfirms)
-            : this(isMaster, useConfirms, 0, isMaster ? DefaultMasterAddress : DefaultOutstationAddress, isMaster ? DefaultOutstationAddress : DefaultMasterAddress, 1000)
+            : this(isMaster, useConfirms, DefaultNumRetries, GetDefaultSourceAddress(isMaster), GetDefaultDestinationAddress(isMaster), DefaultTimeoutMillisconds)
         {
 
         }
@@ -83,6 +53,53 @@ namespace DNP3.Interface
             : this(true, false)
         {
 
+        }
+
+        public static System.UInt16 DefaultOutstationAddress
+        {
+            get
+            {
+                return 1024;
+            }
+        }
+
+        public static System.UInt16 DefaultMasterAddress
+        {
+            get
+            {
+                return 1;
+            }
+        }
+
+        public static System.UInt32 DefaultNumRetries
+        {
+            get
+            {
+                return 0;
+            }
+        }
+
+        public static System.UInt16 GetDefaultSourceAddress(bool isMaster)
+        {
+            return isMaster ? DefaultMasterAddress : DefaultOutstationAddress;
+        }
+
+        public static System.UInt16 GetDefaultDestinationAddress(bool isMaster)
+        {
+            return isMaster ? DefaultOutstationAddress : DefaultMasterAddress;
+        }
+
+        public static System.UInt16 GetDefaultAddress(bool isMaster)
+        {
+            return isMaster ? DefaultMasterAddress : DefaultOutstationAddress;
+        }
+
+        public static System.UInt32 DefaultTimeoutMillisconds
+        {
+            get
+            {
+                return 1000;
+            }
         }
 
         /// <summary>
