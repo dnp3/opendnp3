@@ -1,4 +1,6 @@
-﻿namespace Automatak.DNP3.Simulator
+﻿using Automatak.Simulator.UI;
+
+namespace Automatak.DNP3.Simulator
 {
     partial class SimulatorForm
     {
@@ -39,7 +41,7 @@
             this.mainPanel = new System.Windows.Forms.Panel();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.commTreeView = new Automatak.DNP3.Simulator.CommTreeView();
-            this.logWindow1 = new Automatak.DNP3.Simulator.LogWindow();
+            this.logWindow1 = new Automatak.Simulator.UI.LogWindow();
             this.logFlushTimer = new System.Windows.Forms.Timer(this.components);
             this.mainMenuStrip.SuspendLayout();
             this.mainPanel.SuspendLayout();

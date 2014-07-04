@@ -1,4 +1,4 @@
-﻿namespace Automatak.DNP3.Simulator
+﻿namespace Automatak.Simulator.DNP3
 {
     partial class GUIMasterForm
     {
@@ -33,7 +33,7 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.comboBoxTypes = new System.Windows.Forms.ComboBox();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.measurementView = new Automatak.DNP3.Simulator.MeasurementView();
+            this.measurementView = new Automatak.Simulator.DNP3.MeasurementView();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();

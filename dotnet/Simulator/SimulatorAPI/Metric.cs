@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Automatak.DNP3.Simulator
+namespace Automatak.Simulator.API
 {
-    class CommCounter
+    class Metric
     {
-        private String id;
-        private System.UInt32 count;
+        readonly String id;
+        readonly String value;
 
-        public CommCounter(String id, System.UInt32 count)
+        public Metric(String id, String value)
         {
             this.id = id;
-            this.count = count;
+            this.value = value;
         }
 
         public String Id
@@ -24,11 +24,11 @@ namespace Automatak.DNP3.Simulator
             }
         }
 
-        public System.UInt32 Count
+        public String Value
         {
             get
             {
-                return count;
+                return value;
             }
         }
     }

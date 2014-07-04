@@ -7,8 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-using DNP3.Interface;
-
 namespace Automatak.DNP3.Simulator
 {
     public partial class CommTreeView : UserControl

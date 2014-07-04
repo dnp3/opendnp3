@@ -97,68 +97,12 @@
     <Compile Include="AboutBox.Designer.cs">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="BundledPlugins\DBListView.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="BundledPlugins\DBListView.Designer.cs">
-      <DependentUpon>DBListView.cs</DependentUpon>
-    </Compile>
-    <Compile Include="BundledPlugins\GUIMasterForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="BundledPlugins\GUIMasterForm.Designer.cs">
-      <DependentUpon>GUIMasterForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="BundledPlugins\GUIMasterPlugin.cs" />
-    <Compile Include="BundledPlugins\GUIMasterPluginFactory.cs" />
-    <Compile Include="BundledPlugins\Measurement.cs" />
-    <Compile Include="BundledPlugins\MeasurementCollection.cs" />
-    <Compile Include="BundledPlugins\MeasurementView.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="BundledPlugins\MeasurementView.Designer.cs">
-      <DependentUpon>MeasurementView.cs</DependentUpon>
-    </Compile>
-    <Compile Include="BundledPlugins\SOEHandler.cs" />
-    <Compile Include="CommCounter.cs" />
-    <Compile Include="Components\ClassFieldControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Components\ClassFieldControl.Designer.cs">
-      <DependentUpon>ClassFieldControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Components\LinkConfigControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Components\LinkConfigControl.Designer.cs">
-      <DependentUpon>LinkConfigControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Components\MasterConfigControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Components\MasterConfigControl.Designer.cs">
-      <DependentUpon>MasterConfigControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="LogProcessor.cs" />
-    <Compile Include="MasterDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MasterDialog.Designer.cs">
-      <DependentUpon>MasterDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ChannelDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ChannelDialog.Designer.cs">
-      <DependentUpon>ChannelDialog.cs</DependentUpon>
-    </Compile>
     <Compile Include="CommTreeView.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="CommTreeView.Designer.cs">
       <DependentUpon>CommTreeView.cs</DependentUpon>
     </Compile>
-    <Compile Include="BundledPlugins\MeasurementPoco.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -174,27 +118,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="BundledPlugins\GUIMasterForm.resx">
-      <DependentUpon>GUIMasterForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="BundledPlugins\MeasurementView.resx">
-      <DependentUpon>MeasurementView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Components\ClassFieldControl.resx">
-      <DependentUpon>ClassFieldControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Components\LinkConfigControl.resx">
-      <DependentUpon>LinkConfigControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Components\MasterConfigControl.resx">
-      <DependentUpon>MasterConfigControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MasterDialog.resx">
-      <DependentUpon>MasterDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ChannelDialog.resx">
-      <DependentUpon>ChannelDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CommTreeView.resx">
       <DependentUpon>CommTreeView.cs</DependentUpon>
@@ -221,14 +144,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\bindings\CLRAdapter\DNP3CLRAdapter.vcxproj">
-      <Project>{7ce83e8a-7dd6-4731-9024-967df7cf60af}</Project>
-      <Name>CLRAdapter</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\bindings\CLRInterface\CLRInterface.csproj">
-      <Project>{5f06c7be-3107-4b3e-8559-e5e1bb4008b5}</Project>
-      <Name>CLRInterface</Name>
-    </ProjectReference>
     <ProjectReference Include="..\simulatorAPI\SimulatorAPI.csproj">
       <Project>{6a19318b-8cc5-4bc8-8e80-412180c420a5}</Project>
       <Name>SimulatorAPI</Name>

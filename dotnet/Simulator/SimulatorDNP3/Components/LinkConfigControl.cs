@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 using DNP3.Interface;
 
-namespace Automatak.DNP3.Simulator.Components
+namespace Automatak.Simulator.DNP3.Components
 {
     public partial class LinkConfigControl : UserControl
     {

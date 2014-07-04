@@ -6,7 +6,7 @@ using System.Text;
 
 using DNP3.Interface;
 
-namespace Automatak.DNP3.Simulator
+namespace Automatak.Simulator.DNP3
 {
     public interface IMasterPluginFactory
     {

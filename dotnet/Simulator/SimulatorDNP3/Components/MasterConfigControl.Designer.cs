@@ -1,6 +1,6 @@
 ﻿using DNP3.Interface;
 
-namespace Automatak.DNP3.Simulator.Components
+namespace Automatak.Simulator.DNP3.Components
 {
     partial class MasterConfigControl
     {
@@ -34,10 +34,10 @@ namespace Automatak.DNP3.Simulator.Components
             this.comboBoxTimeSync = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.checkBoxDisableUnsolicited = new System.Windows.Forms.CheckBox();
-            this.classFieldControlIntegrity = new Automatak.DNP3.Simulator.Components.ClassFieldControl();
+            this.classFieldControlIntegrity = new Automatak.Simulator.DNP3.Components.ClassFieldControl();
             this.groupBoxIntegrity = new System.Windows.Forms.GroupBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.classFieldControlEnableUnsol = new Automatak.DNP3.Simulator.Components.ClassFieldControl();
+            this.classFieldControlEnableUnsol = new Automatak.Simulator.DNP3.Components.ClassFieldControl();
             this.checkBoxIntegrityOnOverflow = new System.Windows.Forms.CheckBox();
             this.numericUpDownResponseTimeout = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();

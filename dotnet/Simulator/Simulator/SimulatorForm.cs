@@ -9,26 +9,15 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 
-using DNP3.Interface;
-
 namespace Automatak.DNP3.Simulator
 {
     public partial class SimulatorForm : Form
     {     
-        public SimulatorForm(IDNP3Manager manager, IEnumerable<IMasterPluginFactory> masterPlugins)
-        {
-            this.manager = manager;
-            this.masterPlugins = masterPlugins;            
-
-            InitializeComponent();           
-            
-            manager.AddLogHandler(logQueue);                                          
+        public SimulatorForm()
+        {                 
+            InitializeComponent();                                 
         }
-        
-
-        private IDNP3Manager manager;
-        private LogProcessor logQueue = new LogProcessor();
-        IEnumerable<IMasterPluginFactory> masterPlugins;        
+           
 
         void ShowAboutBox()
         {
@@ -45,13 +34,13 @@ namespace Automatak.DNP3.Simulator
        
         void TestHarnessForm_Load(object sender, EventArgs e)
         {
-            logQueue.LogSystemMessage("Add a channel or load a configuration to begin");            
+            //logQueue.LogSystemMessage("Add a channel or load a configuration to begin");            
         }     
 
         void FlushLogQueue()
         {
-            var lines = logQueue.Flush();
-            this.logWindow1.AddRows(lines);            
+            //var lines = logQueue.Flush();
+            //this.logWindow1.AddRows(lines);            
         }
 
         private void clearWindowToolStripMenuItem_Click(object sender, EventArgs e)

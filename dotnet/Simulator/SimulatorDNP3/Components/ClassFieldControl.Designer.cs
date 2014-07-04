@@ -1,4 +1,4 @@
-﻿namespace Automatak.DNP3.Simulator.Components
+﻿namespace Automatak.Simulator.DNP3.Components
 {
     partial class ClassFieldControl
     {

@@ -8,7 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 
 
-namespace Automatak.DNP3.Simulator
+namespace Automatak.Simulator.DNP3
 {
     public partial class MeasurementView : UserControl, IMeasurementObserver
     {

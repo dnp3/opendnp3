@@ -1,4 +1,4 @@
-﻿namespace Automatak.DNP3.Simulator
+﻿namespace Automatak.Simulator.UI
 {
     partial class LogWindow
     {
@@ -42,7 +42,7 @@
             this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.pauseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.resumeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.logControl = new Automatak.DNP3.Simulator.LogControl();
+            this.logControl = new Automatak.Simulator.UI.LogControl();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyToClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();

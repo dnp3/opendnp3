@@ -1,4 +1,4 @@
-﻿namespace Automatak.DNP3.Simulator
+﻿namespace Automatak.Simulator.DNP3
 {
     partial class MasterDialog
     {
@@ -36,8 +36,8 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.linkConfigControl = new Automatak.DNP3.Simulator.Components.LinkConfigControl();
-            this.masterConfigControl = new Automatak.DNP3.Simulator.Components.MasterConfigControl();
+            this.linkConfigControl = new Automatak.Simulator.DNP3.Components.LinkConfigControl();
+            this.masterConfigControl = new Automatak.Simulator.DNP3.Components.MasterConfigControl();
             this.groupBoxButtons.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
