@@ -36,20 +36,26 @@ namespace Automatak.Simulator
             ShowAboutBox();  
         }
 
-        private void BindNode(ISimulatorNode simNode, TreeView control, TreeNode node, TreeNode parentNode)
+        private void BindNode(ISimulatorNode simNode, TreeNode node, TreeNodeCollection parent)
         {
             node.Text = simNode.DisplayName;
 
-            if (parentNode == null)
-            {
-                control.Nodes.Add(node);
-            }
-            else
-            {
-                parentNode.Nodes.Add(node);
-            }
+            var menu = new ContextMenu();
+            var item = new MenuItem("Remove");
+            item.Click += new EventHandler(
+                delegate(Object o, EventArgs a)
+                {
+                    simNode.Remove();
+                    parent.Remove(node);
+                }
+            );
+
+            menu.MenuItems.Add("-");
+            menu.MenuItems.Add(item);
+            node.ContextMenu = menu;
+            parent.Add(node);
         }
-      
+        
         private void SimulatorForm_Load(object sender, EventArgs e)
         {            
             foreach (var factory in plugins)
@@ -72,7 +78,7 @@ namespace Automatak.Simulator
                         var node = instance.Create(callbacks);
                         if (node != null)
                         {
-                            BindNode(node, treeView, callbacks.node, null);
+                            BindNode(node, callbacks.node, treeView.Nodes);
                         }
                     }
                 );
