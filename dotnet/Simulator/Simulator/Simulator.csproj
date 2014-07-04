@@ -145,19 +145,7 @@
     <Compile Include="Components\MasterConfigControl.Designer.cs">
       <DependentUpon>MasterConfigControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="LogControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="LogControl.Designer.cs">
-      <DependentUpon>LogControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="LogProcessor.cs" />
-    <Compile Include="LogWindow.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="LogWindow.Designer.cs">
-      <DependentUpon>LogWindow.cs</DependentUpon>
-    </Compile>
     <Compile Include="MasterDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -210,12 +198,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Components\MasterConfigControl.resx">
       <DependentUpon>MasterConfigControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="LogControl.resx">
-      <DependentUpon>LogControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="LogWindow.resx">
-      <DependentUpon>LogWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MasterDialog.resx">
       <DependentUpon>MasterDialog.cs</DependentUpon>
@@ -289,6 +271,10 @@
     <ProjectReference Include="..\simulatorAPI\SimulatorAPI.csproj">
       <Project>{6a19318b-8cc5-4bc8-8e80-412180c420a5}</Project>
       <Name>SimulatorAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SimulatorUI\SimulatorUI.csproj">
+      <Project>{428ddb1f-13f8-401c-aa0e-f0b80af1fc00}</Project>
+      <Name>SimulatorUI</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
