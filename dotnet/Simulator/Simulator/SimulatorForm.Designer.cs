@@ -59,14 +59,15 @@
             this.mainMenuStrip.Location = new System.Drawing.Point(0, 0);
             this.mainMenuStrip.Name = "mainMenuStrip";
             this.mainMenuStrip.Padding = new System.Windows.Forms.Padding(5, 5, 0, 5);
-            this.mainMenuStrip.Size = new System.Drawing.Size(1045, 29);
+            this.mainMenuStrip.Size = new System.Drawing.Size(1045, 38);
             this.mainMenuStrip.TabIndex = 1;
             this.mainMenuStrip.Text = "mainMenuStrip";
             // 
             // addToolStripMenuItem
             // 
+            this.addToolStripMenuItem.Image = global::Automatak.DNP3.Simulator.Properties.Resources.satellite_dish_add;
             this.addToolStripMenuItem.Name = "addToolStripMenuItem";
-            this.addToolStripMenuItem.Size = new System.Drawing.Size(41, 19);
+            this.addToolStripMenuItem.Size = new System.Drawing.Size(65, 28);
             this.addToolStripMenuItem.Text = "Add";
             this.addToolStripMenuItem.Click += new System.EventHandler(this.addToolStripMenuItem_Click);
             // 
@@ -75,27 +76,29 @@
             this.toolStripMenuItem2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.loadToolStripMenuItem,
             this.saveToolStripMenuItem});
+            this.toolStripMenuItem2.Image = global::Automatak.DNP3.Simulator.Properties.Resources.folder_diskette;
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(37, 19);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(61, 28);
             this.toolStripMenuItem2.Text = "File";
             // 
             // loadToolStripMenuItem
             // 
             this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            this.loadToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.loadToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
             this.loadToolStripMenuItem.Text = "Load";
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
             this.saveToolStripMenuItem.Text = "Save";
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.aboutToolStripMenuItem.Image = global::Automatak.DNP3.Simulator.Properties.Resources.info;
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(52, 19);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(76, 28);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -103,10 +106,10 @@
             // 
             this.mainPanel.Controls.Add(this.splitContainer2);
             this.mainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.mainPanel.Location = new System.Drawing.Point(0, 29);
+            this.mainPanel.Location = new System.Drawing.Point(0, 38);
             this.mainPanel.Name = "mainPanel";
             this.mainPanel.Padding = new System.Windows.Forms.Padding(5, 0, 5, 5);
-            this.mainPanel.Size = new System.Drawing.Size(1045, 453);
+            this.mainPanel.Size = new System.Drawing.Size(1045, 444);
             this.mainPanel.TabIndex = 2;
             // 
             // splitContainer2
@@ -123,7 +126,7 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.logWindow1);
-            this.splitContainer2.Size = new System.Drawing.Size(1035, 448);
+            this.splitContainer2.Size = new System.Drawing.Size(1035, 439);
             this.splitContainer2.SplitterDistance = 157;
             this.splitContainer2.TabIndex = 3;
             // 
@@ -132,7 +135,7 @@
             this.commTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.commTreeView.Location = new System.Drawing.Point(0, 0);
             this.commTreeView.Name = "commTreeView";
-            this.commTreeView.Size = new System.Drawing.Size(157, 448);
+            this.commTreeView.Size = new System.Drawing.Size(157, 439);
             this.commTreeView.TabIndex = 0;
             // 
             // logWindow1
@@ -142,7 +145,7 @@
             this.logWindow1.LogFont = new System.Drawing.Font("Courier New", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.logWindow1.MinimumSize = new System.Drawing.Size(300, 250);
             this.logWindow1.Name = "logWindow1";
-            this.logWindow1.Size = new System.Drawing.Size(874, 448);
+            this.logWindow1.Size = new System.Drawing.Size(874, 439);
             this.logWindow1.TabIndex = 0;
             // 
             // logFlushTimer

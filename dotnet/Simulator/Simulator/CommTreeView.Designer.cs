@@ -47,8 +47,8 @@
             // 
             this.imageListMain.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageListMain.ImageStream")));
             this.imageListMain.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageListMain.Images.SetKeyName(0, "satellite_dish.ico");
-            this.imageListMain.Images.SetKeyName(1, "network_monitor.ico");
+            this.imageListMain.Images.SetKeyName(0, "satellite_dish.png");
+            this.imageListMain.Images.SetKeyName(1, "network_monitor.png");
             // 
             // splitContainer
             // 

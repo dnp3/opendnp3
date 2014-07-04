@@ -239,7 +239,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="resources\folder_diskette.png" />
+    <None Include="resources\info.png" />
     <Content Include="resources\opendnp3.png" />
+    <None Include="resources\satellite_dish_add.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
