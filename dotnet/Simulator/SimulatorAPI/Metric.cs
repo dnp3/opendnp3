@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Automatak.Simulator.API
 {
-    class Metric
+    public class Metric
     {
         readonly String id;
         readonly String value;

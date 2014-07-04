@@ -8,17 +8,21 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using Automatak.Simulator.API;
 
-namespace Automatak.DNP3.Simulator
+namespace Automatak.Simulator
 {
     public partial class SimulatorForm : Form
-    {     
-        public SimulatorForm()
+    {
+        readonly IEnumerable<ISimulatorPluginFactory> plugins;
+
+        public SimulatorForm(IEnumerable<ISimulatorPluginFactory> plugins)
         {                 
-            InitializeComponent();                                 
+            InitializeComponent();    
+            
+            this.plugins = plugins;     
         }
            
-
         void ShowAboutBox()
         {
             using (About about = new About())
@@ -31,40 +35,49 @@ namespace Automatak.DNP3.Simulator
         {
             ShowAboutBox();  
         }
-       
-        void TestHarnessForm_Load(object sender, EventArgs e)
-        {
-            //logQueue.LogSystemMessage("Add a channel or load a configuration to begin");            
-        }     
 
-        void FlushLogQueue()
+        private void BindNode(ISimulatorNode simNode, TreeView control, TreeNode node, TreeNode parentNode)
         {
-            //var lines = logQueue.Flush();
-            //this.logWindow1.AddRows(lines);            
-        }
+            node.Text = simNode.DisplayName;
 
-        private void clearWindowToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //logControl.Clear();
-        }
-
-        private void addToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            /*
-            using (ChannelDialog dialog = new ChannelDialog(Enumerable.Empty<string>()))
+            if (parentNode == null)
             {
-                if (dialog.ShowDialog() == DialogResult.OK)
-                {
-                    var channel = dialog.ChannelAction.Invoke(manager);
-                    this.commTreeView.AddChannel(dialog.ChannelId, channel, masterPlugins);
-                }
+                control.Nodes.Add(node);
             }
-            */
-        }       
+            else
+            {
+                parentNode.Nodes.Add(node);
+            }
+        }
+      
+        private void SimulatorForm_Load(object sender, EventArgs e)
+        {            
+            foreach (var factory in plugins)
+            {
+                var instance = factory.Create();                
+                var item = new ToolStripMenuItem(instance.RootDisplayName);
+                item.Image = instance.PluginImage;
+                this.addToolStripMenuItem.DropDownItems.Add(item);
+                var page = new TabPage(instance.UniqueId);
+                var treeView = new TreeView();
+                treeView.Dock = DockStyle.Fill;
+                treeView.ImageList = instance.NodeImageList;
+                page.Controls.Add(treeView);
+                this.tabControlPlugins.TabPages.Add(page);
+                
+                item.Click += new EventHandler(
+                    delegate(Object o, EventArgs a)
+                    {                        
+                        var callbacks = new TreeNodeCallbcks();
+                        var node = instance.Create(callbacks);
+                        if (node != null)
+                        {
+                            BindNode(node, treeView, callbacks.node, null);
+                        }
+                    }
+                );
+            }
+        }
 
-        private void logFlushTimer_Tick(object sender, EventArgs e)
-        {
-            FlushLogQueue(); 
-        }             
     }
 }

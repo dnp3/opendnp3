@@ -84,6 +84,7 @@
       <DependentUpon>MeasurementView.cs</DependentUpon>
     </Compile>
     <Compile Include="BundledPlugins\SOEHandler.cs" />
+    <Compile Include="ChannelNode.cs" />
     <Compile Include="Components\ChannelDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -114,10 +115,19 @@
     <Compile Include="Components\MasterDialog.Designer.cs">
       <DependentUpon>MasterDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="DNP3SimulatorPlugin.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DNP3SimulatorPluginFactory.cs" />
     <Compile Include="IMasterPlugin.cs" />
     <Compile Include="IMasterPluginFactory.cs" />
     <Compile Include="LogProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="BundledPlugins\GUIMasterForm.resx">
@@ -141,6 +151,10 @@
     <EmbeddedResource Include="Components\MasterDialog.resx">
       <DependentUpon>MasterDialog.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\bindings\CLRAdapter\DNP3CLRAdapter.vcxproj">
@@ -155,6 +169,18 @@
       <Project>{6a19318b-8cc5-4bc8-8e80-412180c420a5}</Project>
       <Name>SimulatorAPI</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\satellite_dish_add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\network_monitor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\satellite_dish.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,4 +1,4 @@
-﻿namespace Automatak.DNP3.Simulator
+﻿namespace Automatak.Simulator
 {
     partial class About
     {
@@ -36,7 +36,7 @@
             // 
             this.pictureBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.pictureBox.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pictureBox.Image = global::Automatak.Simulator.Application.Properties.Resources.opendnp3;
+            this.pictureBox.Image = global::Automatak.Simulator.Properties.Resources.opendnp3;
             this.pictureBox.Location = new System.Drawing.Point(20, 20);
             this.pictureBox.Name = "pictureBox";
             this.pictureBox.Size = new System.Drawing.Size(651, 200);

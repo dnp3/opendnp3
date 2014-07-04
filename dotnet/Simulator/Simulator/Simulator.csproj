@@ -7,7 +7,7 @@
     <ProjectGuid>{9850AA24-6847-4611-81DA-6F04F92B3400}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Automatak.Simulator.Application</RootNamespace>
+    <RootNamespace>Automatak.Simulator</RootNamespace>
     <AssemblyName>SimulatorApplication</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -116,6 +116,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TreeNodeCallbcks.cs" />
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>
@@ -148,6 +149,10 @@
       <Project>{6a19318b-8cc5-4bc8-8e80-412180c420a5}</Project>
       <Name>SimulatorAPI</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SimulatorDNP3\SimulatorDNP3.csproj">
+      <Project>{2edbd258-1a19-4527-9c92-7418191bee87}</Project>
+      <Name>SimulatorDNP3</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SimulatorUI\SimulatorUI.csproj">
       <Project>{428ddb1f-13f8-401c-aa0e-f0b80af1fc00}</Project>
       <Name>SimulatorUI</Name>
@@ -156,6 +161,7 @@
   <ItemGroup>
     <None Include="resources\folder_diskette.png" />
     <None Include="resources\info.png" />
+    <None Include="resources\add.png" />
     <Content Include="resources\opendnp3.png" />
     <None Include="resources\satellite_dish_add.png" />
   </ItemGroup>

@@ -1,6 +1,6 @@
 ﻿using Automatak.Simulator.UI;
 
-namespace Automatak.DNP3.Simulator
+namespace Automatak.Simulator
 {
     partial class SimulatorForm
     {
@@ -30,7 +30,6 @@ namespace Automatak.DNP3.Simulator
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SimulatorForm));
             this.mainMenuStrip = new System.Windows.Forms.MenuStrip();
             this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -40,15 +39,22 @@ namespace Automatak.DNP3.Simulator
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainPanel = new System.Windows.Forms.Panel();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.commTreeView = new Automatak.DNP3.Simulator.CommTreeView();
             this.logWindow1 = new Automatak.Simulator.UI.LogWindow();
-            this.logFlushTimer = new System.Windows.Forms.Timer(this.components);
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.tabControlPlugins = new System.Windows.Forms.TabControl();
+            this.listViewMetrics = new System.Windows.Forms.ListView();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.mainMenuStrip.SuspendLayout();
             this.mainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
             // 
             // mainMenuStrip
@@ -61,24 +67,23 @@ namespace Automatak.DNP3.Simulator
             this.mainMenuStrip.Location = new System.Drawing.Point(0, 0);
             this.mainMenuStrip.Name = "mainMenuStrip";
             this.mainMenuStrip.Padding = new System.Windows.Forms.Padding(5, 5, 0, 5);
-            this.mainMenuStrip.Size = new System.Drawing.Size(1045, 38);
+            this.mainMenuStrip.Size = new System.Drawing.Size(1060, 38);
             this.mainMenuStrip.TabIndex = 1;
             this.mainMenuStrip.Text = "mainMenuStrip";
             // 
             // addToolStripMenuItem
             // 
-            this.addToolStripMenuItem.Image = global::Automatak.Simulator.Application.Properties.Resources.satellite_dish_add;
+            this.addToolStripMenuItem.Image = global::Automatak.Simulator.Properties.Resources.add;
             this.addToolStripMenuItem.Name = "addToolStripMenuItem";
             this.addToolStripMenuItem.Size = new System.Drawing.Size(65, 28);
             this.addToolStripMenuItem.Text = "Add";
-            this.addToolStripMenuItem.Click += new System.EventHandler(this.addToolStripMenuItem_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.loadToolStripMenuItem,
             this.saveToolStripMenuItem});
-            this.toolStripMenuItem2.Image = global::Automatak.Simulator.Application.Properties.Resources.folder_diskette;
+            this.toolStripMenuItem2.Image = global::Automatak.Simulator.Properties.Resources.folder_diskette;
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
             this.toolStripMenuItem2.Size = new System.Drawing.Size(61, 28);
             this.toolStripMenuItem2.Text = "File";
@@ -98,7 +103,7 @@ namespace Automatak.DNP3.Simulator
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.aboutToolStripMenuItem.Image = global::Automatak.Simulator.Application.Properties.Resources.info;
+            this.aboutToolStripMenuItem.Image = global::Automatak.Simulator.Properties.Resources.info;
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(76, 28);
             this.aboutToolStripMenuItem.Text = "About";
@@ -111,7 +116,7 @@ namespace Automatak.DNP3.Simulator
             this.mainPanel.Location = new System.Drawing.Point(0, 38);
             this.mainPanel.Name = "mainPanel";
             this.mainPanel.Padding = new System.Windows.Forms.Padding(5, 0, 5, 5);
-            this.mainPanel.Size = new System.Drawing.Size(1045, 444);
+            this.mainPanel.Size = new System.Drawing.Size(1060, 417);
             this.mainPanel.TabIndex = 2;
             // 
             // splitContainer2
@@ -123,22 +128,14 @@ namespace Automatak.DNP3.Simulator
             // 
             // splitContainer2.Panel1
             // 
-            this.splitContainer2.Panel1.Controls.Add(this.commTreeView);
+            this.splitContainer2.Panel1.Controls.Add(this.splitContainer1);
             // 
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.logWindow1);
-            this.splitContainer2.Size = new System.Drawing.Size(1035, 439);
-            this.splitContainer2.SplitterDistance = 157;
+            this.splitContainer2.Size = new System.Drawing.Size(1050, 412);
+            this.splitContainer2.SplitterDistance = 226;
             this.splitContainer2.TabIndex = 3;
-            // 
-            // commTreeView
-            // 
-            this.commTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.commTreeView.Location = new System.Drawing.Point(0, 0);
-            this.commTreeView.Name = "commTreeView";
-            this.commTreeView.Size = new System.Drawing.Size(157, 439);
-            this.commTreeView.TabIndex = 0;
             // 
             // logWindow1
             // 
@@ -147,19 +144,64 @@ namespace Automatak.DNP3.Simulator
             this.logWindow1.LogFont = new System.Drawing.Font("Courier New", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.logWindow1.MinimumSize = new System.Drawing.Size(300, 250);
             this.logWindow1.Name = "logWindow1";
-            this.logWindow1.Size = new System.Drawing.Size(874, 439);
+            this.logWindow1.Size = new System.Drawing.Size(820, 412);
             this.logWindow1.TabIndex = 0;
             // 
-            // logFlushTimer
+            // splitContainer1
             // 
-            this.logFlushTimer.Enabled = true;
-            this.logFlushTimer.Tick += new System.EventHandler(this.logFlushTimer_Tick);
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.tabControlPlugins);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.listViewMetrics);
+            this.splitContainer1.Size = new System.Drawing.Size(226, 412);
+            this.splitContainer1.SplitterDistance = 204;
+            this.splitContainer1.TabIndex = 0;
+            // 
+            // tabControlPlugins
+            // 
+            this.tabControlPlugins.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControlPlugins.Location = new System.Drawing.Point(0, 0);
+            this.tabControlPlugins.Name = "tabControlPlugins";
+            this.tabControlPlugins.SelectedIndex = 0;
+            this.tabControlPlugins.Size = new System.Drawing.Size(226, 204);
+            this.tabControlPlugins.TabIndex = 0;
+            // 
+            // listViewMetrics
+            // 
+            this.listViewMetrics.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1,
+            this.columnHeader2});
+            this.listViewMetrics.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listViewMetrics.Location = new System.Drawing.Point(0, 0);
+            this.listViewMetrics.Name = "listViewMetrics";
+            this.listViewMetrics.Size = new System.Drawing.Size(226, 204);
+            this.listViewMetrics.TabIndex = 0;
+            this.listViewMetrics.UseCompatibleStateImageBehavior = false;
+            this.listViewMetrics.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "Metric";
+            this.columnHeader1.Width = 100;
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "Value";
+            this.columnHeader2.Width = 110;
             // 
             // SimulatorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1045, 482);
+            this.ClientSize = new System.Drawing.Size(1060, 455);
             this.Controls.Add(this.mainPanel);
             this.Controls.Add(this.mainMenuStrip);
             this.DoubleBuffered = true;
@@ -168,7 +210,7 @@ namespace Automatak.DNP3.Simulator
             this.MinimumSize = new System.Drawing.Size(600, 400);
             this.Name = "SimulatorForm";
             this.Text = "DNP3 Simulator";
-            this.Load += new System.EventHandler(this.TestHarnessForm_Load);
+            this.Load += new System.EventHandler(this.SimulatorForm_Load);
             this.mainMenuStrip.ResumeLayout(false);
             this.mainMenuStrip.PerformLayout();
             this.mainPanel.ResumeLayout(false);
@@ -176,6 +218,10 @@ namespace Automatak.DNP3.Simulator
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -191,9 +237,12 @@ namespace Automatak.DNP3.Simulator
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
         private System.Windows.Forms.Panel mainPanel;
         private System.Windows.Forms.SplitContainer splitContainer2;
-        private CommTreeView commTreeView;
-        private System.Windows.Forms.Timer logFlushTimer;
         private LogWindow logWindow1;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.TabControl tabControlPlugins;
+        private System.Windows.Forms.ListView listViewMetrics;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.ColumnHeader columnHeader2;
 
     }
 }

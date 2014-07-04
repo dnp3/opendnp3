@@ -1,4 +1,4 @@
-﻿namespace Automatak.DNP3.Simulator
+﻿namespace Automatak.Simulator
 {
     partial class CommTreeView
     {
