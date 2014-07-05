@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 using DNP3.Interface;
 using Automatak.Simulator.API;
@@ -15,11 +16,33 @@ namespace Automatak.Simulator.DNP3
         readonly ISimulatorNodeCallbacks callbacks;
         readonly string alias;
 
+        readonly ISimulatorNodeFactory masterFactory;
+
         public ChannelNode(IChannel channel, ISimulatorNodeCallbacks callbacks, string alias)
         {
             this.channel = channel;
             this.callbacks = callbacks;
             this.alias = alias;
+
+            this.masterFactory = new ActionNodeFactory("Add Master", cb => CreateMaster(cb));
+        }
+
+        ISimulatorNode CreateMaster(ISimulatorNodeCallbacks callbacks)
+        {
+            using (var dialog = new Components.MasterDialog())
+            {
+                dialog.ShowDialog();
+                if (dialog.DialogResult == DialogResult.OK)
+                {
+                    var config = dialog.Configuration;
+                    var master = channel.AddMaster("master", PrintingSOEHandler.Instance, DefaultMasterApplication.Instance, config);
+                    return new MasterNode(master, callbacks, "master");
+                }
+                else
+                {
+                    return null;
+                }
+            }   
         }
 
         void ISimulatorNode.Remove()
@@ -35,6 +58,14 @@ namespace Automatak.Simulator.DNP3
         string ISimulatorNode.DisplayName
         {
             get { return alias; }
+        }
+
+        IEnumerable<ISimulatorNodeFactory> ISimulatorNode.Children
+        {
+            get 
+            {
+                yield return masterFactory;
+            }
         }
     }
 }

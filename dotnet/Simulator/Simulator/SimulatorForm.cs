@@ -41,6 +41,29 @@ namespace Automatak.Simulator
             node.Text = simNode.DisplayName;
 
             var menu = new ContextMenu();
+            
+            foreach (var factory in simNode.Children)
+            {
+                var action = new MenuItem(factory.DisplayName);
+                action.Click += new EventHandler(
+                    delegate(Object o, EventArgs a)
+                    {
+                        var callbacks = new TreeNodeCallbacks();
+                        var child = factory.Create(callbacks);
+                        if (child != null)
+                        {
+                            this.BindNode(child, callbacks.node, node.Nodes);
+                        }
+                    }
+                );
+                menu.MenuItems.Add(action);
+            }
+
+            if (simNode.Children.Any())
+            {
+                menu.MenuItems.Add("-");
+            }
+
             var item = new MenuItem("Remove");
             item.Click += new EventHandler(
                 delegate(Object o, EventArgs a)
@@ -49,8 +72,7 @@ namespace Automatak.Simulator
                     parent.Remove(node);
                 }
             );
-
-            menu.MenuItems.Add("-");
+           
             menu.MenuItems.Add(item);
             node.ContextMenu = menu;
             parent.Add(node);
@@ -74,7 +96,7 @@ namespace Automatak.Simulator
                 item.Click += new EventHandler(
                     delegate(Object o, EventArgs a)
                     {                        
-                        var callbacks = new TreeNodeCallbcks();
+                        var callbacks = new TreeNodeCallbacks();
                         var node = instance.Create(callbacks);
                         if (node != null)
                         {

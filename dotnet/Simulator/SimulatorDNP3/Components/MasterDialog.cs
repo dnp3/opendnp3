@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 using DNP3.Interface;
 
-namespace Automatak.Simulator.DNP3
+namespace Automatak.Simulator.DNP3.Components
 {
     public partial class MasterDialog : Form
     {

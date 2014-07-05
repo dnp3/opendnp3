@@ -9,7 +9,7 @@ using Automatak.Simulator.API;
 
 namespace Automatak.Simulator
 {
-    class TreeNodeCallbcks : ISimulatorNodeCallbacks
+    class TreeNodeCallbacks : ISimulatorNodeCallbacks
     {
         public readonly TreeNode node = new TreeNode("temp");
 

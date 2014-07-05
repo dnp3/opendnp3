@@ -39,12 +39,12 @@ namespace Automatak.Simulator
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainPanel = new System.Windows.Forms.Panel();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.logWindow1 = new Automatak.Simulator.UI.LogWindow();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tabControlPlugins = new System.Windows.Forms.TabControl();
             this.listViewMetrics = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.logWindow1 = new Automatak.Simulator.UI.LogWindow();
             this.mainMenuStrip.SuspendLayout();
             this.mainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
@@ -134,18 +134,8 @@ namespace Automatak.Simulator
             // 
             this.splitContainer2.Panel2.Controls.Add(this.logWindow1);
             this.splitContainer2.Size = new System.Drawing.Size(1050, 412);
-            this.splitContainer2.SplitterDistance = 226;
+            this.splitContainer2.SplitterDistance = 225;
             this.splitContainer2.TabIndex = 3;
-            // 
-            // logWindow1
-            // 
-            this.logWindow1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.logWindow1.Location = new System.Drawing.Point(0, 0);
-            this.logWindow1.LogFont = new System.Drawing.Font("Courier New", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.logWindow1.MinimumSize = new System.Drawing.Size(300, 250);
-            this.logWindow1.Name = "logWindow1";
-            this.logWindow1.Size = new System.Drawing.Size(820, 412);
-            this.logWindow1.TabIndex = 0;
             // 
             // splitContainer1
             // 
@@ -161,7 +151,7 @@ namespace Automatak.Simulator
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.listViewMetrics);
-            this.splitContainer1.Size = new System.Drawing.Size(226, 412);
+            this.splitContainer1.Size = new System.Drawing.Size(225, 412);
             this.splitContainer1.SplitterDistance = 204;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -171,7 +161,7 @@ namespace Automatak.Simulator
             this.tabControlPlugins.Location = new System.Drawing.Point(0, 0);
             this.tabControlPlugins.Name = "tabControlPlugins";
             this.tabControlPlugins.SelectedIndex = 0;
-            this.tabControlPlugins.Size = new System.Drawing.Size(226, 204);
+            this.tabControlPlugins.Size = new System.Drawing.Size(225, 204);
             this.tabControlPlugins.TabIndex = 0;
             // 
             // listViewMetrics
@@ -182,7 +172,7 @@ namespace Automatak.Simulator
             this.listViewMetrics.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listViewMetrics.Location = new System.Drawing.Point(0, 0);
             this.listViewMetrics.Name = "listViewMetrics";
-            this.listViewMetrics.Size = new System.Drawing.Size(226, 204);
+            this.listViewMetrics.Size = new System.Drawing.Size(225, 204);
             this.listViewMetrics.TabIndex = 0;
             this.listViewMetrics.UseCompatibleStateImageBehavior = false;
             this.listViewMetrics.View = System.Windows.Forms.View.Details;
@@ -197,6 +187,16 @@ namespace Automatak.Simulator
             this.columnHeader2.Text = "Value";
             this.columnHeader2.Width = 110;
             // 
+            // logWindow1
+            // 
+            this.logWindow1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.logWindow1.Location = new System.Drawing.Point(0, 0);
+            this.logWindow1.LogFont = new System.Drawing.Font("Courier New", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.logWindow1.MinimumSize = new System.Drawing.Size(300, 250);
+            this.logWindow1.Name = "logWindow1";
+            this.logWindow1.Size = new System.Drawing.Size(821, 412);
+            this.logWindow1.TabIndex = 0;
+            // 
             // SimulatorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -209,7 +209,7 @@ namespace Automatak.Simulator
             this.MainMenuStrip = this.mainMenuStrip;
             this.MinimumSize = new System.Drawing.Size(600, 400);
             this.Name = "SimulatorForm";
-            this.Text = "DNP3 Simulator";
+            this.Text = "Simulator";
             this.Load += new System.EventHandler(this.SimulatorForm_Load);
             this.mainMenuStrip.ResumeLayout(false);
             this.mainMenuStrip.PerformLayout();

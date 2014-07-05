@@ -1,4 +1,5 @@
-﻿namespace Automatak.Simulator.DNP3
+﻿
+namespace Automatak.Simulator.DNP3.Components
 {
     partial class MasterDialog
     {

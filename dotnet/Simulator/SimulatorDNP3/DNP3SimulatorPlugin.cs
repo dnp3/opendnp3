@@ -11,6 +11,13 @@ using Automatak.Simulator.API;
 
 namespace Automatak.Simulator.DNP3
 {
+    static class IconIndex
+    {
+        public const int InactiveChannel = 0;
+        public const int InactiveMaster = 1;
+    };
+
+
     class DNP3SimulatorPlugin : ISimulatorPlugin
     {
         readonly ImageList imgList = new ImageList();
@@ -41,7 +48,7 @@ namespace Automatak.Simulator.DNP3
 
         ISimulatorNode ISimulatorPlugin.Create(ISimulatorNodeCallbacks callbacks)
         {
-            using (var dialog = new Components.ChannelDialog(Enumerable.Empty<String>()))
+            using (var dialog = new Components.ChannelDialog())
             {
                 dialog.ShowDialog();
                 if (dialog.DialogResult == DialogResult.OK)

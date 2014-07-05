@@ -13,6 +13,16 @@ namespace Automatak.Simulator.API
         void ChangeImage(int index);
     }
 
+    public interface ISimulatorNodeFactory
+    {
+        string DisplayName
+        {
+            get;
+        }
+
+        ISimulatorNode Create(ISimulatorNodeCallbacks callbacks);
+    }
+    
     public interface ISimulatorNode
     {
         void Remove();
@@ -22,6 +32,12 @@ namespace Automatak.Simulator.API
         String DisplayName
         {
             get;
-        }                     
+        }
+
+        IEnumerable<ISimulatorNodeFactory> Children
+        {
+            get;
+        }
     }
+    
 }

@@ -14,7 +14,7 @@ namespace Automatak.Simulator.DNP3.Components
 {
     public partial class ChannelDialog : Form
     {
-        public ChannelDialog(IEnumerable<string> takenNames)
+        public ChannelDialog()
         {
             InitializeComponent();
             this.takenNames = takenNames;
