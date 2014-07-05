@@ -120,6 +120,14 @@ namespace Automatak.Simulator.DNP3.Components
             }
         }
 
+        public String SelectedAlias
+        {
+            get
+            {
+                return textBoxID.Text;
+            }
+        }
+
         public String ChannelId
         {
             get
@@ -129,6 +137,6 @@ namespace Automatak.Simulator.DNP3.Components
         }
 
 
-        private Func<IDNP3Manager, IChannel> create = null;        
+        private Func<IDNP3Manager, IChannel> create = null;     
     }
 }

@@ -365,9 +365,9 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(110, 33);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(54, 13);
+            this.label3.Size = new System.Drawing.Size(29, 13);
             this.label3.TabIndex = 5;
-            this.label3.Text = "Logger ID";
+            this.label3.Text = "Alias";
             // 
             // textBoxID
             // 
@@ -608,7 +608,7 @@
             this.Name = "ChannelDialog";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Add Channel";
+            this.Text = "Add DNP3 Channel";
             this.TopMost = true;
             this.groupBoxButtons.ResumeLayout(false);
             this.tabControlChannelType.ResumeLayout(false);
