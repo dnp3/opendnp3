@@ -125,7 +125,7 @@ int main(int argc, char* argv[])
 				case('a') :
 				{				
 					tx.Update(Analog(value, AQ_ONLINE), 0);
-					value += 1.75;
+					value += 1;
 					break;
 				}
 				case('b') :

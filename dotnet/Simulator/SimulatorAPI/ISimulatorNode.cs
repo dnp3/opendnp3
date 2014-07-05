@@ -13,6 +13,16 @@ namespace Automatak.Simulator.API
         void ChangeImage(int index);
     }
 
+    public interface ISimulatorNodeAction
+    {
+        string DisplayName
+        {
+            get;
+        }
+
+        void Invoke();
+    }
+
     public interface ISimulatorNodeFactory
     {
         string DisplayName
@@ -27,7 +37,10 @@ namespace Automatak.Simulator.API
     {
         void Remove();
 
-        IEnumerable<Metric> GetMetrics();
+        IEnumerable<Metric> Metrics
+        {
+            get;
+        }
                 
         String DisplayName
         {
@@ -35,6 +48,11 @@ namespace Automatak.Simulator.API
         }
 
         IEnumerable<ISimulatorNodeFactory> Children
+        {
+            get;
+        }
+
+        IEnumerable<ISimulatorNodeAction> Actions
         {
             get;
         }

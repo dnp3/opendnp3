@@ -30,6 +30,7 @@ namespace Automatak.Simulator
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SimulatorForm));
             this.mainMenuStrip = new System.Windows.Forms.MenuStrip();
             this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -45,6 +46,7 @@ namespace Automatak.Simulator
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.logWindow1 = new Automatak.Simulator.UI.LogWindow();
+            this.timerMetrics = new System.Windows.Forms.Timer(this.components);
             this.mainMenuStrip.SuspendLayout();
             this.mainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
@@ -199,6 +201,12 @@ namespace Automatak.Simulator
             this.logWindow1.Size = new System.Drawing.Size(822, 412);
             this.logWindow1.TabIndex = 0;
             // 
+            // timerMetrics
+            // 
+            this.timerMetrics.Enabled = true;
+            this.timerMetrics.Interval = 1000;
+            this.timerMetrics.Tick += new System.EventHandler(this.timerMetrics_Tick);
+            // 
             // SimulatorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -245,6 +253,7 @@ namespace Automatak.Simulator
         private System.Windows.Forms.ListView listViewMetrics;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
+        private System.Windows.Forms.Timer timerMetrics;
 
     }
 }

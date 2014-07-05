@@ -16,8 +16,7 @@ namespace Automatak.Simulator.DNP3.Components
     {
         public ChannelDialog()
         {
-            InitializeComponent();
-            this.takenNames = takenNames;
+            InitializeComponent();            
             this.comboBoxSerialDeviceName.Items.AddRange(System.IO.Ports.SerialPort.GetPortNames());
             this.comboBoxParity.DataSource = Enum.GetValues(typeof(Parity));
             this.comboBoxStopBits.DataSource = Enum.GetValues(typeof(StopBits));
@@ -130,7 +129,6 @@ namespace Automatak.Simulator.DNP3.Components
         }
 
 
-        private Func<IDNP3Manager, IChannel> create = null;
-        private IEnumerable<string> takenNames;
+        private Func<IDNP3Manager, IChannel> create = null;        
     }
 }

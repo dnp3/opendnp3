@@ -146,11 +146,6 @@
             // 
             // numericUpDownDest
             // 
-            this.numericUpDownDest.Increment = new decimal(new int[] {
-            250,
-            0,
-            0,
-            0});
             this.numericUpDownDest.Location = new System.Drawing.Point(12, 41);
             this.numericUpDownDest.Maximum = new decimal(new int[] {
             65530,

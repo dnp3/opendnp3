@@ -45,8 +45,8 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyToClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.logControl = new Automatak.Simulator.UI.LogControl();
             this.timerRefresh = new System.Windows.Forms.Timer(this.components);
+            this.logControl = new Automatak.Simulator.UI.LogControl();
             this.panelVert.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.contextMenuStrip.SuspendLayout();
@@ -207,6 +207,12 @@
             this.copyToClipboardToolStripMenuItem.Text = "Copy to Clipboard";
             this.copyToClipboardToolStripMenuItem.Click += new System.EventHandler(this.copyToClipboardToolStripMenuItem_Click);
             // 
+            // timerRefresh
+            // 
+            this.timerRefresh.Enabled = true;
+            this.timerRefresh.Interval = 250;
+            this.timerRefresh.Tick += new System.EventHandler(this.timerRefresh_Tick);
+            // 
             // logControl
             // 
             this.logControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -214,10 +220,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.logControl.AutoScroll = true;
             this.logControl.AutoScrollMinSize = new System.Drawing.Size(100, 100);
-            this.logControl.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.logControl.BackColor = System.Drawing.SystemColors.InactiveCaptionText;
             this.logControl.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.logControl.ContextMenuStrip = this.contextMenuStrip;
             this.logControl.Font = new System.Drawing.Font("Courier New", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.logControl.ForeColor = System.Drawing.SystemColors.Window;
             this.logControl.Location = new System.Drawing.Point(0, 0);
             this.logControl.Margin = new System.Windows.Forms.Padding(0);
             this.logControl.MinimumSize = new System.Drawing.Size(500, 150);
@@ -225,12 +232,6 @@
             this.logControl.Size = new System.Drawing.Size(814, 282);
             this.logControl.SpacingFactor = 0F;
             this.logControl.TabIndex = 0;
-            // 
-            // timerRefresh
-            // 
-            this.timerRefresh.Enabled = true;
-            this.timerRefresh.Interval = 250;
-            this.timerRefresh.Tick += new System.EventHandler(this.timerRefresh_Tick);
             // 
             // LogWindow
             // 

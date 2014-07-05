@@ -39,8 +39,26 @@ namespace Automatak.Simulator
         private void BindNode(ISimulatorNode simNode, TreeNode node, TreeNodeCollection parent)
         {
             node.Text = simNode.DisplayName;
+            node.Tag = simNode;
 
             var menu = new ContextMenu();
+
+            foreach (var nodeAction in simNode.Actions)
+            {
+                var action = new MenuItem(nodeAction.DisplayName);
+                action.Click += new EventHandler(
+                    delegate(Object o, EventArgs a)
+                    {
+                        nodeAction.Invoke();
+                    }
+                );
+                menu.MenuItems.Add(action);
+            }
+
+            if (simNode.Actions.Any())
+            {
+                menu.MenuItems.Add("-");
+            }
             
             foreach (var factory in simNode.Children)
             {
@@ -68,7 +86,7 @@ namespace Automatak.Simulator
             item.Click += new EventHandler(
                 delegate(Object o, EventArgs a)
                 {
-                    simNode.Remove();
+                    ShutdownFrom(node);
                     parent.Remove(node);
                 }
             );
@@ -76,6 +94,16 @@ namespace Automatak.Simulator
             menu.MenuItems.Add(item);
             node.ContextMenu = menu;
             parent.Add(node);
+        }
+
+        private static void ShutdownFrom(TreeNode node)
+        {
+            var simNode = node.Tag as ISimulatorNode;
+            foreach(TreeNode subnode in node.Nodes)
+            {
+                ShutdownFrom(subnode);
+            }
+            simNode.Remove();
         }
         
         private void SimulatorForm_Load(object sender, EventArgs e)
@@ -86,8 +114,9 @@ namespace Automatak.Simulator
                 var item = new ToolStripMenuItem(instance.RootDisplayName);
                 item.Image = instance.PluginImage;
                 this.addToolStripMenuItem.DropDownItems.Add(item);
-                var page = new TabPage(instance.UniqueId);
+                var page = new TabPage(instance.UniqueId);                
                 var treeView = new TreeView();
+                page.Tag = treeView;
                 treeView.Dock = DockStyle.Fill;
                 treeView.ImageList = instance.NodeImageList;
                 page.Controls.Add(treeView);
@@ -104,6 +133,29 @@ namespace Automatak.Simulator
                         }
                     }
                 );
+            }
+        }
+
+        private void timerMetrics_Tick(object sender, EventArgs e)
+        {
+            var tab = this.tabControlPlugins.SelectedTab;
+            if (tab != null)
+            {
+                var view = tab.Tag as TreeView;
+                var node = view.SelectedNode;
+                if (node != null)
+                { 
+                    var metrics = (node.Tag as ISimulatorNode).Metrics;
+                    this.listViewMetrics.SuspendLayout();
+                    this.listViewMetrics.Items.Clear();
+                    foreach (Metric m in metrics)
+                    { 
+                        var values = new String[] { m.Id, m.Value };
+                        var item = new ListViewItem(values);
+                        this.listViewMetrics.Items.Add(item);
+                    }
+                    this.listViewMetrics.ResumeLayout();
+                }
             }
         }
 

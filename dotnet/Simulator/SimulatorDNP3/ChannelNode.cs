@@ -36,12 +36,20 @@ namespace Automatak.Simulator.DNP3
                 dialog.ShowDialog();
                 if (dialog.DialogResult == DialogResult.OK)
                 {
+                    var form = new GUIMasterForm();
                     var config = dialog.Configuration;
-                    var master = channel.AddMaster("master", PrintingSOEHandler.Instance, DefaultMasterApplication.Instance, config);
-                    
-                    master.Enable();
-                    
-                    return new MasterNode(master, callbacks, "master");
+                    var master = channel.AddMaster("master", form.SequenceOfEvents, DefaultMasterApplication.Instance, config);
+
+                    if (master == null)
+                    {
+                        return null;
+                    }
+                    else
+                    {
+                        form.SetMaster(master);
+                        master.Enable();
+                        return new MasterNode(form, master, callbacks, "master");
+                    }                    
                 }
                 else
                 {
@@ -55,14 +63,36 @@ namespace Automatak.Simulator.DNP3
             channel.Shutdown();
         }
 
-        IEnumerable<Metric> ISimulatorNode.GetMetrics()
+        IEnumerable<Metric> ISimulatorNode.Metrics
         {
-            return Enumerable.Empty<Metric>();
+            get
+            {
+                var list = new List<Metric>();
+                var stats = channel.GetChannelStatistics();
+                list.Add(new Metric("bytes rx", stats.NumBytesRx.ToString()));
+                list.Add(new Metric("bytes tx", stats.NumBytesTx.ToString()));
+                list.Add(new Metric("crc errors", stats.NumCrcError.ToString()));
+                list.Add(new Metric("open count", stats.NumOpen.ToString()));
+                list.Add(new Metric("num close", stats.NumClose.ToString()));
+                list.Add(new Metric("open fail count", stats.NumOpenFail.ToString()));
+                list.Add(new Metric("link frames rx", stats.NumLinkFrameRx.ToString()));
+                list.Add(new Metric("link frames tx", stats.NumLinkFrameTx.ToString()));
+                list.Add(new Metric("bad link frames rx", stats.NumBadLinkFrameRx.ToString()));
+                return list;
+            }
         }
 
         string ISimulatorNode.DisplayName
         {
             get { return alias; }
+        }
+
+        IEnumerable<ISimulatorNodeAction> ISimulatorNode.Actions
+        {
+            get
+            {
+                return Enumerable.Empty<ISimulatorNodeAction>();
+            }
         }
 
         IEnumerable<ISimulatorNodeFactory> ISimulatorNode.Children

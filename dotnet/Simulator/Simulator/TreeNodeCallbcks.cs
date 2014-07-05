@@ -15,7 +15,8 @@ namespace Automatak.Simulator
 
         void ISimulatorNodeCallbacks.ChangeImage(int index)
         {
-            
+            node.ImageIndex = index;
+            node.SelectedImageIndex = index;        
         }
     }
 }

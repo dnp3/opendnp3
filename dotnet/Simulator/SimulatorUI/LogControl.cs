@@ -8,19 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 
 namespace Automatak.Simulator.UI
-{
-    public class LogItem
-    {
-        public LogItem(string message, DisplayHint displayHint)
-        {
-            this.message = message;
-            this.displayHint = displayHint;
-        }
-
-        public readonly string message;        
-        readonly DisplayHint displayHint;
-    }
-
+{    
     public partial class LogControl : UserControl
     {
         public LogControl()
@@ -223,6 +211,18 @@ namespace Automatak.Simulator.UI
         private bool paused = false;
         private IList<LogItem> rows = new List<LogItem>();
         private IList<LogItem> snapshot = new List<LogItem>();
+    }
+
+    public class LogItem
+    {
+        public LogItem(string message, DisplayHint displayHint)
+        {
+            this.message = message;
+            this.displayHint = displayHint;
+        }
+
+        public readonly string message;
+        readonly DisplayHint displayHint;
     }
 }
 
