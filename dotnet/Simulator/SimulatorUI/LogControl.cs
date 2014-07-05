@@ -9,6 +9,18 @@ using System.Windows.Forms;
 
 namespace Automatak.Simulator.UI
 {
+    public class LogItem
+    {
+        public LogItem(string message, DisplayHint displayHint)
+        {
+            this.message = message;
+            this.displayHint = displayHint;
+        }
+
+        public readonly string message;        
+        readonly DisplayHint displayHint;
+    }
+
     public partial class LogControl : UserControl
     {
         public LogControl()
@@ -16,7 +28,7 @@ namespace Automatak.Simulator.UI
             InitializeComponent();
         }
 
-        public void AddRows(IEnumerable<string> rs)
+        public void AddRows(IEnumerable<LogItem> rs)
         {
             if(rs.Any())
             { 
@@ -41,7 +53,7 @@ namespace Automatak.Simulator.UI
             }
         }
 
-        int CalcBackRows(ICollection<string> rows)
+        int CalcBackRows(int count)
         {            
             if (viewFraction >= 0 && viewFraction <= 1.0)
             {
@@ -107,7 +119,7 @@ namespace Automatak.Simulator.UI
             PaintRows(pe.Graphics, GetViewportRows());               
         }
 
-        IList<string> GetCurrentRows()
+        IList<LogItem> GetCurrentRows()
         {            
             if (paused)
             {
@@ -119,23 +131,23 @@ namespace Automatak.Simulator.UI
             }
         }
 
-        public IEnumerable<string> GetAllRows()
+        public IEnumerable<LogItem> GetAllRows()
         {
             return GetCurrentRows();
         }
 
-        public IEnumerable<string> GetViewportRows()
+        public IEnumerable<LogItem> GetViewportRows()
         {
             return TrimRows(GetCurrentRows());
         }
 
-        public IEnumerable<string> TrimRows(IList<string> list)
+        public IEnumerable<LogItem> TrimRows(IList<LogItem> list)
         {
             var rowsVisible = this.NumRowsVisible();
 
             if (rowsVisible < list.Count)
             {
-                var skipCount = list.Count - rowsVisible - CalcBackRows(list);
+                var skipCount = list.Count - rowsVisible - CalcBackRows(list.Count);
 
                 return rows.Skip(skipCount);
             }
@@ -145,7 +157,7 @@ namespace Automatak.Simulator.UI
             } 
         }
 
-        private void PaintRows(Graphics g, IEnumerable<string> rows)
+        private void PaintRows(Graphics g, IEnumerable<LogItem> rows)
         {
             // Declare and instantiate a new pen.             
             var brush = new System.Drawing.SolidBrush(this.ForeColor);
@@ -154,7 +166,7 @@ namespace Automatak.Simulator.UI
 
             foreach (var s in rows)
             {
-                g.DrawString(s, this.Font, brush, new PointF(0, RowPosition(ri)));
+                g.DrawString(s.message, this.Font, brush, new PointF(0, RowPosition(ri)));
                 ++ri;
             } 
         }
@@ -171,7 +183,7 @@ namespace Automatak.Simulator.UI
             }
         }
 
-        IEnumerable<String> VisibleLines
+        IEnumerable<LogItem> VisibleLines
         {
             get
             {
@@ -209,8 +221,8 @@ namespace Automatak.Simulator.UI
         private int maxRows = 500;
         private double viewFraction = 1.0;
         private bool paused = false;
-        private IList<string> rows = new List<string>();
-        private IList<string> snapshot = new List<string>();
+        private IList<LogItem> rows = new List<LogItem>();
+        private IList<LogItem> snapshot = new List<LogItem>();
     }
 }
 

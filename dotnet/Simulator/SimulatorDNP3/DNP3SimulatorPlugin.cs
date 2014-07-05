@@ -7,6 +7,8 @@ using System.Windows.Forms;
 
 using DNP3.Adapter;
 using DNP3.Interface;
+
+using Automatak.Simulator.UI;
 using Automatak.Simulator.API;
 
 namespace Automatak.Simulator.DNP3
@@ -22,11 +24,15 @@ namespace Automatak.Simulator.DNP3
     {
         readonly ImageList imgList = new ImageList();
         readonly IDNP3Manager manager = DNP3ManagerFactory.CreateManager();
+        readonly ILogHandler logHandler;
 
-        public DNP3SimulatorPlugin()
+        public DNP3SimulatorPlugin(ILog log)
         {
+            this.logHandler = new ForwardingLogHandler(log);
+            this.manager.AddLogHandler(logHandler);
+
             imgList.Images.Add(Properties.Resources.satellite_dish);
-            imgList.Images.Add(Properties.Resources.network_monitor);
+            imgList.Images.Add(Properties.Resources.network_monitor);            
         }
 
         string ISimulatorPlugin.UniqueId

@@ -82,7 +82,7 @@ namespace Automatak.Simulator
         {            
             foreach (var factory in plugins)
             {
-                var instance = factory.Create();                
+                var instance = factory.Create(this.logWindow1);                
                 var item = new ToolStripMenuItem(instance.RootDisplayName);
                 item.Image = instance.PluginImage;
                 this.addToolStripMenuItem.DropDownItems.Add(item);

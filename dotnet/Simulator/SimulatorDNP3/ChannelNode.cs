@@ -23,8 +23,10 @@ namespace Automatak.Simulator.DNP3
             this.channel = channel;
             this.callbacks = callbacks;
             this.alias = alias;
+            
+            this.callbacks.ChangeImage(IconIndex.InactiveChannel);
 
-            this.masterFactory = new ActionNodeFactory("Add Master", cb => CreateMaster(cb));
+            this.masterFactory = new ActionNodeFactory("Add Master", cb => CreateMaster(cb));            
         }
 
         ISimulatorNode CreateMaster(ISimulatorNodeCallbacks callbacks)
@@ -36,6 +38,9 @@ namespace Automatak.Simulator.DNP3
                 {
                     var config = dialog.Configuration;
                     var master = channel.AddMaster("master", PrintingSOEHandler.Instance, DefaultMasterApplication.Instance, config);
+                    
+                    master.Enable();
+                    
                     return new MasterNode(master, callbacks, "master");
                 }
                 else

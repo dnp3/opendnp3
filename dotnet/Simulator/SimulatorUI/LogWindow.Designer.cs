@@ -46,6 +46,7 @@
             this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyToClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logControl = new Automatak.Simulator.UI.LogControl();
+            this.timerRefresh = new System.Windows.Forms.Timer(this.components);
             this.panelVert.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.contextMenuStrip.SuspendLayout();
@@ -70,9 +71,9 @@
             this.panelVert.Controls.Add(this.buttonClipboard);
             this.panelVert.Controls.Add(this.buttonPause);
             this.panelVert.Controls.Add(this.buttonPlay);
-            this.panelVert.Location = new System.Drawing.Point(995, 0);
+            this.panelVert.Location = new System.Drawing.Point(813, 0);
             this.panelVert.Name = "panelVert";
-            this.panelVert.Size = new System.Drawing.Size(40, 568);
+            this.panelVert.Size = new System.Drawing.Size(40, 282);
             this.panelVert.TabIndex = 4;
             // 
             // buttonClear
@@ -82,7 +83,7 @@
             this.buttonClear.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonClear.ImageIndex = 3;
             this.buttonClear.ImageList = this.imageListLog;
-            this.buttonClear.Location = new System.Drawing.Point(3, 498);
+            this.buttonClear.Location = new System.Drawing.Point(3, 212);
             this.buttonClear.Name = "buttonClear";
             this.buttonClear.Size = new System.Drawing.Size(32, 32);
             this.buttonClear.TabIndex = 7;
@@ -95,7 +96,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.vScrollBar.Location = new System.Drawing.Point(3, -1);
             this.vScrollBar.Name = "vScrollBar";
-            this.vScrollBar.Size = new System.Drawing.Size(32, 428);
+            this.vScrollBar.Size = new System.Drawing.Size(32, 142);
             this.vScrollBar.TabIndex = 6;
             this.vScrollBar.Value = 100;
             this.vScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.vScrollBar_Scroll);
@@ -107,7 +108,7 @@
             this.buttonClipboard.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonClipboard.ImageIndex = 2;
             this.buttonClipboard.ImageList = this.imageListLog;
-            this.buttonClipboard.Location = new System.Drawing.Point(3, 532);
+            this.buttonClipboard.Location = new System.Drawing.Point(3, 246);
             this.buttonClipboard.Name = "buttonClipboard";
             this.buttonClipboard.Size = new System.Drawing.Size(32, 32);
             this.buttonClipboard.TabIndex = 5;
@@ -121,7 +122,7 @@
             this.buttonPause.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonPause.ImageIndex = 1;
             this.buttonPause.ImageList = this.imageListLog;
-            this.buttonPause.Location = new System.Drawing.Point(3, 463);
+            this.buttonPause.Location = new System.Drawing.Point(3, 177);
             this.buttonPause.Name = "buttonPause";
             this.buttonPause.Size = new System.Drawing.Size(32, 32);
             this.buttonPause.TabIndex = 4;
@@ -136,7 +137,7 @@
             this.buttonPlay.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonPlay.ImageIndex = 0;
             this.buttonPlay.ImageList = this.imageListLog;
-            this.buttonPlay.Location = new System.Drawing.Point(3, 430);
+            this.buttonPlay.Location = new System.Drawing.Point(3, 144);
             this.buttonPlay.Name = "buttonPlay";
             this.buttonPlay.Size = new System.Drawing.Size(32, 32);
             this.buttonPlay.TabIndex = 3;
@@ -147,9 +148,9 @@
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 567);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 281);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1035, 26);
+            this.statusStrip1.Size = new System.Drawing.Size(853, 26);
             this.statusStrip1.SizingGrip = false;
             this.statusStrip1.TabIndex = 5;
             this.statusStrip1.Text = "statusStrip1";
@@ -221,9 +222,15 @@
             this.logControl.Margin = new System.Windows.Forms.Padding(0);
             this.logControl.MinimumSize = new System.Drawing.Size(500, 150);
             this.logControl.Name = "logControl";
-            this.logControl.Size = new System.Drawing.Size(1235, 568);
+            this.logControl.Size = new System.Drawing.Size(814, 282);
             this.logControl.SpacingFactor = 0F;
             this.logControl.TabIndex = 0;
+            // 
+            // timerRefresh
+            // 
+            this.timerRefresh.Enabled = true;
+            this.timerRefresh.Interval = 250;
+            this.timerRefresh.Tick += new System.EventHandler(this.timerRefresh_Tick);
             // 
             // LogWindow
             // 
@@ -234,7 +241,7 @@
             this.Controls.Add(this.logControl);
             this.MinimumSize = new System.Drawing.Size(300, 250);
             this.Name = "LogWindow";
-            this.Size = new System.Drawing.Size(1035, 593);
+            this.Size = new System.Drawing.Size(853, 307);
             this.panelVert.ResumeLayout(false);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
@@ -262,5 +269,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem clearToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem copyToClipboardToolStripMenuItem;
+        private System.Windows.Forms.Timer timerRefresh;
     }
 }

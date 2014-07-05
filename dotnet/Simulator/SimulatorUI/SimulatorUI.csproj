@@ -47,12 +47,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IColorScheme.cs" />
+    <Compile Include="ILog.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="LogControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="LogControl.Designer.cs">
       <DependentUpon>LogControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="LogFormatter.cs" />
     <Compile Include="LogWindow.cs">
       <SubType>UserControl</SubType>
     </Compile>

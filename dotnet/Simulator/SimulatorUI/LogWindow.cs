@@ -9,15 +9,35 @@ using System.Windows.Forms;
 
 namespace Automatak.Simulator.UI
 {
-    public partial class LogWindow : UserControl
+    public partial class LogWindow : UserControl, ILog
     {
+        Queue<LogItem> queue = new Queue<LogItem>();
+
         public LogWindow()
         {
             InitializeComponent();
-            this.UpdateStatus();
+            this.UpdateStatus();            
         }
 
-        public void AddRows(IEnumerable<string> lines)
+        void ILog.Log(DisplayHint hint, string message)
+        {
+            var item = new LogItem(LogFormatter.GetBareString(message), hint);
+            lock (queue)
+            {
+                queue.Enqueue(item);
+            }
+        }
+
+        void ILog.LogFull(DisplayHint hint, string filter, string alias, string message)
+        {
+            var item = new LogItem(LogFormatter.GetLogString(filter, alias, message), hint);
+            lock (queue)
+            {
+                queue.Enqueue(item);
+            }
+        }
+
+        void AddItems(IEnumerable<LogItem> lines)
         {
             this.logControl.AddRows(lines);
             this.UpdateStatus();
@@ -76,9 +96,10 @@ namespace Automatak.Simulator.UI
         }
 
         void CopyToClipboard()
-        {
+        {            
             var rows = this.logControl.GetAllRows();
-            Clipboard.SetText(String.Join(Environment.NewLine, rows.ToArray()));
+            Clipboard.SetText(String.Join(Environment.NewLine, rows.Select(r => r.message).ToArray()));
+            
         }
 
         private void buttonClear_Click(object sender, EventArgs e)
@@ -124,8 +145,36 @@ namespace Automatak.Simulator.UI
         }
 
         private void copyToClipboardToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+        {            
             this.CopyToClipboard();
         }
+
+        private IEnumerable<LogItem> GetItems()
+        {
+            lock (queue)
+            {
+                if (queue.Count > 0)
+                {
+                    var items = new List<LogItem>();
+                    while (queue.Count > 0)
+                    {
+                        items.Add(queue.Dequeue());
+                    }
+                    return items;
+                }
+                else
+                {
+                    return Enumerable.Empty<LogItem>();
+                }
+                
+            }
+        }
+
+        private void timerRefresh_Tick(object sender, EventArgs e)
+        {
+            this.AddItems(GetItems());
+        }
+
+       
     }
 }

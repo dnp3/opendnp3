@@ -134,7 +134,7 @@ namespace Automatak.Simulator
             // 
             this.splitContainer2.Panel2.Controls.Add(this.logWindow1);
             this.splitContainer2.Size = new System.Drawing.Size(1050, 412);
-            this.splitContainer2.SplitterDistance = 225;
+            this.splitContainer2.SplitterDistance = 224;
             this.splitContainer2.TabIndex = 3;
             // 
             // splitContainer1
@@ -151,7 +151,7 @@ namespace Automatak.Simulator
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.listViewMetrics);
-            this.splitContainer1.Size = new System.Drawing.Size(225, 412);
+            this.splitContainer1.Size = new System.Drawing.Size(224, 412);
             this.splitContainer1.SplitterDistance = 204;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -160,8 +160,10 @@ namespace Automatak.Simulator
             this.tabControlPlugins.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControlPlugins.Location = new System.Drawing.Point(0, 0);
             this.tabControlPlugins.Name = "tabControlPlugins";
+            this.tabControlPlugins.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.tabControlPlugins.RightToLeftLayout = true;
             this.tabControlPlugins.SelectedIndex = 0;
-            this.tabControlPlugins.Size = new System.Drawing.Size(225, 204);
+            this.tabControlPlugins.Size = new System.Drawing.Size(224, 204);
             this.tabControlPlugins.TabIndex = 0;
             // 
             // listViewMetrics
@@ -172,7 +174,7 @@ namespace Automatak.Simulator
             this.listViewMetrics.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listViewMetrics.Location = new System.Drawing.Point(0, 0);
             this.listViewMetrics.Name = "listViewMetrics";
-            this.listViewMetrics.Size = new System.Drawing.Size(225, 204);
+            this.listViewMetrics.Size = new System.Drawing.Size(224, 204);
             this.listViewMetrics.TabIndex = 0;
             this.listViewMetrics.UseCompatibleStateImageBehavior = false;
             this.listViewMetrics.View = System.Windows.Forms.View.Details;
@@ -194,7 +196,7 @@ namespace Automatak.Simulator
             this.logWindow1.LogFont = new System.Drawing.Font("Courier New", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.logWindow1.MinimumSize = new System.Drawing.Size(300, 250);
             this.logWindow1.Name = "logWindow1";
-            this.logWindow1.Size = new System.Drawing.Size(821, 412);
+            this.logWindow1.Size = new System.Drawing.Size(822, 412);
             this.logWindow1.TabIndex = 0;
             // 
             // SimulatorForm
