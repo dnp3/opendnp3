@@ -18,11 +18,11 @@ namespace Automatak.Simulator
                                                   
                  "This software is based on open source components with the following licenses:",
                  "",
-                 "Opendnp3",                 
+                 "opendnp3",                 
                  "http://www.automatak.com/opendnp3",
                  "http://www.apache.org/licenses/LICENSE-2.0.html",
                  "",
-                 "asio C++ library",
+                 "asio",
                  "http://think-async.com/",
                  "http://www.boost.org/users/license.html",
                  "",
