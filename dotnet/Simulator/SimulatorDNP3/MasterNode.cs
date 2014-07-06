@@ -11,27 +11,44 @@ namespace Automatak.Simulator.DNP3
 {
     class MasterNode : ISimulatorNode
     {
-        readonly GUIMasterForm form;
+        readonly SOEHandler handler;
         readonly IMaster master;
         readonly ISimulatorNodeCallbacks callbacks;
         readonly string alias;
         readonly ISimulatorNodeAction openAction;
 
-        public MasterNode(GUIMasterForm form, IMaster master, ISimulatorNodeCallbacks callbacks, string alias)
+        GUIMasterForm form = null;
+
+        public MasterNode(SOEHandler handler, IMaster master, ISimulatorNodeCallbacks callbacks, string alias)
         {
-            this.form = form;
+            this.handler = handler;
             this.master = master;
             this.callbacks = callbacks;
             this.alias = alias;
 
             this.callbacks.ChangeImage(IconIndex.Master);
 
-            this.openAction = new NodeAction("Open", () => form.Show());
+            this.openAction = new NodeAction("Open", () => OpenForm());
+        }
+
+        void OpenForm()
+        {
+            if (form == null)
+            {
+                form = new GUIMasterForm(master, handler);
+            }
+
+            form.Show();
         }
 
         void ISimulatorNode.Remove()
         {
-            form.Close();
+            if (form != null)
+            {
+                form.Close();
+                form.Dispose();
+                form = null;
+            }
             master.Shutdown();
         }
 

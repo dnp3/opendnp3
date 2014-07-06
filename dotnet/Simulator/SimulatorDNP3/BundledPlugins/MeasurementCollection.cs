@@ -41,11 +41,28 @@ namespace Automatak.Simulator.DNP3
         {
             lock (observers)
             {
-                map[meas.Index] = meas;                                    
-                foreach (var o in observers) o.Update(meas);
+                map[meas.Index] = meas;
+                foreach (var o in observers)
+                {
+                    o.Update(meas);
+                }
             }
-        }  
-        
+        }
+
+        public void Update(IEnumerable<Measurement> meas)
+        {
+            lock (observers)
+            {
+                foreach (var m in meas)
+                {
+                    map[m.Index] = m;
+                    foreach (var o in observers)
+                    {
+                        o.Update(m);
+                    }
+                }                
+            }
+        }
         
     }
 }

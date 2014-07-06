@@ -4,117 +4,213 @@ using System.Linq;
 using System.Text;
 using System.ComponentModel;
 
+using System.Threading;
+
 using DNP3.Interface;
 
 namespace Automatak.Simulator.DNP3
 {       
-    class SOEHandler: ISOEHandler
+    class SOEHandler: ISOEHandler, IMeasurementCache
     {
-        public delegate void OnMeasurements(IEnumerable<Measurement> measurements);
-        public event OnMeasurements NewMeasurements;
+        readonly Object mutex = new Object();
 
-        IList<Measurement> measurements = null;
+        readonly MeasurementCollection binaries = new MeasurementCollection();
+        readonly MeasurementCollection doubleBinaries = new MeasurementCollection();
+        readonly MeasurementCollection counters = new MeasurementCollection();
+        readonly MeasurementCollection frozenCounters = new MeasurementCollection();
+        readonly MeasurementCollection analogs = new MeasurementCollection();
+        readonly MeasurementCollection binaryOutputStatii = new MeasurementCollection();
+        readonly MeasurementCollection analogOutputStatii = new MeasurementCollection();
+        readonly MeasurementCollection octetStrings = new MeasurementCollection();        
         
         void ISOEHandler.Start()
         {
-            measurements = new List<Measurement>();            
-        }
-
-        void Add<T>(IEnumerable<T> values, Func<T, Measurement> convert)
-        {
-            var converted = values.Select(convert);
-            foreach (var v in converted)
-            {
-                measurements.Add(v);
-            }   
-        }
+            Monitor.Enter(mutex);
+        }      
         
         void ISOEHandler.End()
         {
-            if (measurements.Any() && NewMeasurements != null)
-            {               
-               NewMeasurements(measurements);                
-            }           
+            Monitor.Exit(mutex);          
         }
 
-        void ISOEHandler.LoadStatic(IEnumerable<IndexedValue<Binary>> values)
+        public void LoadStatic(IEnumerable<IndexedValue<Binary>> values)
         {
-            Add(values, m => new Measurement(m.Value.Value.ToString(), m.Value, MeasType.Binary, m.Index));           
+            var converted = values.Select(m => new Measurement(m.Value.Value.ToString(), m.Value, MeasType.Binary, m.Index));
+            binaries.Update(converted);
         }
 
-        void ISOEHandler.LoadStatic(IEnumerable<IndexedValue<DoubleBitBinary>> values)
+        public void LoadStatic(IEnumerable<IndexedValue<DoubleBitBinary>> values)
         {
-            Add(values, m => new Measurement(m.Value.Value.ToString(), m.Value, MeasType.DoubleBitBinary, m.Index));
+            var converted = values.Select(m => new Measurement(m.Value.Value.ToString(), m.Value, MeasType.DoubleBitBinary, m.Index));
+            doubleBinaries.Update(converted);
         }
 
-        void ISOEHandler.LoadStatic(IEnumerable<IndexedValue<Analog>> values)
+        public void LoadStatic(IEnumerable<IndexedValue<Analog>> values)
         {
-            Add(values, m => new Measurement(m.Value.Value.ToString(), m.Value, MeasType.Analog, m.Index));
+            var converted = values.Select(m => new Measurement(m.Value.Value.ToString(), m.Value, MeasType.Analog, m.Index));
+            analogs.Update(converted);
         }
 
-        void ISOEHandler.LoadStatic(IEnumerable<IndexedValue<Counter>> values)
+        public void LoadStatic(IEnumerable<IndexedValue<Counter>> values)
         {
-            Add(values, m => new Measurement(m.Value.Value.ToString(), m.Value, MeasType.Counter, m.Index));
+            var converted = values.Select(m => new Measurement(m.Value.Value.ToString(), m.Value, MeasType.Counter, m.Index));
+            counters.Update(converted);
         }
 
-        void ISOEHandler.LoadStatic(IEnumerable<IndexedValue<FrozenCounter>> values)
+        public void LoadStatic(IEnumerable<IndexedValue<FrozenCounter>> values)
         {
-            Add(values, m => new Measurement(m.Value.Value.ToString(), m.Value, MeasType.FrozenCounter, m.Index));
+            var converted = values.Select(m => new Measurement(m.Value.Value.ToString(), m.Value, MeasType.FrozenCounter, m.Index));
+            frozenCounters.Update(converted);
         }
 
-        void ISOEHandler.LoadStatic(IEnumerable<IndexedValue<BinaryOutputStatus>> values)
+        public void LoadStatic(IEnumerable<IndexedValue<BinaryOutputStatus>> values)
         {
-            Add(values, m => new Measurement(m.Value.Value.ToString(), m.Value, MeasType.BinaryOutputStatus, m.Index));
+            var converted = values.Select(m => new Measurement(m.Value.Value.ToString(), m.Value, MeasType.BinaryOutputStatus, m.Index));
+            binaryOutputStatii.Update(converted);
         }
 
-        void ISOEHandler.LoadStatic(IEnumerable<IndexedValue<AnalogOutputStatus>> values)
+        public void LoadStatic(IEnumerable<IndexedValue<AnalogOutputStatus>> values)
         {
-            Add(values, m => new Measurement(m.Value.Value.ToString(), m.Value, MeasType.AnalogOutputStatus, m.Index));
+            var converted = values.Select(m => new Measurement(m.Value.Value.ToString(), m.Value, MeasType.AnalogOutputStatus, m.Index));
+            analogOutputStatii.Update(converted);
         }
 
-        void ISOEHandler.LoadStatic(IEnumerable<IndexedValue<OctetString>> values)
+        public void LoadStatic(IEnumerable<IndexedValue<OctetString>> values)
         {
-            Add(values, m => new Measurement(m.Value.AsString(), m.Value, MeasType.OctetString, m.Index));
+            var converted = values.Select(m => new Measurement(m.Value.AsString(), m.Value, MeasType.OctetString, m.Index));
+            octetStrings.Update(converted);
         }
 
-        void ISOEHandler.LoadEvent(IEnumerable<IndexedValue<Binary>> values)
+        public void LoadEvent(IEnumerable<IndexedValue<Binary>> values)
         {
-            Add(values, m => new Measurement(m.Value.Value.ToString(), m.Value, MeasType.Binary, m.Index));
+            LoadStatic(values);
         }
 
-        void ISOEHandler.LoadEvent(IEnumerable<IndexedValue<DoubleBitBinary>> values)
+        public void LoadEvent(IEnumerable<IndexedValue<DoubleBitBinary>> values)
         {
-            Add(values, m => new Measurement(m.Value.Value.ToString(), m.Value, MeasType.DoubleBitBinary, m.Index));
+            LoadStatic(values);
         }
 
-        void ISOEHandler.LoadEvent(IEnumerable<IndexedValue<Analog>> values)
+        public void LoadEvent(IEnumerable<IndexedValue<Analog>> values)
         {
-            Add(values, m => new Measurement(m.Value.Value.ToString(), m.Value, MeasType.Analog, m.Index));
+            LoadStatic(values);
         }
 
-        void ISOEHandler.LoadEvent(IEnumerable<IndexedValue<Counter>> values)
+        public void LoadEvent(IEnumerable<IndexedValue<Counter>> values)
         {
-            Add(values, m => new Measurement(m.Value.Value.ToString(), m.Value, MeasType.Counter, m.Index));
+            LoadStatic(values);
         }
 
-        void ISOEHandler.LoadEvent(IEnumerable<IndexedValue<FrozenCounter>> values)
+        public void LoadEvent(IEnumerable<IndexedValue<FrozenCounter>> values)
         {
-            Add(values, m => new Measurement(m.Value.Value.ToString(), m.Value, MeasType.FrozenCounter, m.Index));
+            LoadStatic(values);
         }
 
-        void ISOEHandler.LoadEvent(IEnumerable<IndexedValue<BinaryOutputStatus>> values)
+        public void LoadEvent(IEnumerable<IndexedValue<BinaryOutputStatus>> values)
         {
-            Add(values, m => new Measurement(m.Value.ToString(), m.Value, MeasType.BinaryOutputStatus, m.Index));
+            LoadStatic(values);
         }
 
-        void ISOEHandler.LoadEvent(IEnumerable<IndexedValue<AnalogOutputStatus>> values)
+        public void LoadEvent(IEnumerable<IndexedValue<AnalogOutputStatus>> values)
         {
-            Add(values, m => new Measurement(m.Value.Value.ToString(), m.Value, MeasType.AnalogOutputStatus, m.Index));
+            LoadStatic(values);
         }
 
-        void ISOEHandler.LoadEvent(IEnumerable<IndexedValue<OctetString>> values)
+        public void LoadEvent(IEnumerable<IndexedValue<OctetString>> values)
         {
-            Add(values, m => new Measurement(m.Value.AsString(), m.Value, MeasType.OctetString, m.Index));
+            LoadStatic(values);
         }
+
+        MeasurementCollection GetCollectionMaybeNull(MeasType type)
+        {
+            switch (type)
+            {
+                case (MeasType.Binary):
+                    return binaries;
+                case (MeasType.DoubleBitBinary):
+                    return doubleBinaries;
+                case (MeasType.Counter):
+                    return counters;
+                case (MeasType.FrozenCounter):
+                    return frozenCounters;
+                case (MeasType.Analog):
+                    return analogs;
+                case (MeasType.BinaryOutputStatus):
+                    return binaryOutputStatii;
+                case (MeasType.AnalogOutputStatus):
+                    return analogOutputStatii;
+                case (MeasType.OctetString):
+                    return octetStrings;
+                default:
+                    return null;
+            }
+        }
+
+        MeasurementCollection IMeasurementCache.Binaries
+        {
+            get { return binaries; }
+        }
+
+        MeasurementCollection IMeasurementCache.DoubleBinaries
+        {
+            get { return doubleBinaries; }
+        }
+
+        MeasurementCollection IMeasurementCache.Counters
+        {
+            get { return counters; }
+        }
+
+        MeasurementCollection IMeasurementCache.FrozenCounters
+        {
+            get { return frozenCounters; }
+        }
+
+        MeasurementCollection IMeasurementCache.Analogs
+        {
+            get { return analogs; }
+        }
+
+        MeasurementCollection IMeasurementCache.BinaryOutputStatii
+        {
+            get { return binaryOutputStatii; }
+        }
+
+        MeasurementCollection IMeasurementCache.AnalogOutputStatii
+        {
+            get { return analogOutputStatii; }
+        }
+
+        public MeasurementCollection OctetStrings
+        {
+            get { return octetStrings; }
+        }
+
+        public MeasurementCollection GetCollection(MeasType type)
+        {
+            switch (type)
+            { 
+                case(MeasType.Binary):
+                    return binaries;
+                case (MeasType.DoubleBitBinary):
+                    return doubleBinaries;
+                case (MeasType.Counter):
+                    return counters;
+                case (MeasType.FrozenCounter):
+                    return frozenCounters;
+                case (MeasType.Analog):
+                    return analogs;
+                case (MeasType.BinaryOutputStatus):
+                    return binaryOutputStatii;
+                case (MeasType.AnalogOutputStatus):
+                    return analogOutputStatii;
+                case(MeasType.OctetString):
+                    return octetStrings;
+                default:
+                    return null;
+            }
+        }
+
+        
     }
 }

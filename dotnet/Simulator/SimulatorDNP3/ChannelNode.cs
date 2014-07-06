@@ -54,20 +54,19 @@ namespace Automatak.Simulator.DNP3
             {
                 dialog.ShowDialog();
                 if (dialog.DialogResult == DialogResult.OK)
-                {
-                    var form = new GUIMasterForm();
+                {                    
+                    var handler = new SOEHandler();
                     var config = dialog.Configuration;
-                    var master = channel.AddMaster("master", form.SequenceOfEvents, DefaultMasterApplication.Instance, config);
+                    var master = channel.AddMaster("master", handler, DefaultMasterApplication.Instance, config);
 
                     if (master == null)
                     {
                         return null;
                     }
                     else
-                    {
-                        form.SetMaster(master);
+                    {                        
                         master.Enable();
-                        return new MasterNode(form, master, callbacks, "master");
+                        return new MasterNode(handler, master, callbacks, "master");
                     }                    
                 }
                 else

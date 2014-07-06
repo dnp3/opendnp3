@@ -60,6 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IMeasurementCache.cs" />
     <Compile Include="NodeAction.cs" />
     <Compile Include="ActionNodeFactory.cs" />
     <Compile Include="BundledPlugins\DBListView.cs">
@@ -74,8 +75,6 @@
     <Compile Include="BundledPlugins\GUIMasterForm.Designer.cs">
       <DependentUpon>GUIMasterForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="BundledPlugins\GUIMasterPlugin.cs" />
-    <Compile Include="BundledPlugins\GUIMasterPluginFactory.cs" />
     <Compile Include="BundledPlugins\Measurement.cs" />
     <Compile Include="BundledPlugins\MeasurementCollection.cs" />
     <Compile Include="BundledPlugins\MeasurementPoco.cs" />
