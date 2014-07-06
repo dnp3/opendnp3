@@ -60,6 +60,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\LogLevelControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\LogLevelControl.Designer.cs">
+      <DependentUpon>LogLevelControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="IMeasurementCache.cs" />
     <Compile Include="NodeAction.cs" />
     <Compile Include="ActionNodeFactory.cs" />
@@ -146,6 +152,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Components\LinkConfigControl.resx">
       <DependentUpon>LinkConfigControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\LogLevelControl.resx">
+      <DependentUpon>LogLevelControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Components\MasterConfigControl.resx">
       <DependentUpon>MasterConfigControl.cs</DependentUpon>

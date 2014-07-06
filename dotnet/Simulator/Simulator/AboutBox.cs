@@ -8,25 +8,23 @@ using System.Windows.Forms;
 
 namespace Automatak.Simulator
 {
-    partial class About : Form
+    partial class AboutBox : Form
     {
-        public About()
+        public AboutBox()
         {
             InitializeComponent();
 
             string[] lines = {
-                 
-                 "Opendnp3 - The de facto reference implementation of IEEE 1815 (DNP3)",
+                                                  
+                 "This software is based on open source components with the following licenses:",
                  "",
-                 "This software licensed to you under the Apache 2.0 license:",
+                 "Opendnp3",                 
+                 "http://www.automatak.com/opendnp3",
+                 "http://www.apache.org/licenses/LICENSE-2.0.html",
                  "",
-                 "http://www.apache.org/licenses/LICENSE-2.0",
-                 "",
-                 "Contains software written by:",
-                 "",
-                 "Automatak LLC - http://www.automatak.com",
-                 "Green Enery Corp - http://www.greenenergycorp.com",
-                 "asio C++ library - http://think-async.com/",
+                 "asio C++ library",
+                 "http://think-async.com/",
+                 "http://www.boost.org/users/license.html",
                  "",
                  "Unless required by applicable law or agreed to in writing, software",
                  "distributed under the License is distributed on an \"AS IS\" BASIS",
@@ -34,7 +32,17 @@ namespace Automatak.Simulator
             };
 
 
-            this.richTextBox1.Text = String.Join(Environment.NewLine, lines);
+            this.richTextBox1.Text = String.Join(Environment.NewLine, lines);            
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void richTextBox1_LinkClicked(object sender, LinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(e.LinkText);
         }        
     }
 }

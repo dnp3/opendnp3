@@ -16,18 +16,20 @@ namespace Automatak.Simulator
     public partial class SimulatorForm : Form
     {
         readonly IEnumerable<ISimulatorPluginFactory> plugins;
+        readonly bool splashOnLoad;
 
-        public SimulatorForm(IEnumerable<ISimulatorPluginFactory> plugins)
+        public SimulatorForm(IEnumerable<ISimulatorPluginFactory> plugins, bool splashOnLoad)
         {                 
             InitializeComponent();    
             
-            this.plugins = plugins;     
+            this.plugins = plugins;
+            this.splashOnLoad = splashOnLoad;
         }
            
         void ShowAboutBox()
         {
-            using (About about = new About())
-            {
+            using (var about = new AboutBox())
+            {                
                 about.ShowDialog();
             }            
         }
@@ -108,7 +110,7 @@ namespace Automatak.Simulator
         }
         
         private void SimulatorForm_Load(object sender, EventArgs e)
-        {       
+        {            
             ILog log  = this.logWindow1;
 
             foreach (var factory in plugins)
@@ -175,6 +177,17 @@ namespace Automatak.Simulator
                 this.listViewMetrics.Items.Add(item);
             }
             this.listViewMetrics.ResumeLayout();
+        }
+
+        private void SimulatorForm_Shown(object sender, EventArgs e)
+        {
+            if (splashOnLoad)
+            {
+                using (var about = new AboutBox())
+                {
+                    about.ShowDialog();
+                }
+            }             
         }
 
     }

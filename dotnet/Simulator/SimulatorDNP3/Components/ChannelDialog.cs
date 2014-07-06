@@ -67,50 +67,16 @@ namespace Automatak.Simulator.DNP3.Components
             var flow = (FlowControl) comboBoxFlowControl.SelectedValue;
             var stopBits = (StopBits) comboBoxStopBits.SelectedValue;
 
+            var flags = logLevelControl1.Filters.Flags;
             var ss = new SerialSettings(name, baud, dataBits, stopBits, parity, flow);
-            return (IDNP3Manager manager) => manager.AddSerial(this.textBoxID.Text, GetFilters(), min, max, ss);
+            return (IDNP3Manager manager) => manager.AddSerial(this.textBoxID.Text, flags, min, max, ss);
         }
 
         private Func<IDNP3Manager, IChannel> GetTCPClientFunctor(TimeSpan min, TimeSpan max)
         {
-            return (IDNP3Manager manager) => manager.AddTCPClient(this.textBoxID.Text, GetFilters(), min, max, textBoxHost.Text, Decimal.ToUInt16(numericUpDownPort.Value));
-        }
-
-        private uint GetFilters()
-        {
-            uint filters = LogFilters.EVENT;
-            if (checkBoxError.Checked) filters |= LogFilters.ERROR;
-            if (checkBoxWarn.Checked) filters |= LogFilters.WARNING;
-            if (checkBoxInfo.Checked) filters |= LogFilters.INFO;
-            if (checkBoxDebug.Checked) filters |= LogFilters.DEBUG;
-
-            if (checkBoxLink.Checked)
-            {
-                filters |= (LogFilters.LINK_RX | LogFilters.LINK_TX);
-            }
-
-            if (checkBoxLinkRaw.Checked)
-            {
-                filters |= (LogFilters.LINK_RX_HEX | LogFilters.LINK_TX_HEX);
-            }
-
-            if (checkBoxTransport.Checked)
-            {
-                filters |= (LogFilters.TRANSPORT_RX | LogFilters.TRANSPORT_TX);
-            }
-
-            if (checkBoxAppHeader.Checked)
-            {
-                filters |= (LogFilters.APP_HEADER_RX | LogFilters.APP_HEADER_TX);
-            }
-
-            if (checkBoxAppObject.Checked)
-            {
-                filters |= (LogFilters.APP_OBJECT_RX | LogFilters.APP_OBJECT_TX);
-            }
-
-            return filters;
-        }
+            var flags = logLevelControl1.Filters.Flags;
+            return (IDNP3Manager manager) => manager.AddTCPClient(this.textBoxID.Text, flags, min, max, textBoxHost.Text, Decimal.ToUInt16(numericUpDownPort.Value));
+        }       
 
         public Func<IDNP3Manager, IChannel> ChannelAction
         {
