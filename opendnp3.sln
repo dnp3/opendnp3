@@ -336,6 +336,7 @@ Global
 		{428DDB1F-13F8-401C-AA0E-F0B80AF1FC00}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{428DDB1F-13F8-401C-AA0E-F0B80AF1FC00}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{428DDB1F-13F8-401C-AA0E-F0B80AF1FC00}.Release|Win32.ActiveCfg = Release|Any CPU
+		{428DDB1F-13F8-401C-AA0E-F0B80AF1FC00}.Release|Win32.Build.0 = Release|Any CPU
 		{428DDB1F-13F8-401C-AA0E-F0B80AF1FC00}.Release|x64.ActiveCfg = Release|Any CPU
 		{428DDB1F-13F8-401C-AA0E-F0B80AF1FC00}.Release|x86.ActiveCfg = Release|Any CPU
 		{2EDBD258-1A19-4527-9C92-7418191BEE87}.Debug|Any CPU.ActiveCfg = Debug|x86
