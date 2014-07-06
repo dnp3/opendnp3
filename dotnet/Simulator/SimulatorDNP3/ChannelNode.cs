@@ -24,10 +24,29 @@ namespace Automatak.Simulator.DNP3
             this.callbacks = callbacks;
             this.alias = alias;
             
-            this.callbacks.ChangeImage(IconIndex.InactiveChannel);
+            this.callbacks.ChangeImage(IconIndex.Channel);
 
-            this.masterFactory = new ActionNodeFactory("Add Master", cb => CreateMaster(cb));            
+            this.masterFactory = new ActionNodeFactory("Add Master", cb => CreateMaster(cb));
+
+
+            this.channel.AddStateListener(state => callbacks.ChangeState(GetNodeState(state)));
         }
+
+        
+        NodeState GetNodeState(ChannelState state)
+        {
+            switch (state)
+            { 
+                case(ChannelState.OPENING):
+                    return NodeState.Waiting;
+                case (ChannelState.WAITING):
+                    return NodeState.Failed;
+                case (ChannelState.OPEN):
+                    return NodeState.Active;                
+                default:
+                    return NodeState.Inactive;
+            }
+        }        
 
         ISimulatorNode CreateMaster(ISimulatorNodeCallbacks callbacks)
         {

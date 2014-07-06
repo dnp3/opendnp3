@@ -15,8 +15,8 @@ namespace Automatak.Simulator.DNP3
 {
     static class IconIndex
     {
-        public const int InactiveChannel = 0;
-        public const int InactiveMaster = 1;
+        public const int Channel = 0;                
+        public const int Master = 1;
     };
 
 
@@ -31,8 +31,8 @@ namespace Automatak.Simulator.DNP3
             this.logHandler = new ForwardingLogHandler(log);
             this.manager.AddLogHandler(logHandler);
 
-            imgList.Images.Add(Properties.Resources.satellite_dish);
-            imgList.Images.Add(Properties.Resources.network_monitor);            
+            imgList.Images.Add(Properties.Resources.satellite_dish);            
+            imgList.Images.Add(Properties.Resources.network_monitor);
         }
 
         string ISimulatorPlugin.UniqueId

@@ -66,7 +66,7 @@ namespace Automatak.Simulator
                 action.Click += new EventHandler(
                     delegate(Object o, EventArgs a)
                     {
-                        var callbacks = new TreeNodeCallbacks();
+                        var callbacks = new TreeNodeCallbacks(this);
                         var child = factory.Create(callbacks);
                         if (child != null)
                         {
@@ -125,7 +125,7 @@ namespace Automatak.Simulator
                 item.Click += new EventHandler(
                     delegate(Object o, EventArgs a)
                     {                        
-                        var callbacks = new TreeNodeCallbacks();
+                        var callbacks = new TreeNodeCallbacks(this);
                         var node = instance.Create(callbacks);
                         if (node != null)
                         {

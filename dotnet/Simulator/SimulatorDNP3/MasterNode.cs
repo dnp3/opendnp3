@@ -24,7 +24,7 @@ namespace Automatak.Simulator.DNP3
             this.callbacks = callbacks;
             this.alias = alias;
 
-            this.callbacks.ChangeImage(IconIndex.InactiveMaster);
+            this.callbacks.ChangeImage(IconIndex.Master);
 
             this.openAction = new NodeAction("Open", () => form.Show());
         }

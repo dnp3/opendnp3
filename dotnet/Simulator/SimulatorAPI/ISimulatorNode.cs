@@ -8,9 +8,21 @@ using System.Drawing;
 
 namespace Automatak.Simulator.API
 {
+    public enum NodeState
+    {
+        Inactive,
+        Waiting,
+        Active,
+        Failed
+    }
+
     public interface ISimulatorNodeCallbacks
     {
+        
+
         void ChangeImage(int index);
+
+        void ChangeState(NodeState state);
     }
 
     public interface ISimulatorNodeAction

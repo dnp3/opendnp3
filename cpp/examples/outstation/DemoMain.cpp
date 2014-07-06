@@ -53,7 +53,8 @@ int main(int argc, char* argv[])
 	const uint32_t FILTERS = levels::NORMAL; // | levels::ALL_COMMS;
 
 	// This is the main point of interaction with the stack
-	DNP3Manager manager(std::thread::hardware_concurrency());
+	// Allocate a single thread to the pool since this is a single outstation
+	DNP3Manager manager(1);
 
 	// send log messages to the console
 	manager.AddLogSubscriber(&ConsoleLogger::Instance());
