@@ -32,7 +32,7 @@ namespace Automatak.Simulator.DNP3
             this.manager.AddLogHandler(logHandler);
 
             imgList.Images.Add(Properties.Resources.satellite_dish);            
-            imgList.Images.Add(Properties.Resources.network_monitor);
+            imgList.Images.Add(Properties.Resources.network_monitor);            
         }
 
         string ISimulatorPlugin.UniqueId

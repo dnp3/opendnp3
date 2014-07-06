@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using Automatak.Simulator.UI;
 using Automatak.Simulator.API;
 
 namespace Automatak.Simulator
@@ -107,10 +108,12 @@ namespace Automatak.Simulator
         }
         
         private void SimulatorForm_Load(object sender, EventArgs e)
-        {            
+        {       
+            ILog log  = this.logWindow1;
+
             foreach (var factory in plugins)
-            {
-                var instance = factory.Create(this.logWindow1);                
+            {                
+                var instance = factory.Create(log);                
                 var item = new ToolStripMenuItem(instance.RootDisplayName);
                 item.Image = instance.PluginImage;
                 this.addToolStripMenuItem.DropDownItems.Add(item);
@@ -133,6 +136,8 @@ namespace Automatak.Simulator
                         }
                     }
                 );
+
+                log.LogFull(DisplayHint.INFO, "INFO", "system", "Initialized " + instance.UniqueId + " plugin");
             }
         }
 

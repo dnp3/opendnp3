@@ -21,33 +21,46 @@ namespace Automatak.Simulator.DNP3
         {
             switch (filter.Flags)
             {                                     
-                case (LogFilters.EVENT):                
-                case (LogFilters.ERROR):
-                case (LogFilters.WARNING):
-                case (LogFilters.INFO):
-                case (LogFilters.DEBUG):
-                case (LogFilters.LINK_RX):
-                case (LogFilters.LINK_TX):
-                case (LogFilters.TRANSPORT_RX):
-                case (LogFilters.TRANSPORT_TX):
-                case (LogFilters.APP_HEADER_RX):
-                case (LogFilters.APP_HEADER_TX):
-                    return true;  
-                default:
+                case(LogFilters.APP_OBJECT_RX):
+                case(LogFilters.APP_OBJECT_TX):
+                case(LogFilters.LINK_RX_HEX):
+                case(LogFilters.LINK_TX_HEX):
                     return false;
+                default:
+                    return true;
+            }
+        }
+
+        static DisplayHint GetDisplayHint(LogFilter filter)
+        {
+            switch (filter.Flags)
+            {
+                case(LogFilters.ERROR):
+                    return DisplayHint.ERROR;
+                case(LogFilters.WARNING):
+                    return DisplayHint.WARNING;
+                case (LogFilters.APP_OBJECT_RX):
+                case (LogFilters.APP_OBJECT_TX):
+                case (LogFilters.LINK_RX_HEX):
+                case (LogFilters.LINK_TX_HEX):
+                    return DisplayHint.ALT1;
+                default:
+                    return DisplayHint.INFO;
             }
         }
 
         void ILogHandler.Log(LogEntry entry)
         {
+            var hint = GetDisplayHint(entry.filter);
+
             if (DisplayTimestamp(entry.filter))
             {
-                proxy.Log(DisplayHint.EVENT, "");
-                proxy.LogFull(DisplayHint.EVENT, LogFilters.GetFilterString(entry.filter.Flags), entry.alias, entry.message);                
+                proxy.Log(hint, "");
+                proxy.LogFull(hint, LogFilters.GetFilterString(entry.filter.Flags), entry.alias, entry.message);                
             }
             else
             {
-                proxy.Log(DisplayHint.EVENT, entry.message);
+                proxy.Log(hint, entry.message);
             }        
         }                        
     }

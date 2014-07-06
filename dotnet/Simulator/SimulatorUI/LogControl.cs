@@ -13,7 +13,7 @@ namespace Automatak.Simulator.UI
     {
         public LogControl()
         {
-            InitializeComponent();
+            InitializeComponent();            
         }
 
         public void AddRows(IEnumerable<LogItem> rs)
@@ -145,18 +145,35 @@ namespace Automatak.Simulator.UI
             } 
         }
 
-        private void PaintRows(Graphics g, IEnumerable<LogItem> rows)
+        void PaintRows(Graphics g, IEnumerable<LogItem> rows)
         {
             // Declare and instantiate a new pen.             
             var brush = new System.Drawing.SolidBrush(this.ForeColor);
+            
 
-            var ri = 0;
+            var ri = 0;            
 
             foreach (var s in rows)
             {
+                brush.Color = GetColor(s.displayHint);
                 g.DrawString(s.message, this.Font, brush, new PointF(0, RowPosition(ri)));
                 ++ri;
             } 
+        }
+
+        Color GetColor(DisplayHint hint)
+        {
+            switch(hint)
+            {
+                case(DisplayHint.ERROR):
+                    return Color.OrangeRed;
+                case(DisplayHint.WARNING):
+                    return Color.Gold;
+                case(DisplayHint.ALT1):
+                    return Color.Aqua;
+                default:
+                    return this.ForeColor;
+            }
         }
 
         [Description("Test text displayed in the textbox"), Category("Look and Feel")]
@@ -222,7 +239,7 @@ namespace Automatak.Simulator.UI
         }
 
         public readonly string message;
-        readonly DisplayHint displayHint;
+        public readonly DisplayHint displayHint;
     }
 }
 
