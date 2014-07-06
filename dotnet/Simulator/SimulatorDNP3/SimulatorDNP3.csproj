@@ -66,6 +66,30 @@
     <Compile Include="Components\LogLevelControl.Designer.cs">
       <DependentUpon>LogLevelControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Components\OutstationDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Components\OutstationDialog.Designer.cs">
+      <DependentUpon>OutstationDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\ResponseTypeControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\ResponseTypeControl.Designer.cs">
+      <DependentUpon>ResponseTypeControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\EventResponseTypeControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\EventResponseTypeControl.Designer.cs">
+      <DependentUpon>EventResponseTypeControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\StaticResponseTypeControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\StaticResponseTypeControl.Designer.cs">
+      <DependentUpon>StaticResponseTypeControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="IMeasurementCache.cs" />
     <Compile Include="NodeAction.cs" />
     <Compile Include="ActionNodeFactory.cs" />
@@ -159,8 +183,14 @@
     <EmbeddedResource Include="Components\MasterConfigControl.resx">
       <DependentUpon>MasterConfigControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Components\OutstationDialog.resx">
+      <DependentUpon>OutstationDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Components\MasterDialog.resx">
       <DependentUpon>MasterDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\ResponseTypeControl.resx">
+      <DependentUpon>ResponseTypeControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

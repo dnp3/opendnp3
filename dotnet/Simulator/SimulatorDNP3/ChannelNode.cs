@@ -17,6 +17,7 @@ namespace Automatak.Simulator.DNP3
         readonly string alias;
 
         readonly ISimulatorNodeFactory masterFactory;
+        readonly ISimulatorNodeFactory outstationFactory;
 
         public ChannelNode(IChannel channel, ISimulatorNodeCallbacks callbacks, string alias)
         {
@@ -27,6 +28,7 @@ namespace Automatak.Simulator.DNP3
             this.callbacks.ChangeImage(IconIndex.Channel);
 
             this.masterFactory = new ActionNodeFactory("Add Master", cb => CreateMaster(cb));
+            this.outstationFactory = new ActionNodeFactory("Add Outstation", cb => CreateOutstation(cb));
 
 
             this.channel.AddStateListener(state => callbacks.ChangeState(GetNodeState(state)));
@@ -77,6 +79,22 @@ namespace Automatak.Simulator.DNP3
             }   
         }
 
+        ISimulatorNode CreateOutstation(ISimulatorNodeCallbacks callbacks)
+        {
+            using (var dialog = new Components.OutstationDialog())
+            {
+                dialog.ShowDialog();
+                if (dialog.DialogResult == DialogResult.OK)
+                {
+                    return null;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
         void ISimulatorNode.Remove()
         {
             channel.Shutdown();
@@ -119,6 +137,7 @@ namespace Automatak.Simulator.DNP3
             get 
             {
                 yield return masterFactory;
+                yield return outstationFactory;
             }
         }
     }
