@@ -35,7 +35,7 @@ namespace Automatak.Simulator.DNP3
         {
             if (form == null)
             {
-                form = new GUIMasterForm(master, handler);
+                form = new GUIMasterForm(master, handler, alias);
             }
 
             form.Show();

@@ -18,12 +18,14 @@ namespace Automatak.Simulator.DNP3
         readonly IMaster master;
         readonly IMeasurementCache cache;      
 
-        public GUIMasterForm(IMaster master, IMeasurementCache cache)
+        public GUIMasterForm(IMaster master, IMeasurementCache cache, String alias)
         {
             InitializeComponent();
 
             this.master = master;
-            this.cache = cache;            
+            this.cache = cache;
+
+            this.Text = String.Format("DNP3 Master ({0})", alias);
         }                       
      
         void GUIMasterForm_FormClosing(object sender, FormClosingEventArgs e)

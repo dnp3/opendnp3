@@ -36,21 +36,25 @@ namespace Automatak.Simulator.DNP3.Components
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.linkConfigControl = new Automatak.Simulator.DNP3.Components.LinkConfigControl();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.masterConfigControl = new Automatak.Simulator.DNP3.Components.MasterConfigControl();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.textBoxID = new System.Windows.Forms.TextBox();
             this.groupBoxButtons.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBoxButtons
             // 
             this.groupBoxButtons.Controls.Add(this.buttonCancel);
             this.groupBoxButtons.Controls.Add(this.buttonADD);
-            this.groupBoxButtons.Location = new System.Drawing.Point(12, 405);
+            this.groupBoxButtons.Location = new System.Drawing.Point(12, 435);
             this.groupBoxButtons.Name = "groupBoxButtons";
             this.groupBoxButtons.Size = new System.Drawing.Size(482, 71);
             this.groupBoxButtons.TabIndex = 0;
@@ -83,7 +87,7 @@ namespace Automatak.Simulator.DNP3.Components
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 489);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 514);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(507, 22);
             this.statusStrip1.SizingGrip = false;
@@ -102,7 +106,7 @@ namespace Automatak.Simulator.DNP3.Components
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(482, 396);
+            this.tabControl1.Size = new System.Drawing.Size(482, 353);
             this.tabControl1.TabIndex = 7;
             // 
             // tabPage1
@@ -111,21 +115,10 @@ namespace Automatak.Simulator.DNP3.Components
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(474, 253);
+            this.tabPage1.Size = new System.Drawing.Size(474, 327);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Link";
             this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Controls.Add(this.masterConfigControl);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(474, 370);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Master";
-            this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // linkConfigControl
             // 
@@ -134,6 +127,17 @@ namespace Automatak.Simulator.DNP3.Components
             this.linkConfigControl.Size = new System.Drawing.Size(226, 222);
             this.linkConfigControl.TabIndex = 6;
             // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.masterConfigControl);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(474, 327);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Master";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
             // masterConfigControl
             // 
             this.masterConfigControl.Location = new System.Drawing.Point(0, 0);
@@ -141,13 +145,42 @@ namespace Automatak.Simulator.DNP3.Components
             this.masterConfigControl.Size = new System.Drawing.Size(282, 321);
             this.masterConfigControl.TabIndex = 0;
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.textBoxID);
+            this.groupBox1.Location = new System.Drawing.Point(12, 371);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(478, 66);
+            this.groupBox1.TabIndex = 8;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Logging";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(118, 27);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(29, 13);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "Alias";
+            // 
+            // textBoxID
+            // 
+            this.textBoxID.Location = new System.Drawing.Point(24, 24);
+            this.textBoxID.Name = "textBoxID";
+            this.textBoxID.Size = new System.Drawing.Size(88, 20);
+            this.textBoxID.TabIndex = 4;
+            this.textBoxID.Text = "master";
+            // 
             // MasterDialog
             // 
             this.AcceptButton = this.buttonADD;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(507, 511);
+            this.ClientSize = new System.Drawing.Size(507, 536);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.groupBoxButtons);
@@ -166,6 +199,8 @@ namespace Automatak.Simulator.DNP3.Components
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -183,5 +218,8 @@ namespace Automatak.Simulator.DNP3.Components
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private Components.MasterConfigControl masterConfigControl;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox textBoxID;
     }
 }

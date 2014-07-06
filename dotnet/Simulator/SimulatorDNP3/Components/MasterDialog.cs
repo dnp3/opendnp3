@@ -26,6 +26,14 @@ namespace Automatak.Simulator.DNP3.Components
             this.Close();
         }
 
+        public String SelectedAlias
+        {
+            get
+            {
+                return textBoxID.Text;
+            }
+        }
+
         public MasterStackConfig Configuration
         {
             get

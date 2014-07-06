@@ -126,16 +126,7 @@ namespace Automatak.Simulator.DNP3.Components
             {
                 return textBoxID.Text;
             }
-        }
-
-        public String ChannelId
-        {
-            get
-            {
-                return this.textBoxID.Text;
-            }
-        }
-
+        }        
 
         private Func<IDNP3Manager, IChannel> create = null;     
     }
