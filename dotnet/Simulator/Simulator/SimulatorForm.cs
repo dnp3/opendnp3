@@ -141,27 +141,40 @@ namespace Automatak.Simulator
             }
         }
 
-        private void timerMetrics_Tick(object sender, EventArgs e)
+        private IEnumerable<Metric> GetMetrics()
         {
             var tab = this.tabControlPlugins.SelectedTab;
-            if (tab != null)
+            if (tab == null)
+            {
+                return Enumerable.Empty<Metric>();
+            }
+            else
             {
                 var view = tab.Tag as TreeView;
                 var node = view.SelectedNode;
-                if (node != null)
-                { 
-                    var metrics = (node.Tag as ISimulatorNode).Metrics;
-                    this.listViewMetrics.SuspendLayout();
-                    this.listViewMetrics.Items.Clear();
-                    foreach (Metric m in metrics)
-                    { 
-                        var values = new String[] { m.Id, m.Value };
-                        var item = new ListViewItem(values);
-                        this.listViewMetrics.Items.Add(item);
-                    }
-                    this.listViewMetrics.ResumeLayout();
+                if (node == null)
+                {
+                    return Enumerable.Empty<Metric>();
+                }
+                else
+                {
+                    return (node.Tag as ISimulatorNode).Metrics;                   
                 }
             }
+        }
+
+        private void timerMetrics_Tick(object sender, EventArgs e)
+        {
+            var metrics = GetMetrics();
+            this.listViewMetrics.SuspendLayout();
+            this.listViewMetrics.Items.Clear();
+            foreach (Metric m in metrics)
+            {
+                var values = new String[] { m.Id, m.Value };
+                var item = new ListViewItem(values);
+                this.listViewMetrics.Items.Add(item);
+            }
+            this.listViewMetrics.ResumeLayout();
         }
 
     }
