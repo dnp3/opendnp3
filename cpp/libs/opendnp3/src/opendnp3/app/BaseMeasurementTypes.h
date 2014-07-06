@@ -35,29 +35,20 @@ public:
 
 	virtual ~Measurement() {}
 
-	uint64_t GetTime() const
-	{
-		return time;
-	}
-	bool IsTimeValid() const
-	{
-		return isTimeValid;
-	}
-	uint8_t GetQuality() const
-	{
-		return quality;
-	}
-
-	void SetTime(uint64_t time_)
-	{
-		time = time_;
-		isTimeValid = true;
-	}
+	uint8_t quality;	//	bitfield that stores type specific quality information
+	uint64_t time;		//	timestamp associated with the measurement
+	bool isTimeValid;	//  records if the time field was set or not
 
 	void ClearTime()
 	{
 		isTimeValid = false;
 		time = 0;
+	}
+
+	void SetTime(uint64_t time_)
+	{
+		isTimeValid = true;
+		time = time_;
 	}
 
 protected:
@@ -70,10 +61,7 @@ protected:
 
 	Measurement(uint8_t quality_, uint64_t time_) : quality(quality_), time(time_), isTimeValid(true)
 	{}
-
-	uint8_t quality;					//	bitfield that stores type specific quality information
-	uint64_t time;						//	timestamp associated with the measurement
-	bool isTimeValid;					//  records if the time field was set or not
+	
 };
 
 
@@ -81,24 +69,18 @@ protected:
 template <class T>
 class TypedMeasurement : public Measurement
 {
-public:
+public:	
 
-	T GetValue() const
-	{
-		return mValue;
-	}
+	T value;
 
 	typedef T Type;
 
 protected:
 
-	TypedMeasurement(): Measurement(), mValue(0) {}
-	TypedMeasurement(uint8_t aQuality) : Measurement(aQuality), mValue(0) {}
-	TypedMeasurement(T value, uint8_t aQuality) : Measurement(aQuality), mValue(value) {}
-	TypedMeasurement(T value, uint8_t aQuality, int64_t aTime) : Measurement(aQuality, aTime), mValue(value) {}
-
-private:
-	T mValue;
+	TypedMeasurement(): Measurement(), value(0) {}
+	TypedMeasurement(uint8_t quality) : Measurement(quality), value(0) {}
+	TypedMeasurement(T value, uint8_t quality) : Measurement(quality), value(value) {}
+	TypedMeasurement(T value, uint8_t quality, int64_t time) : Measurement(quality, time), value(value) {}	
 };
 
 }

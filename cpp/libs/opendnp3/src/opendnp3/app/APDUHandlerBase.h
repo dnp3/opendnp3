@@ -204,7 +204,7 @@ void APDUHandlerBase::OnIndexPrefixCTO(const HeaderRecord& record, const Iterabl
 		                 [commonTime](const IndexedValue<T, uint16_t>& value)
 		{
 			T copy(value.value);
-			copy.SetTime(commonTime + copy.GetTime());
+			copy.time += commonTime;
 			return IndexedValue<T, uint16_t>(copy, value.index);
 		}
 

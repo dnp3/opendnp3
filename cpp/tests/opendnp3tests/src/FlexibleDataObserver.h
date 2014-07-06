@@ -87,8 +87,8 @@ public:
 	{
 		PointMap<Analog>::Type::iterator i = mAnalogMap.find(aIndex);
 		if(i == mAnalogMap.end()) return false;
-		if(i->second.GetQuality() != aQuality) return false;
-		return openpal::FloatEqual(aValue, i->second.GetValue());
+		if(i->second.quality != aQuality) return false;
+		return openpal::FloatEqual(aValue, i->second.value);
 	}
 
 	bool Check(int32_t aValue, AnalogQuality aQuality, size_t aIndex, int64_t aTime)
@@ -262,7 +262,7 @@ bool FlexibleDataObserver::Check(typename PointMap<T>::Type& arMap, U aValue, ui
 {
 	typename PointMap<T>::Type::iterator i = arMap.find(aIndex);
 	if(i == arMap.end()) return false;
-	return i->second.GetValue() == aValue && i->second.GetQuality() == aQual;
+	return i->second.value == aValue && i->second.quality == aQual;
 }
 
 template <class T, class U>
@@ -270,7 +270,7 @@ bool FlexibleDataObserver::Check(typename PointMap<T>::Type& arMap, U aValue, ui
 {
 	typename PointMap<T>::Type::iterator i = arMap.find(aIndex);
 	if(i == arMap.end()) return false;
-	return i->second.GetValue() == aValue && i->second.GetQuality() == aQual && i->second.GetTime() == aTime;
+	return i->second.value == aValue && i->second.quality == aQual && i->second.time == aTime;
 }
 
 template <class T>
@@ -278,13 +278,13 @@ bool FlexibleDataObserver::CheckQual(typename PointMap<T>::Type& arMap, uint8_t 
 {
 	typename PointMap<T>::Type::iterator i = arMap.find(aIndex);
 	if(i == arMap.end()) return false;
-	return i->second.GetQuality() == aQual;
+	return i->second.quality == aQual;
 }
 
 template <class T>
 void FlexibleDataObserver::SetQuality(uint8_t aQuality, typename PointMap<T>::Type& arMap)
 {
-	for(auto pair : arMap) pair->second.SetQuality(aQuality);
+	for(auto pair : arMap) pair->second.quality = aQuality;
 }
 
 template <class T>
@@ -299,7 +299,7 @@ void FlexibleDataObserver::Print(typename PointMap<T>::Type& arMap)
 	int j = 0;
 	for(auto pair : arMap)
 	{
-		std::cout << j << ", " << pair.second.GetValue() << ", " << static_cast<int>(pair.second.GetQuality()) << std::endl;
+		std::cout << j << ", " << pair.second.value << ", " << static_cast<int>(pair.second.quality) << std::endl;
 		++j;
 	}
 }

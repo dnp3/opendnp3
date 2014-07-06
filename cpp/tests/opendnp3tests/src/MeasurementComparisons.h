@@ -30,10 +30,10 @@ template<class T>
 bool Equals(const opendnp3::TypedMeasurement<T>& lhs, const opendnp3::TypedMeasurement<T>& rhs)
 {
 	return
-	    (lhs.GetQuality() == rhs.GetQuality()) &&
-	    (lhs.GetValue() == rhs.GetValue()) &&
-	    (lhs.GetTime() == rhs.GetTime()) &&
-	    (lhs.IsTimeValid() == rhs.IsTimeValid());
+	    (lhs.quality == rhs.quality) &&
+	    (lhs.value == rhs.value) &&
+	    (lhs.time == rhs.time) &&
+	    (lhs.isTimeValid == rhs.isTimeValid);
 }
 
 template<class T>

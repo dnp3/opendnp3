@@ -47,9 +47,14 @@ private:
 	{
 		for (int i = 0; i < source->Count; ++i)
 		{
-			if (target.Contains(i))
+			if (target.values.Contains(i))
 			{
-				target[i].clazz = (opendnp3::PointClass) source[i]->pointClass;
+				target.values[i].current.quality = source[i]->quality;
+			}
+
+			if (target.metadata.Contains(i))
+			{
+				target.metadata[i].clazz = (opendnp3::PointClass) source[i]->pointClass;				
 			}			 
 		}
 	}
@@ -59,10 +64,15 @@ private:
 	{
 		for (int i = 0; i < source->Count; ++i)
 		{
-			if (target.Contains(i))
+			if (target.values.Contains(i))
 			{
-				target[i].clazz = (opendnp3::PointClass) source[i]->pointClass;
-				target[i].deadband = source[i]->deadband;
+				target.values[i].current.quality = source[i]->quality;
+			}
+
+			if (target.metadata.Contains(i))
+			{
+				target.metadata[i].clazz = (opendnp3::PointClass) source[i]->pointClass;
+				target.metadata[i].deadband = source[i]->deadband;
 			}
 		}
 	}

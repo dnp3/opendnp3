@@ -137,85 +137,85 @@ AnalogOutputDouble64^ Conversions::ConvertCommand(const opendnp3::AnalogOutputDo
 
 Binary^ Conversions::ConvertMeas(opendnp3::Binary meas)
 {
-	if (meas.IsTimeValid())
+	if (meas.isTimeValid)
 	{
-		return gcnew Binary(meas.GetValue(), meas.GetQuality(), TimeStamp::Convert(meas.GetTime()));
+		return gcnew Binary(meas.value , meas.quality, TimeStamp::Convert(meas.time));
 	}
 	else
 	{
-		return gcnew Binary(meas.GetValue(), meas.GetQuality());
+		return gcnew Binary(meas.value, meas.quality);
 	}
 }
 
 DoubleBitBinary^ Conversions::ConvertMeas(opendnp3::DoubleBitBinary meas)
 {
-	if (meas.IsTimeValid())
+	if (meas.isTimeValid)
 	{
-		return gcnew DoubleBitBinary(static_cast<DoubleBit>(meas.GetValue()), meas.GetQuality(), TimeStamp::Convert(meas.GetTime()));
+		return gcnew DoubleBitBinary(static_cast<DoubleBit>(meas.value), meas.quality, TimeStamp::Convert(meas.time));
 	}
 	else
 	{
-		return gcnew DoubleBitBinary(static_cast<DoubleBit>(meas.GetValue()), meas.GetQuality());
+		return gcnew DoubleBitBinary(static_cast<DoubleBit>(meas.value), meas.quality);
 	}
 }
 
 Analog^ Conversions::ConvertMeas(opendnp3::Analog meas)
 {
-	if (meas.IsTimeValid())
+	if (meas.isTimeValid)
 	{
-		return gcnew Analog(meas.GetValue(), meas.GetQuality(), TimeStamp::Convert(meas.GetTime()));
+		return gcnew Analog(meas.value, meas.quality, TimeStamp::Convert(meas.time));
 	}
 	else
 	{
-		return gcnew Analog(meas.GetValue(), meas.GetQuality());
+		return gcnew Analog(meas.value, meas.quality);
 	}
 }
 
 Counter^ Conversions::ConvertMeas(opendnp3::Counter meas)
 {
-	if (meas.IsTimeValid())
+	if (meas.isTimeValid)
 	{
-		return gcnew Counter(meas.GetValue(), meas.GetQuality(), TimeStamp::Convert(meas.GetTime()));
+		return gcnew Counter(meas.value, meas.quality, TimeStamp::Convert(meas.time));
 	}
 	else
 	{
-		return gcnew Counter(meas.GetValue(), meas.GetQuality());
+		return gcnew Counter(meas.value, meas.quality);
 	}
 }
 
 FrozenCounter^ Conversions::ConvertMeas(opendnp3::FrozenCounter meas)
 {
-	if (meas.IsTimeValid())
+	if (meas.isTimeValid)
 	{
-		return gcnew FrozenCounter(meas.GetValue(), meas.GetQuality(), TimeStamp::Convert(meas.GetTime()));
+		return gcnew FrozenCounter(meas.value, meas.quality, TimeStamp::Convert(meas.time));
 	}
 	else
 	{
-		return gcnew FrozenCounter(meas.GetValue(), meas.GetQuality());
+		return gcnew FrozenCounter(meas.value, meas.quality);
 	}
 }
 
 AnalogOutputStatus^ Conversions::ConvertMeas(opendnp3::AnalogOutputStatus meas)
 {
-	if (meas.IsTimeValid())
+	if (meas.isTimeValid)
 	{
-		return gcnew AnalogOutputStatus(meas.GetValue(), meas.GetQuality(), TimeStamp::Convert(meas.GetTime()));
+		return gcnew AnalogOutputStatus(meas.value, meas.quality, TimeStamp::Convert(meas.time));
 	}
 	else
 	{
-		return gcnew AnalogOutputStatus(meas.GetValue(), meas.GetQuality());
+		return gcnew AnalogOutputStatus(meas.value, meas.quality);
 	}
 }
 
 BinaryOutputStatus^ Conversions::ConvertMeas(opendnp3::BinaryOutputStatus meas)
 {
-	if (meas.IsTimeValid())
+	if (meas.isTimeValid)
 	{
-		return gcnew BinaryOutputStatus(meas.GetValue(), meas.GetQuality(), TimeStamp::Convert(meas.GetTime()));
+		return gcnew BinaryOutputStatus(meas.value, meas.quality, TimeStamp::Convert(meas.time));
 	}
 	else
 	{
-		return gcnew BinaryOutputStatus(meas.GetValue(), meas.GetQuality());
+		return gcnew BinaryOutputStatus(meas.value, meas.quality);
 	}
 }
 

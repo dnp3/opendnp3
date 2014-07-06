@@ -71,7 +71,7 @@ private:
 
 			std::cout << name << " [" << pair.index << "] : " <<
 			          ValueToString(pair.value) << " : " <<
-			          static_cast<int>(pair.value.GetQuality()) << " : " <<
+			          static_cast<int>(pair.value.quality) << " : " <<
 			          GetTimeString(pair.value) <<
 			          std::endl;
 		});
@@ -81,16 +81,16 @@ private:
 	static std::string ValueToString(const T& meas)
 	{
 		std::ostringstream oss;
-		oss << meas.GetValue();
+		oss << meas.value;
 		return oss.str();
 	}
 
 	static std::string GetTimeString(const Measurement& meas)
 	{
 		std::ostringstream oss;
-		if (meas.IsTimeValid())
+		if (meas.isTimeValid)
 		{
-			oss << meas.GetTime();
+			oss << meas.time;
 		}
 		else
 		{
@@ -101,7 +101,7 @@ private:
 
 	static std::string ValueToString(const DoubleBitBinary& meas)
 	{
-		return DoubleBitToString(meas.GetValue());
+		return DoubleBitToString(meas.value);
 	}
 
 	PrintingSOEHandler()

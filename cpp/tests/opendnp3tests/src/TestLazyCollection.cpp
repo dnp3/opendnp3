@@ -83,7 +83,7 @@ TEST_CASE(SUITE("SingleBitValue"))
 	{
 		values.push_back(v);
 	});
-	REQUIRE(true ==  values[0].GetValue());
+	REQUIRE(true ==  values[0].value);
 }
 
 TEST_CASE(SUITE("ComplexBitCount"))

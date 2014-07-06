@@ -209,7 +209,7 @@ public:
 		if(quality != newValue.quality) return true;
 		else
 		{
-			return measurements::IsEvent<uint32_t, uint64_t>(this->GetValue(), newValue.GetValue(), aDeadband);
+			return measurements::IsEvent<uint32_t, uint64_t>(this->value, newValue.value, aDeadband);
 		}
 	}
 };
@@ -237,7 +237,7 @@ public:
 		if(quality != newValue.quality) return true;
 		else
 		{
-			return measurements::IsEvent<uint32_t, uint64_t>(this->GetValue(), newValue.GetValue(), aDeadband);
+			return measurements::IsEvent<uint32_t, uint64_t>(this->value, newValue.value, aDeadband);
 		}
 	}
 };

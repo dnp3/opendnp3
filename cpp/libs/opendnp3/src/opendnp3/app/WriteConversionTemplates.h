@@ -35,7 +35,7 @@ struct ConvertQ : private openpal::PureStatic
 	static Target Apply(const Source& src)
 	{
 		Target t;
-		t.flags = src.GetQuality();
+		t.flags = src.quality;
 		return t;
 	}
 };
@@ -46,8 +46,8 @@ struct ConvertQV : private openpal::PureStatic
 	static Target Apply(const Source& src)
 	{
 		Target t;
-		t.value = src.GetValue();
-		t.flags = src.GetQuality();
+		t.value = src.value;
+		t.flags = src.quality;
 		return t;
 	}
 };
@@ -58,7 +58,7 @@ struct ConvertV : private openpal::PureStatic
 	static Target Apply(const Source& src)
 	{
 		Target t;
-		t.value = src.GetValue();
+		t.value = src.value;
 		return t;
 	}
 };
@@ -69,7 +69,7 @@ struct ConvertVandTruncate : private openpal::PureStatic
 	static Target Apply(const Source& src)
 	{
 		Target t;
-		t.value = static_cast<typename Target::ValueType>(src.GetValue());
+		t.value = static_cast<typename Target::ValueType>(src.value);
 		return t;
 	}
 };
@@ -80,7 +80,7 @@ struct ConvertVRangeCheck : private openpal::PureStatic
 	static Target Apply(const Source& src)
 	{
 		Target t;
-		DownSampling<typename Source::Type, typename Target::ValueType>::Apply(src.GetValue(), t.value);
+		DownSampling<typename Source::Type, typename Target::ValueType>::Apply(src.value, t.value);
 		return t;
 	}
 };
@@ -91,9 +91,9 @@ struct ConvertQVRangeCheck : private openpal::PureStatic
 	static Target Apply(const Source& src)
 	{
 		Target t;
-		auto overrange = DownSampling<typename Source::Type, typename Target::ValueType>::Apply(src.GetValue(), t.value);
+		auto overrange = DownSampling<typename Source::Type, typename Target::ValueType>::Apply(src.value, t.value);
 		t.flags = overrange ? Overrange : 0;
-		t.flags |= src.GetQuality();
+		t.flags |= src.quality;
 		return t;
 	}
 };
@@ -104,8 +104,8 @@ struct ConvertQVandTruncate : private openpal::PureStatic
 	static Target Apply(const Source& src)
 	{
 		Target t;
-		t.flags = src.GetQuality();
-		t.value = static_cast<typename Target::ValueType>(src.GetValue());
+		t.flags = src.quality;
+		t.value = static_cast<typename Target::ValueType>(src.value);
 		return t;
 	}
 };
@@ -116,9 +116,9 @@ struct ConvertQVT : private openpal::PureStatic
 	static Target Apply(const Source& src)
 	{
 		Target t;
-		t.flags = src.GetQuality();
-		t.value = src.GetValue();
-		t.time = src.GetTime();
+		t.flags = src.quality;
+		t.value = src.value;
+		t.time = src.time;
 		return t;
 	}
 };
@@ -129,9 +129,9 @@ struct ConvertQVTandTruncate : private openpal::PureStatic
 	static Target Apply(const Source& src)
 	{
 		Target t;
-		t.flags = src.GetQuality();
-		t.value = static_cast<typename Target::ValueType>(src.GetValue());
-		t.time = src.GetTime();
+		t.flags = src.quality;
+		t.value = static_cast<typename Target::ValueType>(src.value);
+		t.time = src.time;
 		return t;
 	}
 };
@@ -142,10 +142,10 @@ struct ConvertQVTRangeCheck : private openpal::PureStatic
 	static Target Apply(const Source& src)
 	{
 		Target t;
-		auto overrange = DownSampling<typename Source::Type, typename Target::ValueType>::Apply(src.GetValue(), t.value);
+		auto overrange = DownSampling<typename Source::Type, typename Target::ValueType>::Apply(src.value, t.value);
 		t.flags = overrange ? Overrange : 0;
-		t.flags |= src.GetQuality();
-		t.time = src.GetTime();
+		t.flags |= src.quality;
+		t.time = src.time;
 		return t;
 	}
 };
@@ -156,8 +156,8 @@ struct ConvertQT : private openpal::PureStatic
 	static Target Apply(const Source& src)
 	{
 		Target t;
-		t.flags = src.GetQuality();
-		t.time = src.GetTime();
+		t.flags = src.quality;
+		t.time = src.time;
 		return t;
 	}
 };
@@ -168,8 +168,8 @@ struct ConvertQTDowncast : private openpal::PureStatic
 	static Target Apply(const Source& src)
 	{
 		Target t;
-		t.flags = src.GetQuality();
-		t.time = static_cast<Downcast>(src.GetTime());
+		t.flags = src.quality;
+		t.time = static_cast<Downcast>(src.time);
 		return t;
 	}
 };

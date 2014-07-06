@@ -29,13 +29,13 @@ namespace measurements
 {
 bool IsEvent(const TypedMeasurement<double>& newMeas, const TypedMeasurement<double>& oldMeas, double deadband)
 {
-	if (newMeas.GetQuality() != oldMeas.GetQuality())
+	if (newMeas.quality != oldMeas.quality)
 	{
 		return true;
 	}
 	else
 	{
-		double diff = fabs(newMeas.GetValue() - oldMeas.GetValue());
+		double diff = fabs(newMeas.value - oldMeas.value);
 		if (diff == INFINITY)
 		{
 			return true;

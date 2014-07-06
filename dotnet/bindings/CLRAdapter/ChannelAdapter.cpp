@@ -107,14 +107,14 @@ IOutstation^ ChannelAdapter::AddOutstation(System::String^ loggerId, ICommandHan
 
 void ChannelAdapter::ApplyDatabaseSettings(opendnp3::Database& database, DatabaseTemplate^ dbTemplate)
 {
-	ApplyClassSettings(dbTemplate->binaries, database.staticData.binaries.metadata);
-	ApplyClassSettings(dbTemplate->binaryOutputStatii, database.staticData.binaryOutputStatii.metadata);
-	ApplyClassSettings(dbTemplate->doubleBinaries, database.staticData.doubleBinaries.metadata);
+	ApplyClassSettings(dbTemplate->binaries, database.staticData.binaries);
+	ApplyClassSettings(dbTemplate->binaryOutputStatii, database.staticData.binaryOutputStatii);
+	ApplyClassSettings(dbTemplate->doubleBinaries, database.staticData.doubleBinaries);
 
-	ApplyClassAndDeadbandSettings(dbTemplate->analogs, database.staticData.analogs.metadata);
-	ApplyClassAndDeadbandSettings(dbTemplate->counters, database.staticData.counters.metadata);
-	ApplyClassAndDeadbandSettings(dbTemplate->frozenCounters, database.staticData.frozenCounters.metadata);
-	ApplyClassAndDeadbandSettings(dbTemplate->analogOutputStatii, database.staticData.analogOutputStatii.metadata);
+	ApplyClassAndDeadbandSettings(dbTemplate->analogs, database.staticData.analogs);
+	ApplyClassAndDeadbandSettings(dbTemplate->counters, database.staticData.counters);
+	ApplyClassAndDeadbandSettings(dbTemplate->frozenCounters, database.staticData.frozenCounters);
+	ApplyClassAndDeadbandSettings(dbTemplate->analogOutputStatii, database.staticData.analogOutputStatii);
 
 }
 

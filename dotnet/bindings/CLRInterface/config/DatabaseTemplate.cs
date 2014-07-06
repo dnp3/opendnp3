@@ -32,9 +32,15 @@ namespace DNP3.Interface
     /// </summary>
     public class EventPointRecord
     {
-        public EventPointRecord(PointClass pointClass)
+        public EventPointRecord(PointClass pointClass, System.Byte quality)
         {            
             this.pointClass = pointClass;
+            this.quality = quality;
+        }
+
+        public EventPointRecord(PointClass pointClass) : this(pointClass, 0x02)
+        {
+
         }
 
         public EventPointRecord() : this(PointClass.Class1)
@@ -43,6 +49,7 @@ namespace DNP3.Interface
         }
 
         public PointClass pointClass;
+        public System.Byte quality;
     };
 
     /// <summary>
@@ -63,7 +70,7 @@ namespace DNP3.Interface
         /// <summary>
         /// Default constructor with Class 0 and 0.1 tolerance
         /// </summary>
-        public DeadbandEventPointRecord(): base(PointClass.Class0)
+        public DeadbandEventPointRecord(): base()
         {
             this.deadband = default(T);
         }
