@@ -70,7 +70,7 @@ cpp/libs/opendnp3/src/opendnp3/app/BitReader.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/ClassField.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/ControlRelayOutputBlock.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/EventTriggers.cpp \
-cpp/libs/opendnp3/src/opendnp3/app/GroupVariation.cpp \
+cpp/libs/opendnp3/src/opendnp3/app/GroupVariationRecord.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/IINField.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/ObjectWriter.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/OctetData.cpp \
@@ -88,6 +88,7 @@ cpp/libs/opendnp3/src/opendnp3/gen/EventCounterResponse.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/EventDoubleBinaryResponse.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/EventFrozenCounterResponse.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/FunctionCode.cpp \
+cpp/libs/opendnp3/src/opendnp3/gen/GroupVariation.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/LinkFunction.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/PointClass.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/PollState.cpp \
