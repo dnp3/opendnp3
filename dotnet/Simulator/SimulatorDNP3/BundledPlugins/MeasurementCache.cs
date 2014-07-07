@@ -9,7 +9,21 @@ using System.Threading;
 using DNP3.Interface;
 
 namespace Automatak.Simulator.DNP3
-{       
+{
+    static class Helpers
+    { 
+        public static IEnumerable<B> SelectWithIndex<A,B>(this IEnumerable<A> seq, Func<A, ushort, B> selector)
+        {
+            ushort i = 0;
+            
+            return seq.Select(x => {
+                var num = i;
+                ++i;
+                return selector(x, num);
+            });
+        }
+    }
+
     class MeasurementCache: ISOEHandler, IMeasurementCache
     {
         readonly Object mutex = new Object();
@@ -21,8 +35,24 @@ namespace Automatak.Simulator.DNP3
         readonly MeasurementCollection analogs = new MeasurementCollection();
         readonly MeasurementCollection binaryOutputStatii = new MeasurementCollection();
         readonly MeasurementCollection analogOutputStatii = new MeasurementCollection();
-        readonly MeasurementCollection octetStrings = new MeasurementCollection();        
-        
+        readonly MeasurementCollection octetStrings = new MeasurementCollection();
+
+        public MeasurementCache(DatabaseTemplate template)
+        {
+            LoadStatic(template.binaries.SelectWithIndex((m, i) => new IndexedValue<Binary>(new Binary(m.quality), i)));
+            LoadStatic(template.doubleBinaries.SelectWithIndex((m, i) => new IndexedValue<DoubleBitBinary>(new DoubleBitBinary(m.quality), i)));
+            LoadStatic(template.counters.SelectWithIndex((m, i) => new IndexedValue<Counter>(new Counter(m.quality), i)));
+            LoadStatic(template.frozenCounters.SelectWithIndex((m, i) => new IndexedValue<FrozenCounter>(new FrozenCounter(m.quality), i)));
+            LoadStatic(template.analogs.SelectWithIndex((m, i) => new IndexedValue<Analog>(new Analog(m.quality), i)));
+            LoadStatic(template.binaryOutputStatii.SelectWithIndex((m, i) => new IndexedValue<BinaryOutputStatus>(new BinaryOutputStatus(m.quality), i)));
+            LoadStatic(template.analogOutputStatii.SelectWithIndex((m, i) => new IndexedValue<AnalogOutputStatus>(new AnalogOutputStatus(m.quality), i)));            
+        }
+
+        public MeasurementCache()
+        {
+
+        }
+
         void ISOEHandler.Start()
         {
             Monitor.Enter(mutex);

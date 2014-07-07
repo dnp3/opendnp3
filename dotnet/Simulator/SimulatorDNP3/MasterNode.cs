@@ -17,9 +17,10 @@ namespace Automatak.Simulator.DNP3
         readonly ISimulatorNodeCallbacks callbacks;
         readonly string alias;
         readonly ISimulatorNodeAction openAction;
+
         readonly Guid guid = new Guid();
 
-        GUIMasterForm form = null;
+        MasterForm form = null;
 
         string ISimulatorNode.Alias
         {
@@ -46,7 +47,7 @@ namespace Automatak.Simulator.DNP3
         {
             if (form == null)
             {
-                form = new GUIMasterForm(master, cache, alias);
+                form = new MasterForm(master, cache, alias);
             }
 
             form.Show();

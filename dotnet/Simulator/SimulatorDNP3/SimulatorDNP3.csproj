@@ -60,6 +60,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BundledPlugins\OutstationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BundledPlugins\OutstationForm.Designer.cs">
+      <DependentUpon>OutstationForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\EventBufferConfigControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\EventBufferConfigControl.Designer.cs">
+      <DependentUpon>EventBufferConfigControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Components\TemplateItemDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -120,11 +132,11 @@
     <Compile Include="BundledPlugins\DBListView.Designer.cs">
       <DependentUpon>DBListView.cs</DependentUpon>
     </Compile>
-    <Compile Include="BundledPlugins\GUIMasterForm.cs">
+    <Compile Include="BundledPlugins\MasterForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="BundledPlugins\GUIMasterForm.Designer.cs">
-      <DependentUpon>GUIMasterForm.cs</DependentUpon>
+    <Compile Include="BundledPlugins\MasterForm.Designer.cs">
+      <DependentUpon>MasterForm.cs</DependentUpon>
     </Compile>
     <Compile Include="BundledPlugins\Measurement.cs" />
     <Compile Include="BundledPlugins\MeasurementCollection.cs" />
@@ -181,11 +193,17 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="BundledPlugins\GUIMasterForm.resx">
-      <DependentUpon>GUIMasterForm.cs</DependentUpon>
+    <EmbeddedResource Include="BundledPlugins\OutstationForm.resx">
+      <DependentUpon>OutstationForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BundledPlugins\MasterForm.resx">
+      <DependentUpon>MasterForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="BundledPlugins\MeasurementView.resx">
       <DependentUpon>MeasurementView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\EventBufferConfigControl.resx">
+      <DependentUpon>EventBufferConfigControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Components\TemplateItemDialog.resx">
       <DependentUpon>TemplateItemDialog.cs</DependentUpon>

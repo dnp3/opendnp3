@@ -47,6 +47,14 @@ namespace DNP3.Interface
         /// <param name="quality">quality enumeration as a bitfield</param>
         public Binary(bool value, byte quality) : base(value, quality, DateTime.MinValue, false)
         {}
+
+        /// <summary>
+        /// Constructor with only quality
+        /// </summary>
+        /// <param name="quality"></param>
+        public Binary(byte quality)
+            : base(false, quality, DateTime.MinValue, false)
+        { }
     }
 
     /// <summary>
@@ -70,6 +78,16 @@ namespace DNP3.Interface
         /// <param name="quality">quality enumeration as a bitfield</param>
         public DoubleBitBinary(DoubleBit value, byte quality) : base(value, quality, DateTime.MinValue, false)
         {}
+
+        /// <summary>
+        /// Constructor with only a quality
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="quality"></param>
+        /// <param name="time"></param>
+        public DoubleBitBinary(byte quality)
+            : base(DoubleBit.DETERMINED_OFF, quality, DateTime.MinValue, false)
+        { }
     }
 
     /// <summary>
@@ -93,6 +111,14 @@ namespace DNP3.Interface
         /// <param name="quality">quality enumeration as a bitfield</param>
         public Analog(double value, byte quality) : base(value, quality, DateTime.MinValue, false)
         {}
+
+        /// <summary>
+        /// Constructor with only quality
+        /// </summary>
+        /// <param name="quality"></param>
+        public Analog(byte quality)
+            : base(0.0, quality, DateTime.MinValue, false)
+        { }
     }
 
     /// <summary>
@@ -117,6 +143,14 @@ namespace DNP3.Interface
         /// <param name="quality">quality enumeration as a bitfield</param>
         public Counter(System.UInt32 value, byte quality) : base(value, quality, DateTime.MinValue, false)
         {}
+
+        /// <summary>
+        /// Constructor with only quality
+        /// </summary>
+        /// <param name="quality"></param>
+        public Counter(byte quality)
+            : base(0, quality, DateTime.MinValue, false)
+        { }
     }
 
     /// <summary>
@@ -141,6 +175,14 @@ namespace DNP3.Interface
         /// <param name="quality">quality enumeration as a bitfield</param>
         public FrozenCounter(System.UInt32 value, byte quality) : base(value, quality, DateTime.MinValue, false)
         {}
+
+        /// <summary>
+        /// Constructor with only quality
+        /// </summary>
+        /// <param name="quality"></param>
+        public FrozenCounter(byte quality)
+            : base(0, quality, DateTime.MinValue, false)
+        { }
     }
 
     /// <summary>
@@ -165,6 +207,14 @@ namespace DNP3.Interface
         /// <param name="quality">quality enumeration as a bitfield</param>
         public BinaryOutputStatus(bool value, byte quality) : base(value, quality, DateTime.MinValue, false)
         {}
+
+        /// <summary>
+        /// Constructor with only quality
+        /// </summary>
+        /// <param name="quality"></param>
+        public BinaryOutputStatus(byte quality)
+            : base(false, quality, DateTime.MinValue, false)
+        { }
     };
 
     /// <summary>
@@ -189,6 +239,14 @@ namespace DNP3.Interface
         /// <param name="quality">quality enumeration as a bitfield</param>
         public AnalogOutputStatus(double value, byte quality): base(value, quality, DateTime.MinValue, false)
         {}
+
+         /// <summary>
+        /// Constructor with only quality
+        /// </summary>
+        /// <param name="quality"></param>
+        public AnalogOutputStatus(byte quality)
+            : base(0.0, quality, DateTime.MinValue, false)
+        { }
     }
 
     public class OctetData : MeasurementBase

@@ -15,16 +15,26 @@ namespace Automatak.Simulator.DNP3
         MeasurementCollection collection = new MeasurementCollection();
         SortedDictionary<ushort, int> indexToRow = new SortedDictionary<ushort, int>();
 
+        public delegate void RowSelectionEvent(IEnumerable<UInt16> rows);
+
+        public event RowSelectionEvent OnRowSelectionChanged;
+
+        bool allowSelection = false;
+
         public MeasurementView()
-        {
+        {            
             InitializeComponent();           
         }
 
-        void BindCollection(MeasurementCollection measurements)
+        public bool AllowSelection
         {
-            if (collection != null)
+            set
             {
-                collection.RemoveObserver(this);
+                allowSelection = value;
+            }
+            get
+            {
+                return allowSelection;
             }
         }
 
@@ -115,9 +125,28 @@ namespace Automatak.Simulator.DNP3
 
         private void listView_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
-            if (e.IsSelected)
+            if (!allowSelection && e.IsSelected)
             {
                 e.Item.Selected = false;
+            }
+        }
+
+        IEnumerable<UInt16> SelectedIndices
+        {
+            get
+            {
+                foreach (int i in listView.SelectedIndices)
+                {
+                    yield return (ushort) i;
+                }
+            }
+        }
+
+        private void listView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (this.OnRowSelectionChanged != null)
+            {
+                OnRowSelectionChanged(SelectedIndices.ToArray());
             }
         }
     }

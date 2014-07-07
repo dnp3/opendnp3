@@ -1,6 +1,6 @@
 ﻿namespace Automatak.Simulator.DNP3
 {
-    partial class GUIMasterForm
+    partial class MasterForm
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GUIMasterForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MasterForm));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.comboBoxTypes = new System.Windows.Forms.ComboBox();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);

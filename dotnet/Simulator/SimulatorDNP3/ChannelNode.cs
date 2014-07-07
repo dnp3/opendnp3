@@ -99,8 +99,9 @@ namespace Automatak.Simulator.DNP3
                 {
                     var outstationConfig = dialog.Configuration;
                     var alias = dialog.SelectedAlias;
+                    var cache = new MeasurementCache(outstationConfig.databaseTemplate);
                     var outstation = channel.AddOutstation(alias, RejectingCommandHandler.Instance, PrintingOutstationApplication.Instance, outstationConfig);
-
+                    
                     if (outstation == null)
                     {
                         return null;
@@ -108,7 +109,7 @@ namespace Automatak.Simulator.DNP3
                     else
                     {
                         outstation.Enable();
-                        return new OutstationNode(config, outstation, callbacks, alias);
+                        return new OutstationNode(cache, config, outstation, callbacks, alias);
                     }                       
                 }
                 else

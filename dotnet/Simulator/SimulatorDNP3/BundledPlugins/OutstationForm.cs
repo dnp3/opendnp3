@@ -11,21 +11,21 @@ using DNP3.Interface;
 
 namespace Automatak.Simulator.DNP3
 {    
-    partial class GUIMasterForm : Form
+    partial class OutstationForm : Form
     {
         MeasurementCollection activeCollection = null;
 
-        readonly IMaster master;
-        readonly IMeasurementCache cache;      
+        readonly IOutstation outstation;
+        readonly IMeasurementCache cache;
 
-        public GUIMasterForm(IMaster master, IMeasurementCache cache, String alias)
+        public OutstationForm(IOutstation outstation, IMeasurementCache cache, String alias)
         {
             InitializeComponent();
 
-            this.master = master;
+            this.outstation = outstation;
             this.cache = cache;
 
-            this.Text = String.Format("DNP3 Master ({0})", alias);
+            this.Text = String.Format("DNP3 Outstation ({0})", alias);
         }                       
      
         void GUIMasterForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -59,7 +59,18 @@ namespace Automatak.Simulator.DNP3
                     collection.AddObserver(this.measurementView);
                 }                
             }                      
-        }                                
+        }
+
+        private void measurementView_OnRowSelectionChanged(IEnumerable<UInt16> rows)
+        {
+
+        }
+
+        private void measurementView_OnRowSelectionChanged_1()
+        {
+
+        }
+                                          
         
     }
 }

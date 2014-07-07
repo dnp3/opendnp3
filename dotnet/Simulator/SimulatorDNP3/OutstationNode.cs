@@ -11,11 +11,17 @@ namespace Automatak.Simulator.DNP3
 {
     class OutstationNode : ISimulatorNode
     {
+        readonly MeasurementCache cache;
         readonly IDNP3Config config;
         readonly IOutstation outstation;
         readonly ISimulatorNodeCallbacks callbacks;
         readonly string alias;
+        readonly ISimulatorNodeAction openAction;
+
         readonly Guid guid = new Guid();
+        
+
+        OutstationForm form = null;
 
         string ISimulatorNode.Alias
         {
@@ -25,18 +31,37 @@ namespace Automatak.Simulator.DNP3
             }
         }
 
-        public OutstationNode(IDNP3Config config, IOutstation outstation, ISimulatorNodeCallbacks callbacks, string alias)
+        public OutstationNode(MeasurementCache cache, IDNP3Config config, IOutstation outstation, ISimulatorNodeCallbacks callbacks, string alias)
         {
+            this.cache = cache;
             this.config = config;
             this.outstation = outstation;
             this.callbacks = callbacks;
             this.alias = alias;
 
-            this.callbacks.ChangeImage(IconIndex.Outstation);            
+            this.callbacks.ChangeImage(IconIndex.Outstation);
+
+            this.openAction = new NodeAction("Open", () => OpenForm());
+        }
+
+        void OpenForm()
+        {
+            if (form == null)
+            {
+                form = new OutstationForm(outstation, cache, alias);
+            }
+
+            form.Show();
         }
         
         void ISimulatorNode.Remove()
         {
+            if (form != null)
+            {
+                form.Close();
+                form.Dispose();
+                form = null;
+            }
             outstation.Shutdown();            
         }
 
@@ -62,7 +87,7 @@ namespace Automatak.Simulator.DNP3
         {
             get
             {
-                return Enumerable.Empty<ISimulatorNodeAction>();
+                yield return openAction;
             }
         }
 
