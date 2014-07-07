@@ -10,7 +10,7 @@ using DNP3.Interface;
 
 namespace Automatak.Simulator.DNP3
 {       
-    class SOEHandler: ISOEHandler, IMeasurementCache
+    class MeasurementCache: ISOEHandler, IMeasurementCache
     {
         readonly Object mutex = new Object();
 

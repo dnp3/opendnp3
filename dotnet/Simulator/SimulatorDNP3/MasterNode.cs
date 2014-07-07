@@ -12,7 +12,7 @@ namespace Automatak.Simulator.DNP3
     class MasterNode : ISimulatorNode
     {
         readonly IDNP3Config config;
-        readonly SOEHandler handler;
+        readonly MeasurementCache cache;
         readonly IMaster master;
         readonly ISimulatorNodeCallbacks callbacks;
         readonly string alias;
@@ -29,10 +29,10 @@ namespace Automatak.Simulator.DNP3
             }
         }
 
-        public MasterNode(IDNP3Config config, SOEHandler handler, IMaster master, ISimulatorNodeCallbacks callbacks, string alias)
+        public MasterNode(IDNP3Config config, MeasurementCache cache, IMaster master, ISimulatorNodeCallbacks callbacks, string alias)
         {
             this.config = config;
-            this.handler = handler;
+            this.cache = cache;
             this.master = master;
             this.callbacks = callbacks;
             this.alias = alias;
@@ -46,7 +46,7 @@ namespace Automatak.Simulator.DNP3
         {
             if (form == null)
             {
-                form = new GUIMasterForm(master, handler, alias);
+                form = new GUIMasterForm(master, cache, alias);
             }
 
             form.Show();

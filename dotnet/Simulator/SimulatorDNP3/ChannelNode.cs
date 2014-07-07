@@ -67,11 +67,11 @@ namespace Automatak.Simulator.DNP3
             {
                 dialog.ShowDialog();
                 if (dialog.DialogResult == DialogResult.OK)
-                {                    
-                    var handler = new SOEHandler();
+                {
+                    var cache = new MeasurementCache();
                     var masterConfig = dialog.Configuration;
                     var alias = dialog.SelectedAlias;
-                    var master = channel.AddMaster(alias, handler, DefaultMasterApplication.Instance, masterConfig);
+                    var master = channel.AddMaster(alias, cache, DefaultMasterApplication.Instance, masterConfig);
 
                     if (master == null)
                     {
@@ -80,7 +80,7 @@ namespace Automatak.Simulator.DNP3
                     else
                     {                        
                         master.Enable();
-                        return new MasterNode(config, handler, master, callbacks, alias);
+                        return new MasterNode(config, cache, master, callbacks, alias);
                     }                    
                 }
                 else

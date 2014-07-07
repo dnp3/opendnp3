@@ -135,7 +135,7 @@
     <Compile Include="BundledPlugins\MeasurementView.Designer.cs">
       <DependentUpon>MeasurementView.cs</DependentUpon>
     </Compile>
-    <Compile Include="BundledPlugins\SOEHandler.cs" />
+    <Compile Include="BundledPlugins\MeasurementCache.cs" />
     <Compile Include="ChannelNode.cs" />
     <Compile Include="Components\ChannelDialog.cs">
       <SubType>Form</SubType>
