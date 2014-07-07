@@ -131,7 +131,7 @@ namespace Automatak.Simulator.DNP3
             }
         }
 
-        IEnumerable<UInt16> SelectedIndices
+        public IEnumerable<UInt16> SelectedIndices
         {
             get
             {

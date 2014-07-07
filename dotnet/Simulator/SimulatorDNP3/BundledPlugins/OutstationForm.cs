@@ -26,22 +26,31 @@ namespace Automatak.Simulator.DNP3
             this.cache = cache;
 
             this.Text = String.Format("DNP3 Outstation ({0})", alias);
-        }                       
+            this.comboBoxTypes.DataSource = System.Enum.GetValues(typeof(MeasType));
+
+            this.CheckState();
+        }       
+        
+        void CheckState()
+        {
+            if (((MeasType)comboBoxTypes.SelectedValue) != MeasType.OctetString && this.measurementView.SelectedIndices.Any())
+            {
+                this.buttonEdit.Enabled = true;
+            }
+            else
+            {
+                this.buttonEdit.Enabled = false;
+            }
+        }
      
         void GUIMasterForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             e.Cancel = true;
             this.Hide();
-        }       
-
-        void GUIMasterForm_Load(object sender, EventArgs e)
-        {
-            this.comboBoxTypes.DataSource = null;
-            this.comboBoxTypes.DataSource = System.Enum.GetValues(typeof(MeasType));            
-        }
+        }               
 
         void comboBoxTypes_SelectedIndexChanged(object sender, EventArgs e)
-        {
+        {        
             var index = this.comboBoxTypes.SelectedIndex;
             if(Enum.IsDefined(typeof(MeasType), index))
             {
@@ -58,19 +67,13 @@ namespace Automatak.Simulator.DNP3
 
                     collection.AddObserver(this.measurementView);
                 }                
-            }                      
+            }
+            this.CheckState(); 
         }
 
         private void measurementView_OnRowSelectionChanged(IEnumerable<UInt16> rows)
         {
-
-        }
-
-        private void measurementView_OnRowSelectionChanged_1()
-        {
-
-        }
-                                          
-        
+            this.CheckState();
+        }                                                       
     }
 }
