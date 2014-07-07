@@ -40,7 +40,7 @@ namespace Automatak.Simulator.DNP3
             switch (state)
             { 
                 case(ChannelState.OPENING):
-                    return NodeState.Waiting;
+                    return NodeState.Inactive;
                 case (ChannelState.WAITING):
                     return NodeState.Failed;
                 case (ChannelState.OPEN):
@@ -86,7 +86,19 @@ namespace Automatak.Simulator.DNP3
                 dialog.ShowDialog();
                 if (dialog.DialogResult == DialogResult.OK)
                 {
-                    return null;
+                    var config = dialog.Configuration;
+                    var alias = dialog.SelectedAlias;
+                    var outstation = channel.AddOutstation(alias, RejectingCommandHandler.Instance, PrintingOutstationApplication.Instance, config);
+
+                    if (outstation == null)
+                    {
+                        return null;
+                    }
+                    else
+                    {
+                        outstation.Enable();
+                        return new OutstationNode(outstation, callbacks, alias);
+                    }                       
                 }
                 else
                 {

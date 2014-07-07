@@ -18,13 +18,13 @@ namespace Automatak.Simulator.DNP3.Components
         {
             InitializeComponent();
 
-            this.ComboBoxBinary.DataSource = Enum.GetNames(typeof(EventBinaryResponse));
-            this.ComboBoxDoubleBinary.DataSource = Enum.GetNames(typeof(EventDoubleBinaryResponse));
-            this.ComboBoxCounter.DataSource = Enum.GetNames(typeof(EventCounterResponse));
-            this.ComboBoxFrozenCounter.DataSource = Enum.GetNames(typeof(EventFrozenCounterResponse));
-            this.ComboBoxAnalog.DataSource = Enum.GetNames(typeof(EventAnalogResponse));
-            this.ComboBoxBinaryOutputStatus.DataSource = Enum.GetNames(typeof(EventBinaryOutputStatusResponse));
-            this.ComboBoxAnalogOutputStatus.DataSource = Enum.GetNames(typeof(EventAnalogOutputStatusResponse));
+            this.ComboBoxBinary.DataSource = Enum.GetValues(typeof(EventBinaryResponse));
+            this.ComboBoxDoubleBinary.DataSource = Enum.GetValues(typeof(EventDoubleBinaryResponse));
+            this.ComboBoxCounter.DataSource = Enum.GetValues(typeof(EventCounterResponse));
+            this.ComboBoxFrozenCounter.DataSource = Enum.GetValues(typeof(EventFrozenCounterResponse));
+            this.ComboBoxAnalog.DataSource = Enum.GetValues(typeof(EventAnalogResponse));
+            this.ComboBoxBinaryOutputStatus.DataSource = Enum.GetValues(typeof(EventBinaryOutputStatusResponse));
+            this.ComboBoxAnalogOutputStatus.DataSource = Enum.GetValues(typeof(EventAnalogOutputStatusResponse));
         }
 
         public EventResponseConfig Configuration

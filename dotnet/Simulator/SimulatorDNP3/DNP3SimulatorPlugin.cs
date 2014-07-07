@@ -17,6 +17,7 @@ namespace Automatak.Simulator.DNP3
     {
         public const int Channel = 0;                
         public const int Master = 1;
+        public const int Outstation = 2;
     };
 
 
@@ -32,7 +33,8 @@ namespace Automatak.Simulator.DNP3
             this.manager.AddLogHandler(logHandler);
 
             imgList.Images.Add(Properties.Resources.satellite_dish);            
-            imgList.Images.Add(Properties.Resources.network_monitor);            
+            imgList.Images.Add(Properties.Resources.network_monitor);
+            imgList.Images.Add(Properties.Resources.send_container);
         }
 
         string ISimulatorPlugin.UniqueId

@@ -69,7 +69,7 @@ namespace Automatak.Simulator
             this.mainMenuStrip.Location = new System.Drawing.Point(0, 0);
             this.mainMenuStrip.Name = "mainMenuStrip";
             this.mainMenuStrip.Padding = new System.Windows.Forms.Padding(5, 5, 0, 5);
-            this.mainMenuStrip.Size = new System.Drawing.Size(1060, 38);
+            this.mainMenuStrip.Size = new System.Drawing.Size(1236, 38);
             this.mainMenuStrip.TabIndex = 1;
             this.mainMenuStrip.Text = "mainMenuStrip";
             // 
@@ -118,7 +118,7 @@ namespace Automatak.Simulator
             this.mainPanel.Location = new System.Drawing.Point(0, 38);
             this.mainPanel.Name = "mainPanel";
             this.mainPanel.Padding = new System.Windows.Forms.Padding(5, 0, 5, 5);
-            this.mainPanel.Size = new System.Drawing.Size(1060, 417);
+            this.mainPanel.Size = new System.Drawing.Size(1236, 572);
             this.mainPanel.TabIndex = 2;
             // 
             // splitContainer2
@@ -135,8 +135,8 @@ namespace Automatak.Simulator
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.logWindow1);
-            this.splitContainer2.Size = new System.Drawing.Size(1050, 412);
-            this.splitContainer2.SplitterDistance = 224;
+            this.splitContainer2.Size = new System.Drawing.Size(1226, 567);
+            this.splitContainer2.SplitterDistance = 261;
             this.splitContainer2.TabIndex = 3;
             // 
             // splitContainer1
@@ -153,8 +153,8 @@ namespace Automatak.Simulator
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.listViewMetrics);
-            this.splitContainer1.Size = new System.Drawing.Size(224, 412);
-            this.splitContainer1.SplitterDistance = 204;
+            this.splitContainer1.Size = new System.Drawing.Size(261, 567);
+            this.splitContainer1.SplitterDistance = 280;
             this.splitContainer1.TabIndex = 0;
             // 
             // tabControlPlugins
@@ -165,7 +165,7 @@ namespace Automatak.Simulator
             this.tabControlPlugins.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.tabControlPlugins.RightToLeftLayout = true;
             this.tabControlPlugins.SelectedIndex = 0;
-            this.tabControlPlugins.Size = new System.Drawing.Size(224, 204);
+            this.tabControlPlugins.Size = new System.Drawing.Size(261, 280);
             this.tabControlPlugins.TabIndex = 0;
             // 
             // listViewMetrics
@@ -176,7 +176,7 @@ namespace Automatak.Simulator
             this.listViewMetrics.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listViewMetrics.Location = new System.Drawing.Point(0, 0);
             this.listViewMetrics.Name = "listViewMetrics";
-            this.listViewMetrics.Size = new System.Drawing.Size(224, 204);
+            this.listViewMetrics.Size = new System.Drawing.Size(261, 283);
             this.listViewMetrics.TabIndex = 0;
             this.listViewMetrics.UseCompatibleStateImageBehavior = false;
             this.listViewMetrics.View = System.Windows.Forms.View.Details;
@@ -198,7 +198,7 @@ namespace Automatak.Simulator
             this.logWindow1.LogFont = new System.Drawing.Font("Courier New", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.logWindow1.MinimumSize = new System.Drawing.Size(300, 250);
             this.logWindow1.Name = "logWindow1";
-            this.logWindow1.Size = new System.Drawing.Size(822, 412);
+            this.logWindow1.Size = new System.Drawing.Size(961, 567);
             this.logWindow1.TabIndex = 0;
             // 
             // timerMetrics
@@ -211,7 +211,7 @@ namespace Automatak.Simulator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1060, 455);
+            this.ClientSize = new System.Drawing.Size(1236, 610);
             this.Controls.Add(this.mainPanel);
             this.Controls.Add(this.mainMenuStrip);
             this.DoubleBuffered = true;
@@ -219,6 +219,7 @@ namespace Automatak.Simulator
             this.MainMenuStrip = this.mainMenuStrip;
             this.MinimumSize = new System.Drawing.Size(600, 400);
             this.Name = "SimulatorForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Simulator";
             this.Load += new System.EventHandler(this.SimulatorForm_Load);
             this.Shown += new System.EventHandler(this.SimulatorForm_Shown);

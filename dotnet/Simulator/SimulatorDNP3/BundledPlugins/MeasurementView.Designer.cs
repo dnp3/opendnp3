@@ -63,12 +63,12 @@
             // 
             // columnHeader3
             // 
-            this.columnHeader3.Text = "Quality";
+            this.columnHeader3.Text = "Flags";
             this.columnHeader3.Width = 130;
             // 
             // columnHeader4
             // 
-            this.columnHeader4.Text = "Timestamp";
+            this.columnHeader4.Text = "Timestamp (UTC)";
             this.columnHeader4.Width = 193;
             // 
             // MeasurementView

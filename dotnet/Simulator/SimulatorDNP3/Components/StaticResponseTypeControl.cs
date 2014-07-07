@@ -18,13 +18,13 @@ namespace Automatak.Simulator.DNP3.Components
         {
             InitializeComponent();
 
-            this.ComboBoxBinary.DataSource = Enum.GetNames(typeof(StaticBinaryResponse));
-            this.ComboBoxDoubleBinary.DataSource = Enum.GetNames(typeof(StaticDoubleBinaryResponse));
-            this.ComboBoxCounter.DataSource = Enum.GetNames(typeof(StaticCounterResponse));
-            this.ComboBoxFrozenCounter.DataSource = Enum.GetNames(typeof(StaticFrozenCounterResponse));
-            this.ComboBoxAnalog.DataSource = Enum.GetNames(typeof(StaticAnalogResponse));
-            this.ComboBoxBinaryOutputStatus.DataSource = Enum.GetNames(typeof(StaticBinaryOutputStatusResponse));
-            this.ComboBoxAnalogOutputStatus.DataSource = Enum.GetNames(typeof(StaticAnalogOutputStatusResponse));
+            this.ComboBoxBinary.DataSource = Enum.GetValues(typeof(StaticBinaryResponse));
+            this.ComboBoxDoubleBinary.DataSource = Enum.GetValues(typeof(StaticDoubleBinaryResponse));
+            this.ComboBoxCounter.DataSource = Enum.GetValues(typeof(StaticCounterResponse));
+            this.ComboBoxFrozenCounter.DataSource = Enum.GetValues(typeof(StaticFrozenCounterResponse));
+            this.ComboBoxAnalog.DataSource = Enum.GetValues(typeof(StaticAnalogResponse));
+            this.ComboBoxBinaryOutputStatus.DataSource = Enum.GetValues(typeof(StaticBinaryOutputStatusResponse));
+            this.ComboBoxAnalogOutputStatus.DataSource = Enum.GetValues(typeof(StaticAnalogOutputStatusResponse));
         }
 
         public StaticResponseConfig Configuration

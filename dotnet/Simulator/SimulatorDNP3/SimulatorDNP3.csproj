@@ -91,6 +91,7 @@
       <DependentUpon>StaticResponseTypeControl.cs</DependentUpon>
     </Compile>
     <Compile Include="IMeasurementCache.cs" />
+    <Compile Include="OutstationNode.cs" />
     <Compile Include="NodeAction.cs" />
     <Compile Include="ActionNodeFactory.cs" />
     <Compile Include="BundledPlugins\DBListView.cs">
@@ -226,6 +227,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\satellite_dish.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\send_container.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

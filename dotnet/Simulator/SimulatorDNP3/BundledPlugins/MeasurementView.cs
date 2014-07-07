@@ -30,7 +30,7 @@ namespace Automatak.Simulator.DNP3
 
         ListViewItem CreateItem(Measurement m)
         {
-            string[] text = { m.Index.ToString(), m.Value, m.Flags, m.Timestamp.ToString() };
+            string[] text = { m.Index.ToString(), m.Value, m.Flags, m.Timestamp.ToString("d") + m.Timestamp.ToString(" HH:mm:ss.fff") };
             var item = new ListViewItem(text);
             return item;
         }

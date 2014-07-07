@@ -32,7 +32,7 @@ namespace Automatak.Simulator.DNP3.Components
             create = GetCreateFunctorMaybeNull();
             if (create == null)
             {
-                statusStrip.Text = "Unable to create channel";
+                toolStripStatusLabel1.Text = "Unable to create channel";
             }
             else
             { 
@@ -51,6 +51,8 @@ namespace Automatak.Simulator.DNP3.Components
                 case(0):
                     return GetTCPClientFunctor(min, max);
                 case(1):
+                    return GetTCPServerFunctor(min, max);
+                case(2):
                     return GetSerialFunctor(min, max);
                 default:
                     return null;
@@ -76,7 +78,13 @@ namespace Automatak.Simulator.DNP3.Components
         {
             var flags = logLevelControl1.Filters.Flags;
             return (IDNP3Manager manager) => manager.AddTCPClient(this.textBoxID.Text, flags, min, max, textBoxHost.Text, Decimal.ToUInt16(numericUpDownPort.Value));
-        }       
+        }
+
+        private Func<IDNP3Manager, IChannel> GetTCPServerFunctor(TimeSpan min, TimeSpan max)
+        {
+            var flags = logLevelControl1.Filters.Flags;
+            return (IDNP3Manager manager) => manager.AddTCPServer(this.textBoxID.Text, flags, min, max, textBoxServerHost.Text, Decimal.ToUInt16(numericUpDownServerPort.Value));
+        } 
 
         public Func<IDNP3Manager, IChannel> ChannelAction
         {
