@@ -14,7 +14,16 @@ namespace Automatak.Simulator.DNP3
         readonly IDNP3Config config;
         readonly IOutstation outstation;
         readonly ISimulatorNodeCallbacks callbacks;
-        readonly string alias;            
+        readonly string alias;
+        readonly Guid guid = new Guid();
+
+        string ISimulatorNode.Alias
+        {
+            get
+            {
+                return alias;
+            }
+        }
 
         public OutstationNode(IDNP3Config config, IOutstation outstation, ISimulatorNodeCallbacks callbacks, string alias)
         {
@@ -60,6 +69,12 @@ namespace Automatak.Simulator.DNP3
         IEnumerable<ISimulatorNodeFactory> ISimulatorNode.Children
         {
             get { return Enumerable.Empty<ISimulatorNodeFactory>(); }
+        }
+
+
+        Guid ISimulatorNode.UniqueID
+        {
+            get { return guid; }
         }
     }
 }

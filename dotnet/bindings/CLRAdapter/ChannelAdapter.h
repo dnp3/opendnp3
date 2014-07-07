@@ -45,35 +45,41 @@ private:
 	template <class Source, class Target>
 	static void ApplyClassSettings(Source^ source, Target& target)
 	{
-		for (int i = 0; i < source->Count; ++i)
+		int i = 0;
+		for each(auto src in source)
 		{
 			if (target.values.Contains(i))
 			{
-				target.values[i].current.quality = source[i]->quality;
+				target.values[i].current.quality = src->quality;
 			}
 
 			if (target.metadata.Contains(i))
 			{
-				target.metadata[i].clazz = (opendnp3::PointClass) source[i]->pointClass;				
+				target.metadata[i].clazz = (opendnp3::PointClass) src->pointClass;				
 			}			 
+
+			++i;
 		}
 	}
 
 	template <class Source, class Target>
 	static void ApplyClassAndDeadbandSettings(Source^ source, Target& target)
 	{
-		for (int i = 0; i < source->Count; ++i)
+		int i = 0;
+		for each(auto src in source)
 		{
 			if (target.values.Contains(i))
 			{
-				target.values[i].current.quality = source[i]->quality;
+				target.values[i].current.quality = src->quality;
 			}
 
 			if (target.metadata.Contains(i))
 			{
-				target.metadata[i].clazz = (opendnp3::PointClass) source[i]->pointClass;
-				target.metadata[i].deadband = source[i]->deadband;
+				target.metadata[i].clazz = (opendnp3::PointClass) src->pointClass;
+				target.metadata[i].deadband = src->deadband;
 			}
+
+			++i;
 		}
 	}
 };

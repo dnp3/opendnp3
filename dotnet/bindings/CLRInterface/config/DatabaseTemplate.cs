@@ -67,6 +67,12 @@ namespace DNP3.Interface
             this.deadband = deadband;
         }
 
+        public DeadbandEventPointRecord(PointClass pointClass)
+            : base(pointClass)
+        {
+            this.deadband = default(T);
+        }
+
         /// <summary>
         /// Default constructor with Class 0 and 0.1 tolerance
         /// </summary>
@@ -133,30 +139,30 @@ namespace DNP3.Interface
         /// <summary>
         /// Modify individual binary configuration here
         /// </summary>
-        public List<EventPointRecord> binaries;
+        public IList<EventPointRecord> binaries;
         /// <summary>
         /// Modify individual double binary configuration here
         /// </summary>
-        public List<EventPointRecord> doubleBinaries;
+        public IList<EventPointRecord> doubleBinaries;
         /// <summary>
         /// Modify individual analog configuration here
         /// </summary>
-        public List<DeadbandEventPointRecord<System.UInt32>> counters;
+        public IList<DeadbandEventPointRecord<System.UInt32>> counters;
         /// <summary>
         /// Modify individual analog configuration here
         /// </summary>
-        public List<DeadbandEventPointRecord<System.UInt32>> frozenCounters;
+        public IList<DeadbandEventPointRecord<System.UInt32>> frozenCounters;
         /// <summary>
         /// Modify individual counter configuration here
         /// </summary>
-        public List<DeadbandEventPointRecord<double>> analogs;
+        public IList<DeadbandEventPointRecord<double>> analogs;
         /// <summary>
         /// Modify individual binary output status configuration here
         /// </summary>
-        public List<EventPointRecord> binaryOutputStatii;
+        public IList<EventPointRecord> binaryOutputStatii;
         /// <summary>
         /// Modify individual analog output status configuration here
         /// </summary>
-        public List<DeadbandEventPointRecord<double>> analogOutputStatii;
+        public IList<DeadbandEventPointRecord<double>> analogOutputStatii;
     };    
 }

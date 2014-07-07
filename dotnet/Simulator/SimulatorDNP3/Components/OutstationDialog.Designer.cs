@@ -37,6 +37,7 @@ namespace Automatak.Simulator.DNP3.Components
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.linkConfigControl = new Automatak.Simulator.DNP3.Components.LinkConfigControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.label8 = new System.Windows.Forms.Label();
             this.numericUpDownMaxControls = new System.Windows.Forms.NumericUpDown();
@@ -53,15 +54,14 @@ namespace Automatak.Simulator.DNP3.Components
             this.numericUpDownSolConfirmTimeout = new System.Windows.Forms.NumericUpDown();
             this.checkBoxEnableUnsol = new System.Windows.Forms.CheckBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.staticResponseTypeControl1 = new Automatak.Simulator.DNP3.Components.StaticResponseTypeControl();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.eventResponseTypeControl1 = new Automatak.Simulator.DNP3.Components.EventResponseTypeControl();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.buttonEdit = new System.Windows.Forms.Button();
             this.buttonNew = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
             this.comboBoxTemplate = new System.Windows.Forms.ComboBox();
-            this.linkConfigControl = new Automatak.Simulator.DNP3.Components.LinkConfigControl();
-            this.staticResponseTypeControl1 = new Automatak.Simulator.DNP3.Components.StaticResponseTypeControl();
-            this.eventResponseTypeControl1 = new Automatak.Simulator.DNP3.Components.EventResponseTypeControl();
             this.groupBoxButtons.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -156,6 +156,13 @@ namespace Automatak.Simulator.DNP3.Components
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Link";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // linkConfigControl
+            // 
+            this.linkConfigControl.Location = new System.Drawing.Point(6, 6);
+            this.linkConfigControl.Name = "linkConfigControl";
+            this.linkConfigControl.Size = new System.Drawing.Size(226, 222);
+            this.linkConfigControl.TabIndex = 6;
             // 
             // tabPage2
             // 
@@ -397,6 +404,13 @@ namespace Automatak.Simulator.DNP3.Components
             this.tabPage3.Text = "Static Defaults";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // staticResponseTypeControl1
+            // 
+            this.staticResponseTypeControl1.Location = new System.Drawing.Point(6, 6);
+            this.staticResponseTypeControl1.Name = "staticResponseTypeControl1";
+            this.staticResponseTypeControl1.Size = new System.Drawing.Size(260, 210);
+            this.staticResponseTypeControl1.TabIndex = 1;
+            // 
             // tabPage4
             // 
             this.tabPage4.Controls.Add(this.eventResponseTypeControl1);
@@ -407,6 +421,13 @@ namespace Automatak.Simulator.DNP3.Components
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Event Defaults";
             this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // eventResponseTypeControl1
+            // 
+            this.eventResponseTypeControl1.Location = new System.Drawing.Point(6, 6);
+            this.eventResponseTypeControl1.Name = "eventResponseTypeControl1";
+            this.eventResponseTypeControl1.Size = new System.Drawing.Size(260, 210);
+            this.eventResponseTypeControl1.TabIndex = 0;
             // 
             // groupBox1
             // 
@@ -431,6 +452,7 @@ namespace Automatak.Simulator.DNP3.Components
             this.buttonEdit.TabIndex = 9;
             this.buttonEdit.Text = "Edit";
             this.buttonEdit.UseVisualStyleBackColor = true;
+            this.buttonEdit.Click += new System.EventHandler(this.buttonEdit_Click);
             // 
             // buttonNew
             // 
@@ -442,6 +464,7 @@ namespace Automatak.Simulator.DNP3.Components
             this.buttonNew.TabIndex = 8;
             this.buttonNew.Text = "New";
             this.buttonNew.UseVisualStyleBackColor = true;
+            this.buttonNew.Click += new System.EventHandler(this.buttonNew_Click);
             // 
             // label9
             // 
@@ -460,27 +483,7 @@ namespace Automatak.Simulator.DNP3.Components
             this.comboBoxTemplate.Name = "comboBoxTemplate";
             this.comboBoxTemplate.Size = new System.Drawing.Size(137, 21);
             this.comboBoxTemplate.TabIndex = 6;
-            // 
-            // linkConfigControl
-            // 
-            this.linkConfigControl.Location = new System.Drawing.Point(6, 6);
-            this.linkConfigControl.Name = "linkConfigControl";
-            this.linkConfigControl.Size = new System.Drawing.Size(226, 222);
-            this.linkConfigControl.TabIndex = 6;
-            // 
-            // staticResponseTypeControl1
-            // 
-            this.staticResponseTypeControl1.Location = new System.Drawing.Point(6, 6);
-            this.staticResponseTypeControl1.Name = "staticResponseTypeControl1";
-            this.staticResponseTypeControl1.Size = new System.Drawing.Size(260, 210);
-            this.staticResponseTypeControl1.TabIndex = 1;
-            // 
-            // eventResponseTypeControl1
-            // 
-            this.eventResponseTypeControl1.Location = new System.Drawing.Point(6, 6);
-            this.eventResponseTypeControl1.Name = "eventResponseTypeControl1";
-            this.eventResponseTypeControl1.Size = new System.Drawing.Size(260, 210);
-            this.eventResponseTypeControl1.TabIndex = 0;
+            this.comboBoxTemplate.SelectedIndexChanged += new System.EventHandler(this.comboBoxTemplate_SelectedIndexChanged);
             // 
             // OutstationDialog
             // 

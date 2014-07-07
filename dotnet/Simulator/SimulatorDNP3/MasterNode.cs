@@ -17,8 +17,17 @@ namespace Automatak.Simulator.DNP3
         readonly ISimulatorNodeCallbacks callbacks;
         readonly string alias;
         readonly ISimulatorNodeAction openAction;
+        readonly Guid guid = new Guid();
 
         GUIMasterForm form = null;
+
+        string ISimulatorNode.Alias
+        {
+            get
+            {
+                return alias;
+            }
+        }
 
         public MasterNode(IDNP3Config config, SOEHandler handler, IMaster master, ISimulatorNodeCallbacks callbacks, string alias)
         {
@@ -83,6 +92,12 @@ namespace Automatak.Simulator.DNP3
         IEnumerable<ISimulatorNodeFactory> ISimulatorNode.Children
         {
             get { return Enumerable.Empty<ISimulatorNodeFactory>(); }
+        }
+
+
+        Guid ISimulatorNode.UniqueID
+        {
+            get { return guid; }
         }
     }
 }

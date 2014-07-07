@@ -49,6 +49,16 @@ namespace Automatak.Simulator.API
     {
         void Remove();
 
+        string Alias
+        {
+            get;
+        }
+
+        Guid UniqueID
+        {
+            get;
+        }
+
         IEnumerable<Metric> Metrics
         {
             get;

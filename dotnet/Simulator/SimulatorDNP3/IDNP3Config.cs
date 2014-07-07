@@ -10,10 +10,16 @@ namespace Automatak.Simulator.DNP3
 {
     interface IDNP3Config
     {
+        void AddTemplate(string alias, DatabaseTemplate template);
+
+        DatabaseTemplate GetTemplateMaybeNull(string alias);
 
         IEnumerable<KeyValuePair<string, DatabaseTemplate>> Templates
         {
             get;
         }
+
+        bool ContainsTemplateId(string alias);
+        
     }
 }

@@ -16,9 +16,18 @@ namespace Automatak.Simulator.DNP3
         readonly IChannel channel;
         readonly ISimulatorNodeCallbacks callbacks;
         readonly string alias;
+        readonly Guid guid = new Guid();
 
         readonly ISimulatorNodeFactory masterFactory;
         readonly ISimulatorNodeFactory outstationFactory;
+
+        string ISimulatorNode.Alias
+        {
+            get
+            {
+                return alias;
+            }
+        }
 
         public ChannelNode(IDNP3Config config, IChannel channel, ISimulatorNodeCallbacks callbacks, string alias)
         {
@@ -83,7 +92,7 @@ namespace Automatak.Simulator.DNP3
 
         ISimulatorNode CreateOutstation(ISimulatorNodeCallbacks callbacks)
         {
-            using (var dialog = new Components.OutstationDialog())
+            using (var dialog = new Components.OutstationDialog(config))
             {
                 dialog.ShowDialog();
                 if (dialog.DialogResult == DialogResult.OK)
@@ -153,6 +162,12 @@ namespace Automatak.Simulator.DNP3
                 yield return masterFactory;
                 yield return outstationFactory;
             }
+        }
+
+
+        Guid ISimulatorNode.UniqueID
+        {
+            get { return guid; }
         }
     }
 }

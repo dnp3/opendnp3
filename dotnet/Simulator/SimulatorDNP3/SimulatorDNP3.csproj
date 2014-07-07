@@ -60,11 +60,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\TemplateItemDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Components\TemplateItemDialog.Designer.cs">
+      <DependentUpon>TemplateItemDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Components\LogLevelControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Components\LogLevelControl.Designer.cs">
       <DependentUpon>LogLevelControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\TemplateControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\TemplateControl.Designer.cs">
+      <DependentUpon>TemplateControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\TemplateDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Components\TemplateDialog.Designer.cs">
+      <DependentUpon>TemplateDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Components\OutstationDialog.cs">
       <SubType>Form</SubType>
@@ -169,6 +187,9 @@
     <EmbeddedResource Include="BundledPlugins\MeasurementView.resx">
       <DependentUpon>MeasurementView.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Components\TemplateItemDialog.resx">
+      <DependentUpon>TemplateItemDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Components\ChannelDialog.resx">
       <DependentUpon>ChannelDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -183,6 +204,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Components\MasterConfigControl.resx">
       <DependentUpon>MasterConfigControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\TemplateControl.resx">
+      <DependentUpon>TemplateControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\TemplateDialog.resx">
+      <DependentUpon>TemplateDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Components\OutstationDialog.resx">
       <DependentUpon>OutstationDialog.cs</DependentUpon>
