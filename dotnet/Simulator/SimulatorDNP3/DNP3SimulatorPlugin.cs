@@ -26,10 +26,12 @@ namespace Automatak.Simulator.DNP3
         readonly ImageList imgList = new ImageList();
         readonly IDNP3Manager manager = DNP3ManagerFactory.CreateManager();
         readonly ILogHandler logHandler;
+        readonly DNP3Config config = new DNP3Config();
 
         public DNP3SimulatorPlugin(ILog log)
         {
             this.logHandler = new ForwardingLogHandler(log);
+
             this.manager.AddLogHandler(logHandler);
 
             imgList.Images.Add(Properties.Resources.satellite_dish);            
@@ -62,7 +64,7 @@ namespace Automatak.Simulator.DNP3
                 if (dialog.DialogResult == DialogResult.OK)
                 {
                     var channel = dialog.ChannelAction.Invoke(manager);
-                    return new ChannelNode(channel, callbacks, dialog.SelectedAlias);
+                    return new ChannelNode(config, channel, callbacks, dialog.SelectedAlias);
                 }
                 else
                 {

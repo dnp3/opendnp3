@@ -11,6 +11,7 @@ namespace Automatak.Simulator.DNP3
 {
     class MasterNode : ISimulatorNode
     {
+        readonly IDNP3Config config;
         readonly SOEHandler handler;
         readonly IMaster master;
         readonly ISimulatorNodeCallbacks callbacks;
@@ -19,8 +20,9 @@ namespace Automatak.Simulator.DNP3
 
         GUIMasterForm form = null;
 
-        public MasterNode(SOEHandler handler, IMaster master, ISimulatorNodeCallbacks callbacks, string alias)
+        public MasterNode(IDNP3Config config, SOEHandler handler, IMaster master, ISimulatorNodeCallbacks callbacks, string alias)
         {
+            this.config = config;
             this.handler = handler;
             this.master = master;
             this.callbacks = callbacks;

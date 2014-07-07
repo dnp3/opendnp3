@@ -62,5 +62,24 @@ namespace Automatak.Simulator.DNP3.Components
                 return config;
             }
         }
+
+        void CheckState()
+        {
+            if (comboBoxTemplate.SelectedValue == null)
+            {
+                this.buttonEdit.Enabled = false;
+                this.buttonAdd.Enabled = false;
+            }
+            else
+            {
+                this.buttonEdit.Enabled = true;
+                this.buttonAdd.Enabled = true;
+            }
+        }
+
+        void OutstationDialog_Load(object sender, EventArgs e)
+        {
+            CheckState();
+        }
     }
 }

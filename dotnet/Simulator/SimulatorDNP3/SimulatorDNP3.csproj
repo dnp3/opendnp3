@@ -90,6 +90,8 @@
     <Compile Include="Components\StaticResponseTypeControl.Designer.cs">
       <DependentUpon>StaticResponseTypeControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="DNP3Config.cs" />
+    <Compile Include="IDNP3Config.cs" />
     <Compile Include="IMeasurementCache.cs" />
     <Compile Include="OutstationNode.cs" />
     <Compile Include="NodeAction.cs" />

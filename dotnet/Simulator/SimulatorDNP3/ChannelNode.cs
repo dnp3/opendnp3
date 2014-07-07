@@ -12,6 +12,7 @@ namespace Automatak.Simulator.DNP3
 {
     class ChannelNode : ISimulatorNode
     {
+        readonly IDNP3Config config;
         readonly IChannel channel;
         readonly ISimulatorNodeCallbacks callbacks;
         readonly string alias;
@@ -19,8 +20,9 @@ namespace Automatak.Simulator.DNP3
         readonly ISimulatorNodeFactory masterFactory;
         readonly ISimulatorNodeFactory outstationFactory;
 
-        public ChannelNode(IChannel channel, ISimulatorNodeCallbacks callbacks, string alias)
+        public ChannelNode(IDNP3Config config, IChannel channel, ISimulatorNodeCallbacks callbacks, string alias)
         {
+            this.config = config;
             this.channel = channel;
             this.callbacks = callbacks;
             this.alias = alias;
@@ -58,9 +60,9 @@ namespace Automatak.Simulator.DNP3
                 if (dialog.DialogResult == DialogResult.OK)
                 {                    
                     var handler = new SOEHandler();
-                    var config = dialog.Configuration;
+                    var masterConfig = dialog.Configuration;
                     var alias = dialog.SelectedAlias;
-                    var master = channel.AddMaster(alias, handler, DefaultMasterApplication.Instance, config);
+                    var master = channel.AddMaster(alias, handler, DefaultMasterApplication.Instance, masterConfig);
 
                     if (master == null)
                     {
@@ -69,7 +71,7 @@ namespace Automatak.Simulator.DNP3
                     else
                     {                        
                         master.Enable();
-                        return new MasterNode(handler, master, callbacks, alias);
+                        return new MasterNode(config, handler, master, callbacks, alias);
                     }                    
                 }
                 else
@@ -86,9 +88,9 @@ namespace Automatak.Simulator.DNP3
                 dialog.ShowDialog();
                 if (dialog.DialogResult == DialogResult.OK)
                 {
-                    var config = dialog.Configuration;
+                    var outstationConfig = dialog.Configuration;
                     var alias = dialog.SelectedAlias;
-                    var outstation = channel.AddOutstation(alias, RejectingCommandHandler.Instance, PrintingOutstationApplication.Instance, config);
+                    var outstation = channel.AddOutstation(alias, RejectingCommandHandler.Instance, PrintingOutstationApplication.Instance, outstationConfig);
 
                     if (outstation == null)
                     {
@@ -97,7 +99,7 @@ namespace Automatak.Simulator.DNP3
                     else
                     {
                         outstation.Enable();
-                        return new OutstationNode(outstation, callbacks, alias);
+                        return new OutstationNode(config, outstation, callbacks, alias);
                     }                       
                 }
                 else

@@ -30,89 +30,99 @@ namespace Automatak.Simulator.DNP3.Components
         private void InitializeComponent()
         {
             this.groupBoxButtons = new System.Windows.Forms.GroupBox();
-            this.buttonCancel = new System.Windows.Forms.Button();
-            this.buttonADD = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.buttonAdd = new System.Windows.Forms.Button();
+            this.textBoxID = new System.Windows.Forms.TextBox();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.linkConfigControl = new Automatak.Simulator.DNP3.Components.LinkConfigControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.staticResponseTypeControl1 = new Automatak.Simulator.DNP3.Components.StaticResponseTypeControl();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.eventResponseTypeControl1 = new Automatak.Simulator.DNP3.Components.EventResponseTypeControl();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.textBoxID = new System.Windows.Forms.TextBox();
-            this.checkBoxEnableUnsol = new System.Windows.Forms.CheckBox();
-            this.numericUpDownSolConfirmTimeout = new System.Windows.Forms.NumericUpDown();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.numericUpDownUnsolConfirmTimeout = new System.Windows.Forms.NumericUpDown();
-            this.label4 = new System.Windows.Forms.Label();
-            this.numericUpDownUnsolicitedRetry = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDownMaxTxFrag = new System.Windows.Forms.NumericUpDown();
-            this.label5 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.numericUpDownMaxControls = new System.Windows.Forms.NumericUpDown();
+            this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.numericUpDownSelectTimeout = new System.Windows.Forms.NumericUpDown();
-            this.label7 = new System.Windows.Forms.Label();
-            this.numericUpDownMaxControls = new System.Windows.Forms.NumericUpDown();
-            this.label8 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.numericUpDownMaxTxFrag = new System.Windows.Forms.NumericUpDown();
+            this.label4 = new System.Windows.Forms.Label();
+            this.numericUpDownUnsolicitedRetry = new System.Windows.Forms.NumericUpDown();
+            this.label2 = new System.Windows.Forms.Label();
+            this.numericUpDownUnsolConfirmTimeout = new System.Windows.Forms.NumericUpDown();
+            this.label1 = new System.Windows.Forms.Label();
+            this.numericUpDownSolConfirmTimeout = new System.Windows.Forms.NumericUpDown();
+            this.checkBoxEnableUnsol = new System.Windows.Forms.CheckBox();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.buttonEdit = new System.Windows.Forms.Button();
+            this.buttonNew = new System.Windows.Forms.Button();
+            this.label9 = new System.Windows.Forms.Label();
+            this.comboBoxTemplate = new System.Windows.Forms.ComboBox();
+            this.linkConfigControl = new Automatak.Simulator.DNP3.Components.LinkConfigControl();
+            this.staticResponseTypeControl1 = new Automatak.Simulator.DNP3.Components.StaticResponseTypeControl();
+            this.eventResponseTypeControl1 = new Automatak.Simulator.DNP3.Components.EventResponseTypeControl();
             this.groupBoxButtons.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxControls)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSelectTimeout)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxTxFrag)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownUnsolicitedRetry)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownUnsolConfirmTimeout)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSolConfirmTimeout)).BeginInit();
             this.tabPage3.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSolConfirmTimeout)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownUnsolConfirmTimeout)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownUnsolicitedRetry)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxTxFrag)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSelectTimeout)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxControls)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBoxButtons
             // 
-            this.groupBoxButtons.Controls.Add(this.buttonCancel);
-            this.groupBoxButtons.Controls.Add(this.buttonADD);
-            this.groupBoxButtons.Location = new System.Drawing.Point(13, 343);
+            this.groupBoxButtons.Controls.Add(this.label3);
+            this.groupBoxButtons.Controls.Add(this.buttonAdd);
+            this.groupBoxButtons.Controls.Add(this.textBoxID);
+            this.groupBoxButtons.Location = new System.Drawing.Point(12, 343);
             this.groupBoxButtons.Name = "groupBoxButtons";
-            this.groupBoxButtons.Size = new System.Drawing.Size(482, 71);
+            this.groupBoxButtons.Size = new System.Drawing.Size(478, 71);
             this.groupBoxButtons.TabIndex = 0;
             this.groupBoxButtons.TabStop = false;
             // 
-            // buttonCancel
+            // label3
             // 
-            this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonCancel.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonCancel.Location = new System.Drawing.Point(353, 19);
-            this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(116, 42);
-            this.buttonCancel.TabIndex = 1;
-            this.buttonCancel.Text = "Cancel";
-            this.buttonCancel.UseVisualStyleBackColor = true;
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(118, 34);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(29, 13);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "Alias";
             // 
-            // buttonADD
+            // buttonAdd
             // 
-            this.buttonADD.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonADD.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonADD.Location = new System.Drawing.Point(231, 19);
-            this.buttonADD.Name = "buttonADD";
-            this.buttonADD.Size = new System.Drawing.Size(116, 42);
-            this.buttonADD.TabIndex = 0;
-            this.buttonADD.Text = "Add";
-            this.buttonADD.UseVisualStyleBackColor = true;
-            this.buttonADD.Click += new System.EventHandler(this.buttonADD_Click);
+            this.buttonAdd.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonAdd.Location = new System.Drawing.Point(231, 19);
+            this.buttonAdd.Name = "buttonAdd";
+            this.buttonAdd.Size = new System.Drawing.Size(238, 42);
+            this.buttonAdd.TabIndex = 0;
+            this.buttonAdd.Text = "Add";
+            this.buttonAdd.UseVisualStyleBackColor = true;
+            this.buttonAdd.Click += new System.EventHandler(this.buttonADD_Click);
+            // 
+            // textBoxID
+            // 
+            this.textBoxID.Location = new System.Drawing.Point(24, 31);
+            this.textBoxID.Name = "textBoxID";
+            this.textBoxID.Size = new System.Drawing.Size(88, 20);
+            this.textBoxID.TabIndex = 4;
+            this.textBoxID.Text = "outstation";
             // 
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 421);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 424);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(502, 22);
             this.statusStrip1.SizingGrip = false;
@@ -147,13 +157,6 @@ namespace Automatak.Simulator.DNP3.Components
             this.tabPage1.Text = "Link";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // linkConfigControl
-            // 
-            this.linkConfigControl.Location = new System.Drawing.Point(6, 6);
-            this.linkConfigControl.Name = "linkConfigControl";
-            this.linkConfigControl.Size = new System.Drawing.Size(226, 222);
-            this.linkConfigControl.TabIndex = 6;
-            // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.label8);
@@ -178,138 +181,104 @@ namespace Automatak.Simulator.DNP3.Components
             this.tabPage2.Text = "Outstation";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // tabPage3
+            // label8
             // 
-            this.tabPage3.Controls.Add(this.staticResponseTypeControl1);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(474, 227);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Static Defaults";
-            this.tabPage3.UseVisualStyleBackColor = true;
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(146, 186);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(130, 13);
+            this.label8.TabIndex = 13;
+            this.label8.Text = "Max Controls Per Request";
             // 
-            // staticResponseTypeControl1
+            // numericUpDownMaxControls
             // 
-            this.staticResponseTypeControl1.Location = new System.Drawing.Point(6, 6);
-            this.staticResponseTypeControl1.Name = "staticResponseTypeControl1";
-            this.staticResponseTypeControl1.Size = new System.Drawing.Size(260, 210);
-            this.staticResponseTypeControl1.TabIndex = 1;
+            this.numericUpDownMaxControls.Location = new System.Drawing.Point(20, 184);
+            this.numericUpDownMaxControls.Maximum = new decimal(new int[] {
+            16,
+            0,
+            0,
+            0});
+            this.numericUpDownMaxControls.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDownMaxControls.Name = "numericUpDownMaxControls";
+            this.numericUpDownMaxControls.Size = new System.Drawing.Size(120, 20);
+            this.numericUpDownMaxControls.TabIndex = 12;
+            this.numericUpDownMaxControls.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
-            // tabPage4
+            // label7
             // 
-            this.tabPage4.Controls.Add(this.eventResponseTypeControl1);
-            this.tabPage4.Location = new System.Drawing.Point(4, 22);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(474, 227);
-            this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "Event Defaults";
-            this.tabPage4.UseVisualStyleBackColor = true;
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(146, 134);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(104, 13);
+            this.label7.TabIndex = 11;
+            this.label7.Text = "Select TImeout  (ms)";
             // 
-            // eventResponseTypeControl1
+            // label6
             // 
-            this.eventResponseTypeControl1.Location = new System.Drawing.Point(6, 6);
-            this.eventResponseTypeControl1.Name = "eventResponseTypeControl1";
-            this.eventResponseTypeControl1.Size = new System.Drawing.Size(260, 210);
-            this.eventResponseTypeControl1.TabIndex = 0;
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(229, 106);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(142, 13);
+            this.label6.TabIndex = 10;
+            this.label6.Text = "Unsolicited Retry Period (ms)";
             // 
-            // groupBox1
+            // numericUpDownSelectTimeout
             // 
-            this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.textBoxID);
-            this.groupBox1.Location = new System.Drawing.Point(12, 271);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(478, 66);
-            this.groupBox1.TabIndex = 8;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Logging";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(118, 27);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(29, 13);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "Alias";
-            // 
-            // textBoxID
-            // 
-            this.textBoxID.Location = new System.Drawing.Point(24, 24);
-            this.textBoxID.Name = "textBoxID";
-            this.textBoxID.Size = new System.Drawing.Size(88, 20);
-            this.textBoxID.TabIndex = 4;
-            this.textBoxID.Text = "outstation";
-            // 
-            // checkBoxEnableUnsol
-            // 
-            this.checkBoxEnableUnsol.AutoSize = true;
-            this.checkBoxEnableUnsol.Location = new System.Drawing.Point(20, 19);
-            this.checkBoxEnableUnsol.Name = "checkBoxEnableUnsol";
-            this.checkBoxEnableUnsol.Size = new System.Drawing.Size(144, 17);
-            this.checkBoxEnableUnsol.TabIndex = 0;
-            this.checkBoxEnableUnsol.Text = "Enable Unsolicited Mode";
-            this.checkBoxEnableUnsol.UseVisualStyleBackColor = true;
-            // 
-            // numericUpDownSolConfirmTimeout
-            // 
-            this.numericUpDownSolConfirmTimeout.Location = new System.Drawing.Point(20, 52);
-            this.numericUpDownSolConfirmTimeout.Maximum = new decimal(new int[] {
+            this.numericUpDownSelectTimeout.Location = new System.Drawing.Point(20, 132);
+            this.numericUpDownSelectTimeout.Maximum = new decimal(new int[] {
             120000,
             0,
             0,
             0});
-            this.numericUpDownSolConfirmTimeout.Minimum = new decimal(new int[] {
+            this.numericUpDownSelectTimeout.Minimum = new decimal(new int[] {
             100,
             0,
             0,
             0});
-            this.numericUpDownSolConfirmTimeout.Name = "numericUpDownSolConfirmTimeout";
-            this.numericUpDownSolConfirmTimeout.Size = new System.Drawing.Size(120, 20);
-            this.numericUpDownSolConfirmTimeout.TabIndex = 1;
-            this.numericUpDownSolConfirmTimeout.Value = new decimal(new int[] {
+            this.numericUpDownSelectTimeout.Name = "numericUpDownSelectTimeout";
+            this.numericUpDownSelectTimeout.Size = new System.Drawing.Size(120, 20);
+            this.numericUpDownSelectTimeout.TabIndex = 9;
+            this.numericUpDownSelectTimeout.Value = new decimal(new int[] {
             5000,
             0,
             0,
             0});
             // 
-            // label1
+            // label5
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(146, 55);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(148, 13);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Solicited Confirm Timeout (ms)";
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(146, 160);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(112, 13);
+            this.label5.TabIndex = 8;
+            this.label5.Text = "Max Tx Fragment Size";
             // 
-            // label2
+            // numericUpDownMaxTxFrag
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(146, 81);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(160, 13);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "Unsolicited Confirm Timeout (ms)";
-            // 
-            // numericUpDownUnsolConfirmTimeout
-            // 
-            this.numericUpDownUnsolConfirmTimeout.Location = new System.Drawing.Point(20, 78);
-            this.numericUpDownUnsolConfirmTimeout.Maximum = new decimal(new int[] {
-            120000,
+            this.numericUpDownMaxTxFrag.Location = new System.Drawing.Point(20, 158);
+            this.numericUpDownMaxTxFrag.Maximum = new decimal(new int[] {
+            2048,
             0,
             0,
             0});
-            this.numericUpDownUnsolConfirmTimeout.Minimum = new decimal(new int[] {
-            100,
+            this.numericUpDownMaxTxFrag.Minimum = new decimal(new int[] {
+            20,
             0,
             0,
             0});
-            this.numericUpDownUnsolConfirmTimeout.Name = "numericUpDownUnsolConfirmTimeout";
-            this.numericUpDownUnsolConfirmTimeout.Size = new System.Drawing.Size(120, 20);
-            this.numericUpDownUnsolConfirmTimeout.TabIndex = 3;
-            this.numericUpDownUnsolConfirmTimeout.Value = new decimal(new int[] {
-            5000,
+            this.numericUpDownMaxTxFrag.Name = "numericUpDownMaxTxFrag";
+            this.numericUpDownMaxTxFrag.Size = new System.Drawing.Size(120, 20);
+            this.numericUpDownMaxTxFrag.TabIndex = 7;
+            this.numericUpDownMaxTxFrag.Value = new decimal(new int[] {
+            2048,
             0,
             0,
             0});
@@ -345,115 +314,180 @@ namespace Automatak.Simulator.DNP3.Components
             0,
             0});
             // 
-            // numericUpDownMaxTxFrag
+            // label2
             // 
-            this.numericUpDownMaxTxFrag.Location = new System.Drawing.Point(20, 158);
-            this.numericUpDownMaxTxFrag.Maximum = new decimal(new int[] {
-            2048,
-            0,
-            0,
-            0});
-            this.numericUpDownMaxTxFrag.Minimum = new decimal(new int[] {
-            20,
-            0,
-            0,
-            0});
-            this.numericUpDownMaxTxFrag.Name = "numericUpDownMaxTxFrag";
-            this.numericUpDownMaxTxFrag.Size = new System.Drawing.Size(120, 20);
-            this.numericUpDownMaxTxFrag.TabIndex = 7;
-            this.numericUpDownMaxTxFrag.Value = new decimal(new int[] {
-            2048,
-            0,
-            0,
-            0});
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(146, 81);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(160, 13);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "Unsolicited Confirm Timeout (ms)";
             // 
-            // label5
+            // numericUpDownUnsolConfirmTimeout
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(146, 160);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(112, 13);
-            this.label5.TabIndex = 8;
-            this.label5.Text = "Max Tx Fragment Size";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(229, 106);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(142, 13);
-            this.label6.TabIndex = 10;
-            this.label6.Text = "Unsolicited Retry Period (ms)";
-            // 
-            // numericUpDownSelectTimeout
-            // 
-            this.numericUpDownSelectTimeout.Location = new System.Drawing.Point(20, 132);
-            this.numericUpDownSelectTimeout.Maximum = new decimal(new int[] {
+            this.numericUpDownUnsolConfirmTimeout.Location = new System.Drawing.Point(20, 78);
+            this.numericUpDownUnsolConfirmTimeout.Maximum = new decimal(new int[] {
             120000,
             0,
             0,
             0});
-            this.numericUpDownSelectTimeout.Minimum = new decimal(new int[] {
+            this.numericUpDownUnsolConfirmTimeout.Minimum = new decimal(new int[] {
             100,
             0,
             0,
             0});
-            this.numericUpDownSelectTimeout.Name = "numericUpDownSelectTimeout";
-            this.numericUpDownSelectTimeout.Size = new System.Drawing.Size(120, 20);
-            this.numericUpDownSelectTimeout.TabIndex = 9;
-            this.numericUpDownSelectTimeout.Value = new decimal(new int[] {
+            this.numericUpDownUnsolConfirmTimeout.Name = "numericUpDownUnsolConfirmTimeout";
+            this.numericUpDownUnsolConfirmTimeout.Size = new System.Drawing.Size(120, 20);
+            this.numericUpDownUnsolConfirmTimeout.TabIndex = 3;
+            this.numericUpDownUnsolConfirmTimeout.Value = new decimal(new int[] {
             5000,
             0,
             0,
             0});
             // 
-            // label7
+            // label1
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(146, 134);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(104, 13);
-            this.label7.TabIndex = 11;
-            this.label7.Text = "Select TImeout  (ms)";
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(146, 55);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(148, 13);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "Solicited Confirm Timeout (ms)";
             // 
-            // numericUpDownMaxControls
+            // numericUpDownSolConfirmTimeout
             // 
-            this.numericUpDownMaxControls.Location = new System.Drawing.Point(20, 184);
-            this.numericUpDownMaxControls.Maximum = new decimal(new int[] {
-            16,
+            this.numericUpDownSolConfirmTimeout.Location = new System.Drawing.Point(20, 52);
+            this.numericUpDownSolConfirmTimeout.Maximum = new decimal(new int[] {
+            120000,
             0,
             0,
             0});
-            this.numericUpDownMaxControls.Minimum = new decimal(new int[] {
-            1,
+            this.numericUpDownSolConfirmTimeout.Minimum = new decimal(new int[] {
+            100,
             0,
             0,
             0});
-            this.numericUpDownMaxControls.Name = "numericUpDownMaxControls";
-            this.numericUpDownMaxControls.Size = new System.Drawing.Size(120, 20);
-            this.numericUpDownMaxControls.TabIndex = 12;
-            this.numericUpDownMaxControls.Value = new decimal(new int[] {
-            1,
+            this.numericUpDownSolConfirmTimeout.Name = "numericUpDownSolConfirmTimeout";
+            this.numericUpDownSolConfirmTimeout.Size = new System.Drawing.Size(120, 20);
+            this.numericUpDownSolConfirmTimeout.TabIndex = 1;
+            this.numericUpDownSolConfirmTimeout.Value = new decimal(new int[] {
+            5000,
             0,
             0,
             0});
             // 
-            // label8
+            // checkBoxEnableUnsol
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(146, 186);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(130, 13);
-            this.label8.TabIndex = 13;
-            this.label8.Text = "Max Controls Per Request";
+            this.checkBoxEnableUnsol.AutoSize = true;
+            this.checkBoxEnableUnsol.Location = new System.Drawing.Point(20, 19);
+            this.checkBoxEnableUnsol.Name = "checkBoxEnableUnsol";
+            this.checkBoxEnableUnsol.Size = new System.Drawing.Size(144, 17);
+            this.checkBoxEnableUnsol.TabIndex = 0;
+            this.checkBoxEnableUnsol.Text = "Enable Unsolicited Mode";
+            this.checkBoxEnableUnsol.UseVisualStyleBackColor = true;
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.staticResponseTypeControl1);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(474, 227);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Static Defaults";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.eventResponseTypeControl1);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(474, 227);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Event Defaults";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.buttonEdit);
+            this.groupBox1.Controls.Add(this.buttonNew);
+            this.groupBox1.Controls.Add(this.label9);
+            this.groupBox1.Controls.Add(this.comboBoxTemplate);
+            this.groupBox1.Location = new System.Drawing.Point(12, 271);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(478, 66);
+            this.groupBox1.TabIndex = 8;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Database";
+            // 
+            // buttonEdit
+            // 
+            this.buttonEdit.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.buttonEdit.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonEdit.Location = new System.Drawing.Point(231, 17);
+            this.buttonEdit.Name = "buttonEdit";
+            this.buttonEdit.Size = new System.Drawing.Size(116, 42);
+            this.buttonEdit.TabIndex = 9;
+            this.buttonEdit.Text = "Edit";
+            this.buttonEdit.UseVisualStyleBackColor = true;
+            // 
+            // buttonNew
+            // 
+            this.buttonNew.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonNew.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonNew.Location = new System.Drawing.Point(353, 17);
+            this.buttonNew.Name = "buttonNew";
+            this.buttonNew.Size = new System.Drawing.Size(116, 42);
+            this.buttonNew.TabIndex = 8;
+            this.buttonNew.Text = "New";
+            this.buttonNew.UseVisualStyleBackColor = true;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(154, 32);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(51, 13);
+            this.label9.TabIndex = 7;
+            this.label9.Text = "Template";
+            // 
+            // comboBoxTemplate
+            // 
+            this.comboBoxTemplate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxTemplate.FormattingEnabled = true;
+            this.comboBoxTemplate.Location = new System.Drawing.Point(10, 29);
+            this.comboBoxTemplate.Name = "comboBoxTemplate";
+            this.comboBoxTemplate.Size = new System.Drawing.Size(137, 21);
+            this.comboBoxTemplate.TabIndex = 6;
+            // 
+            // linkConfigControl
+            // 
+            this.linkConfigControl.Location = new System.Drawing.Point(6, 6);
+            this.linkConfigControl.Name = "linkConfigControl";
+            this.linkConfigControl.Size = new System.Drawing.Size(226, 222);
+            this.linkConfigControl.TabIndex = 6;
+            // 
+            // staticResponseTypeControl1
+            // 
+            this.staticResponseTypeControl1.Location = new System.Drawing.Point(6, 6);
+            this.staticResponseTypeControl1.Name = "staticResponseTypeControl1";
+            this.staticResponseTypeControl1.Size = new System.Drawing.Size(260, 210);
+            this.staticResponseTypeControl1.TabIndex = 1;
+            // 
+            // eventResponseTypeControl1
+            // 
+            this.eventResponseTypeControl1.Location = new System.Drawing.Point(6, 6);
+            this.eventResponseTypeControl1.Name = "eventResponseTypeControl1";
+            this.eventResponseTypeControl1.Size = new System.Drawing.Size(260, 210);
+            this.eventResponseTypeControl1.TabIndex = 0;
             // 
             // OutstationDialog
             // 
-            this.AcceptButton = this.buttonADD;
+            this.AcceptButton = this.buttonAdd;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(502, 443);
+            this.ClientSize = new System.Drawing.Size(502, 446);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.statusStrip1);
@@ -467,23 +501,25 @@ namespace Automatak.Simulator.DNP3.Components
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Add Outstation";
             this.TopMost = true;
+            this.Load += new System.EventHandler(this.OutstationDialog_Load);
             this.groupBoxButtons.ResumeLayout(false);
+            this.groupBoxButtons.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxControls)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSelectTimeout)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxTxFrag)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownUnsolicitedRetry)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownUnsolConfirmTimeout)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSolConfirmTimeout)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSolConfirmTimeout)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownUnsolConfirmTimeout)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownUnsolicitedRetry)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxTxFrag)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSelectTimeout)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownMaxControls)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -492,8 +528,7 @@ namespace Automatak.Simulator.DNP3.Components
         #endregion
 
         private System.Windows.Forms.GroupBox groupBoxButtons;
-        private System.Windows.Forms.Button buttonCancel;
-        private System.Windows.Forms.Button buttonADD;
+        private System.Windows.Forms.Button buttonAdd;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private Components.LinkConfigControl linkConfigControl;
@@ -521,5 +556,9 @@ namespace Automatak.Simulator.DNP3.Components
         private System.Windows.Forms.NumericUpDown numericUpDownSelectTimeout;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.NumericUpDown numericUpDownMaxControls;
+        private System.Windows.Forms.ComboBox comboBoxTemplate;
+        private System.Windows.Forms.Button buttonEdit;
+        private System.Windows.Forms.Button buttonNew;
+        private System.Windows.Forms.Label label9;
     }
 }

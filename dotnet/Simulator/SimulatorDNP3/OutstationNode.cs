@@ -10,13 +10,15 @@ using Automatak.Simulator.API;
 namespace Automatak.Simulator.DNP3
 {
     class OutstationNode : ISimulatorNode
-    {        
+    {
+        readonly IDNP3Config config;
         readonly IOutstation outstation;
         readonly ISimulatorNodeCallbacks callbacks;
         readonly string alias;            
 
-        public OutstationNode(IOutstation outstation, ISimulatorNodeCallbacks callbacks, string alias)
+        public OutstationNode(IDNP3Config config, IOutstation outstation, ISimulatorNodeCallbacks callbacks, string alias)
         {
+            this.config = config;
             this.outstation = outstation;
             this.callbacks = callbacks;
             this.alias = alias;
