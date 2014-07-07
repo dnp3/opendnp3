@@ -30,7 +30,7 @@ object CppEnumGenerator {
       EnumConfig(ControlCode(), true, true),
       EnumConfig(ChannelState(), false, true),
       EnumConfig(TimeSyncMode(), false, false)
-    ) ::: EventTypes.enums.map(m => EnumConfig(m, true, false))
+    ) ::: EventTypes.enums.map(m => EnumConfig(m, true, false)) ::: QualityMasks.enums.map(m => EnumConfig(m, false, false))
 
     // list of all enumerations that we want to generate
     def sourceEnums = List(FunctionCode(), QualifierCode(), LinkFunction()).map(em => EnumConfig.apply(em, true, true))
@@ -60,8 +60,12 @@ object CppEnumGenerator {
         def funcs = renders.map(r => r.impl.render(cfg.model)).flatten.toIterator
         def inc = quoted(cfg.headerName)
         def lines = license ++ space ++ Iterator(include(inc)) ++ space ++ namespace(nsopendnp3)(funcs)
-        writeTo(cfg.implPath(directory))(lines)
-        println("Wrote: " + cfg.implPath(directory))
+
+        if(cfg.conversions || cfg.stringConv)
+        {
+          writeTo(cfg.implPath(directory))(lines)
+          println("Wrote: " + cfg.implPath(directory))
+        }
       }
 
       writeHeader()

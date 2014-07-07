@@ -32,7 +32,7 @@ TEST_CASE(SUITE("Group30Var2ConvertsWithinRange"))
 	auto gv = ConvertGroup30Var2::Apply(a);
 
 	REQUIRE(gv.value ==  12);
-	REQUIRE(gv.flags ==  AnalogQuality::AQ_ONLINE);
+	REQUIRE(gv.flags ==  ToUnderlying(AnalogQuality::ONLINE));
 }
 
 TEST_CASE(SUITE("Group30Var2ConvertsOverrange"))
@@ -41,7 +41,7 @@ TEST_CASE(SUITE("Group30Var2ConvertsOverrange"))
 	auto gv = ConvertGroup30Var2::Apply(a);
 
 	REQUIRE(gv.value ==  32767);
-	REQUIRE(gv.flags ==  (AnalogQuality::AQ_ONLINE | AnalogQuality::AQ_OVERRANGE));
+	REQUIRE(gv.flags == (ToUnderlying(AnalogQuality::ONLINE) | ToUnderlying(AnalogQuality::OVERRANGE)));
 }
 
 TEST_CASE(SUITE("Group30Var2ConvertsUnderrange"))
@@ -50,7 +50,7 @@ TEST_CASE(SUITE("Group30Var2ConvertsUnderrange"))
 	auto gv = ConvertGroup30Var2::Apply(a);
 
 	REQUIRE(gv.value ==  -32768);
-	REQUIRE(gv.flags ==  (AnalogQuality::AQ_ONLINE | AnalogQuality::AQ_OVERRANGE));
+	REQUIRE(gv.flags == (ToUnderlying(AnalogQuality::ONLINE) | ToUnderlying(AnalogQuality::OVERRANGE)));
 }
 
 

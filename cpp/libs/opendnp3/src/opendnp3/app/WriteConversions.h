@@ -113,21 +113,21 @@ typedef ConvertQVT<Group23Var5, FrozenCounter> ConvertGroup23Var5;
 typedef ConvertQVTandTruncate<Group23Var6, FrozenCounter> ConvertGroup23Var6;
 
 // Group 30
-typedef ConvertQVRangeCheck<Group30Var1, Analog, AnalogQuality::AQ_OVERRANGE> ConvertGroup30Var1;
-typedef ConvertQVRangeCheck<Group30Var2, Analog, AnalogQuality::AQ_OVERRANGE> ConvertGroup30Var2;
+typedef ConvertQVRangeCheck<Group30Var1, Analog, 0x20> ConvertGroup30Var1;
+typedef ConvertQVRangeCheck<Group30Var2, Analog, 0x20> ConvertGroup30Var2;
 typedef ConvertVRangeCheck<Group30Var3, Analog> ConvertGroup30Var3;
 typedef ConvertVRangeCheck<Group30Var4, Analog> ConvertGroup30Var4;
-typedef ConvertQVRangeCheck<Group30Var5, Analog, AnalogQuality::AQ_OVERRANGE> ConvertGroup30Var5;
+typedef ConvertQVRangeCheck<Group30Var5, Analog, 0x20> ConvertGroup30Var5;
 typedef ConvertQV<Group30Var6, Analog> ConvertGroup30Var6;
 
 // Group 32
-typedef ConvertQVRangeCheck<Group32Var1, Analog, AnalogQuality::AQ_OVERRANGE> ConvertGroup32Var1;
-typedef ConvertQVRangeCheck<Group32Var2, Analog, AnalogQuality::AQ_OVERRANGE> ConvertGroup32Var2;
-typedef ConvertQVTRangeCheck<Group32Var3, Analog, AnalogQuality::AQ_OVERRANGE> ConvertGroup32Var3;
-typedef ConvertQVTRangeCheck<Group32Var4, Analog, AnalogQuality::AQ_OVERRANGE> ConvertGroup32Var4;
-typedef ConvertQVRangeCheck<Group32Var5, Analog, AnalogQuality::AQ_OVERRANGE> ConvertGroup32Var5;
+typedef ConvertQVRangeCheck<Group32Var1, Analog, 0x20> ConvertGroup32Var1;
+typedef ConvertQVRangeCheck<Group32Var2, Analog, 0x20> ConvertGroup32Var2;
+typedef ConvertQVTRangeCheck<Group32Var3, Analog, 0x20> ConvertGroup32Var3;
+typedef ConvertQVTRangeCheck<Group32Var4, Analog, 0x20> ConvertGroup32Var4;
+typedef ConvertQVRangeCheck<Group32Var5, Analog, 0x20> ConvertGroup32Var5;
 typedef ConvertQV<Group32Var6, Analog> ConvertGroup32Var6;
-typedef ConvertQVTRangeCheck<Group32Var7, Analog, AnalogQuality::AQ_OVERRANGE> ConvertGroup32Var7;
+typedef ConvertQVTRangeCheck<Group32Var7, Analog, 0x20> ConvertGroup32Var7;
 typedef ConvertQVT<Group32Var8, Analog> ConvertGroup32Var8;
 
 // Group 40 - TODO - strange to have no flag

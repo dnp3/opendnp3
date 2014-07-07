@@ -7,14 +7,12 @@ object QualityMasks {
   private def comments(name: String) = List("Quality field bitmask for " + name + " values.")
 
 
-  def apply(): List[EnumModel] = List(
+  def enums: List[EnumModel] = List(
     EnumModel("BinaryQuality", comments("binary"), EnumModel.UInt8, binaryValues, Hex),
     EnumModel("DoubleBitBinaryQuality", comments("double bit binary"), EnumModel.UInt8, doubleBinaryValues, Hex),
     EnumModel("CounterQuality", comments("counter"), EnumModel.UInt8, counterValues, Hex),
-    EnumModel("FrozenCounterQuality", comments("frozen counter"), EnumModel.UInt8, counterValues, Hex),
     EnumModel("AnalogQuality", comments("analog"), EnumModel.UInt8, analogValues, Hex),
-    EnumModel("BinaryOutputStatusQuality", comments("binary output status"), EnumModel.UInt8, binaryOutputValues, Hex),
-    EnumModel("AnalogOutputStatusQuality", comments("analog output status"), EnumModel.UInt8, analogValues, Hex)
+    EnumModel("BinaryOutputStatusQuality", comments("binary output status"), EnumModel.UInt8, binaryOutputValues, Hex)
   )
 
   private def bits() : Iterator[Int] = Iterator.iterate(1)(x => x << 1)
@@ -35,10 +33,8 @@ object QualityMasks {
 
   private val reserved = "RESERVED" -> "reserved bit"
 
-  private val reserved1 = "RESERVED" -> "reserved bit 1"
-  private val reserved2 = "RESERVED" -> "reserved bit 2"
-  private val reserved3 = "RESERVED" -> "reserved bit 3"
-  private val reserved4 = "RESERVED" -> "reserved bit 4"
+  private val reserved1 = "RESERVED1" -> "reserved bit 1"
+  private val reserved2 = "RESERVED2" -> "reserved bit 2"
 
   private def toValues(list : List[(String, String)]): List[EnumValue] = {
     val bit : Iterator[Int] = bits()

@@ -178,7 +178,7 @@ TEST_CASE(SUITE("ReadClass0MultiFragAnalog"))
 	t.Transaction([](Database& db) {
 		for (uint16_t i = 0; i < 8; i++)
 		{
-			db.Update(Analog(0, AQ_ONLINE), i);
+			db.Update(Analog(0, 0x01), i);
 		}
 	});
 	
@@ -283,8 +283,8 @@ TEST_CASE(SUITE("ReadByRangeHeader"))
 	t.LowerLayerUp();
 
 	t.Transaction([](Database& db){
-		db.Update(Analog(42, AQ_ONLINE), 5);
-		db.Update(Analog(41, AQ_ONLINE), 6);
+		db.Update(Analog(42, 0x01), 5);
+		db.Update(Analog(41, 0x01), 6);
 	});	
 
 	t.SendToOutstation("C2 01 1E 02 00 05 06"); // read 30 var 2, [05 : 06]
@@ -370,7 +370,7 @@ void TestStaticBinaryOutputStatus(T value, const std::string& response)
 	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOutputStatusOnly(1));
 	t.LowerLayerUp();
 
-	t.Transaction([value](Database& db) { db.Update(BinaryOutputStatus(value, TQ_ONLINE), 0); });
+	t.Transaction([value](Database& db) { db.Update(BinaryOutputStatus(value, 0x01), 0); });
 
 	t.SendToOutstation("C0 01 3C 01 06"); // Read class 0
 	REQUIRE(t.lower.PopWriteAsHex() == response);

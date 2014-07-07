@@ -383,8 +383,8 @@ TEST_CASE(SUITE("TestDoubleBitCommonTimeOccurence"))
 		REQUIRE(1 == mock.records.size());
 		REQUIRE(2 ==  mock.eventDoubleBinaries.size());
 
-		IndexedValue<DoubleBitBinary, uint16_t> event1(DoubleBitBinary(DoubleBit::INDETERMINATE, DBQ_ONLINE, 123456789 + 7), 3);
-		IndexedValue<DoubleBitBinary, uint16_t> event2(DoubleBitBinary(DoubleBit::DETERMINED_OFF, DBQ_ONLINE, 123456789 + 9), 5);
+		IndexedValue<DoubleBitBinary, uint16_t> event1(DoubleBitBinary(DoubleBit::INDETERMINATE, 0x01, 123456789 + 7), 3);
+		IndexedValue<DoubleBitBinary, uint16_t> event2(DoubleBitBinary(DoubleBit::DETERMINED_OFF, 0x01, 123456789 + 9), 5);
 
 		REQUIRE((event1 == mock.eventDoubleBinaries[0]));
 		REQUIRE((event2 == mock.eventDoubleBinaries[1]));

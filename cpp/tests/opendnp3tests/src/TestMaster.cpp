@@ -72,7 +72,7 @@ TEST_CASE(SUITE("SolicitedResponseWithData"))
 	REQUIRE(t.exe.NumPendingTimers() == 1);
 	t.SendToMaster("C0 81 00 00 01 02 00 02 02 81"); //group 2 var 1, index = 2, 0x81 = Online, true	
 	REQUIRE(t.meas.NumTotal() == 1);
-	REQUIRE((Binary(true, BQ_ONLINE) == t.meas.GetBinary(2)));
+	REQUIRE((Binary(true, 0x01) == t.meas.GetBinary(2)));
 }
 
 TEST_CASE(SUITE("UnsolDisableEnableOnStartup"))
@@ -211,11 +211,11 @@ TEST_CASE(SUITE("SolicitedMultiFragResponse"))
 	t.master.OnSendResult(true);
 	t.SendToMaster("80 81 00 00 01 02 00 02 02 81"); // partial response FIR = 1, FIN = 0	
 	REQUIRE(1 == t.meas.NumStatic());
-	REQUIRE((Binary(true, BQ_ONLINE) == t.meas.GetBinary(2)));
+	REQUIRE((Binary(true, 0x01) == t.meas.GetBinary(2)));
 	REQUIRE(0 == t.lower.NumWrites());
 	t.SendToMaster("41 81 00 00 01 02 00 03 03 02"); // final response FIR = 0, FIN = 1
 	REQUIRE(2 == t.meas.NumStatic());
-	REQUIRE((Binary(false, BQ_RESTART) == t.meas.GetBinary(3)));	
+	REQUIRE((Binary(false, 0x02) == t.meas.GetBinary(3)));	
 }
 
 TEST_CASE(SUITE("EventPoll"))
@@ -238,7 +238,7 @@ TEST_CASE(SUITE("EventPoll"))
 	t.SendToMaster("C0 81 00 00 02 01 17 01 02 81"); //group 2 var 1, index = 2, 0x81 = Online, true
 
 	REQUIRE(t.meas.NumEvent() == 1);
-	REQUIRE((Binary(true, BQ_ONLINE) == t.meas.GetEventBinary(2)));
+	REQUIRE((Binary(true, 0x01) == t.meas.GetEventBinary(2)));
 
 	t.exe.RunMany();
 
@@ -250,7 +250,7 @@ TEST_CASE(SUITE("EventPoll"))
 	t.SendToMaster("C1 81 00 00 02 01 17 01 03 01"); //group 2 var 1, index = 3, 0x81 = Online, true
 
 	REQUIRE(t.meas.NumEvent() == 2);
-	REQUIRE((Binary(false, BQ_ONLINE) == t.meas.GetEventBinary(3)));
+	REQUIRE((Binary(false, 0x01) == t.meas.GetEventBinary(3)));
 }
 
 TEST_CASE(SUITE("ParsesOctetStringResponseWithFiveCharacters"))

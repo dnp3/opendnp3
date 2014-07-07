@@ -49,7 +49,7 @@ TEST_CASE(SUITE("ReceiveNewRequestSolConfirmWait"))
 	OutstationTestObject t(config, DatabaseTemplate::BinaryOnly(1), EventBufferConfig::AllTypes(10));
 	t.LowerLayerUp();
 
-	t.Transaction([](Database& db) { db.Update(Binary(true, BQ_ONLINE), 0); });
+	t.Transaction([](Database& db) { db.Update(Binary(true, 0x01), 0); });
 
 	t.SendToOutstation("C0 01 3C 02 06");
 	REQUIRE(t.lower.PopWriteAsHex() == "E0 81 80 00 02 01 28 01 00 00 00 81");
@@ -67,9 +67,9 @@ TEST_CASE(SUITE("ReadClass1WithSOE"))
 	t.LowerLayerUp();
 
 	t.Transaction([](Database& db) {
-		db.Update(Analog(0x1234, AQ_ONLINE), 0x17); // 0x 12 34 00 00 in little endian
-		db.Update(Binary(true, BQ_ONLINE), 0x10);
-		db.Update(Analog(0x2222, AQ_ONLINE), 0x17); // 0x 22 22 00 00 in little endian
+		db.Update(Analog(0x1234, 0x01), 0x17); // 0x 12 34 00 00 in little endian
+		db.Update(Binary(true, 0x01), 0x10);
+		db.Update(Analog(0x2222, 0x01), 0x17); // 0x 22 22 00 00 in little endian
 	});
 
 	t.SendToOutstation("C0 01 3C 02 06");
@@ -139,7 +139,7 @@ TEST_CASE(SUITE("ReadGrp2Var0"))
 {
 	auto update = [](Database& db)
 	{
-		db.Update(Binary(false, BQ_ONLINE), 0);
+		db.Update(Binary(false, 0x01), 0);
 	};
 
 	TestEventRead("C0 01 02 00 06", "E0 81 80 00 02 01 28 01 00 00 00 01", update);
@@ -149,7 +149,7 @@ TEST_CASE(SUITE("ReadGrp22Var0"))
 {
 	auto update = [](Database & db)
 	{
-		db.Update(Counter(0, CQ_ONLINE), 0);
+		db.Update(Counter(0, 0x01), 0);
 	};
 
 	TestEventRead("C0 01 16 00 06", "E0 81 80 00 16 01 28 01 00 00 00 01 00 00 00 00", update);
@@ -159,7 +159,7 @@ TEST_CASE(SUITE("ReadGrp32Var0"))
 {
 	auto update = [](Database & db)
 	{
-		db.Update(Analog(0.0, AQ_ONLINE), 0);
+		db.Update(Analog(0.0, 0x01), 0);
 	};
 
 	TestEventRead("C0 01 20 00 06", "E0 81 80 00 20 01 28 01 00 00 00 01 00 00 00 00", update);

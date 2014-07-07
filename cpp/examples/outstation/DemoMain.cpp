@@ -119,13 +119,13 @@ int main(int argc, char* argv[])
 			{
 				case('c') :
 				{				
-					tx.Update(Counter(count, CQ_ONLINE), 0);
+					tx.Update(Counter(count), 0);
 					++count;
 					break;
 				}
 				case('a') :
 				{				
-					tx.Update(Analog(value, AQ_ONLINE), 0);
+					tx.Update(Analog(value), 0);
 					value += 1;
 					break;
 				}

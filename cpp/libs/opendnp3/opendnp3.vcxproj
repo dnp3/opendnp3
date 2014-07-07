@@ -65,6 +65,11 @@
     <ClInclude Include="src\opendnp3\app\VTOData.h" />
     <ClInclude Include="src\opendnp3\app\WriteConversions.h" />
     <ClInclude Include="src\opendnp3\app\WriteConversionTemplates.h" />
+    <ClInclude Include="src\opendnp3\gen\AnalogQuality.h" />
+    <ClInclude Include="src\opendnp3\gen\BinaryOutputStatusQuality.h" />
+    <ClInclude Include="src\opendnp3\gen\BinaryQuality.h" />
+    <ClInclude Include="src\opendnp3\gen\CounterQuality.h" />
+    <ClInclude Include="src\opendnp3\gen\DoubleBitBinaryQuality.h" />
     <ClInclude Include="src\opendnp3\gen\GroupVariation.h" />
     <ClInclude Include="src\opendnp3\gen\PointClass.h" />
     <ClInclude Include="src\opendnp3\gen\PollState.h" />
