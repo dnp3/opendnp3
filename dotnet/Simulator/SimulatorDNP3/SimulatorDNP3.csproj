@@ -60,11 +60,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BundledPlugins\MeasurementConversion.cs" />
     <Compile Include="BundledPlugins\OutstationForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="BundledPlugins\OutstationForm.Designer.cs">
       <DependentUpon>OutstationForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BundledPlugins\BinaryValueDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BundledPlugins\BinaryValueDialog.Designer.cs">
+      <DependentUpon>BinaryValueDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Components\EventBufferConfigControl.cs">
       <SubType>UserControl</SubType>
@@ -201,6 +208,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="BundledPlugins\MeasurementView.resx">
       <DependentUpon>MeasurementView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BundledPlugins\BinaryValueDialog.resx">
+      <DependentUpon>BinaryValueDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Components\EventBufferConfigControl.resx">
       <DependentUpon>EventBufferConfigControl.cs</DependentUpon>

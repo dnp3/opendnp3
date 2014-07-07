@@ -16,9 +16,11 @@ namespace Automatak.Simulator.DNP3
         MeasurementCollection activeCollection = null;
 
         readonly IOutstation outstation;
-        readonly IMeasurementCache cache;
+        readonly MeasurementCache cache;
 
-        public OutstationForm(IOutstation outstation, IMeasurementCache cache, String alias)
+        readonly IList<Action<IDatabase, DateTime>> events = new List<Action<IDatabase, DateTime>>();
+
+        public OutstationForm(IOutstation outstation, MeasurementCache cache, String alias)
         {
             InitializeComponent();
 
@@ -40,6 +42,17 @@ namespace Automatak.Simulator.DNP3
             else
             {
                 this.buttonEdit.Enabled = false;
+            }
+
+            if (events.Count > 0)
+            {
+                this.buttonApply.Enabled = true;
+                this.buttonClear.Enabled = true;
+            }
+            else
+            {
+                this.buttonApply.Enabled = false;
+                this.buttonClear.Enabled = false;
             }
         }
      
@@ -69,11 +82,73 @@ namespace Automatak.Simulator.DNP3
                 }                
             }
             this.CheckState(); 
+        }             
+
+        private void buttonEdit_Click(object sender, EventArgs e)
+        {
+            var indices = this.measurementView.SelectedIndices;
+
+            switch ((MeasType) comboBoxTypes.SelectedValue)
+            { 
+                case(MeasType.Binary):
+                    LoadBinaries(indices);
+                    break;
+            }
         }
 
-        private void measurementView_OnRowSelectionChanged(IEnumerable<UInt16> rows)
+        void LoadBinaries(IEnumerable<ushort> indices)
+        {
+            using (var dialog = new BinaryValueDialog())
+            {
+                dialog.ShowDialog();
+                if (dialog.DialogResult == DialogResult.OK)
+                {
+                    var meas = new Binary(dialog.SelectedValue, dialog.SelectedQuality);                    
+                    var updates = indices.Select(i => GetAction(meas, i));
+                    foreach(var item in updates)
+                    {
+                        this.events.Add(item);
+                    }
+                    this.CheckState();
+                }
+            }
+        }
+
+        Action<IDatabase, DateTime> GetAction(Binary meas, ushort index)
+        {
+            return (IDatabase db, DateTime timestamp) =>
+            {
+                meas.Timestamp = timestamp;
+                db.Update(meas, index);
+            };
+        }
+
+        private void measurementView_OnRowSelectionChanged(IEnumerable<UInt16> selection)
         {
             this.CheckState();
-        }                                                       
+        }
+
+        private void buttonApply_Click(object sender, EventArgs e)
+        {          
+           IDatabase db1 = this.cache;
+           IDatabase db2 = outstation.GetDatabase();
+           var time = DateTime.Now;
+           
+           db1.Start();
+           db2.Start();
+            
+           foreach (var item in events)
+           {
+               item.Invoke(db1, time);
+               item.Invoke(db2, time);
+           }
+
+           db2.End();
+           db1.End();
+
+           this.events.Clear();
+
+           this.CheckState();
+        }                                                             
     }
 }

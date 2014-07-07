@@ -21,17 +21,7 @@ namespace DNP3.Interface
             this.databaseTemplate = new DatabaseTemplate(10, 10, 10, 10, 10, 10, 10);
             this.link = new LinkConfig(false, false);
         }
-
-        /// <summary>
-        /// Default variations to use in static responses
-        /// </summary>
-        public StaticResponseConfig defaultStaticResponses = new StaticResponseConfig();
-
-        /// <summary>
-        /// Default variations to use in event responses
-        /// </summary>
-        public EventResponseConfig defaultEventResponses = new EventResponseConfig();
-
+      
         /// <summary>
         /// Outstation config
         /// </summary>

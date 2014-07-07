@@ -49,6 +49,10 @@ namespace DNP3.Interface
             {
                 return quality;
             }
+            set
+            {
+                quality = value;
+            }
         }
 
         public DateTime Timestamp
@@ -56,6 +60,10 @@ namespace DNP3.Interface
             get
             {
                 return time;
+            }
+            set
+            {
+                time = value;
             }
         }
 
@@ -73,9 +81,9 @@ namespace DNP3.Interface
             return "quality: " + quality.ToString("X") + " time: " + timeString;
         }
 
-        private readonly byte quality;
-        private readonly DateTime time;
-        private readonly bool isTimeValid;
+        byte quality;
+        DateTime time;
+        bool isTimeValid;
     }
 
     /// <summary>

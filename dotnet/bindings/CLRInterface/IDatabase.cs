@@ -43,42 +43,42 @@ namespace DNP3.Interface
         /// </summary>
         /// <param name="update">measurement to update</param>
         /// <param name="index">index of measurement</param>        
-		void Update(Binary update, System.UInt32 index);
+		void Update(Binary update, System.UInt16 index);
 
         /// <summary>
         /// Update an Analog input
         /// </summary>
         /// <param name="update">measurement to update</param>
         /// <param name="index">index of measurement</param>
-		void Update(Analog update, System.UInt32 index);
+		void Update(Analog update, System.UInt16 index);
 
         /// <summary>
         /// Update a Counter
         /// </summary>
         /// <param name="update">measurement to update</param>
         /// <param name="index">index of measurement</param>
-		void Update(Counter update, System.UInt32 index);
+		void Update(Counter update, System.UInt16 index);
 
         /// <summary>
         /// Update a FrozenCounter
         /// </summary>
         /// <param name="update">measurement to update</param>
         /// <param name="index">index of measurement</param>
-        void Update(FrozenCounter update, System.UInt32 index);
+        void Update(FrozenCounter update, System.UInt16 index);
 
         /// <summary>
         /// Update a BinaryOutputStatus
         /// </summary>
         /// <param name="update">measurement to update</param>
         /// <param name="index">index of measurement</param>
-		void Update(BinaryOutputStatus update, System.UInt32 index);
+		void Update(BinaryOutputStatus update, System.UInt16 index);
 
         /// <summary>
         /// Update an AnalogOutputStatus
         /// </summary>
         /// <param name="update">measurement to update</param>
         /// <param name="index">index of measurement</param>
-		void Update(AnalogOutputStatus update, System.UInt32 index);
+		void Update(AnalogOutputStatus update, System.UInt16 index);
 
         /// <summary>
         /// End a transaction

@@ -384,7 +384,7 @@ opendnp3::MasterStackConfig Conversions::ConvertConfig(MasterStackConfig^ config
 
 opendnp3::OutstationStackConfig Conversions::ConvertConfig(OutstationStackConfig^ config)
 {	
-	opendnp3::OutstationStackConfig cfg;
+	opendnp3::OutstationStackConfig cfg;	
 	cfg.dbTemplate = ConvertConfig(config->databaseTemplate);
 	cfg.eventBuffer = ConvertConfig(config->buffer);
 	cfg.outstation = ConvertConfig(config->outstation);	

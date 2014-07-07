@@ -18,32 +18,32 @@ void OutstationDatabaseAdapter::Start()
 	opendnp3::Transaction::Start(pProxy);
 }
 
-void OutstationDatabaseAdapter::Update(Binary^ meas, System::UInt32 index)
+void OutstationDatabaseAdapter::Update(Binary^ meas, System::UInt16 index)
 {
 	pProxy->Update(Conversions::ConvertMeas(meas), index);
 }
 
-void OutstationDatabaseAdapter::Update(Analog^ meas, System::UInt32 index)
+void OutstationDatabaseAdapter::Update(Analog^ meas, System::UInt16 index)
 {
 	pProxy->Update(Conversions::ConvertMeas(meas), index);
 }
 
-void OutstationDatabaseAdapter::Update(Counter^ meas, System::UInt32 index)
+void OutstationDatabaseAdapter::Update(Counter^ meas, System::UInt16 index)
 {
 	pProxy->Update(Conversions::ConvertMeas(meas), index);
 }
 
-void OutstationDatabaseAdapter::Update(FrozenCounter^ meas, System::UInt32 index)
+void OutstationDatabaseAdapter::Update(FrozenCounter^ meas, System::UInt16 index)
 {
 	pProxy->Update(Conversions::ConvertMeas(meas), index);
 }
 
-void OutstationDatabaseAdapter::Update(BinaryOutputStatus^ meas, System::UInt32 index)
+void OutstationDatabaseAdapter::Update(BinaryOutputStatus^ meas, System::UInt16 index)
 {
 	pProxy->Update(Conversions::ConvertMeas(meas), index);
 }
 
-void OutstationDatabaseAdapter::Update(AnalogOutputStatus^ meas, System::UInt32 index)
+void OutstationDatabaseAdapter::Update(AnalogOutputStatus^ meas, System::UInt16 index)
 {
 	pProxy->Update(Conversions::ConvertMeas(meas), index);
 }

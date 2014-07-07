@@ -16,12 +16,12 @@ public:
 	OutstationDatabaseAdapter(opendnp3::IDatabase& proxy);
 
 	virtual void Start();
-	virtual void Update(DNP3::Interface::Binary^ meas, System::UInt32 index);
-	virtual void Update(DNP3::Interface::Analog^ meas, System::UInt32 index);
-	virtual void Update(DNP3::Interface::Counter^ meas, System::UInt32 index);
-	virtual void Update(DNP3::Interface::FrozenCounter^ meas, System::UInt32 index);
-	virtual void Update(DNP3::Interface::BinaryOutputStatus^ meas, System::UInt32 index);
-	virtual void Update(DNP3::Interface::AnalogOutputStatus^ meas, System::UInt32 index);
+	virtual void Update(DNP3::Interface::Binary^ meas, System::UInt16 index);
+	virtual void Update(DNP3::Interface::Analog^ meas, System::UInt16 index);
+	virtual void Update(DNP3::Interface::Counter^ meas, System::UInt16 index);
+	virtual void Update(DNP3::Interface::FrozenCounter^ meas, System::UInt16 index);
+	virtual void Update(DNP3::Interface::BinaryOutputStatus^ meas, System::UInt16 index);
+	virtual void Update(DNP3::Interface::AnalogOutputStatus^ meas, System::UInt16 index);
 	virtual void End();
 
 private:

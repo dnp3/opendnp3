@@ -24,7 +24,7 @@ namespace Automatak.Simulator.DNP3
         }
     }
 
-    class MeasurementCache: ISOEHandler, IMeasurementCache
+    class MeasurementCache: ISOEHandler, IMeasurementCache, IDatabase
     {
         readonly Object mutex = new Object();
 
@@ -65,49 +65,49 @@ namespace Automatak.Simulator.DNP3
 
         public void LoadStatic(IEnumerable<IndexedValue<Binary>> values)
         {
-            var converted = values.Select(m => new Measurement(m.Value.Value.ToString(), m.Value, MeasType.Binary, m.Index));
+            var converted = values.Select(m => m.Value.ToMeasurement(m.Index));
             binaries.Update(converted);
         }
 
         public void LoadStatic(IEnumerable<IndexedValue<DoubleBitBinary>> values)
         {
-            var converted = values.Select(m => new Measurement(m.Value.Value.ToString(), m.Value, MeasType.DoubleBitBinary, m.Index));
+            var converted = values.Select(m => m.Value.ToMeasurement(m.Index));
             doubleBinaries.Update(converted);
         }
 
         public void LoadStatic(IEnumerable<IndexedValue<Analog>> values)
         {
-            var converted = values.Select(m => new Measurement(m.Value.Value.ToString(), m.Value, MeasType.Analog, m.Index));
+            var converted = values.Select(m => m.Value.ToMeasurement(m.Index));
             analogs.Update(converted);
         }
 
         public void LoadStatic(IEnumerable<IndexedValue<Counter>> values)
         {
-            var converted = values.Select(m => new Measurement(m.Value.Value.ToString(), m.Value, MeasType.Counter, m.Index));
+            var converted = values.Select(m => m.Value.ToMeasurement(m.Index));
             counters.Update(converted);
         }
 
         public void LoadStatic(IEnumerable<IndexedValue<FrozenCounter>> values)
         {
-            var converted = values.Select(m => new Measurement(m.Value.Value.ToString(), m.Value, MeasType.FrozenCounter, m.Index));
+            var converted = values.Select(m => m.Value.ToMeasurement(m.Index));
             frozenCounters.Update(converted);
         }
 
         public void LoadStatic(IEnumerable<IndexedValue<BinaryOutputStatus>> values)
         {
-            var converted = values.Select(m => new Measurement(m.Value.Value.ToString(), m.Value, MeasType.BinaryOutputStatus, m.Index));
+            var converted = values.Select(m => m.Value.ToMeasurement(m.Index));
             binaryOutputStatii.Update(converted);
         }
 
         public void LoadStatic(IEnumerable<IndexedValue<AnalogOutputStatus>> values)
         {
-            var converted = values.Select(m => new Measurement(m.Value.Value.ToString(), m.Value, MeasType.AnalogOutputStatus, m.Index));
+            var converted = values.Select(m => m.Value.ToMeasurement(m.Index));
             analogOutputStatii.Update(converted);
         }
 
         public void LoadStatic(IEnumerable<IndexedValue<OctetString>> values)
         {
-            var converted = values.Select(m => new Measurement(m.Value.AsString(), m.Value, MeasType.OctetString, m.Index));
+            var converted = values.Select(m => m.Value.ToMeasurement(m.Index));
             octetStrings.Update(converted);
         }
 
@@ -241,6 +241,46 @@ namespace Automatak.Simulator.DNP3
             }
         }
 
-        
+
+
+        void IDatabase.Start()
+        {
+            Monitor.Enter(mutex);
+        }
+
+        void IDatabase.Update(Binary update, ushort index)
+        {
+            binaries.Update(update.ToMeasurement(index));
+        }
+
+        void IDatabase.Update(Analog update, ushort index)
+        {            
+            analogs.Update(update.ToMeasurement(index));
+        }
+
+        void IDatabase.Update(Counter update, ushort index)
+        {            
+            counters.Update(update.ToMeasurement(index));
+        }
+
+        void IDatabase.Update(FrozenCounter update, ushort index)
+        {            
+            frozenCounters.Update(update.ToMeasurement(index));
+        }
+
+        void IDatabase.Update(BinaryOutputStatus update, ushort index)
+        {           
+            binaryOutputStatii.Update(update.ToMeasurement(index));
+        }
+
+        void IDatabase.Update(AnalogOutputStatus update, ushort index)
+        {            
+            analogOutputStatii.Update(update.ToMeasurement(index));
+        }
+
+        void IDatabase.End()
+        {
+            Monitor.Exit(mutex);
+        }
     }
 }

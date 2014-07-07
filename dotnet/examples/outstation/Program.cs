@@ -55,8 +55,8 @@ namespace DotNetOutstationDemo
             // ....
 
             // Optional: overide the default reporting variations
-            config.defaultEventResponses.binary = EventBinaryResponse.Group2Var2;
-            config.defaultStaticResponses.analog = StaticAnalogResponse.Group30Var5;
+            config.outstation.eventConfig.binary = EventBinaryResponse.Group2Var2;
+            config.outstation.staticConfig.analog = StaticAnalogResponse.Group30Var5;
 
             // Optional: setup your stack configuration here
             config.link.localAddr = 10;
