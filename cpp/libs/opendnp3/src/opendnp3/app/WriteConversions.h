@@ -142,13 +142,13 @@ typedef ConvertQS<Group41Var3, AnalogOutputFloat32> ConvertGroup41Var3;
 typedef ConvertQS<Group41Var4, AnalogOutputDouble64> ConvertGroup41Var4;
 
 // Group 42
-typedef ConvertQVRangeCheck<Group42Var1, AnalogOutputStatus, 0> ConvertGroup42Var1;
-typedef ConvertQVRangeCheck<Group42Var2, AnalogOutputStatus, 0> ConvertGroup42Var2;
-typedef ConvertQVTRangeCheck<Group42Var3, AnalogOutputStatus, 0> ConvertGroup42Var3;
-typedef ConvertQVTRangeCheck<Group42Var4, AnalogOutputStatus, 0> ConvertGroup42Var4;
-typedef ConvertQVRangeCheck<Group42Var5, AnalogOutputStatus, 0> ConvertGroup42Var5;
+typedef ConvertQVRangeCheck<Group42Var1, AnalogOutputStatus, 0x20> ConvertGroup42Var1;
+typedef ConvertQVRangeCheck<Group42Var2, AnalogOutputStatus, 0x20> ConvertGroup42Var2;
+typedef ConvertQVTRangeCheck<Group42Var3, AnalogOutputStatus, 0x20> ConvertGroup42Var3;
+typedef ConvertQVTRangeCheck<Group42Var4, AnalogOutputStatus, 0x20> ConvertGroup42Var4;
+typedef ConvertQVRangeCheck<Group42Var5, AnalogOutputStatus, 0x20> ConvertGroup42Var5;
 typedef ConvertQV<Group42Var6, AnalogOutputStatus> ConvertGroup42Var6;
-typedef ConvertQVTRangeCheck<Group42Var7, AnalogOutputStatus, 0> ConvertGroup42Var7;
+typedef ConvertQVTRangeCheck<Group42Var7, AnalogOutputStatus, 0x20> ConvertGroup42Var7;
 typedef ConvertQVT<Group42Var8, AnalogOutputStatus> ConvertGroup42Var8;
 
 }
