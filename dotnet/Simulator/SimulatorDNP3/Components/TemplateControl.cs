@@ -116,6 +116,11 @@ namespace Automatak.Simulator.DNP3.Components
                 listViewMeas.ResumeLayout();
             }
         }
+
+        private void buttonClear_Click(object sender, EventArgs e)
+        {
+            this.numericUpDownCount.Value = 0;
+        }
       
     }
 }

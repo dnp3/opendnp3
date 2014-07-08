@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Automatak.Simulator.Commons
 {
-    static class LogFormatter
+    public static class LogFormatter
     {
         private static string timeFormat = "HH:mm:ss.fff";
         private static string logFormat = "  {0,-16}{1,-10}{2,-10}{3}";

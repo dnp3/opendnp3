@@ -59,7 +59,6 @@
     <Compile Include="LogFileControl.Designer.cs">
       <DependentUpon>LogFileControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="LogFormatter.cs" />
     <Compile Include="LogWindow.cs">
       <SubType>UserControl</SubType>
     </Compile>
