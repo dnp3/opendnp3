@@ -207,6 +207,15 @@ void OutstationContext::OnReceiveAPDU(const openpal::ReadOnlyBuffer& apdu)
 	APDUHeader header;	
 	if (APDUHeaderParser::ParseRequest(apdu, header, &logger))
 	{
+		FORMAT_LOG_BLOCK(logger, flags::APP_HEADER_RX,
+			"FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s",
+			header.control.FIN,
+			header.control.FIN,
+			header.control.CON,
+			header.control.UNS,
+			header.control.SEQ,
+			FunctionCodeToString(header.function));
+
 		// outstations should only process single fragment messages
 		if ((header.control.FIR && header.control.FIN) && !header.control.CON)
 		{
