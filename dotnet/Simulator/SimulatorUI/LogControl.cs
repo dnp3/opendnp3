@@ -173,6 +173,8 @@ namespace Automatak.Simulator.UI
                     return Color.Gold;
                 case(DisplayHint.ALT1):
                     return Color.Aqua;
+                case(DisplayHint.ALT2):
+                    return Color.GreenYellow;
                 default:
                     return this.ForeColor;
             }

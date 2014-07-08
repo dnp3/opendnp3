@@ -53,6 +53,12 @@
     <Compile Include="LogControl.Designer.cs">
       <DependentUpon>LogControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="LogFileControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LogFileControl.Designer.cs">
+      <DependentUpon>LogFileControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="LogFormatter.cs" />
     <Compile Include="LogWindow.cs">
       <SubType>UserControl</SubType>
@@ -63,6 +69,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="LogControl.resx">
       <DependentUpon>LogControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LogFileControl.resx">
+      <DependentUpon>LogFileControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LogWindow.resx">
       <DependentUpon>LogWindow.cs</DependentUpon>
@@ -95,6 +104,9 @@
       <Project>{67c09f7a-3dd4-4c02-aa3b-6882fb6ea816}</Project>
       <Name>Commons</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resources\folder.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -94,6 +94,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MakeNoteDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MakeNoteDialog.Designer.cs">
+      <DependentUpon>MakeNoteDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="AboutBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -120,6 +126,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TreeNodeCallbcks.cs" />
+    <EmbeddedResource Include="MakeNoteDialog.resx">
+      <DependentUpon>MakeNoteDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
     </EmbeddedResource>

@@ -199,5 +199,29 @@ namespace Automatak.Simulator
             fileLogger.Shutdown();
         }
 
+        private void buttonMakeNote_Click(object sender, EventArgs e)
+        {
+            using (var dialog = new MakeNoteDialog())
+            {
+                dialog.ShowDialog();
+                if (dialog.DialogResult == DialogResult.OK)
+                {
+                    var lines = dialog.SelectedLines;
+                    var first = lines.Take(1);
+                    var remainder = lines.Skip(1);
+                    
+                    foreach (var line in first)
+                    {
+                        log.LogFull(DisplayHint.ALT2, "USER", "system", line);
+                    }
+
+                    foreach (var line in remainder)
+                    {
+                        log.Log(DisplayHint.ALT2, line);
+                    }
+                }
+            }
+        }
+
     }
 }
