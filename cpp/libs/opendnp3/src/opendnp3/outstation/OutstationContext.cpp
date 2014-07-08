@@ -24,6 +24,7 @@
 #include "opendnp3/Configure.h"
 #include "opendnp3/LogLevels.h"
 
+#include "opendnp3/app/APDULogging.h"
 #include "opendnp3/app/APDUBuilders.h"
 #include "opendnp3/app/APDUParser.h"
 #include "opendnp3/app/APDUHeaderParser.h"
@@ -352,6 +353,7 @@ OutstationSolicitedStateBase* OutstationContext::RespondToReadRequest(uint8_t se
 
 void OutstationContext::BeginResponseTx(const ReadOnlyBuffer& response)
 {		
+	logging::ParseAndLogResponseTx(&logger, response);
 	this->isTransmitting = true;
 	lastResponse = response;
 	pLower->BeginTransmit(response);	
@@ -359,6 +361,7 @@ void OutstationContext::BeginResponseTx(const ReadOnlyBuffer& response)
 
 void OutstationContext::BeginUnsolTx(const ReadOnlyBuffer& response)
 {	
+	logging::ParseAndLogResponseTx(&logger, response);
 	this->isTransmitting = true;
 	this->expectedUnsolConfirmSeq = unsolSeqN;
 	this->unsolSeqN = AppControlField::NextSeq(unsolSeqN);

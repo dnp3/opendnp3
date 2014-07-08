@@ -59,6 +59,38 @@ void ParseAndLogRequestTx(openpal::Logger* pLogger, const openpal::ReadOnlyBuffe
 #endif
 
 }
+
+void ParseAndLogResponseTx(openpal::Logger* pLogger, const openpal::ReadOnlyBuffer& apdu)
+{
+
+#ifndef OPENPAL_STRIP_LOGGING
+
+	if (pLogger && pLogger->IsEnabled(flags::APP_HEADER_TX))
+	{
+		APDUResponseHeader header;
+		if (APDUHeaderParser::ParseResponse(apdu, header, pLogger))
+		{
+			FORMAT_LOGGER_BLOCK(pLogger, flags::APP_HEADER_TX,
+				"FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s IIN: [0x%02x, 0x%02x]",
+				header.control.FIN,
+				header.control.FIN,
+				header.control.CON,
+				header.control.UNS,
+				header.control.SEQ,
+				FunctionCodeToString(header.function),
+				header.IIN.LSB,
+				header.IIN.MSB);
+
+			if (pLogger->IsEnabled(flags::APP_OBJECT_TX))
+			{				
+				APDUParser::ParseTwoPass(apdu.Skip(APDU_RESPONSE_HEADER_SIZE), nullptr, pLogger, APDUParser::Context(true, flags::APP_OBJECT_TX));
+			}
+		}
+	}
+
+#endif
+
+}
 	
 }
 }

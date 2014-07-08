@@ -220,11 +220,7 @@ void MasterContext::OnUnsolicitedResponse(const APDUResponseHeader& header, cons
 		{
 			this->QueueConfirm(APDUHeader::UnsolicitedConfirm(header.control.SEQ));
 		}
-	}
-	else
-	{
-		
-	}
+	}	
 }
 
 void MasterContext::OnReceiveIIN(const IINField& iin)

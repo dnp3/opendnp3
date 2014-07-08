@@ -70,9 +70,9 @@ namespace Automatak.Simulator.Commons
             this.logFilePath = path;
         }
 
-        void ChangeEnabledState(bool enabled)
+        void ChangeEnabledState(bool value)
         {
-            this.enabled = true;
+            this.enabled = value;
         }
 
         void ReadLogMessages()

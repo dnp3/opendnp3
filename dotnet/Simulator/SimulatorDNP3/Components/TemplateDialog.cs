@@ -45,7 +45,7 @@ namespace Automatak.Simulator.DNP3.Components
                 template.doubleBinaries = templateControlDoubleBinary.GetRecords().ToList();
                 template.counters = templateControlCounter.GetRecords().Select(x => new DeadbandEventPointRecord<uint>(x.pointClass)).ToList();
                 template.frozenCounters = templateControlFrozenCounter.GetRecords().Select(x => new DeadbandEventPointRecord<uint>(x.pointClass)).ToList();
-                template.analogs = templateControlFrozenCounter.GetRecords().Select(x => new DeadbandEventPointRecord<double>(x.pointClass)).ToList();
+                template.analogs = templateControlAnalog.GetRecords().Select(x => new DeadbandEventPointRecord<double>(x.pointClass)).ToList();
                 template.binaryOutputStatii = templateControlBOStatus.GetRecords().ToList();
                 template.analogOutputStatii = templateControlAOStatus.GetRecords().Select(x => new DeadbandEventPointRecord<double>(x.pointClass)).ToList();
                 return template;

@@ -227,7 +227,7 @@ namespace Automatak.Simulator.UI
         }
 
         private float spacingFactor = 0.1f;
-        private int maxRows = 500;
+        private int maxRows = 5000;
         private double viewFraction = 1.0;
         private bool paused = false;
         private IList<LogItem> rows = new List<LogItem>();
