@@ -17,6 +17,7 @@ namespace Automatak.Simulator.DNP3
 
         readonly IOutstation outstation;
         readonly MeasurementCache cache;
+        readonly IDatabase database;
 
         readonly IList<Action<IDatabase, DateTime>> events = new List<Action<IDatabase, DateTime>>();
 
@@ -26,6 +27,8 @@ namespace Automatak.Simulator.DNP3
 
             this.outstation = outstation;
             this.cache = cache;
+
+            this.database = new MultiplexedDatabase(cache, outstation.GetDatabase());
 
             this.Text = String.Format("DNP3 Outstation ({0})", alias);
             this.comboBoxTypes.DataSource = System.Enum.GetValues(typeof(MeasType));
@@ -137,35 +140,25 @@ namespace Automatak.Simulator.DNP3
 
         private void buttonApply_Click(object sender, EventArgs e)
         {          
-           IDatabase db1 = this.cache;
-           IDatabase db2 = outstation.GetDatabase();
-           var time = DateTime.Now;
            
-           db1.Start();
-           db2.Start();
-            
+           var time = DateTime.Now;
+           database.Start();            
            foreach (var item in events)
            {
-               item.Invoke(db1, time);
-               item.Invoke(db2, time);
+               item.Invoke(database, time);               
            }
-
-           db2.End();
-           db1.End();
+           database.End();
+           
 
            this.listViewEvents.Items.Clear();
-
            this.events.Clear();
-
            this.CheckState();
         }
 
         private void buttonClear_Click(object sender, EventArgs e)
         {
             this.listViewEvents.Items.Clear();
-
             this.events.Clear();
-
             this.CheckState();
         }                                                             
     }
