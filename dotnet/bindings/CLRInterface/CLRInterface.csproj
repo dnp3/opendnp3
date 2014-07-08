@@ -109,6 +109,7 @@
     <Compile Include="IOutstationApplication.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="IQualityBitInfo.cs" />
     <Compile Include="ISOEHandler.cs" />
     <Compile Include="IOutstation.cs" />
     <Compile Include="IStack.cs">

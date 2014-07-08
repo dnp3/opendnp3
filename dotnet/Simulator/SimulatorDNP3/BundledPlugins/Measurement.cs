@@ -21,19 +21,14 @@ namespace Automatak.Simulator.DNP3
 
     class Measurement
     {
-        public Measurement(string sValue, MeasurementBase meas, MeasType type, UInt16 index)
+        public Measurement(string sValue, MeasurementBase meas, MeasType type, UInt16 index, IQualityBitInfo info)
         {
-            this.sValue = sValue;            
-            this.flags = meas.Quality.ToString("X2");
+            this.sValue = sValue;
+            this.flags = "0x" + meas.Quality.ToString("X02") + " - " + String.Join(", ", QualityInfo.GetLongNames(meas.Quality, info));
             this.timeStamp = meas.Timestamp;            
             this.type = type;
             this.index = index;
-        }
-
-        public string EventString()
-        {
-            return String.Format("{0} - [{1}] -> {2} 0x{3}", type.ToString(), index, sValue, flags);
-        }
+        }        
 
         public ushort Index
         {
