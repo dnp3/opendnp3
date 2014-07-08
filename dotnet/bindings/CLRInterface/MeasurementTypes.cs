@@ -26,6 +26,46 @@ using System.Text;
 
 namespace DNP3.Interface
 {
+    public static class Flags
+    {
+        public const byte ONLINE = 0x01;
+        public const byte RESTART = 0x02;
+
+        const byte DoubleValueMask = 0xC0;
+        const byte DoubleQualityMask = 0x3F;
+
+        public static byte FromBinaryValue(bool value, byte quality)
+        {
+            if (value)
+            {
+                return (byte) (quality | ((byte) BinaryQuality.STATE));
+            }
+            else
+            { 
+                return (byte) (quality & ~((byte) BinaryQuality.STATE));
+            }
+        }
+
+        public static bool ToBinaryValue(byte quality)
+        {
+            return (quality & ((byte)BinaryQuality.STATE)) != 0;
+        }
+
+        public static byte FromDoubleBitValue(byte quality, DoubleBit state)
+        {
+	        byte value = (byte) (((byte)(state)) << 6);
+            return (byte) ((DoubleQualityMask & quality) | value);
+        }
+
+        public static DoubleBit ToDoubleBitValue(byte quality)
+        {
+	        // the value is the top 2 bits, so downshift 6
+	        byte value = (byte) ((quality >> 6) & 0xFF);
+	        return (DoubleBit) value;
+        }
+      
+    }
+
     /// <summary>
     /// A boolean measurement type (i.e. whether a switch is open/closed)
     /// </summary>
@@ -37,7 +77,8 @@ namespace DNP3.Interface
         /// <param name="value">value of the measurement</param>
         /// <param name="quality">quality enumeration as a bitfield</param>
         /// <param name="time">timestamp</param>
-	    public Binary(bool value, byte quality, DateTime time) : base(value, quality, time, true)
+	    public Binary(bool value, byte quality, DateTime time) :
+            base(value, Flags.FromBinaryValue(value, quality), time, true)
 	    {}
 
         /// <summary>
@@ -45,7 +86,8 @@ namespace DNP3.Interface
         /// </summary>
         /// <param name="value">value of the measurement</param>
         /// <param name="quality">quality enumeration as a bitfield</param>
-        public Binary(bool value, byte quality) : base(value, quality, DateTime.MinValue, false)
+        public Binary(bool value, byte quality) :
+            base(value, Flags.FromBinaryValue(value, quality), DateTime.MinValue, false)
         {}
 
         /// <summary>
@@ -53,7 +95,7 @@ namespace DNP3.Interface
         /// </summary>
         /// <param name="quality"></param>
         public Binary(byte quality)
-            : base(false, quality, DateTime.MinValue, false)
+            : base(Flags.ToBinaryValue(quality), quality, DateTime.MinValue, false)
         { }
     }
 
@@ -68,7 +110,8 @@ namespace DNP3.Interface
         /// <param name="value">value of the measurement</param>
         /// <param name="quality">quality enumeration as a bitfield</param>
         /// <param name="time">timestamp</param>
-	    public DoubleBitBinary(DoubleBit value, byte quality, DateTime time) : base(value, quality, time, true)
+	    public DoubleBitBinary(DoubleBit value, byte quality, DateTime time) : 
+            base(value, Flags.FromDoubleBitValue(quality, value), time, true)
 	    {}
 
         /// <summary>
@@ -76,7 +119,8 @@ namespace DNP3.Interface
         /// </summary>
         /// <param name="value">value of the measurement</param>
         /// <param name="quality">quality enumeration as a bitfield</param>
-        public DoubleBitBinary(DoubleBit value, byte quality) : base(value, quality, DateTime.MinValue, false)
+        public DoubleBitBinary(DoubleBit value, byte quality) :
+            base(value, Flags.FromDoubleBitValue(quality, value), DateTime.MinValue, false)
         {}
 
         /// <summary>
@@ -86,7 +130,7 @@ namespace DNP3.Interface
         /// <param name="quality"></param>
         /// <param name="time"></param>
         public DoubleBitBinary(byte quality)
-            : base(DoubleBit.DETERMINED_OFF, quality, DateTime.MinValue, false)
+            : base(Flags.ToDoubleBitValue(quality), quality, DateTime.MinValue, false)
         { }
     }
 
@@ -197,7 +241,8 @@ namespace DNP3.Interface
         /// <param name="value">value of the measurement</param>
         /// <param name="quality">quality enumeration as a bitfield</param>
         /// <param name="time">timestamp</param>
-	    public BinaryOutputStatus(bool value, byte quality, DateTime time) : base(value, quality, time, true)
+	    public BinaryOutputStatus(bool value, byte quality, DateTime time) :
+            base(value, Flags.FromBinaryValue(value, quality), time, true)
 	    {}
 
         /// <summary>
@@ -205,7 +250,8 @@ namespace DNP3.Interface
         /// </summary>
         /// <param name="value">value of the measurement</param>
         /// <param name="quality">quality enumeration as a bitfield</param>
-        public BinaryOutputStatus(bool value, byte quality) : base(value, quality, DateTime.MinValue, false)
+        public BinaryOutputStatus(bool value, byte quality) :
+            base(value, Flags.FromBinaryValue(value, quality), DateTime.MinValue, false)
         {}
 
         /// <summary>
@@ -213,7 +259,7 @@ namespace DNP3.Interface
         /// </summary>
         /// <param name="quality"></param>
         public BinaryOutputStatus(byte quality)
-            : base(false, quality, DateTime.MinValue, false)
+            : base(Flags.ToBinaryValue(quality), quality, DateTime.MinValue, false)
         { }
     };
 
