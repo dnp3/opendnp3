@@ -17,6 +17,7 @@ public:
 
 	virtual void Start();
 	virtual void Update(DNP3::Interface::Binary^ meas, System::UInt16 index);
+	virtual void Update(DNP3::Interface::DoubleBitBinary^ meas, System::UInt16 index);
 	virtual void Update(DNP3::Interface::Analog^ meas, System::UInt16 index);
 	virtual void Update(DNP3::Interface::Counter^ meas, System::UInt16 index);
 	virtual void Update(DNP3::Interface::FrozenCounter^ meas, System::UInt16 index);

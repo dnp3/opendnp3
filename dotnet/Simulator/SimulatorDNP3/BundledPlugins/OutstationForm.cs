@@ -17,9 +17,9 @@ namespace Automatak.Simulator.DNP3
 
         readonly IOutstation outstation;
         readonly MeasurementCache cache;
-        readonly IDatabase database;
+        readonly IDatabase database;        
 
-        readonly IList<Action<IDatabase, DateTime>> events = new List<Action<IDatabase, DateTime>>();
+        readonly IList<Action<IDatabase>> events = new List<Action<IDatabase>>();
 
         public OutstationForm(IOutstation outstation, MeasurementCache cache, String alias)
         {
@@ -28,7 +28,7 @@ namespace Automatak.Simulator.DNP3
             this.outstation = outstation;
             this.cache = cache;
 
-            this.database = new MultiplexedDatabase(cache, outstation.GetDatabase());
+            this.database = new MultiplexedDatabase(cache, outstation.GetDatabase());            
 
             this.Text = String.Format("DNP3 Outstation ({0})", alias);
             this.comboBoxTypes.DataSource = System.Enum.GetValues(typeof(MeasType));
@@ -94,43 +94,88 @@ namespace Automatak.Simulator.DNP3
             switch ((MeasType) comboBoxTypes.SelectedValue)
             { 
                 case(MeasType.Binary):
-                    LoadBinaries(indices);
+                    LoadBinaries(indices, true);
                     break;
+                case (MeasType.BinaryOutputStatus):
+                    LoadBinaries(indices, false);
+                    break;
+                case (MeasType.Counter):
+                    LoadCounters(indices, true);
+                    break;
+                case (MeasType.FrozenCounter):
+                    LoadCounters(indices, false);
+                    break;
+                case (MeasType.Analog):
+                    LoadAnalogs(indices, true);
+                    break;
+                case (MeasType.AnalogOutputStatus):
+                    LoadAnalogs(indices, false);
+                    break;
+                case(MeasType.DoubleBitBinary):
+                    LoadDoubleBinaries(indices);
+                    break;
+                
             }
         }
 
-        void LoadBinaries(IEnumerable<ushort> indices)
+        void LoadBinaries(IEnumerable<ushort> indices, bool isBinary)
         {
-            using (var dialog = new BinaryValueDialog(QualityInfo.binary))
+            using (var dialog = new BinaryValueDialog(isBinary, indices))
             {
                 dialog.ShowDialog();
                 if (dialog.DialogResult == DialogResult.OK)
                 {
-                    var type = new Binary(dialog.SelectedValue, dialog.SelectedQuality, DateTime.Now);
-                    var updates = indices.Select(i => GetAction(type, i));
-                    foreach(var i in indices)
-                    {
-                        var meas = type.ToMeasurement(i);
-                        string[] text = { meas.Index.ToString(), meas.Value, meas.Flags, meas.Timestamp, "Binary" };
-                        var item = new ListViewItem(text);
-                        this.listViewEvents.Items.Add(item);
-                    }
-                    foreach(var item in updates)
-                    {
-                        this.events.Add(item);
-                    }
-                    this.CheckState();
+                    this.AddActions(dialog.SelectedActions);
                 }
             }
         }
 
-        Action<IDatabase, DateTime> GetAction(Binary meas, ushort index)
+        void LoadDoubleBinaries(IEnumerable<ushort> indices)
         {
-            return (IDatabase db, DateTime timestamp) =>
+            using (var dialog = new DoubleBinaryValueDialog(indices))
             {
-                meas.Timestamp = timestamp;
-                db.Update(meas, index);
-            };
+                dialog.ShowDialog();
+                if (dialog.DialogResult == DialogResult.OK)
+                {
+                    this.AddActions(dialog.SelectedActions);
+                }
+            }
+        }
+
+        void LoadAnalogs(IEnumerable<ushort> indices, bool isAnalog)
+        {
+            using (var dialog = new AnalogValueDialog(isAnalog, indices))
+            {
+                dialog.ShowDialog();
+                if (dialog.DialogResult == DialogResult.OK)
+                {
+                    this.AddActions(dialog.SelectedActions);
+                }
+            }
+        }
+
+        void LoadCounters(IEnumerable<ushort> indices, bool isCounter)
+        {
+            using (var dialog = new CounterValueDialog(isCounter, indices))
+            {
+                dialog.ShowDialog();
+                if (dialog.DialogResult == DialogResult.OK)
+                {
+                    this.AddActions(dialog.SelectedActions);
+                }
+            }
+        }
+
+        void AddActions(IEnumerable<Action<IDatabase>> actions)
+        {
+            ListviewDatabaseAdapter.Process(actions, listViewEvents);
+
+            foreach (var action in actions)
+            {
+                this.events.Add(action);
+            }
+
+            this.CheckState();
         }
 
         private void measurementView_OnRowSelectionChanged(IEnumerable<UInt16> selection)
@@ -140,16 +185,14 @@ namespace Automatak.Simulator.DNP3
 
         private void buttonApply_Click(object sender, EventArgs e)
         {          
-           
-           var time = DateTime.Now;
+                      
            database.Start();            
            foreach (var item in events)
            {
-               item.Invoke(database, time);               
+               item.Invoke(database);               
            }
            database.End();
            
-
            this.listViewEvents.Items.Clear();
            this.events.Clear();
            this.CheckState();
@@ -160,6 +203,6 @@ namespace Automatak.Simulator.DNP3
             this.listViewEvents.Items.Clear();
             this.events.Clear();
             this.CheckState();
-        }                                                             
+        }        
     }
 }

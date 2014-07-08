@@ -253,6 +253,11 @@ namespace Automatak.Simulator.DNP3
             binaries.Update(update.ToMeasurement(index));
         }
 
+        void IDatabase.Update(DoubleBitBinary update, ushort index)
+        {
+            doubleBinaries.Update(update.ToMeasurement(index));
+        }
+
         void IDatabase.Update(Analog update, ushort index)
         {            
             analogs.Update(update.ToMeasurement(index));
@@ -281,6 +286,6 @@ namespace Automatak.Simulator.DNP3
         void IDatabase.End()
         {
             Monitor.Exit(mutex);
-        }
+        }        
     }
 }

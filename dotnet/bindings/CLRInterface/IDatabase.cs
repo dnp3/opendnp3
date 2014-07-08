@@ -46,6 +46,13 @@ namespace DNP3.Interface
 		void Update(Binary update, System.UInt16 index);
 
         /// <summary>
+        /// Update a Binary input
+        /// </summary>
+        /// <param name="update">measurement to update</param>
+        /// <param name="index">index of measurement</param>        
+        void Update(DoubleBitBinary update, System.UInt16 index);
+
+        /// <summary>
         /// Update an Analog input
         /// </summary>
         /// <param name="update">measurement to update</param>

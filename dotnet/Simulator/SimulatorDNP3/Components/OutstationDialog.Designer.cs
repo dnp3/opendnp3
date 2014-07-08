@@ -37,7 +37,9 @@ namespace Automatak.Simulator.DNP3.Components
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.linkConfigControl = new Automatak.Simulator.DNP3.Components.LinkConfigControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.eventBufferConfigControl1 = new Automatak.Simulator.DNP3.Components.EventBufferConfigControl();
             this.label8 = new System.Windows.Forms.Label();
             this.numericUpDownMaxControls = new System.Windows.Forms.NumericUpDown();
             this.label7 = new System.Windows.Forms.Label();
@@ -52,16 +54,14 @@ namespace Automatak.Simulator.DNP3.Components
             this.numericUpDownSolConfirmTimeout = new System.Windows.Forms.NumericUpDown();
             this.checkBoxEnableUnsol = new System.Windows.Forms.CheckBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.staticResponseTypeControl1 = new Automatak.Simulator.DNP3.Components.StaticResponseTypeControl();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.eventResponseTypeControl1 = new Automatak.Simulator.DNP3.Components.EventResponseTypeControl();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.buttonEdit = new System.Windows.Forms.Button();
             this.buttonNew = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
             this.comboBoxTemplate = new System.Windows.Forms.ComboBox();
-            this.linkConfigControl = new Automatak.Simulator.DNP3.Components.LinkConfigControl();
-            this.eventBufferConfigControl1 = new Automatak.Simulator.DNP3.Components.EventBufferConfigControl();
-            this.staticResponseTypeControl1 = new Automatak.Simulator.DNP3.Components.StaticResponseTypeControl();
-            this.eventResponseTypeControl1 = new Automatak.Simulator.DNP3.Components.EventResponseTypeControl();
             this.groupBoxButtons.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -157,6 +157,13 @@ namespace Automatak.Simulator.DNP3.Components
             this.tabPage1.Text = "Link";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // linkConfigControl
+            // 
+            this.linkConfigControl.Location = new System.Drawing.Point(6, 6);
+            this.linkConfigControl.Name = "linkConfigControl";
+            this.linkConfigControl.Size = new System.Drawing.Size(226, 222);
+            this.linkConfigControl.TabIndex = 6;
+            // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.eventBufferConfigControl1);
@@ -180,6 +187,13 @@ namespace Automatak.Simulator.DNP3.Components
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Outstation";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // eventBufferConfigControl1
+            // 
+            this.eventBufferConfigControl1.Location = new System.Drawing.Point(280, 27);
+            this.eventBufferConfigControl1.Name = "eventBufferConfigControl1";
+            this.eventBufferConfigControl1.Size = new System.Drawing.Size(258, 208);
+            this.eventBufferConfigControl1.TabIndex = 14;
             // 
             // label8
             // 
@@ -370,6 +384,8 @@ namespace Automatak.Simulator.DNP3.Components
             // checkBoxEnableUnsol
             // 
             this.checkBoxEnableUnsol.AutoSize = true;
+            this.checkBoxEnableUnsol.Checked = true;
+            this.checkBoxEnableUnsol.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxEnableUnsol.Location = new System.Drawing.Point(20, 27);
             this.checkBoxEnableUnsol.Name = "checkBoxEnableUnsol";
             this.checkBoxEnableUnsol.Size = new System.Drawing.Size(144, 17);
@@ -388,6 +404,13 @@ namespace Automatak.Simulator.DNP3.Components
             this.tabPage3.Text = "Static Defaults";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // staticResponseTypeControl1
+            // 
+            this.staticResponseTypeControl1.Location = new System.Drawing.Point(6, 6);
+            this.staticResponseTypeControl1.Name = "staticResponseTypeControl1";
+            this.staticResponseTypeControl1.Size = new System.Drawing.Size(260, 210);
+            this.staticResponseTypeControl1.TabIndex = 1;
+            // 
             // tabPage4
             // 
             this.tabPage4.Controls.Add(this.eventResponseTypeControl1);
@@ -398,6 +421,13 @@ namespace Automatak.Simulator.DNP3.Components
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Event Defaults";
             this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // eventResponseTypeControl1
+            // 
+            this.eventResponseTypeControl1.Location = new System.Drawing.Point(6, 6);
+            this.eventResponseTypeControl1.Name = "eventResponseTypeControl1";
+            this.eventResponseTypeControl1.Size = new System.Drawing.Size(260, 210);
+            this.eventResponseTypeControl1.TabIndex = 0;
             // 
             // groupBox1
             // 
@@ -454,34 +484,6 @@ namespace Automatak.Simulator.DNP3.Components
             this.comboBoxTemplate.Size = new System.Drawing.Size(137, 21);
             this.comboBoxTemplate.TabIndex = 6;
             this.comboBoxTemplate.SelectedIndexChanged += new System.EventHandler(this.comboBoxTemplate_SelectedIndexChanged);
-            // 
-            // linkConfigControl
-            // 
-            this.linkConfigControl.Location = new System.Drawing.Point(6, 6);
-            this.linkConfigControl.Name = "linkConfigControl";
-            this.linkConfigControl.Size = new System.Drawing.Size(226, 222);
-            this.linkConfigControl.TabIndex = 6;
-            // 
-            // eventBufferConfigControl1
-            // 
-            this.eventBufferConfigControl1.Location = new System.Drawing.Point(280, 27);
-            this.eventBufferConfigControl1.Name = "eventBufferConfigControl1";
-            this.eventBufferConfigControl1.Size = new System.Drawing.Size(258, 208);
-            this.eventBufferConfigControl1.TabIndex = 14;
-            // 
-            // staticResponseTypeControl1
-            // 
-            this.staticResponseTypeControl1.Location = new System.Drawing.Point(6, 6);
-            this.staticResponseTypeControl1.Name = "staticResponseTypeControl1";
-            this.staticResponseTypeControl1.Size = new System.Drawing.Size(260, 210);
-            this.staticResponseTypeControl1.TabIndex = 1;
-            // 
-            // eventResponseTypeControl1
-            // 
-            this.eventResponseTypeControl1.Location = new System.Drawing.Point(6, 6);
-            this.eventResponseTypeControl1.Name = "eventResponseTypeControl1";
-            this.eventResponseTypeControl1.Size = new System.Drawing.Size(260, 210);
-            this.eventResponseTypeControl1.TabIndex = 0;
             // 
             // OutstationDialog
             // 

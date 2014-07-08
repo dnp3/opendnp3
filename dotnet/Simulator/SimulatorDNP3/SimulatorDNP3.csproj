@@ -60,6 +60,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BundledPlugins\DoubleBinaryValueDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BundledPlugins\DoubleBinaryValueDialog.Designer.cs">
+      <DependentUpon>DoubleBinaryValueDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BundledPlugins\CounterValueDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BundledPlugins\CounterValueDialog.Designer.cs">
+      <DependentUpon>CounterValueDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BundledPlugins\AnalogValueDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BundledPlugins\AnalogValueDialog.Designer.cs">
+      <DependentUpon>AnalogValueDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BundledPlugins\MeasActions.cs" />
     <Compile Include="BundledPlugins\MeasurementConversion.cs" />
     <Compile Include="BundledPlugins\OutstationForm.cs">
       <SubType>Form</SubType>
@@ -136,6 +155,7 @@
     <Compile Include="DNP3Config.cs" />
     <Compile Include="IDNP3Config.cs" />
     <Compile Include="IMeasurementCache.cs" />
+    <Compile Include="ListviewDatabaseAdapter.cs" />
     <Compile Include="MultiplexedDatabase.cs" />
     <Compile Include="OutstationNode.cs" />
     <Compile Include="NodeAction.cs" />
@@ -207,6 +227,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="BundledPlugins\DoubleBinaryValueDialog.resx">
+      <DependentUpon>DoubleBinaryValueDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BundledPlugins\CounterValueDialog.resx">
+      <DependentUpon>CounterValueDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BundledPlugins\AnalogValueDialog.resx">
+      <DependentUpon>AnalogValueDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="BundledPlugins\OutstationForm.resx">
       <DependentUpon>OutstationForm.cs</DependentUpon>
     </EmbeddedResource>

@@ -232,6 +232,11 @@ opendnp3::Binary Conversions::ConvertMeas(Binary^ meas)
 	return opendnp3::Binary(meas->Value, meas->Quality, TimeStamp::Convert(meas->Timestamp));
 }
 
+opendnp3::DoubleBitBinary Conversions::ConvertMeas(DoubleBitBinary^ meas)
+{
+	return opendnp3::DoubleBitBinary((opendnp3::DoubleBit) meas->Value, meas->Quality, TimeStamp::Convert(meas->Timestamp));
+}
+
 opendnp3::Analog Conversions::ConvertMeas(Analog^ meas)
 {
 	return opendnp3::Analog(meas->Value, meas->Quality, TimeStamp::Convert(meas->Timestamp));

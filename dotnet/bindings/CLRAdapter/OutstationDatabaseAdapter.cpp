@@ -23,6 +23,11 @@ void OutstationDatabaseAdapter::Update(Binary^ meas, System::UInt16 index)
 	pProxy->Update(Conversions::ConvertMeas(meas), index);
 }
 
+void OutstationDatabaseAdapter::Update(DoubleBitBinary^ meas, System::UInt16 index)
+{
+	pProxy->Update(Conversions::ConvertMeas(meas), index);
+}
+
 void OutstationDatabaseAdapter::Update(Analog^ meas, System::UInt16 index)
 {
 	pProxy->Update(Conversions::ConvertMeas(meas), index);

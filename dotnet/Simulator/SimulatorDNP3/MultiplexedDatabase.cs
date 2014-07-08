@@ -33,6 +33,14 @@ namespace Automatak.Simulator.DNP3
             }
         }
 
+        void IDatabase.Update(DoubleBitBinary update, ushort index)
+        {
+            foreach (var db in databases)
+            {
+                db.Update(update, index);
+            }
+        }
+
         void IDatabase.Update(Analog update, ushort index)
         {
             foreach (var db in databases)
@@ -79,6 +87,6 @@ namespace Automatak.Simulator.DNP3
             {
                 db.End();
             }
-        }
+        }        
     }
 }

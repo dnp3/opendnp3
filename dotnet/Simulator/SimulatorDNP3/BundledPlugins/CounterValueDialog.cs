@@ -11,19 +11,22 @@ using DNP3.Interface;
 
 namespace Automatak.Simulator.DNP3
 {
-    public partial class BinaryValueDialog : Form
+    public partial class CounterValueDialog : Form
     {
-        readonly bool isBinary;
+        readonly bool isCounter;
         readonly IEnumerable<ushort> indices;
 
-        public BinaryValueDialog(bool isBinary, IEnumerable<ushort> indices)
+        public CounterValueDialog(bool isCounter, IEnumerable<ushort> indices)
         {
             InitializeComponent();
 
-            this.isBinary = isBinary;
+            this.isCounter = isCounter;
             this.indices = indices;
 
-            this.qualitySelector.QualityInfo = isBinary ? QualityInfo.binary : QualityInfo.binaryOutputStatus;
+            this.qualitySelector.QualityInfo = QualityInfo.counter;
+
+            this.numericUpDown1.Minimum = 0;
+            this.numericUpDown1.Maximum = UInt32.MaxValue;
         }
 
         private void buttonSave_Click(object sender, EventArgs e)
@@ -36,15 +39,18 @@ namespace Automatak.Simulator.DNP3
         {
             get
             {
+                var value = Decimal.ToUInt32(numericUpDown1.Value);
                 var timestamp = DateTime.Now;
+                var quality = qualitySelector.Quality;
+                
 
-                if (isBinary)
+                if (isCounter)
                 {
-                    return indices.Select(i => MeasActions.GetBinaryAction(checkBoxValue.Checked, qualitySelector.Quality, timestamp, i));                    
+                    return indices.Select(i => MeasActions.GetCounterAction(value, quality, timestamp, i));                    
                 }
                 else
                 {
-                    return indices.Select(i => MeasActions.GetBinaryOutputStatusAction(checkBoxValue.Checked, qualitySelector.Quality, timestamp, i));
+                    return indices.Select(i => MeasActions.GetFrozenCounterAction(value, quality, timestamp, i));
                 }
             }
         }        

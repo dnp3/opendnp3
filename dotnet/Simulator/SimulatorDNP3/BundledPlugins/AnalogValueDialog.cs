@@ -11,19 +11,22 @@ using DNP3.Interface;
 
 namespace Automatak.Simulator.DNP3
 {
-    public partial class BinaryValueDialog : Form
+    public partial class AnalogValueDialog : Form
     {
-        readonly bool isBinary;
+        readonly bool isAnalog;
         readonly IEnumerable<ushort> indices;
 
-        public BinaryValueDialog(bool isBinary, IEnumerable<ushort> indices)
+        public AnalogValueDialog(bool isAnalog, IEnumerable<ushort> indices)
         {
             InitializeComponent();
 
-            this.isBinary = isBinary;
+            this.isAnalog = isAnalog;
             this.indices = indices;
 
-            this.qualitySelector.QualityInfo = isBinary ? QualityInfo.binary : QualityInfo.binaryOutputStatus;
+            this.qualitySelector.QualityInfo = QualityInfo.analog;
+
+            this.numericUpDown1.Minimum = Decimal.MinValue;
+            this.numericUpDown1.Maximum = Decimal.MaxValue;
         }
 
         private void buttonSave_Click(object sender, EventArgs e)
@@ -36,15 +39,18 @@ namespace Automatak.Simulator.DNP3
         {
             get
             {
+                var value = Decimal.ToDouble(numericUpDown1.Value);
                 var timestamp = DateTime.Now;
+                var quality = qualitySelector.Quality;
+                
 
-                if (isBinary)
+                if (isAnalog)
                 {
-                    return indices.Select(i => MeasActions.GetBinaryAction(checkBoxValue.Checked, qualitySelector.Quality, timestamp, i));                    
+                    return indices.Select(i => MeasActions.GetAnalogAction(value, quality, timestamp, i));                    
                 }
                 else
                 {
-                    return indices.Select(i => MeasActions.GetBinaryOutputStatusAction(checkBoxValue.Checked, qualitySelector.Quality, timestamp, i));
+                    return indices.Select(i => MeasActions.GetAnalogOutputStatusAction(value, quality, timestamp, i));
                 }
             }
         }        
