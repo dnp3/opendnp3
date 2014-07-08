@@ -18,7 +18,9 @@ namespace Automatak.Simulator
     {
         readonly IEnumerable<ISimulatorPluginFactory> plugins;
         readonly bool splashOnLoad;
+        readonly LogToFile fileLogger;
         readonly ILog log;
+
 
         public SimulatorForm(IEnumerable<ISimulatorPluginFactory> plugins, bool splashOnLoad)
         {                 
@@ -26,7 +28,8 @@ namespace Automatak.Simulator
             
             this.plugins = plugins;
             this.splashOnLoad = splashOnLoad;
-            this.log = new LogMultiplexer(this.logWindow1);
+            this.fileLogger = new LogToFile();
+            this.log = new LogMultiplexer(this.logWindow1, fileLogger);
         }
            
         void ShowAboutBox()
@@ -189,6 +192,11 @@ namespace Automatak.Simulator
                     about.ShowDialog();
                 }
             }             
+        }
+
+        private void SimulatorForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            fileLogger.Shutdown();
         }
 
     }

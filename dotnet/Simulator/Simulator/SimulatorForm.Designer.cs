@@ -221,6 +221,7 @@ namespace Automatak.Simulator
             this.Name = "SimulatorForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Simulator";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.SimulatorForm_FormClosing);
             this.Load += new System.EventHandler(this.SimulatorForm_Load);
             this.Shown += new System.EventHandler(this.SimulatorForm_Shown);
             this.mainMenuStrip.ResumeLayout(false);
