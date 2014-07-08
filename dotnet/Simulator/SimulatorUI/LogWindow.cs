@@ -18,7 +18,19 @@ namespace Automatak.Simulator.UI
         public LogWindow()
         {
             InitializeComponent();
-            this.UpdateStatus();            
+            this.UpdateStatus();
+
+            var toolTipResume = new ToolTip();
+            toolTipResume.SetToolTip(this.buttonPlay, "Resume auto-scrolling of the log window");
+
+            var toolTipPause = new ToolTip();
+            toolTipPause.SetToolTip(this.buttonPause, "Pause auto-scrolling of the log window");
+
+            var toolTipClear = new ToolTip();
+            toolTipClear.SetToolTip(this.buttonClear, "Clear the log window");
+
+            var toolTipClipboard = new ToolTip();
+            toolTipClipboard.SetToolTip(this.buttonClipboard, "Copy the log window to the clipboard");
         }
 
         void ILog.Log(DisplayHint hint, string message)

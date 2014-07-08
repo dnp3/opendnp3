@@ -32,8 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LogFileControl));
             this.buttonBrowse = new System.Windows.Forms.Button();
             this.imageList = new System.Windows.Forms.ImageList(this.components);
-            this.buttonPlay = new System.Windows.Forms.Button();
-            this.buttonPause = new System.Windows.Forms.Button();
+            this.buttonStop = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // buttonBrowse
@@ -54,44 +53,30 @@
             this.imageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList.ImageStream")));
             this.imageList.TransparentColor = System.Drawing.Color.Transparent;
             this.imageList.Images.SetKeyName(0, "folder.png");
-            this.imageList.Images.SetKeyName(1, "pause.png");
-            this.imageList.Images.SetKeyName(2, "play.png");
+            this.imageList.Images.SetKeyName(1, "cross.png");
             // 
-            // buttonPlay
+            // buttonStop
             // 
-            this.buttonPlay.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonPlay.ImageIndex = 2;
-            this.buttonPlay.ImageList = this.imageList;
-            this.buttonPlay.Location = new System.Drawing.Point(43, 0);
-            this.buttonPlay.Name = "buttonPlay";
-            this.buttonPlay.Size = new System.Drawing.Size(42, 38);
-            this.buttonPlay.TabIndex = 2;
-            this.buttonPlay.UseVisualStyleBackColor = true;
-            this.buttonPlay.Click += new System.EventHandler(this.buttonPlay_Click);
-            // 
-            // buttonPause
-            // 
-            this.buttonPause.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonPause.ImageIndex = 1;
-            this.buttonPause.ImageList = this.imageList;
-            this.buttonPause.Location = new System.Drawing.Point(86, 0);
-            this.buttonPause.Name = "buttonPause";
-            this.buttonPause.Size = new System.Drawing.Size(42, 38);
-            this.buttonPause.TabIndex = 3;
-            this.buttonPause.UseVisualStyleBackColor = true;
-            this.buttonPause.Click += new System.EventHandler(this.buttonPause_Click);
+            this.buttonStop.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.buttonStop.ImageIndex = 1;
+            this.buttonStop.ImageList = this.imageList;
+            this.buttonStop.Location = new System.Drawing.Point(44, 0);
+            this.buttonStop.Name = "buttonStop";
+            this.buttonStop.Size = new System.Drawing.Size(42, 38);
+            this.buttonStop.TabIndex = 3;
+            this.buttonStop.UseVisualStyleBackColor = true;
+            this.buttonStop.Click += new System.EventHandler(this.buttonStop_Click);
             // 
             // LogFileControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.Controls.Add(this.buttonPause);
-            this.Controls.Add(this.buttonPlay);
+            this.Controls.Add(this.buttonStop);
             this.Controls.Add(this.buttonBrowse);
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "LogFileControl";
-            this.Size = new System.Drawing.Size(130, 39);
+            this.Size = new System.Drawing.Size(89, 39);
             this.ResumeLayout(false);
 
         }
@@ -100,7 +85,6 @@
 
         private System.Windows.Forms.Button buttonBrowse;
         private System.Windows.Forms.ImageList imageList;
-        private System.Windows.Forms.Button buttonPlay;
-        private System.Windows.Forms.Button buttonPause;
+        private System.Windows.Forms.Button buttonStop;
     }
 }

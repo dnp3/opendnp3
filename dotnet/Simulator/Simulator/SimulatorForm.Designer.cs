@@ -178,7 +178,7 @@ namespace Automatak.Simulator
             this.buttonMakeNote.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.buttonMakeNote.ImageIndex = 0;
             this.buttonMakeNote.ImageList = this.imageList;
-            this.buttonMakeNote.Location = new System.Drawing.Point(129, 240);
+            this.buttonMakeNote.Location = new System.Drawing.Point(89, 240);
             this.buttonMakeNote.Name = "buttonMakeNote";
             this.buttonMakeNote.Size = new System.Drawing.Size(42, 38);
             this.buttonMakeNote.TabIndex = 3;

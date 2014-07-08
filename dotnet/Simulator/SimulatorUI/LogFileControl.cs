@@ -14,13 +14,19 @@ namespace Automatak.Simulator.UI
 {
     public partial class LogFileControl : UserControl
     {
-        LogToFile log = null;
+        LogToFile log = null;        
         bool enabled = false;
-        bool hasPath = false;
 
         public LogFileControl()
         {
             InitializeComponent();
+
+            var tooltip1 = new System.Windows.Forms.ToolTip();
+            tooltip1.SetToolTip(this.buttonBrowse, "Browse for a log file");
+
+            var tooltip2 = new System.Windows.Forms.ToolTip();
+            tooltip2.SetToolTip(this.buttonStop, "Stop logging to file");
+            
 
             this.CheckState();
         }
@@ -37,23 +43,20 @@ namespace Automatak.Simulator.UI
         void CheckState()
         {
             if (log == null)
-            {
-                this.buttonPlay.Enabled = false;
-                this.buttonPause.Enabled = false;
+            {                
+                this.buttonStop.Enabled = false;
                 this.buttonBrowse.Enabled = false;
             }
             else
             {
                 if (enabled)
-                {
-                    this.buttonPlay.Enabled = false;
-                    this.buttonPause.Enabled = true;
+                {                    
+                    this.buttonStop.Enabled = true;
                     this.buttonBrowse.Enabled = false;
                 }
                 else
-                {                    
-                    this.buttonPlay.Enabled = hasPath;
-                    this.buttonPause.Enabled = false;
+                {                                        
+                    this.buttonStop.Enabled = false;
                     this.buttonBrowse.Enabled = true;
                 }
             }             
@@ -68,25 +71,20 @@ namespace Automatak.Simulator.UI
                 dialog.Filter = "Text files (*.txt)|*.txt";
                 if(dialog.ShowDialog() == DialogResult.OK)
                 {
-                    this.hasPath = true;
+                    this.enabled = true;
                     log.LogFilePath = dialog.FileName;
+                    log.Enabled = true;
                     this.CheckState();
                 }                
             }
         }
 
-        private void buttonPlay_Click(object sender, EventArgs e)
+        private void buttonStop_Click(object sender, EventArgs e)
         {
-            this.log.Enabled = true;
-            this.enabled = true;
-            this.CheckState();
-        }
-
-        private void buttonPause_Click(object sender, EventArgs e)
-        {
-            this.log.Enabled = false;
             this.enabled = false;
+            log.Enabled = false;
             this.CheckState();
         }
+       
     }
 }

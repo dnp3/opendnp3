@@ -32,6 +32,9 @@ namespace Automatak.Simulator
             this.log = new LogMultiplexer(this.logWindow1, fileLogger);
 
             this.logFileControl.FileLogger = fileLogger;
+
+            var toolTipUserNote = new ToolTip();
+            toolTipUserNote.SetToolTip(this.buttonMakeNote, "Make a user-defined note in the log");
         }
            
         void ShowAboutBox()

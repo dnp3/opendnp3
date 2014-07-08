@@ -8,7 +8,7 @@ namespace Automatak.Simulator.Commons
     public static class LogFormatter
     {
         private static string timeFormat = "HH:mm:ss.fff";
-        private static string logFormat = "  {0,-16}{1,-10}{2,-10}{3}";
+        private static string logFormat = "  {0,-14}{1,-8}{2,-14}{3}";
 
         public static string GetLogString(string filters, string alias, string message)
         {
