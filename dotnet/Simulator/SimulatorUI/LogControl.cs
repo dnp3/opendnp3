@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
+using Automatak.Simulator.Commons;
+
 namespace Automatak.Simulator.UI
 {    
     public partial class LogControl : UserControl

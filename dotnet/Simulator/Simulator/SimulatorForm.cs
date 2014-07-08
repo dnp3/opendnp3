@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using Automatak.Simulator.UI;
+using Automatak.Simulator.Commons;
 using Automatak.Simulator.API;
 
 namespace Automatak.Simulator

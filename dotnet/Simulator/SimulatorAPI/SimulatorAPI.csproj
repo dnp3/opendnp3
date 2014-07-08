@@ -53,9 +53,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SimulatorUI\SimulatorUI.csproj">
-      <Project>{428ddb1f-13f8-401c-aa0e-f0b80af1fc00}</Project>
-      <Name>SimulatorUI</Name>
+    <ProjectReference Include="..\Commons\Commons.csproj">
+      <Project>{67c09f7a-3dd4-4c02-aa3b-6882fb6ea816}</Project>
+      <Name>Commons</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using DNP3.Adapter;
 using DNP3.Interface;
 
-using Automatak.Simulator.UI;
+using Automatak.Simulator.Commons;
 using Automatak.Simulator.API;
 
 namespace Automatak.Simulator.DNP3
