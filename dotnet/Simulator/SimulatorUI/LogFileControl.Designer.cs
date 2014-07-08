@@ -47,6 +47,7 @@
             this.buttonBrowse.Size = new System.Drawing.Size(42, 38);
             this.buttonBrowse.TabIndex = 0;
             this.buttonBrowse.UseVisualStyleBackColor = true;
+            this.buttonBrowse.Click += new System.EventHandler(this.buttonBrowse_Click);
             // 
             // imageList
             // 
@@ -66,6 +67,7 @@
             this.buttonPlay.Size = new System.Drawing.Size(42, 38);
             this.buttonPlay.TabIndex = 2;
             this.buttonPlay.UseVisualStyleBackColor = true;
+            this.buttonPlay.Click += new System.EventHandler(this.buttonPlay_Click);
             // 
             // buttonPause
             // 
@@ -77,6 +79,7 @@
             this.buttonPause.Size = new System.Drawing.Size(42, 38);
             this.buttonPause.TabIndex = 3;
             this.buttonPause.UseVisualStyleBackColor = true;
+            this.buttonPause.Click += new System.EventHandler(this.buttonPause_Click);
             // 
             // LogFileControl
             // 

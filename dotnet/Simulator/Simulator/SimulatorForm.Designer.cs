@@ -42,14 +42,14 @@ namespace Automatak.Simulator
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tabControlPlugins = new System.Windows.Forms.TabControl();
+            this.buttonMakeNote = new System.Windows.Forms.Button();
+            this.imageList = new System.Windows.Forms.ImageList(this.components);
+            this.logFileControl = new Automatak.Simulator.UI.LogFileControl();
             this.listViewMetrics = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.logWindow1 = new Automatak.Simulator.UI.LogWindow();
             this.timerMetrics = new System.Windows.Forms.Timer(this.components);
-            this.logFileControl1 = new Automatak.Simulator.UI.LogFileControl();
-            this.buttonMakeNote = new System.Windows.Forms.Button();
-            this.imageList = new System.Windows.Forms.ImageList(this.components);
             this.mainMenuStrip.SuspendLayout();
             this.mainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
@@ -139,7 +139,7 @@ namespace Automatak.Simulator
             // 
             this.splitContainer2.Panel2.Controls.Add(this.logWindow1);
             this.splitContainer2.Size = new System.Drawing.Size(1226, 567);
-            this.splitContainer2.SplitterDistance = 569;
+            this.splitContainer2.SplitterDistance = 568;
             this.splitContainer2.TabIndex = 3;
             // 
             // splitContainer1
@@ -156,9 +156,9 @@ namespace Automatak.Simulator
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.buttonMakeNote);
-            this.splitContainer1.Panel2.Controls.Add(this.logFileControl1);
+            this.splitContainer1.Panel2.Controls.Add(this.logFileControl);
             this.splitContainer1.Panel2.Controls.Add(this.listViewMetrics);
-            this.splitContainer1.Size = new System.Drawing.Size(569, 567);
+            this.splitContainer1.Size = new System.Drawing.Size(568, 567);
             this.splitContainer1.SplitterDistance = 280;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -170,8 +170,36 @@ namespace Automatak.Simulator
             this.tabControlPlugins.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.tabControlPlugins.RightToLeftLayout = true;
             this.tabControlPlugins.SelectedIndex = 0;
-            this.tabControlPlugins.Size = new System.Drawing.Size(569, 280);
+            this.tabControlPlugins.Size = new System.Drawing.Size(568, 280);
             this.tabControlPlugins.TabIndex = 0;
+            // 
+            // buttonMakeNote
+            // 
+            this.buttonMakeNote.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonMakeNote.ImageIndex = 0;
+            this.buttonMakeNote.ImageList = this.imageList;
+            this.buttonMakeNote.Location = new System.Drawing.Point(129, 240);
+            this.buttonMakeNote.Name = "buttonMakeNote";
+            this.buttonMakeNote.Size = new System.Drawing.Size(42, 38);
+            this.buttonMakeNote.TabIndex = 3;
+            this.buttonMakeNote.UseVisualStyleBackColor = true;
+            this.buttonMakeNote.Click += new System.EventHandler(this.buttonMakeNote_Click);
+            // 
+            // imageList
+            // 
+            this.imageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList.ImageStream")));
+            this.imageList.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList.Images.SetKeyName(0, "clipboard_pencil.png");
+            // 
+            // logFileControl
+            // 
+            this.logFileControl.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.logFileControl.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.logFileControl.Location = new System.Drawing.Point(0, 240);
+            this.logFileControl.Margin = new System.Windows.Forms.Padding(5);
+            this.logFileControl.Name = "logFileControl";
+            this.logFileControl.Size = new System.Drawing.Size(138, 43);
+            this.logFileControl.TabIndex = 2;
             // 
             // listViewMetrics
             // 
@@ -183,7 +211,7 @@ namespace Automatak.Simulator
             this.columnHeader2});
             this.listViewMetrics.Location = new System.Drawing.Point(0, 2);
             this.listViewMetrics.Name = "listViewMetrics";
-            this.listViewMetrics.Size = new System.Drawing.Size(569, 230);
+            this.listViewMetrics.Size = new System.Drawing.Size(568, 230);
             this.listViewMetrics.TabIndex = 1;
             this.listViewMetrics.UseCompatibleStateImageBehavior = false;
             this.listViewMetrics.View = System.Windows.Forms.View.Details;
@@ -205,7 +233,7 @@ namespace Automatak.Simulator
             this.logWindow1.LogFont = new System.Drawing.Font("Courier New", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.logWindow1.MinimumSize = new System.Drawing.Size(300, 250);
             this.logWindow1.Name = "logWindow1";
-            this.logWindow1.Size = new System.Drawing.Size(653, 567);
+            this.logWindow1.Size = new System.Drawing.Size(654, 567);
             this.logWindow1.TabIndex = 0;
             // 
             // timerMetrics
@@ -213,34 +241,6 @@ namespace Automatak.Simulator
             this.timerMetrics.Enabled = true;
             this.timerMetrics.Interval = 1000;
             this.timerMetrics.Tick += new System.EventHandler(this.timerMetrics_Tick);
-            // 
-            // logFileControl1
-            // 
-            this.logFileControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.logFileControl1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.logFileControl1.Location = new System.Drawing.Point(0, 240);
-            this.logFileControl1.Margin = new System.Windows.Forms.Padding(5);
-            this.logFileControl1.Name = "logFileControl1";
-            this.logFileControl1.Size = new System.Drawing.Size(138, 43);
-            this.logFileControl1.TabIndex = 2;
-            // 
-            // buttonMakeNote
-            // 
-            this.buttonMakeNote.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonMakeNote.ImageIndex = 0;
-            this.buttonMakeNote.ImageList = this.imageList;
-            this.buttonMakeNote.Location = new System.Drawing.Point(129, 240);
-            this.buttonMakeNote.Name = "buttonMakeNote";
-            this.buttonMakeNote.Size = new System.Drawing.Size(42, 38);
-            this.buttonMakeNote.TabIndex = 3;
-            this.buttonMakeNote.UseVisualStyleBackColor = true;
-            this.buttonMakeNote.Click += new System.EventHandler(this.buttonMakeNote_Click);
-            // 
-            // imageList
-            // 
-            this.imageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList.ImageStream")));
-            this.imageList.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList.Images.SetKeyName(0, "clipboard_pencil.png");
             // 
             // SimulatorForm
             // 
@@ -292,7 +292,7 @@ namespace Automatak.Simulator
         private System.Windows.Forms.ListView listViewMetrics;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
-        private LogFileControl logFileControl1;
+        private LogFileControl logFileControl;
         private System.Windows.Forms.Button buttonMakeNote;
         private System.Windows.Forms.ImageList imageList;
 

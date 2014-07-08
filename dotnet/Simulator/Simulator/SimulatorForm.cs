@@ -29,7 +29,9 @@ namespace Automatak.Simulator
             this.plugins = plugins;
             this.splashOnLoad = splashOnLoad;
             this.fileLogger = new LogToFile();
-            this.log = new LogMultiplexer(this.logWindow1, fileLogger);            
+            this.log = new LogMultiplexer(this.logWindow1, fileLogger);
+
+            this.logFileControl.FileLogger = fileLogger;
         }
            
         void ShowAboutBox()
