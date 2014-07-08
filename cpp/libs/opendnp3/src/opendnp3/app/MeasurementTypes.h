@@ -28,6 +28,20 @@
 namespace opendnp3
 {
 
+namespace quality {
+
+	enum Quality : uint8_t
+	{
+		ONLINE = 0x01,
+		RESTART = 0x02
+	};
+
+	bool GetBinaryValue(uint8_t quality);
+	
+	uint8_t GetBinaryQuality(uint8_t q, bool value);
+}
+
+
 /**
 	The Binary data type is for describing on-off (boolean) type values. Good examples of
 	binaries are alarms, mode settings, enabled/disabled flags etc. Think of it as a status
@@ -37,34 +51,20 @@ class Binary : public TypedMeasurement<bool>
 {
 public:
 
-	Binary() : TypedMeasurement(false, ToUnderlying(BinaryQuality::RESTART))
-	{}
+	Binary();
 
-	Binary(bool value) : TypedMeasurement(value, GetQual(ToUnderlying(BinaryQuality::ONLINE), value))
-	{}
+	Binary(bool value);
 
-	Binary(uint8_t quality) : TypedMeasurement((quality & ToUnderlying(BinaryQuality::STATE)) != 0, quality)
-	{}
+	Binary(uint8_t quality);
 
-	Binary(uint8_t quality, uint64_t aTime) : TypedMeasurement((quality & ToUnderlying(BinaryQuality::STATE)) != 0, quality, aTime)
-	{}
+	Binary(uint8_t quality, uint64_t aTime);
 
-	Binary(bool value, uint8_t quality) : TypedMeasurement(value, GetQual(quality, value))
-	{}
+	Binary(bool value, uint8_t quality);
 
-	Binary(bool value, uint8_t quality, uint64_t aTime) : TypedMeasurement(value, GetQual(quality, value), aTime)
-	{}
+	Binary(bool value, uint8_t quality, uint64_t aTime);
 
-	bool IsEvent(const Binary& newValue) const
-	{
-		return quality != newValue.quality;
-	}
-
-private:
-	static uint8_t GetQual(uint8_t q, bool value)
-	{
-		return (value) ? (q | ToUnderlying(BinaryQuality::STATE)) : (q & (~ToUnderlying(BinaryQuality::STATE)));
-	}
+	bool IsEvent(const Binary& newValue) const;
+	
 };
 
 /**
@@ -76,46 +76,28 @@ class DoubleBitBinary : public TypedMeasurement<DoubleBit>
 public:
 
 
-	DoubleBitBinary() : TypedMeasurement(DoubleBit::INDETERMINATE, ToUnderlying(DoubleBitBinaryQuality::RESTART))
-	{}
+	DoubleBitBinary();
 
-	DoubleBitBinary(DoubleBit value) : TypedMeasurement(value, GetQual(ToUnderlying(DoubleBitBinaryQuality::ONLINE), value))
-	{}
+	DoubleBitBinary(DoubleBit value);
 
-	DoubleBitBinary(uint8_t quality) : TypedMeasurement(GetValueFromQuality(quality), quality)
-	{}
+	DoubleBitBinary(uint8_t quality);
 
-	DoubleBitBinary(uint8_t quality, uint64_t aTime) : TypedMeasurement(GetValueFromQuality(quality), quality, aTime)
-	{}
+	DoubleBitBinary(uint8_t quality, uint64_t time);
 
-	DoubleBitBinary(DoubleBit value, uint8_t quality) : TypedMeasurement(value, GetQual(quality, value))
-	{}
+	DoubleBitBinary(DoubleBit value, uint8_t quality);
 
-	DoubleBitBinary(DoubleBit value, uint8_t quality, uint64_t aTime) : TypedMeasurement(value, GetQual(quality, value), aTime)
-	{}
+	DoubleBitBinary(DoubleBit value, uint8_t quality, uint64_t time);
 
-	bool IsEvent(const DoubleBitBinary& newValue) const
-	{
-		return quality != newValue.quality;
-	}
+	bool IsEvent(const DoubleBitBinary& newValue) const;
 
 private:
 
 	static const uint8_t ValueMask = 0xC0;
 	static const uint8_t QualityMask = 0x3F;
 
-	static DoubleBit GetValueFromQuality(uint8_t quality)
-	{
-		// the value is the top 2 bits, so downshift 6
-		uint8_t value = quality >> 6;
-		return DoubleBitFromType(value);
-	}
+	static DoubleBit GetValue(uint8_t quality);
 
-	static uint8_t GetQual(uint8_t quality, DoubleBit state)
-	{
-		uint8_t value = DoubleBitToType(state) << 6;
-		return (QualityMask & quality) | value;
-	}
+	static uint8_t GetQual(uint8_t quality, DoubleBit state);
 };
 
 
@@ -127,35 +109,20 @@ private:
 class BinaryOutputStatus : public TypedMeasurement<bool>
 {
 public:
-	BinaryOutputStatus() : TypedMeasurement(false, ToUnderlying(BinaryOutputStatusQuality::RESTART))
-	{}
 
-	BinaryOutputStatus(bool value) : TypedMeasurement(value, GetQual(ToUnderlying(BinaryOutputStatusQuality::ONLINE), value))
-	{}
+	BinaryOutputStatus();
 
-	BinaryOutputStatus(uint8_t quality) : TypedMeasurement((quality & ToUnderlying(BinaryOutputStatusQuality::STATE)) != 0, quality)
-	{}
+	BinaryOutputStatus(bool value);
 
-	BinaryOutputStatus(uint8_t quality, uint64_t aTime) : TypedMeasurement((quality& ToUnderlying(BinaryOutputStatusQuality::STATE)) != 0, quality, aTime)
-	{}
+	BinaryOutputStatus(uint8_t quality);
 
-	BinaryOutputStatus(bool value, uint8_t quality) : TypedMeasurement(value, GetQual(quality, value))
-	{}
+	BinaryOutputStatus(uint8_t quality, uint64_t time);
 
-	BinaryOutputStatus(bool value, uint8_t quality, uint64_t aTime) : TypedMeasurement(value, GetQual(quality, value), aTime)
-	{}
+	BinaryOutputStatus(bool value, uint8_t quality);
 
-	bool IsEvent(const BinaryOutputStatus& newValue) const
-	{
-		return quality != newValue.quality;
-	}
+	BinaryOutputStatus(bool value, uint8_t quality, uint64_t aTime);
 
-private:
-
-	static uint8_t GetQual(uint8_t q, bool value)
-	{
-		return (value) ? (q | ToUnderlying(BinaryOutputStatusQuality::STATE)) : (q & (~ToUnderlying(BinaryOutputStatusQuality::STATE)));
-	}
+	bool IsEvent(const BinaryOutputStatus& newValue) const;
 };
 
 /**
@@ -167,22 +134,15 @@ class Analog : public TypedMeasurement<double>
 {
 public:
 
-	Analog() : TypedMeasurement(ToUnderlying(AnalogQuality::RESTART))
-	{}
+	Analog();
 
-	Analog(double value) : TypedMeasurement(value, ToUnderlying(AnalogQuality::ONLINE))
-	{}
+	Analog(double value);
 
-	Analog(double value, uint8_t quality) : TypedMeasurement(value, quality)
-	{}
+	Analog(double value, uint8_t quality);
 
-	Analog(double value, uint8_t quality, uint64_t aTime) : TypedMeasurement<double>(value, quality, aTime)
-	{}
+	Analog(double value, uint8_t quality, uint64_t time);
 
-	bool IsEvent(const Analog& newValue, double deadband) const
-	{
-		return measurements::IsEvent(newValue, *this, deadband);
-	}
+	bool IsEvent(const Analog& newValue, double deadband) const;
 };
 
 /**
@@ -193,25 +153,15 @@ class Counter : public TypedMeasurement<uint32_t>
 {
 public:
 
-	Counter() : TypedMeasurement(0, ToUnderlying(CounterQuality::RESTART)) {}
+	Counter();
 
-	Counter(uint32_t value) : TypedMeasurement<uint32_t>(value, ToUnderlying(CounterQuality::ONLINE))
-	{}
+	Counter(uint32_t value);
 
-	Counter(uint32_t value, uint8_t quality) : TypedMeasurement<uint32_t>(value, quality)
-	{}
+	Counter(uint32_t value, uint8_t quality);
 
-	Counter(uint32_t value, uint8_t quality, uint64_t aTime) : TypedMeasurement<uint32_t>(value, quality, aTime)
-	{}
+	Counter(uint32_t value, uint8_t quality, uint64_t aTime);
 
-	bool IsEvent(const Counter& newValue, uint32_t aDeadband) const
-	{
-		if(quality != newValue.quality) return true;
-		else
-		{
-			return measurements::IsEvent<uint32_t, uint64_t>(this->value, newValue.value, aDeadband);
-		}
-	}
+	bool IsEvent(const Counter& newValue, uint32_t aDeadband) const;
 };
 
 /**
@@ -221,25 +171,15 @@ class FrozenCounter : public TypedMeasurement<uint32_t>
 {
 public:
 
-	FrozenCounter() : TypedMeasurement(0, ToUnderlying(CounterQuality::RESTART)) {}
+	FrozenCounter();
 
-	FrozenCounter(uint32_t value) : TypedMeasurement<uint32_t>(value, ToUnderlying(CounterQuality::ONLINE))
-	{}
+	FrozenCounter(uint32_t value);	
 
-	FrozenCounter(uint32_t value, uint8_t quality) : TypedMeasurement<uint32_t>(value, quality)
-	{}
+	FrozenCounter(uint32_t value, uint8_t quality);
 
-	FrozenCounter(uint32_t value, uint8_t quality, uint64_t aTime) : TypedMeasurement<uint32_t>(value, quality, aTime)
-	{}
+	FrozenCounter(uint32_t value, uint8_t quality, uint64_t aTime);
 
-	bool IsEvent(const FrozenCounter& newValue, uint32_t aDeadband) const
-	{
-		if(quality != newValue.quality) return true;
-		else
-		{
-			return measurements::IsEvent<uint32_t, uint64_t>(this->value, newValue.value, aDeadband);
-		}
-	}
+	bool IsEvent(const FrozenCounter& newValue, uint32_t aDeadband) const;
 };
 
 /**
@@ -250,21 +190,15 @@ class AnalogOutputStatus : public TypedMeasurement<double>
 {
 public:
 
-	AnalogOutputStatus() : TypedMeasurement<double>(ToUnderlying(AnalogQuality::RESTART)) {}
+	AnalogOutputStatus();
 
-	AnalogOutputStatus(double value) : TypedMeasurement<double>(value, ToUnderlying(AnalogQuality::ONLINE))
-	{}
+	AnalogOutputStatus(double value);	
 
-	AnalogOutputStatus(double value, uint8_t quality) : TypedMeasurement<double>(value, quality)
-	{}
+	AnalogOutputStatus(double value, uint8_t quality);
 
-	AnalogOutputStatus(double value, uint8_t quality, uint64_t aTime) : TypedMeasurement<double>(value, quality, aTime)
-	{}
+	AnalogOutputStatus(double value, uint8_t quality, uint64_t aTime);
 
-	bool IsEvent(const AnalogOutputStatus& newValue, double deadband) const
-	{
-		return measurements::IsEvent(newValue, *this, deadband);
-	}
+	bool IsEvent(const AnalogOutputStatus& newValue, double deadband) const;
 };
 
 }

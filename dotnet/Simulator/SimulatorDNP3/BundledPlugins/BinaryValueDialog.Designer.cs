@@ -42,9 +42,9 @@
             // 
             this.groupBoxButtons.Controls.Add(this.checkBoxValue);
             this.groupBoxButtons.Controls.Add(this.buttonSave);
-            this.groupBoxButtons.Location = new System.Drawing.Point(12, 135);
+            this.groupBoxButtons.Location = new System.Drawing.Point(9, 129);
             this.groupBoxButtons.Name = "groupBoxButtons";
-            this.groupBoxButtons.Size = new System.Drawing.Size(287, 70);
+            this.groupBoxButtons.Size = new System.Drawing.Size(282, 70);
             this.groupBoxButtons.TabIndex = 0;
             this.groupBoxButtons.TabStop = false;
             // 
@@ -63,7 +63,7 @@
             // 
             this.buttonSave.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonSave.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonSave.Location = new System.Drawing.Point(158, 19);
+            this.buttonSave.Location = new System.Drawing.Point(153, 18);
             this.buttonSave.Name = "buttonSave";
             this.buttonSave.Size = new System.Drawing.Size(116, 42);
             this.buttonSave.TabIndex = 0;
@@ -75,9 +75,9 @@
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1});
-            this.statusStrip.Location = new System.Drawing.Point(0, 214);
+            this.statusStrip.Location = new System.Drawing.Point(0, 211);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(311, 22);
+            this.statusStrip.Size = new System.Drawing.Size(303, 22);
             this.statusStrip.SizingGrip = false;
             this.statusStrip.TabIndex = 5;
             // 
@@ -87,10 +87,10 @@
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(0, 17);
             this.toolStripStatusLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // qualiytControl1
+            // qualitySelector
             // 
-            this.qualitySelector.Location = new System.Drawing.Point(15, 13);
-            this.qualitySelector.Name = "qualiytControl1";
+            this.qualitySelector.Location = new System.Drawing.Point(12, 12);
+            this.qualitySelector.Name = "qualitySelector";
             this.qualitySelector.Size = new System.Drawing.Size(284, 120);
             this.qualitySelector.TabIndex = 6;
             // 
@@ -99,7 +99,7 @@
             this.AcceptButton = this.buttonSave;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(311, 236);
+            this.ClientSize = new System.Drawing.Size(303, 233);
             this.Controls.Add(this.qualitySelector);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.groupBoxButtons);

@@ -1100,5 +1100,8 @@
     <ClCompile Include="src\opendnp3\app\GroupVariationRecord.cpp">
       <Filter>Source\app</Filter>
     </ClCompile>
+    <ClCompile Include="src\opendnp3\app\MeasurementTypes.cpp">
+      <Filter>Source\app</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
