@@ -7,16 +7,17 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-
 using DNP3.Interface;
 
 namespace Automatak.Simulator.DNP3
 {
     public partial class BinaryValueDialog : Form
     {
-        public BinaryValueDialog()
+        public BinaryValueDialog(IQualityBitInfo info)
         {
-            InitializeComponent();            
+            InitializeComponent();
+
+            this.qualitySelector.QualityInfo = info;
         }
 
         private void buttonSave_Click(object sender, EventArgs e)
@@ -37,7 +38,7 @@ namespace Automatak.Simulator.DNP3
         {
             get
             {
-                return 0x01;
+                return this.qualitySelector.Quality;
             }
         }
     }

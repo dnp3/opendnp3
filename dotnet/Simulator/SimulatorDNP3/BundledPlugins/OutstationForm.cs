@@ -98,13 +98,20 @@ namespace Automatak.Simulator.DNP3
 
         void LoadBinaries(IEnumerable<ushort> indices)
         {
-            using (var dialog = new BinaryValueDialog())
+            using (var dialog = new BinaryValueDialog(QualityInfo.binary))
             {
                 dialog.ShowDialog();
                 if (dialog.DialogResult == DialogResult.OK)
                 {
-                    var meas = new Binary(dialog.SelectedValue, dialog.SelectedQuality);                    
-                    var updates = indices.Select(i => GetAction(meas, i));
+                    var type = new Binary(dialog.SelectedValue, dialog.SelectedQuality, DateTime.Now);
+                    var updates = indices.Select(i => GetAction(type, i));
+                    foreach(var i in indices)
+                    {
+                        var meas = type.ToMeasurement(i);
+                        string[] text = { meas.Index.ToString(), meas.Value, meas.Flags, meas.Timestamp, "Binary" };
+                        var item = new ListViewItem(text);
+                        this.listViewEvents.Items.Add(item);
+                    }
                     foreach(var item in updates)
                     {
                         this.events.Add(item);
@@ -146,9 +153,20 @@ namespace Automatak.Simulator.DNP3
            db2.End();
            db1.End();
 
+           this.listViewEvents.Items.Clear();
+
            this.events.Clear();
 
            this.CheckState();
+        }
+
+        private void buttonClear_Click(object sender, EventArgs e)
+        {
+            this.listViewEvents.Items.Clear();
+
+            this.events.Clear();
+
+            this.CheckState();
         }                                                             
     }
 }

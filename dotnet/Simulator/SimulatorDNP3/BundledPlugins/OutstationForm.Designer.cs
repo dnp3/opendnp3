@@ -41,6 +41,7 @@
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -84,6 +85,7 @@
             this.buttonClear.TabIndex = 3;
             this.buttonClear.Text = "Clear Events";
             this.buttonClear.UseVisualStyleBackColor = true;
+            this.buttonClear.Click += new System.EventHandler(this.buttonClear_Click);
             // 
             // buttonApply
             // 
@@ -155,6 +157,7 @@
             this.columnHeader2,
             this.columnHeader3,
             this.columnHeader4,
+            this.columnHeader5,
             this.columnHeader1});
             this.listViewEvents.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listViewEvents.Location = new System.Drawing.Point(0, 0);
@@ -178,6 +181,11 @@
             // 
             this.columnHeader4.Text = "Flags";
             this.columnHeader4.Width = 138;
+            // 
+            // columnHeader5
+            // 
+            this.columnHeader5.Text = "Timestamp (UTC)";
+            this.columnHeader5.Width = 156;
             // 
             // columnHeader1
             // 
@@ -228,6 +236,7 @@
         private System.Windows.Forms.ColumnHeader columnHeader4;
         private System.Windows.Forms.Button buttonClear;
         private System.Windows.Forms.Button buttonApply;
+        private System.Windows.Forms.ColumnHeader columnHeader5;
 
     }
 }

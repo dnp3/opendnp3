@@ -29,10 +29,11 @@
         private void InitializeComponent()
         {
             this.groupBoxButtons = new System.Windows.Forms.GroupBox();
+            this.checkBoxValue = new System.Windows.Forms.CheckBox();
             this.buttonSave = new System.Windows.Forms.Button();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.checkBoxValue = new System.Windows.Forms.CheckBox();
+            this.qualitySelector = new Automatak.Simulator.DNP3.QualitySelector();
             this.groupBoxButtons.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -41,17 +42,28 @@
             // 
             this.groupBoxButtons.Controls.Add(this.checkBoxValue);
             this.groupBoxButtons.Controls.Add(this.buttonSave);
-            this.groupBoxButtons.Location = new System.Drawing.Point(7, 13);
+            this.groupBoxButtons.Location = new System.Drawing.Point(12, 135);
             this.groupBoxButtons.Name = "groupBoxButtons";
-            this.groupBoxButtons.Size = new System.Drawing.Size(272, 70);
+            this.groupBoxButtons.Size = new System.Drawing.Size(287, 70);
             this.groupBoxButtons.TabIndex = 0;
             this.groupBoxButtons.TabStop = false;
             // 
+            // checkBoxValue
+            // 
+            this.checkBoxValue.AutoSize = true;
+            this.checkBoxValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBoxValue.Location = new System.Drawing.Point(21, 28);
+            this.checkBoxValue.Name = "checkBoxValue";
+            this.checkBoxValue.Size = new System.Drawing.Size(65, 24);
+            this.checkBoxValue.TabIndex = 6;
+            this.checkBoxValue.Text = "value";
+            this.checkBoxValue.UseVisualStyleBackColor = true;
+            // 
             // buttonSave
             // 
-            this.buttonSave.Font = new System.Drawing.Font("Calibri", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonSave.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonSave.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonSave.Location = new System.Drawing.Point(148, 19);
+            this.buttonSave.Location = new System.Drawing.Point(158, 19);
             this.buttonSave.Name = "buttonSave";
             this.buttonSave.Size = new System.Drawing.Size(116, 42);
             this.buttonSave.TabIndex = 0;
@@ -63,9 +75,9 @@
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1});
-            this.statusStrip.Location = new System.Drawing.Point(0, 95);
+            this.statusStrip.Location = new System.Drawing.Point(0, 214);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(291, 22);
+            this.statusStrip.Size = new System.Drawing.Size(311, 22);
             this.statusStrip.SizingGrip = false;
             this.statusStrip.TabIndex = 5;
             // 
@@ -75,22 +87,20 @@
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(0, 17);
             this.toolStripStatusLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // checkBoxValue
+            // qualiytControl1
             // 
-            this.checkBoxValue.AutoSize = true;
-            this.checkBoxValue.Location = new System.Drawing.Point(15, 33);
-            this.checkBoxValue.Name = "checkBoxValue";
-            this.checkBoxValue.Size = new System.Drawing.Size(52, 17);
-            this.checkBoxValue.TabIndex = 6;
-            this.checkBoxValue.Text = "value";
-            this.checkBoxValue.UseVisualStyleBackColor = true;
+            this.qualitySelector.Location = new System.Drawing.Point(15, 13);
+            this.qualitySelector.Name = "qualiytControl1";
+            this.qualitySelector.Size = new System.Drawing.Size(284, 120);
+            this.qualitySelector.TabIndex = 6;
             // 
             // BinaryValueDialog
             // 
             this.AcceptButton = this.buttonSave;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(291, 117);
+            this.ClientSize = new System.Drawing.Size(311, 236);
+            this.Controls.Add(this.qualitySelector);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.groupBoxButtons);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -118,5 +128,6 @@
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.CheckBox checkBoxValue;
+        private QualitySelector qualitySelector;
     }
 }

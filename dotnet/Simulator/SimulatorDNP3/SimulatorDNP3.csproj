@@ -73,6 +73,12 @@
     <Compile Include="BundledPlugins\BinaryValueDialog.Designer.cs">
       <DependentUpon>BinaryValueDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="BundledPlugins\QualitySelector.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BundledPlugins\QualitySelector.Designer.cs">
+      <DependentUpon>QualitySelector.cs</DependentUpon>
+    </Compile>
     <Compile Include="Components\EventBufferConfigControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -211,6 +217,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="BundledPlugins\BinaryValueDialog.resx">
       <DependentUpon>BinaryValueDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BundledPlugins\QualitySelector.resx">
+      <DependentUpon>QualitySelector.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Components\EventBufferConfigControl.resx">
       <DependentUpon>EventBufferConfigControl.cs</DependentUpon>

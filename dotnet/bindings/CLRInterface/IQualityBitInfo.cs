@@ -43,6 +43,21 @@ namespace DNP3.Interface
         public static readonly IQualityBitInfo binaryOutputStatus = new TypedQualityBitInfo(GetBinaryOutputStatusString);
         public static readonly IQualityBitInfo octetString = new TypedQualityBitInfo(x => "");
 
+        public static int CountOf(byte flags)
+        {
+            var count = 0;
+
+            for (byte i = 0; i < 8; ++i)
+            {
+                if ((flags & (1 << i)) != 0)
+                {
+                    ++count;
+                }
+            }
+
+            return count;
+        }
+
         public static IEnumerable<string> GetLongNames(byte flags, IQualityBitInfo info)
         {
             for (byte i = 0; i < 8; ++i)
