@@ -37,11 +37,11 @@ namespace DNP3.Interface
     /// <summary>
     /// set if the value is being forced to a "fake" value somewhere in the system
     /// </summary>
-    REMOTE_FORCED_DATA = 0x8,
+    REMOTE_FORCED = 0x8,
     /// <summary>
     /// set if the value is being forced to a "fake" value on the original device
     /// </summary>
-    LOCAL_FORCED_DATA = 0x10,
+    LOCAL_FORCED = 0x10,
     /// <summary>
     /// set if the value is oscillating very quickly and some events are being suppressed
     /// </summary>

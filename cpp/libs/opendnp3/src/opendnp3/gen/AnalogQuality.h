@@ -34,9 +34,9 @@ enum class AnalogQuality : uint8_t
   /// set if communication has been lost with the source of the data (after establishing contact)
   COMM_LOST = 0x4,
   /// set if the value is being forced to a "fake" value somewhere in the system
-  REMOTE_FORCED_DATA = 0x8,
+  REMOTE_FORCED = 0x8,
   /// set if the value is being forced to a "fake" value on the original device
-  LOCAL_FORCED_DATA = 0x10,
+  LOCAL_FORCED = 0x10,
   /// set if a hardware input etc. is out of range and we are using a place holder value
   OVERRANGE = 0x20,
   /// set if calibration or reference voltage has been lost meaning readings are questionable

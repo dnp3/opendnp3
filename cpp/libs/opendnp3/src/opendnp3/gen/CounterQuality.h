@@ -34,9 +34,9 @@ enum class CounterQuality : uint8_t
   /// set if communication has been lost with the source of the data (after establishing contact)
   COMM_LOST = 0x4,
   /// set if the value is being forced to a "fake" value somewhere in the system
-  REMOTE_FORCED_DATA = 0x8,
+  REMOTE_FORCED = 0x8,
   /// set if the value is being forced to a "fake" value on the original device
-  LOCAL_FORCED_DATA = 0x10,
+  LOCAL_FORCED = 0x10,
   /// Deprecated flag that indicates value has rolled over
   ROLLOVER = 0x20,
   /// indicates an unusual change in value
