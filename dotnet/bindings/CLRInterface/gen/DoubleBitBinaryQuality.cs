@@ -18,7 +18,7 @@
 namespace DNP3.Interface
 {
   /// <summary>
-  /// Quality field bitmask for double bit binary values.
+  /// Quality field bitmask for double bit binary values
   /// </summary>
   public enum DoubleBitBinaryQuality : byte
   {

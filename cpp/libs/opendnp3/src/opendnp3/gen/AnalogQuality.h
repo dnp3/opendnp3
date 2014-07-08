@@ -23,7 +23,7 @@
 namespace opendnp3 {
 
 /**
-  Quality field bitmask for analog values.
+  Quality field bitmask for analog values
 */
 enum class AnalogQuality : uint8_t
 {

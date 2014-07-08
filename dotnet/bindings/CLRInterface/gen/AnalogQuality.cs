@@ -18,7 +18,7 @@
 namespace DNP3.Interface
 {
   /// <summary>
-  /// Quality field bitmask for analog values.
+  /// Quality field bitmask for analog values
   /// </summary>
   public enum AnalogQuality : byte
   {

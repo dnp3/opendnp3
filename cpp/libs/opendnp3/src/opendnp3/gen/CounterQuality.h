@@ -23,7 +23,7 @@
 namespace opendnp3 {
 
 /**
-  Quality field bitmask for counter values.
+  Quality field bitmask for counter values
 */
 enum class CounterQuality : uint8_t
 {

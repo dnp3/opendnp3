@@ -4,7 +4,7 @@ import com.automatak.render._
 
 object QualityMasks {
 
-  private def comments(name: String) = List("Quality field bitmask for " + name + " values.")
+  private def comments(name: String) = List("Quality field bitmask for " + name + " values")
 
 
   def enums: List[EnumModel] = List(

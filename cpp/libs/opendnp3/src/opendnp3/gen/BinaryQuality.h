@@ -23,7 +23,7 @@
 namespace opendnp3 {
 
 /**
-  Quality field bitmask for binary values.
+  Quality field bitmask for binary values
 */
 enum class BinaryQuality : uint8_t
 {

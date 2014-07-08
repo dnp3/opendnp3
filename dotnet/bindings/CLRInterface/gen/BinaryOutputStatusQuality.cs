@@ -18,7 +18,7 @@
 namespace DNP3.Interface
 {
   /// <summary>
-  /// Quality field bitmask for binary output status values.
+  /// Quality field bitmask for binary output status values
   /// </summary>
   public enum BinaryOutputStatusQuality : byte
   {

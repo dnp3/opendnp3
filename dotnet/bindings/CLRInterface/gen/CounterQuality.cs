@@ -18,7 +18,7 @@
 namespace DNP3.Interface
 {
   /// <summary>
-  /// Quality field bitmask for counter values.
+  /// Quality field bitmask for counter values
   /// </summary>
   public enum CounterQuality : byte
   {

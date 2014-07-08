@@ -23,7 +23,7 @@
 namespace opendnp3 {
 
 /**
-  Quality field bitmask for binary output status values.
+  Quality field bitmask for binary output status values
 */
 enum class BinaryOutputStatusQuality : uint8_t
 {
