@@ -18,6 +18,7 @@ namespace Automatak.Simulator
     {
         readonly IEnumerable<ISimulatorPluginFactory> plugins;
         readonly bool splashOnLoad;
+        readonly ILog log;
 
         public SimulatorForm(IEnumerable<ISimulatorPluginFactory> plugins, bool splashOnLoad)
         {                 
@@ -25,6 +26,7 @@ namespace Automatak.Simulator
             
             this.plugins = plugins;
             this.splashOnLoad = splashOnLoad;
+            this.log = new LogMultiplexer(this.logWindow1);
         }
            
         void ShowAboutBox()
@@ -111,12 +113,10 @@ namespace Automatak.Simulator
         }
         
         private void SimulatorForm_Load(object sender, EventArgs e)
-        {            
-            ILog log  = this.logWindow1;
-
+        {                        
             foreach (var factory in plugins)
             {                
-                var instance = factory.Create(log);                
+                var instance = factory.Create(this.log);                
                 var item = new ToolStripMenuItem(instance.RootDisplayName);
                 item.Image = instance.PluginImage;
                 this.addToolStripMenuItem.DropDownItems.Add(item);
@@ -140,7 +140,7 @@ namespace Automatak.Simulator
                     }
                 );
 
-                log.LogFull(DisplayHint.INFO, "INFO", "system", "Initialized " + instance.UniqueId + " plugin");
+                this.log.LogFull(DisplayHint.INFO, "INFO", "system", "Initialized " + instance.UniqueId + " plugin");
             }
         }
 
