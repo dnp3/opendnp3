@@ -18,6 +18,8 @@ object CSharpEnumGenerator {
 
     def events = EventTypes.enums.map(m => EnumConfig(m, dir))
 
+    def qualityMasks = QualityMasks.enums.map(m => EnumConfig(m, dir))
+
     def enums : List[EnumConfig] = List(
       DoubleBit(),
       PointClass(),
@@ -27,7 +29,7 @@ object CSharpEnumGenerator {
       ControlCode(),
       ChannelState(),
       TimeSyncMode()
-    ).map(e => EnumConfig.apply(e, dir)) ::: events
+    ).map(e => EnumConfig.apply(e, dir)) ::: events ::: qualityMasks
 
     implicit val indent = CppIndentation()
 

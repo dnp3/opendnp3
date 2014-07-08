@@ -63,11 +63,16 @@
     </Compile>
     <Compile Include="Conversions.cs" />
     <Compile Include="config\EventBufferConfig.cs" />
+    <Compile Include="gen\AnalogQuality.cs" />
+    <Compile Include="gen\BinaryOutputStatusQuality.cs" />
+    <Compile Include="gen\BinaryQuality.cs" />
     <Compile Include="gen\ChannelState.cs" />
     <Compile Include="gen\CommandResult.cs" />
     <Compile Include="gen\CommandStatus.cs" />
     <Compile Include="gen\ControlCode.cs" />
+    <Compile Include="gen\CounterQuality.cs" />
     <Compile Include="gen\DoubleBit.cs" />
+    <Compile Include="gen\DoubleBitBinaryQuality.cs" />
     <Compile Include="gen\EventAnalogOutputStatusResponse.cs" />
     <Compile Include="gen\EventAnalogResponse.cs" />
     <Compile Include="gen\EventBinaryOutputStatusResponse.cs" />
@@ -124,7 +129,6 @@
     <Compile Include="config\OutstationStackConfig.cs" />
     <Compile Include="PrintingSOEHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QualityMasks.cs" />
     <Compile Include="config\SerialSettings.cs" />
     <Compile Include="SimpleCommandHandler.cs" />
     <Compile Include="StackStatistics.cs" />
