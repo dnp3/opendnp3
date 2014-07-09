@@ -59,12 +59,12 @@ namespace Automatak.Simulator.DNP3.Components
             }
             else
             {
-                var output = String.Format("Accepted Analog: {0} - {1} with result {2}", value, index);
+                var output = String.Format("Accepted Analog: {0} - {1}", value, index);
                 this.listBoxLog.Items.Add(output);
                 if (checkBoxMapAnalog.Checked)
                 {
                     database.Start();
-                    database.Update(new Analog(value, 0x01, DateTime.Now), index);
+                    database.Update(new AnalogOutputStatus(value, 0x01, DateTime.Now), index);
                     database.End();
                 }
             }

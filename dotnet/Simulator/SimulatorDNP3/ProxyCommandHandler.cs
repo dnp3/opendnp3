@@ -200,7 +200,7 @@ namespace Automatak.Simulator.DNP3
         {
             lock (mutex)
             {
-                return GetOrElseAndLogAnalog(command.value, index, binaryMap, () => proxy.Perform(command, index));
+                return GetOrElseAndLogAnalog(command.value, index, analogMap, () => proxy.Perform(command, index));
             }
         }
 
@@ -208,7 +208,7 @@ namespace Automatak.Simulator.DNP3
         {
             lock (mutex)
             {
-                return GetOrElseAndLogAnalog(command.value, index, binaryMap, () => proxy.Perform(command, index));
+                return GetOrElseAndLogAnalog(command.value, index, analogMap, () => proxy.Perform(command, index));
             }
         }
 
@@ -216,7 +216,7 @@ namespace Automatak.Simulator.DNP3
         {
             lock (mutex)
             {
-                return GetOrElseAndLogAnalog(command.value, index, binaryMap, () => proxy.Perform(command, index));
+                return GetOrElseAndLogAnalog(command.value, index, analogMap, () => proxy.Perform(command, index));
             }
         }
 
@@ -224,7 +224,7 @@ namespace Automatak.Simulator.DNP3
         {
             lock (mutex)
             {
-                return GetOrElseAndLogAnalog(command.value, index, binaryMap, () => proxy.Perform(command, index));
+                return GetOrElseAndLogAnalog(command.value, index, analogMap, () => proxy.Perform(command, index));
             }
         }
     }
