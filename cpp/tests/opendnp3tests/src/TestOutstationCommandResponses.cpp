@@ -327,13 +327,39 @@ TEST_CASE(SUITE("SelectOperateGroup41Var4"))
 	t.OnSendResult(true);
 }
 
+TEST_CASE(SUITE("DirectOperateNoResponseGroup12Var1"))
+{
+	OutstationConfig config;
+	OutstationTestObject t(config);
+	t.LowerLayerUp();	
+		
+	// Direct operate (no response) group 12 Var 1, count = 1, index = 3	
+	t.SendToOutstation("C1 06 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
+	REQUIRE(t.lower.PopWriteAsHex() == "");
+
+	// command should have operated
+	REQUIRE(t.cmdHandler.NumInvocations() == 1);
+
+	t.SendToOutstation("C1 06 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
+	REQUIRE(t.lower.PopWriteAsHex() == "");
+
+	// shoudl be ignored due to sequence number
+	REQUIRE(t.cmdHandler.NumInvocations() == 1);
+
+	t.SendToOutstation("C2 06 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
+	REQUIRE(t.lower.PopWriteAsHex() == "");
+
+	// shoudl be ignored due to sequence number
+	REQUIRE(t.cmdHandler.NumInvocations() == 2);
+}
+
 TEST_CASE(SUITE("DirectOperateGroup41Var1"))
 {
 	OutstationConfig config;
 	OutstationTestObject t(config);
 	t.LowerLayerUp();
 
-	// Select group 41 Var 1, count = 1, index = 3
+	// Direct operate group 41 Var 1, count = 1, index = 3
 	t.SendToOutstation("C1 05 29 01 17 01 03 00 00 00 00 00");
 	REQUIRE(t.lower.PopWriteAsHex() == "C1 81 80 00 29 01 17 01 03 00 00 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
 }
@@ -344,7 +370,7 @@ TEST_CASE(SUITE("DirectOperateGroup41Var2"))
 	OutstationTestObject t(config);
 	t.LowerLayerUp();
 
-	// Select group 41 Var 1, count = 1, index = 3
+	// Direct operate group 41 Var 1, count = 1, index = 3
 	t.SendToOutstation("C1 05 29 02 17 01 03 00 00 00");
 	REQUIRE(t.lower.PopWriteAsHex() == "C1 81 80 00 29 02 17 01 03 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
 
@@ -356,7 +382,7 @@ TEST_CASE(SUITE("DirectOperateGroup41Var3"))
 	OutstationTestObject t(config);
 	t.LowerLayerUp();
 
-	// operate group 41 Var 3, count = 1, index = 1
+	// Direct operate group 41 Var 3, count = 1, index = 1
 	t.SendToOutstation("C1 05 29 03 17 01 01 00 00 C8 42 00");
 	REQUIRE(t.lower.PopWriteAsHex() == "C1 81 80 00 29 03 17 01 01 00 00 C8 42 00"); // 0x00 status == CommandStatus::SUCCESS
 
@@ -368,7 +394,7 @@ TEST_CASE(SUITE("DirectOperateGroup41Var4"))
 	OutstationTestObject t(config);
 	t.LowerLayerUp();
 
-	// operate group 41 Var 4, count = 1, index = 1
+	// Direct operate group 41 Var 4, count = 1, index = 1
 	t.SendToOutstation("C1 05 29 04 17 01 01 00 00 00 00 00 00 59 40 00");
 	REQUIRE(t.lower.PopWriteAsHex() == "C1 81 80 00 29 04 17 01 01 00 00 00 00 00 00 59 40 00"); // 0x00 status == CommandStatus::SUCCESS
 }
