@@ -41,6 +41,8 @@
             this.numericUpDownIndex = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
             this.comboBoxCode = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.groupBoxBehavior.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownIndex)).BeginInit();
             this.SuspendLayout();
@@ -50,9 +52,9 @@
             this.listBoxLog.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listBoxLog.FormattingEnabled = true;
-            this.listBoxLog.Location = new System.Drawing.Point(451, 13);
+            this.listBoxLog.Location = new System.Drawing.Point(451, 39);
             this.listBoxLog.Name = "listBoxLog";
-            this.listBoxLog.Size = new System.Drawing.Size(282, 264);
+            this.listBoxLog.Size = new System.Drawing.Size(282, 238);
             this.listBoxLog.TabIndex = 2;
             // 
             // groupBoxBehavior
@@ -101,9 +103,9 @@
             // listBoxHandlers
             // 
             this.listBoxHandlers.FormattingEnabled = true;
-            this.listBoxHandlers.Location = new System.Drawing.Point(204, 13);
+            this.listBoxHandlers.Location = new System.Drawing.Point(204, 39);
             this.listBoxHandlers.Name = "listBoxHandlers";
-            this.listBoxHandlers.Size = new System.Drawing.Size(232, 147);
+            this.listBoxHandlers.Size = new System.Drawing.Size(232, 121);
             this.listBoxHandlers.TabIndex = 11;
             // 
             // buttonAddBO
@@ -112,7 +114,7 @@
             this.buttonAddBO.Name = "buttonAddBO";
             this.buttonAddBO.Size = new System.Drawing.Size(72, 39);
             this.buttonAddBO.TabIndex = 12;
-            this.buttonAddBO.Text = "Add BO";
+            this.buttonAddBO.Text = "Add CROB";
             this.buttonAddBO.UseVisualStyleBackColor = true;
             this.buttonAddBO.Click += new System.EventHandler(this.buttonAddBO_Click);
             // 
@@ -132,7 +134,7 @@
             this.buttonAddAO.Name = "buttonAddAO";
             this.buttonAddAO.Size = new System.Drawing.Size(72, 39);
             this.buttonAddAO.TabIndex = 14;
-            this.buttonAddAO.Text = "Add AO";
+            this.buttonAddAO.Text = "Add Analog";
             this.buttonAddAO.UseVisualStyleBackColor = true;
             this.buttonAddAO.Click += new System.EventHandler(this.buttonAddAO_Click);
             // 
@@ -175,10 +177,30 @@
             this.comboBoxCode.Size = new System.Drawing.Size(121, 21);
             this.comboBoxCode.TabIndex = 15;
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(201, 20);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(102, 13);
+            this.label3.TabIndex = 19;
+            this.label3.Text = "Commands Handled";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(448, 20);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(157, 13);
+            this.label4.TabIndex = 20;
+            this.label4.Text = "Virtual Operations (any function)";
+            // 
             // CommandHandlerControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.numericUpDownIndex);
             this.Controls.Add(this.label1);
@@ -214,5 +236,7 @@
         private System.Windows.Forms.NumericUpDown numericUpDownIndex;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox comboBoxCode;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
     }
 }
