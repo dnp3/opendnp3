@@ -28,14 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.listBoxLog = new System.Windows.Forms.ListBox();
+            this.contextMenuStripOperations = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.groupBoxBehavior = new System.Windows.Forms.GroupBox();
             this.checkBoxEnabled = new System.Windows.Forms.CheckBox();
             this.checkBoxMapAnalog = new System.Windows.Forms.CheckBox();
             this.checkBoxMapBinary = new System.Windows.Forms.CheckBox();
             this.listBoxHandlers = new System.Windows.Forms.ListBox();
+            this.contextMenuStripHandlers = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.buttonAddBO = new System.Windows.Forms.Button();
-            this.buttonReset = new System.Windows.Forms.Button();
             this.buttonAddAO = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.numericUpDownIndex = new System.Windows.Forms.NumericUpDown();
@@ -51,11 +53,17 @@
             // 
             this.listBoxLog.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.listBoxLog.ContextMenuStrip = this.contextMenuStripOperations;
             this.listBoxLog.FormattingEnabled = true;
             this.listBoxLog.Location = new System.Drawing.Point(451, 39);
             this.listBoxLog.Name = "listBoxLog";
-            this.listBoxLog.Size = new System.Drawing.Size(282, 238);
+            this.listBoxLog.Size = new System.Drawing.Size(293, 238);
             this.listBoxLog.TabIndex = 2;
+            // 
+            // contextMenuStripOperations
+            // 
+            this.contextMenuStripOperations.Name = "contextMenuStripOperations";
+            this.contextMenuStripOperations.Size = new System.Drawing.Size(153, 26);
             // 
             // groupBoxBehavior
             // 
@@ -102,37 +110,33 @@
             // 
             // listBoxHandlers
             // 
+            this.listBoxHandlers.ContextMenuStrip = this.contextMenuStripHandlers;
             this.listBoxHandlers.FormattingEnabled = true;
             this.listBoxHandlers.Location = new System.Drawing.Point(204, 39);
             this.listBoxHandlers.Name = "listBoxHandlers";
             this.listBoxHandlers.Size = new System.Drawing.Size(232, 121);
             this.listBoxHandlers.TabIndex = 11;
             // 
+            // contextMenuStripHandlers
+            // 
+            this.contextMenuStripHandlers.Name = "contextMenuStripHandlers";
+            this.contextMenuStripHandlers.Size = new System.Drawing.Size(61, 4);
+            // 
             // buttonAddBO
             // 
             this.buttonAddBO.Location = new System.Drawing.Point(204, 238);
             this.buttonAddBO.Name = "buttonAddBO";
-            this.buttonAddBO.Size = new System.Drawing.Size(72, 39);
+            this.buttonAddBO.Size = new System.Drawing.Size(109, 39);
             this.buttonAddBO.TabIndex = 12;
             this.buttonAddBO.Text = "Add CROB";
             this.buttonAddBO.UseVisualStyleBackColor = true;
             this.buttonAddBO.Click += new System.EventHandler(this.buttonAddBO_Click);
             // 
-            // buttonReset
-            // 
-            this.buttonReset.Location = new System.Drawing.Point(364, 238);
-            this.buttonReset.Name = "buttonReset";
-            this.buttonReset.Size = new System.Drawing.Size(72, 39);
-            this.buttonReset.TabIndex = 13;
-            this.buttonReset.Text = "Reset";
-            this.buttonReset.UseVisualStyleBackColor = true;
-            this.buttonReset.Click += new System.EventHandler(this.buttonReset_Click);
-            // 
             // buttonAddAO
             // 
-            this.buttonAddAO.Location = new System.Drawing.Point(284, 238);
+            this.buttonAddAO.Location = new System.Drawing.Point(327, 238);
             this.buttonAddAO.Name = "buttonAddAO";
-            this.buttonAddAO.Size = new System.Drawing.Size(72, 39);
+            this.buttonAddAO.Size = new System.Drawing.Size(109, 39);
             this.buttonAddAO.TabIndex = 14;
             this.buttonAddAO.Text = "Add Analog";
             this.buttonAddAO.UseVisualStyleBackColor = true;
@@ -191,9 +195,9 @@
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(448, 20);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(157, 13);
+            this.label4.Size = new System.Drawing.Size(184, 13);
             this.label4.TabIndex = 20;
-            this.label4.Text = "Virtual Operations (any function)";
+            this.label4.Text = "Virtual Operations (any function code)";
             // 
             // CommandHandlerControl
             // 
@@ -206,13 +210,12 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.comboBoxCode);
             this.Controls.Add(this.buttonAddAO);
-            this.Controls.Add(this.buttonReset);
             this.Controls.Add(this.buttonAddBO);
             this.Controls.Add(this.listBoxHandlers);
             this.Controls.Add(this.groupBoxBehavior);
             this.Controls.Add(this.listBoxLog);
             this.Name = "CommandHandlerControl";
-            this.Size = new System.Drawing.Size(755, 297);
+            this.Size = new System.Drawing.Size(766, 299);
             this.groupBoxBehavior.ResumeLayout(false);
             this.groupBoxBehavior.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownIndex)).EndInit();
@@ -227,7 +230,6 @@
         private System.Windows.Forms.GroupBox groupBoxBehavior;
         private System.Windows.Forms.ListBox listBoxHandlers;
         private System.Windows.Forms.Button buttonAddBO;
-        private System.Windows.Forms.Button buttonReset;
         private System.Windows.Forms.CheckBox checkBoxMapAnalog;
         private System.Windows.Forms.CheckBox checkBoxMapBinary;
         private System.Windows.Forms.CheckBox checkBoxEnabled;
@@ -238,5 +240,7 @@
         private System.Windows.Forms.ComboBox comboBoxCode;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripHandlers;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripOperations;
     }
 }

@@ -22,6 +22,25 @@ namespace Automatak.Simulator.DNP3.Components
             InitializeComponent();
 
             this.comboBoxCode.DataSource = Enum.GetValues(typeof(CommandStatus));
+
+            var clearHandlers = new ToolStripMenuItem("Clear");
+            this.contextMenuStripHandlers.Items.Add(clearHandlers);
+            clearHandlers.Click += clearHandlers_Click;
+
+            var clearOperations = new ToolStripMenuItem("Clear");
+            this.contextMenuStripOperations.Items.Add(clearOperations);
+            clearOperations.Click += clearOperations_Click;
+        }
+
+        void clearOperations_Click(object sender, EventArgs e)
+        {
+            this.listBoxLog.Items.Clear();
+        }
+
+        void clearHandlers_Click(object sender, EventArgs e)
+        {
+            this.handler.ClearResponses();
+            this.RepopulateList();
         }
 
         public void Configure(ProxyCommandHandler proxy, IDatabase database)
@@ -101,13 +120,7 @@ namespace Automatak.Simulator.DNP3.Components
             this.listBoxHandlers.Items.AddRange(MakeHandlerStrings("BO", this.handler.BinaryResponses).ToArray());
             this.listBoxHandlers.Items.AddRange(MakeHandlerStrings("AO", this.handler.AnalogResponses).ToArray());            
             this.listBoxHandlers.ResumeLayout();
-        }
-
-        private void buttonReset_Click(object sender, EventArgs e)
-        {
-            this.handler.ClearResponses();
-            this.RepopulateList();
-        }
+        }        
 
         private UInt16 SelectedIndex
         {
