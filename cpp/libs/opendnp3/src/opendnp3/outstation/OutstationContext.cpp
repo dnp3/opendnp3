@@ -362,7 +362,16 @@ OutstationSolicitedStateBase* OutstationContext::RespondToReadRequest(uint8_t se
 
 void OutstationContext::ProcessNoResponseFunction(const APDUHeader& header, const openpal::ReadOnlyBuffer& objects)
 {
-	FORMAT_LOG_BLOCK(logger, flags::WARN, "Ignoring NR function code: %s", FunctionCodeToString(header.function));
+	switch (header.function)
+	{
+		case(FunctionCode::DIRECT_OPERATE_NR) :
+			this->HandleDirectOperate(objects, nullptr); // no object writer, this is a no ack code
+			break;
+		default:
+			FORMAT_LOG_BLOCK(logger, flags::WARN, "Ignoring NR function code: %s", FunctionCodeToString(header.function));
+			break;
+	}
+	
 }
 
 void OutstationContext::BeginResponseTx(const ReadOnlyBuffer& response)
@@ -393,7 +402,7 @@ IINField OutstationContext::BuildNonReadResponse(const APDUHeader& header, const
 		case(FunctionCode::OPERATE) :
 			return HandleOperate(objects, writer, objectsEqualToLastRequest);
 		case(FunctionCode::DIRECT_OPERATE) :
-			return HandleDirectOperate(objects, writer);
+			return HandleDirectOperate(objects, &writer);
 		case(FunctionCode::DELAY_MEASURE) :
 			return HandleDelayMeasure(objects, writer);
 		case(FunctionCode::DISABLE_UNSOLICITED) :
@@ -614,10 +623,10 @@ IINField OutstationContext::HandleWrite(const openpal::ReadOnlyBuffer& objects)
 	}
 }
 
-IINField OutstationContext::HandleDirectOperate(const openpal::ReadOnlyBuffer& objects, ObjectWriter& writer)
+IINField OutstationContext::HandleDirectOperate(const openpal::ReadOnlyBuffer& objects, ObjectWriter* pWriter)
 {
 	// since we're echoing, make sure there's enough size before beginning
-	if (objects.Size() > writer.Remaining())
+	if (pWriter && (objects.Size() > pWriter->Remaining()))
 	{
 		FORMAT_LOG_BLOCK(logger, flags::WARN, "Igonring command request due to oversized payload size of %u", objects.Size());
 		return IINField(IINBit::PARAM_ERROR);
@@ -625,7 +634,7 @@ IINField OutstationContext::HandleDirectOperate(const openpal::ReadOnlyBuffer& o
 	else
 	{
 		CommandActionAdapter adapter(pCommandHandler, false);
-		CommandResponseHandler handler(logger, params.maxControlsPerRequest, &adapter, writer);
+		CommandResponseHandler handler(logger, params.maxControlsPerRequest, &adapter, pWriter);
 		auto result = APDUParser::ParseTwoPass(objects, &handler, &logger);
 		if (result == APDUParser::Result::OK)
 		{
@@ -649,7 +658,7 @@ IINField OutstationContext::HandleSelect(const openpal::ReadOnlyBuffer& objects,
 	else
 	{
 		CommandActionAdapter adapter(pCommandHandler, true);
-		CommandResponseHandler handler(logger, params.maxControlsPerRequest, &adapter, writer);
+		CommandResponseHandler handler(logger, params.maxControlsPerRequest, &adapter, &writer);
 		auto result = APDUParser::ParseTwoPass(objects, &handler, &logger);
 		if (result == APDUParser::Result::OK)
 		{
@@ -687,7 +696,7 @@ IINField OutstationContext::HandleOperate(const openpal::ReadOnlyBuffer& objects
 				if (objectsEqualToLastRequest)
 				{					
 					CommandActionAdapter adapter(pCommandHandler, false);
-					CommandResponseHandler handler(logger, params.maxControlsPerRequest, &adapter, writer);
+					CommandResponseHandler handler(logger, params.maxControlsPerRequest, &adapter, &writer);
 					auto result = APDUParser::ParseTwoPass(objects, &handler, &logger);
 					if (result == APDUParser::Result::OK)
 					{
@@ -764,7 +773,7 @@ IINField OutstationContext::HandleEnableUnsolicited(const openpal::ReadOnlyBuffe
 IINField OutstationContext::HandleCommandWithConstant(const openpal::ReadOnlyBuffer& objects, ObjectWriter& writer, CommandStatus status)
 {
 	ConstantCommandAction constant(status);
-	CommandResponseHandler handler(logger, params.maxControlsPerRequest, &constant, writer);
+	CommandResponseHandler handler(logger, params.maxControlsPerRequest, &constant, &writer);
 	auto result = APDUParser::ParseTwoPass(objects, &handler, &logger);
 	return IINFromParseResult(result);
 }

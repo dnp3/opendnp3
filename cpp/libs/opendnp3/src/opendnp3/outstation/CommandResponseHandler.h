@@ -36,7 +36,7 @@ class CommandResponseHandler : public APDUHandlerBase
 {
 public:
 
-	CommandResponseHandler(openpal::Logger logger, uint8_t maxCommands_, ICommandAction* pCommandAction_, ObjectWriter& writer);
+	CommandResponseHandler(openpal::Logger logger, uint8_t maxCommands_, ICommandAction* pCommandAction_, ObjectWriter* pWriter_);
 
 	virtual void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint16_t>>& meas) override final;
 	virtual void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint16_t>>& meas) override final;
@@ -66,42 +66,61 @@ private:
 	template <class Target, class IndexType>
 	void RespondToHeader(QualifierCode qualifier, IDNP3Serializer<Target>& serializer, const IterableBuffer<IndexedValue<Target, typename IndexType::Type>>& values);
 
+	template <class Target, class IndexType>
+	void RespondToHeaderWithIterator(QualifierCode qualifier, IDNP3Serializer<Target>& serializer, const IterableBuffer<IndexedValue<Target, typename IndexType::Type>>& values, PrefixedWriteIterator<IndexType, Target>* pIterator = nullptr);
 };
 
+
 template <class Target, class IndexType>
-void CommandResponseHandler::RespondToHeader(QualifierCode qualifier, IDNP3Serializer<Target>& serializer, const IterableBuffer<IndexedValue<Target, typename IndexType::Type>>& values)
+void CommandResponseHandler::RespondToHeaderWithIterator(QualifierCode qualifier, IDNP3Serializer<Target>& serializer, const IterableBuffer<IndexedValue<Target, typename IndexType::Type>>& values, PrefixedWriteIterator<IndexType, Target>* pIterator)
 {
-	auto iter = pWriter->IterateOverCountWithPrefix<IndexType, Target>(qualifier, serializer);
-
 	auto commands = values.Iterate();
-
 	do
 	{
 		auto command = commands.Current();
 		auto result = CommandStatus::TOO_MANY_OPS;
-		
+
 		if (numRequests < maxCommands)
 		{
 			result = pCommandAction->Action(command.value, command.index);
 		}
-		
+
 		switch (result)
 		{
 			case(CommandStatus::SUCCESS) :
 				++numSuccess;
 				break;
-			case(CommandStatus::NOT_SUPPORTED):
+			case(CommandStatus::NOT_SUPPORTED) :
 				errors.Set(IINBit::PARAM_ERROR);
 				break;
 		}
 
 		Target response(command.value);
 		response.status = result;
-		iter.Write(response, command.index);
+		
+		if (pIterator)
+		{
+			pIterator->Write(response, command.index);
+		}		
+
 		++numRequests;
 	} 
 	while (commands.MoveNext());
+}
 
+
+template <class Target, class IndexType>
+void CommandResponseHandler::RespondToHeader(QualifierCode qualifier, IDNP3Serializer<Target>& serializer, const IterableBuffer<IndexedValue<Target, typename IndexType::Type>>& values)
+{
+	if (pWriter)
+	{
+		auto iter = pWriter->IterateOverCountWithPrefix<IndexType, Target>(qualifier, serializer);		
+		this->RespondToHeaderWithIterator<Target, IndexType>(qualifier, serializer, values, &iter);
+	}
+	else
+	{		
+		this->RespondToHeaderWithIterator<Target, IndexType>(qualifier, serializer, values);
+	}
 }
 
 }
