@@ -40,19 +40,19 @@ FunctionCode FunctionCodeFromType(uint8_t arg)
     case(0x5):
       return FunctionCode::DIRECT_OPERATE;
     case(0x6):
-      return FunctionCode::DIRECT_OPERATE_NO_ACK;
+      return FunctionCode::DIRECT_OPERATE_NR;
     case(0x7):
-      return FunctionCode::FREEZE;
+      return FunctionCode::IMMED_FREEZE;
     case(0x8):
-      return FunctionCode::FREEZE_NO_ACK;
+      return FunctionCode::IMMED_FREEZE_NR;
     case(0x9):
       return FunctionCode::FREEZE_CLEAR;
     case(0xA):
-      return FunctionCode::FREEZE_CLEAR_NO_ACK;
+      return FunctionCode::FREEZE_CLEAR_NR;
     case(0xB):
       return FunctionCode::FREEZE_AT_TIME;
     case(0xC):
-      return FunctionCode::FREEZE_AT_TIME_NO_ACK;
+      return FunctionCode::FREEZE_AT_TIME_NR;
     case(0xD):
       return FunctionCode::COLD_RESTART;
     case(0xE):
@@ -76,19 +76,19 @@ FunctionCode FunctionCodeFromType(uint8_t arg)
     case(0x17):
       return FunctionCode::DELAY_MEASURE;
     case(0x18):
-      return FunctionCode::RECORD_TIME;
+      return FunctionCode::RECORD_CURRENT_TIME;
     case(0x19):
-      return FunctionCode::FILE_OPEN;
+      return FunctionCode::OPEN_FILE;
     case(0x1A):
-      return FunctionCode::FILE_CLOSE;
+      return FunctionCode::CLOSE_FILE;
     case(0x1B):
-      return FunctionCode::FILE_DELETE;
+      return FunctionCode::DELETE_FILE;
     case(0x1C):
-      return FunctionCode::FILE_INFO;
+      return FunctionCode::GET_FILE_INFO;
     case(0x1D):
-      return FunctionCode::FILE_AUTHENTICATE;
+      return FunctionCode::AUTHENTICATE_FILE;
     case(0x1E):
-      return FunctionCode::FILE_ABORT;
+      return FunctionCode::ABORT_FILE;
     case(0x81):
       return FunctionCode::RESPONSE;
     case(0x82):
@@ -114,20 +114,20 @@ char const* FunctionCodeToString(FunctionCode arg)
       return "OPERATE";
     case(FunctionCode::DIRECT_OPERATE):
       return "DIRECT_OPERATE";
-    case(FunctionCode::DIRECT_OPERATE_NO_ACK):
-      return "DIRECT_OPERATE_NO_ACK";
-    case(FunctionCode::FREEZE):
-      return "FREEZE";
-    case(FunctionCode::FREEZE_NO_ACK):
-      return "FREEZE_NO_ACK";
+    case(FunctionCode::DIRECT_OPERATE_NR):
+      return "DIRECT_OPERATE_NR";
+    case(FunctionCode::IMMED_FREEZE):
+      return "IMMED_FREEZE";
+    case(FunctionCode::IMMED_FREEZE_NR):
+      return "IMMED_FREEZE_NR";
     case(FunctionCode::FREEZE_CLEAR):
       return "FREEZE_CLEAR";
-    case(FunctionCode::FREEZE_CLEAR_NO_ACK):
-      return "FREEZE_CLEAR_NO_ACK";
+    case(FunctionCode::FREEZE_CLEAR_NR):
+      return "FREEZE_CLEAR_NR";
     case(FunctionCode::FREEZE_AT_TIME):
       return "FREEZE_AT_TIME";
-    case(FunctionCode::FREEZE_AT_TIME_NO_ACK):
-      return "FREEZE_AT_TIME_NO_ACK";
+    case(FunctionCode::FREEZE_AT_TIME_NR):
+      return "FREEZE_AT_TIME_NR";
     case(FunctionCode::COLD_RESTART):
       return "COLD_RESTART";
     case(FunctionCode::WARM_RESTART):
@@ -150,20 +150,20 @@ char const* FunctionCodeToString(FunctionCode arg)
       return "ASSIGN_CLASS";
     case(FunctionCode::DELAY_MEASURE):
       return "DELAY_MEASURE";
-    case(FunctionCode::RECORD_TIME):
-      return "RECORD_TIME";
-    case(FunctionCode::FILE_OPEN):
-      return "FILE_OPEN";
-    case(FunctionCode::FILE_CLOSE):
-      return "FILE_CLOSE";
-    case(FunctionCode::FILE_DELETE):
-      return "FILE_DELETE";
-    case(FunctionCode::FILE_INFO):
-      return "FILE_INFO";
-    case(FunctionCode::FILE_AUTHENTICATE):
-      return "FILE_AUTHENTICATE";
-    case(FunctionCode::FILE_ABORT):
-      return "FILE_ABORT";
+    case(FunctionCode::RECORD_CURRENT_TIME):
+      return "RECORD_CURRENT_TIME";
+    case(FunctionCode::OPEN_FILE):
+      return "OPEN_FILE";
+    case(FunctionCode::CLOSE_FILE):
+      return "CLOSE_FILE";
+    case(FunctionCode::DELETE_FILE):
+      return "DELETE_FILE";
+    case(FunctionCode::GET_FILE_INFO):
+      return "GET_FILE_INFO";
+    case(FunctionCode::AUTHENTICATE_FILE):
+      return "AUTHENTICATE_FILE";
+    case(FunctionCode::ABORT_FILE):
+      return "ABORT_FILE";
     case(FunctionCode::RESPONSE):
       return "RESPONSE";
     case(FunctionCode::UNSOLICITED_RESPONSE):

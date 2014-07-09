@@ -38,6 +38,7 @@
     <ClInclude Include="src\opendnp3\app\ControlRelayOutputBlock.h" />
     <ClInclude Include="src\opendnp3\app\CountWriteIterator.h" />
     <ClInclude Include="src\opendnp3\app\EventTriggers.h" />
+    <ClInclude Include="src\opendnp3\app\FunctionHelpers.h" />
     <ClInclude Include="src\opendnp3\app\ITransactable.h" />
     <ClInclude Include="src\opendnp3\app\MeasurementTypes.h" />
     <ClInclude Include="src\opendnp3\app\DownSampling.h" />
@@ -246,6 +247,7 @@
     <ClCompile Include="src\opendnp3\app\BitReader.cpp" />
     <ClCompile Include="src\opendnp3\app\ClassField.cpp" />
     <ClCompile Include="src\opendnp3\app\ControlRelayOutputBlock.cpp" />
+    <ClCompile Include="src\opendnp3\app\FunctionHelpers.cpp" />
     <ClCompile Include="src\opendnp3\app\GroupVariationRecord.cpp" />
     <ClCompile Include="src\opendnp3\app\APDUHandlerBase.cpp" />
     <ClCompile Include="src\opendnp3\app\IINField.cpp" />
