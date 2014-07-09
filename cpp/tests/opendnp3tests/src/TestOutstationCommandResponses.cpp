@@ -42,7 +42,8 @@ TEST_CASE(SUITE("SelectCROBNotSupported"))
 	// Select group 12 Var 1, count = 1, index = 3
 	t.SendToOutstation("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");	
 	
-	REQUIRE(t.lower.PopWriteAsHex() ==  "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 04"); // 0x04 status == CommandStatus::NOT_SUPPORTED
+	// conformance requires IIN 2.2 to be set whenever the command status is not supported
+	REQUIRE(t.lower.PopWriteAsHex() ==  "C0 81 80 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 04"); // 0x04 status == CommandStatus::NOT_SUPPORTED
 }
 
 TEST_CASE(SUITE("SelectCROBTooMany"))

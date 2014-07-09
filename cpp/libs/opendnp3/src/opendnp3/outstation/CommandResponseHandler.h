@@ -79,14 +79,22 @@ void CommandResponseHandler::RespondToHeader(QualifierCode qualifier, IDNP3Seria
 	{
 		auto command = commands.Current();
 		auto result = CommandStatus::TOO_MANY_OPS;
+		
 		if (numRequests < maxCommands)
 		{
 			result = pCommandAction->Action(command.value, command.index);
 		}
-		if (result == CommandStatus::SUCCESS)
+		
+		switch (result)
 		{
-			++numSuccess;
+			case(CommandStatus::SUCCESS) :
+				++numSuccess;
+				break;
+			case(CommandStatus::NOT_SUPPORTED):
+				errors.Set(IINBit::PARAM_ERROR);
+				break;
 		}
+
 		Target response(command.value);
 		response.status = result;
 		iter.Write(response, command.index);

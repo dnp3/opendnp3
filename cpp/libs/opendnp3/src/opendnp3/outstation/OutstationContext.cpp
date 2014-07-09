@@ -622,7 +622,14 @@ IINField OutstationContext::HandleDirectOperate(const openpal::ReadOnlyBuffer& o
 		CommandActionAdapter adapter(pCommandHandler, false);
 		CommandResponseHandler handler(logger, params.maxControlsPerRequest, &adapter, writer);
 		auto result = APDUParser::ParseTwoPass(objects, &handler, &logger);
-		return IINFromParseResult(result);
+		if (result == APDUParser::Result::OK)
+		{
+			return handler.Errors();
+		}
+		else
+		{
+			return IINFromParseResult(result);
+		}		
 	}
 }
 
@@ -645,13 +652,10 @@ IINField OutstationContext::HandleSelect(const openpal::ReadOnlyBuffer& objects,
 			{				
 				operateExpectedFragCount = rxFragCount + 1;
 				operateExpectedSeq = AppControlField::NextSeq(solSeqN);
-				selectTime = pExecutor->GetTime();
-				return IINField::Empty;
+				selectTime = pExecutor->GetTime();				
 			}
-			else
-			{
-				return IINField::Empty;
-			}
+			
+			return handler.Errors();
 		}
 		else
 		{
@@ -680,7 +684,14 @@ IINField OutstationContext::HandleOperate(const openpal::ReadOnlyBuffer& objects
 					CommandActionAdapter adapter(pCommandHandler, false);
 					CommandResponseHandler handler(logger, params.maxControlsPerRequest, &adapter, writer);
 					auto result = APDUParser::ParseTwoPass(objects, &handler, &logger);
-					return IINFromParseResult(result);					
+					if (result == APDUParser::Result::OK)
+					{
+						return handler.Errors();
+					}
+					else
+					{
+						return IINFromParseResult(result);
+					}					
 				}
 				else
 				{
