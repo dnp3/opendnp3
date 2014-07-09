@@ -30,11 +30,12 @@
     <ROW Component="SHORTCUTDIR" ComponentId="{4B55F51E-F112-4292-9496-F644899E9F89}" Directory_="SHORTCUTDIR" Attributes="0"/>
     <ROW Component="SimulatorAPI.dll" ComponentId="{0C0FB702-B061-4534-8A68-1CEBB38A3F93}" Directory_="APPDIR" Attributes="0" KeyPath="SimulatorAPI.dll"/>
     <ROW Component="SimulatorApplication.exe" ComponentId="{A601801D-D797-402A-AC4C-3270C9BD4266}" Directory_="APPDIR" Attributes="0" KeyPath="SimulatorApplication.exe"/>
+    <ROW Component="SimulatorCommons.dll" ComponentId="{28E0ED8C-0242-4E48-B5B4-BF1C61BB2A7B}" Directory_="APPDIR" Attributes="0" KeyPath="SimulatorCommons.dll"/>
     <ROW Component="SimulatorDNP3.dll" ComponentId="{FEF66579-F168-43F2-8587-7D18F8090DFA}" Directory_="APPDIR" Attributes="0" KeyPath="SimulatorDNP3.dll"/>
     <ROW Component="SimulatorUI.dll" ComponentId="{C920E690-6622-4A1E-911A-CC4271391C72}" Directory_="APPDIR" Attributes="0" KeyPath="SimulatorUI.dll"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiFeatsComponent">
-    <ROW Feature="MainFeature" Title="MainFeature" Description="Description" Display="1" Level="1" Directory_="APPDIR" Attributes="0" Components="DNP3CLRAdapter.dll DNP3CLRInterface.dll ProductInformation SHORTCUTDIR SimulatorAPI.dll SimulatorApplication.exe SimulatorDNP3.dll SimulatorUI.dll"/>
+    <ROW Feature="MainFeature" Title="MainFeature" Description="Description" Display="1" Level="1" Directory_="APPDIR" Attributes="0" Components="DNP3CLRAdapter.dll DNP3CLRInterface.dll ProductInformation SHORTCUTDIR SimulatorAPI.dll SimulatorApplication.exe SimulatorCommons.dll SimulatorDNP3.dll SimulatorUI.dll"/>
     <ATTRIBUTE name="CurrentFeature" value="MainFeature"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiFilesComponent">
@@ -42,8 +43,9 @@
     <ROW File="DNP3CLRInterface.dll" Component_="DNP3CLRInterface.dll" FileName="DNP3CL~2.DLL|DNP3CLRInterface.dll" Attributes="0" SourcePath="Simulator\bin\x86\Release\DNP3CLRInterface.dll" SelfReg="false" NextFile="SimulatorAPI.dll"/>
     <ROW File="SimulatorAPI.dll" Component_="SimulatorAPI.dll" FileName="SIMULA~1.DLL|SimulatorAPI.dll" Attributes="0" SourcePath="Simulator\bin\x86\Release\SimulatorAPI.dll" SelfReg="false" NextFile="SimulatorApplication.exe"/>
     <ROW File="SimulatorApplication.exe" Component_="SimulatorApplication.exe" FileName="SIMULA~1.EXE|SimulatorApplication.exe" Attributes="0" SourcePath="Simulator\bin\x86\Release\SimulatorApplication.exe" SelfReg="false" NextFile="SimulatorDNP3.dll" DigSign="true"/>
+    <ROW File="SimulatorCommons.dll" Component_="SimulatorCommons.dll" FileName="SIMULA~4.DLL|SimulatorCommons.dll" Attributes="0" SourcePath="Simulator\bin\x86\Release\SimulatorCommons.dll" SelfReg="false"/>
     <ROW File="SimulatorDNP3.dll" Component_="SimulatorDNP3.dll" FileName="SIMULA~2.DLL|SimulatorDNP3.dll" Attributes="0" SourcePath="Simulator\bin\x86\Release\SimulatorDNP3.dll" SelfReg="false" NextFile="SimulatorUI.dll"/>
-    <ROW File="SimulatorUI.dll" Component_="SimulatorUI.dll" FileName="SIMULA~3.DLL|SimulatorUI.dll" Attributes="0" SourcePath="Simulator\bin\x86\Release\SimulatorUI.dll" SelfReg="false"/>
+    <ROW File="SimulatorUI.dll" Component_="SimulatorUI.dll" FileName="SIMULA~3.DLL|SimulatorUI.dll" Attributes="0" SourcePath="Simulator\bin\x86\Release\SimulatorUI.dll" SelfReg="false" NextFile="SimulatorCommons.dll"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.BuildComponent">
     <ROW BuildKey="DefaultBuild" BuildName="DefaultBuild" BuildOrder="1" BuildType="0" PackageFolder="..\..\..\..\..\Desktop\output" PackageFileName="setup" Languages="en" InstallationType="4" UseLargeSchema="true"/>

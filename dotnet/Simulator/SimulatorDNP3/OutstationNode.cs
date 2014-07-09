@@ -12,6 +12,7 @@ namespace Automatak.Simulator.DNP3
     class OutstationNode : ISimulatorNode
     {
         readonly MeasurementCache cache;
+        readonly ProxyCommandHandler handler;
         readonly IDNP3Config config;
         readonly IOutstation outstation;
         readonly ISimulatorNodeCallbacks callbacks;
@@ -31,9 +32,10 @@ namespace Automatak.Simulator.DNP3
             }
         }
 
-        public OutstationNode(MeasurementCache cache, IDNP3Config config, IOutstation outstation, ISimulatorNodeCallbacks callbacks, string alias)
+        public OutstationNode(MeasurementCache cache, ProxyCommandHandler handler, IDNP3Config config, IOutstation outstation, ISimulatorNodeCallbacks callbacks, string alias)
         {
             this.cache = cache;
+            this.handler = handler;
             this.config = config;
             this.outstation = outstation;
             this.callbacks = callbacks;
