@@ -50,7 +50,7 @@ namespace Automatak.Simulator.DNP3
         {
             if (form == null)
             {
-                form = new OutstationForm(outstation, cache, alias);
+                form = new OutstationForm(outstation, cache, handler, alias);
             }
 
             form.Show();

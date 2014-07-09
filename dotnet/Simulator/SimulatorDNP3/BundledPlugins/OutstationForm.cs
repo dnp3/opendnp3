@@ -17,21 +17,25 @@ namespace Automatak.Simulator.DNP3
 
         readonly IOutstation outstation;
         readonly MeasurementCache cache;
+        readonly ProxyCommandHandler proxy;
         readonly IDatabase database;        
 
         readonly IList<Action<IDatabase>> events = new List<Action<IDatabase>>();
 
-        public OutstationForm(IOutstation outstation, MeasurementCache cache, String alias)
+        public OutstationForm(IOutstation outstation, MeasurementCache cache, ProxyCommandHandler proxy, String alias)
         {
             InitializeComponent();
 
             this.outstation = outstation;
             this.cache = cache;
+            this.proxy = proxy;
 
             this.database = new MultiplexedDatabase(cache, outstation.GetDatabase());            
 
             this.Text = String.Format("DNP3 Outstation ({0})", alias);
             this.comboBoxTypes.DataSource = System.Enum.GetValues(typeof(MeasType));
+
+            this.commandHandlerControl1.Configure(proxy, database);
 
             this.CheckState();
         }       
