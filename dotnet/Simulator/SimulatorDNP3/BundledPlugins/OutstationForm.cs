@@ -168,7 +168,7 @@ namespace Automatak.Simulator.DNP3
 
         void AddActions(IEnumerable<Action<IDatabase>> actions)
         {
-            ListviewDatabaseAdapter.Process(actions, listViewEvents);
+            ListviewDatabaseAdapter.Process(actions, listBoxEvents);
 
             foreach (var action in actions)
             {
@@ -193,14 +193,14 @@ namespace Automatak.Simulator.DNP3
            }
            database.End();
            
-           this.listViewEvents.Items.Clear();
+           this.listBoxEvents.Items.Clear();
            this.events.Clear();
            this.CheckState();
         }
 
         private void buttonClear_Click(object sender, EventArgs e)
         {
-            this.listViewEvents.Items.Clear();
+            this.listBoxEvents.Items.Clear();
             this.events.Clear();
             this.CheckState();
         }        

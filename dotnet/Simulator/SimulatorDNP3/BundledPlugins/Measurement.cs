@@ -23,12 +23,13 @@ namespace Automatak.Simulator.DNP3
     {
         public Measurement(string sValue, MeasurementBase meas, MeasType type, UInt16 index, IQualityBitInfo info)
         {
-            this.valueAsString = sValue;
-            this.flags = GetQualityAsString(meas.Quality, info);
+            this.valueAsString = sValue;            
             this.timeStamp = meas.IsTimestampValid ? meas.Timestamp : DateTime.Now;                        
             this.timeStampAssumed = !meas.IsTimestampValid;
             this.type = type;
             this.index = index;
+            this.info = info;
+            this.quality = meas.Quality;
         }        
 
         public ushort Index
@@ -51,7 +52,22 @@ namespace Automatak.Simulator.DNP3
         {
             get
             {
-                return flags;
+                if (QualityInfo.CountOf(quality) > 2)
+                {
+                    return ShortFlags + " - " + String.Join(", ", QualityInfo.GetShortNames(quality, info));
+                }
+                else
+                {
+                    return ShortFlags + " - " + String.Join(", ", QualityInfo.GetLongNames(quality, info));
+                }   
+            }
+        }
+
+        public string ShortFlags
+        {
+            get
+            {
+                return "0x" + quality.ToString("X02");
             }
         }
 
@@ -69,7 +85,7 @@ namespace Automatak.Simulator.DNP3
                     return time;
                 }
             }
-        }        
+        }
 
         public MeasType Type
         {
@@ -78,27 +94,13 @@ namespace Automatak.Simulator.DNP3
                 return type;
             }
         }
-
-        string GetQualityAsString(byte quality, IQualityBitInfo info)
-        {
-            var start = "0x" + quality.ToString("X02") + " - ";
-
-            if (QualityInfo.CountOf(quality) > 2)
-            {
-                return start + String.Join(", ", QualityInfo.GetShortNames(quality, info));
-            }
-            else
-            {
-                return start + String.Join(", ", QualityInfo.GetLongNames(quality, info));
-            }            
-        }
-
         
         readonly UInt16 index;
-        readonly string valueAsString;
-        readonly string flags;
+        readonly string valueAsString;        
         readonly DateTime timeStamp;
         readonly bool timeStampAssumed;
-        readonly MeasType type;       
+        readonly MeasType type;
+        readonly IQualityBitInfo info;
+        readonly byte quality;
     }
 }

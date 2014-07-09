@@ -11,16 +11,16 @@ namespace Automatak.Simulator.DNP3
 {
     class ListviewDatabaseAdapter : IDatabase
     {
-        readonly ListView listView;
+        readonly ListBox listBox;
 
-        ListviewDatabaseAdapter(ListView listView)
+        ListviewDatabaseAdapter(ListBox listBox)
         {
-            this.listView = listView;
+            this.listBox = listBox;
         }
 
-        public static void Process(IEnumerable<Action<IDatabase>> actions, ListView listView)
+        public static void Process(IEnumerable<Action<IDatabase>> actions, ListBox listBox)
         {
-            IDatabase adapter = new ListviewDatabaseAdapter(listView);
+            IDatabase adapter = new ListviewDatabaseAdapter(listBox);
             
             adapter.Start();
             foreach (var action in actions)
@@ -32,14 +32,13 @@ namespace Automatak.Simulator.DNP3
 
         void IDatabase.Start()
         {
-            listView.SuspendLayout();
+            listBox.SuspendLayout();
         }
 
         void Add(Measurement meas, string label)
         {
-            string[] text = { meas.Index.ToString(), meas.Value, meas.Flags, meas.Timestamp, label };
-            var item = new ListViewItem(text);
-            listView.Items.Add(item);
+            var text = string.Format("{0} Event ({1}) - {2} - {3}", label, meas.Index, meas.Value, meas.ShortFlags);        
+            listBox.Items.Add(text);
         }
 
 
@@ -80,7 +79,7 @@ namespace Automatak.Simulator.DNP3
 
         void IDatabase.End()
         {
-            listView.ResumeLayout();
+            listBox.ResumeLayout();
         }        
     }
 }
