@@ -113,6 +113,12 @@ OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnRepeatNonReadReque
 	}
 	else
 	{
+		if (header.function == FunctionCode::SELECT)
+		{
+			// repeat selects are allowed, but they do not reset the select timer
+			pContext->operateExpectedFragCount = pContext->rxFragCount + 1;
+		}
+
 		pContext->BeginResponseTx(pContext->lastResponse);
 		return this;
 	}

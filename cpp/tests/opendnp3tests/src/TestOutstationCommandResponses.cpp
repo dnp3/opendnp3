@@ -91,6 +91,28 @@ TEST_CASE(SUITE("SelectOperateCROB"))
 	t.OnSendResult(true);
 }
 
+TEST_CASE(SUITE("SelectRetryAndOperateCROB"))
+{
+	OutstationConfig config;
+	OutstationTestObject t(config);
+	t.LowerLayerUp();
+
+	// Select group 12 Var 1, count = 1, index = 3
+	t.SendToOutstation("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
+	t.OnSendResult(true);
+
+	// Select group 12 Var 1, count = 1, index = 3
+	t.SendToOutstation("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
+	t.OnSendResult(true);
+
+	// operate
+	t.SendToOutstation("C1 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
+	REQUIRE(t.lower.PopWriteAsHex() == "C1 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
+	t.OnSendResult(true);
+}
+
 TEST_CASE(SUITE("SelectOperateTimeout"))
 {
 	OutstationConfig config;
