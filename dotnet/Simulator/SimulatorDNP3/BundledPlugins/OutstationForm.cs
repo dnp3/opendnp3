@@ -203,6 +203,11 @@ namespace Automatak.Simulator.DNP3
             this.listBoxEvents.Items.Clear();
             this.events.Clear();
             this.CheckState();
+        }
+
+        private void measurementView_OnRowSelectionChanged()
+        {
+
         }        
     }
 }

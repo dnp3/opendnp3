@@ -37,7 +37,7 @@ namespace Automatak.Simulator.DNP3
 
         void Add(Measurement meas, string label)
         {
-            var text = string.Format("{0} Event ({1}) - {2} - {3}", label, meas.Index, meas.Value, meas.ShortFlags);        
+            var text = string.Format("{0} ({1}) - {2} - {3}", label, meas.Index, meas.Value, meas.ShortFlags);        
             listBox.Items.Add(text);
         }
 

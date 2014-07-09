@@ -34,15 +34,14 @@
             this.buttonEdit = new System.Windows.Forms.Button();
             this.comboBoxTypes = new System.Windows.Forms.ComboBox();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.measurementView = new Automatak.Simulator.DNP3.MeasurementView();
             this.listBoxEvents = new System.Windows.Forms.ListBox();
+            this.measurementView = new Automatak.Simulator.DNP3.MeasurementView();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
-            this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -54,6 +53,7 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.listBoxEvents);
             this.splitContainer1.Panel1.Controls.Add(this.buttonClear);
             this.splitContainer1.Panel1.Controls.Add(this.buttonApply);
             this.splitContainer1.Panel1.Controls.Add(this.buttonEdit);
@@ -64,7 +64,7 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
             this.splitContainer1.Size = new System.Drawing.Size(903, 453);
-            this.splitContainer1.SplitterDistance = 171;
+            this.splitContainer1.SplitterDistance = 261;
             this.splitContainer1.TabIndex = 1;
             // 
             // buttonClear
@@ -73,7 +73,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonClear.Location = new System.Drawing.Point(5, 137);
             this.buttonClear.Name = "buttonClear";
-            this.buttonClear.Size = new System.Drawing.Size(161, 38);
+            this.buttonClear.Size = new System.Drawing.Size(251, 38);
             this.buttonClear.TabIndex = 3;
             this.buttonClear.Text = "Clear Events";
             this.buttonClear.UseVisualStyleBackColor = true;
@@ -85,7 +85,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonApply.Location = new System.Drawing.Point(5, 93);
             this.buttonApply.Name = "buttonApply";
-            this.buttonApply.Size = new System.Drawing.Size(161, 38);
+            this.buttonApply.Size = new System.Drawing.Size(251, 38);
             this.buttonApply.TabIndex = 2;
             this.buttonApply.Text = "Apply Events";
             this.buttonApply.UseVisualStyleBackColor = true;
@@ -97,7 +97,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonEdit.Location = new System.Drawing.Point(5, 49);
             this.buttonEdit.Name = "buttonEdit";
-            this.buttonEdit.Size = new System.Drawing.Size(161, 38);
+            this.buttonEdit.Size = new System.Drawing.Size(251, 38);
             this.buttonEdit.TabIndex = 1;
             this.buttonEdit.Text = "Edit Selection";
             this.buttonEdit.UseVisualStyleBackColor = true;
@@ -111,7 +111,7 @@
             this.comboBoxTypes.FormattingEnabled = true;
             this.comboBoxTypes.Location = new System.Drawing.Point(5, 5);
             this.comboBoxTypes.Name = "comboBoxTypes";
-            this.comboBoxTypes.Size = new System.Drawing.Size(161, 21);
+            this.comboBoxTypes.Size = new System.Drawing.Size(251, 21);
             this.comboBoxTypes.TabIndex = 0;
             this.comboBoxTypes.SelectedIndexChanged += new System.EventHandler(this.comboBoxTypes_SelectedIndexChanged);
             // 
@@ -125,13 +125,18 @@
             // splitContainer2.Panel1
             // 
             this.splitContainer2.Panel1.Controls.Add(this.measurementView);
-            // 
-            // splitContainer2.Panel2
-            // 
-            this.splitContainer2.Panel2.Controls.Add(this.listBoxEvents);
-            this.splitContainer2.Size = new System.Drawing.Size(728, 453);
+            this.splitContainer2.Size = new System.Drawing.Size(638, 453);
             this.splitContainer2.SplitterDistance = 215;
             this.splitContainer2.TabIndex = 0;
+            // 
+            // listBoxEvents
+            // 
+            this.listBoxEvents.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.listBoxEvents.FormattingEnabled = true;
+            this.listBoxEvents.Location = new System.Drawing.Point(5, 184);
+            this.listBoxEvents.Name = "listBoxEvents";
+            this.listBoxEvents.Size = new System.Drawing.Size(251, 264);
+            this.listBoxEvents.TabIndex = 0;
             // 
             // measurementView
             // 
@@ -139,18 +144,9 @@
             this.measurementView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.measurementView.Location = new System.Drawing.Point(0, 0);
             this.measurementView.Name = "measurementView";
-            this.measurementView.Size = new System.Drawing.Size(728, 215);
+            this.measurementView.Size = new System.Drawing.Size(638, 215);
             this.measurementView.TabIndex = 3;
             this.measurementView.OnRowSelectionChanged += new Automatak.Simulator.DNP3.MeasurementView.RowSelectionEvent(this.measurementView_OnRowSelectionChanged);
-            // 
-            // listBoxEvents
-            // 
-            this.listBoxEvents.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listBoxEvents.FormattingEnabled = true;
-            this.listBoxEvents.Location = new System.Drawing.Point(0, 0);
-            this.listBoxEvents.Name = "listBoxEvents";
-            this.listBoxEvents.Size = new System.Drawing.Size(728, 234);
-            this.listBoxEvents.TabIndex = 0;
             // 
             // OutstationForm
             // 
@@ -167,7 +163,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.splitContainer2.Panel1.ResumeLayout(false);
-            this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
             this.ResumeLayout(false);
