@@ -47,6 +47,8 @@ public:
 
 	/// allows matching of exact code
 	ControlCode functionCode;
+	/// The raw code in bytes
+	uint8_t rawCode;
 	/// the number of times to repeat the operation
 	uint8_t count;
 	/// the 'on' time for the pulse train

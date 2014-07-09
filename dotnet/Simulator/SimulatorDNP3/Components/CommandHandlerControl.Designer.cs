@@ -37,7 +37,12 @@
             this.buttonAddBO = new System.Windows.Forms.Button();
             this.buttonReset = new System.Windows.Forms.Button();
             this.buttonAddAO = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.numericUpDownIndex = new System.Windows.Forms.NumericUpDown();
+            this.label1 = new System.Windows.Forms.Label();
+            this.comboBoxCode = new System.Windows.Forms.ComboBox();
             this.groupBoxBehavior.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownIndex)).BeginInit();
             this.SuspendLayout();
             // 
             // listBoxLog
@@ -98,7 +103,7 @@
             this.listBoxHandlers.FormattingEnabled = true;
             this.listBoxHandlers.Location = new System.Drawing.Point(204, 13);
             this.listBoxHandlers.Name = "listBoxHandlers";
-            this.listBoxHandlers.Size = new System.Drawing.Size(232, 212);
+            this.listBoxHandlers.Size = new System.Drawing.Size(232, 147);
             this.listBoxHandlers.TabIndex = 11;
             // 
             // buttonAddBO
@@ -131,10 +136,53 @@
             this.buttonAddAO.UseVisualStyleBackColor = true;
             this.buttonAddAO.Click += new System.EventHandler(this.buttonAddAO_Click);
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(343, 205);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(33, 13);
+            this.label2.TabIndex = 18;
+            this.label2.Text = "Index";
+            // 
+            // numericUpDownIndex
+            // 
+            this.numericUpDownIndex.Location = new System.Drawing.Point(205, 203);
+            this.numericUpDownIndex.Maximum = new decimal(new int[] {
+            65535,
+            0,
+            0,
+            0});
+            this.numericUpDownIndex.Name = "numericUpDownIndex";
+            this.numericUpDownIndex.Size = new System.Drawing.Size(120, 20);
+            this.numericUpDownIndex.TabIndex = 17;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(343, 179);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(72, 13);
+            this.label1.TabIndex = 16;
+            this.label1.Text = "Return Status";
+            // 
+            // comboBoxCode
+            // 
+            this.comboBoxCode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxCode.FormattingEnabled = true;
+            this.comboBoxCode.Location = new System.Drawing.Point(204, 175);
+            this.comboBoxCode.Name = "comboBoxCode";
+            this.comboBoxCode.Size = new System.Drawing.Size(121, 21);
+            this.comboBoxCode.TabIndex = 15;
+            // 
             // CommandHandlerControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.numericUpDownIndex);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.comboBoxCode);
             this.Controls.Add(this.buttonAddAO);
             this.Controls.Add(this.buttonReset);
             this.Controls.Add(this.buttonAddBO);
@@ -145,7 +193,9 @@
             this.Size = new System.Drawing.Size(755, 297);
             this.groupBoxBehavior.ResumeLayout(false);
             this.groupBoxBehavior.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownIndex)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -160,5 +210,9 @@
         private System.Windows.Forms.CheckBox checkBoxMapBinary;
         private System.Windows.Forms.CheckBox checkBoxEnabled;
         private System.Windows.Forms.Button buttonAddAO;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.NumericUpDown numericUpDownIndex;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ComboBox comboBoxCode;
     }
 }

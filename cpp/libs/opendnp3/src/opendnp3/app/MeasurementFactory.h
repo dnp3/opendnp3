@@ -104,13 +104,15 @@ struct FrozenCounterFactory: private openpal::PureStatic
 struct ControlRelayOutputBlockFactory: private openpal::PureStatic
 {
 	inline static ControlRelayOutputBlock From(
-	    ControlCode aCode,
+	    uint8_t aCode,
 	    uint8_t aCount,
 	    uint32_t aOnTime,
 	    uint32_t aOffTime,
 	    CommandStatus aStatus)
 	{
-		return ControlRelayOutputBlock(aCode, aCount, aOnTime, aOffTime, aStatus);
+		ControlRelayOutputBlock crob(ControlCodeFromType(aCode), aCount, aOnTime, aOffTime, aStatus);
+		crob.rawCode = aCode;
+		return crob;
 	}
 };
 

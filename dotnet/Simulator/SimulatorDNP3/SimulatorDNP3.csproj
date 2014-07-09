@@ -98,12 +98,6 @@
     <Compile Include="BundledPlugins\QualitySelector.Designer.cs">
       <DependentUpon>QualitySelector.cs</DependentUpon>
     </Compile>
-    <Compile Include="CommandHandlerDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="CommandHandlerDialog.Designer.cs">
-      <DependentUpon>CommandHandlerDialog.cs</DependentUpon>
-    </Compile>
     <Compile Include="Components\CommandHandlerControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -263,9 +257,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="BundledPlugins\QualitySelector.resx">
       <DependentUpon>QualitySelector.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="CommandHandlerDialog.resx">
-      <DependentUpon>CommandHandlerDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Components\CommandHandlerControl.resx">
       <DependentUpon>CommandHandlerControl.cs</DependentUpon>

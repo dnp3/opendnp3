@@ -10,7 +10,7 @@ object Group12 extends ObjectGroup {
 }
 
 object Group12Var1 extends FixedSize(Group12, 1)(
-  controlCode,
+  FixedSizeField("code", UInt8Field),
   FixedSizeField("count", UInt8Field),
   FixedSizeField("onTime", UInt32Field),
   FixedSizeField("offTime", UInt32Field),

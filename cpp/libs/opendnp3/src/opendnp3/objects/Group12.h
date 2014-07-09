@@ -21,7 +21,6 @@
 #include <openpal/container/ReadOnlyBuffer.h>
 #include <openpal/container/WriteBuffer.h>
 #include "opendnp3/app/GroupVariationID.h"
-#include "opendnp3/gen/ControlCode.h"
 #include "opendnp3/gen/CommandStatus.h"
 #include "opendnp3/app/IDNP3Serializer.h"
 #include "opendnp3/app/ControlRelayOutputBlock.h"
@@ -36,7 +35,7 @@ struct Group12Var1
   static Group12Var1 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group12Var1&, openpal::WriteBuffer&);
 
-  ControlCode code;
+  uint8_t code;
   uint8_t count;
   uint32_t onTime;
   uint32_t offTime;

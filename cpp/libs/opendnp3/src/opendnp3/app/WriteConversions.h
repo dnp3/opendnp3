@@ -73,7 +73,7 @@ struct ConvertGroup12Var1 : private openpal::Uncopyable
 	static Group12Var1 Apply(const ControlRelayOutputBlock& crob)
 	{
 		Group12Var1 ret;
-		ret.code = crob.functionCode;
+		ret.code = crob.rawCode;
 		ret.count = crob.count;
 		ret.onTime = crob.onTimeMS;
 		ret.offTime = crob.offTimeMS;

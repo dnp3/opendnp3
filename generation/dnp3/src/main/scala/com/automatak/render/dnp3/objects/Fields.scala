@@ -38,7 +38,6 @@ object FixedSizeField {
 
 
   //enums
-  val controlCode = FixedSizeField("code", EnumField(ControlCode()))
   val commandStatus = FixedSizeField("status", EnumField(CommandStatus()))
 }
 

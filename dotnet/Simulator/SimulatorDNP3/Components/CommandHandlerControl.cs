@@ -19,7 +19,9 @@ namespace Automatak.Simulator.DNP3.Components
 
         public CommandHandlerControl()
         {
-            InitializeComponent();                        
+            InitializeComponent();
+
+            this.comboBoxCode.DataSource = Enum.GetValues(typeof(CommandStatus));
         }
 
         public void Configure(ProxyCommandHandler proxy, IDatabase database)
@@ -105,31 +107,34 @@ namespace Automatak.Simulator.DNP3.Components
         {
             this.handler.ClearResponses();
             this.RepopulateList();
-        }     
+        }
+
+        private UInt16 SelectedIndex
+        {
+            get 
+            {
+                return Decimal.ToUInt16(numericUpDownIndex.Value);
+            }
+        }
+
+        private CommandStatus SelectedStatus
+        {
+            get
+            {
+                return (CommandStatus)this.comboBoxCode.SelectedValue;
+            }
+        }
 
         private void buttonAddBO_Click(object sender, EventArgs e)
         {
-            using (var dialog = new CommandHandlerDialog("Add CROB Handler"))
-            {
-                if (dialog.ShowDialog() == DialogResult.OK)
-                {
-                    this.handler.AddBinaryResponse(dialog.SelectedIndex, dialog.SelectedCode);
-                    this.RepopulateList();
-                }
-            }
-            
+            this.handler.AddBinaryResponse(SelectedIndex, SelectedStatus);
+            this.RepopulateList();                       
         }
 
         private void buttonAddAO_Click(object sender, EventArgs e)
         {
-            using (var dialog = new CommandHandlerDialog("Add AnalogOutput Handler"))
-            {
-                if (dialog.ShowDialog() == DialogResult.OK)
-                {
-                    this.handler.AddAnalogResponse(dialog.SelectedIndex, dialog.SelectedCode);
-                    this.RepopulateList();
-                }
-            }            
+            this.handler.AddAnalogResponse(SelectedIndex, SelectedStatus);
+            this.RepopulateList();                
         }
     }
 }

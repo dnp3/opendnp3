@@ -30,7 +30,7 @@ const GroupVariationID  Group12Var1::ID(12,1);
 Group12Var1 Group12Var1::Read(ReadOnlyBuffer& buffer)
 {
   Group12Var1 obj;
-  obj.code = ControlCodeFromType(UInt8::Read(buffer));
+  obj.code = UInt8::Read(buffer);
   buffer.Advance(1);
   obj.count = UInt8::Read(buffer);
   buffer.Advance(1);
@@ -45,7 +45,7 @@ Group12Var1 Group12Var1::Read(ReadOnlyBuffer& buffer)
 
 void Group12Var1::Write(const Group12Var1& arg, openpal::WriteBuffer& buffer)
 {
-  UInt8::Write(buffer, ControlCodeToType(arg.code));
+  UInt8::Write(buffer, arg.code);
   buffer.Advance(1);
   UInt8::Write(buffer, arg.count);
   buffer.Advance(1);
