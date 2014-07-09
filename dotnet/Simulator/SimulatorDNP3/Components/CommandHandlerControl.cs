@@ -51,15 +51,15 @@ namespace Automatak.Simulator.DNP3.Components
             this.handler.AnalogCommandAccepted += handler_AnalogCommandAccepted;
         }
 
-        void handler_AnalogCommandAccepted(double value, ushort index, CommandStatus result)
+        void handler_AnalogCommandAccepted(double value, ushort index)
         {
             if (this.InvokeRequired)
             {
-                this.BeginInvoke(new Action(() => handler_AnalogCommandAccepted(value, index, result)));
+                this.BeginInvoke(new Action(() => handler_AnalogCommandAccepted(value, index)));
             }
             else
             {
-                var output = String.Format("Accepted Analog: {0} - {1} with result {2}", value, index, result);
+                var output = String.Format("Accepted Analog: {0} - {1} with result {2}", value, index);
                 this.listBoxLog.Items.Add(output);
                 if (checkBoxMapAnalog.Checked)
                 {
@@ -70,15 +70,15 @@ namespace Automatak.Simulator.DNP3.Components
             }
         }
 
-        void handler_BinaryCommandAccepted(ControlRelayOutputBlock crob, ushort index, CommandStatus result)
+        void handler_BinaryCommandAccepted(ControlRelayOutputBlock crob, ushort index)
         {
             if (this.InvokeRequired)
             {
-                this.BeginInvoke(new Action(() => handler_BinaryCommandAccepted(crob, index, result)));
+                this.BeginInvoke(new Action(() => handler_BinaryCommandAccepted(crob, index)));
             }
             else
             {
-                var output = String.Format("Accepted CROB: {0} - {1} with result {2}", crob.code, index, result);
+                var output = String.Format("Accepted CROB: {0} - {1}", crob.code, index);
                 this.listBoxLog.Items.Add(output);
                 if (checkBoxMapBinary.Checked)
                 {

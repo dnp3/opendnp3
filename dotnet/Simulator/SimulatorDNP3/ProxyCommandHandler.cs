@@ -25,10 +25,10 @@ namespace Automatak.Simulator.DNP3
         IDictionary<UInt16, CommandStatus> analogMap = new Dictionary<UInt16, CommandStatus>();
         ICommandHandler proxy = RejectingCommandHandler.Instance;
 
-        public delegate void OnBinaryAccepted(ControlRelayOutputBlock crob, UInt16 index, CommandStatus result);
+        public delegate void OnBinaryAccepted(ControlRelayOutputBlock crob, UInt16 index);
         public event OnBinaryAccepted BinaryCommandAccepted;
 
-        public delegate void OnAnalogAccepted(double value, UInt16 index, CommandStatus result);
+        public delegate void OnAnalogAccepted(double value, UInt16 index);
         public event OnAnalogAccepted AnalogCommandAccepted;
 
         public ICommandHandler CommandProxy
@@ -131,9 +131,9 @@ namespace Automatak.Simulator.DNP3
         CommandStatus GetOrElseAndLogBinary(ControlRelayOutputBlock command, ushort index, IDictionary<UInt16, CommandStatus> dictionary, Func<CommandStatus> action)
         {
             var result = GetOrElse(index, dictionary, action);
-            if (BinaryCommandAccepted != null)
+            if (result == CommandStatus.SUCCESS && BinaryCommandAccepted != null)
             {
-                BinaryCommandAccepted(command, index, result);
+                BinaryCommandAccepted(command, index);
             }
             return result;
         }
@@ -141,9 +141,9 @@ namespace Automatak.Simulator.DNP3
         CommandStatus GetOrElseAndLogAnalog(double value, ushort index, IDictionary<UInt16, CommandStatus> dictionary, Func<CommandStatus> action)
         {
             var result = GetOrElse(index, dictionary, action);
-            if (AnalogCommandAccepted != null)
+            if (result == CommandStatus.SUCCESS && AnalogCommandAccepted != null)
             {
-                AnalogCommandAccepted(value, index, result);
+                AnalogCommandAccepted(value, index);
             }
             return result;
         }
