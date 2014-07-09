@@ -28,8 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OutstationForm));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.buttonClear = new System.Windows.Forms.Button();
             this.buttonApply = new System.Windows.Forms.Button();
@@ -43,7 +41,6 @@
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -192,13 +189,6 @@
             this.columnHeader1.Text = "Event Type";
             this.columnHeader1.Width = 192;
             // 
-            // imageList1
-            // 
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList1.Images.SetKeyName(0, "dials.ico");
-            this.imageList1.Images.SetKeyName(1, "switch.ico");
-            // 
             // OutstationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -225,7 +215,6 @@
 
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.ComboBox comboBoxTypes;
-        private System.Windows.Forms.ImageList imageList1;
         private System.Windows.Forms.Button buttonEdit;
         private System.Windows.Forms.SplitContainer splitContainer2;
         private MeasurementView measurementView;

@@ -28,11 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MasterForm));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.comboBoxTypes = new System.Windows.Forms.ComboBox();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.measurementView = new Automatak.Simulator.DNP3.MeasurementView();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -69,29 +67,23 @@
             this.comboBoxTypes.TabIndex = 0;
             this.comboBoxTypes.SelectedIndexChanged += new System.EventHandler(this.comboBoxTypes_SelectedIndexChanged);
             // 
-            // imageList1
-            // 
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList1.Images.SetKeyName(0, "dials.ico");
-            this.imageList1.Images.SetKeyName(1, "switch.ico");
-            // 
             // measurementView
             // 
+            this.measurementView.AllowSelection = false;
             this.measurementView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.measurementView.Location = new System.Drawing.Point(0, 0);
             this.measurementView.Name = "measurementView";
             this.measurementView.Size = new System.Drawing.Size(786, 543);
             this.measurementView.TabIndex = 2;
             // 
-            // GUIMasterForm
+            // MasterForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1048, 543);
             this.Controls.Add(this.splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "GUIMasterForm";
+            this.Name = "MasterForm";
             this.Text = "Master";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GUIMasterForm_FormClosing);
             this.Load += new System.EventHandler(this.GUIMasterForm_Load);
@@ -108,7 +100,6 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.ComboBox comboBoxTypes;
         private MeasurementView measurementView;
-        private System.Windows.Forms.ImageList imageList1;
 
     }
 }
