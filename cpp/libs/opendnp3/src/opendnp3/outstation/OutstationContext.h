@@ -146,6 +146,8 @@ class OutstationContext
 
 	OutstationSolicitedStateBase* RespondToReadRequest(uint8_t seq, const openpal::ReadOnlyBuffer& objects);
 
+	void ProcessNoResponseFunction(const APDUHeader& header, const openpal::ReadOnlyBuffer& objects);
+
 	private:
 
 	void PostCheckForActions();

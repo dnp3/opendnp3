@@ -23,6 +23,7 @@
 
 #include "OutstationTestObject.h"
 #include "APDUHexBuilders.h"
+#include "HexConversions.h"
 
 #include <opendnp3/ErrorCodes.h>
 
@@ -56,6 +57,36 @@ TEST_CASE(SUITE("UnsupportedFunction"))
 
 	t.SendToOutstation("C0 10"); // func = initialize application (16)
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 01"); // IIN = device restart + func not supported
+}
+
+TEST_CASE(SUITE("NoResponseToNoAckCodes"))
+{
+	OutstationConfig config;
+	OutstationTestObject t(config);
+	t.LowerLayerUp();
+
+	// outstation shouldn't respond to any of these
+	std::vector<FunctionCode> codes;
+	codes.push_back(FunctionCode::DIRECT_OPERATE_NR);
+	codes.push_back(FunctionCode::FREEZE_AT_TIME_NR);
+	codes.push_back(FunctionCode::FREEZE_CLEAR_NR);
+	codes.push_back(FunctionCode::FREEZE_AT_TIME_NR);
+
+	uint8_t sequence = 0;
+
+	for (auto code : codes)
+	{
+		uint8_t bytes[2];		
+		AppControlField control(true, true, false, false, sequence);
+		bytes[0] = control.ToByte();
+		bytes[1] = static_cast<uint8_t>(code);
+		auto request = toHex(bytes, 2, true);
+
+		t.SendToOutstation(request);
+		REQUIRE(t.lower.PopWriteAsHex() == "");
+
+		++sequence;
+	}	
 }
 
 TEST_CASE(SUITE("WriteIIN"))

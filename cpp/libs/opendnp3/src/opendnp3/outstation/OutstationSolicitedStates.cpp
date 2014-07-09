@@ -23,6 +23,7 @@
 
 #include "opendnp3/LogLevels.h"
 #include "opendnp3/outstation/OutstationContext.h"
+#include "opendnp3/app/FunctionHelpers.h"
 
 
 #include <openpal/logging/LogMacros.h>
@@ -100,7 +101,15 @@ OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewNonReadRequest(
 	}
 	else
 	{
-		return pContext->RespondToNonReadRequest(header, objects, lastHeadersEqual);
+		if (IsNoAckCode(header.function))
+		{
+			pContext->ProcessNoResponseFunction(header, objects);
+			return this;
+		}
+		else
+		{
+			return pContext->RespondToNonReadRequest(header, objects, lastHeadersEqual);
+		}		
 	}
 }
 
@@ -113,16 +122,22 @@ OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnRepeatNonReadReque
 	}
 	else
 	{
-		if (header.function == FunctionCode::SELECT)
+		if (IsNoAckCode(header.function))
 		{
-			// repeat selects are allowed, but they do not reset the select timer
-			pContext->operateExpectedFragCount = pContext->rxFragCount + 1;
+			return this;
 		}
+		else
+		{
+			if (header.function == FunctionCode::SELECT)
+			{
+				// repeat selects are allowed, but they do not reset the select timer
+				pContext->operateExpectedFragCount = pContext->rxFragCount + 1;
+			}
 
-		pContext->BeginResponseTx(pContext->lastResponse);
-		return this;
-	}
-	
+			pContext->BeginResponseTx(pContext->lastResponse);
+			return this;
+		}		
+	}	
 }
 
 // --------------------- OutstationStateSolConfirmWait ----------------------

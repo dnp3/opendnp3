@@ -360,6 +360,11 @@ OutstationSolicitedStateBase* OutstationContext::RespondToReadRequest(uint8_t se
 	}	
 }
 
+void OutstationContext::ProcessNoResponseFunction(const APDUHeader& header, const openpal::ReadOnlyBuffer& objects)
+{
+	FORMAT_LOG_BLOCK(logger, flags::WARN, "Ignoring NR function code: %s", FunctionCodeToString(header.function));
+}
+
 void OutstationContext::BeginResponseTx(const ReadOnlyBuffer& response)
 {		
 	logging::ParseAndLogResponseTx(&logger, response);
