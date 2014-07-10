@@ -57,7 +57,7 @@ namespace Automatak.Simulator.DNP3
             }
             set
             {
-                enabled = true;
+                enabled = value;
             }
         }
 
