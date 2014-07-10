@@ -28,8 +28,11 @@
 namespace opendnp3
 {
 
-struct SelectionCriteria
+class SelectionCriteria
 {
+
+public:
+
 	static SelectionCriteria FromClassField(const ClassField& field);
 
 	SelectionCriteria();
@@ -63,6 +66,8 @@ struct SelectionCriteria
 		AddToClass2(types);
 		AddToClass3(types);
 	}
+
+private:
 
 	// ----- bit masks for measurement types in each class --------
 
