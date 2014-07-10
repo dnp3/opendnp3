@@ -384,8 +384,6 @@ namespace Automatak.Simulator.DNP3.Components
             // checkBoxEnableUnsol
             // 
             this.checkBoxEnableUnsol.AutoSize = true;
-            this.checkBoxEnableUnsol.Checked = true;
-            this.checkBoxEnableUnsol.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxEnableUnsol.Location = new System.Drawing.Point(20, 27);
             this.checkBoxEnableUnsol.Name = "checkBoxEnableUnsol";
             this.checkBoxEnableUnsol.Size = new System.Drawing.Size(144, 17);
