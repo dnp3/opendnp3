@@ -53,6 +53,7 @@ IINField StaticResponseContext::ReadAll(const GroupVariationRecord& record)
 {
 	switch(record.enumeration)
 	{
+
 	case(GroupVariation::Group60Var1):
 		return QueueStaticIntegrity();
 

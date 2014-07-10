@@ -497,15 +497,15 @@ void OutstationContext::CheckForUnsolicited()
 			if (eventBuffer.TotalEvents().Intersects(params.unsolClassMask))
 			{
 				auto criteria = SelectionCriteria::FromClassField(params.unsolClassMask);
-				auto unsol = this->StartNewUnsolicitedResponse();				
+				auto unsol = this->StartNewUnsolicitedResponse();
 						
 				{
 					// even though we're not loading static data, we need to lock 
 					// the database since it updates the event buffer					
 					Transaction tx(pDatabase);
-					auto iterator = eventBuffer.SelectEvents(criteria);
+					auto iterator = eventBuffer.Iterate();
 					auto writer = unsol.GetWriter();
-					EventWriter::WriteEventHeaders(writer, iterator, eventConfig);
+					EventWriter::WriteEventHeaders(writer, criteria, iterator, eventConfig);
 				}
 			
 				

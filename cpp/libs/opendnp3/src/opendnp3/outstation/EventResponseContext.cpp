@@ -115,8 +115,8 @@ bool EventResponseContext::Load(ObjectWriter& writer, const EventResponseConfig&
 	{
 		if (criteria.HasSelection())
 		{			
-			auto iterator = pBuffer->SelectEvents(criteria);
-			isComplete = EventWriter::WriteEventHeaders(writer, iterator, config);
+			auto iterator = pBuffer->Iterate();
+			isComplete = EventWriter::WriteEventHeaders(writer, criteria, iterator, config);
 			return isComplete;
 		}
 		else

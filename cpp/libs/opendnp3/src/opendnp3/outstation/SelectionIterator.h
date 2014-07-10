@@ -43,7 +43,7 @@ public:
 
 	EventType GetValue();
 	
-	bool SeekNext();	
+	bool SeekNext(const SelectionCriteria& criteria);	
 	
 	void SelectCurrent();
 
@@ -58,17 +58,15 @@ public:
 
 private:
 
-	openpal::ListNode<SequenceRecord>* SeekNextNode();
+	openpal::ListNode<SequenceRecord>* SeekNextNode(const SelectionCriteria& criteria);
 
-	SelectionIterator(OutstationEventBuffer* pBuffer_,
-	                  const SelectionCriteria& criteria_,
+	SelectionIterator(OutstationEventBuffer* pBuffer_,	                  
 	                  const openpal::LinkedListAdapter<SequenceRecord, uint16_t>::Iterator& iterator_);
 
 	template <class T>
 	bool ReadAny(Event<T>& evt, EventType type, const openpal::RandomInsertAdapter<Event<T>, uint16_t>& adapter);
 
-	OutstationEventBuffer* pBuffer;
-	SelectionCriteria criteria;
+	OutstationEventBuffer* pBuffer;	
 	openpal::ListNode<SequenceRecord>* pCurrent;
 	openpal::LinkedListAdapter<SequenceRecord, uint16_t>::Iterator iterator;
 };

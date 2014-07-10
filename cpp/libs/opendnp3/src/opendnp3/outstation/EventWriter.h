@@ -40,19 +40,19 @@ class EventWriter : private openpal::PureStatic
 
 public:
 
-	static bool WriteEventHeaders(ObjectWriter& writer, SelectionIterator& iterator, const EventResponseConfig& config);
+	static bool WriteEventHeaders(ObjectWriter& writer, SelectionCriteria& criteria, SelectionIterator& iterator, const EventResponseConfig& config);
 
 private:
 	
-	static uint32_t WriteOneHeader(ObjectWriter& writer, SelectionIterator& iterator, const EventResponseConfig& config);
+	static uint32_t WriteOneHeader(ObjectWriter& writer, SelectionCriteria& criteria, SelectionIterator& iterator, const EventResponseConfig& config);
 
 	// return the number of events written in the header
 	template <class T>
-	static uint32_t WriteFullHeader(ObjectWriter& writer, SelectionIterator& iterator, IDNP3Serializer<T>& serializer);
+	static uint32_t WriteFullHeader(ObjectWriter& writer, SelectionCriteria& criteria, SelectionIterator& iterator, IDNP3Serializer<T>& serializer);
 };
 
 template <class T>
-uint32_t EventWriter::WriteFullHeader(ObjectWriter& ow, SelectionIterator& iterator, IDNP3Serializer<T>& serializer)
+uint32_t EventWriter::WriteFullHeader(ObjectWriter& ow, SelectionCriteria& criteria, SelectionIterator& iterator, IDNP3Serializer<T>& serializer)
 {
 	uint32_t count = 0;
 
@@ -65,7 +65,7 @@ uint32_t EventWriter::WriteFullHeader(ObjectWriter& ow, SelectionIterator& itera
 		{
 			++count;
 			iterator.SelectCurrent();
-			iterator.SeekNext();
+			iterator.SeekNext(criteria);
 		}
 		else
 		{

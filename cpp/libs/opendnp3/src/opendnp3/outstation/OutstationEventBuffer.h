@@ -66,7 +66,7 @@ public:
 	void Reset(); // called when a transmission fails
 	void Clear(); // called when a transmission succeeds
 
-	SelectionIterator SelectEvents(const SelectionCriteria& criteria);	
+	SelectionIterator Iterate();	
 
 	EventCount TotalEvents() const;
 	EventCount SelectedEvents() const;

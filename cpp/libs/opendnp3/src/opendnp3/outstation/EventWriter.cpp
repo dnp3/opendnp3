@@ -25,11 +25,14 @@
 
 namespace opendnp3
 {
-	bool EventWriter::WriteEventHeaders(ObjectWriter& writer, SelectionIterator& iterator, const EventResponseConfig& config)
+	bool EventWriter::WriteEventHeaders(ObjectWriter& writer, SelectionCriteria& criteria, SelectionIterator& iterator, const EventResponseConfig& config)
 	{		
+		// seek to the first value
+		iterator.SeekNext(criteria);
+
 		while (iterator.HasValue())
 		{
-			auto numWritten = WriteOneHeader(writer, iterator, config);			
+			auto numWritten = WriteOneHeader(writer, criteria, iterator, config);			
 			if (numWritten == 0)
 			{
 				return false;
@@ -39,30 +42,30 @@ namespace opendnp3
 		return true;
 	}
 
-	uint32_t EventWriter::WriteOneHeader(ObjectWriter& writer, SelectionIterator& iterator, const EventResponseConfig& config)
+	uint32_t EventWriter::WriteOneHeader(ObjectWriter& writer, SelectionCriteria& criteria, SelectionIterator& iterator, const EventResponseConfig& config)
 	{
 		switch (iterator.GetValue())
 		{
 			case(EventType::Binary) :
-				return WriteFullHeader<Binary>(writer, iterator, EventResponseTypes::Lookup(config.binary));
+				return WriteFullHeader<Binary>(writer, criteria, iterator, EventResponseTypes::Lookup(config.binary));
 
 			case(EventType::DoubleBitBinary) :
-				return WriteFullHeader<DoubleBitBinary>(writer, iterator, EventResponseTypes::Lookup(config.doubleBinary));
+				return WriteFullHeader<DoubleBitBinary>(writer, criteria, iterator, EventResponseTypes::Lookup(config.doubleBinary));
 
 			case(EventType::Counter) :
-				return WriteFullHeader<Counter>(writer, iterator, EventResponseTypes::Lookup(config.counter));
+				return WriteFullHeader<Counter>(writer, criteria, iterator, EventResponseTypes::Lookup(config.counter));
 
 			case(EventType::FrozenCounter) :
-				return WriteFullHeader<FrozenCounter>(writer, iterator, EventResponseTypes::Lookup(config.frozenCounter));
+				return WriteFullHeader<FrozenCounter>(writer, criteria, iterator, EventResponseTypes::Lookup(config.frozenCounter));
 
 			case(EventType::Analog) :
-				return WriteFullHeader<Analog>(writer, iterator, EventResponseTypes::Lookup(config.analog));
+				return WriteFullHeader<Analog>(writer, criteria, iterator, EventResponseTypes::Lookup(config.analog));
 
 			case(EventType::BinaryOutputStatus) :
-				return WriteFullHeader<BinaryOutputStatus>(writer, iterator, EventResponseTypes::Lookup(config.binaryOutputStatus));
+				return WriteFullHeader<BinaryOutputStatus>(writer, criteria, iterator, EventResponseTypes::Lookup(config.binaryOutputStatus));
 
 			case(EventType::AnalogOutputStatus) :
-				return WriteFullHeader<AnalogOutputStatus>(writer, iterator, EventResponseTypes::Lookup(config.analogOutputStatus));
+				return WriteFullHeader<AnalogOutputStatus>(writer, criteria, iterator, EventResponseTypes::Lookup(config.analogOutputStatus));
 
 			default:
 				return 0;

@@ -28,13 +28,12 @@ using namespace openpal;
 namespace opendnp3
 {
 
-SelectionIterator::SelectionIterator(OutstationEventBuffer* pBuffer_, const SelectionCriteria& criteria_, const openpal::LinkedListAdapter<SequenceRecord, uint16_t>::Iterator& iterator_) :
-	pBuffer(pBuffer_),
-	criteria(criteria_),
+SelectionIterator::SelectionIterator(OutstationEventBuffer* pBuffer_, const openpal::LinkedListAdapter<SequenceRecord, uint16_t>::Iterator& iterator_) :
+	pBuffer(pBuffer_),	
 	pCurrent(nullptr),
 	iterator(iterator_)
 {
-	pCurrent = SeekNextNode();
+	
 }
 
 bool SelectionIterator::HasValue() const
@@ -48,13 +47,13 @@ EventType SelectionIterator::GetValue()
 	return pCurrent->value.type;
 }
 
-bool SelectionIterator::SeekNext()
+bool SelectionIterator::SeekNext(const SelectionCriteria& criteria)
 {
-	pCurrent = this->SeekNextNode();
+	pCurrent = this->SeekNextNode(criteria);
 	return pCurrent != nullptr;
 }
 
-openpal::ListNode<SequenceRecord>* SelectionIterator::SeekNextNode()
+openpal::ListNode<SequenceRecord>* SelectionIterator::SeekNextNode(const SelectionCriteria& criteria)
 {
 	while (iterator.HasNext())
 	{
