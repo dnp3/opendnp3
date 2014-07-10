@@ -22,14 +22,35 @@
 
 #include "ProtocolUtil.h"
 #include "TransportTestObject.h"
+#include "LogTester.h"
+
+#include <asiodnp3/ConsoleLogger.h>
 
 #include <opendnp3/transport/TransportConstants.h>
 
 using namespace std;
 using namespace openpal;
 using namespace opendnp3;
+using namespace asiodnp3;
 
 #define SUITE(name) "TransportLayerTestSuite - " name
+
+TEST_CASE(SUITE("RepeatSendsDoNotLogOrChangeStatistics"))
+{
+	LogTester log;
+	StackStatistics stats;
+	TransportTx transmitter(log.GetLogger(), &stats);
+	HexSequence hs("12 34 56");
+	transmitter.Configure(hs.ToReadOnly());
+	
+	auto segment1 = transmitter.GetSegment();
+	REQUIRE("C0 12 34 56" == toHex(segment1));
+	REQUIRE(1 == stats.numTransportTx);
+
+	auto segment2 = transmitter.GetSegment();
+	REQUIRE("C0 12 34 56" == toHex(segment2));
+	REQUIRE(1 == stats.numTransportTx);	
+}
 
 // make sure an invalid state exception gets thrown
 // for every event other than LowerLayerUp() since
@@ -275,6 +296,8 @@ TEST_CASE(SUITE("SendFullAPDU"))
 
 	test.transport.OnSendResult(true);
 }
+
+
 
 
 

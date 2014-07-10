@@ -23,6 +23,8 @@
 
 #include <openpal/logging/LogRoot.h>
 
+#include <opendnp3/LogLevels.h>
+
 #include <string>
 #include <queue>
 
@@ -47,7 +49,7 @@ class LogTester : public openpal::ILogHandler
 {
 
 public:
-	LogTester();
+	LogTester(uint32_t filters = levels::NORMAL);
 
 	void Log(const std::string& aLocation, const std::string& aMessage);
 
@@ -64,7 +66,7 @@ public:
 	bool GetNextEntry(LogRecord& record);
 	bool IsLogErrorFree();
 
-	void Pop(openpal::ILogHandler* pLog);
+	void Pop(openpal::ILogHandler& log);
 
 	openpal::Logger GetLogger();
 

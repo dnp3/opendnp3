@@ -20,8 +20,6 @@
  */
 #include "LogTester.h"
 
-#include <opendnp3/LogLevels.h>
-
 using namespace openpal;
 
 namespace opendnp3
@@ -45,7 +43,7 @@ LogRecord::LogRecord(const LogEntry& entry) :
 
 }
 
-LogTester::LogTester() : root(this, "test", levels::NORMAL), logger(root.GetLogger())
+LogTester::LogTester(uint32_t filters) : root(this, "test", filters), logger(root.GetLogger())
 {
 
 }
@@ -143,13 +141,13 @@ bool LogTester::GetNextEntry(LogRecord& record)
 	}
 }
 
-void LogTester::Pop(openpal::ILogHandler* pLog)
+void LogTester::Pop(openpal::ILogHandler& log)
 {
 	LogRecord record;
 	while (GetNextEntry(record))
 	{
 		LogEntry le(record.id.c_str(), record.filters, record.location.c_str(), record.message.c_str(), record.errorCode);
-		pLog->Log(le);
+		log.Log(le);
 	}
 }
 

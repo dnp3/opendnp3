@@ -23,6 +23,7 @@
 
 #include <openpal/container/StaticBuffer.h>
 #include <openpal/logging/Logger.h>
+#include <openpal/container/Settable.h>
 
 #include "opendnp3/StackStatistics.h"
 #include "opendnp3/link/ITransportSegment.h"
@@ -60,6 +61,9 @@ private:
 	// A wrapper to the APDU buffer that we're segmenting
 	openpal::ReadOnlyBuffer apdu;
 
+	openpal::Settable<openpal::ReadOnlyBuffer> txSegment;
+
+	// Static buffer where we store tpdus that are being transmitted
 	openpal::StaticBuffer<TL_MAX_TPDU_LENGTH> tpduBuffer;
 
 	openpal::Logger logger;

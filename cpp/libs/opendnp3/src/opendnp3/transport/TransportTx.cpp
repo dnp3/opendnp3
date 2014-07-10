@@ -45,6 +45,7 @@ TransportTx::TransportTx(const openpal::Logger& logger_, StackStatistics* pStati
 void TransportTx::Configure(const openpal::ReadOnlyBuffer& output)
 {
 	assert(output.IsNotEmpty());
+	txSegment.Clear();
 	this->apdu = output;
 	this->tpduCount = 0;
 }
@@ -56,18 +57,34 @@ bool TransportTx::HasValue() const
 
 openpal::ReadOnlyBuffer TransportTx::GetSegment()
 {	
-	uint32_t numToSend = apdu.Size() < 249 ? apdu.Size() : 249;
-	memcpy(tpduBuffer.Buffer() + 1, apdu, numToSend);
-	bool fir = (tpduCount == 0);
-	bool fin = (numToSend == apdu.Size());
-	tpduBuffer[0] = GetHeader(fir, fin, sequence);
-	FORMAT_LOG_BLOCK(logger, flags::TRANSPORT_TX, "FIR: %d FIN: %d SEQ: %u LEN: %u", fir, fin, sequence, numToSend);
-	if (pStatistics) ++pStatistics->numTransportTx;
-	return ReadOnlyBuffer(tpduBuffer.Buffer(), numToSend + 1);
+	if (txSegment.IsSet())
+	{
+		return txSegment.Get();
+	}
+	else
+	{
+		uint32_t numToSend = apdu.Size() < 249 ? apdu.Size() : 249;
+		memcpy(tpduBuffer.Buffer() + 1, apdu, numToSend);
+		bool fir = (tpduCount == 0);
+		bool fin = (numToSend == apdu.Size());
+		tpduBuffer[0] = GetHeader(fir, fin, sequence);
+		FORMAT_LOG_BLOCK(logger, flags::TRANSPORT_TX, "FIR: %d FIN: %d SEQ: %u LEN: %u", fir, fin, sequence, numToSend);
+		
+		if (pStatistics)
+		{
+			++pStatistics->numTransportTx;
+		}
+
+		ReadOnlyBuffer segment(tpduBuffer.Buffer(), numToSend + 1);
+		txSegment.Set(segment);
+		return segment;
+	}
+	
 }
 
 bool TransportTx::Advance()
 {
+	txSegment.Clear();
 	uint32_t numToSend = apdu.Size() < 249 ? apdu.Size() : 249;
 	apdu.Advance(numToSend);
 	++tpduCount;
