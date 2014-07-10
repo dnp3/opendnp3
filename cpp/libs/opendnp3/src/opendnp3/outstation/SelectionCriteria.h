@@ -25,17 +25,19 @@
 #include "EventType.h"
 #include "EventCount.h"
 
+#include <openpal/util/Uncopyable.h>
+
 namespace opendnp3
 {
 
-class SelectionCriteria
+class SelectionCriteria : private openpal::Uncopyable
 {
 
 public:
-
-	static SelectionCriteria FromClassField(const ClassField& field);
-
+	
 	SelectionCriteria();
+
+	SelectionCriteria(const ClassField& field);
 
 	SelectionCriteria(uint16_t clazz1, uint16_t clazz2, uint16_t clazz3);
 

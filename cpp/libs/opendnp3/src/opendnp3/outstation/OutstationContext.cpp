@@ -496,7 +496,7 @@ void OutstationContext::CheckForUnsolicited()
 			// are there events to be reported?
 			if (eventBuffer.TotalEvents().Intersects(params.unsolClassMask))
 			{
-				auto criteria = SelectionCriteria::FromClassField(params.unsolClassMask);
+				SelectionCriteria criteria(params.unsolClassMask);
 				auto unsol = this->StartNewUnsolicitedResponse();
 						
 				{

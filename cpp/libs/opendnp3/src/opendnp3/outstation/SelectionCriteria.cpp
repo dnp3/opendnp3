@@ -24,17 +24,16 @@
 namespace opendnp3
 {
 
-SelectionCriteria SelectionCriteria::FromClassField(const ClassField& field)
-{
-	SelectionCriteria sc;
-	if (field.HasClass1()) sc.class1 = events::ALL_TYPES;
-	if (field.HasClass2()) sc.class2 = events::ALL_TYPES;
-	if (field.HasClass3()) sc.class3 = events::ALL_TYPES;
-	return sc;
-}
-
 SelectionCriteria::SelectionCriteria() : class1(0), class2(0), class3(0)
 {}
+
+SelectionCriteria::SelectionCriteria(const ClassField& field) :
+class1(field.HasClass1() ? events::ALL_TYPES : 0),
+class2(field.HasClass2() ? events::ALL_TYPES : 0),
+class3(field.HasClass3() ? events::ALL_TYPES : 0)
+{
+
+}
 
 SelectionCriteria::SelectionCriteria(uint16_t clazz1, uint16_t clazz2, uint16_t clazz3) :
 	class1(clazz1),
