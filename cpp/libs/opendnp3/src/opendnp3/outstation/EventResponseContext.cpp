@@ -79,6 +79,11 @@ IINField EventResponseContext::ReadAll(const GroupVariationRecord& record)
 	}
 }
 
+IINField EventResponseContext::ReadCount(const GroupVariationRecord& record, uint32_t count)
+{
+	return IINField(IINBit::FUNC_NOT_SUPPORTED);
+}
+
 void EventResponseContext::Reset()
 {
 	isComplete = false;

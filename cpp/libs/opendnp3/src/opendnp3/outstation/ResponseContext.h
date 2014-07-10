@@ -47,6 +47,7 @@ public:
 
 	IINField ReadAllObjects(const GroupVariationRecord& record);
 	IINField ReadRange(const GroupVariationRecord& record, const StaticRange& range);
+	IINField ReadCount(const GroupVariationRecord& record, uint32_t count);
 
 	void Reset();
 

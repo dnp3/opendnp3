@@ -95,4 +95,15 @@ IINField ResponseContext::ReadRange(const GroupVariationRecord& record, const St
 	}
 }
 
+IINField ResponseContext::ReadCount(const GroupVariationRecord& record, uint32_t count)
+{
+	switch (record.type)
+	{	
+		case(GroupVariationType::EVENT) :
+			return eventContext.ReadCount(record, count);
+		default:
+			return IINField(IINBit::FUNC_NOT_SUPPORTED);
+	}
+}
+
 }

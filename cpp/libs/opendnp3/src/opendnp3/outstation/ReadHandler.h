@@ -39,6 +39,8 @@ public:
 
 	virtual void _OnRangeRequest(const HeaderRecord& record, const StaticRange& range) override final;
 
+	virtual void _OnCountRequest(const HeaderRecord& record, uint32_t count) override final;
+
 private:
 
 	ResponseContext* pRspContext;

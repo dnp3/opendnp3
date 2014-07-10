@@ -45,7 +45,9 @@ public:
 
 	bool IsComplete() const;
 
-	IINField ReadAll(const GroupVariationRecord& record);	
+	IINField ReadAll(const GroupVariationRecord& record);
+
+	IINField ReadCount(const GroupVariationRecord& record, uint32_t count);
 
 	void Reset();
 	

@@ -41,8 +41,10 @@ void ReadHandler::_OnRangeRequest(const HeaderRecord& record, const StaticRange&
 	errors |= pRspContext->ReadRange(record, range);
 }
 
-
-
+void ReadHandler::_OnCountRequest(const HeaderRecord& record, uint32_t count)
+{
+	errors |= pRspContext->ReadCount(record, count);
+}
 
 }
 
