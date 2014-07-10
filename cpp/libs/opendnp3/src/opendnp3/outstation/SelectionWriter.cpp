@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "SelectionIterator.h"
+#include "SelectionWriter.h"
 
 #include "OutstationEventBuffer.h"
 
@@ -28,32 +28,22 @@ using namespace openpal;
 namespace opendnp3
 {
 
-SelectionIterator::SelectionIterator(OutstationEventBuffer* pBuffer_, const openpal::LinkedListAdapter<SequenceRecord, uint16_t>::Iterator& iterator_) :
-	pBuffer(pBuffer_),	
+SelectionWriter::SelectionWriter(
+	OutstationEventBuffer& buffer,	
+	const openpal::LinkedListAdapter<SequenceRecord, uint16_t>::Iterator& iterator_) :
+	pBuffer(&buffer),	
 	pCurrent(nullptr),
 	iterator(iterator_)
 {
 	
 }
 
-bool SelectionIterator::HasValue() const
+bool SelectionWriter::WriteEvents(SelectionCriteria& criteria, ObjectWriter& writer)
 {
-	return pCurrent != nullptr;
+	return true;
 }
 
-EventType SelectionIterator::GetValue()
-{
-	assert(pCurrent);
-	return pCurrent->value.type;
-}
-
-bool SelectionIterator::SeekNext(const SelectionCriteria& criteria)
-{
-	pCurrent = this->SeekNextNode(criteria);
-	return pCurrent != nullptr;
-}
-
-openpal::ListNode<SequenceRecord>* SelectionIterator::SeekNextNode(const SelectionCriteria& criteria)
+openpal::ListNode<SequenceRecord>* SelectionWriter::SeekNextNode(SelectionCriteria& criteria)
 {
 	while (iterator.HasNext())
 	{
@@ -67,7 +57,8 @@ openpal::ListNode<SequenceRecord>* SelectionIterator::SeekNextNode(const Selecti
 	return nullptr;
 }
 
-void SelectionIterator::SelectCurrent()
+/*
+void SelectionWriter::SelectCurrent()
 {
 	assert(pCurrent);
 	pCurrent->value.selected = true;
@@ -76,41 +67,41 @@ void SelectionIterator::SelectCurrent()
 	pCurrent = nullptr;
 }
 
-bool SelectionIterator::Read(Event<Binary>& evt)
+bool SelectionWriter::Read(Event<Binary>& evt)
 {
 	return ReadAny<Binary>(evt, EventType::Binary, pBuffer->facade.binaryEvents);
 }
 
-bool SelectionIterator::Read(Event<DoubleBitBinary>& evt)
+bool SelectionWriter::Read(Event<DoubleBitBinary>& evt)
 {
 	return ReadAny<DoubleBitBinary>(evt, EventType::DoubleBitBinary, pBuffer->facade.doubleBinaryEvents);
 }
 
-bool SelectionIterator::Read(Event<Counter>& evt)
+bool SelectionWriter::Read(Event<Counter>& evt)
 {
 	return ReadAny<Counter>(evt, EventType::Counter, pBuffer->facade.counterEvents);
 }
 
-bool SelectionIterator::Read(Event<Analog>& evt)
+bool SelectionWriter::Read(Event<Analog>& evt)
 {
 	return ReadAny<Analog>(evt, EventType::Analog, pBuffer->facade.analogEvents);
 }
 
-bool SelectionIterator::Read(Event<FrozenCounter>& evt)
+bool SelectionWriter::Read(Event<FrozenCounter>& evt)
 {
 	return ReadAny<FrozenCounter>(evt, EventType::FrozenCounter, pBuffer->facade.frozenCounterEvents);
 }
 
-bool SelectionIterator::Read(Event<BinaryOutputStatus>& evt)
+bool SelectionWriter::Read(Event<BinaryOutputStatus>& evt)
 {
 	return ReadAny<BinaryOutputStatus>(evt, EventType::BinaryOutputStatus, pBuffer->facade.binaryOutputStatusEvents);
 }
 
-bool SelectionIterator::Read(Event<AnalogOutputStatus>& evt)
+bool SelectionWriter::Read(Event<AnalogOutputStatus>& evt)
 {
 	return ReadAny<AnalogOutputStatus>(evt, EventType::AnalogOutputStatus, pBuffer->facade.analogOutputStatusEvents);
 }
-
+*/
 
 
 

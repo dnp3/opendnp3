@@ -35,7 +35,6 @@
 #include "opendnp3/outstation/CommandActionAdapter.h"
 #include "opendnp3/outstation/CommandResponseHandler.h"
 #include "opendnp3/outstation/ConstantCommandAction.h"
-#include "opendnp3/outstation/EventWriter.h"
 
 #include "opendnp3/outstation/ClassBasedRequestHandler.h"
 
@@ -497,22 +496,21 @@ void OutstationContext::CheckForUnsolicited()
 			if (eventBuffer.TotalEvents().Intersects(params.unsolClassMask))
 			{
 				SelectionCriteria criteria(params.unsolClassMask);
-				auto unsol = this->StartNewUnsolicitedResponse();
+				auto unsolResponse = this->StartNewUnsolicitedResponse();
+				auto objectWriter = unsolResponse.GetWriter();				
 						
 				{
 					// even though we're not loading static data, we need to lock 
 					// the database since it updates the event buffer					
-					Transaction tx(pDatabase);
-					auto iterator = eventBuffer.Iterate();
-					auto writer = unsol.GetWriter();
-					EventWriter::WriteEventHeaders(writer, criteria, iterator, eventConfig);
+					Transaction tx(pDatabase);					
+					auto writer = eventBuffer.Iterate();
+					writer.WriteEvents(criteria, objectWriter);					
 				}
-			
-				
-				this->ConfigureUnsolHeader(unsol);
+							
+				this->ConfigureUnsolHeader(unsolResponse);
 				this->StartUnsolicitedConfirmTimer();
 				this->pUnsolicitedState = &OutstationUnsolicitedStateConfirmWait::Inst();
-				this->BeginUnsolTx(unsol.ToReadOnly());				
+				this->BeginUnsolTx(unsolResponse.ToReadOnly());
 			}
 		}
 		else

@@ -23,8 +23,6 @@
 
 #include <openpal/serialization/Serialization.h>
 
-#include "opendnp3/outstation/EventWriter.h"
-
 using namespace openpal;
 
 namespace opendnp3
@@ -105,7 +103,7 @@ void EventResponseContext::Reset()
 	criteria.Clear();
 }
 
-bool EventResponseContext::Load(ObjectWriter& writer, const EventResponseConfig& config)
+bool EventResponseContext::Load(ObjectWriter& objectWriter, const EventResponseConfig& config)
 {
 	if (isComplete)
 	{
@@ -114,10 +112,8 @@ bool EventResponseContext::Load(ObjectWriter& writer, const EventResponseConfig&
 	else
 	{
 		if (criteria.HasSelection())
-		{			
-			auto iterator = pBuffer->Iterate();
-			isComplete = EventWriter::WriteEventHeaders(writer, criteria, iterator, config);
-			return isComplete;
+		{						
+			return pBuffer->Iterate().WriteEvents(criteria, objectWriter);
 		}
 		else
 		{

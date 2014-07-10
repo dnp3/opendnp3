@@ -462,9 +462,6 @@
     <ClInclude Include="src\opendnp3\LogLevels.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\SelectionIterator.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\EventBufferConfig.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
@@ -585,9 +582,6 @@
     <ClInclude Include="src\opendnp3\link\LinkLayerParser.h">
       <Filter>Header\link</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\EventWriter.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\DeferredRequest.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
@@ -692,6 +686,9 @@
     </ClInclude>
     <ClInclude Include="src\opendnp3\app\FunctionHelpers.h">
       <Filter>Header\app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\SelectionWriter.h">
+      <Filter>Header\outstation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -944,9 +941,6 @@
     <ClCompile Include="src\opendnp3\outstation\SelectionCriteria.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\SelectionIterator.cpp">
-      <Filter>Source\outstation</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\EventBufferConfig.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
@@ -1058,9 +1052,6 @@
     <ClCompile Include="src\opendnp3\link\LinkLayerParser.cpp">
       <Filter>Source\link</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\EventWriter.cpp">
-      <Filter>Source\outstation</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\ClassBasedRequestHandler.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
@@ -1108,6 +1099,9 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\app\FunctionHelpers.cpp">
       <Filter>Source\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\SelectionWriter.cpp">
+      <Filter>Source\outstation</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

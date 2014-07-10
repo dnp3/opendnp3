@@ -19,10 +19,12 @@
  * to you under the terms of the License.
  */
 
-#ifndef __SELECTION_ITERATOR_H_
-#define __SELECTION_ITERATOR_H_
+#ifndef __SELECTION_WRITER_H_
+#define __SELECTION_WRITER_H_
 
 #include <openpal/container/LinkedListAdapter.h>
+
+#include "opendnp3/app/ObjectWriter.h"
 
 #include "opendnp3/outstation/EventType.h"
 #include "opendnp3/outstation/EventBufferFacade.h"
@@ -33,35 +35,20 @@ namespace opendnp3
 
 class OutstationEventBuffer;
 
-class SelectionIterator
+class SelectionWriter
 {
 	friend class OutstationEventBuffer;
 
 public:	
 
-	bool HasValue() const;
-
-	EventType GetValue();
-	
-	bool SeekNext(const SelectionCriteria& criteria);	
-	
-	void SelectCurrent();
-
-	bool Read(Event<Binary>& evt);
-	bool Read(Event<DoubleBitBinary>& evt);
-	bool Read(Event<Counter>& evt);
-	bool Read(Event<Analog>& evt);
-	bool Read(Event<FrozenCounter>& evt);
-	bool Read(Event<BinaryOutputStatus>& evt);
-	bool Read(Event<AnalogOutputStatus>& evt);
-
+	bool WriteEvents(SelectionCriteria& criteria, ObjectWriter& writer);
 
 private:
 
-	openpal::ListNode<SequenceRecord>* SeekNextNode(const SelectionCriteria& criteria);
+	openpal::ListNode<SequenceRecord>* SeekNextNode(SelectionCriteria& criteria);
 
-	SelectionIterator(OutstationEventBuffer* pBuffer_,	                  
-	                  const openpal::LinkedListAdapter<SequenceRecord, uint16_t>::Iterator& iterator_);
+	SelectionWriter(  OutstationEventBuffer& buffer_,
+					  const openpal::LinkedListAdapter<SequenceRecord, uint16_t>::Iterator& iterator_);
 
 	template <class T>
 	bool ReadAny(Event<T>& evt, EventType type, const openpal::RandomInsertAdapter<Event<T>, uint16_t>& adapter);
@@ -72,7 +59,7 @@ private:
 };
 
 template <class T>
-bool SelectionIterator::ReadAny(Event<T>& evt, EventType type, const openpal::RandomInsertAdapter<Event<T>, uint16_t>& adapter)
+bool SelectionWriter::ReadAny(Event<T>& evt, EventType type, const openpal::RandomInsertAdapter<Event<T>, uint16_t>& adapter)
 {
 	if (pCurrent)
 	{

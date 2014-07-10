@@ -26,7 +26,7 @@
 #include "EventBufferFacade.h"
 #include "SelectionCriteria.h"
 #include "EventCount.h"
-#include "SelectionIterator.h"
+#include "SelectionWriter.h"
 
 namespace opendnp3
 {
@@ -47,7 +47,7 @@ namespace opendnp3
 */
 class OutstationEventBuffer : public IEventBuffer
 {
-	friend class SelectionIterator;
+	friend class SelectionWriter;
 
 
 public:
@@ -66,7 +66,7 @@ public:
 	void Reset(); // called when a transmission fails
 	void Clear(); // called when a transmission succeeds
 
-	SelectionIterator Iterate();	
+	SelectionWriter Iterate();	
 
 	EventCount TotalEvents() const;
 	EventCount SelectedEvents() const;

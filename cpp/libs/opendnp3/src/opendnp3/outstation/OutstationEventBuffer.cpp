@@ -158,9 +158,9 @@ bool OutstationEventBuffer::HasEnoughSpaceToClearOverflow() const
 	        HasSpace(facade.sequenceOfEvents);
 }
 
-SelectionIterator OutstationEventBuffer::Iterate()
+SelectionWriter OutstationEventBuffer::Iterate()
 {
-	return SelectionIterator(this, facade.sequenceOfEvents.Iterate());
+	return SelectionWriter(*this, facade.sequenceOfEvents.Iterate());
 }
 
 }

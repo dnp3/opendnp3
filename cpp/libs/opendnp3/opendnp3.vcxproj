@@ -195,7 +195,6 @@
     <ClInclude Include="src\opendnp3\outstation\EventResponseContext.h" />
     <ClInclude Include="src\opendnp3\outstation\EventResponseTypes.h" />
     <ClInclude Include="src\opendnp3\outstation\EventType.h" />
-    <ClInclude Include="src\opendnp3\outstation\EventWriter.h" />
     <ClInclude Include="src\opendnp3\outstation\ICommandAction.h" />
     <ClInclude Include="src\opendnp3\outstation\ICommandHandler.h" />
     <ClInclude Include="src\opendnp3\outstation\IDatabase.h" />
@@ -212,7 +211,7 @@
     <ClInclude Include="src\opendnp3\outstation\ReadHandler.h" />
     <ClInclude Include="src\opendnp3\outstation\ResponseContext.h" />
     <ClInclude Include="src\opendnp3\outstation\SelectionCriteria.h" />
-    <ClInclude Include="src\opendnp3\outstation\SelectionIterator.h" />
+    <ClInclude Include="src\opendnp3\outstation\SelectionWriter.h" />
     <ClInclude Include="src\opendnp3\outstation\SimpleCommandHandler.h" />
     <ClInclude Include="src\opendnp3\outstation\OutstationStackConfig.h" />
     <ClInclude Include="src\opendnp3\outstation\StaticallyAllocatedDatabase.h" />
@@ -349,7 +348,6 @@
     <ClCompile Include="src\opendnp3\outstation\EventResponseConfig.cpp" />
     <ClCompile Include="src\opendnp3\outstation\EventResponseContext.cpp" />
     <ClCompile Include="src\opendnp3\outstation\EventResponseTypes.cpp" />
-    <ClCompile Include="src\opendnp3\outstation\EventWriter.cpp" />
     <ClCompile Include="src\opendnp3\outstation\IINHelpers.cpp" />
     <ClCompile Include="src\opendnp3\outstation\IOutstationApplication.cpp" />
     <ClCompile Include="src\opendnp3\outstation\Outstation.cpp" />
@@ -361,7 +359,7 @@
     <ClCompile Include="src\opendnp3\outstation\ReadHandler.cpp" />
     <ClCompile Include="src\opendnp3\outstation\ResponseContext.cpp" />
     <ClCompile Include="src\opendnp3\outstation\SelectionCriteria.cpp" />
-    <ClCompile Include="src\opendnp3\outstation\SelectionIterator.cpp" />
+    <ClCompile Include="src\opendnp3\outstation\SelectionWriter.cpp" />
     <ClCompile Include="src\opendnp3\outstation\SimpleCommandHandler.cpp" />
     <ClCompile Include="src\opendnp3\outstation\StaticResponseConfig.cpp" />
     <ClCompile Include="src\opendnp3\outstation\StaticResponseContext.cpp" />
