@@ -64,14 +64,29 @@ IINField EventResponseContext::ReadAll(const GroupVariationRecord& record)
 	case(GroupVariation::Group2Var0) :
 		criteria.AddToAllClasses(events::BINARY);
 		return IINField::Empty;
+
+	case(GroupVariation::Group4Var0) :
+		criteria.AddToAllClasses(events::DOUBLE_BIT_BINARY);
+		return IINField::Empty;
+
+	case(GroupVariation::Group11Var0) :
+		criteria.AddToAllClasses(events::BINARY_OUTPUT_STATUS);
+		return IINField::Empty;
+
 	case(GroupVariation::Group22Var0) :
 		criteria.AddToAllClasses(events::COUNTER);
 		return IINField::Empty;
+
 	case(GroupVariation::Group23Var0) :
 		criteria.AddToAllClasses(events::FROZEN_COUNTER);
 		return IINField::Empty;
+
 	case(GroupVariation::Group32Var0) :
 		criteria.AddToAllClasses(events::ANALOG);
+		return IINField::Empty;
+
+	case(GroupVariation::Group42Var0) :
+		criteria.AddToAllClasses(events::ANALOG_OUTPUT_STATUS);
 		return IINField::Empty;
 
 	default:
