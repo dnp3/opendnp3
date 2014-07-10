@@ -179,43 +179,43 @@ TEST_CASE(SUITE("Group1Var2CountOfZero"))
 }
 
 TEST_CASE(SUITE("Group1Var2With2Headers"))
-{
-
-	TestComplex("01 02 07 01 81 01 02 07 02 81 81", APDUParser::Result::OK, 2, [](MockApduHeaderHandler & mock)
+{		
+	// 1 -> 2 & 2 -> 3
+	TestComplex("01 02 00 01 01 81 01 02 00 02 03 81 81", APDUParser::Result::OK, 2, [](MockApduHeaderHandler & mock)
 	{
 		REQUIRE(2 == mock.records.size());
 	});
 }
 
 
-TEST_CASE(SUITE("Group1Var2Count8"))
+TEST_CASE(SUITE("Group1Var2Range1to3"))
 {
-	// 1 byte count == 3, 3 octets data
-	TestComplex("01 02 07 03 81 01 81", APDUParser::Result::OK, 1, [](MockApduHeaderHandler & mock)
+	// 1 byte start / stop, 1 -> 3, 3 octets data
+	TestComplex("01 02 00 01 03 81 01 81", APDUParser::Result::OK, 1, [](MockApduHeaderHandler & mock)
 	{
 		REQUIRE(3 ==  mock.staticBinaries.size());
 		{
-			IndexedValue<Binary, uint16_t> value(Binary(true), 0);
+			IndexedValue<Binary, uint16_t> value(Binary(true), 1);
 			REQUIRE((value == mock.staticBinaries[0]));
 		}
 		{
-			IndexedValue<Binary, uint16_t> value(Binary(false), 1);
+			IndexedValue<Binary, uint16_t> value(Binary(false), 2);
 			REQUIRE((value == mock.staticBinaries[1]));
 		}
 		{
-			IndexedValue<Binary, uint16_t> value(Binary(true), 2);
+			IndexedValue<Binary, uint16_t> value(Binary(true), 3);
 			REQUIRE((value == mock.staticBinaries[2]));
 		}
 	});
 }
 
-TEST_CASE(SUITE("Group1Var2Count16"))
+TEST_CASE(SUITE("Group1Var2Range16"))
 {
 	// 2 byte count == 1, 1 octet data
-	TestComplex("01 02 08 01 00 81", APDUParser::Result::OK, 1, [](MockApduHeaderHandler & mock)
+	TestComplex("01 02 01 03 00 03 00 81", APDUParser::Result::OK, 1, [](MockApduHeaderHandler & mock)
 	{
 		REQUIRE(1 ==  mock.staticBinaries.size());
-		IndexedValue<Binary, uint16_t> value(Binary(true), 0);
+		IndexedValue<Binary, uint16_t> value(Binary(true), 3);
 		REQUIRE((value == mock.staticBinaries[0]));
 	});
 }
@@ -235,8 +235,8 @@ TEST_CASE(SUITE("Group1Var2AllCountQualifiers"))
 		}
 	};
 
-	TestComplex("01 02 07 02 81 01", APDUParser::Result::OK, 1, validator);
-	TestComplex("01 02 08 02 00 81 01", APDUParser::Result::OK, 1, validator);
+	TestComplex("01 02 00 00 01 81 01", APDUParser::Result::OK, 1, validator);
+	TestComplex("01 02 01 00 00 01 00 81 01", APDUParser::Result::OK, 1, validator);
 	TestSimple("01 02 09 02 00 00 00 81 01", APDUParser::Result::UNKNOWN_QUALIFIER, 0);
 }
 
@@ -267,7 +267,7 @@ TEST_CASE(SUITE("MaxCountAccumlatesOverHeaders"))
 
 TEST_CASE(SUITE("ParserDoesNotAllowEmptyOctetStrings"))
 {
-	HexSequence buffer("6E 00 08 FF 01"); // 255 + 256
+	HexSequence buffer("6E 00 00 00 FF"); // 255 + 256
 	MockApduHeaderHandler mock;
 
 	auto result = APDUParser::ParseTwoPass(buffer.ToReadOnly(), &mock, nullptr);

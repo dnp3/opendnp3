@@ -32,6 +32,7 @@ class Range
 {
 public:
 
+	// TODO - Remove this?
 	static Range FromCount(uint16_t count)
 	{
 		assert(count > 0);

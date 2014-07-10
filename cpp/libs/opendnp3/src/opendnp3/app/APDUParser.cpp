@@ -149,7 +149,7 @@ IndexedValue<BinaryOutputStatus, uint16_t> APDUParser::BoolToBinaryOutputStatus(
 	case(GroupVariation::descriptor): \
 	return ParseRangeFixedSize(record, descriptor##Serializer::Inst(), buffer, pLogger, range, pHandler);
 
-APDUParser::Result APDUParser::ParseObjectsWithRange(openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, const HeaderRecord& record, const Range& range, IAPDUHandler* pHandler)
+APDUParser::Result APDUParser::ParseRangeOfObjects(openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, const HeaderRecord& record, const Range& range, IAPDUHandler* pHandler)
 {
 	switch(record.enumeration)
 	{
@@ -226,19 +226,7 @@ APDUParser::Result APDUParser::ParseObjectsWithRange(openpal::ReadOnlyBuffer& bu
 		MACRO_PARSE_OBJECTS_WITH_RANGE(Group40Var1);
 		MACRO_PARSE_OBJECTS_WITH_RANGE(Group40Var2);
 		MACRO_PARSE_OBJECTS_WITH_RANGE(Group40Var3);
-		MACRO_PARSE_OBJECTS_WITH_RANGE(Group40Var4);
-
-	case(GroupVariation::Group50Var1):
-		return ParseCountOf<Group50Var1>(buffer, pLogger, record, range.Count(), pHandler);
-
-	case(GroupVariation::Group51Var1) :
-		return ParseCountOf<Group51Var1>(buffer, pLogger, record, range.Count(), pHandler);
-
-	case(GroupVariation::Group51Var2) :
-		return ParseCountOf<Group51Var1>(buffer, pLogger, record, range.Count(), pHandler);
-
-	case(GroupVariation::Group52Var2):
-		return ParseCountOf<Group52Var2>(buffer, pLogger, record, range.Count(), pHandler);
+		MACRO_PARSE_OBJECTS_WITH_RANGE(Group40Var4);	
 
 	case(GroupVariation::Group80Var1):
 		return ParseRangeAsBitField(buffer, pLogger, record, range, [pHandler, record](const IterableBuffer<IndexedValue<bool, uint16_t>>& values)
@@ -259,6 +247,26 @@ APDUParser::Result APDUParser::ParseObjectsWithRange(openpal::ReadOnlyBuffer& bu
 
 		return Result::INVALID_OBJECT_QUALIFIER;
 	}
+}
+
+APDUParser::Result APDUParser::ParseCountOfObjects(openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, const HeaderRecord& record, uint16_t count, IAPDUHandler* pHandler)
+{
+	switch(record.enumeration)
+	{
+		case(GroupVariation::Group50Var1) :
+			return ParseCountOf<Group50Var1>(buffer, pLogger, record, count, pHandler);
+
+		case(GroupVariation::Group51Var1) :
+			return ParseCountOf<Group51Var1>(buffer, pLogger, record, count, pHandler);
+
+		case(GroupVariation::Group51Var2) :
+			return ParseCountOf<Group51Var1>(buffer, pLogger, record, count, pHandler);
+
+		case(GroupVariation::Group52Var2) :
+			return ParseCountOf<Group52Var2>(buffer, pLogger, record, count, pHandler);
+		default:
+			return Result::INVALID_OBJECT_QUALIFIER;
+	}		
 }
 
 APDUParser::Result APDUParser::ParseRangeOfOctetData(

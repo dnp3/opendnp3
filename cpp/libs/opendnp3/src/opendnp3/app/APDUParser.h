@@ -149,7 +149,9 @@ private:
 	template <class ParserType>
 	static Result ParseCount(openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, Context& context, typename ParserType::Type& count);
 
-	static Result ParseObjectsWithRange(openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, const HeaderRecord& record, const Range& range, IAPDUHandler* pHandler);
+	static Result ParseRangeOfObjects(openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, const HeaderRecord& record, const Range& range, IAPDUHandler* pHandler);
+
+	static Result ParseCountOfObjects(openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, const HeaderRecord& record, uint16_t count, IAPDUHandler* pHandler);
 
 	template <class IndexType>
 	static Result ParseObjectsWithIndexPrefix(openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, const HeaderRecord& record, uint32_t count, IAPDUHandler* pHandler);
@@ -221,7 +223,7 @@ APDUParser::Result APDUParser::ParseCountHeader(openpal::ReadOnlyBuffer& buffer,
 
 		if(context.ExpectsContents())
 		{
-			return ParseObjectsWithRange(buffer, pLogger, record, Range::FromCount(count), pHandler);
+			return ParseCountOfObjects(buffer, pLogger, record, count, pHandler);
 		}
 		else
 		{
@@ -229,10 +231,14 @@ APDUParser::Result APDUParser::ParseCountHeader(openpal::ReadOnlyBuffer& buffer,
 			{
 				pHandler->OnCountRequest(record, count);
 			}
+
 			return Result::OK;
 		}
 	}
-	else return res;
+	else
+	{
+		return res;
+	}
 }
 
 template <class ParserType, class CountType>
@@ -253,7 +259,7 @@ APDUParser::Result APDUParser::ParseRangeHeader(openpal::ReadOnlyBuffer& buffer,
 
 		if(context.ExpectsContents())
 		{
-			return ParseObjectsWithRange(buffer, pLogger, record, range, pHandler);
+			return ParseRangeOfObjects(buffer, pLogger, record, range, pHandler);
 		}
 		else
 		{
