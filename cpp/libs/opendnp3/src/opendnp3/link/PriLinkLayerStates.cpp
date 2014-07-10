@@ -185,13 +185,13 @@ void PLLS_ResetLinkWait::OnTimeout(LinkLayer* apLL)
 {
 	if(apLL->Retry())
 	{
-		FORMAT_LOG_BLOCK(apLL->GetLogger(), flags::WARN, "Confirmed data timeout, retrying %i remaining", apLL->RetryRemaining());
+		FORMAT_LOG_BLOCK(apLL->GetLogger(), flags::WARN, "Link reset timeout, retrying %i remaining", apLL->RetryRemaining());
 		apLL->QueueResetLinks();
 		apLL->ChangeState(PLLS_LinkResetTransmitWait::Inst());
 	}
 	else
 	{
-		SIMPLE_LOG_BLOCK(apLL->GetLogger(), flags::WARN, "Confirmed data final timeout");
+		SIMPLE_LOG_BLOCK(apLL->GetLogger(), flags::WARN, "Link reset final timeout, no retries remain");
 		apLL->ChangeState(PLLS_SecNotReset::Inst());
 		apLL->DoSendResult(false);
 	}
@@ -254,14 +254,14 @@ void PLLS_ConfDataWait::OnTimeout(LinkLayer* apLL)
 {
 	if(apLL->Retry())
 	{
-		SIMPLE_LOG_BLOCK(apLL->GetLogger(), flags::WARN, "Retry confirmed data");
+		FORMAT_LOG_BLOCK(apLL->GetLogger(), flags::WARN, "confirmed data timeout, retrying %u remaining", apLL->RetryRemaining());
 		auto buffer = apLL->FormatPrimaryBufferWithConfirmed(apLL->pSegments->GetSegment(), apLL->NextWriteFCB());
 		apLL->QueueTransmit(buffer, true);
 		apLL->ChangeState(PLLS_ConfUserDataTransmitWait::Inst());
 	}
 	else
 	{
-		SIMPLE_LOG_BLOCK(apLL->GetLogger(), flags::WARN, "Confirmed data timeout");
+		SIMPLE_LOG_BLOCK(apLL->GetLogger(), flags::WARN, "Confirmed data final timeout, no retries remain");
 		apLL->ChangeState(PLLS_SecNotReset::Inst());
 		apLL->DoSendResult(false);
 	}
