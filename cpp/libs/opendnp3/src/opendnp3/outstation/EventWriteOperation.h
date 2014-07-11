@@ -19,50 +19,37 @@
  * to you under the terms of the License.
  */
 
-#include "Limits.h"
+#ifndef __EVENT_WRITE_OPERATION_H_
+#define __EVENT_WRITE_OPERATION_H_
 
-#include <float.h>
 #include <cstdint>
 
-/// these are implemented in terms of cstdint
-/// since AVR doesn't have std::limits
-namespace openpal
+namespace opendnp3
 {
 
-template <>
-uint8_t MinValue<uint8_t>() { return 0; }
+class ObjectWriter;
+class SelectionCriteria;
 
-template <>
-uint8_t MaxValue<uint8_t>() { return UINT8_MAX; }
+typedef bool(*EventHeaderWriteFunc)(ObjectWriter& writer, SelectionCriteria& criteria, uint32_t maxObjects);
+
+class EventWriteOperation
+{
+	public:
+
+	EventWriteOperation();
+
+	EventWriteOperation(EventHeaderWriteFunc pWriter_, uint32_t count_);
+
+	bool Invoke(ObjectWriter& writer, SelectionCriteria& criteria);
+
+	bool IsDefined() const;
 	
-template <>
-uint16_t MinValue<uint16_t>() { return 0; }
+	void Clear();	
 
-template <>
-uint16_t MaxValue<uint16_t>() { return UINT16_MAX; }
-	
-template <>
-float MinValue<float>() { return -FLT_MAX; }
+	EventHeaderWriteFunc pWriter;
+	uint32_t count;
+};
 
-template <>
-float MaxValue<float>() { return FLT_MAX ; }
-	
-template <>
-int16_t MinValue<int16_t>() { return INT16_MIN; }
-
-template <>
-int16_t MaxValue<int16_t>() { return INT16_MAX; }
-	
-template <>
-int32_t MinValue<int32_t>() { return INT32_MIN; }
-
-template <>
-int32_t MaxValue<int32_t>() { return INT32_MAX; }
-
-template <>
-int64_t MinValue<int64_t>() { return INT64_MIN; }
-
-template <>
-int64_t MaxValue<int64_t>() { return INT64_MAX; }
-	
 }
+
+#endif

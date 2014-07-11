@@ -160,7 +160,7 @@ bool OutstationEventBuffer::HasEnoughSpaceToClearOverflow() const
 
 SelectionWriter OutstationEventBuffer::Iterate()
 {
-	return SelectionWriter(*this, facade.sequenceOfEvents.Iterate());
+	return SelectionWriter(*this);
 }
 
 }

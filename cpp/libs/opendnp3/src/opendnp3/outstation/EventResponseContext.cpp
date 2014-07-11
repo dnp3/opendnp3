@@ -48,43 +48,43 @@ IINField EventResponseContext::ReadAll(const GroupVariationRecord& record)
 		// ----------- class polls --------------
 
 	case(GroupVariation::Group60Var2) :
-		criteria.AddToClass1(events::ALL_TYPES);
+		//criteria.AddToClass1(events::ALL_TYPES);
 		return IINField::Empty;
 	case(GroupVariation::Group60Var3) :
-		criteria.AddToClass2(events::ALL_TYPES);
+		//criteria.AddToClass2(events::ALL_TYPES);
 		return IINField::Empty;
 	case(GroupVariation::Group60Var4) :
-		criteria.AddToClass3(events::ALL_TYPES);
+		//criteria.AddToClass3(events::ALL_TYPES);
 		return IINField::Empty;
 
 		// ----------- variation 0 --------------
 
 	case(GroupVariation::Group2Var0) :
-		criteria.AddToAllClasses(events::BINARY);
+		//criteria.AddToAllClasses(events::BINARY);
 		return IINField::Empty;
 
 	case(GroupVariation::Group4Var0) :
-		criteria.AddToAllClasses(events::DOUBLE_BIT_BINARY);
+		//criteria.AddToAllClasses(events::DOUBLE_BIT_BINARY);
 		return IINField::Empty;
 
 	case(GroupVariation::Group11Var0) :
-		criteria.AddToAllClasses(events::BINARY_OUTPUT_STATUS);
+		//criteria.AddToAllClasses(events::BINARY_OUTPUT_STATUS);
 		return IINField::Empty;
 
 	case(GroupVariation::Group22Var0) :
-		criteria.AddToAllClasses(events::COUNTER);
+		//criteria.AddToAllClasses(events::COUNTER);
 		return IINField::Empty;
 
 	case(GroupVariation::Group23Var0) :
-		criteria.AddToAllClasses(events::FROZEN_COUNTER);
+		//criteria.AddToAllClasses(events::FROZEN_COUNTER);
 		return IINField::Empty;
 
 	case(GroupVariation::Group32Var0) :
-		criteria.AddToAllClasses(events::ANALOG);
+		//criteria.AddToAllClasses(events::ANALOG);
 		return IINField::Empty;
 
 	case(GroupVariation::Group42Var0) :
-		criteria.AddToAllClasses(events::ANALOG_OUTPUT_STATUS);
+		//criteria.AddToAllClasses(events::ANALOG_OUTPUT_STATUS);
 		return IINField::Empty;
 
 	default:
@@ -111,14 +111,7 @@ bool EventResponseContext::Load(ObjectWriter& objectWriter, const EventResponseC
 	}
 	else
 	{
-		if (criteria.HasSelection())
-		{						
-			return pBuffer->Iterate().WriteEvents(criteria, objectWriter);
-		}
-		else
-		{
-			return true;
-		}
+		return pBuffer->Iterate().WriteAllEvents(config, criteria, objectWriter);
 	}	
 }
 

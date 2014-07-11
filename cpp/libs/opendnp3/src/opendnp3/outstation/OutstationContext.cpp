@@ -504,7 +504,7 @@ void OutstationContext::CheckForUnsolicited()
 					// the database since it updates the event buffer					
 					Transaction tx(pDatabase);					
 					auto writer = eventBuffer.Iterate();
-					writer.WriteEvents(criteria, objectWriter);					
+					writer.WriteAllEvents(this->eventConfig, criteria, objectWriter);					
 				}
 							
 				this->ConfigureUnsolHeader(unsolResponse);

@@ -21,48 +21,46 @@
 
 #include "SelectionCriteria.h"
 
+#include <openpal/util/Limits.h>
+
+using namespace openpal;
+
 namespace opendnp3
 {
 
-SelectionCriteria::SelectionCriteria() : class1(0), class2(0), class3(0)
+SelectionCriteria::SelectionCriteria() : numClass1(0), numClass2(0), numClass3(0)
 {}
 
 SelectionCriteria::SelectionCriteria(const ClassField& field) :
-class1(field.HasClass1() ? events::ALL_TYPES : 0),
-class2(field.HasClass2() ? events::ALL_TYPES : 0),
-class3(field.HasClass3() ? events::ALL_TYPES : 0)
+	numClass1(field.HasClass1() ? MaxValue<uint32_t>() : 0),
+	numClass2(field.HasClass2() ? MaxValue<uint32_t>() : 0),
+	numClass3(field.HasClass3() ? MaxValue<uint32_t>() : 0)
 {
 
 }
 
-SelectionCriteria::SelectionCriteria(uint16_t clazz1, uint16_t clazz2, uint16_t clazz3) :
-	class1(clazz1),
-	class2(clazz2),
-	class3(clazz3)
-{}
-
 void SelectionCriteria::Clear()
 {
-	class1 = class2 = class3 = 0;	
+	numClass1 = numClass2 = numClass3 = 0;
 }
 
 bool SelectionCriteria::HasSelection() const
 {
-	return (class1 | class2 | class3) > 0;
+	return (numClass1 | numClass2 | numClass3) > 0;
 }
 
-bool SelectionCriteria::IsMatch(EventClass clazz, EventType type) const
+EventWriteOperation SelectionCriteria::GetWriteOperationFor(const EventResponseConfig& config, EventClass clazz, EventType type) const
 {
 	switch(clazz)
 	{
-	case(EventClass::EC1):
-		return (class1 & static_cast<uint32_t>(type)) != 0;
-	case(EventClass::EC2):
-		return (class2 & static_cast<uint32_t>(type)) != 0;
-	case(EventClass::EC3):
-		return (class3 & static_cast<uint32_t>(type)) != 0;
-	default:
-		return false;
+		case(EventClass::EC1) :
+			return EventWriteOperation();
+		case(EventClass::EC2):
+			return EventWriteOperation();
+		case(EventClass::EC3):
+			return EventWriteOperation();
+		default:
+			return EventWriteOperation();
 	}
 }
 

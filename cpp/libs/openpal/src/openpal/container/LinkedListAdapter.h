@@ -61,10 +61,16 @@ public:
 
 	ListNode< ValueType>* Next()
 	{
-		assert(pCurrent != nullptr);
-		auto pRet = pCurrent;
-		pCurrent = pCurrent->next;
-		return pRet;
+		if (pCurrent == nullptr)
+		{
+			return nullptr;			
+		}
+		else
+		{
+			auto pRet = pCurrent;
+			pCurrent = pCurrent->next;
+			return pRet;
+		}				
 	}
 
 private:

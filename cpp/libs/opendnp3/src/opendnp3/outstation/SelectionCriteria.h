@@ -22,8 +22,11 @@
 #ifndef __SELECTION_CRITERIA_H_
 #define __SELECTION_CRITERIA_H_
 
-#include "EventType.h"
-#include "EventCount.h"
+#include "opendnp3/app/ClassField.h"
+
+#include "opendnp3/outstation/EventType.h"
+#include "opendnp3/outstation/EventWriteOperation.h"
+#include "opendnp3/outstation/EventResponseConfig.h"
 
 #include <openpal/util/Uncopyable.h>
 
@@ -39,43 +42,19 @@ public:
 
 	SelectionCriteria(const ClassField& field);
 
-	SelectionCriteria(uint16_t clazz1, uint16_t clazz2, uint16_t clazz3);
-
-	bool IsMatch(EventClass clazz, EventType type) const;
+	EventWriteOperation GetWriteOperationFor(const EventResponseConfig& config, EventClass clazz, EventType type) const;
 
 	void Clear();
 
-	bool HasSelection() const;
-
-	inline void AddToClass1(uint16_t types)
-	{
-		class1 |= types;
-	}
-
-	inline void AddToClass2(uint16_t types)
-	{
-		class2 |= types;
-	}
-
-	inline void AddToClass3(uint16_t types)
-	{
-		class3 |= types;
-	}
-
-	inline void AddToAllClasses(uint16_t types)
-	{
-		AddToClass1(types);
-		AddToClass2(types);
-		AddToClass3(types);
-	}
+	bool HasSelection() const;	
 
 private:
 
 	// ----- bit masks for measurement types in each class --------
 
-	uint16_t class1;
-	uint16_t class2;
-	uint16_t class3;
+	uint32_t numClass1;
+	uint32_t numClass2;
+	uint32_t numClass3;
 };
 
 }

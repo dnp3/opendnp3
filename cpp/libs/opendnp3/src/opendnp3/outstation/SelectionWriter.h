@@ -41,21 +41,18 @@ class SelectionWriter
 
 public:	
 
-	bool WriteEvents(SelectionCriteria& criteria, ObjectWriter& writer);
+	bool WriteAllEvents(const EventResponseConfig& config, SelectionCriteria& criteria, ObjectWriter& writer);
 
 private:
 
-	openpal::ListNode<SequenceRecord>* SeekNextNode(SelectionCriteria& criteria);
+	static openpal::ListNode<SequenceRecord>* SeekNextWriteableNode(openpal::LinkedListIterator<SequenceRecord>& iterator);
 
-	SelectionWriter(  OutstationEventBuffer& buffer_,
-					  const openpal::LinkedListAdapter<SequenceRecord, uint16_t>::Iterator& iterator_);
+	SelectionWriter(OutstationEventBuffer& buffer);
 
 	template <class T>
 	bool ReadAny(Event<T>& evt, EventType type, const openpal::RandomInsertAdapter<Event<T>, uint16_t>& adapter);
 
 	OutstationEventBuffer* pBuffer;	
-	openpal::ListNode<SequenceRecord>* pCurrent;
-	openpal::LinkedListAdapter<SequenceRecord, uint16_t>::Iterator iterator;
 };
 
 template <class T>
