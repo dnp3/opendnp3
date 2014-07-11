@@ -68,34 +68,6 @@ void OutstationEventBuffer::Clear()
 	selectedTracker.Clear();
 }
 
-void OutstationEventBuffer::ReleaseFromTypedStorage(const SequenceRecord& record)
-{
-	switch (record.type)
-	{
-		case(EventType::Binary) :
-			facade.binaryEvents.Release(record.index);
-			break;
-		case(EventType::DoubleBitBinary) :
-			facade.doubleBinaryEvents.Release(record.index);
-			break;
-		case(EventType::Analog) :
-			facade.analogEvents.Release(record.index);
-			break;
-		case(EventType::Counter) :
-			facade.counterEvents.Release(record.index);
-			break;
-		case(EventType::FrozenCounter) :
-			facade.frozenCounterEvents.Release(record.index);
-			break;
-		case(EventType::BinaryOutputStatus) :
-			facade.binaryOutputStatusEvents.Release(record.index);
-			break;
-		case(EventType::AnalogOutputStatus) :
-			facade.analogOutputStatusEvents.Release(record.index);
-			break;
-	}
-}
-
 EventCount OutstationEventBuffer::TotalEvents() const
 {
 	return totalTracker;
@@ -113,42 +85,45 @@ EventCount OutstationEventBuffer::SelectedEvents() const
 
 void OutstationEventBuffer::Update(const Event<Binary>& aEvent)
 {
-	InsertEvent(aEvent, EventType::Binary, facade.binaryEvents);
+	//InsertEvent(aEvent, EventType::Binary, facade.binaryEvents);
 }
 
 void OutstationEventBuffer::Update(const Event<Analog>& aEvent)
 {
-	InsertEvent(aEvent, EventType::Analog,  facade.analogEvents);
+	//InsertEvent(aEvent, EventType::Analog,  facade.analogEvents);
 }
 
 void OutstationEventBuffer::Update(const Event<Counter>& aEvent)
 {
-	InsertEvent(aEvent, EventType::Counter,  facade.counterEvents);
+	//InsertEvent(aEvent, EventType::Counter,  facade.counterEvents);
 }
 
 void OutstationEventBuffer::Update(const Event<FrozenCounter>& aEvent)
 {
-	InsertEvent(aEvent, EventType::FrozenCounter,  facade.frozenCounterEvents);
+	//InsertEvent(aEvent, EventType::FrozenCounter,  facade.frozenCounterEvents);
 }
 
 void OutstationEventBuffer::Update(const Event<DoubleBitBinary>& aEvent)
 {
-	InsertEvent(aEvent, EventType::DoubleBitBinary, facade.doubleBinaryEvents);
+	//InsertEvent(aEvent, EventType::DoubleBitBinary, facade.doubleBinaryEvents);
 }
 
 void OutstationEventBuffer::Update(const Event<BinaryOutputStatus>& aEvent)
 {
-	InsertEvent(aEvent, EventType::BinaryOutputStatus, facade.binaryOutputStatusEvents);
+	//InsertEvent(aEvent, EventType::BinaryOutputStatus, facade.binaryOutputStatusEvents);
 }
 
 void OutstationEventBuffer::Update(const Event<AnalogOutputStatus>& aEvent)
 {
-	InsertEvent(aEvent, EventType::AnalogOutputStatus, facade.analogOutputStatusEvents);
+	//InsertEvent(aEvent, EventType::AnalogOutputStatus, facade.analogOutputStatusEvents);
 }
 
 bool OutstationEventBuffer::HasEnoughSpaceToClearOverflow() const
 {
-	return	HasSpace(facade.analogEvents) &&
+	return	false;
+	
+			/*
+			HasSpace(facade.analogEvents) &&
 	        HasSpace(facade.analogOutputStatusEvents) &&
 	        HasSpace(facade.binaryEvents) &&
 	        HasSpace(facade.binaryOutputStatusEvents) &&
@@ -156,6 +131,7 @@ bool OutstationEventBuffer::HasEnoughSpaceToClearOverflow() const
 	        HasSpace(facade.doubleBinaryEvents) &&
 	        HasSpace(facade.frozenCounterEvents) &&
 	        HasSpace(facade.sequenceOfEvents);
+			*/
 }
 
 SelectionWriter OutstationEventBuffer::Iterate()

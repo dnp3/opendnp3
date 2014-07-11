@@ -215,6 +215,7 @@
     <ClInclude Include="src\opendnp3\outstation\SelectionWriter.h" />
     <ClInclude Include="src\opendnp3\outstation\SimpleCommandHandler.h" />
     <ClInclude Include="src\opendnp3\outstation\OutstationStackConfig.h" />
+    <ClInclude Include="src\opendnp3\outstation\SOERecord.h" />
     <ClInclude Include="src\opendnp3\outstation\StaticallyAllocatedDatabase.h" />
     <ClInclude Include="src\opendnp3\outstation\StaticallyAllocatedEventBuffer.h" />
     <ClInclude Include="src\opendnp3\outstation\StaticDataFacade.h" />
@@ -363,6 +364,7 @@
     <ClCompile Include="src\opendnp3\outstation\SelectionCriteria.cpp" />
     <ClCompile Include="src\opendnp3\outstation\SelectionWriter.cpp" />
     <ClCompile Include="src\opendnp3\outstation\SimpleCommandHandler.cpp" />
+    <ClCompile Include="src\opendnp3\outstation\SOERecord.cpp" />
     <ClCompile Include="src\opendnp3\outstation\StaticResponseConfig.cpp" />
     <ClCompile Include="src\opendnp3\outstation\StaticResponseContext.cpp" />
     <ClCompile Include="src\opendnp3\outstation\StaticResponseTypes.cpp" />

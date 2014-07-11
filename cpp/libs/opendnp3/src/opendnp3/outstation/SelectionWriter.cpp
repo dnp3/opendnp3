@@ -42,7 +42,10 @@ bool SelectionWriter::WriteAllEvents(const EventResponseConfig& config, Selectio
 		if (pNode)
 		{
 			auto operation = criteria.GetWriteOperationFor(config, pNode->value.clazz, pNode->value.type);
-			apduHasSpace = operation.Invoke(writer, criteria);			
+			if (operation.IsDefined())
+			{
+				apduHasSpace = operation.Invoke(writer, criteria);
+			}						
 		}
 
 	} 
@@ -50,7 +53,7 @@ bool SelectionWriter::WriteAllEvents(const EventResponseConfig& config, Selectio
 	return apduHasSpace;
 }
 
-openpal::ListNode<SequenceRecord>* SelectionWriter::SeekNextWriteableNode(openpal::LinkedListIterator<SequenceRecord>& iterator)
+openpal::ListNode<SOERecord>* SelectionWriter::SeekNextWriteableNode(openpal::LinkedListIterator<SOERecord>& iterator)
 {
 	while (iterator.HasNext())
 	{

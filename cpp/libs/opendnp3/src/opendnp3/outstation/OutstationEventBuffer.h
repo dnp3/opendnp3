@@ -76,7 +76,7 @@ public:
 
 private:
 
-	void ReleaseFromTypedStorage(const SequenceRecord& record);
+	void ReleaseFromTypedStorage(const SOERecord& record);
 
 	bool overflow;
 	EventBufferFacade facade;
@@ -87,10 +87,7 @@ private:
 	template <class T>
 	static bool HasSpace(const T& buffer);
 
-	bool HasEnoughSpaceToClearOverflow() const;
-
-	template <class T>
-	void InsertEvent(const T& aEvent, EventType eventType, openpal::RandomInsertAdapter<T, uint16_t>& buffer);
+	bool HasEnoughSpaceToClearOverflow() const;	
 };
 
 template <class T>
@@ -103,39 +100,6 @@ bool OutstationEventBuffer::HasSpace(const T& buffer)
 	else // ignore zero capacity buffers
 	{
 		return true;
-	}
-}
-
-template <class T>
-void OutstationEventBuffer::InsertEvent(const T& aEvent, EventType eventType, openpal::RandomInsertAdapter<T, uint16_t>& buffer)
-{
-	if(buffer.Capacity() > 0)
-	{
-		if (buffer.IsFull() || facade.sequenceOfEvents.IsFull())
-		{
-			this->overflow = true;
-			// find the first event of this type in the SOE, and discard it
-			auto isMatch = [eventType](const SequenceRecord& rec) { return rec.type == eventType; };
-			auto pNode = facade.sequenceOfEvents.FindFirst(isMatch);
-			if (pNode)
-			{
-				totalTracker.Decrement(aEvent.clazz);
-				this->ReleaseFromTypedStorage(pNode->value);
-
-				if (pNode->value.selected)
-				{
-					pNode->value.selected = false;
-					selectedTracker.Decrement(aEvent.clazz);
-				}
-				
-				facade.sequenceOfEvents.Remove(pNode);
-			}
-		}
-		
-		totalTracker.Increment(aEvent.clazz);
-		auto index = buffer.Add(aEvent);
-		SequenceRecord record(eventType, index, aEvent.clazz, false);
-		facade.sequenceOfEvents.Add(record);		
 	}
 }
 

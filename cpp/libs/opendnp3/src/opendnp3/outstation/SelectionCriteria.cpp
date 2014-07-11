@@ -64,4 +64,37 @@ EventWriteOperation SelectionCriteria::GetWriteOperationFor(const EventResponseC
 	}
 }
 
+EventWriteOperation SelectionCriteria::GetWriteOperationFor(const EventResponseConfig& config, EventType type, uint32_t maximum)
+{
+	if (maximum > 0)
+	{
+		return EventWriteOperation();
+	}
+	else
+	{
+		/*
+		switch (type)
+		{
+			case(EventType::Binary):
+			
+			case(EventType::DoubleBitBinary):
+			
+			case(EventType::BinaryOutputStatus):
+			
+			case(EventType::Counter):
+			
+			case(EventType::FrozenCounter):
+			
+			case(EventType::Analog):
+			
+			case(EventType::AnalogOutputStatus):
+
+			default:
+				break;
+		}
+		*/
+		return EventWriteOperation();
+	}
+}
+
 }

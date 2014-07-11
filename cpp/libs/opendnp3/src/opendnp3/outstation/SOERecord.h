@@ -19,33 +19,42 @@
  * to you under the terms of the License.
  */
 
-#ifndef __EVENT_BUFFER_FACADE_H_
-#define __EVENT_BUFFER_FACADE_H_
-
-#include <openpal/container/StaticLinkedList.h>
-#include <openpal/container/StackAdapter.h>
-
-#include "opendnp3/outstation/SOERecord.h"
+#ifndef __SOE_RECORD_H_
+#define __SOE_RECORD_H_
 
 
+#include <openpal/container/ErasedType.h>
+
+#include "opendnp3/outstation/EventType.h"
+#include "opendnp3/app/MeasurementTypes.h"
 
 
 namespace opendnp3
 {
 
-struct EventBufferFacade
+typedef openpal::ErasedType<sizeof(Analog)> EventErasure;
+
+class SOERecord
 {
 public:
 
-	EventBufferFacade(	   
-		openpal::LinkedListAdapter<SOERecord, uint16_t> sequenceOfEvents_,
-		openpal::StackAdapter<openpal::ListNode<SOERecord>*, uint16_t> selectedEvents_
-	);
-	
-	openpal::LinkedListAdapter<SOERecord, uint16_t> sequenceOfEvents;
-	openpal::StackAdapter<openpal::ListNode<SOERecord>*, uint16_t> selectedEvents;
-};
+	SOERecord();
 
+	 SOERecord(const Binary& meas, uint16_t index_, EventClass clazz_, bool selected_);
+	 SOERecord(const DoubleBitBinary& meas, uint16_t index_, EventClass clazz_, bool selected_);
+	 SOERecord(const BinaryOutputStatus& meas, uint16_t index_, EventClass clazz_, bool selected_);
+	 SOERecord(const Counter& meas, uint16_t index_, EventClass clazz_, bool selected_);
+	 SOERecord(const FrozenCounter& meas, uint16_t index_, EventClass clazz_, bool selected_);
+	 SOERecord(const Analog& meas, uint16_t index_, EventClass clazz_, bool selected_);
+	 SOERecord(const AnalogOutputStatus& meas, uint16_t index_, EventClass clazz_, bool selected_);
+
+
+	EventType type;
+	EventErasure erasure;
+	uint16_t index;
+	EventClass clazz;
+	bool selected;
+};
 
 }
 

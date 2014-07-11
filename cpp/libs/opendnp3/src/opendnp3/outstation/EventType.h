@@ -47,21 +47,6 @@ enum class EventClass: uint8_t
     EC3 = 4
 };
 
-namespace events
-{
-
-const uint16_t BINARY = static_cast<uint16_t>(EventType::Binary);
-const uint16_t ANALOG = static_cast<uint16_t>(EventType::Analog);
-const uint16_t COUNTER = static_cast<uint16_t>(EventType::Counter);
-const uint16_t FROZEN_COUNTER = static_cast<uint16_t>(EventType::FrozenCounter);
-const uint16_t DOUBLE_BIT_BINARY = static_cast<uint16_t>(EventType::DoubleBitBinary);
-const uint16_t BINARY_OUTPUT_STATUS = static_cast<uint16_t>(EventType::BinaryOutputStatus);
-const uint16_t ANALOG_OUTPUT_STATUS = static_cast<uint16_t>(EventType::AnalogOutputStatus);
-
-static const uint16_t NONE = 0;
-static const uint16_t ALL_TYPES = ~NONE;
-}
-
 }
 
 #endif

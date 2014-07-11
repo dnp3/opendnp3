@@ -24,32 +24,11 @@
 namespace opendnp3
 {
 
-SequenceRecord::SequenceRecord() : type(EventType::Analog), index(0), clazz(EventClass::EC1), selected(false)
-{}
-
-SequenceRecord::SequenceRecord(EventType type_, uint16_t index_, EventClass clazz_, bool selected_) :
-	type(type_), index(index_), clazz(clazz_), selected(selected_)
-{}
-
-EventBufferFacade::EventBufferFacade(
-    openpal::RandomInsertAdapter<Event<Binary>, uint16_t> binaryEvents_,
-    openpal::RandomInsertAdapter<Event<DoubleBitBinary>, uint16_t> doubleBinaryEvents_,
-    openpal::RandomInsertAdapter<Event<Analog>, uint16_t> analogEvents_,
-    openpal::RandomInsertAdapter<Event<Counter>, uint16_t> counterEvents_,
-    openpal::RandomInsertAdapter<Event<FrozenCounter>, uint16_t> frozenCounterEvents_,
-    openpal::RandomInsertAdapter<Event<BinaryOutputStatus>, uint16_t> binaryOutputStatusEvents_,
-    openpal::RandomInsertAdapter<Event<AnalogOutputStatus>, uint16_t> analogOutputStatusEvents_,
-
-    openpal::LinkedListAdapter<SequenceRecord, uint16_t> sequenceOfEvents_,
-    openpal::StackAdapter<openpal::ListNode<SequenceRecord>*, uint16_t> selectedEvents_) :
-
-	binaryEvents(binaryEvents_),
-	doubleBinaryEvents(doubleBinaryEvents_),
-	analogEvents(analogEvents_),
-	counterEvents(counterEvents_),
-	frozenCounterEvents(frozenCounterEvents_),
-	binaryOutputStatusEvents(binaryOutputStatusEvents_),
-	analogOutputStatusEvents(analogOutputStatusEvents_),
+EventBufferFacade::EventBufferFacade(  
+	openpal::LinkedListAdapter<SOERecord, uint16_t> sequenceOfEvents_,
+	openpal::StackAdapter<openpal::ListNode<SOERecord>*, uint16_t> selectedEvents_
+	) :
+	
 	sequenceOfEvents(sequenceOfEvents_),
 	selectedEvents(selectedEvents_)
 {

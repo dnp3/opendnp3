@@ -19,33 +19,68 @@
  * to you under the terms of the License.
  */
 
-#ifndef __EVENT_BUFFER_FACADE_H_
-#define __EVENT_BUFFER_FACADE_H_
+#ifndef __ERASED_TYPE_H_
+#define __ERASED_TYPE_H_
 
-#include <openpal/container/StaticLinkedList.h>
-#include <openpal/container/StackAdapter.h>
+#include <cstdint>
+#include <cstring>
 
-#include "opendnp3/outstation/SOERecord.h"
-
-
-
-
-namespace opendnp3
+namespace openpal
 {
 
-struct EventBufferFacade
+// a generic cell that can be used to store events of any type using an erased buffer
+template <size_t MaxSize>
+class ErasedType
 {
-public:
-
-	EventBufferFacade(	   
-		openpal::LinkedListAdapter<SOERecord, uint16_t> sequenceOfEvents_,
-		openpal::StackAdapter<openpal::ListNode<SOERecord>*, uint16_t> selectedEvents_
-	);
+	public:
 	
-	openpal::LinkedListAdapter<SOERecord, uint16_t> sequenceOfEvents;
-	openpal::StackAdapter<openpal::ListNode<SOERecord>*, uint16_t> selectedEvents;
-};
+	ErasedType() : size(0)
+	{}
 
+	ErasedType(const ErasedType& copy) : size(copy.size)
+	{
+		memcpy(buffer, copy.buffer, copy.size);
+	}
+
+	ErasedType& operator= (const ErasedType& other)
+	{
+		if (this != &other)
+		{
+			this->size = other.size;
+			memcpy(buffer, copy.buffer, copy.size);
+		}
+		
+		return *this;
+	}
+
+	template <class T>
+	void Set(const T& type)
+	{
+		static_assert(sizeof(T) <= MaxSize, "Type is too big for erasure");
+		(*reinterpret_cast<T*>(buffer)) = type;
+		size = sizeof(T);
+	}
+
+	template <class T>
+	bool Read(T& type) const
+	{
+		static_assert(sizeof(T) <= MaxSize, "Type is too big for erasure");
+		if (size < sizeof(T))
+		{
+			return false;
+		}
+		else
+		{
+			type = (*reinterpret<T*>(buffer));
+			return true;
+		}
+		
+	}
+	
+	private:
+	size_t size;
+	uint8_t buffer[MaxSize];
+};
 
 }
 

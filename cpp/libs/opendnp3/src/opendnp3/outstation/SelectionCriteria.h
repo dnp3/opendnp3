@@ -50,6 +50,8 @@ public:
 
 private:
 
+	static EventWriteOperation GetWriteOperationFor(const EventResponseConfig& config, EventType type, uint32_t maximum);
+
 	// ----- bit masks for measurement types in each class --------
 
 	uint32_t numClass1;

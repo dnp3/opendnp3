@@ -45,16 +45,19 @@ public:
 
 private:
 
-	static openpal::ListNode<SequenceRecord>* SeekNextWriteableNode(openpal::LinkedListIterator<SequenceRecord>& iterator);
+	static openpal::ListNode<SOERecord>* SeekNextWriteableNode(openpal::LinkedListIterator<SOERecord>& iterator);
 
 	SelectionWriter(OutstationEventBuffer& buffer);
 
+	/*
 	template <class T>
 	bool ReadAny(Event<T>& evt, EventType type, const openpal::RandomInsertAdapter<Event<T>, uint16_t>& adapter);
+	*/
 
 	OutstationEventBuffer* pBuffer;	
 };
 
+/*
 template <class T>
 bool SelectionWriter::ReadAny(Event<T>& evt, EventType type, const openpal::RandomInsertAdapter<Event<T>, uint16_t>& adapter)
 {
@@ -75,6 +78,7 @@ bool SelectionWriter::ReadAny(Event<T>& evt, EventType type, const openpal::Rand
 		return false;
 	}
 }
+*/
 
 }
 

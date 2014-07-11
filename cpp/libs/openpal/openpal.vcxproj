@@ -25,6 +25,7 @@
     <ClInclude Include="src\openpal\channel\LayerInterfaces.h" />
     <ClInclude Include="src\openpal\Configure.h" />
     <ClInclude Include="src\openpal\container\DynamicArray.h" />
+    <ClInclude Include="src\openpal\container\ErasedType.h" />
     <ClInclude Include="src\openpal\container\HasSize.h" />
     <ClInclude Include="src\openpal\container\Indexable.h" />
     <ClInclude Include="src\openpal\container\IndexableIterator.h" />
