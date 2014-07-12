@@ -84,6 +84,12 @@ IINField SelectionCriteria::RecordAllObjects(GroupVariation enumeration)
 		case(GroupVariation::Group2Var0) :
 			return RecordTypeMaxValue(EventType::Binary, GetDefaultWriteFunction(defaults, EventType::Binary));
 
+		case(GroupVariation::Group22Var0) :
+			return RecordTypeMaxValue(EventType::Counter, GetDefaultWriteFunction(defaults, EventType::Counter));
+
+		case(GroupVariation::Group32Var0) :
+			return RecordTypeMaxValue(EventType::Analog, GetDefaultWriteFunction(defaults, EventType::Analog));
+
 		default:
 			return IINField(IINBit::FUNC_NOT_SUPPORTED);
 	}
