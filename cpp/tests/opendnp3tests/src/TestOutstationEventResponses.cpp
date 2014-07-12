@@ -46,7 +46,8 @@ TEST_CASE(SUITE("BlankExceptionScan"))
 TEST_CASE(SUITE("ReceiveNewRequestSolConfirmWait"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config, DatabaseTemplate::BinaryOnly(1), EventBufferConfig::AllTypes(10));
+	config.eventBufferConfig = EventBufferConfig::AllTypes(10);
+	OutstationTestObject t(config, DatabaseTemplate::BinaryOnly(1));
 	t.LowerLayerUp();
 
 	t.Transaction([](Database& db) { db.Update(Binary(true, 0x01), 0); });
@@ -62,7 +63,8 @@ TEST_CASE(SUITE("ReceiveNewRequestSolConfirmWait"))
 TEST_CASE(SUITE("ReadClass1WithSOE"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config, DatabaseTemplate::AllTypes(100), EventBufferConfig::AllTypes(10));
+	config.eventBufferConfig = EventBufferConfig::AllTypes(10);
+	OutstationTestObject t(config, DatabaseTemplate::AllTypes(100));
 
 	t.LowerLayerUp();
 
@@ -84,7 +86,8 @@ TEST_CASE(SUITE("ReadClass1WithSOE"))
 TEST_CASE(SUITE("MultipleClasses"))
 {
 	OutstationConfig config;
-	OutstationTestObject t(config, DatabaseTemplate::AllTypes(1), EventBufferConfig::AllTypes(10));
+	config.eventBufferConfig = EventBufferConfig::AllTypes(10);
+	OutstationTestObject t(config, DatabaseTemplate::AllTypes(1));
 	t.LowerLayerUp();
 
 	t.Transaction([](Database& db) {
@@ -126,7 +129,8 @@ void TestEventRead(const std::string& request, const std::string& response, cons
 {
 
 	OutstationConfig config;
-	OutstationTestObject t(config, DatabaseTemplate::AllTypes(1), EventBufferConfig::AllTypes(10));
+	config.eventBufferConfig = EventBufferConfig::AllTypes(10);
+	OutstationTestObject t(config, DatabaseTemplate::AllTypes(1));
 	t.LowerLayerUp();
 
 	t.Transaction([&](Database& db){ loadFun(db); });

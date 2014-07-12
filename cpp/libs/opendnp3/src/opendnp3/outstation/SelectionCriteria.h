@@ -22,16 +22,22 @@
 #ifndef __SELECTION_CRITERIA_H_
 #define __SELECTION_CRITERIA_H_
 
+#include "opendnp3/app/EventType.h"
+#include "opendnp3/outstation/EventCount.h"
 #include "opendnp3/app/ClassField.h"
+#include "opendnp3/gen/GroupVariation.h"
 
-#include "opendnp3/outstation/EventType.h"
 #include "opendnp3/outstation/EventWriteOperation.h"
 #include "opendnp3/outstation/EventResponseConfig.h"
+#include "opendnp3/app/IINField.h"
 
+#include <openpal/util/Limits.h>
 #include <openpal/util/Uncopyable.h>
 
 namespace opendnp3
 {
+
+
 
 class SelectionCriteria : private openpal::Uncopyable
 {
@@ -42,15 +48,23 @@ public:
 
 	SelectionCriteria(const ClassField& field);
 
-	EventWriteOperation GetWriteOperationFor(const EventResponseConfig& config, EventClass clazz, EventType type) const;
+	IINField RecordAllObjects(GroupVariation enumeration);
+
+	EventWriteOperation GetWriteOperationFor(const EventResponseConfig& config, EventClass clazz, EventType type);
+
+	void RecordAsWritten(EventClass clazz, EventType type);
 
 	void Clear();
 
 	bool HasSelection() const;	
 
-private:
+private:	
 
-	static EventWriteOperation GetWriteOperationFor(const EventResponseConfig& config, EventType type, uint32_t maximum);
+	IINField SelectionCriteria::RecordClass(uint32_t& count);
+
+	IINField SelectionCriteria::RecordClass(uint32_t& count, uint32_t value);
+
+	static EventHeaderWriteFunc GetDefaultWriteFunction(const EventResponseConfig& config, EventType type);
 
 	// ----- bit masks for measurement types in each class --------
 

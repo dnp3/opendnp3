@@ -21,7 +21,7 @@
 
 #include "SelectionCriteria.h"
 
-#include <openpal/util/Limits.h>
+#include "opendnp3/outstation/EventResponseTypes.h"
 
 using namespace openpal;
 
@@ -29,14 +29,49 @@ namespace opendnp3
 {
 
 SelectionCriteria::SelectionCriteria() : numClass1(0), numClass2(0), numClass3(0)
-{}
-
-SelectionCriteria::SelectionCriteria(const ClassField& field) :
-	numClass1(field.HasClass1() ? MaxValue<uint32_t>() : 0),
-	numClass2(field.HasClass2() ? MaxValue<uint32_t>() : 0),
-	numClass3(field.HasClass3() ? MaxValue<uint32_t>() : 0)
 {
 
+}
+
+SelectionCriteria::SelectionCriteria(const ClassField& field) 	
+{
+	
+}
+
+IINField SelectionCriteria::RecordAllObjects(GroupVariation enumeration)
+{
+	switch (enumeration)
+	{
+		case(GroupVariation::Group60Var2):
+			return RecordClass(numClass1);
+
+		case(GroupVariation::Group60Var3):
+			return RecordClass(numClass2);
+
+		case(GroupVariation::Group60Var4):
+			return RecordClass(numClass3);
+
+		default:
+			return IINField(IINBit::FUNC_NOT_SUPPORTED);
+	}
+}
+
+IINField SelectionCriteria::RecordClass(uint32_t& count)
+{
+	return RecordClass(count, openpal::MaxValue<uint32_t>());
+}
+
+IINField SelectionCriteria::RecordClass(uint32_t& count, uint32_t value)
+{
+	if (count > 0)
+	{
+		return IINField(IINBit::PARAM_ERROR);
+	}
+	else
+	{
+		count = value;
+		return IINField::Empty;
+	}
 }
 
 void SelectionCriteria::Clear()
@@ -49,51 +84,65 @@ bool SelectionCriteria::HasSelection() const
 	return (numClass1 | numClass2 | numClass3) > 0;
 }
 
-EventWriteOperation SelectionCriteria::GetWriteOperationFor(const EventResponseConfig& config, EventClass clazz, EventType type) const
+void SelectionCriteria::RecordAsWritten(EventClass clazz, EventType type)
 {
+	switch (clazz)
+	{
+		case(EventClass::EC1) :
+			--numClass1;
+			break;
+		case(EventClass::EC2) :
+			--numClass2;
+			break;
+		case(EventClass::EC3) :
+			--numClass3;
+			break;	
+	}
+}
+
+EventWriteOperation SelectionCriteria::GetWriteOperationFor(const EventResponseConfig& defaults, EventClass clazz, EventType type)
+{
+	EventWriteLimits limits;
+	limits.numClass1 = numClass1;
+	limits.numClass2 = numClass2;
+	limits.numClass3 = numClass3;
+	limits.numOfType = openpal::MaxValue<uint32_t>();
+
+	auto pFunction = GetDefaultWriteFunction(defaults, type);
+
 	switch(clazz)
 	{
 		case(EventClass::EC1) :
-			return EventWriteOperation();
+			return EventWriteOperation(pFunction, limits);
 		case(EventClass::EC2):
-			return EventWriteOperation();
+			return EventWriteOperation(pFunction, limits);
 		case(EventClass::EC3):
-			return EventWriteOperation();
+			return EventWriteOperation(pFunction, limits);
 		default:
 			return EventWriteOperation();
 	}
 }
 
-EventWriteOperation SelectionCriteria::GetWriteOperationFor(const EventResponseConfig& config, EventType type, uint32_t maximum)
+EventHeaderWriteFunc SelectionCriteria::GetDefaultWriteFunction(const EventResponseConfig& config, EventType type)
 {
-	if (maximum > 0)
+	switch (type)
 	{
-		return EventWriteOperation();
-	}
-	else
-	{
-		/*
-		switch (type)
-		{
-			case(EventType::Binary):
-			
-			case(EventType::DoubleBitBinary):
-			
-			case(EventType::BinaryOutputStatus):
-			
-			case(EventType::Counter):
-			
-			case(EventType::FrozenCounter):
-			
-			case(EventType::Analog):
-			
-			case(EventType::AnalogOutputStatus):
-
-			default:
-				break;
-		}
-		*/
-		return EventWriteOperation();
+		case(EventType::Binary) :
+			return EventResponseTypes::Lookup(config.binary);
+		case(EventType::DoubleBitBinary) :
+			return EventResponseTypes::Lookup(config.doubleBinary);
+		case(EventType::BinaryOutputStatus) :
+			return EventResponseTypes::Lookup(config.binaryOutputStatus);
+		case(EventType::Counter) :
+			return EventResponseTypes::Lookup(config.counter);
+		case(EventType::FrozenCounter) :
+			return EventResponseTypes::Lookup(config.frozenCounter);
+		case(EventType::Analog) :
+			return EventResponseTypes::Lookup(config.analog);
+		case(EventType::AnalogOutputStatus) :
+			return EventResponseTypes::Lookup(config.analogOutputStatus);
+		default:
+			return nullptr;
 	}
 }
 

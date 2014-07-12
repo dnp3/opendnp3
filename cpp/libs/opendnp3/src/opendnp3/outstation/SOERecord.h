@@ -25,7 +25,7 @@
 
 #include <openpal/container/ErasedType.h>
 
-#include "opendnp3/outstation/EventType.h"
+#include "opendnp3/app/EventType.h"
 #include "opendnp3/app/MeasurementTypes.h"
 
 
@@ -40,13 +40,13 @@ public:
 
 	SOERecord();
 
-	 SOERecord(const Binary& meas, uint16_t index_, EventClass clazz_, bool selected_);
-	 SOERecord(const DoubleBitBinary& meas, uint16_t index_, EventClass clazz_, bool selected_);
-	 SOERecord(const BinaryOutputStatus& meas, uint16_t index_, EventClass clazz_, bool selected_);
-	 SOERecord(const Counter& meas, uint16_t index_, EventClass clazz_, bool selected_);
-	 SOERecord(const FrozenCounter& meas, uint16_t index_, EventClass clazz_, bool selected_);
-	 SOERecord(const Analog& meas, uint16_t index_, EventClass clazz_, bool selected_);
-	 SOERecord(const AnalogOutputStatus& meas, uint16_t index_, EventClass clazz_, bool selected_);
+	SOERecord(const Binary& meas, uint16_t index_, EventClass clazz_);
+	SOERecord(const DoubleBitBinary& meas, uint16_t index_, EventClass clazz_);
+	SOERecord(const BinaryOutputStatus& meas, uint16_t index_, EventClass clazz_);
+	SOERecord(const Counter& meas, uint16_t index_, EventClass clazz_);
+	SOERecord(const FrozenCounter& meas, uint16_t index_, EventClass clazz_);
+	SOERecord(const Analog& meas, uint16_t index_, EventClass clazz_);
+	SOERecord(const AnalogOutputStatus& meas, uint16_t index_, EventClass clazz_);	
 
 
 	EventType type;

@@ -34,34 +34,14 @@ class DynamicallyAllocatedEventBuffer : openpal::Uncopyable
 {
 
 public:
-	DynamicallyAllocatedEventBuffer(const opendnp3::EventBufferConfig& config);
+	DynamicallyAllocatedEventBuffer(uint32_t maxEvents);
 
 	opendnp3::EventBufferFacade GetFacade();
 
-private:
-	openpal::DynamicArray<uint16_t, uint16_t> binaryStack;
-	openpal::DynamicArray<opendnp3::Event<opendnp3::Binary>, uint16_t> binaryArray;
+private:	
 
-	openpal::DynamicArray<uint16_t, uint16_t> doubleBinaryStack;
-	openpal::DynamicArray<opendnp3::Event<opendnp3::DoubleBitBinary>, uint16_t> doubleBinaryArray;
-
-	openpal::DynamicArray<uint16_t, uint16_t> analogStack;
-	openpal::DynamicArray<opendnp3::Event<opendnp3::Analog>, uint16_t> analogArray;
-
-	openpal::DynamicArray<uint16_t, uint16_t> counterStack;
-	openpal::DynamicArray<opendnp3::Event<opendnp3::Counter>, uint16_t> counterArray;
-
-	openpal::DynamicArray<uint16_t, uint16_t> frozenCounterStack;
-	openpal::DynamicArray<opendnp3::Event<opendnp3::FrozenCounter>, uint16_t> frozenCounterArray;
-
-	openpal::DynamicArray<uint16_t, uint16_t> binaryOutputStatusStack;
-	openpal::DynamicArray<opendnp3::Event<opendnp3::BinaryOutputStatus>, uint16_t> binaryOutputStatusArray;
-
-	openpal::DynamicArray<uint16_t, uint16_t> analogOutputStatusStack;
-	openpal::DynamicArray<opendnp3::Event<opendnp3::AnalogOutputStatus>, uint16_t> analogOutputStatusArray;
-
-	openpal::DynamicArray<openpal::ListNode<opendnp3::SequenceRecord>, uint16_t> sequenceOfEvents;
-	openpal::DynamicArray<openpal::ListNode<opendnp3::SequenceRecord>*, uint16_t> selectedEvents;
+	openpal::DynamicArray<openpal::ListNode<opendnp3::SOERecord>, uint32_t> sequenceOfEvents;
+	openpal::DynamicArray<openpal::ListNode<opendnp3::SOERecord>*, uint32_t> selectedEvents;
 };
 
 }

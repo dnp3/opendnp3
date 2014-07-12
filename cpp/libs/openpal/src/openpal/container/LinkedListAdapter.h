@@ -73,6 +73,23 @@ public:
 		}				
 	}
 
+	ListNode< ValueType>* Current()
+	{
+		return pCurrent;		
+	}
+
+	ValueType* CurrentValue()
+	{
+		if (pCurrent)
+		{
+			return &pCurrent->value;
+		}
+		else
+		{
+			return nullptr;
+		}
+	}
+
 private:
 	ListNode<ValueType>* pCurrent;
 };

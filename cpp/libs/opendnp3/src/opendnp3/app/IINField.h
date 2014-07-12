@@ -87,7 +87,7 @@ public:
 
 	IINField(IINBit bit) : LSB(0), MSB(0)
 	{
-		this->Set(bit);
+		this->SetBit(bit);
 	}
 
 	IINField(uint8_t aLSB, uint8_t aMSB) : 	LSB(aLSB), MSB(aMSB)
@@ -97,12 +97,16 @@ public:
 	{}
 
 	bool IsSet(IINBit bit) const;
+
 	bool IsClear(IINBit bit) const
 	{
 		return !IsSet(bit);
 	}
-	void Set(IINBit bit);
-	void Clear(IINBit bit);
+
+	void SetBit(IINBit bit);
+	void ClearBit(IINBit bit);
+
+	void SetBitToValue(IINBit bit, bool value);
 
 	bool operator==(const IINField& arRHS) const;
 

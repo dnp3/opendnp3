@@ -72,7 +72,19 @@ bool IINField::IsSet(IINBit bit) const
 	};
 }
 
-void IINField::Set(IINBit bit)
+void IINField::SetBitToValue(IINBit bit, bool value)
+{
+	if (value)
+	{
+		SetBit(bit);
+	}
+	else
+	{
+		ClearBit(bit);
+	}
+}
+
+void IINField::SetBit(IINBit bit)
 {
 	switch(bit)
 	{
@@ -129,7 +141,7 @@ void IINField::Set(IINBit bit)
 	};
 }
 
-void IINField::Clear(IINBit bit)
+void IINField::ClearBit(IINBit bit)
 {
 	switch(bit)
 	{

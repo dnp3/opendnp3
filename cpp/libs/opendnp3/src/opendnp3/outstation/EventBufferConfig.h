@@ -23,46 +23,50 @@
 
 #include <cstdint>
 
+#include "opendnp3/app/EventType.h"
+
 namespace opendnp3
 {
 
 /// Configuration of max event counts
 struct EventBufferConfig
 {
-	static EventBufferConfig AllTypes(uint32_t sizes);	
+	static EventBufferConfig AllTypes(uint16_t sizes);
+
+	uint16_t GetMaxEventsForType(EventType type) const;
 
 	EventBufferConfig(
-		uint32_t maxBinaryEvents_ = 0,
-		uint32_t maxDoubleBinaryEvents_ = 0,
-		uint32_t maxAnalogEvents_ = 0,
-		uint32_t maxCounterEvents_ = 0,
-		uint32_t maxFrozenCounterEvents_ = 0,
-		uint32_t maxBinaryOutputStatusEvents_ = 0,
-		uint32_t maxAnalogOutputStatusEvents_ = 0
+		uint16_t maxBinaryEvents_ = 0,
+		uint16_t maxDoubleBinaryEvents_ = 0,
+		uint16_t maxAnalogEvents_ = 0,
+		uint16_t maxCounterEvents_ = 0,
+		uint16_t maxFrozenCounterEvents_ = 0,
+		uint16_t maxBinaryOutputStatusEvents_ = 0,
+		uint16_t maxAnalogOutputStatusEvents_ = 0
 		);
 
 	uint32_t TotalEvents() const;
 
 	/// The number of binary events the outstation will buffer before overflowing
-	uint32_t maxBinaryEvents;
+	uint16_t maxBinaryEvents;
 
 	/// The number of double bit binary events the outstation will buffer before overflowing
-	uint32_t maxDoubleBinaryEvents;
+	uint16_t maxDoubleBinaryEvents;
 
 	/// The number of analog events the outstation will buffer before overflowing
-	uint32_t maxAnalogEvents;
+	uint16_t maxAnalogEvents;
 
 	/// The number of counter events the outstation will buffer before overflowing
-	uint32_t maxCounterEvents;
+	uint16_t maxCounterEvents;
 
 	/// The number of frozen counter events the outstation will buffer before overflowing
-	uint32_t maxFrozenCounterEvents;
+	uint16_t maxFrozenCounterEvents;
 
 	/// The number of binary output status events the outstation will buffer before overflowing
-	uint32_t maxBinaryOutputStatusEvents;
+	uint16_t maxBinaryOutputStatusEvents;
 
 	/// The number of analog output status events the outstation will buffer before overflowing
-	uint32_t maxAnalogOutputStatusEvents;
+	uint16_t maxAnalogOutputStatusEvents;
 };
 
 }

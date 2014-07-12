@@ -205,6 +205,12 @@
     <ClInclude Include="src\openpal\container\ErasedType.h">
       <Filter>Header\container</Filter>
     </ClInclude>
+    <ClInclude Include="src\openpal\executor\Function0.h">
+      <Filter>Header\executor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\openpal\executor\Function1.h">
+      <Filter>Header\executor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\openpal\container\RingBufferAdapter.cpp">

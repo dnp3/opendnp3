@@ -29,130 +29,134 @@
 #include "opendnp3/objects/Group32.h"
 #include "opendnp3/objects/Group42.h"
 
+#include "EventWriteFunctions.h"
+
 
 namespace opendnp3
 {	
-	IDNP3Serializer<Binary>& EventResponseTypes::Lookup(EventBinaryResponse enumeration)
+	EventHeaderWriteFunc EventResponseTypes::Lookup(EventBinaryResponse enumeration)
 	{
 		switch (enumeration)
 		{
-			case(EventBinaryResponse::Group2Var1):
-				return Group2Var1Serializer::Inst();
-			case(EventBinaryResponse::Group2Var2):
-				return Group2Var2Serializer::Inst();
-			default:
-				return Group2Var1Serializer::Inst();
+		case(EventBinaryResponse::Group2Var1) :
+			return &EventWriteFunctions::WriteFixedSizeSimple<Group2Var1Serializer>;
+		case(EventBinaryResponse::Group2Var2) :
+			return &EventWriteFunctions::WriteFixedSizeSimple<Group2Var2Serializer>;
+		default:
+			return &EventWriteFunctions::WriteFixedSizeSimple<Group2Var1Serializer>;
 		}
 	}
 
-	IDNP3Serializer<DoubleBitBinary>& EventResponseTypes::Lookup(EventDoubleBinaryResponse enumeration)
+	
+	EventHeaderWriteFunc EventResponseTypes::Lookup(EventDoubleBinaryResponse enumeration)
 	{
 		switch (enumeration)
 		{
-			case(EventDoubleBinaryResponse::Group4Var1) :
-				return Group4Var1Serializer::Inst();
-			case(EventDoubleBinaryResponse::Group4Var2) :
-				return Group4Var2Serializer::Inst();
-			default:
-				return Group4Var1Serializer::Inst();
+		case(EventDoubleBinaryResponse::Group4Var1) :
+			return &EventWriteFunctions::WriteFixedSizeSimple<Group4Var1Serializer>;
+		case(EventDoubleBinaryResponse::Group4Var2) :
+			return &EventWriteFunctions::WriteFixedSizeSimple<Group4Var2Serializer>;
+		default:
+			return &EventWriteFunctions::WriteFixedSizeSimple<Group4Var1Serializer>;
 		}
 	}
 
-	IDNP3Serializer<Counter>& EventResponseTypes::Lookup(EventCounterResponse enumeration)
+	EventHeaderWriteFunc EventResponseTypes::Lookup(EventCounterResponse enumeration)
 	{
 		switch (enumeration)
 		{
-			case(EventCounterResponse::Group22Var1) :
-				return Group22Var1Serializer::Inst();
+		case(EventCounterResponse::Group22Var1) :
+				return &EventWriteFunctions::WriteFixedSizeSimple<Group22Var1Serializer>;
 			case(EventCounterResponse::Group22Var2) :
-				return Group22Var2Serializer::Inst();
+				return &EventWriteFunctions::WriteFixedSizeSimple<Group22Var2Serializer>;
 			case(EventCounterResponse::Group22Var5) :
-				return Group22Var5Serializer::Inst();
+				return &EventWriteFunctions::WriteFixedSizeSimple<Group22Var5Serializer>;
 			case(EventCounterResponse::Group22Var6) :
-				return Group22Var6Serializer::Inst();
+				return &EventWriteFunctions::WriteFixedSizeSimple<Group22Var6Serializer>;
 			default:
-				return Group22Var1Serializer::Inst();
+				return &EventWriteFunctions::WriteFixedSizeSimple<Group22Var1Serializer>;
 		}
 	}
 
-	IDNP3Serializer<FrozenCounter>& EventResponseTypes::Lookup(EventFrozenCounterResponse enumeration)
+	EventHeaderWriteFunc EventResponseTypes::Lookup(EventFrozenCounterResponse enumeration)
 	{
 		switch (enumeration)
 		{
 			case(EventFrozenCounterResponse::Group23Var1) :
-				return Group23Var1Serializer::Inst();
+				return &EventWriteFunctions::WriteFixedSizeSimple<Group23Var1Serializer>;
 			case(EventFrozenCounterResponse::Group23Var2) :
-				return Group23Var2Serializer::Inst();
+				return &EventWriteFunctions::WriteFixedSizeSimple<Group23Var2Serializer>;
 			case(EventFrozenCounterResponse::Group23Var5) :
-				return Group23Var5Serializer::Inst();
+				return &EventWriteFunctions::WriteFixedSizeSimple<Group23Var5Serializer>;
 			case(EventFrozenCounterResponse::Group23Var6) :
-				return Group23Var6Serializer::Inst();
+				return &EventWriteFunctions::WriteFixedSizeSimple<Group23Var6Serializer>;
 			default:
-				return Group23Var1Serializer::Inst();
+				return &EventWriteFunctions::WriteFixedSizeSimple<Group23Var1Serializer>;
 		}
 	}
 
-	IDNP3Serializer<Analog>& EventResponseTypes::Lookup(EventAnalogResponse enumeration)
+	EventHeaderWriteFunc EventResponseTypes::Lookup(EventAnalogResponse enumeration)
 	{
 		switch (enumeration)
 		{
 			case(EventAnalogResponse::Group32Var1) :
-				return Group32Var1Serializer::Inst();
+				return &EventWriteFunctions::WriteFixedSizeSimple<Group32Var1Serializer>;
 			case(EventAnalogResponse::Group32Var2) :
-				return Group32Var2Serializer::Inst();
+				return &EventWriteFunctions::WriteFixedSizeSimple<Group32Var2Serializer>;
 			case(EventAnalogResponse::Group32Var3) :
-				return Group32Var3Serializer::Inst();
+				return &EventWriteFunctions::WriteFixedSizeSimple<Group32Var3Serializer>;
 			case(EventAnalogResponse::Group32Var4) :
-				return Group32Var4Serializer::Inst();
+				return &EventWriteFunctions::WriteFixedSizeSimple<Group32Var4Serializer>;
 			case(EventAnalogResponse::Group32Var5) :
-				return Group32Var5Serializer::Inst();
+				return &EventWriteFunctions::WriteFixedSizeSimple<Group32Var5Serializer>;
 			case(EventAnalogResponse::Group32Var6) :
-				return Group32Var6Serializer::Inst();
+				return &EventWriteFunctions::WriteFixedSizeSimple<Group32Var6Serializer>;
 			case(EventAnalogResponse::Group32Var7) :
-				return Group32Var7Serializer::Inst();
+				return &EventWriteFunctions::WriteFixedSizeSimple<Group32Var7Serializer>;
 			case(EventAnalogResponse::Group32Var8) :
-				return Group32Var8Serializer::Inst();
+				return &EventWriteFunctions::WriteFixedSizeSimple<Group32Var8Serializer>;
 			default:
-				return Group32Var1Serializer::Inst();
+				return &EventWriteFunctions::WriteFixedSizeSimple<Group32Var1Serializer>;
 		}
 	}
 
-	IDNP3Serializer<BinaryOutputStatus>& EventResponseTypes::Lookup(EventBinaryOutputStatusResponse enumeration)
+	EventHeaderWriteFunc EventResponseTypes::Lookup(EventBinaryOutputStatusResponse enumeration)
 	{
 		switch (enumeration)
 		{
 			case(EventBinaryOutputStatusResponse::Group11Var1) :
-				return Group11Var1Serializer::Inst();
+				return &EventWriteFunctions::WriteFixedSizeSimple<Group11Var1Serializer>;
 			case(EventBinaryOutputStatusResponse::Group11Var2) :
-				return Group11Var2Serializer::Inst();
+				return &EventWriteFunctions::WriteFixedSizeSimple<Group11Var2Serializer>;
 			default:
-				return Group11Var1Serializer::Inst();
+				return &EventWriteFunctions::WriteFixedSizeSimple<Group11Var1Serializer>;
 		}
 	}
 
-	IDNP3Serializer<AnalogOutputStatus>& EventResponseTypes::Lookup(EventAnalogOutputStatusResponse enumeration)
+	EventHeaderWriteFunc EventResponseTypes::Lookup(EventAnalogOutputStatusResponse enumeration)
 	{
 		switch (enumeration)
 		{
 		case(EventAnalogOutputStatusResponse::Group42Var1) :
-			return Group42Var1Serializer::Inst();
+			return &EventWriteFunctions::WriteFixedSizeSimple<Group42Var1Serializer>;
 		case(EventAnalogOutputStatusResponse::Group42Var2) :
-			return Group42Var2Serializer::Inst();
+			return &EventWriteFunctions::WriteFixedSizeSimple<Group42Var2Serializer>;
 		case(EventAnalogOutputStatusResponse::Group42Var3) :
-			return Group42Var3Serializer::Inst();
+			return &EventWriteFunctions::WriteFixedSizeSimple<Group42Var3Serializer>;
 		case(EventAnalogOutputStatusResponse::Group42Var4) :
-			return Group42Var4Serializer::Inst();
+			return &EventWriteFunctions::WriteFixedSizeSimple<Group42Var4Serializer>;
 		case(EventAnalogOutputStatusResponse::Group42Var5) :
-			return Group42Var5Serializer::Inst();
+			return &EventWriteFunctions::WriteFixedSizeSimple<Group42Var5Serializer>;
 		case(EventAnalogOutputStatusResponse::Group42Var6) :
-			return Group42Var6Serializer::Inst();
+			return &EventWriteFunctions::WriteFixedSizeSimple<Group42Var6Serializer>;
 		case(EventAnalogOutputStatusResponse::Group42Var7) :
-			return Group42Var7Serializer::Inst();
+			return &EventWriteFunctions::WriteFixedSizeSimple<Group42Var7Serializer>;
 		case(EventAnalogOutputStatusResponse::Group42Var8) :
-			return Group42Var8Serializer::Inst();
+			return &EventWriteFunctions::WriteFixedSizeSimple<Group42Var8Serializer>;
 		default:
-			return Group42Var1Serializer::Inst();
+			return &EventWriteFunctions::WriteFixedSizeSimple<Group42Var1Serializer>;
 		}
 	}
+	
 
 }

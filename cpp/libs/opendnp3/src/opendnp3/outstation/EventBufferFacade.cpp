@@ -25,8 +25,8 @@ namespace opendnp3
 {
 
 EventBufferFacade::EventBufferFacade(  
-	openpal::LinkedListAdapter<SOERecord, uint16_t> sequenceOfEvents_,
-	openpal::StackAdapter<openpal::ListNode<SOERecord>*, uint16_t> selectedEvents_
+	openpal::LinkedListAdapter<SOERecord, uint32_t> sequenceOfEvents_,
+	openpal::StackAdapter<openpal::ListNode<SOERecord>*, uint32_t> selectedEvents_
 	) :
 	
 	sequenceOfEvents(sequenceOfEvents_),

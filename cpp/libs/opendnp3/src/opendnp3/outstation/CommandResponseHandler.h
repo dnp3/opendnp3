@@ -91,7 +91,7 @@ void CommandResponseHandler::RespondToHeaderWithIterator(QualifierCode qualifier
 				++numSuccess;
 				break;
 			case(CommandStatus::NOT_SUPPORTED) :
-				errors.Set(IINBit::PARAM_ERROR);
+				errors.SetBit(IINBit::PARAM_ERROR);
 				break;
 		}
 

@@ -24,34 +24,40 @@
 
 #include <cstdint>
 
-#include "EventType.h"
+#include <openpal/util/Uncopyable.h>
+
 #include "opendnp3/app/ClassField.h"
+#include "opendnp3/app/EventType.h"
 
 namespace opendnp3
 {
 
-class EventCount
+class EventCount : openpal::Uncopyable
 {
+	static const uint16_t NUM_CLASSES = 3;
+	static const uint16_t NUM_TYPES = 7;
+	
 public:
 
-	EventCount();
+	EventCount();	
 
-	EventCount(uint32_t numClass1, uint32_t numClass2, uint32_t numClass3);
+	ClassField ToClassField() const;
 
-	bool Intersects(const ClassField& field) const;
+	uint32_t NumOfClass(EventClass clazz) const;
+	uint32_t NumOfType(EventType type) const;
 
-	EventCount Subtract(const EventCount& rhs) const;
+	ClassField Subtract(const EventCount& rhs) const;
 
-	void Increment(EventClass clazz);
-	void Decrement(EventClass clazz);	
-
+	void Increment(EventClass clazz, EventType type, uint32_t count = 1);
+	void Decrement(EventClass clazz, EventType type, uint32_t count = 1);
+	
 	bool IsEmpty() const;	
 
-	void Clear();
+	void Clear();	
 
-	uint32_t numClass1;
-	uint32_t numClass2;
-	uint32_t numClass3;
+private:
+
+	uint16_t numOfTypeAndClass[NUM_CLASSES][NUM_TYPES];	
 };
 
 }

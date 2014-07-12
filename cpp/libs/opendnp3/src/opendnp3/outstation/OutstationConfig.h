@@ -25,6 +25,7 @@
 
 #include "opendnp3/outstation/OutstationParams.h"
 #include "opendnp3/outstation/StaticResponseConfig.h"
+#include "opendnp3/outstation/EventBufferConfig.h"
 #include "opendnp3/outstation/EventResponseConfig.h"
 
 
@@ -43,6 +44,9 @@ struct OutstationConfig
 {
 	/// Various parameters that govern outstation behavior
 	OutstationParams params;
+
+	/// Describes the sizes in the event buffer
+	EventBufferConfig eventBufferConfig;
 
 	/// Default statis response types
 	StaticResponseConfig defaultStaticResponses;

@@ -41,7 +41,7 @@ OutstationStackImpl::OutstationStackImpl(
 	handler(handler_),
 	stack(root, &executor, &statistics, config.link),
 	databaseBuffers(config.dbTemplate),
-	eventBuffers(config.eventBuffer),
+	eventBuffers(config.outstation.eventBufferConfig.TotalEvents()),
 	mutex(),
 	database(databaseBuffers.GetFacade(), &mutex),
 	outstation(config.outstation, executor, root, stack.transport, commandHandler, application, database, eventBuffers.GetFacade())

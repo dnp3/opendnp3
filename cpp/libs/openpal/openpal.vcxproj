@@ -45,6 +45,8 @@
     <ClInclude Include="src\openpal\container\WriteBuffer.h" />
     <ClInclude Include="src\openpal\executor\Erasure.h" />
     <ClInclude Include="src\openpal\executor\Action1.h" />
+    <ClInclude Include="src\openpal\executor\Function0.h" />
+    <ClInclude Include="src\openpal\executor\Function1.h" />
     <ClInclude Include="src\openpal\executor\IExecutor.h" />
     <ClInclude Include="src\openpal\executor\IMutex.h" />
     <ClInclude Include="src\openpal\executor\ITimer.h" />

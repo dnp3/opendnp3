@@ -24,35 +24,37 @@
 namespace opendnp3
 {
 
-EventWriteOperation::EventWriteOperation() : pWriter(nullptr), count(0)
+EventWriteOperation::EventWriteOperation() : pWriter(nullptr)
 {}
 
-EventWriteOperation::EventWriteOperation(EventHeaderWriteFunc pWriter_, uint32_t count_) :
+EventWriteOperation::EventWriteOperation(EventHeaderWriteFunc pWriter_, const EventWriteLimits& limits_) :
 	pWriter(pWriter_),
-	count(count_)
-{}
+	limits(limits_)
+{
 
-bool EventWriteOperation::Invoke(ObjectWriter& writer, SelectionCriteria& criteria)
+}
+
+bool EventWriteOperation::Invoke(ObjectWriter& writer, openpal::ListNode<SOERecord>* start, const ListIterator& writeCallback)
 {
 	if (IsDefined())
 	{
-		return pWriter(writer, criteria, count);
+		return pWriter(limits, writer, start, writeCallback);
 	}
 	else
 	{
-		return true;
+		return false;
 	}
 }
 
 bool EventWriteOperation::IsDefined() const
 {
-	return pWriter && (count > 0);
+	return pWriter && limits.numOfType > 0;
 }
 
 void EventWriteOperation::Clear()
 {
 	pWriter = nullptr;
-	count = 0;
+	this->limits.Clear();
 }
 
 }

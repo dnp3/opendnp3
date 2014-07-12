@@ -24,8 +24,9 @@
 namespace opendnp3
 {
 
-OutstationEventBuffer::OutstationEventBuffer(const EventBufferFacade& facade_) :
+OutstationEventBuffer::OutstationEventBuffer(const EventBufferConfig& config_, const EventBufferFacade& facade_) :
 	overflow(false),
+	config(config_),
 	facade(facade_)
 {
 
@@ -35,7 +36,7 @@ void OutstationEventBuffer::Reset()
 {
 	while(facade.selectedEvents.IsNotEmpty())
 	{
-		auto pNode = facade.selectedEvents.Pop();
+		auto pNode = facade.selectedEvents.Pop();		
 		pNode->value.selected = false;
 	}
 
@@ -58,80 +59,91 @@ void OutstationEventBuffer::Clear()
 	{		
 		auto pNode = facade.selectedEvents.Pop();
 		if (pNode->value.selected) // could have been removed due to buffer overflow
-		{
-			this->ReleaseFromTypedStorage(pNode->value);
+		{			
 			facade.sequenceOfEvents.Remove(pNode); // O(1) from SOE
-			totalTracker.Decrement(pNode->value.clazz);
+			totalTracker.Decrement(pNode->value.clazz, pNode->value.type);
 		}
 	}
 	
 	selectedTracker.Clear();
 }
 
-EventCount OutstationEventBuffer::TotalEvents() const
+ClassField OutstationEventBuffer::TotalEventMask() const
 {
-	return totalTracker;
+	return totalTracker.ToClassField();
 }
 
-EventCount OutstationEventBuffer::UnselectedEvents() const
+ClassField OutstationEventBuffer::UnselectedEventMask() const
 {
 	return totalTracker.Subtract(selectedTracker);
 }
 
-EventCount OutstationEventBuffer::SelectedEvents() const
+void OutstationEventBuffer::Update(const Event<Binary>& evt)
 {
-	return selectedTracker;
+	this->UpdateAny(evt, EventType::Binary);
 }
 
-void OutstationEventBuffer::Update(const Event<Binary>& aEvent)
+void OutstationEventBuffer::Update(const Event<Analog>& evt)
 {
-	//InsertEvent(aEvent, EventType::Binary, facade.binaryEvents);
+	this->UpdateAny(evt, EventType::Analog);
 }
 
-void OutstationEventBuffer::Update(const Event<Analog>& aEvent)
+void OutstationEventBuffer::Update(const Event<Counter>& evt)
 {
-	//InsertEvent(aEvent, EventType::Analog,  facade.analogEvents);
+	this->UpdateAny(evt, EventType::Counter);
 }
 
-void OutstationEventBuffer::Update(const Event<Counter>& aEvent)
+void OutstationEventBuffer::Update(const Event<FrozenCounter>& evt)
 {
-	//InsertEvent(aEvent, EventType::Counter,  facade.counterEvents);
+	this->UpdateAny(evt, EventType::FrozenCounter);
 }
 
-void OutstationEventBuffer::Update(const Event<FrozenCounter>& aEvent)
+void OutstationEventBuffer::Update(const Event<DoubleBitBinary>& evt)
 {
-	//InsertEvent(aEvent, EventType::FrozenCounter,  facade.frozenCounterEvents);
+	this->UpdateAny(evt, EventType::DoubleBitBinary);
 }
 
-void OutstationEventBuffer::Update(const Event<DoubleBitBinary>& aEvent)
+void OutstationEventBuffer::Update(const Event<BinaryOutputStatus>& evt)
 {
-	//InsertEvent(aEvent, EventType::DoubleBitBinary, facade.doubleBinaryEvents);
+	this->UpdateAny(evt, EventType::BinaryOutputStatus);
 }
 
-void OutstationEventBuffer::Update(const Event<BinaryOutputStatus>& aEvent)
+void OutstationEventBuffer::Update(const Event<AnalogOutputStatus>& evt)
 {
-	//InsertEvent(aEvent, EventType::BinaryOutputStatus, facade.binaryOutputStatusEvents);
+	this->UpdateAny(evt, EventType::AnalogOutputStatus);
 }
 
-void OutstationEventBuffer::Update(const Event<AnalogOutputStatus>& aEvent)
+bool OutstationEventBuffer::IsTypeOverflown(EventType type) const
+{	
+	auto max = config.GetMaxEventsForType(type);
+
+	if (max > 0)
+	{
+		return  totalTracker.NumOfType(type) < max;
+	}
+	else
+	{
+		return false;
+	}	
+}
+
+bool OutstationEventBuffer::IsAnyTypeOverflown() const
 {
-	//InsertEvent(aEvent, EventType::AnalogOutputStatus, facade.analogOutputStatusEvents);
+	return	IsTypeOverflown(EventType::Binary) ||
+			IsTypeOverflown(EventType::DoubleBitBinary) ||
+			IsTypeOverflown(EventType::BinaryOutputStatus) ||
+			IsTypeOverflown(EventType::Counter) ||
+			IsTypeOverflown(EventType::FrozenCounter) ||
+			IsTypeOverflown(EventType::Analog) ||
+			IsTypeOverflown(EventType::AnalogOutputStatus);
 }
 
 bool OutstationEventBuffer::HasEnoughSpaceToClearOverflow() const
 {
-	return	false;
-	
-			/*
-			HasSpace(facade.analogEvents) &&
-	        HasSpace(facade.analogOutputStatusEvents) &&
-	        HasSpace(facade.binaryEvents) &&
-	        HasSpace(facade.binaryOutputStatusEvents) &&
-	        HasSpace(facade.counterEvents) &&
-	        HasSpace(facade.doubleBinaryEvents) &&
-	        HasSpace(facade.frozenCounterEvents) &&
-	        HasSpace(facade.sequenceOfEvents);
-			*/
+	auto soeHasSpace = facade.sequenceOfEvents.Size() < facade.sequenceOfEvents.Capacity();
+
+	return soeHasSpace && !IsAnyTypeOverflown();
+		
 }
 
 SelectionWriter OutstationEventBuffer::Iterate()

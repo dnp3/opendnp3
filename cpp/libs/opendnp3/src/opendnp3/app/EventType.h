@@ -22,8 +22,6 @@
 #ifndef __EVENT_TYPE_H_
 #define __EVENT_TYPE_H_
 
-#include <openpal/util/Uncopyable.h>
-
 #include <cstdint>
 
 namespace opendnp3
@@ -31,20 +29,20 @@ namespace opendnp3
 
 enum class EventType : uint16_t
 {
-    Binary = 1,
-    Analog = 2,
-    Counter = 4,
-    FrozenCounter = 8,
-    DoubleBitBinary = 16,
-    BinaryOutputStatus = 32,
-    AnalogOutputStatus = 64
+    Binary = 0,
+    Analog = 1,
+    Counter = 2,
+    FrozenCounter = 3,
+    DoubleBitBinary = 4,
+    BinaryOutputStatus = 5,
+    AnalogOutputStatus = 6
 };
 
 enum class EventClass: uint8_t
 {
-    EC1 = 1,
-    EC2 = 2,
-    EC3 = 4
+    EC1 = 0,
+    EC2 = 1,
+    EC3 = 2
 };
 
 }

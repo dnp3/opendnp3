@@ -27,49 +27,21 @@ using namespace opendnp3;
 namespace asiodnp3
 {
 
-DynamicallyAllocatedEventBuffer::DynamicallyAllocatedEventBuffer(const EventBufferConfig& config) :
-	binaryStack(config.maxBinaryEvents),
-	binaryArray(config.maxBinaryEvents),
-	doubleBinaryStack(config.maxDoubleBinaryEvents),
-	doubleBinaryArray(config.maxDoubleBinaryEvents),
-	analogStack(config.maxAnalogEvents),
-	analogArray(config.maxAnalogEvents),
-	counterStack(config.maxCounterEvents),
-	counterArray(config.maxCounterEvents),
-	frozenCounterStack(config.maxFrozenCounterEvents),
-	frozenCounterArray(config.maxFrozenCounterEvents),
-	binaryOutputStatusStack(config.maxBinaryOutputStatusEvents),
-	binaryOutputStatusArray(config.maxBinaryOutputStatusEvents),
-	analogOutputStatusStack(config.maxAnalogOutputStatusEvents),
-	analogOutputStatusArray(config.maxAnalogOutputStatusEvents),
-	sequenceOfEvents(config.TotalEvents()),
-	selectedEvents(config.TotalEvents())
+DynamicallyAllocatedEventBuffer::DynamicallyAllocatedEventBuffer(uint32_t maxEvents) :	
+	sequenceOfEvents(maxEvents),
+	selectedEvents(maxEvents)
 {}
 
 EventBufferFacade DynamicallyAllocatedEventBuffer::GetFacade()
-{
-	RandomInsertAdapter<Event<Binary>, uint16_t> binaryAdapter(binaryArray.ToIndexable(), binaryStack.ToIndexable());
-	RandomInsertAdapter<Event<DoubleBitBinary>, uint16_t> doubleBinaryAdapter(doubleBinaryArray.ToIndexable(), doubleBinaryStack.ToIndexable());
-	RandomInsertAdapter<Event<Analog>, uint16_t> analogAdapter(analogArray.ToIndexable(), analogStack.ToIndexable());
-	RandomInsertAdapter<Event<Counter>, uint16_t> counterAdapter(counterArray.ToIndexable(), counterStack.ToIndexable());
-	RandomInsertAdapter<Event<FrozenCounter>, uint16_t> frozenCounterAdapter(frozenCounterArray.ToIndexable(), frozenCounterStack.ToIndexable());
-	RandomInsertAdapter<Event<BinaryOutputStatus>, uint16_t> binaryOutputStatusAdapter(binaryOutputStatusArray.ToIndexable(), binaryOutputStatusStack.ToIndexable());
-	RandomInsertAdapter<Event<AnalogOutputStatus>, uint16_t> analogOutputStatusAdapter(analogOutputStatusArray.ToIndexable(), analogOutputStatusStack.ToIndexable());
+{	
 
-	LinkedListAdapter<SequenceRecord, uint16_t> soeAdapter(sequenceOfEvents.ToIndexable());
-	StackAdapter<ListNode<SequenceRecord>*, uint16_t> selectionAdapter(selectedEvents.ToIndexable());
+	LinkedListAdapter<SOERecord, uint32_t> soeAdapter(sequenceOfEvents.ToIndexable());
+	StackAdapter<ListNode<SOERecord>*, uint32_t> selectionAdapter(selectedEvents.ToIndexable());
 
-	return EventBufferFacade(
-	           binaryAdapter,
-	           doubleBinaryAdapter,
-	           analogAdapter,
-	           counterAdapter,
-	           frozenCounterAdapter,
-	           binaryOutputStatusAdapter,
-	           analogOutputStatusAdapter,
+	return EventBufferFacade(	           
 	           soeAdapter,
 	           selectionAdapter
-	       );
+	);
 }
 
 }

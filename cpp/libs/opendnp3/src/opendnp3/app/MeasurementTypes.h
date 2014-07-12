@@ -25,6 +25,8 @@
 #include "EventTriggers.h"
 #include "opendnp3/gen/DoubleBit.h"
 
+#include "opendnp3/app/EventType.h"
+
 namespace opendnp3
 {
 
@@ -64,6 +66,8 @@ public:
 	Binary(bool value, uint8_t quality, uint64_t aTime);
 
 	bool IsEvent(const Binary& newValue) const;
+
+	const static EventType EventTypeEnum = EventType::Binary;
 	
 };
 
@@ -89,6 +93,8 @@ public:
 	DoubleBitBinary(DoubleBit value, uint8_t quality, uint64_t time);
 
 	bool IsEvent(const DoubleBitBinary& newValue) const;
+
+	const static EventType EventTypeEnum = EventType::DoubleBitBinary;
 
 private:
 
@@ -123,6 +129,8 @@ public:
 	BinaryOutputStatus(bool value, uint8_t quality, uint64_t aTime);
 
 	bool IsEvent(const BinaryOutputStatus& newValue) const;
+
+	const static EventType EventTypeEnum = EventType::BinaryOutputStatus;
 };
 
 /**
@@ -143,6 +151,8 @@ public:
 	Analog(double value, uint8_t quality, uint64_t time);
 
 	bool IsEvent(const Analog& newValue, double deadband) const;
+
+	const static EventType EventTypeEnum = EventType::Analog;
 };
 
 /**
@@ -162,6 +172,8 @@ public:
 	Counter(uint32_t value, uint8_t quality, uint64_t aTime);
 
 	bool IsEvent(const Counter& newValue, uint32_t aDeadband) const;
+
+	const static EventType EventTypeEnum = EventType::Counter;
 };
 
 /**
@@ -180,6 +192,8 @@ public:
 	FrozenCounter(uint32_t value, uint8_t quality, uint64_t aTime);
 
 	bool IsEvent(const FrozenCounter& newValue, uint32_t aDeadband) const;
+
+	const static EventType EventTypeEnum = EventType::FrozenCounter;
 };
 
 /**
@@ -199,6 +213,8 @@ public:
 	AnalogOutputStatus(double value, uint8_t quality, uint64_t aTime);
 
 	bool IsEvent(const AnalogOutputStatus& newValue, double deadband) const;
+
+	const static EventType EventTypeEnum = EventType::AnalogOutputStatus;
 };
 
 }

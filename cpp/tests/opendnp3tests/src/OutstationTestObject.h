@@ -42,8 +42,7 @@ class OutstationTestObject
 
 public:
 	OutstationTestObject(const OutstationConfig& config,
-							const DatabaseTemplate& dbTemplate = DatabaseTemplate(), 
-							const EventBufferConfig& ebConfig = EventBufferConfig::AllTypes(0));
+						 const DatabaseTemplate& dbTemplate = DatabaseTemplate());
 
 	
 	uint32_t SendToOutstation(const std::string& hex);

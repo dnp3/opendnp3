@@ -22,11 +22,12 @@
 #ifndef __OUTSTATION_EVENT_BUFFER_H_
 #define __OUTSTATION_EVENT_BUFFER_H_
 
-#include "IEventBuffer.h"
-#include "EventBufferFacade.h"
-#include "SelectionCriteria.h"
-#include "EventCount.h"
-#include "SelectionWriter.h"
+#include "opendnp3/outstation/IEventBuffer.h"
+#include "opendnp3/outstation/EventBufferFacade.h"
+#include "opendnp3/outstation/SelectionCriteria.h"
+#include "opendnp3/outstation/EventCount.h"
+#include "opendnp3/outstation/SelectionWriter.h"
+#include "opendnp3/outstation/EventBufferConfig.h"
 
 namespace opendnp3
 {
@@ -51,55 +52,79 @@ class OutstationEventBuffer : public IEventBuffer
 
 
 public:
-	OutstationEventBuffer(const EventBufferFacade& facade);
+	OutstationEventBuffer(const EventBufferConfig& config, const EventBufferFacade& facade);
 
 	// ------- Update methods ------ These can be called anytime
 
-	virtual void Update(const Event<Binary>& aEvent) override final;
-	virtual void Update(const Event<Analog>& aEvent) override final;
-	virtual void Update(const Event<Counter>& aEvent) override final;
-	virtual void Update(const Event<FrozenCounter>& aEvent) override final;
-	virtual void Update(const Event<DoubleBitBinary>& aEvent) override final;
-	virtual void Update(const Event<BinaryOutputStatus>& aEvent) override final;
-	virtual void Update(const Event<AnalogOutputStatus>& aEvent) override final;
+	virtual void Update(const Event<Binary>& evt) override final;
+	virtual void Update(const Event<Analog>& evt) override final;
+	virtual void Update(const Event<Counter>& evt) override final;
+	virtual void Update(const Event<FrozenCounter>& evt) override final;
+	virtual void Update(const Event<DoubleBitBinary>& evt) override final;
+	virtual void Update(const Event<BinaryOutputStatus>& evt) override final;
+	virtual void Update(const Event<AnalogOutputStatus>& evt) override final;
 
 	void Reset(); // called when a transmission fails
 	void Clear(); // called when a transmission succeeds
 
 	SelectionWriter Iterate();	
 
-	EventCount TotalEvents() const;
-	EventCount SelectedEvents() const;
-	EventCount UnselectedEvents() const;
+	ClassField TotalEventMask() const;
+	ClassField UnselectedEventMask() const;
+	
 	bool IsOverflown();
 
+	template <class T>
+	void UpdateAny(const Event<T>& evt, EventType type);
 
 private:
 
-	void ReleaseFromTypedStorage(const SOERecord& record);
+	bool IsAnyTypeOverflown() const;
+	bool IsTypeOverflown(EventType type) const;	
 
 	bool overflow;
+
+	EventBufferConfig config;
 	EventBufferFacade facade;
 
 	EventCount totalTracker;
-	EventCount selectedTracker;
-
-	template <class T>
-	static bool HasSpace(const T& buffer);
+	EventCount selectedTracker;	
 
 	bool HasEnoughSpaceToClearOverflow() const;	
 };
 
 template <class T>
-bool OutstationEventBuffer::HasSpace(const T& buffer)
+void OutstationEventBuffer::UpdateAny(const Event<T>& evt, EventType type)
 {
-	if (buffer.Capacity() > 0)
+	auto maxForType = config.GetMaxEventsForType(type);
+
+	if (maxForType > 0)
 	{
-		return !buffer.IsFull();
-	}
-	else // ignore zero capacity buffers
-	{
-		return true;
+		auto currentCount = totalTracker.NumOfType(type);
+
+		if (currentCount >= maxForType || facade.sequenceOfEvents.IsFull())
+		{
+			this->overflow = true;
+			// find the first event of this type in the SOE, and discard it
+			auto isMatch = [type](const SOERecord& rec) { return rec.type == type; };
+			auto pNode = facade.sequenceOfEvents.FindFirst(isMatch);
+			if (pNode)
+			{
+				totalTracker.Decrement(pNode->value.clazz, type);
+				
+				if (pNode->value.selected)
+				{
+					pNode->value.selected = false;
+					selectedTracker.Decrement(pNode->value.clazz, type);
+				}
+
+				facade.sequenceOfEvents.Remove(pNode);
+			}
+		}
+
+		totalTracker.Increment(evt.clazz, type);		
+		SOERecord record(evt.value, evt.index, evt.clazz);
+		facade.sequenceOfEvents.Add(record);
 	}
 }
 

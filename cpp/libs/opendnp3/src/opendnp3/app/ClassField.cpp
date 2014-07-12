@@ -40,8 +40,26 @@ ClassField::ClassField() : bitfield(0)
 ClassField::ClassField(PointClass pc) : bitfield(static_cast<uint8_t>(pc))
 {}
 
+ClassField::ClassField(bool class0, bool class1, bool class2, bool class3) : bitfield(0)
+{
+	bitfield = class0 ? ClassField::CLASS_0 : 0;
+	bitfield |= class1 ? ClassField::CLASS_1 : 0;
+	bitfield |= class2 ? ClassField::CLASS_2 : 0;
+	bitfield |= class3 ? ClassField::CLASS_3 : 0;
+}
+
 ClassField::ClassField(uint8_t mask_) : bitfield(mask_ & ALL_CLASSES)
 {}
+
+bool ClassField::IsEmpty() const
+{
+	return (bitfield == 0);
+}
+
+bool ClassField::Intersects(const ClassField& other) const
+{
+	return (bitfield & other.bitfield) > 0;
+}
 
 void ClassField::Set(PointClass pc)
 {

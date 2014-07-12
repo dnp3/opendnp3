@@ -21,7 +21,7 @@
 #ifndef __EVENT_METADATA_H_
 #define __EVENT_METADATA_H_
 
-#include "opendnp3/outstation/EventType.h"
+#include "opendnp3/app/EventType.h"
 #include "opendnp3/gen/PointClass.h"
 
 namespace opendnp3

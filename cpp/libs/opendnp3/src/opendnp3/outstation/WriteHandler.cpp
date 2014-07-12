@@ -43,29 +43,29 @@ void WriteHandler::_OnIIN(const HeaderRecord&, const IterableBuffer<IndexedValue
 	IndexedValue<bool, uint16_t> v;
 	if(meas.ReadOnlyValue(v))
 	{
-		if (wroteIIN) errors.Set(IINBit::PARAM_ERROR);
+		if (wroteIIN) errors.SetBit(IINBit::PARAM_ERROR);
 		else
 		{
 			if (v.index == static_cast<int>(IINBit::DEVICE_RESTART))
 			{
-				if (v.value) errors.Set(IINBit::PARAM_ERROR);
+				if (v.value) errors.SetBit(IINBit::PARAM_ERROR);
 				else
 				{
 					wroteIIN = true;
-					pWriteIIN->Clear(IINBit::DEVICE_RESTART);
+					pWriteIIN->ClearBit(IINBit::DEVICE_RESTART);
 				}
 			}
-			else errors.Set(IINBit::PARAM_ERROR);
+			else errors.SetBit(IINBit::PARAM_ERROR);
 		}
 	}
-	else errors.Set(IINBit::PARAM_ERROR);
+	else errors.SetBit(IINBit::PARAM_ERROR);
 }
 
 void WriteHandler::_OnCountOf(const HeaderRecord&, const IterableBuffer<Group50Var1>& times)
 {
 	if (wroteTime)
 	{
-		errors.Set(IINBit::PARAM_ERROR);
+		errors.SetBit(IINBit::PARAM_ERROR);
 	}
 	else
 	{		
@@ -75,21 +75,21 @@ void WriteHandler::_OnCountOf(const HeaderRecord&, const IterableBuffer<Group50V
 			if (pApplication->SupportsWriteAbsoluteTime())
 			{
 				wroteTime = true;
-				pWriteIIN->Clear(IINBit::NEED_TIME);
+				pWriteIIN->ClearBit(IINBit::NEED_TIME);
 				bool accepted = pApplication->WriteAbsoluteTime(UTCTimestamp(time.time));
 				if (!accepted)
 				{
-					errors.Set(IINBit::PARAM_ERROR);
+					errors.SetBit(IINBit::PARAM_ERROR);
 				}
 			}
 			else
 			{
-				errors.Set(IINBit::FUNC_NOT_SUPPORTED);
+				errors.SetBit(IINBit::FUNC_NOT_SUPPORTED);
 			}
 		}
 		else
 		{
-			errors.Set(IINBit::PARAM_ERROR);
+			errors.SetBit(IINBit::PARAM_ERROR);
 		}		
 	}
 }

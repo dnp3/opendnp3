@@ -62,7 +62,7 @@ OutstationContext::OutstationContext(
 	pCommandHandler(&commandHandler),
 	pApplication(&application),
 	pDatabase(&database),
-	eventBuffer(buffers),
+	eventBuffer(config.eventBufferConfig, buffers),
 	isOnline(false),
 	pSolicitedState(&OutstationSolicitedStateIdle::Inst()),
 	pUnsolicitedState(&OutstationUnsolicitedStateIdle::Inst()),
@@ -82,7 +82,7 @@ OutstationContext::OutstationContext(
 	pLower(&lower)
 {
 	pDatabase->SetEventBuffer(eventBuffer);
-	staticIIN.Set(IINBit::DEVICE_RESTART);
+	staticIIN.SetBit(IINBit::DEVICE_RESTART);
 
 	if (params.maxTxFragSize < sizes::MIN_APDU_SIZE)
 	{
@@ -100,25 +100,15 @@ OutstationContext::OutstationContext(
 }
 
 IINField OutstationContext::GetDynamicIIN()
-{
+{	
+	auto classField = eventBuffer.UnselectedEventMask();
+
 	IINField ret;
-	auto count = eventBuffer.UnselectedEvents();
-	if (count.numClass1)
-	{
-		ret.Set(IINBit::CLASS1_EVENTS);
-	}
-	if (count.numClass2)
-	{
-		ret.Set(IINBit::CLASS2_EVENTS);
-	}
-	if (count.numClass3)
-	{
-		ret.Set(IINBit::CLASS3_EVENTS);
-	}
-	if (eventBuffer.IsOverflown())
-	{
-		ret.Set(IINBit::EVENT_BUFFER_OVERFLOW);
-	}
+	ret.SetBitToValue(IINBit::CLASS1_EVENTS, classField.HasClass1());
+	ret.SetBitToValue(IINBit::CLASS2_EVENTS, classField.HasClass2());
+	ret.SetBitToValue(IINBit::CLASS3_EVENTS, classField.HasClass3());
+	ret.SetBitToValue(IINBit::EVENT_BUFFER_OVERFLOW, eventBuffer.IsOverflown());
+	
 	return ret;
 }
 
@@ -493,7 +483,7 @@ void OutstationContext::CheckForUnsolicited()
 		if (completedNullUnsol)
 		{										
 			// are there events to be reported?
-			if (eventBuffer.TotalEvents().Intersects(params.unsolClassMask))
+			if (eventBuffer.TotalEventMask().Intersects(params.unsolClassMask))
 			{
 				SelectionCriteria criteria(params.unsolClassMask);
 				auto unsolResponse = this->StartNewUnsolicitedResponse();
@@ -504,7 +494,7 @@ void OutstationContext::CheckForUnsolicited()
 					// the database since it updates the event buffer					
 					Transaction tx(pDatabase);					
 					auto writer = eventBuffer.Iterate();
-					writer.WriteAllEvents(this->eventConfig, criteria, objectWriter);					
+					writer.WriteAllEvents(eventConfig, criteria, objectWriter);					
 				}
 							
 				this->ConfigureUnsolHeader(unsolResponse);

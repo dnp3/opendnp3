@@ -26,71 +26,83 @@
 namespace opendnp3
 {
 
-EventCount::EventCount() : numClass1(0), numClass2(0), numClass3(0)
-{}
-
-EventCount::EventCount(uint32_t numClass1_, uint32_t numClass2_, uint32_t numClass3_) : 
-	numClass1(numClass1_),
-	numClass2(numClass2_),
-	numClass3(numClass3_)
-{}
+EventCount::EventCount()
+{
+	this->Clear();
+}
 
 void EventCount::Clear()
 {
-	numClass1 = numClass2 = numClass3 = 0;	
+	for (auto clazz = 0; clazz < NUM_CLASSES; ++clazz)
+	{
+		for (auto type = 0; type < NUM_TYPES; ++type)
+		{
+			numOfTypeAndClass[clazz][type] = 0;
+		}
+	}
 }
 
-bool EventCount::Intersects(const ClassField& field) const
-{
-	uint8_t mask = 0;
+ClassField EventCount::Subtract(const EventCount& rhs) const
+{	
+	EventCount count;
 
-	if (numClass1)  mask |= ClassField::CLASS_1;
-	if (numClass2)  mask |= ClassField::CLASS_2;
-	if (numClass3)  mask |= ClassField::CLASS_3;
+	for (auto clazz = 0; clazz < NUM_CLASSES; ++clazz)
+	{
+		for (auto type = 0; type < NUM_TYPES; ++type)
+		{
+			count.numOfTypeAndClass[clazz][type] = numOfTypeAndClass[clazz][type] - rhs.numOfTypeAndClass[clazz][type];
+		}
+	}
 
-	return (field.GetBitfield() & mask) != 0;	
+	return count.ToClassField();
 }
 
-EventCount EventCount::Subtract(const EventCount& rhs) const
+ClassField EventCount::ToClassField() const
 {
-	return EventCount(numClass1 - rhs.numClass1, numClass2 - rhs.numClass2, numClass3 - rhs.numClass3);
+	bool class1 = this->NumOfClass(EventClass::EC1) > 0;
+	bool class2 = this->NumOfClass(EventClass::EC2) > 0;
+	bool class3 = this->NumOfClass(EventClass::EC3) > 0;
+
+	return ClassField(false, class1, class2, class3);
+}
+
+uint32_t EventCount::NumOfClass(EventClass clazz) const
+{
+	uint32_t total = 0;
+
+	for (auto type = 0; type < NUM_TYPES; ++type)
+	{
+		total += numOfTypeAndClass[static_cast<int>(clazz)][type];
+	}
+
+	return total;
+}
+
+uint32_t EventCount::NumOfType(EventType type) const
+{
+	uint32_t total = 0;
+
+	for (auto clazz = 0; clazz < NUM_CLASSES; ++clazz)
+	{
+		total += numOfTypeAndClass[clazz][static_cast<int>(type)];
+	}
+
+	return total;
 }
 
 bool EventCount::IsEmpty() const
 {
-	return (numClass1 | numClass2 | numClass3) != 0;
+	return ToClassField().IsEmpty();	
 }
 
-void EventCount::Increment(EventClass clazz)
+void EventCount::Increment(EventClass clazz, EventType type, uint32_t count)
 {
-	switch(clazz)
-	{
-		case(EventClass::EC1) :
-			++numClass1;
-			break;
-		case(EventClass::EC2):
-			++numClass2;
-			break;
-		case(EventClass::EC3):
-			++numClass3;
-			break;
-	}
+	numOfTypeAndClass[static_cast<int>(clazz)][static_cast<int>(type)] += count;
 }
 
-void EventCount::Decrement(EventClass clazz)
+void EventCount::Decrement(EventClass clazz, EventType type, uint32_t count)
 {
-	switch (clazz)
-	{
-		case(EventClass::EC1) :
-			--numClass1;
-			break;
-		case(EventClass::EC2) :
-			--numClass2;
-			break;
-		case(EventClass::EC3) :
-			--numClass3;
-			break;
-	}
+	numOfTypeAndClass[static_cast<int>(clazz)][static_cast<int>(type)] -= count;
 }
 
 }

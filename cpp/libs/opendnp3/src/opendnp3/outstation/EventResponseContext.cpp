@@ -43,53 +43,7 @@ bool EventResponseContext::IsComplete() const
 
 IINField EventResponseContext::ReadAll(const GroupVariationRecord& record)
 {
-	switch(record.enumeration)
-	{
-		// ----------- class polls --------------
-
-	case(GroupVariation::Group60Var2) :
-		//criteria.AddToClass1(events::ALL_TYPES);
-		return IINField::Empty;
-	case(GroupVariation::Group60Var3) :
-		//criteria.AddToClass2(events::ALL_TYPES);
-		return IINField::Empty;
-	case(GroupVariation::Group60Var4) :
-		//criteria.AddToClass3(events::ALL_TYPES);
-		return IINField::Empty;
-
-		// ----------- variation 0 --------------
-
-	case(GroupVariation::Group2Var0) :
-		//criteria.AddToAllClasses(events::BINARY);
-		return IINField::Empty;
-
-	case(GroupVariation::Group4Var0) :
-		//criteria.AddToAllClasses(events::DOUBLE_BIT_BINARY);
-		return IINField::Empty;
-
-	case(GroupVariation::Group11Var0) :
-		//criteria.AddToAllClasses(events::BINARY_OUTPUT_STATUS);
-		return IINField::Empty;
-
-	case(GroupVariation::Group22Var0) :
-		//criteria.AddToAllClasses(events::COUNTER);
-		return IINField::Empty;
-
-	case(GroupVariation::Group23Var0) :
-		//criteria.AddToAllClasses(events::FROZEN_COUNTER);
-		return IINField::Empty;
-
-	case(GroupVariation::Group32Var0) :
-		//criteria.AddToAllClasses(events::ANALOG);
-		return IINField::Empty;
-
-	case(GroupVariation::Group42Var0) :
-		//criteria.AddToAllClasses(events::ANALOG_OUTPUT_STATUS);
-		return IINField::Empty;
-
-	default:
-		return IINField(IINBit::FUNC_NOT_SUPPORTED);
-	}
+	return criteria.RecordAllObjects(record.enumeration);
 }
 
 IINField EventResponseContext::ReadCount(const GroupVariationRecord& record, uint32_t count)

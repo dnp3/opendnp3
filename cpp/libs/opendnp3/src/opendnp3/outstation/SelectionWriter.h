@@ -24,9 +24,9 @@
 
 #include <openpal/container/LinkedListAdapter.h>
 
+#include "opendnp3/app/EventType.h"
 #include "opendnp3/app/ObjectWriter.h"
 
-#include "opendnp3/outstation/EventType.h"
 #include "opendnp3/outstation/EventBufferFacade.h"
 #include "opendnp3/outstation/SelectionCriteria.h"
 
@@ -41,44 +41,17 @@ class SelectionWriter
 
 public:	
 
-	bool WriteAllEvents(const EventResponseConfig& config, SelectionCriteria& criteria, ObjectWriter& writer);
+	bool WriteAllEvents(const EventResponseConfig& defaults, SelectionCriteria& criteria, ObjectWriter& writer);
 
 private:
+	
+	SelectionWriter(OutstationEventBuffer& buffer);	
 
-	static openpal::ListNode<SOERecord>* SeekNextWriteableNode(openpal::LinkedListIterator<SOERecord>& iterator);
-
-	SelectionWriter(OutstationEventBuffer& buffer);
-
-	/*
-	template <class T>
-	bool ReadAny(Event<T>& evt, EventType type, const openpal::RandomInsertAdapter<Event<T>, uint16_t>& adapter);
-	*/
-
-	OutstationEventBuffer* pBuffer;	
+	OutstationEventBuffer* pBuffer;
+	openpal::LinkedListIterator<SOERecord> iterator;
+	
+	static bool SeekNextUnselectedNode(openpal::LinkedListIterator<SOERecord>& iterator);
 };
-
-/*
-template <class T>
-bool SelectionWriter::ReadAny(Event<T>& evt, EventType type, const openpal::RandomInsertAdapter<Event<T>, uint16_t>& adapter)
-{
-	if (pCurrent)
-	{
-		if (pCurrent->value.type == type)
-		{
-			evt = adapter[pCurrent->value.index];
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-	else
-	{
-		return false;
-	}
-}
-*/
 
 }
 

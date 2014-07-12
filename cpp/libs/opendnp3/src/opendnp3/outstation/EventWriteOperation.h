@@ -24,13 +24,83 @@
 
 #include <cstdint>
 
+#include <openpal/util/Uncopyable.h>
+#include <openpal/container/StaticLinkedList.h>
+#include <openpal/serialization/Serialization.h>
+#include <openpal/executor/Function1.h>
+
+#include "opendnp3/app/ClassField.h"
+#include "opendnp3/app/ObjectWriter.h"
+#include "opendnp3/outstation/SOERecord.h"
+#include "opendnp3/outstation/EventResponseConfig.h"
+
 namespace opendnp3
 {
 
 class ObjectWriter;
 class SelectionCriteria;
 
-typedef bool(*EventHeaderWriteFunc)(ObjectWriter& writer, SelectionCriteria& criteria, uint32_t maxObjects);
+class EventWriteLimits
+{
+	public:	
+	
+	EventWriteLimits() : numClass1(0), numClass2(0), numClass3(0), numOfType(0)
+	{}
+
+	void Decrement(EventClass clazz)
+	{
+		--numOfType;
+		switch (clazz)
+		{
+			case(EventClass::EC1) :
+				--numClass1;
+				break;
+			case(EventClass::EC2):
+				--numClass2;
+				break;
+			case(EventClass::EC3):
+				--numClass3;
+				break;
+		}
+	}
+
+	bool CanWrite(EventClass clazz) const
+	{
+		if (numOfType > 0)
+		{
+			switch (clazz)
+			{
+				case(EventClass::EC1) :
+					return numClass1 > 0;
+				case(EventClass::EC2) :
+					return numClass2 > 0;
+				case(EventClass::EC3) :
+					return numClass3 > 0;
+				default:
+					return false;
+			}
+		}
+		else
+		{
+			return false;
+		}		
+	}
+
+	void Clear()
+	{
+		numClass1 = numClass2 = numClass3 = numOfType = 0;
+	}
+
+	uint32_t numClass1;
+	uint32_t numClass2;
+	uint32_t numClass3;
+
+	uint32_t numOfType;
+};
+
+typedef openpal::Function1<openpal::ListNode<SOERecord>*, openpal::ListNode<SOERecord>*> ListIterator;
+
+typedef bool(*EventHeaderWriteFunc)(const EventWriteLimits& classMask, ObjectWriter& writer, openpal::ListNode<SOERecord>* start, const ListIterator& writeCallback);
 
 class EventWriteOperation
 {
@@ -38,16 +108,18 @@ class EventWriteOperation
 
 	EventWriteOperation();
 
-	EventWriteOperation(EventHeaderWriteFunc pWriter_, uint32_t count_);
+	EventWriteOperation(EventHeaderWriteFunc pWriter_, const EventWriteLimits& limits_);
 
-	bool Invoke(ObjectWriter& writer, SelectionCriteria& criteria);
+	bool Invoke(ObjectWriter& writer, openpal::ListNode<SOERecord>* start, const ListIterator& writeCallback);
 
 	bool IsDefined() const;
+
+	void MarkAsWritten(uint32_t count);
 	
 	void Clear();	
 
-	EventHeaderWriteFunc pWriter;
-	uint32_t count;
+	EventHeaderWriteFunc pWriter;	
+	EventWriteLimits limits;
 };
 
 }

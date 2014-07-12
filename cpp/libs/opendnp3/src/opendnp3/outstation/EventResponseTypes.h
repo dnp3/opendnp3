@@ -21,16 +21,9 @@
 #ifndef __EVENT_RESPONSE_TYPES_H_
 #define __EVENT_RESPONSE_TYPES_H_
 
-#include "opendnp3/gen/EventBinaryResponse.h"
-#include "opendnp3/gen/EventDoubleBinaryResponse.h"
-#include "opendnp3/gen/EventCounterResponse.h"
-#include "opendnp3/gen/EventAnalogResponse.h"
-#include "opendnp3/gen/EventFrozenCounterResponse.h"
-#include "opendnp3/gen/EventBinaryOutputStatusResponse.h"
-#include "opendnp3/gen/EventAnalogOutputStatusResponse.h"
+#include "opendnp3/outstation/EventResponseConfig.h"
 
-#include "opendnp3/app/IDNP3Serializer.h"
-#include "opendnp3/app/MeasurementTypes.h"
+#include "opendnp3/outstation/EventWriteOperation.h"
 
 #include <openpal/util/Uncopyable.h>
 
@@ -45,13 +38,13 @@ class EventResponseTypes : openpal::PureStatic
 
 public:
 
-	static IDNP3Serializer<Binary>& Lookup(EventBinaryResponse enumeration);
-	static IDNP3Serializer<DoubleBitBinary>& Lookup(EventDoubleBinaryResponse enumeration);
-	static IDNP3Serializer<Counter>& Lookup(EventCounterResponse enumeration);
-	static IDNP3Serializer<FrozenCounter>& Lookup(EventFrozenCounterResponse enumeration);
-	static IDNP3Serializer<Analog>& Lookup(EventAnalogResponse enumeration);
-	static IDNP3Serializer<BinaryOutputStatus>& Lookup(EventBinaryOutputStatusResponse enumeration);
-	static IDNP3Serializer<AnalogOutputStatus>& Lookup(EventAnalogOutputStatusResponse enumeration);
+	static EventHeaderWriteFunc Lookup(EventBinaryResponse enumeration);
+	static EventHeaderWriteFunc Lookup(EventDoubleBinaryResponse enumeration);
+	static EventHeaderWriteFunc Lookup(EventCounterResponse enumeration);
+	static EventHeaderWriteFunc Lookup(EventFrozenCounterResponse enumeration);
+	static EventHeaderWriteFunc Lookup(EventAnalogResponse enumeration);
+	static EventHeaderWriteFunc Lookup(EventBinaryOutputStatusResponse enumeration);
+	static EventHeaderWriteFunc Lookup(EventAnalogOutputStatusResponse enumeration);
 	
 };
 

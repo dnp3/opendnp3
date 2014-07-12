@@ -48,7 +48,7 @@ void APDUHandlerBase::Reset()
 IINField APDUHandlerBase::Errors() const
 {
 	IINField copy(errors);
-	if(ignoredHeaders > 0) copy.Set(IINBit::FUNC_NOT_SUPPORTED);
+	if(ignoredHeaders > 0) copy.SetBit(IINBit::FUNC_NOT_SUPPORTED);
 	return copy;
 }
 

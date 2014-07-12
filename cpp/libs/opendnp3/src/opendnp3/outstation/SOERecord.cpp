@@ -27,47 +27,46 @@ namespace opendnp3
 SOERecord::SOERecord() : type(EventType::Analog), index(0), clazz(EventClass::EC1), selected(false)
 {}
 
-SOERecord::SOERecord(const Binary& meas, uint16_t index_, EventClass clazz_, bool selected_) :
+SOERecord::SOERecord(const Binary& meas, uint16_t index_, EventClass clazz_) :
 	type(EventType::Binary), index(0), clazz(EventClass::EC1), selected(false)
 {
 	this->erasure.Set(meas);
 }
 
-SOERecord::SOERecord(const DoubleBitBinary& meas, uint16_t index_, EventClass clazz_, bool selected_) :
+SOERecord::SOERecord(const DoubleBitBinary& meas, uint16_t index_, EventClass clazz_) :
 	type(EventType::DoubleBitBinary), index(0), clazz(EventClass::EC1), selected(false)
 {
 	this->erasure.Set(meas);
 }
 
-SOERecord::SOERecord(const BinaryOutputStatus& meas, uint16_t index_, EventClass clazz_, bool selected_) :
+SOERecord::SOERecord(const BinaryOutputStatus& meas, uint16_t index_, EventClass clazz_) :
 	type(EventType::BinaryOutputStatus), index(0), clazz(EventClass::EC1), selected(false)
 {
 	this->erasure.Set(meas);
 }
 
-SOERecord::SOERecord(const Counter& meas, uint16_t index_, EventClass clazz_, bool selected_) :
+SOERecord::SOERecord(const Counter& meas, uint16_t index_, EventClass clazz_) :
 	type(EventType::Counter), index(0), clazz(EventClass::EC1), selected(false)
 {
 	this->erasure.Set(meas);
 }
 
-SOERecord::SOERecord(const FrozenCounter& meas, uint16_t index_, EventClass clazz_, bool selected_) :
+SOERecord::SOERecord(const FrozenCounter& meas, uint16_t index_, EventClass clazz_) :
 	type(EventType::FrozenCounter), index(0), clazz(EventClass::EC1), selected(false)
 {
 	this->erasure.Set(meas);
 }
 
-SOERecord::SOERecord(const Analog& meas, uint16_t index_, EventClass clazz_, bool selected_) :
+SOERecord::SOERecord(const Analog& meas, uint16_t index_, EventClass clazz_) :
 	type(EventType::Analog), index(0), clazz(EventClass::EC1), selected(false)
 {
 	this->erasure.Set(meas);
 }
 
-SOERecord::SOERecord(const AnalogOutputStatus& meas, uint16_t index_, EventClass clazz_, bool selected_) :
+SOERecord::SOERecord(const AnalogOutputStatus& meas, uint16_t index_, EventClass clazz_) :
 	type(EventType::AnalogOutputStatus), index(0), clazz(EventClass::EC1), selected(false)
 {
 	this->erasure.Set(meas);
 }
 
 }
-

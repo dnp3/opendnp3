@@ -22,7 +22,7 @@
 #define __OPENDNP3_EVENT_H_
 
 #include "opendnp3/app/IndexedValue.h"
-#include "opendnp3/outstation/EventType.h"
+#include "opendnp3/app/EventType.h"
 
 namespace opendnp3
 {

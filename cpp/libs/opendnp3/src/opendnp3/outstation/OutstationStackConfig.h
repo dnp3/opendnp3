@@ -36,24 +36,17 @@ struct OutstationStackConfig
 {
 
 	OutstationStackConfig(const DatabaseTemplate& dbTemplate_) :
-		dbTemplate(dbTemplate_),
-		eventBuffer(),
+		dbTemplate(dbTemplate_),		
 		link(false, false)		
 	{
 
 	}
 
-	OutstationStackConfig() :
-		dbTemplate(),
-		eventBuffer(),
-		link(false, false)		
+	OutstationStackConfig() : link(false, false)		
 	{}
 
 	// Configuration of the database
-	DatabaseTemplate dbTemplate;
-	
-	// Configuration of event buffer
-	EventBufferConfig eventBuffer;
+	DatabaseTemplate dbTemplate;	
 	
 	/// Outstation config
 	OutstationConfig outstation;

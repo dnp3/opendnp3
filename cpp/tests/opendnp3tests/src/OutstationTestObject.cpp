@@ -27,12 +27,12 @@ using namespace openpal;
 namespace opendnp3
 {
 
-OutstationTestObject::OutstationTestObject(const OutstationConfig& config, const DatabaseTemplate& dbTemplate, const EventBufferConfig& ebConfig) :
+OutstationTestObject::OutstationTestObject(const OutstationConfig& config, const DatabaseTemplate& dbTemplate) :
 	log(),
 	exe(),
 	lower(log.root),
 	dbBuffers(dbTemplate),
-	eventBuffers(ebConfig),
+	eventBuffers(config.eventBufferConfig.TotalEvents()),
 	db(dbBuffers.GetFacade()),
 	cmdHandler(CommandStatus::SUCCESS),
 	application(),

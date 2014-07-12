@@ -95,7 +95,7 @@ void Outstation::OnSendResult(bool isSuccess)
 
 void Outstation::SetRequestTimeIIN()
 {
-	context.staticIIN.Set(IINBit::NEED_TIME);
+	context.staticIIN.SetBit(IINBit::NEED_TIME);
 }
 	
 }

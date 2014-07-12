@@ -19,67 +19,67 @@
  * to you under the terms of the License.
  */
 
-#ifndef __ERASED_TYPE_H_
-#define __ERASED_TYPE_H_
+#ifndef __FUNCTION_ONE_H_
+#define __FUNCTION_ONE_H_
 
-#include <cstdint>
-#include <cstring>
+#include "Erasure.h"
 
 namespace openpal
 {
 
-// a generic cell that can be used to store events of any type using an erased buffer
-template <size_t MaxSize>
-class ErasedType
+template <class A, class R>
+class Function1 : private Erasure
 {
-	public:
-	
-	ErasedType() : size(0)
+	typedef R (*Invoke)(const uint8_t* pBuffer, const A& arg);
+
+public:
+
+	Function1() : pInvoke(nullptr)
 	{}
 
-	ErasedType(const ErasedType& copy) : size(copy.size)
+	Function1(const Function1& other) : pInvoke(other.pInvoke)
 	{
-		memcpy(buffer, copy.buffer, copy.size);
+		this->CopyErasure(other);
 	}
 
-	ErasedType& operator= (const ErasedType& other)
+	Function1& operator=(const Function1& other)
 	{
 		if (this != &other)
 		{
-			this->size = other.size;
-			memcpy(buffer, other.buffer, other.size);
+			this->pInvoke = other.pInvoke;
+			this->CopyErasure(other);
 		}
-		
+
 		return *this;
+	}
+
+	template <class Lambda>
+	static Function1<A,R> Bind(Lambda& lambda)
+	{
+		static_assert(sizeof(Lambda) <= sizes::MAX_ERASURE_SIZE, "Lambda is too big for erasure");		
+		Function1<A, R> function(&RunLambda<Lambda>, sizeof(lambda));
+		new(function.bytes) Lambda(lambda); // use placement new
+		return function;
 	}	
 
-	template <class T>
-	void Set(const T& type)
+	R Apply(const A& arg) const
 	{
-		static_assert(sizeof(T) <= MaxSize, "Type is too big for erasure");
-		(*reinterpret_cast<T*>(buffer)) = type;
-		size = sizeof(T);
+		assert(pInvoke);
+		return (*pInvoke)(bytes, arg);		
 	}
 
-	template <class T>
-	bool Read(T& type) const
+private:
+
+	template <class Lambda>
+	static R RunLambda(const uint8_t* pBuffer, const A& arg)
 	{
-		static_assert(sizeof(T) <= MaxSize, "Type is too big for erasure");
-		if (size < sizeof(T))
-		{
-			return false;
-		}
-		else
-		{
-			type = (*reinterpret_cast<const T*>(buffer));
-			return true;
-		}
-		
+		return (*reinterpret_cast<const Lambda*>(pBuffer))(arg);		
 	}
-	
-	private:
-	size_t size;
-	uint8_t buffer[MaxSize];
+
+	Function1(Invoke pInvoke_, uint32_t size_) : Erasure(size_), pInvoke(pInvoke_)
+	{}
+
+	Invoke pInvoke;	
 };
 
 }

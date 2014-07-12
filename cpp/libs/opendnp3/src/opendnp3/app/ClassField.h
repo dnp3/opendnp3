@@ -30,13 +30,19 @@ namespace opendnp3
 
 class ClassField
 {
-	public:
+	public:	
 
 	ClassField();
 
 	ClassField(PointClass pc);
 
 	ClassField(uint8_t mask_);
+
+	ClassField(bool class0, bool class1, bool class2, bool class3);
+
+	bool IsEmpty() const;
+
+	bool Intersects(const ClassField& other) const;	
 
 	uint8_t GetBitfield() const { return bitfield; };
 

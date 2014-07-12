@@ -28,44 +28,62 @@ using namespace openpal;
 namespace opendnp3
 {
 
-SelectionWriter::SelectionWriter(OutstationEventBuffer& buffer) : pBuffer(&buffer) {}
+SelectionWriter::SelectionWriter(OutstationEventBuffer& buffer) : 
+	pBuffer(&buffer),
+	iterator(buffer.facade.sequenceOfEvents.Iterate()) 
+{
 
-bool SelectionWriter::WriteAllEvents(const EventResponseConfig& config, SelectionCriteria& criteria, ObjectWriter& writer)
-{	
-	auto apduHasSpace = true;
-	auto iterator = pBuffer->facade.sequenceOfEvents.Iterate();
-			
-	while (apduHasSpace && iterator.HasNext() && criteria.HasSelection())
-	{
-		auto pNode = SeekNextWriteableNode(iterator);		
-
-		if (pNode)
-		{
-			auto operation = criteria.GetWriteOperationFor(config, pNode->value.clazz, pNode->value.type);
-			if (operation.IsDefined())
-			{
-				apduHasSpace = operation.Invoke(writer, criteria);
-			}						
-		}
-
-	} 
-	
-	return apduHasSpace;
 }
 
-openpal::ListNode<SOERecord>* SelectionWriter::SeekNextWriteableNode(openpal::LinkedListIterator<SOERecord>& iterator)
-{
-	while (iterator.HasNext())
-	{
-		auto pNode = iterator.Next();
+bool SelectionWriter::WriteAllEvents(const EventResponseConfig& defaults, SelectionCriteria& criteria, ObjectWriter& writer)
+{						
+	while (this->SeekNextUnselectedNode(iterator) && criteria.HasSelection())
+	{	
+		auto pStart = iterator.Current();
 		
-		if (pNode && !pNode->value.selected)
+		auto operation = criteria.GetWriteOperationFor(defaults, pStart->value.clazz, pStart->value.type);
+
+		if (operation.IsDefined())
 		{
-			return pNode;
+			uint32_t numWritten = 0;
+
+			// callback that tells us this record was written to the apdu
+			auto callback = [this, &criteria](ListNode<SOERecord>* pNode) 
+			{
+				pNode->value.selected = true;
+				pBuffer->selectedTracker.Increment(pNode->value.clazz, pNode->value.type);
+				pBuffer->facade.selectedEvents.Push(pNode);
+				criteria.RecordAsWritten(pNode->value.clazz, pNode->value.type);
+				this->SeekNextUnselectedNode(iterator);
+				return iterator.Current();
+			};
+
+			return operation.Invoke(writer, pStart, Function1<ListNode<SOERecord>*, ListNode<SOERecord>*>::Bind(callback));
+		}
+		else
+		{
+			iterator.Next();
 		}
 	} 
 	
-	return nullptr;
+	return true;
+}
+
+bool SelectionWriter::SeekNextUnselectedNode(openpal::LinkedListIterator<SOERecord>& iterator)
+{
+	while (iterator.CurrentValue())
+	{				
+		if (iterator.CurrentValue()->selected)
+		{
+			iterator.Next();
+		}
+		else
+		{
+			return true;
+		}
+	} 	
+
+	return false;
 }
 
 /*

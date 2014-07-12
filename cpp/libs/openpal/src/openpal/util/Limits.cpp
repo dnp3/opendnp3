@@ -60,6 +60,12 @@ template <>
 int32_t MaxValue<int32_t>() { return INT32_MAX; }
 
 template <>
+uint32_t MinValue<uint32_t>() { return 0; }
+
+template <>
+uint32_t MaxValue<uint32_t>() { return UINT32_MAX; }
+
+template <>
 int64_t MinValue<int64_t>() { return INT64_MIN; }
 
 template <>
