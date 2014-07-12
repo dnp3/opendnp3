@@ -132,7 +132,7 @@ void TestEventRead(const std::string& request, const std::string& response, cons
 
 	OutstationConfig config;
 	config.eventBufferConfig = EventBufferConfig::AllTypes(10);
-	OutstationTestObject t(config, DatabaseTemplate::AllTypes(1));
+	OutstationTestObject t(config, DatabaseTemplate::AllTypes(5));
 	t.LowerLayerUp();
 
 	t.Transaction([&](Database& db){ loadFun(db); });
@@ -150,6 +150,7 @@ TEST_CASE(SUITE("ReadGrp2Var0"))
 
 	TestEventRead("C0 01 02 00 06", "E0 81 80 00 02 01 28 01 00 00 00 01", update);
 }
+
 
 TEST_CASE(SUITE("ReadGrp22Var0"))
 {
@@ -171,23 +172,27 @@ TEST_CASE(SUITE("ReadGrp32Var0"))
 	TestEventRead("C0 01 20 00 06", "E0 81 80 00 20 01 28 01 00 00 00 01 00 00 00 00", update);
 }
 
-/*
 TEST_CASE(SUITE("ReadGrp2Var1"))
 {
 	auto update = [](Database & db)
 	{
-		db.Update(Binary(false, BQ_ONLINE), 0);
+		db.Update(Binary(false, 0x01), 3);
 	};
 
-	TestEventRead("C0 01 02 01 06", "E0 81 80 00 02 01 17 01 00 01", update); // 1 byte count == 1, ONLINE quality
+	TestEventRead("C0 01 02 01 06", "E0 81 80 00 02 01 28 01 00 03 00 01", update); // 1 byte count == 1, ONLINE quality
 }
-
 
 TEST_CASE(SUITE("ReadGrp2Var2"))
 {
-	TestEventRead("C0 01 02 02 06", "E0 81 80 00 02 02 17 01 00 01 00 00 00 00 00 00"); // 1 byte count == 1, ONLINE quality
+	auto update = [](Database & db)
+	{		
+		db.Update(Binary(false, 0x01, 0x4571), 3);
+	};
+
+	TestEventRead("C0 01 02 02 06", "E0 81 80 00 02 02 28 01 00 03 00 01 71 45 00 00 00 00", update); // 1 byte count == 1, ONLINE quality
 }
 
+/*
 TEST_CASE(SUITE("ReadGrp2Var3"))
 {
 	TestEventRead("C0 01 02 03 06", "E0 81 80 00 33 01 07 01 00 00 00 00 00 00 02 03 17 01 00 01 00 00"); // 1 byte count == 1, ONLINE quality
