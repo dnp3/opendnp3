@@ -32,7 +32,8 @@
 
 #include "opendnp3/outstation/Database.h"
 #include "opendnp3/outstation/StaticLoader.h"
-#include "opendnp3/outstation/StaticResponseTypes.h"
+#include "opendnp3/outstation/StaticResponseConfig.h"
+#include "opendnp3/outstation/StaticLoadFunctions.h"
 
 namespace opendnp3
 {
@@ -56,7 +57,7 @@ class StaticResponseContext : private openpal::Uncopyable
 
 public:
 
-	StaticResponseContext(Database& database, const StaticResponseTypes& rspTypes = StaticResponseTypes());
+	StaticResponseContext(Database& database, const StaticResponseConfig& config);
 
 	void Reset();
 
@@ -71,59 +72,29 @@ public:
 
 private:
 
-	IINField QueueReadRange(const StaticRangeLoader& loader);
-
-	IINField QueueStaticIntegrity();
-
-	template <class T>
-	StaticRangeLoader GetFullRangeWithDefaultLoader();
-
-	template <class T>
-	StaticRangeLoader GetClippedRangeWithDefaultLoader(const StaticRange& range);
-
-	template <class Serializer>
-	StaticRangeLoader GetFullRange();
-
-	template <class Serializer>
-	StaticRangeLoader GetClippedRange(const StaticRange& range);
+	IINField QueueLoader(const StaticRangeLoader& loader);	
 
 	StaticLoadResult LoadStaticData(ObjectWriter& writer);
 
 	Database* pDatabase;
-	StaticResponseTypes rspTypes;
+	StaticResponseConfig defaults;
 
 	openpal::StaticQueue<StaticRangeLoader, uint8_t, sizes::MAX_READ_REQUESTS> staticResponseQueue;
 
+	template <class Target>
+	IINField QueueClippedRangeByEnum(const StaticRange& range, typename Target::StaticResponseEnum enumeration)
+	{
+		StaticRange copy(range);
+		copy.ClipTo(pDatabase->FullRange<Target>());
+		return QueueLoader(StaticRangeLoader(StaticLoadFunctions::Get(enumeration), copy));
+	}	
+
+	template <class Target>
+	IINField QueueFullRangeByEnum(typename Target::StaticResponseEnum enumeration)
+	{		
+		return QueueLoader(StaticRangeLoader(StaticLoadFunctions::Get(enumeration), pDatabase->FullRange<Target>()));
+	}
 };
-
-template <class T>
-StaticResponseContext::StaticRangeLoader StaticResponseContext::GetClippedRangeWithDefaultLoader(const StaticRange& range)
-{
-	StaticRange copy(range);
-	copy.ClipTo(pDatabase->FullRange<T>());
-	return StaticRangeLoader(rspTypes.GetLoader<T>(), copy);
-}
-
-
-template <class T>
-StaticResponseContext::StaticRangeLoader StaticResponseContext::GetFullRangeWithDefaultLoader()
-{
-	return StaticRangeLoader(rspTypes.GetLoader<T>(), pDatabase->FullRange<T>());
-}
-
-template <class Serializer>
-StaticResponseContext::StaticRangeLoader StaticResponseContext::GetFullRange()
-{
-	return StaticRangeLoader(&StaticLoader::LoadFixedSizeStartStop<Serializer>, pDatabase->FullRange<typename Serializer::Target>());
-}
-
-template <class Serializer>
-StaticResponseContext::StaticRangeLoader StaticResponseContext::GetClippedRange(const StaticRange& range)
-{
-	StaticRange copy(range);
-	copy.ClipTo(pDatabase->FullRange<typename Serializer::Target>());
-	return StaticRangeLoader(&StaticLoader::LoadFixedSizeStartStop<Serializer>, copy);
-}
 
 }
 

@@ -29,9 +29,9 @@ using namespace openpal;
 namespace opendnp3
 {
 
-StaticResponseContext::StaticResponseContext(Database& database, const StaticResponseTypes& rspTypes_) :
+	StaticResponseContext::StaticResponseContext(Database& database, const StaticResponseConfig& config) :
 	pDatabase(&database),
-	rspTypes(rspTypes_)
+	defaults(config)
 {}
 
 bool StaticResponseContext::IsComplete() const
@@ -51,193 +51,120 @@ void StaticResponseContext::Reset()
 
 IINField StaticResponseContext::ReadAll(const GroupVariationRecord& record)
 {
-	switch(record.enumeration)
+	if (record.enumeration == GroupVariation::Group60Var1)
 	{
-
-	case(GroupVariation::Group60Var1):
-		return QueueStaticIntegrity();
-
-		// Group 1
-	case(GroupVariation::Group1Var0):
-		return QueueReadRange(GetFullRangeWithDefaultLoader<Binary>());
-	case(GroupVariation::Group1Var2):
-		return QueueReadRange(GetFullRange<Group1Var2Serializer>());
-
-		// Group 10
-	case(GroupVariation::Group10Var0):
-		return QueueReadRange(GetFullRangeWithDefaultLoader<BinaryOutputStatus>());
-	case(GroupVariation::Group10Var2):
-		return QueueReadRange(GetFullRange<Group10Var2Serializer>());
-
-		// Group 20
-	case(GroupVariation::Group20Var0):
-		return QueueReadRange(GetFullRangeWithDefaultLoader<Counter>());
-	case(GroupVariation::Group20Var1):
-		return QueueReadRange(GetFullRange<Group20Var1Serializer>());
-	case(GroupVariation::Group20Var2):
-		return QueueReadRange(GetFullRange<Group20Var2Serializer>());
-	case(GroupVariation::Group20Var5):
-		return QueueReadRange(GetFullRange<Group20Var5Serializer>());
-	case(GroupVariation::Group20Var6):
-		return QueueReadRange(GetFullRange<Group20Var6Serializer>());
-
-		// Group 21
-	case(GroupVariation::Group21Var0):
-		return QueueReadRange(GetFullRangeWithDefaultLoader<FrozenCounter>());
-	case(GroupVariation::Group21Var1):
-		return QueueReadRange(GetFullRange<Group21Var1Serializer>());
-	case(GroupVariation::Group21Var2):
-		return QueueReadRange(GetFullRange<Group21Var2Serializer>());
-	case(GroupVariation::Group21Var5):
-		return QueueReadRange(GetFullRange<Group21Var5Serializer>());
-	case(GroupVariation::Group21Var6):
-		return QueueReadRange(GetFullRange<Group21Var6Serializer>());
-	case(GroupVariation::Group21Var9):
-		return QueueReadRange(GetFullRange<Group21Var9Serializer>());
-	case(GroupVariation::Group21Var10):
-		return QueueReadRange(GetFullRange<Group21Var10Serializer>());
-
-		// Group 30
-	case(GroupVariation::Group30Var0):
-		return QueueReadRange(GetFullRangeWithDefaultLoader<Analog>());
-	case(GroupVariation::Group30Var1):
-		return QueueReadRange(GetFullRange<Group30Var1Serializer>());
-	case(GroupVariation::Group30Var2):
-		return QueueReadRange(GetFullRange<Group30Var2Serializer>());
-	case(GroupVariation::Group30Var3):
-		return QueueReadRange(GetFullRange<Group30Var3Serializer>());
-	case(GroupVariation::Group30Var4):
-		return QueueReadRange(GetFullRange<Group30Var4Serializer>());
-	case(GroupVariation::Group30Var5):
-		return QueueReadRange(GetFullRange<Group30Var5Serializer>());
-	case(GroupVariation::Group30Var6):
-		return QueueReadRange(GetFullRange<Group30Var6Serializer>());
-
-		// Group 40
-	case(GroupVariation::Group40Var0):
-		return QueueReadRange(GetFullRangeWithDefaultLoader<AnalogOutputStatus>());
-	case(GroupVariation::Group40Var1):
-		return QueueReadRange(GetFullRange<Group40Var1Serializer>());
-	case(GroupVariation::Group40Var2):
-		return QueueReadRange(GetFullRange<Group40Var2Serializer>());
-	case(GroupVariation::Group40Var3):
-		return QueueReadRange(GetFullRange<Group40Var3Serializer>());
-	case(GroupVariation::Group40Var4):
-		return QueueReadRange(GetFullRange<Group40Var4Serializer>());
-
-	default:
-		return IINField(IINBit::FUNC_NOT_SUPPORTED);
+		IINField result;
+		result = result | QueueFullRangeByEnum<Binary>(defaults.binary);
+		result = result | QueueFullRangeByEnum<DoubleBitBinary>(defaults.doubleBinary);
+		result = result | QueueFullRangeByEnum<BinaryOutputStatus>(defaults.binaryOutputStatus);
+		result = result | QueueFullRangeByEnum<Counter>(defaults.counter);
+		result = result | QueueFullRangeByEnum<FrozenCounter>(defaults.frozenCounter);
+		result = result | QueueFullRangeByEnum<Analog>(defaults.analog);
+		result = result | QueueFullRangeByEnum<AnalogOutputStatus>(defaults.analogOutputStatus);
+		return result;		
 	}
+	else
+	{
+		switch (record.group)
+		{
+			case(1) :
+				return ReadRange(record, pDatabase->FullRange<Binary>());
+			case(3) :
+				return ReadRange(record, pDatabase->FullRange<DoubleBitBinary>());
+			case(10) :
+				return ReadRange(record, pDatabase->FullRange<BinaryOutputStatus>());
+			case(20) :
+				return ReadRange(record, pDatabase->FullRange<Counter>());
+			case(21) :
+				return ReadRange(record, pDatabase->FullRange<FrozenCounter>());
+			case(30) :
+				return ReadRange(record, pDatabase->FullRange<Analog>());
+			case(40) :
+				return ReadRange(record, pDatabase->FullRange<AnalogOutputStatus>());
+			default:
+				return IINField(IINBit::FUNC_NOT_SUPPORTED);
+		}
+	}	
 }
 
 IINField StaticResponseContext::ReadRange(const GroupVariationRecord& record, const StaticRange& range)
-{
-	switch(record.enumeration)
+{	
+	switch (record.enumeration)
 	{
 		// Group 1
-	case(GroupVariation::Group1Var0):
-		return QueueReadRange(GetClippedRangeWithDefaultLoader<Binary>(range));
-	case(GroupVariation::Group1Var2):
-		return QueueReadRange(GetClippedRange<Group1Var2Serializer>(range));
+	case(GroupVariation::Group1Var0) :
+		return QueueClippedRangeByEnum<Binary>(range, defaults.binary);
+	case(GroupVariation::Group1Var2) :
+		return QueueClippedRangeByEnum<Binary>(range, StaticBinaryResponse::Group1Var2);
 
 		// Group 10
-	case(GroupVariation::Group10Var0):
-		return QueueReadRange(GetClippedRangeWithDefaultLoader<BinaryOutputStatus>(range));
-	case(GroupVariation::Group10Var2):
-		return QueueReadRange(GetClippedRange<Group10Var2Serializer>(range));
+	case(GroupVariation::Group10Var0) :
+		return QueueClippedRangeByEnum<BinaryOutputStatus>(range, defaults.binaryOutputStatus);
+	case(GroupVariation::Group10Var2) :
+		return QueueClippedRangeByEnum<BinaryOutputStatus>(range, StaticBinaryOutputStatusResponse::Group10Var2);
 
 		// Group 20
-	case(GroupVariation::Group20Var0):
-		return QueueReadRange(GetClippedRangeWithDefaultLoader<Counter>(range));
-	case(GroupVariation::Group20Var1):
-		return QueueReadRange(GetClippedRange<Group20Var1Serializer>(range));
-	case(GroupVariation::Group20Var2):
-		return QueueReadRange(GetClippedRange<Group20Var2Serializer>(range));
-	case(GroupVariation::Group20Var5):
-		return QueueReadRange(GetClippedRange<Group20Var5Serializer>(range));
-	case(GroupVariation::Group20Var6):
-		return QueueReadRange(GetClippedRange<Group20Var6Serializer>(range));
-
+	case(GroupVariation::Group20Var0) :
+		return QueueClippedRangeByEnum<Counter>(range, defaults.counter);
+	case(GroupVariation::Group20Var1) :
+		return QueueClippedRangeByEnum<Counter>(range, StaticCounterResponse::Group20Var1);
+	case(GroupVariation::Group20Var2) :
+		return QueueClippedRangeByEnum<Counter>(range, StaticCounterResponse::Group20Var2);
+	case(GroupVariation::Group20Var5) :
+		return QueueClippedRangeByEnum<Counter>(range, StaticCounterResponse::Group20Var5);
+	case(GroupVariation::Group20Var6) :
+		return QueueClippedRangeByEnum<Counter>(range, StaticCounterResponse::Group20Var6);
 
 		// Group 21
-	case(GroupVariation::Group21Var0):
-		return QueueReadRange(GetClippedRangeWithDefaultLoader<FrozenCounter>(range));
-	case(GroupVariation::Group21Var1):
-		return QueueReadRange(GetClippedRange<Group21Var1Serializer>(range));
-	case(GroupVariation::Group21Var2):
-		return QueueReadRange(GetClippedRange<Group21Var2Serializer>(range));
-	case(GroupVariation::Group21Var5):
-		return QueueReadRange(GetClippedRange<Group21Var5Serializer>(range));
-	case(GroupVariation::Group21Var6):
-		return QueueReadRange(GetClippedRange<Group21Var6Serializer>(range));
-	case(GroupVariation::Group21Var9):
-		return QueueReadRange(GetClippedRange<Group21Var9Serializer>(range));
-	case(GroupVariation::Group21Var10):
-		return QueueReadRange(GetClippedRange<Group21Var10Serializer>(range));
-
+	case(GroupVariation::Group21Var0) :
+		return QueueClippedRangeByEnum<FrozenCounter>(range, defaults.frozenCounter);
+	case(GroupVariation::Group21Var1) :
+		return QueueClippedRangeByEnum<FrozenCounter>(range, StaticFrozenCounterResponse::Group21Var1);
+	case(GroupVariation::Group21Var2) :
+		return QueueClippedRangeByEnum<FrozenCounter>(range, StaticFrozenCounterResponse::Group21Var2);
+	case(GroupVariation::Group21Var5) :
+		return QueueClippedRangeByEnum<FrozenCounter>(range, StaticFrozenCounterResponse::Group21Var5);
+	case(GroupVariation::Group21Var6) :
+		return QueueClippedRangeByEnum<FrozenCounter>(range, StaticFrozenCounterResponse::Group21Var6);
+	case(GroupVariation::Group21Var9) :
+		return QueueClippedRangeByEnum<FrozenCounter>(range, StaticFrozenCounterResponse::Group21Var9);
+	case(GroupVariation::Group21Var10) :
+		return QueueClippedRangeByEnum<FrozenCounter>(range, StaticFrozenCounterResponse::Group21Var10);
 
 		// Group 30
-	case(GroupVariation::Group30Var0):
-		return QueueReadRange(GetClippedRangeWithDefaultLoader<Analog>(range));
-	case(GroupVariation::Group30Var1):
-		return QueueReadRange(GetClippedRange<Group30Var1Serializer>(range));
-	case(GroupVariation::Group30Var2):
-		return QueueReadRange(GetClippedRange<Group30Var2Serializer>(range));
-	case(GroupVariation::Group30Var3):
-		return QueueReadRange(GetClippedRange<Group30Var3Serializer>(range));
-	case(GroupVariation::Group30Var4):
-		return QueueReadRange(GetClippedRange<Group30Var4Serializer>(range));
-	case(GroupVariation::Group30Var5):
-		return QueueReadRange(GetClippedRange<Group30Var5Serializer>(range));
-	case(GroupVariation::Group30Var6):
-		return QueueReadRange(GetClippedRange<Group30Var6Serializer>(range));
+	case(GroupVariation::Group30Var0) :
+		return QueueClippedRangeByEnum<Analog>(range, defaults.analog);
+	case(GroupVariation::Group30Var1) :
+		return QueueClippedRangeByEnum<Analog>(range, StaticAnalogResponse::Group30Var1);
+	case(GroupVariation::Group30Var2) :
+		return QueueClippedRangeByEnum<Analog>(range, StaticAnalogResponse::Group30Var2);
+	case(GroupVariation::Group30Var3) :
+		return QueueClippedRangeByEnum<Analog>(range, StaticAnalogResponse::Group30Var3);
+	case(GroupVariation::Group30Var4) :
+		return QueueClippedRangeByEnum<Analog>(range, StaticAnalogResponse::Group30Var4);
+	case(GroupVariation::Group30Var5) :
+		return QueueClippedRangeByEnum<Analog>(range, StaticAnalogResponse::Group30Var5);
+	case(GroupVariation::Group30Var6) :
+		return QueueClippedRangeByEnum<Analog>(range, StaticAnalogResponse::Group30Var6);
 
 		// Group 40
-	case(GroupVariation::Group40Var0):
-		return QueueReadRange(GetClippedRangeWithDefaultLoader<AnalogOutputStatus>(range));
-	case(GroupVariation::Group40Var1):
-		return QueueReadRange(GetClippedRange<Group40Var1Serializer>(range));
-	case(GroupVariation::Group40Var2):
-		return QueueReadRange(GetClippedRange<Group40Var2Serializer>(range));
-	case(GroupVariation::Group40Var3):
-		return QueueReadRange(GetClippedRange<Group40Var3Serializer>(range));
-	case(GroupVariation::Group40Var4):
-		return QueueReadRange(GetClippedRange<Group40Var4Serializer>(range));
-
+	case(GroupVariation::Group40Var0) :
+		return QueueClippedRangeByEnum<AnalogOutputStatus>(range, defaults.analogOutputStatus);
+	case(GroupVariation::Group40Var1) :
+		return QueueClippedRangeByEnum<AnalogOutputStatus>(range, StaticAnalogOutputStatusResponse::Group40Var1);
+	case(GroupVariation::Group40Var2) :
+		return QueueClippedRangeByEnum<AnalogOutputStatus>(range, StaticAnalogOutputStatusResponse::Group40Var2);
+	case(GroupVariation::Group40Var3) :
+		return QueueClippedRangeByEnum<AnalogOutputStatus>(range, StaticAnalogOutputStatusResponse::Group40Var3);
+	case(GroupVariation::Group40Var4) :
+		return QueueClippedRangeByEnum<AnalogOutputStatus>(range, StaticAnalogOutputStatusResponse::Group40Var4);
 
 	default:
 		return IINField(IINBit::FUNC_NOT_SUPPORTED);
 	}
 }
 
-IINField StaticResponseContext::QueueStaticIntegrity()
-{
-	StaticQueue<StaticRangeLoader, uint32_t, 7> values;
-	values.Enqueue(GetFullRangeWithDefaultLoader<Binary>());
-	values.Enqueue(GetFullRangeWithDefaultLoader<DoubleBitBinary>());
-	values.Enqueue(GetFullRangeWithDefaultLoader<Counter>());
-	values.Enqueue(GetFullRangeWithDefaultLoader<FrozenCounter>());
-	values.Enqueue(GetFullRangeWithDefaultLoader<Analog>());
-	values.Enqueue(GetFullRangeWithDefaultLoader<BinaryOutputStatus>());
-	values.Enqueue(GetFullRangeWithDefaultLoader<AnalogOutputStatus>());
-
-	while(values.IsNotEmpty())
-	{
-		auto pLoader = values.Pop();
-		if (pLoader->IsDefined())
-		{
-			auto iin = QueueReadRange(*pLoader);
-			if (iin.Any())
-			{
-				return iin;
-			}
-		}
-	}
-
-	return IINField::Empty;
-}
-
-IINField StaticResponseContext::QueueReadRange(const StaticRangeLoader& loader)
+IINField StaticResponseContext::QueueLoader(const StaticRangeLoader& loader)
 {
 	if(loader.IsDefined())
 	{
@@ -250,7 +177,10 @@ IINField StaticResponseContext::QueueReadRange(const StaticRangeLoader& loader)
 			return IINField(IINBit::PARAM_ERROR);
 		}
 	}
-	else return IINField(IINBit::PARAM_ERROR);
+	else
+	{
+		return IINField::Empty;
+	}
 }
 
 bool StaticResponseContext::Load(ObjectWriter& writer)

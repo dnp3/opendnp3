@@ -25,7 +25,6 @@
 
 #include "opendnp3/app/StaticRange.h"
 #include "opendnp3/app/APDUResponse.h"
-#include "opendnp3/outstation/StaticResponseTypes.h"
 
 #include  "opendnp3/outstation/StaticResponseContext.h"
 #include  "opendnp3/outstation/EventResponseContext.h"
@@ -43,7 +42,7 @@ class ResponseContext : private openpal::Uncopyable
 
 public:
 
-	ResponseContext(Database& database, OutstationEventBuffer& buffer, const StaticResponseTypes& rspTypes, const EventResponseConfig& config);
+	ResponseContext(Database& database, OutstationEventBuffer& buffer, const StaticResponseConfig& staticConfig, const EventResponseConfig& eventConfig);
 
 	IINField ReadAllObjects(const GroupVariationRecord& record);
 	IINField ReadRange(const GroupVariationRecord& record, const StaticRange& range);

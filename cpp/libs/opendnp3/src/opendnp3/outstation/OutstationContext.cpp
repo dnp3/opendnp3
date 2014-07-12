@@ -78,7 +78,7 @@ OutstationContext::OutstationContext(
 	expectedSolConfirmSeq(0),
 	expectedUnsolConfirmSeq(0),
 	completedNullUnsol(false),	
-	rspContext(database, eventBuffer, StaticResponseTypes(config.defaultStaticResponses), config.defaultEventResponses),
+	rspContext(database, eventBuffer, config.defaultStaticResponses, config.defaultEventResponses),
 	pLower(&lower)
 {
 	pDatabase->SetEventBuffer(eventBuffer);

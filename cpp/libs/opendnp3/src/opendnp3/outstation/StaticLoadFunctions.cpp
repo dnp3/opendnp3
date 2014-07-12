@@ -18,7 +18,7 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "StaticResponseTypes.h"
+#include "StaticLoadFunctions.h"
 
 #include "opendnp3/objects/Group1.h"
 #include "opendnp3/objects/Group3.h"
@@ -33,73 +33,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-StaticResponseTypes::StaticResponseTypes(const StaticResponseConfig& config) :
-	pStaticBinaryLoader(GetStaticBinary(config.binary)),
-	pStaticDoubleBinaryLoader(GetStaticDoubleBinary(config.doubleBinary)),
-	pStaticAnalogLoader(GetStaticAnalog(config.analog)),
-	pStaticCounterLoader(GetStaticCounter(config.counter)),
-	pStaticFrozenCounterLoader(GetStaticFrozenCounter(config.frozenCounter)),
-	pStaticBinaryOutputStatusLoader(GetStaticBinaryOutputStatus(config.binaryOutputStatus)),
-	pStaticAnalogOutputStatusLoader(GetStaticAnalogOutputStatus(config.analogOutputStatus))
-{
-
-}
-
-StaticResponseTypes::StaticResponseTypes() :
-	pStaticBinaryLoader(&StaticLoader::LoadFixedSizeStartStop<Group1Var2Serializer>),
-	pStaticDoubleBinaryLoader(&StaticLoader::LoadFixedSizeStartStop<Group3Var2Serializer>),
-	pStaticAnalogLoader(&StaticLoader::LoadFixedSizeStartStop<Group30Var1Serializer>),
-	pStaticCounterLoader(&StaticLoader::LoadFixedSizeStartStop<Group20Var1Serializer>),
-	pStaticFrozenCounterLoader(&StaticLoader::LoadFixedSizeStartStop<Group21Var1Serializer>),
-	pStaticBinaryOutputStatusLoader(&StaticLoader::LoadFixedSizeStartStop<Group10Var2Serializer>),
-	pStaticAnalogOutputStatusLoader(&StaticLoader::LoadFixedSizeStartStop<Group40Var1Serializer>)
-{
-
-}
-
-template <>
-StaticLoadFun StaticResponseTypes::GetLoader<Binary>()
-{
-	return pStaticBinaryLoader;
-}
-
-template <>
-StaticLoadFun StaticResponseTypes::GetLoader<DoubleBitBinary>()
-{
-	return pStaticDoubleBinaryLoader;
-}
-
-template <>
-StaticLoadFun StaticResponseTypes::GetLoader<Analog>()
-{
-	return pStaticAnalogLoader;
-}
-
-template <>
-StaticLoadFun StaticResponseTypes::GetLoader<Counter>()
-{
-	return pStaticCounterLoader;
-}
-
-template <>
-StaticLoadFun StaticResponseTypes::GetLoader<FrozenCounter>()
-{
-	return pStaticFrozenCounterLoader;
-}
-
-template <>
-StaticLoadFun StaticResponseTypes::GetLoader<BinaryOutputStatus>()
-{
-	return pStaticBinaryOutputStatusLoader;
-}
-
-template <>
-StaticLoadFun StaticResponseTypes::GetLoader<AnalogOutputStatus>()
-{
-	return pStaticAnalogOutputStatusLoader;
-}
-
-StaticLoadFun StaticResponseTypes::GetStaticBinary(StaticBinaryResponse rsp)
+StaticLoadFun StaticLoadFunctions::Get(StaticBinaryResponse rsp)
 {
 	switch(rsp)
 	{
@@ -110,7 +44,7 @@ StaticLoadFun StaticResponseTypes::GetStaticBinary(StaticBinaryResponse rsp)
 	}
 }
 
-StaticLoadFun StaticResponseTypes::GetStaticDoubleBinary(StaticDoubleBinaryResponse rsp)
+StaticLoadFun StaticLoadFunctions::Get(StaticDoubleBinaryResponse rsp)
 {
 	switch (rsp)
 	{
@@ -121,7 +55,7 @@ StaticLoadFun StaticResponseTypes::GetStaticDoubleBinary(StaticDoubleBinaryRespo
 	}
 }
 
-StaticLoadFun StaticResponseTypes::GetStaticAnalog(StaticAnalogResponse rsp)
+StaticLoadFun StaticLoadFunctions::Get(StaticAnalogResponse rsp)
 {
 	switch(rsp)
 	{
@@ -136,7 +70,7 @@ StaticLoadFun StaticResponseTypes::GetStaticAnalog(StaticAnalogResponse rsp)
 	}
 }
 
-StaticLoadFun StaticResponseTypes::GetStaticCounter(StaticCounterResponse rsp)
+StaticLoadFun StaticLoadFunctions::Get(StaticCounterResponse rsp)
 {
 	switch(rsp)
 	{
@@ -149,7 +83,7 @@ StaticLoadFun StaticResponseTypes::GetStaticCounter(StaticCounterResponse rsp)
 	}
 }
 
-StaticLoadFun StaticResponseTypes::GetStaticFrozenCounter(StaticFrozenCounterResponse rsp)
+StaticLoadFun StaticLoadFunctions::Get(StaticFrozenCounterResponse rsp)
 {
 	switch(rsp)
 	{
@@ -159,7 +93,7 @@ StaticLoadFun StaticResponseTypes::GetStaticFrozenCounter(StaticFrozenCounterRes
 	}
 }
 
-StaticLoadFun StaticResponseTypes::GetStaticBinaryOutputStatus(StaticBinaryOutputStatusResponse rsp)
+StaticLoadFun StaticLoadFunctions::Get(StaticBinaryOutputStatusResponse rsp)
 {
 	switch(rsp)
 	{
@@ -169,7 +103,7 @@ StaticLoadFun StaticResponseTypes::GetStaticBinaryOutputStatus(StaticBinaryOutpu
 	}
 }
 
-StaticLoadFun StaticResponseTypes::GetStaticAnalogOutputStatus(StaticAnalogOutputStatusResponse rsp)
+StaticLoadFun StaticLoadFunctions::Get(StaticAnalogOutputStatusResponse rsp)
 {
 	switch(rsp)
 	{

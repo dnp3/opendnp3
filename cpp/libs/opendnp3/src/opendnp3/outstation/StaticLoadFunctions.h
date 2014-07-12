@@ -18,10 +18,9 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __STATIC_RESPONSE_TYPES_H_
-#define __STATIC_RESPONSE_TYPES_H_
 
-#include "opendnp3/app/MeasurementTypes.h"
+#ifndef __STATIC_LOAD_FUNCTIONS_H_
+#define __STATIC_LOAD_FUNCTIONS_H_
 
 #include "opendnp3/outstation/StaticResponseConfig.h"
 #include "opendnp3/outstation/StaticLoader.h"
@@ -33,34 +32,17 @@ namespace opendnp3
  * Reads a outstation config object and and translates the configuration to
  * singletons.
  */
-class StaticResponseTypes
+class StaticLoadFunctions : openpal::PureStatic
 {
 public:
 
-	StaticResponseTypes();
-
-	StaticResponseTypes(const StaticResponseConfig& arCfg);
-
-	template <class T>
-	StaticLoadFun GetLoader();
-
-private:
-
-	const StaticLoadFun pStaticBinaryLoader;
-	const StaticLoadFun pStaticDoubleBinaryLoader;
-	const StaticLoadFun pStaticAnalogLoader;
-	const StaticLoadFun pStaticCounterLoader;
-	const StaticLoadFun pStaticFrozenCounterLoader;
-	const StaticLoadFun pStaticBinaryOutputStatusLoader;
-	const StaticLoadFun pStaticAnalogOutputStatusLoader;
-
-	static StaticLoadFun GetStaticBinary(StaticBinaryResponse rsp);
-	static StaticLoadFun GetStaticDoubleBinary(StaticDoubleBinaryResponse rsp);
-	static StaticLoadFun GetStaticCounter(StaticCounterResponse rsp);
-	static StaticLoadFun GetStaticFrozenCounter(StaticFrozenCounterResponse rsp);
-	static StaticLoadFun GetStaticAnalog(StaticAnalogResponse rsp);
-	static StaticLoadFun GetStaticAnalogOutputStatus(StaticAnalogOutputStatusResponse rsp);
-	static StaticLoadFun GetStaticBinaryOutputStatus(StaticBinaryOutputStatusResponse rsp);
+	static StaticLoadFun Get(StaticBinaryResponse rsp);
+	static StaticLoadFun Get(StaticDoubleBinaryResponse rsp);
+	static StaticLoadFun Get(StaticCounterResponse rsp);
+	static StaticLoadFun Get(StaticFrozenCounterResponse rsp);
+	static StaticLoadFun Get(StaticAnalogResponse rsp);
+	static StaticLoadFun Get(StaticAnalogOutputStatusResponse rsp);
+	static StaticLoadFun Get(StaticBinaryOutputStatusResponse rsp);
 };
 
 }
