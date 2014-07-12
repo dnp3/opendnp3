@@ -312,6 +312,7 @@ opendnp3::OutstationConfig Conversions::ConvertConfig(OutstationConfig^ config)
 	opendnp3::OutstationConfig oc;
 	
 	oc.params = ConvertConfig(config->config);
+	oc.eventBufferConfig = ConvertConfig(config->buffer);
 	oc.defaultStaticResponses = ConvertConfig(config->staticConfig);
 	oc.defaultEventResponses = ConvertConfig(config->eventConfig);
 
@@ -390,8 +391,7 @@ opendnp3::MasterStackConfig Conversions::ConvertConfig(MasterStackConfig^ config
 opendnp3::OutstationStackConfig Conversions::ConvertConfig(OutstationStackConfig^ config)
 {	
 	opendnp3::OutstationStackConfig cfg;	
-	cfg.dbTemplate = ConvertConfig(config->databaseTemplate);
-	cfg.eventBuffer = ConvertConfig(config->buffer);
+	cfg.dbTemplate = ConvertConfig(config->databaseTemplate);	
 	cfg.outstation = ConvertConfig(config->outstation);	
 	cfg.link = ConvertConfig(config->link);
 	return cfg;

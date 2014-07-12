@@ -7,9 +7,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\RandomInsertAdapterTestSuite.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\CatchTestStart.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

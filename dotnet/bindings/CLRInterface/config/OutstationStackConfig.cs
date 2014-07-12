@@ -16,8 +16,7 @@ namespace DNP3.Interface
         /// </summary>
         public OutstationStackConfig()
         {
-            this.outstation = new OutstationConfig();
-            this.buffer = new EventBufferConfig();
+            this.outstation = new OutstationConfig();            
             this.databaseTemplate = new DatabaseTemplate(10, 10, 10, 10, 10, 10, 10);
             this.link = new LinkConfig(false, false);
         }
@@ -25,12 +24,7 @@ namespace DNP3.Interface
         /// <summary>
         /// Outstation config
         /// </summary>
-        public OutstationConfig outstation;
-
-        /// <summary>
-        /// Configuration of the outstation event buffer
-        /// </summary>
-        public EventBufferConfig buffer;
+        public OutstationConfig outstation;        
 
         /// <summary>
         /// Device template that specifies database layout, control behavior

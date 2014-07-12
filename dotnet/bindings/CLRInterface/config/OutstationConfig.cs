@@ -17,6 +17,11 @@ namespace DNP3.Interface
         public OutstationParams config = new OutstationParams();
 
         /// <summary>
+        /// Configuration of the outstation event buffer
+        /// </summary>
+        public EventBufferConfig buffer = new EventBufferConfig();
+
+        /// <summary>
         /// Default static responses
         /// </summary>
         public StaticResponseConfig staticConfig = new StaticResponseConfig();
