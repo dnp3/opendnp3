@@ -98,9 +98,16 @@ private:
 
 	IINField SelectionCriteria::RecordClass(EventClass ec, uint32_t count);
 	
-	IINField SelectionCriteria::RecordType(EventType type, EventHeaderWriteFunc function, uint32_t count);	
+	IINField SelectionCriteria::RecordEventType(EventType type, EventHeaderWriteFunc function, uint32_t count);	
 
 	static EventHeaderWriteFunc GetDefaultWriteFunction(const EventResponseConfig& config, EventType type);
+
+	template <class Target>
+	IINField RecordType(typename Target::EventResponseEnum enumeration, uint32_t count)
+	{
+		auto function = EventResponseTypes::Lookup(enumeration);
+		return RecordEventType(typename Target::EventTypeEnum, function, count);
+	}
 
 	Mode mode;
 	EventResponseConfig defaults;
