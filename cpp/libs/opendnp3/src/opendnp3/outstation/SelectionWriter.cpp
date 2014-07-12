@@ -35,7 +35,7 @@ SelectionWriter::SelectionWriter(OutstationEventBuffer& buffer) :
 
 }
 
-bool SelectionWriter::WriteAllEvents(const EventResponseConfig& defaults, SelectionCriteria& criteria, ObjectWriter& writer)
+bool SelectionWriter::WriteAllEvents(SelectionCriteria& criteria, ObjectWriter& writer)
 {		
 	bool hasSpace = true;
 
@@ -43,7 +43,7 @@ bool SelectionWriter::WriteAllEvents(const EventResponseConfig& defaults, Select
 	{	
 		auto pStart = iterator.Current();
 		
-		auto operation = criteria.GetWriteOperationFor(defaults, pStart->value.clazz, pStart->value.type);
+		auto operation = criteria.GetWriteOperationFor(pStart->value.clazz, pStart->value.type);
 
 		if (operation.IsDefined())
 		{						

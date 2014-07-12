@@ -41,7 +41,7 @@ class SelectionWriter
 
 public:	
 
-	bool WriteAllEvents(const EventResponseConfig& defaults, SelectionCriteria& criteria, ObjectWriter& writer);
+	bool WriteAllEvents(SelectionCriteria& criteria, ObjectWriter& writer);
 
 private:
 	

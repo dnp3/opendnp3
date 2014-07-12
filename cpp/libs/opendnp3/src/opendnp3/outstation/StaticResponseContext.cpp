@@ -29,8 +29,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-StaticResponseContext::StaticResponseContext(Database* pDatabase_, const StaticResponseTypes& rspTypes_) :
-	pDatabase(pDatabase_),
+StaticResponseContext::StaticResponseContext(Database& database, const StaticResponseTypes& rspTypes_) :
+	pDatabase(&database),
 	rspTypes(rspTypes_)
 {}
 

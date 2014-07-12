@@ -41,7 +41,7 @@ class EventResponseContext : private openpal::Uncopyable
 
 public:
 
-	EventResponseContext(OutstationEventBuffer* pBuffer_);
+	EventResponseContext(const EventResponseConfig& config, OutstationEventBuffer& buffer);
 
 	bool IsComplete() const;
 
@@ -51,7 +51,7 @@ public:
 
 	void Reset();
 	
-	bool Load(ObjectWriter& writer, const EventResponseConfig& config);
+	bool Load(ObjectWriter& writer);
 
 private:
 

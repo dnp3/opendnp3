@@ -41,16 +41,40 @@ namespace opendnp3
 
 class SelectionCriteria : private openpal::Uncopyable
 {
+	// requests can be class based, or type based, but not both
+	// as the appropriate response to this would not be clearly defined
+	enum Mode
+	{
+		UNDEFINED,
+		CLASS_BASED,
+		TYPE_BASED
+	};
+
+	class TypeSelection
+	{
+		public:
+
+		TypeSelection();
+
+		TypeSelection(uint32_t maximum_, EventHeaderWriteFunc function_);
+
+		bool IsDefined() const;
+
+		void Clear();
+
+		uint32_t maximum;
+		EventHeaderWriteFunc function;
+	};
 
 public:
 	
-	SelectionCriteria();
-
-	SelectionCriteria(const ClassField& field);
+	SelectionCriteria(const EventResponseConfig& config);
 
 	IINField RecordAllObjects(GroupVariation enumeration);
 
-	EventWriteOperation GetWriteOperationFor(const EventResponseConfig& config, EventClass clazz, EventType type);
+	void RecordViaClassField(const ClassField& field);
+
+	EventWriteOperation GetWriteOperationFor(EventClass clazz, EventType type);
 
 	void RecordAsWritten(EventClass clazz, EventType type);
 
@@ -60,17 +84,34 @@ public:
 
 private:	
 
-	IINField SelectionCriteria::RecordClass(uint32_t& count);
+	EventWriteOperation GetClassBasedWriteOperationFor(EventClass clazz, EventType type);	
 
-	IINField SelectionCriteria::RecordClass(uint32_t& count, uint32_t value);
+	EventWriteOperation GetTypedBasedWriteOperationFor(EventClass clazz, EventType type);
+
+	void AssignAllClassCounts(uint32_t count);
+
+	void ClearAllTypeSections();
+
+	bool HasTypeSelection() const;
+
+	IINField SelectionCriteria::RecordTypeMaxValue(EventType type, EventHeaderWriteFunc function);
+
+	IINField SelectionCriteria::RecordClassMaxValue(EventClass ec);
+	
+	IINField SelectionCriteria::RecordClass(EventClass ec, uint32_t value);		
 
 	static EventHeaderWriteFunc GetDefaultWriteFunction(const EventResponseConfig& config, EventType type);
 
-	// ----- bit masks for measurement types in each class --------
+	Mode mode;
+	EventResponseConfig defaults;
 
-	uint32_t numClass1;
-	uint32_t numClass2;
-	uint32_t numClass3;
+	// ----- allowed counts for class mode --------
+
+	uint32_t classCounts[3];
+
+	// ----- allowed 
+
+	TypeSelection typeSelections[NUM_OUTSTATION_EVENT_TYPES];
 };
 
 }

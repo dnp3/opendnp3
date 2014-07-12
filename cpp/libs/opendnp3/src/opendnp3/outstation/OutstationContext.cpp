@@ -78,7 +78,7 @@ OutstationContext::OutstationContext(
 	expectedSolConfirmSeq(0),
 	expectedUnsolConfirmSeq(0),
 	completedNullUnsol(false),	
-	rspContext(&database, &eventBuffer, StaticResponseTypes(config.defaultStaticResponses)),
+	rspContext(database, eventBuffer, StaticResponseTypes(config.defaultStaticResponses), config.defaultEventResponses),
 	pLower(&lower)
 {
 	pDatabase->SetEventBuffer(eventBuffer);
@@ -409,7 +409,7 @@ OutstationSolicitedStateBase* OutstationContext::ContinueMultiFragResponse(uint8
 	auto writer = response.GetWriter();
 	response.SetFunction(FunctionCode::RESPONSE);	
 	Transaction tx(this->pDatabase);	
-	auto control = this->rspContext.LoadSolicited(writer, eventConfig);
+	auto control = this->rspContext.LoadSolicited(writer);
 	control.SEQ = seq;
 	expectedSolConfirmSeq = seq;
 	response.SetControl(control);
@@ -485,7 +485,8 @@ void OutstationContext::CheckForUnsolicited()
 			// are there events to be reported?
 			if (eventBuffer.TotalEventMask().Intersects(params.unsolClassMask))
 			{
-				SelectionCriteria criteria(params.unsolClassMask);
+				SelectionCriteria criteria(eventConfig);
+				criteria.RecordViaClassField(params.unsolClassMask);
 				auto unsolResponse = this->StartNewUnsolicitedResponse();
 				auto objectWriter = unsolResponse.GetWriter();				
 						
@@ -494,7 +495,7 @@ void OutstationContext::CheckForUnsolicited()
 					// the database since it updates the event buffer					
 					Transaction tx(pDatabase);					
 					auto writer = eventBuffer.Iterate();
-					writer.WriteAllEvents(eventConfig, criteria, objectWriter);					
+					writer.WriteAllEvents(criteria, objectWriter);					
 				}
 							
 				this->ConfigureUnsolHeader(unsolResponse);
@@ -587,7 +588,7 @@ Pair<IINField, AppControlField> OutstationContext::HandleRead(const openpal::Rea
 		// this ensures that multi-fragmented responses see a consistent snapshot of the state
 		Transaction tx(pDatabase);
 		pDatabase->DoubleBuffer();
-		auto control = rspContext.LoadSolicited(writer, eventConfig);		
+		auto control = rspContext.LoadSolicited(writer);		
 		return Pair<IINField, AppControlField>(handler.Errors(), control);
 	}
 	else

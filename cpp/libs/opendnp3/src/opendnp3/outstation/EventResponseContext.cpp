@@ -28,9 +28,10 @@ using namespace openpal;
 namespace opendnp3
 {
 
-EventResponseContext::EventResponseContext(OutstationEventBuffer* pBuffer_) : 
+EventResponseContext::EventResponseContext(const EventResponseConfig& config, OutstationEventBuffer& buffer) :
 	isComplete(false),
-	pBuffer(pBuffer_)	
+	criteria(config),
+	pBuffer(&buffer)
 {
 
 }
@@ -57,7 +58,7 @@ void EventResponseContext::Reset()
 	criteria.Clear();
 }
 
-bool EventResponseContext::Load(ObjectWriter& objectWriter, const EventResponseConfig& config)
+bool EventResponseContext::Load(ObjectWriter& objectWriter)
 {
 	if (isComplete)
 	{
@@ -66,7 +67,7 @@ bool EventResponseContext::Load(ObjectWriter& objectWriter, const EventResponseC
 	else
 	{
 		auto writer = pBuffer->Iterate();
-		auto complete = writer.WriteAllEvents(config, criteria, objectWriter);
+		auto complete = writer.WriteAllEvents(criteria, objectWriter);
 		isComplete = complete;
 		return complete;
 	}	

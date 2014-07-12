@@ -56,7 +56,7 @@ class StaticResponseContext : private openpal::Uncopyable
 
 public:
 
-	StaticResponseContext(Database*, const StaticResponseTypes& rspTypes = StaticResponseTypes());
+	StaticResponseContext(Database& database, const StaticResponseTypes& rspTypes = StaticResponseTypes());
 
 	void Reset();
 

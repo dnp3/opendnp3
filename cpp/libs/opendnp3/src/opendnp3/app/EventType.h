@@ -27,6 +27,8 @@
 namespace opendnp3
 {
 
+static const int NUM_OUTSTATION_EVENT_TYPES = 7;
+
 enum class EventType : uint16_t
 {
     Binary = 0,
