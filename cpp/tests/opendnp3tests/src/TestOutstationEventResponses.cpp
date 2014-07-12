@@ -138,7 +138,7 @@ void TestEventRead(const std::string& request, const std::string& response, cons
 	t.Transaction([&](Database& db){ loadFun(db); });
 	
 	t.SendToOutstation(request);
-	REQUIRE(t.lower.PopWriteAsHex() ==  response);
+	REQUIRE(t.lower.PopWriteAsHex() ==  response);	
 }
 
 TEST_CASE(SUITE("ReadGrp2Var0"))
@@ -182,6 +182,19 @@ TEST_CASE(SUITE("ReadGrp2Var1"))
 	TestEventRead("C0 01 02 01 06", "E0 81 80 00 02 01 28 01 00 03 00 01", update); // 1 byte count == 1, ONLINE quality
 }
 
+TEST_CASE(SUITE("ReadGrp2Var1LimitedCount"))
+{
+	auto update = [](Database & db)
+	{
+		db.Update(Binary(false, 0x01), 3);
+		db.Update(Binary(true, 0x01), 2);
+		db.Update(Binary(false, 0x01), 1);
+	};
+
+	// read 2 events only, Class 1 data IIN still set
+	TestEventRead("C0 01 02 01 07 02", "E0 81 82 00 02 01 28 02 00 03 00 01 02 00 81", update); // 1 byte count == 1, ONLINE quality
+}
+
 TEST_CASE(SUITE("ReadGrp2Var2"))
 {
 	auto update = [](Database & db)
@@ -199,45 +212,6 @@ TEST_CASE(SUITE("ReadGrp2Var3"))
 }
 */
 
-
-/*
-TEST_CASE(SUITE("ComplexReadSequence"))
-{
-
-const size_t NUM = 4;
-OutstationConfig config; cfg.disableUnsol = true;
-OutstationTestObject t(cfg);
-t.db.Configure(MeasurementType::BINARY, NUM);
-t.db.SetClass(MeasurementType::BINARY, PointClass::Class1);
-t.outstation.OnLowerLayerUp();
-
-{
-Transaction tr(&t.db);
-for(size_t i = 0; i < NUM; ++i) t.db.Update(Binary(false, BQ_ONLINE), i);
-}
-
-//request
-std::string request("C0 01");
-std::string grp2Var2x2("02 02 07 02");
-std::string grp2Var0("02 00 06");
-
-
-//response
-std::string rsp("E0 81 80 00");
-std::string grp2Var2hdr("02 02 17 02");
-std::string grp2Var1hdr("02 01 17 02");
-std::string grp2Var2rsp("01 00 00 00 00 00 00"); //minus the index
-
-
-request.append(" ").append(grp2Var2x2).append(" ").append(grp2Var0);
-rsp.append(" ").append(grp2Var2hdr).append(" 00 ").append(grp2Var2rsp).append(" 01 ").append(grp2Var2rsp);
-rsp.append(" ").append(grp2Var1hdr).append(" 02 01 03 01");
-
-
-t.SendToOutstation(request);
-REQUIRE(t.lower.PopWriteAsHex() ==  rsp);
-}
-*/
 
 
 
