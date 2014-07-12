@@ -44,7 +44,12 @@ namespace hex
 	std::string IntegrityPoll(uint8_t seq, const ClassField& field)
 	{
 		return ClassTask(FunctionCode::READ, seq, field);
-	}	
+	}
+
+	std::string ClassPoll(uint8_t seq, PointClass pc)
+	{
+		return ClassTask(FunctionCode::READ, seq, ClassField(pc));
+	}
 
 	std::string ClearRestartIIN(uint8_t seq)
 	{
@@ -80,15 +85,24 @@ namespace hex
 		return toHex(response.ToReadOnly());
 	}	
 
+	std::string SolicitedConfirm(uint8_t seq)
+	{
+		return Confirm(seq, false);
+	}
+
 	std::string UnsolConfirm(uint8_t seq)
+	{
+		return Confirm(seq, true);
+	}
+
+	std::string Confirm(uint8_t seq, bool unsol)
 	{
 		StaticBuffer<2048> buffer;
 		APDURequest apdu(buffer.GetWriteBuffer());
-		apdu.SetControl(AppControlField(true, true, false, true, seq));
-		apdu.SetFunction(FunctionCode::CONFIRM);		
+		apdu.SetControl(AppControlField(true, true, false, unsol, seq));
+		apdu.SetFunction(FunctionCode::CONFIRM);
 		return toHex(apdu.ToReadOnly());
 	}
-
 }
 
 

@@ -113,11 +113,11 @@ EventWriteOperation SelectionCriteria::GetWriteOperationFor(const EventResponseC
 	switch(clazz)
 	{
 		case(EventClass::EC1) :
-			return EventWriteOperation(pFunction, limits);
+			return (numClass1 > 0) ? EventWriteOperation(pFunction, limits) : EventWriteOperation();
 		case(EventClass::EC2):
-			return EventWriteOperation(pFunction, limits);
+			return (numClass2 > 0) ? EventWriteOperation(pFunction, limits) : EventWriteOperation();
 		case(EventClass::EC3):
-			return EventWriteOperation(pFunction, limits);
+			return (numClass3 > 0) ? EventWriteOperation(pFunction, limits) : EventWriteOperation();
 		default:
 			return EventWriteOperation();
 	}

@@ -22,6 +22,8 @@
 
 #include "OutstationTestObject.h"
 
+#include "APDUHexBuilders.h"
+
 #include <opendnp3/ErrorCodes.h>
 
 #include <functional>
@@ -52,11 +54,11 @@ TEST_CASE(SUITE("ReceiveNewRequestSolConfirmWait"))
 
 	t.Transaction([](Database& db) { db.Update(Binary(true, 0x01), 0); });
 
-	t.SendToOutstation("C0 01 3C 02 06");
+	t.SendToOutstation(hex::ClassPoll(0, PointClass::Class1));
 	REQUIRE(t.lower.PopWriteAsHex() == "E0 81 80 00 02 01 28 01 00 00 00 81");
 	t.OnSendResult(true);
 
-	t.SendToOutstation("C1 01 3C 02 06");
+	t.SendToOutstation(hex::ClassPoll(1, PointClass::Class1));
 	REQUIRE(t.lower.PopWriteAsHex() == "E1 81 80 00 02 01 28 01 00 00 00 81");
 }
 
@@ -74,12 +76,12 @@ TEST_CASE(SUITE("ReadClass1WithSOE"))
 		db.Update(Analog(0x2222, 0x01), 0x17); // 0x 22 22 00 00 in little endian
 	});
 
-	t.SendToOutstation("C0 01 3C 02 06");
+	t.SendToOutstation(hex::ClassPoll(0, PointClass::Class1));
 	REQUIRE(t.lower.PopWriteAsHex() == "E0 81 80 00 20 01 28 01 00 17 00 01 34 12 00 00 02 01 28 01 00 10 00 81 20 01 28 01 00 17 00 01 22 22 00 00");
 	t.OnSendResult(true);
-	t.SendToOutstation("C0 00");
+	t.SendToOutstation(hex::SolicitedConfirm(0));
 
-	t.SendToOutstation("C1 01 3C 02 06");		// Repeat read class 1
+	t.SendToOutstation(hex::ClassPoll(1, PointClass::Class1));		// Repeat read class 1
 	REQUIRE(t.lower.PopWriteAsHex() == "C1 81 80 00");	// Buffer should have been cleared
 }
 
@@ -106,7 +108,7 @@ TEST_CASE(SUITE("MultipleClasses"))
 
 	// ------ read 1 event at a time by class, until all events are gone ----
 
-	t.SendToOutstation("C1 01 3C 03 06"); // Class 2
+	t.SendToOutstation(hex::ClassPoll(1, PointClass::Class2)); // Class 2
 	REQUIRE(t.lower.PopWriteAsHex() == "E1 81 8A 00 20 01 28 01 00 00 00 01 03 00 00 00"); // restart + Class 1/3
 	t.OnSendResult(true);
 	t.SendToOutstation("C1 00");

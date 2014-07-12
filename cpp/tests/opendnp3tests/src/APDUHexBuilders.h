@@ -25,6 +25,7 @@
 #include <string>
 #include <cstdint>
 
+#include <opendnp3/gen/PointClass.h>
 #include <opendnp3/app/IINField.h>
 #include <opendnp3/gen/FunctionCode.h>
 #include <opendnp3/app/ClassField.h>
@@ -36,6 +37,8 @@ namespace hex
 	std::string IntegrityPoll(uint8_t seq, const opendnp3::ClassField& field = opendnp3::ClassField::AllClasses());
 
 	std::string ClassTask(opendnp3::FunctionCode fc, uint8_t seq, const opendnp3::ClassField& field = opendnp3::ClassField::AllClasses());
+
+	std::string ClassPoll(uint8_t seq, opendnp3::PointClass pc);
 
 	std::string ClearRestartIIN(uint8_t seq);
 
@@ -49,7 +52,11 @@ namespace hex
 
 	// ----------- confirms --------------
 
+	std::string SolicitedConfirm(uint8_t seq);
+
 	std::string UnsolConfirm(uint8_t seq);
+
+	std::string Confirm(uint8_t seq, bool unsol);
 }
 
 #endif

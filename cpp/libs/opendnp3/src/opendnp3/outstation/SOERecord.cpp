@@ -28,43 +28,43 @@ SOERecord::SOERecord() : type(EventType::Analog), index(0), clazz(EventClass::EC
 {}
 
 SOERecord::SOERecord(const Binary& meas, uint16_t index_, EventClass clazz_) :
-	type(EventType::Binary), index(0), clazz(EventClass::EC1), selected(false)
+	type(EventType::Binary), index(index_), clazz(clazz_), selected(false)
 {
 	this->erasure.Set(meas);
 }
 
 SOERecord::SOERecord(const DoubleBitBinary& meas, uint16_t index_, EventClass clazz_) :
-	type(EventType::DoubleBitBinary), index(0), clazz(EventClass::EC1), selected(false)
+	type(EventType::DoubleBitBinary), index(index_), clazz(clazz_), selected(false)
 {
 	this->erasure.Set(meas);
 }
 
 SOERecord::SOERecord(const BinaryOutputStatus& meas, uint16_t index_, EventClass clazz_) :
-	type(EventType::BinaryOutputStatus), index(0), clazz(EventClass::EC1), selected(false)
+	type(EventType::BinaryOutputStatus), index(index_), clazz(clazz_), selected(false)
 {
 	this->erasure.Set(meas);
 }
 
 SOERecord::SOERecord(const Counter& meas, uint16_t index_, EventClass clazz_) :
-	type(EventType::Counter), index(0), clazz(EventClass::EC1), selected(false)
+	type(EventType::Counter), index(index_), clazz(clazz_), selected(false)
 {
 	this->erasure.Set(meas);
 }
 
 SOERecord::SOERecord(const FrozenCounter& meas, uint16_t index_, EventClass clazz_) :
-	type(EventType::FrozenCounter), index(0), clazz(EventClass::EC1), selected(false)
+	type(EventType::FrozenCounter), index(index_), clazz(clazz_), selected(false)
 {
 	this->erasure.Set(meas);
 }
 
 SOERecord::SOERecord(const Analog& meas, uint16_t index_, EventClass clazz_) :
-	type(EventType::Analog), index(0), clazz(EventClass::EC1), selected(false)
+	type(EventType::Analog), index(index_), clazz(clazz_), selected(false)
 {
 	this->erasure.Set(meas);
 }
 
 SOERecord::SOERecord(const AnalogOutputStatus& meas, uint16_t index_, EventClass clazz_) :
-	type(EventType::AnalogOutputStatus), index(0), clazz(EventClass::EC1), selected(false)
+	type(EventType::AnalogOutputStatus), index(index_), clazz(EventClass::EC1), selected(false)
 {
 	this->erasure.Set(meas);
 }

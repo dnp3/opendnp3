@@ -36,29 +36,29 @@ SelectionWriter::SelectionWriter(OutstationEventBuffer& buffer) :
 }
 
 bool SelectionWriter::WriteAllEvents(const EventResponseConfig& defaults, SelectionCriteria& criteria, ObjectWriter& writer)
-{						
-	while (this->SeekNextUnselectedNode(iterator) && criteria.HasSelection())
+{		
+	bool hasSpace = true;
+
+	while (hasSpace && this->SeekNextUnselectedNode(iterator) && criteria.HasSelection())
 	{	
 		auto pStart = iterator.Current();
 		
 		auto operation = criteria.GetWriteOperationFor(defaults, pStart->value.clazz, pStart->value.type);
 
 		if (operation.IsDefined())
-		{
-			uint32_t numWritten = 0;
-
+		{						
 			// callback that tells us this record was written to the apdu
-			auto callback = [this, &criteria](ListNode<SOERecord>* pNode) 
+			auto callback = [this, &criteria](ListNode<SOERecord>* pNode)
 			{
 				pNode->value.selected = true;
 				pBuffer->selectedTracker.Increment(pNode->value.clazz, pNode->value.type);
 				pBuffer->facade.selectedEvents.Push(pNode);
 				criteria.RecordAsWritten(pNode->value.clazz, pNode->value.type);
-				this->SeekNextUnselectedNode(iterator);
+				this->SeekNextUnselectedNode(iterator);				
 				return iterator.Current();
 			};
 
-			return operation.Invoke(writer, pStart, Function1<ListNode<SOERecord>*, ListNode<SOERecord>*>::Bind(callback));
+			hasSpace = operation.Invoke(writer, pStart, Function1<ListNode<SOERecord>*, ListNode<SOERecord>*>::Bind(callback));			
 		}
 		else
 		{
@@ -66,7 +66,7 @@ bool SelectionWriter::WriteAllEvents(const EventResponseConfig& defaults, Select
 		}
 	} 
 	
-	return true;
+	return hasSpace;
 }
 
 bool SelectionWriter::SeekNextUnselectedNode(openpal::LinkedListIterator<SOERecord>& iterator)

@@ -65,7 +65,10 @@ bool EventResponseContext::Load(ObjectWriter& objectWriter, const EventResponseC
 	}
 	else
 	{
-		return pBuffer->Iterate().WriteAllEvents(config, criteria, objectWriter);
+		auto writer = pBuffer->Iterate();
+		auto complete = writer.WriteAllEvents(config, criteria, objectWriter);
+		isComplete = complete;
+		return complete;
 	}	
 }
 
