@@ -82,7 +82,7 @@ private:
 	openpal::StaticQueue<StaticRangeLoader, uint8_t, sizes::MAX_READ_REQUESTS> staticResponseQueue;
 
 	template <class Target>
-	IINField QueueClippedRangeByEnum(const StaticRange& range, typename Target::StaticResponseEnum enumeration)
+	IINField QueueRange(const StaticRange& range, typename Target::StaticResponseEnum enumeration)
 	{
 		StaticRange copy(range);
 		copy.ClipTo(pDatabase->FullRange<Target>());
@@ -90,7 +90,7 @@ private:
 	}	
 
 	template <class Target>
-	IINField QueueFullRangeByEnum(typename Target::StaticResponseEnum enumeration)
+	IINField QueueRange(typename Target::StaticResponseEnum enumeration)
 	{		
 		return QueueLoader(StaticRangeLoader(StaticLoadFunctions::Get(enumeration), pDatabase->FullRange<Target>()));
 	}
