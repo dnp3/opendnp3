@@ -47,9 +47,9 @@ IINField EventResponseContext::ReadAll(const GroupVariationRecord& record)
 	return criteria.RecordAllObjects(record.enumeration);
 }
 
-IINField EventResponseContext::ReadCount(const GroupVariationRecord& record, uint32_t count)
+IINField EventResponseContext::ReadCount(const GroupVariationRecord& record, uint16_t count)
 {
-	return IINField(IINBit::FUNC_NOT_SUPPORTED);
+	return criteria.RecordCountOfObjects(record.enumeration, count);
 }
 
 void EventResponseContext::Reset()

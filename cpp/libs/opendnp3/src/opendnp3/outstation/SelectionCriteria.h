@@ -72,6 +72,8 @@ public:
 
 	IINField RecordAllObjects(GroupVariation enumeration);
 
+	IINField RecordCountOfObjects(GroupVariation enumeration, uint32_t count);
+
 	void RecordViaClassField(const ClassField& field);
 
 	EventWriteOperation GetWriteOperationFor(EventClass clazz, EventType type);
@@ -94,22 +96,20 @@ private:
 
 	bool HasTypeSelection() const;
 
-	IINField SelectionCriteria::RecordTypeMaxValue(EventType type, EventHeaderWriteFunc function);
-
-	IINField SelectionCriteria::RecordClassMaxValue(EventClass ec);
+	IINField SelectionCriteria::RecordClass(EventClass ec, uint32_t count);
 	
-	IINField SelectionCriteria::RecordClass(EventClass ec, uint32_t value);		
+	IINField SelectionCriteria::RecordType(EventType type, EventHeaderWriteFunc function, uint32_t count);	
 
 	static EventHeaderWriteFunc GetDefaultWriteFunction(const EventResponseConfig& config, EventType type);
 
 	Mode mode;
 	EventResponseConfig defaults;
 
-	// ----- allowed counts for class mode --------
+	// ----- allowed counts for class mode ----------
 
 	uint32_t classCounts[3];
 
-	// ----- allowed 
+	// ----- allowed selectionsfor type mode --------
 
 	TypeSelection typeSelections[NUM_OUTSTATION_EVENT_TYPES];
 };

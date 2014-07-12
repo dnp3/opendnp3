@@ -47,7 +47,7 @@ public:
 
 	IINField ReadAll(const GroupVariationRecord& record);
 
-	IINField ReadCount(const GroupVariationRecord& record, uint32_t count);
+	IINField ReadCount(const GroupVariationRecord& record, uint16_t count);
 
 	void Reset();
 	

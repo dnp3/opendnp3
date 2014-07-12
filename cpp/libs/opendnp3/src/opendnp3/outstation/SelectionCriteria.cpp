@@ -52,50 +52,57 @@ SelectionCriteria::SelectionCriteria(const EventResponseConfig& config) : mode(M
 
 void SelectionCriteria::RecordViaClassField(const ClassField& field)
 {	
+	auto max = openpal::MaxValue<uint32_t>();
+
 	if (field.HasClass1())
 	{
-		this->RecordClassMaxValue(EventClass::EC1);
+		this->RecordClass(EventClass::EC1, max);
 	}
 	
 	if (field.HasClass2())
 	{
-		this->RecordClassMaxValue(EventClass::EC2);
+		this->RecordClass(EventClass::EC2, max);
 	}
 
 	if (field.HasClass3())
 	{
-		this->RecordClassMaxValue(EventClass::EC3);
+		this->RecordClass(EventClass::EC3, max);
 	}
 }
 
 IINField SelectionCriteria::RecordAllObjects(GroupVariation enumeration)
 {
+	return RecordCountOfObjects(enumeration, openpal::MaxValue<uint32_t>());
+}
+
+IINField SelectionCriteria::RecordCountOfObjects(GroupVariation enumeration, uint32_t count)
+{
 	switch (enumeration)
 	{
 		case(GroupVariation::Group60Var2):
-			return RecordClassMaxValue(EventClass::EC1);
+			return RecordClass(EventClass::EC1, count);
 
 		case(GroupVariation::Group60Var3):
-			return RecordClassMaxValue(EventClass::EC2);
+			return RecordClass(EventClass::EC2, count);
 
 		case(GroupVariation::Group60Var4):
-			return RecordClassMaxValue(EventClass::EC3);
+			return RecordClass(EventClass::EC3, count);
 			
 		case(GroupVariation::Group2Var0) :
-			return RecordTypeMaxValue(EventType::Binary, GetDefaultWriteFunction(defaults, EventType::Binary));
+			return RecordType(EventType::Binary, GetDefaultWriteFunction(defaults, EventType::Binary), count);
 
 		case(GroupVariation::Group22Var0) :
-			return RecordTypeMaxValue(EventType::Counter, GetDefaultWriteFunction(defaults, EventType::Counter));
+			return RecordType(EventType::Counter, GetDefaultWriteFunction(defaults, EventType::Counter), count);
 
 		case(GroupVariation::Group32Var0) :
-			return RecordTypeMaxValue(EventType::Analog, GetDefaultWriteFunction(defaults, EventType::Analog));
+			return RecordType(EventType::Analog, GetDefaultWriteFunction(defaults, EventType::Analog), count);
 
 		default:
 			return IINField(IINBit::FUNC_NOT_SUPPORTED);
 	}
 }
 
-IINField SelectionCriteria::RecordTypeMaxValue(EventType type, EventHeaderWriteFunc function)
+IINField SelectionCriteria::RecordType(EventType type, EventHeaderWriteFunc function, uint32_t count)
 {
 	if (mode == Mode::CLASS_BASED)
 	{
@@ -111,15 +118,10 @@ IINField SelectionCriteria::RecordTypeMaxValue(EventType type, EventHeaderWriteF
 		}
 		else
 		{
-			record = TypeSelection(MaxValue<uint32_t>(), function);
+			record = TypeSelection(count, function);
 			return IINField::Empty;
 		}
 	}
-}
-
-IINField SelectionCriteria::RecordClassMaxValue(EventClass ec)
-{
-	return RecordClass(ec, openpal::MaxValue<uint32_t>());
 }
 
 IINField SelectionCriteria::RecordClass(EventClass ec, uint32_t value)
