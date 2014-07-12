@@ -127,12 +127,19 @@ TEST_CASE(SUITE("MultipleClasses"))
 	REQUIRE(t.lower.PopWriteAsHex() == "C4 81 80 00"); // restart only
 }
 
-void TestEventRead(const std::string& request, const std::string& response, const std::function<void(Database& db)>& loadFun)
+void TestEventRead(	const std::string& request, 
+					const std::string& response, 
+					const std::function<void(Database& db)>& loadFun, 
+					const std::function<void(Database& db)>& configure = [](Database& db){}
+				  )
 {
 
 	OutstationConfig config;
 	config.eventBufferConfig = EventBufferConfig::AllTypes(10);
 	OutstationTestObject t(config, DatabaseTemplate::AllTypes(5));
+
+	configure(t.db);
+
 	t.LowerLayerUp();
 
 	t.Transaction([&](Database& db){ loadFun(db); });
@@ -174,6 +181,31 @@ TEST_CASE(SUITE("Class1TwoByteLimitedCount"))
 
 	// reads a single event, IIB bit indicates more events present
 	TestEventRead("C0 01 3C 02 08 02 00", "E0 81 82 00 02 01 28 02 00 02 00 01 01 00 81", update);
+}
+
+TEST_CASE(SUITE("MixedClassLimitedCount"))
+{
+	auto configure = [](Database& db)
+	{
+		db.staticData.binaries.metadata[0].clazz = PointClass::Class1;
+		db.staticData.binaries.metadata[1].clazz = PointClass::Class2;
+		db.staticData.binaries.metadata[2].clazz = PointClass::Class3;
+	};
+
+	auto update = [](Database& db)
+	{
+		db.Update(Binary(false, 0x01), 0);
+		
+		db.Update(Binary(true, 0x01), 1);
+		db.Update(Binary(false, 0x01), 1);
+
+		db.Update(Binary(true, 0x01), 2);
+		db.Update(Binary(false, 0x01), 2);
+	};
+
+	// read 1 class 2 event and 1 class 3 event, 1 of each event type left in buffer
+	// In theory this type of request could be satisfied with a single header, but this is permissible	
+	TestEventRead("C0 01 3C 03 07 01 3C 04 07 01", "E0 81 8E 00 02 01 28 01 00 01 00 81 02 01 28 01 00 02 00 81", update, configure);
 }
 
 TEST_CASE(SUITE("ReadGrp2Var0"))

@@ -84,10 +84,10 @@ public:
 private:
 
 	asiodnp3::DynamicallyAllocatedDatabase dbBuffers;
-	asiodnp3::DynamicallyAllocatedEventBuffer eventBuffers;
-	Database db;
+	asiodnp3::DynamicallyAllocatedEventBuffer eventBuffers;	
 
 public:
+	Database db;
 	MockCommandHandler cmdHandler;
 	MockOutstationApplication application;
 
