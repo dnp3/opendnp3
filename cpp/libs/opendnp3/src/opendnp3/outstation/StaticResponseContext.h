@@ -114,7 +114,7 @@ StaticResponseContext::StaticRangeLoader StaticResponseContext::GetFullRangeWith
 template <class Serializer>
 StaticResponseContext::StaticRangeLoader StaticResponseContext::GetFullRange()
 {
-	return StaticRangeLoader(StaticLoader::GetLoadFunction<Serializer>(), pDatabase->FullRange<typename Serializer::Target>());
+	return StaticRangeLoader(&StaticLoader::LoadFixedSizeStartStop<Serializer>, pDatabase->FullRange<typename Serializer::Target>());
 }
 
 template <class Serializer>
@@ -122,7 +122,7 @@ StaticResponseContext::StaticRangeLoader StaticResponseContext::GetClippedRange(
 {
 	StaticRange copy(range);
 	copy.ClipTo(pDatabase->FullRange<typename Serializer::Target>());
-	return StaticRangeLoader(StaticLoader::GetLoadFunction<Serializer>(), copy);
+	return StaticRangeLoader(&StaticLoader::LoadFixedSizeStartStop<Serializer>, copy);
 }
 
 }

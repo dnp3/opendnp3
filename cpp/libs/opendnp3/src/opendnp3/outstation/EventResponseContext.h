@@ -43,22 +43,25 @@ public:
 
 	EventResponseContext(const EventResponseConfig& config, OutstationEventBuffer& buffer);
 
-	bool IsComplete() const;
+	// -- called during APDU parsing handler --
 
 	IINField ReadAll(const GroupVariationRecord& record);
 
 	IINField ReadCount(const GroupVariationRecord& record, uint16_t count);
 
-	void Reset();
-	
-	bool Load(ObjectWriter& writer);
+	// ----- called after parsing to load the requested objects -----
 
+	bool Load(ObjectWriter& writer);
+	
+	void Reset();
+
+	bool IsComplete() const;
+	
 private:
 
 	bool isComplete;
 	SelectionCriteria criteria;
 	OutstationEventBuffer* pBuffer;		
-
 };
 
 }

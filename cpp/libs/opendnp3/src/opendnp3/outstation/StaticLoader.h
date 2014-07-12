@@ -47,19 +47,12 @@ class StaticLoader : private openpal::PureStatic
 public:
 
 	template <class Serializer>
-	static StaticLoadFun GetLoadFunction()
-	{
-		return &LoadFixedSizeStartStop<Serializer>;
-	}
+	static StaticLoadResult LoadFixedSizeStartStop(ObjectWriter& writer, StaticRange& range, Database& db);	
 
 private:
 
-	template <class Serializer>
-	static StaticLoadResult LoadFixedSizeStartStop(ObjectWriter& writer, StaticRange& range, Database& db);
-
 	template <class Target, class IndexType>
 	static StaticLoadResult LoadFixedSizeStartStopWithIterator(const openpal::Indexable<DualValue<Target>, uint16_t>& values, RangeWriteIterator<IndexType, Target>& iterator, StaticRange& range);
-
 };
 
 template <class Serializer>
