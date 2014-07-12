@@ -196,23 +196,26 @@ IINField SelectionCriteria::RecordCountOfObjects(GroupVariation enumeration, uin
 
 IINField SelectionCriteria::RecordEventType(EventType type, EventHeaderWriteFunc function, uint32_t count)
 {
-	if (mode == Mode::CLASS_BASED)
-	{
-		return IINField(IINBit::PARAM_ERROR);
-	}
-	else
-	{
-		mode = Mode::TYPE_BASED;
+	if (mode == Mode::TYPE_BASED || mode == Mode::UNDEFINED)
+	{		
 		auto& record = typeSelections[static_cast<int>(type)];
+
 		if (record.IsDefined())
 		{
+			mode = Mode::FAILED;
 			return IINField(IINBit::PARAM_ERROR);
 		}
 		else
 		{
+			mode = Mode::TYPE_BASED;
 			record = TypeSelection(count, function);
 			return IINField::Empty;
 		}
+	}
+	else
+	{
+		mode = Mode::FAILED;
+		return IINField(IINBit::PARAM_ERROR);
 	}
 }
 
@@ -220,22 +223,24 @@ IINField SelectionCriteria::RecordClass(EventClass ec, uint32_t value)
 {
 	auto& count = classCounts[static_cast<int>(ec)];
 
-	if (mode == Mode::TYPE_BASED)
-	{
-		return IINField(IINBit::PARAM_ERROR);
-	}
-	else
+	if (mode == Mode::CLASS_BASED || mode == Mode::UNDEFINED)
 	{
 		if (count > 0)
 		{
+			mode = Mode::FAILED;
 			return IINField(IINBit::PARAM_ERROR);
 		}
 		else
 		{
-			count = value;
 			mode = Mode::CLASS_BASED;
+			count = value;			
 			return IINField::Empty;
 		}		
+	}
+	else
+	{
+		mode = Mode::FAILED;
+		return IINField(IINBit::PARAM_ERROR);
 	}	
 }
 

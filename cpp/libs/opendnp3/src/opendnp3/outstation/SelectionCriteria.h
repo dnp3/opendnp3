@@ -37,8 +37,6 @@
 namespace opendnp3
 {
 
-
-
 class SelectionCriteria : private openpal::Uncopyable
 {
 	// requests can be class based, or type based, but not both
@@ -47,7 +45,8 @@ class SelectionCriteria : private openpal::Uncopyable
 	{
 		UNDEFINED,
 		CLASS_BASED,
-		TYPE_BASED
+		TYPE_BASED,
+		FAILED
 	};
 
 	class TypeSelection

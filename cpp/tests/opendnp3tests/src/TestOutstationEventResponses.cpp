@@ -141,6 +141,41 @@ void TestEventRead(const std::string& request, const std::string& response, cons
 	REQUIRE(t.lower.PopWriteAsHex() ==  response);	
 }
 
+TEST_CASE(SUITE("Class1"))
+{
+	auto update = [](Database& db)
+	{
+		db.Update(Binary(false, 0x01), 0);
+	};
+
+	TestEventRead(hex::ClassPoll(0, PointClass::Class1), "E0 81 80 00 02 01 28 01 00 00 00 01", update);
+}
+
+TEST_CASE(SUITE("Class1OneByteLimitedCount"))
+{
+	auto update = [](Database& db)
+	{
+		db.Update(Binary(false, 0x01), 2);
+		db.Update(Binary(true, 0x01), 1);
+	};
+
+	// reads a single event, IIB bit indicates more events present
+	TestEventRead("C0 01 3C 02 07 01", "E0 81 82 00 02 01 28 01 00 02 00 01", update);
+}
+
+TEST_CASE(SUITE("Class1TwoByteLimitedCount"))
+{
+	auto update = [](Database& db)
+	{
+		db.Update(Binary(false, 0x01), 2);
+		db.Update(Binary(true, 0x01), 1);
+		db.Update(Binary(true, 0x01), 3);
+	};
+
+	// reads a single event, IIB bit indicates more events present
+	TestEventRead("C0 01 3C 02 08 02 00", "E0 81 82 00 02 01 28 02 00 02 00 01 01 00 81", update);
+}
+
 TEST_CASE(SUITE("ReadGrp2Var0"))
 {
 	auto update = [](Database& db)
