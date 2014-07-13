@@ -33,25 +33,25 @@ class EventWriteFunctions : openpal::PureStatic
 public:
 
 	template <class Serializer>
-	static bool WriteFixedSizeSimple(const EventWriteLimits& limits, ObjectWriter& writer, openpal::ListNode<SOERecord>* start, const ListIterator& writeCallback);
+	static bool WriteFixedSize(const EventWriteLimits& limits, ObjectWriter& writer, openpal::ListNode<SOERecord>* start, const ListIterator& writeCallback);
 
 private:
 
 	template <class Target>
-	static bool WriteFixedSizeSimpleWithPrefixIterator(const EventWriteLimits& limits, PrefixedWriteIterator<openpal::UInt16, Target>& iterator, openpal::ListNode<SOERecord>* start, const ListIterator& writeCallback);
+	static bool WriteFixedSizeWithPrefixIterator(const EventWriteLimits& limits, PrefixedWriteIterator<openpal::UInt16, Target>& iterator, openpal::ListNode<SOERecord>* start, const ListIterator& writeCallback);
 
 };
 
 template <class Serializer>
-bool EventWriteFunctions::WriteFixedSizeSimple(const EventWriteLimits& limits, ObjectWriter& ow, openpal::ListNode<SOERecord>* start, const ListIterator& writeCallback)
+bool EventWriteFunctions::WriteFixedSize(const EventWriteLimits& limits, ObjectWriter& ow, openpal::ListNode<SOERecord>* start, const ListIterator& writeCallback)
 {		
 	auto writer = ow.IterateOverCountWithPrefix<openpal::UInt16, typename Serializer::Target>(QualifierCode::UINT16_CNT_UINT16_INDEX, Serializer::Inst());
 	
-	return WriteFixedSizeSimpleWithPrefixIterator(limits, writer, start, writeCallback);
+	return WriteFixedSizeWithPrefixIterator(limits, writer, start, writeCallback);
 }
 
 template <class Target>
-static bool EventWriteFunctions::WriteFixedSizeSimpleWithPrefixIterator(const EventWriteLimits& limits, PrefixedWriteIterator<openpal::UInt16, Target>& writer, openpal::ListNode<SOERecord>* start, const ListIterator& writeCallback)
+static bool EventWriteFunctions::WriteFixedSizeWithPrefixIterator(const EventWriteLimits& limits, PrefixedWriteIterator<openpal::UInt16, Target>& writer, openpal::ListNode<SOERecord>* start, const ListIterator& writeCallback)
 {
 	/// initialize with the limits, and decrement as write items with certain classes
 	EventWriteLimits remainder(limits);
