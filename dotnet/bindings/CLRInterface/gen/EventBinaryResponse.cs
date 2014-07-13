@@ -22,6 +22,7 @@ namespace DNP3.Interface
   public enum EventBinaryResponse : int
   {
     Group2Var1 = 0,
-    Group2Var2 = 1
+    Group2Var2 = 1,
+    Group2Var3 = 2
   }
 }

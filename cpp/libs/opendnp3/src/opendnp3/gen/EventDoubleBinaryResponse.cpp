@@ -31,8 +31,10 @@ EventDoubleBinaryResponse EventDoubleBinaryResponseFromType(int arg)
       return EventDoubleBinaryResponse::Group4Var1;
     case(1):
       return EventDoubleBinaryResponse::Group4Var2;
+    case(2):
+      return EventDoubleBinaryResponse::Group4Var3;
   }
-  return EventDoubleBinaryResponse::Group4Var2;
+  return EventDoubleBinaryResponse::Group4Var3;
 }
 
 }

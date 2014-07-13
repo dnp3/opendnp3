@@ -28,6 +28,7 @@
 #include "opendnp3/objects/Group23.h"
 #include "opendnp3/objects/Group32.h"
 #include "opendnp3/objects/Group42.h"
+#include "opendnp3/objects/Group51.h"
 
 #include "EventWriteFunctions.h"
 
@@ -42,6 +43,8 @@ namespace opendnp3
 			return &EventWriteFunctions::WriteFixedSize<Group2Var1Serializer>;
 		case(EventBinaryResponse::Group2Var2) :
 			return &EventWriteFunctions::WriteFixedSize<Group2Var2Serializer>;
+		case(EventBinaryResponse::Group2Var3) :
+			return &EventWriteFunctions::WriteFixedSizeWithCTO<Group2Var3Serializer, Group51Var1>;
 		default:
 			return &EventWriteFunctions::WriteFixedSize<Group2Var1Serializer>;
 		}
@@ -56,6 +59,8 @@ namespace opendnp3
 			return &EventWriteFunctions::WriteFixedSize<Group4Var1Serializer>;
 		case(EventDoubleBinaryResponse::Group4Var2) :
 			return &EventWriteFunctions::WriteFixedSize<Group4Var2Serializer>;
+		case(EventDoubleBinaryResponse::Group4Var3) :
+			return &EventWriteFunctions::WriteFixedSizeWithCTO<Group4Var3Serializer, Group51Var1>;
 		default:
 			return &EventWriteFunctions::WriteFixedSize<Group4Var1Serializer>;
 		}

@@ -25,7 +25,8 @@ namespace opendnp3 {
 enum class EventDoubleBinaryResponse : int
 {
   Group4Var1 = 0,
-  Group4Var2 = 1
+  Group4Var2 = 1,
+  Group4Var3 = 2
 };
 
 int EventDoubleBinaryResponseToType(EventDoubleBinaryResponse arg);

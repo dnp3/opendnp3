@@ -31,8 +31,10 @@ EventBinaryResponse EventBinaryResponseFromType(int arg)
       return EventBinaryResponse::Group2Var1;
     case(1):
       return EventBinaryResponse::Group2Var2;
+    case(2):
+      return EventBinaryResponse::Group2Var3;
   }
-  return EventBinaryResponse::Group2Var2;
+  return EventBinaryResponse::Group2Var3;
 }
 
 }

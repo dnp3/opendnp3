@@ -114,6 +114,8 @@ IINField SelectionCriteria::RecordCountOfObjects(GroupVariation enumeration, uin
 			return RecordType<Binary>(EventBinaryResponse::Group2Var1, count);
 		case(GroupVariation::Group2Var2) :
 			return RecordType<Binary>(EventBinaryResponse::Group2Var2, count);
+		case(GroupVariation::Group2Var3) :
+			return RecordType<Binary>(EventBinaryResponse::Group2Var3, count);
 
 		/// --- specific double binary variations ------
 		
@@ -121,6 +123,8 @@ IINField SelectionCriteria::RecordCountOfObjects(GroupVariation enumeration, uin
 			return RecordType<DoubleBitBinary>(EventDoubleBinaryResponse::Group4Var1, count);
 		case(GroupVariation::Group4Var2) :
 			return RecordType<DoubleBitBinary>(EventDoubleBinaryResponse::Group4Var2, count);
+		case(GroupVariation::Group4Var3) :
+			return RecordType<DoubleBitBinary>(EventDoubleBinaryResponse::Group4Var3, count);
 
 		/// --- specific binary output status variations ------
 

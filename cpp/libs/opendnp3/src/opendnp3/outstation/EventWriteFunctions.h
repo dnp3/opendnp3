@@ -35,19 +35,38 @@ public:
 	template <class Serializer>
 	static bool WriteFixedSize(const EventWriteLimits& limits, HeaderWriter& writer, openpal::ListNode<SOERecord>* start, const ListIterator& writeCallback);
 
+	template <class Serializer, class CTOType>
+	static bool WriteFixedSizeWithCTO(const EventWriteLimits& limits, HeaderWriter& writer, openpal::ListNode<SOERecord>* start, const ListIterator& writeCallback);
+
 private:
 
 	template <class Target>
 	static bool WriteFixedSizeWithPrefixIterator(const EventWriteLimits& limits, PrefixedWriteIterator<openpal::UInt16, Target>& iterator, openpal::ListNode<SOERecord>* start, const ListIterator& writeCallback);
+
+	template <class Target, class CTOType>
+	static bool WriteFixedSizeWithPrefixIteratorAndCTO(const EventWriteLimits& limits, PrefixedWriteIterator<openpal::UInt16, Target>& iterator, openpal::ListNode<SOERecord>* start, const ListIterator& writeCallback, const CTOType& cto);
 
 };
 
 template <class Serializer>
 bool EventWriteFunctions::WriteFixedSize(const EventWriteLimits& limits, HeaderWriter& ow, openpal::ListNode<SOERecord>* start, const ListIterator& writeCallback)
 {		
-	auto writer = ow.IterateOverCountWithPrefix<openpal::UInt16, typename Serializer::Target>(QualifierCode::UINT16_CNT_UINT16_INDEX, Serializer::Inst());
+	auto iter = ow.IterateOverCountWithPrefix<openpal::UInt16, typename Serializer::Target>(QualifierCode::UINT16_CNT_UINT16_INDEX, Serializer::Inst());
 	
-	return WriteFixedSizeWithPrefixIterator(limits, writer, start, writeCallback);
+	return WriteFixedSizeWithPrefixIterator(limits, iter, start, writeCallback);
+}
+
+template <class Serializer, class CTOType>
+bool EventWriteFunctions::WriteFixedSizeWithCTO(const EventWriteLimits& limits, HeaderWriter& writer, openpal::ListNode<SOERecord>* start, const ListIterator& writeCallback)
+{
+	typename Serializer::Target meas;
+	start->value.erasure.Read(meas);
+	CTOType cto = { meas.time };
+	//cto.time = meas.time;
+
+	auto iter = writer.IterateOverCountWithPrefixAndCTO<openpal::UInt16, typename Serializer::Target>(QualifierCode::UINT16_CNT_UINT16_INDEX, Serializer::Inst(), cto);
+
+	return WriteFixedSizeWithPrefixIteratorAndCTO(limits, iter, start, writeCallback, cto);
 }
 
 template <class Target>
@@ -74,6 +93,59 @@ static bool EventWriteFunctions::WriteFixedSizeWithPrefixIterator(const EventWri
 			{
 				return false;
 			}
+		}
+
+		return true;
+	}
+	else
+	{
+		// can't even write the header + one measurement
+		return false;
+	}
+}
+
+template <class Target, class CTOType>
+bool EventWriteFunctions::WriteFixedSizeWithPrefixIteratorAndCTO(const EventWriteLimits& limits, PrefixedWriteIterator<openpal::UInt16, Target>& writer, openpal::ListNode<SOERecord>* start, const ListIterator& writeCallback, const CTOType& cto)
+{
+	/// initialize with the limits, and decrement as write items with certain classes
+	EventWriteLimits remainder(limits);
+
+	if (writer.IsValid())
+	{
+		auto pNode = start;
+
+		Target measurement;		
+
+		while (pNode && (pNode->value.type == typename Target::EventTypeEnum) && remainder.CanWrite(pNode->value.clazz) && pNode->value.erasure.Read(measurement))
+		{
+			if (measurement.time < cto.time)
+			{
+				// can't write this because the timestamp is less than the CTO
+				return true;
+			}
+			else
+			{
+				auto diff = measurement.time - cto.time;
+				if (diff > openpal::UInt16::Max)
+				{
+					// can't write this measurement because the timestamp difference is buffer than 2^16 - 1
+					return true;
+				}
+				else
+				{					
+					measurement.time = diff;
+					if (writer.Write(measurement, pNode->value.index))
+					{
+						remainder.Decrement(pNode->value.clazz);
+						// inform that we wrote this node, and get the next node
+						pNode = writeCallback.Apply(pNode);
+					}
+					else
+					{
+						return false;
+					}
+				}
+			}			
 		}
 
 		return true;

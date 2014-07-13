@@ -21,7 +21,8 @@ package com.automatak.dnp3;
 public enum EventBinaryResponse
 {
   Group2Var1(0),
-  Group2Var2(1);
+  Group2Var2(1),
+  Group2Var3(2);
 
   private final int id;
 
@@ -43,7 +44,9 @@ public enum EventBinaryResponse
         return Group2Var1;
       case(1):
         return Group2Var2;
+      case(2):
+        return Group2Var3;
     }
-    return Group2Var2;
+    return Group2Var3;
   }
 }

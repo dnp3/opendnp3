@@ -20,8 +20,8 @@ object EventTypes {
     create("StaticAnalogOutputStatusResponse",group(40)(1,2,3,4)),
 
 
-    create("EventBinaryResponse", group(2)(1,2)),
-    create("EventDoubleBinaryResponse", group(4)(1,2)),
+    create("EventBinaryResponse", group(2)(1,2,3)),
+    create("EventDoubleBinaryResponse", group(4)(1,2,3)),
     create("EventAnalogResponse", group(32)(1,2,3,4,5,6,7,8)),
     create("EventCounterResponse", group(22)(1,2,5,6)),
     create("EventFrozenCounterResponse", group(23)(1,2,5,6)),

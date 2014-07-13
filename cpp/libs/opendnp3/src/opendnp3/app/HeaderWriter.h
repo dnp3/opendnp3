@@ -196,7 +196,7 @@ template <class PrefixType, class WriteType, class CTOType>
 PrefixedWriteIterator<PrefixType, WriteType> HeaderWriter::IterateOverCountWithPrefixAndCTO(QualifierCode qc, IDNP3Serializer<WriteType>& serializer, const CTOType& cto)
 {
 	this->Mark();
-	if (this->WriteSingleValue<UInt8, CTOType>(QualifierCode::UINT8_CNT, cto))
+	if (this->WriteSingleValue<openpal::UInt8, CTOType>(QualifierCode::UINT8_CNT, cto))
 	{
 		auto iter = IterateOverCountWithPrefix<PrefixType, WriteType>(qc, serializer);
 		if (!iter.IsValid())
