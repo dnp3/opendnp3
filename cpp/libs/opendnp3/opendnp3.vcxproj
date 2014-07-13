@@ -341,6 +341,7 @@
     <ClCompile Include="src\opendnp3\objects\Group51.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group52.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group60.cpp" />
+    <ClCompile Include="src\opendnp3\outstation\ApplicationIIN.cpp" />
     <ClCompile Include="src\opendnp3\outstation\ClassBasedRequestHandler.cpp" />
     <ClCompile Include="src\opendnp3\outstation\CommandActionAdapter.cpp" />
     <ClCompile Include="src\opendnp3\outstation\CommandResponseHandler.cpp" />

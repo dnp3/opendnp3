@@ -54,9 +54,16 @@ public:
 			return false;
 		}		
 	}
+
+	virtual ApplicationIIN GetApplicationIIN() const override final
+	{
+		return appIIN;
+	}
 	
 	bool supportsTimeWrite;
 	bool allowTimeWrite;
+
+	ApplicationIIN appIIN;
 
 	std::deque<openpal::UTCTimestamp> timestamps;
 

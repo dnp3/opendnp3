@@ -1118,5 +1118,8 @@
     <ClCompile Include="src\opendnp3\outstation\StaticLoadFunctions.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\ApplicationIIN.cpp">
+      <Filter>Source\outstation</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

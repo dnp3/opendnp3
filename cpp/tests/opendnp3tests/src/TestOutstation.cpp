@@ -59,6 +59,22 @@ TEST_CASE(SUITE("UnsupportedFunction"))
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 01"); // IIN = device restart + func not supported
 }
 
+TEST_CASE(SUITE("ApplicationIINBits"))
+{
+	OutstationConfig config;
+	OutstationTestObject t(config);
+	t.LowerLayerUp();
+	
+	t.application.appIIN.deviceTrouble = true;
+	t.application.appIIN.localControl = true;
+	t.application.appIIN.configCorrupt = true;
+	t.application.appIIN.needTime = true;
+
+	t.SendToOutstation("C0 01"); // blank read
+	// All 4 bits + restart
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 F0 20");
+}
+
 TEST_CASE(SUITE("ReadUnknownObject"))
 {
 	OutstationConfig config;
@@ -144,12 +160,10 @@ TEST_CASE(SUITE("DelayMeasure"))
 {
 	OutstationConfig config;
 	OutstationTestObject t(config);
-	t.LowerLayerUp();
-
-	t.SetRequestTimeIIN();
+	t.LowerLayerUp();	
 
 	t.SendToOutstation("C0 17"); //delay measure
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 90 00 34 02 07 01 00 00"); // response, Grp51Var2, count 1, value == 00 00
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00 34 02 07 01 00 00"); // response, Grp51Var2, count 1, value == 00 00
 }
 
 TEST_CASE(SUITE("DelayMeasureExtraData"))

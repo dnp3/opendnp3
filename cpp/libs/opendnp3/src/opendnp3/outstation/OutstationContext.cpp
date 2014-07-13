@@ -114,7 +114,7 @@ IINField OutstationContext::GetDynamicIIN()
 
 IINField OutstationContext::GetResponseIIN()
 {
-	return this->staticIIN | GetDynamicIIN();
+	return this->staticIIN | GetDynamicIIN() | pApplication->GetApplicationIIN().ToIIN();
 }
 
 APDUResponse OutstationContext::StartNewSolicitedResponse()

@@ -76,12 +76,6 @@ StackStatistics OutstationStackImpl::GetStackStatistics()
 	return asiopal::SynchronouslyGet<StackStatistics>(handler.GetExecutor()->strand, getter);
 }
 
-void OutstationStackImpl::SetNeedTimeIIN()
-{	
-	auto lambda = [this]() { this->outstation.SetRequestTimeIIN(); };
-	handler.GetExecutor()->PostLambda(lambda);
-}
-
 void OutstationStackImpl::SetLinkRouter(opendnp3::ILinkRouter* pRouter)
 {
 	stack.link.SetRouter(pRouter);

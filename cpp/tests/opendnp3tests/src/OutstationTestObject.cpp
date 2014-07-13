@@ -71,11 +71,6 @@ size_t OutstationTestObject::NumPendingTimers() const
 	return exe.NumPendingTimers();
 }
 
-void OutstationTestObject::SetRequestTimeIIN()
-{
-	outstation.SetRequestTimeIIN();
-}
-
 bool OutstationTestObject::AdvanceToNextTimer()
 {
 	if (exe.AdvanceToNextTimer())

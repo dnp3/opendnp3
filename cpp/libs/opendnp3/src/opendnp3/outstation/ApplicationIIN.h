@@ -18,44 +18,38 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __I_OUTSTATION_H_
-#define __I_OUTSTATION_H_
 
-#include "IStack.h"
+#ifndef __APPLICATION_IIN_H_
+#define __APPLICATION_IIN_H_
 
+#include <openpal/executor/UTCTimestamp.h>
+
+#include <opendnp3/app/IINField.h>
 
 namespace opendnp3
 {
-	class Database;
-}
-
-namespace asiodnp3
-{
 
 /**
-* Interface representing a running outstation.
-* To get a data observer interface to load measurements on the outstation:-
-\code
-	IMeasurementLoader* pDataObserver = pOutstation->GetDataObserver()
-\endcode
+	Some IIN bits are necessarily controlled by the outstation application,
+	not the underlying protocol stack. This structure describes the state of 
+	the bits controllable by the application.
 */
-class IOutstation : public IStack
+class ApplicationIIN
 {
-	public:	
-		
-	virtual ~IOutstation() {}
 
-	/**
-	* @return stack statistics counters
-	*/
-	virtual opendnp3::StackStatistics GetStackStatistics() = 0;
+	public:
 
-	/**
-	* Get a the database interface to load measurements into the outstation
-	* @return Database inteface used to load measurements into the outstation
-	*/
-	virtual opendnp3::Database& GetDatabase() = 0;
+	ApplicationIIN();
+
+	bool needTime;
+	bool localControl;
+	bool deviceTrouble;
+	bool configCorrupt;
+
+	IINField ToIIN() const;
+
 };
+
 
 }
 

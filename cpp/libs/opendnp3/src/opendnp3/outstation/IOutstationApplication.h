@@ -24,6 +24,8 @@
 
 #include <openpal/executor/UTCTimestamp.h>
 
+#include <opendnp3/outstation/ApplicationIIN.h>
+
 namespace opendnp3
 {
 
@@ -34,9 +36,18 @@ class IOutstationApplication
 {
 	public:
 
+	/// True if the outstation supports absolute time writes
+	/// If this function returns false, WriteAbsoluteTime will never be called
 	virtual bool SupportsWriteAbsoluteTime() = 0;
 
-	virtual bool WriteAbsoluteTime(const openpal::UTCTimestamp& timestamp) = 0;	
+	/// Write the time to outstation, only called if SupportsWriteAbsoluteTime return true
+	/// @return boolean value indicating if the time value supplied was accepted. Returning
+	/// false will cause the outstation to set IIN 2.3 (PARAM_ERROR) in its response.
+	/// The outstation should clear its NEED_TIME field when handling this response
+	virtual bool WriteAbsoluteTime(const openpal::UTCTimestamp& timestamp) = 0;
+
+	/// Returns the application-controlled IIN field
+	virtual ApplicationIIN GetApplicationIIN() const = 0;
 	
 	virtual ~IOutstationApplication() {}	
 };
@@ -50,6 +61,8 @@ class DefaultOutstationApplication : public IOutstationApplication
 	virtual bool WriteAbsoluteTime(const openpal::UTCTimestamp& timestamp) override final { return false; }
 
 	static IOutstationApplication& Instance();
+
+	virtual ApplicationIIN GetApplicationIIN() const override final { return ApplicationIIN(); };
 	
 	private:
 

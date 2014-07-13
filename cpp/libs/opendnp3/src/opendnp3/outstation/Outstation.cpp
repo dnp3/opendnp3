@@ -92,11 +92,6 @@ void Outstation::OnSendResult(bool isSuccess)
 		SIMPLE_LOG_BLOCK(context.logger, flags::ERR, "Unexpected send callback");
 	}	
 }
-
-void Outstation::SetRequestTimeIIN()
-{
-	context.staticIIN.SetBit(IINBit::NEED_TIME);
-}
 	
 }
 

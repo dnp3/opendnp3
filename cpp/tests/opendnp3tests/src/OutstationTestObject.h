@@ -53,9 +53,7 @@ public:
 
 	uint32_t OnSendResult(bool isSuccess);
 
-	size_t NumPendingTimers() const;
-	
-	void SetRequestTimeIIN();
+	size_t NumPendingTimers() const;	
 
 	bool AdvanceToNextTimer();
 

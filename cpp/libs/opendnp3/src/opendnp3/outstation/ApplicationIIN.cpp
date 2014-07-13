@@ -18,45 +18,23 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __I_OUTSTATION_H_
-#define __I_OUTSTATION_H_
 
-#include "IStack.h"
-
+#include "ApplicationIIN.h"
 
 namespace opendnp3
 {
-	class Database;
+
+ApplicationIIN::ApplicationIIN() : needTime(false), localControl(false), configCorrupt(false), deviceTrouble(false)
+{}
+
+IINField ApplicationIIN::ToIIN() const
+{
+	IINField ret;
+	ret.SetBitToValue(IINBit::NEED_TIME, needTime);
+	ret.SetBitToValue(IINBit::LOCAL_CONTROL, localControl);
+	ret.SetBitToValue(IINBit::CONFIG_CORRUPT, configCorrupt);
+	ret.SetBitToValue(IINBit::DEVICE_TROUBLE, deviceTrouble);
+	return ret;
 }
 
-namespace asiodnp3
-{
-
-/**
-* Interface representing a running outstation.
-* To get a data observer interface to load measurements on the outstation:-
-\code
-	IMeasurementLoader* pDataObserver = pOutstation->GetDataObserver()
-\endcode
-*/
-class IOutstation : public IStack
-{
-	public:	
-		
-	virtual ~IOutstation() {}
-
-	/**
-	* @return stack statistics counters
-	*/
-	virtual opendnp3::StackStatistics GetStackStatistics() = 0;
-
-	/**
-	* Get a the database interface to load measurements into the outstation
-	* @return Database inteface used to load measurements into the outstation
-	*/
-	virtual opendnp3::Database& GetDatabase() = 0;
-};
-
 }
-
-#endif

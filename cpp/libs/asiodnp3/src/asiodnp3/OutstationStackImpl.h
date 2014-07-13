@@ -54,9 +54,7 @@ public:
 		const opendnp3::OutstationStackConfig& config,
 	    const StackActionHandler& handler);
 
-	virtual opendnp3::Database& GetDatabase() override final;
-
-	virtual void SetNeedTimeIIN() override final;
+	virtual opendnp3::Database& GetDatabase() override final;	
 	
 	virtual bool Enable() override final;
 	
