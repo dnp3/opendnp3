@@ -92,6 +92,11 @@ void Outstation::OnSendResult(bool isSuccess)
 		SIMPLE_LOG_BLOCK(context.logger, flags::ERR, "Unexpected send callback");
 	}	
 }
+
+void Outstation::SetRestartIIN()
+{
+	context.staticIIN.SetBit(IINBit::DEVICE_RESTART);
+}
 	
 }
 

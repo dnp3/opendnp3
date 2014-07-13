@@ -46,6 +46,12 @@ class IOutstation : public IStack
 	virtual ~IOutstation() {}
 
 	/**
+	* Sets the restart IIN bit. Normally applications should not
+	* touch this bit, but it is provided for simulating restarts.
+	*/
+	virtual void SetRestartIIN() = 0;
+
+	/**
 	* @return stack statistics counters
 	*/
 	virtual opendnp3::StackStatistics GetStackStatistics() = 0;

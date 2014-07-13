@@ -19,6 +19,8 @@ public:
 
 	virtual DNP3::Interface::IDatabase^ GetDatabase();	
 
+	virtual void SetRestartIIN();
+
 	virtual void Shutdown();
 
 	virtual void Enable();

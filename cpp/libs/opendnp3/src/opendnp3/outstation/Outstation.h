@@ -50,6 +50,10 @@ class Outstation : public openpal::IUpperLayer
 	virtual void OnReceive(const openpal::ReadOnlyBuffer&) override final;
 	
 	virtual void OnSendResult(bool isSucccess) override final;
+
+	/// ---- Other public members
+
+	void SetRestartIIN();
 	
 	
 	private:

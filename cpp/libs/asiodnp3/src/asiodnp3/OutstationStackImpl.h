@@ -55,6 +55,8 @@ public:
 	    const StackActionHandler& handler);
 
 	virtual opendnp3::Database& GetDatabase() override final;	
+
+	virtual void SetRestartIIN() override final;
 	
 	virtual bool Enable() override final;
 	

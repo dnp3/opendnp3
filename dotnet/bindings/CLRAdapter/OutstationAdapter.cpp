@@ -22,6 +22,11 @@ DNP3::Interface::IDatabase^ OutstationAdapter::GetDatabase()
 	return databaseAdapter;
 }
 
+void OutstationAdapter::SetRestartIIN()
+{
+	pOutstation->SetRestartIIN();
+}
+
 void OutstationAdapter::Shutdown()
 {
 	pOutstation->Shutdown();

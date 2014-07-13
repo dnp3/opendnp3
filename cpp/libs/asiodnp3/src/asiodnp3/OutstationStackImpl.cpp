@@ -54,6 +54,12 @@ opendnp3::Database& OutstationStackImpl::GetDatabase()
 	return database;
 }
 
+void OutstationStackImpl::SetRestartIIN()
+{
+	auto setter = [this]() { outstation.SetRestartIIN(); };
+	return asiopal::SynchronouslyExecute(handler.GetExecutor()->strand, setter);
+}
+
 bool OutstationStackImpl::Enable()
 {
 	return handler.EnableRoute(&stack.link);

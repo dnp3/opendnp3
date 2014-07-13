@@ -60,9 +60,9 @@ namespace DNP3.Interface
         UInt16 WarmRestart();
     }
 
-    public class PrintingOutstationApplication : IOutstationApplication
+    public class DefaultOutstationApplication : IOutstationApplication
     {
-        private static IOutstationApplication instance = new PrintingOutstationApplication();
+        private static IOutstationApplication instance = new DefaultOutstationApplication();
 
         public static IOutstationApplication Instance
         {
@@ -72,17 +72,16 @@ namespace DNP3.Interface
             }
         }
 
-        private PrintingOutstationApplication() { }
+        private DefaultOutstationApplication() { }
 
         bool IOutstationApplication.SupportsWriteAbsoluteTime()
         {
-            return true;
+            return false;
         }
 
         bool IOutstationApplication.WriteAbsoluteTime(UInt64 millisecSinceEpoch)
-        {
-            Console.WriteLine("Time write: " + millisecSinceEpoch);
-            return true;
+        {            
+            return false;
         }
 
 

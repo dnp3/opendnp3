@@ -101,7 +101,7 @@ namespace Automatak.Simulator.DNP3
                     var alias = dialog.SelectedAlias;
                     var cache = new MeasurementCache(outstationConfig.databaseTemplate);
                     var handler = new ProxyCommandHandler();
-                    var outstation = channel.AddOutstation(alias, handler, PrintingOutstationApplication.Instance, outstationConfig);
+                    var outstation = channel.AddOutstation(alias, handler, DefaultOutstationApplication.Instance, outstationConfig);
                     
                     if (outstation == null)
                     {

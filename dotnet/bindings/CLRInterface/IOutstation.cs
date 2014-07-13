@@ -37,5 +37,11 @@ namespace DNP3.Interface
         /// </summary>
         /// <returns>Interface used to load data into the outstation</returns>
         IDatabase GetDatabase();       
+
+        /// <summary>
+        /// Sets the restart IIN bit. Normally applications should not
+	    /// touch this bit, but it is provided for simulating restarts.
+        /// </summary>
+        void SetRestartIIN();
     }
 }
