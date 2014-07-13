@@ -17,9 +17,7 @@ public:
 
 	OutstationAdapter(asiodnp3::IOutstation* apOutstation);
 
-	virtual DNP3::Interface::IDatabase^ GetDatabase();
-
-	virtual void SetNeedTimeIIN();
+	virtual DNP3::Interface::IDatabase^ GetDatabase();	
 
 	virtual void Shutdown();
 

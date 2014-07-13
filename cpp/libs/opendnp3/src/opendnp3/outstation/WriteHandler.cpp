@@ -74,9 +74,10 @@ void WriteHandler::_OnCountOf(const HeaderRecord&, const IterableBuffer<Group50V
 		{
 			if (pApplication->SupportsWriteAbsoluteTime())
 			{
-				wroteTime = true;
-				pWriteIIN->ClearBit(IINBit::NEED_TIME);
+				wroteTime = true;				
+				
 				bool accepted = pApplication->WriteAbsoluteTime(UTCTimestamp(time.time));
+				
 				if (!accepted)
 				{
 					errors.SetBit(IINBit::PARAM_ERROR);

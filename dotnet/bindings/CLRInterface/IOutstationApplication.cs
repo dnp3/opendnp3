@@ -35,6 +35,11 @@ namespace DNP3.Interface
         bool SupportsWriteAbsoluteTime();
 
         bool WriteAbsoluteTime(UInt64 millisecSinceEpoch);
+
+        ApplicationIIN ApplicationIndications
+        {
+            get;
+        }
     }
 
     public class PrintingOutstationApplication : IOutstationApplication
@@ -60,6 +65,12 @@ namespace DNP3.Interface
         {
             Console.WriteLine("Time write: " + millisecSinceEpoch);
             return true;
+        }
+
+
+        ApplicationIIN IOutstationApplication.ApplicationIndications
+        {
+            get { return new ApplicationIIN(); }
         }
     }
 }

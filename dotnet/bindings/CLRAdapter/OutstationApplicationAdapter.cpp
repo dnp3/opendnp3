@@ -25,6 +25,18 @@ bool OutstationApplicationAdapter::SupportsWriteAbsoluteTime()
 	return proxy->SupportsWriteAbsoluteTime();
 }
 
+opendnp3::ApplicationIIN OutstationApplicationAdapter::GetApplicationIIN() const
+{
+	ApplicationIIN indications = proxy->ApplicationIndications;
+ 
+	opendnp3::ApplicationIIN iin;
+	iin.configCorrupt = indications.configCorrupt;
+	iin.deviceTrouble = indications.deviceTrouble;
+	iin.localControl = indications.localControl;
+	iin.needTime = indications.needTime;	
+	return iin;
+}
+
 }
 }
 

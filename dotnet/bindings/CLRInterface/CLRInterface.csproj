@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationIIN.cs" />
     <Compile Include="BaseMeasurementTypes.cs" />
     <Compile Include="ChannelStatistics.cs">
       <SubType>Code</SubType>

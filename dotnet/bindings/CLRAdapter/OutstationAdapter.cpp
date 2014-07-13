@@ -22,11 +22,6 @@ DNP3::Interface::IDatabase^ OutstationAdapter::GetDatabase()
 	return databaseAdapter;
 }
 
-void OutstationAdapter::SetNeedTimeIIN()
-{
-	pOutstation->SetNeedTimeIIN();
-}
-
 void OutstationAdapter::Shutdown()
 {
 	pOutstation->Shutdown();

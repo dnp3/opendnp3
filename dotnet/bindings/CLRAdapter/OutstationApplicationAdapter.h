@@ -24,6 +24,8 @@ public:
 	virtual bool WriteAbsoluteTime(const openpal::UTCTimestamp& timestamp) override final;
 
 	virtual bool SupportsWriteAbsoluteTime() override final;
+	
+	virtual opendnp3::ApplicationIIN GetApplicationIIN() const override final;
 
 private:
 	gcroot < DNP3::Interface::IOutstationApplication^ > proxy;
