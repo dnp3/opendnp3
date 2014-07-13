@@ -26,6 +26,14 @@ public:
 	virtual bool SupportsWriteAbsoluteTime() override final;
 	
 	virtual opendnp3::ApplicationIIN GetApplicationIIN() const override final;
+	
+	virtual opendnp3::RestartMode ColdRestartSupport() const override final;
+	
+	virtual opendnp3::RestartMode WarmRestartSupport() const override final;
+	
+	virtual uint16_t ColdRestart();
+	
+	virtual uint16_t WarmRestart();
 
 private:
 	gcroot < DNP3::Interface::IOutstationApplication^ > proxy;

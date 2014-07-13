@@ -34,7 +34,11 @@ public:
 	
 	MockOutstationApplication() :		
 		supportsTimeWrite(true),
-		allowTimeWrite(true)
+		allowTimeWrite(true),
+		warmRestartSupport(RestartMode::UNSUPPORTED),
+		coldRestartSupport(RestartMode::UNSUPPORTED),
+		warmRestartTimeDelay(0),
+		coldRestartTimeDelay(0)
 	{}
 
 	virtual bool SupportsWriteAbsoluteTime() override final
@@ -60,8 +64,34 @@ public:
 		return appIIN;
 	}
 	
+	virtual RestartMode ColdRestartSupport() const override final
+	{
+		return coldRestartSupport;
+	}
+	
+	virtual RestartMode WarmRestartSupport() const override final
+	{
+		return warmRestartSupport;
+	}
+	
+	virtual uint16_t ColdRestart() override final
+	{
+		return coldRestartTimeDelay;
+	}
+	
+	virtual uint16_t WarmRestart() override final
+	{
+		return warmRestartTimeDelay;
+	}
+	
 	bool supportsTimeWrite;
 	bool allowTimeWrite;
+
+	RestartMode warmRestartSupport;
+	RestartMode coldRestartSupport;
+
+	uint16_t warmRestartTimeDelay;
+	uint16_t coldRestartTimeDelay;
 
 	ApplicationIIN appIIN;
 

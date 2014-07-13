@@ -40,6 +40,24 @@ namespace DNP3.Interface
         {
             get;
         }
+
+        /// Query the outstation for the cold restart mode it supports
+	    RestartMode ColdRestartSupport();
+
+	    /// Query the outstation for the warm restart mode it supports
+	    RestartMode WarmRestartSupport();
+
+	    /// The outstation should perform a complete restart.
+	    /// See the DNP3 specification for a complete descripton of normal behavior
+	    /// @return number of seconds or milliseconds until restart is complete. The value
+	    /// is interpreted based on the Restart Mode returned from ColdRestartSupport()
+	    UInt16 ColdRestart();
+
+	    /// The outstation should perform a partial restart of only the DNP3 application.
+	    /// See the DNP3 specification for a complete descripton of normal behavior
+	    /// @return number of seconds or milliseconds until restart is complete. The value
+	    /// is interpreted based on the Restart Mode returned from WarmRestartSupport()
+        UInt16 WarmRestart();
     }
 
     public class PrintingOutstationApplication : IOutstationApplication
@@ -71,6 +89,27 @@ namespace DNP3.Interface
         ApplicationIIN IOutstationApplication.ApplicationIndications
         {
             get { return new ApplicationIIN(); }
+        }
+
+
+        RestartMode IOutstationApplication.ColdRestartSupport()
+        {
+            return RestartMode.UNSUPPORTED;
+        }
+
+        RestartMode IOutstationApplication.WarmRestartSupport()
+        {
+            return RestartMode.UNSUPPORTED;
+        }
+
+        ushort IOutstationApplication.ColdRestart()
+        {
+            return UInt16.MaxValue;
+        }
+
+        ushort IOutstationApplication.WarmRestart()
+        {
+            return UInt16.MaxValue;
         }
     }
 }

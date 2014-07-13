@@ -37,6 +37,26 @@ opendnp3::ApplicationIIN OutstationApplicationAdapter::GetApplicationIIN() const
 	return iin;
 }
 
+opendnp3::RestartMode OutstationApplicationAdapter::ColdRestartSupport() const
+{
+	return (opendnp3::RestartMode) proxy->ColdRestartSupport();
+}
+
+opendnp3::RestartMode OutstationApplicationAdapter::WarmRestartSupport() const
+{
+	return (opendnp3::RestartMode) proxy->WarmRestartSupport();
+}
+
+uint16_t OutstationApplicationAdapter::ColdRestart()
+{
+	return proxy->ColdRestart();
+}
+
+uint16_t OutstationApplicationAdapter::WarmRestart()
+{
+	return proxy->WarmRestart();
+}
+
 }
 }
 

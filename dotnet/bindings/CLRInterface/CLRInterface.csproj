@@ -83,6 +83,7 @@
     <Compile Include="gen\EventFrozenCounterResponse.cs" />
     <Compile Include="gen\PointClass.cs" />
     <Compile Include="gen\PollState.cs" />
+    <Compile Include="gen\RestartMode.cs" />
     <Compile Include="gen\StaticAnalogResponse.cs" />
     <Compile Include="gen\StaticBinaryOutputStatusResponse.cs" />
     <Compile Include="gen\StaticBinaryResponse.cs" />

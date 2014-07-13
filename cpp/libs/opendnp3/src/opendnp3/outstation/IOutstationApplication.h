@@ -24,6 +24,7 @@
 
 #include <openpal/executor/UTCTimestamp.h>
 
+#include <opendnp3/gen/RestartMode.h>
 #include <opendnp3/outstation/ApplicationIIN.h>
 
 namespace opendnp3
@@ -48,6 +49,25 @@ class IOutstationApplication
 
 	/// Returns the application-controlled IIN field
 	virtual ApplicationIIN GetApplicationIIN() const = 0;
+
+	/// Query the outstation for the cold restart mode it supports
+	virtual RestartMode ColdRestartSupport() const = 0;
+
+	/// Query the outstation for the warm restart mode it supports
+	virtual RestartMode WarmRestartSupport() const = 0;
+
+	/// The outstation should perform a complete restart.
+	/// See the DNP3 specification for a complete descripton of normal behavior
+	/// @return number of seconds or milliseconds until restart is complete. The value
+	/// is interpreted based on the Restart Mode returned from ColdRestartSupport()
+	virtual uint16_t ColdRestart() = 0;
+
+	/// The outstation should perform a partial restart of only the DNP3 application.
+	/// See the DNP3 specification for a complete descripton of normal behavior
+	/// @return number of seconds or milliseconds until restart is complete. The value
+	/// is interpreted based on the Restart Mode returned from WarmRestartSupport()
+	virtual uint16_t WarmRestart() = 0;
+
 	
 	virtual ~IOutstationApplication() {}	
 };
@@ -63,6 +83,14 @@ class DefaultOutstationApplication : public IOutstationApplication
 	static IOutstationApplication& Instance();
 
 	virtual ApplicationIIN GetApplicationIIN() const override final { return ApplicationIIN(); };
+
+	virtual RestartMode ColdRestartSupport() const override final { return RestartMode::UNSUPPORTED; }
+	
+	virtual RestartMode WarmRestartSupport() const override final { return RestartMode::UNSUPPORTED; }
+	
+	virtual uint16_t ColdRestart() override final { return 65535; }
+	
+	virtual uint16_t WarmRestart() override final { return 65535; }
 	
 	private:
 
