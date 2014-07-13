@@ -27,10 +27,12 @@
 #include <openpal/serialization/Serialization.h>
 #include <openpal/container/StaticArray.h>
 
+#include <opendnp3/objects/Group2.h>
 #include <opendnp3/objects/Group12.h>
 #include <opendnp3/objects/Group20.h>
 #include <opendnp3/objects/Group30.h>
 #include <opendnp3/objects/Group50.h>
+#include <opendnp3/objects/Group51.h>
 #include <opendnp3/objects/Group60.h>
 
 #include <assert.h>
@@ -140,6 +142,58 @@ TEST_CASE(SUITE("PrefixWriteIteratorWithSingleCROB"))
 	REQUIRE("C0 81 00 00 0C 01 17 01 21 03 1F 10 00 00 00 AA 00 00 00 07" ==  toHex(response.ToReadOnly()));
 }
 
+TEST_CASE(SUITE("PrefixWriteIteratorCTO"))
+{
+	APDUResponse response(APDUHelpers::Response());
+	auto writer = response.GetWriter();
+
+	Group51Var1 cto;
+	cto.time = 0xAA;
+
+	{
+		auto iter = writer.IterateOverCountWithPrefixAndCTO<UInt16, Binary>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group2Var3Serializer::Inst(), cto);
+		REQUIRE(iter.IsValid());
+		REQUIRE(iter.Write(Binary(true, 0x01, 0x0B), 6));
+		REQUIRE(iter.Write(Binary(true, 0x01, 0x0C), 7));		
+	}
+
+	REQUIRE("C0 81 00 00 33 01 07 01 AA 00 00 00 00 00 02 03 28 02 00 06 00 81 0B 00 07 00 81 0C 00" == toHex(response.ToReadOnly()));
+}
+
+TEST_CASE(SUITE("PrefixWriteIteratorCTOSpaceForOnly1Value"))
+{
+	APDUResponse response(APDUHelpers::Response(26));
+	auto writer = response.GetWriter();
+
+	Group51Var1 cto;
+	cto.time = 0xAA;
+
+	{
+		auto iter = writer.IterateOverCountWithPrefixAndCTO<UInt16, Binary>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group2Var3Serializer::Inst(), cto);
+		REQUIRE(iter.IsValid());
+		REQUIRE(iter.Write(Binary(true, 0x01, 0x0B), 6));
+		REQUIRE(!iter.Write(Binary(true, 0x01, 0x0C), 7));
+	}
+
+	REQUIRE("C0 81 00 00 33 01 07 01 AA 00 00 00 00 00 02 03 28 01 00 06 00 81 0B 00" == toHex(response.ToReadOnly()));
+}
+
+TEST_CASE(SUITE("PrefixWriteIteratorNotEnoughSpaceForAValue"))
+{
+	APDUResponse response(APDUHelpers::Response(23));
+	auto writer = response.GetWriter();
+
+	Group51Var1 cto;
+	cto.time = 0xAA;
+
+	{
+		auto iter = writer.IterateOverCountWithPrefixAndCTO<UInt16, Binary>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group2Var3Serializer::Inst(), cto);
+		REQUIRE(!iter.IsValid());		
+	}
+
+	REQUIRE("C0 81 00 00" == toHex(response.ToReadOnly()));
+}
+
 
 TEST_CASE(SUITE("SingleValueWithIndexCROB"))
 {
@@ -176,5 +230,6 @@ TEST_CASE(SUITE("WriteIINRestart"))
 
 	REQUIRE("C0 02 50 01 00 07 08 03" ==  toHex(request.ToReadOnly()));
 }
+
 
 

@@ -70,6 +70,10 @@ public:
 	template <class PrefixType, class WriteType>
 	PrefixedWriteIterator<PrefixType, WriteType> IterateOverCountWithPrefix(QualifierCode qc, IDNP3Serializer<WriteType>& serializer);
 
+	template <class PrefixType, class WriteType, class CTOType>
+	PrefixedWriteIterator<PrefixType, WriteType> IterateOverCountWithPrefixAndCTO(QualifierCode qc, IDNP3Serializer<WriteType>& serializer, const CTOType& cto);
+
+
 	// record the current position in case we need to rollback
 	void Mark();
 
@@ -186,6 +190,26 @@ PrefixedWriteIterator<PrefixType, WriteType> HeaderWriter::IterateOverCountWithP
 		return PrefixedWriteIterator<PrefixType, WriteType>(serializer, *position);
 	}
 	else return PrefixedWriteIterator<PrefixType, WriteType>::Null();
+}
+
+template <class PrefixType, class WriteType, class CTOType>
+PrefixedWriteIterator<PrefixType, WriteType> HeaderWriter::IterateOverCountWithPrefixAndCTO(QualifierCode qc, IDNP3Serializer<WriteType>& serializer, const CTOType& cto)
+{
+	this->Mark();
+	if (this->WriteSingleValue<UInt8, CTOType>(QualifierCode::UINT8_CNT, cto))
+	{
+		auto iter = IterateOverCountWithPrefix<PrefixType, WriteType>(qc, serializer);
+		if (!iter.IsValid())
+		{
+			// remove the CTO header, if there's no space to write a value
+			this->Rollback();
+		}
+		return iter;
+	}
+	else
+	{
+		return PrefixedWriteIterator<PrefixType, WriteType>::Null();
+	}
 }
 
 }
