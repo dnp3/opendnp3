@@ -59,6 +59,17 @@ TEST_CASE(SUITE("UnsupportedFunction"))
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 01"); // IIN = device restart + func not supported
 }
 
+TEST_CASE(SUITE("ReadUnknownObject"))
+{
+	OutstationConfig config;
+	OutstationTestObject t(config);
+	t.LowerLayerUp();
+
+	// from the conformance tests, respond with IIN 2-1
+	t.SendToOutstation("C0 01 00 00 06");
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 02"); // IIN = device restart + unknown object
+}
+
 TEST_CASE(SUITE("NoResponseToNoAckCodes"))
 {
 	OutstationConfig config;

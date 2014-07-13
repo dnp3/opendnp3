@@ -593,8 +593,8 @@ Pair<IINField, AppControlField> OutstationContext::HandleRead(const openpal::Rea
 	}
 	else
 	{
-		rspContext.Reset();
-		return Pair<IINField, AppControlField>(IINField(IINBit::PARAM_ERROR), AppControlField(true, true, false, false));
+		rspContext.Reset();		
+		return Pair<IINField, AppControlField>(IINFromParseResult(result), AppControlField(true, true, false, false));
 	}
 }
 
