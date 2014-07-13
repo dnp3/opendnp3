@@ -392,6 +392,10 @@ IINField OutstationContext::BuildNonReadResponse(const APDUHeader& header, const
 			return HandleOperate(objects, writer, objectsEqualToLastRequest);
 		case(FunctionCode::DIRECT_OPERATE) :
 			return HandleDirectOperate(objects, &writer);
+		case(FunctionCode::COLD_RESTART) :
+			return HandleRestart(objects, false, &writer);
+		case(FunctionCode::WARM_RESTART) :
+			return HandleRestart(objects, true, &writer);
 		case(FunctionCode::DELAY_MEASURE) :
 			return HandleDelayMeasure(objects, writer);
 		case(FunctionCode::DISABLE_UNSOLICITED) :
@@ -725,7 +729,46 @@ IINField OutstationContext::HandleDelayMeasure(const openpal::ReadOnlyBuffer& ob
 	else
 	{
 		// there shouldn't be any trailing headers in delay measure request, no need to even parse
-		return IINField(IINBit::FUNC_NOT_SUPPORTED);
+		return IINField(IINBit::PARAM_ERROR);
+	}
+}
+
+IINField OutstationContext::HandleRestart(const openpal::ReadOnlyBuffer& objects, bool isWarmRestart, HeaderWriter* pWriter)
+{
+	if (objects.IsEmpty())
+	{
+		auto mode = isWarmRestart ? pApplication->WarmRestartSupport() : pApplication->ColdRestartSupport();		
+
+		switch (mode)
+		{
+			case(RestartMode::UNSUPPORTED) :
+				return IINField(IINBit::FUNC_NOT_SUPPORTED);
+			case(RestartMode::SUPPORTED_DELAY_COARSE) :
+			{
+				auto delay = isWarmRestart ? pApplication->WarmRestart() : pApplication->ColdRestart();
+				if (pWriter)
+				{
+					Group52Var1 coarse = { delay };
+					pWriter->WriteSingleValue<UInt8>(QualifierCode::UINT8_CNT, coarse);
+				}
+				return IINField::Empty;
+			}
+			default:
+			{
+				auto delay = isWarmRestart ? pApplication->WarmRestart() : pApplication->ColdRestart();
+				if (pWriter)
+				{
+					Group52Var2 fine = { delay };
+					pWriter->WriteSingleValue<UInt8>(QualifierCode::UINT8_CNT, fine);
+				}
+				return IINField::Empty;
+			}
+		}		
+	}
+	else
+	{
+		// there shouldn't be any trailing headers in restart requests, no need to even parse
+		return IINField(IINBit::PARAM_ERROR);
 	}
 }
 

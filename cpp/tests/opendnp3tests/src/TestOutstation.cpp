@@ -86,6 +86,45 @@ TEST_CASE(SUITE("ReadUnknownObject"))
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 02"); // IIN = device restart + unknown object
 }
 
+TEST_CASE(SUITE("ColdRestart"))
+{
+	OutstationConfig config;
+	OutstationTestObject t(config);
+	t.LowerLayerUp();
+
+	// try first with support turned off
+	t.SendToOutstation("C0 0D");
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 01"); // IIN = device restart + function not supported
+	t.OnSendResult(true);
+
+	t.application.coldRestartSupport = RestartMode::SUPPORTED_DELAY_FINE;
+	t.application.coldRestartTimeDelay = 1;
+
+
+	t.SendToOutstation("C1 0D");
+	REQUIRE(t.lower.PopWriteAsHex() == "C1 81 80 00 34 02 07 01 01 00");
+}
+
+TEST_CASE(SUITE("WarmRestart"))
+{
+	OutstationConfig config;
+	OutstationTestObject t(config);
+	t.LowerLayerUp();
+
+	// try first with support turned off
+	t.SendToOutstation("C0 0E");
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 01"); // IIN = device restart + function not supported
+	t.OnSendResult(true);
+
+	t.application.warmRestartSupport = RestartMode::SUPPORTED_DELAY_COARSE;
+	t.application.warmRestartTimeDelay = 65535;
+
+
+	t.SendToOutstation("C1 0E");
+	REQUIRE(t.lower.PopWriteAsHex() == "C1 81 80 00 34 01 07 01 FF FF");
+}
+
+
 TEST_CASE(SUITE("NoResponseToNoAckCodes"))
 {
 	OutstationConfig config;
@@ -173,7 +212,7 @@ TEST_CASE(SUITE("DelayMeasureExtraData"))
 	t.LowerLayerUp();
 
 	t.SendToOutstation("C0 17 DE AD BE EF"); //delay measure
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 01"); // Func not supported
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 04"); // param error
 }
 
 TEST_CASE(SUITE("WriteTimeDate"))
