@@ -44,7 +44,7 @@ bool ResponseContext::IsComplete() const
 	return eventContext.IsComplete() && staticContext.IsComplete();
 }
 
-AppControlField ResponseContext::LoadSolicited(ObjectWriter& writer)
+AppControlField ResponseContext::LoadSolicited(HeaderWriter& writer)
 {
 	auto fir = fragmentCount == 0;
 	++fragmentCount;

@@ -29,7 +29,7 @@
 namespace opendnp3
 {
 
-	CommandResponseHandler::CommandResponseHandler(openpal::Logger logger, uint8_t maxCommands_, ICommandAction* pCommandAction_, ObjectWriter* pWriter_) :
+	CommandResponseHandler::CommandResponseHandler(openpal::Logger logger, uint8_t maxCommands_, ICommandAction* pCommandAction_, HeaderWriter* pWriter_) :
 	APDUHandlerBase(logger),
 	pCommandAction(pCommandAction_),
 	numRequests(0),

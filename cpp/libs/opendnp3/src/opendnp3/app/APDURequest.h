@@ -22,7 +22,7 @@
 #define __APDU_REQUEST_H_
 
 #include "APDUWrapper.h"
-#include "ObjectWriter.h"
+#include "HeaderWriter.h"
 
 namespace opendnp3
 {

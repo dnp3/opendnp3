@@ -25,7 +25,7 @@
 #include <openpal/container/LinkedListAdapter.h>
 
 #include "opendnp3/app/EventType.h"
-#include "opendnp3/app/ObjectWriter.h"
+#include "opendnp3/app/HeaderWriter.h"
 
 #include "opendnp3/outstation/EventBufferFacade.h"
 #include "opendnp3/outstation/SelectionCriteria.h"
@@ -41,7 +41,7 @@ class SelectionWriter
 
 public:	
 
-	bool WriteAllEvents(SelectionCriteria& criteria, ObjectWriter& writer);
+	bool WriteAllEvents(SelectionCriteria& criteria, HeaderWriter& writer);
 
 private:
 	

@@ -380,7 +380,7 @@ void OutstationContext::BeginUnsolTx(const ReadOnlyBuffer& response)
 	pLower->BeginTransmit(response);
 }
 
-IINField OutstationContext::BuildNonReadResponse(const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, ObjectWriter& writer, bool objectsEqualToLastRequest)
+IINField OutstationContext::BuildNonReadResponse(const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, HeaderWriter& writer, bool objectsEqualToLastRequest)
 {
 	switch (header.function)
 	{				
@@ -576,7 +576,7 @@ void OutstationContext::OnUnsolRetryTimeout()
 	this->CheckForUnsolicited();
 }
 
-Pair<IINField, AppControlField> OutstationContext::HandleRead(const openpal::ReadOnlyBuffer& objects, ObjectWriter& writer)
+Pair<IINField, AppControlField> OutstationContext::HandleRead(const openpal::ReadOnlyBuffer& objects, HeaderWriter& writer)
 {
 	rspContext.Reset();
 	ReadHandler handler(logger, rspContext);
@@ -612,7 +612,7 @@ IINField OutstationContext::HandleWrite(const openpal::ReadOnlyBuffer& objects)
 	}
 }
 
-IINField OutstationContext::HandleDirectOperate(const openpal::ReadOnlyBuffer& objects, ObjectWriter* pWriter)
+IINField OutstationContext::HandleDirectOperate(const openpal::ReadOnlyBuffer& objects, HeaderWriter* pWriter)
 {
 	// since we're echoing, make sure there's enough size before beginning
 	if (pWriter && (objects.Size() > pWriter->Remaining()))
@@ -636,7 +636,7 @@ IINField OutstationContext::HandleDirectOperate(const openpal::ReadOnlyBuffer& o
 	}
 }
 
-IINField OutstationContext::HandleSelect(const openpal::ReadOnlyBuffer& objects, ObjectWriter& writer)
+IINField OutstationContext::HandleSelect(const openpal::ReadOnlyBuffer& objects, HeaderWriter& writer)
 {
 	// since we're echoing, make sure there's enough size before beginning
 	if (objects.Size() > writer.Remaining())
@@ -667,7 +667,7 @@ IINField OutstationContext::HandleSelect(const openpal::ReadOnlyBuffer& objects,
 	}
 }
 
-IINField OutstationContext::HandleOperate(const openpal::ReadOnlyBuffer& objects, ObjectWriter& writer, bool objectsEqualToLastRequest)
+IINField OutstationContext::HandleOperate(const openpal::ReadOnlyBuffer& objects, HeaderWriter& writer, bool objectsEqualToLastRequest)
 {
 	// since we're echoing, make sure there's enough size before beginning
 	if (objects.Size() > writer.Remaining())
@@ -714,7 +714,7 @@ IINField OutstationContext::HandleOperate(const openpal::ReadOnlyBuffer& objects
 	}
 }
 
-IINField OutstationContext::HandleDelayMeasure(const openpal::ReadOnlyBuffer& objects, ObjectWriter& writer)
+IINField OutstationContext::HandleDelayMeasure(const openpal::ReadOnlyBuffer& objects, HeaderWriter& writer)
 {
 	if (objects.IsEmpty())
 	{		
@@ -729,7 +729,7 @@ IINField OutstationContext::HandleDelayMeasure(const openpal::ReadOnlyBuffer& ob
 	}
 }
 
-IINField OutstationContext::HandleDisableUnsolicited(const openpal::ReadOnlyBuffer& objects, ObjectWriter& writer)
+IINField OutstationContext::HandleDisableUnsolicited(const openpal::ReadOnlyBuffer& objects, HeaderWriter& writer)
 {
 	ClassBasedRequestHandler handler(logger);
 	auto result = APDUParser::ParseTwoPass(objects, &handler, &logger);
@@ -744,7 +744,7 @@ IINField OutstationContext::HandleDisableUnsolicited(const openpal::ReadOnlyBuff
 	}
 }
 
-IINField OutstationContext::HandleEnableUnsolicited(const openpal::ReadOnlyBuffer& objects, ObjectWriter& writer)
+IINField OutstationContext::HandleEnableUnsolicited(const openpal::ReadOnlyBuffer& objects, HeaderWriter& writer)
 {	
 	ClassBasedRequestHandler handler(logger);
 	auto result = APDUParser::ParseTwoPass(objects, &handler, &logger);
@@ -759,7 +759,7 @@ IINField OutstationContext::HandleEnableUnsolicited(const openpal::ReadOnlyBuffe
 	}
 }
 
-IINField OutstationContext::HandleCommandWithConstant(const openpal::ReadOnlyBuffer& objects, ObjectWriter& writer, CommandStatus status)
+IINField OutstationContext::HandleCommandWithConstant(const openpal::ReadOnlyBuffer& objects, HeaderWriter& writer, CommandStatus status)
 {
 	ConstantCommandAction constant(status);
 	CommandResponseHandler handler(logger, params.maxControlsPerRequest, &constant, &writer);

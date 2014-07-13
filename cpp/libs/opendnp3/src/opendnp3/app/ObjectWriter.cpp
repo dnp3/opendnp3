@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "ObjectWriter.h"
+#include "HeaderWriter.h"
 
 #include <openpal/serialization/Serialization.h>
 
@@ -30,20 +30,20 @@ using namespace openpal;
 namespace opendnp3
 {
 
-ObjectWriter::ObjectWriter(openpal::WriteBuffer* position_) : position(position_)
+HeaderWriter::HeaderWriter(openpal::WriteBuffer* position_) : position(position_)
 {}
 
-uint32_t  ObjectWriter::Remaining() const
+uint32_t  HeaderWriter::Remaining() const
 {
 	return position->Size();
 }
 
-void ObjectWriter::Mark()
+void HeaderWriter::Mark()
 {
 	mark.Set(*position);
 }
 
-bool ObjectWriter::Rollback()
+bool HeaderWriter::Rollback()
 {
 	if (mark.IsSet())
 	{
@@ -57,7 +57,7 @@ bool ObjectWriter::Rollback()
 	}
 }
 
-bool ObjectWriter::WriteHeader(GroupVariationID id, QualifierCode qc)
+bool HeaderWriter::WriteHeader(GroupVariationID id, QualifierCode qc)
 {
 	if(position->Size() < 3) return false;
 	else
@@ -69,7 +69,7 @@ bool ObjectWriter::WriteHeader(GroupVariationID id, QualifierCode qc)
 	}
 }
 
-bool ObjectWriter::WriteHeaderWithReserve(GroupVariationID id, QualifierCode qc, uint32_t reserve)
+bool HeaderWriter::WriteHeaderWithReserve(GroupVariationID id, QualifierCode qc, uint32_t reserve)
 {
 	if(position->Size() < (3 + reserve)) return false;
 	else return WriteHeader(id, qc);

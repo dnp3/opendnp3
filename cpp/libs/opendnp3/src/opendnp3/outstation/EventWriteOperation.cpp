@@ -34,7 +34,7 @@ EventWriteOperation::EventWriteOperation(EventHeaderWriteFunc pWriter_, const Ev
 
 }
 
-bool EventWriteOperation::Invoke(ObjectWriter& writer, openpal::ListNode<SOERecord>* start, const ListIterator& writeCallback)
+bool EventWriteOperation::Invoke(HeaderWriter& writer, openpal::ListNode<SOERecord>* start, const ListIterator& writeCallback)
 {
 	if (IsDefined())
 	{

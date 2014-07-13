@@ -52,7 +52,7 @@ public:
 
 	bool IsComplete() const;
 
-	AppControlField LoadSolicited(ObjectWriter& writer);
+	AppControlField LoadSolicited(HeaderWriter& writer);
 
 private:
 

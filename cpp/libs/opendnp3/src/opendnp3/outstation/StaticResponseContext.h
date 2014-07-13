@@ -68,13 +68,13 @@ public:
 
 	bool HasRequests() const;
 
-	bool Load(ObjectWriter& writer);
+	bool Load(HeaderWriter& writer);
 
 private:
 
 	IINField QueueLoader(const StaticRangeLoader& loader);	
 
-	StaticLoadResult LoadStaticData(ObjectWriter& writer);
+	StaticLoadResult LoadStaticData(HeaderWriter& writer);
 
 	Database* pDatabase;
 	StaticResponseConfig defaults;

@@ -33,7 +33,7 @@ class EventWriteFunctions : openpal::PureStatic
 public:
 
 	template <class Serializer>
-	static bool WriteFixedSize(const EventWriteLimits& limits, ObjectWriter& writer, openpal::ListNode<SOERecord>* start, const ListIterator& writeCallback);
+	static bool WriteFixedSize(const EventWriteLimits& limits, HeaderWriter& writer, openpal::ListNode<SOERecord>* start, const ListIterator& writeCallback);
 
 private:
 
@@ -43,7 +43,7 @@ private:
 };
 
 template <class Serializer>
-bool EventWriteFunctions::WriteFixedSize(const EventWriteLimits& limits, ObjectWriter& ow, openpal::ListNode<SOERecord>* start, const ListIterator& writeCallback)
+bool EventWriteFunctions::WriteFixedSize(const EventWriteLimits& limits, HeaderWriter& ow, openpal::ListNode<SOERecord>* start, const ListIterator& writeCallback)
 {		
 	auto writer = ow.IterateOverCountWithPrefix<openpal::UInt16, typename Serializer::Target>(QualifierCode::UINT16_CNT_UINT16_INDEX, Serializer::Inst());
 	

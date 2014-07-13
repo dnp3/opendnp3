@@ -58,7 +58,7 @@ void EventResponseContext::Reset()
 	criteria.Clear();
 }
 
-bool EventResponseContext::Load(ObjectWriter& objectWriter)
+bool EventResponseContext::Load(HeaderWriter& objectWriter)
 {
 	if (isComplete)
 	{

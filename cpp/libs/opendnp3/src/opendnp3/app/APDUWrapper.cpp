@@ -69,9 +69,9 @@ bool APDUWrapper::IsValid() const
 	return valid;
 }
 
-ObjectWriter APDUWrapper::GetWriter()
+HeaderWriter APDUWrapper::GetWriter()
 {
-	return ObjectWriter(&remaining);
+	return HeaderWriter(&remaining);
 }
 
 uint32_t APDUWrapper::Remaining() const

@@ -23,7 +23,7 @@
 
 #include <openpal/util/Uncopyable.h>
 #include "opendnp3/app/StaticRange.h"
-#include "opendnp3/app/ObjectWriter.h"
+#include "opendnp3/app/HeaderWriter.h"
 #include "opendnp3/outstation/Database.h"
 
 #include <openpal/serialization/Serialization.h>
@@ -40,14 +40,14 @@ enum class StaticLoadResult
 };
 
 // A function that takes a writer, range, and a database and writes some objects
-typedef StaticLoadResult (*StaticLoadFun)(ObjectWriter& writer, StaticRange& range, Database& db);
+typedef StaticLoadResult (*StaticLoadFun)(HeaderWriter& writer, StaticRange& range, Database& db);
 
 class StaticLoader : private openpal::PureStatic
 {
 public:
 
 	template <class Serializer>
-	static StaticLoadResult LoadFixedSizeStartStop(ObjectWriter& writer, StaticRange& range, Database& db);	
+	static StaticLoadResult LoadFixedSizeStartStop(HeaderWriter& writer, StaticRange& range, Database& db);	
 
 private:
 
@@ -56,7 +56,7 @@ private:
 };
 
 template <class Serializer>
-StaticLoadResult StaticLoader::LoadFixedSizeStartStop(ObjectWriter& writer, StaticRange& range, Database& db)
+StaticLoadResult StaticLoader::LoadFixedSizeStartStop(HeaderWriter& writer, StaticRange& range, Database& db)
 {
 	auto values = db.Values<typename Serializer::Target>();
 	if(range.IsContainedByUInt8())

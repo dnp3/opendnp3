@@ -188,7 +188,7 @@ IINField StaticResponseContext::QueueLoader(const StaticRangeLoader& loader)
 	}
 }
 
-bool StaticResponseContext::Load(ObjectWriter& writer)
+bool StaticResponseContext::Load(HeaderWriter& writer)
 {
 	switch (LoadStaticData(writer))
 	{
@@ -201,7 +201,7 @@ bool StaticResponseContext::Load(ObjectWriter& writer)
 	}
 }
 
-StaticLoadResult StaticResponseContext::LoadStaticData(ObjectWriter& writer)
+StaticLoadResult StaticResponseContext::LoadStaticData(HeaderWriter& writer)
 {
 	while(!staticResponseQueue.IsEmpty())
 	{

@@ -36,7 +36,7 @@ class CommandResponseHandler : public APDUHandlerBase
 {
 public:
 
-	CommandResponseHandler(openpal::Logger logger, uint8_t maxCommands_, ICommandAction* pCommandAction_, ObjectWriter* pWriter_);
+	CommandResponseHandler(openpal::Logger logger, uint8_t maxCommands_, ICommandAction* pCommandAction_, HeaderWriter* pWriter_);
 
 	virtual void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint16_t>>& meas) override final;
 	virtual void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint16_t>>& meas) override final;
@@ -61,7 +61,7 @@ private:
 	uint32_t numRequests;
 	uint32_t numSuccess;
 	const uint8_t maxCommands;
-	ObjectWriter* pWriter;
+	HeaderWriter* pWriter;
 
 	template <class Target, class IndexType>
 	void RespondToHeader(QualifierCode qualifier, IDNP3Serializer<Target>& serializer, const IterableBuffer<IndexedValue<Target, typename IndexType::Type>>& values);

@@ -26,7 +26,7 @@
 
 #include "opendnp3/gen/FunctionCode.h"
 #include "opendnp3/app/AppControlField.h"
-#include "opendnp3/app/ObjectWriter.h"
+#include "opendnp3/app/HeaderWriter.h"
 
 namespace opendnp3
 {
@@ -59,7 +59,7 @@ public:
 
 	openpal::ReadOnlyBuffer ToReadOnly() const;
 
-	ObjectWriter GetWriter();
+	HeaderWriter GetWriter();
 
 	uint32_t Remaining() const;
 

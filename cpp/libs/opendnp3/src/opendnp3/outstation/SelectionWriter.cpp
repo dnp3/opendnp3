@@ -35,7 +35,7 @@ SelectionWriter::SelectionWriter(OutstationEventBuffer& buffer) :
 
 }
 
-bool SelectionWriter::WriteAllEvents(SelectionCriteria& criteria, ObjectWriter& writer)
+bool SelectionWriter::WriteAllEvents(SelectionCriteria& criteria, HeaderWriter& writer)
 {		
 	bool hasSpace = true;
 

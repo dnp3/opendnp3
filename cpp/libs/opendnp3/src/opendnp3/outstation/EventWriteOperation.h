@@ -30,14 +30,14 @@
 #include <openpal/executor/Function1.h>
 
 #include "opendnp3/app/ClassField.h"
-#include "opendnp3/app/ObjectWriter.h"
+#include "opendnp3/app/HeaderWriter.h"
 #include "opendnp3/outstation/SOERecord.h"
 #include "opendnp3/outstation/EventResponseConfig.h"
 
 namespace opendnp3
 {
 
-class ObjectWriter;
+class HeaderWriter;
 class SelectionCriteria;
 
 class EventWriteLimits
@@ -100,7 +100,7 @@ class EventWriteLimits
 
 typedef openpal::Function1<openpal::ListNode<SOERecord>*, openpal::ListNode<SOERecord>*> ListIterator;
 
-typedef bool(*EventHeaderWriteFunc)(const EventWriteLimits& classMask, ObjectWriter& writer, openpal::ListNode<SOERecord>* start, const ListIterator& writeCallback);
+typedef bool(*EventHeaderWriteFunc)(const EventWriteLimits& classMask, HeaderWriter& writer, openpal::ListNode<SOERecord>* start, const ListIterator& writeCallback);
 
 class EventWriteOperation
 {
@@ -110,7 +110,7 @@ class EventWriteOperation
 
 	EventWriteOperation(EventHeaderWriteFunc pWriter_, const EventWriteLimits& limits_);
 
-	bool Invoke(ObjectWriter& writer, openpal::ListNode<SOERecord>* start, const ListIterator& writeCallback);
+	bool Invoke(HeaderWriter& writer, openpal::ListNode<SOERecord>* start, const ListIterator& writeCallback);
 
 	bool IsDefined() const;
 

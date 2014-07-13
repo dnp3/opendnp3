@@ -51,7 +51,7 @@ public:
 
 	// ----- called after parsing to load the requested objects -----
 
-	bool Load(ObjectWriter& writer);
+	bool Load(HeaderWriter& writer);
 	
 	void Reset();
 
