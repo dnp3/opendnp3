@@ -139,7 +139,7 @@ namespace Automatak.Simulator
             // 
             this.splitContainer2.Panel2.Controls.Add(this.logWindow1);
             this.splitContainer2.Size = new System.Drawing.Size(1226, 567);
-            this.splitContainer2.SplitterDistance = 373;
+            this.splitContainer2.SplitterDistance = 250;
             this.splitContainer2.TabIndex = 3;
             // 
             // splitContainer1
@@ -158,7 +158,7 @@ namespace Automatak.Simulator
             this.splitContainer1.Panel2.Controls.Add(this.buttonMakeNote);
             this.splitContainer1.Panel2.Controls.Add(this.logFileControl);
             this.splitContainer1.Panel2.Controls.Add(this.listViewMetrics);
-            this.splitContainer1.Size = new System.Drawing.Size(373, 567);
+            this.splitContainer1.Size = new System.Drawing.Size(250, 567);
             this.splitContainer1.SplitterDistance = 280;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -170,7 +170,7 @@ namespace Automatak.Simulator
             this.tabControlPlugins.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.tabControlPlugins.RightToLeftLayout = true;
             this.tabControlPlugins.SelectedIndex = 0;
-            this.tabControlPlugins.Size = new System.Drawing.Size(373, 280);
+            this.tabControlPlugins.Size = new System.Drawing.Size(250, 280);
             this.tabControlPlugins.TabIndex = 0;
             // 
             // buttonMakeNote
@@ -211,7 +211,7 @@ namespace Automatak.Simulator
             this.columnHeader2});
             this.listViewMetrics.Location = new System.Drawing.Point(0, 2);
             this.listViewMetrics.Name = "listViewMetrics";
-            this.listViewMetrics.Size = new System.Drawing.Size(373, 230);
+            this.listViewMetrics.Size = new System.Drawing.Size(250, 230);
             this.listViewMetrics.TabIndex = 1;
             this.listViewMetrics.UseCompatibleStateImageBehavior = false;
             this.listViewMetrics.View = System.Windows.Forms.View.Details;
@@ -233,7 +233,7 @@ namespace Automatak.Simulator
             this.logWindow1.LogFont = new System.Drawing.Font("Courier New", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.logWindow1.MinimumSize = new System.Drawing.Size(300, 250);
             this.logWindow1.Name = "logWindow1";
-            this.logWindow1.Size = new System.Drawing.Size(849, 567);
+            this.logWindow1.Size = new System.Drawing.Size(972, 567);
             this.logWindow1.TabIndex = 0;
             // 
             // timerMetrics

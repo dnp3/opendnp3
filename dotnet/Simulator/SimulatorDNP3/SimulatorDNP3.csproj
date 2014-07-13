@@ -232,6 +232,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="EventedOutstationApplication.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="BundledPlugins\DoubleBinaryValueDialog.resx">

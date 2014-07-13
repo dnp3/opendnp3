@@ -22,7 +22,7 @@ bool OutstationApplicationAdapter::WriteAbsoluteTime(const openpal::UTCTimestamp
 
 bool OutstationApplicationAdapter::SupportsWriteAbsoluteTime()
 {
-	return proxy->SupportsWriteAbsoluteTime();
+	return proxy->SupportsWriteAbsoluteTime;
 }
 
 opendnp3::ApplicationIIN OutstationApplicationAdapter::GetApplicationIIN() const
@@ -39,12 +39,12 @@ opendnp3::ApplicationIIN OutstationApplicationAdapter::GetApplicationIIN() const
 
 opendnp3::RestartMode OutstationApplicationAdapter::ColdRestartSupport() const
 {
-	return (opendnp3::RestartMode) proxy->ColdRestartSupport();
+	return (opendnp3::RestartMode) proxy->ColdRestartSupport;
 }
 
 opendnp3::RestartMode OutstationApplicationAdapter::WarmRestartSupport() const
 {
-	return (opendnp3::RestartMode) proxy->WarmRestartSupport();
+	return (opendnp3::RestartMode) proxy->WarmRestartSupport;
 }
 
 uint16_t OutstationApplicationAdapter::ColdRestart()

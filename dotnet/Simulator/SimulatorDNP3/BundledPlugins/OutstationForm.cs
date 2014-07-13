@@ -16,17 +16,19 @@ namespace Automatak.Simulator.DNP3
         MeasurementCollection activeCollection = null;
 
         readonly IOutstation outstation;
+        readonly EventedOutstationApplication application;
         readonly MeasurementCache cache;
         readonly ProxyCommandHandler proxy;
         readonly IDatabase database;        
 
         readonly IList<Action<IDatabase>> events = new List<Action<IDatabase>>();
 
-        public OutstationForm(IOutstation outstation, MeasurementCache cache, ProxyCommandHandler proxy, String alias)
+        public OutstationForm(IOutstation outstation, EventedOutstationApplication application, MeasurementCache cache, ProxyCommandHandler proxy, String alias)
         {
             InitializeComponent();
 
             this.outstation = outstation;
+            this.application = application;
             this.cache = cache;
             this.proxy = proxy;
 
@@ -37,7 +39,24 @@ namespace Automatak.Simulator.DNP3
 
             this.commandHandlerControl1.Configure(proxy, database);
 
+            this.comboBoxColdRestartMode.DataSource = System.Enum.GetValues(typeof(RestartMode));
+
+            this.application.ColdRestart += application_ColdRestart;
+            this.application.TimeWrite += application_TimeWrite;
+
             this.CheckState();
+        }
+
+        void application_TimeWrite(ulong millisecSinceEpoch)
+        {
+            this.application.NeedTime = false;
+            this.Invoke(new Action(() => this.checkBoxNeedTime.Checked = false));
+        }
+
+        void application_ColdRestart()
+        {
+            // simulate a restart with the restart IIN bit
+            this.outstation.SetRestartIIN();
         }       
         
         void CheckState()
@@ -207,11 +226,26 @@ namespace Automatak.Simulator.DNP3
             this.listBoxEvents.Items.Clear();
             this.events.Clear();
             this.CheckState();
+        }       
+
+        private void checkBoxNeedTime_CheckedChanged(object sender, EventArgs e)
+        {
+            this.application.NeedTime = checkBoxNeedTime.Checked;                        
         }
 
-        private void measurementView_OnRowSelectionChanged()
+        private void checkBoxLocalMode_CheckedChanged(object sender, EventArgs e)
         {
+            this.application.LocalMode = checkBoxLocalMode.Checked;
+        }
 
-        }        
+        private void comboBoxColdRestartMode_SelectedValueChanged(object sender, EventArgs e)
+        {
+            this.application.ColdRestartMode = (RestartMode) comboBoxColdRestartMode.SelectedValue;
+        }
+
+        private void numericUpDownColdRestartTime_ValueChanged(object sender, EventArgs e)
+        {
+            this.application.ColdRestartTime = Decimal.ToUInt16(numericUpDownColdRestartTime.Value);
+        }       
     }
 }

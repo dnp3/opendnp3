@@ -32,7 +32,7 @@ namespace DNP3.Interface
     /// </summary>
     public interface IOutstationApplication
     {
-        bool SupportsWriteAbsoluteTime();
+        bool SupportsWriteAbsoluteTime { get; }
 
         bool WriteAbsoluteTime(UInt64 millisecSinceEpoch);
 
@@ -42,10 +42,10 @@ namespace DNP3.Interface
         }
 
         /// Query the outstation for the cold restart mode it supports
-	    RestartMode ColdRestartSupport();
+	    RestartMode ColdRestartSupport { get; }
 
 	    /// Query the outstation for the warm restart mode it supports
-	    RestartMode WarmRestartSupport();
+        RestartMode WarmRestartSupport { get; }
 
 	    /// The outstation should perform a complete restart.
 	    /// See the DNP3 specification for a complete descripton of normal behavior
@@ -74,9 +74,12 @@ namespace DNP3.Interface
 
         private DefaultOutstationApplication() { }
 
-        bool IOutstationApplication.SupportsWriteAbsoluteTime()
+        bool IOutstationApplication.SupportsWriteAbsoluteTime
         {
-            return false;
+            get {
+                return false;
+            }
+            
         }
 
         bool IOutstationApplication.WriteAbsoluteTime(UInt64 millisecSinceEpoch)
@@ -91,14 +94,20 @@ namespace DNP3.Interface
         }
 
 
-        RestartMode IOutstationApplication.ColdRestartSupport()
+        RestartMode IOutstationApplication.ColdRestartSupport
         {
-            return RestartMode.UNSUPPORTED;
+            get 
+            {
+                return RestartMode.UNSUPPORTED;
+            }
         }
 
-        RestartMode IOutstationApplication.WarmRestartSupport()
+        RestartMode IOutstationApplication.WarmRestartSupport
         {
-            return RestartMode.UNSUPPORTED;
+            get
+            {
+                return RestartMode.UNSUPPORTED;
+            }
         }
 
         ushort IOutstationApplication.ColdRestart()

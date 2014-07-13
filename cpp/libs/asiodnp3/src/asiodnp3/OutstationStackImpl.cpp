@@ -56,8 +56,9 @@ opendnp3::Database& OutstationStackImpl::GetDatabase()
 
 void OutstationStackImpl::SetRestartIIN()
 {
-	auto setter = [this]() { outstation.SetRestartIIN(); };
-	return asiopal::SynchronouslyExecute(handler.GetExecutor()->strand, setter);
+	// this doesn't need to be synchronous, just post it
+	auto lambda = [this]() { outstation.SetRestartIIN(); };
+	handler.GetExecutor()->strand.post(lambda);	
 }
 
 bool OutstationStackImpl::Enable()

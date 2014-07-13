@@ -32,7 +32,6 @@ void OutstationAdapter::Shutdown()
 	pOutstation->Shutdown();
 }
 
-
 void OutstationAdapter::Enable()
 {
 	pOutstation->Enable();

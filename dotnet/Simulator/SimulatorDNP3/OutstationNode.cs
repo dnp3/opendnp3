@@ -13,6 +13,7 @@ namespace Automatak.Simulator.DNP3
     {
         readonly MeasurementCache cache;
         readonly ProxyCommandHandler handler;
+        readonly EventedOutstationApplication application;
         readonly IDNP3Config config;
         readonly IOutstation outstation;
         readonly ISimulatorNodeCallbacks callbacks;
@@ -32,10 +33,11 @@ namespace Automatak.Simulator.DNP3
             }
         }
 
-        public OutstationNode(MeasurementCache cache, ProxyCommandHandler handler, IDNP3Config config, IOutstation outstation, ISimulatorNodeCallbacks callbacks, string alias)
+        public OutstationNode(MeasurementCache cache, ProxyCommandHandler handler, EventedOutstationApplication application, IDNP3Config config, IOutstation outstation, ISimulatorNodeCallbacks callbacks, string alias)
         {
             this.cache = cache;
             this.handler = handler;
+            this.application = application;
             this.config = config;
             this.outstation = outstation;
             this.callbacks = callbacks;
@@ -50,7 +52,7 @@ namespace Automatak.Simulator.DNP3
         {
             if (form == null)
             {
-                form = new OutstationForm(outstation, cache, handler, alias);
+                form = new OutstationForm(outstation, application, cache, handler, alias);
             }
 
             form.Show();
