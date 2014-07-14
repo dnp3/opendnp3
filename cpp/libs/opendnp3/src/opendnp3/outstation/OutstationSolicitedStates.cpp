@@ -198,6 +198,7 @@ OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnConfirm(Out
 
 OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnConfirmTimeout(OutstationContext* pContext)
 {	
+	SIMPLE_LOG_BLOCK(pContext->logger, flags::WARN, "Solicited confirm timeout");
 	pContext->pConfirmTimer = nullptr;		
 	pContext->eventBuffer.Reset();
 	pContext->rspContext.Reset();

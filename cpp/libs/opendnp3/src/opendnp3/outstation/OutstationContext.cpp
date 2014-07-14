@@ -565,7 +565,8 @@ bool OutstationContext::StartUnsolRetryTimer()
 
 void OutstationContext::OnSolConfirmTimeout()
 {
-	this->pSolicitedState->OnConfirmTimeout(this);
+	pSolicitedState = this->pSolicitedState->OnConfirmTimeout(this);
+	this->PostCheckForActions();
 }
 
 void OutstationContext::OnUnsolConfirmTimeout()
