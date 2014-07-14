@@ -119,7 +119,7 @@ bool OutstationEventBuffer::IsTypeOverflown(EventType type) const
 
 	if (max > 0)
 	{
-		return  totalTracker.NumOfType(type) < max;
+		return  totalTracker.NumOfType(type) >= max;
 	}
 	else
 	{

@@ -85,6 +85,33 @@ TEST_CASE(SUITE("ReadClass1WithSOE"))
 	REQUIRE(t.lower.PopWriteAsHex() == "C1 81 80 00");	// Buffer should have been cleared
 }
 
+TEST_CASE(SUITE("EventBufferOverflowAndClear"))
+{
+	OutstationConfig config;
+	config.eventBufferConfig = EventBufferConfig::AllTypes(2);
+	OutstationTestObject t(config, DatabaseTemplate::AllTypes(100));
+
+	t.LowerLayerUp();
+
+	t.Transaction([](Database& db) {
+		db.Update(Binary(true, 0x01), 0);  // this event is lost in the overflow
+		db.Update(Binary(true, 0x01), 1);
+		db.Update(Binary(true, 0x01), 2);
+	});
+
+	t.SendToOutstation("C0 01");
+	REQUIRE("C0 81 82 08" == t.lower.PopWriteAsHex());
+	t.OnSendResult(true);
+
+	t.SendToOutstation("C1 01 3C 02 07 01"); // class 1, count of 1	
+	REQUIRE("E1 81 82 08 02 01 28 01 00 01 00 81" == t.lower.PopWriteAsHex());
+	t.OnSendResult(true);
+	t.SendToOutstation(hex::SolicitedConfirm(1));
+
+	t.SendToOutstation("C0 01");
+	REQUIRE("C0 81 82 00" == t.lower.PopWriteAsHex());
+}
+
 TEST_CASE(SUITE("MultipleClasses"))
 {
 	OutstationConfig config;
