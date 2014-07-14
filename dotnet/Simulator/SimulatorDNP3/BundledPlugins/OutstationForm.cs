@@ -230,6 +230,7 @@ namespace Automatak.Simulator.DNP3
 
         private void checkBoxNeedTime_CheckedChanged(object sender, EventArgs e)
         {
+            this.application.SupportsWriteTime = checkBoxNeedTime.Checked;
             this.application.NeedTime = checkBoxNeedTime.Checked;                        
         }
 

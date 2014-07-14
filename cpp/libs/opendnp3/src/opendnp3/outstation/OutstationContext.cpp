@@ -198,7 +198,7 @@ void OutstationContext::OnReceiveAPDU(const openpal::ReadOnlyBuffer& apdu)
 	{
 		FORMAT_LOG_BLOCK(logger, flags::APP_HEADER_RX,
 			"FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s",
-			header.control.FIN,
+			header.control.FIR,
 			header.control.FIN,
 			header.control.CON,
 			header.control.UNS,

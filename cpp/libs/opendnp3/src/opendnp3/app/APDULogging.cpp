@@ -41,7 +41,7 @@ void ParseAndLogRequestTx(openpal::Logger* pLogger, const openpal::ReadOnlyBuffe
 		{
 			FORMAT_LOGGER_BLOCK(pLogger, flags::APP_HEADER_TX,
 				"FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s",
-				header.control.FIN,
+				header.control.FIR,
 				header.control.FIN,
 				header.control.CON,
 				header.control.UNS,
@@ -72,7 +72,7 @@ void ParseAndLogResponseTx(openpal::Logger* pLogger, const openpal::ReadOnlyBuff
 		{
 			FORMAT_LOGGER_BLOCK(pLogger, flags::APP_HEADER_TX,
 				"FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s IIN: [0x%02x, 0x%02x]",
-				header.control.FIN,
+				header.control.FIR,
 				header.control.FIN,
 				header.control.CON,
 				header.control.UNS,
