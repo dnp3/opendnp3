@@ -280,9 +280,6 @@
     <EmbeddedResource Include="Components\LogLevelControl.resx">
       <DependentUpon>LogLevelControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Components\MasterConfigControl.resx">
-      <DependentUpon>MasterConfigControl.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Components\TemplateControl.resx">
       <DependentUpon>TemplateControl.cs</DependentUpon>
     </EmbeddedResource>

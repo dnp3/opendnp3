@@ -25,7 +25,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DNP3.Interface
+namespace Automatak.DNP3.Interface
 {
     /// <summary>
     /// Root interface used for all dnp3 applications

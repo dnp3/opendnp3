@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using DNP3.Interface;
+using Automatak.DNP3.Interface;
 
 namespace Automatak.Simulator.DNP3
 {

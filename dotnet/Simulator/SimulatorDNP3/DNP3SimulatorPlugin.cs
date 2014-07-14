@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using DNP3.Adapter;
-using DNP3.Interface;
+using Automatak.DNP3.Adapter;
+using Automatak.DNP3.Interface;
 
 using Automatak.Simulator.Commons;
 using Automatak.Simulator.API;

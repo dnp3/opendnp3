@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-using DNP3.Interface;
+using Automatak.DNP3.Interface;
 
 namespace Automatak.Simulator.DNP3.Components
 {

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace DNP3.Interface
+namespace Automatak.DNP3.Interface
 {
     /// <summary>
     /// Configuration information for the dnp3 master

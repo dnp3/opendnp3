@@ -25,7 +25,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace DNP3.Interface
+namespace Automatak.DNP3.Interface
 {        
     /// <summary>
     /// Interface called to load data into an outstation or receive data from a master

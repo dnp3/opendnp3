@@ -6,46 +6,49 @@ using namespace System::Collections::ObjectModel;
 #include <vcclr.h>
 #include <openpal/logging/ILogHandler.h>
 
-using namespace DNP3::Interface;
+using namespace Automatak::DNP3::Interface;
 
-namespace DNP3
+namespace Automatak
 {
-namespace Adapter
-{
-
-private class LogAdapter : public openpal::ILogHandler
-{
-public:
-
-	LogAdapter(DNP3::Interface::ILogHandler^ proxy);
-
-	// logging error messages, etc
-	virtual void Log(const openpal::LogEntry& Entry) override final;
-
-private:
-	gcroot < DNP3::Interface::ILogHandler^ > proxy;
-};
-
-private ref class LogAdapterWrapper
-{
-public:
-	LogAdapterWrapper(ILogHandler^ proxy) : mpAdapter(new LogAdapter(proxy))
-	{}
-
-	openpal::ILogHandler* GetLogAdapter()
+	namespace DNP3
 	{
-		return mpAdapter;
-	}
+		namespace Adapter
+		{
 
-	~LogAdapterWrapper()
-	{
-		delete mpAdapter;
-	}
+			private class LogAdapter : public openpal::ILogHandler
+			{
+			public:
 
-private:
-	LogAdapter* mpAdapter;
-};
-}
+				LogAdapter(Automatak::DNP3::Interface::ILogHandler^ proxy);
+
+				// logging error messages, etc
+				virtual void Log(const openpal::LogEntry& Entry) override final;
+
+			private:
+				gcroot < Automatak::DNP3::Interface::ILogHandler^ > proxy;
+			};
+
+			private ref class LogAdapterWrapper
+			{
+			public:
+				LogAdapterWrapper(ILogHandler^ proxy) : mpAdapter(new LogAdapter(proxy))
+				{}
+
+				openpal::ILogHandler* GetLogAdapter()
+				{
+					return mpAdapter;
+				}
+
+				~LogAdapterWrapper()
+				{
+					delete mpAdapter;
+				}
+
+			private:
+				LogAdapter* mpAdapter;
+			};
+		}
+	}
 }
 
 #endif

@@ -78,9 +78,9 @@ OutstationUnsolicitedStateBase* OutstationUnsolicitedStateConfirmWait::OnConfirm
 
 OutstationUnsolicitedStateBase* OutstationUnsolicitedStateConfirmWait::OnConfirmTimeout(OutstationContext* pContext)
 {
+	SIMPLE_LOG_BLOCK(pContext->logger, flags::WARN, "Unsolicited confirm timeout");
 	pContext->pConfirmTimer = nullptr;
-	pContext->eventBuffer.Reset();
-	pContext->StartUnsolRetryTimer();
+	pContext->eventBuffer.Reset();	
 	return &OutstationUnsolicitedStateIdle::Inst();
 }
 

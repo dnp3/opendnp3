@@ -5,36 +5,39 @@ using namespace System::Collections::ObjectModel;
 
 #include <asiodnp3/IOutstation.h>
 
-using namespace DNP3::Interface;
+using namespace Automatak::DNP3::Interface;
 
-namespace DNP3
+namespace Automatak
 {
-namespace Adapter
-{
-private ref class OutstationAdapter : IOutstation
-{
-public:
+	namespace DNP3
+	{
+		namespace Adapter
+		{
+			private ref class OutstationAdapter : IOutstation
+			{
+			public:
 
-	OutstationAdapter(asiodnp3::IOutstation* apOutstation);
+				OutstationAdapter(asiodnp3::IOutstation* apOutstation);
 
-	virtual DNP3::Interface::IDatabase^ GetDatabase();	
+				virtual Automatak::DNP3::Interface::IDatabase^ GetDatabase();
 
-	virtual void SetRestartIIN();
+				virtual void SetRestartIIN();
 
-	virtual void Shutdown();
+				virtual void Shutdown();
 
-	virtual void Enable();
+				virtual void Enable();
 
-	virtual void Disable();
+				virtual void Disable();
 
-	virtual IStackStatistics^ GetStackStatistics();
+				virtual IStackStatistics^ GetStackStatistics();
 
-private:
-	asiodnp3::IOutstation* pOutstation;
-	DNP3::Interface::IDatabase^ databaseAdapter;
-};
+			private:
+				asiodnp3::IOutstation* pOutstation;
+				Automatak::DNP3::Interface::IDatabase^ databaseAdapter;
+			};
 
-}
+		}
+	}
 }
 
 #endif

@@ -7,40 +7,43 @@ using namespace System::Collections::ObjectModel;
 #include <vcclr.h>
 
 
-using namespace DNP3::Interface;
+using namespace Automatak::DNP3::Interface;
 using namespace System::Collections::Generic;
 
-namespace DNP3
+namespace Automatak
 {
-namespace Adapter
-{
+	namespace DNP3
+	{
+		namespace Adapter
+		{
 
-class ScanListenerAdapter;
+			class ScanListenerAdapter;
 
-private ref class MasterScanAdapter : IMasterScan
-{
-public:
+			private ref class MasterScanAdapter : IMasterScan
+			{
+			public:
 
-	MasterScanAdapter(const opendnp3::MasterScan& scan);
+				MasterScanAdapter(const opendnp3::MasterScan& scan);
 
-	~MasterScanAdapter();
+				~MasterScanAdapter();
 
-	virtual void AddScanCallback(System::Action<PollState>^ callback);
+				virtual void AddScanCallback(System::Action<PollState>^ callback);
 
-	void OnStateChane(DNP3::Interface::PollState state);
+				void OnStateChane(Automatak::DNP3::Interface::PollState state);
 
-	virtual void Demand();
+				virtual void Demand();
 
-private:
+			private:
 
-	opendnp3::MasterScan* pScan;
-	ScanListenerAdapter* pAdapter;
+				opendnp3::MasterScan* pScan;
+				ScanListenerAdapter* pAdapter;
 
-	List<System::Action<PollState>^>^ listeners;
-	
-};
+				List<System::Action<PollState>^>^ listeners;
 
-}
+			};
+
+		}
+	}
 }
 
 #endif

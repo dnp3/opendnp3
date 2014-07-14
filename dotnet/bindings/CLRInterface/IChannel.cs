@@ -25,7 +25,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DNP3.Interface
+namespace Automatak.DNP3.Interface
 {    
     /// <summary>
     /// A communication channel to which DNP3 masters / outstation can be attached

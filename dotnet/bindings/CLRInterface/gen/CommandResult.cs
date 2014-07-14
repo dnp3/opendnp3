@@ -15,7 +15,7 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-namespace DNP3.Interface
+namespace Automatak.DNP3.Interface
 {
   /// <summary>
   /// Opendnp3 API enum used for differentiating cases when a command sequence fails without a response from the outstation

@@ -66,8 +66,7 @@ OutstationContext::OutstationContext(
 	isOnline(false),
 	pSolicitedState(&OutstationSolicitedStateIdle::Inst()),
 	pUnsolicitedState(&OutstationUnsolicitedStateIdle::Inst()),
-	pConfirmTimer(nullptr),
-	pUnsolTimer(nullptr),
+	pConfirmTimer(nullptr),	
 	unsolPackTimerExpired(false),
 	rxFragCount(0),		
 	operateExpectedSeq(0),
@@ -149,8 +148,7 @@ void OutstationContext::SetOffline()
 	deferredRequest.Clear();
 	eventBuffer.Reset();
 	rspContext.Reset();
-	CancelConfirmTimer();
-	CancelUnsolTimer();
+	CancelConfirmTimer();	
 }
 
 bool OutstationContext::IsOperateSequenceValid()
@@ -170,10 +168,12 @@ bool OutstationContext::CancelConfirmTimer()
 	return CancelTimer(pConfirmTimer);
 }
 
+/*
 bool OutstationContext::CancelUnsolTimer()
 {
 	return CancelTimer(pUnsolTimer);
 }
+*/
 
 bool OutstationContext::CancelTimer(openpal::ITimer*& pTimer)
 {
@@ -482,7 +482,7 @@ void OutstationContext::CheckForTaskStart()
 void OutstationContext::CheckForUnsolicited()
 {
 
-	if(params.allowUnsolicited && (pUnsolTimer == nullptr))
+	if(params.allowUnsolicited)
 	{
 		if (completedNullUnsol)
 		{										
@@ -549,6 +549,7 @@ bool OutstationContext::StartUnsolicitedConfirmTimer()
 	}
 }
 
+/*
 bool OutstationContext::StartUnsolRetryTimer()
 {
 	if (pUnsolTimer)
@@ -562,6 +563,7 @@ bool OutstationContext::StartUnsolRetryTimer()
 		return true;
 	}
 }
+*/
 
 void OutstationContext::OnSolConfirmTimeout()
 {
@@ -573,12 +575,6 @@ void OutstationContext::OnUnsolConfirmTimeout()
 {
 	pUnsolicitedState = this->pUnsolicitedState->OnConfirmTimeout(this);
 	this->PostCheckForActions();
-}
-
-void OutstationContext::OnUnsolRetryTimeout()
-{
-	pUnsolTimer = nullptr;
-	this->CheckForUnsolicited();
 }
 
 Pair<IINField, AppControlField> OutstationContext::HandleRead(const openpal::ReadOnlyBuffer& objects, HeaderWriter& writer)

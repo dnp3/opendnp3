@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DNP3.Interface
+namespace Automatak.DNP3.Interface
 {
     /// <summary>
     /// Includes the OutstationParams and the default response settings

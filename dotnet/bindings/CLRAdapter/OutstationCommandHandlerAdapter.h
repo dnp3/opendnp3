@@ -7,36 +7,39 @@ using namespace System::Collections::ObjectModel;
 
 #include <opendnp3/outstation/ICommandHandler.h>
 
-using namespace DNP3::Interface;
+using namespace Automatak::DNP3::Interface;
 
-namespace DNP3
+namespace Automatak
 {
-namespace Adapter
-{
-//this object goes into the stack
-private class OutstationCommandHandlerAdapter : public opendnp3::ICommandHandler
-{
-public:
-	OutstationCommandHandlerAdapter(DNP3::Interface::ICommandHandler^ proxy);
+	namespace DNP3
+	{
+		namespace Adapter
+		{
+			//this object goes into the stack
+			private class OutstationCommandHandlerAdapter : public opendnp3::ICommandHandler
+			{
+			public:
+				OutstationCommandHandlerAdapter(Automatak::DNP3::Interface::ICommandHandler^ proxy);
 
-	opendnp3::CommandStatus Supports(const opendnp3::ControlRelayOutputBlock& arCommand, uint16_t aIndex);
-	opendnp3::CommandStatus Supports(const opendnp3::AnalogOutputInt32& arCommand, uint16_t aIndex);
-	opendnp3::CommandStatus Supports(const opendnp3::AnalogOutputInt16& arCommand, uint16_t aIndex);
-	opendnp3::CommandStatus Supports(const opendnp3::AnalogOutputFloat32& arCommand, uint16_t aIndex);
-	opendnp3::CommandStatus Supports(const opendnp3::AnalogOutputDouble64& arCommand, uint16_t aIndex);
+				opendnp3::CommandStatus Supports(const opendnp3::ControlRelayOutputBlock& arCommand, uint16_t aIndex);
+				opendnp3::CommandStatus Supports(const opendnp3::AnalogOutputInt32& arCommand, uint16_t aIndex);
+				opendnp3::CommandStatus Supports(const opendnp3::AnalogOutputInt16& arCommand, uint16_t aIndex);
+				opendnp3::CommandStatus Supports(const opendnp3::AnalogOutputFloat32& arCommand, uint16_t aIndex);
+				opendnp3::CommandStatus Supports(const opendnp3::AnalogOutputDouble64& arCommand, uint16_t aIndex);
 
-	opendnp3::CommandStatus Perform(const opendnp3::ControlRelayOutputBlock& arCommand, uint16_t aIndex);
-	opendnp3::CommandStatus Perform(const opendnp3::AnalogOutputInt32& arCommand, uint16_t aIndex);
-	opendnp3::CommandStatus Perform(const opendnp3::AnalogOutputInt16& arCommand, uint16_t aIndex);
-	opendnp3::CommandStatus Perform(const opendnp3::AnalogOutputFloat32& arCommand, uint16_t aIndex);
-	opendnp3::CommandStatus Perform(const opendnp3::AnalogOutputDouble64& arCommand, uint16_t aIndex);
+				opendnp3::CommandStatus Perform(const opendnp3::ControlRelayOutputBlock& arCommand, uint16_t aIndex);
+				opendnp3::CommandStatus Perform(const opendnp3::AnalogOutputInt32& arCommand, uint16_t aIndex);
+				opendnp3::CommandStatus Perform(const opendnp3::AnalogOutputInt16& arCommand, uint16_t aIndex);
+				opendnp3::CommandStatus Perform(const opendnp3::AnalogOutputFloat32& arCommand, uint16_t aIndex);
+				opendnp3::CommandStatus Perform(const opendnp3::AnalogOutputDouble64& arCommand, uint16_t aIndex);
 
 
-private:
-	gcroot < DNP3::Interface::ICommandHandler^ > proxy;
-};
+			private:
+				gcroot < Automatak::DNP3::Interface::ICommandHandler^ > proxy;
+			};
 
-}
+		}
+	}
 }
 
 #endif

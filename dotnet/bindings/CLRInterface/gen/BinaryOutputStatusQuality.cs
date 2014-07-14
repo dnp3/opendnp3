@@ -15,7 +15,7 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-namespace DNP3.Interface
+namespace Automatak.DNP3.Interface
 {
   /// <summary>
   /// Quality field bitmask for binary output status values

@@ -7,7 +7,7 @@
     <ProjectGuid>{5F06C7BE-3107-4B3E-8559-E5E1BB4008B5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DNP3.Interface</RootNamespace>
+    <RootNamespace>Automatak.DNP3.Interface</RootNamespace>
     <AssemblyName>DNP3CLRInterface</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

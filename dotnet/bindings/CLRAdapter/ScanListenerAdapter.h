@@ -8,32 +8,35 @@ using namespace System::Collections::ObjectModel;
 
 #include "MasterScanAdapter.h"
 
-using namespace DNP3::Interface;
+using namespace Automatak::DNP3::Interface;
 
-namespace DNP3
+namespace Automatak
 {
-namespace Adapter
-{
+	namespace DNP3
+	{
+		namespace Adapter
+		{
 
-private class ScanListenerAdapter : public opendnp3::IPollListener
-{
-public:
+			private class ScanListenerAdapter : public opendnp3::IPollListener
+			{
+			public:
 
-	ScanListenerAdapter(MasterScanAdapter^ adapter) : root(adapter)
-	{}
+				ScanListenerAdapter(MasterScanAdapter^ adapter) : root(adapter)
+				{}
 
-	
-	virtual void OnStateChange(opendnp3::PollState state)
-	{		
-		root->OnStateChane((PollState)state);
+
+				virtual void OnStateChange(opendnp3::PollState state)
+				{
+					root->OnStateChane((PollState)state);
+				}
+
+			private:
+
+				gcroot<MasterScanAdapter^> root;
+			};
+
+		}
 	}
-
-private:
-
-	gcroot<MasterScanAdapter^> root;
-};
-
-}
 }
 
 #endif

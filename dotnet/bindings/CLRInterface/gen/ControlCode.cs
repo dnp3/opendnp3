@@ -15,7 +15,7 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-namespace DNP3.Interface
+namespace Automatak.DNP3.Interface
 {
   /// <summary>
   /// There are a number of types of controls. The best way to understand this 

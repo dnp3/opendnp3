@@ -84,7 +84,7 @@ class OutstationContext
 	IINField staticIIN;
 
 	openpal::ITimer* pConfirmTimer;
-	openpal::ITimer* pUnsolTimer;						// gets used for both retries and "pack" timer
+	//openpal::ITimer* pUnsolTimer;						// gets used for both retries and "pack" timer
 	bool unsolPackTimerExpired;
 	
 	uint32_t rxFragCount;
@@ -119,14 +119,10 @@ class OutstationContext
 	bool IsOperateSequenceValid();
 	bool IsIdle();
 
-	bool CancelConfirmTimer();
-
-	bool CancelUnsolTimer();
+	bool CancelConfirmTimer();	
 	
 	bool StartSolicitedConfirmTimer();
-	bool StartUnsolicitedConfirmTimer();
-
-	bool StartUnsolRetryTimer();
+	bool StartUnsolicitedConfirmTimer();	
 
 	void OnReceiveAPDU(const openpal::ReadOnlyBuffer& apdu);
 
@@ -176,9 +172,7 @@ class OutstationContext
 
 	void OnSolConfirmTimeout();
 
-	void OnUnsolConfirmTimeout();
-
-	void OnUnsolRetryTimeout();	
+	void OnUnsolConfirmTimeout();	
 
 	// ------ Function Handlers ------
 
