@@ -47,7 +47,7 @@ namespace Automatak.Simulator.DNP3
 
         public static Measurement ToMeasurement(this OctetString meas, UInt16 index)
         {
-            return new Measurement(meas.AsString(), meas, MeasType.OctetString, index, QualityInfo.octetString);
+            return new Measurement(meas.AsString(), MeasType.OctetString, index, QualityInfo.octetString);
         }       
     }
 }

@@ -36,11 +36,22 @@ namespace Automatak.DNP3.Interface
         /// </summary>        
         /// <param name="quality">quality enumeration as a bitfield</param>
         /// <param name="time">timestamp</param>
-        public MeasurementBase(byte quality, DateTime time, bool isTimeValid)
+        public MeasurementBase(byte quality, DateTime time)
         {
             this.quality = quality;
-            this.time = time;
-            this.isTimeValid = isTimeValid;
+            this.time = time;            
+        }
+
+        public MeasurementBase(byte quality)
+        {
+            this.quality = quality;
+            this.time = DateTime.MinValue;
+        }
+
+        public MeasurementBase()
+        {
+            this.quality = 0;
+            this.time = DateTime.MinValue;
         }
 
         public byte Quality
@@ -65,25 +76,15 @@ namespace Automatak.DNP3.Interface
             {
                 time = value;
             }
-        }
-
-        public bool IsTimestampValid
-        {
-            get
-            {
-                return isTimeValid;
-            }
-        }
+        }        
 
         public override string ToString()
-        {
-            string timeString = isTimeValid ? time.ToString() : "invalid";
-            return "quality: " + quality.ToString("X") + " time: " + timeString;
+        {            
+            return "quality: " + quality.ToString("X") + " time: " + time.ToString();
         }
 
         byte quality;
-        DateTime time;
-        bool isTimeValid;
+        DateTime time;        
     }
 
     /// <summary>
@@ -97,10 +98,14 @@ namespace Automatak.DNP3.Interface
         /// </summary>        
         /// <param name="quality">quality enumeration as a bitfield</param>
         /// <param name="time">timestamp</param>
-        public TypedMeasurementBase(T value, byte quality, DateTime time, bool isTimeValid) : 
-            base(quality, time, isTimeValid)
+        public TypedMeasurementBase(T value, byte quality, DateTime time) :  base(quality, time)
         {
             this.value = value;         
+        }
+
+        public TypedMeasurementBase(T value, byte quality) :  base(quality)            
+        {
+            this.value = value;
         }
 
         private readonly T value;

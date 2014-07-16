@@ -36,30 +36,17 @@ public:
 	virtual ~Measurement() {}
 
 	uint8_t quality;	//	bitfield that stores type specific quality information
-	uint64_t time;		//	timestamp associated with the measurement
-	bool isTimeValid;	//  records if the time field was set or not
-
-	void ClearTime()
-	{
-		isTimeValid = false;
-		time = 0;
-	}
-
-	void SetTime(uint64_t time_)
-	{
-		isTimeValid = true;
-		time = time_;
-	}
+	uint64_t time;		//	timestamp associated with the measurement			
 
 protected:
 
-	Measurement() : quality(0), time(0), isTimeValid(false)
+	Measurement() : quality(0), time(0)
 	{}
 
-	Measurement(uint8_t quality_) : quality(quality_), time(0), isTimeValid(false)
+	Measurement(uint8_t quality_) : quality(quality_), time(0)
 	{}
 
-	Measurement(uint8_t quality_, uint64_t time_) : quality(quality_), time(time_), isTimeValid(true)
+	Measurement(uint8_t quality_, uint64_t time_) : quality(quality_), time(time_)
 	{}
 	
 };

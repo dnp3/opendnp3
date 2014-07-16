@@ -87,15 +87,8 @@ private:
 
 	static std::string GetTimeString(const Measurement& meas)
 	{
-		std::ostringstream oss;
-		if (meas.isTimeValid)
-		{
-			oss << meas.time;
-		}
-		else
-		{
-			oss << "no timestamp";
-		}
+		std::ostringstream oss;		
+		oss << meas.time;		
 		return oss.str();
 	}
 

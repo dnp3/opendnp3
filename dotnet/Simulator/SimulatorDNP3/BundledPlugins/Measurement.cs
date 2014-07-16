@@ -23,14 +23,23 @@ namespace Automatak.Simulator.DNP3
     {
         public Measurement(string sValue, MeasurementBase meas, MeasType type, UInt16 index, IQualityBitInfo info)
         {
-            this.valueAsString = sValue;            
-            this.timeStamp = meas.IsTimestampValid ? meas.Timestamp : DateTime.Now;                        
-            this.timeStampAssumed = !meas.IsTimestampValid;
+            this.valueAsString = sValue;
+            this.timeStamp = meas.Timestamp;            
             this.type = type;
             this.index = index;
             this.info = info;
             this.quality = meas.Quality;
-        }        
+        }
+
+        public Measurement(string sValue, MeasType type, UInt16 index, IQualityBitInfo info)
+        {
+            this.valueAsString = sValue;
+            this.timeStamp = DateTime.Now;
+            this.type = type;
+            this.index = index;
+            this.info = info;
+            this.quality = 0;
+        } 
 
         public ushort Index
         {
@@ -76,8 +85,8 @@ namespace Automatak.Simulator.DNP3
             get
             {
                 var time = timeStamp.ToString("d") + timeStamp.ToString(" HH:mm:ss.fff");
-                if (timeStampAssumed)
-                {
+                if (true) //TODO
+                { 
                     return time + " (assumed)";
                 }
                 else
@@ -97,8 +106,7 @@ namespace Automatak.Simulator.DNP3
         
         readonly UInt16 index;
         readonly string valueAsString;        
-        readonly DateTime timeStamp;
-        readonly bool timeStampAssumed;
+        readonly DateTime timeStamp;        
         readonly MeasType type;
         readonly IQualityBitInfo info;
         readonly byte quality;

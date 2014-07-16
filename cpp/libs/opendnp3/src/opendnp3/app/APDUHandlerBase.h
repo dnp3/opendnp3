@@ -213,16 +213,7 @@ void APDUHandlerBase::OnIndexPrefixCTO(const HeaderRecord& record, const Iterabl
 	}
 	else
 	{
-		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Received CTO objects without preceding common time, using assumed time");
-		auto transform = MapIterableBuffer< IndexedValue<T, uint16_t>, IndexedValue<T, uint16_t> >(&meas,
-		                 [](const IndexedValue<T, uint16_t>& value)
-		{
-			T copy(value.value);
-			copy.ClearTime();
-			return IndexedValue<T, uint16_t>(copy, value.index);
-		}
-		                                                                                          );
-		this->_OnIndexPrefix(record, transform);
+		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Received CTO objects without preceding common time, discarding");		
 	}
 }
 

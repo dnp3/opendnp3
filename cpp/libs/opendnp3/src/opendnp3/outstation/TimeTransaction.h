@@ -48,7 +48,7 @@ private:
 	template <class T>
 	void Load(T meas, uint16_t index)
 	{
-		meas.SetTime(timestamp.msSinceEpoch);
+		meas.time = timestamp.msSinceEpoch;
 		pDatabase->Update(meas, index);
 	}
 

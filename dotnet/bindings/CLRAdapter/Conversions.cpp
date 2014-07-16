@@ -138,87 +138,38 @@ namespace Automatak
 			}
 
 			Binary^ Conversions::ConvertMeas(opendnp3::Binary meas)
-			{
-				if (meas.isTimeValid)
-				{
-					return gcnew Binary(meas.value, meas.quality, TimeStamp::Convert(meas.time));
-				}
-				else
-				{
-					return gcnew Binary(meas.value, meas.quality);
-				}
+			{				
+				return gcnew Binary(meas.value, meas.quality, TimeStamp::Convert(meas.time));				
 			}
 
 			DoubleBitBinary^ Conversions::ConvertMeas(opendnp3::DoubleBitBinary meas)
 			{
-				if (meas.isTimeValid)
-				{
-					return gcnew DoubleBitBinary(static_cast<DoubleBit>(meas.value), meas.quality, TimeStamp::Convert(meas.time));
-				}
-				else
-				{
-					return gcnew DoubleBitBinary(static_cast<DoubleBit>(meas.value), meas.quality);
-				}
+				return gcnew DoubleBitBinary(static_cast<DoubleBit>(meas.value), meas.quality, TimeStamp::Convert(meas.time));				
 			}
 
 			Analog^ Conversions::ConvertMeas(opendnp3::Analog meas)
-			{
-				if (meas.isTimeValid)
-				{
-					return gcnew Analog(meas.value, meas.quality, TimeStamp::Convert(meas.time));
-				}
-				else
-				{
-					return gcnew Analog(meas.value, meas.quality);
-				}
+			{				
+				return gcnew Analog(meas.value, meas.quality, TimeStamp::Convert(meas.time));				
 			}
 
 			Counter^ Conversions::ConvertMeas(opendnp3::Counter meas)
 			{
-				if (meas.isTimeValid)
-				{
-					return gcnew Counter(meas.value, meas.quality, TimeStamp::Convert(meas.time));
-				}
-				else
-				{
-					return gcnew Counter(meas.value, meas.quality);
-				}
+				return gcnew Counter(meas.value, meas.quality, TimeStamp::Convert(meas.time));				
 			}
 
 			FrozenCounter^ Conversions::ConvertMeas(opendnp3::FrozenCounter meas)
 			{
-				if (meas.isTimeValid)
-				{
-					return gcnew FrozenCounter(meas.value, meas.quality, TimeStamp::Convert(meas.time));
-				}
-				else
-				{
-					return gcnew FrozenCounter(meas.value, meas.quality);
-				}
+				return gcnew FrozenCounter(meas.value, meas.quality, TimeStamp::Convert(meas.time));				
 			}
 
 			AnalogOutputStatus^ Conversions::ConvertMeas(opendnp3::AnalogOutputStatus meas)
 			{
-				if (meas.isTimeValid)
-				{
-					return gcnew AnalogOutputStatus(meas.value, meas.quality, TimeStamp::Convert(meas.time));
-				}
-				else
-				{
-					return gcnew AnalogOutputStatus(meas.value, meas.quality);
-				}
+				return gcnew AnalogOutputStatus(meas.value, meas.quality, TimeStamp::Convert(meas.time));				
 			}
 
 			BinaryOutputStatus^ Conversions::ConvertMeas(opendnp3::BinaryOutputStatus meas)
-			{
-				if (meas.isTimeValid)
-				{
-					return gcnew BinaryOutputStatus(meas.value, meas.quality, TimeStamp::Convert(meas.time));
-				}
-				else
-				{
-					return gcnew BinaryOutputStatus(meas.value, meas.quality);
-				}
+			{				
+				return gcnew BinaryOutputStatus(meas.value, meas.quality, TimeStamp::Convert(meas.time));				
 			}
 
 			OctetString^ Conversions::ConvertMeas(const opendnp3::OctetString& arMeas)
