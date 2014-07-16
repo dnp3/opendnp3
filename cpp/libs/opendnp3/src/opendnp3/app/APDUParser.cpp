@@ -260,7 +260,7 @@ APDUParser::Result APDUParser::ParseCountOfObjects(openpal::ReadOnlyBuffer& buff
 			return ParseCountOf<Group51Var1>(buffer, pLogger, record, count, pHandler);
 
 		case(GroupVariation::Group51Var2) :
-			return ParseCountOf<Group51Var1>(buffer, pLogger, record, count, pHandler);
+			return ParseCountOf<Group51Var2>(buffer, pLogger, record, count, pHandler);
 
 		case(GroupVariation::Group52Var2) :
 			return ParseCountOf<Group52Var2>(buffer, pLogger, record, count, pHandler);

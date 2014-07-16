@@ -52,23 +52,23 @@ public:
 
 	~MeasurementHandler();
 
-	void _OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override final;
-	void _OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) override final;
-	void _OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) override final;
-	void _OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) override final;
-	void _OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) override final;
-	void _OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) override final;
-	void _OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas)  final;
-	void _OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) override final;
+	void _OnRange(const HeaderRecord& record, TimestampMode stmode, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override final;
+	void _OnRange(const HeaderRecord& record, TimestampMode stmode, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) override final;
+	void _OnRange(const HeaderRecord& record, TimestampMode stmode, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) override final;
+	void _OnRange(const HeaderRecord& record, TimestampMode stmode, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) override final;
+	void _OnRange(const HeaderRecord& record, TimestampMode stmode, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) override final;
+	void _OnRange(const HeaderRecord& record, TimestampMode stmode, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) override final;
+	void _OnRange(const HeaderRecord& record, TimestampMode stmode, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas)  final;
+	void _OnRange(const HeaderRecord& record, TimestampMode stmode, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) override final;
 
-	void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override final;
-	void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) override final;
-	void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) override final;
-	void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) override final;
-	void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) override final;
-	void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) override final;
-	void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas) override final;
-	void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) override final;
+	void _OnIndexPrefix(const HeaderRecord& record, TimestampMode stmode, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override final;
+	void _OnIndexPrefix(const HeaderRecord& record, TimestampMode stmode, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) override final;
+	void _OnIndexPrefix(const HeaderRecord& record, TimestampMode stmode, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) override final;
+	void _OnIndexPrefix(const HeaderRecord& record, TimestampMode stmode, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) override final;
+	void _OnIndexPrefix(const HeaderRecord& record, TimestampMode stmode, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) override final;
+	void _OnIndexPrefix(const HeaderRecord& record, TimestampMode stmode, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) override final;
+	void _OnIndexPrefix(const HeaderRecord& record, TimestampMode stmode, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas) override final;
+	void _OnIndexPrefix(const HeaderRecord& record, TimestampMode stmode, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) override final;
 
 
 private:

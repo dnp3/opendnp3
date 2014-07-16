@@ -61,99 +61,100 @@ void MeasurementHandler::CheckForTxStart()
 	}
 }
 
-void MeasurementHandler::_OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)
+void MeasurementHandler::_OnRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)
 {
 	this->CheckForTxStart();
-	pSOEHandler->LoadStatic(meas);
+	pSOEHandler->OnReceiveHeader(record, tsmode, meas);
 }
 
-void MeasurementHandler::_OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas)
+void MeasurementHandler::_OnRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas)
 {
 	this->CheckForTxStart();
-	pSOEHandler->LoadStatic(meas);
+	pSOEHandler->OnReceiveHeader(record, tsmode, meas);
 }
 
-void MeasurementHandler::_OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas)
+void MeasurementHandler::_OnRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas)
 {
 	this->CheckForTxStart();
-	pSOEHandler->LoadStatic(meas);
+	pSOEHandler->OnReceiveHeader(record, tsmode, meas);
 }
 
-void MeasurementHandler::_OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)
+void MeasurementHandler::_OnRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)
 {
 	this->CheckForTxStart();
-	pSOEHandler->LoadStatic(meas);
+	pSOEHandler->OnReceiveHeader(record, tsmode, meas);
 }
 
-void MeasurementHandler::_OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas)
+void MeasurementHandler::_OnRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas)
 {
 	this->CheckForTxStart();
-	pSOEHandler->LoadStatic(meas);
+	pSOEHandler->OnReceiveHeader(record, tsmode, meas);
 }
 
-void MeasurementHandler::_OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)
+void MeasurementHandler::_OnRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)
 {
 	this->CheckForTxStart();
-	pSOEHandler->LoadStatic(meas);
+	pSOEHandler->OnReceiveHeader(record, tsmode, meas);
 }
 
-void MeasurementHandler::_OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas)
+void MeasurementHandler::_OnRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas)
 {
 	this->CheckForTxStart();
-	pSOEHandler->LoadStatic(meas);
+	pSOEHandler->OnReceiveHeader(record, tsmode, meas);
 }
 
-void MeasurementHandler::_OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas)
+void MeasurementHandler::_OnRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas)
 {
 	this->CheckForTxStart();
-	pSOEHandler->LoadStatic(meas);
+	pSOEHandler->OnReceiveHeader(record, tsmode, meas);
 }
 
-void MeasurementHandler::_OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)
+void MeasurementHandler::_OnIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)
 {
 	this->CheckForTxStart();
-	pSOEHandler->LoadEvent(meas);
+	pSOEHandler->OnReceiveHeader(record, tsmode, meas);
 }
 
-void MeasurementHandler::_OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas)
+void MeasurementHandler::_OnIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas)
 {
 	this->CheckForTxStart();
-	pSOEHandler->LoadEvent(meas);
+	pSOEHandler->OnReceiveHeader(record, tsmode, meas);
 }
 
-void MeasurementHandler::_OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas)
+void MeasurementHandler::_OnIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas)
 {
 	this->CheckForTxStart();
-	pSOEHandler->LoadEvent(meas);
+	pSOEHandler->OnReceiveHeader(record, tsmode, meas);
 }
 
-void MeasurementHandler::_OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)
-{
-	pSOEHandler->LoadEvent(meas);
-}
-
-void MeasurementHandler::_OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas)
+void MeasurementHandler::_OnIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)
 {
 	this->CheckForTxStart();
-	pSOEHandler->LoadEvent(meas);
+	pSOEHandler->OnReceiveHeader(record, tsmode, meas);
 }
 
-void MeasurementHandler::_OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)
+void MeasurementHandler::_OnIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas)
 {
 	this->CheckForTxStart();
-	pSOEHandler->LoadEvent(meas);
+	pSOEHandler->OnReceiveHeader(record, tsmode, meas);
 }
 
-void MeasurementHandler::_OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas)
+void MeasurementHandler::_OnIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)
 {
 	this->CheckForTxStart();
-	pSOEHandler->LoadEvent(meas);
+	pSOEHandler->OnReceiveHeader(record, tsmode, meas);
 }
 
-void MeasurementHandler::_OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas)
+void MeasurementHandler::_OnIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas)
 {
 	this->CheckForTxStart();
-	pSOEHandler->LoadEvent(meas);
+	pSOEHandler->OnReceiveHeader(record, tsmode, meas);
+}
+
+void MeasurementHandler::_OnIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas)
+{
+	this->CheckForTxStart();
+	pSOEHandler->OnReceiveHeader(record, tsmode, meas);
 }
 
 }

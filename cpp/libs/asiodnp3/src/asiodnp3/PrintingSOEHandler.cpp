@@ -28,89 +28,46 @@ namespace opendnp3
 
 PrintingSOEHandler PrintingSOEHandler::instance;
 
-void PrintingSOEHandler::LoadStatic(const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)
+void PrintingSOEHandler::OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)
 {
-	Print(meas, "Static - Binary");
+	Print(header, meas, tsmode, "Binary");
 }
 
-void PrintingSOEHandler::LoadStatic(const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas)
+void PrintingSOEHandler::OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas)
 {
-	Print(meas, "Static - DoubleBitBinary");
+	Print(header, meas, tsmode, "DoubleBitBinary");
 }
 
-void PrintingSOEHandler::LoadStatic(const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)
+void PrintingSOEHandler::OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)
 {
-	Print(meas, "Static - Analog");
+	Print(header, meas, tsmode, "Analog");
 }
 
-void PrintingSOEHandler::LoadStatic(const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)
+void PrintingSOEHandler::OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)
 {
-	Print(meas, "Static - Counter");
+	Print(header, meas, tsmode, "Counter");
 }
 
-void PrintingSOEHandler::LoadStatic(const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas)
+void PrintingSOEHandler::OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas)
 {
-	Print(meas, "Static - FrozenCounter");
+	Print(header, meas, tsmode, "FrozenCounter");
 }
 
-void PrintingSOEHandler::LoadStatic(const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas)
+void PrintingSOEHandler::OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas)
 {
-	Print(meas, "Static - BinaryOutputStatus");
+	Print(header, meas, tsmode, "BinaryOutputStatus");
 }
 
-void PrintingSOEHandler::LoadStatic(const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas)
+void PrintingSOEHandler::OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas)
 {
-	Print(meas, "Static - AnalogOutputStatus");
+	Print(header, meas, tsmode, "AnalogOutputStatus");
 }
 
-void PrintingSOEHandler::LoadStatic(const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas)
+void PrintingSOEHandler::OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas)
 {
 	meas.foreach([&](const IndexedValue<OctetString, uint16_t>& pair)
 	{
-		std::cout << "Static - OctetString " <<  " [" << pair.index << "] : Size : " << pair.value.ToReadOnly().Size() << std::endl;
-	});
-}
-
-void PrintingSOEHandler::LoadEvent(const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)
-{
-	Print(meas, "Event - Binary");
-}
-
-void PrintingSOEHandler::LoadEvent(const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas)
-{
-	Print(meas, "Event - DoubleBitBinary");
-}
-
-void PrintingSOEHandler::LoadEvent(const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)
-{
-	Print(meas, "Event - Analog");
-}
-
-void PrintingSOEHandler::LoadEvent(const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)
-{
-	Print(meas, "Event - Counter");
-}
-
-void PrintingSOEHandler::LoadEvent(const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas)
-{
-	Print(meas, "Event - FrozenCounter");
-}
-
-void PrintingSOEHandler::LoadEvent(const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas)
-{
-	Print(meas, "Event - BinaryOutputStatus");
-}
-
-void PrintingSOEHandler::LoadEvent(const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas)
-{
-	Print(meas, "Event - AnalogOutputStatus");
-}
-
-void PrintingSOEHandler::LoadEvent(const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas)
-{
-	meas.foreach([&](const IndexedValue<OctetString, uint16_t>& pair)
-	{
-		std::cout << "Event - OctetString " << " [" << pair.index << "] : Size : " << pair.value.ToReadOnly().Size() << std::endl;
+		std::cout << "OctetString " <<  " [" << pair.index << "] : Size : " << pair.value.ToReadOnly().Size() << std::endl;
 	});
 }
 

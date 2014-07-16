@@ -29,7 +29,8 @@ object CSharpEnumGenerator {
       ControlCode(),
       ChannelState(),
       TimeSyncMode(),
-      RestartMode()
+      RestartMode(),
+      TimestampMode()
     ).map(e => EnumConfig.apply(e, dir)) ::: events ::: qualityMasks
 
     implicit val indent = CppIndentation()

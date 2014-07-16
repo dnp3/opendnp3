@@ -31,6 +31,9 @@
 namespace opendnp3
 {
 
+// tells if type carries a timestamp
+bool TypeHasTimestamp(GroupVariation gv);
+
 enum class GroupVariationType : int
 {
     STATIC,
@@ -61,6 +64,9 @@ public:
 
 	GroupVariationRecord(uint8_t group_, uint8_t variation_, GroupVariation enumeration_, GroupVariationType type_);
 
+	GroupVariationRecord() : enumeration(GroupVariation::UNKNOWN), type(GroupVariationType::OTHER), group(0), variation(0)
+	{}
+
 	GroupVariation enumeration;
 	GroupVariationType type;
 	uint8_t group;
@@ -71,7 +77,10 @@ class HeaderRecord : public GroupVariationRecord
 {
 public:
 
-	HeaderRecord(const GroupVariationRecord& gv, QualifierCode qualifier_);
+	HeaderRecord() : qualifier(QualifierCode::UNDEFINED)
+	{}
+
+	HeaderRecord(const GroupVariationRecord& gv, QualifierCode qualifier_);	
 
 	QualifierCode qualifier;
 };

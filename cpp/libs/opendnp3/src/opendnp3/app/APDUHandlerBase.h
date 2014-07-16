@@ -25,9 +25,13 @@
 #include "opendnp3/app/IAPDUHandler.h"
 #include "opendnp3/app/IterableTransforms.h"
 
+#include "opendnp3/gen/TimestampMode.h"
+
 #include "opendnp3/LogLevels.h"
 #include <openpal/logging/LogMacros.h>
 #include <openpal/logging/Logger.h>
+
+
 
 namespace opendnp3
 {
@@ -117,7 +121,7 @@ public:
 protected:
 
 	void Reset();
-	bool GetCTO(uint64_t& cto);
+	TimestampMode GetCTO(uint64_t& cto);
 
 	inline uint32_t GetCurrentHeader()
 	{
@@ -141,23 +145,23 @@ protected:
 	virtual void _OnCountOf(const HeaderRecord& record, const IterableBuffer<Group50Var1>& objects);
 	virtual void _OnCountOf(const HeaderRecord& record, const IterableBuffer<Group52Var2>&);
 
-	virtual void _OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas);
-	virtual void _OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas);
-	virtual void _OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas);
-	virtual void _OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas);
-	virtual void _OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas);
-	virtual void _OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas);
-	virtual void _OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas);
-	virtual void _OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas);
+	virtual void _OnRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas);
+	virtual void _OnRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas);
+	virtual void _OnRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas);
+	virtual void _OnRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas);
+	virtual void _OnRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas);
+	virtual void _OnRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas);
+	virtual void _OnRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas);
+	virtual void _OnRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas);
 
-	virtual void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas);
-	virtual void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas);
-	virtual void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas);
-	virtual void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas);
-	virtual void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas);
-	virtual void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas);
-	virtual void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas);
-	virtual void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas);
+	virtual void _OnIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas);
+	virtual void _OnIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas);
+	virtual void _OnIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas);
+	virtual void _OnIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas);
+	virtual void _OnIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas);
+	virtual void _OnIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas);
+	virtual void _OnIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas);
+	virtual void _OnIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas);
 
 	virtual void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint16_t>>& meas);
 	virtual void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint16_t>>& meas);
@@ -179,8 +183,12 @@ protected:
 
 private:
 
+	static TimestampMode ModeFromType(GroupVariation gv);
+
 	uint64_t cto;
-	int32_t ctoHeader;
+	uint32_t ctoHeader;
+	TimestampMode ctoMode;
+
 	int32_t currentHeader;
 
 	template <class T>
@@ -197,7 +205,8 @@ template <class T>
 void APDUHandlerBase::OnIndexPrefixCTO(const HeaderRecord& record, const IterableBuffer<IndexedValue<T, uint16_t>>& meas)
 {
 	uint64_t commonTime;
-	if (GetCTO(commonTime))
+	auto mode = GetCTO(commonTime);
+	if (mode != TimestampMode::INVALID)
 	{
 		auto transform = MapIterableBuffer< IndexedValue<T, uint16_t>, IndexedValue<T, uint16_t> >(&meas,
 
@@ -209,7 +218,7 @@ void APDUHandlerBase::OnIndexPrefixCTO(const HeaderRecord& record, const Iterabl
 		}
 
 		                                                                                          );
-		this->_OnIndexPrefix(record, transform);
+		this->_OnIndexPrefix(record, mode, transform);
 	}
 	else
 	{

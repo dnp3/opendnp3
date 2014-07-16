@@ -26,6 +26,8 @@
 #include "opendnp3/app/IndexedValue.h"
 #include "opendnp3/app/MeasurementTypes.h"
 #include "opendnp3/app/OctetString.h"
+#include "opendnp3/app/GroupVariationRecord.h"
+#include "opendnp3/gen/TimestampMode.h"
 
 namespace opendnp3
 {
@@ -41,23 +43,14 @@ class ISOEHandler : public ITransactable
 {
 public:
 
-	virtual void LoadStatic(const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) = 0;
-	virtual void LoadStatic(const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) = 0;
-	virtual void LoadStatic(const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) = 0;
-	virtual void LoadStatic(const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) = 0;
-	virtual void LoadStatic(const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) = 0;
-	virtual void LoadStatic(const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) = 0;
-	virtual void LoadStatic(const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas) = 0;
-	virtual void LoadStatic(const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) = 0;
-
-	virtual void LoadEvent(const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) = 0;
-	virtual void LoadEvent(const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) = 0;
-	virtual void LoadEvent(const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) = 0;
-	virtual void LoadEvent(const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) = 0;
-	virtual void LoadEvent(const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) = 0;
-	virtual void LoadEvent(const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) = 0;
-	virtual void LoadEvent(const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas) = 0;
-	virtual void LoadEvent(const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) = 0;
+	virtual void OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) = 0;
+	virtual void OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) = 0;
+	virtual void OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) = 0;
+	virtual void OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) = 0;
+	virtual void OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) = 0;
+	virtual void OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) = 0;
+	virtual void OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas) = 0;
+	virtual void OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) = 0;
 
 	virtual ~ISOEHandler() {}
 };
@@ -73,23 +66,14 @@ public:
 		return instance;
 	}
 
-	void LoadStatic(const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override final {}
-	void LoadStatic(const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) override final {}
-	void LoadStatic(const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) override final {}
-	void LoadStatic(const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) override final {}
-	void LoadStatic(const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) override final {}
-	void LoadStatic(const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) override final {}
-	void LoadStatic(const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas) override final {}
-	void LoadStatic(const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) override final {}
-
-	void LoadEvent(const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override final {}
-	void LoadEvent(const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) override final {}
-	void LoadEvent(const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) override final {}
-	void LoadEvent(const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) override final {}
-	void LoadEvent(const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) override final {}
-	void LoadEvent(const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) override final {}
-	void LoadEvent(const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas) override final {}
-	void LoadEvent(const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) override final {}
+	virtual void OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override final {}
+	virtual void OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) override final {}
+	virtual void OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) override final {}
+	virtual void OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)  override final {}
+	virtual void OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas)  override final {}
+	virtual void OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas)  override final {}
+	virtual void OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas)  override final {}
+	virtual void OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas)  override final {}
 
 protected:
 

@@ -24,6 +24,45 @@
 namespace opendnp3
 {
 
+
+bool TypeHasTimestamp(GroupVariation gv)
+{
+	switch (gv)
+	{
+	case(GroupVariation::Group2Var2) :
+	case(GroupVariation::Group2Var3) :
+
+	case(GroupVariation::Group4Var2) :
+	case(GroupVariation::Group4Var3) :
+
+	case(GroupVariation::Group11Var2) :
+
+	// group 21 (frozen counters) is the only static type with a timestamp
+	case(GroupVariation::Group21Var5) :
+	case(GroupVariation::Group21Var6) :
+	
+	case(GroupVariation::Group22Var5) :
+	case(GroupVariation::Group22Var6) :
+
+	case(GroupVariation::Group23Var5) :
+	case(GroupVariation::Group23Var6) :
+
+	case(GroupVariation::Group32Var3) :
+	case(GroupVariation::Group32Var4) :
+	case(GroupVariation::Group32Var7) :
+	case(GroupVariation::Group32Var8) :
+
+	case(GroupVariation::Group42Var3) :
+	case(GroupVariation::Group42Var4) :
+	case(GroupVariation::Group42Var7) :
+	case(GroupVariation::Group42Var8) :
+
+		return true;
+	default:
+		return false;
+	}
+}
+
 GroupVariationRecord::GroupVariationRecord(uint8_t group_, uint8_t variation_, GroupVariation enumeration_, GroupVariationType type_) :
 	enumeration(enumeration_),
 	type(type_),

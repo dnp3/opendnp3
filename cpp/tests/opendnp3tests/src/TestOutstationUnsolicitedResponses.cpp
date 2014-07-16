@@ -57,11 +57,7 @@ TEST_CASE(SUITE("UnsolRetryDelay"))
 	REQUIRE(t.NumPendingTimers() ==  1); // confirm timer
 	REQUIRE(t.AdvanceToNextTimer());
 
-	REQUIRE(t.lower.NumWrites() == 0);
-	REQUIRE(t.NumPendingTimers() == 1); // unsol retry timer
-	REQUIRE(t.AdvanceToNextTimer());
-	
-	// repeats the null unsol packet with the next sequence #
+	// immediately retries with new sequence #
 	REQUIRE(t.lower.PopWriteAsHex() == hex::NullUnsolicited(1, IINField(IINBit::DEVICE_RESTART)));
 }
 

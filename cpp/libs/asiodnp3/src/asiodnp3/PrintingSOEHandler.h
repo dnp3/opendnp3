@@ -38,23 +38,15 @@ public:
 		return instance;
 	}
 
-	void LoadStatic(const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override final;
-	void LoadStatic(const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) override final;
-	void LoadStatic(const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) override final;
-	void LoadStatic(const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) override final;
-	void LoadStatic(const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) override final;
-	void LoadStatic(const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) override final;
-	void LoadStatic(const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas) override final;
-	void LoadStatic(const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) override final;
-
-	void LoadEvent(const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override final;
-	void LoadEvent(const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) override final;
-	void LoadEvent(const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) override final;
-	void LoadEvent(const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) override final;
-	void LoadEvent(const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) override final;
-	void LoadEvent(const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) override final;
-	void LoadEvent(const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas) override final;
-	void LoadEvent(const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) override final;
+	void OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override final;
+	void OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) override final;
+	void OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) override final;
+	void OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) override final;
+	void OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) override final;
+	void OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) override final;
+	void OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas) override final;
+	void OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) override final;
+	
 
 protected:
 
@@ -64,15 +56,16 @@ protected:
 private:
 
 	template <class T>
-	static void Print(const IterableBuffer<IndexedValue<T, uint16_t>>& buffer, const std::string& name)
+	static void Print(const HeaderRecord& header, const IterableBuffer<IndexedValue<T, uint16_t>>& buffer, TimestampMode tsmode, const std::string& name)
 	{
+		std::cout << "Group " << static_cast<int>(header.group) << " Var " << static_cast<int>(header.variation) << std::endl;
 		buffer.foreach([&](const IndexedValue<T, uint16_t>& pair)
 		{
 
 			std::cout << name << " [" << pair.index << "] : " <<
 			          ValueToString(pair.value) << " : " <<
 			          static_cast<int>(pair.value.quality) << " : " <<
-			          GetTimeString(pair.value) <<
+					  GetTimeString(pair.value, tsmode) <<
 			          std::endl;
 		});
 	}
@@ -85,10 +78,22 @@ private:
 		return oss.str();
 	}
 
-	static std::string GetTimeString(const Measurement& meas)
+	static std::string GetTimeString(const Measurement& meas, TimestampMode tsmode)
 	{
-		std::ostringstream oss;		
-		oss << meas.time;		
+		std::ostringstream oss;	
+		switch (tsmode)
+		{
+			case(TimestampMode::SYNCHRONIZED) :
+				oss << meas.time << " (synchronized)";
+				break;
+			case(TimestampMode::UNSYNCHRONIZED):
+				oss << meas.time << " (unsynchronized)";
+				break;
+			default:
+				oss << "(no timestamp)";
+				break;
+		}
+		
 		return oss.str();
 	}
 
