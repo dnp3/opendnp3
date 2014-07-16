@@ -60,9 +60,13 @@ namespace Automatak.DNP3.Interface
             {
                 return flags;
             }
+            set
+            {
+                flags = value;
+            }
         }
 
-        private readonly System.UInt32 flags;
+        private System.UInt32 flags;
     };
 
     /// <summary>
