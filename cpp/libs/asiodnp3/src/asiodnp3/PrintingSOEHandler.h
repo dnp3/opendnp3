@@ -58,17 +58,18 @@ private:
 	template <class T>
 	static void Print(const HeaderRecord& header, const IterableBuffer<IndexedValue<T, uint16_t>>& buffer, TimestampMode tsmode, const std::string& name)
 	{
-		std::cout << "Group " << static_cast<int>(header.group) << " Var " << static_cast<int>(header.variation) << std::endl;
+		std::cout << "Header: " << " Group" << static_cast<int>(header.group) << "Var" << static_cast<int>(header.variation);
+		std::cout << " (" << name << ") " << QualifierCodeToString(header.qualifier) << " timestamps: " << GetTimeString(tsmode) << std::endl;
+
 		buffer.foreach([&](const IndexedValue<T, uint16_t>& pair)
 		{
 
 			std::cout << name << " [" << pair.index << "] : " <<
 			          ValueToString(pair.value) << " : " <<
 			          static_cast<int>(pair.value.quality) << " : " <<
-					  GetTimeString(pair.value, tsmode) <<
-			          std::endl;
+					  pair.value.time << std::endl;
 		});
-	}
+	}	
 
 	template <class T>
 	static std::string ValueToString(const T& meas)
@@ -78,19 +79,19 @@ private:
 		return oss.str();
 	}
 
-	static std::string GetTimeString(const Measurement& meas, TimestampMode tsmode)
+	static std::string GetTimeString(TimestampMode tsmode)
 	{
 		std::ostringstream oss;	
 		switch (tsmode)
 		{
 			case(TimestampMode::SYNCHRONIZED) :
-				oss << meas.time << " (synchronized)";
+				return "synchronized";
 				break;
 			case(TimestampMode::UNSYNCHRONIZED):
-				oss << meas.time << " (unsynchronized)";
+				oss << "unsynchronized";
 				break;
 			default:
-				oss << "(no timestamp)";
+				oss << "no timestamp";
 				break;
 		}
 		
