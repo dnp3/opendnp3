@@ -33,6 +33,7 @@
 #include "opendnp3/app/GroupVariationID.h"
 
 #include <openpal/container/Settable.h>
+#include <openpal/serialization/Serialization.h>
 
 namespace opendnp3
 {

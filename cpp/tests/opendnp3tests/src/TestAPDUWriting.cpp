@@ -153,6 +153,7 @@ TEST_CASE(SUITE("PrefixWriteIteratorCTO"))
 	{
 		auto iter = writer.IterateOverCountWithPrefixAndCTO<UInt16, Binary>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group2Var3Serializer::Inst(), cto);
 		REQUIRE(iter.IsValid());
+
 		REQUIRE(iter.Write(Binary(true, 0x01, 0x0B), 6));
 		REQUIRE(iter.Write(Binary(true, 0x01, 0x0C), 7));		
 	}

@@ -67,7 +67,7 @@ public:
 		}
 	}	
 
-	bool Write(WriteType& value, typename PrefixType::Type index)
+	bool Write(const WriteType& value, typename PrefixType::Type index)
 	{
 		if (isValid && (pPosition->Size() >= sizeOfTypePlusIndex))
 		{

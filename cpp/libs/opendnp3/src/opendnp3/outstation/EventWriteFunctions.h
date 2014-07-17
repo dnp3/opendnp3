@@ -70,7 +70,7 @@ bool EventWriteFunctions::WriteFixedSizeWithCTO(const EventWriteLimits& limits, 
 }
 
 template <class Target>
-static bool EventWriteFunctions::WriteFixedSizeWithPrefixIterator(const EventWriteLimits& limits, PrefixedWriteIterator<openpal::UInt16, Target>& writer, openpal::ListNode<SOERecord>* start, const ListIterator& writeCallback)
+bool EventWriteFunctions::WriteFixedSizeWithPrefixIterator(const EventWriteLimits& limits, PrefixedWriteIterator<openpal::UInt16, Target>& writer, openpal::ListNode<SOERecord>* start, const ListIterator& writeCallback)
 {
 	/// initialize with the limits, and decrement as write items with certain classes
 	EventWriteLimits remainder(limits);
@@ -81,7 +81,7 @@ static bool EventWriteFunctions::WriteFixedSizeWithPrefixIterator(const EventWri
 
 		Target measurement;
 
-		while (pNode && (pNode->value.type == typename Target::EventTypeEnum) && remainder.CanWrite(pNode->value.clazz) && pNode->value.erasure.Read(measurement))
+		while (pNode && (pNode->value.type == Target::EventTypeEnum) && remainder.CanWrite(pNode->value.clazz) && pNode->value.erasure.Read(measurement))
 		{
 			if (writer.Write(measurement, pNode->value.index))
 			{
@@ -116,7 +116,7 @@ bool EventWriteFunctions::WriteFixedSizeWithPrefixIteratorAndCTO(const EventWrit
 
 		Target measurement;		
 
-		while (pNode && (pNode->value.type == typename Target::EventTypeEnum) && remainder.CanWrite(pNode->value.clazz) && pNode->value.erasure.Read(measurement))
+		while (pNode && (pNode->value.type == Target::EventTypeEnum) && remainder.CanWrite(pNode->value.clazz) && pNode->value.erasure.Read(measurement))
 		{
 			if (measurement.time < cto.time)
 			{

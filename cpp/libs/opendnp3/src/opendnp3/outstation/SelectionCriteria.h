@@ -29,6 +29,7 @@
 
 #include "opendnp3/outstation/EventWriteOperation.h"
 #include "opendnp3/outstation/EventResponseConfig.h"
+#include "opendnp3/outstation/EventResponseTypes.h"
 #include "opendnp3/app/IINField.h"
 
 #include <openpal/util/Limits.h>
@@ -95,9 +96,9 @@ private:
 
 	bool HasTypeSelection() const;
 
-	IINField SelectionCriteria::RecordClass(EventClass ec, uint32_t count);
+	IINField RecordClass(EventClass ec, uint32_t count);
 	
-	IINField SelectionCriteria::RecordEventType(EventType type, EventHeaderWriteFunc function, uint32_t count);	
+	IINField RecordEventType(EventType type, EventHeaderWriteFunc function, uint32_t count);	
 
 	static EventHeaderWriteFunc GetDefaultWriteFunction(const EventResponseConfig& config, EventType type);
 
@@ -105,7 +106,7 @@ private:
 	IINField RecordType(typename Target::EventResponseEnum enumeration, uint32_t count)
 	{
 		auto function = EventResponseTypes::Lookup(enumeration);
-		return RecordEventType(typename Target::EventTypeEnum, function, count);
+		return RecordEventType(Target::EventTypeEnum, function, count);
 	}
 
 	Mode mode;

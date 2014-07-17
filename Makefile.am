@@ -70,8 +70,10 @@ cpp/libs/opendnp3/src/opendnp3/app/BitReader.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/ClassField.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/ControlRelayOutputBlock.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/EventTriggers.cpp \
+cpp/libs/opendnp3/src/opendnp3/app/FunctionHelpers.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/GroupVariationRecord.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/IINField.cpp \
+cpp/libs/opendnp3/src/opendnp3/app/MeasurementTypes.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/ObjectWriter.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/OctetData.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/StaticRange.cpp \
@@ -158,6 +160,7 @@ cpp/libs/opendnp3/src/opendnp3/objects/Group50.cpp \
 cpp/libs/opendnp3/src/opendnp3/objects/Group51.cpp \
 cpp/libs/opendnp3/src/opendnp3/objects/Group52.cpp \
 cpp/libs/opendnp3/src/opendnp3/objects/Group60.cpp \
+cpp/libs/opendnp3/src/opendnp3/outstation/ApplicationIIN.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/ClassBasedRequestHandler.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/CommandActionAdapter.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/CommandResponseHandler.cpp \
@@ -168,7 +171,7 @@ cpp/libs/opendnp3/src/opendnp3/outstation/EventCount.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/EventResponseConfig.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/EventResponseContext.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/EventResponseTypes.cpp \
-cpp/libs/opendnp3/src/opendnp3/outstation/EventWriter.cpp \
+cpp/libs/opendnp3/src/opendnp3/outstation/EventWriteOperation.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/IINHelpers.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/IOutstationApplication.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/OutstationContext.cpp \
@@ -180,11 +183,12 @@ cpp/libs/opendnp3/src/opendnp3/outstation/OutstationUnsolicitedStates.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/ReadHandler.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/ResponseContext.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/SelectionCriteria.cpp \
-cpp/libs/opendnp3/src/opendnp3/outstation/SelectionIterator.cpp \
+cpp/libs/opendnp3/src/opendnp3/outstation/SelectionWriter.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/SimpleCommandHandler.cpp \
+cpp/libs/opendnp3/src/opendnp3/outstation/SOERecord.cpp \
+cpp/libs/opendnp3/src/opendnp3/outstation/StaticLoadFunctions.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/StaticResponseConfig.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/StaticResponseContext.cpp \
-cpp/libs/opendnp3/src/opendnp3/outstation/StaticResponseTypes.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/TimeTransaction.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/WriteHandler.cpp \
 cpp/libs/opendnp3/src/opendnp3/transport/TransportLayer.cpp \
@@ -236,7 +240,6 @@ openpaltest_LDADD = libopenpal.la
 openpaltest_SOURCES = \
 cpp/tests/openpaltests/src/CatchTestStart.cpp \
 cpp/tests/openpaltests/src/LinkedListAdapterTestSuite.cpp \
-cpp/tests/openpaltests/src/RandomInsertAdapterTestSuite.cpp \
 cpp/tests/openpaltests/src/RingBufferTestSuite.cpp \
 cpp/tests/openpaltests/src/StackAdapterTestSuite.cpp \
 cpp/tests/openpaltests/src/StaticPriorityQueueTestSuite.cpp \
@@ -252,10 +255,8 @@ cpp/tests/opendnp3tests/src/APDUHexBuilders.cpp \
 cpp/tests/opendnp3tests/src/BufferHelpers.cpp \
 cpp/tests/opendnp3tests/src/BufferTestObject.cpp \
 cpp/tests/opendnp3tests/src/CatchTestStart.cpp \
-cpp/tests/opendnp3tests/src/ComparingDataObserver.cpp \
 cpp/tests/opendnp3tests/src/CopyableBuffer.cpp \
 cpp/tests/opendnp3tests/src/DNPHelpers.cpp \
-cpp/tests/opendnp3tests/src/FlexibleDataObserver.cpp \
 cpp/tests/opendnp3tests/src/HexConversions.cpp \
 cpp/tests/opendnp3tests/src/LinkLayerRouterTest.cpp \
 cpp/tests/opendnp3tests/src/LinkLayerTest.cpp \
@@ -325,4 +326,5 @@ cpp/tests/opendnp3tests/src/TransportLoopbackTestObject.cpp \
 cpp/tests/opendnp3tests/src/TransportScalabilityTestObject.cpp \
 cpp/tests/opendnp3tests/src/TransportStackPair.cpp \
 cpp/tests/opendnp3tests/src/TransportTestObject.cpp
+
 
