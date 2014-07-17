@@ -39,13 +39,17 @@ namespace Automatak.Simulator.DNP3
 
         public MeasurementCache(DatabaseTemplate template)
         {
-            LoadStatic(template.binaries.SelectWithIndex((m, i) => new IndexedValue<Binary>(new Binary(m.quality), i)));
-            LoadStatic(template.doubleBinaries.SelectWithIndex((m, i) => new IndexedValue<DoubleBitBinary>(new DoubleBitBinary(m.quality), i)));
-            LoadStatic(template.counters.SelectWithIndex((m, i) => new IndexedValue<Counter>(new Counter(m.quality), i)));
-            LoadStatic(template.frozenCounters.SelectWithIndex((m, i) => new IndexedValue<FrozenCounter>(new FrozenCounter(m.quality), i)));
-            LoadStatic(template.analogs.SelectWithIndex((m, i) => new IndexedValue<Analog>(new Analog(m.quality), i)));
-            LoadStatic(template.binaryOutputStatii.SelectWithIndex((m, i) => new IndexedValue<BinaryOutputStatus>(new BinaryOutputStatus(m.quality), i)));
-            LoadStatic(template.analogOutputStatii.SelectWithIndex((m, i) => new IndexedValue<AnalogOutputStatus>(new AnalogOutputStatus(m.quality), i)));            
+            var info = new HeaderInfo(GroupVariation.UNKNOWN, QualifierCode.UNDEFINED, TimestampMode.SYNCHRONIZED);
+
+            ISOEHandler handler = this;
+
+            handler.OnReceiveHeader(info, template.binaries.SelectWithIndex((m, i) => new IndexedValue<Binary>(new Binary(m.quality), i)));
+            handler.OnReceiveHeader(info, template.doubleBinaries.SelectWithIndex((m, i) => new IndexedValue<DoubleBitBinary>(new DoubleBitBinary(m.quality), i)));
+            handler.OnReceiveHeader(info, template.counters.SelectWithIndex((m, i) => new IndexedValue<Counter>(new Counter(m.quality), i)));
+            handler.OnReceiveHeader(info, template.frozenCounters.SelectWithIndex((m, i) => new IndexedValue<FrozenCounter>(new FrozenCounter(m.quality), i)));
+            handler.OnReceiveHeader(info, template.analogs.SelectWithIndex((m, i) => new IndexedValue<Analog>(new Analog(m.quality), i)));
+            handler.OnReceiveHeader(info, template.binaryOutputStatii.SelectWithIndex((m, i) => new IndexedValue<BinaryOutputStatus>(new BinaryOutputStatus(m.quality), i)));
+            handler.OnReceiveHeader(info, template.analogOutputStatii.SelectWithIndex((m, i) => new IndexedValue<AnalogOutputStatus>(new AnalogOutputStatus(m.quality), i)));            
         }
 
         public MeasurementCache()
@@ -61,95 +65,7 @@ namespace Automatak.Simulator.DNP3
         void ISOEHandler.End()
         {
             Monitor.Exit(mutex);          
-        }
-
-        public void LoadStatic(IEnumerable<IndexedValue<Binary>> values)
-        {
-            var converted = values.Select(m => m.Value.ToMeasurement(m.Index));
-            binaries.Update(converted);
-        }
-
-        public void LoadStatic(IEnumerable<IndexedValue<DoubleBitBinary>> values)
-        {
-            var converted = values.Select(m => m.Value.ToMeasurement(m.Index));
-            doubleBinaries.Update(converted);
-        }
-
-        public void LoadStatic(IEnumerable<IndexedValue<Analog>> values)
-        {
-            var converted = values.Select(m => m.Value.ToMeasurement(m.Index));
-            analogs.Update(converted);
-        }
-
-        public void LoadStatic(IEnumerable<IndexedValue<Counter>> values)
-        {
-            var converted = values.Select(m => m.Value.ToMeasurement(m.Index));
-            counters.Update(converted);
-        }
-
-        public void LoadStatic(IEnumerable<IndexedValue<FrozenCounter>> values)
-        {
-            var converted = values.Select(m => m.Value.ToMeasurement(m.Index));
-            frozenCounters.Update(converted);
-        }
-
-        public void LoadStatic(IEnumerable<IndexedValue<BinaryOutputStatus>> values)
-        {
-            var converted = values.Select(m => m.Value.ToMeasurement(m.Index));
-            binaryOutputStatii.Update(converted);
-        }
-
-        public void LoadStatic(IEnumerable<IndexedValue<AnalogOutputStatus>> values)
-        {
-            var converted = values.Select(m => m.Value.ToMeasurement(m.Index));
-            analogOutputStatii.Update(converted);
-        }
-
-        public void LoadStatic(IEnumerable<IndexedValue<OctetString>> values)
-        {
-            var converted = values.Select(m => m.Value.ToMeasurement(m.Index));
-            octetStrings.Update(converted);
-        }
-
-        public void LoadEvent(IEnumerable<IndexedValue<Binary>> values)
-        {
-            LoadStatic(values);
-        }
-
-        public void LoadEvent(IEnumerable<IndexedValue<DoubleBitBinary>> values)
-        {
-            LoadStatic(values);
-        }
-
-        public void LoadEvent(IEnumerable<IndexedValue<Analog>> values)
-        {
-            LoadStatic(values);
-        }
-
-        public void LoadEvent(IEnumerable<IndexedValue<Counter>> values)
-        {
-            LoadStatic(values);
-        }
-
-        public void LoadEvent(IEnumerable<IndexedValue<FrozenCounter>> values)
-        {
-            LoadStatic(values);
-        }
-
-        public void LoadEvent(IEnumerable<IndexedValue<BinaryOutputStatus>> values)
-        {
-            LoadStatic(values);
-        }
-
-        public void LoadEvent(IEnumerable<IndexedValue<AnalogOutputStatus>> values)
-        {
-            LoadStatic(values);
-        }
-
-        public void LoadEvent(IEnumerable<IndexedValue<OctetString>> values)
-        {
-            LoadStatic(values);
-        }
+        }       
 
         MeasurementCollection GetCollectionMaybeNull(MeasType type)
         {
@@ -250,42 +166,91 @@ namespace Automatak.Simulator.DNP3
 
         void IDatabase.Update(Binary update, ushort index)
         {
-            binaries.Update(update.ToMeasurement(index));
+            binaries.Update(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED));
         }
 
         void IDatabase.Update(DoubleBitBinary update, ushort index)
         {
-            doubleBinaries.Update(update.ToMeasurement(index));
+            doubleBinaries.Update(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED));
         }
 
         void IDatabase.Update(Analog update, ushort index)
-        {            
-            analogs.Update(update.ToMeasurement(index));
+        {
+            analogs.Update(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED));
         }
 
         void IDatabase.Update(Counter update, ushort index)
-        {            
-            counters.Update(update.ToMeasurement(index));
+        {
+            counters.Update(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED));
         }
 
         void IDatabase.Update(FrozenCounter update, ushort index)
-        {            
-            frozenCounters.Update(update.ToMeasurement(index));
+        {
+            frozenCounters.Update(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED));
         }
 
         void IDatabase.Update(BinaryOutputStatus update, ushort index)
-        {           
-            binaryOutputStatii.Update(update.ToMeasurement(index));
+        {
+            binaryOutputStatii.Update(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED));
         }
 
         void IDatabase.Update(AnalogOutputStatus update, ushort index)
-        {            
-            analogOutputStatii.Update(update.ToMeasurement(index));
+        {
+            analogOutputStatii.Update(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED));
         }
 
         void IDatabase.End()
         {
             Monitor.Exit(mutex);
-        }        
+        }
+
+
+        void ISOEHandler.OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<Binary>> values)
+        {
+            var converted = values.Select(m => m.Value.ToMeasurement(m.Index, info.tsmode));
+            binaries.Update(converted);
+        }
+
+        void ISOEHandler.OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<DoubleBitBinary>> values)
+        {
+            var converted = values.Select(m => m.Value.ToMeasurement(m.Index, info.tsmode));
+            doubleBinaries.Update(converted);
+        }
+
+        void ISOEHandler.OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<Analog>> values)
+        {
+            var converted = values.Select(m => m.Value.ToMeasurement(m.Index, info.tsmode));
+            analogs.Update(converted);
+        }
+
+        void ISOEHandler.OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<Counter>> values)
+        {
+            var converted = values.Select(m => m.Value.ToMeasurement(m.Index, info.tsmode));
+            counters.Update(converted);
+        }
+
+        void ISOEHandler.OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<FrozenCounter>> values)
+        {
+            var converted = values.Select(m => m.Value.ToMeasurement(m.Index, info.tsmode));
+            frozenCounters.Update(converted);
+        }
+
+        void ISOEHandler.OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<BinaryOutputStatus>> values)
+        {
+            var converted = values.Select(m => m.Value.ToMeasurement(m.Index, info.tsmode));
+            binaryOutputStatii.Update(converted);
+        }
+
+        void ISOEHandler.OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<AnalogOutputStatus>> values)
+        {
+            var converted = values.Select(m => m.Value.ToMeasurement(m.Index, info.tsmode));
+            analogOutputStatii.Update(converted);
+        }
+
+        void ISOEHandler.OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<OctetString>> values)
+        {
+            var converted = values.Select(m => m.Value.ToMeasurement(m.Index, info.tsmode));
+            octetStrings.Update(converted);
+        }
     }
 }

@@ -30,41 +30,43 @@ PrintingSOEHandler PrintingSOEHandler::instance;
 
 void PrintingSOEHandler::OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)
 {
-	Print(header, meas, tsmode, "Binary");
+	Print(header, meas, tsmode);
 }
 
 void PrintingSOEHandler::OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas)
 {
-	Print(header, meas, tsmode, "DoubleBitBinary");
+	Print(header, meas, tsmode);
 }
 
 void PrintingSOEHandler::OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)
 {
-	Print(header, meas, tsmode, "Analog");
+	Print(header, meas, tsmode);
 }
 
 void PrintingSOEHandler::OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)
 {
-	Print(header, meas, tsmode, "Counter");
+	Print(header, meas, tsmode);
 }
 
 void PrintingSOEHandler::OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas)
 {
-	Print(header, meas, tsmode, "FrozenCounter");
+	Print(header, meas, tsmode);
 }
 
 void PrintingSOEHandler::OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas)
 {
-	Print(header, meas, tsmode, "BinaryOutputStatus");
+	Print(header, meas, tsmode);
 }
 
 void PrintingSOEHandler::OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas)
 {
-	Print(header, meas, tsmode, "AnalogOutputStatus");
+	Print(header, meas, tsmode);
 }
 
 void PrintingSOEHandler::OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas)
 {
+	this->PrintHeaderInfo(header, tsmode);
+
 	meas.foreach([&](const IndexedValue<OctetString, uint16_t>& pair)
 	{
 		std::cout << "OctetString " <<  " [" << pair.index << "] : Size : " << pair.value.ToReadOnly().Size() << std::endl;

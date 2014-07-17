@@ -51,7 +51,21 @@ namespace Automatak.DNP3.Interface
         {
             get { return index; }
         }
-    }    
+    }
+
+    public class HeaderInfo
+    {
+        public HeaderInfo(GroupVariation variation, QualifierCode qualifier, TimestampMode tsmode)
+        {
+            this.variation = variation;
+            this.qualifier = qualifier;
+            this.tsmode = tsmode;
+        }
+
+        public readonly GroupVariation variation;
+        public readonly QualifierCode qualifier;
+        public readonly TimestampMode tsmode;
+    }
 
     /// <summary>
     /// Interface called to receive measurement callbacks from the master
@@ -61,22 +75,13 @@ namespace Automatak.DNP3.Interface
             void Start();
             void End();
 
-            void LoadStatic(IEnumerable<IndexedValue<Binary>> values);
-            void LoadStatic(IEnumerable<IndexedValue<DoubleBitBinary>> values);
-            void LoadStatic(IEnumerable<IndexedValue<Analog>> values);
-            void LoadStatic(IEnumerable<IndexedValue<Counter>> values);
-            void LoadStatic(IEnumerable<IndexedValue<FrozenCounter>> values);
-            void LoadStatic(IEnumerable<IndexedValue<BinaryOutputStatus>> values);
-            void LoadStatic(IEnumerable<IndexedValue<AnalogOutputStatus>> values);
-            void LoadStatic(IEnumerable<IndexedValue<OctetString>> values);
-
-	        void LoadEvent(IEnumerable<IndexedValue<Binary>> values);
-	        void LoadEvent(IEnumerable<IndexedValue<DoubleBitBinary>> values);
-	        void LoadEvent(IEnumerable<IndexedValue<Analog>> values);
-	        void LoadEvent(IEnumerable<IndexedValue<Counter>> values);
-	        void LoadEvent(IEnumerable<IndexedValue<FrozenCounter>> values);
-	        void LoadEvent(IEnumerable<IndexedValue<BinaryOutputStatus>> values);
-	        void LoadEvent(IEnumerable<IndexedValue<AnalogOutputStatus>> values);
-            void LoadEvent(IEnumerable<IndexedValue<OctetString>> values);
+            void OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<Binary>> values);
+            void OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<DoubleBitBinary>> values);
+            void OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<Analog>> values);
+            void OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<Counter>> values);
+            void OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<FrozenCounter>> values);
+            void OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<BinaryOutputStatus>> values);
+            void OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<AnalogOutputStatus>> values);
+            void OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<OctetString>> values);	        
 	}
 }

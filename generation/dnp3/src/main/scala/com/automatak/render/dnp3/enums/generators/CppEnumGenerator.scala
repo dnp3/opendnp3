@@ -31,7 +31,8 @@ object CppEnumGenerator {
       EnumConfig(ChannelState(), false, true),
       EnumConfig(TimeSyncMode(), false, false),
       EnumConfig(RestartMode(), false, false),
-      EnumConfig(TimestampMode(), false, false)
+      EnumConfig(TimestampMode(), false, false),
+      EnumConfig(QualifierCode(), true, true)
     ) ::: EventTypes.enums.map(m => EnumConfig(m, true, false)) ::: QualityMasks.enums.map(m => EnumConfig(m, false, false))
 
     // list of all enumerations that we want to generate

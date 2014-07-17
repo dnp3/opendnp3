@@ -55,16 +55,21 @@ protected:
 
 private:
 
-	template <class T>
-	static void Print(const HeaderRecord& header, const IterableBuffer<IndexedValue<T, uint16_t>>& buffer, TimestampMode tsmode, const std::string& name)
+	static void PrintHeaderInfo(const HeaderRecord& header, TimestampMode tsmode)
 	{
 		std::cout << "Header: " << " Group" << static_cast<int>(header.group) << "Var" << static_cast<int>(header.variation);
-		std::cout << " (" << name << ") " << QualifierCodeToString(header.qualifier) << " timestamps: " << GetTimeString(tsmode) << std::endl;
+		std::cout << QualifierCodeToString(header.qualifier) << " timestamps: " << GetTimeString(tsmode) << std::endl;
+	}
+
+	template <class T>
+	static void Print(const HeaderRecord& header, const IterableBuffer<IndexedValue<T, uint16_t>>& buffer, TimestampMode tsmode)
+	{
+		PrintHeaderInfo(header, tsmode);
 
 		buffer.foreach([&](const IndexedValue<T, uint16_t>& pair)
 		{
 
-			std::cout << name << " [" << pair.index << "] : " <<
+			std::cout << "[" << pair.index << "] : " <<
 			          ValueToString(pair.value) << " : " <<
 			          static_cast<int>(pair.value.quality) << " : " <<
 					  pair.value.time << std::endl;

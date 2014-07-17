@@ -21,20 +21,22 @@ namespace Automatak.Simulator.DNP3
 
     class Measurement
     {
-        public Measurement(string sValue, MeasurementBase meas, MeasType type, UInt16 index, IQualityBitInfo info)
+        public Measurement(string displayValue, MeasurementBase meas, TimestampMode tsmode, MeasType type, UInt16 index, IQualityBitInfo info)
         {
-            this.valueAsString = sValue;
-            this.timeStamp = meas.Timestamp;            
+            this.valueAsString = displayValue;
+            this.timeStamp = (tsmode == TimestampMode.INVALID) ? DateTime.Now : meas.Timestamp;
+            this.tsmode = tsmode;
             this.type = type;
             this.index = index;
             this.info = info;
             this.quality = meas.Quality;
         }
 
-        public Measurement(string sValue, MeasType type, UInt16 index, IQualityBitInfo info)
+        public Measurement(string displayValue, TimestampMode tsmode, MeasType type, UInt16 index, IQualityBitInfo info)
         {
-            this.valueAsString = sValue;
+            this.valueAsString = displayValue;
             this.timeStamp = DateTime.Now;
+            this.tsmode = tsmode;
             this.type = type;
             this.index = index;
             this.info = info;
@@ -85,15 +87,21 @@ namespace Automatak.Simulator.DNP3
             get
             {
                 var time = timeStamp.ToString("d") + timeStamp.ToString(" HH:mm:ss.fff");
-                if (true) //TODO
-                { 
-                    return time + " (assumed)";
-                }
-                else
-                {
-                    return time;
-                }
+                return String.Format("{0} ({1})", time, GetTimeModeString(tsmode));
             }
+        }
+
+        private static string GetTimeModeString(TimestampMode mode)
+        {             
+            switch(mode)
+            {
+                case(TimestampMode.INVALID):
+                    return "local timestamp";
+                case(TimestampMode.SYNCHRONIZED):
+                    return "synchronized";
+                default:
+                    return "unsynchronized";
+            }            
         }
 
         public MeasType Type
@@ -106,7 +114,8 @@ namespace Automatak.Simulator.DNP3
         
         readonly UInt16 index;
         readonly string valueAsString;        
-        readonly DateTime timeStamp;        
+        readonly DateTime timeStamp;
+        readonly TimestampMode tsmode;
         readonly MeasType type;
         readonly IQualityBitInfo info;
         readonly byte quality;

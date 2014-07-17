@@ -44,37 +44,37 @@ namespace Automatak.Simulator.DNP3
 
         void IDatabase.Update(Binary update, ushort index)
         {
-            this.Add(update.ToMeasurement(index), "Binary");
+            this.Add(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED), "Binary");
         }
 
         void IDatabase.Update(DoubleBitBinary update, ushort index)
         {
-            this.Add(update.ToMeasurement(index), "DoubleBitBinary");
+            this.Add(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED), "DoubleBitBinary");
         }
 
         void IDatabase.Update(Analog update, ushort index)
         {
-            this.Add(update.ToMeasurement(index), "Analog");
+            this.Add(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED), "Analog");
         }
 
         void IDatabase.Update(Counter update, ushort index)
         {
-            this.Add(update.ToMeasurement(index), "Counter");
+            this.Add(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED), "Counter");
         }
 
         void IDatabase.Update(FrozenCounter update, ushort index)
         {
-            this.Add(update.ToMeasurement(index), "FrozenCounter");
+            this.Add(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED), "FrozenCounter");
         }
 
         void IDatabase.Update(BinaryOutputStatus update, ushort index)
         {
-            this.Add(update.ToMeasurement(index), "BinaryOutputStatus");
+            this.Add(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED), "BinaryOutputStatus");
         }
 
         void IDatabase.Update(AnalogOutputStatus update, ushort index)
         {
-            this.Add(update.ToMeasurement(index), "AnalogOutputStatus");
+            this.Add(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED), "AnalogOutputStatus");
         }
 
         void IDatabase.End()

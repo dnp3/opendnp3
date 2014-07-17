@@ -10,44 +10,44 @@ namespace Automatak.Simulator.DNP3
 {
     static class MeasurementConversion
     {
-        public static Measurement ToMeasurement(this Binary meas, UInt16 index)
+        public static Measurement ToMeasurement(this Binary meas, UInt16 index, TimestampMode tsmode)
         {
-            return new Measurement(meas.Value.ToString(), meas, MeasType.Binary, index, QualityInfo.binary);
+            return new Measurement(meas.Value.ToString(), meas, tsmode, MeasType.Binary, index, QualityInfo.binary);
         }
 
-        public static Measurement ToMeasurement(this DoubleBitBinary meas, UInt16 index)
+        public static Measurement ToMeasurement(this DoubleBitBinary meas, UInt16 index, TimestampMode tsmode)
         {
-            return new Measurement(meas.Value.ToString(), meas, MeasType.DoubleBitBinary, index, QualityInfo.doubleBinary);
+            return new Measurement(meas.Value.ToString(), meas, tsmode, MeasType.DoubleBitBinary, index, QualityInfo.doubleBinary);
         }
 
-        public static Measurement ToMeasurement(this Counter meas, UInt16 index)
+        public static Measurement ToMeasurement(this Counter meas, UInt16 index, TimestampMode tsmode)
         {
-            return new Measurement(meas.Value.ToString(), meas, MeasType.Counter, index, QualityInfo.counter);
+            return new Measurement(meas.Value.ToString(), meas, tsmode, MeasType.Counter, index, QualityInfo.counter);
         }
 
-        public static Measurement ToMeasurement(this FrozenCounter meas, UInt16 index)
+        public static Measurement ToMeasurement(this FrozenCounter meas, UInt16 index, TimestampMode tsmode)
         {
-            return new Measurement(meas.Value.ToString(), meas, MeasType.FrozenCounter, index, QualityInfo.counter);
+            return new Measurement(meas.Value.ToString(), meas, tsmode, MeasType.FrozenCounter, index, QualityInfo.counter);
         }
 
-        public static Measurement ToMeasurement(this Analog meas, UInt16 index)
+        public static Measurement ToMeasurement(this Analog meas, UInt16 index, TimestampMode tsmode)
         {
-            return new Measurement(meas.Value.ToString(), meas, MeasType.Analog, index, QualityInfo.analog);
+            return new Measurement(meas.Value.ToString(), meas, tsmode, MeasType.Analog, index, QualityInfo.analog);
         }
 
-        public static Measurement ToMeasurement(this BinaryOutputStatus meas, UInt16 index)
+        public static Measurement ToMeasurement(this BinaryOutputStatus meas, UInt16 index, TimestampMode tsmode)
         {
-            return new Measurement(meas.Value.ToString(), meas, MeasType.BinaryOutputStatus, index, QualityInfo.binaryOutputStatus);
+            return new Measurement(meas.Value.ToString(), meas, tsmode, MeasType.BinaryOutputStatus, index, QualityInfo.binaryOutputStatus);
         }
 
-        public static Measurement ToMeasurement(this AnalogOutputStatus meas, UInt16 index)
+        public static Measurement ToMeasurement(this AnalogOutputStatus meas, UInt16 index, TimestampMode tsmode)
         {
-            return new Measurement(meas.Value.ToString(), meas, MeasType.AnalogOutputStatus, index, QualityInfo.analog);
+            return new Measurement(meas.Value.ToString(), meas, tsmode, MeasType.AnalogOutputStatus, index, QualityInfo.analog);
         }
 
-        public static Measurement ToMeasurement(this OctetString meas, UInt16 index)
+        public static Measurement ToMeasurement(this OctetString meas, UInt16 index, TimestampMode tsmode)
         {
-            return new Measurement(meas.AsString(), MeasType.OctetString, index, QualityInfo.octetString);
+            return new Measurement(meas.AsString(), tsmode, MeasType.OctetString, index, QualityInfo.octetString);
         }       
     }
 }

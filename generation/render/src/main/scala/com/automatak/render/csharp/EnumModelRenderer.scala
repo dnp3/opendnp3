@@ -28,6 +28,7 @@ object EnumModelRenderer extends ModelRenderer[EnumModel] {
 
     def getEnumType(typ: EnumModel.Type): String = typ match {
       case EnumModel.UInt8 => "byte"
+      case EnumModel.UInt16 => "ushort"
       case EnumModel.UInt32 => "uint"
       case EnumModel.Integer => "int"
     }
