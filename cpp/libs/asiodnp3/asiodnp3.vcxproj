@@ -27,6 +27,9 @@
     <ClCompile Include="src\asiodnp3\ChannelSet.cpp" />
     <ClCompile Include="src\asiodnp3\DynamicallyAllocatedDatabase.cpp" />
     <ClCompile Include="src\asiodnp3\DynamicallyAllocatedEventBuffer.cpp" />
+    <ClCompile Include="src\asiodnp3\impl\LinkLayerRouter.cpp" />
+    <ClCompile Include="src\asiodnp3\impl\PhysicalLayerMonitor.cpp" />
+    <ClCompile Include="src\asiodnp3\impl\PhysicalLayerMonitorStates.cpp" />
     <ClCompile Include="src\asiodnp3\MasterStackImpl.cpp" />
     <ClCompile Include="src\asiodnp3\MultidropTaskLock.cpp" />
     <ClCompile Include="src\asiodnp3\OutstationStackImpl.cpp" />
@@ -44,6 +47,9 @@
     <ClInclude Include="src\asiodnp3\DynamicallyAllocatedEventBuffer.h" />
     <ClInclude Include="src\asiodnp3\IChannel.h" />
     <ClInclude Include="src\asiodnp3\IMaster.h" />
+    <ClInclude Include="src\asiodnp3\impl\LinkLayerRouter.h" />
+    <ClInclude Include="src\asiodnp3\impl\PhysicalLayerMonitor.h" />
+    <ClInclude Include="src\asiodnp3\impl\PhysicalLayerMonitorStates.h" />
     <ClInclude Include="src\asiodnp3\IOutstation.h" />
     <ClInclude Include="src\asiodnp3\IStack.h" />
     <ClInclude Include="src\asiodnp3\MasterStackImpl.h" />

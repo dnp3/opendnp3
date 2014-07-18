@@ -133,7 +133,7 @@ TEST_CASE(SUITE("ReentrantCloseWorks"))
 	t.router.Enable(&mfs);
 	t.phys.SignalOpenSuccess();
 	REQUIRE(mfs.mLowerOnline);
-	mfs.AddAction(std::bind(&LinkLayerRouter::Shutdown, &t.router));
+	mfs.AddAction(std::bind(&asiodnp3::LinkLayerRouter::Shutdown, &t.router));
 
 	StaticBuffer<292> buffer;
 	auto writeTo = buffer.GetWriteBuffer();

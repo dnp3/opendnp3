@@ -25,16 +25,17 @@
 #include <openpal/logging/LogMacros.h>
 #include <openpal/channel/IPhysicalLayer.h>
 
-#include "opendnp3/LogLevels.h"
-#include "ILinkContext.h"
-#include "LinkFrame.h"
+#include <opendnp3/LogLevels.h>
+#include <opendnp3/link/ILinkContext.h>
+#include <opendnp3/link/LinkFrame.h>
 
 #include <algorithm>
 
 using namespace std;
 using namespace openpal;
+using namespace opendnp3;
 
-namespace opendnp3
+namespace asiodnp3
 {
 
 LinkLayerRouter::LinkLayerRouter(	openpal::LogRoot& root,

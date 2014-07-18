@@ -26,16 +26,15 @@
 #include <openpal/executor/TimeDuration.h>
 #include <openpal/logging/LogRoot.h>
 
-#include "opendnp3/gen/ChannelState.h"
-#include "opendnp3/link/IOpenDelayStrategy.h"
+#include <opendnp3/gen/ChannelState.h>
+#include <opendnp3/link/IOpenDelayStrategy.h>
 
 namespace openpal
 {
-class IPhysicalLayer;
+	class IPhysicalLayer;
 }
 
-
-namespace opendnp3
+namespace asiodnp3
 {
 
 class IMonitorState;
@@ -53,7 +52,7 @@ public:
 	                        openpal::IPhysicalLayer*,
 	                        openpal::TimeDuration minOpenRetry_,
 	                        openpal::TimeDuration maxOpenRetry_,
-							IOpenDelayStrategy& strategy = ExponentialBackoffStrategy::Instance());
+							opendnp3::IOpenDelayStrategy& strategy = opendnp3::ExponentialBackoffStrategy::Instance());
 
 	/** Begin monitor execution, retry indefinitely on failure - Idempotent*/
 	void Start();
@@ -71,7 +70,7 @@ public:
 	void Shutdown();
 
 	/// @return ChannelState enumeration
-	ChannelState GetState();
+	opendnp3::ChannelState GetState();
 
 	openpal::Logger& GetLogger()
 	{
@@ -91,7 +90,7 @@ protected:
 	virtual void OnPhysicalLayerOpenSuccessCallback() = 0;
 	virtual void OnPhysicalLayerOpenFailureCallback() = 0;
 	virtual void OnPhysicalLayerCloseCallback() = 0;
-	virtual void OnStateChange(ChannelState aState) {}
+	virtual void OnStateChange(opendnp3::ChannelState aState) {}
 
 	/// Begins the open timer
 	void StartOpenTimer();
@@ -134,7 +133,7 @@ private:
 	
 	openpal::TimeDuration currentRetry;
 
-	const IOpenDelayStrategy* pOpenStrategy;
+	const opendnp3::IOpenDelayStrategy* pOpenStrategy;
 };
 
 }

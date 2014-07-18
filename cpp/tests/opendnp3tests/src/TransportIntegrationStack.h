@@ -21,9 +21,10 @@
 #ifndef __TRANSPORT_INTEGRATION_STACK_H_
 #define __TRANSPORT_INTEGRATION_STACK_H_
 
-#include <opendnp3/link/LinkLayerRouter.h>
 #include <opendnp3/link/LinkLayer.h>
 #include <opendnp3/transport/TransportLayer.h>
+
+#include <asiodnp3/impl/LinkLayerRouter.h>
 
 #include "MockUpperLayer.h"
 
@@ -40,7 +41,7 @@ class TransportIntegrationStack
 public:
 	TransportIntegrationStack(openpal::LogRoot& root, openpal::IExecutor& executor, openpal::IPhysicalLayer*, LinkConfig);
 
-	LinkLayerRouter mRouter;
+	asiodnp3::LinkLayerRouter mRouter;
 	LinkLayer mLink;
 	TransportLayer mTransport;
 	MockUpperLayer mUpper;
