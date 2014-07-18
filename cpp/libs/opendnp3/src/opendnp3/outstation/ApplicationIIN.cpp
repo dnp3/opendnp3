@@ -24,7 +24,7 @@
 namespace opendnp3
 {
 
-ApplicationIIN::ApplicationIIN() : needTime(false), localControl(false), configCorrupt(false), deviceTrouble(false)
+ApplicationIIN::ApplicationIIN() : needTime(false), localControl(false), deviceTrouble(false), configCorrupt(false)
 {}
 
 IINField ApplicationIIN::ToIIN() const

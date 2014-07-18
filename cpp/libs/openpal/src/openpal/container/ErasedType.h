@@ -71,7 +71,8 @@ class ErasedType
 		}
 		else
 		{
-			type = (*reinterpret_cast<const T*>(buffer));
+			const T& casted = *(reinterpret_cast<const T*>(buffer));
+			type = casted;
 			return true;
 		}
 		

@@ -34,12 +34,14 @@ int main()
 		
 	// 5 static binaries, 0 others
 	StaticallyAllocatedDatabase<5, 0, 0, 0, 0, 0, 0> staticBuffers;
+	// allow a max of 5 events
+	StaticallyAllocatedEventBuffer<5> eventBuffers;
+	
 	
 	Database database(staticBuffers.GetFacade());
-	
-	// 5 binary events, 0 others
-	StaticallyAllocatedEventBuffer<5, 0, 0, 0, 0, 0, 0> eventBuffers;
+		
 	OutstationConfig config;
+	config.eventBufferConfig = EventBufferConfig(5);
 	config.params.allowUnsolicited = true;	
 	config.defaultEventResponses.binary = EventBinaryResponse::Group2Var2;
 	
@@ -90,7 +92,7 @@ void ToggleBinaryEvery3Seconds(IExecutor* pExecutor, Database* pDatabase, uint8_
 		
 	{
 		Transaction tx(pDatabase);
-		pDatabase->Update(Binary(value, BQ_ONLINE, pExecutor->GetTime().milliseconds), index);	
+		pDatabase->Update(Binary(value, 0x01, pExecutor->GetTime().milliseconds), index);	
 	}	
 		
 	auto lambda = [pExecutor, pDatabase, value, next]() { ToggleBinaryEvery3Seconds(pExecutor, pDatabase, next, !value); };

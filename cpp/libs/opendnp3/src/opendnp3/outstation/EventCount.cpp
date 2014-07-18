@@ -33,9 +33,9 @@ EventCount::EventCount()
 
 void EventCount::Clear()
 {
-	for (auto clazz = 0; clazz < NUM_CLASSES; ++clazz)
+	for (uint16_t clazz = 0; clazz < NUM_CLASSES; ++clazz)
 	{
-		for (auto type = 0; type < NUM_TYPES; ++type)
+		for (uint16_t type = 0; type < NUM_TYPES; ++type)
 		{
 			numOfTypeAndClass[clazz][type] = 0;
 		}

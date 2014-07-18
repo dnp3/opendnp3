@@ -93,6 +93,8 @@ void CommandResponseHandler::RespondToHeaderWithIterator(QualifierCode qualifier
 			case(CommandStatus::NOT_SUPPORTED) :
 				errors.SetBit(IINBit::PARAM_ERROR);
 				break;
+			default:
+				break;
 		}
 
 		Target response(command.value);

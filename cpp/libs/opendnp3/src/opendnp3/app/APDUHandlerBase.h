@@ -189,7 +189,7 @@ private:
 	uint32_t ctoHeader;
 	TimestampMode ctoMode;
 
-	int32_t currentHeader;
+	uint32_t currentHeader;
 
 	template <class T>
 	static IndexedValue<T, uint16_t> Widen(const IndexedValue<T, uint8_t> value)
