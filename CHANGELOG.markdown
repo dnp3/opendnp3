@@ -1,4 +1,12 @@
-### 2.0.0-M3 ###
+### 2.0.0-RC2 ###
+
+Conformance fixes based on testing with 3rd party harness. Only remaining level 2 conformance item is handling broadcast addressing.
+  * Outstation now handles limited count (0x07, 0x08) request headers for class polls and specific variation polls.
+  * IOutstationApplication can now handle cold/warm restart function codes.
+
+Master measurement API (ISOEHandler) now informs application of qualifer, group variation, and validity of timestamps for each header received.
+  
+### 2.0.0-RC1 ###
 
 ## Refactoring / Improvements  - General ##
 * To enable ports to other platforms and MCUs, the 1.1.x library was divided into 4 sub-libraries.
@@ -11,10 +19,10 @@
 * Example applications for Atmel Studio for Arduino boards have been added. They are not yet production ready, but a proof of concept.
 * Stack depth has been reduced to better suite embedded systems.
 * Core library is now organized by layer making navigation, maintainence, and learning the library easier.
-* All libraries are now exception-free. They can be compiled with -fno-exceptions.
-* IExecutor now uses a "Runnable" which uses type-safe erasure/lambdas combined with static allocation
+* C++ libraries are now exception-free. They can be compiled with -fno-exceptions.
+* IExecutor now uses an "Action0" which is a parameterless functor. Uses type-safe erasure/lambdas combined with static allocation.
 * Core library now uses sprintf instead of iostreams. All usage of std::string removed to improve portability.
-* Removed some instances of recursion in the link layer CRC checking.
+* Removed some instances of recursion in the link layer CRC checking. The library is now recursion-free.
 * The library no longer uses BOOST. Instead it uses the standalone verison (header only) of [ASIO](http://think-async.com/)
 * Tests were ported from BOOST_TEST to [Catch](https://github.com/philsquared/Catch). Catch is header only and redistributed with the project.
 * Core library no longer uses STL. This makes ports to MCUs much easier.
@@ -58,7 +66,6 @@
 * Transport layer can now receive non-fin packets with payload length between 1 and 249. It's very strange for an implementation to do this, but its actually in the spec.
 * Count-of-zero headers are now explicitly disallowed and parsing is halted.
 * Ticket 57 - When a READ is received while waiting for a confirm, any further retries should be canceled. (also fixed on 1.1.x)
-* Ticket 34 - The transport layer now passes the link layer an "IBufferSegment". This allows an entire APDU to be written to the physical layer if unconfirmed data mode is used.
 * Ticket 62 - Fixed a bug where the master scheduler could hang if the the channel was closed while waiting for response to a command.
 
 ## Removed ##
