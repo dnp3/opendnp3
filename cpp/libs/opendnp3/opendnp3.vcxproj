@@ -117,7 +117,6 @@
     <ClInclude Include="src\opendnp3\link\LinkLayer.h" />
     <ClInclude Include="src\opendnp3\link\LinkLayerConstants.h" />
     <ClInclude Include="src\opendnp3\link\LinkLayerParser.h" />
-    <ClInclude Include="src\opendnp3\link\LinkRoute.h" />
     <ClInclude Include="src\opendnp3\link\PriLinkLayerStates.h" />
     <ClInclude Include="src\opendnp3\link\SecLinkLayerStates.h" />
     <ClInclude Include="src\opendnp3\link\ShiftableBuffer.h" />
@@ -227,6 +226,7 @@
     <ClInclude Include="src\opendnp3\outstation\TimeTransaction.h" />
     <ClInclude Include="src\opendnp3\outstation\ValueMetadataPair.h" />
     <ClInclude Include="src\opendnp3\outstation\WriteHandler.h" />
+    <ClInclude Include="src\opendnp3\Route.h" />
     <ClInclude Include="src\opendnp3\StackStatistics.h" />
     <ClInclude Include="src\opendnp3\Configure.h" />
     <ClInclude Include="src\opendnp3\transport\TransportConstants.h" />

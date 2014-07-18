@@ -165,7 +165,7 @@ IMaster* DNP3Channel::_AddMaster(char const* id,
 	opendnp3::IMasterApplication& application,
 	const opendnp3::MasterStackConfig& config)
 {
-	LinkRoute route(config.link.RemoteAddr, config.link.LocalAddr);
+	Route route(config.link.RemoteAddr, config.link.LocalAddr);
 	if (router.IsRouteInUse(route))
 	{
 		FORMAT_LOG_BLOCK(logger, flags::ERR, "Route already in use: %i -> %i", route.source, route.destination);
@@ -189,7 +189,7 @@ IOutstation* DNP3Channel::_AddOutstation(char const* id,
 	opendnp3::IOutstationApplication& application,
 	const opendnp3::OutstationStackConfig& config)
 {
-	LinkRoute route(config.link.RemoteAddr, config.link.LocalAddr);
+	Route route(config.link.RemoteAddr, config.link.LocalAddr);
 	if (router.IsRouteInUse(route))
 	{
 		FORMAT_LOG_BLOCK(logger, flags::ERR, "Route already in use: %i -> %i", route.source, route.destination);

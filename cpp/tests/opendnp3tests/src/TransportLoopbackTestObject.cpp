@@ -20,7 +20,7 @@
  */
 #include "TransportLoopbackTestObject.h"
 
-#include <opendnp3/link/LinkRoute.h>
+#include <opendnp3/Route.h>
 
 #include <openpal/channel/IPhysicalLayer.h>
 
@@ -51,8 +51,8 @@ TransportLoopbackTestObject::TransportLoopbackTestObject(
 	mTransB(root, &executor),
 	mRouter(root, executor, apPhys, TimeDuration::Seconds(1), TimeDuration::Seconds(1))
 {
-	LinkRoute routeA(mCfgA.RemoteAddr, mCfgA.LocalAddr);
-	LinkRoute routeB(mCfgB.RemoteAddr, mCfgB.LocalAddr);
+	Route routeA(mCfgA.RemoteAddr, mCfgA.LocalAddr);
+	Route routeB(mCfgB.RemoteAddr, mCfgB.LocalAddr);
 
 	mRouter.AddContext(&mLinkA, routeA);
 	mRouter.Enable(&mLinkA);

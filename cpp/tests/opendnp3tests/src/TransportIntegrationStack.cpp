@@ -20,7 +20,7 @@
  */
 #include "TransportIntegrationStack.h"
 
-#include <opendnp3/link/LinkRoute.h>
+#include <opendnp3/Route.h>
 
 #include <openpal/channel/IPhysicalLayer.h>
 
@@ -34,7 +34,7 @@ namespace opendnp3
 	link(root, &executor, aCfg),
 	transport(root, &executor)
 {
-	LinkRoute route(aCfg.RemoteAddr, aCfg.LocalAddr);
+	Route route(aCfg.RemoteAddr, aCfg.LocalAddr);
 	router.AddContext(&link, route);
 	router.Enable(&link);
 	link.SetRouter(&router);

@@ -26,8 +26,8 @@
 
 #include "asiodnp3/impl/PhysicalLayerMonitor.h"
 
+#include <opendnp3/Route.h>
 #include <opendnp3/link/LinkLayerParser.h>
-#include <opendnp3/link/LinkRoute.h>
 #include <opendnp3/link/IFrameSink.h>
 #include <opendnp3/link/ILinkRouter.h>
 #include <opendnp3/link/IOpenDelayStrategy.h>
@@ -72,10 +72,10 @@ public:
 	void SetShutdownHandler(const openpal::Action0& action);
 
 	// Query to see if a route is in use
-	bool IsRouteInUse(const opendnp3::LinkRoute& route);
+	bool IsRouteInUse(const opendnp3::Route& route);
 
 	// Ties the lower part of the link layer to the upper part
-	bool AddContext(opendnp3::ILinkContext* pContext, const opendnp3::LinkRoute& route);
+	bool AddContext(opendnp3::ILinkContext* pContext, const opendnp3::Route& route);
 
 	/**
 	*  Tells the router to begin sending messages to the context
@@ -126,7 +126,7 @@ private:
 
 	struct Record
 	{
-		Record(opendnp3::ILinkContext* context, const opendnp3::LinkRoute& route_) :
+		Record(opendnp3::ILinkContext* context, const opendnp3::Route& route_) :
 			pContext(context),
 			route(route_),
 			enabled(false)
@@ -136,7 +136,7 @@ private:
 		{}
 
 		opendnp3::ILinkContext* pContext;
-		opendnp3::LinkRoute route;
+		opendnp3::Route route;
 		bool enabled;
 	};
 
@@ -157,7 +157,7 @@ private:
 	};
 
 	opendnp3::ILinkContext* GetDestination(uint16_t aDest, uint16_t aSrc);
-	opendnp3::ILinkContext* GetEnabledContext(const opendnp3::LinkRoute&);
+	opendnp3::ILinkContext* GetEnabledContext(const opendnp3::Route&);
 
 	void CheckForSend();
 

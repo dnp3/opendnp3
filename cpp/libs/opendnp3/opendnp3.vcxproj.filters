@@ -219,9 +219,6 @@
     <ClInclude Include="src\opendnp3\link\LinkLayerConstants.h">
       <Filter>Header\link</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\link\LinkRoute.h">
-      <Filter>Header\link</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\link\PriLinkLayerStates.h">
       <Filter>Header\link</Filter>
     </ClInclude>
@@ -697,6 +694,9 @@
       <Filter>Header\gen</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\LayerInterfaces.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\Route.h">
       <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>

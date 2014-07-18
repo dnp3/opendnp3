@@ -59,7 +59,7 @@ void LinkLayerRouter::SetShutdownHandler(const Action0& action)
 	this->shutdownHandler = action;
 }
 
-bool LinkLayerRouter::IsRouteInUse(const LinkRoute& route)
+bool LinkLayerRouter::IsRouteInUse(const Route& route)
 {
 	auto matches = [route](const Record & record)
 	{
@@ -70,7 +70,7 @@ bool LinkLayerRouter::IsRouteInUse(const LinkRoute& route)
 	return iter != records.end();
 }
 
-bool LinkLayerRouter::AddContext(ILinkContext* pContext, const LinkRoute& route)
+bool LinkLayerRouter::AddContext(ILinkContext* pContext, const Route& route)
 {
 	assert(pContext != nullptr);
 
@@ -193,7 +193,7 @@ bool LinkLayerRouter::Remove(ILinkContext* pContext)
 	}
 }
 
-ILinkContext* LinkLayerRouter::GetEnabledContext(const LinkRoute& route)
+ILinkContext* LinkLayerRouter::GetEnabledContext(const Route& route)
 {
 	auto matches = [route](const Record & rec) { return rec.enabled && rec.route.Equals(route); };	
 	auto iter = std::find_if(records.begin(), records.end(), matches);
@@ -210,7 +210,7 @@ ILinkContext* LinkLayerRouter::GetEnabledContext(const LinkRoute& route)
 
 ILinkContext* LinkLayerRouter::GetDestination(uint16_t dest, uint16_t src)
 {
-	LinkRoute route(src, dest);
+	Route route(src, dest);
 
 	ILinkContext* pDest = GetEnabledContext(route);
 

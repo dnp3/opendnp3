@@ -24,6 +24,8 @@
 #include <openpal/container/WriteBuffer.h>
 #include <openpal/container/ReadOnlyBuffer.h>
 
+#include "Route.h"
+
 #include <assert.h>
 
 namespace opendnp3
