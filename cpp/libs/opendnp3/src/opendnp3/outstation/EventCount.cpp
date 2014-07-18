@@ -46,9 +46,9 @@ ClassField EventCount::Subtract(const EventCount& rhs) const
 {	
 	EventCount count;
 
-	for (auto clazz = 0; clazz < NUM_CLASSES; ++clazz)
+	for (uint16_t clazz = 0; clazz < NUM_CLASSES; ++clazz)
 	{
-		for (auto type = 0; type < NUM_TYPES; ++type)
+		for (uint16_t type = 0; type < NUM_TYPES; ++type)
 		{
 			count.numOfTypeAndClass[clazz][type] = numOfTypeAndClass[clazz][type] - rhs.numOfTypeAndClass[clazz][type];
 		}
@@ -70,7 +70,7 @@ uint32_t EventCount::NumOfClass(EventClass clazz) const
 {
 	uint32_t total = 0;
 
-	for (auto type = 0; type < NUM_TYPES; ++type)
+	for (uint16_t type = 0; type < NUM_TYPES; ++type)
 	{
 		total += numOfTypeAndClass[static_cast<int>(clazz)][type];
 	}
@@ -82,7 +82,7 @@ uint32_t EventCount::NumOfType(EventType type) const
 {
 	uint32_t total = 0;
 
-	for (auto clazz = 0; clazz < NUM_CLASSES; ++clazz)
+	for (uint16_t clazz = 0; clazz < NUM_CLASSES; ++clazz)
 	{
 		total += numOfTypeAndClass[clazz][static_cast<int>(type)];
 	}
