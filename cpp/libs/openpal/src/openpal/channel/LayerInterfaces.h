@@ -21,9 +21,8 @@
 #ifndef __LAYER_INTERFACES_H_
 #define __LAYER_INTERFACES_H_
 
-#include "openpal/container/ReadOnlyBuffer.h"
 #include "openpal/container/WriteBuffer.h"
-#include "openpal/Configure.h"
+#include "openpal/container/ReadOnlyBuffer.h"
 
 #include <assert.h>
 
@@ -85,11 +84,10 @@ public:
 
 	// Called by the lower layer when data arrives
 
-	void SetLowerLayer(ILowerLayer* pLowerLayer_)
-	{
-		assert(pLowerLayer_ != nullptr);
+	void SetLowerLayer(ILowerLayer& lowerLayer)
+	{		
 		assert(pLowerLayer == nullptr);
-		pLowerLayer = pLowerLayer_;
+		pLowerLayer = &lowerLayer;
 	}
 
 protected:
@@ -106,11 +104,10 @@ public:
 
 	// Called by the lower layer when data arrives
 
-	void SetUpperLayer(IUpperLayer* pUpperLayer_)
-	{
-		assert(pUpperLayer_ != nullptr);
+	void SetUpperLayer(IUpperLayer& upperLayer)
+	{		
 		assert(pUpperLayer == nullptr);
-		pUpperLayer = pUpperLayer_;
+		pUpperLayer = &upperLayer;
 	}
 
 protected:

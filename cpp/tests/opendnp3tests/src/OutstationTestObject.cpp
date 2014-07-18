@@ -38,7 +38,7 @@ OutstationTestObject::OutstationTestObject(const OutstationConfig& config, const
 	application(),
 	outstation(config, exe, log.root, lower, cmdHandler, application, db, eventBuffers.GetFacade())
 {
-	lower.SetUpperLayer(&outstation);
+	lower.SetUpperLayer(outstation);
 }
 
 uint32_t OutstationTestObject::LowerLayerUp()

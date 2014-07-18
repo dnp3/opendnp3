@@ -41,10 +41,10 @@ class TransportIntegrationStack
 public:
 	TransportIntegrationStack(openpal::LogRoot& root, openpal::IExecutor& executor, openpal::IPhysicalLayer*, LinkConfig);
 
-	asiodnp3::LinkLayerRouter mRouter;
-	LinkLayer mLink;
-	TransportLayer mTransport;
-	MockUpperLayer mUpper;
+	asiodnp3::LinkLayerRouter router;
+	LinkLayer link;
+	TransportLayer transport;
+	MockUpperLayer upper;
 };
 
 }

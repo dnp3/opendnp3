@@ -38,10 +38,10 @@ TransportTestObject::TransportTestObject(bool aOpenOnStart, uint32_t filters, bo
 	exe(),
 	transport(log.root, &exe)
 {
-	link.SetUpperLayer(&transport);
+	link.SetUpperLayer(transport);
 	transport.SetLinkLayer(&link);
 
-	upper.SetLowerLayer(&transport);
+	upper.SetLowerLayer(transport);
 	transport.SetAppLayer(&upper);
 
 	if (aOpenOnStart)
