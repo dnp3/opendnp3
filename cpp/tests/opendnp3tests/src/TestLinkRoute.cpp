@@ -33,8 +33,8 @@ TEST_CASE(SUITE("LinkRouteEqualityComparison"))
 	LinkRoute lr2(1, 3);
 	LinkRoute lr3(1, 3);
 
-	REQUIRE(!(lr1 == lr2));
-	REQUIRE(lr3 == lr2);
+	REQUIRE(!(lr1.Equals(lr2)));
+	REQUIRE(lr3.Equals(lr2));
 
 }
 

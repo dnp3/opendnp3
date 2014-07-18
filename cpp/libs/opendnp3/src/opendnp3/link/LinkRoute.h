@@ -48,7 +48,7 @@ public:
 	uint16_t remote;
 	uint16_t local;
 
-	bool operator == (const LinkRoute& rhs) const
+	bool Equals(const LinkRoute& rhs) const
 	{
 		return (this->remote == rhs.remote) && (this->local == rhs.local);
 	}	

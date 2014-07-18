@@ -34,6 +34,9 @@
 
 #include "opendnp3/Configure.h"
 
+#include <vector>
+#include <deque>
+
 namespace openpal
 {
 class IPhysicalLayer;
@@ -156,10 +159,10 @@ private:
 
 	IChannelStateListener* pStateHandler;
 	openpal::Action0 shutdownHandler;
-
-	openpal::StaticLinkedList<Record, uint16_t, sizes::MAX_STACKS_PER_CHANNEL> records;
-	openpal::StaticQueue<Transmission, uint16_t, sizes::MAX_STACKS_PER_CHANNEL> transmitQueue;
-
+	
+	std::vector<Record> records;
+	std::deque<Transmission>  transmitQueue;
+	
 	// Handles the parsing of incoming frames
 	
 	LinkChannelStatistics* pStatistics;
