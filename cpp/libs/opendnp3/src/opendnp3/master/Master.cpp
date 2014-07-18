@@ -33,7 +33,7 @@ namespace opendnp3
 Master::Master(
 	openpal::IExecutor& executor,
 	openpal::LogRoot& root,
-	openpal::ILowerLayer& lower,
+	ILowerLayer& lower,
 	ISOEHandler& SOEHandler,	
 	opendnp3::IMasterApplication& application,
 	const MasterParams& params,

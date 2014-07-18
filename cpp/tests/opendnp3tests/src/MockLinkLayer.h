@@ -32,7 +32,7 @@
 namespace opendnp3
 {
 
-class MockLinkLayer : public ILinkLayer, public openpal::HasUpperLayer
+class MockLinkLayer : public ILinkLayer, public HasUpperLayer
 {
 
 public:

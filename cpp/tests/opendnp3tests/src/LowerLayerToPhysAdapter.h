@@ -22,8 +22,9 @@
 #define __LOWER_LAYER_TO_PHYS_ADAPTER_H_
 
 #include <openpal/channel/IPhysicalLayerCallbacks.h>
-#include <openpal/channel/LayerInterfaces.h>
 #include <openpal/logging/Logger.h>
+
+#include <opendnp3/LayerInterfaces.h>
 
 namespace openpal
 {
@@ -35,7 +36,7 @@ namespace opendnp3
 
 /** Class for turning an async physical layer into an ILowerLayer
 */
-class LowerLayerToPhysAdapter : public openpal::IPhysicalLayerCallbacks, public openpal::ILowerLayer, public openpal::HasUpperLayer
+class LowerLayerToPhysAdapter : public openpal::IPhysicalLayerCallbacks, public ILowerLayer, public HasUpperLayer
 {
 
 public:

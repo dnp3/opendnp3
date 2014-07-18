@@ -21,12 +21,12 @@
 #ifndef __LAYER_INTERFACES_H_
 #define __LAYER_INTERFACES_H_
 
-#include "openpal/container/WriteBuffer.h"
-#include "openpal/container/ReadOnlyBuffer.h"
+#include <openpal/container/WriteBuffer.h>
+#include <openpal/container/ReadOnlyBuffer.h>
 
 #include <assert.h>
 
-namespace openpal
+namespace opendnp3
 {
 
 class IUpDown
@@ -55,7 +55,7 @@ public:
 
 	// Called by the lower layer when data arrives
 
-	virtual void OnReceive(const ReadOnlyBuffer&) = 0;
+	virtual void OnReceive(const openpal::ReadOnlyBuffer&) = 0;
 
 	// Called by lower layer when a previously requested send operation succeeds or fails.
 	// Layers can only have 1 outstanding send operation. The callback is guaranteed
@@ -71,7 +71,7 @@ public:
 
 	virtual ~ILowerLayer() {}	
 
-	virtual void BeginTransmit(const ReadOnlyBuffer&) = 0;
+	virtual void BeginTransmit(const openpal::ReadOnlyBuffer&) = 0;
 
 };
 

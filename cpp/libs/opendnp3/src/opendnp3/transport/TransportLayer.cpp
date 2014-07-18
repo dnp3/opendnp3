@@ -136,7 +136,7 @@ void TransportLayer::OnSendResult(bool isSuccess)
 	}
 }
 
-void TransportLayer::SetAppLayer(openpal::IUpperLayer* pUpperLayer_)
+void TransportLayer::SetAppLayer(IUpperLayer* pUpperLayer_)
 {
 	assert(pUpperLayer_ != nullptr);
 	assert(pUpperLayer == nullptr);

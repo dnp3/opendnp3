@@ -78,6 +78,7 @@
     <ClInclude Include="src\opendnp3\gen\RestartMode.h" />
     <ClInclude Include="src\opendnp3\gen\TimestampMode.h" />
     <ClInclude Include="src\opendnp3\gen\TimeSyncMode.h" />
+    <ClInclude Include="src\opendnp3\LayerInterfaces.h" />
     <ClInclude Include="src\opendnp3\link\IChannelStateListener.h" />
     <ClInclude Include="src\opendnp3\link\LinkChannelStatistics.h" />
     <ClInclude Include="src\opendnp3\ErrorCodes.h" />

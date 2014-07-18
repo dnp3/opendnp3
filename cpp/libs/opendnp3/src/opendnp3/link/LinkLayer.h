@@ -40,7 +40,7 @@ class PriStateBase;
 class SecStateBase;
 
 //	@section desc Implements the contextual state of DNP3 Data Link Layer
-class LinkLayer : public ILinkLayer, public ILinkContext, public openpal::HasUpperLayer
+class LinkLayer : public ILinkLayer, public ILinkContext, public HasUpperLayer
 {
 public:
 

@@ -55,9 +55,6 @@
     <ClInclude Include="src\openpal\channel\IPhysicalLayerCallbacks.h">
       <Filter>Header\channel</Filter>
     </ClInclude>
-    <ClInclude Include="src\openpal\channel\LayerInterfaces.h">
-      <Filter>Header\channel</Filter>
-    </ClInclude>
     <ClInclude Include="src\openpal\container\Indexable.h">
       <Filter>Header\container</Filter>
     </ClInclude>
