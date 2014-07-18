@@ -28,45 +28,87 @@ SOERecord::SOERecord() : type(EventType::Analog), index(0), clazz(EventClass::EC
 {}
 
 SOERecord::SOERecord(const Binary& meas, uint16_t index_, EventClass clazz_) :
-	type(EventType::Binary), index(index_), clazz(clazz_), selected(false)
+	type(EventType::Binary), index(index_), clazz(clazz_), selected(false), time(meas.time), flags(meas.quality)
 {
-	this->erasure.Set(meas);
+	this->value.boolValue = meas.value;
 }
 
 SOERecord::SOERecord(const DoubleBitBinary& meas, uint16_t index_, EventClass clazz_) :
-	type(EventType::DoubleBitBinary), index(index_), clazz(clazz_), selected(false)
+type(EventType::DoubleBitBinary), index(index_), clazz(clazz_), selected(false), time(meas.time), flags(meas.quality)
 {
-	this->erasure.Set(meas);
+	this->value.doubleBitValue = meas.value;
 }
 
 SOERecord::SOERecord(const BinaryOutputStatus& meas, uint16_t index_, EventClass clazz_) :
-	type(EventType::BinaryOutputStatus), index(index_), clazz(clazz_), selected(false)
+type(EventType::BinaryOutputStatus), index(index_), clazz(clazz_), selected(false), time(meas.time), flags(meas.quality)
 {
-	this->erasure.Set(meas);
+	this->value.boolValue = meas.value;
 }
 
 SOERecord::SOERecord(const Counter& meas, uint16_t index_, EventClass clazz_) :
-	type(EventType::Counter), index(index_), clazz(clazz_), selected(false)
+type(EventType::Counter), index(index_), clazz(clazz_), selected(false), time(meas.time), flags(meas.quality)
 {
-	this->erasure.Set(meas);
+	this->value.uintValue = meas.value;
 }
 
 SOERecord::SOERecord(const FrozenCounter& meas, uint16_t index_, EventClass clazz_) :
-	type(EventType::FrozenCounter), index(index_), clazz(clazz_), selected(false)
+type(EventType::FrozenCounter), index(index_), clazz(clazz_), selected(false), time(meas.time), flags(meas.quality)
 {
-	this->erasure.Set(meas);
+	this->value.uintValue = meas.value;
 }
 
 SOERecord::SOERecord(const Analog& meas, uint16_t index_, EventClass clazz_) :
-	type(EventType::Analog), index(index_), clazz(clazz_), selected(false)
+type(EventType::Analog), index(index_), clazz(clazz_), selected(false), time(meas.time), flags(meas.quality)
 {
-	this->erasure.Set(meas);
+	this->value.analogValue = meas.value;
 }
 
 SOERecord::SOERecord(const AnalogOutputStatus& meas, uint16_t index_, EventClass clazz_) :
-	type(EventType::AnalogOutputStatus), index(index_), clazz(EventClass::EC1), selected(false)
+type(EventType::AnalogOutputStatus), index(index_), clazz(EventClass::EC1), selected(false), time(meas.time), flags(meas.quality)
 {
-	this->erasure.Set(meas);
+	this->value.analogValue = meas.value;
+}
+
+template <>
+void SOERecord::Read(Binary& meas)
+{
+	meas = Binary(value.boolValue, flags, time);
+}
+
+template <>
+void SOERecord::Read(DoubleBitBinary& meas)
+{
+	meas = DoubleBitBinary(value.doubleBitValue, flags, time);
+}
+
+template <>
+void SOERecord::Read(BinaryOutputStatus& meas)
+{
+	meas = BinaryOutputStatus(value.boolValue, flags, time);
+}
+
+template <>
+void SOERecord::Read(Counter& meas)
+{
+	meas = Counter(value.uintValue, flags, time);
+}
+
+template <>
+void SOERecord::Read(FrozenCounter& meas)
+{
+	meas = FrozenCounter(value.uintValue, flags, time);
+}
+
+template <>
+void SOERecord::Read(Analog& meas)
+{
+	meas = Analog(value.analogValue, flags, time);
+}
+
+template <>
+void SOERecord::Read(AnalogOutputStatus& meas)
+{
+	meas = AnalogOutputStatus(value.analogValue, flags, time);
 }
 
 }

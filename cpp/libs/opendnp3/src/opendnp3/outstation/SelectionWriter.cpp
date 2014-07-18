@@ -46,14 +46,16 @@ bool SelectionWriter::WriteAllEvents(SelectionCriteria& criteria, HeaderWriter& 
 		auto operation = criteria.GetWriteOperationFor(pStart->value.clazz, pStart->value.type);
 
 		if (operation.IsDefined())
-		{						
+		{					
+			auto pCriteria = &criteria;
+				
 			// callback that tells us this record was written to the apdu
-			auto callback = [this, &criteria](ListNode<SOERecord>* pNode)
+			auto callback = [this, pCriteria](ListNode<SOERecord>* pNode)
 			{
 				pNode->value.selected = true;
 				pBuffer->selectedTracker.Increment(pNode->value.clazz, pNode->value.type);
 				pBuffer->facade.selectedEvents.Push(pNode);
-				criteria.RecordAsWritten(pNode->value.clazz, pNode->value.type);
+				pCriteria->RecordAsWritten(pNode->value.clazz, pNode->value.type);
 				this->SeekNextUnselectedNode(iterator);				
 				return iterator.Current();
 			};

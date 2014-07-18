@@ -22,9 +22,6 @@
 #ifndef __SOE_RECORD_H_
 #define __SOE_RECORD_H_
 
-
-#include <openpal/container/ErasedType.h>
-
 #include "opendnp3/app/EventType.h"
 #include "opendnp3/app/MeasurementTypes.h"
 
@@ -32,7 +29,13 @@
 namespace opendnp3
 {
 
-typedef openpal::ErasedType<sizeof(Analog)> EventErasure;
+union MeasValue
+{
+	bool boolValue;
+	double analogValue;
+	DoubleBit doubleBitValue;
+	uint32_t uintValue;
+};
 
 class SOERecord
 {
@@ -46,14 +49,24 @@ public:
 	SOERecord(const Counter& meas, uint16_t index_, EventClass clazz_);
 	SOERecord(const FrozenCounter& meas, uint16_t index_, EventClass clazz_);
 	SOERecord(const Analog& meas, uint16_t index_, EventClass clazz_);
-	SOERecord(const AnalogOutputStatus& meas, uint16_t index_, EventClass clazz_);	
+	SOERecord(const AnalogOutputStatus& meas, uint16_t index_, EventClass clazz_);
+
+	template <class T>
+	void Read(T& meas);
 
 
-	EventType type;
-	EventErasure erasure;
+	EventType type;	
 	uint16_t index;
 	EventClass clazz;
 	bool selected;
+
+private:
+
+	// the actual value;
+	MeasValue value;
+	uint64_t time;
+	uint8_t flags;
+
 };
 
 }

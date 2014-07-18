@@ -60,7 +60,7 @@ template <class Serializer, class CTOType>
 bool EventWriteFunctions::WriteFixedSizeWithCTO(const EventWriteLimits& limits, HeaderWriter& writer, openpal::ListNode<SOERecord>* start, const ListIterator& writeCallback)
 {
 	typename Serializer::Target meas;
-	start->value.erasure.Read(meas);
+	start->value.Read(meas);
 	CTOType cto = { meas.time };
 	//cto.time = meas.time;
 
@@ -81,8 +81,10 @@ bool EventWriteFunctions::WriteFixedSizeWithPrefixIterator(const EventWriteLimit
 
 		Target measurement;
 
-		while (pNode && (pNode->value.type == Target::EventTypeEnum) && remainder.CanWrite(pNode->value.clazz) && pNode->value.erasure.Read(measurement))
+		while (pNode && (pNode->value.type == Target::EventTypeEnum) && remainder.CanWrite(pNode->value.clazz))
 		{
+			pNode->value.Read(measurement);
+
 			if (writer.Write(measurement, pNode->value.index))
 			{
 				remainder.Decrement(pNode->value.clazz);
@@ -116,8 +118,10 @@ bool EventWriteFunctions::WriteFixedSizeWithPrefixIteratorAndCTO(const EventWrit
 
 		Target measurement;		
 
-		while (pNode && (pNode->value.type == Target::EventTypeEnum) && remainder.CanWrite(pNode->value.clazz) && pNode->value.erasure.Read(measurement))
+		while (pNode && (pNode->value.type == Target::EventTypeEnum) && remainder.CanWrite(pNode->value.clazz))
 		{
+			pNode->value.Read(measurement);
+
 			if (measurement.time < cto.time)
 			{
 				// can't write this because the timestamp is less than the CTO
