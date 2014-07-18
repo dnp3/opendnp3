@@ -908,9 +908,6 @@
     <ClCompile Include="src\opendnp3\link\LinkLayer.cpp">
       <Filter>Source\link</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\link\LinkRoute.cpp">
-      <Filter>Source\link</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\link\PriLinkLayerStates.cpp">
       <Filter>Source\link</Filter>
     </ClCompile>

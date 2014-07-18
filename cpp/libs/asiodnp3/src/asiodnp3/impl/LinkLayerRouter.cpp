@@ -208,15 +208,15 @@ ILinkContext* LinkLayerRouter::GetEnabledContext(const LinkRoute& route)
 }
 
 
-ILinkContext* LinkLayerRouter::GetDestination(uint16_t aDest, uint16_t aSrc)
+ILinkContext* LinkLayerRouter::GetDestination(uint16_t dest, uint16_t src)
 {
-	LinkRoute route(aSrc, aDest);
+	LinkRoute route(src, dest);
 
 	ILinkContext* pDest = GetEnabledContext(route);
 
 	if(pDest == nullptr)
 	{
-		FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::WARN, DLERR_UNKNOWN_ROUTE, "Frame w/ unknown route: %i to %i", route.remote, route.local);
+		FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::WARN, DLERR_UNKNOWN_ROUTE, "Frame w/ unknown route, source: %i, dest %i", route.source, route.destination);
 	}
 
 	return pDest;

@@ -290,7 +290,6 @@
     <ClCompile Include="src\opendnp3\link\LinkHeader.cpp" />
     <ClCompile Include="src\opendnp3\link\LinkLayer.cpp" />
     <ClCompile Include="src\opendnp3\link\LinkLayerParser.cpp" />
-    <ClCompile Include="src\opendnp3\link\LinkRoute.cpp" />
     <ClCompile Include="src\opendnp3\link\PriLinkLayerStates.cpp" />
     <ClCompile Include="src\opendnp3\link\SecLinkLayerStates.cpp" />
     <ClCompile Include="src\opendnp3\link\ShiftableBuffer.cpp" />

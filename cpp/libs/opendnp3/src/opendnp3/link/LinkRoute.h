@@ -30,27 +30,24 @@ namespace opendnp3
 {
 
 /**
- * Immutable class that defines a route from a DNP3 source address to a
- * destination address.  Remote/Local used here instead of source/destination.
- *
- * When transmitting, destination = remote, source = local
- * When receiving, destination = local, soource = remote
- *
- * Primary used as a key for stl map/set.
+ * DNP3 source/destination address pair  
  */
 class LinkRoute
 {
 public:
-	LinkRoute(const uint16_t aRemoteAddr, const uint16_t aLocalAddr);
+	LinkRoute(uint16_t destination_, uint16_t source_) : 
+		destination(destination_),
+		source(source_)		
+	{}
 
-	LinkRoute();
+	LinkRoute() : destination(0), source(0) {}
 
-	uint16_t remote;
-	uint16_t local;
+	uint16_t destination;
+	uint16_t source;
 
 	bool Equals(const LinkRoute& rhs) const
 	{
-		return (this->remote == rhs.remote) && (this->local == rhs.local);
+		return (this->destination == rhs.destination) && (this->source == rhs.source);
 	}	
 };
 

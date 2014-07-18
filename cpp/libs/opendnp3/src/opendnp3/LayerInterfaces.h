@@ -29,6 +29,10 @@
 namespace opendnp3
 {
 
+/**
+* Describes a layer that can be opened or closed in response to the
+* availability of the layer below it.
+*/
 class IUpDown
 {
 
