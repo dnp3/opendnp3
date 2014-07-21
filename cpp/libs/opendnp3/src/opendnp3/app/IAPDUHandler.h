@@ -49,7 +49,7 @@ public:
 
 	virtual void AllObjects(const HeaderRecord& record) = 0;
 
-	virtual void OnRangeRequest(const HeaderRecord& record, const StaticRange& range) = 0;
+	virtual void OnRangeRequest(const HeaderRecord& record, const Range& range) = 0;
 
 	virtual void OnCountRequest(const HeaderRecord& record, uint32_t count) = 0;
 

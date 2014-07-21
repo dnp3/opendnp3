@@ -76,12 +76,7 @@ public:
 	uint16_t NumValues() const;
 
 	template <class T>
-	StaticRange FullRange() const
-	{
-		uint16_t num = NumValues<T>();
-		if(num > 0) return StaticRange(0, num - 1);
-		else return StaticRange();
-	}
+	StaticRange FullRange() const;
 
 	StaticDataFacade staticData;
 	
@@ -104,9 +99,10 @@ private:
 	template <class T, class U>
 	void UpdateEvent(const T& value, uint16_t index, U& collection)
 	{
-		if(collection.values.Contains(index))
+        auto position = collection.indexes.GetPosition(index);
+		if(collection.values.Contains(position))
 		{
-			auto& metadata = collection.metadata[index];
+			auto& metadata = collection.metadata[position];
 			EventClass eventClass;
 			if (metadata.GetEventClass(eventClass) && metadata.CheckForEvent(value))
 			{
@@ -116,7 +112,7 @@ private:
 					transactionHasEvents = true;
 				}
 			}
-			collection.values[index].Update(value);
+			collection.values[position].Update(value);
 		}
 	}
 

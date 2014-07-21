@@ -62,7 +62,7 @@ public:
 	void Reset();
 
 	IINField ReadAll(const GroupVariationRecord& record);
-	IINField ReadRange(const GroupVariationRecord& record, const StaticRange& range);
+	IINField ReadRange(const GroupVariationRecord& record, const Range& range);
 
 	bool IsComplete() const;
 
@@ -82,10 +82,10 @@ private:
 	openpal::StaticQueue<StaticRangeLoader, uint8_t, sizes::MAX_READ_REQUESTS> staticResponseQueue;
 
 	template <class Target>
-	IINField QueueRange(const StaticRange& range, typename Target::StaticResponseEnum enumeration)
+	IINField QueueRange(const Range& range, typename Target::StaticResponseEnum enumeration)
 	{
-		StaticRange copy(range);
-		copy.ClipTo(pDatabase->FullRange<Target>());
+        StaticRange copy(pDatabase->FullRange<Target>());
+        copy.ClipTo(range);
 		return QueueLoader(StaticRangeLoader(StaticLoadFunctions::Get(enumeration), copy));
 	}	
 

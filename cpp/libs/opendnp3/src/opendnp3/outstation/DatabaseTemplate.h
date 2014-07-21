@@ -23,6 +23,8 @@
 
 #include <cstdint>
 
+#include "PointIndexes.h"
+
 namespace opendnp3
 {
 
@@ -69,30 +71,71 @@ struct DatabaseTemplate
 		return DatabaseTemplate(count, count, count, count, count, count, count);
 	}
 
-	DatabaseTemplate(uint32_t numBinary_ = 0,
+	DatabaseTemplate(uint32_t numBinary_,
 	                 uint32_t numDoubleBinary_ = 0,
 	                 uint32_t numAnalog_ = 0,
 	                 uint32_t numCounter_ = 0,
 	                 uint32_t numFrozenCounter_ = 0,
 	                 uint32_t numBinaryOutputStatus_ = 0,
 	                 uint32_t numAnalogOutputStatus_ = 0) :
+    
+        binaryRange(numBinary_),
+        doubleBinaryRange(numDoubleBinary_),
+        analogRange(numAnalog_),
+        counterRange(numCounter_),
+        frozenCounterRange(numFrozenCounter_),
+        binaryOutputStatusRange(numBinaryOutputStatus_),
+        analogOutputStatusRange(numAnalogOutputStatus_),
 
-		numBinary(numBinary_),
-		numDoubleBinary(numDoubleBinary_),
-		numAnalog(numAnalog_),
-		numCounter(numCounter_),
-		numFrozenCounter(numFrozenCounter_),
-		numBinaryOutputStatus(numBinaryOutputStatus_),
-		numAnalogOutputStatus(numAnalogOutputStatus_)
+        binaryIndexes(openpal::Indexable<PointRange, uint32_t>(&binaryRange,1)),
+        doubleBinaryIndexes(openpal::Indexable<PointRange, uint32_t>(&doubleBinaryRange,1)),
+        analogIndexes(openpal::Indexable<PointRange, uint32_t>(&analogRange,1)),
+        counterIndexes(openpal::Indexable<PointRange, uint32_t>(&counterRange,1)),
+        frozenCounterIndexes(openpal::Indexable<PointRange, uint32_t>(&frozenCounterRange,1)),
+        binaryOutputStatusIndexes(openpal::Indexable<PointRange, uint32_t>(&binaryOutputStatusRange,1)),
+        analogOutputStatusIndexes(openpal::Indexable<PointRange, uint32_t>(&analogOutputStatusRange,1))
 	{}
+    
+    DatabaseTemplate(PointIndexes binaryIndexes_ = PointIndexes::EMPTYINDEXES,
+	                 PointIndexes doubleBinaryIndexes_ = PointIndexes::EMPTYINDEXES,
+	                 PointIndexes analogIndexes_ = PointIndexes::EMPTYINDEXES,
+	                 PointIndexes counterIndexes_ = PointIndexes::EMPTYINDEXES,
+	                 PointIndexes frozenCounterIndexes_ = PointIndexes::EMPTYINDEXES,
+	                 PointIndexes binaryOutputStatusIndexes_ = PointIndexes::EMPTYINDEXES,
+	                 PointIndexes analogOutputStatusIndexes_ = PointIndexes::EMPTYINDEXES) :
+    
+    binaryRange(binaryIndexes_.ToRange()),
+    doubleBinaryRange(doubleBinaryIndexes_.ToRange()),
+    analogRange(analogIndexes_.ToRange()),
+    counterRange(counterIndexes_.ToRange()),
+    frozenCounterRange(frozenCounterIndexes_.ToRange()),
+    binaryOutputStatusRange(binaryOutputStatusIndexes_.ToRange()),
+    analogOutputStatusRange(analogOutputStatusIndexes_.ToRange()),
+    
+    binaryIndexes(binaryIndexes_),
+    doubleBinaryIndexes(doubleBinaryIndexes_),
+    analogIndexes(analogIndexes_),
+    counterIndexes(counterIndexes_),
+    frozenCounterIndexes(frozenCounterIndexes_),
+    binaryOutputStatusIndexes(binaryOutputStatusIndexes_),
+    analogOutputStatusIndexes(analogOutputStatusIndexes_)
+	{}
+    
+    PointRange binaryRange;
+    PointRange doubleBinaryRange;
+    PointRange analogRange;
+    PointRange counterRange;
+    PointRange frozenCounterRange;
+    PointRange binaryOutputStatusRange;
+    PointRange analogOutputStatusRange;
 
-	uint32_t numBinary;
-	uint32_t numDoubleBinary;
-	uint32_t numAnalog;
-	uint32_t numCounter;
-	uint32_t numFrozenCounter;
-	uint32_t numBinaryOutputStatus;
-	uint32_t numAnalogOutputStatus;
+    PointIndexes binaryIndexes;
+    PointIndexes doubleBinaryIndexes;
+    PointIndexes analogIndexes;
+    PointIndexes counterIndexes;
+    PointIndexes frozenCounterIndexes;
+    PointIndexes binaryOutputStatusIndexes;
+    PointIndexes analogOutputStatusIndexes;
 };
 
 }

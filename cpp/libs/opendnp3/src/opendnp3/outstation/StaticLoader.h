@@ -36,6 +36,7 @@ enum class StaticLoadResult
 {
     EMPTY,		// nothing was loaded because the response context is empty
     COMPLETED,	// at least 1 event was loaded and the response context is empty
+    DISCONT,    // at least 1 event was loaded and the next range of contiguous points was reached
     FULL		// events were loaded and the APDU is full, context is not empty
 };
 
@@ -78,9 +79,12 @@ StaticLoadResult StaticLoader::LoadFixedSizeStartStopWithIterator(const openpal:
 	{
 		while(range.IsDefined())
 		{
-			if(iterator.Write(values[range.start].frozen))
+			if(iterator.Write(values[range.position].frozen))
 			{
-				range.Advance();
+                if(!range.Advance())
+                {
+                    return StaticLoadResult::DISCONT;
+                }
 			}
 			else
 			{				

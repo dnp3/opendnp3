@@ -68,27 +68,27 @@ IINField StaticResponseContext::ReadAll(const GroupVariationRecord& record)
 		switch (record.group)
 		{
 			case(1) :
-				return ReadRange(record, pDatabase->FullRange<Binary>());
+				return ReadRange(record, pDatabase->FullRange<Binary>().ToRange());
 			case(3) :
-				return ReadRange(record, pDatabase->FullRange<DoubleBitBinary>());
+				return ReadRange(record, pDatabase->FullRange<DoubleBitBinary>().ToRange());
 			case(10) :
-				return ReadRange(record, pDatabase->FullRange<BinaryOutputStatus>());
+				return ReadRange(record, pDatabase->FullRange<BinaryOutputStatus>().ToRange());
 			case(20) :
-				return ReadRange(record, pDatabase->FullRange<Counter>());
+				return ReadRange(record, pDatabase->FullRange<Counter>().ToRange());
 			case(21) :
-				return ReadRange(record, pDatabase->FullRange<FrozenCounter>());
+				return ReadRange(record, pDatabase->FullRange<FrozenCounter>().ToRange());
 			case(30) :
-				return ReadRange(record, pDatabase->FullRange<Analog>());
+				return ReadRange(record, pDatabase->FullRange<Analog>().ToRange());
 			case(40) :
-				return ReadRange(record, pDatabase->FullRange<AnalogOutputStatus>());
+				return ReadRange(record, pDatabase->FullRange<AnalogOutputStatus>().ToRange());
 			default:
 				return IINField(IINBit::FUNC_NOT_SUPPORTED);
 		}
 	}	
 }
 
-IINField StaticResponseContext::ReadRange(const GroupVariationRecord& record, const StaticRange& range)
-{	
+IINField StaticResponseContext::ReadRange(const GroupVariationRecord& record, const Range& range)
+{
 	switch (record.enumeration)
 	{
 		// Group 1
@@ -206,7 +206,13 @@ StaticLoadResult StaticResponseContext::LoadStaticData(HeaderWriter& writer)
 	while(!staticResponseQueue.IsEmpty())
 	{
 		auto pFront = staticResponseQueue.Peek();
-		auto result = (*pFront->pLoadFun)(writer, *pFront, *pDatabase);
+		auto result = StaticLoadResult::DISCONT;
+        
+        // Repeat for each contiguous range of points
+        while(result == StaticLoadResult::DISCONT)
+        {
+            result = (*pFront->pLoadFun)(writer, *pFront, *pDatabase);
+        }
 		if(result == StaticLoadResult::COMPLETED)
 		{
 			staticResponseQueue.Pop();

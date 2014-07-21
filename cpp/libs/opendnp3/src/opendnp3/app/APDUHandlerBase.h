@@ -57,7 +57,7 @@ public:
 
 	virtual void AllObjects(const HeaderRecord& record) override final;
 
-	virtual void OnRangeRequest(const HeaderRecord& record, const StaticRange& range) override final;
+	virtual void OnRangeRequest(const HeaderRecord& record, const Range& range) override final;
 
 	virtual void OnCountRequest(const HeaderRecord& record, uint32_t count) override final;
 
@@ -136,7 +136,7 @@ protected:
 
 	virtual void _AllObjects(const HeaderRecord& record);
 
-	virtual void _OnRangeRequest(const HeaderRecord& record, const StaticRange& range);
+	virtual void _OnRangeRequest(const HeaderRecord& record, const Range& range);
 
 	virtual void _OnCountRequest(const HeaderRecord& record, uint32_t count);
 

@@ -27,34 +27,42 @@ namespace asiodnp3
 {
 
 DynamicallyAllocatedDatabase::DynamicallyAllocatedDatabase(const DatabaseTemplate& databaseTemplate):
-	binaryValues(databaseTemplate.numBinary),
-	doubleBinaryValues(databaseTemplate.numDoubleBinary),
-	analogValues(databaseTemplate.numAnalog),
-	counterValues(databaseTemplate.numCounter),
-	frozenCounterValues(databaseTemplate.numFrozenCounter),
-	binaryOutputStatusValues(databaseTemplate.numBinaryOutputStatus),
-	analogOutputStatusValues(databaseTemplate.numAnalogOutputStatus),
+	binaryValues(databaseTemplate.binaryIndexes.IndexCount()),
+	doubleBinaryValues(databaseTemplate.doubleBinaryIndexes.IndexCount()),
+	analogValues(databaseTemplate.analogIndexes.IndexCount()),
+	counterValues(databaseTemplate.counterIndexes.IndexCount()),
+	frozenCounterValues(databaseTemplate.frozenCounterIndexes.IndexCount()),
+	binaryOutputStatusValues(databaseTemplate.binaryOutputStatusIndexes.IndexCount()),
+	analogOutputStatusValues(databaseTemplate.analogOutputStatusIndexes.IndexCount()),
 
-	binaryMetadata(databaseTemplate.numBinary),
-	doubleBinaryMetadata(databaseTemplate.numDoubleBinary),
-	analogMetadata(databaseTemplate.numAnalog),
-	counterMetadata(databaseTemplate.numCounter),
-	frozenCounterMetadata(databaseTemplate.numFrozenCounter),
-	binaryOutputStatusMetadata(databaseTemplate.numBinaryOutputStatus),
-	analogOutputStatusMetadata(databaseTemplate.numAnalogOutputStatus)
+	binaryMetadata(databaseTemplate.binaryIndexes.IndexCount()),
+	doubleBinaryMetadata(databaseTemplate.doubleBinaryIndexes.IndexCount()),
+	analogMetadata(databaseTemplate.analogIndexes.IndexCount()),
+	counterMetadata(databaseTemplate.counterIndexes.IndexCount()),
+	frozenCounterMetadata(databaseTemplate.frozenCounterIndexes.IndexCount()),
+	binaryOutputStatusMetadata(databaseTemplate.binaryOutputStatusIndexes.IndexCount()),
+	analogOutputStatusMetadata(databaseTemplate.analogOutputStatusIndexes.IndexCount()),
+    
+    binaryIndexes(databaseTemplate.binaryIndexes),
+    doubleBinaryIndexes(databaseTemplate.doubleBinaryIndexes),
+    analogIndexes(databaseTemplate.analogIndexes),
+    counterIndexes(databaseTemplate.counterIndexes),
+    frozenCounterIndexes(databaseTemplate.frozenCounterIndexes),
+    binaryOutputStatusIndexes(databaseTemplate.binaryOutputStatusIndexes),
+    analogOutputStatusIndexes(databaseTemplate.analogOutputStatusIndexes)
 {
 
 }
 
 StaticDataFacade DynamicallyAllocatedDatabase::GetFacade()
 {
-	BinaryCollection binaries(binaryValues.ToIndexable(), binaryMetadata.ToIndexable());
-	DoubleBinaryCollection dobuleBinaries(doubleBinaryValues.ToIndexable(), doubleBinaryMetadata.ToIndexable());
-	AnalogCollection analogs(analogValues.ToIndexable(), analogMetadata.ToIndexable());
-	CounterCollection counters(counterValues.ToIndexable(), counterMetadata.ToIndexable());
-	FrozenCounterCollection frozenCounters(frozenCounterValues.ToIndexable(), frozenCounterMetadata.ToIndexable());
-	BinaryOutputStatusCollection binaryOutputStatii(binaryOutputStatusValues.ToIndexable(), binaryOutputStatusMetadata.ToIndexable());
-	AnalogOutputStatusCollection analogOutputStatii(analogOutputStatusValues.ToIndexable(), analogOutputStatusMetadata.ToIndexable());
+	BinaryCollection binaries(binaryValues.ToIndexable(), binaryMetadata.ToIndexable(), binaryIndexes);
+	DoubleBinaryCollection dobuleBinaries(doubleBinaryValues.ToIndexable(), doubleBinaryMetadata.ToIndexable(), doubleBinaryIndexes);
+	AnalogCollection analogs(analogValues.ToIndexable(), analogMetadata.ToIndexable(), analogIndexes);
+	CounterCollection counters(counterValues.ToIndexable(), counterMetadata.ToIndexable(), counterIndexes);
+	FrozenCounterCollection frozenCounters(frozenCounterValues.ToIndexable(), frozenCounterMetadata.ToIndexable(), frozenCounterIndexes);
+	BinaryOutputStatusCollection binaryOutputStatii(binaryOutputStatusValues.ToIndexable(), binaryOutputStatusMetadata.ToIndexable(), binaryOutputStatusIndexes);
+	AnalogOutputStatusCollection analogOutputStatii(analogOutputStatusValues.ToIndexable(), analogOutputStatusMetadata.ToIndexable(), analogOutputStatusIndexes);
 
 	return StaticDataFacade(
 	           binaries,

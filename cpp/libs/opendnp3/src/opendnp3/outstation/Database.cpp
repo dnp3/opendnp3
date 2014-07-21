@@ -225,11 +225,52 @@ uint16_t Database::NumValues<AnalogOutputStatus>() const
 	return staticData.analogOutputStatii.values.Size();
 }
 
+template <>
+StaticRange Database::FullRange<Binary>() const
+{
+    return &staticData.binaries.indexes;
+}
+
+template <>
+StaticRange Database::FullRange<DoubleBitBinary>() const
+{
+    return &staticData.doubleBinaries.indexes;
+}
+
+template <>
+StaticRange Database::FullRange<Analog>() const
+{
+    return &staticData.analogs.indexes;
+}
+
+template <>
+StaticRange Database::FullRange<Counter>() const
+{
+    return &staticData.counters.indexes;
+}
+
+template <>
+StaticRange Database::FullRange<FrozenCounter>() const
+{
+    return &staticData.frozenCounters.indexes;
+}
+
+template <>
+StaticRange Database::FullRange<BinaryOutputStatus>() const
+{
+    return &staticData.binaryOutputStatii.indexes;
+}
+
+template <>
+StaticRange Database::FullRange<AnalogOutputStatus>() const
+{
+    return &staticData.analogOutputStatii.indexes;
+}
+    
 void Database::SetEventHandler(const Action0& callback)
 {
 	onEventAction.Set(callback);
 }
-
 
 }
 

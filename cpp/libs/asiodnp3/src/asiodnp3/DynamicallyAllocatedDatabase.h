@@ -23,6 +23,7 @@
 
 #include <opendnp3/outstation/StaticDataFacade.h>
 #include <opendnp3/outstation/DatabaseTemplate.h>
+#include <opendnp3/app/PointIndexes.h>
 
 #include <openpal/container/DynamicArray.h>
 
@@ -54,6 +55,14 @@ private:
 	openpal::DynamicArray<opendnp3::FrozenCounterMetadata, uint16_t> frozenCounterMetadata;
 	openpal::DynamicArray<opendnp3::BinaryOutputStatusMetadata, uint16_t> binaryOutputStatusMetadata;
 	openpal::DynamicArray<opendnp3::AnalogOutputStatusMetadata, uint16_t> analogOutputStatusMetadata;
+    
+    opendnp3::PointIndexes binaryIndexes;
+    opendnp3::PointIndexes doubleBinaryIndexes;
+    opendnp3::PointIndexes analogIndexes;
+    opendnp3::PointIndexes counterIndexes;
+    opendnp3::PointIndexes frozenCounterIndexes;
+    opendnp3::PointIndexes binaryOutputStatusIndexes;
+    opendnp3::PointIndexes analogOutputStatusIndexes;
 };
 
 }

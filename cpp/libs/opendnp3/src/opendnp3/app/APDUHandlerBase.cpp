@@ -65,7 +65,7 @@ void APDUHandlerBase::AllObjects(const HeaderRecord& record)
 	++currentHeader;
 }
 
-void APDUHandlerBase::OnRangeRequest(const HeaderRecord& record, const StaticRange& range)
+void APDUHandlerBase::OnRangeRequest(const HeaderRecord& record, const Range& range)
 {
 	this->_OnRangeRequest(record, range);
 	++currentHeader;
@@ -384,7 +384,7 @@ void APDUHandlerBase::_AllObjects(const HeaderRecord& record)
 	++ignoredHeaders;
 }
 
-void APDUHandlerBase::_OnRangeRequest(const HeaderRecord& record, const StaticRange& range)
+void APDUHandlerBase::_OnRangeRequest(const HeaderRecord& record, const Range& range)
 {
 	++ignoredHeaders;
 }

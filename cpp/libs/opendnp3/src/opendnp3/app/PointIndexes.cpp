@@ -19,33 +19,18 @@
  * to you under the terms of the License.
  */
 
-#include "ReadHandler.h"
+#include "PointIndexes.h"
+
+#include <openpal/util/Limits.h>
 
 namespace opendnp3
 {
+    const uint32_t PointRange::MIN(openpal::MinValue<uint16_t>());
+    const uint32_t PointRange::MAX(openpal::MaxValue<uint16_t>());
+    const uint32_t PointRange::OUTOFRANGE(openpal::MaxValue<uint32_t>());
+    PointRange PointRange::FULLRANGE = { PointRange::MIN, PointRange::MAX, PointRange::MIN };
+    PointRange PointRange::EMPTYRANGE = { PointRange::MAX, PointRange::MIN, PointRange::MIN };
 
-ReadHandler::ReadHandler(openpal::Logger& logger, ResponseContext& rspContext) :
-	APDUHandlerBase(logger),
-	pRspContext(&rspContext)
-{
-
+    const PointIndexes PointIndexes::FULLINDEXES(openpal::Indexable<PointRange, uint32_t>(&PointRange::FULLRANGE,1));
+    const PointIndexes PointIndexes::EMPTYINDEXES(openpal::Indexable<PointRange, uint32_t>(&PointRange::EMPTYRANGE,0));
 }
-
-void ReadHandler::_AllObjects(const HeaderRecord& record)
-{
-	errors |= pRspContext->ReadAllObjects(record);
-}
-
-void ReadHandler::_OnRangeRequest(const HeaderRecord& record, const Range& range)
-{
-	errors |= pRspContext->ReadRange(record, range);
-}
-
-void ReadHandler::_OnCountRequest(const HeaderRecord& record, uint32_t count)
-{
-	errors |= pRspContext->ReadCount(record, count);
-}
-
-}
-
-
