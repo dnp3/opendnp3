@@ -23,7 +23,7 @@
 
 #include <cstdint>
 
-#include "PointIndexes.h"
+#include "opendnp3/app/PointIndexes.h"
 
 namespace opendnp3
 {

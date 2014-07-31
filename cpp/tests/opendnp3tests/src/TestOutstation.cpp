@@ -389,7 +389,8 @@ TEST_CASE(SUITE("ReadByRangeHeader"))
 TEST_CASE(SUITE("ReadDiscontiguousIndexes"))
 {
 	OutstationConfig config;
-    StaticPointIndexes<2,2,4,5> binaryIndexes;
+    
+    StaticPointIndexes<2> binaryIndexes({2, 4, 5});
 	OutstationTestObject t(config, DatabaseTemplate(binaryIndexes));
 	t.LowerLayerUp();
     

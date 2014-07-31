@@ -24,7 +24,7 @@
 
 #include <cstdint>
 #include "GroupVariationRecord.h"
-#include "PointIndexes.h"
+#include "opendnp3/app/PointIndexes.h"
 
 namespace opendnp3
 {

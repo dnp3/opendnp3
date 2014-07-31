@@ -24,7 +24,7 @@
 #include <assert.h>
 #include <openpal/container/Indexable.h>
 
-#include "PointIndexes.h"
+#include "opendnp3/app/PointIndexes.h"
 
 namespace opendnp3
 {
@@ -35,7 +35,7 @@ struct ValueMetadataPair
 	ValueMetadataPair(openpal::Indexable<T, uint16_t> aValues, openpal::Indexable<U, uint16_t> aMetadata, PointIndexes aIndexes) :
 		values(aValues),
 		metadata(aMetadata),
-        indexes(aIndexes)
+        indexes(aIndexes.ranges)
 	{
 		assert(aValues.Size() == aMetadata.Size());
         assert(aValues.Size() <= aIndexes.IndexCount());
