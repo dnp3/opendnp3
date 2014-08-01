@@ -34,7 +34,7 @@ namespace opendnp3
     const PointIndexes PointIndexes::FULLINDEXES(openpal::Indexable<PointRange, uint32_t>(&PointRange::FULLRANGE,1));
     const PointIndexes PointIndexes::EMPTYINDEXES(openpal::Indexable<PointRange, uint32_t>(&PointRange::EMPTYRANGE,0));
     
-    void PointIndexes::SetRanges(std::initializer_list<uint32_t> points)
+    void PointIndexes::SetRanges(std::initializer_list<Range> points)
     {
         assert(ranges.Size() == CountRanges(points));
         if(ranges.Size() == 0) return;
@@ -43,30 +43,34 @@ namespace opendnp3
         uint32_t lastPoint = 0;
         for(auto p : points)
         {
+            assert(p.start <= p.stop);
             if(count > 0)
             {
-                assert(p > lastPoint);
-                lastPoint++;
-                if (p > lastPoint)
+                assert(p.start > lastPoint);
+                if (p.start > lastPoint + 1)
                 {
-                    ranges[count-1].stop = lastPoint-1;
-                    ranges[count].start = p;
-                    ranges[count].offset = ranges[count-1].offset + (p - lastPoint);
+                    ranges[count].start = p.start;
+                    ranges[count].stop = p.stop;
+                    ranges[count].offset = p.start - lastPoint + ranges[count-1].offset;
                     count++;
-                    lastPoint = p;
                 }
+                else
+                {
+                    ranges[count-1].stop = p.stop;
+                }
+                lastPoint = p.stop;
             }
             else
             {
-                ranges[count].start = p;
-                ranges[count].offset = p;
-                lastPoint = p;
+                ranges[count].start = p.start;
+                ranges[count].stop = p.stop;
+                ranges[count].offset = p.start;
                 count++;
+                lastPoint = p.stop;
             }
         }
-        ranges[count-1].stop = lastPoint;
     }
-    
+    /*
     void PointIndexes::SetRanges(openpal::Indexable<uint32_t, uint32_t>& points)
     {
         assert(ranges.Size() == CountRanges(points));
@@ -93,31 +97,46 @@ namespace opendnp3
             {
                 ranges[count].start = points[p];
                 ranges[count].offset = points[p];
-                lastPoint = points[p];
                 count++;
+                lastPoint = points[p];
             }
         }
         ranges[count-1].stop = lastPoint;
-    }
+    }*/
     
     void PointIndexes::SetRanges(openpal::Indexable<Range, uint32_t> pointranges)
     {
-        assert(ranges.Size() == pointranges.Size());
+        //assert(ranges.Size() == pointranges.Size());
         if(ranges.Size() == 0) return;
-        
+
+        uint32_t count = 0;
+        uint32_t lastPoint = 0;
         for(uint32_t p = 0; p < pointranges.Size(); ++p)
         {
-            ranges[p].start = pointranges[p].start;
-            ranges[p].stop = pointranges[p].stop;
-            assert(ranges[p].start <= ranges[p].stop);
-            if(p > 0)
+            assert(pointranges[p].start <= pointranges[p].stop);
+            if(count > 0)
             {
-                assert(ranges[p].start > ranges[p-1].stop);
-                ranges[p].offset = ranges[p-1].offset + (ranges[p].start - ranges[p-1].stop - 1);
+                assert(pointranges[p].start > lastPoint);
+                if (pointranges[p].start > lastPoint + 1)
+                {
+                    ranges[count].start = pointranges[p].start;
+                    ranges[count].stop = pointranges[p].stop;
+                    ranges[count].offset = pointranges[p].start - lastPoint + ranges[count-1].offset;
+                    count++;
+                }
+                else
+                {
+                    ranges[count-1].stop = pointranges[p].stop;
+                }
+                lastPoint = pointranges[p].stop;
             }
             else
             {
-                ranges[p].offset = pointranges[p].start;
+                ranges[count].start = pointranges[p].start;
+                ranges[count].stop = pointranges[p].stop;
+                ranges[count].offset = pointranges[p].start;
+                count++;
+                lastPoint = pointranges[p].stop;
             }
         }
     }
@@ -235,51 +254,51 @@ namespace opendnp3
         return true;
     }
     
-    uint32_t PointIndexes::CountRanges(openpal::Indexable<uint32_t, uint32_t> points)
+    uint32_t PointIndexes::CountRanges(openpal::Indexable<Range, uint32_t> pointranges)
     {
         /* count the number of contiguous ranges, ensuring points are increasing */
         uint32_t count = 0;
         uint32_t lastPoint = 0;
-        for(uint32_t p = 0; p < points.Size(); ++p)
+        for(uint32_t p = 0; p < pointranges.Size(); ++p)
         {
+            assert(pointranges[p].start <= pointranges[p].stop);
             if(count)
             {
-                assert(points[p] > lastPoint);
-                lastPoint++;
-                if (points[p] > lastPoint) {
-                    lastPoint = points[p];
+                assert(pointranges[p].start > lastPoint);
+                if (pointranges[p].start > lastPoint + 1) {
                     count++;
                 }
+                lastPoint = pointranges[p].stop;
             }
             else
             {
-                lastPoint = points[p];
                 count++;
+                lastPoint = pointranges[p].stop;
             }
         }
         return count;
     }
     
-    uint32_t PointIndexes::CountRanges(std::initializer_list<uint32_t> points)
+    uint32_t PointIndexes::CountRanges(std::initializer_list<Range> points)
     {
         /* count the number of contiguous ranges, ensuring points are increasing */
         uint32_t count = 0;
         uint32_t lastPoint = 0;
         for(auto p : points)
         {
+            assert(p.start <= p.stop);
             if(count)
             {
-                assert(p > lastPoint);
-                lastPoint++;
-                if (p > lastPoint) {
-                    lastPoint = p;
+                assert(p.start > lastPoint);
+                if (p.start > lastPoint + 1) {
                     count++;
                 }
+                lastPoint = p.stop;
             }
             else
             {
-                lastPoint = p;
                 count++;
+                lastPoint = p.stop;
             }
         }
         return count;

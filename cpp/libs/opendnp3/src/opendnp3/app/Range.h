@@ -38,6 +38,11 @@ public:
 		assert(count > 0);
 		return Range(0, count - 1);
 	}
+    
+	Range(uint16_t index_) :
+        start(index_),
+        stop(index_)
+	{}
 
 	Range(uint16_t start_, uint16_t stop_) :
 		start(start_),
