@@ -82,7 +82,7 @@ namespace opendnp3
         { }
         
         void SetRanges(std::initializer_list<Range> points);
-        //void SetRanges(openpal::Indexable<uint32_t, uint32_t>& points);
+        void SetRanges(openpal::Indexable<uint32_t, uint32_t>& points);
         void SetRanges(openpal::Indexable<Range, uint32_t> pointranges);
         void SetRanges(PointIndexes pointranges);
         
@@ -146,8 +146,9 @@ namespace opendnp3
         /* Returns true if index is contained in a range */;
         bool Contains(uint32_t index) const;
         
-        static uint32_t CountRanges(openpal::Indexable<Range, uint32_t> points);
         static uint32_t CountRanges(std::initializer_list<Range> points);
+        static uint32_t CountRanges(openpal::Indexable<uint32_t, uint32_t> points);
+        static uint32_t CountRanges(openpal::Indexable<Range, uint32_t> points);
         
         openpal::Indexable<PointRange, uint32_t> ranges;
         
@@ -169,13 +170,13 @@ namespace opendnp3
             PointIndexes pi(ranges.ToIndexable());
             pi.SetRanges(points);
         }
-        /*
+        
         StaticPointIndexes(openpal::Indexable<uint32_t, uint32_t> points)
         {
             PointIndexes pi(ranges.ToIndexable());
             pi.SetRanges(points);
-        }*/
-
+        }
+        
         StaticPointIndexes(openpal::Indexable<Range, uint32_t> pointranges)
         {
             PointIndexes pi(ranges.ToIndexable());
@@ -207,14 +208,14 @@ namespace opendnp3
             PointIndexes pi(ranges.ToIndexable());
             pi.SetRanges(points);
         }
-        /*
+        
         DynamicPointIndexes(openpal::Indexable<uint32_t, uint32_t> points) :
         ranges(PointIndexes::CountRanges(points))
         {
             PointIndexes pi(ranges.ToIndexable());
             pi.SetRanges(points);
         }
-        */
+        
         DynamicPointIndexes(openpal::Indexable<Range, uint32_t> pointranges) :
         ranges(pointranges.Size())
         {
