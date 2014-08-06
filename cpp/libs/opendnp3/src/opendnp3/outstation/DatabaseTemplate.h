@@ -93,7 +93,15 @@ struct DatabaseTemplate
         counterIndexes(openpal::Indexable<PointRange, uint32_t>(&counterRange,1)),
         frozenCounterIndexes(openpal::Indexable<PointRange, uint32_t>(&frozenCounterRange,1)),
         binaryOutputStatusIndexes(openpal::Indexable<PointRange, uint32_t>(&binaryOutputStatusRange,1)),
-        analogOutputStatusIndexes(openpal::Indexable<PointRange, uint32_t>(&analogOutputStatusRange,1))
+        analogOutputStatusIndexes(openpal::Indexable<PointRange, uint32_t>(&analogOutputStatusRange,1)),
+
+		numBinary(numBinary_),
+		numDoubleBinary(numDoubleBinary_),
+		numAnalog(numAnalog_),
+		numCounter(numCounter_),
+		numFrozenCounter(numFrozenCounter_),
+		numBinaryOutputStatus(numBinaryOutputStatus_),
+		numAnalogOutputStatus(numAnalogOutputStatus_)
 	{}
     
     DatabaseTemplate(PointIndexes binaryIndexes_ = PointIndexes::EMPTYINDEXES,
@@ -112,13 +120,21 @@ struct DatabaseTemplate
     binaryOutputStatusRange(binaryOutputStatusIndexes_.ToRange()),
     analogOutputStatusRange(analogOutputStatusIndexes_.ToRange()),
     
-    binaryIndexes(binaryIndexes_),
+	binaryIndexes(binaryIndexes_),
     doubleBinaryIndexes(doubleBinaryIndexes_),
     analogIndexes(analogIndexes_),
     counterIndexes(counterIndexes_),
     frozenCounterIndexes(frozenCounterIndexes_),
     binaryOutputStatusIndexes(binaryOutputStatusIndexes_),
-    analogOutputStatusIndexes(analogOutputStatusIndexes_)
+    analogOutputStatusIndexes(analogOutputStatusIndexes_),
+
+	numBinary(binaryIndexes_.IndexCount()),
+	numDoubleBinary(doubleBinaryIndexes_.IndexCount()),
+	numAnalog(analogIndexes_.IndexCount()),
+	numCounter(counterIndexes_.IndexCount()),
+	numFrozenCounter(frozenCounterIndexes_.IndexCount()),
+	numBinaryOutputStatus(binaryOutputStatusIndexes_.IndexCount()),
+	numAnalogOutputStatus(analogOutputStatusIndexes_.IndexCount())
 	{}
     
     PointRange binaryRange;
@@ -136,6 +152,15 @@ struct DatabaseTemplate
     PointIndexes frozenCounterIndexes;
     PointIndexes binaryOutputStatusIndexes;
     PointIndexes analogOutputStatusIndexes;
+
+	uint32_t numBinary;
+	uint32_t numDoubleBinary;
+	uint32_t numAnalog;
+	uint32_t numCounter;
+	uint32_t numFrozenCounter;
+	uint32_t numBinaryOutputStatus;
+	uint32_t numAnalogOutputStatus;
+
 };
 
 }

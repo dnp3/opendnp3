@@ -160,7 +160,7 @@ namespace opendnp3
         uint32_t count = 1 + stop - start;
         
         /* delete all the gaps between start and stop */
-        for(auto i = 1; i < ranges.Size(); i++)
+        for(uint32_t i = 1; i < ranges.Size(); i++)
         {
             if ((start <= ranges[i-1].stop) && (stop >= ranges[i].start))
             {
