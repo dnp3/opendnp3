@@ -306,7 +306,7 @@ namespace Automatak.DNP3.Interface
 
         public byte[] Bytes
         {
-            get { return Bytes; }
+            get { return bytes; }
         }
 
         private readonly byte[] bytes;    
