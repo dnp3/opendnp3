@@ -144,7 +144,8 @@ namespace Automatak.DNP3.Interface
         /// <param name="value">value of the measurement</param>
         /// <param name="quality">quality enumeration as a bitfield</param>
         /// <param name="time">timestamp</param>
-        public Analog(double value, byte quality, DateTime time) : base(value, quality, DateTime.MinValue)
+        public Analog(double value, byte quality, DateTime time)
+            : base(value, quality, time)
 	    {}
 
         /// <summary>
