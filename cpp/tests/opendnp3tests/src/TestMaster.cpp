@@ -397,3 +397,37 @@ TEST_CASE(SUITE("ReceiveCTOUnsynchronized"))
 	REQUIRE(equal); 
 	REQUIRE(record.tsmode == TimestampMode::UNSYNCHRONIZED);
 }
+
+TEST_CASE(SUITE("ReceiveIINinResponses"))
+{
+	auto params = NoStartupTasks();
+	MasterTestObject t(params);
+	t.master.OnLowerLayerUp();
+
+	auto scan = t.master.AddClassScan(ClassField(~0), TimeDuration::Seconds(1));
+
+	REQUIRE(t.exe.AdvanceToNextTimer());
+	REQUIRE(t.exe.RunMany() > 0);
+	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
+	t.master.OnSendResult(true);
+
+	// response with IIN retart bit
+	t.SendToMaster("C0 81 80 00");
+
+	REQUIRE(t.application.rxIIN.size() == 1);
+	REQUIRE(t.application.rxIIN[0].IsSet(IINBit::DEVICE_RESTART));
+}
+
+TEST_CASE(SUITE("ReceiveIINUnsol"))
+{
+	auto params = NoStartupTasks();
+	MasterTestObject t(params);
+	t.master.OnLowerLayerUp();	
+	
+	t.SendToMaster(hex::NullUnsolicited(0, IINField(IINBit::DEVICE_TROUBLE)));
+
+	REQUIRE(t.application.rxIIN.size() == 1);
+	REQUIRE(t.application.rxIIN[0].IsSet(IINBit::DEVICE_TROUBLE));
+}
+
+

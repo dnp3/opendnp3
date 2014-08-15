@@ -25,6 +25,8 @@ namespace Automatak
 
 				virtual openpal::UTCTimestamp Now() override final;
 
+				virtual void OnReceiveIIN(const opendnp3::IINField& iin) override final;
+
 			private:
 				gcroot < Automatak::DNP3::Interface::IMasterApplication^ > proxy;
 			};
