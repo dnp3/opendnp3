@@ -36,7 +36,16 @@ namespace Automatak.DNP3.Interface
         /// 
         /// </summary>
         /// <returns> Interface used to dispatch command requests </returns>
-        ICommandProcessor GetCommandProcessor();       
+        ICommandProcessor GetCommandProcessor();
+
+        /// <summary>
+        /// Adds an all objects scan that uses the 0x06 qualifier
+        /// </summary>
+        /// <param name="group"></param>
+        /// <param name="variation"></param>
+        /// <param name="period"></param>
+        /// <returns></returns>
+        IMasterScan AddAllObjectsScan(byte group, byte variation, TimeSpan period);
 
         /// <summary>
         /// Adds a class scan to the master

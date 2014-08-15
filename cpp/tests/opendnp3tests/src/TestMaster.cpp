@@ -148,6 +148,19 @@ TEST_CASE(SUITE("SolicitedResponseTimeout"))
 	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(1));
 }
 
+TEST_CASE(SUITE("AllObjectsScan"))
+{
+	MasterTestObject t(NoStartupTasks());
+	auto scan = t.master.AddAllObjectsScan(GroupVariationID(110, 0), TimeDuration::Seconds(1));
+	t.master.OnLowerLayerUp();
+
+	t.exe.RunMany();
+	REQUIRE(t.exe.AdvanceToNextTimer());
+	t.exe.RunMany();
+
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 01 6E 00 06");	
+}
+
 TEST_CASE(SUITE("ClassScanCanRepeat"))
 {
 	MasterTestObject t(NoStartupTasks());

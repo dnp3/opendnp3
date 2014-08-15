@@ -50,6 +50,12 @@ public:
 	virtual opendnp3::StackStatistics GetStackStatistics() = 0;
 
 	/**
+	* Add a scan that requests all objects using qualifier code 0x06
+	* @ return A proxy class used to manipulate the scan
+	*/
+	virtual opendnp3::MasterScan AddAllObjectsScan(opendnp3::GroupVariationID gvId, openpal::TimeDuration period) = 0;
+
+	/**
 	* Add a class-based scan to the master
 	* @return A proxy class used to manipulate the scan
 	*/
