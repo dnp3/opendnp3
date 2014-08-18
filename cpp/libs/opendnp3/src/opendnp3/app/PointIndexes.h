@@ -26,16 +26,13 @@
 #include <initializer_list>
 
 #include <openpal/container/Indexable.h>
-#include <openpal/container/StaticArray.h>
-
-#include <openpal/container/DynamicArray.h>
 
 #include "Range.h"
 
 namespace opendnp3
 {
 
-    class PointRange
+    struct PointRange
     {
     public:
         PointRange(uint32_t count=0)
@@ -157,86 +154,6 @@ namespace opendnp3
         {
             return ranges.Size()-1;
         }
-    };
-   
-    // A statically sized array of point indexes
-    template <uint32_t nranges>
-    class StaticPointIndexes
-    {
-    public:
-
-        StaticPointIndexes(std::initializer_list<Range> points)
-        {
-            PointIndexes pi(ranges.ToIndexable());
-            pi.SetRanges(points);
-        }
-        
-        StaticPointIndexes(openpal::Indexable<uint32_t, uint32_t> points)
-        {
-            PointIndexes pi(ranges.ToIndexable());
-            pi.SetRanges(points);
-        }
-        
-        StaticPointIndexes(openpal::Indexable<Range, uint32_t> pointranges)
-        {
-            PointIndexes pi(ranges.ToIndexable());
-            pi.SetRanges(pointranges);
-        }
-        
-        StaticPointIndexes(PointIndexes pointranges)
-        {
-            PointIndexes pi(ranges.ToIndexable());
-            pi.SetRanges(pointranges);
-        }
-        
-        operator PointIndexes()
-        {
-            return ranges.ToIndexable();
-        }
-        
-    private:
-        openpal::StaticArray<PointRange, uint32_t, nranges> ranges;
-    };
-
-    // A dynamically sized array of point indexes
-    class DynamicPointIndexes
-    {
-    public:
-        DynamicPointIndexes(std::initializer_list<Range> points) :
-        ranges(PointIndexes::CountRanges(points))
-        {
-            PointIndexes pi(ranges.ToIndexable());
-            pi.SetRanges(points);
-        }
-        
-        DynamicPointIndexes(openpal::Indexable<uint32_t, uint32_t> points) :
-        ranges(PointIndexes::CountRanges(points))
-        {
-            PointIndexes pi(ranges.ToIndexable());
-            pi.SetRanges(points);
-        }
-        
-        DynamicPointIndexes(openpal::Indexable<Range, uint32_t> pointranges) :
-        ranges(pointranges.Size())
-        {
-            PointIndexes pi(ranges.ToIndexable());
-            pi.SetRanges(pointranges);
-        }
-        
-        DynamicPointIndexes(PointIndexes pointranges) :
-        ranges(pointranges.ranges.Size())
-        {
-            PointIndexes pi(ranges.ToIndexable());
-            pi.SetRanges(pointranges);
-        }
-        
-        operator PointIndexes()
-        {
-            return ranges.ToIndexable();
-        }
-        
-    private:
-        openpal::DynamicArray<PointRange, uint32_t> ranges;
     };
     
 }

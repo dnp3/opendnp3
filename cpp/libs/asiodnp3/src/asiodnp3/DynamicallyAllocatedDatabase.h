@@ -23,7 +23,7 @@
 
 #include <opendnp3/outstation/StaticDataFacade.h>
 #include <opendnp3/outstation/DatabaseTemplate.h>
-#include <opendnp3/app/PointIndexes.h>
+#include <opendnp3/app/DynamicPointIndexes.h>
 
 #include <openpal/container/DynamicArray.h>
 
