@@ -37,6 +37,8 @@ namespace build
 
 	void ReadIntegrity(APDURequest& request, const ClassField& classes, uint8_t seq = 0);
 
+	void ReadAllObjects(APDURequest& request, GroupVariationID gvId, uint8_t seq = 0);
+
 	void DisableUnsolicited(APDURequest& request, uint8_t seq = 0);
 
 	void EnableUnsolicited(APDURequest& request, const ClassField& classes, uint8_t seq = 0);

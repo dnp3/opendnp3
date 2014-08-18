@@ -37,11 +37,19 @@ void ReadIntegrity(APDURequest& request, const ClassField& classes, uint8_t seq)
 	ClassRequest(request, FunctionCode::READ, classes, seq);
 }
 
+void ReadAllObjects(APDURequest& request, GroupVariationID gvId, uint8_t seq)
+{
+	request.SetControl(AppControlField(true, true, false, false, seq));
+	request.SetFunction(FunctionCode::READ);
+	auto writer = request.GetWriter();
+	writer.WriteHeader(gvId, QualifierCode::ALL_OBJECTS);
+}
+
 void ClassRequest(APDURequest& request, FunctionCode fc, const ClassField& classes, uint8_t seq)
 {
 	request.SetControl(AppControlField(true, true, false, false, seq));
 	request.SetFunction(fc);
-	WriteClassHeaders(request, classes);
+	WriteClassHeaders(request, classes);	
 }
 
 void WriteClassHeaders(APDURequest& request, const ClassField& classes)
