@@ -21,7 +21,9 @@ namespace Automatak
 
 			void MasterApplicationAdapter::OnReceiveIIN(const opendnp3::IINField& iin)
 			{
-				// TODO, add to C# API and translate type
+				Automatak::DNP3::Interface::IINField ^iinField = gcnew Automatak::DNP3::Interface::IINField(
+					(Automatak::DNP3::Interface::LSBMask)iin.LSB, (Automatak::DNP3::Interface::MSBMask)iin.MSB);
+				proxy->OnReceiveIIN(iinField);
 			}
 
 		}
