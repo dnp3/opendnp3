@@ -88,6 +88,12 @@ MasterScan Master::AddClassScan(const ClassField& field, openpal::TimeDuration p
 	return this->AddScan(period, openpal::Action1<APDURequest&>::Bind(configure));
 }
 
+MasterScan Master::AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period)
+{
+	auto configure = [gvId](APDURequest& request) { build::ReadAllObjects(request, gvId); };
+	return this->AddScan(period, openpal::Action1<APDURequest&>::Bind(configure));
+}
+
 MasterScan Master::AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period)
 {
 	auto configure = [gvId, start, stop](APDURequest& request) {

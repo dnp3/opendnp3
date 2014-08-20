@@ -89,6 +89,12 @@ opendnp3::ILinkContext* MasterStackImpl::GetLinkContext()
 	return &stack.link;
 }
 
+MasterScan MasterStackImpl::AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period)
+{
+	auto add = [this, gvId, period]() { return master.AddAllObjectsScan(gvId, period); };
+	return asiopal::SynchronouslyGet<MasterScan>(handler.GetExecutor()->strand, add);
+}
+
 MasterScan MasterStackImpl::AddClassScan(const ClassField& field, openpal::TimeDuration period)
 {	
 	auto add = [this, field, period]() { return master.AddClassScan(field, period); };

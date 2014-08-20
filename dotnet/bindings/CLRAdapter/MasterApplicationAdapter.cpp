@@ -19,6 +19,11 @@ namespace Automatak
 				return openpal::UTCTimestamp(milliseconds);
 			}
 
+			void MasterApplicationAdapter::OnReceiveIIN(const opendnp3::IINField& iin)
+			{
+				// TODO, add to C# API and translate type
+			}
+
 		}
 	}
 }

@@ -23,6 +23,8 @@
 
 #include <opendnp3/master/IMasterApplication.h>
 
+#include <vector>
+
 namespace opendnp3
 {
 
@@ -38,6 +40,13 @@ public:
 	{
 		return openpal::UTCTimestamp(time);
 	}
+
+	virtual void OnReceiveIIN(const IINField& iin) override final
+	{
+		rxIIN.push_back(iin);
+	}
+
+	std::vector<IINField> rxIIN;
 
 	uint64_t time;
 };

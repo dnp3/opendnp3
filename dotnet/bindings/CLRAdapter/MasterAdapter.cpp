@@ -43,6 +43,13 @@ namespace Automatak
 				pMaster->Shutdown();
 			}
 
+			IMasterScan^ MasterAdapter::AddAllObjectsScan(System::Byte group, System::Byte variation, System::TimeSpan period)
+			{
+				opendnp3::GroupVariationID gvid(group, variation);
+				auto scan = pMaster->AddAllObjectsScan(gvid, Conversions::ConvertTimespan(period));
+				return gcnew MasterScanAdapter(scan);
+			}
+
 			IMasterScan^ MasterAdapter::AddClassScan(ClassField field, System::TimeSpan period)
 			{
 				auto scan = pMaster->AddClassScan(Conversions::ConvertClassField(field), Conversions::ConvertTimespan(period));

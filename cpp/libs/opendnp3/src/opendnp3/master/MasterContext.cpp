@@ -225,6 +225,7 @@ void MasterContext::OnUnsolicitedResponse(const APDUResponseHeader& header, cons
 
 void MasterContext::OnReceiveIIN(const IINField& iin)
 {
+	pApplication->OnReceiveIIN(iin);
 	scheduler.ProcessRxIIN(iin, params);
 }
 

@@ -24,6 +24,8 @@
 
 #include <openpal/executor/IUTCTimeSource.h>
 
+#include "opendnp3/app/IINField.h"
+
 namespace opendnp3
 {
 
@@ -35,6 +37,9 @@ class IMasterApplication : public openpal::IUTCTimeSource
 	public:
 	
 	virtual ~IMasterApplication() {}
+
+	/// Called when a response or unsolicited response is receive from the outstation
+	virtual void OnReceiveIIN(const IINField& iin) = 0;
 };
 
 }

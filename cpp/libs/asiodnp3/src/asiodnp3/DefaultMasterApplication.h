@@ -33,6 +33,8 @@ public:
 
 	static IMasterApplication& Instance();
 
+	virtual void OnReceiveIIN(const opendnp3::IINField& iin) override final {}
+
 	virtual openpal::UTCTimestamp Now() override final;
 
 private:
