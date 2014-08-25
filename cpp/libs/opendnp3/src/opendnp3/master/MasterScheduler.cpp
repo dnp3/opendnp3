@@ -47,8 +47,14 @@ MasterScheduler::MasterScheduler(	openpal::Logger* pLogger,
 }
 
 void MasterScheduler::Schedule(IMasterTask& task, const openpal::TimeDuration& delay)
-{	
-	auto expiration = pExecutor->GetTime().Add(delay);
+{		
+	// if the delay is negative, the expiration time will be infinity
+	auto expiration = MonotonicTimestamp::Max();
+	if (delay >= 0)
+	{
+		expiration = pExecutor->GetTime().Add(delay);
+	}
+	
 	this->periodicTasks.Add(TaskRecord(task, expiration));
 	if (blockingTask.IsEmpty() && !this->pCurrentTask)
 	{
@@ -337,11 +343,12 @@ void MasterScheduler::OnLowerLayerUp(const MasterParams& params)
 		this->scheduledTaskMask = tasks::STARTUP_TASK_SEQUENCE;
 
 		auto now = pExecutor->GetTime();
-		auto addToPeriodic = [this, now](PollTask& pt) 
+		auto schedule = [this, now](PollTask& pt) 
 		{ 
-			this->periodicTasks.Add(TaskRecord(pt, now.Add(pt.GetPeriod()))); 
+			this->Schedule(pt, pt.GetPeriod());			
 		};
-		pollTasks.Foreach(addToPeriodic);
+
+		pollTasks.Foreach(schedule);
 		pCallback->OnPendingTask();
 	}	
 }
