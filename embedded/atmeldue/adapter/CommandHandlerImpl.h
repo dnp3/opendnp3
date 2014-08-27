@@ -31,7 +31,7 @@ namespace arduino
 /**
 * Mock ICommandHandler used for examples and demos
 */
-class AVRCommandHandler : public opendnp3::ICommandHandler, openpal::Uncopyable
+class CommandHandlerImpl : public opendnp3::ICommandHandler, openpal::Uncopyable
 {
 public:
 
