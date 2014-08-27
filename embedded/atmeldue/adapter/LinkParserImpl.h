@@ -1,10 +1,9 @@
 
-#ifndef __AVR_LINK_PARSER_H_
-#define __AVR_LINK_PARSER_H_
+#ifndef __LINK_PARSER_H_
+#define __LINK_PARSER_H_
 
 #include <opendnp3/link/ILinkRouter.h>
 #include <opendnp3/link/ILinkContext.h>
-
 
 #include <opendnp3/link/LinkLayerParser.h>
 
@@ -15,13 +14,11 @@
 #include <openpal/container/RingBuffer.h>
 #include <openpal/executor/IExecutor.h>
 
-namespace arduino {
-
-class AVRLinkParser : public opendnp3::ILinkRouter
+class LinkParserImpl : public opendnp3::ILinkRouter
 {
 	public:
 
-	AVRLinkParser(openpal::LogRoot& root, openpal::IExecutor& exe, opendnp3::ILinkContext& context);
+	LinkParserImpl(openpal::LogRoot& root, openpal::IExecutor& exe, opendnp3::ILinkContext& context);
 	
 	virtual void QueueTransmit(const openpal::ReadOnlyBuffer& buffer, opendnp3::ILinkContext* pContext, bool primary) final override;	
 	
@@ -61,8 +58,6 @@ class AVRLinkParser : public opendnp3::ILinkRouter
 	opendnp3::ILinkContext* pContext;		
 	opendnp3::LinkLayerParser parser;
 };
-
-}
 
 #endif
 

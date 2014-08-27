@@ -16,7 +16,7 @@
 #include <openpal/logging/LogRoot.h>
 
 #include "ExecutorImpl.h"
-#include "AVRLinkParser.h"
+#include "LinkParserImpl.h"
 #include "CommandHandlerImpl.h"
 #include "Macros.h"
 
@@ -63,7 +63,7 @@ int main(void)
 	
 	stack.transport.SetAppLayer(&outstation);
 	
-	AVRLinkParser parser(root, exe, stack.link);
+	LinkParserImpl parser(root, exe, stack.link);
 	stack.link.SetRouter(&parser);
 	stack.link.OnLowerLayerUp();
 	

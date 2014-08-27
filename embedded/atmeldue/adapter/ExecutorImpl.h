@@ -1,5 +1,5 @@
-#ifndef __AVR_EXECUTOR_H_
-#define __AVR_EXECUTOR_H_
+#ifndef __EXECUTOR_IMPL_H_
+#define __EXECUTOR_IMPL_H_
 
 #include <openpal/executor/IExecutor.h>
 #include <openpal/container/StaticQueue.h>

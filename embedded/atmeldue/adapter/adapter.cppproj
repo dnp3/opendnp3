@@ -186,10 +186,10 @@
     <Compile Include="ExecutorImpl.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="AVRLinkParser.cpp">
+    <Compile Include="LinkParserImpl.cpp">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="AVRLinkParser.h">
+    <Compile Include="LinkParserImpl.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="TimerImpl.cpp">
