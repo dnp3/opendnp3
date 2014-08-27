@@ -7,6 +7,8 @@
 
 #include "sam.h"
 
+#include "AVRExecutor.h"
+
 /**
  * \brief Application entry point.
  *
@@ -16,6 +18,8 @@ int main(void)
 {
     /* Initialize the SAM system */
     SystemInit();
+	
+	AVRExecutor exe;
 
     while (1) 
     {

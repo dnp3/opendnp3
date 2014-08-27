@@ -7,6 +7,8 @@ Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "opendnp3", "opendnp3\opendn
 EndProject
 Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "demooutstation", "demooutstation\demooutstation.cppproj", "{2F8B26A8-C1B0-4412-8C4D-6E601E5AA2BF}"
 EndProject
+Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "adapter", "adapter\adapter.cppproj", "{F9CDAFBF-E141-4DB0-844D-2E3BCB64A591}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM = Debug|ARM
@@ -25,6 +27,10 @@ Global
 		{2F8B26A8-C1B0-4412-8C4D-6E601E5AA2BF}.Debug|ARM.Build.0 = Debug|ARM
 		{2F8B26A8-C1B0-4412-8C4D-6E601E5AA2BF}.Release|ARM.ActiveCfg = Release|ARM
 		{2F8B26A8-C1B0-4412-8C4D-6E601E5AA2BF}.Release|ARM.Build.0 = Release|ARM
+		{F9CDAFBF-E141-4DB0-844D-2E3BCB64A591}.Debug|ARM.ActiveCfg = Debug|ARM
+		{F9CDAFBF-E141-4DB0-844D-2E3BCB64A591}.Debug|ARM.Build.0 = Debug|ARM
+		{F9CDAFBF-E141-4DB0-844D-2E3BCB64A591}.Release|ARM.ActiveCfg = Release|ARM
+		{F9CDAFBF-E141-4DB0-844D-2E3BCB64A591}.Release|ARM.Build.0 = Release|ARM
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
