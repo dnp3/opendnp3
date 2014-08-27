@@ -137,12 +137,15 @@
       <Value>%24(ToolchainDir)\..\..\CMSIS_Atmel</Value>
       <Value>%24(ToolchainDir)\..\..\CMSIS_Atmel\CMSIS\Include</Value>
       <Value>%24(ToolchainDir)\..\..\CMSIS_Atmel\Device\ATMEL</Value>
+      <Value>../../../../cpp/libs/opendnp3/src</Value>
+      <Value>../../../../cpp/libs/openpal/src</Value>
     </ListValues>
   </armgcccpp.compiler.directories.IncludePaths>
   <armgcccpp.compiler.optimization.level>Optimize (-O1)</armgcccpp.compiler.optimization.level>
   <armgcccpp.compiler.optimization.PrepareFunctionsForGarbageCollection>True</armgcccpp.compiler.optimization.PrepareFunctionsForGarbageCollection>
   <armgcccpp.compiler.optimization.DebugLevel>Maximum (-g3)</armgcccpp.compiler.optimization.DebugLevel>
   <armgcccpp.compiler.warnings.AllWarnings>True</armgcccpp.compiler.warnings.AllWarnings>
+  <armgcccpp.compiler.miscellaneous.OtherFlags>--std=c++11 -D OPENPAL_STRIP_LOGGING</armgcccpp.compiler.miscellaneous.OtherFlags>
   <armgcccpp.linker.libraries.Libraries>
     <ListValues>
       <Value>libm</Value>
@@ -154,6 +157,7 @@
     </ListValues>
   </armgcccpp.linker.libraries.LibrarySearchPaths>
   <armgcccpp.linker.optimization.GarbageCollectUnusedSections>True</armgcccpp.linker.optimization.GarbageCollectUnusedSections>
+  <armgcccpp.linker.memorysettings.ExternalRAM />
   <armgcccpp.linker.miscellaneous.LinkerFlags>-Tsam3x8e_flash.ld</armgcccpp.linker.miscellaneous.LinkerFlags>
   <armgcccpp.assembler.debugging.DebugLevel>Default (-g)</armgcccpp.assembler.debugging.DebugLevel>
   <armgcccpp.preprocessingassembler.general.IncludePaths>
@@ -169,13 +173,46 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AVRCommandHandler.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="AVRCommandHandler.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="AVRExecutor.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="AVRExecutor.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="AVRLinkParser.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="AVRLinkParser.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="AVRTimer.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="AVRTimer.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="cmsis\src\startup_sam3xa.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="cmsis\src\system_sam3xa.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="demooutstation.cpp">
+    <Compile Include="CriticalSection.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="CriticalSection.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Macros.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="main.cpp">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>
@@ -197,6 +234,18 @@
     <None Include="cmsis\linkerScripts\sam3xa_sram.ld">
       <SubType>compile</SubType>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\opendnp3\opendnp3.cppproj">
+      <Name>opendnp3</Name>
+      <Project>{e9679465-a0ad-45c3-b0e2-b1c76ecd852f}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\openpal\openpal.cppproj">
+      <Name>openpal</Name>
+      <Project>{a2e8692b-b094-48b7-93f2-e977705ea2f1}</Project>
+      <Private>True</Private>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
 </Project>
