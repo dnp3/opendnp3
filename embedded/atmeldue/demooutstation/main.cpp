@@ -20,6 +20,10 @@ int main(void)
     SystemInit();
 	
 	AVRExecutor exe;
+	
+	auto action = [](){};
+	
+	exe.PostLambda(action);
 
     while (1) 
     {
