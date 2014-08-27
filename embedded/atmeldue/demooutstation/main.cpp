@@ -7,8 +7,6 @@
 
 #include "sam.h"
 
-#include "AVRExecutor.h"
-
 #include <opendnp3/transport/TransportStack.h>
 #include <opendnp3/outstation/Outstation.h>
 #include <opendnp3/outstation/StaticallyAllocatedDatabase.h>
@@ -17,7 +15,7 @@
 
 #include <openpal/logging/LogRoot.h>
 
-#include "AVRExecutor.h"
+#include "ExecutorImpl.h"
 #include "AVRLinkParser.h"
 #include "CommandHandlerImpl.h"
 #include "Macros.h"
@@ -38,7 +36,7 @@ int main(void)
     // Initialize the SAM system
     SystemInit();
 	
-	AVRExecutor exe;
+	ExecutorImpl exe;
 	
 	LogRoot root(nullptr, "root", 0);
 	
@@ -58,7 +56,7 @@ int main(void)
 	config.defaultEventResponses.binary = EventBinaryResponse::Group2Var2;
 	
 	// Object that handles command (CROB / analog output) requests
-	// This example can toggle an LED on the Arduino board
+	// This example can toggle an LED
 	CommandHandlerImpl commandHandler;
 	
 	Outstation outstation(config, exe, root, stack.transport, commandHandler, DefaultOutstationApplication::Instance(), database, eventBuffers.GetFacade());

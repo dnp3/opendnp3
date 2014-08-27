@@ -1,13 +1,13 @@
 
-#include "AVRExecutor.h"
+#include "ExecutorImpl.h"
 
-#include "AVRTimer.h"
+#include "TimerImpl.h"
 
 #include "CriticalSection.h"
 
 using namespace openpal;
 
-AVRExecutor* gpExecutor = nullptr;
+ExecutorImpl* gpExecutor = nullptr;
 
 /* TODO - ARM specific timer handler
 SIGNAL(TIMER1_COMPA_vect)
@@ -19,25 +19,25 @@ SIGNAL(TIMER1_COMPA_vect)
 }
 */
 
-void AVRExecutor::Tick()
+void ExecutorImpl::Tick()
 {
 	++ticks;	
 }
 
-void AVRExecutor::Sleep()
+void ExecutorImpl::Sleep()
 {
 	// TODO - Define a sleep mode
 }
 
 
-void AVRExecutor::Init()
+void ExecutorImpl::Init()
 {		
 	// TODO - enable ARM time interrupts to call the executor tick
  	
 	gpExecutor = this;		
 }
 
-AVRExecutor::AVRExecutor() : ticks(0)
+ExecutorImpl::ExecutorImpl() : ticks(0)
 {	
 	for(uint8_t i = 0; i < timers.Size(); ++i)
 	{
@@ -45,39 +45,39 @@ AVRExecutor::AVRExecutor() : ticks(0)
 	}
 }
 
-MonotonicTimestamp AVRExecutor::GetTime()
+MonotonicTimestamp ExecutorImpl::GetTime()
 {	
 	// disable interrupts to ensure atomic access to the 'ticks' variable
 	CriticalSection cs;
 	return MonotonicTimestamp(ticks*10); // every tick represents 10 milliseconds since Init()				
 }
 
-ITimer* AVRExecutor::Start(const TimeDuration& duration, const Action0& action)
+ITimer* ExecutorImpl::Start(const TimeDuration& duration, const Action0& action)
 {	
 	return Start(GetTime().Add(duration), action);
 }
 	
-ITimer* AVRExecutor::Start(const MonotonicTimestamp& ts, const Action0& action)
+ITimer* ExecutorImpl::Start(const MonotonicTimestamp& ts, const Action0& action)
 {
 	assert(idleTimers.IsNotEmpty());
-	AVRTimer** pTimer = idleTimers.Pop();
+	TimerImpl** pTimer = idleTimers.Pop();
 	(*pTimer)->Set(this, action, ts);
 	this->activeTimers.Add(*pTimer);
 	return *pTimer;
 }
 	
-void AVRExecutor::Post(const Action0& action)
+void ExecutorImpl::Post(const Action0& action)
 {	
 	assert(!work.IsFull());
 	work.Enqueue(action);
 }
 
-void AVRExecutor::Run()
+void ExecutorImpl::Run()
 {
 	while(RunOne());
 }
 
-bool AVRExecutor::RunOne()
+bool ExecutorImpl::RunOne()
 {				
 	if(RunOneTimer())
 	{
@@ -98,10 +98,10 @@ bool AVRExecutor::RunOne()
 	}	
 }
 
-bool AVRExecutor::RunOneTimer()
+bool ExecutorImpl::RunOneTimer()
 {	
 	MonotonicTimestamp time = GetTime();
-	auto expired = [time](AVRTimer* pTimer) { return pTimer->ExpiresAt().milliseconds < time.milliseconds; };
+	auto expired = [time](TimerImpl* pTimer) { return pTimer->ExpiresAt().milliseconds < time.milliseconds; };
 	auto pNode = activeTimers.RemoveFirst(expired);
 	if(pNode)
 	{
@@ -118,9 +118,9 @@ bool AVRExecutor::RunOneTimer()
 	}
 }
 			
-void AVRExecutor::OnCancel(AVRTimer* pTimer)
+void ExecutorImpl::OnCancel(TimerImpl* pTimer)
 {
-	auto matches = [pTimer](AVRTimer* pItem){ return pTimer == pItem; };
+	auto matches = [pTimer](TimerImpl* pItem){ return pTimer == pItem; };
 	activeTimers.RemoveFirst(matches);	
 	idleTimers.Enqueue(pTimer);
 }

@@ -6,15 +6,15 @@
 #include <openpal/container/StaticArray.h>
 #include <openpal/container/StaticLinkedList.h>
 
-#include "AVRTimer.h"
+#include "TimerImpl.h"
 
-class AVRExecutor : public openpal::IExecutor
+class ExecutorImpl : public openpal::IExecutor
 {
-	friend class AVRTimer;
+	friend class TimerImpl;
 	
 	public:	
 	
-	AVRExecutor();
+	ExecutorImpl();
 	
 	virtual openpal::MonotonicTimestamp GetTime() override final;
 	
@@ -38,17 +38,17 @@ class AVRExecutor : public openpal::IExecutor
 	
 	private:
 	
-	void OnCancel(AVRTimer* pTimer);
+	void OnCancel(TimerImpl* pTimer);
 	
 	bool RunOneTimer();
 	
 	int64_t ticks;	
 	
-	openpal::StaticArray<AVRTimer, uint8_t, 5> timers;
+	openpal::StaticArray<TimerImpl, uint8_t, 5> timers;
 	openpal::StaticQueue<openpal::Action0, uint8_t, 5> work;
 	
-	openpal::StaticQueue<AVRTimer*, uint8_t, 5> idleTimers;
-	openpal::StaticLinkedList<AVRTimer*, uint8_t, 5> activeTimers;
+	openpal::StaticQueue<TimerImpl*, uint8_t, 5> idleTimers;
+	openpal::StaticLinkedList<TimerImpl*, uint8_t, 5> activeTimers;
 };
 
 #endif

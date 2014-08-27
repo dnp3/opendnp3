@@ -180,10 +180,10 @@
     <Compile Include="CommandHandlerImpl.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="AVRExecutor.cpp">
+    <Compile Include="ExecutorImpl.cpp">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="AVRExecutor.h">
+    <Compile Include="ExecutorImpl.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="AVRLinkParser.cpp">
@@ -192,10 +192,10 @@
     <Compile Include="AVRLinkParser.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="AVRTimer.cpp">
+    <Compile Include="TimerImpl.cpp">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="AVRTimer.h">
+    <Compile Include="TimerImpl.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="CriticalSection.cpp">
