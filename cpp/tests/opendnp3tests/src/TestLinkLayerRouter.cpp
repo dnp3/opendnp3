@@ -25,7 +25,7 @@
 #include <openpal/util/ToHex.h>
 #include <openpal/container/StaticBuffer.h>
 
-#include <opendnp3/link/LinkRoute.h>
+#include <opendnp3/Route.h>
 
 #include "LinkLayerRouterTest.h"
 #include "MockFrameSink.h"
@@ -44,7 +44,7 @@ TEST_CASE(SUITE("UnknownDestination"))
 
 	MockFrameSink mfs;
 
-	LinkRoute route(1, 1024);
+	Route route(1, 1024);
 
 	REQUIRE(t.router.AddContext(&mfs, route));
 	REQUIRE(!t.phys.IsOpening());
@@ -62,7 +62,7 @@ TEST_CASE(SUITE("LayerNotOnline"))
 {
 	LinkLayerRouterTest t;
 	MockFrameSink mfs;
-	LinkRoute route(1, 1024);
+	Route route(1, 1024);
 	REQUIRE(t.router.AddContext(&mfs, route));
 	REQUIRE(t.router.Enable(&mfs));
 	ReadOnlyBuffer buffer;
@@ -75,7 +75,7 @@ TEST_CASE(SUITE("AutomaticallyClosesWhenAllContextsAreRemoved"))
 {
 	LinkLayerRouterTest t;
 	MockFrameSink mfs;
-	LinkRoute route(1, 1024);
+	Route route(1, 1024);
 	t.router.AddContext(&mfs, route);
 	REQUIRE(t.router.Enable(&mfs));
 	REQUIRE((ChannelState::OPENING == t.router.GetState()));
@@ -90,7 +90,7 @@ TEST_CASE(SUITE("CloseBehavior"))
 {
 	LinkLayerRouterTest t;
 	MockFrameSink mfs;
-	LinkRoute route(1, 1024);
+	Route route(1, 1024);
 	t.router.AddContext(&mfs, route);
 	REQUIRE(t.router.Enable(&mfs));
 	t.phys.SignalOpenSuccess();
@@ -128,12 +128,12 @@ TEST_CASE(SUITE("ReentrantCloseWorks"))
 {
 	LinkLayerRouterTest t;
 	MockFrameSink mfs;
-	LinkRoute route(1, 1024);
+	Route route(1, 1024);
 	t.router.AddContext(&mfs, route);
 	t.router.Enable(&mfs);
 	t.phys.SignalOpenSuccess();
 	REQUIRE(mfs.mLowerOnline);
-	mfs.AddAction(std::bind(&LinkLayerRouter::Shutdown, &t.router));
+	mfs.AddAction(std::bind(&asiodnp3::LinkLayerRouter::Shutdown, &t.router));
 
 	StaticBuffer<292> buffer;
 	auto writeTo = buffer.GetWriteBuffer();
@@ -148,7 +148,7 @@ TEST_CASE(SUITE("MultiAddressBindError"))
 {
 	LinkLayerRouterTest t;
 	MockFrameSink mfs;
-	LinkRoute route(1, 1024);
+	Route route(1, 1024);
 	REQUIRE(t.router.AddContext(&mfs, route));
 	REQUIRE_FALSE(t.router.AddContext(&mfs, route));
 }
@@ -158,8 +158,8 @@ TEST_CASE(SUITE("MultiContextBindError"))
 {
 	LinkLayerRouterTest t;
 	MockFrameSink mfs;
-	REQUIRE(t.router.AddContext(&mfs, LinkRoute(1, 1024)));
-	REQUIRE_FALSE(t.router.AddContext(&mfs, LinkRoute(1, 2048)));
+	REQUIRE(t.router.AddContext(&mfs, Route(1, 1024)));
+	REQUIRE_FALSE(t.router.AddContext(&mfs, Route(1, 2048)));
 }
 
 /// Test that router correctly buffers and sends frames from multiple contexts
@@ -169,8 +169,8 @@ TEST_CASE(SUITE("MultiContextSend"))
 	MockFrameSink mfs1;
 	MockFrameSink mfs2;
 
-	LinkRoute route1(1, 1024);
-	LinkRoute route2(1, 2048);
+	Route route1(1, 1024);
+	Route route2(1, 2048);
 
 	t.router.AddContext(&mfs1, route1);
 	t.router.Enable(&mfs1);
@@ -194,7 +194,7 @@ TEST_CASE(SUITE("LinkLayerRouterClearsBufferOnLowerLayerDown"))
 {
 	LinkLayerRouterTest t;
 	MockFrameSink mfs;
-	LinkRoute route(1, 1024);
+	Route route(1, 1024);
 	t.router.AddContext(&mfs, route);
 	REQUIRE(t.router.Enable(&mfs));
 	t.phys.SignalOpenSuccess();

@@ -24,7 +24,6 @@
 #include <openpal/logging/LogRoot.h>
 
 #include <opendnp3/outstation/OutstationStackConfig.h>
-#include <opendnp3/link/LinkLayerRouter.h>
 #include <opendnp3/link/LinkChannelStatistics.h>
 
 #include <asiopal/ASIOExecutor.h>
@@ -32,6 +31,8 @@
 
 #include "IChannel.h"
 #include "MultidropTaskLock.h"
+
+#include "asiodnp3/impl/LinkLayerRouter.h"
 
 #include <memory>
 #include <set>
@@ -129,7 +130,7 @@ private:
 	opendnp3::ChannelState channelState;
 	std::vector<std::function<void(opendnp3::ChannelState)>> callbacks;
 	
-	opendnp3::LinkLayerRouter router;
+	LinkLayerRouter router;
 
 	
 };

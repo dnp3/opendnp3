@@ -26,8 +26,9 @@
 #include "opendnp3/LogLevels.h"
 
 using namespace openpal;
+using namespace opendnp3;
 
-namespace opendnp3
+namespace asiodnp3
 {
 
 /* --- MonitorStateActions --- */

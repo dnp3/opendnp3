@@ -26,9 +26,10 @@
 #include "MockUpperLayer.h"
 
 #include <opendnp3/LogLevels.h>
-#include <opendnp3/link/LinkLayerRouter.h>
 #include <opendnp3/link/LinkLayer.h>
 #include <opendnp3/transport/TransportLayer.h>
+
+#include <asiodnp3/impl/LinkLayerRouter.h>
 
 namespace opendnp3
 {
@@ -62,7 +63,7 @@ private:
 	TransportLayer mTransA;
 	TransportLayer mTransB;
 
-	LinkLayerRouter mRouter;
+	asiodnp3::LinkLayerRouter mRouter;
 
 public:
 	MockUpperLayer mUpperA;

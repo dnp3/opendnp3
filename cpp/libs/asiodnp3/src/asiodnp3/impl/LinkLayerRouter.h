@@ -24,15 +24,17 @@
 #include <openpal/container/StaticLinkedList.h>
 #include <openpal/container/StaticQueue.h>
 
-#include "opendnp3/link/PhysicalLayerMonitor.h"
-#include "opendnp3/link/LinkLayerParser.h"
-#include "opendnp3/link/LinkRoute.h"
-#include "opendnp3/link/IFrameSink.h"
-#include "opendnp3/link/ILinkRouter.h"
-#include "opendnp3/link/IOpenDelayStrategy.h"
-#include "opendnp3/link/IChannelStateListener.h"
+#include "asiodnp3/impl/PhysicalLayerMonitor.h"
 
-#include "opendnp3/Configure.h"
+#include <opendnp3/Route.h>
+#include <opendnp3/link/LinkLayerParser.h>
+#include <opendnp3/link/IFrameSink.h>
+#include <opendnp3/link/ILinkRouter.h>
+#include <opendnp3/link/IOpenDelayStrategy.h>
+#include <opendnp3/link/IChannelStateListener.h>
+
+#include <vector>
+#include <deque>
 
 namespace openpal
 {
@@ -42,13 +44,18 @@ class IPhysicalLayer;
 namespace opendnp3
 {
 
-class ILinkContext;
-class LinkFrame;
+	class ILinkContext;
+	class LinkFrame;
+
+}
+
+namespace asiodnp3
+{
 
 // Implements the parsing and de-multiplexing portion of
 // of DNP 3 Data Link Layer. PhysicalLayerMonitor inherits
 // from IHandler, which inherits from IUpperLayer
-class LinkLayerRouter : public PhysicalLayerMonitor, public ILinkRouter, private IFrameSink
+	class LinkLayerRouter : public asiodnp3::PhysicalLayerMonitor, public opendnp3::ILinkRouter, private opendnp3::IFrameSink
 {
 public:
 
@@ -57,34 +64,34 @@ public:
 	                openpal::IPhysicalLayer*,
 	                openpal::TimeDuration minOpenRetry,
 	                openpal::TimeDuration maxOpenRetry,
-	                IChannelStateListener* pStateHandler = nullptr,
-					IOpenDelayStrategy& strategy = ExponentialBackoffStrategy::Instance(),
-					LinkChannelStatistics* pStatistics = nullptr);
+					opendnp3::IChannelStateListener* pStateHandler = nullptr,
+					opendnp3::IOpenDelayStrategy& strategy = opendnp3::ExponentialBackoffStrategy::Instance(),
+					opendnp3::LinkChannelStatistics* pStatistics = nullptr);
 
 	// called when the router shuts down
 	void SetShutdownHandler(const openpal::Action0& action);
 
 	// Query to see if a route is in use
-	bool IsRouteInUse(const LinkRoute& route);
+	bool IsRouteInUse(const opendnp3::Route& route);
 
 	// Ties the lower part of the link layer to the upper part
-	bool AddContext(ILinkContext* pContext, const LinkRoute& route);
+	bool AddContext(opendnp3::ILinkContext* pContext, const opendnp3::Route& route);
 
 	/**
 	*  Tells the router to begin sending messages to the context
 	*/
-	bool Enable(ILinkContext* pContext);
+	bool Enable(opendnp3::ILinkContext* pContext);
 
 	/**
 	*  Tells the router to stop sending messages to the context associated with this route
 	*  Does not remove the context entirely
 	*/
-	bool Disable(ILinkContext* pContext);
+	bool Disable(opendnp3::ILinkContext* pContext);
 
 	/**
 	* This is safe to do at runtime, so long as the request happens from the executor
 	*/
-	bool Remove(ILinkContext* pContext);
+	bool Remove(opendnp3::ILinkContext* pContext);
 
 	// ------------ IFrameSink -----------------
 
@@ -100,7 +107,7 @@ public:
 
 	// ------------ ILinkRouter -----------------
 
-	virtual void QueueTransmit(const openpal::ReadOnlyBuffer& buffer, ILinkContext* pContext, bool primary) override final;
+	virtual void QueueTransmit(const openpal::ReadOnlyBuffer& buffer, opendnp3::ILinkContext* pContext, bool primary) override final;
 
 	// ------------ IUpperLayer -----------------
 
@@ -113,13 +120,13 @@ protected:
 
 private:
 
-	void OnStateChange(ChannelState aState);
+	void OnStateChange(opendnp3::ChannelState aState);
 
 	bool HasEnabledContext();
 
 	struct Record
 	{
-		Record(ILinkContext* context, const LinkRoute& route_) :
+		Record(opendnp3::ILinkContext* context, const opendnp3::Route& route_) :
 			pContext(context),
 			route(route_),
 			enabled(false)
@@ -128,14 +135,14 @@ private:
 		Record() : pContext(nullptr), enabled(false)
 		{}
 
-		ILinkContext* pContext;
-		LinkRoute route;
+		opendnp3::ILinkContext* pContext;
+		opendnp3::Route route;
 		bool enabled;
 	};
 
 	struct Transmission
 	{
-		Transmission(const openpal::ReadOnlyBuffer& buffer_, ILinkContext* pContext_, bool primary_) :
+		Transmission(const openpal::ReadOnlyBuffer& buffer_, opendnp3::ILinkContext* pContext_, bool primary_) :
 			buffer(buffer_),
 			pContext(pContext_),
 			primary(primary_)
@@ -145,25 +152,25 @@ private:
 		{}
 
 		openpal::ReadOnlyBuffer buffer;
-		ILinkContext* pContext;
+		opendnp3::ILinkContext* pContext;
 		bool primary;
 	};
 
-	ILinkContext* GetDestination(uint16_t aDest, uint16_t aSrc);
-	ILinkContext* GetEnabledContext(const LinkRoute&);
+	opendnp3::ILinkContext* GetDestination(uint16_t aDest, uint16_t aSrc);
+	opendnp3::ILinkContext* GetEnabledContext(const opendnp3::Route&);
 
 	void CheckForSend();
 
-	IChannelStateListener* pStateHandler;
+	opendnp3::IChannelStateListener* pStateHandler;
 	openpal::Action0 shutdownHandler;
-
-	openpal::StaticLinkedList<Record, uint16_t, sizes::MAX_STACKS_PER_CHANNEL> records;
-	openpal::StaticQueue<Transmission, uint16_t, sizes::MAX_STACKS_PER_CHANNEL> transmitQueue;
-
+	
+	std::vector<Record> records;
+	std::deque<Transmission>  transmitQueue;
+	
 	// Handles the parsing of incoming frames
 	
-	LinkChannelStatistics* pStatistics;
-	LinkLayerParser parser;
+	opendnp3::LinkChannelStatistics* pStatistics;
+	opendnp3::LinkLayerParser parser;
 	bool isTransmitting;
 
 	// Implement virtual PhysLayerMonitor

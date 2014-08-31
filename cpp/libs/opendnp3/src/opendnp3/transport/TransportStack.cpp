@@ -29,7 +29,7 @@ TransportStack::TransportStack(openpal::LogRoot& root, openpal::IExecutor* pExec
 	link(root, pExecutor, config),
 	transport(root, pExecutor, pStatistics)
 {
-	link.SetUpperLayer(&transport);
+	link.SetUpperLayer(transport);
 	transport.SetLinkLayer(&link);	
 }
 

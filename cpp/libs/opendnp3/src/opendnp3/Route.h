@@ -18,16 +18,37 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "LinkRoute.h"
+#ifndef __OPENDNP3_ROUTE_H_
+#define __OPENDNP3_ROUTE_H_
+
+#include <cstdint>
 
 namespace opendnp3
 {
 
-LinkRoute::LinkRoute(const uint16_t aRemoteAddr, const uint16_t aLocalAddr) :
-	remote(aRemoteAddr),
-	local(aLocalAddr)
-{}
+/**
+* DNP3 source/destination address pair
+*/
+class Route
+{
 
-LinkRoute::LinkRoute() : remote(0), local(0) {}
+public:
+	Route(uint16_t destination_, uint16_t source_) :
+		destination(destination_),
+		source(source_)
+	{}
+
+	Route() : destination(0), source(0) {}
+
+	uint16_t destination;
+	uint16_t source;
+
+	bool Equals(const Route& rhs) const
+	{
+		return (this->destination == rhs.destination) && (this->source == rhs.source);
+	}
+};
 
 }
+
+#endif

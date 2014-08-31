@@ -238,8 +238,8 @@ TEST_CASE(SUITE("Loopback"))
 	PhysicalLayerTCPClient client(root, test.GetService(), "127.0.0.1", 30000);
 	LowerLayerToPhysAdapter adapter(root.GetLogger(), &client);
 	MockUpperLayer upper;
-	adapter.SetUpperLayer(&upper);
-	upper.SetLowerLayer(&adapter);
+	adapter.SetUpperLayer(upper);
+	upper.SetLowerLayer(adapter);
 
 	client.BeginOpen();
 	REQUIRE(test.ProceedUntil(std::bind(&MockUpperLayer::IsOnline, &upper)));

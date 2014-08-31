@@ -21,7 +21,8 @@
 #ifndef __PHYS_LOOPBACK_H_
 #define __PHYS_LOOPBACK_H_
 
-#include <opendnp3/link/PhysicalLayerMonitor.h>
+#include <asiodnp3/impl/PhysicalLayerMonitor.h>
+
 #include "CopyableBuffer.h"
 
 namespace opendnp3
@@ -30,7 +31,7 @@ namespace opendnp3
 /**
 *	Buffers and sends all bytes received to back on the same layer.
 */
-class PhysLoopback : public PhysicalLayerMonitor
+class PhysLoopback : public asiodnp3::PhysicalLayerMonitor
 {
 public:
 	PhysLoopback(openpal::LogRoot& root, openpal::IExecutor& executor, openpal::IPhysicalLayer*);

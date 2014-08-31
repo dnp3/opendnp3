@@ -21,7 +21,7 @@
 #ifndef __MASTER_CONTEXT_H_
 #define __MASTER_CONTEXT_H_
 
-#include <openpal/channel/LayerInterfaces.h>
+#include "opendnp3/LayerInterfaces.h"
 
 #include <openpal/executor/IExecutor.h>
 #include <openpal/logging/LogRoot.h>
@@ -42,7 +42,7 @@ class MasterContext : public ICommandProcessor, public IScheduleCallback
 
 	MasterContext(	openpal::IExecutor& executor,
 					openpal::LogRoot& root, 
-					openpal::ILowerLayer& lower,
+					ILowerLayer& lower,
 					ISOEHandler& SOEHandler,					
 					opendnp3::IMasterApplication& application,
 					const MasterParams& params,
@@ -51,7 +51,7 @@ class MasterContext : public ICommandProcessor, public IScheduleCallback
 	
 	openpal::Logger logger;
 	openpal::IExecutor* pExecutor;
-	openpal::ILowerLayer* pLower;
+	ILowerLayer* pLower;
 
 	// ------- configuration --------
 	MasterParams params;

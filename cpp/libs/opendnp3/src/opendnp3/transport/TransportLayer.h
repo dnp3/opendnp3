@@ -26,8 +26,8 @@
 
 #include <openpal/executor/IExecutor.h>
 #include <openpal/logging/LogRoot.h>
-#include <openpal/channel/LayerInterfaces.h>
 
+#include "opendnp3/LayerInterfaces.h"
 #include "opendnp3/StackStatistics.h"
 #include "opendnp3/link/ILinkLayer.h"
 #include "opendnp3/Configure.h"
@@ -38,7 +38,7 @@ namespace opendnp3
 /** Implements the DNP3 transport layer as a generic
 asynchronous protocol stack layer
 */
-class TransportLayer : public openpal::IUpperLayer, public openpal::ILowerLayer
+class TransportLayer : public IUpperLayer, public ILowerLayer
 {	
 	friend class TransportTx;
 
@@ -57,13 +57,13 @@ public:
 	virtual void OnLowerLayerDown() override final;
 	virtual void OnSendResult(bool isSuccess) override final;
 
-	void SetAppLayer(openpal::IUpperLayer* pUpperLayer_);
+	void SetAppLayer(IUpperLayer* pUpperLayer_);
 	void SetLinkLayer(ILinkLayer* pLinkLayer_);
 
 private:
 	
 	openpal::Logger logger;
-	openpal::IUpperLayer* pUpperLayer;
+	IUpperLayer* pUpperLayer;
 	ILinkLayer* pLinkLayer;	
 
 	// ---- state ----

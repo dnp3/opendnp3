@@ -35,7 +35,7 @@ Outstation::Outstation(
 		const OutstationConfig& config,
 		IExecutor& executor,
 		openpal::LogRoot& root,
-		openpal::ILowerLayer& lower,
+		ILowerLayer& lower,
 		ICommandHandler& commandHandler,
 		IOutstationApplication& application,
 		Database& database,

@@ -20,9 +20,10 @@
  */
 #include <catch.hpp>
 
-#include <opendnp3/link/PhysicalLayerMonitor.h>
-#include <opendnp3/link/PhysicalLayerMonitorStates.h>
+
 #include <opendnp3/LogLevels.h>
+
+#include <asiodnp3/impl/PhysicalLayerMonitor.h>
 
 #include "MockExecutor.h"
 #include "MockPhysicalLayer.h"
@@ -32,7 +33,7 @@
 using namespace opendnp3;
 using namespace openpal;
 
-class ConcretePhysicalLayerMonitor : public PhysicalLayerMonitor
+class ConcretePhysicalLayerMonitor : public asiodnp3::PhysicalLayerMonitor
 {
 public:
 

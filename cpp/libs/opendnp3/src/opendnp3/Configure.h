@@ -67,9 +67,6 @@ static const uint32_t MAX_RX_APDU_SIZE = OPENDNP3_MAX_RX_APDU_SIZE;
 // the default APDU buffer size
 static const uint32_t DEFAULT_APDU_BUFFER_SIZE = MAX_TX_APDU_SIZE;
 
-// The maximum number of stacks that can associate to a link layer router
-static const uint16_t MAX_STACKS_PER_CHANNEL = 16;
-
 // default sizing is big enough to receive a full APDU with full LPDU's
 static const uint32_t LINK_RECEIVER_BUFFER_SIZE = MACRO_NUM_LINK_FRAMES(MAX_RX_APDU_SIZE) * 292;
 
@@ -77,7 +74,6 @@ static_assert(MAX_MASTER_USERS_TASKS >= 8, "Max master user tasks must be at lea
 static_assert(MAX_TX_APDU_SIZE >= MIN_APDU_SIZE, "APDU tx buffer size must be at least the minimum size");
 static_assert(MAX_RX_APDU_SIZE >= MIN_APDU_SIZE, "APDU rx buffer size must be at least the minimum size");
 static_assert(DEFAULT_APDU_BUFFER_SIZE <= MAX_TX_APDU_SIZE, "default buffer size must be less than the maximum");
-static_assert(MAX_STACKS_PER_CHANNEL > 0, "At least 1 stack is required per router");
 static_assert(LINK_RECEIVER_BUFFER_SIZE >= 292, "Receiver must buffer at least 292 bytes");
 
 }

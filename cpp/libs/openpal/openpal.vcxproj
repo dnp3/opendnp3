@@ -22,7 +22,6 @@
     <ClInclude Include="src\openpal\channel\ChannelStatistics.h" />
     <ClInclude Include="src\openpal\channel\IPhysicalLayer.h" />
     <ClInclude Include="src\openpal\channel\IPhysicalLayerCallbacks.h" />
-    <ClInclude Include="src\openpal\channel\LayerInterfaces.h" />
     <ClInclude Include="src\openpal\Configure.h" />
     <ClInclude Include="src\openpal\container\DynamicArray.h" />
     <ClInclude Include="src\openpal\container\HasSize.h" />

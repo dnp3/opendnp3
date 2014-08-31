@@ -24,12 +24,11 @@
 #include <openpal/logging/LogRoot.h>
 #include <openpal/executor/IExecutor.h>
 
-#include <openpal/channel/LayerInterfaces.h>
-
 #include <openpal/container/StaticBuffer.h>
 #include <openpal/container/Pair.h>
 #include <openpal/container/Settable.h>
 
+#include "opendnp3/LayerInterfaces.h"
 #include "opendnp3/outstation/Database.h"
 #include "opendnp3/outstation/ResponseContext.h"
 #include "opendnp3/outstation/OutstationConfig.h"
@@ -58,7 +57,7 @@ class OutstationContext
 	OutstationContext(	const OutstationConfig& config,
 						openpal::IExecutor& executor,
 						openpal::LogRoot& root, 
-						openpal::ILowerLayer& lower,
+						ILowerLayer& lower,
 						ICommandHandler& commandHandler,
 						IOutstationApplication& application,
 						Database& database, 
@@ -152,7 +151,7 @@ class OutstationContext
 
 	// private variables not available from the states
 
-	openpal::ILowerLayer* pLower;
+	ILowerLayer* pLower;
 
 	// ------ Helpers ---------
 

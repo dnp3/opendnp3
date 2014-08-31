@@ -25,14 +25,17 @@
 #include <openpal/logging/LogMacros.h>
 #include <openpal/channel/IPhysicalLayer.h>
 
-#include "opendnp3/LogLevels.h"
-#include "ILinkContext.h"
-#include "LinkFrame.h"
+#include <opendnp3/LogLevels.h>
+#include <opendnp3/link/ILinkContext.h>
+#include <opendnp3/link/LinkFrame.h>
+
+#include <algorithm>
 
 using namespace std;
 using namespace openpal;
+using namespace opendnp3;
 
-namespace opendnp3
+namespace asiodnp3
 {
 
 LinkLayerRouter::LinkLayerRouter(	openpal::LogRoot& root,
@@ -56,16 +59,18 @@ void LinkLayerRouter::SetShutdownHandler(const Action0& action)
 	this->shutdownHandler = action;
 }
 
-bool LinkLayerRouter::IsRouteInUse(const LinkRoute& route)
+bool LinkLayerRouter::IsRouteInUse(const Route& route)
 {
-	auto pNode = records.FindFirst([route](const Record & record)
+	auto matches = [route](const Record & record)
 	{
-		return record.route == route;
-	});
-	return (pNode != nullptr);
+		return record.route.Equals(route);
+	};
+
+	auto iter = std::find_if(records.begin(), records.end(), matches);
+	return iter != records.end();
 }
 
-bool LinkLayerRouter::AddContext(ILinkContext* pContext, const LinkRoute& route)
+bool LinkLayerRouter::AddContext(ILinkContext* pContext, const Route& route)
 {
 	assert(pContext != nullptr);
 
@@ -75,44 +80,47 @@ bool LinkLayerRouter::AddContext(ILinkContext* pContext, const LinkRoute& route)
 	}
 	else
 	{
-		auto pNode = records.FindFirst([pContext](const Record & record)
+		auto matches = [pContext](const Record & record)
 		{
 			return record.pContext == pContext;
-		});
+		};		
 
-		if (pNode)
-		{
-			SIMPLE_LOG_BLOCK(logger, flags::ERR, "Context cannot be bound 2x");
-			return false;
-		}
-		else
+		auto iter = std::find_if(records.begin(), records.end(), matches);
+
+		if (iter == records.end())
 		{
 			// record is always disabled by default
 			Record(pContext, route);
-			return records.Add(Record(pContext, route));
+			records.push_back(Record(pContext, route));	
+			return true;
+		}
+		else
+		{
+			SIMPLE_LOG_BLOCK(logger, flags::ERR, "Context cannot be bound 2x");
+			return false;
 		}
 	}
 }
 
 bool LinkLayerRouter::Enable(ILinkContext* pContext)
 {
-	auto isMatch = [pContext](const Record & rec) { return rec.pContext == pContext; };
-	auto pNode = records.FindFirst(isMatch);
+	auto matches = [pContext](const Record & rec) { return rec.pContext == pContext; };
+	auto iter = std::find_if(records.begin(), records.end(), matches);
 
-	if(pNode)
+	if(iter != records.end())
 	{
-		if(pNode->value.enabled)
+		if(iter->enabled)
 		{
 			// already enabled
 			return true;			
 		}
 		else
 		{
-			pNode->value.enabled = true;
+			iter->enabled = true;
 
 			if (this->IsOnline())
 			{
-				pNode->value.pContext->OnLowerLayerUp();
+				iter->pContext->OnLowerLayerUp();
 			}
 
 			this->Start(); // idempotent call to start router
@@ -129,20 +137,19 @@ bool LinkLayerRouter::Enable(ILinkContext* pContext)
 
 bool LinkLayerRouter::Disable(ILinkContext* pContext)
 {
-	auto pNode = records.FindFirst([pContext](const Record & rec)
-	{
-		return rec.pContext == pContext;
-	});
+	auto matches = [pContext](const Record & rec) { return rec.pContext == pContext; };
 
-	if (pNode)
+	auto iter = std::find_if(records.begin(), records.end(), matches);
+
+	if (iter != records.end())
 	{
-		if (pNode->value.enabled)
+		if (iter->enabled)
 		{
-			pNode->value.enabled = false;
+			iter->enabled = false;
 
 			if (this->IsOnline())
 			{
-				pNode->value.pContext->OnLowerLayerDown();
+				iter->pContext->OnLowerLayerDown();
 			}
 
 			if (!this->HasEnabledContext())
@@ -160,24 +167,24 @@ bool LinkLayerRouter::Disable(ILinkContext* pContext)
 
 bool LinkLayerRouter::Remove(ILinkContext* pContext)
 {
-	auto pNode = records.RemoveFirst([pContext](const Record & rec)
-	{
-		return rec.pContext == pContext;
-	});
+	auto matches = [pContext](const Record & rec) { return rec.pContext == pContext; };
+	auto iter = std::find_if(records.begin(), records.end(), matches);
 
-	if(pNode)
+	if(iter != records.end())
 	{
-		if (this->GetState() == ChannelState::OPEN && pNode->value.enabled)
+		if (this->GetState() == ChannelState::OPEN && iter->enabled)
 		{
-			pNode->value.pContext->OnLowerLayerDown();
+			iter->pContext->OnLowerLayerDown();
 		}
+
+		records.erase(iter);
 
 		// if no contexts are enabled, suspend the router
 		if (!HasEnabledContext())
 		{
 			this->Suspend();
 		}
-
+		
 		return true;
 	}
 	else
@@ -186,23 +193,30 @@ bool LinkLayerRouter::Remove(ILinkContext* pContext)
 	}
 }
 
-ILinkContext* LinkLayerRouter::GetEnabledContext(const LinkRoute& route)
+ILinkContext* LinkLayerRouter::GetEnabledContext(const Route& route)
 {
-	auto find = [route](const Record & rec) { return rec.enabled && (rec.route == route); };	
-	auto pNode = records.FindFirst(find);
-	return pNode ? pNode->value.pContext : nullptr;
+	auto matches = [route](const Record & rec) { return rec.enabled && rec.route.Equals(route); };	
+	auto iter = std::find_if(records.begin(), records.end(), matches);
+	if (iter == records.end())
+	{
+		return nullptr;
+	}
+	else
+	{
+		return iter->pContext;
+	}	
 }
 
 
-ILinkContext* LinkLayerRouter::GetDestination(uint16_t aDest, uint16_t aSrc)
+ILinkContext* LinkLayerRouter::GetDestination(uint16_t dest, uint16_t src)
 {
-	LinkRoute route(aSrc, aDest);
+	Route route(src, dest);
 
 	ILinkContext* pDest = GetEnabledContext(route);
 
 	if(pDest == nullptr)
 	{
-		FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::WARN, DLERR_UNKNOWN_ROUTE, "Frame w/ unknown route: %i to %i", route.remote, route.local);
+		FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::WARN, DLERR_UNKNOWN_ROUTE, "Frame w/ unknown route, source: %i, dest %i", route.source, route.destination);
 	}
 
 	return pDest;
@@ -276,15 +290,8 @@ void LinkLayerRouter::QueueTransmit(const openpal::ReadOnlyBuffer& buffer, ILink
 	{
 		Transmission tx(buffer, pContext, primary);
 
-		if (this->transmitQueue.Enqueue(tx))
-		{
-			this->CheckForSend();
-		}
-		else
-		{
-			auto lambda = [pContext, primary]() { pContext->OnTransmitResult(primary, false); };
-			pExecutor->PostLambda(lambda);
-		}
+		transmitQueue.push_back(tx);
+		this->CheckForSend();		
 	}
 	else
 	{
@@ -307,32 +314,31 @@ void LinkLayerRouter::OnShutdown()
 
 bool LinkLayerRouter::HasEnabledContext()
 {
-	auto pNode = records.FindFirst([](const Record & rec)
-	{
-		return rec.enabled;
-	});
-	return (pNode != nullptr);
+	auto matches = [](const Record & rec) { return rec.enabled; };
+	auto iter = std::find_if(records.begin(), records.end(), matches);
+	return iter != records.end();
 }
 
 void LinkLayerRouter::OnSendResult(bool result)
 {
-	assert(transmitQueue.IsNotEmpty());
+	assert(!transmitQueue.empty());
 	assert(isTransmitting);
 	isTransmitting = false;
 
-	auto pTx = transmitQueue.Pop();
-	pTx->pContext->OnTransmitResult(pTx->primary, result);
+	auto pTx = transmitQueue.front();
+	transmitQueue.pop_front();
+	pTx.pContext->OnTransmitResult(pTx.primary, result);
 	this->CheckForSend();
 }
 
 void LinkLayerRouter::CheckForSend()
 {
-	if (transmitQueue.IsNotEmpty() && !isTransmitting && pPhys->CanWrite())
+	if (!transmitQueue.empty() && !isTransmitting && pPhys->CanWrite())
 	{
 		if (pStatistics) ++pStatistics->numLinkFrameTx;
-		auto pTransmission = transmitQueue.Peek();
+		auto tx = transmitQueue.front();
 		isTransmitting = true;
-		pPhys->BeginWrite(pTransmission->buffer);
+		pPhys->BeginWrite(tx.buffer);
 	}
 }
 
@@ -344,16 +350,13 @@ void LinkLayerRouter::OnPhysicalLayerOpenSuccessCallback()
 		pPhys->BeginRead(buff);
 	}
 
-	records.Foreach(
-	    [](const Record & rec)
+	for (auto& rec : records)
 	{
 		if (rec.enabled)
 		{
 			rec.pContext->OnLowerLayerUp();
 		}
 	}
-	);
-
 }
 
 void LinkLayerRouter::OnPhysicalLayerCloseCallback()
@@ -363,17 +366,15 @@ void LinkLayerRouter::OnPhysicalLayerCloseCallback()
 
 	// Drop frames queued for transmit and tell the contexts that the router has closed
 	isTransmitting = false;
-	transmitQueue.Clear();
+	transmitQueue.clear();
 
-	auto disable = [](const Record & rec)
+	for (auto& rec : records)
 	{
 		if (rec.enabled)
 		{
 			rec.pContext->OnLowerLayerDown();
 		}
-	};
-
-	records.Foreach(disable);
+	}	
 }
 
 }

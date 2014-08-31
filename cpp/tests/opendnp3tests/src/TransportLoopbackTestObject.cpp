@@ -20,7 +20,7 @@
  */
 #include "TransportLoopbackTestObject.h"
 
-#include <opendnp3/link/LinkRoute.h>
+#include <opendnp3/Route.h>
 
 #include <openpal/channel/IPhysicalLayer.h>
 
@@ -51,18 +51,18 @@ TransportLoopbackTestObject::TransportLoopbackTestObject(
 	mTransB(root, &executor),
 	mRouter(root, executor, apPhys, TimeDuration::Seconds(1), TimeDuration::Seconds(1))
 {
-	LinkRoute routeA(mCfgA.RemoteAddr, mCfgA.LocalAddr);
-	LinkRoute routeB(mCfgB.RemoteAddr, mCfgB.LocalAddr);
+	Route routeA(mCfgA.RemoteAddr, mCfgA.LocalAddr);
+	Route routeB(mCfgB.RemoteAddr, mCfgB.LocalAddr);
 
 	mRouter.AddContext(&mLinkA, routeA);
 	mRouter.Enable(&mLinkA);
 	mRouter.AddContext(&mLinkB, routeB);
 	mRouter.Enable(&mLinkB);
 
-	mLinkA.SetUpperLayer(&mTransA);
+	mLinkA.SetUpperLayer(mTransA);
 	mTransA.SetLinkLayer(&mLinkA);
 
-	mLinkB.SetUpperLayer(&mTransB);
+	mLinkB.SetUpperLayer(mTransB);
 	mTransB.SetLinkLayer(&mLinkB);
 
 	mLinkA.SetRouter(&mRouter);
@@ -71,8 +71,8 @@ TransportLoopbackTestObject::TransportLoopbackTestObject(
 	mTransA.SetAppLayer(&mUpperA);
 	mTransB.SetAppLayer(&mUpperB);
 
-	mUpperA.SetLowerLayer(&mTransA);
-	mUpperB.SetLowerLayer(&mTransB);
+	mUpperA.SetLowerLayer(mTransA);
+	mUpperB.SetLowerLayer(mTransB);
 }
 
 TransportLoopbackTestObject::~TransportLoopbackTestObject()
