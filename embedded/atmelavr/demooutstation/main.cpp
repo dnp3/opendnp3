@@ -3,7 +3,7 @@
 #include <opendnp3/transport/TransportStack.h>
 #include <opendnp3/outstation/Outstation.h>
 #include <opendnp3/outstation/DynamicallyAllocatedDatabase.h>
-#include <opendnp3/outstation/StaticallyAllocatedEventBuffer.h>
+#include <opendnp3/outstation/DynamicallyAllocatedEventBuffer.h>
 #include <opendnp3/outstation/IOutstationApplication.h>
 
 #include <openpal/logging/LogRoot.h>
@@ -36,7 +36,7 @@ int main()
 	DynamicallyAllocatedDatabase staticBuffers(DatabaseTemplate::BinaryOnly(5));
 	
 	// allow a max of 5 events
-	StaticallyAllocatedEventBuffer<5> eventBuffers;	
+	DynamicallyAllocatedEventBuffer eventBuffers(5);
 	
 	Database database(staticBuffers.GetFacade());	
 		

@@ -1222,14 +1222,6 @@
       <SubType>compile</SubType>
       <Link>outstation\SOERecord.h</Link>
     </Compile>
-    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\StaticallyAllocatedDatabase.h">
-      <SubType>compile</SubType>
-      <Link>outstation\StaticallyAllocatedDatabase.h</Link>
-    </Compile>
-    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\StaticallyAllocatedEventBuffer.h">
-      <SubType>compile</SubType>
-      <Link>outstation\StaticallyAllocatedEventBuffer.h</Link>
-    </Compile>
     <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\StaticDataFacade.h">
       <SubType>compile</SubType>
       <Link>outstation\StaticDataFacade.h</Link>
