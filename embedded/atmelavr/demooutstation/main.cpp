@@ -35,10 +35,9 @@ int main()
 	// 5 static binaries, 0 others
 	StaticallyAllocatedDatabase<5, 0, 0, 0, 0, 0, 0> staticBuffers;
 	// allow a max of 5 events
-	StaticallyAllocatedEventBuffer<5> eventBuffers;
+	StaticallyAllocatedEventBuffer<5> eventBuffers;	
 	
-	
-	Database database(staticBuffers.GetFacade());
+	Database database(staticBuffers.GetFacade());	
 		
 	OutstationConfig config;
 	config.eventBufferConfig = EventBufferConfig(5);

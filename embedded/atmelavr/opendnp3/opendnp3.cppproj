@@ -746,14 +746,6 @@
       <SubType>compile</SubType>
       <Link>link\LinkLayerParser.h</Link>
     </Compile>
-    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\link\LinkRoute.cpp">
-      <SubType>compile</SubType>
-      <Link>link\LinkRoute.cpp</Link>
-    </Compile>
-    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\link\LinkRoute.h">
-      <SubType>compile</SubType>
-      <Link>link\LinkRoute.h</Link>
-    </Compile>
     <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\link\PriLinkLayerStates.cpp">
       <SubType>compile</SubType>
       <Link>link\PriLinkLayerStates.cpp</Link>
