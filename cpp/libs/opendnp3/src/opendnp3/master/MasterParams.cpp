@@ -35,7 +35,8 @@ MasterParams::MasterParams() :
 	unsolClassMask(ClassField::AllEventClasses()),
 	startupIntegrityClassMask(ClassField::AllClasses()),
 	integrityOnEventOverflowIIN(true),
-	taskRetryPeriod(TimeDuration::Seconds(5))
+	taskRetryPeriod(TimeDuration::Seconds(5)),
+	maxTxAPDUSize(sizes::DEFAULT_MAX_APDU_SIZE)
 {}
 
 }

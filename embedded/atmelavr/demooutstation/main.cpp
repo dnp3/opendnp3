@@ -24,6 +24,8 @@ void ToggleBinaryEvery3Seconds(IExecutor* pExecutor, Database* pDatabase, uint8_
 
 int main()
 {	
+	const uint32_t MAX_APDU_SIZE = 249;
+	
 	cli();
 	
 	AVRExecutor exe;
@@ -41,6 +43,8 @@ int main()
 	Database database(staticBuffers.GetFacade());	
 		
 	OutstationConfig config;
+	config.params.maxTxFragSize = MAX_APDU_SIZE;
+	config.params.maxRxFragSize = MAX_APDU_SIZE;
 	config.eventBufferConfig = EventBufferConfig(5);
 	config.params.allowUnsolicited = true;	
 	config.defaultEventResponses.binary = EventBinaryResponse::Group2Var2;

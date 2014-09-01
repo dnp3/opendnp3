@@ -26,7 +26,7 @@
 #include <openpal/executor/IExecutor.h>
 #include <openpal/logging/LogRoot.h>
 #include <openpal/container/StaticQueue.h>
-#include <openpal/container/StaticBuffer.h>
+#include <openpal/container/DynamicBuffer.h>
 
 #include "opendnp3/master/MasterScheduler.h"
 #include "opendnp3/master/IMasterState.h"
@@ -71,7 +71,7 @@ class MasterContext : public ICommandProcessor, public IScheduleCallback
 	MasterScheduler scheduler;
 	openpal::StaticQueue<APDUHeader, uint8_t, 4> confirmQueue;
 
-	openpal::StaticBuffer<sizes::MAX_TX_APDU_SIZE> txBuffer;
+	openpal::DynamicBuffer txBuffer;
 	
 	void PostCheckForTask();
 

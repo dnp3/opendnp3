@@ -58,6 +58,9 @@ struct MasterParams
 
 	/// Time delay beforce retrying a failed task
 	openpal::TimeDuration taskRetryPeriod;
+
+	/// maximum APDU tranmission size in bytes
+	uint32_t maxTxAPDUSize;
 };
 
 }

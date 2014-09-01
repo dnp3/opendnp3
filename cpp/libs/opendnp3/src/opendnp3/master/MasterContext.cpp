@@ -60,7 +60,8 @@ MasterContext::MasterContext(
 	pState(&MasterStateIdle::Instance()),
 	pResponseTimer(nullptr),
 	staticTasks(&logger, SOEHandler, application),
-	scheduler(&logger, staticTasks, executor, *this)
+	scheduler(&logger, staticTasks, executor, *this),
+	txBuffer(params.maxTxAPDUSize)
 {
 	
 }

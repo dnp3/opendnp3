@@ -23,7 +23,7 @@
 
 namespace openpal
 {
-	DynamicBuffer::DynamicBuffer(uint32_t size) : DynamicArray<uint8_t, uint32_t>()
+	DynamicBuffer::DynamicBuffer(uint32_t size) : DynamicArray<uint8_t, uint32_t>(size)
 	{}
 
 	ReadOnlyBuffer DynamicBuffer::ToReadOnly() const

@@ -24,7 +24,7 @@
 #include <openpal/logging/LogRoot.h>
 #include <openpal/executor/IExecutor.h>
 
-#include <openpal/container/StaticBuffer.h>
+#include <openpal/container/DynamicBuffer.h>
 #include <openpal/container/Pair.h>
 #include <openpal/container/Settable.h>
 
@@ -190,11 +190,11 @@ class OutstationContext
 
 	IINField HandleCommandWithConstant(const openpal::ReadOnlyBuffer& objects, HeaderWriter& writer, CommandStatus status);
 
-	// ------ Static bufers -------
+	// ------ buffers -------
 
-	openpal::StaticBuffer<sizes::MAX_RX_APDU_SIZE> rxBuffer;
-	openpal::StaticBuffer<sizes::MAX_TX_APDU_SIZE> solTxBuffer;
-	openpal::StaticBuffer<sizes::MAX_TX_APDU_SIZE> unsolTxBuffer;
+	openpal::DynamicBuffer rxBuffer;
+	openpal::DynamicBuffer solTxBuffer;
+	openpal::DynamicBuffer unsolTxBuffer;
 };
 
 
