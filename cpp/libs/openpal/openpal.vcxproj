@@ -24,6 +24,7 @@
     <ClInclude Include="src\openpal\channel\IPhysicalLayerCallbacks.h" />
     <ClInclude Include="src\openpal\Configure.h" />
     <ClInclude Include="src\openpal\container\DynamicArray.h" />
+    <ClInclude Include="src\openpal\container\DynamicBuffer.h" />
     <ClInclude Include="src\openpal\container\HasSize.h" />
     <ClInclude Include="src\openpal\container\Indexable.h" />
     <ClInclude Include="src\openpal\container\IndexableIterator.h" />
@@ -74,6 +75,7 @@
     <ClInclude Include="src\openpal\util\Uncopyable.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\openpal\container\DynamicBuffer.cpp" />
     <ClCompile Include="src\openpal\container\ReadOnlyBuffer.cpp" />
     <ClCompile Include="src\openpal\container\RingBufferAdapter.cpp" />
     <ClCompile Include="src\openpal\container\WriteBuffer.cpp" />

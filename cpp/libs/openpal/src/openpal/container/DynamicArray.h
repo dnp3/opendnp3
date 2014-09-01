@@ -101,8 +101,12 @@ public:
 		delete[] buffer;
 	}
 
-private:
+protected:
+
 	ValueType* buffer;
+
+private:
+	
 	DynamicArray& operator=(const DynamicArray&);
 };
 
