@@ -58,14 +58,13 @@ namespace DotNetMasterDemo
             // you a can optionally add various kinds of polls
             var integrityPoll = master.AddClassScan(ClassField.AllClasses, TimeSpan.FromMinutes(1));
             var rangePoll = master.AddRangeScan(30, 2, 5, 7, TimeSpan.FromSeconds(20));
-            var classPoll = master.AddClassScan(ClassField.AllEventClasses, TimeSpan.FromSeconds(5));
-            var iinbits = master.AddRangeScan(80, 1, 0, 15, TimeSpan.FromMinutes(2));
+            var classPoll = master.AddClassScan(ClassField.AllEventClasses, TimeSpan.FromSeconds(5));           
 
             // you a can optionally add state callbacks for monitoring these polls
             integrityPoll.AddScanCallback((PollState state) => Console.WriteLine("integrity poll state change: " + state));
             classPoll.AddScanCallback((PollState state) => Console.WriteLine("class poll state change: " + state));
             rangePoll.AddScanCallback((PollState state) => Console.WriteLine("range poll state change: " + state));
-            iinbits.AddScanCallback((PollState state) => Console.WriteLine("iinbits change: " + state));
+            
 
             master.Enable(); // enable communications
 
@@ -93,10 +92,7 @@ namespace DotNetMasterDemo
                         break;
                     case "e":
                         classPoll.Demand();                        
-                        break;
-                    case "b":
-                        iinbits.Demand();
-                        break;
+                        break;                   
                     case "x":
                         return 0;                        
                     default:

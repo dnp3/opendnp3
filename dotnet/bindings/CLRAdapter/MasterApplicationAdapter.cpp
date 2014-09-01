@@ -21,8 +21,7 @@ namespace Automatak
 
 			void MasterApplicationAdapter::OnReceiveIIN(const opendnp3::IINField& iin)
 			{
-				Automatak::DNP3::Interface::IINField ^iinField = gcnew Automatak::DNP3::Interface::IINField(
-					(Automatak::DNP3::Interface::LSBMask)iin.LSB, (Automatak::DNP3::Interface::MSBMask)iin.MSB);
+				IINField ^iinField = gcnew IINField((Automatak::DNP3::Interface::LSBMask)iin.LSB, (Automatak::DNP3::Interface::MSBMask)iin.MSB);
 				proxy->OnReceiveIIN(iinField);
 			}
 
