@@ -109,10 +109,6 @@ cpp/libs/opendnp3/src/opendnp3/link/LinkFrame.cpp \
 cpp/libs/opendnp3/src/opendnp3/link/LinkHeader.cpp \
 cpp/libs/opendnp3/src/opendnp3/link/LinkLayer.cpp \
 cpp/libs/opendnp3/src/opendnp3/link/LinkLayerParser.cpp \
-cpp/libs/opendnp3/src/opendnp3/link/LinkLayerRouter.cpp \
-cpp/libs/opendnp3/src/opendnp3/link/LinkRoute.cpp \
-cpp/libs/opendnp3/src/opendnp3/link/PhysicalLayerMonitor.cpp \
-cpp/libs/opendnp3/src/opendnp3/link/PhysicalLayerMonitorStates.cpp \
 cpp/libs/opendnp3/src/opendnp3/link/PriLinkLayerStates.cpp \
 cpp/libs/opendnp3/src/opendnp3/link/SecLinkLayerStates.cpp \
 cpp/libs/opendnp3/src/opendnp3/link/ShiftableBuffer.cpp \
@@ -201,6 +197,9 @@ cpp/libs/opendnp3/src/opendnp3/transport/TransportTx.cpp
 libasiodnp3_la_CPPFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) -I$(ASIODNP3_INCLUDE) $(ASIO_CONFIG)
 libasiodnp3_la_LDFLAGS = -version-info 1:1:0
 libasiodnp3_la_SOURCES = \
+cpp/libs/asiodnp3/src/asiodnp3/impl/LinkLayerRouter.cpp \
+cpp/libs/asiodnp3/src/asiodnp3/impl/PhysicalLayerMonitor.cpp \
+cpp/libs/asiodnp3/src/asiodnp3/impl/PhysicalLayerMonitorStates.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/ChannelSet.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/ConsoleLogger.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/DefaultMasterApplication.cpp \
