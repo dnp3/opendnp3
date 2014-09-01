@@ -2,7 +2,7 @@
 
 #include <opendnp3/transport/TransportStack.h>
 #include <opendnp3/outstation/Outstation.h>
-#include <opendnp3/outstation/StaticallyAllocatedDatabase.h>
+#include <opendnp3/outstation/DynamicallyAllocatedDatabase.h>
 #include <opendnp3/outstation/StaticallyAllocatedEventBuffer.h>
 #include <opendnp3/outstation/IOutstationApplication.h>
 
@@ -33,7 +33,8 @@ int main()
 	TransportStack stack(root, &exe, nullptr, LinkConfig(false, false));
 		
 	// 5 static binaries, 0 others
-	StaticallyAllocatedDatabase<5, 0, 0, 0, 0, 0, 0> staticBuffers;
+	DynamicallyAllocatedDatabase staticBuffers(DatabaseTemplate::BinaryOnly(5));
+	
 	// allow a max of 5 events
 	StaticallyAllocatedEventBuffer<5> eventBuffers;	
 	
