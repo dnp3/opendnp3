@@ -47,12 +47,6 @@
     <ClCompile Include="src\asiodnp3\MultidropTaskLock.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\asiodnp3\DynamicallyAllocatedDatabase.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\asiodnp3\DynamicallyAllocatedEventBuffer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\asiodnp3\DefaultMasterApplication.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -110,12 +104,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\asiodnp3\MultidropTaskLock.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\asiodnp3\DynamicallyAllocatedDatabase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\asiodnp3\DynamicallyAllocatedEventBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\asiodnp3\DefaultMasterApplication.h">

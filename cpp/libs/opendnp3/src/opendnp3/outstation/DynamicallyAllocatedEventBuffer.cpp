@@ -19,31 +19,28 @@
  * to you under the terms of the License.
  */
 
-#ifndef __DYNAMICALLY_ALLOCATED_EVENT_BUFFER_H_
-#define __DYNAMICALLY_ALLOCATED_EVENT_BUFFER_H_
+#include "DynamicallyAllocatedEventBuffer.h"
 
-#include <opendnp3/outstation/EventBufferConfig.h>
-#include <opendnp3/outstation/EventBufferFacade.h>
+using namespace openpal;
 
-#include <openpal/container/DynamicArray.h>
-
-namespace asiodnp3
+namespace opendnp3
 {
 
-class DynamicallyAllocatedEventBuffer : openpal::Uncopyable
-{
+DynamicallyAllocatedEventBuffer::DynamicallyAllocatedEventBuffer(uint32_t maxEvents) :	
+	sequenceOfEvents(maxEvents),
+	selectedEvents(maxEvents)
+{}
 
-public:
-	DynamicallyAllocatedEventBuffer(uint32_t maxEvents);
+EventBufferFacade DynamicallyAllocatedEventBuffer::GetFacade()
+{	
 
-	opendnp3::EventBufferFacade GetFacade();
+	LinkedListAdapter<SOERecord, uint32_t> soeAdapter(sequenceOfEvents.ToIndexable());
+	StackAdapter<ListNode<SOERecord>*, uint32_t> selectionAdapter(selectedEvents.ToIndexable());
 
-private:	
-
-	openpal::DynamicArray<openpal::ListNode<opendnp3::SOERecord>, uint32_t> sequenceOfEvents;
-	openpal::DynamicArray<openpal::ListNode<opendnp3::SOERecord>*, uint32_t> selectedEvents;
-};
-
+	return EventBufferFacade(	           
+	           soeAdapter,
+	           selectionAdapter
+	);
 }
 
-#endif
+}

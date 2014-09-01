@@ -28,8 +28,8 @@
 #include <opendnp3/link/ILinkRouter.h>
 #include <opendnp3/transport/TransportStack.h>
 
-#include <asiodnp3/DynamicallyAllocatedDatabase.h>
-#include <asiodnp3/DynamicallyAllocatedEventBuffer.h>
+#include <opendnp3/outstation/DynamicallyAllocatedDatabase.h>
+#include <opendnp3/outstation/DynamicallyAllocatedEventBuffer.h>
 
 #include "IOutstation.h"
 #include "Mutex.h"
@@ -80,8 +80,8 @@ private:
 	opendnp3::StackStatistics statistics;	
 	StackActionHandler handler;
 	opendnp3::TransportStack stack;
-	DynamicallyAllocatedDatabase databaseBuffers;
-	DynamicallyAllocatedEventBuffer eventBuffers;
+	opendnp3::DynamicallyAllocatedDatabase databaseBuffers;
+	opendnp3::DynamicallyAllocatedEventBuffer eventBuffers;
 	Mutex mutex;
 	opendnp3::Database database;
 	opendnp3::Outstation outstation;
