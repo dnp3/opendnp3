@@ -76,24 +76,15 @@ public:
 			return Context();
 		}
 
-		Context(bool expectContents_ = true, int32_t logFilters_ = flags::APP_OBJECT_RX, uint32_t aMaxObjects = sizes::MAX_OBJECTS_PER_APDU) :
+		Context(bool expectContents_ = true, int32_t logFilters_ = flags::APP_OBJECT_RX) :
 			expectContents(expectContents_),
-			logFilters(logFilters_),
-			count(0),
-			MAX_OBJECTS(aMaxObjects)
+			logFilters(logFilters_)			
 		{}
 
 		inline bool ExpectsContents() const
 		{
 			return expectContents;
-		}
-
-		// return true if the count exceeds the max count
-		inline bool AddObjectCount(uint32_t aCount)
-		{
-			count += aCount;
-			return count > MAX_OBJECTS;
-		}
+		}		
 
 		inline int32_t Filters() const
 		{
@@ -104,9 +95,7 @@ public:
 
 
 		const bool expectContents;
-		int32_t logFilters;
-		uint32_t count;
-		const uint32_t MAX_OBJECTS;
+		int32_t logFilters;		
 	};
 
 	enum class Result
@@ -500,18 +489,10 @@ APDUParser::Result APDUParser::ParseRange(openpal::ReadOnlyBuffer& buffer, openp
 		}
 		else
 		{
-			RangeType count = static_cast<RangeType>(stop) - static_cast<RangeType>(start) + 1;
-			if (context.AddObjectCount(count))
-			{
-				SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_TOO_MANY_OBJECTS_IN_APDU, "too many objects in APDU");
-				return Result::UNREASONABLE_OBJECT_COUNT;
-			}
-			else
-			{
-				range.start = start;
-				range.stop = stop;
-				return Result::OK;
-			}
+			RangeType count = static_cast<RangeType>(stop) - static_cast<RangeType>(start) + 1;			
+			range.start = start;
+			range.stop = stop;
+			return Result::OK;			
 		}
 	}
 }
@@ -533,16 +514,8 @@ APDUParser::Result APDUParser::ParseCount(openpal::ReadOnlyBuffer& buffer, openp
 			return Result::COUNT_OF_ZERO;
 		}
 		else
-		{
-			if (context.AddObjectCount(count))
-			{
-				SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_TOO_MANY_OBJECTS_IN_APDU, "too many objects in APDU");
-				return Result::UNREASONABLE_OBJECT_COUNT;
-			}
-			else
-			{
-				return Result::OK;
-			}
+		{			
+			return Result::OK;			
 		}
 	}
 }

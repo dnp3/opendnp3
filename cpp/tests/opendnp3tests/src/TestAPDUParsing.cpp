@@ -250,19 +250,7 @@ TEST_CASE(SUITE("FlippedRange"))
 TEST_CASE(SUITE("TestUnreasonableRanges"))
 {
 	// 2 byte start/stop 0->65535, no data - the default max objects is very low (32768)
-	TestSimple("01 02 01 00 00 FF FF", APDUParser::Result::UNREASONABLE_OBJECT_COUNT, 0);
-}
-
-TEST_CASE(SUITE("MaxCountAccumlatesOverHeaders"))
-{
-	HexSequence buffer("01 02 00 01 02 81 81 01 02 00 01 02 81 81"); // total of four objects
-	MockApduHeaderHandler mock;
-
-	APDUParser::Context ctx(true, 0, 3); //maximum of the 3 objects
-	auto result = APDUParser::ParseTwoPass(buffer.ToReadOnly(), &mock, nullptr, ctx);
-
-	REQUIRE((result == APDUParser::Result::UNREASONABLE_OBJECT_COUNT));
-	REQUIRE(0 == mock.records.size()); // 0 calls because parser rejects bad count on first pass
+	TestSimple("01 02 01 00 00 FF FF", APDUParser::Result::NOT_ENOUGH_DATA_FOR_OBJECTS, 0);
 }
 
 TEST_CASE(SUITE("ParserDoesNotAllowEmptyOctetStrings"))
@@ -273,17 +261,6 @@ TEST_CASE(SUITE("ParserDoesNotAllowEmptyOctetStrings"))
 	auto result = APDUParser::ParseTwoPass(buffer.ToReadOnly(), &mock, nullptr);
 
 	REQUIRE((result == APDUParser::Result::INVALID_OBJECT));
-	REQUIRE(0 == mock.records.size());
-}
-
-TEST_CASE(SUITE("ParserRejectsLargeEmptyOctetStringsWithDefaultSettings"))
-{
-	HexSequence buffer("6E 00 08 FF FF"); // count of 65535 empty strings
-	MockApduHeaderHandler mock;
-
-	auto result = APDUParser::ParseTwoPass(buffer.ToReadOnly(), &mock, nullptr);
-
-	REQUIRE((result == APDUParser::Result::UNREASONABLE_OBJECT_COUNT));
 	REQUIRE(0 == mock.records.size());
 }
 

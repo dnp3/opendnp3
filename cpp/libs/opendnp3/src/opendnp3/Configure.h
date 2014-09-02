@@ -35,9 +35,6 @@ static const uint32_t DEFAULT_MAX_APDU_SIZE = 2048;
 // the maximum number of static read object/variation records that can be in any READ request
 static const uint16_t MAX_READ_REQUESTS = 8;
 
-// a safeguard parameter to project from DoS attacks, this really only applies to "empty strings"
-static const uint32_t MAX_OBJECTS_PER_APDU = 32768;
-
 // the maximum number of queued commands for a master
 static const uint8_t MAX_MASTER_POLL_TASKS = 8;
 
