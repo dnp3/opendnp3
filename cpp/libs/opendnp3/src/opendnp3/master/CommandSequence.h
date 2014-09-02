@@ -48,9 +48,9 @@ template <class CommandType>
 class CommandSequence : public ICommandSequence
 {
 public:
-	CommandSequence(openpal::Logger logger, IDNP3Serializer<CommandType>& serializer) :
+	CommandSequence(openpal::Logger logger, const DNP3Serializer<CommandType>& serializer_) :
 		ICommandSequence(logger),
-		pSerializer(&serializer)
+		serializer(serializer_)
 	{}
 
 	void Configure(const CommandType& value, uint16_t index)
@@ -79,7 +79,7 @@ public:
 	virtual void FormatRequestHeader(APDURequest& request) final
 	{		
 		auto writer = request.GetWriter();
-		writer.WriteSingleIndexedValue<openpal::UInt16, CommandType>(QualifierCode::UINT16_CNT_UINT16_INDEX, *pSerializer, command.value, command.index);
+		writer.WriteSingleIndexedValue<openpal::UInt16, CommandType>(QualifierCode::UINT16_CNT_UINT16_INDEX, serializer, command.value, command.index);
 	}
 
 
@@ -101,7 +101,7 @@ public:
 private:
 	CommandResponse response;
 	IndexedValue<CommandType, uint16_t> command;
-	IDNP3Serializer<CommandType>* pSerializer;
+	DNP3Serializer<CommandType> serializer;
 };
 
 

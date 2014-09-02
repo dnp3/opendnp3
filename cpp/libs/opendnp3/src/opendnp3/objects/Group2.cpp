@@ -43,15 +43,13 @@ void Group2Var1::Write(const Group2Var1& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(1);
 }
 
-Group2Var1Serializer Group2Var1Serializer::instance;
-
-Binary Group2Var1Serializer::Read(ReadOnlyBuffer& buff) const
+Binary Group2Var1Serializer::Read(ReadOnlyBuffer& buff)
 {
   auto gv = Group2Var1::Read(buff);
   return BinaryFactory::From(gv.flags);
 }
 
-void Group2Var1Serializer::Write(const Binary& value, openpal::WriteBuffer& buff) const
+void Group2Var1Serializer::Write(const Binary& value, openpal::WriteBuffer& buff)
 {
   Group2Var1::Write(ConvertGroup2Var1::Apply(value), buff);
 }
@@ -77,15 +75,13 @@ void Group2Var2::Write(const Group2Var2& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(6);
 }
 
-Group2Var2Serializer Group2Var2Serializer::instance;
-
-Binary Group2Var2Serializer::Read(ReadOnlyBuffer& buff) const
+Binary Group2Var2Serializer::Read(ReadOnlyBuffer& buff)
 {
   auto gv = Group2Var2::Read(buff);
   return BinaryFactory::From(gv.flags, gv.time);
 }
 
-void Group2Var2Serializer::Write(const Binary& value, openpal::WriteBuffer& buff) const
+void Group2Var2Serializer::Write(const Binary& value, openpal::WriteBuffer& buff)
 {
   Group2Var2::Write(ConvertGroup2Var2::Apply(value), buff);
 }
@@ -111,15 +107,13 @@ void Group2Var3::Write(const Group2Var3& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(2);
 }
 
-Group2Var3Serializer Group2Var3Serializer::instance;
-
-Binary Group2Var3Serializer::Read(ReadOnlyBuffer& buff) const
+Binary Group2Var3Serializer::Read(ReadOnlyBuffer& buff)
 {
   auto gv = Group2Var3::Read(buff);
   return BinaryFactory::From(gv.flags, gv.time);
 }
 
-void Group2Var3Serializer::Write(const Binary& value, openpal::WriteBuffer& buff) const
+void Group2Var3Serializer::Write(const Binary& value, openpal::WriteBuffer& buff)
 {
   Group2Var3::Write(ConvertGroup2Var3::Apply(value), buff);
 }

@@ -45,15 +45,13 @@ void Group22Var1::Write(const Group22Var1& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(4);
 }
 
-Group22Var1Serializer Group22Var1Serializer::instance;
-
-Counter Group22Var1Serializer::Read(ReadOnlyBuffer& buff) const
+Counter Group22Var1Serializer::Read(ReadOnlyBuffer& buff)
 {
   auto gv = Group22Var1::Read(buff);
   return CounterFactory::From(gv.flags, gv.value);
 }
 
-void Group22Var1Serializer::Write(const Counter& value, openpal::WriteBuffer& buff) const
+void Group22Var1Serializer::Write(const Counter& value, openpal::WriteBuffer& buff)
 {
   Group22Var1::Write(ConvertGroup22Var1::Apply(value), buff);
 }
@@ -79,15 +77,13 @@ void Group22Var2::Write(const Group22Var2& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(2);
 }
 
-Group22Var2Serializer Group22Var2Serializer::instance;
-
-Counter Group22Var2Serializer::Read(ReadOnlyBuffer& buff) const
+Counter Group22Var2Serializer::Read(ReadOnlyBuffer& buff)
 {
   auto gv = Group22Var2::Read(buff);
   return CounterFactory::From(gv.flags, gv.value);
 }
 
-void Group22Var2Serializer::Write(const Counter& value, openpal::WriteBuffer& buff) const
+void Group22Var2Serializer::Write(const Counter& value, openpal::WriteBuffer& buff)
 {
   Group22Var2::Write(ConvertGroup22Var2::Apply(value), buff);
 }
@@ -117,15 +113,13 @@ void Group22Var5::Write(const Group22Var5& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(6);
 }
 
-Group22Var5Serializer Group22Var5Serializer::instance;
-
-Counter Group22Var5Serializer::Read(ReadOnlyBuffer& buff) const
+Counter Group22Var5Serializer::Read(ReadOnlyBuffer& buff)
 {
   auto gv = Group22Var5::Read(buff);
   return CounterFactory::From(gv.flags, gv.value, gv.time);
 }
 
-void Group22Var5Serializer::Write(const Counter& value, openpal::WriteBuffer& buff) const
+void Group22Var5Serializer::Write(const Counter& value, openpal::WriteBuffer& buff)
 {
   Group22Var5::Write(ConvertGroup22Var5::Apply(value), buff);
 }
@@ -155,15 +149,13 @@ void Group22Var6::Write(const Group22Var6& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(6);
 }
 
-Group22Var6Serializer Group22Var6Serializer::instance;
-
-Counter Group22Var6Serializer::Read(ReadOnlyBuffer& buff) const
+Counter Group22Var6Serializer::Read(ReadOnlyBuffer& buff)
 {
   auto gv = Group22Var6::Read(buff);
   return CounterFactory::From(gv.flags, gv.value, gv.time);
 }
 
-void Group22Var6Serializer::Write(const Counter& value, openpal::WriteBuffer& buff) const
+void Group22Var6Serializer::Write(const Counter& value, openpal::WriteBuffer& buff)
 {
   Group22Var6::Write(ConvertGroup22Var6::Apply(value), buff);
 }

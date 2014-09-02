@@ -250,14 +250,6 @@
       <SubType>compile</SubType>
       <Link>container\StaticLinkedList.h</Link>
     </Compile>
-    <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\container\StaticPriorityQueue.h">
-      <SubType>compile</SubType>
-      <Link>container\StaticPriorityQueue.h</Link>
-    </Compile>
-    <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\container\StaticQueue.h">
-      <SubType>compile</SubType>
-      <Link>container\StaticQueue.h</Link>
-    </Compile>
     <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\container\WriteBuffer.cpp">
       <SubType>compile</SubType>
       <Link>container\WriteBuffer.cpp</Link>
@@ -382,10 +374,6 @@
       <SubType>compile</SubType>
       <Link>serialization\FloatSerializationTemplates.h</Link>
     </Compile>
-    <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\serialization\ISerializer.h">
-      <SubType>compile</SubType>
-      <Link>serialization\ISerializer.h</Link>
-    </Compile>
     <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\serialization\Serialization.h">
       <SubType>compile</SubType>
       <Link>serialization\Serialization.h</Link>
@@ -397,6 +385,10 @@
     <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\serialization\SerializationTemplatesLE.h">
       <SubType>compile</SubType>
       <Link>serialization\SerializationTemplatesLE.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\serialization\Serializer.h">
+      <SubType>compile</SubType>
+      <Link>serialization\Serializer.h</Link>
     </Compile>
     <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\serialization\UInt48LE.cpp">
       <SubType>compile</SubType>

@@ -22,7 +22,7 @@
 #include <openpal/container/WriteBuffer.h>
 #include "opendnp3/app/GroupVariationID.h"
 #include "opendnp3/gen/CommandStatus.h"
-#include "opendnp3/app/IDNP3Serializer.h"
+#include "opendnp3/app/DNP3Serializer.h"
 #include "opendnp3/app/ControlRelayOutputBlock.h"
 
 namespace opendnp3 {
@@ -42,22 +42,15 @@ struct Group12Var1
   CommandStatus status;
 };
 
-struct Group12Var1Serializer : public IDNP3Serializer<ControlRelayOutputBlock>
+struct Group12Var1Serializer
 {
 
-  static IDNP3Serializer<ControlRelayOutputBlock>& Inst() { return instance; }
-
-  GroupVariationID ID() const { return Group12Var1::ID; }
-
-  uint32_t Size() const { return Group12Var1::SIZE; }
+  static DNP3Serializer<ControlRelayOutputBlock> Inst() { return DNP3Serializer<ControlRelayOutputBlock>(Group12Var1::ID, Group12Var1::SIZE, &Read, &Write); }
 
   typedef ControlRelayOutputBlock Target;
-  ControlRelayOutputBlock Read(openpal::ReadOnlyBuffer&) const;
-  void Write(const ControlRelayOutputBlock&, openpal::WriteBuffer&) const;
+  static ControlRelayOutputBlock Read(openpal::ReadOnlyBuffer&);
+  static void Write(const ControlRelayOutputBlock&, openpal::WriteBuffer&);
 
-  private:
-
-  static Group12Var1Serializer instance;
 };
 
 

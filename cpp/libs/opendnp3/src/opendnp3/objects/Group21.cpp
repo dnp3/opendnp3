@@ -45,15 +45,13 @@ void Group21Var1::Write(const Group21Var1& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(4);
 }
 
-Group21Var1Serializer Group21Var1Serializer::instance;
-
-FrozenCounter Group21Var1Serializer::Read(ReadOnlyBuffer& buff) const
+FrozenCounter Group21Var1Serializer::Read(ReadOnlyBuffer& buff)
 {
   auto gv = Group21Var1::Read(buff);
   return FrozenCounterFactory::From(gv.flags, gv.value);
 }
 
-void Group21Var1Serializer::Write(const FrozenCounter& value, openpal::WriteBuffer& buff) const
+void Group21Var1Serializer::Write(const FrozenCounter& value, openpal::WriteBuffer& buff)
 {
   Group21Var1::Write(ConvertGroup21Var1::Apply(value), buff);
 }
@@ -79,15 +77,13 @@ void Group21Var2::Write(const Group21Var2& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(2);
 }
 
-Group21Var2Serializer Group21Var2Serializer::instance;
-
-FrozenCounter Group21Var2Serializer::Read(ReadOnlyBuffer& buff) const
+FrozenCounter Group21Var2Serializer::Read(ReadOnlyBuffer& buff)
 {
   auto gv = Group21Var2::Read(buff);
   return FrozenCounterFactory::From(gv.flags, gv.value);
 }
 
-void Group21Var2Serializer::Write(const FrozenCounter& value, openpal::WriteBuffer& buff) const
+void Group21Var2Serializer::Write(const FrozenCounter& value, openpal::WriteBuffer& buff)
 {
   Group21Var2::Write(ConvertGroup21Var2::Apply(value), buff);
 }
@@ -117,15 +113,13 @@ void Group21Var5::Write(const Group21Var5& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(6);
 }
 
-Group21Var5Serializer Group21Var5Serializer::instance;
-
-FrozenCounter Group21Var5Serializer::Read(ReadOnlyBuffer& buff) const
+FrozenCounter Group21Var5Serializer::Read(ReadOnlyBuffer& buff)
 {
   auto gv = Group21Var5::Read(buff);
   return FrozenCounterFactory::From(gv.flags, gv.value, gv.time);
 }
 
-void Group21Var5Serializer::Write(const FrozenCounter& value, openpal::WriteBuffer& buff) const
+void Group21Var5Serializer::Write(const FrozenCounter& value, openpal::WriteBuffer& buff)
 {
   Group21Var5::Write(ConvertGroup21Var5::Apply(value), buff);
 }
@@ -155,15 +149,13 @@ void Group21Var6::Write(const Group21Var6& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(6);
 }
 
-Group21Var6Serializer Group21Var6Serializer::instance;
-
-FrozenCounter Group21Var6Serializer::Read(ReadOnlyBuffer& buff) const
+FrozenCounter Group21Var6Serializer::Read(ReadOnlyBuffer& buff)
 {
   auto gv = Group21Var6::Read(buff);
   return FrozenCounterFactory::From(gv.flags, gv.value, gv.time);
 }
 
-void Group21Var6Serializer::Write(const FrozenCounter& value, openpal::WriteBuffer& buff) const
+void Group21Var6Serializer::Write(const FrozenCounter& value, openpal::WriteBuffer& buff)
 {
   Group21Var6::Write(ConvertGroup21Var6::Apply(value), buff);
 }
@@ -185,15 +177,13 @@ void Group21Var9::Write(const Group21Var9& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(4);
 }
 
-Group21Var9Serializer Group21Var9Serializer::instance;
-
-FrozenCounter Group21Var9Serializer::Read(ReadOnlyBuffer& buff) const
+FrozenCounter Group21Var9Serializer::Read(ReadOnlyBuffer& buff)
 {
   auto gv = Group21Var9::Read(buff);
   return FrozenCounterFactory::From(gv.value);
 }
 
-void Group21Var9Serializer::Write(const FrozenCounter& value, openpal::WriteBuffer& buff) const
+void Group21Var9Serializer::Write(const FrozenCounter& value, openpal::WriteBuffer& buff)
 {
   Group21Var9::Write(ConvertGroup21Var9::Apply(value), buff);
 }
@@ -215,15 +205,13 @@ void Group21Var10::Write(const Group21Var10& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(2);
 }
 
-Group21Var10Serializer Group21Var10Serializer::instance;
-
-FrozenCounter Group21Var10Serializer::Read(ReadOnlyBuffer& buff) const
+FrozenCounter Group21Var10Serializer::Read(ReadOnlyBuffer& buff)
 {
   auto gv = Group21Var10::Read(buff);
   return FrozenCounterFactory::From(gv.value);
 }
 
-void Group21Var10Serializer::Write(const FrozenCounter& value, openpal::WriteBuffer& buff) const
+void Group21Var10Serializer::Write(const FrozenCounter& value, openpal::WriteBuffer& buff)
 {
   Group21Var10::Write(ConvertGroup21Var10::Apply(value), buff);
 }

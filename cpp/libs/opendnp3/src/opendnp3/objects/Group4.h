@@ -21,7 +21,7 @@
 #include <openpal/container/ReadOnlyBuffer.h>
 #include <openpal/container/WriteBuffer.h>
 #include "opendnp3/app/GroupVariationID.h"
-#include "opendnp3/app/IDNP3Serializer.h"
+#include "opendnp3/app/DNP3Serializer.h"
 #include "opendnp3/app/MeasurementTypes.h"
 
 namespace opendnp3 {
@@ -37,22 +37,15 @@ struct Group4Var1
   uint8_t flags;
 };
 
-struct Group4Var1Serializer : public IDNP3Serializer<DoubleBitBinary>
+struct Group4Var1Serializer
 {
 
-  static IDNP3Serializer<DoubleBitBinary>& Inst() { return instance; }
-
-  GroupVariationID ID() const { return Group4Var1::ID; }
-
-  uint32_t Size() const { return Group4Var1::SIZE; }
+  static DNP3Serializer<DoubleBitBinary> Inst() { return DNP3Serializer<DoubleBitBinary>(Group4Var1::ID, Group4Var1::SIZE, &Read, &Write); }
 
   typedef DoubleBitBinary Target;
-  DoubleBitBinary Read(openpal::ReadOnlyBuffer&) const;
-  void Write(const DoubleBitBinary&, openpal::WriteBuffer&) const;
+  static DoubleBitBinary Read(openpal::ReadOnlyBuffer&);
+  static void Write(const DoubleBitBinary&, openpal::WriteBuffer&);
 
-  private:
-
-  static Group4Var1Serializer instance;
 };
 
 struct Group4Var2
@@ -67,22 +60,15 @@ struct Group4Var2
   uint64_t time;
 };
 
-struct Group4Var2Serializer : public IDNP3Serializer<DoubleBitBinary>
+struct Group4Var2Serializer
 {
 
-  static IDNP3Serializer<DoubleBitBinary>& Inst() { return instance; }
-
-  GroupVariationID ID() const { return Group4Var2::ID; }
-
-  uint32_t Size() const { return Group4Var2::SIZE; }
+  static DNP3Serializer<DoubleBitBinary> Inst() { return DNP3Serializer<DoubleBitBinary>(Group4Var2::ID, Group4Var2::SIZE, &Read, &Write); }
 
   typedef DoubleBitBinary Target;
-  DoubleBitBinary Read(openpal::ReadOnlyBuffer&) const;
-  void Write(const DoubleBitBinary&, openpal::WriteBuffer&) const;
+  static DoubleBitBinary Read(openpal::ReadOnlyBuffer&);
+  static void Write(const DoubleBitBinary&, openpal::WriteBuffer&);
 
-  private:
-
-  static Group4Var2Serializer instance;
 };
 
 struct Group4Var3
@@ -97,22 +83,15 @@ struct Group4Var3
   uint16_t time;
 };
 
-struct Group4Var3Serializer : public IDNP3Serializer<DoubleBitBinary>
+struct Group4Var3Serializer
 {
 
-  static IDNP3Serializer<DoubleBitBinary>& Inst() { return instance; }
-
-  GroupVariationID ID() const { return Group4Var3::ID; }
-
-  uint32_t Size() const { return Group4Var3::SIZE; }
+  static DNP3Serializer<DoubleBitBinary> Inst() { return DNP3Serializer<DoubleBitBinary>(Group4Var3::ID, Group4Var3::SIZE, &Read, &Write); }
 
   typedef DoubleBitBinary Target;
-  DoubleBitBinary Read(openpal::ReadOnlyBuffer&) const;
-  void Write(const DoubleBitBinary&, openpal::WriteBuffer&) const;
+  static DoubleBitBinary Read(openpal::ReadOnlyBuffer&);
+  static void Write(const DoubleBitBinary&, openpal::WriteBuffer&);
 
-  private:
-
-  static Group4Var3Serializer instance;
 };
 
 

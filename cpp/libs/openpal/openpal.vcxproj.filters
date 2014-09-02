@@ -139,9 +139,6 @@
     <ClInclude Include="src\openpal\serialization\FloatSerializationTemplates.h">
       <Filter>Header\serialization</Filter>
     </ClInclude>
-    <ClInclude Include="src\openpal\serialization\ISerializer.h">
-      <Filter>Header\serialization</Filter>
-    </ClInclude>
     <ClInclude Include="src\openpal\serialization\Serialization.h">
       <Filter>Header\serialization</Filter>
     </ClInclude>
@@ -198,6 +195,9 @@
     </ClInclude>
     <ClInclude Include="src\openpal\container\Queue.h">
       <Filter>Header\container</Filter>
+    </ClInclude>
+    <ClInclude Include="src\openpal\serialization\Serializer.h">
+      <Filter>Header\serialization</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

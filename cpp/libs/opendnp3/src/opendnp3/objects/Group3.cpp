@@ -45,15 +45,13 @@ void Group3Var2::Write(const Group3Var2& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(1);
 }
 
-Group3Var2Serializer Group3Var2Serializer::instance;
-
-DoubleBitBinary Group3Var2Serializer::Read(ReadOnlyBuffer& buff) const
+DoubleBitBinary Group3Var2Serializer::Read(ReadOnlyBuffer& buff)
 {
   auto gv = Group3Var2::Read(buff);
   return DoubleBitBinaryFactory::From(gv.flags);
 }
 
-void Group3Var2Serializer::Write(const DoubleBitBinary& value, openpal::WriteBuffer& buff) const
+void Group3Var2Serializer::Write(const DoubleBitBinary& value, openpal::WriteBuffer& buff)
 {
   Group3Var2::Write(ConvertGroup3Var2::Apply(value), buff);
 }

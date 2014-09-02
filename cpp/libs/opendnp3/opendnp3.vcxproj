@@ -47,7 +47,7 @@
     <ClInclude Include="src\opendnp3\app\GroupVariationRecord.h" />
     <ClInclude Include="src\opendnp3\app\GroupVariationID.h" />
     <ClInclude Include="src\opendnp3\app\IAPDUHandler.h" />
-    <ClInclude Include="src\opendnp3\app\IDNP3Serializer.h" />
+    <ClInclude Include="src\opendnp3\app\DNP3Serializer.h" />
     <ClInclude Include="src\opendnp3\app\IINField.h" />
     <ClInclude Include="src\opendnp3\app\IndexedValue.h" />
     <ClInclude Include="src\opendnp3\app\IndexParser.h" />

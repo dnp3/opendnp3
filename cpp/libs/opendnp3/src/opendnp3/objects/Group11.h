@@ -21,7 +21,7 @@
 #include <openpal/container/ReadOnlyBuffer.h>
 #include <openpal/container/WriteBuffer.h>
 #include "opendnp3/app/GroupVariationID.h"
-#include "opendnp3/app/IDNP3Serializer.h"
+#include "opendnp3/app/DNP3Serializer.h"
 #include "opendnp3/app/MeasurementTypes.h"
 
 namespace opendnp3 {
@@ -37,22 +37,15 @@ struct Group11Var1
   uint8_t flags;
 };
 
-struct Group11Var1Serializer : public IDNP3Serializer<BinaryOutputStatus>
+struct Group11Var1Serializer
 {
 
-  static IDNP3Serializer<BinaryOutputStatus>& Inst() { return instance; }
-
-  GroupVariationID ID() const { return Group11Var1::ID; }
-
-  uint32_t Size() const { return Group11Var1::SIZE; }
+  static DNP3Serializer<BinaryOutputStatus> Inst() { return DNP3Serializer<BinaryOutputStatus>(Group11Var1::ID, Group11Var1::SIZE, &Read, &Write); }
 
   typedef BinaryOutputStatus Target;
-  BinaryOutputStatus Read(openpal::ReadOnlyBuffer&) const;
-  void Write(const BinaryOutputStatus&, openpal::WriteBuffer&) const;
+  static BinaryOutputStatus Read(openpal::ReadOnlyBuffer&);
+  static void Write(const BinaryOutputStatus&, openpal::WriteBuffer&);
 
-  private:
-
-  static Group11Var1Serializer instance;
 };
 
 struct Group11Var2
@@ -67,22 +60,15 @@ struct Group11Var2
   uint64_t time;
 };
 
-struct Group11Var2Serializer : public IDNP3Serializer<BinaryOutputStatus>
+struct Group11Var2Serializer
 {
 
-  static IDNP3Serializer<BinaryOutputStatus>& Inst() { return instance; }
-
-  GroupVariationID ID() const { return Group11Var2::ID; }
-
-  uint32_t Size() const { return Group11Var2::SIZE; }
+  static DNP3Serializer<BinaryOutputStatus> Inst() { return DNP3Serializer<BinaryOutputStatus>(Group11Var2::ID, Group11Var2::SIZE, &Read, &Write); }
 
   typedef BinaryOutputStatus Target;
-  BinaryOutputStatus Read(openpal::ReadOnlyBuffer&) const;
-  void Write(const BinaryOutputStatus&, openpal::WriteBuffer&) const;
+  static BinaryOutputStatus Read(openpal::ReadOnlyBuffer&);
+  static void Write(const BinaryOutputStatus&, openpal::WriteBuffer&);
 
-  private:
-
-  static Group11Var2Serializer instance;
 };
 
 

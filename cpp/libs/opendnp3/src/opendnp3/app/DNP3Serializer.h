@@ -18,36 +18,34 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __I_SERIALIZER_H_
-#define __I_SERIALIZER_H_
+#ifndef __DNP3_SERIALIZER_H_
+#define __DNP3_SERIALIZER_H_
 
-#include <cstdint>
+#include <openpal/serialization/Serializer.h>
 
-#include "openpal/container/ReadOnlyBuffer.h"
-#include "openpal/container/WriteBuffer.h"
+#include "GroupVariationID.h"
 
-namespace openpal
+namespace opendnp3
 {
 
 template <class T>
-class ISerializer
+class DNP3Serializer : public openpal::Serializer<T>
 {
-public:
+public:	
 
-	/**
-	* @return The size (in bytes) required for every call to read/write
-	*/
-	virtual uint32_t Size() const = 0;
+	DNP3Serializer(GroupVariationID id_, uint32_t size_, typename openpal::Serializer<T>::ReadFunc pReadFunc_, typename openpal::Serializer<T>::WriteFunc pWriteFunc_) :
+		openpal::Serializer<T>(size_, pReadFunc_, pWriteFunc_),
+		id(id_)
+	{}
 
-	/**
-	* reads the value and advances the read buffer
-	*/
-	virtual T Read(ReadOnlyBuffer& buffer) const = 0;
+	GroupVariationID ID() const
+	{
+		return id;
+	}
 
-	/**
-	* writes the value and advances the write buffer
-	*/
-	virtual void Write(const T& value, WriteBuffer& buffer) const = 0;
+private:
+
+	GroupVariationID id;
 
 };
 

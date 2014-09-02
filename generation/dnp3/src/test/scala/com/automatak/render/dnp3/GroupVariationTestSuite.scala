@@ -1,7 +1,7 @@
 package com.automatak.render.dnp3
 
 import org.scalatest.FunSuite
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.Matchers
 import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith
 
@@ -10,7 +10,7 @@ import com.automatak.render.dnp3.objects.ObjectGroup
 import com.automatak.render.dnp3.objects.groups.Group12Var1
 
 @RunWith(classOf[JUnitRunner])
-class GroupVariationTestSuite extends FunSuite with ShouldMatchers {
+class GroupVariationTestSuite extends FunSuite with Matchers {
 
   test("Groups are all unique") {
     ObjectGroup.all.foldLeft(Set.empty[Byte]) { (set, group) =>

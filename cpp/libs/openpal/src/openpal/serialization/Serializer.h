@@ -18,22 +18,61 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __I_DNP3_SERIALIZER_H_
-#define __I_DNP3_SERIALIZER_H_
+#ifndef __SERIALIZER_H_
+#define __SERIALIZER_H_
 
-#include <openpal/serialization/ISerializer.h>
+#include <cstdint>
 
-#include "GroupVariationID.h"
+#include "openpal/container/ReadOnlyBuffer.h"
+#include "openpal/container/WriteBuffer.h"
 
-namespace opendnp3
+namespace openpal
 {
 
 template <class T>
-class IDNP3Serializer : public openpal::ISerializer<T>
+class Serializer
 {
 public:
 
-	virtual GroupVariationID ID() const = 0;
+	typedef T (*ReadFunc)(ReadOnlyBuffer& buffer);
+	typedef void (*WriteFunc)(const T& value, WriteBuffer& buffer);
+
+	Serializer() : size(0), pReadFunc(nullptr), pWriteFunc(nullptr)
+	{}
+
+	Serializer(uint32_t size_, ReadFunc pReadFunc_, WriteFunc pWriteFunc_) :
+		size(size_), pReadFunc(pReadFunc_), pWriteFunc(pWriteFunc_)
+	{}
+
+	/**
+	* @return The size (in bytes) required for every call to read/write
+	*/
+	uint32_t Size() const
+	{
+		return size;
+	}
+
+	/**
+	* reads the value and advances the read buffer
+	*/
+	T Read(ReadOnlyBuffer& buffer) const
+	{
+		return (*pReadFunc)(buffer);
+	}
+
+	/**
+	* writes the value and advances the write buffer
+	*/
+	void Write(const T& value, WriteBuffer& buffer) const
+	{
+		(*pWriteFunc)(value, buffer);
+	}
+
+private:
+
+	uint32_t size;
+	ReadFunc pReadFunc;
+	WriteFunc pWriteFunc;
 
 };
 

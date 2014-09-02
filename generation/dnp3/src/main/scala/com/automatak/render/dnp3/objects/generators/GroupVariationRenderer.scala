@@ -65,15 +65,12 @@ object GroupVariationHeaderRenderer extends ModelRenderer[GroupVariation]{
       case None => Iterator.empty
       case Some(conv) =>
         val structName = x.name+"Serializer"
-        val baseClass = "IDNP3Serializer<"+conv.target+">"
-        space ++ struct(structName, Some(baseClass)) {
-          space ++ Iterator("static " + baseClass + "& Inst() { return instance; }") ++
-          space ++ Iterator("GroupVariationID ID() const { return " + x.name + "::ID; }") ++
-          space ++ Iterator("uint32_t Size() const { return " + x.name + "::SIZE; }") ++
-          space ++ conv.signatures ++ space ++
-          privateSection {
-            Iterator("static " + structName + " instance;")
-          }
+        val serializerType = "DNP3Serializer<"+conv.target+">"
+        space ++ struct(structName, None) {
+          space ++ Iterator("static " + serializerType + " Inst() { return " + serializerType + "(" + x.name + "::ID, " + x.name + "::SIZE, &Read, &Write); }") ++
+          //space ++ Iterator("GroupVariationID ID() const { return " + x.name + "::ID; }") ++
+          //space ++ Iterator("uint32_t Size() const { return " + x.name + "::SIZE; }") ++
+          space ++ conv.signatures ++ space
         }
     }
 

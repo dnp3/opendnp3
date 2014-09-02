@@ -21,7 +21,7 @@
 #include <openpal/container/ReadOnlyBuffer.h>
 #include <openpal/container/WriteBuffer.h>
 #include "opendnp3/app/GroupVariationID.h"
-#include "opendnp3/app/IDNP3Serializer.h"
+#include "opendnp3/app/DNP3Serializer.h"
 #include "opendnp3/app/MeasurementTypes.h"
 
 namespace opendnp3 {
@@ -47,22 +47,15 @@ struct Group10Var2
   uint8_t flags;
 };
 
-struct Group10Var2Serializer : public IDNP3Serializer<BinaryOutputStatus>
+struct Group10Var2Serializer
 {
 
-  static IDNP3Serializer<BinaryOutputStatus>& Inst() { return instance; }
-
-  GroupVariationID ID() const { return Group10Var2::ID; }
-
-  uint32_t Size() const { return Group10Var2::SIZE; }
+  static DNP3Serializer<BinaryOutputStatus> Inst() { return DNP3Serializer<BinaryOutputStatus>(Group10Var2::ID, Group10Var2::SIZE, &Read, &Write); }
 
   typedef BinaryOutputStatus Target;
-  BinaryOutputStatus Read(openpal::ReadOnlyBuffer&) const;
-  void Write(const BinaryOutputStatus&, openpal::WriteBuffer&) const;
+  static BinaryOutputStatus Read(openpal::ReadOnlyBuffer&);
+  static void Write(const BinaryOutputStatus&, openpal::WriteBuffer&);
 
-  private:
-
-  static Group10Var2Serializer instance;
 };
 
 

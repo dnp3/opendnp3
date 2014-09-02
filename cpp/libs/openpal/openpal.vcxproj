@@ -62,7 +62,7 @@
     <ClInclude Include="src\openpal\logging\StringFormatting.h" />
     <ClInclude Include="src\openpal\serialization\ByteSerialization.h" />
     <ClInclude Include="src\openpal\serialization\FloatSerializationTemplates.h" />
-    <ClInclude Include="src\openpal\serialization\ISerializer.h" />
+    <ClInclude Include="src\openpal\serialization\Serializer.h" />
     <ClInclude Include="src\openpal\serialization\Serialization.h" />
     <ClInclude Include="src\openpal\serialization\SerializationTemplatesBE.h" />
     <ClInclude Include="src\openpal\serialization\SerializationTemplatesLE.h" />

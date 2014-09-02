@@ -21,7 +21,7 @@
 #include <openpal/container/ReadOnlyBuffer.h>
 #include <openpal/container/WriteBuffer.h>
 #include "opendnp3/app/GroupVariationID.h"
-#include "opendnp3/app/IDNP3Serializer.h"
+#include "opendnp3/app/DNP3Serializer.h"
 #include "opendnp3/app/MeasurementTypes.h"
 
 namespace opendnp3 {
@@ -42,22 +42,15 @@ struct Group2Var1
   uint8_t flags;
 };
 
-struct Group2Var1Serializer : public IDNP3Serializer<Binary>
+struct Group2Var1Serializer
 {
 
-  static IDNP3Serializer<Binary>& Inst() { return instance; }
-
-  GroupVariationID ID() const { return Group2Var1::ID; }
-
-  uint32_t Size() const { return Group2Var1::SIZE; }
+  static DNP3Serializer<Binary> Inst() { return DNP3Serializer<Binary>(Group2Var1::ID, Group2Var1::SIZE, &Read, &Write); }
 
   typedef Binary Target;
-  Binary Read(openpal::ReadOnlyBuffer&) const;
-  void Write(const Binary&, openpal::WriteBuffer&) const;
+  static Binary Read(openpal::ReadOnlyBuffer&);
+  static void Write(const Binary&, openpal::WriteBuffer&);
 
-  private:
-
-  static Group2Var1Serializer instance;
 };
 
 struct Group2Var2
@@ -72,22 +65,15 @@ struct Group2Var2
   uint64_t time;
 };
 
-struct Group2Var2Serializer : public IDNP3Serializer<Binary>
+struct Group2Var2Serializer
 {
 
-  static IDNP3Serializer<Binary>& Inst() { return instance; }
-
-  GroupVariationID ID() const { return Group2Var2::ID; }
-
-  uint32_t Size() const { return Group2Var2::SIZE; }
+  static DNP3Serializer<Binary> Inst() { return DNP3Serializer<Binary>(Group2Var2::ID, Group2Var2::SIZE, &Read, &Write); }
 
   typedef Binary Target;
-  Binary Read(openpal::ReadOnlyBuffer&) const;
-  void Write(const Binary&, openpal::WriteBuffer&) const;
+  static Binary Read(openpal::ReadOnlyBuffer&);
+  static void Write(const Binary&, openpal::WriteBuffer&);
 
-  private:
-
-  static Group2Var2Serializer instance;
 };
 
 struct Group2Var3
@@ -102,22 +88,15 @@ struct Group2Var3
   uint16_t time;
 };
 
-struct Group2Var3Serializer : public IDNP3Serializer<Binary>
+struct Group2Var3Serializer
 {
 
-  static IDNP3Serializer<Binary>& Inst() { return instance; }
-
-  GroupVariationID ID() const { return Group2Var3::ID; }
-
-  uint32_t Size() const { return Group2Var3::SIZE; }
+  static DNP3Serializer<Binary> Inst() { return DNP3Serializer<Binary>(Group2Var3::ID, Group2Var3::SIZE, &Read, &Write); }
 
   typedef Binary Target;
-  Binary Read(openpal::ReadOnlyBuffer&) const;
-  void Write(const Binary&, openpal::WriteBuffer&) const;
+  static Binary Read(openpal::ReadOnlyBuffer&);
+  static void Write(const Binary&, openpal::WriteBuffer&);
 
-  private:
-
-  static Group2Var3Serializer instance;
 };
 
 

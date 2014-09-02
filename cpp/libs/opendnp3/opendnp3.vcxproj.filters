@@ -402,9 +402,6 @@
     <ClInclude Include="src\opendnp3\app\Range.h">
       <Filter>Header\app</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\app\IDNP3Serializer.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\app\MeasurementFactory.h">
       <Filter>Header\app</Filter>
     </ClInclude>
@@ -697,6 +694,9 @@
       <Filter>Header\outstation</Filter>
     </ClInclude>
     <ClInclude Include="AppConstants.h">
+      <Filter>Header\app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\app\DNP3Serializer.h">
       <Filter>Header\app</Filter>
     </ClInclude>
   </ItemGroup>

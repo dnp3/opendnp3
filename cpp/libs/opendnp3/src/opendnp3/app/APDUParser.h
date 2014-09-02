@@ -24,7 +24,7 @@
 #include <openpal/container/ReadOnlyBuffer.h>
 #include <openpal/logging/Logger.h>
 #include <openpal/logging/LogMacros.h>
-#include <openpal/serialization/ISerializer.h>
+#include <openpal/serialization/Serializer.h>
 #include <openpal/serialization/Serialization.h>
 
 #include <openpal/util/Uncopyable.h>
@@ -175,7 +175,7 @@ private:
 	    IAPDUHandler* pHandler);
 
 	template <class Target>
-	static Result ParseRangeFixedSize(const HeaderRecord& record, openpal::ISerializer<Target>& serializer, openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, const Range& range, IAPDUHandler* pHandler);
+	static Result ParseRangeFixedSize(const HeaderRecord& record, openpal::Serializer<Target>& serializer, openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, const Range& range, IAPDUHandler* pHandler);
 
 	template <class Descriptor>
 	static Result ParseCountOf(openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, const HeaderRecord& record, uint32_t count, IAPDUHandler* pHandler);
@@ -186,7 +186,7 @@ private:
 	    openpal::ReadOnlyBuffer& buffer,
 	    openpal::Logger* pLogger,
 	    uint32_t count,
-	    openpal::ISerializer<Target>& serializer,
+	    openpal::Serializer<Target>& serializer,
 	    IAPDUHandler* pHandler);
 
 	static IndexedValue<Binary, uint16_t> BoolToBinary(const IndexedValue<bool, uint16_t>& v);
@@ -518,7 +518,7 @@ APDUParser::Result APDUParser::ParseCount(openpal::ReadOnlyBuffer& buffer, openp
 }
 
 template <class Target>
-APDUParser::Result APDUParser::ParseRangeFixedSize(const HeaderRecord& record, openpal::ISerializer<Target>& serializer, openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, const Range& range, IAPDUHandler* pHandler)
+APDUParser::Result APDUParser::ParseRangeFixedSize(const HeaderRecord& record, openpal::Serializer<Target>& serializer, openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, const Range& range, IAPDUHandler* pHandler)
 {
 	uint32_t size = range.Count() * serializer.Size();
 	if (buffer.Size() < size)
@@ -573,7 +573,7 @@ APDUParser::Result APDUParser::ParseCountFixedSizeWithIndex(
     openpal::ReadOnlyBuffer& buffer,
     openpal::Logger* pLogger,
     uint32_t count,
-    openpal::ISerializer<Target>& serializer,
+    openpal::Serializer<Target>& serializer,
     IAPDUHandler* pHandler)
 {
 	uint32_t size = count * (IndexType::Size + serializer.Size());

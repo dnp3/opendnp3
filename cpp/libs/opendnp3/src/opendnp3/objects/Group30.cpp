@@ -45,15 +45,13 @@ void Group30Var1::Write(const Group30Var1& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(4);
 }
 
-Group30Var1Serializer Group30Var1Serializer::instance;
-
-Analog Group30Var1Serializer::Read(ReadOnlyBuffer& buff) const
+Analog Group30Var1Serializer::Read(ReadOnlyBuffer& buff)
 {
   auto gv = Group30Var1::Read(buff);
   return AnalogFactory::From(gv.flags, gv.value);
 }
 
-void Group30Var1Serializer::Write(const Analog& value, openpal::WriteBuffer& buff) const
+void Group30Var1Serializer::Write(const Analog& value, openpal::WriteBuffer& buff)
 {
   Group30Var1::Write(ConvertGroup30Var1::Apply(value), buff);
 }
@@ -79,15 +77,13 @@ void Group30Var2::Write(const Group30Var2& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(2);
 }
 
-Group30Var2Serializer Group30Var2Serializer::instance;
-
-Analog Group30Var2Serializer::Read(ReadOnlyBuffer& buff) const
+Analog Group30Var2Serializer::Read(ReadOnlyBuffer& buff)
 {
   auto gv = Group30Var2::Read(buff);
   return AnalogFactory::From(gv.flags, gv.value);
 }
 
-void Group30Var2Serializer::Write(const Analog& value, openpal::WriteBuffer& buff) const
+void Group30Var2Serializer::Write(const Analog& value, openpal::WriteBuffer& buff)
 {
   Group30Var2::Write(ConvertGroup30Var2::Apply(value), buff);
 }
@@ -109,15 +105,13 @@ void Group30Var3::Write(const Group30Var3& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(4);
 }
 
-Group30Var3Serializer Group30Var3Serializer::instance;
-
-Analog Group30Var3Serializer::Read(ReadOnlyBuffer& buff) const
+Analog Group30Var3Serializer::Read(ReadOnlyBuffer& buff)
 {
   auto gv = Group30Var3::Read(buff);
   return AnalogFactory::From(gv.value);
 }
 
-void Group30Var3Serializer::Write(const Analog& value, openpal::WriteBuffer& buff) const
+void Group30Var3Serializer::Write(const Analog& value, openpal::WriteBuffer& buff)
 {
   Group30Var3::Write(ConvertGroup30Var3::Apply(value), buff);
 }
@@ -139,15 +133,13 @@ void Group30Var4::Write(const Group30Var4& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(2);
 }
 
-Group30Var4Serializer Group30Var4Serializer::instance;
-
-Analog Group30Var4Serializer::Read(ReadOnlyBuffer& buff) const
+Analog Group30Var4Serializer::Read(ReadOnlyBuffer& buff)
 {
   auto gv = Group30Var4::Read(buff);
   return AnalogFactory::From(gv.value);
 }
 
-void Group30Var4Serializer::Write(const Analog& value, openpal::WriteBuffer& buff) const
+void Group30Var4Serializer::Write(const Analog& value, openpal::WriteBuffer& buff)
 {
   Group30Var4::Write(ConvertGroup30Var4::Apply(value), buff);
 }
@@ -173,15 +165,13 @@ void Group30Var5::Write(const Group30Var5& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(4);
 }
 
-Group30Var5Serializer Group30Var5Serializer::instance;
-
-Analog Group30Var5Serializer::Read(ReadOnlyBuffer& buff) const
+Analog Group30Var5Serializer::Read(ReadOnlyBuffer& buff)
 {
   auto gv = Group30Var5::Read(buff);
   return AnalogFactory::From(gv.flags, gv.value);
 }
 
-void Group30Var5Serializer::Write(const Analog& value, openpal::WriteBuffer& buff) const
+void Group30Var5Serializer::Write(const Analog& value, openpal::WriteBuffer& buff)
 {
   Group30Var5::Write(ConvertGroup30Var5::Apply(value), buff);
 }
@@ -207,15 +197,13 @@ void Group30Var6::Write(const Group30Var6& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(8);
 }
 
-Group30Var6Serializer Group30Var6Serializer::instance;
-
-Analog Group30Var6Serializer::Read(ReadOnlyBuffer& buff) const
+Analog Group30Var6Serializer::Read(ReadOnlyBuffer& buff)
 {
   auto gv = Group30Var6::Read(buff);
   return AnalogFactory::From(gv.flags, gv.value);
 }
 
-void Group30Var6Serializer::Write(const Analog& value, openpal::WriteBuffer& buff) const
+void Group30Var6Serializer::Write(const Analog& value, openpal::WriteBuffer& buff)
 {
   Group30Var6::Write(ConvertGroup30Var6::Apply(value), buff);
 }
