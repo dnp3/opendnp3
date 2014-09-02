@@ -62,27 +62,27 @@ namespace Automatak.DNP3.Interface
             this.status = status;
         }
 
-        CommandStatus ICommandHandler.Supports(ControlRelayOutputBlock command, ushort index)
+        CommandStatus ICommandHandler.Select(ControlRelayOutputBlock command, ushort index)
         {
             return status();
         }
 
-        CommandStatus ICommandHandler.Supports(AnalogOutputInt32 command, ushort index)
+        CommandStatus ICommandHandler.Select(AnalogOutputInt32 command, ushort index)
         {
             return status();
         }
 
-        CommandStatus ICommandHandler.Supports(AnalogOutputInt16 command, ushort index)
+        CommandStatus ICommandHandler.Select(AnalogOutputInt16 command, ushort index)
         {
             return status();
         }
 
-        CommandStatus ICommandHandler.Supports(AnalogOutputFloat32 command, ushort index)
+        CommandStatus ICommandHandler.Select(AnalogOutputFloat32 command, ushort index)
         {
             return status();
         }
 
-        CommandStatus ICommandHandler.Supports(AnalogOutputDouble64 command, ushort index)
+        CommandStatus ICommandHandler.Select(AnalogOutputDouble64 command, ushort index)
         {
             return status();
         }

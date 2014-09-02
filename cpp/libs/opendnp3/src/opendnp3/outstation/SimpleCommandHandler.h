@@ -38,29 +38,30 @@ public:
 	*/
 	SimpleCommandHandler(CommandStatus status);
 
-	CommandStatus Supports(const ControlRelayOutputBlock& arCommand, uint16_t aIndex) override final;
+	CommandStatus Select(const ControlRelayOutputBlock& arCommand, uint16_t aIndex) override final;
 	CommandStatus Perform(const ControlRelayOutputBlock& arCommand, uint16_t aIndex) override final;
 
 
-	CommandStatus Supports(const AnalogOutputInt16& arCommand, uint16_t aIndex) override final;
+	CommandStatus Select(const AnalogOutputInt16& arCommand, uint16_t aIndex) override final;
 	CommandStatus Perform(const AnalogOutputInt16& arCommand, uint16_t aIndex) override final;
 
 
-	CommandStatus Supports(const AnalogOutputInt32& arCommand, uint16_t aIndex) override final;
+	CommandStatus Select(const AnalogOutputInt32& arCommand, uint16_t aIndex) override final;
 	CommandStatus Perform(const AnalogOutputInt32& arCommand, uint16_t aIndex) override final;
 
 
-	CommandStatus Supports(const AnalogOutputFloat32& arCommand, uint16_t aIndex) override final;
+	CommandStatus Select(const AnalogOutputFloat32& arCommand, uint16_t aIndex) override final;
 	CommandStatus Perform(const AnalogOutputFloat32& arCommand, uint16_t aIndex) override final;
 
 
-	CommandStatus Supports(const AnalogOutputDouble64& arCommand, uint16_t aIndex) override final;
+	CommandStatus Select(const AnalogOutputDouble64& arCommand, uint16_t aIndex) override final;
 	CommandStatus Perform(const AnalogOutputDouble64& arCommand, uint16_t aIndex) override final;
 
 
 protected:
 	CommandStatus status;
-	uint32_t numInvocations;
+	uint32_t numPerform;
+	uint32_t numSelect;
 	
 };
 

@@ -148,43 +148,43 @@ namespace Automatak.Simulator.DNP3
             return result;
         }
 
-        CommandStatus ICommandHandler.Supports(ControlRelayOutputBlock command, ushort index)
+        CommandStatus ICommandHandler.Select(ControlRelayOutputBlock command, ushort index)
         {
             lock (mutex)
             {
-                return GetOrElse(index, binaryMap, () => proxy.Supports(command, index));
+                return GetOrElse(index, binaryMap, () => proxy.Select(command, index));
             }
         }
 
-        CommandStatus ICommandHandler.Supports(AnalogOutputInt32 command, ushort index)
+        CommandStatus ICommandHandler.Select(AnalogOutputInt32 command, ushort index)
         {
             lock (mutex)
             {
-                return GetOrElse(index, analogMap, () => proxy.Supports(command, index));
+                return GetOrElse(index, analogMap, () => proxy.Select(command, index));
             }
         }
 
-        CommandStatus ICommandHandler.Supports(AnalogOutputInt16 command, ushort index)
+        CommandStatus ICommandHandler.Select(AnalogOutputInt16 command, ushort index)
         {
             lock (mutex)
             {
-                return GetOrElse(index, analogMap, () => proxy.Supports(command, index));
+                return GetOrElse(index, analogMap, () => proxy.Select(command, index));
             }
         }
 
-        CommandStatus ICommandHandler.Supports(AnalogOutputFloat32 command, ushort index)
+        CommandStatus ICommandHandler.Select(AnalogOutputFloat32 command, ushort index)
         {
             lock (mutex)
             {
-                return GetOrElse(index, analogMap, () => proxy.Supports(command, index));
+                return GetOrElse(index, analogMap, () => proxy.Select(command, index));
             }
         }
 
-        CommandStatus ICommandHandler.Supports(AnalogOutputDouble64 command, ushort index)
+        CommandStatus ICommandHandler.Select(AnalogOutputDouble64 command, ushort index)
         {
             lock (mutex)
             {
-                return GetOrElse(index, analogMap, () => proxy.Supports(command, index));
+                return GetOrElse(index, analogMap, () => proxy.Select(command, index));
             }
         }
 

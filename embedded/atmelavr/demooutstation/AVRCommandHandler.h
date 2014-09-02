@@ -35,23 +35,23 @@ class AVRCommandHandler : public opendnp3::ICommandHandler, openpal::Uncopyable
 {
 public:
 
-	opendnp3::CommandStatus Supports(const opendnp3::ControlRelayOutputBlock& command, uint16_t index) override final;
+	opendnp3::CommandStatus Select(const opendnp3::ControlRelayOutputBlock& command, uint16_t index) override final;
 	opendnp3::CommandStatus Perform(const opendnp3::ControlRelayOutputBlock& command, uint16_t index) override final;
 
 
-	opendnp3::CommandStatus Supports(const opendnp3::AnalogOutputInt16& command, uint16_t index) override final;
+	opendnp3::CommandStatus Select(const opendnp3::AnalogOutputInt16& command, uint16_t index) override final;
 	opendnp3::CommandStatus Perform(const opendnp3::AnalogOutputInt16& command, uint16_t index) override final;
 
 
-	opendnp3::CommandStatus Supports(const opendnp3::AnalogOutputInt32& command, uint16_t index) override final;
+	opendnp3::CommandStatus Select(const opendnp3::AnalogOutputInt32& command, uint16_t index) override final;
 	opendnp3::CommandStatus Perform(const opendnp3::AnalogOutputInt32& command, uint16_t index) override final;
 
 
-	opendnp3::CommandStatus Supports(const opendnp3::AnalogOutputFloat32& command, uint16_t index) override final;
+	opendnp3::CommandStatus Select(const opendnp3::AnalogOutputFloat32& command, uint16_t index) override final;
 	opendnp3::CommandStatus Perform(const opendnp3::AnalogOutputFloat32& command, uint16_t index) override final;
 
 
-	opendnp3::CommandStatus Supports(const opendnp3::AnalogOutputDouble64& command, uint16_t index) override final;
+	opendnp3::CommandStatus Select(const opendnp3::AnalogOutputDouble64& command, uint16_t index) override final;
 	opendnp3::CommandStatus Perform(const opendnp3::AnalogOutputDouble64& command, uint16_t index) override final;
 	
 };

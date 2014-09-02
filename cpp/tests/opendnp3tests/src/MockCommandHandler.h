@@ -40,7 +40,17 @@ public:
 
 	uint32_t NumInvocations() const
 	{
-		return numInvocations;
+		return numSelect + numPerform;
+	}
+
+	uint32_t NumSelect() const
+	{
+		return numSelect;
+	}
+
+	uint32_t NumPerform() const
+	{
+		return numPerform;
 	}
 
 };

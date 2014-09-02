@@ -41,7 +41,7 @@ public:
 	* @param index index of the command
 	* @return result of request
 	*/
-	virtual CommandStatus Supports(const ControlRelayOutputBlock& command, uint16_t index) = 0;
+	virtual CommandStatus Select(const ControlRelayOutputBlock& command, uint16_t index) = 0;
 
 	/**
 	* Operate a ControlRelayOutputBlock - group 12 variation 1
@@ -58,7 +58,7 @@ public:
 	* @param index index of the command
 	* @return result of request
 	*/
-	virtual CommandStatus Supports(const AnalogOutputInt16& command, uint16_t index) = 0;
+	virtual CommandStatus Select(const AnalogOutputInt16& command, uint16_t index) = 0;
 
 	/**
 	* Ask if the application supports a 16 bit analog output - group 41 variation 2
@@ -75,7 +75,7 @@ public:
 	* @param index index of the command
 	* @return result of request
 	*/
-	virtual CommandStatus Supports(const AnalogOutputInt32& command, uint16_t index) = 0;
+	virtual CommandStatus Select(const AnalogOutputInt32& command, uint16_t index) = 0;
 
 	/**
 	* Operate a 32 bit analog output - group 41 variation 1
@@ -91,7 +91,7 @@ public:
 	* @param index index of the command
 	* @return result of request
 	*/
-	virtual CommandStatus Supports(const AnalogOutputFloat32& command, uint16_t index) = 0;
+	virtual CommandStatus Select(const AnalogOutputFloat32& command, uint16_t index) = 0;
 
 	/**
 	* Operate a single precision, floating point analog output - group 41 variation 3
@@ -107,7 +107,7 @@ public:
 	* @param index index of the command
 	* @return result of request
 	*/
-	virtual CommandStatus Supports(const AnalogOutputDouble64& command, uint16_t index) = 0;
+	virtual CommandStatus Select(const AnalogOutputDouble64& command, uint16_t index) = 0;
 
 	/**
 	* Operate a double precision, floating point analog output - group 41 variation 4

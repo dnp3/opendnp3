@@ -36,22 +36,22 @@ class CommandActionAdapter : public ICommandAction
 
 public:
 
-	CommandActionAdapter(ICommandHandler* pHandler_, bool supports_);
+	CommandActionAdapter(ICommandHandler* pHandler_, bool isSelect_);
 
-	virtual CommandStatus Action(const ControlRelayOutputBlock& command, uint16_t aIndex) final;
+	virtual CommandStatus Action(const ControlRelayOutputBlock& command, uint16_t index) final;
 
-	virtual CommandStatus Action(const AnalogOutputInt16& command, uint16_t aIndex) final;
+	virtual CommandStatus Action(const AnalogOutputInt16& command, uint16_t index) final;
 
-	virtual CommandStatus Action(const AnalogOutputInt32& command, uint16_t aIndex) final;
+	virtual CommandStatus Action(const AnalogOutputInt32& command, uint16_t index) final;
 
-	virtual CommandStatus Action(const AnalogOutputFloat32& command, uint16_t aIndex) final;
+	virtual CommandStatus Action(const AnalogOutputFloat32& command, uint16_t index) final;
 
-	virtual CommandStatus Action(const AnalogOutputDouble64& command, uint16_t aIndex) final;
+	virtual CommandStatus Action(const AnalogOutputDouble64& command, uint16_t index) final;
 
 private:
 
 	ICommandHandler* pHandler;
-	bool supports;
+	bool isSelect;
 
 };
 
