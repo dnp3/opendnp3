@@ -2,7 +2,7 @@
 
 ACLOCAL_AMFLAGS = -I m4
 
-ASIO_CONFIG = -I $(ASIO_HOME)/include -DASIO_STANDALONE
+ASIO_CONFIG = -I $(ASIO_HOME) -DASIO_STANDALONE
 
 OPENPAL_INCLUDE = $(top_srcdir)/cpp/libs/openpal/src
 OPENDNP3_INCLUDE = $(top_srcdir)/cpp/libs/opendnp3/src
@@ -18,6 +18,7 @@ lib_LTLIBRARIES = libopenpal.la libasiopal.la libopendnp3.la libasiodnp3.la
 libopenpal_la_LDFLAGS = -version-info 1:1:0
 libopenpal_la_CXXFLAGS = -I$(OPENPAL_INCLUDE)
 libopenpal_la_SOURCES = \
+cpp/libs/openpal/src/openpal/container/DynamicBuffer.cpp \
 cpp/libs/openpal/src/openpal/container/ReadOnlyBuffer.cpp \
 cpp/libs/openpal/src/openpal/container/RingBufferAdapter.cpp \
 cpp/libs/openpal/src/openpal/container/WriteBuffer.cpp \
@@ -161,6 +162,8 @@ cpp/libs/opendnp3/src/opendnp3/outstation/ClassBasedRequestHandler.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/CommandActionAdapter.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/CommandResponseHandler.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/Database.cpp \
+cpp/libs/opendnp3/src/opendnp3/outstation/DynamicallyAllocatedDatabase.cpp \
+cpp/libs/opendnp3/src/opendnp3/outstation/DynamicallyAllocatedEventBuffer.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/EventBufferConfig.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/EventBufferFacade.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/EventCount.cpp \
@@ -206,8 +209,6 @@ cpp/libs/asiodnp3/src/asiodnp3/DefaultMasterApplication.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/DestructorHook.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/DNP3Channel.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/DNP3Manager.cpp \
-cpp/libs/asiodnp3/src/asiodnp3/DynamicallyAllocatedDatabase.cpp \
-cpp/libs/asiodnp3/src/asiodnp3/DynamicallyAllocatedEventBuffer.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/MasterStackImpl.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/MultidropTaskLock.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/OutstationStackImpl.cpp \
