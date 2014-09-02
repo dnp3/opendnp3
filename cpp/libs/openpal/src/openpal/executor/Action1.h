@@ -27,6 +27,7 @@
 namespace openpal
 {
 
+	/*
 template <class T>
 class Action1 : private Erasure
 {
@@ -83,6 +84,7 @@ private:
 
 	Invoke pInvoke;	
 };
+*/
 
 }
 
