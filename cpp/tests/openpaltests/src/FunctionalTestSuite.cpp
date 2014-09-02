@@ -21,7 +21,6 @@
 #include <catch.hpp>
 
 #include <openpal/executor/Action0.h>
-#include <openpal/executor/Action1.h>
 
 using namespace openpal;
 

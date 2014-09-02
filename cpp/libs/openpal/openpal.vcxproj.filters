@@ -184,9 +184,6 @@
     <ClInclude Include="src\openpal\executor\IMutex.h">
       <Filter>Header\executor</Filter>
     </ClInclude>
-    <ClInclude Include="src\openpal\executor\Action1.h">
-      <Filter>Header\executor</Filter>
-    </ClInclude>
     <ClInclude Include="src\openpal\executor\Action0.h">
       <Filter>Header\executor</Filter>
     </ClInclude>
