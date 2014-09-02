@@ -96,7 +96,7 @@ private:
 	openpal::ReadOnlyBuffer userData;
 
 	// buffer where received data is written
-	uint8_t rxBuffer[LS_MAX_FRAME_SIZE];	
+	uint8_t rxBuffer[LPDU_MAX_FRAME_SIZE];
 
 	// facade over the rxBuffer that provides ability to "shift" as data is read
 	ShiftableBuffer buffer;

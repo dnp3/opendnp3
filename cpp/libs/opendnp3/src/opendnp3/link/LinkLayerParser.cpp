@@ -38,7 +38,7 @@ LinkLayerParser::LinkLayerParser(const Logger& logger_, LinkChannelStatistics* p
 	pStatistics(pStatistics_),
 	state(State::FindSync),
 	frameSize(0),			
-	buffer(rxBuffer, LS_MAX_FRAME_SIZE)
+	buffer(rxBuffer, LPDU_MAX_FRAME_SIZE)
 {
 
 }
@@ -193,8 +193,8 @@ void LinkLayerParser::PushFrame(IFrameSink* pSink)
 
 void LinkLayerParser::TransferUserData()
 {
-	uint32_t len = header.GetLength() - LS_MIN_LENGTH;
-	LinkFrame::ReadUserData(buffer.ReadBuffer() + LS_HEADER_SIZE,  rxBuffer, len);
+	uint32_t len = header.GetLength() - LPDU_MIN_LENGTH;
+	LinkFrame::ReadUserData(buffer.ReadBuffer() + LPDU_HEADER_SIZE, rxBuffer, len);
 	userData = ReadOnlyBuffer(rxBuffer, len);
 }
 
@@ -223,8 +223,8 @@ bool LinkLayerParser::ReadHeader()
 
 bool LinkLayerParser::ValidateBody()
 {
-	uint32_t len = header.GetLength() - LS_MIN_LENGTH;
-	if (LinkFrame::ValidateBodyCRC(buffer.ReadBuffer() + LS_HEADER_SIZE, len))
+	uint32_t len = header.GetLength() - LPDU_MIN_LENGTH;
+	if (LinkFrame::ValidateBodyCRC(buffer.ReadBuffer() + LPDU_HEADER_SIZE, len))
 	{
 		FORMAT_LOG_BLOCK(logger, flags::LINK_RX,
 			"Function: %s Dest: %u Source: %u Length: %u",
@@ -265,7 +265,7 @@ bool LinkLayerParser::ValidateHeaderParameters()
 		return false;
 	}
 
-	uint8_t user_data_length = header.GetLength() - LS_MIN_LENGTH;
+	uint8_t user_data_length = header.GetLength() - LPDU_MIN_LENGTH;
 	frameSize = LinkFrame::CalcFrameSize(user_data_length);
 	LinkFunction func = header.GetFuncEnum();
 

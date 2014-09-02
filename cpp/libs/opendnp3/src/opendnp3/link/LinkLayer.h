@@ -147,10 +147,10 @@ public:
 	void QueueTransmit(const openpal::ReadOnlyBuffer& buffer, bool primary);
 
 	// the buffer for secondary responses
-	openpal::StaticBuffer<LS_HEADER_SIZE> secondaryBuffer;
+	openpal::StaticBuffer<LPDU_HEADER_SIZE> secondaryBuffer;
 
 	// the buffer for primary requests
-	openpal::StaticBuffer<LS_MAX_FRAME_SIZE> primaryBuffer;
+	openpal::StaticBuffer<LPDU_MAX_FRAME_SIZE> primaryBuffer;
 
 	openpal::ReadOnlyBuffer FormatPrimaryBufferWithUnconfirmed(const openpal::ReadOnlyBuffer& tpdu);
 
