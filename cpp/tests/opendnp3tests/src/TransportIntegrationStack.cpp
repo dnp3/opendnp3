@@ -29,10 +29,10 @@ using namespace openpal;
 namespace opendnp3
 {
 
-	TransportIntegrationStack::TransportIntegrationStack(openpal::LogRoot& root, openpal::IExecutor& executor, IPhysicalLayer* apPhys, LinkConfig aCfg) :
+TransportIntegrationStack::TransportIntegrationStack(openpal::LogRoot& root, openpal::IExecutor& executor, IPhysicalLayer* apPhys, LinkConfig aCfg) :
 	router(root, executor, apPhys, TimeDuration::Seconds(1), TimeDuration::Seconds(1)),
 	link(root, &executor, aCfg),
-	transport(root, &executor)
+	transport(root, &executor, sizes::DEFAULT_MAX_APDU_SIZE)
 {
 	Route route(aCfg.RemoteAddr, aCfg.LocalAddr);
 	router.AddContext(&link, route);

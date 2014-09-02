@@ -43,6 +43,10 @@ public:
 	WriteBuffer GetWriteBuffer();
 
 	WriteBuffer GetWriteBuffer(uint32_t maxSize);
+
+	const uint8_t* operator()() const { return buffer; }
+
+	uint8_t* operator()() { return buffer; }
 };
 
 }

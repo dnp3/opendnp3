@@ -47,8 +47,8 @@ TransportLoopbackTestObject::TransportLoopbackTestObject(
 	mCfgB(aCfgB),
 	mLinkA(root, &executor, aCfgA),
 	mLinkB(root, &executor, aCfgB),
-	mTransA(root, &executor),
-	mTransB(root, &executor),
+	mTransA(root, &executor, sizes::DEFAULT_MAX_APDU_SIZE),
+	mTransB(root, &executor, sizes::DEFAULT_MAX_APDU_SIZE),
 	mRouter(root, executor, apPhys, TimeDuration::Seconds(1), TimeDuration::Seconds(1))
 {
 	Route routeA(mCfgA.RemoteAddr, mCfgA.LocalAddr);

@@ -30,7 +30,7 @@ namespace opendnp3
 class TransportStack
 {
 public:
-	TransportStack(openpal::LogRoot& root, openpal::IExecutor* pExecutor, StackStatistics* pStatistics, const LinkConfig& config);
+	TransportStack(openpal::LogRoot& root, openpal::IExecutor* pExecutor, uint32_t maxRxFragSize, StackStatistics* pStatistics, const LinkConfig& config);
 
 	LinkLayer link;
 	TransportLayer transport;	

@@ -59,7 +59,8 @@ public:
 		HexSequence hs(hex);
 		if (pUpperLayer)
 		{
-			pUpperLayer->OnReceive(hs);
+			auto buffer = hs.ToReadOnly();			
+			pUpperLayer->OnReceive(buffer);
 		}
 	}
 

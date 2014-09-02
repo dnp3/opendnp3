@@ -41,7 +41,7 @@ MasterStackImpl::MasterStackImpl(   const char* id,
 									opendnp3::ITaskLock& taskLock) :
 	root(root_, id),
 	handler(handler_),
-	stack(root, &executor, &statistics, config.link),
+	stack(root, &executor, config.master.maxRxFragSize, &statistics, config.link),
 	master(executor, root, stack.transport, SOEHandler, application, config.master, taskLock)
 {
 	stack.transport.SetAppLayer(&master);

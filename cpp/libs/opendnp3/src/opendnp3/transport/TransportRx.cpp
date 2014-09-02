@@ -33,18 +33,14 @@ using namespace openpal;
 namespace opendnp3
 {
 
-	TransportRx::TransportRx(const Logger& logger_, StackStatistics* pStatistics_, uint32_t fragSize) :
+TransportRx::TransportRx(const Logger& logger_, uint32_t maxRxFragSize, StackStatistics* pStatistics_) :
 	logger(logger_),	
+	rxBuffer(maxRxFragSize),
 	pStatistics(pStatistics_),
 	numBytesRead(0),
-	sequence(0),
-	maxFragSize(fragSize)
+	sequence(0)	
 {
-	if(fragSize > rxBuffer.Size())
-	{
-		maxFragSize = rxBuffer.Size();
-		SIMPLE_LOG_BLOCK(logger, flags::ERR, "specified fragment size exceeds underling buffer size");
-	}
+	
 }
 
 void TransportRx::Reset()
@@ -61,9 +57,9 @@ ReadOnlyBuffer TransportRx::ProcessReceive(const ReadOnlyBuffer& input)
 		if (pStatistics) ++pStatistics->numTransportErrorRx;
 		return ReadOnlyBuffer::Empty();
 	}
-	else if (input.Size() > TL_MAX_TPDU_LENGTH)
+	else if (input.Size() > MAX_TPDU_LENGTH)
 	{
-		FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::WARN, TLERR_TOO_MUCH_DATA, "Illegal arg: %i exceeds max tpdu size of %u", static_cast<unsigned int>(input.Size()), TL_MAX_TPDU_LENGTH);
+		FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::WARN, TLERR_TOO_MUCH_DATA, "Illegal arg: %i exceeds max tpdu size of %u", static_cast<unsigned int>(input.Size()), MAX_TPDU_LENGTH);
 		if (pStatistics) ++pStatistics->numTransportErrorRx;
 		return ReadOnlyBuffer::Empty();
 	}
@@ -80,7 +76,9 @@ ReadOnlyBuffer TransportRx::ProcessReceive(const ReadOnlyBuffer& input)
 
 		if (this->ValidateHeader(first, last, seq, payloadLength))
 		{
-			if (BufferRemaining() < payloadLength)
+			auto remainder = rxBuffer.Size() - numBytesRead;
+
+			if (remainder < payloadLength)
 			{
 				if (pStatistics) ++pStatistics->numTransportErrorRx;
 				SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, TLERR_BUFFER_FULL, "Exceeded the buffer size before a complete fragment was read");
@@ -92,13 +90,13 @@ ReadOnlyBuffer TransportRx::ProcessReceive(const ReadOnlyBuffer& input)
 			{
 				if (pStatistics) ++pStatistics->numTransportRx;
 
-				memcpy(rxBuffer.Buffer() + numBytesRead, input + 1, payloadLength);
+				memcpy(rxBuffer() + numBytesRead, input + 1, payloadLength);
 				numBytesRead += payloadLength;
 				sequence = (sequence + 1) % 64;
 
 				if(last)
 				{				
-					ReadOnlyBuffer ret(rxBuffer.Buffer(), numBytesRead);
+					ReadOnlyBuffer ret(rxBuffer(), numBytesRead);
 					numBytesRead = 0;					
 					return ret;
 				}

@@ -61,7 +61,7 @@ MasterContext::MasterContext(
 	pResponseTimer(nullptr),
 	staticTasks(&logger, SOEHandler, application),
 	scheduler(&logger, staticTasks, executor, *this),
-	txBuffer(params.maxTxAPDUSize)
+	txBuffer(params.maxTxFragSize)
 {
 	
 }

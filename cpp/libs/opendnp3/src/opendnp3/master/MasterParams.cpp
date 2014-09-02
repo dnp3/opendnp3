@@ -36,7 +36,8 @@ MasterParams::MasterParams() :
 	startupIntegrityClassMask(ClassField::AllClasses()),
 	integrityOnEventOverflowIIN(true),
 	taskRetryPeriod(TimeDuration::Seconds(5)),
-	maxTxAPDUSize(sizes::DEFAULT_MAX_APDU_SIZE)
+	maxTxFragSize(sizes::DEFAULT_MAX_APDU_SIZE),
+	maxRxFragSize(sizes::DEFAULT_MAX_APDU_SIZE)
 {}
 
 }

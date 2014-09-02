@@ -25,9 +25,9 @@ using namespace openpal;
 namespace opendnp3
 {
 
-TransportStack::TransportStack(openpal::LogRoot& root, openpal::IExecutor* pExecutor, StackStatistics* pStatistics, const LinkConfig& config) :
+TransportStack::TransportStack(openpal::LogRoot& root, openpal::IExecutor* pExecutor, uint32_t maxRxFragSize, StackStatistics* pStatistics, const LinkConfig& config) :
 	link(root, pExecutor, config),
-	transport(root, pExecutor, pStatistics)
+	transport(root, pExecutor, maxRxFragSize, pStatistics)
 {
 	link.SetUpperLayer(transport);
 	transport.SetLinkLayer(&link);	

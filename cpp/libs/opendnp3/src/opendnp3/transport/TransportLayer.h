@@ -44,7 +44,7 @@ class TransportLayer : public IUpperLayer, public ILowerLayer
 
 public:
 
-	TransportLayer(openpal::LogRoot& root, openpal::IExecutor* pExecutor_, StackStatistics* pStatistics_ = nullptr, uint32_t maxFragSize = sizes::DEFAULT_APDU_BUFFER_SIZE);
+	TransportLayer(openpal::LogRoot& root, openpal::IExecutor* pExecutor_, uint32_t maxRxFragSize, StackStatistics* pStatistics_ = nullptr);
 
 	/// ILowerLayer	
 
@@ -71,8 +71,7 @@ private:
 	bool isSending;
 
 	openpal::IExecutor* pExecutor;
-
-	const uint32_t M_FRAG_SIZE;
+	
 
 	// ----- Transmitter and Receiver Classes ------
 	TransportRx receiver;
