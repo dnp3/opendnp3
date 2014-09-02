@@ -35,6 +35,8 @@ class ICommandProcessor
 {
 public:
 
+	
+
 	/**
 	* Select and operate a ControlRelayOutputBlock
 	* @param command command to operate

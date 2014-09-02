@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\asiodnp3\BlockingCommandCallback.cpp" />
     <ClCompile Include="src\asiodnp3\ConsoleLogger.cpp" />
     <ClCompile Include="src\asiodnp3\DefaultMasterApplication.cpp" />
     <ClCompile Include="src\asiodnp3\DNP3Manager.cpp" />
@@ -35,6 +36,7 @@
     <ClCompile Include="src\asiodnp3\StackActionHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\asiodnp3\BlockingCommandCallback.h" />
     <ClInclude Include="src\asiodnp3\ConsoleLogger.h" />
     <ClInclude Include="src\asiodnp3\DefaultMasterApplication.h" />
     <ClInclude Include="src\asiodnp3\DNP3Manager.h" />

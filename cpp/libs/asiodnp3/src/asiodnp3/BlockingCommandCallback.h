@@ -18,20 +18,35 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef __BLOCKING_COMMAND_CALLBACK_H_
+#define __BLOCKING_COMMAND_CALLBACK_H_
 
-#include "BlockingCommandCallback.h"
+#include <openpal/util/Uncopyable.h>
+#include <opendnp3/master/CommandResponse.h>
+#include <opendnp3/master/ICommandCallback.h>
 
-namespace opendnp3
+#include <asiopal/Synchronized.h>
+
+namespace asiodnp3
 {
+
+/**
+* Callback when a command finishes or fails
+*/
+class BlockingCommandCallback : public opendnp3::ICommandCallback, private openpal::Uncopyable
+{	
 	
-CommandResponse BlockingCommandCallback::WaitForResult()
-{
-	return response.WaitForValue();
+public:	
+	
+	virtual void OnComplete(const opendnp3::CommandResponse& response) override final;
+
+	opendnp3::CommandResponse WaitForResult();
+
+private:
+
+	asiopal::Synchronized<opendnp3::CommandResponse> response;
+};
+
 }
 
-void BlockingCommandCallback::OnComplete(const CommandResponse& response)
-{
-	this->response.SetValue(response);
-}
-
-}
+#endif
