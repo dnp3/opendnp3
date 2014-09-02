@@ -203,6 +203,7 @@ libasiodnp3_la_SOURCES = \
 cpp/libs/asiodnp3/src/asiodnp3/impl/LinkLayerRouter.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/impl/PhysicalLayerMonitor.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/impl/PhysicalLayerMonitorStates.cpp \
+cpp/libs/asiodnp3/src/asiodnp3/BlockingCommandCallback.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/ChannelSet.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/ConsoleLogger.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/DefaultMasterApplication.cpp \
@@ -219,7 +220,7 @@ cpp/libs/asiodnp3/src/asiodnp3/StackActionHandler.cpp
 masterdemo_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) -I$(ASIODNP3_INCLUDE) $(ASIO_CONFIG) -Wl,--no-as-needed
 masterdemo_LDFLAGS = -pthread
 masterdemo_LDADD = libopenpal.la libasiopal.la libopendnp3.la libasiodnp3.la
-masterdemo_SOURCES = cpp/examples/master/DemoMain.cpp cpp/examples/master/BlockingCommandCallback.cpp
+masterdemo_SOURCES = cpp/examples/master/DemoMain.cpp
 
 outstationdemo_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) -I$(ASIODNP3_INCLUDE) $(ASIO_CONFIG) -Wl,--no-as-needed
 outstationdemo_LDFLAGS = -pthread
