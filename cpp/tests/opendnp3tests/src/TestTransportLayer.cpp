@@ -103,6 +103,16 @@ TEST_CASE(SUITE("ReceiveBadArguments"))
 	REQUIRE(-1 ==  test.log.NextErrorCode());
 }
 
+TEST_CASE(SUITE("AllowsHeaderOnlyFinalFrame"))
+{
+	TransportTestObject test(true);
+	
+	test.link.SendUp("41 DE AD BE EF");
+	test.link.SendUp("82");
+
+	REQUIRE(test.upper.GetBufferAsHexString() == "DE AD BE EF");
+}
+
 TEST_CASE(SUITE("ReceiveNoFIR"))
 {
 	TransportTestObject test(true);
