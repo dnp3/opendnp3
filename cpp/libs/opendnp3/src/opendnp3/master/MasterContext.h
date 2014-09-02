@@ -116,7 +116,7 @@ class MasterContext : public ICommandProcessor, public IScheduleCallback
 	// callback from the scheduler that a task is ready to run	
 	virtual void OnPendingTask() override final;
 
-	bool QueueUserTask(const openpal::Function0<IMasterTask*>& action);
+	void QueueUserTask(const openpal::Function0<IMasterTask*>& action);
 
 	void OnResponseTimeout();
 
@@ -149,10 +149,7 @@ void MasterContext::SelectAndOperateT(const T& command, uint16_t index, ICommand
 			return pCommandTask;
 		};
 
-		if (!QueueUserTask(openpal::Function0<IMasterTask*>::Bind(userTask)))
-		{
-			callback.OnComplete(CommandResponse(CommandResult::QUEUE_FULL));
-		}
+		QueueUserTask(openpal::Function0<IMasterTask*>::Bind(userTask));
 	}
 	else
 	{
@@ -176,10 +173,7 @@ void MasterContext::DirectOperateT(const T& command, uint16_t index, ICommandCal
 			return pCommandTask;
 		};
 
-		if (!QueueUserTask(openpal::Function0<IMasterTask*>::Bind(userTask)))
-		{
-			callback.OnComplete(CommandResponse(CommandResult::QUEUE_FULL));
-		}
+		QueueUserTask(openpal::Function0<IMasterTask*>::Bind(userTask));
 	}
 	else
 	{

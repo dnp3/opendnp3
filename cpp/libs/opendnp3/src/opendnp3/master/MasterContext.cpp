@@ -136,16 +136,9 @@ void MasterContext::OnPendingTask()
 	this->PostCheckForTask();
 }
 
-bool MasterContext::QueueUserTask(const openpal::Function0<IMasterTask*>& action)
+void MasterContext::QueueUserTask(const openpal::Function0<IMasterTask*>& action)
 {
-	if (isOnline)
-	{
-		return scheduler.ScheduleUserTask(action);
-	}
-	else
-	{
-		return false;
-	}
+	scheduler.ScheduleUserTask(action);	
 }
 
 void MasterContext::OnResponseTimeout()

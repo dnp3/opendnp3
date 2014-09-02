@@ -29,19 +29,8 @@ namespace opendnp3
 namespace sizes
 {
 
-// the default size for an APDU
-static const uint32_t DEFAULT_MAX_APDU_SIZE = 2048;
-
 // the maximum number of static read object/variation records that can be in any READ request
 static const uint16_t MAX_READ_REQUESTS = 8;
-
-// the maximum number of queued commands for a master
-static const uint8_t MAX_MASTER_POLL_TASKS = 8;
-
-// the maximum number of queued users tasks like commands
-static const uint8_t MAX_MASTER_USERS_TASKS = 8;
-
-static_assert(MAX_MASTER_USERS_TASKS >= 8, "Max master user tasks must be at least 8");
 
 }
 }

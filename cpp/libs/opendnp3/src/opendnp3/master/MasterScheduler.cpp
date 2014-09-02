@@ -25,6 +25,8 @@
 
 #include <openpal/executor/MonotonicTimestamp.h>
 
+#include <algorithm>
+
 using namespace openpal;
 
 namespace opendnp3
@@ -55,7 +57,7 @@ void MasterScheduler::Schedule(IMasterTask& task, const openpal::TimeDuration& d
 		expiration = pExecutor->GetTime().Add(delay);
 	}
 	
-	this->periodicTasks.Add(TaskRecord(task, expiration));
+	this->periodicTasks.push_back(TaskRecord(task, expiration));
 	if (blockingTask.IsEmpty() && !this->pCurrentTask)
 	{
 		this->StartOrRestartTimer(expiration);
@@ -82,20 +84,21 @@ bool MasterScheduler::Demand(IMasterTask& task)
 		else
 		{
 			auto equals = [pTask](const TaskRecord& tr) { return tr.pTask == pTask; };
-			auto pNode = periodicTasks.FindFirst(equals);
-			if (pNode)
+			auto iter = std::find_if(periodicTasks.begin(), periodicTasks.end(), equals);
+			
+			if (iter == periodicTasks.end())
 			{
-				pNode->value.expiration = MonotonicTimestamp::Min();
+				return false;				
+			}
+			else
+			{				
+				iter->expiration = MonotonicTimestamp::Min();
 				if (!IsAnyTaskActive())
 				{
 					this->CancelScheduleTimer();
 					this->pCallback->OnPendingTask();
 				}
 				return true;
-			}
-			else
-			{				
-				return false;
 			}
 		}
 	}
@@ -140,9 +143,11 @@ IMasterTask* MasterScheduler::FindTaskToStart(const MasterParams& params)
 		}
 		else
 		{						
-			if (userTasks.IsNotEmpty())
+			if (!userTasks.empty())
 			{
-				return userTasks.Pop()->Apply();
+				auto pTask = userTasks.front().Apply();
+				userTasks.pop_front();
+				return pTask;				
 			}
 			else
 			{
@@ -198,89 +203,50 @@ bool MasterScheduler::CanTaskRun(IMasterTask& task, tasks::TaskBitmask bitmask, 
 
 IMasterTask* MasterScheduler::GetPeriodicTask(const MasterParams& params, const openpal::MonotonicTimestamp& now)
 {
-	auto pNode = this->GetEarliestExpirationTime();
-	if (pNode)
+	auto lessThan = [](const TaskRecord& lhs, const TaskRecord& rhs) { return lhs.expiration < rhs.expiration; };
+	auto iter = std::min_element(periodicTasks.begin(), periodicTasks.end(), lessThan);
+	if (iter == periodicTasks.end())
 	{
-		if (pNode->value.expiration.milliseconds <= now.milliseconds)
+		return nullptr;		
+	}
+	else
+	{
+		if (iter->expiration.milliseconds <= now.milliseconds)
 		{
-			periodicTasks.Adapter().Remove(pNode);
-			return pNode->value.pTask;
+			auto ret = iter->pTask;
+			periodicTasks.erase(iter);
+			return ret;
 		}
 		else
 		{
-			this->StartOrRestartTimer(pNode->value.expiration);
+			this->StartOrRestartTimer(iter->expiration);
 			return nullptr;
 		}
 	}
-	else
-	{
-		return nullptr;
-	}
 }
 
-ListNode<TaskRecord>* MasterScheduler::GetEarliestExpirationTime()
+void MasterScheduler::ScheduleUserTask(const openpal::Function0<IMasterTask*>& task)
 {
-	openpal::ListNode<TaskRecord>* pNode = nullptr;
-	// TODO - turn this min function into a reusable algo.
-	auto iterator = periodicTasks.Adapter().Iterate();
-	while (iterator.HasNext())
+	this->userTasks.push_back(task);
+	
+	if (!IsAnyTaskActive())
 	{
-		auto pCurrent = iterator.Next();
-		if (pNode)
-		{
-			if (pCurrent->value.expiration < pNode->value.expiration)
-			{
-				pNode = pCurrent;
-			}
-		}
-		else
-		{
-			pNode = pCurrent;
-		}
-	}
-	return pNode;
-}
-
-bool MasterScheduler::ScheduleUserTask(const openpal::Function0<IMasterTask*>& task)
-{
-	if (this->userTasks.Enqueue(task))
-	{
-		if (!IsAnyTaskActive())
-		{
-			this->CancelScheduleTimer();
-			this->pCallback->OnPendingTask();
-		}
-
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-
-PollTask* MasterScheduler::AddPollTask(const PollTask& pt)
-{		
-	if (periodicTasks.IsFull())
-	{
-		return nullptr;
-	}
-	else
-	{		
-		auto result = pollTasks.AddAndGetPointer(pt);
-		if (result)
-		{
-			if (isOnline)
-			{
-				this->Schedule(result->value, pt.GetPeriod());
-			}			
-			return &result->value;
-		}
-		else
-		{
-			return nullptr;
-		}		
+		this->CancelScheduleTimer();
+		this->pCallback->OnPendingTask();
 	}	
+}
+
+PollTask* MasterScheduler::AddPollTask(const PollTask& task)
+{				
+	pollTasks.push_back(task);
+	auto& ref = pollTasks.back();
+
+	if (isOnline)
+	{
+		this->Schedule(ref, ref.GetPeriod());
+	}				
+
+	return &ref;
 }
 
 
@@ -339,16 +305,16 @@ void MasterScheduler::OnLowerLayerUp(const MasterParams& params)
 	if (!isOnline)
 	{
 		isOnline = true;
-		
+
 		this->scheduledTaskMask = tasks::STARTUP_TASK_SEQUENCE;
 
 		auto now = pExecutor->GetTime();
-		auto schedule = [this, now](PollTask& pt) 
-		{ 
-			this->Schedule(pt, pt.GetPeriod());			
-		};
-
-		pollTasks.Foreach(schedule);
+		
+		for (auto& pt : pollTasks)
+		{
+			this->Schedule(pt, pt.GetPeriod());
+		}
+		
 		pCallback->OnPendingTask();
 	}	
 }
@@ -361,7 +327,7 @@ void MasterScheduler::OnLowerLayerDown()
 	{
 		isOnline = false;
 		this->CancelScheduleTimer();
-		periodicTasks.Clear();
+		periodicTasks.clear();
 
 		this->scheduledTaskMask = 0;
 
@@ -373,11 +339,11 @@ void MasterScheduler::OnLowerLayerDown()
 			blockingTask.Clear();
 		}
 
-		while (userTasks.IsNotEmpty())
+		while (!userTasks.empty())
 		{
-			auto pFun = userTasks.Pop();
-			auto pTask = pFun->Apply();
+			auto pTask = userTasks.front().Apply();			 
 			pTask->OnLowerLayerClose();
+			userTasks.pop_front();
 		}		
 	}	
 }

@@ -699,6 +699,9 @@
     <ClInclude Include="src\opendnp3\outstation\DynamicallyAllocatedEventBuffer.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
+    <ClInclude Include="AppConstants.h">
+      <Filter>Header\app</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\AnalogOutput.cpp">

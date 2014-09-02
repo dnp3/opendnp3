@@ -21,6 +21,7 @@
 #include "TransportIntegrationStack.h"
 
 #include <opendnp3/Route.h>
+#include <opendnp3/app/AppConstants.h>
 
 #include <openpal/channel/IPhysicalLayer.h>
 
@@ -32,7 +33,7 @@ namespace opendnp3
 TransportIntegrationStack::TransportIntegrationStack(openpal::LogRoot& root, openpal::IExecutor& executor, IPhysicalLayer* apPhys, LinkConfig aCfg) :
 	router(root, executor, apPhys, TimeDuration::Seconds(1), TimeDuration::Seconds(1)),
 	link(root, &executor, aCfg),
-	transport(root, &executor, sizes::DEFAULT_MAX_APDU_SIZE)
+	transport(root, &executor, DEFAULT_MAX_APDU_SIZE)
 {
 	Route route(aCfg.RemoteAddr, aCfg.LocalAddr);
 	router.AddContext(&link, route);

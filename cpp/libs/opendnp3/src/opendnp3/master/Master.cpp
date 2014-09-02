@@ -72,14 +72,7 @@ MasterScan Master::AddScan(openpal::TimeDuration period, const openpal::Action1<
 {
 	PollTask task(builder, period, context.pSOEHandler, &context.logger);
 	auto pTask = context.scheduler.AddPollTask(task);
-	if (pTask)
-	{
-		return MasterScan(*context.pExecutor, context.scheduler, *pTask);
-	}
-	else
-	{
-		return MasterScan();
-	}
+	return MasterScan(*context.pExecutor, context.scheduler, *pTask);	
 }
 
 MasterScan Master::AddClassScan(const ClassField& field, openpal::TimeDuration period)
