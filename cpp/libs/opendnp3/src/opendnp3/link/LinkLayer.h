@@ -144,13 +144,10 @@ public:
 		return mRetryRemaining;
 	}
 
-	void QueueTransmit(const openpal::ReadOnlyBuffer& buffer, bool primary);
-
-	// the buffer for secondary responses
-	openpal::StaticBuffer<LPDU_HEADER_SIZE> secondaryBuffer;
+	void QueueTransmit(const openpal::ReadOnlyBuffer& buffer, bool primary);	
 
 	// the buffer for primary requests
-	openpal::StaticBuffer<LPDU_MAX_FRAME_SIZE> primaryBuffer;
+	uint8_t txBuffer[LPDU_MAX_FRAME_SIZE];
 
 	openpal::ReadOnlyBuffer FormatPrimaryBufferWithUnconfirmed(const openpal::ReadOnlyBuffer& tpdu);
 
