@@ -42,7 +42,7 @@ public:
 	CountWriteIterator() : count(0), pPosition(nullptr), isValid(false)
 	{}
 
-	CountWriteIterator(openpal::Serializer<WriteType>& serializer_, openpal::WriteBuffer& position) :
+	CountWriteIterator(const openpal::Serializer<WriteType>& serializer_, openpal::WriteBuffer& position) :
 		count(0),
 		serializer(serializer_),
 		countPosition(position),

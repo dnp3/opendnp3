@@ -63,15 +63,15 @@ private:
 	HeaderWriter* pWriter;
 
 	template <class Target, class IndexType>
-	void RespondToHeader(QualifierCode qualifier, DNP3Serializer<Target>& serializer, const IterableBuffer<IndexedValue<Target, typename IndexType::Type>>& values);
+	void RespondToHeader(QualifierCode qualifier, const DNP3Serializer<Target>& serializer, const IterableBuffer<IndexedValue<Target, typename IndexType::Type>>& values);
 
 	template <class Target, class IndexType>
-	void RespondToHeaderWithIterator(QualifierCode qualifier, DNP3Serializer<Target>& serializer, const IterableBuffer<IndexedValue<Target, typename IndexType::Type>>& values, PrefixedWriteIterator<IndexType, Target>* pIterator = nullptr);
+	void RespondToHeaderWithIterator(QualifierCode qualifier, const DNP3Serializer<Target>& serializer, const IterableBuffer<IndexedValue<Target, typename IndexType::Type>>& values, PrefixedWriteIterator<IndexType, Target>* pIterator = nullptr);
 };
 
 
 template <class Target, class IndexType>
-void CommandResponseHandler::RespondToHeaderWithIterator(QualifierCode qualifier, DNP3Serializer<Target>& serializer, const IterableBuffer<IndexedValue<Target, typename IndexType::Type>>& values, PrefixedWriteIterator<IndexType, Target>* pIterator)
+void CommandResponseHandler::RespondToHeaderWithIterator(QualifierCode qualifier, const DNP3Serializer<Target>& serializer, const IterableBuffer<IndexedValue<Target, typename IndexType::Type>>& values, PrefixedWriteIterator<IndexType, Target>* pIterator)
 {
 	auto commands = values.Iterate();
 	do
@@ -111,7 +111,7 @@ void CommandResponseHandler::RespondToHeaderWithIterator(QualifierCode qualifier
 
 
 template <class Target, class IndexType>
-void CommandResponseHandler::RespondToHeader(QualifierCode qualifier, DNP3Serializer<Target>& serializer, const IterableBuffer<IndexedValue<Target, typename IndexType::Type>>& values)
+void CommandResponseHandler::RespondToHeader(QualifierCode qualifier, const DNP3Serializer<Target>& serializer, const IterableBuffer<IndexedValue<Target, typename IndexType::Type>>& values)
 {
 	if (pWriter)
 	{

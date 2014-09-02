@@ -41,7 +41,7 @@ public:
 	RangeWriteIterator() : start(0), count(0), isValid(false), pPosition(nullptr)
 	{}
 
-	RangeWriteIterator(typename IndexType::Type start_, openpal::Serializer<WriteType>& serializer_, openpal::WriteBuffer& position) :
+	RangeWriteIterator(typename IndexType::Type start_, const openpal::Serializer<WriteType>& serializer_, openpal::WriteBuffer& position) :
 		start(start_),
 		serializer(serializer_),
 		count(0),				

@@ -44,7 +44,7 @@ public:
 		pPosition(nullptr)
 	{}
 
-	PrefixedWriteIterator(openpal::Serializer<WriteType>& serializer_, openpal::WriteBuffer& position) :
+	PrefixedWriteIterator(const openpal::Serializer<WriteType>& serializer_, openpal::WriteBuffer& position) :
 		serializer(serializer_),
 		sizeOfTypePlusIndex(serializer.Size() + PrefixType::Size),
 		count(0),		
