@@ -56,7 +56,7 @@ private:
 	
 	openpal::DynamicBuffer rxBuffer;
 	uint32_t numBytesRead;
-	uint8_t sequence;		
+	uint8_t sequence;
 };
 
 }

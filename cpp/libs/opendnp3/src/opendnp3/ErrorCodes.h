@@ -39,8 +39,7 @@ enum ErrorCodes
 	ALERR_UNKNOWN_QUALIFIER,					// An unknown qualifer was received
 
     // Transport Layer
-	TLERR_NO_PAYLOAD,							// TPDU carried no payload bytes
-	TLERR_TOO_MUCH_DATA,						// TPDU with too much payload data
+	TLERR_NO_HEADER,							// TPDU with no header (empty)	
 	TLERR_BUFFER_FULL,							// Transport reassembly buffer full before complete fragment received
 	TLERR_NEW_FIR_MID_SEQUENCE,					// Received a new FIR in the middle of previous fragment
 	TLERR_MESSAGE_WITHOUT_FIR,					// Received a NON-FIR TPDU without a previous FIR

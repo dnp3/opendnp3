@@ -93,21 +93,14 @@ TEST_CASE(SUITE("ReceiveBadArguments"))
 
 	//check that the wrong aruments throw argument exceptions, and it's doesn't go to the sending state
 	test.link.SendUp("");
-	REQUIRE(TLERR_NO_PAYLOAD ==  test.log.NextErrorCode());
+	REQUIRE(TLERR_NO_HEADER ==  test.log.NextErrorCode());
+	
 	test.link.SendUp("FF");
-	REQUIRE(TLERR_NO_PAYLOAD ==  test.log.NextErrorCode());
+	REQUIRE(-1 ==  test.log.NextErrorCode());
 
 	test.link.SendUp(test.GetData("C0", 0, 250)); // length 251
 
-	REQUIRE(TLERR_TOO_MUCH_DATA ==  test.log.NextErrorCode());
-}
-
-TEST_CASE(SUITE("ReceiveNoPayload"))
-{
-	TransportTestObject test(true);
-	//try sending a FIR/FIN packet with no payload (1 byte)
-	test.link.SendUp("C0"); // FIR/FIN
-	REQUIRE(test.log.NextErrorCode() ==  TLERR_NO_PAYLOAD);
+	REQUIRE(-1 ==  test.log.NextErrorCode());
 }
 
 TEST_CASE(SUITE("ReceiveNoFIR"))

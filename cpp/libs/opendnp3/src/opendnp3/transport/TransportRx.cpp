@@ -51,18 +51,12 @@ void TransportRx::Reset()
 
 ReadOnlyBuffer TransportRx::ProcessReceive(const ReadOnlyBuffer& input)
 {
-	if (input.Size() < 2)
+	if (input.Size() == 0)
 	{
-		FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::WARN, TLERR_NO_PAYLOAD, "Received tpdu with no payload, size: %u", static_cast<unsigned int>(input.Size()));
+		FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::WARN, TLERR_NO_HEADER, "Received tpdu with no header");
 		if (pStatistics) ++pStatistics->numTransportErrorRx;
 		return ReadOnlyBuffer::Empty();
-	}
-	else if (input.Size() > MAX_TPDU_LENGTH)
-	{
-		FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::WARN, TLERR_TOO_MUCH_DATA, "Illegal arg: %i exceeds max tpdu size of %u", static_cast<unsigned int>(input.Size()), MAX_TPDU_LENGTH);
-		if (pStatistics) ++pStatistics->numTransportErrorRx;
-		return ReadOnlyBuffer::Empty();
-	}
+	}	
 	else
 	{
 		uint8_t hdr = input[0];
