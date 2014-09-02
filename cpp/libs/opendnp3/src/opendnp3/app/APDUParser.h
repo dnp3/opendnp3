@@ -488,8 +488,7 @@ APDUParser::Result APDUParser::ParseRange(openpal::ReadOnlyBuffer& buffer, openp
 			return Result::BAD_START_STOP;
 		}
 		else
-		{
-			RangeType count = static_cast<RangeType>(stop) - static_cast<RangeType>(start) + 1;			
+		{					
 			range.start = start;
 			range.stop = stop;
 			return Result::OK;			
