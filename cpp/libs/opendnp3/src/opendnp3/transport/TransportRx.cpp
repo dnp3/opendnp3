@@ -35,8 +35,8 @@ namespace opendnp3
 
 TransportRx::TransportRx(const Logger& logger_, uint32_t maxRxFragSize, StackStatistics* pStatistics_) :
 	logger(logger_),	
-	rxBuffer(maxRxFragSize),
 	pStatistics(pStatistics_),
+	rxBuffer(maxRxFragSize),	
 	numBytesRead(0),
 	sequence(0)	
 {

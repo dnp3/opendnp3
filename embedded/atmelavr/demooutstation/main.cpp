@@ -32,7 +32,7 @@ int main()
 	
 	LogRoot root(nullptr, "root", 0);
 		
-	TransportStack stack(root, &exe, nullptr, LinkConfig(false, false));
+	TransportStack stack(root, &exe, MAX_APDU_SIZE, nullptr, LinkConfig(false, false));
 		
 	// 5 static binaries, 0 others
 	DynamicallyAllocatedDatabase staticBuffers(DatabaseTemplate::BinaryOnly(5));
