@@ -188,43 +188,43 @@ namespace Automatak.Simulator.DNP3
             }
         }
 
-        CommandStatus ICommandHandler.Perform(ControlRelayOutputBlock command, ushort index)
+        CommandStatus ICommandHandler.Operate(ControlRelayOutputBlock command, ushort index)
         {
             lock (mutex)
             {
-                return GetOrElseAndLogBinary(command, index, binaryMap, () => proxy.Perform(command, index));
+                return GetOrElseAndLogBinary(command, index, binaryMap, () => proxy.Operate(command, index));
             }
         }
 
-        CommandStatus ICommandHandler.Perform(AnalogOutputInt32 command, ushort index)
+        CommandStatus ICommandHandler.Operate(AnalogOutputInt32 command, ushort index)
         {
             lock (mutex)
             {
-                return GetOrElseAndLogAnalog(command.value, index, analogMap, () => proxy.Perform(command, index));
+                return GetOrElseAndLogAnalog(command.value, index, analogMap, () => proxy.Operate(command, index));
             }
         }
 
-        CommandStatus ICommandHandler.Perform(AnalogOutputInt16 command, ushort index)
+        CommandStatus ICommandHandler.Operate(AnalogOutputInt16 command, ushort index)
         {
             lock (mutex)
             {
-                return GetOrElseAndLogAnalog(command.value, index, analogMap, () => proxy.Perform(command, index));
+                return GetOrElseAndLogAnalog(command.value, index, analogMap, () => proxy.Operate(command, index));
             }
         }
 
-        CommandStatus ICommandHandler.Perform(AnalogOutputFloat32 command, ushort index)
+        CommandStatus ICommandHandler.Operate(AnalogOutputFloat32 command, ushort index)
         {
             lock (mutex)
             {
-                return GetOrElseAndLogAnalog(command.value, index, analogMap, () => proxy.Perform(command, index));
+                return GetOrElseAndLogAnalog(command.value, index, analogMap, () => proxy.Operate(command, index));
             }
         }
 
-        CommandStatus ICommandHandler.Perform(AnalogOutputDouble64 command, ushort index)
+        CommandStatus ICommandHandler.Operate(AnalogOutputDouble64 command, ushort index)
         {
             lock (mutex)
             {
-                return GetOrElseAndLogAnalog(command.value, index, analogMap, () => proxy.Perform(command, index));
+                return GetOrElseAndLogAnalog(command.value, index, analogMap, () => proxy.Operate(command, index));
             }
         }
     }

@@ -78,14 +78,15 @@ namespace Automatak.DNP3.Interface
         /// <param name="command">Command to operate</param>
         /// <param name="index">index of the command</param>        
         /// <returns>result of the operation as a CommandStatus enumeration</returns>
-        CommandStatus Perform(ControlRelayOutputBlock command, System.UInt16 index);
+        CommandStatus Operate(ControlRelayOutputBlock command, System.UInt16 index);
+        
         /// <summary>
         /// Operate a 32-bit analog output (Group 41 Var1)
         /// </summary>
         /// <param name="command">Command to operate</param>
         /// <param name="index">index of the command</param>        
         /// <returns>result of the operation as a CommandStatus enumeration</returns>
-        CommandStatus Perform(AnalogOutputInt32 command, System.UInt16 index);
+        CommandStatus Operate(AnalogOutputInt32 command, System.UInt16 index);
         
         /// <summary>
         /// Operate a 16-bit analog output (Group 41 Var2)
@@ -93,7 +94,7 @@ namespace Automatak.DNP3.Interface
         /// <param name="command">Command to operate</param>
         /// <param name="index">index of the command</param>        
         /// <returns>result of the operation as a CommandStatus enumeration</returns>
-        CommandStatus Perform(AnalogOutputInt16 command, System.UInt16 index);
+        CommandStatus Operate(AnalogOutputInt16 command, System.UInt16 index);
 
         /// <summary>
         /// Operate a single precision analog output (Group 41 Var3)
@@ -101,7 +102,7 @@ namespace Automatak.DNP3.Interface
         /// <param name="command">Command to operate</param>
         /// <param name="index">index of the command</param>        
         /// <returns>result of the operation as a CommandStatus enumeration</returns>
-        CommandStatus Perform(AnalogOutputFloat32 command, System.UInt16 index);
+        CommandStatus Operate(AnalogOutputFloat32 command, System.UInt16 index);
 
         /// <summary>
         /// Operate a double precision analog output (Group 41 Var4)
@@ -109,7 +110,7 @@ namespace Automatak.DNP3.Interface
         /// <param name="command">Command to operate</param>
         /// <param name="index">index of the command</param>        
         /// <returns>result of the operation as a CommandStatus enumeration</returns>
-        CommandStatus Perform(AnalogOutputDouble64 command, System.UInt16 index);
+        CommandStatus Operate(AnalogOutputDouble64 command, System.UInt16 index);
      
     }
 }

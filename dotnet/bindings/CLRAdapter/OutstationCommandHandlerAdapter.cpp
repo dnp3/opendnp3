@@ -41,29 +41,29 @@ namespace Automatak
 				return Conversions::ConvertCommandStatus(proxy->Select(Conversions::ConvertCommand(arCommand), aIndex));
 			}
 
-			opendnp3::CommandStatus OutstationCommandHandlerAdapter::Perform(const opendnp3::ControlRelayOutputBlock& arCommand, uint16_t aIndex)
+			opendnp3::CommandStatus OutstationCommandHandlerAdapter::Operate(const opendnp3::ControlRelayOutputBlock& arCommand, uint16_t aIndex)
 			{
-				return Conversions::ConvertCommandStatus(proxy->Perform(Conversions::ConvertCommand(arCommand), aIndex));
+				return Conversions::ConvertCommandStatus(proxy->Operate(Conversions::ConvertCommand(arCommand), aIndex));
 			}
 
-			opendnp3::CommandStatus OutstationCommandHandlerAdapter::Perform(const opendnp3::AnalogOutputInt32& arCommand, uint16_t aIndex)
+			opendnp3::CommandStatus OutstationCommandHandlerAdapter::Operate(const opendnp3::AnalogOutputInt32& arCommand, uint16_t aIndex)
 			{
-				return Conversions::ConvertCommandStatus(proxy->Perform(Conversions::ConvertCommand(arCommand), aIndex));
+				return Conversions::ConvertCommandStatus(proxy->Operate(Conversions::ConvertCommand(arCommand), aIndex));
 			}
 
-			opendnp3::CommandStatus OutstationCommandHandlerAdapter::Perform(const opendnp3::AnalogOutputInt16& arCommand, uint16_t aIndex)
+			opendnp3::CommandStatus OutstationCommandHandlerAdapter::Operate(const opendnp3::AnalogOutputInt16& arCommand, uint16_t aIndex)
 			{
-				return Conversions::ConvertCommandStatus(proxy->Perform(Conversions::ConvertCommand(arCommand), aIndex));
+				return Conversions::ConvertCommandStatus(proxy->Operate(Conversions::ConvertCommand(arCommand), aIndex));
 			}
 
-			opendnp3::CommandStatus OutstationCommandHandlerAdapter::Perform(const opendnp3::AnalogOutputFloat32& arCommand, uint16_t aIndex)
+			opendnp3::CommandStatus OutstationCommandHandlerAdapter::Operate(const opendnp3::AnalogOutputFloat32& arCommand, uint16_t aIndex)
 			{
-				return Conversions::ConvertCommandStatus(proxy->Perform(Conversions::ConvertCommand(arCommand), aIndex));
+				return Conversions::ConvertCommandStatus(proxy->Operate(Conversions::ConvertCommand(arCommand), aIndex));
 			}
 
-			opendnp3::CommandStatus OutstationCommandHandlerAdapter::Perform(const opendnp3::AnalogOutputDouble64& arCommand, uint16_t aIndex)
+			opendnp3::CommandStatus OutstationCommandHandlerAdapter::Operate(const opendnp3::AnalogOutputDouble64& arCommand, uint16_t aIndex)
 			{
-				return Conversions::ConvertCommandStatus(proxy->Perform(Conversions::ConvertCommand(arCommand), aIndex));
+				return Conversions::ConvertCommandStatus(proxy->Operate(Conversions::ConvertCommand(arCommand), aIndex));
 			}
 
 		}

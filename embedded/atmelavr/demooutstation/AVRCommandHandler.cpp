@@ -41,7 +41,7 @@ namespace arduino
 		}
 	}
 	
-	CommandStatus AVRCommandHandler::Perform(const ControlRelayOutputBlock& command, uint16_t index)
+	CommandStatus AVRCommandHandler::Operate(const ControlRelayOutputBlock& command, uint16_t index)
 	{
 		if(index == 0)
 		{
@@ -68,18 +68,18 @@ namespace arduino
 
 
 	CommandStatus AVRCommandHandler::Select(const AnalogOutputInt16& command, uint16_t index) { return CommandStatus::NOT_SUPPORTED; }
-	CommandStatus AVRCommandHandler::Perform(const AnalogOutputInt16& command, uint16_t index) { return CommandStatus::NOT_SUPPORTED; }
+	CommandStatus AVRCommandHandler::Operate(const AnalogOutputInt16& command, uint16_t index) { return CommandStatus::NOT_SUPPORTED; }
 
 
 	CommandStatus AVRCommandHandler::Select(const AnalogOutputInt32& command, uint16_t index) { return CommandStatus::NOT_SUPPORTED; }
-	CommandStatus AVRCommandHandler::Perform(const AnalogOutputInt32& command, uint16_t index) { return CommandStatus::NOT_SUPPORTED; }
+	CommandStatus AVRCommandHandler::Operate(const AnalogOutputInt32& command, uint16_t index) { return CommandStatus::NOT_SUPPORTED; }
 
 
 	CommandStatus AVRCommandHandler::Select(const AnalogOutputFloat32& command, uint16_t index) { return CommandStatus::NOT_SUPPORTED; }
-	CommandStatus AVRCommandHandler::Perform(const AnalogOutputFloat32& command, uint16_t index) { return CommandStatus::NOT_SUPPORTED; }
+	CommandStatus AVRCommandHandler::Operate(const AnalogOutputFloat32& command, uint16_t index) { return CommandStatus::NOT_SUPPORTED; }
 
 
 	CommandStatus AVRCommandHandler::Select(const AnalogOutputDouble64& command, uint16_t index) { return CommandStatus::NOT_SUPPORTED; }
-	CommandStatus AVRCommandHandler::Perform(const AnalogOutputDouble64& command, uint16_t index) { return CommandStatus::NOT_SUPPORTED; }
+	CommandStatus AVRCommandHandler::Operate(const AnalogOutputDouble64& command, uint16_t index) { return CommandStatus::NOT_SUPPORTED; }
 	
 }
