@@ -163,7 +163,6 @@
     <ClCompile Include="src\StaticQueueTestSuite.cpp" />
     <ClCompile Include="src\RingBufferTestSuite.cpp" />
     <ClCompile Include="src\StackAdapterTestSuite.cpp" />
-    <ClCompile Include="src\StaticPriorityQueueTestSuite.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\libs\openpal\openpal.vcxproj">
