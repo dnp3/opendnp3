@@ -229,7 +229,6 @@
     <ClInclude Include="src\opendnp3\outstation\WriteHandler.h" />
     <ClInclude Include="src\opendnp3\Route.h" />
     <ClInclude Include="src\opendnp3\StackStatistics.h" />
-    <ClInclude Include="src\opendnp3\Configure.h" />
     <ClInclude Include="src\opendnp3\transport\TransportConstants.h" />
     <ClInclude Include="src\opendnp3\transport\TransportLayer.h" />
     <ClInclude Include="src\opendnp3\transport\TransportRx.h" />

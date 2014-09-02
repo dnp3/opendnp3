@@ -25,7 +25,6 @@
 #include <openpal/serialization/Serialization.h>
 
 #include <openpal/util/Uncopyable.h>
-#include "opendnp3/Configure.h"
 
 #include "opendnp3/app/StaticRange.h"
 #include "opendnp3/app/APDUResponse.h"

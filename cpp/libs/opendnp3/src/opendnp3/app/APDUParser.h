@@ -58,8 +58,6 @@
 #include "opendnp3/objects/Group51.h"
 #include "opendnp3/objects/Group52.h"
 
-#include "opendnp3/Configure.h"
-
 namespace opendnp3
 {
 

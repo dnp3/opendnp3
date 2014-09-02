@@ -22,7 +22,6 @@
 #define __TRANSPORT_RX_H_
 
 #include "opendnp3/transport/TransportConstants.h"
-#include "opendnp3/Configure.h"
 #include "opendnp3/StackStatistics.h"
 
 #include <openpal/container/ReadOnlyBuffer.h>

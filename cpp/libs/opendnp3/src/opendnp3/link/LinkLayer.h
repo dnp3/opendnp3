@@ -30,8 +30,6 @@
 #include "opendnp3/link/LinkLayerConstants.h"
 #include "opendnp3/link/LinkConfig.h"
 
-#include "opendnp3/Configure.h"
-
 namespace opendnp3
 {
 

@@ -582,9 +582,6 @@
     <ClInclude Include="src\opendnp3\app\ITransactable.h">
       <Filter>Header\app</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\Configure.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\ErrorCodes.h">
       <Filter>Header</Filter>
     </ClInclude>

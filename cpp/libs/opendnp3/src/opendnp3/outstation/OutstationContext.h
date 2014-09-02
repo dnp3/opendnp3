@@ -42,9 +42,6 @@
 #include "opendnp3/outstation/OutstationUnsolicitedStates.h"
 #include "opendnp3/outstation/DeferredRequest.h"
 
-#include "opendnp3/Configure.h"
-
-
 namespace opendnp3
 {
 

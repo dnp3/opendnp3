@@ -21,6 +21,7 @@ arduino::AVRLinkParser* gLinkParser = nullptr;
 namespace arduino {
 	
 AVRLinkParser::AVRLinkParser(openpal::LogRoot& root, openpal::IExecutor& exe, opendnp3::ILinkContext& context) : 	
+	txQueue(2),
 	pExecutor(&exe),
 	pContext(&context),
 	parser(root.GetLogger())

@@ -34,7 +34,7 @@ int main()
 	
 	cli();
 	
-	AVRExecutor exe;
+	AVRExecutor exe(5,5); // maximum of 5 async operations and 5 timers
 	
 	LogRoot root(nullptr, "root", 0);
 		
