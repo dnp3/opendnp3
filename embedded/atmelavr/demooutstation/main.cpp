@@ -20,7 +20,13 @@ using namespace opendnp3;
 using namespace arduino;
 using namespace openpal;
 
-void ToggleBinaryEvery3Seconds(IExecutor* pExecutor, Database* pDatabase, uint8_t index = 0, bool value = true);
+void ReportRamUsageEvery3Seconds(IExecutor* pExecutor, Database* pDatabase);
+
+int GetFreeRAM () {
+	extern int __heap_start, *__brkval;
+	int v;
+	return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval);
+}
 
 int main()
 {	
@@ -35,19 +41,19 @@ int main()
 	TransportStack stack(root, &exe, MAX_APDU_SIZE, nullptr, LinkConfig(false, false));
 		
 	// 5 static binaries, 0 others
-	DynamicallyAllocatedDatabase staticBuffers(DatabaseTemplate::BinaryOnly(5));
+	DynamicallyAllocatedDatabase staticBuffers(DatabaseTemplate(0,0,1));
 	
-	// allow a max of 5 events
-	DynamicallyAllocatedEventBuffer eventBuffers(5);
-	
+	// allow a max of 2 events
+	DynamicallyAllocatedEventBuffer eventBuffers(2);
 	Database database(staticBuffers.GetFacade());	
 		
 	OutstationConfig config;
 	config.params.maxTxFragSize = MAX_APDU_SIZE;
 	config.params.maxRxFragSize = MAX_APDU_SIZE;
-	config.eventBufferConfig = EventBufferConfig(5);
+	config.eventBufferConfig = EventBufferConfig(0,0,2);
 	config.params.allowUnsolicited = true;	
 	config.defaultEventResponses.binary = EventBinaryResponse::Group2Var2;
+	config.defaultEventResponses.analog = EventAnalogResponse::Group32Var1;
 	
 	// Object that handles command (CROB / analog output) requests
 	// This example can toggle an LED on the Arduino board
@@ -73,7 +79,7 @@ int main()
 	// Set LED as output
 	SET(DDRB, BIT(7));	
 	
-	ToggleBinaryEvery3Seconds(&exe, &database);
+	ReportRamUsageEvery3Seconds(&exe, &database);
 				
 	for (;;)
 	{ 	
@@ -90,15 +96,15 @@ int main()
 	return 0;
 }
 
-void ToggleBinaryEvery3Seconds(IExecutor* pExecutor, Database* pDatabase, uint8_t index, bool value)
-{	
-	uint16_t next = ((index + 1) % 5);
-		
+void ReportRamUsageEvery3Seconds(IExecutor* pExecutor, Database* pDatabase)
+{			
+	auto freeRAM = GetFreeRAM();
+				
 	{
 		Transaction tx(pDatabase);
-		pDatabase->Update(Binary(value, 0x01, pExecutor->GetTime().milliseconds), index);	
+		pDatabase->Update(Analog(freeRAM, 0x01, pExecutor->GetTime().milliseconds), 0);	
 	}	
 		
-	auto lambda = [pExecutor, pDatabase, value, next]() { ToggleBinaryEvery3Seconds(pExecutor, pDatabase, next, !value); };
-	pExecutor->Start(TimeDuration::Seconds(3), Action0::Bind(lambda));	
+	auto lambda = [pExecutor, pDatabase]() { ReportRamUsageEvery3Seconds(pExecutor, pDatabase); };
+	pExecutor->Start(TimeDuration::Seconds(3), Action0::Bind(lambda));			
 }

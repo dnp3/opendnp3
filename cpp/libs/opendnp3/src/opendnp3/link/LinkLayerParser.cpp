@@ -37,9 +37,8 @@ LinkLayerParser::LinkLayerParser(const Logger& logger_, LinkChannelStatistics* p
 	logger(logger_),
 	pStatistics(pStatistics_),
 	state(State::FindSync),
-	frameSize(0),		
-	rxBuffer(),
-	buffer(rxBuffer.Buffer(), rxBuffer.Size())
+	frameSize(0),			
+	buffer(rxBuffer, LS_MAX_FRAME_SIZE)
 {
 
 }
@@ -195,8 +194,8 @@ void LinkLayerParser::PushFrame(IFrameSink* pSink)
 void LinkLayerParser::TransferUserData()
 {
 	uint32_t len = header.GetLength() - LS_MIN_LENGTH;
-	LinkFrame::ReadUserData(buffer.ReadBuffer() + LS_HEADER_SIZE,  rxBuffer.Buffer(), len);
-	userData = rxBuffer.ToReadOnly().Take(len);
+	LinkFrame::ReadUserData(buffer.ReadBuffer() + LS_HEADER_SIZE,  rxBuffer, len);
+	userData = ReadOnlyBuffer(rxBuffer, len);
 }
 
 bool LinkLayerParser::ReadHeader()

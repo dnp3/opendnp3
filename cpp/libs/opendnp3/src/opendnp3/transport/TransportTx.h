@@ -64,7 +64,7 @@ private:
 	openpal::Settable<openpal::ReadOnlyBuffer> txSegment;
 
 	// Static buffer where we store tpdus that are being transmitted
-	openpal::StaticBuffer<MAX_TPDU_LENGTH> tpduBuffer;
+	uint8_t tpduBuffer[MAX_TPDU_LENGTH];	
 
 	openpal::Logger logger;
 	StackStatistics* pStatistics;

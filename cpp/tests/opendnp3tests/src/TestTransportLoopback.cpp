@@ -74,7 +74,7 @@ TEST_CASE(SUITE("TestTransportWithMockLoopback"))
 	LoopbackPhysicalLayer phys(root, service);
 	TransportLoopbackTestObject t(root, service, phys.executor, &phys, cfgA, cfgB);
 
-	TestLoopback(&t, opendnp3::sizes::DEFAULT_APDU_BUFFER_SIZE);
+	TestLoopback(&t, opendnp3::sizes::DEFAULT_MAX_APDU_SIZE);
 }
 
 // Run this test on ARM to give us some regression protection for serial

@@ -24,20 +24,6 @@
 
 #include <cstdint>
 
-// Default configurations for statically allocated buffers in the stack
-// They are set to the default maximum of 2K by default, but can be reduced 
-// for embedded systems
-
-#ifndef OPENDNP3_MAX_TX_APDU_SIZE
-#define OPENDNP3_MAX_TX_APDU_SIZE 2048
-#endif
-
-#ifndef OPENDNP3_MAX_RX_APDU_SIZE
-#define OPENDNP3_MAX_RX_APDU_SIZE 2048
-#endif
-
-#define MACRO_NUM_LINK_FRAMES(size) ((static_cast<uint32_t>(size) / 249) + ((static_cast<uint32_t>(size) % 249) ? 1 : 0))
-
 namespace opendnp3
 {
 namespace sizes
@@ -61,23 +47,7 @@ static const uint8_t MAX_MASTER_USERS_TASKS = 8;
 /// The miniumum allowed size for rx and tx APDUs
 static const uint32_t MIN_APDU_SIZE = 20;
 
-// the maximum size of a transmitted APDU
-static const uint32_t MAX_TX_APDU_SIZE = OPENDNP3_MAX_TX_APDU_SIZE;
-
-// the maximum size of a received APDU
-static const uint32_t MAX_RX_APDU_SIZE = OPENDNP3_MAX_RX_APDU_SIZE;
-
-// the default APDU buffer size
-static const uint32_t DEFAULT_APDU_BUFFER_SIZE = MAX_TX_APDU_SIZE;
-
-// default sizing is big enough to receive a full APDU with full LPDU's
-static const uint32_t LINK_RECEIVER_BUFFER_SIZE = MACRO_NUM_LINK_FRAMES(MAX_RX_APDU_SIZE) * 292;
-
 static_assert(MAX_MASTER_USERS_TASKS >= 8, "Max master user tasks must be at least 8");
-static_assert(MAX_TX_APDU_SIZE >= MIN_APDU_SIZE, "APDU tx buffer size must be at least the minimum size");
-static_assert(MAX_RX_APDU_SIZE >= MIN_APDU_SIZE, "APDU rx buffer size must be at least the minimum size");
-static_assert(DEFAULT_APDU_BUFFER_SIZE <= MAX_TX_APDU_SIZE, "default buffer size must be less than the maximum");
-static_assert(LINK_RECEIVER_BUFFER_SIZE >= 292, "Receiver must buffer at least 292 bytes");
 
 }
 }

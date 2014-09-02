@@ -95,8 +95,8 @@ private:
 	uint32_t frameSize;
 	openpal::ReadOnlyBuffer userData;
 
-	// buffer where received data is written		
-	openpal::StaticBuffer<sizes::LINK_RECEIVER_BUFFER_SIZE> rxBuffer;
+	// buffer where received data is written
+	uint8_t rxBuffer[LS_MAX_FRAME_SIZE];	
 
 	// facade over the rxBuffer that provides ability to "shift" as data is read
 	ShiftableBuffer buffer;

@@ -63,8 +63,8 @@ openpal::ReadOnlyBuffer TransportTx::GetSegment()
 	}
 	else
 	{
-		uint32_t numToSend = apdu.Size() < 249 ? apdu.Size() : 249;
-		memcpy(tpduBuffer.Buffer() + 1, apdu, numToSend);
+		uint32_t numToSend = (apdu.Size() < MAX_TPDU_PAYLOAD) ? apdu.Size() : MAX_TPDU_PAYLOAD;
+		memcpy(tpduBuffer + 1, apdu, numToSend);
 		bool fir = (tpduCount == 0);
 		bool fin = (numToSend == apdu.Size());
 		tpduBuffer[0] = GetHeader(fir, fin, sequence);
@@ -75,7 +75,7 @@ openpal::ReadOnlyBuffer TransportTx::GetSegment()
 			++pStatistics->numTransportTx;
 		}
 
-		ReadOnlyBuffer segment(tpduBuffer.Buffer(), numToSend + 1);
+		ReadOnlyBuffer segment(tpduBuffer, numToSend + 1);
 		txSegment.Set(segment);
 		return segment;
 	}
@@ -85,7 +85,7 @@ openpal::ReadOnlyBuffer TransportTx::GetSegment()
 bool TransportTx::Advance()
 {
 	txSegment.Clear();
-	uint32_t numToSend = apdu.Size() < 249 ? apdu.Size() : 249;
+	uint32_t numToSend = apdu.Size() < MAX_TPDU_PAYLOAD ? apdu.Size() : MAX_TPDU_PAYLOAD;
 	apdu.Advance(numToSend);
 	++tpduCount;
 	sequence = (sequence + 1) % 64;
