@@ -243,7 +243,6 @@ cpp/tests/openpaltests/src/CatchTestStart.cpp \
 cpp/tests/openpaltests/src/LinkedListAdapterTestSuite.cpp \
 cpp/tests/openpaltests/src/RingBufferTestSuite.cpp \
 cpp/tests/openpaltests/src/StackAdapterTestSuite.cpp \
-cpp/tests/openpaltests/src/StaticPriorityQueueTestSuite.cpp \
 cpp/tests/openpaltests/src/StaticQueueTestSuite.cpp
 
 #ls cpp/tests/opendnp3tests/src/*.cpp -1 | awk '{print $0" \\"}'
