@@ -37,6 +37,7 @@
 #include <deque>
 #include <list>
 #include <vector>
+#include <functional>
 
 namespace opendnp3
 {
@@ -46,7 +47,7 @@ class MasterScheduler : public IMasterScheduler
 
 public:
 
-	typedef openpal::Action1<ICommandProcessor&> CommandErasure;
+	typedef std::function<void (ICommandProcessor&)>  CommandErasure;
 
 	MasterScheduler(	openpal::Logger* pLogger,
 						MasterTasks& tasks,

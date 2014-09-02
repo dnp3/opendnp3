@@ -56,7 +56,7 @@ class Master : public IUpperLayer
 	
 	ICommandProcessor& GetCommandProcessor();
 
-	MasterScan AddScan(openpal::TimeDuration period, const openpal::Action1<APDURequest&> builder);
+	MasterScan AddScan(openpal::TimeDuration period, const std::function<void (APDURequest&)>& builder);
 
 	MasterScan AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period);
 

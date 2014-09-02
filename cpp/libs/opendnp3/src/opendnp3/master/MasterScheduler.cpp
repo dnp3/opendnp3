@@ -351,7 +351,7 @@ void MasterScheduler::OnLowerLayerDown()
 void MasterScheduler::ReportFailure(const CommandErasure& action, CommandResult result)
 {
 	ConstantCommandProcessor processor(CommandResponse::NoResponse(result), pExecutor);
-	action.Apply(processor);
+	action(processor);
 }
 
 void MasterScheduler::OnTimerExpiration()
