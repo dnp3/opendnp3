@@ -25,13 +25,15 @@
 
 #include <openpal/executor/IExecutor.h>
 #include <openpal/logging/LogRoot.h>
-#include <openpal/container/StaticQueue.h>
+#include <openpal/container/Queue.h>
 #include <openpal/container/DynamicBuffer.h>
 
 #include "opendnp3/master/MasterScheduler.h"
 #include "opendnp3/master/IMasterState.h"
 #include "opendnp3/master/ITaskLock.h"
 #include "opendnp3/master/IMasterApplication.h"
+
+#include <deque>
 
 namespace opendnp3
 {
@@ -69,7 +71,9 @@ class MasterContext : public ICommandProcessor, public IScheduleCallback
 	openpal::ITimer* pResponseTimer;
 	MasterTasks staticTasks;
 	MasterScheduler scheduler;
-	openpal::StaticQueue<APDUHeader, uint8_t, 4> confirmQueue;
+
+	std::deque<APDUHeader> confirmQueue;
+	
 
 	openpal::DynamicBuffer txBuffer;
 	

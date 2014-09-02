@@ -18,23 +18,23 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __STATIC_QUEUE_H_
-#define __STATIC_QUEUE_H_
-
-#include "openpal/Configure.h"
+#ifndef __OPENPAL_QUEUE_H_
+#define __OPENPAL_QUEUE_H_
 
 #include <assert.h>
+
+#include "openpal/container/DynamicArray.h"
 
 namespace openpal
 {
 
-template <class ValueType, class IndexType, IndexType N>
-class StaticQueue
+template <class ValueType, class IndexType>
+class Queue
 {
 
 public:
 
-	StaticQueue() : count(0), first(0), nextInsert(0)
+	Queue(IndexType size) : count(0), first(0), nextInsert(0), buffer(size)
 	{}
 
 	IndexType Size() const
@@ -44,7 +44,7 @@ public:
 
 	IndexType Capacity() const
 	{
-		return N;
+		return buffer.Size();
 	}
 
 	bool IsEmpty() const
@@ -59,7 +59,7 @@ public:
 
 	bool IsFull() const
 	{
-		return count == N;
+		return count == buffer.Size();
 	}
 
 	void Clear()
@@ -75,7 +75,7 @@ public:
 		}
 		else
 		{
-			return &array[first];
+			return &buffer[first];
 		}		
 	}
 
@@ -88,9 +88,9 @@ public:
 		else
 		{
 			IndexType ret = first;
-			first = (first + 1) % N;
+			first = (first + 1) % buffer.Size();
 			--count;
-			return &array[ret];
+			return &buffer[ret];
 		}		
 	}
 
@@ -102,8 +102,8 @@ public:
 		}
 		else
 		{
-			array[nextInsert] = value;
-			nextInsert = (nextInsert + 1) % N;
+			buffer[nextInsert] = value;
+			nextInsert = (nextInsert + 1) % buffer.Size();
 			++count;
 			return true;
 		}
@@ -115,8 +115,7 @@ private:
 	IndexType first;
 	IndexType nextInsert;
 	
-
-	ValueType array[N];
+	openpal::DynamicArray<ValueType, IndexType> buffer;
 };
 
 }

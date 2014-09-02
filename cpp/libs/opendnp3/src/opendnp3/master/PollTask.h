@@ -24,7 +24,7 @@
 #include "opendnp3/master/PollTaskBase.h"
 
 #include <openpal/executor/Action1.h>
-#include <openpal/container/StaticQueue.h>
+#include <openpal/container/Queue.h>
 
 
 namespace opendnp3

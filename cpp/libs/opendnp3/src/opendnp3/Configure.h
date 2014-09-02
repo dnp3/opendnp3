@@ -30,7 +30,7 @@ namespace sizes
 {
 
 // the maximum number of static read object/variation records that can be in any READ request
-static const uint16_t MAX_READ_REQUESTS = 8;
+//static const uint16_t MAX_READ_REQUESTS = 8;
 
 }
 }

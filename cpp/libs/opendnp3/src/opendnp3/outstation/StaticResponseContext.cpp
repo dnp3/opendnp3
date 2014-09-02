@@ -29,9 +29,10 @@ using namespace openpal;
 namespace opendnp3
 {
 
-	StaticResponseContext::StaticResponseContext(Database& database, const StaticResponseConfig& config) :
+StaticResponseContext::StaticResponseContext(Database& database, const StaticResponseConfig& config) :
 	pDatabase(&database),
-	defaults(config)
+	defaults(config),
+	staticResponseQueue(8) // TODO - make configurable
 {}
 
 bool StaticResponseContext::IsComplete() const

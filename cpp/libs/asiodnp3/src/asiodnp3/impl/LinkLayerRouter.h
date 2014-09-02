@@ -21,9 +21,6 @@
 #ifndef __LINK_LAYER_ROUTER_H_
 #define __LINK_LAYER_ROUTER_H_
 
-#include <openpal/container/StaticLinkedList.h>
-#include <openpal/container/StaticQueue.h>
-
 #include "asiodnp3/impl/PhysicalLayerMonitor.h"
 
 #include <opendnp3/Route.h>

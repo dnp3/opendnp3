@@ -248,19 +248,20 @@ bool MasterContext::CancelResponseTimer()
 
 void MasterContext::QueueConfirm(const APDUHeader& header)
 {
-	this->confirmQueue.Enqueue(header);
+	this->confirmQueue.push_back(header);
 	this->CheckConfirmTransmit();
 }
 
 bool MasterContext::CheckConfirmTransmit()
 {
-	if (!isSending && confirmQueue.IsNotEmpty())
+	if (!isSending && !confirmQueue.empty())
 	{
-		auto pConfirm = confirmQueue.Pop();
+		auto pConfirm = confirmQueue.front();
 		APDUWrapper wrapper(txBuffer.GetWriteBuffer());
-		wrapper.SetFunction(pConfirm->function);
-		wrapper.SetControl(pConfirm->control);
+		wrapper.SetFunction(pConfirm.function);
+		wrapper.SetControl(pConfirm.control);
 		this->Transmit(wrapper.ToReadOnly());
+		confirmQueue.pop_front();
 		return true;
 	}
 	else

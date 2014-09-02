@@ -38,7 +38,7 @@
     <ClInclude Include="src\openpal\container\StaticArray.h" />
     <ClInclude Include="src\openpal\container\StaticBuffer.h" />
     <ClInclude Include="src\openpal\container\StaticLinkedList.h" />
-    <ClInclude Include="src\openpal\container\StaticQueue.h" />
+    <ClInclude Include="src\openpal\container\Queue.h" />
     <ClInclude Include="src\openpal\container\WriteBuffer.h" />
     <ClInclude Include="src\openpal\executor\Erasure.h" />
     <ClInclude Include="src\openpal\executor\Action1.h" />

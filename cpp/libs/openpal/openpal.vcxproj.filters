@@ -85,9 +85,6 @@
     <ClInclude Include="src\openpal\container\StaticLinkedList.h">
       <Filter>Header\container</Filter>
     </ClInclude>
-    <ClInclude Include="src\openpal\container\StaticQueue.h">
-      <Filter>Header\container</Filter>
-    </ClInclude>
     <ClInclude Include="src\openpal\container\DynamicArray.h">
       <Filter>Header\container</Filter>
     </ClInclude>
@@ -200,6 +197,9 @@
       <Filter>Header\executor</Filter>
     </ClInclude>
     <ClInclude Include="src\openpal\container\DynamicBuffer.h">
+      <Filter>Header\container</Filter>
+    </ClInclude>
+    <ClInclude Include="src\openpal\container\Queue.h">
       <Filter>Header\container</Filter>
     </ClInclude>
   </ItemGroup>
