@@ -41,9 +41,6 @@ static const uint8_t MAX_MASTER_POLL_TASKS = 8;
 // the maximum number of queued users tasks like commands
 static const uint8_t MAX_MASTER_USERS_TASKS = 8;
 
-/// The miniumum allowed size for rx and tx APDUs
-static const uint32_t MIN_APDU_SIZE = 20;
-
 static_assert(MAX_MASTER_USERS_TASKS >= 8, "Max master user tasks must be at least 8");
 
 }
