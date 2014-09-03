@@ -21,7 +21,7 @@ class AVRLinkParser : public opendnp3::ILinkRouter
 {
 	public:
 
-	AVRLinkParser(openpal::LogRoot& root, openpal::IExecutor& exe, opendnp3::ILinkContext& context);
+	AVRLinkParser(openpal::LogRoot& root, openpal::IExecutor& exe, opendnp3::ILinkContext& context, uint32_t bufferSize);
 	
 	virtual void QueueTransmit(const openpal::ReadOnlyBuffer& buffer, opendnp3::ILinkContext* pContext, bool primary) final override;	
 	
@@ -52,7 +52,7 @@ class AVRLinkParser : public opendnp3::ILinkRouter
 	};
 	
 	openpal::Queue<Transmission, uint8_t> txQueue;
-	openpal::RingBuffer<8> rxBuffer;
+	openpal::RingBuffer rxBuffer;
 	
 	openpal::Settable<openpal::ReadOnlyBuffer> primaryTx;
 	openpal::Settable<openpal::ReadOnlyBuffer> secondaryTx;

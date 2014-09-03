@@ -64,12 +64,6 @@
     <ClInclude Include="src\openpal\container\Pair.h">
       <Filter>Header\container</Filter>
     </ClInclude>
-    <ClInclude Include="src\openpal\container\RingBuffer.h">
-      <Filter>Header\container</Filter>
-    </ClInclude>
-    <ClInclude Include="src\openpal\container\RingBufferAdapter.h">
-      <Filter>Header\container</Filter>
-    </ClInclude>
     <ClInclude Include="src\openpal\container\Settable.h">
       <Filter>Header\container</Filter>
     </ClInclude>
@@ -77,9 +71,6 @@
       <Filter>Header\container</Filter>
     </ClInclude>
     <ClInclude Include="src\openpal\container\StaticArray.h">
-      <Filter>Header\container</Filter>
-    </ClInclude>
-    <ClInclude Include="src\openpal\container\StaticBuffer.h">
       <Filter>Header\container</Filter>
     </ClInclude>
     <ClInclude Include="src\openpal\container\StaticLinkedList.h">
@@ -199,11 +190,11 @@
     <ClInclude Include="src\openpal\serialization\Serializer.h">
       <Filter>Header\serialization</Filter>
     </ClInclude>
+    <ClInclude Include="src\openpal\container\RingBuffer.h">
+      <Filter>Header\container</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\openpal\container\RingBufferAdapter.cpp">
-      <Filter>Source\container</Filter>
-    </ClCompile>
     <ClCompile Include="src\openpal\executor\MonotonicTimestamp.cpp">
       <Filter>Source\executor</Filter>
     </ClCompile>
@@ -247,6 +238,9 @@
       <Filter>Source\executor</Filter>
     </ClCompile>
     <ClCompile Include="src\openpal\container\DynamicBuffer.cpp">
+      <Filter>Source\container</Filter>
+    </ClCompile>
+    <ClCompile Include="src\openpal\container\RingBuffer.cpp">
       <Filter>Source\container</Filter>
     </ClCompile>
   </ItemGroup>

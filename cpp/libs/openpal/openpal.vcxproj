@@ -32,11 +32,9 @@
     <ClInclude Include="src\openpal\container\Pair.h" />
     <ClInclude Include="src\openpal\container\ReadOnlyBuffer.h" />
     <ClInclude Include="src\openpal\container\RingBuffer.h" />
-    <ClInclude Include="src\openpal\container\RingBufferAdapter.h" />
     <ClInclude Include="src\openpal\container\Settable.h" />
     <ClInclude Include="src\openpal\container\StackAdapter.h" />
     <ClInclude Include="src\openpal\container\StaticArray.h" />
-    <ClInclude Include="src\openpal\container\StaticBuffer.h" />
     <ClInclude Include="src\openpal\container\StaticLinkedList.h" />
     <ClInclude Include="src\openpal\container\Queue.h" />
     <ClInclude Include="src\openpal\container\WriteBuffer.h" />
@@ -75,7 +73,7 @@
   <ItemGroup>
     <ClCompile Include="src\openpal\container\DynamicBuffer.cpp" />
     <ClCompile Include="src\openpal\container\ReadOnlyBuffer.cpp" />
-    <ClCompile Include="src\openpal\container\RingBufferAdapter.cpp" />
+    <ClCompile Include="src\openpal\container\RingBuffer.cpp" />
     <ClCompile Include="src\openpal\container\WriteBuffer.cpp" />
     <ClCompile Include="src\openpal\executor\Erasure.cpp" />
     <ClCompile Include="src\openpal\executor\MonotonicTimestamp.cpp" />

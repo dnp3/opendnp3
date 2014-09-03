@@ -22,7 +22,6 @@
 #define __LINK_LAYER_H_
 
 #include <openpal/executor/IExecutor.h>
-#include <openpal/container/StaticBuffer.h>
 #include <openpal/logging/LogRoot.h>
 
 #include "opendnp3/link/ILinkLayer.h"

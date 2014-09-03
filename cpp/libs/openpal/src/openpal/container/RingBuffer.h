@@ -21,24 +21,37 @@
 #ifndef __RING_BUFFER_H_
 #define __RING_BUFFER_H_
 
-#include "RingBufferAdapter.h"
-#include "StaticBuffer.h"
+#include "openpal/container/DynamicBuffer.h"
+#include "openpal/container/WriteBuffer.h"
+
+#include <cstdint>
 
 namespace openpal
 {
 
-template <uint32_t N>
-class RingBuffer : public RingBufferAdapter
+/// A circular buffer
+class RingBuffer
 {	
 
 public:
 
-	RingBuffer() : RingBufferAdapter(buffer, N)
-	{}
+	RingBuffer(uint32_t size);
+
+	void Put(uint8_t value);
+
+	uint32_t Read(WriteBuffer& output);
+	
 
 private:
-	uint8_t buffer[N];
 
+	DynamicBuffer buffer;
+
+	uint32_t start;
+	uint32_t nextWrite;
+	uint32_t count;
+	
+	RingBuffer(const RingBuffer&);
+	RingBuffer& operator= (const RingBuffer&);
 };
 
 }

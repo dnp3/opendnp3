@@ -25,7 +25,6 @@
 #include "opendnp3/app/APDUResponse.h"
 #include "opendnp3/outstation/ICommandAction.h"
 
-#include <openpal/container/StaticBuffer.h>
 #include <openpal/logging/LogMacros.h>
 
 namespace opendnp3

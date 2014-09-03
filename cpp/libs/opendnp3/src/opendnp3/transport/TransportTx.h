@@ -21,7 +21,6 @@
 #ifndef __TRANSPORT_TX_H_
 #define __TRANSPORT_TX_H_
 
-#include <openpal/container/StaticBuffer.h>
 #include <openpal/logging/Logger.h>
 #include <openpal/container/Settable.h>
 

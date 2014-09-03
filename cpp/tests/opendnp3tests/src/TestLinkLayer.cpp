@@ -24,7 +24,7 @@
 #include <opendnp3/link/LinkFrame.h>
 
 #include <openpal/util/ToHex.h>
-#include <openpal/container/StaticBuffer.h>
+#include <openpal/container/DynamicBuffer.h>
 
 #include "BufferHelpers.h"
 #include "LinkLayerTest.h"
@@ -140,7 +140,7 @@ TEST_CASE(SUITE("SecondaryResetLink"))
 	t.link.OnLowerLayerUp();
 	t.link.ResetLinkStates(false, 1, 1024);
 
-	StaticBuffer<292> buffer;
+	DynamicBuffer buffer(292);
 	auto writeTo = buffer.GetWriteBuffer();
 	auto frame = LinkFrame::FormatAck(writeTo, true, false, 1024, 1, nullptr);
 
@@ -165,7 +165,7 @@ TEST_CASE(SUITE("SecAckWrongFCB"))
 	t.link.OnTransmitResult(false, true);
 	REQUIRE(t.numWrites ==  2);
 
-	StaticBuffer<292> buffer;
+	DynamicBuffer buffer(292);
 	auto writeTo = buffer.GetWriteBuffer();
 	auto frame = LinkFrame::FormatAck(writeTo, true, false, 1024, 1, nullptr);
 
@@ -188,7 +188,7 @@ TEST_CASE(SUITE("SecondaryResetResetLinkStates"))
 	REQUIRE(t.numWrites == 2);
 	t.link.OnTransmitResult(false, true);
 
-	StaticBuffer<292> buffer;
+	DynamicBuffer buffer(292);
 	auto writeTo = buffer.GetWriteBuffer();
 	auto frame = LinkFrame::FormatAck(writeTo, true, false, 1024, 1, nullptr);
 
@@ -227,7 +227,7 @@ TEST_CASE(SUITE("RequestStatusOfLink"))
 	REQUIRE(t.numWrites ==  1);
 	t.link.OnTransmitResult(false, true);
 
-	StaticBuffer<292> buffer;
+	DynamicBuffer buffer(292);
 	auto writeTo = buffer.GetWriteBuffer();
 	auto frame = LinkFrame::FormatLinkStatus(writeTo, true, false, 1024, 1, nullptr);
 
@@ -255,7 +255,7 @@ TEST_CASE(SUITE("TestLinkStates"))
 	t.link.OnTransmitResult(false, true);
 
 	t.link.TestLinkStatus(false, true, 1, 1024);
-	StaticBuffer<292> buffer;
+	DynamicBuffer buffer(292);
 	auto writeTo = buffer.GetWriteBuffer();
 	auto frame = LinkFrame::FormatAck(writeTo, true, false, 1024, 1, nullptr);
 	REQUIRE(t.numWrites ==  2);
@@ -317,7 +317,7 @@ TEST_CASE(SUITE("ResetLinkTimerExpiration"))
 	REQUIRE(t.numWrites ==  1);
 	t.link.OnTransmitResult(true, true); // reset link
 
-	StaticBuffer<292> buffer;
+	DynamicBuffer buffer(292);
 	auto writeTo = buffer.GetWriteBuffer();
 	auto result = LinkFrame::FormatResetLinkStates(writeTo, true, 1024, 1, nullptr);
 	REQUIRE(toHex(t.lastWrite) ==  toHex(result));
@@ -349,7 +349,8 @@ TEST_CASE(SUITE("ResetLinkTimerExpirationWithRetry"))
 	
 	REQUIRE(t.upper.CountersEqual(0, 0)); //check that the send is still occuring
 	REQUIRE(t.numWrites == 2);
-	StaticBuffer<292> buffer;
+	DynamicBuffer buffer(292);
+
 	{
 		auto writeTo = buffer.GetWriteBuffer();
 		auto result = LinkFrame::FormatResetLinkStates(writeTo, true, 1024, 1, nullptr);
@@ -452,7 +453,7 @@ TEST_CASE(SUITE("ConfirmedDataRetry"))
 	REQUIRE(t.exe.RunOne()); //timeout the ConfData, check that it retransmits	
 	REQUIRE(t.numWrites ==  3);
 
-	StaticBuffer<292> buffer;
+	DynamicBuffer buffer(292);
 	auto writeTo = buffer.GetWriteBuffer();
 	auto frame = LinkFrame::FormatConfirmedUserData(writeTo, true, true, 1024, 1, bytes, bytes.Size(), nullptr);
 
@@ -479,7 +480,7 @@ TEST_CASE(SUITE("ResetLinkRetries"))
 	for(int i = 1; i < 5; ++i)
 	{
 		REQUIRE(t.numWrites ==  i); // sends link retry
-		StaticBuffer<292> buffer;
+		DynamicBuffer buffer(292);
 		auto writeTo = buffer.GetWriteBuffer();
 		auto frame = LinkFrame::FormatResetLinkStates(writeTo, true, 1024, 1, nullptr);
 		REQUIRE(toHex(t.lastWrite) == toHex(frame));
@@ -533,7 +534,7 @@ TEST_CASE(SUITE("SendDataTimerExpiration"))
 
 	t.link.Ack(false, false, 1, 1024); // ACK the reset links
 	REQUIRE(t.numWrites ==  2);
-	StaticBuffer<292> buffer;
+	DynamicBuffer buffer(292);
 	auto writeTo = buffer.GetWriteBuffer();
 	auto frame = LinkFrame::FormatConfirmedUserData(writeTo, true, true, 1024, 1, bytes, bytes.Size(), nullptr);
 	REQUIRE(t.numWrites ==  2);
@@ -565,7 +566,7 @@ TEST_CASE(SUITE("SendDataSuccess"))
 
 	segments.Reset();
 	t.link.Send(segments); // now we should be directly sending w/o having to reset, and the FCB should flip
-	StaticBuffer<292> buffer;
+	DynamicBuffer buffer(292);
 	auto writeTo = buffer.GetWriteBuffer();
 	auto frame = LinkFrame::FormatConfirmedUserData(writeTo, true, false, 1024, 1, bytes, bytes.Size(), nullptr);
 	REQUIRE(t.numWrites ==  3);
