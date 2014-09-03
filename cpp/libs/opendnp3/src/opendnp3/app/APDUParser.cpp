@@ -147,7 +147,7 @@ IndexedValue<BinaryOutputStatus, uint16_t> APDUParser::BoolToBinaryOutputStatus(
 
 #define MACRO_PARSE_OBJECTS_WITH_RANGE(descriptor) \
 	case(GroupVariation::descriptor): \
-	return ParseRangeFixedSize(record, descriptor##Serializer::Inst(), buffer, pLogger, range, pHandler);
+	return ParseRangeFixedSize(record, descriptor::Inst(), buffer, pLogger, range, pHandler);
 
 APDUParser::Result APDUParser::ParseRangeOfObjects(openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, const HeaderRecord& record, const Range& range, IAPDUHandler* pHandler)
 {

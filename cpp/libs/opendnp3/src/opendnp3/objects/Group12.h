@@ -30,27 +30,21 @@ namespace opendnp3 {
 struct Group12Var1
 {
   static const GroupVariationID ID;
-  typedef ControlRelayOutputBlock Target;
   static const uint32_t SIZE = 11;
   static Group12Var1 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group12Var1&, openpal::WriteBuffer&);
+
+  static DNP3Serializer<ControlRelayOutputBlock> Inst() { return DNP3Serializer<ControlRelayOutputBlock>(ID, SIZE, &ReadTarget, &WriteTarget); }
+
+  typedef ControlRelayOutputBlock Target;
+  static ControlRelayOutputBlock ReadTarget(openpal::ReadOnlyBuffer&);
+  static void WriteTarget(const ControlRelayOutputBlock&, openpal::WriteBuffer&);
 
   uint8_t code;
   uint8_t count;
   uint32_t onTime;
   uint32_t offTime;
   CommandStatus status;
-};
-
-struct Group12Var1Serializer
-{
-
-  static DNP3Serializer<ControlRelayOutputBlock> Inst() { return DNP3Serializer<ControlRelayOutputBlock>(Group12Var1::ID, Group12Var1::SIZE, &Read, &Write); }
-
-  typedef ControlRelayOutputBlock Target;
-  static ControlRelayOutputBlock Read(openpal::ReadOnlyBuffer&);
-  static void Write(const ControlRelayOutputBlock&, openpal::WriteBuffer&);
-
 };
 
 

@@ -45,13 +45,13 @@ void Group10Var2::Write(const Group10Var2& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(1);
 }
 
-BinaryOutputStatus Group10Var2Serializer::Read(ReadOnlyBuffer& buff)
+BinaryOutputStatus Group10Var2::ReadTarget(ReadOnlyBuffer& buff)
 {
   auto gv = Group10Var2::Read(buff);
   return BinaryOutputStatusFactory::From(gv.flags);
 }
 
-void Group10Var2Serializer::Write(const BinaryOutputStatus& value, openpal::WriteBuffer& buff)
+void Group10Var2::WriteTarget(const BinaryOutputStatus& value, openpal::WriteBuffer& buff)
 {
   Group10Var2::Write(ConvertGroup10Var2::Apply(value), buff);
 }

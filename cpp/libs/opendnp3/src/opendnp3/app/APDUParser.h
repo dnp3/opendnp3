@@ -392,68 +392,68 @@ APDUParser::Result APDUParser::ParseObjectsWithIndexPrefix(openpal::ReadOnlyBuff
 	switch (record.enumeration)
 	{
 	case(GroupVariation::Group2Var1):
-		return ParseCountFixedSizeWithIndex<Binary, IndexType>(record, buffer, pLogger, count, Group2Var1Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<Binary, IndexType>(record, buffer, pLogger, count, Group2Var1::Inst(), pHandler);
 	case(GroupVariation::Group2Var2) :
-		return ParseCountFixedSizeWithIndex<Binary, IndexType>(record, buffer, pLogger, count, Group2Var2Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<Binary, IndexType>(record, buffer, pLogger, count, Group2Var2::Inst(), pHandler);
 	case(GroupVariation::Group2Var3) :
-		return ParseCountFixedSizeWithIndex<Binary, IndexType>(record, buffer, pLogger, count, Group2Var3Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<Binary, IndexType>(record, buffer, pLogger, count, Group2Var3::Inst(), pHandler);
 
 	case(GroupVariation::Group4Var1) :
-		return ParseCountFixedSizeWithIndex<DoubleBitBinary, IndexType>(record, buffer, pLogger, count, Group4Var1Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<DoubleBitBinary, IndexType>(record, buffer, pLogger, count, Group4Var1::Inst(), pHandler);
 	case(GroupVariation::Group4Var2) :
-		return ParseCountFixedSizeWithIndex<DoubleBitBinary, IndexType>(record, buffer, pLogger, count, Group4Var2Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<DoubleBitBinary, IndexType>(record, buffer, pLogger, count, Group4Var2::Inst(), pHandler);
 	case(GroupVariation::Group4Var3) :
-		return ParseCountFixedSizeWithIndex<DoubleBitBinary, IndexType>(record, buffer, pLogger, count, Group4Var3Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<DoubleBitBinary, IndexType>(record, buffer, pLogger, count, Group4Var3::Inst(), pHandler);
 
 	case(GroupVariation::Group11Var1):
-		return ParseCountFixedSizeWithIndex<BinaryOutputStatus, IndexType>(record, buffer, pLogger, count, Group11Var1Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<BinaryOutputStatus, IndexType>(record, buffer, pLogger, count, Group11Var1::Inst(), pHandler);
 		
 	case(GroupVariation::Group12Var1) :
-		return ParseCountFixedSizeWithIndex<ControlRelayOutputBlock, IndexType>(record, buffer, pLogger, count, Group12Var1Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<ControlRelayOutputBlock, IndexType>(record, buffer, pLogger, count, Group12Var1::Inst(), pHandler);
 
 	case(GroupVariation::Group22Var1) :
-		return ParseCountFixedSizeWithIndex<Counter, IndexType>(record, buffer, pLogger, count, Group22Var1Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<Counter, IndexType>(record, buffer, pLogger, count, Group22Var1::Inst(), pHandler);
 	case(GroupVariation::Group22Var2) :
-		return ParseCountFixedSizeWithIndex<Counter, IndexType>(record, buffer, pLogger, count, Group22Var2Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<Counter, IndexType>(record, buffer, pLogger, count, Group22Var2::Inst(), pHandler);
 	case(GroupVariation::Group22Var5) :
-		return ParseCountFixedSizeWithIndex<Counter, IndexType>(record, buffer, pLogger, count, Group22Var5Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<Counter, IndexType>(record, buffer, pLogger, count, Group22Var5::Inst(), pHandler);
 	case(GroupVariation::Group22Var6) :
-		return ParseCountFixedSizeWithIndex<Counter, IndexType>(record, buffer, pLogger, count, Group22Var6Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<Counter, IndexType>(record, buffer, pLogger, count, Group22Var6::Inst(), pHandler);
 
 	case(GroupVariation::Group23Var1) :
-		return ParseCountFixedSizeWithIndex<Counter, IndexType>(record, buffer, pLogger, count, Group22Var1Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<Counter, IndexType>(record, buffer, pLogger, count, Group22Var1::Inst(), pHandler);
 	case(GroupVariation::Group23Var2) :
-		return ParseCountFixedSizeWithIndex<Counter, IndexType>(record, buffer, pLogger, count, Group22Var2Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<Counter, IndexType>(record, buffer, pLogger, count, Group22Var2::Inst(), pHandler);
 	case(GroupVariation::Group23Var5) :
-		return ParseCountFixedSizeWithIndex<Counter, IndexType>(record, buffer, pLogger, count, Group22Var5Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<Counter, IndexType>(record, buffer, pLogger, count, Group22Var5::Inst(), pHandler);
 	case(GroupVariation::Group23Var6) :
-		return ParseCountFixedSizeWithIndex<Counter, IndexType>(record, buffer, pLogger, count, Group22Var6Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<Counter, IndexType>(record, buffer, pLogger, count, Group22Var6::Inst(), pHandler);
 
 	case(GroupVariation::Group32Var1) :
-		return ParseCountFixedSizeWithIndex<Analog, IndexType>(record, buffer, pLogger, count, Group32Var1Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<Analog, IndexType>(record, buffer, pLogger, count, Group32Var1::Inst(), pHandler);
 	case(GroupVariation::Group32Var2) :
-		return ParseCountFixedSizeWithIndex<Analog, IndexType>(record, buffer, pLogger, count, Group32Var2Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<Analog, IndexType>(record, buffer, pLogger, count, Group32Var2::Inst(), pHandler);
 	case(GroupVariation::Group32Var3) :
-		return ParseCountFixedSizeWithIndex<Analog, IndexType>(record, buffer, pLogger, count, Group32Var3Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<Analog, IndexType>(record, buffer, pLogger, count, Group32Var3::Inst(), pHandler);
 	case(GroupVariation::Group32Var4) :
-		return ParseCountFixedSizeWithIndex<Analog, IndexType>(record, buffer, pLogger, count, Group32Var4Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<Analog, IndexType>(record, buffer, pLogger, count, Group32Var4::Inst(), pHandler);
 	case(GroupVariation::Group32Var5) :
-		return ParseCountFixedSizeWithIndex<Analog, IndexType>(record, buffer, pLogger, count, Group32Var5Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<Analog, IndexType>(record, buffer, pLogger, count, Group32Var5::Inst(), pHandler);
 	case(GroupVariation::Group32Var6) :
-		return ParseCountFixedSizeWithIndex<Analog, IndexType>(record, buffer, pLogger, count, Group32Var6Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<Analog, IndexType>(record, buffer, pLogger, count, Group32Var6::Inst(), pHandler);
 	case(GroupVariation::Group32Var7) :
-		return ParseCountFixedSizeWithIndex<Analog, IndexType>(record, buffer, pLogger, count, Group32Var7Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<Analog, IndexType>(record, buffer, pLogger, count, Group32Var7::Inst(), pHandler);
 	case(GroupVariation::Group32Var8) :
-		return ParseCountFixedSizeWithIndex<Analog, IndexType>(record, buffer, pLogger, count, Group32Var8Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<Analog, IndexType>(record, buffer, pLogger, count, Group32Var8::Inst(), pHandler);
 
 	case(GroupVariation::Group41Var1) :
-		return ParseCountFixedSizeWithIndex<AnalogOutputInt32, IndexType>(record, buffer, pLogger, count, Group41Var1Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<AnalogOutputInt32, IndexType>(record, buffer, pLogger, count, Group41Var1::Inst(), pHandler);
 	case(GroupVariation::Group41Var2) :
-		return ParseCountFixedSizeWithIndex<AnalogOutputInt16, IndexType>(record, buffer, pLogger, count, Group41Var2Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<AnalogOutputInt16, IndexType>(record, buffer, pLogger, count, Group41Var2::Inst(), pHandler);
 	case(GroupVariation::Group41Var3) :
-		return ParseCountFixedSizeWithIndex<AnalogOutputFloat32, IndexType>(record, buffer, pLogger, count, Group41Var3Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<AnalogOutputFloat32, IndexType>(record, buffer, pLogger, count, Group41Var3::Inst(), pHandler);
 	case(GroupVariation::Group41Var4) :
-		return ParseCountFixedSizeWithIndex<AnalogOutputDouble64, IndexType>(record, buffer, pLogger, count, Group41Var4Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<AnalogOutputDouble64, IndexType>(record, buffer, pLogger, count, Group41Var4::Inst(), pHandler);
 
 	case(GroupVariation::Group111AnyVar) :
 		return ParseIndexPrefixedOctetData<IndexType>(buffer, pLogger, record, count, pHandler);

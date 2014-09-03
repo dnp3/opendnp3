@@ -41,13 +41,13 @@ void Group4Var1::Write(const Group4Var1& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(1);
 }
 
-DoubleBitBinary Group4Var1Serializer::Read(ReadOnlyBuffer& buff)
+DoubleBitBinary Group4Var1::ReadTarget(ReadOnlyBuffer& buff)
 {
   auto gv = Group4Var1::Read(buff);
   return DoubleBitBinaryFactory::From(gv.flags);
 }
 
-void Group4Var1Serializer::Write(const DoubleBitBinary& value, openpal::WriteBuffer& buff)
+void Group4Var1::WriteTarget(const DoubleBitBinary& value, openpal::WriteBuffer& buff)
 {
   Group4Var1::Write(ConvertGroup4Var1::Apply(value), buff);
 }
@@ -73,13 +73,13 @@ void Group4Var2::Write(const Group4Var2& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(6);
 }
 
-DoubleBitBinary Group4Var2Serializer::Read(ReadOnlyBuffer& buff)
+DoubleBitBinary Group4Var2::ReadTarget(ReadOnlyBuffer& buff)
 {
   auto gv = Group4Var2::Read(buff);
   return DoubleBitBinaryFactory::From(gv.flags, gv.time);
 }
 
-void Group4Var2Serializer::Write(const DoubleBitBinary& value, openpal::WriteBuffer& buff)
+void Group4Var2::WriteTarget(const DoubleBitBinary& value, openpal::WriteBuffer& buff)
 {
   Group4Var2::Write(ConvertGroup4Var2::Apply(value), buff);
 }
@@ -105,13 +105,13 @@ void Group4Var3::Write(const Group4Var3& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(2);
 }
 
-DoubleBitBinary Group4Var3Serializer::Read(ReadOnlyBuffer& buff)
+DoubleBitBinary Group4Var3::ReadTarget(ReadOnlyBuffer& buff)
 {
   auto gv = Group4Var3::Read(buff);
   return DoubleBitBinaryFactory::From(gv.flags, gv.time);
 }
 
-void Group4Var3Serializer::Write(const DoubleBitBinary& value, openpal::WriteBuffer& buff)
+void Group4Var3::WriteTarget(const DoubleBitBinary& value, openpal::WriteBuffer& buff)
 {
   Group4Var3::Write(ConvertGroup4Var3::Apply(value), buff);
 }

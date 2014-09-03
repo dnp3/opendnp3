@@ -30,7 +30,6 @@ struct Group50Var1
   static const uint32_t SIZE = 6;
   static Group50Var1 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group50Var1&, openpal::WriteBuffer&);
-
   uint64_t time;
 };
 

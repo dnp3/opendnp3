@@ -29,97 +29,73 @@ namespace opendnp3 {
 struct Group40Var1
 {
   static const GroupVariationID ID;
-  typedef AnalogOutputStatus Target;
   static const uint32_t SIZE = 5;
   static Group40Var1 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group40Var1&, openpal::WriteBuffer&);
+
+  static DNP3Serializer<AnalogOutputStatus> Inst() { return DNP3Serializer<AnalogOutputStatus>(ID, SIZE, &ReadTarget, &WriteTarget); }
+
+  typedef AnalogOutputStatus Target;
+  static AnalogOutputStatus ReadTarget(openpal::ReadOnlyBuffer&);
+  static void WriteTarget(const AnalogOutputStatus&, openpal::WriteBuffer&);
 
   typedef int32_t ValueType;
   uint8_t flags;
   int32_t value;
 };
 
-struct Group40Var1Serializer
-{
-
-  static DNP3Serializer<AnalogOutputStatus> Inst() { return DNP3Serializer<AnalogOutputStatus>(Group40Var1::ID, Group40Var1::SIZE, &Read, &Write); }
-
-  typedef AnalogOutputStatus Target;
-  static AnalogOutputStatus Read(openpal::ReadOnlyBuffer&);
-  static void Write(const AnalogOutputStatus&, openpal::WriteBuffer&);
-
-};
-
 struct Group40Var2
 {
   static const GroupVariationID ID;
-  typedef AnalogOutputStatus Target;
   static const uint32_t SIZE = 3;
   static Group40Var2 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group40Var2&, openpal::WriteBuffer&);
+
+  static DNP3Serializer<AnalogOutputStatus> Inst() { return DNP3Serializer<AnalogOutputStatus>(ID, SIZE, &ReadTarget, &WriteTarget); }
+
+  typedef AnalogOutputStatus Target;
+  static AnalogOutputStatus ReadTarget(openpal::ReadOnlyBuffer&);
+  static void WriteTarget(const AnalogOutputStatus&, openpal::WriteBuffer&);
 
   typedef int16_t ValueType;
   uint8_t flags;
   int16_t value;
 };
 
-struct Group40Var2Serializer
-{
-
-  static DNP3Serializer<AnalogOutputStatus> Inst() { return DNP3Serializer<AnalogOutputStatus>(Group40Var2::ID, Group40Var2::SIZE, &Read, &Write); }
-
-  typedef AnalogOutputStatus Target;
-  static AnalogOutputStatus Read(openpal::ReadOnlyBuffer&);
-  static void Write(const AnalogOutputStatus&, openpal::WriteBuffer&);
-
-};
-
 struct Group40Var3
 {
   static const GroupVariationID ID;
-  typedef AnalogOutputStatus Target;
   static const uint32_t SIZE = 5;
   static Group40Var3 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group40Var3&, openpal::WriteBuffer&);
+
+  static DNP3Serializer<AnalogOutputStatus> Inst() { return DNP3Serializer<AnalogOutputStatus>(ID, SIZE, &ReadTarget, &WriteTarget); }
+
+  typedef AnalogOutputStatus Target;
+  static AnalogOutputStatus ReadTarget(openpal::ReadOnlyBuffer&);
+  static void WriteTarget(const AnalogOutputStatus&, openpal::WriteBuffer&);
 
   typedef float ValueType;
   uint8_t flags;
   float value;
 };
 
-struct Group40Var3Serializer
-{
-
-  static DNP3Serializer<AnalogOutputStatus> Inst() { return DNP3Serializer<AnalogOutputStatus>(Group40Var3::ID, Group40Var3::SIZE, &Read, &Write); }
-
-  typedef AnalogOutputStatus Target;
-  static AnalogOutputStatus Read(openpal::ReadOnlyBuffer&);
-  static void Write(const AnalogOutputStatus&, openpal::WriteBuffer&);
-
-};
-
 struct Group40Var4
 {
   static const GroupVariationID ID;
-  typedef AnalogOutputStatus Target;
   static const uint32_t SIZE = 9;
   static Group40Var4 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group40Var4&, openpal::WriteBuffer&);
 
+  static DNP3Serializer<AnalogOutputStatus> Inst() { return DNP3Serializer<AnalogOutputStatus>(ID, SIZE, &ReadTarget, &WriteTarget); }
+
+  typedef AnalogOutputStatus Target;
+  static AnalogOutputStatus ReadTarget(openpal::ReadOnlyBuffer&);
+  static void WriteTarget(const AnalogOutputStatus&, openpal::WriteBuffer&);
+
   typedef double ValueType;
   uint8_t flags;
   double value;
-};
-
-struct Group40Var4Serializer
-{
-
-  static DNP3Serializer<AnalogOutputStatus> Inst() { return DNP3Serializer<AnalogOutputStatus>(Group40Var4::ID, Group40Var4::SIZE, &Read, &Write); }
-
-  typedef AnalogOutputStatus Target;
-  static AnalogOutputStatus Read(openpal::ReadOnlyBuffer&);
-  static void Write(const AnalogOutputStatus&, openpal::WriteBuffer&);
-
 };
 
 

@@ -45,13 +45,13 @@ void Group41Var1::Write(const Group41Var1& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(1);
 }
 
-AnalogOutputInt32 Group41Var1Serializer::Read(ReadOnlyBuffer& buff)
+AnalogOutputInt32 Group41Var1::ReadTarget(ReadOnlyBuffer& buff)
 {
   auto gv = Group41Var1::Read(buff);
   return AnalogOutputInt32Factory::From(gv.value, gv.status);
 }
 
-void Group41Var1Serializer::Write(const AnalogOutputInt32& value, openpal::WriteBuffer& buff)
+void Group41Var1::WriteTarget(const AnalogOutputInt32& value, openpal::WriteBuffer& buff)
 {
   Group41Var1::Write(ConvertGroup41Var1::Apply(value), buff);
 }
@@ -77,13 +77,13 @@ void Group41Var2::Write(const Group41Var2& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(1);
 }
 
-AnalogOutputInt16 Group41Var2Serializer::Read(ReadOnlyBuffer& buff)
+AnalogOutputInt16 Group41Var2::ReadTarget(ReadOnlyBuffer& buff)
 {
   auto gv = Group41Var2::Read(buff);
   return AnalogOutputInt16Factory::From(gv.value, gv.status);
 }
 
-void Group41Var2Serializer::Write(const AnalogOutputInt16& value, openpal::WriteBuffer& buff)
+void Group41Var2::WriteTarget(const AnalogOutputInt16& value, openpal::WriteBuffer& buff)
 {
   Group41Var2::Write(ConvertGroup41Var2::Apply(value), buff);
 }
@@ -109,13 +109,13 @@ void Group41Var3::Write(const Group41Var3& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(1);
 }
 
-AnalogOutputFloat32 Group41Var3Serializer::Read(ReadOnlyBuffer& buff)
+AnalogOutputFloat32 Group41Var3::ReadTarget(ReadOnlyBuffer& buff)
 {
   auto gv = Group41Var3::Read(buff);
   return AnalogOutputFloat32Factory::From(gv.value, gv.status);
 }
 
-void Group41Var3Serializer::Write(const AnalogOutputFloat32& value, openpal::WriteBuffer& buff)
+void Group41Var3::WriteTarget(const AnalogOutputFloat32& value, openpal::WriteBuffer& buff)
 {
   Group41Var3::Write(ConvertGroup41Var3::Apply(value), buff);
 }
@@ -141,13 +141,13 @@ void Group41Var4::Write(const Group41Var4& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(1);
 }
 
-AnalogOutputDouble64 Group41Var4Serializer::Read(ReadOnlyBuffer& buff)
+AnalogOutputDouble64 Group41Var4::ReadTarget(ReadOnlyBuffer& buff)
 {
   auto gv = Group41Var4::Read(buff);
   return AnalogOutputDouble64Factory::From(gv.value, gv.status);
 }
 
-void Group41Var4Serializer::Write(const AnalogOutputDouble64& value, openpal::WriteBuffer& buff)
+void Group41Var4::WriteTarget(const AnalogOutputDouble64& value, openpal::WriteBuffer& buff)
 {
   Group41Var4::Write(ConvertGroup41Var4::Apply(value), buff);
 }

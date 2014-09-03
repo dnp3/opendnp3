@@ -40,11 +40,11 @@ CommandTask::CommandTask(openpal::Logger* pLogger_) :
 	pLogger(pLogger_),
 	pCallback(nullptr),
 	pActiveSequence(nullptr),	
-	crobSeq(*pLogger_, Group12Var1Serializer::Inst()),
-	analogInt32Seq(*pLogger_, Group41Var1Serializer::Inst()),
-	analogInt16Seq(*pLogger_, Group41Var2Serializer::Inst()),
-	analogFloat32Seq(*pLogger_, Group41Var3Serializer::Inst()),
-	analogDouble64Seq(*pLogger_, Group41Var4Serializer::Inst())
+	crobSeq(*pLogger_, Group12Var1::Inst()),
+	analogInt32Seq(*pLogger_, Group41Var1::Inst()),
+	analogInt16Seq(*pLogger_, Group41Var2::Inst()),
+	analogFloat32Seq(*pLogger_, Group41Var3::Inst()),
+	analogDouble64Seq(*pLogger_, Group41Var4::Inst())
 {
 
 }

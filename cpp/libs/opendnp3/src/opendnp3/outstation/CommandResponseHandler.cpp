@@ -42,52 +42,52 @@ namespace opendnp3
 
 void CommandResponseHandler::_OnIndexPrefix(const HeaderRecord&, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint16_t>>& meas)
 {
-	this->RespondToHeader<ControlRelayOutputBlock, openpal::UInt16>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group12Var1Serializer::Inst(), meas);
+	this->RespondToHeader<ControlRelayOutputBlock, openpal::UInt16>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group12Var1::Inst(), meas);
 }
 
 void CommandResponseHandler::_OnIndexPrefix(const HeaderRecord&, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint16_t>>& meas)
 {
-	this->RespondToHeader<AnalogOutputInt16, openpal::UInt16>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group41Var2Serializer::Inst(), meas);
+	this->RespondToHeader<AnalogOutputInt16, openpal::UInt16>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group41Var2::Inst(), meas);
 }
 
 void CommandResponseHandler::_OnIndexPrefix(const HeaderRecord&, const IterableBuffer<IndexedValue<AnalogOutputInt32, uint16_t>>& meas)
 {
-	this->RespondToHeader<AnalogOutputInt32, openpal::UInt16>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group41Var1Serializer::Inst(), meas);
+	this->RespondToHeader<AnalogOutputInt32, openpal::UInt16>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group41Var1::Inst(), meas);
 }
 
 void CommandResponseHandler::_OnIndexPrefix(const HeaderRecord&, const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint16_t>>& meas)
 {
-	this->RespondToHeader<AnalogOutputFloat32, openpal::UInt16>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group41Var3Serializer::Inst(), meas);
+	this->RespondToHeader<AnalogOutputFloat32, openpal::UInt16>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group41Var3::Inst(), meas);
 }
 
 void CommandResponseHandler::_OnIndexPrefix(const HeaderRecord&, const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint16_t>>& meas)
 {
-	this->RespondToHeader<AnalogOutputDouble64, openpal::UInt16>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group41Var4Serializer::Inst(), meas);
+	this->RespondToHeader<AnalogOutputDouble64, openpal::UInt16>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group41Var4::Inst(), meas);
 }
 
 void CommandResponseHandler::_OnIndexPrefix(const HeaderRecord&, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint8_t>>& meas)
 {
-	this->RespondToHeader<ControlRelayOutputBlock, openpal::UInt8>(QualifierCode::UINT8_CNT_UINT8_INDEX, Group12Var1Serializer::Inst(), meas);
+	this->RespondToHeader<ControlRelayOutputBlock, openpal::UInt8>(QualifierCode::UINT8_CNT_UINT8_INDEX, Group12Var1::Inst(), meas);
 }
 
 void CommandResponseHandler::_OnIndexPrefix(const HeaderRecord&, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint8_t>>& meas)
 {
-	this->RespondToHeader<AnalogOutputInt16, openpal::UInt8>(QualifierCode::UINT8_CNT_UINT8_INDEX, Group41Var2Serializer::Inst(), meas);
+	this->RespondToHeader<AnalogOutputInt16, openpal::UInt8>(QualifierCode::UINT8_CNT_UINT8_INDEX, Group41Var2::Inst(), meas);
 }
 
 void CommandResponseHandler::_OnIndexPrefix(const HeaderRecord&, const IterableBuffer<IndexedValue<AnalogOutputInt32, uint8_t>>& meas)
 {
-	this->RespondToHeader<AnalogOutputInt32, openpal::UInt8>(QualifierCode::UINT8_CNT_UINT8_INDEX, Group41Var1Serializer::Inst(), meas);
+	this->RespondToHeader<AnalogOutputInt32, openpal::UInt8>(QualifierCode::UINT8_CNT_UINT8_INDEX, Group41Var1::Inst(), meas);
 }
 
 void CommandResponseHandler::_OnIndexPrefix(const HeaderRecord&, const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint8_t>>& meas)
 {
-	this->RespondToHeader<AnalogOutputFloat32, openpal::UInt8>(QualifierCode::UINT8_CNT_UINT8_INDEX, Group41Var3Serializer::Inst(), meas);
+	this->RespondToHeader<AnalogOutputFloat32, openpal::UInt8>(QualifierCode::UINT8_CNT_UINT8_INDEX, Group41Var3::Inst(), meas);
 }
 
 void CommandResponseHandler::_OnIndexPrefix(const HeaderRecord&, const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint8_t>>& meas)
 {
-	this->RespondToHeader<AnalogOutputDouble64, openpal::UInt8>(QualifierCode::UINT8_CNT_UINT8_INDEX, Group41Var4Serializer::Inst(), meas);
+	this->RespondToHeader<AnalogOutputDouble64, openpal::UInt8>(QualifierCode::UINT8_CNT_UINT8_INDEX, Group41Var4::Inst(), meas);
 }
 
 }

@@ -53,28 +53,24 @@ object GroupVariationHeaderRenderer extends ModelRenderer[GroupVariation]{
 
     def definition : Iterator[String] = struct(x.name) {
       idDeclaration ++
-      x.conversion.map(c => Iterator("typedef " + c.target + " Target;")).getOrElse(Iterator.empty) ++
+      //x.conversion.map(c => Iterator("typedef " + c.target + " Target;")).getOrElse(Iterator.empty) ++
       sizeSignature ++
       readSignature ++
       writeSignature ++
-      space ++
+      serializer ++
       members
     }
 
     def serializer: Iterator[String] = x.conversion match {
       case None => Iterator.empty
       case Some(conv) =>
-        val structName = x.name+"Serializer"
         val serializerType = "DNP3Serializer<"+conv.target+">"
-        space ++ struct(structName, None) {
-          space ++ Iterator("static " + serializerType + " Inst() { return " + serializerType + "(" + x.name + "::ID, " + x.name + "::SIZE, &Read, &Write); }") ++
-          //space ++ Iterator("GroupVariationID ID() const { return " + x.name + "::ID; }") ++
-          //space ++ Iterator("uint32_t Size() const { return " + x.name + "::SIZE; }") ++
-          space ++ conv.signatures ++ space
-        }
+        space ++
+        Iterator("static " + serializerType + " Inst() { return " + serializerType + "(ID, SIZE, &ReadTarget, &WriteTarget); }") ++
+        space ++ conv.signatures ++ space
     }
 
-    definition ++ serializer
+    definition
   }
 }
 

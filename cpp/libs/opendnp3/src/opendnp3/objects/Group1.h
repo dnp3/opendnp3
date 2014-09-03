@@ -34,23 +34,17 @@ struct Group1Var0
 struct Group1Var2
 {
   static const GroupVariationID ID;
-  typedef Binary Target;
   static const uint32_t SIZE = 1;
   static Group1Var2 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group1Var2&, openpal::WriteBuffer&);
 
-  uint8_t flags;
-};
-
-struct Group1Var2Serializer
-{
-
-  static DNP3Serializer<Binary> Inst() { return DNP3Serializer<Binary>(Group1Var2::ID, Group1Var2::SIZE, &Read, &Write); }
+  static DNP3Serializer<Binary> Inst() { return DNP3Serializer<Binary>(ID, SIZE, &ReadTarget, &WriteTarget); }
 
   typedef Binary Target;
-  static Binary Read(openpal::ReadOnlyBuffer&);
-  static void Write(const Binary&, openpal::WriteBuffer&);
+  static Binary ReadTarget(openpal::ReadOnlyBuffer&);
+  static void WriteTarget(const Binary&, openpal::WriteBuffer&);
 
+  uint8_t flags;
 };
 
 struct Group1Var1

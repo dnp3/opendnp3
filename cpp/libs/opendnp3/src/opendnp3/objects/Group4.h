@@ -29,69 +29,51 @@ namespace opendnp3 {
 struct Group4Var1
 {
   static const GroupVariationID ID;
-  typedef DoubleBitBinary Target;
   static const uint32_t SIZE = 1;
   static Group4Var1 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group4Var1&, openpal::WriteBuffer&);
 
-  uint8_t flags;
-};
-
-struct Group4Var1Serializer
-{
-
-  static DNP3Serializer<DoubleBitBinary> Inst() { return DNP3Serializer<DoubleBitBinary>(Group4Var1::ID, Group4Var1::SIZE, &Read, &Write); }
+  static DNP3Serializer<DoubleBitBinary> Inst() { return DNP3Serializer<DoubleBitBinary>(ID, SIZE, &ReadTarget, &WriteTarget); }
 
   typedef DoubleBitBinary Target;
-  static DoubleBitBinary Read(openpal::ReadOnlyBuffer&);
-  static void Write(const DoubleBitBinary&, openpal::WriteBuffer&);
+  static DoubleBitBinary ReadTarget(openpal::ReadOnlyBuffer&);
+  static void WriteTarget(const DoubleBitBinary&, openpal::WriteBuffer&);
 
+  uint8_t flags;
 };
 
 struct Group4Var2
 {
   static const GroupVariationID ID;
-  typedef DoubleBitBinary Target;
   static const uint32_t SIZE = 7;
   static Group4Var2 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group4Var2&, openpal::WriteBuffer&);
+
+  static DNP3Serializer<DoubleBitBinary> Inst() { return DNP3Serializer<DoubleBitBinary>(ID, SIZE, &ReadTarget, &WriteTarget); }
+
+  typedef DoubleBitBinary Target;
+  static DoubleBitBinary ReadTarget(openpal::ReadOnlyBuffer&);
+  static void WriteTarget(const DoubleBitBinary&, openpal::WriteBuffer&);
 
   uint8_t flags;
   uint64_t time;
 };
 
-struct Group4Var2Serializer
-{
-
-  static DNP3Serializer<DoubleBitBinary> Inst() { return DNP3Serializer<DoubleBitBinary>(Group4Var2::ID, Group4Var2::SIZE, &Read, &Write); }
-
-  typedef DoubleBitBinary Target;
-  static DoubleBitBinary Read(openpal::ReadOnlyBuffer&);
-  static void Write(const DoubleBitBinary&, openpal::WriteBuffer&);
-
-};
-
 struct Group4Var3
 {
   static const GroupVariationID ID;
-  typedef DoubleBitBinary Target;
   static const uint32_t SIZE = 3;
   static Group4Var3 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group4Var3&, openpal::WriteBuffer&);
 
-  uint8_t flags;
-  uint16_t time;
-};
-
-struct Group4Var3Serializer
-{
-
-  static DNP3Serializer<DoubleBitBinary> Inst() { return DNP3Serializer<DoubleBitBinary>(Group4Var3::ID, Group4Var3::SIZE, &Read, &Write); }
+  static DNP3Serializer<DoubleBitBinary> Inst() { return DNP3Serializer<DoubleBitBinary>(ID, SIZE, &ReadTarget, &WriteTarget); }
 
   typedef DoubleBitBinary Target;
-  static DoubleBitBinary Read(openpal::ReadOnlyBuffer&);
-  static void Write(const DoubleBitBinary&, openpal::WriteBuffer&);
+  static DoubleBitBinary ReadTarget(openpal::ReadOnlyBuffer&);
+  static void WriteTarget(const DoubleBitBinary&, openpal::WriteBuffer&);
 
+  uint8_t flags;
+  uint16_t time;
 };
 
 

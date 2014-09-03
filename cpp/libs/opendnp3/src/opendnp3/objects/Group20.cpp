@@ -45,13 +45,13 @@ void Group20Var1::Write(const Group20Var1& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(4);
 }
 
-Counter Group20Var1Serializer::Read(ReadOnlyBuffer& buff)
+Counter Group20Var1::ReadTarget(ReadOnlyBuffer& buff)
 {
   auto gv = Group20Var1::Read(buff);
   return CounterFactory::From(gv.flags, gv.value);
 }
 
-void Group20Var1Serializer::Write(const Counter& value, openpal::WriteBuffer& buff)
+void Group20Var1::WriteTarget(const Counter& value, openpal::WriteBuffer& buff)
 {
   Group20Var1::Write(ConvertGroup20Var1::Apply(value), buff);
 }
@@ -77,13 +77,13 @@ void Group20Var2::Write(const Group20Var2& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(2);
 }
 
-Counter Group20Var2Serializer::Read(ReadOnlyBuffer& buff)
+Counter Group20Var2::ReadTarget(ReadOnlyBuffer& buff)
 {
   auto gv = Group20Var2::Read(buff);
   return CounterFactory::From(gv.flags, gv.value);
 }
 
-void Group20Var2Serializer::Write(const Counter& value, openpal::WriteBuffer& buff)
+void Group20Var2::WriteTarget(const Counter& value, openpal::WriteBuffer& buff)
 {
   Group20Var2::Write(ConvertGroup20Var2::Apply(value), buff);
 }
@@ -105,13 +105,13 @@ void Group20Var5::Write(const Group20Var5& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(4);
 }
 
-Counter Group20Var5Serializer::Read(ReadOnlyBuffer& buff)
+Counter Group20Var5::ReadTarget(ReadOnlyBuffer& buff)
 {
   auto gv = Group20Var5::Read(buff);
   return CounterFactory::From(gv.value);
 }
 
-void Group20Var5Serializer::Write(const Counter& value, openpal::WriteBuffer& buff)
+void Group20Var5::WriteTarget(const Counter& value, openpal::WriteBuffer& buff)
 {
   Group20Var5::Write(ConvertGroup20Var5::Apply(value), buff);
 }
@@ -133,13 +133,13 @@ void Group20Var6::Write(const Group20Var6& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(2);
 }
 
-Counter Group20Var6Serializer::Read(ReadOnlyBuffer& buff)
+Counter Group20Var6::ReadTarget(ReadOnlyBuffer& buff)
 {
   auto gv = Group20Var6::Read(buff);
   return CounterFactory::From(gv.value);
 }
 
-void Group20Var6Serializer::Write(const Counter& value, openpal::WriteBuffer& buff)
+void Group20Var6::WriteTarget(const Counter& value, openpal::WriteBuffer& buff)
 {
   Group20Var6::Write(ConvertGroup20Var6::Apply(value), buff);
 }

@@ -39,23 +39,17 @@ struct Group3Var1
 struct Group3Var2
 {
   static const GroupVariationID ID;
-  typedef DoubleBitBinary Target;
   static const uint32_t SIZE = 1;
   static Group3Var2 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group3Var2&, openpal::WriteBuffer&);
 
-  uint8_t flags;
-};
-
-struct Group3Var2Serializer
-{
-
-  static DNP3Serializer<DoubleBitBinary> Inst() { return DNP3Serializer<DoubleBitBinary>(Group3Var2::ID, Group3Var2::SIZE, &Read, &Write); }
+  static DNP3Serializer<DoubleBitBinary> Inst() { return DNP3Serializer<DoubleBitBinary>(ID, SIZE, &ReadTarget, &WriteTarget); }
 
   typedef DoubleBitBinary Target;
-  static DoubleBitBinary Read(openpal::ReadOnlyBuffer&);
-  static void Write(const DoubleBitBinary&, openpal::WriteBuffer&);
+  static DoubleBitBinary ReadTarget(openpal::ReadOnlyBuffer&);
+  static void WriteTarget(const DoubleBitBinary&, openpal::WriteBuffer&);
 
+  uint8_t flags;
 };
 
 
