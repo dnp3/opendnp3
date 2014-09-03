@@ -28,22 +28,22 @@ namespace opendnp3 {
 
 struct Group3Var0
 {
-  static const GroupVariationID ID;
+  static GroupVariationID ID() { return GroupVariationID(3,0); }
 };
 
 struct Group3Var1
 {
-  static const GroupVariationID ID;
+  static GroupVariationID ID() { return GroupVariationID(3,1); }
 };
 
 struct Group3Var2
 {
-  static const GroupVariationID ID;
-  static const uint32_t SIZE = 1;
+  static GroupVariationID ID() { return GroupVariationID(3,2); }
+  static uint32_t Size() { return 1; }
   static Group3Var2 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group3Var2&, openpal::WriteBuffer&);
 
-  static DNP3Serializer<DoubleBitBinary> Inst() { return DNP3Serializer<DoubleBitBinary>(ID, SIZE, &ReadTarget, &WriteTarget); }
+  static DNP3Serializer<DoubleBitBinary> Inst() { return DNP3Serializer<DoubleBitBinary>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef DoubleBitBinary Target;
   static DoubleBitBinary ReadTarget(openpal::ReadOnlyBuffer&);

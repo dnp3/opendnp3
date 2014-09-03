@@ -25,8 +25,6 @@ using namespace openpal;
 
 namespace opendnp3 {
 
-const GroupVariationID  Group20Var1::ID(20,1);
-
 Group20Var1 Group20Var1::Read(ReadOnlyBuffer& buffer)
 {
   Group20Var1 obj;
@@ -45,6 +43,7 @@ void Group20Var1::Write(const Group20Var1& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(4);
 }
 
+
 Counter Group20Var1::ReadTarget(ReadOnlyBuffer& buff)
 {
   auto gv = Group20Var1::Read(buff);
@@ -56,8 +55,6 @@ void Group20Var1::WriteTarget(const Counter& value, openpal::WriteBuffer& buff)
   Group20Var1::Write(ConvertGroup20Var1::Apply(value), buff);
 }
 
-
-const GroupVariationID  Group20Var2::ID(20,2);
 
 Group20Var2 Group20Var2::Read(ReadOnlyBuffer& buffer)
 {
@@ -77,6 +74,7 @@ void Group20Var2::Write(const Group20Var2& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(2);
 }
 
+
 Counter Group20Var2::ReadTarget(ReadOnlyBuffer& buff)
 {
   auto gv = Group20Var2::Read(buff);
@@ -88,8 +86,6 @@ void Group20Var2::WriteTarget(const Counter& value, openpal::WriteBuffer& buff)
   Group20Var2::Write(ConvertGroup20Var2::Apply(value), buff);
 }
 
-
-const GroupVariationID  Group20Var5::ID(20,5);
 
 Group20Var5 Group20Var5::Read(ReadOnlyBuffer& buffer)
 {
@@ -105,6 +101,7 @@ void Group20Var5::Write(const Group20Var5& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(4);
 }
 
+
 Counter Group20Var5::ReadTarget(ReadOnlyBuffer& buff)
 {
   auto gv = Group20Var5::Read(buff);
@@ -116,8 +113,6 @@ void Group20Var5::WriteTarget(const Counter& value, openpal::WriteBuffer& buff)
   Group20Var5::Write(ConvertGroup20Var5::Apply(value), buff);
 }
 
-
-const GroupVariationID  Group20Var6::ID(20,6);
 
 Group20Var6 Group20Var6::Read(ReadOnlyBuffer& buffer)
 {
@@ -132,6 +127,7 @@ void Group20Var6::Write(const Group20Var6& arg, openpal::WriteBuffer& buffer)
   UInt16::Write(buffer, arg.value);
   buffer.Advance(2);
 }
+
 
 Counter Group20Var6::ReadTarget(ReadOnlyBuffer& buff)
 {

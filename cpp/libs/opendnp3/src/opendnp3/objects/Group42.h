@@ -28,12 +28,12 @@ namespace opendnp3 {
 
 struct Group42Var1
 {
-  static const GroupVariationID ID;
-  static const uint32_t SIZE = 5;
+  static GroupVariationID ID() { return GroupVariationID(42,1); }
+  static uint32_t Size() { return 5; }
   static Group42Var1 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group42Var1&, openpal::WriteBuffer&);
 
-  static DNP3Serializer<AnalogOutputStatus> Inst() { return DNP3Serializer<AnalogOutputStatus>(ID, SIZE, &ReadTarget, &WriteTarget); }
+  static DNP3Serializer<AnalogOutputStatus> Inst() { return DNP3Serializer<AnalogOutputStatus>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef AnalogOutputStatus Target;
   static AnalogOutputStatus ReadTarget(openpal::ReadOnlyBuffer&);
@@ -46,12 +46,12 @@ struct Group42Var1
 
 struct Group42Var2
 {
-  static const GroupVariationID ID;
-  static const uint32_t SIZE = 3;
+  static GroupVariationID ID() { return GroupVariationID(42,2); }
+  static uint32_t Size() { return 3; }
   static Group42Var2 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group42Var2&, openpal::WriteBuffer&);
 
-  static DNP3Serializer<AnalogOutputStatus> Inst() { return DNP3Serializer<AnalogOutputStatus>(ID, SIZE, &ReadTarget, &WriteTarget); }
+  static DNP3Serializer<AnalogOutputStatus> Inst() { return DNP3Serializer<AnalogOutputStatus>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef AnalogOutputStatus Target;
   static AnalogOutputStatus ReadTarget(openpal::ReadOnlyBuffer&);
@@ -64,12 +64,12 @@ struct Group42Var2
 
 struct Group42Var3
 {
-  static const GroupVariationID ID;
-  static const uint32_t SIZE = 11;
+  static GroupVariationID ID() { return GroupVariationID(42,3); }
+  static uint32_t Size() { return 11; }
   static Group42Var3 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group42Var3&, openpal::WriteBuffer&);
 
-  static DNP3Serializer<AnalogOutputStatus> Inst() { return DNP3Serializer<AnalogOutputStatus>(ID, SIZE, &ReadTarget, &WriteTarget); }
+  static DNP3Serializer<AnalogOutputStatus> Inst() { return DNP3Serializer<AnalogOutputStatus>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef AnalogOutputStatus Target;
   static AnalogOutputStatus ReadTarget(openpal::ReadOnlyBuffer&);
@@ -83,12 +83,12 @@ struct Group42Var3
 
 struct Group42Var4
 {
-  static const GroupVariationID ID;
-  static const uint32_t SIZE = 9;
+  static GroupVariationID ID() { return GroupVariationID(42,4); }
+  static uint32_t Size() { return 9; }
   static Group42Var4 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group42Var4&, openpal::WriteBuffer&);
 
-  static DNP3Serializer<AnalogOutputStatus> Inst() { return DNP3Serializer<AnalogOutputStatus>(ID, SIZE, &ReadTarget, &WriteTarget); }
+  static DNP3Serializer<AnalogOutputStatus> Inst() { return DNP3Serializer<AnalogOutputStatus>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef AnalogOutputStatus Target;
   static AnalogOutputStatus ReadTarget(openpal::ReadOnlyBuffer&);
@@ -102,12 +102,12 @@ struct Group42Var4
 
 struct Group42Var5
 {
-  static const GroupVariationID ID;
-  static const uint32_t SIZE = 5;
+  static GroupVariationID ID() { return GroupVariationID(42,5); }
+  static uint32_t Size() { return 5; }
   static Group42Var5 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group42Var5&, openpal::WriteBuffer&);
 
-  static DNP3Serializer<AnalogOutputStatus> Inst() { return DNP3Serializer<AnalogOutputStatus>(ID, SIZE, &ReadTarget, &WriteTarget); }
+  static DNP3Serializer<AnalogOutputStatus> Inst() { return DNP3Serializer<AnalogOutputStatus>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef AnalogOutputStatus Target;
   static AnalogOutputStatus ReadTarget(openpal::ReadOnlyBuffer&);
@@ -120,12 +120,12 @@ struct Group42Var5
 
 struct Group42Var6
 {
-  static const GroupVariationID ID;
-  static const uint32_t SIZE = 9;
+  static GroupVariationID ID() { return GroupVariationID(42,6); }
+  static uint32_t Size() { return 9; }
   static Group42Var6 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group42Var6&, openpal::WriteBuffer&);
 
-  static DNP3Serializer<AnalogOutputStatus> Inst() { return DNP3Serializer<AnalogOutputStatus>(ID, SIZE, &ReadTarget, &WriteTarget); }
+  static DNP3Serializer<AnalogOutputStatus> Inst() { return DNP3Serializer<AnalogOutputStatus>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef AnalogOutputStatus Target;
   static AnalogOutputStatus ReadTarget(openpal::ReadOnlyBuffer&);
@@ -138,12 +138,12 @@ struct Group42Var6
 
 struct Group42Var7
 {
-  static const GroupVariationID ID;
-  static const uint32_t SIZE = 11;
+  static GroupVariationID ID() { return GroupVariationID(42,7); }
+  static uint32_t Size() { return 11; }
   static Group42Var7 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group42Var7&, openpal::WriteBuffer&);
 
-  static DNP3Serializer<AnalogOutputStatus> Inst() { return DNP3Serializer<AnalogOutputStatus>(ID, SIZE, &ReadTarget, &WriteTarget); }
+  static DNP3Serializer<AnalogOutputStatus> Inst() { return DNP3Serializer<AnalogOutputStatus>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef AnalogOutputStatus Target;
   static AnalogOutputStatus ReadTarget(openpal::ReadOnlyBuffer&);
@@ -157,12 +157,12 @@ struct Group42Var7
 
 struct Group42Var8
 {
-  static const GroupVariationID ID;
-  static const uint32_t SIZE = 15;
+  static GroupVariationID ID() { return GroupVariationID(42,8); }
+  static uint32_t Size() { return 15; }
   static Group42Var8 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group42Var8&, openpal::WriteBuffer&);
 
-  static DNP3Serializer<AnalogOutputStatus> Inst() { return DNP3Serializer<AnalogOutputStatus>(ID, SIZE, &ReadTarget, &WriteTarget); }
+  static DNP3Serializer<AnalogOutputStatus> Inst() { return DNP3Serializer<AnalogOutputStatus>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef AnalogOutputStatus Target;
   static AnalogOutputStatus ReadTarget(openpal::ReadOnlyBuffer&);

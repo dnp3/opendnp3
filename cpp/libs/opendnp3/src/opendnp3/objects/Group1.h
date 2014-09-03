@@ -28,17 +28,17 @@ namespace opendnp3 {
 
 struct Group1Var0
 {
-  static const GroupVariationID ID;
+  static GroupVariationID ID() { return GroupVariationID(1,0); }
 };
 
 struct Group1Var2
 {
-  static const GroupVariationID ID;
-  static const uint32_t SIZE = 1;
+  static GroupVariationID ID() { return GroupVariationID(1,2); }
+  static uint32_t Size() { return 1; }
   static Group1Var2 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group1Var2&, openpal::WriteBuffer&);
 
-  static DNP3Serializer<Binary> Inst() { return DNP3Serializer<Binary>(ID, SIZE, &ReadTarget, &WriteTarget); }
+  static DNP3Serializer<Binary> Inst() { return DNP3Serializer<Binary>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef Binary Target;
   static Binary ReadTarget(openpal::ReadOnlyBuffer&);
@@ -49,7 +49,7 @@ struct Group1Var2
 
 struct Group1Var1
 {
-  static const GroupVariationID ID;
+  static GroupVariationID ID() { return GroupVariationID(1,1); }
 };
 
 

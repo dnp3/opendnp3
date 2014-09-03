@@ -28,17 +28,17 @@ namespace opendnp3 {
 
 struct Group2Var0
 {
-  static const GroupVariationID ID;
+  static GroupVariationID ID() { return GroupVariationID(2,0); }
 };
 
 struct Group2Var1
 {
-  static const GroupVariationID ID;
-  static const uint32_t SIZE = 1;
+  static GroupVariationID ID() { return GroupVariationID(2,1); }
+  static uint32_t Size() { return 1; }
   static Group2Var1 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group2Var1&, openpal::WriteBuffer&);
 
-  static DNP3Serializer<Binary> Inst() { return DNP3Serializer<Binary>(ID, SIZE, &ReadTarget, &WriteTarget); }
+  static DNP3Serializer<Binary> Inst() { return DNP3Serializer<Binary>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef Binary Target;
   static Binary ReadTarget(openpal::ReadOnlyBuffer&);
@@ -49,12 +49,12 @@ struct Group2Var1
 
 struct Group2Var2
 {
-  static const GroupVariationID ID;
-  static const uint32_t SIZE = 7;
+  static GroupVariationID ID() { return GroupVariationID(2,2); }
+  static uint32_t Size() { return 7; }
   static Group2Var2 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group2Var2&, openpal::WriteBuffer&);
 
-  static DNP3Serializer<Binary> Inst() { return DNP3Serializer<Binary>(ID, SIZE, &ReadTarget, &WriteTarget); }
+  static DNP3Serializer<Binary> Inst() { return DNP3Serializer<Binary>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef Binary Target;
   static Binary ReadTarget(openpal::ReadOnlyBuffer&);
@@ -66,12 +66,12 @@ struct Group2Var2
 
 struct Group2Var3
 {
-  static const GroupVariationID ID;
-  static const uint32_t SIZE = 3;
+  static GroupVariationID ID() { return GroupVariationID(2,3); }
+  static uint32_t Size() { return 3; }
   static Group2Var3 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group2Var3&, openpal::WriteBuffer&);
 
-  static DNP3Serializer<Binary> Inst() { return DNP3Serializer<Binary>(ID, SIZE, &ReadTarget, &WriteTarget); }
+  static DNP3Serializer<Binary> Inst() { return DNP3Serializer<Binary>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef Binary Target;
   static Binary ReadTarget(openpal::ReadOnlyBuffer&);

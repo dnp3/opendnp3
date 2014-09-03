@@ -28,12 +28,12 @@ namespace opendnp3 {
 
 struct Group32Var1
 {
-  static const GroupVariationID ID;
-  static const uint32_t SIZE = 5;
+  static GroupVariationID ID() { return GroupVariationID(32,1); }
+  static uint32_t Size() { return 5; }
   static Group32Var1 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group32Var1&, openpal::WriteBuffer&);
 
-  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID, SIZE, &ReadTarget, &WriteTarget); }
+  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef Analog Target;
   static Analog ReadTarget(openpal::ReadOnlyBuffer&);
@@ -46,12 +46,12 @@ struct Group32Var1
 
 struct Group32Var2
 {
-  static const GroupVariationID ID;
-  static const uint32_t SIZE = 3;
+  static GroupVariationID ID() { return GroupVariationID(32,2); }
+  static uint32_t Size() { return 3; }
   static Group32Var2 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group32Var2&, openpal::WriteBuffer&);
 
-  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID, SIZE, &ReadTarget, &WriteTarget); }
+  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef Analog Target;
   static Analog ReadTarget(openpal::ReadOnlyBuffer&);
@@ -64,12 +64,12 @@ struct Group32Var2
 
 struct Group32Var3
 {
-  static const GroupVariationID ID;
-  static const uint32_t SIZE = 11;
+  static GroupVariationID ID() { return GroupVariationID(32,3); }
+  static uint32_t Size() { return 11; }
   static Group32Var3 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group32Var3&, openpal::WriteBuffer&);
 
-  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID, SIZE, &ReadTarget, &WriteTarget); }
+  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef Analog Target;
   static Analog ReadTarget(openpal::ReadOnlyBuffer&);
@@ -83,12 +83,12 @@ struct Group32Var3
 
 struct Group32Var4
 {
-  static const GroupVariationID ID;
-  static const uint32_t SIZE = 9;
+  static GroupVariationID ID() { return GroupVariationID(32,4); }
+  static uint32_t Size() { return 9; }
   static Group32Var4 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group32Var4&, openpal::WriteBuffer&);
 
-  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID, SIZE, &ReadTarget, &WriteTarget); }
+  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef Analog Target;
   static Analog ReadTarget(openpal::ReadOnlyBuffer&);
@@ -102,12 +102,12 @@ struct Group32Var4
 
 struct Group32Var5
 {
-  static const GroupVariationID ID;
-  static const uint32_t SIZE = 5;
+  static GroupVariationID ID() { return GroupVariationID(32,5); }
+  static uint32_t Size() { return 5; }
   static Group32Var5 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group32Var5&, openpal::WriteBuffer&);
 
-  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID, SIZE, &ReadTarget, &WriteTarget); }
+  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef Analog Target;
   static Analog ReadTarget(openpal::ReadOnlyBuffer&);
@@ -120,12 +120,12 @@ struct Group32Var5
 
 struct Group32Var6
 {
-  static const GroupVariationID ID;
-  static const uint32_t SIZE = 9;
+  static GroupVariationID ID() { return GroupVariationID(32,6); }
+  static uint32_t Size() { return 9; }
   static Group32Var6 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group32Var6&, openpal::WriteBuffer&);
 
-  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID, SIZE, &ReadTarget, &WriteTarget); }
+  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef Analog Target;
   static Analog ReadTarget(openpal::ReadOnlyBuffer&);
@@ -138,12 +138,12 @@ struct Group32Var6
 
 struct Group32Var7
 {
-  static const GroupVariationID ID;
-  static const uint32_t SIZE = 11;
+  static GroupVariationID ID() { return GroupVariationID(32,7); }
+  static uint32_t Size() { return 11; }
   static Group32Var7 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group32Var7&, openpal::WriteBuffer&);
 
-  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID, SIZE, &ReadTarget, &WriteTarget); }
+  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef Analog Target;
   static Analog ReadTarget(openpal::ReadOnlyBuffer&);
@@ -157,12 +157,12 @@ struct Group32Var7
 
 struct Group32Var8
 {
-  static const GroupVariationID ID;
-  static const uint32_t SIZE = 15;
+  static GroupVariationID ID() { return GroupVariationID(32,8); }
+  static uint32_t Size() { return 15; }
   static Group32Var8 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group32Var8&, openpal::WriteBuffer&);
 
-  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID, SIZE, &ReadTarget, &WriteTarget); }
+  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef Analog Target;
   static Analog ReadTarget(openpal::ReadOnlyBuffer&);

@@ -57,19 +57,19 @@ void WriteClassHeaders(APDURequest& request, const ClassField& classes)
 	auto writer = request.GetWriter();
 	if (classes.HasClass1())
 	{
-		writer.WriteHeader(Group60Var2::ID, QualifierCode::ALL_OBJECTS);
+		writer.WriteHeader(Group60Var2::ID(), QualifierCode::ALL_OBJECTS);
 	}
 	if (classes.HasClass2())
 	{
-		writer.WriteHeader(Group60Var3::ID, QualifierCode::ALL_OBJECTS);
+		writer.WriteHeader(Group60Var3::ID(), QualifierCode::ALL_OBJECTS);
 	}
 	if (classes.HasClass3())
 	{
-		writer.WriteHeader(Group60Var4::ID, QualifierCode::ALL_OBJECTS);
+		writer.WriteHeader(Group60Var4::ID(), QualifierCode::ALL_OBJECTS);
 	}
 	if (classes.HasClass0())
 	{
-		writer.WriteHeader(Group60Var1::ID, QualifierCode::ALL_OBJECTS);
+		writer.WriteHeader(Group60Var1::ID(), QualifierCode::ALL_OBJECTS);
 	}
 }
 

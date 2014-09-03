@@ -25,8 +25,6 @@ using namespace openpal;
 
 namespace opendnp3 {
 
-const GroupVariationID  Group32Var1::ID(32,1);
-
 Group32Var1 Group32Var1::Read(ReadOnlyBuffer& buffer)
 {
   Group32Var1 obj;
@@ -45,6 +43,7 @@ void Group32Var1::Write(const Group32Var1& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(4);
 }
 
+
 Analog Group32Var1::ReadTarget(ReadOnlyBuffer& buff)
 {
   auto gv = Group32Var1::Read(buff);
@@ -56,8 +55,6 @@ void Group32Var1::WriteTarget(const Analog& value, openpal::WriteBuffer& buff)
   Group32Var1::Write(ConvertGroup32Var1::Apply(value), buff);
 }
 
-
-const GroupVariationID  Group32Var2::ID(32,2);
 
 Group32Var2 Group32Var2::Read(ReadOnlyBuffer& buffer)
 {
@@ -77,6 +74,7 @@ void Group32Var2::Write(const Group32Var2& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(2);
 }
 
+
 Analog Group32Var2::ReadTarget(ReadOnlyBuffer& buff)
 {
   auto gv = Group32Var2::Read(buff);
@@ -88,8 +86,6 @@ void Group32Var2::WriteTarget(const Analog& value, openpal::WriteBuffer& buff)
   Group32Var2::Write(ConvertGroup32Var2::Apply(value), buff);
 }
 
-
-const GroupVariationID  Group32Var3::ID(32,3);
 
 Group32Var3 Group32Var3::Read(ReadOnlyBuffer& buffer)
 {
@@ -113,6 +109,7 @@ void Group32Var3::Write(const Group32Var3& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(6);
 }
 
+
 Analog Group32Var3::ReadTarget(ReadOnlyBuffer& buff)
 {
   auto gv = Group32Var3::Read(buff);
@@ -124,8 +121,6 @@ void Group32Var3::WriteTarget(const Analog& value, openpal::WriteBuffer& buff)
   Group32Var3::Write(ConvertGroup32Var3::Apply(value), buff);
 }
 
-
-const GroupVariationID  Group32Var4::ID(32,4);
 
 Group32Var4 Group32Var4::Read(ReadOnlyBuffer& buffer)
 {
@@ -149,6 +144,7 @@ void Group32Var4::Write(const Group32Var4& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(6);
 }
 
+
 Analog Group32Var4::ReadTarget(ReadOnlyBuffer& buff)
 {
   auto gv = Group32Var4::Read(buff);
@@ -160,8 +156,6 @@ void Group32Var4::WriteTarget(const Analog& value, openpal::WriteBuffer& buff)
   Group32Var4::Write(ConvertGroup32Var4::Apply(value), buff);
 }
 
-
-const GroupVariationID  Group32Var5::ID(32,5);
 
 Group32Var5 Group32Var5::Read(ReadOnlyBuffer& buffer)
 {
@@ -181,6 +175,7 @@ void Group32Var5::Write(const Group32Var5& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(4);
 }
 
+
 Analog Group32Var5::ReadTarget(ReadOnlyBuffer& buff)
 {
   auto gv = Group32Var5::Read(buff);
@@ -192,8 +187,6 @@ void Group32Var5::WriteTarget(const Analog& value, openpal::WriteBuffer& buff)
   Group32Var5::Write(ConvertGroup32Var5::Apply(value), buff);
 }
 
-
-const GroupVariationID  Group32Var6::ID(32,6);
 
 Group32Var6 Group32Var6::Read(ReadOnlyBuffer& buffer)
 {
@@ -213,6 +206,7 @@ void Group32Var6::Write(const Group32Var6& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(8);
 }
 
+
 Analog Group32Var6::ReadTarget(ReadOnlyBuffer& buff)
 {
   auto gv = Group32Var6::Read(buff);
@@ -224,8 +218,6 @@ void Group32Var6::WriteTarget(const Analog& value, openpal::WriteBuffer& buff)
   Group32Var6::Write(ConvertGroup32Var6::Apply(value), buff);
 }
 
-
-const GroupVariationID  Group32Var7::ID(32,7);
 
 Group32Var7 Group32Var7::Read(ReadOnlyBuffer& buffer)
 {
@@ -249,6 +241,7 @@ void Group32Var7::Write(const Group32Var7& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(6);
 }
 
+
 Analog Group32Var7::ReadTarget(ReadOnlyBuffer& buff)
 {
   auto gv = Group32Var7::Read(buff);
@@ -260,8 +253,6 @@ void Group32Var7::WriteTarget(const Analog& value, openpal::WriteBuffer& buff)
   Group32Var7::Write(ConvertGroup32Var7::Apply(value), buff);
 }
 
-
-const GroupVariationID  Group32Var8::ID(32,8);
 
 Group32Var8 Group32Var8::Read(ReadOnlyBuffer& buffer)
 {
@@ -284,6 +275,7 @@ void Group32Var8::Write(const Group32Var8& arg, openpal::WriteBuffer& buffer)
   UInt48::Write(buffer, arg.time);
   buffer.Advance(6);
 }
+
 
 Analog Group32Var8::ReadTarget(ReadOnlyBuffer& buff)
 {

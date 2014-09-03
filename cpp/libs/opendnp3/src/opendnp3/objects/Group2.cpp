@@ -25,10 +25,6 @@ using namespace openpal;
 
 namespace opendnp3 {
 
-const GroupVariationID  Group2Var0::ID(2,0);
-
-const GroupVariationID  Group2Var1::ID(2,1);
-
 Group2Var1 Group2Var1::Read(ReadOnlyBuffer& buffer)
 {
   Group2Var1 obj;
@@ -43,6 +39,7 @@ void Group2Var1::Write(const Group2Var1& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(1);
 }
 
+
 Binary Group2Var1::ReadTarget(ReadOnlyBuffer& buff)
 {
   auto gv = Group2Var1::Read(buff);
@@ -54,8 +51,6 @@ void Group2Var1::WriteTarget(const Binary& value, openpal::WriteBuffer& buff)
   Group2Var1::Write(ConvertGroup2Var1::Apply(value), buff);
 }
 
-
-const GroupVariationID  Group2Var2::ID(2,2);
 
 Group2Var2 Group2Var2::Read(ReadOnlyBuffer& buffer)
 {
@@ -75,6 +70,7 @@ void Group2Var2::Write(const Group2Var2& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(6);
 }
 
+
 Binary Group2Var2::ReadTarget(ReadOnlyBuffer& buff)
 {
   auto gv = Group2Var2::Read(buff);
@@ -86,8 +82,6 @@ void Group2Var2::WriteTarget(const Binary& value, openpal::WriteBuffer& buff)
   Group2Var2::Write(ConvertGroup2Var2::Apply(value), buff);
 }
 
-
-const GroupVariationID  Group2Var3::ID(2,3);
 
 Group2Var3 Group2Var3::Read(ReadOnlyBuffer& buffer)
 {
@@ -106,6 +100,7 @@ void Group2Var3::Write(const Group2Var3& arg, openpal::WriteBuffer& buffer)
   UInt16::Write(buffer, arg.time);
   buffer.Advance(2);
 }
+
 
 Binary Group2Var3::ReadTarget(ReadOnlyBuffer& buff)
 {

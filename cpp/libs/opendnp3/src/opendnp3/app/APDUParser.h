@@ -546,7 +546,7 @@ APDUParser::Result APDUParser::ParseRangeFixedSize(const HeaderRecord& record, c
 template <class Descriptor>
 APDUParser::Result APDUParser::ParseCountOf(openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, const HeaderRecord& record, uint32_t count, IAPDUHandler* pHandler)
 {
-	uint32_t size = count * Descriptor::SIZE;
+	uint32_t size = count * Descriptor::Size();
 	if (buffer.Size() < size)
 	{
 		SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified objects");

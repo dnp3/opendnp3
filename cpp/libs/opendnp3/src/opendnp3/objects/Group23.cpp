@@ -25,8 +25,6 @@ using namespace openpal;
 
 namespace opendnp3 {
 
-const GroupVariationID  Group23Var1::ID(23,1);
-
 Group23Var1 Group23Var1::Read(ReadOnlyBuffer& buffer)
 {
   Group23Var1 obj;
@@ -45,6 +43,7 @@ void Group23Var1::Write(const Group23Var1& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(4);
 }
 
+
 FrozenCounter Group23Var1::ReadTarget(ReadOnlyBuffer& buff)
 {
   auto gv = Group23Var1::Read(buff);
@@ -56,8 +55,6 @@ void Group23Var1::WriteTarget(const FrozenCounter& value, openpal::WriteBuffer& 
   Group23Var1::Write(ConvertGroup23Var1::Apply(value), buff);
 }
 
-
-const GroupVariationID  Group23Var2::ID(23,2);
 
 Group23Var2 Group23Var2::Read(ReadOnlyBuffer& buffer)
 {
@@ -77,6 +74,7 @@ void Group23Var2::Write(const Group23Var2& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(2);
 }
 
+
 FrozenCounter Group23Var2::ReadTarget(ReadOnlyBuffer& buff)
 {
   auto gv = Group23Var2::Read(buff);
@@ -88,8 +86,6 @@ void Group23Var2::WriteTarget(const FrozenCounter& value, openpal::WriteBuffer& 
   Group23Var2::Write(ConvertGroup23Var2::Apply(value), buff);
 }
 
-
-const GroupVariationID  Group23Var5::ID(23,5);
 
 Group23Var5 Group23Var5::Read(ReadOnlyBuffer& buffer)
 {
@@ -113,6 +109,7 @@ void Group23Var5::Write(const Group23Var5& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(6);
 }
 
+
 FrozenCounter Group23Var5::ReadTarget(ReadOnlyBuffer& buff)
 {
   auto gv = Group23Var5::Read(buff);
@@ -124,8 +121,6 @@ void Group23Var5::WriteTarget(const FrozenCounter& value, openpal::WriteBuffer& 
   Group23Var5::Write(ConvertGroup23Var5::Apply(value), buff);
 }
 
-
-const GroupVariationID  Group23Var6::ID(23,6);
 
 Group23Var6 Group23Var6::Read(ReadOnlyBuffer& buffer)
 {
@@ -148,6 +143,7 @@ void Group23Var6::Write(const Group23Var6& arg, openpal::WriteBuffer& buffer)
   UInt48::Write(buffer, arg.time);
   buffer.Advance(6);
 }
+
 
 FrozenCounter Group23Var6::ReadTarget(ReadOnlyBuffer& buff)
 {

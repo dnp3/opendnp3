@@ -28,12 +28,12 @@ namespace opendnp3 {
 
 struct Group22Var1
 {
-  static const GroupVariationID ID;
-  static const uint32_t SIZE = 5;
+  static GroupVariationID ID() { return GroupVariationID(22,1); }
+  static uint32_t Size() { return 5; }
   static Group22Var1 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group22Var1&, openpal::WriteBuffer&);
 
-  static DNP3Serializer<Counter> Inst() { return DNP3Serializer<Counter>(ID, SIZE, &ReadTarget, &WriteTarget); }
+  static DNP3Serializer<Counter> Inst() { return DNP3Serializer<Counter>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef Counter Target;
   static Counter ReadTarget(openpal::ReadOnlyBuffer&);
@@ -46,12 +46,12 @@ struct Group22Var1
 
 struct Group22Var2
 {
-  static const GroupVariationID ID;
-  static const uint32_t SIZE = 3;
+  static GroupVariationID ID() { return GroupVariationID(22,2); }
+  static uint32_t Size() { return 3; }
   static Group22Var2 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group22Var2&, openpal::WriteBuffer&);
 
-  static DNP3Serializer<Counter> Inst() { return DNP3Serializer<Counter>(ID, SIZE, &ReadTarget, &WriteTarget); }
+  static DNP3Serializer<Counter> Inst() { return DNP3Serializer<Counter>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef Counter Target;
   static Counter ReadTarget(openpal::ReadOnlyBuffer&);
@@ -64,12 +64,12 @@ struct Group22Var2
 
 struct Group22Var5
 {
-  static const GroupVariationID ID;
-  static const uint32_t SIZE = 11;
+  static GroupVariationID ID() { return GroupVariationID(22,5); }
+  static uint32_t Size() { return 11; }
   static Group22Var5 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group22Var5&, openpal::WriteBuffer&);
 
-  static DNP3Serializer<Counter> Inst() { return DNP3Serializer<Counter>(ID, SIZE, &ReadTarget, &WriteTarget); }
+  static DNP3Serializer<Counter> Inst() { return DNP3Serializer<Counter>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef Counter Target;
   static Counter ReadTarget(openpal::ReadOnlyBuffer&);
@@ -83,12 +83,12 @@ struct Group22Var5
 
 struct Group22Var6
 {
-  static const GroupVariationID ID;
-  static const uint32_t SIZE = 9;
+  static GroupVariationID ID() { return GroupVariationID(22,6); }
+  static uint32_t Size() { return 9; }
   static Group22Var6 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group22Var6&, openpal::WriteBuffer&);
 
-  static DNP3Serializer<Counter> Inst() { return DNP3Serializer<Counter>(ID, SIZE, &ReadTarget, &WriteTarget); }
+  static DNP3Serializer<Counter> Inst() { return DNP3Serializer<Counter>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef Counter Target;
   static Counter ReadTarget(openpal::ReadOnlyBuffer&);

@@ -25,8 +25,6 @@ using namespace openpal;
 
 namespace opendnp3 {
 
-const GroupVariationID  Group40Var1::ID(40,1);
-
 Group40Var1 Group40Var1::Read(ReadOnlyBuffer& buffer)
 {
   Group40Var1 obj;
@@ -45,6 +43,7 @@ void Group40Var1::Write(const Group40Var1& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(4);
 }
 
+
 AnalogOutputStatus Group40Var1::ReadTarget(ReadOnlyBuffer& buff)
 {
   auto gv = Group40Var1::Read(buff);
@@ -56,8 +55,6 @@ void Group40Var1::WriteTarget(const AnalogOutputStatus& value, openpal::WriteBuf
   Group40Var1::Write(ConvertGroup40Var1::Apply(value), buff);
 }
 
-
-const GroupVariationID  Group40Var2::ID(40,2);
 
 Group40Var2 Group40Var2::Read(ReadOnlyBuffer& buffer)
 {
@@ -77,6 +74,7 @@ void Group40Var2::Write(const Group40Var2& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(2);
 }
 
+
 AnalogOutputStatus Group40Var2::ReadTarget(ReadOnlyBuffer& buff)
 {
   auto gv = Group40Var2::Read(buff);
@@ -88,8 +86,6 @@ void Group40Var2::WriteTarget(const AnalogOutputStatus& value, openpal::WriteBuf
   Group40Var2::Write(ConvertGroup40Var2::Apply(value), buff);
 }
 
-
-const GroupVariationID  Group40Var3::ID(40,3);
 
 Group40Var3 Group40Var3::Read(ReadOnlyBuffer& buffer)
 {
@@ -109,6 +105,7 @@ void Group40Var3::Write(const Group40Var3& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(4);
 }
 
+
 AnalogOutputStatus Group40Var3::ReadTarget(ReadOnlyBuffer& buff)
 {
   auto gv = Group40Var3::Read(buff);
@@ -120,8 +117,6 @@ void Group40Var3::WriteTarget(const AnalogOutputStatus& value, openpal::WriteBuf
   Group40Var3::Write(ConvertGroup40Var3::Apply(value), buff);
 }
 
-
-const GroupVariationID  Group40Var4::ID(40,4);
 
 Group40Var4 Group40Var4::Read(ReadOnlyBuffer& buffer)
 {
@@ -140,6 +135,7 @@ void Group40Var4::Write(const Group40Var4& arg, openpal::WriteBuffer& buffer)
   DoubleFloat::Write(buffer, arg.value);
   buffer.Advance(8);
 }
+
 
 AnalogOutputStatus Group40Var4::ReadTarget(ReadOnlyBuffer& buff)
 {

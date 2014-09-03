@@ -28,12 +28,12 @@ namespace opendnp3 {
 
 struct Group30Var1
 {
-  static const GroupVariationID ID;
-  static const uint32_t SIZE = 5;
+  static GroupVariationID ID() { return GroupVariationID(30,1); }
+  static uint32_t Size() { return 5; }
   static Group30Var1 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group30Var1&, openpal::WriteBuffer&);
 
-  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID, SIZE, &ReadTarget, &WriteTarget); }
+  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef Analog Target;
   static Analog ReadTarget(openpal::ReadOnlyBuffer&);
@@ -46,12 +46,12 @@ struct Group30Var1
 
 struct Group30Var2
 {
-  static const GroupVariationID ID;
-  static const uint32_t SIZE = 3;
+  static GroupVariationID ID() { return GroupVariationID(30,2); }
+  static uint32_t Size() { return 3; }
   static Group30Var2 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group30Var2&, openpal::WriteBuffer&);
 
-  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID, SIZE, &ReadTarget, &WriteTarget); }
+  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef Analog Target;
   static Analog ReadTarget(openpal::ReadOnlyBuffer&);
@@ -64,12 +64,12 @@ struct Group30Var2
 
 struct Group30Var3
 {
-  static const GroupVariationID ID;
-  static const uint32_t SIZE = 4;
+  static GroupVariationID ID() { return GroupVariationID(30,3); }
+  static uint32_t Size() { return 4; }
   static Group30Var3 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group30Var3&, openpal::WriteBuffer&);
 
-  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID, SIZE, &ReadTarget, &WriteTarget); }
+  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef Analog Target;
   static Analog ReadTarget(openpal::ReadOnlyBuffer&);
@@ -81,12 +81,12 @@ struct Group30Var3
 
 struct Group30Var4
 {
-  static const GroupVariationID ID;
-  static const uint32_t SIZE = 2;
+  static GroupVariationID ID() { return GroupVariationID(30,4); }
+  static uint32_t Size() { return 2; }
   static Group30Var4 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group30Var4&, openpal::WriteBuffer&);
 
-  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID, SIZE, &ReadTarget, &WriteTarget); }
+  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef Analog Target;
   static Analog ReadTarget(openpal::ReadOnlyBuffer&);
@@ -98,12 +98,12 @@ struct Group30Var4
 
 struct Group30Var5
 {
-  static const GroupVariationID ID;
-  static const uint32_t SIZE = 5;
+  static GroupVariationID ID() { return GroupVariationID(30,5); }
+  static uint32_t Size() { return 5; }
   static Group30Var5 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group30Var5&, openpal::WriteBuffer&);
 
-  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID, SIZE, &ReadTarget, &WriteTarget); }
+  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef Analog Target;
   static Analog ReadTarget(openpal::ReadOnlyBuffer&);
@@ -116,12 +116,12 @@ struct Group30Var5
 
 struct Group30Var6
 {
-  static const GroupVariationID ID;
-  static const uint32_t SIZE = 9;
+  static GroupVariationID ID() { return GroupVariationID(30,6); }
+  static uint32_t Size() { return 9; }
   static Group30Var6 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group30Var6&, openpal::WriteBuffer&);
 
-  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID, SIZE, &ReadTarget, &WriteTarget); }
+  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef Analog Target;
   static Analog ReadTarget(openpal::ReadOnlyBuffer&);

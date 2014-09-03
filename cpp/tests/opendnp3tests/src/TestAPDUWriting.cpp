@@ -49,11 +49,11 @@ TEST_CASE(SUITE("AllObjectsAndRollback"))
 {
 	APDURequest request(APDUHelpers::Request(FunctionCode::READ));
 	auto writer = request.GetWriter();
-	writer.WriteHeader(Group60Var1::ID, QualifierCode::ALL_OBJECTS);
-	writer.WriteHeader(Group60Var2::ID, QualifierCode::ALL_OBJECTS);
+	writer.WriteHeader(Group60Var1::ID(), QualifierCode::ALL_OBJECTS);
+	writer.WriteHeader(Group60Var2::ID(), QualifierCode::ALL_OBJECTS);
 	writer.Mark();
-	writer.WriteHeader(Group60Var3::ID, QualifierCode::ALL_OBJECTS);
-	writer.WriteHeader(Group60Var4::ID, QualifierCode::ALL_OBJECTS);
+	writer.WriteHeader(Group60Var3::ID(), QualifierCode::ALL_OBJECTS);
+	writer.WriteHeader(Group60Var4::ID(), QualifierCode::ALL_OBJECTS);
 
 	REQUIRE("C0 01 3C 01 06 3C 02 06 3C 03 06 3C 04 06" ==  toHex(request.ToReadOnly()));
 
@@ -67,8 +67,8 @@ TEST_CASE(SUITE("AllObjectsReturnsFalseWhenFull"))
 	APDURequest request(APDUHelpers::Request(FunctionCode::READ, 6));
 	auto writer = request.GetWriter();
 
-	REQUIRE(writer.WriteHeader(Group60Var1::ID, QualifierCode::ALL_OBJECTS));
-	REQUIRE(!writer.WriteHeader(Group60Var1::ID, QualifierCode::ALL_OBJECTS));
+	REQUIRE(writer.WriteHeader(Group60Var1::ID(), QualifierCode::ALL_OBJECTS));
+	REQUIRE(!writer.WriteHeader(Group60Var1::ID(), QualifierCode::ALL_OBJECTS));
 
 	REQUIRE("C0 01 3C 01 06" ==  toHex(request.ToReadOnly()));
 }

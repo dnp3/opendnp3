@@ -25,8 +25,6 @@ using namespace openpal;
 
 namespace opendnp3 {
 
-const GroupVariationID  Group12Var1::ID(12,1);
-
 Group12Var1 Group12Var1::Read(ReadOnlyBuffer& buffer)
 {
   Group12Var1 obj;
@@ -56,6 +54,7 @@ void Group12Var1::Write(const Group12Var1& arg, openpal::WriteBuffer& buffer)
   UInt8::Write(buffer, CommandStatusToType(arg.status));
   buffer.Advance(1);
 }
+
 
 ControlRelayOutputBlock Group12Var1::ReadTarget(ReadOnlyBuffer& buff)
 {

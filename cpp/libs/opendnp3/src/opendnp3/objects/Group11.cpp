@@ -25,8 +25,6 @@ using namespace openpal;
 
 namespace opendnp3 {
 
-const GroupVariationID  Group11Var1::ID(11,1);
-
 Group11Var1 Group11Var1::Read(ReadOnlyBuffer& buffer)
 {
   Group11Var1 obj;
@@ -41,6 +39,7 @@ void Group11Var1::Write(const Group11Var1& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(1);
 }
 
+
 BinaryOutputStatus Group11Var1::ReadTarget(ReadOnlyBuffer& buff)
 {
   auto gv = Group11Var1::Read(buff);
@@ -52,8 +51,6 @@ void Group11Var1::WriteTarget(const BinaryOutputStatus& value, openpal::WriteBuf
   Group11Var1::Write(ConvertGroup11Var1::Apply(value), buff);
 }
 
-
-const GroupVariationID  Group11Var2::ID(11,2);
 
 Group11Var2 Group11Var2::Read(ReadOnlyBuffer& buffer)
 {
@@ -72,6 +69,7 @@ void Group11Var2::Write(const Group11Var2& arg, openpal::WriteBuffer& buffer)
   UInt48::Write(buffer, arg.time);
   buffer.Advance(6);
 }
+
 
 BinaryOutputStatus Group11Var2::ReadTarget(ReadOnlyBuffer& buff)
 {
