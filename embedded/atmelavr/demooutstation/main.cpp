@@ -23,6 +23,7 @@ using namespace openpal;
 void ToggleValuesEvery3Seconds(IExecutor* pExecutor, Database* pDatabase);
 
 const uint16_t NUM_BINARY = 5;
+const uint32_t MAX_APDU_SIZE = 249;
 int index = 0;
 bool value = true;
 
@@ -32,10 +33,20 @@ int GetFreeRAM () {
 	return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval);
 }
 
+OutstationConfig GetOutstationConfig()
+{
+	OutstationConfig config;
+	config.params.maxTxFragSize = MAX_APDU_SIZE;
+	config.params.maxRxFragSize = MAX_APDU_SIZE;
+	config.eventBufferConfig = EventBufferConfig(5,0,2);
+	config.params.allowUnsolicited = true;
+	config.defaultEventResponses.binary = EventBinaryResponse::Group2Var2;
+	config.defaultEventResponses.analog = EventAnalogResponse::Group32Var1;
+	return config;
+}
+
 int main()
-{	
-	const uint32_t MAX_APDU_SIZE = 249;
-	
+{			
 	cli();
 	
 	AVRExecutor exe(5,5); // maximum of 5 async operations and 5 timers
@@ -49,21 +60,13 @@ int main()
 	
 	// allow a max of 2 events
 	DynamicallyAllocatedEventBuffer eventBuffers(5);
-	Database database(staticBuffers.GetFacade());	
-		
-	OutstationConfig config;
-	config.params.maxTxFragSize = MAX_APDU_SIZE;
-	config.params.maxRxFragSize = MAX_APDU_SIZE;
-	config.eventBufferConfig = EventBufferConfig(5,0,2);
-	config.params.allowUnsolicited = true;	
-	config.defaultEventResponses.binary = EventBinaryResponse::Group2Var2;
-	config.defaultEventResponses.analog = EventAnalogResponse::Group32Var1;
+	Database database(staticBuffers.GetFacade());
 	
 	// Object that handles command (CROB / analog output) requests
 	// This example can toggle an LED on the Arduino board
 	AVRCommandHandler commandHandler;						
 						
-	Outstation outstation(config, exe, root, stack.transport, commandHandler, DefaultOutstationApplication::Instance(), database, eventBuffers.GetFacade());
+	Outstation outstation(GetOutstationConfig(), exe, root, stack.transport, commandHandler, DefaultOutstationApplication::Instance(), database, eventBuffers.GetFacade());
 		
 	stack.transport.SetAppLayer(&outstation);
 			
@@ -101,13 +104,13 @@ int main()
 }
 
 void ToggleValuesEvery3Seconds(IExecutor* pExecutor, Database* pDatabase)
-{			
-	auto freeRAM = GetFreeRAM();
+{				
 	auto currentIndex = index;
 	auto currentValue = value;
 	index = (index + 1) % NUM_BINARY;
 	value = !value;
 	auto time = pExecutor->GetTime().milliseconds;
+	auto freeRAM = GetFreeRAM();
 				
 	{
 		Transaction tx(pDatabase);
