@@ -3224,23 +3224,7 @@
             <qualifierCode>1</qualifierCode>
             <qualifierCode>6</qualifierCode>
           </request>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>30</objectGroup>
-          <variation>0</variation>
-          <description>Analog Input - any variation</description>
-          <request>
-            <functionCode>22</functionCode>
-            <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>
-            <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </request>
-        </supportedVariation>
+        </supportedVariation>        
         <supportedVariation>
           <objectGroup>30</objectGroup>
           <variation>1</variation>
@@ -3250,18 +3234,11 @@
             <qualifierCode>0</qualifierCode>
             <qualifierCode>1</qualifierCode>
             <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
-            <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
             <qualifierCode>0</qualifierCode>
             <qualifierCode>1</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
         <supportedVariation>
@@ -3273,18 +3250,11 @@
             <qualifierCode>0</qualifierCode>
             <qualifierCode>1</qualifierCode>
             <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
-            <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
             <qualifierCode>0</qualifierCode>
             <qualifierCode>1</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
         <supportedVariation>
@@ -3296,18 +3266,11 @@
             <qualifierCode>0</qualifierCode>
             <qualifierCode>1</qualifierCode>
             <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
-            <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
             <qualifierCode>0</qualifierCode>
             <qualifierCode>1</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
         <supportedVariation>
@@ -3319,18 +3282,11 @@
             <qualifierCode>0</qualifierCode>
             <qualifierCode>1</qualifierCode>
             <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
-            <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
             <qualifierCode>0</qualifierCode>
             <qualifierCode>1</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
         <supportedVariation>
@@ -3342,18 +3298,11 @@
             <qualifierCode>0</qualifierCode>
             <qualifierCode>1</qualifierCode>
             <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
-            <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
             <qualifierCode>0</qualifierCode>
             <qualifierCode>1</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
         <supportedVariation>
@@ -3365,18 +3314,11 @@
             <qualifierCode>0</qualifierCode>
             <qualifierCode>1</qualifierCode>
             <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
-            <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
             <qualifierCode>0</qualifierCode>
             <qualifierCode>1</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
         <supportedVariation>
@@ -3597,137 +3539,7 @@
             <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>34</objectGroup>
-          <variation>0</variation>
-          <description>Analog Input Deadband - any variation</description>
-          <request>
-            <functionCode>1</functionCode>
-            <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>
-            <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </request>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>34</objectGroup>
-          <variation>1</variation>
-          <description>Analog Input Deadband - 16-bit</description>
-          <request>
-            <functionCode>1</functionCode>
-            <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>
-            <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </request>
-          <response>
-            <functionCode>129</functionCode>
-            <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>34</objectGroup>
-          <variation>1</variation>
-          <description>Analog Input Deadband - 16-bit</description>
-          <request>
-            <functionCode>2</functionCode>
-            <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </request>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>34</objectGroup>
-          <variation>2</variation>
-          <description>Analog Input Deadband - 32-bit</description>
-          <request>
-            <functionCode>1</functionCode>
-            <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>
-            <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </request>
-          <response>
-            <functionCode>129</functionCode>
-            <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>34</objectGroup>
-          <variation>2</variation>
-          <description>Analog Input Deadband - 32-bit</description>
-          <request>
-            <functionCode>2</functionCode>
-            <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </request>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>34</objectGroup>
-          <variation>3</variation>
-          <description>Analog Input Deadband - single-precision, floating-point</description>
-          <request>
-            <functionCode>1</functionCode>
-            <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>
-            <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </request>
-          <response>
-            <functionCode>129</functionCode>
-            <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>34</objectGroup>
-          <variation>3</variation>
-          <description>Analog Input Deadband - single-precision, floating-point</description>
-          <request>
-            <functionCode>2</functionCode>
-            <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </request>
-        </supportedVariation>
+        </supportedVariation>        
         <supportedVariation>
           <objectGroup>40</objectGroup>
           <variation>0</variation>
