@@ -2423,7 +2423,7 @@
             <functionCode>1</functionCode>
             <qualifierCode>0</qualifierCode>
             <qualifierCode>1</qualifierCode>
-            <qualifierCode>6</qualifierCode>           
+            <qualifierCode>6</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
@@ -2528,30 +2528,9 @@
             <functionCode>1</functionCode>
             <qualifierCode>0</qualifierCode>
             <qualifierCode>1</qualifierCode>
-            <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
-            <qualifierCode>40</qualifierCode>
+            <qualifierCode>6</qualifierCode>            
           </request>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>3</objectGroup>
-          <variation>0</variation>
-          <description>Double-bit Input - any variation</description>
-          <request>
-            <functionCode>22</functionCode>
-            <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>
-            <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </request>
-        </supportedVariation>
+        </supportedVariation>        
         <supportedVariation>
           <objectGroup>3</objectGroup>
           <variation>1</variation>
@@ -2560,19 +2539,12 @@
             <functionCode>1</functionCode>
             <qualifierCode>0</qualifierCode>
             <qualifierCode>1</qualifierCode>
-            <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
-            <qualifierCode>40</qualifierCode>
+            <qualifierCode>6</qualifierCode>            
           </request>
           <response>
             <functionCode>129</functionCode>
             <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
+            <qualifierCode>1</qualifierCode>            
           </response>
         </supportedVariation>
         <supportedVariation>
@@ -2583,19 +2555,12 @@
             <functionCode>1</functionCode>
             <qualifierCode>0</qualifierCode>
             <qualifierCode>1</qualifierCode>
-            <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
-            <qualifierCode>40</qualifierCode>
+            <qualifierCode>6</qualifierCode>            
           </request>
           <response>
             <functionCode>129</functionCode>
             <qualifierCode>0</qualifierCode>
             <qualifierCode>1</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
         <supportedVariation>
@@ -2695,81 +2660,23 @@
             <functionCode>1</functionCode>
             <qualifierCode>0</qualifierCode>
             <qualifierCode>1</qualifierCode>
-            <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
+            <qualifierCode>6</qualifierCode>            
           </request>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>10</objectGroup>
-          <variation>0</variation>
-          <description>Binary Output - any variation</description>
-          <request>
-            <functionCode>22</functionCode>
-            <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>
-            <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </request>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>10</objectGroup>
-          <variation>1</variation>
-          <description>Binary Output - packed format</description>
-          <request>
-            <functionCode>1</functionCode>
-            <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>
-            <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </request>
-          <response>
-            <functionCode>129</functionCode>
-            <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>10</objectGroup>
-          <variation>1</variation>
-          <description>Binary Output - packed format</description>
-          <request>
-            <functionCode>2</functionCode>
-            <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>
-          </request>
-        </supportedVariation>
+        </supportedVariation>                        
         <supportedVariation>
           <objectGroup>10</objectGroup>
           <variation>2</variation>
-          <description>Continuous Control - output status with flags</description>
+          <description>Binary Output - Output status with Flags</description>
           <request>
             <functionCode>1</functionCode>
             <qualifierCode>0</qualifierCode>
             <qualifierCode>1</qualifierCode>
-            <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
+            <qualifierCode>6</qualifierCode>            
           </request>
           <response>
             <functionCode>129</functionCode>
             <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
+            <qualifierCode>1</qualifierCode>            
           </response>
         </supportedVariation>
         <supportedVariation>
@@ -2834,37 +2741,19 @@
             <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>12</objectGroup>
-          <variation>0</variation>
-          <description>Binary Output Command (CROB) - any variation</description>
-          <request>
-            <functionCode>22</functionCode>
-            <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>
-            <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </request>
-        </supportedVariation>
+        </supportedVariation>        
         <supportedVariation>
           <objectGroup>12</objectGroup>
           <variation>1</variation>
           <description>Binary Output Command (CROB) - control relay output block</description>
           <request>
             <functionCode>3</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
+            <qualifierCode>23</qualifierCode>            
             <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
+            <qualifierCode>23</qualifierCode>            
             <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
@@ -2874,14 +2763,12 @@
           <description>Binary Output Command (CROB) - control relay output block</description>
           <request>
             <functionCode>4</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
+            <qualifierCode>23</qualifierCode>            
             <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
+            <qualifierCode>23</qualifierCode>            
             <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
@@ -2891,14 +2778,12 @@
           <description>Binary Output Command (CROB) - control relay output block</description>
           <request>
             <functionCode>5</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
+            <qualifierCode>23</qualifierCode>            
             <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
+            <qualifierCode>23</qualifierCode>            
             <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
@@ -2908,192 +2793,15 @@
           <description>Binary Output Command (CROB) - control relay output block</description>
           <request>
             <functionCode>6</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
+            <qualifierCode>23</qualifierCode>            
             <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
+            <qualifierCode>23</qualifierCode>            
             <qualifierCode>40</qualifierCode>
           </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>12</objectGroup>
-          <variation>2</variation>
-          <description>Binary Output Command - pattern control block</description>
-          <request>
-            <functionCode>3</functionCode>
-            <qualifierCode>7</qualifierCode>
-          </request>
-          <response>
-            <functionCode>129</functionCode>
-            <qualifierCode>7</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>12</objectGroup>
-          <variation>2</variation>
-          <description>Binary Output Command - pattern control block</description>
-          <request>
-            <functionCode>4</functionCode>
-            <qualifierCode>7</qualifierCode>
-          </request>
-          <response>
-            <functionCode>129</functionCode>
-            <qualifierCode>7</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>12</objectGroup>
-          <variation>2</variation>
-          <description>Binary Output Command - pattern control block</description>
-          <request>
-            <functionCode>5</functionCode>
-            <qualifierCode>7</qualifierCode>
-          </request>
-          <response>
-            <functionCode>129</functionCode>
-            <qualifierCode>7</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>12</objectGroup>
-          <variation>2</variation>
-          <description>Binary Output Command - pattern control block</description>
-          <request>
-            <functionCode>6</functionCode>
-            <qualifierCode>7</qualifierCode>
-          </request>
-          <response>
-            <functionCode>129</functionCode>
-            <qualifierCode>7</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>12</objectGroup>
-          <variation>3</variation>
-          <description>Binary Output Command - pattern mask</description>
-          <request>
-            <functionCode>3</functionCode>
-            <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>
-          </request>
-          <response>
-            <functionCode>129</functionCode>
-            <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>12</objectGroup>
-          <variation>3</variation>
-          <description>Binary Output Command - pattern mask</description>
-          <request>
-            <functionCode>4</functionCode>
-            <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>
-          </request>
-          <response>
-            <functionCode>129</functionCode>
-            <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>12</objectGroup>
-          <variation>3</variation>
-          <description>Binary Output Command - pattern mask</description>
-          <request>
-            <functionCode>5</functionCode>
-            <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>
-          </request>
-          <response>
-            <functionCode>129</functionCode>
-            <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>12</objectGroup>
-          <variation>3</variation>
-          <description>Binary Output Command - pattern mask</description>
-          <request>
-            <functionCode>6</functionCode>
-            <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>
-          </request>
-          <response>
-            <functionCode>129</functionCode>
-            <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>13</objectGroup>
-          <variation>0</variation>
-          <description>Binary Output Command Event - any variation</description>
-          <request>
-            <functionCode>1</functionCode>
-            <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-          </request>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>13</objectGroup>
-          <variation>1</variation>
-          <description>Binary Output Command Event - without time</description>
-          <request>
-            <functionCode>1</functionCode>
-            <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-          </request>
-          <response>
-            <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>13</objectGroup>
-          <variation>1</variation>
-          <description>Binary Output Command Event - without time</description>
-          <response>
-            <functionCode>130</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>13</objectGroup>
-          <variation>2</variation>
-          <description>Binary Output Command Event - with time</description>
-          <request>
-            <functionCode>1</functionCode>
-            <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-          </request>
-          <response>
-            <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>13</objectGroup>
-          <variation>2</variation>
-          <description>Binary Output Command Event - with time</description>
-          <response>
-            <functionCode>130</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </response>
-        </supportedVariation>
+        </supportedVariation>                                                      
         <supportedVariation>
           <objectGroup>20</objectGroup>
           <variation>0</variation>
