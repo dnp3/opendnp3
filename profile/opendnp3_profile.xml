@@ -4075,20 +4075,7 @@
             <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </response>
-        </supportedVariation>           
-        <supportedVariation>
-          <objectGroup>50</objectGroup>
-          <variation>1</variation>
-          <description>Time and Date - absolute time</description>
-          <request>
-            <functionCode>1</functionCode>
-            <qualifierCode>7</qualifierCode>
-          </request>
-          <response>
-            <functionCode>129</functionCode>
-            <qualifierCode>7</qualifierCode>
-          </response>
-        </supportedVariation>
+        </supportedVariation>                  
         <supportedVariation>
           <objectGroup>50</objectGroup>
           <variation>1</variation>
@@ -4097,16 +4084,7 @@
             <functionCode>2</functionCode>
             <qualifierCode>7</qualifierCode>
           </request>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>50</objectGroup>
-          <variation>3</variation>
-          <description>Time and Date - absolute time at last recorded time</description>
-          <request>
-            <functionCode>2</functionCode>
-            <qualifierCode>7</qualifierCode>
-          </request>
-        </supportedVariation>
+        </supportedVariation>        
         <supportedVariation>
           <objectGroup>51</objectGroup>
           <variation>1</variation>
@@ -4169,16 +4147,7 @@
             <functionCode>1</functionCode>
             <qualifierCode>6</qualifierCode>
           </request>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>60</objectGroup>
-          <variation>1</variation>
-          <description>Class Objects - class 0 data</description>
-          <request>
-            <functionCode>22</functionCode>
-            <qualifierCode>6</qualifierCode>
-          </request>
-        </supportedVariation>
+        </supportedVariation>       
         <supportedVariation>
           <objectGroup>60</objectGroup>
           <variation>2</variation>
@@ -4207,16 +4176,7 @@
             <functionCode>21</functionCode>
             <qualifierCode>6</qualifierCode>
           </request>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>60</objectGroup>
-          <variation>2</variation>
-          <description>Class Objects - class 1 data</description>
-          <request>
-            <functionCode>22</functionCode>
-            <qualifierCode>6</qualifierCode>
-          </request>
-        </supportedVariation>
+        </supportedVariation>       
         <supportedVariation>
           <objectGroup>60</objectGroup>
           <variation>3</variation>
@@ -4245,16 +4205,7 @@
             <functionCode>21</functionCode>
             <qualifierCode>6</qualifierCode>
           </request>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>60</objectGroup>
-          <variation>3</variation>
-          <description>Class Objects - class 2 data</description>
-          <request>
-            <functionCode>22</functionCode>
-            <qualifierCode>6</qualifierCode>
-          </request>
-        </supportedVariation>
+        </supportedVariation>        
         <supportedVariation>
           <objectGroup>60</objectGroup>
           <variation>4</variation>
@@ -4283,201 +4234,7 @@
             <functionCode>21</functionCode>
             <qualifierCode>6</qualifierCode>
           </request>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>60</objectGroup>
-          <variation>4</variation>
-          <description>Class Objects - class 3 data</description>
-          <request>
-            <functionCode>22</functionCode>
-            <qualifierCode>6</qualifierCode>
-          </request>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>70</objectGroup>
-          <variation>0</variation>
-          <description>File Control - any variation</description>
-          <request>
-            <functionCode>1</functionCode>
-            <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-          </request>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>70</objectGroup>
-          <variation>0</variation>
-          <description>File Control - any variation</description>
-          <request>
-            <functionCode>22</functionCode>
-            <qualifierCode>6</qualifierCode>
-          </request>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>70</objectGroup>
-          <variation>2</variation>
-          <description>File Control - authentication</description>
-          <request>
-            <functionCode>29</functionCode>
-            <qualifierCode>91</qualifierCode>
-          </request>
-          <response>
-            <functionCode>129</functionCode>
-            <qualifierCode>91</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>70</objectGroup>
-          <variation>3</variation>
-          <description>File Control - file command</description>
-          <request>
-            <functionCode>25</functionCode>
-            <qualifierCode>91</qualifierCode>
-          </request>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>70</objectGroup>
-          <variation>3</variation>
-          <description>File Control - file command</description>
-          <request>
-            <functionCode>27</functionCode>
-            <qualifierCode>91</qualifierCode>
-          </request>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>70</objectGroup>
-          <variation>4</variation>
-          <description>File Control - file command status</description>
-          <request>
-            <functionCode>26</functionCode>
-            <qualifierCode>91</qualifierCode>
-          </request>
-          <response>
-            <functionCode>129</functionCode>
-            <qualifierCode>91</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>70</objectGroup>
-          <variation>4</variation>
-          <description>File Control - file command status</description>
-          <response>
-            <functionCode>130</functionCode>
-            <qualifierCode>91</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>70</objectGroup>
-          <variation>4</variation>
-          <description>File Control - file command status</description>
-          <request>
-            <functionCode>30</functionCode>
-            <qualifierCode>91</qualifierCode>
-          </request>
-          <response>
-            <functionCode>129</functionCode>
-            <qualifierCode>91</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>70</objectGroup>
-          <variation>5</variation>
-          <description>File Control - file transport</description>
-          <request>
-            <functionCode>1</functionCode>
-            <qualifierCode>91</qualifierCode>
-          </request>
-          <response>
-            <functionCode>129</functionCode>
-            <qualifierCode>91</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>70</objectGroup>
-          <variation>5</variation>
-          <description>File Control - file transport</description>
-          <response>
-            <functionCode>130</functionCode>
-            <qualifierCode>91</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>70</objectGroup>
-          <variation>5</variation>
-          <description>File Control - file transport</description>
-          <request>
-            <functionCode>2</functionCode>
-            <qualifierCode>91</qualifierCode>
-          </request>
-          <response>
-            <functionCode>129</functionCode>
-            <qualifierCode>91</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>70</objectGroup>
-          <variation>6</variation>
-          <description>File Control - file transport status</description>
-          <response>
-            <functionCode>129</functionCode>
-            <qualifierCode>91</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>70</objectGroup>
-          <variation>6</variation>
-          <description>File Control - file transport status</description>
-          <response>
-            <functionCode>130</functionCode>
-            <qualifierCode>91</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>70</objectGroup>
-          <variation>7</variation>
-          <description>File Control - file descriptor</description>
-          <request>
-            <functionCode>28</functionCode>
-            <qualifierCode>91</qualifierCode>
-          </request>
-          <response>
-            <functionCode>129</functionCode>
-            <qualifierCode>91</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>70</objectGroup>
-          <variation>7</variation>
-          <description>File Control - file descriptor</description>
-          <response>
-            <functionCode>130</functionCode>
-            <qualifierCode>91</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>70</objectGroup>
-          <variation>8</variation>
-          <description>File Control - file specification string</description>
-          <request>
-            <functionCode>31</functionCode>
-            <qualifierCode>91</qualifierCode>
-          </request>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>80</objectGroup>
-          <variation>1</variation>
-          <description>Internal Indications - packed format</description>
-          <request>
-            <functionCode>1</functionCode>
-            <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>
-          </request>
-          <response>
-            <functionCode>129</functionCode>
-            <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>
-          </response>
-        </supportedVariation>
+        </supportedVariation>                      
         <supportedVariation>
           <objectGroup>80</objectGroup>
           <variation>1</variation>
@@ -4486,233 +4243,7 @@
             <functionCode>2</functionCode>
             <qualifierCode>0</qualifierCode>
           </request>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>85</objectGroup>
-          <variation>0</variation>
-          <description>Data Set Prototype - any variation</description>
-          <request>
-            <functionCode>1</functionCode>
-            <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>
-            <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </request>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>85</objectGroup>
-          <variation>1</variation>
-          <description>Data Set Prototype - with UUID</description>
-          <request>
-            <functionCode>1</functionCode>
-            <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>
-            <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </request>
-          <response>
-            <functionCode>129</functionCode>
-            <qualifierCode>91</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>85</objectGroup>
-          <variation>1</variation>
-          <description>Data Set Prototype - with UUID</description>
-          <request>
-            <functionCode>2</functionCode>
-            <qualifierCode>91</qualifierCode>
-          </request>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>86</objectGroup>
-          <variation>0</variation>
-          <description>Data Set Descriptor - any variation</description>
-          <request>
-            <functionCode>22</functionCode>
-            <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>
-            <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </request>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>86</objectGroup>
-          <variation>1</variation>
-          <description>Data Set Descriptor - Data Set contents</description>
-          <request>
-            <functionCode>1</functionCode>
-            <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>
-            <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </request>
-          <response>
-            <functionCode>129</functionCode>
-            <qualifierCode>91</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>86</objectGroup>
-          <variation>1</variation>
-          <description>Data Set Descriptor - Data Set contents</description>
-          <request>
-            <functionCode>2</functionCode>
-            <qualifierCode>91</qualifierCode>
-          </request>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>86</objectGroup>
-          <variation>2</variation>
-          <description>Data Set Descriptor - characteristics</description>
-          <request>
-            <functionCode>1</functionCode>
-            <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>
-            <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </request>
-          <response>
-            <functionCode>129</functionCode>
-            <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>86</objectGroup>
-          <variation>3</variation>
-          <description>Data Set Descriptor - point index attributes</description>
-          <request>
-            <functionCode>1</functionCode>
-            <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>
-            <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </request>
-          <response>
-            <functionCode>129</functionCode>
-            <qualifierCode>91</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>86</objectGroup>
-          <variation>3</variation>
-          <description>Data Set Descriptor - point index attributes</description>
-          <request>
-            <functionCode>2</functionCode>
-            <qualifierCode>91</qualifierCode>
-          </request>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>87</objectGroup>
-          <variation>0</variation>
-          <description>Data Set - present value</description>
-          <request>
-            <functionCode>1</functionCode>
-            <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>
-            <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </request>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>87</objectGroup>
-          <variation>1</variation>
-          <description>Data Set - present value</description>
-          <request>
-            <functionCode>1</functionCode>
-            <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>
-            <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </request>
-          <response>
-            <functionCode>129</functionCode>
-            <qualifierCode>91</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>87</objectGroup>
-          <variation>1</variation>
-          <description>Data Set - present value</description>
-          <request>
-            <functionCode>2</functionCode>
-            <qualifierCode>91</qualifierCode>
-          </request>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>88</objectGroup>
-          <variation>0</variation>
-          <description>Data Set Event - any variation</description>
-          <request>
-            <functionCode>1</functionCode>
-            <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-          </request>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>88</objectGroup>
-          <variation>1</variation>
-          <description>Data Set Event - snapshot</description>
-          <request>
-            <functionCode>1</functionCode>
-            <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-          </request>
-          <response>
-            <functionCode>129</functionCode>
-            <qualifierCode>91</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>88</objectGroup>
-          <variation>1</variation>
-          <description>Data Set Event - snapshot</description>
-          <response>
-            <functionCode>130</functionCode>
-            <qualifierCode>91</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>91</objectGroup>
-          <variation>1</variation>
-          <description>Status of Requested Operation</description>
-          <response>
-            <functionCode>129</functionCode>
-            <qualifierCode>7</qualifierCode>
-          </response>
-        </supportedVariation>
+        </supportedVariation>        
         <supportedVariation>
           <objectGroup>110</objectGroup>
           <variation>255</variation>
