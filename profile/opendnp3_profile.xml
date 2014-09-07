@@ -5,7 +5,7 @@
   <!--Document Header-->
   <documentHeader>
     <documentName>Opendnp3 profile</documentName>
-    <documentDescription>DNP3 Device Profile Template for the opendnp3 library</documentDescription>
+    <documentDescription>DNP3 Device Profile for the opendnp3 library (master & outstation)</documentDescription>
     <!--Revision History-->
     <revisionHistory version="1">
       <date>2014-09-07</date>
@@ -30,7 +30,7 @@
           </currentValue>
           <!--Configuration Methods-->
           <methods>
-            <note>Opendnp3 is a source code library for implementing masters and outstations. </note>
+            <note>Opendnp3 is a source code library for implementing masters and outstations. Implementers integrating the library should supply their own device profile specific to their device.</note>
           </methods>
         </deviceFunction>
         <!--1.1.2) Vendor Name-->
@@ -4247,47 +4247,17 @@
         <supportedVariation>
           <objectGroup>110</objectGroup>
           <variation>255</variation>
-          <description>Octet String</description>
-          <request>
-            <functionCode>1</functionCode>
-            <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>
-            <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </request>
+          <description>Octet String</description>          
           <response>
             <functionCode>129</functionCode>
             <qualifierCode>0</qualifierCode>
             <qualifierCode>1</qualifierCode>
           </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>110</objectGroup>
-          <variation>255</variation>
-          <description>Octet String</description>
-          <request>
-            <functionCode>2</functionCode>
-            <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </request>
-        </supportedVariation>
+        </supportedVariation>        
         <supportedVariation>
           <objectGroup>111</objectGroup>
           <variation>255</variation>
-          <description>Octet String Change Event</description>
-          <request>
-            <functionCode>1</functionCode>
-            <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-          </request>
+          <description>Octet String Change Event</description>          
           <response>
             <functionCode>129</functionCode>
             <qualifierCode>23</qualifierCode>
@@ -4303,31 +4273,11 @@
             <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>112</objectGroup>
-          <variation>255</variation>
-          <description>Virtual Terminal Output Block</description>
-          <request>
-            <functionCode>2</functionCode>
-            <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </request>
-        </supportedVariation>
+        </supportedVariation>        
         <supportedVariation>
           <objectGroup>113</objectGroup>
           <variation>255</variation>
-          <description>Virtual Terminal Event Data</description>
-          <request>
-            <functionCode>1</functionCode>
-            <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-          </request>
+          <description>Virtual Terminal Event Data</description>          
           <response>
             <functionCode>129</functionCode>
             <qualifierCode>23</qualifierCode>
@@ -4343,117 +4293,7 @@
             <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>120</objectGroup>
-          <variation>1</variation>
-          <description>Authentication - Challenge</description>
-          <request>
-            <functionCode>32</functionCode>
-            <qualifierCode>91</qualifierCode>
-          </request>
-          <response>
-            <functionCode>131</functionCode>
-            <qualifierCode>91</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>120</objectGroup>
-          <variation>2</variation>
-          <description>Authentication - Reply</description>
-          <request>
-            <functionCode>32</functionCode>
-            <qualifierCode>91</qualifierCode>
-          </request>
-          <response>
-            <functionCode>131</functionCode>
-            <qualifierCode>91</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>120</objectGroup>
-          <variation>3</variation>
-          <description>Authentication - Aggressive Mode</description>
-          <request>
-            <functionCode>255</functionCode>
-            <qualifierCode>91</qualifierCode>
-          </request>
-          <response>
-            <functionCode>129</functionCode>
-            <qualifierCode>91</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>120</objectGroup>
-          <variation>3</variation>
-          <description>Authentication - Aggressive Mode</description>
-          <response>
-            <functionCode>130</functionCode>
-            <qualifierCode>91</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>120</objectGroup>
-          <variation>4</variation>
-          <description>Authentication - Session Key Status Request</description>
-          <request>
-            <functionCode>32</functionCode>
-            <qualifierCode>91</qualifierCode>
-          </request>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>120</objectGroup>
-          <variation>5</variation>
-          <description>Authentication - Session Key Status</description>
-          <response>
-            <functionCode>131</functionCode>
-            <qualifierCode>91</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>120</objectGroup>
-          <variation>6</variation>
-          <description>Authentication - Session Key Change</description>
-          <request>
-            <functionCode>32</functionCode>
-            <qualifierCode>91</qualifierCode>
-          </request>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>120</objectGroup>
-          <variation>7</variation>
-          <description>Authentication - Error</description>
-          <request>
-            <functionCode>33</functionCode>
-            <qualifierCode>91</qualifierCode>
-          </request>
-          <response>
-            <functionCode>131</functionCode>
-            <qualifierCode>91</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>120</objectGroup>
-          <variation>9</variation>
-          <description>Authentication - HMAC</description>
-          <request>
-            <functionCode>255</functionCode>
-            <qualifierCode>91</qualifierCode>
-          </request>
-          <response>
-            <functionCode>129</functionCode>
-            <qualifierCode>91</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>120</objectGroup>
-          <variation>9</variation>
-          <description>Authentication - HMAC</description>
-          <response>
-            <functionCode>130</functionCode>
-            <qualifierCode>91</qualifierCode>
-          </response>
-        </supportedVariation>
+        </supportedVariation>        
       </table>
     </implementationTable>
     <!--5) Data Points List-->
