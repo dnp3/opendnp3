@@ -3549,29 +3549,8 @@
             <qualifierCode>0</qualifierCode>
             <qualifierCode>1</qualifierCode>
             <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
-            <qualifierCode>40</qualifierCode>
           </request>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>40</objectGroup>
-          <variation>0</variation>
-          <description>Analog Output Status - any variation</description>
-          <request>
-            <functionCode>22</functionCode>
-            <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>
-            <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </request>
-        </supportedVariation>
+        </supportedVariation>       
         <supportedVariation>
           <objectGroup>40</objectGroup>
           <variation>1</variation>
@@ -3581,18 +3560,11 @@
             <qualifierCode>0</qualifierCode>
             <qualifierCode>1</qualifierCode>
             <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
-            <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
             <qualifierCode>0</qualifierCode>
             <qualifierCode>1</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
         <supportedVariation>
@@ -3604,18 +3576,11 @@
             <qualifierCode>0</qualifierCode>
             <qualifierCode>1</qualifierCode>
             <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
-            <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
             <qualifierCode>0</qualifierCode>
             <qualifierCode>1</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
         <supportedVariation>
@@ -3627,18 +3592,11 @@
             <qualifierCode>0</qualifierCode>
             <qualifierCode>1</qualifierCode>
             <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
-            <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
             <qualifierCode>0</qualifierCode>
             <qualifierCode>1</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
         <supportedVariation>
@@ -3650,50 +3608,25 @@
             <qualifierCode>0</qualifierCode>
             <qualifierCode>1</qualifierCode>
             <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
-            <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
             <qualifierCode>0</qualifierCode>
             <qualifierCode>1</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
           </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>41</objectGroup>
-          <variation>0</variation>
-          <description>Analog Output Block - any variation</description>
-          <request>
-            <functionCode>22</functionCode>
-            <qualifierCode>0</qualifierCode>
-            <qualifierCode>1</qualifierCode>
-            <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </request>
-        </supportedVariation>
+        </supportedVariation>       
         <supportedVariation>
           <objectGroup>41</objectGroup>
           <variation>1</variation>
           <description>Analog Output Block - 32-bit</description>
           <request>
             <functionCode>3</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
+            <qualifierCode>23</qualifierCode>            
             <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
+            <qualifierCode>23</qualifierCode>            
             <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
@@ -3703,14 +3636,12 @@
           <description>Analog Output Block - 32-bit</description>
           <request>
             <functionCode>4</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
+            <qualifierCode>23</qualifierCode>            
             <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
+            <qualifierCode>23</qualifierCode>            
             <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
@@ -3720,14 +3651,12 @@
           <description>Analog Output Block - 32-bit</description>
           <request>
             <functionCode>5</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
+            <qualifierCode>23</qualifierCode>            
             <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
+            <qualifierCode>23</qualifierCode>            
             <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
@@ -3737,14 +3666,12 @@
           <description>Analog Output Block - 32-bit</description>
           <request>
             <functionCode>6</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
+            <qualifierCode>23</qualifierCode>            
             <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
+            <qualifierCode>23</qualifierCode>            
             <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
@@ -3771,14 +3698,12 @@
           <description>Analog Output Block - 16-bit</description>
           <request>
             <functionCode>4</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
+            <qualifierCode>23</qualifierCode>            
             <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
+            <qualifierCode>23</qualifierCode>            
             <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
@@ -3788,14 +3713,12 @@
           <description>Analog Output Block - 16-bit</description>
           <request>
             <functionCode>5</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
+            <qualifierCode>23</qualifierCode>            
             <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
+            <qualifierCode>23</qualifierCode>            
             <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
@@ -3805,14 +3728,12 @@
           <description>Analog Output Block - 16-bit</description>
           <request>
             <functionCode>6</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
+            <qualifierCode>23</qualifierCode>            
             <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
+            <qualifierCode>23</qualifierCode>            
             <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
@@ -3822,14 +3743,12 @@
           <description>Analog Output Block - single-precision, floating-point</description>
           <request>
             <functionCode>3</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
+            <qualifierCode>23</qualifierCode>            
             <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
+            <qualifierCode>23</qualifierCode>            
             <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
@@ -3839,14 +3758,12 @@
           <description>Analog Output Block - single-precision, floating-point</description>
           <request>
             <functionCode>4</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
+            <qualifierCode>23</qualifierCode>            
             <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
+            <qualifierCode>23</qualifierCode>            
             <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
@@ -3856,14 +3773,12 @@
           <description>Analog Output Block - single-precision, floating-point</description>
           <request>
             <functionCode>5</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
+            <qualifierCode>23</qualifierCode>            
             <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
+            <qualifierCode>23</qualifierCode>            
             <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
@@ -3873,14 +3788,12 @@
           <description>Analog Output Block - single-precision, floating-point</description>
           <request>
             <functionCode>6</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
+            <qualifierCode>23</qualifierCode>            
             <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
+            <qualifierCode>23</qualifierCode>            
             <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
@@ -3890,14 +3803,12 @@
           <description>Analog Output Block - double-precision, floating-point</description>
           <request>
             <functionCode>3</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
+            <qualifierCode>23</qualifierCode>            
             <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
+            <qualifierCode>23</qualifierCode>            
             <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
@@ -3907,14 +3818,12 @@
           <description>Analog Output Block - double-precision, floating-point</description>
           <request>
             <functionCode>4</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
+            <qualifierCode>23</qualifierCode>            
             <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
+            <qualifierCode>23</qualifierCode>            
             <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
@@ -3924,14 +3833,12 @@
           <description>Analog Output Block - double-precision, floating-point</description>
           <request>
             <functionCode>5</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
+            <qualifierCode>23</qualifierCode>            
             <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
+            <qualifierCode>23</qualifierCode>            
             <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
@@ -3941,14 +3848,12 @@
           <description>Analog Output Block - double-precision, floating-point</description>
           <request>
             <functionCode>6</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
+            <qualifierCode>23</qualifierCode>            
             <qualifierCode>40</qualifierCode>
           </request>
           <response>
             <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>39</qualifierCode>
+            <qualifierCode>23</qualifierCode>            
             <qualifierCode>40</qualifierCode>
           </response>
         </supportedVariation>
@@ -4170,226 +4075,7 @@
             <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>43</objectGroup>
-          <variation>0</variation>
-          <description>Analog Output Command Event - any variation</description>
-          <request>
-            <functionCode>1</functionCode>
-            <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-          </request>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>43</objectGroup>
-          <variation>1</variation>
-          <description>Analog Output Command Event - 32-bit without time</description>
-          <request>
-            <functionCode>1</functionCode>
-            <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-          </request>
-          <response>
-            <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>43</objectGroup>
-          <variation>1</variation>
-          <description>Analog Output Command Event - 32-bit without time</description>
-          <response>
-            <functionCode>130</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>43</objectGroup>
-          <variation>2</variation>
-          <description>Analog Output Command Event - 16-bit without time</description>
-          <request>
-            <functionCode>1</functionCode>
-            <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-          </request>
-          <response>
-            <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>43</objectGroup>
-          <variation>2</variation>
-          <description>Analog Output Command Event - 16-bit without time</description>
-          <response>
-            <functionCode>130</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>43</objectGroup>
-          <variation>3</variation>
-          <description>Analog Output Command Event - 32-bit with time</description>
-          <request>
-            <functionCode>1</functionCode>
-            <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-          </request>
-          <response>
-            <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>43</objectGroup>
-          <variation>3</variation>
-          <description>Analog Output Command Event - 32-bit with time</description>
-          <response>
-            <functionCode>130</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>43</objectGroup>
-          <variation>4</variation>
-          <description>Analog Output Command Event - 16-bit with time</description>
-          <request>
-            <functionCode>1</functionCode>
-            <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-          </request>
-          <response>
-            <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>43</objectGroup>
-          <variation>4</variation>
-          <description>Analog Output Command Event - 16-bit with time</description>
-          <response>
-            <functionCode>130</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>43</objectGroup>
-          <variation>5</variation>
-          <description>Analog Output Command Event - single-precision, floating-point without time</description>
-          <request>
-            <functionCode>1</functionCode>
-            <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-          </request>
-          <response>
-            <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>43</objectGroup>
-          <variation>5</variation>
-          <description>Analog Output Command Event - single-precision, floating-point without time</description>
-          <response>
-            <functionCode>130</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>43</objectGroup>
-          <variation>6</variation>
-          <description>Analog Output Command Event - double-precision, floating-point without time</description>
-          <request>
-            <functionCode>1</functionCode>
-            <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-          </request>
-          <response>
-            <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>43</objectGroup>
-          <variation>6</variation>
-          <description>Analog Output Command Event - double-precision, floating-point without time</description>
-          <response>
-            <functionCode>130</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>43</objectGroup>
-          <variation>7</variation>
-          <description>Analog Output Command Event - single-precision, floating-point with time</description>
-          <request>
-            <functionCode>1</functionCode>
-            <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-          </request>
-          <response>
-            <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>43</objectGroup>
-          <variation>7</variation>
-          <description>Analog Output Command Event - single-precision, floating-point with time</description>
-          <response>
-            <functionCode>130</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>43</objectGroup>
-          <variation>8</variation>
-          <description>Analog Output Command Event - double-precision, floating-point with time</description>
-          <request>
-            <functionCode>1</functionCode>
-            <qualifierCode>6</qualifierCode>
-            <qualifierCode>7</qualifierCode>
-            <qualifierCode>8</qualifierCode>
-          </request>
-          <response>
-            <functionCode>129</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </response>
-        </supportedVariation>
-        <supportedVariation>
-          <objectGroup>43</objectGroup>
-          <variation>8</variation>
-          <description>Analog Output Command Event - double-precision, floating-point with time</description>
-          <response>
-            <functionCode>130</functionCode>
-            <qualifierCode>23</qualifierCode>
-            <qualifierCode>40</qualifierCode>
-          </response>
-        </supportedVariation>
+        </supportedVariation>           
         <supportedVariation>
           <objectGroup>50</objectGroup>
           <variation>1</variation>
