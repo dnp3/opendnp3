@@ -25,12 +25,13 @@
 #include <string>
 
 #include <openpal/logging/LogRoot.h>
-#include <openpal/channel/LayerInterfaces.h>
+
+#include <opendnp3/LayerInterfaces.h>
 
 namespace opendnp3
 {
 
-class MockLowerLayer : public openpal::ILowerLayer, public openpal::HasUpperLayer
+class MockLowerLayer : public ILowerLayer, public HasUpperLayer
 {
 public:
 	MockLowerLayer(openpal::LogRoot& root);

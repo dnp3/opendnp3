@@ -18,48 +18,34 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __STATIC_BUFFER_H_
-#define __STATIC_BUFFER_H_
-
-#include "StaticArray.h"
-
-#include "openpal/container/WriteBuffer.h"
-#include "openpal/container/ReadOnlyBuffer.h"
+#ifndef __OPENDNP3_ROUTE_H_
+#define __OPENDNP3_ROUTE_H_
 
 #include <cstdint>
 
-namespace openpal
+namespace opendnp3
 {
 
-template <uint32_t N>
-class StaticBuffer : public StaticArray<uint8_t, uint32_t, N>
+/**
+* DNP3 source/destination address pair
+*/
+class Route
 {
 
 public:
-
-	StaticBuffer() : StaticArray<uint8_t, uint32_t, N>()
+	Route(uint16_t destination_, uint16_t source_) :
+		destination(destination_),
+		source(source_)
 	{}
 
-	ReadOnlyBuffer ToReadOnly() const
-	{
-		return ReadOnlyBuffer(this->buffer, this->size);
-	}
+	Route() : destination(0), source(0) {}
 
-	WriteBuffer GetWriteBuffer()
-	{
-		return WriteBuffer(this->buffer, this->Size());
-	}
+	uint16_t destination;
+	uint16_t source;
 
-	WriteBuffer GetWriteBuffer(uint32_t maxSize)
-	{		
-		if (maxSize <= this->Size())
-		{
-			return WriteBuffer(this->buffer, maxSize);
-		}
-		else
-		{
-			return GetWriteBuffer();
-		}
+	bool Equals(const Route& rhs) const
+	{
+		return (this->destination == rhs.destination) && (this->source == rhs.source);
 	}
 };
 

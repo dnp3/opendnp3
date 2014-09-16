@@ -19,29 +19,27 @@
  * to you under the terms of the License.
  */
 
-#include "RingBufferAdapter.h"
+#include "RingBuffer.h"
 
-#include "openpal/container/WriteBuffer.h"
 #include "openpal/container/ReadOnlyBuffer.h"
 
 namespace openpal
 {
 
-RingBufferAdapter::RingBufferAdapter(uint8_t* pBuffer_, uint32_t size) : 
-	pBuffer(pBuffer_),
-	capacity(size),
+RingBuffer::RingBuffer(uint32_t size) : 
+	buffer(size),
 	start(0),
 	nextWrite(0),
 	count(0)
 {}
 
-void RingBufferAdapter::Put(uint8_t value)
+void RingBuffer::Put(uint8_t value)
 {
-	pBuffer[nextWrite] = value;
-	nextWrite = (nextWrite + 1) % capacity;
-	if (count == capacity) // overflow, overwrite oldest value
+	buffer[nextWrite] = value;
+	nextWrite = (nextWrite + 1) % buffer.Size();
+	if (count == buffer.Size()) // overflow, overwrite oldest value
 	{
-		start = (start + 1) % capacity;
+		start = (start + 1) % buffer.Size();
 	}
 	else
 	{
@@ -49,26 +47,26 @@ void RingBufferAdapter::Put(uint8_t value)
 	}
 }
 
-uint32_t RingBufferAdapter::Read(openpal::WriteBuffer& output)
+uint32_t RingBuffer::Read(openpal::WriteBuffer& output)
 {
 	auto numToRead = output.Size() > count ? count : output.Size();
 	
 	// the number of bytes on the tail of the buffer
-	auto tailSize = capacity - start;
+	auto tailSize = buffer.Size() - start;
 	
 	if (tailSize >= numToRead) // data is contiguous, only one read is required
 	{
-		output.ReadFrom(ReadOnlyBuffer(pBuffer + start, numToRead));
+		output.ReadFrom(ReadOnlyBuffer(buffer() + start, numToRead));
 	}
 	else // data wraps around, perform 2 reads
 	{
 		// read the first part from the end of buffer
-		output.ReadFrom(ReadOnlyBuffer(pBuffer + start, tailSize));
+		output.ReadFrom(ReadOnlyBuffer(buffer() + start, tailSize));
 		// read the remainder from the front of buffer
-		output.ReadFrom(ReadOnlyBuffer(pBuffer, numToRead - tailSize));
+		output.ReadFrom(ReadOnlyBuffer(buffer(), numToRead - tailSize));
 	}
 
-	start = (start + numToRead) % capacity;
+	start = (start + numToRead) % buffer.Size();
 	count -= numToRead;
 	return numToRead;
 }

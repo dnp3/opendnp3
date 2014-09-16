@@ -21,7 +21,6 @@
 #ifndef __TRANSPORT_TX_H_
 #define __TRANSPORT_TX_H_
 
-#include <openpal/container/StaticBuffer.h>
 #include <openpal/logging/Logger.h>
 #include <openpal/container/Settable.h>
 
@@ -64,7 +63,7 @@ private:
 	openpal::Settable<openpal::ReadOnlyBuffer> txSegment;
 
 	// Static buffer where we store tpdus that are being transmitted
-	openpal::StaticBuffer<TL_MAX_TPDU_LENGTH> tpduBuffer;
+	uint8_t tpduBuffer[MAX_TPDU_LENGTH];	
 
 	openpal::Logger logger;
 	StackStatistics* pStatistics;

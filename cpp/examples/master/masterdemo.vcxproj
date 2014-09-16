@@ -165,7 +165,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DemoMain.cpp" />
-    <ClCompile Include="BlockingCommandCallback.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\libs\asiodnp3\asiodnp3.vcxproj">
@@ -180,9 +179,6 @@
     <ProjectReference Include="..\..\libs\openpal\openpal.vcxproj">
       <Project>{abf09bda-75a5-47d7-9f15-d7b7ec69f1e7}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="BlockingCommandCallback.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -21,7 +21,6 @@
 #ifndef _I_PHYSICAL_LAYER_H_
 #define _I_PHYSICAL_LAYER_H_
 
-#include "LayerInterfaces.h"
 #include "ChannelStatistics.h"
 
 #include "openpal/container/ReadOnlyBuffer.h"

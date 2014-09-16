@@ -21,7 +21,7 @@
 
 #include "MasterParams.h"
 
-#include "opendnp3/Configure.h"
+#include "opendnp3/app/AppConstants.h"
 
 using namespace openpal;
 
@@ -35,7 +35,9 @@ MasterParams::MasterParams() :
 	unsolClassMask(ClassField::AllEventClasses()),
 	startupIntegrityClassMask(ClassField::AllClasses()),
 	integrityOnEventOverflowIIN(true),
-	taskRetryPeriod(TimeDuration::Seconds(5))
+	taskRetryPeriod(TimeDuration::Seconds(5)),
+	maxTxFragSize(DEFAULT_MAX_APDU_SIZE),
+	maxRxFragSize(DEFAULT_MAX_APDU_SIZE)
 {}
 
 }

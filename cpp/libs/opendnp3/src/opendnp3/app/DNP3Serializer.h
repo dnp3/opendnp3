@@ -18,40 +18,35 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __RING_BUFFER_ADAPTER_H_
-#define __RING_BUFFER_ADAPTER_H_
+#ifndef __DNP3_SERIALIZER_H_
+#define __DNP3_SERIALIZER_H_
 
-#include <cstdint>
+#include <openpal/serialization/Serializer.h>
 
-namespace openpal
+#include "GroupVariationID.h"
+
+namespace opendnp3
 {
 
-class WriteBuffer;
+template <class T>
+class DNP3Serializer : public openpal::Serializer<T>
+{
+public:	
 
-/// A circular buffer
-class RingBufferAdapter
-{	
+	DNP3Serializer(GroupVariationID id_, uint32_t size_, typename openpal::Serializer<T>::ReadFunc pReadFunc_, typename openpal::Serializer<T>::WriteFunc pWriteFunc_) :
+		openpal::Serializer<T>(size_, pReadFunc_, pWriteFunc_),
+		id(id_)
+	{}
 
-public:
-
-	RingBufferAdapter(uint8_t* pBuffer, uint32_t size);
-
-	void Put(uint8_t value);
-
-	uint32_t Read(openpal::WriteBuffer& output);
-	
+	GroupVariationID ID() const
+	{
+		return id;
+	}
 
 private:
 
-	uint8_t* pBuffer;
-	uint32_t capacity;
+	GroupVariationID id;
 
-	uint32_t start;
-	uint32_t nextWrite;
-	uint32_t count;
-	
-	RingBufferAdapter(const RingBufferAdapter&);
-	RingBufferAdapter& operator= (const RingBufferAdapter&);
 };
 
 }

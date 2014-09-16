@@ -199,7 +199,7 @@ void LinkLayer::OnTransmitResult(bool primary, bool success)
 
 openpal::ReadOnlyBuffer LinkLayer::FormatPrimaryBufferWithConfirmed(const openpal::ReadOnlyBuffer& tpdu, bool FCB)
 {
-	auto buffer = primaryBuffer.GetWriteBuffer();	
+	auto buffer = WriteBuffer(txBuffer, LPDU_MAX_FRAME_SIZE);
 	auto output = LinkFrame::FormatConfirmedUserData(buffer, config.IsMaster, FCB, config.RemoteAddr, config.LocalAddr, tpdu, tpdu.Size(), &logger);
 	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, output, 10, 18);
 	return output;	
@@ -207,7 +207,7 @@ openpal::ReadOnlyBuffer LinkLayer::FormatPrimaryBufferWithConfirmed(const openpa
 
 ReadOnlyBuffer LinkLayer::FormatPrimaryBufferWithUnconfirmed(const openpal::ReadOnlyBuffer& tpdu)
 {
-	auto buffer = primaryBuffer.GetWriteBuffer();
+	auto buffer = WriteBuffer(txBuffer, LPDU_MAX_FRAME_SIZE);
 	auto output = LinkFrame::FormatUnconfirmedUserData(buffer, config.IsMaster, config.RemoteAddr, config.LocalAddr, tpdu, tpdu.Size(), &logger);
 	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, output, 10, 18);
 	return output;
@@ -220,7 +220,7 @@ void LinkLayer::QueueTransmit(const ReadOnlyBuffer& buffer, bool primary)
 
 void LinkLayer::QueueAck()
 {
-	auto writeTo = primaryBuffer.GetWriteBuffer();
+	auto writeTo = WriteBuffer(txBuffer, LPDU_MAX_FRAME_SIZE);
 	auto buffer = LinkFrame::FormatAck(writeTo, config.IsMaster, false, config.RemoteAddr, config.LocalAddr, &logger);
 	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, buffer, 10, 18);
 	this->QueueTransmit(buffer, false);
@@ -228,7 +228,7 @@ void LinkLayer::QueueAck()
 
 void LinkLayer::QueueLinkStatus()
 {
-	auto writeTo = primaryBuffer.GetWriteBuffer();
+	auto writeTo = WriteBuffer(txBuffer, LPDU_MAX_FRAME_SIZE);
 	auto buffer = LinkFrame::FormatLinkStatus(writeTo, config.IsMaster, false, config.RemoteAddr, config.LocalAddr, &logger);
 	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, buffer, 10, 18);
 	this->QueueTransmit(buffer, false);
@@ -236,7 +236,7 @@ void LinkLayer::QueueLinkStatus()
 
 void LinkLayer::QueueResetLinks()
 {
-	auto writeTo = primaryBuffer.GetWriteBuffer();
+	auto writeTo = WriteBuffer(txBuffer, LPDU_MAX_FRAME_SIZE);
 	auto buffer = LinkFrame::FormatResetLinkStates(writeTo, config.IsMaster, config.RemoteAddr, config.LocalAddr, &logger);
 	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, buffer, 10, 18);
 	this->QueueTransmit(buffer, true);

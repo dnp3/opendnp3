@@ -21,7 +21,6 @@
 
 #include "APDUHexBuilders.h"
 
-#include <openpal/container/StaticBuffer.h>
 #include <opendnp3/app/APDURequest.h>
 #include <opendnp3/app/APDUResponse.h>
 #include <opendnp3/app/APDUBuilders.h>
@@ -34,9 +33,9 @@ using namespace opendnp3;
 namespace hex
 {
 	std::string ClassTask(FunctionCode fc, uint8_t seq, const ClassField& field)
-	{
-		StaticBuffer<2048> buffer;
-		APDURequest request(buffer.GetWriteBuffer());
+	{		
+		uint8_t buffer[2048];
+		APDURequest request(WriteBuffer(buffer, 2048));
 		opendnp3::build::ClassRequest(request, fc, field, seq);
 		return toHex(request.ToReadOnly());
 	}
@@ -53,24 +52,24 @@ namespace hex
 
 	std::string ClearRestartIIN(uint8_t seq)
 	{
-		StaticBuffer<2048> buffer;
-		APDURequest request(buffer.GetWriteBuffer());		
+		uint8_t buffer[2048];
+		APDURequest request(WriteBuffer(buffer, 2048));
 		build::ClearRestartIIN(request, seq);
 		return toHex(request.ToReadOnly());
 	}
 
 	std::string MeasureDelay(uint8_t seq)
 	{
-		StaticBuffer<2048> buffer;
-		APDURequest request(buffer.GetWriteBuffer());
+		uint8_t buffer[2048];
+		APDURequest request(WriteBuffer(buffer, 2048));
 		build::MeasureDelay(request, seq);
 		return toHex(request.ToReadOnly());
 	}
 
 	std::string EmptyResponse(uint8_t seq, const opendnp3::IINField& iin)
 	{
-		StaticBuffer<2048> buffer;
-		APDUResponse response(buffer.GetWriteBuffer());
+		uint8_t buffer[2048];
+		APDUResponse response(WriteBuffer(buffer, 2048));
 		response.SetFunction(FunctionCode::RESPONSE);
 		response.SetControl(AppControlField(true, true, false, false, seq));
 		response.SetIIN(iin);
@@ -79,8 +78,8 @@ namespace hex
 
 	std::string NullUnsolicited(uint8_t seq, const IINField& iin)
 	{
-		StaticBuffer<2048> buffer;
-		APDUResponse response(buffer.GetWriteBuffer());
+		uint8_t buffer[2048];
+		APDUResponse response(WriteBuffer(buffer, 2048));
 		build::NullUnsolicited(response, seq, iin);
 		return toHex(response.ToReadOnly());
 	}	
@@ -97,8 +96,8 @@ namespace hex
 
 	std::string Confirm(uint8_t seq, bool unsol)
 	{
-		StaticBuffer<2048> buffer;
-		APDURequest apdu(buffer.GetWriteBuffer());
+		uint8_t buffer[2048];
+		APDURequest apdu(WriteBuffer(buffer, 2048));
 		apdu.SetControl(AppControlField(true, true, false, unsol, seq));
 		apdu.SetFunction(FunctionCode::CONFIRM);
 		return toHex(apdu.ToReadOnly());

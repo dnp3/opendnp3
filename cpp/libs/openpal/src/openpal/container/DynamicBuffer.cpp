@@ -19,31 +19,33 @@
  * to you under the terms of the License.
  */
 
-#ifndef __DYNAMICALLY_ALLOCATED_EVENT_BUFFER_H_
-#define __DYNAMICALLY_ALLOCATED_EVENT_BUFFER_H_
+#include "DynamicBuffer.h"
 
-#include <opendnp3/outstation/EventBufferConfig.h>
-#include <opendnp3/outstation/EventBufferFacade.h>
-
-#include <openpal/container/DynamicArray.h>
-
-namespace asiodnp3
+namespace openpal
 {
+	DynamicBuffer::DynamicBuffer(uint32_t size) : DynamicArray<uint8_t, uint32_t>(size)
+	{}
 
-class DynamicallyAllocatedEventBuffer : openpal::Uncopyable
-{
+	ReadOnlyBuffer DynamicBuffer::ToReadOnly() const
+	{
+		return ReadOnlyBuffer(this->buffer, this->size);
+	}
 
-public:
-	DynamicallyAllocatedEventBuffer(uint32_t maxEvents);
+	WriteBuffer DynamicBuffer::GetWriteBuffer()
+	{
+		return WriteBuffer(this->buffer, this->Size());
+	}
 
-	opendnp3::EventBufferFacade GetFacade();
-
-private:	
-
-	openpal::DynamicArray<openpal::ListNode<opendnp3::SOERecord>, uint32_t> sequenceOfEvents;
-	openpal::DynamicArray<openpal::ListNode<opendnp3::SOERecord>*, uint32_t> selectedEvents;
-};
-
+	WriteBuffer DynamicBuffer::GetWriteBuffer(uint32_t maxSize)
+	{		
+		if (maxSize <= this->Size())
+		{
+			return WriteBuffer(this->buffer, maxSize);
+		}
+		else
+		{
+			return GetWriteBuffer();
+		}
+	}
 }
 
-#endif

@@ -23,7 +23,7 @@
 #include "LinkReceiverTest.h"
 #include "DNPHelpers.h"
 
-#include <openpal/container/StaticBuffer.h>
+#include <openpal/container/DynamicBuffer.h>
 
 using namespace openpal;
 using namespace opendnp3;
@@ -138,7 +138,8 @@ TEST_CASE(SUITE("CombinedFailures"))
 
 TEST_CASE(SUITE("ReadACK"))
 {
-	StaticBuffer<292> buffer;
+	DynamicBuffer buffer(292);
+
 	auto writeTo = buffer.GetWriteBuffer();
 	auto frame = LinkFrame::FormatAck(writeTo, true, false, 1, 2, nullptr);
 
@@ -151,7 +152,7 @@ TEST_CASE(SUITE("ReadACK"))
 
 TEST_CASE(SUITE("ReadNACK"))
 {
-	StaticBuffer<292> buffer;
+	DynamicBuffer buffer(292);
 	auto writeTo = buffer.GetWriteBuffer();
 	auto frame = LinkFrame::FormatNack(writeTo, false, true, 1, 2, nullptr);
 
@@ -164,7 +165,7 @@ TEST_CASE(SUITE("ReadNACK"))
 
 TEST_CASE(SUITE("LinkStatus"))
 {
-	StaticBuffer<292> buffer;
+	DynamicBuffer buffer(292);
 	auto writeTo = buffer.GetWriteBuffer();
 	auto frame = LinkFrame::FormatLinkStatus(writeTo, true, true, 1, 2, nullptr);
 
@@ -177,7 +178,7 @@ TEST_CASE(SUITE("LinkStatus"))
 
 TEST_CASE(SUITE("NotSupported"))
 {
-	StaticBuffer<292> buffer;
+	DynamicBuffer buffer(292);
 	auto writeTo = buffer.GetWriteBuffer();
 	auto frame = LinkFrame::FormatNotSupported(writeTo, true, false, 1, 2, nullptr);
 
@@ -194,7 +195,7 @@ TEST_CASE(SUITE("NotSupported"))
 
 TEST_CASE(SUITE("TestLinkStates"))
 {
-	StaticBuffer<292> buffer;
+	DynamicBuffer buffer(292);
 	auto writeTo = buffer.GetWriteBuffer();
 	auto frame = LinkFrame::FormatTestLinkStatus(writeTo, false, true, 1, 2, nullptr);
 
@@ -207,7 +208,7 @@ TEST_CASE(SUITE("TestLinkStates"))
 
 TEST_CASE(SUITE("ResetLinkStates"))
 {
-	StaticBuffer<292> buffer;
+	DynamicBuffer buffer(292);
 	auto writeTo = buffer.GetWriteBuffer();
 	auto frame = LinkFrame::FormatResetLinkStates(writeTo, false, 1, 2, nullptr);
 
@@ -220,7 +221,7 @@ TEST_CASE(SUITE("ResetLinkStates"))
 
 TEST_CASE(SUITE("RequestLinkStatus"))
 {
-	StaticBuffer<292> buffer;
+	DynamicBuffer buffer(292);
 	auto writeTo = buffer.GetWriteBuffer();
 	auto frame = LinkFrame::FormatRequestLinkStatus(writeTo, true, 1, 2, nullptr);
 
@@ -235,7 +236,7 @@ TEST_CASE(SUITE("UnconfirmedUserData"))
 {
 	ByteStr data(250, 0); //initializes a buffer with increasing value
 
-	StaticBuffer<292> buffer;
+	DynamicBuffer buffer(292);
 	auto writeTo = buffer.GetWriteBuffer();
 	auto frame = LinkFrame::FormatUnconfirmedUserData(writeTo, true, 1, 2, data, data.Size(), nullptr);
 
@@ -251,7 +252,7 @@ TEST_CASE(SUITE("ConfirmedUserData"))
 {
 	ByteStr data(250, 0); //initializes a buffer with increasing value
 
-	StaticBuffer<292> buffer;
+	DynamicBuffer buffer(292);
 	auto writeTo = buffer.GetWriteBuffer();
 	auto frame = LinkFrame::FormatConfirmedUserData(writeTo, true, true, 1, 2, data, data.Size(), nullptr);
 
@@ -300,7 +301,7 @@ TEST_CASE(SUITE("Resync0564"))
 TEST_CASE(SUITE("ManyReceives"))
 {
 
-	StaticBuffer<292> buffer;
+	DynamicBuffer buffer(292);
 	auto writeTo = buffer.GetWriteBuffer();
 	auto frame = LinkFrame::FormatAck(writeTo, true, false, 1, 2, nullptr);
 

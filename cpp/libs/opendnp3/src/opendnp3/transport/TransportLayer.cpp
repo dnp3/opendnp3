@@ -34,15 +34,14 @@ using namespace openpal;
 namespace opendnp3
 {
 
-TransportLayer::TransportLayer(openpal::LogRoot& root, openpal::IExecutor* pExecutor_, StackStatistics* pStatistics, uint32_t maxFragSize) :
+TransportLayer::TransportLayer(openpal::LogRoot& root, openpal::IExecutor* pExecutor_, uint32_t maxRxFragSize, StackStatistics* pStatistics) :
 	logger(root.GetLogger()),
 	pUpperLayer(nullptr),
 	pLinkLayer(nullptr),
 	isOnline(false),
 	isSending(false),
-	pExecutor(pExecutor_),
-	M_FRAG_SIZE(maxFragSize),
-	receiver(logger, pStatistics, maxFragSize),
+	pExecutor(pExecutor_),	
+	receiver(logger, maxRxFragSize, pStatistics),
 	transmitter(logger, pStatistics)
 {
 
@@ -56,9 +55,9 @@ void TransportLayer::BeginTransmit(const ReadOnlyBuffer& apdu)
 {
 	if (isOnline)
 	{
-		if (apdu.IsEmpty() || apdu.Size() > M_FRAG_SIZE)
+		if (apdu.IsEmpty())
 		{
-			FORMAT_LOG_BLOCK(logger, flags::ERR, "Illegal arg: %i, Array length must be in the range [1, %i]", apdu.Size(), M_FRAG_SIZE);
+			SIMPLE_LOG_BLOCK(logger, flags::ERR, "APDU cannot be empty");
 			auto lambda = [this]() { this->OnSendResult(false); };
 			pExecutor->PostLambda(lambda);
 		}
@@ -136,7 +135,7 @@ void TransportLayer::OnSendResult(bool isSuccess)
 	}
 }
 
-void TransportLayer::SetAppLayer(openpal::IUpperLayer* pUpperLayer_)
+void TransportLayer::SetAppLayer(IUpperLayer* pUpperLayer_)
 {
 	assert(pUpperLayer_ != nullptr);
 	assert(pUpperLayer == nullptr);

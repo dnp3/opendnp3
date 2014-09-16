@@ -18,51 +18,32 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <catch.hpp>
 
-#include <openpal/container/StaticPriorityQueue.h>
+#ifndef __DYNAMICALLY_ALLOCATED_EVENT_BUFFER_H_
+#define __DYNAMICALLY_ALLOCATED_EVENT_BUFFER_H_
 
-using namespace openpal;
+#include "opendnp3/outstation/EventBufferConfig.h"
+#include "opendnp3/outstation/EventBufferFacade.h"
 
-#define SUITE(name) "StaticProrityQueue - " name
+#include <openpal/container/DynamicArray.h>
 
-TEST_CASE(SUITE("Default less than works for ints"))
+namespace opendnp3
 {
-	StaticPriorityQueue<int, uint16_t, 3> queue;
 
-	REQUIRE(queue.IsEmpty());
-	REQUIRE(queue.Enqueue(5));
-	REQUIRE(queue.Enqueue(2));
-	REQUIRE(queue.Enqueue(7));
-	REQUIRE(!queue.Enqueue(10));
+class DynamicallyAllocatedEventBuffer : openpal::Uncopyable
+{
 
-	REQUIRE(queue.Size() == 3);
-	REQUIRE(queue.Pop() == 2);
-	REQUIRE(queue.Pop() == 5);
-	REQUIRE(queue.Pop() == 7);	
+public:
+	DynamicallyAllocatedEventBuffer(uint32_t maxEvents);
+
+	EventBufferFacade GetFacade();
+
+private:	
+
+	openpal::DynamicArray<openpal::ListNode<SOERecord>, uint32_t> sequenceOfEvents;
+	openpal::DynamicArray<openpal::ListNode<SOERecord>*, uint32_t> selectedEvents;
+};
+
 }
 
-TEST_CASE(SUITE("Overriding less than works for ints"))
-{
-	struct ReverseOrder
-	{
-		static bool IsLessThan(const int& lhs, const int& rhs)
-		{
-			return rhs < lhs;
-		}
-	};
-
-	StaticPriorityQueue<int, uint16_t, 3, ReverseOrder> queue;
-
-	REQUIRE(queue.IsEmpty());
-	REQUIRE(queue.Enqueue(5));
-	REQUIRE(queue.Enqueue(2));
-	REQUIRE(queue.Enqueue(7));
-	REQUIRE(!queue.Enqueue(10));
-
-	REQUIRE(queue.Size() == 3);
-	REQUIRE(queue.Pop() == 7);
-	REQUIRE(queue.Pop() == 5);
-	REQUIRE(queue.Pop() == 2);
-}
-
+#endif

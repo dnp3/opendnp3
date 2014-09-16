@@ -22,7 +22,7 @@
 #define __MOCK_UPPER_LAYER_H_
 
 
-#include <openpal/channel/LayerInterfaces.h>
+#include <opendnp3/LayerInterfaces.h>
 
 #include <functional>
 
@@ -31,7 +31,7 @@
 namespace opendnp3
 {
 
-class MockUpperLayer : public openpal::IUpperLayer, public openpal::HasLowerLayer, public BufferTestObject
+class MockUpperLayer : public IUpperLayer, public HasLowerLayer, public BufferTestObject
 {
 public:
 

@@ -24,7 +24,7 @@
 
 #include "opendnp3/link/ITransportSegment.h"
 
-#include <openpal/channel/LayerInterfaces.h>
+#include "opendnp3/LayerInterfaces.h"
 
 #include <assert.h>
 

@@ -21,15 +21,15 @@
 
 #include "BlockingCommandCallback.h"
 
-namespace opendnp3
+namespace asiodnp3
 {
 	
-CommandResponse BlockingCommandCallback::WaitForResult()
+opendnp3::CommandResponse BlockingCommandCallback::WaitForResult()
 {
 	return response.WaitForValue();
 }
 
-void BlockingCommandCallback::OnComplete(const CommandResponse& response)
+void BlockingCommandCallback::OnComplete(const opendnp3::CommandResponse& response)
 {
 	this->response.SetValue(response);
 }

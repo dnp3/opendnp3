@@ -33,11 +33,11 @@ PhysTestObject::PhysTestObject(uint32_t filters, bool aAutoRead) :
 	mClientAdapter(log.GetLogger(), &mTCPClient, aAutoRead),
 	mServerAdapter(log.GetLogger(), &mTCPServer, aAutoRead)
 {
-	mClientAdapter.SetUpperLayer(&mClientUpper);
-	mServerAdapter.SetUpperLayer(&mServerUpper);
+	mClientAdapter.SetUpperLayer(mClientUpper);
+	mServerAdapter.SetUpperLayer(mServerUpper);
 
-	mClientUpper.SetLowerLayer(&mClientAdapter);
-	mServerUpper.SetLowerLayer(&mServerAdapter);
+	mClientUpper.SetLowerLayer(mClientAdapter);
+	mServerUpper.SetLowerLayer(mServerAdapter);
 }
 
 }

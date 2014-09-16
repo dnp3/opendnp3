@@ -121,6 +121,7 @@ private:
 	}
 
 	IEventBuffer* pEventBuffer;
+	
 
 	openpal::IMutex* pMutex;
 	openpal::Settable<openpal::Action0> onEventAction;

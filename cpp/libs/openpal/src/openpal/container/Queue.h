@@ -18,107 +18,104 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __STATIC_PRIORITY_QUEUE_H_
-#define __STATIC_PRIORITY_QUEUE_H_
-
-#include "StaticLinkedList.h"
-
-#include "openpal/Configure.h"
+#ifndef __OPENPAL_QUEUE_H_
+#define __OPENPAL_QUEUE_H_
 
 #include <assert.h>
+
+#include "openpal/container/DynamicArray.h"
 
 namespace openpal
 {
 
-template <class ValueType>
-struct DefaultLessThan
-{
-	static bool IsLessThan(const ValueType& lhs, const ValueType& rhs)
-	{
-		return lhs < rhs;
-	}
-};
-
-template <class ValueType, class IndexType, IndexType N, class LessThan = DefaultLessThan<ValueType>>
-class StaticPriorityQueue : private Uncopyable
+template <class ValueType, class IndexType>
+class Queue
 {
 
-public:		
+public:
+
+	Queue(IndexType size) : count(0), first(0), nextInsert(0), buffer(size)
+	{}
 
 	IndexType Size() const
 	{
-		return list.Size();
-	}
+		return count;
+	}	
 
 	IndexType Capacity() const
 	{
-		return list.Capacity();
+		return buffer.Size();
 	}
 
 	bool IsEmpty() const
 	{
-		return list.IsEmpty();
+		return count == 0;
 	}
 
 	bool IsNotEmpty() const
 	{
-		return list.IsNotEmpty();
+		return count > 0;
 	}
 
 	bool IsFull() const
 	{
-		return list.IsFull();
+		return count == buffer.Size();
 	}
 
 	void Clear()
 	{
-		list.Clear();
-	}
-
-	template <class Match>
-	bool RemoveFirst(const Match& match)
-	{
-		auto pNode = list.RemoveFirst(match);
-		return pNode ? true : false;				
-	}
-
-	template <class Match>
-	bool Contains(const Match& match)
-	{		
-		return list.FindFirst(match) ? true : false;
+		count = first = nextInsert = 0;
 	}	
 
-	ValueType& Peek()
+	ValueType* Peek()
 	{
-		auto pNode = list.FindFirst([](const ValueType&)
+		if (IsEmpty())
 		{
-			return true;
-		});
-		assert(pNode);
-		return (pNode->value);
+			return nullptr;
+		}
+		else
+		{
+			return &buffer[first];
+		}		
 	}
 
-	ValueType& Pop()
+	ValueType* Pop()
 	{
-		auto pNode = list.RemoveFirst([](const ValueType&)
+		if (IsEmpty())
 		{
-			return true;
-		});
-		assert(pNode);
-		return (pNode->value);
+			return nullptr;
+		}
+		else
+		{
+			IndexType ret = first;
+			first = (first + 1) % buffer.Size();
+			--count;
+			return &buffer[ret];
+		}		
 	}
 
 	bool Enqueue(const ValueType& value)
 	{
-		auto lt = [](const ValueType& lhs, const ValueType& rhs){ return LessThan::IsLessThan(lhs, rhs);  };
-		return list.Insert(value, lt);
+		if (IsFull())
+		{
+			return false;
+		}
+		else
+		{
+			buffer[nextInsert] = value;
+			nextInsert = (nextInsert + 1) % buffer.Size();
+			++count;
+			return true;
+		}
 	}
 
 private:
+
+	IndexType count;
+	IndexType first;
+	IndexType nextInsert;
 	
-	StaticLinkedList<ValueType, IndexType, N> list;
-
-
+	openpal::DynamicArray<ValueType, IndexType> buffer;
 };
 
 }

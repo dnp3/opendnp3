@@ -26,6 +26,7 @@
 #include <openpal/logging/LogRoot.h>
 
 #include <system_error>
+#include <assert.h>
 
 namespace asiopal
 {

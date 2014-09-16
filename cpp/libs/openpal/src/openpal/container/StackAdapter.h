@@ -56,13 +56,16 @@ public:
 
 	bool Push(const ValueType& value)
 	{
-		if(!IsFull())
+		if(IsFull())
+		{
+			return false;
+		}
+		else
 		{
 			indexable[this->size] = value;
 			++(this->size);
-			return true;
+			return true;			
 		}
-		else return false;
 	}
 
 	ValueType Pop()

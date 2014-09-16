@@ -21,21 +21,21 @@
 #ifndef __OUTSTATION_H_
 #define __OUTSTATION_H_
 
-#include <openpal/channel/LayerInterfaces.h>
+#include "opendnp3/LayerInterfaces.h"
 
 #include "opendnp3/outstation/OutstationContext.h"
 
 namespace opendnp3
 {
 
-class Outstation : public openpal::IUpperLayer
+class Outstation : public IUpperLayer
 {
 	public:
 
 	Outstation(	const OutstationConfig& config,
 					openpal::IExecutor& executor, 
 					openpal::LogRoot& root, 
-					openpal::ILowerLayer& lower,
+					ILowerLayer& lower,
 					ICommandHandler& commandHandler,
 					IOutstationApplication& application,
 					Database& database, 

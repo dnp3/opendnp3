@@ -33,6 +33,7 @@ namespace Automatak.DNP3.Interface
     public interface IMasterApplication
     {
         UInt64 GetMillisecondsSinceEpoch();
+        void OnReceiveIIN(IINField iin);
     }
 
     /// <summary>
@@ -58,6 +59,11 @@ namespace Automatak.DNP3.Interface
         {
             var ticks = DateTime.Now.ToUniversalTime().Subtract(epoch).Ticks;
             return (UInt64) (ticks / TimeSpan.TicksPerMillisecond);
+        }
+
+        void IMasterApplication.OnReceiveIIN(IINField iin)
+        {
+           // ignore these in the default application
         }
     }
 }

@@ -2,8 +2,7 @@ package com.automatak.render.dnp3
 
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
-import org.scalatest.FunSuite
-import org.scalatest.matchers.ShouldMatchers
+import org.scalatest.{Matchers, FunSuite}
 
 import com.automatak.render.dnp3.objects.ObjectGroup
 import com.automatak.render.dnp3.objects.generators._
@@ -11,7 +10,7 @@ import com.automatak.render.cpp.CppIndentation
 
 
 @RunWith(classOf[JUnitRunner])
-class GroupVariationRenderingTestSuite extends FunSuite with ShouldMatchers {
+class GroupVariationRenderingTestSuite extends FunSuite with Matchers {
 
   test("Experiment with rendering") {
 

@@ -82,6 +82,7 @@
     <Compile Include="gen\EventDoubleBinaryResponse.cs" />
     <Compile Include="gen\EventFrozenCounterResponse.cs" />
     <Compile Include="gen\GroupVariation.cs" />
+    <Compile Include="gen\IINField.cs" />
     <Compile Include="gen\PointClass.cs" />
     <Compile Include="gen\PollState.cs" />
     <Compile Include="gen\QualifierCode.cs" />

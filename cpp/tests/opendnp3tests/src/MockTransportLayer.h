@@ -22,7 +22,7 @@
 #ifndef __MOCK_LINK_LAYER_USER_H_
 #define __MOCK_LINK_LAYER_USER_H_
 
-#include <openpal/channel/LayerInterfaces.h>
+#include <opendnp3/LayerInterfaces.h>
 #include <opendnp3/link/ILinkLayer.h>
 
 #include <deque>
@@ -31,7 +31,7 @@
 namespace opendnp3
 {
 
-class MockTransportLayer : public openpal::IUpperLayer
+class MockTransportLayer : public IUpperLayer
 {
 
 public:

@@ -26,11 +26,10 @@ namespace opendnp3 {
 
 struct Group50Var1
 {
-  static const GroupVariationID ID;
-  static const uint32_t SIZE = 6;
+  static GroupVariationID ID() { return GroupVariationID(50,1); }
+  static uint32_t Size() { return 6; }
   static Group50Var1 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group50Var1&, openpal::WriteBuffer&);
-
   uint64_t time;
 };
 

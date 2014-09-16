@@ -18,37 +18,35 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __I_SERIALIZER_H_
-#define __I_SERIALIZER_H_
+#ifndef __DYNAMIC_BUFFER_H_
+#define __DYNAMIC_BUFFER_H_
+
+#include "DynamicArray.h"
+
+#include "openpal/container/WriteBuffer.h"
+#include "openpal/container/ReadOnlyBuffer.h"
 
 #include <cstdint>
-
-#include "openpal/container/ReadOnlyBuffer.h"
-#include "openpal/container/WriteBuffer.h"
 
 namespace openpal
 {
 
-template <class T>
-class ISerializer
+class DynamicBuffer : public DynamicArray<uint8_t, uint32_t>
 {
+
 public:
 
-	/**
-	* @return The size (in bytes) required for every call to read/write
-	*/
-	virtual uint32_t Size() const = 0;
+	DynamicBuffer(uint32_t size);
 
-	/**
-	* reads the value and advances the read buffer
-	*/
-	virtual T Read(ReadOnlyBuffer& buffer) const = 0;
+	ReadOnlyBuffer ToReadOnly() const;
 
-	/**
-	* writes the value and advances the write buffer
-	*/
-	virtual void Write(const T& value, WriteBuffer& buffer) const = 0;
+	WriteBuffer GetWriteBuffer();
 
+	WriteBuffer GetWriteBuffer(uint32_t maxSize);
+
+	const uint8_t* operator()() const { return buffer; }
+
+	uint8_t* operator()() { return buffer; }
 };
 
 }

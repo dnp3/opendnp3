@@ -25,8 +25,6 @@ using namespace openpal;
 
 namespace opendnp3 {
 
-const GroupVariationID  Group12Var1::ID(12,1);
-
 Group12Var1 Group12Var1::Read(ReadOnlyBuffer& buffer)
 {
   Group12Var1 obj;
@@ -57,15 +55,14 @@ void Group12Var1::Write(const Group12Var1& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(1);
 }
 
-Group12Var1Serializer Group12Var1Serializer::instance;
 
-ControlRelayOutputBlock Group12Var1Serializer::Read(ReadOnlyBuffer& buff) const
+ControlRelayOutputBlock Group12Var1::ReadTarget(ReadOnlyBuffer& buff)
 {
   auto gv = Group12Var1::Read(buff);
   return ControlRelayOutputBlockFactory::From(gv.code, gv.count, gv.onTime, gv.offTime, gv.status);
 }
 
-void Group12Var1Serializer::Write(const ControlRelayOutputBlock& value, openpal::WriteBuffer& buff) const
+void Group12Var1::WriteTarget(const ControlRelayOutputBlock& value, openpal::WriteBuffer& buff)
 {
   Group12Var1::Write(ConvertGroup12Var1::Apply(value), buff);
 }

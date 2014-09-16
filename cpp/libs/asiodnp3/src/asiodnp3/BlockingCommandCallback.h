@@ -18,41 +18,33 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef __BLOCKING_COMMAND_CALLBACK_H_
+#define __BLOCKING_COMMAND_CALLBACK_H_
 
-#ifndef __STATICALLY_ALLOCATED_EVENT_BUFFER_
-#define __STATICALLY_ALLOCATED_EVENT_BUFFER_
+#include <openpal/util/Uncopyable.h>
+#include <opendnp3/master/CommandResponse.h>
+#include <opendnp3/master/ICommandCallback.h>
 
-#include "EventBufferFacade.h"
+#include <asiopal/Synchronized.h>
 
-#include <openpal/container/StaticArray.h>
-#include <openpal/container/LinkedListAdapter.h>
-#include <openpal/container/StackAdapter.h>
-
-#include "opendnp3/outstation/SOERecord.h"
-
-namespace opendnp3
+namespace asiodnp3
 {
 
-template <uint16_t MaxEvents>
-class StaticallyAllocatedEventBuffer
-{
-public:
+/**
+* Callback when a command finishes or fails
+*/
+class BlockingCommandCallback : public opendnp3::ICommandCallback, private openpal::Uncopyable
+{	
+	
+public:	
+	
+	virtual void OnComplete(const opendnp3::CommandResponse& response) override final;
 
-	EventBufferFacade GetFacade()
-	{		
-		openpal::LinkedListAdapter<SOERecord, uint32_t> soeAdapter(sequenceOfEvents.ToIndexable());
-		openpal::StackAdapter<openpal::ListNode<SOERecord>*, uint32_t> selectionAdapter(selectedEvents.ToIndexable());
-
-		return EventBufferFacade(			
-			soeAdapter,
-			selectionAdapter
-		);
-	}
+	opendnp3::CommandResponse WaitForResult();
 
 private:
 
-	openpal::StaticArray<openpal::ListNode<opendnp3::SOERecord>, uint32_t, MaxEvents> sequenceOfEvents;
-	openpal::StaticArray<openpal::ListNode<opendnp3::SOERecord>*, uint32_t, MaxEvents> selectedEvents;
+	asiopal::Synchronized<opendnp3::CommandResponse> response;
 };
 
 }

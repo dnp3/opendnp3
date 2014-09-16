@@ -62,52 +62,52 @@ namespace Automatak.DNP3.Interface
             this.status = status;
         }
 
-        CommandStatus ICommandHandler.Supports(ControlRelayOutputBlock command, ushort index)
+        CommandStatus ICommandHandler.Select(ControlRelayOutputBlock command, ushort index)
         {
             return status();
         }
 
-        CommandStatus ICommandHandler.Supports(AnalogOutputInt32 command, ushort index)
+        CommandStatus ICommandHandler.Select(AnalogOutputInt32 command, ushort index)
         {
             return status();
         }
 
-        CommandStatus ICommandHandler.Supports(AnalogOutputInt16 command, ushort index)
+        CommandStatus ICommandHandler.Select(AnalogOutputInt16 command, ushort index)
         {
             return status();
         }
 
-        CommandStatus ICommandHandler.Supports(AnalogOutputFloat32 command, ushort index)
+        CommandStatus ICommandHandler.Select(AnalogOutputFloat32 command, ushort index)
         {
             return status();
         }
 
-        CommandStatus ICommandHandler.Supports(AnalogOutputDouble64 command, ushort index)
+        CommandStatus ICommandHandler.Select(AnalogOutputDouble64 command, ushort index)
         {
             return status();
         }
 
-        CommandStatus ICommandHandler.Perform(ControlRelayOutputBlock command, ushort index)
+        CommandStatus ICommandHandler.Operate(ControlRelayOutputBlock command, ushort index)
         {
             return status();
         }
 
-        CommandStatus ICommandHandler.Perform(AnalogOutputInt32 command, ushort index)
+        CommandStatus ICommandHandler.Operate(AnalogOutputInt32 command, ushort index)
         {
             return status();
         }
 
-        CommandStatus ICommandHandler.Perform(AnalogOutputInt16 command, ushort index)
+        CommandStatus ICommandHandler.Operate(AnalogOutputInt16 command, ushort index)
         {
             return status();
         }
 
-        CommandStatus ICommandHandler.Perform(AnalogOutputFloat32 command, ushort index)
+        CommandStatus ICommandHandler.Operate(AnalogOutputFloat32 command, ushort index)
         {
             return status();
         }
 
-        CommandStatus ICommandHandler.Perform(AnalogOutputDouble64 command, ushort index)
+        CommandStatus ICommandHandler.Operate(AnalogOutputDouble64 command, ushort index)
         {
             return status();
         }      

@@ -21,7 +21,6 @@
 #include <catch.hpp>
 
 #include <openpal/executor/Action0.h>
-#include <openpal/executor/Action1.h>
 
 using namespace openpal;
 
@@ -44,17 +43,4 @@ TEST_CASE(SUITE("Action0BindWorksAsExpected"))
 	REQUIRE(a == 3);
 }
 
-TEST_CASE(SUITE("Action1BindWorksAsExpected"))
-{
-	int a = 1;
-	auto pA = &a;	
-
-	auto add = [=](int b) { *pA += b; };
-
-	auto bound = Action1<int>::Bind(add);
-
-	bound.Apply(4);
-
-	REQUIRE(a == 5);
-}
 

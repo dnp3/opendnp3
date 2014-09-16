@@ -21,15 +21,20 @@
 #ifndef __LAYER_INTERFACES_H_
 #define __LAYER_INTERFACES_H_
 
-#include "openpal/container/ReadOnlyBuffer.h"
-#include "openpal/container/WriteBuffer.h"
-#include "openpal/Configure.h"
+#include <openpal/container/WriteBuffer.h>
+#include <openpal/container/ReadOnlyBuffer.h>
+
+#include "Route.h"
 
 #include <assert.h>
 
-namespace openpal
+namespace opendnp3
 {
 
+/**
+* Describes a layer that can be opened or closed in response to the
+* availability of the layer below it.
+*/
 class IUpDown
 {
 
@@ -56,7 +61,7 @@ public:
 
 	// Called by the lower layer when data arrives
 
-	virtual void OnReceive(const ReadOnlyBuffer&) = 0;
+	virtual void OnReceive(const openpal::ReadOnlyBuffer&) = 0;
 
 	// Called by lower layer when a previously requested send operation succeeds or fails.
 	// Layers can only have 1 outstanding send operation. The callback is guaranteed
@@ -72,7 +77,7 @@ public:
 
 	virtual ~ILowerLayer() {}	
 
-	virtual void BeginTransmit(const ReadOnlyBuffer&) = 0;
+	virtual void BeginTransmit(const openpal::ReadOnlyBuffer&) = 0;
 
 };
 
@@ -85,11 +90,10 @@ public:
 
 	// Called by the lower layer when data arrives
 
-	void SetLowerLayer(ILowerLayer* pLowerLayer_)
-	{
-		assert(pLowerLayer_ != nullptr);
+	void SetLowerLayer(ILowerLayer& lowerLayer)
+	{		
 		assert(pLowerLayer == nullptr);
-		pLowerLayer = pLowerLayer_;
+		pLowerLayer = &lowerLayer;
 	}
 
 protected:
@@ -106,11 +110,10 @@ public:
 
 	// Called by the lower layer when data arrives
 
-	void SetUpperLayer(IUpperLayer* pUpperLayer_)
-	{
-		assert(pUpperLayer_ != nullptr);
+	void SetUpperLayer(IUpperLayer& upperLayer)
+	{		
 		assert(pUpperLayer == nullptr);
-		pUpperLayer = pUpperLayer_;
+		pUpperLayer = &upperLayer;
 	}
 
 protected:

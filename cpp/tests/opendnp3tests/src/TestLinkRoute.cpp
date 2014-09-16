@@ -20,7 +20,7 @@
  */
 #include <catch.hpp>
 
-#include <opendnp3/link/LinkRoute.h>
+#include <opendnp3/Route.h>
 
 using namespace std;
 using namespace opendnp3;
@@ -29,12 +29,12 @@ using namespace opendnp3;
 
 TEST_CASE(SUITE("LinkRouteEqualityComparison"))
 {
-	LinkRoute lr1(1, 2);
-	LinkRoute lr2(1, 3);
-	LinkRoute lr3(1, 3);
+	Route lr1(1, 2);
+	Route lr2(1, 3);
+	Route lr3(1, 3);
 
-	REQUIRE(!(lr1 == lr2));
-	REQUIRE(lr3 == lr2);
+	REQUIRE(!(lr1.Equals(lr2)));
+	REQUIRE(lr3.Equals(lr2));
 
 }
 

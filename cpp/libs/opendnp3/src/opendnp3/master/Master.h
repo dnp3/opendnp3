@@ -29,13 +29,13 @@
 namespace opendnp3
 {
 
-class Master : public openpal::IUpperLayer
+class Master : public IUpperLayer
 {
 	public:
 
 	Master(	openpal::IExecutor& executor, 				
 			openpal::LogRoot& root, 
-			openpal::ILowerLayer& lower,
+			ILowerLayer& lower,
 			ISOEHandler& SOEHandler,			
 			opendnp3::IMasterApplication& application,
 			const MasterParams& params,
@@ -56,7 +56,7 @@ class Master : public openpal::IUpperLayer
 	
 	ICommandProcessor& GetCommandProcessor();
 
-	MasterScan AddScan(openpal::TimeDuration period, const openpal::Action1<APDURequest&> builder);
+	MasterScan AddScan(openpal::TimeDuration period, const std::function<void (APDURequest&)>& builder);
 
 	MasterScan AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period);
 

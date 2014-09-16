@@ -18,16 +18,29 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "LinkRoute.h"
+
+#include "DynamicallyAllocatedEventBuffer.h"
+
+using namespace openpal;
 
 namespace opendnp3
 {
 
-LinkRoute::LinkRoute(const uint16_t aRemoteAddr, const uint16_t aLocalAddr) :
-	remote(aRemoteAddr),
-	local(aLocalAddr)
+DynamicallyAllocatedEventBuffer::DynamicallyAllocatedEventBuffer(uint32_t maxEvents) :	
+	sequenceOfEvents(maxEvents),
+	selectedEvents(maxEvents)
 {}
 
-LinkRoute::LinkRoute() : remote(0), local(0) {}
+EventBufferFacade DynamicallyAllocatedEventBuffer::GetFacade()
+{	
+
+	LinkedListAdapter<SOERecord, uint32_t> soeAdapter(sequenceOfEvents.ToIndexable());
+	StackAdapter<ListNode<SOERecord>*, uint32_t> selectionAdapter(selectedEvents.ToIndexable());
+
+	return EventBufferFacade(	           
+	           soeAdapter,
+	           selectionAdapter
+	);
+}
 
 }

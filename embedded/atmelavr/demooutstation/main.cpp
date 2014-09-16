@@ -2,8 +2,8 @@
 
 #include <opendnp3/transport/TransportStack.h>
 #include <opendnp3/outstation/Outstation.h>
-#include <opendnp3/outstation/StaticallyAllocatedDatabase.h>
-#include <opendnp3/outstation/StaticallyAllocatedEventBuffer.h>
+#include <opendnp3/outstation/DynamicallyAllocatedDatabase.h>
+#include <opendnp3/outstation/DynamicallyAllocatedEventBuffer.h>
 #include <opendnp3/outstation/IOutstationApplication.h>
 
 #include <openpal/logging/LogRoot.h>
@@ -20,40 +20,57 @@ using namespace opendnp3;
 using namespace arduino;
 using namespace openpal;
 
-void ToggleBinaryEvery3Seconds(IExecutor* pExecutor, Database* pDatabase, uint8_t index = 0, bool value = true);
+void ToggleValuesEvery3Seconds(IExecutor* pExecutor, Database* pDatabase);
+
+const uint16_t NUM_BINARY = 5;
+const uint32_t MAX_APDU_SIZE = 249;
+int index = 0;
+bool value = true;
+
+int GetFreeRAM () {
+	extern int __heap_start, *__brkval;
+	int v;
+	return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval);
+}
+
+OutstationConfig GetOutstationConfig()
+{
+	OutstationConfig config;
+	config.params.maxTxFragSize = MAX_APDU_SIZE;
+	config.params.maxRxFragSize = MAX_APDU_SIZE;
+	config.eventBufferConfig = EventBufferConfig(5,0,2);
+	config.params.allowUnsolicited = true;
+	config.defaultEventResponses.binary = EventBinaryResponse::Group2Var2;
+	config.defaultEventResponses.analog = EventAnalogResponse::Group32Var1;
+	return config;
+}
 
 int main()
-{	
+{			
 	cli();
 	
-	AVRExecutor exe;
+	AVRExecutor exe(5,5); // maximum of 5 async operations and 5 timers
 	
 	LogRoot root(nullptr, "root", 0);
 		
-	TransportStack stack(root, &exe, nullptr, LinkConfig(false, false));
+	TransportStack stack(root, &exe, MAX_APDU_SIZE, nullptr, LinkConfig(false, false));
 		
 	// 5 static binaries, 0 others
-	StaticallyAllocatedDatabase<5, 0, 0, 0, 0, 0, 0> staticBuffers;
-	// allow a max of 5 events
-	StaticallyAllocatedEventBuffer<5> eventBuffers;
+	DynamicallyAllocatedDatabase staticBuffers(DatabaseTemplate(5,0,1));
 	
-	
+	// allow a max of 2 events
+	DynamicallyAllocatedEventBuffer eventBuffers(5);
 	Database database(staticBuffers.GetFacade());
-		
-	OutstationConfig config;
-	config.eventBufferConfig = EventBufferConfig(5);
-	config.params.allowUnsolicited = true;	
-	config.defaultEventResponses.binary = EventBinaryResponse::Group2Var2;
 	
 	// Object that handles command (CROB / analog output) requests
 	// This example can toggle an LED on the Arduino board
 	AVRCommandHandler commandHandler;						
 						
-	Outstation outstation(config, exe, root, stack.transport, commandHandler, DefaultOutstationApplication::Instance(), database, eventBuffers.GetFacade());
+	Outstation outstation(GetOutstationConfig(), exe, root, stack.transport, commandHandler, DefaultOutstationApplication::Instance(), database, eventBuffers.GetFacade());
 		
 	stack.transport.SetAppLayer(&outstation);
 			
-	AVRLinkParser parser(root, exe, stack.link);
+	AVRLinkParser parser(root, exe, stack.link, 8); // buffer up to 8 bytes
 	stack.link.SetRouter(&parser);	
 	stack.link.OnLowerLayerUp();
 	
@@ -69,7 +86,7 @@ int main()
 	// Set LED as output
 	SET(DDRB, BIT(7));	
 	
-	ToggleBinaryEvery3Seconds(&exe, &database);
+	ToggleValuesEvery3Seconds(&exe, &database);
 				
 	for (;;)
 	{ 	
@@ -86,15 +103,21 @@ int main()
 	return 0;
 }
 
-void ToggleBinaryEvery3Seconds(IExecutor* pExecutor, Database* pDatabase, uint8_t index, bool value)
-{	
-	uint16_t next = ((index + 1) % 5);
-		
+void ToggleValuesEvery3Seconds(IExecutor* pExecutor, Database* pDatabase)
+{				
+	auto currentIndex = index;
+	auto currentValue = value;
+	index = (index + 1) % NUM_BINARY;
+	value = !value;
+	auto time = pExecutor->GetTime().milliseconds;
+	auto freeRAM = GetFreeRAM();
+				
 	{
 		Transaction tx(pDatabase);
-		pDatabase->Update(Binary(value, 0x01, pExecutor->GetTime().milliseconds), index);	
+		pDatabase->Update(Analog(freeRAM, 0x01, time), 0);	
+		pDatabase->Update(Binary(currentValue, 0x01, time), currentIndex);
 	}	
 		
-	auto lambda = [pExecutor, pDatabase, value, next]() { ToggleBinaryEvery3Seconds(pExecutor, pDatabase, next, !value); };
-	pExecutor->Start(TimeDuration::Seconds(3), Action0::Bind(lambda));	
+	auto lambda = [pExecutor, pDatabase]() { ToggleValuesEvery3Seconds(pExecutor, pDatabase); };
+	pExecutor->Start(TimeDuration::Seconds(10), Action0::Bind(lambda));			
 }

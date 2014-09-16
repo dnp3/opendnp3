@@ -32,8 +32,9 @@
 
 #include <openpal/logging/Logger.h>
 #include <openpal/Configure.h>
-#include <openpal/container/StaticQueue.h>
 #include <assert.h>
+
+#include <deque>
 
 namespace opendnp3
 {
@@ -89,7 +90,7 @@ private:
 
 	void Callback(const CommandResponse& cr);
 
-	openpal::StaticQueue<FunctionCode, uint8_t, 2> functionCodes;
+	std::deque<FunctionCode> functionCodes;	
 
 	openpal::Logger* pLogger;
 	ICommandCallback* pCallback;	

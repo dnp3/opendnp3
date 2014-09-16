@@ -38,9 +38,9 @@ StaticLoadFun StaticLoadFunctions::Get(StaticBinaryResponse rsp)
 	switch(rsp)
 	{
 	case(StaticBinaryResponse::Group1Var2):
-		return &StaticLoader::LoadFixedSizeStartStop<Group1Var2Serializer>;
+		return &StaticLoader::LoadFixedSizeStartStop<Group1Var2>;
 	default:
-		return &StaticLoader::LoadFixedSizeStartStop<Group1Var2Serializer>;
+		return &StaticLoader::LoadFixedSizeStartStop<Group1Var2>;
 	}
 }
 
@@ -49,9 +49,9 @@ StaticLoadFun StaticLoadFunctions::Get(StaticDoubleBinaryResponse rsp)
 	switch (rsp)
 	{
 		case(StaticDoubleBinaryResponse::Group3Var2) :
-			return &StaticLoader::LoadFixedSizeStartStop<Group3Var2Serializer>;
+			return &StaticLoader::LoadFixedSizeStartStop<Group3Var2>;
 		default:
-			return &StaticLoader::LoadFixedSizeStartStop<Group3Var2Serializer>;
+			return &StaticLoader::LoadFixedSizeStartStop<Group3Var2>;
 	}
 }
 
@@ -59,14 +59,14 @@ StaticLoadFun StaticLoadFunctions::Get(StaticAnalogResponse rsp)
 {
 	switch(rsp)
 	{
-	case(StaticAnalogResponse::Group30Var1): return &StaticLoader::LoadFixedSizeStartStop<Group30Var1Serializer>;
-	case(StaticAnalogResponse::Group30Var2): return &StaticLoader::LoadFixedSizeStartStop<Group30Var2Serializer>;
-	case(StaticAnalogResponse::Group30Var3): return &StaticLoader::LoadFixedSizeStartStop<Group30Var3Serializer>;
-	case(StaticAnalogResponse::Group30Var4): return &StaticLoader::LoadFixedSizeStartStop<Group30Var4Serializer>;
-	case(StaticAnalogResponse::Group30Var5): return &StaticLoader::LoadFixedSizeStartStop<Group30Var5Serializer>;
-	case(StaticAnalogResponse::Group30Var6): return &StaticLoader::LoadFixedSizeStartStop<Group30Var6Serializer>;
+	case(StaticAnalogResponse::Group30Var1): return &StaticLoader::LoadFixedSizeStartStop<Group30Var1>;
+	case(StaticAnalogResponse::Group30Var2): return &StaticLoader::LoadFixedSizeStartStop<Group30Var2>;
+	case(StaticAnalogResponse::Group30Var3): return &StaticLoader::LoadFixedSizeStartStop<Group30Var3>;
+	case(StaticAnalogResponse::Group30Var4): return &StaticLoader::LoadFixedSizeStartStop<Group30Var4>;
+	case(StaticAnalogResponse::Group30Var5): return &StaticLoader::LoadFixedSizeStartStop<Group30Var5>;
+	case(StaticAnalogResponse::Group30Var6): return &StaticLoader::LoadFixedSizeStartStop<Group30Var6>;
 	default:
-		return &StaticLoader::LoadFixedSizeStartStop<Group30Var1Serializer>;
+		return &StaticLoader::LoadFixedSizeStartStop<Group30Var1>;
 	}
 }
 
@@ -74,12 +74,12 @@ StaticLoadFun StaticLoadFunctions::Get(StaticCounterResponse rsp)
 {
 	switch(rsp)
 	{
-	case(StaticCounterResponse::Group20Var1): return &StaticLoader::LoadFixedSizeStartStop<Group20Var1Serializer>;
-	case(StaticCounterResponse::Group20Var2): return &StaticLoader::LoadFixedSizeStartStop<Group20Var2Serializer>;
-	case(StaticCounterResponse::Group20Var5): return &StaticLoader::LoadFixedSizeStartStop<Group20Var5Serializer>;
-	case(StaticCounterResponse::Group20Var6): return &StaticLoader::LoadFixedSizeStartStop<Group20Var6Serializer>;
+	case(StaticCounterResponse::Group20Var1): return &StaticLoader::LoadFixedSizeStartStop<Group20Var1>;
+	case(StaticCounterResponse::Group20Var2): return &StaticLoader::LoadFixedSizeStartStop<Group20Var2>;
+	case(StaticCounterResponse::Group20Var5): return &StaticLoader::LoadFixedSizeStartStop<Group20Var5>;
+	case(StaticCounterResponse::Group20Var6): return &StaticLoader::LoadFixedSizeStartStop<Group20Var6>;
 	default:
-		return &StaticLoader::LoadFixedSizeStartStop<Group20Var1Serializer>;
+		return &StaticLoader::LoadFixedSizeStartStop<Group20Var1>;
 	}
 }
 
@@ -87,9 +87,9 @@ StaticLoadFun StaticLoadFunctions::Get(StaticFrozenCounterResponse rsp)
 {
 	switch(rsp)
 	{
-	case(StaticFrozenCounterResponse::Group21Var1): return &StaticLoader::LoadFixedSizeStartStop<Group21Var1Serializer>;
+	case(StaticFrozenCounterResponse::Group21Var1): return &StaticLoader::LoadFixedSizeStartStop<Group21Var1>;
 	default:
-		return &StaticLoader::LoadFixedSizeStartStop<Group21Var1Serializer>;
+		return &StaticLoader::LoadFixedSizeStartStop<Group21Var1>;
 	}
 }
 
@@ -97,9 +97,9 @@ StaticLoadFun StaticLoadFunctions::Get(StaticBinaryOutputStatusResponse rsp)
 {
 	switch(rsp)
 	{
-	case(StaticBinaryOutputStatusResponse::Group10Var2): return &StaticLoader::LoadFixedSizeStartStop<Group10Var2Serializer>;
+	case(StaticBinaryOutputStatusResponse::Group10Var2): return &StaticLoader::LoadFixedSizeStartStop<Group10Var2>;
 	default:
-		return &StaticLoader::LoadFixedSizeStartStop<Group10Var2Serializer>;
+		return &StaticLoader::LoadFixedSizeStartStop<Group10Var2>;
 	}
 }
 
@@ -107,12 +107,12 @@ StaticLoadFun StaticLoadFunctions::Get(StaticAnalogOutputStatusResponse rsp)
 {
 	switch(rsp)
 	{
-	case(StaticAnalogOutputStatusResponse::Group40Var1): return &StaticLoader::LoadFixedSizeStartStop<Group40Var1Serializer>;
-	case(StaticAnalogOutputStatusResponse::Group40Var2): return &StaticLoader::LoadFixedSizeStartStop<Group40Var2Serializer>;
-	case(StaticAnalogOutputStatusResponse::Group40Var3): return &StaticLoader::LoadFixedSizeStartStop<Group40Var3Serializer>;
-	case(StaticAnalogOutputStatusResponse::Group40Var4): return &StaticLoader::LoadFixedSizeStartStop<Group40Var4Serializer>;
+	case(StaticAnalogOutputStatusResponse::Group40Var1): return &StaticLoader::LoadFixedSizeStartStop<Group40Var1>;
+	case(StaticAnalogOutputStatusResponse::Group40Var2): return &StaticLoader::LoadFixedSizeStartStop<Group40Var2>;
+	case(StaticAnalogOutputStatusResponse::Group40Var3): return &StaticLoader::LoadFixedSizeStartStop<Group40Var3>;
+	case(StaticAnalogOutputStatusResponse::Group40Var4): return &StaticLoader::LoadFixedSizeStartStop<Group40Var4>;
 	default:
-		return &StaticLoader::LoadFixedSizeStartStop<Group40Var1Serializer>;
+		return &StaticLoader::LoadFixedSizeStartStop<Group40Var1>;
 	}
 }
 

@@ -11,7 +11,7 @@
 #include <openpal/logging/LogRoot.h>
 
 #include <openpal/container/Settable.h>
-#include <openpal/container/StaticQueue.h>
+#include <openpal/container/Queue.h>
 #include <openpal/container/RingBuffer.h>
 #include <openpal/executor/IExecutor.h>
 
@@ -21,7 +21,7 @@ class AVRLinkParser : public opendnp3::ILinkRouter
 {
 	public:
 
-	AVRLinkParser(openpal::LogRoot& root, openpal::IExecutor& exe, opendnp3::ILinkContext& context);
+	AVRLinkParser(openpal::LogRoot& root, openpal::IExecutor& exe, opendnp3::ILinkContext& context, uint32_t bufferSize);
 	
 	virtual void QueueTransmit(const openpal::ReadOnlyBuffer& buffer, opendnp3::ILinkContext* pContext, bool primary) final override;	
 	
@@ -51,8 +51,8 @@ class AVRLinkParser : public opendnp3::ILinkRouter
 		bool primary;
 	};
 	
-	openpal::StaticQueue<Transmission, uint8_t, 2> txQueue;
-	openpal::RingBuffer<8> rxBuffer;
+	openpal::Queue<Transmission, uint8_t> txQueue;
+	openpal::RingBuffer rxBuffer;
 	
 	openpal::Settable<openpal::ReadOnlyBuffer> primaryTx;
 	openpal::Settable<openpal::ReadOnlyBuffer> secondaryTx;

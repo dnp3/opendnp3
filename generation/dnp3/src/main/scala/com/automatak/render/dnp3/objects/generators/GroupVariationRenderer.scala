@@ -7,7 +7,9 @@ import com.automatak.render.cpp._
 
 object GroupVariationHeaderRenderer extends ModelRenderer[GroupVariation]{
 
-  private def idDeclaration: Iterator[String] = Iterator("static const GroupVariationID ID;")
+  private def idDeclaration(gv: GroupVariation): Iterator[String] = Iterator(
+    "static GroupVariationID ID() { return GroupVariationID(" + gv.group + "," + gv.variation + "); }"
+  )
 
   def render(gv: GroupVariation)(implicit i: Indentation): Iterator[String] = gv match {
     case x: AnyVariation => renderIdOnly(x)
@@ -18,7 +20,7 @@ object GroupVariationHeaderRenderer extends ModelRenderer[GroupVariation]{
 
   private def renderIdOnly(gv: GroupVariation)(implicit i: Indentation): Iterator[String] = {
     struct(gv.name) {
-      idDeclaration
+      idDeclaration(gv)
     }
   }
 
@@ -45,54 +47,39 @@ object GroupVariationHeaderRenderer extends ModelRenderer[GroupVariation]{
 
     def members: Iterator[String] =  x.fields.map(f => typedefs(f)).iterator.flatten ++ x.fields.map(f => getFieldString(f)).iterator
 
-    def sizeSignature: Iterator[String] = Iterator("static const uint32_t SIZE = " + x.size + ";")
+    def sizeSignature: Iterator[String] = Iterator("static uint32_t Size() { return " + x.size + "; }")
 
     def readSignature: Iterator[String] = Iterator("static " + x.name + " Read(openpal::ReadOnlyBuffer&);")
 
     def writeSignature: Iterator[String] = Iterator("static void Write(const " + x.name + "&, openpal::WriteBuffer&);")
 
     def definition : Iterator[String] = struct(x.name) {
-      idDeclaration ++
-      x.conversion.map(c => Iterator("typedef " + c.target + " Target;")).getOrElse(Iterator.empty) ++
+      idDeclaration(x) ++
       sizeSignature ++
       readSignature ++
       writeSignature ++
-      space ++
+      serializer ++
       members
     }
 
     def serializer: Iterator[String] = x.conversion match {
       case None => Iterator.empty
       case Some(conv) =>
-        val structName = x.name+"Serializer"
-        val baseClass = "IDNP3Serializer<"+conv.target+">"
-        space ++ struct(structName, Some(baseClass)) {
-          space ++ Iterator("static " + baseClass + "& Inst() { return instance; }") ++
-          space ++ Iterator("GroupVariationID ID() const { return " + x.name + "::ID; }") ++
-          space ++ Iterator("uint32_t Size() const { return " + x.name + "::SIZE; }") ++
-          space ++ conv.signatures ++ space ++
-          privateSection {
-            Iterator("static " + structName + " instance;")
-          }
-        }
+        val serializerType = "DNP3Serializer<"+conv.target+">"
+        space ++
+        Iterator("static " + serializerType + " Inst() { return " + serializerType + "(ID(), Size(), &ReadTarget, &WriteTarget); }") ++
+        space ++ conv.signatures ++ space
     }
 
-    definition ++ serializer
+    definition
   }
 }
 
 object GroupVariationImplRenderer extends ModelRenderer[GroupVariation]{
 
-  private def idDefintion(gv: GroupVariation): Iterator[String] =
-    Iterator("const GroupVariationID  " + gv.name + "::ID(" + gv.group + "," + gv.variation + ");")
-
   def render(gv: GroupVariation)(implicit i: Indentation): Iterator[String] = gv match {
     case x: FixedSize => renderFixedSize(x)
-    case _ => renderIdOnly(gv)
-  }
-
-  private def renderIdOnly(gv: GroupVariation)(implicit i: Indentation): Iterator[String] = {
-    idDefintion(gv)
+    case _ => Iterator.empty
   }
 
 
@@ -151,9 +138,8 @@ object GroupVariationImplRenderer extends ModelRenderer[GroupVariation]{
 
     }
 
-    idDefintion(x) ++ space ++
     readFunction ++ space ++
-    writeFunction ++
+    writeFunction ++ space ++
     convertFunction
   }
 

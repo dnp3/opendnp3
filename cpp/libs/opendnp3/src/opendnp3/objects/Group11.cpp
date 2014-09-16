@@ -25,8 +25,6 @@ using namespace openpal;
 
 namespace opendnp3 {
 
-const GroupVariationID  Group11Var1::ID(11,1);
-
 Group11Var1 Group11Var1::Read(ReadOnlyBuffer& buffer)
 {
   Group11Var1 obj;
@@ -41,21 +39,18 @@ void Group11Var1::Write(const Group11Var1& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(1);
 }
 
-Group11Var1Serializer Group11Var1Serializer::instance;
 
-BinaryOutputStatus Group11Var1Serializer::Read(ReadOnlyBuffer& buff) const
+BinaryOutputStatus Group11Var1::ReadTarget(ReadOnlyBuffer& buff)
 {
   auto gv = Group11Var1::Read(buff);
   return BinaryOutputStatusFactory::From(gv.flags);
 }
 
-void Group11Var1Serializer::Write(const BinaryOutputStatus& value, openpal::WriteBuffer& buff) const
+void Group11Var1::WriteTarget(const BinaryOutputStatus& value, openpal::WriteBuffer& buff)
 {
   Group11Var1::Write(ConvertGroup11Var1::Apply(value), buff);
 }
 
-
-const GroupVariationID  Group11Var2::ID(11,2);
 
 Group11Var2 Group11Var2::Read(ReadOnlyBuffer& buffer)
 {
@@ -75,15 +70,14 @@ void Group11Var2::Write(const Group11Var2& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(6);
 }
 
-Group11Var2Serializer Group11Var2Serializer::instance;
 
-BinaryOutputStatus Group11Var2Serializer::Read(ReadOnlyBuffer& buff) const
+BinaryOutputStatus Group11Var2::ReadTarget(ReadOnlyBuffer& buff)
 {
   auto gv = Group11Var2::Read(buff);
   return BinaryOutputStatusFactory::From(gv.flags, gv.time);
 }
 
-void Group11Var2Serializer::Write(const BinaryOutputStatus& value, openpal::WriteBuffer& buff) const
+void Group11Var2::WriteTarget(const BinaryOutputStatus& value, openpal::WriteBuffer& buff)
 {
   Group11Var2::Write(ConvertGroup11Var2::Apply(value), buff);
 }

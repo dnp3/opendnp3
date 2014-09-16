@@ -36,7 +36,7 @@ PollTask::PollTask(const Builder& builder_, const openpal::TimeDuration& period_
 void PollTask::BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq)
 {		
 	rxCount = 0;
-	builder.Apply(request);
+	builder(request);
 	request.SetFunction(FunctionCode::READ);
 	request.SetControl(AppControlField::Request(seq));
 

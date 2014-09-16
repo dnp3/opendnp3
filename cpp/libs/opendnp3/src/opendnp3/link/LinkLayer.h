@@ -22,15 +22,12 @@
 #define __LINK_LAYER_H_
 
 #include <openpal/executor/IExecutor.h>
-#include <openpal/container/StaticBuffer.h>
 #include <openpal/logging/LogRoot.h>
 
 #include "opendnp3/link/ILinkLayer.h"
 #include "opendnp3/link/ILinkContext.h"
 #include "opendnp3/link/LinkLayerConstants.h"
 #include "opendnp3/link/LinkConfig.h"
-
-#include "opendnp3/Configure.h"
 
 namespace opendnp3
 {
@@ -40,7 +37,7 @@ class PriStateBase;
 class SecStateBase;
 
 //	@section desc Implements the contextual state of DNP3 Data Link Layer
-class LinkLayer : public ILinkLayer, public ILinkContext, public openpal::HasUpperLayer
+class LinkLayer : public ILinkLayer, public ILinkContext, public HasUpperLayer
 {
 public:
 
@@ -144,13 +141,10 @@ public:
 		return mRetryRemaining;
 	}
 
-	void QueueTransmit(const openpal::ReadOnlyBuffer& buffer, bool primary);
-
-	// the buffer for secondary responses
-	openpal::StaticBuffer<LS_HEADER_SIZE> secondaryBuffer;
+	void QueueTransmit(const openpal::ReadOnlyBuffer& buffer, bool primary);	
 
 	// the buffer for primary requests
-	openpal::StaticBuffer<LS_MAX_FRAME_SIZE> primaryBuffer;
+	uint8_t txBuffer[LPDU_MAX_FRAME_SIZE];
 
 	openpal::ReadOnlyBuffer FormatPrimaryBufferWithUnconfirmed(const openpal::ReadOnlyBuffer& tpdu);
 

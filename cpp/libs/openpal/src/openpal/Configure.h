@@ -40,10 +40,31 @@ namespace openpal { namespace sizes {
 #ifdef AVR
 
 #include <stddef.h>
+#include <stdlib.h>
 
 inline void* operator new(size_t, void* p)
 { 
-	return p; 
+	return p;
+}
+
+inline void * operator new(size_t size)
+{
+	return malloc(size);
+}
+
+inline void operator delete(void * ptr)
+{
+	free(ptr);
+}
+
+inline void * operator new[](size_t size)
+{
+	return malloc(size);
+}
+
+inline void operator delete[](void * ptr)
+{
+	free(ptr);
 }
 
 extern "C" void abort();

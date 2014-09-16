@@ -13,8 +13,8 @@ class ArbitraryConversion(name: String, incHeaders: List[String], cppHeaders: Li
   def signatures : Iterator[String] = {
     Iterator(
       "typedef " + name + " Target;",
-      name + " Read(openpal::ReadOnlyBuffer&) const;",
-      "void Write(const " + name + "&, openpal::WriteBuffer&) const;"
+      "static " + name + " ReadTarget(openpal::ReadOnlyBuffer&);",
+      "static void WriteTarget(const " + name + "&, openpal::WriteBuffer&);"
     )
   }
 
@@ -23,24 +23,20 @@ class ArbitraryConversion(name: String, incHeaders: List[String], cppHeaders: Li
 
     def args : String = fs.fields.map(f => "gv."+f.name).mkString(", ")
 
-    val serializer = fs.name + "Serializer"
-
-    def singleton = Iterator(serializer + " " + serializer + "::instance;")
-
     def func1 = {
-      Iterator(name + " " + serializer + "::Read(ReadOnlyBuffer& buff) const") ++ bracket {
+      Iterator(name + " " + fs.name + "::ReadTarget(ReadOnlyBuffer& buff)") ++ bracket {
         Iterator("auto gv = "+ fs.name + "::Read(buff);",
           "return " + name + "Factory::From(" + args + ");")
       }
     }
 
     def func2 = {
-      Iterator("void " + serializer + "::Write(const " + name + "& value, openpal::WriteBuffer& buff) const") ++ bracket {
+      Iterator("void " + fs.name + "::WriteTarget(const " + name + "& value, openpal::WriteBuffer& buff)") ++ bracket {
         Iterator(fs.name+"::Write(Convert" + fs.name + "::Apply(value), buff);")
       }
     }
 
-    singleton ++ space ++ func1 ++ space ++ func2
+    func1 ++ space ++ func2
   }
 
 }
@@ -51,7 +47,7 @@ object ConversionHeaders {
   val crob = quoted("opendnp3/app/ControlRelayOutputBlock.h")
   val ao = quoted("opendnp3/app/AnalogOutput.h")
   val factory = quoted("opendnp3/app/MeasurementFactory.h")
-  val serializer = quoted("opendnp3/app/IDNP3Serializer.h")
+  val serializer = quoted("opendnp3/app/DNP3Serializer.h")
   val conversions = quoted("opendnp3/app/WriteConversions.h")
 
   val cppIncldues = List(factory, conversions)

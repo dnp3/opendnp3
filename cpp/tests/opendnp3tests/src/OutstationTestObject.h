@@ -25,8 +25,8 @@
 #include <opendnp3/app/ITransactable.h>
 #include <opendnp3/outstation/Outstation.h>
 #include <opendnp3/outstation/Database.h>
-#include <asiodnp3/DynamicallyAllocatedDatabase.h>
-#include <asiodnp3/DynamicallyAllocatedEventBuffer.h>
+#include <opendnp3/outstation/DynamicallyAllocatedDatabase.h>
+#include <opendnp3/outstation/DynamicallyAllocatedEventBuffer.h>
 
 #include "MockExecutor.h"
 #include "LogTester.h"
@@ -81,8 +81,8 @@ public:
 
 private:
 
-	asiodnp3::DynamicallyAllocatedDatabase dbBuffers;
-	asiodnp3::DynamicallyAllocatedEventBuffer eventBuffers;	
+	opendnp3::DynamicallyAllocatedDatabase dbBuffers;
+	opendnp3::DynamicallyAllocatedEventBuffer eventBuffers;	
 
 public:
 	Database db;

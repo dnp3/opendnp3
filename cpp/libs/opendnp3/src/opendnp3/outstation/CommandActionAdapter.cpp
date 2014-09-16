@@ -24,34 +24,34 @@
 namespace opendnp3
 {
 
-CommandActionAdapter::CommandActionAdapter(ICommandHandler* pHandler_, bool supports_) :
+CommandActionAdapter::CommandActionAdapter(ICommandHandler* pHandler_, bool isSelect_) :
 	pHandler(pHandler_),
-	supports(supports_)
+	isSelect(isSelect_)
 {}
 
 CommandStatus CommandActionAdapter::Action(const ControlRelayOutputBlock& command, uint16_t index)
 {
-	return supports ? pHandler->Supports(command, index) : pHandler->Perform(command, index);
+	return isSelect ? pHandler->Select(command, index) : pHandler->Operate(command, index);
 }
 
 CommandStatus CommandActionAdapter::Action(const AnalogOutputInt16& command, uint16_t index)
 {
-	return supports ? pHandler->Supports(command, index) : pHandler->Perform(command, index);
+	return isSelect ? pHandler->Select(command, index) : pHandler->Operate(command, index);
 }
 
 CommandStatus CommandActionAdapter::Action(const AnalogOutputInt32& command, uint16_t index)
 {
-	return supports ? pHandler->Supports(command, index) : pHandler->Perform(command, index);
+	return isSelect ? pHandler->Select(command, index) : pHandler->Operate(command, index);
 }
 
 CommandStatus CommandActionAdapter::Action(const AnalogOutputFloat32& command, uint16_t index)
 {
-	return supports ? pHandler->Supports(command, index) : pHandler->Perform(command, index);
+	return isSelect ? pHandler->Select(command, index) : pHandler->Operate(command, index);
 }
 
 CommandStatus CommandActionAdapter::Action(const AnalogOutputDouble64& command, uint16_t index)
 {
-	return supports ? pHandler->Supports(command, index) : pHandler->Perform(command, index);
+	return isSelect ? pHandler->Select(command, index) : pHandler->Operate(command, index);
 }
 
 }

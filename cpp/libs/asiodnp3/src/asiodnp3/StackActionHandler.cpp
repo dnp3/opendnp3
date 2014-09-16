@@ -25,7 +25,7 @@
 #include <asiopal/ASIOExecutor.h>
 #include <asiopal/StrandGetters.h>
 
-#include "opendnp3/link/LinkLayerRouter.h"
+#include "asiodnp3/impl/LinkLayerRouter.h"
 
 using namespace openpal;
 using namespace opendnp3;

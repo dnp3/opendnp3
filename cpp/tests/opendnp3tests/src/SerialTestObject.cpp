@@ -33,8 +33,8 @@ SerialTestObject::SerialTestObject(SerialSettings cfg, uint32_t filters, bool aI
 	mPort(log.root, this->GetService(), cfg),
 	mAdapter(log.GetLogger(), &mPort, true)
 {
-	mAdapter.SetUpperLayer(&mUpper);
-	mUpper.SetLowerLayer(&mAdapter);
+	mAdapter.SetUpperLayer(mUpper);
+	mUpper.SetLowerLayer(mAdapter);
 }
 
 }

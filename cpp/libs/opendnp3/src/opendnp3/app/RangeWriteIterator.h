@@ -22,7 +22,7 @@
 #define __RANGE_WRITE_ITERATOR_H_
 
 #include <openpal/container/WriteBuffer.h>
-#include <openpal/serialization/ISerializer.h>
+#include <openpal/serialization/Serializer.h>
 
 namespace opendnp3
 {
@@ -38,12 +38,12 @@ public:
 		return RangeWriteIterator();
 	}
 
-	RangeWriteIterator() : start(0), pSerializer(nullptr), count(0), isValid(false), pPosition(nullptr)
+	RangeWriteIterator() : start(0), count(0), isValid(false), pPosition(nullptr)
 	{}
 
-	RangeWriteIterator(typename IndexType::Type start_, openpal::ISerializer<WriteType>& serializer, openpal::WriteBuffer& position) :
+	RangeWriteIterator(typename IndexType::Type start_, const openpal::Serializer<WriteType>& serializer_, openpal::WriteBuffer& position) :
 		start(start_),
-		pSerializer(&serializer),
+		serializer(serializer_),
 		count(0),				
 		isValid(position.Size() >= 2 * IndexType::Size),
 		range(position),
@@ -67,9 +67,9 @@ public:
 
 	bool Write(const WriteType& value)
 	{
-		if (isValid && pPosition->Size() >= pSerializer->Size())
+		if (isValid && pPosition->Size() >= serializer.Size())
 		{
-			pSerializer->Write(value, *pPosition);
+			serializer.Write(value, *pPosition);
 			++count;
 			return true;			
 		}
@@ -87,7 +87,7 @@ public:
 private:
 
 	typename IndexType::Type start;
-	openpal::ISerializer<WriteType>* pSerializer;
+	openpal::Serializer<WriteType> serializer;
 	typename IndexType::Type count;
 
 	bool isValid;

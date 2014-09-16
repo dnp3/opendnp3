@@ -45,7 +45,7 @@ public:
 	std::string GeneratePacketSequence(std::vector<std::string>&, uint32_t aNumPackets, uint32_t aLastPacketLength);
 
 	// Get a Sequence of data w/ optional header
-	std::string GetData(const std::string& arHdr, uint8_t aSeed = 0, uint32_t aLength = TL_MAX_TPDU_PAYLOAD);
+	std::string GetData(const std::string& arHdr, uint8_t aSeed = 0, uint32_t aLength = MAX_TPDU_PAYLOAD);
 
 	LogTester log;
 	MockExecutor exe;
