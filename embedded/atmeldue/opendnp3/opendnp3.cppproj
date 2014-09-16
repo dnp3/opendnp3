@@ -446,10 +446,6 @@
       <SubType>compile</SubType>
       <Link>app\WriteConversionTemplates.h</Link>
     </Compile>
-    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\Configure.h">
-      <SubType>compile</SubType>
-      <Link>Configure.h</Link>
-    </Compile>
     <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\ErrorCodes.h">
       <SubType>compile</SubType>
       <Link>ErrorCodes.h</Link>
@@ -774,14 +770,6 @@
       <SubType>compile</SubType>
       <Link>link\LinkLayerParser.h</Link>
     </Compile>
-    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\link\LinkRoute.cpp">
-      <SubType>compile</SubType>
-      <Link>link\LinkRoute.cpp</Link>
-    </Compile>
-    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\link\LinkRoute.h">
-      <SubType>compile</SubType>
-      <Link>link\LinkRoute.h</Link>
-    </Compile>
     <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\link\PriLinkLayerStates.cpp">
       <SubType>compile</SubType>
       <Link>link\PriLinkLayerStates.cpp</Link>
@@ -1034,6 +1022,22 @@
       <SubType>compile</SubType>
       <Link>outstation\DualValue.h</Link>
     </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\DynamicallyAllocatedDatabase.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\DynamicallyAllocatedDatabase.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\DynamicallyAllocatedDatabase.h">
+      <SubType>compile</SubType>
+      <Link>outstation\DynamicallyAllocatedDatabase.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\DynamicallyAllocatedEventBuffer.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\DynamicallyAllocatedEventBuffer.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\DynamicallyAllocatedEventBuffer.h">
+      <SubType>compile</SubType>
+      <Link>outstation\DynamicallyAllocatedEventBuffer.h</Link>
+    </Compile>
     <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\Event.h">
       <SubType>compile</SubType>
       <Link>outstation\Event.h</Link>
@@ -1237,14 +1241,6 @@
     <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\SOERecord.h">
       <SubType>compile</SubType>
       <Link>outstation\SOERecord.h</Link>
-    </Compile>
-    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\StaticallyAllocatedDatabase.h">
-      <SubType>compile</SubType>
-      <Link>outstation\StaticallyAllocatedDatabase.h</Link>
-    </Compile>
-    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\StaticallyAllocatedEventBuffer.h">
-      <SubType>compile</SubType>
-      <Link>outstation\StaticallyAllocatedEventBuffer.h</Link>
     </Compile>
     <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\StaticDataFacade.h">
       <SubType>compile</SubType>

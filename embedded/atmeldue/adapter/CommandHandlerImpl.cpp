@@ -25,59 +25,51 @@
 
 using namespace opendnp3;
 
-namespace arduino
-{	
-	CommandStatus CommandHandlerImpl::Supports(const ControlRelayOutputBlock& command, uint16_t index)
+
+CommandStatus CommandHandlerImpl::Select(const ControlRelayOutputBlock& command, uint16_t index)
+{
+	if(index == 0 && (command.functionCode == ControlCode::LATCH_OFF || command.functionCode == ControlCode::LATCH_ON))
 	{
-		if(index == 0 && (command.functionCode == ControlCode::LATCH_OFF || command.functionCode == ControlCode::LATCH_ON))
+		return CommandStatus::SUCCESS;
+	}
+	else
+	{
+		return CommandStatus::NOT_SUPPORTED;
+	}
+}
+	
+CommandStatus CommandHandlerImpl::Operate(const ControlRelayOutputBlock& command, uint16_t index)
+{
+	if(index == 0)
+	{
+		if(command.functionCode == ControlCode::LATCH_ON)
 		{
+			// TODO Change an LED on the DUE - SET(PORTB, BIT(7)); 
+			return CommandStatus::SUCCESS;
+		}
+		else if(command.functionCode == ControlCode::LATCH_OFF)
+		{
+			// TODO Change an LED on the DUE - CLEAR(PORTB, BIT(7));
 			return CommandStatus::SUCCESS;
 		}
 		else
 		{
 			return CommandStatus::NOT_SUPPORTED;
-		}
+		}			
 	}
-	
-	CommandStatus CommandHandlerImpl::Perform(const ControlRelayOutputBlock& command, uint16_t index)
+	else
 	{
-		if(index == 0)
-		{
-			if(command.functionCode == ControlCode::LATCH_ON)
-			{
-				// TODO Change an LED on the DUE - SET(PORTB, BIT(7)); 
-				return CommandStatus::SUCCESS;
-			}
-			else if(command.functionCode == ControlCode::LATCH_OFF)
-			{
-				// TODO Change an LED on the DUE - CLEAR(PORTB, BIT(7));
-				return CommandStatus::SUCCESS;
-			}
-			else
-			{
-				return CommandStatus::NOT_SUPPORTED;
-			}			
-		}
-		else
-		{
-			return CommandStatus::NOT_SUPPORTED;
-		}
+		return CommandStatus::NOT_SUPPORTED;
 	}
-
-
-	CommandStatus CommandHandlerImpl::Supports(const AnalogOutputInt16& command, uint16_t index) { return CommandStatus::NOT_SUPPORTED; }
-	CommandStatus CommandHandlerImpl::Perform(const AnalogOutputInt16& command, uint16_t index) { return CommandStatus::NOT_SUPPORTED; }
-
-
-	CommandStatus CommandHandlerImpl::Supports(const AnalogOutputInt32& command, uint16_t index) { return CommandStatus::NOT_SUPPORTED; }
-	CommandStatus CommandHandlerImpl::Perform(const AnalogOutputInt32& command, uint16_t index) { return CommandStatus::NOT_SUPPORTED; }
-
-
-	CommandStatus CommandHandlerImpl::Supports(const AnalogOutputFloat32& command, uint16_t index) { return CommandStatus::NOT_SUPPORTED; }
-	CommandStatus CommandHandlerImpl::Perform(const AnalogOutputFloat32& command, uint16_t index) { return CommandStatus::NOT_SUPPORTED; }
-
-
-	CommandStatus CommandHandlerImpl::Supports(const AnalogOutputDouble64& command, uint16_t index) { return CommandStatus::NOT_SUPPORTED; }
-	CommandStatus CommandHandlerImpl::Perform(const AnalogOutputDouble64& command, uint16_t index) { return CommandStatus::NOT_SUPPORTED; }
-	
 }
+
+opendnp3::CommandStatus CommandHandlerImpl::Select(const opendnp3::AnalogOutputInt16& command, uint16_t index) { return CommandStatus::NOT_SUPPORTED; }
+opendnp3::CommandStatus CommandHandlerImpl::Operate(const opendnp3::AnalogOutputInt16& command, uint16_t index) { return CommandStatus::NOT_SUPPORTED; }
+
+opendnp3::CommandStatus CommandHandlerImpl::Select(const opendnp3::AnalogOutputInt32& command, uint16_t index) { return CommandStatus::NOT_SUPPORTED; }
+opendnp3::CommandStatus CommandHandlerImpl::Operate(const opendnp3::AnalogOutputInt32& command, uint16_t index) { return CommandStatus::NOT_SUPPORTED; }
+opendnp3::CommandStatus CommandHandlerImpl::Select(const opendnp3::AnalogOutputFloat32& command, uint16_t index) { return CommandStatus::NOT_SUPPORTED; }
+opendnp3::CommandStatus CommandHandlerImpl::Operate(const opendnp3::AnalogOutputFloat32& command, uint16_t index) { return CommandStatus::NOT_SUPPORTED; }
+
+opendnp3::CommandStatus CommandHandlerImpl::Select(const opendnp3::AnalogOutputDouble64& command, uint16_t index) { return CommandStatus::NOT_SUPPORTED; }
+opendnp3::CommandStatus CommandHandlerImpl::Operate(const opendnp3::AnalogOutputDouble64& command, uint16_t index) { return CommandStatus::NOT_SUPPORTED; }

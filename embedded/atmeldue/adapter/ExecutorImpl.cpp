@@ -37,7 +37,7 @@ void ExecutorImpl::Init()
 	gpExecutor = this;		
 }
 
-ExecutorImpl::ExecutorImpl() : ticks(0)
+ExecutorImpl::ExecutorImpl(uint8_t maxQueueSize, uint8_t maxtimers) : ticks(0), work(maxQueueSize), idleTimers(maxtimers)
 {	
 	for(uint8_t i = 0; i < timers.Size(); ++i)
 	{

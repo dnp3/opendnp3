@@ -6,6 +6,8 @@
 LinkParserImpl* gLinkParser = nullptr;
 	
 LinkParserImpl::LinkParserImpl(openpal::LogRoot& root, openpal::IExecutor& exe, opendnp3::ILinkContext& context) : 	
+	txQueue(2),
+	rxBuffer(8),
 	pExecutor(&exe),
 	pContext(&context),
 	parser(root.GetLogger())

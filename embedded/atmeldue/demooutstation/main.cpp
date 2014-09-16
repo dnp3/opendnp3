@@ -9,8 +9,8 @@
 
 #include <opendnp3/transport/TransportStack.h>
 #include <opendnp3/outstation/Outstation.h>
-#include <opendnp3/outstation/StaticallyAllocatedDatabase.h>
-#include <opendnp3/outstation/StaticallyAllocatedEventBuffer.h>
+#include <opendnp3/outstation/DynamicallyAllocatedDatabase.h>
+#include <opendnp3/outstation/DynamicallyAllocatedEventBuffer.h>
 #include <opendnp3/outstation/IOutstationApplication.h>
 
 #include <openpal/logging/LogRoot.h>
@@ -21,7 +21,6 @@
 #include "Macros.h"
 
 using namespace opendnp3;
-using namespace arduino;
 using namespace openpal;
 
 void ToggleBinaryEvery3Seconds(IExecutor* pExecutor, Database* pDatabase, uint8_t index = 0, bool value = true);
@@ -36,19 +35,19 @@ int main(void)
     // Initialize the SAM system
     SystemInit();
 	
-	ExecutorImpl exe;
+	ExecutorImpl exe(5,5);
 	
 	LogRoot root(nullptr, "root", 0);
 	
-	TransportStack stack(root, &exe, nullptr, LinkConfig(false, false));
+	TransportStack stack(root, &exe, 2048, nullptr, LinkConfig(false, false));
 	
 	// 5 static binaries, 0 others
-	StaticallyAllocatedDatabase<5, 0, 0, 0, 0, 0, 0> staticBuffers;
+	DynamicallyAllocatedDatabase buffers(5);
 	// allow a max of 5 events
-	StaticallyAllocatedEventBuffer<5> eventBuffers;
+	DynamicallyAllocatedEventBuffer eventBuffers(5);
 	
 	
-	Database database(staticBuffers.GetFacade());
+	Database database(buffers.GetFacade());
 	
 	OutstationConfig config;
 	config.eventBufferConfig = EventBufferConfig(5);
