@@ -6,6 +6,7 @@
  */ 
 
 #include "sam.h"
+#include "sam3x8e.h"
 
 #include "ExecutorImpl.h"
 
@@ -30,6 +31,8 @@ using namespace openpal;
 
 void ToggleLEDEvery3Seconds(IExecutor* pExecutor);
 
+uint32_t led = (1u << 27); 
+
 /**
  * \brief Application entry point.
  *
@@ -39,6 +42,10 @@ int main(void)
 {
     // Initialize the SAM system
     SystemInit();
+	
+	// Output Enable Register
+	REG_PIOB_OER = led; 	
+	
 	
 	ExecutorImpl exe(5,5);
 
@@ -81,6 +88,8 @@ int main(void)
 	
 	ToggleLEDEvery3Seconds(&exe);
 	
+	
+	
 	for (;;)
 	{
 		// process any bytes that were received on the interrupt
@@ -88,10 +97,24 @@ int main(void)
 		// parser.ProcessRx();
 
 		// run all pending events or expired timers
-		exe.Run();
+		//exe.Run();
+	
+		REG_PIOB_SODR = led; // Set Output Data Register, turns LED on
+		
+		for(int i=0; i < 10000000; ++i);
+		
+		REG_PIOB_CODR = led; // Clear Output Data Register, turns LED off
+		
+		for(int i=0; i < 10000000; ++i);
 		
 		// sleep until an interrupt occurs
-		exe.Sleep();
+		//exe.Sleep();
+		
+		    
+		    //delay(1000);         // wait for a second
+		    
+		    //delay(1000);         // wait for a second
+		
 	}
 
 	return 0;
