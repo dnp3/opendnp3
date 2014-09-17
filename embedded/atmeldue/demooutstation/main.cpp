@@ -7,6 +7,9 @@
 
 #include "sam.h"
 
+#include "ExecutorImpl.h"
+
+/* commented out until PAL works
 #include <opendnp3/transport/TransportStack.h>
 #include <opendnp3/outstation/Outstation.h>
 #include <opendnp3/outstation/DynamicallyAllocatedDatabase.h>
@@ -15,15 +18,17 @@
 
 #include <openpal/logging/LogRoot.h>
 
-#include "ExecutorImpl.h"
+
 #include "LinkParserImpl.h"
 #include "CommandHandlerImpl.h"
 #include "Macros.h"
 
 using namespace opendnp3;
+*/
+
 using namespace openpal;
 
-void ToggleBinaryEvery3Seconds(IExecutor* pExecutor, Database* pDatabase, uint8_t index = 0, bool value = true);
+void ToggleLEDEvery3Seconds(IExecutor* pExecutor);
 
 /**
  * \brief Application entry point.
@@ -36,7 +41,8 @@ int main(void)
     SystemInit();
 	
 	ExecutorImpl exe(5,5);
-	
+
+/*	
 	LogRoot root(nullptr, "root", 0);
 	
 	TransportStack stack(root, &exe, 2048, nullptr, LinkConfig(false, false));
@@ -71,13 +77,15 @@ int main(void)
 	
 	// enable USART RX/TX interrupts
 	parser.Init();	
+*/	
 	
-	ToggleBinaryEvery3Seconds(&exe, &database);
+	ToggleLEDEvery3Seconds(&exe);
 	
 	for (;;)
 	{
 		// process any bytes that were received on the interrupt
-		parser.ProcessRx();
+		// commented out until timers work
+		// parser.ProcessRx();
 
 		// run all pending events or expired timers
 		exe.Run();
@@ -89,16 +97,12 @@ int main(void)
 	return 0;
 }
 
-void ToggleBinaryEvery3Seconds(IExecutor* pExecutor, Database* pDatabase, uint8_t index, bool value)
-{
-	uint16_t next = ((index + 1) % 5);
-	
-	{
-		Transaction tx(pDatabase);
-		pDatabase->Update(Binary(value, 0x01, pExecutor->GetTime().milliseconds), index);
-	}
-	
-	auto lambda = [pExecutor, pDatabase, value, next]() { ToggleBinaryEvery3Seconds(pExecutor, pDatabase, next, !value); };
+void ToggleLEDEvery3Seconds(IExecutor* pExecutor)
+{	
+	// TODO - toggle LED here ...
+		
+	// schedule the next toggle
+	auto lambda = [pExecutor]() { ToggleLEDEvery3Seconds(pExecutor); };
 	pExecutor->Start(TimeDuration::Seconds(3), Action0::Bind(lambda));
 }
 
