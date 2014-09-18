@@ -14,23 +14,32 @@
 #include <openpal/container/RingBuffer.h>
 #include <openpal/executor/IExecutor.h>
 
+typedef int (*ReadFunc)(uint8_t *c);
+typedef int (*WriteFunc)(const uint8_t c);
+
 class LinkParserImpl : public opendnp3::ILinkRouter
 {
 	public:
 
-	LinkParserImpl(openpal::LogRoot& root, openpal::IExecutor& exe, opendnp3::ILinkContext& context);
+	LinkParserImpl(openpal::LogRoot& root, openpal::IExecutor& exe, opendnp3::ILinkContext& context, ReadFunc read_, WriteFunc write_);
 	
 	virtual void QueueTransmit(const openpal::ReadOnlyBuffer& buffer, opendnp3::ILinkContext* pContext, bool primary) final override;	
 	
-	void Receive(uint8_t byte);
 	
-	void Init();
 	
-	void CheckTransmit();
+	void CheckTxRx();
 	
-	void ProcessRx();
+	
 	
 	private:
+	
+	void Receive(uint8_t byte);
+	
+	void CheckTx();	
+	void CheckRx();
+	
+	ReadFunc read;
+	WriteFunc write;
 	
 	uint32_t CopyRxBuffer();
 		

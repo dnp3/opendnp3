@@ -65,7 +65,8 @@ void configure_uart(void)
 	UART->UART_CR = UART_CR_RSTRX | UART_CR_RSTTX | UART_CR_RXDIS | UART_CR_TXDIS;
 	
 	// Set the baudrate to 115200
-	UART->UART_BRGR = 45; // 84000000 / 16 * x = BaudRate (write x into UART_BRGR)
+	//UART->UART_BRGR = 45; // 84000000 / 16 * x = BaudRate (write x into UART_BRGR)
+	UART->UART_BRGR = 547;
 	
 	// No Parity
 	UART->UART_MR = UART_MR_PAR_NO;
@@ -74,9 +75,11 @@ void configure_uart(void)
 	UART->UART_PTCR = UART_PTCR_RXTDIS | UART_PTCR_TXTDIS;
 	
 	// Disable / Enable interrupts on end of receive
+	/*
 	UART->UART_IDR = 0xFFFFFFFF;
-	NVIC_EnableIRQ((IRQn_Type) ID_UART);
+	NVIC_EnableIRQ((IRQn_Type) ID_UART);	
 	UART->UART_IER = UART_IER_RXRDY;
+	*/
 	
 	// Enable receiver and trasmitter
 	UART->UART_CR = UART_CR_RXEN | UART_CR_TXEN;	
@@ -86,24 +89,33 @@ int uart_getchar(uint8_t *c)
 {
     // Check if the receiver is ready
     if((UART->UART_SR & UART_SR_RXRDY) == 0)
-    return 1;
- 
-    // Read the character
-    *c = (uint8_t) UART->UART_RHR;
-    return 0;
+	{
+		return 1;			
+	}
+	else
+	{
+		// Read the character
+		*c = (uint8_t) UART->UART_RHR;
+		return 0;		
+	}
 }
  
 int uart_putchar(const uint8_t c)
 {
     // Check if the transmitter is ready
-    if(!(UART->UART_SR & UART_SR_TXRDY))
-    return 1;
- 
-    // Send the character
-    UART->UART_THR = c;
-    return 0;
+    if(!(UART->UART_SR & UART_SR_TXRDY))	
+	{
+		return 1;
+	}
+	else
+	{
+		// Send the character
+		UART->UART_THR = c;
+		return 0;			
+	}        
 }
 
+/*
 void UART_Handler(void)
 {
 	uint8_t c;
@@ -117,6 +129,7 @@ void UART_Handler(void)
 		}
 	}
 }
+*/
 
 int main(void)
 {
@@ -157,7 +170,7 @@ int main(void)
 
 	stack.transport.SetAppLayer(&outstation);
 	
-	LinkParserImpl parser(root, exe, stack.link);
+	LinkParserImpl parser(root, exe, stack.link, &uart_getchar, &uart_putchar);
 	stack.link.SetRouter(&parser);
 	stack.link.OnLowerLayerUp();
 		
@@ -167,18 +180,17 @@ int main(void)
 		}
 	}
 	
-	configure_uart();
+	configure_uart();				
 	
-	// enable USART RX/TX interrupts
-	parser.Init();	
-	
-	ToggleLED(&exe);				
+	REG_PIOB_CODR = LED_MASK; // Clear Output Data Register, turns LED off				
+	auto lambda = []() { REG_PIOB_SODR = LED_MASK; };
+	exe.Start(TimeDuration::Milliseconds(3000), Action0::Bind(lambda));
 	
 	for (;;)
 	{		
 		exe.Run();
 		
-		parser.ProcessRx();
+		parser.CheckTxRx();
 		
 		// TODO - put the device into a sleep mode that the system timer or usart can wake it from
 	}
@@ -200,7 +212,7 @@ void ToggleLED(IExecutor* pExecutor)
 	gValue = !gValue;
 		
 	// schedule the next toggle
-	auto lambda = [pExecutor]() { ToggleLED(pExecutor); };
-	pExecutor->Start(TimeDuration::Milliseconds(200), Action0::Bind(lambda));
+	//auto lambda = [pExecutor]() { ToggleLED(pExecutor); };
+	//pExecutor->Start(TimeDuration::Milliseconds(200), Action0::Bind(lambda));
 }
 

@@ -2,10 +2,10 @@
 #include "LinkParserImpl.h"
 
 #include "CriticalSection.h"
-
-LinkParserImpl* gLinkParser = nullptr;
 	
-LinkParserImpl::LinkParserImpl(openpal::LogRoot& root, openpal::IExecutor& exe, opendnp3::ILinkContext& context) : 	
+LinkParserImpl::LinkParserImpl(openpal::LogRoot& root, openpal::IExecutor& exe, opendnp3::ILinkContext& context, ReadFunc read_, WriteFunc write_) : 	
+	read(read_),
+	write(write_),
 	txQueue(2),
 	rxBuffer(8),
 	pExecutor(&exe),
@@ -15,81 +15,48 @@ LinkParserImpl::LinkParserImpl(openpal::LogRoot& root, openpal::IExecutor& exe, 
 	
 }
 
-void LinkParserImpl::Init()
+void LinkParserImpl::CheckTxRx()
 {
-	gLinkParser = this;
-	
-	// TODO - Configure the USART and enable rx/tx interrupts	
+	this->CheckRx();
+	this->CheckTx();
 }
 
-void LinkParserImpl::Receive(uint8_t byte)
-{	
-	// comes in on the interrupt
-	rxBuffer.Put(byte);
-}
-
-void LinkParserImpl::CheckTransmit()
-{	
-	// TODO - ARM specific transmit check	
-	
-	/*
-	if(txQueue.IsNotEmpty() && (UCSR0A & (1<<UDRE0))) 
+void LinkParserImpl::CheckTx()
+{					
+	if(txQueue.IsNotEmpty()) 
 	{		
 		auto pTx = txQueue.Peek();
-		UDR0 = pTx->buffer[0];
-		pTx->buffer.Advance(1);
-		
-		if(pTx->buffer.IsEmpty())
+		auto byte = pTx->buffer[0];
+		if((*write)(byte) == 0)
 		{
-			txQueue.Pop();
-			auto pri = pTx->primary;
-			auto callback = [this, pri]() { pContext->OnTransmitResult(pri, true); };
-			pExecutor->PostLambda(callback);
-		}
-	}
-	*/	
+			pTx->buffer.Advance(1);
+			
+			if(pTx->buffer.IsEmpty())
+			{
+				txQueue.Pop();
+				auto pri = pTx->primary;
+				auto callback = [this, pri]() { pContext->OnTransmitResult(pri, true); };
+				pExecutor->PostLambda(callback);
+			}	
+		}								
+	}	
 }
 
-void LinkParserImpl::ProcessRx()
+void LinkParserImpl::CheckRx()
 {
-	auto num = CopyRxBuffer();
-	if(num > 0)
+	uint8_t rx;
+	if((*read)(&rx) == 0)
 	{
-		parser.OnRead(num, pContext);
-	}
-}
-
-uint32_t LinkParserImpl::CopyRxBuffer()
-{	
-	// disable interrupts and copy contents of ring buffer to the receiver's write buffer
-	CriticalSection cs; 
-	auto buffer = parser.WriteBuff();
-	return rxBuffer.Read(buffer);
+		rxBuffer.Put(rx);
+		auto buffer = parser.WriteBuff();
+		auto count = rxBuffer.Read(buffer);
+		parser.OnRead(count, pContext);
+	}	
 }
 	
 void LinkParserImpl::QueueTransmit(const openpal::ReadOnlyBuffer& buffer, opendnp3::ILinkContext* pContext, bool primary)
 {
 	txQueue.Enqueue(Transmission(buffer, primary));
-	this->CheckTransmit();
+	// this->CheckTx();
 }
-
-/* TODO - ARM specific USART rx/tx interrupt handlers
-ISR(USART0_TX_vect)
-{	
-	if(gLinkParser)
-	{
-		gLinkParser->CheckTransmit();
-	}
-}
-
-ISR(USART0_RX_vect)
-{
-	uint8_t rx;
-	rx = UDR0;	
-	if(gLinkParser)
-	{
-		gLinkParser->Receive(rx);
-	}	
-}
-*/
 
