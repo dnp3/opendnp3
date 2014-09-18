@@ -33,26 +33,10 @@ const uint32_t MAX_FRAG_SIZE = 2048;
 
 ExecutorImpl* gpExecutor = nullptr;
 bool gValue = true;
-uint32_t gTicks = 0;
 
 void SysTick_Handler(void)
 {
-	gpExecutor->Tick();
-	
-	++gTicks;
-	if(gTicks == 100)
-	{
-		gTicks = 0;
-		if(gValue)
-		{
-			REG_PIOB_SODR = led; // Set Output Data Register, turns LED on
-		}
-		else
-		{							
-			REG_PIOB_CODR = led; // Clear Output Data Register, turns LED off						
-		}
-		gValue = !gValue;
-	}
+	gpExecutor->Tick();		
 }
 
 /**
@@ -71,7 +55,6 @@ int main(void)
 	ExecutorImpl exe(5,5);
 	gpExecutor = &exe;
 	
-
 	LogRoot root(nullptr, "root", 0);
 	
 	TransportStack stack(root, &exe, MAX_FRAG_SIZE, nullptr, LinkConfig(false, false));
@@ -117,7 +100,9 @@ int main(void)
 	
 	for (;;)
 	{		
+		exe.Run();
 		
+		// TODO - put the device into a sleep mode that the system timer or usart can wake it from
 	}
 
 	return 0;
@@ -125,7 +110,16 @@ int main(void)
 
 void ToggleLEDEvery3Seconds(IExecutor* pExecutor)
 {	
-	// TODO - toggle LED here ...
+	// Toggle the LED
+	if(gValue)
+	{
+		REG_PIOB_SODR = led; // Set Output Data Register, turns LED on
+	}
+	else
+	{
+		REG_PIOB_CODR = led; // Clear Output Data Register, turns LED off
+	}
+	gValue = !gValue;
 		
 	// schedule the next toggle
 	auto lambda = [pExecutor]() { ToggleLEDEvery3Seconds(pExecutor); };
