@@ -80,7 +80,7 @@ class DefaultOutstationApplication : public IOutstationApplication
 
 	virtual bool WriteAbsoluteTime(const openpal::UTCTimestamp& timestamp) override final { return false; }
 
-	static IOutstationApplication& Instance();
+	// static IOutstationApplication& Instance();
 
 	virtual ApplicationIIN GetApplicationIIN() const override final { return ApplicationIIN(); };
 
@@ -92,11 +92,13 @@ class DefaultOutstationApplication : public IOutstationApplication
 	
 	virtual uint16_t WarmRestart() override final { return 65535; }
 	
-	private:
+	
 
 	DefaultOutstationApplication() {}
+		
+	private:
 
-	static DefaultOutstationApplication instance;
+	//static DefaultOutstationApplication instance;
 };
 
 }

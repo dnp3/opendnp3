@@ -8,9 +8,12 @@
 #include "sam.h"
 #include "sam3x8e.h"
 
-#include "ExecutorImpl.h"
 
-/* commented out until PAL works
+#include "ExecutorImpl.h"
+#include "LinkParserImpl.h"
+#include "CommandHandlerImpl.h"
+#include "Macros.h"
+
 #include <opendnp3/transport/TransportStack.h>
 #include <opendnp3/outstation/Outstation.h>
 #include <opendnp3/outstation/DynamicallyAllocatedDatabase.h>
@@ -19,19 +22,14 @@
 
 #include <openpal/logging/LogRoot.h>
 
-
-#include "LinkParserImpl.h"
-#include "CommandHandlerImpl.h"
-#include "Macros.h"
-
 using namespace opendnp3;
-*/
-
 using namespace openpal;
 
 void ToggleLEDEvery3Seconds(IExecutor* pExecutor);
 
 uint32_t led = (1u << 27); 
+
+const uint32_t MAX_FRAG_SIZE = 249;
 
 /**
  * \brief Application entry point.
@@ -49,10 +47,9 @@ int main(void)
 	
 	ExecutorImpl exe(5,5);
 
-/*	
 	LogRoot root(nullptr, "root", 0);
 	
-	TransportStack stack(root, &exe, 2048, nullptr, LinkConfig(false, false));
+	TransportStack stack(root, &exe, MAX_FRAG_SIZE, nullptr, LinkConfig(false, false));
 	
 	// 5 static binaries, 0 others
 	DynamicallyAllocatedDatabase buffers(5);
@@ -63,16 +60,22 @@ int main(void)
 	Database database(buffers.GetFacade());
 	
 	OutstationConfig config;
+	config.params.maxRxFragSize = MAX_FRAG_SIZE;
+	config.params.maxTxFragSize = MAX_FRAG_SIZE;
 	config.eventBufferConfig = EventBufferConfig(5);
 	config.params.allowUnsolicited = true;
-	config.defaultEventResponses.binary = EventBinaryResponse::Group2Var2;
-	
+	config.defaultEventResponses.binary = EventBinaryResponse::Group2Var2;	
+
+
 	// Object that handles command (CROB / analog output) requests
 	// This example can toggle an LED
 	CommandHandlerImpl commandHandler;
 	
-	Outstation outstation(config, exe, root, stack.transport, commandHandler, DefaultOutstationApplication::Instance(), database, eventBuffers.GetFacade());
-	
+	DefaultOutstationApplication application;
+
+
+	Outstation outstation(config, exe, root, stack.transport, commandHandler, application, database, eventBuffers.GetFacade());
+
 	stack.transport.SetAppLayer(&outstation);
 	
 	LinkParserImpl parser(root, exe, stack.link);
@@ -84,11 +87,10 @@ int main(void)
 	
 	// enable USART RX/TX interrupts
 	parser.Init();	
-*/	
 	
 	ToggleLEDEvery3Seconds(&exe);
 	
-	
+	const int BLINK_DELAY = 1000000;
 	
 	for (;;)
 	{
@@ -101,11 +103,11 @@ int main(void)
 	
 		REG_PIOB_SODR = led; // Set Output Data Register, turns LED on
 		
-		for(int i=0; i < 10000000; ++i);
+		for(int i=0; i < BLINK_DELAY; ++i);
 		
 		REG_PIOB_CODR = led; // Clear Output Data Register, turns LED off
 		
-		for(int i=0; i < 10000000; ++i);
+		for(int i=0; i < BLINK_DELAY; ++i);
 		
 		// sleep until an interrupt occurs
 		//exe.Sleep();
