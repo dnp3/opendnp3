@@ -29,7 +29,7 @@ void ToggleLEDEvery3Seconds(IExecutor* pExecutor);
 
 uint32_t led = (1u << 27); 
 
-const uint32_t MAX_FRAG_SIZE = 249;
+const uint32_t MAX_FRAG_SIZE = 2048;//1024;
 
 /**
  * \brief Application entry point.
@@ -41,10 +41,10 @@ int main(void)
     // Initialize the SAM system
     SystemInit();
 	
+	
 	// Output Enable Register
 	REG_PIOB_OER = led; 	
-	
-	
+		
 	ExecutorImpl exe(5,5);
 
 	LogRoot root(nullptr, "root", 0);
@@ -73,7 +73,6 @@ int main(void)
 	
 	DefaultOutstationApplication application;
 
-
 	Outstation outstation(config, exe, root, stack.transport, commandHandler, application, database, eventBuffers.GetFacade());
 
 	stack.transport.SetAppLayer(&outstation);
@@ -88,7 +87,7 @@ int main(void)
 	// enable USART RX/TX interrupts
 	parser.Init();	
 	
-	ToggleLEDEvery3Seconds(&exe);
+	ToggleLEDEvery3Seconds(&exe);		
 	
 	const int BLINK_DELAY = 1000000;
 	
