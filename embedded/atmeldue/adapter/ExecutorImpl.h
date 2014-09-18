@@ -24,9 +24,7 @@ class ExecutorImpl : public openpal::IExecutor
 	
 	virtual void Post(const openpal::Action0& action) override final;	
 	
-	void Run();
-	
-	void Init();
+	void Run();	
 	
 	void Tick();
 	

@@ -29,7 +29,31 @@ void ToggleLEDEvery3Seconds(IExecutor* pExecutor);
 
 uint32_t led = (1u << 27); 
 
-const uint32_t MAX_FRAG_SIZE = 2048;//1024;
+const uint32_t MAX_FRAG_SIZE = 2048;
+
+ExecutorImpl* gpExecutor = nullptr;
+bool gValue = true;
+uint32_t gTicks = 0;
+
+void SysTick_Handler(void)
+{
+	gpExecutor->Tick();
+	
+	++gTicks;
+	if(gTicks == 100)
+	{
+		gTicks = 0;
+		if(gValue)
+		{
+			REG_PIOB_SODR = led; // Set Output Data Register, turns LED on
+		}
+		else
+		{							
+			REG_PIOB_CODR = led; // Clear Output Data Register, turns LED off						
+		}
+		gValue = !gValue;
+	}
+}
 
 /**
  * \brief Application entry point.
@@ -40,12 +64,13 @@ int main(void)
 {
     // Initialize the SAM system
     SystemInit();
-	
-	
+		
 	// Output Enable Register
 	REG_PIOB_OER = led; 	
 		
 	ExecutorImpl exe(5,5);
+	gpExecutor = &exe;
+	
 
 	LogRoot root(nullptr, "root", 0);
 	
@@ -55,8 +80,7 @@ int main(void)
 	DynamicallyAllocatedDatabase buffers(5);
 	// allow a max of 5 events
 	DynamicallyAllocatedEventBuffer eventBuffers(5);
-	
-	
+		
 	Database database(buffers.GetFacade());
 	
 	OutstationConfig config;
@@ -65,7 +89,6 @@ int main(void)
 	config.eventBufferConfig = EventBufferConfig(5);
 	config.params.allowUnsolicited = true;
 	config.defaultEventResponses.binary = EventBinaryResponse::Group2Var2;	
-
 
 	// Object that handles command (CROB / analog output) requests
 	// This example can toggle an LED
@@ -80,41 +103,20 @@ int main(void)
 	LinkParserImpl parser(root, exe, stack.link);
 	stack.link.SetRouter(&parser);
 	stack.link.OnLowerLayerUp();
-	
-	// enable timer interrupts at 100Hz
-	exe.Init();
+		
+	// Setup SysTick Timer for 1 msec interrupts
+	if (SysTick_Config(84000000 / 1000)) {
+		while (1) {  //
+		}
+	}
 	
 	// enable USART RX/TX interrupts
 	parser.Init();	
 	
-	ToggleLEDEvery3Seconds(&exe);		
-	
-	const int BLINK_DELAY = 1000000;
+	ToggleLEDEvery3Seconds(&exe);				
 	
 	for (;;)
-	{
-		// process any bytes that were received on the interrupt
-		// commented out until timers work
-		// parser.ProcessRx();
-
-		// run all pending events or expired timers
-		//exe.Run();
-	
-		REG_PIOB_SODR = led; // Set Output Data Register, turns LED on
-		
-		for(int i=0; i < BLINK_DELAY; ++i);
-		
-		REG_PIOB_CODR = led; // Clear Output Data Register, turns LED off
-		
-		for(int i=0; i < BLINK_DELAY; ++i);
-		
-		// sleep until an interrupt occurs
-		//exe.Sleep();
-		
-		    
-		    //delay(1000);         // wait for a second
-		    
-		    //delay(1000);         // wait for a second
+	{		
 		
 	}
 

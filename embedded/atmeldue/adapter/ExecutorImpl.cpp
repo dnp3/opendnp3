@@ -7,18 +7,6 @@
 
 using namespace openpal;
 
-ExecutorImpl* gpExecutor = nullptr;
-
-/* TODO - ARM specific timer handler
-SIGNAL(TIMER1_COMPA_vect)
-{
-	if(gpExecutor)
-	{
-		gpExecutor->Tick();		
-	}	
-}
-*/
-
 void ExecutorImpl::Tick()
 {
 	++ticks;	
@@ -27,14 +15,6 @@ void ExecutorImpl::Tick()
 void ExecutorImpl::Sleep()
 {
 	// TODO - Define a sleep mode
-}
-
-
-void ExecutorImpl::Init()
-{		
-	// TODO - enable ARM time interrupts to call the executor tick
- 	
-	gpExecutor = this;		
 }
 
 ExecutorImpl::ExecutorImpl(uint8_t maxQueueSize, uint8_t maxtimers) : ticks(0), work(maxQueueSize), idleTimers(maxtimers)
@@ -49,7 +29,7 @@ MonotonicTimestamp ExecutorImpl::GetTime()
 {	
 	// disable interrupts to ensure atomic access to the 'ticks' variable
 	CriticalSection cs;
-	return MonotonicTimestamp(ticks*10); // every tick represents 10 milliseconds since Init()				
+	return MonotonicTimestamp(ticks); // every tick represents 1 milliseconds
 }
 
 ITimer* ExecutorImpl::Start(const TimeDuration& duration, const Action0& action)
