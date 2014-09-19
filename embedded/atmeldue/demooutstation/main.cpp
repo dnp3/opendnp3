@@ -25,21 +25,40 @@
 using namespace opendnp3;
 using namespace openpal;
 
-void ToggleLED(IExecutor* pExecutor);
+void ToggleLED();
 
 const uint32_t LED_MASK = (1u << 27); 
 
 const uint32_t MAX_FRAG_SIZE = 2048;
 
 ExecutorImpl* gpExecutor = nullptr;
-bool gValue = true;
+bool gValueLED = true;
 
+// systick ISR handler
 void SysTick_Handler(void)
 {
 	gpExecutor->Tick();		
 }
 
-void configure_uart(void)
+// rx/tx ready UART ISR handler
+
+void UART_Handler(void)
+{
+	/*
+	uint8_t c;
+	
+	// Check if the interrupt source is receive ready
+	if(UART->UART_IMR & UART_IMR_RXRDY)
+	{
+		if(uart_getchar(&c) == 0)
+		{
+			uart_putchar(c);
+		}
+	}
+	*/
+}
+
+void ConfigureUart(void)
 {
 	uint32_t ul_sr;
 	
@@ -65,8 +84,8 @@ void configure_uart(void)
 	UART->UART_CR = UART_CR_RSTRX | UART_CR_RSTTX | UART_CR_RXDIS | UART_CR_TXDIS;
 	
 	// Set the baudrate to 115200
-	//UART->UART_BRGR = 45; // 84000000 / 16 * x = BaudRate (write x into UART_BRGR)
-	UART->UART_BRGR = 547;
+	// UART->UART_BRGR = 45; // 84000000 / 16 * x = BaudRate (write x into UART_BRGR)
+	UART->UART_BRGR = 547; // <- 9600 baud
 	
 	// No Parity
 	UART->UART_MR = UART_MR_PAR_NO;
@@ -74,11 +93,12 @@ void configure_uart(void)
 	// Disable PDC channel requests
 	UART->UART_PTCR = UART_PTCR_RXTDIS | UART_PTCR_TXTDIS;
 	
-	// Disable / Enable interrupts on end of receive
 	/*
+	// Disable / Enable interrupts on rxready	
 	UART->UART_IDR = 0xFFFFFFFF;
 	NVIC_EnableIRQ((IRQn_Type) ID_UART);	
-	UART->UART_IER = UART_IER_RXRDY;
+	//UART->UART_IER = UART_IER_RXRDY | UART_IER_TXRDY;
+	UART->UART_IER = UART_IER_RXRDY;// | UART_IER_TXRDY;
 	*/
 	
 	// Enable receiver and trasmitter
@@ -115,21 +135,7 @@ int uart_putchar(const uint8_t c)
 	}        
 }
 
-/*
-void UART_Handler(void)
-{
-	uint8_t c;
-	
-	// Check if the interrupt source is receive ready
-	if(UART->UART_IMR & UART_IMR_RXRDY)
-	{
-		if(uart_getchar(&c) == 0)
-		{
-			uart_putchar(c);
-		}
-	}
-}
-*/
+
 
 int main(void)
 {
@@ -137,7 +143,7 @@ int main(void)
     SystemInit();
 		
 	// Output Enable Register
-	REG_PIOB_OER = LED_MASK; 	
+	REG_PIOB_OER = LED_MASK;
 		
 	ExecutorImpl exe(5,5);
 	gpExecutor = &exe;
@@ -147,9 +153,9 @@ int main(void)
 	TransportStack stack(root, &exe, MAX_FRAG_SIZE, nullptr, LinkConfig(false, false));
 	
 	// 5 static binaries, 0 others
-	DynamicallyAllocatedDatabase buffers(5);
+	DynamicallyAllocatedDatabase buffers(DatabaseTemplate(10,0,0,10));
 	// allow a max of 5 events
-	DynamicallyAllocatedEventBuffer eventBuffers(5);
+	DynamicallyAllocatedEventBuffer eventBuffers(20);
 		
 	Database database(buffers.GetFacade());
 	
@@ -160,7 +166,7 @@ int main(void)
 	config.params.allowUnsolicited = true;
 	config.defaultEventResponses.binary = EventBinaryResponse::Group2Var2;	
 
-	// Object that handles command (CROB / analog output) requests
+	// object that handles command (CROB / analog output) requests
 	// This example can toggle an LED
 	CommandHandlerImpl commandHandler;
 	
@@ -175,33 +181,42 @@ int main(void)
 	stack.link.OnLowerLayerUp();
 		
 	// Setup SysTick Timer for 1 msec interrupts
-	if (SysTick_Config(84000000 / 1000)) {
-		while (1) {  // trap error
-		}
-	}
+	assert(SysTick_Config(84000000 / 1000) == 0);
 	
-	configure_uart();				
+	ConfigureUart();				
 	
 	REG_PIOB_CODR = LED_MASK; // Clear Output Data Register, turns LED off				
 	auto lambda = []() { REG_PIOB_SODR = LED_MASK; };
 	exe.Start(TimeDuration::Milliseconds(3000), Action0::Bind(lambda));
 	
+	int loopCount = 0;
+	
 	for (;;)
-	{		
-		exe.Run();
-		
+	{	
 		parser.CheckTxRx();
+			
+		exe.Run();
+						
+		// WFE stands for "wait for event". This seems to have stopped the board resets		
+		__WFE();
 		
-		// TODO - put the device into a sleep mode that the system timer or usart can wake it from
+		// The systick is at 1000hz, so this reduces the LED toggle to 10hz
+		if(loopCount == 100)
+		{
+			loopCount = 0;
+			ToggleLED();
+		}
+		
+		++loopCount;
 	}
 
 	return 0;
 }
 
-void ToggleLED(IExecutor* pExecutor)
+void ToggleLED()
 {	
 	// Toggle the LED
-	if(gValue)
+	if(gValueLED)
 	{
 		REG_PIOB_SODR = LED_MASK; // Set Output Data Register, turns LED on
 	}
@@ -209,10 +224,6 @@ void ToggleLED(IExecutor* pExecutor)
 	{
 		REG_PIOB_CODR = LED_MASK; // Clear Output Data Register, turns LED off
 	}
-	gValue = !gValue;
-		
-	// schedule the next toggle
-	//auto lambda = [pExecutor]() { ToggleLED(pExecutor); };
-	//pExecutor->Start(TimeDuration::Milliseconds(200), Action0::Bind(lambda));
+	gValueLED= !gValueLED;			
 }
 
