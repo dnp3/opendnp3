@@ -1,14 +1,14 @@
 
 #include "CriticalSection.h"
 
-CriticalSection::CriticalSection()
+CriticalSection::CriticalSection(Resource res_) : res(res_)
 {
-	// TODO - disable all interrupts, e.g. on AVR, cli();
+	res.acquire();
 }
 
 CriticalSection::~CriticalSection()
 {
-	// TODO - disable all interrupts, e.g. on AVR, sei();
+	res.release();
 }
 	
 

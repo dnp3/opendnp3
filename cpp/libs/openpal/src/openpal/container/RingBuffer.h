@@ -21,37 +21,77 @@
 #ifndef __RING_BUFFER_H_
 #define __RING_BUFFER_H_
 
-#include "openpal/container/DynamicBuffer.h"
-#include "openpal/container/WriteBuffer.h"
-
 #include <cstdint>
 
 namespace openpal
 {
 
-/// A circular buffer
+/** 
+	A byte oriented ring buffer
+	interrupt-safe (w/o disabling interrupts) if single producer
+	and single consumer, one reading and one writing.
+	
+	N must be a power of 2.
+**/	
+template <uint8_t N>
 class RingBuffer
-{	
+{		
+	static_assert((N > 1) & !(N & (N - 1)), "Should use a power of 2 as template parameter, e.g. 16, 32, 64, 128");
 
 public:
 
-	RingBuffer(uint32_t size);
+	RingBuffer() : head(0), tail(0) {}
 
-	void Put(uint8_t value);
+	bool Put(uint8_t byteIn)
+	{
+		if(Full())
+		{
+			return false;						
+		}
+		else
+		{
+			buffer[(head++) & (N-1)] = byteIn;
+			return true;
+		}
+	}
 
-	uint32_t Read(WriteBuffer& output);
+	bool Get(uint8_t& byteOut)
+	{
+		 if(Empty())
+		 {
+			return false;
+		 }
+		 else
+		 {
+			byteOut = buffer[(tail++) & (N-1)];
+			return true;
+		 }
+	}
 	
-
 private:
 
-	DynamicBuffer buffer;
-
-	uint32_t start;
-	uint32_t nextWrite;
-	uint32_t count;
+	inline uint8_t Count()
+	{
+		return head - tail;
+	}
 	
-	RingBuffer(const RingBuffer&);
-	RingBuffer& operator= (const RingBuffer&);
+	inline bool Full()
+	{
+		return Count() == N;
+	}
+	
+	inline bool Empty()
+	{
+		return Count() == 0;
+	}
+	
+	uint8_t buffer[N];
+
+	uint8_t head;
+	uint8_t tail;	
+	
+	RingBuffer(const RingBuffer&) = delete;
+	RingBuffer& operator= (const RingBuffer&) = delete;	
 };
 
 }

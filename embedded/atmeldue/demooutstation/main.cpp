@@ -32,6 +32,8 @@ const uint32_t LED_MASK = (1u << 27);
 const uint32_t MAX_FRAG_SIZE = 2048;
 
 ExecutorImpl* gpExecutor = nullptr;
+LinkParserImpl* gpParser = nullptr;
+
 bool gValueLED = true;
 
 // systick ISR handler
@@ -40,22 +42,50 @@ void SysTick_Handler(void)
 	gpExecutor->Tick();		
 }
 
-// rx/tx ready UART ISR handler
+void DisableTxISR()
+{
+	UART->UART_IDR = UART_IDR_TXRDY;
+}
 
+void EnableTxISR()
+{
+	UART->UART_IER = UART_IER_TXRDY;
+}
+
+void DisableRxISR()
+{
+	UART->UART_IDR = UART_IDR_RXRDY;
+}
+
+void EnableRxISR()
+{
+	UART->UART_IER = UART_IER_RXRDY;
+}
+
+// rx/tx ready UART ISR handler
 void UART_Handler(void)
 {
-	/*
-	uint8_t c;
-	
-	// Check if the interrupt source is receive ready
-	if(UART->UART_IMR & UART_IMR_RXRDY)
+	// is the receive ready?
+	if(UART->UART_SR & UART_SR_TXRDY)
 	{
-		if(uart_getchar(&c) == 0)
+		uint8_t rxByte = UART->UART_RHR;
+		gpParser->Receive(rxByte);
+	}
+	
+	// is the transmit ready?
+	if(UART->UART_SR & UART_SR_TXRDY)
+	{
+		uint8_t txByte;
+		if(gpParser->NextTransmit(txByte))
 		{
-			uart_putchar(c);
+			//send the character
+			UART->UART_THR = txByte;
+		}
+		else
+		{
+			DisableTxISR();
 		}
 	}
-	*/
 }
 
 void ConfigureUart(void)
@@ -92,50 +122,16 @@ void ConfigureUart(void)
 	
 	// Disable PDC channel requests
 	UART->UART_PTCR = UART_PTCR_RXTDIS | UART_PTCR_TXTDIS;
-	
-	/*
+		
 	// Disable / Enable interrupts on rxready	
 	UART->UART_IDR = 0xFFFFFFFF;
 	NVIC_EnableIRQ((IRQn_Type) ID_UART);	
-	//UART->UART_IER = UART_IER_RXRDY | UART_IER_TXRDY;
-	UART->UART_IER = UART_IER_RXRDY;// | UART_IER_TXRDY;
-	*/
+	UART->UART_IER = UART_IER_RXRDY | UART_IER_TXRDY;
+	//UART->UART_IER = UART_IER_RXRDY;	// | UART_IER_TXRDY;	
 	
 	// Enable receiver and trasmitter
 	UART->UART_CR = UART_CR_RXEN | UART_CR_TXEN;	
 }
-
-int uart_getchar(uint8_t *c)
-{
-    // Check if the receiver is ready
-    if((UART->UART_SR & UART_SR_RXRDY) == 0)
-	{
-		return 1;			
-	}
-	else
-	{
-		// Read the character
-		*c = (uint8_t) UART->UART_RHR;
-		return 0;		
-	}
-}
- 
-int uart_putchar(const uint8_t c)
-{
-    // Check if the transmitter is ready
-    if(!(UART->UART_SR & UART_SR_TXRDY))	
-	{
-		return 1;
-	}
-	else
-	{
-		// Send the character
-		UART->UART_THR = c;
-		return 0;			
-	}        
-}
-
-
 
 int main(void)
 {
@@ -176,7 +172,16 @@ int main(void)
 
 	stack.transport.SetAppLayer(&outstation);
 	
-	LinkParserImpl parser(root, exe, stack.link, &uart_getchar, &uart_putchar);
+	ChannelHAL channel = {
+		EnableTxISR,
+		DisableTxISR,
+		EnableRxISR,
+		DisableRxISR,
+	};
+	
+	LinkParserImpl parser(root, exe, stack.link, channel);
+	gpParser = &parser;
+	
 	stack.link.SetRouter(&parser);
 	stack.link.OnLowerLayerUp();
 		
@@ -193,7 +198,7 @@ int main(void)
 	
 	for (;;)
 	{	
-		parser.CheckTxRx();
+		parser.CheckRxTx();
 			
 		exe.Run();
 						

@@ -3,8 +3,6 @@
 
 #include "TimerImpl.h"
 
-#include "CriticalSection.h"
-
 using namespace openpal;
 
 void ExecutorImpl::Tick()
@@ -12,12 +10,10 @@ void ExecutorImpl::Tick()
 	++ticks;	
 }
 
-void ExecutorImpl::Sleep()
-{
-	// TODO - Define a sleep mode
-}
-
-ExecutorImpl::ExecutorImpl(uint8_t maxQueueSize, uint8_t maxtimers) : ticks(0), work(maxQueueSize), idleTimers(maxtimers)
+ExecutorImpl::ExecutorImpl(uint8_t maxQueueSize, uint8_t maxtimers) : 
+	ticks(0), 	
+	work(maxQueueSize), 
+	idleTimers(maxtimers)
 {	
 	for(uint8_t i = 0; i < timers.Size(); ++i)
 	{
@@ -26,9 +22,7 @@ ExecutorImpl::ExecutorImpl(uint8_t maxQueueSize, uint8_t maxtimers) : ticks(0), 
 }
 
 MonotonicTimestamp ExecutorImpl::GetTime()
-{	
-	// disable interrupts to ensure atomic access to the 'ticks' variable
-	CriticalSection cs;
+{		
 	return MonotonicTimestamp(ticks); // every tick represents 1 milliseconds
 }
 
@@ -38,7 +32,7 @@ ITimer* ExecutorImpl::Start(const TimeDuration& duration, const Action0& action)
 }
 	
 ITimer* ExecutorImpl::Start(const MonotonicTimestamp& ts, const Action0& action)
-{
+{	
 	assert(idleTimers.IsNotEmpty());
 	TimerImpl** pTimer = idleTimers.Pop();
 	(*pTimer)->Set(this, action, ts);
@@ -47,7 +41,7 @@ ITimer* ExecutorImpl::Start(const MonotonicTimestamp& ts, const Action0& action)
 }
 	
 void ExecutorImpl::Post(const Action0& action)
-{	
+{		
 	assert(!work.IsFull());
 	work.Enqueue(action);
 }

@@ -26,9 +26,7 @@ class ExecutorImpl : public openpal::IExecutor
 	
 	void Run();	
 	
-	void Tick();
-	
-	void Sleep();
+	void Tick();	
 	
 	protected:
 	
@@ -40,7 +38,7 @@ class ExecutorImpl : public openpal::IExecutor
 	
 	bool RunOneTimer();
 	
-	int64_t ticks;	
+	int64_t ticks;		
 	
 	openpal::StaticArray<TimerImpl, uint8_t, 5> timers;
 	openpal::Queue<openpal::Action0, uint8_t> work;

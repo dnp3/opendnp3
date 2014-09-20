@@ -3,11 +3,9 @@
 
 #include "CriticalSection.h"
 	
-LinkParserImpl::LinkParserImpl(openpal::LogRoot& root, openpal::IExecutor& exe, opendnp3::ILinkContext& context, ReadFunc read_, WriteFunc write_) : 	
-	read(read_),
-	write(write_),
-	txQueue(2),
-	rxBuffer(8),
+LinkParserImpl::LinkParserImpl(openpal::LogRoot& root, openpal::IExecutor& exe, opendnp3::ILinkContext& context, void (*startTxFun_)(void)) :	
+	startTxFun(startTxFun_),
+	txQueue(2),	
 	pExecutor(&exe),
 	pContext(&context),
 	parser(root.GetLogger())
@@ -15,48 +13,94 @@ LinkParserImpl::LinkParserImpl(openpal::LogRoot& root, openpal::IExecutor& exe, 
 	
 }
 
-void LinkParserImpl::CheckTxRx()
+bool LinkParserImpl::GetTx(uint8_t& byteOut)
+{		
+	return txBuffer.Get(byteOut);
+}
+
+void LinkParserImpl::PutRx(uint8_t byteIn)
 {
-	this->CheckRx();
-	this->CheckTx();
+	rxBuffer.Put(byteIn);
+}
+	
+void LinkParserImpl::CheckRx()
+{
+	// flush the rx buffer
+	auto count = this->FlushRxBuffer();	
+		
+	// if we received some bytes, invoke the parser
+	if(count > 0)									
+	{
+		parser.OnRead(count, pContext);	
+	}
 }
 
 void LinkParserImpl::CheckTx()
-{					
+{
+		
+}
+	
+	this->channelHAL.disableTxReadyISR();
+	
+	if(txQueue.IsNotEmpty())
+	{
+		auto pTx = txQueue.Peek();
+		if(pTx->buffer.IsEmpty())
+		{
+			txQueue.Pop();
+			auto pri = pTx->primary;
+			if(txQueue.IsNotEmpty())
+			{
+				this->channelHAL.enableTxReadyISR();										
+			}			
+			pContext->OnTransmitResult(pri, true);						
+		}
+	}
+}
+
+/*				
 	if(txQueue.IsNotEmpty()) 
 	{		
 		auto pTx = txQueue.Peek();
-		auto byte = pTx->buffer[0];
-		if((*write)(byte) == 0)
+		if(pTx->buffer.Size() > 0)
 		{
+			byte = pTx->buffer[0];
 			pTx->buffer.Advance(1);
-			
-			if(pTx->buffer.IsEmpty())
-			{
-				txQueue.Pop();
-				auto pri = pTx->primary;
-				auto callback = [this, pri]() { pContext->OnTransmitResult(pri, true); };
-				pExecutor->PostLambda(callback);
-			}	
-		}								
+			return true;	
+		}
+		else
+		{
+			return false;
+		}						
+												
+		return true;
 	}	
+	else
+	{		
+		return false;
+	}
 }
+*/
 
-void LinkParserImpl::CheckRx()
+uint32_t LinkParserImpl::FlushRxBuffer()
 {
-	uint8_t rx;
-	if((*read)(&rx) == 0)
-	{
-		rxBuffer.Put(rx);
-		auto buffer = parser.WriteBuff();
-		auto count = rxBuffer.Read(buffer);
-		parser.OnRead(count, pContext);
-	}	
+	uint32_t count = 0;
+	auto buffer = parser.WriteBuff();	
+	while(buffer.IsNotEmpty() && rxBuffer.Get(buffer[0]))
+	{		
+		buffer.Advance(1);
+		++count;
+	}
+	return count;
 }
 	
 void LinkParserImpl::QueueTransmit(const openpal::ReadOnlyBuffer& buffer, opendnp3::ILinkContext* pContext, bool primary)
 {
-	txQueue.Enqueue(Transmission(buffer, primary));
-	// this->CheckTx();
+	if(transmission.IsSet())
+	{
+		auto callback = [pContext]()
+		pExecutor->
+		pContext->OnTransmitResult(false);
+	}
 }
 
