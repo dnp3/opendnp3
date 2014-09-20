@@ -41,9 +41,9 @@ class LinkLayer : public ILinkLayer, public ILinkContext, public HasUpperLayer
 {
 public:
 
-	LinkLayer(openpal::LogRoot&, openpal::IExecutor*, const LinkConfig& config);
+	LinkLayer(openpal::LogRoot&, openpal::IExecutor*, const LinkConfig&);
 
-	void SetRouter(ILinkRouter*);
+	void SetRouter(ILinkRouter&);
 
 	// ILinkContext interface
 	virtual void OnLowerLayerUp() override final;
@@ -93,32 +93,32 @@ public:
 
 	void ResetReadFCB()
 	{
-		mNextReadFCB = true;
+		nextReadFCB = true;
 	}
 
 	void ToggleReadFCB()
 	{
-		mNextReadFCB = !mNextReadFCB;
+		nextReadFCB = !nextReadFCB;
 	}
 
 	bool NextReadFCB()
 	{
-		return mNextReadFCB;
+		return nextReadFCB;
 	}
 
 	void ResetWriteFCB()
 	{
-		mNextWriteFCB = true;
+		nextWriteFCB = true;
 	}
 
 	void ToggleWriteFCB()
 	{
-		mNextWriteFCB = !mNextWriteFCB;
+		nextWriteFCB = !nextWriteFCB;
 	}
 
-	bool NextWriteFCB()
+	bool NextWriteFCB() const
 	{
-		return mNextWriteFCB;
+		return nextWriteFCB;
 	}
 
 	// Helpers for sending frames
@@ -136,9 +136,9 @@ public:
 	void ResetRetry();
 	bool Retry();
 
-	uint32_t RetryRemaining()
+	uint32_t RetryRemaining() const
 	{
-		return mRetryRemaining;
+		return numRetryRemaining;
 	}
 
 	void QueueTransmit(const openpal::ReadOnlyBuffer& buffer, bool primary);	
@@ -154,23 +154,23 @@ public:
 
 private:
 
-	uint32_t mRetryRemaining;
+	uint32_t numRetryRemaining;
 
-	openpal::IExecutor* mpExecutor;
-	openpal::ITimer* mpTimer;
+	openpal::IExecutor* pExecutor;
+	openpal::ITimer* pTimer;
 
 	// callback from the active timer
 	void OnTimeout();
 
-	bool mNextReadFCB;
-	bool mNextWriteFCB;
-	bool mIsOnline;
+	bool nextReadFCB;
+	bool nextWriteFCB;
+	bool isOnline;
 
-	bool Validate(bool aIsMaster, uint16_t aSrc, uint16_t aDest);	
+	bool Validate(bool isMaster, uint16_t src, uint16_t dest);	
 
-	ILinkRouter* mpRouter;
-	PriStateBase* mpPriState;
-	SecStateBase* mpSecState;
+	ILinkRouter* pRouter;
+	PriStateBase* pPriState;
+	SecStateBase* pSecState;
 };
 
 }

@@ -38,7 +38,7 @@ TransportIntegrationStack::TransportIntegrationStack(openpal::LogRoot& root, ope
 	Route route(aCfg.RemoteAddr, aCfg.LocalAddr);
 	router.AddContext(&link, route);
 	router.Enable(&link);
-	link.SetRouter(&router);
+	link.SetRouter(router);
 
 	link.SetUpperLayer(transport);
 	transport.SetLinkLayer(&link);

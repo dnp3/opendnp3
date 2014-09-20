@@ -69,7 +69,7 @@ public:
 
 	// ------- Non-interface public members ---------
 
-	void SetLinkRouter(opendnp3::ILinkRouter* pRouter);
+	void SetLinkRouter(opendnp3::ILinkRouter& router);
 
 	void SetShutdownAction(const openpal::Action0& action);
 
