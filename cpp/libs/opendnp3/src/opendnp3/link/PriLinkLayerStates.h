@@ -29,17 +29,19 @@ namespace opendnp3
 
 class LinkLayer;
 
+
+
 class PriStateBase
 {
 public:
 
 	// Incoming messages for primary station
-	virtual void Ack(LinkLayer*, bool aIsRcvBuffFull);
-	virtual void Nack(LinkLayer*, bool aIsRcvBuffFull);
-	virtual void LinkStatus(LinkLayer*, bool aIsRcvBuffFull);
-	virtual void NotSupported (LinkLayer*, bool aIsRcvBuffFull);
+	virtual void Ack(LinkLayer*, bool receiveBuffFull);
+	virtual void Nack(LinkLayer*, bool receiveBuffFull);
+	virtual void LinkStatus(LinkLayer*, bool receiveBuffFull);
+	virtual void NotSupported(LinkLayer*, bool receiveBuffFull);
 
-	virtual void OnTransmitResult(LinkLayer* apLL, bool success);
+	virtual void OnTransmitResult(LinkLayer*, bool success);
 
 	virtual void OnTimeout(LinkLayer*);
 
