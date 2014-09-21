@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __STRING_FORMATTING_H_
-#define __STRING_FORMATTING_H_
+#ifndef OPENPAL_STRINGFORMATTING_H
+#define OPENPAL_STRINGFORMATTING_H
 
 #include "Logger.h"
 

@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __LOG_MACROS_H_
-#define __LOG_MACROS_H_
+#ifndef OPENPAL_LOGMACROS_H
+#define OPENPAL_LOGMACROS_H
 
 #include "Location.h"
 

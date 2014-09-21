@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __SETTABLE_H_
-#define __SETTABLE_H_
+#ifndef OPENPAL_SETTABLE_H
+#define OPENPAL_SETTABLE_H
 
 namespace openpal
 {

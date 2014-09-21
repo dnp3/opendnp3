@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __BYTE_SERIALIZATION_H_
-#define __BYTE_SERIALIZATION_H_
+#ifndef OPENPAL_BYTESERIALIZATION_H
+#define OPENPAL_BYTESERIALIZATION_H
 
 #include <cstdint>
 #include <cstring>

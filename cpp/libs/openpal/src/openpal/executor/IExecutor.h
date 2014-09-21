@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __I_EXECUTOR_H_
-#define __I_EXECUTOR_H_
+#ifndef OPENPAL_IEXECUTOR_H
+#define OPENPAL_IEXECUTOR_H
 
 #include "ITimer.h"
 #include "TimeDuration.h"

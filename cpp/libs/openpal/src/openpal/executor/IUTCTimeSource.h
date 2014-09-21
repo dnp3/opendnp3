@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __I_UTC_TIME_SOURCE_H_
-#define __I_UTC_TIME_SOURCE_H_
+#ifndef OPENPAL_IUTCTIMESOURCE_H
+#define OPENPAL_IUTCTIMESOURCE_H
 
 #include "UTCTimestamp.h"
 

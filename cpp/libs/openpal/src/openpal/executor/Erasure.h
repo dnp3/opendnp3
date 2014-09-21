@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __OPENPAL_ERASURE_H_
-#define __OPENPAL_ERASURE_H_
+#ifndef OPENPAL_ERASURE_H
+#define OPENPAL_ERASURE_H
 
 #include "openpal/Configure.h"
 

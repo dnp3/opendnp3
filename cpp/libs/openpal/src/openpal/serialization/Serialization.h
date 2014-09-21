@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __OPENPAL_SERIALIZATION_H_
-#define __OPENPAL_SERIALIZATION_H_
+#ifndef OPENPAL_SERIALIZATION_H
+#define OPENPAL_SERIALIZATION_H
 
 #include "UInt48LE.h"
 #include "SerializationTemplatesLE.h"

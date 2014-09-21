@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __STATIC_LINKED_LIST_H_
-#define __STATIC_LINKED_LIST_H_
+#ifndef OPENPAL_STATICLINKEDLIST_H
+#define OPENPAL_STATICLINKEDLIST_H
 
 #include "openpal/util/Uncopyable.h"
 

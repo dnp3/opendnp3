@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __UINT8LE_H_
-#define __UINT8LE_H_
+#ifndef OPENPAL_UINT48LE_H
+#define OPENPAL_UINT48LE_H
 
 #include <cstdint>
 #include <cstring>
