@@ -19,8 +19,8 @@
  * to you under the terms of the License.
  */
 
-#ifndef __I_TASK_LOCK_H_
-#define __I_TASK_LOCK_H_
+#ifndef OPENDNP3_ITASKLOCK_H
+#define OPENDNP3_ITASKLOCK_H
 
 #include <openpal/util/Uncopyable.h>
 

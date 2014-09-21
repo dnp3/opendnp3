@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __STATIC_DATA_FACADE_H_
-#define __STATIC_DATA_FACADE_H_
+#ifndef OPENDNP3_STATICDATAFACADE_H
+#define OPENDNP3_STATICDATAFACADE_H
 
 #include <openpal/container/Indexable.h>
 

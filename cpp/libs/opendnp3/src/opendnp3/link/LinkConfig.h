@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __LINK_CONFIG_H_
-#define __LINK_CONFIG_H_
+#ifndef OPENDNP3_LINKCONFIG_H
+#define OPENDNP3_LINKCONFIG_H
 
 #include <openpal/executor/TimeDuration.h>
 

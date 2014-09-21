@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __I_STACK_H_
-#define __I_STACK_H_
+#ifndef ASIODNP3_ISTACK_H
+#define ASIODNP3_ISTACK_H
 
 #include "DestructorHook.h"
 

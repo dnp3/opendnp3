@@ -284,11 +284,11 @@ void LinkLayerRouter::OnReceive(const openpal::ReadOnlyBuffer& input)
 	}	
 }
 
-void LinkLayerRouter::QueueTransmit(const openpal::ReadOnlyBuffer& buffer, ILinkContext* pContext, bool primary)
+void LinkLayerRouter::BeginTransmit(const openpal::ReadOnlyBuffer& buffer, ILinkContext* pContext)
 {
 	if (this->IsOnline())
 	{
-		Transmission tx(buffer, pContext, primary);
+		Transmission tx(buffer, pContext);
 
 		transmitQueue.push_back(tx);
 		this->CheckForSend();		
@@ -327,7 +327,7 @@ void LinkLayerRouter::OnSendResult(bool result)
 
 	auto pTx = transmitQueue.front();
 	transmitQueue.pop_front();
-	pTx.pContext->OnTransmitResult(pTx.primary, result);
+	pTx.pContext->OnTransmitResult(result);
 	this->CheckForSend();
 }
 

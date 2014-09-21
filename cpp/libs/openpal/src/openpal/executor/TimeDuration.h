@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __TIME_DURATION_H_
-#define __TIME_DURATION_H_
+#ifndef OPENPAL_TIMEDURATION_H
+#define OPENPAL_TIMEDURATION_H
 
 #include <cstdint>
 

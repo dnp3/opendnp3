@@ -19,8 +19,8 @@
  * to you under the terms of the License.
  */
 
-#ifndef __EVENT_BUFFER_FACADE_H_
-#define __EVENT_BUFFER_FACADE_H_
+#ifndef OPENDNP3_EVENTBUFFERFACADE_H
+#define OPENDNP3_EVENTBUFFERFACADE_H
 
 #include <openpal/container/StaticLinkedList.h>
 #include <openpal/container/StackAdapter.h>

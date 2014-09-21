@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __TRANSPORT_SEGMENT_H_
-#define __TRANSPORT_SEGMENT_H_
+#ifndef OPENDNP3_ITRANSPORTSEGMENT_H
+#define OPENDNP3_ITRANSPORTSEGMENT_H
 
 #include <openpal/container/ReadOnlyBuffer.h>
 

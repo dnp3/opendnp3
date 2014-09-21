@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __I_MUTEX_H_
-#define	__I_MUTEX_H_
+#ifndef OPENPAL_IMUTEX_H
+#define OPENPAL_IMUTEX_H
 
 #include <assert.h>
 

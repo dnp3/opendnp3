@@ -83,9 +83,9 @@ StackStatistics OutstationStackImpl::GetStackStatistics()
 	return asiopal::SynchronouslyGet<StackStatistics>(handler.GetExecutor()->strand, getter);
 }
 
-void OutstationStackImpl::SetLinkRouter(opendnp3::ILinkRouter* pRouter)
+void OutstationStackImpl::SetLinkRouter(opendnp3::ILinkRouter& router)
 {
-	stack.link.SetRouter(pRouter);
+	stack.link.SetRouter(router);
 }
 
 void OutstationStackImpl::SetShutdownAction(const openpal::Action0& action)

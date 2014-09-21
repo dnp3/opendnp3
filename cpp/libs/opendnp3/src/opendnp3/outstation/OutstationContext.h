@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __OUTSTATION_CONTEXT_H_
-#define __OUTSTATION_CONTEXT_H_
+#ifndef OPENDNP3_OUTSTATIONCONTEXT_H
+#define OPENDNP3_OUTSTATIONCONTEXT_H
 
 #include <openpal/logging/LogRoot.h>
 #include <openpal/executor/IExecutor.h>

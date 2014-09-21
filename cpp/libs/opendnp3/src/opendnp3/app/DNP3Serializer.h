@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __DNP3_SERIALIZER_H_
-#define __DNP3_SERIALIZER_H_
+#ifndef OPENDNP3_DNP3SERIALIZER_H
+#define OPENDNP3_DNP3SERIALIZER_H
 
 #include <openpal/serialization/Serializer.h>
 

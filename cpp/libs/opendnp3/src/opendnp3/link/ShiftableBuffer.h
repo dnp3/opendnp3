@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __SHIFTABLE_BUFFER_H_
-#define __SHIFTABLE_BUFFER_H_
+#ifndef OPENDNP3_SHIFTABLEBUFFER_H
+#define OPENDNP3_SHIFTABLEBUFFER_H
 
 #include <openpal/container/WriteBuffer.h>
 #include <openpal/container/ReadOnlyBuffer.h>

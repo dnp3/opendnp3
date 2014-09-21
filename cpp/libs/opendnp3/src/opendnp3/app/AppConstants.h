@@ -19,8 +19,8 @@
 * to you under the terms of the License.
 */
 
-#ifndef __OPENDNP3_APP_CONSTANTS_H_
-#define __OPENDNP3_APP_CONSTANTS_H_
+#ifndef OPENDNP3_APPCONSTANTS_H
+#define OPENDNP3_APPCONSTANTS_H
 
 #include <cstdint>
 

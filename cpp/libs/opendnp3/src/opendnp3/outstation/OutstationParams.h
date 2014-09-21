@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __OUTSTATION_PARAMS_H_
-#define __OUTSTATION_PARAMS_H_
+#ifndef OPENDNP3_OUTSTATIONPARAMS_H
+#define OPENDNP3_OUTSTATIONPARAMS_H
 
 #include <openpal/executor/TimeDuration.h>
 

@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __IIN_FIELD_H_
-#define __IIN_FIELD_H_
+#ifndef OPENDNP3_IINFIELD_H
+#define OPENDNP3_IINFIELD_H
 
 #include <cstdint>
 

@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __INDEX_PARSER_H_
-#define __INDEX_PARSER_H_
+#ifndef OPENDNP3_INDEXPARSER_H
+#define OPENDNP3_INDEXPARSER_H
 
 #include <openpal/container/ReadOnlyBuffer.h>
 #include <openpal/serialization/Serialization.h>

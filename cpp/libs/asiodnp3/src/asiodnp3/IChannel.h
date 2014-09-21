@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __I_CHANNEL_H_
-#define __I_CHANNEL_H_
+#ifndef ASIODNP3_ICHANNEL_H
+#define ASIODNP3_ICHANNEL_H
 
 #include <opendnp3/gen/ChannelState.h>
 #include <opendnp3/link/LinkChannelStatistics.h>

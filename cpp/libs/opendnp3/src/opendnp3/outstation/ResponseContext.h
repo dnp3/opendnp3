@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __RESPONSE_CONTEXT_H_
-#define __RESPONSE_CONTEXT_H_
+#ifndef OPENDNP3_RESPONSECONTEXT_H
+#define OPENDNP3_RESPONSECONTEXT_H
 
 #include <openpal/util/Uncopyable.h>
 

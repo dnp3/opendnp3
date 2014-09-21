@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __READ_HANDLER_H_
-#define __READ_HANDLER_H_
+#ifndef OPENDNP3_READHANDLER_H
+#define OPENDNP3_READHANDLER_H
 
 
 #include "opendnp3/app/APDUHandlerBase.h"

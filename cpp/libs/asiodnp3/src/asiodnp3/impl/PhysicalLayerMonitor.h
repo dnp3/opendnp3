@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __PHYSICAL_LAYER_MONITOR_H_
-#define __PHYSICAL_LAYER_MONITOR_H_
+#ifndef ASIODNP3_PHYSICALLAYERMONITOR_H
+#define ASIODNP3_PHYSICALLAYERMONITOR_H
 
 #include <openpal/channel/IPhysicalLayerCallbacks.h>
 #include <openpal/executor/IExecutor.h>

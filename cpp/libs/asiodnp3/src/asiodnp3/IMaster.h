@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __I_MASTER_H_
-#define __I_MASTER_H_
+#ifndef ASIODNP3_IMASTER_H
+#define ASIODNP3_IMASTER_H
 
 #include "IStack.h"
 #include "StackActionHandler.h"

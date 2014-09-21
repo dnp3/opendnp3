@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __I_LINK_CONTEXT_H_
-#define __I_LINK_CONTEXT_H_
+#ifndef OPENDNP3_ILINKCONTEXT_H
+#define OPENDNP3_ILINKCONTEXT_H
 
 #include "IFrameSink.h"
 
@@ -33,7 +33,7 @@ public:
 
 	virtual ~ILinkContext() {}
 
-	virtual void OnTransmitResult(bool primary, bool success) = 0;
+	virtual void OnTransmitResult(bool success) = 0;
 
 	virtual void OnLowerLayerUp() = 0;
 	virtual void OnLowerLayerDown() = 0;

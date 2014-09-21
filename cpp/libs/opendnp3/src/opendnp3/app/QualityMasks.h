@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __QUALITY_MASKS_H_
-#define __QUALITY_MASKS_H_
+#ifndef OPENDNP3_QUALITYMASKS_H
+#define OPENDNP3_QUALITYMASKS_H
 
 #include "opendnp3/gen/BinaryQuality.h"
 #include "opendnp3/gen/DoubleBitBinaryQuality.h"

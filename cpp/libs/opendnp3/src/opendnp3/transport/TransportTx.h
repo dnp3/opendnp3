@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __TRANSPORT_TX_H_
-#define __TRANSPORT_TX_H_
+#ifndef OPENDNP3_TRANSPORTTX_H
+#define OPENDNP3_TRANSPORTTX_H
 
 #include <openpal/logging/Logger.h>
 #include <openpal/container/Settable.h>

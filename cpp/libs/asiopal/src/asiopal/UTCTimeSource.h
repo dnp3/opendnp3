@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __UTC_TIME_SOURCE_H_
-#define __UTC_TIME_SOURCE_H_
+#ifndef ASIOPAL_UTCTIMESOURCE_H
+#define ASIOPAL_UTCTIMESOURCE_H
 
 #include <openpal/executor/IUTCTimeSource.h>
 

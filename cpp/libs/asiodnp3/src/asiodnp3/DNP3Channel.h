@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __DNP3_CHANNEL_H_
-#define __DNP3_CHANNEL_H_
+#ifndef ASIODNP3_DNP3CHANNEL_H
+#define ASIODNP3_DNP3CHANNEL_H
 
 #include <openpal/logging/LogRoot.h>
 

@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __FLOAT_SERIALIZATION_TEMPLATES_H_
-#define __FLOAT_SERIALIZATION_TEMPLATES_H_
+#ifndef OPENPAL_FLOATSERIALIZATIONTEMPLATES_H
+#define OPENPAL_FLOATSERIALIZATIONTEMPLATES_H
 
 #include <cstdint>
 #include <cstring>

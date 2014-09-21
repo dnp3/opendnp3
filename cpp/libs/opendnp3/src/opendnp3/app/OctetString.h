@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __OCTET_STRING_H_
-#define __OCTET_STRING_H_
+#ifndef OPENDNP3_OCTETSTRING_H
+#define OPENDNP3_OCTETSTRING_H
 
 #include "OctetData.h"
 

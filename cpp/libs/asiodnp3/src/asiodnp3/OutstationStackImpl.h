@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __OUTSTATION_STACK_IMPL_H_
-#define __OUTSTATION_STACK_IMPL_H_
+#ifndef ASIODNP3_OUTSTATIONSTACKIMPL_H
+#define ASIODNP3_OUTSTATIONSTACKIMPL_H
 
 #include <opendnp3/outstation/OutstationStackConfig.h>
 #include <opendnp3/outstation/Database.h>
@@ -68,7 +68,7 @@ public:
 
 	// ------- Non-interface public members ---------
 
-	void SetLinkRouter(opendnp3::ILinkRouter* pRouter);
+	void SetLinkRouter(opendnp3::ILinkRouter& router);
 
 	void SetShutdownAction(const openpal::Action0& action);
 

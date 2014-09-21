@@ -89,7 +89,7 @@ package object cpp {
 
   def includeGuards(name: String)(internals: => Iterator[String]): Iterator[String] = {
 
-    val pattern = "__OPENDNP3_GENERATED_"+ name.toUpperCase + "_H_"
+    val pattern = "OPENDNP3_"+ name.toUpperCase + "_H"
 
     Iterator.apply("#ifndef " + pattern) ++
     Iterator.apply("#define " + pattern) ++

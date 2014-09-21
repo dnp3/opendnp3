@@ -19,8 +19,8 @@
  * to you under the terms of the License.
  */
 
-#ifndef __SOE_RECORD_H_
-#define __SOE_RECORD_H_
+#ifndef OPENDNP3_SOERECORD_H
+#define OPENDNP3_SOERECORD_H
 
 #include "opendnp3/app/EventType.h"
 #include "opendnp3/app/MeasurementTypes.h"

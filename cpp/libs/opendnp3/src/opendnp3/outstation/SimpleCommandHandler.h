@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __SIMPLE_COMMAND_HANDLER_H_
-#define __SIMPLE_COMMAND_HANDLER_H_
+#ifndef OPENDNP3_SIMPLECOMMANDHANDLER_H
+#define OPENDNP3_SIMPLECOMMANDHANDLER_H
 
 #include "ICommandHandler.h"
 

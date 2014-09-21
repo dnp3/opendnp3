@@ -19,8 +19,8 @@
  * to you under the terms of the License.
  */
 
-#ifndef __TASK_RECORD_H_
-#define __TASK_RECORD_H_
+#ifndef OPENDNP3_TASKRECORD_H
+#define OPENDNP3_TASKRECORD_H
 
 #include <openpal/executor/MonotonicTimestamp.h>
 

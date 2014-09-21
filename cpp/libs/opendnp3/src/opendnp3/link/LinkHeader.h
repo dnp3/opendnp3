@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __LINK_HEADER_H_
-#define __LINK_HEADER_H_
+#ifndef OPENDNP3_LINKHEADER_H
+#define OPENDNP3_LINKHEADER_H
 
 #include "LinkLayerConstants.h"
 #include "../gen/LinkFunction.h"

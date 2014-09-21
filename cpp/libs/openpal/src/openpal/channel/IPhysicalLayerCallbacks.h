@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __I_PHYSICAL_LAYER_CALLBACKS_H_
-#define __I_PHYSICAL_LAYER_CALLBACKS_H_
+#ifndef OPENPAL_IPHYSICALLAYERCALLBACKS_H
+#define OPENPAL_IPHYSICALLAYERCALLBACKS_H
 
 #include "openpal/container/ReadOnlyBuffer.h"
 

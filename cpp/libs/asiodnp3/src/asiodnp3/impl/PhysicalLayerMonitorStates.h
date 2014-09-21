@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __PHYS_LAYER_MONITOR_STATES_H_
-#define __PHYS_LAYER_MONITOR_STATES_H_
+#ifndef ASIODNP3_PHYSICALLAYERMONITORSTATES_H
+#define ASIODNP3_PHYSICALLAYERMONITORSTATES_H
 
 #include <opendnp3/link/Singleton.h>
 #include <opendnp3/gen/ChannelState.h>

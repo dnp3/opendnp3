@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __SERIAL_TIME_SYNC_TASK_H_
-#define __SERIAL_TIME_SYNC_TASK_H_
+#ifndef OPENDNP3_SERIALTIMESYNCTASK_H
+#define OPENDNP3_SERIALTIMESYNCTASK_H
 
 #include <openpal/executor/IUTCTimeSource.h>
 

@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __OCTET_DATA_H_
-#define __OCTET_DATA_H_
+#ifndef OPENDNP3_OCTETDATA_H
+#define OPENDNP3_OCTETDATA_H
 
 #include <cstdint>
 

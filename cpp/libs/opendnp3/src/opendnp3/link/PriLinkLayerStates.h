@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __PRI_LINK_LAYER_STATES_H_
-#define __PRI_LINK_LAYER_STATES_H_
+#ifndef OPENDNP3_PRILINKLAYERSTATES_H
+#define OPENDNP3_PRILINKLAYERSTATES_H
 
 #include "opendnp3/link/Singleton.h"
 #include "opendnp3/link/LinkLayer.h"
@@ -29,17 +29,19 @@ namespace opendnp3
 
 class LinkLayer;
 
+
+
 class PriStateBase
 {
 public:
 
 	// Incoming messages for primary station
-	virtual void Ack(LinkLayer*, bool aIsRcvBuffFull);
-	virtual void Nack(LinkLayer*, bool aIsRcvBuffFull);
-	virtual void LinkStatus(LinkLayer*, bool aIsRcvBuffFull);
-	virtual void NotSupported (LinkLayer*, bool aIsRcvBuffFull);
+	virtual void Ack(LinkLayer*, bool receiveBuffFull);
+	virtual void Nack(LinkLayer*, bool receiveBuffFull);
+	virtual void LinkStatus(LinkLayer*, bool receiveBuffFull);
+	virtual void NotSupported(LinkLayer*, bool receiveBuffFull);
 
-	virtual void OnTransmitResult(LinkLayer* apLL, bool success);
+	virtual void OnTransmitResult(LinkLayer*, bool success);
 
 	virtual void OnTimeout(LinkLayer*);
 

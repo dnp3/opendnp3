@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __INDEXED_VALUE_H_
-#define __INDEXED_VALUE_H_
+#ifndef OPENDNP3_INDEXEDVALUE_H
+#define OPENDNP3_INDEXEDVALUE_H
 
 #include <cstdint>
 

@@ -19,8 +19,8 @@
  * to you under the terms of the License.
  */
 
-#ifndef __DEFERRED_REQUEST_H_
-#define __DEFERRED_REQUEST_H_
+#ifndef OPENDNP3_DEFERREDREQUEST_H
+#define OPENDNP3_DEFERREDREQUEST_H
 
 #include "opendnp3/gen/FunctionCode.h"
 #include "opendnp3/app/APDUWrapper.h"

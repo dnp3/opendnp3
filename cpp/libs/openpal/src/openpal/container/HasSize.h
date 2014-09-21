@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __HAS_SIZE_H_
-#define __HAS_SIZE_H_
+#ifndef OPENPAL_HASSIZE_H
+#define OPENPAL_HASSIZE_H
 
 namespace openpal
 {

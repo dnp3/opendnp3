@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __OPENPAL_LIMITS_H_
-#define __OPENPAL_LIMITS_H_
+#ifndef OPENPAL_LIMITS_H
+#define OPENPAL_LIMITS_H
 
 namespace openpal
 {

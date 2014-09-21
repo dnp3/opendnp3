@@ -74,9 +74,9 @@ StackStatistics MasterStackImpl::GetStackStatistics()
 	return asiopal::SynchronouslyGet<StackStatistics>(handler.GetExecutor()->strand, get);
 }
 
-void MasterStackImpl::SetLinkRouter(opendnp3::ILinkRouter* pRouter)
+void MasterStackImpl::SetLinkRouter(opendnp3::ILinkRouter& router)
 {
-	stack.link.SetRouter(pRouter);
+	stack.link.SetRouter(router);
 }
 
 void MasterStackImpl::SetShutdownAction(const openpal::Action0& action)

@@ -19,8 +19,8 @@
  * to you under the terms of the License.
  */
 
-#ifndef __I_OUTSTATION_APPLICATION_H_
-#define __I_OUTSTATION_APPLICATION_H_
+#ifndef OPENDNP3_IOUTSTATIONAPPLICATION_H
+#define OPENDNP3_IOUTSTATIONAPPLICATION_H
 
 #include <openpal/executor/UTCTimestamp.h>
 
@@ -80,7 +80,7 @@ class DefaultOutstationApplication : public IOutstationApplication
 
 	virtual bool WriteAbsoluteTime(const openpal::UTCTimestamp& timestamp) override final { return false; }
 
-	// static IOutstationApplication& Instance();
+	static IOutstationApplication& Instance();
 
 	virtual ApplicationIIN GetApplicationIIN() const override final { return ApplicationIIN(); };
 
@@ -92,13 +92,11 @@ class DefaultOutstationApplication : public IOutstationApplication
 	
 	virtual uint16_t WarmRestart() override final { return 65535; }
 	
-	
-
-	DefaultOutstationApplication() {}
-		
 	private:
 
-	//static DefaultOutstationApplication instance;
+	DefaultOutstationApplication() {}
+
+	static DefaultOutstationApplication instance;
 };
 
 }

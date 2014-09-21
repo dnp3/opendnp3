@@ -19,8 +19,8 @@
  * to you under the terms of the License.
  */
 
-#ifndef __MASTER_SCHEDULER_H_
-#define __MASTER_SCHEDULER_H_
+#ifndef OPENDNP3_MASTERSCHEDULER_H
+#define OPENDNP3_MASTERSCHEDULER_H
 
 #include <openpal/executor/Function0.h>
 #include <openpal/executor/IExecutor.h>

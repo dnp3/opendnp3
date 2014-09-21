@@ -19,8 +19,8 @@
  * to you under the terms of the License.
  */
 
-#ifndef __MASTER_TASKS_H_
-#define __MASTER_TASKS_H_
+#ifndef OPENDNP3_MASTERTASKS_H
+#define OPENDNP3_MASTERTASKS_H
 
 #include "opendnp3/master/ClearRestartTask.h"
 #include "opendnp3/master/EnableUnsolicitedTask.h"

@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __APDU_WRAPPER__H_
-#define __APDU_WRAPPER__H_
+#ifndef OPENDNP3_APDUWRAPPER_H
+#define OPENDNP3_APDUWRAPPER_H
 
 #include <openpal/container/ReadOnlyBuffer.h>
 #include <openpal/container/WriteBuffer.h>

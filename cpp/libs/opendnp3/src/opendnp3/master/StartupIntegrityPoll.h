@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __STARTUP_INTEGRITY_POLL_H_
-#define __STARTUP_INTEGRITY_POLL_H_
+#ifndef OPENDNP3_STARTUPINTEGRITYPOLL_H
+#define OPENDNP3_STARTUPINTEGRITYPOLL_H
 
 #include "opendnp3/master/PollTaskBase.h"
 

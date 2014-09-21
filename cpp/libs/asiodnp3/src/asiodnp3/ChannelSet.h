@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __CHANNEL_SET_H_
-#define __CHANNEL_SET_H_
+#ifndef ASIODNP3_CHANNELSET_H
+#define ASIODNP3_CHANNELSET_H
 
 #include <set>
 

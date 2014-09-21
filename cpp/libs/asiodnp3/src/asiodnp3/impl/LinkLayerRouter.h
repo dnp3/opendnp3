@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __LINK_LAYER_ROUTER_H_
-#define __LINK_LAYER_ROUTER_H_
+#ifndef ASIODNP3_LINKLAYERROUTER_H
+#define ASIODNP3_LINKLAYERROUTER_H
 
 #include "asiodnp3/impl/PhysicalLayerMonitor.h"
 
@@ -104,7 +104,7 @@ public:
 
 	// ------------ ILinkRouter -----------------
 
-	virtual void QueueTransmit(const openpal::ReadOnlyBuffer& buffer, opendnp3::ILinkContext* pContext, bool primary) override final;
+	virtual void BeginTransmit(const openpal::ReadOnlyBuffer& buffer, opendnp3::ILinkContext* pContext) override final;
 
 	// ------------ IUpperLayer -----------------
 
@@ -139,18 +139,16 @@ private:
 
 	struct Transmission
 	{
-		Transmission(const openpal::ReadOnlyBuffer& buffer_, opendnp3::ILinkContext* pContext_, bool primary_) :
+		Transmission(const openpal::ReadOnlyBuffer& buffer_, opendnp3::ILinkContext* pContext_) :
 			buffer(buffer_),
-			pContext(pContext_),
-			primary(primary_)
+			pContext(pContext_)			
 		{}
 
-		Transmission() : buffer(), pContext(nullptr), primary(false)
+		Transmission() : buffer(), pContext(nullptr)
 		{}
 
 		openpal::ReadOnlyBuffer buffer;
-		opendnp3::ILinkContext* pContext;
-		bool primary;
+		opendnp3::ILinkContext* pContext;		
 	};
 
 	opendnp3::ILinkContext* GetDestination(uint16_t aDest, uint16_t aSrc);

@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __CONTROL_RELAY_OUTPUT_BLOCK_H_
-#define __CONTROL_RELAY_OUTPUT_BLOCK_H_
+#ifndef OPENDNP3_CONTROLRELAYOUTPUTBLOCK_H
+#define OPENDNP3_CONTROLRELAYOUTPUTBLOCK_H
 
 #include "opendnp3/gen/CommandStatus.h"
 #include "opendnp3/gen/ControlCode.h"

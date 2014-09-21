@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __I_OUTSTATION_H_
-#define __I_OUTSTATION_H_
+#ifndef ASIODNP3_IOUTSTATION_H
+#define ASIODNP3_IOUTSTATION_H
 
 #include "IStack.h"
 

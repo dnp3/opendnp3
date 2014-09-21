@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __SERIALIZER_H_
-#define __SERIALIZER_H_
+#ifndef OPENPAL_SERIALIZER_H
+#define OPENPAL_SERIALIZER_H
 
 #include <cstdint>
 

@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __IO_SERVICE_THREAD_POOL_
-#define __IO_SERVICE_THREAD_POOL_
+#ifndef ASIOPAL_IOSERVICETHREADPOOL_H
+#define ASIOPAL_IOSERVICETHREADPOOL_H
 
 #include <openpal/logging/LogRoot.h>
 

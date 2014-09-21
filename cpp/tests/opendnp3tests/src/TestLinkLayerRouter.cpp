@@ -66,7 +66,7 @@ TEST_CASE(SUITE("LayerNotOnline"))
 	REQUIRE(t.router.AddContext(&mfs, route));
 	REQUIRE(t.router.Enable(&mfs));
 	ReadOnlyBuffer buffer;
-	t.router.QueueTransmit(buffer, &mfs, false);
+	t.router.BeginTransmit(buffer, &mfs);
 	REQUIRE(t.log.PopOneEntry(flags::ERR));
 }
 
@@ -96,7 +96,7 @@ TEST_CASE(SUITE("CloseBehavior"))
 	t.phys.SignalOpenSuccess();
 
 	ByteStr buffer(292);
-	t.router.QueueTransmit(buffer.ToReadOnly(), &mfs, false); // puts the router in the send state
+	t.router.BeginTransmit(buffer.ToReadOnly(), &mfs); // puts the router in the send state
 
 	REQUIRE(t.phys.NumWrites() ==  1);
 	t.phys.BeginClose(); //we're both reading and writing so this doesn't trigger a callback yet
@@ -117,7 +117,7 @@ TEST_CASE(SUITE("CloseBehavior"))
 	t.phys.ClearBuffer();
 	t.phys.SignalOpenSuccess();
 
-	t.router.QueueTransmit(buffer.ToReadOnly(), &mfs, false);
+	t.router.BeginTransmit(buffer.ToReadOnly(), &mfs);
 	REQUIRE(t.phys.NumWrites() ==  2);
 	REQUIRE(t.phys.GetBufferAsHexString() == toHex(buffer.ToReadOnly()));
 	t.phys.SignalSendSuccess();
@@ -180,8 +180,8 @@ TEST_CASE(SUITE("MultiContextSend"))
 	DynamicBuffer buffer(292);
 
 	t.phys.SignalOpenSuccess();
-	t.router.QueueTransmit(buffer.ToReadOnly(), &mfs1, false);
-	t.router.QueueTransmit(buffer.ToReadOnly(), &mfs2, false);
+	t.router.BeginTransmit(buffer.ToReadOnly(), &mfs1);
+	t.router.BeginTransmit(buffer.ToReadOnly(), &mfs2);
 	REQUIRE(t.phys.NumWrites() ==  1);
 	t.phys.SignalSendSuccess();
 	REQUIRE(t.phys.NumWrites() ==  2);

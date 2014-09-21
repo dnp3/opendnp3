@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __LOG_ENTRY_H_
-#define __LOG_ENTRY_H_
+#ifndef OPENPAL_LOGENTRY_H
+#define OPENPAL_LOGENTRY_H
 
 #include <cstdint>
 

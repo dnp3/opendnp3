@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __DOWN_SAMPLING_H_
-#define __DOWN_SAMPLING_H_
+#ifndef OPENDNP3_DOWNSAMPLING_H
+#define OPENDNP3_DOWNSAMPLING_H
 
 #include <openpal/util/Uncopyable.h>
 #include <openpal/util/Limits.h>

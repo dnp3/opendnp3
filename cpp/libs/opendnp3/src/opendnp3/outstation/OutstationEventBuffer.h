@@ -19,8 +19,8 @@
  * to you under the terms of the License.
  */
 
-#ifndef __OUTSTATION_EVENT_BUFFER_H_
-#define __OUTSTATION_EVENT_BUFFER_H_
+#ifndef OPENDNP3_OUTSTATIONEVENTBUFFER_H
+#define OPENDNP3_OUTSTATIONEVENTBUFFER_H
 
 #include "opendnp3/outstation/IEventBuffer.h"
 #include "opendnp3/outstation/EventBufferFacade.h"

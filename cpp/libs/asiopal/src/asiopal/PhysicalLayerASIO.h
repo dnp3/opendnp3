@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __PHYSICAL_LAYER_ASIO_H_
-#define __PHYSICAL_LAYER_ASIO_H_
+#ifndef ASIOPAL_PHYSICALLAYERASIO_H
+#define ASIOPAL_PHYSICALLAYERASIO_H
 
 #include "PhysicalLayerBase.h"
 

@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __EVENT_BUFFER_CONFIG_H_
-#define __EVENT_BUFFER_CONFIG_H_
+#ifndef OPENDNP3_EVENTBUFFERCONFIG_H
+#define OPENDNP3_EVENTBUFFERCONFIG_H
 
 #include <cstdint>
 

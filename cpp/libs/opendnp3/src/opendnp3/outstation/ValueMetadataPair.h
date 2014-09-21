@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __VALUE_METADATA_PAIR_H_
-#define __VALUE_METADATA_PAIR_H_
+#ifndef OPENDNP3_VALUEMETADATAPAIR_H
+#define OPENDNP3_VALUEMETADATAPAIR_H
 
 #include <assert.h>
 #include <openpal/container/Indexable.h>

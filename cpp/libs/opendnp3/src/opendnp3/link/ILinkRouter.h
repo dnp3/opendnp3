@@ -19,8 +19,8 @@
  * to you under the terms of the License.
  */
 
-#ifndef __I_LINK_ROUTER_H_
-#define __I_LINK_ROUTER_H_
+#ifndef OPENDNP3_ILINKROUTER_H
+#define OPENDNP3_ILINKROUTER_H
 
 #include <openpal/container/ReadOnlyBuffer.h>
 
@@ -38,9 +38,9 @@ public:
 	virtual ~ILinkRouter() {}
 
 	/**
-	* Queue a frame for transmission. Callback happens OFF the call stack (via executor)
+	* Begin transmission of a frame. Callback happens OFF the call stack (via executor)
 	*/
-	virtual void QueueTransmit(const openpal::ReadOnlyBuffer& buffer, ILinkContext* pContext, bool primary) = 0;
+	virtual void BeginTransmit(const openpal::ReadOnlyBuffer& buffer, ILinkContext* pContext) = 0;
 
 };
 

@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __PREFIXED_WRITE_ITERATOR_H_
-#define __PREFIXED_WRITE_ITERATOR_H_
+#ifndef OPENDNP3_PREFIXEDWRITEITERATOR_H
+#define OPENDNP3_PREFIXEDWRITEITERATOR_H
 
 #include <openpal/serialization/Serializer.h>
 

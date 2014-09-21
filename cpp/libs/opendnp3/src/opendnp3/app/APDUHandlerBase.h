@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __APDU_HANDLER_BASE_H_
-#define __APDU_HANDLER_BASE_H_
+#ifndef OPENDNP3_APDUHANDLERBASE_H
+#define OPENDNP3_APDUHANDLERBASE_H
 
 #include "opendnp3/app/IINField.h"
 #include "opendnp3/app/IAPDUHandler.h"

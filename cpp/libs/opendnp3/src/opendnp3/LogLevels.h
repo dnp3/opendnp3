@@ -19,8 +19,8 @@
 * to you under the terms of the License.
 */
 
-#ifndef __OPENDNP3_LOG_LEVELS_H_
-#define __OPENDNP3_LOG_LEVELS_H_
+#ifndef OPENDNP3_LOGLEVELS_H
+#define OPENDNP3_LOGLEVELS_H
 
 #include <openpal/logging/LogLevels.h>
 

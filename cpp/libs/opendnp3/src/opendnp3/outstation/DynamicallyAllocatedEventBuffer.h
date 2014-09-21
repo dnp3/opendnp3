@@ -19,8 +19,8 @@
  * to you under the terms of the License.
  */
 
-#ifndef __DYNAMICALLY_ALLOCATED_EVENT_BUFFER_H_
-#define __DYNAMICALLY_ALLOCATED_EVENT_BUFFER_H_
+#ifndef OPENDNP3_DYNAMICALLYALLOCATEDEVENTBUFFER_H
+#define OPENDNP3_DYNAMICALLYALLOCATEDEVENTBUFFER_H
 
 #include "opendnp3/outstation/EventBufferConfig.h"
 #include "opendnp3/outstation/EventBufferFacade.h"

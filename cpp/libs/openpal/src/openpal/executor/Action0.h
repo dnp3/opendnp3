@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __ACTION_ZERO_H_
-#define __ACTION_ZERO_H_
+#ifndef OPENPAL_ACTION0_H
+#define OPENPAL_ACTION0_H
 
 #include "Erasure.h"
 #include "openpal/Configure.h"

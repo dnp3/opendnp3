@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __LINK_LAYER_CONSTANTS_H_
-#define __LINK_LAYER_CONSTANTS_H_
+#ifndef OPENDNP3_LINKLAYERCONSTANTS_H
+#define OPENDNP3_LINKLAYERCONSTANTS_H
 
 #include <cstdint>
 
