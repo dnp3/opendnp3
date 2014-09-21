@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __BLOCKING_COMMAND_CALLBACK_H_
-#define __BLOCKING_COMMAND_CALLBACK_H_
+#ifndef ASIODNP3_BLOCKINGCOMMANDCALLBACK_H
+#define ASIODNP3_BLOCKINGCOMMANDCALLBACK_H
 
 #include <openpal/util/Uncopyable.h>
 #include <opendnp3/master/CommandResponse.h>

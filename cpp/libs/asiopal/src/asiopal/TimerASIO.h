@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __TIMER_ASIO_H_
-#define __TIMER_ASIO_H_
+#ifndef ASIOPAL_TIMERASIO_H
+#define ASIOPAL_TIMERASIO_H
 
 #include <asio.hpp>
 

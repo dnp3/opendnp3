@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __LINK_LAYER_ROUTER_H_
-#define __LINK_LAYER_ROUTER_H_
+#ifndef ASIODNP3_LINKLAYERROUTER_H
+#define ASIODNP3_LINKLAYERROUTER_H
 
 #include "asiodnp3/impl/PhysicalLayerMonitor.h"
 

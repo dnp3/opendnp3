@@ -19,8 +19,8 @@
  * to you under the terms of the License.
  */
 
-#ifndef __DEFAULT_MASTER_APPLICATION_H_
-#define __DEFAULT_MASTER_APPLICATION_H_
+#ifndef ASIODNP3_DEFAULTMASTERAPPLICATION_H
+#define ASIODNP3_DEFAULTMASTERAPPLICATION_H
 
 #include <opendnp3/master/IMasterApplication.h>
 

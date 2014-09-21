@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef _ASIO_SERIAL_HELPERS_H_
-#define _ASIO_SERIAL_HELPERS_H_
+#ifndef ASIOPAL_ASIOSERIALHELPERS_H
+#define ASIOPAL_ASIOSERIALHELPERS_H
 
 #include <asio.hpp>
 #include <asio/basic_serial_port.hpp>

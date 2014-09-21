@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __ASIO_EXECUTOR_H_
-#define __ASIO_EXECUTOR_H_
+#ifndef ASIOPAL_ASIOEXECUTOR_H
+#define ASIOPAL_ASIOEXECUTOR_H
 
 #include <openpal/executor/IExecutor.h>
 

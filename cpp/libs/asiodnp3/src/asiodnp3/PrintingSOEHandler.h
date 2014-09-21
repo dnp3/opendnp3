@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __PRINTING_SOE_HANDLER_H_
-#define	__PRINTING_SOE_HANDLER_H_
+#ifndef ASIODNP3_PRINTINGSOEHANDLER_H
+#define ASIODNP3_PRINTINGSOEHANDLER_H
 
 #include <opendnp3/master/ISOEHandler.h>
 

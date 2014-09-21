@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __PHYSICAL_LAYER_BASE_H_
-#define __PHYSICAL_LAYER_BASE_H_
+#ifndef ASIOPAL_PHYSICALLAYERBASE_H
+#define ASIOPAL_PHYSICALLAYERBASE_H
 
 #include <openpal/executor/IExecutor.h>
 #include <openpal/channel/IPhysicalLayer.h>

@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __STACK_ACTION_HANDLER_H_
-#define __STACK_ACTION_HANDLER_H_
+#ifndef ASIODNP3_STACKACTIONHANDLER_H
+#define ASIODNP3_STACKACTIONHANDLER_H
 
 
 namespace opendnp3

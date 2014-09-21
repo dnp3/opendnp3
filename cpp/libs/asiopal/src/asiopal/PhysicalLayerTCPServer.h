@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __PHYSICAL_LAYER_TCP_SERVER_H_
-#define __PHYSICAL_LAYER_TCP_SERVER_H_
+#ifndef ASIOPAL_PHYSICALLAYERTCPSERVER_H
+#define ASIOPAL_PHYSICALLAYERTCPSERVER_H
 
 #include "PhysicalLayerBaseTCP.h"
 

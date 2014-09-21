@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __DESTRUCTOR_HOOK_H_
-#define __DESTRUCTOR_HOOK_H_
+#ifndef ASIODNP3_DESTRUCTORHOOK_H
+#define ASIODNP3_DESTRUCTORHOOK_H
 
 #include <vector>
 #include <functional>

@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __PHYSICAL_LAYER_SERIAL_H_
-#define __PHYSICAL_LAYER_SERIAL_H_
+#ifndef ASIOPAL_PHYSICALLAYERSERIAL_H
+#define ASIOPAL_PHYSICALLAYERSERIAL_H
 
 #include "SerialTypes.h"
 #include "PhysicalLayerASIO.h"

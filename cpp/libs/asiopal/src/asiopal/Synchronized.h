@@ -19,8 +19,8 @@
  * to you under the terms of the License.
  */
 
-#ifndef __SYNCHRONIZED_H_
-#define __SYNCHRONIZED_H_
+#ifndef ASIOPAL_SYNCHRONIZED_H
+#define ASIOPAL_SYNCHRONIZED_H
 
 #include <asio.hpp>
 #include <mutex>
