@@ -4,8 +4,8 @@
 #include "CriticalSection.h"
 	
 LinkParserImpl::LinkParserImpl(openpal::LogRoot& root, openpal::IExecutor& exe, opendnp3::ILinkContext& context, void (*startTxFun_)(void)) :	
-	startTxFun(startTxFun_),
-	txQueue(2),	
+	isTransmitting(false),
+	startTxFun(startTxFun_),	
 	pExecutor(&exe),
 	pContext(&context),
 	parser(root.GetLogger())
@@ -22,6 +22,12 @@ void LinkParserImpl::PutRx(uint8_t byteIn)
 {
 	rxBuffer.Put(byteIn);
 }
+
+void LinkParserImpl::CheckRxTx()
+{	
+	this->CheckRx();
+	this->CheckTx();	
+}
 	
 void LinkParserImpl::CheckRx()
 {
@@ -36,51 +42,25 @@ void LinkParserImpl::CheckRx()
 }
 
 void LinkParserImpl::CheckTx()
-{
-		
-}
-	
-	this->channelHAL.disableTxReadyISR();
-	
-	if(txQueue.IsNotEmpty())
+{		
+	if(isTransmitting) // we're in the middle of transmit
 	{
-		auto pTx = txQueue.Peek();
-		if(pTx->buffer.IsEmpty())
+		while(!txBuffer.Full() && !transmission.IsEmpty())
 		{
-			txQueue.Pop();
-			auto pri = pTx->primary;
-			if(txQueue.IsNotEmpty())
-			{
-				this->channelHAL.enableTxReadyISR();										
-			}			
-			pContext->OnTransmitResult(pri, true);						
+			auto txByte = transmission[0];
+			transmission.Advance(1);
+			txBuffer.Put(txByte);
+			this->startTxFun();
+		}
+				
+		if(transmission.IsEmpty() && txBuffer.Empty())
+		{
+			isTransmitting = false;
+			auto callback = [this]() { this->pContext->OnTransmitResult(true); };
+			pExecutor->PostLambda(callback);
 		}
 	}
 }
-
-/*				
-	if(txQueue.IsNotEmpty()) 
-	{		
-		auto pTx = txQueue.Peek();
-		if(pTx->buffer.Size() > 0)
-		{
-			byte = pTx->buffer[0];
-			pTx->buffer.Advance(1);
-			return true;	
-		}
-		else
-		{
-			return false;
-		}						
-												
-		return true;
-	}	
-	else
-	{		
-		return false;
-	}
-}
-*/
 
 uint32_t LinkParserImpl::FlushRxBuffer()
 {
@@ -94,13 +74,19 @@ uint32_t LinkParserImpl::FlushRxBuffer()
 	return count;
 }
 	
-void LinkParserImpl::QueueTransmit(const openpal::ReadOnlyBuffer& buffer, opendnp3::ILinkContext* pContext, bool primary)
+void LinkParserImpl::BeginTransmit(const openpal::ReadOnlyBuffer& buffer, opendnp3::ILinkContext* pContext)
 {
-	if(transmission.IsSet())
+	if(isTransmitting)
 	{
-		auto callback = [pContext]()
-		pExecutor->
-		pContext->OnTransmitResult(false);
+		auto callback = [pContext]() { pContext->OnTransmitResult(false); };
+		pExecutor->PostLambda(callback);
+		
 	}
+	else
+	{
+		isTransmitting = true;
+		transmission = buffer;
+		this->CheckTx();		
+	}	
 }
 

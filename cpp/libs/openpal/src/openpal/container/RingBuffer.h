@@ -68,23 +68,24 @@ public:
 		 }
 	}
 	
+	inline bool Full()
+	{
+		return Count() == N;
+	}
+
+	inline bool Empty()
+	{
+		return Count() == 0;
+	}
+	
+	
 private:
 
 	inline uint8_t Count()
 	{
 		return head - tail;
 	}
-	
-	inline bool Full()
-	{
-		return Count() == N;
-	}
-	
-	inline bool Empty()
-	{
-		return Count() == 0;
-	}
-	
+			
 	uint8_t buffer[N];
 
 	uint8_t head;

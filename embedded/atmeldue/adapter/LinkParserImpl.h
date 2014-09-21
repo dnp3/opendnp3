@@ -21,7 +21,7 @@ class LinkParserImpl : public opendnp3::ILinkRouter
 	LinkParserImpl(openpal::LogRoot& root, openpal::IExecutor& exe, opendnp3::ILinkContext& context, void (*startTxFun_)(void));
 	
 	// called from the upper part of the stack, from the main loop
-	virtual void QueueTransmit(const openpal::ReadOnlyBuffer& buffer, opendnp3::ILinkContext* pContext, bool primary) final override;	
+	virtual void BeginTransmit(const openpal::ReadOnlyBuffer& buffer, opendnp3::ILinkContext* pContext) final override;	
 	
 	// called from the uart ISR when rxready
 	void PutRx(uint8_t byteIn);
@@ -37,15 +37,17 @@ class LinkParserImpl : public opendnp3::ILinkRouter
 	private:
 	
 	void CheckRx();
+	void CheckTx();
+	
+	bool isTransmitting;
+	openpal::ReadOnlyBuffer transmission;
 	
 	openpal::RingBuffer<16> rxBuffer;
 	openpal::RingBuffer<16> txBuffer;
 					
 	uint32_t FlushRxBuffer();		
 	
-	void (*startTxFun)(void);
-			
-	openpal::Settable<openpal::ReadOnlyBuffer> transmission;	
+	void (*startTxFun)(void);			
 	
 	openpal::IExecutor* pExecutor;
 	opendnp3::ILinkContext* pContext;		

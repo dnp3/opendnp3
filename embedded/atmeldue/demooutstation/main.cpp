@@ -69,14 +69,14 @@ void UART_Handler(void)
 	if(UART->UART_SR & UART_SR_TXRDY)
 	{
 		uint8_t rxByte = UART->UART_RHR;
-		gpParser->Receive(rxByte);
+		gpParser->PutRx(rxByte);
 	}
 	
 	// is the transmit ready?
 	if(UART->UART_SR & UART_SR_TXRDY)
 	{
 		uint8_t txByte;
-		if(gpParser->NextTransmit(txByte))
+		if(gpParser->GetTx(txByte))
 		{
 			//send the character
 			UART->UART_THR = txByte;
@@ -114,8 +114,8 @@ void ConfigureUart(void)
 	UART->UART_CR = UART_CR_RSTRX | UART_CR_RSTTX | UART_CR_RXDIS | UART_CR_TXDIS;
 	
 	// Set the baudrate to 115200
-	// UART->UART_BRGR = 45; // 84000000 / 16 * x = BaudRate (write x into UART_BRGR)
-	UART->UART_BRGR = 547; // <- 9600 baud
+	UART->UART_BRGR = 45; // 84000000 / 16 * x = BaudRate (write x into UART_BRGR)
+	// UART->UART_BRGR = 547; // <- 9600 baud
 	
 	// No Parity
 	UART->UART_MR = UART_MR_PAR_NO;
@@ -164,25 +164,16 @@ int main(void)
 
 	// object that handles command (CROB / analog output) requests
 	// This example can toggle an LED
-	CommandHandlerImpl commandHandler;
-	
-	DefaultOutstationApplication application;
+	CommandHandlerImpl commandHandler;		
 
-	Outstation outstation(config, exe, root, stack.transport, commandHandler, application, database, eventBuffers.GetFacade());
+	Outstation outstation(config, exe, root, stack.transport, commandHandler, DefaultOutstationApplication::Instance(), database, eventBuffers.GetFacade());
 
-	stack.transport.SetAppLayer(&outstation);
+	stack.transport.SetAppLayer(&outstation);		
 	
-	ChannelHAL channel = {
-		EnableTxISR,
-		DisableTxISR,
-		EnableRxISR,
-		DisableRxISR,
-	};
-	
-	LinkParserImpl parser(root, exe, stack.link, channel);
+	LinkParserImpl parser(root, exe, stack.link, EnableTxISR);
 	gpParser = &parser;
 	
-	stack.link.SetRouter(&parser);
+	stack.link.SetRouter(parser);
 	stack.link.OnLowerLayerUp();
 		
 	// Setup SysTick Timer for 1 msec interrupts
@@ -206,7 +197,7 @@ int main(void)
 		__WFE();
 		
 		// The systick is at 1000hz, so this reduces the LED toggle to 10hz
-		if(loopCount == 100)
+		if(loopCount == 1000)
 		{
 			loopCount = 0;
 			ToggleLED();
