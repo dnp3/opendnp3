@@ -23,6 +23,7 @@
 
 #include <openpal/executor/IExecutor.h>
 #include <openpal/logging/LogRoot.h>
+#include <openpal/container/Settable.h>
 
 #include "opendnp3/link/ILinkLayer.h"
 #include "opendnp3/link/ILinkContext.h"
@@ -39,6 +40,13 @@ class SecStateBase;
 //	@section desc Implements the contextual state of DNP3 Data Link Layer
 class LinkLayer : public ILinkLayer, public ILinkContext, public HasUpperLayer
 {
+	enum class TransmitMode : uint8_t
+	{
+		Idle,
+		Primary,
+		Secondary
+	};	
+
 public:
 
 	LinkLayer(openpal::LogRoot&, openpal::IExecutor*, const LinkConfig&);
@@ -48,7 +56,7 @@ public:
 	// ILinkContext interface
 	virtual void OnLowerLayerUp() override final;
 	virtual void OnLowerLayerDown() override final;
-	virtual void OnTransmitResult(bool primary, bool success) override final;
+	virtual void OnTransmitResult(bool success) override final;
 
 	// IFrameSink interface
 	virtual void Ack(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc) override final;
@@ -143,8 +151,10 @@ public:
 
 	void QueueTransmit(const openpal::ReadOnlyBuffer& buffer, bool primary);	
 
-	// the buffer for primary requests
-	uint8_t txBuffer[LPDU_MAX_FRAME_SIZE];
+	// buffers used for primary and secondary requests	
+	uint8_t priTxBuffer[LPDU_MAX_FRAME_SIZE];
+	uint8_t secTxBuffer[LPDU_HEADER_SIZE];
+	
 
 	openpal::ReadOnlyBuffer FormatPrimaryBufferWithUnconfirmed(const openpal::ReadOnlyBuffer& tpdu);
 
@@ -153,6 +163,12 @@ public:
 	ITransportSegment* pSegments;
 
 private:
+
+	TransmitMode txMode;
+	openpal::Settable<openpal::ReadOnlyBuffer> pendingPriTx;
+	openpal::Settable<openpal::ReadOnlyBuffer> pendingSecTx;
+
+	void CheckPendingTx(openpal::Settable<openpal::ReadOnlyBuffer>& pending, bool primary);
 
 	uint32_t numRetryRemaining;
 

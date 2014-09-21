@@ -45,7 +45,7 @@ public:
 	void OnLowerLayerUp();
 	void OnLowerLayerDown();
 
-	void OnTransmitResult(bool primary, bool success);
+	void OnTransmitResult(bool success);
 
 	//	Sec to Pri
 	void Ack(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc);

@@ -38,9 +38,9 @@ public:
 	virtual ~ILinkRouter() {}
 
 	/**
-	* Queue a frame for transmission. Callback happens OFF the call stack (via executor)
+	* Begin transmission of a frame. Callback happens OFF the call stack (via executor)
 	*/
-	virtual void QueueTransmit(const openpal::ReadOnlyBuffer& buffer, ILinkContext* pContext, bool primary) = 0;
+	virtual void BeginTransmit(const openpal::ReadOnlyBuffer& buffer, ILinkContext* pContext) = 0;
 
 };
 

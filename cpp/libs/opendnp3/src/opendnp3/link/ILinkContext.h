@@ -33,7 +33,7 @@ public:
 
 	virtual ~ILinkContext() {}
 
-	virtual void OnTransmitResult(bool primary, bool success) = 0;
+	virtual void OnTransmitResult(bool success) = 0;
 
 	virtual void OnLowerLayerUp() = 0;
 	virtual void OnLowerLayerDown() = 0;
