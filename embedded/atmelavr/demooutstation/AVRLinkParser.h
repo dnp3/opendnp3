@@ -21,41 +21,30 @@ class AVRLinkParser : public opendnp3::ILinkRouter
 {
 	public:
 
-	AVRLinkParser(openpal::LogRoot& root, openpal::IExecutor& exe, opendnp3::ILinkContext& context, uint32_t bufferSize);
+	AVRLinkParser(openpal::LogRoot& root, openpal::IExecutor& exe, opendnp3::ILinkContext& context);
 	
-	virtual void QueueTransmit(const openpal::ReadOnlyBuffer& buffer, opendnp3::ILinkContext* pContext, bool primary) final override;	
+	virtual void BeginTransmit(const openpal::ReadOnlyBuffer& buffer, opendnp3::ILinkContext* pContext) final override;	
 	
-	void Receive(uint8_t byte);
+	// called from the rxReady ISR
+	void Receive(uint8_t rxByte);
+	
+	// called from the txReady ISR
+	bool GetTx(uint8_t& txByte);
 	
 	void Init();
-	
-	void CheckTransmit();
-	
-	void ProcessRx();
+			
+	void CheckRxTx();
 	
 	private:
 	
-	uint32_t CopyRxBuffer();
-		
-	struct Transmission
-	{
-		Transmission(const openpal::ReadOnlyBuffer& buffer_, bool primary_) :
-			buffer(buffer_),
-			primary(primary_)
-			{}
-
-		Transmission() : buffer(), primary(false)
-		{}
-
-		openpal::ReadOnlyBuffer buffer;
-		bool primary;
-	};
+	void CheckTx();
+	void CheckRx();
+							
+	openpal::RingBuffer<16> rxBuffer;
+	openpal::RingBuffer<16> txBuffer;
 	
-	openpal::Queue<Transmission, uint8_t> txQueue;
-	openpal::RingBuffer rxBuffer;
-	
-	openpal::Settable<openpal::ReadOnlyBuffer> primaryTx;
-	openpal::Settable<openpal::ReadOnlyBuffer> secondaryTx;
+	bool isTransmitting;
+	openpal::ReadOnlyBuffer transmission;		
 	
 	openpal::IExecutor* pExecutor;
 	opendnp3::ILinkContext* pContext;		

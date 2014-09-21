@@ -70,8 +70,8 @@ int main()
 		
 	stack.transport.SetAppLayer(&outstation);
 			
-	AVRLinkParser parser(root, exe, stack.link, 8); // buffer up to 8 bytes
-	stack.link.SetRouter(&parser);	
+	AVRLinkParser parser(root, exe, stack.link);
+	stack.link.SetRouter(parser);	
 	stack.link.OnLowerLayerUp();
 	
 	// enable timer interrupts at 100Hz	
@@ -86,18 +86,30 @@ int main()
 	// Set LED as output
 	SET(DDRB, BIT(7));	
 	
-	ToggleValuesEvery3Seconds(&exe, &database);
+	//ToggleValuesEvery3Seconds(&exe, &database);
+		
+	int loopCount = 0;		
 				
 	for (;;)
 	{ 	
-		// process any bytes that were received on the interrupt		
-		parser.ProcessRx();
+		// process any bytes that were received on the interrupt
+		// load new transmission bytes if necessary	
+		parser.CheckRxTx();
 
 		// run all pending events or expired timers							
 		exe.Run();
 		
-		// sleep until an interrupt occurs
-		exe.Sleep(); 
+		// sleep until an interrupt occurs		
+		exe.Sleep();
+		
+		
+		if(loopCount == 100)
+		{
+			loopCount = 0;	
+			TOGGLE(PORTB, BIT(7));			
+		}
+		
+		++loopCount;
 	}
 
 	return 0;

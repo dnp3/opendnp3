@@ -16,14 +16,11 @@ namespace arduino {
 
 arduino::AVRLinkParser* gLinkParser = nullptr;
 
-
-
 namespace arduino {
 	
-AVRLinkParser::AVRLinkParser(openpal::LogRoot& root, openpal::IExecutor& exe, opendnp3::ILinkContext& context, uint32_t bufferSize) : 	
-	txQueue(2),
-	pExecutor(&exe),
-	rxBuffer(bufferSize),
+AVRLinkParser::AVRLinkParser(openpal::LogRoot& root, openpal::IExecutor& exe, opendnp3::ILinkContext& context) : 		
+	isTransmitting(false),
+	pExecutor(&exe),	
 	pContext(&context),
 	parser(root.GetLogger())
 {
@@ -53,64 +50,93 @@ void AVRLinkParser::Receive(uint8_t byte)
 	rxBuffer.Put(byte);
 }
 
-void AVRLinkParser::CheckTransmit()
+bool AVRLinkParser::GetTx(uint8_t& txByte)
+{
+	// requested on the interrupt
+	return txBuffer.Get(txByte);
+}
+
+void AVRLinkParser::CheckTx()
 {	
-	if(txQueue.IsNotEmpty() && (UCSR0A & (1<<UDRE0))) 
+	if(isTransmitting)
 	{		
-		auto pTx = txQueue.Peek();
-		UDR0 = pTx->buffer[0];
-		pTx->buffer.Advance(1);
+		// transfer bytes into the ring buffer
+		while(!txBuffer.Full() && !transmission.Empty())
+		{			
+			uint8_t byte = transmission[0];
+			txBuffer.Put(byte);
+			transmission.Advance(1);			
+		}				
 		
-		if(pTx->buffer.IsEmpty())
+		if(transmission.IsEmpty() && txBuffer.Empty())
 		{
-			txQueue.Pop();
-			auto pri = pTx->primary;
-			auto callback = [this, pri]() { pContext->OnTransmitResult(pri, true); };
+			isTransmitting = false;			
+			auto callback = [this]() { pContext->OnTransmitResult(true); };
 			pExecutor->PostLambda(callback);
 		}
 	}	
 }
 
-void AVRLinkParser::ProcessRx()
-{
-	auto num = CopyRxBuffer();
-	if(num > 0)
-	{
-		parser.OnRead(num, pContext);
-	}
+void AVRLinkParser::CheckRxTx()
+{		
+	this->CheckTx();
+	this->CheckRx();
 }
 
-uint32_t AVRLinkParser::CopyRxBuffer()
+void AVRLinkParser::CheckRx()
 {	
-	// disable interrupts and copy contents of ring buffer to the receiver's write buffer
-	CriticalSection cs; 
-	auto buffer = parser.WriteBuff();
-	return rxBuffer.Read(buffer);
+	// copy contents of ring buffer to the receiver's write buffer		
+	uint32_t count = 0;
+	auto buffer = parser.WriteBuff();	
+	uint8_t rxByte;
+	while(!buffer.IsEmpty() && rxBuffer.Get(rxByte))
+	{				
+		buffer[0] = rxByte;
+		buffer.Advance(1);
+		++count;
+	}
+	
+	if(count > 0)
+	{
+		parser.OnRead(count, pContext);
+	}		
 }
 	
-void AVRLinkParser::QueueTransmit(const openpal::ReadOnlyBuffer& buffer, opendnp3::ILinkContext* pContext, bool primary)
+void AVRLinkParser::BeginTransmit(const openpal::ReadOnlyBuffer& buffer, opendnp3::ILinkContext* pContext)
 {
-	txQueue.Enqueue(Transmission(buffer, primary));
-	this->CheckTransmit();
+	if(!isTransmitting)
+	{
+		isTransmitting = true;
+		transmission = buffer;
+		this->CheckTx();
+		
+		// to kick off the transmit, we have to actually load the first value
+		// subsequent bytes are transmitted on the txReady interrupt handler
+		/*
+		uint8_t txByte;
+		if(txBuffer.Get(txByte))
+		{
+			UDR0 = txByte;
+		}
+		*/
+	}	
 }
 
 }
 
 ISR(USART0_TX_vect)
-{	
-	if(gLinkParser)
+{			
+	uint8_t txByte;
+	if(gLinkParser->GetTx(txByte))
 	{
-		gLinkParser->CheckTransmit();
-	}
+		UDR0 = txByte;
+	}	
 }
 
 ISR(USART0_RX_vect)
 {
 	uint8_t rx;
-	rx = UDR0;	
-	if(gLinkParser)
-	{
-		gLinkParser->Receive(rx);
-	}	
+	rx = UDR0;		
+	gLinkParser->Receive(rx);	
 }
 

@@ -218,10 +218,6 @@
       <SubType>compile</SubType>
       <Link>container\ReadOnlyBuffer.h</Link>
     </Compile>
-    <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\container\RingBuffer.cpp">
-      <SubType>compile</SubType>
-      <Link>container\RingBuffer.cpp</Link>
-    </Compile>
     <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\container\RingBuffer.h">
       <SubType>compile</SubType>
       <Link>container\RingBuffer.h</Link>
