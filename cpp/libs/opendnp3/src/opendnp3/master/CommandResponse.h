@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __COMMAND_RESPONSE_H_
-#define __COMMAND_RESPONSE_H_
+#ifndef OPENDNP3_COMMANDRESPONSE_H
+#define OPENDNP3_COMMANDRESPONSE_H
 
 #include "opendnp3/gen/CommandStatus.h"
 #include "opendnp3/gen/CommandResult.h"

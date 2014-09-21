@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __SEC_LINK_LAYER_STATES_H_
-#define __SEC_LINK_LAYER_STATES_H_
+#ifndef OPENDNP3_SECLINKLAYERSTATES_H
+#define OPENDNP3_SECLINKLAYERSTATES_H
 
 #include "opendnp3/LogLevels.h"
 #include "opendnp3/link/Singleton.h"

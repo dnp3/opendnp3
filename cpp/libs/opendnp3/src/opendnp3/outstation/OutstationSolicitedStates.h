@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __OUTSTATION_STATES_H_
-#define __OUTSTATION_STATES_H_
+#ifndef OPENDNP3_OUTSTATIONSOLICITEDSTATES_H
+#define OPENDNP3_OUTSTATIONSOLICITEDSTATES_H
 
 #include "opendnp3/app/APDUHeader.h"
 #include "opendnp3/app/APDUWrapper.h"

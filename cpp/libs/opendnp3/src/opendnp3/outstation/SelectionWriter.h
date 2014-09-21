@@ -19,8 +19,8 @@
  * to you under the terms of the License.
  */
 
-#ifndef __SELECTION_WRITER_H_
-#define __SELECTION_WRITER_H_
+#ifndef OPENDNP3_SELECTIONWRITER_H
+#define OPENDNP3_SELECTIONWRITER_H
 
 #include <openpal/container/LinkedListAdapter.h>
 

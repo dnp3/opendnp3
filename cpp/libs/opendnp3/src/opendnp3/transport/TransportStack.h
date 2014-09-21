@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __TRANSPORT_STACK_H_
-#define __TRANSPORT_STACK_H_
+#ifndef OPENDNP3_TRANSPORTSTACK_H
+#define OPENDNP3_TRANSPORTSTACK_H
 
 #include "opendnp3/link/LinkLayer.h"
 #include "opendnp3/transport/TransportLayer.h"

@@ -15,8 +15,8 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef __OPENDNP3_GENERATED_CHANNELSTATE_H_
-#define __OPENDNP3_GENERATED_CHANNELSTATE_H_
+#ifndef OPENDNP3_CHANNELSTATE_H
+#define OPENDNP3_CHANNELSTATE_H
 
 #include <cstdint>
 

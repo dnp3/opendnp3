@@ -19,8 +19,8 @@
  * to you under the terms of the License.
  */
 
-#ifndef __COUNT_OF_H_
-#define __COUNT_OF_H_
+#ifndef OPENDNP3_COUNTOF_H
+#define OPENDNP3_COUNTOF_H
 
 #include <cstdint>
 #include <assert.h>

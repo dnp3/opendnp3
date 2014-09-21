@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __DYNAMICICALLY_ALLOCATED_DATABASE_H_
-#define __DYNAMICICALLY_ALLOCATED_DATABASE_H_
+#ifndef OPENDNP3_DYNAMICALLYALLOCATEDDATABASE_H
+#define OPENDNP3_DYNAMICALLYALLOCATEDDATABASE_H
 
 #include "opendnp3/outstation/StaticDataFacade.h"
 #include "opendnp3/outstation/DatabaseTemplate.h"

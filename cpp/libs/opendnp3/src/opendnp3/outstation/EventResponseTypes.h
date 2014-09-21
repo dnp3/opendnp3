@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __EVENT_RESPONSE_TYPES_H_
-#define __EVENT_RESPONSE_TYPES_H_
+#ifndef OPENDNP3_EVENTRESPONSETYPES_H
+#define OPENDNP3_EVENTRESPONSETYPES_H
 
 #include "opendnp3/outstation/EventResponseConfig.h"
 

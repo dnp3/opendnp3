@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __TIME_TRANSACTION_H_
-#define	__TIME_TRANSACTION_H_
+#ifndef OPENDNP3_TIMETRANSACTION_H
+#define OPENDNP3_TIMETRANSACTION_H
 
 #include "opendnp3/app/ITransactable.h"
 

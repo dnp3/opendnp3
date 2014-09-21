@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __COMMAND_RESPONSE_HANDLER_H_
-#define __COMMAND_RESPONSE_HANDLER_H_
+#ifndef OPENDNP3_COMMANDRESPONSEHANDLER_H
+#define OPENDNP3_COMMANDRESPONSEHANDLER_H
 
 #include "opendnp3/app/APDUHandlerBase.h"
 #include "opendnp3/app/APDUResponse.h"

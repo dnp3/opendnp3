@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __MEASUREMENT_TYPES_H_
-#define __MEASUREMENT_TYPES_H_
+#ifndef OPENDNP3_MEASUREMENTTYPES_H
+#define OPENDNP3_MEASUREMENTTYPES_H
 
 #include "QualityMasks.h"
 #include "EventTriggers.h"

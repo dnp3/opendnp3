@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __ITERABLE_TRANSFORMS_H_
-#define __ITERABLE_TRANSFORMS_H_
+#ifndef OPENDNP3_ITERABLETRANSFORMS_H
+#define OPENDNP3_ITERABLETRANSFORMS_H
 
 #include "opendnp3/app/LazyIterable.h"
 

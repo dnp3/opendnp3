@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __EVENT_RESPONSE_CONTEXT_H_
-#define __EVENT_RESPONSE_CONTEXT_H_
+#ifndef OPENDNP3_EVENTRESPONSECONTEXT_H
+#define OPENDNP3_EVENTRESPONSECONTEXT_H
 
 #include <openpal/util/Uncopyable.h>
 #include <openpal/serialization/Serialization.h>

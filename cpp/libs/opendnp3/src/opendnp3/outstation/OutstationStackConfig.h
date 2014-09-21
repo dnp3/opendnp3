@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __OUTSTATION_STACK_CONFIG_H_
-#define __OUTSTATION_STACK_CONFIG_H_
+#ifndef OPENDNP3_OUTSTATIONSTACKCONFIG_H
+#define OPENDNP3_OUTSTATIONSTACKCONFIG_H
 
 #include "opendnp3/outstation/OutstationConfig.h"
 #include "opendnp3/outstation/EventBufferConfig.h"

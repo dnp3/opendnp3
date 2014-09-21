@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __TASK_BITMASK_H_
-#define __TASK_BITMASK_H_
+#ifndef OPENDNP3_TASKBITMASK_H
+#define OPENDNP3_TASKBITMASK_H
 
 #include <cstdint>
 

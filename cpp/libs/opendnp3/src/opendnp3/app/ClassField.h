@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __CLASS_FIELD_H_
-#define __CLASS_FIELD_H_
+#ifndef OPENDNP3_CLASSFIELD_H
+#define OPENDNP3_CLASSFIELD_H
 
 #include <cstdint>
 

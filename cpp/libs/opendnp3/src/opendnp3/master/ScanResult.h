@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __SCAN_RESULT_H_
-#define __SCAN_RESULT_H_
+#ifndef OPENDNP3_SCANRESULT_H
+#define OPENDNP3_SCANRESULT_H
 
 #include "opendnp3/gen/ScanStatus.h"
 

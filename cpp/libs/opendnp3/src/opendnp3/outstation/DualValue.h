@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __DUAL_VALUE_H_
-#define __DUAL_VALUE_H_
+#ifndef OPENDNP3_DUALVALUE_H
+#define OPENDNP3_DUALVALUE_H
 
 namespace opendnp3
 {

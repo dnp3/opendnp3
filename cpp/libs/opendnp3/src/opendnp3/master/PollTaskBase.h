@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __POLL_TASK_BASE_H_
-#define __POLL_TASK_BASE_H_
+#ifndef OPENDNP3_POLLTASKBASE_H
+#define OPENDNP3_POLLTASKBASE_H
 
 #include "opendnp3/master/IMasterTask.h"
 #include "opendnp3/master/IPollListener.h"

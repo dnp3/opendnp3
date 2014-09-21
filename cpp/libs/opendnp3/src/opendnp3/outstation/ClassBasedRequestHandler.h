@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __CLASS_BASED_REQUEST_HANDLER_H_
-#define __CLASS_BASED_REQUEST_HANDLER_H_
+#ifndef OPENDNP3_CLASSBASEDREQUESTHANDLER_H
+#define OPENDNP3_CLASSBASEDREQUESTHANDLER_H
 
 #include "opendnp3/app/APDUHandlerBase.h"
 

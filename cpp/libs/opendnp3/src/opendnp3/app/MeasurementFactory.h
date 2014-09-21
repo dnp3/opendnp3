@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __MEASUREMENT_FACTORY_H_
-#define __MEASUREMENT_FACTORY_H_
+#ifndef OPENDNP3_MEASUREMENTFACTORY_H
+#define OPENDNP3_MEASUREMENTFACTORY_H
 
 #include <openpal/util/Uncopyable.h>
 #include "opendnp3/app/MeasurementTypes.h"

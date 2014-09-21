@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __COMMAND_ACTION_ADAPTER_H_
-#define __COMMAND_ACTION_ADAPTER_H_
+#ifndef OPENDNP3_COMMANDACTIONADAPTER_H
+#define OPENDNP3_COMMANDACTIONADAPTER_H
 
 #include "ICommandAction.h"
 

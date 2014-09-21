@@ -15,8 +15,8 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef __OPENDNP3_GENERATED_GROUP50_H_
-#define __OPENDNP3_GENERATED_GROUP50_H_
+#ifndef OPENDNP3_GROUP50_H
+#define OPENDNP3_GROUP50_H
 
 #include <openpal/container/ReadOnlyBuffer.h>
 #include <openpal/container/WriteBuffer.h>

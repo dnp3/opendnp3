@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __LINK_LAYER_H_
-#define __LINK_LAYER_H_
+#ifndef OPENDNP3_LINKLAYER_H
+#define OPENDNP3_LINKLAYER_H
 
 #include <openpal/executor/IExecutor.h>
 #include <openpal/logging/LogRoot.h>

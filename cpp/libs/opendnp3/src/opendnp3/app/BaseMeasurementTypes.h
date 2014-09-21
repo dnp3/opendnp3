@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __BASE_DATA_TYPES_H_
-#define __BASE_DATA_TYPES_H_
+#ifndef OPENDNP3_BASEMEASUREMENTTYPES_H
+#define OPENDNP3_BASEMEASUREMENTTYPES_H
 
 #include <cstdint>
 

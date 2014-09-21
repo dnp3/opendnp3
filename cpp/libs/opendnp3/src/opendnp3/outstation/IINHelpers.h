@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __IIN_HELPERS_H_
-#define __IIN_HELPERS_H_
+#ifndef OPENDNP3_IINHELPERS_H
+#define OPENDNP3_IINHELPERS_H
 
 #include "opendnp3/app/IINField.h"
 #include "opendnp3/app/APDUParser.h"

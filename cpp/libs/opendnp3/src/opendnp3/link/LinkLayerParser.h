@@ -19,8 +19,8 @@
  * to you under the terms of the License.
  */
 
-#ifndef __LINK_LAYER_PARSER_H_
-#define __LINK_LAYER_PARSER_H_
+#ifndef OPENDNP3_LINKLAYERPARSER_H
+#define OPENDNP3_LINKLAYERPARSER_H
 
 
 #include <openpal/container/WriteBuffer.h>

@@ -15,8 +15,8 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef __OPENDNP3_GENERATED_QUALIFIERCODE_H_
-#define __OPENDNP3_GENERATED_QUALIFIERCODE_H_
+#ifndef OPENDNP3_QUALIFIERCODE_H
+#define OPENDNP3_QUALIFIERCODE_H
 
 #include <cstdint>
 

@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __SEQUENCE_INFO_H_
-#define __SEQUENCE_INFO_H_
+#ifndef OPENDNP3_SEQUENCEINFO_H
+#define OPENDNP3_SEQUENCEINFO_H
 
 namespace opendnp3
 {

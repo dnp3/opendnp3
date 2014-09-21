@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __OPENDNP3_EVENT_H_
-#define __OPENDNP3_EVENT_H_
+#ifndef OPENDNP3_EVENT_H
+#define OPENDNP3_EVENT_H
 
 #include "opendnp3/app/IndexedValue.h"
 #include "opendnp3/app/EventType.h"

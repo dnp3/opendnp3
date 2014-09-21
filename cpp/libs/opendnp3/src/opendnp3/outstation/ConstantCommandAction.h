@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __CONSTANT_COMMAND_ACTION_H_
-#define __CONSTANT_COMMAND_ACTION_H_
+#ifndef OPENDNP3_CONSTANTCOMMANDACTION_H
+#define OPENDNP3_CONSTANTCOMMANDACTION_H
 
 #include "ICommandAction.h"
 

@@ -19,8 +19,8 @@
  * to you under the terms of the License.
  */
 
-#ifndef __EVENT_COUNT_H_
-#define __EVENT_COUNT_H_
+#ifndef OPENDNP3_EVENTCOUNT_H
+#define OPENDNP3_EVENTCOUNT_H
 
 #include <cstdint>
 

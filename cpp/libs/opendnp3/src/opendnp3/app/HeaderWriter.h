@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __HEADER_WRITER_H_
-#define __HEADER_WRITER_H_
+#ifndef OPENDNP3_HEADERWRITER_H
+#define OPENDNP3_HEADERWRITER_H
 
 #include "opendnp3/app/GroupVariationRecord.h"
 #include "opendnp3/gen/QualifierCode.h"

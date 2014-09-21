@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __WRITE_CONVERSION_TEMPLATES_H_
-#define __WRITE_CONVERSION_TEMPLATES_H_
+#ifndef OPENDNP3_WRITECONVERSIONTEMPLATES_H
+#define OPENDNP3_WRITECONVERSIONTEMPLATES_H
 
 #include <openpal/util/Uncopyable.h>
 

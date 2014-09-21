@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __RANGE_WRITE_ITERATOR_H_
-#define __RANGE_WRITE_ITERATOR_H_
+#ifndef OPENDNP3_RANGEWRITEITERATOR_H
+#define OPENDNP3_RANGEWRITEITERATOR_H
 
 #include <openpal/container/WriteBuffer.h>
 #include <openpal/serialization/Serializer.h>

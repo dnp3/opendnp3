@@ -19,8 +19,8 @@
  * to you under the terms of the License.
  */
 
-#ifndef __I_LINK_ROUTER_H_
-#define __I_LINK_ROUTER_H_
+#ifndef OPENDNP3_ILINKROUTER_H
+#define OPENDNP3_ILINKROUTER_H
 
 #include <openpal/container/ReadOnlyBuffer.h>
 

@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __STATIC_RESPONSE_CONFIG_H_
-#define __STATIC_RESPONSE_CONFIG_H_
+#ifndef OPENDNP3_STATICRESPONSECONFIG_H
+#define OPENDNP3_STATICRESPONSECONFIG_H
 
 #include <assert.h>
 

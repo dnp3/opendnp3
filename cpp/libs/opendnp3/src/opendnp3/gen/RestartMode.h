@@ -15,8 +15,8 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef __OPENDNP3_GENERATED_RESTARTMODE_H_
-#define __OPENDNP3_GENERATED_RESTARTMODE_H_
+#ifndef OPENDNP3_RESTARTMODE_H
+#define OPENDNP3_RESTARTMODE_H
 
 #include <cstdint>
 

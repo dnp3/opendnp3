@@ -19,8 +19,8 @@
  * to you under the terms of the License.
  */
 
-#ifndef __EVENT_WRITE_OPERATION_H_
-#define __EVENT_WRITE_OPERATION_H_
+#ifndef OPENDNP3_EVENTWRITEOPERATION_H
+#define OPENDNP3_EVENTWRITEOPERATION_H
 
 #include <cstdint>
 

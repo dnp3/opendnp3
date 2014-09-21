@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __I_COMMAND_CALLBACK_H_
-#define __I_COMMAND_CALLBACK_H_
+#ifndef OPENDNP3_ICOMMANDCALLBACK_H
+#define OPENDNP3_ICOMMANDCALLBACK_H
 
 #include "opendnp3/master/CommandResponse.h"
 

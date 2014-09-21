@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __LAYER_INTERFACES_H_
-#define __LAYER_INTERFACES_H_
+#ifndef OPENDNP3_LAYERINTERFACES_H
+#define OPENDNP3_LAYERINTERFACES_H
 
 #include <openpal/container/WriteBuffer.h>
 #include <openpal/container/ReadOnlyBuffer.h>

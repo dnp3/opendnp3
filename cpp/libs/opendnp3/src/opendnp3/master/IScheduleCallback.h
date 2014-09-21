@@ -19,8 +19,8 @@
  * to you under the terms of the License.
  */
 
-#ifndef __I_SCHEDULE_CALLBACK_H_
-#define __I_SCHEDULE_CALLBACK_H_
+#ifndef OPENDNP3_ISCHEDULECALLBACK_H
+#define OPENDNP3_ISCHEDULECALLBACK_H
 
 namespace opendnp3
 {

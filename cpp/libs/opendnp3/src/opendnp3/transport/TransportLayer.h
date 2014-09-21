@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __TRANSPORT_LAYER_H_
-#define __TRANSPORT_LAYER_H_
+#ifndef OPENDNP3_TRANSPORTLAYER_H
+#define OPENDNP3_TRANSPORTLAYER_H
 
 #include "TransportRx.h"
 #include "TransportTx.h"

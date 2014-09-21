@@ -19,8 +19,8 @@
  * to you under the terms of the License.
  */
 
-#ifndef __I_MASTER_SCHEDULER_H_
-#define __I_MASTER_SCHEDULER_H_
+#ifndef OPENDNP3_IMASTERSCHEDULER_H
+#define OPENDNP3_IMASTERSCHEDULER_H
 
 #include <openpal/executor/TimeDuration.h>
 

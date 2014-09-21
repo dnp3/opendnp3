@@ -15,8 +15,8 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef __OPENDNP3_GENERATED_POLLSTATE_H_
-#define __OPENDNP3_GENERATED_POLLSTATE_H_
+#ifndef OPENDNP3_POLLSTATE_H
+#define OPENDNP3_POLLSTATE_H
 
 #include <cstdint>
 

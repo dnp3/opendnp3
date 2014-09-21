@@ -15,8 +15,8 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef __OPENDNP3_GENERATED_DOUBLEBIT_H_
-#define __OPENDNP3_GENERATED_DOUBLEBIT_H_
+#ifndef OPENDNP3_DOUBLEBIT_H
+#define OPENDNP3_DOUBLEBIT_H
 
 #include <cstdint>
 

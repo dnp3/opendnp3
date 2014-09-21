@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __OUTSTATION_H_
-#define __OUTSTATION_H_
+#ifndef OPENDNP3_OUTSTATION_H
+#define OPENDNP3_OUTSTATION_H
 
 #include "opendnp3/LayerInterfaces.h"
 

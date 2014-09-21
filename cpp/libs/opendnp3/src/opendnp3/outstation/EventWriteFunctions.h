@@ -19,8 +19,8 @@
  * to you under the terms of the License.
  */
 
-#ifndef __EVENT_WRITE_FUNCTIONS_H_
-#define __EVENT_WRITE_FUNCTIONS_H_
+#ifndef OPENDNP3_EVENTWRITEFUNCTIONS_H
+#define OPENDNP3_EVENTWRITEFUNCTIONS_H
 
 #include "EventWriteOperation.h"
 

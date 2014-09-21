@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __I_POLL_LISTENER_H_
-#define __I_POLL_LISTENER_H_
+#ifndef OPENDNP3_IPOLLLISTENER_H
+#define OPENDNP3_IPOLLLISTENER_H
 
 #include "opendnp3/gen/PollState.h"
 

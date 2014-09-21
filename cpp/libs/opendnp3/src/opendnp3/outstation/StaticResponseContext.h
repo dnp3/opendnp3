@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __STATIC_RESPONSE_CONTEXT_H_
-#define __STATIC_RESPONSE_CONTEXT_H_
+#ifndef OPENDNP3_STATICRESPONSECONTEXT_H
+#define OPENDNP3_STATICRESPONSECONTEXT_H
 
 #include <openpal/container/Queue.h>
 #include <openpal/serialization/Serialization.h>

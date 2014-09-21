@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __GROUP_VARIATION_RECORD_H_
-#define __GROUP_VARIATION_RECORD_H_
+#ifndef OPENDNP3_GROUPVARIATIONRECORD_H
+#define OPENDNP3_GROUPVARIATIONRECORD_H
 
 #include <cstdint>
 

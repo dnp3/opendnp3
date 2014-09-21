@@ -19,8 +19,8 @@
  * to you under the terms of the License.
  */
 
-#ifndef __STATIC_LOAD_FUNCTIONS_H_
-#define __STATIC_LOAD_FUNCTIONS_H_
+#ifndef OPENDNP3_STATICLOADFUNCTIONS_H
+#define OPENDNP3_STATICLOADFUNCTIONS_H
 
 #include "opendnp3/outstation/StaticResponseConfig.h"
 #include "opendnp3/outstation/StaticLoader.h"
