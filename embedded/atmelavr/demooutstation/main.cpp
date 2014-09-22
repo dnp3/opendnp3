@@ -10,6 +10,7 @@
 
 #include <avr/io.h> 
 #include <avr/interrupt.h>
+#include <avr/sleep.h>
 
 #include "AVRExecutor.h"
 #include "AVRLinkParser.h"
@@ -48,6 +49,8 @@ DatabaseTemplate GetDatabaseTemplate()
 {
 	return DatabaseTemplate(NUM_BINARY,0,1);
 }
+
+void Sleep();
 
 int main()
 {			
@@ -104,7 +107,7 @@ int main()
 		exe.Run();
 		
 		// sleep until an interrupt occurs		
-		exe.Sleep();
+		Sleep();
 		
 		
 		if(loopCount == 100)
@@ -117,6 +120,28 @@ int main()
 	}
 
 	return 0;
+}
+
+void Sleep()
+{
+	set_sleep_mode(SLEEP_MODE_IDLE);
+  
+	sleep_enable();
+	
+	// things we might consider disabling
+	/*
+	power_adc_disable();
+	power_spi_disable();
+	power_timer0_disable();
+	power_timer2_disable();
+	power_twi_disable(); 
+	*/
+
+	/* Now enter sleep mode. */
+	sleep_mode();
+  
+	/* The program will continue from here after the timer timeout*/
+	sleep_disable(); /* First thing to do is disable sleep. */
 }
 
 void ToggleValuesEvery3Seconds(IExecutor* pExecutor, Database* pDatabase)

@@ -28,9 +28,7 @@ class AVRExecutor : public openpal::IExecutor
 	
 	void Init();
 	
-	void Tick();
-	
-	void Sleep();
+	void Tick();		
 	
 	protected:
 	
