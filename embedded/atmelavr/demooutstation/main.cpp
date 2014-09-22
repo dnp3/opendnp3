@@ -13,11 +13,10 @@
 
 #include "AVRExecutor.h"
 #include "AVRLinkParser.h"
-#include "AVRCommandHandler.h"
+#include "CommandHandlerImpl.h"
 #include "Macros.h"
 
 using namespace opendnp3;
-using namespace arduino;
 using namespace openpal;
 
 void ToggleValuesEvery3Seconds(IExecutor* pExecutor, Database* pDatabase);
@@ -45,6 +44,11 @@ OutstationConfig GetOutstationConfig()
 	return config;
 }
 
+DatabaseTemplate GetDatabaseTemplate()
+{
+	return DatabaseTemplate(NUM_BINARY,0,1);
+}
+
 int main()
 {			
 	cli();
@@ -56,7 +60,7 @@ int main()
 	TransportStack stack(root, &exe, MAX_APDU_SIZE, nullptr, LinkConfig(false, false));
 		
 	// 5 static binaries, 0 others
-	DynamicallyAllocatedDatabase staticBuffers(DatabaseTemplate(5,0,1));
+	DynamicallyAllocatedDatabase staticBuffers(GetDatabaseTemplate());
 	
 	// allow a max of 2 events
 	DynamicallyAllocatedEventBuffer eventBuffers(5);
@@ -64,7 +68,7 @@ int main()
 	
 	// Object that handles command (CROB / analog output) requests
 	// This example can toggle an LED on the Arduino board
-	AVRCommandHandler commandHandler;						
+	CommandHandlerImpl commandHandler;						
 						
 	Outstation outstation(GetOutstationConfig(), exe, root, stack.transport, commandHandler, DefaultOutstationApplication::Instance(), database, eventBuffers.GetFacade());
 		
@@ -86,7 +90,7 @@ int main()
 	// Set LED as output
 	SET(DDRB, BIT(7));	
 	
-	//ToggleValuesEvery3Seconds(&exe, &database);
+	ToggleValuesEvery3Seconds(&exe, &database);
 		
 	int loopCount = 0;		
 				

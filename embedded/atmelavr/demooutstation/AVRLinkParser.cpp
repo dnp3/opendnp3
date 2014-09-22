@@ -7,17 +7,13 @@
 #define BAUDRATE 9600
 #define BAUD_PRESCALLER (((F_CPU / (BAUDRATE * 16UL))) - 1)
 
+#include "Macros.h"
+
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-namespace arduino {
-	class AVRLinkParser;
-}
+AVRLinkParser* gLinkParser = nullptr;
 
-arduino::AVRLinkParser* gLinkParser = nullptr;
-
-namespace arduino {
-	
 AVRLinkParser::AVRLinkParser(openpal::LogRoot& root, openpal::IExecutor& exe, opendnp3::ILinkContext& context) : 		
 	isTransmitting(false),
 	pExecutor(&exe),	
@@ -34,14 +30,16 @@ void AVRLinkParser::Init()
 	// configure the baud rate
 	UBRR0H = (uint8_t)(BAUD_PRESCALLER>>8);
 	UBRR0L = (uint8_t)(BAUD_PRESCALLER);
-	
+			
 	// turn on rx / tx
-	UCSR0B = (1<<RXEN0)|(1<<TXEN0);
-	UCSR0C = ((1<<UCSZ00)|(1<<UCSZ01));
+	UCSR0B = BIT(RXEN0)| BIT(TXEN0);
 	
-	// enable rx & tx interrupts
-	UCSR0B |= (1 << RXCIE0);
-	UCSR0B |= (1 << TXCIE0);
+	// configure 8 databits
+	UCSR0C = BIT(UCSZ00) | BIT(UCSZ01);
+	
+	// enable rx ready ISR
+	UCSR0B |= BIT(RXCIE0);
+	// UCSR0B |= (1 << TXCIE0);
 }
 
 void AVRLinkParser::Receive(uint8_t byte)
@@ -59,21 +57,23 @@ bool AVRLinkParser::GetTx(uint8_t& txByte)
 void AVRLinkParser::CheckTx()
 {	
 	if(isTransmitting)
-	{		
+	{						
 		// transfer bytes into the ring buffer
-		while(!txBuffer.Full() && !transmission.Empty())
+		while(!txBuffer.Full() && !transmission.IsEmpty())
 		{			
 			uint8_t byte = transmission[0];
 			txBuffer.Put(byte);
-			transmission.Advance(1);			
-		}				
+			transmission.Advance(1);
+		}			
+		
+		// enable data register empty interrupt
+		UCSR0B |= BIT(UDRIE0);	
 		
 		if(transmission.IsEmpty() && txBuffer.Empty())
 		{
-			isTransmitting = false;			
-			auto callback = [this]() { pContext->OnTransmitResult(true); };
-			pExecutor->PostLambda(callback);
-		}
+			isTransmitting = false;						
+			pContext->OnTransmitResult(true);
+		}		
 	}	
 }
 
@@ -104,33 +104,32 @@ void AVRLinkParser::CheckRx()
 	
 void AVRLinkParser::BeginTransmit(const openpal::ReadOnlyBuffer& buffer, opendnp3::ILinkContext* pContext)
 {
-	if(!isTransmitting)
+	if(isTransmitting)
+	{
+		auto failure = [pContext](){ pContext->OnTransmitResult(false); };
+		pExecutor->PostLambda(failure);
+	}
+	else	
 	{
 		isTransmitting = true;
-		transmission = buffer;
-		this->CheckTx();
+		transmission = buffer;		
 		
-		// to kick off the transmit, we have to actually load the first value
-		// subsequent bytes are transmitted on the txReady interrupt handler
-		/*
-		uint8_t txByte;
-		if(txBuffer.Get(txByte))
-		{
-			UDR0 = txByte;
-		}
-		*/
+		this->CheckTx();													
 	}	
 }
 
-}
-
-ISR(USART0_TX_vect)
-{			
+ISR(USART0_UDRE_vect)
+{					
 	uint8_t txByte;
 	if(gLinkParser->GetTx(txByte))
 	{
 		UDR0 = txByte;
 	}	
+	else
+	{
+		// nothing left to transmit. Disable the interrupt
+		UCSR0B &= ~BIT(UDRIE0);
+	}
 }
 
 ISR(USART0_RX_vect)

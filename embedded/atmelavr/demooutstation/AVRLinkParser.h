@@ -15,8 +15,6 @@
 #include <openpal/container/RingBuffer.h>
 #include <openpal/executor/IExecutor.h>
 
-namespace arduino {
-
 class AVRLinkParser : public opendnp3::ILinkRouter
 {
 	public:
@@ -50,8 +48,6 @@ class AVRLinkParser : public opendnp3::ILinkRouter
 	opendnp3::ILinkContext* pContext;		
 	opendnp3::LinkLayerParser parser;
 };
-
-}
 
 #endif
 

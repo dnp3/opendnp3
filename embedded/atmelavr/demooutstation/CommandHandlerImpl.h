@@ -25,15 +25,12 @@
 
 #include "opendnp3/outstation/ICommandHandler.h"
 
-namespace arduino
-{
-
 /**
 * Mock ICommandHandler used for examples and demos
 */
-class AVRCommandHandler : public opendnp3::ICommandHandler, openpal::Uncopyable
+class CommandHandlerImpl : public opendnp3::ICommandHandler, openpal::Uncopyable
 {
-public:
+public:	
 
 	opendnp3::CommandStatus Select(const opendnp3::ControlRelayOutputBlock& command, uint16_t index) override final;
 	opendnp3::CommandStatus Operate(const opendnp3::ControlRelayOutputBlock& command, uint16_t index) override final;
@@ -52,11 +49,9 @@ public:
 
 
 	opendnp3::CommandStatus Select(const opendnp3::AnalogOutputDouble64& command, uint16_t index) override final;
-	opendnp3::CommandStatus Operate(const opendnp3::AnalogOutputDouble64& command, uint16_t index) override final;
+	opendnp3::CommandStatus Operate(const opendnp3::AnalogOutputDouble64& command, uint16_t index) override final;	
 	
 };
-
-}
 
 #endif
 
