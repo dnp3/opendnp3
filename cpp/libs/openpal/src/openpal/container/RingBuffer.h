@@ -27,12 +27,12 @@ namespace openpal
 {
 
 /** 
-	A byte oriented ring buffer
-	interrupt-safe (w/o disabling interrupts) if single producer
+	A byte-oriented ring buffer.
+	Interrupt-safe (w/o disabling interrupts) if single producer
 	and single consumer, one reading and one writing.
 	
-	N must be a power of 2.
-**/	
+	N must be a power of 2, and is enforced via static assert.
+*/	
 template <uint8_t N>
 class RingBuffer
 {		
