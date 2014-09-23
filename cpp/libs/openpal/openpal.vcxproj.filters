@@ -240,8 +240,5 @@
     <ClCompile Include="src\openpal\container\DynamicBuffer.cpp">
       <Filter>Source\container</Filter>
     </ClCompile>
-    <ClCompile Include="src\openpal\container\RingBuffer.cpp">
-      <Filter>Source\container</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

@@ -73,7 +73,6 @@
   <ItemGroup>
     <ClCompile Include="src\openpal\container\DynamicBuffer.cpp" />
     <ClCompile Include="src\openpal\container\ReadOnlyBuffer.cpp" />
-    <ClCompile Include="src\openpal\container\RingBuffer.cpp" />
     <ClCompile Include="src\openpal\container\WriteBuffer.cpp" />
     <ClCompile Include="src\openpal\executor\Erasure.cpp" />
     <ClCompile Include="src\openpal\executor\MonotonicTimestamp.cpp" />
