@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __TASK_STATUS_H_
-#define __TASK_STATUS_H_
+#ifndef OPENDNP3_TASKRESULT_H
+#define OPENDNP3_TASKRESULT_H
 
 namespace opendnp3
 {

@@ -19,9 +19,6 @@
     <ClCompile Include="src\LinkedListAdapterTestSuite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\StaticPriorityQueueTestSuite.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\RingBufferTestSuite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

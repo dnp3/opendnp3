@@ -219,18 +219,6 @@
     <ClInclude Include="src\opendnp3\link\LinkLayerConstants.h">
       <Filter>Header\link</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\link\LinkLayerRouter.h">
-      <Filter>Header\link</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\link\LinkRoute.h">
-      <Filter>Header\link</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\link\PhysicalLayerMonitor.h">
-      <Filter>Header\link</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\link\PhysicalLayerMonitorStates.h">
-      <Filter>Header\link</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\link\PriLinkLayerStates.h">
       <Filter>Header\link</Filter>
     </ClInclude>
@@ -381,9 +369,6 @@
     <ClInclude Include="src\opendnp3\outstation\SimpleCommandHandler.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\StaticallyAllocatedEventBuffer.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\StaticDataFacade.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
@@ -415,9 +400,6 @@
       <Filter>Header\transport</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\app\Range.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\app\IDNP3Serializer.h">
       <Filter>Header\app</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\app\MeasurementFactory.h">
@@ -488,9 +470,6 @@
     </ClInclude>
     <ClInclude Include="src\opendnp3\transport\TransportStack.h">
       <Filter>Header\transport</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\StaticallyAllocatedDatabase.h">
-      <Filter>Header\outstation</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\OutstationContext.h">
       <Filter>Header\outstation</Filter>
@@ -599,9 +578,6 @@
     </ClInclude>
     <ClInclude Include="src\opendnp3\app\ITransactable.h">
       <Filter>Header\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\Configure.h">
-      <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\ErrorCodes.h">
       <Filter>Header</Filter>
@@ -712,6 +688,24 @@
       <Filter>Header\app</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\app\PointIndexes.h">
+        <Filter>Header\app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\LayerInterfaces.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\Route.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\DynamicallyAllocatedDatabase.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\DynamicallyAllocatedEventBuffer.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="AppConstants.h">
+      <Filter>Header\app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\app\DNP3Serializer.h">
       <Filter>Header\app</Filter>
     </ClInclude>
   </ItemGroup>
@@ -923,18 +917,6 @@
     <ClCompile Include="src\opendnp3\link\LinkLayer.cpp">
       <Filter>Source\link</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\link\LinkLayerRouter.cpp">
-      <Filter>Source\link</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\link\LinkRoute.cpp">
-      <Filter>Source\link</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\link\PhysicalLayerMonitor.cpp">
-      <Filter>Source\link</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\link\PhysicalLayerMonitorStates.cpp">
-      <Filter>Source\link</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\link\PriLinkLayerStates.cpp">
       <Filter>Source\link</Filter>
     </ClCompile>
@@ -1138,6 +1120,12 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\app\PointIndexes.cpp">
       <Filter>Source\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\DynamicallyAllocatedDatabase.cpp">
+      <Filter>Source\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\DynamicallyAllocatedEventBuffer.cpp">
+      <Filter>Source\outstation</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

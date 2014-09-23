@@ -18,24 +18,24 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __OUTSTATION_H_
-#define __OUTSTATION_H_
+#ifndef OPENDNP3_OUTSTATION_H
+#define OPENDNP3_OUTSTATION_H
 
-#include <openpal/channel/LayerInterfaces.h>
+#include "opendnp3/LayerInterfaces.h"
 
 #include "opendnp3/outstation/OutstationContext.h"
 
 namespace opendnp3
 {
 
-class Outstation : public openpal::IUpperLayer
+class Outstation : public IUpperLayer
 {
 	public:
 
 	Outstation(	const OutstationConfig& config,
 					openpal::IExecutor& executor, 
 					openpal::LogRoot& root, 
-					openpal::ILowerLayer& lower,
+					ILowerLayer& lower,
 					ICommandHandler& commandHandler,
 					IOutstationApplication& application,
 					Database& database, 

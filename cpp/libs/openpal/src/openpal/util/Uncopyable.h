@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __UNCOPYABLE_H_
-#define __UNCOPYABLE_H_
+#ifndef OPENPAL_UNCOPYABLE_H
+#define OPENPAL_UNCOPYABLE_H
 
 namespace openpal
 {

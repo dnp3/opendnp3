@@ -20,7 +20,6 @@
  */
 #include <catch.hpp>
 
-#include <openpal/container/StaticBuffer.h>
 #include <openpal/container/RingBuffer.h>
 
 using namespace openpal;
@@ -29,15 +28,16 @@ using namespace openpal;
 
 TEST_CASE(SUITE("ReadAndWriteModulo2"))
 {	
-	RingBuffer<3> rb;
+	RingBuffer rb(3);
 
-	StaticBuffer<2> buffer;
+	uint8_t buffer[2];
+	
 
 	for (int i = 0; i < 10; ++i)
 	{
 		rb.Put(1);
 		rb.Put(2);
-		auto wb = buffer.GetWriteBuffer();
+		auto wb = WriteBuffer(buffer, 2);
 		auto num = rb.Read(wb);
 		REQUIRE(num == 2);
 		REQUIRE(buffer[0] == 1);
@@ -47,9 +47,9 @@ TEST_CASE(SUITE("ReadAndWriteModulo2"))
 
 TEST_CASE(SUITE("WriteOverflowDropsOldBytes"))
 {
-	RingBuffer<3> rb;
+	RingBuffer rb(3);
 
-	StaticBuffer<3> buffer;
+	uint8_t buffer[3];
 
 	for (int i = 0; i < 10; ++i)
 	{
@@ -59,7 +59,7 @@ TEST_CASE(SUITE("WriteOverflowDropsOldBytes"))
 		rb.Put(3);
 		rb.Put(4);
 
-		auto wb = buffer.GetWriteBuffer();
+		auto wb = WriteBuffer(buffer, 3);
 		auto num = rb.Read(wb);
 
 		REQUIRE(num == 3);

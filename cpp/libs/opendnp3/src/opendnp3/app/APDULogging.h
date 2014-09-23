@@ -19,8 +19,8 @@
 * to you under the terms of the License.
 */
 
-#ifndef __APDU_LOGGING_H_
-#define __APDU_LOGGING_H_
+#ifndef OPENDNP3_APDULOGGING_H
+#define OPENDNP3_APDULOGGING_H
 
 #include <openpal/logging/LogFilters.h>
 #include <openpal/container/ReadOnlyBuffer.h>

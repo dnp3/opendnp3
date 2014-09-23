@@ -23,62 +23,63 @@
 namespace opendnp3
 {
 
-SimpleCommandHandler::SimpleCommandHandler(CommandStatus status_) : status(status_), numInvocations(0)
+SimpleCommandHandler::SimpleCommandHandler(CommandStatus status_) : status(status_), numOperate(0), numSelect(0)
 {
 
 }
 
-CommandStatus SimpleCommandHandler::Supports(const ControlRelayOutputBlock& arCommand, uint16_t aIndex)
+CommandStatus SimpleCommandHandler::Select(const ControlRelayOutputBlock& arCommand, uint16_t aIndex)
 {
-	++numInvocations;
+	++numSelect;
 	return status;
 }
-CommandStatus SimpleCommandHandler::Perform(const ControlRelayOutputBlock& arCommand, uint16_t aIndex)
+CommandStatus SimpleCommandHandler::Operate(const ControlRelayOutputBlock& arCommand, uint16_t aIndex)
 {
-	++numInvocations;
-	return status;
-}
-
-CommandStatus SimpleCommandHandler::Supports(const AnalogOutputInt16& arCommand, uint16_t aIndex)
-{
-	++numInvocations;
-	return status;
-}
-CommandStatus SimpleCommandHandler::Perform(const AnalogOutputInt16& arCommand, uint16_t aIndex)
-{
-	++numInvocations;
+	++numOperate;
 	return status;
 }
 
-CommandStatus SimpleCommandHandler::Supports(const AnalogOutputInt32& arCommand, uint16_t aIndex)
+CommandStatus SimpleCommandHandler::Select(const AnalogOutputInt16& arCommand, uint16_t aIndex)
 {
+	++numSelect;
 	return status;
 }
-CommandStatus SimpleCommandHandler::Perform(const AnalogOutputInt32& arCommand, uint16_t aIndex)
+CommandStatus SimpleCommandHandler::Operate(const AnalogOutputInt16& arCommand, uint16_t aIndex)
 {
-	++numInvocations;
-	return status;
-}
-
-CommandStatus SimpleCommandHandler::Supports(const AnalogOutputFloat32& arCommand, uint16_t aIndex)
-{
-	++numInvocations;
-	return status;
-}
-CommandStatus SimpleCommandHandler::Perform(const AnalogOutputFloat32& arCommand, uint16_t aIndex)
-{
-	++numInvocations;
+	++numOperate;
 	return status;
 }
 
-CommandStatus SimpleCommandHandler::Supports(const AnalogOutputDouble64& arCommand, uint16_t aIndex)
+CommandStatus SimpleCommandHandler::Select(const AnalogOutputInt32& arCommand, uint16_t aIndex)
 {
-	++numInvocations;
+	++numSelect;
 	return status;
 }
-CommandStatus SimpleCommandHandler::Perform(const AnalogOutputDouble64& arCommand, uint16_t aIndex)
+CommandStatus SimpleCommandHandler::Operate(const AnalogOutputInt32& arCommand, uint16_t aIndex)
 {
-	++numInvocations;
+	++numOperate;
+	return status;
+}
+
+CommandStatus SimpleCommandHandler::Select(const AnalogOutputFloat32& arCommand, uint16_t aIndex)
+{
+	++numSelect;
+	return status;
+}
+CommandStatus SimpleCommandHandler::Operate(const AnalogOutputFloat32& arCommand, uint16_t aIndex)
+{
+	++numOperate;
+	return status;
+}
+
+CommandStatus SimpleCommandHandler::Select(const AnalogOutputDouble64& arCommand, uint16_t aIndex)
+{
+	++numSelect;
+	return status;
+}
+CommandStatus SimpleCommandHandler::Operate(const AnalogOutputDouble64& arCommand, uint16_t aIndex)
+{
+	++numOperate;
 	return status;
 }
 

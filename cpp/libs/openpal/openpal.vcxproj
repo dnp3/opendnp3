@@ -22,9 +22,9 @@
     <ClInclude Include="src\openpal\channel\ChannelStatistics.h" />
     <ClInclude Include="src\openpal\channel\IPhysicalLayer.h" />
     <ClInclude Include="src\openpal\channel\IPhysicalLayerCallbacks.h" />
-    <ClInclude Include="src\openpal\channel\LayerInterfaces.h" />
     <ClInclude Include="src\openpal\Configure.h" />
     <ClInclude Include="src\openpal\container\DynamicArray.h" />
+    <ClInclude Include="src\openpal\container\DynamicBuffer.h" />
     <ClInclude Include="src\openpal\container\HasSize.h" />
     <ClInclude Include="src\openpal\container\Indexable.h" />
     <ClInclude Include="src\openpal\container\IndexableIterator.h" />
@@ -32,17 +32,13 @@
     <ClInclude Include="src\openpal\container\Pair.h" />
     <ClInclude Include="src\openpal\container\ReadOnlyBuffer.h" />
     <ClInclude Include="src\openpal\container\RingBuffer.h" />
-    <ClInclude Include="src\openpal\container\RingBufferAdapter.h" />
     <ClInclude Include="src\openpal\container\Settable.h" />
     <ClInclude Include="src\openpal\container\StackAdapter.h" />
     <ClInclude Include="src\openpal\container\StaticArray.h" />
-    <ClInclude Include="src\openpal\container\StaticBuffer.h" />
     <ClInclude Include="src\openpal\container\StaticLinkedList.h" />
-    <ClInclude Include="src\openpal\container\StaticPriorityQueue.h" />
-    <ClInclude Include="src\openpal\container\StaticQueue.h" />
+    <ClInclude Include="src\openpal\container\Queue.h" />
     <ClInclude Include="src\openpal\container\WriteBuffer.h" />
     <ClInclude Include="src\openpal\executor\Erasure.h" />
-    <ClInclude Include="src\openpal\executor\Action1.h" />
     <ClInclude Include="src\openpal\executor\Function0.h" />
     <ClInclude Include="src\openpal\executor\Function1.h" />
     <ClInclude Include="src\openpal\executor\IExecutor.h" />
@@ -64,7 +60,7 @@
     <ClInclude Include="src\openpal\logging\StringFormatting.h" />
     <ClInclude Include="src\openpal\serialization\ByteSerialization.h" />
     <ClInclude Include="src\openpal\serialization\FloatSerializationTemplates.h" />
-    <ClInclude Include="src\openpal\serialization\ISerializer.h" />
+    <ClInclude Include="src\openpal\serialization\Serializer.h" />
     <ClInclude Include="src\openpal\serialization\Serialization.h" />
     <ClInclude Include="src\openpal\serialization\SerializationTemplatesBE.h" />
     <ClInclude Include="src\openpal\serialization\SerializationTemplatesLE.h" />
@@ -75,8 +71,9 @@
     <ClInclude Include="src\openpal\util\Uncopyable.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\openpal\container\DynamicBuffer.cpp" />
     <ClCompile Include="src\openpal\container\ReadOnlyBuffer.cpp" />
-    <ClCompile Include="src\openpal\container\RingBufferAdapter.cpp" />
+    <ClCompile Include="src\openpal\container\RingBuffer.cpp" />
     <ClCompile Include="src\openpal\container\WriteBuffer.cpp" />
     <ClCompile Include="src\openpal\executor\Erasure.cpp" />
     <ClCompile Include="src\openpal\executor\MonotonicTimestamp.cpp" />

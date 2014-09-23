@@ -40,13 +40,13 @@ namespace opendnp3
 		switch (enumeration)
 		{
 		case(EventBinaryResponse::Group2Var1) :
-			return &EventWriteFunctions::WriteFixedSize<Group2Var1Serializer>;
+			return &EventWriteFunctions::WriteFixedSize<Group2Var1>;
 		case(EventBinaryResponse::Group2Var2) :
-			return &EventWriteFunctions::WriteFixedSize<Group2Var2Serializer>;
+			return &EventWriteFunctions::WriteFixedSize<Group2Var2>;
 		case(EventBinaryResponse::Group2Var3) :
-			return &EventWriteFunctions::WriteFixedSizeWithCTO<Group2Var3Serializer, Group51Var1>;
+			return &EventWriteFunctions::WriteFixedSizeWithCTO<Group2Var3, Group51Var1>;
 		default:
-			return &EventWriteFunctions::WriteFixedSize<Group2Var1Serializer>;
+			return &EventWriteFunctions::WriteFixedSize<Group2Var1>;
 		}
 	}
 
@@ -56,13 +56,13 @@ namespace opendnp3
 		switch (enumeration)
 		{
 		case(EventDoubleBinaryResponse::Group4Var1) :
-			return &EventWriteFunctions::WriteFixedSize<Group4Var1Serializer>;
+			return &EventWriteFunctions::WriteFixedSize<Group4Var1>;
 		case(EventDoubleBinaryResponse::Group4Var2) :
-			return &EventWriteFunctions::WriteFixedSize<Group4Var2Serializer>;
+			return &EventWriteFunctions::WriteFixedSize<Group4Var2>;
 		case(EventDoubleBinaryResponse::Group4Var3) :
-			return &EventWriteFunctions::WriteFixedSizeWithCTO<Group4Var3Serializer, Group51Var1>;
+			return &EventWriteFunctions::WriteFixedSizeWithCTO<Group4Var3, Group51Var1>;
 		default:
-			return &EventWriteFunctions::WriteFixedSize<Group4Var1Serializer>;
+			return &EventWriteFunctions::WriteFixedSize<Group4Var1>;
 		}
 	}
 
@@ -71,15 +71,15 @@ namespace opendnp3
 		switch (enumeration)
 		{
 		case(EventCounterResponse::Group22Var1) :
-				return &EventWriteFunctions::WriteFixedSize<Group22Var1Serializer>;
+				return &EventWriteFunctions::WriteFixedSize<Group22Var1>;
 			case(EventCounterResponse::Group22Var2) :
-				return &EventWriteFunctions::WriteFixedSize<Group22Var2Serializer>;
+				return &EventWriteFunctions::WriteFixedSize<Group22Var2>;
 			case(EventCounterResponse::Group22Var5) :
-				return &EventWriteFunctions::WriteFixedSize<Group22Var5Serializer>;
+				return &EventWriteFunctions::WriteFixedSize<Group22Var5>;
 			case(EventCounterResponse::Group22Var6) :
-				return &EventWriteFunctions::WriteFixedSize<Group22Var6Serializer>;
+				return &EventWriteFunctions::WriteFixedSize<Group22Var6>;
 			default:
-				return &EventWriteFunctions::WriteFixedSize<Group22Var1Serializer>;
+				return &EventWriteFunctions::WriteFixedSize<Group22Var1>;
 		}
 	}
 
@@ -88,15 +88,15 @@ namespace opendnp3
 		switch (enumeration)
 		{
 			case(EventFrozenCounterResponse::Group23Var1) :
-				return &EventWriteFunctions::WriteFixedSize<Group23Var1Serializer>;
+				return &EventWriteFunctions::WriteFixedSize<Group23Var1>;
 			case(EventFrozenCounterResponse::Group23Var2) :
-				return &EventWriteFunctions::WriteFixedSize<Group23Var2Serializer>;
+				return &EventWriteFunctions::WriteFixedSize<Group23Var2>;
 			case(EventFrozenCounterResponse::Group23Var5) :
-				return &EventWriteFunctions::WriteFixedSize<Group23Var5Serializer>;
+				return &EventWriteFunctions::WriteFixedSize<Group23Var5>;
 			case(EventFrozenCounterResponse::Group23Var6) :
-				return &EventWriteFunctions::WriteFixedSize<Group23Var6Serializer>;
+				return &EventWriteFunctions::WriteFixedSize<Group23Var6>;
 			default:
-				return &EventWriteFunctions::WriteFixedSize<Group23Var1Serializer>;
+				return &EventWriteFunctions::WriteFixedSize<Group23Var1>;
 		}
 	}
 
@@ -105,23 +105,23 @@ namespace opendnp3
 		switch (enumeration)
 		{
 			case(EventAnalogResponse::Group32Var1) :
-				return &EventWriteFunctions::WriteFixedSize<Group32Var1Serializer>;
+				return &EventWriteFunctions::WriteFixedSize<Group32Var1>;
 			case(EventAnalogResponse::Group32Var2) :
-				return &EventWriteFunctions::WriteFixedSize<Group32Var2Serializer>;
+				return &EventWriteFunctions::WriteFixedSize<Group32Var2>;
 			case(EventAnalogResponse::Group32Var3) :
-				return &EventWriteFunctions::WriteFixedSize<Group32Var3Serializer>;
+				return &EventWriteFunctions::WriteFixedSize<Group32Var3>;
 			case(EventAnalogResponse::Group32Var4) :
-				return &EventWriteFunctions::WriteFixedSize<Group32Var4Serializer>;
+				return &EventWriteFunctions::WriteFixedSize<Group32Var4>;
 			case(EventAnalogResponse::Group32Var5) :
-				return &EventWriteFunctions::WriteFixedSize<Group32Var5Serializer>;
+				return &EventWriteFunctions::WriteFixedSize<Group32Var5>;
 			case(EventAnalogResponse::Group32Var6) :
-				return &EventWriteFunctions::WriteFixedSize<Group32Var6Serializer>;
+				return &EventWriteFunctions::WriteFixedSize<Group32Var6>;
 			case(EventAnalogResponse::Group32Var7) :
-				return &EventWriteFunctions::WriteFixedSize<Group32Var7Serializer>;
+				return &EventWriteFunctions::WriteFixedSize<Group32Var7>;
 			case(EventAnalogResponse::Group32Var8) :
-				return &EventWriteFunctions::WriteFixedSize<Group32Var8Serializer>;
+				return &EventWriteFunctions::WriteFixedSize<Group32Var8>;
 			default:
-				return &EventWriteFunctions::WriteFixedSize<Group32Var1Serializer>;
+				return &EventWriteFunctions::WriteFixedSize<Group32Var1>;
 		}
 	}
 
@@ -130,11 +130,11 @@ namespace opendnp3
 		switch (enumeration)
 		{
 			case(EventBinaryOutputStatusResponse::Group11Var1) :
-				return &EventWriteFunctions::WriteFixedSize<Group11Var1Serializer>;
+				return &EventWriteFunctions::WriteFixedSize<Group11Var1>;
 			case(EventBinaryOutputStatusResponse::Group11Var2) :
-				return &EventWriteFunctions::WriteFixedSize<Group11Var2Serializer>;
+				return &EventWriteFunctions::WriteFixedSize<Group11Var2>;
 			default:
-				return &EventWriteFunctions::WriteFixedSize<Group11Var1Serializer>;
+				return &EventWriteFunctions::WriteFixedSize<Group11Var1>;
 		}
 	}
 
@@ -143,23 +143,23 @@ namespace opendnp3
 		switch (enumeration)
 		{
 		case(EventAnalogOutputStatusResponse::Group42Var1) :
-			return &EventWriteFunctions::WriteFixedSize<Group42Var1Serializer>;
+			return &EventWriteFunctions::WriteFixedSize<Group42Var1>;
 		case(EventAnalogOutputStatusResponse::Group42Var2) :
-			return &EventWriteFunctions::WriteFixedSize<Group42Var2Serializer>;
+			return &EventWriteFunctions::WriteFixedSize<Group42Var2>;
 		case(EventAnalogOutputStatusResponse::Group42Var3) :
-			return &EventWriteFunctions::WriteFixedSize<Group42Var3Serializer>;
+			return &EventWriteFunctions::WriteFixedSize<Group42Var3>;
 		case(EventAnalogOutputStatusResponse::Group42Var4) :
-			return &EventWriteFunctions::WriteFixedSize<Group42Var4Serializer>;
+			return &EventWriteFunctions::WriteFixedSize<Group42Var4>;
 		case(EventAnalogOutputStatusResponse::Group42Var5) :
-			return &EventWriteFunctions::WriteFixedSize<Group42Var5Serializer>;
+			return &EventWriteFunctions::WriteFixedSize<Group42Var5>;
 		case(EventAnalogOutputStatusResponse::Group42Var6) :
-			return &EventWriteFunctions::WriteFixedSize<Group42Var6Serializer>;
+			return &EventWriteFunctions::WriteFixedSize<Group42Var6>;
 		case(EventAnalogOutputStatusResponse::Group42Var7) :
-			return &EventWriteFunctions::WriteFixedSize<Group42Var7Serializer>;
+			return &EventWriteFunctions::WriteFixedSize<Group42Var7>;
 		case(EventAnalogOutputStatusResponse::Group42Var8) :
-			return &EventWriteFunctions::WriteFixedSize<Group42Var8Serializer>;
+			return &EventWriteFunctions::WriteFixedSize<Group42Var8>;
 		default:
-			return &EventWriteFunctions::WriteFixedSize<Group42Var1Serializer>;
+			return &EventWriteFunctions::WriteFixedSize<Group42Var1>;
 		}
 	}
 	

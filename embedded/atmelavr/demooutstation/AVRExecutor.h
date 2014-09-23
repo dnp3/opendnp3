@@ -2,7 +2,7 @@
 #define __AVR_EXECUTOR_H_
 
 #include <openpal/executor/IExecutor.h>
-#include <openpal/container/StaticQueue.h>
+#include <openpal/container/Queue.h>
 #include <openpal/container/StaticArray.h>
 #include <openpal/container/StaticLinkedList.h>
 
@@ -14,7 +14,7 @@ class AVRExecutor : public openpal::IExecutor
 	
 	public:	
 	
-	AVRExecutor();
+	AVRExecutor(uint8_t maxQueueSize, uint8_t maxtimers);
 	
 	virtual openpal::MonotonicTimestamp GetTime() override final;
 	
@@ -28,9 +28,7 @@ class AVRExecutor : public openpal::IExecutor
 	
 	void Init();
 	
-	void Tick();
-	
-	void Sleep();
+	void Tick();		
 	
 	protected:
 	
@@ -45,9 +43,9 @@ class AVRExecutor : public openpal::IExecutor
 	int64_t ticks;	
 	
 	openpal::StaticArray<AVRTimer, uint8_t, 5> timers;
-	openpal::StaticQueue<openpal::Action0, uint8_t, 5> work;
+	openpal::Queue<openpal::Action0, uint8_t> work;
 	
-	openpal::StaticQueue<AVRTimer*, uint8_t, 5> idleTimers;
+	openpal::Queue<AVRTimer*, uint8_t> idleTimers;
 	openpal::StaticLinkedList<AVRTimer*, uint8_t, 5> activeTimers;
 };
 

@@ -9,6 +9,12 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
+    <Filter Include="Header Files\impl">
+      <UniqueIdentifier>{e0ef7e87-2c04-4b68-aa89-52eb42828dec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\impl">
+      <UniqueIdentifier>{fe63b2c7-5407-468d-81db-c477a20cc100}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\asiodnp3\DestructorHook.cpp">
@@ -41,13 +47,19 @@
     <ClCompile Include="src\asiodnp3\MultidropTaskLock.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\asiodnp3\DynamicallyAllocatedDatabase.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\asiodnp3\DynamicallyAllocatedEventBuffer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\asiodnp3\DefaultMasterApplication.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\asiodnp3\impl\LinkLayerRouter.cpp">
+      <Filter>Source Files\impl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\asiodnp3\impl\PhysicalLayerMonitor.cpp">
+      <Filter>Source Files\impl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\asiodnp3\impl\PhysicalLayerMonitorStates.cpp">
+      <Filter>Source Files\impl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\asiodnp3\BlockingCommandCallback.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -97,13 +109,19 @@
     <ClInclude Include="src\asiodnp3\MultidropTaskLock.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\asiodnp3\DynamicallyAllocatedDatabase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\asiodnp3\DynamicallyAllocatedEventBuffer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\asiodnp3\DefaultMasterApplication.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\asiodnp3\impl\LinkLayerRouter.h">
+      <Filter>Header Files\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\asiodnp3\impl\PhysicalLayerMonitor.h">
+      <Filter>Header Files\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\asiodnp3\impl\PhysicalLayerMonitorStates.h">
+      <Filter>Header Files\impl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\asiodnp3\BlockingCommandCallback.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

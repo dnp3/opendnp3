@@ -18,13 +18,13 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __APDU_PARSER_H_
-#define __APDU_PARSER_H_
+#ifndef OPENDNP3_APDUPARSER_H
+#define OPENDNP3_APDUPARSER_H
 
 #include <openpal/container/ReadOnlyBuffer.h>
 #include <openpal/logging/Logger.h>
 #include <openpal/logging/LogMacros.h>
-#include <openpal/serialization/ISerializer.h>
+#include <openpal/serialization/Serializer.h>
 #include <openpal/serialization/Serialization.h>
 
 #include <openpal/util/Uncopyable.h>
@@ -58,8 +58,6 @@
 #include "opendnp3/objects/Group51.h"
 #include "opendnp3/objects/Group52.h"
 
-#include "opendnp3/Configure.h"
-
 namespace opendnp3
 {
 
@@ -76,24 +74,15 @@ public:
 			return Context();
 		}
 
-		Context(bool expectContents_ = true, int32_t logFilters_ = flags::APP_OBJECT_RX, uint32_t aMaxObjects = sizes::MAX_OBJECTS_PER_APDU) :
+		Context(bool expectContents_ = true, int32_t logFilters_ = flags::APP_OBJECT_RX) :
 			expectContents(expectContents_),
-			logFilters(logFilters_),
-			count(0),
-			MAX_OBJECTS(aMaxObjects)
+			logFilters(logFilters_)			
 		{}
 
 		inline bool ExpectsContents() const
 		{
 			return expectContents;
-		}
-
-		// return true if the count exceeds the max count
-		inline bool AddObjectCount(uint32_t aCount)
-		{
-			count += aCount;
-			return count > MAX_OBJECTS;
-		}
+		}		
 
 		inline int32_t Filters() const
 		{
@@ -104,9 +93,7 @@ public:
 
 
 		const bool expectContents;
-		int32_t logFilters;
-		uint32_t count;
-		const uint32_t MAX_OBJECTS;
+		int32_t logFilters;		
 	};
 
 	enum class Result
@@ -188,7 +175,7 @@ private:
 	    IAPDUHandler* pHandler);
 
 	template <class Target>
-	static Result ParseRangeFixedSize(const HeaderRecord& record, openpal::ISerializer<Target>& serializer, openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, const Range& range, IAPDUHandler* pHandler);
+	static Result ParseRangeFixedSize(const HeaderRecord& record, const openpal::Serializer<Target>& serializer, openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, const Range& range, IAPDUHandler* pHandler);
 
 	template <class Descriptor>
 	static Result ParseCountOf(openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, const HeaderRecord& record, uint32_t count, IAPDUHandler* pHandler);
@@ -199,7 +186,7 @@ private:
 	    openpal::ReadOnlyBuffer& buffer,
 	    openpal::Logger* pLogger,
 	    uint32_t count,
-	    openpal::ISerializer<Target>& serializer,
+	    const openpal::Serializer<Target>& serializer,
 	    IAPDUHandler* pHandler);
 
 	static IndexedValue<Binary, uint16_t> BoolToBinary(const IndexedValue<bool, uint16_t>& v);
@@ -405,68 +392,68 @@ APDUParser::Result APDUParser::ParseObjectsWithIndexPrefix(openpal::ReadOnlyBuff
 	switch (record.enumeration)
 	{
 	case(GroupVariation::Group2Var1):
-		return ParseCountFixedSizeWithIndex<Binary, IndexType>(record, buffer, pLogger, count, Group2Var1Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<Binary, IndexType>(record, buffer, pLogger, count, Group2Var1::Inst(), pHandler);
 	case(GroupVariation::Group2Var2) :
-		return ParseCountFixedSizeWithIndex<Binary, IndexType>(record, buffer, pLogger, count, Group2Var2Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<Binary, IndexType>(record, buffer, pLogger, count, Group2Var2::Inst(), pHandler);
 	case(GroupVariation::Group2Var3) :
-		return ParseCountFixedSizeWithIndex<Binary, IndexType>(record, buffer, pLogger, count, Group2Var3Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<Binary, IndexType>(record, buffer, pLogger, count, Group2Var3::Inst(), pHandler);
 
 	case(GroupVariation::Group4Var1) :
-		return ParseCountFixedSizeWithIndex<DoubleBitBinary, IndexType>(record, buffer, pLogger, count, Group4Var1Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<DoubleBitBinary, IndexType>(record, buffer, pLogger, count, Group4Var1::Inst(), pHandler);
 	case(GroupVariation::Group4Var2) :
-		return ParseCountFixedSizeWithIndex<DoubleBitBinary, IndexType>(record, buffer, pLogger, count, Group4Var2Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<DoubleBitBinary, IndexType>(record, buffer, pLogger, count, Group4Var2::Inst(), pHandler);
 	case(GroupVariation::Group4Var3) :
-		return ParseCountFixedSizeWithIndex<DoubleBitBinary, IndexType>(record, buffer, pLogger, count, Group4Var3Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<DoubleBitBinary, IndexType>(record, buffer, pLogger, count, Group4Var3::Inst(), pHandler);
 
 	case(GroupVariation::Group11Var1):
-		return ParseCountFixedSizeWithIndex<BinaryOutputStatus, IndexType>(record, buffer, pLogger, count, Group11Var1Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<BinaryOutputStatus, IndexType>(record, buffer, pLogger, count, Group11Var1::Inst(), pHandler);
 		
 	case(GroupVariation::Group12Var1) :
-		return ParseCountFixedSizeWithIndex<ControlRelayOutputBlock, IndexType>(record, buffer, pLogger, count, Group12Var1Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<ControlRelayOutputBlock, IndexType>(record, buffer, pLogger, count, Group12Var1::Inst(), pHandler);
 
 	case(GroupVariation::Group22Var1) :
-		return ParseCountFixedSizeWithIndex<Counter, IndexType>(record, buffer, pLogger, count, Group22Var1Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<Counter, IndexType>(record, buffer, pLogger, count, Group22Var1::Inst(), pHandler);
 	case(GroupVariation::Group22Var2) :
-		return ParseCountFixedSizeWithIndex<Counter, IndexType>(record, buffer, pLogger, count, Group22Var2Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<Counter, IndexType>(record, buffer, pLogger, count, Group22Var2::Inst(), pHandler);
 	case(GroupVariation::Group22Var5) :
-		return ParseCountFixedSizeWithIndex<Counter, IndexType>(record, buffer, pLogger, count, Group22Var5Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<Counter, IndexType>(record, buffer, pLogger, count, Group22Var5::Inst(), pHandler);
 	case(GroupVariation::Group22Var6) :
-		return ParseCountFixedSizeWithIndex<Counter, IndexType>(record, buffer, pLogger, count, Group22Var6Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<Counter, IndexType>(record, buffer, pLogger, count, Group22Var6::Inst(), pHandler);
 
 	case(GroupVariation::Group23Var1) :
-		return ParseCountFixedSizeWithIndex<Counter, IndexType>(record, buffer, pLogger, count, Group22Var1Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<Counter, IndexType>(record, buffer, pLogger, count, Group22Var1::Inst(), pHandler);
 	case(GroupVariation::Group23Var2) :
-		return ParseCountFixedSizeWithIndex<Counter, IndexType>(record, buffer, pLogger, count, Group22Var2Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<Counter, IndexType>(record, buffer, pLogger, count, Group22Var2::Inst(), pHandler);
 	case(GroupVariation::Group23Var5) :
-		return ParseCountFixedSizeWithIndex<Counter, IndexType>(record, buffer, pLogger, count, Group22Var5Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<Counter, IndexType>(record, buffer, pLogger, count, Group22Var5::Inst(), pHandler);
 	case(GroupVariation::Group23Var6) :
-		return ParseCountFixedSizeWithIndex<Counter, IndexType>(record, buffer, pLogger, count, Group22Var6Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<Counter, IndexType>(record, buffer, pLogger, count, Group22Var6::Inst(), pHandler);
 
 	case(GroupVariation::Group32Var1) :
-		return ParseCountFixedSizeWithIndex<Analog, IndexType>(record, buffer, pLogger, count, Group32Var1Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<Analog, IndexType>(record, buffer, pLogger, count, Group32Var1::Inst(), pHandler);
 	case(GroupVariation::Group32Var2) :
-		return ParseCountFixedSizeWithIndex<Analog, IndexType>(record, buffer, pLogger, count, Group32Var2Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<Analog, IndexType>(record, buffer, pLogger, count, Group32Var2::Inst(), pHandler);
 	case(GroupVariation::Group32Var3) :
-		return ParseCountFixedSizeWithIndex<Analog, IndexType>(record, buffer, pLogger, count, Group32Var3Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<Analog, IndexType>(record, buffer, pLogger, count, Group32Var3::Inst(), pHandler);
 	case(GroupVariation::Group32Var4) :
-		return ParseCountFixedSizeWithIndex<Analog, IndexType>(record, buffer, pLogger, count, Group32Var4Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<Analog, IndexType>(record, buffer, pLogger, count, Group32Var4::Inst(), pHandler);
 	case(GroupVariation::Group32Var5) :
-		return ParseCountFixedSizeWithIndex<Analog, IndexType>(record, buffer, pLogger, count, Group32Var5Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<Analog, IndexType>(record, buffer, pLogger, count, Group32Var5::Inst(), pHandler);
 	case(GroupVariation::Group32Var6) :
-		return ParseCountFixedSizeWithIndex<Analog, IndexType>(record, buffer, pLogger, count, Group32Var6Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<Analog, IndexType>(record, buffer, pLogger, count, Group32Var6::Inst(), pHandler);
 	case(GroupVariation::Group32Var7) :
-		return ParseCountFixedSizeWithIndex<Analog, IndexType>(record, buffer, pLogger, count, Group32Var7Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<Analog, IndexType>(record, buffer, pLogger, count, Group32Var7::Inst(), pHandler);
 	case(GroupVariation::Group32Var8) :
-		return ParseCountFixedSizeWithIndex<Analog, IndexType>(record, buffer, pLogger, count, Group32Var8Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<Analog, IndexType>(record, buffer, pLogger, count, Group32Var8::Inst(), pHandler);
 
 	case(GroupVariation::Group41Var1) :
-		return ParseCountFixedSizeWithIndex<AnalogOutputInt32, IndexType>(record, buffer, pLogger, count, Group41Var1Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<AnalogOutputInt32, IndexType>(record, buffer, pLogger, count, Group41Var1::Inst(), pHandler);
 	case(GroupVariation::Group41Var2) :
-		return ParseCountFixedSizeWithIndex<AnalogOutputInt16, IndexType>(record, buffer, pLogger, count, Group41Var2Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<AnalogOutputInt16, IndexType>(record, buffer, pLogger, count, Group41Var2::Inst(), pHandler);
 	case(GroupVariation::Group41Var3) :
-		return ParseCountFixedSizeWithIndex<AnalogOutputFloat32, IndexType>(record, buffer, pLogger, count, Group41Var3Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<AnalogOutputFloat32, IndexType>(record, buffer, pLogger, count, Group41Var3::Inst(), pHandler);
 	case(GroupVariation::Group41Var4) :
-		return ParseCountFixedSizeWithIndex<AnalogOutputDouble64, IndexType>(record, buffer, pLogger, count, Group41Var4Serializer::Inst(), pHandler);
+		return ParseCountFixedSizeWithIndex<AnalogOutputDouble64, IndexType>(record, buffer, pLogger, count, Group41Var4::Inst(), pHandler);
 
 	case(GroupVariation::Group111AnyVar) :
 		return ParseIndexPrefixedOctetData<IndexType>(buffer, pLogger, record, count, pHandler);
@@ -499,19 +486,10 @@ APDUParser::Result APDUParser::ParseRange(openpal::ReadOnlyBuffer& buffer, openp
 			return Result::BAD_START_STOP;
 		}
 		else
-		{
-			RangeType count = static_cast<RangeType>(stop) - static_cast<RangeType>(start) + 1;
-			if (context.AddObjectCount(count))
-			{
-				SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_TOO_MANY_OBJECTS_IN_APDU, "too many objects in APDU");
-				return Result::UNREASONABLE_OBJECT_COUNT;
-			}
-			else
-			{
-				range.start = start;
-				range.stop = stop;
-				return Result::OK;
-			}
+		{					
+			range.start = start;
+			range.stop = stop;
+			return Result::OK;			
 		}
 	}
 }
@@ -533,22 +511,14 @@ APDUParser::Result APDUParser::ParseCount(openpal::ReadOnlyBuffer& buffer, openp
 			return Result::COUNT_OF_ZERO;
 		}
 		else
-		{
-			if (context.AddObjectCount(count))
-			{
-				SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_TOO_MANY_OBJECTS_IN_APDU, "too many objects in APDU");
-				return Result::UNREASONABLE_OBJECT_COUNT;
-			}
-			else
-			{
-				return Result::OK;
-			}
+		{			
+			return Result::OK;			
 		}
 	}
 }
 
 template <class Target>
-APDUParser::Result APDUParser::ParseRangeFixedSize(const HeaderRecord& record, openpal::ISerializer<Target>& serializer, openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, const Range& range, IAPDUHandler* pHandler)
+APDUParser::Result APDUParser::ParseRangeFixedSize(const HeaderRecord& record, const openpal::Serializer<Target>& serializer, openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, const Range& range, IAPDUHandler* pHandler)
 {
 	uint32_t size = range.Count() * serializer.Size();
 	if (buffer.Size() < size)
@@ -576,7 +546,7 @@ APDUParser::Result APDUParser::ParseRangeFixedSize(const HeaderRecord& record, o
 template <class Descriptor>
 APDUParser::Result APDUParser::ParseCountOf(openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, const HeaderRecord& record, uint32_t count, IAPDUHandler* pHandler)
 {
-	uint32_t size = count * Descriptor::SIZE;
+	uint32_t size = count * Descriptor::Size();
 	if (buffer.Size() < size)
 	{
 		SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified objects");
@@ -603,7 +573,7 @@ APDUParser::Result APDUParser::ParseCountFixedSizeWithIndex(
     openpal::ReadOnlyBuffer& buffer,
     openpal::Logger* pLogger,
     uint32_t count,
-    openpal::ISerializer<Target>& serializer,
+    const openpal::Serializer<Target>& serializer,
     IAPDUHandler* pHandler)
 {
 	uint32_t size = count * (IndexType::Size + serializer.Size());

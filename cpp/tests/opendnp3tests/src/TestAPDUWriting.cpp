@@ -49,11 +49,11 @@ TEST_CASE(SUITE("AllObjectsAndRollback"))
 {
 	APDURequest request(APDUHelpers::Request(FunctionCode::READ));
 	auto writer = request.GetWriter();
-	writer.WriteHeader(Group60Var1::ID, QualifierCode::ALL_OBJECTS);
-	writer.WriteHeader(Group60Var2::ID, QualifierCode::ALL_OBJECTS);
+	writer.WriteHeader(Group60Var1::ID(), QualifierCode::ALL_OBJECTS);
+	writer.WriteHeader(Group60Var2::ID(), QualifierCode::ALL_OBJECTS);
 	writer.Mark();
-	writer.WriteHeader(Group60Var3::ID, QualifierCode::ALL_OBJECTS);
-	writer.WriteHeader(Group60Var4::ID, QualifierCode::ALL_OBJECTS);
+	writer.WriteHeader(Group60Var3::ID(), QualifierCode::ALL_OBJECTS);
+	writer.WriteHeader(Group60Var4::ID(), QualifierCode::ALL_OBJECTS);
 
 	REQUIRE("C0 01 3C 01 06 3C 02 06 3C 03 06 3C 04 06" ==  toHex(request.ToReadOnly()));
 
@@ -67,8 +67,8 @@ TEST_CASE(SUITE("AllObjectsReturnsFalseWhenFull"))
 	APDURequest request(APDUHelpers::Request(FunctionCode::READ, 6));
 	auto writer = request.GetWriter();
 
-	REQUIRE(writer.WriteHeader(Group60Var1::ID, QualifierCode::ALL_OBJECTS));
-	REQUIRE(!writer.WriteHeader(Group60Var1::ID, QualifierCode::ALL_OBJECTS));
+	REQUIRE(writer.WriteHeader(Group60Var1::ID(), QualifierCode::ALL_OBJECTS));
+	REQUIRE(!writer.WriteHeader(Group60Var1::ID(), QualifierCode::ALL_OBJECTS));
 
 	REQUIRE("C0 01 3C 01 06" ==  toHex(request.ToReadOnly()));
 }
@@ -80,7 +80,7 @@ TEST_CASE(SUITE("RangeWriteIteratorStartStop"))
 	auto writer = response.GetWriter();
 
 	{
-		auto iterator = writer.IterateOverRange<UInt8, Counter>(QualifierCode::UINT8_START_STOP, Group20Var6Serializer::Inst(), 2);
+		auto iterator = writer.IterateOverRange<UInt8, Counter>(QualifierCode::UINT8_START_STOP, Group20Var6::Inst(), 2);
 		REQUIRE(iterator.Write(Counter(9)));
 		REQUIRE(iterator.Write(Counter(7)));
 	}
@@ -93,7 +93,7 @@ TEST_CASE(SUITE("EmptyHeadersWhenNotEnoughSpaceForSingleValue"))
 	APDUResponse response(APDUHelpers::Response(8));
 	auto writer = response.GetWriter();
 
-	auto iterator = writer.IterateOverRange<UInt8, Counter>(QualifierCode::UINT8_START_STOP, Group20Var6Serializer::Inst(), 2);
+	auto iterator = writer.IterateOverRange<UInt8, Counter>(QualifierCode::UINT8_START_STOP, Group20Var6::Inst(), 2);
 
 	REQUIRE(!iterator.IsValid());
 
@@ -105,7 +105,7 @@ TEST_CASE(SUITE("CountWriteIteratorAllowsCountOfZero"))
 	APDUResponse response(APDUHelpers::Response());
 	auto writer = response.GetWriter();
 	
-	writer.IterateOverCount<UInt16, Analog>(QualifierCode::UINT16_CNT, Group30Var1Serializer::Inst());	
+	writer.IterateOverCount<UInt16, Analog>(QualifierCode::UINT16_CNT, Group30Var1::Inst());	
 
 	REQUIRE("C0 81 00 00 1E 01 08 00 00" ==  toHex(response.ToReadOnly()));
 
@@ -117,7 +117,7 @@ TEST_CASE(SUITE("CountWriteIteratorFillsUpCorrectly"))
 	auto writer = response.GetWriter();
 
 	{
-		auto iter = writer.IterateOverCount<UInt8, Analog>(QualifierCode::UINT8_CNT, Group30Var2Serializer::Inst());
+		auto iter = writer.IterateOverCount<UInt8, Analog>(QualifierCode::UINT8_CNT, Group30Var2::Inst());
 
 		REQUIRE(iter.Write(Analog(9, 0xFF)));
 		REQUIRE(iter.Write(Analog(7, 0xFF)));
@@ -133,7 +133,7 @@ TEST_CASE(SUITE("PrefixWriteIteratorWithSingleCROB"))
 	auto writer = response.GetWriter();
 
 	{
-		auto iter = writer.IterateOverCountWithPrefix<UInt8, ControlRelayOutputBlock>(QualifierCode::UINT8_CNT_UINT8_INDEX, Group12Var1Serializer::Inst());
+		auto iter = writer.IterateOverCountWithPrefix<UInt8, ControlRelayOutputBlock>(QualifierCode::UINT8_CNT_UINT8_INDEX, Group12Var1::Inst());
 		REQUIRE(iter.IsValid());
 		ControlRelayOutputBlock crob(ControlCode::LATCH_ON, 0x1F, 0x10, 0xAA, CommandStatus::LOCAL);
 		REQUIRE(iter.Write(crob, 0x21));
@@ -151,7 +151,7 @@ TEST_CASE(SUITE("PrefixWriteIteratorCTO"))
 	cto.time = 0xAA;
 
 	{
-		auto iter = writer.IterateOverCountWithPrefixAndCTO<UInt16, Binary>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group2Var3Serializer::Inst(), cto);
+		auto iter = writer.IterateOverCountWithPrefixAndCTO<UInt16, Binary>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group2Var3::Inst(), cto);
 		REQUIRE(iter.IsValid());
 
 		REQUIRE(iter.Write(Binary(true, 0x01, 0x0B), 6));
@@ -170,7 +170,7 @@ TEST_CASE(SUITE("PrefixWriteIteratorCTOSpaceForOnly1Value"))
 	cto.time = 0xAA;
 
 	{
-		auto iter = writer.IterateOverCountWithPrefixAndCTO<UInt16, Binary>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group2Var3Serializer::Inst(), cto);
+		auto iter = writer.IterateOverCountWithPrefixAndCTO<UInt16, Binary>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group2Var3::Inst(), cto);
 		REQUIRE(iter.IsValid());
 		REQUIRE(iter.Write(Binary(true, 0x01, 0x0B), 6));
 		REQUIRE(!iter.Write(Binary(true, 0x01, 0x0C), 7));
@@ -188,7 +188,7 @@ TEST_CASE(SUITE("PrefixWriteIteratorNotEnoughSpaceForAValue"))
 	cto.time = 0xAA;
 
 	{
-		auto iter = writer.IterateOverCountWithPrefixAndCTO<UInt16, Binary>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group2Var3Serializer::Inst(), cto);
+		auto iter = writer.IterateOverCountWithPrefixAndCTO<UInt16, Binary>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group2Var3::Inst(), cto);
 		REQUIRE(!iter.IsValid());		
 	}
 
@@ -203,7 +203,7 @@ TEST_CASE(SUITE("SingleValueWithIndexCROB"))
 
 	ControlRelayOutputBlock crob(ControlCode::LATCH_ON, 0x1F, 0x10, 0xAA, CommandStatus::LOCAL);
 
-	REQUIRE(writer.WriteSingleIndexedValue<UInt16>(QualifierCode::UINT16_CNT, Group12Var1Serializer::Inst(), crob, 0x21));
+	REQUIRE(writer.WriteSingleIndexedValue<UInt16>(QualifierCode::UINT16_CNT, Group12Var1::Inst(), crob, 0x21));
 
 	REQUIRE("C0 03 0C 01 08 01 00 21 00 03 1F 10 00 00 00 AA 00 00 00 07" ==  toHex(request.ToReadOnly()));
 }

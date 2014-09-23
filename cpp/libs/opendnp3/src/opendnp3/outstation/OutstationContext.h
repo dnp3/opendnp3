@@ -18,18 +18,17 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __OUTSTATION_CONTEXT_H_
-#define __OUTSTATION_CONTEXT_H_
+#ifndef OPENDNP3_OUTSTATIONCONTEXT_H
+#define OPENDNP3_OUTSTATIONCONTEXT_H
 
 #include <openpal/logging/LogRoot.h>
 #include <openpal/executor/IExecutor.h>
 
-#include <openpal/channel/LayerInterfaces.h>
-
-#include <openpal/container/StaticBuffer.h>
+#include <openpal/container/DynamicBuffer.h>
 #include <openpal/container/Pair.h>
 #include <openpal/container/Settable.h>
 
+#include "opendnp3/LayerInterfaces.h"
 #include "opendnp3/outstation/Database.h"
 #include "opendnp3/outstation/ResponseContext.h"
 #include "opendnp3/outstation/OutstationConfig.h"
@@ -43,9 +42,6 @@
 #include "opendnp3/outstation/OutstationUnsolicitedStates.h"
 #include "opendnp3/outstation/DeferredRequest.h"
 
-#include "opendnp3/Configure.h"
-
-
 namespace opendnp3
 {
 
@@ -58,7 +54,7 @@ class OutstationContext
 	OutstationContext(	const OutstationConfig& config,
 						openpal::IExecutor& executor,
 						openpal::LogRoot& root, 
-						openpal::ILowerLayer& lower,
+						ILowerLayer& lower,
 						ICommandHandler& commandHandler,
 						IOutstationApplication& application,
 						Database& database, 
@@ -152,7 +148,7 @@ class OutstationContext
 
 	// private variables not available from the states
 
-	openpal::ILowerLayer* pLower;
+	ILowerLayer* pLower;
 
 	// ------ Helpers ---------
 
@@ -191,11 +187,11 @@ class OutstationContext
 
 	IINField HandleCommandWithConstant(const openpal::ReadOnlyBuffer& objects, HeaderWriter& writer, CommandStatus status);
 
-	// ------ Static bufers -------
+	// ------ buffers -------
 
-	openpal::StaticBuffer<sizes::MAX_RX_APDU_SIZE> rxBuffer;
-	openpal::StaticBuffer<sizes::MAX_TX_APDU_SIZE> solTxBuffer;
-	openpal::StaticBuffer<sizes::MAX_TX_APDU_SIZE> unsolTxBuffer;
+	openpal::DynamicBuffer rxBuffer;
+	openpal::DynamicBuffer solTxBuffer;
+	openpal::DynamicBuffer unsolTxBuffer;
 };
 
 

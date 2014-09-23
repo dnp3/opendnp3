@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __ERROR_CODES_H_
-#define __ERROR_CODES_H_
+#ifndef OPENDNP3_ERRORCODES_H
+#define OPENDNP3_ERRORCODES_H
 
 namespace opendnp3
 {
@@ -33,14 +33,12 @@ enum ErrorCodes
     ALERR_INSUFFICIENT_DATA_FOR_OBJECTS,		// not enough to read the indicated objects
 	ALERR_UNKNOWN_GROUP_VAR,					// encounter an unknown group var while parsing
 	ALERR_ILLEGAL_QUALIFIER_AND_OBJECT,			// The qualifier/object combination is invalid
-	ALERR_COUNT_OF_ZERO,						// count header with ZERO
-	ALERR_TOO_MANY_OBJECTS_IN_APDU,				// safeguard error against integer overflows
+	ALERR_COUNT_OF_ZERO,						// count header with ZERO	
 	ALERR_START_STOP_MISMATCH,					// start > stop in a ranged header
 	ALERR_UNKNOWN_QUALIFIER,					// An unknown qualifer was received
 
     // Transport Layer
-	TLERR_NO_PAYLOAD,							// TPDU carried no payload bytes
-	TLERR_TOO_MUCH_DATA,						// TPDU with too much payload data
+	TLERR_NO_HEADER,							// TPDU with no header (empty)	
 	TLERR_BUFFER_FULL,							// Transport reassembly buffer full before complete fragment received
 	TLERR_NEW_FIR_MID_SEQUENCE,					// Received a new FIR in the middle of previous fragment
 	TLERR_MESSAGE_WITHOUT_FIR,					// Received a NON-FIR TPDU without a previous FIR

@@ -75,6 +75,9 @@ cpp/demos/outstation/Release
 *vcxproj.user
 cpp/unittest.log
 
+#atmel studio
+*jlink*
+
 #sandcastle generated files
 clr/Help
 clr/opendnp3.shfbproj_*

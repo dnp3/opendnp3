@@ -7,6 +7,9 @@
 // |_| \_|\___/  |______\__,_|_|\__|_|_| |_|\__, (_|_|_)
 //                                           __/ |
 //                                          |___/
+// 
+// This file is auto-generated. Do not edit manually
+// 
 // Copyright 2013 Automatak LLC
 // 
 // Automatak LLC (www.automatak.com) licenses this file
@@ -25,10 +28,6 @@ using namespace openpal;
 
 namespace opendnp3 {
 
-const GroupVariationID  Group1Var0::ID(1,0);
-
-const GroupVariationID  Group1Var2::ID(1,2);
-
 Group1Var2 Group1Var2::Read(ReadOnlyBuffer& buffer)
 {
   Group1Var2 obj;
@@ -43,21 +42,18 @@ void Group1Var2::Write(const Group1Var2& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(1);
 }
 
-Group1Var2Serializer Group1Var2Serializer::instance;
 
-Binary Group1Var2Serializer::Read(ReadOnlyBuffer& buff) const
+Binary Group1Var2::ReadTarget(ReadOnlyBuffer& buff)
 {
   auto gv = Group1Var2::Read(buff);
   return BinaryFactory::From(gv.flags);
 }
 
-void Group1Var2Serializer::Write(const Binary& value, openpal::WriteBuffer& buff) const
+void Group1Var2::WriteTarget(const Binary& value, openpal::WriteBuffer& buff)
 {
   Group1Var2::Write(ConvertGroup1Var2::Apply(value), buff);
 }
 
-
-const GroupVariationID  Group1Var1::ID(1,1);
 
 
 }

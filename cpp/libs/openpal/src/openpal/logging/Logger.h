@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __LOGGER_H_
-#define __LOGGER_H_
+#ifndef OPENPAL_LOGGER_H
+#define OPENPAL_LOGGER_H
 
 #include "LogEntry.h"
 #include "LogFilters.h"

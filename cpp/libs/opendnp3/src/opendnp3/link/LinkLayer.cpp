@@ -38,48 +38,49 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LinkLayer::LinkLayer(openpal::LogRoot& root, openpal::IExecutor* apExecutor, const LinkConfig& config_) :
+LinkLayer::LinkLayer(openpal::LogRoot& root, openpal::IExecutor* pExecutor_, const LinkConfig& config_) :
 	logger(root.GetLogger()),
 	config(config_),
 	pSegments(nullptr),
-	mRetryRemaining(0),
-	mpExecutor(apExecutor),
-	mpTimer(nullptr),
-	mNextReadFCB(false),
-	mNextWriteFCB(false),
-	mIsOnline(false),
-	mpRouter(nullptr),
-	mpPriState(PLLS_SecNotReset::Inst()),
-	mpSecState(SLLS_NotReset::Inst())
+	txMode(TransmitMode::Idle),
+	numRetryRemaining(0),
+	pExecutor(pExecutor_),
+	pTimer(nullptr),
+	nextReadFCB(false),
+	nextWriteFCB(false),
+	isOnline(false),
+	pRouter(nullptr),
+	pPriState(PLLS_SecNotReset::Inst()),
+	pSecState(SLLS_NotReset::Inst())
 {
 
 }
 
-void LinkLayer::SetRouter(ILinkRouter* apRouter)
+void LinkLayer::SetRouter(ILinkRouter& router)
 {
-	assert(mpRouter == nullptr); assert(apRouter != nullptr);
-	mpRouter = apRouter;
+	assert(pRouter == nullptr);
+	pRouter = &router;
 }
 
-void LinkLayer::ChangeState(PriStateBase* apState)
+void LinkLayer::ChangeState(PriStateBase* pState)
 {
-	mpPriState = apState;
+	pPriState = pState;
 }
 
-void LinkLayer::ChangeState(SecStateBase* apState)
+void LinkLayer::ChangeState(SecStateBase* pState)
 {
-	mpSecState = apState;
+	pSecState = pState;
 }
 
 void LinkLayer::PostSendResult(bool isSuccess)
 {
 	auto lambda = [this, isSuccess]() { this->DoSendResult(isSuccess); };
-	mpExecutor->PostLambda(lambda);
+	pExecutor->PostLambda(lambda);
 }
 
 bool LinkLayer::Validate(bool aIsMaster, uint16_t aSrc, uint16_t aDest)
 {
-	if (mIsOnline)
+	if (isOnline)
 	{
 		if (aIsMaster == config.IsMaster)
 		{			
@@ -122,15 +123,15 @@ bool LinkLayer::Validate(bool aIsMaster, uint16_t aSrc, uint16_t aDest)
 
 void LinkLayer::Send(ITransportSegment& segments)
 {
-	if (mIsOnline)
+	if (isOnline)
 	{
 		if (config.UseConfirms)
 		{
-			mpPriState->SendConfirmed(this, segments);
+			pPriState->SendConfirmed(this, segments);
 		}
 		else
 		{
-			mpPriState->SendUnconfirmed(this, segments);
+			pPriState->SendUnconfirmed(this, segments);
 		}
 	}
 	else
@@ -145,13 +146,13 @@ void LinkLayer::Send(ITransportSegment& segments)
 
 void LinkLayer::OnLowerLayerUp()
 {
-	if (mIsOnline)
+	if (isOnline)
 	{
 		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer already online");
 	}
 	else
 	{
-		mIsOnline = true;
+		isOnline = true;
 
 		if (pUpperLayer)
 		{
@@ -162,17 +163,20 @@ void LinkLayer::OnLowerLayerUp()
 
 void LinkLayer::OnLowerLayerDown()
 {
-	if (mIsOnline)
+	if (isOnline)
 	{
-		mIsOnline = false;
+		isOnline = false;
+		txMode = TransmitMode::Idle;
+		pendingPriTx.Clear();
+		pendingSecTx.Clear();
 
-		if (mpTimer)
+		if (pTimer)
 		{
 			this->CancelTimer();
 		}
 
-		mpPriState = PLLS_SecNotReset::Inst();
-		mpSecState = SLLS_NotReset::Inst();
+		pPriState = PLLS_SecNotReset::Inst();
+		pSecState = SLLS_NotReset::Inst();
 
 		if (pUpperLayer)
 		{
@@ -185,21 +189,46 @@ void LinkLayer::OnLowerLayerDown()
 	}
 }
 
-void LinkLayer::OnTransmitResult(bool primary, bool success)
+void LinkLayer::OnTransmitResult(bool success)
 {
-	if (primary)
+	if (txMode == TransmitMode::Idle)
 	{
-		mpPriState->OnTransmitResult(this, success);
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Unknown transmission callback");
 	}
 	else
 	{
-		mpSecState->OnTransmitResult(this, success);
+		auto isPrimary = (txMode == TransmitMode::Primary);
+		this->txMode = TransmitMode::Idle;
+
+		// before we dispatch the transmit result, give any pending transmissions access first
+		this->CheckPendingTx(pendingSecTx, false);
+		this->CheckPendingTx(pendingPriTx, true);
+
+		// now dispatch the completion event to the correct state handler
+		if (isPrimary)
+		{
+			pPriState->OnTransmitResult(this, success);
+		}
+		else
+		{
+			pSecState->OnTransmitResult(this, success);
+		}		
+	}			
+}
+
+void LinkLayer::CheckPendingTx(openpal::Settable<ReadOnlyBuffer>& pending, bool primary)
+{
+	if (txMode == TransmitMode::Idle && pending.IsSet())
+	{
+		pRouter->BeginTransmit(pending.Get(), this);
+		pending.Clear();
+		this->txMode = primary ? TransmitMode::Primary : TransmitMode::Secondary;
 	}
 }
 
 openpal::ReadOnlyBuffer LinkLayer::FormatPrimaryBufferWithConfirmed(const openpal::ReadOnlyBuffer& tpdu, bool FCB)
 {
-	auto buffer = primaryBuffer.GetWriteBuffer();	
+	auto buffer = WriteBuffer(priTxBuffer, LPDU_MAX_FRAME_SIZE);
 	auto output = LinkFrame::FormatConfirmedUserData(buffer, config.IsMaster, FCB, config.RemoteAddr, config.LocalAddr, tpdu, tpdu.Size(), &logger);
 	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, output, 10, 18);
 	return output;	
@@ -207,20 +236,35 @@ openpal::ReadOnlyBuffer LinkLayer::FormatPrimaryBufferWithConfirmed(const openpa
 
 ReadOnlyBuffer LinkLayer::FormatPrimaryBufferWithUnconfirmed(const openpal::ReadOnlyBuffer& tpdu)
 {
-	auto buffer = primaryBuffer.GetWriteBuffer();
+	auto buffer = WriteBuffer(priTxBuffer, LPDU_MAX_FRAME_SIZE);
 	auto output = LinkFrame::FormatUnconfirmedUserData(buffer, config.IsMaster, config.RemoteAddr, config.LocalAddr, tpdu, tpdu.Size(), &logger);
 	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, output, 10, 18);
 	return output;
 }
 
 void LinkLayer::QueueTransmit(const ReadOnlyBuffer& buffer, bool primary)
-{
-	mpRouter->QueueTransmit(buffer, this, primary);
+{	
+	if (txMode == TransmitMode::Idle)
+	{
+		txMode = primary ? TransmitMode::Primary : TransmitMode::Secondary;
+		pRouter->BeginTransmit(buffer, this);
+	}
+	else
+	{
+		if (primary)
+		{
+			pendingPriTx.Set(buffer);
+		}
+		else
+		{
+			pendingSecTx.Set(buffer);
+		}
+	}
 }
 
 void LinkLayer::QueueAck()
 {
-	auto writeTo = primaryBuffer.GetWriteBuffer();
+	auto writeTo = WriteBuffer(secTxBuffer, LPDU_HEADER_SIZE);
 	auto buffer = LinkFrame::FormatAck(writeTo, config.IsMaster, false, config.RemoteAddr, config.LocalAddr, &logger);
 	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, buffer, 10, 18);
 	this->QueueTransmit(buffer, false);
@@ -228,7 +272,7 @@ void LinkLayer::QueueAck()
 
 void LinkLayer::QueueLinkStatus()
 {
-	auto writeTo = primaryBuffer.GetWriteBuffer();
+	auto writeTo = WriteBuffer(secTxBuffer, LPDU_HEADER_SIZE);
 	auto buffer = LinkFrame::FormatLinkStatus(writeTo, config.IsMaster, false, config.RemoteAddr, config.LocalAddr, &logger);
 	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, buffer, 10, 18);
 	this->QueueTransmit(buffer, false);
@@ -236,7 +280,7 @@ void LinkLayer::QueueLinkStatus()
 
 void LinkLayer::QueueResetLinks()
 {
-	auto writeTo = primaryBuffer.GetWriteBuffer();
+	auto writeTo = WriteBuffer(priTxBuffer, LPDU_MAX_FRAME_SIZE);
 	auto buffer = LinkFrame::FormatResetLinkStates(writeTo, config.IsMaster, config.RemoteAddr, config.LocalAddr, &logger);
 	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, buffer, 10, 18);
 	this->QueueTransmit(buffer, true);
@@ -244,31 +288,34 @@ void LinkLayer::QueueResetLinks()
 
 void LinkLayer::StartTimer()
 {
-	assert(mpTimer == nullptr);
+	assert(pTimer == nullptr);
 	auto lambda = [this]() { this->OnTimeout(); };
-	mpTimer = this->mpExecutor->Start(TimeDuration(config.Timeout), Action0::Bind(lambda));
+	pTimer = this->pExecutor->Start(TimeDuration(config.Timeout), Action0::Bind(lambda));
 }
 
 void LinkLayer::CancelTimer()
 {
-	assert(mpTimer);
-	mpTimer->Cancel();
-	mpTimer = nullptr;
+	assert(pTimer);
+	pTimer->Cancel();
+	pTimer = nullptr;
 }
 
 void LinkLayer::ResetRetry()
 {
-	this->mRetryRemaining = config.NumRetry;
+	this->numRetryRemaining = config.NumRetry;
 }
 
 bool LinkLayer::Retry()
 {
-	if(mRetryRemaining > 0)
+	if(numRetryRemaining > 0)
 	{
-		--mRetryRemaining;
+		--numRetryRemaining;
 		return true;
 	}
-	else return false;
+	else
+	{
+		return false;
+	}
 }
 
 ////////////////////////////////
@@ -279,7 +326,7 @@ void LinkLayer::Ack(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_
 {
 	if (this->Validate(aIsMaster, aSrc, aDest))
 	{
-		mpPriState->Ack(this, aIsRcvBuffFull);
+		pPriState->Ack(this, aIsRcvBuffFull);
 	}
 }
 
@@ -287,7 +334,7 @@ void LinkLayer::Nack(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16
 {
 	if (this->Validate(aIsMaster, aSrc, aDest))
 	{
-		mpPriState->Nack(this, aIsRcvBuffFull);
+		pPriState->Nack(this, aIsRcvBuffFull);
 	}
 }
 
@@ -295,7 +342,7 @@ void LinkLayer::LinkStatus(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, 
 {
 	if (this->Validate(aIsMaster, aSrc, aDest))
 	{
-		mpPriState->LinkStatus(this, aIsRcvBuffFull);
+		pPriState->LinkStatus(this, aIsRcvBuffFull);
 	}
 }
 
@@ -303,7 +350,7 @@ void LinkLayer::NotSupported (bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDes
 {
 	if (this->Validate(aIsMaster, aSrc, aDest))
 	{
-		mpPriState->NotSupported(this, aIsRcvBuffFull);
+		pPriState->NotSupported(this, aIsRcvBuffFull);
 	}
 }
 
@@ -311,7 +358,7 @@ void LinkLayer::TestLinkStatus(bool aIsMaster, bool aFcb, uint16_t aDest, uint16
 {
 	if (this->Validate(aIsMaster, aSrc, aDest))
 	{
-		mpSecState->TestLinkStatus(this, aFcb);
+		pSecState->TestLinkStatus(this, aFcb);
 	}
 }
 
@@ -319,7 +366,7 @@ void LinkLayer::ResetLinkStates(bool aIsMaster, uint16_t aDest, uint16_t aSrc)
 {
 	if (this->Validate(aIsMaster, aSrc, aDest))
 	{
-		mpSecState->ResetLinkStates(this);
+		pSecState->ResetLinkStates(this);
 	}
 }
 
@@ -327,7 +374,7 @@ void LinkLayer::RequestLinkStatus(bool aIsMaster, uint16_t aDest, uint16_t aSrc)
 {
 	if (this->Validate(aIsMaster, aSrc, aDest))
 	{
-		mpSecState->RequestLinkStatus(this);
+		pSecState->RequestLinkStatus(this);
 	}
 }
 
@@ -335,7 +382,7 @@ void LinkLayer::ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uin
 {
 	if (this->Validate(aIsMaster, aSrc, aDest))
 	{
-		mpSecState->ConfirmedUserData(this, aFcb, input);
+		pSecState->ConfirmedUserData(this, aFcb, input);
 	}
 }
 
@@ -349,9 +396,9 @@ void LinkLayer::UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSr
 
 void LinkLayer::OnTimeout()
 {
-	assert(mpTimer);
-	mpTimer = nullptr;
-	mpPriState->OnTimeout(this);
+	assert(pTimer);
+	pTimer = nullptr;
+	pPriState->OnTimeout(this);
 }
 
 }

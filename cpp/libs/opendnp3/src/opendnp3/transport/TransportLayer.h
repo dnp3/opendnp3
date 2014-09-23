@@ -18,19 +18,18 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __TRANSPORT_LAYER_H_
-#define __TRANSPORT_LAYER_H_
+#ifndef OPENDNP3_TRANSPORTLAYER_H
+#define OPENDNP3_TRANSPORTLAYER_H
 
 #include "TransportRx.h"
 #include "TransportTx.h"
 
 #include <openpal/executor/IExecutor.h>
 #include <openpal/logging/LogRoot.h>
-#include <openpal/channel/LayerInterfaces.h>
 
+#include "opendnp3/LayerInterfaces.h"
 #include "opendnp3/StackStatistics.h"
 #include "opendnp3/link/ILinkLayer.h"
-#include "opendnp3/Configure.h"
 
 namespace opendnp3
 {
@@ -38,13 +37,13 @@ namespace opendnp3
 /** Implements the DNP3 transport layer as a generic
 asynchronous protocol stack layer
 */
-class TransportLayer : public openpal::IUpperLayer, public openpal::ILowerLayer
+class TransportLayer : public IUpperLayer, public ILowerLayer
 {	
 	friend class TransportTx;
 
 public:
 
-	TransportLayer(openpal::LogRoot& root, openpal::IExecutor* pExecutor_, StackStatistics* pStatistics_ = nullptr, uint32_t maxFragSize = sizes::DEFAULT_APDU_BUFFER_SIZE);
+	TransportLayer(openpal::LogRoot& root, openpal::IExecutor* pExecutor_, uint32_t maxRxFragSize, StackStatistics* pStatistics_ = nullptr);
 
 	/// ILowerLayer	
 
@@ -57,13 +56,13 @@ public:
 	virtual void OnLowerLayerDown() override final;
 	virtual void OnSendResult(bool isSuccess) override final;
 
-	void SetAppLayer(openpal::IUpperLayer* pUpperLayer_);
+	void SetAppLayer(IUpperLayer* pUpperLayer_);
 	void SetLinkLayer(ILinkLayer* pLinkLayer_);
 
 private:
 	
 	openpal::Logger logger;
-	openpal::IUpperLayer* pUpperLayer;
+	IUpperLayer* pUpperLayer;
 	ILinkLayer* pLinkLayer;	
 
 	// ---- state ----
@@ -71,8 +70,7 @@ private:
 	bool isSending;
 
 	openpal::IExecutor* pExecutor;
-
-	const uint32_t M_FRAG_SIZE;
+	
 
 	// ----- Transmitter and Receiver Classes ------
 	TransportRx receiver;

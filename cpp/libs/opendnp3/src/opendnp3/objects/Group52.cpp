@@ -7,6 +7,9 @@
 // |_| \_|\___/  |______\__,_|_|\__|_|_| |_|\__, (_|_|_)
 //                                           __/ |
 //                                          |___/
+// 
+// This file is auto-generated. Do not edit manually
+// 
 // Copyright 2013 Automatak LLC
 // 
 // Automatak LLC (www.automatak.com) licenses this file
@@ -23,8 +26,6 @@ using namespace openpal;
 
 namespace opendnp3 {
 
-const GroupVariationID  Group52Var1::ID(52,1);
-
 Group52Var1 Group52Var1::Read(ReadOnlyBuffer& buffer)
 {
   Group52Var1 obj;
@@ -39,7 +40,6 @@ void Group52Var1::Write(const Group52Var1& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(2);
 }
 
-const GroupVariationID  Group52Var2::ID(52,2);
 
 Group52Var2 Group52Var2::Read(ReadOnlyBuffer& buffer)
 {
@@ -54,6 +54,7 @@ void Group52Var2::Write(const Group52Var2& arg, openpal::WriteBuffer& buffer)
   UInt16::Write(buffer, arg.time);
   buffer.Advance(2);
 }
+
 
 
 }

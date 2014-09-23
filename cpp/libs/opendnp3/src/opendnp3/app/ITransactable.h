@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __I_TRANSACTABLE_H_
-#define	__I_TRANSACTABLE_H_
+#ifndef OPENDNP3_ITRANSACTABLE_H
+#define OPENDNP3_ITRANSACTABLE_H
 
 #include <openpal/util/Uncopyable.h>
 

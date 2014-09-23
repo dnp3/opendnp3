@@ -19,8 +19,8 @@
  * to you under the terms of the License.
  */
 
-#ifndef __OUTSTATION_UNSOLCITIED_STATES_H_
-#define __OUTSTATION_UNSOLCITIED_STATES_H_
+#ifndef OPENDNP3_OUTSTATIONUNSOLICITEDSTATES_H
+#define OPENDNP3_OUTSTATIONUNSOLICITEDSTATES_H
 
 #include "opendnp3/app/APDUHeader.h"
 #include "opendnp3/app/APDUWrapper.h"

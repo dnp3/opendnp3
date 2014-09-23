@@ -18,13 +18,12 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __STACK_ACTION_HANDLER_H_
-#define __STACK_ACTION_HANDLER_H_
+#ifndef ASIODNP3_STACKACTIONHANDLER_H
+#define ASIODNP3_STACKACTIONHANDLER_H
 
 
 namespace opendnp3
-{
-	class LinkLayerRouter;	
+{	
 	class ILinkContext;
 }
 
@@ -37,12 +36,13 @@ namespace asiodnp3
 {
 
 class IStack;
+class LinkLayerRouter;
 
 class StackActionHandler
 {
 public:
 
-	StackActionHandler(opendnp3::LinkLayerRouter& router, asiopal::ASIOExecutor& executor);
+	StackActionHandler(LinkLayerRouter& router, asiopal::ASIOExecutor& executor);
 
 	asiopal::ASIOExecutor* GetExecutor();
 
@@ -54,7 +54,7 @@ public:
 
 private:
 
-	opendnp3::LinkLayerRouter* pRouter;
+	LinkLayerRouter* pRouter;
 	asiopal::ASIOExecutor* pExecutor;
 
 };

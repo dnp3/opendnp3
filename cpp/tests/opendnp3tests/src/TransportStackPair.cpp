@@ -44,13 +44,13 @@ TransportStackPair::TransportStackPair(
 
 bool TransportStackPair::BothLayersUp()
 {
-	return mServerStack.mUpper.IsOnline() && mClientStack.mUpper.IsOnline();
+	return mServerStack.upper.IsOnline() && mClientStack.upper.IsOnline();
 }
 
 void TransportStackPair::Start()
 {
-	mServerStack.mRouter.Start();
-	mClientStack.mRouter.Start();
+	mServerStack.router.Start();
+	mClientStack.router.Start();
 }
 
 }

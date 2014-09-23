@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __MUTEX_H_
-#define __MUTEX_H_
+#ifndef ASIODNP3_MUTEX_H
+#define ASIODNP3_MUTEX_H
 
 #include <mutex>
 

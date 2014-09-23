@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __DATABASE_H_
-#define __DATABASE_H_
+#ifndef OPENDNP3_DATABASE_H
+#define OPENDNP3_DATABASE_H
 
 #include <openpal/executor/IMutex.h>
 #include <openpal/executor/Action0.h>
@@ -117,6 +117,7 @@ private:
 	}
 
 	IEventBuffer* pEventBuffer;
+	
 
 	openpal::IMutex* pMutex;
 	openpal::Settable<openpal::Action0> onEventAction;

@@ -18,10 +18,9 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef _I_PHYSICAL_LAYER_H_
-#define _I_PHYSICAL_LAYER_H_
+#ifndef OPENPAL_IPHYSICALLAYER_H
+#define OPENPAL_IPHYSICALLAYER_H
 
-#include "LayerInterfaces.h"
 #include "ChannelStatistics.h"
 
 #include "openpal/container/ReadOnlyBuffer.h"

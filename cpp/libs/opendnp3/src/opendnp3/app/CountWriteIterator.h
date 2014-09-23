@@ -18,12 +18,12 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __COUNT_WRITE_ITERATOR_H_
-#define __COUNT_WRITE_ITERATOR_H_
+#ifndef OPENDNP3_COUNTWRITEITERATOR_H
+#define OPENDNP3_COUNTWRITEITERATOR_H
 
 
 #include <openpal/container/WriteBuffer.h>
-#include <openpal/serialization/ISerializer.h>
+#include <openpal/serialization/Serializer.h>
 
 namespace opendnp3
 {
@@ -39,12 +39,12 @@ public:
 		return CountWriteIterator();
 	}
 
-	CountWriteIterator() : count(0), pSerializer(nullptr), pPosition(nullptr), isValid(false)
+	CountWriteIterator() : count(0), pPosition(nullptr), isValid(false)
 	{}
 
-	CountWriteIterator(openpal::ISerializer<WriteType>& serializer, openpal::WriteBuffer& position) :
+	CountWriteIterator(const openpal::Serializer<WriteType>& serializer_, openpal::WriteBuffer& position) :
 		count(0),
-		pSerializer(&serializer),
+		serializer(serializer_),
 		countPosition(position),
 		pPosition(&position),
 		isValid(position.Size() >= CountType::Size)
@@ -65,9 +65,9 @@ public:
 
 	bool Write(const WriteType& value)
 	{
-		if (isValid && pPosition->Size() >= pSerializer->Size())
+		if (isValid && pPosition->Size() >= serializer.Size())
 		{
-			pSerializer->Write(value, *this->pPosition);
+			serializer.Write(value, *this->pPosition);
 			++count;
 			return true;			
 		}
@@ -85,7 +85,7 @@ public:
 private:
 
 	typename CountType::Type count;
-	openpal::ISerializer<WriteType>* pSerializer;
+	openpal::Serializer<WriteType> serializer;
 
 	bool isValid;
 

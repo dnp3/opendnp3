@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __I_EVENT_BUFFER_H_
-#define __I_EVENT_BUFFER_H_
+#ifndef OPENDNP3_IEVENTBUFFER_H
+#define OPENDNP3_IEVENTBUFFER_H
 
 #include "opendnp3/app/MeasurementTypes.h"
 

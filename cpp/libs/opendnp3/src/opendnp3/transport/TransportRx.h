@@ -18,15 +18,14 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __TRANSPORT_RX_H_
-#define __TRANSPORT_RX_H_
+#ifndef OPENDNP3_TRANSPORTRX_H
+#define OPENDNP3_TRANSPORTRX_H
 
 #include "opendnp3/transport/TransportConstants.h"
-#include "opendnp3/Configure.h"
 #include "opendnp3/StackStatistics.h"
 
 #include <openpal/container/ReadOnlyBuffer.h>
-#include <openpal/container/StaticBuffer.h>
+#include <openpal/container/DynamicBuffer.h>
 #include <openpal/logging/Logger.h>
 
 namespace opendnp3
@@ -41,7 +40,7 @@ class TransportRx
 {
 
 public:
-	TransportRx(const openpal::Logger&, StackStatistics* pStatistics, uint32_t fragSize);	
+	TransportRx(const openpal::Logger&, uint32_t maxRxFragSize, StackStatistics* pStatistics);
 
 	openpal::ReadOnlyBuffer ProcessReceive(const openpal::ReadOnlyBuffer& input);
 
@@ -54,15 +53,9 @@ private:
 	openpal::Logger logger;
 	StackStatistics* pStatistics;
 	
-	openpal::StaticBuffer<sizes::MAX_RX_APDU_SIZE> rxBuffer;
+	openpal::DynamicBuffer rxBuffer;
 	uint32_t numBytesRead;
 	uint8_t sequence;
-	uint32_t maxFragSize;
-
-	uint32_t BufferRemaining() const
-	{
-		return maxFragSize - numBytesRead;
-	}
 };
 
 }

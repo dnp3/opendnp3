@@ -7,6 +7,9 @@
 // |_| \_|\___/  |______\__,_|_|\__|_|_| |_|\__, (_|_|_)
 //                                           __/ |
 //                                          |___/
+// 
+// This file is auto-generated. Do not edit manually
+// 
 // Copyright 2013 Automatak LLC
 // 
 // Automatak LLC (www.automatak.com) licenses this file
@@ -24,8 +27,6 @@
 using namespace openpal;
 
 namespace opendnp3 {
-
-const GroupVariationID  Group23Var1::ID(23,1);
 
 Group23Var1 Group23Var1::Read(ReadOnlyBuffer& buffer)
 {
@@ -45,21 +46,18 @@ void Group23Var1::Write(const Group23Var1& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(4);
 }
 
-Group23Var1Serializer Group23Var1Serializer::instance;
 
-FrozenCounter Group23Var1Serializer::Read(ReadOnlyBuffer& buff) const
+FrozenCounter Group23Var1::ReadTarget(ReadOnlyBuffer& buff)
 {
   auto gv = Group23Var1::Read(buff);
   return FrozenCounterFactory::From(gv.flags, gv.value);
 }
 
-void Group23Var1Serializer::Write(const FrozenCounter& value, openpal::WriteBuffer& buff) const
+void Group23Var1::WriteTarget(const FrozenCounter& value, openpal::WriteBuffer& buff)
 {
   Group23Var1::Write(ConvertGroup23Var1::Apply(value), buff);
 }
 
-
-const GroupVariationID  Group23Var2::ID(23,2);
 
 Group23Var2 Group23Var2::Read(ReadOnlyBuffer& buffer)
 {
@@ -79,21 +77,18 @@ void Group23Var2::Write(const Group23Var2& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(2);
 }
 
-Group23Var2Serializer Group23Var2Serializer::instance;
 
-FrozenCounter Group23Var2Serializer::Read(ReadOnlyBuffer& buff) const
+FrozenCounter Group23Var2::ReadTarget(ReadOnlyBuffer& buff)
 {
   auto gv = Group23Var2::Read(buff);
   return FrozenCounterFactory::From(gv.flags, gv.value);
 }
 
-void Group23Var2Serializer::Write(const FrozenCounter& value, openpal::WriteBuffer& buff) const
+void Group23Var2::WriteTarget(const FrozenCounter& value, openpal::WriteBuffer& buff)
 {
   Group23Var2::Write(ConvertGroup23Var2::Apply(value), buff);
 }
 
-
-const GroupVariationID  Group23Var5::ID(23,5);
 
 Group23Var5 Group23Var5::Read(ReadOnlyBuffer& buffer)
 {
@@ -117,21 +112,18 @@ void Group23Var5::Write(const Group23Var5& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(6);
 }
 
-Group23Var5Serializer Group23Var5Serializer::instance;
 
-FrozenCounter Group23Var5Serializer::Read(ReadOnlyBuffer& buff) const
+FrozenCounter Group23Var5::ReadTarget(ReadOnlyBuffer& buff)
 {
   auto gv = Group23Var5::Read(buff);
   return FrozenCounterFactory::From(gv.flags, gv.value, gv.time);
 }
 
-void Group23Var5Serializer::Write(const FrozenCounter& value, openpal::WriteBuffer& buff) const
+void Group23Var5::WriteTarget(const FrozenCounter& value, openpal::WriteBuffer& buff)
 {
   Group23Var5::Write(ConvertGroup23Var5::Apply(value), buff);
 }
 
-
-const GroupVariationID  Group23Var6::ID(23,6);
 
 Group23Var6 Group23Var6::Read(ReadOnlyBuffer& buffer)
 {
@@ -155,15 +147,14 @@ void Group23Var6::Write(const Group23Var6& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(6);
 }
 
-Group23Var6Serializer Group23Var6Serializer::instance;
 
-FrozenCounter Group23Var6Serializer::Read(ReadOnlyBuffer& buff) const
+FrozenCounter Group23Var6::ReadTarget(ReadOnlyBuffer& buff)
 {
   auto gv = Group23Var6::Read(buff);
   return FrozenCounterFactory::From(gv.flags, gv.value, gv.time);
 }
 
-void Group23Var6Serializer::Write(const FrozenCounter& value, openpal::WriteBuffer& buff) const
+void Group23Var6::WriteTarget(const FrozenCounter& value, openpal::WriteBuffer& buff)
 {
   Group23Var6::Write(ConvertGroup23Var6::Apply(value), buff);
 }

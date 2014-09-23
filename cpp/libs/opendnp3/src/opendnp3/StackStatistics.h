@@ -19,8 +19,8 @@
 * to you under the terms of the License.
 */
 
-#ifndef __STACK_STATISTICS_H_
-#define __STACK_STATISTICS_H_
+#ifndef OPENDNP3_STACKSTATISTICS_H
+#define OPENDNP3_STACKSTATISTICS_H
 
 #include <cstdint>
 

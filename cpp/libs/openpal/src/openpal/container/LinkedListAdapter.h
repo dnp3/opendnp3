@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __LINKED_LIST_ADAPTER_H_
-#define __LINKED_LIST_ADAPTER_H_
+#ifndef OPENPAL_LINKEDLISTADAPTER_H
+#define OPENPAL_LINKEDLISTADAPTER_H
 
 #include "Indexable.h"
 

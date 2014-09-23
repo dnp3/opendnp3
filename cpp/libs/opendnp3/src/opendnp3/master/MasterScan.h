@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __MASTER_SCAN_H_
-#define __MASTER_SCAN_H_
+#ifndef OPENDNP3_MASTERSCAN_H
+#define OPENDNP3_MASTERSCAN_H
 
 #include <openpal/executor/IExecutor.h>
 

@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __MASTER_STACK_CONFIG_H_
-#define __MASTER_STACK_CONFIG_H_
+#ifndef OPENDNP3_MASTERSTACKCONFIG_H
+#define OPENDNP3_MASTERSTACKCONFIG_H
 
 #include "opendnp3/master/MasterParams.h"
 #include "opendnp3/link/LinkConfig.h"

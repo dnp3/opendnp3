@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __UTC_TIMESTAMP_H_
-#define __UTC_TIMESTAMP_H_
+#ifndef OPENPAL_UTCTIMESTAMP_H
+#define OPENPAL_UTCTIMESTAMP_H
 
 #include <cstdint>
 

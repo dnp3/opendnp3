@@ -32,7 +32,7 @@
 namespace opendnp3
 {
 
-class MockLinkLayer : public ILinkLayer, public openpal::HasUpperLayer
+class MockLinkLayer : public ILinkLayer, public HasUpperLayer
 {
 
 public:
@@ -59,7 +59,8 @@ public:
 		HexSequence hs(hex);
 		if (pUpperLayer)
 		{
-			pUpperLayer->OnReceive(hs);
+			auto buffer = hs.ToReadOnly();			
+			pUpperLayer->OnReceive(buffer);
 		}
 	}
 

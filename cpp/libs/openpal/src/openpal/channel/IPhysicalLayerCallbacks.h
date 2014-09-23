@@ -18,23 +18,38 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __I_PHYSICAL_LAYER_CALLBACKS_H_
-#define __I_PHYSICAL_LAYER_CALLBACKS_H_
+#ifndef OPENPAL_IPHYSICALLAYERCALLBACKS_H
+#define OPENPAL_IPHYSICALLAYERCALLBACKS_H
 
-#include "LayerInterfaces.h"
+#include "openpal/container/ReadOnlyBuffer.h"
 
 namespace openpal
 {
 
-class IPhysicalLayerCallbacks : public IUpperLayer
+class IPhysicalLayerCallbacks
 {
 
 public:
 	virtual ~IPhysicalLayerCallbacks() {}
 
+	// Called by a lower Layer when it is available to this layer
+	virtual void OnLowerLayerUp() = 0;
+
+	// Called by a lower layer when it is no longer available to this layer
+	virtual void OnLowerLayerDown() = 0;
+
 	// In addition to all of the IUpperLayer functions, provide a mechanism to receive open failures
 	// For consistency sake, use NVII pattern in case we want pre/post conditions in the future
 	virtual void OnOpenFailure() = 0;
+
+	// Called by the physical layer when data arrives
+	virtual void OnReceive(const ReadOnlyBuffer&) = 0;
+
+	// Called by lower layer when a previously requested send operation succeeds or fails.
+	// Layers can only have 1 outstanding send operation. The callback is guaranteed
+	// unless the the OnLowerLayerDown() function is called beforehand
+	virtual void OnSendResult(bool isSucccess) = 0;
+
 };
 
 }

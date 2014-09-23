@@ -19,12 +19,12 @@
  * to you under the terms of the License.
  */
 
-#ifndef __I_LINK_LAYER_H_
-#define __I_LINK_LAYER_H_
+#ifndef OPENDNP3_ILINKLAYER_H
+#define OPENDNP3_ILINKLAYER_H
 
 #include "opendnp3/link/ITransportSegment.h"
 
-#include <openpal/channel/LayerInterfaces.h>
+#include "opendnp3/LayerInterfaces.h"
 
 #include <assert.h>
 

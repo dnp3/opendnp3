@@ -32,11 +32,11 @@ LinkLayerTest::LinkLayerTest(LinkConfig config) :
 	upper(&link),
 	numWrites(0)
 {
-	link.SetUpperLayer(&upper);
-	link.SetRouter(this);
+	link.SetUpperLayer(upper);
+	link.SetRouter(*this);
 }
 
-void LinkLayerTest::QueueTransmit(const openpal::ReadOnlyBuffer& buffer, ILinkContext* pContext, bool primary)
+void LinkLayerTest::BeginTransmit(const openpal::ReadOnlyBuffer& buffer, ILinkContext* pContext)
 {
 	lastWrite = buffer;
 	++numWrites;

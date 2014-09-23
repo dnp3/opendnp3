@@ -19,8 +19,8 @@
  * to you under the terms of the License.
  */
 
-#ifndef __STATIC_RANGE_H_
-#define __STATIC_RANGE_H_
+#ifndef OPENDNP3_STATICRANGE_H
+#define OPENDNP3_STATICRANGE_H
 
 #include <cstdint>
 #include "GroupVariationRecord.h"

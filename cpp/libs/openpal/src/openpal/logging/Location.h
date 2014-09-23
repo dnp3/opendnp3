@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __LOCATION_H_
-#define __LOCATION_H_
+#ifndef OPENPAL_LOCATION_H
+#define OPENPAL_LOCATION_H
 
 #define STRINGIFY(x) #x
 #define TOSTRING(x) STRINGIFY(x)

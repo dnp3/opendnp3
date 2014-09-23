@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __INDEXABLE_ITERATOR_H_
-#define __INDEXABLE_ITERATOR_H_
+#ifndef OPENPAL_INDEXABLEITERATOR_H
+#define OPENPAL_INDEXABLEITERATOR_H
 
 #include "openpal/Configure.h"
 

@@ -33,7 +33,7 @@ namespace opendnp3
 Master::Master(
 	openpal::IExecutor& executor,
 	openpal::LogRoot& root,
-	openpal::ILowerLayer& lower,
+	ILowerLayer& lower,
 	ISOEHandler& SOEHandler,	
 	opendnp3::IMasterApplication& application,
 	const MasterParams& params,
@@ -68,30 +68,23 @@ ICommandProcessor& Master::GetCommandProcessor()
 	return commandMarshaller;
 }
 
-MasterScan Master::AddScan(openpal::TimeDuration period, const openpal::Action1<APDURequest&> builder)
+MasterScan Master::AddScan(openpal::TimeDuration period, const std::function<void (APDURequest&)>& builder)
 {
 	PollTask task(builder, period, context.pSOEHandler, &context.logger);
 	auto pTask = context.scheduler.AddPollTask(task);
-	if (pTask)
-	{
-		return MasterScan(*context.pExecutor, context.scheduler, *pTask);
-	}
-	else
-	{
-		return MasterScan();
-	}
+	return MasterScan(*context.pExecutor, context.scheduler, *pTask);	
 }
 
 MasterScan Master::AddClassScan(const ClassField& field, openpal::TimeDuration period)
 {	
 	auto configure = [field](APDURequest& request) { build::WriteClassHeaders(request, field); };
-	return this->AddScan(period, openpal::Action1<APDURequest&>::Bind(configure));
+	return this->AddScan(period, configure);
 }
 
 MasterScan Master::AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period)
 {
 	auto configure = [gvId](APDURequest& request) { build::ReadAllObjects(request, gvId); };
-	return this->AddScan(period, openpal::Action1<APDURequest&>::Bind(configure));
+	return this->AddScan(period, configure);
 }
 
 MasterScan Master::AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period)
@@ -99,7 +92,7 @@ MasterScan Master::AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t 
 	auto configure = [gvId, start, stop](APDURequest& request) {
 		request.GetWriter().WriteRangeHeader<openpal::UInt16>(QualifierCode::UINT16_START_STOP, gvId, start, stop);		
 	};
-	return this->AddScan(period, openpal::Action1<APDURequest&>::Bind(configure));
+	return this->AddScan(period, configure);
 }
 	
 }

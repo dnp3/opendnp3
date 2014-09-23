@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __LOG_FANOUT_HANDLER_H_
-#define __LOG_FANOUT_HANDLER_H_
+#ifndef ASIOPAL_LOGFANOUTHANDLER_H
+#define ASIOPAL_LOGFANOUTHANDLER_H
 
 #include <mutex>
 #include <vector>

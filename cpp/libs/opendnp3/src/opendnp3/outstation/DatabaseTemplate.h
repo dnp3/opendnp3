@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __DATABASE_TEMPLATE_H_
-#define __DATABASE_TEMPLATE_H_
+#ifndef OPENDNP3_DATABASETEMPLATE_H
+#define OPENDNP3_DATABASETEMPLATE_H
 
 #include <cstdint>
 

@@ -36,7 +36,7 @@ PollTask::PollTask(const Builder& builder_, const openpal::TimeDuration& period_
 void PollTask::BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq)
 {		
 	rxCount = 0;
-	builder.Apply(request);
+	builder(request);
 	request.SetFunction(FunctionCode::READ);
 	request.SetControl(AppControlField::Request(seq));
 
@@ -51,13 +51,21 @@ openpal::TimeDuration PollTask::GetPeriod() const
 void PollTask::OnFailure(const MasterParams& params, IMasterScheduler& scheduler)
 {
 	this->NotifyState(PollState::FAILURE);
-	scheduler.Schedule(*this, params.taskRetryPeriod);
+	if (this->period.GetMilliseconds() >= 0)
+	{
+		scheduler.Schedule(*this, params.taskRetryPeriod);		
+	}
+	else
+	{
+		scheduler.Schedule(*this, this->period);
+	}
+	
 }
 
 void PollTask::OnSuccess(const MasterParams& params, IMasterScheduler& scheduler)
 {
 	this->NotifyState(PollState::SUCCESS);
-	scheduler.Schedule(*this, period);
+	scheduler.Schedule(*this, this->period);	
 }
 
 } //end ns

@@ -7,6 +7,9 @@
 // |_| \_|\___/  |______\__,_|_|\__|_|_| |_|\__, (_|_|_)
 //                                           __/ |
 //                                          |___/
+// 
+// This file is auto-generated. Do not edit manually
+// 
 // Copyright 2013 Automatak LLC
 // 
 // Automatak LLC (www.automatak.com) licenses this file
@@ -15,8 +18,8 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef __OPENDNP3_GENERATED_CHANNELSTATE_H_
-#define __OPENDNP3_GENERATED_CHANNELSTATE_H_
+#ifndef OPENDNP3_CHANNELSTATE_H
+#define OPENDNP3_CHANNELSTATE_H
 
 #include <cstdint>
 

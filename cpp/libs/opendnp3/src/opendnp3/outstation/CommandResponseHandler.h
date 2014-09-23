@@ -18,15 +18,13 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __COMMAND_RESPONSE_HANDLER_H_
-#define __COMMAND_RESPONSE_HANDLER_H_
+#ifndef OPENDNP3_COMMANDRESPONSEHANDLER_H
+#define OPENDNP3_COMMANDRESPONSEHANDLER_H
 
-#include "opendnp3/Configure.h"
 #include "opendnp3/app/APDUHandlerBase.h"
 #include "opendnp3/app/APDUResponse.h"
 #include "opendnp3/outstation/ICommandAction.h"
 
-#include <openpal/container/StaticBuffer.h>
 #include <openpal/logging/LogMacros.h>
 
 namespace opendnp3
@@ -64,15 +62,15 @@ private:
 	HeaderWriter* pWriter;
 
 	template <class Target, class IndexType>
-	void RespondToHeader(QualifierCode qualifier, IDNP3Serializer<Target>& serializer, const IterableBuffer<IndexedValue<Target, typename IndexType::Type>>& values);
+	void RespondToHeader(QualifierCode qualifier, const DNP3Serializer<Target>& serializer, const IterableBuffer<IndexedValue<Target, typename IndexType::Type>>& values);
 
 	template <class Target, class IndexType>
-	void RespondToHeaderWithIterator(QualifierCode qualifier, IDNP3Serializer<Target>& serializer, const IterableBuffer<IndexedValue<Target, typename IndexType::Type>>& values, PrefixedWriteIterator<IndexType, Target>* pIterator = nullptr);
+	void RespondToHeaderWithIterator(QualifierCode qualifier, const DNP3Serializer<Target>& serializer, const IterableBuffer<IndexedValue<Target, typename IndexType::Type>>& values, PrefixedWriteIterator<IndexType, Target>* pIterator = nullptr);
 };
 
 
 template <class Target, class IndexType>
-void CommandResponseHandler::RespondToHeaderWithIterator(QualifierCode qualifier, IDNP3Serializer<Target>& serializer, const IterableBuffer<IndexedValue<Target, typename IndexType::Type>>& values, PrefixedWriteIterator<IndexType, Target>* pIterator)
+void CommandResponseHandler::RespondToHeaderWithIterator(QualifierCode qualifier, const DNP3Serializer<Target>& serializer, const IterableBuffer<IndexedValue<Target, typename IndexType::Type>>& values, PrefixedWriteIterator<IndexType, Target>* pIterator)
 {
 	auto commands = values.Iterate();
 	do
@@ -112,7 +110,7 @@ void CommandResponseHandler::RespondToHeaderWithIterator(QualifierCode qualifier
 
 
 template <class Target, class IndexType>
-void CommandResponseHandler::RespondToHeader(QualifierCode qualifier, IDNP3Serializer<Target>& serializer, const IterableBuffer<IndexedValue<Target, typename IndexType::Type>>& values)
+void CommandResponseHandler::RespondToHeader(QualifierCode qualifier, const DNP3Serializer<Target>& serializer, const IterableBuffer<IndexedValue<Target, typename IndexType::Type>>& values)
 {
 	if (pWriter)
 	{

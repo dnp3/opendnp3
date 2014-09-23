@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __ILOG_HANDLER_
-#define __ILOG_HANDLER_
+#ifndef OPENPAL_ILOGHANDLER_H
+#define OPENPAL_ILOGHANDLER_H
 
 #include "LogEntry.h"
 

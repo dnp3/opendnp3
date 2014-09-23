@@ -7,6 +7,9 @@
 // |_| \_|\___/  |______\__,_|_|\__|_|_| |_|\__, (_|_|_)
 //                                           __/ |
 //                                          |___/
+// 
+// This file is auto-generated. Do not edit manually
+// 
 // Copyright 2013 Automatak LLC
 // 
 // Automatak LLC (www.automatak.com) licenses this file
@@ -15,8 +18,8 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef __OPENDNP3_GENERATED_GROUP50_H_
-#define __OPENDNP3_GENERATED_GROUP50_H_
+#ifndef OPENDNP3_GROUP50_H
+#define OPENDNP3_GROUP50_H
 
 #include <openpal/container/ReadOnlyBuffer.h>
 #include <openpal/container/WriteBuffer.h>
@@ -26,11 +29,10 @@ namespace opendnp3 {
 
 struct Group50Var1
 {
-  static const GroupVariationID ID;
-  static const uint32_t SIZE = 6;
+  static GroupVariationID ID() { return GroupVariationID(50,1); }
+  static uint32_t Size() { return 6; }
   static Group50Var1 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group50Var1&, openpal::WriteBuffer&);
-
   uint64_t time;
 };
 

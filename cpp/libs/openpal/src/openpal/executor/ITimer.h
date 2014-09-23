@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __I_TIMER_H_
-#define __I_TIMER_H_
+#ifndef OPENPAL_ITIMER_H
+#define OPENPAL_ITIMER_H
 
 #include "MonotonicTimestamp.h"
 

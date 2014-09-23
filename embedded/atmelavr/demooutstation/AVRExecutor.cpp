@@ -5,7 +5,6 @@
 
 #include <avr/interrupt.h>
 #include <avr/io.h>
-#include <avr/sleep.h>
 
 #include <CriticalSection.h>
 
@@ -26,32 +25,6 @@ void AVRExecutor::Tick()
 	++ticks;	
 }
 
-void AVRExecutor::Sleep()
-{
-	set_sleep_mode(SLEEP_MODE_IDLE);
-  
-	sleep_enable();
-	
-	// things we might disable
-	/*
-	power_adc_disable();
-	power_spi_disable();
-	power_timer0_disable();
-	power_timer2_disable();
-	power_twi_disable(); 
-	*/
-
-	/* Now enter sleep mode. */
-	sleep_mode();
-  
-	/* The program will continue from here after the timer timeout*/
-	sleep_disable(); /* First thing to do is disable sleep. */
-  
-	/* Re-enable the peripherals. */
-	// power_all_enable();
-}
-
-
 void AVRExecutor::Init()
 {		
 	 // Configure timer 1 for CTC mode
@@ -68,7 +41,7 @@ void AVRExecutor::Init()
 	gpExecutor = this;		
 }
 
-AVRExecutor::AVRExecutor() : ticks(0)
+AVRExecutor::AVRExecutor(uint8_t maxQueueSize, uint8_t maxtimers) : ticks(0), work(maxQueueSize), idleTimers(maxtimers)
 {	
 	for(uint8_t i = 0; i < timers.Size(); ++i)
 	{
@@ -78,7 +51,7 @@ AVRExecutor::AVRExecutor() : ticks(0)
 
 MonotonicTimestamp AVRExecutor::GetTime()
 {	
-	// disable interrupts to ensure atomic access to the 'ticks' variable
+	// disable interrupts to ensure atomic access to the int64_t 'ticks' variable
 	CriticalSection cs;
 	return MonotonicTimestamp(ticks*10); // every tick represents 10 milliseconds since Init()				
 }

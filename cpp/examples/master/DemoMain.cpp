@@ -22,13 +22,12 @@
 #include <asiodnp3/PrintingSOEHandler.h>
 #include <asiodnp3/ConsoleLogger.h>
 #include <asiodnp3/DefaultMasterApplication.h>
+#include <asiodnp3/BlockingCommandCallback.h>
 
 #include <asiopal/UTCTimeSource.h>
 
 #include <opendnp3/LogLevels.h>
 #include <opendnp3/app/ControlRelayOutputBlock.h>
-
-#include "BlockingCommandCallback.h"
 
 #include <thread>
 

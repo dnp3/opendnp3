@@ -19,8 +19,8 @@
  * to you under the terms of the License.
  */
 
-#ifndef __I_OUTSTATION_APPLICATION_H_
-#define __I_OUTSTATION_APPLICATION_H_
+#ifndef OPENDNP3_IOUTSTATIONAPPLICATION_H
+#define OPENDNP3_IOUTSTATIONAPPLICATION_H
 
 #include <openpal/executor/UTCTimestamp.h>
 

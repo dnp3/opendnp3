@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __MASTER_PARAMS_H_
-#define __MASTER_PARAMS_H_
+#ifndef OPENDNP3_MASTERPARAMS_H
+#define OPENDNP3_MASTERPARAMS_H
 
 #include <openpal/executor/TimeDuration.h>
 
@@ -58,6 +58,12 @@ struct MasterParams
 
 	/// Time delay beforce retrying a failed task
 	openpal::TimeDuration taskRetryPeriod;
+
+	/// maximum APDU tx size in bytes
+	uint32_t maxTxFragSize;
+
+	/// maximum APDU rx size in bytes
+	uint32_t maxRxFragSize;
 };
 
 }

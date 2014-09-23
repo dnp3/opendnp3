@@ -20,7 +20,7 @@
  */
 #include <catch.hpp>
 
-#include <openpal/container/StaticQueue.h>
+#include <openpal/container/Queue.h>
 
 using namespace openpal;
 
@@ -28,12 +28,12 @@ using namespace openpal;
 
 TEST_CASE(SUITE("StaticQueueCompiles"))
 {
-	StaticQueue<char, int, 4> queue;
+	Queue<char, int> queue(4);
 }
 
 TEST_CASE(SUITE("CorrectInitialState"))
 {
-	StaticQueue<int, uint8_t, 3> queue;
+	Queue<int, uint8_t> queue(3);
 
 	REQUIRE(queue.IsEmpty());
 	REQUIRE(!queue.IsFull());
@@ -43,7 +43,7 @@ TEST_CASE(SUITE("CorrectInitialState"))
 
 TEST_CASE(SUITE("PushesUntilFullAndPopsCorrectly"))
 {
-	StaticQueue<int, uint16_t, 3> queue;
+	Queue<int, uint16_t> queue(3);
 
 	REQUIRE(queue.Enqueue(1));
 	REQUIRE(queue.Enqueue(2));
@@ -57,7 +57,7 @@ TEST_CASE(SUITE("PushesUntilFullAndPopsCorrectly"))
 
 TEST_CASE(SUITE("PushesAndPopsInRing"))
 {
-	StaticQueue<int, uint16_t, 3> queue;
+	Queue<int, uint16_t> queue(3);
 
 	REQUIRE(queue.Enqueue(1));
 	REQUIRE(queue.Enqueue(2));
@@ -75,7 +75,7 @@ TEST_CASE(SUITE("PushesAndPopsInRing"))
 
 TEST_CASE(SUITE("QueueCanBeClearedWhileNeitherFullNorEmpty"))
 {
-	StaticQueue<int, uint16_t, 3> queue;
+	Queue<int, uint16_t> queue(3);
 
 	REQUIRE(queue.Enqueue(1));
 	REQUIRE(queue.Enqueue(2));
@@ -91,7 +91,7 @@ TEST_CASE(SUITE("QueueCanBeClearedWhileNeitherFullNorEmpty"))
 
 TEST_CASE(SUITE("QueueCanBeClearedWhileEmpty"))
 {
-	StaticQueue<int, uint16_t, 3> queue;
+	Queue<int, uint16_t> queue(3);
 	queue.Clear();
 	REQUIRE(queue.Enqueue(1));
 	REQUIRE(queue.Enqueue(2));
@@ -103,7 +103,7 @@ TEST_CASE(SUITE("QueueCanBeClearedWhileEmpty"))
 
 TEST_CASE(SUITE("QueueCanBeClearedWhileFull"))
 {
-	StaticQueue<int, uint16_t, 3> queue;
+	Queue<int, uint16_t> queue(3);
 
 	REQUIRE(queue.Enqueue(1));
 	REQUIRE(queue.Enqueue(2));

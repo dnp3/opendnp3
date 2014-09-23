@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __WRITE_BUFFER_H_
-#define __WRITE_BUFFER_H_
+#ifndef OPENPAL_WRITEBUFFER_H
+#define OPENPAL_WRITEBUFFER_H
 
 #include "HasSize.h"
 

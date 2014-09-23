@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __MEASUREMENT_HANDLER_H_
-#define __MEASUREMENT_HANDLER_H_
+#ifndef OPENDNP3_MEASUREMENTHANDLER_H
+#define OPENDNP3_MEASUREMENTHANDLER_H
 
 #include <openpal/logging/Logger.h>
 

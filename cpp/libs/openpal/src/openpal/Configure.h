@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __OPENPAL_CONFIGURE_H_
-#define __OPENPAL_CONFIGURE_H_
+#ifndef OPENPAL_CONFIGURE_H
+#define OPENPAL_CONFIGURE_H
 
 #include <cstdint>
 
@@ -40,10 +40,31 @@ namespace openpal { namespace sizes {
 #ifdef AVR
 
 #include <stddef.h>
+#include <stdlib.h>
 
 inline void* operator new(size_t, void* p)
 { 
-	return p; 
+	return p;
+}
+
+inline void * operator new(size_t size)
+{
+	return malloc(size);
+}
+
+inline void operator delete(void * ptr)
+{
+	free(ptr);
+}
+
+inline void * operator new[](size_t size)
+{
+	return malloc(size);
+}
+
+inline void operator delete[](void * ptr)
+{
+	free(ptr);
 }
 
 extern "C" void abort();

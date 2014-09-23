@@ -7,6 +7,9 @@
 // |_| \_|\___/  |______\__,_|_|\__|_|_| |_|\__, (_|_|_)
 //                                           __/ |
 //                                          |___/
+// 
+// This file is auto-generated. Do not edit manually
+// 
 // Copyright 2013 Automatak LLC
 // 
 // Automatak LLC (www.automatak.com) licenses this file
@@ -22,14 +25,6 @@
 using namespace openpal;
 
 namespace opendnp3 {
-
-const GroupVariationID  Group60Var1::ID(60,1);
-
-const GroupVariationID  Group60Var2::ID(60,2);
-
-const GroupVariationID  Group60Var3::ID(60,3);
-
-const GroupVariationID  Group60Var4::ID(60,4);
 
 
 }

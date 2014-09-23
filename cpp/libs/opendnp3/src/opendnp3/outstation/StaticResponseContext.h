@@ -18,14 +18,13 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __STATIC_RESPONSE_CONTEXT_H_
-#define __STATIC_RESPONSE_CONTEXT_H_
+#ifndef OPENDNP3_STATICRESPONSECONTEXT_H
+#define OPENDNP3_STATICRESPONSECONTEXT_H
 
-#include <openpal/container/StaticQueue.h>
+#include <openpal/container/Queue.h>
 #include <openpal/serialization/Serialization.h>
 
 #include <openpal/util/Uncopyable.h>
-#include "opendnp3/Configure.h"
 
 #include "opendnp3/app/StaticRange.h"
 #include "opendnp3/app/APDUResponse.h"
@@ -79,7 +78,7 @@ private:
 	Database* pDatabase;
 	StaticResponseConfig defaults;
 
-	openpal::StaticQueue<StaticRangeLoader, uint8_t, sizes::MAX_READ_REQUESTS> staticResponseQueue;
+	openpal::Queue<StaticRangeLoader, uint8_t> staticResponseQueue;
 
 	template <class Target>
 	IINField QueueRange(const Range& range, typename Target::StaticResponseEnum enumeration)

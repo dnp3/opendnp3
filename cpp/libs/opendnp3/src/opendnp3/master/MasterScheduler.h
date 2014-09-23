@@ -19,13 +19,12 @@
  * to you under the terms of the License.
  */
 
-#ifndef __MASTER_SCHEDULER_H_
-#define __MASTER_SCHEDULER_H_
+#ifndef OPENDNP3_MASTERSCHEDULER_H
+#define OPENDNP3_MASTERSCHEDULER_H
 
 #include <openpal/executor/Function0.h>
 #include <openpal/executor/IExecutor.h>
 #include <openpal/container/Settable.h>
-#include <openpal/container/StaticLinkedList.h>
 
 #include "opendnp3/master/MasterTasks.h"
 #include "opendnp3/master/PollTask.h"
@@ -35,7 +34,10 @@
 #include "opendnp3/master/IScheduleCallback.h"
 #include "opendnp3/master/TaskBitmask.h"
 
-#include "opendnp3/Configure.h"
+#include <deque>
+#include <list>
+#include <vector>
+#include <functional>
 
 namespace opendnp3
 {
@@ -45,7 +47,7 @@ class MasterScheduler : public IMasterScheduler
 
 public:
 
-	typedef openpal::Action1<ICommandProcessor&> CommandErasure;
+	typedef std::function<void (ICommandProcessor&)>  CommandErasure;
 
 	MasterScheduler(	openpal::Logger* pLogger,
 						MasterTasks& tasks,
@@ -81,12 +83,13 @@ public:
 	/*
 	* Schedule a command to run
 	*/
-	bool ScheduleUserTask(const openpal::Function0<IMasterTask*>& task);
+	void ScheduleUserTask(const openpal::Function0<IMasterTask*>& task);
 
 	/**
 	* Add a new poll to the scheduler
+	* @return an id that can be used to 
 	*/
-	PollTask* AddPollTask(const PollTask& pt);
+	PollTask* AddPollTask(const PollTask& task);
 
 	/*
 	* Called when the master observes the IIN::DeviceRestart bit
@@ -101,9 +104,7 @@ private:
 
 	bool CanTaskRun(IMasterTask& task, tasks::TaskBitmask bitmask, const MasterParams& params);
 
-	IMasterTask* GetPeriodicTask(const MasterParams& params, const openpal::MonotonicTimestamp& now);
-
-	openpal::ListNode<TaskRecord>* GetEarliestExpirationTime();	
+	IMasterTask* GetPeriodicTask(const MasterParams& params, const openpal::MonotonicTimestamp& now);	
 
 	void ReportFailure(const CommandErasure& action, CommandResult result);	
 	
@@ -137,11 +138,9 @@ private:
 
 	openpal::Settable<TaskRecord> blockingTask;
 
-	openpal::StaticLinkedList<PollTask, uint16_t, sizes::MAX_MASTER_POLL_TASKS> pollTasks;
-	
-	openpal::StaticLinkedList<TaskRecord, uint16_t, sizes::MAX_MASTER_POLL_TASKS> periodicTasks;	
-
-	openpal::StaticQueue<openpal::Function0<IMasterTask*>, uint16_t, sizes::MAX_MASTER_USERS_TASKS> userTasks;
+	std::list<PollTask> pollTasks;	
+	std::vector<TaskRecord> periodicTasks;
+	std::deque<openpal::Function0<IMasterTask*>> userTasks;
 	
 };
 

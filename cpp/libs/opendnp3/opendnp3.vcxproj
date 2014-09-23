@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AppConstants.h" />
     <ClInclude Include="src\opendnp3\app\AnalogOutput.h" />
     <ClInclude Include="src\opendnp3\app\APDUBuilders.h" />
     <ClInclude Include="src\opendnp3\app\APDUHandlerBase.h" />
@@ -47,7 +48,7 @@
     <ClInclude Include="src\opendnp3\app\GroupVariationRecord.h" />
     <ClInclude Include="src\opendnp3\app\GroupVariationID.h" />
     <ClInclude Include="src\opendnp3\app\IAPDUHandler.h" />
-    <ClInclude Include="src\opendnp3\app\IDNP3Serializer.h" />
+    <ClInclude Include="src\opendnp3\app\DNP3Serializer.h" />
     <ClInclude Include="src\opendnp3\app\IINField.h" />
     <ClInclude Include="src\opendnp3\app\IndexedValue.h" />
     <ClInclude Include="src\opendnp3\app\IndexParser.h" />
@@ -81,6 +82,7 @@
     <ClInclude Include="src\opendnp3\gen\RestartMode.h" />
     <ClInclude Include="src\opendnp3\gen\TimestampMode.h" />
     <ClInclude Include="src\opendnp3\gen\TimeSyncMode.h" />
+    <ClInclude Include="src\opendnp3\LayerInterfaces.h" />
     <ClInclude Include="src\opendnp3\link\IChannelStateListener.h" />
     <ClInclude Include="src\opendnp3\link\LinkChannelStatistics.h" />
     <ClInclude Include="src\opendnp3\ErrorCodes.h" />
@@ -119,10 +121,6 @@
     <ClInclude Include="src\opendnp3\link\LinkLayer.h" />
     <ClInclude Include="src\opendnp3\link\LinkLayerConstants.h" />
     <ClInclude Include="src\opendnp3\link\LinkLayerParser.h" />
-    <ClInclude Include="src\opendnp3\link\LinkLayerRouter.h" />
-    <ClInclude Include="src\opendnp3\link\LinkRoute.h" />
-    <ClInclude Include="src\opendnp3\link\PhysicalLayerMonitor.h" />
-    <ClInclude Include="src\opendnp3\link\PhysicalLayerMonitorStates.h" />
     <ClInclude Include="src\opendnp3\link\PriLinkLayerStates.h" />
     <ClInclude Include="src\opendnp3\link\SecLinkLayerStates.h" />
     <ClInclude Include="src\opendnp3\link\ShiftableBuffer.h" />
@@ -192,6 +190,8 @@
     <ClInclude Include="src\opendnp3\outstation\DatabaseTemplate.h" />
     <ClInclude Include="src\opendnp3\outstation\DeferredRequest.h" />
     <ClInclude Include="src\opendnp3\outstation\DualValue.h" />
+    <ClInclude Include="src\opendnp3\outstation\DynamicallyAllocatedDatabase.h" />
+    <ClInclude Include="src\opendnp3\outstation\DynamicallyAllocatedEventBuffer.h" />
     <ClInclude Include="src\opendnp3\outstation\Event.h" />
     <ClInclude Include="src\opendnp3\outstation\EventBufferConfig.h" />
     <ClInclude Include="src\opendnp3\outstation\EventBufferFacade.h" />
@@ -222,8 +222,6 @@
     <ClInclude Include="src\opendnp3\outstation\SimpleCommandHandler.h" />
     <ClInclude Include="src\opendnp3\outstation\OutstationStackConfig.h" />
     <ClInclude Include="src\opendnp3\outstation\SOERecord.h" />
-    <ClInclude Include="src\opendnp3\outstation\StaticallyAllocatedDatabase.h" />
-    <ClInclude Include="src\opendnp3\outstation\StaticallyAllocatedEventBuffer.h" />
     <ClInclude Include="src\opendnp3\outstation\StaticDataFacade.h" />
     <ClInclude Include="src\opendnp3\outstation\StaticLoader.h" />
     <ClInclude Include="src\opendnp3\outstation\StaticResponseConfig.h" />
@@ -232,8 +230,8 @@
     <ClInclude Include="src\opendnp3\outstation\TimeTransaction.h" />
     <ClInclude Include="src\opendnp3\outstation\ValueMetadataPair.h" />
     <ClInclude Include="src\opendnp3\outstation\WriteHandler.h" />
+    <ClInclude Include="src\opendnp3\Route.h" />
     <ClInclude Include="src\opendnp3\StackStatistics.h" />
-    <ClInclude Include="src\opendnp3\Configure.h" />
     <ClInclude Include="src\opendnp3\transport\TransportConstants.h" />
     <ClInclude Include="src\opendnp3\transport\TransportLayer.h" />
     <ClInclude Include="src\opendnp3\transport\TransportRx.h" />
@@ -296,10 +294,6 @@
     <ClCompile Include="src\opendnp3\link\LinkHeader.cpp" />
     <ClCompile Include="src\opendnp3\link\LinkLayer.cpp" />
     <ClCompile Include="src\opendnp3\link\LinkLayerParser.cpp" />
-    <ClCompile Include="src\opendnp3\link\LinkLayerRouter.cpp" />
-    <ClCompile Include="src\opendnp3\link\LinkRoute.cpp" />
-    <ClCompile Include="src\opendnp3\link\PhysicalLayerMonitor.cpp" />
-    <ClCompile Include="src\opendnp3\link\PhysicalLayerMonitorStates.cpp" />
     <ClCompile Include="src\opendnp3\link\PriLinkLayerStates.cpp" />
     <ClCompile Include="src\opendnp3\link\SecLinkLayerStates.cpp" />
     <ClCompile Include="src\opendnp3\link\ShiftableBuffer.cpp" />
@@ -352,6 +346,8 @@
     <ClCompile Include="src\opendnp3\outstation\CommandActionAdapter.cpp" />
     <ClCompile Include="src\opendnp3\outstation\CommandResponseHandler.cpp" />
     <ClCompile Include="src\opendnp3\outstation\Database.cpp" />
+    <ClCompile Include="src\opendnp3\outstation\DynamicallyAllocatedDatabase.cpp" />
+    <ClCompile Include="src\opendnp3\outstation\DynamicallyAllocatedEventBuffer.cpp" />
     <ClCompile Include="src\opendnp3\outstation\EventBufferConfig.cpp" />
     <ClCompile Include="src\opendnp3\outstation\EventBufferFacade.cpp" />
     <ClCompile Include="src\opendnp3\outstation\EventCount.cpp" />
@@ -455,7 +451,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
-      <ExceptionHandling>false</ExceptionHandling>
+      <ExceptionHandling>Sync</ExceptionHandling>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -473,7 +469,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
-      <ExceptionHandling>false</ExceptionHandling>
+      <ExceptionHandling>Sync</ExceptionHandling>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -490,7 +486,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <ExceptionHandling>false</ExceptionHandling>
+      <ExceptionHandling>Sync</ExceptionHandling>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -510,7 +506,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(SolutionDir)/cpp/include</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <ExceptionHandling>false</ExceptionHandling>
+      <ExceptionHandling>Sync</ExceptionHandling>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

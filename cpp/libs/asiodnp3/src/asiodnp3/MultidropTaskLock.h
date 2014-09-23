@@ -19,8 +19,8 @@
  * to you under the terms of the License.
  */
 
-#ifndef __MULTIDROP_TASK_LOCK_H_
-#define __MULTIDROP_TASK_LOCK_H_
+#ifndef ASIODNP3_MULTIDROPTASKLOCK_H
+#define ASIODNP3_MULTIDROPTASKLOCK_H
 
 #include <opendnp3/master/ITaskLock.h>
 

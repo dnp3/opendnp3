@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __I_COMMAND_HANDLER_H_
-#define __I_COMMAND_HANDLER_H_
+#ifndef OPENDNP3_ICOMMANDHANDLER_H
+#define OPENDNP3_ICOMMANDHANDLER_H
 
 #include "opendnp3/app/ControlRelayOutputBlock.h"
 #include "opendnp3/app/AnalogOutput.h"
@@ -37,85 +37,85 @@ public:
 
 	/**
 	* Ask if the application supports a ControlRelayOutputBlock - group 12 variation 1
-	* @param arCommand command to operate
-	* @param aIndex index of the command
+	* @param command command to operate
+	* @param index index of the command
 	* @return result of request
 	*/
-	virtual CommandStatus Supports(const ControlRelayOutputBlock& arCommand, uint16_t aIndex) = 0;
+	virtual CommandStatus Select(const ControlRelayOutputBlock& command, uint16_t index) = 0;
 
 	/**
 	* Operate a ControlRelayOutputBlock - group 12 variation 1
-	* @param arCommand command to operate
-	* @param aIndex index of the command
+	* @param command command to operate
+	* @param index index of the command
 	* @return result of request
 	*/
-	virtual CommandStatus Perform(const ControlRelayOutputBlock& arCommand, uint16_t aIndex) = 0;
+	virtual CommandStatus Operate(const ControlRelayOutputBlock& command, uint16_t index) = 0;
 
 
 	/**
 	* Ask if the application supports a 16 bit analog output - group 41 variation 2
-	* @param arCommand command to operate
-	* @param aIndex index of the command
+	* @param command command to operate
+	* @param index index of the command
 	* @return result of request
 	*/
-	virtual CommandStatus Supports(const AnalogOutputInt16& arCommand, uint16_t aIndex) = 0;
+	virtual CommandStatus Select(const AnalogOutputInt16& command, uint16_t index) = 0;
 
 	/**
 	* Ask if the application supports a 16 bit analog output - group 41 variation 2
-	* @param arCommand command to operate
-	* @param aIndex index of the command
+	* @param command command to operate
+	* @param index index of the command
 	* @return result of request
 	*/
-	virtual CommandStatus Perform(const AnalogOutputInt16& arCommand, uint16_t aIndex) = 0;
+	virtual CommandStatus Operate(const AnalogOutputInt16& command, uint16_t index) = 0;
 
 
 	/**
 	* Ask if the application supports a 32 bit analog output - group 41 variation 1
-	* @param arCommand command to operate
-	* @param aIndex index of the command
+	* @param command command to operate
+	* @param index index of the command
 	* @return result of request
 	*/
-	virtual CommandStatus Supports(const AnalogOutputInt32& arCommand, uint16_t aIndex) = 0;
+	virtual CommandStatus Select(const AnalogOutputInt32& command, uint16_t index) = 0;
 
 	/**
 	* Operate a 32 bit analog output - group 41 variation 1
-	* @param arCommand command to operate
-	* @param aIndex index of the command
+	* @param command command to operate
+	* @param index index of the command
 	* @return result of request
 	*/
-	virtual CommandStatus Perform(const AnalogOutputInt32& arCommand, uint16_t aIndex) = 0;
+	virtual CommandStatus Operate(const AnalogOutputInt32& command, uint16_t index) = 0;
 
 	/**
 	* Ask if the application supports a single precision, floating point analog output - group 41 variation 3
-	* @param arCommand command to operate
-	* @param aIndex index of the command
+	* @param command command to operate
+	* @param index index of the command
 	* @return result of request
 	*/
-	virtual CommandStatus Supports(const AnalogOutputFloat32& arCommand, uint16_t aIndex) = 0;
+	virtual CommandStatus Select(const AnalogOutputFloat32& command, uint16_t index) = 0;
 
 	/**
 	* Operate a single precision, floating point analog output - group 41 variation 3
-	* @param arCommand command to operate
-	* @param aIndex index of the command
+	* @param command command to operate
+	* @param index index of the command
 	* @return result of request
 	*/
-	virtual CommandStatus Perform(const AnalogOutputFloat32& arCommand, uint16_t aIndex) = 0;
+	virtual CommandStatus Operate(const AnalogOutputFloat32& command, uint16_t index) = 0;
 
 	/**
 	* Ask if the application supports a double precision, floating point analog output - group 41 variation 4
-	* @param arCommand command to operate
-	* @param aIndex index of the command
+	* @param command command to operate
+	* @param index index of the command
 	* @return result of request
 	*/
-	virtual CommandStatus Supports(const AnalogOutputDouble64& arCommand, uint16_t aIndex) = 0;
+	virtual CommandStatus Select(const AnalogOutputDouble64& command, uint16_t index) = 0;
 
 	/**
 	* Operate a double precision, floating point analog output - group 41 variation 4
-	* @param arCommand command to operate
-	* @param aIndex index of the command
+	* @param command command to operate
+	* @param index index of the command
 	* @return result of request
 	*/
-	virtual CommandStatus Perform(const AnalogOutputDouble64& arCommand, uint16_t aIndex) = 0;
+	virtual CommandStatus Operate(const AnalogOutputDouble64& command, uint16_t index) = 0;
 
 };
 

@@ -20,7 +20,8 @@
  */
 #include "TransportIntegrationStack.h"
 
-#include <opendnp3/link/LinkRoute.h>
+#include <opendnp3/Route.h>
+#include <opendnp3/app/AppConstants.h>
 
 #include <openpal/channel/IPhysicalLayer.h>
 
@@ -29,21 +30,21 @@ using namespace openpal;
 namespace opendnp3
 {
 
-	TransportIntegrationStack::TransportIntegrationStack(openpal::LogRoot& root, openpal::IExecutor& executor, IPhysicalLayer* apPhys, LinkConfig aCfg) :
-	mRouter(root, executor, apPhys, TimeDuration::Seconds(1), TimeDuration::Seconds(1)),
-	mLink(root, &executor, aCfg),
-	mTransport(root, &executor)
+TransportIntegrationStack::TransportIntegrationStack(openpal::LogRoot& root, openpal::IExecutor& executor, IPhysicalLayer* apPhys, LinkConfig aCfg) :
+	router(root, executor, apPhys, TimeDuration::Seconds(1), TimeDuration::Seconds(1)),
+	link(root, &executor, aCfg),
+	transport(root, &executor, DEFAULT_MAX_APDU_SIZE)
 {
-	LinkRoute route(aCfg.RemoteAddr, aCfg.LocalAddr);
-	mRouter.AddContext(&mLink, route);
-	mRouter.Enable(&mLink);
-	mLink.SetRouter(&mRouter);
+	Route route(aCfg.RemoteAddr, aCfg.LocalAddr);
+	router.AddContext(&link, route);
+	router.Enable(&link);
+	link.SetRouter(router);
 
-	mLink.SetUpperLayer(&mTransport);
-	mTransport.SetLinkLayer(&mLink);
+	link.SetUpperLayer(transport);
+	transport.SetLinkLayer(&link);
 
-	mTransport.SetAppLayer(&mUpper);
-	mUpper.SetLowerLayer(&mTransport);
+	transport.SetAppLayer(&upper);
+	upper.SetLowerLayer(transport);
 }
 
 

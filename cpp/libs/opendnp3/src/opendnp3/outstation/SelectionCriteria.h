@@ -19,8 +19,8 @@
  * to you under the terms of the License.
  */
 
-#ifndef __SELECTION_CRITERIA_H_
-#define __SELECTION_CRITERIA_H_
+#ifndef OPENDNP3_SELECTIONCRITERIA_H
+#define OPENDNP3_SELECTIONCRITERIA_H
 
 #include "opendnp3/app/EventType.h"
 #include "opendnp3/outstation/EventCount.h"

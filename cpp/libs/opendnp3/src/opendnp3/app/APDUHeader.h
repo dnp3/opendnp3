@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __APDU_HEADER_H_
-#define __APDU_HEADER_H_
+#ifndef OPENDNP3_APDUHEADER_H
+#define OPENDNP3_APDUHEADER_H
 
 #include "opendnp3/gen/FunctionCode.h"
 #include "opendnp3/app/AppControlField.h"

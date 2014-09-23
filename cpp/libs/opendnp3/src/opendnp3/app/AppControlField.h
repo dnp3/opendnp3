@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __APP_CONTROL_FIELD_H_
-#define __APP_CONTROL_FIELD_H_
+#ifndef OPENDNP3_APPCONTROLFIELD_H
+#define OPENDNP3_APPCONTROLFIELD_H
 
 #include <cstdint>
 
@@ -43,12 +43,7 @@ struct AppControlField
 
 	AppControlField(bool aFIR, bool aFIN, bool aCON, bool aUNS, uint8_t aSEQ = 0);
 
-	uint8_t ToByte() const;
-
-	inline bool IsFirAndFin() const
-	{
-		return FIR && FIN;
-	}
+	uint8_t ToByte() const;	
 
 	bool FIR;
 	bool FIN;

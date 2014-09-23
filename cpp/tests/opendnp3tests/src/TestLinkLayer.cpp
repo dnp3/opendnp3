@@ -24,7 +24,7 @@
 #include <opendnp3/link/LinkFrame.h>
 
 #include <openpal/util/ToHex.h>
-#include <openpal/container/StaticBuffer.h>
+#include <openpal/container/DynamicBuffer.h>
 
 #include "BufferHelpers.h"
 #include "LinkLayerTest.h"
@@ -140,7 +140,7 @@ TEST_CASE(SUITE("SecondaryResetLink"))
 	t.link.OnLowerLayerUp();
 	t.link.ResetLinkStates(false, 1, 1024);
 
-	StaticBuffer<292> buffer;
+	DynamicBuffer buffer(292);
 	auto writeTo = buffer.GetWriteBuffer();
 	auto frame = LinkFrame::FormatAck(writeTo, true, false, 1024, 1, nullptr);
 
@@ -158,14 +158,14 @@ TEST_CASE(SUITE("SecAckWrongFCB"))
 
 	t.link.ResetLinkStates(false, 1, 1024);
 	REQUIRE(t.numWrites == 1);
-	t.link.OnTransmitResult(false, true);
+	t.link.OnTransmitResult(true);
 
 	ByteStr b(250, 0);
 	t.link.ConfirmedUserData(false, false, 1, 1024, b.ToReadOnly());
-	t.link.OnTransmitResult(false, true);
+	t.link.OnTransmitResult(true);
 	REQUIRE(t.numWrites ==  2);
 
-	StaticBuffer<292> buffer;
+	DynamicBuffer buffer(292);
 	auto writeTo = buffer.GetWriteBuffer();
 	auto frame = LinkFrame::FormatAck(writeTo, true, false, 1024, 1, nullptr);
 
@@ -182,13 +182,13 @@ TEST_CASE(SUITE("SecondaryResetResetLinkStates"))
 	t.link.OnLowerLayerUp();
 	t.link.ResetLinkStates(false, 1, 1024);
 	REQUIRE(t.numWrites == 1);
-	t.link.OnTransmitResult(false, true);
+	t.link.OnTransmitResult(true);
 
 	t.link.ResetLinkStates(false, 1, 1024);
 	REQUIRE(t.numWrites == 2);
-	t.link.OnTransmitResult(false, true);
+	t.link.OnTransmitResult(true);
 
-	StaticBuffer<292> buffer;
+	DynamicBuffer buffer(292);
 	auto writeTo = buffer.GetWriteBuffer();
 	auto frame = LinkFrame::FormatAck(writeTo, true, false, 1024, 1, nullptr);
 
@@ -202,12 +202,12 @@ TEST_CASE(SUITE("SecondaryResetConfirmedUserData"))
 	t.link.OnLowerLayerUp();
 	t.link.ResetLinkStates(false, 1, 1024);
 	REQUIRE(t.numWrites == 1);
-	t.link.OnTransmitResult(false, true);
+	t.link.OnTransmitResult(true);
 
 	ByteStr bytes(250, 0);
 	t.link.ConfirmedUserData(false, true, 1, 1024, bytes.ToReadOnly());
 	REQUIRE(t.numWrites ==  2);
-	t.link.OnTransmitResult(false, true);
+	t.link.OnTransmitResult(true);
 
 	REQUIRE(t.upper.receivedQueue.front() == bytes.ToHex());
 	REQUIRE(t.log.IsLogErrorFree());
@@ -225,9 +225,9 @@ TEST_CASE(SUITE("RequestStatusOfLink"))
 	t.link.OnLowerLayerUp();
 	t.link.RequestLinkStatus(false, 1, 1024); //should be able to request this before the link is reset
 	REQUIRE(t.numWrites ==  1);
-	t.link.OnTransmitResult(false, true);
+	t.link.OnTransmitResult(true);
 
-	StaticBuffer<292> buffer;
+	DynamicBuffer buffer(292);
 	auto writeTo = buffer.GetWriteBuffer();
 	auto frame = LinkFrame::FormatLinkStatus(writeTo, true, false, 1024, 1, nullptr);
 
@@ -235,7 +235,7 @@ TEST_CASE(SUITE("RequestStatusOfLink"))
 
 	t.link.ResetLinkStates(false, 1, 1024);
 	REQUIRE(t.numWrites == 2);
-	t.link.OnTransmitResult(false, true);
+	t.link.OnTransmitResult(true);
 
 	t.link.RequestLinkStatus(false, 1, 1024); //should be able to request this before the link is reset
 	REQUIRE(t.numWrites ==  3);
@@ -252,10 +252,10 @@ TEST_CASE(SUITE("TestLinkStates"))
 
 	t.link.ResetLinkStates(false, 1, 1024);
 	REQUIRE(t.numWrites ==  1);
-	t.link.OnTransmitResult(false, true);
+	t.link.OnTransmitResult(true);
 
 	t.link.TestLinkStatus(false, true, 1, 1024);
-	StaticBuffer<292> buffer;
+	DynamicBuffer buffer(292);
 	auto writeTo = buffer.GetWriteBuffer();
 	auto frame = LinkFrame::FormatAck(writeTo, true, false, 1024, 1, nullptr);
 	REQUIRE(t.numWrites ==  2);
@@ -271,7 +271,7 @@ TEST_CASE(SUITE("SendUnconfirmed"))
 	BufferSegment segment(250, bytes.ToHex());
 	t.link.Send(segment);
 	REQUIRE(t.numWrites ==  1);
-	t.link.OnTransmitResult(true, true);
+	t.link.OnTransmitResult(true);
 
 	REQUIRE(t.lastWrite.Size() ==  292);
 
@@ -288,7 +288,7 @@ TEST_CASE(SUITE("CloseBehavior"))
 	ByteStr bytes(250, 0);
 	BufferSegment segments(250, bytes.ToHex());
 	t.link.Send(segments);
-	t.link.OnTransmitResult(true, true);
+	t.link.OnTransmitResult(true);
 
 	REQUIRE(t.upper.CountersEqual(1, 0));
 	t.link.OnLowerLayerDown(); //take it down during the middle of a send
@@ -315,9 +315,9 @@ TEST_CASE(SUITE("ResetLinkTimerExpiration"))
 	BufferSegment segments(250, bytes.ToHex());
 	t.link.Send(segments);
 	REQUIRE(t.numWrites ==  1);
-	t.link.OnTransmitResult(true, true); // reset link
+	t.link.OnTransmitResult(true); // reset link
 
-	StaticBuffer<292> buffer;
+	DynamicBuffer buffer(292);
 	auto writeTo = buffer.GetWriteBuffer();
 	auto result = LinkFrame::FormatResetLinkStates(writeTo, true, 1024, 1, nullptr);
 	REQUIRE(toHex(t.lastWrite) ==  toHex(result));
@@ -343,19 +343,20 @@ TEST_CASE(SUITE("ResetLinkTimerExpirationWithRetry"))
 	BufferSegment segments(250, bytes.ToHex());
 	t.link.Send(segments);
 	REQUIRE(t.numWrites == 1);
-	t.link.OnTransmitResult(true, true);
+	t.link.OnTransmitResult(true);
 	t.exe.AdvanceTime(cfg.Timeout);
 	REQUIRE(t.exe.RunOne()); // timeout the wait for Ack
 	
 	REQUIRE(t.upper.CountersEqual(0, 0)); //check that the send is still occuring
 	REQUIRE(t.numWrites == 2);
-	StaticBuffer<292> buffer;
+	DynamicBuffer buffer(292);
+
 	{
 		auto writeTo = buffer.GetWriteBuffer();
 		auto result = LinkFrame::FormatResetLinkStates(writeTo, true, 1024, 1, nullptr);
 		REQUIRE(toHex(t.lastWrite) == toHex(result)); // check that reset links got sent again
 	}
-	t.link.OnTransmitResult(true, true);
+	t.link.OnTransmitResult(true);
 
 	t.link.Ack(false, false, 1, 1024); // this time Ack it
 	REQUIRE(t.numWrites == 3);
@@ -364,7 +365,7 @@ TEST_CASE(SUITE("ResetLinkTimerExpirationWithRetry"))
 		auto result = LinkFrame::FormatConfirmedUserData(writeTo, true, true, 1024, 1, bytes, bytes.Size(), nullptr);
 		REQUIRE(toHex(t.lastWrite) == toHex(result)); // check that the data got sent
 	}
-	t.link.OnTransmitResult(true, true);
+	t.link.OnTransmitResult(true);
 
 	t.exe.AdvanceTime(cfg.Timeout);
 	REQUIRE(t.exe.RunOne()); //timeout the ACK	
@@ -374,7 +375,7 @@ TEST_CASE(SUITE("ResetLinkTimerExpirationWithRetry"))
 	segments.Reset();
 	t.link.Send(segments);
 	REQUIRE(t.numWrites ==  4);
-	t.link.OnTransmitResult(true, true);
+	t.link.OnTransmitResult(true);
 
 	REQUIRE(t.log.IsLogErrorFree());
 	t.exe.AdvanceTime(cfg.Timeout);
@@ -395,24 +396,24 @@ TEST_CASE(SUITE("ResetLinkTimerExpirationWithRetryResetState"))
 	BufferSegment segments(250, bytes.ToHex());
 	t.link.Send(segments);
 	REQUIRE(t.numWrites == 1);
-	t.link.OnTransmitResult(true, true);
+	t.link.OnTransmitResult(true);
 	t.link.Ack(false, false, 1, 1024);
 	REQUIRE(t.numWrites == 2);
-	t.link.OnTransmitResult(true, true);
+	t.link.OnTransmitResult(true);
 	t.link.Ack(false, false, 1, 1024);
 	REQUIRE(t.upper.CountersEqual(1, 0));
 
 	segments.Reset();
 	t.link.Send(segments);
 	REQUIRE(t.numWrites ==  3);
-	t.link.OnTransmitResult(true, true);
+	t.link.OnTransmitResult(true);
 
 	REQUIRE(t.log.IsLogErrorFree());
 	t.exe.AdvanceTime(cfg.Timeout);
 	REQUIRE(t.exe.RunOne()); // timeout
 	REQUIRE(t.upper.CountersEqual(1, 0)); //check that the send is still occuring
 	REQUIRE(t.numWrites ==  4);
-	t.link.OnTransmitResult(true, true);
+	t.link.OnTransmitResult(true);
 
 	t.link.Ack(false, false, 1, 1024);
 	REQUIRE(t.upper.CountersEqual(2, 0));
@@ -421,7 +422,7 @@ TEST_CASE(SUITE("ResetLinkTimerExpirationWithRetryResetState"))
 	segments.Reset();
 	t.link.Send(segments);
 	REQUIRE(t.numWrites ==  5);	// Should now be waiting for an ACK with active timer
-	t.link.OnTransmitResult(true, true);
+	t.link.OnTransmitResult(true);
 
 	REQUIRE(t.log.IsLogErrorFree());
 	t.exe.AdvanceTime(cfg.Timeout);
@@ -441,23 +442,23 @@ TEST_CASE(SUITE("ConfirmedDataRetry"))
 	ByteStr bytes(250, 0);
 	BufferSegment segments(250, bytes.ToHex());
 	t.link.Send(segments);
-	t.link.OnTransmitResult(true, true);
+	t.link.OnTransmitResult(true);
 	REQUIRE(t.numWrites ==  1); // Should now be waiting for an ACK with active timer
 
 	t.link.Ack(false, false, 1, 1024);
 	REQUIRE(t.numWrites ==  2);
-	t.link.OnTransmitResult(true, true);
+	t.link.OnTransmitResult(true);
 
 	t.exe.AdvanceTime(cfg.Timeout);
 	REQUIRE(t.exe.RunOne()); //timeout the ConfData, check that it retransmits	
 	REQUIRE(t.numWrites ==  3);
 
-	StaticBuffer<292> buffer;
+	DynamicBuffer buffer(292);
 	auto writeTo = buffer.GetWriteBuffer();
 	auto frame = LinkFrame::FormatConfirmedUserData(writeTo, true, true, 1024, 1, bytes, bytes.Size(), nullptr);
 
 	REQUIRE(toHex(t.lastWrite) ==  toHex(frame));
-	t.link.OnTransmitResult(true, true);
+	t.link.OnTransmitResult(true);
 
 	t.link.Ack(false, false, 1, 1024);
 	REQUIRE(t.numWrites ==  3);
@@ -479,11 +480,11 @@ TEST_CASE(SUITE("ResetLinkRetries"))
 	for(int i = 1; i < 5; ++i)
 	{
 		REQUIRE(t.numWrites ==  i); // sends link retry
-		StaticBuffer<292> buffer;
+		DynamicBuffer buffer(292);
 		auto writeTo = buffer.GetWriteBuffer();
 		auto frame = LinkFrame::FormatResetLinkStates(writeTo, true, 1024, 1, nullptr);
 		REQUIRE(toHex(t.lastWrite) == toHex(frame));
-		t.link.OnTransmitResult(true, true);
+		t.link.OnTransmitResult(true);
 		t.exe.AdvanceTime(cfg.Timeout);
 		REQUIRE(t.exe.RunOne()); //timeout
 	}
@@ -502,15 +503,15 @@ TEST_CASE(SUITE("ConfirmedDataNackDFCClear"))
 	ByteStr bytes(250, 0);
 	BufferSegment segments(250, bytes.ToHex());
 	t.link.Send(segments);
-	t.link.OnTransmitResult(true, true);
+	t.link.OnTransmitResult(true);
 	REQUIRE(t.numWrites ==  1); // Should now be waiting for an ACK with active timer
 
 	t.link.Ack(false, false, 1, 1024);
-	t.link.OnTransmitResult(true, true);
+	t.link.OnTransmitResult(true);
 	REQUIRE(t.numWrites ==  2);  // num transmitting confirmed data
 
 	t.link.Nack(false, false, 1, 1024);  // test that we try to reset the link again
-	t.link.OnTransmitResult(true, true);
+	t.link.OnTransmitResult(true);
 	REQUIRE(t.numWrites ==  3);
 
 	t.link.Ack(false, false, 1, 1024); // ACK the link reset
@@ -529,16 +530,16 @@ TEST_CASE(SUITE("SendDataTimerExpiration"))
 	BufferSegment segments(250, bytes.ToHex());
 	t.link.Send(segments);
 	REQUIRE(t.numWrites ==  1);
-	t.link.OnTransmitResult(true, true);
+	t.link.OnTransmitResult(true);
 
 	t.link.Ack(false, false, 1, 1024); // ACK the reset links
 	REQUIRE(t.numWrites ==  2);
-	StaticBuffer<292> buffer;
+	DynamicBuffer buffer(292);
 	auto writeTo = buffer.GetWriteBuffer();
 	auto frame = LinkFrame::FormatConfirmedUserData(writeTo, true, true, 1024, 1, bytes, bytes.Size(), nullptr);
 	REQUIRE(t.numWrites ==  2);
 	REQUIRE(toHex(t.lastWrite) ==  toHex(frame)); // check that data was sent
-	t.link.OnTransmitResult(true, true);
+	t.link.OnTransmitResult(true);
 
 	t.exe.AdvanceTime(cfg.Timeout);
 	REQUIRE(t.exe.RunOne()); //trigger the timeout callback
@@ -557,15 +558,15 @@ TEST_CASE(SUITE("SendDataSuccess"))
 	ByteStr bytes(250, 0);
 	BufferSegment segments(250, bytes.ToHex());
 	t.link.Send(segments);
-	t.link.OnTransmitResult(true, true);
+	t.link.OnTransmitResult(true);
 	t.link.Ack(false, false, 1, 1024);
-	t.link.OnTransmitResult(true, true);
+	t.link.OnTransmitResult(true);
 	t.link.Ack(false, false, 1, 1024);
 	REQUIRE(t.upper.CountersEqual(1, 0));
 
 	segments.Reset();
 	t.link.Send(segments); // now we should be directly sending w/o having to reset, and the FCB should flip
-	StaticBuffer<292> buffer;
+	DynamicBuffer buffer(292);
 	auto writeTo = buffer.GetWriteBuffer();
 	auto frame = LinkFrame::FormatConfirmedUserData(writeTo, true, false, 1024, 1, bytes, bytes.Size(), nullptr);
 	REQUIRE(t.numWrites ==  3);

@@ -18,11 +18,10 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __BITFIELD_RANGE_WRITE_ITERATOR_H_
-#define __BITFIELD_RANGE_WRITE_ITERATOR_H_
+#ifndef OPENDNP3_BITFIELDRANGEWRITEITERATOR_H
+#define OPENDNP3_BITFIELDRANGEWRITEITERATOR_H
 
 #include <openpal/container/WriteBuffer.h>
-#include <openpal/serialization/ISerializer.h>
 
 namespace opendnp3
 {

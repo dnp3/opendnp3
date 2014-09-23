@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __TRANSPORT_CONSTANTS_H_
-#define __TRANSPORT_CONSTANTS_H_
+#ifndef OPENDNP3_TRANSPORTCONSTANTS_H
+#define OPENDNP3_TRANSPORTCONSTANTS_H
 
 #include "opendnp3/ErrorCodes.h"
 
@@ -37,9 +37,9 @@ enum TransportHeader
 };
 
 /// Maximum TPDU length
-const uint8_t TL_MAX_TPDU_LENGTH = 250;
+const uint8_t MAX_TPDU_LENGTH = 250;
 /// Maximum TPDU payload size
-const uint8_t TL_MAX_TPDU_PAYLOAD = 249;
+const uint8_t MAX_TPDU_PAYLOAD = 249;
 
 }
 

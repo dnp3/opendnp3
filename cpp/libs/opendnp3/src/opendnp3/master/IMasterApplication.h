@@ -19,8 +19,8 @@
  * to you under the terms of the License.
  */
 
-#ifndef __I_MASTER_APPLICATION_H_
-#define __I_MASTER_APPLICATION_H_
+#ifndef OPENDNP3_IMASTERAPPLICATION_H
+#define OPENDNP3_IMASTERAPPLICATION_H
 
 #include <openpal/executor/IUTCTimeSource.h>
 

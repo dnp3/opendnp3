@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __APDU_HEADER_PARSER_H_
-#define __APDU_HEADER_PARSER_H_
+#ifndef OPENDNP3_APDUHEADERPARSER_H
+#define OPENDNP3_APDUHEADERPARSER_H
 
 #include <openpal/container/ReadOnlyBuffer.h>
 #include <openpal/util/Uncopyable.h>

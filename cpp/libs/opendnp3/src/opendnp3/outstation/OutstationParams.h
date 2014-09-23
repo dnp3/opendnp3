@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __OUTSTATION_PARAMS_H_
-#define __OUTSTATION_PARAMS_H_
+#ifndef OPENDNP3_OUTSTATIONPARAMS_H
+#define OPENDNP3_OUTSTATIONPARAMS_H
 
 #include <openpal/executor/TimeDuration.h>
 
@@ -49,6 +49,9 @@ struct OutstationParams
 
 	/// The maximum fragment size the outstation will use for fragments it sends
 	uint32_t maxTxFragSize;
+
+	/// The maximum fragment size the outstation will be able to receive
+	uint32_t maxRxFragSize;
 
 	/// Global enabled / disable for unsolicted messages. If false, the NULL unsolicited message is not even sent
 	bool allowUnsolicited;

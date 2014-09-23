@@ -18,10 +18,10 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __PREFIXED_WRITE_ITERATOR_H_
-#define __PREFIXED_WRITE_ITERATOR_H_
+#ifndef OPENDNP3_PREFIXEDWRITEITERATOR_H
+#define OPENDNP3_PREFIXEDWRITEITERATOR_H
 
-#include "opendnp3/app/IDNP3Serializer.h"
+#include <openpal/serialization/Serializer.h>
 
 namespace opendnp3
 {
@@ -37,16 +37,15 @@ public:
 		return PrefixedWriteIterator();
 	}
 
-	PrefixedWriteIterator() :
-		pSerializer(nullptr),
+	PrefixedWriteIterator() :		
 		sizeOfTypePlusIndex(0),
 		count(0),		
 		isValid(false),
 		pPosition(nullptr)
 	{}
 
-	PrefixedWriteIterator(IDNP3Serializer<WriteType>& serializer, openpal::WriteBuffer& position) :
-		pSerializer(&serializer),
+	PrefixedWriteIterator(const openpal::Serializer<WriteType>& serializer_, openpal::WriteBuffer& position) :
+		serializer(serializer_),
 		sizeOfTypePlusIndex(serializer.Size() + PrefixType::Size),
 		count(0),		
 		isValid(position.Size() >= PrefixType::Size),
@@ -72,7 +71,7 @@ public:
 		if (isValid && (pPosition->Size() >= sizeOfTypePlusIndex))
 		{
 			PrefixType::WriteBuffer(*pPosition, index);
-			pSerializer->Write(value, *pPosition);
+			serializer.Write(value, *pPosition);
 			++count;
 			return true;			
 		}
@@ -89,7 +88,7 @@ public:
 
 private:
 
-	IDNP3Serializer<WriteType>* pSerializer;
+	openpal::Serializer<WriteType> serializer;
 	uint32_t sizeOfTypePlusIndex;
 
 	typename PrefixType::Type count;

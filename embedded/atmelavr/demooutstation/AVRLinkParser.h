@@ -11,11 +11,9 @@
 #include <openpal/logging/LogRoot.h>
 
 #include <openpal/container/Settable.h>
-#include <openpal/container/StaticQueue.h>
+#include <openpal/container/Queue.h>
 #include <openpal/container/RingBuffer.h>
 #include <openpal/executor/IExecutor.h>
-
-namespace arduino {
 
 class AVRLinkParser : public opendnp3::ILinkRouter
 {
@@ -23,46 +21,33 @@ class AVRLinkParser : public opendnp3::ILinkRouter
 
 	AVRLinkParser(openpal::LogRoot& root, openpal::IExecutor& exe, opendnp3::ILinkContext& context);
 	
-	virtual void QueueTransmit(const openpal::ReadOnlyBuffer& buffer, opendnp3::ILinkContext* pContext, bool primary) final override;	
+	virtual void BeginTransmit(const openpal::ReadOnlyBuffer& buffer, opendnp3::ILinkContext* pContext) final override;	
 	
-	void Receive(uint8_t byte);
+	// called from the rxReady ISR
+	void Receive(uint8_t rxByte);
+	
+	// called from the txReady ISR
+	bool GetTx(uint8_t& txByte);
 	
 	void Init();
-	
-	void CheckTransmit();
-	
-	void ProcessRx();
+			
+	void CheckRxTx();
 	
 	private:
 	
-	uint32_t CopyRxBuffer();
-		
-	struct Transmission
-	{
-		Transmission(const openpal::ReadOnlyBuffer& buffer_, bool primary_) :
-			buffer(buffer_),
-			primary(primary_)
-			{}
-
-		Transmission() : buffer(), primary(false)
-		{}
-
-		openpal::ReadOnlyBuffer buffer;
-		bool primary;
-	};
+	void CheckTx();
+	void CheckRx();
+							
+	openpal::RingBuffer<16> rxBuffer;
+	openpal::RingBuffer<16> txBuffer;
 	
-	openpal::StaticQueue<Transmission, uint8_t, 2> txQueue;
-	openpal::RingBuffer<8> rxBuffer;
-	
-	openpal::Settable<openpal::ReadOnlyBuffer> primaryTx;
-	openpal::Settable<openpal::ReadOnlyBuffer> secondaryTx;
+	bool isTransmitting;
+	openpal::ReadOnlyBuffer transmission;		
 	
 	openpal::IExecutor* pExecutor;
 	opendnp3::ILinkContext* pContext;		
 	opendnp3::LinkLayerParser parser;
 };
-
-}
 
 #endif
 

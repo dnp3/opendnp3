@@ -19,8 +19,8 @@
  * to you under the terms of the License.
  */
 
-#ifndef __STRAND_GETTERS_H_
-#define __STRAND_GETTERS_H_
+#ifndef ASIOPAL_STRANDGETTERS_H
+#define ASIOPAL_STRANDGETTERS_H
 
 #include <asio.hpp>
 

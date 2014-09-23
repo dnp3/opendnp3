@@ -19,12 +19,11 @@
  * to you under the terms of the License.
  */
 
-#ifndef __LINK_LAYER_PARSER_H_
-#define __LINK_LAYER_PARSER_H_
+#ifndef OPENDNP3_LINKLAYERPARSER_H
+#define OPENDNP3_LINKLAYERPARSER_H
 
 
 #include <openpal/container/WriteBuffer.h>
-#include <openpal/container/StaticBuffer.h>
 #include <openpal/logging/Logger.h>
 
 #include "opendnp3/ErrorCodes.h"
@@ -33,7 +32,6 @@
 #include "opendnp3/link/LinkFrame.h"
 #include "opendnp3/link/LinkHeader.h"
 #include "opendnp3/link/LinkChannelStatistics.h"
-#include "opendnp3/Configure.h"
 
 namespace opendnp3
 {
@@ -95,8 +93,8 @@ private:
 	uint32_t frameSize;
 	openpal::ReadOnlyBuffer userData;
 
-	// buffer where received data is written		
-	openpal::StaticBuffer<sizes::LINK_RECEIVER_BUFFER_SIZE> rxBuffer;
+	// buffer where received data is written
+	uint8_t rxBuffer[LPDU_MAX_FRAME_SIZE];
 
 	// facade over the rxBuffer that provides ability to "shift" as data is read
 	ShiftableBuffer buffer;

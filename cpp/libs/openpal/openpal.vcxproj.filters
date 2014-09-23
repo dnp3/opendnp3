@@ -55,9 +55,6 @@
     <ClInclude Include="src\openpal\channel\IPhysicalLayerCallbacks.h">
       <Filter>Header\channel</Filter>
     </ClInclude>
-    <ClInclude Include="src\openpal\channel\LayerInterfaces.h">
-      <Filter>Header\channel</Filter>
-    </ClInclude>
     <ClInclude Include="src\openpal\container\Indexable.h">
       <Filter>Header\container</Filter>
     </ClInclude>
@@ -65,12 +62,6 @@
       <Filter>Header\container</Filter>
     </ClInclude>
     <ClInclude Include="src\openpal\container\Pair.h">
-      <Filter>Header\container</Filter>
-    </ClInclude>
-    <ClInclude Include="src\openpal\container\RingBuffer.h">
-      <Filter>Header\container</Filter>
-    </ClInclude>
-    <ClInclude Include="src\openpal\container\RingBufferAdapter.h">
       <Filter>Header\container</Filter>
     </ClInclude>
     <ClInclude Include="src\openpal\container\Settable.h">
@@ -82,16 +73,7 @@
     <ClInclude Include="src\openpal\container\StaticArray.h">
       <Filter>Header\container</Filter>
     </ClInclude>
-    <ClInclude Include="src\openpal\container\StaticBuffer.h">
-      <Filter>Header\container</Filter>
-    </ClInclude>
     <ClInclude Include="src\openpal\container\StaticLinkedList.h">
-      <Filter>Header\container</Filter>
-    </ClInclude>
-    <ClInclude Include="src\openpal\container\StaticPriorityQueue.h">
-      <Filter>Header\container</Filter>
-    </ClInclude>
-    <ClInclude Include="src\openpal\container\StaticQueue.h">
       <Filter>Header\container</Filter>
     </ClInclude>
     <ClInclude Include="src\openpal\container\DynamicArray.h">
@@ -148,9 +130,6 @@
     <ClInclude Include="src\openpal\serialization\FloatSerializationTemplates.h">
       <Filter>Header\serialization</Filter>
     </ClInclude>
-    <ClInclude Include="src\openpal\serialization\ISerializer.h">
-      <Filter>Header\serialization</Filter>
-    </ClInclude>
     <ClInclude Include="src\openpal\serialization\Serialization.h">
       <Filter>Header\serialization</Filter>
     </ClInclude>
@@ -193,9 +172,6 @@
     <ClInclude Include="src\openpal\executor\IMutex.h">
       <Filter>Header\executor</Filter>
     </ClInclude>
-    <ClInclude Include="src\openpal\executor\Action1.h">
-      <Filter>Header\executor</Filter>
-    </ClInclude>
     <ClInclude Include="src\openpal\executor\Action0.h">
       <Filter>Header\executor</Filter>
     </ClInclude>
@@ -205,11 +181,20 @@
     <ClInclude Include="src\openpal\executor\Function1.h">
       <Filter>Header\executor</Filter>
     </ClInclude>
+    <ClInclude Include="src\openpal\container\DynamicBuffer.h">
+      <Filter>Header\container</Filter>
+    </ClInclude>
+    <ClInclude Include="src\openpal\container\Queue.h">
+      <Filter>Header\container</Filter>
+    </ClInclude>
+    <ClInclude Include="src\openpal\serialization\Serializer.h">
+      <Filter>Header\serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="src\openpal\container\RingBuffer.h">
+      <Filter>Header\container</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\openpal\container\RingBufferAdapter.cpp">
-      <Filter>Source\container</Filter>
-    </ClCompile>
     <ClCompile Include="src\openpal\executor\MonotonicTimestamp.cpp">
       <Filter>Source\executor</Filter>
     </ClCompile>
@@ -251,6 +236,12 @@
     </ClCompile>
     <ClCompile Include="src\openpal\executor\Erasure.cpp">
       <Filter>Source\executor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\openpal\container\DynamicBuffer.cpp">
+      <Filter>Source\container</Filter>
+    </ClCompile>
+    <ClCompile Include="src\openpal\container\RingBuffer.cpp">
+      <Filter>Source\container</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

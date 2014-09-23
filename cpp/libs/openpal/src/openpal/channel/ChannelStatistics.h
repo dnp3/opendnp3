@@ -19,8 +19,8 @@
 * to you under the terms of the License.
 */
 
-#ifndef __OPENPAL_CHANNEL_STATISTICS_H_
-#define __OPENPAL_CHANNEL_STATISTICS_H_
+#ifndef OPENPAL_CHANNELSTATISTICS_H
+#define OPENPAL_CHANNELSTATISTICS_H
 
 #include <cstdint>
 

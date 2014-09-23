@@ -20,7 +20,7 @@
  */
 #include <catch.hpp>
 
-#include <opendnp3/link/PhysicalLayerMonitor.h>
+#include <asiodnp3/impl/PhysicalLayerMonitor.h>
 #include "CopyableBuffer.h"
 
 #include <queue>
@@ -28,7 +28,7 @@
 namespace opendnp3
 {
 
-class MockPhysicalLayerMonitor : public PhysicalLayerMonitor
+class MockPhysicalLayerMonitor : public asiodnp3::PhysicalLayerMonitor
 {
 public:
 	MockPhysicalLayerMonitor(

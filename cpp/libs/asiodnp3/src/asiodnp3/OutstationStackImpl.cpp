@@ -39,7 +39,7 @@ OutstationStackImpl::OutstationStackImpl(
 	
 	root(root_, id),
 	handler(handler_),
-	stack(root, &executor, &statistics, config.link),
+	stack(root, &executor, config.outstation.params.maxRxFragSize, &statistics, config.link),
 	databaseBuffers(config.dbTemplate),
 	eventBuffers(config.outstation.eventBufferConfig.TotalEvents()),
 	mutex(),
@@ -83,9 +83,9 @@ StackStatistics OutstationStackImpl::GetStackStatistics()
 	return asiopal::SynchronouslyGet<StackStatistics>(handler.GetExecutor()->strand, getter);
 }
 
-void OutstationStackImpl::SetLinkRouter(opendnp3::ILinkRouter* pRouter)
+void OutstationStackImpl::SetLinkRouter(opendnp3::ILinkRouter& router)
 {
-	stack.link.SetRouter(pRouter);
+	stack.link.SetRouter(router);
 }
 
 void OutstationStackImpl::SetShutdownAction(const openpal::Action0& action)

@@ -25,7 +25,7 @@
 #include "MockExecutor.h"
 #include "MockPhysicalLayer.h"
 
-#include <opendnp3/link/LinkLayerRouter.h>
+#include <asiodnp3/impl/LinkLayerRouter.h>
 #include <opendnp3/LogLevels.h>
 
 namespace opendnp3
@@ -39,7 +39,7 @@ public:
 	LogTester log;
 	MockExecutor exe;
 	MockPhysicalLayer phys;
-	LinkLayerRouter router;
+	asiodnp3::LinkLayerRouter router;
 };
 
 }

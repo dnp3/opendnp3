@@ -7,6 +7,9 @@
 // |_| \_|\___/  |______\__,_|_|\__|_|_| |_|\__, (_|_|_)
 //                                           __/ |
 //                                          |___/
+// 
+// This file is auto-generated. Do not edit manually
+// 
 // Copyright 2013 Automatak LLC
 // 
 // Automatak LLC (www.automatak.com) licenses this file
@@ -24,8 +27,6 @@
 using namespace openpal;
 
 namespace opendnp3 {
-
-const GroupVariationID  Group41Var1::ID(41,1);
 
 Group41Var1 Group41Var1::Read(ReadOnlyBuffer& buffer)
 {
@@ -45,21 +46,18 @@ void Group41Var1::Write(const Group41Var1& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(1);
 }
 
-Group41Var1Serializer Group41Var1Serializer::instance;
 
-AnalogOutputInt32 Group41Var1Serializer::Read(ReadOnlyBuffer& buff) const
+AnalogOutputInt32 Group41Var1::ReadTarget(ReadOnlyBuffer& buff)
 {
   auto gv = Group41Var1::Read(buff);
   return AnalogOutputInt32Factory::From(gv.value, gv.status);
 }
 
-void Group41Var1Serializer::Write(const AnalogOutputInt32& value, openpal::WriteBuffer& buff) const
+void Group41Var1::WriteTarget(const AnalogOutputInt32& value, openpal::WriteBuffer& buff)
 {
   Group41Var1::Write(ConvertGroup41Var1::Apply(value), buff);
 }
 
-
-const GroupVariationID  Group41Var2::ID(41,2);
 
 Group41Var2 Group41Var2::Read(ReadOnlyBuffer& buffer)
 {
@@ -79,21 +77,18 @@ void Group41Var2::Write(const Group41Var2& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(1);
 }
 
-Group41Var2Serializer Group41Var2Serializer::instance;
 
-AnalogOutputInt16 Group41Var2Serializer::Read(ReadOnlyBuffer& buff) const
+AnalogOutputInt16 Group41Var2::ReadTarget(ReadOnlyBuffer& buff)
 {
   auto gv = Group41Var2::Read(buff);
   return AnalogOutputInt16Factory::From(gv.value, gv.status);
 }
 
-void Group41Var2Serializer::Write(const AnalogOutputInt16& value, openpal::WriteBuffer& buff) const
+void Group41Var2::WriteTarget(const AnalogOutputInt16& value, openpal::WriteBuffer& buff)
 {
   Group41Var2::Write(ConvertGroup41Var2::Apply(value), buff);
 }
 
-
-const GroupVariationID  Group41Var3::ID(41,3);
 
 Group41Var3 Group41Var3::Read(ReadOnlyBuffer& buffer)
 {
@@ -113,21 +108,18 @@ void Group41Var3::Write(const Group41Var3& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(1);
 }
 
-Group41Var3Serializer Group41Var3Serializer::instance;
 
-AnalogOutputFloat32 Group41Var3Serializer::Read(ReadOnlyBuffer& buff) const
+AnalogOutputFloat32 Group41Var3::ReadTarget(ReadOnlyBuffer& buff)
 {
   auto gv = Group41Var3::Read(buff);
   return AnalogOutputFloat32Factory::From(gv.value, gv.status);
 }
 
-void Group41Var3Serializer::Write(const AnalogOutputFloat32& value, openpal::WriteBuffer& buff) const
+void Group41Var3::WriteTarget(const AnalogOutputFloat32& value, openpal::WriteBuffer& buff)
 {
   Group41Var3::Write(ConvertGroup41Var3::Apply(value), buff);
 }
 
-
-const GroupVariationID  Group41Var4::ID(41,4);
 
 Group41Var4 Group41Var4::Read(ReadOnlyBuffer& buffer)
 {
@@ -147,15 +139,14 @@ void Group41Var4::Write(const Group41Var4& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(1);
 }
 
-Group41Var4Serializer Group41Var4Serializer::instance;
 
-AnalogOutputDouble64 Group41Var4Serializer::Read(ReadOnlyBuffer& buff) const
+AnalogOutputDouble64 Group41Var4::ReadTarget(ReadOnlyBuffer& buff)
 {
   auto gv = Group41Var4::Read(buff);
   return AnalogOutputDouble64Factory::From(gv.value, gv.status);
 }
 
-void Group41Var4Serializer::Write(const AnalogOutputDouble64& value, openpal::WriteBuffer& buff) const
+void Group41Var4::WriteTarget(const AnalogOutputDouble64& value, openpal::WriteBuffer& buff)
 {
   Group41Var4::Write(ConvertGroup41Var4::Apply(value), buff);
 }

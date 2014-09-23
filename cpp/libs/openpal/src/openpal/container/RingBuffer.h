@@ -18,27 +18,81 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __RING_BUFFER_H_
-#define __RING_BUFFER_H_
+#ifndef OPENPAL_RINGBUFFER_H
+#define OPENPAL_RINGBUFFER_H
 
-#include "RingBufferAdapter.h"
-#include "StaticBuffer.h"
+#include <cstdint>
 
 namespace openpal
 {
 
-template <uint32_t N>
-class RingBuffer : public RingBufferAdapter
-{	
+/** 
+	A byte-oriented ring buffer.
+	Interrupt-safe (w/o disabling interrupts) if single producer
+	and single consumer, one reading and one writing.
+	
+	N must be a power of 2, and is enforced via static assert.
+*/	
+template <uint8_t N>
+class RingBuffer
+{		
+	static_assert((N > 1) & !(N & (N - 1)), "Should use a power of 2 as template parameter, e.g. 16, 32, 64, 128");
 
 public:
 
-	RingBuffer() : RingBufferAdapter(buffer, N)
-	{}
+	RingBuffer() : head(0), tail(0) {}
 
+	bool Put(uint8_t byteIn)
+	{
+		if(Full())
+		{
+			return false;						
+		}
+		else
+		{
+			buffer[(head++) & (N-1)] = byteIn;
+			return true;
+		}
+	}
+
+	bool Get(uint8_t& byteOut)
+	{
+		 if(Empty())
+		 {
+			return false;
+		 }
+		 else
+		 {
+			byteOut = buffer[(tail++) & (N-1)];
+			return true;
+		 }
+	}
+	
+	inline bool Full()
+	{
+		return Count() == N;
+	}
+
+	inline bool Empty()
+	{
+		return Count() == 0;
+	}
+	
+	
 private:
+
+	inline uint8_t Count()
+	{
+		return head - tail;
+	}
+			
 	uint8_t buffer[N];
 
+	uint8_t head;
+	uint8_t tail;	
+	
+	RingBuffer(const RingBuffer&) = delete;
+	RingBuffer& operator= (const RingBuffer&) = delete;	
 };
 
 }

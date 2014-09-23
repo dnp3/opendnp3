@@ -23,6 +23,7 @@
 #include "BufferHelpers.h"
 
 #include <openpal/util/ToHex.h>
+#include <opendnp3/app/AppConstants.h>
 
 #include <memory>
 #include <sstream>
@@ -36,12 +37,12 @@ namespace opendnp3
 TransportTestObject::TransportTestObject(bool aOpenOnStart, uint32_t filters, bool aImmediate) :
 	log(),
 	exe(),
-	transport(log.root, &exe)
+	transport(log.root, &exe, DEFAULT_MAX_APDU_SIZE)
 {
-	link.SetUpperLayer(&transport);
+	link.SetUpperLayer(transport);
 	transport.SetLinkLayer(&link);
 
-	upper.SetLowerLayer(&transport);
+	upper.SetLowerLayer(transport);
 	transport.SetAppLayer(&upper);
 
 	if (aOpenOnStart)
@@ -74,7 +75,7 @@ std::string TransportTestObject::GeneratePacketSequence(vector< std::string >& a
 		bool fir = i == 0;
 		bool fin = i == (aNumPackets - 1);
 		int seq = static_cast<int>(i % 64);
-		uint32_t len = fin ? aLastPacketLength : TL_MAX_TPDU_PAYLOAD;
+		uint32_t len = fin ? aLastPacketLength : MAX_TPDU_PAYLOAD;
 		uint8_t hdr = TransportTx::GetHeader(fir, fin, seq);
 		std::string data = this->GetData("", 0, len); //raw data with no header
 		oss << ((i == 0) ? "" : " ") << data; //cache the data in the string stream

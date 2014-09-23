@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __COMMAND_TASK_H_
-#define __COMMAND_TASK_H_
+#ifndef OPENDNP3_COMMANDTASK_H
+#define OPENDNP3_COMMANDTASK_H
 
 
 #include "opendnp3/gen/FunctionCode.h"
@@ -32,8 +32,9 @@
 
 #include <openpal/logging/Logger.h>
 #include <openpal/Configure.h>
-#include <openpal/container/StaticQueue.h>
 #include <assert.h>
+
+#include <deque>
 
 namespace opendnp3
 {
@@ -89,7 +90,7 @@ private:
 
 	void Callback(const CommandResponse& cr);
 
-	openpal::StaticQueue<FunctionCode, uint8_t, 2> functionCodes;
+	std::deque<FunctionCode> functionCodes;	
 
 	openpal::Logger* pLogger;
 	ICommandCallback* pCallback;	

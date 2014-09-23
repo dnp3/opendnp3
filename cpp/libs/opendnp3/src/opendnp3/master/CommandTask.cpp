@@ -40,11 +40,11 @@ CommandTask::CommandTask(openpal::Logger* pLogger_) :
 	pLogger(pLogger_),
 	pCallback(nullptr),
 	pActiveSequence(nullptr),	
-	crobSeq(*pLogger_, Group12Var1Serializer::Inst()),
-	analogInt32Seq(*pLogger_, Group41Var1Serializer::Inst()),
-	analogInt16Seq(*pLogger_, Group41Var2Serializer::Inst()),
-	analogFloat32Seq(*pLogger_, Group41Var3Serializer::Inst()),
-	analogDouble64Seq(*pLogger_, Group41Var4Serializer::Inst())
+	crobSeq(*pLogger_, Group12Var1::Inst()),
+	analogInt32Seq(*pLogger_, Group41Var1::Inst()),
+	analogInt16Seq(*pLogger_, Group41Var2::Inst()),
+	analogFloat32Seq(*pLogger_, Group41Var3::Inst()),
+	analogDouble64Seq(*pLogger_, Group41Var4::Inst())
 {
 
 }
@@ -59,15 +59,15 @@ void CommandTask::Callback(const CommandResponse& cr)
 
 void CommandTask::LoadSelectAndOperate()
 {
-	functionCodes.Clear();
-	functionCodes.Enqueue(FunctionCode::SELECT);
-	functionCodes.Enqueue(FunctionCode::OPERATE);
+	functionCodes.clear();
+	functionCodes.push_back(FunctionCode::SELECT);
+	functionCodes.push_back(FunctionCode::OPERATE);
 }
 
 void CommandTask::LoadDirectOperate()
 {
-	functionCodes.Clear();
-	functionCodes.Enqueue(FunctionCode::DIRECT_OPERATE);
+	functionCodes.clear();
+	functionCodes.push_back(FunctionCode::DIRECT_OPERATE);
 }
 
 void CommandTask::SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback& callback)
@@ -132,12 +132,12 @@ void CommandTask::DirectOperate(const AnalogOutputDouble64& command, uint16_t in
 
 void CommandTask::BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq)
 {
-	if (functionCodes.IsNotEmpty() && pActiveSequence)
-	{
-		auto pCode = functionCodes.Pop();
-		request.SetFunction(*pCode);
+	if (!functionCodes.empty() && pActiveSequence)
+	{		
+		request.SetFunction(functionCodes.front());
+		functionCodes.pop_front();
 		request.SetControl(AppControlField::Request(seq));
-		pActiveSequence->FormatRequestHeader(request);
+		pActiveSequence->FormatRequestHeader(request);		
 	}
 }
 
@@ -170,7 +170,7 @@ TaskStatus CommandTask::OnSingleResponse(const APDUResponseHeader& response, con
 	auto result = APDUParser::ParseTwoPass(objects, pActiveSequence, pLogger);
 	if(result == APDUParser::Result::OK)
 	{
-		if(functionCodes.IsEmpty()) // we're done
+		if(functionCodes.empty()) // we're done
 		{
 			auto commandResponse = pActiveSequence->Validate();
 			this->Callback(commandResponse);			

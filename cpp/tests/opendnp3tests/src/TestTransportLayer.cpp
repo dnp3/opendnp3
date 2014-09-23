@@ -26,6 +26,7 @@
 
 #include <asiodnp3/ConsoleLogger.h>
 
+#include <opendnp3/app/AppConstants.h>
 #include <opendnp3/transport/TransportConstants.h>
 
 using namespace std;
@@ -93,21 +94,24 @@ TEST_CASE(SUITE("ReceiveBadArguments"))
 
 	//check that the wrong aruments throw argument exceptions, and it's doesn't go to the sending state
 	test.link.SendUp("");
-	REQUIRE(TLERR_NO_PAYLOAD ==  test.log.NextErrorCode());
+	REQUIRE(TLERR_NO_HEADER ==  test.log.NextErrorCode());
+	
 	test.link.SendUp("FF");
-	REQUIRE(TLERR_NO_PAYLOAD ==  test.log.NextErrorCode());
+	REQUIRE(-1 ==  test.log.NextErrorCode());
 
 	test.link.SendUp(test.GetData("C0", 0, 250)); // length 251
 
-	REQUIRE(TLERR_TOO_MUCH_DATA ==  test.log.NextErrorCode());
+	REQUIRE(-1 ==  test.log.NextErrorCode());
 }
 
-TEST_CASE(SUITE("ReceiveNoPayload"))
+TEST_CASE(SUITE("AllowsHeaderOnlyFinalFrame"))
 {
 	TransportTestObject test(true);
-	//try sending a FIR/FIN packet with no payload (1 byte)
-	test.link.SendUp("C0"); // FIR/FIN
-	REQUIRE(test.log.NextErrorCode() ==  TLERR_NO_PAYLOAD);
+	
+	test.link.SendUp("41 DE AD BE EF");
+	test.link.SendUp("82");
+
+	REQUIRE(test.upper.GetBufferAsHexString() == "DE AD BE EF");
 }
 
 TEST_CASE(SUITE("ReceiveNoFIR"))
@@ -149,8 +153,8 @@ TEST_CASE(SUITE("ReceiveLargestPossibleAPDU"))
 {
 	TransportTestObject test(true);
 
-	uint32_t num_packets = CalcMaxPackets(opendnp3::sizes::DEFAULT_APDU_BUFFER_SIZE, TL_MAX_TPDU_PAYLOAD);
-	uint32_t last_packet_length = CalcLastPacketSize(opendnp3::sizes::DEFAULT_APDU_BUFFER_SIZE, TL_MAX_TPDU_PAYLOAD);
+	uint32_t num_packets = CalcMaxPackets(opendnp3::DEFAULT_MAX_APDU_SIZE, MAX_TPDU_PAYLOAD);
+	uint32_t last_packet_length = CalcLastPacketSize(opendnp3::DEFAULT_MAX_APDU_SIZE, MAX_TPDU_PAYLOAD);
 
 	vector<string> packets;
 	string apdu = test.GeneratePacketSequence(packets, num_packets, last_packet_length);
@@ -167,8 +171,8 @@ TEST_CASE(SUITE("ReceiveBufferOverflow"))
 {
 	TransportTestObject test(true);
 
-	uint32_t num_packets = CalcMaxPackets(opendnp3::sizes::DEFAULT_APDU_BUFFER_SIZE, TL_MAX_TPDU_PAYLOAD);
-	uint32_t last_packet_length = CalcLastPacketSize(opendnp3::sizes::DEFAULT_APDU_BUFFER_SIZE, TL_MAX_TPDU_PAYLOAD);
+	uint32_t num_packets = CalcMaxPackets(opendnp3::DEFAULT_MAX_APDU_SIZE, MAX_TPDU_PAYLOAD);
+	uint32_t last_packet_length = CalcLastPacketSize(opendnp3::DEFAULT_MAX_APDU_SIZE, MAX_TPDU_PAYLOAD);
 
 	//send 1 more packet than possible
 	vector<string> packets;
@@ -277,8 +281,8 @@ TEST_CASE(SUITE("SendFullAPDU"))
 {
 	TransportTestObject test(true);
 
-	uint32_t numPackets = CalcMaxPackets(opendnp3::sizes::DEFAULT_APDU_BUFFER_SIZE, TL_MAX_TPDU_PAYLOAD);
-	uint32_t lastPacketLength = CalcLastPacketSize(opendnp3::sizes::DEFAULT_APDU_BUFFER_SIZE, TL_MAX_TPDU_PAYLOAD);
+	uint32_t numPackets = CalcMaxPackets(opendnp3::DEFAULT_MAX_APDU_SIZE, MAX_TPDU_PAYLOAD);
+	uint32_t lastPacketLength = CalcLastPacketSize(opendnp3::DEFAULT_MAX_APDU_SIZE, MAX_TPDU_PAYLOAD);
 
 	vector<string> packets;
 	std::string apdu = test.GeneratePacketSequence(packets, numPackets, lastPacketLength);

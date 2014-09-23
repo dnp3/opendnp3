@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __STACK_ADAPTER_H_
-#define __STACK_ADAPTER_H_
+#ifndef OPENPAL_STACKADAPTER_H
+#define OPENPAL_STACKADAPTER_H
 
 #include "Indexable.h"
 
@@ -56,13 +56,16 @@ public:
 
 	bool Push(const ValueType& value)
 	{
-		if(!IsFull())
+		if(IsFull())
+		{
+			return false;
+		}
+		else
 		{
 			indexable[this->size] = value;
 			++(this->size);
-			return true;
+			return true;			
 		}
-		else return false;
 	}
 
 	ValueType Pop()

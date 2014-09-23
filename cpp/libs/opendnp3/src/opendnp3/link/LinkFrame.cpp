@@ -43,7 +43,7 @@ void LinkFrame::ReadUserData(const uint8_t* pSrc, uint8_t* pDest, uint32_t lengt
 
 	while (length > 0)
 	{
-		uint32_t max = LS_DATA_BLOCK_SIZE;
+		uint32_t max = LPDU_DATA_BLOCK_SIZE;
 		uint32_t num = (length <= max) ? length : max;
 		uint32_t num_with_crc = num + 2;
 		memmove(pWrite, pRead, num);
@@ -58,7 +58,7 @@ bool LinkFrame::ValidateBodyCRC(const uint8_t* pBody, uint32_t length)
 {
 	while(length > 0)
 	{
-		uint32_t max = LS_DATA_BLOCK_SIZE;
+		uint32_t max = LPDU_DATA_BLOCK_SIZE;
 		uint32_t num = (length <= max) ? length : max;
 
 		if (CRC::IsCorrectCRC(pBody, num))
@@ -76,16 +76,16 @@ bool LinkFrame::ValidateBodyCRC(const uint8_t* pBody, uint32_t length)
 
 uint32_t LinkFrame::CalcFrameSize(uint8_t dataLength)
 {
-	return LS_HEADER_SIZE + CalcUserDataSize(dataLength);
+	return LPDU_HEADER_SIZE + CalcUserDataSize(dataLength);
 }
 
 uint32_t LinkFrame::CalcUserDataSize(uint8_t dataLength)
 {
 	if (dataLength > 0)
 	{
-		uint32_t mod16 = dataLength % LS_DATA_BLOCK_SIZE;
-		uint32_t size = (dataLength / LS_DATA_BLOCK_SIZE) * LS_DATA_PLUS_CRC_SIZE; //complete blocks
-		return (mod16 > 0) ? (size + mod16 + LS_CRC_SIZE) : size; //possible partial block
+		uint32_t mod16 = dataLength % LPDU_DATA_BLOCK_SIZE;
+		uint32_t size = (dataLength / LPDU_DATA_BLOCK_SIZE) * LPDU_DATA_PLUS_CRC_SIZE; //complete blocks
+		return (mod16 > 0) ? (size + mod16 + LPDU_CRC_SIZE) : size; //possible partial block
 	}
 	else
 	{
@@ -143,9 +143,9 @@ ReadOnlyBuffer LinkFrame::FormatTestLinkStatus(WriteBuffer& buffer, bool aIsMast
 ReadOnlyBuffer LinkFrame::FormatConfirmedUserData(WriteBuffer& buffer, bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, uint8_t dataLength, openpal::Logger* pLogger)
 {
 	assert(dataLength > 0);
-	assert(dataLength <= 250);
+	assert(dataLength <= LPDU_MAX_USER_DATA_SIZE);
 	auto userDataSize = CalcUserDataSize(dataLength);
-	auto ret = buffer.ToReadOnly().Take(userDataSize + LS_HEADER_SIZE);
+	auto ret = buffer.ToReadOnly().Take(userDataSize + LPDU_HEADER_SIZE);
 	FormatHeader(buffer, dataLength, aIsMaster, aFcb, true, LinkFunction::PRI_CONFIRMED_USER_DATA, aDest, aSrc, pLogger);
 	WriteUserData(apData, buffer, dataLength);
 	buffer.Advance(userDataSize);
@@ -155,9 +155,9 @@ ReadOnlyBuffer LinkFrame::FormatConfirmedUserData(WriteBuffer& buffer, bool aIsM
 ReadOnlyBuffer LinkFrame::FormatUnconfirmedUserData(WriteBuffer& buffer, bool aIsMaster, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, uint8_t dataLength, openpal::Logger* pLogger)
 {
 	assert(dataLength > 0);
-	assert(dataLength <= 250);
+	assert(dataLength <= LPDU_MAX_USER_DATA_SIZE);
 	auto userDataSize = CalcUserDataSize(dataLength);
-	auto ret = buffer.ToReadOnly().Take(userDataSize + LS_HEADER_SIZE);
+	auto ret = buffer.ToReadOnly().Take(userDataSize + LPDU_HEADER_SIZE);
 	FormatHeader(buffer, dataLength, aIsMaster, false, false, LinkFunction::PRI_UNCONFIRMED_USER_DATA, aDest, aSrc, pLogger);
 	WriteUserData(apData, buffer, dataLength);
 	buffer.Advance(userDataSize);
@@ -166,8 +166,8 @@ ReadOnlyBuffer LinkFrame::FormatUnconfirmedUserData(WriteBuffer& buffer, bool aI
 
 ReadOnlyBuffer LinkFrame::FormatHeader(WriteBuffer& buffer, uint8_t aDataLength, bool aIsMaster, bool aFcb, bool aFcvDfc, LinkFunction aFuncCode, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger)
 {
-	assert(buffer.Size() >= 10);	
-	LinkHeader header(aDataLength + LS_MIN_LENGTH, aSrc, aDest, aIsMaster, aFcvDfc, aFcb, aFuncCode);
+	assert(buffer.Size() >= LPDU_HEADER_SIZE);	
+	LinkHeader header(aDataLength + LPDU_MIN_LENGTH, aSrc, aDest, aIsMaster, aFcvDfc, aFcb, aFuncCode);
 		
 	FORMAT_LOGGER_BLOCK(pLogger, flags::LINK_TX,
 		"Function: %s Dest: %u Source: %u Length: %u",
@@ -186,7 +186,7 @@ void LinkFrame::WriteUserData(const uint8_t* pSrc, uint8_t* pDest, uint8_t lengt
 {
 	while (length > 0)
 	{
-		uint8_t max = LS_DATA_BLOCK_SIZE;
+		uint8_t max = LPDU_DATA_BLOCK_SIZE;
 		uint8_t num = length > max ? max : length;
 		memcpy(pDest, pSrc, num);
 		CRC::AddCrc(pDest, num);

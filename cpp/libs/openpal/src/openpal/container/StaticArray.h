@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __STATIC_ARRAY_H_
-#define __STATIC_ARRAY_H_
+#ifndef OPENPAL_STATICARRAY_H
+#define OPENPAL_STATICARRAY_H
 
 #include "Indexable.h"
 

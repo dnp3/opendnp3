@@ -19,8 +19,8 @@
 * to you under the terms of the License.
 */
 
-#ifndef __LINK_CHANNEL_STATISTICS_H_
-#define __LINK_CHANNEL_STATISTICS_H_
+#ifndef OPENDNP3_LINKCHANNELSTATISTICS_H
+#define OPENDNP3_LINKCHANNELSTATISTICS_H
 
 #include <openpal/channel/ChannelStatistics.h>
 

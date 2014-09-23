@@ -1,0 +1,1278 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>6.2</ProjectVersion>
+    <ToolchainName>com.Atmel.ARMGCC.CPP</ToolchainName>
+    <ProjectGuid>{e9679465-a0ad-45c3-b0e2-b1c76ecd852f}</ProjectGuid>
+    <avrdevice>ATSAM3X8E</avrdevice>
+    <avrdeviceseries>none</avrdeviceseries>
+    <OutputType>StaticLibrary</OutputType>
+    <Language>CPP</Language>
+    <OutputFileName>lib$(MSBuildProjectName)</OutputFileName>
+    <OutputFileExtension>.a</OutputFileExtension>
+    <OutputDirectory>$(MSBuildProjectDirectory)\$(Configuration)</OutputDirectory>
+    <AvrGccProjectExtensions>
+    </AvrGccProjectExtensions>
+    <AssemblyName>opendnp3</AssemblyName>
+    <Name>opendnp3</Name>
+    <RootNamespace>opendnp3</RootNamespace>
+    <ToolchainFlavour>Native</ToolchainFlavour>
+    <KeepTimersRunning>true</KeepTimersRunning>
+    <OverrideVtor>false</OverrideVtor>
+    <CacheFlash>true</CacheFlash>
+    <ProgFlashFromRam>true</ProgFlashFromRam>
+    <RamSnippetAddress />
+    <UncachedRange />
+    <OverrideVtorValue />
+    <BootSegment>2</BootSegment>
+    <eraseonlaunchrule>1</eraseonlaunchrule>
+    <AsfFrameworkConfig>
+      <framework-data xmlns="">
+        <options />
+        <configurations />
+        <files />
+        <documentation help="" />
+        <offline-documentation help="" />
+        <dependencies>
+          <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.17.0" />
+        </dependencies>
+      </framework-data>
+    </AsfFrameworkConfig>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <ToolchainSettings>
+      <ArmGccCpp>
+  <armgcc.common.outputfiles.hex>True</armgcc.common.outputfiles.hex>
+  <armgcc.common.outputfiles.lss>True</armgcc.common.outputfiles.lss>
+  <armgcc.common.outputfiles.eep>True</armgcc.common.outputfiles.eep>
+  <armgcc.common.outputfiles.bin>True</armgcc.common.outputfiles.bin>
+  <armgcc.common.outputfiles.srec>True</armgcc.common.outputfiles.srec>
+  <armgcc.compiler.directories.IncludePaths><ListValues><Value>%24(ToolchainDir)\..\..\CMSIS_Atmel\Device\ATMEL\sam3xa\include</Value><Value>%24(ToolchainDir)\..\..\CMSIS_Atmel</Value><Value>%24(ToolchainDir)\..\..\CMSIS_Atmel\CMSIS\Include</Value><Value>%24(ToolchainDir)\..\..\CMSIS_Atmel\Device\ATMEL</Value></ListValues></armgcc.compiler.directories.IncludePaths>
+  <armgcc.compiler.optimization.PrepareFunctionsForGarbageCollection>True</armgcc.compiler.optimization.PrepareFunctionsForGarbageCollection>
+  <armgcc.compiler.warnings.AllWarnings>True</armgcc.compiler.warnings.AllWarnings>
+  <armgcccpp.compiler.symbols.DefSymbols><ListValues>
+  <Value>OPENPAL_STRIP_LOGGING</Value>
+  <Value>NDEBUG</Value>
+</ListValues></armgcccpp.compiler.symbols.DefSymbols>
+  <armgcccpp.compiler.directories.IncludePaths><ListValues><Value>%24(ToolchainDir)\..\..\CMSIS_Atmel\Device\ATMEL\sam3xa\include</Value><Value>%24(ToolchainDir)\..\..\CMSIS_Atmel</Value><Value>%24(ToolchainDir)\..\..\CMSIS_Atmel\CMSIS\Include</Value><Value>%24(ToolchainDir)\..\..\CMSIS_Atmel\Device\ATMEL</Value><Value>../../../../cpp/libs/opendnp3/src</Value><Value>../../../../cpp/libs/openpal/src</Value></ListValues></armgcccpp.compiler.directories.IncludePaths>
+  <armgcccpp.compiler.optimization.PrepareFunctionsForGarbageCollection>True</armgcccpp.compiler.optimization.PrepareFunctionsForGarbageCollection>
+  <armgcccpp.compiler.warnings.AllWarnings>True</armgcccpp.compiler.warnings.AllWarnings>
+  <armgcccpp.compiler.miscellaneous.OtherFlags>--std=c++11</armgcccpp.compiler.miscellaneous.OtherFlags>
+  <armgcccpp.linker.libraries.Libraries><ListValues><Value>libm</Value></ListValues></armgcccpp.linker.libraries.Libraries>
+  <armgcccpp.linker.libraries.LibrarySearchPaths><ListValues><Value>../cmsis/linkerScripts</Value></ListValues></armgcccpp.linker.libraries.LibrarySearchPaths>
+  <armgcccpp.linker.optimization.GarbageCollectUnusedSections>True</armgcccpp.linker.optimization.GarbageCollectUnusedSections>
+  <armgcccpp.linker.memorysettings.ExternalRAM>False</armgcccpp.linker.memorysettings.ExternalRAM>
+  <armgcccpp.preprocessingassembler.general.IncludePaths><ListValues><Value>%24(ToolchainDir)\..\..\CMSIS_Atmel\Device\ATMEL\sam3xa\include</Value><Value>%24(ToolchainDir)\..\..\CMSIS_Atmel</Value><Value>%24(ToolchainDir)\..\..\CMSIS_Atmel\CMSIS\Include</Value><Value>%24(ToolchainDir)\..\..\CMSIS_Atmel\Device\ATMEL</Value></ListValues></armgcccpp.preprocessingassembler.general.IncludePaths>
+  <armgcc.compiler.symbols.DefSymbols><ListValues><Value>NDEBUG</Value></ListValues></armgcc.compiler.symbols.DefSymbols>
+  <armgcc.compiler.optimization.level>Optimize for size (-Os)</armgcc.compiler.optimization.level>
+  <armgcccpp.compiler.optimization.level>Optimize for size (-Os)</armgcccpp.compiler.optimization.level>
+</ArmGccCpp>
+    </ToolchainSettings>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <ToolchainSettings>
+      <ArmGccCpp>
+  <armgcc.common.outputfiles.hex>True</armgcc.common.outputfiles.hex>
+  <armgcc.common.outputfiles.lss>True</armgcc.common.outputfiles.lss>
+  <armgcc.common.outputfiles.eep>True</armgcc.common.outputfiles.eep>
+  <armgcc.common.outputfiles.bin>True</armgcc.common.outputfiles.bin>
+  <armgcc.common.outputfiles.srec>True</armgcc.common.outputfiles.srec>
+  <armgcc.compiler.directories.IncludePaths><ListValues><Value>%24(ToolchainDir)\..\..\CMSIS_Atmel\Device\ATMEL\sam3xa\include</Value><Value>%24(ToolchainDir)\..\..\CMSIS_Atmel</Value><Value>%24(ToolchainDir)\..\..\CMSIS_Atmel\CMSIS\Include</Value><Value>%24(ToolchainDir)\..\..\CMSIS_Atmel\Device\ATMEL</Value></ListValues></armgcc.compiler.directories.IncludePaths>
+  <armgcc.compiler.optimization.PrepareFunctionsForGarbageCollection>True</armgcc.compiler.optimization.PrepareFunctionsForGarbageCollection>
+  <armgcc.compiler.warnings.AllWarnings>True</armgcc.compiler.warnings.AllWarnings>
+  <armgcccpp.compiler.symbols.DefSymbols><ListValues>
+  <Value>OPENPAL_STRIP_LOGGING</Value>
+  <Value>DEBUG</Value>
+</ListValues></armgcccpp.compiler.symbols.DefSymbols>
+  <armgcccpp.compiler.directories.IncludePaths><ListValues><Value>%24(ToolchainDir)\..\..\CMSIS_Atmel\Device\ATMEL\sam3xa\include</Value><Value>%24(ToolchainDir)\..\..\CMSIS_Atmel</Value><Value>%24(ToolchainDir)\..\..\CMSIS_Atmel\CMSIS\Include</Value><Value>%24(ToolchainDir)\..\..\CMSIS_Atmel\Device\ATMEL</Value><Value>../../../../cpp/libs/opendnp3/src</Value><Value>../../../../cpp/libs/openpal/src</Value></ListValues></armgcccpp.compiler.directories.IncludePaths>
+  <armgcccpp.compiler.optimization.PrepareFunctionsForGarbageCollection>True</armgcccpp.compiler.optimization.PrepareFunctionsForGarbageCollection>
+  <armgcccpp.compiler.warnings.AllWarnings>True</armgcccpp.compiler.warnings.AllWarnings>
+  <armgcccpp.compiler.miscellaneous.OtherFlags>--std=c++11</armgcccpp.compiler.miscellaneous.OtherFlags>
+  <armgcccpp.linker.libraries.Libraries><ListValues><Value>libm</Value></ListValues></armgcccpp.linker.libraries.Libraries>
+  <armgcccpp.linker.libraries.LibrarySearchPaths><ListValues><Value>../cmsis/linkerScripts</Value></ListValues></armgcccpp.linker.libraries.LibrarySearchPaths>
+  <armgcccpp.linker.optimization.GarbageCollectUnusedSections>True</armgcccpp.linker.optimization.GarbageCollectUnusedSections>
+  <armgcccpp.linker.memorysettings.ExternalRAM></armgcccpp.linker.memorysettings.ExternalRAM>
+  <armgcccpp.preprocessingassembler.general.IncludePaths><ListValues><Value>%24(ToolchainDir)\..\..\CMSIS_Atmel\Device\ATMEL\sam3xa\include</Value><Value>%24(ToolchainDir)\..\..\CMSIS_Atmel</Value><Value>%24(ToolchainDir)\..\..\CMSIS_Atmel\CMSIS\Include</Value><Value>%24(ToolchainDir)\..\..\CMSIS_Atmel\Device\ATMEL</Value></ListValues></armgcccpp.preprocessingassembler.general.IncludePaths>
+  <armgcc.compiler.symbols.DefSymbols><ListValues><Value>DEBUG</Value></ListValues></armgcc.compiler.symbols.DefSymbols>
+  <armgcc.compiler.optimization.level>Optimize (-O1)</armgcc.compiler.optimization.level>
+  <armgcc.compiler.optimization.DebugLevel>Maximum (-g3)</armgcc.compiler.optimization.DebugLevel>
+  <armgcccpp.compiler.optimization.level>Optimize (-O1)</armgcccpp.compiler.optimization.level>
+  <armgcccpp.compiler.optimization.DebugLevel>Maximum (-g3)</armgcccpp.compiler.optimization.DebugLevel>
+  <armgcccpp.assembler.debugging.DebugLevel>Default (-g)</armgcccpp.assembler.debugging.DebugLevel>
+  <armgcccpp.preprocessingassembler.debugging.DebugLevel>Default (-Wa,-g)</armgcccpp.preprocessingassembler.debugging.DebugLevel>
+</ArmGccCpp>
+    </ToolchainSettings>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\AnalogOutput.cpp">
+      <SubType>compile</SubType>
+      <Link>app\AnalogOutput.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\AnalogOutput.h">
+      <SubType>compile</SubType>
+      <Link>app\AnalogOutput.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\APDUBuilders.cpp">
+      <SubType>compile</SubType>
+      <Link>app\APDUBuilders.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\APDUBuilders.h">
+      <SubType>compile</SubType>
+      <Link>app\APDUBuilders.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\APDUHandlerBase.cpp">
+      <SubType>compile</SubType>
+      <Link>app\APDUHandlerBase.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\APDUHandlerBase.h">
+      <SubType>compile</SubType>
+      <Link>app\APDUHandlerBase.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\APDUHeader.cpp">
+      <SubType>compile</SubType>
+      <Link>app\APDUHeader.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\APDUHeader.h">
+      <SubType>compile</SubType>
+      <Link>app\APDUHeader.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\APDUHeaderParser.cpp">
+      <SubType>compile</SubType>
+      <Link>app\APDUHeaderParser.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\APDUHeaderParser.h">
+      <SubType>compile</SubType>
+      <Link>app\APDUHeaderParser.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\APDULogging.cpp">
+      <SubType>compile</SubType>
+      <Link>app\APDULogging.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\APDULogging.h">
+      <SubType>compile</SubType>
+      <Link>app\APDULogging.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\APDUParser.cpp">
+      <SubType>compile</SubType>
+      <Link>app\APDUParser.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\APDUParser.h">
+      <SubType>compile</SubType>
+      <Link>app\APDUParser.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\APDURequest.cpp">
+      <SubType>compile</SubType>
+      <Link>app\APDURequest.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\APDURequest.h">
+      <SubType>compile</SubType>
+      <Link>app\APDURequest.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\APDUResponse.cpp">
+      <SubType>compile</SubType>
+      <Link>app\APDUResponse.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\APDUResponse.h">
+      <SubType>compile</SubType>
+      <Link>app\APDUResponse.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\APDUWrapper.cpp">
+      <SubType>compile</SubType>
+      <Link>app\APDUWrapper.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\APDUWrapper.h">
+      <SubType>compile</SubType>
+      <Link>app\APDUWrapper.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\AppControlField.cpp">
+      <SubType>compile</SubType>
+      <Link>app\AppControlField.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\AppControlField.h">
+      <SubType>compile</SubType>
+      <Link>app\AppControlField.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\BaseMeasurementTypes.h">
+      <SubType>compile</SubType>
+      <Link>app\BaseMeasurementTypes.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\BitfieldRangeWriteIterator.h">
+      <SubType>compile</SubType>
+      <Link>app\BitfieldRangeWriteIterator.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\BitReader.cpp">
+      <SubType>compile</SubType>
+      <Link>app\BitReader.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\BitReader.h">
+      <SubType>compile</SubType>
+      <Link>app\BitReader.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\ClassField.cpp">
+      <SubType>compile</SubType>
+      <Link>app\ClassField.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\ClassField.h">
+      <SubType>compile</SubType>
+      <Link>app\ClassField.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\ControlRelayOutputBlock.cpp">
+      <SubType>compile</SubType>
+      <Link>app\ControlRelayOutputBlock.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\ControlRelayOutputBlock.h">
+      <SubType>compile</SubType>
+      <Link>app\ControlRelayOutputBlock.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\CountWriteIterator.h">
+      <SubType>compile</SubType>
+      <Link>app\CountWriteIterator.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\DownSampling.h">
+      <SubType>compile</SubType>
+      <Link>app\DownSampling.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\EventTriggers.cpp">
+      <SubType>compile</SubType>
+      <Link>app\EventTriggers.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\EventTriggers.h">
+      <SubType>compile</SubType>
+      <Link>app\EventTriggers.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\EventType.h">
+      <SubType>compile</SubType>
+      <Link>app\EventType.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\FunctionHelpers.cpp">
+      <SubType>compile</SubType>
+      <Link>app\FunctionHelpers.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\FunctionHelpers.h">
+      <SubType>compile</SubType>
+      <Link>app\FunctionHelpers.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\GroupVariationID.h">
+      <SubType>compile</SubType>
+      <Link>app\GroupVariationID.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\GroupVariationRecord.cpp">
+      <SubType>compile</SubType>
+      <Link>app\GroupVariationRecord.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\GroupVariationRecord.h">
+      <SubType>compile</SubType>
+      <Link>app\GroupVariationRecord.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\HeaderWriter.h">
+      <SubType>compile</SubType>
+      <Link>app\HeaderWriter.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\IAPDUHandler.h">
+      <SubType>compile</SubType>
+      <Link>app\IAPDUHandler.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\IDNP3Serializer.h">
+      <SubType>compile</SubType>
+      <Link>app\IDNP3Serializer.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\IINField.cpp">
+      <SubType>compile</SubType>
+      <Link>app\IINField.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\IINField.h">
+      <SubType>compile</SubType>
+      <Link>app\IINField.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\IndexedValue.h">
+      <SubType>compile</SubType>
+      <Link>app\IndexedValue.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\IndexParser.h">
+      <SubType>compile</SubType>
+      <Link>app\IndexParser.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\IterableBuffer.h">
+      <SubType>compile</SubType>
+      <Link>app\IterableBuffer.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\IterableTransforms.h">
+      <SubType>compile</SubType>
+      <Link>app\IterableTransforms.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\ITransactable.h">
+      <SubType>compile</SubType>
+      <Link>app\ITransactable.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\LazyIterable.h">
+      <SubType>compile</SubType>
+      <Link>app\LazyIterable.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\MeasurementFactory.h">
+      <SubType>compile</SubType>
+      <Link>app\MeasurementFactory.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\MeasurementTypes.cpp">
+      <SubType>compile</SubType>
+      <Link>app\MeasurementTypes.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\MeasurementTypes.h">
+      <SubType>compile</SubType>
+      <Link>app\MeasurementTypes.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\ObjectWriter.cpp">
+      <SubType>compile</SubType>
+      <Link>app\ObjectWriter.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\OctetData.cpp">
+      <SubType>compile</SubType>
+      <Link>app\OctetData.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\OctetData.h">
+      <SubType>compile</SubType>
+      <Link>app\OctetData.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\OctetString.h">
+      <SubType>compile</SubType>
+      <Link>app\OctetString.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\PrefixedWriteIterator.h">
+      <SubType>compile</SubType>
+      <Link>app\PrefixedWriteIterator.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\QualityMasks.h">
+      <SubType>compile</SubType>
+      <Link>app\QualityMasks.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\Range.h">
+      <SubType>compile</SubType>
+      <Link>app\Range.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\RangeWriteIterator.h">
+      <SubType>compile</SubType>
+      <Link>app\RangeWriteIterator.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\SequenceInfo.h">
+      <SubType>compile</SubType>
+      <Link>app\SequenceInfo.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\StaticRange.cpp">
+      <SubType>compile</SubType>
+      <Link>app\StaticRange.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\StaticRange.h">
+      <SubType>compile</SubType>
+      <Link>app\StaticRange.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\VTOData.h">
+      <SubType>compile</SubType>
+      <Link>app\VTOData.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\WriteConversions.h">
+      <SubType>compile</SubType>
+      <Link>app\WriteConversions.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\WriteConversionTemplates.h">
+      <SubType>compile</SubType>
+      <Link>app\WriteConversionTemplates.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\ErrorCodes.h">
+      <SubType>compile</SubType>
+      <Link>ErrorCodes.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\AnalogQuality.h">
+      <SubType>compile</SubType>
+      <Link>gen\AnalogQuality.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\BinaryOutputStatusQuality.h">
+      <SubType>compile</SubType>
+      <Link>gen\BinaryOutputStatusQuality.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\BinaryQuality.h">
+      <SubType>compile</SubType>
+      <Link>gen\BinaryQuality.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\ChannelState.cpp">
+      <SubType>compile</SubType>
+      <Link>gen\ChannelState.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\ChannelState.h">
+      <SubType>compile</SubType>
+      <Link>gen\ChannelState.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\CommandResult.cpp">
+      <SubType>compile</SubType>
+      <Link>gen\CommandResult.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\CommandResult.h">
+      <SubType>compile</SubType>
+      <Link>gen\CommandResult.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\CommandStatus.cpp">
+      <SubType>compile</SubType>
+      <Link>gen\CommandStatus.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\CommandStatus.h">
+      <SubType>compile</SubType>
+      <Link>gen\CommandStatus.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\ControlCode.cpp">
+      <SubType>compile</SubType>
+      <Link>gen\ControlCode.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\ControlCode.h">
+      <SubType>compile</SubType>
+      <Link>gen\ControlCode.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\CounterQuality.h">
+      <SubType>compile</SubType>
+      <Link>gen\CounterQuality.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\DoubleBit.cpp">
+      <SubType>compile</SubType>
+      <Link>gen\DoubleBit.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\DoubleBit.h">
+      <SubType>compile</SubType>
+      <Link>gen\DoubleBit.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\DoubleBitBinaryQuality.h">
+      <SubType>compile</SubType>
+      <Link>gen\DoubleBitBinaryQuality.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\EventAnalogOutputStatusResponse.cpp">
+      <SubType>compile</SubType>
+      <Link>gen\EventAnalogOutputStatusResponse.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\EventAnalogOutputStatusResponse.h">
+      <SubType>compile</SubType>
+      <Link>gen\EventAnalogOutputStatusResponse.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\EventAnalogResponse.cpp">
+      <SubType>compile</SubType>
+      <Link>gen\EventAnalogResponse.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\EventAnalogResponse.h">
+      <SubType>compile</SubType>
+      <Link>gen\EventAnalogResponse.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\EventBinaryOutputStatusResponse.cpp">
+      <SubType>compile</SubType>
+      <Link>gen\EventBinaryOutputStatusResponse.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\EventBinaryOutputStatusResponse.h">
+      <SubType>compile</SubType>
+      <Link>gen\EventBinaryOutputStatusResponse.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\EventBinaryResponse.cpp">
+      <SubType>compile</SubType>
+      <Link>gen\EventBinaryResponse.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\EventBinaryResponse.h">
+      <SubType>compile</SubType>
+      <Link>gen\EventBinaryResponse.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\EventCounterResponse.cpp">
+      <SubType>compile</SubType>
+      <Link>gen\EventCounterResponse.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\EventCounterResponse.h">
+      <SubType>compile</SubType>
+      <Link>gen\EventCounterResponse.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\EventDoubleBinaryResponse.cpp">
+      <SubType>compile</SubType>
+      <Link>gen\EventDoubleBinaryResponse.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\EventDoubleBinaryResponse.h">
+      <SubType>compile</SubType>
+      <Link>gen\EventDoubleBinaryResponse.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\EventFrozenCounterResponse.cpp">
+      <SubType>compile</SubType>
+      <Link>gen\EventFrozenCounterResponse.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\EventFrozenCounterResponse.h">
+      <SubType>compile</SubType>
+      <Link>gen\EventFrozenCounterResponse.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\FunctionCode.cpp">
+      <SubType>compile</SubType>
+      <Link>gen\FunctionCode.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\FunctionCode.h">
+      <SubType>compile</SubType>
+      <Link>gen\FunctionCode.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\GroupVariation.cpp">
+      <SubType>compile</SubType>
+      <Link>gen\GroupVariation.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\GroupVariation.h">
+      <SubType>compile</SubType>
+      <Link>gen\GroupVariation.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\LinkFunction.cpp">
+      <SubType>compile</SubType>
+      <Link>gen\LinkFunction.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\LinkFunction.h">
+      <SubType>compile</SubType>
+      <Link>gen\LinkFunction.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\PointClass.cpp">
+      <SubType>compile</SubType>
+      <Link>gen\PointClass.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\PointClass.h">
+      <SubType>compile</SubType>
+      <Link>gen\PointClass.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\PollState.cpp">
+      <SubType>compile</SubType>
+      <Link>gen\PollState.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\PollState.h">
+      <SubType>compile</SubType>
+      <Link>gen\PollState.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\QualifierCode.cpp">
+      <SubType>compile</SubType>
+      <Link>gen\QualifierCode.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\QualifierCode.h">
+      <SubType>compile</SubType>
+      <Link>gen\QualifierCode.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\RestartMode.h">
+      <SubType>compile</SubType>
+      <Link>gen\RestartMode.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\StaticAnalogOutputStatusResponse.cpp">
+      <SubType>compile</SubType>
+      <Link>gen\StaticAnalogOutputStatusResponse.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\StaticAnalogOutputStatusResponse.h">
+      <SubType>compile</SubType>
+      <Link>gen\StaticAnalogOutputStatusResponse.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\StaticAnalogResponse.cpp">
+      <SubType>compile</SubType>
+      <Link>gen\StaticAnalogResponse.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\StaticAnalogResponse.h">
+      <SubType>compile</SubType>
+      <Link>gen\StaticAnalogResponse.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\StaticBinaryOutputStatusResponse.cpp">
+      <SubType>compile</SubType>
+      <Link>gen\StaticBinaryOutputStatusResponse.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\StaticBinaryOutputStatusResponse.h">
+      <SubType>compile</SubType>
+      <Link>gen\StaticBinaryOutputStatusResponse.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\StaticBinaryResponse.cpp">
+      <SubType>compile</SubType>
+      <Link>gen\StaticBinaryResponse.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\StaticBinaryResponse.h">
+      <SubType>compile</SubType>
+      <Link>gen\StaticBinaryResponse.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\StaticCounterResponse.cpp">
+      <SubType>compile</SubType>
+      <Link>gen\StaticCounterResponse.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\StaticCounterResponse.h">
+      <SubType>compile</SubType>
+      <Link>gen\StaticCounterResponse.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\StaticDoubleBinaryResponse.cpp">
+      <SubType>compile</SubType>
+      <Link>gen\StaticDoubleBinaryResponse.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\StaticDoubleBinaryResponse.h">
+      <SubType>compile</SubType>
+      <Link>gen\StaticDoubleBinaryResponse.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\StaticFrozenCounterResponse.cpp">
+      <SubType>compile</SubType>
+      <Link>gen\StaticFrozenCounterResponse.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\StaticFrozenCounterResponse.h">
+      <SubType>compile</SubType>
+      <Link>gen\StaticFrozenCounterResponse.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\TimestampMode.h">
+      <SubType>compile</SubType>
+      <Link>gen\TimestampMode.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\TimeSyncMode.cpp">
+      <SubType>compile</SubType>
+      <Link>gen\TimeSyncMode.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\TimeSyncMode.h">
+      <SubType>compile</SubType>
+      <Link>gen\TimeSyncMode.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\link\CRC.cpp">
+      <SubType>compile</SubType>
+      <Link>link\CRC.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\link\CRC.h">
+      <SubType>compile</SubType>
+      <Link>link\CRC.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\link\IChannelStateListener.h">
+      <SubType>compile</SubType>
+      <Link>link\IChannelStateListener.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\link\IFrameSink.h">
+      <SubType>compile</SubType>
+      <Link>link\IFrameSink.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\link\ILinkContext.h">
+      <SubType>compile</SubType>
+      <Link>link\ILinkContext.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\link\ILinkLayer.h">
+      <SubType>compile</SubType>
+      <Link>link\ILinkLayer.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\link\ILinkRouter.h">
+      <SubType>compile</SubType>
+      <Link>link\ILinkRouter.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\link\IOpenDelayStrategy.cpp">
+      <SubType>compile</SubType>
+      <Link>link\IOpenDelayStrategy.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\link\IOpenDelayStrategy.h">
+      <SubType>compile</SubType>
+      <Link>link\IOpenDelayStrategy.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\link\ITransportSegment.h">
+      <SubType>compile</SubType>
+      <Link>link\ITransportSegment.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\link\LinkChannelStatistics.h">
+      <SubType>compile</SubType>
+      <Link>link\LinkChannelStatistics.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\link\LinkConfig.h">
+      <SubType>compile</SubType>
+      <Link>link\LinkConfig.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\link\LinkFrame.cpp">
+      <SubType>compile</SubType>
+      <Link>link\LinkFrame.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\link\LinkFrame.h">
+      <SubType>compile</SubType>
+      <Link>link\LinkFrame.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\link\LinkHeader.cpp">
+      <SubType>compile</SubType>
+      <Link>link\LinkHeader.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\link\LinkHeader.h">
+      <SubType>compile</SubType>
+      <Link>link\LinkHeader.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\link\LinkLayer.cpp">
+      <SubType>compile</SubType>
+      <Link>link\LinkLayer.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\link\LinkLayer.h">
+      <SubType>compile</SubType>
+      <Link>link\LinkLayer.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\link\LinkLayerConstants.h">
+      <SubType>compile</SubType>
+      <Link>link\LinkLayerConstants.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\link\LinkLayerParser.cpp">
+      <SubType>compile</SubType>
+      <Link>link\LinkLayerParser.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\link\LinkLayerParser.h">
+      <SubType>compile</SubType>
+      <Link>link\LinkLayerParser.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\link\PriLinkLayerStates.cpp">
+      <SubType>compile</SubType>
+      <Link>link\PriLinkLayerStates.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\link\PriLinkLayerStates.h">
+      <SubType>compile</SubType>
+      <Link>link\PriLinkLayerStates.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\link\SecLinkLayerStates.cpp">
+      <SubType>compile</SubType>
+      <Link>link\SecLinkLayerStates.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\link\SecLinkLayerStates.h">
+      <SubType>compile</SubType>
+      <Link>link\SecLinkLayerStates.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\link\ShiftableBuffer.cpp">
+      <SubType>compile</SubType>
+      <Link>link\ShiftableBuffer.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\link\ShiftableBuffer.h">
+      <SubType>compile</SubType>
+      <Link>link\ShiftableBuffer.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\link\Singleton.h">
+      <SubType>compile</SubType>
+      <Link>link\Singleton.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\LogLevels.h">
+      <SubType>compile</SubType>
+      <Link>LogLevels.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\objects\Group1.cpp">
+      <SubType>compile</SubType>
+      <Link>objects\Group1.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\objects\Group1.h">
+      <SubType>compile</SubType>
+      <Link>objects\Group1.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\objects\Group10.cpp">
+      <SubType>compile</SubType>
+      <Link>objects\Group10.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\objects\Group10.h">
+      <SubType>compile</SubType>
+      <Link>objects\Group10.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\objects\Group11.cpp">
+      <SubType>compile</SubType>
+      <Link>objects\Group11.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\objects\Group11.h">
+      <SubType>compile</SubType>
+      <Link>objects\Group11.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\objects\Group12.cpp">
+      <SubType>compile</SubType>
+      <Link>objects\Group12.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\objects\Group12.h">
+      <SubType>compile</SubType>
+      <Link>objects\Group12.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\objects\Group2.cpp">
+      <SubType>compile</SubType>
+      <Link>objects\Group2.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\objects\Group2.h">
+      <SubType>compile</SubType>
+      <Link>objects\Group2.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\objects\Group20.cpp">
+      <SubType>compile</SubType>
+      <Link>objects\Group20.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\objects\Group20.h">
+      <SubType>compile</SubType>
+      <Link>objects\Group20.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\objects\Group21.cpp">
+      <SubType>compile</SubType>
+      <Link>objects\Group21.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\objects\Group21.h">
+      <SubType>compile</SubType>
+      <Link>objects\Group21.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\objects\Group22.cpp">
+      <SubType>compile</SubType>
+      <Link>objects\Group22.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\objects\Group22.h">
+      <SubType>compile</SubType>
+      <Link>objects\Group22.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\objects\Group23.cpp">
+      <SubType>compile</SubType>
+      <Link>objects\Group23.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\objects\Group23.h">
+      <SubType>compile</SubType>
+      <Link>objects\Group23.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\objects\Group3.cpp">
+      <SubType>compile</SubType>
+      <Link>objects\Group3.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\objects\Group3.h">
+      <SubType>compile</SubType>
+      <Link>objects\Group3.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\objects\Group30.cpp">
+      <SubType>compile</SubType>
+      <Link>objects\Group30.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\objects\Group30.h">
+      <SubType>compile</SubType>
+      <Link>objects\Group30.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\objects\Group32.cpp">
+      <SubType>compile</SubType>
+      <Link>objects\Group32.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\objects\Group32.h">
+      <SubType>compile</SubType>
+      <Link>objects\Group32.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\objects\Group4.cpp">
+      <SubType>compile</SubType>
+      <Link>objects\Group4.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\objects\Group4.h">
+      <SubType>compile</SubType>
+      <Link>objects\Group4.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\objects\Group40.cpp">
+      <SubType>compile</SubType>
+      <Link>objects\Group40.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\objects\Group40.h">
+      <SubType>compile</SubType>
+      <Link>objects\Group40.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\objects\Group41.cpp">
+      <SubType>compile</SubType>
+      <Link>objects\Group41.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\objects\Group41.h">
+      <SubType>compile</SubType>
+      <Link>objects\Group41.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\objects\Group42.cpp">
+      <SubType>compile</SubType>
+      <Link>objects\Group42.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\objects\Group42.h">
+      <SubType>compile</SubType>
+      <Link>objects\Group42.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\objects\Group50.cpp">
+      <SubType>compile</SubType>
+      <Link>objects\Group50.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\objects\Group50.h">
+      <SubType>compile</SubType>
+      <Link>objects\Group50.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\objects\Group51.cpp">
+      <SubType>compile</SubType>
+      <Link>objects\Group51.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\objects\Group51.h">
+      <SubType>compile</SubType>
+      <Link>objects\Group51.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\objects\Group52.cpp">
+      <SubType>compile</SubType>
+      <Link>objects\Group52.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\objects\Group52.h">
+      <SubType>compile</SubType>
+      <Link>objects\Group52.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\objects\Group60.cpp">
+      <SubType>compile</SubType>
+      <Link>objects\Group60.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\objects\Group60.h">
+      <SubType>compile</SubType>
+      <Link>objects\Group60.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\ApplicationIIN.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\ApplicationIIN.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\ApplicationIIN.h">
+      <SubType>compile</SubType>
+      <Link>outstation\ApplicationIIN.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\ClassBasedRequestHandler.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\ClassBasedRequestHandler.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\ClassBasedRequestHandler.h">
+      <SubType>compile</SubType>
+      <Link>outstation\ClassBasedRequestHandler.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\CommandActionAdapter.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\CommandActionAdapter.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\CommandActionAdapter.h">
+      <SubType>compile</SubType>
+      <Link>outstation\CommandActionAdapter.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\CommandResponseHandler.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\CommandResponseHandler.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\CommandResponseHandler.h">
+      <SubType>compile</SubType>
+      <Link>outstation\CommandResponseHandler.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\ConstantCommandAction.h">
+      <SubType>compile</SubType>
+      <Link>outstation\ConstantCommandAction.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\CountOf.h">
+      <SubType>compile</SubType>
+      <Link>outstation\CountOf.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\Database.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\Database.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\Database.h">
+      <SubType>compile</SubType>
+      <Link>outstation\Database.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\DatabaseTemplate.h">
+      <SubType>compile</SubType>
+      <Link>outstation\DatabaseTemplate.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\DeferredRequest.h">
+      <SubType>compile</SubType>
+      <Link>outstation\DeferredRequest.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\DualValue.h">
+      <SubType>compile</SubType>
+      <Link>outstation\DualValue.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\DynamicallyAllocatedDatabase.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\DynamicallyAllocatedDatabase.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\DynamicallyAllocatedDatabase.h">
+      <SubType>compile</SubType>
+      <Link>outstation\DynamicallyAllocatedDatabase.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\DynamicallyAllocatedEventBuffer.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\DynamicallyAllocatedEventBuffer.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\DynamicallyAllocatedEventBuffer.h">
+      <SubType>compile</SubType>
+      <Link>outstation\DynamicallyAllocatedEventBuffer.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\Event.h">
+      <SubType>compile</SubType>
+      <Link>outstation\Event.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\EventBufferConfig.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\EventBufferConfig.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\EventBufferConfig.h">
+      <SubType>compile</SubType>
+      <Link>outstation\EventBufferConfig.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\EventBufferFacade.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\EventBufferFacade.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\EventBufferFacade.h">
+      <SubType>compile</SubType>
+      <Link>outstation\EventBufferFacade.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\EventCount.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\EventCount.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\EventCount.h">
+      <SubType>compile</SubType>
+      <Link>outstation\EventCount.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\EventMetadata.h">
+      <SubType>compile</SubType>
+      <Link>outstation\EventMetadata.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\EventResponseConfig.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\EventResponseConfig.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\EventResponseConfig.h">
+      <SubType>compile</SubType>
+      <Link>outstation\EventResponseConfig.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\EventResponseContext.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\EventResponseContext.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\EventResponseContext.h">
+      <SubType>compile</SubType>
+      <Link>outstation\EventResponseContext.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\EventResponseTypes.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\EventResponseTypes.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\EventResponseTypes.h">
+      <SubType>compile</SubType>
+      <Link>outstation\EventResponseTypes.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\EventWriteFunctions.h">
+      <SubType>compile</SubType>
+      <Link>outstation\EventWriteFunctions.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\EventWriteOperation.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\EventWriteOperation.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\EventWriteOperation.h">
+      <SubType>compile</SubType>
+      <Link>outstation\EventWriteOperation.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\ICommandAction.h">
+      <SubType>compile</SubType>
+      <Link>outstation\ICommandAction.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\ICommandHandler.h">
+      <SubType>compile</SubType>
+      <Link>outstation\ICommandHandler.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\IDatabase.h">
+      <SubType>compile</SubType>
+      <Link>outstation\IDatabase.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\IEventBuffer.h">
+      <SubType>compile</SubType>
+      <Link>outstation\IEventBuffer.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\IINHelpers.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\IINHelpers.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\IINHelpers.h">
+      <SubType>compile</SubType>
+      <Link>outstation\IINHelpers.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\IOutstationApplication.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\IOutstationApplication.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\IOutstationApplication.h">
+      <SubType>compile</SubType>
+      <Link>outstation\IOutstationApplication.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\Outstation.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\Outstation.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\Outstation.h">
+      <SubType>compile</SubType>
+      <Link>outstation\Outstation.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\OutstationConfig.h">
+      <SubType>compile</SubType>
+      <Link>outstation\OutstationConfig.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\OutstationContext.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\OutstationContext.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\OutstationContext.h">
+      <SubType>compile</SubType>
+      <Link>outstation\OutstationContext.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\OutstationEventBuffer.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\OutstationEventBuffer.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\OutstationEventBuffer.h">
+      <SubType>compile</SubType>
+      <Link>outstation\OutstationEventBuffer.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\OutstationParams.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\OutstationParams.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\OutstationParams.h">
+      <SubType>compile</SubType>
+      <Link>outstation\OutstationParams.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\OutstationSolicitedStates.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\OutstationSolicitedStates.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\OutstationSolicitedStates.h">
+      <SubType>compile</SubType>
+      <Link>outstation\OutstationSolicitedStates.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\OutstationStackConfig.h">
+      <SubType>compile</SubType>
+      <Link>outstation\OutstationStackConfig.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\OutstationUnsolicitedStates.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\OutstationUnsolicitedStates.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\OutstationUnsolicitedStates.h">
+      <SubType>compile</SubType>
+      <Link>outstation\OutstationUnsolicitedStates.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\ReadHandler.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\ReadHandler.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\ReadHandler.h">
+      <SubType>compile</SubType>
+      <Link>outstation\ReadHandler.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\ResponseContext.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\ResponseContext.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\ResponseContext.h">
+      <SubType>compile</SubType>
+      <Link>outstation\ResponseContext.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\SelectionCriteria.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\SelectionCriteria.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\SelectionCriteria.h">
+      <SubType>compile</SubType>
+      <Link>outstation\SelectionCriteria.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\SelectionWriter.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\SelectionWriter.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\SelectionWriter.h">
+      <SubType>compile</SubType>
+      <Link>outstation\SelectionWriter.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\SimpleCommandHandler.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\SimpleCommandHandler.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\SimpleCommandHandler.h">
+      <SubType>compile</SubType>
+      <Link>outstation\SimpleCommandHandler.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\SOERecord.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\SOERecord.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\SOERecord.h">
+      <SubType>compile</SubType>
+      <Link>outstation\SOERecord.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\StaticDataFacade.h">
+      <SubType>compile</SubType>
+      <Link>outstation\StaticDataFacade.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\StaticLoader.h">
+      <SubType>compile</SubType>
+      <Link>outstation\StaticLoader.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\StaticLoadFunctions.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\StaticLoadFunctions.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\StaticLoadFunctions.h">
+      <SubType>compile</SubType>
+      <Link>outstation\StaticLoadFunctions.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\StaticResponseConfig.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\StaticResponseConfig.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\StaticResponseConfig.h">
+      <SubType>compile</SubType>
+      <Link>outstation\StaticResponseConfig.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\StaticResponseContext.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\StaticResponseContext.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\StaticResponseContext.h">
+      <SubType>compile</SubType>
+      <Link>outstation\StaticResponseContext.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\TimeTransaction.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\TimeTransaction.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\TimeTransaction.h">
+      <SubType>compile</SubType>
+      <Link>outstation\TimeTransaction.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\ValueMetadataPair.h">
+      <SubType>compile</SubType>
+      <Link>outstation\ValueMetadataPair.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\WriteHandler.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\WriteHandler.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\WriteHandler.h">
+      <SubType>compile</SubType>
+      <Link>outstation\WriteHandler.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\StackStatistics.h">
+      <SubType>compile</SubType>
+      <Link>StackStatistics.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\transport\TransportConstants.h">
+      <SubType>compile</SubType>
+      <Link>transport\TransportConstants.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\transport\TransportLayer.cpp">
+      <SubType>compile</SubType>
+      <Link>transport\TransportLayer.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\transport\TransportLayer.h">
+      <SubType>compile</SubType>
+      <Link>transport\TransportLayer.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\transport\TransportRx.cpp">
+      <SubType>compile</SubType>
+      <Link>transport\TransportRx.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\transport\TransportRx.h">
+      <SubType>compile</SubType>
+      <Link>transport\TransportRx.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\transport\TransportStack.cpp">
+      <SubType>compile</SubType>
+      <Link>transport\TransportStack.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\transport\TransportStack.h">
+      <SubType>compile</SubType>
+      <Link>transport\TransportStack.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\transport\TransportTx.cpp">
+      <SubType>compile</SubType>
+      <Link>transport\TransportTx.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\transport\TransportTx.h">
+      <SubType>compile</SubType>
+      <Link>transport\TransportTx.h</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="link" />
+    <Folder Include="app" />
+    <Folder Include="gen" />
+    <Folder Include="outstation" />
+    <Folder Include="objects" />
+    <Folder Include="transport" />
+  </ItemGroup>
+  <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
+</Project>

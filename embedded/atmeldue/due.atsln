@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Atmel Studio Solution File, Format Version 11.00
+Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "openpal", "openpal\openpal.cppproj", "{A2E8692B-B094-48B7-93F2-E977705EA2F1}"
+EndProject
+Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "opendnp3", "opendnp3\opendnp3.cppproj", "{E9679465-A0AD-45C3-B0E2-B1C76ECD852F}"
+EndProject
+Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "adapter", "adapter\adapter.cppproj", "{F9CDAFBF-E141-4DB0-844D-2E3BCB64A591}"
+EndProject
+Project("{E66E83B9-2572-4076-B26E-6BE79FF3018A}") = "demooutstation", "demooutstation\demooutstation.cppproj", "{2F8B26A8-C1B0-4412-8C4D-6E601E5AA2BF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|ARM = Debug|ARM
+		Release|ARM = Release|ARM
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A2E8692B-B094-48B7-93F2-E977705EA2F1}.Debug|ARM.ActiveCfg = Debug|ARM
+		{A2E8692B-B094-48B7-93F2-E977705EA2F1}.Debug|ARM.Build.0 = Debug|ARM
+		{A2E8692B-B094-48B7-93F2-E977705EA2F1}.Release|ARM.ActiveCfg = Release|ARM
+		{A2E8692B-B094-48B7-93F2-E977705EA2F1}.Release|ARM.Build.0 = Release|ARM
+		{E9679465-A0AD-45C3-B0E2-B1C76ECD852F}.Debug|ARM.ActiveCfg = Debug|ARM
+		{E9679465-A0AD-45C3-B0E2-B1C76ECD852F}.Debug|ARM.Build.0 = Debug|ARM
+		{E9679465-A0AD-45C3-B0E2-B1C76ECD852F}.Release|ARM.ActiveCfg = Release|ARM
+		{E9679465-A0AD-45C3-B0E2-B1C76ECD852F}.Release|ARM.Build.0 = Release|ARM
+		{F9CDAFBF-E141-4DB0-844D-2E3BCB64A591}.Debug|ARM.ActiveCfg = Debug|ARM
+		{F9CDAFBF-E141-4DB0-844D-2E3BCB64A591}.Debug|ARM.Build.0 = Debug|ARM
+		{F9CDAFBF-E141-4DB0-844D-2E3BCB64A591}.Release|ARM.ActiveCfg = Release|ARM
+		{F9CDAFBF-E141-4DB0-844D-2E3BCB64A591}.Release|ARM.Build.0 = Release|ARM
+		{2F8B26A8-C1B0-4412-8C4D-6E601E5AA2BF}.Debug|ARM.ActiveCfg = Debug|ARM
+		{2F8B26A8-C1B0-4412-8C4D-6E601E5AA2BF}.Debug|ARM.Build.0 = Debug|ARM
+		{2F8B26A8-C1B0-4412-8C4D-6E601E5AA2BF}.Release|ARM.ActiveCfg = Release|ARM
+		{2F8B26A8-C1B0-4412-8C4D-6E601E5AA2BF}.Release|ARM.Build.0 = Release|ARM
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

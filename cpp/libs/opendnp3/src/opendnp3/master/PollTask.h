@@ -18,14 +18,14 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __POLL_TASK_H_
-#define __POLL_TASK_H_
+#ifndef OPENDNP3_POLLTASK_H
+#define OPENDNP3_POLLTASK_H
 
 #include "opendnp3/master/PollTaskBase.h"
 
-#include <openpal/executor/Action1.h>
-#include <openpal/container/StaticQueue.h>
+#include <openpal/container/Queue.h>
 
+#include <functional>
 
 namespace opendnp3
 {
@@ -40,7 +40,7 @@ class PollTask : public PollTaskBase
 
 public:
 
-	typedef openpal::Action1<APDURequest&> Builder;
+	typedef std::function<void (APDURequest&)> Builder;
 
 	PollTask();	
 

@@ -18,19 +18,17 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __LINK_LAYER_H_
-#define __LINK_LAYER_H_
+#ifndef OPENDNP3_LINKLAYER_H
+#define OPENDNP3_LINKLAYER_H
 
 #include <openpal/executor/IExecutor.h>
-#include <openpal/container/StaticBuffer.h>
 #include <openpal/logging/LogRoot.h>
+#include <openpal/container/Settable.h>
 
 #include "opendnp3/link/ILinkLayer.h"
 #include "opendnp3/link/ILinkContext.h"
 #include "opendnp3/link/LinkLayerConstants.h"
 #include "opendnp3/link/LinkConfig.h"
-
-#include "opendnp3/Configure.h"
 
 namespace opendnp3
 {
@@ -40,18 +38,25 @@ class PriStateBase;
 class SecStateBase;
 
 //	@section desc Implements the contextual state of DNP3 Data Link Layer
-class LinkLayer : public ILinkLayer, public ILinkContext, public openpal::HasUpperLayer
+class LinkLayer : public ILinkLayer, public ILinkContext, public HasUpperLayer
 {
+	enum class TransmitMode : uint8_t
+	{
+		Idle,
+		Primary,
+		Secondary
+	};	
+
 public:
 
-	LinkLayer(openpal::LogRoot&, openpal::IExecutor*, const LinkConfig& config);
+	LinkLayer(openpal::LogRoot&, openpal::IExecutor*, const LinkConfig&);
 
-	void SetRouter(ILinkRouter*);
+	void SetRouter(ILinkRouter&);
 
 	// ILinkContext interface
 	virtual void OnLowerLayerUp() override final;
 	virtual void OnLowerLayerDown() override final;
-	virtual void OnTransmitResult(bool primary, bool success) override final;
+	virtual void OnTransmitResult(bool success) override final;
 
 	// IFrameSink interface
 	virtual void Ack(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc) override final;
@@ -96,32 +101,32 @@ public:
 
 	void ResetReadFCB()
 	{
-		mNextReadFCB = true;
+		nextReadFCB = true;
 	}
 
 	void ToggleReadFCB()
 	{
-		mNextReadFCB = !mNextReadFCB;
+		nextReadFCB = !nextReadFCB;
 	}
 
 	bool NextReadFCB()
 	{
-		return mNextReadFCB;
+		return nextReadFCB;
 	}
 
 	void ResetWriteFCB()
 	{
-		mNextWriteFCB = true;
+		nextWriteFCB = true;
 	}
 
 	void ToggleWriteFCB()
 	{
-		mNextWriteFCB = !mNextWriteFCB;
+		nextWriteFCB = !nextWriteFCB;
 	}
 
-	bool NextWriteFCB()
+	bool NextWriteFCB() const
 	{
-		return mNextWriteFCB;
+		return nextWriteFCB;
 	}
 
 	// Helpers for sending frames
@@ -139,18 +144,17 @@ public:
 	void ResetRetry();
 	bool Retry();
 
-	uint32_t RetryRemaining()
+	uint32_t RetryRemaining() const
 	{
-		return mRetryRemaining;
+		return numRetryRemaining;
 	}
 
-	void QueueTransmit(const openpal::ReadOnlyBuffer& buffer, bool primary);
+	void QueueTransmit(const openpal::ReadOnlyBuffer& buffer, bool primary);	
 
-	// the buffer for secondary responses
-	openpal::StaticBuffer<LS_HEADER_SIZE> secondaryBuffer;
-
-	// the buffer for primary requests
-	openpal::StaticBuffer<LS_MAX_FRAME_SIZE> primaryBuffer;
+	// buffers used for primary and secondary requests	
+	uint8_t priTxBuffer[LPDU_MAX_FRAME_SIZE];
+	uint8_t secTxBuffer[LPDU_HEADER_SIZE];
+	
 
 	openpal::ReadOnlyBuffer FormatPrimaryBufferWithUnconfirmed(const openpal::ReadOnlyBuffer& tpdu);
 
@@ -160,23 +164,29 @@ public:
 
 private:
 
-	uint32_t mRetryRemaining;
+	TransmitMode txMode;
+	openpal::Settable<openpal::ReadOnlyBuffer> pendingPriTx;
+	openpal::Settable<openpal::ReadOnlyBuffer> pendingSecTx;
 
-	openpal::IExecutor* mpExecutor;
-	openpal::ITimer* mpTimer;
+	void CheckPendingTx(openpal::Settable<openpal::ReadOnlyBuffer>& pending, bool primary);
+
+	uint32_t numRetryRemaining;
+
+	openpal::IExecutor* pExecutor;
+	openpal::ITimer* pTimer;
 
 	// callback from the active timer
 	void OnTimeout();
 
-	bool mNextReadFCB;
-	bool mNextWriteFCB;
-	bool mIsOnline;
+	bool nextReadFCB;
+	bool nextWriteFCB;
+	bool isOnline;
 
-	bool Validate(bool aIsMaster, uint16_t aSrc, uint16_t aDest);	
+	bool Validate(bool isMaster, uint16_t src, uint16_t dest);	
 
-	ILinkRouter* mpRouter;
-	PriStateBase* mpPriState;
-	SecStateBase* mpSecState;
+	ILinkRouter* pRouter;
+	PriStateBase* pPriState;
+	SecStateBase* pSecState;
 };
 
 }

@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __DYNAMIC_ARRAY_H_
-#define __DYNAMIC_ARRAY_H_
+#ifndef OPENPAL_DYNAMICARRAY_H
+#define OPENPAL_DYNAMICARRAY_H
 
 #include "Indexable.h"
 
@@ -101,8 +101,12 @@ public:
 		delete[] buffer;
 	}
 
-private:
+protected:
+
 	ValueType* buffer;
+
+private:
+	
 	DynamicArray& operator=(const DynamicArray&);
 };
 

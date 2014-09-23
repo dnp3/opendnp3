@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __OUTSTATION_STACK_IMPL_H_
-#define __OUTSTATION_STACK_IMPL_H_
+#ifndef ASIODNP3_OUTSTATIONSTACKIMPL_H
+#define ASIODNP3_OUTSTATIONSTACKIMPL_H
 
 #include <opendnp3/outstation/OutstationStackConfig.h>
 #include <opendnp3/outstation/Database.h>
@@ -28,8 +28,8 @@
 #include <opendnp3/link/ILinkRouter.h>
 #include <opendnp3/transport/TransportStack.h>
 
-#include <asiodnp3/DynamicallyAllocatedDatabase.h>
-#include <asiodnp3/DynamicallyAllocatedEventBuffer.h>
+#include <opendnp3/outstation/DynamicallyAllocatedDatabase.h>
+#include <opendnp3/outstation/DynamicallyAllocatedEventBuffer.h>
 
 #include "IOutstation.h"
 #include "Mutex.h"
@@ -68,7 +68,7 @@ public:
 
 	// ------- Non-interface public members ---------
 
-	void SetLinkRouter(opendnp3::ILinkRouter* pRouter);
+	void SetLinkRouter(opendnp3::ILinkRouter& router);
 
 	void SetShutdownAction(const openpal::Action0& action);
 
@@ -80,8 +80,8 @@ private:
 	opendnp3::StackStatistics statistics;	
 	StackActionHandler handler;
 	opendnp3::TransportStack stack;
-	DynamicallyAllocatedDatabase databaseBuffers;
-	DynamicallyAllocatedEventBuffer eventBuffers;
+	opendnp3::DynamicallyAllocatedDatabase databaseBuffers;
+	opendnp3::DynamicallyAllocatedEventBuffer eventBuffers;
 	Mutex mutex;
 	opendnp3::Database database;
 	opendnp3::Outstation outstation;

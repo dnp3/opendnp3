@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __I_MASTER_H_
-#define __I_MASTER_H_
+#ifndef ASIODNP3_IMASTER_H
+#define ASIODNP3_IMASTER_H
 
 #include "IStack.h"
 #include "StackActionHandler.h"
@@ -32,11 +32,8 @@
 namespace asiodnp3
 {
 
-/** Interface that represents a running master.
-* To get a command processor interface to execute controls on the master:-
-\code
-	ICommandProcessor* pCmdProcessor = pMaster->GetCommandProcessor();
-\endcode
+/** 
+* @desc Interface that represents a running master.
 */
 class IMaster : public IStack
 {

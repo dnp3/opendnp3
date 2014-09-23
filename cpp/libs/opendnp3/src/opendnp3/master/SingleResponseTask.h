@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __SINGLE_RESPONSE_TASK_H_
-#define __SINGLE_RESPONSE_TASK_H_
+#ifndef OPENDNP3_SINGLERESPONSETASK_H
+#define OPENDNP3_SINGLERESPONSETASK_H
 
 #include "opendnp3/master/IMasterTask.h"
 

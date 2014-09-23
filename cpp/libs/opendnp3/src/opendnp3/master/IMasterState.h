@@ -19,8 +19,8 @@
 * to you under the terms of the License.
 */
 
-#ifndef __I_MASTER_STATE_H_
-#define __I_MASTER_STATE_H_
+#ifndef OPENDNP3_IMASTERSTATE_H
+#define OPENDNP3_IMASTERSTATE_H
 
 #include <openpal/util/Uncopyable.h>
 #include <openpal/container/ReadOnlyBuffer.h>

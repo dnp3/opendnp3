@@ -19,8 +19,8 @@
  * to you under the terms of the License.
  */
 
-#ifndef __FUNCTION_ZERO_H_
-#define __FUNCTION_ZERO_H_
+#ifndef OPENPAL_FUNCTION0_H
+#define OPENPAL_FUNCTION0_H
 
 #include "Erasure.h"
 
