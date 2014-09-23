@@ -20,7 +20,6 @@ libopenpal_la_CXXFLAGS = -I$(OPENPAL_INCLUDE)
 libopenpal_la_SOURCES = \
 cpp/libs/openpal/src/openpal/container/DynamicBuffer.cpp \
 cpp/libs/openpal/src/openpal/container/ReadOnlyBuffer.cpp \
-cpp/libs/openpal/src/openpal/container/RingBuffer.cpp \
 cpp/libs/openpal/src/openpal/container/WriteBuffer.cpp \
 cpp/libs/openpal/src/openpal/executor/Erasure.cpp \
 cpp/libs/openpal/src/openpal/executor/MonotonicTimestamp.cpp \
@@ -241,7 +240,6 @@ openpaltest_LDADD = libopenpal.la
 openpaltest_SOURCES = \
 cpp/tests/openpaltests/src/CatchTestStart.cpp \
 cpp/tests/openpaltests/src/LinkedListAdapterTestSuite.cpp \
-cpp/tests/openpaltests/src/RingBufferTestSuite.cpp \
 cpp/tests/openpaltests/src/StackAdapterTestSuite.cpp \
 cpp/tests/openpaltests/src/StaticQueueTestSuite.cpp
 
