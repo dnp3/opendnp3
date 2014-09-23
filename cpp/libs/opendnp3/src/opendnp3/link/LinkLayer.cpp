@@ -141,7 +141,7 @@ void LinkLayer::Send(ITransportSegment& segments)
 }
 
 ////////////////////////////////
-// ILinkContext
+// ILinkSession
 ////////////////////////////////
 
 void LinkLayer::OnLowerLayerUp()

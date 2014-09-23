@@ -3,7 +3,7 @@
 #define __AVR_LINK_PARSER_H_
 
 #include <opendnp3/link/ILinkRouter.h>
-#include <opendnp3/link/ILinkContext.h>
+#include <opendnp3/link/ILinkSession.h>
 
 
 #include <opendnp3/link/LinkLayerParser.h>
@@ -19,9 +19,9 @@ class AVRLinkParser : public opendnp3::ILinkRouter
 {
 	public:
 
-	AVRLinkParser(openpal::LogRoot& root, openpal::IExecutor& exe, opendnp3::ILinkContext& context);
+	AVRLinkParser(openpal::LogRoot& root, openpal::IExecutor& exe, opendnp3::ILinkSession& context);
 	
-	virtual void BeginTransmit(const openpal::ReadOnlyBuffer& buffer, opendnp3::ILinkContext* pContext) final override;	
+	virtual void BeginTransmit(const openpal::ReadOnlyBuffer& buffer, opendnp3::ILinkSession* pContext) final override;	
 	
 	// called from the rxReady ISR
 	void Receive(uint8_t rxByte);
@@ -45,7 +45,7 @@ class AVRLinkParser : public opendnp3::ILinkRouter
 	openpal::ReadOnlyBuffer transmission;		
 	
 	openpal::IExecutor* pExecutor;
-	opendnp3::ILinkContext* pContext;		
+	opendnp3::ILinkSession* pContext;		
 	opendnp3::LinkLayerParser parser;
 };
 

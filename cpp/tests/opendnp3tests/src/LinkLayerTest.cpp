@@ -36,7 +36,7 @@ LinkLayerTest::LinkLayerTest(LinkConfig config) :
 	link.SetRouter(*this);
 }
 
-void LinkLayerTest::BeginTransmit(const openpal::ReadOnlyBuffer& buffer, ILinkContext* pContext)
+void LinkLayerTest::BeginTransmit(const openpal::ReadOnlyBuffer& buffer, ILinkSession* pContext)
 {
 	lastWrite = buffer;
 	++numWrites;

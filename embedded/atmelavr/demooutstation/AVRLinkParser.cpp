@@ -14,7 +14,7 @@
 
 AVRLinkParser* gLinkParser = nullptr;
 
-AVRLinkParser::AVRLinkParser(openpal::LogRoot& root, openpal::IExecutor& exe, opendnp3::ILinkContext& context) : 		
+AVRLinkParser::AVRLinkParser(openpal::LogRoot& root, openpal::IExecutor& exe, opendnp3::ILinkSession& context) : 		
 	isTransmitting(false),
 	pExecutor(&exe),	
 	pContext(&context),
@@ -90,7 +90,7 @@ void AVRLinkParser::CheckRx()
 	}		
 }
 	
-void AVRLinkParser::BeginTransmit(const openpal::ReadOnlyBuffer& buffer, opendnp3::ILinkContext* pContext)
+void AVRLinkParser::BeginTransmit(const openpal::ReadOnlyBuffer& buffer, opendnp3::ILinkSession* pContext)
 {
 	if(isTransmitting)
 	{

@@ -24,7 +24,7 @@
 
 #include <openpal/container/ReadOnlyBuffer.h>
 
-#include "opendnp3/link/ILinkContext.h"
+#include "opendnp3/link/ILinkSession.h"
 
 namespace opendnp3
 {
@@ -40,7 +40,7 @@ public:
 	/**
 	* Begin transmission of a frame. Callback happens OFF the call stack (via executor)
 	*/
-	virtual void BeginTransmit(const openpal::ReadOnlyBuffer& buffer, ILinkContext* pContext) = 0;
+	virtual void BeginTransmit(const openpal::ReadOnlyBuffer& buffer, ILinkSession* pContext) = 0;
 
 };
 

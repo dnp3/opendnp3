@@ -93,7 +93,7 @@ void OutstationStackImpl::SetShutdownAction(const openpal::Action0& action)
 	shutdownAction = action;
 }
 
-opendnp3::ILinkContext* OutstationStackImpl::GetLinkContext()
+opendnp3::ILinkSession* OutstationStackImpl::GetLinkContext()
 {
 	return &stack.link;
 }

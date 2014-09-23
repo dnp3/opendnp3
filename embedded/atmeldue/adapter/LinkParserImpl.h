@@ -3,7 +3,7 @@
 #define __LINK_PARSER_H_
 
 #include <opendnp3/link/ILinkRouter.h>
-#include <opendnp3/link/ILinkContext.h>
+#include <opendnp3/link/ILinkSession.h>
 
 #include <opendnp3/link/LinkLayerParser.h>
 
@@ -18,10 +18,10 @@ class LinkParserImpl : public opendnp3::ILinkRouter
 {
 	public:
 
-	LinkParserImpl(openpal::LogRoot& root, openpal::IExecutor& exe, opendnp3::ILinkContext& context, void (*startTxFun_)(void));
+	LinkParserImpl(openpal::LogRoot& root, openpal::IExecutor& exe, opendnp3::ILinkSession& context, void (*startTxFun_)(void));
 	
 	// called from the upper part of the stack, from the main loop
-	virtual void BeginTransmit(const openpal::ReadOnlyBuffer& buffer, opendnp3::ILinkContext* pContext) final override;	
+	virtual void BeginTransmit(const openpal::ReadOnlyBuffer& buffer, opendnp3::ILinkSession* pContext) final override;	
 	
 	// called from the uart ISR when rxready
 	void PutRx(uint8_t byteIn);
@@ -48,7 +48,7 @@ class LinkParserImpl : public opendnp3::ILinkRouter
 	void (*startTxFun)(void);			
 	
 	openpal::IExecutor* pExecutor;
-	opendnp3::ILinkContext* pContext;		
+	opendnp3::ILinkSession* pContext;		
 	opendnp3::LinkLayerParser parser;
 };
 

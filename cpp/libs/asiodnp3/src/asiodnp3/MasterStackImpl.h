@@ -23,7 +23,7 @@
 
 #include "IMaster.h"
 
-#include <opendnp3/link/ILinkContext.h>
+#include <opendnp3/link/ILinkSession.h>
 #include <opendnp3/master/MasterStackConfig.h>
 #include <opendnp3/master/Master.h>
 #include <opendnp3/transport/TransportStack.h>
@@ -73,7 +73,7 @@ public:
 
 	void SetShutdownAction(const openpal::Action0& action);
 
-	opendnp3::ILinkContext* GetLinkContext();
+	opendnp3::ILinkSession* GetLinkContext();
 
 
 private:

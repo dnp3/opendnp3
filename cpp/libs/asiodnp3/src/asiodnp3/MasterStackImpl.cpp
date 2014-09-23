@@ -84,7 +84,7 @@ void MasterStackImpl::SetShutdownAction(const openpal::Action0& action)
 	shutdownAction = action;
 }
 
-opendnp3::ILinkContext* MasterStackImpl::GetLinkContext()
+opendnp3::ILinkSession* MasterStackImpl::GetLinkContext()
 {
 	return &stack.link;
 }

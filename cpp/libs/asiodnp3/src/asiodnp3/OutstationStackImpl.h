@@ -38,7 +38,7 @@
 namespace asiodnp3
 {
 
-class ILinkContext;
+class ILinkSession;
 
 /** @section desc A stack object for a master */
 class OutstationStackImpl : public IOutstation
@@ -72,7 +72,7 @@ public:
 
 	void SetShutdownAction(const openpal::Action0& action);
 
-	opendnp3::ILinkContext* GetLinkContext();
+	opendnp3::ILinkSession* GetLinkContext();
 
 private:
 	openpal::LogRoot root;

@@ -24,7 +24,7 @@
 
 namespace opendnp3
 {	
-	class ILinkContext;
+	class ILinkSession;
 }
 
 namespace asiopal
@@ -46,11 +46,11 @@ public:
 
 	asiopal::ASIOExecutor* GetExecutor();
 
-	bool EnableRoute(opendnp3::ILinkContext*);
+	bool EnableRoute(opendnp3::ILinkSession*);
 
-	bool DisableRoute(opendnp3::ILinkContext*);
+	bool DisableRoute(opendnp3::ILinkSession*);
 
-	void Shutdown(opendnp3::ILinkContext* pContext);
+	void Shutdown(opendnp3::ILinkSession* pContext);
 
 private:
 

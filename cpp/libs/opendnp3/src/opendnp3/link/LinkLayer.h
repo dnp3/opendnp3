@@ -26,7 +26,7 @@
 #include <openpal/container/Settable.h>
 
 #include "opendnp3/link/ILinkLayer.h"
-#include "opendnp3/link/ILinkContext.h"
+#include "opendnp3/link/ILinkSession.h"
 #include "opendnp3/link/LinkLayerConstants.h"
 #include "opendnp3/link/LinkConfig.h"
 
@@ -38,7 +38,7 @@ class PriStateBase;
 class SecStateBase;
 
 //	@section desc Implements the contextual state of DNP3 Data Link Layer
-class LinkLayer : public ILinkLayer, public ILinkContext, public HasUpperLayer
+class LinkLayer : public ILinkLayer, public ILinkSession, public HasUpperLayer
 {
 	enum class TransmitMode : uint8_t
 	{
@@ -53,7 +53,7 @@ public:
 
 	void SetRouter(ILinkRouter&);
 
-	// ILinkContext interface
+	// ILinkSession interface
 	virtual void OnLowerLayerUp() override final;
 	virtual void OnLowerLayerDown() override final;
 	virtual void OnTransmitResult(bool success) override final;

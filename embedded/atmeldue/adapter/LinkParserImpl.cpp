@@ -1,7 +1,7 @@
 
 #include "LinkParserImpl.h"
 	
-LinkParserImpl::LinkParserImpl(openpal::LogRoot& root, openpal::IExecutor& exe, opendnp3::ILinkContext& context, void (*startTxFun_)(void)) :	
+LinkParserImpl::LinkParserImpl(openpal::LogRoot& root, openpal::IExecutor& exe, opendnp3::ILinkSession& context, void (*startTxFun_)(void)) :	
 	isTransmitting(false),
 	startTxFun(startTxFun_),	
 	pExecutor(&exe),
@@ -58,7 +58,7 @@ void LinkParserImpl::CheckTx()
 	}
 }
 
-void LinkParserImpl::BeginTransmit(const openpal::ReadOnlyBuffer& buffer, opendnp3::ILinkContext* pContext)
+void LinkParserImpl::BeginTransmit(const openpal::ReadOnlyBuffer& buffer, opendnp3::ILinkSession* pContext)
 {
 	if(isTransmitting)
 	{

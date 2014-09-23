@@ -107,7 +107,7 @@
     <ClInclude Include="src\opendnp3\gen\StaticFrozenCounterResponse.h" />
     <ClInclude Include="src\opendnp3\link\CRC.h" />
     <ClInclude Include="src\opendnp3\link\IFrameSink.h" />
-    <ClInclude Include="src\opendnp3\link\ILinkContext.h" />
+    <ClInclude Include="src\opendnp3\link\ILinkSession.h" />
     <ClInclude Include="src\opendnp3\link\ILinkLayer.h" />
     <ClInclude Include="src\opendnp3\link\ILinkRouter.h" />
     <ClInclude Include="src\opendnp3\link\IOpenDelayStrategy.h" />

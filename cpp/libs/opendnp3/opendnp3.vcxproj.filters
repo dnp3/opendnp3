@@ -198,9 +198,6 @@
     <ClInclude Include="src\opendnp3\link\IFrameSink.h">
       <Filter>Header\link</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\link\ILinkContext.h">
-      <Filter>Header\link</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\link\ILinkRouter.h">
       <Filter>Header\link</Filter>
     </ClInclude>
@@ -698,6 +695,9 @@
     </ClInclude>
     <ClInclude Include="src\opendnp3\app\DNP3Serializer.h">
       <Filter>Header\app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\link\ILinkSession.h">
+      <Filter>Header\link</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

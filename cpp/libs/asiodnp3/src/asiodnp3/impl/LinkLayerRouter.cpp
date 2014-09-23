@@ -26,7 +26,7 @@
 #include <openpal/channel/IPhysicalLayer.h>
 
 #include <opendnp3/LogLevels.h>
-#include <opendnp3/link/ILinkContext.h>
+#include <opendnp3/link/ILinkSession.h>
 #include <opendnp3/link/LinkFrame.h>
 
 #include <algorithm>
@@ -70,7 +70,7 @@ bool LinkLayerRouter::IsRouteInUse(const Route& route)
 	return iter != records.end();
 }
 
-bool LinkLayerRouter::AddContext(ILinkContext* pContext, const Route& route)
+bool LinkLayerRouter::AddContext(ILinkSession* pContext, const Route& route)
 {
 	assert(pContext != nullptr);
 
@@ -102,7 +102,7 @@ bool LinkLayerRouter::AddContext(ILinkContext* pContext, const Route& route)
 	}
 }
 
-bool LinkLayerRouter::Enable(ILinkContext* pContext)
+bool LinkLayerRouter::Enable(ILinkSession* pContext)
 {
 	auto matches = [pContext](const Record & rec) { return rec.pContext == pContext; };
 	auto iter = std::find_if(records.begin(), records.end(), matches);
@@ -135,7 +135,7 @@ bool LinkLayerRouter::Enable(ILinkContext* pContext)
 	}
 }
 
-bool LinkLayerRouter::Disable(ILinkContext* pContext)
+bool LinkLayerRouter::Disable(ILinkSession* pContext)
 {
 	auto matches = [pContext](const Record & rec) { return rec.pContext == pContext; };
 
@@ -165,7 +165,7 @@ bool LinkLayerRouter::Disable(ILinkContext* pContext)
 	}
 }
 
-bool LinkLayerRouter::Remove(ILinkContext* pContext)
+bool LinkLayerRouter::Remove(ILinkSession* pContext)
 {
 	auto matches = [pContext](const Record & rec) { return rec.pContext == pContext; };
 	auto iter = std::find_if(records.begin(), records.end(), matches);
@@ -193,7 +193,7 @@ bool LinkLayerRouter::Remove(ILinkContext* pContext)
 	}
 }
 
-ILinkContext* LinkLayerRouter::GetEnabledContext(const Route& route)
+ILinkSession* LinkLayerRouter::GetEnabledContext(const Route& route)
 {
 	auto matches = [route](const Record & rec) { return rec.enabled && rec.route.Equals(route); };	
 	auto iter = std::find_if(records.begin(), records.end(), matches);
@@ -208,11 +208,11 @@ ILinkContext* LinkLayerRouter::GetEnabledContext(const Route& route)
 }
 
 
-ILinkContext* LinkLayerRouter::GetDestination(uint16_t dest, uint16_t src)
+ILinkSession* LinkLayerRouter::GetDestination(uint16_t dest, uint16_t src)
 {
 	Route route(src, dest);
 
-	ILinkContext* pDest = GetEnabledContext(route);
+	ILinkSession* pDest = GetEnabledContext(route);
 
 	if(pDest == nullptr)
 	{
@@ -228,47 +228,47 @@ ILinkContext* LinkLayerRouter::GetDestination(uint16_t dest, uint16_t src)
 
 void LinkLayerRouter::Ack(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc)
 {
-	ILinkContext* pDest = GetDestination(aDest, aSrc);
+	ILinkSession* pDest = GetDestination(aDest, aSrc);
 	if(pDest) pDest->Ack(aIsMaster, aIsRcvBuffFull, aDest, aSrc);
 }
 void LinkLayerRouter::Nack(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc)
 {
-	ILinkContext* pDest = GetDestination(aDest, aSrc);
+	ILinkSession* pDest = GetDestination(aDest, aSrc);
 	if(pDest) pDest->Nack(aIsMaster, aIsRcvBuffFull, aDest, aSrc);
 }
 void LinkLayerRouter::LinkStatus(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc)
 {
-	ILinkContext* pDest = GetDestination(aDest, aSrc);
+	ILinkSession* pDest = GetDestination(aDest, aSrc);
 	if(pDest) pDest->LinkStatus(aIsMaster, aIsRcvBuffFull, aDest, aSrc);
 }
 void LinkLayerRouter::NotSupported (bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc)
 {
-	ILinkContext* pDest = GetDestination(aDest, aSrc);
+	ILinkSession* pDest = GetDestination(aDest, aSrc);
 	if(pDest) pDest->NotSupported(aIsMaster, aIsRcvBuffFull, aDest, aSrc);
 }
 void LinkLayerRouter::TestLinkStatus(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc)
 {
-	ILinkContext* pDest = GetDestination(aDest, aSrc);
+	ILinkSession* pDest = GetDestination(aDest, aSrc);
 	if(pDest) pDest->TestLinkStatus(aIsMaster, aFcb, aDest, aSrc);
 }
 void LinkLayerRouter::ResetLinkStates(bool aIsMaster, uint16_t aDest, uint16_t aSrc)
 {
-	ILinkContext* pDest = GetDestination(aDest, aSrc);
+	ILinkSession* pDest = GetDestination(aDest, aSrc);
 	if(pDest) pDest->ResetLinkStates(aIsMaster, aDest, aSrc);
 }
 void LinkLayerRouter::RequestLinkStatus(bool aIsMaster, uint16_t aDest, uint16_t aSrc)
 {
-	ILinkContext* pDest = GetDestination(aDest, aSrc);
+	ILinkSession* pDest = GetDestination(aDest, aSrc);
 	if(pDest) pDest->RequestLinkStatus(aIsMaster, aDest, aSrc);
 }
 void LinkLayerRouter::ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const ReadOnlyBuffer& arBuffer)
 {
-	ILinkContext* pDest = GetDestination(aDest, aSrc);
+	ILinkSession* pDest = GetDestination(aDest, aSrc);
 	if(pDest) pDest->ConfirmedUserData(aIsMaster, aFcb, aDest, aSrc, arBuffer);
 }
 void LinkLayerRouter::UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const ReadOnlyBuffer& arBuffer)
 {
-	ILinkContext* pDest = GetDestination(aDest, aSrc);
+	ILinkSession* pDest = GetDestination(aDest, aSrc);
 	if(pDest) pDest->UnconfirmedUserData(aIsMaster, aDest, aSrc, arBuffer);
 }
 
@@ -276,7 +276,7 @@ void LinkLayerRouter::OnReceive(const openpal::ReadOnlyBuffer& input)
 {
 	// The order is important here. You must let the receiver process the byte or another read could write
 	// over the buffer before it is processed	
-	parser.OnRead(input.Size(), this); //this may trigger callbacks to the local ILinkContext interface
+	parser.OnRead(input.Size(), this); //this may trigger callbacks to the local ILinkSession interface
 	if(pPhys->CanRead())   // this is required because the call above could trigger the layer to be closed
 	{
 		auto buff = parser.WriteBuff();
@@ -284,7 +284,7 @@ void LinkLayerRouter::OnReceive(const openpal::ReadOnlyBuffer& input)
 	}	
 }
 
-void LinkLayerRouter::BeginTransmit(const openpal::ReadOnlyBuffer& buffer, ILinkContext* pContext)
+void LinkLayerRouter::BeginTransmit(const openpal::ReadOnlyBuffer& buffer, ILinkSession* pContext)
 {
 	if (this->IsOnline())
 	{

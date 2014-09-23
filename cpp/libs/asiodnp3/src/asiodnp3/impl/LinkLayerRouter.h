@@ -41,7 +41,7 @@ class IPhysicalLayer;
 namespace opendnp3
 {
 
-	class ILinkContext;
+	class ILinkSession;
 	class LinkFrame;
 
 }
@@ -72,23 +72,23 @@ public:
 	bool IsRouteInUse(const opendnp3::Route& route);
 
 	// Ties the lower part of the link layer to the upper part
-	bool AddContext(opendnp3::ILinkContext* pContext, const opendnp3::Route& route);
+	bool AddContext(opendnp3::ILinkSession* pContext, const opendnp3::Route& route);
 
 	/**
 	*  Tells the router to begin sending messages to the context
 	*/
-	bool Enable(opendnp3::ILinkContext* pContext);
+	bool Enable(opendnp3::ILinkSession* pContext);
 
 	/**
 	*  Tells the router to stop sending messages to the context associated with this route
 	*  Does not remove the context entirely
 	*/
-	bool Disable(opendnp3::ILinkContext* pContext);
+	bool Disable(opendnp3::ILinkSession* pContext);
 
 	/**
 	* This is safe to do at runtime, so long as the request happens from the executor
 	*/
-	bool Remove(opendnp3::ILinkContext* pContext);
+	bool Remove(opendnp3::ILinkSession* pContext);
 
 	// ------------ IFrameSink -----------------
 
@@ -104,7 +104,7 @@ public:
 
 	// ------------ ILinkRouter -----------------
 
-	virtual void BeginTransmit(const openpal::ReadOnlyBuffer& buffer, opendnp3::ILinkContext* pContext) override final;
+	virtual void BeginTransmit(const openpal::ReadOnlyBuffer& buffer, opendnp3::ILinkSession* pContext) override final;
 
 	// ------------ IUpperLayer -----------------
 
@@ -123,7 +123,7 @@ private:
 
 	struct Record
 	{
-		Record(opendnp3::ILinkContext* context, const opendnp3::Route& route_) :
+		Record(opendnp3::ILinkSession* context, const opendnp3::Route& route_) :
 			pContext(context),
 			route(route_),
 			enabled(false)
@@ -132,14 +132,14 @@ private:
 		Record() : pContext(nullptr), enabled(false)
 		{}
 
-		opendnp3::ILinkContext* pContext;
+		opendnp3::ILinkSession* pContext;
 		opendnp3::Route route;
 		bool enabled;
 	};
 
 	struct Transmission
 	{
-		Transmission(const openpal::ReadOnlyBuffer& buffer_, opendnp3::ILinkContext* pContext_) :
+		Transmission(const openpal::ReadOnlyBuffer& buffer_, opendnp3::ILinkSession* pContext_) :
 			buffer(buffer_),
 			pContext(pContext_)			
 		{}
@@ -148,11 +148,11 @@ private:
 		{}
 
 		openpal::ReadOnlyBuffer buffer;
-		opendnp3::ILinkContext* pContext;		
+		opendnp3::ILinkSession* pContext;		
 	};
 
-	opendnp3::ILinkContext* GetDestination(uint16_t aDest, uint16_t aSrc);
-	opendnp3::ILinkContext* GetEnabledContext(const opendnp3::Route&);
+	opendnp3::ILinkSession* GetDestination(uint16_t aDest, uint16_t aSrc);
+	opendnp3::ILinkSession* GetEnabledContext(const opendnp3::Route&);
 
 	void CheckForSend();
 

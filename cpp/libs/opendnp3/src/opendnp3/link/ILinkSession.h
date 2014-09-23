@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_ILINKCONTEXT_H
-#define OPENDNP3_ILINKCONTEXT_H
+#ifndef OPENDNP3_ILINKSESSION_H
+#define OPENDNP3_ILINKSESSION_H
 
 #include "IFrameSink.h"
 
@@ -27,11 +27,11 @@ namespace opendnp3
 {
 
 // @section DESCRIPTION Interface from the link router to the link layer
-class ILinkContext : public IFrameSink
+class ILinkSession : public IFrameSink
 {
 public:
 
-	virtual ~ILinkContext() {}
+	virtual ~ILinkSession() {}
 
 	virtual void OnTransmitResult(bool success) = 0;
 

@@ -45,19 +45,19 @@ asiopal::ASIOExecutor* StackActionHandler::GetExecutor()
 	return pExecutor;
 }
 
-bool StackActionHandler::EnableRoute(ILinkContext* pContext)
+bool StackActionHandler::EnableRoute(ILinkSession* pContext)
 {
 	auto enable = [this, pContext]() { return pRouter->Enable(pContext); };
 	return asiopal::SynchronouslyGet<bool>(pExecutor->strand, enable);
 }
 
-bool StackActionHandler::DisableRoute(ILinkContext* pContext)
+bool StackActionHandler::DisableRoute(ILinkSession* pContext)
 {
 	auto disable = [this, pContext]() { return pRouter->Disable(pContext); };
 	return asiopal::SynchronouslyGet<bool>(pExecutor->strand, disable);
 }
 
-void StackActionHandler::Shutdown(ILinkContext* pContext)
+void StackActionHandler::Shutdown(ILinkSession* pContext)
 {
 	auto action = [this, pContext](){ pRouter->Remove(pContext); };
 	asiopal::SynchronouslyExecute(pExecutor->strand, action);
