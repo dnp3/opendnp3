@@ -16,7 +16,6 @@
 
 #include <opendnp3/transport/TransportStack.h>
 #include <opendnp3/outstation/Outstation.h>
-#include <opendnp3/outstation/DynamicallyAllocatedDatabase.h>
 #include <opendnp3/outstation/DynamicallyAllocatedEventBuffer.h>
 #include <opendnp3/outstation/IOutstationApplication.h>
 
@@ -147,13 +146,11 @@ int main(void)
 	LogRoot root(nullptr, "root", 0);
 	
 	TransportStack stack(root, &exe, MAX_FRAG_SIZE, nullptr, LinkConfig(false, false));
-	
-	// 5 static binaries, 0 others
-	DynamicallyAllocatedDatabase buffers(DatabaseTemplate(10,0,0,10));
+		
 	// allow a max of 5 events
 	DynamicallyAllocatedEventBuffer eventBuffers(20);
 		
-	Database database(buffers.GetFacade());
+	Database database(DatabaseTemplate(10,0,0,10));
 	
 	OutstationConfig config;
 	config.params.maxRxFragSize = MAX_FRAG_SIZE;

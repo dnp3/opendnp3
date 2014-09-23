@@ -219,7 +219,6 @@
     <ClInclude Include="src\opendnp3\outstation\SimpleCommandHandler.h" />
     <ClInclude Include="src\opendnp3\outstation\OutstationStackConfig.h" />
     <ClInclude Include="src\opendnp3\outstation\SOERecord.h" />
-    <ClInclude Include="src\opendnp3\outstation\StaticDataFacade.h" />
     <ClInclude Include="src\opendnp3\outstation\StaticLoader.h" />
     <ClInclude Include="src\opendnp3\outstation\StaticResponseConfig.h" />
     <ClInclude Include="src\opendnp3\outstation\StaticResponseContext.h" />
