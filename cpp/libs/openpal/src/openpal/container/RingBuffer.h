@@ -23,12 +23,15 @@
 
 #include <cstdint>
 
+#include "openpal/container/WriteBuffer.h"
+#include "openpal/util/Comparisons.h"
+
 namespace openpal
 {
 
 /** 
 	A byte-oriented ring buffer.
-	Interrupt-safe (w/o disabling interrupts) if single producer
+	Interrupt-safe (w/o disabling interrupts) for a single producer
 	and single consumer, one reading and one writing.
 	
 	N must be a power of 2, and is enforced via static assert.
@@ -66,6 +69,28 @@ public:
 			byteOut = buffer[(tail++) & (N-1)];
 			return true;
 		 }
+	}
+	
+	uint8_t GetMany(WriteBuffer& output)
+	{
+		uint8_t num = openpal::Min<uint32_t>(Count(), output.Size());
+		for(uint8_t i=0; i<num; ++i)
+		{
+			output[i] = buffer[(tail++) & (N-1)];
+		}
+		output.Advance(num);
+		return num;
+	}
+	
+	uint8_t PutMany(ReadOnlyBuffer& input)
+	{		
+		uint8_t num = openpal::Min<uint32_t>(N - Count(), input.Size());
+		for(uint8_t i=0; i<num; ++i)
+		{
+			buffer[(head++) & (N-1)] = input[i];
+		}
+		input.Advance(num);
+		return num;
 	}
 	
 	inline bool Full()

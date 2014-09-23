@@ -59,13 +59,8 @@ void AVRLinkParser::CheckTx()
 	if(isTransmitting)
 	{						
 		// transfer bytes into the ring buffer
-		while(!txBuffer.Full() && !transmission.IsEmpty())
-		{			
-			uint8_t byte = transmission[0];
-			txBuffer.Put(byte);
-			transmission.Advance(1);
-		}			
-		
+		txBuffer.PutMany(transmission);
+						
 		// enable data register empty interrupt
 		UCSR0B |= BIT(UDRIE0);	
 		
@@ -85,17 +80,10 @@ void AVRLinkParser::CheckRxTx()
 
 void AVRLinkParser::CheckRx()
 {	
-	// copy contents of ring buffer to the receiver's write buffer		
-	uint32_t count = 0;
-	auto buffer = parser.WriteBuff();	
-	uint8_t rxByte;
-	while(!buffer.IsEmpty() && rxBuffer.Get(rxByte))
-	{				
-		buffer[0] = rxByte;
-		buffer.Advance(1);
-		++count;
-	}
-	
+	// copy contents of ring buffer to the receiver's write buffer			
+	auto buffer = parser.WriteBuff();
+	uint32_t count = rxBuffer.GetMany(buffer);
+				
 	if(count > 0)
 	{
 		parser.OnRead(count, pContext);
