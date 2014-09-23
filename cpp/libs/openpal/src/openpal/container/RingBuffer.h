@@ -46,7 +46,7 @@ public:
 
 	RingBuffer() : head(0), tail(0) {}
 
-	bool Put(uint8_t byteIn)
+	volatile bool Put(uint8_t byteIn)
 	{
 		if(Full())
 		{
@@ -59,7 +59,7 @@ public:
 		}
 	}
 
-	bool Get(uint8_t& byteOut)
+	volatile bool Get(uint8_t& byteOut)
 	{
 		 if(Empty())
 		 {
@@ -72,7 +72,7 @@ public:
 		 }
 	}
 	
-	uint8_t GetMany(WriteBuffer& output)
+	volatile uint8_t GetMany(WriteBuffer& output)
 	{
 		uint8_t num = openpal::Min<uint32_t>(Count(), output.Size());
 		for(uint8_t i=0; i<num; ++i)
@@ -83,7 +83,7 @@ public:
 		return num;
 	}
 	
-	uint8_t PutMany(ReadOnlyBuffer& input)
+	volatile uint8_t PutMany(ReadOnlyBuffer& input)
 	{		
 		uint8_t num = openpal::Min<uint32_t>(N - Count(), input.Size());
 		for(uint8_t i=0; i<num; ++i)
@@ -94,12 +94,12 @@ public:
 		return num;
 	}
 	
-	inline bool Full()
+	volatile inline bool Full()
 	{
 		return Count() == N;
 	}
 
-	inline bool Empty()
+	volatile inline bool Empty()
 	{
 		return Count() == 0;
 	}
