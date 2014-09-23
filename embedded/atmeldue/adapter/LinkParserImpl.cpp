@@ -1,7 +1,5 @@
 
 #include "LinkParserImpl.h"
-
-#include "CriticalSection.h"
 	
 LinkParserImpl::LinkParserImpl(openpal::LogRoot& root, openpal::IExecutor& exe, opendnp3::ILinkContext& context, void (*startTxFun_)(void)) :	
 	isTransmitting(false),

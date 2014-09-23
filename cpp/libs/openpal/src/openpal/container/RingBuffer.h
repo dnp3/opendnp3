@@ -24,6 +24,7 @@
 #include <cstdint>
 
 #include "openpal/container/WriteBuffer.h"
+#include "openpal/container/ReadOnlyBuffer.h"
 #include "openpal/util/Comparisons.h"
 
 namespace openpal
