@@ -161,7 +161,7 @@ cpp/libs/opendnp3/src/opendnp3/outstation/ClassBasedRequestHandler.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/CommandActionAdapter.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/CommandResponseHandler.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/Database.cpp \
-cpp/libs/opendnp3/src/opendnp3/outstation/DynamicallyAllocatedDatabase.cpp \
+cpp/libs/opendnp3/src/opendnp3/outstation/DatabaseBuffers.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/DynamicallyAllocatedEventBuffer.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/EventBufferConfig.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/EventBufferFacade.cpp \
@@ -236,6 +236,7 @@ check_PROGRAMS = openpaltest dnp3test apdufuzzer
 
 #ls cpp/tests/openpaltests/src/*.cpp -1 | awk '{print $0" \\"}'
 openpaltest_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(CATCH_INCLUDE)
+openpaltest_LDFLAGS = -pthread
 openpaltest_LDADD = libopenpal.la
 openpaltest_SOURCES = \
 cpp/tests/openpaltests/src/CatchTestStart.cpp \
