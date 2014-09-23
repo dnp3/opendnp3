@@ -109,14 +109,14 @@ namespace Automatak
 
 			void ChannelAdapter::ApplyDatabaseSettings(opendnp3::Database& database, DatabaseTemplate^ dbTemplate)
 			{
-				ApplyClassSettings(dbTemplate->binaries, database.staticData.binaries);
-				ApplyClassSettings(dbTemplate->binaryOutputStatii, database.staticData.binaryOutputStatii);
-				ApplyClassSettings(dbTemplate->doubleBinaries, database.staticData.doubleBinaries);
+				ApplyClassSettings(dbTemplate->binaries, database.buffers.binaries);
+				ApplyClassSettings(dbTemplate->binaryOutputStatii, database.buffers.binaryOutputStatii);
+				ApplyClassSettings(dbTemplate->doubleBinaries, database.buffers.doubleBinaries);
 
-				ApplyClassAndDeadbandSettings(dbTemplate->analogs, database.staticData.analogs);
-				ApplyClassAndDeadbandSettings(dbTemplate->counters, database.staticData.counters);
-				ApplyClassAndDeadbandSettings(dbTemplate->frozenCounters, database.staticData.frozenCounters);
-				ApplyClassAndDeadbandSettings(dbTemplate->analogOutputStatii, database.staticData.analogOutputStatii);
+				ApplyClassAndDeadbandSettings(dbTemplate->analogs, database.buffers.analogs);
+				ApplyClassAndDeadbandSettings(dbTemplate->counters, database.buffers.counters);
+				ApplyClassAndDeadbandSettings(dbTemplate->frozenCounters, database.buffers.frozenCounters);
+				ApplyClassAndDeadbandSettings(dbTemplate->analogOutputStatii, database.buffers.analogOutputStatii);
 
 			}
 

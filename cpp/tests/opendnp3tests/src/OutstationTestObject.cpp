@@ -30,10 +30,9 @@ namespace opendnp3
 OutstationTestObject::OutstationTestObject(const OutstationConfig& config, const DatabaseTemplate& dbTemplate) :
 	log(),
 	exe(),
-	lower(log.root),
-	dbBuffers(dbTemplate),
+	lower(log.root),	
 	eventBuffers(config.eventBufferConfig.TotalEvents()),
-	db(dbBuffers.GetFacade()),
+	db(dbTemplate),
 	cmdHandler(CommandStatus::SUCCESS),
 	application(),
 	outstation(config, exe, log.root, lower, cmdHandler, application, db, eventBuffers.GetFacade())

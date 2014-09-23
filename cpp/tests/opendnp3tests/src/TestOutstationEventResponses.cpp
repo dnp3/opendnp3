@@ -120,9 +120,9 @@ TEST_CASE(SUITE("MultipleClasses"))
 	t.LowerLayerUp();
 
 	t.Transaction([](Database& db) {
-		db.staticData.binaries.metadata[0].clazz = PointClass::Class1;
-		db.staticData.analogs.metadata[0].clazz = PointClass::Class2;
-		db.staticData.counters.metadata[0].clazz = PointClass::Class3;
+		db.buffers.binaries.metadata[0].clazz = PointClass::Class1;
+		db.buffers.analogs.metadata[0].clazz = PointClass::Class2;
+		db.buffers.counters.metadata[0].clazz = PointClass::Class3;
 
 		db.Update(Binary(true), 0);
 		db.Update(Analog(3), 0);
@@ -214,9 +214,9 @@ TEST_CASE(SUITE("MixedClassLimitedCount"))
 {
 	auto configure = [](Database& db)
 	{
-		db.staticData.binaries.metadata[0].clazz = PointClass::Class1;
-		db.staticData.binaries.metadata[1].clazz = PointClass::Class2;
-		db.staticData.binaries.metadata[2].clazz = PointClass::Class3;
+		db.buffers.binaries.metadata[0].clazz = PointClass::Class1;
+		db.buffers.binaries.metadata[1].clazz = PointClass::Class2;
+		db.buffers.binaries.metadata[2].clazz = PointClass::Class3;
 	};
 
 	auto update = [](Database& db)

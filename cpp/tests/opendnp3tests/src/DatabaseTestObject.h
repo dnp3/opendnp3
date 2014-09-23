@@ -25,8 +25,6 @@
 
 #include <opendnp3/outstation/Event.h>
 #include <opendnp3/outstation/Database.h>
-#include <opendnp3/outstation/DynamicallyAllocatedDatabase.h>
-
 
 namespace opendnp3
 {
@@ -82,15 +80,11 @@ public:
 class DatabaseTestObject
 {
 public:
-	DatabaseTestObject(const DatabaseTemplate& dbTemplate) :
-		buffers(dbTemplate),
-		db(buffers.GetFacade())
+	DatabaseTestObject(const DatabaseTemplate& dbTemplate) : db(dbTemplate)
 	{
 		db.SetEventBuffer(buffer);
 	}
 
-private:
-	DynamicallyAllocatedDatabase buffers;
 
 public:
 	MockEventBuffer buffer;

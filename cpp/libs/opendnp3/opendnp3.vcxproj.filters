@@ -684,9 +684,6 @@
     <ClInclude Include="src\opendnp3\Route.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\DynamicallyAllocatedDatabase.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\DynamicallyAllocatedEventBuffer.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
@@ -698,6 +695,9 @@
     </ClInclude>
     <ClInclude Include="src\opendnp3\link\ILinkSession.h">
       <Filter>Header\link</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\DatabaseBuffers.h">
+      <Filter>Header\outstation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1109,10 +1109,10 @@
     <ClCompile Include="src\opendnp3\outstation\ApplicationIIN.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\DynamicallyAllocatedDatabase.cpp">
+    <ClCompile Include="src\opendnp3\outstation\DynamicallyAllocatedEventBuffer.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\DynamicallyAllocatedEventBuffer.cpp">
+    <ClCompile Include="src\opendnp3\outstation\DatabaseBuffers.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
   </ItemGroup>

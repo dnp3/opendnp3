@@ -28,12 +28,10 @@
 #include "opendnp3/app/StaticRange.h"
 #include "opendnp3/outstation/IEventBuffer.h"
 #include "opendnp3/outstation/IDatabase.h"
-#include "opendnp3/outstation/StaticDataFacade.h"
+#include "opendnp3/outstation/DatabaseBuffers.h"
 
 namespace opendnp3
 {
-
-struct DeviceTemplate;
 
 /**
 Manages the static data model of a DNP3 outstation. Dual-interface to update data points and read current values.
@@ -44,9 +42,7 @@ class Database : public IDatabase
 {
 public:
 
-	Database(const StaticDataFacade&, openpal::IMutex* pMutex = nullptr);
-
-	/* Functions for obtaining iterators */
+	Database(const DatabaseTemplate&, openpal::IMutex* pMutex = nullptr);	
 
 	void SetEventBuffer(IEventBuffer& eventBuffer);
 
@@ -60,14 +56,6 @@ public:
 	void Update(const FrozenCounter& value, uint16_t) override final;
 	void Update(const BinaryOutputStatus& value, uint16_t) override final;
 	void Update(const AnalogOutputStatus& value, uint16_t) override final;
-
-	openpal::Indexable<DualValue<Binary>, uint16_t>& Binaries();
-	openpal::Indexable<DualValue<DoubleBitBinary>, uint16_t>& DoubleBinaries();
-	openpal::Indexable<DualValue<Analog>, uint16_t>& Analogs();
-	openpal::Indexable<DualValue<Counter>, uint16_t>& Counters();
-	openpal::Indexable<DualValue<FrozenCounter>, uint16_t>& FrozenCounters();
-	openpal::Indexable<DualValue<BinaryOutputStatus>, uint16_t>& ControlStatii();
-	openpal::Indexable<DualValue<AnalogOutputStatus>, uint16_t>& SetpointStatii();
 
 	template <class T>
 	openpal::Indexable<DualValue<T>, uint16_t>& Values();
@@ -83,7 +71,7 @@ public:
 		else return StaticRange();
 	}
 
-	StaticDataFacade staticData;
+	DatabaseBuffers buffers;
 	
 	void SetEventHandler(const openpal::Action0& callback);
 

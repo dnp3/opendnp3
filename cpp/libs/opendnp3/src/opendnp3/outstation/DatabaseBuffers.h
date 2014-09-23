@@ -18,10 +18,13 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_DYNAMICALLYALLOCATEDDATABASE_H
-#define OPENDNP3_DYNAMICALLYALLOCATEDDATABASE_H
+#ifndef OPENDNP3_DATABASEBUFFERS_H
+#define OPENDNP3_DATABASEBUFFERS_H
 
-#include "opendnp3/outstation/StaticDataFacade.h"
+#include "opendnp3/outstation/EventMetadata.h"
+#include "opendnp3/outstation/ValueMetadataPair.h"
+#include "opendnp3/app/MeasurementTypes.h"
+#include "opendnp3/outstation/DualValue.h"
 #include "opendnp3/outstation/DatabaseTemplate.h"
 
 #include <openpal/container/DynamicArray.h>
@@ -29,13 +32,27 @@
 namespace opendnp3
 {
 
-class DynamicallyAllocatedDatabase
+typedef SimpleEventMetadata<Binary> BinaryMetadata;
+typedef SimpleEventMetadata<DoubleBitBinary> DoubleBinaryMetadata;
+typedef DeadbandMetadata<Analog, double> AnalogMetadata;
+typedef DeadbandMetadata<Counter, uint32_t> CounterMetadata;
+typedef DeadbandMetadata<FrozenCounter, uint32_t> FrozenCounterMetadata;
+typedef SimpleEventMetadata<BinaryOutputStatus> BinaryOutputStatusMetadata;
+typedef DeadbandMetadata<AnalogOutputStatus, double> AnalogOutputStatusMetadata;
+
+typedef ValueMetadataPair<DualValue<Binary>, BinaryMetadata> BinaryCollection;
+typedef ValueMetadataPair<DualValue<DoubleBitBinary>, DoubleBinaryMetadata> DoubleBinaryCollection;
+typedef ValueMetadataPair<DualValue<Analog>, AnalogMetadata> AnalogCollection;
+typedef ValueMetadataPair<DualValue<Counter>, CounterMetadata> CounterCollection;
+typedef ValueMetadataPair<DualValue<FrozenCounter>, FrozenCounterMetadata> FrozenCounterCollection;
+typedef ValueMetadataPair<DualValue<BinaryOutputStatus>, BinaryOutputStatusMetadata> BinaryOutputStatusCollection;
+typedef ValueMetadataPair<DualValue<AnalogOutputStatus>, AnalogOutputStatusMetadata> AnalogOutputStatusCollection;
+
+class DatabaseBuffers
 {
 public:
 
-	DynamicallyAllocatedDatabase(const DatabaseTemplate& databaseTemplate);
-
-	StaticDataFacade GetFacade();
+	DatabaseBuffers(const DatabaseTemplate& databaseTemplate);	
 
 private:
 
@@ -54,6 +71,17 @@ private:
 	openpal::DynamicArray<FrozenCounterMetadata, uint16_t> frozenCounterMetadata;
 	openpal::DynamicArray<BinaryOutputStatusMetadata, uint16_t> binaryOutputStatusMetadata;
 	openpal::DynamicArray<AnalogOutputStatusMetadata, uint16_t> analogOutputStatusMetadata;
+
+public:
+
+	BinaryCollection binaries;
+	DoubleBinaryCollection doubleBinaries;
+	AnalogCollection analogs;
+	CounterCollection counters;
+	FrozenCounterCollection frozenCounters;
+	BinaryOutputStatusCollection binaryOutputStatii;
+	AnalogOutputStatusCollection analogOutputStatii;
+
 };
 
 }

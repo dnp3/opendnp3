@@ -393,9 +393,13 @@ void TestStaticType(const OutstationConfig& config, const DatabaseTemplate& tmp,
 
 	t.LowerLayerUp();
 
-	t.Transaction([value](Database& db) { db.Update(PointType(value), 0); });
+	t.Transaction([value](Database& db) 
+	{ 
+		db.Update(PointType(value), 0); 
+	});
 
 	t.SendToOutstation("C0 01 3C 01 06"); // Read class 0
+
 	REQUIRE(t.lower.PopWriteAsHex() == rsp);
 }
 

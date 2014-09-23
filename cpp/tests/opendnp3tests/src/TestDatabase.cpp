@@ -104,21 +104,21 @@ TEST_CASE(SUITE("AnalogNoEventNegative"))
 TEST_CASE(SUITE("BinaryNoChange"))
 {
 	DatabaseTestObject t(DatabaseTemplate::BinaryOnly(1));
-	t.db.staticData.binaries.metadata[0].clazz = PointClass::Class1;
+	t.db.buffers.binaries.metadata[0].clazz = PointClass::Class1;
 	TestBufferForEvent(false, Binary(false, ToUnderlying(BinaryQuality::RESTART)), t, t.buffer.binaryEvents);
 }
 
 TEST_CASE(SUITE("AnalogNoChange"))
 {
 	DatabaseTestObject t(DatabaseTemplate::AnalogOnly(1));
-	t.db.staticData.analogs.metadata[0].clazz = PointClass::Class1;
+	t.db.buffers.analogs.metadata[0].clazz = PointClass::Class1;
 	TestBufferForEvent(false, Analog(0, ToUnderlying(AnalogQuality::RESTART)), t, t.buffer.analogEvents);
 }
 
 TEST_CASE(SUITE("CounterNoChange"))
 {
 	DatabaseTestObject t(DatabaseTemplate::CounterOnly(1));
-	t.db.staticData.counters.metadata[0].clazz = PointClass::Class1;
+	t.db.buffers.counters.metadata[0].clazz = PointClass::Class1;
 	TestBufferForEvent(false, Counter(0, ToUnderlying(CounterQuality::RESTART)), t, t.buffer.counterEvents);
 }
 
@@ -126,21 +126,21 @@ TEST_CASE(SUITE("CounterNoChange"))
 TEST_CASE(SUITE("BinaryChange"))
 {
 	DatabaseTestObject t(DatabaseTemplate::BinaryOnly(1));
-	t.db.staticData.binaries.metadata[0].clazz = PointClass::Class1;
+	t.db.buffers.binaries.metadata[0].clazz = PointClass::Class1;
 	TestBufferForEvent(true, Binary(false, ToUnderlying(BinaryQuality::ONLINE)), t, t.buffer.binaryEvents);
 }
 
 TEST_CASE(SUITE("AnalogChange"))
 {
 	DatabaseTestObject t(DatabaseTemplate::AnalogOnly(1));
-	t.db.staticData.analogs.metadata[0].clazz = PointClass::Class1;
+	t.db.buffers.analogs.metadata[0].clazz = PointClass::Class1;
 	TestBufferForEvent(true, Analog(0, ToUnderlying(AnalogQuality::ONLINE)), t, t.buffer.analogEvents);
 }
 
 TEST_CASE(SUITE("CounterChange"))
 {
 	DatabaseTestObject t(DatabaseTemplate::CounterOnly(1));
-	t.db.staticData.counters.metadata[0].clazz = PointClass::Class1;
+	t.db.buffers.counters.metadata[0].clazz = PointClass::Class1;
 	TestBufferForEvent(true, Counter(0, ToUnderlying(CounterQuality::ONLINE)), t, t.buffer.counterEvents);
 }
 
@@ -148,8 +148,8 @@ TEST_CASE(SUITE("CounterChange"))
 TEST_CASE(SUITE("AnalogLastReportedChange"))
 {
 	DatabaseTestObject t(DatabaseTemplate::AnalogOnly(1));
-	t.db.staticData.analogs.metadata[0].clazz = PointClass::Class1;
-	t.db.staticData.analogs.metadata[0].deadband = 5; //value must change by more than 5 before being reported
+	t.db.buffers.analogs.metadata[0].clazz = PointClass::Class1;
+	t.db.buffers.analogs.metadata[0].deadband = 5; //value must change by more than 5 before being reported
 
 	TestBufferForEvent(false, Analog(-2, ToUnderlying(AnalogQuality::RESTART)), t, t.buffer.analogEvents);
 	TestBufferForEvent(false, Analog(5, ToUnderlying(AnalogQuality::RESTART)), t, t.buffer.analogEvents);
@@ -161,8 +161,8 @@ TEST_CASE(SUITE("AnalogLastReportedChange"))
 TEST_CASE(SUITE("CounterLastReportedChange"))
 {
 	DatabaseTestObject t(DatabaseTemplate::CounterOnly(1));
-	t.db.staticData.counters.metadata[0].clazz = PointClass::Class1;
-	t.db.staticData.counters.metadata[0].deadband = 5;
+	t.db.buffers.counters.metadata[0].clazz = PointClass::Class1;
+	t.db.buffers.counters.metadata[0].deadband = 5;
 
 	TestBufferForEvent(false, Counter(1, ToUnderlying(CounterQuality::RESTART)), t, t.buffer.counterEvents);
 	TestBufferForEvent(false, Counter(5, ToUnderlying(CounterQuality::RESTART)), t, t.buffer.counterEvents);

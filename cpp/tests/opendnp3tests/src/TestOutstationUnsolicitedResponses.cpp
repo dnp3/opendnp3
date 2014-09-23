@@ -69,9 +69,9 @@ TEST_CASE(SUITE("UnsolData"))
 	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOnly(3));
 			
 	t.Transaction([](Database& db) {
-		db.staticData.binaries.metadata[0].clazz = PointClass::Class1;
-		db.staticData.binaries.metadata[1].clazz = PointClass::Class2;
-		db.staticData.binaries.metadata[2].clazz = PointClass::Class3;
+		db.buffers.binaries.metadata[0].clazz = PointClass::Class1;
+		db.buffers.binaries.metadata[1].clazz = PointClass::Class2;
+		db.buffers.binaries.metadata[2].clazz = PointClass::Class3;
 	});
 	
 	t.LowerLayerUp();	

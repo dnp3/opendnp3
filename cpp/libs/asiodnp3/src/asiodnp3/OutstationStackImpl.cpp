@@ -39,11 +39,10 @@ OutstationStackImpl::OutstationStackImpl(
 	
 	root(root_, id),
 	handler(handler_),
-	stack(root, &executor, config.outstation.params.maxRxFragSize, &statistics, config.link),
-	databaseBuffers(config.dbTemplate),
+	stack(root, &executor, config.outstation.params.maxRxFragSize, &statistics, config.link),	
 	eventBuffers(config.outstation.eventBufferConfig.TotalEvents()),
 	mutex(),
-	database(databaseBuffers.GetFacade(), &mutex),
+	database(config.dbTemplate, &mutex),
 	outstation(config.outstation, executor, root, stack.transport, commandHandler, application, database, eventBuffers.GetFacade())
 {
 	stack.transport.SetAppLayer(&outstation);
