@@ -32,7 +32,8 @@ void LinkParserImpl::CheckRxTx()
 void LinkParserImpl::CheckRx()
 {
 	// flush the rx buffer
-	auto count = this->FlushRxBuffer();	
+	auto writeBuffer = parser.WriteBuff();
+	auto count = rxBuffer.GetMany(writeBuffer);
 		
 	// if we received some bytes, invoke the parser
 	if(count > 0)									
@@ -45,13 +46,10 @@ void LinkParserImpl::CheckTx()
 {		
 	if(isTransmitting) // we're in the middle of transmit
 	{
-		while(!txBuffer.Full() && !transmission.IsEmpty())
+		if(txBuffer.PutMany(transmission) > 0)
 		{
-			auto txByte = transmission[0];
-			transmission.Advance(1);
-			txBuffer.Put(txByte);
 			this->startTxFun();
-		}
+		}				
 				
 		if(transmission.IsEmpty() && txBuffer.Empty())
 		{
@@ -62,18 +60,6 @@ void LinkParserImpl::CheckTx()
 	}
 }
 
-uint32_t LinkParserImpl::FlushRxBuffer()
-{
-	uint32_t count = 0;
-	auto buffer = parser.WriteBuff();	
-	while(buffer.IsNotEmpty() && rxBuffer.Get(buffer[0]))
-	{		
-		buffer.Advance(1);
-		++count;
-	}
-	return count;
-}
-	
 void LinkParserImpl::BeginTransmit(const openpal::ReadOnlyBuffer& buffer, opendnp3::ILinkContext* pContext)
 {
 	if(isTransmitting)

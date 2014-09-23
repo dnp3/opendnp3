@@ -43,9 +43,7 @@ class LinkParserImpl : public opendnp3::ILinkRouter
 	openpal::ReadOnlyBuffer transmission;
 	
 	openpal::RingBuffer<16> rxBuffer;
-	openpal::RingBuffer<16> txBuffer;
-					
-	uint32_t FlushRxBuffer();		
+	openpal::RingBuffer<16> txBuffer;					
 	
 	void (*startTxFun)(void);			
 	
