@@ -88,8 +88,9 @@ private:
 			
 	uint8_t buffer[N];
 
-	uint8_t head;
-	uint8_t tail;	
+	// these may be changed from another thread or interrupt
+	volatile uint8_t head;
+	volatile uint8_t tail;
 	
 	RingBuffer(const RingBuffer&) = delete;
 	RingBuffer& operator= (const RingBuffer&) = delete;	
