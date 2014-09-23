@@ -28,22 +28,31 @@ using namespace openpal;
 
 #define SUITE(name) "RingBufferTestSuite - " name
 
+void RunTest();
+
 TEST_CASE(SUITE("RingBufferIsThreadSafe"))
 {	
-	
+	for (int i = 0; i < 100; ++i)
+	{
+		RunTest();
+	}	
+}
+
+void RunTest()
+{
 	RingBuffer<128> rb;
-	
-	const int SIZE = 1024*1024;
-	
+
+	const int SIZE = 1024 * 1024;
+
 	auto source = std::unique_ptr<uint8_t[]>(new uint8_t[SIZE]);
 	auto destination = std::unique_ptr<uint8_t[]>(new uint8_t[SIZE]);
-	
+
 	//initialize source to a known pattern modulo 256
 	for (int i = 0; i < SIZE; ++i)
 	{
 		source[i] = static_cast<uint8_t>(i & 0xFF);
 	}
-		
+
 	ReadOnlyBuffer src(source.get(), SIZE);
 	WriteBuffer dest(destination.get(), SIZE);
 
@@ -74,7 +83,6 @@ TEST_CASE(SUITE("RingBufferIsThreadSafe"))
 			FAIL("source != dest at index: " << i);
 		}
 	}
-	
 }
 
 

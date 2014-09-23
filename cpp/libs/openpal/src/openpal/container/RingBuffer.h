@@ -107,7 +107,7 @@ public:
 	
 private:
 
-	inline uint8_t Count()
+	volatile inline uint8_t Count()
 	{
 		return head - tail;
 	}
