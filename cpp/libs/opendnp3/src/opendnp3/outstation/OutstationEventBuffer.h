@@ -23,11 +23,13 @@
 #define OPENDNP3_OUTSTATIONEVENTBUFFER_H
 
 #include "opendnp3/outstation/IEventBuffer.h"
-#include "opendnp3/outstation/EventBufferFacade.h"
 #include "opendnp3/outstation/SelectionCriteria.h"
 #include "opendnp3/outstation/EventCount.h"
 #include "opendnp3/outstation/SelectionWriter.h"
 #include "opendnp3/outstation/EventBufferConfig.h"
+
+#include <openpal/container/DynamicArray.h>
+#include <openpal/container/StackAdapter.h>
 
 namespace opendnp3
 {
@@ -52,7 +54,7 @@ class OutstationEventBuffer : public IEventBuffer
 
 
 public:
-	OutstationEventBuffer(const EventBufferConfig& config, const EventBufferFacade& facade);
+	OutstationEventBuffer(const EventBufferConfig& config);
 
 	// ------- Update methods ------ These can be called anytime
 
@@ -85,7 +87,12 @@ private:
 	bool overflow;
 
 	EventBufferConfig config;
-	EventBufferFacade facade;
+	
+	openpal::DynamicArray<openpal::ListNode<SOERecord>, uint32_t> sequenceOfEventsBuffer;
+	openpal::DynamicArray<openpal::ListNode<SOERecord>*, uint32_t> selectedEventsBuffers;
+
+	openpal::LinkedListAdapter<SOERecord, uint32_t> sequenceOfEvents;
+	openpal::StackAdapter<openpal::ListNode<SOERecord>*, uint32_t> selectedEvents;	
 
 	EventCount totalTracker;
 	EventCount selectedTracker;	
@@ -102,12 +109,12 @@ void OutstationEventBuffer::UpdateAny(const Event<T>& evt, EventType type)
 	{
 		auto currentCount = totalTracker.NumOfType(type);
 
-		if (currentCount >= maxForType || facade.sequenceOfEvents.IsFull())
+		if (currentCount >= maxForType || sequenceOfEvents.IsFull())
 		{
 			this->overflow = true;
 			// find the first event of this type in the SOE, and discard it
 			auto isMatch = [type](const SOERecord& rec) { return rec.type == type; };
-			auto pNode = facade.sequenceOfEvents.FindFirst(isMatch);
+			auto pNode = sequenceOfEvents.FindFirst(isMatch);
 			if (pNode)
 			{
 				totalTracker.Decrement(pNode->value.clazz, type);
@@ -118,13 +125,13 @@ void OutstationEventBuffer::UpdateAny(const Event<T>& evt, EventType type)
 					selectedTracker.Decrement(pNode->value.clazz, type);
 				}
 
-				facade.sequenceOfEvents.Remove(pNode);
+				sequenceOfEvents.Remove(pNode);
 			}
 		}
 
 		totalTracker.Increment(evt.clazz, type);		
 		SOERecord record(evt.value, evt.index, evt.clazz);
-		facade.sequenceOfEvents.Add(record);
+		sequenceOfEvents.Add(record);
 	}
 }
 

@@ -57,8 +57,7 @@ class OutstationContext
 						ILowerLayer& lower,
 						ICommandHandler& commandHandler,
 						IOutstationApplication& application,
-						Database& database, 
-						const EventBufferFacade& buffers);
+						Database& database);
 
 	// ------ Unchanging variables and self managing variables -------
 

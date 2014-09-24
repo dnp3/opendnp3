@@ -25,7 +25,6 @@
 #include <opendnp3/app/ITransactable.h>
 #include <opendnp3/outstation/Outstation.h>
 #include <opendnp3/outstation/Database.h>
-#include <opendnp3/outstation/DynamicallyAllocatedEventBuffer.h>
 
 #include "MockExecutor.h"
 #include "LogTester.h"
@@ -77,12 +76,6 @@ private:
 public:
 
 	MockLowerLayer lower;
-
-private:
-	
-	opendnp3::DynamicallyAllocatedEventBuffer eventBuffers;	
-
-public:
 	Database db;
 	MockCommandHandler cmdHandler;
 	MockOutstationApplication application;

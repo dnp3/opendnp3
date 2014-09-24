@@ -38,9 +38,8 @@ Outstation::Outstation(
 		ILowerLayer& lower,
 		ICommandHandler& commandHandler,
 		IOutstationApplication& application,
-		Database& database,
-		const EventBufferFacade& buffers) :
-		context(config, executor, root, lower, commandHandler, application, database, buffers)
+		Database& database) :
+		context(config, executor, root, lower, commandHandler, application, database)
 {
 	
 }

@@ -24,19 +24,22 @@
 namespace opendnp3
 {
 
-OutstationEventBuffer::OutstationEventBuffer(const EventBufferConfig& config_, const EventBufferFacade& facade_) :
+OutstationEventBuffer::OutstationEventBuffer(const EventBufferConfig& config_) :
 	overflow(false),
 	config(config_),
-	facade(facade_)
+	sequenceOfEventsBuffer(config.TotalEvents()),
+	selectedEventsBuffers(config.TotalEvents()),
+	sequenceOfEvents(sequenceOfEventsBuffer.ToIndexable()),
+	selectedEvents(selectedEventsBuffers.ToIndexable())
 {
 
 }
 
 void OutstationEventBuffer::Reset()
 {
-	while(facade.selectedEvents.IsNotEmpty())
+	while(selectedEvents.IsNotEmpty())
 	{
-		auto pNode = facade.selectedEvents.Pop();		
+		auto pNode = selectedEvents.Pop();		
 		pNode->value.selected = false;
 	}
 
@@ -55,12 +58,12 @@ bool OutstationEventBuffer::IsOverflown()
 
 void OutstationEventBuffer::Clear()
 {
-	while(facade.selectedEvents.IsNotEmpty())
+	while(selectedEvents.IsNotEmpty())
 	{		
-		auto pNode = facade.selectedEvents.Pop();
+		auto pNode = selectedEvents.Pop();
 		if (pNode->value.selected) // could have been removed due to buffer overflow
 		{			
-			facade.sequenceOfEvents.Remove(pNode); // O(1) from SOE
+			sequenceOfEvents.Remove(pNode); // O(1) from SOE
 			totalTracker.Decrement(pNode->value.clazz, pNode->value.type);
 		}
 	}
@@ -140,7 +143,7 @@ bool OutstationEventBuffer::IsAnyTypeOverflown() const
 
 bool OutstationEventBuffer::HasEnoughSpaceToClearOverflow() const
 {
-	auto soeHasSpace = facade.sequenceOfEvents.Size() < facade.sequenceOfEvents.Capacity();
+	auto soeHasSpace = sequenceOfEvents.Size() < sequenceOfEvents.Capacity();
 
 	return soeHasSpace && !IsAnyTypeOverflown();
 		

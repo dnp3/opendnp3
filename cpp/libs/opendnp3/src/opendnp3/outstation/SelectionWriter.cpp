@@ -30,7 +30,7 @@ namespace opendnp3
 
 SelectionWriter::SelectionWriter(OutstationEventBuffer& buffer) : 
 	pBuffer(&buffer),
-	iterator(buffer.facade.sequenceOfEvents.Iterate()) 
+	iterator(buffer.sequenceOfEvents.Iterate()) 
 {
 
 }
@@ -54,7 +54,7 @@ bool SelectionWriter::WriteAllEvents(SelectionCriteria& criteria, HeaderWriter& 
 			{
 				pNode->value.selected = true;
 				pBuffer->selectedTracker.Increment(pNode->value.clazz, pNode->value.type);
-				pBuffer->facade.selectedEvents.Push(pNode);
+				pBuffer->selectedEvents.Push(pNode);
 				pCriteria->RecordAsWritten(pNode->value.clazz, pNode->value.type);
 				this->SeekNextUnselectedNode(iterator);				
 				return iterator.Current();
@@ -94,7 +94,7 @@ void SelectionWriter::SelectCurrent()
 	assert(pCurrent);
 	pCurrent->value.selected = true;
 	pBuffer->selectedTracker.Increment(pCurrent->value.clazz);
-	pBuffer->facade.selectedEvents.Push(pCurrent);
+	pBuffer->selectedEvents.Push(pCurrent);
 	pCurrent = nullptr;
 }
 */

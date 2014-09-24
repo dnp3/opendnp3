@@ -26,8 +26,6 @@
 
 #include "opendnp3/app/EventType.h"
 #include "opendnp3/app/HeaderWriter.h"
-
-#include "opendnp3/outstation/EventBufferFacade.h"
 #include "opendnp3/outstation/SelectionCriteria.h"
 
 namespace opendnp3

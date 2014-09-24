@@ -333,9 +333,6 @@
     <ClInclude Include="src\opendnp3\outstation\Event.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\EventBufferFacade.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\EventCount.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
@@ -681,9 +678,6 @@
     <ClInclude Include="src\opendnp3\Route.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\DynamicallyAllocatedEventBuffer.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
     <ClInclude Include="AppConstants.h">
       <Filter>Header\app</Filter>
     </ClInclude>
@@ -944,9 +938,6 @@
     <ClCompile Include="src\opendnp3\app\EventTriggers.cpp">
       <Filter>Source\app</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\EventBufferFacade.cpp">
-      <Filter>Source\outstation</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\gen\StaticDoubleBinaryResponse.cpp">
       <Filter>Source\gen</Filter>
     </ClCompile>
@@ -1104,9 +1095,6 @@
       <Filter>Source\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\ApplicationIIN.cpp">
-      <Filter>Source\outstation</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\DynamicallyAllocatedEventBuffer.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\DatabaseBuffers.cpp">

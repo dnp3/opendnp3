@@ -51,8 +51,7 @@ OutstationContext::OutstationContext(
 		ILowerLayer& lower,
 		ICommandHandler& commandHandler,
 		IOutstationApplication& application,
-		Database& database,
-		const EventBufferFacade& buffers) :
+		Database& database) :
 	
 	params(config.params),
 	eventConfig(config.defaultEventResponses),
@@ -61,7 +60,7 @@ OutstationContext::OutstationContext(
 	pCommandHandler(&commandHandler),
 	pApplication(&application),
 	pDatabase(&database),
-	eventBuffer(config.eventBufferConfig, buffers),
+	eventBuffer(config.eventBufferConfig),
 	isOnline(false),
 	pSolicitedState(&OutstationSolicitedStateIdle::Inst()),
 	pUnsolicitedState(&OutstationUnsolicitedStateIdle::Inst()),

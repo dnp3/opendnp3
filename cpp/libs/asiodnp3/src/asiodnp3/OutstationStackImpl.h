@@ -28,8 +28,6 @@
 #include <opendnp3/link/ILinkRouter.h>
 #include <opendnp3/transport/TransportStack.h>
 
-#include <opendnp3/outstation/DynamicallyAllocatedEventBuffer.h>
-
 #include "IOutstation.h"
 #include "Mutex.h"
 #include "StackActionHandler.h"
@@ -79,7 +77,6 @@ private:
 	opendnp3::StackStatistics statistics;	
 	StackActionHandler handler;
 	opendnp3::TransportStack stack;	
-	opendnp3::DynamicallyAllocatedEventBuffer eventBuffers;
 	Mutex mutex;
 	opendnp3::Database database;
 	opendnp3::Outstation outstation;
