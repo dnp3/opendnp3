@@ -202,10 +202,6 @@
       <SubType>compile</SubType>
       <Link>container\IndexableIterator.h</Link>
     </Compile>
-    <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\container\LinkedListAdapter.h">
-      <SubType>compile</SubType>
-      <Link>container\LinkedListAdapter.h</Link>
-    </Compile>
     <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\container\Pair.h">
       <SubType>compile</SubType>
       <Link>container\Pair.h</Link>
@@ -225,18 +221,6 @@
     <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\container\Settable.h">
       <SubType>compile</SubType>
       <Link>container\Settable.h</Link>
-    </Compile>
-    <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\container\StackAdapter.h">
-      <SubType>compile</SubType>
-      <Link>container\StackAdapter.h</Link>
-    </Compile>
-    <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\container\StaticArray.h">
-      <SubType>compile</SubType>
-      <Link>container\StaticArray.h</Link>
-    </Compile>
-    <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\container\StaticLinkedList.h">
-      <SubType>compile</SubType>
-      <Link>container\StaticLinkedList.h</Link>
     </Compile>
     <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\container\WriteBuffer.cpp">
       <SubType>compile</SubType>
