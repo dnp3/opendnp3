@@ -72,7 +72,7 @@ void Database::DoubleBuffer()
 }
 
 ////////////////////////////////////////////////////
-// IMeasurementLoader* interface
+// IDatabase* interface
 ////////////////////////////////////////////////////
 
 void Database::Update(const Binary& value, uint16_t index)
