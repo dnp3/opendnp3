@@ -16,7 +16,6 @@
 
 #include <opendnp3/transport/TransportStack.h>
 #include <opendnp3/outstation/Outstation.h>
-#include <opendnp3/outstation/DynamicallyAllocatedEventBuffer.h>
 #include <opendnp3/outstation/IOutstationApplication.h>
 
 #include <openpal/logging/LogRoot.h>
@@ -132,6 +131,8 @@ void ConfigureUart(void)
 	UART->UART_CR = UART_CR_RXEN | UART_CR_TXEN;	
 }
 
+OutstationConfig GetOutstationConfig();
+
 int main(void)
 {
     // Initialize the SAM system
@@ -145,25 +146,15 @@ int main(void)
 	
 	LogRoot root(nullptr, "root", 0);
 	
-	TransportStack stack(root, &exe, MAX_FRAG_SIZE, nullptr, LinkConfig(false, false));
-		
-	// allow a max of 5 events
-	DynamicallyAllocatedEventBuffer eventBuffers(20);
+	TransportStack stack(root, &exe, MAX_FRAG_SIZE, nullptr, LinkConfig(false, false));			
 		
 	Database database(DatabaseTemplate(10,0,0,10));
-	
-	OutstationConfig config;
-	config.params.maxRxFragSize = MAX_FRAG_SIZE;
-	config.params.maxTxFragSize = MAX_FRAG_SIZE;
-	config.eventBufferConfig = EventBufferConfig(5);
-	config.params.allowUnsolicited = true;
-	config.defaultEventResponses.binary = EventBinaryResponse::Group2Var2;	
-
+		
 	// object that handles command (CROB / analog output) requests
 	// This example can toggle an LED
 	CommandHandlerImpl commandHandler;		
 
-	Outstation outstation(config, exe, root, stack.transport, commandHandler, DefaultOutstationApplication::Instance(), database, eventBuffers.GetFacade());
+	Outstation outstation(GetOutstationConfig(), exe, root, stack.transport, commandHandler, DefaultOutstationApplication::Instance(), database);
 
 	stack.transport.SetAppLayer(&outstation);		
 	
@@ -204,6 +195,17 @@ int main(void)
 	}
 
 	return 0;
+}
+
+OutstationConfig GetOutstationConfig()
+{
+	OutstationConfig config;
+	config.params.maxRxFragSize = MAX_FRAG_SIZE;
+	config.params.maxTxFragSize = MAX_FRAG_SIZE;
+	config.eventBufferConfig = EventBufferConfig(5, 0, 0, 5);
+	config.params.allowUnsolicited = true;
+	config.defaultEventResponses.binary = EventBinaryResponse::Group2Var2;
+	return config;
 }
 
 void ToggleLED()

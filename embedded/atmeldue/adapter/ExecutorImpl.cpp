@@ -12,8 +12,10 @@ void ExecutorImpl::Tick()
 
 ExecutorImpl::ExecutorImpl(uint8_t maxQueueSize, uint8_t maxtimers) : 
 	ticks(0), 	
+	timers(maxtimers),
 	work(maxQueueSize), 
-	idleTimers(maxtimers)
+	idleTimers(maxtimers),
+	activeTimers(maxtimers)
 {	
 	for(uint8_t i = 0; i < timers.Size(); ++i)
 	{
