@@ -21,6 +21,7 @@ object CSharpEnumGenerator {
     def qualityMasks = QualityMasks.enums.map(m => EnumConfig(m, dir))
 
     def enums : List[EnumConfig] = List(
+      AssignClassType(),
       DoubleBit(),
       PointClass(),
       PollState(),

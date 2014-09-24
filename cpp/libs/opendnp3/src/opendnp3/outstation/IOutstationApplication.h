@@ -24,8 +24,10 @@
 
 #include <openpal/executor/UTCTimestamp.h>
 
-#include <opendnp3/gen/RestartMode.h>
-#include <opendnp3/outstation/ApplicationIIN.h>
+#include "opendnp3/gen/PointClass.h"
+#include "opendnp3/gen/RestartMode.h"
+#include "opendnp3/gen/AssignClassType.h"
+#include "opendnp3/outstation/ApplicationIIN.h"
 
 namespace opendnp3
 {
@@ -39,6 +41,7 @@ class IOutstationApplication
 
 	/// True if the outstation supports absolute time writes
 	/// If this function returns false, WriteAbsoluteTime will never be called
+	/// and the outstation will return IIN 2.1 (FUNC_NOT_SUPPORTED)
 	virtual bool SupportsWriteAbsoluteTime() = 0;
 
 	/// Write the time to outstation, only called if SupportsWriteAbsoluteTime return true
@@ -46,6 +49,17 @@ class IOutstationApplication
 	/// false will cause the outstation to set IIN 2.3 (PARAM_ERROR) in its response.
 	/// The outstation should clear its NEED_TIME field when handling this response
 	virtual bool WriteAbsoluteTime(const openpal::UTCTimestamp& timestamp) = 0;
+
+	/// True if the outstation supports the assign class function code
+	/// If this function returns false, the assign class callbacks will never be called
+	/// and the outstation will return IIN 2.1 (FUNC_NOT_SUPPORTED) when it receives this function code
+	virtual bool SupportsAssignClass() = 0;
+
+	/// Called if SupportsAssignClass returns true
+	/// The type and range are pre-validated against the outstation's database
+	/// and class assignments are automatically applied internally.
+	/// This callback allows user code to persist the changes to non-volatile memory	
+	virtual void AssignClass(AssignClassType type, PointClass clazz, uint16_t start, uint16_t stop) = 0;
 
 	/// Returns the application-controlled IIN field
 	virtual ApplicationIIN GetApplicationIIN() const = 0;
@@ -79,6 +93,10 @@ class DefaultOutstationApplication : public IOutstationApplication
 	virtual bool SupportsWriteAbsoluteTime() override final { return false; }
 
 	virtual bool WriteAbsoluteTime(const openpal::UTCTimestamp& timestamp) override final { return false; }
+
+	virtual bool SupportsAssignClass() override final { return false; }
+	
+	virtual void AssignClass(AssignClassType type, PointClass clazz, uint16_t start, uint16_t stop) override final { }
 
 	static IOutstationApplication& Instance();
 

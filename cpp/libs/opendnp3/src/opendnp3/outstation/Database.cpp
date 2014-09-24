@@ -194,6 +194,14 @@ uint16_t Database::NumValues<AnalogOutputStatus>() const
 	return buffers.analogOutputStatii.values.Size();
 }
 
+bool Database::AssignClass(AssignClassType type, PointClass clazz, const StaticRange& range)
+{
+	switch (type)
+	{	
+	default:
+		return false;
+	}
+}
 
 void Database::SetEventHandler(const Action0& callback)
 {

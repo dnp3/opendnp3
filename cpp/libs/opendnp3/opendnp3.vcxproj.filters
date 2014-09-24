@@ -49,9 +49,6 @@
     <Filter Include="Source\link">
       <UniqueIdentifier>{c4a0ef96-6633-47b7-b4fe-01d480acfe75}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header\outstation\handlers">
-      <UniqueIdentifier>{733de7e2-7eb2-4d32-93a0-5404043d8b50}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\opendnp3\app\AnalogOutput.h">
@@ -612,12 +609,6 @@
     <ClInclude Include="src\opendnp3\outstation\IOutstationApplication.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\ClassBasedRequestHandler.h">
-      <Filter>Header\outstation\handlers</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\CommandResponseHandler.h">
-      <Filter>Header\outstation\handlers</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\master\IMasterApplication.h">
       <Filter>Header\master</Filter>
     </ClInclude>
@@ -689,6 +680,18 @@
     </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\DatabaseBuffers.h">
       <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\CommandResponseHandler.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\ClassBasedRequestHandler.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\AssignClassHandler.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\AssignClassType.h">
+      <Filter>Header\gen</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1099,6 +1102,9 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\DatabaseBuffers.cpp">
       <Filter>Source\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\AssignClassHandler.cpp">
+      <Filter>Header\outstation</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

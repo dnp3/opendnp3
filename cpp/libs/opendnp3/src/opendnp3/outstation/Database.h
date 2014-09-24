@@ -25,6 +25,7 @@
 #include <openpal/executor/Action0.h>
 #include <openpal/container/Settable.h>
 
+#include "opendnp3/gen/AssignClassType.h"
 #include "opendnp3/app/StaticRange.h"
 #include "opendnp3/outstation/IEventBuffer.h"
 #include "opendnp3/outstation/IDatabase.h"
@@ -63,6 +64,8 @@ public:
 	template <class T>
 	uint16_t NumValues() const;
 
+	bool AssignClass(AssignClassType type, PointClass clazz, const StaticRange& range);
+
 	template <class T>
 	StaticRange FullRange() const
 	{
@@ -75,7 +78,7 @@ public:
 	
 	void SetEventHandler(const openpal::Action0& callback);
 
-private:
+private:	
 
 	template <class T>
 	static void FreezeCollection(openpal::Indexable<DualValue<T>, uint16_t>& collection)

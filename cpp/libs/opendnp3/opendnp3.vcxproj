@@ -69,6 +69,7 @@
     <ClInclude Include="src\opendnp3\app\WriteConversions.h" />
     <ClInclude Include="src\opendnp3\app\WriteConversionTemplates.h" />
     <ClInclude Include="src\opendnp3\gen\AnalogQuality.h" />
+    <ClInclude Include="src\opendnp3\gen\AssignClassType.h" />
     <ClInclude Include="src\opendnp3\gen\BinaryOutputStatusQuality.h" />
     <ClInclude Include="src\opendnp3\gen\BinaryQuality.h" />
     <ClInclude Include="src\opendnp3\gen\CounterQuality.h" />
@@ -178,6 +179,7 @@
     <ClInclude Include="src\opendnp3\objects\Group51.h" />
     <ClInclude Include="src\opendnp3\objects\Group52.h" />
     <ClInclude Include="src\opendnp3\objects\Group60.h" />
+    <ClInclude Include="src\opendnp3\outstation\AssignClassHandler.h" />
     <ClInclude Include="src\opendnp3\outstation\ClassBasedRequestHandler.h" />
     <ClInclude Include="src\opendnp3\outstation\CommandActionAdapter.h" />
     <ClInclude Include="src\opendnp3\outstation\CommandResponseHandler.h" />
@@ -335,6 +337,7 @@
     <ClCompile Include="src\opendnp3\objects\Group52.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group60.cpp" />
     <ClCompile Include="src\opendnp3\outstation\ApplicationIIN.cpp" />
+    <ClCompile Include="src\opendnp3\outstation\AssignClassHandler.cpp" />
     <ClCompile Include="src\opendnp3\outstation\ClassBasedRequestHandler.cpp" />
     <ClCompile Include="src\opendnp3\outstation\CommandActionAdapter.cpp" />
     <ClCompile Include="src\opendnp3\outstation\CommandResponseHandler.cpp" />
