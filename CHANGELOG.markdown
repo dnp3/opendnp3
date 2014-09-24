@@ -1,3 +1,17 @@
+### 2.0.0-RC3 ###
+* Dynamic memory allocation now allowed in core library during initialization.
+  * Removed various redundant static container types in openpal
+  * Database and event buffers now create they underlying storage from configuration
+  * Hard limits that were in Configure.h are no longer necessary.
+* C++/C# master API now receives callback whenever an IIN field is received to allow user layer processing.
+* Fixed a bug where periodic taks with period < 0 would rapid-retry instead ()
+* Added an embedded demo for the sam3x8E ARM (arduino DUE)
+* Parsers are no longer singletons, both groups of functions to reduce SRAM usage on embedded systems.
+* ICommandHandler semantics switched back to Select/Operate to more closely match spec. Operate is indistinguisable from DirectOperate at user layer
+* Include guards now prepend library name to avoid potential conflicts
+* Master can now bind arbitrary 0x06 (all objects) periodic scans
+  
+
 ### 2.0.0-RC2 ###
 
 Conformance fixes based on testing with 3rd party harness. Only remaining level 2 conformance item is handling broadcast addressing.
