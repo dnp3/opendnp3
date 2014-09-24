@@ -26,6 +26,7 @@
 #include "opendnp3/outstation/EventBufferFacade.h"
 
 #include <openpal/container/DynamicArray.h>
+#include <openpal/util/Uncopyable.h>
 
 namespace opendnp3
 {

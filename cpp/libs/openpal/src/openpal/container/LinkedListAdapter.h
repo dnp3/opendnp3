@@ -146,6 +146,31 @@ public:
 
 	ListNode<ValueType>* Add(const ValueType& value);
 
+	template <class Selector>
+	void Foreach(Selector select)
+	{
+		auto iter = this->Iterate();
+		while (iter.HasNext())
+		{
+			select(iter.Next()->value);
+		}
+	}
+
+	bool Remove(const ValueType& value)
+	{
+		auto iter = this->Iterate();
+		while (iter.HasNext())
+		{
+			auto pNode = iter.Next();
+			if (pNode->value == value)
+			{
+				this->Remove(pNode);
+				return true;
+			}
+		}
+		return false;
+	}
+
 	template <class LessThan>
 	ListNode<ValueType>* Insert(const ValueType& value, LessThan lt);
 

@@ -22,9 +22,8 @@
 #ifndef OPENDNP3_EVENTBUFFERFACADE_H
 #define OPENDNP3_EVENTBUFFERFACADE_H
 
-#include <openpal/container/StaticLinkedList.h>
+#include <openpal/container/LinkedListAdapter.h>
 #include <openpal/container/StackAdapter.h>
-
 #include "opendnp3/outstation/SOERecord.h"
 
 

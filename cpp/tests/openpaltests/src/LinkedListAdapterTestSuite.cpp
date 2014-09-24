@@ -22,7 +22,6 @@
 
 #include <openpal/container/DynamicArray.h>
 #include <openpal/container/LinkedListAdapter.h>
-#include <openpal/container/StaticLinkedList.h>
 
 using namespace openpal;
 
@@ -30,7 +29,8 @@ using namespace openpal;
 
 TEST_CASE(SUITE("CorrectInitialState"))
 {
-	StaticLinkedList<int, uint16_t, 3> list;
+	DynamicArray<ListNode<int>, uint16_t> arr(3);
+	LinkedListAdapter<int, uint16_t> list(arr.ToIndexable());
 
 	REQUIRE(list.IsEmpty());
 	REQUIRE(!list.IsFull());
@@ -39,7 +39,8 @@ TEST_CASE(SUITE("CorrectInitialState"))
 
 TEST_CASE(SUITE("AddsUntilFull"))
 {
-	StaticLinkedList<int, uint16_t, 3> list;
+	DynamicArray<ListNode<int>, uint16_t> arr(3);
+	LinkedListAdapter<int, uint16_t> list(arr.ToIndexable());
 
 	REQUIRE(list.Add(1));
 	REQUIRE(list.Add(2));
@@ -127,7 +128,8 @@ TEST_CASE(SUITE("CanIterateOverValues"))
 
 TEST_CASE(SUITE("StaticLinkedList"))
 {
-	StaticLinkedList<int, uint16_t, 3> list;
+	DynamicArray<ListNode<int>, uint16_t> arr(3);
+	LinkedListAdapter<int, uint16_t> list(arr.ToIndexable());
 
 	REQUIRE(list.Add(1));
 	REQUIRE(list.Add(2));
@@ -139,7 +141,8 @@ TEST_CASE(SUITE("StaticLinkedList"))
 
 TEST_CASE(SUITE("Insert at front of list"))
 {
-	StaticLinkedList<int, uint16_t, 10> list;
+	DynamicArray<ListNode<int>, uint16_t> arr(3);
+	LinkedListAdapter<int, uint16_t> list(arr.ToIndexable());
 
 	REQUIRE(list.Add(7));
 	
@@ -156,7 +159,8 @@ TEST_CASE(SUITE("Insert at front of list"))
 
 TEST_CASE(SUITE("Insert in center of list"))
 {
-	StaticLinkedList<int, uint16_t, 10> list;
+	DynamicArray<ListNode<int>, uint16_t> arr(10);
+	LinkedListAdapter<int, uint16_t> list(arr.ToIndexable());
 
 	REQUIRE(list.Add(2));
 	REQUIRE(list.Add(7));
@@ -176,7 +180,8 @@ TEST_CASE(SUITE("Insert in center of list"))
 
 TEST_CASE(SUITE("Insert at end of list"))
 {
-	StaticLinkedList<int, uint16_t, 10> list;
+	DynamicArray<ListNode<int>, uint16_t> arr(10);
+	LinkedListAdapter<int, uint16_t> list(arr.ToIndexable());
 
 	REQUIRE(list.Add(2));
 	REQUIRE(list.Add(4));
