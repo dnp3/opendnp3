@@ -67,9 +67,6 @@
     <ClInclude Include="src\openpal\container\Settable.h">
       <Filter>Header\container</Filter>
     </ClInclude>
-    <ClInclude Include="src\openpal\container\StaticArray.h">
-      <Filter>Header\container</Filter>
-    </ClInclude>
     <ClInclude Include="src\openpal\container\DynamicArray.h">
       <Filter>Header\container</Filter>
     </ClInclude>

@@ -25,7 +25,6 @@
 
 #include <openpal/util/ToHex.h>
 #include <openpal/serialization/Serialization.h>
-#include <openpal/container/StaticArray.h>
 
 #include <opendnp3/objects/Group2.h>
 #include <opendnp3/objects/Group12.h>
