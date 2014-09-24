@@ -87,11 +87,10 @@ private:
 	bool overflow;
 
 	EventBufferConfig config;
-	
-	openpal::DynamicArray<openpal::ListNode<SOERecord>, uint32_t> sequenceOfEventsBuffer;
-	openpal::DynamicArray<openpal::ListNode<SOERecord>*, uint32_t> selectedEventsBuffers;
+			
+	openpal::LinkedList<SOERecord, uint32_t> sequenceOfEvents;
 
-	openpal::LinkedListAdapter<SOERecord, uint32_t> sequenceOfEvents;
+	openpal::DynamicArray<openpal::ListNode<SOERecord>*, uint32_t> selectedEventsBuffers;
 	openpal::StackAdapter<openpal::ListNode<SOERecord>*, uint32_t> selectedEvents;	
 
 	EventCount totalTracker;

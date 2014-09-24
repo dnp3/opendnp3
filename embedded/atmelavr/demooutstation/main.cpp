@@ -2,7 +2,6 @@
 
 #include <opendnp3/transport/TransportStack.h>
 #include <opendnp3/outstation/Outstation.h>
-#include <opendnp3/outstation/DynamicallyAllocatedEventBuffer.h>
 #include <opendnp3/outstation/IOutstationApplication.h>
 
 #include <openpal/logging/LogRoot.h>
@@ -61,16 +60,13 @@ int main()
 		
 	TransportStack stack(root, &exe, MAX_APDU_SIZE, nullptr, LinkConfig(false, false));		
 	
-	// allow a max of 2 events
-	DynamicallyAllocatedEventBuffer eventBuffers(5);
-	
 	Database database(DatabaseTemplate(NUM_BINARY,0,1));
 	
 	// Object that handles command (CROB / analog output) requests
 	// This example can toggle an LED on the Arduino board
 	CommandHandlerImpl commandHandler;						
 						
-	Outstation outstation(GetOutstationConfig(), exe, root, stack.transport, commandHandler, DefaultOutstationApplication::Instance(), database, eventBuffers.GetFacade());
+	Outstation outstation(GetOutstationConfig(), exe, root, stack.transport, commandHandler, DefaultOutstationApplication::Instance(), database);
 		
 	stack.transport.SetAppLayer(&outstation);
 			

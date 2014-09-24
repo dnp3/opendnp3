@@ -26,7 +26,7 @@
 
 #include <openpal/util/Uncopyable.h>
 #include <openpal/serialization/Serialization.h>
-#include <openpal/container/LinkedListAdapter.h>
+#include <openpal/container/LinkedList.h>
 #include <openpal/executor/Function1.h>
 
 #include "opendnp3/app/ClassField.h"

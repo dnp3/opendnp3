@@ -22,7 +22,7 @@
 #ifndef OPENDNP3_SELECTIONWRITER_H
 #define OPENDNP3_SELECTIONWRITER_H
 
-#include <openpal/container/LinkedListAdapter.h>
+#include <openpal/container/LinkedList.h>
 
 #include "opendnp3/app/EventType.h"
 #include "opendnp3/app/HeaderWriter.h"

@@ -18,10 +18,12 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENPAL_LINKEDLISTADAPTER_H
-#define OPENPAL_LINKEDLISTADAPTER_H
+#ifndef OPENPAL_LINKEDLIST_H
+#define OPENPAL_LINKEDLIST_H
 
 #include "Indexable.h"
+
+#include "openpal/container/DynamicArray.h"
 
 namespace openpal
 {
@@ -40,7 +42,7 @@ private:
 	ListNode* next;
 
 	template <class T, class U>
-	friend class LinkedListAdapter;
+	friend class LinkedList;
 
 	template <class T>
 	friend class LinkedListIterator;
@@ -97,18 +99,18 @@ private:
 
 // A container adapter for a -linked list
 template <class ValueType, class IndexType>
-class LinkedListAdapter : public HasSize<IndexType>
+class LinkedList : public HasSize<IndexType>
 {
 public:
 
 	typedef LinkedListIterator<ValueType> Iterator;
 
-	LinkedListAdapter(Indexable<ListNode<ValueType>, IndexType> underlying_) :
+	LinkedList(IndexType maxSize) :
 		HasSize<IndexType>(0),
 		pHead(nullptr),
 		pTail(nullptr),
 		pFree(nullptr),
-		underlying(underlying_)
+		underlying(maxSize)
 	{
 		Initialize();
 	}
@@ -156,6 +158,17 @@ public:
 		}
 	}
 
+	template <class Selector>
+	ListNode<ValueType>* RemoveFirst(Selector select)
+	{
+		auto pNode = this->FindFirst(select);
+		if (pNode)
+		{
+			this->Remove(pNode);
+		}
+		return pNode;
+	}
+
 	bool Remove(const ValueType& value)
 	{
 		auto iter = this->Iterate();
@@ -179,10 +192,12 @@ public:
 	inline bool IsFull() const;
 
 private:
+
 	ListNode<ValueType>* pHead;
 	ListNode<ValueType>* pTail;
 	ListNode<ValueType>* pFree;
-	Indexable<ListNode<ValueType>, IndexType> underlying;
+
+	DynamicArray<ListNode<ValueType>, IndexType> underlying;
 
 	ListNode<ValueType>* Insert(const ValueType& value, ListNode<ValueType>* left, ListNode<ValueType>* right);
 
@@ -192,7 +207,7 @@ private:
 };
 
 template <class ValueType, class IndexType>
-ListNode<ValueType>* LinkedListAdapter<ValueType, IndexType>::Add(const ValueType& value)
+ListNode<ValueType>* LinkedList<ValueType, IndexType>::Add(const ValueType& value)
 {
 	return this->Insert(value, pTail, nullptr);	
 }
@@ -200,7 +215,7 @@ ListNode<ValueType>* LinkedListAdapter<ValueType, IndexType>::Add(const ValueTyp
 
 template <class ValueType, class IndexType>
 template <class LessThan>
-ListNode<ValueType>* LinkedListAdapter<ValueType, IndexType>::Insert(const ValueType& value, LessThan lt)
+ListNode<ValueType>* LinkedList<ValueType, IndexType>::Insert(const ValueType& value, LessThan lt)
 {
 	if (pFree == nullptr)
 	{
@@ -222,7 +237,7 @@ ListNode<ValueType>* LinkedListAdapter<ValueType, IndexType>::Insert(const Value
 }
 
 template <class ValueType, class IndexType>
-ListNode<ValueType>* LinkedListAdapter<ValueType, IndexType>::Insert(const ValueType& value, ListNode<ValueType>* pLeft, ListNode<ValueType>* pRight)
+ListNode<ValueType>* LinkedList<ValueType, IndexType>::Insert(const ValueType& value, ListNode<ValueType>* pLeft, ListNode<ValueType>* pRight)
 {
 	if (pFree == nullptr)
 	{
@@ -257,7 +272,7 @@ ListNode<ValueType>* LinkedListAdapter<ValueType, IndexType>::Insert(const Value
 
 template <class ValueType, class IndexType>
 template <class Selector>
-ListNode<ValueType>* LinkedListAdapter<ValueType, IndexType>::FindFirst(Selector select)
+ListNode<ValueType>* LinkedList<ValueType, IndexType>::FindFirst(Selector select)
 {
 	auto iter = this->Iterate();
 	while (iter.HasNext())
@@ -272,12 +287,18 @@ ListNode<ValueType>* LinkedListAdapter<ValueType, IndexType>::FindFirst(Selector
 }
 
 template <class ValueType, class IndexType>
-void LinkedListAdapter<ValueType, IndexType>::Remove(ListNode<ValueType>* apNode)
+void LinkedList<ValueType, IndexType>::Remove(ListNode<ValueType>* apNode)
 {
 	if(apNode->prev == nullptr) // it's the head
 	{
-		if(apNode->next == nullptr) pHead = pTail = nullptr; // list is now empty
-		else pHead = apNode->next; // head but not tail
+		if (apNode->next == nullptr)
+		{
+			pHead = pTail = nullptr; // list is now empty
+		}
+		else
+		{
+			pHead = apNode->next; // head but not tail
+		}
 	}
 	else
 	{
@@ -296,7 +317,7 @@ void LinkedListAdapter<ValueType, IndexType>::Remove(ListNode<ValueType>* apNode
 }
 
 template <class ValueType, class IndexType>
-bool LinkedListAdapter<ValueType, IndexType>::IsFull() const
+bool LinkedList<ValueType, IndexType>::IsFull() const
 {
 	return (pFree == nullptr);
 }
@@ -304,14 +325,14 @@ bool LinkedListAdapter<ValueType, IndexType>::IsFull() const
 
 
 template <class ValueType, class IndexType>
-void LinkedListAdapter<ValueType, IndexType>::Link(ListNode<ValueType>* first, ListNode<ValueType>* second)
+void LinkedList<ValueType, IndexType>::Link(ListNode<ValueType>* first, ListNode<ValueType>* second)
 {
 	if(first) first->next = second;
 	if(second) second->prev = first;
 }
 
 template <class ValueType, class IndexType>
-void LinkedListAdapter<ValueType, IndexType>::Initialize()
+void LinkedList<ValueType, IndexType>::Initialize()
 {	
 	if(underlying.IsNotEmpty())
 	{

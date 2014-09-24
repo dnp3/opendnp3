@@ -3,8 +3,8 @@
 
 #include <openpal/executor/IExecutor.h>
 #include <openpal/container/Queue.h>
-#include <openpal/container/StaticArray.h>
-#include <openpal/container/StaticLinkedList.h>
+#include <openpal/container/DynamicArray.h>
+#include <openpal/container/LinkedList.h>
 
 #include "AVRTimer.h"
 
@@ -42,11 +42,11 @@ class AVRExecutor : public openpal::IExecutor
 	
 	int64_t ticks;	
 	
-	openpal::StaticArray<AVRTimer, uint8_t, 5> timers;
+	openpal::DynamicArray<AVRTimer, uint8_t> timers;
 	openpal::Queue<openpal::Action0, uint8_t> work;
 	
 	openpal::Queue<AVRTimer*, uint8_t> idleTimers;
-	openpal::StaticLinkedList<AVRTimer*, uint8_t, 5> activeTimers;
+	openpal::LinkedList<AVRTimer*, uint8_t> activeTimers;
 };
 
 #endif

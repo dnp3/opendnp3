@@ -1002,14 +1002,6 @@
       <SubType>compile</SubType>
       <Link>outstation\DualValue.h</Link>
     </Compile>
-    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\DynamicallyAllocatedEventBuffer.cpp">
-      <SubType>compile</SubType>
-      <Link>outstation\DynamicallyAllocatedEventBuffer.cpp</Link>
-    </Compile>
-    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\DynamicallyAllocatedEventBuffer.h">
-      <SubType>compile</SubType>
-      <Link>outstation\DynamicallyAllocatedEventBuffer.h</Link>
-    </Compile>
     <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\Event.h">
       <SubType>compile</SubType>
       <Link>outstation\Event.h</Link>
@@ -1021,14 +1013,6 @@
     <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\EventBufferConfig.h">
       <SubType>compile</SubType>
       <Link>outstation\EventBufferConfig.h</Link>
-    </Compile>
-    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\EventBufferFacade.cpp">
-      <SubType>compile</SubType>
-      <Link>outstation\EventBufferFacade.cpp</Link>
-    </Compile>
-    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\EventBufferFacade.h">
-      <SubType>compile</SubType>
-      <Link>outstation\EventBufferFacade.h</Link>
     </Compile>
     <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\EventCount.cpp">
       <SubType>compile</SubType>

@@ -28,7 +28,7 @@
     <ClInclude Include="src\openpal\container\HasSize.h" />
     <ClInclude Include="src\openpal\container\Indexable.h" />
     <ClInclude Include="src\openpal\container\IndexableIterator.h" />
-    <ClInclude Include="src\openpal\container\LinkedListAdapter.h" />
+    <ClInclude Include="src\openpal\container\LinkedList.h" />
     <ClInclude Include="src\openpal\container\Pair.h" />
     <ClInclude Include="src\openpal\container\ReadOnlyBuffer.h" />
     <ClInclude Include="src\openpal\container\RingBuffer.h" />

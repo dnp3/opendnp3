@@ -26,10 +26,9 @@ namespace opendnp3
 
 OutstationEventBuffer::OutstationEventBuffer(const EventBufferConfig& config_) :
 	overflow(false),
-	config(config_),
-	sequenceOfEventsBuffer(config.TotalEvents()),
+	config(config_),		
+	sequenceOfEvents(config.TotalEvents()),
 	selectedEventsBuffers(config.TotalEvents()),
-	sequenceOfEvents(sequenceOfEventsBuffer.ToIndexable()),
 	selectedEvents(selectedEventsBuffers.ToIndexable())
 {
 

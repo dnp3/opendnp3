@@ -21,16 +21,15 @@
 #include <catch.hpp>
 
 #include <openpal/container/DynamicArray.h>
-#include <openpal/container/LinkedListAdapter.h>
+#include <openpal/container/LinkedList.h>
 
 using namespace openpal;
 
 #define SUITE(name) "LinkedListAdapter - " name
 
 TEST_CASE(SUITE("CorrectInitialState"))
-{
-	DynamicArray<ListNode<int>, uint16_t> arr(3);
-	LinkedListAdapter<int, uint16_t> list(arr.ToIndexable());
+{	
+	LinkedList<int, uint16_t> list(3);
 
 	REQUIRE(list.IsEmpty());
 	REQUIRE(!list.IsFull());
@@ -38,9 +37,8 @@ TEST_CASE(SUITE("CorrectInitialState"))
 }
 
 TEST_CASE(SUITE("AddsUntilFull"))
-{
-	DynamicArray<ListNode<int>, uint16_t> arr(3);
-	LinkedListAdapter<int, uint16_t> list(arr.ToIndexable());
+{	
+	LinkedList<int, uint16_t> list(3);
 
 	REQUIRE(list.Add(1));
 	REQUIRE(list.Add(2));
@@ -53,9 +51,8 @@ TEST_CASE(SUITE("AddsUntilFull"))
 }
 
 TEST_CASE(SUITE("CanRemoveHead"))
-{
-	DynamicArray<ListNode<int>, uint16_t> arr(3);
-	LinkedListAdapter<int, uint16_t> list(arr.ToIndexable());
+{	
+	LinkedList<int, uint16_t> list(3);
 
 	auto one = list.Add(1);
 	auto two = list.Add(2);
@@ -71,9 +68,8 @@ TEST_CASE(SUITE("CanRemoveHead"))
 }
 
 TEST_CASE(SUITE("CanRemoveTail"))
-{
-	DynamicArray<ListNode<int>, uint16_t> arr(3);
-	LinkedListAdapter<int, uint16_t> list(arr.ToIndexable());
+{	
+	LinkedList<int, uint16_t> list(3);
 
 	auto one = list.Add(1);
 	auto two = list.Add(2);
@@ -89,9 +85,8 @@ TEST_CASE(SUITE("CanRemoveTail"))
 }
 
 TEST_CASE(SUITE("CanRemoveMiddle"))
-{
-	DynamicArray<ListNode<int>, uint16_t> arr(3);
-	LinkedListAdapter<int, uint16_t> list(arr.ToIndexable());
+{	
+	LinkedList<int, uint16_t> list(3);
 
 	auto one = list.Add(1);
 	auto two = list.Add(2);
@@ -107,9 +102,8 @@ TEST_CASE(SUITE("CanRemoveMiddle"))
 }
 
 TEST_CASE(SUITE("CanIterateOverValues"))
-{
-	DynamicArray<ListNode<int>, uint16_t> arr(3);
-	LinkedListAdapter<int, uint16_t> list(arr.ToIndexable());
+{	
+	LinkedList<int, uint16_t> list(3);
 
 	list.Add(1);
 	list.Add(2);
@@ -127,9 +121,8 @@ TEST_CASE(SUITE("CanIterateOverValues"))
 }
 
 TEST_CASE(SUITE("StaticLinkedList"))
-{
-	DynamicArray<ListNode<int>, uint16_t> arr(3);
-	LinkedListAdapter<int, uint16_t> list(arr.ToIndexable());
+{	
+	LinkedList<int, uint16_t> list(3);
 
 	REQUIRE(list.Add(1));
 	REQUIRE(list.Add(2));
@@ -140,9 +133,8 @@ TEST_CASE(SUITE("StaticLinkedList"))
 }
 
 TEST_CASE(SUITE("Insert at front of list"))
-{
-	DynamicArray<ListNode<int>, uint16_t> arr(3);
-	LinkedListAdapter<int, uint16_t> list(arr.ToIndexable());
+{	
+	LinkedList<int, uint16_t> list(3);
 
 	REQUIRE(list.Add(7));
 	
@@ -158,9 +150,8 @@ TEST_CASE(SUITE("Insert at front of list"))
 }
 
 TEST_CASE(SUITE("Insert in center of list"))
-{
-	DynamicArray<ListNode<int>, uint16_t> arr(10);
-	LinkedListAdapter<int, uint16_t> list(arr.ToIndexable());
+{	
+	LinkedList<int, uint16_t> list(10);
 
 	REQUIRE(list.Add(2));
 	REQUIRE(list.Add(7));
@@ -179,9 +170,8 @@ TEST_CASE(SUITE("Insert in center of list"))
 }
 
 TEST_CASE(SUITE("Insert at end of list"))
-{
-	DynamicArray<ListNode<int>, uint16_t> arr(10);
-	LinkedListAdapter<int, uint16_t> list(arr.ToIndexable());
+{	
+	LinkedList<int, uint16_t> list(10);
 
 	REQUIRE(list.Add(2));
 	REQUIRE(list.Add(4));

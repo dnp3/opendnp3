@@ -41,7 +41,12 @@ void AVRExecutor::Init()
 	gpExecutor = this;		
 }
 
-AVRExecutor::AVRExecutor(uint8_t maxQueueSize, uint8_t maxtimers) : ticks(0), work(maxQueueSize), idleTimers(maxtimers)
+AVRExecutor::AVRExecutor(uint8_t maxQueueSize, uint8_t maxtimers) : 
+	ticks(0),
+	timers(maxtimers),
+	work(maxQueueSize),
+	idleTimers(maxtimers),
+	activeTimers(maxtimers)
 {	
 	for(uint8_t i = 0; i < timers.Size(); ++i)
 	{
