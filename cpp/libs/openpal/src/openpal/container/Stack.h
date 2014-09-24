@@ -21,7 +21,7 @@
 #ifndef OPENPAL_STACKADAPTER_H
 #define OPENPAL_STACKADAPTER_H
 
-#include "Indexable.h"
+#include "openpal/container/DynamicArray.h"
 
 namespace openpal
 {
@@ -29,24 +29,22 @@ namespace openpal
 // References a fixed-size buffer somewhere, providing a list-like interface
 // Gives the appearance of a list that can grow, but not shrink
 template <class ValueType, class IndexType>
-class StackAdapter : public HasSize<IndexType>
+class Stack : public HasSize<IndexType>
 {
 
 public:
 
-	StackAdapter(Indexable<ValueType, IndexType> indexable) :
-		HasSize<IndexType>(0),
-		indexable(indexable)
+	Stack(IndexType maxSize) : HasSize<IndexType>(0), underlying(maxSize)
 	{}
 
 	inline IndexType Capacity() const
 	{
-		return indexable.Size();
+		return underlying.Size();
 	}
 
 	inline bool IsFull() const
 	{
-		return this->size == indexable.Size();
+		return this->size == underlying.Size();
 	}
 
 	inline void Clear()
@@ -62,7 +60,7 @@ public:
 		}
 		else
 		{
-			indexable[this->size] = value;
+			underlying[this->size] = value;
 			++(this->size);
 			return true;			
 		}
@@ -72,12 +70,12 @@ public:
 	{
 		assert(this->IsNotEmpty());
 		--(this->size);
-		return indexable[this->size];
+		return underlying[this->size];
 	}
 
 private:
-	Indexable<ValueType, IndexType> indexable;
-	StackAdapter();
+	DynamicArray<ValueType, IndexType> underlying;
+	Stack();
 };
 
 }

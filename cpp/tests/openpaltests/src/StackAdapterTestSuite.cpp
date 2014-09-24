@@ -20,17 +20,15 @@
  */
 #include <catch.hpp>
 
-#include <openpal/container/StaticArray.h>
-#include <openpal/container/StackAdapter.h>
+#include <openpal/container/Stack.h>
 
 using namespace openpal;
 
 #define SUITE(name) "StackAdapter - " name
 
 TEST_CASE(SUITE("CorrectInitialState"))
-{
-	StaticArray<int, uint8_t, 3> array;
-	StackAdapter<int, uint8_t> stack(array.ToIndexable());
+{	
+	Stack<int, uint8_t> stack(3);
 
 	REQUIRE(stack.IsEmpty());
 	REQUIRE(!stack.IsFull());
@@ -39,9 +37,8 @@ TEST_CASE(SUITE("CorrectInitialState"))
 }
 
 TEST_CASE(SUITE("PushesAndPopsCorrectly"))
-{
-	StaticArray<int, int, 3> array;
-	StackAdapter<int, int> stack(array.ToIndexable());
+{	
+	Stack<int, int> stack(3);
 
 	stack.Push(1);
 	stack.Push(2);
@@ -51,7 +48,5 @@ TEST_CASE(SUITE("PushesAndPopsCorrectly"))
 	REQUIRE(2 == stack.Pop());
 	REQUIRE(1 == stack.Pop());
 	REQUIRE(stack.IsEmpty());
-
-
 }
 

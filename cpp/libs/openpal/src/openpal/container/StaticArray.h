@@ -23,6 +23,7 @@
 
 #include "Indexable.h"
 
+
 namespace openpal
 {
 
@@ -70,6 +71,7 @@ private:
 	StaticArray(const StaticArray&);
 	StaticArray& operator= (const StaticArray&);
 };
+
 
 }
 

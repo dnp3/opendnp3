@@ -33,7 +33,7 @@
     <ClInclude Include="src\openpal\container\ReadOnlyBuffer.h" />
     <ClInclude Include="src\openpal\container\RingBuffer.h" />
     <ClInclude Include="src\openpal\container\Settable.h" />
-    <ClInclude Include="src\openpal\container\StackAdapter.h" />
+    <ClInclude Include="src\openpal\container\Stack.h" />
     <ClInclude Include="src\openpal\container\StaticArray.h" />
     <ClInclude Include="src\openpal\container\Queue.h" />
     <ClInclude Include="src\openpal\container\WriteBuffer.h" />

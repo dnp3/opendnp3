@@ -28,8 +28,7 @@
 #include "opendnp3/outstation/SelectionWriter.h"
 #include "opendnp3/outstation/EventBufferConfig.h"
 
-#include <openpal/container/DynamicArray.h>
-#include <openpal/container/StackAdapter.h>
+#include <openpal/container/Stack.h>
 
 namespace opendnp3
 {
@@ -89,9 +88,7 @@ private:
 	EventBufferConfig config;
 			
 	openpal::LinkedList<SOERecord, uint32_t> sequenceOfEvents;
-
-	openpal::DynamicArray<openpal::ListNode<SOERecord>*, uint32_t> selectedEventsBuffers;
-	openpal::StackAdapter<openpal::ListNode<SOERecord>*, uint32_t> selectedEvents;	
+	openpal::Stack<openpal::ListNode<SOERecord>*, uint32_t> selectedEvents;	
 
 	EventCount totalTracker;
 	EventCount selectedTracker;	
