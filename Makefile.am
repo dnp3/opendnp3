@@ -162,9 +162,7 @@ cpp/libs/opendnp3/src/opendnp3/outstation/CommandActionAdapter.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/CommandResponseHandler.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/Database.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/DatabaseBuffers.cpp \
-cpp/libs/opendnp3/src/opendnp3/outstation/DynamicallyAllocatedEventBuffer.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/EventBufferConfig.cpp \
-cpp/libs/opendnp3/src/opendnp3/outstation/EventBufferFacade.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/EventCount.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/EventResponseConfig.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/EventResponseContext.cpp \
