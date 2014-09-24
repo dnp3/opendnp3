@@ -224,12 +224,7 @@ outstationdemo_LDFLAGS = -pthread
 outstationdemo_LDADD = libopenpal.la libasiopal.la libopendnp3.la libasiodnp3.la
 outstationdemo_SOURCES = cpp/examples/outstation/DemoMain.cpp
 
-apdufuzzer_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(OPENDNP3_INCLUDE) -Wl,--no-as-needed
-apdufuzzer_LDFLAGS = -pthread
-apdufuzzer_LDADD = libopenpal.la libopendnp3.la
-apdufuzzer_SOURCES = cpp/tests/apdufuzzer/ApduFuzzer.cpp
-
-check_PROGRAMS = openpaltest dnp3test apdufuzzer
+check_PROGRAMS = openpaltest dnp3test
 #TESTS = openpaltest dnp3test
 
 #ls cpp/tests/openpaltests/src/*.cpp -1 | awk '{print $0" \\"}'
