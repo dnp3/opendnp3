@@ -49,29 +49,28 @@ void AssignClassHandler::_AllObjects(const HeaderRecord& record)
 		switch (record.enumeration)
 		{
 			case(GroupVariation::Group1Var0) :
-				
+				this->ProcessAssignment(AssignClassType::BinaryInput, clazz, pDatabase->FullRange<Binary>());
 				break;
 			case(GroupVariation::Group3Var0) :
-
+				this->ProcessAssignment(AssignClassType::DoubleBinaryInput, clazz, pDatabase->FullRange<DoubleBitBinary>());
 				break;
 			case(GroupVariation::Group10Var0) :
-
+				this->ProcessAssignment(AssignClassType::BinaryOutputStatus, clazz, pDatabase->FullRange<BinaryOutputStatus>());
 				break;
 			case(GroupVariation::Group20Var0) :
-
-
+				this->ProcessAssignment(AssignClassType::Counter, clazz, pDatabase->FullRange<Counter>());
 				break;
 			case(GroupVariation::Group21Var0) :
-
+				this->ProcessAssignment(AssignClassType::FrozenCounter, clazz, pDatabase->FullRange<FrozenCounter>());
 				break;
 			case(GroupVariation::Group30Var0) :
-
+				this->ProcessAssignment(AssignClassType::AnalogInput, clazz, pDatabase->FullRange<Analog>());
 				break;
 			case(GroupVariation::Group40Var0) :
-
+				this->ProcessAssignment(AssignClassType::AnalogOutputStatus, clazz, pDatabase->FullRange<AnalogOutputStatus>());
 				break;
-
-			default:				
+			default:	
+				errors.SetBit(IINBit::FUNC_NOT_SUPPORTED);
 				break;
 		}		
 	}
@@ -86,28 +85,53 @@ void AssignClassHandler::_OnRangeRequest(const HeaderRecord& record, const Stati
 	if (classIsValid)
 	{
 		classIsValid = false;
-		
+		switch (record.enumeration)
+		{
+		case(GroupVariation::Group1Var0) :
+			this->ProcessAssignment(AssignClassType::BinaryInput, clazz, range);
+			break;
+		case(GroupVariation::Group3Var0) :
+			this->ProcessAssignment(AssignClassType::DoubleBinaryInput, clazz, range);
+			break;
+		case(GroupVariation::Group10Var0) :
+			this->ProcessAssignment(AssignClassType::BinaryOutputStatus, clazz, range);
+			break;
+		case(GroupVariation::Group20Var0) :
+			this->ProcessAssignment(AssignClassType::Counter, clazz, range);
+			break;
+		case(GroupVariation::Group21Var0) :
+			this->ProcessAssignment(AssignClassType::FrozenCounter, clazz, range);
+			break;
+		case(GroupVariation::Group30Var0) :
+			this->ProcessAssignment(AssignClassType::AnalogInput, clazz, range);
+			break;
+		case(GroupVariation::Group40Var0) :
+			this->ProcessAssignment(AssignClassType::AnalogOutputStatus, clazz, range);
+			break;
+		default:
+			errors.SetBit(IINBit::FUNC_NOT_SUPPORTED);
+			break;
+		}
 	}	
+	else
+	{
+		errors.SetBit(IINBit::FUNC_NOT_SUPPORTED);
+	}
 }
 
-void AssignClassHandler::ProcessAssignment(AssignClassType type, PointClass clazz, uint16_t start, uint16_t stop)
+void AssignClassHandler::ProcessAssignment(AssignClassType type, PointClass clazz, const StaticRange& range)
 {
 	Transaction tx(pDatabase);
 
-	switch (type)
+	if (pDatabase->AssignClass(type, clazz, range))
 	{
-		case(AssignClassType::BinaryInput) :
-			for (uint16_t i = start; i <= stop; ++i)
-			{
-				pDatabase->buffers.binaries.metadata[i].clazz = clazz;
-			}
-			break;
-
-		default:
-			break;
+		pApplication->AssignClass(type, clazz, range.start, range.stop);
 	}
-
-	pApplication->AssignClass(type, clazz, start, stop);
+	else
+	{
+		errors.SetBit(IINBit::PARAM_ERROR);
+	}
+	
 }
 
 void AssignClassHandler::RecordClass(GroupVariation gv)

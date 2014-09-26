@@ -198,8 +198,10 @@ bool Database::AssignClass(AssignClassType type, PointClass clazz, const StaticR
 {
 	switch (type)
 	{	
-	default:
-		return false;
+		case(AssignClassType::BinaryInput) :
+			return AssignClassTo(buffers.binaries.metadata, clazz, range);
+		default:
+			return false;
 	}
 }
 

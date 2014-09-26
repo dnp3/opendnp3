@@ -46,7 +46,7 @@ private:
 
 	void RecordClass(GroupVariation gv);	
 
-	void ProcessAssignment(AssignClassType type, PointClass clazz, uint16_t start, uint16_t stop);
+	void ProcessAssignment(AssignClassType type, PointClass clazz, const StaticRange& range);
 	
 	bool classIsValid;
 	PointClass clazz;
