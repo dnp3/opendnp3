@@ -180,7 +180,8 @@ class OutstationContext
 	IINField HandleOperate(const openpal::ReadOnlyBuffer& objects, HeaderWriter& writer, bool objectsEqualToLastRequest);
 	IINField HandleDirectOperate(const openpal::ReadOnlyBuffer& objects, HeaderWriter* pWriter);
 	IINField HandleDelayMeasure(const openpal::ReadOnlyBuffer& objects, HeaderWriter& writer);
-	IINField HandleRestart(const openpal::ReadOnlyBuffer& objects, bool isWarmRestart, HeaderWriter* pWriter);	
+	IINField HandleRestart(const openpal::ReadOnlyBuffer& objects, bool isWarmRestart, HeaderWriter* pWriter);
+	IINField HandleAssignClass(const openpal::ReadOnlyBuffer& objects);
 	IINField HandleDisableUnsolicited(const openpal::ReadOnlyBuffer& objects, HeaderWriter& writer);
 	IINField HandleEnableUnsolicited(const openpal::ReadOnlyBuffer& objects, HeaderWriter& writer);
 

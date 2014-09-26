@@ -36,6 +36,7 @@
 #include "opendnp3/outstation/ConstantCommandAction.h"
 
 #include "opendnp3/outstation/ClassBasedRequestHandler.h"
+#include "opendnp3/outstation/AssignClassHandler.h"
 
 #include <openpal/logging/LogMacros.h>
 
@@ -387,6 +388,8 @@ IINField OutstationContext::BuildNonReadResponse(const APDUHeader& header, const
 			return HandleRestart(objects, false, &writer);
 		case(FunctionCode::WARM_RESTART) :
 			return HandleRestart(objects, true, &writer);
+		case(FunctionCode::ASSIGN_CLASS) :
+			return HandleAssignClass(objects);
 		case(FunctionCode::DELAY_MEASURE) :
 			return HandleDelayMeasure(objects, writer);
 		case(FunctionCode::DISABLE_UNSOLICITED) :
@@ -757,6 +760,20 @@ IINField OutstationContext::HandleRestart(const openpal::ReadOnlyBuffer& objects
 	{
 		// there shouldn't be any trailing headers in restart requests, no need to even parse
 		return IINField(IINBit::PARAM_ERROR);
+	}
+}
+
+IINField OutstationContext::HandleAssignClass(const openpal::ReadOnlyBuffer& objects)
+{
+	AssignClassHandler handler(logger, *pExecutor, *pApplication, *pDatabase);
+	auto result = APDUParser::ParseTwoPass(objects, &handler, &logger);
+	if (result == APDUParser::Result::OK)
+	{		
+		return handler.Errors();
+	}
+	else
+	{
+		return IINFromParseResult(result);
 	}
 }
 

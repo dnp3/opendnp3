@@ -31,10 +31,11 @@
 namespace opendnp3
 {
 
-AssignClassHandler::AssignClassHandler(openpal::Logger& logger, IOutstationApplication& application, Database& database) : 
+AssignClassHandler::AssignClassHandler(openpal::Logger& logger, openpal::IExecutor& executor, IOutstationApplication& application, Database& database) :
 	APDUHandlerBase(logger),
 	classHeader(-1),
 	clazz(PointClass::Class0),
+	pExecutor(&executor),
 	pApplication(&application),
 	pDatabase(&database)
 {
@@ -136,7 +137,13 @@ void AssignClassHandler::ProcessAssignment(AssignClassType type, PointClass claz
 {	
 	if (pDatabase->AssignClass(type, clazz, range))
 	{
-		pApplication->RecordClassAssignment(type, clazz, range.start, range.stop);
+		auto start = range.start;
+		auto stop = range.stop;
+		auto callback = [this, start, stop, clazz, type]() 
+		{
+			pApplication->RecordClassAssignment(type, clazz, start, stop);
+		};
+		pExecutor->PostLambda(callback);
 	}
 	else
 	{

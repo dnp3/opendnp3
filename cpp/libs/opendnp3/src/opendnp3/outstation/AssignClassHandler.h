@@ -28,6 +28,7 @@
 #include "opendnp3/outstation/IOutstationApplication.h"
 
 #include <openpal/logging/Logger.h>
+#include <openpal/executor/IExecutor.h>
 
 namespace opendnp3
 {
@@ -36,7 +37,7 @@ class AssignClassHandler : public APDUHandlerBase
 {
 public:
 
-	AssignClassHandler(openpal::Logger& logger, IOutstationApplication& application, Database& database);	
+	AssignClassHandler(openpal::Logger& logger, openpal::IExecutor& executor, IOutstationApplication& application, Database& database);	
 
 	virtual void _AllObjects(const HeaderRecord& record) override final;
 
@@ -53,6 +54,7 @@ private:
 	int32_t classHeader;
 	PointClass clazz;
 
+	openpal::IExecutor* pExecutor;
 	IOutstationApplication* pApplication;
 	Database* pDatabase;
 };
