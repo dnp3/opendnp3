@@ -33,7 +33,7 @@ namespace opendnp3
 
 AssignClassHandler::AssignClassHandler(openpal::Logger& logger, IOutstationApplication& application, Database& database) : 
 	APDUHandlerBase(logger),
-	classIsValid(false),
+	classHeader(-1),
 	clazz(PointClass::Class0),
 	pApplication(&application),
 	pDatabase(&database)
@@ -43,9 +43,8 @@ AssignClassHandler::AssignClassHandler(openpal::Logger& logger, IOutstationAppli
 
 void AssignClassHandler::_AllObjects(const HeaderRecord& record)
 {
-	if (classIsValid)
-	{
-		classIsValid = false;
+	if (IsExpectingAssignment())
+	{		
 		switch (record.enumeration)
 		{
 			case(GroupVariation::Group1Var0) :
@@ -80,11 +79,25 @@ void AssignClassHandler::_AllObjects(const HeaderRecord& record)
 	}
 }
 
+bool AssignClassHandler::IsExpectingAssignment()
+{
+	int32_t current = static_cast<int32_t>(this->GetCurrentHeader());
+
+	if (current > 0 && ((current - 1) == this->classHeader))
+	{ 
+		this->classHeader = -1;
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 void AssignClassHandler::_OnRangeRequest(const HeaderRecord& record, const StaticRange& range)
 {
-	if (classIsValid)
-	{
-		classIsValid = false;
+	if (IsExpectingAssignment())
+	{		
 		switch (record.enumeration)
 		{
 		case(GroupVariation::Group1Var0) :
@@ -134,27 +147,25 @@ void AssignClassHandler::ProcessAssignment(AssignClassType type, PointClass claz
 
 void AssignClassHandler::RecordClass(GroupVariation gv)
 {
+	classHeader = this->GetCurrentHeader();
+
 	switch (gv)
 	{
-	case(GroupVariation::Group60Var1) :
-		clazz = PointClass::Class0;
-		classIsValid = true;
-		break;
-	case(GroupVariation::Group60Var2) :
-		clazz = PointClass::Class1;
-		classIsValid = true;
-		break;
-	case(GroupVariation::Group60Var3) :
-		clazz = PointClass::Class2;
-		classIsValid = true;
-		break;
-	case(GroupVariation::Group60Var4) :
-		clazz = PointClass::Class3;
-		classIsValid = true;
-		break;
-	default:		
-		classIsValid = false;
-		break;
+		case(GroupVariation::Group60Var1) :
+			clazz = PointClass::Class0;				
+			break;
+		case(GroupVariation::Group60Var2) :
+			clazz = PointClass::Class1;		
+			break;
+		case(GroupVariation::Group60Var3) :
+			clazz = PointClass::Class2;		
+			break;
+		case(GroupVariation::Group60Var4) :
+			clazz = PointClass::Class3;		
+			break;
+		default:		
+			classHeader = -1;
+			break;
 	}
 }
 

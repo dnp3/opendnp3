@@ -82,16 +82,19 @@ private:
 
 	template <class T>
 	bool AssignClassTo(T& metadata, PointClass clazz, const StaticRange& range)
-	{
-		if (metadata.IsEmpty())
+	{				
+		if (range.IsContainedBy(metadata.Size()))
 		{
-			return false;
+			for (uint16_t i = range.start; i <= range.stop; ++i)
+			{
+				metadata[i].clazz = clazz;
+			}
+			return true;
 		}
 		else
 		{
-			StaticRange full(0, metadata.Size() - 1);
 			return false;
-		}
+		}				
 	}
 
 	template <class T>

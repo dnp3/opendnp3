@@ -46,9 +46,11 @@ private:
 
 	void RecordClass(GroupVariation gv);	
 
+	bool IsExpectingAssignment();
+
 	void ProcessAssignment(AssignClassType type, PointClass clazz, const StaticRange& range);
 	
-	bool classIsValid;
+	int32_t classHeader;
 	PointClass clazz;
 
 	IOutstationApplication* pApplication;

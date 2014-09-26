@@ -201,6 +201,18 @@ bool Database::AssignClass(AssignClassType type, PointClass clazz, const StaticR
 	{	
 		case(AssignClassType::BinaryInput) :
 			return AssignClassTo(buffers.binaries.metadata, clazz, range);
+		case(AssignClassType::DoubleBinaryInput) :
+			return AssignClassTo(buffers.doubleBinaries.metadata, clazz, range);
+		case(AssignClassType::Counter) :
+			return AssignClassTo(buffers.counters.metadata, clazz, range);
+		case(AssignClassType::FrozenCounter) :
+			return AssignClassTo(buffers.frozenCounters.metadata, clazz, range);
+		case(AssignClassType::AnalogInput) :
+			return AssignClassTo(buffers.analogs.metadata, clazz, range);
+		case(AssignClassType::AnalogOutputStatus):
+			return AssignClassTo(buffers.analogOutputStatii.metadata, clazz, range);
+		case(AssignClassType::BinaryOutputStatus) :
+			return AssignClassTo(buffers.binaryOutputStatii.metadata, clazz, range);		
 		default:
 			return false;
 	}
