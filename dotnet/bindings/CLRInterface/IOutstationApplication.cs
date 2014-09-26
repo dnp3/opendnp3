@@ -36,6 +36,10 @@ namespace Automatak.DNP3.Interface
 
         bool WriteAbsoluteTime(UInt64 millisecSinceEpoch);
 
+        bool SupportsAssignClass();
+
+        void RecordClassAssignment(AssignClassType type, PointClass clazz, UInt16 start, UInt16 stop);
+
         ApplicationIIN ApplicationIndications
         {
             get;
@@ -87,6 +91,15 @@ namespace Automatak.DNP3.Interface
             return false;
         }
 
+        bool IOutstationApplication.SupportsAssignClass()
+        {
+            return false;
+        }
+
+        void IOutstationApplication.RecordClassAssignment(AssignClassType type, PointClass clazz, UInt16 start, UInt16 stop)
+        { 
+        
+        }
 
         ApplicationIIN IOutstationApplication.ApplicationIndications
         {

@@ -123,6 +123,16 @@ namespace Automatak.Simulator.DNP3
             return true;
         }
 
+        bool IOutstationApplication.SupportsAssignClass()
+        {
+            return true;
+        }
+
+        void IOutstationApplication.RecordClassAssignment(AssignClassType type, PointClass clazz, ushort start, ushort stop)
+        {
+
+        }
+
         ApplicationIIN IOutstationApplication.ApplicationIndications
         {
             get { return appIIN; }
@@ -157,5 +167,6 @@ namespace Automatak.Simulator.DNP3
 
             return warmRestartTime; 
         }
+        
     }
 }

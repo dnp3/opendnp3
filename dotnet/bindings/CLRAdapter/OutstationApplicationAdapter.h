@@ -27,6 +27,10 @@ namespace Automatak
 
 				virtual bool SupportsWriteAbsoluteTime() override final;
 
+				virtual bool SupportsAssignClass() override final;
+
+				virtual void RecordClassAssignment(opendnp3::AssignClassType type, opendnp3::PointClass clazz, uint16_t start, uint16_t stop) override final;
+
 				virtual opendnp3::ApplicationIIN GetApplicationIIN() const override final;
 
 				virtual opendnp3::RestartMode ColdRestartSupport() const override final;

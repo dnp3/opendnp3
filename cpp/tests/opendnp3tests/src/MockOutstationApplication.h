@@ -59,6 +59,16 @@ public:
 		}		
 	}
 
+	virtual bool SupportsAssignClass() override final
+	{
+		return false;
+	}
+	
+	virtual void RecordClassAssignment(AssignClassType type, PointClass clazz, uint16_t start, uint16_t stop) override final
+	{
+	
+	}
+
 	virtual ApplicationIIN GetApplicationIIN() const override final
 	{
 		return appIIN;

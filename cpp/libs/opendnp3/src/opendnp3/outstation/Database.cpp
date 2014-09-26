@@ -196,6 +196,7 @@ uint16_t Database::NumValues<AnalogOutputStatus>() const
 
 bool Database::AssignClass(AssignClassType type, PointClass clazz, const StaticRange& range)
 {
+	Transaction tx(this);
 	switch (type)
 	{	
 		case(AssignClassType::BinaryInput) :

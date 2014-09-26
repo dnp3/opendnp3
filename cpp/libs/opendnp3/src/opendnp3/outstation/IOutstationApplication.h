@@ -59,7 +59,7 @@ class IOutstationApplication
 	/// The type and range are pre-validated against the outstation's database
 	/// and class assignments are automatically applied internally.
 	/// This callback allows user code to persist the changes to non-volatile memory	
-	virtual void AssignClass(AssignClassType type, PointClass clazz, uint16_t start, uint16_t stop) = 0;
+	virtual void RecordClassAssignment(AssignClassType type, PointClass clazz, uint16_t start, uint16_t stop) = 0;
 
 	/// Returns the application-controlled IIN field
 	virtual ApplicationIIN GetApplicationIIN() const = 0;
@@ -96,7 +96,7 @@ class DefaultOutstationApplication : public IOutstationApplication
 
 	virtual bool SupportsAssignClass() override final { return false; }
 	
-	virtual void AssignClass(AssignClassType type, PointClass clazz, uint16_t start, uint16_t stop) override final { }
+	virtual void RecordClassAssignment(AssignClassType type, PointClass clazz, uint16_t start, uint16_t stop) override final { }
 
 	static IOutstationApplication& Instance();
 

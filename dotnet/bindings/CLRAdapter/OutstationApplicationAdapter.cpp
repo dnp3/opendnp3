@@ -27,6 +27,16 @@ namespace Automatak
 				return proxy->SupportsWriteAbsoluteTime;
 			}
 
+			bool OutstationApplicationAdapter::SupportsAssignClass()
+			{
+				return proxy->SupportsAssignClass();
+			}
+
+			void OutstationApplicationAdapter::RecordClassAssignment(opendnp3::AssignClassType type, opendnp3::PointClass clazz, uint16_t start, uint16_t stop)
+			{
+				proxy->RecordClassAssignment((AssignClassType) type, (PointClass) clazz, start, stop);
+			}
+
 			opendnp3::ApplicationIIN OutstationApplicationAdapter::GetApplicationIIN() const
 			{
 				ApplicationIIN indications = proxy->ApplicationIndications;

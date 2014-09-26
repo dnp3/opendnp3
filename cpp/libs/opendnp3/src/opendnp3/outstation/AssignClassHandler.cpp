@@ -120,12 +120,10 @@ void AssignClassHandler::_OnRangeRequest(const HeaderRecord& record, const Stati
 }
 
 void AssignClassHandler::ProcessAssignment(AssignClassType type, PointClass clazz, const StaticRange& range)
-{
-	Transaction tx(pDatabase);
-
+{	
 	if (pDatabase->AssignClass(type, clazz, range))
 	{
-		pApplication->AssignClass(type, clazz, range.start, range.stop);
+		pApplication->RecordClassAssignment(type, clazz, range.start, range.stop);
 	}
 	else
 	{
