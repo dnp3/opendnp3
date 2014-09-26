@@ -139,7 +139,8 @@ void AssignClassHandler::ProcessAssignment(AssignClassType type, PointClass claz
 	{
 		auto start = range.start;
 		auto stop = range.stop;
-		auto callback = [this, start, stop, clazz, type]() 
+		auto pApplication = this->pApplication;
+		auto callback = [pApplication, start, stop, clazz, type]()
 		{
 			pApplication->RecordClassAssignment(type, clazz, start, stop);
 		};

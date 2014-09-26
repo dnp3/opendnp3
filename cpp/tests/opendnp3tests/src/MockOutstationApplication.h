@@ -34,6 +34,7 @@ public:
 	
 	MockOutstationApplication() :		
 		supportsTimeWrite(true),
+		supportsAssignClass(false),
 		allowTimeWrite(true),
 		warmRestartSupport(RestartMode::UNSUPPORTED),
 		coldRestartSupport(RestartMode::UNSUPPORTED),
@@ -61,12 +62,12 @@ public:
 
 	virtual bool SupportsAssignClass() override final
 	{
-		return false;
+		return supportsAssignClass;
 	}
 	
 	virtual void RecordClassAssignment(AssignClassType type, PointClass clazz, uint16_t start, uint16_t stop) override final
 	{
-	
+		this->classAssignments.push_back(std::make_tuple(type, clazz, start, stop));
 	}
 
 	virtual ApplicationIIN GetApplicationIIN() const override final
@@ -95,6 +96,7 @@ public:
 	}
 	
 	bool supportsTimeWrite;
+	bool supportsAssignClass;
 	bool allowTimeWrite;
 
 	RestartMode warmRestartSupport;
@@ -106,7 +108,7 @@ public:
 	ApplicationIIN appIIN;
 
 	std::deque<openpal::UTCTimestamp> timestamps;
-
+	std::deque<std::tuple<AssignClassType, PointClass, uint16_t, uint16_t>> classAssignments;
 
 };
 

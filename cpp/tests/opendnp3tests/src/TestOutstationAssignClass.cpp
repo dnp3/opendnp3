@@ -32,13 +32,50 @@ using namespace openpal;
 
 #define SUITE(name) "OutstationAssignClassTestSuite - " name
 
-TEST_CASE(SUITE("RejectsAssignClassIfNotSupported"))
+TEST_CASE(SUITE("RejectsWithFuncNotSupportedIfAppDoesNotSupport"))
 {
 	OutstationConfig config;
 	OutstationTestObject t(config);
 	t.LowerLayerUp();
 
-	t.SendToOutstation("C0 16 3C 01 06 01 00 06");
+	// assign binaries to class 2
+	t.SendToOutstation("C0 16 3C 03 06 01 00 06");
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 01");
+
+	REQUIRE(t.application.classAssignments.empty());
+}
+
+TEST_CASE(SUITE("RejectsWithParamErrorIfNoType"))
+{
+	OutstationConfig config;
+	OutstationTestObject t(config);
+	t.application.supportsAssignClass = true;
+	t.LowerLayerUp();
+
+	// assign binaries to class 2
+	t.SendToOutstation("C0 16 3C 03 06 01 00 06");
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 04");
+	REQUIRE(t.application.classAssignments.empty());
+}
+
+TEST_CASE(SUITE("AcceptsAssignClassViaAllObjects"))
+{
+	OutstationConfig config;
+	OutstationTestObject t(config, DatabaseTemplate::BinaryOnly(5));
+	t.application.supportsAssignClass = true;
+	t.LowerLayerUp();
+
+	// assign binaries to class 2
+	t.SendToOutstation("C0 16 3C 03 06 01 00 06");
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00");
+
+	for (uint16_t i = 0; i <= 4; ++i)
+	{
+		REQUIRE(t.db.buffers.binaries.metadata[i].clazz == PointClass::Class2);
+	}
+		
+	REQUIRE(t.application.classAssignments.size() == 1);
+	auto assignment = t.application.classAssignments.front();
+	REQUIRE(assignment == std::make_tuple(AssignClassType::BinaryInput, PointClass::Class2, 0, 4));
 }
 
