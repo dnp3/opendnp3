@@ -157,6 +157,7 @@ cpp/libs/opendnp3/src/opendnp3/objects/Group51.cpp \
 cpp/libs/opendnp3/src/opendnp3/objects/Group52.cpp \
 cpp/libs/opendnp3/src/opendnp3/objects/Group60.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/ApplicationIIN.cpp \
+cpp/libs/opendnp3/src/opendnp3/outstation/AssignClassHandler.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/ClassBasedRequestHandler.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/CommandActionAdapter.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/CommandResponseHandler.cpp \
@@ -293,6 +294,7 @@ cpp/tests/opendnp3tests/src/TestMasterMultidrop.cpp \
 cpp/tests/opendnp3tests/src/TestMasterUnsolBehaviors.cpp \
 cpp/tests/opendnp3tests/src/TestObjectASIO.cpp \
 cpp/tests/opendnp3tests/src/TestObject.cpp \
+cpp/tests/opendnp3tests/src/TestOutstationAssignClass.cpp \
 cpp/tests/opendnp3tests/src/TestOutstationCommandResponses.cpp \
 cpp/tests/opendnp3tests/src/TestOutstation.cpp \
 cpp/tests/opendnp3tests/src/TestOutstationEventResponses.cpp \
