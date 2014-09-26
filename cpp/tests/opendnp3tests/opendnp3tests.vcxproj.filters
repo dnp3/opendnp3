@@ -406,5 +406,8 @@
     <ClCompile Include="src\TestMasterUnsolBehaviors.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\TestOutstationAssignClass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

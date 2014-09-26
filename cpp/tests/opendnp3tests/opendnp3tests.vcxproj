@@ -283,6 +283,7 @@
     <ClCompile Include="src\TestMasterCommandRequests.cpp" />
     <ClCompile Include="src\TestMaster.cpp" />
     <ClCompile Include="src\TestOutstation.cpp" />
+    <ClCompile Include="src\TestOutstationAssignClass.cpp" />
     <ClCompile Include="src\TestOutstationCommandResponses.cpp" />
     <ClCompile Include="src\TestOutstationEventResponses.cpp" />
     <ClCompile Include="src\TestOutstationUnsolicitedResponses.cpp" />

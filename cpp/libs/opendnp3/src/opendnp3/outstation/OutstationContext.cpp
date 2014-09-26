@@ -160,13 +160,6 @@ bool OutstationContext::CancelConfirmTimer()
 	return CancelTimer(pConfirmTimer);
 }
 
-/*
-bool OutstationContext::CancelUnsolTimer()
-{
-	return CancelTimer(pUnsolTimer);
-}
-*/
-
 bool OutstationContext::CancelTimer(openpal::ITimer*& pTimer)
 {
 	if (pTimer)
@@ -543,22 +536,6 @@ bool OutstationContext::StartUnsolicitedConfirmTimer()
 	}
 }
 
-/*
-bool OutstationContext::StartUnsolRetryTimer()
-{
-	if (pUnsolTimer)
-	{
-		return false;		
-	}
-	else
-	{
-		auto timeout = [this]() { this->OnUnsolRetryTimeout(); };
-		pUnsolTimer = pExecutor->Start(params.unsolRetryTimeout, Action0::Bind(timeout));
-		return true;
-	}
-}
-*/
-
 void OutstationContext::OnSolConfirmTimeout()
 {
 	pSolicitedState = this->pSolicitedState->OnConfirmTimeout(this);
@@ -765,16 +742,23 @@ IINField OutstationContext::HandleRestart(const openpal::ReadOnlyBuffer& objects
 
 IINField OutstationContext::HandleAssignClass(const openpal::ReadOnlyBuffer& objects)
 {
-	AssignClassHandler handler(logger, *pExecutor, *pApplication, *pDatabase);
-	auto result = APDUParser::ParseTwoPass(objects, &handler, &logger);
-	if (result == APDUParser::Result::OK)
-	{		
-		return handler.Errors();
+	if (pApplication->SupportsAssignClass())
+	{
+		AssignClassHandler handler(logger, *pExecutor, *pApplication, *pDatabase);
+		auto result = APDUParser::ParseTwoPass(objects, &handler, &logger);
+		if (result == APDUParser::Result::OK)
+		{
+			return handler.Errors();
+		}
+		else
+		{
+			return IINFromParseResult(result);
+		}
 	}
 	else
 	{
-		return IINFromParseResult(result);
-	}
+		return IINField(IINBit::FUNC_NOT_SUPPORTED);
+	}	
 }
 
 IINField OutstationContext::HandleDisableUnsolicited(const openpal::ReadOnlyBuffer& objects, HeaderWriter& writer)
