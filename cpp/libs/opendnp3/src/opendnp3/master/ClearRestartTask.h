@@ -29,6 +29,7 @@ namespace opendnp3
 /**
 * Base class for tasks that only require a single response
 */
+	/*
 class ClearRestartTask : public SingleResponseTask
 {	
 
@@ -49,6 +50,7 @@ protected:
 	virtual TaskStatus OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler) override final;
 
 };
+*/
 
 } //end ns
 

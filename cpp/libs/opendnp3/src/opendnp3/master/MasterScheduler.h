@@ -42,7 +42,7 @@
 namespace opendnp3
 {
 
-class MasterScheduler : public IMasterScheduler
+class MasterScheduler
 {		
 
 public:
@@ -53,15 +53,9 @@ public:
 						MasterTasks& tasks,
 						openpal::IExecutor& executor,			
 						IScheduleCallback& callback
-					);
-
-	// ---------- Implement IMasterScheduler ----------- 
+					);	
 	
-	virtual void Schedule(IMasterTask& task, const openpal::TimeDuration& delay) override final;
-
-	virtual void SetBlocking(IMasterTask& task, const openpal::TimeDuration& delay) override final;
-	
-	virtual bool Demand(IMasterTask& task) override final;
+	bool Demand(IMasterTask* task);
 
 	// ---------- other public functions ----------------
 
@@ -83,7 +77,7 @@ public:
 	/*
 	* Schedule a command to run
 	*/
-	void ScheduleUserTask(const openpal::Function0<IMasterTask*>& task);
+	void ScheduleUserTask(IMasterTask* pTask);
 
 	/**
 	* Add a new poll to the scheduler
@@ -92,7 +86,8 @@ public:
 	PollTask* AddPollTask(const PollTask& task);
 
 	/*
-	* Called when the master observes the IIN::DeviceRestart bit
+	* Called whenever the master receivers an IIN bit so that we can optionally
+	* set certain tasks to run
 	*/
 	void ProcessRxIIN(const IINField& iin, const MasterParams& params);	
 

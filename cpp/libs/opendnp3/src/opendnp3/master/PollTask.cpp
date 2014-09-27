@@ -24,6 +24,7 @@
 namespace opendnp3
 {
 
+/*
 PollTask::PollTask()
 {}
 
@@ -67,6 +68,7 @@ void PollTask::OnSuccess(const MasterParams& params, IMasterScheduler& scheduler
 	this->NotifyState(PollState::SUCCESS);
 	scheduler.Schedule(*this, this->period);	
 }
+*/
 
 } //end ns
 

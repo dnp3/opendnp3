@@ -25,36 +25,41 @@
 namespace opendnp3
 {
 
-MasterScan::MasterScan() : pExecutor(nullptr), pScheduler(nullptr), pTask(nullptr)
+MasterScan::MasterScan() : pExecutor(nullptr), pTask(nullptr)
 {}
 
-MasterScan::MasterScan(openpal::IExecutor& executor, IMasterScheduler& scheduler, PollTask& task) :
-	pExecutor(&executor),
-	pScheduler(&scheduler),
-	pTask(&task)
+MasterScan::MasterScan(openpal::IExecutor& executor, IMasterTask* pTask_) :
+	pExecutor(&executor),	
+	pTask(pTask_)
 {
 
 }
 
 void MasterScan::SetStateListener(IPollListener& listener)
 {
+	// TODO - decide what can of listener to put here
+	// all tasks should probably have a listener
+	/*
 	auto pListener = &listener;
 	auto action = [this, pListener]() { pTask->SetStateListener(*pListener); };
 	pExecutor->PostLambda(action);
+	*/
 }
 
 bool MasterScan::IsDefined() const
 {
-	return pExecutor && pScheduler && pTask;
+	return pExecutor && pTask;
 }
 
 bool MasterScan::Demand()
 {
 	if (IsDefined())
 	{
+		/* TODO
 		auto action = [this](){ pScheduler->Demand(*pTask); };
 		pExecutor->PostLambda(action);
-		return true;
+		*/
+		return false;
 	}	
 	else
 	{

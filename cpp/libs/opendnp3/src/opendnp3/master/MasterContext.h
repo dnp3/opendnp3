@@ -111,9 +111,7 @@ class MasterContext : public ICommandProcessor, public IScheduleCallback
 	void StartTask(IMasterTask* pTask);
 	bool CancelResponseTimer();
 	void QueueConfirm(const APDUHeader& header);
-	void StartResponseTimer();
-
-	static bool CanConfirmResponse(TaskStatus status);
+	void StartResponseTimer();	
 
 	private:
 	

@@ -38,7 +38,7 @@ public:
 
 protected:
 
-	virtual TaskStatus OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler) override final;
+	virtual TaskState OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects) override final;
 	
 	virtual void OnSuccess(const MasterParams& params, IMasterScheduler& scheduler) = 0;	
 };

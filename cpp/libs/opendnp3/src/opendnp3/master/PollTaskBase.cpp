@@ -50,39 +50,39 @@ void PollTaskBase::NotifyState(PollState state)
 	}
 }
 	
-TaskStatus PollTaskBase::OnResponse(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler)
+TaskState PollTaskBase::OnResponse(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects)
 {
 	if (header.control.FIR)
 	{
 		if (rxCount > 0)
 		{
 			SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Ignoring unexpected FIR frame");
-			this->OnFailure(params, scheduler);
-			return TaskStatus::FAIL;
+			this->OnFailure();
+			return TaskState::SCHEDULED;
 		}
 		else
 		{			
-			return ProcessMeasurements(header, objects, params, scheduler);
+			return ProcessMeasurements(header, objects);
 		}
 	}
 	else
 	{
 		if (rxCount > 0)
 		{			
-			return ProcessMeasurements(header, objects, params, scheduler);
+			return ProcessMeasurements(header, objects);
 		}
 		else
 		{	
 			SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Ignoring unexpected non-FIR frame");			
-			this->OnFailure(params, scheduler);			
-			return TaskStatus::FAIL;
+			this->OnFailure();			
+			return TaskState::SCHEDULED;
 		}
 	}
 }
 
-void PollTaskBase::OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler)
+bool PollTaskBase::OnResponseTimeout()
 {	
-	this->OnFailure(params, scheduler);
+	return false;
 }
 
 void PollTaskBase::SetStateListener(IPollListener& listener)
@@ -90,26 +90,25 @@ void PollTaskBase::SetStateListener(IPollListener& listener)
 	pPollListener = &listener;
 }
 	
-TaskStatus PollTaskBase::ProcessMeasurements(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler)
+TaskState PollTaskBase::ProcessMeasurements(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects)
 {	
 	++rxCount;
 
 	if (MeasurementHandler::ProcessMeasurements(objects, pLogger, pSOEHandler))
 	{	
 		if (header.control.FIN)
-		{						
-			this->OnSuccess(params, scheduler);
-			return TaskStatus::SUCCESS;
+		{									
+			return TaskState::COMPLETE;
 		}
 		else
 		{
-			return TaskStatus::CONTINUE;
+			return TaskState::CONTINUE;
 		}		
 	}
 	else
-	{			
-		this->OnFailure(params, scheduler);
-		return TaskStatus::FAIL;
+	{		
+		// TODO - reschedule
+		TaskState::COMPLETE;
 	}
 }
 

@@ -36,15 +36,15 @@ public:
 
 	SingleResponseTask(openpal::Logger* pLogger_);			
 	
-	virtual TaskStatus OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler) override final;
+	virtual TaskState OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects) override final;
 
-	virtual void OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler) override final;
+	virtual bool OnResponseTimeout() override final;
 
 protected:
 
-	virtual void OnTimeoutOrBadControlOctet(const MasterParams& params, IMasterScheduler& scheduler) = 0;
+	virtual void OnTimeoutOrBadControlOctet() = 0;
 
-	virtual TaskStatus OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler) = 0;
+	virtual TaskState OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects) = 0;
 
 	openpal::Logger* pLogger;	
 };

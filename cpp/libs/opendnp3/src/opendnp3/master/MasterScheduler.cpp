@@ -48,66 +48,6 @@ MasterScheduler::MasterScheduler(	openpal::Logger* pLogger,
 
 }
 
-void MasterScheduler::Schedule(IMasterTask& task, const openpal::TimeDuration& delay)
-{		
-	// if the delay is negative, the expiration time will be infinity
-	auto expiration = MonotonicTimestamp::Max();
-	if (delay >= 0)
-	{
-		expiration = pExecutor->GetTime().Add(delay);
-	}
-	
-	this->periodicTasks.push_back(TaskRecord(task, expiration));
-	if (blockingTask.IsEmpty() && !this->pCurrentTask)
-	{
-		this->StartOrRestartTimer(expiration);
-	}	
-}
-
-void MasterScheduler::SetBlocking(IMasterTask& task, const openpal::TimeDuration& delay)
-{
-	auto expiration = pExecutor->GetTime().Add(delay);
-	this->blockingTask.Set(TaskRecord(task, expiration));
-	this->CancelScheduleTimer();
-	this->StartTimer(expiration);
-}
-
-bool MasterScheduler::Demand(IMasterTask& task)
-{
-	if (isOnline)
-	{
-		auto pTask = &task;
-		if (this->IsTaskActive(pTask))
-		{
-			return true;
-		}
-		else
-		{
-			auto equals = [pTask](const TaskRecord& tr) { return tr.pTask == pTask; };
-			auto iter = std::find_if(periodicTasks.begin(), periodicTasks.end(), equals);
-			
-			if (iter == periodicTasks.end())
-			{
-				return false;				
-			}
-			else
-			{				
-				iter->expiration = MonotonicTimestamp::Min();
-				if (!IsAnyTaskActive())
-				{
-					this->CancelScheduleTimer();
-					this->pCallback->OnPendingTask();
-				}
-				return true;
-			}
-		}
-	}
-	else
-	{
-		return false;
-	}	
-}
-
 IMasterTask* MasterScheduler::Start(const MasterParams& params)
 {	
 	auto pTask = FindTaskToStart(params);
@@ -160,6 +100,7 @@ IMasterTask* MasterScheduler::FindTaskToStart(const MasterParams& params)
 
 IMasterTask* MasterScheduler::GetScheduledTask(const MasterParams& params)
 {
+	/*
 	if (CanTaskRun(pStaticTasks->disableUnsol, tasks::DISABLE_UNSOLCITED, params))
 	{
 		return &pStaticTasks->disableUnsol;
@@ -184,6 +125,7 @@ IMasterTask* MasterScheduler::GetScheduledTask(const MasterParams& params)
 	{
 		return &pStaticTasks->enableUnsol;
 	}
+	*/
 	
 	return nullptr;
 }
@@ -193,7 +135,7 @@ bool MasterScheduler::CanTaskRun(IMasterTask& task, tasks::TaskBitmask bitmask, 
 	if (scheduledTaskMask & bitmask)
 	{
 		scheduledTaskMask &= ~bitmask; // clear this bit
-		return task.Enabled(params);
+		return nullptr;
 	}
 	else
 	{ 
@@ -225,6 +167,7 @@ IMasterTask* MasterScheduler::GetPeriodicTask(const MasterParams& params, const 
 	}
 }
 
+/*
 void MasterScheduler::ScheduleUserTask(const openpal::Function0<IMasterTask*>& task)
 {
 	this->userTasks.push_back(task);
@@ -402,6 +345,7 @@ bool MasterScheduler::CancelScheduleTimer()
 		return false;
 	}
 }
+*/
 
 }
 

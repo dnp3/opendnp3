@@ -35,6 +35,7 @@ class ISOEHandler;
 /**
  * A generic interface for defining master request/response style tasks
  */
+
 class PollTask : public PollTaskBase
 {	
 
@@ -48,7 +49,7 @@ public:
 	
 	virtual char const* Name() const override final { return "Poll Task"; }	
 	
-	virtual void BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq) override final;
+	virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;
 
 	/// --- Public members ----
 
@@ -56,9 +57,9 @@ public:
 
 private:
 
-	virtual void OnFailure(const MasterParams& params, IMasterScheduler& scheduler) override final;
+	virtual void OnFailure() override final;
 
-	virtual void OnSuccess(const MasterParams& params, IMasterScheduler& scheduler) override final;	
+	virtual void OnSuccess() override final;	
 
 	Builder builder;
 	openpal::TimeDuration period;	

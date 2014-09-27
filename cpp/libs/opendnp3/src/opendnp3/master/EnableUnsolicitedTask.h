@@ -29,6 +29,8 @@ namespace opendnp3
 /**
 * Base class for tasks that only require a single response
 */
+
+	/*
 class EnableUnsolicitedTask : public NullResponseTask
 {	
 
@@ -47,8 +49,8 @@ private:
 	virtual void OnSuccess(const MasterParams& params, IMasterScheduler& scheduler) override final {}
 
 	virtual void OnTimeoutOrBadControlOctet(const MasterParams& params, IMasterScheduler& scheduler) override final;
-
 };
+*/
 
 } //end ns
 

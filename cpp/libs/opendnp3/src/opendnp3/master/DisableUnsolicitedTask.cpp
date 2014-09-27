@@ -28,6 +28,7 @@
 namespace opendnp3
 {
 
+/*
 DisableUnsolicitedTask::DisableUnsolicitedTask(openpal::Logger* pLogger_) : NullResponseTask(pLogger_)	
 {
 
@@ -47,7 +48,7 @@ void DisableUnsolicitedTask::OnTimeoutOrBadControlOctet(const MasterParams& para
 {
 	scheduler.SetBlocking(*this, params.taskRetryPeriod);
 }
-
+*/
 
 } //end ns
 

@@ -24,18 +24,18 @@
 namespace opendnp3
 {
 
-enum class TaskStatus
+enum class TaskState
 {
-	/// The task is complete
-	SUCCESS,
+	/// The task has been (re)scheduled for execution
+	SCHEDULED,
 
-	/// The task fails, further responses are ignored
-	FAIL,	
+	/// The task is complete and can be deleted
+	COMPLETE,
 
-	/// The task should repeat the format, transmit, await response sequence
+	/// The task should repeat the format, transmit, and await response sequence
 	REPEAT,
 
-	/// The task should continue running, restart the response timer, and increment expected SEQ#
+	/// The task should continue executing. Restart the response timer, and increment expected SEQ#.
 	CONTINUE
 };
 

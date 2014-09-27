@@ -126,7 +126,7 @@ void MasterContext::CheckForTask()
 void MasterContext::StartTask(IMasterTask* pTask)
 {		
 	APDURequest request(txBuffer.GetWriteBuffer());	
-	pTask->BuildRequest(request, params, solSeq);
+	pTask->BuildRequest(request, solSeq);
 	this->StartResponseTimer();
 	this->Transmit(request.ToReadOnly());
 }
@@ -138,7 +138,7 @@ void MasterContext::OnPendingTask()
 
 void MasterContext::QueueUserTask(const openpal::Function0<IMasterTask*>& action)
 {
-	scheduler.ScheduleUserTask(action);	
+	// TODO - rework this function
 }
 
 void MasterContext::OnResponseTimeout()
@@ -276,18 +276,6 @@ void MasterContext::Transmit(const ReadOnlyBuffer& output)
 	assert(!isSending);
 	isSending = true;
 	pLower->BeginTransmit(output);	
-}
-
-bool MasterContext::CanConfirmResponse(TaskStatus status)
-{
-	switch (status)
-	{
-		case(TaskStatus::SUCCESS) :
-		case(TaskStatus::CONTINUE) :
-			return true;
-		default:
-			return false;
-	}
 }
 
 void MasterContext::SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback& callback)

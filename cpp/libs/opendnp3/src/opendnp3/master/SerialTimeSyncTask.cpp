@@ -33,6 +33,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
+/*
 SerialTimeSyncTask::SerialTimeSyncTask(openpal::Logger* pLogger_, openpal::IUTCTimeSource* pTimeSource_) :
 	SingleResponseTask(pLogger_),
 	pTimeSource(pTimeSource_),
@@ -107,7 +108,7 @@ TaskStatus SerialTimeSyncTask::OnSingleResponse(const APDUResponseHeader& respon
 		return TaskStatus::SUCCESS;
 	}
 }
-
+*/
 	
 } //ens ns
 

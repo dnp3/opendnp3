@@ -70,9 +70,10 @@ ICommandProcessor& Master::GetCommandProcessor()
 
 MasterScan Master::AddScan(openpal::TimeDuration period, const std::function<void (APDURequest&)>& builder)
 {
-	PollTask task(builder, period, context.pSOEHandler, &context.logger);
-	auto pTask = context.scheduler.AddPollTask(task);
-	return MasterScan(*context.pExecutor, context.scheduler, *pTask);	
+	//PollTask task(builder, period, context.pSOEHandler, &context.logger);
+	//auto pTask = context.scheduler.AddPollTask(task);
+	// todo crete the poll task
+	return MasterScan(*context.pExecutor, nullptr);	
 }
 
 MasterScan Master::AddClassScan(const ClassField& field, openpal::TimeDuration period)

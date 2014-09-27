@@ -35,6 +35,7 @@
 namespace opendnp3
 {
 
+/*
 StartupIntegrityPoll::StartupIntegrityPoll(ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_) :
 	PollTaskBase(pSOEHandler_, pLogger_)	
 {
@@ -61,5 +62,6 @@ void StartupIntegrityPoll::OnSuccess(const MasterParams&, IMasterScheduler& sche
 {
 	
 }
+*/
 
 } //end ns

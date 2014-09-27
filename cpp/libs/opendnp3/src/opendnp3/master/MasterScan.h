@@ -23,7 +23,6 @@
 
 #include <openpal/executor/IExecutor.h>
 
-#include "opendnp3/master/IMasterScheduler.h"
 #include "opendnp3/master/PollTask.h"
 
 namespace opendnp3
@@ -35,7 +34,7 @@ public:
 
 	MasterScan();
 
-	MasterScan(openpal::IExecutor& executor, IMasterScheduler& scheduler, PollTask& task);
+	MasterScan(openpal::IExecutor& executor, IMasterTask* pTask);
 
 	void SetStateListener(IPollListener& listener);
 
@@ -46,9 +45,8 @@ public:
 
 private:
 	
-	openpal::IExecutor* pExecutor;	
-	IMasterScheduler* pScheduler;	
-	PollTask* pTask;
+	openpal::IExecutor* pExecutor;		
+	IMasterTask* pTask;
 };
 
 }

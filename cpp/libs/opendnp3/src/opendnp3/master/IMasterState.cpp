@@ -116,19 +116,19 @@ IMasterState* MasterStateWaitForResponse::OnResponse(MasterContext* pContext, co
 
 		pContext->solSeq = AppControlField::NextSeq(pContext->solSeq);		
 		
-		auto result = pContext->pActiveTask->OnResponse(response, objects, pContext->params, pContext->scheduler);
+		auto result = pContext->pActiveTask->OnResponse(response, objects);
 
-		if (response.control.CON && pContext->CanConfirmResponse(result))
+		if (response.control.CON) // TODO evaluate if reponse was procesed before confirming && pContext->CanConfirmResponse(result))
 		{
 			pContext->QueueConfirm(APDUHeader::SolicitedConfirm(response.control.SEQ));
 		}
 
 		switch (result)
 		{
-			case(TaskStatus::CONTINUE) :
+			case(TaskState::CONTINUE) :
 				pContext->StartResponseTimer();
 				return this;
-			case(TaskStatus::REPEAT) :				
+			case(TaskState::REPEAT) :				
 				return MasterStateTaskReady::Instance().OnStart(pContext);
 			default:
 				pContext->pActiveTask = nullptr;
@@ -147,7 +147,10 @@ IMasterState* MasterStateWaitForResponse::OnResponse(MasterContext* pContext, co
 IMasterState* MasterStateWaitForResponse::OnResponseTimeout(MasterContext* pContext)
 {	
 	pContext->pResponseTimer = nullptr;
-	pContext->pActiveTask->OnResponseTimeout(pContext->params, pContext->scheduler);
+	if (!pContext->pActiveTask->OnResponseTimeout())
+	{
+		// TODO delete this task
+	}
 	pContext->pActiveTask = nullptr;
 	pContext->pTaskLock->Release(*pContext);
 	pContext->solSeq = AppControlField::NextSeq(pContext->solSeq);

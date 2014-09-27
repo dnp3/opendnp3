@@ -36,9 +36,11 @@
 
 #include <deque>
 
+
 namespace opendnp3
 {
 
+/*
 // Base class with machinery for performing command operations
 class CommandTask : public IMasterTask, public ICommandProcessor
 {
@@ -102,6 +104,7 @@ private:
 	CommandSequence<AnalogOutputFloat32> analogFloat32Seq;
 	CommandSequence<AnalogOutputDouble64> analogDouble64Seq;	
 };
+*/
 
 
 } //ens ns

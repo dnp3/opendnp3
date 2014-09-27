@@ -30,6 +30,7 @@
 namespace opendnp3
 {
 
+/*
 NullResponseTask::NullResponseTask(openpal::Logger* pLogger_) : SingleResponseTask(pLogger_)
 {}
 	
@@ -54,6 +55,7 @@ TaskStatus NullResponseTask::OnSingleResponse(const APDUResponseHeader& response
 		return TaskStatus::FAIL;
 	}
 }
+*/
 
 } //end ns
 

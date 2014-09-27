@@ -32,17 +32,7 @@ class IMasterTask;
 class IMasterScheduler
 {
 
-public:
-
-	/**
-	* Schedule the task to run now or in the future
-	*/
-	virtual void Schedule(IMasterTask& task, const openpal::TimeDuration& delay = openpal::TimeDuration::Min()) = 0;
-
-	/**
-	* Set the scheduler to block until the duration elapses and then run the task
-	*/
-	virtual void SetBlocking(IMasterTask& task, const openpal::TimeDuration& delay) = 0;
+public:	
 
 	/*
 	* If the task is currently waiting, set it to run ASAP

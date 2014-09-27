@@ -41,19 +41,19 @@ public:
 
 	PollTaskBase(ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_);				
 	
-	virtual TaskStatus OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler) override final;
+	virtual TaskState OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects) override final;
 	
-	virtual void OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler) override final;
+	virtual bool OnResponseTimeout() override final;
 
 	void SetStateListener(IPollListener& listener);
 
 protected:
 
-	TaskStatus ProcessMeasurements(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler);
+	TaskState ProcessMeasurements(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects);
 
-	virtual void OnFailure(const MasterParams& params, IMasterScheduler& scheduler) = 0;
+	virtual void OnFailure() = 0;
 
-	virtual void OnSuccess(const MasterParams& params, IMasterScheduler& scheduler) = 0;
+	virtual void OnSuccess() = 0;
 
 	void NotifyState(PollState state);
 

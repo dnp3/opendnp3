@@ -35,7 +35,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-
+/*
 CommandTask::CommandTask(openpal::Logger* pLogger_) :
 	pLogger(pLogger_),
 	pCallback(nullptr),
@@ -196,5 +196,6 @@ TaskStatus CommandTask::OnSingleResponse(const APDUResponseHeader& response, con
 		return TaskStatus::FAIL;
 	}
 }
+*/
 
 } //ens ns

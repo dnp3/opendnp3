@@ -26,13 +26,13 @@
 namespace opendnp3
 {
 
-MasterTasks::MasterTasks(openpal::Logger* pLogger, ISOEHandler& SOEHandler, openpal::IUTCTimeSource& timeSource) :
-enableUnsol(pLogger),
-clearRestartTask(pLogger),
-startupIntegrity(&SOEHandler, pLogger),
-disableUnsol(pLogger),	
-serialTimeSync(pLogger, &timeSource),
-commandTask(pLogger)
+MasterTasks::MasterTasks(openpal::Logger* pLogger, ISOEHandler& SOEHandler, openpal::IUTCTimeSource& timeSource)
+//enableUnsol(pLogger),
+//clearRestartTask(pLogger),
+//startupIntegrity(&SOEHandler, pLogger),
+//disableUnsol(pLogger),	
+//serialTimeSync(pLogger, &timeSource),
+//commandTask(pLogger)
 {
 	
 }

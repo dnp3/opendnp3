@@ -22,6 +22,7 @@
 #define OPENDNP3_IMASTERTASK_H
 
 #include <openpal/logging/Logger.h>
+#include <openpal/executor/MonotonicTimestamp.h>
 
 #include "opendnp3/app/APDUHeader.h"
 #include "opendnp3/app/APDURequest.h"
@@ -32,8 +33,6 @@
 
 namespace opendnp3
 {
-
-class MasterTasks;
 
 /**
  * A generic interface for defining master request/response style tasks
@@ -49,34 +48,45 @@ public:
 	*/
 	virtual char const* Name() const = 0;	
 
+	/*
+	* The task's priority. Lower numbers are higher priority.
+	*/
+	virtual int Priority() const = 0;
+
+	/*
+	* Allows tasks to enter a blocking mode where lower priority
+	* tasks cannot run until this task completes
+	*/
+	virtual bool BlocksLowerPriority() const = 0;
+
+	/**
+	* The time when this task can run again.
+	*/
+	virtual openpal::MonotonicTimestamp ExpirationTime() const = 0;
+
 	/**
 	 * Build a request APDU.
 	 *	
 	 */
-	virtual void BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq) = 0;
+	virtual void BuildRequest(APDURequest& request, uint8_t seq) = 0;
 
 	/**
 	 * Handler for responses
 	 *	 	 	
 	 */
-	virtual TaskStatus OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler) = 0;
+	virtual TaskState OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects) = 0;
 	
 	/**
-	 * Called when a response times out
+	 * Called when a response times out.
+	 * @return true if the task is rescheduled. False if it is complete and can be deleted.
 	 */
-	virtual void OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler) = 0;
+	virtual bool OnResponseTimeout() = 0;
 
 	/**
-	* Called when the layer closes while the task is executing
+	* Called when the layer closes while the task is executing.
+	* The task can always be deleted when this event happens.
 	*/
-	virtual void OnLowerLayerClose() {}
-
-	/**
-	* Check if the task is enabled. Used for sequenced (startup) tasks.
-	*
-	* @return true if the task is enabled with the specified settings
-	*/
-	virtual bool Enabled(const MasterParams& params) { return false; }	
+	virtual void OnLowerLayerClose() = 0;
 
 };
 

@@ -40,14 +40,14 @@ public:
 	MasterTasks(openpal::Logger* pLogger, ISOEHandler& SOEHandler, openpal::IUTCTimeSource& timeSource);
 
 	// reconfigurable task for doing commands
-	CommandTask commandTask;	
+	//CommandTask commandTask;	
 
 	// master tasks that can be "failed" (startup and in response to IIN bits)
-	EnableUnsolicitedTask enableUnsol;
-	ClearRestartTask clearRestartTask;
-	StartupIntegrityPoll startupIntegrity;
-	DisableUnsolicitedTask disableUnsol;	
-	SerialTimeSyncTask serialTimeSync;
+	//EnableUnsolicitedTask enableUnsol;
+	//ClearRestartTask clearRestartTask;
+	//StartupIntegrityPoll startupIntegrity;
+	//DisableUnsolicitedTask disableUnsol;	
+	//SerialTimeSyncTask serialTimeSync;
 	
 };
 

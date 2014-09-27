@@ -31,6 +31,7 @@ class ISOEHandler;
 /**
  * A generic interface for defining master request/response style tasks
  */
+/*
 class StartupIntegrityPoll : public PollTaskBase
 {	
 
@@ -51,6 +52,7 @@ private:
 	virtual void OnSuccess(const MasterParams& params, IMasterScheduler& scheduler) override final;
 	
 };
+*/
 
 } //end ns
 

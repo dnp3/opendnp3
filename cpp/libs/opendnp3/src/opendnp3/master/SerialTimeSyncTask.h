@@ -28,6 +28,7 @@
 namespace opendnp3
 {
 
+/*
 // Synchronizes the time on the outstation
 class SerialTimeSyncTask : public SingleResponseTask
 {
@@ -58,6 +59,7 @@ private:
 	// what time we sent the delay meas
 	openpal::UTCTimestamp start;
 };
+*/
 
 } //ens ns
 

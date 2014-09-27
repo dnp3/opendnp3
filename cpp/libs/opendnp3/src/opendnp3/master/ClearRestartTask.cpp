@@ -30,6 +30,7 @@
 namespace opendnp3
 {
 
+/*
 ClearRestartTask::ClearRestartTask(openpal::Logger* pLogger_) :  SingleResponseTask(pLogger_)	
 {
 
@@ -65,6 +66,7 @@ TaskStatus ClearRestartTask::OnSingleResponse(const APDUResponseHeader& response
 		return TaskStatus::SUCCESS;
 	}
 }
+*/
 
 } //end ns
 
