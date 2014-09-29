@@ -48,21 +48,21 @@ MasterScheduler::MasterScheduler(	openpal::Logger* pLogger,
 
 }
 
-IMasterTask* MasterScheduler::Start(const MasterParams& params)
+IMasterTask* MasterScheduler::Start()
 {	
-	auto pTask = FindTaskToStart(params);
+	auto pTask = FindTaskToStart();
 	this->pCurrentTask = pTask;
 	return pTask;
 }
 
-IMasterTask* MasterScheduler::FindTaskToStart(const MasterParams& params)
+IMasterTask* MasterScheduler::FindTaskToStart()
 {		
 	auto now = pExecutor->GetTime();	
 	
 	return nullptr;
 }
 
-IMasterTask* MasterScheduler::GetScheduledTask(const MasterParams& params)
+IMasterTask* MasterScheduler::GetScheduledTask()
 {
 	/*
 	if (CanTaskRun(pStaticTasks->disableUnsol, tasks::DISABLE_UNSOLCITED, params))
@@ -94,47 +94,14 @@ IMasterTask* MasterScheduler::GetScheduledTask(const MasterParams& params)
 	return nullptr;
 }
 
-bool MasterScheduler::CanTaskRun(IMasterTask& task, tasks::TaskBitmask bitmask, const MasterParams& params)
+bool MasterScheduler::CanTaskRun(IMasterTask& task, tasks::TaskBitmask bitmask)
 {
-	if (scheduledTaskMask & bitmask)
-	{
-		scheduledTaskMask &= ~bitmask; // clear this bit
-		return nullptr;
-	}
-	else
-	{ 
-		return nullptr;
-	}
+	return false;
 }
-
-/*
-void MasterScheduler::ScheduleUserTask(const openpal::Function0<IMasterTask*>& task)
-{
-	this->userTasks.push_back(task);
-	
-	if (!IsAnyTaskActive())
-	{
-		this->CancelScheduleTimer();
-		this->pCallback->OnPendingTask();
-	}	
-}
-
-PollTask* MasterScheduler::AddPollTask(const PollTask& task)
-{				
-	pollTasks.push_back(task);
-	auto& ref = pollTasks.back();
-
-	if (isOnline)
-	{
-		this->Schedule(ref, ref.GetPeriod());
-	}				
-
-	return &ref;
-}
-
 
 void MasterScheduler::ProcessRxIIN(const IINField& iin, const MasterParams& params)
 {
+	/*
 	if (iin.IsSet(IINBit::DEVICE_RESTART))
 	{		
 		if (!this->IsTaskActive(&pStaticTasks->clearRestartTask))
@@ -163,27 +130,10 @@ void MasterScheduler::ProcessRxIIN(const IINField& iin, const MasterParams& para
 	{
 		this->CancelScheduleTimer();
 	}
+	*/
 }
 
-bool MasterScheduler::IsTaskActive(IMasterTask* pTask)
-{
-	auto isEqual = [pTask] (const TaskRecord& tr) { return tr.pTask == pTask; };
-	if (blockingTask.IsSetAnd(isEqual))
-	{
-		return true;
-	}
-	else
-	{
-		return pCurrentTask == pTask;
-	}	
-}
-
-bool MasterScheduler::IsAnyTaskActive() const
-{
-	return pCurrentTask || blockingTask.IsSet();
-}
-
-void MasterScheduler::OnLowerLayerUp(const MasterParams& params)
+void MasterScheduler::OnLowerLayerUp()
 {
 	if (!isOnline)
 	{
@@ -191,12 +141,7 @@ void MasterScheduler::OnLowerLayerUp(const MasterParams& params)
 
 		this->scheduledTaskMask = tasks::STARTUP_TASK_SEQUENCE;
 
-		auto now = pExecutor->GetTime();
-		
-		for (auto& pt : pollTasks)
-		{
-			this->Schedule(pt, pt.GetPeriod());
-		}
+		auto now = pExecutor->GetTime();			
 		
 		pCallback->OnPendingTask();
 	}	
@@ -209,25 +154,12 @@ void MasterScheduler::OnLowerLayerDown()
 	if (isOnline)
 	{
 		isOnline = false;
-		this->CancelScheduleTimer();
-		periodicTasks.clear();
-
+		this->CancelScheduleTimer();	
 		this->scheduledTaskMask = 0;
 
 		pCurrentTask = nullptr;
 
-		if (blockingTask.IsSet())
-		{
-			blockingTask.Get().pTask->OnLowerLayerClose();
-			blockingTask.Clear();
-		}
-
-		while (!userTasks.empty())
-		{
-			auto pTask = userTasks.front().Apply();			 
-			pTask->OnLowerLayerClose();
-			userTasks.pop_front();
-		}		
+		// TODO - fail all tasks		
 	}	
 }
 
@@ -285,7 +217,7 @@ bool MasterScheduler::CancelScheduleTimer()
 		return false;
 	}
 }
-*/
+
 
 }
 

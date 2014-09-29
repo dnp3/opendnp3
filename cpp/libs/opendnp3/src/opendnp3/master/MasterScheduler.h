@@ -62,12 +62,12 @@ public:
 	/**
 	* @return Task to start or nullptr if no tasks are available
 	*/
-	IMasterTask* Start(const MasterParams& params);
+	IMasterTask* Start();
 
 	/*
 	* Startup
 	*/
-	void OnLowerLayerUp(const MasterParams& params);
+	void OnLowerLayerUp();
 
 	/**
 	* Cleanup all existing tasks & cancel any timers
@@ -87,13 +87,13 @@ public:
 
 private:	
 
-	IMasterTask* FindTaskToStart(const MasterParams& params);	
+	IMasterTask* FindTaskToStart();	
 
-	IMasterTask* GetScheduledTask(const MasterParams& params);
+	IMasterTask* GetScheduledTask();
 
-	bool CanTaskRun(IMasterTask& task, tasks::TaskBitmask bitmask, const MasterParams& params);
+	bool CanTaskRun(IMasterTask& task, tasks::TaskBitmask bitmask);
 
-	IMasterTask* GetPeriodicTask(const MasterParams& params, const openpal::MonotonicTimestamp& now);	
+	IMasterTask* GetPeriodicTask(const openpal::MonotonicTimestamp& now);	
 
 	void ReportFailure(const CommandErasure& action, CommandResult result);	
 	

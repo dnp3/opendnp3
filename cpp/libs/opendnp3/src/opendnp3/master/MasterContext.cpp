@@ -76,7 +76,7 @@ bool MasterContext::OnLayerUp()
 	{
 		isOnline = true;
 		pTaskLock->OnLayerUp();
-		scheduler.OnLowerLayerUp(params);		
+		scheduler.OnLowerLayerUp();		
 		return true;
 	}
 }
