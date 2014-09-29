@@ -43,6 +43,18 @@ test-suite.log
 *~
 *.dirstamp
 
+#cmake generated files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+libasiodnp3.a
+libasiopal.a
+libopendnp3.a
+libopenpal.a
+testopendnp3
+testopenpal
+
+
 #doxygen
 doc
 
