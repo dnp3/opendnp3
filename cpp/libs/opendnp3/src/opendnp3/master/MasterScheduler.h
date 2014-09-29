@@ -27,7 +27,7 @@
 #include <openpal/container/Settable.h>
 
 #include "opendnp3/master/MasterTasks.h"
-#include "opendnp3/master/PollTask.h"
+#include "opendnp3/master/UserPollTask.h"
 #include "opendnp3/master/IMasterTask.h"
 #include "opendnp3/master/IMasterScheduler.h"
 #include "opendnp3/master/TaskRecord.h"
@@ -77,13 +77,7 @@ public:
 	/*
 	* Schedule a command to run
 	*/
-	void ScheduleUserTask(IMasterTask* pTask);
-
-	/**
-	* Add a new poll to the scheduler
-	* @return an id that can be used to 
-	*/
-	PollTask* AddPollTask(const PollTask& task);
+	void ScheduleUserTask(IMasterTask* pTask);	
 
 	/*
 	* Called whenever the master receivers an IIN bit so that we can optionally
@@ -129,14 +123,7 @@ private:
 	int32_t scheduledTaskMask;
 
 	openpal::ITimer* pTimer;
-	IMasterTask* pCurrentTask;	
-
-	openpal::Settable<TaskRecord> blockingTask;
-
-	std::list<PollTask> pollTasks;	
-	std::vector<TaskRecord> periodicTasks;
-	std::deque<openpal::Function0<IMasterTask*>> userTasks;
-	
+	IMasterTask* pCurrentTask;		
 };
 
 }

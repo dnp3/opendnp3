@@ -18,12 +18,13 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_POLLTASK_H
-#define OPENDNP3_POLLTASK_H
+#ifndef OPENDNP3_USERPOLLTASK_H
+#define OPENDNP3_USERPOLLTASK_H
 
 #include "opendnp3/master/PollTaskBase.h"
 
 #include <openpal/container/Queue.h>
+#include <openpal/executor/IExecutor.h>
 
 #include <functional>
 
@@ -36,33 +37,33 @@ class ISOEHandler;
  * A generic interface for defining master request/response style tasks
  */
 
-class PollTask : public PollTaskBase
+class UserPollTask : public PollTaskBase
 {	
 
-public:
+public:	
 
-	typedef std::function<void (APDURequest&)> Builder;
-
-	PollTask();	
-
-	PollTask(const Builder& builder, const openpal::TimeDuration& period_, ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_);
+	UserPollTask(
+		openpal::IExecutor& executor,
+		const APDUBuilder& builder, 
+		const std::string& name,		
+		const openpal::TimeDuration& period,	
+		const openpal::TimeDuration& retryDelay,
+		ISOEHandler* pSOEHandler,
+		openpal::Logger* pLogger
+		);	
 	
-	virtual char const* Name() const override final { return "Poll Task"; }	
-	
-	virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;
-
-	/// --- Public members ----
-
-	openpal::TimeDuration GetPeriod() const;
+	virtual openpal::MonotonicTimestamp ExpirationTime() const = 0;	
 
 private:
 
 	virtual void OnFailure() override final;
 
 	virtual void OnSuccess() override final;	
-
-	Builder builder;
-	openpal::TimeDuration period;	
+		
+	openpal::IExecutor* pExecutor;
+	openpal::TimeDuration period;
+	openpal::TimeDuration retryDelay;
+	openpal::MonotonicTimestamp expiration;
 
 };
 

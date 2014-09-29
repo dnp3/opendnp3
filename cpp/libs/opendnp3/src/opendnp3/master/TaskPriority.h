@@ -18,24 +18,27 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_IPOLLLISTENER_H
-#define OPENDNP3_IPOLLLISTENER_H
-
-#include "opendnp3/gen/PollState.h"
+#ifndef OPENDNP3_TASKPRIORITY_H
+#define OPENDNP3_TASKPRIORITY_H
 
 namespace opendnp3
 {
 
-/// Receives event about the status of a poll task
-class IPollListener
-{	
+	namespace priority
+	{
+		const int COMMAND = 0;
+		
+		const int DISABLE_UNSOLICITED = 10;
 
-public:
+		const int INTEGRITY_POLL = 20;
 
-	virtual void OnStateChange(PollState state) = 0;
-	
-};
+		const int CLEAR_RESTART = 30;
 
+		const int ENABLE_UNSOLICITED = 40;
+
+		const int USER_POLL = 50;
+
+	}
 
 }
 

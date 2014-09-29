@@ -31,8 +31,12 @@
 #include "opendnp3/master/TaskResult.h"
 #include "opendnp3/master/IMasterScheduler.h"
 
+#include <functional>
+
 namespace opendnp3
 {
+
+typedef std::function<void(APDURequest&)> APDUBuilder;
 
 /**
  * A generic interface for defining master request/response style tasks

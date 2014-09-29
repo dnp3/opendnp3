@@ -30,25 +30,28 @@
 namespace opendnp3
 {
 
-PollTaskBase::PollTaskBase() : pSOEHandler(nullptr), pLogger(nullptr), rxCount(0), pPollListener(nullptr)
-{}
-
-PollTaskBase::PollTaskBase(ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_) :
+PollTaskBase::PollTaskBase(
+		const APDUBuilder& builder_,
+		const std::string& name_,
+		ISOEHandler* pSOEHandler_,
+		openpal::Logger* pLogger_) :
+	builder(builder_),
+	name(name_),
 	pSOEHandler(pSOEHandler_),
 	pLogger(pLogger_),
-	rxCount(0),
-	pPollListener(nullptr)
+	rxCount(0)	
 {
 	
 }
 
-void PollTaskBase::NotifyState(PollState state)
+void PollTaskBase::BuildRequest(APDURequest& request, uint8_t seq)
 {
-	if (pPollListener)
-	{
-		pPollListener->OnStateChange(state);
-	}
+	rxCount = 0;
+	builder(request);
+	request.SetFunction(FunctionCode::READ);
+	request.SetControl(AppControlField::Request(seq));	
 }
+
 	
 TaskState PollTaskBase::OnResponse(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects)
 {
@@ -85,11 +88,6 @@ bool PollTaskBase::OnResponseTimeout()
 	return false;
 }
 
-void PollTaskBase::SetStateListener(IPollListener& listener)
-{
-	pPollListener = &listener;
-}
-	
 TaskState PollTaskBase::ProcessMeasurements(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects)
 {	
 	++rxCount;
@@ -108,7 +106,7 @@ TaskState PollTaskBase::ProcessMeasurements(const APDUResponseHeader& header, co
 	else
 	{		
 		// TODO - reschedule
-		TaskState::COMPLETE;
+		TaskState::SCHEDULED;
 	}
 }
 

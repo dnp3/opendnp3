@@ -22,7 +22,6 @@
 #define OPENDNP3_POLLTASKBASE_H
 
 #include "opendnp3/master/IMasterTask.h"
-#include "opendnp3/master/IPollListener.h"
 
 namespace opendnp3
 {
@@ -32,20 +31,22 @@ class ISOEHandler;
 /**
  * Base class for measurement polls
  */
-class PollTaskBase : public IMasterTask
+class PollTaskBase : public IMasterTask, openpal::Uncopyable
 {	
 
-public:
+public:		
 
-	PollTaskBase();
+	PollTaskBase(
+		const APDUBuilder& builder_,
+		const std::string& name_,
+		ISOEHandler* pSOEHandler_,
+		openpal::Logger* pLogger_);
 
-	PollTaskBase(ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_);				
+	virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;
 	
 	virtual TaskState OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects) override final;
 	
-	virtual bool OnResponseTimeout() override final;
-
-	void SetStateListener(IPollListener& listener);
+	virtual bool OnResponseTimeout() override final;	
 
 protected:
 
@@ -53,17 +54,15 @@ protected:
 
 	virtual void OnFailure() = 0;
 
-	virtual void OnSuccess() = 0;
+	virtual void OnSuccess() = 0;	
 
-	void NotifyState(PollState state);
-
+	APDUBuilder builder;
+	std::string name;
 	ISOEHandler* pSOEHandler;
+
 	openpal::Logger* pLogger;
 	uint16_t rxCount;
 
-private:
-
-	IPollListener* pPollListener;
 };
 
 } //end ns

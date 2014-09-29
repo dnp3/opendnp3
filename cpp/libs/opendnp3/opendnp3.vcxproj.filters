@@ -513,9 +513,6 @@
     <ClInclude Include="src\opendnp3\master\StartupIntegrityPoll.h">
       <Filter>Header\master</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\master\PollTask.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\Outstation.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
@@ -580,9 +577,6 @@
       <Filter>Header\master</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\master\IScheduleCallback.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\IPollListener.h">
       <Filter>Header\master</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\gen\PollState.h">
@@ -692,6 +686,12 @@
     </ClInclude>
     <ClInclude Include="src\opendnp3\gen\AssignClassType.h">
       <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\TaskPriority.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\UserPollTask.h">
+      <Filter>Header\master</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1016,9 +1016,6 @@
     <ClCompile Include="src\opendnp3\master\EnableUnsolicitedTask.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\master\PollTask.cpp">
-      <Filter>Source\master</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\master\Master.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
@@ -1105,6 +1102,9 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\AssignClassHandler.cpp">
       <Filter>Header\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\UserPollTask.cpp">
+      <Filter>Source\master</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

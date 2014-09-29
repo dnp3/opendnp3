@@ -142,16 +142,8 @@ void MasterContext::SelectAndOperateT(const T& command, uint16_t index, ICommand
 {
 	if (isOnline)
 	{
-		auto pCallback = &callback;
-		auto pCommandTask = &staticTasks.commandTask;
-
-		auto userTask = [command, index, pCallback, pCommandTask]()
-		{
-			pCommandTask->SelectAndOperate(command, index, *pCallback);
-			return pCommandTask;
-		};
-
-		QueueUserTask(openpal::Function0<IMasterTask*>::Bind(userTask));
+		// TODO create a dynamically allocated command task and queue it on the scheduler
+		callback.OnComplete(CommandResponse(CommandResult::NO_COMMS));		
 	}
 	else
 	{
@@ -165,17 +157,9 @@ template <class T>
 void MasterContext::DirectOperateT(const T& command, uint16_t index, ICommandCallback& callback)
 {
 	if (isOnline)
-	{
-		auto pCallback = &callback;
-		auto pCommandTask = &staticTasks.commandTask;
-
-		auto userTask = [command, index, pCallback, pCommandTask]()
-		{
-			pCommandTask->DirectOperate(command, index, *pCallback);
-			return pCommandTask;
-		};
-
-		QueueUserTask(openpal::Function0<IMasterTask*>::Bind(userTask));
+	{		
+		// TODO create a dynamically allocated command task and queue it on the scheduler
+		callback.OnComplete(CommandResponse(CommandResult::NO_COMMS));
 	}
 	else
 	{

@@ -19,56 +19,39 @@
  * to you under the terms of the License.
  */
 
-#include "PollTask.h"
+#include "UserPollTask.h"
+
+using namespace openpal;
 
 namespace opendnp3
 {
 
-/*
-PollTask::PollTask()
-{}
-
-PollTask::PollTask(const Builder& builder_, const openpal::TimeDuration& period_, ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_) :
-	PollTaskBase(pSOEHandler_, pLogger_),
-	builder(builder_),
-	period(period_)
+UserPollTask::UserPollTask(
+	openpal::IExecutor& executor,
+	const APDUBuilder& builder,
+	const std::string& name,
+	const openpal::TimeDuration& period_,
+	const openpal::TimeDuration& retryDelay_,
+	ISOEHandler* pSOEHandler,
+	openpal::Logger* pLogger
+) :
+	PollTaskBase(builder, name, pSOEHandler, pLogger),
+	pExecutor(&executor),
+	period(period_),
+	retryDelay(retryDelay_),
+	expiration(MonotonicTimestamp::Min())
 {}
 		
-void PollTask::BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq)
-{		
-	rxCount = 0;
-	builder(request);
-	request.SetFunction(FunctionCode::READ);
-	request.SetControl(AppControlField::Request(seq));
-
-	this->NotifyState(PollState::RUNNING);
+void UserPollTask::OnFailure()
+{	
+	expiration = retryDelay.IsNegative() ? MonotonicTimestamp::Max() : pExecutor->GetTime().Add(retryDelay);
 }
 
-openpal::TimeDuration PollTask::GetPeriod() const
-{
-	return period;
+void UserPollTask::OnSuccess()
+{	
+	expiration = period.IsNegative() ? MonotonicTimestamp::Max() : pExecutor->GetTime().Add(period);
 }
 
-void PollTask::OnFailure(const MasterParams& params, IMasterScheduler& scheduler)
-{
-	this->NotifyState(PollState::FAILURE);
-	if (this->period.GetMilliseconds() >= 0)
-	{
-		scheduler.Schedule(*this, params.taskRetryPeriod);		
-	}
-	else
-	{
-		scheduler.Schedule(*this, this->period);
-	}
-	
-}
-
-void PollTask::OnSuccess(const MasterParams& params, IMasterScheduler& scheduler)
-{
-	this->NotifyState(PollState::SUCCESS);
-	scheduler.Schedule(*this, this->period);	
-}
-*/
 
 } //end ns
 

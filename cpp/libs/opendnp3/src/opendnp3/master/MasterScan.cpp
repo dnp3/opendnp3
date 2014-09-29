@@ -35,17 +35,6 @@ MasterScan::MasterScan(openpal::IExecutor& executor, IMasterTask* pTask_) :
 
 }
 
-void MasterScan::SetStateListener(IPollListener& listener)
-{
-	// TODO - decide what can of listener to put here
-	// all tasks should probably have a listener
-	/*
-	auto pListener = &listener;
-	auto action = [this, pListener]() { pTask->SetStateListener(*pListener); };
-	pExecutor->PostLambda(action);
-	*/
-}
-
 bool MasterScan::IsDefined() const
 {
 	return pExecutor && pTask;

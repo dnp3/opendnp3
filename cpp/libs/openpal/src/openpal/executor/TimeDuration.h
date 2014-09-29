@@ -39,6 +39,11 @@ public:
 	{
 		return milliseconds;
 	}
+
+	bool IsNegative() const
+	{
+		return milliseconds < 0;
+	}
 	
 	operator T() const { return milliseconds; }
 

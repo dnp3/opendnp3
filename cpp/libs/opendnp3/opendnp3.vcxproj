@@ -137,11 +137,10 @@
     <ClInclude Include="src\opendnp3\master\IMasterScheduler.h" />
     <ClInclude Include="src\opendnp3\master\IMasterState.h" />
     <ClInclude Include="src\opendnp3\master\IMasterTask.h" />
-    <ClInclude Include="src\opendnp3\master\IPollListener.h" />
     <ClInclude Include="src\opendnp3\master\IScheduleCallback.h" />
     <ClInclude Include="src\opendnp3\master\ITaskLock.h" />
     <ClInclude Include="src\opendnp3\master\NullResponseTask.h" />
-    <ClInclude Include="src\opendnp3\master\PollTask.h" />
+    <ClInclude Include="src\opendnp3\master\UserPollTask.h" />
     <ClInclude Include="src\opendnp3\master\StartupIntegrityPoll.h" />
     <ClInclude Include="src\opendnp3\master\ISOEHandler.h" />
     <ClInclude Include="src\opendnp3\master\MasterContext.h" />
@@ -156,6 +155,7 @@
     <ClInclude Include="src\opendnp3\master\SerialTimeSyncTask.h" />
     <ClInclude Include="src\opendnp3\master\MasterTasks.h" />
     <ClInclude Include="src\opendnp3\master\TaskBitmask.h" />
+    <ClInclude Include="src\opendnp3\master\TaskPriority.h" />
     <ClInclude Include="src\opendnp3\master\TaskRecord.h" />
     <ClInclude Include="src\opendnp3\master\TaskResult.h" />
     <ClInclude Include="src\opendnp3\master\TimeSyncHandler.h" />
@@ -302,7 +302,7 @@
     <ClCompile Include="src\opendnp3\master\IMasterState.cpp" />
     <ClCompile Include="src\opendnp3\master\ITaskLock.cpp" />
     <ClCompile Include="src\opendnp3\master\NullResponseTask.cpp" />
-    <ClCompile Include="src\opendnp3\master\PollTask.cpp" />
+    <ClCompile Include="src\opendnp3\master\UserPollTask.cpp" />
     <ClCompile Include="src\opendnp3\master\SerialTimeSyncTask.cpp" />
     <ClCompile Include="src\opendnp3\master\StartupIntegrityPoll.cpp" />
     <ClCompile Include="src\opendnp3\master\ISOEHandler.cpp" />

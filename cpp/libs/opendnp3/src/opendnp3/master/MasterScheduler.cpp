@@ -58,44 +58,8 @@ IMasterTask* MasterScheduler::Start(const MasterParams& params)
 IMasterTask* MasterScheduler::FindTaskToStart(const MasterParams& params)
 {		
 	auto now = pExecutor->GetTime();	
-
-	if (blockingTask.IsSet())
-	{
-		auto record = blockingTask.Get();		
-		if (record.expiration.milliseconds <= now.milliseconds)
-		{
-			blockingTask.Clear();
-			return record.pTask;
-		}
-		else
-		{
-			this->StartOrRestartTimer(record.expiration);
-			return nullptr;
-		}
-	}
-	else
-	{
-		// nothing blocking, so look at the startup sequence next
-		auto scheduled = this->GetScheduledTask(params);
-		if (scheduled)
-		{
-			return scheduled;
-		}
-		else
-		{						
-			if (!userTasks.empty())
-			{
-				auto pTask = userTasks.front().Apply();
-				userTasks.pop_front();
-				return pTask;				
-			}
-			else
-			{
-				//finally check for periodic tasks
-				return GetPeriodicTask(params, now);
-			}										
-		}
-	}
+	
+	return nullptr;
 }
 
 IMasterTask* MasterScheduler::GetScheduledTask(const MasterParams& params)
@@ -140,30 +104,6 @@ bool MasterScheduler::CanTaskRun(IMasterTask& task, tasks::TaskBitmask bitmask, 
 	else
 	{ 
 		return nullptr;
-	}
-}
-
-IMasterTask* MasterScheduler::GetPeriodicTask(const MasterParams& params, const openpal::MonotonicTimestamp& now)
-{
-	auto lessThan = [](const TaskRecord& lhs, const TaskRecord& rhs) { return lhs.expiration < rhs.expiration; };
-	auto iter = std::min_element(periodicTasks.begin(), periodicTasks.end(), lessThan);
-	if (iter == periodicTasks.end())
-	{
-		return nullptr;		
-	}
-	else
-	{
-		if (iter->expiration.milliseconds <= now.milliseconds)
-		{
-			auto ret = iter->pTask;
-			periodicTasks.erase(iter);
-			return ret;
-		}
-		else
-		{
-			this->StartOrRestartTimer(iter->expiration);
-			return nullptr;
-		}
 	}
 }
 

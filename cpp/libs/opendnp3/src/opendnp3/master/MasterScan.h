@@ -23,7 +23,7 @@
 
 #include <openpal/executor/IExecutor.h>
 
-#include "opendnp3/master/PollTask.h"
+#include "opendnp3/master/IMasterTask.h"
 
 namespace opendnp3
 {
@@ -36,7 +36,7 @@ public:
 
 	MasterScan(openpal::IExecutor& executor, IMasterTask* pTask);
 
-	void SetStateListener(IPollListener& listener);
+	// void SetStateListener(IPollListener& listener); TODO
 
 	// Request that the scan be performed as soon as possible
 	bool Demand();
