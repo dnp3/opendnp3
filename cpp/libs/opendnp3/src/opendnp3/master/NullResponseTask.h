@@ -38,9 +38,9 @@ public:
 
 protected:
 
-	virtual TaskState OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects) override final;
+	virtual TaskState OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now) override final;
 	
-	virtual void OnSuccess(const MasterParams& params, IMasterScheduler& scheduler) = 0;	
+	virtual void OnSuccess(const openpal::MonotonicTimestamp& now) = 0;
 };
 
 } //end ns

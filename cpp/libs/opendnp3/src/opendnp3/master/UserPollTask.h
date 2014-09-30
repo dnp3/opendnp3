@@ -23,10 +23,6 @@
 
 #include "opendnp3/master/PollTaskBase.h"
 
-#include <openpal/container/Queue.h>
-#include <openpal/executor/IExecutor.h>
-
-#include <functional>
 
 namespace opendnp3
 {
@@ -42,8 +38,7 @@ class UserPollTask : public PollTaskBase
 
 public:	
 
-	UserPollTask(
-		openpal::IExecutor& executor,
+	UserPollTask(		
 		const APDUBuilder& builder, 
 		const std::string& name,		
 		const openpal::TimeDuration& period,	
@@ -56,11 +51,10 @@ public:
 
 private:
 
-	virtual void OnFailure() override final;
+	virtual void OnFailure(const openpal::MonotonicTimestamp& now) override final;
 
-	virtual void OnSuccess() override final;	
-		
-	openpal::IExecutor* pExecutor;
+	virtual void OnSuccess(const openpal::MonotonicTimestamp& now) override final;
+			
 	openpal::TimeDuration period;
 	openpal::TimeDuration retryDelay;
 	openpal::MonotonicTimestamp expiration;

@@ -140,6 +140,7 @@
     <ClInclude Include="src\opendnp3\master\IScheduleCallback.h" />
     <ClInclude Include="src\opendnp3\master\ITaskLock.h" />
     <ClInclude Include="src\opendnp3\master\NullResponseTask.h" />
+    <ClInclude Include="src\opendnp3\master\PollTaskBase.h" />
     <ClInclude Include="src\opendnp3\master\UserPollTask.h" />
     <ClInclude Include="src\opendnp3\master\StartupIntegrityPoll.h" />
     <ClInclude Include="src\opendnp3\master\ISOEHandler.h" />

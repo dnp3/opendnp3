@@ -3,7 +3,7 @@
 
 using namespace System::Collections::ObjectModel;
 
-#include <opendnp3/master/IPollListener.h>
+
 #include <vcclr.h>
 
 #include "MasterScanAdapter.h"

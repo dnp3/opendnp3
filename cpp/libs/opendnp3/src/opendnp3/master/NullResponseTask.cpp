@@ -30,32 +30,30 @@
 namespace opendnp3
 {
 
-/*
 NullResponseTask::NullResponseTask(openpal::Logger* pLogger_) : SingleResponseTask(pLogger_)
 {}
 	
-TaskStatus NullResponseTask::OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler)
+TaskState NullResponseTask::OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now)
 {
 	if (objects.IsEmpty())
 	{
 		if (response.IIN.HasRequestError())
-		{
-			return TaskStatus::FAIL;
+		{			
+			return TaskState::COMPLETE;
 		}
 		else
 		{		
-			this->OnSuccess(params, scheduler);
-			return TaskStatus::SUCCESS;
+			this->OnSuccess(now);
+			return TaskState::COMPLETE;
 		}		
 	}
 	else
 	{
 		FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Ignoring trailing objects headers for task: %s", this->Name());		
-		this->OnTimeoutOrBadControlOctet(params, scheduler);
-		return TaskStatus::FAIL;
+		this->OnTimeoutOrBadControlOctet(now);
+		return TaskState::COMPLETE;
 	}
 }
-*/
 
 } //end ns
 

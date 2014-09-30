@@ -32,36 +32,36 @@
 
 #include <openpal/logging/LogMacros.h>
 
+using namespace openpal;
+
 namespace opendnp3
 {
 
-/*
-StartupIntegrityPoll::StartupIntegrityPoll(ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_) :
-	PollTaskBase(pSOEHandler_, pLogger_)	
+StartupIntegrityPoll::StartupIntegrityPoll(const MasterParams& params, ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_) :
+	PollTaskBase("Startup Integrity Poll", pSOEHandler_, pLogger_),
+	expiration(0),
+	pParams(&params)
 {
 	
 }
-	
-void StartupIntegrityPoll::BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq)
+
+void StartupIntegrityPoll::BuildRequest(APDURequest& request, uint8_t seq)
 {
 	rxCount = 0;
-	build::ReadIntegrity(request, params.startupIntegrityClassMask, seq);
-}
-
-bool StartupIntegrityPoll::Enabled(const MasterParams& params)
-{
-	return params.startupIntegrityClassMask.HasAnyClass();
+	build::ReadIntegrity(request, pParams->startupIntegrityClassMask, seq);
+	request.SetFunction(FunctionCode::READ);
+	request.SetControl(AppControlField::Request(seq));
 }
 	
-void StartupIntegrityPoll::OnFailure(const MasterParams& params, IMasterScheduler& scheduler)
+void StartupIntegrityPoll::OnFailure(const openpal::MonotonicTimestamp& now)
 {
-	scheduler.SetBlocking(*this, params.taskRetryPeriod);
+	expiration = now.Add(pParams->taskRetryPeriod);
 }
 
-void StartupIntegrityPoll::OnSuccess(const MasterParams&, IMasterScheduler& scheduler)
+void StartupIntegrityPoll::OnSuccess(const openpal::MonotonicTimestamp& now)
 {
-	
+	expiration = MonotonicTimestamp::Max();
 }
-*/
+
 
 } //end ns

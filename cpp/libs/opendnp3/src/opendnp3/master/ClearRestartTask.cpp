@@ -27,46 +27,55 @@
 
 #include <openpal/logging/LogMacros.h>
 
+using namespace openpal;
+
 namespace opendnp3
 {
 
-/*
-ClearRestartTask::ClearRestartTask(openpal::Logger* pLogger_) :  SingleResponseTask(pLogger_)	
+ClearRestartTask::ClearRestartTask(const MasterParams& params, openpal::Logger* pLogger_) :
+	SingleResponseTask(pLogger_),
+	pParams(&params),
+	expiration(MonotonicTimestamp::Max())
 {
 
 }	
 
-void ClearRestartTask::BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq)
+void ClearRestartTask::BuildRequest(APDURequest& request, uint8_t seq)
 {
 	build::ClearRestartIIN(request, seq);
 }
 
-bool ClearRestartTask::Enabled(const MasterParams& params)
+openpal::MonotonicTimestamp ClearRestartTask::ExpirationTime() const
 {
-	return true;
+	return expiration;
 }
 
-void ClearRestartTask::OnTimeoutOrBadControlOctet(const MasterParams& params, IMasterScheduler& scheduler)
+void ClearRestartTask::OnLowerLayerClose(const openpal::MonotonicTimestamp&)
 {
-	// timeout or bad control octet
-	scheduler.SetBlocking(*this, params.taskRetryPeriod);
+	expiration = MonotonicTimestamp::Max();
+}
+
+void ClearRestartTask::OnTimeoutOrBadControlOctet(const openpal::MonotonicTimestamp& now)
+{
+	expiration = now.Add(pParams->taskRetryPeriod);
 }
 	
-TaskStatus ClearRestartTask::OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler)
+TaskState ClearRestartTask::OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const MonotonicTimestamp& now)
 {
 	if (response.IIN.IsSet(IINBit::DEVICE_RESTART))
 	{
 		// we tried to clear the restart, but the device responded with the restart still set
 		SIMPLE_LOGGER_BLOCK(pLogger, flags::ERR, "Clear restart task failed to clear restart bit");	
-		scheduler.SetBlocking(*this, params.taskRetryPeriod);
-		return TaskStatus::FAIL;
+		expiration = now.Add(pParams->taskRetryPeriod);
+		return TaskState::COMPLETE;
 	}
 	else
 	{
-		return TaskStatus::SUCCESS;
+		expiration = MonotonicTimestamp::Max();
+		return TaskState::COMPLETE;
 	}
 }
-*/
+
 
 } //end ns
 

@@ -31,28 +31,37 @@ class ISOEHandler;
 /**
  * A generic interface for defining master request/response style tasks
  */
-/*
 class StartupIntegrityPoll : public PollTaskBase
 {	
 
 public:	
 
-	StartupIntegrityPoll(ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_);
+	StartupIntegrityPoll(const MasterParams& params, ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_);
+
+	virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;
 	
-	virtual char const* Name() const override final { return "Startup Integrity Poll"; }
-	
-	virtual void BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq) override final;	
-	
-	virtual bool Enabled(const MasterParams& params) override final;
+	virtual bool DeleteOnCompletion() override final { return false; }	
+
+	virtual int Priority() const override final { return priority::INTEGRITY_POLL; }
+
+	virtual openpal::MonotonicTimestamp ExpirationTime() const override final;
+
+	virtual bool BlocksLowerPriority() const { return true; }
+
+	virtual void OnLowerLayerClose(const openpal::MonotonicTimestamp& now) override final;
+			
 
 private:
 
-	virtual void OnFailure(const MasterParams& params, IMasterScheduler& scheduler) override final;
+	openpal::MonotonicTimestamp expiration;
+	const MasterParams* pParams;
 
-	virtual void OnSuccess(const MasterParams& params, IMasterScheduler& scheduler) override final;
+	virtual void OnFailure(const openpal::MonotonicTimestamp& now) override final;
+
+	virtual void OnSuccess(const openpal::MonotonicTimestamp& now) override final;
 	
 };
-*/
+
 
 } //end ns
 

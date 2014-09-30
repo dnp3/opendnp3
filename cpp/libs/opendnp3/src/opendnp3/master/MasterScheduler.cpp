@@ -49,29 +49,89 @@ MasterScheduler::MasterScheduler(	openpal::Logger* pLogger,
 
 IMasterTask* MasterScheduler::Start()
 {	
-	auto pTask = NextTask();
+	auto pTask = PopNextTask();
 	this->pCurrentTask = pTask;
 	return pTask;
 }
 
-bool MasterScheduler::TaskLessThan(IMasterTask* lhs, IMasterTask* rhs)
+int MasterScheduler::Compare(const MonotonicTimestamp& now, IMasterTask* lhs, IMasterTask* rhs)
 {
-	if (lhs->IsEnabled())
+	// if they're both enabled we compare based on
+	// blocking/priority/expiration time
+	if (lhs->IsEnabled() && rhs->IsEnabled())
 	{
-		if (rhs->IsEnabled())
+		if ((lhs->Priority() > rhs->Priority()) && rhs->BlocksLowerPriority())
 		{
-			
+			return 1; // rhs greater
 		}
-		else
+		else if (rhs->Priority() < lhs->Priority() && lhs->BlocksLowerPriority())
 		{
+			return -1; // lhs greater
+		}
+		else // equal priority or neither task blocks lower priority tasks, compare based on time
+		{
+			auto tlhs = lhs->ExpirationTime();
+			auto trhs = rhs->ExpirationTime();
+			auto lhsExpired = tlhs.milliseconds <= now.milliseconds;
+			auto rhsExpired = trhs.milliseconds <= now.milliseconds;
 
+			if (lhsExpired && rhsExpired)
+			{
+				// both expired, compare based on priority				
+				return lhs->Priority() - rhs->Priority();
+			}
+			else
+			{
+				if (tlhs.milliseconds < trhs.milliseconds)
+				{
+					return -1;
+				}
+				else if (trhs.milliseconds < tlhs.milliseconds)
+				{
+					return 1;
+				}
+				else
+				{
+					// if equal times, compare based on priority
+					return lhs->Priority() - rhs->Priority();
+				}
+			}			
 		}
+	}
+	else 
+	{
+		// always prefer the enabled task over the one that isn't
+		return rhs->IsEnabled() ? 1 : -1;
 	}
 }
 
-IMasterTask* MasterScheduler::NextTask()
+std::vector<IMasterTask*>::iterator MasterScheduler::GetNextTask()
 {
-	auto elem = std::max_element(tasks.begin(), tasks.end(), TaskLessThan);
+	auto runningBest = tasks.begin();
+	
+	if (!tasks.empty())	
+	{
+		auto now = pExecutor->GetTime();
+		auto current = tasks.begin();
+		++current;
+
+		for (; current != tasks.end(); ++current)
+		{
+			auto cmp = Compare(now, *runningBest, *current);
+			if (cmp > 0)
+			{
+				runningBest = current;
+			}
+		}
+	}
+	
+
+	return runningBest;
+}
+
+IMasterTask* MasterScheduler::PopNextTask()
+{		
+	auto elem = GetNextTask();
 
 	if (elem == tasks.end())
 	{

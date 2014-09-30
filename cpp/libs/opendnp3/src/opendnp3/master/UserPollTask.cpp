@@ -26,8 +26,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-UserPollTask::UserPollTask(
-	openpal::IExecutor& executor,
+UserPollTask::UserPollTask(	
 	const APDUBuilder& builder,
 	const std::string& name,
 	const openpal::TimeDuration& period_,
@@ -35,21 +34,20 @@ UserPollTask::UserPollTask(
 	ISOEHandler* pSOEHandler,
 	openpal::Logger* pLogger
 ) :
-	PollTaskBase(builder, name, pSOEHandler, pLogger),
-	pExecutor(&executor),
+	PollTaskBase(builder, name, pSOEHandler, pLogger),	
 	period(period_),
 	retryDelay(retryDelay_),
 	expiration(MonotonicTimestamp::Min())
 {}
 		
-void UserPollTask::OnFailure()
+void UserPollTask::OnFailure(const openpal::MonotonicTimestamp& now)
 {	
-	expiration = retryDelay.IsNegative() ? MonotonicTimestamp::Max() : pExecutor->GetTime().Add(retryDelay);
+	expiration = retryDelay.IsNegative() ? MonotonicTimestamp::Max() : now.Add(retryDelay);
 }
 
-void UserPollTask::OnSuccess()
+void UserPollTask::OnSuccess(const openpal::MonotonicTimestamp& now)
 {	
-	expiration = period.IsNegative() ? MonotonicTimestamp::Max() : pExecutor->GetTime().Add(period);
+	expiration = period.IsNegative() ? MonotonicTimestamp::Max() : now.Add(period);
 }
 
 

@@ -85,9 +85,11 @@ public:
 
 private:
 
-	static bool TaskLessThan(IMasterTask* lhs, IMasterTask* rhs);
+	static int Compare(const openpal::MonotonicTimestamp& now, IMasterTask* lhs, IMasterTask* rhs);
 
-	IMasterTask* NextTask();
+	std::vector<IMasterTask*>::iterator GetNextTask();
+
+	IMasterTask* PopNextTask();
 
 	
 

@@ -34,8 +34,7 @@ PollTaskBase::PollTaskBase(
 		const APDUBuilder& builder_,
 		const std::string& name_,
 		ISOEHandler* pSOEHandler_,
-		openpal::Logger* pLogger_) :
-	builder(builder_),
+		openpal::Logger* pLogger_) :	
 	name(name_),
 	pSOEHandler(pSOEHandler_),
 	pLogger(pLogger_),
@@ -47,48 +46,50 @@ PollTaskBase::PollTaskBase(
 void PollTaskBase::BuildRequest(APDURequest& request, uint8_t seq)
 {
 	rxCount = 0;
-	builder(request);
+	builder(request, seq);
 	request.SetFunction(FunctionCode::READ);
 	request.SetControl(AppControlField::Request(seq));	
 }
 
+virtual const char* PollTaskBase::Name() const override final;
+
 	
-TaskState PollTaskBase::OnResponse(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects)
+TaskState PollTaskBase::OnResponse(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now)
 {
 	if (header.control.FIR)
 	{
 		if (rxCount > 0)
 		{
 			SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Ignoring unexpected FIR frame");
-			this->OnFailure();
+			this->OnFailure(now);
 			return TaskState::SCHEDULED;
 		}
 		else
 		{			
-			return ProcessMeasurements(header, objects);
+			return ProcessMeasurements(header, objects, now);
 		}
 	}
 	else
 	{
 		if (rxCount > 0)
 		{			
-			return ProcessMeasurements(header, objects);
+			return ProcessMeasurements(header, objects, now);
 		}
 		else
 		{	
 			SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Ignoring unexpected non-FIR frame");			
-			this->OnFailure();			
+			this->OnFailure(now);			
 			return TaskState::SCHEDULED;
 		}
 	}
 }
 
-bool PollTaskBase::OnResponseTimeout()
+bool PollTaskBase::OnResponseTimeout(const openpal::MonotonicTimestamp& now)
 {	
 	return false;
 }
 
-TaskState PollTaskBase::ProcessMeasurements(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects)
+TaskState PollTaskBase::ProcessMeasurements(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now)
 {	
 	++rxCount;
 

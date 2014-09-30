@@ -36,7 +36,7 @@
 namespace opendnp3
 {
 
-typedef std::function<void(APDURequest&)> APDUBuilder;
+typedef std::function<void(APDURequest&, uint8_t seq)> APDUBuilder;
 
 /**
  * A generic interface for defining master request/response style tasks
@@ -46,11 +46,17 @@ class IMasterTask
 	
 public:
 
+	/*
+	* Describes whether the framework should delete the instance (true) or if
+	* the lifecycle is managed elsewhere.
+	*/
+	virtual bool DeleteOnCompletion() = 0;
+
 	/**	
 	*
 	* @return	the name of the task
 	*/
-	virtual char const* Name() const = 0;	
+	virtual char const* Name() const = 0;		
 
 	/*
 	* The task's priority. Lower numbers are higher priority.
@@ -78,19 +84,19 @@ public:
 	 * Handler for responses
 	 *	 	 	
 	 */
-	virtual TaskState OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects) = 0;
+	virtual TaskState OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now) = 0;
 	
 	/**
 	 * Called when a response times out.
 	 * @return true if the task is rescheduled. False if it is complete and can be deleted.
 	 */
-	virtual bool OnResponseTimeout() = 0;
+	virtual bool OnResponseTimeout(const openpal::MonotonicTimestamp& now) = 0;
 
 	/**
 	* Called when the layer closes while the task is executing.
 	* The task can always be deleted when this event happens.
 	*/
-	virtual void OnLowerLayerClose() = 0;
+	virtual void OnLowerLayerClose(const openpal::MonotonicTimestamp& now) = 0;
 
 	/*
 	* Helper function that determines if the tasks is enabled. Setting the expiration time to max (infinity)

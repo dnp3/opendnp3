@@ -114,9 +114,11 @@ IMasterState* MasterStateWaitForResponse::OnResponse(MasterContext* pContext, co
 	{
 		pContext->CancelResponseTimer();
 
-		pContext->solSeq = AppControlField::NextSeq(pContext->solSeq);		
+		pContext->solSeq = AppControlField::NextSeq(pContext->solSeq);	
+
+		auto now = pContext->pExecutor->GetTime();
 		
-		auto result = pContext->pActiveTask->OnResponse(response, objects);
+		auto result = pContext->pActiveTask->OnResponse(response, objects, now);
 
 		if (response.control.CON) // TODO evaluate if reponse was procesed before confirming && pContext->CanConfirmResponse(result))
 		{
@@ -147,7 +149,8 @@ IMasterState* MasterStateWaitForResponse::OnResponse(MasterContext* pContext, co
 IMasterState* MasterStateWaitForResponse::OnResponseTimeout(MasterContext* pContext)
 {	
 	pContext->pResponseTimer = nullptr;
-	if (!pContext->pActiveTask->OnResponseTimeout())
+	auto now = pContext->pExecutor->GetTime();
+	if (!pContext->pActiveTask->OnResponseTimeout(now))
 	{
 		// TODO delete this task
 	}

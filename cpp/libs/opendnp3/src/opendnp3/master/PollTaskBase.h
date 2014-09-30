@@ -37,24 +37,23 @@ class PollTaskBase : public IMasterTask, openpal::Uncopyable
 public:		
 
 	PollTaskBase(
-		const APDUBuilder& builder_,
 		const std::string& name_,
 		ISOEHandler* pSOEHandler_,
-		openpal::Logger* pLogger_);
+		openpal::Logger* pLogger_);	
 
-	virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;
+	virtual const char* Name() const override final;
 	
-	virtual TaskState OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects) override final;
+	virtual TaskState OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now) override final;
 	
-	virtual bool OnResponseTimeout() override final;	
+	virtual bool OnResponseTimeout(const openpal::MonotonicTimestamp& now) override final;
 
 protected:
 
-	TaskState ProcessMeasurements(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects);
+	TaskState ProcessMeasurements(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now);
 
-	virtual void OnFailure() = 0;
+	virtual void OnFailure(const openpal::MonotonicTimestamp& now) = 0;
 
-	virtual void OnSuccess() = 0;	
+	virtual void OnSuccess(const openpal::MonotonicTimestamp& now) = 0;
 
 	APDUBuilder builder;
 	std::string name;

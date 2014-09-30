@@ -59,7 +59,7 @@ MasterContext::MasterContext(
 	pActiveTask(nullptr),
 	pState(&MasterStateIdle::Instance()),
 	pResponseTimer(nullptr),
-	staticTasks(&logger, SOEHandler, application),
+	staticTasks(params, &logger, SOEHandler, application),
 	scheduler(&logger, staticTasks, executor, *this),
 	txBuffer(params.maxTxFragSize)
 {
@@ -85,9 +85,11 @@ bool MasterContext::OnLayerDown()
 {
 	if (isOnline)
 	{
+		auto now = pExecutor->GetTime();
+
 		if (pActiveTask)
 		{
-			pActiveTask->OnLowerLayerClose();
+			pActiveTask->OnLowerLayerClose(now);
 			pActiveTask = nullptr;
 		}
 
