@@ -34,8 +34,6 @@
 #include "opendnp3/master/IScheduleCallback.h"
 #include "opendnp3/master/TaskBitmask.h"
 
-#include <deque>
-#include <list>
 #include <vector>
 #include <functional>
 
@@ -85,11 +83,13 @@ public:
 	*/
 	void ProcessRxIIN(const IINField& iin, const MasterParams& params);	
 
-private:	
+private:
 
-	IMasterTask* FindTaskToStart();	
+	static bool TaskLessThan(IMasterTask* lhs, IMasterTask* rhs);
 
-	IMasterTask* GetScheduledTask();
+	IMasterTask* NextTask();
+
+	
 
 	bool CanTaskRun(IMasterTask& task, tasks::TaskBitmask bitmask);
 
@@ -120,10 +120,9 @@ private:
 	// ----------- dynamic state -----------
 
 	bool isOnline;	
-	int32_t scheduledTaskMask;
-
 	openpal::ITimer* pTimer;
 	IMasterTask* pCurrentTask;		
+	std::vector<IMasterTask*> tasks;
 };
 
 }

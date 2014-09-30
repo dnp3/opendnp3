@@ -92,6 +92,11 @@ public:
 	*/
 	virtual void OnLowerLayerClose() = 0;
 
+	/*
+	* Helper function that determines if the tasks is enabled. Setting the expiration time to max (infinity)
+	* disables the task.
+	*/
+	bool IsEnabled() const { return !ExpirationTime().IsMax(); }
 };
 
 }

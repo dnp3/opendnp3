@@ -40,8 +40,7 @@ MasterScheduler::MasterScheduler(	openpal::Logger* pLogger,
 	pExecutor(&executor),
 	pCallback(&callback),
 	pStaticTasks(&tasks),
-	isOnline(false),
-	scheduledTaskMask(0),
+	isOnline(false),	
 	pTimer(nullptr),
 	pCurrentTask(nullptr)	
 {
@@ -50,48 +49,39 @@ MasterScheduler::MasterScheduler(	openpal::Logger* pLogger,
 
 IMasterTask* MasterScheduler::Start()
 {	
-	auto pTask = FindTaskToStart();
+	auto pTask = NextTask();
 	this->pCurrentTask = pTask;
 	return pTask;
 }
 
-IMasterTask* MasterScheduler::FindTaskToStart()
-{		
-	auto now = pExecutor->GetTime();	
-	
-	return nullptr;
+bool MasterScheduler::TaskLessThan(IMasterTask* lhs, IMasterTask* rhs)
+{
+	if (lhs->IsEnabled())
+	{
+		if (rhs->IsEnabled())
+		{
+			
+		}
+		else
+		{
+
+		}
+	}
 }
 
-IMasterTask* MasterScheduler::GetScheduledTask()
+IMasterTask* MasterScheduler::NextTask()
 {
-	/*
-	if (CanTaskRun(pStaticTasks->disableUnsol, tasks::DISABLE_UNSOLCITED, params))
-	{
-		return &pStaticTasks->disableUnsol;
-	}
+	auto elem = std::max_element(tasks.begin(), tasks.end(), TaskLessThan);
 
-	if (CanTaskRun(pStaticTasks->clearRestartTask, tasks::CLEAR_RESTART_IIN, params))
+	if (elem == tasks.end())
 	{
-		return &pStaticTasks->clearRestartTask;
+		return nullptr;
 	}
-
-	if (CanTaskRun(pStaticTasks->startupIntegrity, tasks::STARTUP_INTEGRITY, params))
+	else
 	{
-		return &pStaticTasks->startupIntegrity;
-	}
-
-	if (CanTaskRun(pStaticTasks->serialTimeSync, tasks::TIME_SYNC, params))
-	{
-		return &pStaticTasks->serialTimeSync;
-	}
-
-	if (CanTaskRun(pStaticTasks->enableUnsol, tasks::ENABLE_UNSOLCITED, params))
-	{
-		return &pStaticTasks->enableUnsol;
-	}
-	*/
-	
-	return nullptr;
+		tasks.erase(elem);
+		return *elem;
+	}	
 }
 
 bool MasterScheduler::CanTaskRun(IMasterTask& task, tasks::TaskBitmask bitmask)
@@ -137,11 +127,7 @@ void MasterScheduler::OnLowerLayerUp()
 {
 	if (!isOnline)
 	{
-		isOnline = true;
-
-		this->scheduledTaskMask = tasks::STARTUP_TASK_SEQUENCE;
-
-		auto now = pExecutor->GetTime();			
+		isOnline = true;				
 		
 		pCallback->OnPendingTask();
 	}	
@@ -154,9 +140,7 @@ void MasterScheduler::OnLowerLayerDown()
 	if (isOnline)
 	{
 		isOnline = false;
-		this->CancelScheduleTimer();	
-		this->scheduledTaskMask = 0;
-
+		this->CancelScheduleTimer();		
 		pCurrentTask = nullptr;
 
 		// TODO - fail all tasks		

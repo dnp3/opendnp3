@@ -35,6 +35,16 @@ MonotonicTimestamp MonotonicTimestamp::Min()
 	return MonotonicTimestamp(INT64_MIN);
 }
 
+bool MonotonicTimestamp::IsMax() const
+{
+	return milliseconds == INT64_MAX;
+}
+
+bool MonotonicTimestamp::IsMin() const
+{
+	return milliseconds == INT64_MIN;
+}
+
 MonotonicTimestamp::MonotonicTimestamp() : milliseconds(0)
 {}
 
