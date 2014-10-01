@@ -167,11 +167,7 @@ TEST_CASE(SUITE("ClassScanCanRepeat"))
 	
 	t.exe.RunMany();
 
-	auto scan = t.master.AddClassScan(~0, TimeDuration::Seconds(10));
-	
-	t.exe.AdvanceTime(TimeDuration::Seconds(9));
-	REQUIRE(t.exe.RunMany() == 0);
-	t.exe.AdvanceTime(TimeDuration::Seconds(1));
+	auto scan = t.master.AddClassScan(~0, TimeDuration::Seconds(10));	
 
 	REQUIRE(t.exe.RunMany() > 0);
 
@@ -183,7 +179,7 @@ TEST_CASE(SUITE("ClassScanCanRepeat"))
 
 	// 2nd poll
 	REQUIRE(t.exe.NumPendingTimers() == 1);
-	REQUIRE(t.exe.NextTimerExpiration().milliseconds == 20000);
+	REQUIRE(t.exe.NextTimerExpiration().milliseconds == 10000);
 	t.exe.AdvanceTime(TimeDuration::Seconds(10));
 	REQUIRE(t.exe.RunMany() > 0);
 	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(1));
@@ -238,11 +234,7 @@ TEST_CASE(SUITE("EventPoll"))
 	auto class3 = t.master.AddClassScan(ClassField(ClassField::CLASS_3), TimeDuration::Milliseconds(20));
 
 	t.master.OnLowerLayerUp();		
-	t.exe.RunMany();
-
-	REQUIRE(t.lower.PopWriteAsHex() == "");
 	
-	REQUIRE(t.exe.AdvanceToNextTimer());
 	REQUIRE(t.exe.RunMany() > 0);
 
 	REQUIRE(t.lower.PopWriteAsHex() ==  "C0 01 3C 02 06 3C 03 06");
@@ -252,9 +244,6 @@ TEST_CASE(SUITE("EventPoll"))
 	REQUIRE(t.meas.TotalReceived() == 1);
 	REQUIRE((Binary(true, 0x01) == t.meas.binarySOE[2].meas));
 
-	t.exe.RunMany();
-
-	REQUIRE(t.exe.AdvanceToNextTimer());
 	REQUIRE(t.exe.RunMany() > 0);
 
 	REQUIRE(t.lower.PopWriteAsHex() == "C1 01 3C 04 06");
@@ -281,10 +270,7 @@ TEST_CASE(SUITE("ParsesOctetStringResponseSizeOfOne"))
 	MasterTestObject t(NoStartupTasks());
 	t.master.AddClassScan(~0, TimeDuration::Seconds(1));
 	t.master.OnLowerLayerUp();
-
-	t.exe.RunMany();
-
-	REQUIRE(t.exe.AdvanceToNextTimer());
+	
 	REQUIRE(t.exe.RunMany() > 0);
 
 	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
