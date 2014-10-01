@@ -134,7 +134,6 @@
     <ClInclude Include="src\opendnp3\master\ICommandCallback.h" />
     <ClInclude Include="src\opendnp3\master\ICommandProcessor.h" />
     <ClInclude Include="src\opendnp3\master\IMasterApplication.h" />
-    <ClInclude Include="src\opendnp3\master\IMasterScheduler.h" />
     <ClInclude Include="src\opendnp3\master\IMasterState.h" />
     <ClInclude Include="src\opendnp3\master\IMasterTask.h" />
     <ClInclude Include="src\opendnp3\master\IScheduleCallback.h" />
@@ -155,7 +154,6 @@
     <ClInclude Include="src\opendnp3\master\SingleResponseTask.h" />
     <ClInclude Include="src\opendnp3\master\SerialTimeSyncTask.h" />
     <ClInclude Include="src\opendnp3\master\MasterTasks.h" />
-    <ClInclude Include="src\opendnp3\master\TaskBitmask.h" />
     <ClInclude Include="src\opendnp3\master\TaskPriority.h" />
     <ClInclude Include="src\opendnp3\master\TaskRecord.h" />
     <ClInclude Include="src\opendnp3\master\TaskResult.h" />

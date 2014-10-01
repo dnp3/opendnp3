@@ -32,11 +32,11 @@ class DisableUnsolicitedTask : public NullResponseTask
 
 public:	
 
-	DisableUnsolicitedTask(const MasterParams& params, openpal::Logger* pLogger_);
-
-	virtual bool DeleteOnCompletion() override final { return false; }
+	DisableUnsolicitedTask(const MasterParams& params, openpal::Logger* pLogger_);	
 
 	virtual char const* Name() const override final { return "Disable Unsolicited"; }
+
+	virtual bool IsRecurring() const override final { return true; }
 
 	virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;
 

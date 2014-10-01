@@ -29,6 +29,8 @@
 #include "opendnp3/master/SerialTimeSyncTask.h"
 #include "opendnp3/master/CommandTask.h"
 
+#include "opendnp3/master/MasterScheduler.h"
+
 namespace opendnp3
 {
 
@@ -39,16 +41,14 @@ public:
 
 	MasterTasks(const MasterParams& params, openpal::Logger* pLogger, ISOEHandler& SOEHandler, openpal::IUTCTimeSource& timeSource);
 
-	// reconfigurable task for doing commands
-	//CommandTask commandTask;	
-
+	void Initialize(MasterScheduler& scheduler);
+	
 	// master tasks that can be "failed" (startup and in response to IIN bits)
 	EnableUnsolicitedTask enableUnsol;
-	ClearRestartTask clearRestartTask;
+	ClearRestartTask clearRestart;
 	StartupIntegrityPoll startupIntegrity;
 	DisableUnsolicitedTask disableUnsol;	
 	//SerialTimeSyncTask serialTimeSync;
-	
 };
 
 }

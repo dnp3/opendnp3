@@ -38,7 +38,7 @@ public:
 	
 	virtual TaskState OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now) override final;
 
-	virtual bool OnResponseTimeout(const openpal::MonotonicTimestamp& now) override final;
+	virtual void OnResponseTimeout(const openpal::MonotonicTimestamp& now) override final;
 
 protected:
 

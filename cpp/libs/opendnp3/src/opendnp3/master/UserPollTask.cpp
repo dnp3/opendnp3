@@ -27,14 +27,15 @@ namespace opendnp3
 {
 
 UserPollTask::UserPollTask(	
-	const APDUBuilder& builder,
+	const APDUBuilder& builder_,
 	const std::string& name,
 	const openpal::TimeDuration& period_,
 	const openpal::TimeDuration& retryDelay_,
 	ISOEHandler* pSOEHandler,
 	openpal::Logger* pLogger
 ) :
-	PollTaskBase(builder, name, pSOEHandler, pLogger),	
+	PollTaskBase(name, pSOEHandler, pLogger),	
+	builder(builder_),
 	period(period_),
 	retryDelay(retryDelay_),
 	expiration(MonotonicTimestamp::Min())

@@ -28,7 +28,9 @@
 #include <openpal/container/Queue.h>
 #include <openpal/container/DynamicBuffer.h>
 
+#include "opendnp3/master/ICommandProcessor.h"
 #include "opendnp3/master/MasterScheduler.h"
+#include "opendnp3/master/MasterTasks.h"
 #include "opendnp3/master/IMasterState.h"
 #include "opendnp3/master/ITaskLock.h"
 #include "opendnp3/master/IMasterApplication.h"
@@ -66,7 +68,7 @@ class MasterContext : public ICommandProcessor, public IScheduleCallback
 	bool isSending;
 	uint8_t solSeq;
 	uint8_t unsolSeq;
-	IMasterTask* pActiveTask;
+	openpal::ManagedPtr<IMasterTask> pActiveTask;
 	IMasterState* pState;
 	openpal::ITimer* pResponseTimer;
 	MasterTasks staticTasks;
@@ -108,17 +110,16 @@ class MasterContext : public ICommandProcessor, public IScheduleCallback
 	virtual void DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback) override final;
 
 	// ----- Helpers accessible by the state objects -----
-	void StartTask(IMasterTask* pTask);
+	void StartTask(IMasterTask& task);
 	bool CancelResponseTimer();
 	void QueueConfirm(const APDUHeader& header);
-	void StartResponseTimer();	
+	void StartResponseTimer();
+	void ReleaseActiveTask();
 
 	private:
 	
 	// callback from the scheduler that a task is ready to run	
-	virtual void OnPendingTask() override final;
-
-	void QueueUserTask(const openpal::Function0<IMasterTask*>& action);
+	virtual void OnPendingTask() override final;	
 
 	void OnResponseTimeout();
 
@@ -131,35 +132,33 @@ class MasterContext : public ICommandProcessor, public IScheduleCallback
 	void Transmit(const openpal::ReadOnlyBuffer& output);	
 
 	template <class T>
-	void SelectAndOperateT(const T& command, uint16_t index, ICommandCallback& callback);
+	void SelectAndOperateT(const T& command, uint16_t index, ICommandCallback& callback, const DNP3Serializer<T>& serializer);
 
 	template <class T>
-	void DirectOperateT(const T& command, uint16_t index, ICommandCallback& callback);
+	void DirectOperateT(const T& command, uint16_t index, ICommandCallback& callback, const DNP3Serializer<T>& serializer);
 };
 
 template <class T>
-void MasterContext::SelectAndOperateT(const T& command, uint16_t index, ICommandCallback& callback)
+void MasterContext::SelectAndOperateT(const T& command, uint16_t index, ICommandCallback& callback, const DNP3Serializer<T>& serializer)
 {
 	if (isOnline)
 	{
-		// TODO create a dynamically allocated command task and queue it on the scheduler
-		callback.OnComplete(CommandResponse(CommandResult::NO_COMMS));		
+		scheduler.Schedule(ManagedPtr<IMasterTask>::Deleted(CommandTask::FSelectAndOperate(command, index, callback, serializer, logger)));
+		this->PostCheckForTask();
 	}
 	else
 	{
-		callback.OnComplete(CommandResponse(CommandResult::NO_COMMS));
-	}
-
-	
+		callback.OnComplete(CommandResponse(CommandResult::NO_COMMS));		
+	}	
 }
 
 template <class T>
-void MasterContext::DirectOperateT(const T& command, uint16_t index, ICommandCallback& callback)
+void MasterContext::DirectOperateT(const T& command, uint16_t index, ICommandCallback& callback, const DNP3Serializer<T>& serializer)
 {
 	if (isOnline)
 	{		
-		// TODO create a dynamically allocated command task and queue it on the scheduler
-		callback.OnComplete(CommandResponse(CommandResult::NO_COMMS));
+		scheduler.Schedule(ManagedPtr<IMasterTask>::Deleted(CommandTask::FDirectOperate(command, index, callback, serializer, logger)));
+		this->PostCheckForTask();
 	}
 	else
 	{

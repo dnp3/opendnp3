@@ -25,14 +25,12 @@
 #include <openpal/executor/Function0.h>
 #include <openpal/executor/IExecutor.h>
 #include <openpal/container/Settable.h>
+#include <openpal/container/ManagedPtr.h>
 
-#include "opendnp3/master/MasterTasks.h"
 #include "opendnp3/master/UserPollTask.h"
 #include "opendnp3/master/IMasterTask.h"
-#include "opendnp3/master/IMasterScheduler.h"
 #include "opendnp3/master/TaskRecord.h"
 #include "opendnp3/master/IScheduleCallback.h"
-#include "opendnp3/master/TaskBitmask.h"
 
 #include <vector>
 #include <functional>
@@ -43,24 +41,24 @@ namespace opendnp3
 class MasterScheduler
 {		
 
-public:
+public:	
 
-	typedef std::function<void (ICommandProcessor&)>  CommandErasure;
-
-	MasterScheduler(	openpal::Logger* pLogger,
-						MasterTasks& tasks,
+	MasterScheduler(	openpal::Logger* pLogger,						
 						openpal::IExecutor& executor,			
 						IScheduleCallback& callback
 					);	
 	
-	bool Demand(IMasterTask* task);
-
 	// ---------- other public functions ----------------
 
-	/**
-	* @return Task to start or nullptr if no tasks are available
+	/*
+	* Add a task to the scheduler
 	*/
-	IMasterTask* Start();
+	void Schedule(openpal::ManagedPtr<IMasterTask> pTask);
+
+	/**
+	* @return Task to start or undefined pointer if no task to start
+	*/
+	openpal::ManagedPtr<IMasterTask> Start();
 
 	/*
 	* Startup
@@ -72,32 +70,13 @@ public:
 	*/
 	void OnLowerLayerDown();	
 
-	/*
-	* Schedule a command to run
-	*/
-	void ScheduleUserTask(IMasterTask* pTask);	
-
-	/*
-	* Called whenever the master receivers an IIN bit so that we can optionally
-	* set certain tasks to run
-	*/
-	void ProcessRxIIN(const IINField& iin, const MasterParams& params);	
-
 private:
 
-	static int Compare(const openpal::MonotonicTimestamp& now, IMasterTask* lhs, IMasterTask* rhs);
+	static int Compare(const openpal::MonotonicTimestamp& now, const IMasterTask& lhs, const IMasterTask& rhs);
 
-	std::vector<IMasterTask*>::iterator GetNextTask();
+	std::vector<openpal::ManagedPtr<IMasterTask>>::iterator GetNextTask(const openpal::MonotonicTimestamp& now);
 
-	IMasterTask* PopNextTask();
-
-	
-
-	bool CanTaskRun(IMasterTask& task, tasks::TaskBitmask bitmask);
-
-	IMasterTask* GetPeriodicTask(const openpal::MonotonicTimestamp& now);	
-
-	void ReportFailure(const CommandErasure& action, CommandResult result);	
+	openpal::ManagedPtr<IMasterTask> PopNextTask();
 	
 	void StartOrRestartTimer(const openpal::MonotonicTimestamp& expiration);
 
@@ -107,24 +86,18 @@ private:
 
 	void OnTimerExpiration();	
 
-	bool CancelScheduleTimer();	
-
-	bool IsTaskActive(IMasterTask* pTask);
-
-	bool IsAnyTaskActive() const;
+	bool CancelScheduleTimer();		
 
 	// ----------- static configuration ---------
 
 	openpal::IExecutor* pExecutor;
 	IScheduleCallback* pCallback;
-	MasterTasks* pStaticTasks;
 
 	// ----------- dynamic state -----------
 
 	bool isOnline;	
-	openpal::ITimer* pTimer;
-	IMasterTask* pCurrentTask;		
-	std::vector<IMasterTask*> tasks;
+	openpal::ITimer* pTimer;	
+	std::vector<openpal::ManagedPtr<IMasterTask>> tasks;
 };
 
 }

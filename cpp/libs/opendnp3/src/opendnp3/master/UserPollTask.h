@@ -55,6 +55,7 @@ private:
 
 	virtual void OnSuccess(const openpal::MonotonicTimestamp& now) override final;
 			
+	APDUBuilder builder;
 	openpal::TimeDuration period;
 	openpal::TimeDuration retryDelay;
 	openpal::MonotonicTimestamp expiration;

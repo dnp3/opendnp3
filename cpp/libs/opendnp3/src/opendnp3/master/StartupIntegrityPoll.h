@@ -22,6 +22,7 @@
 #define OPENDNP3_STARTUPINTEGRITYPOLL_H
 
 #include "opendnp3/master/PollTaskBase.h"
+#include "opendnp3/master/TaskPriority.h"
 
 namespace opendnp3
 {
@@ -38,9 +39,9 @@ public:
 
 	StartupIntegrityPoll(const MasterParams& params, ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_);
 
-	virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;
-	
-	virtual bool DeleteOnCompletion() override final { return false; }	
+	virtual bool IsRecurring() const override final { return true; }
+
+	virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;	
 
 	virtual int Priority() const override final { return priority::INTEGRITY_POLL; }
 

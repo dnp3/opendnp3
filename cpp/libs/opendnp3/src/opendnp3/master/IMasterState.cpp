@@ -58,18 +58,18 @@ IMasterState* MasterStateIdle::OnStart(MasterContext* pContext)
 	{
 		auto pTask = pContext->scheduler.Start();
 		
-		if (pTask)
+		if (pTask.IsDefined())
 		{		
+			pContext->pActiveTask = std::move(pTask);
+
 			if (pContext->pTaskLock->Acquire(*pContext))
 			{
-				FORMAT_LOG_BLOCK(pContext->logger, flags::INFO, "Begining task: %s", pTask->Name());
-				pContext->pActiveTask = pTask;
-				pContext->StartTask(pTask);
+				FORMAT_LOG_BLOCK(pContext->logger, flags::INFO, "Begining task: %s", pContext->pActiveTask->Name());
+				pContext->StartTask(*pContext->pActiveTask);
 				return &MasterStateWaitForResponse::Instance();
 			}
 			else
-			{
-				pContext->pActiveTask = pTask;
+			{				
 				return &MasterStateTaskReady::Instance();
 			}
 		}
@@ -84,7 +84,7 @@ IMasterState* MasterStateIdle::OnStart(MasterContext* pContext)
 
 MasterStateTaskReady MasterStateTaskReady::instance;
 
-IMasterState* MasterStateTaskReady::OnStart(MasterContext*pContext)
+IMasterState* MasterStateTaskReady::OnStart(MasterContext* pContext)
 {
 	if (pContext->isSending)
 	{
@@ -94,7 +94,7 @@ IMasterState* MasterStateTaskReady::OnStart(MasterContext*pContext)
 	{
 		if (pContext->pTaskLock->Acquire(*pContext))
 		{
-			pContext->StartTask(pContext->pActiveTask);
+			pContext->StartTask(*pContext->pActiveTask);
 			return &MasterStateWaitForResponse::Instance();
 		}
 		else
@@ -133,7 +133,7 @@ IMasterState* MasterStateWaitForResponse::OnResponse(MasterContext* pContext, co
 			case(TaskState::REPEAT) :				
 				return MasterStateTaskReady::Instance().OnStart(pContext);
 			default:
-				pContext->pActiveTask = nullptr;
+				pContext->ReleaseActiveTask();												
 				pContext->pTaskLock->Release(*pContext);
 				pContext->PostCheckForTask();
 				return &MasterStateIdle::Instance();
@@ -150,11 +150,8 @@ IMasterState* MasterStateWaitForResponse::OnResponseTimeout(MasterContext* pCont
 {	
 	pContext->pResponseTimer = nullptr;
 	auto now = pContext->pExecutor->GetTime();
-	if (!pContext->pActiveTask->OnResponseTimeout(now))
-	{
-		// TODO delete this task
-	}
-	pContext->pActiveTask = nullptr;
+	pContext->pActiveTask->OnResponseTimeout(now);
+	pContext->ReleaseActiveTask();	
 	pContext->pTaskLock->Release(*pContext);
 	pContext->solSeq = AppControlField::NextSeq(pContext->solSeq);
 	pContext->PostCheckForTask();

@@ -41,9 +41,9 @@ class EnableUnsolicitedTask : public NullResponseTask
 
 public:	
 
-	EnableUnsolicitedTask(const MasterParams& params, openpal::Logger* pLogger_);
+	EnableUnsolicitedTask(const MasterParams& params, openpal::Logger* pLogger_);	
 
-	virtual bool DeleteOnCompletion() override final { return false; }
+	virtual bool IsRecurring() const override final { return true; }
 
 	virtual char const* Name() const override final { return "Enable Unsolicited"; }
 

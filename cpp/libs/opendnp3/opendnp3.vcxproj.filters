@@ -477,9 +477,6 @@
     <ClInclude Include="src\opendnp3\master\IMasterTask.h">
       <Filter>Header\master</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\master\IMasterScheduler.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\master\MasterScheduler.h">
       <Filter>Header\master</Filter>
     </ClInclude>
@@ -581,9 +578,6 @@
     </ClInclude>
     <ClInclude Include="src\opendnp3\gen\PollState.h">
       <Filter>Header\gen</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\TaskBitmask.h">
-      <Filter>Header\master</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\gen\TimeSyncMode.h">
       <Filter>Header\gen</Filter>

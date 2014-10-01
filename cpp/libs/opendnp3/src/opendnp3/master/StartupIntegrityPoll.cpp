@@ -52,6 +52,11 @@ void StartupIntegrityPoll::BuildRequest(APDURequest& request, uint8_t seq)
 	request.SetFunction(FunctionCode::READ);
 	request.SetControl(AppControlField::Request(seq));
 }
+
+openpal::MonotonicTimestamp StartupIntegrityPoll::ExpirationTime() const
+{
+	return pParams->startupIntegrityClassMask.HasAnyClass() ? expiration : MonotonicTimestamp::Max();
+}
 	
 void StartupIntegrityPoll::OnFailure(const openpal::MonotonicTimestamp& now)
 {
@@ -61,6 +66,11 @@ void StartupIntegrityPoll::OnFailure(const openpal::MonotonicTimestamp& now)
 void StartupIntegrityPoll::OnSuccess(const openpal::MonotonicTimestamp& now)
 {
 	expiration = MonotonicTimestamp::Max();
+}
+
+void StartupIntegrityPoll::OnLowerLayerClose(const openpal::MonotonicTimestamp& now)
+{
+	expiration = 0;
 }
 
 

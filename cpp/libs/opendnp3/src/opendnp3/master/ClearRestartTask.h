@@ -35,11 +35,11 @@ class ClearRestartTask : public SingleResponseTask
 
 public:	
 
-	ClearRestartTask(const MasterParams& params, openpal::Logger* pLogger_);
+	ClearRestartTask(const MasterParams& params, openpal::Logger* pLogger_);	
 
-	virtual bool DeleteOnCompletion() override final { return false; }
+	virtual char const* Name() const override final { return "Clear Restart IIN"; }
 
-	virtual char const* Name() const override final { return "Clear Restart IIN"; }	
+	virtual bool IsRecurring() const override final { return true; }
 
 	virtual int Priority() const override final { return priority::CLEAR_RESTART; }
 

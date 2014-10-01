@@ -26,10 +26,7 @@ namespace opendnp3
 
 enum class TaskState
 {
-	/// The task has been (re)scheduled for execution
-	SCHEDULED,
-
-	/// The task is complete and can be deleted
+	/// This run of the task is complete
 	COMPLETE,
 
 	/// The task should repeat the format, transmit, and await response sequence

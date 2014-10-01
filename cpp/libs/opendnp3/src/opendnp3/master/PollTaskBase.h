@@ -45,7 +45,7 @@ public:
 	
 	virtual TaskState OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now) override final;
 	
-	virtual bool OnResponseTimeout(const openpal::MonotonicTimestamp& now) override final;
+	virtual void OnResponseTimeout(const openpal::MonotonicTimestamp& now) override final;
 
 protected:
 
@@ -54,8 +54,7 @@ protected:
 	virtual void OnFailure(const openpal::MonotonicTimestamp& now) = 0;
 
 	virtual void OnSuccess(const openpal::MonotonicTimestamp& now) = 0;
-
-	APDUBuilder builder;
+	
 	std::string name;
 	ISOEHandler* pSOEHandler;
 

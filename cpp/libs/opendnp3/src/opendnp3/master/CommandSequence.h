@@ -48,17 +48,12 @@ template <class CommandType>
 class CommandSequence : public ICommandSequence
 {
 public:
-	CommandSequence(openpal::Logger logger, const DNP3Serializer<CommandType>& serializer_) :
+	CommandSequence(openpal::Logger logger, const DNP3Serializer<CommandType>& serializer_, const CommandType& value, uint16_t index) :		
 		ICommandSequence(logger),
-		serializer(serializer_)
-	{}
-
-	void Configure(const CommandType& value, uint16_t index)
-	{
-		this->Reset(); // resets all state inside the base class
-		response = CommandResponse(CommandResult::BAD_RESPONSE);
-		command = IndexedValue<CommandType, uint16_t>(value, index);
-	}
+		serializer(serializer_),
+		command(value, index),
+		response(CommandResponse(CommandResult::BAD_RESPONSE))
+	{}	
 
 	virtual void _OnIndexPrefix(const HeaderRecord&, const IterableBuffer<IndexedValue<CommandType, uint16_t>>& meas)
 	{
@@ -99,9 +94,9 @@ public:
 	}
 
 private:
-	CommandResponse response;
-	IndexedValue<CommandType, uint16_t> command;
 	DNP3Serializer<CommandType> serializer;
+	IndexedValue<CommandType, uint16_t> command;
+	CommandResponse response;	
 };
 
 

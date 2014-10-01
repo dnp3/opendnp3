@@ -31,28 +31,21 @@ namespace opendnp3
 {
 
 PollTaskBase::PollTaskBase(
-		const APDUBuilder& builder_,
 		const std::string& name_,
 		ISOEHandler* pSOEHandler_,
 		openpal::Logger* pLogger_) :	
 	name(name_),
 	pSOEHandler(pSOEHandler_),
 	pLogger(pLogger_),
-	rxCount(0)	
+	rxCount(0)
 {
 	
 }
 
-void PollTaskBase::BuildRequest(APDURequest& request, uint8_t seq)
+const char* PollTaskBase::Name() const
 {
-	rxCount = 0;
-	builder(request, seq);
-	request.SetFunction(FunctionCode::READ);
-	request.SetControl(AppControlField::Request(seq));	
+	return name.empty() ? "user poll" : name.c_str();
 }
-
-virtual const char* PollTaskBase::Name() const override final;
-
 	
 TaskState PollTaskBase::OnResponse(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now)
 {
@@ -62,7 +55,7 @@ TaskState PollTaskBase::OnResponse(const APDUResponseHeader& header, const openp
 		{
 			SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Ignoring unexpected FIR frame");
 			this->OnFailure(now);
-			return TaskState::SCHEDULED;
+			return TaskState::COMPLETE;
 		}
 		else
 		{			
@@ -79,14 +72,14 @@ TaskState PollTaskBase::OnResponse(const APDUResponseHeader& header, const openp
 		{	
 			SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Ignoring unexpected non-FIR frame");			
 			this->OnFailure(now);			
-			return TaskState::SCHEDULED;
+			return TaskState::COMPLETE;
 		}
 	}
 }
 
-bool PollTaskBase::OnResponseTimeout(const openpal::MonotonicTimestamp& now)
+void PollTaskBase::OnResponseTimeout(const openpal::MonotonicTimestamp& now)
 {	
-	return false;
+	this->OnFailure(now);	
 }
 
 TaskState PollTaskBase::ProcessMeasurements(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now)
@@ -96,7 +89,8 @@ TaskState PollTaskBase::ProcessMeasurements(const APDUResponseHeader& header, co
 	if (MeasurementHandler::ProcessMeasurements(objects, pLogger, pSOEHandler))
 	{	
 		if (header.control.FIN)
-		{									
+		{								
+			this->OnSuccess(now);
 			return TaskState::COMPLETE;
 		}
 		else
@@ -105,9 +99,9 @@ TaskState PollTaskBase::ProcessMeasurements(const APDUResponseHeader& header, co
 		}		
 	}
 	else
-	{		
-		// TODO - reschedule
-		TaskState::SCHEDULED;
+	{				
+		this->OnFailure(now);
+		TaskState::COMPLETE;
 	}
 }
 

@@ -20,14 +20,9 @@
  */
 #include "CommandTask.h"
 
-
 #include <openpal/logging/LogMacros.h>
 
 #include "opendnp3/app/APDUParser.h"
-
-#include "opendnp3/objects/Group12.h"
-#include "opendnp3/objects/Group41.h"
-
 #include "opendnp3/LogLevels.h"
 
 using namespace openpal;
@@ -35,16 +30,10 @@ using namespace openpal;
 namespace opendnp3
 {
 
-/*
-CommandTask::CommandTask(openpal::Logger* pLogger_) :
-	pLogger(pLogger_),
-	pCallback(nullptr),
-	pActiveSequence(nullptr),	
-	crobSeq(*pLogger_, Group12Var1::Inst()),
-	analogInt32Seq(*pLogger_, Group41Var1::Inst()),
-	analogInt16Seq(*pLogger_, Group41Var2::Inst()),
-	analogFloat32Seq(*pLogger_, Group41Var3::Inst()),
-	analogDouble64Seq(*pLogger_, Group41Var4::Inst())
+CommandTask::CommandTask(ICommandSequence* pSequence_, ICommandCallback& callback, openpal::Logger logger_) :
+	logger(logger_),
+	pCallback(&callback),
+	pSequence(pSequence_)
 {
 
 }
@@ -70,132 +59,71 @@ void CommandTask::LoadDirectOperate()
 	functionCodes.push_back(FunctionCode::DIRECT_OPERATE);
 }
 
-void CommandTask::SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback& callback)
+void CommandTask::BuildRequest(APDURequest& request, uint8_t seq)
 {
-	this->LoadSelectAndOperate();
-	this->Configure(crobSeq, command, index, callback);
-}
-
-void CommandTask::SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback& callback)
-{
-	this->LoadSelectAndOperate();
-	this->Configure(analogInt16Seq, command, index, callback);
-}
-
-void CommandTask::SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback& callback)
-{
-	this->LoadSelectAndOperate();
-	this->Configure(analogInt32Seq, command, index, callback);
-}
-
-void CommandTask::SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback& callback)
-{
-	this->LoadSelectAndOperate();
-	this->Configure(analogFloat32Seq, command, index, callback);
-}
-
-void CommandTask::SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback)
-{
-	this->LoadSelectAndOperate();
-	this->Configure(analogDouble64Seq, command, index, callback);
-}
-
-void CommandTask::DirectOperate(const ControlRelayOutputBlock& command, uint16_t index,  ICommandCallback& callback)
-{
-	this->LoadDirectOperate();
-	this->Configure(crobSeq, command, index, callback);
-}
-
-void CommandTask::DirectOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback& callback)
-{
-	this->LoadDirectOperate();
-	this->Configure(analogInt16Seq, command, index, callback);
-}
-
-void CommandTask::DirectOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback& callback)
-{
-	this->LoadDirectOperate();
-	this->Configure(analogInt32Seq, command, index, callback);
-}
-
-void CommandTask::DirectOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback& callback)
-{
-	this->LoadDirectOperate();
-	this->Configure(analogFloat32Seq, command, index, callback);
-}
-
-void CommandTask::DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback)
-{
-	this->LoadDirectOperate();
-	this->Configure(analogDouble64Seq, command, index, callback);
-}
-
-void CommandTask::BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq)
-{
-	if (!functionCodes.empty() && pActiveSequence)
+	if (!functionCodes.empty())
 	{		
 		request.SetFunction(functionCodes.front());
 		functionCodes.pop_front();
 		request.SetControl(AppControlField::Request(seq));
-		pActiveSequence->FormatRequestHeader(request);		
+		pSequence->FormatRequestHeader(request);		
 	}
 }
 
-TaskStatus CommandTask::OnResponse(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler)
+TaskState CommandTask::OnResponse(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now)
 {
 	if (header.control.FIR && header.control.FIN)
 	{
-		return this->OnSingleResponse(header, objects, params, scheduler);
+		return this->OnSingleResponse(header, objects, now);
 	}
 	else
 	{
-		SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Ignoring unexpected response with FIR/FIN not set");
+		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Ignoring unexpected response with FIR/FIN not set");
 		this->Callback(CommandResponse(CommandResult::BAD_RESPONSE));		
-		return TaskStatus::FAIL;
+		return TaskState::COMPLETE;
 	}
 }
 
-void CommandTask::OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler)
+void CommandTask::OnResponseTimeout(const openpal::MonotonicTimestamp&)
 {
 	this->Callback(CommandResponse(CommandResult::TIMEOUT));
 }
 
-void CommandTask::OnLowerLayerClose()
+void CommandTask::OnLowerLayerClose(const openpal::MonotonicTimestamp& now)
 {	
 	this->Callback(CommandResponse::NoResponse(CommandResult::NO_COMMS));
 }
 
-TaskStatus CommandTask::OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler)
+TaskState CommandTask::OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now)
 {
-	auto result = APDUParser::ParseTwoPass(objects, pActiveSequence, pLogger);
+	auto result = APDUParser::ParseTwoPass(objects, pSequence.get(), &logger);
 	if(result == APDUParser::Result::OK)
 	{
 		if(functionCodes.empty()) // we're done
 		{
-			auto commandResponse = pActiveSequence->Validate();
+			auto commandResponse = pSequence->Validate();
 			this->Callback(commandResponse);			
-			return TaskStatus::SUCCESS;
+			return TaskState::COMPLETE;
 		}
 		else // we may have more depending on response
 		{
-			auto commandResponse = pActiveSequence->Validate();
+			auto commandResponse = pSequence->Validate();
 			if (commandResponse == CommandResponse::Success)
 			{				
-				return TaskStatus::REPEAT;
+				return TaskState::REPEAT;
 			}
 			else
 			{
 				this->Callback(commandResponse);  // something failed, end the task early				
-				return TaskStatus::FAIL;
+				return TaskState::COMPLETE;
 			}
 		}
 	}
 	else
 	{		
 		this->Callback(CommandResponse(CommandResult::BAD_RESPONSE));
-		return TaskStatus::FAIL;
+		return TaskState::COMPLETE;
 	}
 }
-*/
 
 } //ens ns

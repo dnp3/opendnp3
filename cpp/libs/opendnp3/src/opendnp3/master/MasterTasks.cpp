@@ -21,18 +21,28 @@
 
 #include "MasterTasks.h"
 
+using namespace openpal;
+
 namespace opendnp3
 {
 
 MasterTasks::MasterTasks(const MasterParams& params, openpal::Logger* pLogger, ISOEHandler& SOEHandler, openpal::IUTCTimeSource& timeSource) :
 enableUnsol(params, pLogger),
-clearRestartTask(params, pLogger),
+clearRestart(params, pLogger),
 startupIntegrity(params, &SOEHandler, pLogger),
 disableUnsol(params, pLogger)
 //serialTimeSync(pLogger, &timeSource),
 //commandTask(pLogger)
 {
 	
+}
+
+void MasterTasks::Initialize(MasterScheduler& scheduler)
+{
+	scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(&enableUnsol));
+	scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(&clearRestart));
+	scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(&startupIntegrity));
+	scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(&disableUnsol));
 }
 
 }

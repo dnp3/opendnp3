@@ -29,7 +29,6 @@
 
 #include "opendnp3/master/MasterParams.h"
 #include "opendnp3/master/TaskResult.h"
-#include "opendnp3/master/IMasterScheduler.h"
 
 #include <functional>
 
@@ -44,13 +43,7 @@ typedef std::function<void(APDURequest&, uint8_t seq)> APDUBuilder;
 class IMasterTask
 {
 	
-public:
-
-	/*
-	* Describes whether the framework should delete the instance (true) or if
-	* the lifecycle is managed elsewhere.
-	*/
-	virtual bool DeleteOnCompletion() = 0;
+public:	
 
 	/**	
 	*
@@ -68,6 +61,12 @@ public:
 	* tasks cannot run until this task completes
 	*/
 	virtual bool BlocksLowerPriority() const = 0;
+
+	/*
+	* Indicates if the task should be rescheduled (true) or discarded
+	* after a single execution (false)
+	*/
+	virtual bool IsRecurring() const = 0;
 
 	/**
 	* The time when this task can run again.
@@ -87,10 +86,9 @@ public:
 	virtual TaskState OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now) = 0;
 	
 	/**
-	 * Called when a response times out.
-	 * @return true if the task is rescheduled. False if it is complete and can be deleted.
+	 * Called when a response times out	 
 	 */
-	virtual bool OnResponseTimeout(const openpal::MonotonicTimestamp& now) = 0;
+	virtual void OnResponseTimeout(const openpal::MonotonicTimestamp& now) = 0;
 
 	/**
 	* Called when the layer closes while the task is executing.

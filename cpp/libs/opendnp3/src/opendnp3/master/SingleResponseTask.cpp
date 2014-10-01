@@ -45,10 +45,9 @@ TaskState SingleResponseTask::OnResponse(const APDUResponseHeader& header, const
 	}
 }
 
-bool SingleResponseTask::OnResponseTimeout(const openpal::MonotonicTimestamp& now)
+void SingleResponseTask::OnResponseTimeout(const openpal::MonotonicTimestamp& now)
 {	
-	this->OnTimeoutOrBadControlOctet(now);
-	return false;
+	this->OnTimeoutOrBadControlOctet(now);	
 }
 
 } //end ns
