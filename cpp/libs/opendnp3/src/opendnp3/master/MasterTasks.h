@@ -51,7 +51,8 @@ public:
 	EnableUnsolicitedTask enableUnsol;
 	ClearRestartTask clearRestart;
 	StartupIntegrityPoll startupIntegrity;
-	DisableUnsolicitedTask disableUnsol;	
+	DisableUnsolicitedTask disableUnsol;
+	SerialTimeSyncTask timeSync;
 
 private:
 

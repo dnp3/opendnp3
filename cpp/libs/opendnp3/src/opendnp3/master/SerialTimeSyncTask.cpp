@@ -33,9 +33,9 @@ using namespace openpal;
 namespace opendnp3
 {
 
-/*
 SerialTimeSyncTask::SerialTimeSyncTask(openpal::Logger* pLogger_, openpal::IUTCTimeSource* pTimeSource_) :
 	SingleResponseTask(pLogger_),
+	expiration(MonotonicTimestamp::Max()),
 	pTimeSource(pTimeSource_),
 	delay(-1)
 {}
@@ -45,7 +45,7 @@ void SerialTimeSyncTask::Reset()
 	delay = -1;
 }
 
-void SerialTimeSyncTask::BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq)
+void SerialTimeSyncTask::BuildRequest(APDURequest& request, uint8_t seq)
 {
 	if (delay < 0)
 	{
@@ -64,18 +64,18 @@ void SerialTimeSyncTask::BuildRequest(APDURequest& request, const MasterParams& 
 	}
 }
 
-void SerialTimeSyncTask::OnTimeoutOrBadControlOctet(const MasterParams& params, IMasterScheduler& scheduler)
+openpal::MonotonicTimestamp SerialTimeSyncTask::ExpirationTime() const
+{
+
+}
+
+void SerialTimeSyncTask::OnTimeoutOrBadControlOctet(const openpal::MonotonicTimestamp& now)
 {
 	// TODO - some kind of logging?
 	// don't reschedule. Seeing the NeedTime bit again will automatically re-activate the task
 }
 
-bool SerialTimeSyncTask::Enabled(const MasterParams& params)
-{
-	return params.timeSyncMode == TimeSyncMode::SerialTimeSync;	
-}
-
-TaskStatus SerialTimeSyncTask::OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler)
+TaskState SerialTimeSyncTask::OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now)
 {
 	if (delay < 0)
 	{
@@ -91,24 +91,26 @@ TaskStatus SerialTimeSyncTask::OnSingleResponse(const APDUResponseHeader& respon
 
 				// The later shouldn't happen, but could cause a negative delay which would result in a weird time setting				
 				delay = (sendReceieveTime >= rtuTurnAroundTime) ? (sendReceieveTime - rtuTurnAroundTime) / 2 : 0;				
-				return TaskStatus::REPEAT;
+				return TaskState::REPEAT;
 			}
 			else
 			{
-				return TaskStatus::FAIL;
+				expiration = MonotonicTimestamp::Max();
+				return TaskState::COMPLETE;
 			}
 		}
 		else
-		{			
-			return TaskStatus::FAIL;
+		{		
+			expiration = MonotonicTimestamp::Max();
+			return TaskState::COMPLETE;
 		}
 	}
 	else
 	{
-		return TaskStatus::SUCCESS;
+		expiration = MonotonicTimestamp::Max();
+		return TaskState::COMPLETE;
 	}
 }
-*/
 	
 } //ens ns
 

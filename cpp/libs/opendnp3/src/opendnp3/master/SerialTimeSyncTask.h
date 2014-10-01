@@ -24,11 +24,11 @@
 #include <openpal/executor/IUTCTimeSource.h>
 
 #include "opendnp3/master/SingleResponseTask.h"
+#include "opendnp3/master/TaskPriority.h"
 
 namespace opendnp3
 {
 
-/*
 // Synchronizes the time on the outstation
 class SerialTimeSyncTask : public SingleResponseTask
 {
@@ -40,17 +40,26 @@ public:
 
 	virtual char const* Name() const override final { return "serial (non-LAN) time sync"; }
 
-	virtual void BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq) override final;
+	virtual int Priority() const override final { return priority::TIME_SYNC; }
+	
+	virtual bool BlocksLowerPriority() const override final { return true; }
+	
+	virtual bool IsRecurring() const override final { return true; }
+	
+	virtual openpal::MonotonicTimestamp ExpirationTime() const override final;
 
-	virtual void OnTimeoutOrBadControlOctet(const MasterParams& params, IMasterScheduler& scheduler) override final;
+	virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;
 
-	virtual bool Enabled(const MasterParams& params) override final;
+	virtual void OnTimeoutOrBadControlOctet(const openpal::MonotonicTimestamp& now) override final;	
 
 protected:
 
-	virtual TaskStatus OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler) override final;
+	virtual TaskState OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now) override final;
 
 private:
+
+	openpal::MonotonicTimestamp expiration;
+
 	openpal::IUTCTimeSource* pTimeSource;
 
 	// < 0 implies the delay measure hasn't happened yet
@@ -59,7 +68,6 @@ private:
 	// what time we sent the delay meas
 	openpal::UTCTimestamp start;
 };
-*/
 
 } //ens ns
 

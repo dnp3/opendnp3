@@ -25,7 +25,7 @@ namespace Automatak
 				{}
 
 
-				virtual void OnStateChange(opendnp3::PollState state)
+				virtual void OnStateChange(opendnp3::TaskState state)
 				{
 					root->OnStateChane((PollState)state);
 				}
