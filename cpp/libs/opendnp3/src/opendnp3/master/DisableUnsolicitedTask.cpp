@@ -40,7 +40,7 @@ DisableUnsolicitedTask::DisableUnsolicitedTask(const MasterParams& params, openp
 
 void DisableUnsolicitedTask::BuildRequest(APDURequest& request, uint8_t seq)
 {
-	build::EnableUnsolicited(request, pParams->unsolClassMask, seq);
+	build::DisableUnsolicited(request, seq);
 }
 
 openpal::MonotonicTimestamp DisableUnsolicitedTask::ExpirationTime() const
