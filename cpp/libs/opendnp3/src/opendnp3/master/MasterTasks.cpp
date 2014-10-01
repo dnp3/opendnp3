@@ -31,8 +31,7 @@ enableUnsol(params, pLogger),
 clearRestart(params, pLogger),
 startupIntegrity(params, &SOEHandler, pLogger),
 disableUnsol(params, pLogger)
-//serialTimeSync(pLogger, &timeSource),
-//commandTask(pLogger)
+//serialTimeSync(pLogger, &timeSource)
 {
 	
 }
@@ -43,6 +42,16 @@ void MasterTasks::Initialize(MasterScheduler& scheduler)
 	scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(&clearRestart));
 	scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(&startupIntegrity));
 	scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(&disableUnsol));
+
+	for (auto& pTask : boundTasks)
+	{
+		scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(pTask.get()));
+	}
+}
+
+void MasterTasks::BindTask(IMasterTask* pTask)
+{
+	boundTasks.push_back(std::unique_ptr<IMasterTask>(pTask));
 }
 
 }

@@ -32,7 +32,6 @@
 using namespace openpal;
 using namespace opendnp3;
 
-
 #define SUITE(name) "MasterTestSuite - " name
 
 TEST_CASE(SUITE("InitialState"))

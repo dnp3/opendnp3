@@ -34,9 +34,7 @@ public:
 
 	MasterScan();
 
-	MasterScan(openpal::IExecutor& executor, IMasterTask* pTask);
-
-	// void SetStateListener(IPollListener& listener); TODO
+	MasterScan(openpal::IExecutor& executor, IMasterTask* pTask);	
 
 	// Request that the scan be performed as soon as possible
 	bool Demand();

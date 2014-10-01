@@ -25,6 +25,8 @@
 #include "opendnp3/app/APDUBuilders.h"
 #include "opendnp3/LogLevels.h"
 
+#include "opendnp3/master/UserPollTask.h"
+
 #include <openpal/logging/LogMacros.h>
 
 namespace opendnp3
@@ -70,10 +72,9 @@ ICommandProcessor& Master::GetCommandProcessor()
 
 MasterScan Master::AddScan(openpal::TimeDuration period, const std::function<void (APDURequest&)>& builder)
 {
-	//PollTask task(builder, period, context.pSOEHandler, &context.logger);
-	//auto pTask = context.scheduler.AddPollTask(task);
-	// todo crete the poll task
-	return MasterScan(*context.pExecutor, nullptr);	
+	auto pTask = new UserPollTask(builder, true, "", period, context.params.taskRetryPeriod, context.pSOEHandler, &context.logger);
+	context.AddPollTask(pTask);	
+	return MasterScan(*context.pExecutor, pTask);	
 }
 
 MasterScan Master::AddClassScan(const ClassField& field, openpal::TimeDuration period)

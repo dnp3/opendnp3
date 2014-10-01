@@ -27,7 +27,8 @@ namespace opendnp3
 {
 
 UserPollTask::UserPollTask(	
-	const APDUBuilder& builder_,
+	const std::function<void(APDURequest&)>& builder_,
+	bool recurring_,
 	const std::string& name,
 	const openpal::TimeDuration& period_,
 	const openpal::TimeDuration& retryDelay_,
@@ -36,10 +37,24 @@ UserPollTask::UserPollTask(
 ) :
 	PollTaskBase(name, pSOEHandler, pLogger),	
 	builder(builder_),
+	recurring(recurring_),
 	period(period_),
 	retryDelay(retryDelay_),
 	expiration(MonotonicTimestamp::Min())
 {}
+
+void UserPollTask::BuildRequest(APDURequest& request, uint8_t seq)
+{
+	rxCount = 0;	
+	builder(request);
+	request.SetFunction(FunctionCode::READ);
+	request.SetControl(AppControlField::Request(seq));
+}
+
+void UserPollTask::OnLowerLayerClose(const openpal::MonotonicTimestamp& now)
+{
+	
+}
 		
 void UserPollTask::OnFailure(const openpal::MonotonicTimestamp& now)
 {	

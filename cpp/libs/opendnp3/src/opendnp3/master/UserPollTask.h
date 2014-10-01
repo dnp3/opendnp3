@@ -22,7 +22,7 @@
 #define OPENDNP3_USERPOLLTASK_H
 
 #include "opendnp3/master/PollTaskBase.h"
-
+#include "opendnp3/master/TaskPriority.h"
 
 namespace opendnp3
 {
@@ -39,15 +39,26 @@ class UserPollTask : public PollTaskBase
 public:	
 
 	UserPollTask(		
-		const APDUBuilder& builder, 
+		const std::function<void(APDURequest&)>& builder,
+		bool recurring,
 		const std::string& name,		
 		const openpal::TimeDuration& period,	
 		const openpal::TimeDuration& retryDelay,
 		ISOEHandler* pSOEHandler,
 		openpal::Logger* pLogger
 		);	
+
+	virtual int Priority() const override final { return priority::USER_POLL; }
+
+	virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;
+
+	virtual openpal::MonotonicTimestamp ExpirationTime() const override final { return expiration; }
+
+	virtual bool BlocksLowerPriority() const override final { return false; }
 	
-	virtual openpal::MonotonicTimestamp ExpirationTime() const = 0;	
+	virtual bool IsRecurring() const override final { return recurring; }	
+
+	virtual void OnLowerLayerClose(const openpal::MonotonicTimestamp&) override final;
 
 private:
 
@@ -55,7 +66,8 @@ private:
 
 	virtual void OnSuccess(const openpal::MonotonicTimestamp& now) override final;
 			
-	APDUBuilder builder;
+	std::function<void(APDURequest&)> builder;
+	bool recurring;
 	openpal::TimeDuration period;
 	openpal::TimeDuration retryDelay;
 	openpal::MonotonicTimestamp expiration;

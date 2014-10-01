@@ -151,6 +151,17 @@ void MasterContext::ReleaseActiveTask()
 	}
 }
 
+void MasterContext::AddPollTask(IMasterTask* pTask)
+{
+	staticTasks.BindTask(pTask);
+
+	if (isOnline)
+	{
+		scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(pTask));
+		this->PostCheckForTask();
+	}	
+}
+
 void MasterContext::OnPendingTask()
 {
 	this->PostCheckForTask();

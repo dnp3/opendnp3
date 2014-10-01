@@ -116,6 +116,8 @@ class MasterContext : public ICommandProcessor, public IScheduleCallback
 	void StartResponseTimer();
 	void ReleaseActiveTask();
 
+	void AddPollTask(IMasterTask* pTask);
+
 	private:
 	
 	// callback from the scheduler that a task is ready to run	

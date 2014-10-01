@@ -31,6 +31,8 @@
 
 #include "opendnp3/master/MasterScheduler.h"
 
+#include <vector>
+
 namespace opendnp3
 {
 
@@ -39,16 +41,22 @@ class MasterTasks
 
 public:
 
-	MasterTasks(const MasterParams& params, openpal::Logger* pLogger, ISOEHandler& SOEHandler, openpal::IUTCTimeSource& timeSource);
+	MasterTasks(const MasterParams& params, openpal::Logger* pLogger, ISOEHandler& SOEHandler, openpal::IUTCTimeSource& timeSource);	
 
 	void Initialize(MasterScheduler& scheduler);
+
+	void BindTask(IMasterTask* pTask);
 	
 	// master tasks that can be "failed" (startup and in response to IIN bits)
 	EnableUnsolicitedTask enableUnsol;
 	ClearRestartTask clearRestart;
 	StartupIntegrityPoll startupIntegrity;
 	DisableUnsolicitedTask disableUnsol;	
-	//SerialTimeSyncTask serialTimeSync;
+
+private:
+
+	std::vector<std::unique_ptr<IMasterTask>> boundTasks;
+
 };
 
 }
