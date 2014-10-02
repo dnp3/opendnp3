@@ -23,6 +23,7 @@
 #define OPENDNP3_MASTERTASKS_H
 
 #include "opendnp3/master/ClearRestartTask.h"
+#include "opendnp3/master/AssignClassTask.h"
 #include "opendnp3/master/EnableUnsolicitedTask.h"
 #include "opendnp3/master/StartupIntegrityPoll.h"
 #include "opendnp3/master/DisableUnsolicitedTask.h"
@@ -36,12 +37,14 @@
 namespace opendnp3
 {
 
+class IMasterApplication;
+
 class MasterTasks
 {
 
 public:
 
-	MasterTasks(const MasterParams& params, openpal::Logger* pLogger, ISOEHandler& SOEHandler, openpal::IUTCTimeSource& timeSource);	
+	MasterTasks(const MasterParams& params, openpal::Logger* pLogger, IMasterApplication& application, ISOEHandler& SOEHandler, openpal::IUTCTimeSource& timeSource);
 
 	void Initialize(MasterScheduler& scheduler);
 
@@ -50,6 +53,7 @@ public:
 	// master tasks that can be "failed" (startup and in response to IIN bits)
 	EnableUnsolicitedTask enableUnsol;
 	ClearRestartTask clearRestart;
+	AssignClassTask assignClass;
 	StartupIntegrityPoll startupIntegrity;
 	DisableUnsolicitedTask disableUnsol;
 	SerialTimeSyncTask timeSync;

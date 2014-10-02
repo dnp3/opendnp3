@@ -696,6 +696,9 @@
     <ClInclude Include="src\opendnp3\master\TaskId.h">
       <Filter>Header\master</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\master\AssignClassTask.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\AnalogOutput.cpp">
@@ -1108,6 +1111,9 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\gen\TaskState.cpp">
       <Filter>Source\gen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\AssignClassTask.cpp">
+      <Filter>Source\master</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

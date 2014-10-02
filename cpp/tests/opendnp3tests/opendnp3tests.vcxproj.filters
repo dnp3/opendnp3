@@ -409,5 +409,8 @@
     <ClCompile Include="src\TestOutstationAssignClass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\TestMasterAssignClass.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

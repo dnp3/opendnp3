@@ -30,15 +30,17 @@ namespace opendnp3
 		
 		const int CLEAR_RESTART = 10;
 		
-		const int DISABLE_UNSOLICITED = 20;		
+		const int DISABLE_UNSOLICITED = 20;
+
+		const int ASSIGN_CLASS = 30;
 				
-		const int INTEGRITY_POLL = 30;
+		const int INTEGRITY_POLL = 40;
 
-		const int TIME_SYNC = 40;		
+		const int TIME_SYNC = 50;		
 
-		const int ENABLE_UNSOLICITED = 50;
+		const int ENABLE_UNSOLICITED = 60;
 
-		const int USER_POLL = 60;
+		const int USER_POLL = 70;
 
 	}
 

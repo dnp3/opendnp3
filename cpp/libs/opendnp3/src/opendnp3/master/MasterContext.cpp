@@ -61,7 +61,7 @@ MasterContext::MasterContext(
 	unsolSeq(0),	
 	pState(&MasterStateIdle::Instance()),
 	pResponseTimer(nullptr),
-	tasks(params, &logger, SOEHandler, application),
+	tasks(params, &logger, application, SOEHandler, application),
 	scheduler(&logger, executor, *this),
 	txBuffer(params.maxTxFragSize)
 {
@@ -255,12 +255,11 @@ void MasterContext::OnUnsolicitedResponse(const APDUResponseHeader& header, cons
 void MasterContext::OnReceiveIIN(const IINField& iin)
 {
 	pApplication->OnReceiveIIN(iin);
-
-	// TODO - process the IIN bit against the startup tasks
-
+	
 	if (iin.IsSet(IINBit::DEVICE_RESTART))
 	{
 		tasks.clearRestart.Demand();
+		tasks.assignClass.Demand();
 		tasks.startupIntegrity.Demand();
 		tasks.enableUnsol.Demand();		
 	}

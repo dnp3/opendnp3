@@ -26,9 +26,10 @@ using namespace openpal;
 namespace opendnp3
 {
 
-MasterTasks::MasterTasks(const MasterParams& params, openpal::Logger* pLogger, ISOEHandler& SOEHandler, openpal::IUTCTimeSource& timeSource) :
+MasterTasks::MasterTasks(const MasterParams& params, openpal::Logger* pLogger, IMasterApplication& application, ISOEHandler& SOEHandler, openpal::IUTCTimeSource& timeSource) :
 enableUnsol(params, pLogger),
 clearRestart(params, pLogger),
+assignClass(params, application, pLogger),
 startupIntegrity(params, &SOEHandler, pLogger),
 disableUnsol(params, pLogger),
 timeSync(pLogger, &timeSource)
@@ -40,6 +41,7 @@ void MasterTasks::Initialize(MasterScheduler& scheduler)
 {
 	scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(&enableUnsol));
 	scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(&clearRestart));
+	scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(&assignClass));
 	scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(&startupIntegrity));
 	scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(&disableUnsol));
 	scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(&timeSync));

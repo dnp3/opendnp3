@@ -33,7 +33,7 @@ class MockMasterApplication : public IMasterApplication
 
 public:
 
-	MockMasterApplication() : assignClassDuringStartup(false), time(0)
+	MockMasterApplication() : time(0)
 	{}
 
 	virtual openpal::UTCTimestamp Now() override final
@@ -48,22 +48,25 @@ public:
 
 	virtual void OnTaskStateChange(TaskId id, TaskState state) override final
 	{
-
+		taskEvents.push_back(std::pair<TaskId, TaskState>(id, state));
 	}
 
 	virtual bool AssignClassDuringStartup() override final
 	{
-		return assignClassDuringStartup;
+		return !assignClass._Empty();
 	}
 	
 	virtual void ConfigureAssignClassRequest(HeaderWriter& writer) override final
 	{
-	
+		assignClass(writer);
 	}
+	
 
-	bool assignClassDuringStartup;
+	std::function<void(HeaderWriter&)> assignClass;
 
 	std::vector<IINField> rxIIN;
+
+	std::vector<std::pair<TaskId, TaskState>> taskEvents;
 
 	uint64_t time;
 };
