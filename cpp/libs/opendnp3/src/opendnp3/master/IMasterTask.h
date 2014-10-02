@@ -51,22 +51,27 @@ public:
 	*/
 	virtual char const* Name() const = 0;		
 
-	/*
+	/**
 	* The task's priority. Lower numbers are higher priority.
 	*/
 	virtual int Priority() const = 0;
 
-	/*
+	/**
 	* Allows tasks to enter a blocking mode where lower priority
 	* tasks cannot run until this task completes
 	*/
 	virtual bool BlocksLowerPriority() const = 0;
 
-	/*
+	/**
 	* Indicates if the task should be rescheduled (true) or discarded
 	* after a single execution (false)
 	*/
 	virtual bool IsRecurring() const = 0;
+
+	/**
+	* Configures the task to run ASAP
+	*/
+	virtual void Demand() = 0;
 
 	/**
 	* The time when this task can run again.

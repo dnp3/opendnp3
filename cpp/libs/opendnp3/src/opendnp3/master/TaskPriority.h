@@ -28,13 +28,13 @@ namespace opendnp3
 	{
 		const int COMMAND = 0;
 		
-		const int DISABLE_UNSOLICITED = 10;
-
-		const int TIME_SYNC = 20;
-
+		const int CLEAR_RESTART = 10;
+		
+		const int DISABLE_UNSOLICITED = 20;		
+				
 		const int INTEGRITY_POLL = 30;
 
-		const int CLEAR_RESTART = 40;
+		const int TIME_SYNC = 40;		
 
 		const int ENABLE_UNSOLICITED = 50;
 

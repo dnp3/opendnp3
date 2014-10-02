@@ -43,6 +43,7 @@ SerialTimeSyncTask::SerialTimeSyncTask(openpal::Logger* pLogger_, openpal::IUTCT
 void SerialTimeSyncTask::Reset()
 {
 	delay = -1;
+	expiration = MonotonicTimestamp::Max();
 }
 
 void SerialTimeSyncTask::BuildRequest(APDURequest& request, uint8_t seq)
@@ -64,13 +65,19 @@ void SerialTimeSyncTask::BuildRequest(APDURequest& request, uint8_t seq)
 	}
 }
 
-openpal::MonotonicTimestamp SerialTimeSyncTask::ExpirationTime() const
+void SerialTimeSyncTask::OnLowerLayerClose(const openpal::MonotonicTimestamp&)
 {
-
+	this->Reset();
 }
 
-void SerialTimeSyncTask::OnTimeoutOrBadControlOctet(const openpal::MonotonicTimestamp& now)
+openpal::MonotonicTimestamp SerialTimeSyncTask::ExpirationTime() const
 {
+	return expiration;
+}
+
+void SerialTimeSyncTask::OnTimeoutOrBadControlOctet(const openpal::MonotonicTimestamp&)
+{
+	this->Reset();	
 	// TODO - some kind of logging?
 	// don't reschedule. Seeing the NeedTime bit again will automatically re-activate the task
 }
@@ -95,19 +102,19 @@ TaskState SerialTimeSyncTask::OnSingleResponse(const APDUResponseHeader& respons
 			}
 			else
 			{
-				expiration = MonotonicTimestamp::Max();
+				this->Reset();
 				return TaskState::COMPLETE;
 			}
 		}
 		else
 		{		
-			expiration = MonotonicTimestamp::Max();
+			this->Reset();
 			return TaskState::COMPLETE;
 		}
 	}
 	else
 	{
-		expiration = MonotonicTimestamp::Max();
+		this->Reset();
 		return TaskState::COMPLETE;
 	}
 }

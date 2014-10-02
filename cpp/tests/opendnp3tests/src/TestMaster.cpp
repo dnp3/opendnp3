@@ -305,7 +305,7 @@ TEST_CASE(SUITE("RestartDuringStartup"))
 	t.SendToMaster(hex::EmptyResponse(1));
 
 	REQUIRE(t.exe.RunMany() > 0);
-
+	
 	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::ENABLE_UNSOLICITED, 2, ClassField::AllEventClasses()));	
 }
 
@@ -321,9 +321,7 @@ TEST_CASE(SUITE("RestartAndTimeBits"))
 
 	REQUIRE(t.lower.NumWrites() == 0);
 
-	t.SendToMaster(hex::NullUnsolicited(0, IINField(IINBit::DEVICE_RESTART) | IINField(IINBit::NEED_TIME)));
-
-	t.exe.RunMany();
+	t.SendToMaster(hex::NullUnsolicited(0, IINField(IINBit::DEVICE_RESTART) | IINField(IINBit::NEED_TIME)));	
 
 	REQUIRE(t.lower.PopWriteAsHex() == hex::UnsolConfirm(0));
 	t.master.OnSendResult(true);	
@@ -389,9 +387,7 @@ TEST_CASE(SUITE("ReceiveIINinResponses"))
 	MasterTestObject t(params);
 	t.master.OnLowerLayerUp();
 
-	auto scan = t.master.AddClassScan(ClassField(~0), TimeDuration::Seconds(1));
-
-	REQUIRE(t.exe.AdvanceToNextTimer());
+	auto scan = t.master.AddClassScan(ClassField(~0), TimeDuration::Seconds(1));	
 	REQUIRE(t.exe.RunMany() > 0);
 	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
 	t.master.OnSendResult(true);

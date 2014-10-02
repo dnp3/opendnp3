@@ -60,6 +60,8 @@ public:
 
 	virtual void OnLowerLayerClose(const openpal::MonotonicTimestamp&) override final;
 
+	virtual void Demand() override final { expiration = 0; }
+
 private:
 
 	virtual void OnFailure(const openpal::MonotonicTimestamp& now) override final;

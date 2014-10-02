@@ -71,7 +71,7 @@ class MasterContext : public ICommandProcessor, public IScheduleCallback
 	openpal::ManagedPtr<IMasterTask> pActiveTask;
 	IMasterState* pState;
 	openpal::ITimer* pResponseTimer;
-	MasterTasks staticTasks;
+	MasterTasks tasks;
 	MasterScheduler scheduler;
 
 	std::deque<APDUHeader> confirmQueue;

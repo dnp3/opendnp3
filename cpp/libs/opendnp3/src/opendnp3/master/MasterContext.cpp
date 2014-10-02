@@ -61,7 +61,7 @@ MasterContext::MasterContext(
 	unsolSeq(0),	
 	pState(&MasterStateIdle::Instance()),
 	pResponseTimer(nullptr),
-	staticTasks(params, &logger, SOEHandler, application),
+	tasks(params, &logger, SOEHandler, application),
 	scheduler(&logger, executor, *this),
 	txBuffer(params.maxTxFragSize)
 {
@@ -78,7 +78,7 @@ bool MasterContext::OnLayerUp()
 	{
 		isOnline = true;
 		pTaskLock->OnLayerUp();
-		staticTasks.Initialize(scheduler);
+		tasks.Initialize(scheduler);
 		scheduler.OnLowerLayerUp();
 		return true;
 	}
@@ -153,7 +153,7 @@ void MasterContext::ReleaseActiveTask()
 
 void MasterContext::AddPollTask(IMasterTask* pTask)
 {
-	staticTasks.BindTask(pTask);
+	tasks.BindTask(pTask);
 
 	if (isOnline)
 	{
@@ -248,36 +248,23 @@ void MasterContext::OnReceiveIIN(const IINField& iin)
 	pApplication->OnReceiveIIN(iin);
 
 	// TODO - process the IIN bit against the startup tasks
-	/*
+
 	if (iin.IsSet(IINBit::DEVICE_RESTART))
 	{
-		if (!this->IsTaskActive(&pStaticTasks->clearRestartTask))
-		{
-			scheduledTaskMask |= tasks::CLEAR_RESTART_SEQUENCE;
-		}
+		tasks.clearRestart.Demand();
+		tasks.startupIntegrity.Demand();
+		tasks.enableUnsol.Demand();		
 	}
 
 	if (iin.IsSet(IINBit::EVENT_BUFFER_OVERFLOW) && params.integrityOnEventOverflowIIN)
-	{
-		if (!this->IsTaskActive(&pStaticTasks->startupIntegrity))
-		{
-			scheduledTaskMask |= tasks::STARTUP_INTEGRITY;
-		}
+	{		
+		tasks.startupIntegrity.Demand();		
 	}
 
 	if (iin.IsSet(IINBit::NEED_TIME))
 	{
-		if (!this->IsTaskActive(&pStaticTasks->serialTimeSync))
-		{
-			scheduledTaskMask |= tasks::TIME_SYNC;
-		}
-	}
-
-	if (scheduledTaskMask)
-	{
-		this->CancelScheduleTimer();
-	}
-	*/
+		tasks.timeSync.Demand();
+	}	
 }
 
 void MasterContext::StartResponseTimer()

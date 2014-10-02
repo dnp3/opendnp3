@@ -57,6 +57,8 @@ public:
 
 	virtual void OnLowerLayerClose(const openpal::MonotonicTimestamp& now) override final;
 
+	virtual void Demand() override final { expiration = 0; }
+
 private:
 	
 	const MasterParams* pParams;

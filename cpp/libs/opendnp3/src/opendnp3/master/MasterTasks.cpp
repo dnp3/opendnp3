@@ -30,8 +30,8 @@ MasterTasks::MasterTasks(const MasterParams& params, openpal::Logger* pLogger, I
 enableUnsol(params, pLogger),
 clearRestart(params, pLogger),
 startupIntegrity(params, &SOEHandler, pLogger),
-disableUnsol(params, pLogger)
-//serialTimeSync(pLogger, &timeSource)
+disableUnsol(params, pLogger),
+timeSync(pLogger, &timeSource)
 {
 	
 }
@@ -42,6 +42,7 @@ void MasterTasks::Initialize(MasterScheduler& scheduler)
 	scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(&clearRestart));
 	scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(&startupIntegrity));
 	scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(&disableUnsol));
+	scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(&timeSync));
 
 	for (auto& pTask : boundTasks)
 	{

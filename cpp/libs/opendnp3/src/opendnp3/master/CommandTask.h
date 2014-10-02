@@ -73,6 +73,8 @@ public:
 
 	virtual void OnLowerLayerClose(const openpal::MonotonicTimestamp& now) override final;
 
+	virtual void Demand() override final { }
+
 private:
 
 	CommandTask(ICommandSequence* pSequence_, ICommandCallback& callback, openpal::Logger logger);

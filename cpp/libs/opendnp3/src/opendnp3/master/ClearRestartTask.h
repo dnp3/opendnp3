@@ -49,7 +49,9 @@ public:
 
 	virtual void OnLowerLayerClose(const openpal::MonotonicTimestamp& now) override final;
 
-	virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;	
+	virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;
+
+	virtual void Demand() override final { expiration = 0; }
 		
 protected:
 
