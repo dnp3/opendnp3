@@ -67,7 +67,7 @@ int main(int argc, char* argv[])
 	// you can override application layer settings for the master here
 	// in this example, we've change the application layer timeout to 2 seconds
 	stackConfig.master.responseTimeout = TimeDuration::Seconds(2);
-	stackConfig.master.disableUnsolOnStartup = false;
+	stackConfig.master.disableUnsolOnStartup = true;
 
 	// You can override the default link layer settings here
 	// in this example we've changed the default link layer addressing

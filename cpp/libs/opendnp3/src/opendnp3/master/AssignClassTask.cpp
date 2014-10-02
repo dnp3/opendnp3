@@ -41,6 +41,14 @@ void AssignClassTask::BuildRequest(APDURequest& request, uint8_t seq)
 	auto writer = request.GetWriter();
 	pApplication->ConfigureAssignClassRequest(writer);
 }
+
+void AssignClassTask::Demand()
+{ 
+	if (expiration.IsMax())
+	{
+		expiration = 0;
+	}	
+}
 	
 openpal::MonotonicTimestamp AssignClassTask::ExpirationTime() const
 {

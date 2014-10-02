@@ -30,7 +30,7 @@ using namespace openpal;
 
 #define SUITE(name) "MasterAssignClassTestSuite - " name
 
-TEST_CASE(SUITE("AssignsClassDuringRestart"))
+TEST_CASE(SUITE("AssignsClassAfterConnect"))
 {
 	MasterTestObject t(NoStartupTasks());
 
@@ -57,4 +57,24 @@ TEST_CASE(SUITE("AssignsClassDuringRestart"))
 	REQUIRE(t.application.taskEvents[0].first.isUserAssigned == false);
 	REQUIRE(t.application.taskEvents[0].second == TaskState::RUNNING);
 	REQUIRE(t.application.taskEvents[1].second == TaskState::SUCCESS);
+}
+
+TEST_CASE(SUITE("DisableUnsolBeforeAssignClass"))
+{
+	auto params = NoStartupTasks();
+	params.disableUnsolOnStartup = true;
+	MasterTestObject t(params);
+
+	// configure the mock application to do assign class on startup
+	t.application.assignClass = [](HeaderWriter& writer) {
+		writer.WriteHeader(GroupVariationID(60, 2), QualifierCode::ALL_OBJECTS);
+		writer.WriteHeader(GroupVariationID(3, 0), QualifierCode::ALL_OBJECTS);
+	};
+
+	t.master.OnLowerLayerUp();
+
+	REQUIRE(t.exe.RunMany() > 0);
+
+	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ClassField::AllEventClasses()));
+
 }

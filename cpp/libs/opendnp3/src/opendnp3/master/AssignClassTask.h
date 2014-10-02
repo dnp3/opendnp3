@@ -44,7 +44,7 @@ public:
 
 	virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;
 
-	virtual int Priority(void) const override final { return priority::DISABLE_UNSOLICITED; }
+	virtual int Priority(void) const override final { return priority::ASSIGN_CLASS; }
 
 	virtual openpal::MonotonicTimestamp ExpirationTime() const override final;
 
@@ -52,7 +52,7 @@ public:
 
 	virtual void OnLowerLayerClose(const openpal::MonotonicTimestamp& now) override final;
 
-	virtual void Demand() override final { expiration = 0; }
+	virtual void Demand() override final;
 
 private:
 

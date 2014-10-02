@@ -39,6 +39,7 @@ TaskResult NullResponseTask::OnSingleResponse(const APDUResponseHeader& response
 	{
 		if (response.IIN.HasRequestError())
 		{			
+			this->OnTimeoutOrBadControlOctet(now);
 			return TaskResult::FAILURE;
 		}
 		else

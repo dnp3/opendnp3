@@ -63,6 +63,13 @@ void DisableUnsolicitedTask::OnLowerLayerClose(const openpal::MonotonicTimestamp
 	expiration = 0;
 }
 
+void DisableUnsolicitedTask::Demand()
+{
+	if (expiration.IsMax())
+	{
+		expiration = 0;
+	}
+}
 
 } //end ns
 
