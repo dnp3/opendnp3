@@ -32,9 +32,37 @@ namespace Automatak.DNP3.Interface
     /// </summary>
     public interface IMasterApplication
     {
+        /// <summary>
+        /// Get a count of milliseconds since Unix epoch for the purposes of time syncing
+        /// </summary>
+        /// <returns></returns>
         UInt64 GetMillisecondsSinceEpoch();
+        
+        /// <summary>
+        /// Called whenever an IIN field is received
+        /// </summary>
+        /// <param name="iin"></param>
         void OnReceiveIIN(IINField iin);
+        
+        /// <summary>
+        /// Task state notifications for built-in and user defined tasks        
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="state"></param>
         void OnTaskStateChange(TaskId id, TaskState state);
+        
+        /// <summary>
+        /// Tells the master whether to assign class on startup
+        /// </summary>
+        /// <returns>if true, assign class is performed</returns>
+        bool AssignClassDuringStartup();
+
+        /// <summary>
+        /// Returns a list of class assignments to perform during startup or restart
+        /// Only called if AssignClassDuringStartup returns true
+        /// </summary>
+        /// <returns>An enumerable collection of class assignments</returns>
+        IEnumerable<ClassAssignment> GetClassAssignments();
     }
 
     /// <summary>
@@ -70,6 +98,16 @@ namespace Automatak.DNP3.Interface
         void IMasterApplication.OnTaskStateChange(TaskId id, TaskState state)
         {
             // ignore these in the default application
+        }
+
+        bool IMasterApplication.AssignClassDuringStartup()
+        {
+            return false;
+        }
+
+        IEnumerable<ClassAssignment> IMasterApplication.GetClassAssignments()
+        {
+            return Enumerable.Empty<ClassAssignment>();
         }
     }
 }

@@ -29,11 +29,14 @@ namespace Automatak
 
 				virtual void OnTaskStateChange(opendnp3::TaskId id, opendnp3::TaskState state) override final;
 
-				virtual bool AssignClassDuringStartup() override final { return false; }
+				virtual bool AssignClassDuringStartup() override final;
 
-				virtual void ConfigureAssignClassRequest(opendnp3::HeaderWriter& writer) override final {}
+				virtual void ConfigureAssignClassRequest(opendnp3::HeaderWriter& writer) override final;
 
 			private:
+
+				static opendnp3::GroupVariationID Convert(PointClass clazz);
+
 				gcroot < Automatak::DNP3::Interface::IMasterApplication^ > proxy;
 			};
 

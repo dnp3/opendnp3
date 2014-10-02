@@ -51,6 +51,7 @@
     <Compile Include="ChannelStatistics.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ClassAssignment.cs" />
     <Compile Include="ClassField.cs" />
     <Compile Include="CommandTypes.cs" />
     <Compile Include="config\DatabaseTemplate.cs" />
