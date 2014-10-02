@@ -33,7 +33,7 @@ class MockMasterApplication : public IMasterApplication
 
 public:
 
-	MockMasterApplication() : time(0)
+	MockMasterApplication() : assignClassDuringStartup(false), time(0)
 	{}
 
 	virtual openpal::UTCTimestamp Now() override final
@@ -50,6 +50,18 @@ public:
 	{
 
 	}
+
+	virtual bool AssignClassDuringStartup() override final
+	{
+		return assignClassDuringStartup;
+	}
+	
+	virtual void ConfigureAssignClassRequest(HeaderWriter& writer) override final
+	{
+	
+	}
+
+	bool assignClassDuringStartup;
 
 	std::vector<IINField> rxIIN;
 
