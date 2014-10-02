@@ -42,7 +42,7 @@ namespace Automatak
 			{
 				auto assignments = proxy->GetClassAssignments();
 				for each(auto a in assignments)
-				{					
+				{										
 					writer.WriteHeader(Convert(a.clazz), opendnp3::QualifierCode::ALL_OBJECTS);
 					opendnp3::GroupVariationID id(a.group, a.variation);
 					if (a.range.IsAllObjects())
@@ -51,7 +51,7 @@ namespace Automatak
 					}
 					else
 					{
-						writer.WriteRangeHeader<openpal::UInt16>(opendnp3::QualifierCode::UINT16_START_STOP, id, a.range.start, a.range.start);
+						writer.WriteRangeHeader<openpal::UInt16>(opendnp3::QualifierCode::UINT16_START_STOP, id, a.range.start, a.range.stop);
 					}
 				}
 			}
