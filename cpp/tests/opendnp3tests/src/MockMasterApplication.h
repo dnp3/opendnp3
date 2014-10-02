@@ -53,12 +53,12 @@ public:
 
 	virtual bool AssignClassDuringStartup() override final
 	{
-		return !assignClass._Empty();
+		return assignClass ? true : false;
 	}
 	
 	virtual void ConfigureAssignClassRequest(HeaderWriter& writer) override final
 	{
-		assignClass(writer);
+		return assignClass(writer);
 	}
 	
 

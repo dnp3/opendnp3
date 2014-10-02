@@ -146,7 +146,7 @@ void MasterContext::SelectAndOperateT(const T& command, uint16_t index, ICommand
 {
 	if (isOnline)
 	{
-		scheduler.Schedule(ManagedPtr<IMasterTask>::Deleted(CommandTask::FSelectAndOperate(command, index, callback, serializer, logger)));
+		scheduler.Schedule(openpal::ManagedPtr<IMasterTask>::Deleted(CommandTask::FSelectAndOperate(command, index, callback, serializer, logger)));
 		this->PostCheckForTask();
 	}
 	else
@@ -160,7 +160,7 @@ void MasterContext::DirectOperateT(const T& command, uint16_t index, ICommandCal
 {
 	if (isOnline)
 	{		
-		scheduler.Schedule(ManagedPtr<IMasterTask>::Deleted(CommandTask::FDirectOperate(command, index, callback, serializer, logger)));
+		scheduler.Schedule(openpal::ManagedPtr<IMasterTask>::Deleted(CommandTask::FDirectOperate(command, index, callback, serializer, logger)));
 		this->PostCheckForTask();
 	}
 	else
