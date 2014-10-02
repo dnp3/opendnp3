@@ -23,12 +23,14 @@
 
 #include <openpal/logging/Logger.h>
 #include <openpal/executor/MonotonicTimestamp.h>
+#include <openpal/executor/IExecutor.h>
 
 #include "opendnp3/app/APDUHeader.h"
 #include "opendnp3/app/APDURequest.h"
 
 #include "opendnp3/master/MasterParams.h"
 #include "opendnp3/master/TaskResult.h"
+#include "opendnp3/gen/TaskState.h"
 
 #include <functional>
 
@@ -43,7 +45,7 @@ typedef std::function<void(APDURequest&, uint8_t seq)> APDUBuilder;
 class IMasterTask
 {
 	
-public:	
+public:		
 
 	/**	
 	*
@@ -88,7 +90,7 @@ public:
 	 * Handler for responses
 	 *	 	 	
 	 */
-	virtual TaskState OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now) = 0;
+	virtual TaskResult OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now) = 0;
 	
 	/**
 	 * Called when a response times out	 
@@ -106,6 +108,28 @@ public:
 	* disables the task.
 	*/
 	bool IsEnabled() const { return !ExpirationTime().IsMax(); }
+
+
+	void SetTaskCallback(const std::function<void(TaskState)>& callback_)
+	{
+		callback = callback_;
+	}
+
+	void Notify(openpal::IExecutor* pExecutor, TaskState state)
+	{
+		if (callback)
+		{
+			auto lambda = [this, state](){
+				this->callback(state);
+			};
+			pExecutor->PostLambda(lambda);
+		}		
+	}
+
+	private:
+
+	std::function<void(TaskState)> callback;
+
 };
 
 }

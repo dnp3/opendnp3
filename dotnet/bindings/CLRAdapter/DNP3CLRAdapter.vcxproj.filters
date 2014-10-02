@@ -51,9 +51,6 @@
     <ClInclude Include="MasterApplicationAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MasterScanAdapter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="OutstationAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -66,10 +63,13 @@
     <ClInclude Include="OutstationDatabaseAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ScanListenerAdapter.h">
+    <ClInclude Include="SOEHandlerAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SOEHandlerAdapter.h">
+    <ClInclude Include="TaskStateListenerAdapter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TaskStateAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -101,9 +101,6 @@
     <ClCompile Include="MasterApplicationAdapter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MasterScanAdapter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="OutstationAdapter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -117,6 +114,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SOEHandlerAdapter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TaskStateAdapter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

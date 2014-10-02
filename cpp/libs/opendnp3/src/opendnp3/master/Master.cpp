@@ -74,7 +74,8 @@ MasterScan Master::AddScan(openpal::TimeDuration period, const std::function<voi
 {
 	auto pTask = new UserPollTask(builder, true, "", period, context.params.taskRetryPeriod, context.pSOEHandler, &context.logger);
 	context.AddPollTask(pTask);	
-	return MasterScan(*context.pExecutor, pTask);	
+	auto callback = [this]() { this->context.PostCheckForTask(); };
+	return MasterScan(*context.pExecutor, pTask, callback);
 }
 
 MasterScan Master::AddClassScan(const ClassField& field, openpal::TimeDuration period)

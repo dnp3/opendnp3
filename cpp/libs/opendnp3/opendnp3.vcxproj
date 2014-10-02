@@ -76,8 +76,8 @@
     <ClInclude Include="src\opendnp3\gen\DoubleBitBinaryQuality.h" />
     <ClInclude Include="src\opendnp3\gen\GroupVariation.h" />
     <ClInclude Include="src\opendnp3\gen\PointClass.h" />
-    <ClInclude Include="src\opendnp3\gen\PollState.h" />
     <ClInclude Include="src\opendnp3\gen\RestartMode.h" />
+    <ClInclude Include="src\opendnp3\gen\TaskState.h" />
     <ClInclude Include="src\opendnp3\gen\TimestampMode.h" />
     <ClInclude Include="src\opendnp3\gen\TimeSyncMode.h" />
     <ClInclude Include="src\opendnp3\LayerInterfaces.h" />
@@ -272,7 +272,6 @@
     <ClCompile Include="src\opendnp3\gen\GroupVariation.cpp" />
     <ClCompile Include="src\opendnp3\gen\LinkFunction.cpp" />
     <ClCompile Include="src\opendnp3\gen\PointClass.cpp" />
-    <ClCompile Include="src\opendnp3\gen\PollState.cpp" />
     <ClCompile Include="src\opendnp3\gen\QualifierCode.cpp" />
     <ClCompile Include="src\opendnp3\gen\StaticAnalogOutputStatusResponse.cpp" />
     <ClCompile Include="src\opendnp3\gen\StaticAnalogResponse.cpp" />
@@ -281,6 +280,7 @@
     <ClCompile Include="src\opendnp3\gen\StaticCounterResponse.cpp" />
     <ClCompile Include="src\opendnp3\gen\StaticDoubleBinaryResponse.cpp" />
     <ClCompile Include="src\opendnp3\gen\StaticFrozenCounterResponse.cpp" />
+    <ClCompile Include="src\opendnp3\gen\TaskState.cpp" />
     <ClCompile Include="src\opendnp3\gen\TimeSyncMode.cpp" />
     <ClCompile Include="src\opendnp3\link\CRC.cpp" />
     <ClCompile Include="src\opendnp3\link\IOpenDelayStrategy.cpp" />

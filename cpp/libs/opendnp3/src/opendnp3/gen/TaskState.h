@@ -18,24 +18,28 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-namespace Automatak.DNP3.Interface
+#ifndef OPENDNP3_TASKSTATE_H
+#define OPENDNP3_TASKSTATE_H
+
+#include <cstdint>
+
+namespace opendnp3 {
+
+/**
+  Enumeration for the state of a poll
+*/
+enum class TaskState : int
 {
-  /// <summary>
-  /// Enumeration for the state of a poll
-  /// </summary>
-  public enum PollState : int
-  {
-    /// <summary>
-    /// Valid response was received
-    /// </summary>
-    RUNNING = 0,
-    /// <summary>
-    /// Valid response was received
-    /// </summary>
-    SUCCESS = 1,
-    /// <summary>
-    /// The operation timed out or explicitly failed
-    /// </summary>
-    FAILURE = 2
-  }
+  /// Valid response was received
+  RUNNING = 0,
+  /// Valid response was received
+  SUCCESS = 1,
+  /// The operation timed out or explicitly failed
+  FAILURE = 2
+};
+
+char const* TaskStateToString(TaskState arg);
+
 }
+
+#endif

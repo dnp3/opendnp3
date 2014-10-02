@@ -45,6 +45,14 @@ void ClearRestartTask::BuildRequest(APDURequest& request, uint8_t seq)
 	build::ClearRestartIIN(request, seq);
 }
 
+void ClearRestartTask::Demand()
+{
+	if (expiration.IsMax())
+	{
+		expiration = 0;
+	}
+}
+
 openpal::MonotonicTimestamp ClearRestartTask::ExpirationTime() const
 {
 	return expiration;
@@ -60,19 +68,19 @@ void ClearRestartTask::OnTimeoutOrBadControlOctet(const openpal::MonotonicTimest
 	expiration = now.Add(pParams->taskRetryPeriod);
 }
 	
-TaskState ClearRestartTask::OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const MonotonicTimestamp& now)
+TaskResult ClearRestartTask::OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const MonotonicTimestamp& now)
 {
 	if (response.IIN.IsSet(IINBit::DEVICE_RESTART))
 	{
 		// we tried to clear the restart, but the device responded with the restart still set
 		SIMPLE_LOGGER_BLOCK(pLogger, flags::ERR, "Clear restart task failed to clear restart bit");	
 		expiration = now.Add(pParams->taskRetryPeriod);
-		return TaskState::COMPLETE;
+		return TaskResult::FAILURE;
 	}
 	else
 	{
 		expiration = MonotonicTimestamp::Max();
-		return TaskState::COMPLETE;
+		return TaskResult::SUCCESS;
 	}
 }
 

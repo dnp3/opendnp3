@@ -70,7 +70,7 @@ void CommandTask::BuildRequest(APDURequest& request, uint8_t seq)
 	}
 }
 
-TaskState CommandTask::OnResponse(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now)
+TaskResult CommandTask::OnResponse(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now)
 {
 	if (header.control.FIR && header.control.FIN)
 	{
@@ -80,7 +80,7 @@ TaskState CommandTask::OnResponse(const APDUResponseHeader& header, const openpa
 	{
 		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Ignoring unexpected response with FIR/FIN not set");
 		this->Callback(CommandResponse(CommandResult::BAD_RESPONSE));		
-		return TaskState::COMPLETE;
+		return TaskResult::FAILURE;
 	}
 }
 
@@ -94,7 +94,7 @@ void CommandTask::OnLowerLayerClose(const openpal::MonotonicTimestamp& now)
 	this->Callback(CommandResponse::NoResponse(CommandResult::NO_COMMS));
 }
 
-TaskState CommandTask::OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now)
+TaskResult CommandTask::OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now)
 {
 	auto result = APDUParser::ParseTwoPass(objects, pSequence.get(), &logger);
 	if(result == APDUParser::Result::OK)
@@ -103,26 +103,26 @@ TaskState CommandTask::OnSingleResponse(const APDUResponseHeader& response, cons
 		{
 			auto commandResponse = pSequence->Validate();
 			this->Callback(commandResponse);			
-			return TaskState::COMPLETE;
+			return TaskResult::SUCCESS;
 		}
 		else // we may have more depending on response
 		{
 			auto commandResponse = pSequence->Validate();
 			if (commandResponse == CommandResponse::Success)
 			{				
-				return TaskState::REPEAT;
+				return TaskResult::REPEAT;
 			}
 			else
 			{
 				this->Callback(commandResponse);  // something failed, end the task early				
-				return TaskState::COMPLETE;
+				return TaskResult::FAILURE;
 			}
 		}
 	}
 	else
 	{		
 		this->Callback(CommandResponse(CommandResult::BAD_RESPONSE));
-		return TaskState::COMPLETE;
+		return TaskResult::FAILURE;
 	}
 }
 

@@ -85,7 +85,6 @@
     <Compile Include="gen\GroupVariation.cs" />
     <Compile Include="gen\IINField.cs" />
     <Compile Include="gen\PointClass.cs" />
-    <Compile Include="gen\PollState.cs" />
     <Compile Include="gen\QualifierCode.cs" />
     <Compile Include="gen\RestartMode.cs" />
     <Compile Include="gen\StaticAnalogResponse.cs" />
@@ -95,6 +94,7 @@
     <Compile Include="gen\StaticAnalogOutputStatusResponse.cs" />
     <Compile Include="gen\StaticDoubleBinaryResponse.cs" />
     <Compile Include="gen\StaticFrozenCounterResponse.cs" />
+    <Compile Include="gen\TaskState.cs" />
     <Compile Include="gen\TimestampMode.cs" />
     <Compile Include="gen\TimeSyncMode.cs" />
     <Compile Include="IChannelStatistics.cs" />

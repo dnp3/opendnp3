@@ -174,13 +174,13 @@
     <ClInclude Include="LogAdapter.h" />
     <ClInclude Include="MasterAdapter.h" />
     <ClInclude Include="MasterApplicationAdapter.h" />
-    <ClInclude Include="MasterScanAdapter.h" />
+    <ClInclude Include="TaskStateAdapter.h" />
     <ClInclude Include="OutstationAdapter.h" />
     <ClInclude Include="OutstationApplicationAdapter.h" />
     <ClInclude Include="OutstationCommandHandlerAdapter.h" />
     <ClInclude Include="OutstationDatabaseAdapter.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="ScanListenerAdapter.h" />
+    <ClInclude Include="TaskStateListenerAdapter.h" />
     <ClInclude Include="SOEHandlerAdapter.h" />
     <ClInclude Include="Stdafx.h" />
   </ItemGroup>
@@ -193,7 +193,7 @@
     <ClCompile Include="LogAdapter.cpp" />
     <ClCompile Include="MasterAdapter.cpp" />
     <ClCompile Include="MasterApplicationAdapter.cpp" />
-    <ClCompile Include="MasterScanAdapter.cpp" />
+    <ClCompile Include="TaskStateAdapter.cpp" />
     <ClCompile Include="OutstationAdapter.cpp" />
     <ClCompile Include="OutstationApplicationAdapter.cpp" />
     <ClCompile Include="OutstationCommandHandlerAdapter.cpp" />

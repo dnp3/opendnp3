@@ -24,7 +24,7 @@ object CSharpEnumGenerator {
       AssignClassType(),
       DoubleBit(),
       PointClass(),
-      PollState(),
+      TaskState(),
       CommandStatus(),
       CommandResult(),
       ControlCode(),

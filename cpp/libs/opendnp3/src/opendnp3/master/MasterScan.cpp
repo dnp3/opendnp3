@@ -28,12 +28,19 @@ namespace opendnp3
 MasterScan::MasterScan() : pExecutor(nullptr), pTask(nullptr)
 {}
 
-MasterScan::MasterScan(openpal::IExecutor& executor, IMasterTask* pTask_) :
+MasterScan::MasterScan(openpal::IExecutor& executor, IMasterTask* pTask_, const std::function<void()>& demandCallback_) :
 	pExecutor(&executor),	
-	pTask(pTask_)
+	pTask(pTask_),
+	demandCallback(demandCallback_)
 {
 
 }
+
+void MasterScan::SetTaskCallback(const std::function<void(TaskState)>& callback)
+{
+	pTask->SetTaskCallback(callback);
+}
+
 
 bool MasterScan::IsDefined() const
 {
@@ -45,12 +52,12 @@ bool MasterScan::Demand()
 	if (IsDefined())
 	{		
 		auto action = [this]()
-		{ 
-			// TODO - tell the scheduler to reevaluate its state
-			pTask->Demand();
+		{ 			
+			pTask->Demand();			
 		};
 		pExecutor->PostLambda(action);	
-		return false;
+		demandCallback();
+		return true;
 	}	
 	else
 	{

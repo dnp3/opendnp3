@@ -91,8 +91,9 @@ bool MasterContext::OnLayerDown()
 		auto now = pExecutor->GetTime();
 
 		if (pActiveTask.IsDefined())
-		{
+		{			
 			pActiveTask->OnLowerLayerClose(now);
+			pActiveTask->Notify(pExecutor, TaskState::FAILURE);
 			pActiveTask.Release();
 		}
 
@@ -130,10 +131,10 @@ void MasterContext::CheckForTask()
 
 void MasterContext::StartTask(IMasterTask& task)
 {		
-	APDURequest request(txBuffer.GetWriteBuffer());	
+	APDURequest request(txBuffer.GetWriteBuffer());
 	task.BuildRequest(request, solSeq);
 	this->StartResponseTimer();
-	this->Transmit(request.ToReadOnly());
+	this->Transmit(request.ToReadOnly());	
 }
 
 void MasterContext::ReleaseActiveTask()

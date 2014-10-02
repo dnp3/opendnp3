@@ -61,9 +61,9 @@ namespace DotNetMasterDemo
             var classPoll = master.AddClassScan(ClassField.AllEventClasses, TimeSpan.FromSeconds(5));           
 
             // you a can optionally add state callbacks for monitoring these polls
-            integrityPoll.AddScanCallback((PollState state) => Console.WriteLine("integrity poll state change: " + state));
-            classPoll.AddScanCallback((PollState state) => Console.WriteLine("class poll state change: " + state));
-            rangePoll.AddScanCallback((PollState state) => Console.WriteLine("range poll state change: " + state));
+            integrityPoll.AddScanCallback((TaskState state) => Console.WriteLine("integrity poll state change: " + state));
+            classPoll.AddScanCallback((TaskState state) => Console.WriteLine("class poll state change: " + state));
+            rangePoll.AddScanCallback((TaskState state) => Console.WriteLine("range poll state change: " + state));
             
 
             master.Enable(); // enable communications

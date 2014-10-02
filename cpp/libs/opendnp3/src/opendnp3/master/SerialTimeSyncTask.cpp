@@ -40,7 +40,7 @@ SerialTimeSyncTask::SerialTimeSyncTask(openpal::Logger* pLogger_, openpal::IUTCT
 	delay(-1)
 {}
 
-void SerialTimeSyncTask::Reset()
+void SerialTimeSyncTask::Initialize()
 {
 	delay = -1;
 	expiration = MonotonicTimestamp::Max();
@@ -67,7 +67,7 @@ void SerialTimeSyncTask::BuildRequest(APDURequest& request, uint8_t seq)
 
 void SerialTimeSyncTask::OnLowerLayerClose(const openpal::MonotonicTimestamp&)
 {
-	this->Reset();
+	this->Initialize();
 }
 
 openpal::MonotonicTimestamp SerialTimeSyncTask::ExpirationTime() const
@@ -77,12 +77,12 @@ openpal::MonotonicTimestamp SerialTimeSyncTask::ExpirationTime() const
 
 void SerialTimeSyncTask::OnTimeoutOrBadControlOctet(const openpal::MonotonicTimestamp&)
 {
-	this->Reset();	
+	this->Initialize();
 	// TODO - some kind of logging?
 	// don't reschedule. Seeing the NeedTime bit again will automatically re-activate the task
 }
 
-TaskState SerialTimeSyncTask::OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now)
+TaskResult SerialTimeSyncTask::OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now)
 {
 	if (delay < 0)
 	{
@@ -98,24 +98,24 @@ TaskState SerialTimeSyncTask::OnSingleResponse(const APDUResponseHeader& respons
 
 				// The later shouldn't happen, but could cause a negative delay which would result in a weird time setting				
 				delay = (sendReceieveTime >= rtuTurnAroundTime) ? (sendReceieveTime - rtuTurnAroundTime) / 2 : 0;				
-				return TaskState::REPEAT;
+				return TaskResult::REPEAT;
 			}
 			else
 			{
-				this->Reset();
-				return TaskState::COMPLETE;
+				this->Initialize();
+				return TaskResult::FAILURE;
 			}
 		}
 		else
 		{		
-			this->Reset();
-			return TaskState::COMPLETE;
+			this->Initialize();
+			return TaskResult::FAILURE;
 		}
 	}
 	else
 	{
-		this->Reset();
-		return TaskState::COMPLETE;
+		this->Initialize();
+		return TaskResult::SUCCESS;
 	}
 }
 	

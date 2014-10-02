@@ -67,7 +67,7 @@ public:
 	
 	virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;
 
-	virtual TaskState OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now) override final;
+	virtual TaskResult OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now) override final;
 
 	virtual void OnResponseTimeout(const openpal::MonotonicTimestamp& now) override final;
 
@@ -79,7 +79,7 @@ private:
 
 	CommandTask(ICommandSequence* pSequence_, ICommandCallback& callback, openpal::Logger logger);
 
-	TaskState OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now);
+	TaskResult OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now);
 
 	void LoadSelectAndOperate();
 	void LoadDirectOperate();

@@ -51,13 +51,13 @@ public:
 
 	virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;
 
-	virtual void Demand() override final { expiration = 0; }
+	virtual void Demand() override final;
 		
 protected:
 
 	virtual void OnTimeoutOrBadControlOctet(const openpal::MonotonicTimestamp&) override final;
 	
-	virtual TaskState OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp&) override final;
+	virtual TaskResult OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp&) override final;
 
 private:
 

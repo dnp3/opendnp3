@@ -35,8 +35,7 @@ class SerialTimeSyncTask : public SingleResponseTask
 
 public:
 	SerialTimeSyncTask(openpal::Logger* pLogger, openpal::IUTCTimeSource* pTimeSource_);
-
-	void Reset();
+	
 
 	virtual char const* Name() const override final { return "serial (non-LAN) time sync"; }
 
@@ -58,9 +57,11 @@ public:
 
 protected:
 
-	virtual TaskState OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now) override final;
+	virtual TaskResult OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now) override final;
 
 private:
+
+	void Initialize();
 
 	openpal::MonotonicTimestamp expiration;
 

@@ -24,7 +24,7 @@ object CppEnumGenerator {
       EnumConfig(AssignClassType(), false, false),
       EnumConfig(GroupVariation(), true, true),
       EnumConfig(DoubleBit(), true, true),
-      EnumConfig(PollState(), false, true),
+      EnumConfig(TaskState(), false, true),
       EnumConfig(PointClass(), true, true),
       EnumConfig(CommandStatus(), true, true),
       EnumConfig(CommandResult(), false, true),

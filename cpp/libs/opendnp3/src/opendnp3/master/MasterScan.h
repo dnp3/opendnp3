@@ -25,6 +25,8 @@
 
 #include "opendnp3/master/IMasterTask.h"
 
+#include <functional>
+
 namespace opendnp3
 {
 
@@ -34,7 +36,9 @@ public:
 
 	MasterScan();
 
-	MasterScan(openpal::IExecutor& executor, IMasterTask* pTask);	
+	MasterScan(openpal::IExecutor& executor, IMasterTask* pTask, const std::function<void()>& demandCallback);
+
+	void SetTaskCallback(const std::function<void(TaskState)>& callback);
 
 	// Request that the scan be performed as soon as possible
 	bool Demand();
@@ -45,6 +49,7 @@ private:
 	
 	openpal::IExecutor* pExecutor;		
 	IMasterTask* pTask;
+	std::function<void()> demandCallback;
 };
 
 }

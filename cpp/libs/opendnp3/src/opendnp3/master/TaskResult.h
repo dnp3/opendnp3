@@ -24,10 +24,13 @@
 namespace opendnp3
 {
 
-enum class TaskState
+enum class TaskResult
 {
-	/// This run of the task is complete
-	COMPLETE,
+	/// This run of the task is complete and it succeeded
+	SUCCESS,
+
+	/// This run of the task is complete and it failed
+	FAILURE,
 
 	/// The task should repeat the format, transmit, and await response sequence
 	REPEAT,

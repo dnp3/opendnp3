@@ -576,9 +576,6 @@
     <ClInclude Include="src\opendnp3\master\IScheduleCallback.h">
       <Filter>Header\master</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\PollState.h">
-      <Filter>Header\gen</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\gen\TimeSyncMode.h">
       <Filter>Header\gen</Filter>
     </ClInclude>
@@ -689,6 +686,9 @@
     </ClInclude>
     <ClInclude Include="src\opendnp3\master\PollTaskBase.h">
       <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\TaskState.h">
+      <Filter>Header\gen</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1052,9 +1052,6 @@
     <ClCompile Include="src\opendnp3\master\TaskRecord.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\gen\PollState.cpp">
-      <Filter>Source\gen</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\gen\TimeSyncMode.cpp">
       <Filter>Source\gen</Filter>
     </ClCompile>
@@ -1102,6 +1099,9 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\master\UserPollTask.cpp">
       <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\gen\TaskState.cpp">
+      <Filter>Source\gen</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

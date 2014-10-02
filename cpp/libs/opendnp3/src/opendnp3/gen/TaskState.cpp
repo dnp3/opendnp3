@@ -18,28 +18,22 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef OPENDNP3_POLLSTATE_H
-#define OPENDNP3_POLLSTATE_H
-
-#include <cstdint>
+#include "TaskState.h"
 
 namespace opendnp3 {
 
-/**
-  Enumeration for the state of a poll
-*/
-enum class PollState : int
+char const* TaskStateToString(TaskState arg)
 {
-  /// Valid response was received
-  RUNNING = 0,
-  /// Valid response was received
-  SUCCESS = 1,
-  /// The operation timed out or explicitly failed
-  FAILURE = 2
-};
-
-char const* PollStateToString(PollState arg);
-
+  switch(arg)
+  {
+    case(TaskState::RUNNING):
+      return "RUNNING";
+    case(TaskState::SUCCESS):
+      return "SUCCESS";
+    case(TaskState::FAILURE):
+      return "FAILURE";
+  }
+  return "FAILURE";
 }
 
-#endif
+}

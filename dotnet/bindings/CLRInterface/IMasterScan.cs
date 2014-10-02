@@ -10,6 +10,6 @@ namespace Automatak.DNP3.Interface
     {        
         void Demand();
 
-        void AddScanCallback(Action<PollState> callback);
+        void AddScanCallback(Action<TaskState> callback);
     }
 }

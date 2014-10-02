@@ -18,22 +18,24 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#include "PollState.h"
-
-namespace opendnp3 {
-
-char const* PollStateToString(PollState arg)
+namespace Automatak.DNP3.Interface
 {
-  switch(arg)
+  /// <summary>
+  /// Enumeration for the state of a poll
+  /// </summary>
+  public enum TaskState : int
   {
-    case(PollState::RUNNING):
-      return "RUNNING";
-    case(PollState::SUCCESS):
-      return "SUCCESS";
-    case(PollState::FAILURE):
-      return "FAILURE";
+    /// <summary>
+    /// Valid response was received
+    /// </summary>
+    RUNNING = 0,
+    /// <summary>
+    /// Valid response was received
+    /// </summary>
+    SUCCESS = 1,
+    /// <summary>
+    /// The operation timed out or explicitly failed
+    /// </summary>
+    FAILURE = 2
   }
-  return "FAILURE";
-}
-
 }
