@@ -23,6 +23,8 @@
 
 #include "opendnp3/master/IMasterTask.h"
 
+#include <string>
+
 namespace opendnp3
 {
 

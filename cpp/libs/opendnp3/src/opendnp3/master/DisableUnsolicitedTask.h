@@ -34,6 +34,8 @@ public:
 
 	DisableUnsolicitedTask(const MasterParams& params, openpal::Logger* pLogger_);	
 
+	virtual TaskId Id() const override final { return TaskId::From(TaskIds::DISABLE_UNSOLICITED); }
+
 	virtual char const* Name() const override final { return "Disable Unsolicited"; }
 
 	virtual bool IsRecurring() const override final { return true; }

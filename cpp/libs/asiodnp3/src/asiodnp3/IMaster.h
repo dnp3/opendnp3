@@ -50,19 +50,19 @@ public:
 	* Add a scan that requests all objects using qualifier code 0x06
 	* @ return A proxy class used to manipulate the scan
 	*/
-	virtual opendnp3::MasterScan AddAllObjectsScan(opendnp3::GroupVariationID gvId, openpal::TimeDuration period) = 0;
+	virtual opendnp3::MasterScan AddAllObjectsScan(opendnp3::GroupVariationID gvId, openpal::TimeDuration period, int id = -1) = 0;
 
 	/**
 	* Add a class-based scan to the master
 	* @return A proxy class used to manipulate the scan
 	*/
-	virtual opendnp3::MasterScan AddClassScan(const opendnp3::ClassField& field, openpal::TimeDuration scanRate) = 0;
+	virtual opendnp3::MasterScan AddClassScan(const opendnp3::ClassField& field, openpal::TimeDuration scanRate, int id = -1) = 0;
 
 	/**
 	* Add a start/stop rnage scan to the master
 	* @return A proxy class used to manipulate the scan
 	*/
-	virtual opendnp3::MasterScan  AddRangeScan(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period) = 0;
+	virtual opendnp3::MasterScan  AddRangeScan(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, int id = -1) = 0;
 
 	/**
 	* Get a command processor interface to execute controls on the master

@@ -56,13 +56,13 @@ class Master : public IUpperLayer
 	
 	ICommandProcessor& GetCommandProcessor();
 
-	MasterScan AddScan(openpal::TimeDuration period, const std::function<void (APDURequest&)>& builder);
+	MasterScan AddScan(openpal::TimeDuration period, const std::function<void (APDURequest&)>& builder, int id = -1);
 
-	MasterScan AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period);
+	MasterScan AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, int id = -1);
 
-	MasterScan AddClassScan(const ClassField& field, openpal::TimeDuration period);	
+	MasterScan AddClassScan(const ClassField& field, openpal::TimeDuration period, int id = -1);
 
-	MasterScan AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period);
+	MasterScan AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, int id = -1);
 	
 	private:
 

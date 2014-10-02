@@ -140,6 +140,7 @@
     <Compile Include="config\SerialSettings.cs" />
     <Compile Include="SimpleCommandHandler.cs" />
     <Compile Include="StackStatistics.cs" />
+    <Compile Include="TaskId.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\openpal\src\openpal\util\Limits.h" />
     <ClInclude Include="AppConstants.h" />
     <ClInclude Include="src\opendnp3\app\AnalogOutput.h" />
     <ClInclude Include="src\opendnp3\app\APDUBuilders.h" />
@@ -140,6 +141,7 @@
     <ClInclude Include="src\opendnp3\master\ITaskLock.h" />
     <ClInclude Include="src\opendnp3\master\NullResponseTask.h" />
     <ClInclude Include="src\opendnp3\master\PollTaskBase.h" />
+    <ClInclude Include="src\opendnp3\master\TaskId.h" />
     <ClInclude Include="src\opendnp3\master\UserPollTask.h" />
     <ClInclude Include="src\opendnp3\master\StartupIntegrityPoll.h" />
     <ClInclude Include="src\opendnp3\master\ISOEHandler.h" />

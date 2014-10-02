@@ -30,14 +30,11 @@
 
 #include "opendnp3/master/MasterParams.h"
 #include "opendnp3/master/TaskResult.h"
+#include "opendnp3/master/TaskId.h"
 #include "opendnp3/gen/TaskState.h"
-
-#include <functional>
 
 namespace opendnp3
 {
-
-typedef std::function<void(APDURequest&, uint8_t seq)> APDUBuilder;
 
 /**
  * A generic interface for defining master request/response style tasks
@@ -45,7 +42,12 @@ typedef std::function<void(APDURequest&, uint8_t seq)> APDUBuilder;
 class IMasterTask
 {
 	
-public:		
+public:	
+
+	/**	
+	* @return An id of the task. Id's < 0 are anonymous
+	*/
+	virtual TaskId Id() const = 0;
 
 	/**	
 	*
@@ -107,29 +109,7 @@ public:
 	* Helper function that determines if the tasks is enabled. Setting the expiration time to max (infinity)
 	* disables the task.
 	*/
-	bool IsEnabled() const { return !ExpirationTime().IsMax(); }
-
-
-	void SetTaskCallback(const std::function<void(TaskState)>& callback_)
-	{
-		callback = callback_;
-	}
-
-	void Notify(openpal::IExecutor* pExecutor, TaskState state)
-	{
-		if (callback)
-		{
-			auto lambda = [this, state](){
-				this->callback(state);
-			};
-			pExecutor->PostLambda(lambda);
-		}		
-	}
-
-	private:
-
-	std::function<void(TaskState)> callback;
-
+	bool IsEnabled() const { return !ExpirationTime().IsMax(); }	
 };
 
 }

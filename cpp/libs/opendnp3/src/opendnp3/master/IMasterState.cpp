@@ -65,8 +65,8 @@ IMasterState* MasterStateIdle::OnStart(MasterContext* pContext)
 			if (pContext->pTaskLock->Acquire(*pContext))
 			{
 				FORMAT_LOG_BLOCK(pContext->logger, flags::INFO, "Begining task: %s", pContext->pActiveTask->Name());
-				pContext->StartTask(*pContext->pActiveTask);
-				pContext->pActiveTask->Notify(pContext->pExecutor, TaskState::RUNNING);
+				pContext->StartTask(*pContext->pActiveTask);				
+				pContext->NotifyCurrentTask(TaskState::RUNNING);
 				return &MasterStateWaitForResponse::Instance();
 			}
 			else
@@ -133,8 +133,8 @@ IMasterState* MasterStateWaitForResponse::OnResponse(MasterContext* pContext, co
 				return this;
 			case(TaskResult::REPEAT) :				
 				return MasterStateTaskReady::Instance().OnStart(pContext);
-			default:
-				pContext->pActiveTask->Notify(pContext->pExecutor, (result == TaskResult::SUCCESS) ? TaskState::SUCCESS : TaskState::FAILURE);
+			default:				
+				pContext->NotifyCurrentTask((result == TaskResult::SUCCESS) ? TaskState::SUCCESS : TaskState::FAILURE);
 				pContext->ReleaseActiveTask();												
 				pContext->pTaskLock->Release(*pContext);
 				pContext->PostCheckForTask();								
@@ -150,7 +150,7 @@ IMasterState* MasterStateWaitForResponse::OnResponse(MasterContext* pContext, co
 
 IMasterState* MasterStateWaitForResponse::OnResponseTimeout(MasterContext* pContext)
 {	
-	pContext->pActiveTask->Notify(pContext->pExecutor, TaskState::FAILURE);
+	pContext->NotifyCurrentTask(TaskState::FAILURE);
 	pContext->pResponseTimer = nullptr;
 	auto now = pContext->pExecutor->GetTime();
 	pContext->pActiveTask->OnResponseTimeout(now);

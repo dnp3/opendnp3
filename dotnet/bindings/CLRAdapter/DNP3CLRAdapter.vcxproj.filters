@@ -66,10 +66,7 @@
     <ClInclude Include="SOEHandlerAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TaskStateListenerAdapter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TaskStateAdapter.h">
+    <ClInclude Include="MasterScanAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -116,7 +113,7 @@
     <ClCompile Include="SOEHandlerAdapter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TaskStateAdapter.cpp">
+    <ClCompile Include="MasterScanAdapter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

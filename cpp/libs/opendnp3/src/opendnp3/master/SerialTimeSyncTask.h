@@ -35,9 +35,10 @@ class SerialTimeSyncTask : public SingleResponseTask
 
 public:
 	SerialTimeSyncTask(openpal::Logger* pLogger, openpal::IUTCTimeSource* pTimeSource_);
-	
 
-	virtual char const* Name() const override final { return "serial (non-LAN) time sync"; }
+	virtual TaskId Id() const override final { return TaskId::From(TaskIds::SERIAL_TIME_SYNC); }
+	
+	virtual char const* Name() const override final { return "serial time sync"; }
 
 	virtual int Priority() const override final { return priority::TIME_SYNC; }
 	

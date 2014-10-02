@@ -36,12 +36,6 @@ MasterScan::MasterScan(openpal::IExecutor& executor, IMasterTask* pTask_, const 
 
 }
 
-void MasterScan::SetTaskCallback(const std::function<void(TaskState)>& callback)
-{
-	pTask->SetTaskCallback(callback);
-}
-
-
 bool MasterScan::IsDefined() const
 {
 	return pExecutor && pTask;

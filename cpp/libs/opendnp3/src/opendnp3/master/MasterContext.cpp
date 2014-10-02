@@ -93,7 +93,7 @@ bool MasterContext::OnLayerDown()
 		if (pActiveTask.IsDefined())
 		{			
 			pActiveTask->OnLowerLayerClose(now);
-			pActiveTask->Notify(pExecutor, TaskState::FAILURE);
+			this->NotifyCurrentTask(TaskState::FAILURE);			
 			pActiveTask.Release();
 		}
 
@@ -149,6 +149,14 @@ void MasterContext::ReleaseActiveTask()
 		{
 			pActiveTask.Release();
 		}
+	}
+}
+
+void MasterContext::NotifyCurrentTask(TaskState state)
+{
+	if (pActiveTask.IsDefined() && pActiveTask->Id().IsDefined())
+	{
+		pApplication->OnTaskStateChange(pActiveTask->Id(), state);
 	}
 }
 

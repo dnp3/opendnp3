@@ -28,6 +28,7 @@ namespace opendnp3
 
 UserPollTask::UserPollTask(	
 	const std::function<void(APDURequest&)>& builder_,
+	int id_,
 	bool recurring_,
 	const std::string& name,
 	const openpal::TimeDuration& period_,
@@ -35,7 +36,8 @@ UserPollTask::UserPollTask(
 	ISOEHandler* pSOEHandler,
 	openpal::Logger* pLogger
 ) :
-	PollTaskBase(name, pSOEHandler, pLogger),	
+	PollTaskBase(name, pSOEHandler, pLogger),
+	id(id_),
 	builder(builder_),
 	recurring(recurring_),
 	period(period_),

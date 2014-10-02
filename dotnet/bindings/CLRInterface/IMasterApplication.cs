@@ -34,6 +34,7 @@ namespace Automatak.DNP3.Interface
     {
         UInt64 GetMillisecondsSinceEpoch();
         void OnReceiveIIN(IINField iin);
+        void OnTaskStateChange(TaskId id, TaskState state);
     }
 
     /// <summary>
@@ -64,6 +65,11 @@ namespace Automatak.DNP3.Interface
         void IMasterApplication.OnReceiveIIN(IINField iin)
         {
            // ignore these in the default application
+        }
+
+        void IMasterApplication.OnTaskStateChange(TaskId id, TaskState state)
+        {
+            // ignore these in the default application
         }
     }
 }

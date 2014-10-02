@@ -89,21 +89,21 @@ opendnp3::ILinkSession* MasterStackImpl::GetLinkContext()
 	return &stack.link;
 }
 
-MasterScan MasterStackImpl::AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period)
+MasterScan MasterStackImpl::AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, int id)
 {
-	auto add = [this, gvId, period]() { return master.AddAllObjectsScan(gvId, period); };
+	auto add = [this, gvId, period, id]() { return master.AddAllObjectsScan(gvId, period, id); };
 	return asiopal::SynchronouslyGet<MasterScan>(handler.GetExecutor()->strand, add);
 }
 
-MasterScan MasterStackImpl::AddClassScan(const ClassField& field, openpal::TimeDuration period)
+MasterScan MasterStackImpl::AddClassScan(const ClassField& field, openpal::TimeDuration period, int id)
 {	
-	auto add = [this, field, period]() { return master.AddClassScan(field, period); };
+	auto add = [this, field, period, id]() { return master.AddClassScan(field, period, id); };
 	return asiopal::SynchronouslyGet<MasterScan>(handler.GetExecutor()->strand, add);
 }
 
-MasterScan  MasterStackImpl::AddRangeScan(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period)
+MasterScan  MasterStackImpl::AddRangeScan(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, int id)
 {	
-	auto add = [this, gvId, start, stop, period]() { return master.AddRangeScan(gvId, start, stop, period); };
+	auto add = [this, gvId, start, stop, period, id]() { return master.AddRangeScan(gvId, start, stop, period, id); };
 	return asiopal::SynchronouslyGet<MasterScan>(handler.GetExecutor()->strand, add);
 }
 

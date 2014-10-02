@@ -18,46 +18,47 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __MOCK_MASTER_APPLICATION_H_
-#define __MOCK_MASTER_APPLICATION_H_
-
-#include <opendnp3/master/IMasterApplication.h>
-
-#include <vector>
+#ifndef OPENDNP3_TASKID_H
+#define OPENDNP3_TASKID_H
 
 namespace opendnp3
 {
-
-class MockMasterApplication : public IMasterApplication
-{
-
-public:
-
-	MockMasterApplication() : time(0)
-	{}
-
-	virtual openpal::UTCTimestamp Now() override final
+	enum class TaskIds : int
 	{
-		return openpal::UTCTimestamp(time);
-	}
+		CLEAR_RESTART,
+		DISABLE_UNSOLICITED,
+		STARTUP_INTEGRITY_POLL,
+		SERIAL_TIME_SYNC,
+		ENABLE_UNSOLICITED
+	};
 
-	virtual void OnReceiveIIN(const IINField& iin) override final
+	class TaskId
 	{
-		rxIIN.push_back(iin);
-	}
+		public:			
 
-	virtual void OnTaskStateChange(TaskId id, TaskState state) override final
-	{
+		static TaskId From(TaskIds id)
+		{
+			return TaskId(false, (int)id);
+		}
 
-	}
+		static TaskId UserDefined(int id)
+		{
+			return TaskId(true, id);
+		}
 
-	std::vector<IINField> rxIIN;
+		inline bool IsDefined() const 
+		{
+			return id >= 0;
+		}
 
-	uint64_t time;
-};
+		int id;
+		bool isUserAssigned;
+		
+		private:
 
-
+		TaskId(bool userAssigned_, int id_) : id(id_), isUserAssigned(userAssigned_)			
+		{}
+	};
 }
 
 #endif
-
