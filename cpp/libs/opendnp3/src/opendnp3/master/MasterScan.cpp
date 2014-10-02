@@ -43,11 +43,13 @@ bool MasterScan::IsDefined() const
 bool MasterScan::Demand()
 {
 	if (IsDefined())
-	{
-		/* TODO
-		auto action = [this](){ pScheduler->Demand(*pTask); };
-		pExecutor->PostLambda(action);
-		*/
+	{		
+		auto action = [this]()
+		{ 
+			// TODO - tell the scheduler to reevaluate its state
+			pTask->Demand();
+		};
+		pExecutor->PostLambda(action);	
 		return false;
 	}	
 	else
