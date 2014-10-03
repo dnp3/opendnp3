@@ -111,9 +111,10 @@ object GroupVariation {
     group(41, "Analog Output", group41),
     group(42, "Analog Output Event", group42),
 
-    group(50, "Time and Date", List(1 -> "Absolute Time")),
+    group(50, "Time and Date", List(1 -> "Absolute Time", 4 -> "Indexed absolute time and long interval")),
     group(51, "Time and Date CTO", List(1 -> "Absolute time, synchronized", 2 -> "Absolute time, synchronized")),
     group(52, "Time Delay", List(1 -> "Coarse", 2 -> "Fine")),
+
 
     group(60, "Class Data", group60),
 

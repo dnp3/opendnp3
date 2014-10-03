@@ -105,6 +105,7 @@ namespace Automatak.DNP3.Interface
     Group42Var7 = 0x2A07,
     Group42Var8 = 0x2A08,
     Group50Var1 = 0x3201,
+    Group50Var4 = 0x3204,
     Group51Var1 = 0x3301,
     Group51Var2 = 0x3302,
     Group52Var1 = 0x3401,
