@@ -50,7 +50,7 @@ namespace DotNetOutstationDemo
             var config = new OutstationStackConfig();
 
             // configure the various measurements in our database
-            config.databaseTemplate = new DatabaseTemplate(4, 1, 1, 1, 1, 1, 1);
+            config.databaseTemplate = new DatabaseTemplate(4, 1, 1, 1, 1, 1, 1, 0);
             config.databaseTemplate.binaries[0].pointClass = PointClass.Class2;
             // ....
 

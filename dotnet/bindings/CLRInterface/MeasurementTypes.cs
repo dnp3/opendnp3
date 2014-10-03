@@ -343,6 +343,11 @@ namespace Automatak.DNP3.Interface
             }
         }
 
+        public override string ToString()
+        {
+            return String.Format("time: {0} interval: {1} units: {2}", time, interval, units);
+        }
+
         public readonly UInt64 time;
         public readonly UInt32 interval;
         public readonly Byte units;	

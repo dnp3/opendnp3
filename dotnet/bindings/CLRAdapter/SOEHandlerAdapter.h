@@ -32,6 +32,7 @@ namespace Automatak
 				virtual void OnReceiveHeader(const opendnp3::HeaderRecord& header, opendnp3::TimestampMode tsmode, const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::BinaryOutputStatus, uint16_t>>& meas) override final;
 				virtual void OnReceiveHeader(const opendnp3::HeaderRecord& header, opendnp3::TimestampMode tsmode, const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::AnalogOutputStatus, uint16_t>>& meas) override final;
 				virtual void OnReceiveHeader(const opendnp3::HeaderRecord& header, opendnp3::TimestampMode tsmode, const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::OctetString, uint16_t>>& meas) override final;			
+				virtual void OnReceiveHeader(const opendnp3::HeaderRecord& header, opendnp3::TimestampMode tsmode, const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::TimeAndInterval, uint16_t>>& meas) override final;
 
 			private:
 

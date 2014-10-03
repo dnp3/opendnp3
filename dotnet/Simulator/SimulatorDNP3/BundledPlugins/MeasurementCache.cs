@@ -36,6 +36,7 @@ namespace Automatak.Simulator.DNP3
         readonly MeasurementCollection binaryOutputStatii = new MeasurementCollection();
         readonly MeasurementCollection analogOutputStatii = new MeasurementCollection();
         readonly MeasurementCollection octetStrings = new MeasurementCollection();
+        readonly MeasurementCollection timeAndIntervals = new MeasurementCollection();
 
         public MeasurementCache(DatabaseTemplate template)
         {
@@ -49,7 +50,8 @@ namespace Automatak.Simulator.DNP3
             handler.OnReceiveHeader(info, template.frozenCounters.SelectWithIndex((m, i) => new IndexedValue<FrozenCounter>(new FrozenCounter(m.quality), i)));
             handler.OnReceiveHeader(info, template.analogs.SelectWithIndex((m, i) => new IndexedValue<Analog>(new Analog(m.quality), i)));
             handler.OnReceiveHeader(info, template.binaryOutputStatii.SelectWithIndex((m, i) => new IndexedValue<BinaryOutputStatus>(new BinaryOutputStatus(m.quality), i)));
-            handler.OnReceiveHeader(info, template.analogOutputStatii.SelectWithIndex((m, i) => new IndexedValue<AnalogOutputStatus>(new AnalogOutputStatus(m.quality), i)));            
+            handler.OnReceiveHeader(info, template.analogOutputStatii.SelectWithIndex((m, i) => new IndexedValue<AnalogOutputStatus>(new AnalogOutputStatus(m.quality), i)));
+            // TODO ? handler.OnReceiveHeader(info, template.analogOutputStatii.SelectWithIndex((m, i) => new IndexedValue<TimeAndInterval>(new TimeAndInterval(m.quality), i)));            
         }
 
         public MeasurementCache()
@@ -199,6 +201,11 @@ namespace Automatak.Simulator.DNP3
             analogOutputStatii.Update(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED));
         }
 
+        void IDatabase.Update(TimeAndInterval update, ushort index)
+        {
+            timeAndIntervals.Update(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED));
+        }
+
         void IDatabase.End()
         {
             Monitor.Exit(mutex);
@@ -248,6 +255,12 @@ namespace Automatak.Simulator.DNP3
         }
 
         void ISOEHandler.OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<OctetString>> values)
+        {
+            var converted = values.Select(m => m.Value.ToMeasurement(m.Index, info.tsmode));
+            octetStrings.Update(converted);
+        }
+
+        void ISOEHandler.OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<TimeAndInterval>> values)
         {
             var converted = values.Select(m => m.Value.ToMeasurement(m.Index, info.tsmode));
             octetStrings.Update(converted);

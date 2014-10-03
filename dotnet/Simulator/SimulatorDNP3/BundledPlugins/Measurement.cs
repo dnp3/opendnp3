@@ -16,7 +16,8 @@ namespace Automatak.Simulator.DNP3
         Analog,
         BinaryOutputStatus,
         AnalogOutputStatus,
-        OctetString
+        OctetString,
+        TimeAndInterval
     };
 
     class Measurement
