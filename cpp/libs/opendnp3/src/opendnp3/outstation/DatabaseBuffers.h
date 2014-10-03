@@ -24,6 +24,7 @@
 #include "opendnp3/outstation/EventMetadata.h"
 #include "opendnp3/outstation/ValueMetadataPair.h"
 #include "opendnp3/app/MeasurementTypes.h"
+#include "opendnp3/app/TimeAndInterval.h"
 #include "opendnp3/outstation/DualValue.h"
 #include "opendnp3/outstation/DatabaseTemplate.h"
 
@@ -47,6 +48,7 @@ typedef ValueMetadataPair<DualValue<Counter>, CounterMetadata> CounterCollection
 typedef ValueMetadataPair<DualValue<FrozenCounter>, FrozenCounterMetadata> FrozenCounterCollection;
 typedef ValueMetadataPair<DualValue<BinaryOutputStatus>, BinaryOutputStatusMetadata> BinaryOutputStatusCollection;
 typedef ValueMetadataPair<DualValue<AnalogOutputStatus>, AnalogOutputStatusMetadata> AnalogOutputStatusCollection;
+//typedef openpal::Indexable<TimeAndInterval, uint16_t> TimeAndIntervalCollection;
 
 class DatabaseBuffers
 {
@@ -64,6 +66,12 @@ private:
 	openpal::DynamicArray<DualValue<BinaryOutputStatus>, uint16_t> binaryOutputStatusValues;
 	openpal::DynamicArray<DualValue<AnalogOutputStatus>, uint16_t> analogOutputStatusValues;
 
+public:
+
+	openpal::DynamicArray<DualValue<TimeAndInterval>, uint16_t> timeAndIntervals;
+
+private:
+
 	openpal::DynamicArray<BinaryMetadata, uint16_t> binaryMetadata;
 	openpal::DynamicArray<DoubleBinaryMetadata, uint16_t> doubleBinaryMetadata;
 	openpal::DynamicArray<AnalogMetadata, uint16_t> analogMetadata;
@@ -74,6 +82,8 @@ private:
 
 public:
 
+	
+
 	BinaryCollection binaries;
 	DoubleBinaryCollection doubleBinaries;
 	AnalogCollection analogs;
@@ -81,6 +91,7 @@ public:
 	FrozenCounterCollection frozenCounters;
 	BinaryOutputStatusCollection binaryOutputStatii;
 	AnalogOutputStatusCollection analogOutputStatii;
+	
 
 };
 

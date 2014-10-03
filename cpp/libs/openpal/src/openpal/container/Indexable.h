@@ -40,7 +40,7 @@ public:
 	static Indexable<ValueType, IndexType> Empty()
 	{
 		return Indexable(nullptr, 0);
-	}
+	}	
 
 	Indexable(ValueType* start, IndexType aSize) : HasSize<IndexType>(aSize), buffer(start)
 	{}

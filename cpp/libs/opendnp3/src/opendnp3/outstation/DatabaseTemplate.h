@@ -27,6 +27,7 @@ namespace opendnp3
 {
 
 // template for specifying the size of types in an outstation database
+// TODO - change these to 16-bit
 struct DatabaseTemplate
 {
 	static DatabaseTemplate BinaryOnly(uint32_t count)
@@ -64,9 +65,14 @@ struct DatabaseTemplate
 		return DatabaseTemplate(0, 0, 0, 0, 0, 0, count);
 	}
 
+	static DatabaseTemplate TimeAndIntervalOnly(uint32_t count)
+	{
+		return DatabaseTemplate(0, 0, 0, 0, 0, 0, 0, count);
+	}
+
 	static DatabaseTemplate AllTypes(uint32_t count)
 	{
-		return DatabaseTemplate(count, count, count, count, count, count, count);
+		return DatabaseTemplate(count, count, count, count, count, count, count, count);
 	}
 
 	DatabaseTemplate(uint32_t numBinary_ = 0,
@@ -75,7 +81,8 @@ struct DatabaseTemplate
 	                 uint32_t numCounter_ = 0,
 	                 uint32_t numFrozenCounter_ = 0,
 	                 uint32_t numBinaryOutputStatus_ = 0,
-	                 uint32_t numAnalogOutputStatus_ = 0) :
+	                 uint32_t numAnalogOutputStatus_ = 0,
+					 uint32_t numTimeAndInterval_ = 0) :
 
 		numBinary(numBinary_),
 		numDoubleBinary(numDoubleBinary_),
@@ -83,7 +90,8 @@ struct DatabaseTemplate
 		numCounter(numCounter_),
 		numFrozenCounter(numFrozenCounter_),
 		numBinaryOutputStatus(numBinaryOutputStatus_),
-		numAnalogOutputStatus(numAnalogOutputStatus_)
+		numAnalogOutputStatus(numAnalogOutputStatus_),
+		numTimeAndInterval(numTimeAndInterval_)
 	{}
 
 	uint32_t numBinary;
@@ -93,6 +101,7 @@ struct DatabaseTemplate
 	uint32_t numFrozenCounter;
 	uint32_t numBinaryOutputStatus;
 	uint32_t numAnalogOutputStatus;
+	uint32_t numTimeAndInterval;
 };
 
 }

@@ -55,13 +55,13 @@ IINField StaticResponseContext::ReadAll(const GroupVariationRecord& record)
 	if (record.enumeration == GroupVariation::Group60Var1)
 	{
 		IINField result;
-		result = result | QueueRange<Binary>(defaults.binary);
-		result = result | QueueRange<DoubleBitBinary>(defaults.doubleBinary);
-		result = result | QueueRange<BinaryOutputStatus>(defaults.binaryOutputStatus);
-		result = result | QueueRange<Counter>(defaults.counter);
-		result = result | QueueRange<FrozenCounter>(defaults.frozenCounter);
-		result = result | QueueRange<Analog>(defaults.analog);
-		result = result | QueueRange<AnalogOutputStatus>(defaults.analogOutputStatus);
+		result |= QueueRange<Binary>(defaults.binary);
+		result |= QueueRange<DoubleBitBinary>(defaults.doubleBinary);
+		result |= QueueRange<BinaryOutputStatus>(defaults.binaryOutputStatus);
+		result |= QueueRange<Counter>(defaults.counter);
+		result |= QueueRange<FrozenCounter>(defaults.frozenCounter);
+		result |= QueueRange<Analog>(defaults.analog);
+		result |= QueueRange<AnalogOutputStatus>(defaults.analogOutputStatus);
 		return result;		
 	}
 	else

@@ -57,6 +57,7 @@ public:
 	void Update(const FrozenCounter& value, uint16_t) override final;
 	void Update(const BinaryOutputStatus& value, uint16_t) override final;
 	void Update(const AnalogOutputStatus& value, uint16_t) override final;
+	//void Update(const TimeAndInterval) override final;
 
 	template <class T>
 	openpal::Indexable<DualValue<T>, uint16_t>& Values();

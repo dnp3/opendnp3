@@ -32,6 +32,8 @@ DatabaseBuffers::DatabaseBuffers(const DatabaseTemplate& databaseTemplate) :
 	frozenCounterValues(databaseTemplate.numFrozenCounter),
 	binaryOutputStatusValues(databaseTemplate.numBinaryOutputStatus),
 	analogOutputStatusValues(databaseTemplate.numAnalogOutputStatus),
+	
+	timeAndIntervals(databaseTemplate.numTimeAndInterval),
 
 	binaryMetadata(databaseTemplate.numBinary),
 	doubleBinaryMetadata(databaseTemplate.numDoubleBinary),
@@ -41,6 +43,7 @@ DatabaseBuffers::DatabaseBuffers(const DatabaseTemplate& databaseTemplate) :
 	binaryOutputStatusMetadata(databaseTemplate.numBinaryOutputStatus),
 	analogOutputStatusMetadata(databaseTemplate.numAnalogOutputStatus),
 
+
 	binaries(binaryValues.ToIndexable(), binaryMetadata.ToIndexable()),
 	doubleBinaries(doubleBinaryValues.ToIndexable(), doubleBinaryMetadata.ToIndexable()),
 	analogs(analogValues.ToIndexable(), analogMetadata.ToIndexable()),
@@ -48,6 +51,7 @@ DatabaseBuffers::DatabaseBuffers(const DatabaseTemplate& databaseTemplate) :
 	frozenCounters(frozenCounterValues.ToIndexable(), frozenCounterMetadata.ToIndexable()),
 	binaryOutputStatii(binaryOutputStatusValues.ToIndexable(), binaryOutputStatusMetadata.ToIndexable()),
 	analogOutputStatii(analogOutputStatusValues.ToIndexable(), analogOutputStatusMetadata.ToIndexable())
+	
 {
 
 }
