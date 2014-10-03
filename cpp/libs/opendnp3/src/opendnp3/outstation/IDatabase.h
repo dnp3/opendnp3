@@ -23,7 +23,7 @@
 
 #include "opendnp3/app/ITransactable.h"
 #include "opendnp3/app/MeasurementTypes.h"
-
+#include "opendnp3/app/TimeAndInterval.h"
 
 namespace opendnp3
 {
@@ -99,6 +99,13 @@ public:
 	* @param index index of the measurement
 	*/
 	virtual void Update(const AnalogOutputStatus& meas, uint16_t index) = 0;
+
+	/**
+	* Update a TimeAndInterval value, must have transaction started
+	* @param meas measurement to be processed
+	* @param index index of the measurement
+	*/
+	virtual void Update(const TimeAndInterval& meas, uint16_t index) = 0;
 
 };
 

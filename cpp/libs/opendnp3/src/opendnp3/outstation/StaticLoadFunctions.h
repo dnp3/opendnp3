@@ -43,6 +43,8 @@ public:
 	static StaticLoadFun Get(StaticAnalogResponse rsp);
 	static StaticLoadFun Get(StaticAnalogOutputStatusResponse rsp);
 	static StaticLoadFun Get(StaticBinaryOutputStatusResponse rsp);
+	static StaticLoadFun Get(StaticTimeAndIntervalResponse rsp);
+
 };
 
 }

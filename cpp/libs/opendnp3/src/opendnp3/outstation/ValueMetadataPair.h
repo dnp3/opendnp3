@@ -34,7 +34,12 @@ struct ValueMetadataPair
 		values(aValues),
 		metadata(aMetadata)
 	{
-		assert(aValues.Size() == aMetadata.Size());
+		
+	}
+
+	bool Contains(uint16_t index) const
+	{
+		return values.Contains(index) && metadata.Contains(index);
 	}
 
 	openpal::Indexable<T, uint16_t> values;

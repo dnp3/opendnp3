@@ -22,6 +22,7 @@
 #define OPENDNP3_TIMEANDINTERVAL_H
 
 #include "opendnp3/gen/IntervalUnits.h"
+#include "opendnp3/gen/StaticTimeAndIntervalResponse.h"
 
 namespace opendnp3
 {
@@ -46,6 +47,8 @@ public:
 	uint64_t time;
 	uint32_t interval;	
 	uint8_t units;	
+
+	typedef StaticTimeAndIntervalResponse StaticResponseEnum;
 };
 
 }

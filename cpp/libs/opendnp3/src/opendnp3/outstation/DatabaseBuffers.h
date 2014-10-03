@@ -33,6 +33,8 @@
 namespace opendnp3
 {
 
+struct EmptyMetadata {};
+
 typedef SimpleEventMetadata<Binary> BinaryMetadata;
 typedef SimpleEventMetadata<DoubleBitBinary> DoubleBinaryMetadata;
 typedef DeadbandMetadata<Analog, double> AnalogMetadata;
@@ -48,7 +50,7 @@ typedef ValueMetadataPair<DualValue<Counter>, CounterMetadata> CounterCollection
 typedef ValueMetadataPair<DualValue<FrozenCounter>, FrozenCounterMetadata> FrozenCounterCollection;
 typedef ValueMetadataPair<DualValue<BinaryOutputStatus>, BinaryOutputStatusMetadata> BinaryOutputStatusCollection;
 typedef ValueMetadataPair<DualValue<AnalogOutputStatus>, AnalogOutputStatusMetadata> AnalogOutputStatusCollection;
-//typedef openpal::Indexable<TimeAndInterval, uint16_t> TimeAndIntervalCollection;
+typedef ValueMetadataPair<DualValue<TimeAndInterval>, EmptyMetadata> TimeAndIntervalCollection;
 
 class DatabaseBuffers
 {
@@ -65,10 +67,7 @@ private:
 	openpal::DynamicArray<DualValue<FrozenCounter>, uint16_t> frozenCounterValues;
 	openpal::DynamicArray<DualValue<BinaryOutputStatus>, uint16_t> binaryOutputStatusValues;
 	openpal::DynamicArray<DualValue<AnalogOutputStatus>, uint16_t> analogOutputStatusValues;
-
-public:
-
-	openpal::DynamicArray<DualValue<TimeAndInterval>, uint16_t> timeAndIntervals;
+	openpal::DynamicArray<DualValue<TimeAndInterval>, uint16_t> timeAndIntervalValues;
 
 private:
 
@@ -91,7 +90,7 @@ public:
 	FrozenCounterCollection frozenCounters;
 	BinaryOutputStatusCollection binaryOutputStatii;
 	AnalogOutputStatusCollection analogOutputStatii;
-	
+	TimeAndIntervalCollection timeAndIntervals;
 
 };
 

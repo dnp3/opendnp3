@@ -61,7 +61,8 @@ IINField StaticResponseContext::ReadAll(const GroupVariationRecord& record)
 		result |= QueueRange<Counter>(defaults.counter);
 		result |= QueueRange<FrozenCounter>(defaults.frozenCounter);
 		result |= QueueRange<Analog>(defaults.analog);
-		result |= QueueRange<AnalogOutputStatus>(defaults.analogOutputStatus);
+		result |= QueueRange<AnalogOutputStatus>(defaults.analogOutputStatus);		
+		result |= QueueRange<TimeAndInterval>(defaults.timeAndInterval);
 		return result;		
 	}
 	else
@@ -82,6 +83,8 @@ IINField StaticResponseContext::ReadAll(const GroupVariationRecord& record)
 				return ReadRange(record, pDatabase->FullRange<Analog>());
 			case(40) :
 				return ReadRange(record, pDatabase->FullRange<AnalogOutputStatus>());
+			case(50) :
+				return ReadRange(record, pDatabase->FullRange<TimeAndInterval>());
 			default:
 				return IINField(IINBit::FUNC_NOT_SUPPORTED);
 		}
@@ -164,6 +167,10 @@ IINField StaticResponseContext::ReadRange(const GroupVariationRecord& record, co
 		return QueueRange<AnalogOutputStatus>(range, StaticAnalogOutputStatusResponse::Group40Var3);
 	case(GroupVariation::Group40Var4) :
 		return QueueRange<AnalogOutputStatus>(range, StaticAnalogOutputStatusResponse::Group40Var4);
+
+		// Group 50
+	case(GroupVariation::Group50Var4) :
+		return QueueRange<TimeAndInterval>(range, StaticTimeAndIntervalResponse::Group50Var4);
 
 	default:
 		return IINField(IINBit::FUNC_NOT_SUPPORTED);

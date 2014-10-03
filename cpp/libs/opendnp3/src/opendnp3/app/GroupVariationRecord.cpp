@@ -110,52 +110,61 @@ EnumAndType GroupVariationRecord::GetEnumAndType(uint8_t group, uint8_t variatio
 
 GroupVariationType GroupVariationRecord::GetType(uint8_t group, uint8_t variation)
 {
-	switch(group)
+	switch (group)
 	{
-	case(1):
-		return GroupVariationType::STATIC;
-		
-	case(2):
-		return GroupVariationType::EVENT;
-		
-	case(3):
-		return GroupVariationType::STATIC;
-		
-	case(4):
-		return GroupVariationType::EVENT;
-		
-	case(10):
-		return GroupVariationType::STATIC;
-		
-	case(11):
-		return GroupVariationType::EVENT;	
-
-	case(20):
-		return GroupVariationType::STATIC;
-		
-	case(21):
+	case(1) :
 		return GroupVariationType::STATIC;
 
-	case(22):
+	case(2) :
 		return GroupVariationType::EVENT;
-		
-	case(23):
-		return GroupVariationType::EVENT;
-		
-	case(30):
+
+	case(3) :
 		return GroupVariationType::STATIC;
 
-	case(32):
+	case(4) :
 		return GroupVariationType::EVENT;
 
-	case(40):
+	case(10) :
 		return GroupVariationType::STATIC;
-		
-	case(41):
+
+	case(11) :
 		return GroupVariationType::EVENT;
 
-	case(42):
+	case(20) :
+		return GroupVariationType::STATIC;
+
+	case(21) :
+		return GroupVariationType::STATIC;
+
+	case(22) :
 		return GroupVariationType::EVENT;
+
+	case(23) :
+		return GroupVariationType::EVENT;
+
+	case(30) :
+		return GroupVariationType::STATIC;
+
+	case(32) :
+		return GroupVariationType::EVENT;
+
+	case(40) :
+		return GroupVariationType::STATIC;
+
+	case(41) :
+		return GroupVariationType::EVENT;
+
+	case(42) :
+		return GroupVariationType::EVENT;
+
+	case(50) :
+		switch (variation)
+		{
+			case(4) :
+				return GroupVariationType::STATIC;
+			default:
+				return GroupVariationType::OTHER;
+		}
 
 	case(60):
 		switch (variation)

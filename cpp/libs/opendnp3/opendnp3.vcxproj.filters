@@ -705,6 +705,9 @@
     <ClInclude Include="src\opendnp3\app\TimeAndInterval.h">
       <Filter>Header\app</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\StaticTimeAndIntervalResponse.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\AnalogOutput.cpp">
@@ -1125,6 +1128,9 @@
       <Filter>Source\app</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\gen\IntervalUnits.cpp">
+      <Filter>Source\gen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\gen\StaticTimeAndIntervalResponse.cpp">
       <Filter>Source\gen</Filter>
     </ClCompile>
   </ItemGroup>

@@ -69,6 +69,7 @@ void Database::DoubleBuffer()
 	FreezeCollection(buffers.frozenCounters.values);
 	FreezeCollection(buffers.binaryOutputStatii.values);
 	FreezeCollection(buffers.analogOutputStatii.values);
+	FreezeCollection(buffers.timeAndIntervals.values);
 }
 
 ////////////////////////////////////////////////////
@@ -109,6 +110,15 @@ void Database::Update(const AnalogOutputStatus& value, uint16_t index)
 {
 	this->UpdateEvent(value, index, buffers.analogOutputStatii);
 }
+
+void Database::Update(const TimeAndInterval& value, uint16_t index)
+{
+	if (buffers.timeAndIntervals.values.Contains(index))
+	{		
+		buffers.timeAndIntervals.values[index].Update(value);
+	}
+}
+
 
 template <>
 openpal::Indexable<DualValue<Binary>, uint16_t>& Database::Values<Binary>()
@@ -153,6 +163,12 @@ openpal::Indexable<DualValue<AnalogOutputStatus>, uint16_t>& Database::Values<An
 }
 
 template <>
+openpal::Indexable<DualValue<TimeAndInterval>, uint16_t>& Database::Values<TimeAndInterval>()
+{
+	return buffers.timeAndIntervals.values;
+}
+
+template <>
 uint16_t Database::NumValues<Binary>() const
 {
 	return buffers.binaries.values.Size();
@@ -192,6 +208,12 @@ template <>
 uint16_t Database::NumValues<AnalogOutputStatus>() const
 {
 	return buffers.analogOutputStatii.values.Size();
+}
+
+template <>
+uint16_t Database::NumValues<TimeAndInterval>() const
+{
+	return buffers.timeAndIntervals.values.Size();
 }
 
 bool Database::AssignClass(AssignClassType type, PointClass clazz, const StaticRange& range)

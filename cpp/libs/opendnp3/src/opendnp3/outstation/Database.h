@@ -57,7 +57,7 @@ public:
 	void Update(const FrozenCounter& value, uint16_t) override final;
 	void Update(const BinaryOutputStatus& value, uint16_t) override final;
 	void Update(const AnalogOutputStatus& value, uint16_t) override final;
-	//void Update(const TimeAndInterval) override final;
+	void Update(const TimeAndInterval& value, uint16_t) override final;
 
 	template <class T>
 	openpal::Indexable<DualValue<T>, uint16_t>& Values();
@@ -113,7 +113,7 @@ private:
 	template <class T, class U>
 	void UpdateEvent(const T& value, uint16_t index, U& collection)
 	{
-		if(collection.values.Contains(index))
+		if (collection.Contains(index))
 		{
 			auto& metadata = collection.metadata[index];
 			EventClass eventClass;

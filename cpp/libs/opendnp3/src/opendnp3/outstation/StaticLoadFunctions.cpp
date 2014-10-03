@@ -27,21 +27,16 @@
 #include "opendnp3/objects/Group21.h"
 #include "opendnp3/objects/Group30.h"
 #include "opendnp3/objects/Group40.h"
+#include "opendnp3/objects/Group50.h"
 
 using namespace openpal;
 
 namespace opendnp3
 {
 
-StaticLoadFun StaticLoadFunctions::Get(StaticBinaryResponse rsp)
+StaticLoadFun StaticLoadFunctions::Get(StaticBinaryResponse)
 {
-	switch(rsp)
-	{
-	case(StaticBinaryResponse::Group1Var2):
-		return &StaticLoader::LoadFixedSizeStartStop<Group1Var2>;
-	default:
-		return &StaticLoader::LoadFixedSizeStartStop<Group1Var2>;
-	}
+	return &StaticLoader::LoadFixedSizeStartStop<Group1Var2>;
 }
 
 StaticLoadFun StaticLoadFunctions::Get(StaticDoubleBinaryResponse rsp)
@@ -114,6 +109,11 @@ StaticLoadFun StaticLoadFunctions::Get(StaticAnalogOutputStatusResponse rsp)
 	default:
 		return &StaticLoader::LoadFixedSizeStartStop<Group40Var1>;
 	}
+}
+
+StaticLoadFun StaticLoadFunctions::Get(StaticTimeAndIntervalResponse)
+{
+	return &StaticLoader::LoadFixedSizeStartStop<Group50Var4>;	
 }
 
 

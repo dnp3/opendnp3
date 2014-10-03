@@ -319,6 +319,37 @@ void NewTestStaticRead(const std::string& request, const std::string& response)
 	REQUIRE(t.lower.PopWriteAsHex() == response);
 }
 
+void TestTimeAndIntervalRead(const std::string& request)
+{
+	OutstationConfig config;
+	OutstationTestObject t(config, DatabaseTemplate::TimeAndIntervalOnly(1));
+	t.LowerLayerUp();
+
+	t.Transaction(
+		[](Database& db){
+		db.Update(TimeAndInterval(9, 3, IntervalUnits::Days), 0);
+	}
+	);
+
+	t.SendToOutstation(request);
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00 32 04 00 00 00 09 00 00 00 00 00 03 00 00 00 05");
+}
+
+TEST_CASE(SUITE("TimeAndIntervalViaIntegrity"))
+{
+	TestTimeAndIntervalRead(hex::IntegrityPoll(0));	
+}
+
+TEST_CASE(SUITE("TimeAndIntervalViaDirectRequest"))
+{
+	TestTimeAndIntervalRead("C0 01 32 04 06");
+}
+
+TEST_CASE(SUITE("TimeAndIntervalViaDirectRangeRequest"))
+{
+	TestTimeAndIntervalRead("C0 01 32 04 00 00 00");
+}
+
 // ---- Static data reads ----- //
 
 TEST_CASE(SUITE("ReadGrp1Var0ViaIntegrity"))

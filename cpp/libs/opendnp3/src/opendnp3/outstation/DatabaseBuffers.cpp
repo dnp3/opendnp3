@@ -32,8 +32,7 @@ DatabaseBuffers::DatabaseBuffers(const DatabaseTemplate& databaseTemplate) :
 	frozenCounterValues(databaseTemplate.numFrozenCounter),
 	binaryOutputStatusValues(databaseTemplate.numBinaryOutputStatus),
 	analogOutputStatusValues(databaseTemplate.numAnalogOutputStatus),
-	
-	timeAndIntervals(databaseTemplate.numTimeAndInterval),
+	timeAndIntervalValues(databaseTemplate.numTimeAndInterval),
 
 	binaryMetadata(databaseTemplate.numBinary),
 	doubleBinaryMetadata(databaseTemplate.numDoubleBinary),
@@ -50,8 +49,8 @@ DatabaseBuffers::DatabaseBuffers(const DatabaseTemplate& databaseTemplate) :
 	counters(counterValues.ToIndexable(), counterMetadata.ToIndexable()),
 	frozenCounters(frozenCounterValues.ToIndexable(), frozenCounterMetadata.ToIndexable()),
 	binaryOutputStatii(binaryOutputStatusValues.ToIndexable(), binaryOutputStatusMetadata.ToIndexable()),
-	analogOutputStatii(analogOutputStatusValues.ToIndexable(), analogOutputStatusMetadata.ToIndexable())
-	
+	analogOutputStatii(analogOutputStatusValues.ToIndexable(), analogOutputStatusMetadata.ToIndexable()),
+	timeAndIntervals(timeAndIntervalValues.ToIndexable(), openpal::Indexable<EmptyMetadata, uint16_t>::Empty())
 {
 
 }

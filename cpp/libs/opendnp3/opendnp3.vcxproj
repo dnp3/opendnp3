@@ -80,6 +80,7 @@
     <ClInclude Include="src\opendnp3\gen\IntervalUnits.h" />
     <ClInclude Include="src\opendnp3\gen\PointClass.h" />
     <ClInclude Include="src\opendnp3\gen\RestartMode.h" />
+    <ClInclude Include="src\opendnp3\gen\StaticTimeAndIntervalResponse.h" />
     <ClInclude Include="src\opendnp3\gen\TaskState.h" />
     <ClInclude Include="src\opendnp3\gen\TimestampMode.h" />
     <ClInclude Include="src\opendnp3\gen\TimeSyncMode.h" />
@@ -287,6 +288,7 @@
     <ClCompile Include="src\opendnp3\gen\StaticCounterResponse.cpp" />
     <ClCompile Include="src\opendnp3\gen\StaticDoubleBinaryResponse.cpp" />
     <ClCompile Include="src\opendnp3\gen\StaticFrozenCounterResponse.cpp" />
+    <ClCompile Include="src\opendnp3\gen\StaticTimeAndIntervalResponse.cpp" />
     <ClCompile Include="src\opendnp3\gen\TaskState.cpp" />
     <ClCompile Include="src\opendnp3\gen\TimeSyncMode.cpp" />
     <ClCompile Include="src\opendnp3\link\CRC.cpp" />
