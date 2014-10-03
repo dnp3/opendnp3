@@ -51,7 +51,7 @@ namespace Automatak.Simulator.DNP3
             handler.OnReceiveHeader(info, template.analogs.SelectWithIndex((m, i) => new IndexedValue<Analog>(new Analog(m.quality), i)));
             handler.OnReceiveHeader(info, template.binaryOutputStatii.SelectWithIndex((m, i) => new IndexedValue<BinaryOutputStatus>(new BinaryOutputStatus(m.quality), i)));
             handler.OnReceiveHeader(info, template.analogOutputStatii.SelectWithIndex((m, i) => new IndexedValue<AnalogOutputStatus>(new AnalogOutputStatus(m.quality), i)));
-            // TODO ? handler.OnReceiveHeader(info, template.analogOutputStatii.SelectWithIndex((m, i) => new IndexedValue<TimeAndInterval>(new TimeAndInterval(m.quality), i)));            
+            //handler.OnReceiveHeader(info, template.analogOutputStatii.SelectWithIndex((m, i) => new IndexedValue<TimeAndInterval>(new TimeAndInterval(m.quality), i)));            
         }
 
         public MeasurementCache()
@@ -89,6 +89,8 @@ namespace Automatak.Simulator.DNP3
                     return analogOutputStatii;
                 case (MeasType.OctetString):
                     return octetStrings;
+                case(MeasType.TimeAndInterval):
+                    return timeAndIntervals;
                 default:
                     return null;
             }
