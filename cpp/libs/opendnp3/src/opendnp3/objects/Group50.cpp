@@ -20,6 +20,8 @@
 
 #include "Group50.h"
 
+#include "opendnp3/app/MeasurementFactory.h"
+#include "opendnp3/app/WriteConversions.h"
 #include <openpal/serialization/Serialization.h>
 
 using namespace openpal;
@@ -61,6 +63,18 @@ void Group50Var4::Write(const Group50Var4& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(4);
   UInt8::Write(buffer, arg.units);
   buffer.Advance(1);
+}
+
+
+TimeAndInterval Group50Var4::ReadTarget(ReadOnlyBuffer& buff)
+{
+  auto gv = Group50Var4::Read(buff);
+  return TimeAndIntervalFactory::From(gv.time, gv.interval, gv.units);
+}
+
+void Group50Var4::WriteTarget(const TimeAndInterval& value, openpal::WriteBuffer& buff)
+{
+  Group50Var4::Write(ConvertGroup50Var4::Apply(value), buff);
 }
 
 

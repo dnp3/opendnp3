@@ -23,6 +23,7 @@
 
 #include <openpal/util/Uncopyable.h>
 #include "opendnp3/app/MeasurementTypes.h"
+#include "opendnp3/app/TimeAndInterval.h"
 #include "opendnp3/app/ControlRelayOutputBlock.h"
 #include "opendnp3/app/AnalogOutput.h"
 
@@ -101,6 +102,14 @@ struct FrozenCounterFactory: private openpal::PureStatic
 	}
 };
 
+struct TimeAndIntervalFactory : private openpal::PureStatic
+{	
+	inline static TimeAndInterval From(uint64_t time, uint32_t interval, uint8_t units)
+	{
+		return TimeAndInterval(time, interval, units);
+	}
+};
+
 struct ControlRelayOutputBlockFactory: private openpal::PureStatic
 {
 	inline static ControlRelayOutputBlock From(
@@ -156,6 +165,8 @@ typedef AnalogOutputFactory<AnalogOutputInt32, int32_t> AnalogOutputInt32Factory
 typedef AnalogOutputFactory<AnalogOutputInt16, int16_t> AnalogOutputInt16Factory;
 typedef AnalogOutputFactory<AnalogOutputFloat32, float> AnalogOutputFloat32Factory;
 typedef AnalogOutputFactory<AnalogOutputDouble64, double> AnalogOutputDouble64Factory;
+
+
 
 }
 

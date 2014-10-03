@@ -276,6 +276,7 @@
     <ClCompile Include="src\opendnp3\gen\EventFrozenCounterResponse.cpp" />
     <ClCompile Include="src\opendnp3\gen\FunctionCode.cpp" />
     <ClCompile Include="src\opendnp3\gen\GroupVariation.cpp" />
+    <ClCompile Include="src\opendnp3\gen\IntervalUnits.cpp" />
     <ClCompile Include="src\opendnp3\gen\LinkFunction.cpp" />
     <ClCompile Include="src\opendnp3\gen\PointClass.cpp" />
     <ClCompile Include="src\opendnp3\gen\QualifierCode.cpp" />

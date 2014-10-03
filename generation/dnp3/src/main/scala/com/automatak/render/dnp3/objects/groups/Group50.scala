@@ -11,10 +11,6 @@ object Group50 extends ObjectGroup {
 }
 
 object Group50Var1 extends FixedSize(Group50, 1)(time48)
-object Group50Var4 extends FixedSize(Group50, 4)(time48, FixedSizeField("interval", UInt32Field), FixedSizeField("units", UInt8Field))
 
-/*
-object Group50Var2 extends FixedSize(Group50, 2)
-object Group50Var3 extends FixedSize(Group50, 3)
-object Group50Var4 extends FixedSize(Group50, 4)
-*/
+object Group50Var4 extends FixedSize(Group50, 4)(time48, FixedSizeField("interval", UInt32Field), FixedSizeField("units", UInt8Field)) with ConversionToTimeAndInterval
+

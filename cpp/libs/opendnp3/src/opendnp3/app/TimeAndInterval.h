@@ -29,7 +29,7 @@ namespace opendnp3
 /**
 	Maps to Group50Var4
 
-	This class is a bit of an outlier and is really only used in the DNP3 PV profile
+	This class is a bit of an outlier as an indexed type and is really only used in the DNP3 PV profile
 */
 class TimeAndInterval
 {

@@ -44,6 +44,7 @@ class ArbitraryConversion(name: String, incHeaders: List[String], cppHeaders: Li
 object ConversionHeaders {
 
   val dataTypes = quoted("opendnp3/app/MeasurementTypes.h")
+  val timeAndInterval = quoted("opendnp3/app/TimeAndInterval.h")
   val crob = quoted("opendnp3/app/ControlRelayOutputBlock.h")
   val ao = quoted("opendnp3/app/AnalogOutput.h")
   val factory = quoted("opendnp3/app/MeasurementFactory.h")
@@ -67,6 +68,7 @@ object AnalogOutputInt16Conversion extends ArbitraryConversion("AnalogOutputInt1
 object AnalogOutputInt32Conversion extends ArbitraryConversion("AnalogOutputInt32", List(serializer, ao), cppIncldues)
 object AnalogOutputFloat32Conversion extends ArbitraryConversion("AnalogOutputFloat32", List(serializer, ao), cppIncldues)
 object AnalogOutputDouble64Conversion extends ArbitraryConversion("AnalogOutputDouble64", List(serializer, ao), cppIncldues)
+object TimeAndIntervalConversion extends ArbitraryConversion("TimeAndInterval", List(serializer,timeAndInterval), cppIncldues)
 
 trait ConversionToBinary {
   self : FixedSize =>
@@ -77,8 +79,6 @@ trait ConversionToDoubleBitBinary {
   self : FixedSize =>
   override def conversion: Option[Conversion] = Some(DoubleBitBinaryConversion)
 }
-
-
 trait ConversionToAnalog {
   self : FixedSize =>
   override def conversion: Option[Conversion] = Some(AnalogConversion)
@@ -128,5 +128,10 @@ trait ConversionToAnalogOutputFloat32 {
 trait ConversionToAnalogOutputDouble64 {
   self : FixedSize =>
   override def conversion: Option[Conversion] = Some(AnalogOutputDouble64Conversion)
+}
+
+trait ConversionToTimeAndInterval {
+  self : FixedSize =>
+  override def conversion: Option[Conversion] = Some(TimeAndIntervalConversion)
 }
 

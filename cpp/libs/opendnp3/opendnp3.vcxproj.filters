@@ -1124,5 +1124,8 @@
     <ClCompile Include="src\opendnp3\app\TimeAndInterval.cpp">
       <Filter>Source\app</Filter>
     </ClCompile>
+    <ClCompile Include="src\opendnp3\gen\IntervalUnits.cpp">
+      <Filter>Source\gen</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
