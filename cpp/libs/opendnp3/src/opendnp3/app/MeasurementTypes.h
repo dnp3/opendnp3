@@ -59,7 +59,6 @@ namespace quality {
 	uint8_t GetBinaryQuality(uint8_t q, bool value);
 }
 
-
 /**
 	The Binary data type is for describing on-off (boolean) type values. Good examples of
 	binaries are alarms, mode settings, enabled/disabled flags etc. Think of it as a status

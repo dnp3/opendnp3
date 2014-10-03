@@ -36,6 +36,17 @@ struct Group50Var1
   uint64_t time;
 };
 
+struct Group50Var4
+{
+  static GroupVariationID ID() { return GroupVariationID(50,4); }
+  static uint32_t Size() { return 11; }
+  static Group50Var4 Read(openpal::ReadOnlyBuffer&);
+  static void Write(const Group50Var4&, openpal::WriteBuffer&);
+  uint64_t time;
+  uint32_t interval;
+  uint8_t units;
+};
+
 
 }
 

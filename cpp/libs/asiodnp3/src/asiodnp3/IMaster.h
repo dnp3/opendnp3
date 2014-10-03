@@ -56,10 +56,10 @@ public:
 	* Add a class-based scan to the master
 	* @return A proxy class used to manipulate the scan
 	*/
-	virtual opendnp3::MasterScan AddClassScan(const opendnp3::ClassField& field, openpal::TimeDuration scanRate, int id = -1) = 0;
+	virtual opendnp3::MasterScan AddClassScan(const opendnp3::ClassField& field, openpal::TimeDuration period, int id = -1) = 0;
 
 	/**
-	* Add a start/stop rnage scan to the master
+	* Add a start/stop (range) scan to the master
 	* @return A proxy class used to manipulate the scan
 	*/
 	virtual opendnp3::MasterScan  AddRangeScan(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, int id = -1) = 0;

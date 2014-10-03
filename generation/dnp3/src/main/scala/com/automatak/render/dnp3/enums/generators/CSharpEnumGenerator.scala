@@ -22,6 +22,7 @@ object CSharpEnumGenerator {
 
     def enums : List[EnumConfig] = List(
       AssignClassType(),
+      IntervalUnit(),
       DoubleBit(),
       PointClass(),
       TaskState(),

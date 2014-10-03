@@ -1,7 +1,7 @@
 package com.automatak.render.dnp3.objects
 
 import com.automatak.render.EnumModel
-import com.automatak.render.dnp3.enums.{ControlCode, CommandStatus}
+import com.automatak.render.dnp3.enums.{IntervalUnit, ControlCode, CommandStatus}
 
 sealed trait FieldType
 class FixedSizeFieldType(val numBytes: Int) extends FieldType
@@ -22,6 +22,7 @@ object FixedSizeField {
   //common flags field
   val flags = FixedSizeField("flags", UInt8Field)
 
+
   // timestamps
   val time16 = FixedSizeField("time", UInt16Field)
   val time48 = FixedSizeField("time", UInt48Field)
@@ -39,6 +40,8 @@ object FixedSizeField {
 
   //enums
   val commandStatus = FixedSizeField("status", EnumField(CommandStatus()))
+  val intervalUnit = FixedSizeField("intervalUnit", EnumField(IntervalUnit()))
+
 }
 
 

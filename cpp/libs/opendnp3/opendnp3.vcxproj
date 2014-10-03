@@ -66,6 +66,7 @@
     <ClInclude Include="src\opendnp3\app\RangeWriteIterator.h" />
     <ClInclude Include="src\opendnp3\app\SequenceInfo.h" />
     <ClInclude Include="src\opendnp3\app\StaticRange.h" />
+    <ClInclude Include="src\opendnp3\app\TimeAndInterval.h" />
     <ClInclude Include="src\opendnp3\app\VTOData.h" />
     <ClInclude Include="src\opendnp3\app\WriteConversions.h" />
     <ClInclude Include="src\opendnp3\app\WriteConversionTemplates.h" />
@@ -76,6 +77,7 @@
     <ClInclude Include="src\opendnp3\gen\CounterQuality.h" />
     <ClInclude Include="src\opendnp3\gen\DoubleBitBinaryQuality.h" />
     <ClInclude Include="src\opendnp3\gen\GroupVariation.h" />
+    <ClInclude Include="src\opendnp3\gen\IntervalUnits.h" />
     <ClInclude Include="src\opendnp3\gen\PointClass.h" />
     <ClInclude Include="src\opendnp3\gen\RestartMode.h" />
     <ClInclude Include="src\opendnp3\gen\TaskState.h" />
@@ -259,6 +261,7 @@
     <ClCompile Include="src\opendnp3\app\ObjectWriter.cpp" />
     <ClCompile Include="src\opendnp3\app\OctetData.cpp" />
     <ClCompile Include="src\opendnp3\app\StaticRange.cpp" />
+    <ClCompile Include="src\opendnp3\app\TimeAndInterval.cpp" />
     <ClCompile Include="src\opendnp3\gen\ChannelState.cpp" />
     <ClCompile Include="src\opendnp3\gen\CommandResult.cpp" />
     <ClCompile Include="src\opendnp3\gen\CommandStatus.cpp" />
