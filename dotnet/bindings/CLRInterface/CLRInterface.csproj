@@ -85,6 +85,7 @@
     <Compile Include="gen\EventFrozenCounterResponse.cs" />
     <Compile Include="gen\GroupVariation.cs" />
     <Compile Include="gen\IINField.cs" />
+    <Compile Include="gen\IntervalUnits.cs" />
     <Compile Include="gen\PointClass.cs" />
     <Compile Include="gen\QualifierCode.cs" />
     <Compile Include="gen\RestartMode.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="gen\StaticAnalogOutputStatusResponse.cs" />
     <Compile Include="gen\StaticDoubleBinaryResponse.cs" />
     <Compile Include="gen\StaticFrozenCounterResponse.cs" />
+    <Compile Include="gen\StaticTimeAndIntervalResponse.cs" />
     <Compile Include="gen\TaskState.cs" />
     <Compile Include="gen\TimestampMode.cs" />
     <Compile Include="gen\TimeSyncMode.cs" />

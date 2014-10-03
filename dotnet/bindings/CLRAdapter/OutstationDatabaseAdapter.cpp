@@ -55,6 +55,11 @@ namespace Automatak
 				pProxy->Update(Conversions::ConvertMeas(meas), index);
 			}
 
+			void OutstationDatabaseAdapter::Update(TimeAndInterval^ meas, System::UInt16 index)
+			{
+				pProxy->Update(Conversions::ConvertMeas(meas), index);
+			}
+
 			void OutstationDatabaseAdapter::End()
 			{
 				opendnp3::Transaction::End(pProxy);

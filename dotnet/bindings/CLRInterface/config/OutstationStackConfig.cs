@@ -17,7 +17,7 @@ namespace Automatak.DNP3.Interface
         public OutstationStackConfig()
         {
             this.outstation = new OutstationConfig();            
-            this.databaseTemplate = new DatabaseTemplate(10, 10, 10, 10, 10, 10, 10);
+            this.databaseTemplate = new DatabaseTemplate(10);
             this.link = new LinkConfig(false, false);
         }
       

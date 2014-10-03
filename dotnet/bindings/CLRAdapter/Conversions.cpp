@@ -180,6 +180,11 @@ namespace Automatak
 				return gcnew OctetString(bytes);
 			}
 
+			TimeAndInterval^ Conversions::ConvertMeas(const opendnp3::TimeAndInterval& meas)
+			{
+				return gcnew TimeAndInterval(meas.time, meas.interval, meas.units);
+			}
+
 			opendnp3::Binary Conversions::ConvertMeas(Binary^ meas)
 			{
 				return opendnp3::Binary(meas->Value, meas->Quality, TimeStamp::Convert(meas->Timestamp));
@@ -208,6 +213,11 @@ namespace Automatak
 			opendnp3::AnalogOutputStatus Conversions::ConvertMeas(AnalogOutputStatus^ meas)
 			{
 				return opendnp3::AnalogOutputStatus(meas->Value, meas->Quality, TimeStamp::Convert(meas->Timestamp));
+			}
+
+			opendnp3::TimeAndInterval Conversions::ConvertMeas(TimeAndInterval^ meas)
+			{
+				return opendnp3::TimeAndInterval(meas->time, meas->interval, meas->units);
 			}
 
 			opendnp3::BinaryOutputStatus Conversions::ConvertMeas(BinaryOutputStatus^ meas)
@@ -361,6 +371,7 @@ namespace Automatak
 				dbTemplate.numCounter = config->counters->Count;
 				dbTemplate.numDoubleBinary = config->doubleBinaries->Count;
 				dbTemplate.numFrozenCounter = config->frozenCounters->Count;
+				dbTemplate.numTimeAndInterval = config->numTimeAndInterval;
 
 				return dbTemplate;
 			}

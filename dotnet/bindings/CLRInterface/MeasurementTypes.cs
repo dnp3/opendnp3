@@ -318,4 +318,33 @@ namespace Automatak.DNP3.Interface
         { }
     }
 
+    public class TimeAndInterval
+    {
+        public TimeAndInterval(UInt64 time, UInt32 interval, Byte units)
+        {
+            this.time = time;
+            this.interval = interval;
+            this.units = units;
+        }
+
+        public TimeAndInterval(UInt64 time, UInt32 interval, IntervalUnits units)
+            : this(time, interval, (Byte)units)
+        {}
+
+        IntervalUnits GetUnitsEnum()
+        {
+            if (Enum.IsDefined(typeof(IntervalUnits), units))
+            {
+                return (IntervalUnits)Enum.ToObject(typeof(IntervalUnits), units);
+            }
+            else
+            {
+                return IntervalUnits.Undefined;
+            }
+        }
+
+        public readonly UInt64 time;
+        public readonly UInt32 interval;
+        public readonly Byte units;	
+    }
 }
