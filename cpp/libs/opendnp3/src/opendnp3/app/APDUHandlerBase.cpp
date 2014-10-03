@@ -285,6 +285,12 @@ void APDUHandlerBase::OnRange(const HeaderRecord& record, const IterableBuffer<I
 	++currentHeader;
 }
 
+void APDUHandlerBase::OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas)
+{
+	this->_OnRange(record, ModeFromType(record.enumeration), meas);
+	++currentHeader;
+}
+
 void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas)
 {
 	this->_OnIndexPrefix(record, ModeFromType(record.enumeration), meas);
@@ -446,6 +452,11 @@ void APDUHandlerBase::_OnRange(const HeaderRecord& record, TimestampMode tsmode,
 }
 
 void APDUHandlerBase::_OnRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas)
+{
+	++ignoredHeaders;
+}
+
+void APDUHandlerBase::_OnRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas)
 {
 	++ignoredHeaders;
 }

@@ -283,6 +283,28 @@ TEST_CASE(SUITE("ParsesOctetStringResponseSizeOfOne"))
 	REQUIRE("AA" ==  toHex(t.meas.octetStringSOE[3].meas.ToReadOnly()));
 }
 
+TEST_CASE(SUITE("ParsesGroup50Var4"))
+{
+	auto config = NoStartupTasks();
+	config.startupIntegrityClassMask = ClassField(~0);
+	MasterTestObject t(config);	
+	t.master.OnLowerLayerUp();
+
+	REQUIRE(t.exe.RunMany() > 0);
+
+	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
+	t.master.OnSendResult(true);
+
+	// octet strings shouldn't be found in class 0 polls, but we'll test that we can process them anyway
+	// Group 110 (0x6E) Variation(length), start = 3, stop = 3
+	t.SendToMaster("C0 81 00 00 32 04 00 00 00 09 00 00 00 00 00 03 00 00 00 05");
+
+	REQUIRE(1 == t.meas.timeAndIntervalSOE.size());
+	REQUIRE(t.meas.timeAndIntervalSOE[0].meas.interval == 3);
+	REQUIRE(t.meas.timeAndIntervalSOE[0].meas.time == 9);
+	REQUIRE(t.meas.timeAndIntervalSOE[0].meas.GetUnitsEnum() == IntervalUnits::Days);
+}
+
 TEST_CASE(SUITE("RestartDuringStartup"))
 {
 

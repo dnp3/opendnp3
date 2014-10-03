@@ -226,7 +226,9 @@ APDUParser::Result APDUParser::ParseRangeOfObjects(openpal::ReadOnlyBuffer& buff
 		MACRO_PARSE_OBJECTS_WITH_RANGE(Group40Var1);
 		MACRO_PARSE_OBJECTS_WITH_RANGE(Group40Var2);
 		MACRO_PARSE_OBJECTS_WITH_RANGE(Group40Var3);
-		MACRO_PARSE_OBJECTS_WITH_RANGE(Group40Var4);	
+		MACRO_PARSE_OBJECTS_WITH_RANGE(Group40Var4);
+
+		MACRO_PARSE_OBJECTS_WITH_RANGE(Group50Var4);
 
 	case(GroupVariation::Group80Var1):
 		return ParseRangeAsBitField(buffer, pLogger, record, range, [pHandler, record](const IterableBuffer<IndexedValue<bool, uint16_t>>& values)
