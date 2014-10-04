@@ -36,6 +36,10 @@ namespace Automatak.DNP3.Interface
 
         bool WriteAbsoluteTime(UInt64 millisecSinceEpoch);
 
+        bool SupportsWriteTimeAndInterval();
+
+        bool WriteTimeAndInterval(IEnumerable<IndexedValue<TimeAndInterval>> values);
+
         bool SupportsAssignClass();
 
         void RecordClassAssignment(AssignClassType type, PointClass clazz, UInt16 start, UInt16 stop);
@@ -88,6 +92,16 @@ namespace Automatak.DNP3.Interface
 
         bool IOutstationApplication.WriteAbsoluteTime(UInt64 millisecSinceEpoch)
         {            
+            return false;
+        }
+
+        bool IOutstationApplication.SupportsWriteTimeAndInterval()
+        {
+            return false;
+        }
+
+        bool IOutstationApplication.WriteTimeAndInterval(IEnumerable<IndexedValue<TimeAndInterval>> values)
+        {
             return false;
         }
 

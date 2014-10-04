@@ -26,6 +26,10 @@ namespace Automatak
 				virtual bool WriteAbsoluteTime(const openpal::UTCTimestamp& timestamp) override final;
 
 				virtual bool SupportsWriteAbsoluteTime() override final;
+				
+				virtual bool SupportsWriteTimeAndInterval() override final;
+				
+				virtual bool WriteTimeAndInterval(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::TimeAndInterval, uint16_t>>& meas) override final;
 
 				virtual bool SupportsAssignClass() override final;
 

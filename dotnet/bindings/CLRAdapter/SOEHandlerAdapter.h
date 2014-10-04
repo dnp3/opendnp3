@@ -6,6 +6,8 @@ using namespace System::Collections::ObjectModel;
 #include <opendnp3/master/ISOEHandler.h>
 #include <vcclr.h>
 
+#include "EnumerableConversions.h"
+
 using namespace Automatak::DNP3::Interface;
 
 namespace Automatak
@@ -38,6 +40,7 @@ namespace Automatak
 
 				static HeaderInfo^ GetInfo(const opendnp3::HeaderRecord& record, opendnp3::TimestampMode tsmode);
 
+				/*
 				template <class Target, class Source>
 				static System::Collections::Generic::IEnumerable<IndexedValue<Target>^>^ ToEnumerable(const opendnp3::IterableBuffer<opendnp3::IndexedValue<Source, uint16_t>>& meas)
 				{
@@ -53,6 +56,7 @@ namespace Automatak
 
 					return list;
 				}
+				*/
 
 				gcroot < Automatak::DNP3::Interface::ISOEHandler^ > proxy;
 			};
