@@ -123,6 +123,16 @@ namespace Automatak.Simulator.DNP3
             return true;
         }
 
+        bool IOutstationApplication.SupportsWriteTimeAndInterval()
+        {
+            return false;
+        }
+
+        bool IOutstationApplication.WriteTimeAndInterval(IEnumerable<IndexedValue<TimeAndInterval>> values)
+        {
+            return false;
+        }
+
         bool IOutstationApplication.SupportsAssignClass()
         {
             return true;

@@ -319,6 +319,8 @@ void NewTestStaticRead(const std::string& request, const std::string& response)
 	REQUIRE(t.lower.PopWriteAsHex() == response);
 }
 
+// ---- Group50Var4 TimeAndInterval support ----- //
+
 void TestTimeAndIntervalRead(const std::string& request)
 {
 	OutstationConfig config;
@@ -348,6 +350,23 @@ TEST_CASE(SUITE("TimeAndIntervalViaDirectRequest"))
 TEST_CASE(SUITE("TimeAndIntervalViaDirectRangeRequest"))
 {
 	TestTimeAndIntervalRead("C0 01 32 04 00 00 00");
+}
+
+TEST_CASE(SUITE("TestTimeAndIntervalWrite"))
+{
+	OutstationConfig config;	
+	OutstationTestObject t(config, DatabaseTemplate::TimeAndIntervalOnly(1));
+	t.LowerLayerUp();
+
+	t.application.supportsWriteTimeAndInterval = true;	
+
+	// write g50v4 using 2-octet count & index prefix
+	t.SendToOutstation("C0 02 32 04 28 01 00 07 00 09 00 00 00 00 00 03 00 00 00 05");
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00");
+
+	REQUIRE(t.application.timeAndIntervals.size() == 1);
+	REQUIRE(t.application.timeAndIntervals[0].index == 7);
+	REQUIRE(t.application.timeAndIntervals[0].value.time == 9);
 }
 
 // ---- Static data reads ----- //
