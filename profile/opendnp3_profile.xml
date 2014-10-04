@@ -5,7 +5,7 @@
   <!--Document Header-->
   <documentHeader>
     <documentName>Opendnp3 profile</documentName>
-    <documentDescription>DNP3 Device Profile for the opendnp3 library (master & outstation)</documentDescription>
+    <documentDescription>DNP3 Device Profile for the opendnp3 library (master / outstation)</documentDescription>
     <!--Revision History-->
     <revisionHistory version="1">
       <date>2014-09-07</date>
@@ -2398,7 +2398,18 @@
             <qualifierCode>1</qualifierCode>
             <qualifierCode>6</qualifierCode>            
           </request>          
-        </supportedVariation>        
+        </supportedVariation>
+        <supportedVariation>
+          <objectGroup>1</objectGroup>
+          <variation>0</variation>
+          <description>Binary Input - any variation</description>
+          <request>
+            <functionCode>22</functionCode>
+            <qualifierCode>0</qualifierCode>
+            <qualifierCode>1</qualifierCode>
+            <qualifierCode>6</qualifierCode>
+          </request>
+        </supportedVariation>
         <supportedVariation>
           <objectGroup>1</objectGroup>
           <variation>1</variation>
@@ -2530,7 +2541,18 @@
             <qualifierCode>1</qualifierCode>
             <qualifierCode>6</qualifierCode>            
           </request>
-        </supportedVariation>        
+        </supportedVariation>
+        <supportedVariation>
+          <objectGroup>3</objectGroup>
+          <variation>0</variation>
+          <description>Double-bit Input - any variation</description>
+          <request>
+            <functionCode>22</functionCode>
+            <qualifierCode>0</qualifierCode>
+            <qualifierCode>1</qualifierCode>
+            <qualifierCode>6</qualifierCode>
+          </request>
+        </supportedVariation>
         <supportedVariation>
           <objectGroup>3</objectGroup>
           <variation>1</variation>
@@ -2662,7 +2684,18 @@
             <qualifierCode>1</qualifierCode>
             <qualifierCode>6</qualifierCode>            
           </request>
-        </supportedVariation>                        
+        </supportedVariation>
+        <supportedVariation>
+          <objectGroup>10</objectGroup>
+          <variation>0</variation>
+          <description>Binary Output - any variation</description>
+          <request>
+            <functionCode>22</functionCode>
+            <qualifierCode>0</qualifierCode>
+            <qualifierCode>1</qualifierCode>
+            <qualifierCode>6</qualifierCode>
+          </request>
+        </supportedVariation>
         <supportedVariation>
           <objectGroup>10</objectGroup>
           <variation>2</variation>
@@ -2741,7 +2774,7 @@
             <qualifierCode>23</qualifierCode>
             <qualifierCode>40</qualifierCode>
           </response>
-        </supportedVariation>        
+        </supportedVariation>
         <supportedVariation>
           <objectGroup>12</objectGroup>
           <variation>1</variation>
@@ -2801,7 +2834,7 @@
             <qualifierCode>23</qualifierCode>            
             <qualifierCode>40</qualifierCode>
           </response>
-        </supportedVariation>                                                      
+        </supportedVariation>
         <supportedVariation>
           <objectGroup>20</objectGroup>
           <variation>0</variation>
@@ -2810,9 +2843,20 @@
             <functionCode>1</functionCode>
             <qualifierCode>0</qualifierCode>
             <qualifierCode>1</qualifierCode>
-            <qualifierCode>6</qualifierCode>            
+            <qualifierCode>6</qualifierCode>
           </request>
-        </supportedVariation>        
+        </supportedVariation>
+        <supportedVariation>
+          <objectGroup>20</objectGroup>
+          <variation>0</variation>
+          <description>Counter - any variation</description>
+          <request>
+            <functionCode>22</functionCode>
+            <qualifierCode>0</qualifierCode>
+            <qualifierCode>1</qualifierCode>
+            <qualifierCode>6</qualifierCode>
+          </request>
+        </supportedVariation>
         <supportedVariation>
           <objectGroup>20</objectGroup>
           <variation>1</variation>
@@ -2887,7 +2931,18 @@
             <qualifierCode>1</qualifierCode>
             <qualifierCode>6</qualifierCode>           
           </request>
-        </supportedVariation>        
+        </supportedVariation>
+        <supportedVariation>
+          <objectGroup>21</objectGroup>
+          <variation>0</variation>
+          <description>Frozen Counter - any variation</description>
+          <request>
+            <functionCode>22</functionCode>
+            <qualifierCode>0</qualifierCode>
+            <qualifierCode>1</qualifierCode>
+            <qualifierCode>6</qualifierCode>
+          </request>
+        </supportedVariation>
         <supportedVariation>
           <objectGroup>21</objectGroup>
           <variation>1</variation>
@@ -3224,7 +3279,18 @@
             <qualifierCode>1</qualifierCode>
             <qualifierCode>6</qualifierCode>
           </request>
-        </supportedVariation>        
+        </supportedVariation>
+        <supportedVariation>
+          <objectGroup>30</objectGroup>
+          <variation>0</variation>
+          <description>Analog Input - any variation</description>
+          <request>
+            <functionCode>22</functionCode>
+            <qualifierCode>0</qualifierCode>
+            <qualifierCode>1</qualifierCode>
+            <qualifierCode>6</qualifierCode>
+          </request>
+        </supportedVariation>
         <supportedVariation>
           <objectGroup>30</objectGroup>
           <variation>1</variation>
@@ -3550,7 +3616,18 @@
             <qualifierCode>1</qualifierCode>
             <qualifierCode>6</qualifierCode>
           </request>
-        </supportedVariation>       
+        </supportedVariation>
+        <supportedVariation>
+          <objectGroup>40</objectGroup>
+          <variation>0</variation>
+          <description>Analog Output Status - any variation</description>
+          <request>
+            <functionCode>22</functionCode>
+            <qualifierCode>0</qualifierCode>
+            <qualifierCode>1</qualifierCode>
+            <qualifierCode>6</qualifierCode>
+          </request>
+        </supportedVariation>
         <supportedVariation>
           <objectGroup>40</objectGroup>
           <variation>1</variation>
@@ -4147,7 +4224,16 @@
             <functionCode>1</functionCode>
             <qualifierCode>6</qualifierCode>
           </request>
-        </supportedVariation>       
+        </supportedVariation>
+        <supportedVariation>
+          <objectGroup>60</objectGroup>
+          <variation>1</variation>
+          <description>Class Objects - class 0 data</description>
+          <request>
+            <functionCode>22</functionCode>
+            <qualifierCode>6</qualifierCode>
+          </request>
+        </supportedVariation>
         <supportedVariation>
           <objectGroup>60</objectGroup>
           <variation>2</variation>
@@ -4176,7 +4262,16 @@
             <functionCode>21</functionCode>
             <qualifierCode>6</qualifierCode>
           </request>
-        </supportedVariation>       
+        </supportedVariation>
+        <supportedVariation>
+          <objectGroup>60</objectGroup>
+          <variation>2</variation>
+          <description>Class Objects - class 1 data</description>
+          <request>
+            <functionCode>22</functionCode>
+            <qualifierCode>6</qualifierCode>
+          </request>
+        </supportedVariation>
         <supportedVariation>
           <objectGroup>60</objectGroup>
           <variation>3</variation>
@@ -4205,7 +4300,16 @@
             <functionCode>21</functionCode>
             <qualifierCode>6</qualifierCode>
           </request>
-        </supportedVariation>        
+        </supportedVariation>
+        <supportedVariation>
+          <objectGroup>60</objectGroup>
+          <variation>3</variation>
+          <description>Class Objects - class 2 data</description>
+          <request>
+            <functionCode>22</functionCode>
+            <qualifierCode>6</qualifierCode>
+          </request>
+        </supportedVariation>
         <supportedVariation>
           <objectGroup>60</objectGroup>
           <variation>4</variation>
@@ -4234,7 +4338,16 @@
             <functionCode>21</functionCode>
             <qualifierCode>6</qualifierCode>
           </request>
-        </supportedVariation>                      
+        </supportedVariation>
+        <supportedVariation>
+          <objectGroup>60</objectGroup>
+          <variation>4</variation>
+          <description>Class Objects - class 3 data</description>
+          <request>
+            <functionCode>22</functionCode>
+            <qualifierCode>6</qualifierCode>
+          </request>
+        </supportedVariation>
         <supportedVariation>
           <objectGroup>80</objectGroup>
           <variation>1</variation>
