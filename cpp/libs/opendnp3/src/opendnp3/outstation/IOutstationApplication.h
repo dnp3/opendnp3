@@ -27,7 +27,13 @@
 #include "opendnp3/gen/PointClass.h"
 #include "opendnp3/gen/RestartMode.h"
 #include "opendnp3/gen/AssignClassType.h"
+
+#include "opendnp3/app/IndexedValue.h"
+#include "opendnp3/app/IterableBuffer.h"
+#include "opendnp3/app/TimeAndInterval.h"
+
 #include "opendnp3/outstation/ApplicationIIN.h"
+
 
 namespace opendnp3
 {
@@ -39,7 +45,7 @@ class IOutstationApplication
 {
 	public:
 
-	/// True if the outstation supports absolute time writes
+	/// Queries whether the the outstation supports absolute time writes
 	/// If this function returns false, WriteAbsoluteTime will never be called
 	/// and the outstation will return IIN 2.1 (FUNC_NOT_SUPPORTED)
 	virtual bool SupportsWriteAbsoluteTime() = 0;
@@ -49,6 +55,18 @@ class IOutstationApplication
 	/// false will cause the outstation to set IIN 2.3 (PARAM_ERROR) in its response.
 	/// The outstation should clear its NEED_TIME field when handling this response
 	virtual bool WriteAbsoluteTime(const openpal::UTCTimestamp& timestamp) = 0;
+
+	/// Queries whether the outstation supports the writing of TimeAndInterval
+	/// If this function returns false, WriteTimeAndInterval will never be called
+	/// and the outstation will return IIN 2.1 (FUNC_NOT_SUPPORTED) when it receives this request
+	virtual bool SupportsWriteTimeAndInterval() = 0;
+
+	/// Write an indexed collection of TimeAndInterval values. Only called if SupportsWriteTimeAndInterval returns true.
+	/// The outstation application code is reponsible for updating TimeAndInterval values in the database if this behavior
+	/// is desired
+	/// @return boolean value indicating if the values supplied were accepted. Returning
+	/// false will cause the outstation to set IIN 2.3 (PARAM_ERROR) in its response.	
+	virtual bool WriteTimeAndInterval(const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas) = 0;
 
 	/// True if the outstation supports the assign class function code
 	/// If this function returns false, the assign class callbacks will never be called
@@ -93,6 +111,10 @@ class DefaultOutstationApplication : public IOutstationApplication
 	virtual bool SupportsWriteAbsoluteTime() override final { return false; }
 
 	virtual bool WriteAbsoluteTime(const openpal::UTCTimestamp& timestamp) override final { return false; }
+	
+	virtual bool SupportsWriteTimeAndInterval() override final { return false; }
+	
+	virtual bool WriteTimeAndInterval(const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas) override final { return false; }
 
 	virtual bool SupportsAssignClass() override final { return false; }
 	

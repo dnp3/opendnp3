@@ -35,6 +35,7 @@ public:
 	MockOutstationApplication() :		
 		supportsTimeWrite(true),
 		supportsAssignClass(false),
+		supportsWriteTimeAndInterval(false),
 		allowTimeWrite(true),
 		warmRestartSupport(RestartMode::UNSUPPORTED),
 		coldRestartSupport(RestartMode::UNSUPPORTED),
@@ -58,6 +59,21 @@ public:
 		{
 			return false;
 		}		
+	}
+
+	virtual bool SupportsWriteTimeAndInterval() override final
+	{
+		return supportsWriteTimeAndInterval;
+	}
+
+	virtual bool WriteTimeAndInterval(const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas) override final
+	{
+		auto record = [this](const IndexedValue<TimeAndInterval, uint16_t>& pair) 
+		{
+			timeAndIntervals.push_back(pair);
+		};
+		meas.foreach(record);
+		return true;
 	}
 
 	virtual bool SupportsAssignClass() override final
@@ -97,6 +113,8 @@ public:
 	
 	bool supportsTimeWrite;
 	bool supportsAssignClass;
+	bool supportsWriteTimeAndInterval;
+
 	bool allowTimeWrite;
 
 	RestartMode warmRestartSupport;
@@ -109,6 +127,7 @@ public:
 
 	std::deque<openpal::UTCTimestamp> timestamps;
 	std::deque<std::tuple<AssignClassType, PointClass, uint16_t, uint16_t>> classAssignments;
+	std::deque<IndexedValue<TimeAndInterval, uint16_t>> timeAndIntervals;
 
 };
 
