@@ -455,6 +455,9 @@ APDUParser::Result APDUParser::ParseObjectsWithIndexPrefix(openpal::ReadOnlyBuff
 	case(GroupVariation::Group41Var4) :
 		return ParseCountFixedSizeWithIndex<AnalogOutputDouble64, IndexType>(record, buffer, pLogger, count, Group41Var4::Inst(), pHandler);
 
+	case(GroupVariation::Group50Var4) :
+		return ParseCountFixedSizeWithIndex<TimeAndInterval, IndexType>(record, buffer, pLogger, count, Group50Var4::Inst(), pHandler);
+
 	case(GroupVariation::Group111AnyVar) :
 		return ParseIndexPrefixedOctetData<IndexType>(buffer, pLogger, record, count, pHandler);
 

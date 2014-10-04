@@ -297,6 +297,12 @@ void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBu
 	++currentHeader;
 }
 
+void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas)
+{
+	this->_OnIndexPrefix(record, ModeFromType(record.enumeration), meas);
+	++currentHeader;
+}
+
 void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint8_t>>& meas)
 {
 	auto transform = MapIterableBuffer<IndexedValue<Binary, uint8_t>, IndexedValue<Binary, uint16_t>>(&meas,
@@ -385,6 +391,18 @@ void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBu
 	                                                                                                           );
 	this->OnIndexPrefix(record, transform);
 }
+
+void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<TimeAndInterval, uint8_t>>& meas)
+{
+	auto transform = MapIterableBuffer<IndexedValue<TimeAndInterval, uint8_t>, IndexedValue<TimeAndInterval, uint16_t>>(&meas,
+		[](const IndexedValue<TimeAndInterval, uint8_t>& value)
+	{
+		return value.Widen<uint16_t>();
+	}
+	);
+	this->OnIndexPrefix(record, transform);
+}
+
 void APDUHandlerBase::_AllObjects(const HeaderRecord& record)
 {
 	++ignoredHeaders;
@@ -497,6 +515,11 @@ void APDUHandlerBase::_OnIndexPrefix(const HeaderRecord& record, TimestampMode t
 }
 
 void APDUHandlerBase::_OnIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas)
+{
+	++ignoredHeaders;
+}
+
+void APDUHandlerBase::_OnIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas)
 {
 	++ignoredHeaders;
 }
