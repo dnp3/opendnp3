@@ -350,7 +350,7 @@ TEST_CASE(SUITE("RestartAndTimeBits"))
 
 	REQUIRE(t.lower.PopWriteAsHex() == hex::ClearRestartIIN(0));
 	t.master.OnSendResult(true);
-	t.SendToMaster(hex::EmptyResponse(0, IINField::Empty));
+	t.SendToMaster(hex::EmptyResponse(0, IINField::Empty()));
 
 	t.exe.RunMany();
 
@@ -365,7 +365,7 @@ TEST_CASE(SUITE("RestartAndTimeBits"))
 	// 200-100-10/2 = 45 => 45 + 200 - 0xF5
 	REQUIRE(t.lower.PopWriteAsHex() == "C2 02 32 01 07 01 F5 00 00 00 00 00");
 	t.master.OnSendResult(true);
-	t.SendToMaster(hex::EmptyResponse(0, IINField::Empty)); // time bit is now clear
+	t.SendToMaster(hex::EmptyResponse(0, IINField::Empty())); // time bit is now clear
 
 	t.exe.RunMany();
 

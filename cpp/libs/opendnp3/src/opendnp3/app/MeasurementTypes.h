@@ -35,6 +35,8 @@
 #include "opendnp3/gen/StaticAnalogResponse.h"
 #include "opendnp3/gen/StaticAnalogOutputStatusResponse.h"
 
+#include "opendnp3/gen/StaticTypeBitmask.h"
+
 #include "opendnp3/gen/EventBinaryResponse.h"
 #include "opendnp3/gen/EventDoubleBinaryResponse.h"
 #include "opendnp3/gen/EventBinaryOutputStatusResponse.h"
@@ -83,6 +85,7 @@ public:
 	bool IsEvent(const Binary& newValue) const;
 
 	const static EventType EventTypeEnum = EventType::Binary;
+	const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::BinaryInput;
 	
 	typedef EventBinaryResponse EventResponseEnum;
 
@@ -113,6 +116,7 @@ public:
 	bool IsEvent(const DoubleBitBinary& newValue) const;
 
 	const static EventType EventTypeEnum = EventType::DoubleBitBinary;
+	const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::DoubleBinaryInput;
 
 	typedef EventDoubleBinaryResponse EventResponseEnum;
 	typedef StaticDoubleBinaryResponse StaticResponseEnum;
@@ -152,6 +156,7 @@ public:
 	bool IsEvent(const BinaryOutputStatus& newValue) const;
 
 	const static EventType EventTypeEnum = EventType::BinaryOutputStatus;
+	const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::BinaryOutputStatus;
 
 	typedef EventBinaryOutputStatusResponse EventResponseEnum;
 	typedef StaticBinaryOutputStatusResponse StaticResponseEnum;
@@ -177,6 +182,7 @@ public:
 	bool IsEvent(const Analog& newValue, double deadband) const;
 
 	const static EventType EventTypeEnum = EventType::Analog;
+	const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::AnalogInput;
 
 	typedef EventAnalogResponse EventResponseEnum;
 	typedef StaticAnalogResponse StaticResponseEnum;
@@ -201,6 +207,7 @@ public:
 	bool IsEvent(const Counter& newValue, uint32_t aDeadband) const;
 
 	const static EventType EventTypeEnum = EventType::Counter;
+	const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::Counter;
 
 	typedef EventCounterResponse EventResponseEnum;
 	typedef StaticCounterResponse StaticResponseEnum;
@@ -224,6 +231,7 @@ public:
 	bool IsEvent(const FrozenCounter& newValue, uint32_t aDeadband) const;
 
 	const static EventType EventTypeEnum = EventType::FrozenCounter;
+	const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::FrozenCounter;
 
 	typedef EventFrozenCounterResponse EventResponseEnum;
 	typedef StaticFrozenCounterResponse StaticResponseEnum;
@@ -248,6 +256,7 @@ public:
 	bool IsEvent(const AnalogOutputStatus& newValue, double deadband) const;
 
 	const static EventType EventTypeEnum = EventType::AnalogOutputStatus;
+	const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::AnalogOutputStatus;
 
 	typedef EventAnalogOutputStatusResponse EventResponseEnum;
 	typedef StaticAnalogOutputStatusResponse StaticResponseEnum;

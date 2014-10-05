@@ -76,7 +76,7 @@ OutstationContext::OutstationContext(
 	expectedSolConfirmSeq(0),
 	expectedUnsolConfirmSeq(0),
 	completedNullUnsol(false),	
-	rspContext(database, eventBuffer, config.defaultStaticResponses, config.defaultEventResponses),
+	rspContext(database, eventBuffer, &params, config.defaultStaticResponses, config.defaultEventResponses),
 	pLower(&lower),
 	rxBuffer(params.maxRxFragSize),
 	solTxBuffer(params.maxTxFragSize),
@@ -692,7 +692,7 @@ IINField OutstationContext::HandleDelayMeasure(const openpal::ReadOnlyBuffer& ob
 	{		
 		Group52Var2 value = { 0 }; 	// respond with 0 time delay
 		writer.WriteSingleValue<UInt8, Group52Var2>(QualifierCode::UINT8_CNT, value);
-		return IINField::Empty;
+		return IINField::Empty();
 	}
 	else
 	{
@@ -719,7 +719,7 @@ IINField OutstationContext::HandleRestart(const openpal::ReadOnlyBuffer& objects
 					Group52Var1 coarse = { delay };
 					pWriter->WriteSingleValue<UInt8>(QualifierCode::UINT8_CNT, coarse);
 				}
-				return IINField::Empty;
+				return IINField::Empty();
 			}
 			default:
 			{
@@ -729,7 +729,7 @@ IINField OutstationContext::HandleRestart(const openpal::ReadOnlyBuffer& objects
 					Group52Var2 fine = { delay };
 					pWriter->WriteSingleValue<UInt8>(QualifierCode::UINT8_CNT, fine);
 				}
-				return IINField::Empty;
+				return IINField::Empty();
 			}
 		}		
 	}

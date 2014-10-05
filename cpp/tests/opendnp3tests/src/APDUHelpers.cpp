@@ -40,7 +40,7 @@ opendnp3::APDUResponse APDUHelpers::Response(uint32_t size)
 	opendnp3::APDUResponse response(buffer);
 	response.SetFunction(opendnp3::FunctionCode::RESPONSE);
 	response.SetControl(opendnp3::AppControlField(true, true, false, false, 0));
-	response.SetIIN(opendnp3::IINField::Empty);
+	response.SetIIN(opendnp3::IINField::Empty());
 	return response;
 }
 

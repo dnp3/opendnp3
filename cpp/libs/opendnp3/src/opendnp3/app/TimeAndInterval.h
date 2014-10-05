@@ -23,6 +23,7 @@
 
 #include "opendnp3/gen/IntervalUnits.h"
 #include "opendnp3/gen/StaticTimeAndIntervalResponse.h"
+#include "opendnp3/gen/StaticTypeBitmask.h"
 
 namespace opendnp3
 {
@@ -47,6 +48,8 @@ public:
 	uint64_t time;
 	uint32_t interval;	
 	uint8_t units;	
+
+	const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::TimeAndInterval;
 
 	typedef StaticTimeAndIntervalResponse StaticResponseEnum;
 };

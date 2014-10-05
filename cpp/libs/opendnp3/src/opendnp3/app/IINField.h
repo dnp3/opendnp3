@@ -83,7 +83,10 @@ private:
 
 public:
 
-	static const IINField Empty;
+	static IINField Empty()
+	{
+		return IINField(0, 0);
+	}
 
 	IINField(IINBit bit) : LSB(0), MSB(0)
 	{

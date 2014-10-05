@@ -22,6 +22,7 @@ object CppEnumGenerator {
 
     def includeEnums = List(
       EnumConfig(AssignClassType(), false, false),
+      EnumConfig(StaticTypeBitmask(), false, false),
       EnumConfig(IntervalUnit(), true, true),
       EnumConfig(GroupVariation(), true, true),
       EnumConfig(DoubleBit(), true, true),

@@ -323,7 +323,7 @@ void NewTestStaticRead(const std::string& request, const std::string& response)
 
 void TestTimeAndIntervalRead(const std::string& request)
 {
-	OutstationConfig config;
+	OutstationConfig config;	
 	OutstationTestObject t(config, DatabaseTemplate::TimeAndIntervalOnly(1));
 	t.LowerLayerUp();
 

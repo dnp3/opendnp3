@@ -36,8 +36,11 @@ OutstationParams::OutstationParams() :
 	unsolRetryTimeout(TimeDuration::Seconds(5)),
 	maxTxFragSize(DEFAULT_MAX_APDU_SIZE),
 	maxRxFragSize(DEFAULT_MAX_APDU_SIZE),
-	allowUnsolicited(false)	
-{}
+	allowUnsolicited(false),
+	typesAllowedInClass0(StaticTypeBitField::AllTypes())
+{
+
+}
 
 }
 

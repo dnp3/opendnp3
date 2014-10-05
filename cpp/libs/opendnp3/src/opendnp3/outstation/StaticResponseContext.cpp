@@ -29,8 +29,9 @@ using namespace openpal;
 namespace opendnp3
 {
 
-StaticResponseContext::StaticResponseContext(Database& database, const StaticResponseConfig& config) :
+StaticResponseContext::StaticResponseContext(Database& database, const OutstationParams* pParams_, const StaticResponseConfig& config) :
 	pDatabase(&database),
+	pParams(pParams_),
 	defaults(config),
 	staticResponseQueue(8) // TODO - make configurable
 {}
@@ -55,7 +56,7 @@ IINField StaticResponseContext::ReadAll(const GroupVariationRecord& record)
 	if (record.enumeration == GroupVariation::Group60Var1)
 	{
 		IINField result;
-		result |= QueueRange<Binary>(defaults.binary);
+		result |= QueueRange<Binary>(defaults.binary);				
 		result |= QueueRange<DoubleBitBinary>(defaults.doubleBinary);
 		result |= QueueRange<BinaryOutputStatus>(defaults.binaryOutputStatus);
 		result |= QueueRange<Counter>(defaults.counter);
@@ -183,7 +184,7 @@ IINField StaticResponseContext::QueueLoader(const StaticRangeLoader& loader)
 	{
 		if(staticResponseQueue.Enqueue(loader))
 		{
-			return loader.IsClipped() ? IINField(IINBit::PARAM_ERROR) : IINField::Empty;
+			return loader.IsClipped() ? IINField(IINBit::PARAM_ERROR) : IINField::Empty();
 		}
 		else
 		{
@@ -192,7 +193,7 @@ IINField StaticResponseContext::QueueLoader(const StaticRangeLoader& loader)
 	}
 	else
 	{
-		return IINField::Empty;
+		return IINField::Empty();
 	}
 }
 

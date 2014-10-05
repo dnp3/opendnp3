@@ -31,6 +31,7 @@
 
 #include "opendnp3/outstation/Database.h"
 #include "opendnp3/outstation/StaticLoader.h"
+#include "opendnp3/outstation/OutstationParams.h"
 #include "opendnp3/outstation/StaticResponseConfig.h"
 #include "opendnp3/outstation/StaticLoadFunctions.h"
 
@@ -56,7 +57,7 @@ class StaticResponseContext : private openpal::Uncopyable
 
 public:
 
-	StaticResponseContext(Database& database, const StaticResponseConfig& config);
+	StaticResponseContext(Database& database, const OutstationParams* pParams, const StaticResponseConfig& config);
 
 	void Reset();
 
@@ -76,6 +77,7 @@ private:
 	StaticLoadResult LoadStaticData(HeaderWriter& writer);
 
 	Database* pDatabase;
+	const OutstationParams* pParams;
 	StaticResponseConfig defaults;
 
 	openpal::Queue<StaticRangeLoader, uint8_t> staticResponseQueue;
@@ -91,7 +93,14 @@ private:
 	template <class Target>
 	IINField QueueRange(typename Target::StaticResponseEnum enumeration)
 	{		
-		return QueueLoader(StaticRangeLoader(StaticLoadFunctions::Get(enumeration), pDatabase->FullRange<Target>()));
+		if (pParams->typesAllowedInClass0.IsSet(Target::StaticTypeEnum))
+		{
+			return QueueLoader(StaticRangeLoader(StaticLoadFunctions::Get(enumeration), pDatabase->FullRange<Target>()));
+		}
+		else
+		{
+			return IINField::Empty();
+		}		
 	}
 };
 

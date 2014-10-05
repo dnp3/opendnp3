@@ -18,23 +18,37 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef OPENDNP3_STATICTYPEBITFIELD_H
+#define OPENDNP3_STATICTYPEBITFIELD_H
 
-#include "opendnp3/outstation/IINHelpers.h"
+#include "opendnp3/gen/StaticTypeBitmask.h"
+
+#include <cstdint>
 
 namespace opendnp3
 {
 
-IINField IINFromParseResult(APDUParser::Result result)
+struct StaticTypeBitField
 {
-	switch(result)
+	StaticTypeBitField() : mask(0)
+	{}
+
+	StaticTypeBitField(uint16_t mask_) : mask(mask_)
+	{}
+
+	bool IsSet(StaticTypeBitmask type) const
 	{
-	case(APDUParser::Result::OK):
-		return IINField::Empty();
-	case(APDUParser::Result::UNKNOWN_OBJECT):
-		return IINField(IINBit::OBJECT_UNKNOWN);
-	default:
-		return IINField(IINBit::PARAM_ERROR);
+		return (mask & static_cast<uint16_t>(type)) != 0;
 	}
-}
+
+	static StaticTypeBitField AllTypes()
+	{		
+		return StaticTypeBitField(~0);
+	}
+
+	uint16_t mask;
+};
 
 }
+
+#endif

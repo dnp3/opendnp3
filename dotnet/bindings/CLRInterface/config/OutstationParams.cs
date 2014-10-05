@@ -48,6 +48,11 @@ namespace Automatak.DNP3.Interface
         /// Global enabled / disable for unsolicted messages. If false, the NULL unsolicited message is not even sent
         /// </summary>
         public bool allowUnsolicited = false;
+
+        /// <summary>
+        /// By default, g50v4 is NOT returned in response to class 0 for compatbility reasons
+        /// </summary>
+        public bool returnTimeAndIntevalInClass0;
        
         /// <summary>
         /// Class mask for unsolicted, default to 0 as unsolicited has to be enabled by master
