@@ -63,6 +63,7 @@
     <Compile Include="config\StaticResponseConfig.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="config\StaticTypeBitfield.cs" />
     <Compile Include="Conversions.cs" />
     <Compile Include="config\EventBufferConfig.cs" />
     <Compile Include="gen\AnalogQuality.cs" />
@@ -97,6 +98,7 @@
     <Compile Include="gen\StaticDoubleBinaryResponse.cs" />
     <Compile Include="gen\StaticFrozenCounterResponse.cs" />
     <Compile Include="gen\StaticTimeAndIntervalResponse.cs" />
+    <Compile Include="gen\StaticTypeBitmask.cs" />
     <Compile Include="gen\TaskState.cs" />
     <Compile Include="gen\TimestampMode.cs" />
     <Compile Include="gen\TimeSyncMode.cs" />

@@ -50,9 +50,10 @@ namespace Automatak.DNP3.Interface
         public bool allowUnsolicited = false;
 
         /// <summary>
-        /// By default, g50v4 is NOT returned in response to class 0 for compatbility reasons
+        /// Specifies which types are allowed in Class0 repsones. Defaults to all types.
+        /// Use this field to disable some types for compatibility reasons.
         /// </summary>
-        public bool returnTimeAndIntevalInClass0;
+        public StaticTypeBitField typesAllowedInClass0 = StaticTypeBitField.AllTypes();
        
         /// <summary>
         /// Class mask for unsolicted, default to 0 as unsolicited has to be enabled by master

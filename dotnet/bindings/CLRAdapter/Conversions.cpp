@@ -317,6 +317,7 @@ namespace Automatak
 				opendnp3::OutstationParams params;
 
 				params.allowUnsolicited = config->allowUnsolicited;
+				params.typesAllowedInClass0 = opendnp3::StaticTypeBitField(config->typesAllowedInClass0.mask);
 				params.maxControlsPerRequest = config->maxControlsPerRequest;
 				params.maxTxFragSize = config->maxTxFragSize;
 				params.selectTimeout = ConvertTimespan(config->selectTimeout);
@@ -324,6 +325,7 @@ namespace Automatak
 				params.unsolClassMask = ConvertClassField(config->unsolClassMask);
 				params.unsolConfirmTimeout = ConvertTimespan(config->unsolicitedConfirmTimeout);
 				params.unsolRetryTimeout = ConvertTimespan(config->unsolicitedRetryPeriod);
+				
 
 				return params;
 			}
