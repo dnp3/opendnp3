@@ -28,7 +28,7 @@ object CSharpEnumGenerator {
       PointClass(),
       TaskState(),
       CommandStatus(),
-      CommandResult(),
+      UserTaskResult(),
       ControlCode(),
       ChannelState(),
       TimeSyncMode(),

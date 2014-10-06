@@ -62,9 +62,9 @@ namespace Automatak
 				return CommandResponse(result, status);
 			}
 
-			CommandResult Conversions::ConvertCommandResult(opendnp3::CommandResult result)
+			UserTaskResult Conversions::ConvertCommandResult(opendnp3::UserTaskResult result)
 			{
-				return (CommandResult)result;
+				return (UserTaskResult)result;
 			}
 
 			CommandStatus Conversions::ConvertCommandStatus(opendnp3::CommandStatus status)

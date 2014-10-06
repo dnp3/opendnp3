@@ -21,16 +21,16 @@
 namespace Automatak.DNP3.Interface
 {
   /// <summary>
-  /// Opendnp3 API enum used for differentiating cases when a command sequence fails without a response from the outstation
+  /// Opendnp3 API enum used that describes the result of a user task
   /// </summary>
-  public enum CommandResult : int
+  public enum UserTaskResult : int
   {
     /// <summary>
-    /// A response was received from the outstation, check the CommandStatus enumeration
+    /// A valid response was received from the outstation
     /// </summary>
     RESPONSE_OK = 0,
     /// <summary>
-    /// A response was received from the outstation, but it did not match or contained bad formatting
+    /// A response was received from the outstation, but it contained unexpected contents or was malformed
     /// </summary>
     BAD_RESPONSE = 1,
     /// <summary>

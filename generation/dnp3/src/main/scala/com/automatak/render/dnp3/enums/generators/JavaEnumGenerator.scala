@@ -21,7 +21,7 @@ object JavaEnumGenerator {
 
     def enums : List[EnumConfig] = List(
       CommandStatus(),
-      CommandResult(),
+      UserTaskResult(),
       ControlCode(),
       ChannelState(),
       LogLevel()

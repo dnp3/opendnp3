@@ -85,12 +85,12 @@
     <ClInclude Include="src\opendnp3\gen\TaskState.h" />
     <ClInclude Include="src\opendnp3\gen\TimestampMode.h" />
     <ClInclude Include="src\opendnp3\gen\TimeSyncMode.h" />
+    <ClInclude Include="src\opendnp3\gen\UserTaskResult.h" />
     <ClInclude Include="src\opendnp3\LayerInterfaces.h" />
     <ClInclude Include="src\opendnp3\link\IChannelStateListener.h" />
     <ClInclude Include="src\opendnp3\link\LinkChannelStatistics.h" />
     <ClInclude Include="src\opendnp3\ErrorCodes.h" />
     <ClInclude Include="src\opendnp3\gen\ChannelState.h" />
-    <ClInclude Include="src\opendnp3\gen\CommandResult.h" />
     <ClInclude Include="src\opendnp3\gen\CommandStatus.h" />
     <ClInclude Include="src\opendnp3\gen\ControlCode.h" />
     <ClInclude Include="src\opendnp3\gen\DoubleBit.h" />
@@ -266,7 +266,6 @@
     <ClCompile Include="src\opendnp3\app\StaticRange.cpp" />
     <ClCompile Include="src\opendnp3\app\TimeAndInterval.cpp" />
     <ClCompile Include="src\opendnp3\gen\ChannelState.cpp" />
-    <ClCompile Include="src\opendnp3\gen\CommandResult.cpp" />
     <ClCompile Include="src\opendnp3\gen\CommandStatus.cpp" />
     <ClCompile Include="src\opendnp3\gen\ControlCode.cpp" />
     <ClCompile Include="src\opendnp3\gen\DoubleBit.cpp" />
@@ -293,6 +292,7 @@
     <ClCompile Include="src\opendnp3\gen\StaticTimeAndIntervalResponse.cpp" />
     <ClCompile Include="src\opendnp3\gen\TaskState.cpp" />
     <ClCompile Include="src\opendnp3\gen\TimeSyncMode.cpp" />
+    <ClCompile Include="src\opendnp3\gen\UserTaskResult.cpp" />
     <ClCompile Include="src\opendnp3\link\CRC.cpp" />
     <ClCompile Include="src\opendnp3\link\IOpenDelayStrategy.cpp" />
     <ClCompile Include="src\opendnp3\link\LinkFrame.cpp" />

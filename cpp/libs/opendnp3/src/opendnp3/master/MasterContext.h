@@ -151,7 +151,7 @@ void MasterContext::SelectAndOperateT(const T& command, uint16_t index, ICommand
 	}
 	else
 	{
-		callback.OnComplete(CommandResponse(CommandResult::NO_COMMS));		
+		callback.OnComplete(CommandResponse(UserTaskResult::NO_COMMS));
 	}	
 }
 
@@ -165,7 +165,7 @@ void MasterContext::DirectOperateT(const T& command, uint16_t index, ICommandCal
 	}
 	else
 	{
-		callback.OnComplete(CommandResponse(CommandResult::NO_COMMS));
+		callback.OnComplete(CommandResponse(UserTaskResult::NO_COMMS));
 	}
 }
 

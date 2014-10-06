@@ -71,7 +71,6 @@
     <Compile Include="gen\BinaryOutputStatusQuality.cs" />
     <Compile Include="gen\BinaryQuality.cs" />
     <Compile Include="gen\ChannelState.cs" />
-    <Compile Include="gen\CommandResult.cs" />
     <Compile Include="gen\CommandStatus.cs" />
     <Compile Include="gen\ControlCode.cs" />
     <Compile Include="gen\CounterQuality.cs" />
@@ -102,6 +101,7 @@
     <Compile Include="gen\TaskState.cs" />
     <Compile Include="gen\TimestampMode.cs" />
     <Compile Include="gen\TimeSyncMode.cs" />
+    <Compile Include="gen\UserTaskResult.cs" />
     <Compile Include="IChannelStatistics.cs" />
     <Compile Include="ICommandHandler.cs">
       <SubType>Code</SubType>

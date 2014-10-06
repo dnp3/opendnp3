@@ -18,21 +18,21 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#include "CommandResult.h"
+#include "UserTaskResult.h"
 
 namespace opendnp3 {
 
-char const* CommandResultToString(CommandResult arg)
+char const* UserTaskResultToString(UserTaskResult arg)
 {
   switch(arg)
   {
-    case(CommandResult::RESPONSE_OK):
+    case(UserTaskResult::RESPONSE_OK):
       return "RESPONSE_OK";
-    case(CommandResult::BAD_RESPONSE):
+    case(UserTaskResult::BAD_RESPONSE):
       return "BAD_RESPONSE";
-    case(CommandResult::TIMEOUT):
+    case(UserTaskResult::TIMEOUT):
       return "TIMEOUT";
-    case(CommandResult::NO_COMMS):
+    case(UserTaskResult::NO_COMMS):
       return "NO_COMMS";
   }
   return "NO_COMMS";

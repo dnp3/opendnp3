@@ -125,7 +125,7 @@ int main(int argc, char* argv[])
 					BlockingCommandCallback handler;
 					pCommandProcessor->SelectAndOperate(crob, 0, handler);
 					auto response = handler.WaitForResult();
-					std::cout << "Result: " << CommandResultToString(response.GetResult()) <<
+					std::cout << "Result: " << UserTaskResultToString(response.GetResult()) <<
 								 " Status: " << CommandStatusToString(response.GetStatus()) << std::endl;
 					break;
 				}

@@ -29,7 +29,7 @@ object CppEnumGenerator {
       EnumConfig(TaskState(), false, true),
       EnumConfig(PointClass(), true, true),
       EnumConfig(CommandStatus(), true, true),
-      EnumConfig(CommandResult(), false, true),
+      EnumConfig(UserTaskResult(), false, true),
       EnumConfig(ControlCode(), true, true),
       EnumConfig(ChannelState(), false, true),
       EnumConfig(TimeSyncMode(), false, false),

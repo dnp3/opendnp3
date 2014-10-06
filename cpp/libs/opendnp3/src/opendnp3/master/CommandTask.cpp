@@ -79,19 +79,19 @@ TaskResult CommandTask::OnResponse(const APDUResponseHeader& header, const openp
 	else
 	{
 		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Ignoring unexpected response with FIR/FIN not set");
-		this->Callback(CommandResponse(CommandResult::BAD_RESPONSE));		
+		this->Callback(CommandResponse(UserTaskResult::BAD_RESPONSE));
 		return TaskResult::FAILURE;
 	}
 }
 
 void CommandTask::OnResponseTimeout(const openpal::MonotonicTimestamp&)
 {
-	this->Callback(CommandResponse(CommandResult::TIMEOUT));
+	this->Callback(CommandResponse(UserTaskResult::TIMEOUT));
 }
 
 void CommandTask::OnLowerLayerClose(const openpal::MonotonicTimestamp& now)
 {	
-	this->Callback(CommandResponse::NoResponse(CommandResult::NO_COMMS));
+	this->Callback(CommandResponse::NoResponse(UserTaskResult::NO_COMMS));
 }
 
 TaskResult CommandTask::OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now)
@@ -121,7 +121,7 @@ TaskResult CommandTask::OnSingleResponse(const APDUResponseHeader& response, con
 	}
 	else
 	{		
-		this->Callback(CommandResponse(CommandResult::BAD_RESPONSE));
+		this->Callback(CommandResponse(UserTaskResult::BAD_RESPONSE));
 		return TaskResult::FAILURE;
 	}
 }

@@ -18,21 +18,21 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef OPENDNP3_COMMANDRESULT_H
-#define OPENDNP3_COMMANDRESULT_H
+#ifndef OPENDNP3_USERTASKRESULT_H
+#define OPENDNP3_USERTASKRESULT_H
 
 #include <cstdint>
 
 namespace opendnp3 {
 
 /**
-  Opendnp3 API enum used for differentiating cases when a command sequence fails without a response from the outstation
+  Opendnp3 API enum used that describes the result of a user task
 */
-enum class CommandResult : int
+enum class UserTaskResult : int
 {
-  /// A response was received from the outstation, check the CommandStatus enumeration
+  /// A valid response was received from the outstation
   RESPONSE_OK = 0,
-  /// A response was received from the outstation, but it did not match or contained bad formatting
+  /// A response was received from the outstation, but it contained unexpected contents or was malformed
   BAD_RESPONSE = 1,
   /// The operation timed out without a response
   TIMEOUT = 2,
@@ -40,7 +40,7 @@ enum class CommandResult : int
   NO_COMMS = 3
 };
 
-char const* CommandResultToString(CommandResult arg);
+char const* UserTaskResultToString(UserTaskResult arg);
 
 }
 

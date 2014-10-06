@@ -186,9 +186,6 @@
     <ClInclude Include="src\opendnp3\gen\CommandStatus.h">
       <Filter>Header\gen</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\CommandResult.h">
-      <Filter>Header\gen</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\gen\ChannelState.h">
       <Filter>Header\gen</Filter>
     </ClInclude>
@@ -714,6 +711,9 @@
     <ClInclude Include="src\opendnp3\outstation\StaticTypeBitfield.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\UserTaskResult.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\AnalogOutput.cpp">
@@ -789,9 +789,6 @@
       <Filter>Source\gen</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\gen\CommandStatus.cpp">
-      <Filter>Source\gen</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\gen\CommandResult.cpp">
       <Filter>Source\gen</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\gen\ChannelState.cpp">
@@ -1137,6 +1134,9 @@
       <Filter>Source\gen</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\gen\StaticTimeAndIntervalResponse.cpp">
+      <Filter>Source\gen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\gen\UserTaskResult.cpp">
       <Filter>Source\gen</Filter>
     </ClCompile>
   </ItemGroup>
