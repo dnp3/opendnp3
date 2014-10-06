@@ -37,9 +37,7 @@ enum class CommandResult : int
   /// The operation timed out without a response
   TIMEOUT = 2,
   /// There is no communication with the outstation, and the command was not attempted
-  NO_COMMS = 3,
-  /// The master's requst queue is full. Too many operations have been requested
-  QUEUE_FULL = 4
+  NO_COMMS = 3
 };
 
 char const* CommandResultToString(CommandResult arg);

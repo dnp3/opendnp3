@@ -40,10 +40,6 @@ namespace Automatak.DNP3.Interface
     /// <summary>
     /// There is no communication with the outstation, and the command was not attempted
     /// </summary>
-    NO_COMMS = 3,
-    /// <summary>
-    /// The master's requst queue is full. Too many operations have been requested
-    /// </summary>
-    QUEUE_FULL = 4
+    NO_COMMS = 3
   }
 }

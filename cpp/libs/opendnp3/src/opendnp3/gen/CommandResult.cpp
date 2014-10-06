@@ -34,10 +34,8 @@ char const* CommandResultToString(CommandResult arg)
       return "TIMEOUT";
     case(CommandResult::NO_COMMS):
       return "NO_COMMS";
-    case(CommandResult::QUEUE_FULL):
-      return "QUEUE_FULL";
   }
-  return "QUEUE_FULL";
+  return "NO_COMMS";
 }
 
 }
