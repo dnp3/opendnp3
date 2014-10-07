@@ -35,7 +35,7 @@ struct ValueMetadataPair
 	ValueMetadataPair(openpal::Indexable<T, uint16_t> aValues, openpal::Indexable<U, uint16_t> aMetadata, PointIndexes aIndexes) :
 		values(aValues),
 		metadata(aMetadata),
-        indexes(aIndexes.ranges)
+        indexes(aIndexes)
 	{
 		assert(aValues.Size() == aMetadata.Size());
         assert(aValues.Size() <= aIndexes.IndexCount());

@@ -67,42 +67,32 @@ namespace opendnp3
         static PointRange EMPTYRANGE;
         static const uint32_t OUTOFRANGE;
     };
-
+    
     class PointIndexes
     {
     public:
         static const PointIndexes FULLINDEXES;
         static const PointIndexes EMPTYINDEXES;
         
-        PointIndexes(openpal::Indexable<PointRange, uint32_t> base) :
-        ranges(base)
+        PointIndexes(openpal::Indexable<PointRange, uint32_t> ranges_) :
+        ranges(ranges_)
         { }
         
-        void SetRanges(std::initializer_list<Range> points);
-        void SetRanges(openpal::Indexable<uint32_t, uint32_t>& points);
-        void SetRanges(openpal::Indexable<Range, uint32_t> pointranges);
-        void SetRanges(PointIndexes pointranges);
         
         inline const PointRange ToRange() const
         {
             return {First(), Last(), First()};
         }
         
-        const PointRange& operator[](uint32_t index) const
-        {
-            assert(index < IndexCount());
-            return ranges[index];
-        }
-        
         inline uint32_t First() const
         {
-            if(ranges.Size() == 0) return PointRange::MAX;
+            if(IsEmpty()) return PointRange::MAX;
             return ranges[0].start;
         }
         
         inline uint32_t Last() const
         {
-            if(ranges.Size() == 0) return PointRange::MIN;
+            if(IsEmpty()) return PointRange::MIN;
             return ranges[LastRange()].stop;
         }
         
@@ -119,34 +109,53 @@ namespace opendnp3
             return true;
         }
         
+        // Returns the total number of defined points
         inline uint32_t IndexCount() const
         {
-            return IndexCount(First(), Last());
+            if(IsEmpty()) return 0;
+            const uint32_t lr = LastRange();
+            return 1 + ranges[lr].stop - ranges[lr].offset;
         }
         
-        // Gives the number of indexes between a start and stop index
+        // Returns the number of points between a start and stop index
         uint32_t IndexCount(uint32_t start, uint32_t stop) const;
         
-        // Given a point index, returns a position
+        // Given point index, returns database array position
         uint32_t GetPosition(uint32_t index) const;
+
+        // Given database array position, returns point index
+        uint32_t GetIndex(uint32_t position) const;
         
-        // Returns the range that the index is in OR
-        // the range of the next index
-        uint32_t GetRange(uint32_t index) const;
-        
-        /* Given an index, returns the next valid index (inclusive of the index provided) */
+        // Given an index, returns the next valid index (inclusive of the index provided)
         uint32_t GetNextValid(uint32_t index) const;
         
-        /* Given an index, returns the previous valid index (inclusive of the index provided) */
+        // Given an index, returns the previous valid index (inclusive of the index provided)
         uint32_t GetPreviousValid(uint32_t index) const;
         
-        /* Returns true if index is contained in a range */;
+        // Returns true if index is contained in the point indexes
         bool Contains(uint32_t index) const;
         
+        // Returns true if there are no discontinuities betweent the start and stop indexes
+        bool IsContiguous(uint32_t start, uint32_t stop) const;
+    
+        // Sets PointIndexes from initializer list of Ranges (array of <start, stop> pairs
+        void SetRanges(std::initializer_list<Range> points);
+
+        // Sets PointIndexes from indexable list of Ranges (array of <start, stop> pairs
+        void SetRanges(openpal::Indexable<Range, uint32_t> pointranges);
+
+        // Sets PointIndexes from indexable list of increasing point indexes
+        void SetRanges(openpal::Indexable<uint32_t, uint32_t>& points);
+        
+        // Sets PointIndexes from existing PointIndexes reference
+        void SetRanges(PointIndexes pointranges);
+        
+        // Static functions for counting the number of dis-contiguous ranges in a collection of points
         static uint32_t CountRanges(std::initializer_list<Range> points);
         static uint32_t CountRanges(openpal::Indexable<uint32_t, uint32_t> points);
         static uint32_t CountRanges(openpal::Indexable<Range, uint32_t> points);
         
+        uint32_t GetRange(uint32_t index) const;
         openpal::Indexable<PointRange, uint32_t> ranges;
         
     private:

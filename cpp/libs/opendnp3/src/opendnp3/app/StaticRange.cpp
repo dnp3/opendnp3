@@ -59,17 +59,15 @@ void StaticRange::ClipTo(const Range& borders)
 
 	if(!clipped)
 	{
-        auto startRange = indexes->GetRange(maxStart);
-        auto stopRange = indexes->GetRange(minStop);
-		clipped = !((maxStart == borders.start) && (minStop == borders.stop) && (startRange == stopRange));
+		clipped = !(indexes->IsContiguous(borders.start, borders.stop));
 	}
 
 	start = maxStart;
 	stop = minStop;
     if(start <= stop)
     {
-        range = (*indexes).GetRange(start);
-        position = (*indexes).GetPosition(start);
+        range = indexes->GetRange(start);
+        position = indexes->GetPosition(start);
     }
 }
 
@@ -84,13 +82,13 @@ bool StaticRange::Advance()
 	{
 		++start;
 		++position;
-        if(start > (*indexes)[range].stop)
+        if(start > indexes->ranges[range].stop)
         {
             // end of contiguous range of points
-            if(++range < (*indexes).ranges.Size())
+            if(++range < indexes->ranges.Size())
             {
                 // move to next range of points
-                start = (*indexes)[range].start;
+                start = indexes->ranges[range].start;
                 return false;
             }
             else

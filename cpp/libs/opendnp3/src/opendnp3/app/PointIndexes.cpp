@@ -156,42 +156,75 @@ namespace opendnp3
     {
         if(ranges.Size() == 0) return 0;
         if(First() > Last()) return 0;
-        
-        uint32_t count = 1 + stop - start;
-        
-        /* delete all the gaps between start and stop */
-        for(uint32_t i = 1; i < ranges.Size(); i++)
-        {
-            if ((start <= ranges[i-1].stop) && (stop >= ranges[i].start))
-            {
-                count -= ranges[i].start - ranges[i-1].stop - 1;
-            }
-        }
-        return count;
+        return 1 + GetPosition(stop) - GetPosition(start);
     }
     
-    // Given a point index, returns a position
+    
+    /* Returns true if index is contained in a range */
+    bool PointIndexes::Contains(uint32_t index) const
+    {
+        if(IsEmpty()) return false;
+        const uint32_t IndexRange = GetRange(index);
+        if (index < ranges[IndexRange].start) return false;
+        if (index > ranges[IndexRange].stop) return false;
+        return true;
+    }
+    
+    // Returns true if there are no dis-continuities in the range of point indexes
+    bool PointIndexes::IsContiguous(uint32_t start, uint32_t stop) const
+    {
+        if(IsEmpty()) return false;
+        if (start > stop) return false;
+        const uint32_t IndexRange = GetRange(start);
+        if (start < ranges[IndexRange].start) return false;
+        if (stop > ranges[IndexRange].stop) return false;
+        return true;
+    }
+    
+    // Given point index, returns database array position
     uint32_t PointIndexes::GetPosition(uint32_t index) const
     {
+        if(IsEmpty()) return PointRange::OUTOFRANGE;
         const uint32_t IndexRange = GetRange(index);
-        if(IndexRange == PointRange::OUTOFRANGE) return PointRange::OUTOFRANGE;
         if(index < ranges[IndexRange].start) return PointRange::OUTOFRANGE;
         if(index > ranges[IndexRange].stop) return PointRange::OUTOFRANGE;
         return index - ranges[IndexRange].offset;
     }
     
-    // Returns the range that the index is in OR
-    // the range of the next index
-    uint32_t PointIndexes::GetRange(uint32_t index) const
+    // Given database array position, returns point index
+    uint32_t PointIndexes::GetIndex(uint32_t position) const
     {
-        uint32_t nRanges = ranges.Size();
+        const uint32_t nRanges = ranges.Size();
         if (nRanges == 0) return PointRange::OUTOFRANGE;
-        if (index < ranges[0].start) return 0;
-        if (index > ranges[nRanges-1].stop) return PointRange::OUTOFRANGE;
-        
+
         /* Simple binary search */
         uint32_t imin = 0;
-        uint32_t imax = ranges.Size() - 1;
+        uint32_t imax = nRanges - 1;
+        uint32_t index = 0;
+
+        if (position + ranges[imax].offset > ranges[imax].stop) return PointRange::OUTOFRANGE;
+        
+        while (imax > imin)
+        {
+            const uint32_t imid = imin + (imax - imin)/2;
+            index = position + ranges[imid].offset;
+            if (index < ranges[imid].start) imax = imid - 1;
+            else if (index > ranges[imid].stop) imin = imid + 1;
+            else return index;
+        }
+        return index;
+    }
+    
+    // Returns the range that the index is in OR
+    // the next range
+    uint32_t PointIndexes::GetRange(uint32_t index) const
+    {
+        const uint32_t nRanges = ranges.Size();
+        if (nRanges == 0) return PointRange::OUTOFRANGE;
+
+        /* Simple binary search */
+        uint32_t imin = 0;
+        uint32_t imax = nRanges - 1;
         
         while (imax > imin)
         {
@@ -206,40 +239,30 @@ namespace opendnp3
     /* Given an index, returns the next valid index (inclusive of the index provided) */
     uint32_t PointIndexes::GetNextValid(uint32_t index) const
     {
+        if (IsEmpty()) return PointRange::OUTOFRANGE;
+        if (index < First()) return First();
+        if (index > Last()) return PointRange::OUTOFRANGE;
+        
         const uint32_t IndexRange = GetRange(index);
-        if (IndexRange == PointRange::OUTOFRANGE) return PointRange::OUTOFRANGE;
-        // before the range start
-        if (index < ranges[IndexRange].start) return ranges[IndexRange].start;
-        // in the range
         if (index <= ranges[IndexRange].stop) return index;
-        // past the range end
-        assert(IndexRange < LastRange());
-        return ranges[IndexRange+1].start;
+        return ranges[IndexRange+1].start; // past the range end
     }
     
     /* Given an index, returns the previous valid index (inclusive of the index provided) */
     uint32_t PointIndexes::GetPreviousValid(uint32_t index) const
     {
+        if (IsEmpty()) return PointRange::OUTOFRANGE;
+        if (index < First()) return PointRange::OUTOFRANGE;
+        if (index > Last()) return Last();
+
         const uint32_t IndexRange = GetRange(index);
-        if (ranges.Size() == 0) return PointRange::MIN;
-        if (IndexRange == PointRange::OUTOFRANGE) return Last();
         // past the range end
         if (index > ranges[IndexRange].stop) return ranges[IndexRange].stop;
         // in the range
         if (index >= ranges[IndexRange].start) return index;
         // before the range start
         if (IndexRange > 0) return ranges[IndexRange-1].stop;
-        return PointRange::MIN;
-    }
-    
-    /* Returns true if index is contained in a range */
-    bool PointIndexes::Contains(uint32_t index) const
-    {
-        const uint32_t IndexRange = GetRange(index);
-        if (IndexRange == PointRange::OUTOFRANGE) return false;
-        if (index < ranges[IndexRange].start) return false;
-        if (index > ranges[IndexRange].stop) return false;
-        return true;
+        return PointRange::OUTOFRANGE;
     }
 
     uint32_t PointIndexes::CountRanges(std::initializer_list<Range> pointranges)
@@ -317,5 +340,5 @@ namespace opendnp3
         }
         return count;
     }
-
+    
 }
