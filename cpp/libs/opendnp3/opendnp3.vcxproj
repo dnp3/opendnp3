@@ -137,7 +137,7 @@
     <ClInclude Include="src\opendnp3\master\ConstantCommandProcessor.h" />
     <ClInclude Include="src\opendnp3\master\DisableUnsolicitedTask.h" />
     <ClInclude Include="src\opendnp3\master\EnableUnsolicitedTask.h" />
-    <ClInclude Include="src\opendnp3\master\ICommandCallback.h" />
+    <ClInclude Include="src\opendnp3\master\ITaskCallback.h" />
     <ClInclude Include="src\opendnp3\master\ICommandProcessor.h" />
     <ClInclude Include="src\opendnp3\master\IMasterApplication.h" />
     <ClInclude Include="src\opendnp3\master\IMasterState.h" />

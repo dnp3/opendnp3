@@ -30,7 +30,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-CommandTask::CommandTask(ICommandSequence* pSequence_, ICommandCallback& callback, openpal::Logger logger_) :
+CommandTask::CommandTask(ICommandSequence* pSequence_, ITaskCallback<CommandResponse>& callback, openpal::Logger logger_) :
 	logger(logger_),
 	pCallback(&callback),
 	pSequence(pSequence_)

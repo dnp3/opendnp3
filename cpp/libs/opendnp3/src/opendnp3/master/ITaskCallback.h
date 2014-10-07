@@ -18,23 +18,21 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_ICOMMANDCALLBACK_H
-#define OPENDNP3_ICOMMANDCALLBACK_H
-
-#include "opendnp3/master/CommandResponse.h"
+#ifndef OPENDNP3_ITASKCALLBACK_H
+#define OPENDNP3_ITASKCALLBACK_H
 
 namespace opendnp3
 {
 
 /**
-* Callback when a command finishes or fails
+* Parameterized callback when a task finishes or fails
 */
-class ICommandCallback
+template <class T>
+class ITaskCallback
 {
 public:
-
 	
-	virtual void OnComplete(const CommandResponse& response) = 0;	
+	virtual void OnComplete(const T& response) = 0;	
 };
 
 }
