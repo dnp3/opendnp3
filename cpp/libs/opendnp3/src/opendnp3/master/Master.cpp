@@ -70,7 +70,7 @@ ICommandProcessor& Master::GetCommandProcessor()
 	return commandMarshaller;
 }
 
-MasterScan Master::AddScan(openpal::TimeDuration period, const std::function<void(APDURequest&)>& builder, int id)
+MasterScan Master::AddScan(openpal::TimeDuration period, const std::function<void(HeaderWriter&)>& builder, int id)
 {
 	auto pTask = new UserPollTask(builder, id, true, "", period, context.params.taskRetryPeriod, context.pSOEHandler, &context.logger);
 	context.AddPollTask(pTask);	
@@ -80,20 +80,27 @@ MasterScan Master::AddScan(openpal::TimeDuration period, const std::function<voi
 
 MasterScan Master::AddClassScan(const ClassField& field, openpal::TimeDuration period, int id)
 {	
-	auto configure = [field](APDURequest& request) { build::WriteClassHeaders(request, field); };
+	auto configure = [field](HeaderWriter& writer) 
+	{ 
+		build::WriteClassHeaders(writer, field); 
+	};
 	return this->AddScan(period, configure, id);
 }
 
 MasterScan Master::AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, int id)
 {
-	auto configure = [gvId](APDURequest& request) { build::ReadAllObjects(request, gvId); };
+	auto configure = [gvId](HeaderWriter& writer)
+	{ 
+		writer.WriteHeader(gvId, QualifierCode::ALL_OBJECTS);		
+	};
 	return this->AddScan(period, configure, id);
 }
 
 MasterScan Master::AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, int id)
 {
-	auto configure = [gvId, start, stop](APDURequest& request) {
-		request.GetWriter().WriteRangeHeader<openpal::UInt16>(QualifierCode::UINT16_START_STOP, gvId, start, stop);		
+	auto configure = [gvId, start, stop](HeaderWriter& writer)
+	{
+		writer.WriteRangeHeader<openpal::UInt16>(QualifierCode::UINT16_START_STOP, gvId, start, stop);		
 	};
 	return this->AddScan(period, configure, id);
 }

@@ -33,7 +33,7 @@ namespace build
 
 	void ClassRequest(APDURequest& request, FunctionCode code, const ClassField& classes, uint8_t seq);
 
-	void WriteClassHeaders(APDURequest& request, const ClassField& classes);
+	void WriteClassHeaders(HeaderWriter& writer, const ClassField& classes);
 
 	void ReadIntegrity(APDURequest& request, const ClassField& classes, uint8_t seq = 0);
 

@@ -21,6 +21,8 @@
 #ifndef OPENDNP3_MASTER_H
 #define OPENDNP3_MASTER_H
 
+#include "opendnp3/app/HeaderWriter.h"
+
 #include "opendnp3/master/MasterContext.h"
 #include "opendnp3/master/CommandMarshaller.h"
 #include "opendnp3/master/MasterScan.h"
@@ -56,7 +58,7 @@ class Master : public IUpperLayer
 	
 	ICommandProcessor& GetCommandProcessor();
 
-	MasterScan AddScan(openpal::TimeDuration period, const std::function<void (APDURequest&)>& builder, int id = -1);
+	MasterScan AddScan(openpal::TimeDuration period, const std::function<void (HeaderWriter&)>& builder, int id = -1);
 
 	MasterScan AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, int id = -1);
 

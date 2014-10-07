@@ -89,6 +89,12 @@ opendnp3::ILinkSession* MasterStackImpl::GetLinkContext()
 	return &stack.link;
 }
 
+MasterScan MasterStackImpl::AddScan(TimeDuration period, const std::function<void(HeaderWriter&)>& builder, int id)
+{
+	auto add = [this, period, builder, id]() { return master.AddScan(period, builder, id); };
+	return asiopal::SynchronouslyGet<MasterScan>(handler.GetExecutor()->strand, add);
+}
+
 MasterScan MasterStackImpl::AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, int id)
 {
 	auto add = [this, gvId, period, id]() { return master.AddAllObjectsScan(gvId, period, id); };

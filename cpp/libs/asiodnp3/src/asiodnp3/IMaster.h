@@ -47,6 +47,12 @@ public:
 	virtual opendnp3::StackStatistics GetStackStatistics() = 0;
 
 	/**
+	* Add a user-defined scan (via a lambda)
+	* @ return A proxy class used to manipulate the scan
+	*/
+	virtual opendnp3::MasterScan AddScan(openpal::TimeDuration period, const std::function<void(opendnp3::HeaderWriter&)>& builder, int id = -1) = 0;
+
+	/**
 	* Add a scan that requests all objects using qualifier code 0x06
 	* @ return A proxy class used to manipulate the scan
 	*/
@@ -62,7 +68,10 @@ public:
 	* Add a start/stop (range) scan to the master
 	* @return A proxy class used to manipulate the scan
 	*/
-	virtual opendnp3::MasterScan  AddRangeScan(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, int id = -1) = 0;
+	virtual opendnp3::MasterScan AddRangeScan(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, int id = -1) = 0;
+
+	
+	//virtual bool QueueAllObjectsScan()
 
 	/**
 	* Get a command processor interface to execute controls on the master

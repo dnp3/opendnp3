@@ -49,12 +49,12 @@ void ClassRequest(APDURequest& request, FunctionCode fc, const ClassField& class
 {
 	request.SetControl(AppControlField(true, true, false, false, seq));
 	request.SetFunction(fc);
-	WriteClassHeaders(request, classes);	
+	auto writer = request.GetWriter();
+	WriteClassHeaders(writer, classes);	
 }
 
-void WriteClassHeaders(APDURequest& request, const ClassField& classes)
-{
-	auto writer = request.GetWriter();
+void WriteClassHeaders(HeaderWriter& writer, const ClassField& classes)
+{	
 	if (classes.HasClass1())
 	{
 		writer.WriteHeader(Group60Var2::ID(), QualifierCode::ALL_OBJECTS);

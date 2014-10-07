@@ -23,6 +23,8 @@
 
 #include "opendnp3/master/PollTaskBase.h"
 #include "opendnp3/master/TaskPriority.h"
+#include "opendnp3/master/ITaskCallback.h"
+#include "opendnp3/gen/UserTaskResult.h"
 
 #include <functional>
 
@@ -41,14 +43,14 @@ class UserPollTask : public PollTaskBase
 public:	
 
 	UserPollTask(		
-		const std::function<void(APDURequest&)>& builder,		
+		const std::function<void(HeaderWriter&)>& builder,
 		int id,
 		bool recurring,
 		const std::string& name,		
 		const openpal::TimeDuration& period,	
 		const openpal::TimeDuration& retryDelay,
 		ISOEHandler* pSOEHandler,
-		openpal::Logger* pLogger	
+		openpal::Logger* pLogger
 		);	
 
 	virtual int Priority() const override final { return priority::USER_POLL; }
@@ -69,16 +71,19 @@ public:
 
 private:
 
+	void Notify(UserTaskResult result);
+
 	virtual void OnFailure(const openpal::MonotonicTimestamp& now) override final;
 
 	virtual void OnSuccess(const openpal::MonotonicTimestamp& now) override final;
 			
-	std::function<void(APDURequest&)> builder;
+	std::function<void(HeaderWriter&)> builder;
 	int id;
 	bool recurring;
 	openpal::TimeDuration period;
 	openpal::TimeDuration retryDelay;
 	openpal::MonotonicTimestamp expiration;
+	ITaskCallback<UserTaskResult>* pCallback;
 
 };
 
