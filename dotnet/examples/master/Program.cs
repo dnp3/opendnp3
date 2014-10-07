@@ -68,6 +68,10 @@ namespace DotNetMasterDemo
             {                
                 switch (Console.ReadLine())
                 { 
+                    case "a":
+                        // perform an ad-hoc scan of all analogs
+                        master.ScanAllObjects(30, 0);
+                        break;
                     case "c":
                         var crob = new ControlRelayOutputBlock(ControlCode.PULSE, 1, 100, 100);
                         var future = master.GetCommandProcessor().SelectAndOperate(crob, 0);
