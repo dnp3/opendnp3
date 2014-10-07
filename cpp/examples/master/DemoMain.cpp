@@ -86,10 +86,10 @@ int main(int argc, char* argv[])
 	
 	
 	// do an integrity poll (Class 3/2/1/0) once per minute
-	auto integrityScan = pMaster->AddClassScan(ClassField::AllClasses(), TimeDuration::Minutes(1));
+	//auto integrityScan = pMaster->AddClassScan(ClassField::AllClasses(), TimeDuration::Minutes(1));
 	
 	// do a Class 1 exception poll every 5 seconds
-	auto exceptionScan = pMaster->AddClassScan(ClassField(ClassField::CLASS_1), TimeDuration::Seconds(5));
+	//auto exceptionScan = pMaster->AddClassScan(ClassField(ClassField::CLASS_1), TimeDuration::Seconds(5));
 
 	// Enable the master. This will start communications.
 	pMaster->Enable();
@@ -98,9 +98,9 @@ int main(int argc, char* argv[])
 
 	do
 	{
-
-		std::cout << "Enter a command" << std::endl;
+		std::cout << "Enter a command" << std::endl;		
 		std::cout << "x - exits program" << std::endl;
+		std::cout << "a - performs and ad-hoc range scan" << std::endl;
 		std::cout << "i - integrity demand scan" << std::endl;
 		std::cout << "e - exception demand scan" << std::endl;
 		std::cout << "c - send crob" << std::endl;
@@ -109,14 +109,17 @@ int main(int argc, char* argv[])
 		std::cin >> cmd;
 		switch(cmd)
 		{
+			case('a') :
+				pMaster->ScanRange(GroupVariationID(1, 2), 0, 3, 5);				
+				break;
 			case('x'):
 				// C++ destructor on DNP3Manager cleans everything up for you
 				return 0;
 			case('i'):
-				integrityScan.Demand();
+				//integrityScan.Demand();
 				break;
 			case('e'):
-				exceptionScan.Demand();
+				//exceptionScan.Demand();
 				break;
 			case('c'):
 				{

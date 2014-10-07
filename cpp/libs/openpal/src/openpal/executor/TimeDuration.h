@@ -69,6 +69,8 @@ public:
 
 	static TimeDuration Min();
 
+	static TimeDuration Max();
+
 	static TimeDuration Zero();
 
 	static TimeDuration Milliseconds(int64_t aMilliseconds);

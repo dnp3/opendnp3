@@ -117,7 +117,9 @@ class MasterContext : public ICommandProcessor, public IScheduleCallback
 	void ReleaseActiveTask();
 	void NotifyCurrentTask(TaskState state);
 
-	void AddPollTask(IMasterTask* pTask);
+	void ScheduleRecurringPollTask(IMasterTask* pTask);
+
+	void ScheduleAdhocPollTask(IMasterTask* pTask);
 
 	private:
 	

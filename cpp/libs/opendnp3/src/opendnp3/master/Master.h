@@ -58,6 +58,8 @@ class Master : public IUpperLayer
 	
 	ICommandProcessor& GetCommandProcessor();
 
+	/// ---- Permanently bound scans ----
+
 	MasterScan AddScan(openpal::TimeDuration period, const std::function<void (HeaderWriter&)>& builder, int id = -1);
 
 	MasterScan AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, int id = -1);
@@ -65,6 +67,17 @@ class Master : public IUpperLayer
 	MasterScan AddClassScan(const ClassField& field, openpal::TimeDuration period, int id = -1);
 
 	MasterScan AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, int id = -1);
+
+	/// ---- Single shot immediate scans ----
+	
+	void Scan(const std::function<void(HeaderWriter&)>& builder, int id = -1);
+
+	void ScanAllObjects(GroupVariationID gvId, int id = -1);
+
+	void ScanClasses(const ClassField& field, int id = -1);
+
+	void ScanRange(GroupVariationID gvId, uint16_t start, uint16_t stop, int id = -1);
+
 	
 	private:
 

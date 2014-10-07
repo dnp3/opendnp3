@@ -160,7 +160,7 @@ void MasterContext::NotifyCurrentTask(TaskState state)
 	}
 }
 
-void MasterContext::AddPollTask(IMasterTask* pTask)
+void MasterContext::ScheduleRecurringPollTask(IMasterTask* pTask)
 {
 	tasks.BindTask(pTask);
 
@@ -169,6 +169,21 @@ void MasterContext::AddPollTask(IMasterTask* pTask)
 		scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(pTask));
 		this->PostCheckForTask();
 	}	
+}
+
+void MasterContext::ScheduleAdhocPollTask(IMasterTask* pTask)
+{
+	auto task = ManagedPtr<IMasterTask>::Deleted(pTask);
+	if (isOnline)
+	{
+		scheduler.Schedule(std::move(task));
+		this->PostCheckForTask();
+	}
+	else
+	{
+		// can't run this task since we're offline so fail it immediately
+		pApplication->OnTaskStateChange(task->Id(), TaskState::FAILURE);
+	}
 }
 
 void MasterContext::OnPendingTask()

@@ -59,7 +59,7 @@ public:
 
 	virtual opendnp3::ICommandProcessor* GetCommandProcessor()  override final;
 
-	// ------- Scan handlers ---------
+	// ------- Periodic scan API ---------
 
 	virtual opendnp3::MasterScan AddScan(openpal::TimeDuration period, const std::function<void(opendnp3::HeaderWriter&)>& builder, int id) override final;
 
@@ -67,7 +67,17 @@ public:
 
 	virtual opendnp3::MasterScan AddClassScan(const opendnp3::ClassField& field, openpal::TimeDuration period, int id) override final;
 
-	virtual opendnp3::MasterScan  AddRangeScan(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, int id) override final;
+	virtual opendnp3::MasterScan AddRangeScan(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, int id) override final;
+
+	// ------- Adhoc scan API ---------
+	
+	virtual void Scan(const std::function<void(opendnp3::HeaderWriter&)>& builder, int id);
+
+	virtual void ScanAllObjects(opendnp3::GroupVariationID gvId, int id);
+
+	virtual void ScanClasses(const opendnp3::ClassField& field, int id);
+
+	virtual void ScanRange(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, int id = -1);
 
 	// ------- Non-interface public members ---------
 

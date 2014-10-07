@@ -113,4 +113,28 @@ MasterScan  MasterStackImpl::AddRangeScan(opendnp3::GroupVariationID gvId, uint1
 	return asiopal::SynchronouslyGet<MasterScan>(handler.GetExecutor()->strand, add);
 }
 
+void MasterStackImpl::Scan(const std::function<void(opendnp3::HeaderWriter&)>& builder, int id)
+{
+	auto add = [this, builder, id]() { master.Scan(builder, id); };
+	return asiopal::SynchronouslyExecute(handler.GetExecutor()->strand, add);
+}
+
+void MasterStackImpl::ScanAllObjects(opendnp3::GroupVariationID gvId, int id)
+{
+	auto add = [this, gvId, id]() { return master.ScanAllObjects(gvId, id); };
+	return asiopal::SynchronouslyExecute(handler.GetExecutor()->strand, add);
+}
+
+void MasterStackImpl::ScanClasses(const opendnp3::ClassField& field, int id)
+{
+	auto add = [this, field, id]() { return master.ScanClasses(field, id); };
+	return asiopal::SynchronouslyExecute(handler.GetExecutor()->strand, add);
+}
+
+void MasterStackImpl::ScanRange(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, int id)
+{
+	auto add = [this, gvId, start, stop, id]() { return master.ScanRange(gvId, start, stop, id); };
+	return asiopal::SynchronouslyExecute(handler.GetExecutor()->strand, add);
+}
+
 }
