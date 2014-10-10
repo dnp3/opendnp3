@@ -25,6 +25,7 @@
 #include "opendnp3/outstation/ValueMetadataPair.h"
 #include "opendnp3/app/MeasurementTypes.h"
 #include "opendnp3/app/TimeAndInterval.h"
+#include "opendnp3/app/DynamicPointIndexes.h"
 #include "opendnp3/outstation/DualValue.h"
 #include "opendnp3/outstation/DatabaseTemplate.h"
 
@@ -79,6 +80,15 @@ private:
 	openpal::DynamicArray<BinaryOutputStatusMetadata, uint16_t> binaryOutputStatusMetadata;
 	openpal::DynamicArray<AnalogOutputStatusMetadata, uint16_t> analogOutputStatusMetadata;
 
+    opendnp3::DynamicPointIndexes binaryIndexes;
+    opendnp3::DynamicPointIndexes doubleBinaryIndexes;
+    opendnp3::DynamicPointIndexes analogIndexes;
+    opendnp3::DynamicPointIndexes counterIndexes;
+    opendnp3::DynamicPointIndexes frozenCounterIndexes;
+    opendnp3::DynamicPointIndexes binaryOutputStatusIndexes;
+    opendnp3::DynamicPointIndexes analogOutputStatusIndexes;
+    opendnp3::DynamicPointIndexes timeAndIntervalIndexes;
+    
 public:
 
 	

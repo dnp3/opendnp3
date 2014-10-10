@@ -95,32 +95,60 @@ bool AssignClassHandler::IsExpectingAssignment()
 	}
 }
 
-void AssignClassHandler::_OnRangeRequest(const HeaderRecord& record, const StaticRange& range)
+void AssignClassHandler::_OnRangeRequest(const HeaderRecord& record, const Range& range)
 {
 	if (IsExpectingAssignment())
-	{		
+	{
 		switch (record.enumeration)
 		{
 		case(GroupVariation::Group1Var0) :
-			this->ProcessAssignment(AssignClassType::BinaryInput, clazz, range);
+            {
+            StaticRange staticrange(pDatabase->FullRange<Binary>());
+            staticrange.ClipTo(range);
+			this->ProcessAssignment(AssignClassType::BinaryInput, clazz, staticrange);
+            }
 			break;
 		case(GroupVariation::Group3Var0) :
-			this->ProcessAssignment(AssignClassType::DoubleBinaryInput, clazz, range);
+            {
+            StaticRange staticrange(pDatabase->FullRange<DoubleBitBinary>());
+            staticrange.ClipTo(range);
+			this->ProcessAssignment(AssignClassType::DoubleBinaryInput, clazz, staticrange);
+            }
 			break;
 		case(GroupVariation::Group10Var0) :
-			this->ProcessAssignment(AssignClassType::BinaryOutputStatus, clazz, range);
+            {
+            StaticRange staticrange(pDatabase->FullRange<BinaryOutputStatus>());
+            staticrange.ClipTo(range);
+			this->ProcessAssignment(AssignClassType::BinaryOutputStatus, clazz, staticrange);
+            }
 			break;
 		case(GroupVariation::Group20Var0) :
-			this->ProcessAssignment(AssignClassType::Counter, clazz, range);
+            {
+            StaticRange staticrange(pDatabase->FullRange<Counter>());
+            staticrange.ClipTo(range);
+			this->ProcessAssignment(AssignClassType::Counter, clazz, staticrange);
+            }
 			break;
 		case(GroupVariation::Group21Var0) :
-			this->ProcessAssignment(AssignClassType::FrozenCounter, clazz, range);
+            {
+            StaticRange staticrange(pDatabase->FullRange<FrozenCounter>());
+            staticrange.ClipTo(range);
+			this->ProcessAssignment(AssignClassType::FrozenCounter, clazz, staticrange);
+            }
 			break;
 		case(GroupVariation::Group30Var0) :
-			this->ProcessAssignment(AssignClassType::AnalogInput, clazz, range);
+            {
+            StaticRange staticrange(pDatabase->FullRange<Analog>());
+            staticrange.ClipTo(range);
+			this->ProcessAssignment(AssignClassType::AnalogInput, clazz, staticrange);
+            }
 			break;
 		case(GroupVariation::Group40Var0) :
-			this->ProcessAssignment(AssignClassType::AnalogOutputStatus, clazz, range);
+            {
+            StaticRange staticrange(pDatabase->FullRange<AnalogOutputStatus>());
+            staticrange.ClipTo(range);
+			this->ProcessAssignment(AssignClassType::AnalogOutputStatus, clazz, staticrange);
+            }
 			break;
 		default:
 			errors.SetBit(IINBit::FUNC_NOT_SUPPORTED);
@@ -134,8 +162,8 @@ void AssignClassHandler::_OnRangeRequest(const HeaderRecord& record, const Stati
 }
 
 void AssignClassHandler::ProcessAssignment(AssignClassType type, PointClass clazz, const StaticRange& range)
-{	
-	if (pDatabase->AssignClass(type, clazz, range))
+{
+	if (!range.IsClipped() && pDatabase->AssignClass(type, clazz, range))
 	{
 		auto start = range.start;
 		auto stop = range.stop;

@@ -39,6 +39,7 @@
     <ClInclude Include="src\opendnp3\app\ClassField.h" />
     <ClInclude Include="src\opendnp3\app\ControlRelayOutputBlock.h" />
     <ClInclude Include="src\opendnp3\app\CountWriteIterator.h" />
+    <ClInclude Include="src\opendnp3\app\DynamicPointIndexes.h" />
     <ClInclude Include="src\opendnp3\app\EventTriggers.h" />
     <ClInclude Include="src\opendnp3\app\EventType.h" />
     <ClInclude Include="src\opendnp3\app\FunctionHelpers.h" />
@@ -60,11 +61,13 @@
     <ClInclude Include="src\opendnp3\app\OctetData.h" />
     <ClInclude Include="src\opendnp3\app\OctetString.h" />
     <ClInclude Include="src\opendnp3\app\ClassMash.h" />
+    <ClInclude Include="src\opendnp3\app\PointIndexes.h" />
     <ClInclude Include="src\opendnp3\app\PrefixedWriteIterator.h" />
     <ClInclude Include="src\opendnp3\app\QualityMasks.h" />
     <ClInclude Include="src\opendnp3\app\Range.h" />
     <ClInclude Include="src\opendnp3\app\RangeWriteIterator.h" />
     <ClInclude Include="src\opendnp3\app\SequenceInfo.h" />
+    <ClInclude Include="src\opendnp3\app\StaticPointIndexes.h" />
     <ClInclude Include="src\opendnp3\app\StaticRange.h" />
     <ClInclude Include="src\opendnp3\app\TimeAndInterval.h" />
     <ClInclude Include="src\opendnp3\app\VTOData.h" />
@@ -263,6 +266,7 @@
     <ClCompile Include="src\opendnp3\app\MeasurementTypes.cpp" />
     <ClCompile Include="src\opendnp3\app\ObjectWriter.cpp" />
     <ClCompile Include="src\opendnp3\app\OctetData.cpp" />
+    <ClCompile Include="src\opendnp3\app\PointIndexes.cpp" />
     <ClCompile Include="src\opendnp3\app\StaticRange.cpp" />
     <ClCompile Include="src\opendnp3\app\TimeAndInterval.cpp" />
     <ClCompile Include="src\opendnp3\gen\ChannelState.cpp" />

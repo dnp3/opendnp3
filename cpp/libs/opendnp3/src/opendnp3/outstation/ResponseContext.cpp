@@ -84,7 +84,7 @@ IINField ResponseContext::ReadAllObjects(const GroupVariationRecord& record)
 	}
 }
 
-IINField ResponseContext::ReadRange(const GroupVariationRecord& record, const StaticRange& range)
+IINField ResponseContext::ReadRange(const GroupVariationRecord& record, const Range& range)
 {
 	switch (record.type)
 	{

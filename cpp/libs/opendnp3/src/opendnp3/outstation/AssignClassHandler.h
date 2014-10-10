@@ -41,7 +41,7 @@ public:
 
 	virtual void _AllObjects(const HeaderRecord& record) override final;
 
-	virtual void _OnRangeRequest(const HeaderRecord& record, const StaticRange& range) override final;
+	virtual void _OnRangeRequest(const HeaderRecord& record, const Range& range) override final;
 
 private:
 

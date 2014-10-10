@@ -44,7 +44,7 @@ public:
 		records.push_back(record);
 	}
 
-	virtual void _OnRangeRequest(const HeaderRecord& record, const StaticRange& range) override
+	virtual void _OnRangeRequest(const HeaderRecord& record, const Range& range) override
 	{
 		records.push_back(record);
 	}

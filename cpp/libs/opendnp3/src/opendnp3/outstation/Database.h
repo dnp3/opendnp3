@@ -68,12 +68,7 @@ public:
 	bool AssignClass(AssignClassType type, PointClass clazz, const StaticRange& range);
 
 	template <class T>
-	StaticRange FullRange() const
-	{
-		uint16_t num = NumValues<T>();
-		if(num > 0) return StaticRange(0, num - 1);
-		else return StaticRange();
-	}
+	StaticRange FullRange() const;
 
 	DatabaseBuffers buffers;
 	
@@ -83,19 +78,21 @@ private:
 
 	template <class T>
 	bool AssignClassTo(T& metadata, PointClass clazz, const StaticRange& range)
-	{				
-		if (range.IsContainedBy(metadata.Size()))
-		{
-			for (uint16_t i = range.start; i <= range.stop; ++i)
-			{
-				metadata[i].clazz = clazz;
-			}
-			return true;
-		}
-		else
-		{
-			return false;
-		}				
+	{
+        StaticRange rangit(range);
+		if (rangit.IsDefined() && (range.IsContainedBy(metadata.Size())))
+        {
+            while(rangit.IsDefined())
+            {
+                metadata[rangit.position].clazz = clazz;
+                rangit.Advance();
+            }
+            return true;
+        }
+        else
+        {
+            return false;
+        }
 	}
 
 	template <class T>
@@ -113,9 +110,10 @@ private:
 	template <class T, class U>
 	void UpdateEvent(const T& value, uint16_t index, U& collection)
 	{
-		if (collection.Contains(index))
+        auto position = collection.indexes.GetPosition(index);
+		if(collection.values.Contains(position))
 		{
-			auto& metadata = collection.metadata[index];
+			auto& metadata = collection.metadata[position];
 			EventClass eventClass;
 			if (metadata.GetEventClass(eventClass) && metadata.CheckForEvent(value))
 			{
@@ -125,7 +123,7 @@ private:
 					transactionHasEvents = true;
 				}
 			}
-			collection.values[index].Update(value);
+			collection.values[position].Update(value);
 		}
 	}
 
