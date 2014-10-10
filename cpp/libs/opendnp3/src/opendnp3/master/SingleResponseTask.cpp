@@ -31,23 +31,23 @@ namespace opendnp3
 SingleResponseTask::SingleResponseTask(openpal::Logger* pLogger_) : pLogger(pLogger_)
 {}
 	
-TaskStatus SingleResponseTask::OnResponse(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler)
+TaskResult SingleResponseTask::OnResponse(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now)
 {
 	if (header.control.FIR && header.control.FIN)
 	{		
-		return this->OnSingleResponse(header, objects, params, scheduler);
+		return this->OnSingleResponse(header, objects, now);
 	}
 	else
 	{
 		SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Ignoring unexpected response FIR/FIN not set");		
-		this->OnTimeoutOrBadControlOctet(params, scheduler);
-		return TaskStatus::FAIL;
+		this->OnTimeoutOrBadControlOctet(now);
+		return TaskResult::FAILURE;
 	}
 }
 
-void SingleResponseTask::OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler)
+void SingleResponseTask::OnResponseTimeout(const openpal::MonotonicTimestamp& now)
 {	
-	this->OnTimeoutOrBadControlOctet(params, scheduler);
+	this->OnTimeoutOrBadControlOctet(now);	
 }
 
 } //end ns

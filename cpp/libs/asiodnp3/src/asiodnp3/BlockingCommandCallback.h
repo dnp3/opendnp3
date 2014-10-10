@@ -23,7 +23,8 @@
 
 #include <openpal/util/Uncopyable.h>
 #include <opendnp3/master/CommandResponse.h>
-#include <opendnp3/master/ICommandCallback.h>
+#include <opendnp3/master/ITaskCallback.h>
+#include <opendnp3/master/CommandResponse.h>
 
 #include <asiopal/Synchronized.h>
 
@@ -33,7 +34,7 @@ namespace asiodnp3
 /**
 * Callback when a command finishes or fails
 */
-class BlockingCommandCallback : public opendnp3::ICommandCallback, private openpal::Uncopyable
+class BlockingCommandCallback : public opendnp3::ITaskCallback<opendnp3::CommandResponse>, private openpal::Uncopyable
 {	
 	
 public:	

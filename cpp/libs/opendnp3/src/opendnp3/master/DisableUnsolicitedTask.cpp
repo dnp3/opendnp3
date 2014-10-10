@@ -25,29 +25,51 @@
 
 #include "MasterTasks.h"
 
+using namespace openpal;
+
 namespace opendnp3
 {
 
-DisableUnsolicitedTask::DisableUnsolicitedTask(openpal::Logger* pLogger_) : NullResponseTask(pLogger_)	
+DisableUnsolicitedTask::DisableUnsolicitedTask(const MasterParams& params, openpal::Logger* pLogger_) : 
+	NullResponseTask(pLogger_),
+	pParams(&params),
+	expiration(0)
 {
 
 }
 
-void DisableUnsolicitedTask::BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq)
+void DisableUnsolicitedTask::BuildRequest(APDURequest& request, uint8_t seq)
 {
 	build::DisableUnsolicited(request, seq);
 }
 
-bool DisableUnsolicitedTask::Enabled(const MasterParams& params)
+openpal::MonotonicTimestamp DisableUnsolicitedTask::ExpirationTime() const
 {
-	return params.disableUnsolOnStartup;
+	return pParams->disableUnsolOnStartup ? expiration : MonotonicTimestamp::Max();
 }
 
-void DisableUnsolicitedTask::OnTimeoutOrBadControlOctet(const MasterParams& params, IMasterScheduler& scheduler)
+void DisableUnsolicitedTask::OnSuccess(const openpal::MonotonicTimestamp&)
 {
-	scheduler.SetBlocking(*this, params.taskRetryPeriod);
+	expiration = MonotonicTimestamp::Max();
 }
 
+void DisableUnsolicitedTask::OnTimeoutOrBadControlOctet(const openpal::MonotonicTimestamp& now)
+{
+	expiration = now.Add(pParams->taskRetryPeriod);
+}
+
+void DisableUnsolicitedTask::OnLowerLayerClose(const openpal::MonotonicTimestamp&)
+{
+	expiration = 0;
+}
+
+void DisableUnsolicitedTask::Demand()
+{
+	if (expiration.IsMax())
+	{
+		expiration = 0;
+	}
+}
 
 } //end ns
 

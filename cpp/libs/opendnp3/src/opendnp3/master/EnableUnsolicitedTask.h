@@ -22,6 +22,12 @@
 #define OPENDNP3_ENABLEUNSOLICITEDTASK_H
 
 #include "opendnp3/master/NullResponseTask.h"
+#include "opendnp3/master/TaskPriority.h"
+
+namespace openpal
+{
+	class IExecutor;
+}
 
 namespace opendnp3
 {
@@ -29,25 +35,41 @@ namespace opendnp3
 /**
 * Base class for tasks that only require a single response
 */
+
 class EnableUnsolicitedTask : public NullResponseTask
 {	
 
 public:	
 
-	EnableUnsolicitedTask(openpal::Logger* pLogger_);
+	EnableUnsolicitedTask(const MasterParams& params, openpal::Logger* pLogger_);	
+
+	virtual TaskId Id() const override final { return TaskId::From(TaskIds::ENABLE_UNSOLICITED); }
+
+	virtual bool IsRecurring() const override final { return true; }
 
 	virtual char const* Name() const override final { return "Enable Unsolicited"; }
 
-	virtual void BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq) override final;				
+	virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;		
 
-	virtual bool Enabled(const MasterParams& params) { return params.unsolClassMask.HasEventClass(); }
+	virtual int Priority() const override final { return priority::ENABLE_UNSOLICITED; }
+
+	virtual openpal::MonotonicTimestamp ExpirationTime() const override final;
+
+	virtual bool BlocksLowerPriority() const { return true; }
+
+	virtual void OnLowerLayerClose(const openpal::MonotonicTimestamp& now) override final;
+
+	virtual void Demand() override final { expiration = 0; }
 
 private:
+	
+	const MasterParams* pParams;
 
-	virtual void OnSuccess(const MasterParams& params, IMasterScheduler& scheduler) override final {}
+	openpal::MonotonicTimestamp expiration;
 
-	virtual void OnTimeoutOrBadControlOctet(const MasterParams& params, IMasterScheduler& scheduler) override final;
+	virtual void OnSuccess(const openpal::MonotonicTimestamp& now) override final;
 
+	virtual void OnTimeoutOrBadControlOctet(const openpal::MonotonicTimestamp& now) override final;
 };
 
 } //end ns

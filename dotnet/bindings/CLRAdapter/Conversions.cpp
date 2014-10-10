@@ -62,9 +62,9 @@ namespace Automatak
 				return CommandResponse(result, status);
 			}
 
-			CommandResult Conversions::ConvertCommandResult(opendnp3::CommandResult result)
+			UserTaskResult Conversions::ConvertCommandResult(opendnp3::UserTaskResult result)
 			{
-				return (CommandResult)result;
+				return (UserTaskResult)result;
 			}
 
 			CommandStatus Conversions::ConvertCommandStatus(opendnp3::CommandStatus status)
@@ -180,6 +180,11 @@ namespace Automatak
 				return gcnew OctetString(bytes);
 			}
 
+			TimeAndInterval^ Conversions::ConvertMeas(const opendnp3::TimeAndInterval& meas)
+			{
+				return gcnew TimeAndInterval(meas.time, meas.interval, meas.units);
+			}
+
 			opendnp3::Binary Conversions::ConvertMeas(Binary^ meas)
 			{
 				return opendnp3::Binary(meas->Value, meas->Quality, TimeStamp::Convert(meas->Timestamp));
@@ -208,6 +213,11 @@ namespace Automatak
 			opendnp3::AnalogOutputStatus Conversions::ConvertMeas(AnalogOutputStatus^ meas)
 			{
 				return opendnp3::AnalogOutputStatus(meas->Value, meas->Quality, TimeStamp::Convert(meas->Timestamp));
+			}
+
+			opendnp3::TimeAndInterval Conversions::ConvertMeas(TimeAndInterval^ meas)
+			{
+				return opendnp3::TimeAndInterval(meas->time, meas->interval, meas->units);
 			}
 
 			opendnp3::BinaryOutputStatus Conversions::ConvertMeas(BinaryOutputStatus^ meas)
@@ -307,6 +317,7 @@ namespace Automatak
 				opendnp3::OutstationParams params;
 
 				params.allowUnsolicited = config->allowUnsolicited;
+				params.typesAllowedInClass0 = opendnp3::StaticTypeBitField(config->typesAllowedInClass0.mask);
 				params.maxControlsPerRequest = config->maxControlsPerRequest;
 				params.maxTxFragSize = config->maxTxFragSize;
 				params.selectTimeout = ConvertTimespan(config->selectTimeout);
@@ -314,6 +325,7 @@ namespace Automatak
 				params.unsolClassMask = ConvertClassField(config->unsolClassMask);
 				params.unsolConfirmTimeout = ConvertTimespan(config->unsolicitedConfirmTimeout);
 				params.unsolRetryTimeout = ConvertTimespan(config->unsolicitedRetryPeriod);
+				
 
 				return params;
 			}
@@ -361,6 +373,7 @@ namespace Automatak
 				dbTemplate.numCounter = config->counters->Count;
 				dbTemplate.numDoubleBinary = config->doubleBinaries->Count;
 				dbTemplate.numFrozenCounter = config->frozenCounters->Count;
+				dbTemplate.numTimeAndInterval = config->numTimeAndInterval;
 
 				return dbTemplate;
 			}

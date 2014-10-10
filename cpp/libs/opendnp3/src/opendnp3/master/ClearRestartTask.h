@@ -22,31 +22,49 @@
 #define OPENDNP3_CLEARRESTARTTASK_H
 
 #include "opendnp3/master/NullResponseTask.h"
+#include "opendnp3/master/TaskPriority.h"
 
 namespace opendnp3
 {
 
 /**
-* Base class for tasks that only require a single response
+* Clear the IIN restart bit
 */
 class ClearRestartTask : public SingleResponseTask
 {	
 
 public:	
 
-	ClearRestartTask(openpal::Logger* pLogger_);
+	ClearRestartTask(const MasterParams& params, openpal::Logger* pLogger_);
 
-	virtual char const* Name() const override final { return "Clear Restart IIN"; }	
+	virtual TaskId Id() const override final { return TaskId::From(TaskIds::CLEAR_RESTART); }
 
-	virtual void BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq) override final;
+	virtual char const* Name() const override final { return "Clear Restart IIN"; }
 
-	virtual bool Enabled(const MasterParams& params) override final;
+	virtual bool IsRecurring() const override final { return true; }
+
+	virtual int Priority() const override final { return priority::CLEAR_RESTART; }
+
+	virtual bool BlocksLowerPriority() const override final { return true; }
+
+	virtual openpal::MonotonicTimestamp ExpirationTime() const override final;
+
+	virtual void OnLowerLayerClose(const openpal::MonotonicTimestamp& now) override final;
+
+	virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;
+
+	virtual void Demand() override final;
 		
-protected:	
+protected:
 
-	virtual void OnTimeoutOrBadControlOctet(const MasterParams& params, IMasterScheduler& scheduler) override final;
+	virtual void OnTimeoutOrBadControlOctet(const openpal::MonotonicTimestamp&) override final;
 	
-	virtual TaskStatus OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler) override final;
+	virtual TaskResult OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp&) override final;
+
+private:
+
+	const MasterParams* pParams;
+	openpal::MonotonicTimestamp expiration;
 
 };
 

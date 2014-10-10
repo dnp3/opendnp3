@@ -58,13 +58,7 @@ namespace DotNetMasterDemo
             // you a can optionally add various kinds of polls
             var integrityPoll = master.AddClassScan(ClassField.AllClasses, TimeSpan.FromMinutes(1));
             var rangePoll = master.AddRangeScan(30, 2, 5, 7, TimeSpan.FromSeconds(20));
-            var classPoll = master.AddClassScan(ClassField.AllEventClasses, TimeSpan.FromSeconds(5));           
-
-            // you a can optionally add state callbacks for monitoring these polls
-            integrityPoll.AddScanCallback((PollState state) => Console.WriteLine("integrity poll state change: " + state));
-            classPoll.AddScanCallback((PollState state) => Console.WriteLine("class poll state change: " + state));
-            rangePoll.AddScanCallback((PollState state) => Console.WriteLine("range poll state change: " + state));
-            
+            var classPoll = master.AddClassScan(ClassField.AllEventClasses, TimeSpan.FromSeconds(5));                                   
 
             master.Enable(); // enable communications
 
@@ -74,6 +68,10 @@ namespace DotNetMasterDemo
             {                
                 switch (Console.ReadLine())
                 { 
+                    case "a":
+                        // perform an ad-hoc scan of all analogs
+                        master.ScanAllObjects(30, 0);
+                        break;
                     case "c":
                         var crob = new ControlRelayOutputBlock(ControlCode.PULSE, 1, 100, 100);
                         var future = master.GetCommandProcessor().SelectAndOperate(crob, 0);

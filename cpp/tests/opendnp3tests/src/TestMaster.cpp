@@ -32,7 +32,6 @@
 using namespace openpal;
 using namespace opendnp3;
 
-
 #define SUITE(name) "MasterTestSuite - " name
 
 TEST_CASE(SUITE("InitialState"))
@@ -168,11 +167,7 @@ TEST_CASE(SUITE("ClassScanCanRepeat"))
 	
 	t.exe.RunMany();
 
-	auto scan = t.master.AddClassScan(~0, TimeDuration::Seconds(10));
-	
-	t.exe.AdvanceTime(TimeDuration::Seconds(9));
-	REQUIRE(t.exe.RunMany() == 0);
-	t.exe.AdvanceTime(TimeDuration::Seconds(1));
+	auto scan = t.master.AddClassScan(~0, TimeDuration::Seconds(10));	
 
 	REQUIRE(t.exe.RunMany() > 0);
 
@@ -184,7 +179,7 @@ TEST_CASE(SUITE("ClassScanCanRepeat"))
 
 	// 2nd poll
 	REQUIRE(t.exe.NumPendingTimers() == 1);
-	REQUIRE(t.exe.NextTimerExpiration().milliseconds == 20000);
+	REQUIRE(t.exe.NextTimerExpiration().milliseconds == 10000);
 	t.exe.AdvanceTime(TimeDuration::Seconds(10));
 	REQUIRE(t.exe.RunMany() > 0);
 	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(1));
@@ -239,11 +234,7 @@ TEST_CASE(SUITE("EventPoll"))
 	auto class3 = t.master.AddClassScan(ClassField(ClassField::CLASS_3), TimeDuration::Milliseconds(20));
 
 	t.master.OnLowerLayerUp();		
-	t.exe.RunMany();
-
-	REQUIRE(t.lower.PopWriteAsHex() == "");
 	
-	REQUIRE(t.exe.AdvanceToNextTimer());
 	REQUIRE(t.exe.RunMany() > 0);
 
 	REQUIRE(t.lower.PopWriteAsHex() ==  "C0 01 3C 02 06 3C 03 06");
@@ -253,9 +244,6 @@ TEST_CASE(SUITE("EventPoll"))
 	REQUIRE(t.meas.TotalReceived() == 1);
 	REQUIRE((Binary(true, 0x01) == t.meas.binarySOE[2].meas));
 
-	t.exe.RunMany();
-
-	REQUIRE(t.exe.AdvanceToNextTimer());
 	REQUIRE(t.exe.RunMany() > 0);
 
 	REQUIRE(t.lower.PopWriteAsHex() == "C1 01 3C 04 06");
@@ -282,10 +270,7 @@ TEST_CASE(SUITE("ParsesOctetStringResponseSizeOfOne"))
 	MasterTestObject t(NoStartupTasks());
 	t.master.AddClassScan(~0, TimeDuration::Seconds(1));
 	t.master.OnLowerLayerUp();
-
-	t.exe.RunMany();
-
-	REQUIRE(t.exe.AdvanceToNextTimer());
+	
 	REQUIRE(t.exe.RunMany() > 0);
 
 	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
@@ -296,6 +281,28 @@ TEST_CASE(SUITE("ParsesOctetStringResponseSizeOfOne"))
 	t.SendToMaster("C0 81 00 00 6E 01 00 03 03 AA");
 
 	REQUIRE("AA" ==  toHex(t.meas.octetStringSOE[3].meas.ToReadOnly()));
+}
+
+TEST_CASE(SUITE("ParsesGroup50Var4"))
+{
+	auto config = NoStartupTasks();
+	config.startupIntegrityClassMask = ClassField(~0);
+	MasterTestObject t(config);	
+	t.master.OnLowerLayerUp();
+
+	REQUIRE(t.exe.RunMany() > 0);
+
+	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
+	t.master.OnSendResult(true);
+
+	// octet strings shouldn't be found in class 0 polls, but we'll test that we can process them anyway
+	// Group 110 (0x6E) Variation(length), start = 3, stop = 3
+	t.SendToMaster("C0 81 00 00 32 04 00 00 00 09 00 00 00 00 00 03 00 00 00 05");
+
+	REQUIRE(1 == t.meas.timeAndIntervalSOE.size());
+	REQUIRE(t.meas.timeAndIntervalSOE[0].meas.interval == 3);
+	REQUIRE(t.meas.timeAndIntervalSOE[0].meas.time == 9);
+	REQUIRE(t.meas.timeAndIntervalSOE[0].meas.GetUnitsEnum() == IntervalUnits::Days);
 }
 
 TEST_CASE(SUITE("RestartDuringStartup"))
@@ -320,7 +327,7 @@ TEST_CASE(SUITE("RestartDuringStartup"))
 	t.SendToMaster(hex::EmptyResponse(1));
 
 	REQUIRE(t.exe.RunMany() > 0);
-
+	
 	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::ENABLE_UNSOLICITED, 2, ClassField::AllEventClasses()));	
 }
 
@@ -336,16 +343,14 @@ TEST_CASE(SUITE("RestartAndTimeBits"))
 
 	REQUIRE(t.lower.NumWrites() == 0);
 
-	t.SendToMaster(hex::NullUnsolicited(0, IINField(IINBit::DEVICE_RESTART) | IINField(IINBit::NEED_TIME)));
-
-	t.exe.RunMany();
+	t.SendToMaster(hex::NullUnsolicited(0, IINField(IINBit::DEVICE_RESTART) | IINField(IINBit::NEED_TIME)));	
 
 	REQUIRE(t.lower.PopWriteAsHex() == hex::UnsolConfirm(0));
 	t.master.OnSendResult(true);	
 
 	REQUIRE(t.lower.PopWriteAsHex() == hex::ClearRestartIIN(0));
 	t.master.OnSendResult(true);
-	t.SendToMaster(hex::EmptyResponse(0, IINField::Empty));
+	t.SendToMaster(hex::EmptyResponse(0, IINField::Empty()));
 
 	t.exe.RunMany();
 
@@ -360,7 +365,7 @@ TEST_CASE(SUITE("RestartAndTimeBits"))
 	// 200-100-10/2 = 45 => 45 + 200 - 0xF5
 	REQUIRE(t.lower.PopWriteAsHex() == "C2 02 32 01 07 01 F5 00 00 00 00 00");
 	t.master.OnSendResult(true);
-	t.SendToMaster(hex::EmptyResponse(0, IINField::Empty)); // time bit is now clear
+	t.SendToMaster(hex::EmptyResponse(0, IINField::Empty())); // time bit is now clear
 
 	t.exe.RunMany();
 
@@ -404,9 +409,7 @@ TEST_CASE(SUITE("ReceiveIINinResponses"))
 	MasterTestObject t(params);
 	t.master.OnLowerLayerUp();
 
-	auto scan = t.master.AddClassScan(ClassField(~0), TimeDuration::Seconds(1));
-
-	REQUIRE(t.exe.AdvanceToNextTimer());
+	auto scan = t.master.AddClassScan(ClassField(~0), TimeDuration::Seconds(1));	
 	REQUIRE(t.exe.RunMany() > 0);
 	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
 	t.master.OnSendResult(true);

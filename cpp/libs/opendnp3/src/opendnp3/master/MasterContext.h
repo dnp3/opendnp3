@@ -28,7 +28,9 @@
 #include <openpal/container/Queue.h>
 #include <openpal/container/DynamicBuffer.h>
 
+#include "opendnp3/master/ICommandProcessor.h"
 #include "opendnp3/master/MasterScheduler.h"
+#include "opendnp3/master/MasterTasks.h"
 #include "opendnp3/master/IMasterState.h"
 #include "opendnp3/master/ITaskLock.h"
 #include "opendnp3/master/IMasterApplication.h"
@@ -66,10 +68,10 @@ class MasterContext : public ICommandProcessor, public IScheduleCallback
 	bool isSending;
 	uint8_t solSeq;
 	uint8_t unsolSeq;
-	IMasterTask* pActiveTask;
+	openpal::ManagedPtr<IMasterTask> pActiveTask;
 	IMasterState* pState;
 	openpal::ITimer* pResponseTimer;
-	MasterTasks staticTasks;
+	MasterTasks tasks;
 	MasterScheduler scheduler;
 
 	std::deque<APDUHeader> confirmQueue;
@@ -92,35 +94,37 @@ class MasterContext : public ICommandProcessor, public IScheduleCallback
 
 	// ------- command events ----------
 
-	virtual void SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback& callback) override final;
-	virtual void DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback& callback) override final;
+	virtual void SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ITaskCallback<CommandResponse>& callback) override final;
+	virtual void DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, ITaskCallback<CommandResponse>& callback) override final;
 
-	virtual void SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback& callback) override final;
-	virtual void DirectOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback& callback) override final;
+	virtual void SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, ITaskCallback<CommandResponse>& callback) override final;
+	virtual void DirectOperate(const AnalogOutputInt16& command, uint16_t index, ITaskCallback<CommandResponse>& callback) override final;
 
-	virtual void SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback& callback) override final;
-	virtual void DirectOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback& callback) override final;
+	virtual void SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, ITaskCallback<CommandResponse>& callback) override final;
+	virtual void DirectOperate(const AnalogOutputInt32& command, uint16_t index, ITaskCallback<CommandResponse>& callback) override final;
 
-	virtual void SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback& callback) override final;
-	virtual void DirectOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback& callback) override final;
+	virtual void SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, ITaskCallback<CommandResponse>& callback) override final;
+	virtual void DirectOperate(const AnalogOutputFloat32& command, uint16_t index, ITaskCallback<CommandResponse>& callback) override final;
 
-	virtual void SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback) override final;
-	virtual void DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback) override final;
+	virtual void SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ITaskCallback<CommandResponse>& callback) override final;
+	virtual void DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ITaskCallback<CommandResponse>& callback) override final;
 
 	// ----- Helpers accessible by the state objects -----
-	void StartTask(IMasterTask* pTask);
+	void StartTask(IMasterTask& task);
 	bool CancelResponseTimer();
 	void QueueConfirm(const APDUHeader& header);
 	void StartResponseTimer();
+	void ReleaseActiveTask();
+	void NotifyCurrentTask(TaskState state);
 
-	static bool CanConfirmResponse(TaskStatus status);
+	void ScheduleRecurringPollTask(IMasterTask* pTask);
+
+	void ScheduleAdhocPollTask(IMasterTask* pTask);
 
 	private:
 	
 	// callback from the scheduler that a task is ready to run	
-	virtual void OnPendingTask() override final;
-
-	void QueueUserTask(const openpal::Function0<IMasterTask*>& action);
+	virtual void OnPendingTask() override final;	
 
 	void OnResponseTimeout();
 
@@ -133,55 +137,37 @@ class MasterContext : public ICommandProcessor, public IScheduleCallback
 	void Transmit(const openpal::ReadOnlyBuffer& output);	
 
 	template <class T>
-	void SelectAndOperateT(const T& command, uint16_t index, ICommandCallback& callback);
+	void SelectAndOperateT(const T& command, uint16_t index, ITaskCallback<CommandResponse>& callback, const DNP3Serializer<T>& serializer);
 
 	template <class T>
-	void DirectOperateT(const T& command, uint16_t index, ICommandCallback& callback);
+	void DirectOperateT(const T& command, uint16_t index, ITaskCallback<CommandResponse>& callback, const DNP3Serializer<T>& serializer);
 };
 
 template <class T>
-void MasterContext::SelectAndOperateT(const T& command, uint16_t index, ICommandCallback& callback)
+void MasterContext::SelectAndOperateT(const T& command, uint16_t index, ITaskCallback<CommandResponse>& callback, const DNP3Serializer<T>& serializer)
 {
 	if (isOnline)
 	{
-		auto pCallback = &callback;
-		auto pCommandTask = &staticTasks.commandTask;
-
-		auto userTask = [command, index, pCallback, pCommandTask]()
-		{
-			pCommandTask->SelectAndOperate(command, index, *pCallback);
-			return pCommandTask;
-		};
-
-		QueueUserTask(openpal::Function0<IMasterTask*>::Bind(userTask));
+		scheduler.Schedule(openpal::ManagedPtr<IMasterTask>::Deleted(CommandTask::FSelectAndOperate(command, index, callback, serializer, logger)));
+		this->PostCheckForTask();
 	}
 	else
 	{
-		callback.OnComplete(CommandResponse(CommandResult::NO_COMMS));
-	}
-
-	
+		callback.OnComplete(CommandResponse(UserTaskResult::NO_COMMS));
+	}	
 }
 
 template <class T>
-void MasterContext::DirectOperateT(const T& command, uint16_t index, ICommandCallback& callback)
+void MasterContext::DirectOperateT(const T& command, uint16_t index, ITaskCallback<CommandResponse>& callback, const DNP3Serializer<T>& serializer)
 {
 	if (isOnline)
-	{
-		auto pCallback = &callback;
-		auto pCommandTask = &staticTasks.commandTask;
-
-		auto userTask = [command, index, pCallback, pCommandTask]()
-		{
-			pCommandTask->DirectOperate(command, index, *pCallback);
-			return pCommandTask;
-		};
-
-		QueueUserTask(openpal::Function0<IMasterTask*>::Bind(userTask));
+	{		
+		scheduler.Schedule(openpal::ManagedPtr<IMasterTask>::Deleted(CommandTask::FDirectOperate(command, index, callback, serializer, logger)));
+		this->PostCheckForTask();
 	}
 	else
 	{
-		callback.OnComplete(CommandResponse(CommandResult::NO_COMMS));
+		callback.OnComplete(CommandResponse(UserTaskResult::NO_COMMS));
 	}
 }
 

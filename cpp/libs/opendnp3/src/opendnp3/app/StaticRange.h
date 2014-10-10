@@ -24,6 +24,7 @@
 
 #include <cstdint>
 #include "GroupVariationRecord.h"
+#include "opendnp3/app/PointIndexes.h"
 
 namespace opendnp3
 {
@@ -33,9 +34,9 @@ class StaticRange
 public:
 
 	StaticRange();
-	StaticRange(uint16_t start_, uint16_t stop_);
-
-	void ClipTo(const StaticRange& borders);
+    StaticRange(const PointIndexes* points_);
+    
+	void ClipTo(const Range& borders);
 
 	bool IsClipped() const
 	{
@@ -51,13 +52,21 @@ public:
 		return start <= stop;
 	}
 
-	void Advance();
+	bool Advance();
+    
+    inline Range ToRange() const
+    {
+        return Range(start, stop);
+    }
 
 	uint16_t start;
-	uint16_t stop;
+	uint16_t stop;    
+    uint16_t position;
 
 private:
 
+    const PointIndexes* indexes;
+    uint16_t range;
 	bool clipped;
 
 	static const uint16_t MIN;

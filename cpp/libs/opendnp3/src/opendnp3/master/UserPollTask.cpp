@@ -19,54 +19,56 @@
  * to you under the terms of the License.
  */
 
-#include "PollTask.h"
+#include "UserPollTask.h"
+
+using namespace openpal;
 
 namespace opendnp3
 {
 
-PollTask::PollTask()
+UserPollTask::UserPollTask(	
+	const std::function<void(HeaderWriter&)>& builder_,
+	int id_,
+	bool recurring_,
+	const std::string& name,
+	const openpal::TimeDuration& period_,
+	const openpal::TimeDuration& retryDelay_,
+	ISOEHandler* pSOEHandler,
+	openpal::Logger* pLogger	
+) :
+	PollTaskBase(name, pSOEHandler, pLogger),
+	id(id_),
+	builder(builder_),
+	recurring(recurring_),
+	period(period_),
+	retryDelay(retryDelay_),
+	expiration(MonotonicTimestamp::Min())	
 {}
 
-PollTask::PollTask(const Builder& builder_, const openpal::TimeDuration& period_, ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_) :
-	PollTaskBase(pSOEHandler_, pLogger_),
-	builder(builder_),
-	period(period_)
-{}
-		
-void PollTask::BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq)
-{		
-	rxCount = 0;
-	builder(request);
+void UserPollTask::BuildRequest(APDURequest& request, uint8_t seq)
+{
+	rxCount = 0;	
 	request.SetFunction(FunctionCode::READ);
 	request.SetControl(AppControlField::Request(seq));
-
-	this->NotifyState(PollState::RUNNING);
+	auto writer = request.GetWriter();
+	builder(writer);
 }
 
-openpal::TimeDuration PollTask::GetPeriod() const
+void UserPollTask::OnLowerLayerClose(const openpal::MonotonicTimestamp& now)
 {
-	return period;
+
+}
+		
+void UserPollTask::OnFailure(const openpal::MonotonicTimestamp& now)
+{		
+	expiration = retryDelay.IsNegative() ? MonotonicTimestamp::Max() : now.Add(retryDelay);	
 }
 
-void PollTask::OnFailure(const MasterParams& params, IMasterScheduler& scheduler)
-{
-	this->NotifyState(PollState::FAILURE);
-	if (this->period.GetMilliseconds() >= 0)
-	{
-		scheduler.Schedule(*this, params.taskRetryPeriod);		
-	}
-	else
-	{
-		scheduler.Schedule(*this, this->period);
-	}
-	
+void UserPollTask::OnSuccess(const openpal::MonotonicTimestamp& now)
+{		
+	expiration = period.IsNegative() ? MonotonicTimestamp::Max() : now.Add(period);	
 }
 
-void PollTask::OnSuccess(const MasterParams& params, IMasterScheduler& scheduler)
-{
-	this->NotifyState(PollState::SUCCESS);
-	scheduler.Schedule(*this, this->period);	
-}
 
 } //end ns
 

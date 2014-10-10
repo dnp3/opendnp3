@@ -24,6 +24,8 @@
 #include "opendnp3/outstation/EventMetadata.h"
 #include "opendnp3/outstation/ValueMetadataPair.h"
 #include "opendnp3/app/MeasurementTypes.h"
+#include "opendnp3/app/TimeAndInterval.h"
+#include "opendnp3/app/DynamicPointIndexes.h"
 #include "opendnp3/outstation/DualValue.h"
 #include "opendnp3/outstation/DatabaseTemplate.h"
 
@@ -31,6 +33,8 @@
 
 namespace opendnp3
 {
+
+struct EmptyMetadata {};
 
 typedef SimpleEventMetadata<Binary> BinaryMetadata;
 typedef SimpleEventMetadata<DoubleBitBinary> DoubleBinaryMetadata;
@@ -47,6 +51,7 @@ typedef ValueMetadataPair<DualValue<Counter>, CounterMetadata> CounterCollection
 typedef ValueMetadataPair<DualValue<FrozenCounter>, FrozenCounterMetadata> FrozenCounterCollection;
 typedef ValueMetadataPair<DualValue<BinaryOutputStatus>, BinaryOutputStatusMetadata> BinaryOutputStatusCollection;
 typedef ValueMetadataPair<DualValue<AnalogOutputStatus>, AnalogOutputStatusMetadata> AnalogOutputStatusCollection;
+typedef ValueMetadataPair<DualValue<TimeAndInterval>, EmptyMetadata> TimeAndIntervalCollection;
 
 class DatabaseBuffers
 {
@@ -63,6 +68,9 @@ private:
 	openpal::DynamicArray<DualValue<FrozenCounter>, uint16_t> frozenCounterValues;
 	openpal::DynamicArray<DualValue<BinaryOutputStatus>, uint16_t> binaryOutputStatusValues;
 	openpal::DynamicArray<DualValue<AnalogOutputStatus>, uint16_t> analogOutputStatusValues;
+	openpal::DynamicArray<DualValue<TimeAndInterval>, uint16_t> timeAndIntervalValues;
+
+private:
 
 	openpal::DynamicArray<BinaryMetadata, uint16_t> binaryMetadata;
 	openpal::DynamicArray<DoubleBinaryMetadata, uint16_t> doubleBinaryMetadata;
@@ -72,7 +80,18 @@ private:
 	openpal::DynamicArray<BinaryOutputStatusMetadata, uint16_t> binaryOutputStatusMetadata;
 	openpal::DynamicArray<AnalogOutputStatusMetadata, uint16_t> analogOutputStatusMetadata;
 
+    opendnp3::DynamicPointIndexes binaryIndexes;
+    opendnp3::DynamicPointIndexes doubleBinaryIndexes;
+    opendnp3::DynamicPointIndexes analogIndexes;
+    opendnp3::DynamicPointIndexes counterIndexes;
+    opendnp3::DynamicPointIndexes frozenCounterIndexes;
+    opendnp3::DynamicPointIndexes binaryOutputStatusIndexes;
+    opendnp3::DynamicPointIndexes analogOutputStatusIndexes;
+    opendnp3::DynamicPointIndexes timeAndIntervalIndexes;
+    
 public:
+
+	
 
 	BinaryCollection binaries;
 	DoubleBinaryCollection doubleBinaries;
@@ -81,6 +100,7 @@ public:
 	FrozenCounterCollection frozenCounters;
 	BinaryOutputStatusCollection binaryOutputStatii;
 	AnalogOutputStatusCollection analogOutputStatii;
+	TimeAndIntervalCollection timeAndIntervals;
 
 };
 

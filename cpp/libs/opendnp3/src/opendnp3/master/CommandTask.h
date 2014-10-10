@@ -26,83 +26,92 @@
 
 #include "opendnp3/master/SingleResponseTask.h"
 #include "opendnp3/master/CommandResponse.h"
-#include "opendnp3/master/ICommandCallback.h"
+#include "opendnp3/master/ITaskCallback.h"
 #include "opendnp3/master/ICommandProcessor.h"
 #include "opendnp3/master/CommandSequence.h"
+#include "opendnp3/master/TaskPriority.h"
+
 
 #include <openpal/logging/Logger.h>
 #include <openpal/Configure.h>
 #include <assert.h>
 
 #include <deque>
+#include <memory>
+
 
 namespace opendnp3
 {
 
 // Base class with machinery for performing command operations
-class CommandTask : public IMasterTask, public ICommandProcessor
+class CommandTask : public IMasterTask
 {
 	
 public:	
+	
+	template <class T>
+	static IMasterTask* FDirectOperate(const T& command, uint16_t index, ITaskCallback<CommandResponse>& callback, const DNP3Serializer<T>& serializer, openpal::Logger logger);
 
-	CommandTask(openpal::Logger* pLogger_);
-
-
-	virtual void SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback& callback) override final;
-	virtual void DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback& callback) override final;
-
-	virtual void SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback& callback) override final;
-	virtual void DirectOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback& callback) override final;
-
-	virtual void SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback& callback) override final;
-	virtual void DirectOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback& callback) override final;
-
-	virtual void SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback& callback) override final;
-	virtual void DirectOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback& callback) override final;
-
-	virtual void SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback) override final;
-	virtual void DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback) override final;
+	template <class T>
+	static IMasterTask* FSelectAndOperate(const T& command, uint16_t index, ITaskCallback<CommandResponse>& callback, const DNP3Serializer<T>& serializer, openpal::Logger logger);
 
 	virtual char const* Name() const override final { return "Command Task"; }
+
+	virtual TaskId Id() const override final { return TaskId::UserDefined(-1); }
+
+	virtual int Priority() const override final { return priority::COMMAND; }
 	
-	virtual void BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq) override final;
+	virtual bool BlocksLowerPriority() const override final { return false; }
 
-	virtual TaskStatus OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler) override final;
+	virtual openpal::MonotonicTimestamp ExpirationTime() const override final { return openpal::MonotonicTimestamp(0); }
+	
+	virtual bool IsRecurring() const override final { return false; }
+	
+	virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;
 
-	virtual void OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler) override final;
+	virtual TaskResult OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now) override final;
 
-	virtual void OnLowerLayerClose() override final;
+	virtual void OnResponseTimeout(const openpal::MonotonicTimestamp& now) override final;
+
+	virtual void OnLowerLayerClose(const openpal::MonotonicTimestamp& now) override final;
+
+	virtual void Demand() override final { }
 
 private:
 
-	TaskStatus OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler);
+	CommandTask(ICommandSequence* pSequence_, ITaskCallback<CommandResponse>& callback, openpal::Logger logger);
+
+	TaskResult OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now);
 
 	void LoadSelectAndOperate();
 	void LoadDirectOperate();
-
-	template <class T>
-	void Configure(CommandSequence<T>& sequence, const T& value, uint16_t index, ICommandCallback& callback)
-	{				
-		this->pCallback = &callback;
-		sequence.Configure(value, index);
-		pActiveSequence = &sequence;
-	}
-
+	
 	void Callback(const CommandResponse& cr);
 
-	std::deque<FunctionCode> functionCodes;	
+	std::deque<FunctionCode> functionCodes;
 
-	openpal::Logger* pLogger;
-	ICommandCallback* pCallback;	
-	ICommandSequence* pActiveSequence;
-
-	CommandSequence<ControlRelayOutputBlock> crobSeq;
-	CommandSequence<AnalogOutputInt32> analogInt32Seq;
-	CommandSequence<AnalogOutputInt16> analogInt16Seq;
-	CommandSequence<AnalogOutputFloat32> analogFloat32Seq;
-	CommandSequence<AnalogOutputDouble64> analogDouble64Seq;	
+	openpal::Logger logger;
+	ITaskCallback<CommandResponse>* pCallback;	
+	std::unique_ptr<ICommandSequence> pSequence;	
 };
 
+template <class T>
+IMasterTask* CommandTask::FDirectOperate(const T& command, uint16_t index, ITaskCallback<CommandResponse>& callback, const DNP3Serializer<T>& serializer, openpal::Logger logger)
+{
+	auto pSequence = new CommandSequence<T>(logger, serializer, command, index);
+	auto pCommand = new CommandTask(pSequence, callback, logger);
+	pCommand->LoadDirectOperate();
+	return pCommand;
+}
+
+template <class T>
+IMasterTask* CommandTask::FSelectAndOperate(const T& command, uint16_t index, ITaskCallback<CommandResponse>& callback, const DNP3Serializer<T>& serializer, openpal::Logger logger)
+{
+	auto pSequence = new CommandSequence<T>(logger, serializer, command, index);
+	auto pCommand = new CommandTask(pSequence, callback, logger);
+	pCommand->LoadSelectAndOperate();
+	return pCommand;
+}
 
 } //ens ns
 

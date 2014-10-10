@@ -39,32 +39,62 @@ namespace Automatak.DNP3.Interface
         ICommandProcessor GetCommandProcessor();
 
         /// <summary>
-        /// Adds an all objects scan that uses the 0x06 qualifier
+        /// Adds a periodic all objects scan that uses the 0x06 qualifier
         /// </summary>
         /// <param name="group"></param>
         /// <param name="variation"></param>
         /// <param name="period"></param>
-        /// <returns></returns>
-        IMasterScan AddAllObjectsScan(byte group, byte variation, TimeSpan period);
+        /// <param name="id">An optional id that can be used to correlate task state callbacks with this scan</param>
+        /// <returns>a new master scan interface</returns>
+        IMasterScan AddAllObjectsScan(byte group, byte variation, TimeSpan period, int id = -1);
 
         /// <summary>
-        /// Adds a class scan to the master
+        /// Adds a periodic class scan to the master
         /// </summary>
-        /// <param name="aClassMask">bitfield of class values</param>
+        /// <param name="field">bitfield of class values</param>
         /// <param name="period">period, negative for non-periodic</param>        
+        /// <param name="id">An optional id that can be used to correlate task state callbacks with this scan</param>
         /// <returns>a new master scan interface</returns>
-        IMasterScan AddClassScan(ClassField field, TimeSpan period);
+        IMasterScan AddClassScan(ClassField field, TimeSpan period, int id = -1);
 
-       /// <summary>        
-       /// Adds a range-based (start/stop) scan to the master
-       /// </summary>        
-       /// </summary>
-       /// <param name="group"></param>
-       /// <param name="variation"></param>
-       /// <param name="start"></param>
-       /// <param name="stop"></param>
-       /// <param name="period"></param>
-       /// <returns></returns>
-       IMasterScan AddRangeScan(byte group, byte variation, System.UInt16 start, System.UInt16 stop, TimeSpan period);
+        /// <summary>        
+        /// Adds a periodic range-based (start/stop) scan to the master
+        /// </summary>        
+        /// </summary>
+        /// <param name="group"></param>
+        /// <param name="variation"></param>
+        /// <param name="start"></param>
+        /// <param name="stop"></param>
+        /// <param name="period"></param>
+        /// <param name="id">An optional id that can be used to correlate task state callbacks with this scan</param>
+        /// <returns>a new master scan interface</returns>
+        IMasterScan AddRangeScan(byte group, byte variation, System.UInt16 start, System.UInt16 stop, TimeSpan period, int id = -1);
+
+        /// <summary>
+        /// Perform an immediate adhoc scan that uses the 0x06 qualifier
+        /// </summary>
+        /// <param name="group"></param>
+        /// <param name="variation"></param>        
+        /// <param name="id">An optional id that can be used to correlate task state callbacks with this scan</param>        
+        void ScanAllObjects(byte group, byte variation, int id = -1);
+
+        /// <summary>
+        /// Perform an immediate adhoc class scan
+        /// </summary>
+        /// <param name="field">bitfield of class values</param>
+        /// <param name="period">period, negative for non-periodic</param>        
+        /// <param name="id">An optional id that can be used to correlate task state callbacks with this scan</param>
+        /// <returns>a new master scan interface</returns>
+        void ScanClasses(ClassField field, int id = -1);
+
+        /// <summary>        
+        /// Perform an immediate adhoc range-based (start/stop) scan
+        /// </summary>                
+        /// <param name="group"></param>
+        /// <param name="variation"></param>
+        /// <param name="start"></param>
+        /// <param name="stop"></param>        
+        /// <param name="id">An optional id that can be used to correlate task state callbacks with this scan</param>        
+        void ScanRange(byte group, byte variation, System.UInt16 start, System.UInt16 stop, int id = -1);
     }
 }

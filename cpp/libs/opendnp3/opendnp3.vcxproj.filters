@@ -49,9 +49,6 @@
     <Filter Include="Source\link">
       <UniqueIdentifier>{c4a0ef96-6633-47b7-b4fe-01d480acfe75}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header\outstation\handlers">
-      <UniqueIdentifier>{733de7e2-7eb2-4d32-93a0-5404043d8b50}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\opendnp3\app\AnalogOutput.h">
@@ -187,9 +184,6 @@
       <Filter>Header\gen</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\gen\CommandStatus.h">
-      <Filter>Header\gen</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\CommandResult.h">
       <Filter>Header\gen</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\gen\ChannelState.h">
@@ -456,9 +450,6 @@
     <ClInclude Include="src\opendnp3\outstation\OutstationStackConfig.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\master\ICommandCallback.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\transport\TransportStack.h">
       <Filter>Header\transport</Filter>
     </ClInclude>
@@ -478,9 +469,6 @@
       <Filter>Header\master</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\master\IMasterTask.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\IMasterScheduler.h">
       <Filter>Header\master</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\master\MasterScheduler.h">
@@ -514,9 +502,6 @@
       <Filter>Header\master</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\master\StartupIntegrityPoll.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\PollTask.h">
       <Filter>Header\master</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\Outstation.h">
@@ -585,15 +570,6 @@
     <ClInclude Include="src\opendnp3\master\IScheduleCallback.h">
       <Filter>Header\master</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\master\IPollListener.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\PollState.h">
-      <Filter>Header\gen</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\TaskBitmask.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\gen\TimeSyncMode.h">
       <Filter>Header\gen</Filter>
     </ClInclude>
@@ -611,12 +587,6 @@
     </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\IOutstationApplication.h">
       <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\ClassBasedRequestHandler.h">
-      <Filter>Header\outstation\handlers</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\CommandResponseHandler.h">
-      <Filter>Header\outstation\handlers</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\master\IMasterApplication.h">
       <Filter>Header\master</Filter>
@@ -672,6 +642,15 @@
     <ClInclude Include="src\opendnp3\gen\TimestampMode.h">
       <Filter>Header\gen</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\app\DynamicPointIndexes.h">
+      <Filter>Header\app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\app\StaticPointIndexes.h">
+      <Filter>Header\app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\app\PointIndexes.h">
+        <Filter>Header\app</Filter>
+    </ClInclude>
     <ClInclude Include="src\opendnp3\LayerInterfaces.h">
       <Filter>Header</Filter>
     </ClInclude>
@@ -689,6 +668,60 @@
     </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\DatabaseBuffers.h">
       <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\CommandResponseHandler.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\ClassBasedRequestHandler.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\AssignClassHandler.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\AssignClassType.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\TaskPriority.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\UserPollTask.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\PollTaskBase.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\TaskState.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="..\openpal\src\openpal\util\Limits.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\TaskId.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\AssignClassTask.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\IntervalUnits.h">
+      <Filter>Header\app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\app\TimeAndInterval.h">
+      <Filter>Header\app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\StaticTimeAndIntervalResponse.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\StaticTypeBitmask.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\StaticTypeBitfield.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\UserTaskResult.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\ITaskCallback.h">
+      <Filter>Header\master</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -765,9 +798,6 @@
       <Filter>Source\gen</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\gen\CommandStatus.cpp">
-      <Filter>Source\gen</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\gen\CommandResult.cpp">
       <Filter>Source\gen</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\gen\ChannelState.cpp">
@@ -1013,9 +1043,6 @@
     <ClCompile Include="src\opendnp3\master\EnableUnsolicitedTask.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\master\PollTask.cpp">
-      <Filter>Source\master</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\master\Master.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
@@ -1054,9 +1081,6 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\master\TaskRecord.cpp">
       <Filter>Source\master</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\gen\PollState.cpp">
-      <Filter>Source\gen</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\gen\TimeSyncMode.cpp">
       <Filter>Source\gen</Filter>
@@ -1097,8 +1121,39 @@
     <ClCompile Include="src\opendnp3\outstation\ApplicationIIN.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="src\opendnp3\outstation\DatabaseBuffers.cpp">
+=======
+    <ClCompile Include="src\opendnp3\app\PointIndexes.cpp">
+      <Filter>Source\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\DynamicallyAllocatedDatabase.cpp">
+>>>>>>> 196cbd1b2c7c968b697e6d15b1a8107102567731
       <Filter>Source\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\AssignClassHandler.cpp">
+      <Filter>Header\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\UserPollTask.cpp">
+      <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\gen\TaskState.cpp">
+      <Filter>Source\gen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\AssignClassTask.cpp">
+      <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\app\TimeAndInterval.cpp">
+      <Filter>Source\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\gen\IntervalUnits.cpp">
+      <Filter>Source\gen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\gen\StaticTimeAndIntervalResponse.cpp">
+      <Filter>Source\gen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\gen\UserTaskResult.cpp">
+      <Filter>Source\gen</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

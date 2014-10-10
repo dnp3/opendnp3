@@ -46,7 +46,27 @@ public:
 		rxIIN.push_back(iin);
 	}
 
+	virtual void OnTaskStateChange(TaskId id, TaskState state) override final
+	{
+		taskEvents.push_back(std::pair<TaskId, TaskState>(id, state));
+	}
+
+	virtual bool AssignClassDuringStartup() override final
+	{
+		return assignClass ? true : false;
+	}
+	
+	virtual void ConfigureAssignClassRequest(HeaderWriter& writer) override final
+	{
+		return assignClass(writer);
+	}
+	
+
+	std::function<void(HeaderWriter&)> assignClass;
+
 	std::vector<IINField> rxIIN;
+
+	std::vector<std::pair<TaskId, TaskState>> taskEvents;
 
 	uint64_t time;
 };

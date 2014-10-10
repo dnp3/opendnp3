@@ -252,7 +252,7 @@ APDUParser::Result APDUParser::ParseRangeHeader(openpal::ReadOnlyBuffer& buffer,
 		{
 			if(pHandler)
 			{
-				pHandler->OnRangeRequest(record, StaticRange(range.start, range.stop));
+				pHandler->OnRangeRequest(record, Range(range.start, range.stop));
 			}
 			return Result::OK;
 		}
@@ -454,6 +454,9 @@ APDUParser::Result APDUParser::ParseObjectsWithIndexPrefix(openpal::ReadOnlyBuff
 		return ParseCountFixedSizeWithIndex<AnalogOutputFloat32, IndexType>(record, buffer, pLogger, count, Group41Var3::Inst(), pHandler);
 	case(GroupVariation::Group41Var4) :
 		return ParseCountFixedSizeWithIndex<AnalogOutputDouble64, IndexType>(record, buffer, pLogger, count, Group41Var4::Inst(), pHandler);
+
+	case(GroupVariation::Group50Var4) :
+		return ParseCountFixedSizeWithIndex<TimeAndInterval, IndexType>(record, buffer, pLogger, count, Group50Var4::Inst(), pHandler);
 
 	case(GroupVariation::Group111AnyVar) :
 		return ParseIndexPrefixedOctetData<IndexType>(buffer, pLogger, record, count, pHandler);

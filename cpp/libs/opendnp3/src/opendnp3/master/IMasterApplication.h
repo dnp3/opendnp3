@@ -25,6 +25,9 @@
 #include <openpal/executor/IUTCTimeSource.h>
 
 #include "opendnp3/app/IINField.h"
+#include "opendnp3/app/HeaderWriter.h"
+#include "opendnp3/gen/TaskState.h"
+#include "opendnp3/master/TaskId.h"
 
 namespace opendnp3
 {
@@ -40,6 +43,18 @@ class IMasterApplication : public openpal::IUTCTimeSource
 
 	/// Called when a response or unsolicited response is receive from the outstation
 	virtual void OnReceiveIIN(const IINField& iin) = 0;
+
+	/// Shared task state notifier. Only calls for ids >= 0.
+	/// TaskId object differentiates between built-in ids and user defined ids
+	virtual void OnTaskStateChange(TaskId id, TaskState state) = 0;
+
+	/// @return true if the master should do an assign class task during startup handshaking
+	virtual bool AssignClassDuringStartup() = 0;
+
+	/// Configure the request headers for assign class. Only called if
+	/// "AssignClassDuringStartup" returns true
+	/// The user only needs to write the object headers
+	virtual void ConfigureAssignClassRequest(HeaderWriter& writer) = 0;
 };
 
 }

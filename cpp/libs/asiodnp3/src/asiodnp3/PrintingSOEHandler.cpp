@@ -63,6 +63,20 @@ void PrintingSOEHandler::OnReceiveHeader(const HeaderRecord& header, TimestampMo
 	Print(header, meas, tsmode);
 }
 
+void PrintingSOEHandler::OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas)
+{
+	PrintHeaderInfo(header, tsmode);
+
+	meas.foreach([&](const IndexedValue<TimeAndInterval, uint16_t>& pair)
+	{		
+			std::cout << "TimeAndInterval: " <<
+			"[" << pair.index << "] : " <<
+			pair.value.time << " : " <<
+			pair.value.interval << " : " << 
+			IntervalUnitsToString(pair.value.GetUnitsEnum()) << std::endl;
+	});
+}
+
 void PrintingSOEHandler::OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas)
 {
 	this->PrintHeaderInfo(header, tsmode);

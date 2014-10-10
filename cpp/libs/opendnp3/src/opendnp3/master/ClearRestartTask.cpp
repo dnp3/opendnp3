@@ -27,44 +27,63 @@
 
 #include <openpal/logging/LogMacros.h>
 
+using namespace openpal;
+
 namespace opendnp3
 {
 
-ClearRestartTask::ClearRestartTask(openpal::Logger* pLogger_) :  SingleResponseTask(pLogger_)	
+ClearRestartTask::ClearRestartTask(const MasterParams& params, openpal::Logger* pLogger_) :
+	SingleResponseTask(pLogger_),
+	pParams(&params),
+	expiration(MonotonicTimestamp::Max())
 {
 
 }	
 
-void ClearRestartTask::BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq)
+void ClearRestartTask::BuildRequest(APDURequest& request, uint8_t seq)
 {
 	build::ClearRestartIIN(request, seq);
 }
 
-bool ClearRestartTask::Enabled(const MasterParams& params)
+void ClearRestartTask::Demand()
 {
-	return true;
+	if (expiration.IsMax())
+	{
+		expiration = 0;
+	}
 }
 
-void ClearRestartTask::OnTimeoutOrBadControlOctet(const MasterParams& params, IMasterScheduler& scheduler)
+openpal::MonotonicTimestamp ClearRestartTask::ExpirationTime() const
 {
-	// timeout or bad control octet
-	scheduler.SetBlocking(*this, params.taskRetryPeriod);
+	return expiration;
+}
+
+void ClearRestartTask::OnLowerLayerClose(const openpal::MonotonicTimestamp&)
+{
+	expiration = MonotonicTimestamp::Max();
+}
+
+void ClearRestartTask::OnTimeoutOrBadControlOctet(const openpal::MonotonicTimestamp& now)
+{
+	expiration = now.Add(pParams->taskRetryPeriod);
 }
 	
-TaskStatus ClearRestartTask::OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler)
+TaskResult ClearRestartTask::OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const MonotonicTimestamp& now)
 {
 	if (response.IIN.IsSet(IINBit::DEVICE_RESTART))
 	{
 		// we tried to clear the restart, but the device responded with the restart still set
 		SIMPLE_LOGGER_BLOCK(pLogger, flags::ERR, "Clear restart task failed to clear restart bit");	
-		scheduler.SetBlocking(*this, params.taskRetryPeriod);
-		return TaskStatus::FAIL;
+		expiration = now.Add(pParams->taskRetryPeriod);
+		return TaskResult::FAILURE;
 	}
 	else
 	{
-		return TaskStatus::SUCCESS;
+		expiration = MonotonicTimestamp::Max();
+		return TaskResult::SUCCESS;
 	}
 }
+
 
 } //end ns
 

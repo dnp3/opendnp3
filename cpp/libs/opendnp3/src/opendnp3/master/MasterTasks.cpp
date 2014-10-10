@@ -21,20 +21,40 @@
 
 #include "MasterTasks.h"
 
-
+using namespace openpal;
 
 namespace opendnp3
 {
 
-MasterTasks::MasterTasks(openpal::Logger* pLogger, ISOEHandler& SOEHandler, openpal::IUTCTimeSource& timeSource) :
-enableUnsol(pLogger),
-clearRestartTask(pLogger),
-startupIntegrity(&SOEHandler, pLogger),
-disableUnsol(pLogger),	
-serialTimeSync(pLogger, &timeSource),
-commandTask(pLogger)
+MasterTasks::MasterTasks(const MasterParams& params, openpal::Logger* pLogger, IMasterApplication& application, ISOEHandler& SOEHandler, openpal::IUTCTimeSource& timeSource) :
+enableUnsol(params, pLogger),
+clearRestart(params, pLogger),
+assignClass(params, application, pLogger),
+startupIntegrity(params, &SOEHandler, pLogger),
+disableUnsol(params, pLogger),
+timeSync(pLogger, &timeSource)
 {
 	
+}
+
+void MasterTasks::Initialize(MasterScheduler& scheduler)
+{
+	scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(&enableUnsol));
+	scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(&clearRestart));
+	scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(&assignClass));
+	scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(&startupIntegrity));
+	scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(&disableUnsol));
+	scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(&timeSync));
+
+	for (auto& pTask : boundTasks)
+	{
+		scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(pTask.get()));
+	}
+}
+
+void MasterTasks::BindTask(IMasterTask* pTask)
+{
+	boundTasks.push_back(std::unique_ptr<IMasterTask>(pTask));
 }
 
 }

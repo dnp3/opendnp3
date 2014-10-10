@@ -169,6 +169,7 @@
     <ClInclude Include="Conversions.h" />
     <ClInclude Include="DNP3ManagerAdapter.h" />
     <ClInclude Include="EnumerableAdapter.h" />
+    <ClInclude Include="EnumerableConversions.h" />
     <ClInclude Include="EventConverter.h" />
     <ClInclude Include="Lock.h" />
     <ClInclude Include="LogAdapter.h" />
@@ -180,7 +181,6 @@
     <ClInclude Include="OutstationCommandHandlerAdapter.h" />
     <ClInclude Include="OutstationDatabaseAdapter.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="ScanListenerAdapter.h" />
     <ClInclude Include="SOEHandlerAdapter.h" />
     <ClInclude Include="Stdafx.h" />
   </ItemGroup>

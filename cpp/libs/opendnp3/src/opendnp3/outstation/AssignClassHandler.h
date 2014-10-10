@@ -18,55 +18,48 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_POLLTASK_H
-#define OPENDNP3_POLLTASK_H
+#ifndef OPENDNP3_ASSIGNCLASSHANDLER_H
+#define OPENDNP3_ASSIGNCLASSHANDLER_H
 
-#include "opendnp3/master/PollTaskBase.h"
+#include "opendnp3/app/APDUHandlerBase.h"
 
-#include <openpal/container/Queue.h>
+#include "opendnp3/gen/AssignClassType.h"
+#include "opendnp3/outstation/Database.h"
+#include "opendnp3/outstation/IOutstationApplication.h"
 
-#include <functional>
+#include <openpal/logging/Logger.h>
+#include <openpal/executor/IExecutor.h>
 
 namespace opendnp3
 {
 
-class ISOEHandler;
-
-/**
- * A generic interface for defining master request/response style tasks
- */
-class PollTask : public PollTaskBase
-{	
-
+class AssignClassHandler : public APDUHandlerBase
+{
 public:
 
-	typedef std::function<void (APDURequest&)> Builder;
+	AssignClassHandler(openpal::Logger& logger, openpal::IExecutor& executor, IOutstationApplication& application, Database& database);	
 
-	PollTask();	
+	virtual void _AllObjects(const HeaderRecord& record) override final;
 
-	PollTask(const Builder& builder, const openpal::TimeDuration& period_, ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_);
-	
-	virtual char const* Name() const override final { return "Poll Task"; }	
-	
-	virtual void BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq) override final;
-
-	/// --- Public members ----
-
-	openpal::TimeDuration GetPeriod() const;
+	virtual void _OnRangeRequest(const HeaderRecord& record, const Range& range) override final;
 
 private:
 
-	virtual void OnFailure(const MasterParams& params, IMasterScheduler& scheduler) override final;
+	void RecordClass(GroupVariation gv);	
 
-	virtual void OnSuccess(const MasterParams& params, IMasterScheduler& scheduler) override final;	
+	bool IsExpectingAssignment();
 
-	Builder builder;
-	openpal::TimeDuration period;	
+	void ProcessAssignment(AssignClassType type, PointClass clazz, const StaticRange& range);
+	
+	int32_t classHeader;
+	PointClass clazz;
 
+	openpal::IExecutor* pExecutor;
+	IOutstationApplication* pApplication;
+	Database* pDatabase;
 };
 
-
-} //end ns
-
+}
 
 #endif
+

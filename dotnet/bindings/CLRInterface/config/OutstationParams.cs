@@ -48,6 +48,12 @@ namespace Automatak.DNP3.Interface
         /// Global enabled / disable for unsolicted messages. If false, the NULL unsolicited message is not even sent
         /// </summary>
         public bool allowUnsolicited = false;
+
+        /// <summary>
+        /// Specifies which types are allowed in Class0 repsones. Defaults to all types.
+        /// Use this field to disable some types for compatibility reasons.
+        /// </summary>
+        public StaticTypeBitField typesAllowedInClass0 = StaticTypeBitField.AllTypes();
        
         /// <summary>
         /// Class mask for unsolicted, default to 0 as unsolicited has to be enabled by master

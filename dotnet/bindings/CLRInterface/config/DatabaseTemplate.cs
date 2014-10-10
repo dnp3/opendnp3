@@ -101,13 +101,15 @@ namespace Automatak.DNP3.Interface
         /// <param name="numCounter">numer of frozen counter values starting at index 0</param>
         /// <param name="numBinaryOutputStatus">numer of control status values starting at index 0</param>
         /// <param name="numAnalogOutputStatus">numer of setpoint status values starting at index 0</param>
+        /// /// <param name="numTimeAndInterval">numer of TimeAndInterval values starting at index 0</param>
         public DatabaseTemplate(  System.UInt16 numBinary,
                                   System.UInt16 numDoubleBinary,
                                   System.UInt16 numAnalog,
                                   System.UInt16 numCounter,
                                   System.UInt16 numFrozenCounter,
                                   System.UInt16 numBinaryOutputStatus,
-                                  System.UInt16 numAnalogOutputStatus)
+                                  System.UInt16 numAnalogOutputStatus,
+                                  System.UInt16 numTimeAndInterval)
         {
             binaries = Enumerable.Range(0, numBinary).Select(i => new EventPointRecord(PointClass.Class1)).ToList();
 
@@ -122,12 +124,14 @@ namespace Automatak.DNP3.Interface
             binaryOutputStatii = Enumerable.Range(0, numBinaryOutputStatus).Select(i => new EventPointRecord(PointClass.Class1)).ToList();
             
             analogOutputStatii = Enumerable.Range(0, numAnalogOutputStatus).Select(i => new DeadbandEventPointRecord<double>(PointClass.Class1, 0.0)).ToList();
+
+            this.numTimeAndInterval = numTimeAndInterval;
         }
 
         /// <summary>
         /// Default constructor that sets every value to the same count
         /// </summary>
-        public DatabaseTemplate(System.UInt16 count) : this(count, count, count, count, count, count, count)
+        public DatabaseTemplate(System.UInt16 count) : this(count, count, count, count, count, count, count, count)
         { }
 
         /// <summary>
@@ -164,5 +168,7 @@ namespace Automatak.DNP3.Interface
         /// Modify individual analog output status configuration here
         /// </summary>
         public IList<DeadbandEventPointRecord<double>> analogOutputStatii;
+
+        public readonly UInt16 numTimeAndInterval;
     };    
 }

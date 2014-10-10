@@ -30,86 +30,78 @@
 namespace opendnp3
 {
 
-PollTaskBase::PollTaskBase() : pSOEHandler(nullptr), pLogger(nullptr), rxCount(0), pPollListener(nullptr)
-{}
-
-PollTaskBase::PollTaskBase(ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_) :
+PollTaskBase::PollTaskBase(
+		const std::string& name_,
+		ISOEHandler* pSOEHandler_,
+		openpal::Logger* pLogger_) :	
+	name(name_),
 	pSOEHandler(pSOEHandler_),
 	pLogger(pLogger_),
-	rxCount(0),
-	pPollListener(nullptr)
+	rxCount(0)
 {
 	
 }
 
-void PollTaskBase::NotifyState(PollState state)
+const char* PollTaskBase::Name() const
 {
-	if (pPollListener)
-	{
-		pPollListener->OnStateChange(state);
-	}
+	return name.empty() ? "user poll" : name.c_str();
 }
 	
-TaskStatus PollTaskBase::OnResponse(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler)
+TaskResult PollTaskBase::OnResponse(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now)
 {
 	if (header.control.FIR)
 	{
 		if (rxCount > 0)
 		{
 			SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Ignoring unexpected FIR frame");
-			this->OnFailure(params, scheduler);
-			return TaskStatus::FAIL;
+			this->OnFailure(now);
+			return TaskResult::FAILURE;
 		}
 		else
 		{			
-			return ProcessMeasurements(header, objects, params, scheduler);
+			return ProcessMeasurements(header, objects, now);
 		}
 	}
 	else
 	{
 		if (rxCount > 0)
 		{			
-			return ProcessMeasurements(header, objects, params, scheduler);
+			return ProcessMeasurements(header, objects, now);
 		}
 		else
 		{	
 			SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Ignoring unexpected non-FIR frame");			
-			this->OnFailure(params, scheduler);			
-			return TaskStatus::FAIL;
+			this->OnFailure(now);			
+			return TaskResult::FAILURE;
 		}
 	}
 }
 
-void PollTaskBase::OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler)
+void PollTaskBase::OnResponseTimeout(const openpal::MonotonicTimestamp& now)
 {	
-	this->OnFailure(params, scheduler);
+	this->OnFailure(now);	
 }
 
-void PollTaskBase::SetStateListener(IPollListener& listener)
-{
-	pPollListener = &listener;
-}
-	
-TaskStatus PollTaskBase::ProcessMeasurements(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler)
+TaskResult PollTaskBase::ProcessMeasurements(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now)
 {	
 	++rxCount;
 
 	if (MeasurementHandler::ProcessMeasurements(objects, pLogger, pSOEHandler))
 	{	
 		if (header.control.FIN)
-		{						
-			this->OnSuccess(params, scheduler);
-			return TaskStatus::SUCCESS;
+		{								
+			this->OnSuccess(now);
+			return TaskResult::SUCCESS;
 		}
 		else
 		{
-			return TaskStatus::CONTINUE;
+			return TaskResult::CONTINUE;
 		}		
 	}
 	else
-	{			
-		this->OnFailure(params, scheduler);
-		return TaskStatus::FAIL;
+	{				
+		this->OnFailure(now);
+		return TaskResult::FAILURE;
 	}
 }
 

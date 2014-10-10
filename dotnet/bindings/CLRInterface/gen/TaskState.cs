@@ -21,29 +21,21 @@
 namespace Automatak.DNP3.Interface
 {
   /// <summary>
-  /// Opendnp3 API enum used for differentiating cases when a command sequence fails without a response from the outstation
+  /// Enumeration for the state of a poll
   /// </summary>
-  public enum CommandResult : int
+  public enum TaskState : int
   {
     /// <summary>
-    /// A response was received from the outstation, check the CommandStatus enumeration
+    /// Valid response was received
     /// </summary>
-    RESPONSE_OK = 0,
+    RUNNING = 0,
     /// <summary>
-    /// A response was received from the outstation, but it did not match or contained bad formatting
+    /// Valid response was received
     /// </summary>
-    BAD_RESPONSE = 1,
+    SUCCESS = 1,
     /// <summary>
-    /// The operation timed out without a response
+    /// The operation timed out or explicitly failed
     /// </summary>
-    TIMEOUT = 2,
-    /// <summary>
-    /// There is no communication with the outstation, and the command was not attempted
-    /// </summary>
-    NO_COMMS = 3,
-    /// <summary>
-    /// The master's requst queue is full. Too many operations have been requested
-    /// </summary>
-    QUEUE_FULL = 4
+    FAILURE = 2
   }
 }

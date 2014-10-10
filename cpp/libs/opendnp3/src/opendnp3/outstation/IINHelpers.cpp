@@ -29,7 +29,7 @@ IINField IINFromParseResult(APDUParser::Result result)
 	switch(result)
 	{
 	case(APDUParser::Result::OK):
-		return IINField::Empty;
+		return IINField::Empty();
 	case(APDUParser::Result::UNKNOWN_OBJECT):
 		return IINField(IINBit::OBJECT_UNKNOWN);
 	default:

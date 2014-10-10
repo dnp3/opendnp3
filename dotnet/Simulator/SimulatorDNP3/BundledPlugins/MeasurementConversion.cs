@@ -45,6 +45,11 @@ namespace Automatak.Simulator.DNP3
             return new Measurement(meas.Value.ToString(), meas, tsmode, MeasType.AnalogOutputStatus, index, QualityInfo.analog);
         }
 
+        public static Measurement ToMeasurement(this TimeAndInterval meas, UInt16 index, TimestampMode tsmode)
+        {
+            return new Measurement(meas.ToString(), tsmode, MeasType.TimeAndInterval, index, QualityInfo.octetString);
+        }
+
         public static Measurement ToMeasurement(this OctetString meas, UInt16 index, TimestampMode tsmode)
         {
             return new Measurement(meas.AsString(), tsmode, MeasType.OctetString, index, QualityInfo.octetString);

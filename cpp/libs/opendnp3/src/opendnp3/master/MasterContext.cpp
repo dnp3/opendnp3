@@ -28,6 +28,9 @@
 #include "opendnp3/master/MeasurementHandler.h"
 #include "opendnp3/master/ConstantCommandProcessor.h"
 
+#include "opendnp3/objects/Group12.h"
+#include "opendnp3/objects/Group41.h"
+
 #include <openpal/logging/LogMacros.h>
 
 using namespace openpal;
@@ -55,12 +58,11 @@ MasterContext::MasterContext(
 	isOnline(false),
 	isSending(false),
 	solSeq(0),
-	unsolSeq(0),
-	pActiveTask(nullptr),
+	unsolSeq(0),	
 	pState(&MasterStateIdle::Instance()),
 	pResponseTimer(nullptr),
-	staticTasks(&logger, SOEHandler, application),
-	scheduler(&logger, staticTasks, executor, *this),
+	tasks(params, &logger, application, SOEHandler, application),
+	scheduler(&logger, executor, *this),
 	txBuffer(params.maxTxFragSize)
 {
 	
@@ -76,7 +78,8 @@ bool MasterContext::OnLayerUp()
 	{
 		isOnline = true;
 		pTaskLock->OnLayerUp();
-		scheduler.OnLowerLayerUp(params);		
+		tasks.Initialize(scheduler);
+		scheduler.OnLowerLayerUp();
 		return true;
 	}
 }
@@ -85,10 +88,13 @@ bool MasterContext::OnLayerDown()
 {
 	if (isOnline)
 	{
-		if (pActiveTask)
-		{
-			pActiveTask->OnLowerLayerClose();
-			pActiveTask = nullptr;
+		auto now = pExecutor->GetTime();
+
+		if (pActiveTask.IsDefined())
+		{			
+			pActiveTask->OnLowerLayerClose(now);
+			this->NotifyCurrentTask(TaskState::FAILURE);			
+			pActiveTask.Release();
 		}
 
 		pState = &MasterStateIdle::Instance();
@@ -123,22 +129,66 @@ void MasterContext::CheckForTask()
 	}
 }
 
-void MasterContext::StartTask(IMasterTask* pTask)
+void MasterContext::StartTask(IMasterTask& task)
 {		
-	APDURequest request(txBuffer.GetWriteBuffer());	
-	pTask->BuildRequest(request, params, solSeq);
+	APDURequest request(txBuffer.GetWriteBuffer());
+	task.BuildRequest(request, solSeq);
 	this->StartResponseTimer();
-	this->Transmit(request.ToReadOnly());
+	this->Transmit(request.ToReadOnly());	
+}
+
+void MasterContext::ReleaseActiveTask()
+{
+	if (pActiveTask.IsDefined())
+	{
+		if (pActiveTask->IsRecurring())
+		{
+			scheduler.Schedule(std::move(pActiveTask));
+		}
+		else
+		{
+			pActiveTask.Release();
+		}
+	}
+}
+
+void MasterContext::NotifyCurrentTask(TaskState state)
+{
+	if (pActiveTask.IsDefined() && pActiveTask->Id().IsDefined())
+	{
+		pApplication->OnTaskStateChange(pActiveTask->Id(), state);
+	}
+}
+
+void MasterContext::ScheduleRecurringPollTask(IMasterTask* pTask)
+{
+	tasks.BindTask(pTask);
+
+	if (isOnline)
+	{
+		scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(pTask));
+		this->PostCheckForTask();
+	}	
+}
+
+void MasterContext::ScheduleAdhocPollTask(IMasterTask* pTask)
+{
+	auto task = ManagedPtr<IMasterTask>::Deleted(pTask);
+	if (isOnline)
+	{
+		scheduler.Schedule(std::move(task));
+		this->PostCheckForTask();
+	}
+	else
+	{
+		// can't run this task since we're offline so fail it immediately
+		pApplication->OnTaskStateChange(task->Id(), TaskState::FAILURE);
+	}
 }
 
 void MasterContext::OnPendingTask()
 {
 	this->PostCheckForTask();
-}
-
-void MasterContext::QueueUserTask(const openpal::Function0<IMasterTask*>& action)
-{
-	scheduler.ScheduleUserTask(action);	
 }
 
 void MasterContext::OnResponseTimeout()
@@ -220,7 +270,24 @@ void MasterContext::OnUnsolicitedResponse(const APDUResponseHeader& header, cons
 void MasterContext::OnReceiveIIN(const IINField& iin)
 {
 	pApplication->OnReceiveIIN(iin);
-	scheduler.ProcessRxIIN(iin, params);
+	
+	if (iin.IsSet(IINBit::DEVICE_RESTART))
+	{
+		tasks.clearRestart.Demand();
+		tasks.assignClass.Demand();
+		tasks.startupIntegrity.Demand();
+		tasks.enableUnsol.Demand();		
+	}
+
+	if (iin.IsSet(IINBit::EVENT_BUFFER_OVERFLOW) && params.integrityOnEventOverflowIIN)
+	{		
+		tasks.startupIntegrity.Demand();		
+	}
+
+	if (iin.IsSet(IINBit::NEED_TIME))
+	{
+		tasks.timeSync.Demand();
+	}	
 }
 
 void MasterContext::StartResponseTimer()
@@ -278,66 +345,54 @@ void MasterContext::Transmit(const ReadOnlyBuffer& output)
 	pLower->BeginTransmit(output);	
 }
 
-bool MasterContext::CanConfirmResponse(TaskStatus status)
-{
-	switch (status)
-	{
-		case(TaskStatus::SUCCESS) :
-		case(TaskStatus::CONTINUE) :
-			return true;
-		default:
-			return false;
-	}
-}
-
-void MasterContext::SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback& callback)
+void MasterContext::SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ITaskCallback<CommandResponse>& callback)
 {	
-	this->SelectAndOperateT(command, index, callback);
+	this->SelectAndOperateT(command, index, callback, Group12Var1::Inst());
 }
 
-void MasterContext::DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback& callback)
+void MasterContext::DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, ITaskCallback<CommandResponse>& callback)
 {
-	this->DirectOperateT(command, index, callback);
+	this->DirectOperateT(command, index, callback, Group12Var1::Inst());
 }
 
-void MasterContext::SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback& callback)
+void MasterContext::SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, ITaskCallback<CommandResponse>& callback)
 {
-	this->SelectAndOperateT(command, index, callback);
+	this->SelectAndOperateT(command, index, callback, Group41Var2::Inst());
 }
 
-void MasterContext::DirectOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback& callback)
+void MasterContext::DirectOperate(const AnalogOutputInt16& command, uint16_t index, ITaskCallback<CommandResponse>& callback)
 {
-	this->DirectOperateT(command, index, callback);
+	this->DirectOperateT(command, index, callback, Group41Var2::Inst());
 }
 
-void MasterContext::SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback& callback)
+void MasterContext::SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, ITaskCallback<CommandResponse>& callback)
 {
-	this->SelectAndOperateT(command, index, callback);
+	this->SelectAndOperateT(command, index, callback, Group41Var1::Inst());
 }
 
-void MasterContext::DirectOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback& callback)
+void MasterContext::DirectOperate(const AnalogOutputInt32& command, uint16_t index, ITaskCallback<CommandResponse>& callback)
 {
-	this->DirectOperateT(command, index, callback);
+	this->DirectOperateT(command, index, callback, Group41Var1::Inst());
 }
 
-void MasterContext::SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback& callback)
+void MasterContext::SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, ITaskCallback<CommandResponse>& callback)
 {
-	this->SelectAndOperateT(command, index, callback);
+	this->SelectAndOperateT(command, index, callback, Group41Var3::Inst());
 }
 
-void MasterContext::DirectOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback& callback)
+void MasterContext::DirectOperate(const AnalogOutputFloat32& command, uint16_t index, ITaskCallback<CommandResponse>& callback)
 {
-	this->DirectOperateT(command, index, callback);
+	this->DirectOperateT(command, index, callback, Group41Var3::Inst());
 }
 
-void MasterContext::SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback)
+void MasterContext::SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ITaskCallback<CommandResponse>& callback)
 {
-	this->SelectAndOperateT(command, index, callback);
+	this->SelectAndOperateT(command, index, callback, Group41Var4::Inst());
 }
 
-void MasterContext::DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback)
+void MasterContext::DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ITaskCallback<CommandResponse>& callback)
 {
-	this->DirectOperateT(command, index, callback);
+	this->DirectOperateT(command, index, callback, Group41Var4::Inst());
 }
 
 }

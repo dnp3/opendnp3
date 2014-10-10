@@ -21,6 +21,8 @@
 #ifndef OPENDNP3_MASTER_H
 #define OPENDNP3_MASTER_H
 
+#include "opendnp3/app/HeaderWriter.h"
+
 #include "opendnp3/master/MasterContext.h"
 #include "opendnp3/master/CommandMarshaller.h"
 #include "opendnp3/master/MasterScan.h"
@@ -56,13 +58,26 @@ class Master : public IUpperLayer
 	
 	ICommandProcessor& GetCommandProcessor();
 
-	MasterScan AddScan(openpal::TimeDuration period, const std::function<void (APDURequest&)>& builder);
+	/// ---- Permanently bound scans ----
 
-	MasterScan AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period);
+	MasterScan AddScan(openpal::TimeDuration period, const std::function<void (HeaderWriter&)>& builder, int id = -1);
 
-	MasterScan AddClassScan(const ClassField& field, openpal::TimeDuration period);	
+	MasterScan AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, int id = -1);
 
-	MasterScan AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period);
+	MasterScan AddClassScan(const ClassField& field, openpal::TimeDuration period, int id = -1);
+
+	MasterScan AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, int id = -1);
+
+	/// ---- Single shot immediate scans ----
+	
+	void Scan(const std::function<void(HeaderWriter&)>& builder, int id = -1);
+
+	void ScanAllObjects(GroupVariationID gvId, int id = -1);
+
+	void ScanClasses(const ClassField& field, int id = -1);
+
+	void ScanRange(GroupVariationID gvId, uint16_t start, uint16_t stop, int id = -1);
+
 	
 	private:
 

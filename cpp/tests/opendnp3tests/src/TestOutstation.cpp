@@ -319,6 +319,56 @@ void NewTestStaticRead(const std::string& request, const std::string& response)
 	REQUIRE(t.lower.PopWriteAsHex() == response);
 }
 
+// ---- Group50Var4 TimeAndInterval support ----- //
+
+void TestTimeAndIntervalRead(const std::string& request)
+{
+	OutstationConfig config;	
+	OutstationTestObject t(config, DatabaseTemplate::TimeAndIntervalOnly(1));
+	t.LowerLayerUp();
+
+	t.Transaction(
+		[](Database& db){
+		db.Update(TimeAndInterval(9, 3, IntervalUnits::Days), 0);
+	}
+	);
+
+	t.SendToOutstation(request);
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00 32 04 00 00 00 09 00 00 00 00 00 03 00 00 00 05");
+}
+
+TEST_CASE(SUITE("TimeAndIntervalViaIntegrity"))
+{
+	TestTimeAndIntervalRead(hex::IntegrityPoll(0));	
+}
+
+TEST_CASE(SUITE("TimeAndIntervalViaDirectRequest"))
+{
+	TestTimeAndIntervalRead("C0 01 32 04 06");
+}
+
+TEST_CASE(SUITE("TimeAndIntervalViaDirectRangeRequest"))
+{
+	TestTimeAndIntervalRead("C0 01 32 04 00 00 00");
+}
+
+TEST_CASE(SUITE("TestTimeAndIntervalWrite"))
+{
+	OutstationConfig config;	
+	OutstationTestObject t(config, DatabaseTemplate::TimeAndIntervalOnly(1));
+	t.LowerLayerUp();
+
+	t.application.supportsWriteTimeAndInterval = true;	
+
+	// write g50v4 using 2-octet count & index prefix
+	t.SendToOutstation("C0 02 32 04 28 01 00 07 00 09 00 00 00 00 00 03 00 00 00 05");
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00");
+
+	REQUIRE(t.application.timeAndIntervals.size() == 1);
+	REQUIRE(t.application.timeAndIntervals[0].index == 7);
+	REQUIRE(t.application.timeAndIntervals[0].value.time == 9);
+}
+
 // ---- Static data reads ----- //
 
 TEST_CASE(SUITE("ReadGrp1Var0ViaIntegrity"))
@@ -384,6 +434,42 @@ TEST_CASE(SUITE("ReadByRangeHeader"))
 
 	t.SendToOutstation("C2 01 1E 02 00 05 06"); // read 30 var 2, [05 : 06]
 	REQUIRE(t.lower.PopWriteAsHex() == "C2 81 80 00 1E 02 00 05 06 01 2A 00 01 29 00");
+}
+
+TEST_CASE(SUITE("ReadDiscontiguousIndexes"))
+{
+	OutstationConfig config;
+    
+	DynamicPointIndexes binaryIndexes({ 2, 4, 5 });
+	OutstationTestObject t(config, DatabaseTemplate(binaryIndexes));
+	t.LowerLayerUp();
+    
+	t.Transaction([](Database& db){
+		db.Update(Binary(true, 0x01), 2);
+		db.Update(Binary(false, 0x01), 4);
+	});
+
+    t.SendToOutstation("C0 01 3C 01 06"); // Read class 0
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00 01 02 00 02 02 81 01 02 00 04 05 01 02");
+    t.OnSendResult(true);
+	t.SendToOutstation("C2 01 01 02 00 02 02"); // read 01 var 2, [02 : 02]
+	REQUIRE(t.lower.PopWriteAsHex() == "C2 81 80 00 01 02 00 02 02 81");
+    t.OnSendResult(true);
+	t.SendToOutstation("C2 01 01 02 00 04 05"); // read 01 var 2, [04 : 05]
+	REQUIRE(t.lower.PopWriteAsHex() == "C2 81 80 00 01 02 00 04 05 01 02");
+    t.OnSendResult(true);
+	t.SendToOutstation("C2 01 01 02 00 05 06"); // read 01 var 2, [05 : 06]
+	REQUIRE(t.lower.PopWriteAsHex() == "C2 81 80 04 01 02 00 05 05 02");
+    t.OnSendResult(true);
+	t.SendToOutstation("C2 01 01 02 00 02 02 01 02 00 04 05"); // read 01 var 2, [02 : 02]; read 01 var 2, [04 : 05]
+	REQUIRE(t.lower.PopWriteAsHex() == "C2 81 80 00 01 02 00 02 02 81 01 02 00 04 05 01 02");
+    t.OnSendResult(true);
+	t.SendToOutstation("C2 01 01 02 00 02 03 01 02 00 04 05"); // read 01 var 2, [02 : 03]; read 01 var 2, [04 : 05]
+	REQUIRE(t.lower.PopWriteAsHex() == "C2 81 80 04 01 02 00 02 02 81 01 02 00 04 05 01 02");
+    t.OnSendResult(true);
+	t.SendToOutstation("C2 01 01 02 00 02 05"); // read 01 var 2, [02 : 05]
+	REQUIRE(t.lower.PopWriteAsHex() == "C2 81 80 04 01 02 00 02 02 81 01 02 00 04 05 01 02");
+    t.OnSendResult(true);
 }
 
 template <class PointType>

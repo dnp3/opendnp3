@@ -18,6 +18,7 @@ object EventTypes {
     create("StaticFrozenCounterResponse", group(21)(1,2,5,6,7,8,9,10)),
     create("StaticBinaryOutputStatusResponse",group(10)(2)),
     create("StaticAnalogOutputStatusResponse",group(40)(1,2,3,4)),
+    create("StaticTimeAndIntervalResponse", group(50)(4)),
 
 
     create("EventBinaryResponse", group(2)(1,2,3)),

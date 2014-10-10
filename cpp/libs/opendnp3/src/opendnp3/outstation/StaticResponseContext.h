@@ -31,6 +31,7 @@
 
 #include "opendnp3/outstation/Database.h"
 #include "opendnp3/outstation/StaticLoader.h"
+#include "opendnp3/outstation/OutstationParams.h"
 #include "opendnp3/outstation/StaticResponseConfig.h"
 #include "opendnp3/outstation/StaticLoadFunctions.h"
 
@@ -56,12 +57,12 @@ class StaticResponseContext : private openpal::Uncopyable
 
 public:
 
-	StaticResponseContext(Database& database, const StaticResponseConfig& config);
+	StaticResponseContext(Database& database, const OutstationParams* pParams, const StaticResponseConfig& config);
 
 	void Reset();
 
 	IINField ReadAll(const GroupVariationRecord& record);
-	IINField ReadRange(const GroupVariationRecord& record, const StaticRange& range);
+	IINField ReadRange(const GroupVariationRecord& record, const Range& range);
 
 	bool IsComplete() const;
 
@@ -76,22 +77,30 @@ private:
 	StaticLoadResult LoadStaticData(HeaderWriter& writer);
 
 	Database* pDatabase;
+	const OutstationParams* pParams;
 	StaticResponseConfig defaults;
 
 	openpal::Queue<StaticRangeLoader, uint8_t> staticResponseQueue;
 
 	template <class Target>
-	IINField QueueRange(const StaticRange& range, typename Target::StaticResponseEnum enumeration)
+	IINField QueueRange(const Range& range, typename Target::StaticResponseEnum enumeration)
 	{
-		StaticRange copy(range);
-		copy.ClipTo(pDatabase->FullRange<Target>());
+        StaticRange copy(pDatabase->FullRange<Target>());
+        copy.ClipTo(range);
 		return QueueLoader(StaticRangeLoader(StaticLoadFunctions::Get(enumeration), copy));
 	}	
 
 	template <class Target>
 	IINField QueueRange(typename Target::StaticResponseEnum enumeration)
 	{		
-		return QueueLoader(StaticRangeLoader(StaticLoadFunctions::Get(enumeration), pDatabase->FullRange<Target>()));
+		if (pParams->typesAllowedInClass0.IsSet(Target::StaticTypeEnum))
+		{
+			return QueueLoader(StaticRangeLoader(StaticLoadFunctions::Get(enumeration), pDatabase->FullRange<Target>()));
+		}
+		else
+		{
+			return IINField::Empty();
+		}		
 	}
 };
 

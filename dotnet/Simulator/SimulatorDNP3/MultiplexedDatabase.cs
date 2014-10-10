@@ -81,6 +81,14 @@ namespace Automatak.Simulator.DNP3
             }
         }
 
+        void IDatabase.Update(TimeAndInterval update, ushort index)
+        {
+            foreach (var db in databases)
+            {
+                db.Update(update, index);
+            }
+        }
+
         void IDatabase.End()
         {
             foreach (var db in databases)

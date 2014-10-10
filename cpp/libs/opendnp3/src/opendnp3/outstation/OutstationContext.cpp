@@ -36,6 +36,7 @@
 #include "opendnp3/outstation/ConstantCommandAction.h"
 
 #include "opendnp3/outstation/ClassBasedRequestHandler.h"
+#include "opendnp3/outstation/AssignClassHandler.h"
 
 #include <openpal/logging/LogMacros.h>
 
@@ -75,7 +76,7 @@ OutstationContext::OutstationContext(
 	expectedSolConfirmSeq(0),
 	expectedUnsolConfirmSeq(0),
 	completedNullUnsol(false),	
-	rspContext(database, eventBuffer, config.defaultStaticResponses, config.defaultEventResponses),
+	rspContext(database, eventBuffer, &params, config.defaultStaticResponses, config.defaultEventResponses),
 	pLower(&lower),
 	rxBuffer(params.maxRxFragSize),
 	solTxBuffer(params.maxTxFragSize),
@@ -158,13 +159,6 @@ bool OutstationContext::CancelConfirmTimer()
 {
 	return CancelTimer(pConfirmTimer);
 }
-
-/*
-bool OutstationContext::CancelUnsolTimer()
-{
-	return CancelTimer(pUnsolTimer);
-}
-*/
 
 bool OutstationContext::CancelTimer(openpal::ITimer*& pTimer)
 {
@@ -387,6 +381,8 @@ IINField OutstationContext::BuildNonReadResponse(const APDUHeader& header, const
 			return HandleRestart(objects, false, &writer);
 		case(FunctionCode::WARM_RESTART) :
 			return HandleRestart(objects, true, &writer);
+		case(FunctionCode::ASSIGN_CLASS) :
+			return HandleAssignClass(objects);
 		case(FunctionCode::DELAY_MEASURE) :
 			return HandleDelayMeasure(objects, writer);
 		case(FunctionCode::DISABLE_UNSOLICITED) :
@@ -539,22 +535,6 @@ bool OutstationContext::StartUnsolicitedConfirmTimer()
 		return true;
 	}
 }
-
-/*
-bool OutstationContext::StartUnsolRetryTimer()
-{
-	if (pUnsolTimer)
-	{
-		return false;		
-	}
-	else
-	{
-		auto timeout = [this]() { this->OnUnsolRetryTimeout(); };
-		pUnsolTimer = pExecutor->Start(params.unsolRetryTimeout, Action0::Bind(timeout));
-		return true;
-	}
-}
-*/
 
 void OutstationContext::OnSolConfirmTimeout()
 {
@@ -712,7 +692,7 @@ IINField OutstationContext::HandleDelayMeasure(const openpal::ReadOnlyBuffer& ob
 	{		
 		Group52Var2 value = { 0 }; 	// respond with 0 time delay
 		writer.WriteSingleValue<UInt8, Group52Var2>(QualifierCode::UINT8_CNT, value);
-		return IINField::Empty;
+		return IINField::Empty();
 	}
 	else
 	{
@@ -739,7 +719,7 @@ IINField OutstationContext::HandleRestart(const openpal::ReadOnlyBuffer& objects
 					Group52Var1 coarse = { delay };
 					pWriter->WriteSingleValue<UInt8>(QualifierCode::UINT8_CNT, coarse);
 				}
-				return IINField::Empty;
+				return IINField::Empty();
 			}
 			default:
 			{
@@ -749,7 +729,7 @@ IINField OutstationContext::HandleRestart(const openpal::ReadOnlyBuffer& objects
 					Group52Var2 fine = { delay };
 					pWriter->WriteSingleValue<UInt8>(QualifierCode::UINT8_CNT, fine);
 				}
-				return IINField::Empty;
+				return IINField::Empty();
 			}
 		}		
 	}
@@ -758,6 +738,27 @@ IINField OutstationContext::HandleRestart(const openpal::ReadOnlyBuffer& objects
 		// there shouldn't be any trailing headers in restart requests, no need to even parse
 		return IINField(IINBit::PARAM_ERROR);
 	}
+}
+
+IINField OutstationContext::HandleAssignClass(const openpal::ReadOnlyBuffer& objects)
+{
+	if (pApplication->SupportsAssignClass())
+	{
+		AssignClassHandler handler(logger, *pExecutor, *pApplication, *pDatabase);
+		auto result = APDUParser::ParseTwoPass(objects, &handler, &logger, APDUParser::Context(false));
+		if (result == APDUParser::Result::OK)
+		{
+			return handler.Errors();
+		}
+		else
+		{
+			return IINFromParseResult(result);
+		}
+	}
+	else
+	{
+		return IINField(IINBit::FUNC_NOT_SUPPORTED);
+	}	
 }
 
 IINField OutstationContext::HandleDisableUnsolicited(const openpal::ReadOnlyBuffer& objects, HeaderWriter& writer)

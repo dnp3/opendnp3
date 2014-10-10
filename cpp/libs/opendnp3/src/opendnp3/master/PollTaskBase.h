@@ -22,7 +22,8 @@
 #define OPENDNP3_POLLTASKBASE_H
 
 #include "opendnp3/master/IMasterTask.h"
-#include "opendnp3/master/IPollListener.h"
+
+#include <string>
 
 namespace opendnp3
 {
@@ -32,38 +33,36 @@ class ISOEHandler;
 /**
  * Base class for measurement polls
  */
-class PollTaskBase : public IMasterTask
+class PollTaskBase : public IMasterTask, openpal::Uncopyable
 {	
 
-public:
+public:		
 
-	PollTaskBase();
+	PollTaskBase(
+		const std::string& name_,
+		ISOEHandler* pSOEHandler_,
+		openpal::Logger* pLogger_);	
 
-	PollTaskBase(ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_);				
+	virtual const char* Name() const override final;
 	
-	virtual TaskStatus OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler) override final;
+	virtual TaskResult OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now) override final;
 	
-	virtual void OnResponseTimeout(const MasterParams& params, IMasterScheduler& scheduler) override final;
-
-	void SetStateListener(IPollListener& listener);
+	virtual void OnResponseTimeout(const openpal::MonotonicTimestamp& now) override final;
 
 protected:
 
-	TaskStatus ProcessMeasurements(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler);
+	TaskResult ProcessMeasurements(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now);
 
-	virtual void OnFailure(const MasterParams& params, IMasterScheduler& scheduler) = 0;
+	virtual void OnFailure(const openpal::MonotonicTimestamp& now) = 0;
 
-	virtual void OnSuccess(const MasterParams& params, IMasterScheduler& scheduler) = 0;
-
-	void NotifyState(PollState state);
-
+	virtual void OnSuccess(const openpal::MonotonicTimestamp& now) = 0;
+	
+	std::string name;
 	ISOEHandler* pSOEHandler;
+
 	openpal::Logger* pLogger;
 	uint16_t rxCount;
 
-private:
-
-	IPollListener* pPollListener;
 };
 
 } //end ns

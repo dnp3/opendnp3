@@ -22,7 +22,7 @@
 #define OPENDNP3_COMMANDRESPONSE_H
 
 #include "opendnp3/gen/CommandStatus.h"
-#include "opendnp3/gen/CommandResult.h"
+#include "opendnp3/gen/UserTaskResult.h"
 
 
 
@@ -38,14 +38,14 @@ public:
 
 	static const CommandResponse Success;
 
-	CommandResponse(CommandResult result = CommandResult::NO_COMMS, CommandStatus status = CommandStatus::UNDEFINED);
+	CommandResponse(UserTaskResult result = UserTaskResult::NO_COMMS, CommandStatus status = CommandStatus::UNDEFINED);
 
 	static CommandResponse OK(CommandStatus status);
-	static CommandResponse NoResponse(CommandResult result);
+	static CommandResponse NoResponse(UserTaskResult result);
 
 
 	///  The result of the operation, should be examined before looking at the status code
-	CommandResult GetResult() const;
+	UserTaskResult GetResult() const;
 
 	/// The command status enumeration received from the outstation, if applicable
 	CommandStatus GetStatus() const;
@@ -54,7 +54,7 @@ public:
 
 private:
 
-	CommandResult mResult;
+	UserTaskResult mResult;
 	CommandStatus mStatus;
 };
 

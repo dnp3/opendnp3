@@ -29,31 +29,46 @@ namespace opendnp3
 const uint16_t StaticRange::MIN(openpal::MinValue<uint16_t>());
 const uint16_t StaticRange::MAX(openpal::MaxValue<uint16_t>());
 
-StaticRange::StaticRange() : start(MAX), stop(MIN), clipped(false) {}
-
-StaticRange::StaticRange(uint16_t start_, uint16_t stop_) :
-	start(start_),
-	stop(stop_),
-	clipped(false)
+StaticRange::StaticRange() :
+    start(MAX),
+    stop(MIN),
+    indexes(&PointIndexes::EMPTYINDEXES),
+    position(0),
+    range(0),
+    clipped(false)
 {}
 
+StaticRange::StaticRange(const PointIndexes* points_) :
+    indexes(points_),
+    start(points_->First()),
+    stop(points_->Last()),
+    position(0),
+    range(0),
+    clipped(false)
+{}
+    
 bool StaticRange::IsContainedByUInt8() const
 {
 	return (stop <= 255) && (start <= 255);
 }
 
-void StaticRange::ClipTo(const StaticRange& borders)
+void StaticRange::ClipTo(const Range& borders)
 {
-	auto maxStart = (start < borders.start) ? borders.start : start;
-	auto minStop = (stop < borders.stop) ? stop : borders.stop;
+	auto maxStart = indexes->GetNextValid(borders.start);
+	auto minStop = indexes->GetPreviousValid(borders.stop);
 
 	if(!clipped)
 	{
-		clipped = !((maxStart == start) && (minStop == stop));
+		clipped = !(indexes->IsContiguous(borders.start, borders.stop));
 	}
 
 	start = maxStart;
 	stop = minStop;
+    if(start <= stop)
+    {
+        range = indexes->GetRange(start);
+        position = indexes->GetPosition(start);
+    }
 }
 
 bool StaticRange::IsContainedBy(uint16_t size) const
@@ -61,17 +76,38 @@ bool StaticRange::IsContainedBy(uint16_t size) const
 	return IsDefined() && (start < size) && (stop < size);
 }
 
-void StaticRange::Advance()
+bool StaticRange::Advance()
 {
 	if(start < stop)
 	{
 		++start;
+		++position;
+        if(start > indexes->ranges[range].stop)
+        {
+            // end of contiguous range of points
+            if(++range < indexes->ranges.Size())
+            {
+                // move to next range of points
+                start = indexes->ranges[range].start;
+                return false;
+            }
+            else
+            {
+                // at the end of the points
+                position = MAX;
+                start = MAX;
+                stop = MIN;
+                return true;
+            }
+        }
 	}
 	else
 	{
+        position = MAX;
 		start = MAX;
 		stop = MIN;
 	}
+    return true;
 }
 
 }

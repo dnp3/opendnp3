@@ -18,8 +18,8 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef OPENDNP3_POLLSTATE_H
-#define OPENDNP3_POLLSTATE_H
+#ifndef OPENDNP3_TASKSTATE_H
+#define OPENDNP3_TASKSTATE_H
 
 #include <cstdint>
 
@@ -28,7 +28,7 @@ namespace opendnp3 {
 /**
   Enumeration for the state of a poll
 */
-enum class PollState : int
+enum class TaskState : int
 {
   /// Valid response was received
   RUNNING = 0,
@@ -38,7 +38,7 @@ enum class PollState : int
   FAILURE = 2
 };
 
-char const* PollStateToString(PollState arg);
+char const* TaskStateToString(TaskState arg);
 
 }
 

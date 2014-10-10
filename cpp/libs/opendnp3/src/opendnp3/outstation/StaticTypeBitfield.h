@@ -18,28 +18,37 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_TASKBITMASK_H
-#define OPENDNP3_TASKBITMASK_H
+#ifndef OPENDNP3_STATICTYPEBITFIELD_H
+#define OPENDNP3_STATICTYPEBITFIELD_H
+
+#include "opendnp3/gen/StaticTypeBitmask.h"
 
 #include <cstdint>
 
-namespace opendnp3 { namespace tasks {
-
-enum TaskBitmask : int32_t
+namespace opendnp3
 {
-	DISABLE_UNSOLCITED = 0x01,
-	CLEAR_RESTART_IIN = 0x02,
-	STARTUP_INTEGRITY = 0x04,
-	TIME_SYNC = 0x08,
-	ENABLE_UNSOLCITED = 0x10,
 
-	// aggregate masks for startup sequences
-	STARTUP_TASK_SEQUENCE = DISABLE_UNSOLCITED | STARTUP_INTEGRITY | ENABLE_UNSOLCITED,
-	CLEAR_RESTART_SEQUENCE = CLEAR_RESTART_IIN | STARTUP_INTEGRITY | ENABLE_UNSOLCITED
+struct StaticTypeBitField
+{
+	StaticTypeBitField() : mask(0)
+	{}
 
+	StaticTypeBitField(uint16_t mask_) : mask(mask_)
+	{}
 
+	bool IsSet(StaticTypeBitmask type) const
+	{
+		return (mask & static_cast<uint16_t>(type)) != 0;
+	}
+
+	static StaticTypeBitField AllTypes()
+	{		
+		return StaticTypeBitField(~0);
+	}
+
+	uint16_t mask;
 };
 
-}}
+}
 
 #endif

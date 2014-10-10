@@ -19,7 +19,7 @@ namespace Automatak
 		namespace Adapter
 		{
 
-			class CommandCallbackAdapter : public opendnp3::ICommandCallback, openpal::Uncopyable
+			class CommandCallbackAdapter : public opendnp3::ITaskCallback<opendnp3::CommandResponse>, openpal::Uncopyable
 			{
 			public:
 				CommandCallbackAdapter(Future<CommandResponse>^ future, bool autoDelete_) : autoDelete(autoDelete_), root(future)

@@ -40,6 +40,7 @@
 #include "opendnp3/objects/Group40.h"
 #include "opendnp3/objects/Group41.h"
 #include "opendnp3/objects/Group42.h"
+#include "opendnp3/objects/Group50.h"
 
 namespace opendnp3
 {
@@ -68,7 +69,7 @@ typedef ConvertQ<Group11Var1, BinaryOutputStatus> ConvertGroup11Var1;
 typedef ConvertQT<Group11Var2, BinaryOutputStatus> ConvertGroup11Var2;
 
 // Group 12
-struct ConvertGroup12Var1 : private openpal::Uncopyable
+struct ConvertGroup12Var1 : private openpal::PureStatic
 {
 	static Group12Var1 Apply(const ControlRelayOutputBlock& crob)
 	{
@@ -150,6 +151,19 @@ typedef ConvertQVRangeCheck<Group42Var5, AnalogOutputStatus, 0x20> ConvertGroup4
 typedef ConvertQV<Group42Var6, AnalogOutputStatus> ConvertGroup42Var6;
 typedef ConvertQVTRangeCheck<Group42Var7, AnalogOutputStatus, 0x20> ConvertGroup42Var7;
 typedef ConvertQVT<Group42Var8, AnalogOutputStatus> ConvertGroup42Var8;
+
+// Group 50
+struct ConvertGroup50Var4 : private openpal::PureStatic
+{
+	static Group50Var4 Apply(const TimeAndInterval& value)
+	{
+		Group50Var4 ret;
+		ret.time = value.time;
+		ret.interval = value.interval;
+		ret.units = value.units;
+		return ret;
+	}
+};
 
 }
 

@@ -23,32 +23,45 @@
 #define OPENDNP3_MASTERTASKS_H
 
 #include "opendnp3/master/ClearRestartTask.h"
+#include "opendnp3/master/AssignClassTask.h"
 #include "opendnp3/master/EnableUnsolicitedTask.h"
 #include "opendnp3/master/StartupIntegrityPoll.h"
 #include "opendnp3/master/DisableUnsolicitedTask.h"
 #include "opendnp3/master/SerialTimeSyncTask.h"
 #include "opendnp3/master/CommandTask.h"
 
+#include "opendnp3/master/MasterScheduler.h"
+
+#include <vector>
+
 namespace opendnp3
 {
+
+class IMasterApplication;
 
 class MasterTasks
 {
 
 public:
 
-	MasterTasks(openpal::Logger* pLogger, ISOEHandler& SOEHandler, openpal::IUTCTimeSource& timeSource);
+	MasterTasks(const MasterParams& params, openpal::Logger* pLogger, IMasterApplication& application, ISOEHandler& SOEHandler, openpal::IUTCTimeSource& timeSource);
 
-	// reconfigurable task for doing commands
-	CommandTask commandTask;	
+	void Initialize(MasterScheduler& scheduler);
 
+	void BindTask(IMasterTask* pTask);
+	
 	// master tasks that can be "failed" (startup and in response to IIN bits)
 	EnableUnsolicitedTask enableUnsol;
-	ClearRestartTask clearRestartTask;
+	ClearRestartTask clearRestart;
+	AssignClassTask assignClass;
 	StartupIntegrityPoll startupIntegrity;
-	DisableUnsolicitedTask disableUnsol;	
-	SerialTimeSyncTask serialTimeSync;
-	
+	DisableUnsolicitedTask disableUnsol;
+	SerialTimeSyncTask timeSync;
+
+private:
+
+	std::vector<std::unique_ptr<IMasterTask>> boundTasks;
+
 };
 
 }

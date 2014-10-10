@@ -25,6 +25,7 @@
 #include <openpal/executor/Action0.h>
 #include <openpal/container/Settable.h>
 
+#include "opendnp3/gen/AssignClassType.h"
 #include "opendnp3/app/StaticRange.h"
 #include "opendnp3/outstation/IEventBuffer.h"
 #include "opendnp3/outstation/IDatabase.h"
@@ -56,6 +57,7 @@ public:
 	void Update(const FrozenCounter& value, uint16_t) override final;
 	void Update(const BinaryOutputStatus& value, uint16_t) override final;
 	void Update(const AnalogOutputStatus& value, uint16_t) override final;
+	void Update(const TimeAndInterval& value, uint16_t) override final;
 
 	template <class T>
 	openpal::Indexable<DualValue<T>, uint16_t>& Values();
@@ -63,19 +65,35 @@ public:
 	template <class T>
 	uint16_t NumValues() const;
 
+	bool AssignClass(AssignClassType type, PointClass clazz, const StaticRange& range);
+
 	template <class T>
-	StaticRange FullRange() const
-	{
-		uint16_t num = NumValues<T>();
-		if(num > 0) return StaticRange(0, num - 1);
-		else return StaticRange();
-	}
+	StaticRange FullRange() const;
 
 	DatabaseBuffers buffers;
 	
 	void SetEventHandler(const openpal::Action0& callback);
 
 private:
+
+	template <class T>
+	bool AssignClassTo(T& metadata, PointClass clazz, const StaticRange& range)
+	{
+        StaticRange rangit(range);
+		if (rangit.IsDefined() && (range.IsContainedBy(metadata.Size())))
+        {
+            while(rangit.IsDefined())
+            {
+                metadata[rangit.position].clazz = clazz;
+                rangit.Advance();
+            }
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+	}
 
 	template <class T>
 	static void FreezeCollection(openpal::Indexable<DualValue<T>, uint16_t>& collection)
@@ -92,9 +110,10 @@ private:
 	template <class T, class U>
 	void UpdateEvent(const T& value, uint16_t index, U& collection)
 	{
-		if(collection.values.Contains(index))
+        auto position = collection.indexes.GetPosition(index);
+		if(collection.values.Contains(position))
 		{
-			auto& metadata = collection.metadata[index];
+			auto& metadata = collection.metadata[position];
 			EventClass eventClass;
 			if (metadata.GetEventClass(eventClass) && metadata.CheckForEvent(value))
 			{
@@ -104,7 +123,7 @@ private:
 					transactionHasEvents = true;
 				}
 			}
-			collection.values[index].Update(value);
+			collection.values[position].Update(value);
 		}
 	}
 

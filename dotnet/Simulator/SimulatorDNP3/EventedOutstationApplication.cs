@@ -123,6 +123,26 @@ namespace Automatak.Simulator.DNP3
             return true;
         }
 
+        bool IOutstationApplication.SupportsWriteTimeAndInterval()
+        {
+            return false;
+        }
+
+        bool IOutstationApplication.WriteTimeAndInterval(IEnumerable<IndexedValue<TimeAndInterval>> values)
+        {
+            return false;
+        }
+
+        bool IOutstationApplication.SupportsAssignClass()
+        {
+            return true;
+        }
+
+        void IOutstationApplication.RecordClassAssignment(AssignClassType type, PointClass clazz, ushort start, ushort stop)
+        {
+
+        }
+
         ApplicationIIN IOutstationApplication.ApplicationIndications
         {
             get { return appIIN; }
@@ -157,5 +177,6 @@ namespace Automatak.Simulator.DNP3
 
             return warmRestartTime; 
         }
+        
     }
 }

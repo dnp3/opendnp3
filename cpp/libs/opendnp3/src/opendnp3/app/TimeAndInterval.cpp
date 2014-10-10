@@ -18,25 +18,30 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_ICOMMANDCALLBACK_H
-#define OPENDNP3_ICOMMANDCALLBACK_H
 
-#include "opendnp3/master/CommandResponse.h"
+#include "TimeAndInterval.h"
 
 namespace opendnp3
 {
 
-/**
-* Callback when a command finishes or fails
-*/
-class ICommandCallback
-{
-public:
+TimeAndInterval::TimeAndInterval() : time(0), interval(0), units(0)
+{}
 
+TimeAndInterval::TimeAndInterval(uint64_t time_, uint32_t interval_, uint8_t units_) :
+	time(time_),
+	interval(interval_),
+	units(units_)
+{}
+
+TimeAndInterval::TimeAndInterval(uint64_t time_, uint32_t interval_, IntervalUnits units_) :
+	time(time_),
+	interval(interval_),
+	units(static_cast<uint8_t>(units_))
+{}
 	
-	virtual void OnComplete(const CommandResponse& response) = 0;	
-};
+IntervalUnits TimeAndInterval::GetUnitsEnum() const
+{ 
+	return IntervalUnitsFromType(units);
+}	
 
 }
-
-#endif

@@ -213,7 +213,7 @@ IINField SelectionCriteria::RecordEventType(EventType type, EventHeaderWriteFunc
 		{
 			mode = Mode::TYPE_BASED;
 			record = TypeSelection(count, function);
-			return IINField::Empty;
+			return IINField::Empty();
 		}
 	}
 	else
@@ -238,7 +238,7 @@ IINField SelectionCriteria::RecordClass(EventClass ec, uint32_t value)
 		{
 			mode = Mode::CLASS_BASED;
 			count = value;			
-			return IINField::Empty;
+			return IINField::Empty();
 		}		
 	}
 	else

@@ -101,6 +101,11 @@ void MeasurementHandler::_OnRange(const HeaderRecord& record, TimestampMode tsmo
 	this->LoadAny(record, tsmode, meas);
 }
 
+void MeasurementHandler::_OnRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas)
+{
+	this->LoadAny(record, tsmode, meas);
+}
+
 void MeasurementHandler::_OnIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)
 {
 	this->LoadAny(record, tsmode, meas);

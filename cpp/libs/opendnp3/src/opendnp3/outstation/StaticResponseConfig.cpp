@@ -31,7 +31,8 @@ namespace opendnp3
 		counter(StaticCounterResponse::Group20Var1),
 		frozenCounter(StaticFrozenCounterResponse::Group21Var1),
 		binaryOutputStatus(StaticBinaryOutputStatusResponse::Group10Var2),
-		analogOutputStatus(StaticAnalogOutputStatusResponse::Group40Var1)
+		analogOutputStatus(StaticAnalogOutputStatusResponse::Group40Var1),
+		timeAndInterval(StaticTimeAndIntervalResponse::Group50Var4)
 	{}
 
 

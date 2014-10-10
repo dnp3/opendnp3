@@ -30,6 +30,7 @@
 #include "opendnp3/gen/StaticFrozenCounterResponse.h"
 #include "opendnp3/gen/StaticBinaryOutputStatusResponse.h"
 #include "opendnp3/gen/StaticAnalogOutputStatusResponse.h"
+#include "opendnp3/gen/StaticTimeAndIntervalResponse.h"
 
 namespace opendnp3
 {
@@ -58,6 +59,9 @@ struct StaticResponseConfig
 
 	/// The default group/variation to use for static setpoint status responses
 	StaticAnalogOutputStatusResponse analogOutputStatus;
+
+	/// The default group/variation to use for static time and interval responses
+	StaticTimeAndIntervalResponse timeAndInterval;
 };
 
 }

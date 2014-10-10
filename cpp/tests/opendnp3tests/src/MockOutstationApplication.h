@@ -34,6 +34,8 @@ public:
 	
 	MockOutstationApplication() :		
 		supportsTimeWrite(true),
+		supportsAssignClass(false),
+		supportsWriteTimeAndInterval(false),
 		allowTimeWrite(true),
 		warmRestartSupport(RestartMode::UNSUPPORTED),
 		coldRestartSupport(RestartMode::UNSUPPORTED),
@@ -57,6 +59,31 @@ public:
 		{
 			return false;
 		}		
+	}
+
+	virtual bool SupportsWriteTimeAndInterval() override final
+	{
+		return supportsWriteTimeAndInterval;
+	}
+
+	virtual bool WriteTimeAndInterval(const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas) override final
+	{
+		auto record = [this](const IndexedValue<TimeAndInterval, uint16_t>& pair) 
+		{
+			timeAndIntervals.push_back(pair);
+		};
+		meas.foreach(record);
+		return true;
+	}
+
+	virtual bool SupportsAssignClass() override final
+	{
+		return supportsAssignClass;
+	}
+	
+	virtual void RecordClassAssignment(AssignClassType type, PointClass clazz, uint16_t start, uint16_t stop) override final
+	{
+		this->classAssignments.push_back(std::make_tuple(type, clazz, start, stop));
 	}
 
 	virtual ApplicationIIN GetApplicationIIN() const override final
@@ -85,6 +112,9 @@ public:
 	}
 	
 	bool supportsTimeWrite;
+	bool supportsAssignClass;
+	bool supportsWriteTimeAndInterval;
+
 	bool allowTimeWrite;
 
 	RestartMode warmRestartSupport;
@@ -96,7 +126,8 @@ public:
 	ApplicationIIN appIIN;
 
 	std::deque<openpal::UTCTimestamp> timestamps;
-
+	std::deque<std::tuple<AssignClassType, PointClass, uint16_t, uint16_t>> classAssignments;
+	std::deque<IndexedValue<TimeAndInterval, uint16_t>> timeAndIntervals;
 
 };
 

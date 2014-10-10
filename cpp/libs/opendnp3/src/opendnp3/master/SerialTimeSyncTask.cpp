@@ -35,16 +35,18 @@ namespace opendnp3
 
 SerialTimeSyncTask::SerialTimeSyncTask(openpal::Logger* pLogger_, openpal::IUTCTimeSource* pTimeSource_) :
 	SingleResponseTask(pLogger_),
+	expiration(MonotonicTimestamp::Max()),
 	pTimeSource(pTimeSource_),
 	delay(-1)
 {}
 
-void SerialTimeSyncTask::Reset()
+void SerialTimeSyncTask::Initialize()
 {
 	delay = -1;
+	expiration = MonotonicTimestamp::Max();
 }
 
-void SerialTimeSyncTask::BuildRequest(APDURequest& request, const MasterParams& params, uint8_t seq)
+void SerialTimeSyncTask::BuildRequest(APDURequest& request, uint8_t seq)
 {
 	if (delay < 0)
 	{
@@ -63,18 +65,24 @@ void SerialTimeSyncTask::BuildRequest(APDURequest& request, const MasterParams& 
 	}
 }
 
-void SerialTimeSyncTask::OnTimeoutOrBadControlOctet(const MasterParams& params, IMasterScheduler& scheduler)
+void SerialTimeSyncTask::OnLowerLayerClose(const openpal::MonotonicTimestamp&)
 {
+	this->Initialize();
+}
+
+openpal::MonotonicTimestamp SerialTimeSyncTask::ExpirationTime() const
+{
+	return expiration;
+}
+
+void SerialTimeSyncTask::OnTimeoutOrBadControlOctet(const openpal::MonotonicTimestamp&)
+{
+	this->Initialize();
 	// TODO - some kind of logging?
 	// don't reschedule. Seeing the NeedTime bit again will automatically re-activate the task
 }
 
-bool SerialTimeSyncTask::Enabled(const MasterParams& params)
-{
-	return params.timeSyncMode == TimeSyncMode::SerialTimeSync;	
-}
-
-TaskStatus SerialTimeSyncTask::OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const MasterParams& params, IMasterScheduler& scheduler)
+TaskResult SerialTimeSyncTask::OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now)
 {
 	if (delay < 0)
 	{
@@ -90,24 +98,26 @@ TaskStatus SerialTimeSyncTask::OnSingleResponse(const APDUResponseHeader& respon
 
 				// The later shouldn't happen, but could cause a negative delay which would result in a weird time setting				
 				delay = (sendReceieveTime >= rtuTurnAroundTime) ? (sendReceieveTime - rtuTurnAroundTime) / 2 : 0;				
-				return TaskStatus::REPEAT;
+				return TaskResult::REPEAT;
 			}
 			else
 			{
-				return TaskStatus::FAIL;
+				this->Initialize();
+				return TaskResult::FAILURE;
 			}
 		}
 		else
-		{			
-			return TaskStatus::FAIL;
+		{		
+			this->Initialize();
+			return TaskResult::FAILURE;
 		}
 	}
 	else
 	{
-		return TaskStatus::SUCCESS;
+		this->Initialize();
+		return TaskResult::SUCCESS;
 	}
 }
-
 	
 } //ens ns
 

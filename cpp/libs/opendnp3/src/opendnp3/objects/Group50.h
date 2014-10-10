@@ -24,6 +24,8 @@
 #include <openpal/container/ReadOnlyBuffer.h>
 #include <openpal/container/WriteBuffer.h>
 #include "opendnp3/app/GroupVariationID.h"
+#include "opendnp3/app/DNP3Serializer.h"
+#include "opendnp3/app/TimeAndInterval.h"
 
 namespace opendnp3 {
 
@@ -34,6 +36,24 @@ struct Group50Var1
   static Group50Var1 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group50Var1&, openpal::WriteBuffer&);
   uint64_t time;
+};
+
+struct Group50Var4
+{
+  static GroupVariationID ID() { return GroupVariationID(50,4); }
+  static uint32_t Size() { return 11; }
+  static Group50Var4 Read(openpal::ReadOnlyBuffer&);
+  static void Write(const Group50Var4&, openpal::WriteBuffer&);
+
+  static DNP3Serializer<TimeAndInterval> Inst() { return DNP3Serializer<TimeAndInterval>(ID(), Size(), &ReadTarget, &WriteTarget); }
+
+  typedef TimeAndInterval Target;
+  static TimeAndInterval ReadTarget(openpal::ReadOnlyBuffer&);
+  static void WriteTarget(const TimeAndInterval&, openpal::WriteBuffer&);
+
+  uint64_t time;
+  uint32_t interval;
+  uint8_t units;
 };
 
 

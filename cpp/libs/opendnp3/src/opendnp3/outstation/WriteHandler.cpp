@@ -95,6 +95,21 @@ void WriteHandler::_OnCountOf(const HeaderRecord&, const IterableBuffer<Group50V
 	}
 }
 
+void WriteHandler::_OnIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas)
+{
+	if (pApplication->SupportsWriteTimeAndInterval())
+	{
+		if (!pApplication->WriteTimeAndInterval(meas))
+		{
+			errors.SetBit(IINBit::PARAM_ERROR);
+		}
+	}
+	else
+	{
+		errors.SetBit(IINBit::FUNC_NOT_SUPPORTED);
+	}
+}
+
 }
 
 

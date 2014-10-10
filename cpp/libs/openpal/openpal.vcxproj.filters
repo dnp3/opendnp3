@@ -187,6 +187,9 @@
     <ClInclude Include="src\openpal\container\Stack.h">
       <Filter>Header\container</Filter>
     </ClInclude>
+    <ClInclude Include="src\openpal\container\ManagedPtr.h">
+      <Filter>Header\container</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\openpal\executor\MonotonicTimestamp.cpp">

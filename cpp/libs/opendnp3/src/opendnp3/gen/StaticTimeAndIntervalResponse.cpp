@@ -18,22 +18,22 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#include "PollState.h"
+#include "StaticTimeAndIntervalResponse.h"
 
 namespace opendnp3 {
 
-char const* PollStateToString(PollState arg)
+int StaticTimeAndIntervalResponseToType(StaticTimeAndIntervalResponse arg)
+{
+  return static_cast<int>(arg);
+}
+StaticTimeAndIntervalResponse StaticTimeAndIntervalResponseFromType(int arg)
 {
   switch(arg)
   {
-    case(PollState::RUNNING):
-      return "RUNNING";
-    case(PollState::SUCCESS):
-      return "SUCCESS";
-    case(PollState::FAILURE):
-      return "FAILURE";
+    case(0):
+      return StaticTimeAndIntervalResponse::Group50Var4;
   }
-  return "FAILURE";
+  return StaticTimeAndIntervalResponse::Group50Var4;
 }
 
 }

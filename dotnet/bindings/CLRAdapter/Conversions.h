@@ -11,6 +11,7 @@
 #include <opendnp3/gen/ChannelState.h>
 
 #include <opendnp3/app/MeasurementTypes.h>
+#include <opendnp3/app/TimeAndInterval.h>
 #include <opendnp3/app/ControlRelayOutputBlock.h>
 #include <opendnp3/app/AnalogOutput.h>
 #include <opendnp3/app/OctetString.h>
@@ -60,7 +61,7 @@ namespace Automatak
 				static CommandStatus ConvertCommandStatus(opendnp3::CommandStatus status);
 				static opendnp3::CommandStatus ConvertCommandStatus(CommandStatus status);
 
-				static CommandResult ConvertCommandResult(opendnp3::CommandResult result);
+				static UserTaskResult ConvertCommandResult(opendnp3::UserTaskResult result);
 
 				static CommandResponse ConvertCommandResponse(opendnp3::CommandResponse response);
 
@@ -95,7 +96,8 @@ namespace Automatak
 				static FrozenCounter^ ConvertMeas(opendnp3::FrozenCounter meas);
 				static AnalogOutputStatus^ ConvertMeas(opendnp3::AnalogOutputStatus meas);
 				static BinaryOutputStatus^ ConvertMeas(opendnp3::BinaryOutputStatus meas);
-				static OctetString^ Conversions::ConvertMeas(const opendnp3::OctetString& arMeas);
+				static OctetString^ Conversions::ConvertMeas(const opendnp3::OctetString& meas);
+				static TimeAndInterval^ Conversions::ConvertMeas(const opendnp3::TimeAndInterval& meas);
 
 
 				static opendnp3::Binary ConvertMeas(Binary^ meas);
@@ -105,6 +107,7 @@ namespace Automatak
 				static opendnp3::FrozenCounter ConvertMeas(FrozenCounter^ meas);
 				static opendnp3::AnalogOutputStatus ConvertMeas(AnalogOutputStatus^ meas);
 				static opendnp3::BinaryOutputStatus ConvertMeas(BinaryOutputStatus^ meas);
+				static opendnp3::TimeAndInterval ConvertMeas(TimeAndInterval^ meas);
 
 				//Convert the configuration types
 				static asiopal::SerialSettings ConvertSerialSettings(SerialSettings^ settings);

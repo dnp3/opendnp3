@@ -56,20 +56,21 @@ IMasterState* MasterStateIdle::OnStart(MasterContext* pContext)
 	}
 	else
 	{
-		auto pTask = pContext->scheduler.Start(pContext->params);
+		auto pTask = pContext->scheduler.Start();
 		
-		if (pTask)
+		if (pTask.IsDefined())
 		{		
+			pContext->pActiveTask = std::move(pTask);
+
 			if (pContext->pTaskLock->Acquire(*pContext))
 			{
-				FORMAT_LOG_BLOCK(pContext->logger, flags::INFO, "Begining task: %s", pTask->Name());
-				pContext->pActiveTask = pTask;
-				pContext->StartTask(pTask);
+				FORMAT_LOG_BLOCK(pContext->logger, flags::INFO, "Begining task: %s", pContext->pActiveTask->Name());
+				pContext->StartTask(*pContext->pActiveTask);				
+				pContext->NotifyCurrentTask(TaskState::RUNNING);
 				return &MasterStateWaitForResponse::Instance();
 			}
 			else
-			{
-				pContext->pActiveTask = pTask;
+			{				
 				return &MasterStateTaskReady::Instance();
 			}
 		}
@@ -84,7 +85,7 @@ IMasterState* MasterStateIdle::OnStart(MasterContext* pContext)
 
 MasterStateTaskReady MasterStateTaskReady::instance;
 
-IMasterState* MasterStateTaskReady::OnStart(MasterContext*pContext)
+IMasterState* MasterStateTaskReady::OnStart(MasterContext* pContext)
 {
 	if (pContext->isSending)
 	{
@@ -94,7 +95,7 @@ IMasterState* MasterStateTaskReady::OnStart(MasterContext*pContext)
 	{
 		if (pContext->pTaskLock->Acquire(*pContext))
 		{
-			pContext->StartTask(pContext->pActiveTask);
+			pContext->StartTask(*pContext->pActiveTask);
 			return &MasterStateWaitForResponse::Instance();
 		}
 		else
@@ -114,26 +115,29 @@ IMasterState* MasterStateWaitForResponse::OnResponse(MasterContext* pContext, co
 	{
 		pContext->CancelResponseTimer();
 
-		pContext->solSeq = AppControlField::NextSeq(pContext->solSeq);		
-		
-		auto result = pContext->pActiveTask->OnResponse(response, objects, pContext->params, pContext->scheduler);
+		pContext->solSeq = AppControlField::NextSeq(pContext->solSeq);	
 
-		if (response.control.CON && pContext->CanConfirmResponse(result))
+		auto now = pContext->pExecutor->GetTime();
+		
+		auto result = pContext->pActiveTask->OnResponse(response, objects, now);
+
+		if (response.control.CON) // TODO evaluate if reponse was procesed before confirming && pContext->CanConfirmResponse(result))
 		{
 			pContext->QueueConfirm(APDUHeader::SolicitedConfirm(response.control.SEQ));
 		}
 
 		switch (result)
 		{
-			case(TaskStatus::CONTINUE) :
+			case(TaskResult::CONTINUE) :
 				pContext->StartResponseTimer();
 				return this;
-			case(TaskStatus::REPEAT) :				
+			case(TaskResult::REPEAT) :				
 				return MasterStateTaskReady::Instance().OnStart(pContext);
-			default:
-				pContext->pActiveTask = nullptr;
+			default:				
+				pContext->NotifyCurrentTask((result == TaskResult::SUCCESS) ? TaskState::SUCCESS : TaskState::FAILURE);
+				pContext->ReleaseActiveTask();												
 				pContext->pTaskLock->Release(*pContext);
-				pContext->PostCheckForTask();
+				pContext->PostCheckForTask();								
 				return &MasterStateIdle::Instance();
 		}
 	}
@@ -146,9 +150,11 @@ IMasterState* MasterStateWaitForResponse::OnResponse(MasterContext* pContext, co
 
 IMasterState* MasterStateWaitForResponse::OnResponseTimeout(MasterContext* pContext)
 {	
+	pContext->NotifyCurrentTask(TaskState::FAILURE);
 	pContext->pResponseTimer = nullptr;
-	pContext->pActiveTask->OnResponseTimeout(pContext->params, pContext->scheduler);
-	pContext->pActiveTask = nullptr;
+	auto now = pContext->pExecutor->GetTime();
+	pContext->pActiveTask->OnResponseTimeout(now);
+	pContext->ReleaseActiveTask();	
 	pContext->pTaskLock->Release(*pContext);
 	pContext->solSeq = AppControlField::NextSeq(pContext->solSeq);
 	pContext->PostCheckForTask();

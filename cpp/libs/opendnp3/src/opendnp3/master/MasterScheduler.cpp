@@ -32,226 +32,132 @@ using namespace openpal;
 namespace opendnp3
 {
 
-MasterScheduler::MasterScheduler(	openpal::Logger* pLogger, 
-									MasterTasks& tasks,
+MasterScheduler::MasterScheduler(	openpal::Logger* pLogger, 									
 									openpal::IExecutor& executor,
 									IScheduleCallback& callback
 									) :	
 	pExecutor(&executor),
-	pCallback(&callback),
-	pStaticTasks(&tasks),
-	isOnline(false),
-	scheduledTaskMask(0),
-	pTimer(nullptr),
-	pCurrentTask(nullptr)	
+	pCallback(&callback),	
+	isOnline(false),	
+	pTimer(nullptr)	
 {
 
 }
 
-void MasterScheduler::Schedule(IMasterTask& task, const openpal::TimeDuration& delay)
+void MasterScheduler::Schedule(openpal::ManagedPtr<IMasterTask> pTask)
+{
+	tasks.push_back(std::move(pTask));
+}
+
+openpal::ManagedPtr<IMasterTask> MasterScheduler::Start()
 {		
-	// if the delay is negative, the expiration time will be infinity
-	auto expiration = MonotonicTimestamp::Max();
-	if (delay >= 0)
-	{
-		expiration = pExecutor->GetTime().Add(delay);
-	}
-	
-	this->periodicTasks.push_back(TaskRecord(task, expiration));
-	if (blockingTask.IsEmpty() && !this->pCurrentTask)
-	{
-		this->StartOrRestartTimer(expiration);
-	}	
+	return PopNextTask();	
 }
 
-void MasterScheduler::SetBlocking(IMasterTask& task, const openpal::TimeDuration& delay)
+int MasterScheduler::Compare(const MonotonicTimestamp& now, const IMasterTask& lhs, const IMasterTask& rhs)
 {
-	auto expiration = pExecutor->GetTime().Add(delay);
-	this->blockingTask.Set(TaskRecord(task, expiration));
-	this->CancelScheduleTimer();
-	this->StartTimer(expiration);
-}
-
-bool MasterScheduler::Demand(IMasterTask& task)
-{
-	if (isOnline)
+	// if they're both enabled we compare based on
+	// blocking/priority/expiration time
+	if (lhs.IsEnabled() && rhs.IsEnabled())
 	{
-		auto pTask = &task;
-		if (this->IsTaskActive(pTask))
+		if ((lhs.Priority() > rhs.Priority()) && rhs.BlocksLowerPriority())
 		{
-			return true;
+			return 1; // rhs greater
 		}
-		else
+		else if (rhs.Priority() < lhs.Priority() && lhs.BlocksLowerPriority())
 		{
-			auto equals = [pTask](const TaskRecord& tr) { return tr.pTask == pTask; };
-			auto iter = std::find_if(periodicTasks.begin(), periodicTasks.end(), equals);
-			
-			if (iter == periodicTasks.end())
+			return -1; // lhs greater
+		}
+		else // equal priority or neither task blocks lower priority tasks, compare based on time
+		{
+			auto tlhs = lhs.ExpirationTime();
+			auto trhs = rhs.ExpirationTime();
+			auto lhsExpired = tlhs.milliseconds <= now.milliseconds;
+			auto rhsExpired = trhs.milliseconds <= now.milliseconds;
+
+			if (lhsExpired && rhsExpired)
 			{
-				return false;				
+				// both expired, compare based on priority				
+				return lhs.Priority() - rhs.Priority();
 			}
 			else
-			{				
-				iter->expiration = MonotonicTimestamp::Min();
-				if (!IsAnyTaskActive())
+			{
+				if (tlhs.milliseconds < trhs.milliseconds)
 				{
-					this->CancelScheduleTimer();
-					this->pCallback->OnPendingTask();
+					return -1;
 				}
-				return true;
-			}
+				else if (trhs.milliseconds < tlhs.milliseconds)
+				{
+					return 1;
+				}
+				else
+				{
+					// if equal times, compare based on priority
+					return lhs.Priority() - rhs.Priority();
+				}
+			}			
 		}
 	}
-	else
+	else 
 	{
-		return false;
-	}	
-}
-
-IMasterTask* MasterScheduler::Start(const MasterParams& params)
-{	
-	auto pTask = FindTaskToStart(params);
-	this->pCurrentTask = pTask;
-	return pTask;
-}
-
-IMasterTask* MasterScheduler::FindTaskToStart(const MasterParams& params)
-{		
-	auto now = pExecutor->GetTime();	
-
-	if (blockingTask.IsSet())
-	{
-		auto record = blockingTask.Get();		
-		if (record.expiration.milliseconds <= now.milliseconds)
-		{
-			blockingTask.Clear();
-			return record.pTask;
-		}
-		else
-		{
-			this->StartOrRestartTimer(record.expiration);
-			return nullptr;
-		}
-	}
-	else
-	{
-		// nothing blocking, so look at the startup sequence next
-		auto scheduled = this->GetScheduledTask(params);
-		if (scheduled)
-		{
-			return scheduled;
-		}
-		else
-		{						
-			if (!userTasks.empty())
-			{
-				auto pTask = userTasks.front().Apply();
-				userTasks.pop_front();
-				return pTask;				
-			}
-			else
-			{
-				//finally check for periodic tasks
-				return GetPeriodicTask(params, now);
-			}										
-		}
+		// always prefer the enabled task over the one that isn't
+		return rhs.IsEnabled() ? 1 : -1;
 	}
 }
 
-IMasterTask* MasterScheduler::GetScheduledTask(const MasterParams& params)
+std::vector<openpal::ManagedPtr<IMasterTask>>::iterator MasterScheduler::GetNextTask(const MonotonicTimestamp& now)
 {
-	if (CanTaskRun(pStaticTasks->disableUnsol, tasks::DISABLE_UNSOLCITED, params))
-	{
-		return &pStaticTasks->disableUnsol;
-	}
-
-	if (CanTaskRun(pStaticTasks->clearRestartTask, tasks::CLEAR_RESTART_IIN, params))
-	{
-		return &pStaticTasks->clearRestartTask;
-	}
-
-	if (CanTaskRun(pStaticTasks->startupIntegrity, tasks::STARTUP_INTEGRITY, params))
-	{
-		return &pStaticTasks->startupIntegrity;
-	}
-
-	if (CanTaskRun(pStaticTasks->serialTimeSync, tasks::TIME_SYNC, params))
-	{
-		return &pStaticTasks->serialTimeSync;
-	}
-
-	if (CanTaskRun(pStaticTasks->enableUnsol, tasks::ENABLE_UNSOLCITED, params))
-	{
-		return &pStaticTasks->enableUnsol;
-	}
+	auto runningBest = tasks.begin();
 	
-	return nullptr;
-}
+	if (!tasks.empty())	
+	{		
+		auto current = tasks.begin();
+		++current;
 
-bool MasterScheduler::CanTaskRun(IMasterTask& task, tasks::TaskBitmask bitmask, const MasterParams& params)
-{
-	if (scheduledTaskMask & bitmask)
-	{
-		scheduledTaskMask &= ~bitmask; // clear this bit
-		return task.Enabled(params);
-	}
-	else
-	{ 
-		return nullptr;
-	}
-}
-
-IMasterTask* MasterScheduler::GetPeriodicTask(const MasterParams& params, const openpal::MonotonicTimestamp& now)
-{
-	auto lessThan = [](const TaskRecord& lhs, const TaskRecord& rhs) { return lhs.expiration < rhs.expiration; };
-	auto iter = std::min_element(periodicTasks.begin(), periodicTasks.end(), lessThan);
-	if (iter == periodicTasks.end())
-	{
-		return nullptr;		
-	}
-	else
-	{
-		if (iter->expiration.milliseconds <= now.milliseconds)
+		for (; current != tasks.end(); ++current)
 		{
-			auto ret = iter->pTask;
-			periodicTasks.erase(iter);
+			auto cmp = Compare(now, **runningBest, **current);
+			if (cmp > 0)
+			{
+				runningBest = current;
+			}
+		}		
+	}	
+	
+	return runningBest;	
+}
+
+openpal::ManagedPtr<IMasterTask> MasterScheduler::PopNextTask()
+{	
+	auto now = pExecutor->GetTime();
+	auto elem = GetNextTask(now);	
+
+	if (elem == tasks.end())
+	{
+		return ManagedPtr<IMasterTask>();
+	}
+	else
+	{
+		if ((*elem)->ExpirationTime().milliseconds <= now.milliseconds) 
+		{
+			ManagedPtr<IMasterTask> ret(std::move(*elem));
+			tasks.erase(elem);
 			return ret;
 		}
 		else
 		{
-			this->StartOrRestartTimer(iter->expiration);
-			return nullptr;
-		}
-	}
-}
-
-void MasterScheduler::ScheduleUserTask(const openpal::Function0<IMasterTask*>& task)
-{
-	this->userTasks.push_back(task);
-	
-	if (!IsAnyTaskActive())
-	{
-		this->CancelScheduleTimer();
-		this->pCallback->OnPendingTask();
+			if (!(*elem)->ExpirationTime().IsMax())
+			{
+				this->StartOrRestartTimer((*elem)->ExpirationTime());
+			}			
+			return ManagedPtr<IMasterTask>();
+		}		
 	}	
 }
 
-PollTask* MasterScheduler::AddPollTask(const PollTask& task)
-{				
-	pollTasks.push_back(task);
-	auto& ref = pollTasks.back();
-
-	if (isOnline)
-	{
-		this->Schedule(ref, ref.GetPeriod());
-	}				
-
-	return &ref;
-}
-
-
+/*
 void MasterScheduler::ProcessRxIIN(const IINField& iin, const MasterParams& params)
-{
+{	
 	if (iin.IsSet(IINBit::DEVICE_RESTART))
 	{		
 		if (!this->IsTaskActive(&pStaticTasks->clearRestartTask))
@@ -279,42 +185,15 @@ void MasterScheduler::ProcessRxIIN(const IINField& iin, const MasterParams& para
 	if (scheduledTaskMask)
 	{
 		this->CancelScheduleTimer();
-	}
-}
-
-bool MasterScheduler::IsTaskActive(IMasterTask* pTask)
-{
-	auto isEqual = [pTask] (const TaskRecord& tr) { return tr.pTask == pTask; };
-	if (blockingTask.IsSetAnd(isEqual))
-	{
-		return true;
-	}
-	else
-	{
-		return pCurrentTask == pTask;
 	}	
 }
+*/
 
-bool MasterScheduler::IsAnyTaskActive() const
-{
-	return pCurrentTask || blockingTask.IsSet();
-}
-
-void MasterScheduler::OnLowerLayerUp(const MasterParams& params)
+void MasterScheduler::OnLowerLayerUp()
 {
 	if (!isOnline)
 	{
 		isOnline = true;
-
-		this->scheduledTaskMask = tasks::STARTUP_TASK_SEQUENCE;
-
-		auto now = pExecutor->GetTime();
-		
-		for (auto& pt : pollTasks)
-		{
-			this->Schedule(pt, pt.GetPeriod());
-		}
-		
 		pCallback->OnPendingTask();
 	}	
 }
@@ -327,31 +206,16 @@ void MasterScheduler::OnLowerLayerDown()
 	{
 		isOnline = false;
 		this->CancelScheduleTimer();
-		periodicTasks.clear();
 
-		this->scheduledTaskMask = 0;
-
-		pCurrentTask = nullptr;
-
-		if (blockingTask.IsSet())
+		auto now = pExecutor->GetTime();			
+		
+		for (auto& pTask : tasks)
 		{
-			blockingTask.Get().pTask->OnLowerLayerClose();
-			blockingTask.Clear();
+			pTask->OnLowerLayerClose(now);
 		}
-
-		while (!userTasks.empty())
-		{
-			auto pTask = userTasks.front().Apply();			 
-			pTask->OnLowerLayerClose();
-			userTasks.pop_front();
-		}		
+		
+		tasks.clear();
 	}	
-}
-
-void MasterScheduler::ReportFailure(const CommandErasure& action, CommandResult result)
-{
-	ConstantCommandProcessor processor(CommandResponse::NoResponse(result), pExecutor);
-	action(processor);
 }
 
 void MasterScheduler::OnTimerExpiration()
@@ -402,6 +266,7 @@ bool MasterScheduler::CancelScheduleTimer()
 		return false;
 	}
 }
+
 
 }
 

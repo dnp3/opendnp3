@@ -18,39 +18,48 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-
-#ifndef OPENDNP3_IMASTERSCHEDULER_H
-#define OPENDNP3_IMASTERSCHEDULER_H
-
-#include <openpal/executor/TimeDuration.h>
+#ifndef OPENDNP3_TASKID_H
+#define OPENDNP3_TASKID_H
 
 namespace opendnp3
 {
+	enum class TaskIds : int
+	{
+		CLEAR_RESTART,
+		DISABLE_UNSOLICITED,
+		ASSIGN_CLASS,
+		STARTUP_INTEGRITY_POLL,
+		SERIAL_TIME_SYNC,
+		ENABLE_UNSOLICITED
+	};
 
-class IMasterTask;
+	class TaskId
+	{
+		public:			
 
-class IMasterScheduler
-{
+		static TaskId From(TaskIds id)
+		{
+			return TaskId(false, (int)id);
+		}
 
-public:
+		static TaskId UserDefined(int id)
+		{
+			return TaskId(true, id);
+		}
 
-	/**
-	* Schedule the task to run now or in the future
-	*/
-	virtual void Schedule(IMasterTask& task, const openpal::TimeDuration& delay = openpal::TimeDuration::Min()) = 0;
+		inline bool IsDefined() const 
+		{
+			return id >= 0;
+		}
 
-	/**
-	* Set the scheduler to block until the duration elapses and then run the task
-	*/
-	virtual void SetBlocking(IMasterTask& task, const openpal::TimeDuration& delay) = 0;
+		int id;
+		bool isUserAssigned;
+		
+		private:
 
-	/*
-	* If the task is currently waiting, set it to run ASAP
-	*/
-	virtual bool Demand(IMasterTask& task) = 0;
-
-};
-
+		TaskId(bool userAssigned_, int id_) : id(id_), isUserAssigned(userAssigned_)			
+		{}
+	};
 }
 
 #endif

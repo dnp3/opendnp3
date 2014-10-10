@@ -52,7 +52,7 @@ TEST_CASE(SUITE("ControlExecutionClosedState"))
 		pCmdProcessor->SelectAndOperate(bo, 1, callback);
 		t.exe.RunMany();
 		REQUIRE(1 == callback.responses.size());
-		REQUIRE((CommandResponse(CommandResult::NO_COMMS) == callback.responses.front()));
+		REQUIRE((CommandResponse(UserTaskResult::NO_COMMS) == callback.responses.front()));
 		callback.responses.pop_front();
 	}
 
@@ -106,7 +106,7 @@ TEST_CASE(SUITE("ControlExecutionSelectTimeout"))
 	t.exe.RunMany();
 
 	REQUIRE(1 == callback.responses.size());
-	REQUIRE((CommandResponse(CommandResult::TIMEOUT) == callback.responses.front()));
+	REQUIRE((CommandResponse(UserTaskResult::TIMEOUT) == callback.responses.front()));
 }
 
 TEST_CASE(SUITE("ControlExecutionSelectLayerDown"))
@@ -125,7 +125,7 @@ TEST_CASE(SUITE("ControlExecutionSelectLayerDown"))
 	t.master.OnLowerLayerDown();
 
 	REQUIRE(1 == callback.responses.size());
-	REQUIRE((CommandResponse(CommandResult::NO_COMMS) == callback.responses.front()));
+	REQUIRE((CommandResponse(UserTaskResult::NO_COMMS) == callback.responses.front()));
 }
 
 TEST_CASE(SUITE("ControlExecutionSelectErrorResponse"))
@@ -162,7 +162,7 @@ TEST_CASE(SUITE("ControlExecutionSelectPartialResponse"))
 	t.exe.RunMany();
 
 	REQUIRE(1 ==  callback.responses.size());
-	REQUIRE((CommandResponse(CommandResult::BAD_RESPONSE) == callback.responses.front()));
+	REQUIRE((CommandResponse(UserTaskResult::BAD_RESPONSE) == callback.responses.front()));
 }
 
 TEST_CASE(SUITE("DeferredControlExecution"))

@@ -39,6 +39,11 @@ public:
 	{
 		return milliseconds;
 	}
+
+	bool IsNegative() const
+	{
+		return milliseconds < 0;
+	}
 	
 	operator T() const { return milliseconds; }
 
@@ -63,6 +68,8 @@ public:
 	bool IsPostive() const;
 
 	static TimeDuration Min();
+
+	static TimeDuration Max();
 
 	static TimeDuration Zero();
 

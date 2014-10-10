@@ -237,6 +237,7 @@
     <ClCompile Include="src\PhysBaseTest.cpp" />
     <ClCompile Include="src\PhysTestObject.cpp" />
     <ClCompile Include="src\SerialTestObject.cpp" />
+    <ClCompile Include="src\TestMasterAssignClass.cpp" />
     <ClCompile Include="src\TestMasterMultidrop.cpp" />
     <ClCompile Include="src\TestMasterUnsolBehaviors.cpp" />
     <ClCompile Include="src\TestObject.cpp" />
@@ -283,6 +284,7 @@
     <ClCompile Include="src\TestMasterCommandRequests.cpp" />
     <ClCompile Include="src\TestMaster.cpp" />
     <ClCompile Include="src\TestOutstation.cpp" />
+    <ClCompile Include="src\TestOutstationAssignClass.cpp" />
     <ClCompile Include="src\TestOutstationCommandResponses.cpp" />
     <ClCompile Include="src\TestOutstationEventResponses.cpp" />
     <ClCompile Include="src\TestOutstationUnsolicitedResponses.cpp" />

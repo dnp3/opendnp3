@@ -77,6 +77,7 @@ cpp/libs/opendnp3/src/opendnp3/app/MeasurementTypes.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/ObjectWriter.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/OctetData.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/StaticRange.cpp \
+cpp/libs/opendnp3/src/opendnp3/app/PointIndexes.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/ChannelState.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/CommandResult.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/CommandStatus.cpp \
@@ -93,7 +94,6 @@ cpp/libs/opendnp3/src/opendnp3/gen/FunctionCode.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/GroupVariation.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/LinkFunction.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/PointClass.cpp \
-cpp/libs/opendnp3/src/opendnp3/gen/PollState.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/QualifierCode.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/StaticAnalogOutputStatusResponse.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/StaticAnalogResponse.cpp \
@@ -102,6 +102,7 @@ cpp/libs/opendnp3/src/opendnp3/gen/StaticBinaryResponse.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/StaticCounterResponse.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/StaticDoubleBinaryResponse.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/StaticFrozenCounterResponse.cpp \
+cpp/libs/opendnp3/src/opendnp3/gen/TaskState.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/TimeSyncMode.cpp \
 cpp/libs/opendnp3/src/opendnp3/link/CRC.cpp \
 cpp/libs/opendnp3/src/opendnp3/link/IOpenDelayStrategy.cpp \
@@ -112,6 +113,7 @@ cpp/libs/opendnp3/src/opendnp3/link/LinkLayerParser.cpp \
 cpp/libs/opendnp3/src/opendnp3/link/PriLinkLayerStates.cpp \
 cpp/libs/opendnp3/src/opendnp3/link/SecLinkLayerStates.cpp \
 cpp/libs/opendnp3/src/opendnp3/link/ShiftableBuffer.cpp \
+cpp/libs/opendnp3/src/opendnp3/master/AssignClassTask.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/ClearRestartTask.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/CommandMarshaller.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/CommandResponse.cpp \
@@ -131,11 +133,11 @@ cpp/libs/opendnp3/src/opendnp3/master/MasterTasks.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/MeasurementHandler.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/NullResponseTask.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/PollTaskBase.cpp \
-cpp/libs/opendnp3/src/opendnp3/master/PollTask.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/SerialTimeSyncTask.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/SingleResponseTask.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/StartupIntegrityPoll.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/TaskRecord.cpp \
+cpp/libs/opendnp3/src/opendnp3/master/UserPollTask.cpp \
 cpp/libs/opendnp3/src/opendnp3/objects/Group10.cpp \
 cpp/libs/opendnp3/src/opendnp3/objects/Group11.cpp \
 cpp/libs/opendnp3/src/opendnp3/objects/Group12.cpp \
@@ -157,11 +159,12 @@ cpp/libs/opendnp3/src/opendnp3/objects/Group51.cpp \
 cpp/libs/opendnp3/src/opendnp3/objects/Group52.cpp \
 cpp/libs/opendnp3/src/opendnp3/objects/Group60.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/ApplicationIIN.cpp \
+cpp/libs/opendnp3/src/opendnp3/outstation/AssignClassHandler.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/ClassBasedRequestHandler.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/CommandActionAdapter.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/CommandResponseHandler.cpp \
-cpp/libs/opendnp3/src/opendnp3/outstation/Database.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/DatabaseBuffers.cpp \
+cpp/libs/opendnp3/src/opendnp3/outstation/Database.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/EventBufferConfig.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/EventCount.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/EventResponseConfig.cpp \
@@ -191,7 +194,6 @@ cpp/libs/opendnp3/src/opendnp3/transport/TransportLayer.cpp \
 cpp/libs/opendnp3/src/opendnp3/transport/TransportRx.cpp \
 cpp/libs/opendnp3/src/opendnp3/transport/TransportStack.cpp \
 cpp/libs/opendnp3/src/opendnp3/transport/TransportTx.cpp
-
 
 #ls cpp/libs/asiodnp3/src/asiodnp3/*.cpp -1 | awk '{print $0" \\"}'
 libasiodnp3_la_CPPFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) -I$(ASIODNP3_INCLUDE) $(ASIO_CONFIG)
@@ -287,12 +289,14 @@ cpp/tests/opendnp3tests/src/TestLinkLayerRouter.cpp \
 cpp/tests/opendnp3tests/src/TestLinkReceiver.cpp \
 cpp/tests/opendnp3tests/src/TestLinkRoute.cpp \
 cpp/tests/opendnp3tests/src/TestLog.cpp \
+cpp/tests/opendnp3tests/src/TestMasterAssignClass.cpp \
 cpp/tests/opendnp3tests/src/TestMasterCommandRequests.cpp \
 cpp/tests/opendnp3tests/src/TestMaster.cpp \
 cpp/tests/opendnp3tests/src/TestMasterMultidrop.cpp \
 cpp/tests/opendnp3tests/src/TestMasterUnsolBehaviors.cpp \
 cpp/tests/opendnp3tests/src/TestObjectASIO.cpp \
 cpp/tests/opendnp3tests/src/TestObject.cpp \
+cpp/tests/opendnp3tests/src/TestOutstationAssignClass.cpp \
 cpp/tests/opendnp3tests/src/TestOutstationCommandResponses.cpp \
 cpp/tests/opendnp3tests/src/TestOutstation.cpp \
 cpp/tests/opendnp3tests/src/TestOutstationEventResponses.cpp \

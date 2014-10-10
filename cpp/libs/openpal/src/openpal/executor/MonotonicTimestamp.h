@@ -39,6 +39,9 @@ public:
 	static MonotonicTimestamp Max();
 	static MonotonicTimestamp Min();	
 
+	bool IsMax() const;
+	bool IsMin() const;
+
 	MonotonicTimestamp();
 	MonotonicTimestamp(int64_t aMilliseconds);
 	MonotonicTimestamp Add(const TimeDuration& arDuration) const;

@@ -18,24 +18,22 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_IPOLLLISTENER_H
-#define OPENDNP3_IPOLLLISTENER_H
-
-#include "opendnp3/gen/PollState.h"
+#ifndef OPENDNP3_ITASKCALLBACK_H
+#define OPENDNP3_ITASKCALLBACK_H
 
 namespace opendnp3
 {
 
-/// Receives event about the status of a poll task
-class IPollListener
-{	
-
+/**
+* Parameterized callback when a task finishes or fails
+*/
+template <class T>
+class ITaskCallback
+{
 public:
-
-	virtual void OnStateChange(PollState state) = 0;
 	
+	virtual void OnComplete(const T& response) = 0;	
 };
-
 
 }
 

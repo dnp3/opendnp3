@@ -18,31 +18,28 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef OPENDNP3_COMMANDRESULT_H
-#define OPENDNP3_COMMANDRESULT_H
+#ifndef OPENDNP3_STATICTYPEBITMASK_H
+#define OPENDNP3_STATICTYPEBITMASK_H
 
 #include <cstdint>
 
 namespace opendnp3 {
 
 /**
-  Opendnp3 API enum used for differentiating cases when a command sequence fails without a response from the outstation
+  Bitmask values for all the static types
 */
-enum class CommandResult : int
+enum class StaticTypeBitmask : uint16_t
 {
-  /// A response was received from the outstation, check the CommandStatus enumeration
-  RESPONSE_OK = 0,
-  /// A response was received from the outstation, but it did not match or contained bad formatting
-  BAD_RESPONSE = 1,
-  /// The operation timed out without a response
-  TIMEOUT = 2,
-  /// There is no communication with the outstation, and the command was not attempted
-  NO_COMMS = 3,
-  /// The master's requst queue is full. Too many operations have been requested
-  QUEUE_FULL = 4
+  BinaryInput = 0x1,
+  DoubleBinaryInput = 0x2,
+  Counter = 0x4,
+  FrozenCounter = 0x8,
+  AnalogInput = 0x10,
+  BinaryOutputStatus = 0x20,
+  AnalogOutputStatus = 0x40,
+  TimeAndInterval = 0x80
 };
 
-char const* CommandResultToString(CommandResult arg);
 
 }
 

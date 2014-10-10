@@ -190,6 +190,8 @@ GroupVariation GroupVariationFromType(uint16_t arg)
       return GroupVariation::Group42Var8;
     case(0x3201):
       return GroupVariation::Group50Var1;
+    case(0x3204):
+      return GroupVariation::Group50Var4;
     case(0x3301):
       return GroupVariation::Group51Var1;
     case(0x3302):
@@ -381,6 +383,8 @@ char const* GroupVariationToString(GroupVariation arg)
       return "Analog Output Event - Double-precision With Flag abd Time";
     case(GroupVariation::Group50Var1):
       return "Time and Date - Absolute Time";
+    case(GroupVariation::Group50Var4):
+      return "Time and Date - Indexed absolute time and long interval";
     case(GroupVariation::Group51Var1):
       return "Time and Date CTO - Absolute time, synchronized";
     case(GroupVariation::Group51Var2):

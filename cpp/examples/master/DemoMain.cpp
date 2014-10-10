@@ -67,7 +67,7 @@ int main(int argc, char* argv[])
 	// you can override application layer settings for the master here
 	// in this example, we've change the application layer timeout to 2 seconds
 	stackConfig.master.responseTimeout = TimeDuration::Seconds(2);
-	stackConfig.master.disableUnsolOnStartup = false;
+	stackConfig.master.disableUnsolOnStartup = true;
 
 	// You can override the default link layer settings here
 	// in this example we've changed the default link layer addressing
@@ -98,9 +98,9 @@ int main(int argc, char* argv[])
 
 	do
 	{
-
-		std::cout << "Enter a command" << std::endl;
+		std::cout << "Enter a command" << std::endl;		
 		std::cout << "x - exits program" << std::endl;
+		std::cout << "a - performs and ad-hoc range scan" << std::endl;
 		std::cout << "i - integrity demand scan" << std::endl;
 		std::cout << "e - exception demand scan" << std::endl;
 		std::cout << "c - send crob" << std::endl;
@@ -109,6 +109,9 @@ int main(int argc, char* argv[])
 		std::cin >> cmd;
 		switch(cmd)
 		{
+			case('a') :
+				pMaster->ScanRange(GroupVariationID(1, 2), 0, 3, 5);				
+				break;
 			case('x'):
 				// C++ destructor on DNP3Manager cleans everything up for you
 				return 0;
@@ -125,7 +128,7 @@ int main(int argc, char* argv[])
 					BlockingCommandCallback handler;
 					pCommandProcessor->SelectAndOperate(crob, 0, handler);
 					auto response = handler.WaitForResult();
-					std::cout << "Result: " << CommandResultToString(response.GetResult()) <<
+					std::cout << "Result: " << UserTaskResultToString(response.GetResult()) <<
 								 " Status: " << CommandStatusToString(response.GetStatus()) << std::endl;
 					break;
 				}

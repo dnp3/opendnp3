@@ -17,27 +17,33 @@
 // 
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
+package com.automatak.dnp3;
 
-#include "CommandResult.h"
-
-namespace opendnp3 {
-
-char const* CommandResultToString(CommandResult arg)
+/**
+*/
+public enum StaticTimeAndIntervalResponse
 {
-  switch(arg)
-  {
-    case(CommandResult::RESPONSE_OK):
-      return "RESPONSE_OK";
-    case(CommandResult::BAD_RESPONSE):
-      return "BAD_RESPONSE";
-    case(CommandResult::TIMEOUT):
-      return "TIMEOUT";
-    case(CommandResult::NO_COMMS):
-      return "NO_COMMS";
-    case(CommandResult::QUEUE_FULL):
-      return "QUEUE_FULL";
-  }
-  return "QUEUE_FULL";
-}
+  Group50Var4(0);
 
+  private final int id;
+
+  private StaticTimeAndIntervalResponse(int id)
+  {
+    this.id = id;
+  }
+
+  public int toType()
+  {
+    return id;
+  }
+
+  public static StaticTimeAndIntervalResponse fromType(int arg)
+  {
+    switch(arg)
+    {
+      case(0):
+        return Group50Var4;
+    }
+    return Group50Var4;
+  }
 }

@@ -77,6 +77,11 @@ namespace Automatak.Simulator.DNP3
             this.Add(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED), "AnalogOutputStatus");
         }
 
+        void IDatabase.Update(TimeAndInterval update, ushort index)
+        {
+            this.Add(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED), "TimeAndInterval");
+        }
+
         void IDatabase.End()
         {
             listBox.ResumeLayout();

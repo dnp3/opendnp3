@@ -24,9 +24,9 @@
 namespace opendnp3
 {
 
-ResponseContext::ResponseContext(Database& database, OutstationEventBuffer& buffer, const StaticResponseConfig& staticConfig, const EventResponseConfig& eventConfig) :
+ResponseContext::ResponseContext(Database& database, OutstationEventBuffer& buffer, const OutstationParams* pParams, const StaticResponseConfig& staticConfig, const EventResponseConfig& eventConfig) :
 	fragmentCount(0),
-	staticContext(database, staticConfig),
+	staticContext(database, pParams, staticConfig),
 	eventContext(eventConfig, buffer)
 {
 
@@ -84,7 +84,7 @@ IINField ResponseContext::ReadAllObjects(const GroupVariationRecord& record)
 	}
 }
 
-IINField ResponseContext::ReadRange(const GroupVariationRecord& record, const StaticRange& range)
+IINField ResponseContext::ReadRange(const GroupVariationRecord& record, const Range& range)
 {
 	switch (record.type)
 	{

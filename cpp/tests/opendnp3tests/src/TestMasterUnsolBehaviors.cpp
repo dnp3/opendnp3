@@ -42,7 +42,7 @@ TEST_CASE(SUITE("ReceiveUnsolBeforeTransmit"))
 	MasterTestObject t(params);
 	t.master.OnLowerLayerUp();
 	
-	t.SendToMaster(hex::NullUnsolicited(0, IINField::Empty));
+	t.SendToMaster(hex::NullUnsolicited(0, IINField::Empty()));
 
 	t.exe.RunMany();
 

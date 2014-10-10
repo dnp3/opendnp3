@@ -51,6 +51,7 @@
     <Compile Include="ChannelStatistics.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ClassAssignment.cs" />
     <Compile Include="ClassField.cs" />
     <Compile Include="CommandTypes.cs" />
     <Compile Include="config\DatabaseTemplate.cs" />
@@ -62,13 +63,14 @@
     <Compile Include="config\StaticResponseConfig.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="config\StaticTypeBitfield.cs" />
     <Compile Include="Conversions.cs" />
     <Compile Include="config\EventBufferConfig.cs" />
     <Compile Include="gen\AnalogQuality.cs" />
+    <Compile Include="gen\AssignClassType.cs" />
     <Compile Include="gen\BinaryOutputStatusQuality.cs" />
     <Compile Include="gen\BinaryQuality.cs" />
     <Compile Include="gen\ChannelState.cs" />
-    <Compile Include="gen\CommandResult.cs" />
     <Compile Include="gen\CommandStatus.cs" />
     <Compile Include="gen\ControlCode.cs" />
     <Compile Include="gen\CounterQuality.cs" />
@@ -83,8 +85,8 @@
     <Compile Include="gen\EventFrozenCounterResponse.cs" />
     <Compile Include="gen\GroupVariation.cs" />
     <Compile Include="gen\IINField.cs" />
+    <Compile Include="gen\IntervalUnits.cs" />
     <Compile Include="gen\PointClass.cs" />
-    <Compile Include="gen\PollState.cs" />
     <Compile Include="gen\QualifierCode.cs" />
     <Compile Include="gen\RestartMode.cs" />
     <Compile Include="gen\StaticAnalogResponse.cs" />
@@ -94,8 +96,12 @@
     <Compile Include="gen\StaticAnalogOutputStatusResponse.cs" />
     <Compile Include="gen\StaticDoubleBinaryResponse.cs" />
     <Compile Include="gen\StaticFrozenCounterResponse.cs" />
+    <Compile Include="gen\StaticTimeAndIntervalResponse.cs" />
+    <Compile Include="gen\StaticTypeBitmask.cs" />
+    <Compile Include="gen\TaskState.cs" />
     <Compile Include="gen\TimestampMode.cs" />
     <Compile Include="gen\TimeSyncMode.cs" />
+    <Compile Include="gen\UserTaskResult.cs" />
     <Compile Include="IChannelStatistics.cs" />
     <Compile Include="ICommandHandler.cs">
       <SubType>Code</SubType>
@@ -139,6 +145,7 @@
     <Compile Include="config\SerialSettings.cs" />
     <Compile Include="SimpleCommandHandler.cs" />
     <Compile Include="StackStatistics.cs" />
+    <Compile Include="TaskId.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

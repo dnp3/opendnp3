@@ -35,6 +35,12 @@ public:
 
 	virtual void OnReceiveIIN(const opendnp3::IINField& iin) override final {}
 
+	virtual void OnTaskStateChange(opendnp3::TaskId id, opendnp3::TaskState state) override final {}
+
+	virtual bool AssignClassDuringStartup() override final { return false; }
+	
+	virtual void ConfigureAssignClassRequest(opendnp3::HeaderWriter& writer) override final {}
+
 	virtual openpal::UTCTimestamp Now() override final;
 
 private:

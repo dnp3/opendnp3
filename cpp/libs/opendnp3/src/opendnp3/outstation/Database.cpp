@@ -69,6 +69,7 @@ void Database::DoubleBuffer()
 	FreezeCollection(buffers.frozenCounters.values);
 	FreezeCollection(buffers.binaryOutputStatii.values);
 	FreezeCollection(buffers.analogOutputStatii.values);
+	FreezeCollection(buffers.timeAndIntervals.values);
 }
 
 ////////////////////////////////////////////////////
@@ -109,6 +110,16 @@ void Database::Update(const AnalogOutputStatus& value, uint16_t index)
 {
 	this->UpdateEvent(value, index, buffers.analogOutputStatii);
 }
+
+void Database::Update(const TimeAndInterval& value, uint16_t index)
+{
+    auto position = buffers.timeAndIntervals.indexes.GetPosition(index);
+	if (buffers.timeAndIntervals.values.Contains(position))
+	{		
+		buffers.timeAndIntervals.values[position].Update(value);
+	}
+}
+
 
 template <>
 openpal::Indexable<DualValue<Binary>, uint16_t>& Database::Values<Binary>()
@@ -153,6 +164,12 @@ openpal::Indexable<DualValue<AnalogOutputStatus>, uint16_t>& Database::Values<An
 }
 
 template <>
+openpal::Indexable<DualValue<TimeAndInterval>, uint16_t>& Database::Values<TimeAndInterval>()
+{
+	return buffers.timeAndIntervals.values;
+}
+
+template <>
 uint16_t Database::NumValues<Binary>() const
 {
 	return buffers.binaries.values.Size();
@@ -194,7 +211,84 @@ uint16_t Database::NumValues<AnalogOutputStatus>() const
 	return buffers.analogOutputStatii.values.Size();
 }
 
+template <>
+uint16_t Database::NumValues<TimeAndInterval>() const
+{
+	return buffers.timeAndIntervals.values.Size();
+}
 
+bool Database::AssignClass(AssignClassType type, PointClass clazz, const StaticRange& range)
+{
+	Transaction tx(this);
+	switch (type)
+	{	
+		case(AssignClassType::BinaryInput) :
+			return AssignClassTo(buffers.binaries.metadata, clazz, range);
+		case(AssignClassType::DoubleBinaryInput) :
+			return AssignClassTo(buffers.doubleBinaries.metadata, clazz, range);
+		case(AssignClassType::Counter) :
+			return AssignClassTo(buffers.counters.metadata, clazz, range);
+		case(AssignClassType::FrozenCounter) :
+			return AssignClassTo(buffers.frozenCounters.metadata, clazz, range);
+		case(AssignClassType::AnalogInput) :
+			return AssignClassTo(buffers.analogs.metadata, clazz, range);
+		case(AssignClassType::AnalogOutputStatus):
+			return AssignClassTo(buffers.analogOutputStatii.metadata, clazz, range);
+		case(AssignClassType::BinaryOutputStatus) :
+			return AssignClassTo(buffers.binaryOutputStatii.metadata, clazz, range);		
+		default:
+			return false;
+	}
+}
+
+template <>
+StaticRange Database::FullRange<Binary>() const
+{
+    return &buffers.binaries.indexes;
+}
+
+template <>
+StaticRange Database::FullRange<DoubleBitBinary>() const
+{
+    return &buffers.doubleBinaries.indexes;
+}
+
+template <>
+StaticRange Database::FullRange<Analog>() const
+{
+    return &buffers.analogs.indexes;
+}
+
+template <>
+StaticRange Database::FullRange<Counter>() const
+{
+    return &buffers.counters.indexes;
+}
+
+template <>
+StaticRange Database::FullRange<FrozenCounter>() const
+{
+    return &buffers.frozenCounters.indexes;
+}
+
+template <>
+StaticRange Database::FullRange<BinaryOutputStatus>() const
+{
+    return &buffers.binaryOutputStatii.indexes;
+}
+
+template <>
+StaticRange Database::FullRange<AnalogOutputStatus>() const
+{
+    return &buffers.analogOutputStatii.indexes;
+}
+    
+template <>
+StaticRange Database::FullRange<TimeAndInterval>() const
+{
+    return &buffers.timeAndIntervals.indexes;
+}
+    
 void Database::SetEventHandler(const Action0& callback)
 {
 	onEventAction.Set(callback);

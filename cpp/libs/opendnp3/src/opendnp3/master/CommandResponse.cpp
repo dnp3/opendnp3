@@ -23,24 +23,24 @@
 namespace opendnp3
 {
 
-const CommandResponse CommandResponse::Success(CommandResult::RESPONSE_OK, CommandStatus::SUCCESS);
+const CommandResponse CommandResponse::Success(UserTaskResult::RESPONSE_OK, CommandStatus::SUCCESS);
 
-CommandResponse::CommandResponse(CommandResult aResult, CommandStatus aStatus) :
+CommandResponse::CommandResponse(UserTaskResult aResult, CommandStatus aStatus) :
 	mResult(aResult),
 	mStatus(aStatus)
 {}
 
 CommandResponse CommandResponse::OK(CommandStatus aStatus)
 {
-	return CommandResponse(CommandResult::RESPONSE_OK, aStatus);
+	return CommandResponse(UserTaskResult::RESPONSE_OK, aStatus);
 }
 
-CommandResponse CommandResponse::NoResponse(CommandResult result)
+CommandResponse CommandResponse::NoResponse(UserTaskResult result)
 {
 	return CommandResponse(result);
 }
 
-CommandResult CommandResponse::GetResult() const
+UserTaskResult CommandResponse::GetResult() const
 {
 	return mResult;
 }

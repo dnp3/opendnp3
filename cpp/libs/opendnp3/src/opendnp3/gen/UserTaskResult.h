@@ -18,24 +18,30 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-namespace Automatak.DNP3.Interface
+#ifndef OPENDNP3_USERTASKRESULT_H
+#define OPENDNP3_USERTASKRESULT_H
+
+#include <cstdint>
+
+namespace opendnp3 {
+
+/**
+  Opendnp3 API enum used that describes the result of a user task
+*/
+enum class UserTaskResult : int
 {
-  /// <summary>
-  /// Enumeration for the state of a poll
-  /// </summary>
-  public enum PollState : int
-  {
-    /// <summary>
-    /// Valid response was received
-    /// </summary>
-    RUNNING = 0,
-    /// <summary>
-    /// Valid response was received
-    /// </summary>
-    SUCCESS = 1,
-    /// <summary>
-    /// The operation timed out or explicitly failed
-    /// </summary>
-    FAILURE = 2
-  }
+  /// A valid response was received from the outstation
+  RESPONSE_OK = 0,
+  /// A response was received from the outstation, but it contained unexpected contents or was malformed
+  BAD_RESPONSE = 1,
+  /// The operation timed out without a response
+  TIMEOUT = 2,
+  /// There is no communication with the outstation, and the command was not attempted
+  NO_COMMS = 3
+};
+
+char const* UserTaskResultToString(UserTaskResult arg);
+
 }
+
+#endif

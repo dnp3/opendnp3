@@ -30,6 +30,11 @@ TimeDuration TimeDuration::Min()
 	return TimeDuration(openpal::MinValue<int64_t>());
 }
 
+TimeDuration TimeDuration::Max()
+{
+	return TimeDuration(openpal::MaxValue<int64_t>());
+}
+
 TimeDuration TimeDuration::Zero()
 {
 	return TimeDuration(0);

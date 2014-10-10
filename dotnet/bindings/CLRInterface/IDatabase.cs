@@ -88,6 +88,13 @@ namespace Automatak.DNP3.Interface
 		void Update(AnalogOutputStatus update, System.UInt16 index);
 
         /// <summary>
+        /// Update a TimeAndInterval
+        /// </summary>
+        /// <param name="update"></param>
+        /// <param name="index"></param>
+        void Update(TimeAndInterval update, System.UInt16 index);
+
+        /// <summary>
         /// End a transaction
         /// </summary>
 		void End();
