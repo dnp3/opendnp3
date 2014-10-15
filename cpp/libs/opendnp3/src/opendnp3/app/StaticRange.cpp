@@ -32,17 +32,17 @@ const uint16_t StaticRange::MAX(openpal::MaxValue<uint16_t>());
 StaticRange::StaticRange() :
     start(MAX),
     stop(MIN),
-    indexes(&PointIndexes::EMPTYINDEXES),
-    position(0),
+	position(0),
+    indexes(&PointIndexes::EMPTYINDEXES),    
     range(0),
     clipped(false)
 {}
 
-StaticRange::StaticRange(const PointIndexes* points_) :
-    indexes(points_),
+StaticRange::StaticRange(const PointIndexes* points_) :    
     start(points_->First()),
     stop(points_->Last()),
     position(0),
+	indexes(points_),
     range(0),
     clipped(false)
 {}

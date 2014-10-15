@@ -23,7 +23,6 @@
 #define __POINT_INDEXES_H_
 
 #include <cstdint>
-#include <initializer_list>
 
 #include <openpal/container/DynamicArray.h>
 

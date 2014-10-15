@@ -138,9 +138,9 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="gen" />
     <Folder Include="app" />
     <Folder Include="link" />
+    <Folder Include="gen" />
     <Folder Include="outstation" />
     <Folder Include="transport" />
     <Folder Include="objects" />
@@ -226,6 +226,10 @@
       <SubType>compile</SubType>
       <Link>app\APDUWrapper.h</Link>
     </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\AppConstants.h">
+      <SubType>compile</SubType>
+      <Link>app\AppConstants.h</Link>
+    </Compile>
     <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\AppControlField.cpp">
       <SubType>compile</SubType>
       <Link>app\AppControlField.cpp</Link>
@@ -270,6 +274,10 @@
       <SubType>compile</SubType>
       <Link>app\CountWriteIterator.h</Link>
     </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\DNP3Serializer.h">
+      <SubType>compile</SubType>
+      <Link>app\DNP3Serializer.h</Link>
+    </Compile>
     <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\DownSampling.h">
       <SubType>compile</SubType>
       <Link>app\DownSampling.h</Link>
@@ -313,10 +321,6 @@
     <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\IAPDUHandler.h">
       <SubType>compile</SubType>
       <Link>app\IAPDUHandler.h</Link>
-    </Compile>
-    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\IDNP3Serializer.h">
-      <SubType>compile</SubType>
-      <Link>app\IDNP3Serializer.h</Link>
     </Compile>
     <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\IINField.cpp">
       <SubType>compile</SubType>
@@ -378,6 +382,14 @@
       <SubType>compile</SubType>
       <Link>app\OctetString.h</Link>
     </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\PointIndexes.cpp">
+      <SubType>compile</SubType>
+      <Link>app\PointIndexes.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\PointIndexes.h">
+      <SubType>compile</SubType>
+      <Link>app\PointIndexes.h</Link>
+    </Compile>
     <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\PrefixedWriteIterator.h">
       <SubType>compile</SubType>
       <Link>app\PrefixedWriteIterator.h</Link>
@@ -406,6 +418,14 @@
       <SubType>compile</SubType>
       <Link>app\StaticRange.h</Link>
     </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\TimeAndInterval.cpp">
+      <SubType>compile</SubType>
+      <Link>app\TimeAndInterval.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\TimeAndInterval.h">
+      <SubType>compile</SubType>
+      <Link>app\TimeAndInterval.h</Link>
+    </Compile>
     <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\app\VTOData.h">
       <SubType>compile</SubType>
       <Link>app\VTOData.h</Link>
@@ -426,6 +446,10 @@
       <SubType>compile</SubType>
       <Link>gen\AnalogQuality.h</Link>
     </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\AssignClassType.h">
+      <SubType>compile</SubType>
+      <Link>gen\AssignClassType.h</Link>
+    </Compile>
     <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\BinaryOutputStatusQuality.h">
       <SubType>compile</SubType>
       <Link>gen\BinaryOutputStatusQuality.h</Link>
@@ -441,14 +465,6 @@
     <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\ChannelState.h">
       <SubType>compile</SubType>
       <Link>gen\ChannelState.h</Link>
-    </Compile>
-    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\CommandResult.cpp">
-      <SubType>compile</SubType>
-      <Link>gen\CommandResult.cpp</Link>
-    </Compile>
-    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\CommandResult.h">
-      <SubType>compile</SubType>
-      <Link>gen\CommandResult.h</Link>
     </Compile>
     <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\CommandStatus.cpp">
       <SubType>compile</SubType>
@@ -554,6 +570,14 @@
       <SubType>compile</SubType>
       <Link>gen\GroupVariation.h</Link>
     </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\IntervalUnits.cpp">
+      <SubType>compile</SubType>
+      <Link>gen\IntervalUnits.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\IntervalUnits.h">
+      <SubType>compile</SubType>
+      <Link>gen\IntervalUnits.h</Link>
+    </Compile>
     <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\LinkFunction.cpp">
       <SubType>compile</SubType>
       <Link>gen\LinkFunction.cpp</Link>
@@ -569,14 +593,6 @@
     <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\PointClass.h">
       <SubType>compile</SubType>
       <Link>gen\PointClass.h</Link>
-    </Compile>
-    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\PollState.cpp">
-      <SubType>compile</SubType>
-      <Link>gen\PollState.cpp</Link>
-    </Compile>
-    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\PollState.h">
-      <SubType>compile</SubType>
-      <Link>gen\PollState.h</Link>
     </Compile>
     <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\QualifierCode.cpp">
       <SubType>compile</SubType>
@@ -646,6 +662,26 @@
       <SubType>compile</SubType>
       <Link>gen\StaticFrozenCounterResponse.h</Link>
     </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\StaticTimeAndIntervalResponse.cpp">
+      <SubType>compile</SubType>
+      <Link>gen\StaticTimeAndIntervalResponse.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\StaticTimeAndIntervalResponse.h">
+      <SubType>compile</SubType>
+      <Link>gen\StaticTimeAndIntervalResponse.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\StaticTypeBitmask.h">
+      <SubType>compile</SubType>
+      <Link>gen\StaticTypeBitmask.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\TaskState.cpp">
+      <SubType>compile</SubType>
+      <Link>gen\TaskState.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\TaskState.h">
+      <SubType>compile</SubType>
+      <Link>gen\TaskState.h</Link>
+    </Compile>
     <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\TimestampMode.h">
       <SubType>compile</SubType>
       <Link>gen\TimestampMode.h</Link>
@@ -657,6 +693,14 @@
     <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\TimeSyncMode.h">
       <SubType>compile</SubType>
       <Link>gen\TimeSyncMode.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\UserTaskResult.cpp">
+      <SubType>compile</SubType>
+      <Link>gen\UserTaskResult.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\gen\UserTaskResult.h">
+      <SubType>compile</SubType>
+      <Link>gen\UserTaskResult.h</Link>
     </Compile>
     <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\link\CRC.cpp">
       <SubType>compile</SubType>
@@ -942,6 +986,14 @@
       <SubType>compile</SubType>
       <Link>outstation\ApplicationIIN.h</Link>
     </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\AssignClassHandler.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\AssignClassHandler.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\AssignClassHandler.h">
+      <SubType>compile</SubType>
+      <Link>outstation\AssignClassHandler.h</Link>
+    </Compile>
     <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\ClassBasedRequestHandler.cpp">
       <SubType>compile</SubType>
       <Link>outstation\ClassBasedRequestHandler.cpp</Link>
@@ -1225,6 +1277,10 @@
     <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\StaticResponseContext.h">
       <SubType>compile</SubType>
       <Link>outstation\StaticResponseContext.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\StaticTypeBitfield.h">
+      <SubType>compile</SubType>
+      <Link>outstation\StaticTypeBitfield.h</Link>
     </Compile>
     <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\TimeTransaction.cpp">
       <SubType>compile</SubType>
