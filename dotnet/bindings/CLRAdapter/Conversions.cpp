@@ -364,16 +364,16 @@ namespace Automatak
 
 			opendnp3::DatabaseTemplate Conversions::ConvertConfig(DatabaseTemplate^ config)
 			{
-				opendnp3::DatabaseTemplate dbTemplate;
-
-				dbTemplate.numAnalog = config->analogs->Count;
-				dbTemplate.numAnalogOutputStatus = config->analogOutputStatii->Count;
-				dbTemplate.numBinary = config->binaries->Count;
-				dbTemplate.numBinaryOutputStatus = config->binaryOutputStatii->Count;
-				dbTemplate.numCounter = config->counters->Count;
-				dbTemplate.numDoubleBinary = config->doubleBinaries->Count;
-				dbTemplate.numFrozenCounter = config->frozenCounters->Count;
-				dbTemplate.numTimeAndInterval = config->numTimeAndInterval;
+				opendnp3::DatabaseTemplate dbTemplate(
+					config->binaries->Count,
+					config->doubleBinaries->Count,
+					config->analogs->Count,
+					config->counters->Count,
+					config->frozenCounters->Count,
+					config->binaryOutputStatii->Count,
+					config->analogOutputStatii->Count,
+					config->numTimeAndInterval
+				);				
 
 				return dbTemplate;
 			}

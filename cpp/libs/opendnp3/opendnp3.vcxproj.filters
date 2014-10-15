@@ -1121,16 +1121,9 @@
     <ClCompile Include="src\opendnp3\outstation\ApplicationIIN.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
-<<<<<<< HEAD
-    <ClCompile Include="src\opendnp3\outstation\DatabaseBuffers.cpp">
-=======
     <ClCompile Include="src\opendnp3\app\PointIndexes.cpp">
       <Filter>Source\app</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\DynamicallyAllocatedDatabase.cpp">
->>>>>>> 196cbd1b2c7c968b697e6d15b1a8107102567731
-      <Filter>Source\outstation</Filter>
-    </ClCompile>
+    </ClCompile>    
     <ClCompile Include="src\opendnp3\outstation\AssignClassHandler.cpp">
       <Filter>Header\outstation</Filter>
     </ClCompile>
