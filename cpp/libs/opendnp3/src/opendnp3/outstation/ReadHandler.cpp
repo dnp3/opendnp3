@@ -36,7 +36,7 @@ void ReadHandler::_AllObjects(const HeaderRecord& record)
 	errors |= pRspContext->ReadAllObjects(record);
 }
 
-void ReadHandler::_OnRangeRequest(const HeaderRecord& record, const StaticRange& range)
+void ReadHandler::_OnRangeRequest(const HeaderRecord& record, const Range& range)
 {
 	errors |= pRspContext->ReadRange(record, range);
 }

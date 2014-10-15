@@ -24,33 +24,41 @@
 namespace opendnp3
 {
 
-DatabaseBuffers::DatabaseBuffers(const DatabaseTemplate& databaseTemplate) :
-	binaryValues(databaseTemplate.numBinary),
-	doubleBinaryValues(databaseTemplate.numDoubleBinary),
-	analogValues(databaseTemplate.numAnalog),
-	counterValues(databaseTemplate.numCounter),
-	frozenCounterValues(databaseTemplate.numFrozenCounter),
-	binaryOutputStatusValues(databaseTemplate.numBinaryOutputStatus),
-	analogOutputStatusValues(databaseTemplate.numAnalogOutputStatus),
-	timeAndIntervalValues(databaseTemplate.numTimeAndInterval),
+DatabaseBuffers::DatabaseBuffers(const DatabaseTemplate& databaseTemplate):
+	binaryValues(databaseTemplate.binaryIndexes.IndexCount()),
+	doubleBinaryValues(databaseTemplate.doubleBinaryIndexes.IndexCount()),
+	analogValues(databaseTemplate.analogIndexes.IndexCount()),
+	counterValues(databaseTemplate.counterIndexes.IndexCount()),
+	frozenCounterValues(databaseTemplate.frozenCounterIndexes.IndexCount()),
+	binaryOutputStatusValues(databaseTemplate.binaryOutputStatusIndexes.IndexCount()),
+	analogOutputStatusValues(databaseTemplate.analogOutputStatusIndexes.IndexCount()),
+	timeAndIntervalValues(databaseTemplate.timeAndIntervalIndexes.IndexCount()),
 
-	binaryMetadata(databaseTemplate.numBinary),
-	doubleBinaryMetadata(databaseTemplate.numDoubleBinary),
-	analogMetadata(databaseTemplate.numAnalog),
-	counterMetadata(databaseTemplate.numCounter),
-	frozenCounterMetadata(databaseTemplate.numFrozenCounter),
-	binaryOutputStatusMetadata(databaseTemplate.numBinaryOutputStatus),
-	analogOutputStatusMetadata(databaseTemplate.numAnalogOutputStatus),
+	binaryMetadata(databaseTemplate.binaryIndexes.IndexCount()),
+	doubleBinaryMetadata(databaseTemplate.doubleBinaryIndexes.IndexCount()),
+	analogMetadata(databaseTemplate.analogIndexes.IndexCount()),
+	counterMetadata(databaseTemplate.counterIndexes.IndexCount()),
+	frozenCounterMetadata(databaseTemplate.frozenCounterIndexes.IndexCount()),
+	binaryOutputStatusMetadata(databaseTemplate.binaryOutputStatusIndexes.IndexCount()),
+	analogOutputStatusMetadata(databaseTemplate.analogOutputStatusIndexes.IndexCount()),
 
-
-	binaries(binaryValues.ToIndexable(), binaryMetadata.ToIndexable()),
-	doubleBinaries(doubleBinaryValues.ToIndexable(), doubleBinaryMetadata.ToIndexable()),
-	analogs(analogValues.ToIndexable(), analogMetadata.ToIndexable()),
-	counters(counterValues.ToIndexable(), counterMetadata.ToIndexable()),
-	frozenCounters(frozenCounterValues.ToIndexable(), frozenCounterMetadata.ToIndexable()),
-	binaryOutputStatii(binaryOutputStatusValues.ToIndexable(), binaryOutputStatusMetadata.ToIndexable()),
-	analogOutputStatii(analogOutputStatusValues.ToIndexable(), analogOutputStatusMetadata.ToIndexable()),
-	timeAndIntervals(timeAndIntervalValues.ToIndexable(), openpal::Indexable<EmptyMetadata, uint16_t>::Empty())
+    binaryIndexes(databaseTemplate.binaryIndexes),
+    doubleBinaryIndexes(databaseTemplate.doubleBinaryIndexes),
+    analogIndexes(databaseTemplate.analogIndexes),
+    counterIndexes(databaseTemplate.counterIndexes),
+    frozenCounterIndexes(databaseTemplate.frozenCounterIndexes),
+    binaryOutputStatusIndexes(databaseTemplate.binaryOutputStatusIndexes),
+    analogOutputStatusIndexes(databaseTemplate.analogOutputStatusIndexes),
+    timeAndIntervalIndexes(databaseTemplate.timeAndIntervalIndexes),
+    
+	binaries(binaryValues.ToIndexable(), binaryMetadata.ToIndexable(), binaryIndexes),
+	doubleBinaries(doubleBinaryValues.ToIndexable(), doubleBinaryMetadata.ToIndexable(), doubleBinaryIndexes),
+	analogs(analogValues.ToIndexable(), analogMetadata.ToIndexable(), analogIndexes),
+	counters(counterValues.ToIndexable(), counterMetadata.ToIndexable(), counterIndexes),
+	frozenCounters(frozenCounterValues.ToIndexable(), frozenCounterMetadata.ToIndexable(), frozenCounterIndexes),
+	binaryOutputStatii(binaryOutputStatusValues.ToIndexable(), binaryOutputStatusMetadata.ToIndexable(), binaryOutputStatusIndexes),
+	analogOutputStatii(analogOutputStatusValues.ToIndexable(), analogOutputStatusMetadata.ToIndexable(), analogOutputStatusIndexes),
+	timeAndIntervals(timeAndIntervalValues.ToIndexable(), openpal::Indexable<EmptyMetadata, uint16_t>::Empty(), timeAndIntervalIndexes)    
 {
 
 }

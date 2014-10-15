@@ -252,7 +252,7 @@ APDUParser::Result APDUParser::ParseRangeHeader(openpal::ReadOnlyBuffer& buffer,
 		{
 			if(pHandler)
 			{
-				pHandler->OnRangeRequest(record, StaticRange(range.start, range.stop));
+				pHandler->OnRangeRequest(record, Range(range.start, range.stop));
 			}
 			return Result::OK;
 		}

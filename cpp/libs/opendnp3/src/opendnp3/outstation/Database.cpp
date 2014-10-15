@@ -113,9 +113,10 @@ void Database::Update(const AnalogOutputStatus& value, uint16_t index)
 
 void Database::Update(const TimeAndInterval& value, uint16_t index)
 {
-	if (buffers.timeAndIntervals.values.Contains(index))
+    auto position = buffers.timeAndIntervals.indexes.GetPosition(index);
+	if (buffers.timeAndIntervals.values.Contains(position))
 	{		
-		buffers.timeAndIntervals.values[index].Update(value);
+		buffers.timeAndIntervals.values[position].Update(value);
 	}
 }
 
@@ -240,6 +241,54 @@ bool Database::AssignClass(AssignClassType type, PointClass clazz, const StaticR
 	}
 }
 
+template <>
+StaticRange Database::FullRange<Binary>() const
+{
+    return &buffers.binaries.indexes;
+}
+
+template <>
+StaticRange Database::FullRange<DoubleBitBinary>() const
+{
+    return &buffers.doubleBinaries.indexes;
+}
+
+template <>
+StaticRange Database::FullRange<Analog>() const
+{
+    return &buffers.analogs.indexes;
+}
+
+template <>
+StaticRange Database::FullRange<Counter>() const
+{
+    return &buffers.counters.indexes;
+}
+
+template <>
+StaticRange Database::FullRange<FrozenCounter>() const
+{
+    return &buffers.frozenCounters.indexes;
+}
+
+template <>
+StaticRange Database::FullRange<BinaryOutputStatus>() const
+{
+    return &buffers.binaryOutputStatii.indexes;
+}
+
+template <>
+StaticRange Database::FullRange<AnalogOutputStatus>() const
+{
+    return &buffers.analogOutputStatii.indexes;
+}
+    
+template <>
+StaticRange Database::FullRange<TimeAndInterval>() const
+{
+    return &buffers.timeAndIntervals.indexes;
+}
+    
 void Database::SetEventHandler(const Action0& callback)
 {
 	onEventAction.Set(callback);

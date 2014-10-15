@@ -436,6 +436,47 @@ TEST_CASE(SUITE("ReadByRangeHeader"))
 	REQUIRE(t.lower.PopWriteAsHex() == "C2 81 80 00 1E 02 00 05 06 01 2A 00 01 29 00");
 }
 
+TEST_CASE(SUITE("ReadDiscontiguousIndexes"))
+{
+	OutstationConfig config;
+    
+    uint32_t points[3];
+    points[0] = 2;
+    points[1] = 4;
+    points[2] = 5;
+    
+	PointIndexes binaryIndexes(Indexable<uint32_t, uint32_t>(points, 3));
+	OutstationTestObject t(config, DatabaseTemplate(binaryIndexes));
+	t.LowerLayerUp();
+    
+	t.Transaction([](Database& db){
+		db.Update(Binary(true, 0x01), 2);
+		db.Update(Binary(false, 0x01), 4);
+	});
+
+    t.SendToOutstation("C0 01 3C 01 06"); // Read class 0
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00 01 02 00 02 02 81 01 02 00 04 05 01 02");
+    t.OnSendResult(true);
+	t.SendToOutstation("C2 01 01 02 00 02 02"); // read 01 var 2, [02 : 02]
+	REQUIRE(t.lower.PopWriteAsHex() == "C2 81 80 00 01 02 00 02 02 81");
+    t.OnSendResult(true);
+	t.SendToOutstation("C2 01 01 02 00 04 05"); // read 01 var 2, [04 : 05]
+	REQUIRE(t.lower.PopWriteAsHex() == "C2 81 80 00 01 02 00 04 05 01 02");
+    t.OnSendResult(true);
+	t.SendToOutstation("C2 01 01 02 00 05 06"); // read 01 var 2, [05 : 06]
+	REQUIRE(t.lower.PopWriteAsHex() == "C2 81 80 04 01 02 00 05 05 02");
+    t.OnSendResult(true);
+	t.SendToOutstation("C2 01 01 02 00 02 02 01 02 00 04 05"); // read 01 var 2, [02 : 02]; read 01 var 2, [04 : 05]
+	REQUIRE(t.lower.PopWriteAsHex() == "C2 81 80 00 01 02 00 02 02 81 01 02 00 04 05 01 02");
+    t.OnSendResult(true);
+	t.SendToOutstation("C2 01 01 02 00 02 03 01 02 00 04 05"); // read 01 var 2, [02 : 03]; read 01 var 2, [04 : 05]
+	REQUIRE(t.lower.PopWriteAsHex() == "C2 81 80 04 01 02 00 02 02 81 01 02 00 04 05 01 02");
+    t.OnSendResult(true);
+	t.SendToOutstation("C2 01 01 02 00 02 05"); // read 01 var 2, [02 : 05]
+	REQUIRE(t.lower.PopWriteAsHex() == "C2 81 80 04 01 02 00 02 02 81 01 02 00 04 05 01 02");
+    t.OnSendResult(true);
+}
+
 template <class PointType>
 void TestStaticType(const OutstationConfig& config, const DatabaseTemplate& tmp, PointType value, const std::string& rsp)
 {

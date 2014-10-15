@@ -77,6 +77,7 @@ cpp/libs/opendnp3/src/opendnp3/app/MeasurementTypes.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/ObjectWriter.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/OctetData.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/StaticRange.cpp \
+cpp/libs/opendnp3/src/opendnp3/app/PointIndexes.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/ChannelState.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/CommandResult.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/CommandStatus.cpp \
