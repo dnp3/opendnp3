@@ -440,7 +440,12 @@ TEST_CASE(SUITE("ReadDiscontiguousIndexes"))
 {
 	OutstationConfig config;
     
-	DynamicPointIndexes binaryIndexes({ 2, 4, 5 });
+    uint32_t points[3];
+    points[0] = 2;
+    points[1] = 4;
+    points[2] = 5;
+    
+	PointIndexes binaryIndexes(Indexable<uint32_t, uint32_t>(points, 3));
 	OutstationTestObject t(config, DatabaseTemplate(binaryIndexes));
 	t.LowerLayerUp();
     

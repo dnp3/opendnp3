@@ -86,32 +86,14 @@ struct DatabaseTemplate
 	                 uint32_t numAnalogOutputStatus_ = 0,
 					 uint32_t numTimeAndInterval_ = 0) :
     
-        binaryRange(numBinary_),
-        doubleBinaryRange(numDoubleBinary_),
-        analogRange(numAnalog_),
-        counterRange(numCounter_),
-        frozenCounterRange(numFrozenCounter_),
-        binaryOutputStatusRange(numBinaryOutputStatus_),
-        analogOutputStatusRange(numAnalogOutputStatus_),
-        timeAndIntervalRange(numTimeAndInterval_),
-
-        binaryIndexes(openpal::Indexable<PointRange, uint32_t>(&binaryRange,1)),
-        doubleBinaryIndexes(openpal::Indexable<PointRange, uint32_t>(&doubleBinaryRange,1)),
-        analogIndexes(openpal::Indexable<PointRange, uint32_t>(&analogRange,1)),
-        counterIndexes(openpal::Indexable<PointRange, uint32_t>(&counterRange,1)),
-        frozenCounterIndexes(openpal::Indexable<PointRange, uint32_t>(&frozenCounterRange,1)),
-        binaryOutputStatusIndexes(openpal::Indexable<PointRange, uint32_t>(&binaryOutputStatusRange,1)),
-        analogOutputStatusIndexes(openpal::Indexable<PointRange, uint32_t>(&analogOutputStatusRange,1)),
-        timeAndIntervalIndexes(openpal::Indexable<PointRange, uint32_t>(&timeAndIntervalRange,1)),
-
-		numBinary(numBinary_),
-		numDoubleBinary(numDoubleBinary_),
-		numAnalog(numAnalog_),
-		numCounter(numCounter_),
-		numFrozenCounter(numFrozenCounter_),
-		numBinaryOutputStatus(numBinaryOutputStatus_),
-		numAnalogOutputStatus(numAnalogOutputStatus_),
-		numTimeAndInterval(numTimeAndInterval_)
+        binaryIndexes(numBinary_),
+        doubleBinaryIndexes(numDoubleBinary_),
+        analogIndexes(numAnalog_),
+        counterIndexes(numCounter_),
+        frozenCounterIndexes(numFrozenCounter_),
+        binaryOutputStatusIndexes(numBinaryOutputStatus_),
+        analogOutputStatusIndexes(numAnalogOutputStatus_),
+        timeAndIntervalIndexes(numTimeAndInterval_)
 	{}
     
     DatabaseTemplate(PointIndexes binaryIndexes_ = PointIndexes::EMPTYINDEXES,
@@ -123,15 +105,6 @@ struct DatabaseTemplate
 	                 PointIndexes analogOutputStatusIndexes_ = PointIndexes::EMPTYINDEXES,
                      PointIndexes timeAndIntervalIndexes_ = PointIndexes::EMPTYINDEXES) :
     
-    binaryRange(binaryIndexes_.ToRange()),
-    doubleBinaryRange(doubleBinaryIndexes_.ToRange()),
-    analogRange(analogIndexes_.ToRange()),
-    counterRange(counterIndexes_.ToRange()),
-    frozenCounterRange(frozenCounterIndexes_.ToRange()),
-    binaryOutputStatusRange(binaryOutputStatusIndexes_.ToRange()),
-    analogOutputStatusRange(analogOutputStatusIndexes_.ToRange()),
-    timeAndIntervalRange(timeAndIntervalIndexes_.ToRange()),
-    
 	binaryIndexes(binaryIndexes_),
     doubleBinaryIndexes(doubleBinaryIndexes_),
     analogIndexes(analogIndexes_),
@@ -139,27 +112,9 @@ struct DatabaseTemplate
     frozenCounterIndexes(frozenCounterIndexes_),
     binaryOutputStatusIndexes(binaryOutputStatusIndexes_),
     analogOutputStatusIndexes(analogOutputStatusIndexes_),
-    timeAndIntervalIndexes(timeAndIntervalIndexes_),
-
-	numBinary(binaryIndexes_.IndexCount()),
-	numDoubleBinary(doubleBinaryIndexes_.IndexCount()),
-	numAnalog(analogIndexes_.IndexCount()),
-	numCounter(counterIndexes_.IndexCount()),
-	numFrozenCounter(frozenCounterIndexes_.IndexCount()),
-	numBinaryOutputStatus(binaryOutputStatusIndexes_.IndexCount()),
-	numAnalogOutputStatus(analogOutputStatusIndexes_.IndexCount()),
-    numTimeAndInterval(timeAndIntervalIndexes_.IndexCount())
+    timeAndIntervalIndexes(timeAndIntervalIndexes_)
 	{}
     
-    PointRange binaryRange;
-    PointRange doubleBinaryRange;
-    PointRange analogRange;
-    PointRange counterRange;
-    PointRange frozenCounterRange;
-    PointRange binaryOutputStatusRange;
-    PointRange analogOutputStatusRange;
-    PointRange timeAndIntervalRange;
-
     PointIndexes binaryIndexes;
     PointIndexes doubleBinaryIndexes;
     PointIndexes analogIndexes;
@@ -168,15 +123,6 @@ struct DatabaseTemplate
     PointIndexes binaryOutputStatusIndexes;
     PointIndexes analogOutputStatusIndexes;
     PointIndexes timeAndIntervalIndexes;
-
-	uint32_t numBinary;
-	uint32_t numDoubleBinary;
-	uint32_t numAnalog;
-	uint32_t numCounter;
-	uint32_t numFrozenCounter;
-	uint32_t numBinaryOutputStatus;
-	uint32_t numAnalogOutputStatus;
-	uint32_t numTimeAndInterval;
 };
 
 }

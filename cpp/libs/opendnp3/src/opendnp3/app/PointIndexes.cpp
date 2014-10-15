@@ -28,50 +28,10 @@ namespace opendnp3
     const uint32_t PointRange::MIN(openpal::MinValue<uint16_t>());
     const uint32_t PointRange::MAX(openpal::MaxValue<uint16_t>());
     const uint32_t PointRange::OUTOFRANGE(openpal::MaxValue<uint32_t>());
-    PointRange PointRange::FULLRANGE = { PointRange::MIN, PointRange::MAX, PointRange::MIN };
-    PointRange PointRange::EMPTYRANGE = { PointRange::MAX, PointRange::MIN, PointRange::MIN };
 
-    const PointIndexes PointIndexes::FULLINDEXES(openpal::Indexable<PointRange, uint32_t>(&PointRange::FULLRANGE,1));
-    const PointIndexes PointIndexes::EMPTYINDEXES(openpal::Indexable<PointRange, uint32_t>(&PointRange::EMPTYRANGE,0));
+    const PointIndexes PointIndexes::EMPTYINDEXES(0);
     
-    void PointIndexes::SetRanges(std::initializer_list<Range> pointranges)
-    {
-        if(ranges.Size() == 0) return;
-        
-        uint32_t count = 0;
-        uint32_t lastPoint = 0;
-        for(auto range : pointranges)
-        {
-            assert(range.start <= range.stop);
-            if(count > 0)
-            {
-                assert(range.start > lastPoint);
-                if (range.start > lastPoint + 1)
-                {
-                    assert(count < ranges.Size());
-                    ranges[count].start = range.start;
-                    ranges[count].stop = range.stop;
-                    ranges[count].offset = range.start + (ranges[count-1].offset - lastPoint - 1);
-                    count++;
-                }
-                else
-                {
-                    ranges[count-1].stop = range.stop;
-                }
-                lastPoint = range.stop;
-            }
-            else
-            {
-                ranges[count].start = range.start;
-                ranges[count].stop = range.stop;
-                ranges[count].offset = range.start;
-                count++;
-                lastPoint = range.stop;
-            }
-        }
-    }
-    
-    void PointIndexes::SetRanges(openpal::Indexable<Range, uint32_t> pointranges)
+    void PointIndexes::SetRanges(const openpal::Indexable<Range, uint32_t>& pointranges)
     {
         if(ranges.Size() == 0) return;
 
@@ -109,7 +69,7 @@ namespace opendnp3
         }
     }
     
-    void PointIndexes::SetRanges(openpal::Indexable<uint32_t, uint32_t>& points)
+    void PointIndexes::SetRanges(const openpal::Indexable<uint32_t, uint32_t>& points)
     {
         if(ranges.Size() == 0) return;
         
@@ -142,7 +102,7 @@ namespace opendnp3
         ranges[count-1].stop = lastPoint;
     }
     
-    void PointIndexes::SetRanges(PointIndexes pointranges)
+    void PointIndexes::SetRanges(const PointIndexes& pointranges)
     {
         assert(ranges.Size() == pointranges.ranges.Size());        
         for(uint32_t p = 0; p < pointranges.ranges.Size(); ++p)
@@ -264,33 +224,8 @@ namespace opendnp3
         if (IndexRange > 0) return ranges[IndexRange-1].stop;
         return PointRange::OUTOFRANGE;
     }
-
-    uint32_t PointIndexes::CountRanges(std::initializer_list<Range> pointranges)
-    {
-        /* count the number of contiguous ranges, ensuring points are increasing */
-        uint32_t count = 0;
-        uint32_t lastPoint = 0;
-        for(auto range : pointranges)
-        {
-            assert(range.start <= range.stop);
-            if(count)
-            {
-                assert(range.start > lastPoint);
-                if (range.start > lastPoint + 1) {
-                    count++;
-                }
-                lastPoint = range.stop;
-            }
-            else
-            {
-                count++;
-                lastPoint = range.stop;
-            }
-        }
-        return count;
-    }
     
-    uint32_t PointIndexes::CountRanges(openpal::Indexable<Range, uint32_t> pointranges)
+    uint32_t PointIndexes::CountRanges(const openpal::Indexable<Range, uint32_t>& pointranges)
     {
         /* count the number of contiguous ranges, ensuring points are increasing */
         uint32_t count = 0;
@@ -316,7 +251,7 @@ namespace opendnp3
         return count;
     }
     
-    uint32_t PointIndexes::CountRanges(openpal::Indexable<uint32_t, uint32_t> points)
+    uint32_t PointIndexes::CountRanges(const openpal::Indexable<uint32_t, uint32_t>& points)
     {
         /* count the number of contiguous ranges, ensuring points are increasing */
         uint32_t count = 0;

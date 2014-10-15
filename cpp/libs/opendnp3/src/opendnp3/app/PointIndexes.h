@@ -25,13 +25,12 @@
 #include <cstdint>
 #include <initializer_list>
 
-#include <openpal/container/Indexable.h>
+#include <openpal/container/DynamicArray.h>
 
 #include "Range.h"
 
 namespace opendnp3
 {
-
     struct PointRange
     {
     public:
@@ -63,21 +62,48 @@ namespace opendnp3
         
         static const uint32_t MIN;
         static const uint32_t MAX;
-        static PointRange FULLRANGE;
-        static PointRange EMPTYRANGE;
         static const uint32_t OUTOFRANGE;
     };
     
     class PointIndexes
     {
     public:
-        static const PointIndexes FULLINDEXES;
         static const PointIndexes EMPTYINDEXES;
+
+        PointIndexes(uint32_t npoints) :
+        ranges(npoints>0)
+        {
+            if(npoints>0)
+            {
+                ranges[0].start = 0;
+                ranges[0].stop = npoints-1;
+            }
+        }
         
-        PointIndexes(openpal::Indexable<PointRange, uint32_t> ranges_) :
-        ranges(ranges_)
-        { }
+        PointIndexes(openpal::Indexable<uint32_t, uint32_t> points) :
+        ranges(CountRanges(points))
+        {
+            SetRanges(points);
+        }
         
+        PointIndexes(openpal::Indexable<Range, uint32_t> pointranges) :
+        ranges(pointranges.Size())
+        {
+            SetRanges(pointranges);
+        }
+        
+        PointIndexes(PointIndexes const &pointranges) :
+        ranges(pointranges.ranges.Size())
+        {
+            SetRanges(pointranges);
+        }
+        
+        PointIndexes& operator=(PointIndexes const &pointranges)
+        {
+            ranges.resize(pointranges.ranges.Size());
+            SetRanges(pointranges);
+            return *this;
+        }
         
         inline const PointRange ToRange() const
         {
@@ -138,25 +164,21 @@ namespace opendnp3
         // Returns true if there are no discontinuities betweent the start and stop indexes
         bool IsContiguous(uint32_t start, uint32_t stop) const;
     
-        // Sets PointIndexes from initializer list of Ranges (array of <start, stop> pairs
-        void SetRanges(std::initializer_list<Range> points);
-
         // Sets PointIndexes from indexable list of Ranges (array of <start, stop> pairs
-        void SetRanges(openpal::Indexable<Range, uint32_t> pointranges);
+        void SetRanges(const openpal::Indexable<Range, uint32_t>& pointranges);
 
         // Sets PointIndexes from indexable list of increasing point indexes
-        void SetRanges(openpal::Indexable<uint32_t, uint32_t>& points);
+        void SetRanges(const openpal::Indexable<uint32_t, uint32_t>& points);
         
         // Sets PointIndexes from existing PointIndexes reference
-        void SetRanges(PointIndexes pointranges);
+        void SetRanges(const PointIndexes& pointranges);
         
         // Static functions for counting the number of dis-contiguous ranges in a collection of points
-        static uint32_t CountRanges(std::initializer_list<Range> points);
-        static uint32_t CountRanges(openpal::Indexable<uint32_t, uint32_t> points);
-        static uint32_t CountRanges(openpal::Indexable<Range, uint32_t> points);
+        static uint32_t CountRanges(const openpal::Indexable<uint32_t, uint32_t>& points);
+        static uint32_t CountRanges(const openpal::Indexable<Range, uint32_t>& points);
         
         uint32_t GetRange(uint32_t index) const;
-        openpal::Indexable<PointRange, uint32_t> ranges;
+        openpal::DynamicArray<PointRange, uint32_t> ranges;
         
     private:
         inline uint32_t LastRange() const
