@@ -37,9 +37,9 @@ namespace opendnp3
         {
             if (count == 0)
             {
-                start = MAX;
-                stop = MIN;
-                offset = MIN;
+                start = Max();
+                stop = Min();
+                offset = Min();
             }
             else
             {
@@ -59,9 +59,9 @@ namespace opendnp3
         uint32_t stop;
         uint32_t offset;
         
-        static const uint32_t MIN;
-        static const uint32_t MAX;
-        static const uint32_t OUTOFRANGE;
+		static uint32_t Min();
+        static uint32_t Max();
+		static uint32_t OutOfRange();
     };
     
     class PointIndexes
@@ -111,13 +111,13 @@ namespace opendnp3
         
         inline uint32_t First() const
         {
-            if(IsEmpty()) return PointRange::MAX;
+            if(IsEmpty()) return PointRange::Max();
             return ranges[0].start;
         }
         
         inline uint32_t Last() const
         {
-            if(IsEmpty()) return PointRange::MIN;
+            if(IsEmpty()) return PointRange::Min();
             return ranges[LastRange()].stop;
         }
         
@@ -129,8 +129,8 @@ namespace opendnp3
         inline bool IsFull() const
         {
             if(ranges.Size() != 1) return false;
-            if(ranges[0].start != PointRange::MIN) return false;
-            if(ranges[0].stop != PointRange::MAX) return false;
+            if(ranges[0].start != PointRange::Min()) return false;
+            if(ranges[0].stop != PointRange::Max()) return false;
             return true;
         }
         

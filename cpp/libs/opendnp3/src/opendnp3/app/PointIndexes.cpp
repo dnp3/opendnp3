@@ -25,9 +25,20 @@
 
 namespace opendnp3
 {
-    const uint32_t PointRange::MIN(openpal::MinValue<uint16_t>());
-    const uint32_t PointRange::MAX(openpal::MaxValue<uint16_t>());
-    const uint32_t PointRange::OUTOFRANGE(openpal::MaxValue<uint32_t>());
+	uint32_t PointRange::Min()
+	{
+		return openpal::MinValue<uint16_t>();
+	}
+
+	uint32_t PointRange::Max()
+	{
+		return openpal::MaxValue<uint16_t>();
+	}
+
+	uint32_t PointRange::OutOfRange()
+	{
+		return openpal::MaxValue<uint32_t>();
+	}
 
     const PointIndexes PointIndexes::EMPTYINDEXES(0);
     
@@ -144,10 +155,10 @@ namespace opendnp3
     // Given point index, returns database array position
     uint32_t PointIndexes::GetPosition(uint32_t index) const
     {
-        if(IsEmpty()) return PointRange::OUTOFRANGE;
+        if(IsEmpty()) return PointRange::OutOfRange();
         const uint32_t IndexRange = GetRange(index);
-        if(index < ranges[IndexRange].start) return PointRange::OUTOFRANGE;
-        if(index > ranges[IndexRange].stop) return PointRange::OUTOFRANGE;
+		if (index < ranges[IndexRange].start) return PointRange::OutOfRange();
+		if (index > ranges[IndexRange].stop) return PointRange::OutOfRange();
         return index - ranges[IndexRange].offset;
     }
     
@@ -155,14 +166,14 @@ namespace opendnp3
     uint32_t PointIndexes::GetIndex(uint32_t position) const
     {
         const uint32_t nRanges = ranges.Size();
-        if (nRanges == 0) return PointRange::OUTOFRANGE;
+		if (nRanges == 0) return PointRange::OutOfRange();
 
         /* Simple binary search */
         uint32_t imin = 0;
         uint32_t imax = nRanges - 1;
         uint32_t index = 0;
 
-        if (position + ranges[imax].offset > ranges[imax].stop) return PointRange::OUTOFRANGE;
+		if (position + ranges[imax].offset > ranges[imax].stop) return PointRange::OutOfRange();
         
         while (imax > imin)
         {
@@ -180,7 +191,7 @@ namespace opendnp3
     uint32_t PointIndexes::GetRange(uint32_t index) const
     {
         const uint32_t nRanges = ranges.Size();
-        if (nRanges == 0) return PointRange::OUTOFRANGE;
+		if (nRanges == 0) return PointRange::OutOfRange();
 
         /* Simple binary search */
         uint32_t imin = 0;
@@ -199,9 +210,9 @@ namespace opendnp3
     /* Given an index, returns the next valid index (inclusive of the index provided) */
     uint32_t PointIndexes::GetNextValid(uint32_t index) const
     {
-        if (IsEmpty()) return PointRange::OUTOFRANGE;
+		if (IsEmpty()) return PointRange::OutOfRange();
         if (index < First()) return First();
-        if (index > Last()) return PointRange::OUTOFRANGE;
+		if (index > Last()) return PointRange::OutOfRange();
         
         const uint32_t IndexRange = GetRange(index);
         if (index <= ranges[IndexRange].stop) return index;
@@ -211,8 +222,8 @@ namespace opendnp3
     /* Given an index, returns the previous valid index (inclusive of the index provided) */
     uint32_t PointIndexes::GetPreviousValid(uint32_t index) const
     {
-        if (IsEmpty()) return PointRange::OUTOFRANGE;
-        if (index < First()) return PointRange::OUTOFRANGE;
+		if (IsEmpty()) return PointRange::OutOfRange();
+		if (index < First()) return PointRange::OutOfRange();
         if (index > Last()) return Last();
 
         const uint32_t IndexRange = GetRange(index);
@@ -222,7 +233,7 @@ namespace opendnp3
         if (index >= ranges[IndexRange].start) return index;
         // before the range start
         if (IndexRange > 0) return ranges[IndexRange-1].stop;
-        return PointRange::OUTOFRANGE;
+		return PointRange::OutOfRange();
     }
     
     uint32_t PointIndexes::CountRanges(const openpal::Indexable<Range, uint32_t>& pointranges)
