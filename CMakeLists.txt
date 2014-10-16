@@ -122,10 +122,14 @@ install (FILES ${asiodnp3_HDR} DESTINATION include/asiodnp3)
 install (FILES ${asiodnp3_impl_HDR} DESTINATION include/asiodnp3/impl)
 
 # demos
-add_executable (masterdemo ./cpp/examples/master/DemoMain.cpp)
+file(GLOB_RECURSE masterdemo_SRC 
+       ./cpp/examples/master/*.cpp)
+add_executable (masterdemo ${masterdemo_SRC})
 target_link_libraries (masterdemo LINK_PUBLIC asiodnp3 pthread)
 
-add_executable (outstationdemo ./cpp/examples/outstation/DemoMain.cpp)
+file(GLOB_RECURSE outstationdemo_SRC 
+       ./cpp/examples/outstation/*.cpp)
+add_executable (outstationdemo ${outstationdemo_SRC})
 target_link_libraries (outstationdemo LINK_PUBLIC asiodnp3 pthread)
 
 # tests
