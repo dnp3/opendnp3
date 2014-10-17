@@ -184,6 +184,11 @@ IMasterTask* MasterScheduler::GetScheduledTask(const MasterParams& params)
 	{
 		return &pStaticTasks->enableUnsol;
 	}
+
+	if (CanTaskRun(pStaticTasks->eventScan, tasks::EVENT_SCAN, params))
+	{
+		return &pStaticTasks->eventScan;
+	}
 	
 	return nullptr;
 }
@@ -273,6 +278,14 @@ void MasterScheduler::ProcessRxIIN(const IINField& iin, const MasterParams& para
 		if (!this->IsTaskActive(&pStaticTasks->serialTimeSync))
 		{
 			scheduledTaskMask |= tasks::TIME_SYNC;
+		}
+	}
+
+	if (params.eventScanOnEventsAvailableIIN && (iin.IsSet(IINBit::CLASS1_EVENTS) || iin.IsSet(IINBit::CLASS2_EVENTS) || iin.IsSet(IINBit::CLASS3_EVENTS)))
+	{
+		if (!this->IsTaskActive(&pStaticTasks->eventScan))
+		{
+			scheduledTaskMask |= tasks::EVENT_SCAN;
 		}
 	}
 	

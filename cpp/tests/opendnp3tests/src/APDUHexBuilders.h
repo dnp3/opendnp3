@@ -40,6 +40,8 @@ namespace hex
 
 	std::string ClassPoll(uint8_t seq, opendnp3::PointClass pc);
 
+	std::string EventPoll(uint8_t seq, const opendnp3::ClassField& field = opendnp3::ClassField::AllEventClasses());
+
 	std::string ClearRestartIIN(uint8_t seq);
 
 	std::string MeasureDelay(uint8_t seq);
