@@ -15,16 +15,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// This file was forked on 01/01/2013 by Automatak, LLC and modifications
-// have been made to this file. Automatak, LLC licenses these modifications to
-// you under the GNU Affero General Public License Version 3.0
-// (the "Additional License"). You may not use these modifications except in
-// compliance with the additional license. You may obtain a copy of the Additional
-// License at
-//
-// http://www.gnu.org/licenses/agpl.html
-//
-// Contact Automatak, LLC for a commercial license to these modifications
+// This project was forked on 01/01/2013 by Automatak, LLC and modifications
+// may have been made to this file. Automatak, LLC licenses these modifications
+// to you under the terms of the License.
 //
 using System;
 using System.Collections.Generic;
