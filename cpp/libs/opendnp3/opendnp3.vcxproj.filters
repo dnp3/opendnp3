@@ -690,9 +690,6 @@
     <ClInclude Include="src\opendnp3\outstation\DatabaseBuffers.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\master\EventScanTask.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\AnalogOutput.cpp">
@@ -1102,9 +1099,6 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\DatabaseBuffers.cpp">
       <Filter>Source\outstation</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\master\EventScanTask.cpp">
-      <Filter>Source\master</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -50,11 +50,6 @@ namespace hex
 		return ClassTask(FunctionCode::READ, seq, ClassField(pc));
 	}
 
-	std::string EventPoll(uint8_t seq, const ClassField& field)
-	{
-		return ClassTask(FunctionCode::READ, seq, field);
-	}
-
 	std::string ClearRestartIIN(uint8_t seq)
 	{
 		uint8_t buffer[2048];

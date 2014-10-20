@@ -430,20 +430,4 @@ TEST_CASE(SUITE("ReceiveIINUnsol"))
 	REQUIRE(t.application.rxIIN[0].IsSet(IINBit::DEVICE_TROUBLE));
 }
 
-TEST_CASE(SUITE("EventScanOnEventsAvailableIIN"))
-{
-	auto params = NoStartupTasks();
-	params.eventScanOnEventsAvailableIIN = true;
-	MasterTestObject t(params);
-
-	t.master.OnLowerLayerUp();
-
-	t.SendToMaster(hex::EmptyResponse(0, IINField(IINBit::CLASS1_EVENTS)));
-	
-	t.exe.RunMany();
-
-	REQUIRE(t.lower.PopWriteAsHex() == hex::EventPoll(0));
-	t.master.OnSendResult(true);
-}
-
 

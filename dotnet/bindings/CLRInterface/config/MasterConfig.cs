@@ -24,7 +24,6 @@ namespace Automatak.DNP3.Interface
             unsolClassMask = ClassField.AllEventClasses;
             startupIntegrityClassMask = ClassField.AllClasses;
             integrityOnEventOverflowIIN = true;
-            eventScanOnEventsAvailableIIN = false;
             responseTimeout = TimeSpan.FromSeconds(5);
             taskRetryPeriod = TimeSpan.FromSeconds(5);
         }
@@ -54,11 +53,6 @@ namespace Automatak.DNP3.Interface
         /// Defines whether an integrity scan will be performed when the EventBufferOverflow IIN is detected
         /// </summary>
         public bool integrityOnEventOverflowIIN;
-
-        /// <summary>
-        /// Defines whether an event scan will be performed when Class 1/2/3 event data available IIN is detected
-        /// </summary>
-        public bool eventScanOnEventsAvailableIIN;
 
         /// <summary>
         /// Application layer response timeout
