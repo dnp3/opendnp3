@@ -30,7 +30,7 @@ namespace opendnp3
 	class ISOEHandler;
 
 	/**
-	* A generic interface for defining master request/response style tasks
+	* An auto event scan task that happens when the master sees the event IIN bits
 	*/
 	class EventScanTask : public PollTaskBase
 	{
@@ -39,7 +39,7 @@ namespace opendnp3
 
 		EventScanTask(const MasterParams& params, ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_);
 
-		virtual TaskId Id() const override final { return TaskId::From(TaskIds::EVENT_SCAN); }
+		virtual TaskId Id() const override final { return TaskId::From(TaskIdValue::AUTO_EVENT_SCAN); }
 
 		virtual bool IsRecurring() const override final { return true; }
 

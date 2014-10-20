@@ -43,7 +43,7 @@ public:
 
 	EnableUnsolicitedTask(const MasterParams& params, openpal::Logger* pLogger_);	
 
-	virtual TaskId Id() const override final { return TaskId::From(TaskIds::ENABLE_UNSOLICITED); }
+	virtual TaskId Id() const override final { return TaskId::From(TaskIdValue::ENABLE_UNSOLICITED); }
 
 	virtual bool IsRecurring() const override final { return true; }
 
