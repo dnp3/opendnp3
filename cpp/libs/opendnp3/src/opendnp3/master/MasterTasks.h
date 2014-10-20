@@ -29,6 +29,7 @@
 #include "opendnp3/master/DisableUnsolicitedTask.h"
 #include "opendnp3/master/SerialTimeSyncTask.h"
 #include "opendnp3/master/CommandTask.h"
+#include "opendnp3/master/EventScanTask.h"
 
 #include "opendnp3/master/MasterScheduler.h"
 
@@ -57,6 +58,7 @@ public:
 	StartupIntegrityPoll startupIntegrity;
 	DisableUnsolicitedTask disableUnsol;
 	SerialTimeSyncTask timeSync;
+	EventScanTask eventScan;
 
 private:
 
