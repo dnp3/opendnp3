@@ -102,13 +102,12 @@ namespace Automatak.DNP3.Interface
 
         bool IMasterApplication.AssignClassDuringStartup()
         {
-            return true;
+            return false;
         }
 
         IEnumerable<ClassAssignment> IMasterApplication.GetClassAssignments()
         {
-            var assignment1 = new ClassAssignment(3, 0, PointClass.Class2, Range.All());
-            return new List<ClassAssignment>() { assignment1 };
+            return Enumerable.Empty<ClassAssignment>();
         }
     }
 }
