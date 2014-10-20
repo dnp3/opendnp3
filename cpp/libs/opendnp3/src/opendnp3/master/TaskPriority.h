@@ -40,7 +40,9 @@ namespace opendnp3
 
 		const int ENABLE_UNSOLICITED = 60;
 
-		const int USER_POLL = 70;
+		const int EVENT_SCAN = 70;
+
+		const int USER_POLL = 80;
 
 	}
 

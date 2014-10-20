@@ -140,6 +140,7 @@
     <ClInclude Include="src\opendnp3\master\ConstantCommandProcessor.h" />
     <ClInclude Include="src\opendnp3\master\DisableUnsolicitedTask.h" />
     <ClInclude Include="src\opendnp3\master\EnableUnsolicitedTask.h" />
+    <ClInclude Include="src\opendnp3\master\EventScanTask.h" />
     <ClInclude Include="src\opendnp3\master\ITaskCallback.h" />
     <ClInclude Include="src\opendnp3\master\ICommandProcessor.h" />
     <ClInclude Include="src\opendnp3\master\IMasterApplication.h" />
@@ -314,6 +315,7 @@
     <ClCompile Include="src\opendnp3\master\ConstantCommandProcessor.cpp" />
     <ClCompile Include="src\opendnp3\master\DisableUnsolicitedTask.cpp" />
     <ClCompile Include="src\opendnp3\master\EnableUnsolicitedTask.cpp" />
+    <ClCompile Include="src\opendnp3\master\EventScanTask.cpp" />
     <ClCompile Include="src\opendnp3\master\IMasterState.cpp" />
     <ClCompile Include="src\opendnp3\master\ITaskLock.cpp" />
     <ClCompile Include="src\opendnp3\master\NullResponseTask.cpp" />

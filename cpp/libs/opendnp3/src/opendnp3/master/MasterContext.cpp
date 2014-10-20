@@ -288,6 +288,11 @@ void MasterContext::OnReceiveIIN(const IINField& iin)
 	{
 		tasks.timeSync.Demand();
 	}	
+
+	if (params.eventScanOnEventsAvailableIIN && (iin.IsSet(IINBit::CLASS1_EVENTS) || iin.IsSet(IINBit::CLASS2_EVENTS) || iin.IsSet(IINBit::CLASS3_EVENTS)))
+	{
+		tasks.eventScan.Demand();
+	}
 }
 
 void MasterContext::StartResponseTimer()
