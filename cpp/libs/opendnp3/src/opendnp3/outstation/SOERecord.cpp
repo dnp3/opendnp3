@@ -24,7 +24,7 @@
 namespace opendnp3
 {
 
-SOERecord::SOERecord() : type(EventType::Analog), index(0), clazz(EventClass::EC1), selected(false)
+SOERecord::SOERecord() : type(EventType::Analog), index(0), clazz(EventClass::EC1), selected(false), flags(0)
 {}
 
 SOERecord::SOERecord(const Binary& meas, uint16_t index_, EventClass clazz_) :

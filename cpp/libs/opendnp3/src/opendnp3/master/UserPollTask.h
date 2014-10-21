@@ -83,8 +83,6 @@ private:
 	openpal::TimeDuration period;
 	openpal::TimeDuration retryDelay;
 	openpal::MonotonicTimestamp expiration;
-	ITaskCallback<UserTaskResult>* pCallback;
-
 };
 
 

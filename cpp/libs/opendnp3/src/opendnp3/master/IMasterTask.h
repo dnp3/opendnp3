@@ -44,6 +44,8 @@ class IMasterTask
 	
 public:	
 
+	virtual ~IMasterTask() {}
+
 	/**	
 	* @return An id of the task. Id's < 0 are anonymous
 	*/
