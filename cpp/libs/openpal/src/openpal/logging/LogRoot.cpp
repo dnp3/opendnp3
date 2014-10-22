@@ -35,17 +35,18 @@ LogRoot::LogRoot(ILogHandler* pHandler_, char const* alias_, const LogFilters& f
 	pHandler(pHandler_), 
 	filters(filters_)
 {		
-	char* tmp = new char[strlen(alias_) + 1];
-	alias = strcpy(tmp, alias_);
+	#ifndef OPENPAL_STRIP_LOGGING
+	SAFE_STRING_FORMAT(alias, MAX_ID_SIZE, "%s", alias_);
+	#endif
 }
 
-LogRoot::LogRoot(const LogRoot& copy, char const* alias_) :
-	LogRoot(copy.pHandler, alias_, copy.filters)
-{ }
-
-LogRoot::~LogRoot()
+LogRoot::LogRoot(const LogRoot& copy, char const* alias_) : 
+	pHandler(copy.pHandler),
+	filters(copy.filters)
 {
-	delete[] alias;
+	#ifndef OPENPAL_STRIP_LOGGING
+	SAFE_STRING_FORMAT(alias, MAX_ID_SIZE, "%s", alias_);
+	#endif
 }
 
 void LogRoot::Log(const LogFilters& filters, char const* location, char const* message, int errorCode)

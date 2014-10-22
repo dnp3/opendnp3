@@ -36,14 +36,13 @@ namespace openpal
 */
 class LogRoot : private Uncopyable
 {
+	static const uint8_t MAX_ID_SIZE = 20;
 
 public:
 
 	LogRoot(const LogRoot&, char const* alias_);
 
 	LogRoot(ILogHandler* pHandler_, char const* alias_, const LogFilters& filters);
-	
-	~LogRoot();
 
 	void Log(const LogFilters& filters, char const* location, char const* message, int errorCode);
 
@@ -58,7 +57,7 @@ public:
 private:
 	
 	ILogHandler*	pHandler;
-	char*           alias;
+	char			alias[MAX_ID_SIZE];
 	LogFilters		filters;   // bit field describing what is being logged
 	
 };
