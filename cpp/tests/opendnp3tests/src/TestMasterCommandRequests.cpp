@@ -233,7 +233,7 @@ TEST_CASE(SUITE("ResponseTimeout"))
 	REQUIRE(t.exe.RunMany() > 0);
 		
 	REQUIRE(1 == callback.responses.size());
-	REQUIRE(callback.responses[0].GetResult() == CommandResult::TIMEOUT);
+	REQUIRE(callback.responses[0].GetResult() == UserTaskResult::TIMEOUT);
 }
 
 template <class T>
