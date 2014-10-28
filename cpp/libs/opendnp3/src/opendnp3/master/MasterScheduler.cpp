@@ -64,7 +64,7 @@ int MasterScheduler::Compare(const MonotonicTimestamp& now, const IMasterTask& l
 		{
 			return 1; // rhs greater
 		}
-		else if (rhs.Priority() < lhs.Priority() && lhs.BlocksLowerPriority())
+		else if (rhs.Priority() > lhs.Priority() && lhs.BlocksLowerPriority())
 		{
 			return -1; // lhs greater
 		}

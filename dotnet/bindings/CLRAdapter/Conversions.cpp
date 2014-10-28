@@ -338,6 +338,7 @@ namespace Automatak
 				mp.integrityOnEventOverflowIIN = config->integrityOnEventOverflowIIN;
 				mp.responseTimeout = ConvertTimespan(config->responseTimeout);
 				mp.startupIntegrityClassMask = ConvertClassField(config->startupIntegrityClassMask);
+				mp.eventScanOnEventsAvailableIIN = config->eventScanOnEventsAvailableIIN;
 				mp.taskRetryPeriod = ConvertTimespan(config->taskRetryPeriod);
 				mp.timeSyncMode = (opendnp3::TimeSyncMode) config->timeSyncMode;
 				mp.unsolClassMask = ConvertClassField(config->unsolClassMask);

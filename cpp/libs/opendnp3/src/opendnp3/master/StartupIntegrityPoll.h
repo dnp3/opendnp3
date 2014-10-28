@@ -39,7 +39,7 @@ public:
 
 	StartupIntegrityPoll(const MasterParams& params, ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_);
 
-	virtual TaskId Id() const override final { return TaskId::From(TaskIds::STARTUP_INTEGRITY_POLL); }
+	virtual TaskId Id() const override final { return TaskId::From(TaskIdValue::STARTUP_INTEGRITY_POLL); }
 
 	virtual bool IsRecurring() const override final { return true; }
 

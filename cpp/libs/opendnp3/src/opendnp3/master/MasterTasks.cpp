@@ -32,7 +32,8 @@ clearRestart(params, pLogger),
 assignClass(params, application, pLogger),
 startupIntegrity(params, &SOEHandler, pLogger),
 disableUnsol(params, pLogger),
-timeSync(pLogger, &timeSource)
+timeSync(pLogger, &timeSource),
+eventScan(params, &SOEHandler, pLogger)
 {
 	
 }
@@ -45,6 +46,7 @@ void MasterTasks::Initialize(MasterScheduler& scheduler)
 	scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(&startupIntegrity));
 	scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(&disableUnsol));
 	scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(&timeSync));
+	scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(&eventScan));
 
 	for (auto& pTask : boundTasks)
 	{

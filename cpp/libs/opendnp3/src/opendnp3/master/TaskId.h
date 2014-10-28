@@ -21,23 +21,16 @@
 #ifndef OPENDNP3_TASKID_H
 #define OPENDNP3_TASKID_H
 
+#include "opendnp3/gen/TaskIdValue.h"
+
 namespace opendnp3
 {
-	enum class TaskIds : int
-	{
-		CLEAR_RESTART,
-		DISABLE_UNSOLICITED,
-		ASSIGN_CLASS,
-		STARTUP_INTEGRITY_POLL,
-		SERIAL_TIME_SYNC,
-		ENABLE_UNSOLICITED
-	};
-
+	
 	class TaskId
 	{
 		public:			
 
-		static TaskId From(TaskIds id)
+		static TaskId From(TaskIdValue id)
 		{
 			return TaskId(false, (int)id);
 		}

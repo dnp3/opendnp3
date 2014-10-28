@@ -35,6 +35,7 @@ MasterParams::MasterParams() :
 	unsolClassMask(ClassField::AllEventClasses()),
 	startupIntegrityClassMask(ClassField::AllClasses()),
 	integrityOnEventOverflowIIN(true),
+	eventScanOnEventsAvailableIIN(false),
 	taskRetryPeriod(TimeDuration::Seconds(5)),
 	maxTxFragSize(DEFAULT_MAX_APDU_SIZE),
 	maxRxFragSize(DEFAULT_MAX_APDU_SIZE)

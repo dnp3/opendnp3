@@ -212,6 +212,62 @@ TEST_CASE(SUITE("CloseWhileWaitingForCommandResponse"))
 	REQUIRE(1 == callback.responses.size());		
 }
 
+TEST_CASE(SUITE("ResponseTimeout"))
+{
+	auto config = NoStartupTasks();
+	MasterTestObject t(config);
+	t.master.OnLowerLayerUp();
+
+	AnalogOutputInt16 ao(100);
+	MockCommandCallback callback;
+
+	t.master.GetCommandProcessor().DirectOperate(ao, 1, callback);
+	REQUIRE(t.exe.RunMany() > 0);
+
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 05 29 02 28 01 00 01 00 64 00 00"); // DIRECT OPERATE
+	REQUIRE(t.lower.NumWrites() == 0); //nore more packets
+	REQUIRE(callback.responses.empty());
+	
+	REQUIRE(t.exe.AdvanceToNextTimer());
+
+	REQUIRE(t.exe.RunMany() > 0);
+		
+	REQUIRE(1 == callback.responses.size());
+	REQUIRE(callback.responses[0].GetResult() == UserTaskResult::TIMEOUT);
+}
+
+TEST_CASE(SUITE("SendCommandDuringFailedStartup"))
+{
+	auto config = NoStartupTasks();
+	config.disableUnsolOnStartup = true;
+	MasterTestObject t(config);
+	t.master.OnLowerLayerUp();
+	
+	REQUIRE(t.exe.RunMany() > 0);
+
+	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ClassField::AllEventClasses()));
+	t.master.OnSendResult(true);
+	REQUIRE(t.exe.AdvanceToNextTimer());
+	REQUIRE(t.exe.RunMany() > 0);
+	
+	// while we're waiting for a response to the disable unsol, initiate a command seqeunce
+	MockCommandCallback callback;
+	t.master.GetCommandProcessor().DirectOperate(AnalogOutputInt16(100), 1, callback);
+
+	REQUIRE(t.exe.RunMany() > 0);
+
+	REQUIRE(t.lower.PopWriteAsHex() == "C1 05 29 02 28 01 00 01 00 64 00 00"); // DIRECT OPERATE
+	REQUIRE(t.lower.NumWrites() == 0); //nore more packets
+	REQUIRE(callback.responses.empty());
+
+	REQUIRE(t.exe.AdvanceToNextTimer());
+
+	REQUIRE(t.exe.RunMany() > 0);
+
+	REQUIRE(1 == callback.responses.size());
+	REQUIRE(callback.responses[0].GetResult() == UserTaskResult::TIMEOUT);
+}
+
 template <class T>
 void TestAnalogOutputExecution(const std::string& hex, const T& command)
 {

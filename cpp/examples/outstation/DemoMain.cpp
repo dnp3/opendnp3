@@ -28,7 +28,6 @@
 
 #include <opendnp3/outstation/TimeTransaction.h>
 
-//#include <opendnp3/outstation/ICommandHandler.h>
 #include <opendnp3/outstation/SimpleCommandHandler.h>
 
 #include <opendnp3/outstation/Database.h>

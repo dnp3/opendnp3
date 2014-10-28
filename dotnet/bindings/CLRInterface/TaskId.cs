@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Automatak.DNP3.Interface
-{
+{    
     public class TaskId
     {
         public TaskId(int id, bool isUserAssigned)

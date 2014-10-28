@@ -137,7 +137,7 @@ void Master::ScanRange(GroupVariationID gvId, uint16_t start, uint16_t stop, int
 	{
 		writer.WriteRangeHeader<openpal::UInt16>(QualifierCode::UINT16_START_STOP, gvId, start, stop);
 	};
-	this->Scan(configure);
+	this->Scan(configure, id);
 }
 	
 }
