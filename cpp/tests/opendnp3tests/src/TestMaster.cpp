@@ -448,3 +448,21 @@ TEST_CASE(SUITE("EventScanOnEventsAvailableIIN"))
 	REQUIRE(t.lower.PopWriteAsHex() == hex::EventPoll(0));
 	t.master.OnSendResult(true);
 }
+
+TEST_CASE(SUITE("AdhocScanWorksWithUnsolicitedDisabled"))
+{
+	MasterParams params = NoStartupTasks();
+	params.disableUnsolOnStartup = true;
+	MasterTestObject t(params);
+	t.master.OnLowerLayerUp();
+
+	t.master.ScanClasses(ClassField::AllEventClasses());
+
+	REQUIRE(t.exe.RunMany() > 0);
+	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ClassField::AllEventClasses()));
+	t.master.OnSendResult(true);
+	t.SendToMaster(hex::EmptyResponse(0));
+
+	REQUIRE(t.exe.RunMany() > 0);
+	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::READ, 1, ClassField::AllEventClasses()));	
+}
