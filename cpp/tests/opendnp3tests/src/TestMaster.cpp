@@ -466,3 +466,15 @@ TEST_CASE(SUITE("AdhocScanWorksWithUnsolicitedDisabled"))
 	REQUIRE(t.exe.RunMany() > 0);
 	REQUIRE(t.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::READ, 1, ClassField::AllEventClasses()));	
 }
+
+TEST_CASE(SUITE("AdhocScanFailsImmediatelyIfMasterOffline"))
+{
+	MasterParams params = NoStartupTasks();	
+	MasterTestObject t(params);
+
+	t.master.ScanClasses(ClassField::AllEventClasses(), 10);
+	REQUIRE(t.application.taskEvents.size() == 1);
+	REQUIRE(t.application.taskEvents[0].first.id == 10);
+	REQUIRE(t.application.taskEvents[0].first.isUserAssigned);
+	REQUIRE(t.application.taskEvents[0].second == TaskState::FAILURE);
+}
