@@ -78,6 +78,8 @@ class Master : public IUpperLayer
 
 	void ScanRange(GroupVariationID gvId, uint16_t start, uint16_t stop, int id = -1);
 
+	/// ---- Write tasks -----
+
 	
 	private:
 

@@ -649,7 +649,7 @@
       <Filter>Header\app</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\app\PointIndexes.h">
-        <Filter>Header\app</Filter>
+      <Filter>Header\app</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\LayerInterfaces.h">
       <Filter>Header</Filter>
@@ -724,6 +724,9 @@
       <Filter>Header\master</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\master\EventScanTask.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\WriteTask.h">
       <Filter>Header\master</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1126,7 +1129,7 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\app\PointIndexes.cpp">
       <Filter>Source\app</Filter>
-    </ClCompile>    
+    </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\AssignClassHandler.cpp">
       <Filter>Header\outstation</Filter>
     </ClCompile>
@@ -1152,6 +1155,10 @@
       <Filter>Source\gen</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\master\EventScanTask.cpp">
+      <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\DatabaseBuffers.cpp" />
+    <ClCompile Include="src\opendnp3\master\WriteTask.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
   </ItemGroup>

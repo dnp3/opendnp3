@@ -141,6 +141,7 @@
     <ClInclude Include="src\opendnp3\master\DisableUnsolicitedTask.h" />
     <ClInclude Include="src\opendnp3\master\EnableUnsolicitedTask.h" />
     <ClInclude Include="src\opendnp3\master\EventScanTask.h" />
+    <ClInclude Include="src\opendnp3\master\WriteTask.h" />
     <ClInclude Include="src\opendnp3\master\ITaskCallback.h" />
     <ClInclude Include="src\opendnp3\master\ICommandProcessor.h" />
     <ClInclude Include="src\opendnp3\master\IMasterApplication.h" />
@@ -333,6 +334,7 @@
     <ClCompile Include="src\opendnp3\master\SingleResponseTask.cpp" />
     <ClCompile Include="src\opendnp3\master\MasterTasks.cpp" />
     <ClCompile Include="src\opendnp3\master\TaskRecord.cpp" />
+    <ClCompile Include="src\opendnp3\master\WriteTask.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group1.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group10.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group11.cpp" />

@@ -18,36 +18,41 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_TASKPRIORITY_H
-#define OPENDNP3_TASKPRIORITY_H
+
+#include "WriteTask.h"
 
 namespace opendnp3
 {
 
-	namespace priority
-	{
-		const int COMMAND = 0;
-
-		const int USER_WRITE = 1;
-		
-		const int CLEAR_RESTART = 10;
-		
-		const int DISABLE_UNSOLICITED = 20;
-
-		const int ASSIGN_CLASS = 30;
-				
-		const int INTEGRITY_POLL = 40;
-
-		const int TIME_SYNC = 50;		
-
-		const int ENABLE_UNSOLICITED = 60;
-
-		const int EVENT_SCAN = 70;
-
-		const int USER_POLL = 80;
-
-	}
+WriteTask::WriteTask(const MasterParams& params, const std::string& name_, TaskId id_, const std::function<void(HeaderWriter&)> formatter_, openpal::Logger* pLogger) :
+	NullResponseTask(pLogger),
+	pParams(&params),
+	name(name_),
+	id(id_),
+	formatter(formatter_)
+{
 
 }
 
-#endif
+void WriteTask::BuildRequest(APDURequest& request, uint8_t seq)
+{
+
+}
+
+void WriteTask::OnLowerLayerClose(const openpal::MonotonicTimestamp& now)
+{
+
+}
+
+void WriteTask::OnSuccess(const openpal::MonotonicTimestamp& now)
+{
+
+}
+
+void WriteTask::OnTimeoutOrBadControlOctet(const openpal::MonotonicTimestamp& now)
+{
+
+}
+
+} //end ns
+
