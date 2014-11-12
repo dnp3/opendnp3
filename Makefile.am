@@ -142,6 +142,7 @@ cpp/libs/opendnp3/src/opendnp3/master/SingleResponseTask.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/StartupIntegrityPoll.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/TaskRecord.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/UserPollTask.cpp \
+cpp/libs/opendnp3/src/opendnp3/master/WriteTask.cpp \
 cpp/libs/opendnp3/src/opendnp3/objects/Group10.cpp \
 cpp/libs/opendnp3/src/opendnp3/objects/Group11.cpp \
 cpp/libs/opendnp3/src/opendnp3/objects/Group12.cpp \
