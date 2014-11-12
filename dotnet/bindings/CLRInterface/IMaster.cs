@@ -83,8 +83,7 @@ namespace Automatak.DNP3.Interface
         /// </summary>
         /// <param name="field">bitfield of class values</param>
         /// <param name="period">period, negative for non-periodic</param>        
-        /// <param name="id">An optional id that can be used to correlate task state callbacks with this scan</param>
-        /// <returns>a new master scan interface</returns>
+        /// <param name="id">An optional id that can be used to correlate task state callbacks with this scan</param>        
         void ScanClasses(ClassField field, int id = -1);
 
         /// <summary>        
@@ -96,5 +95,13 @@ namespace Automatak.DNP3.Interface
         /// <param name="stop"></param>        
         /// <param name="id">An optional id that can be used to correlate task state callbacks with this scan</param>        
         void ScanRange(byte group, byte variation, System.UInt16 start, System.UInt16 stop, int id = -1);
+
+        /// <summary>
+        /// Write a time and interval object to a specific index
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="index"></param>
+        /// <param name="id"></param>
+        void Write(TimeAndInterval value, System.UInt16 index, int id = -1);
     }
 }

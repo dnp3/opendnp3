@@ -80,6 +80,11 @@ namespace Automatak
 				pMaster->ScanRange(gvid, start, stop, id);
 			}
 
+			void MasterAdapter::Write(TimeAndInterval^ value, System::UInt16 index, int id)
+			{				
+				pMaster->Write(Conversions::ConvertMeas(value), index, id);
+			}
+
 		}
 	}
 }

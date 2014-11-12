@@ -41,6 +41,8 @@ namespace Automatak
 				
 				virtual void ScanRange(System::Byte group, System::Byte variation, System::UInt16 start, System::UInt16 stop, int id);
 
+				virtual void Write(TimeAndInterval^ value, System::UInt16 index, int id);
+
 			private:
 				asiodnp3::IMaster* pMaster;
 				ICommandProcessor^ commandAdapter;
