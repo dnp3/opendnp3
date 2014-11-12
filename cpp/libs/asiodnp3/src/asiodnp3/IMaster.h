@@ -25,6 +25,7 @@
 #include "StackActionHandler.h"
 
 #include <opendnp3/app/ClassField.h>
+#include <opendnp3/app/TimeAndInterval.h>
 #include <opendnp3/master/MasterScan.h>
 #include <opendnp3/master/ICommandProcessor.h>
 #include <openpal/executor/TimeDuration.h>
@@ -89,6 +90,11 @@ public:
 	* Initiate a single start/stop (range) scan
 	*/
 	virtual void ScanRange(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, int id = -1) = 0;
+
+	/**
+	* Write a time and interval object to a specific index
+	*/
+	virtual void Write(const opendnp3::TimeAndInterval& value, uint16_t index, int id = -1) = 0;
 
 	/**
 	* Get a command processor interface to execute controls on the master

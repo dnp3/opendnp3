@@ -37,7 +37,7 @@ class WriteTask : public NullResponseTask
 
 public:	
 
-	WriteTask(const MasterParams& params, const std::string& name, TaskId id, const std::function<void (HeaderWriter&)> formatter, openpal::Logger* pLogger);
+	WriteTask(const MasterParams& params, const std::string& name, TaskId id, const std::function<void (HeaderWriter&)> format, openpal::Logger* pLogger);
 
 	virtual TaskId Id() const override final { return id; }
 
@@ -62,7 +62,7 @@ private:
 	const MasterParams* pParams;
 	std::string name;
 	TaskId id;	
-	std::function<void(HeaderWriter&)> formatter;
+	std::function<void(HeaderWriter&)> format;
 
 	virtual void OnSuccess(const openpal::MonotonicTimestamp& now) override final;
 

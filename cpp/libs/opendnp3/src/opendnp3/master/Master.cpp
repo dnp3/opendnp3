@@ -26,6 +26,7 @@
 #include "opendnp3/LogLevels.h"
 
 #include "opendnp3/master/UserPollTask.h"
+#include "opendnp3/master/WriteTask.h"
 
 #include <openpal/logging/LogMacros.h>
 
@@ -110,7 +111,7 @@ MasterScan Master::AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t 
 void Master::Scan(const std::function<void(HeaderWriter&)>& builder, int id)
 {
 	auto pTask = new UserPollTask(builder, id, false, "", TimeDuration::Max(), context.params.taskRetryPeriod, context.pSOEHandler, &context.logger);
-	context.ScheduleAdhocPollTask(pTask);	
+	context.ScheduleAdhocTask(pTask);	
 }
 
 void Master::ScanClasses(const ClassField& field, int id)
@@ -138,6 +139,17 @@ void Master::ScanRange(GroupVariationID gvId, uint16_t start, uint16_t stop, int
 		writer.WriteRangeHeader<openpal::UInt16>(QualifierCode::UINT16_START_STOP, gvId, start, stop);
 	};
 	this->Scan(configure, id);
+}
+
+void Master::Write(const TimeAndInterval& value, uint16_t index, int id)
+{
+	auto format = [value, index](HeaderWriter& writer)
+	{
+		writer.WriteSingleIndexedValue<UInt16, TimeAndInterval>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group50Var4::Inst(), value, index);
+	};
+	auto pTask = new WriteTask(context.params, "", TaskId::UserDefined(id), format, &context.logger);
+
+	context.ScheduleAdhocTask(pTask);
 }
 	
 }

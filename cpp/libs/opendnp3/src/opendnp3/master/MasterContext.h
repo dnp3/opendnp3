@@ -119,7 +119,7 @@ class MasterContext : public ICommandProcessor, public IScheduleCallback
 
 	void ScheduleRecurringPollTask(IMasterTask* pTask);
 
-	void ScheduleAdhocPollTask(IMasterTask* pTask);
+	void ScheduleAdhocTask(IMasterTask* pTask);
 
 	private:
 	

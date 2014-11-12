@@ -478,3 +478,21 @@ TEST_CASE(SUITE("AdhocScanFailsImmediatelyIfMasterOffline"))
 	REQUIRE(t.application.taskEvents[0].first.isUserAssigned);
 	REQUIRE(t.application.taskEvents[0].second == TaskState::FAILURE);
 }
+
+TEST_CASE(SUITE("MasterWritesTimeAndInterval"))
+{
+	MasterParams params = NoStartupTasks();
+	MasterTestObject t(params);
+	t.master.OnLowerLayerUp();
+
+	t.master.Write(TimeAndInterval(3, 4, IntervalUnits::Days), 7, 4);
+	REQUIRE(t.exe.RunMany() > 0);
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 02 32 04 28 01 00 07 00 03 00 00 00 00 00 04 00 00 00 05");
+	t.master.OnSendResult(true);	
+	t.SendToMaster("C0 81 00 00");
+	REQUIRE(t.lower.PopWriteAsHex() == "");
+
+	REQUIRE(t.application.taskEvents.size() == 2);
+	REQUIRE(t.application.taskEvents[0].second == TaskState::RUNNING);
+	REQUIRE(t.application.taskEvents[1].second == TaskState::SUCCESS);
+}

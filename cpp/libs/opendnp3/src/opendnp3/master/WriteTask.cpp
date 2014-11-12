@@ -24,32 +24,35 @@
 namespace opendnp3
 {
 
-WriteTask::WriteTask(const MasterParams& params, const std::string& name_, TaskId id_, const std::function<void(HeaderWriter&)> formatter_, openpal::Logger* pLogger) :
+WriteTask::WriteTask(const MasterParams& params, const std::string& name_, TaskId id_, const std::function<void(HeaderWriter&)> format_, openpal::Logger* pLogger) :
 	NullResponseTask(pLogger),
 	pParams(&params),
 	name(name_),
 	id(id_),
-	formatter(formatter_)
+	format(format_)
 {
 
 }
 
 void WriteTask::BuildRequest(APDURequest& request, uint8_t seq)
 {
-
+	request.SetFunction(FunctionCode::WRITE);
+	request.SetControl(AppControlField::Request(seq));
+	auto writer = request.GetWriter();
+	format(writer);
 }
 
-void WriteTask::OnLowerLayerClose(const openpal::MonotonicTimestamp& now)
+void WriteTask::OnLowerLayerClose(const openpal::MonotonicTimestamp&)
 {
 
 }
 
-void WriteTask::OnSuccess(const openpal::MonotonicTimestamp& now)
+void WriteTask::OnSuccess(const openpal::MonotonicTimestamp&)
 {
 
 }
 
-void WriteTask::OnTimeoutOrBadControlOctet(const openpal::MonotonicTimestamp& now)
+void WriteTask::OnTimeoutOrBadControlOctet(const openpal::MonotonicTimestamp&)
 {
 
 }

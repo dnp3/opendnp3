@@ -171,7 +171,7 @@ void MasterContext::ScheduleRecurringPollTask(IMasterTask* pTask)
 	}	
 }
 
-void MasterContext::ScheduleAdhocPollTask(IMasterTask* pTask)
+void MasterContext::ScheduleAdhocTask(IMasterTask* pTask)
 {
 	auto task = ManagedPtr<IMasterTask>::Deleted(pTask);
 	if (isOnline)

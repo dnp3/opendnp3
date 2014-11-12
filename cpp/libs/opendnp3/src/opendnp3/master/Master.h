@@ -80,6 +80,8 @@ class Master : public IUpperLayer
 
 	/// ---- Write tasks -----
 
+	void Write(const TimeAndInterval& value, uint16_t index, int id = -1);
+
 	
 	private:
 

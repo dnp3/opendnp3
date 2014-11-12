@@ -31,18 +31,19 @@ using namespace opendnp3;
 namespace asiodnp3
 {
 
-MasterStackImpl::MasterStackImpl(   const char* id,
-									LogRoot& root_,
-									asiopal::ASIOExecutor& executor,
-									opendnp3::ISOEHandler& SOEHandler,                                    
-									opendnp3::IMasterApplication& application,
-                                    const MasterStackConfig& config,
-                                    const StackActionHandler& handler_,									
-									opendnp3::ITaskLock& taskLock) :
-	root(root_, id),
-	handler(handler_),
-	stack(root, &executor, config.master.maxRxFragSize, &statistics, config.link),
-	master(executor, root, stack.transport, SOEHandler, application, config.master, taskLock)
+MasterStackImpl::MasterStackImpl(   
+	const char* id,
+	LogRoot& root_,
+	asiopal::ASIOExecutor& executor,
+	opendnp3::ISOEHandler& SOEHandler,                                    
+	opendnp3::IMasterApplication& application,
+    const MasterStackConfig& config,
+    const StackActionHandler& handler_,									
+	opendnp3::ITaskLock& taskLock) :
+		root(root_, id),
+		handler(handler_),
+		stack(root, &executor, config.master.maxRxFragSize, &statistics, config.link),
+		master(executor, root, stack.transport, SOEHandler, application, config.master, taskLock)
 {
 	stack.transport.SetAppLayer(&master);
 }
@@ -121,19 +122,25 @@ void MasterStackImpl::Scan(const std::function<void(opendnp3::HeaderWriter&)>& b
 
 void MasterStackImpl::ScanAllObjects(opendnp3::GroupVariationID gvId, int id)
 {
-	auto add = [this, gvId, id]() { return master.ScanAllObjects(gvId, id); };
+	auto add = [this, gvId, id]() { master.ScanAllObjects(gvId, id); };
 	return asiopal::SynchronouslyExecute(handler.GetExecutor()->strand, add);
 }
 
 void MasterStackImpl::ScanClasses(const opendnp3::ClassField& field, int id)
 {
-	auto add = [this, field, id]() { return master.ScanClasses(field, id); };
+	auto add = [this, field, id]() { master.ScanClasses(field, id); };
 	return asiopal::SynchronouslyExecute(handler.GetExecutor()->strand, add);
 }
 
 void MasterStackImpl::ScanRange(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, int id)
 {
-	auto add = [this, gvId, start, stop, id]() { return master.ScanRange(gvId, start, stop, id); };
+	auto add = [this, gvId, start, stop, id]() { master.ScanRange(gvId, start, stop, id); };
+	return asiopal::SynchronouslyExecute(handler.GetExecutor()->strand, add);
+}
+
+void MasterStackImpl::Write(const TimeAndInterval& value, uint16_t index, int id)
+{
+	auto add = [this, value, index, id]() { master.Write(value, index, id); };
 	return asiopal::SynchronouslyExecute(handler.GetExecutor()->strand, add);
 }
 

@@ -71,13 +71,17 @@ public:
 
 	// ------- Adhoc scan API ---------
 	
-	virtual void Scan(const std::function<void(opendnp3::HeaderWriter&)>& builder, int id);
+	virtual void Scan(const std::function<void(opendnp3::HeaderWriter&)>& builder, int id) override final;
 
-	virtual void ScanAllObjects(opendnp3::GroupVariationID gvId, int id);
+	virtual void ScanAllObjects(opendnp3::GroupVariationID gvId, int id) override final;
 
-	virtual void ScanClasses(const opendnp3::ClassField& field, int id);
+	virtual void ScanClasses(const opendnp3::ClassField& field, int id) override final;
 
-	virtual void ScanRange(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, int id = -1);
+	virtual void ScanRange(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, int id = -1) override final;
+
+	// ------- Other adhoc methods -------
+
+	virtual void Write(const opendnp3::TimeAndInterval& value, uint16_t index, int id = -1)  override final;
 
 	// ------- Non-interface public members ---------
 
