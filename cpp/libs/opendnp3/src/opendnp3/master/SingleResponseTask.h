@@ -44,7 +44,7 @@ protected:
 
 	virtual void OnTimeoutOrBadControlOctet(const openpal::MonotonicTimestamp& now) = 0;
 
-	virtual TaskResult OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now) = 0;
+	virtual TaskResult OnOnlyResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now) = 0;
 
 	openpal::Logger* pLogger;	
 };

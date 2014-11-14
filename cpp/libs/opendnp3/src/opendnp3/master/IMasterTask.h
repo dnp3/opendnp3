@@ -85,15 +85,13 @@ public:
 	virtual openpal::MonotonicTimestamp ExpirationTime() const = 0;
 
 	/**
-	 * Build a request APDU.
-	 *	
+	 * Build a request APDU.	 
 	 */
 	virtual void BuildRequest(APDURequest& request, uint8_t seq) = 0;
 
 	/**
-	 * Handler for responses
-	 *	 	 	
-	 */
+	 * Handler for responses	 
+	 */	
 	virtual TaskResult OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now) = 0;
 	
 	/**

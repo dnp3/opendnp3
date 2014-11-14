@@ -68,7 +68,7 @@ void ClearRestartTask::OnTimeoutOrBadControlOctet(const openpal::MonotonicTimest
 	expiration = now.Add(pParams->taskRetryPeriod);
 }
 	
-TaskResult ClearRestartTask::OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const MonotonicTimestamp& now)
+TaskResult ClearRestartTask::OnOnlyResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const MonotonicTimestamp& now)
 {
 	if (response.IIN.IsSet(IINBit::DEVICE_RESTART))
 	{

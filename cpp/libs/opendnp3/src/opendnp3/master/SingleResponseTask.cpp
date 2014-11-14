@@ -35,7 +35,7 @@ TaskResult SingleResponseTask::OnResponse(const APDUResponseHeader& header, cons
 {
 	if (header.control.FIR && header.control.FIN)
 	{		
-		return this->OnSingleResponse(header, objects, now);
+		return this->OnOnlyResponse(header, objects, now);
 	}
 	else
 	{

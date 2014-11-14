@@ -38,7 +38,7 @@ public:
 
 protected:
 
-	virtual TaskResult OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now) override final;
+	virtual TaskResult OnOnlyResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now) override final;
 	
 	virtual void OnSuccess(const openpal::MonotonicTimestamp& now) = 0;
 };

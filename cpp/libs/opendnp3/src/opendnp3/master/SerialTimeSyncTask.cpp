@@ -82,7 +82,7 @@ void SerialTimeSyncTask::OnTimeoutOrBadControlOctet(const openpal::MonotonicTime
 	// don't reschedule. Seeing the NeedTime bit again will automatically re-activate the task
 }
 
-TaskResult SerialTimeSyncTask::OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now)
+TaskResult SerialTimeSyncTask::OnOnlyResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now)
 {
 	if (delay < 0)
 	{
