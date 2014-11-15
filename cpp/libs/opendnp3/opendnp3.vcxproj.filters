@@ -474,9 +474,6 @@
     <ClInclude Include="src\opendnp3\master\MasterParams.h">
       <Filter>Header\master</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\master\TaskResult.h">
-      <Filter>Source\master</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\app\APDUBuilders.h">
       <Filter>Header\app</Filter>
     </ClInclude>

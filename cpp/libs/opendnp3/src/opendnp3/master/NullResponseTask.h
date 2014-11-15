@@ -38,7 +38,7 @@ public:
 
 protected:
 
-	virtual TaskResult OnOnlyResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now) override final;
+	virtual Result OnOnlyResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now) override final;
 	
 	virtual void OnRejectedIIN(const openpal::MonotonicTimestamp& now) = 0;
 	

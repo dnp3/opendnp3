@@ -61,7 +61,7 @@ protected:
 
 	virtual void OnBadControlOctet(const openpal::MonotonicTimestamp&) override final;	
 	
-	virtual TaskResult OnOnlyResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp&) override final;
+	virtual Result OnOnlyResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp&) override final;
 
 private:
 

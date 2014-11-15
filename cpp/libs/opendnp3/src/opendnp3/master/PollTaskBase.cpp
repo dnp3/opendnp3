@@ -47,7 +47,7 @@ const char* PollTaskBase::Name() const
 	return name.empty() ? "user poll" : name.c_str();
 }
 	
-TaskResult PollTaskBase::OnResponse(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now)
+IMasterTask::Result PollTaskBase::OnResponse(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now)
 {
 	if (header.control.FIR)
 	{
@@ -55,7 +55,7 @@ TaskResult PollTaskBase::OnResponse(const APDUResponseHeader& header, const open
 		{
 			SIMPLE_LOG_BLOCK(logger, flags::WARN, "Ignoring unexpected FIR frame");
 			this->OnFailure(now);
-			return TaskResult::FAILURE;
+			return Result::FAILURE;
 		}
 		else
 		{			
@@ -72,7 +72,7 @@ TaskResult PollTaskBase::OnResponse(const APDUResponseHeader& header, const open
 		{	
 			SIMPLE_LOG_BLOCK(logger, flags::WARN, "Ignoring unexpected non-FIR frame");			
 			this->OnFailure(now);			
-			return TaskResult::FAILURE;
+			return Result::FAILURE;
 		}
 	}
 }
@@ -82,7 +82,7 @@ void PollTaskBase::OnResponseTimeout(const openpal::MonotonicTimestamp& now)
 	this->OnFailure(now);	
 }
 
-TaskResult PollTaskBase::ProcessMeasurements(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now)
+IMasterTask::Result PollTaskBase::ProcessMeasurements(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now)
 {	
 	++rxCount;
 
@@ -91,17 +91,17 @@ TaskResult PollTaskBase::ProcessMeasurements(const APDUResponseHeader& header, c
 		if (header.control.FIN)
 		{								
 			this->OnSuccess(now);
-			return TaskResult::SUCCESS;
+			return Result::SUCCESS;
 		}
 		else
 		{
-			return TaskResult::CONTINUE;
+			return Result::CONTINUE;
 		}		
 	}
 	else
 	{				
 		this->OnFailure(now);
-		return TaskResult::FAILURE;
+		return Result::FAILURE;
 	}
 }
 

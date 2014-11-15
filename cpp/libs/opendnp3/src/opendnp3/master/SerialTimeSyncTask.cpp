@@ -86,7 +86,7 @@ void SerialTimeSyncTask::OnBadControlOctet(const openpal::MonotonicTimestamp&)
 	this->Initialize();		
 }
 
-TaskResult SerialTimeSyncTask::OnOnlyResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now)
+IMasterTask::Result SerialTimeSyncTask::OnOnlyResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now)
 {
 	if (delay < 0)
 	{
@@ -102,24 +102,24 @@ TaskResult SerialTimeSyncTask::OnOnlyResponse(const APDUResponseHeader& response
 
 				// The later shouldn't happen, but could cause a negative delay which would result in a weird time setting				
 				delay = (sendReceieveTime >= rtuTurnAroundTime) ? (sendReceieveTime - rtuTurnAroundTime) / 2 : 0;				
-				return TaskResult::REPEAT;
+				return Result::REPEAT;
 			}
 			else
 			{
 				this->Initialize();
-				return TaskResult::FAILURE;
+				return Result::FAILURE;
 			}
 		}
 		else
 		{		
 			this->Initialize();
-			return TaskResult::FAILURE;
+			return Result::FAILURE;
 		}
 	}
 	else
 	{
 		this->Initialize();
-		return TaskResult::SUCCESS;
+		return Result::SUCCESS;
 	}
 }
 	

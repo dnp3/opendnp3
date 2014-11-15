@@ -29,7 +29,6 @@
 #include "opendnp3/app/APDURequest.h"
 
 #include "opendnp3/master/MasterParams.h"
-#include "opendnp3/master/TaskResult.h"
 #include "opendnp3/master/TaskId.h"
 #include "opendnp3/gen/TaskState.h"
 
@@ -43,6 +42,21 @@ class IMasterTask
 {
 	
 public:	
+
+	enum Result
+	{
+		/// The response was good and the task is complete
+		SUCCESS,
+
+		/// The response was bad, the task has failed
+		FAILURE,
+
+		/// The response was good and the task should repeat the format, transmit, and await response sequence
+		REPEAT,
+
+		/// The response was good and the task should continue executing. Restart the response timer, and increment expected SEQ#.
+		CONTINUE
+	};
 
 	virtual ~IMasterTask() {}
 
@@ -92,7 +106,7 @@ public:
 	/**
 	 * Handler for responses	 
 	 */	
-	virtual TaskResult OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now) = 0;
+	virtual Result OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now) = 0;
 	
 	/**
 	 * Called when a response times out	 

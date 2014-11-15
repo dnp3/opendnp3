@@ -121,20 +121,20 @@ IMasterState* MasterStateWaitForResponse::OnResponse(MasterContext* pContext, co
 		
 		auto result = pContext->pActiveTask->OnResponse(response, objects, now);
 
-		if (response.control.CON) // TODO evaluate if reponse was procesed before confirming && pContext->CanConfirmResponse(result))
+		if (response.control.CON)
 		{
 			pContext->QueueConfirm(APDUHeader::SolicitedConfirm(response.control.SEQ));
 		}
 
 		switch (result)
 		{
-			case(TaskResult::CONTINUE) :
+			case(IMasterTask::Result::CONTINUE) :
 				pContext->StartResponseTimer();
 				return this;
-			case(TaskResult::REPEAT) :				
+			case(IMasterTask::Result::REPEAT) :
 				return MasterStateTaskReady::Instance().OnStart(pContext);
 			default:				
-				pContext->NotifyCurrentTask((result == TaskResult::SUCCESS) ? TaskState::SUCCESS : TaskState::FAILURE);
+				pContext->NotifyCurrentTask((result == IMasterTask::Result::SUCCESS) ? TaskState::SUCCESS : TaskState::FAILURE);
 				pContext->ReleaseActiveTask();												
 				pContext->pTaskLock->Release(*pContext);
 				pContext->PostCheckForTask();								

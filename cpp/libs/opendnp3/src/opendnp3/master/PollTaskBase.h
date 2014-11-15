@@ -45,13 +45,13 @@ public:
 
 	virtual const char* Name() const override final;
 	
-	virtual TaskResult OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now) override final;
+	virtual Result OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now) override final;
 	
 	virtual void OnResponseTimeout(const openpal::MonotonicTimestamp& now) override final;
 
 protected:
 
-	TaskResult ProcessMeasurements(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now);
+	Result ProcessMeasurements(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now);
 
 	virtual void OnFailure(const openpal::MonotonicTimestamp& now) = 0;
 

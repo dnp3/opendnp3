@@ -33,7 +33,7 @@ namespace opendnp3
 NullResponseTask::NullResponseTask(const openpal::Logger& logger) : SingleResponseTask(logger)
 {}
 	
-TaskResult NullResponseTask::OnOnlyResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now)
+IMasterTask::Result NullResponseTask::OnOnlyResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now)
 {	
 	if (!objects.IsEmpty())
 	{
@@ -44,12 +44,12 @@ TaskResult NullResponseTask::OnOnlyResponse(const APDUResponseHeader& response, 
 	{			
 		FORMAT_LOG_BLOCK(logger, flags::WARN, "Task was explicitly rejected via response with error IIN bit(s): %s", this->Name());
 		this->OnRejectedIIN(now);
-		return TaskResult::FAILURE;
+		return Result::FAILURE;
 	}
 	else
 	{		
 		this->OnSuccess(now);
-		return TaskResult::SUCCESS;
+		return Result::SUCCESS;
 	}			
 }
 
