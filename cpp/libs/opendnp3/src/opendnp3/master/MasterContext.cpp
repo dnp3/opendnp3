@@ -61,8 +61,8 @@ MasterContext::MasterContext(
 	unsolSeq(0),	
 	pState(&MasterStateIdle::Instance()),
 	pResponseTimer(nullptr),
-	tasks(params, &logger, application, SOEHandler, application),
-	scheduler(&logger, executor, *this),
+	tasks(params, logger, application, SOEHandler, application),
+	scheduler(executor, *this),
 	txBuffer(params.maxTxFragSize)
 {
 	

@@ -31,8 +31,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-EnableUnsolicitedTask::EnableUnsolicitedTask(const MasterParams& params, openpal::Logger* pLogger_) :
-	NullResponseTask(pLogger_),
+EnableUnsolicitedTask::EnableUnsolicitedTask(const MasterParams& params, const openpal::Logger& logger) :
+	NullResponseTask(logger),
 	pParams(&params),	
 	expiration(0)
 {

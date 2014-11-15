@@ -26,8 +26,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-WriteTask::WriteTask(const MasterParams& params, const std::string& name_, TaskId id_, const std::function<void(HeaderWriter&)> format_, openpal::Logger* pLogger) :
-	NullResponseTask(pLogger),
+WriteTask::WriteTask(const MasterParams& params, const std::string& name_, TaskId id_, const std::function<void(HeaderWriter&)> format_, const openpal::Logger& logger) :
+	NullResponseTask(logger),
 	expiration(0),
 	pParams(&params),
 	name(name_),

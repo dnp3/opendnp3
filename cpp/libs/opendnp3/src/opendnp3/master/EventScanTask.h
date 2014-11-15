@@ -37,7 +37,7 @@ namespace opendnp3
 
 	public:
 
-		EventScanTask(const MasterParams& params, ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_);
+		EventScanTask(const MasterParams& params, ISOEHandler* pSOEHandler_, const openpal::Logger& logger);
 
 		virtual TaskId Id() const override final { return TaskId::From(TaskIdValue::AUTO_EVENT_SCAN); }
 

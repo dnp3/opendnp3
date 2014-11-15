@@ -32,7 +32,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-MasterScheduler::MasterScheduler(	openpal::Logger* pLogger, 									
+MasterScheduler::MasterScheduler(
 									openpal::IExecutor& executor,
 									IScheduleCallback& callback
 									) :	

@@ -33,10 +33,10 @@ namespace opendnp3
 PollTaskBase::PollTaskBase(
 		const std::string& name_,
 		ISOEHandler* pSOEHandler_,
-		openpal::Logger* pLogger_) :	
+		const openpal::Logger& logger_) :
 	name(name_),
 	pSOEHandler(pSOEHandler_),
-	pLogger(pLogger_),
+	logger(logger_),
 	rxCount(0)
 {
 	
@@ -53,7 +53,7 @@ TaskResult PollTaskBase::OnResponse(const APDUResponseHeader& header, const open
 	{
 		if (rxCount > 0)
 		{
-			SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Ignoring unexpected FIR frame");
+			SIMPLE_LOG_BLOCK(logger, flags::WARN, "Ignoring unexpected FIR frame");
 			this->OnFailure(now);
 			return TaskResult::FAILURE;
 		}
@@ -70,7 +70,7 @@ TaskResult PollTaskBase::OnResponse(const APDUResponseHeader& header, const open
 		}
 		else
 		{	
-			SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Ignoring unexpected non-FIR frame");			
+			SIMPLE_LOG_BLOCK(logger, flags::WARN, "Ignoring unexpected non-FIR frame");			
 			this->OnFailure(now);			
 			return TaskResult::FAILURE;
 		}
@@ -86,7 +86,7 @@ TaskResult PollTaskBase::ProcessMeasurements(const APDUResponseHeader& header, c
 {	
 	++rxCount;
 
-	if (MeasurementHandler::ProcessMeasurements(objects, pLogger, pSOEHandler))
+	if (MeasurementHandler::ProcessMeasurements(objects, &logger, pSOEHandler))
 	{	
 		if (header.control.FIN)
 		{								

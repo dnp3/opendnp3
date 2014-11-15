@@ -37,8 +37,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-StartupIntegrityPoll::StartupIntegrityPoll(const MasterParams& params, ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_) :
-	PollTaskBase("Startup Integrity Poll", pSOEHandler_, pLogger_),
+StartupIntegrityPoll::StartupIntegrityPoll(const MasterParams& params, ISOEHandler* pSOEHandler_, const openpal::Logger& logger) :
+	PollTaskBase("Startup Integrity Poll", pSOEHandler_, logger),
 	expiration(0),
 	pParams(&params)
 {

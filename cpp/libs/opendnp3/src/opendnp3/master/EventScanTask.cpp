@@ -37,8 +37,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-	EventScanTask::EventScanTask(const MasterParams& params, ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_) :
-		PollTaskBase("Event Scan", pSOEHandler_, pLogger_),
+	EventScanTask::EventScanTask(const MasterParams& params, ISOEHandler* pSOEHandler_, const openpal::Logger& logger) :
+		PollTaskBase("Event Scan", pSOEHandler_, logger),
 		expiration(MonotonicTimestamp::Max()),
 		pParams(&params)
 	{

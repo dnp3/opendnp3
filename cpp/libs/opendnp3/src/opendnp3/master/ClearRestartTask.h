@@ -35,7 +35,7 @@ class ClearRestartTask : public SingleResponseTask
 
 public:	
 
-	ClearRestartTask(const MasterParams& params, openpal::Logger* pLogger_);
+	ClearRestartTask(const MasterParams& params, const openpal::Logger& logger);
 
 	virtual TaskId Id() const override final { return TaskId::From(TaskIdValue::CLEAR_RESTART); }
 

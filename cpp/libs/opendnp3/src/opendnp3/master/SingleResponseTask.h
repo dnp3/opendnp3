@@ -34,7 +34,7 @@ class SingleResponseTask : public IMasterTask
 
 public:	
 
-	SingleResponseTask(openpal::Logger* pLogger_);			
+	SingleResponseTask(const openpal::Logger& logger);
 	
 	virtual TaskResult OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now) override final;	
 
@@ -44,7 +44,7 @@ protected:
 
 	virtual TaskResult OnOnlyResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now) = 0;
 
-	openpal::Logger* pLogger;	
+	openpal::Logger logger;	
 };
 
 } //end ns

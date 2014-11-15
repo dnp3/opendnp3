@@ -50,7 +50,7 @@ public:
 		const openpal::TimeDuration& period,	
 		const openpal::TimeDuration& retryDelay,
 		ISOEHandler* pSOEHandler,
-		openpal::Logger* pLogger
+		const openpal::Logger& logger
 		);	
 
 	virtual int Priority() const override final { return priority::USER_POLL; }

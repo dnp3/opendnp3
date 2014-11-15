@@ -33,8 +33,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-SerialTimeSyncTask::SerialTimeSyncTask(openpal::Logger* pLogger_, openpal::IUTCTimeSource* pTimeSource_) :
-	SingleResponseTask(pLogger_),
+SerialTimeSyncTask::SerialTimeSyncTask(const openpal::Logger& logger, openpal::IUTCTimeSource* pTimeSource_) :
+	SingleResponseTask(logger),
 	expiration(MonotonicTimestamp::Max()),
 	pTimeSource(pTimeSource_),
 	delay(-1)
@@ -90,8 +90,8 @@ TaskResult SerialTimeSyncTask::OnOnlyResponse(const APDUResponseHeader& response
 {
 	if (delay < 0)
 	{
-		TimeSyncHandler handler(*pLogger);
-		auto result = APDUParser::ParseTwoPass(objects, &handler, pLogger);
+		TimeSyncHandler handler(logger);
+		auto result = APDUParser::ParseTwoPass(objects, &handler, &logger);
 		if (result == APDUParser::Result::OK)
 		{
 			uint16_t rtuTurnAroundTime;

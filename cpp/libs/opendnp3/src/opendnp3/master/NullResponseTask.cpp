@@ -30,19 +30,19 @@
 namespace opendnp3
 {
 
-NullResponseTask::NullResponseTask(openpal::Logger* pLogger_) : SingleResponseTask(pLogger_)
+NullResponseTask::NullResponseTask(const openpal::Logger& logger) : SingleResponseTask(logger)
 {}
 	
 TaskResult NullResponseTask::OnOnlyResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now)
 {	
 	if (!objects.IsEmpty())
 	{
-		FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Ignoring unexpected response objects headers for task: %s", this->Name());
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "Ignoring unexpected response objects headers for task: %s", this->Name());
 	}
 
 	if (response.IIN.HasRequestError())
 	{			
-		FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Task was explicitly reject via response with error IIN bit(s): %s", this->Name());
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "Task was explicitly rejected via response with error IIN bit(s): %s", this->Name());
 		this->OnRejectedIIN(now);
 		return TaskResult::FAILURE;
 	}

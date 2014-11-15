@@ -32,8 +32,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-ClearRestartTask::ClearRestartTask(const MasterParams& params, openpal::Logger* pLogger_) :
-	SingleResponseTask(pLogger_),
+ClearRestartTask::ClearRestartTask(const MasterParams& params, const openpal::Logger& logger) :
+	SingleResponseTask(logger),
 	pParams(&params),
 	expiration(MonotonicTimestamp::Max())
 {
@@ -74,16 +74,16 @@ void ClearRestartTask::OnBadControlOctet(const openpal::MonotonicTimestamp& now)
 }
 	
 TaskResult ClearRestartTask::OnOnlyResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const MonotonicTimestamp& now)
-{
+{	
 	if (response.IIN.IsSet(IINBit::DEVICE_RESTART))
 	{
 		// we tried to clear the restart, but the device responded with the restart still set
-		SIMPLE_LOGGER_BLOCK(pLogger, flags::ERR, "Clear restart task failed to clear restart bit");	
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Clear restart task failed to clear restart bit");			
 		expiration = MonotonicTimestamp::Max();
 		return TaskResult::FAILURE;
 	}
 	else
-	{
+	{		
 		expiration = MonotonicTimestamp::Max();
 		return TaskResult::SUCCESS;
 	}

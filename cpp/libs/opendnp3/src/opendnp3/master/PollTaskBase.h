@@ -41,7 +41,7 @@ public:
 	PollTaskBase(
 		const std::string& name_,
 		ISOEHandler* pSOEHandler_,
-		openpal::Logger* pLogger_);	
+		const openpal::Logger& logger);
 
 	virtual const char* Name() const override final;
 	
@@ -60,7 +60,7 @@ protected:
 	std::string name;
 	ISOEHandler* pSOEHandler;
 
-	openpal::Logger* pLogger;
+	openpal::Logger logger;
 	uint16_t rxCount;
 
 };

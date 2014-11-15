@@ -43,10 +43,7 @@ class MasterScheduler
 
 public:	
 
-	MasterScheduler(	openpal::Logger* pLogger,						
-						openpal::IExecutor& executor,			
-						IScheduleCallback& callback
-					);	
+	MasterScheduler(openpal::IExecutor& executor, IScheduleCallback& callback);	
 	
 	// ---------- other public functions ----------------
 

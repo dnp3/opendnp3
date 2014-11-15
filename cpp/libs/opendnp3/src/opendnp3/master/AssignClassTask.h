@@ -34,7 +34,7 @@ class AssignClassTask : public NullResponseTask
 
 public:	
 
-	AssignClassTask(const MasterParams& params, IMasterApplication& application, openpal::Logger* pLogger);
+	AssignClassTask(const MasterParams& params, IMasterApplication& application, const openpal::Logger& logger);
 
 	virtual TaskId Id() const override final { return TaskId::From(TaskIdValue::ASSIGN_CLASS); }
 

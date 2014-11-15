@@ -37,7 +37,7 @@ class StartupIntegrityPoll : public PollTaskBase
 
 public:	
 
-	StartupIntegrityPoll(const MasterParams& params, ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_);
+	StartupIntegrityPoll(const MasterParams& params, ISOEHandler* pSOEHandler_, const openpal::Logger& logger);
 
 	virtual TaskId Id() const override final { return TaskId::From(TaskIdValue::STARTUP_INTEGRITY_POLL); }
 
@@ -58,6 +58,7 @@ public:
 private:
 
 	openpal::MonotonicTimestamp expiration;
+
 	const MasterParams* pParams;
 
 	virtual void OnFailure(const openpal::MonotonicTimestamp& now) override final;

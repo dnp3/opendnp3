@@ -34,7 +34,7 @@ class SerialTimeSyncTask : public SingleResponseTask
 {
 
 public:
-	SerialTimeSyncTask(openpal::Logger* pLogger, openpal::IUTCTimeSource* pTimeSource_);
+	SerialTimeSyncTask(const openpal::Logger& logger, openpal::IUTCTimeSource* pTimeSource_);
 
 	virtual TaskId Id() const override final { return TaskId::From(TaskIdValue::SERIAL_TIME_SYNC); }
 	

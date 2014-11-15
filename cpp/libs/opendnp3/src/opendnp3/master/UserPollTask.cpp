@@ -34,9 +34,9 @@ UserPollTask::UserPollTask(
 	const openpal::TimeDuration& period_,
 	const openpal::TimeDuration& retryDelay_,
 	ISOEHandler* pSOEHandler,
-	openpal::Logger* pLogger	
+	const openpal::Logger& logger
 ) :
-	PollTaskBase(name, pSOEHandler, pLogger),
+	PollTaskBase(name, pSOEHandler, logger),
 	id(id_),
 	builder(builder_),
 	recurring(recurring_),

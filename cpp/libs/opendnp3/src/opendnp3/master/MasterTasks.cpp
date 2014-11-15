@@ -26,14 +26,14 @@ using namespace openpal;
 namespace opendnp3
 {
 
-MasterTasks::MasterTasks(const MasterParams& params, openpal::Logger* pLogger, IMasterApplication& application, ISOEHandler& SOEHandler, openpal::IUTCTimeSource& timeSource) :
-enableUnsol(params, pLogger),
-clearRestart(params, pLogger),
-assignClass(params, application, pLogger),
-startupIntegrity(params, &SOEHandler, pLogger),
-disableUnsol(params, pLogger),
-timeSync(pLogger, &timeSource),
-eventScan(params, &SOEHandler, pLogger)
+MasterTasks::MasterTasks(const MasterParams& params, const openpal::Logger& logger, IMasterApplication& application, ISOEHandler& SOEHandler, openpal::IUTCTimeSource& timeSource) :
+enableUnsol(params, logger),
+clearRestart(params, logger),
+assignClass(params, application, logger),
+startupIntegrity(params, &SOEHandler, logger),
+disableUnsol(params, logger),
+timeSync(logger, &timeSource),
+eventScan(params, &SOEHandler, logger)
 {
 	
 }

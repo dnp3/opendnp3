@@ -28,8 +28,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-AssignClassTask::AssignClassTask(const MasterParams& params, IMasterApplication& application, openpal::Logger* pLogger) :
-	NullResponseTask(pLogger),
+AssignClassTask::AssignClassTask(const MasterParams& params, IMasterApplication& application, const openpal::Logger& logger) :
+	NullResponseTask(logger),
 	pParams(&params),
 	pApplication(&application)
 {}
