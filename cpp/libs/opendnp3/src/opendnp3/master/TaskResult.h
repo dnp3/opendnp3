@@ -29,7 +29,7 @@ enum class TaskResult
 	/// This run of the task is complete and it succeeded
 	SUCCESS,
 
-	/// This run of the task is complete and it failed
+	/// This run of the task is complete, but it failed
 	FAILURE,
 
 	/// The task should repeat the format, transmit, and await response sequence

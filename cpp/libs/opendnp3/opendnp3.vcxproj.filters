@@ -468,9 +468,6 @@
     <ClInclude Include="src\opendnp3\master\MasterContext.h">
       <Filter>Header\master</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\master\IMasterTask.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\master\MasterScheduler.h">
       <Filter>Header\master</Filter>
     </ClInclude>
@@ -727,6 +724,9 @@
       <Filter>Header\master</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\master\WriteTask.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\IMasterTask.h">
       <Filter>Header\master</Filter>
     </ClInclude>
   </ItemGroup>

@@ -69,7 +69,11 @@ private:
 
 	virtual void OnSuccess(const openpal::MonotonicTimestamp& now) override final;
 
-	virtual void OnTimeoutOrBadControlOctet(const openpal::MonotonicTimestamp& now) override final;
+	virtual void OnBadControlOctet(const openpal::MonotonicTimestamp& now) override final;
+
+	virtual void OnResponseTimeout(const openpal::MonotonicTimestamp& now) override final;
+
+	virtual void OnRejectedIIN(const openpal::MonotonicTimestamp& now) override final;
 };
 
 } //end ns

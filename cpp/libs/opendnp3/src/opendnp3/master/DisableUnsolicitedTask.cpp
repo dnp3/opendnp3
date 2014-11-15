@@ -53,7 +53,17 @@ void DisableUnsolicitedTask::OnSuccess(const openpal::MonotonicTimestamp&)
 	expiration = MonotonicTimestamp::Max();
 }
 
-void DisableUnsolicitedTask::OnTimeoutOrBadControlOctet(const openpal::MonotonicTimestamp& now)
+void DisableUnsolicitedTask::OnBadControlOctet(const openpal::MonotonicTimestamp& now)
+{
+	expiration = MonotonicTimestamp::Max();
+}
+
+void DisableUnsolicitedTask::OnRejectedIIN(const openpal::MonotonicTimestamp& now)
+{
+	expiration = MonotonicTimestamp::Max();
+}
+
+void DisableUnsolicitedTask::OnResponseTimeout(const openpal::MonotonicTimestamp& now)
 {
 	expiration = now.Add(pParams->taskRetryPeriod);
 }

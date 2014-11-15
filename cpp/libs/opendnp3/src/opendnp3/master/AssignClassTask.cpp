@@ -65,9 +65,19 @@ void AssignClassTask::OnSuccess(const openpal::MonotonicTimestamp& now)
 	expiration = MonotonicTimestamp::Max();
 }
 
-void AssignClassTask::OnTimeoutOrBadControlOctet(const openpal::MonotonicTimestamp& now)
+void AssignClassTask::OnBadControlOctet(const openpal::MonotonicTimestamp& now)
+{
+	expiration = MonotonicTimestamp::Max();
+}
+
+void AssignClassTask::OnResponseTimeout(const openpal::MonotonicTimestamp& now)
 {
 	expiration = now.Add(pParams->taskRetryPeriod);
+}
+
+void AssignClassTask::OnRejectedIIN(const openpal::MonotonicTimestamp& now)
+{
+	expiration = MonotonicTimestamp::Max();
 }
 
 } //end ns

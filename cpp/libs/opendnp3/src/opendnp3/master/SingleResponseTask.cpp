@@ -40,14 +40,9 @@ TaskResult SingleResponseTask::OnResponse(const APDUResponseHeader& header, cons
 	else
 	{
 		SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Ignoring unexpected response FIR/FIN not set");		
-		this->OnTimeoutOrBadControlOctet(now);
+		this->OnBadControlOctet(now);
 		return TaskResult::FAILURE;
 	}
-}
-
-void SingleResponseTask::OnResponseTimeout(const openpal::MonotonicTimestamp& now)
-{	
-	this->OnTimeoutOrBadControlOctet(now);	
 }
 
 } //end ns

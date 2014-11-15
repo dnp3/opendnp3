@@ -63,9 +63,14 @@ void ClearRestartTask::OnLowerLayerClose(const openpal::MonotonicTimestamp&)
 	expiration = MonotonicTimestamp::Max();
 }
 
-void ClearRestartTask::OnTimeoutOrBadControlOctet(const openpal::MonotonicTimestamp& now)
+void ClearRestartTask::OnResponseTimeout(const openpal::MonotonicTimestamp& now)
 {
 	expiration = now.Add(pParams->taskRetryPeriod);
+}
+
+void ClearRestartTask::OnBadControlOctet(const openpal::MonotonicTimestamp& now)
+{
+	expiration = MonotonicTimestamp::Max();
 }
 	
 TaskResult ClearRestartTask::OnOnlyResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const MonotonicTimestamp& now)
@@ -74,7 +79,7 @@ TaskResult ClearRestartTask::OnOnlyResponse(const APDUResponseHeader& response, 
 	{
 		// we tried to clear the restart, but the device responded with the restart still set
 		SIMPLE_LOGGER_BLOCK(pLogger, flags::ERR, "Clear restart task failed to clear restart bit");	
-		expiration = now.Add(pParams->taskRetryPeriod);
+		expiration = MonotonicTimestamp::Max();
 		return TaskResult::FAILURE;
 	}
 	else

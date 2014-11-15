@@ -46,6 +46,8 @@ class ClassField
 
 	uint8_t GetBitfield() const { return bitfield; };
 
+	ClassField OnlyEventClasses() const;
+
 	void Clear(const ClassField& field);
 
 	void Set(const ClassField& field);

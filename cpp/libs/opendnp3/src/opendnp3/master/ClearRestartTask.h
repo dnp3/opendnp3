@@ -51,13 +51,15 @@ public:
 
 	virtual void OnLowerLayerClose(const openpal::MonotonicTimestamp& now) override final;
 
+	virtual void OnResponseTimeout(const openpal::MonotonicTimestamp& now) override final;
+
 	virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;
 
 	virtual void Demand() override final;
 		
 protected:
 
-	virtual void OnTimeoutOrBadControlOctet(const openpal::MonotonicTimestamp&) override final;
+	virtual void OnBadControlOctet(const openpal::MonotonicTimestamp&) override final;	
 	
 	virtual TaskResult OnOnlyResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp&) override final;
 

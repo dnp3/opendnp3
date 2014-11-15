@@ -41,7 +41,7 @@ EnableUnsolicitedTask::EnableUnsolicitedTask(const MasterParams& params, openpal
 
 void EnableUnsolicitedTask::BuildRequest(APDURequest& request, uint8_t seq)
 {
-	build::EnableUnsolicited(request, pParams->unsolClassMask, seq);
+	build::EnableUnsolicited(request, pParams->unsolClassMask.OnlyEventClasses(), seq);
 }
 
 openpal::MonotonicTimestamp EnableUnsolicitedTask::ExpirationTime() const
@@ -54,9 +54,19 @@ void EnableUnsolicitedTask::OnSuccess(const openpal::MonotonicTimestamp&)
 	expiration = MonotonicTimestamp::Max();
 }
 
-void EnableUnsolicitedTask::OnTimeoutOrBadControlOctet(const openpal::MonotonicTimestamp& now)
+void EnableUnsolicitedTask::OnBadControlOctet(const openpal::MonotonicTimestamp& now)
 {
 	expiration = now.Add(pParams->taskRetryPeriod);
+}
+
+void EnableUnsolicitedTask::OnResponseTimeout(const openpal::MonotonicTimestamp& now)
+{
+	expiration = now.Add(pParams->taskRetryPeriod);
+}
+
+void EnableUnsolicitedTask::OnRejectedIIN(const openpal::MonotonicTimestamp& now)
+{
+	expiration = MonotonicTimestamp::Max();
 }
 
 void EnableUnsolicitedTask::OnLowerLayerClose(const openpal::MonotonicTimestamp&)

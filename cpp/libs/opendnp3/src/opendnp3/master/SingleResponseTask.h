@@ -36,13 +36,11 @@ public:
 
 	SingleResponseTask(openpal::Logger* pLogger_);			
 	
-	virtual TaskResult OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now) override final;
-
-	virtual void OnResponseTimeout(const openpal::MonotonicTimestamp& now) override final;
+	virtual TaskResult OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now) override final;	
 
 protected:
-
-	virtual void OnTimeoutOrBadControlOctet(const openpal::MonotonicTimestamp& now) = 0;
+	
+	virtual void OnBadControlOctet(const openpal::MonotonicTimestamp& now) = 0;
 
 	virtual TaskResult OnOnlyResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now) = 0;
 

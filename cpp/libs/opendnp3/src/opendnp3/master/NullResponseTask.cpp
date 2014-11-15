@@ -34,26 +34,23 @@ NullResponseTask::NullResponseTask(openpal::Logger* pLogger_) : SingleResponseTa
 {}
 	
 TaskResult NullResponseTask::OnOnlyResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now)
-{
-	if (objects.IsEmpty())
+{	
+	if (!objects.IsEmpty())
 	{
-		if (response.IIN.HasRequestError())
-		{			
-			this->OnTimeoutOrBadControlOctet(now);
-			return TaskResult::FAILURE;
-		}
-		else
-		{		
-			this->OnSuccess(now);
-			return TaskResult::SUCCESS;
-		}		
+		FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Ignoring unexpected response objects headers for task: %s", this->Name());
 	}
-	else
-	{
-		FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Ignoring trailing objects headers for task: %s", this->Name());		
-		this->OnTimeoutOrBadControlOctet(now);
+
+	if (response.IIN.HasRequestError())
+	{			
+		FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Task was explicitly reject via response with error IIN bit(s): %s", this->Name());
+		this->OnRejectedIIN(now);
 		return TaskResult::FAILURE;
 	}
+	else
+	{		
+		this->OnSuccess(now);
+		return TaskResult::SUCCESS;
+	}			
 }
 
 } //end ns

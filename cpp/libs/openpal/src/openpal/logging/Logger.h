@@ -32,7 +32,7 @@ namespace openpal
 class LogRoot;
 
 /**
-* Interface that represents a distinct logger with a name and running level
+* A copyable facade over a LogRoot class
 */
 class Logger
 {

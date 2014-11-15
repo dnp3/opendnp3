@@ -21,11 +21,14 @@
 
 #include "WriteTask.h"
 
+using namespace openpal;
+
 namespace opendnp3
 {
 
 WriteTask::WriteTask(const MasterParams& params, const std::string& name_, TaskId id_, const std::function<void(HeaderWriter&)> format_, openpal::Logger* pLogger) :
 	NullResponseTask(pLogger),
+	expiration(0),
 	pParams(&params),
 	name(name_),
 	id(id_),
@@ -44,17 +47,27 @@ void WriteTask::BuildRequest(APDURequest& request, uint8_t seq)
 
 void WriteTask::OnLowerLayerClose(const openpal::MonotonicTimestamp&)
 {
+	expiration = MonotonicTimestamp::Max();
+}
 
+void WriteTask::OnResponseTimeout(const openpal::MonotonicTimestamp& now)
+{
+	expiration = MonotonicTimestamp::Max();
 }
 
 void WriteTask::OnSuccess(const openpal::MonotonicTimestamp&)
 {
-
+	expiration = MonotonicTimestamp::Max();
 }
 
-void WriteTask::OnTimeoutOrBadControlOctet(const openpal::MonotonicTimestamp&)
+void WriteTask::OnBadControlOctet(const openpal::MonotonicTimestamp&)
 {
+	expiration = MonotonicTimestamp::Max();
+}
 
+void WriteTask::OnRejectedIIN(const openpal::MonotonicTimestamp&)
+{
+	expiration = MonotonicTimestamp::Max();
 }
 
 } //end ns

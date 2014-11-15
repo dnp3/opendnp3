@@ -65,6 +65,11 @@ void SerialTimeSyncTask::BuildRequest(APDURequest& request, uint8_t seq)
 	}
 }
 
+void SerialTimeSyncTask::OnResponseTimeout(const openpal::MonotonicTimestamp &)
+{
+	this->Initialize();
+}
+
 void SerialTimeSyncTask::OnLowerLayerClose(const openpal::MonotonicTimestamp&)
 {
 	this->Initialize();
@@ -75,11 +80,10 @@ openpal::MonotonicTimestamp SerialTimeSyncTask::ExpirationTime() const
 	return expiration;
 }
 
-void SerialTimeSyncTask::OnTimeoutOrBadControlOctet(const openpal::MonotonicTimestamp&)
+void SerialTimeSyncTask::OnBadControlOctet(const openpal::MonotonicTimestamp&)
 {
-	this->Initialize();
-	// TODO - some kind of logging?
-	// don't reschedule. Seeing the NeedTime bit again will automatically re-activate the task
+	// Don't reschedule. Seeing the NeedTime bit again will automatically re-activate the task.	
+	this->Initialize();		
 }
 
 TaskResult SerialTimeSyncTask::OnOnlyResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now)

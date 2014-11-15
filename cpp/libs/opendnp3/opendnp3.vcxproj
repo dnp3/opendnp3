@@ -141,12 +141,12 @@
     <ClInclude Include="src\opendnp3\master\DisableUnsolicitedTask.h" />
     <ClInclude Include="src\opendnp3\master\EnableUnsolicitedTask.h" />
     <ClInclude Include="src\opendnp3\master\EventScanTask.h" />
+    <ClInclude Include="src\opendnp3\master\IMasterTask.h" />
     <ClInclude Include="src\opendnp3\master\WriteTask.h" />
     <ClInclude Include="src\opendnp3\master\ITaskCallback.h" />
     <ClInclude Include="src\opendnp3\master\ICommandProcessor.h" />
     <ClInclude Include="src\opendnp3\master\IMasterApplication.h" />
     <ClInclude Include="src\opendnp3\master\IMasterState.h" />
-    <ClInclude Include="src\opendnp3\master\IMasterTask.h" />
     <ClInclude Include="src\opendnp3\master\IScheduleCallback.h" />
     <ClInclude Include="src\opendnp3\master\ITaskLock.h" />
     <ClInclude Include="src\opendnp3\master\NullResponseTask.h" />

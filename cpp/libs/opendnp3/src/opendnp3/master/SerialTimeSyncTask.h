@@ -48,15 +48,17 @@ public:
 	
 	virtual openpal::MonotonicTimestamp ExpirationTime() const override final;
 
-	virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;
+	virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;	
 
-	virtual void OnTimeoutOrBadControlOctet(const openpal::MonotonicTimestamp& now) override final;
+	virtual void OnResponseTimeout(const openpal::MonotonicTimestamp &) override final;
 
 	void OnLowerLayerClose(const openpal::MonotonicTimestamp &) override final;
 
 	virtual void Demand() override final { expiration = 0; }
 
 protected:
+
+	virtual void OnBadControlOctet(const openpal::MonotonicTimestamp& now) override final;
 
 	virtual TaskResult OnOnlyResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now) override final;
 

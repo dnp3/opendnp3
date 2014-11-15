@@ -31,9 +31,7 @@ namespace openpal
 {
 
 Logger::Logger(LogRoot* pRoot_) : pRoot(pRoot_)
-{
-	
-}
+{}
 
 bool Logger::IsEnabled(const LogFilters& filters) const
 {

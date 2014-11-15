@@ -61,6 +61,11 @@ bool ClassField::Intersects(const ClassField& other) const
 	return (bitfield & other.bitfield) > 0;
 }
 
+ClassField ClassField::OnlyEventClasses() const
+{
+	return ClassField(bitfield & EVENT_CLASSES);
+}
+
 void ClassField::Set(PointClass pc)
 {
 	bitfield |= static_cast<uint8_t>(pc);
