@@ -18,30 +18,24 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef OPENDNP3_USERTASKRESULT_H
-#define OPENDNP3_USERTASKRESULT_H
-
-#include <cstdint>
+#include "TaskCompletion.h"
 
 namespace opendnp3 {
 
-/**
-  Opendnp3 API enum used that describes the result of a user task
-*/
-enum class UserTaskResult : int
+char const* TaskCompletionToString(TaskCompletion arg)
 {
-  /// A valid response was received from the outstation
-  RESPONSE_OK = 0,
-  /// A response was received from the outstation, but it contained unexpected contents or was malformed
-  BAD_RESPONSE = 1,
-  /// The operation timed out without a response
-  TIMEOUT = 2,
-  /// There is no communication with the outstation, and the command was not attempted
-  NO_COMMS = 3
-};
-
-char const* UserTaskResultToString(UserTaskResult arg);
-
+  switch(arg)
+  {
+    case(TaskCompletion::SUCCESS):
+      return "SUCCESS";
+    case(TaskCompletion::FAILURE_BAD_RESPONSE):
+      return "FAILURE_BAD_RESPONSE";
+    case(TaskCompletion::FAILURE_RESPONSE_TIMEOUT):
+      return "FAILURE_RESPONSE_TIMEOUT";
+    case(TaskCompletion::FAILURE_NO_COMMS):
+      return "FAILURE_NO_COMMS";
+  }
+  return "FAILURE_NO_COMMS";
 }
 
-#endif
+}

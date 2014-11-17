@@ -35,7 +35,9 @@ public:
 
 	virtual void OnReceiveIIN(const opendnp3::IINField& iin) override final {}
 
-	virtual void OnTaskStateChange(opendnp3::TaskId id, opendnp3::TaskState state) override final {}
+	virtual void OnTaskStart(opendnp3::TaskId id) override final {}
+
+	virtual void OnTaskComplete(opendnp3::TaskId id, opendnp3::TaskCompletion result) override final {}
 
 	virtual bool AssignClassDuringStartup() override final { return false; }
 	

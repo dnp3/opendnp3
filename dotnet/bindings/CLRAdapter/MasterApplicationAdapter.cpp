@@ -28,9 +28,14 @@ namespace Automatak
 				proxy->OnReceiveIIN(iinField);
 			}
 
-			void MasterApplicationAdapter::OnTaskStateChange(opendnp3::TaskId id, opendnp3::TaskState state)
+			void MasterApplicationAdapter::OnTaskStart(opendnp3::TaskId id)
 			{
-				proxy->OnTaskStateChange(gcnew TaskId(id.id, id.isUserAssigned), (TaskState) state);
+				proxy->OnTaskStart(gcnew TaskId(id.id, id.isUserAssigned));
+			}
+
+			void MasterApplicationAdapter::OnTaskComplete(opendnp3::TaskId id, opendnp3::TaskCompletion result)
+			{
+				proxy->OnTaskComplete(gcnew TaskId(id.id, id.isUserAssigned), (TaskCompletion) result);
 			}
 
 			bool MasterApplicationAdapter::AssignClassDuringStartup()

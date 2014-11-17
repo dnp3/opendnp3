@@ -30,7 +30,6 @@
 
 #include "opendnp3/master/MasterParams.h"
 #include "opendnp3/master/TaskId.h"
-#include "opendnp3/gen/TaskState.h"
 
 namespace opendnp3
 {

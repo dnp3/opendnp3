@@ -473,10 +473,10 @@ TEST_CASE(SUITE("AdhocScanFailsImmediatelyIfMasterOffline"))
 	MasterTestObject t(params);
 
 	t.master.ScanClasses(ClassField::AllEventClasses(), 10);
-	REQUIRE(t.application.taskEvents.size() == 1);
-	REQUIRE(t.application.taskEvents[0].first.id == 10);
-	REQUIRE(t.application.taskEvents[0].first.isUserAssigned);
-	REQUIRE(t.application.taskEvents[0].second == TaskState::FAILURE);
+	REQUIRE(t.application.taskCompletionEvents.size() == 1);
+	REQUIRE(t.application.taskCompletionEvents[0].first.id == 10);
+	REQUIRE(t.application.taskCompletionEvents[0].first.isUserAssigned);
+	REQUIRE(t.application.taskCompletionEvents[0].second == TaskCompletion::FAILURE_NO_COMMS);
 }
 
 TEST_CASE(SUITE("MasterWritesTimeAndInterval"))
@@ -492,7 +492,6 @@ TEST_CASE(SUITE("MasterWritesTimeAndInterval"))
 	t.SendToMaster("C0 81 00 00");
 	REQUIRE(t.lower.PopWriteAsHex() == "");
 
-	REQUIRE(t.application.taskEvents.size() == 2);
-	REQUIRE(t.application.taskEvents[0].second == TaskState::RUNNING);
-	REQUIRE(t.application.taskEvents[1].second == TaskState::SUCCESS);
+	REQUIRE(t.application.taskCompletionEvents.size() == 1);
+	REQUIRE(t.application.taskCompletionEvents[0].second == TaskCompletion::SUCCESS);	
 }

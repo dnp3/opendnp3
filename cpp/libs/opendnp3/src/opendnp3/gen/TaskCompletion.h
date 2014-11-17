@@ -18,27 +18,29 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef OPENDNP3_TASKSTATE_H
-#define OPENDNP3_TASKSTATE_H
+#ifndef OPENDNP3_TASKCOMPLETION_H
+#define OPENDNP3_TASKCOMPLETION_H
 
 #include <cstdint>
 
 namespace opendnp3 {
 
 /**
-  Enumeration for the state of a poll
+  Enum that describes if a master task succeeded or failed
 */
-enum class TaskState : int
+enum class TaskCompletion : int
 {
-  /// Valid response was received
-  RUNNING = 0,
-  /// Valid response was received
-  SUCCESS = 1,
-  /// The operation timed out or explicitly failed
-  FAILURE = 2
+  /// A valid response was received from the outstation
+  SUCCESS = 0,
+  /// A response was received from the outstation, but it was not valid
+  FAILURE_BAD_RESPONSE = 1,
+  /// The task request did not receive a response within the timeout
+  FAILURE_RESPONSE_TIMEOUT = 2,
+  /// There is no communication with the outstation, so the task was not attempted
+  FAILURE_NO_COMMS = 3
 };
 
-char const* TaskStateToString(TaskState arg);
+char const* TaskCompletionToString(TaskCompletion arg);
 
 }
 

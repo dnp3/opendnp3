@@ -52,7 +52,7 @@ public:
 		ICommandSequence(logger),
 		serializer(serializer_),
 		command(value, index),
-		response(CommandResponse(UserTaskResult::BAD_RESPONSE))
+		response(CommandResponse(TaskCompletion::FAILURE_BAD_RESPONSE))
 	{}	
 
 	virtual void _OnIndexPrefix(const HeaderRecord&, const IterableBuffer<IndexedValue<CommandType, uint16_t>>& meas)
@@ -64,7 +64,7 @@ public:
 			{
 				if(received.index == command.index && received.value.ValuesEqual(command.value))
 				{
-					response = CommandResponse(UserTaskResult::RESPONSE_OK, received.value.status);
+					response = CommandResponse(TaskCompletion::SUCCESS, received.value.status);
 				}
 			}
 		}
@@ -89,7 +89,7 @@ public:
 		}
 		else
 		{
-			return CommandResponse(UserTaskResult::BAD_RESPONSE);
+			return CommandResponse(TaskCompletion::FAILURE_BAD_RESPONSE);
 		}
 	}
 

@@ -115,7 +115,7 @@ class MasterContext : public ICommandProcessor, public IScheduleCallback
 	void QueueConfirm(const APDUHeader& header);
 	void StartResponseTimer();
 	void ReleaseActiveTask();
-	void NotifyCurrentTask(TaskState state);
+	void NotifyTaskCompletion(TaskCompletion value);
 
 	void ScheduleRecurringPollTask(IMasterTask* pTask);
 
@@ -153,7 +153,7 @@ void MasterContext::SelectAndOperateT(const T& command, uint16_t index, ITaskCal
 	}
 	else
 	{
-		callback.OnComplete(CommandResponse(UserTaskResult::NO_COMMS));
+		callback.OnComplete(CommandResponse(TaskCompletion::FAILURE_NO_COMMS));
 	}	
 }
 
@@ -167,7 +167,7 @@ void MasterContext::DirectOperateT(const T& command, uint16_t index, ITaskCallba
 	}
 	else
 	{
-		callback.OnComplete(CommandResponse(UserTaskResult::NO_COMMS));
+		callback.OnComplete(CommandResponse(TaskCompletion::FAILURE_NO_COMMS));
 	}
 }
 

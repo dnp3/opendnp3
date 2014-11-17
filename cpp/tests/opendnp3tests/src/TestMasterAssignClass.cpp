@@ -52,11 +52,12 @@ TEST_CASE(SUITE("AssignsClassAfterConnect"))
 	REQUIRE(!t.exe.AdvanceToNextTimer());
 	REQUIRE(t.lower.PopWriteAsHex() == "");
 
-	REQUIRE(t.application.taskEvents.size() == 2);
-	REQUIRE(t.application.taskEvents[0].first.id == (int) TaskIdValue::ASSIGN_CLASS);
-	REQUIRE(t.application.taskEvents[0].first.isUserAssigned == false);
-	REQUIRE(t.application.taskEvents[0].second == TaskState::RUNNING);
-	REQUIRE(t.application.taskEvents[1].second == TaskState::SUCCESS);
+	REQUIRE(t.application.taskStartEvents.size() == 1);
+	REQUIRE(t.application.taskStartEvents[0].id == (int)TaskIdValue::ASSIGN_CLASS);
+	REQUIRE(t.application.taskStartEvents[0].isUserAssigned == false);	
+
+	REQUIRE(t.application.taskCompletionEvents.size() == 1);	
+	REQUIRE(t.application.taskCompletionEvents[0].second == TaskCompletion::SUCCESS);
 }
 
 TEST_CASE(SUITE("DisableUnsolBeforeAssignClass"))

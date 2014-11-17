@@ -59,9 +59,7 @@ namespace Automatak
 
 				// Convert the command status enumeration
 				static CommandStatus ConvertCommandStatus(opendnp3::CommandStatus status);
-				static opendnp3::CommandStatus ConvertCommandStatus(CommandStatus status);
-
-				static UserTaskResult ConvertCommandResult(opendnp3::UserTaskResult result);
+				static opendnp3::CommandStatus ConvertCommandStatus(CommandStatus status);				
 
 				static CommandResponse ConvertCommandResponse(opendnp3::CommandResponse response);
 

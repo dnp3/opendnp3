@@ -98,11 +98,10 @@
     <Compile Include="gen\StaticFrozenCounterResponse.cs" />
     <Compile Include="gen\StaticTimeAndIntervalResponse.cs" />
     <Compile Include="gen\StaticTypeBitmask.cs" />
+    <Compile Include="gen\TaskCompletion.cs" />
     <Compile Include="gen\TaskIdValue.cs" />
-    <Compile Include="gen\TaskState.cs" />
     <Compile Include="gen\TimestampMode.cs" />
     <Compile Include="gen\TimeSyncMode.cs" />
-    <Compile Include="gen\UserTaskResult.cs" />
     <Compile Include="IChannelStatistics.cs" />
     <Compile Include="ICommandHandler.cs">
       <SubType>Code</SubType>

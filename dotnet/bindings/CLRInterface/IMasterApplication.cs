@@ -43,13 +43,19 @@ namespace Automatak.DNP3.Interface
         /// </summary>
         /// <param name="iin"></param>
         void OnReceiveIIN(IINField iin);
-        
+
         /// <summary>
-        /// Task state notifications for built-in and user defined tasks        
+        /// Task start notification
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="state"></param>
-        void OnTaskStateChange(TaskId id, TaskState state);
+        void OnTaskStart(TaskId id);
+        
+        /// <summary>
+        /// Task completion notification for built-in and user defined tasks        
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="result"></param>
+        void OnTaskComplete(TaskId id, TaskCompletion result);
         
         /// <summary>
         /// Tells the master whether to assign class on startup
@@ -95,7 +101,12 @@ namespace Automatak.DNP3.Interface
            // ignore these in the default application
         }
 
-        void IMasterApplication.OnTaskStateChange(TaskId id, TaskState state)
+        void IMasterApplication.OnTaskStart(TaskId id)
+        {
+            // ignore these in the default application
+        }
+
+        void IMasterApplication.OnTaskComplete(TaskId id, TaskCompletion result)
         {
             // ignore these in the default application
         }

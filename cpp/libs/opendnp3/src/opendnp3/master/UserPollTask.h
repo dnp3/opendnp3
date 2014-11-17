@@ -24,7 +24,6 @@
 #include "opendnp3/master/PollTaskBase.h"
 #include "opendnp3/master/TaskPriority.h"
 #include "opendnp3/master/ITaskCallback.h"
-#include "opendnp3/gen/UserTaskResult.h"
 
 #include <functional>
 
@@ -69,9 +68,7 @@ public:
 
 	virtual void Demand() override final { expiration = 0; }
 
-private:
-
-	void Notify(UserTaskResult result);
+private:	
 
 	virtual void OnFailure(const openpal::MonotonicTimestamp& now) override final;
 

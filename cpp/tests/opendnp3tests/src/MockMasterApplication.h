@@ -46,9 +46,14 @@ public:
 		rxIIN.push_back(iin);
 	}
 
-	virtual void OnTaskStateChange(TaskId id, TaskState state) override final
+	virtual void OnTaskStart(TaskId id) override final
 	{
-		taskEvents.push_back(std::pair<TaskId, TaskState>(id, state));
+		taskStartEvents.push_back(id);		
+	}
+
+	virtual void OnTaskComplete(TaskId id, TaskCompletion result) override final
+	{
+		taskCompletionEvents.push_back(std::pair<TaskId, TaskCompletion>(id, result));
 	}
 
 	virtual bool AssignClassDuringStartup() override final
@@ -66,8 +71,9 @@ public:
 
 	std::vector<IINField> rxIIN;
 
-	std::vector<std::pair<TaskId, TaskState>> taskEvents;
-
+	std::vector<TaskId> taskStartEvents;
+	std::vector<std::pair<TaskId, TaskCompletion>> taskCompletionEvents;
+	
 	uint64_t time;
 };
 
