@@ -21,18 +21,30 @@
 #ifndef OPENDNP3_ITASKCALLBACK_H
 #define OPENDNP3_ITASKCALLBACK_H
 
+#include "opendnp3/gen/TaskCompletion.h"
+#include "opendnp3/master/CommandResponse.h"
+
 namespace opendnp3
 {
 
 /**
-* Parameterized callback when a task finishes or fails
+* Callbacks for when a task starts and completes
 */
-template <class T>
 class ITaskCallback
 {
 public:
+
+	virtual void OnStart() = 0;
 	
-	virtual void OnComplete(const T& response) = 0;	
+	virtual void OnComplete(const TaskCompletion& response) = 0;	
+};
+
+class ICommandCallback
+{
+
+public:
+
+	virtual void OnComplete(const CommandResponse& response) = 0;
 };
 
 }

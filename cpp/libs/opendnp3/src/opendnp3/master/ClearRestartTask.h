@@ -37,6 +37,8 @@ public:
 
 	ClearRestartTask(const MasterParams& params, const openpal::Logger& logger);
 
+	virtual ITaskCallback* GetTaskCallback() override final { return nullptr; };
+
 	virtual TaskId Id() const override final { return TaskId::From(TaskIdValue::CLEAR_RESTART); }
 
 	virtual char const* Name() const override final { return "Clear Restart IIN"; }

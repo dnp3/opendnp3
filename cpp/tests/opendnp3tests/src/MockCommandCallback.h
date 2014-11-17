@@ -27,9 +27,9 @@
 namespace opendnp3
 {
 
-class MockCommandCallback : public ITaskCallback<CommandResponse>
+class MockCommandCallback : public ICommandCallback
 {
-public:
+public:	
 
 	virtual void OnComplete(const CommandResponse& response) override final
 	{

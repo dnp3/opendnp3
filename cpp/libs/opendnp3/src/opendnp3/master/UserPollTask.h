@@ -44,6 +44,7 @@ public:
 	UserPollTask(		
 		const std::function<void(HeaderWriter&)>& builder,
 		int id,
+		ITaskCallback* pCallback,
 		bool recurring,
 		const std::string& name,		
 		const openpal::TimeDuration& period,	
@@ -53,6 +54,8 @@ public:
 		);	
 
 	virtual int Priority() const override final { return priority::USER_POLL; }
+
+	virtual ITaskCallback* GetTaskCallback() override final { return pCallback; };
 
 	virtual TaskId Id() const override final { return TaskId::UserDefined(id); }
 
@@ -76,6 +79,7 @@ private:
 			
 	std::function<void(HeaderWriter&)> builder;
 	int id;
+	ITaskCallback* pCallback;
 	bool recurring;
 	openpal::TimeDuration period;
 	openpal::TimeDuration retryDelay;

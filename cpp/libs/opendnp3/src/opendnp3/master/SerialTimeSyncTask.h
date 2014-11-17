@@ -36,6 +36,8 @@ class SerialTimeSyncTask : public SingleResponseTask
 public:
 	SerialTimeSyncTask(const openpal::Logger& logger, openpal::IUTCTimeSource* pTimeSource_);
 
+	virtual ITaskCallback* GetTaskCallback() override final { return nullptr; };
+
 	virtual TaskId Id() const override final { return TaskId::From(TaskIdValue::SERIAL_TIME_SYNC); }
 	
 	virtual char const* Name() const override final { return "serial time sync"; }

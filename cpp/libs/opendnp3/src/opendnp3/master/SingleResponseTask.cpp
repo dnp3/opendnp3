@@ -28,7 +28,7 @@
 namespace opendnp3
 {
 
-	SingleResponseTask::SingleResponseTask(const openpal::Logger& logger_) : logger(logger_)
+SingleResponseTask::SingleResponseTask(const openpal::Logger& logger_) : logger(logger_)
 {}
 	
 IMasterTask::Result SingleResponseTask::OnResponse(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now)

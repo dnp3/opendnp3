@@ -28,8 +28,11 @@
 #include "opendnp3/app/APDUHeader.h"
 #include "opendnp3/app/APDURequest.h"
 
+#include "opendnp3/gen/TaskCompletion.h"
+
 #include "opendnp3/master/MasterParams.h"
 #include "opendnp3/master/TaskId.h"
+#include "opendnp3/master/ITaskCallback.h"
 
 namespace opendnp3
 {
@@ -55,9 +58,14 @@ public:
 
 		/// The response was good and the task should continue executing. Restart the response timer, and increment expected SEQ#.
 		CONTINUE
-	};
+	};	
 
 	virtual ~IMasterTask() {}
+
+	/**
+	* @return an optional callback object (may be NULL) associated with the task
+	*/
+	virtual ITaskCallback* GetTaskCallback() = 0;
 
 	/**	
 	* @return An id of the task. Id's < 0 are anonymous

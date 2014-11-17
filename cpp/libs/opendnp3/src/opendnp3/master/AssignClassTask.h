@@ -36,6 +36,8 @@ public:
 
 	AssignClassTask(const MasterParams& params, IMasterApplication& application, const openpal::Logger& logger);
 
+	virtual ITaskCallback* GetTaskCallback() override final { return nullptr; };
+
 	virtual TaskId Id() const override final { return TaskId::From(TaskIdValue::ASSIGN_CLASS); }
 
 	virtual char const* Name() const override final { return "Assign Class"; }

@@ -94,20 +94,20 @@ class MasterContext : public ICommandProcessor, public IScheduleCallback
 
 	// ------- command events ----------
 
-	virtual void SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ITaskCallback<CommandResponse>& callback) override final;
-	virtual void DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, ITaskCallback<CommandResponse>& callback) override final;
+	virtual void SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback& callback) override final;
+	virtual void DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback& callback) override final;
 
-	virtual void SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, ITaskCallback<CommandResponse>& callback) override final;
-	virtual void DirectOperate(const AnalogOutputInt16& command, uint16_t index, ITaskCallback<CommandResponse>& callback) override final;
+	virtual void SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback& callback) override final;
+	virtual void DirectOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback& callback) override final;
 
-	virtual void SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, ITaskCallback<CommandResponse>& callback) override final;
-	virtual void DirectOperate(const AnalogOutputInt32& command, uint16_t index, ITaskCallback<CommandResponse>& callback) override final;
+	virtual void SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback& callback) override final;
+	virtual void DirectOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback& callback) override final;
 
-	virtual void SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, ITaskCallback<CommandResponse>& callback) override final;
-	virtual void DirectOperate(const AnalogOutputFloat32& command, uint16_t index, ITaskCallback<CommandResponse>& callback) override final;
+	virtual void SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback& callback) override final;
+	virtual void DirectOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback& callback) override final;
 
-	virtual void SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ITaskCallback<CommandResponse>& callback) override final;
-	virtual void DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ITaskCallback<CommandResponse>& callback) override final;
+	virtual void SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback) override final;
+	virtual void DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback) override final;
 
 	// ----- Helpers accessible by the state objects -----
 	void StartTask(IMasterTask& task);
@@ -137,14 +137,14 @@ class MasterContext : public ICommandProcessor, public IScheduleCallback
 	void Transmit(const openpal::ReadOnlyBuffer& output);	
 
 	template <class T>
-	void SelectAndOperateT(const T& command, uint16_t index, ITaskCallback<CommandResponse>& callback, const DNP3Serializer<T>& serializer);
+	void SelectAndOperateT(const T& command, uint16_t index, ICommandCallback& callback, const DNP3Serializer<T>& serializer);
 
 	template <class T>
-	void DirectOperateT(const T& command, uint16_t index, ITaskCallback<CommandResponse>& callback, const DNP3Serializer<T>& serializer);
+	void DirectOperateT(const T& command, uint16_t index, ICommandCallback& callback, const DNP3Serializer<T>& serializer);
 };
 
 template <class T>
-void MasterContext::SelectAndOperateT(const T& command, uint16_t index, ITaskCallback<CommandResponse>& callback, const DNP3Serializer<T>& serializer)
+void MasterContext::SelectAndOperateT(const T& command, uint16_t index, ICommandCallback& callback, const DNP3Serializer<T>& serializer)
 {
 	if (isOnline)
 	{
@@ -158,7 +158,7 @@ void MasterContext::SelectAndOperateT(const T& command, uint16_t index, ITaskCal
 }
 
 template <class T>
-void MasterContext::DirectOperateT(const T& command, uint16_t index, ITaskCallback<CommandResponse>& callback, const DNP3Serializer<T>& serializer)
+void MasterContext::DirectOperateT(const T& command, uint16_t index, ICommandCallback& callback, const DNP3Serializer<T>& serializer)
 {
 	if (isOnline)
 	{		

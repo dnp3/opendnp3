@@ -41,6 +41,8 @@ namespace opendnp3
 
 		virtual TaskId Id() const override final { return TaskId::From(TaskIdValue::AUTO_EVENT_SCAN); }
 
+		virtual ITaskCallback* GetTaskCallback() override final { return nullptr; };
+
 		virtual bool IsRecurring() const override final { return true; }
 
 		virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;

@@ -73,82 +73,82 @@ ICommandProcessor& Master::GetCommandProcessor()
 	return commandMarshaller;
 }
 
-MasterScan Master::AddScan(openpal::TimeDuration period, const std::function<void(HeaderWriter&)>& builder, int id)
+MasterScan Master::AddScan(openpal::TimeDuration period, const std::function<void(HeaderWriter&)>& builder, int id, ITaskCallback* pCallback)
 {
-	auto pTask = new UserPollTask(builder, id, true, "", period, context.params.taskRetryPeriod, context.pSOEHandler, context.logger);
+	auto pTask = new UserPollTask(builder, id, pCallback, true, "", period, context.params.taskRetryPeriod, context.pSOEHandler, context.logger);
 	context.ScheduleRecurringPollTask(pTask);	
 	auto callback = [this]() { this->context.PostCheckForTask(); };
 	return MasterScan(*context.pExecutor, pTask, callback);
 }
 
-MasterScan Master::AddClassScan(const ClassField& field, openpal::TimeDuration period, int id)
+MasterScan Master::AddClassScan(const ClassField& field, openpal::TimeDuration period, int id, ITaskCallback* pCallback)
 {	
 	auto configure = [field](HeaderWriter& writer) 
 	{ 
 		build::WriteClassHeaders(writer, field); 
 	};
-	return this->AddScan(period, configure, id);
+	return this->AddScan(period, configure, id, pCallback);
 }
 
-MasterScan Master::AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, int id)
+MasterScan Master::AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, int id, ITaskCallback* pCallback)
 {
 	auto configure = [gvId](HeaderWriter& writer)
 	{ 
 		writer.WriteHeader(gvId, QualifierCode::ALL_OBJECTS);		
 	};
-	return this->AddScan(period, configure, id);
+	return this->AddScan(period, configure, id, pCallback);
 }
 
-MasterScan Master::AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, int id)
+MasterScan Master::AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, int id, ITaskCallback* pCallback)
 {
 	auto configure = [gvId, start, stop](HeaderWriter& writer)
 	{
 		writer.WriteRangeHeader<openpal::UInt16>(QualifierCode::UINT16_START_STOP, gvId, start, stop);		
 	};
-	return this->AddScan(period, configure, id);
+	return this->AddScan(period, configure, id, pCallback);
 }
 
-void Master::Scan(const std::function<void(HeaderWriter&)>& builder, int id)
+void Master::Scan(const std::function<void(HeaderWriter&)>& builder, int id, ITaskCallback* pCallback)
 {
-	auto pTask = new UserPollTask(builder, id, false, "", TimeDuration::Max(), context.params.taskRetryPeriod, context.pSOEHandler, context.logger);
+	auto pTask = new UserPollTask(builder, id, pCallback, false, "", TimeDuration::Max(), context.params.taskRetryPeriod, context.pSOEHandler, context.logger);
 	context.ScheduleAdhocTask(pTask);	
 }
 
-void Master::ScanClasses(const ClassField& field, int id)
+void Master::ScanClasses(const ClassField& field, int id, ITaskCallback* pCallback)
 {
 	auto configure = [field](HeaderWriter& writer)
 	{
 		build::WriteClassHeaders(writer, field);
 	};
-	this->Scan(configure, id);
+	this->Scan(configure, id, pCallback);
 }
 
-void Master::ScanAllObjects(GroupVariationID gvId, int id)
+void Master::ScanAllObjects(GroupVariationID gvId, int id, ITaskCallback* pCallback)
 {
 	auto configure = [gvId](HeaderWriter& writer)
 	{
 		writer.WriteHeader(gvId, QualifierCode::ALL_OBJECTS);
 	};
-	this->Scan(configure, id);
+	this->Scan(configure, id, pCallback);
 }
 
-void Master::ScanRange(GroupVariationID gvId, uint16_t start, uint16_t stop, int id)
+void Master::ScanRange(GroupVariationID gvId, uint16_t start, uint16_t stop, int id, ITaskCallback* pCallback)
 {
 	auto configure = [gvId, start, stop](HeaderWriter& writer)
 	{
 		writer.WriteRangeHeader<openpal::UInt16>(QualifierCode::UINT16_START_STOP, gvId, start, stop);
 	};
-	this->Scan(configure, id);
+	this->Scan(configure, id, pCallback);
 }
 
-void Master::Write(const TimeAndInterval& value, uint16_t index, int id)
+void Master::Write(const TimeAndInterval& value, uint16_t index, int id, ITaskCallback* pCallback)
 {
 	auto format = [value, index](HeaderWriter& writer)
 	{
 		writer.WriteSingleIndexedValue<UInt16, TimeAndInterval>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group50Var4::Inst(), value, index);
 	};
 
-	auto pTask = new WriteTask(context.params, "", TaskId::UserDefined(id), format, context.logger);
+	auto pTask = new WriteTask(context.params, "", TaskId::UserDefined(id), pCallback, format, context.logger);
 
 	context.ScheduleAdhocTask(pTask);
 }
