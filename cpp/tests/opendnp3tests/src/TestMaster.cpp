@@ -23,8 +23,9 @@
 #include "MasterTestObject.h"
 #include "MeasurementComparisons.h"
 #include "HexConversions.h"
-#include "MockCommandCallback.h"
+#include "MockTaskCallback.h"
 #include "APDUHexBuilders.h"
+
 
 #include <opendnp3/app/APDUResponse.h>
 #include <opendnp3/app/APDUBuilders.h>
@@ -485,13 +486,16 @@ TEST_CASE(SUITE("MasterWritesTimeAndInterval"))
 	MasterTestObject t(params);
 	t.master.OnLowerLayerUp();
 
-	t.master.Write(TimeAndInterval(3, 4, IntervalUnits::Days), 7, 4, nullptr);
+	MockTaskCallback callback;
+
+	t.master.Write(TimeAndInterval(3, 4, IntervalUnits::Days), 7, 4, &callback);
 	REQUIRE(t.exe.RunMany() > 0);
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 02 32 04 28 01 00 07 00 03 00 00 00 00 00 04 00 00 00 05");
 	t.master.OnSendResult(true);	
 	t.SendToMaster("C0 81 00 00");
 	REQUIRE(t.lower.PopWriteAsHex() == "");
 
-	REQUIRE(t.application.taskCompletionEvents.size() == 1);
-	REQUIRE(t.application.taskCompletionEvents[0].second == TaskCompletion::SUCCESS);	
+	REQUIRE(callback.numStart == 1);
+	REQUIRE(callback.results.size() == 1);
+	REQUIRE(callback.results[0] == TaskCompletion::SUCCESS);
 }
