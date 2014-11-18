@@ -37,11 +37,9 @@ class WriteTask : public NullResponseTask
 
 public:	
 
-	WriteTask(const MasterParams& params, const std::string& name, TaskId id, ITaskCallback* pCallback, const std::function<void(HeaderWriter&)> format, const openpal::Logger& logger);
+	WriteTask(const MasterParams& params, const std::string& name, TaskId id, const std::function<void(HeaderWriter&)> format, const openpal::Logger& logger);
 
 	virtual TaskId Id() const override final { return id; }
-
-	virtual ITaskCallback* GetTaskCallback() override final { return pCallback; }
 
 	virtual char const* Name() const override final { return name.c_str(); }
 
@@ -66,8 +64,7 @@ private:
 	openpal::MonotonicTimestamp expiration;
 	const MasterParams* pParams;
 	std::string name;
-	TaskId id;	
-	ITaskCallback* pCallback;
+	TaskId id;		
 	std::function<void(HeaderWriter&)> format;
 
 	virtual void OnSuccess(const openpal::MonotonicTimestamp& now) override final;

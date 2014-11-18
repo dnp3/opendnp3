@@ -36,7 +36,7 @@ public:
 
 	virtual void OnStart() = 0;
 	
-	virtual void OnComplete(const TaskCompletion& response) = 0;	
+	virtual void OnComplete(TaskCompletion result) = 0;	
 };
 
 class ICommandCallback

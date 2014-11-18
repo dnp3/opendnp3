@@ -115,7 +115,7 @@ class MasterContext : public ICommandProcessor, public IScheduleCallback
 	void QueueConfirm(const APDUHeader& header);
 	void StartResponseTimer();
 	void ReleaseActiveTask();
-	void NotifyTaskCompletion(TaskCompletion value);
+	void NotifyTaskCompletion(IMasterTask& task, TaskCompletion value);
 
 	void ScheduleRecurringPollTask(IMasterTask* pTask);
 

@@ -39,8 +39,6 @@ public:
 
 	StartupIntegrityPoll(const MasterParams& params, ISOEHandler* pSOEHandler_, const openpal::Logger& logger);
 
-	virtual ITaskCallback* GetTaskCallback() override final { return nullptr; };
-
 	virtual TaskId Id() const override final { return TaskId::From(TaskIdValue::STARTUP_INTEGRITY_POLL); }
 
 	virtual bool IsRecurring() const override final { return true; }

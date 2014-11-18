@@ -57,8 +57,6 @@ public:
 
 	virtual char const* Name() const override final { return "Command Task"; }
 
-	virtual ITaskCallback* GetTaskCallback() override final { return nullptr; }
-
 	virtual TaskId Id() const override final { return TaskId::UserDefined(-1); }
 
 	virtual int Priority() const override final { return priority::COMMAND; }

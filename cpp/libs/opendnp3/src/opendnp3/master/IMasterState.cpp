@@ -133,7 +133,8 @@ IMasterState* MasterStateWaitForResponse::OnResponse(MasterContext* pContext, co
 			case(IMasterTask::Result::REPEAT) :
 				return MasterStateTaskReady::Instance().OnStart(pContext);
 			default:				
-				pContext->NotifyTaskCompletion((result == IMasterTask::Result::SUCCESS) ? TaskCompletion::SUCCESS : TaskCompletion::FAILURE_BAD_RESPONSE);
+				auto completion = (result == IMasterTask::Result::SUCCESS) ? TaskCompletion::SUCCESS : TaskCompletion::FAILURE_BAD_RESPONSE;
+				pContext->NotifyTaskCompletion(*(pContext->pActiveTask), completion);
 				pContext->ReleaseActiveTask();												
 				pContext->pTaskLock->Release(*pContext);
 				pContext->PostCheckForTask();								
@@ -149,7 +150,7 @@ IMasterState* MasterStateWaitForResponse::OnResponse(MasterContext* pContext, co
 
 IMasterState* MasterStateWaitForResponse::OnResponseTimeout(MasterContext* pContext)
 {	
-	pContext->NotifyTaskCompletion(TaskCompletion::FAILURE_RESPONSE_TIMEOUT);
+	pContext->NotifyTaskCompletion(*pContext->pActiveTask, TaskCompletion::FAILURE_RESPONSE_TIMEOUT);
 	pContext->pResponseTimer = nullptr;
 	auto now = pContext->pExecutor->GetTime();
 	pContext->pActiveTask->OnResponseTimeout(now);

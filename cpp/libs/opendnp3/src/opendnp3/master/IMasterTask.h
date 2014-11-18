@@ -28,8 +28,6 @@
 #include "opendnp3/app/APDUHeader.h"
 #include "opendnp3/app/APDURequest.h"
 
-#include "opendnp3/gen/TaskCompletion.h"
-
 #include "opendnp3/master/MasterParams.h"
 #include "opendnp3/master/TaskId.h"
 #include "opendnp3/master/ITaskCallback.h"
@@ -60,12 +58,10 @@ public:
 		CONTINUE
 	};	
 
-	virtual ~IMasterTask() {}
+	IMasterTask() : pCallback(nullptr)
+	{}
 
-	/**
-	* @return an optional callback object (may be NULL) associated with the task
-	*/
-	virtual ITaskCallback* GetTaskCallback() = 0;
+	virtual ~IMasterTask() {}
 
 	/**	
 	* @return An id of the task. Id's < 0 are anonymous
@@ -131,6 +127,40 @@ public:
 	* disables the task.
 	*/
 	bool IsEnabled() const { return !ExpirationTime().IsMax(); }	
+
+	/**
+	* Called when the task first starts, before the first request is formatted
+	*/
+	void OnStart()
+	{
+		if (pCallback)
+		{
+			pCallback->OnStart();
+		}
+	}
+
+	/**
+	* Called wen the task completes after a timeout, layer down, or final response.
+	*/
+	void OnComplete(TaskCompletion result)
+	{
+		if (pCallback)
+		{
+			pCallback->OnComplete(result);
+		}
+	}
+
+	/**
+	* Set the handler that is called when a task starts or completes
+	*/
+	void SetTaskCallback(ITaskCallback* pCallback_)
+	{
+		pCallback = pCallback_;
+	}
+
+	private:
+
+	ITaskCallback* pCallback;
 };
 
 }

@@ -32,9 +32,7 @@ class DisableUnsolicitedTask : public NullResponseTask
 
 public:	
 
-	DisableUnsolicitedTask(const MasterParams& params, const openpal::Logger& logger);
-
-	virtual ITaskCallback* GetTaskCallback() override final { return nullptr; };
+	DisableUnsolicitedTask(const MasterParams& params, const openpal::Logger& logger);	
 
 	virtual TaskId Id() const override final { return TaskId::From(TaskIdValue::DISABLE_UNSOLICITED); }
 

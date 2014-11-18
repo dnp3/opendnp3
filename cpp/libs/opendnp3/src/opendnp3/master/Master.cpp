@@ -75,7 +75,8 @@ ICommandProcessor& Master::GetCommandProcessor()
 
 MasterScan Master::AddScan(openpal::TimeDuration period, const std::function<void(HeaderWriter&)>& builder, int id, ITaskCallback* pCallback)
 {
-	auto pTask = new UserPollTask(builder, id, pCallback, true, "", period, context.params.taskRetryPeriod, context.pSOEHandler, context.logger);
+	auto pTask = new UserPollTask(builder, id, true, "", period, context.params.taskRetryPeriod, context.pSOEHandler, context.logger);
+	pTask->SetTaskCallback(pCallback);
 	context.ScheduleRecurringPollTask(pTask);	
 	auto callback = [this]() { this->context.PostCheckForTask(); };
 	return MasterScan(*context.pExecutor, pTask, callback);
@@ -110,7 +111,8 @@ MasterScan Master::AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t 
 
 void Master::Scan(const std::function<void(HeaderWriter&)>& builder, int id, ITaskCallback* pCallback)
 {
-	auto pTask = new UserPollTask(builder, id, pCallback, false, "", TimeDuration::Max(), context.params.taskRetryPeriod, context.pSOEHandler, context.logger);
+	auto pTask = new UserPollTask(builder, id, false, "", TimeDuration::Max(), context.params.taskRetryPeriod, context.pSOEHandler, context.logger);
+	pTask->SetTaskCallback(pCallback);
 	context.ScheduleAdhocTask(pTask);	
 }
 
@@ -148,7 +150,8 @@ void Master::Write(const TimeAndInterval& value, uint16_t index, int id, ITaskCa
 		writer.WriteSingleIndexedValue<UInt16, TimeAndInterval>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group50Var4::Inst(), value, index);
 	};
 
-	auto pTask = new WriteTask(context.params, "", TaskId::UserDefined(id), pCallback, format, context.logger);
+	auto pTask = new WriteTask(context.params, "", TaskId::UserDefined(id), format, context.logger);
+	pTask->SetTaskCallback(pCallback);
 
 	context.ScheduleAdhocTask(pTask);
 }

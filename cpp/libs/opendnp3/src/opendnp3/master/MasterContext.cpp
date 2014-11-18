@@ -93,7 +93,7 @@ bool MasterContext::OnLayerDown()
 		if (pActiveTask.IsDefined())
 		{			
 			pActiveTask->OnLowerLayerClose(now);
-			this->NotifyTaskCompletion(TaskCompletion::FAILURE_NO_COMMS);			
+			this->NotifyTaskCompletion(*pActiveTask, TaskCompletion::FAILURE_NO_COMMS);			
 			pActiveTask.Release();
 		}
 
@@ -131,6 +131,7 @@ void MasterContext::CheckForTask()
 
 void MasterContext::StartTask(IMasterTask& task)
 {			
+	task.OnStart();
 	pApplication->OnTaskStart(task.Id());
 
 	APDURequest request(txBuffer.GetWriteBuffer());
@@ -154,11 +155,13 @@ void MasterContext::ReleaseActiveTask()
 	}
 }
 
-void MasterContext::NotifyTaskCompletion(TaskCompletion result)
+void MasterContext::NotifyTaskCompletion(IMasterTask& task, TaskCompletion result)
 {
-	if (pActiveTask.IsDefined() && pActiveTask->Id().IsDefined())
-	{
-		pApplication->OnTaskComplete(pActiveTask->Id(), result);
+	task.OnComplete(result);
+	
+	if (task.Id().IsDefined())
+	{		
+		pApplication->OnTaskComplete(task.Id(), result);
 	}
 }
 
