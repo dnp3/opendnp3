@@ -31,7 +31,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-EnableUnsolicitedTask::EnableUnsolicitedTask(const MasterParams& params, const openpal::Logger& logger) :
+EnableUnsolicitedTask::EnableUnsolicitedTask(ClassField field, openpal::TimeDuration retryPeriod, const openpal::Logger& logger) :
 	NullResponseTask(logger),
 	pParams(&params),	
 	expiration(0)
@@ -41,12 +41,17 @@ EnableUnsolicitedTask::EnableUnsolicitedTask(const MasterParams& params, const o
 
 void EnableUnsolicitedTask::BuildRequest(APDURequest& request, uint8_t seq)
 {
-	build::EnableUnsolicited(request, pParams->unsolClassMask.OnlyEventClasses(), seq);
+	build::EnableUnsolicited(request, enabledClasses.OnlyEventClasses(), seq);
 }
 
-openpal::MonotonicTimestamp EnableUnsolicitedTask::ExpirationTime() const
+void EnableUnsolicitedTask::_OnStart()
 {
-	return pParams->unsolClassMask.HasEventClass() ? expiration : MonotonicTimestamp::Max();
+
+}
+
+bool EnableUnsolicitedTask::IsEnabled()
+{
+	return enabledClasses.HasEventClass();
 }
 
 void EnableUnsolicitedTask::OnSuccess(const openpal::MonotonicTimestamp&)

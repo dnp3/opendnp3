@@ -90,57 +90,57 @@ opendnp3::ILinkSession* MasterStackImpl::GetLinkContext()
 	return &stack.link;
 }
 
-MasterScan MasterStackImpl::AddScan(TimeDuration period, const std::function<void(HeaderWriter&)>& builder, int id, opendnp3::ITaskCallback* pCallback)
+MasterScan MasterStackImpl::AddScan(TimeDuration period, const std::function<void(HeaderWriter&)>& builder, opendnp3::ITaskCallback* pCallback)
 {
-	auto add = [this, period, builder, id, pCallback]() { return master.AddScan(period, builder, id, pCallback); };
+	auto add = [this, period, builder, pCallback]() { return master.AddScan(period, builder, pCallback); };
 	return asiopal::SynchronouslyGet<MasterScan>(handler.GetExecutor()->strand, add);
 }
 
-MasterScan MasterStackImpl::AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, int id, opendnp3::ITaskCallback* pCallback)
+MasterScan MasterStackImpl::AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, opendnp3::ITaskCallback* pCallback)
 {
-	auto add = [this, gvId, period, id, pCallback]() { return master.AddAllObjectsScan(gvId, period, id, pCallback); };
+	auto add = [this, gvId, period, pCallback]() { return master.AddAllObjectsScan(gvId, period, pCallback); };
 	return asiopal::SynchronouslyGet<MasterScan>(handler.GetExecutor()->strand, add);
 }
 
-MasterScan MasterStackImpl::AddClassScan(const ClassField& field, openpal::TimeDuration period, int id, opendnp3::ITaskCallback* pCallback)
+MasterScan MasterStackImpl::AddClassScan(const ClassField& field, openpal::TimeDuration period, opendnp3::ITaskCallback* pCallback)
 {	
-	auto add = [this, field, period, id, pCallback]() { return master.AddClassScan(field, period, id, pCallback); };
+	auto add = [this, field, period, pCallback]() { return master.AddClassScan(field, period, pCallback); };
 	return asiopal::SynchronouslyGet<MasterScan>(handler.GetExecutor()->strand, add);
 }
 
-MasterScan  MasterStackImpl::AddRangeScan(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, int id, opendnp3::ITaskCallback* pCallback)
+MasterScan  MasterStackImpl::AddRangeScan(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, opendnp3::ITaskCallback* pCallback)
 {	
-	auto add = [this, gvId, start, stop, period, id, pCallback]() { return master.AddRangeScan(gvId, start, stop, period, id, pCallback); };
+	auto add = [this, gvId, start, stop, period, pCallback]() { return master.AddRangeScan(gvId, start, stop, period, pCallback); };
 	return asiopal::SynchronouslyGet<MasterScan>(handler.GetExecutor()->strand, add);
 }
 
-void MasterStackImpl::Scan(const std::function<void(opendnp3::HeaderWriter&)>& builder, int id, opendnp3::ITaskCallback* pCallback)
+void MasterStackImpl::Scan(const std::function<void(opendnp3::HeaderWriter&)>& builder, opendnp3::ITaskCallback* pCallback)
 {
-	auto add = [this, builder, id, pCallback]() { master.Scan(builder, id, pCallback); };
+	auto add = [this, builder, pCallback]() { master.Scan(builder, pCallback); };
 	return asiopal::SynchronouslyExecute(handler.GetExecutor()->strand, add);
 }
 
-void MasterStackImpl::ScanAllObjects(opendnp3::GroupVariationID gvId, int id, opendnp3::ITaskCallback* pCallback)
+void MasterStackImpl::ScanAllObjects(opendnp3::GroupVariationID gvId, opendnp3::ITaskCallback* pCallback)
 {
-	auto add = [this, gvId, id, pCallback]() { master.ScanAllObjects(gvId, id, pCallback); };
+	auto add = [this, gvId, pCallback]() { master.ScanAllObjects(gvId, pCallback); };
 	return asiopal::SynchronouslyExecute(handler.GetExecutor()->strand, add);
 }
 
-void MasterStackImpl::ScanClasses(const opendnp3::ClassField& field, int id, opendnp3::ITaskCallback* pCallback)
+void MasterStackImpl::ScanClasses(const opendnp3::ClassField& field, opendnp3::ITaskCallback* pCallback)
 {
-	auto add = [this, field, id, pCallback]() { master.ScanClasses(field, id, pCallback); };
+	auto add = [this, field, pCallback]() { master.ScanClasses(field, pCallback); };
 	return asiopal::SynchronouslyExecute(handler.GetExecutor()->strand, add);
 }
 
-void MasterStackImpl::ScanRange(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, int id, opendnp3::ITaskCallback* pCallback)
+void MasterStackImpl::ScanRange(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, opendnp3::ITaskCallback* pCallback)
 {
-	auto add = [this, gvId, start, stop, id, pCallback]() { master.ScanRange(gvId, start, stop, id, pCallback); };
+	auto add = [this, gvId, start, stop, pCallback]() { master.ScanRange(gvId, start, stop, pCallback); };
 	return asiopal::SynchronouslyExecute(handler.GetExecutor()->strand, add);
 }
 
-void MasterStackImpl::Write(const TimeAndInterval& value, uint16_t index, int id, opendnp3::ITaskCallback* pCallback)
+void MasterStackImpl::Write(const TimeAndInterval& value, uint16_t index, opendnp3::ITaskCallback* pCallback)
 {
-	auto add = [this, value, index, id, pCallback]() { master.Write(value, index, id, pCallback); };
+	auto add = [this, value, index, pCallback]() { master.Write(value, index, pCallback); };
 	return asiopal::SynchronouslyExecute(handler.GetExecutor()->strand, add);
 }
 

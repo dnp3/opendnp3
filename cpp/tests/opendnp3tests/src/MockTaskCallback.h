@@ -43,7 +43,7 @@ public:
 
 	uint32_t numStart = 0;
 
-	std::deque<CommandResponse> results;
+	std::deque<TaskCompletion> results;
 
 };
 

@@ -18,17 +18,17 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef OPENDNP3_TASKIDVALUE_H
-#define OPENDNP3_TASKIDVALUE_H
+#ifndef OPENDNP3_TASKID_H
+#define OPENDNP3_TASKID_H
 
 #include <cstdint>
 
 namespace opendnp3 {
 
 /**
-  Enumeration of integer values for task ids
+  Enumeration of internal tasks
 */
-enum class TaskIdValue : int
+enum class TaskId : int
 {
   CLEAR_RESTART = 0,
   DISABLE_UNSOLICITED = 1,

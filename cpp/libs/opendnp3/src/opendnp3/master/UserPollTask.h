@@ -42,8 +42,7 @@ class UserPollTask : public PollTaskBase
 public:	
 
 	UserPollTask(		
-		const std::function<void(HeaderWriter&)>& builder,
-		int id,		
+		const std::function<void(HeaderWriter&)>& builder,		
 		bool recurring,
 		const std::string& name,		
 		const openpal::TimeDuration& period,	
@@ -54,11 +53,7 @@ public:
 
 	virtual int Priority() const override final { return priority::USER_POLL; }
 
-	virtual TaskId Id() const override final { return TaskId::UserDefined(id); }
-
-	virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;
-
-	virtual openpal::MonotonicTimestamp ExpirationTime() const override final { return expiration; }
+	virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;	
 
 	virtual bool BlocksLowerPriority() const override final { return false; }
 	
@@ -74,8 +69,7 @@ private:
 
 	virtual void OnSuccess(const openpal::MonotonicTimestamp& now) override final;
 			
-	std::function<void(HeaderWriter&)> builder;
-	int id;	
+	std::function<void(HeaderWriter&)> builder;	
 	bool recurring;
 	openpal::TimeDuration period;
 	openpal::TimeDuration retryDelay;

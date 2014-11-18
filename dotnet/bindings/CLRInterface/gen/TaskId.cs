@@ -21,9 +21,9 @@
 namespace Automatak.DNP3.Interface
 {
   /// <summary>
-  /// Enumeration of integer values for task ids
+  /// Enumeration of internal tasks
   /// </summary>
-  public enum TaskIdValue : int
+  public enum TaskId : int
   {
     CLEAR_RESTART = 0,
     DISABLE_UNSOLICITED = 1,

@@ -29,7 +29,6 @@
 #include "opendnp3/app/APDURequest.h"
 
 #include "opendnp3/master/MasterParams.h"
-#include "opendnp3/master/TaskId.h"
 #include "opendnp3/master/ITaskCallback.h"
 
 namespace opendnp3
@@ -58,15 +57,14 @@ public:
 		CONTINUE
 	};	
 
-	IMasterTask() : pCallback(nullptr)
-	{}
 
-	virtual ~IMasterTask() {}
+	IMasterTask();
 
-	/**	
-	* @return An id of the task. Id's < 0 are anonymous
-	*/
-	virtual TaskId Id() const = 0;
+	IMasterTask(bool enabled);
+
+	IMasterTask(bool enabled, openpal::MonotonicTimestamp expiration);
+
+	virtual ~IMasterTask() {}	
 
 	/**	
 	*
@@ -99,7 +97,7 @@ public:
 	/**
 	* The time when this task can run again.
 	*/
-	virtual openpal::MonotonicTimestamp ExpirationTime() const = 0;
+	openpal::MonotonicTimestamp ExpirationTime() const;
 
 	/**
 	 * Build a request APDU.	 
@@ -131,32 +129,21 @@ public:
 	/**
 	* Called when the task first starts, before the first request is formatted
 	*/
-	void OnStart()
-	{
-		if (pCallback)
-		{
-			pCallback->OnStart();
-		}
-	}
-
-	/**
-	* Called wen the task completes after a timeout, layer down, or final response.
-	*/
-	void OnComplete(TaskCompletion result)
-	{
-		if (pCallback)
-		{
-			pCallback->OnComplete(result);
-		}
-	}
+	void OnStart();		
 
 	/**
 	* Set the handler that is called when a task starts or completes
 	*/
-	void SetTaskCallback(ITaskCallback* pCallback_)
-	{
-		pCallback = pCallback_;
-	}
+	void SetTaskCallback(ITaskCallback* pCallback_);
+	
+	protected:
+
+	virtual bool IsEnabled() { return enabled; }
+
+	virtual void _OnStart() = 0;
+
+	bool enabled;
+	openpal::MonotonicTimestamp expiration;
 
 	private:
 

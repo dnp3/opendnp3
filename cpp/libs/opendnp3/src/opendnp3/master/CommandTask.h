@@ -55,15 +55,11 @@ public:
 	template <class T>
 	static IMasterTask* FSelectAndOperate(const T& command, uint16_t index, ICommandCallback& callback, const DNP3Serializer<T>& serializer, openpal::Logger logger);
 
-	virtual char const* Name() const override final { return "Command Task"; }
-
-	virtual TaskId Id() const override final { return TaskId::UserDefined(-1); }
+	virtual char const* Name() const override final { return "Command Task"; }	
 
 	virtual int Priority() const override final { return priority::COMMAND; }
 	
-	virtual bool BlocksLowerPriority() const override final { return false; }
-
-	virtual openpal::MonotonicTimestamp ExpirationTime() const override final { return openpal::MonotonicTimestamp(0); }
+	virtual bool BlocksLowerPriority() const override final { return false; }	
 	
 	virtual bool IsRecurring() const override final { return false; }
 	

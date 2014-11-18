@@ -687,9 +687,6 @@
     <ClInclude Include="..\openpal\src\openpal\util\Limits.h">
       <Filter>Header\master</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\master\TaskId.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\master\AssignClassTask.h">
       <Filter>Header\master</Filter>
     </ClInclude>
@@ -721,6 +718,9 @@
       <Filter>Header\master</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\gen\TaskCompletion.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\TaskId.h">
       <Filter>Header\gen</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1151,6 +1151,9 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\gen\TaskCompletion.cpp">
       <Filter>Source\gen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\IMasterTask.cpp">
+      <Filter>Source\master</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -30,12 +30,12 @@ namespace Automatak
 
 			void MasterApplicationAdapter::OnTaskStart(opendnp3::TaskId id)
 			{
-				proxy->OnTaskStart(gcnew TaskId(id.id, id.isUserAssigned));
+				proxy->OnTaskStart((TaskId)id);
 			}
 
 			void MasterApplicationAdapter::OnTaskComplete(opendnp3::TaskId id, opendnp3::TaskCompletion result)
 			{
-				proxy->OnTaskComplete(gcnew TaskId(id.id, id.isUserAssigned), (TaskCompletion) result);
+				proxy->OnTaskComplete((TaskId) id, (TaskCompletion)result);
 			}
 
 			bool MasterApplicationAdapter::AssignClassDuringStartup()

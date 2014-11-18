@@ -110,7 +110,7 @@ int main(int argc, char* argv[])
 		switch(cmd)
 		{
 			case('a') :
-				pMaster->ScanRange(GroupVariationID(1, 2), 0, 3, 5);				
+				pMaster->ScanRange(GroupVariationID(1, 2), 0, 3);				
 				break;
 			case('x'):
 				// C++ destructor on DNP3Manager cleans everything up for you

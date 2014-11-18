@@ -41,9 +41,7 @@ class EnableUnsolicitedTask : public NullResponseTask
 
 public:	
 
-	EnableUnsolicitedTask(const MasterParams& params, const openpal::Logger& logger);
-
-	virtual TaskId Id() const override final { return TaskId::From(TaskIdValue::ENABLE_UNSOLICITED); }
+	EnableUnsolicitedTask(ClassField field, openpal::TimeDuration retryPeriod, const openpal::Logger& logger);	
 
 	virtual bool IsRecurring() const override final { return true; }
 
@@ -51,9 +49,7 @@ public:
 
 	virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;		
 
-	virtual int Priority() const override final { return priority::ENABLE_UNSOLICITED; }
-
-	virtual openpal::MonotonicTimestamp ExpirationTime() const override final;
+	virtual int Priority() const override final { return priority::ENABLE_UNSOLICITED; }	
 
 	virtual bool BlocksLowerPriority() const { return true; }
 
@@ -61,11 +57,16 @@ public:
 
 	virtual void Demand() override final { expiration = 0; }
 
-private:
-	
-	const MasterParams* pParams;
 
-	openpal::MonotonicTimestamp expiration;
+
+private:	
+
+	ClassField enabledClasses;
+	openpal::TimeDuration retryPeriod;
+
+	virtual void _OnStart() override final;
+
+	virtual bool IsEnabled() override final;
 
 	virtual void OnSuccess(const openpal::MonotonicTimestamp& now) override final;
 

@@ -34,9 +34,7 @@ class AssignClassTask : public NullResponseTask
 
 public:	
 
-	AssignClassTask(const MasterParams& params, IMasterApplication& application, const openpal::Logger& logger);	
-
-	virtual TaskId Id() const override final { return TaskId::From(TaskIdValue::ASSIGN_CLASS); }
+	AssignClassTask(openpal::TimeDuration retryPeriod, IMasterApplication& application, const openpal::Logger& logger);	
 
 	virtual char const* Name() const override final { return "Assign Class"; }
 
@@ -44,9 +42,7 @@ public:
 
 	virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;
 
-	virtual int Priority(void) const override final { return priority::ASSIGN_CLASS; }
-
-	virtual openpal::MonotonicTimestamp ExpirationTime() const override final;
+	virtual int Priority(void) const override final { return priority::ASSIGN_CLASS; }	
 
 	virtual bool BlocksLowerPriority() const { return true; }
 
@@ -54,13 +50,15 @@ public:
 
 	virtual void Demand() override final;
 
-private:
+protected:
 
-	const MasterParams* pParams;
+	virtual bool IsEnabled() override final;
 
-	IMasterApplication* pApplication;
+private:	
 
-	openpal::MonotonicTimestamp expiration;
+	openpal::TimeDuration retryPeriod;
+
+	IMasterApplication* pApplication;	
 
 	virtual void OnSuccess(const openpal::MonotonicTimestamp& now) override final;
 

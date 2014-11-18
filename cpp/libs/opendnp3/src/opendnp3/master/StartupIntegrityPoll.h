@@ -39,15 +39,11 @@ public:
 
 	StartupIntegrityPoll(const MasterParams& params, ISOEHandler* pSOEHandler_, const openpal::Logger& logger);
 
-	virtual TaskId Id() const override final { return TaskId::From(TaskIdValue::STARTUP_INTEGRITY_POLL); }
-
 	virtual bool IsRecurring() const override final { return true; }
 
 	virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;	
 
-	virtual int Priority() const override final { return priority::INTEGRITY_POLL; }
-
-	virtual openpal::MonotonicTimestamp ExpirationTime() const override final;
+	virtual int Priority() const override final { return priority::INTEGRITY_POLL; }	
 
 	virtual bool BlocksLowerPriority() const { return true; }
 

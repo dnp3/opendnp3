@@ -86,6 +86,7 @@
     <ClInclude Include="src\opendnp3\gen\StaticTimeAndIntervalResponse.h" />
     <ClInclude Include="src\opendnp3\gen\StaticTypeBitmask.h" />
     <ClInclude Include="src\opendnp3\gen\TaskCompletion.h" />
+    <ClInclude Include="src\opendnp3\gen\TaskId.h" />
     <ClInclude Include="src\opendnp3\gen\TimestampMode.h" />
     <ClInclude Include="src\opendnp3\gen\TimeSyncMode.h" />
     <ClInclude Include="src\opendnp3\LayerInterfaces.h" />
@@ -150,7 +151,6 @@
     <ClInclude Include="src\opendnp3\master\ITaskLock.h" />
     <ClInclude Include="src\opendnp3\master\NullResponseTask.h" />
     <ClInclude Include="src\opendnp3\master\PollTaskBase.h" />
-    <ClInclude Include="src\opendnp3\master\TaskId.h" />
     <ClInclude Include="src\opendnp3\master\UserPollTask.h" />
     <ClInclude Include="src\opendnp3\master\StartupIntegrityPoll.h" />
     <ClInclude Include="src\opendnp3\master\ISOEHandler.h" />
@@ -315,6 +315,7 @@
     <ClCompile Include="src\opendnp3\master\EnableUnsolicitedTask.cpp" />
     <ClCompile Include="src\opendnp3\master\EventScanTask.cpp" />
     <ClCompile Include="src\opendnp3\master\IMasterState.cpp" />
+    <ClCompile Include="src\opendnp3\master\IMasterTask.cpp" />
     <ClCompile Include="src\opendnp3\master\ITaskLock.cpp" />
     <ClCompile Include="src\opendnp3\master\NullResponseTask.cpp" />
     <ClCompile Include="src\opendnp3\master\UserPollTask.cpp" />

@@ -28,9 +28,9 @@ using namespace openpal;
 namespace opendnp3
 {
 
-AssignClassTask::AssignClassTask(const MasterParams& params, IMasterApplication& application, const openpal::Logger& logger) :
-	NullResponseTask(logger),
-	pParams(&params),
+AssignClassTask::AssignClassTask(openpal::TimeDuration retryPeriod_, IMasterApplication& application, const openpal::Logger& logger) :
+	NullResponseTask(true, MonotonicTimestamp(0), logger),	
+	retryPeriod(retryPeriod_),
 	pApplication(&application)
 {}
 
@@ -42,6 +42,11 @@ void AssignClassTask::BuildRequest(APDURequest& request, uint8_t seq)
 	pApplication->ConfigureAssignClassRequest(writer);
 }
 
+bool AssignClassTask::IsEnabled()
+{
+	return enabled && pApplication->AssignClassDuringStartup();
+}
+
 void AssignClassTask::Demand()
 { 
 	if (expiration.IsMax())
@@ -50,11 +55,6 @@ void AssignClassTask::Demand()
 	}	
 }
 	
-openpal::MonotonicTimestamp AssignClassTask::ExpirationTime() const
-{
-	return pApplication->AssignClassDuringStartup() ? expiration : MonotonicTimestamp::Max();
-}
-
 void AssignClassTask::OnLowerLayerClose(const openpal::MonotonicTimestamp&)
 {
 	expiration = 0;
@@ -72,11 +72,11 @@ void AssignClassTask::OnBadControlOctet(const openpal::MonotonicTimestamp& now)
 
 void AssignClassTask::OnResponseTimeout(const openpal::MonotonicTimestamp& now)
 {
-	expiration = now.Add(pParams->taskRetryPeriod);
+	expiration = now.Add(retryPeriod);
 }
 
 void AssignClassTask::OnRejectedIIN(const openpal::MonotonicTimestamp& now)
-{
+{	
 	expiration = MonotonicTimestamp::Max();
 }
 

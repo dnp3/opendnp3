@@ -18,41 +18,43 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_TASKID_H
-#define OPENDNP3_TASKID_H
 
-#include "opendnp3/gen/TaskIdValue.h"
+#include "IMasterTask.h"
+
+using namespace openpal;
 
 namespace opendnp3
 {
+
+IMasterTask::IMasterTask(bool enabled_) : IMasterTask(enabled_, MonotonicTimestamp::Max())
+{}
+
+IMasterTask::IMasterTask() : IMasterTask(false)
+{}
+
+IMasterTask::IMasterTask(bool enabled_, openpal::MonotonicTimestamp expiration_) : enabled(enabled_), expiration(expiration_), pCallback(nullptr)
+{}
+
+openpal::MonotonicTimestamp IMasterTask::ExpirationTime() const
+{
+	return this->IsEnabled() ? expiration : MonotonicTimestamp::Max();
+}
 	
-	class TaskId
+void IMasterTask::OnStart()
+{
+	if (pCallback)
 	{
-		public:			
-
-		static TaskId From(TaskIdValue id)
-		{
-			return TaskId(false, (int)id);
-		}
-
-		static TaskId UserDefined(int id)
-		{
-			return TaskId(true, id);
-		}
-
-		inline bool IsDefined() const 
-		{
-			return id >= 0;
-		}
-
-		int id;
-		bool isUserAssigned;
-		
-		private:
-
-		TaskId(bool userAssigned_, int id_) : id(id_), isUserAssigned(userAssigned_)			
-		{}
-	};
+		pCallback->OnStart();
+	}
+	
+	this->_OnStart();
 }
 
-#endif
+	
+void IMasterTask::SetTaskCallback(ITaskCallback* pCallback_)
+{
+	pCallback = pCallback_;
+}
+
+}
+

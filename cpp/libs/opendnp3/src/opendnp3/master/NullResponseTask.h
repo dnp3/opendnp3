@@ -34,7 +34,7 @@ class NullResponseTask : public SingleResponseTask
 
 public:	
 
-	NullResponseTask(const openpal::Logger& logger);
+	NullResponseTask(bool enabled, openpal::MonotonicTimestamp expiration, openpal::Logger logger);
 
 protected:
 

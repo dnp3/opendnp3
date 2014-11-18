@@ -43,46 +43,46 @@ namespace Automatak
 				pMaster->Shutdown();
 			}
 
-			IMasterScan^ MasterAdapter::AddAllObjectsScan(System::Byte group, System::Byte variation, System::TimeSpan period, int id)
+			IMasterScan^ MasterAdapter::AddAllObjectsScan(System::Byte group, System::Byte variation, System::TimeSpan period)
 			{
 				opendnp3::GroupVariationID gvid(group, variation);
-				auto scan = pMaster->AddAllObjectsScan(gvid, Conversions::ConvertTimespan(period), id);
+				auto scan = pMaster->AddAllObjectsScan(gvid, Conversions::ConvertTimespan(period));
 				return gcnew MasterScanAdapter(scan);
 			}
 
-			IMasterScan^ MasterAdapter::AddClassScan(ClassField field, System::TimeSpan period, int id)
+			IMasterScan^ MasterAdapter::AddClassScan(ClassField field, System::TimeSpan period)
 			{
-				auto scan = pMaster->AddClassScan(Conversions::ConvertClassField(field), Conversions::ConvertTimespan(period), id);
+				auto scan = pMaster->AddClassScan(Conversions::ConvertClassField(field), Conversions::ConvertTimespan(period));
 				return gcnew MasterScanAdapter(scan);
 			}
 
-			IMasterScan^ MasterAdapter::AddRangeScan(System::Byte group, System::Byte variation, System::UInt16 start, System::UInt16 stop, System::TimeSpan period, int id)
+			IMasterScan^ MasterAdapter::AddRangeScan(System::Byte group, System::Byte variation, System::UInt16 start, System::UInt16 stop, System::TimeSpan period)
 			{
 				opendnp3::GroupVariationID gvid(group, variation);
-				auto scan = pMaster->AddRangeScan(gvid, start, stop, Conversions::ConvertTimespan(period), id);
+				auto scan = pMaster->AddRangeScan(gvid, start, stop, Conversions::ConvertTimespan(period));
 				return gcnew MasterScanAdapter(scan);
 			}
 
-			void MasterAdapter::ScanAllObjects(System::Byte group, System::Byte variation, int id)
+			void MasterAdapter::ScanAllObjects(System::Byte group, System::Byte variation)
 			{
 				opendnp3::GroupVariationID gvid(group, variation);
 				pMaster->ScanAllObjects(gvid);
 			}
 
-			void MasterAdapter::ScanClasses(ClassField field, int id)
+			void MasterAdapter::ScanClasses(ClassField field)
 			{
-				pMaster->ScanClasses(Conversions::ConvertClassField(field), id);
+				pMaster->ScanClasses(Conversions::ConvertClassField(field));
 			}
 
-			void MasterAdapter::ScanRange(System::Byte group, System::Byte variation, System::UInt16 start, System::UInt16 stop, int id)
+			void MasterAdapter::ScanRange(System::Byte group, System::Byte variation, System::UInt16 start, System::UInt16 stop)
 			{
 				opendnp3::GroupVariationID gvid(group, variation);
-				pMaster->ScanRange(gvid, start, stop, id);
+				pMaster->ScanRange(gvid, start, stop);
 			}
 
-			void MasterAdapter::Write(TimeAndInterval^ value, System::UInt16 index, int id)
+			void MasterAdapter::Write(TimeAndInterval^ value, System::UInt16 index)
 			{				
-				pMaster->Write(Conversions::ConvertMeas(value), index, id);
+				pMaster->Write(Conversions::ConvertMeas(value), index);
 			}
 
 		}

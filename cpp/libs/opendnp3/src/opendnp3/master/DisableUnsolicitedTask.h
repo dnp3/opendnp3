@@ -34,17 +34,13 @@ public:
 
 	DisableUnsolicitedTask(const MasterParams& params, const openpal::Logger& logger);	
 
-	virtual TaskId Id() const override final { return TaskId::From(TaskIdValue::DISABLE_UNSOLICITED); }
-
 	virtual char const* Name() const override final { return "Disable Unsolicited"; }
 
 	virtual bool IsRecurring() const override final { return true; }
 
 	virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;
 
-	virtual int Priority() const override final { return priority::DISABLE_UNSOLICITED; }
-
-	virtual openpal::MonotonicTimestamp ExpirationTime() const override final;
+	virtual int Priority() const override final { return priority::DISABLE_UNSOLICITED; }	
 
 	virtual bool BlocksLowerPriority() const { return true; }
 
@@ -56,9 +52,7 @@ public:
 
 private:
 
-	const MasterParams* pParams;
-
-	openpal::MonotonicTimestamp expiration;
+	const MasterParams* pParams;	
 
 	virtual void OnSuccess(const openpal::MonotonicTimestamp& now) override final;
 

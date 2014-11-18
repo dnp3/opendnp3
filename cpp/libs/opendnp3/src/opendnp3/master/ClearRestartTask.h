@@ -21,8 +21,9 @@
 #ifndef OPENDNP3_CLEARRESTARTTASK_H
 #define OPENDNP3_CLEARRESTARTTASK_H
 
-#include "opendnp3/master/NullResponseTask.h"
 #include "opendnp3/master/TaskPriority.h"
+#include "opendnp3/master/NullResponseTask.h"
+#include "opendnp3/master/IMasterApplication.h"
 
 namespace opendnp3
 {
@@ -35,9 +36,7 @@ class ClearRestartTask : public SingleResponseTask
 
 public:	
 
-	ClearRestartTask(const MasterParams& params, const openpal::Logger& logger);
-
-	virtual TaskId Id() const override final { return TaskId::From(TaskIdValue::CLEAR_RESTART); }
+	ClearRestartTask(openpal::TimeDuration retryPeriod, IMasterApplication& application, const openpal::Logger& logger);
 
 	virtual char const* Name() const override final { return "Clear Restart IIN"; }
 
@@ -45,9 +44,7 @@ public:
 
 	virtual int Priority() const override final { return priority::CLEAR_RESTART; }
 
-	virtual bool BlocksLowerPriority() const override final { return true; }
-
-	virtual openpal::MonotonicTimestamp ExpirationTime() const override final;
+	virtual bool BlocksLowerPriority() const override final { return true; }	
 
 	virtual void OnLowerLayerClose(const openpal::MonotonicTimestamp& now) override final;
 
@@ -59,15 +56,16 @@ public:
 		
 protected:
 
+	virtual void _OnStart() override final;
+
 	virtual void OnBadControlOctet(const openpal::MonotonicTimestamp&) override final;	
 	
 	virtual Result OnOnlyResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp&) override final;
 
 private:
 
-	const MasterParams* pParams;
-	openpal::MonotonicTimestamp expiration;
-
+	openpal::TimeDuration retryPeriod;
+	IMasterApplication* pApplication;
 };
 
 } //end ns

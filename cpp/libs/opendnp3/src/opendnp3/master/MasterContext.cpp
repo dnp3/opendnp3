@@ -92,8 +92,7 @@ bool MasterContext::OnLayerDown()
 
 		if (pActiveTask.IsDefined())
 		{			
-			pActiveTask->OnLowerLayerClose(now);
-			this->NotifyTaskCompletion(*pActiveTask, TaskCompletion::FAILURE_NO_COMMS);			
+			pActiveTask->OnLowerLayerClose(now);			
 			pActiveTask.Release();
 		}
 
@@ -132,8 +131,6 @@ void MasterContext::CheckForTask()
 void MasterContext::StartTask(IMasterTask& task)
 {			
 	task.OnStart();
-	pApplication->OnTaskStart(task.Id());
-
 	APDURequest request(txBuffer.GetWriteBuffer());
 	task.BuildRequest(request, solSeq);
 	this->StartResponseTimer();
@@ -152,16 +149,6 @@ void MasterContext::ReleaseActiveTask()
 		{
 			pActiveTask.Release();
 		}
-	}
-}
-
-void MasterContext::NotifyTaskCompletion(IMasterTask& task, TaskCompletion result)
-{
-	task.OnComplete(result);
-	
-	if (task.Id().IsDefined())
-	{		
-		pApplication->OnTaskComplete(task.Id(), result);
 	}
 }
 
@@ -187,10 +174,7 @@ void MasterContext::ScheduleAdhocTask(IMasterTask* pTask)
 	else
 	{
 		// can't run this task since we're offline so fail it immediately
-		if (pTask->Id().IsDefined())
-		{
-			pApplication->OnTaskComplete(task->Id(), TaskCompletion::FAILURE_NO_COMMS);
-		}		
+		pTask->OnLowerLayerClose(pExecutor->GetTime());		
 	}
 }
 

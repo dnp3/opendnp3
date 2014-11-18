@@ -32,10 +32,10 @@ using namespace openpal;
 namespace opendnp3
 {
 
-ClearRestartTask::ClearRestartTask(const MasterParams& params, const openpal::Logger& logger) :
-	SingleResponseTask(logger),
-	pParams(&params),
-	expiration(MonotonicTimestamp::Max())
+ClearRestartTask::ClearRestartTask(openpal::TimeDuration retryPeriod_, IMasterApplication& application, const openpal::Logger& logger) :
+	SingleResponseTask(true, MonotonicTimestamp::Max(), logger),
+	retryPeriod(retryPeriod_),
+	pApplication(&application)
 {
 
 }	
@@ -53,11 +53,6 @@ void ClearRestartTask::Demand()
 	}
 }
 
-openpal::MonotonicTimestamp ClearRestartTask::ExpirationTime() const
-{
-	return expiration;
-}
-
 void ClearRestartTask::OnLowerLayerClose(const openpal::MonotonicTimestamp&)
 {
 	expiration = MonotonicTimestamp::Max();
@@ -65,7 +60,7 @@ void ClearRestartTask::OnLowerLayerClose(const openpal::MonotonicTimestamp&)
 
 void ClearRestartTask::OnResponseTimeout(const openpal::MonotonicTimestamp& now)
 {
-	expiration = now.Add(pParams->taskRetryPeriod);
+	expiration = now.Add(retryPeriod);
 }
 
 void ClearRestartTask::OnBadControlOctet(const openpal::MonotonicTimestamp& now)
@@ -78,7 +73,8 @@ IMasterTask::Result ClearRestartTask::OnOnlyResponse(const APDUResponseHeader& r
 	if (response.IIN.IsSet(IINBit::DEVICE_RESTART))
 	{
 		// we tried to clear the restart, but the device responded with the restart still set
-		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Clear restart task failed to clear restart bit");			
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Clear restart task failed to clear restart bit");	
+		enabled = false;
 		expiration = MonotonicTimestamp::Max();
 		return Result::FAILURE;
 	}

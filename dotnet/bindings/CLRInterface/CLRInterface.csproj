@@ -99,7 +99,7 @@
     <Compile Include="gen\StaticTimeAndIntervalResponse.cs" />
     <Compile Include="gen\StaticTypeBitmask.cs" />
     <Compile Include="gen\TaskCompletion.cs" />
-    <Compile Include="gen\TaskIdValue.cs" />
+    <Compile Include="gen\TaskId.cs" />
     <Compile Include="gen\TimestampMode.cs" />
     <Compile Include="gen\TimeSyncMode.cs" />
     <Compile Include="IChannelStatistics.cs" />
@@ -145,7 +145,6 @@
     <Compile Include="config\SerialSettings.cs" />
     <Compile Include="SimpleCommandHandler.cs" />
     <Compile Include="StackStatistics.cs" />
-    <Compile Include="TaskId.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

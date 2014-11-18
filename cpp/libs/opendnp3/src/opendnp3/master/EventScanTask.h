@@ -39,15 +39,11 @@ namespace opendnp3
 
 		EventScanTask(const MasterParams& params, ISOEHandler* pSOEHandler_, const openpal::Logger& logger);
 
-		virtual TaskId Id() const override final { return TaskId::From(TaskIdValue::AUTO_EVENT_SCAN); }
-
 		virtual bool IsRecurring() const override final { return true; }
 
 		virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;
 
-		virtual int Priority() const override final { return priority::EVENT_SCAN; }
-
-		virtual openpal::MonotonicTimestamp ExpirationTime() const override final;
+		virtual int Priority() const override final { return priority::EVENT_SCAN; }		
 
 		virtual bool BlocksLowerPriority() const { return true; }
 

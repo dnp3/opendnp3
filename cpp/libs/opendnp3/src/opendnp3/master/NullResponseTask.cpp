@@ -30,7 +30,8 @@
 namespace opendnp3
 {
 
-NullResponseTask::NullResponseTask(const openpal::Logger& logger) : SingleResponseTask(logger)
+NullResponseTask::NullResponseTask(bool enabled, openpal::MonotonicTimestamp expiration, openpal::Logger logger) : 
+	SingleResponseTask(enabled, expiration, logger)
 {}
 	
 IMasterTask::Result NullResponseTask::OnOnlyResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now)

@@ -51,50 +51,50 @@ public:
 	* Add a recurring user-defined scan (via a lambda)
 	* @ return A proxy class used to manipulate the scan
 	*/
-	virtual opendnp3::MasterScan AddScan(openpal::TimeDuration period, const std::function<void(opendnp3::HeaderWriter&)>& builder, int id = -1, opendnp3::ITaskCallback* pCallback = nullptr) = 0;
+	virtual opendnp3::MasterScan AddScan(openpal::TimeDuration period, const std::function<void(opendnp3::HeaderWriter&)>& builder, opendnp3::ITaskCallback* pCallback = nullptr) = 0;
 
 	/**
 	* Add a scan that requests all objects using qualifier code 0x06
 	* @ return A proxy class used to manipulate the scan
 	*/
-	virtual opendnp3::MasterScan AddAllObjectsScan(opendnp3::GroupVariationID gvId, openpal::TimeDuration period, int id = -1, opendnp3::ITaskCallback* pCallback = nullptr) = 0;
+	virtual opendnp3::MasterScan AddAllObjectsScan(opendnp3::GroupVariationID gvId, openpal::TimeDuration period, opendnp3::ITaskCallback* pCallback = nullptr) = 0;
 
 	/**
 	* Add a class-based scan to the master
 	* @return A proxy class used to manipulate the scan
 	*/
-	virtual opendnp3::MasterScan AddClassScan(const opendnp3::ClassField& field, openpal::TimeDuration period, int id = -1, opendnp3::ITaskCallback* pCallback = nullptr) = 0;
+	virtual opendnp3::MasterScan AddClassScan(const opendnp3::ClassField& field, openpal::TimeDuration period, opendnp3::ITaskCallback* pCallback = nullptr) = 0;
 
 	/**
 	* Add a start/stop (range) scan to the master
 	* @return A proxy class used to manipulate the scan
 	*/
-	virtual opendnp3::MasterScan AddRangeScan(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, int id = -1, opendnp3::ITaskCallback* pCallback = nullptr) = 0;
+	virtual opendnp3::MasterScan AddRangeScan(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, opendnp3::ITaskCallback* pCallback = nullptr) = 0;
 
 	/**
 	* Initiate a single user defined scan via a lambda	
 	*/
-	virtual void Scan(const std::function<void(opendnp3::HeaderWriter&)>& builder, int id = -1, opendnp3::ITaskCallback* pCallback = nullptr) = 0;
+	virtual void Scan(const std::function<void(opendnp3::HeaderWriter&)>& builder, opendnp3::ITaskCallback* pCallback = nullptr) = 0;
 
 	/**
 	* Initiate a single scan that requests all objects (0x06 qualifier code) for a certain group and variation
 	*/
-	virtual void ScanAllObjects(opendnp3::GroupVariationID gvId, int id = -1, opendnp3::ITaskCallback* pCallback = nullptr) = 0;
+	virtual void ScanAllObjects(opendnp3::GroupVariationID gvId, opendnp3::ITaskCallback* pCallback = nullptr) = 0;
 
 	/**
 	* Initiate a single class-based scan	
 	*/
-	virtual void ScanClasses(const opendnp3::ClassField& field, int id = -1, opendnp3::ITaskCallback* pCallback = nullptr) = 0;
+	virtual void ScanClasses(const opendnp3::ClassField& field, opendnp3::ITaskCallback* pCallback = nullptr) = 0;
 
 	/**
 	* Initiate a single start/stop (range) scan
 	*/
-	virtual void ScanRange(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, int id = -1, opendnp3::ITaskCallback* pCallback = nullptr) = 0;
+	virtual void ScanRange(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, opendnp3::ITaskCallback* pCallback = nullptr) = 0;
 
 	/**
 	* Write a time and interval object to a specific index
 	*/
-	virtual void Write(const opendnp3::TimeAndInterval& value, uint16_t index, int id = -1, opendnp3::ITaskCallback* pCallback = nullptr) = 0;
+	virtual void Write(const opendnp3::TimeAndInterval& value, uint16_t index, opendnp3::ITaskCallback* pCallback = nullptr) = 0;
 
 	/**
 	* Get a command processor interface to execute controls on the master

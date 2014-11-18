@@ -3,11 +3,11 @@ package com.automatak.render.dnp3.enums
 import com.automatak.render._
 
 
-object TaskIdValue {
+object TaskId {
 
-  private val comments = List("Enumeration of integer values for task ids")
+  private val comments = List("Enumeration of internal tasks")
 
-  def apply(): EnumModel = EnumModel("TaskIdValue", comments, EnumModel.Integer, codes, Base10)
+  def apply(): EnumModel = EnumModel("TaskId", comments, EnumModel.Integer, codes, Base10)
 
   private val codes = List(
       EnumValue("CLEAR_RESTART", 0),

@@ -34,9 +34,7 @@ class SerialTimeSyncTask : public SingleResponseTask
 {
 
 public:
-	SerialTimeSyncTask(const openpal::Logger& logger, openpal::IUTCTimeSource* pTimeSource_);
-
-	virtual TaskId Id() const override final { return TaskId::From(TaskIdValue::SERIAL_TIME_SYNC); }
+	SerialTimeSyncTask(const openpal::Logger& logger, openpal::IUTCTimeSource* pTimeSource_);	
 	
 	virtual char const* Name() const override final { return "serial time sync"; }
 
@@ -44,9 +42,7 @@ public:
 	
 	virtual bool BlocksLowerPriority() const override final { return true; }
 	
-	virtual bool IsRecurring() const override final { return true; }
-	
-	virtual openpal::MonotonicTimestamp ExpirationTime() const override final;
+	virtual bool IsRecurring() const override final { return true; }	
 
 	virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;	
 

@@ -43,19 +43,17 @@ namespace Automatak.DNP3.Interface
         /// </summary>
         /// <param name="group"></param>
         /// <param name="variation"></param>
-        /// <param name="period"></param>
-        /// <param name="id">An optional id that can be used to correlate task state callbacks with this scan</param>
+        /// <param name="period"></param>        
         /// <returns>a new master scan interface</returns>
-        IMasterScan AddAllObjectsScan(byte group, byte variation, TimeSpan period, int id = -1);
+        IMasterScan AddAllObjectsScan(byte group, byte variation, TimeSpan period);
 
         /// <summary>
         /// Adds a periodic class scan to the master
         /// </summary>
         /// <param name="field">bitfield of class values</param>
-        /// <param name="period">period, negative for non-periodic</param>        
-        /// <param name="id">An optional id that can be used to correlate task state callbacks with this scan</param>
+        /// <param name="period">period, negative for non-periodic</param>                
         /// <returns>a new master scan interface</returns>
-        IMasterScan AddClassScan(ClassField field, TimeSpan period, int id = -1);
+        IMasterScan AddClassScan(ClassField field, TimeSpan period);
 
         /// <summary>        
         /// Adds a periodic range-based (start/stop) scan to the master
@@ -65,26 +63,23 @@ namespace Automatak.DNP3.Interface
         /// <param name="variation"></param>
         /// <param name="start"></param>
         /// <param name="stop"></param>
-        /// <param name="period"></param>
-        /// <param name="id">An optional id that can be used to correlate task state callbacks with this scan</param>
+        /// <param name="period"></param>        
         /// <returns>a new master scan interface</returns>
-        IMasterScan AddRangeScan(byte group, byte variation, System.UInt16 start, System.UInt16 stop, TimeSpan period, int id = -1);
+        IMasterScan AddRangeScan(byte group, byte variation, System.UInt16 start, System.UInt16 stop, TimeSpan period);
 
         /// <summary>
         /// Perform an immediate adhoc scan that uses the 0x06 qualifier
         /// </summary>
         /// <param name="group"></param>
-        /// <param name="variation"></param>        
-        /// <param name="id">An optional id that can be used to correlate task state callbacks with this scan</param>        
-        void ScanAllObjects(byte group, byte variation, int id = -1);
+        /// <param name="variation"></param>                
+        void ScanAllObjects(byte group, byte variation);
 
         /// <summary>
         /// Perform an immediate adhoc class scan
         /// </summary>
         /// <param name="field">bitfield of class values</param>
-        /// <param name="period">period, negative for non-periodic</param>        
-        /// <param name="id">An optional id that can be used to correlate task state callbacks with this scan</param>        
-        void ScanClasses(ClassField field, int id = -1);
+        /// <param name="period">period, negative for non-periodic</param>                
+        void ScanClasses(ClassField field);
 
         /// <summary>        
         /// Perform an immediate adhoc range-based (start/stop) scan
@@ -92,16 +87,14 @@ namespace Automatak.DNP3.Interface
         /// <param name="group"></param>
         /// <param name="variation"></param>
         /// <param name="start"></param>
-        /// <param name="stop"></param>        
-        /// <param name="id">An optional id that can be used to correlate task state callbacks with this scan</param>        
-        void ScanRange(byte group, byte variation, System.UInt16 start, System.UInt16 stop, int id = -1);
+        /// <param name="stop"></param>                
+        void ScanRange(byte group, byte variation, System.UInt16 start, System.UInt16 stop);
 
         /// <summary>
         /// Write a time and interval object to a specific index
         /// </summary>
         /// <param name="value"></param>
-        /// <param name="index"></param>
-        /// <param name="id"></param>
-        void Write(TimeAndInterval value, System.UInt16 index, int id = -1);
+        /// <param name="index"></param>        
+        void Write(TimeAndInterval value, System.UInt16 index);
     }
 }

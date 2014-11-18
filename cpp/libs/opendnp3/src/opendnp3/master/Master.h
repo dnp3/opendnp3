@@ -60,27 +60,27 @@ class Master : public IUpperLayer
 
 	/// ---- Permanently bound scans ----
 
-	MasterScan AddScan(openpal::TimeDuration period, const std::function<void(HeaderWriter&)>& builder, int id, ITaskCallback* pCallback);
+	MasterScan AddScan(openpal::TimeDuration period, const std::function<void(HeaderWriter&)>& builder, ITaskCallback* pCallback);
 
-	MasterScan AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, int id, ITaskCallback* pCallback);
+	MasterScan AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, ITaskCallback* pCallback);
 
-	MasterScan AddClassScan(const ClassField& field, openpal::TimeDuration period, int id, ITaskCallback* pCallback);
+	MasterScan AddClassScan(const ClassField& field, openpal::TimeDuration period, ITaskCallback* pCallback);
 
-	MasterScan AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, int id, ITaskCallback* pCallback);
+	MasterScan AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, ITaskCallback* pCallback);
 
 	/// ---- Single shot immediate scans ----
 	
-	void Scan(const std::function<void(HeaderWriter&)>& builder, int id, ITaskCallback* pCallback);
+	void Scan(const std::function<void(HeaderWriter&)>& builder, ITaskCallback* pCallback);
 
-	void ScanAllObjects(GroupVariationID gvId, int id, ITaskCallback* pCallback);
+	void ScanAllObjects(GroupVariationID gvId, ITaskCallback* pCallback);
 
-	void ScanClasses(const ClassField& field, int id, ITaskCallback* pCallback);
+	void ScanClasses(const ClassField& field, ITaskCallback* pCallback);
 
-	void ScanRange(GroupVariationID gvId, uint16_t start, uint16_t stop, int id, ITaskCallback* pCallback);
+	void ScanRange(GroupVariationID gvId, uint16_t start, uint16_t stop, ITaskCallback* pCallback);
 
 	/// ---- Write tasks -----
 
-	void Write(const TimeAndInterval& value, uint16_t index, int id, ITaskCallback* pCallback);
+	void Write(const TimeAndInterval& value, uint16_t index, ITaskCallback* pCallback);
 
 	
 	private:

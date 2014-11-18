@@ -75,11 +75,6 @@ void SerialTimeSyncTask::OnLowerLayerClose(const openpal::MonotonicTimestamp&)
 	this->Initialize();
 }
 
-openpal::MonotonicTimestamp SerialTimeSyncTask::ExpirationTime() const
-{
-	return expiration;
-}
-
 void SerialTimeSyncTask::OnBadControlOctet(const openpal::MonotonicTimestamp&)
 {
 	// Don't reschedule. Seeing the NeedTime bit again will automatically re-activate the task.	
