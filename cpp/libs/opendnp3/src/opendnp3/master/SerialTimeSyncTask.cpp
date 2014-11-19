@@ -33,29 +33,26 @@ using namespace openpal;
 namespace opendnp3
 {
 
-SerialTimeSyncTask::SerialTimeSyncTask(const openpal::Logger& logger, openpal::IUTCTimeSource* pTimeSource_) :
-	SingleResponseTask(logger),
-	expiration(MonotonicTimestamp::Max()),
-	pTimeSource(pTimeSource_),
+SerialTimeSyncTask::SerialTimeSyncTask(IMasterApplication& app, openpal::Logger logger) :
+	IMasterTask(app, MonotonicTimestamp::Max(), logger),	
 	delay(-1)
 {}
 
 void SerialTimeSyncTask::Initialize()
 {
-	delay = -1;
-	expiration = MonotonicTimestamp::Max();
+	delay = -1;	
 }
 
 void SerialTimeSyncTask::BuildRequest(APDURequest& request, uint8_t seq)
 {
 	if (delay < 0)
 	{
-		start = pTimeSource->Now();
+		start = pApplication->Now();
 		build::MeasureDelay(request, seq);
 	}
 	else
 	{
-		auto now = pTimeSource->Now();
+		auto now = pApplication->Now();
 		Group50Var1 time;
 		time.time = now.msSinceEpoch + delay;
 		request.SetFunction(FunctionCode::WRITE);
@@ -65,25 +62,30 @@ void SerialTimeSyncTask::BuildRequest(APDURequest& request, uint8_t seq)
 	}
 }
 
-void SerialTimeSyncTask::OnResponseTimeout(const openpal::MonotonicTimestamp &)
+void SerialTimeSyncTask::_OnResponseTimeout(openpal::MonotonicTimestamp)
 {
-	this->Initialize();
+	expiration = MonotonicTimestamp::Max();
 }
 
-void SerialTimeSyncTask::OnLowerLayerClose(const openpal::MonotonicTimestamp&)
+void SerialTimeSyncTask::OnResponseError(openpal::MonotonicTimestamp)
 {
-	this->Initialize();
+	disabled = true;
+	expiration = MonotonicTimestamp::Max();	
 }
 
-void SerialTimeSyncTask::OnBadControlOctet(const openpal::MonotonicTimestamp&)
+void SerialTimeSyncTask::OnResponseOK(openpal::MonotonicTimestamp now)
 {
-	// Don't reschedule. Seeing the NeedTime bit again will automatically re-activate the task.	
-	this->Initialize();		
+	expiration = MonotonicTimestamp::Max();
 }
 
-IMasterTask::Result SerialTimeSyncTask::OnOnlyResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now)
-{
-	if (delay < 0)
+IMasterTask::ResponseResult SerialTimeSyncTask::_OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects)
+{	
+	return (delay < 0) ? OnResponseDelayMeas(response, objects) : OnResponseWriteTime(response, objects);				
+}
+
+IMasterTask::ResponseResult SerialTimeSyncTask::OnResponseDelayMeas(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects)
+{	
+	if (ValidateSingleResponse(response))
 	{
 		TimeSyncHandler handler(logger);
 		auto result = APDUParser::ParseTwoPass(objects, &handler, &logger);
@@ -92,30 +94,33 @@ IMasterTask::Result SerialTimeSyncTask::OnOnlyResponse(const APDUResponseHeader&
 			uint16_t rtuTurnAroundTime;
 			if (handler.GetTimeDelay(rtuTurnAroundTime))
 			{
-				auto now = pTimeSource->Now();
+				auto now = pApplication->Now();
 				auto sendReceieveTime = now.msSinceEpoch - start.msSinceEpoch;
 
 				// The later shouldn't happen, but could cause a negative delay which would result in a weird time setting				
-				delay = (sendReceieveTime >= rtuTurnAroundTime) ? (sendReceieveTime - rtuTurnAroundTime) / 2 : 0;				
-				return Result::REPEAT;
+				delay = (sendReceieveTime >= rtuTurnAroundTime) ? (sendReceieveTime - rtuTurnAroundTime) / 2 : 0;
+
+				return ResponseResult::OK_REPEAT;
 			}
 			else
 			{
-				this->Initialize();
-				return Result::FAILURE;
+				return ResponseResult::ERROR;
 			}
 		}
 		else
-		{		
-			this->Initialize();
-			return Result::FAILURE;
+		{
+			return ResponseResult::ERROR;
 		}
 	}
 	else
 	{
-		this->Initialize();
-		return Result::SUCCESS;
-	}
+		return ResponseResult::ERROR;
+	}	
+}
+
+IMasterTask::ResponseResult SerialTimeSyncTask::OnResponseWriteTime(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects)
+{
+	return ValidateNullResponse(header, objects) ? ResponseResult::OK_FINAL : ResponseResult::ERROR;
 }
 	
 } //ens ns

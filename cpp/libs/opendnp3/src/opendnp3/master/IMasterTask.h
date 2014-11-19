@@ -28,8 +28,8 @@
 #include "opendnp3/app/APDUHeader.h"
 #include "opendnp3/app/APDURequest.h"
 
-#include "opendnp3/master/MasterParams.h"
 #include "opendnp3/master/ITaskCallback.h"
+#include "opendnp3/master/IMasterApplication.h"
 
 namespace opendnp3
 {
@@ -42,27 +42,24 @@ class IMasterTask
 	
 public:	
 
-	enum Result
+	enum ResponseResult
 	{
-		/// The response was good and the task is complete
-		SUCCESS,
-
 		/// The response was bad, the task has failed
-		FAILURE,
+		ERROR,
+
+		/// The response was good and the task is complete
+		OK_FINAL,		
 
 		/// The response was good and the task should repeat the format, transmit, and await response sequence
-		REPEAT,
+		OK_REPEAT,
 
 		/// The response was good and the task should continue executing. Restart the response timer, and increment expected SEQ#.
-		CONTINUE
+		OK_CONTINUE
 	};	
+	
 
+	IMasterTask(IMasterApplication& app, openpal::MonotonicTimestamp expiration, openpal::Logger logger, ITaskCallback* pCallback = nullptr);
 
-	IMasterTask();
-
-	IMasterTask(bool enabled);
-
-	IMasterTask(bool enabled, openpal::MonotonicTimestamp expiration);
 
 	virtual ~IMasterTask() {}	
 
@@ -87,17 +84,12 @@ public:
 	* Indicates if the task should be rescheduled (true) or discarded
 	* after a single execution (false)
 	*/
-	virtual bool IsRecurring() const = 0;
-
-	/**
-	* Configures the task to run ASAP
-	*/
-	virtual void Demand() = 0;
+	virtual bool IsRecurring() const = 0;	
 
 	/**
 	* The time when this task can run again.
 	*/
-	openpal::MonotonicTimestamp ExpirationTime() const;
+	openpal::MonotonicTimestamp ExpirationTime() const;		
 
 	/**
 	 * Build a request APDU.	 
@@ -107,45 +99,65 @@ public:
 	/**
 	 * Handler for responses	 
 	 */	
-	virtual Result OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now) = 0;
+	ResponseResult OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, openpal::MonotonicTimestamp now);
 	
 	/**
 	 * Called when a response times out	 
 	 */
-	virtual void OnResponseTimeout(const openpal::MonotonicTimestamp& now) = 0;
+	void OnResponseTimeout(openpal::MonotonicTimestamp now);
 
 	/**
-	* Called when the layer closes while the task is executing.
-	* The task can always be deleted when this event happens.
+	* Called when the layer closes while the task is executing.	
 	*/
-	virtual void OnLowerLayerClose(const openpal::MonotonicTimestamp& now) = 0;
+	void OnLowerLayerClose(openpal::MonotonicTimestamp now);
 
-	/*
-	* Helper function that determines if the tasks is enabled. Setting the expiration time to max (infinity)
-	* disables the task.
+	/**
+	* Called when a task is discared before it can run b/c the session went offline
 	*/
-	bool IsEnabled() const { return !ExpirationTime().IsMax(); }	
+	virtual void OnTaskDiscarded(openpal::MonotonicTimestamp now) {}
 
 	/**
 	* Called when the task first starts, before the first request is formatted
 	*/
-	void OnStart();		
-
-	/**
-	* Set the handler that is called when a task starts or completes
-	*/
-	void SetTaskCallback(ITaskCallback* pCallback_);
+	void OnStart();			
 	
 	protected:
 
-	virtual bool IsEnabled() { return enabled; }
+	// called during OnStart() to initialize any state for a new run
+	virtual void Initialize() {}
 
-	virtual void _OnStart() = 0;
+	// called when _OnResponse() returns ERROR. Use this to reconfigurre the state.
+	virtual void OnResponseError(openpal::MonotonicTimestamp now) = 0;
 
-	bool enabled;
+	// called when _OnResponse() returns OK_FINAL. Use this to reconfigurre the state.
+	virtual void OnResponseOK(openpal::MonotonicTimestamp now) = 0;
+
+	virtual ResponseResult _OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects) = 0;
+
+	virtual void _OnResponseTimeout(openpal::MonotonicTimestamp now) = 0;
+
+	virtual void _OnLowerLayerClose(openpal::MonotonicTimestamp now) = 0;
+
+	virtual bool IsEnabled() const = 0;
+
+	virtual TaskId GetTaskId() const = 0;
+
+	IMasterApplication* pApplication;
+	bool disabled;
 	openpal::MonotonicTimestamp expiration;
+	openpal::Logger logger;
+
+	// Validation helpers for various behaviors to avoid deep inheritance
+	bool ValidateSingleResponse(const APDUResponseHeader& response);
+	bool ValidateNullResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects);	
+	bool ValidateNoObjects(const openpal::ReadOnlyBuffer& objects);
+	bool ValidateInternalIndications(const APDUResponseHeader& response);
+
+	void NotifyResult(TaskCompletion result);
 
 	private:
+
+	IMasterTask();
 
 	ITaskCallback* pCallback;
 };

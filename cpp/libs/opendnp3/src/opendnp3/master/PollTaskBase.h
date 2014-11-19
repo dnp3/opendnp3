@@ -38,31 +38,20 @@ class PollTaskBase : public IMasterTask, openpal::Uncopyable
 
 public:		
 
-	PollTaskBase(
-		const std::string& name_,
-		ISOEHandler* pSOEHandler_,
-		const openpal::Logger& logger);
+	PollTaskBase(IMasterApplication& application, ISOEHandler& soeHandler, openpal::MonotonicTimestamp expiration, openpal::Logger logger);
 
-	virtual const char* Name() const override final;
+	virtual const char* Name() const override final { return "Application Poll"; };
 	
-	virtual Result OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now) override final;
-	
-	virtual void OnResponseTimeout(const openpal::MonotonicTimestamp& now) override final;
+protected:	
 
-protected:
+	virtual ResponseResult _OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects) override final;
 
-	Result ProcessMeasurements(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now);
+	ResponseResult ProcessMeasurements(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects);
 
-	virtual void OnFailure(const openpal::MonotonicTimestamp& now) = 0;
-
-	virtual void OnSuccess(const openpal::MonotonicTimestamp& now) = 0;
-	
-	std::string name;
+	virtual void Initialize() override final;		
+		
 	ISOEHandler* pSOEHandler;
-
-	openpal::Logger logger;
 	uint16_t rxCount;
-
 };
 
 } //end ns

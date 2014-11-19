@@ -30,9 +30,9 @@ using namespace openpal;
 namespace opendnp3
 {
 
-CommandTask::CommandTask(ICommandSequence* pSequence_, ICommandCallback& callback, openpal::Logger logger_) :
-	logger(logger_),
-	pCallback(&callback),
+CommandTask::CommandTask(IMasterApplication& app, ICommandSequence* pSequence_, ICommandCallback& callback, openpal::Logger logger) :
+	IMasterTask(app, MonotonicTimestamp::Min(), logger),	
+	pCommandCallback(&callback),
 	pSequence(pSequence_)
 {
 
@@ -40,9 +40,9 @@ CommandTask::CommandTask(ICommandSequence* pSequence_, ICommandCallback& callbac
 
 void CommandTask::Callback(const CommandResponse& cr)
 {
-	if (pCallback)
+	if (pCommandCallback)
 	{
-		pCallback->OnComplete(cr);
+		pCommandCallback->OnComplete(cr);
 	}
 }
 
@@ -70,59 +70,45 @@ void CommandTask::BuildRequest(APDURequest& request, uint8_t seq)
 	}
 }
 
-IMasterTask::Result CommandTask::OnResponse(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now)
+IMasterTask::ResponseResult CommandTask::_OnResponse(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects)
 {
-	if (header.control.FIR && header.control.FIN)
-	{
-		return this->OnSingleResponse(header, objects, now);
-	}
-	else
-	{
-		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Ignoring unexpected response with FIR/FIN not set");
-		this->Callback(CommandResponse(TaskCompletion::FAILURE_BAD_RESPONSE));
-		return Result::FAILURE;
-	}
+	return ValidateSingleResponse(header) ? ProcessResponse(objects) : ResponseResult::ERROR;
 }
 
-void CommandTask::OnResponseTimeout(const openpal::MonotonicTimestamp&)
+void CommandTask::_OnResponseTimeout(openpal::MonotonicTimestamp)
 {
 	this->Callback(CommandResponse(TaskCompletion::FAILURE_RESPONSE_TIMEOUT));
 }
 
-void CommandTask::OnLowerLayerClose(const openpal::MonotonicTimestamp& now)
+void CommandTask::_OnLowerLayerClose(openpal::MonotonicTimestamp)
 {	
 	this->Callback(CommandResponse::NoResponse(TaskCompletion::FAILURE_NO_COMMS));
 }
 
-IMasterTask::Result CommandTask::OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now)
+void CommandTask::Initialize()
+{
+	response = CommandResponse::NoResponse(TaskCompletion::FAILURE_BAD_RESPONSE);
+}
+
+IMasterTask::ResponseResult CommandTask::ProcessResponse(const openpal::ReadOnlyBuffer& objects)
 {
 	auto result = APDUParser::ParseTwoPass(objects, pSequence.get(), &logger);
 	if(result == APDUParser::Result::OK)
 	{
-		if(functionCodes.empty()) // we're done
-		{
-			auto commandResponse = pSequence->Validate();
-			this->Callback(commandResponse);			
-			return Result::SUCCESS;
+		response = pSequence->Validate();
+
+		if(functionCodes.empty())
+		{						
+			return ResponseResult::OK_FINAL;
 		}
 		else // we may have more depending on response
-		{
-			auto commandResponse = pSequence->Validate();
-			if (commandResponse == CommandResponse::Success)
-			{				
-				return Result::REPEAT;
-			}
-			else
-			{
-				this->Callback(commandResponse);  // something failed, end the task early				
-				return Result::FAILURE;
-			}
+		{			
+			return (response == CommandResponse::Success) ? ResponseResult::OK_REPEAT : ResponseResult::OK_FINAL;			
 		}
 	}
 	else
-	{		
-		this->Callback(CommandResponse(TaskCompletion::FAILURE_BAD_RESPONSE));
-		return Result::FAILURE;
+	{				
+		return ResponseResult::ERROR;
 	}
 }
 

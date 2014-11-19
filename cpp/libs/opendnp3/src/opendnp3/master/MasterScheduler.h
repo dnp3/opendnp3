@@ -69,6 +69,8 @@ public:
 
 private:
 
+	static bool Enabled(const IMasterTask& task) { return !task.ExpirationTime().IsMax(); }
+
 	static int Compare(const openpal::MonotonicTimestamp& now, const IMasterTask& lhs, const IMasterTask& rhs);
 
 	std::vector<openpal::ManagedPtr<IMasterTask>>::iterator GetNextTask(const openpal::MonotonicTimestamp& now);

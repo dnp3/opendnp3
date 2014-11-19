@@ -31,6 +31,7 @@ namespace Automatak.DNP3.Interface
     STARTUP_INTEGRITY_POLL = 3,
     SERIAL_TIME_SYNC = 4,
     ENABLE_UNSOLICITED = 5,
-    AUTO_EVENT_SCAN = 6
+    AUTO_EVENT_SCAN = 6,
+    USER_TASK = 7
   }
 }

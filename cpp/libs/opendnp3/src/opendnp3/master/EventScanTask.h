@@ -26,7 +26,6 @@
 
 namespace opendnp3
 {
-
 	class ISOEHandler;
 
 	/**
@@ -37,7 +36,7 @@ namespace opendnp3
 
 	public:
 
-		EventScanTask(const MasterParams& params, ISOEHandler* pSOEHandler_, const openpal::Logger& logger);
+		EventScanTask(IMasterApplication& application , ISOEHandler& soeHandler, openpal::TimeDuration retryPeriod, const openpal::Logger& logger);
 
 		virtual bool IsRecurring() const override final { return true; }
 
@@ -45,21 +44,23 @@ namespace opendnp3
 
 		virtual int Priority() const override final { return priority::EVENT_SCAN; }		
 
-		virtual bool BlocksLowerPriority() const { return true; }
+		virtual bool BlocksLowerPriority() const { return true; }	
 
-		virtual void OnLowerLayerClose(const openpal::MonotonicTimestamp& now) override final;
+	private:	
 
-		virtual void Demand() override final { expiration = 0; }
+		openpal::TimeDuration retryPeriod;
 
-	private:
+		virtual TaskId GetTaskId() const override final { return TaskId::AUTO_EVENT_SCAN; }
 
-		openpal::MonotonicTimestamp expiration;
-		const MasterParams* pParams;
+		virtual bool IsEnabled() const override final { return true; }
 
-		virtual void OnFailure(const openpal::MonotonicTimestamp& now) override final;
+		virtual void OnResponseError(openpal::MonotonicTimestamp now) override final;
 
-		virtual void OnSuccess(const openpal::MonotonicTimestamp& now) override final;
+		virtual void OnResponseOK(openpal::MonotonicTimestamp now) override final;
 
+		virtual void _OnResponseTimeout(openpal::MonotonicTimestamp now) override final;
+
+		virtual void _OnLowerLayerClose(openpal::MonotonicTimestamp now) override final;
 	};
 
 

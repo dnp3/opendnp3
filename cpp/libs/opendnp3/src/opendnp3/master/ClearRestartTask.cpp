@@ -33,9 +33,8 @@ namespace opendnp3
 {
 
 ClearRestartTask::ClearRestartTask(openpal::TimeDuration retryPeriod_, IMasterApplication& application, const openpal::Logger& logger) :
-	SingleResponseTask(true, MonotonicTimestamp::Max(), logger),
-	retryPeriod(retryPeriod_),
-	pApplication(&application)
+	IMasterTask(application, MonotonicTimestamp::Max(), logger),
+	retryPeriod(retryPeriod_)	
 {
 
 }	
@@ -45,46 +44,48 @@ void ClearRestartTask::BuildRequest(APDURequest& request, uint8_t seq)
 	build::ClearRestartIIN(request, seq);
 }
 
-void ClearRestartTask::Demand()
-{
-	if (expiration.IsMax())
-	{
-		expiration = 0;
-	}
-}
-
-void ClearRestartTask::OnLowerLayerClose(const openpal::MonotonicTimestamp&)
-{
-	expiration = MonotonicTimestamp::Max();
-}
-
-void ClearRestartTask::OnResponseTimeout(const openpal::MonotonicTimestamp& now)
+void ClearRestartTask::_OnResponseTimeout(openpal::MonotonicTimestamp now)
 {
 	expiration = now.Add(retryPeriod);
 }
 
-void ClearRestartTask::OnBadControlOctet(const openpal::MonotonicTimestamp& now)
+IMasterTask::ResponseResult ClearRestartTask::_OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects)
 {
-	expiration = MonotonicTimestamp::Max();
-}
-	
-IMasterTask::Result ClearRestartTask::OnOnlyResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const MonotonicTimestamp& now)
-{	
-	if (response.IIN.IsSet(IINBit::DEVICE_RESTART))
+	// we only care that the response to this has FIR/FIN
+	if (ValidateSingleResponse(response))
 	{
-		// we tried to clear the restart, but the device responded with the restart still set
-		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Clear restart task failed to clear restart bit");	
-		enabled = false;
-		expiration = MonotonicTimestamp::Max();
-		return Result::FAILURE;
+		if (response.IIN.IsSet(IINBit::DEVICE_RESTART))
+		{
+			// we tried to clear the restart, but the device responded with the restart still set
+			SIMPLE_LOG_BLOCK(logger, flags::ERR, "Clear restart task failed to clear restart bit, permanently disabling task");			
+			return ResponseResult::ERROR;
+		}
+		else
+		{			
+			return  ResponseResult::OK_FINAL;
+		}
 	}
 	else
-	{		
-		expiration = MonotonicTimestamp::Max();
-		return Result::SUCCESS;
+	{
+		return  ResponseResult::ERROR;
 	}
 }
 
+void ClearRestartTask::OnResponseError(openpal::MonotonicTimestamp now)
+{
+	disabled = true;
+	expiration = MonotonicTimestamp::Max();
+}
+
+void ClearRestartTask::OnResponseOK(openpal::MonotonicTimestamp now)
+{
+	expiration = MonotonicTimestamp::Max();
+}
+
+void ClearRestartTask::_OnLowerLayerClose(openpal::MonotonicTimestamp)
+{
+	expiration = MonotonicTimestamp::Max();
+}
 
 } //end ns
 

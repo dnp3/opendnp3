@@ -27,81 +27,70 @@
 
 #include <openpal/logging/LogMacros.h>
 
+using namespace openpal;
+
 namespace opendnp3
 {
 
-PollTaskBase::PollTaskBase(
-		const std::string& name_,
-		ISOEHandler* pSOEHandler_,
-		const openpal::Logger& logger_) :
-	name(name_),
-	pSOEHandler(pSOEHandler_),
-	logger(logger_),
-	rxCount(0)
+PollTaskBase::PollTaskBase(IMasterApplication& application, ISOEHandler& soeHandler, openpal::MonotonicTimestamp expiration, openpal::Logger logger) :
+	IMasterTask(application, expiration, logger),
+	rxCount(0),
+	pSOEHandler(&soeHandler)
 {
 	
 }
 
-const char* PollTaskBase::Name() const
+void PollTaskBase::Initialize()
 {
-	return name.empty() ? "user poll" : name.c_str();
+	rxCount = 0;
 }
 	
-IMasterTask::Result PollTaskBase::OnResponse(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now)
+IMasterTask::ResponseResult PollTaskBase::_OnResponse(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects)
 {
 	if (header.control.FIR)
 	{
 		if (rxCount > 0)
 		{
-			SIMPLE_LOG_BLOCK(logger, flags::WARN, "Ignoring unexpected FIR frame");
-			this->OnFailure(now);
-			return Result::FAILURE;
+			SIMPLE_LOG_BLOCK(logger, flags::WARN, "Ignoring unexpected FIR frame");			
+			return ResponseResult::ERROR;
 		}
 		else
 		{			
-			return ProcessMeasurements(header, objects, now);
+			return ProcessMeasurements(header, objects);
 		}
 	}
 	else
 	{
 		if (rxCount > 0)
 		{			
-			return ProcessMeasurements(header, objects, now);
+			return ProcessMeasurements(header, objects);
 		}
 		else
 		{	
 			SIMPLE_LOG_BLOCK(logger, flags::WARN, "Ignoring unexpected non-FIR frame");			
-			this->OnFailure(now);			
-			return Result::FAILURE;
+			return ResponseResult::ERROR;
 		}
 	}
 }
 
-void PollTaskBase::OnResponseTimeout(const openpal::MonotonicTimestamp& now)
-{	
-	this->OnFailure(now);	
-}
-
-IMasterTask::Result PollTaskBase::ProcessMeasurements(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now)
+IMasterTask::ResponseResult PollTaskBase::ProcessMeasurements(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects)
 {	
 	++rxCount;
 
 	if (MeasurementHandler::ProcessMeasurements(objects, &logger, pSOEHandler))
 	{	
 		if (header.control.FIN)
-		{								
-			this->OnSuccess(now);
-			return Result::SUCCESS;
+		{											
+			return ResponseResult::OK_FINAL;
 		}
 		else
 		{
-			return Result::CONTINUE;
+			return ResponseResult::OK_CONTINUE;
 		}		
 	}
 	else
-	{				
-		this->OnFailure(now);
-		return Result::FAILURE;
+	{						
+		return ResponseResult::ERROR;
 	}
 }
 

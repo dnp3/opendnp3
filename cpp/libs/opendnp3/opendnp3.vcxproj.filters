@@ -489,12 +489,6 @@
     <ClInclude Include="src\opendnp3\master\EnableUnsolicitedTask.h">
       <Filter>Header\master</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\master\NullResponseTask.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\SingleResponseTask.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\master\StartupIntegrityPoll.h">
       <Filter>Header\master</Filter>
     </ClInclude>
@@ -1031,13 +1025,7 @@
     <ClCompile Include="src\opendnp3\master\StartupIntegrityPoll.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\master\SingleResponseTask.cpp">
-      <Filter>Source\master</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\master\PollTaskBase.cpp">
-      <Filter>Source\master</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\master\NullResponseTask.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\master\EnableUnsolicitedTask.cpp">

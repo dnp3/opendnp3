@@ -21,18 +21,18 @@
 #ifndef OPENDNP3_DISABLEUNSOLICITEDTASK_H
 #define OPENDNP3_DISABLEUNSOLICITEDTASK_H
 
-#include "opendnp3/master/NullResponseTask.h"
+#include "opendnp3/master/IMasterTask.h"
 #include "opendnp3/master/TaskPriority.h"
 
 namespace opendnp3
 {
 
-class DisableUnsolicitedTask : public NullResponseTask
+class DisableUnsolicitedTask : public IMasterTask
 {	
 
 public:	
 
-	DisableUnsolicitedTask(const MasterParams& params, const openpal::Logger& logger);	
+	DisableUnsolicitedTask(IMasterApplication& application, bool enabled, openpal::TimeDuration retryPeriod, openpal::Logger logger);	
 
 	virtual char const* Name() const override final { return "Disable Unsolicited"; }
 
@@ -42,23 +42,28 @@ public:
 
 	virtual int Priority() const override final { return priority::DISABLE_UNSOLICITED; }	
 
-	virtual bool BlocksLowerPriority() const { return true; }
-
-	virtual void OnLowerLayerClose(const openpal::MonotonicTimestamp& now) override final;
-
-	virtual void OnResponseTimeout(const openpal::MonotonicTimestamp& now) override final;
-
-	virtual void Demand() override final;
+	virtual bool BlocksLowerPriority() const { return true; }	
 
 private:
 
-	const MasterParams* pParams;	
+	bool enabled;
+	openpal::TimeDuration retryPeriod;
 
-	virtual void OnSuccess(const openpal::MonotonicTimestamp& now) override final;
+	virtual TaskId GetTaskId() const override final { return TaskId::DISABLE_UNSOLICITED; }
 
-	virtual void OnBadControlOctet(const openpal::MonotonicTimestamp& now) override final;
+	virtual bool IsEnabled() const override final { return enabled; }
 
-	virtual void OnRejectedIIN(const openpal::MonotonicTimestamp& now) override final;
+	virtual ResponseResult _OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects) override final;
+
+	virtual void OnResponseError(openpal::MonotonicTimestamp now) override final;
+
+	virtual void OnResponseOK(openpal::MonotonicTimestamp now) override final;
+	
+	virtual void _OnLowerLayerClose(openpal::MonotonicTimestamp now) override final;
+
+	virtual void _OnResponseTimeout(openpal::MonotonicTimestamp now) override final;
+
+
 
 };
 

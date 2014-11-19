@@ -21,9 +21,8 @@
 #ifndef OPENDNP3_CLEARRESTARTTASK_H
 #define OPENDNP3_CLEARRESTARTTASK_H
 
+#include "opendnp3/master/IMasterTask.h"
 #include "opendnp3/master/TaskPriority.h"
-#include "opendnp3/master/NullResponseTask.h"
-#include "opendnp3/master/IMasterApplication.h"
 
 namespace opendnp3
 {
@@ -31,7 +30,7 @@ namespace opendnp3
 /**
 * Clear the IIN restart bit
 */
-class ClearRestartTask : public SingleResponseTask
+class ClearRestartTask : public IMasterTask
 {	
 
 public:	
@@ -46,26 +45,25 @@ public:
 
 	virtual bool BlocksLowerPriority() const override final { return true; }	
 
-	virtual void OnLowerLayerClose(const openpal::MonotonicTimestamp& now) override final;
-
-	virtual void OnResponseTimeout(const openpal::MonotonicTimestamp& now) override final;
-
-	virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;
-
-	virtual void Demand() override final;
-		
-protected:
-
-	virtual void _OnStart() override final;
-
-	virtual void OnBadControlOctet(const openpal::MonotonicTimestamp&) override final;	
-	
-	virtual Result OnOnlyResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp&) override final;
+	virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;	
 
 private:
 
-	openpal::TimeDuration retryPeriod;
-	IMasterApplication* pApplication;
+	virtual TaskId GetTaskId() const override final { return TaskId::USER_TASK; }
+
+	virtual bool IsEnabled() const override final { return true; }
+
+	virtual void _OnResponseTimeout(openpal::MonotonicTimestamp now) override final;
+
+	virtual ResponseResult _OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects) override final;
+
+	virtual void OnResponseError(openpal::MonotonicTimestamp now) override final;
+
+	virtual void OnResponseOK(openpal::MonotonicTimestamp now) override final;
+	
+	virtual void _OnLowerLayerClose(openpal::MonotonicTimestamp now) override final;
+
+	openpal::TimeDuration retryPeriod;	
 };
 
 } //end ns

@@ -29,9 +29,8 @@ namespace opendnp3
 {
 
 AssignClassTask::AssignClassTask(openpal::TimeDuration retryPeriod_, IMasterApplication& application, const openpal::Logger& logger) :
-	NullResponseTask(true, MonotonicTimestamp(0), logger),	
-	retryPeriod(retryPeriod_),
-	pApplication(&application)
+	IMasterTask(application, MonotonicTimestamp::Min(), logger),	
+	retryPeriod(retryPeriod_)	
 {}
 
 void AssignClassTask::BuildRequest(APDURequest& request, uint8_t seq)
@@ -42,41 +41,33 @@ void AssignClassTask::BuildRequest(APDURequest& request, uint8_t seq)
 	pApplication->ConfigureAssignClassRequest(writer);
 }
 
-bool AssignClassTask::IsEnabled()
+bool AssignClassTask::IsEnabled() const
 {
-	return enabled && pApplication->AssignClassDuringStartup();
+	return pApplication->AssignClassDuringStartup();
 }
 
-void AssignClassTask::Demand()
-{ 
-	if (expiration.IsMax())
-	{
-		expiration = 0;
-	}	
+IMasterTask::ResponseResult AssignClassTask::_OnResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects)
+{	
+	return ValidateNullResponse(header, objects) ? ResponseResult::OK_FINAL : ResponseResult::ERROR;	
 }
 	
-void AssignClassTask::OnLowerLayerClose(const openpal::MonotonicTimestamp&)
+void AssignClassTask::_OnLowerLayerClose(openpal::MonotonicTimestamp)
 {
 	expiration = 0;
 }
-
-void AssignClassTask::OnSuccess(const openpal::MonotonicTimestamp& now)
-{
-	expiration = MonotonicTimestamp::Max();
-}
-
-void AssignClassTask::OnBadControlOctet(const openpal::MonotonicTimestamp& now)
-{
-	expiration = MonotonicTimestamp::Max();
-}
-
-void AssignClassTask::OnResponseTimeout(const openpal::MonotonicTimestamp& now)
+ 
+void AssignClassTask::_OnResponseTimeout(openpal::MonotonicTimestamp now)
 {
 	expiration = now.Add(retryPeriod);
 }
 
-void AssignClassTask::OnRejectedIIN(const openpal::MonotonicTimestamp& now)
-{	
+void AssignClassTask::OnResponseOK(openpal::MonotonicTimestamp now)
+{
+	expiration = MonotonicTimestamp::Max();
+}
+
+void AssignClassTask::OnResponseError(openpal::MonotonicTimestamp now)
+{
 	expiration = MonotonicTimestamp::Max();
 }
 

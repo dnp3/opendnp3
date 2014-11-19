@@ -43,12 +43,12 @@ public:
 
 	UserPollTask(		
 		const std::function<void(HeaderWriter&)>& builder,		
-		bool recurring,
-		const std::string& name,		
-		const openpal::TimeDuration& period,	
-		const openpal::TimeDuration& retryDelay,
-		ISOEHandler* pSOEHandler,
-		const openpal::Logger& logger
+		bool recurring,			
+		openpal::TimeDuration period,	
+		openpal::TimeDuration retryDelay,
+		IMasterApplication& app,
+		ISOEHandler& soeHandler,
+		openpal::Logger logger
 		);	
 
 	virtual int Priority() const override final { return priority::USER_POLL; }
@@ -58,22 +58,17 @@ public:
 	virtual bool BlocksLowerPriority() const override final { return false; }
 	
 	virtual bool IsRecurring() const override final { return recurring; }	
-
-	virtual void OnLowerLayerClose(const openpal::MonotonicTimestamp&) override final;
-
-	virtual void Demand() override final { expiration = 0; }
-
+		
 private:	
 
-	virtual void OnFailure(const openpal::MonotonicTimestamp& now) override final;
+	virtual void _OnLowerLayerClose(openpal::MonotonicTimestamp now) override final;	
 
-	virtual void OnSuccess(const openpal::MonotonicTimestamp& now) override final;
+	virtual void OnResponseOK(openpal::MonotonicTimestamp now) override final;
 			
 	std::function<void(HeaderWriter&)> builder;	
 	bool recurring;
 	openpal::TimeDuration period;
-	openpal::TimeDuration retryDelay;
-	openpal::MonotonicTimestamp expiration;
+	openpal::TimeDuration retryDelay;	
 };
 
 

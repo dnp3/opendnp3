@@ -21,7 +21,7 @@
 #ifndef OPENDNP3_ASSIGNCLASSTASK_H
 #define OPENDNP3_ASSIGNCLASSTASK_H
 
-#include "opendnp3/master/NullResponseTask.h"
+#include "opendnp3/master/IMasterTask.h"
 #include "opendnp3/master/TaskPriority.h"
 
 namespace opendnp3
@@ -29,7 +29,7 @@ namespace opendnp3
 
 class IMasterApplication;
 
-class AssignClassTask : public NullResponseTask
+class AssignClassTask : public IMasterTask
 {	
 
 public:	
@@ -44,30 +44,25 @@ public:
 
 	virtual int Priority(void) const override final { return priority::ASSIGN_CLASS; }	
 
-	virtual bool BlocksLowerPriority() const { return true; }
+	virtual bool BlocksLowerPriority() const { return true; }	
 
-	virtual void OnLowerLayerClose(const openpal::MonotonicTimestamp& now) override final;
-
-	virtual void Demand() override final;
-
-protected:
-
-	virtual bool IsEnabled() override final;
-
-private:	
+private:
 
 	openpal::TimeDuration retryPeriod;
 
-	IMasterApplication* pApplication;	
+	virtual TaskId GetTaskId() const override final { return TaskId::ASSIGN_CLASS; }
 
-	virtual void OnSuccess(const openpal::MonotonicTimestamp& now) override final;
+	virtual ResponseResult _OnResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects) override final;
 
-	virtual void OnBadControlOctet(const openpal::MonotonicTimestamp& now) override final;
+	virtual void OnResponseOK(openpal::MonotonicTimestamp now) override final;
 
-	virtual void OnResponseTimeout(const openpal::MonotonicTimestamp& now) override final;
+	virtual void OnResponseError(openpal::MonotonicTimestamp now) override final;
 
-	virtual void OnRejectedIIN(const openpal::MonotonicTimestamp& now) override final;
+	virtual void _OnLowerLayerClose(openpal::MonotonicTimestamp now) override final;
 
+	virtual bool IsEnabled() const override final;
+
+	virtual void _OnResponseTimeout(openpal::MonotonicTimestamp now) override final;
 };
 
 

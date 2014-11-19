@@ -47,7 +47,7 @@ bool MasterScan::Demand()
 	{		
 		auto action = [this]()
 		{ 			
-			pTask->Demand();			
+			//pTask->Demand(); TODO - fix demand
 		};
 		pExecutor->PostLambda(action);	
 		demandCallback();

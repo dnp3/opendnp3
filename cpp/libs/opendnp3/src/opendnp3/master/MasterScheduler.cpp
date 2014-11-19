@@ -58,7 +58,7 @@ int MasterScheduler::Compare(const MonotonicTimestamp& now, const IMasterTask& l
 {
 	// if they're both enabled we compare based on
 	// blocking/priority/expiration time
-	if (lhs.IsEnabled() && rhs.IsEnabled())
+	if (Enabled(lhs) && Enabled(rhs))
 	{
 		if ((lhs.Priority() > rhs.Priority()) && rhs.BlocksLowerPriority())
 		{
@@ -101,7 +101,7 @@ int MasterScheduler::Compare(const MonotonicTimestamp& now, const IMasterTask& l
 	else 
 	{
 		// always prefer the enabled task over the one that isn't
-		return rhs.IsEnabled() ? 1 : -1;
+		return Enabled(rhs) ? 1 : -1;
 	}
 }
 
@@ -211,7 +211,7 @@ void MasterScheduler::OnLowerLayerDown()
 		
 		for (auto& pTask : tasks)
 		{
-			pTask->OnLowerLayerClose(now);
+			pTask->OnTaskDiscarded(now);
 		}
 		
 		tasks.clear();

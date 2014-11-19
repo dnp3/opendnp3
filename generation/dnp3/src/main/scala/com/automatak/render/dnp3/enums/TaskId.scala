@@ -16,7 +16,8 @@ object TaskId {
       EnumValue("STARTUP_INTEGRITY_POLL", 3),
       EnumValue("SERIAL_TIME_SYNC", 4),
       EnumValue("ENABLE_UNSOLICITED", 5),
-      EnumValue("AUTO_EVENT_SCAN", 6)
+      EnumValue("AUTO_EVENT_SCAN", 6),
+      EnumValue("USER_TASK", 7)
   )
 
 }

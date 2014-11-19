@@ -29,18 +29,17 @@ namespace opendnp3
 UserPollTask::UserPollTask(	
 	const std::function<void(HeaderWriter&)>& builder_,
 	bool recurring_,
-	const std::string& name,
-	const openpal::TimeDuration& period_,
-	const openpal::TimeDuration& retryDelay_,
-	ISOEHandler* pSOEHandler,
-	const openpal::Logger& logger
+	openpal::TimeDuration period_,
+	openpal::TimeDuration retryDelay_,
+	IMasterApplication& app,
+	ISOEHandler& soeHandler,
+	openpal::Logger logger
 ) :
-	PollTaskBase(name, pSOEHandler, logger),	
+	PollTaskBase(app, soeHandler, MonotonicTimestamp::Max(), logger),	
 	builder(builder_),
 	recurring(recurring_),
 	period(period_),
-	retryDelay(retryDelay_),
-	expiration(MonotonicTimestamp::Min())	
+	retryDelay(retryDelay_)	
 {}
 
 void UserPollTask::BuildRequest(APDURequest& request, uint8_t seq)
@@ -52,21 +51,15 @@ void UserPollTask::BuildRequest(APDURequest& request, uint8_t seq)
 	builder(writer);
 }
 
-void UserPollTask::OnLowerLayerClose(const openpal::MonotonicTimestamp& now)
+void UserPollTask::_OnLowerLayerClose(openpal::MonotonicTimestamp now)
 {
-
-}
-		
-void UserPollTask::OnFailure(const openpal::MonotonicTimestamp& now)
-{		
-	expiration = retryDelay.IsNegative() ? MonotonicTimestamp::Max() : now.Add(retryDelay);	
+	expiration = 0;
 }
 
-void UserPollTask::OnSuccess(const openpal::MonotonicTimestamp& now)
+void UserPollTask::OnResponseOK(openpal::MonotonicTimestamp now)
 {		
 	expiration = period.IsNegative() ? MonotonicTimestamp::Max() : now.Add(period);	
 }
-
 
 } //end ns
 

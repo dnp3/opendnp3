@@ -21,6 +21,8 @@
 #ifndef OPENDNP3_STARTUPINTEGRITYPOLL_H
 #define OPENDNP3_STARTUPINTEGRITYPOLL_H
 
+#include "opendnp3/app/ClassField.h"
+
 #include "opendnp3/master/PollTaskBase.h"
 #include "opendnp3/master/TaskPriority.h"
 
@@ -37,7 +39,7 @@ class StartupIntegrityPoll : public PollTaskBase
 
 public:	
 
-	StartupIntegrityPoll(const MasterParams& params, ISOEHandler* pSOEHandler_, const openpal::Logger& logger);
+	StartupIntegrityPoll(IMasterApplication& app, ISOEHandler& soeHandler, ClassField classes, openpal::TimeDuration retryPeriod, openpal::Logger logger);
 
 	virtual bool IsRecurring() const override final { return true; }
 
@@ -45,21 +47,25 @@ public:
 
 	virtual int Priority() const override final { return priority::INTEGRITY_POLL; }	
 
-	virtual bool BlocksLowerPriority() const { return true; }
-
-	virtual void OnLowerLayerClose(const openpal::MonotonicTimestamp& now) override final;
-			
-	virtual void Demand() override final { expiration = 0; }
+	virtual bool BlocksLowerPriority() const { return true; }	
 
 private:
 
-	openpal::MonotonicTimestamp expiration;
+	ClassField classes;
 
-	const MasterParams* pParams;
+	openpal::TimeDuration retryPeriod;
 
-	virtual void OnFailure(const openpal::MonotonicTimestamp& now) override final;
+	virtual bool IsEnabled() const override final;
 
-	virtual void OnSuccess(const openpal::MonotonicTimestamp& now) override final;
+	virtual TaskId GetTaskId() const override final { return TaskId::STARTUP_INTEGRITY_POLL; }
+
+	virtual void _OnLowerLayerClose(openpal::MonotonicTimestamp now) override final;
+
+	virtual void _OnResponseTimeout(openpal::MonotonicTimestamp now) override final;
+
+	virtual void OnResponseOK(openpal::MonotonicTimestamp now) override final;
+
+	virtual void OnResponseError(openpal::MonotonicTimestamp now) override final;
 	
 };
 

@@ -30,10 +30,10 @@ using namespace openpal;
 namespace opendnp3
 {
 
-DisableUnsolicitedTask::DisableUnsolicitedTask(const MasterParams& params, const Logger& logger) : 
-	NullResponseTask(logger),
-	pParams(&params),
-	expiration(0)
+DisableUnsolicitedTask::DisableUnsolicitedTask(IMasterApplication& application, bool enabled_, TimeDuration retryPeriod_, openpal::Logger logger) :
+	IMasterTask(application, MonotonicTimestamp::Min(), logger),
+	enabled(enabled_),
+	retryPeriod(retryPeriod_)
 {
 
 }
@@ -43,42 +43,25 @@ void DisableUnsolicitedTask::BuildRequest(APDURequest& request, uint8_t seq)
 	build::DisableUnsolicited(request, seq);
 }
 
-openpal::MonotonicTimestamp DisableUnsolicitedTask::ExpirationTime() const
+void DisableUnsolicitedTask::OnResponseError(openpal::MonotonicTimestamp now)
 {
-	return pParams->disableUnsolOnStartup ? expiration : MonotonicTimestamp::Max();
-}
-
-void DisableUnsolicitedTask::OnSuccess(const openpal::MonotonicTimestamp&)
-{
+	disabled = true;
 	expiration = MonotonicTimestamp::Max();
 }
 
-void DisableUnsolicitedTask::OnBadControlOctet(const openpal::MonotonicTimestamp& now)
-{
+void DisableUnsolicitedTask::OnResponseOK(openpal::MonotonicTimestamp now)
+{	
 	expiration = MonotonicTimestamp::Max();
 }
 
-void DisableUnsolicitedTask::OnRejectedIIN(const openpal::MonotonicTimestamp& now)
+void DisableUnsolicitedTask::_OnResponseTimeout(openpal::MonotonicTimestamp now)
 {
-	expiration = MonotonicTimestamp::Max();
+	expiration = now.Add(retryPeriod);
 }
 
-void DisableUnsolicitedTask::OnResponseTimeout(const openpal::MonotonicTimestamp& now)
-{
-	expiration = now.Add(pParams->taskRetryPeriod);
-}
-
-void DisableUnsolicitedTask::OnLowerLayerClose(const openpal::MonotonicTimestamp&)
+void DisableUnsolicitedTask::_OnLowerLayerClose(openpal::MonotonicTimestamp)
 {
 	expiration = 0;
-}
-
-void DisableUnsolicitedTask::Demand()
-{
-	if (expiration.IsMax())
-	{
-		expiration = 0;
-	}
 }
 
 } //end ns

@@ -21,23 +21,68 @@
 
 #include "IMasterTask.h"
 
+#include "openpal/logging/LogMacros.h"
+#include "opendnp3/LogLevels.h"
+
 using namespace openpal;
 
 namespace opendnp3
 {
 
-IMasterTask::IMasterTask(bool enabled_) : IMasterTask(enabled_, MonotonicTimestamp::Max())
-{}
-
-IMasterTask::IMasterTask() : IMasterTask(false)
-{}
-
-IMasterTask::IMasterTask(bool enabled_, openpal::MonotonicTimestamp expiration_) : enabled(enabled_), expiration(expiration_), pCallback(nullptr)
+IMasterTask::IMasterTask(IMasterApplication& app, openpal::MonotonicTimestamp expiration_, openpal::Logger logger_, ITaskCallback* pCallback_) :
+	pApplication(&app),
+	disabled(false),
+	expiration(expiration_),
+	logger(logger_),
+	pCallback(pCallback_)
 {}
 
 openpal::MonotonicTimestamp IMasterTask::ExpirationTime() const
 {
-	return this->IsEnabled() ? expiration : MonotonicTimestamp::Max();
+	return (!disabled && this->IsEnabled()) ? expiration : MonotonicTimestamp::Max();
+}
+
+IMasterTask::ResponseResult IMasterTask::OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, openpal::MonotonicTimestamp now)
+{	
+	auto result = _OnResponse(response, objects);
+	
+	switch (result)
+	{
+		case(ResponseResult::ERROR) :
+			this->OnResponseError(now);
+			this->NotifyResult(TaskCompletion::FAILURE_BAD_RESPONSE);
+			break;
+		case(ResponseResult::OK_FINAL) :
+			this->OnResponseOK(now);
+			this->NotifyResult(TaskCompletion::SUCCESS);
+			break;
+		default:
+			break;
+	}
+
+	return result;
+}
+
+void IMasterTask::OnResponseTimeout(openpal::MonotonicTimestamp now)
+{
+	this->_OnResponseTimeout(now);
+	this->NotifyResult(TaskCompletion::FAILURE_RESPONSE_TIMEOUT);
+}
+
+void IMasterTask::OnLowerLayerClose(openpal::MonotonicTimestamp now)
+{
+	this->_OnLowerLayerClose(now);
+	this->NotifyResult(TaskCompletion::FAILURE_NO_COMMS);
+}
+
+void IMasterTask::NotifyResult(TaskCompletion result)
+{
+	if (pCallback)
+	{
+		pCallback->OnComplete(result);
+	}
+
+	pApplication->OnTaskComplete(this->GetTaskId(), result);
 }
 	
 void IMasterTask::OnStart()
@@ -46,14 +91,54 @@ void IMasterTask::OnStart()
 	{
 		pCallback->OnStart();
 	}
-	
-	this->_OnStart();
+
+	pApplication->OnTaskStart(this->GetTaskId());
+
+	this->Initialize();
 }
 
-	
-void IMasterTask::SetTaskCallback(ITaskCallback* pCallback_)
+bool IMasterTask::ValidateSingleResponse(const APDUResponseHeader& header)
 {
-	pCallback = pCallback_;
+	if (header.control.FIR && header.control.FIN)
+	{
+		return true;
+	}
+	else
+	{
+		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Ignoring unexpected response FIR/FIN not set");
+		return false;		
+	}
+}
+
+bool IMasterTask::ValidateNullResponse(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects)
+{
+	return ValidateSingleResponse(header) && ValidateNoObjects(objects) && ValidateInternalIndications(header);
+}
+
+
+bool IMasterTask::ValidateInternalIndications(const APDUResponseHeader& header)
+{
+	if (header.IIN.HasRequestError())
+	{
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "Task was explicitly rejected via response with error IIN bit(s): %s", this->Name());
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
+bool IMasterTask::ValidateNoObjects(const openpal::ReadOnlyBuffer& objects)
+{
+	if (objects.IsEmpty())
+	{
+		return true;		
+	}
+	else
+	{
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "Received unexpected response object headers for task: %s", this->Name());
+	}
 }
 
 }
