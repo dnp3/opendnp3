@@ -43,6 +43,11 @@ void DisableUnsolicitedTask::BuildRequest(APDURequest& request, uint8_t seq)
 	build::DisableUnsolicited(request, seq);
 }
 
+IMasterTask::ResponseResult DisableUnsolicitedTask::_OnResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects)
+{
+	return ValidateNullResponse(header, objects) ? ResponseResult::OK_FINAL : ResponseResult::ERROR_BAD_RESPONSE;
+}
+
 void DisableUnsolicitedTask::OnResponseError(openpal::MonotonicTimestamp now)
 {
 	disabled = true;

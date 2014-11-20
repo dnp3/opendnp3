@@ -42,10 +42,10 @@ class IMasterTask
 	
 public:	
 
-	enum ResponseResult
+	enum class ResponseResult : uint8_t
 	{
 		/// The response was bad, the task has failed
-		ERROR,
+		ERROR_BAD_RESPONSE,
 
 		/// The response was good and the task is complete
 		OK_FINAL,		
@@ -120,6 +120,11 @@ public:
 	* Called when the task first starts, before the first request is formatted
 	*/
 	void OnStart();			
+
+	/**
+	* Demand that the task run immediately by setting the expiration to 0
+	*/
+	void Demand() { expiration = 0; }
 	
 	protected:
 
@@ -148,10 +153,10 @@ public:
 	openpal::Logger logger;
 
 	// Validation helpers for various behaviors to avoid deep inheritance
-	bool ValidateSingleResponse(const APDUResponseHeader& response);
-	bool ValidateNullResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects);	
+	bool ValidateSingleResponse(const APDUResponseHeader& header);
+	bool ValidateNullResponse(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects);	
 	bool ValidateNoObjects(const openpal::ReadOnlyBuffer& objects);
-	bool ValidateInternalIndications(const APDUResponseHeader& response);
+	bool ValidateInternalIndications(const APDUResponseHeader& header);
 
 	void NotifyResult(TaskCompletion result);
 

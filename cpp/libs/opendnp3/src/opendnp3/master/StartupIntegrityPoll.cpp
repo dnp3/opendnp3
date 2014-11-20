@@ -38,7 +38,7 @@ namespace opendnp3
 {
 
 StartupIntegrityPoll::StartupIntegrityPoll(IMasterApplication& app, ISOEHandler& soeHandler, ClassField classes_, TimeDuration retryPeriod_, openpal::Logger logger) :
-	PollTaskBase(app, soeHandler, 0, logger),
+	PollTaskBase(app, soeHandler, 0, logger, nullptr),
 	classes(classes_),
 	retryPeriod(retryPeriod_)
 {
@@ -55,6 +55,11 @@ void StartupIntegrityPoll::BuildRequest(APDURequest& request, uint8_t seq)
 bool StartupIntegrityPoll::IsEnabled() const
 {
 	return classes.HasAnyClass();
+}
+
+void StartupIntegrityPoll::_OnResponseTimeout(openpal::MonotonicTimestamp now)
+{
+	expiration = now.Add(retryPeriod);
 }
 
 void StartupIntegrityPoll::OnResponseError(openpal::MonotonicTimestamp now)

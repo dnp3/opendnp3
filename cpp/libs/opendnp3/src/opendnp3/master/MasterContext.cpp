@@ -129,8 +129,7 @@ void MasterContext::CheckForTask()
 }
 
 void MasterContext::StartTask(IMasterTask& task)
-{			
-	task.OnStart();
+{				
 	APDURequest request(txBuffer.GetWriteBuffer());
 	task.BuildRequest(request, solSeq);
 	this->StartResponseTimer();

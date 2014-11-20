@@ -48,6 +48,7 @@ public:
 		openpal::TimeDuration retryDelay,
 		IMasterApplication& app,
 		ISOEHandler& soeHandler,
+		ITaskCallback* pCallback,
 		openpal::Logger logger
 		);	
 
@@ -58,12 +59,21 @@ public:
 	virtual bool BlocksLowerPriority() const override final { return false; }
 	
 	virtual bool IsRecurring() const override final { return recurring; }	
+
+	virtual bool IsEnabled() const { return true; }
 		
 private:	
 
 	virtual void _OnLowerLayerClose(openpal::MonotonicTimestamp now) override final;	
 
+	virtual void _OnResponseTimeout(openpal::MonotonicTimestamp now) override final;
+
 	virtual void OnResponseOK(openpal::MonotonicTimestamp now) override final;
+	
+	virtual void OnResponseError(openpal::MonotonicTimestamp now) override final;
+
+	virtual TaskId GetTaskId() const override final { return TaskId::USER_TASK;  }
+
 			
 	std::function<void(HeaderWriter&)> builder;	
 	bool recurring;

@@ -48,7 +48,7 @@ IMasterTask::ResponseResult IMasterTask::OnResponse(const APDUResponseHeader& re
 	
 	switch (result)
 	{
-		case(ResponseResult::ERROR) :
+		case(ResponseResult::ERROR_BAD_RESPONSE) :
 			this->OnResponseError(now);
 			this->NotifyResult(TaskCompletion::FAILURE_BAD_RESPONSE);
 			break;
@@ -138,6 +138,7 @@ bool IMasterTask::ValidateNoObjects(const openpal::ReadOnlyBuffer& objects)
 	else
 	{
 		FORMAT_LOG_BLOCK(logger, flags::WARN, "Received unexpected response object headers for task: %s", this->Name());
+		return false;
 	}
 }
 

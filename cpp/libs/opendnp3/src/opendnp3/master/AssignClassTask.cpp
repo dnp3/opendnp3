@@ -28,9 +28,9 @@ using namespace openpal;
 namespace opendnp3
 {
 
-AssignClassTask::AssignClassTask(openpal::TimeDuration retryPeriod_, IMasterApplication& application, const openpal::Logger& logger) :
-	IMasterTask(application, MonotonicTimestamp::Min(), logger),	
-	retryPeriod(retryPeriod_)	
+AssignClassTask::AssignClassTask(IMasterApplication& application, openpal::TimeDuration retryPeriod_, openpal::Logger logger) :
+	IMasterTask(application, 0, logger),	
+	retryPeriod(retryPeriod_)
 {}
 
 void AssignClassTask::BuildRequest(APDURequest& request, uint8_t seq)
@@ -48,7 +48,7 @@ bool AssignClassTask::IsEnabled() const
 
 IMasterTask::ResponseResult AssignClassTask::_OnResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects)
 {	
-	return ValidateNullResponse(header, objects) ? ResponseResult::OK_FINAL : ResponseResult::ERROR;	
+	return ValidateNullResponse(header, objects) ? ResponseResult::OK_FINAL : ResponseResult::ERROR_BAD_RESPONSE;
 }
 	
 void AssignClassTask::_OnLowerLayerClose(openpal::MonotonicTimestamp)

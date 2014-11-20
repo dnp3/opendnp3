@@ -32,8 +32,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-PollTaskBase::PollTaskBase(IMasterApplication& application, ISOEHandler& soeHandler, openpal::MonotonicTimestamp expiration, openpal::Logger logger) :
-	IMasterTask(application, expiration, logger),
+PollTaskBase::PollTaskBase(IMasterApplication& application, ISOEHandler& soeHandler, openpal::MonotonicTimestamp expiration, openpal::Logger logger, ITaskCallback* pCallback) :
+	IMasterTask(application, expiration, logger, pCallback),
 	rxCount(0),
 	pSOEHandler(&soeHandler)
 {
@@ -52,7 +52,7 @@ IMasterTask::ResponseResult PollTaskBase::_OnResponse(const APDUResponseHeader& 
 		if (rxCount > 0)
 		{
 			SIMPLE_LOG_BLOCK(logger, flags::WARN, "Ignoring unexpected FIR frame");			
-			return ResponseResult::ERROR;
+			return ResponseResult::ERROR_BAD_RESPONSE;
 		}
 		else
 		{			
@@ -68,7 +68,7 @@ IMasterTask::ResponseResult PollTaskBase::_OnResponse(const APDUResponseHeader& 
 		else
 		{	
 			SIMPLE_LOG_BLOCK(logger, flags::WARN, "Ignoring unexpected non-FIR frame");			
-			return ResponseResult::ERROR;
+			return ResponseResult::ERROR_BAD_RESPONSE;
 		}
 	}
 }
@@ -90,7 +90,7 @@ IMasterTask::ResponseResult PollTaskBase::ProcessMeasurements(const APDUResponse
 	}
 	else
 	{						
-		return ResponseResult::ERROR;
+		return ResponseResult::ERROR_BAD_RESPONSE;
 	}
 }
 

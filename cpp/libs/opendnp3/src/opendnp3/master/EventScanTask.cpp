@@ -37,8 +37,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-	EventScanTask::EventScanTask(IMasterApplication& application, ISOEHandler& soeHandler, TimeDuration retryPeriod_, const openpal::Logger& logger) :
-		PollTaskBase(application, soeHandler, MonotonicTimestamp::Max(), logger),
+	EventScanTask::EventScanTask(IMasterApplication& application, ISOEHandler& soeHandler, TimeDuration retryPeriod_, openpal::Logger logger) :
+		PollTaskBase(application, soeHandler, MonotonicTimestamp::Max(), logger, nullptr),
 		retryPeriod(retryPeriod_)
 	{
 
@@ -56,7 +56,7 @@ namespace opendnp3
 
 	void EventScanTask::_OnResponseTimeout(openpal::MonotonicTimestamp now)
 	{
-		expiration = now.Add(
+		expiration = now.Add(retryPeriod);
 	}
 
 	void EventScanTask::OnResponseError(openpal::MonotonicTimestamp)

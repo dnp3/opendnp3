@@ -21,7 +21,7 @@
 #ifndef OPENDNP3_WRITETASK_H
 #define OPENDNP3_WRITETASK_H
 
-#include "opendnp3/master/NullResponseTask.h"
+#include "opendnp3/master/IMasterTask.h"
 #include "opendnp3/master/TaskPriority.h"
 
 #include <string>
@@ -32,43 +32,40 @@ namespace opendnp3
 
 class IMasterApplication;
 
-class WriteTask : public NullResponseTask
+class WriteTask : public IMasterTask
 {	
 
 public:	
 
-	WriteTask(const MasterParams& params, const std::string& name, const std::function<void(HeaderWriter&)> format, const openpal::Logger& logger);	
+	WriteTask(IMasterApplication& app, const std::function<void(HeaderWriter&)> format_, openpal::Logger logger, ITaskCallback* pCallback);
 
-	virtual char const* Name() const override final { return name.c_str(); }
+	virtual char const* Name() const override final { return "Write Task"; }
 
 	virtual bool IsRecurring() const override final { return false; }
 
 	virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;
 
-	virtual int Priority(void) const override final { return priority::USER_WRITE; }
+	virtual int Priority(void) const override final { return priority::USER_WRITE; }	
 
-	virtual openpal::MonotonicTimestamp ExpirationTime() const override final { return openpal::MonotonicTimestamp(0); }
-
-	virtual bool BlocksLowerPriority() const { return false; }
-
-	virtual void OnLowerLayerClose(const openpal::MonotonicTimestamp& now) override final;
-
-	virtual void OnResponseTimeout(const openpal::MonotonicTimestamp& now) override final;
-
-	virtual void Demand() override final {}
+	virtual bool BlocksLowerPriority() const { return false; }		
 
 private:
 
-	openpal::MonotonicTimestamp expiration;
-	const MasterParams* pParams;
-	std::string name;	
+	virtual  bool IsEnabled() const override final { return true; }
+
+	virtual TaskId GetTaskId() const override final { return TaskId::USER_TASK; }
+		
 	std::function<void(HeaderWriter&)> format;
 
-	virtual void OnSuccess(const openpal::MonotonicTimestamp& now) override final;
+	virtual ResponseResult _OnResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects) override final;
 
-	virtual void OnBadControlOctet(const openpal::MonotonicTimestamp& now) override final;
+	virtual void _OnLowerLayerClose(openpal::MonotonicTimestamp now) override final;
 
-	virtual void OnRejectedIIN(const openpal::MonotonicTimestamp& now) override final;
+	virtual void _OnResponseTimeout(openpal::MonotonicTimestamp now) override final;	
+
+	virtual void OnResponseOK(openpal::MonotonicTimestamp now) override final;
+
+	virtual void OnResponseError(openpal::MonotonicTimestamp now) override final;	
 
 };
 

@@ -72,7 +72,17 @@ void CommandTask::BuildRequest(APDURequest& request, uint8_t seq)
 
 IMasterTask::ResponseResult CommandTask::_OnResponse(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects)
 {
-	return ValidateSingleResponse(header) ? ProcessResponse(objects) : ResponseResult::ERROR;
+	return ValidateSingleResponse(header) ? ProcessResponse(objects) : ResponseResult::ERROR_BAD_RESPONSE;
+}
+
+void CommandTask::OnResponseError(openpal::MonotonicTimestamp now)
+{
+	this->Callback(CommandResponse(TaskCompletion::FAILURE_BAD_RESPONSE));
+}
+
+void CommandTask::OnResponseOK(openpal::MonotonicTimestamp now)
+{
+	this->Callback(response);
 }
 
 void CommandTask::_OnResponseTimeout(openpal::MonotonicTimestamp)
@@ -108,7 +118,7 @@ IMasterTask::ResponseResult CommandTask::ProcessResponse(const openpal::ReadOnly
 	}
 	else
 	{				
-		return ResponseResult::ERROR;
+		return ResponseResult::ERROR_BAD_RESPONSE;
 	}
 }
 

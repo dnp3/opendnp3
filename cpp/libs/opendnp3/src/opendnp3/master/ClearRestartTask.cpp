@@ -32,7 +32,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-ClearRestartTask::ClearRestartTask(openpal::TimeDuration retryPeriod_, IMasterApplication& application, const openpal::Logger& logger) :
+ClearRestartTask::ClearRestartTask(IMasterApplication& application, openpal::TimeDuration retryPeriod_, openpal::Logger logger) :
 	IMasterTask(application, MonotonicTimestamp::Max(), logger),
 	retryPeriod(retryPeriod_)	
 {
@@ -58,7 +58,7 @@ IMasterTask::ResponseResult ClearRestartTask::_OnResponse(const APDUResponseHead
 		{
 			// we tried to clear the restart, but the device responded with the restart still set
 			SIMPLE_LOG_BLOCK(logger, flags::ERR, "Clear restart task failed to clear restart bit, permanently disabling task");			
-			return ResponseResult::ERROR;
+			return ResponseResult::ERROR_BAD_RESPONSE;
 		}
 		else
 		{			
@@ -67,7 +67,7 @@ IMasterTask::ResponseResult ClearRestartTask::_OnResponse(const APDUResponseHead
 	}
 	else
 	{
-		return  ResponseResult::ERROR;
+		return  ResponseResult::ERROR_BAD_RESPONSE;
 	}
 }
 

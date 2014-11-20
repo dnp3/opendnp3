@@ -36,7 +36,7 @@ namespace opendnp3
 
 	public:
 
-		EventScanTask(IMasterApplication& application , ISOEHandler& soeHandler, openpal::TimeDuration retryPeriod, const openpal::Logger& logger);
+		EventScanTask(IMasterApplication& application, ISOEHandler& soeHandler, openpal::TimeDuration retryPeriod, openpal::Logger logger);
 
 		virtual bool IsRecurring() const override final { return true; }
 

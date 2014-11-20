@@ -33,9 +33,10 @@ UserPollTask::UserPollTask(
 	openpal::TimeDuration retryDelay_,
 	IMasterApplication& app,
 	ISOEHandler& soeHandler,
+	ITaskCallback* pCallback,
 	openpal::Logger logger
 ) :
-	PollTaskBase(app, soeHandler, MonotonicTimestamp::Max(), logger),	
+	PollTaskBase(app, soeHandler, 0, logger, pCallback),	
 	builder(builder_),
 	recurring(recurring_),
 	period(period_),
@@ -56,9 +57,20 @@ void UserPollTask::_OnLowerLayerClose(openpal::MonotonicTimestamp now)
 	expiration = 0;
 }
 
+void UserPollTask::_OnResponseTimeout(openpal::MonotonicTimestamp now)
+{
+	expiration = period.IsNegative() ? MonotonicTimestamp::Max() : now.Add(period);
+}
+
 void UserPollTask::OnResponseOK(openpal::MonotonicTimestamp now)
 {		
 	expiration = period.IsNegative() ? MonotonicTimestamp::Max() : now.Add(period);	
+}
+
+void UserPollTask::OnResponseError(openpal::MonotonicTimestamp now)
+{
+	disabled = true;
+	expiration = MonotonicTimestamp::Max();
 }
 
 } //end ns

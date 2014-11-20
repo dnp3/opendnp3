@@ -34,7 +34,7 @@ class AssignClassTask : public IMasterTask
 
 public:	
 
-	AssignClassTask(openpal::TimeDuration retryPeriod, IMasterApplication& application, const openpal::Logger& logger);	
+	AssignClassTask(IMasterApplication& application, openpal::TimeDuration retryPeriod, openpal::Logger logger);
 
 	virtual char const* Name() const override final { return "Assign Class"; }
 

@@ -26,11 +26,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-WriteTask::WriteTask(const MasterParams& params, const std::string& name_, const std::function<void(HeaderWriter&)> format_, const openpal::Logger& logger) :
-	NullResponseTask(logger),
-	expiration(0),
-	pParams(&params),
-	name(name_),
+WriteTask::WriteTask(IMasterApplication& app, const std::function<void(HeaderWriter&)> format_, openpal::Logger logger, ITaskCallback* pCallback) :
+	IMasterTask(app, 0, logger, pCallback),	
 	format(format_)
 {
 
@@ -44,29 +41,29 @@ void WriteTask::BuildRequest(APDURequest& request, uint8_t seq)
 	format(writer);
 }
 
-void WriteTask::OnLowerLayerClose(const openpal::MonotonicTimestamp&)
+IMasterTask::ResponseResult WriteTask::_OnResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects)
 {
-	expiration = MonotonicTimestamp::Max();
+	return ValidateNullResponse(header, objects) ? ResponseResult::OK_FINAL : ResponseResult::ERROR_BAD_RESPONSE;
 }
 
-void WriteTask::OnResponseTimeout(const openpal::MonotonicTimestamp& now)
+void WriteTask::_OnLowerLayerClose(openpal::MonotonicTimestamp now)
 {
-	expiration = MonotonicTimestamp::Max();
+	
 }
 
-void WriteTask::OnSuccess(const openpal::MonotonicTimestamp&)
+void WriteTask::_OnResponseTimeout(openpal::MonotonicTimestamp now)
 {
-	expiration = MonotonicTimestamp::Max();
+	
 }
 
-void WriteTask::OnBadControlOctet(const openpal::MonotonicTimestamp&)
+void WriteTask::OnResponseOK(openpal::MonotonicTimestamp now)
 {
-	expiration = MonotonicTimestamp::Max();
+	
 }
 
-void WriteTask::OnRejectedIIN(const openpal::MonotonicTimestamp&)
+void WriteTask::OnResponseError(openpal::MonotonicTimestamp now)
 {
-	expiration = MonotonicTimestamp::Max();
+	
 }
 
 } //end ns

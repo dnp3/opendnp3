@@ -65,6 +65,7 @@ IMasterState* MasterStateIdle::OnStart(MasterContext* pContext)
 			if (pContext->pTaskLock->Acquire(*pContext))
 			{
 				FORMAT_LOG_BLOCK(pContext->logger, flags::INFO, "Begining task: %s", pContext->pActiveTask->Name());
+				pContext->pActiveTask->OnStart();
 				pContext->StartTask(*pContext->pActiveTask);								
 				return &MasterStateWaitForResponse::Instance();
 			}
@@ -127,10 +128,10 @@ IMasterState* MasterStateWaitForResponse::OnResponse(MasterContext* pContext, co
 
 		switch (result)
 		{
-			case(IMasterTask::Result::CONTINUE) :
+			case(IMasterTask::ResponseResult::OK_CONTINUE) :
 				pContext->StartResponseTimer();
 				return this;
-			case(IMasterTask::Result::REPEAT) :
+			case(IMasterTask::ResponseResult::OK_REPEAT) :
 				return MasterStateTaskReady::Instance().OnStart(pContext);
 			default:								
 				pContext->ReleaseActiveTask();												

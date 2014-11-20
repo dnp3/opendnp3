@@ -67,9 +67,17 @@ public:
 
 private:
 
+	virtual bool IsEnabled() const override final { return true; }
+
+	virtual TaskId GetTaskId() const override final { return TaskId::USER_TASK; }
+
 	virtual void Initialize() override final;
 
 	virtual ResponseResult _OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects) override final;
+
+	virtual void OnResponseError(openpal::MonotonicTimestamp now) override final;
+
+	virtual void OnResponseOK(openpal::MonotonicTimestamp now) override final;
 
 	virtual void _OnResponseTimeout(openpal::MonotonicTimestamp now) override final;
 

@@ -35,7 +35,7 @@ class ClearRestartTask : public IMasterTask
 
 public:	
 
-	ClearRestartTask(openpal::TimeDuration retryPeriod, IMasterApplication& application, const openpal::Logger& logger);
+	ClearRestartTask(IMasterApplication& application, openpal::TimeDuration retryPeriod, openpal::Logger logger);
 
 	virtual char const* Name() const override final { return "Clear Restart IIN"; }
 
@@ -46,6 +46,8 @@ public:
 	virtual bool BlocksLowerPriority() const override final { return true; }	
 
 	virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;	
+
+	virtual void Schedule() { expiration = 0; }
 
 private:
 
