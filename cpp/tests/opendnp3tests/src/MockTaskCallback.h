@@ -41,7 +41,14 @@ public:
 		results.push_back(result);
 	}
 
+	virtual void OnDestroyed() override final
+	{
+		++numDestroyed;
+	}
+
 	uint32_t numStart = 0;
+
+	uint32_t numDestroyed = 0;
 
 	std::deque<TaskCompletion> results;
 

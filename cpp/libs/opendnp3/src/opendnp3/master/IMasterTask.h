@@ -61,7 +61,7 @@ public:
 	IMasterTask(IMasterApplication& app, openpal::MonotonicTimestamp expiration, openpal::Logger logger, ITaskCallback* pCallback = nullptr);
 
 
-	virtual ~IMasterTask() {}	
+	virtual ~IMasterTask();
 
 	/**	
 	*

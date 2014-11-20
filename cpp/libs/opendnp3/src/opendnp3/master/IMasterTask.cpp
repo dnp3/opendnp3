@@ -37,6 +37,14 @@ IMasterTask::IMasterTask(IMasterApplication& app, openpal::MonotonicTimestamp ex
 	pCallback(pCallback_)
 {}
 
+IMasterTask::~IMasterTask()
+{
+	if (pCallback)
+	{
+		pCallback->OnDestroyed();
+	}
+}
+
 openpal::MonotonicTimestamp IMasterTask::ExpirationTime() const
 {
 	return (!disabled && this->IsEnabled()) ? expiration : MonotonicTimestamp::Max();

@@ -130,6 +130,7 @@
     <Compile Include="IStackStatistics.cs" />
     <Compile Include="IMasterScan.cs" />
     <Compile Include="config\LinkConfig.cs" />
+    <Compile Include="ITaskCallback.cs" />
     <Compile Include="LogLevels.cs" />
     <Compile Include="config\MasterConfig.cs" />
     <Compile Include="config\MasterStackConfig.cs" />

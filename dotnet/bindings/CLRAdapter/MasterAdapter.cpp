@@ -4,6 +4,7 @@
 #include "CommandProcessorAdapter.h"
 #include "MasterScanAdapter.h"
 #include "Conversions.h"
+#include "TaskCallbackAdapter.h"
 
 namespace Automatak
 {
@@ -43,48 +44,58 @@ namespace Automatak
 				pMaster->Shutdown();
 			}
 
-			IMasterScan^ MasterAdapter::AddAllObjectsScan(System::Byte group, System::Byte variation, System::TimeSpan period)
+			IMasterScan^ MasterAdapter::AddAllObjectsScan(System::Byte group, System::Byte variation, System::TimeSpan period, ITaskCallback^ callback)
 			{
 				opendnp3::GroupVariationID gvid(group, variation);
-				auto scan = pMaster->AddAllObjectsScan(gvid, Conversions::ConvertTimespan(period));
+				auto scan = pMaster->AddAllObjectsScan(gvid, Conversions::ConvertTimespan(period), FGetTaskCallback(callback));
 				return gcnew MasterScanAdapter(scan);
 			}
 
-			IMasterScan^ MasterAdapter::AddClassScan(ClassField field, System::TimeSpan period)
+			IMasterScan^ MasterAdapter::AddClassScan(ClassField field, System::TimeSpan period, ITaskCallback^ callback)
 			{
-				auto scan = pMaster->AddClassScan(Conversions::ConvertClassField(field), Conversions::ConvertTimespan(period));
+				auto scan = pMaster->AddClassScan(Conversions::ConvertClassField(field), Conversions::ConvertTimespan(period), FGetTaskCallback(callback));
 				return gcnew MasterScanAdapter(scan);
 			}
 
-			IMasterScan^ MasterAdapter::AddRangeScan(System::Byte group, System::Byte variation, System::UInt16 start, System::UInt16 stop, System::TimeSpan period)
+			IMasterScan^ MasterAdapter::AddRangeScan(System::Byte group, System::Byte variation, System::UInt16 start, System::UInt16 stop, System::TimeSpan period, ITaskCallback^ callback)
 			{
 				opendnp3::GroupVariationID gvid(group, variation);
-				auto scan = pMaster->AddRangeScan(gvid, start, stop, Conversions::ConvertTimespan(period));
+				auto scan = pMaster->AddRangeScan(gvid, start, stop, Conversions::ConvertTimespan(period), FGetTaskCallback(callback));
 				return gcnew MasterScanAdapter(scan);
 			}
 
-			void MasterAdapter::ScanAllObjects(System::Byte group, System::Byte variation)
-			{
-				opendnp3::GroupVariationID gvid(group, variation);
-				pMaster->ScanAllObjects(gvid);
-			}
-
-			void MasterAdapter::ScanClasses(ClassField field)
-			{
-				pMaster->ScanClasses(Conversions::ConvertClassField(field));
-			}
-
-			void MasterAdapter::ScanRange(System::Byte group, System::Byte variation, System::UInt16 start, System::UInt16 stop)
-			{
-				opendnp3::GroupVariationID gvid(group, variation);
-				pMaster->ScanRange(gvid, start, stop);
-			}
-
-			void MasterAdapter::Write(TimeAndInterval^ value, System::UInt16 index)
+			void MasterAdapter::ScanAllObjects(System::Byte group, System::Byte variation, ITaskCallback^ callback)
 			{				
-				pMaster->Write(Conversions::ConvertMeas(value), index);
+				pMaster->ScanAllObjects(opendnp3::GroupVariationID(group, variation), FGetTaskCallback(callback));
 			}
 
+			void MasterAdapter::ScanClasses(ClassField field, ITaskCallback^ callback)
+			{
+				pMaster->ScanClasses(Conversions::ConvertClassField(field), FGetTaskCallback(callback));
+			}
+
+			void MasterAdapter::ScanRange(System::Byte group, System::Byte variation, System::UInt16 start, System::UInt16 stop, ITaskCallback^ callback)
+			{
+				opendnp3::GroupVariationID gvid(group, variation);
+				pMaster->ScanRange(gvid, start, stop, FGetTaskCallback(callback));
+			}
+
+			void MasterAdapter::Write(TimeAndInterval^ value, System::UInt16 index, ITaskCallback^ callback)
+			{				
+				pMaster->Write(Conversions::ConvertMeas(value), index, FGetTaskCallback(callback));
+			}
+
+			opendnp3::ITaskCallback* MasterAdapter::FGetTaskCallback(ITaskCallback^ callback)
+			{
+				if (callback == nullptr)
+				{
+					return nullptr;
+				}
+				else
+				{
+					return new TaskCallbackAdapter(callback);
+				}
+			}
 		}
 	}
 }

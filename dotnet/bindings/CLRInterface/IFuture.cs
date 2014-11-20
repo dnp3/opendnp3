@@ -39,7 +39,7 @@ namespace Automatak.DNP3.Interface
         T Await();
 
         /// <summary>
-        /// hronously 'listen' for the result of an operation
+        /// Asynchronously 'listen' for the result of an operation
         /// </summary>
         /// <param name="callback">Action that is called when the operation completes</param>
         void Listen(Action<T> callback);

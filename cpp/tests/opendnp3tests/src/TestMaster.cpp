@@ -479,6 +479,7 @@ TEST_CASE(SUITE("AdhocScanFailsImmediatelyIfMasterOffline"))
 	REQUIRE(callback.numStart == 0);
 	REQUIRE(callback.results.size() == 1);
 	REQUIRE(callback.results[0] == TaskCompletion::FAILURE_NO_COMMS);
+	REQUIRE(callback.numDestroyed == 1);
 }
 
 TEST_CASE(SUITE("MasterWritesTimeAndInterval"))

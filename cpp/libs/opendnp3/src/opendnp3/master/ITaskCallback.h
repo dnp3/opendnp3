@@ -34,9 +34,14 @@ class ITaskCallback
 {
 public:
 
+	// Called when the task starts running
 	virtual void OnStart() = 0;
 	
-	virtual void OnComplete(TaskCompletion result) = 0;	
+	// Called when the task succeeds or fails
+	virtual void OnComplete(TaskCompletion result) = 0;
+
+	// Called when the task no longer exists and no more calls will be made to OnStart/OnComplete
+	virtual void OnDestroyed() = 0;
 };
 
 class ICommandCallback
