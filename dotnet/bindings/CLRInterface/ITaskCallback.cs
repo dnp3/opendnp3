@@ -42,5 +42,10 @@ namespace Automatak.DNP3.Interface
         /// </summary>
         /// <param name="result"></param>
         void OnComplete(TaskCompletion result);
+
+        /// <summary>
+        /// Called when the task will never run again
+        /// </summary>
+        void OnDestroyed();
     }
 }

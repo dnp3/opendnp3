@@ -38,6 +38,7 @@ namespace Automatak
 
 				virtual void OnDestroyed() sealed
 				{
+					root->OnDestroyed();
 					delete this;
 				}
 				
