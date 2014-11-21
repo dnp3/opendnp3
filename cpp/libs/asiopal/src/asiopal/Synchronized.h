@@ -50,11 +50,9 @@ class Synchronized
 	
 	void SetValue(T value_)
 	{
-		{
-			std::unique_lock<std::mutex> lock(mutex);
-			this->value = value_;
-			isSet = true;
-		}
+        std::unique_lock<std::mutex> lock(mutex);
+        this->value = value_;
+        isSet = true;
 		condition.notify_all();
 	}
 
