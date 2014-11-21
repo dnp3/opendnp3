@@ -31,7 +31,7 @@ namespace opendnp3
 {
 
 CommandTask::CommandTask(IMasterApplication& app, ICommandSequence* pSequence_, ICommandCallback& callback, openpal::Logger logger) :
-	IMasterTask(app, MonotonicTimestamp::Min(), logger),	
+	IMasterTask(app, MonotonicTimestamp::Min(), logger, nullptr, -1),	
 	pCommandCallback(&callback),
 	pSequence(pSequence_)
 {

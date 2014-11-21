@@ -34,7 +34,7 @@ namespace opendnp3
 {
 
 SerialTimeSyncTask::SerialTimeSyncTask(IMasterApplication& app, openpal::Logger logger) :
-	IMasterTask(app, MonotonicTimestamp::Max(), logger),	
+	IMasterTask(app, MonotonicTimestamp::Max(), logger, nullptr, -1),	
 	delay(-1)
 {}
 

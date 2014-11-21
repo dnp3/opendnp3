@@ -37,7 +37,7 @@ class WriteTask : public IMasterTask
 
 public:	
 
-	WriteTask(IMasterApplication& app, const std::function<void(HeaderWriter&)> format_, openpal::Logger logger, ITaskCallback* pCallback);
+	WriteTask(IMasterApplication& app, const std::function<void(HeaderWriter&)> format_, openpal::Logger logger, ITaskCallback* pCallback, int userId);
 
 	virtual char const* Name() const override final { return "Write Task"; }
 
@@ -53,7 +53,7 @@ private:
 
 	virtual  bool IsEnabled() const override final { return true; }
 
-	virtual TaskId GetTaskId() const override final { return TaskId::USER_TASK; }
+	virtual MasterTaskType GetTaskType() const override final { return MasterTaskType::USER_TASK; }
 		
 	std::function<void(HeaderWriter&)> format;
 

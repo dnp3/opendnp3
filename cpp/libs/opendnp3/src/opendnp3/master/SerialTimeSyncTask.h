@@ -48,7 +48,7 @@ public:
 
 private:
 
-	virtual TaskId GetTaskId() const override final { return TaskId::SERIAL_TIME_SYNC; }
+	virtual MasterTaskType GetTaskType() const override final { return MasterTaskType::SERIAL_TIME_SYNC; }
 
 	virtual bool IsEnabled() const override final { return true; }
 

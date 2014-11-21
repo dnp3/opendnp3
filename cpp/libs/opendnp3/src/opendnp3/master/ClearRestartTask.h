@@ -51,7 +51,7 @@ public:
 
 private:
 
-	virtual TaskId GetTaskId() const override final { return TaskId::USER_TASK; }
+	virtual MasterTaskType GetTaskType() const override final { return MasterTaskType::USER_TASK; }
 
 	virtual bool IsEnabled() const override final { return true; }
 

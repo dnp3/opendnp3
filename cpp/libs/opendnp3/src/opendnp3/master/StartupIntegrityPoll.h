@@ -57,7 +57,7 @@ private:
 
 	virtual bool IsEnabled() const override final;
 
-	virtual TaskId GetTaskId() const override final { return TaskId::STARTUP_INTEGRITY_POLL; }
+	virtual MasterTaskType GetTaskType() const override final { return MasterTaskType::STARTUP_INTEGRITY_POLL; }
 
 	virtual void _OnLowerLayerClose(openpal::MonotonicTimestamp now) override final;
 

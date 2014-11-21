@@ -50,7 +50,7 @@ private:
 
 	openpal::TimeDuration retryPeriod;
 
-	virtual TaskId GetTaskId() const override final { return TaskId::ASSIGN_CLASS; }
+	virtual MasterTaskType GetTaskType() const override final { return MasterTaskType::ASSIGN_CLASS; }
 
 	virtual ResponseResult _OnResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects) override final;
 

@@ -21,7 +21,7 @@ object CppEnumGenerator {
     val nsopendnp3 = "opendnp3"
 
     def includeEnums = List(
-      EnumConfig(TaskId(), false, false),
+      EnumConfig(MasterTaskType(), false, false),
       EnumConfig(AssignClassType(), false, false),
       EnumConfig(StaticTypeBitmask(), false, false),
       EnumConfig(IntervalUnit(), true, true),

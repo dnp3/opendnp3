@@ -45,7 +45,7 @@ namespace Automatak
 
 			private:
 
-				static opendnp3::ITaskCallback* FGetTaskCallback(ITaskCallback^ callback);
+				static opendnp3::ITaskCallback* CreateTaskCallback(ITaskCallback^ callback);
 
 				asiodnp3::IMaster* pMaster;
 				ICommandProcessor^ commandAdapter;

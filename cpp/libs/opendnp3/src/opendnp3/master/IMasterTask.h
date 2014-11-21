@@ -58,7 +58,7 @@ public:
 	};	
 	
 
-	IMasterTask(IMasterApplication& app, openpal::MonotonicTimestamp expiration, openpal::Logger logger, ITaskCallback* pCallback = nullptr);
+	IMasterTask(IMasterApplication& app, openpal::MonotonicTimestamp expiration, openpal::Logger logger, ITaskCallback* pCallback, int userId);
 
 
 	virtual ~IMasterTask();
@@ -145,7 +145,7 @@ public:
 
 	virtual bool IsEnabled() const = 0;
 
-	virtual TaskId GetTaskId() const = 0;
+	virtual MasterTaskType GetTaskType() const = 0;
 
 	IMasterApplication* pApplication;
 	bool disabled;
@@ -165,6 +165,7 @@ public:
 	IMasterTask();
 
 	ITaskCallback* pCallback;
+	int userId;
 };
 
 }

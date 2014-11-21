@@ -81,12 +81,12 @@
     <ClInclude Include="src\opendnp3\gen\DoubleBitBinaryQuality.h" />
     <ClInclude Include="src\opendnp3\gen\GroupVariation.h" />
     <ClInclude Include="src\opendnp3\gen\IntervalUnits.h" />
+    <ClInclude Include="src\opendnp3\gen\MasterTaskType.h" />
     <ClInclude Include="src\opendnp3\gen\PointClass.h" />
     <ClInclude Include="src\opendnp3\gen\RestartMode.h" />
     <ClInclude Include="src\opendnp3\gen\StaticTimeAndIntervalResponse.h" />
     <ClInclude Include="src\opendnp3\gen\StaticTypeBitmask.h" />
     <ClInclude Include="src\opendnp3\gen\TaskCompletion.h" />
-    <ClInclude Include="src\opendnp3\gen\TaskId.h" />
     <ClInclude Include="src\opendnp3\gen\TimestampMode.h" />
     <ClInclude Include="src\opendnp3\gen\TimeSyncMode.h" />
     <ClInclude Include="src\opendnp3\LayerInterfaces.h" />

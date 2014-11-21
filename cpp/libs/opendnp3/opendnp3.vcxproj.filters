@@ -714,7 +714,7 @@
     <ClInclude Include="src\opendnp3\gen\TaskCompletion.h">
       <Filter>Header\gen</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\TaskId.h">
+    <ClInclude Include="src\opendnp3\gen\MasterTaskType.h">
       <Filter>Header\gen</Filter>
     </ClInclude>
   </ItemGroup>

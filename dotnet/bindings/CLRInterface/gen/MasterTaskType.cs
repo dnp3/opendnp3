@@ -23,7 +23,7 @@ namespace Automatak.DNP3.Interface
   /// <summary>
   /// Enumeration of internal tasks
   /// </summary>
-  public enum TaskId : int
+  public enum MasterTaskType : int
   {
     CLEAR_RESTART = 0,
     DISABLE_UNSOLICITED = 1,

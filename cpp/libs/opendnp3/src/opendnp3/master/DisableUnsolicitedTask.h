@@ -49,7 +49,7 @@ private:
 	bool enabled;
 	openpal::TimeDuration retryPeriod;
 
-	virtual TaskId GetTaskId() const override final { return TaskId::DISABLE_UNSOLICITED; }
+	virtual MasterTaskType GetTaskType() const override final { return MasterTaskType::DISABLE_UNSOLICITED; }
 
 	virtual bool IsEnabled() const override final { return enabled; }
 

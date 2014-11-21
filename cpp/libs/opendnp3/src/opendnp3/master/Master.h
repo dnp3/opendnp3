@@ -60,27 +60,27 @@ class Master : public IUpperLayer
 
 	/// ---- Permanently bound scans ----
 
-	MasterScan AddScan(openpal::TimeDuration period, const std::function<void(HeaderWriter&)>& builder, ITaskCallback* pCallback);
+	MasterScan AddScan(openpal::TimeDuration period, const std::function<void(HeaderWriter&)>& builder, ITaskCallback* pCallback = nullptr, int userId = -1);
 
-	MasterScan AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, ITaskCallback* pCallback);
+	MasterScan AddAllObjectsScan(GroupVariationID gvId, openpal::TimeDuration period, ITaskCallback* pCallback = nullptr, int userId = -1);
 
-	MasterScan AddClassScan(const ClassField& field, openpal::TimeDuration period, ITaskCallback* pCallback);
+	MasterScan AddClassScan(const ClassField& field, openpal::TimeDuration period, ITaskCallback* pCallback = nullptr, int userId = -1);
 
-	MasterScan AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, ITaskCallback* pCallback);
+	MasterScan AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, ITaskCallback* pCallback = nullptr, int userId = -1);
 
 	/// ---- Single shot immediate scans ----
 	
-	void Scan(const std::function<void(HeaderWriter&)>& builder, ITaskCallback* pCallback);
+	void Scan(const std::function<void(HeaderWriter&)>& builder, ITaskCallback* pCallback = nullptr, int userId = -1);
 
-	void ScanAllObjects(GroupVariationID gvId, ITaskCallback* pCallback);
+	void ScanAllObjects(GroupVariationID gvId, ITaskCallback* pCallback = nullptr, int userId = -1);
 
-	void ScanClasses(const ClassField& field, ITaskCallback* pCallback);
+	void ScanClasses(const ClassField& field, ITaskCallback* pCallback = nullptr, int userId = -1);
 
-	void ScanRange(GroupVariationID gvId, uint16_t start, uint16_t stop, ITaskCallback* pCallback);
+	void ScanRange(GroupVariationID gvId, uint16_t start, uint16_t stop, ITaskCallback* pCallback = nullptr, int userId = -1);
 
 	/// ---- Write tasks -----
 
-	void Write(const TimeAndInterval& value, uint16_t index, ITaskCallback* pCallback);
+	void Write(const TimeAndInterval& value, uint16_t index, ITaskCallback* pCallback = nullptr, int userId = -1);
 
 	
 	private:

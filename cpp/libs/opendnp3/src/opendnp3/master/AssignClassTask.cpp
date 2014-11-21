@@ -29,7 +29,7 @@ namespace opendnp3
 {
 
 AssignClassTask::AssignClassTask(IMasterApplication& application, openpal::TimeDuration retryPeriod_, openpal::Logger logger) :
-	IMasterTask(application, 0, logger),	
+	IMasterTask(application, 0, logger, nullptr, -1),	
 	retryPeriod(retryPeriod_)
 {}
 

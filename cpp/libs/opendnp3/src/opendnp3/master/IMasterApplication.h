@@ -27,7 +27,7 @@
 #include "opendnp3/app/IINField.h"
 #include "opendnp3/app/HeaderWriter.h"
 
-#include "opendnp3/gen/TaskId.h"
+#include "opendnp3/gen/MasterTaskType.h"
 #include "opendnp3/gen/TaskCompletion.h"
 
 
@@ -46,11 +46,11 @@ class IMasterApplication : public openpal::IUTCTimeSource
 	/// Called when a response or unsolicited response is receive from the outstation
 	virtual void OnReceiveIIN(const IINField& iin) = 0;
 
-	/// Task start notifications for built-in tasks.
-	virtual void OnTaskStart(TaskId id) = 0;
+	/// Task start notification
+	virtual void OnTaskStart(MasterTaskType type, int userId) = 0;
 
-	/// Task completion notifications for built-in tasks.
-	virtual void OnTaskComplete(TaskId id, TaskCompletion value) = 0;		
+	/// Task completion notification
+	virtual void OnTaskComplete(MasterTaskType type, TaskCompletion value, int userId) = 0;
 
 	/// @return true if the master should do an assign class task during startup handshaking
 	virtual bool AssignClassDuringStartup() = 0;

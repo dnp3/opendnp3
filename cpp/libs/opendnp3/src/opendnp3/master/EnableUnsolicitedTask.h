@@ -62,7 +62,7 @@ private:
 	ClassField enabledClasses;
 	openpal::TimeDuration retryPeriod;	
 
-	virtual TaskId GetTaskId() const override final { return TaskId::ENABLE_UNSOLICITED; }
+	virtual MasterTaskType GetTaskType() const override final { return MasterTaskType::ENABLE_UNSOLICITED; }
 
 	virtual ResponseResult _OnResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects) override final;
 

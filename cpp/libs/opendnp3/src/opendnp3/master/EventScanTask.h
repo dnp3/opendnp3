@@ -50,7 +50,7 @@ namespace opendnp3
 
 		openpal::TimeDuration retryPeriod;
 
-		virtual TaskId GetTaskId() const override final { return TaskId::AUTO_EVENT_SCAN; }
+		virtual MasterTaskType GetTaskType() const override final { return MasterTaskType::AUTO_EVENT_SCAN; }
 
 		virtual bool IsEnabled() const override final { return true; }
 

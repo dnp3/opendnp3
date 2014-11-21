@@ -53,7 +53,7 @@ TEST_CASE(SUITE("AssignsClassAfterConnect"))
 	REQUIRE(t.lower.PopWriteAsHex() == "");
 
 	REQUIRE(t.application.taskStartEvents.size() == 1);
-	REQUIRE(t.application.taskStartEvents[0] == TaskId::ASSIGN_CLASS);	
+	REQUIRE(t.application.taskStartEvents[0] == MasterTaskType::ASSIGN_CLASS);	
 
 	REQUIRE(t.application.taskCompletionEvents.size() == 1);	
 	REQUIRE(t.application.taskCompletionEvents[0].second == TaskCompletion::SUCCESS);

@@ -23,8 +23,10 @@ namespace Automatak
 			{
 			public:
 
-				TaskCallbackAdapter(Automatak::DNP3::Interface::ITaskCallback^ proxy) : root(proxy)
-				{}
+				static opendnp3::ITaskCallback* Create(Automatak::DNP3::Interface::ITaskCallback^ proxy)
+				{
+					return new TaskCallbackAdapter(proxy);
+				}
 
 				virtual void OnStart() sealed
 				{
@@ -41,6 +43,13 @@ namespace Automatak
 					root->OnDestroyed();
 					delete this;
 				}
+
+			private:
+
+				TaskCallbackAdapter();
+
+				TaskCallbackAdapter(Automatak::DNP3::Interface::ITaskCallback^ proxy) : root(proxy)
+				{}
 				
 				gcroot < Automatak::DNP3::Interface::ITaskCallback^ > root;
 			};

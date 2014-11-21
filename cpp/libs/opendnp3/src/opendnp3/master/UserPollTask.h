@@ -49,7 +49,8 @@ public:
 		IMasterApplication& app,
 		ISOEHandler& soeHandler,
 		ITaskCallback* pCallback,
-		openpal::Logger logger
+		int userId,
+		openpal::Logger logger		
 		);	
 
 	virtual int Priority() const override final { return priority::USER_POLL; }
@@ -72,7 +73,7 @@ private:
 	
 	virtual void OnResponseError(openpal::MonotonicTimestamp now) override final;
 
-	virtual TaskId GetTaskId() const override final { return TaskId::USER_TASK;  }
+	virtual MasterTaskType GetTaskType() const override final { return MasterTaskType::USER_TASK;  }
 
 			
 	std::function<void(HeaderWriter&)> builder;	

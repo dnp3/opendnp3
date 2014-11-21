@@ -26,8 +26,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-WriteTask::WriteTask(IMasterApplication& app, const std::function<void(HeaderWriter&)> format_, openpal::Logger logger, ITaskCallback* pCallback) :
-	IMasterTask(app, 0, logger, pCallback),	
+WriteTask::WriteTask(IMasterApplication& app, const std::function<void(HeaderWriter&)> format_, openpal::Logger logger, ITaskCallback* pCallback, int userId) :
+	IMasterTask(app, 0, logger, pCallback, userId),	
 	format(format_)
 {
 
