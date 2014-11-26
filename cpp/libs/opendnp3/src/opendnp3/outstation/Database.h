@@ -25,121 +25,94 @@
 #include <openpal/executor/Action0.h>
 #include <openpal/container/Settable.h>
 
+#include "opendnp3/app/Range.h"
 #include "opendnp3/gen/AssignClassType.h"
-#include "opendnp3/app/StaticRange.h"
-#include "opendnp3/outstation/IEventBuffer.h"
+
+#include "opendnp3/outstation/DatabaseTemplate.h"
+#include "opendnp3/outstation/StaticBuffers.h"
 #include "opendnp3/outstation/IDatabase.h"
-#include "opendnp3/outstation/DatabaseBuffers.h"
+#include "opendnp3/outstation/IEventReceiver.h"
+
 
 namespace opendnp3
 {
 
 /**
-Manages the static data model of a DNP3 outstation. Dual-interface to update data points and read current values.
-
-Passes data updates to an associated event buffer for event generation/management.
+The database coordinates all updates of measurement data
 */
 class Database : public IDatabase
 {
 public:
 
-	Database(const DatabaseTemplate&, openpal::IMutex* pMutex = nullptr);	
+	Database(const DatabaseTemplate&, IEventReceiver& eventReceiver, openpal::IMutex* pMutex);
 
-	void SetEventBuffer(IEventBuffer& eventBuffer);
+	// IMeasurementUpdater functions
+	bool Update(const Binary& value, uint16_t) override final;
+	bool Update(const DoubleBitBinary& value, uint16_t) override final;
+	bool Update(const Analog& value, uint16_t) override final;
+	bool Update(const Counter& value, uint16_t) override final;
+	bool Update(const FrozenCounter& value, uint16_t) override final;
+	bool Update(const BinaryOutputStatus& value, uint16_t) override final;
+	bool Update(const AnalogOutputStatus& value, uint16_t) override final;
+	bool Update(const TimeAndInterval& value, uint16_t) override final;	
 
-	void DoubleBuffer();
-
-	// IMeasurementLoader*functions
-	void Update(const Binary& value, uint16_t) override final;
-	void Update(const DoubleBitBinary& value, uint16_t) override final;
-	void Update(const Analog& value, uint16_t) override final;
-	void Update(const Counter& value, uint16_t) override final;
-	void Update(const FrozenCounter& value, uint16_t) override final;
-	void Update(const BinaryOutputStatus& value, uint16_t) override final;
-	void Update(const AnalogOutputStatus& value, uint16_t) override final;
-	void Update(const TimeAndInterval& value, uint16_t) override final;
-
-	template <class T>
-	openpal::Indexable<DualValue<T>, uint16_t>& Values();
-
-	template <class T>
-	uint16_t NumValues() const;
-
-	bool AssignClass(AssignClassType type, PointClass clazz, const StaticRange& range);
-
-	template <class T>
-	StaticRange FullRange() const;
-
-	DatabaseBuffers buffers;
+	bool AssignClass(AssignClassType type, PointClass clazz, const Range& range);	
 	
 	void SetEventHandler(const openpal::Action0& callback);
 
+	StaticBufferView GetStaticView() { return staticBuffers.GetView(); }
+
 private:
 
-	template <class T>
-	bool AssignClassTo(T& metadata, PointClass clazz, const StaticRange& range)
-	{
-        StaticRange rangit(range);
-		if (rangit.IsDefined() && (range.IsContainedBy(metadata.Size())))
-        {
-            while(rangit.IsDefined())
-            {
-                metadata[rangit.position].clazz = clazz;
-                rangit.Advance();
-            }
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-	}
-
-	template <class T>
-	static void FreezeCollection(openpal::Indexable<DualValue<T>, uint16_t>& collection)
-	{
-		collection.foreach([](DualValue<T>& value)
-		{
-			value.Freeze();
-		});
-	}
-
-	Database();
-	Database(const Database&);
-
-	template <class T, class U>
-	void UpdateEvent(const T& value, uint16_t index, U& collection)
-	{
-        auto position = collection.indexes.GetPosition(index);
-		if(collection.values.Contains(position))
-		{
-			auto& metadata = collection.metadata[position];
-			EventClass eventClass;
-			if (metadata.GetEventClass(eventClass) && metadata.CheckForEvent(value))
-			{
-				if (pEventBuffer)
-				{
-					pEventBuffer->Update(Event<T>(value, index, eventClass));		
-					transactionHasEvents = true;
-				}
-			}
-			collection.values[position].Update(value);
-		}
-	}
-
-	IEventBuffer* pEventBuffer;
-	
-
+	// stores the most revent values and event information
+	StaticBuffers staticBuffers;
+	IEventReceiver* pEventReceiver;
 	openpal::IMutex* pMutex;
+	
+	
 	openpal::Settable<openpal::Action0> onEventAction;
-
 	bool transactionHasEvents;
 
-	// ITransactable  functions, proxies to the given transactable
+	Database() = delete;
+	Database(const Database&) = delete;
 
+	static bool ConvertToEventClass(PointClass pc, EventClass& ec);	
+
+	template <class T>
+	bool UpdateEvent(const T& value, uint16_t index, openpal::Indexable<MeasurementCell<T>, uint16_t>& values);
+
+	// ITransactable  functions, proxies to the given transactable
 	virtual void Start() override final;
 	virtual void End() override final;
 };
+
+template <class T>
+bool Database::UpdateEvent(const T& value, uint16_t index, openpal::Indexable<MeasurementCell<T>, uint16_t>& values)
+{	
+	if (values.Contains(index))
+	{
+		auto& metadata = values[index].metadata;
+
+		EventClass ec;
+		if (ConvertToEventClass(metadata.clazz, ec) && metadata.IsEvent(value))
+		{
+			metadata.lastEvent = value;
+
+			if (pEventReceiver)
+			{
+				pEventReceiver->Update(Event<T>(value, index, ec));
+				transactionHasEvents = true;
+			}
+		}
+
+		values[index].currentValue = value;
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
 
 }
 

@@ -103,7 +103,7 @@ private:
 	static EventHeaderWriteFunc GetDefaultWriteFunction(const EventResponseConfig& config, EventType type);
 
 	template <class Target>
-	IINField RecordType(typename Target::EventResponseEnum enumeration, uint32_t count)
+	IINField RecordType(typename Target::EventVariation enumeration, uint32_t count)
 	{
 		auto function = EventResponseTypes::Lookup(enumeration);
 		return RecordEventType(Target::EventTypeEnum, function, count);

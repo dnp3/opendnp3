@@ -18,43 +18,28 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __MULTIPLEXING_DATA_OBSERVER_H_
-#define __MULTIPLEXING_DATA_OBSERVER_H_
+#ifndef OPENDNP3_MEASUREMENTCELL_H
+#define OPENDNP3_MEASUREMENTCELL_H
 
-#include <opendnp3/outstation/IDatabase.h>
-
-#include <vector>
 
 namespace opendnp3
 {
 
-/** DataObserver for sending updates to multiple data observers.
-*/
-class MultiplexingDataObserver : public IDatabase
-{
-public:
+template <class ValueType>
+struct MeasurementCell
+{			
+	ValueType currentValue;
+	typename ValueType::MetadataType metadata;	
+};
 
-	MultiplexingDataObserver();
-	MultiplexingDataObserver(IDatabase* apObserver1);
-	MultiplexingDataObserver(IDatabase* apObserver1, IDatabase* apObserver2);
-
-	void AddObserver(IDatabase* apObserver1);
-
-	void Update(const Binary& arPoint, uint16_t aIndex);
-	void Update(const Analog& arPoint, uint16_t aIndex);
-	void Update(const Counter& arPoint, uint16_t aIndex);
-	void Update(const BinaryOutputStatus& arPoint, uint16_t aIndex);
-	void Update(const AnalogOutputStatus& arPoint, uint16_t aIndex);
-
-private:
-
-	std::vector<IDatabase*> mObservers;
-
-	void Start();
-	void End();
+template <class ValueType>
+struct BufferedCell
+{	
+	bool isSelected;
+	ValueType bufferedValue;	
+	typename ValueType::StaticVariation responseVariation;
 };
 
 }
 
 #endif
-

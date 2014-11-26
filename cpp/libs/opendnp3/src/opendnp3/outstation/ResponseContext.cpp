@@ -24,28 +24,20 @@
 namespace opendnp3
 {
 
-ResponseContext::ResponseContext(Database& database, OutstationEventBuffer& buffer, const OutstationParams* pParams, const StaticResponseConfig& staticConfig, const EventResponseConfig& eventConfig) :
-	fragmentCount(0),
-	staticContext(database, pParams, staticConfig),
-	eventContext(eventConfig, buffer)
+ResponseContext::ResponseContext() :
+	fragmentCount(0)	
 {
 
 }
 
 void ResponseContext::Reset()
 {
-	fragmentCount = 0;
-	eventContext.Reset();
-	staticContext.Reset();
+	fragmentCount = 0;	
 }
 
-bool ResponseContext::IsComplete() const
+AppControlField ResponseContext::LoadResponse(HeaderWriter& writer)
 {
-	return eventContext.IsComplete() && staticContext.IsComplete();
-}
-
-AppControlField ResponseContext::LoadSolicited(HeaderWriter& writer)
-{
+	/*
 	auto fir = fragmentCount == 0;
 	++fragmentCount;
 	
@@ -63,6 +55,9 @@ AppControlField ResponseContext::LoadSolicited(HeaderWriter& writer)
 	{				
 		return GetControl(fir, false, wereEventsWritten);
 	}
+	*/
+
+	return AppControlField(false, false, false, false, 0);
 }
 
 AppControlField ResponseContext::GetControl(bool fir, bool fin, bool hasEvents)
@@ -71,8 +66,10 @@ AppControlField ResponseContext::GetControl(bool fir, bool fin, bool hasEvents)
 	return AppControlField(fir, fin, con, false);		
 }
 
+
 IINField ResponseContext::ReadAllObjects(const GroupVariationRecord& record)
 {
+	/*
 	switch (record.type)
 	{
 		case(GroupVariationType::STATIC) :
@@ -82,10 +79,14 @@ IINField ResponseContext::ReadAllObjects(const GroupVariationRecord& record)
 		default:
 			return IINField(IINBit::FUNC_NOT_SUPPORTED);
 	}
+	*/
+
+	return IINField(IINBit::FUNC_NOT_SUPPORTED);
 }
 
 IINField ResponseContext::ReadRange(const GroupVariationRecord& record, const Range& range)
 {
+	/*
 	switch (record.type)
 	{
 	case(GroupVariationType::STATIC) :
@@ -93,10 +94,15 @@ IINField ResponseContext::ReadRange(const GroupVariationRecord& record, const Ra
 	default:
 		return IINField(IINBit::FUNC_NOT_SUPPORTED);
 	}
+	*/
+
+	return IINField(IINBit::FUNC_NOT_SUPPORTED);
 }
+
 
 IINField ResponseContext::ReadCount(const GroupVariationRecord& record, uint32_t count)
 {
+	/*
 	switch (record.type)
 	{	
 		case(GroupVariationType::EVENT) :
@@ -104,6 +110,10 @@ IINField ResponseContext::ReadCount(const GroupVariationRecord& record, uint32_t
 		default:
 			return IINField(IINBit::FUNC_NOT_SUPPORTED);
 	}
+	*/
+
+	return IINField(IINBit::FUNC_NOT_SUPPORTED);
 }
+
 
 }

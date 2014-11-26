@@ -23,11 +23,9 @@
 
 #include "IStack.h"
 
+#include "opendnp3/outstation/IDatabase.h"
+#include "opendnp3/outstation/StaticBufferView.h"
 
-namespace opendnp3
-{
-	class Database;
-}
 
 namespace asiodnp3
 {
@@ -57,10 +55,16 @@ class IOutstation : public IStack
 	virtual opendnp3::StackStatistics GetStackStatistics() = 0;
 
 	/**
+	* Get a view of the raw buffers in the database. This can be used to configure each point before execution.
+	* @return View of static values and metadata.
+	*/
+	virtual opendnp3::StaticBufferView GetStaticBufferView() = 0;
+
+	/**
 	* Get a the database interface to load measurements into the outstation
 	* @return Database inteface used to load measurements into the outstation
 	*/
-	virtual opendnp3::Database& GetDatabase() = 0;
+	virtual opendnp3::IDatabase& GetDatabase() = 0;
 };
 
 }

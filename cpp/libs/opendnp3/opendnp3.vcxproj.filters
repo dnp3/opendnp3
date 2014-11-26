@@ -315,9 +315,6 @@
     <ClInclude Include="src\opendnp3\outstation\CountOf.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\Database.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\DatabaseTemplate.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
@@ -330,16 +327,10 @@
     <ClInclude Include="src\opendnp3\outstation\EventCount.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\EventMetadata.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\ICommandAction.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\ICommandHandler.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\IEventBuffer.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\IINHelpers.h">
@@ -391,9 +382,6 @@
       <Filter>Header\app</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\app\GroupVariationID.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\app\StaticRange.h">
       <Filter>Header\app</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\objects\Group3.h">
@@ -570,9 +558,6 @@
     <ClInclude Include="src\opendnp3\gen\PointClass.h">
       <Filter>Header\gen</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\IDatabase.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\IOutstationApplication.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
@@ -636,9 +621,6 @@
     <ClInclude Include="src\opendnp3\app\StaticPointIndexes.h">
       <Filter>Header\app</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\app\PointIndexes.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\LayerInterfaces.h">
       <Filter>Header</Filter>
     </ClInclude>
@@ -653,9 +635,6 @@
     </ClInclude>
     <ClInclude Include="src\opendnp3\link\ILinkSession.h">
       <Filter>Header\link</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\DatabaseBuffers.h">
-      <Filter>Header\outstation</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\CommandResponseHandler.h">
       <Filter>Header\outstation</Filter>
@@ -716,6 +695,27 @@
     </ClInclude>
     <ClInclude Include="src\opendnp3\gen\MasterTaskType.h">
       <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\app\EventMetadata.h">
+      <Filter>Header\app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\MeasurementCell.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\IEventReceiver.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\StaticBuffers.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\Database.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\IDatabase.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\StaticBufferView.h">
+      <Filter>Header\outstation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -827,9 +827,6 @@
     <ClCompile Include="src\opendnp3\outstation\CommandActionAdapter.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\Database.cpp">
-      <Filter>Source\outstation</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\EventCount.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
@@ -906,9 +903,6 @@
       <Filter>Source\objects</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\app\ObjectWriter.cpp">
-      <Filter>Source\app</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\app\StaticRange.cpp">
       <Filter>Source\app</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\CommandResponseHandler.cpp">
@@ -1109,9 +1103,6 @@
     <ClCompile Include="src\opendnp3\outstation\ApplicationIIN.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\app\PointIndexes.cpp">
-      <Filter>Source\app</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\AssignClassHandler.cpp">
       <Filter>Header\outstation</Filter>
     </ClCompile>
@@ -1133,7 +1124,6 @@
     <ClCompile Include="src\opendnp3\master\EventScanTask.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\DatabaseBuffers.cpp" />
     <ClCompile Include="src\opendnp3\master\WriteTask.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
@@ -1142,6 +1132,9 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\master\IMasterTask.cpp">
       <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\Database.cpp">
+      <Filter>Source\outstation</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

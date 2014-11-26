@@ -102,21 +102,21 @@ namespace Automatak
 					pOutstation->DeleteOnDestruct(pCommand);
 					pOutstation->DeleteOnDestruct(pApplication);
 
-					ApplyDatabaseSettings(pOutstation->GetDatabase(), config->databaseTemplate);
+					ApplyDatabaseSettings(pOutstation->GetStaticBufferView(), config->databaseTemplate);
 					return gcnew OutstationAdapter(pOutstation);
 				}
 			}
 
-			void ChannelAdapter::ApplyDatabaseSettings(opendnp3::Database& database, DatabaseTemplate^ dbTemplate)
+			void ChannelAdapter::ApplyDatabaseSettings(opendnp3::StaticBufferView view, DatabaseTemplate^ dbTemplate)
 			{
-				ApplyClassSettings(dbTemplate->binaries, database.buffers.binaries);
-				ApplyClassSettings(dbTemplate->binaryOutputStatii, database.buffers.binaryOutputStatii);
-				ApplyClassSettings(dbTemplate->doubleBinaries, database.buffers.doubleBinaries);
+				ApplyClassSettings(dbTemplate->binaries, view.binaries);
+				ApplyClassSettings(dbTemplate->binaryOutputStatii, view.binaryOutputStatii);
+				ApplyClassSettings(dbTemplate->doubleBinaries, view.doubleBinaries);
 
-				ApplyClassAndDeadbandSettings(dbTemplate->analogs, database.buffers.analogs);
-				ApplyClassAndDeadbandSettings(dbTemplate->counters, database.buffers.counters);
-				ApplyClassAndDeadbandSettings(dbTemplate->frozenCounters, database.buffers.frozenCounters);
-				ApplyClassAndDeadbandSettings(dbTemplate->analogOutputStatii, database.buffers.analogOutputStatii);
+				ApplyClassAndDeadbandSettings(dbTemplate->analogs, view.analogs);
+				ApplyClassAndDeadbandSettings(dbTemplate->counters, view.counters);
+				ApplyClassAndDeadbandSettings(dbTemplate->frozenCounters, view.frozenCounters);
+				ApplyClassAndDeadbandSettings(dbTemplate->analogOutputStatii, view.analogOutputStatii);
 
 			}
 

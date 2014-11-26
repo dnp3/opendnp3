@@ -18,22 +18,24 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_IEVENTBUFFER_H
-#define OPENDNP3_IEVENTBUFFER_H
 
-#include "opendnp3/app/MeasurementTypes.h"
+#ifndef OPENDNP3_IEVENTRECEIVER_H
+#define OPENDNP3_IEVENTRECEIVER_H
 
 #include "opendnp3/outstation/Event.h"
+#include "opendnp3/app/MeasurementTypes.h"
 
 namespace opendnp3
 {
 
-// @section desc Used by the database
-class IEventBuffer
+/**
+* Transactional interface that receives events
+*/
+class IEventReceiver
 {
 public:
 
-	virtual ~IEventBuffer() {}
+	virtual ~IEventReceiver() {}
 
 	virtual void Update(const Event<Binary>& evt) = 0;
 
@@ -41,7 +43,7 @@ public:
 
 	virtual void Update(const Event<Analog>& evt) = 0;
 
-	virtual void Update(const Event<Counter>&  evt) = 0;
+	virtual void Update(const Event<Counter>& evt) = 0;
 
 	virtual void Update(const Event<FrozenCounter>&  evt) = 0;
 

@@ -22,8 +22,6 @@
 #include "AssignClassHandler.h"
 
 #include "opendnp3/app/APDUHandlerBase.h"
-
-#include "opendnp3/outstation/Database.h"
 #include "opendnp3/outstation/IOutstationApplication.h"
 
 #include <openpal/logging/Logger.h>
@@ -44,6 +42,8 @@ AssignClassHandler::AssignClassHandler(openpal::Logger& logger, openpal::IExecut
 
 void AssignClassHandler::_AllObjects(const HeaderRecord& record)
 {
+	assert(false);
+	/*
 	if (IsExpectingAssignment())
 	{		
 		switch (record.enumeration)
@@ -78,6 +78,7 @@ void AssignClassHandler::_AllObjects(const HeaderRecord& record)
 	{	
 		this->RecordClass(record.enumeration);
 	}
+	*/
 }
 
 bool AssignClassHandler::IsExpectingAssignment()
@@ -101,11 +102,12 @@ void AssignClassHandler::_OnRangeRequest(const HeaderRecord& record, const Range
 	{
 		switch (record.enumeration)
 		{
+			/* TODO
 		case(GroupVariation::Group1Var0) :
             {
-            StaticRange staticrange(pDatabase->FullRange<Binary>());
-            staticrange.ClipTo(range);
-			this->ProcessAssignment(AssignClassType::BinaryInput, clazz, staticrange);
+            Range range(pDatabase->FullRange<Binary>());
+            range.ClipTo(range);
+			this->ProcessAssignment(AssignClassType::BinaryInput, clazz, range);
             }
 			break;
 		case(GroupVariation::Group3Var0) :
@@ -150,6 +152,7 @@ void AssignClassHandler::_OnRangeRequest(const HeaderRecord& record, const Range
 			this->ProcessAssignment(AssignClassType::AnalogOutputStatus, clazz, staticrange);
             }
 			break;
+			*/
 		default:
 			errors.SetBit(IINBit::FUNC_NOT_SUPPORTED);
 			break;
@@ -161,8 +164,9 @@ void AssignClassHandler::_OnRangeRequest(const HeaderRecord& record, const Range
 	}
 }
 
-void AssignClassHandler::ProcessAssignment(AssignClassType type, PointClass clazz, const StaticRange& range)
+void AssignClassHandler::ProcessAssignment(AssignClassType type, PointClass clazz, const Range& range)
 {
+	/* TODO
 	if (!range.IsClipped() && pDatabase->AssignClass(type, clazz, range))
 	{
 		auto start = range.start;
@@ -172,12 +176,14 @@ void AssignClassHandler::ProcessAssignment(AssignClassType type, PointClass claz
 		{
 			pApplication->RecordClassAssignment(type, clazz, start, stop);
 		};
+
 		pExecutor->PostLambda(callback);
 	}
 	else
 	{
+	*/
 		errors.SetBit(IINBit::PARAM_ERROR);
-	}
+	//}
 	
 }
 

@@ -29,30 +29,13 @@ using namespace openpal;
 namespace opendnp3
 {
 
-StaticResponseContext::StaticResponseContext(Database& database, const OutstationParams* pParams_, const StaticResponseConfig& config) :
-	pDatabase(&database),
-	pParams(pParams_),
-	defaults(config),
-	staticResponseQueue(8) // TODO - make configurable
+/*
+StaticResponseContext::StaticResponseContext(Database& database) :
+	pDatabase(&database)	
 {}
 
-bool StaticResponseContext::IsComplete() const
-{
-	return staticResponseQueue.IsEmpty();
-}
-
-bool StaticResponseContext::HasRequests() const
-{
-	return staticResponseQueue.IsNotEmpty();
-}
-
-void StaticResponseContext::Reset()
-{
-	staticResponseQueue.Clear();
-}
-
 IINField StaticResponseContext::ReadAll(const GroupVariationRecord& record)
-{
+{	
 	if (record.enumeration == GroupVariation::Group60Var1)
 	{
 		IINField result;
@@ -71,29 +54,31 @@ IINField StaticResponseContext::ReadAll(const GroupVariationRecord& record)
 		switch (record.group)
 		{
 			case(1) :
-				return ReadRange(record, pDatabase->FullRange<Binary>().ToRange());
+				return ReadRange(record, pDatabase->FullRange<Binary>());
 			case(3) :
-				return ReadRange(record, pDatabase->FullRange<DoubleBitBinary>().ToRange());
+				return ReadRange(record, pDatabase->FullRange<DoubleBitBinary>());
 			case(10) :
-				return ReadRange(record, pDatabase->FullRange<BinaryOutputStatus>().ToRange());
+				return ReadRange(record, pDatabase->FullRange<BinaryOutputStatus>());
 			case(20) :
-				return ReadRange(record, pDatabase->FullRange<Counter>().ToRange());
+				return ReadRange(record, pDatabase->FullRange<Counter>());
 			case(21) :
-				return ReadRange(record, pDatabase->FullRange<FrozenCounter>().ToRange());
+				return ReadRange(record, pDatabase->FullRange<FrozenCounter>());
 			case(30) :
-				return ReadRange(record, pDatabase->FullRange<Analog>().ToRange());
+				return ReadRange(record, pDatabase->FullRange<Analog>());
 			case(40) :
-				return ReadRange(record, pDatabase->FullRange<AnalogOutputStatus>().ToRange());
+				return ReadRange(record, pDatabase->FullRange<AnalogOutputStatus>());
 			case(50) :
-				return ReadRange(record, pDatabase->FullRange<TimeAndInterval>().ToRange());
+				return ReadRange(record, pDatabase->FullRange<TimeAndInterval>());
 			default:
 				return IINField(IINBit::FUNC_NOT_SUPPORTED);
 		}
-	}	
+	}		
+
+	return IINField::Empty();
 }
 
 IINField StaticResponseContext::ReadRange(const GroupVariationRecord& record, const Range& range)
-{
+{	
 	switch (record.enumeration)
 	{
 		// Group 1
@@ -175,26 +160,9 @@ IINField StaticResponseContext::ReadRange(const GroupVariationRecord& record, co
 
 	default:
 		return IINField(IINBit::FUNC_NOT_SUPPORTED);
-	}
-}
+	}	
 
-IINField StaticResponseContext::QueueLoader(const StaticRangeLoader& loader)
-{
-	if(loader.IsDefined())
-	{
-		if(staticResponseQueue.Enqueue(loader))
-		{
-			return loader.IsClipped() ? IINField(IINBit::PARAM_ERROR) : IINField::Empty();
-		}
-		else
-		{
-			return IINField(IINBit::PARAM_ERROR);
-		}
-	}
-	else
-	{
-		return IINField::Empty();
-	}
+	return IINField::Empty();
 }
 
 bool StaticResponseContext::Load(HeaderWriter& writer)
@@ -212,32 +180,10 @@ bool StaticResponseContext::Load(HeaderWriter& writer)
 
 StaticLoadResult StaticResponseContext::LoadStaticData(HeaderWriter& writer)
 {
-	while(!staticResponseQueue.IsEmpty())
-	{
-		auto pFront = staticResponseQueue.Peek();
-		auto result = StaticLoadResult::DISCONT;
-        
-        // Repeat for each contiguous range of points
-        while(result == StaticLoadResult::DISCONT)
-        {
-            result = (*pFront->pLoadFun)(writer, *pFront, *pDatabase);
-        }
-		if(result == StaticLoadResult::COMPLETED)
-		{
-			staticResponseQueue.Pop();
-			if (staticResponseQueue.IsEmpty())
-			{
-				return StaticLoadResult::COMPLETED;
-			}			
-		}
-		else
-		{
-			return result;
-		}
-	}
-
-	return StaticLoadResult::EMPTY;
+	return StaticLoadResult::COMPLETED;
 }
+
+*/
 
 
 }

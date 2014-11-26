@@ -34,6 +34,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
+/*
 StaticLoadFun StaticLoadFunctions::Get(StaticBinaryResponse)
 {
 	return &StaticLoader::LoadFixedSizeStartStop<Group1Var2>;
@@ -115,10 +116,7 @@ StaticLoadFun StaticLoadFunctions::Get(StaticTimeAndIntervalResponse)
 {
 	return &StaticLoader::LoadFixedSizeStartStop<Group50Var4>;	
 }
-
-
-
-
+*/
 
 }
 

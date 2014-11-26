@@ -51,7 +51,9 @@ public:
 		const opendnp3::OutstationStackConfig& config,
 	    const StackActionHandler& handler);
 
-	virtual opendnp3::Database& GetDatabase() override final;	
+	virtual opendnp3::StaticBufferView GetStaticBufferView() override final;
+
+	virtual opendnp3::IDatabase& GetDatabase() override final;
 
 	virtual void SetRestartIIN() override final;
 	
@@ -72,13 +74,12 @@ public:
 	opendnp3::ILinkSession* GetLinkContext();
 
 private:
+	Mutex mutex;
 	openpal::LogRoot root;
 	openpal::Action0 shutdownAction;
 	opendnp3::StackStatistics statistics;	
 	StackActionHandler handler;
-	opendnp3::TransportStack stack;	
-	Mutex mutex;
-	opendnp3::Database database;
+	opendnp3::TransportStack stack;		
 	opendnp3::Outstation outstation;
 };
 

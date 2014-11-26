@@ -24,6 +24,7 @@
 #include "opendnp3/LayerInterfaces.h"
 
 #include "opendnp3/outstation/OutstationContext.h"
+#include "opendnp3/outstation/StaticBufferView.h"
 
 namespace opendnp3
 {
@@ -32,13 +33,14 @@ class Outstation : public IUpperLayer
 {
 	public:
 
-	Outstation(	const OutstationConfig& config,
+	Outstation(		const OutstationConfig& config,
+					const DatabaseTemplate& dbTemplate,
+					openpal::IMutex* pDBMutex,
 					openpal::IExecutor& executor, 
 					openpal::LogRoot& root, 
 					ILowerLayer& lower,
 					ICommandHandler& commandHandler,
-					IOutstationApplication& application,
-					Database& database);
+					IOutstationApplication& application);
 	
 	/// ----- Implement IUpperLayer ------
 
@@ -50,14 +52,17 @@ class Outstation : public IUpperLayer
 	
 	virtual void OnSendResult(bool isSucccess) override final;
 
+	
 	/// ---- Other public members
 
 	void SetRestartIIN();
-	
-	
-	private:
 
-	// ------ Internal events ------			
+	IDatabase& GetDatabase();
+
+	StaticBufferView GetStaticBufferView();
+	
+	
+	private:			
 
 	OutstationContext context;
 

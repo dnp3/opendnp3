@@ -30,11 +30,10 @@ namespace opendnp3
 OutstationTestObject::OutstationTestObject(const OutstationConfig& config, const DatabaseTemplate& dbTemplate) :
 	log(),
 	exe(),
-	lower(log.root),		
-	db(dbTemplate),
+	lower(log.root),			
 	cmdHandler(CommandStatus::SUCCESS),
 	application(),
-	outstation(config, exe, log.root, lower, cmdHandler, application, db)
+	outstation(config, dbTemplate, nullptr, exe, log.root, lower, cmdHandler, application)
 {
 	lower.SetUpperLayer(outstation);
 }

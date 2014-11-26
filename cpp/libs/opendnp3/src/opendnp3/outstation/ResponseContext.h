@@ -23,7 +23,7 @@
 
 #include <openpal/util/Uncopyable.h>
 
-#include "opendnp3/app/StaticRange.h"
+#include "opendnp3/app/Range.h"
 #include "opendnp3/app/APDUResponse.h"
 
 #include  "opendnp3/outstation/StaticResponseContext.h"
@@ -42,25 +42,21 @@ class ResponseContext : private openpal::Uncopyable
 
 public:
 
-	ResponseContext(Database& database, OutstationEventBuffer& buffer, const OutstationParams* pParams, const StaticResponseConfig& staticConfig, const EventResponseConfig& eventConfig);
+	ResponseContext();
 
 	IINField ReadAllObjects(const GroupVariationRecord& record);
 	IINField ReadRange(const GroupVariationRecord& record, const Range& range);
 	IINField ReadCount(const GroupVariationRecord& record, uint32_t count);
 
-	void Reset();
+	void Reset();	
 
-	bool IsComplete() const;
-
-	AppControlField LoadSolicited(HeaderWriter& writer);
+	AppControlField LoadResponse(HeaderWriter& writer);
 
 private:
 
 	static AppControlField GetControl(bool fir, bool fin, bool hasEvents);
 
-	uint16_t fragmentCount;
-	StaticResponseContext staticContext;
-	EventResponseContext eventContext;
+	uint16_t fragmentCount;	
 };
 
 }

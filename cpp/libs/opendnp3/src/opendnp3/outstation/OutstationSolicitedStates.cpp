@@ -179,8 +179,9 @@ OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnConfirm(Out
 		pContext->CancelConfirmTimer();			
 		pContext->eventBuffer.Clear();
 
-		if (pContext->rspContext.IsComplete())
+		if (true) //TODO
 		{
+			assert(false);
 			return &OutstationSolicitedStateIdle::Inst();			
 		}
 		else 

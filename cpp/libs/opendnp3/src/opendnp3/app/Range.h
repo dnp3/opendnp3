@@ -32,33 +32,49 @@ class Range
 {
 public:
 
-	// TODO - Remove this?
-	static Range FromCount(uint16_t count)
+	static Range From(uint16_t start, uint16_t stop)
 	{
-		assert(count > 0);
-		return Range(0, count - 1);
+		return Range(start, stop);
 	}
-    
+
+	static Range Invalid()
+	{
+		return Range(1, 0);
+	}
+
+
+	Range() : start(1), stop(0)
+	{}
+   	
+	uint32_t Count() const
+	{
+		return (stop - start) + 1;
+	}
+
+	bool IsValid() const
+	{
+		return start <= stop;
+	}
+
+	bool IsOneByte() const
+	{
+		return IsValid() && (start <= 255) && (stop <= 255);
+	}
+	
+	uint16_t start;
+	uint16_t stop;
+
+private:
+
 	Range(uint16_t index_) :
-        start(index_),
-        stop(index_)
+		start(index_),
+		stop(index_)
 	{}
 
 	Range(uint16_t start_, uint16_t stop_) :
 		start(start_),
 		stop(stop_)
 	{}
-
-	uint32_t Count() const
-	{
-		return (stop - start) + 1;
-	}
-
-	Range() : start(0), stop(0)
-	{}
-
-	uint16_t start;
-	uint16_t stop;
 };
 
 }

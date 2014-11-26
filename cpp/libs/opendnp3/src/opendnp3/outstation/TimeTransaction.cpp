@@ -24,6 +24,7 @@ using namespace openpal;
 
 namespace opendnp3
 {
+
 TimeTransaction::TimeTransaction(IDatabase& database, UTCTimestamp timestamp_) :
 	Transaction(database),
 	pDatabase(&database),

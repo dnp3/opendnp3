@@ -22,7 +22,7 @@
 #ifndef OPENDNP3_OUTSTATIONEVENTBUFFER_H
 #define OPENDNP3_OUTSTATIONEVENTBUFFER_H
 
-#include "opendnp3/outstation/IEventBuffer.h"
+#include "opendnp3/outstation/IEventReceiver.h"
 #include "opendnp3/outstation/SelectionCriteria.h"
 #include "opendnp3/outstation/EventCount.h"
 #include "opendnp3/outstation/SelectionWriter.h"
@@ -47,7 +47,8 @@ namespace opendnp3
 	tracking to avoid looping over the SOE list when there are no more events matching
 	the selection criteria.
 */
-class OutstationEventBuffer : public IEventBuffer
+
+class OutstationEventBuffer : public IEventReceiver
 {
 	friend class SelectionWriter;
 

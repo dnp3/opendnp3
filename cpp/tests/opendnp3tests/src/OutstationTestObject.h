@@ -26,6 +26,8 @@
 #include <opendnp3/outstation/Outstation.h>
 #include <opendnp3/outstation/Database.h>
 
+#include <functional>
+
 #include "MockExecutor.h"
 #include "LogTester.h"
 #include "MockCommandHandler.h"
@@ -58,11 +60,11 @@ public:
 	uint32_t AdvanceTime(const openpal::TimeDuration& td);	
 
 	LogTester log;
-
-	template <class Apply>
-	uint32_t Transaction(const Apply& apply)
+	
+	uint32_t Transaction(const std::function<void (IDatabase&)>& apply)
 	{
 		{
+			auto& db = outstation.GetDatabase();
 			opendnp3::Transaction tx(db);
 			apply(db);
 		}
@@ -75,12 +77,9 @@ private:
 
 public:
 
-	MockLowerLayer lower;
-	Database db;
+	MockLowerLayer lower;	
 	MockCommandHandler cmdHandler;
 	MockOutstationApplication application;
-
-private:
 	Outstation outstation;	
 };
 

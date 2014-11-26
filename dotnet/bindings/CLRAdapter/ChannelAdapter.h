@@ -42,7 +42,7 @@ namespace Automatak
 
 				asiodnp3::IChannel* pChannel;
 
-				static void ApplyDatabaseSettings(opendnp3::Database& database, DatabaseTemplate^ dbTemplate);
+				static void ApplyDatabaseSettings(opendnp3::StaticBufferView view, DatabaseTemplate^ dbTemplate);
 
 				template <class Source, class Target>
 				static void ApplyClassSettings(Source^ source, Target& target)
@@ -50,14 +50,10 @@ namespace Automatak
 					int i = 0;
 					for each(auto src in source)
 					{
-						if (target.values.Contains(i))
+						if (target.Contains(i))
 						{
-							target.values[i].current.quality = src->quality;
-						}
-
-						if (target.metadata.Contains(i))
-						{
-							target.metadata[i].clazz = (opendnp3::PointClass) src->pointClass;
+							target[i].currentValue.quality = src->quality;
+							target[i].metadata.clazz = (opendnp3::PointClass) src->pointClass;
 						}
 
 						++i;
@@ -70,16 +66,12 @@ namespace Automatak
 					int i = 0;
 					for each(auto src in source)
 					{
-						if (target.values.Contains(i))
+						if (target.Contains(i))
 						{
-							target.values[i].current.quality = src->quality;
-						}
-
-						if (target.metadata.Contains(i))
-						{
-							target.metadata[i].clazz = (opendnp3::PointClass) src->pointClass;
-							target.metadata[i].deadband = src->deadband;
-						}
+							target[i].currentValue.quality = src->quality;
+							target[i].metadata.clazz = (opendnp3::PointClass) src->pointClass;
+							target[i].metadata.deadband = src->deadband;
+						}						
 
 						++i;
 					}

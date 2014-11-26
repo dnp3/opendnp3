@@ -29,7 +29,7 @@
 namespace opendnp3
 {
 
-class MockEventBuffer : public IEventBuffer
+class MockEventBuffer : public IEventReceiver
 {
 public:
 
@@ -80,9 +80,12 @@ public:
 class DatabaseTestObject
 {
 public:
-	DatabaseTestObject(const DatabaseTemplate& dbTemplate) : db(dbTemplate)
+	
+	DatabaseTestObject(const DatabaseTemplate& dbTemplate) : 
+		buffer(),
+		db(dbTemplate, buffer, nullptr)
 	{
-		db.SetEventBuffer(buffer);
+		
 	}
 
 

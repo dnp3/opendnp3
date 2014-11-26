@@ -25,6 +25,8 @@
 #include "opendnp3/gen/StaticTimeAndIntervalResponse.h"
 #include "opendnp3/gen/StaticTypeBitmask.h"
 
+#include "opendnp3/app/EventMetadata.h"
+
 namespace opendnp3
 {
 
@@ -51,7 +53,8 @@ public:
 
 	const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::TimeAndInterval;
 
-	typedef StaticTimeAndIntervalResponse StaticResponseEnum;
+	typedef StaticTimeAndIntervalResponse StaticVariation;
+	typedef EmptyMetadata MetadataType;
 };
 
 }

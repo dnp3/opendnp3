@@ -26,10 +26,9 @@
 
 #include <openpal/util/Uncopyable.h>
 
-#include "opendnp3/app/StaticRange.h"
+#include "opendnp3/app/Range.h"
 #include "opendnp3/app/APDUResponse.h"
 
-#include "opendnp3/outstation/Database.h"
 #include "opendnp3/outstation/StaticLoader.h"
 #include "opendnp3/outstation/OutstationParams.h"
 #include "opendnp3/outstation/StaticResponseConfig.h"
@@ -42,22 +41,23 @@ namespace opendnp3
  * Builds and tracks the state of multi-fragmented static responses to READ requests,
  * coordinating with the database.
  */
+	/*
 class StaticResponseContext : private openpal::Uncopyable
 {
-	class StaticRangeLoader: public StaticRange
+	
+	class StaticRangeLoader: public Range
 	{
 	public:
 
 		StaticRangeLoader() : pLoadFun(nullptr) {}
-		StaticRangeLoader(StaticLoadFun pLoadFun_, const StaticRange& rng): StaticRange(rng), pLoadFun(pLoadFun_) {}
+		StaticRangeLoader(StaticLoadFun pLoadFun_, const Range& rng): Range(rng), pLoadFun(pLoadFun_) {}
 
 		StaticLoadFun pLoadFun;
 	};
 
-
 public:
 
-	StaticResponseContext(Database& database, const OutstationParams* pParams, const StaticResponseConfig& config);
+	StaticResponseContext(Database& database);
 
 	void Reset();
 
@@ -72,15 +72,10 @@ public:
 
 private:
 
-	IINField QueueLoader(const StaticRangeLoader& loader);	
+	
+	//StaticLoadResult LoadStaticData(HeaderWriter& writer);
 
-	StaticLoadResult LoadStaticData(HeaderWriter& writer);
-
-	Database* pDatabase;
-	const OutstationParams* pParams;
-	StaticResponseConfig defaults;
-
-	openpal::Queue<StaticRangeLoader, uint8_t> staticResponseQueue;
+	// Database* pDatabase;	
 
 	template <class Target>
 	IINField QueueRange(const Range& range, typename Target::StaticResponseEnum enumeration)
@@ -103,6 +98,7 @@ private:
 		}		
 	}
 };
+*/
 
 }
 

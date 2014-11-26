@@ -101,9 +101,6 @@
     <ClInclude Include="src\APDUHelpers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\MultiplexingDataObserver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\MockLinkLayer.h">
       <Filter>Header Files\Mocks</Filter>
     </ClInclude>
@@ -326,9 +323,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\APDUHelpers.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\MultiplexingDataObserver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\TestLinkFrame.cpp">

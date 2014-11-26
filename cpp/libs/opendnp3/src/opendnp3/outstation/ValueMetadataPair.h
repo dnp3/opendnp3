@@ -24,21 +24,18 @@
 #include <assert.h>
 #include <openpal/container/Indexable.h>
 
-#include "opendnp3/app/PointIndexes.h"
-
 namespace opendnp3
 {
 
 template <class T, class U>
 struct ValueMetadataPair
 {
-	ValueMetadataPair(openpal::Indexable<T, uint16_t> aValues, openpal::Indexable<U, uint16_t> aMetadata, PointIndexes aIndexes) :
+	ValueMetadataPair(openpal::Indexable<T, uint16_t> values, openpal::Indexable<U, uint16_t> metadata) :
 		values(aValues),
 		metadata(aMetadata),
         indexes(aIndexes)
 	{
-		//assert(aValues.Size() == aMetadata.Size());
-        //assert(aValues.Size() <= aIndexes.IndexCount());
+		
 	}
 
 	bool Contains(uint16_t index) const
@@ -47,9 +44,7 @@ struct ValueMetadataPair
 	}
 
 	openpal::Indexable<T, uint16_t> values;
-	openpal::Indexable<U, uint16_t> metadata;
-    PointIndexes indexes;
-
+	openpal::Indexable<U, uint16_t> metadata;   
 };
 
 }

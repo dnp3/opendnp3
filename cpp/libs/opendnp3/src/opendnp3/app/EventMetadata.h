@@ -18,61 +18,60 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef OPENDNP3_EVENTMETADATA_H
+#define OPENDNP3_EVENTMETADATA_H
 
-#ifndef OPENDNP3_STATICRANGE_H
-#define OPENDNP3_STATICRANGE_H
-
-#include <cstdint>
-#include "GroupVariationRecord.h"
-#include "opendnp3/app/PointIndexes.h"
+#include "opendnp3/app/EventType.h"
+#include "opendnp3/gen/PointClass.h"
 
 namespace opendnp3
 {
 
-class StaticRange
-{
-public:
+// A null object for types that have no metadata
+struct EmptyMetadata {};
 
-	StaticRange();
-    StaticRange(const PointIndexes* points_);
-    
-	void ClipTo(const Range& borders);
+// Base class for different types of event metadata
+template <class Target>
+struct EventMetadata
+{	
+	PointClass clazz;
+	Target lastEvent;
+	typename Target::EventVariation eventVariation;
+	typename Target::StaticVariation staticVariation;
 
-	bool IsClipped() const
-	{
-		return clipped;
-	}
+	protected:
 
-	bool IsContainedBy(uint16_t size) const;
-
-	bool IsContainedByUInt8() const;
-
-	inline bool IsDefined() const
-	{
-		return start <= stop;
-	}
-
-	bool Advance();
-    
-    inline Range ToRange() const
-    {
-        return Range(start, stop);
-    }
-
-	uint16_t start;
-	uint16_t stop;    
-    uint16_t position;
-
-private:
-
-    const PointIndexes* indexes;
-    uint16_t range;
-	bool clipped;
-
-	static const uint16_t MIN;
-	static const uint16_t MAX;
+	EventMetadata() : clazz(PointClass::Class1)
+	{}
 };
 
-}
+template <class Target>
+struct SimpleEventMetadata : EventMetadata<Target>
+{
+	bool IsEvent(const Target& newValue) const
+	{
+		return lastEvent.IsEvent(newValue);		
+	}
+};
+
+//Structure for holding metadata information on points that have support deadbanding 
+template <class Target, class DeadbandType>
+struct DeadbandMetadata : EventMetadata<Target>
+{
+	DeadbandMetadata() : deadband(0)
+	{}
+
+	bool IsEvent(const Target& newValue) const
+	{
+		return lastEvent.IsEvent(newValue, deadband);
+	}
+
+	DeadbandType deadband;
+};
+
+
+} //end namespace
+
+
 
 #endif

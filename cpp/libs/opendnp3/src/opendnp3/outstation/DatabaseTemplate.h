@@ -23,106 +23,85 @@
 
 #include <cstdint>
 
-#include "opendnp3/app/PointIndexes.h"
-
 namespace opendnp3
 {
 
-// template for specifying the size of types in an outstation database
-// TODO - change these to 16-bit
 struct DatabaseTemplate
 {
-	static DatabaseTemplate BinaryOnly(uint32_t count)
+	static DatabaseTemplate BinaryOnly(uint16_t count)
 	{
 		return DatabaseTemplate(count);
 	}
 
-	static DatabaseTemplate DoubleBinaryOnly(uint32_t count)
+	static DatabaseTemplate DoubleBinaryOnly(uint16_t count)
 	{
 		return DatabaseTemplate(0, count);
 	}
 
-	static DatabaseTemplate AnalogOnly(uint32_t count)
+	static DatabaseTemplate AnalogOnly(uint16_t count)
 	{
 		return DatabaseTemplate(0, 0, count);
 	}
 
-	static DatabaseTemplate CounterOnly(uint32_t count)
+	static DatabaseTemplate CounterOnly(uint16_t count)
 	{
 		return DatabaseTemplate(0, 0, 0, count);
 	}
 
-	static DatabaseTemplate FrozenCounterOnly(uint32_t count)
+	static DatabaseTemplate FrozenCounterOnly(uint16_t count)
 	{
 		return DatabaseTemplate(0, 0, 0, 0, count);
 	}
 
-	static DatabaseTemplate BinaryOutputStatusOnly(uint32_t count)
+	static DatabaseTemplate BinaryOutputStatusOnly(uint16_t count)
 	{
 		return DatabaseTemplate(0, 0, 0, 0, 0, count);
 	}
 
-	static DatabaseTemplate AnalogOutputStatusOnly(uint32_t count)
+	static DatabaseTemplate AnalogOutputStatusOnly(uint16_t count)
 	{
 		return DatabaseTemplate(0, 0, 0, 0, 0, 0, count);
 	}
 
-	static DatabaseTemplate TimeAndIntervalOnly(uint32_t count)
+	static DatabaseTemplate TimeAndIntervalOnly(uint16_t count)
 	{
 		return DatabaseTemplate(0, 0, 0, 0, 0, 0, 0, count);
 	}
 
-	static DatabaseTemplate AllTypes(uint32_t count)
+	static DatabaseTemplate AllTypes(uint16_t count)
 	{
-		return DatabaseTemplate(count, count, count, count, count, count, count, count);
+		return DatabaseTemplate(count, count, count, count, count, count, count);
 	}
 
-	DatabaseTemplate(uint32_t numBinary_,
-	                 uint32_t numDoubleBinary_ = 0,
-	                 uint32_t numAnalog_ = 0,
-	                 uint32_t numCounter_ = 0,
-	                 uint32_t numFrozenCounter_ = 0,
-	                 uint32_t numBinaryOutputStatus_ = 0,
-	                 uint32_t numAnalogOutputStatus_ = 0,
-					 uint32_t numTimeAndInterval_ = 0) :
-    
-        binaryIndexes(numBinary_),
-        doubleBinaryIndexes(numDoubleBinary_),
-        analogIndexes(numAnalog_),
-        counterIndexes(numCounter_),
-        frozenCounterIndexes(numFrozenCounter_),
-        binaryOutputStatusIndexes(numBinaryOutputStatus_),
-        analogOutputStatusIndexes(numAnalogOutputStatus_),
-        timeAndIntervalIndexes(numTimeAndInterval_)
+	
+
+	DatabaseTemplate(uint16_t numBinary_ = 0,
+		uint16_t numDoubleBinary_ = 0,
+		uint16_t numAnalog_ = 0,
+		uint16_t numCounter_ = 0,
+		uint16_t numFrozenCounter_ = 0,
+		uint16_t numBinaryOutputStatus_ = 0,
+		uint16_t numAnalogOutputStatus_ = 0,
+		uint16_t numTimeAndInterval_ = 0) :
+
+		numBinary(numBinary_),
+		numDoubleBinary(numDoubleBinary_),
+		numAnalog(numAnalog_),
+		numCounter(numCounter_),
+		numFrozenCounter(numFrozenCounter_),
+		numBinaryOutputStatus(numBinaryOutputStatus_),
+		numAnalogOutputStatus(numAnalogOutputStatus_),
+		numTimeAndInterval(numTimeAndInterval_)
 	{}
-    
-    DatabaseTemplate(PointIndexes binaryIndexes_ = PointIndexes::EMPTYINDEXES,
-	                 PointIndexes doubleBinaryIndexes_ = PointIndexes::EMPTYINDEXES,
-	                 PointIndexes analogIndexes_ = PointIndexes::EMPTYINDEXES,
-	                 PointIndexes counterIndexes_ = PointIndexes::EMPTYINDEXES,
-	                 PointIndexes frozenCounterIndexes_ = PointIndexes::EMPTYINDEXES,
-	                 PointIndexes binaryOutputStatusIndexes_ = PointIndexes::EMPTYINDEXES,
-	                 PointIndexes analogOutputStatusIndexes_ = PointIndexes::EMPTYINDEXES,
-                     PointIndexes timeAndIntervalIndexes_ = PointIndexes::EMPTYINDEXES) :
-    
-	binaryIndexes(binaryIndexes_),
-    doubleBinaryIndexes(doubleBinaryIndexes_),
-    analogIndexes(analogIndexes_),
-    counterIndexes(counterIndexes_),
-    frozenCounterIndexes(frozenCounterIndexes_),
-    binaryOutputStatusIndexes(binaryOutputStatusIndexes_),
-    analogOutputStatusIndexes(analogOutputStatusIndexes_),
-    timeAndIntervalIndexes(timeAndIntervalIndexes_)
-	{}
-    
-    PointIndexes binaryIndexes;
-    PointIndexes doubleBinaryIndexes;
-    PointIndexes analogIndexes;
-    PointIndexes counterIndexes;
-    PointIndexes frozenCounterIndexes;
-    PointIndexes binaryOutputStatusIndexes;
-    PointIndexes analogOutputStatusIndexes;
-    PointIndexes timeAndIntervalIndexes;
+
+	uint16_t numBinary;
+	uint16_t numDoubleBinary;
+	uint16_t numAnalog;
+	uint16_t numCounter;
+	uint16_t numFrozenCounter;
+	uint16_t numBinaryOutputStatus;
+	uint16_t numAnalogOutputStatus;
+	uint16_t numTimeAndInterval;
 };
 
 }

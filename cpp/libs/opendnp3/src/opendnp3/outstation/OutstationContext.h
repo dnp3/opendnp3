@@ -29,7 +29,6 @@
 #include <openpal/container/Settable.h>
 
 #include "opendnp3/LayerInterfaces.h"
-#include "opendnp3/outstation/Database.h"
 #include "opendnp3/outstation/ResponseContext.h"
 #include "opendnp3/outstation/OutstationConfig.h"
 #include "opendnp3/app/IINField.h"
@@ -52,12 +51,13 @@ class OutstationContext
 	public:		
 
 	OutstationContext(	const OutstationConfig& config,
+						const DatabaseTemplate& dbTemplate,
+						openpal::IMutex* pDBMutex,
 						openpal::IExecutor& executor,
 						openpal::LogRoot& root, 
 						ILowerLayer& lower,
 						ICommandHandler& commandHandler,
-						IOutstationApplication& application,
-						Database& database);
+						IOutstationApplication& application);
 
 	// ------ Unchanging variables and self managing variables -------
 
@@ -66,9 +66,9 @@ class OutstationContext
 	openpal::Logger logger;
 	openpal::IExecutor* pExecutor;	
 	ICommandHandler* pCommandHandler;
-	IOutstationApplication* pApplication;
-	Database* pDatabase;
+	IOutstationApplication* pApplication;	
 	OutstationEventBuffer eventBuffer;
+	Database database;
 
 	// ------ Dynamic "state", i.e. things that must be managed or cleanup on close ------
 	

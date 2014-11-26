@@ -47,21 +47,23 @@ namespace opendnp3
 
 OutstationContext::OutstationContext(
 		const OutstationConfig& config,
+		const DatabaseTemplate& dbTemplate,
+		openpal::IMutex* pDBMutex,
 		IExecutor& executor,
 		LogRoot& root,
 		ILowerLayer& lower,
 		ICommandHandler& commandHandler,
-		IOutstationApplication& application,
-		Database& database) :
+		IOutstationApplication& application
+		) :
 	
 	params(config.params),
 	eventConfig(config.defaultEventResponses),
 	logger(root.GetLogger()),	
 	pExecutor(&executor),	
 	pCommandHandler(&commandHandler),
-	pApplication(&application),
-	pDatabase(&database),
+	pApplication(&application),	
 	eventBuffer(config.eventBufferConfig),
+	database(dbTemplate, eventBuffer, pDBMutex),
 	isOnline(false),
 	pSolicitedState(&OutstationSolicitedStateIdle::Inst()),
 	pUnsolicitedState(&OutstationUnsolicitedStateIdle::Inst()),
@@ -76,15 +78,13 @@ OutstationContext::OutstationContext(
 	expectedSolConfirmSeq(0),
 	expectedUnsolConfirmSeq(0),
 	completedNullUnsol(false),	
-	rspContext(database, eventBuffer, &params, config.defaultStaticResponses, config.defaultEventResponses),
 	pLower(&lower),
 	rxBuffer(params.maxRxFragSize),
 	solTxBuffer(params.maxTxFragSize),
 	unsolTxBuffer(params.maxTxFragSize)
-{
-	pDatabase->SetEventBuffer(eventBuffer);
+{	
 	staticIIN.SetBit(IINBit::DEVICE_RESTART);	
-		
+
 	auto notify = [this]() { this->CheckForTaskStart(); };
 	auto post = [notify, this] { pExecutor->PostLambda(notify); };
 	database.SetEventHandler(Action0::Bind(post));
@@ -399,8 +399,8 @@ OutstationSolicitedStateBase* OutstationContext::ContinueMultiFragResponse(uint8
 	auto response = this->StartNewSolicitedResponse();
 	auto writer = response.GetWriter();
 	response.SetFunction(FunctionCode::RESPONSE);	
-	Transaction tx(this->pDatabase);	
-	auto control = this->rspContext.LoadSolicited(writer);
+	Transaction tx(database);	
+	auto control = this->rspContext.LoadResponse(writer);
 	control.SEQ = seq;
 	expectedSolConfirmSeq = seq;
 	response.SetControl(control);
@@ -484,7 +484,7 @@ void OutstationContext::CheckForUnsolicited()
 				{
 					// even though we're not loading static data, we need to lock 
 					// the database since it updates the event buffer					
-					Transaction tx(pDatabase);					
+					Transaction tx(database);					
 					auto writer = eventBuffer.Iterate();
 					writer.WriteAllEvents(criteria, objectWriter);					
 				}
@@ -558,9 +558,8 @@ Pair<IINField, AppControlField> OutstationContext::HandleRead(const openpal::Rea
 		// Do a transaction on the database (lock) for multi-threaded environments
 		// if the request contained static variations, we double buffer (copy) the entire static database.
 		// this ensures that multi-fragmented responses see a consistent snapshot of the state
-		Transaction tx(pDatabase);
-		pDatabase->DoubleBuffer();
-		auto control = rspContext.LoadSolicited(writer);		
+		Transaction tx(database);		
+		auto control = rspContext.LoadResponse(writer);
 		return Pair<IINField, AppControlField>(handler.Errors(), control);
 	}
 	else
@@ -744,7 +743,7 @@ IINField OutstationContext::HandleAssignClass(const openpal::ReadOnlyBuffer& obj
 {
 	if (pApplication->SupportsAssignClass())
 	{
-		AssignClassHandler handler(logger, *pExecutor, *pApplication, *pDatabase);
+		AssignClassHandler handler(logger, *pExecutor, *pApplication, database);
 		auto result = APDUParser::ParseTwoPass(objects, &handler, &logger, APDUParser::Context(false));
 		if (result == APDUParser::Result::OK)
 		{

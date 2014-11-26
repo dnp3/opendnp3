@@ -29,7 +29,7 @@
 #include "opendnp3/app/AnalogOutput.h"
 #include "opendnp3/app/IndexedValue.h"
 #include "opendnp3/app/OctetString.h"
-#include "opendnp3/app/StaticRange.h"
+#include "opendnp3/app/Range.h"
 
 #include "opendnp3/gen/QualifierCode.h"
 

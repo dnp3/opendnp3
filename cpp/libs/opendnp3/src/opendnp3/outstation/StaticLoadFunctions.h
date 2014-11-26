@@ -32,6 +32,7 @@ namespace opendnp3
  * Reads a outstation config object and and translates the configuration to
  * singletons.
  */
+/*
 class StaticLoadFunctions : openpal::PureStatic
 {
 public:
@@ -46,6 +47,7 @@ public:
 	static StaticLoadFun Get(StaticTimeAndIntervalResponse rsp);
 
 };
+*/
 
 }
 

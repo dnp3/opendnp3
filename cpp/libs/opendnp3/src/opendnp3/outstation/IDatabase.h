@@ -39,12 +39,13 @@ exception-safe Transaction object.
 \code
 {
 	Transaction t(pDatabase);
-	pLoader->Update(Analog(12), 3);
-	pLoader->Update(Binary(true), 1);
+	pDatabase->Update(Analog(12), 3);
+	pDatabase->Update(Binary(true), 1);
 }
 \endcode
 
 */
+
 class IDatabase : public ITransactable
 {
 public:
@@ -56,56 +57,56 @@ public:
 	* @param meas measurement to be processed
 	* @param index index of the measurement
 	*/
-	virtual void Update(const Binary& meas, uint16_t index) = 0;
+	virtual bool Update(const Binary& meas, uint16_t index) = 0;
 
 	/**
 	* Update a DoubleBitBinary measurement, must have transaction started
 	* @param meas measurement to be processed
 	* @param index index of the measurement
 	*/
-	virtual void Update(const DoubleBitBinary& meas, uint16_t index) = 0;
+	virtual bool Update(const DoubleBitBinary& meas, uint16_t index) = 0;
 
 	/**
 	* Update an Analog measurement, must have transaction started
 	* @param meas measurement to be processed
 	* @param index index of the measurement
 	*/
-	virtual void Update(const Analog& meas, uint16_t index) = 0;
+	virtual bool Update(const Analog& meas, uint16_t index) = 0;
 
 	/**
 	* Update a Counter measurement, must have transaction started
 	* @param meas measurement to be processed
 	* @param index index of the measurement
 	*/
-	virtual void Update(const Counter& meas, uint16_t index) = 0;
+	virtual bool Update(const Counter& meas, uint16_t index) = 0;
 
 	/**
 	* Update a FrozenCounter measurement, must have transaction started
 	* @param meas measurement to be processed
 	* @param index index of the measurement
 	*/
-	virtual void Update(const FrozenCounter& meas, uint16_t index) = 0;
+	virtual bool Update(const FrozenCounter& meas, uint16_t index) = 0;
 
 	/**
 	* Update a BinaryOutputStatus measurement, must have transaction started
 	* @param meas measurement to be processed
 	* @param index index of the measurement
 	*/
-	virtual void Update(const BinaryOutputStatus& meas, uint16_t index) = 0;
+	virtual bool Update(const BinaryOutputStatus& meas, uint16_t index) = 0;
 
 	/**
 	* Update a AnalogOutputStatus measurement, must have transaction started
 	* @param meas measurement to be processed
 	* @param index index of the measurement
 	*/
-	virtual void Update(const AnalogOutputStatus& meas, uint16_t index) = 0;
+	virtual bool Update(const AnalogOutputStatus& meas, uint16_t index) = 0;
 
 	/**
 	* Update a TimeAndInterval value, must have transaction started
 	* @param meas measurement to be processed
 	* @param index index of the measurement
 	*/
-	virtual void Update(const TimeAndInterval& meas, uint16_t index) = 0;
+	virtual bool Update(const TimeAndInterval& meas, uint16_t index) = 0;
 
 };
 

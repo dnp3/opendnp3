@@ -37,19 +37,23 @@ OutstationStackImpl::OutstationStackImpl(
     const OutstationStackConfig& config,
     const StackActionHandler& handler_) :	
 	
+	mutex(),
 	root(root_, id),
 	handler(handler_),
-	stack(root, &executor, config.outstation.params.maxRxFragSize, &statistics, config.link),	
-	mutex(),
-	database(config.dbTemplate, &mutex),
-	outstation(config.outstation, executor, root, stack.transport, commandHandler, application, database)
+	stack(root, &executor, config.outstation.params.maxRxFragSize, &statistics, config.link),		
+	outstation(config.outstation, config.dbTemplate, &mutex, executor, root, stack.transport, commandHandler, application)
 {
 	stack.transport.SetAppLayer(&outstation);
 }
 
-opendnp3::Database& OutstationStackImpl::GetDatabase()
+opendnp3::StaticBufferView OutstationStackImpl::GetStaticBufferView()
 {
-	return database;
+	return outstation.GetStaticBufferView();
+}
+
+opendnp3::IDatabase& OutstationStackImpl::GetDatabase()
+{
+	return outstation.GetDatabase();
 }
 
 void OutstationStackImpl::SetRestartIIN()

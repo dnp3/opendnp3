@@ -31,9 +31,9 @@ using namespace openpal;
 namespace opendnp3
 {
 
-Database::Database(const DatabaseTemplate& temp, openpal::IMutex* pMutex_) :
-	buffers(temp),
-	pEventBuffer(nullptr),
+Database::Database(const DatabaseTemplate& dbTemplate, IEventReceiver& eventReceiver, openpal::IMutex* pMutex_) :
+	staticBuffers(dbTemplate),
+	pEventReceiver(&eventReceiver),
 	pMutex(pMutex_),
 	transactionHasEvents(false)
 {
@@ -55,243 +55,103 @@ void Database::End()
 	openpal::CriticalSection::Unlock(pMutex);
 }
 
-void Database::SetEventBuffer(IEventBuffer& eventBuffer)
+bool Database::Update(const Binary& value, uint16_t index)
 {
-	pEventBuffer = &eventBuffer;
+	return this->UpdateEvent(value, index, staticBuffers.binaries.ToIndexable());
 }
 
-void Database::DoubleBuffer()
+bool Database::Update(const DoubleBitBinary& value, uint16_t index)
 {
-	FreezeCollection(buffers.binaries.values);
-	FreezeCollection(buffers.doubleBinaries.values);
-	FreezeCollection(buffers.analogs.values);
-	FreezeCollection(buffers.counters.values);
-	FreezeCollection(buffers.frozenCounters.values);
-	FreezeCollection(buffers.binaryOutputStatii.values);
-	FreezeCollection(buffers.analogOutputStatii.values);
-	FreezeCollection(buffers.timeAndIntervals.values);
+	return this->UpdateEvent(value, index, staticBuffers.doubleBinaries.ToIndexable());
 }
 
-////////////////////////////////////////////////////
-// IDatabase* interface
-////////////////////////////////////////////////////
-
-void Database::Update(const Binary& value, uint16_t index)
+bool Database::Update(const Analog& value, uint16_t index)
 {
-	this->UpdateEvent(value, index, buffers.binaries);
+	return this->UpdateEvent(value, index, staticBuffers.analogs.ToIndexable());
 }
 
-void Database::Update(const DoubleBitBinary& value, uint16_t index)
+bool Database::Update(const Counter& value, uint16_t index)
 {
-	this->UpdateEvent(value, index, buffers.doubleBinaries);
+	return this->UpdateEvent(value, index, staticBuffers.counters.ToIndexable());
 }
 
-void Database::Update(const Analog& value, uint16_t index)
+bool Database::Update(const FrozenCounter& value, uint16_t index)
 {
-	this->UpdateEvent(value, index, buffers.analogs);
+	return this->UpdateEvent(value, index, staticBuffers.frozenCounters.ToIndexable());
 }
 
-void Database::Update(const Counter& value, uint16_t index)
+bool Database::Update(const BinaryOutputStatus& value, uint16_t index)
 {
-	this->UpdateEvent(value, index, buffers.counters);
+	return this->UpdateEvent(value, index, staticBuffers.binaryOutputStatii.ToIndexable());
 }
 
-void Database::Update(const FrozenCounter& value, uint16_t index)
+bool Database::Update(const AnalogOutputStatus& value, uint16_t index)
 {
-	this->UpdateEvent(value, index, buffers.frozenCounters);
+	return this->UpdateEvent(value, index, staticBuffers.analogOutputStatii.ToIndexable());
 }
 
-void Database::Update(const BinaryOutputStatus& value, uint16_t index)
-{
-	this->UpdateEvent(value, index, buffers.binaryOutputStatii);
-}
-
-void Database::Update(const AnalogOutputStatus& value, uint16_t index)
-{
-	this->UpdateEvent(value, index, buffers.analogOutputStatii);
-}
-
-void Database::Update(const TimeAndInterval& value, uint16_t index)
-{
-    auto position = buffers.timeAndIntervals.indexes.GetPosition(index);
-	if (buffers.timeAndIntervals.values.Contains(position))
+bool Database::Update(const TimeAndInterval& value, uint16_t index)
+{		
+	if (staticBuffers.timeAndIntervals.Contains(index))
 	{		
-		buffers.timeAndIntervals.values[position].Update(value);
+		staticBuffers.timeAndIntervals[index].currentValue = value;
+		return true;
+	}
+	else
+	{
+		return false;
 	}
 }
 
-
-template <>
-openpal::Indexable<DualValue<Binary>, uint16_t>& Database::Values<Binary>()
+bool Database::AssignClass(AssignClassType type, PointClass clazz, const Range& range)
 {
-	return buffers.binaries.values;
-}
-
-template <>
-openpal::Indexable<DualValue<DoubleBitBinary>, uint16_t>& Database::Values<DoubleBitBinary>()
-{
-	return  buffers.doubleBinaries.values;
-}
-
-template <>
-openpal::Indexable<DualValue<Analog>, uint16_t>& Database::Values<Analog>()
-{
-	return buffers.analogs.values;
-}
-
-template <>
-openpal::Indexable<DualValue<Counter>, uint16_t>& Database::Values<Counter>()
-{
-	return buffers.counters.values;
-}
-
-template <>
-openpal::Indexable<DualValue<FrozenCounter>, uint16_t>& Database::Values<FrozenCounter>()
-{
-	return buffers.frozenCounters.values;
-}
-
-template <>
-openpal::Indexable<DualValue<BinaryOutputStatus>, uint16_t>& Database::Values<BinaryOutputStatus>()
-{
-	return buffers.binaryOutputStatii.values;
-}
-
-template <>
-openpal::Indexable<DualValue<AnalogOutputStatus>, uint16_t>& Database::Values<AnalogOutputStatus>()
-{
-	return buffers.analogOutputStatii.values;
-}
-
-template <>
-openpal::Indexable<DualValue<TimeAndInterval>, uint16_t>& Database::Values<TimeAndInterval>()
-{
-	return buffers.timeAndIntervals.values;
-}
-
-template <>
-uint16_t Database::NumValues<Binary>() const
-{
-	return buffers.binaries.values.Size();
-}
-
-template <>
-uint16_t Database::NumValues<DoubleBitBinary>() const
-{
-	return buffers.doubleBinaries.values.Size();
-}
-
-template <>
-uint16_t Database::NumValues<Analog>() const
-{
-	return buffers.analogs.values.Size();
-}
-
-template <>
-uint16_t Database::NumValues<Counter>() const
-{
-	return buffers.counters.values.Size();
-}
-
-template <>
-uint16_t Database::NumValues<FrozenCounter>() const
-{
-	return buffers.frozenCounters.values.Size();
-}
-
-template <>
-uint16_t Database::NumValues<BinaryOutputStatus>() const
-{
-	return buffers.binaryOutputStatii.values.Size();
-}
-
-template <>
-uint16_t Database::NumValues<AnalogOutputStatus>() const
-{
-	return buffers.analogOutputStatii.values.Size();
-}
-
-template <>
-uint16_t Database::NumValues<TimeAndInterval>() const
-{
-	return buffers.timeAndIntervals.values.Size();
-}
-
-bool Database::AssignClass(AssignClassType type, PointClass clazz, const StaticRange& range)
-{
+	assert(false);
+	return true;
+	/*
 	Transaction tx(this);
 	switch (type)
 	{	
 		case(AssignClassType::BinaryInput) :
-			return AssignClassTo(buffers.binaries.metadata, clazz, range);
+			return AssignClassTo(buffers.binaryValues, clazz, range);
 		case(AssignClassType::DoubleBinaryInput) :
-			return AssignClassTo(buffers.doubleBinaries.metadata, clazz, range);
+			return AssignClassTo(buffers.doubleBinaryValues, clazz, range);
 		case(AssignClassType::Counter) :
-			return AssignClassTo(buffers.counters.metadata, clazz, range);
+			return AssignClassTo(buffers.counterValues, clazz, range);
 		case(AssignClassType::FrozenCounter) :
-			return AssignClassTo(buffers.frozenCounters.metadata, clazz, range);
+			return AssignClassTo(buffers.frozenCounterValues, clazz, range);
 		case(AssignClassType::AnalogInput) :
-			return AssignClassTo(buffers.analogs.metadata, clazz, range);
+			return AssignClassTo(buffers.analogValues, clazz, range);
 		case(AssignClassType::AnalogOutputStatus):
-			return AssignClassTo(buffers.analogOutputStatii.metadata, clazz, range);
+			return AssignClassTo(buffers.analogOutputStatusValues, clazz, range);
 		case(AssignClassType::BinaryOutputStatus) :
-			return AssignClassTo(buffers.binaryOutputStatii.metadata, clazz, range);		
+			return AssignClassTo(buffers.binaryOutputStatusValues, clazz, range);		
 		default:
 			return false;
 	}
+	*/
 }
 
-template <>
-StaticRange Database::FullRange<Binary>() const
-{
-    return &buffers.binaries.indexes;
-}
-
-template <>
-StaticRange Database::FullRange<DoubleBitBinary>() const
-{
-    return &buffers.doubleBinaries.indexes;
-}
-
-template <>
-StaticRange Database::FullRange<Analog>() const
-{
-    return &buffers.analogs.indexes;
-}
-
-template <>
-StaticRange Database::FullRange<Counter>() const
-{
-    return &buffers.counters.indexes;
-}
-
-template <>
-StaticRange Database::FullRange<FrozenCounter>() const
-{
-    return &buffers.frozenCounters.indexes;
-}
-
-template <>
-StaticRange Database::FullRange<BinaryOutputStatus>() const
-{
-    return &buffers.binaryOutputStatii.indexes;
-}
-
-template <>
-StaticRange Database::FullRange<AnalogOutputStatus>() const
-{
-    return &buffers.analogOutputStatii.indexes;
-}
-    
-template <>
-StaticRange Database::FullRange<TimeAndInterval>() const
-{
-    return &buffers.timeAndIntervals.indexes;
-}
-    
 void Database::SetEventHandler(const Action0& callback)
 {
 	onEventAction.Set(callback);
+}
+
+bool Database::ConvertToEventClass(PointClass pc, EventClass& ec)
+{
+	switch (pc)
+	{
+	case(PointClass::Class1) :
+		ec = EventClass::EC1;
+		return true;
+	case(PointClass::Class2) :
+		ec = EventClass::EC2;
+		return true;
+	case(PointClass::Class3) :
+		ec = EventClass::EC3;
+		return true;
+	default:
+		return false;
+	}
 }
 
 

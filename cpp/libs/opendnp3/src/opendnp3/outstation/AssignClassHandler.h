@@ -24,6 +24,7 @@
 #include "opendnp3/app/APDUHandlerBase.h"
 
 #include "opendnp3/gen/AssignClassType.h"
+
 #include "opendnp3/outstation/Database.h"
 #include "opendnp3/outstation/IOutstationApplication.h"
 
@@ -37,7 +38,7 @@ class AssignClassHandler : public APDUHandlerBase
 {
 public:
 
-	AssignClassHandler(openpal::Logger& logger, openpal::IExecutor& executor, IOutstationApplication& application, Database& database);	
+	AssignClassHandler(openpal::Logger& logger, openpal::IExecutor& executor, IOutstationApplication& application, Database& db);	
 
 	virtual void _AllObjects(const HeaderRecord& record) override final;
 
@@ -49,7 +50,7 @@ private:
 
 	bool IsExpectingAssignment();
 
-	void ProcessAssignment(AssignClassType type, PointClass clazz, const StaticRange& range);
+	void ProcessAssignment(AssignClassType type, PointClass clazz, const Range& range);
 	
 	int32_t classHeader;
 	PointClass clazz;
