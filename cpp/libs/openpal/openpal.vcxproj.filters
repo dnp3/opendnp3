@@ -55,12 +55,6 @@
     <ClInclude Include="src\openpal\channel\IPhysicalLayerCallbacks.h">
       <Filter>Header\channel</Filter>
     </ClInclude>
-    <ClInclude Include="src\openpal\container\Indexable.h">
-      <Filter>Header\container</Filter>
-    </ClInclude>
-    <ClInclude Include="src\openpal\container\IndexableIterator.h">
-      <Filter>Header\container</Filter>
-    </ClInclude>
     <ClInclude Include="src\openpal\container\Pair.h">
       <Filter>Header\container</Filter>
     </ClInclude>
@@ -188,6 +182,12 @@
       <Filter>Header\container</Filter>
     </ClInclude>
     <ClInclude Include="src\openpal\container\ManagedPtr.h">
+      <Filter>Header\container</Filter>
+    </ClInclude>
+    <ClInclude Include="src\openpal\container\ArrayView.h">
+      <Filter>Header\container</Filter>
+    </ClInclude>
+    <ClInclude Include="src\openpal\container\ArrayViewIterator.h">
       <Filter>Header\container</Filter>
     </ClInclude>
   </ItemGroup>

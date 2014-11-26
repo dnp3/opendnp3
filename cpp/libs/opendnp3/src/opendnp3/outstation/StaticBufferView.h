@@ -26,7 +26,7 @@
 
 #include "opendnp3/outstation/MeasurementCell.h"
 
-#include <openpal/container/Indexable.h>
+#include <openpal/container/ArrayView.h>
 
 namespace opendnp3
 {
@@ -40,14 +40,14 @@ class StaticBufferView
 public:	
 
 	StaticBufferView(
-		openpal::Indexable<MeasurementCell<Binary>, uint16_t> binaries_,
-		openpal::Indexable<MeasurementCell<DoubleBitBinary>, uint16_t> doubleBinaries_,
-		openpal::Indexable<MeasurementCell<Analog>, uint16_t> analogs_,
-		openpal::Indexable<MeasurementCell<Counter>, uint16_t> counters_,
-		openpal::Indexable<MeasurementCell<FrozenCounter>, uint16_t> frozenCounters_,
-		openpal::Indexable<MeasurementCell<BinaryOutputStatus>, uint16_t> binaryOutputStatii_,
-		openpal::Indexable<MeasurementCell<AnalogOutputStatus>, uint16_t> analogOutputStatii_,
-		openpal::Indexable<MeasurementCell<TimeAndInterval>, uint16_t> timeAndIntervals_
+		openpal::ArrayView<MeasurementCell<Binary>, uint16_t> binaries_,
+		openpal::ArrayView<MeasurementCell<DoubleBitBinary>, uint16_t> doubleBinaries_,
+		openpal::ArrayView<MeasurementCell<Analog>, uint16_t> analogs_,
+		openpal::ArrayView<MeasurementCell<Counter>, uint16_t> counters_,
+		openpal::ArrayView<MeasurementCell<FrozenCounter>, uint16_t> frozenCounters_,
+		openpal::ArrayView<MeasurementCell<BinaryOutputStatus>, uint16_t> binaryOutputStatii_,
+		openpal::ArrayView<MeasurementCell<AnalogOutputStatus>, uint16_t> analogOutputStatii_,
+		openpal::ArrayView<MeasurementCell<TimeAndInterval>, uint16_t> timeAndIntervals_
 		) :
 		binaries(binaries_),
 		doubleBinaries(doubleBinaries_),
@@ -61,14 +61,14 @@ public:
 
 	//  ----------- Accessors for the raw underlying storage -----------------------
 
-	openpal::Indexable<MeasurementCell<Binary>, uint16_t> binaries;
-	openpal::Indexable<MeasurementCell<DoubleBitBinary>, uint16_t> doubleBinaries;
-	openpal::Indexable<MeasurementCell<Analog>, uint16_t> analogs;
-	openpal::Indexable<MeasurementCell<Counter>, uint16_t> counters;
-	openpal::Indexable<MeasurementCell<FrozenCounter>, uint16_t> frozenCounters;
-	openpal::Indexable<MeasurementCell<BinaryOutputStatus>, uint16_t> binaryOutputStatii;
-	openpal::Indexable<MeasurementCell<AnalogOutputStatus>, uint16_t> analogOutputStatii;
-	openpal::Indexable<MeasurementCell<TimeAndInterval>, uint16_t> timeAndIntervals;	
+	openpal::ArrayView<MeasurementCell<Binary>, uint16_t> binaries;
+	openpal::ArrayView<MeasurementCell<DoubleBitBinary>, uint16_t> doubleBinaries;
+	openpal::ArrayView<MeasurementCell<Analog>, uint16_t> analogs;
+	openpal::ArrayView<MeasurementCell<Counter>, uint16_t> counters;
+	openpal::ArrayView<MeasurementCell<FrozenCounter>, uint16_t> frozenCounters;
+	openpal::ArrayView<MeasurementCell<BinaryOutputStatus>, uint16_t> binaryOutputStatii;
+	openpal::ArrayView<MeasurementCell<AnalogOutputStatus>, uint16_t> analogOutputStatii;
+	openpal::ArrayView<MeasurementCell<TimeAndInterval>, uint16_t> timeAndIntervals;	
 };
 
 }

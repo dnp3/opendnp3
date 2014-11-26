@@ -18,10 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENPAL_INDEXABLEITERATOR_H
-#define OPENPAL_INDEXABLEITERATOR_H
-
-#include "openpal/Configure.h"
+#ifndef OPENPAL_ARRAYVIEWITERATOR_H
+#define OPENPAL_ARRAYVIEWITERATOR_H
 
 #include <assert.h>
 
@@ -29,25 +27,25 @@ namespace openpal
 {
 
 template <class ValueType, class IndexType>
-class Indexable;
+class ArrayView;
 
 template <class ValueType, class IndexType>
-class IndexableIterator
+class ArrayViewIterator
 {
 public:
 
-	IndexableIterator(const Indexable<ValueType, IndexType>& aIndexable, IndexType aPosition, IndexType aStop) :
+	ArrayViewIterator(const ArrayView<ValueType, IndexType>& view_, IndexType position_, IndexType stop_) :
 		empty(false),
-		indexable(aIndexable),
-		position(aPosition),
-		stop(aStop)
+		view(view_),
+		position(position_),
+		stop(stop_)
 	{}
 
-	IndexableIterator(const Indexable<ValueType, IndexType>& aIndexable) :
-		empty(aIndexable.IsEmpty()),
-		indexable(aIndexable),
+	ArrayViewIterator(const ArrayView<ValueType, IndexType>& view_) :
+		empty(view_.IsEmpty()),
+		view(view_),
 		position(0),
-		stop(aIndexable.IsEmpty() ? 0 : aIndexable.Size() - 1)
+		stop(view.IsEmpty() ? 0 : view.Size() - 1)
 	{}
 
 	inline const IndexType Index() const
@@ -93,7 +91,7 @@ public:
 private:
 
 	bool empty;
-	Indexable<ValueType, IndexType> indexable;
+	ArrayView<ValueType, IndexType> view;
 	IndexType position;
 	IndexType stop;
 };

@@ -18,31 +18,31 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENPAL_INDEXABLE_H
-#define OPENPAL_INDEXABLE_H
+#ifndef OPENPAL_ARRAYVIEW_H
+#define OPENPAL_ARRAYVIEW_H
 
 #include "HasSize.h"
 
-#include "IndexableIterator.h"
+#include "ArrayViewIterator.h"
 
 namespace openpal
 {
 
 /**
-* Acts as a functional facade around a buffer of a certain type
+* Acts as a safe facade around an underlying array
 */
 template <class ValueType, class IndexType>
-class Indexable : public HasSize<IndexType>
+class ArrayView : public HasSize<IndexType>
 {
 
 public:
 
-	static Indexable<ValueType, IndexType> Empty()
+	static ArrayView<ValueType, IndexType> Empty()
 	{
-		return Indexable(nullptr, 0);
+		return ArrayView(nullptr, 0);
 	}	
 
-	Indexable(ValueType* start, IndexType aSize) : HasSize<IndexType>(aSize), buffer(start)
+	ArrayView(ValueType* start, IndexType aSize) : HasSize<IndexType>(aSize), buffer(start)
 	{}
 
 	inline const bool Contains(IndexType index) const
@@ -53,17 +53,11 @@ public:
 	inline const bool Contains(IndexType start, IndexType stop) const
 	{
 		return (start < stop) && Contains(stop);
-	}
+	}	
 
-	IndexableIterator<ValueType, IndexType> Range(IndexType start, IndexType stop) const
+	ArrayViewIterator<ValueType, IndexType> FullRange() const
 	{
-		if(Contain(start, stop)) return IndexableIterator<ValueType, IndexType>(this, start, stop);
-		else return IndexableIterator<ValueType, IndexType>(Empty());
-	}
-
-	IndexableIterator<ValueType, IndexType> FullRange() const
-	{
-		return IndexableIterator<ValueType, IndexType>(*this);
+		return ArrayViewIterator<ValueType, IndexType>(*this);
 	}
 
 	inline ValueType& operator[](IndexType index)
@@ -72,7 +66,7 @@ public:
 		return buffer[index];
 	}
 
-	const ValueType& operator[](IndexType index) const
+	inline const ValueType& operator[](IndexType index) const
 	{
 		assert(index < this->size);
 		return buffer[index];
@@ -81,13 +75,19 @@ public:
 	template <class Action>
 	void foreach(const Action& action)
 	{
-		for(IndexType i = 0; i < this->size; ++i) action(buffer[i]);
+		for (IndexType i = 0; i < this->size; ++i)
+		{
+			action(buffer[i]);
+		}
 	}
 
 	template <class Action>
 	void foreachIndex(const Action& action)
 	{
-		for(IndexType i = 0; i < this->size; ++i) action(buffer[i], i);
+		for (IndexType i = 0; i < this->size; ++i)
+		{
+			action(buffer[i], i);
+		}
 	}
 
 private:

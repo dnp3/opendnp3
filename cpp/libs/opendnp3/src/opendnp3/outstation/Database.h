@@ -79,7 +79,7 @@ private:
 	static bool ConvertToEventClass(PointClass pc, EventClass& ec);	
 
 	template <class T>
-	bool UpdateEvent(const T& value, uint16_t index, openpal::Indexable<MeasurementCell<T>, uint16_t>& values);
+	bool UpdateEvent(const T& value, uint16_t index, openpal::ArrayView<MeasurementCell<T>, uint16_t>& values);
 
 	// ITransactable  functions, proxies to the given transactable
 	virtual void Start() override final;
@@ -87,7 +87,7 @@ private:
 };
 
 template <class T>
-bool Database::UpdateEvent(const T& value, uint16_t index, openpal::Indexable<MeasurementCell<T>, uint16_t>& values)
+bool Database::UpdateEvent(const T& value, uint16_t index, openpal::ArrayView<MeasurementCell<T>, uint16_t>& values)
 {	
 	if (values.Contains(index))
 	{

@@ -446,7 +446,7 @@ TEST_CASE(SUITE("ReadDiscontiguousIndexes"))
     points[1] = 4;
     points[2] = 5;
     
-	PointIndexes binaryIndexes(Indexable<uint32_t, uint32_t>(points, 3));
+	PointIndexes binaryIndexes(ArrayView<uint32_t, uint32_t>(points, 3));
 	OutstationTestObject t(config, DatabaseTemplate(binaryIndexes));
 	t.LowerLayerUp();
     

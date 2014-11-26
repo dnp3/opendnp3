@@ -21,7 +21,7 @@
 #ifndef OPENPAL_DYNAMICARRAY_H
 #define OPENPAL_DYNAMICARRAY_H
 
-#include "Indexable.h"
+#include "ArrayView.h"
 
 namespace openpal
 {
@@ -49,9 +49,9 @@ public:
 		for(IndexType i = 0; i < copy.Size(); ++i) buffer[i] = copy.buffer[i];
 	}
 
-	Indexable<ValueType, IndexType> ToIndexable()
+	ArrayView<ValueType, IndexType> ToIndexable()
 	{
-		return Indexable<ValueType, IndexType>(buffer, this->size);
+		return ArrayView<ValueType, IndexType>(buffer, this->size);
 	}
 
 	inline const bool Contains(IndexType index) const

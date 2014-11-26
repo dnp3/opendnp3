@@ -53,7 +53,7 @@ public:
 private:
 
 	template <class Target, class IndexType>
-	static StaticLoadResult LoadFixedSizeStartStopWithIterator(const openpal::Indexable<MeasurementCell<Target>, uint16_t>& values, RangeWriteIterator<IndexType, Target>& iterator, Range& range);
+	static StaticLoadResult LoadFixedSizeStartStopWithIterator(const openpal::ArrayView<MeasurementCell<Target>, uint16_t>& values, RangeWriteIterator<IndexType, Target>& iterator, Range& range);
 };
 
 template <class Serializer>
@@ -73,7 +73,7 @@ StaticLoadResult StaticLoader::LoadFixedSizeStartStop(HeaderWriter& writer, Rang
 }
 
 template <class Target, class IndexType>
-StaticLoadResult StaticLoader::LoadFixedSizeStartStopWithIterator(const openpal::Indexable<MeasurementCell<Target>, uint16_t>& values, RangeWriteIterator<IndexType, Target>& iterator, Range& range)
+StaticLoadResult StaticLoader::LoadFixedSizeStartStopWithIterator(const openpal::ArrayView<MeasurementCell<Target>, uint16_t>& values, RangeWriteIterator<IndexType, Target>& iterator, Range& range)
 {	
 	if(range.IsValid())
 	{

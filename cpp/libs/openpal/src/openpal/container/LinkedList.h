@@ -21,7 +21,7 @@
 #ifndef OPENPAL_LINKEDLIST_H
 #define OPENPAL_LINKEDLIST_H
 
-#include "Indexable.h"
+#include "ArrayView.h"
 
 #include "openpal/container/DynamicArray.h"
 

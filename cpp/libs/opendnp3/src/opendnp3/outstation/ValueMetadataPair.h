@@ -22,7 +22,7 @@
 #define OPENDNP3_VALUEMETADATAPAIR_H
 
 #include <assert.h>
-#include <openpal/container/Indexable.h>
+#include <openpal/container/ArrayView.h>
 
 namespace opendnp3
 {
@@ -30,7 +30,7 @@ namespace opendnp3
 template <class T, class U>
 struct ValueMetadataPair
 {
-	ValueMetadataPair(openpal::Indexable<T, uint16_t> values, openpal::Indexable<U, uint16_t> metadata) :
+	ValueMetadataPair(openpal::ArrayView<T, uint16_t> values, openpal::ArrayView<U, uint16_t> metadata) :
 		values(aValues),
 		metadata(aMetadata),
         indexes(aIndexes)
@@ -43,8 +43,8 @@ struct ValueMetadataPair
 		return indexes.Contains(index);
 	}
 
-	openpal::Indexable<T, uint16_t> values;
-	openpal::Indexable<U, uint16_t> metadata;   
+	openpal::ArrayView<T, uint16_t> values;
+	openpal::ArrayView<U, uint16_t> metadata;   
 };
 
 }
