@@ -50,17 +50,17 @@ public:
 		timeAndIntervals(dbTemplate.numTimeAndInterval)
 	{}	
 
-	StaticBufferView GetView()
+	StaticBufferView GetView() const
 	{
 		return StaticBufferView(
-			binaries.ToIndexable(),
-			doubleBinaries.ToIndexable(),
-			analogs.ToIndexable(),
-			counters.ToIndexable(),
-			frozenCounters.ToIndexable(),
-			binaryOutputStatii.ToIndexable(),
-			analogOutputStatii.ToIndexable(),
-			timeAndIntervals.ToIndexable()
+			binaries.ToView(),
+			doubleBinaries.ToView(),
+			analogs.ToView(),
+			counters.ToView(),
+			frozenCounters.ToView(),
+			binaryOutputStatii.ToView(),
+			analogOutputStatii.ToView(),
+			timeAndIntervals.ToView()
 		);
 	}	
 		

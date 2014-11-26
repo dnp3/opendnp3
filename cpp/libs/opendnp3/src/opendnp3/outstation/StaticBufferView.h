@@ -59,7 +59,7 @@ public:
 		timeAndIntervals(timeAndIntervals_)
 	{}
 
-	//  ----------- Accessors for the raw underlying storage -----------------------
+	//  ----------- Views of the underlying storage ---------
 
 	openpal::ArrayView<MeasurementCell<Binary>, uint16_t> binaries;
 	openpal::ArrayView<MeasurementCell<DoubleBitBinary>, uint16_t> doubleBinaries;

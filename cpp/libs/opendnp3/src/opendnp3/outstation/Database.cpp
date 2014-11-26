@@ -57,37 +57,37 @@ void Database::End()
 
 bool Database::Update(const Binary& value, uint16_t index)
 {
-	return this->UpdateEvent(value, index, staticBuffers.binaries.ToIndexable());
+	return this->UpdateEvent(value, index, staticBuffers.binaries.ToView());
 }
 
 bool Database::Update(const DoubleBitBinary& value, uint16_t index)
 {
-	return this->UpdateEvent(value, index, staticBuffers.doubleBinaries.ToIndexable());
+	return this->UpdateEvent(value, index, staticBuffers.doubleBinaries.ToView());
 }
 
 bool Database::Update(const Analog& value, uint16_t index)
 {
-	return this->UpdateEvent(value, index, staticBuffers.analogs.ToIndexable());
+	return this->UpdateEvent(value, index, staticBuffers.analogs.ToView());
 }
 
 bool Database::Update(const Counter& value, uint16_t index)
 {
-	return this->UpdateEvent(value, index, staticBuffers.counters.ToIndexable());
+	return this->UpdateEvent(value, index, staticBuffers.counters.ToView());
 }
 
 bool Database::Update(const FrozenCounter& value, uint16_t index)
 {
-	return this->UpdateEvent(value, index, staticBuffers.frozenCounters.ToIndexable());
+	return this->UpdateEvent(value, index, staticBuffers.frozenCounters.ToView());
 }
 
 bool Database::Update(const BinaryOutputStatus& value, uint16_t index)
 {
-	return this->UpdateEvent(value, index, staticBuffers.binaryOutputStatii.ToIndexable());
+	return this->UpdateEvent(value, index, staticBuffers.binaryOutputStatii.ToView());
 }
 
 bool Database::Update(const AnalogOutputStatus& value, uint16_t index)
 {
-	return this->UpdateEvent(value, index, staticBuffers.analogOutputStatii.ToIndexable());
+	return this->UpdateEvent(value, index, staticBuffers.analogOutputStatii.ToView());
 }
 
 bool Database::Update(const TimeAndInterval& value, uint16_t index)

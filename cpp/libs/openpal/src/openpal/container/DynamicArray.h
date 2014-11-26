@@ -49,7 +49,7 @@ public:
 		for(IndexType i = 0; i < copy.Size(); ++i) buffer[i] = copy.buffer[i];
 	}
 
-	ArrayView<ValueType, IndexType> ToIndexable()
+	ArrayView<ValueType, IndexType> ToView() const
 	{
 		return ArrayView<ValueType, IndexType>(buffer, this->size);
 	}
