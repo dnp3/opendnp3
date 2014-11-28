@@ -57,15 +57,10 @@ namespace Automatak
 
 			CommandResponse Conversions::ConvertCommandResponse(opendnp3::CommandResponse response)
 			{
-				auto result = ConvertCommandResult(response.GetResult());
+				auto result = (TaskCompletion) response.GetResult();
 				auto status = ConvertCommandStatus(response.GetStatus());
 				return CommandResponse(result, status);
-			}
-
-			UserTaskResult Conversions::ConvertCommandResult(opendnp3::UserTaskResult result)
-			{
-				return (UserTaskResult)result;
-			}
+			}			
 
 			CommandStatus Conversions::ConvertCommandStatus(opendnp3::CommandStatus status)
 			{

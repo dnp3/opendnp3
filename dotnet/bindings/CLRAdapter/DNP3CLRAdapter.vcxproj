@@ -183,6 +183,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="SOEHandlerAdapter.h" />
     <ClInclude Include="Stdafx.h" />
+    <ClInclude Include="TaskCallbackAdapter.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />

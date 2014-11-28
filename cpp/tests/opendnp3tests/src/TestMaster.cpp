@@ -23,8 +23,9 @@
 #include "MasterTestObject.h"
 #include "MeasurementComparisons.h"
 #include "HexConversions.h"
-#include "MockCommandCallback.h"
+#include "MockTaskCallback.h"
 #include "APDUHexBuilders.h"
+
 
 #include <opendnp3/app/APDUResponse.h>
 #include <opendnp3/app/APDUBuilders.h>
@@ -129,7 +130,7 @@ TEST_CASE(SUITE("TimeoutDuringStartup"))
 TEST_CASE(SUITE("SolicitedResponseTimeout"))
 {	
 	MasterTestObject t(NoStartupTasks());
-	auto scan = t.master.AddClassScan(ClassField::AllClasses(), TimeDuration::Seconds(5));
+	auto scan = t.master.AddClassScan(ClassField::AllClasses(), TimeDuration::Seconds(5), nullptr, -1);
 	t.master.OnLowerLayerUp();
 	
 	t.exe.RunMany();
@@ -167,7 +168,7 @@ TEST_CASE(SUITE("ClassScanCanRepeat"))
 	
 	t.exe.RunMany();
 
-	auto scan = t.master.AddClassScan(~0, TimeDuration::Seconds(10));	
+	auto scan = t.master.AddClassScan(~0, TimeDuration::Seconds(10));
 
 	REQUIRE(t.exe.RunMany() > 0);
 
@@ -409,7 +410,7 @@ TEST_CASE(SUITE("ReceiveIINinResponses"))
 	MasterTestObject t(params);
 	t.master.OnLowerLayerUp();
 
-	auto scan = t.master.AddClassScan(ClassField(~0), TimeDuration::Seconds(1));	
+	auto scan = t.master.AddClassScan(ClassField(~0), TimeDuration::Seconds(1));
 	REQUIRE(t.exe.RunMany() > 0);
 	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
 	t.master.OnSendResult(true);
@@ -469,14 +470,16 @@ TEST_CASE(SUITE("AdhocScanWorksWithUnsolicitedDisabled"))
 
 TEST_CASE(SUITE("AdhocScanFailsImmediatelyIfMasterOffline"))
 {
-	MasterParams params = NoStartupTasks();	
+	MasterParams params = NoStartupTasks();
 	MasterTestObject t(params);
 
-	t.master.ScanClasses(ClassField::AllEventClasses(), 10);
-	REQUIRE(t.application.taskEvents.size() == 1);
-	REQUIRE(t.application.taskEvents[0].first.id == 10);
-	REQUIRE(t.application.taskEvents[0].first.isUserAssigned);
-	REQUIRE(t.application.taskEvents[0].second == TaskState::FAILURE);
+	MockTaskCallback callback;
+	t.master.ScanClasses(ClassField::AllEventClasses(), &callback);
+
+	REQUIRE(callback.numStart == 0);
+	REQUIRE(callback.results.size() == 1);
+	REQUIRE(callback.results[0] == TaskCompletion::FAILURE_NO_COMMS);
+	REQUIRE(callback.numDestroyed == 1);
 }
 
 TEST_CASE(SUITE("MasterWritesTimeAndInterval"))
@@ -485,14 +488,16 @@ TEST_CASE(SUITE("MasterWritesTimeAndInterval"))
 	MasterTestObject t(params);
 	t.master.OnLowerLayerUp();
 
-	t.master.Write(TimeAndInterval(3, 4, IntervalUnits::Days), 7, 4);
+	MockTaskCallback callback;
+
+	t.master.Write(TimeAndInterval(3, 4, IntervalUnits::Days), 7, &callback);
 	REQUIRE(t.exe.RunMany() > 0);
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 02 32 04 28 01 00 07 00 03 00 00 00 00 00 04 00 00 00 05");
 	t.master.OnSendResult(true);	
 	t.SendToMaster("C0 81 00 00");
 	REQUIRE(t.lower.PopWriteAsHex() == "");
 
-	REQUIRE(t.application.taskEvents.size() == 2);
-	REQUIRE(t.application.taskEvents[0].second == TaskState::RUNNING);
-	REQUIRE(t.application.taskEvents[1].second == TaskState::SUCCESS);
+	REQUIRE(callback.numStart == 1);
+	REQUIRE(callback.results.size() == 1);
+	REQUIRE(callback.results[0] == TaskCompletion::SUCCESS);
 }

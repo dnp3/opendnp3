@@ -21,20 +21,18 @@
 #ifndef OPENDNP3_DISABLEUNSOLICITEDTASK_H
 #define OPENDNP3_DISABLEUNSOLICITEDTASK_H
 
-#include "opendnp3/master/NullResponseTask.h"
+#include "opendnp3/master/IMasterTask.h"
 #include "opendnp3/master/TaskPriority.h"
 
 namespace opendnp3
 {
 
-class DisableUnsolicitedTask : public NullResponseTask
+class DisableUnsolicitedTask : public IMasterTask
 {	
 
 public:	
 
-	DisableUnsolicitedTask(const MasterParams& params, openpal::Logger* pLogger_);	
-
-	virtual TaskId Id() const override final { return TaskId::From(TaskIdValue::DISABLE_UNSOLICITED); }
+	DisableUnsolicitedTask(IMasterApplication& application, bool enabled, openpal::TimeDuration retryPeriod, openpal::Logger logger);	
 
 	virtual char const* Name() const override final { return "Disable Unsolicited"; }
 
@@ -42,25 +40,30 @@ public:
 
 	virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;
 
-	virtual int Priority() const override final { return priority::DISABLE_UNSOLICITED; }
+	virtual int Priority() const override final { return priority::DISABLE_UNSOLICITED; }	
 
-	virtual openpal::MonotonicTimestamp ExpirationTime() const override final;
-
-	virtual bool BlocksLowerPriority() const { return true; }
-
-	virtual void OnLowerLayerClose(const openpal::MonotonicTimestamp& now) override final;
-
-	virtual void Demand() override final;
+	virtual bool BlocksLowerPriority() const { return true; }	
 
 private:
 
-	const MasterParams* pParams;
+	bool enabled;
+	openpal::TimeDuration retryPeriod;
 
-	openpal::MonotonicTimestamp expiration;
+	virtual MasterTaskType GetTaskType() const override final { return MasterTaskType::DISABLE_UNSOLICITED; }
 
-	virtual void OnSuccess(const openpal::MonotonicTimestamp& now) override final;
+	virtual bool IsEnabled() const override final { return enabled; }
 
-	virtual void OnTimeoutOrBadControlOctet(const openpal::MonotonicTimestamp& now) override final;
+	virtual ResponseResult _OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects) override final;
+
+	virtual void OnResponseError(openpal::MonotonicTimestamp now) override final;
+
+	virtual void OnResponseOK(openpal::MonotonicTimestamp now) override final;
+	
+	virtual void _OnLowerLayerClose(openpal::MonotonicTimestamp now) override final;
+
+	virtual void _OnResponseTimeout(openpal::MonotonicTimestamp now) override final;
+
+
 
 };
 

@@ -34,7 +34,7 @@ namespace asiodnp3
 /**
 * Callback when a command finishes or fails
 */
-class BlockingCommandCallback : public opendnp3::ITaskCallback<opendnp3::CommandResponse>, private openpal::Uncopyable
+class BlockingCommandCallback : public opendnp3::ICommandCallback, private openpal::Uncopyable
 {	
 	
 public:	

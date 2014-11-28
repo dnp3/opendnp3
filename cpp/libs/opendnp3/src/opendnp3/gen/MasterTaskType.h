@@ -18,27 +18,28 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef OPENDNP3_TASKSTATE_H
-#define OPENDNP3_TASKSTATE_H
+#ifndef OPENDNP3_MASTERTASKTYPE_H
+#define OPENDNP3_MASTERTASKTYPE_H
 
 #include <cstdint>
 
 namespace opendnp3 {
 
 /**
-  Enumeration for the state of a poll
+  Enumeration of internal tasks
 */
-enum class TaskState : int
+enum class MasterTaskType : int
 {
-  /// Valid response was received
-  RUNNING = 0,
-  /// Valid response was received
-  SUCCESS = 1,
-  /// The operation timed out or explicitly failed
-  FAILURE = 2
+  CLEAR_RESTART = 0,
+  DISABLE_UNSOLICITED = 1,
+  ASSIGN_CLASS = 2,
+  STARTUP_INTEGRITY_POLL = 3,
+  SERIAL_TIME_SYNC = 4,
+  ENABLE_UNSOLICITED = 5,
+  AUTO_EVENT_SCAN = 6,
+  USER_TASK = 7
 };
 
-char const* TaskStateToString(TaskState arg);
 
 }
 

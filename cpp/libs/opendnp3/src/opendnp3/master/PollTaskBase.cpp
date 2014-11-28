@@ -27,81 +27,70 @@
 
 #include <openpal/logging/LogMacros.h>
 
+using namespace openpal;
+
 namespace opendnp3
 {
 
-PollTaskBase::PollTaskBase(
-		const std::string& name_,
-		ISOEHandler* pSOEHandler_,
-		openpal::Logger* pLogger_) :	
-	name(name_),
-	pSOEHandler(pSOEHandler_),
-	pLogger(pLogger_),
-	rxCount(0)
+	PollTaskBase::PollTaskBase(IMasterApplication& application, ISOEHandler& soeHandler, openpal::MonotonicTimestamp expiration, openpal::Logger logger, ITaskCallback* pCallback, int userId) :
+	IMasterTask(application, expiration, logger, pCallback, userId),
+	rxCount(0),
+	pSOEHandler(&soeHandler)
 {
 	
 }
 
-const char* PollTaskBase::Name() const
+void PollTaskBase::Initialize()
 {
-	return name.empty() ? "user poll" : name.c_str();
+	rxCount = 0;
 }
 	
-TaskResult PollTaskBase::OnResponse(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now)
+IMasterTask::ResponseResult PollTaskBase::_OnResponse(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects)
 {
 	if (header.control.FIR)
 	{
 		if (rxCount > 0)
 		{
-			SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Ignoring unexpected FIR frame");
-			this->OnFailure(now);
-			return TaskResult::FAILURE;
+			SIMPLE_LOG_BLOCK(logger, flags::WARN, "Ignoring unexpected FIR frame");			
+			return ResponseResult::ERROR_BAD_RESPONSE;
 		}
 		else
 		{			
-			return ProcessMeasurements(header, objects, now);
+			return ProcessMeasurements(header, objects);
 		}
 	}
 	else
 	{
 		if (rxCount > 0)
 		{			
-			return ProcessMeasurements(header, objects, now);
+			return ProcessMeasurements(header, objects);
 		}
 		else
 		{	
-			SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Ignoring unexpected non-FIR frame");			
-			this->OnFailure(now);			
-			return TaskResult::FAILURE;
+			SIMPLE_LOG_BLOCK(logger, flags::WARN, "Ignoring unexpected non-FIR frame");			
+			return ResponseResult::ERROR_BAD_RESPONSE;
 		}
 	}
 }
 
-void PollTaskBase::OnResponseTimeout(const openpal::MonotonicTimestamp& now)
-{	
-	this->OnFailure(now);	
-}
-
-TaskResult PollTaskBase::ProcessMeasurements(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now)
+IMasterTask::ResponseResult PollTaskBase::ProcessMeasurements(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects)
 {	
 	++rxCount;
 
-	if (MeasurementHandler::ProcessMeasurements(objects, pLogger, pSOEHandler))
+	if (MeasurementHandler::ProcessMeasurements(objects, &logger, pSOEHandler))
 	{	
 		if (header.control.FIN)
-		{								
-			this->OnSuccess(now);
-			return TaskResult::SUCCESS;
+		{											
+			return ResponseResult::OK_FINAL;
 		}
 		else
 		{
-			return TaskResult::CONTINUE;
+			return ResponseResult::OK_CONTINUE;
 		}		
 	}
 	else
-	{				
-		this->OnFailure(now);
-		return TaskResult::FAILURE;
+	{						
+		return ResponseResult::ERROR_BAD_RESPONSE;
 	}
 }
 

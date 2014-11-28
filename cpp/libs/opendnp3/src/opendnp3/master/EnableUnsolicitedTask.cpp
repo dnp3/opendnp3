@@ -31,35 +31,46 @@ using namespace openpal;
 namespace opendnp3
 {
 
-EnableUnsolicitedTask::EnableUnsolicitedTask(const MasterParams& params, openpal::Logger* pLogger_) :
-	NullResponseTask(pLogger_),
-	pParams(&params),	
-	expiration(0)
+EnableUnsolicitedTask::EnableUnsolicitedTask(IMasterApplication& app, ClassField enabledClasses_, openpal::TimeDuration retryPeriod_, openpal::Logger logger) :
+	IMasterTask(app, 0, logger, nullptr, -1),
+	enabledClasses(enabledClasses_),
+	retryPeriod(retryPeriod_)
 {
 
 }
 
 void EnableUnsolicitedTask::BuildRequest(APDURequest& request, uint8_t seq)
 {
-	build::EnableUnsolicited(request, pParams->unsolClassMask, seq);
+	build::EnableUnsolicited(request, enabledClasses.OnlyEventClasses(), seq);
 }
 
-openpal::MonotonicTimestamp EnableUnsolicitedTask::ExpirationTime() const
+bool EnableUnsolicitedTask::IsEnabled() const
 {
-	return pParams->unsolClassMask.HasEventClass() ? expiration : MonotonicTimestamp::Max();
+	return enabledClasses.HasEventClass();
 }
 
-void EnableUnsolicitedTask::OnSuccess(const openpal::MonotonicTimestamp&)
+IMasterTask::ResponseResult EnableUnsolicitedTask::_OnResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects)
+{
+	return ValidateNullResponse(header, objects) ? ResponseResult::OK_FINAL : ResponseResult::ERROR_BAD_RESPONSE;
+}
+
+void EnableUnsolicitedTask::OnResponseOK(openpal::MonotonicTimestamp)
 {
 	expiration = MonotonicTimestamp::Max();
 }
 
-void EnableUnsolicitedTask::OnTimeoutOrBadControlOctet(const openpal::MonotonicTimestamp& now)
+void EnableUnsolicitedTask::OnResponseError(openpal::MonotonicTimestamp now)
 {
-	expiration = now.Add(pParams->taskRetryPeriod);
+	disabled = true;
+	expiration = MonotonicTimestamp::Max();
 }
 
-void EnableUnsolicitedTask::OnLowerLayerClose(const openpal::MonotonicTimestamp&)
+void EnableUnsolicitedTask::_OnResponseTimeout(openpal::MonotonicTimestamp now)
+{
+	expiration = now.Add(retryPeriod);
+}
+
+void EnableUnsolicitedTask::_OnLowerLayerClose(openpal::MonotonicTimestamp)
 {
 	expiration = 0;
 }

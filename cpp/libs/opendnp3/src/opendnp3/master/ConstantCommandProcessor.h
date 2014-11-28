@@ -41,24 +41,24 @@ public:
 
 	// Implement the ICommandProcessor interface
 
-	void SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ITaskCallback<CommandResponse>& callback);
-	void DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, ITaskCallback<CommandResponse>& callback);
+	void SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback& callback);
+	void DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback& callback);
 
-	void SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, ITaskCallback<CommandResponse>& callback);
-	void DirectOperate(const AnalogOutputInt16& command, uint16_t index, ITaskCallback<CommandResponse>& callback);
+	void SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback& callback);
+	void DirectOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback& callback);
 
-	void SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, ITaskCallback<CommandResponse>& callback);
-	void DirectOperate(const AnalogOutputInt32& command, uint16_t index, ITaskCallback<CommandResponse>& callback);
+	void SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback& callback);
+	void DirectOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback& callback);
 
-	void SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, ITaskCallback<CommandResponse>& callback);
-	void DirectOperate(const AnalogOutputFloat32& command, uint16_t index, ITaskCallback<CommandResponse>& callback);
+	void SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback& callback);
+	void DirectOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback& callback);
 
-	void SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ITaskCallback<CommandResponse>& callback);
-	void DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ITaskCallback<CommandResponse>& callback);
+	void SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback);
+	void DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback);
 
 private:
 
-	void Respond(ITaskCallback<CommandResponse>& callback);
+	void Respond(ICommandCallback& callback);
 
 	openpal::IExecutor* pExecutor;
 	CommandResponse response;

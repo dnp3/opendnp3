@@ -24,6 +24,7 @@
 #include <opendnp3/master/IMasterApplication.h>
 
 #include <vector>
+#include <functional>
 
 namespace opendnp3
 {
@@ -46,9 +47,14 @@ public:
 		rxIIN.push_back(iin);
 	}
 
-	virtual void OnTaskStateChange(TaskId id, TaskState state) override final
+	virtual void OnTaskStart(MasterTaskType type, int userId) override final
 	{
-		taskEvents.push_back(std::pair<TaskId, TaskState>(id, state));
+		taskStartEvents.push_back(type);		
+	}
+
+	virtual void OnTaskComplete(MasterTaskType type, TaskCompletion result, int userId) override final
+	{
+		taskCompletionEvents.push_back(std::pair<MasterTaskType, TaskCompletion>(type, result));
 	}
 
 	virtual bool AssignClassDuringStartup() override final
@@ -66,8 +72,9 @@ public:
 
 	std::vector<IINField> rxIIN;
 
-	std::vector<std::pair<TaskId, TaskState>> taskEvents;
-
+	std::vector<MasterTaskType> taskStartEvents;
+	std::vector<std::pair<MasterTaskType, TaskCompletion>> taskCompletionEvents;
+	
 	uint64_t time;
 };
 

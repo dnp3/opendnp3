@@ -37,36 +37,35 @@ using namespace openpal;
 namespace opendnp3
 {
 
-	EventScanTask::EventScanTask(const MasterParams& params, ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_) :
-		PollTaskBase("Event Scan", pSOEHandler_, pLogger_),
-		expiration(MonotonicTimestamp::Max()),
-		pParams(&params)
+	EventScanTask::EventScanTask(IMasterApplication& application, ISOEHandler& soeHandler, TimeDuration retryPeriod_, openpal::Logger logger) :
+		PollTaskBase(application, soeHandler, MonotonicTimestamp::Max(), logger, nullptr, -1),
+		retryPeriod(retryPeriod_)
 	{
 
 	}
 
 	void EventScanTask::BuildRequest(APDURequest& request, uint8_t seq)
-	{
-		rxCount = 0;
+	{		
 		build::ClassRequest(request, FunctionCode::READ, ClassField::AllEventClasses(), seq);
-	}
+	}	
 
-	openpal::MonotonicTimestamp EventScanTask::ExpirationTime() const
-	{
-		return expiration;
-	}
-
-	void EventScanTask::OnFailure(const openpal::MonotonicTimestamp& now)
-	{
-		expiration = now.Add(pParams->taskRetryPeriod);
-	}
-
-	void EventScanTask::OnSuccess(const openpal::MonotonicTimestamp& now)
+	void EventScanTask::OnResponseOK(openpal::MonotonicTimestamp)
 	{
 		expiration = MonotonicTimestamp::Max();
 	}
 
-	void EventScanTask::OnLowerLayerClose(const openpal::MonotonicTimestamp& now)
+	void EventScanTask::_OnResponseTimeout(openpal::MonotonicTimestamp now)
+	{
+		expiration = now.Add(retryPeriod);
+	}
+
+	void EventScanTask::OnResponseError(openpal::MonotonicTimestamp)
+	{
+		disabled = true;
+		expiration = MonotonicTimestamp::Max();
+	}
+
+	void EventScanTask::_OnLowerLayerClose(openpal::MonotonicTimestamp)
 	{
 		expiration = MonotonicTimestamp::Max();
 	}

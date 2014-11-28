@@ -65,8 +65,8 @@ IMasterState* MasterStateIdle::OnStart(MasterContext* pContext)
 			if (pContext->pTaskLock->Acquire(*pContext))
 			{
 				FORMAT_LOG_BLOCK(pContext->logger, flags::INFO, "Begining task: %s", pContext->pActiveTask->Name());
-				pContext->StartTask(*pContext->pActiveTask);				
-				pContext->NotifyCurrentTask(TaskState::RUNNING);
+				pContext->pActiveTask->OnStart();
+				pContext->StartTask(*pContext->pActiveTask);								
 				return &MasterStateWaitForResponse::Instance();
 			}
 			else
@@ -121,20 +121,19 @@ IMasterState* MasterStateWaitForResponse::OnResponse(MasterContext* pContext, co
 		
 		auto result = pContext->pActiveTask->OnResponse(response, objects, now);
 
-		if (response.control.CON) // TODO evaluate if reponse was procesed before confirming && pContext->CanConfirmResponse(result))
+		if (response.control.CON)
 		{
 			pContext->QueueConfirm(APDUHeader::SolicitedConfirm(response.control.SEQ));
 		}
 
 		switch (result)
 		{
-			case(TaskResult::CONTINUE) :
+			case(IMasterTask::ResponseResult::OK_CONTINUE) :
 				pContext->StartResponseTimer();
 				return this;
-			case(TaskResult::REPEAT) :				
+			case(IMasterTask::ResponseResult::OK_REPEAT) :
 				return MasterStateTaskReady::Instance().OnStart(pContext);
-			default:				
-				pContext->NotifyCurrentTask((result == TaskResult::SUCCESS) ? TaskState::SUCCESS : TaskState::FAILURE);
+			default:								
 				pContext->ReleaseActiveTask();												
 				pContext->pTaskLock->Release(*pContext);
 				pContext->PostCheckForTask();								
@@ -149,8 +148,7 @@ IMasterState* MasterStateWaitForResponse::OnResponse(MasterContext* pContext, co
 }
 
 IMasterState* MasterStateWaitForResponse::OnResponseTimeout(MasterContext* pContext)
-{	
-	pContext->NotifyCurrentTask(TaskState::FAILURE);
+{		
 	pContext->pResponseTimer = nullptr;
 	auto now = pContext->pExecutor->GetTime();
 	pContext->pActiveTask->OnResponseTimeout(now);

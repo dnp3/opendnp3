@@ -72,6 +72,9 @@
     <ClInclude Include="EnumerableConversions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TaskCallbackAdapter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp">

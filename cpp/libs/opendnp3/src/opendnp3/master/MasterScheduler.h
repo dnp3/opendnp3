@@ -43,10 +43,7 @@ class MasterScheduler
 
 public:	
 
-	MasterScheduler(	openpal::Logger* pLogger,						
-						openpal::IExecutor& executor,			
-						IScheduleCallback& callback
-					);	
+	MasterScheduler(openpal::IExecutor& executor, IScheduleCallback& callback);	
 	
 	// ---------- other public functions ----------------
 
@@ -71,6 +68,8 @@ public:
 	void OnLowerLayerDown();	
 
 private:
+
+	static bool Enabled(const IMasterTask& task) { return !task.ExpirationTime().IsMax(); }
 
 	static int Compare(const openpal::MonotonicTimestamp& now, const IMasterTask& lhs, const IMasterTask& rhs);
 

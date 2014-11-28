@@ -23,20 +23,18 @@
 
 #include <openpal/executor/IUTCTimeSource.h>
 
-#include "opendnp3/master/SingleResponseTask.h"
+#include "opendnp3/master/IMasterTask.h"
 #include "opendnp3/master/TaskPriority.h"
 
 namespace opendnp3
 {
 
 // Synchronizes the time on the outstation
-class SerialTimeSyncTask : public SingleResponseTask
+class SerialTimeSyncTask : public IMasterTask
 {
 
 public:
-	SerialTimeSyncTask(openpal::Logger* pLogger, openpal::IUTCTimeSource* pTimeSource_);
-
-	virtual TaskId Id() const override final { return TaskId::From(TaskIdValue::SERIAL_TIME_SYNC); }
+	SerialTimeSyncTask(IMasterApplication& app, openpal::Logger logger);	
 	
 	virtual char const* Name() const override final { return "serial time sync"; }
 
@@ -44,29 +42,31 @@ public:
 	
 	virtual bool BlocksLowerPriority() const override final { return true; }
 	
-	virtual bool IsRecurring() const override final { return true; }
-	
-	virtual openpal::MonotonicTimestamp ExpirationTime() const override final;
+	virtual bool IsRecurring() const override final { return true; }	
 
-	virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;
-
-	virtual void OnTimeoutOrBadControlOctet(const openpal::MonotonicTimestamp& now) override final;
-
-	void OnLowerLayerClose(const openpal::MonotonicTimestamp &) override final;
-
-	virtual void Demand() override final { expiration = 0; }
-
-protected:
-
-	virtual TaskResult OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now) override final;
+	virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;			
 
 private:
 
-	void Initialize();
+	virtual MasterTaskType GetTaskType() const override final { return MasterTaskType::SERIAL_TIME_SYNC; }
 
-	openpal::MonotonicTimestamp expiration;
+	virtual bool IsEnabled() const override final { return true; }
 
-	openpal::IUTCTimeSource* pTimeSource;
+	virtual void OnResponseError(openpal::MonotonicTimestamp now) override final;
+
+	virtual void OnResponseOK(openpal::MonotonicTimestamp now) override final;
+
+	virtual void _OnResponseTimeout(openpal::MonotonicTimestamp now) override final;
+
+	void _OnLowerLayerClose(openpal::MonotonicTimestamp now) override final;
+
+	virtual ResponseResult _OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects) override final;
+
+	ResponseResult OnResponseDelayMeas(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects);
+
+	ResponseResult OnResponseWriteTime(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects);
+
+	virtual void Initialize() override final;
 
 	// < 0 implies the delay measure hasn't happened yet
 	int64_t delay;

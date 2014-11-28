@@ -31,6 +31,7 @@
 #include "opendnp3/master/CommandTask.h"
 #include "opendnp3/master/EventScanTask.h"
 
+#include "opendnp3/master/MasterParams.h"
 #include "opendnp3/master/MasterScheduler.h"
 
 #include <vector>
@@ -45,11 +46,9 @@ class MasterTasks
 
 public:
 
-	MasterTasks(const MasterParams& params, openpal::Logger* pLogger, IMasterApplication& application, ISOEHandler& SOEHandler, openpal::IUTCTimeSource& timeSource);
+	MasterTasks(const MasterParams& params, const openpal::Logger& logger, IMasterApplication& application, ISOEHandler& SOEHandler, openpal::IUTCTimeSource& timeSource);
 
-	void Initialize(MasterScheduler& scheduler);
-
-	void BindTask(IMasterTask* pTask);
+	void Initialize(MasterScheduler& scheduler);	
 	
 	// master tasks that can be "failed" (startup and in response to IIN bits)
 	EnableUnsolicitedTask enableUnsol;
@@ -60,8 +59,10 @@ public:
 	SerialTimeSyncTask timeSync;
 	EventScanTask eventScan;
 
-private:
+	void BindTask(IMasterTask* pTask);
 
+private:
+	
 	std::vector<std::unique_ptr<IMasterTask>> boundTasks;
 
 };

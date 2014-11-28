@@ -43,13 +43,19 @@ namespace Automatak.DNP3.Interface
         /// </summary>
         /// <param name="iin"></param>
         void OnReceiveIIN(IINField iin);
-        
+
         /// <summary>
-        /// Task state notifications for built-in and user defined tasks        
+        /// Task start notification
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="state"></param>
-        void OnTaskStateChange(TaskId id, TaskState state);
+        void OnTaskStart(MasterTaskType type, int userId);
+        
+        /// <summary>
+        /// Task completion notification for built-in and user defined tasks        
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="result"></param>
+        void OnTaskComplete(MasterTaskType type, TaskCompletion result, int userId);
         
         /// <summary>
         /// Tells the master whether to assign class on startup
@@ -93,12 +99,7 @@ namespace Automatak.DNP3.Interface
         void IMasterApplication.OnReceiveIIN(IINField iin)
         {
            // ignore these in the default application
-        }
-
-        void IMasterApplication.OnTaskStateChange(TaskId id, TaskState state)
-        {
-            // ignore these in the default application
-        }
+        }        
 
         bool IMasterApplication.AssignClassDuringStartup()
         {
@@ -108,6 +109,17 @@ namespace Automatak.DNP3.Interface
         IEnumerable<ClassAssignment> IMasterApplication.GetClassAssignments()
         {
             return Enumerable.Empty<ClassAssignment>();
+        }
+
+
+        void IMasterApplication.OnTaskStart(MasterTaskType type, int userId)
+        {
+            // ignore these in the default application
+        }
+
+        void IMasterApplication.OnTaskComplete(MasterTaskType type, TaskCompletion result, int userId)
+        {
+            // ignore these in the default application
         }
     }
 }

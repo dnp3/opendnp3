@@ -22,14 +22,13 @@ object CSharpEnumGenerator {
 
     def enums : List[EnumConfig] = List(
       AssignClassType(),
-      TaskIdValue(),
+      MasterTaskType(),
       StaticTypeBitmask(),
       IntervalUnit(),
       DoubleBit(),
       PointClass(),
-      TaskState(),
       CommandStatus(),
-      UserTaskResult(),
+      TaskCompletion(),
       ControlCode(),
       ChannelState(),
       TimeSyncMode(),

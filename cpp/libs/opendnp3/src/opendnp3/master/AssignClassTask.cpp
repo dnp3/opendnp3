@@ -28,10 +28,9 @@ using namespace openpal;
 namespace opendnp3
 {
 
-AssignClassTask::AssignClassTask(const MasterParams& params, IMasterApplication& application, openpal::Logger* pLogger) :
-	NullResponseTask(pLogger),
-	pParams(&params),
-	pApplication(&application)
+AssignClassTask::AssignClassTask(IMasterApplication& application, openpal::TimeDuration retryPeriod_, openpal::Logger logger) :
+	IMasterTask(application, 0, logger, nullptr, -1),	
+	retryPeriod(retryPeriod_)
 {}
 
 void AssignClassTask::BuildRequest(APDURequest& request, uint8_t seq)
@@ -42,32 +41,34 @@ void AssignClassTask::BuildRequest(APDURequest& request, uint8_t seq)
 	pApplication->ConfigureAssignClassRequest(writer);
 }
 
-void AssignClassTask::Demand()
-{ 
-	if (expiration.IsMax())
-	{
-		expiration = 0;
-	}	
-}
-	
-openpal::MonotonicTimestamp AssignClassTask::ExpirationTime() const
+bool AssignClassTask::IsEnabled() const
 {
-	return pApplication->AssignClassDuringStartup() ? expiration : MonotonicTimestamp::Max();
+	return pApplication->AssignClassDuringStartup();
 }
 
-void AssignClassTask::OnLowerLayerClose(const openpal::MonotonicTimestamp&)
+IMasterTask::ResponseResult AssignClassTask::_OnResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects)
+{	
+	return ValidateNullResponse(header, objects) ? ResponseResult::OK_FINAL : ResponseResult::ERROR_BAD_RESPONSE;
+}
+	
+void AssignClassTask::_OnLowerLayerClose(openpal::MonotonicTimestamp)
 {
 	expiration = 0;
 }
+ 
+void AssignClassTask::_OnResponseTimeout(openpal::MonotonicTimestamp now)
+{
+	expiration = now.Add(retryPeriod);
+}
 
-void AssignClassTask::OnSuccess(const openpal::MonotonicTimestamp& now)
+void AssignClassTask::OnResponseOK(openpal::MonotonicTimestamp now)
 {
 	expiration = MonotonicTimestamp::Max();
 }
 
-void AssignClassTask::OnTimeoutOrBadControlOctet(const openpal::MonotonicTimestamp& now)
+void AssignClassTask::OnResponseError(openpal::MonotonicTimestamp now)
 {
-	expiration = now.Add(pParams->taskRetryPeriod);
+	expiration = MonotonicTimestamp::Max();
 }
 
 } //end ns

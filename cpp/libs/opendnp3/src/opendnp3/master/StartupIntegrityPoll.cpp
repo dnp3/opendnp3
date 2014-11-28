@@ -37,38 +37,42 @@ using namespace openpal;
 namespace opendnp3
 {
 
-StartupIntegrityPoll::StartupIntegrityPoll(const MasterParams& params, ISOEHandler* pSOEHandler_, openpal::Logger* pLogger_) :
-	PollTaskBase("Startup Integrity Poll", pSOEHandler_, pLogger_),
-	expiration(0),
-	pParams(&params)
+StartupIntegrityPoll::StartupIntegrityPoll(IMasterApplication& app, ISOEHandler& soeHandler, ClassField classes_, TimeDuration retryPeriod_, openpal::Logger logger) :
+	PollTaskBase(app, soeHandler, 0, logger, nullptr, -1),
+	classes(classes_),
+	retryPeriod(retryPeriod_)
 {
 	
 }
 
 void StartupIntegrityPoll::BuildRequest(APDURequest& request, uint8_t seq)
-{
-	rxCount = 0;
-	build::ReadIntegrity(request, pParams->startupIntegrityClassMask, seq);
+{	
+	build::ReadIntegrity(request, classes, seq);
 	request.SetFunction(FunctionCode::READ);
 	request.SetControl(AppControlField::Request(seq));
 }
 
-openpal::MonotonicTimestamp StartupIntegrityPoll::ExpirationTime() const
+bool StartupIntegrityPoll::IsEnabled() const
 {
-	return pParams->startupIntegrityClassMask.HasAnyClass() ? expiration : MonotonicTimestamp::Max();
-}
-	
-void StartupIntegrityPoll::OnFailure(const openpal::MonotonicTimestamp& now)
-{
-	expiration = now.Add(pParams->taskRetryPeriod);
+	return classes.HasAnyClass();
 }
 
-void StartupIntegrityPoll::OnSuccess(const openpal::MonotonicTimestamp& now)
+void StartupIntegrityPoll::_OnResponseTimeout(openpal::MonotonicTimestamp now)
+{
+	expiration = now.Add(retryPeriod);
+}
+
+void StartupIntegrityPoll::OnResponseError(openpal::MonotonicTimestamp now)
+{
+	expiration = now.Add(retryPeriod);
+}
+
+void StartupIntegrityPoll::OnResponseOK(openpal::MonotonicTimestamp now)
 {
 	expiration = MonotonicTimestamp::Max();
 }
 
-void StartupIntegrityPoll::OnLowerLayerClose(const openpal::MonotonicTimestamp& now)
+void StartupIntegrityPoll::_OnLowerLayerClose(openpal::MonotonicTimestamp now)
 {
 	expiration = 0;
 }

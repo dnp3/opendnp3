@@ -18,28 +18,24 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef OPENDNP3_TASKIDVALUE_H
-#define OPENDNP3_TASKIDVALUE_H
-
-#include <cstdint>
+#include "TaskCompletion.h"
 
 namespace opendnp3 {
 
-/**
-  Enumeration of integer values for task ids
-*/
-enum class TaskIdValue : int
+char const* TaskCompletionToString(TaskCompletion arg)
 {
-  CLEAR_RESTART = 0,
-  DISABLE_UNSOLICITED = 1,
-  ASSIGN_CLASS = 2,
-  STARTUP_INTEGRITY_POLL = 3,
-  SERIAL_TIME_SYNC = 4,
-  ENABLE_UNSOLICITED = 5,
-  AUTO_EVENT_SCAN = 6
-};
-
-
+  switch(arg)
+  {
+    case(TaskCompletion::SUCCESS):
+      return "SUCCESS";
+    case(TaskCompletion::FAILURE_BAD_RESPONSE):
+      return "FAILURE_BAD_RESPONSE";
+    case(TaskCompletion::FAILURE_RESPONSE_TIMEOUT):
+      return "FAILURE_RESPONSE_TIMEOUT";
+    case(TaskCompletion::FAILURE_NO_COMMS):
+      return "FAILURE_NO_COMMS";
+  }
+  return "FAILURE_NO_COMMS";
 }
 
-#endif
+}

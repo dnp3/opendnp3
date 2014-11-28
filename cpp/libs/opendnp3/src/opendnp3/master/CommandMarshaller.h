@@ -40,20 +40,20 @@ public:
 
 	// Implement the ICommandProcessor interface
 
-	virtual void SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ITaskCallback<CommandResponse>& callback) override final;
-	virtual void DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, ITaskCallback<CommandResponse>& callback) override final;
+	virtual void SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback& callback) override final;
+	virtual void DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback& callback) override final;
 
-	virtual void SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, ITaskCallback<CommandResponse>& callback) override final;
-	virtual void DirectOperate(const AnalogOutputInt16& command, uint16_t index, ITaskCallback<CommandResponse>& callback) override final;
+	virtual void SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback& callback) override final;
+	virtual void DirectOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback& callback) override final;
 
-	virtual void SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, ITaskCallback<CommandResponse>& callback) override final;
-	virtual void DirectOperate(const AnalogOutputInt32& command, uint16_t index, ITaskCallback<CommandResponse>& callback) override final;
+	virtual void SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback& callback) override final;
+	virtual void DirectOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback& callback) override final;
 
-	virtual void SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, ITaskCallback<CommandResponse>& callback) override final;
-	virtual void DirectOperate(const AnalogOutputFloat32& command, uint16_t index, ITaskCallback<CommandResponse>& callback) override final;
+	virtual void SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback& callback) override final;
+	virtual void DirectOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback& callback) override final;
 
-	virtual void SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ITaskCallback<CommandResponse>& callback) override final;
-	virtual void DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ITaskCallback<CommandResponse>& callback) override final;
+	virtual void SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback) override final;
+	virtual void DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback) override final;
 
 private:
 
@@ -61,7 +61,7 @@ private:
 	ICommandProcessor* pProxyTo;
 	
 	template <class T>
-	void SelectAndOperateT(const T& command, uint16_t index, ITaskCallback<CommandResponse>& callback)
+	void SelectAndOperateT(const T& command, uint16_t index, ICommandCallback& callback)
 	{
 		auto pCallback = &callback;
 		auto action = [command, index, pCallback, this]() { pProxyTo->SelectAndOperate(command, index, *pCallback); };
@@ -69,7 +69,7 @@ private:
 	}
 
 	template <class T>
-	void DirectOperateT(const T& command, uint16_t index, ITaskCallback<CommandResponse>& callback)
+	void DirectOperateT(const T& command, uint16_t index, ICommandCallback& callback)
 	{	
 		auto pCallback = &callback;
 		auto action = [command, index, pCallback, this]() { pProxyTo->DirectOperate(command, index, *pCallback); };

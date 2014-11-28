@@ -29,52 +29,52 @@ namespace opendnp3
 	pProxyTo(&proxyTo)
 {}
 
-void CommandMarshaller::SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ITaskCallback<CommandResponse>& callback)
+void CommandMarshaller::SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback& callback)
 {
 	this->SelectAndOperateT(command, index, callback);
 }
 
-void CommandMarshaller::DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, ITaskCallback<CommandResponse>& callback)
+void CommandMarshaller::DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback& callback)
 {
 	this->DirectOperateT(command, index, callback);
 }
 
-void CommandMarshaller::SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, ITaskCallback<CommandResponse>& callback)
+void CommandMarshaller::SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback& callback)
 {
 	this->SelectAndOperateT(command, index, callback);
 }
 
-void CommandMarshaller::DirectOperate(const AnalogOutputInt16& command, uint16_t index, ITaskCallback<CommandResponse>& callback)
+void CommandMarshaller::DirectOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback& callback)
 {
 	this->DirectOperateT(command, index, callback);
 }
 
-void CommandMarshaller::SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, ITaskCallback<CommandResponse>& callback)
+void CommandMarshaller::SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback& callback)
 {
 	this->SelectAndOperateT(command, index, callback);
 }
 
-void CommandMarshaller::DirectOperate(const AnalogOutputInt32& command, uint16_t index, ITaskCallback<CommandResponse>& callback)
+void CommandMarshaller::DirectOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback& callback)
 {
 	this->DirectOperateT(command, index, callback);
 }
 
-void CommandMarshaller::SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, ITaskCallback<CommandResponse>& callback)
+void CommandMarshaller::SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback& callback)
 {
 	this->SelectAndOperateT(command, index, callback);
 }
 
-void CommandMarshaller::DirectOperate(const AnalogOutputFloat32& command, uint16_t index, ITaskCallback<CommandResponse>& callback)
+void CommandMarshaller::DirectOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback& callback)
 {
 	this->DirectOperateT(command, index, callback);
 }
 
-void CommandMarshaller::SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ITaskCallback<CommandResponse>& callback)
+void CommandMarshaller::SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback)
 {
 	this->SelectAndOperateT(command, index, callback);
 }
 
-void CommandMarshaller::DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ITaskCallback<CommandResponse>& callback)
+void CommandMarshaller::DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback)
 {
 	this->DirectOperateT(command, index, callback);
 }

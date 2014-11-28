@@ -29,21 +29,24 @@ namespace Automatak
 
 				virtual void Shutdown();
 
-				virtual IMasterScan^ AddAllObjectsScan(System::Byte group, System::Byte variation, System::TimeSpan period, int id);
+				virtual IMasterScan^ AddAllObjectsScan(System::Byte group, System::Byte variation, System::TimeSpan period, ITaskCallback^ callback);
 
-				virtual IMasterScan^ AddClassScan(ClassField field, System::TimeSpan period, int id);
+				virtual IMasterScan^ AddClassScan(ClassField field, System::TimeSpan period, ITaskCallback^ callback);
 
-				virtual IMasterScan^ AddRangeScan(System::Byte group, System::Byte variation, System::UInt16 start, System::UInt16 stop, System::TimeSpan period, int id);
+				virtual IMasterScan^ AddRangeScan(System::Byte group, System::Byte variation, System::UInt16 start, System::UInt16 stop, System::TimeSpan period, ITaskCallback^ callback);
 
-				virtual void ScanAllObjects(System::Byte group, System::Byte variation, int id);
+				virtual void ScanAllObjects(System::Byte group, System::Byte variation, ITaskCallback^ callback);
 
-				virtual void ScanClasses(ClassField field, int id);
+				virtual void ScanClasses(ClassField field, ITaskCallback^ callback);
 				
-				virtual void ScanRange(System::Byte group, System::Byte variation, System::UInt16 start, System::UInt16 stop, int id);
+				virtual void ScanRange(System::Byte group, System::Byte variation, System::UInt16 start, System::UInt16 stop, ITaskCallback^ callback);
 
-				virtual void Write(TimeAndInterval^ value, System::UInt16 index, int id);
+				virtual void Write(TimeAndInterval^ value, System::UInt16 index, ITaskCallback^ callback);				
 
 			private:
+
+				static opendnp3::ITaskCallback* CreateTaskCallback(ITaskCallback^ callback);
+
 				asiodnp3::IMaster* pMaster;
 				ICommandProcessor^ commandAdapter;
 			};

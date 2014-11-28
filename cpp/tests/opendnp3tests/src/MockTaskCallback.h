@@ -18,28 +18,43 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_TASKRESULT_H
-#define OPENDNP3_TASKRESULT_H
+#ifndef __MOCK_COMMAND_CALLBACK_H_
+#define __MOCK_COMMAND_CALLBACK_H_
+
+#include <opendnp3/master/ITaskCallback.h>
+#include <queue>
 
 namespace opendnp3
 {
 
-enum class TaskResult
+class MockTaskCallback : public ITaskCallback
 {
-	/// This run of the task is complete and it succeeded
-	SUCCESS,
+public:	
 
-	/// This run of the task is complete and it failed
-	FAILURE,
+	virtual void OnStart() override final
+	{
+		++numStart;
+	}
 
-	/// The task should repeat the format, transmit, and await response sequence
-	REPEAT,
+	virtual void OnComplete(TaskCompletion result) override final
+	{
+		results.push_back(result);
+	}
 
-	/// The task should continue executing. Restart the response timer, and increment expected SEQ#.
-	CONTINUE
+	virtual void OnDestroyed() override final
+	{
+		++numDestroyed;
+	}
+
+	uint32_t numStart = 0;
+
+	uint32_t numDestroyed = 0;
+
+	std::deque<TaskCompletion> results;
+
 };
 
-} //end ns
-
+}
 
 #endif
+

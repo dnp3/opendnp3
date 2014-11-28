@@ -86,6 +86,7 @@
     <Compile Include="gen\GroupVariation.cs" />
     <Compile Include="gen\IINField.cs" />
     <Compile Include="gen\IntervalUnits.cs" />
+    <Compile Include="gen\MasterTaskType.cs" />
     <Compile Include="gen\PointClass.cs" />
     <Compile Include="gen\QualifierCode.cs" />
     <Compile Include="gen\RestartMode.cs" />
@@ -98,11 +99,9 @@
     <Compile Include="gen\StaticFrozenCounterResponse.cs" />
     <Compile Include="gen\StaticTimeAndIntervalResponse.cs" />
     <Compile Include="gen\StaticTypeBitmask.cs" />
-    <Compile Include="gen\TaskIdValue.cs" />
-    <Compile Include="gen\TaskState.cs" />
+    <Compile Include="gen\TaskCompletion.cs" />
     <Compile Include="gen\TimestampMode.cs" />
     <Compile Include="gen\TimeSyncMode.cs" />
-    <Compile Include="gen\UserTaskResult.cs" />
     <Compile Include="IChannelStatistics.cs" />
     <Compile Include="ICommandHandler.cs">
       <SubType>Code</SubType>
@@ -131,6 +130,7 @@
     <Compile Include="IStackStatistics.cs" />
     <Compile Include="IMasterScan.cs" />
     <Compile Include="config\LinkConfig.cs" />
+    <Compile Include="ITaskCallback.cs" />
     <Compile Include="LogLevels.cs" />
     <Compile Include="config\MasterConfig.cs" />
     <Compile Include="config\MasterStackConfig.cs" />
@@ -146,7 +146,6 @@
     <Compile Include="config\SerialSettings.cs" />
     <Compile Include="SimpleCommandHandler.cs" />
     <Compile Include="StackStatistics.cs" />
-    <Compile Include="TaskId.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

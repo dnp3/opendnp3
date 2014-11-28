@@ -468,17 +468,11 @@
     <ClInclude Include="src\opendnp3\master\MasterContext.h">
       <Filter>Header\master</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\master\IMasterTask.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\master\MasterScheduler.h">
       <Filter>Header\master</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\master\MasterParams.h">
       <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\TaskResult.h">
-      <Filter>Source\master</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\app\APDUBuilders.h">
       <Filter>Header\app</Filter>
@@ -493,12 +487,6 @@
       <Filter>Header\master</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\master\EnableUnsolicitedTask.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\NullResponseTask.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\SingleResponseTask.h">
       <Filter>Header\master</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\master\StartupIntegrityPoll.h">
@@ -690,13 +678,7 @@
     <ClInclude Include="src\opendnp3\master\PollTaskBase.h">
       <Filter>Header\master</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\TaskState.h">
-      <Filter>Header\gen</Filter>
-    </ClInclude>
     <ClInclude Include="..\openpal\src\openpal\util\Limits.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\TaskId.h">
       <Filter>Header\master</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\master\AssignClassTask.h">
@@ -717,9 +699,6 @@
     <ClInclude Include="src\opendnp3\outstation\StaticTypeBitfield.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\UserTaskResult.h">
-      <Filter>Header\gen</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\master\ITaskCallback.h">
       <Filter>Header\master</Filter>
     </ClInclude>
@@ -728,6 +707,15 @@
     </ClInclude>
     <ClInclude Include="src\opendnp3\master\WriteTask.h">
       <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\IMasterTask.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\TaskCompletion.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\MasterTaskType.h">
+      <Filter>Header\gen</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1037,13 +1025,7 @@
     <ClCompile Include="src\opendnp3\master\StartupIntegrityPoll.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\master\SingleResponseTask.cpp">
-      <Filter>Source\master</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\master\PollTaskBase.cpp">
-      <Filter>Source\master</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\master\NullResponseTask.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\master\EnableUnsolicitedTask.cpp">
@@ -1136,9 +1118,6 @@
     <ClCompile Include="src\opendnp3\master\UserPollTask.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\gen\TaskState.cpp">
-      <Filter>Source\gen</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\master\AssignClassTask.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
@@ -1151,14 +1130,17 @@
     <ClCompile Include="src\opendnp3\gen\StaticTimeAndIntervalResponse.cpp">
       <Filter>Source\gen</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\gen\UserTaskResult.cpp">
-      <Filter>Source\gen</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\master\EventScanTask.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\DatabaseBuffers.cpp" />
     <ClCompile Include="src\opendnp3\master\WriteTask.cpp">
+      <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\gen\TaskCompletion.cpp">
+      <Filter>Source\gen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\IMasterTask.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
   </ItemGroup>

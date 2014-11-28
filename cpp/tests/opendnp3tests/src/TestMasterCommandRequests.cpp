@@ -52,7 +52,7 @@ TEST_CASE(SUITE("ControlExecutionClosedState"))
 		pCmdProcessor->SelectAndOperate(bo, 1, callback);
 		t.exe.RunMany();
 		REQUIRE(1 == callback.responses.size());
-		REQUIRE((CommandResponse(UserTaskResult::NO_COMMS) == callback.responses.front()));
+		REQUIRE((CommandResponse(TaskCompletion::FAILURE_NO_COMMS) == callback.responses.front()));
 		callback.responses.pop_front();
 	}
 
@@ -106,7 +106,7 @@ TEST_CASE(SUITE("ControlExecutionSelectTimeout"))
 	t.exe.RunMany();
 
 	REQUIRE(1 == callback.responses.size());
-	REQUIRE((CommandResponse(UserTaskResult::TIMEOUT) == callback.responses.front()));
+	REQUIRE((CommandResponse(TaskCompletion::FAILURE_RESPONSE_TIMEOUT) == callback.responses.front()));
 }
 
 TEST_CASE(SUITE("ControlExecutionSelectLayerDown"))
@@ -125,7 +125,7 @@ TEST_CASE(SUITE("ControlExecutionSelectLayerDown"))
 	t.master.OnLowerLayerDown();
 
 	REQUIRE(1 == callback.responses.size());
-	REQUIRE((CommandResponse(UserTaskResult::NO_COMMS) == callback.responses.front()));
+	REQUIRE((CommandResponse(TaskCompletion::FAILURE_NO_COMMS) == callback.responses.front()));
 }
 
 TEST_CASE(SUITE("ControlExecutionSelectErrorResponse"))
@@ -162,7 +162,7 @@ TEST_CASE(SUITE("ControlExecutionSelectPartialResponse"))
 	t.exe.RunMany();
 
 	REQUIRE(1 ==  callback.responses.size());
-	REQUIRE((CommandResponse(UserTaskResult::BAD_RESPONSE) == callback.responses.front()));
+	REQUIRE((CommandResponse(TaskCompletion::FAILURE_BAD_RESPONSE) == callback.responses.front()));
 }
 
 TEST_CASE(SUITE("DeferredControlExecution"))
@@ -233,7 +233,7 @@ TEST_CASE(SUITE("ResponseTimeout"))
 	REQUIRE(t.exe.RunMany() > 0);
 		
 	REQUIRE(1 == callback.responses.size());
-	REQUIRE(callback.responses[0].GetResult() == UserTaskResult::TIMEOUT);
+	REQUIRE(callback.responses[0].GetResult() == TaskCompletion::FAILURE_RESPONSE_TIMEOUT);
 }
 
 TEST_CASE(SUITE("SendCommandDuringFailedStartup"))
@@ -265,7 +265,7 @@ TEST_CASE(SUITE("SendCommandDuringFailedStartup"))
 	REQUIRE(t.exe.RunMany() > 0);
 
 	REQUIRE(1 == callback.responses.size());
-	REQUIRE(callback.responses[0].GetResult() == UserTaskResult::TIMEOUT);
+	REQUIRE(callback.responses[0].GetResult() == TaskCompletion::FAILURE_RESPONSE_TIMEOUT);
 }
 
 template <class T>

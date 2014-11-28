@@ -21,21 +21,25 @@
 namespace Automatak.DNP3.Interface
 {
   /// <summary>
-  /// Enumeration for the state of a poll
+  /// Enum that describes if a master task succeeded or failed
   /// </summary>
-  public enum TaskState : int
+  public enum TaskCompletion : int
   {
     /// <summary>
-    /// Valid response was received
+    /// A valid response was received from the outstation
     /// </summary>
-    RUNNING = 0,
+    SUCCESS = 0,
     /// <summary>
-    /// Valid response was received
+    /// A response was received from the outstation, but it was not valid
     /// </summary>
-    SUCCESS = 1,
+    FAILURE_BAD_RESPONSE = 1,
     /// <summary>
-    /// The operation timed out or explicitly failed
+    /// The task request did not receive a response within the timeout
     /// </summary>
-    FAILURE = 2
+    FAILURE_RESPONSE_TIMEOUT = 2,
+    /// <summary>
+    /// There is no communication with the outstation, so the task was not attempted
+    /// </summary>
+    FAILURE_NO_COMMS = 3
   }
 }

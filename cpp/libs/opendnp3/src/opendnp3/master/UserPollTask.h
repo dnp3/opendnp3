@@ -24,7 +24,6 @@
 #include "opendnp3/master/PollTaskBase.h"
 #include "opendnp3/master/TaskPriority.h"
 #include "opendnp3/master/ITaskCallback.h"
-#include "opendnp3/gen/UserTaskResult.h"
 
 #include <functional>
 
@@ -43,46 +42,44 @@ class UserPollTask : public PollTaskBase
 public:	
 
 	UserPollTask(		
-		const std::function<void(HeaderWriter&)>& builder,
-		int id,
-		bool recurring,
-		const std::string& name,		
-		const openpal::TimeDuration& period,	
-		const openpal::TimeDuration& retryDelay,
-		ISOEHandler* pSOEHandler,
-		openpal::Logger* pLogger
+		const std::function<void(HeaderWriter&)>& builder,		
+		bool recurring,			
+		openpal::TimeDuration period,	
+		openpal::TimeDuration retryDelay,
+		IMasterApplication& app,
+		ISOEHandler& soeHandler,
+		ITaskCallback* pCallback,
+		int userId,
+		openpal::Logger logger		
 		);	
 
 	virtual int Priority() const override final { return priority::USER_POLL; }
 
-	virtual TaskId Id() const override final { return TaskId::UserDefined(id); }
-
-	virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;
-
-	virtual openpal::MonotonicTimestamp ExpirationTime() const override final { return expiration; }
+	virtual void BuildRequest(APDURequest& request, uint8_t seq) override final;	
 
 	virtual bool BlocksLowerPriority() const override final { return false; }
 	
 	virtual bool IsRecurring() const override final { return recurring; }	
 
-	virtual void OnLowerLayerClose(const openpal::MonotonicTimestamp&) override final;
+	virtual bool IsEnabled() const { return true; }
+		
+private:	
 
-	virtual void Demand() override final { expiration = 0; }
+	virtual void _OnLowerLayerClose(openpal::MonotonicTimestamp now) override final;	
 
-private:
+	virtual void _OnResponseTimeout(openpal::MonotonicTimestamp now) override final;
 
-	void Notify(UserTaskResult result);
+	virtual void OnResponseOK(openpal::MonotonicTimestamp now) override final;
+	
+	virtual void OnResponseError(openpal::MonotonicTimestamp now) override final;
 
-	virtual void OnFailure(const openpal::MonotonicTimestamp& now) override final;
+	virtual MasterTaskType GetTaskType() const override final { return MasterTaskType::USER_TASK;  }
 
-	virtual void OnSuccess(const openpal::MonotonicTimestamp& now) override final;
 			
-	std::function<void(HeaderWriter&)> builder;
-	int id;
+	std::function<void(HeaderWriter&)> builder;	
 	bool recurring;
 	openpal::TimeDuration period;
-	openpal::TimeDuration retryDelay;
-	openpal::MonotonicTimestamp expiration;
+	openpal::TimeDuration retryDelay;	
 };
 
 

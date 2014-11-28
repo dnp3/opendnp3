@@ -34,7 +34,7 @@ namespace Automatak.DNP3.Interface
     /// </summary>
     public struct CommandResponse
     {
-        public CommandResponse(UserTaskResult result, CommandStatus status)
+        public CommandResponse(TaskCompletion result, CommandStatus status)
         {
             this.result = result;
             this.status = status;
@@ -42,11 +42,11 @@ namespace Automatak.DNP3.Interface
 
         public override string ToString() 
         {
-            if (result == UserTaskResult.RESPONSE_OK) return "Response(" + status + ")";
+            if (result == TaskCompletion.SUCCESS) return "Response(" + status + ")";
             else return "Failure(" + result + ")";
         }
 
-        public UserTaskResult Result
+        public TaskCompletion Result
         {
             get { return result; }
         }
@@ -56,7 +56,7 @@ namespace Automatak.DNP3.Interface
             get { return status; }
         }
 
-        private readonly UserTaskResult result;
+        private readonly TaskCompletion result;
         private readonly CommandStatus status;
     }   
 

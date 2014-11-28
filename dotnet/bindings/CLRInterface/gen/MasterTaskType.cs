@@ -21,9 +21,9 @@
 namespace Automatak.DNP3.Interface
 {
   /// <summary>
-  /// Enumeration of integer values for task ids
+  /// Enumeration of internal tasks
   /// </summary>
-  public enum TaskIdValue : int
+  public enum MasterTaskType : int
   {
     CLEAR_RESTART = 0,
     DISABLE_UNSOLICITED = 1,
@@ -31,6 +31,7 @@ namespace Automatak.DNP3.Interface
     STARTUP_INTEGRITY_POLL = 3,
     SERIAL_TIME_SYNC = 4,
     ENABLE_UNSOLICITED = 5,
-    AUTO_EVENT_SCAN = 6
+    AUTO_EVENT_SCAN = 6,
+    USER_TASK = 7
   }
 }

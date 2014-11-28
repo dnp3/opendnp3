@@ -33,29 +33,26 @@ using namespace openpal;
 namespace opendnp3
 {
 
-SerialTimeSyncTask::SerialTimeSyncTask(openpal::Logger* pLogger_, openpal::IUTCTimeSource* pTimeSource_) :
-	SingleResponseTask(pLogger_),
-	expiration(MonotonicTimestamp::Max()),
-	pTimeSource(pTimeSource_),
+SerialTimeSyncTask::SerialTimeSyncTask(IMasterApplication& app, openpal::Logger logger) :
+	IMasterTask(app, MonotonicTimestamp::Max(), logger, nullptr, -1),	
 	delay(-1)
 {}
 
 void SerialTimeSyncTask::Initialize()
 {
 	delay = -1;
-	expiration = MonotonicTimestamp::Max();
 }
 
 void SerialTimeSyncTask::BuildRequest(APDURequest& request, uint8_t seq)
 {
 	if (delay < 0)
 	{
-		start = pTimeSource->Now();
+		start = pApplication->Now();
 		build::MeasureDelay(request, seq);
 	}
 	else
 	{
-		auto now = pTimeSource->Now();
+		auto now = pApplication->Now();
 		Group50Var1 time;
 		time.time = now.msSinceEpoch + delay;
 		request.SetFunction(FunctionCode::WRITE);
@@ -65,58 +62,70 @@ void SerialTimeSyncTask::BuildRequest(APDURequest& request, uint8_t seq)
 	}
 }
 
-void SerialTimeSyncTask::OnLowerLayerClose(const openpal::MonotonicTimestamp&)
+void SerialTimeSyncTask::_OnResponseTimeout(openpal::MonotonicTimestamp)
 {
-	this->Initialize();
+	expiration = MonotonicTimestamp::Max();
 }
 
-openpal::MonotonicTimestamp SerialTimeSyncTask::ExpirationTime() const
+void SerialTimeSyncTask::_OnLowerLayerClose(openpal::MonotonicTimestamp now)
 {
-	return expiration;
+	expiration = MonotonicTimestamp::Max();
 }
 
-void SerialTimeSyncTask::OnTimeoutOrBadControlOctet(const openpal::MonotonicTimestamp&)
+void SerialTimeSyncTask::OnResponseError(openpal::MonotonicTimestamp)
 {
-	this->Initialize();
-	// TODO - some kind of logging?
-	// don't reschedule. Seeing the NeedTime bit again will automatically re-activate the task
+	disabled = true;
+	expiration = MonotonicTimestamp::Max();	
 }
 
-TaskResult SerialTimeSyncTask::OnSingleResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, const openpal::MonotonicTimestamp& now)
+void SerialTimeSyncTask::OnResponseOK(openpal::MonotonicTimestamp now)
 {
-	if (delay < 0)
+	expiration = MonotonicTimestamp::Max();
+}
+
+IMasterTask::ResponseResult SerialTimeSyncTask::_OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects)
+{	
+	return (delay < 0) ? OnResponseDelayMeas(response, objects) : OnResponseWriteTime(response, objects);				
+}
+
+IMasterTask::ResponseResult SerialTimeSyncTask::OnResponseDelayMeas(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects)
+{	
+	if (ValidateSingleResponse(response))
 	{
-		TimeSyncHandler handler(*pLogger);
-		auto result = APDUParser::ParseTwoPass(objects, &handler, pLogger);
+		TimeSyncHandler handler(logger);
+		auto result = APDUParser::ParseTwoPass(objects, &handler, &logger);
 		if (result == APDUParser::Result::OK)
 		{
 			uint16_t rtuTurnAroundTime;
 			if (handler.GetTimeDelay(rtuTurnAroundTime))
 			{
-				auto now = pTimeSource->Now();
+				auto now = pApplication->Now();
 				auto sendReceieveTime = now.msSinceEpoch - start.msSinceEpoch;
 
 				// The later shouldn't happen, but could cause a negative delay which would result in a weird time setting				
-				delay = (sendReceieveTime >= rtuTurnAroundTime) ? (sendReceieveTime - rtuTurnAroundTime) / 2 : 0;				
-				return TaskResult::REPEAT;
+				delay = (sendReceieveTime >= rtuTurnAroundTime) ? (sendReceieveTime - rtuTurnAroundTime) / 2 : 0;
+
+				return ResponseResult::OK_REPEAT;
 			}
 			else
 			{
-				this->Initialize();
-				return TaskResult::FAILURE;
+				return ResponseResult::ERROR_BAD_RESPONSE;
 			}
 		}
 		else
-		{		
-			this->Initialize();
-			return TaskResult::FAILURE;
+		{
+			return ResponseResult::ERROR_BAD_RESPONSE;
 		}
 	}
 	else
 	{
-		this->Initialize();
-		return TaskResult::SUCCESS;
-	}
+		return ResponseResult::ERROR_BAD_RESPONSE;
+	}	
+}
+
+IMasterTask::ResponseResult SerialTimeSyncTask::OnResponseWriteTime(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects)
+{
+	return ValidateNullResponse(header, objects) ? ResponseResult::OK_FINAL : ResponseResult::ERROR_BAD_RESPONSE;
 }
 	
 } //ens ns

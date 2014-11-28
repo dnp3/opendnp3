@@ -21,14 +21,13 @@
 
 #include "WriteTask.h"
 
+using namespace openpal;
+
 namespace opendnp3
 {
 
-WriteTask::WriteTask(const MasterParams& params, const std::string& name_, TaskId id_, const std::function<void(HeaderWriter&)> format_, openpal::Logger* pLogger) :
-	NullResponseTask(pLogger),
-	pParams(&params),
-	name(name_),
-	id(id_),
+WriteTask::WriteTask(IMasterApplication& app, const std::function<void(HeaderWriter&)> format_, openpal::Logger logger, ITaskCallback* pCallback, int userId) :
+	IMasterTask(app, 0, logger, pCallback, userId),	
 	format(format_)
 {
 
@@ -42,19 +41,29 @@ void WriteTask::BuildRequest(APDURequest& request, uint8_t seq)
 	format(writer);
 }
 
-void WriteTask::OnLowerLayerClose(const openpal::MonotonicTimestamp&)
+IMasterTask::ResponseResult WriteTask::_OnResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects)
 {
-
+	return ValidateNullResponse(header, objects) ? ResponseResult::OK_FINAL : ResponseResult::ERROR_BAD_RESPONSE;
 }
 
-void WriteTask::OnSuccess(const openpal::MonotonicTimestamp&)
+void WriteTask::_OnLowerLayerClose(openpal::MonotonicTimestamp now)
 {
-
+	
 }
 
-void WriteTask::OnTimeoutOrBadControlOctet(const openpal::MonotonicTimestamp&)
+void WriteTask::_OnResponseTimeout(openpal::MonotonicTimestamp now)
 {
+	
+}
 
+void WriteTask::OnResponseOK(openpal::MonotonicTimestamp now)
+{
+	
+}
+
+void WriteTask::OnResponseError(openpal::MonotonicTimestamp now)
+{
+	
 }
 
 } //end ns
