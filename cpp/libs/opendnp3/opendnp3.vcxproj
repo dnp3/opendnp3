@@ -190,7 +190,6 @@
     <ClInclude Include="src\opendnp3\outstation\CommandActionAdapter.h" />
     <ClInclude Include="src\opendnp3\outstation\CommandResponseHandler.h" />
     <ClInclude Include="src\opendnp3\outstation\ConstantCommandAction.h" />
-    <ClInclude Include="src\opendnp3\outstation\CountOf.h" />
     <ClInclude Include="src\opendnp3\outstation\StaticBufferView.h" />
     <ClInclude Include="src\opendnp3\outstation\Database.h" />
     <ClInclude Include="src\opendnp3\outstation\DatabaseTemplate.h" />

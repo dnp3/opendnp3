@@ -312,9 +312,6 @@
     <ClInclude Include="src\opendnp3\outstation\ConstantCommandAction.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\CountOf.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\DatabaseTemplate.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
