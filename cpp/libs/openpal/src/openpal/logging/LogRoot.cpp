@@ -33,15 +33,26 @@ namespace openpal
 
 LogRoot::LogRoot(ILogHandler* pHandler_, char const* alias_, const LogFilters& filters_) :
 	pHandler(pHandler_), 
-	filters(filters_)
-{		
-	char* tmp = new char[strlen(alias_) + 1];
-	alias = strcpy(tmp, alias_);
+	filters(filters_),
+	alias(AllocateCopy(alias_))
+{			
+	alias = AllocateCopy(alias_);
 }
 
 LogRoot::LogRoot(const LogRoot& copy, char const* alias_) :
-	LogRoot(copy.pHandler, alias_, copy.filters)
-{ }
+	pHandler(copy.pHandler),
+	filters(copy.filters),
+	alias(AllocateCopy(alias_))
+{ 
+	
+}
+
+char* LogRoot::AllocateCopy(char const* str)
+{
+	char* tmp = new char[strlen(str) + 1];
+	strcpy(tmp, str);
+	return tmp;
+}
 
 LogRoot::~LogRoot()
 {
