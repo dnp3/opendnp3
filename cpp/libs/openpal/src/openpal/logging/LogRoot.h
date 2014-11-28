@@ -56,10 +56,12 @@ public:
 	const LogFilters& GetFilters() const;
 
 private:
+
+	static char* AllocateCopy(char const* alias);
 	
-	ILogHandler*	pHandler;
-	char*           alias;
+	ILogHandler*	pHandler;	
 	LogFilters		filters;   // bit field describing what is being logged
+	char*           alias;
 	
 };
 
