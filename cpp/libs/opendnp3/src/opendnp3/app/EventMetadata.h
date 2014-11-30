@@ -36,8 +36,7 @@ struct EventMetadata
 {	
 	PointClass clazz;
 	Target lastEvent;
-	typename Target::EventVariation eventVariation;
-	typename Target::StaticVariation staticVariation;
+	typename Target::EventVariation variation;
 
 	protected:
 

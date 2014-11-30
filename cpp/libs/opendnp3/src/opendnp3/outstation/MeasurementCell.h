@@ -29,6 +29,7 @@ template <class ValueType>
 struct MeasurementCell
 {			
 	ValueType value;
+	typename ValueType::StaticVariation variation;
 	typename ValueType::MetadataType metadata;	
 };
 

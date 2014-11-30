@@ -57,6 +57,30 @@ public:
 	template <class T>
 	openpal::ArrayView<BufferedCell<T>, uint16_t> GetArrayView();
 
+	template <>
+	openpal::ArrayView<BufferedCell<Binary>, uint16_t> GetArrayView() { return binaries.ToView(); }
+
+	template <>
+	openpal::ArrayView<BufferedCell<DoubleBitBinary>, uint16_t> GetArrayView() { return doubleBinaries.ToView(); }
+
+	template <>
+	openpal::ArrayView<BufferedCell<Counter>, uint16_t> GetArrayView() { return counters.ToView(); }
+
+	template <>
+	openpal::ArrayView<BufferedCell<FrozenCounter>, uint16_t> GetArrayView() { return frozenCounters.ToView(); }
+
+	template <>
+	openpal::ArrayView<BufferedCell<Analog>, uint16_t> GetArrayView() { return analogs.ToView(); }
+
+	template <>
+	openpal::ArrayView<BufferedCell<BinaryOutputStatus>, uint16_t> GetArrayView() { return binaryOutputStatii.ToView(); }
+
+	template <>
+	openpal::ArrayView<BufferedCell<AnalogOutputStatus>, uint16_t> GetArrayView() { return analogOutputStatii.ToView(); }
+
+	template <>
+	openpal::ArrayView<BufferedCell<TimeAndInterval>, uint16_t> GetArrayView() { return timeAndIntervals.ToView(); }
+
 private:
 		
 	openpal::DynamicArray<BufferedCell<Binary>, uint16_t> binaries;

@@ -207,7 +207,7 @@ bool Database::ConvertToEventClass(PointClass pc, EventClass& ec)
 	}
 }
 
-Range RangeOf(const HasSize<uint16_t>& sized)
+Range Database::RangeOf(const HasSize<uint16_t>& sized)
 {
 	return sized.IsEmpty() ? Range::Invalid() : Range::From(0, sized.Size() - 1);
 }

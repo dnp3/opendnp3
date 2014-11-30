@@ -67,6 +67,31 @@ public:
 	template <class T>
 	openpal::ArrayView<MeasurementCell<T>, uint16_t> GetArrayView();
 
+	template <>
+	openpal::ArrayView<MeasurementCell<Binary>, uint16_t> GetArrayView() { return binaries.ToView(); }
+
+	template <>
+	openpal::ArrayView<MeasurementCell<DoubleBitBinary>, uint16_t> GetArrayView() { return doubleBinaries.ToView(); }
+
+	template <>
+	openpal::ArrayView<MeasurementCell<Counter>, uint16_t> GetArrayView() { return counters.ToView(); }
+
+	template <>
+	openpal::ArrayView<MeasurementCell<FrozenCounter>, uint16_t> GetArrayView() { return frozenCounters.ToView(); }
+
+	template <>
+	openpal::ArrayView<MeasurementCell<Analog>, uint16_t> GetArrayView() { return analogs.ToView(); }
+
+	template <>
+	openpal::ArrayView<MeasurementCell<BinaryOutputStatus>, uint16_t> GetArrayView() { return binaryOutputStatii.ToView(); }
+
+	template <>
+	openpal::ArrayView<MeasurementCell<AnalogOutputStatus>, uint16_t> GetArrayView() { return analogOutputStatii.ToView(); }
+
+	template <>
+	openpal::ArrayView<MeasurementCell<TimeAndInterval>, uint16_t> GetArrayView() { return timeAndIntervals.ToView(); }
+
+
 private:
 		
 	openpal::DynamicArray<MeasurementCell<Binary>, uint16_t> binaries;

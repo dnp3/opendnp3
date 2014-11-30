@@ -178,7 +178,7 @@ IINField Database::GenericSelect(
 				{
 					selected[i].selected = true;
 					selected[i].value = current[i].value;
-					selected[i].variation = useDefault ? current[i].metadata.staticVariation : variation;
+					selected[i].variation = useDefault ? current[i].variation : variation;
 				}				
 			}
 
