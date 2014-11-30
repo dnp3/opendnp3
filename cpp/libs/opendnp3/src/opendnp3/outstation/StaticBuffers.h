@@ -63,6 +63,11 @@ public:
 			timeAndIntervals.ToView()
 		);
 	}	
+
+	template <class T>
+	openpal::ArrayView<MeasurementCell<T>, uint16_t> GetArrayView();
+
+private:
 		
 	openpal::DynamicArray<MeasurementCell<Binary>, uint16_t> binaries;
 	openpal::DynamicArray<MeasurementCell<DoubleBitBinary>, uint16_t> doubleBinaries;

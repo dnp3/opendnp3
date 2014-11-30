@@ -28,9 +28,10 @@
 
 #include "opendnp3/outstation/DatabaseTemplate.h"
 #include "opendnp3/outstation/StaticBuffers.h"
+#include "opendnp3/outstation/StaticSelection.h"
+#include "opendnp3/outstation/IStaticSelector.h"
 #include "opendnp3/outstation/IDatabase.h"
 #include "opendnp3/outstation/IEventReceiver.h"
-
 
 namespace opendnp3
 {
@@ -45,32 +46,40 @@ public:
 /**
 The database coordinates all updates of measurement data
 */
-class Database : public IDatabase
+class Database : public IDatabase, public IStaticSelector
 {
 public:
 
 	Database(const DatabaseTemplate&, IEventReceiver& eventReceiver, INewEventDataHandler& handler, openpal::IMutex* pMutex);
 
-	// IMeasurementUpdater functions
-	bool Update(const Binary& value, uint16_t) override final;
-	bool Update(const DoubleBitBinary& value, uint16_t) override final;
-	bool Update(const Analog& value, uint16_t) override final;
-	bool Update(const Counter& value, uint16_t) override final;
-	bool Update(const FrozenCounter& value, uint16_t) override final;
-	bool Update(const BinaryOutputStatus& value, uint16_t) override final;
-	bool Update(const AnalogOutputStatus& value, uint16_t) override final;
-	bool Update(const TimeAndInterval& value, uint16_t) override final;	
+	// ------- IDatabase --------------
+	virtual bool Update(const Binary& value, uint16_t) override final;
+	virtual bool Update(const DoubleBitBinary& value, uint16_t) override final;
+	virtual bool Update(const Analog& value, uint16_t) override final;
+	virtual bool Update(const Counter& value, uint16_t) override final;
+	virtual bool Update(const FrozenCounter& value, uint16_t) override final;
+	virtual bool Update(const BinaryOutputStatus& value, uint16_t) override final;
+	virtual bool Update(const AnalogOutputStatus& value, uint16_t) override final;
+	virtual bool Update(const TimeAndInterval& value, uint16_t) override final;
 
-	bool AssignClass(AssignClassType type, PointClass clazz, const Range& range);	
+	// ------- IStaticSelector -------------
+
+	virtual IINField SelectAll(const GroupVariationRecord& record) override final;
+	virtual IINField SelectRange(const GroupVariationRecord& record, const Range& range) override final;
+
+	// -------- Misc ---------------
+
 	
-
-	StaticBufferView GetStaticView() { return staticBuffers.GetView(); }
+	StaticBufferView GetStaticView() { return staticBuffers.GetView(); }	
 
 private:
 
+	template <class T>
+	IINField SelectRange(const Range& range);
+
 	// stores the most revent values and event information
 	StaticBuffers staticBuffers;
-
+	StaticSelection staticSelection;
 
 	IEventReceiver* pEventReceiver;
 	openpal::IMutex* pMutex;
@@ -84,7 +93,29 @@ private:
 	static bool ConvertToEventClass(PointClass pc, EventClass& ec);	
 
 	template <class T>
-	bool UpdateEvent(const T& value, uint16_t index, openpal::ArrayView<MeasurementCell<T>, uint16_t>& values);
+	bool UpdateEvent(const T& value, uint16_t index);
+
+	static Range RangeOf(const openpal::HasSize<uint16_t>& sized);
+
+	template <class T>
+	IINField GenericSelect(
+		const Range& range,
+		const openpal::ArrayView<MeasurementCell<T>, uint16_t>& current,
+		openpal::ArrayView<BufferedCell<T>, uint16_t>& frozen,	
+		bool useDefault,
+		typename T::StaticVariation variation
+	);
+
+	template <class T>
+	IINField SelectAll(		
+		bool useDefault = true,
+		typename T::StaticVariation variation = T::StaticVariation()
+		)
+	{
+		auto current = staticBuffers.GetArrayView<T>();
+		auto frozen = staticSelection.GetArrayView<T>();
+		return GenericSelect(RangeOf(current), current, frozen, useDefault, variation);
+	}
 
 	// ITransactable  functions, proxies to the given transactable
 	virtual void Start() override final;
@@ -92,8 +123,10 @@ private:
 };
 
 template <class T>
-bool Database::UpdateEvent(const T& value, uint16_t index, openpal::ArrayView<MeasurementCell<T>, uint16_t>& values)
+bool Database::UpdateEvent(const T& value, uint16_t index)
 {	
+	auto values = staticBuffers.GetArrayView<T>();
+
 	if (values.Contains(index))
 	{
 		auto& metadata = values[index].metadata;
@@ -110,12 +143,55 @@ bool Database::UpdateEvent(const T& value, uint16_t index, openpal::ArrayView<Me
 			}
 		}
 
-		values[index].currentValue = value;
+		values[index].value = value;
 		return true;
 	}
 	else
 	{
 		return false;
+	}
+}
+
+template <class T>
+IINField Database::GenericSelect(
+	const Range& range,
+	const openpal::ArrayView<MeasurementCell<T>, uint16_t>& current,
+	openpal::ArrayView<BufferedCell<T>, uint16_t>& selected,
+	bool useDefault,
+	typename T::StaticVariation variation)
+{
+	if (range.IsValid())
+	{		
+		auto allowed = range.Intersection(RangeOf(current));
+
+		if (allowed.IsValid())
+		{
+			IINField ret;
+
+			for (uint16_t i = allowed.start; i < allowed.stop; ++i)
+			{
+				if (selected[i].selected)
+				{
+					ret |= IINBit::PARAM_ERROR;
+				}
+				else
+				{
+					selected[i].selected = true;
+					selected[i].value = current[i].value;
+					selected[i].variation = useDefault ? current[i].metadata.staticVariation : variation;
+				}				
+			}
+
+			return ret;
+		}
+		else
+		{
+			return IINField(IINBit::PARAM_ERROR);
+		}
+	}
+	else
+	{
+		return IINField();
 	}
 }
 

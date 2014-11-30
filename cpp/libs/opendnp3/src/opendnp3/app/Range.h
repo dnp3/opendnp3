@@ -25,6 +25,8 @@
 #include <cstdint>
 #include <assert.h>
 
+#include <openpal/util/Comparisons.h>
+
 namespace opendnp3
 {
 
@@ -42,9 +44,28 @@ public:
 		return Range(1, 0);
 	}
 
-
 	Range() : start(1), stop(0)
 	{}
+
+	Range Intersection(const Range& other) const
+	{
+		if (other.IsValid() && this->IsValid())
+		{			
+			return Range(
+				openpal::Max<uint16_t>(other.start, start), 
+				openpal::Min<uint16_t>(other.stop, stop)
+			);
+		}
+		else
+		{
+			return Range::Invalid();
+		}
+	}
+
+	bool Equals(const Range& other) const
+	{
+		return (other.start == start) && (other.stop == stop);
+	}
    	
 	uint32_t Count() const
 	{

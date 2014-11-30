@@ -53,15 +53,20 @@ public:
 		analogOutputStatii(dbTemplate.numAnalogOutputStatus),
 		timeAndIntervals(dbTemplate.numTimeAndInterval)
 	{}
+
+	template <class T>
+	openpal::ArrayView<BufferedCell<T>, uint16_t> GetArrayView();
+
+private:
 		
 	openpal::DynamicArray<BufferedCell<Binary>, uint16_t> binaries;
-	openpal::DynamicArray<BufferedCell<Binary>, uint16_t> doubleBinaries;
-	openpal::DynamicArray<BufferedCell<Binary>, uint16_t> analogs;
-	openpal::DynamicArray<BufferedCell<Binary>, uint16_t> counters;
-	openpal::DynamicArray<BufferedCell<Binary>, uint16_t> frozenCounters;
-	openpal::DynamicArray<BufferedCell<Binary>, uint16_t> binaryOutputStatii;
-	openpal::DynamicArray<BufferedCell<Binary>, uint16_t> analogOutputStatii;
-	openpal::DynamicArray<BufferedCell<Binary>, uint16_t> timeAndIntervals;
+	openpal::DynamicArray<BufferedCell<DoubleBitBinary>, uint16_t> doubleBinaries;
+	openpal::DynamicArray<BufferedCell<Analog>, uint16_t> analogs;
+	openpal::DynamicArray<BufferedCell<Counter>, uint16_t> counters;
+	openpal::DynamicArray<BufferedCell<FrozenCounter>, uint16_t> frozenCounters;
+	openpal::DynamicArray<BufferedCell<BinaryOutputStatus>, uint16_t> binaryOutputStatii;
+	openpal::DynamicArray<BufferedCell<AnalogOutputStatus>, uint16_t> analogOutputStatii;
+	openpal::DynamicArray<BufferedCell<TimeAndInterval>, uint16_t> timeAndIntervals;
 };
 
 }

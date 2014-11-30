@@ -18,28 +18,28 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_MEASUREMENTCELL_H
-#define OPENDNP3_MEASUREMENTCELL_H
+#ifndef OPENDNP3_ISTATICSELECTOR_H
+#define OPENDNP3_ISTATICSELECTOR_H
 
+#include "opendnp3/app/Range.h"
+#include "opendnp3/app/IINField.h"
+#include "opendnp3/app/GroupVariationRecord.h"
 
 namespace opendnp3
 {
 
-template <class ValueType>
-struct MeasurementCell
-{			
-	ValueType value;
-	typename ValueType::MetadataType metadata;	
-};
+class IStaticSelector
+{
+public:
 
-template <class ValueType>
-struct BufferedCell
-{	
-	bool selected;
-	ValueType value;	
-	typename ValueType::StaticVariation variation;
+	virtual IINField SelectAll(const GroupVariationRecord& record) = 0;
+
+	virtual IINField SelectRange(const GroupVariationRecord& record, const Range& range) = 0;
 };
 
 }
 
+
+
 #endif
+
