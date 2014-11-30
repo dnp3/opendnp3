@@ -63,7 +63,7 @@ OutstationContext::OutstationContext(
 	pCommandHandler(&commandHandler),
 	pApplication(&application),	
 	eventBuffer(config.eventBufferConfig),
-	database(dbTemplate, eventBuffer, pDBMutex),
+	database(dbTemplate, eventBuffer, *this, pDBMutex),
 	isOnline(false),
 	pSolicitedState(&OutstationSolicitedStateIdle::Inst()),
 	pUnsolicitedState(&OutstationUnsolicitedStateIdle::Inst()),
@@ -83,11 +83,13 @@ OutstationContext::OutstationContext(
 	solTxBuffer(params.maxTxFragSize),
 	unsolTxBuffer(params.maxTxFragSize)
 {	
-	staticIIN.SetBit(IINBit::DEVICE_RESTART);	
+	staticIIN.SetBit(IINBit::DEVICE_RESTART);		
+}
 
+void OutstationContext::OnNewEventData()
+{
 	auto notify = [this]() { this->CheckForTaskStart(); };
-	auto post = [notify, this] { pExecutor->PostLambda(notify); };
-	database.SetEventHandler(Action0::Bind(post));
+	pExecutor->PostLambda(notify);
 }
 
 IINField OutstationContext::GetDynamicIIN()

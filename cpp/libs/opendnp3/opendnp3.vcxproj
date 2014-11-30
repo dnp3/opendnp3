@@ -229,6 +229,7 @@
     <ClInclude Include="src\opendnp3\outstation\StaticResponseConfig.h" />
     <ClInclude Include="src\opendnp3\outstation\StaticResponseContext.h" />
     <ClInclude Include="src\opendnp3\outstation\StaticLoadFunctions.h" />
+    <ClInclude Include="src\opendnp3\outstation\StaticSelection.h" />
     <ClInclude Include="src\opendnp3\outstation\StaticTypeBitfield.h" />
     <ClInclude Include="src\opendnp3\outstation\TimeTransaction.h" />
     <ClInclude Include="src\opendnp3\outstation\ValueMetadataPair.h" />

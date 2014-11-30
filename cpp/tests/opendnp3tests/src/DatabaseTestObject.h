@@ -77,21 +77,25 @@ public:
 	std::deque<Event<AnalogOutputStatus>> analogOutputStatusEvents;
 };
 
-class DatabaseTestObject
+class DatabaseTestObject : private INewEventDataHandler
 {
 public:
 	
 	DatabaseTestObject(const DatabaseTemplate& dbTemplate) : 
 		buffer(),
-		db(dbTemplate, buffer, nullptr)
+		db(dbTemplate, buffer, *this, nullptr)
 	{
 		
 	}
 
 
-public:
 	MockEventBuffer buffer;
 	Database db;
+	uint32_t numEventNotifications;
+
+private:
+
+	virtual void OnNewEventData() override final { ++numEventNotifications; }
 };
 
 }

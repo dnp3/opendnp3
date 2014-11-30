@@ -22,8 +22,6 @@
 #define OPENDNP3_DATABASE_H
 
 #include <openpal/executor/IMutex.h>
-#include <openpal/executor/Action0.h>
-#include <openpal/container/Settable.h>
 
 #include "opendnp3/app/Range.h"
 #include "opendnp3/gen/AssignClassType.h"
@@ -37,6 +35,13 @@
 namespace opendnp3
 {
 
+class INewEventDataHandler
+{
+public:
+	// called when a transaction produces new event data
+	virtual void OnNewEventData() = 0;
+};
+
 /**
 The database coordinates all updates of measurement data
 */
@@ -44,7 +49,7 @@ class Database : public IDatabase
 {
 public:
 
-	Database(const DatabaseTemplate&, IEventReceiver& eventReceiver, openpal::IMutex* pMutex);
+	Database(const DatabaseTemplate&, IEventReceiver& eventReceiver, INewEventDataHandler& handler, openpal::IMutex* pMutex);
 
 	// IMeasurementUpdater functions
 	bool Update(const Binary& value, uint16_t) override final;
@@ -58,7 +63,6 @@ public:
 
 	bool AssignClass(AssignClassType type, PointClass clazz, const Range& range);	
 	
-	void SetEventHandler(const openpal::Action0& callback);
 
 	StaticBufferView GetStaticView() { return staticBuffers.GetView(); }
 
@@ -66,11 +70,12 @@ private:
 
 	// stores the most revent values and event information
 	StaticBuffers staticBuffers;
+
+
 	IEventReceiver* pEventReceiver;
 	openpal::IMutex* pMutex;
-	
-	
-	openpal::Settable<openpal::Action0> onEventAction;
+		
+	INewEventDataHandler* pEventHandler;
 	bool transactionHasEvents;
 
 	Database() = delete;

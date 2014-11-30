@@ -31,10 +31,11 @@ using namespace openpal;
 namespace opendnp3
 {
 
-Database::Database(const DatabaseTemplate& dbTemplate, IEventReceiver& eventReceiver, openpal::IMutex* pMutex_) :
+Database::Database(const DatabaseTemplate& dbTemplate, IEventReceiver& eventReceiver, INewEventDataHandler& handler, openpal::IMutex* pMutex_) :
 	staticBuffers(dbTemplate),
 	pEventReceiver(&eventReceiver),
 	pMutex(pMutex_),
+	pEventHandler(&handler),
 	transactionHasEvents(false)
 {
 
@@ -47,12 +48,20 @@ void Database::Start()
 
 void Database::End()
 {
+	bool notify = false;
+	
 	if (transactionHasEvents)
 	{
-		transactionHasEvents = false;
-		onEventAction.Foreach([](const Action0& runnable) { runnable.Apply(); });
+		notify = true;
+		transactionHasEvents = false;			
 	}
+
 	openpal::CriticalSection::Unlock(pMutex);
+
+	if (notify && pEventHandler)
+	{
+		pEventHandler->OnNewEventData();
+	}
 }
 
 bool Database::Update(const Binary& value, uint16_t index)
@@ -129,11 +138,6 @@ bool Database::AssignClass(AssignClassType type, PointClass clazz, const Range& 
 			return false;
 	}
 	*/
-}
-
-void Database::SetEventHandler(const Action0& callback)
-{
-	onEventAction.Set(callback);
 }
 
 bool Database::ConvertToEventClass(PointClass pc, EventClass& ec)

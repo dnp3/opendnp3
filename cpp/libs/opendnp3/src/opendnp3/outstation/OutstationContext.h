@@ -45,7 +45,7 @@ namespace opendnp3
 {
 
 /// Represent all of the "state" and configuration for an outstation
-class OutstationContext
+class OutstationContext : private INewEventDataHandler
 {
 	
 	public:		
@@ -140,6 +140,8 @@ class OutstationContext
 	void ProcessNoResponseFunction(const APDUHeader& header, const openpal::ReadOnlyBuffer& objects);
 
 	private:
+
+	virtual void OnNewEventData() override final;
 
 	void PostCheckForActions();
 
