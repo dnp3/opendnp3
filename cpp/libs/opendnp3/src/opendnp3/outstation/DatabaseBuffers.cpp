@@ -38,9 +38,9 @@ DatabaseBuffers::DatabaseBuffers(const DatabaseTemplate& dbTemplate) :
 
 }
 
-IINField DatabaseBuffers::SelectAll(const GroupVariationRecord& record)
+IINField DatabaseBuffers::SelectAll(GroupVariation gv)
 {
-	if (record.enumeration == GroupVariation::Group60Var1)
+	if (gv == GroupVariation::Group60Var1)
 	{		
 		this->SelectAll<Binary>();
 		this->SelectAll<DoubleBitBinary>();
@@ -55,7 +55,7 @@ IINField DatabaseBuffers::SelectAll(const GroupVariationRecord& record)
 	}
 	else
 	{	
-		switch (record.enumeration)
+		switch (gv)
 		{
 			case(GroupVariation::Group1Var0):
 				return this->SelectAll<Binary>();				
@@ -133,9 +133,9 @@ IINField DatabaseBuffers::SelectAll(const GroupVariationRecord& record)
 	}
 }
 
-IINField DatabaseBuffers::SelectRange(const GroupVariationRecord& record, const Range& range)
+IINField DatabaseBuffers::SelectRange(GroupVariation gv, const Range& range)
 {
-	switch (record.enumeration)
+	switch (gv)
 	{
 	case(GroupVariation::Group1Var0) :
 		return this->SelectRange<Binary>(range);

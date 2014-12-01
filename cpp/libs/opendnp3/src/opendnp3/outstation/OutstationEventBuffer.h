@@ -23,6 +23,7 @@
 #define OPENDNP3_OUTSTATIONEVENTBUFFER_H
 
 #include "opendnp3/outstation/IEventReceiver.h"
+#include "opendnp3/outstation/IEventSelector.h"
 #include "opendnp3/outstation/SelectionCriteria.h"
 #include "opendnp3/outstation/EventCount.h"
 #include "opendnp3/outstation/SelectionWriter.h"
@@ -48,15 +49,15 @@ namespace opendnp3
 	the selection criteria.
 */
 
-class OutstationEventBuffer : public IEventReceiver
+class OutstationEventBuffer : public IEventReceiver, public IEventSelector
 {
 	friend class SelectionWriter;
 
 
 public:
 	OutstationEventBuffer(const EventBufferConfig& config);
-
-	// ------- Update methods ------ These can be called anytime
+	
+	// ------- IEventReceiver ------ 
 
 	virtual void Update(const Event<Binary>& evt) override final;
 	virtual void Update(const Event<Analog>& evt) override final;
@@ -65,6 +66,14 @@ public:
 	virtual void Update(const Event<DoubleBitBinary>& evt) override final;
 	virtual void Update(const Event<BinaryOutputStatus>& evt) override final;
 	virtual void Update(const Event<AnalogOutputStatus>& evt) override final;
+
+	// ------- IEventSelector ------ 
+
+	virtual IINField SelectAll(GroupVariation gv) override final { return IINBit::FUNC_NOT_SUPPORTED; }
+
+	virtual IINField SelectCount(GroupVariation gv, uint16_t count) override final { return IINBit::FUNC_NOT_SUPPORTED; }
+
+	// ------- Misc -------
 
 	void Reset(); // called when a transmission fails
 	void Clear(); // called when a transmission succeeds

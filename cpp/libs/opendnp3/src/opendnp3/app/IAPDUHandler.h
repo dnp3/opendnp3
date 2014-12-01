@@ -51,7 +51,7 @@ public:
 
 	virtual void OnRangeRequest(const HeaderRecord& record, const Range& range) = 0;
 
-	virtual void OnCountRequest(const HeaderRecord& record, uint32_t count) = 0;
+	virtual void OnCountRequest(const HeaderRecord& record, uint16_t count) = 0;
 
 	virtual void OnCountOf(const HeaderRecord& record, const IterableBuffer<Group50Var1>& times) = 0;
 

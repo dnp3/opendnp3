@@ -18,28 +18,25 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_ISTATICSELECTOR_H
-#define OPENDNP3_ISTATICSELECTOR_H
+#ifndef OPENDNP3_IEVENTSELECTOR_H
+#define OPENDNP3_IEVENTSELECTOR_H
 
-#include "opendnp3/app/Range.h"
 #include "opendnp3/app/IINField.h"
 #include "opendnp3/app/GroupVariationRecord.h"
 
 namespace opendnp3
 {
 
-class IStaticSelector
+class IEventSelector
 {
 public:
 
 	virtual IINField SelectAll(GroupVariation gv) = 0;
 
-	virtual IINField SelectRange(GroupVariation gv, const Range& range) = 0;
+	virtual IINField SelectCount(GroupVariation gv, uint16_t count) = 0;
 };
 
 }
-
-
 
 #endif
 

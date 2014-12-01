@@ -42,8 +42,8 @@ public:
 
 	// ------- IStaticSelector -------------
 
-	virtual IINField SelectAll(const GroupVariationRecord& record) override final;
-	virtual IINField SelectRange(const GroupVariationRecord& record, const Range& range) override final;	
+	virtual IINField SelectAll(GroupVariation gv) override final;
+	virtual IINField SelectRange(GroupVariation gv, const Range& range) override final;
 
 	// stores the most revent values and event information
 	StaticBuffers current;

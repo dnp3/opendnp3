@@ -25,7 +25,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-APDUHandlerBase::APDUHandlerBase(const openpal::Logger& logger_) :
+APDUHandlerBase::APDUHandlerBase(openpal::Logger logger_) :
 	logger(logger_),
 	ignoredHeaders(0),
 	errors(),
@@ -71,7 +71,7 @@ void APDUHandlerBase::OnRangeRequest(const HeaderRecord& record, const Range& ra
 	++currentHeader;
 }
 
-void APDUHandlerBase::OnCountRequest(const HeaderRecord& record, uint32_t count)
+void APDUHandlerBase::OnCountRequest(const HeaderRecord& record, uint16_t count)
 {
 	this->_OnCountRequest(record, count);
 	++currentHeader;
@@ -413,7 +413,7 @@ void APDUHandlerBase::_OnRangeRequest(const HeaderRecord& record, const Range& r
 	++ignoredHeaders;
 }
 
-void APDUHandlerBase::_OnCountRequest(const HeaderRecord& record, uint32_t count)
+void APDUHandlerBase::_OnCountRequest(const HeaderRecord& record, uint16_t count)
 {
 	++ignoredHeaders;
 }

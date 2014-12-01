@@ -46,7 +46,7 @@ public:
 	/**
 	 * @param arLogger	the Logger that the loader should use for message reporting
 	 */
-	APDUHandlerBase(const openpal::Logger& logger);
+	APDUHandlerBase(openpal::Logger logger);
 
 	uint32_t NumIgnoredHeaders() const
 	{
@@ -59,7 +59,7 @@ public:
 
 	virtual void OnRangeRequest(const HeaderRecord& record, const Range& range) override final;
 
-	virtual void OnCountRequest(const HeaderRecord& record, uint32_t count) override final;
+	virtual void OnCountRequest(const HeaderRecord& record, uint16_t count) override final;
 
 	virtual void OnIIN(const HeaderRecord& record, const IterableBuffer<IndexedValue<bool, uint16_t>>& meas) override final;
 
@@ -141,7 +141,7 @@ protected:
 
 	virtual void _OnRangeRequest(const HeaderRecord& record, const Range& range);
 
-	virtual void _OnCountRequest(const HeaderRecord& record, uint32_t count);
+	virtual void _OnCountRequest(const HeaderRecord& record, uint16_t count);
 
 	virtual void _OnIIN(const HeaderRecord& record, const IterableBuffer<IndexedValue<bool, uint16_t>>& meas);
 

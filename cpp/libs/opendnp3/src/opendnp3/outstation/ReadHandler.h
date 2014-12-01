@@ -24,7 +24,8 @@
 
 #include "opendnp3/app/APDUHandlerBase.h"
 
-#include "opendnp3/outstation/ResponseContext.h"
+#include "opendnp3/outstation/IEventSelector.h"
+#include "opendnp3/outstation/IStaticSelector.h"
 
 namespace opendnp3
 {
@@ -33,17 +34,19 @@ class ReadHandler : public APDUHandlerBase
 {
 public:
 
-	ReadHandler(openpal::Logger& logger, ResponseContext& rspContext);
+	ReadHandler(openpal::Logger logger, IStaticSelector& staticSelector, IEventSelector& eventSelector);
 
 	virtual void _AllObjects(const HeaderRecord& record) override final;
 
 	virtual void _OnRangeRequest(const HeaderRecord& record, const Range& range) override final;
 
-	virtual void _OnCountRequest(const HeaderRecord& record, uint32_t count) override final;
+	virtual void _OnCountRequest(const HeaderRecord& record, uint16_t count) override final;
 
 private:
 
-	ResponseContext* pRspContext;
+	IStaticSelector* pStaticSelector;
+	IEventSelector* pEventSelector;
+
 };
 
 }

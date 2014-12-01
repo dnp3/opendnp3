@@ -552,15 +552,12 @@ void OutstationContext::OnUnsolConfirmTimeout()
 
 Pair<IINField, AppControlField> OutstationContext::HandleRead(const openpal::ReadOnlyBuffer& objects, HeaderWriter& writer)
 {
-	rspContext.Reset();
-	ReadHandler handler(logger, rspContext);
+	// Do a transaction (lock) on the database  for multi-threaded environments
+	Transaction tx(database);
+	ReadHandler handler(logger, database.GetSelector(), eventBuffer);
 	auto result = APDUParser::ParseTwoPass(objects, &handler, &logger, APDUParser::Context(false)); // don't expect range/count context on a READ
 	if (result == APDUParser::Result::OK)
-	{
-		// Do a transaction on the database (lock) for multi-threaded environments
-		// if the request contained static variations, we double buffer (copy) the entire static database.
-		// this ensures that multi-fragmented responses see a consistent snapshot of the state
-		Transaction tx(database);		
+	{				
 		auto control = rspContext.LoadResponse(writer);
 		return Pair<IINField, AppControlField>(handler.Errors(), control);
 	}

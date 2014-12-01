@@ -24,26 +24,27 @@
 namespace opendnp3
 {
 
-ReadHandler::ReadHandler(openpal::Logger& logger, ResponseContext& rspContext) :
+ReadHandler::ReadHandler(openpal::Logger logger, IStaticSelector& staticSelector, IEventSelector& eventSelector) :
 	APDUHandlerBase(logger),
-	pRspContext(&rspContext)
+	pStaticSelector(&staticSelector),
+	pEventSelector(&eventSelector)
 {
 
 }
 
 void ReadHandler::_AllObjects(const HeaderRecord& record)
 {
-	errors |= pRspContext->ReadAllObjects(record);
+	//errors |= pRspContext->ReadAllObjects(record);
 }
 
 void ReadHandler::_OnRangeRequest(const HeaderRecord& record, const Range& range)
 {
-	errors |= pRspContext->ReadRange(record, range);
+	errors |= pStaticSelector->SelectRange(record.enumeration, range);
 }
 
-void ReadHandler::_OnCountRequest(const HeaderRecord& record, uint32_t count)
+void ReadHandler::_OnCountRequest(const HeaderRecord& record, uint16_t count)
 {
-	errors |= pRspContext->ReadCount(record, count);
+	errors |= pEventSelector->SelectCount(record.enumeration, count);
 }
 
 }

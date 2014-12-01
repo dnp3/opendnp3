@@ -50,6 +50,7 @@ public:
 	Database(const DatabaseTemplate&, IEventReceiver& eventReceiver, INewEventDataHandler& handler, openpal::IMutex* pMutex);
 
 	// ------- IDatabase --------------
+
 	virtual bool Update(const Binary& value, uint16_t) override final;
 	virtual bool Update(const DoubleBitBinary& value, uint16_t) override final;
 	virtual bool Update(const Analog& value, uint16_t) override final;
@@ -59,15 +60,15 @@ public:
 	virtual bool Update(const AnalogOutputStatus& value, uint16_t) override final;
 	virtual bool Update(const TimeAndInterval& value, uint16_t) override final;
 	
-	// -------- Misc ---------------
+	// ------- Misc ---------------
 	
 	/**
-	* Returns a view of all the static data for configuration purposes
+	* @return a view of all the static data for configuration purposes
 	*/
 	StaticBufferView GetStaticView() { return buffers.current.GetView(); }	
 
 	/**
-	* Returns a selector interface for marking values to be read
+	* @returns selector interface for marking values to be read
 	*/
 	IStaticSelector& GetSelector() { return buffers;  }
 
