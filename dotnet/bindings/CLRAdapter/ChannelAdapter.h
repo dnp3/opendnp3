@@ -52,7 +52,7 @@ namespace Automatak
 					{
 						if (target.Contains(i))
 						{
-							target[i].currentValue.quality = src->quality;
+							target[i].value.quality = src->quality;
 							target[i].metadata.clazz = (opendnp3::PointClass) src->pointClass;
 						}
 
@@ -68,7 +68,7 @@ namespace Automatak
 					{
 						if (target.Contains(i))
 						{
-							target[i].currentValue.quality = src->quality;
+							target[i].value.quality = src->quality;
 							target[i].metadata.clazz = (opendnp3::PointClass) src->pointClass;
 							target[i].metadata.deadband = src->deadband;
 						}						

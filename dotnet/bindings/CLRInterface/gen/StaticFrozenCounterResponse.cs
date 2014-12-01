@@ -28,9 +28,7 @@ namespace Automatak.DNP3.Interface
     Group21Var2 = 1,
     Group21Var5 = 2,
     Group21Var6 = 3,
-    Group21Var7 = 4,
-    Group21Var8 = 5,
-    Group21Var9 = 6,
-    Group21Var10 = 7
+    Group21Var9 = 4,
+    Group21Var10 = 5
   }
 }

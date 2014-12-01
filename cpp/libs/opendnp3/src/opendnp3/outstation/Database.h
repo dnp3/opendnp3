@@ -72,10 +72,7 @@ public:
 	
 	StaticBufferView GetStaticView() { return staticBuffers.GetView(); }	
 
-private:
-
-	template <class T>
-	IINField SelectRange(const Range& range);
+private:	
 
 	// stores the most revent values and event information
 	StaticBuffers staticBuffers;
@@ -112,6 +109,22 @@ private:
 		auto current = staticBuffers.GetArrayView<T>();
 		auto frozen = staticSelection.GetArrayView<T>();
 		return GenericSelect(RangeOf(current), current, frozen, true, typename T::StaticVariation());
+	}
+
+	template <class T>
+	IINField SelectRange(const Range& range)
+	{
+		auto current = staticBuffers.GetArrayView<T>();
+		auto frozen = staticSelection.GetArrayView<T>();
+		return GenericSelect(range, current, frozen, true, typename T::StaticVariation());
+	}
+
+	template <class T>
+	IINField SelectRangeUsing(const Range& range, typename T::StaticVariation variation)
+	{
+		auto current = staticBuffers.GetArrayView<T>();
+		auto frozen = staticSelection.GetArrayView<T>();
+		return GenericSelect(range, current, frozen, false, typename variation);
 	}
 
 	template <class T>

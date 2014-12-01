@@ -39,12 +39,8 @@ StaticFrozenCounterResponse StaticFrozenCounterResponseFromType(int arg)
     case(3):
       return StaticFrozenCounterResponse::Group21Var6;
     case(4):
-      return StaticFrozenCounterResponse::Group21Var7;
-    case(5):
-      return StaticFrozenCounterResponse::Group21Var8;
-    case(6):
       return StaticFrozenCounterResponse::Group21Var9;
-    case(7):
+    case(5):
       return StaticFrozenCounterResponse::Group21Var10;
   }
   return StaticFrozenCounterResponse::Group21Var10;
