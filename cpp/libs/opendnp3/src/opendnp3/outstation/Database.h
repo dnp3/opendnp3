@@ -98,7 +98,7 @@ private:
 	static Range RangeOf(const openpal::HasSize<uint16_t>& sized);
 
 	template <class T>
-	IINField GenericSelect(
+	static IINField GenericSelect(
 		const Range& range,
 		const openpal::ArrayView<MeasurementCell<T>, uint16_t>& current,
 		openpal::ArrayView<BufferedCell<T>, uint16_t>& frozen,	
@@ -107,14 +107,19 @@ private:
 	);
 
 	template <class T>
-	IINField SelectAll(		
-		bool useDefault = true,
-		typename T::StaticVariation variation = T::StaticVariation()
-		)
+	IINField SelectAll()
 	{
 		auto current = staticBuffers.GetArrayView<T>();
 		auto frozen = staticSelection.GetArrayView<T>();
-		return GenericSelect(RangeOf(current), current, frozen, useDefault, variation);
+		return GenericSelect(RangeOf(current), current, frozen, true, typename T::StaticVariation());
+	}
+
+	template <class T>
+	IINField SelectAllUsing(typename T::StaticVariation variation)
+	{
+		auto current = staticBuffers.GetArrayView<T>();
+		auto frozen = staticSelection.GetArrayView<T>();
+		return GenericSelect(RangeOf(current), current, frozen, false, variation);
 	}
 
 	// ITransactable  functions, proxies to the given transactable
@@ -166,7 +171,8 @@ IINField Database::GenericSelect(
 
 		if (allowed.IsValid())
 		{
-			IINField ret;
+			// return code depends on if the range was truncated to match the database
+			IINField ret = allowed.Equals(range) ? IINField() : IINBit::PARAM_ERROR;
 
 			for (uint16_t i = allowed.start; i < allowed.stop; ++i)
 			{

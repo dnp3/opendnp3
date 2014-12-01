@@ -131,7 +131,34 @@ IINField Database::SelectAll(const GroupVariationRecord& record)
 		return IINField::Empty();
 	}
 	else
-	{
+	{	
+		switch (record.enumeration)
+		{
+			case(GroupVariation::Group1Var0):
+				this->SelectAll<Binary>();
+				return IINField();
+			case(GroupVariation::Group1Var2) :
+				this->SelectAllUsing<Binary>(StaticBinaryResponse::Group1Var2);
+				return IINField();
+
+			case(GroupVariation::Group3Var0) :
+				this->SelectAll<DoubleBitBinary>();
+				return IINField();
+			case(GroupVariation::Group3Var2) :
+				this->SelectAllUsing<DoubleBitBinary>(StaticDoubleBinaryResponse::Group3Var2);
+				return IINField();
+
+			case(GroupVariation::Group10Var0) :
+				this->SelectAll<BinaryOutputStatus>();
+				return IINField();
+			case(GroupVariation::Group10Var2) :
+				this->SelectAllUsing<BinaryOutputStatus>(StaticBinaryOutputStatusResponse::Group10Var2);
+				return IINField();
+
+			default:
+				return IINField(IINBit::FUNC_NOT_SUPPORTED);
+		}
+
 		/*
 		switch (record.group)
 		{
@@ -154,10 +181,10 @@ IINField Database::SelectAll(const GroupVariationRecord& record)
 		default:
 			return IINField(IINBit::FUNC_NOT_SUPPORTED);
 		}
-		*/
-		return IINField::Empty();
+		*/			
 	}
 }
+
 IINField Database::SelectRange(const GroupVariationRecord& record, const Range& range)
 {
 	return IINField::Empty();
