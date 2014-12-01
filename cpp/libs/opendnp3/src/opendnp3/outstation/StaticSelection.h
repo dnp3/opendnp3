@@ -81,7 +81,7 @@ public:
 	template <>
 	openpal::ArrayView<BufferedCell<TimeAndInterval>, uint16_t> GetArrayView() { return timeAndIntervals.ToView(); }
 
-private:
+private:	
 		
 	openpal::DynamicArray<BufferedCell<Binary>, uint16_t> binaries;
 	openpal::DynamicArray<BufferedCell<DoubleBitBinary>, uint16_t> doubleBinaries;

@@ -38,6 +38,18 @@ DatabaseBuffers::DatabaseBuffers(const DatabaseTemplate& dbTemplate) :
 
 }
 
+void DatabaseBuffers::DeselectAll()
+{
+	this->Deselect<Binary>();
+	this->Deselect<DoubleBitBinary>();
+	this->Deselect<Counter>();
+	this->Deselect<FrozenCounter>();
+	this->Deselect<Analog>();
+	this->Deselect<BinaryOutputStatus>();
+	this->Deselect<AnalogOutputStatus>();
+	this->Deselect<TimeAndInterval>();
+}
+
 IINField DatabaseBuffers::SelectAll(GroupVariation gv)
 {
 	if (gv == GroupVariation::Group60Var1)

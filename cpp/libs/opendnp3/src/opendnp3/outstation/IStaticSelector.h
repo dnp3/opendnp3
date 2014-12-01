@@ -32,6 +32,8 @@ class IStaticSelector
 {
 public:
 
+	virtual void DeselectAll() = 0;
+
 	virtual IINField SelectAll(GroupVariation gv) = 0;
 
 	virtual IINField SelectRange(GroupVariation gv, const Range& range) = 0;

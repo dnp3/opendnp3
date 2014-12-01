@@ -27,6 +27,7 @@
 #include "opendnp3/outstation/StaticBuffers.h"
 #include "opendnp3/outstation/StaticSelection.h"
 #include "opendnp3/outstation/IStaticSelector.h"
+#include "opendnp3/outstation/SelectedRanges.h"
 
 namespace opendnp3
 {
@@ -42,12 +43,33 @@ public:
 
 	// ------- IStaticSelector -------------
 
+	virtual void DeselectAll() override final;
 	virtual IINField SelectAll(GroupVariation gv) override final;
 	virtual IINField SelectRange(GroupVariation gv, const Range& range) override final;
 
 	// stores the most revent values and event information
 	StaticBuffers current;
+
+private:
+
 	StaticSelection selected;
+	SelectedRanges ranges;
+
+	template <class T>
+	void Deselect()
+	{
+		auto& range = ranges.GetRange<T>();
+		if (range.IsValid())
+		{
+			auto view = selected.GetArrayView<T>();
+			for (uint16_t i = range.start; i <= range.stop; ++i)
+			{
+				view[i].selected = false;
+			}
+		}
+		range = Range::Invalid();
+	}
+
 
 	static Range RangeOf(const openpal::HasSize<uint16_t>& sized);
 

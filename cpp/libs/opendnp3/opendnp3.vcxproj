@@ -193,6 +193,7 @@
     <ClInclude Include="src\opendnp3\outstation\DatabaseBuffers.h" />
     <ClInclude Include="src\opendnp3\outstation\IEventSelector.h" />
     <ClInclude Include="src\opendnp3\outstation\IStaticSelector.h" />
+    <ClInclude Include="src\opendnp3\outstation\SelectedRanges.h" />
     <ClInclude Include="src\opendnp3\outstation\StaticBufferView.h" />
     <ClInclude Include="src\opendnp3\outstation\Database.h" />
     <ClInclude Include="src\opendnp3\outstation\DatabaseTemplate.h" />
