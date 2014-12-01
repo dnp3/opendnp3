@@ -39,11 +39,11 @@ public:
 	
 private:
 
-	virtual void _OnIIN(const HeaderRecord& record, const IterableBuffer<IndexedValue<bool, uint16_t>>& meas) override final;
+	virtual IINField ProcessIIN(const HeaderRecord& record, const IterableBuffer<IndexedValue<bool, uint16_t>>& meas) override final;
 
-	virtual void _OnCountOf(const HeaderRecord& record, const IterableBuffer<Group50Var1>& times) override final;
+	virtual IINField ProcessCountOf(const HeaderRecord& record, const IterableBuffer<Group50Var1>& times) override final;
 
-	virtual void _OnIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas) override final;
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas) override final;
 
 	IOutstationApplication* pApplication;
 	IINField* pWriteIIN;

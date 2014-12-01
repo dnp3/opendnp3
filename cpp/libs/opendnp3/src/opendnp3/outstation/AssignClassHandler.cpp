@@ -40,9 +40,9 @@ AssignClassHandler::AssignClassHandler(openpal::Logger& logger, openpal::IExecut
 
 }
 
-void AssignClassHandler::_AllObjects(const HeaderRecord& record)
+IINField AssignClassHandler::ProcessAllObjects(const HeaderRecord& record)
 {
-	assert(false);
+	return IINBit::FUNC_NOT_SUPPORTED;
 	/*
 	if (IsExpectingAssignment())
 	{		
@@ -96,13 +96,15 @@ bool AssignClassHandler::IsExpectingAssignment()
 	}
 }
 
-void AssignClassHandler::_OnRangeRequest(const HeaderRecord& record, const Range& range)
+IINField AssignClassHandler::ProcessRangeRequest(const HeaderRecord& record, const Range& range)
 {
+	return IINBit::FUNC_NOT_SUPPORTED;
+	/* TODO
 	if (IsExpectingAssignment())
 	{
 		switch (record.enumeration)
 		{
-			/* TODO
+			
 		case(GroupVariation::Group1Var0) :
             {
             Range range(pDatabase->FullRange<Binary>());
@@ -151,8 +153,7 @@ void AssignClassHandler::_OnRangeRequest(const HeaderRecord& record, const Range
             staticrange.ClipTo(range);
 			this->ProcessAssignment(AssignClassType::AnalogOutputStatus, clazz, staticrange);
             }
-			break;
-			*/
+			break;			
 		default:
 			errors.SetBit(IINBit::FUNC_NOT_SUPPORTED);
 			break;
@@ -162,10 +163,12 @@ void AssignClassHandler::_OnRangeRequest(const HeaderRecord& record, const Range
 	{
 		errors.SetBit(IINBit::FUNC_NOT_SUPPORTED);
 	}
+	*/
 }
 
-void AssignClassHandler::ProcessAssignment(AssignClassType type, PointClass clazz, const Range& range)
+IINField AssignClassHandler::ProcessAssignment(AssignClassType type, PointClass clazz, const Range& range)
 {
+	return IINBit::PARAM_ERROR;
 	/* TODO
 	if (!range.IsClipped() && pDatabase->AssignClass(type, clazz, range))
 	{
@@ -181,9 +184,10 @@ void AssignClassHandler::ProcessAssignment(AssignClassType type, PointClass claz
 	}
 	else
 	{
-	*/
+	
 		errors.SetBit(IINBit::PARAM_ERROR);
 	//}
+	*/
 	
 }
 

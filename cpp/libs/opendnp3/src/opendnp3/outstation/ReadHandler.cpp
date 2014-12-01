@@ -32,27 +32,27 @@ ReadHandler::ReadHandler(openpal::Logger logger, IStaticSelector& staticSelector
 
 }
 
-void ReadHandler::_AllObjects(const HeaderRecord& record)
+IINField ReadHandler::ProcessAllObjects(const HeaderRecord& record)
 {
 	switch (record.type)
 	{
 		case(GroupVariationType::STATIC) :
-			errors |= pStaticSelector->SelectAll(record.enumeration);
+			return pStaticSelector->SelectAll(record.enumeration);
 		case(GroupVariationType::EVENT) :
-			errors |= pEventSelector->SelectAll(record.enumeration);
+			return pEventSelector->SelectAll(record.enumeration);
 		default:
-			errors |= IINField(IINBit::FUNC_NOT_SUPPORTED);
+			return IINField(IINBit::FUNC_NOT_SUPPORTED);
 	}	
 }
 
-void ReadHandler::_OnRangeRequest(const HeaderRecord& record, const Range& range)
+IINField ReadHandler::ProcessRangeRequest(const HeaderRecord& record, const Range& range)
 {
-	errors |= pStaticSelector->SelectRange(record.enumeration, range);
+	return pStaticSelector->SelectRange(record.enumeration, range);
 }
 
-void ReadHandler::_OnCountRequest(const HeaderRecord& record, uint16_t count)
+IINField ReadHandler::ProcessCountRequest(const HeaderRecord& record, uint16_t count)
 {
-	errors |= pEventSelector->SelectCount(record.enumeration, count);
+	return pEventSelector->SelectCount(record.enumeration, count);
 }
 
 }

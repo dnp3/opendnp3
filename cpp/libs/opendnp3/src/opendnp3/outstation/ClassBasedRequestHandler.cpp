@@ -29,22 +29,21 @@ ClassBasedRequestHandler::ClassBasedRequestHandler(openpal::Logger& logger) : AP
 
 }
 
-void ClassBasedRequestHandler::_AllObjects(const HeaderRecord& record)
+IINField ClassBasedRequestHandler::ProcessAllObjects(const HeaderRecord& record)
 {
 	switch (record.enumeration)
 	{
 		case(GroupVariation::Group60Var2) :
 			classField.Set(PointClass::Class1);
-			break;
+			return IINField::Empty();
 		case(GroupVariation::Group60Var3) :
 			classField.Set(PointClass::Class2);
-			break;
+			return IINField::Empty();
 		case(GroupVariation::Group60Var4) :
 			classField.Set(PointClass::Class3);
-			break;
+			return IINField::Empty();
 		default:
-			errors |= IINField(IINBit::FUNC_NOT_SUPPORTED);
-			break;
+			return IINField(IINBit::FUNC_NOT_SUPPORTED);			
 	}	
 }
 

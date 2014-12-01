@@ -38,34 +38,47 @@ WriteHandler::WriteHandler(openpal::Logger& aLogger, IOutstationApplication& app
 	wroteIIN(false)
 {}
 
-void WriteHandler::_OnIIN(const HeaderRecord&, const IterableBuffer<IndexedValue<bool, uint16_t>>& meas)
+IINField WriteHandler::ProcessIIN(const HeaderRecord&, const IterableBuffer<IndexedValue<bool, uint16_t>>& meas)
 {
 	IndexedValue<bool, uint16_t> v;
 	if(meas.ReadOnlyValue(v))
 	{
-		if (wroteIIN) errors.SetBit(IINBit::PARAM_ERROR);
+		if (wroteIIN)
+		{
+			return IINBit::PARAM_ERROR;
+		}
 		else
 		{
 			if (v.index == static_cast<int>(IINBit::DEVICE_RESTART))
 			{
-				if (v.value) errors.SetBit(IINBit::PARAM_ERROR);
+				if (v.value)
+				{
+					return IINBit::PARAM_ERROR;
+				}
 				else
 				{
 					wroteIIN = true;
 					pWriteIIN->ClearBit(IINBit::DEVICE_RESTART);
+					return IINField();
 				}
 			}
-			else errors.SetBit(IINBit::PARAM_ERROR);
+			else
+			{
+				return IINBit::PARAM_ERROR;
+			}
 		}
 	}
-	else errors.SetBit(IINBit::PARAM_ERROR);
+	else
+	{
+		return IINBit::PARAM_ERROR;
+	}
 }
 
-void WriteHandler::_OnCountOf(const HeaderRecord&, const IterableBuffer<Group50Var1>& times)
+IINField WriteHandler::ProcessCountOf(const HeaderRecord&, const IterableBuffer<Group50Var1>& times)
 {
 	if (wroteTime)
 	{
-		errors.SetBit(IINBit::PARAM_ERROR);
+		return IINBit::PARAM_ERROR;
 	}
 	else
 	{		
@@ -74,39 +87,30 @@ void WriteHandler::_OnCountOf(const HeaderRecord&, const IterableBuffer<Group50V
 		{
 			if (pApplication->SupportsWriteAbsoluteTime())
 			{
-				wroteTime = true;				
-				
-				bool accepted = pApplication->WriteAbsoluteTime(UTCTimestamp(time.time));
-				
-				if (!accepted)
-				{
-					errors.SetBit(IINBit::PARAM_ERROR);
-				}
+				wroteTime = true;												
+				return pApplication->WriteAbsoluteTime(UTCTimestamp(time.time)) ? IINField::Empty() : IINBit::PARAM_ERROR;
 			}
 			else
 			{
-				errors.SetBit(IINBit::FUNC_NOT_SUPPORTED);
+				return IINBit::FUNC_NOT_SUPPORTED;
 			}
 		}
 		else
 		{
-			errors.SetBit(IINBit::PARAM_ERROR);
+			return IINBit::PARAM_ERROR;
 		}		
 	}
 }
 
-void WriteHandler::_OnIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas)
+IINField  WriteHandler::ProcessIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas)
 {
 	if (pApplication->SupportsWriteTimeAndInterval())
 	{
-		if (!pApplication->WriteTimeAndInterval(meas))
-		{
-			errors.SetBit(IINBit::PARAM_ERROR);
-		}
+		return pApplication->WriteTimeAndInterval(meas) ? IINField::Empty() : IINBit::PARAM_ERROR;		
 	}
 	else
 	{
-		errors.SetBit(IINBit::FUNC_NOT_SUPPORTED);
+		return IINBit::FUNC_NOT_SUPPORTED;
 	}
 }
 

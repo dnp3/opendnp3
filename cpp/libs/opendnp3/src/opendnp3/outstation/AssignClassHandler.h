@@ -40,17 +40,17 @@ public:
 
 	AssignClassHandler(openpal::Logger& logger, openpal::IExecutor& executor, IOutstationApplication& application, Database& db);	
 
-	virtual void _AllObjects(const HeaderRecord& record) override final;
-
-	virtual void _OnRangeRequest(const HeaderRecord& record, const Range& range) override final;
-
 private:
+
+	virtual IINField ProcessAllObjects(const HeaderRecord& record) override final;
+
+	virtual IINField ProcessRangeRequest(const HeaderRecord& record, const Range& range) override final;
 
 	void RecordClass(GroupVariation gv);	
 
 	bool IsExpectingAssignment();
 
-	void ProcessAssignment(AssignClassType type, PointClass clazz, const Range& range);
+	IINField ProcessAssignment(AssignClassType type, PointClass clazz, const Range& range);
 	
 	int32_t classHeader;
 	PointClass clazz;

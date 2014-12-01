@@ -54,38 +54,36 @@ void APDUHandlerBase::Reset()
 
 IINField APDUHandlerBase::Errors() const
 {
-	IINField copy(errors);
-	if(ignoredHeaders > 0) copy.SetBit(IINBit::FUNC_NOT_SUPPORTED);
-	return copy;
+	return errors;
 }
 
 void APDUHandlerBase::AllObjects(const HeaderRecord& record)
 {
-	this->_AllObjects(record);
+	errors |= this->ProcessAllObjects(record);
 	++currentHeader;
 }
 
 void APDUHandlerBase::OnRangeRequest(const HeaderRecord& record, const Range& range)
 {
-	this->_OnRangeRequest(record, range);
+	errors |= this->ProcessRangeRequest(record, range);
 	++currentHeader;
 }
 
 void APDUHandlerBase::OnCountRequest(const HeaderRecord& record, uint16_t count)
 {
-	this->_OnCountRequest(record, count);
+	errors |= this->ProcessCountRequest(record, count);
 	++currentHeader;
 }
 
 void APDUHandlerBase::OnIIN(const HeaderRecord& record, const IterableBuffer<IndexedValue<bool, uint16_t>>& meas)
 {
-	this->_OnIIN(record, meas);
+	errors |= this->ProcessIIN(record, meas);
 	++currentHeader;
 }
 
 void APDUHandlerBase::OnCountOf(const HeaderRecord& record, const IterableBuffer<Group50Var1>& objects)
 {
-	this->_OnCountOf(record, objects);
+	errors |= this->ProcessCountOf(record, objects);
 	++currentHeader;
 }
 
@@ -115,49 +113,49 @@ void APDUHandlerBase::OnCountOf(const HeaderRecord& record, const opendnp3::Iter
 
 void APDUHandlerBase::OnCountOf(const HeaderRecord& record, const IterableBuffer<Group52Var2>& objects)
 {
-	this->_OnCountOf(record, objects);
+	errors |= this->ProcessCountOf(record, objects);
 	++currentHeader;
 }
 
 void APDUHandlerBase::OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)
 {
-	this->_OnRange(record, ModeFromType(record.enumeration), meas);
+	errors |= this->ProcessRange(record, ModeFromType(record.enumeration), meas);
 	++currentHeader;
 }
 
 void APDUHandlerBase::OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas)
 {
-	this->_OnRange(record, ModeFromType(record.enumeration), meas);
+	errors |= this->ProcessRange(record, ModeFromType(record.enumeration), meas);
 	++currentHeader;
 }
 
 void APDUHandlerBase::OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas)
 {
-	this->_OnRange(record, ModeFromType(record.enumeration), meas);
+	errors |= this->ProcessRange(record, ModeFromType(record.enumeration), meas);
 	++currentHeader;
 }
 
 void APDUHandlerBase::OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)
 {
-	this->_OnRange(record, ModeFromType(record.enumeration), meas);
+	errors |= this->ProcessRange(record, ModeFromType(record.enumeration), meas);
 	++currentHeader;
 }
 
 void APDUHandlerBase::OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas)
 {
-	this->_OnRange(record, ModeFromType(record.enumeration), meas);
+	errors |= this->ProcessRange(record, ModeFromType(record.enumeration), meas);
 	++currentHeader;
 }
 
 void APDUHandlerBase::OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)
 {
-	this->_OnRange(record, ModeFromType(record.enumeration), meas);
+	errors |= this->ProcessRange(record, ModeFromType(record.enumeration), meas);
 	++currentHeader;
 }
 
 void APDUHandlerBase::OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas)
 {
-	this->_OnRange(record, ModeFromType(record.enumeration), meas);
+	errors |= this->ProcessRange(record, ModeFromType(record.enumeration), meas);
 	++currentHeader;
 }
 
@@ -165,11 +163,11 @@ void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBu
 {
 	if (record.enumeration == GroupVariation::Group2Var3)
 	{
-		this->OnIndexPrefixCTO(record, meas);
+		errors |= this->ProcessIndexPrefixCTO(record, meas);
 	}
 	else
 	{
-		this->_OnIndexPrefix(record, ModeFromType(record.enumeration), meas);
+		errors |= this->ProcessIndexPrefix(record, ModeFromType(record.enumeration), meas);
 	}
 
 	++currentHeader;
@@ -179,11 +177,11 @@ void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBu
 {
 	if (record.enumeration == GroupVariation::Group4Var3)
 	{
-		this->OnIndexPrefixCTO(record, meas);
+		errors |= this->ProcessIndexPrefixCTO(record, meas);
 	}
 	else
 	{
-		this->_OnIndexPrefix(record, ModeFromType(record.enumeration), meas);
+		errors |= this->ProcessIndexPrefix(record, ModeFromType(record.enumeration), meas);
 	}
 
 	++currentHeader;
@@ -191,115 +189,115 @@ void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBu
 
 void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas)
 {
-	this->_OnIndexPrefix(record, ModeFromType(record.enumeration), meas);
+	errors |= this->ProcessIndexPrefix(record, ModeFromType(record.enumeration), meas);
 	++currentHeader;
 }
 
 void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)
 {
-	this->_OnIndexPrefix(record, ModeFromType(record.enumeration), meas);
+	errors |= this->ProcessIndexPrefix(record, ModeFromType(record.enumeration), meas);
 	++currentHeader;
 }
 
 void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas)
 {
-	this->_OnIndexPrefix(record, ModeFromType(record.enumeration), meas);
+	errors |= this->ProcessIndexPrefix(record, ModeFromType(record.enumeration), meas);
 	++currentHeader;
 }
 
 void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)
 {
-	this->_OnIndexPrefix(record, ModeFromType(record.enumeration), meas);
+	errors |= this->ProcessIndexPrefix(record, ModeFromType(record.enumeration), meas);
 	++currentHeader;
 }
 
 void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas)
 {
-	this->_OnIndexPrefix(record, ModeFromType(record.enumeration), meas);
+	errors |= this->ProcessIndexPrefix(record, ModeFromType(record.enumeration), meas);
 	++currentHeader;
 }
 
 void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint16_t>>& meas)
 {
-	this->_OnIndexPrefix(record, meas);
+	errors |= this->ProcessIndexPrefix(record, meas);
 	++currentHeader;
 }
 
 void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint16_t>>& meas)
 {
-	this->_OnIndexPrefix(record, meas);
+	errors |= this->ProcessIndexPrefix(record, meas);
 	++currentHeader;
 }
 
 void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt32, uint16_t>>& meas)
 {
-	this->_OnIndexPrefix(record, meas);
+	errors |= this->ProcessIndexPrefix(record, meas);
 	++currentHeader;
 }
 
 void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint16_t>>& meas)
 {
-	this->_OnIndexPrefix(record, meas);
+	errors |= this->ProcessIndexPrefix(record, meas);
 	++currentHeader;
 }
 
 void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint16_t>>& meas)
 {
-	this->_OnIndexPrefix(record, meas);
+	errors |= this->ProcessIndexPrefix(record, meas);
 	++currentHeader;
 }
 
 void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint8_t>>& meas)
 {
-	this->_OnIndexPrefix(record, meas);
+	errors |= this->ProcessIndexPrefix(record, meas);
 	++currentHeader;
 }
 
 void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint8_t>>& meas)
 {
-	this->_OnIndexPrefix(record, meas);
+	errors |= this->ProcessIndexPrefix(record, meas);
 	++currentHeader;
 }
 
 void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt32, uint8_t>>& meas)
 {
-	this->_OnIndexPrefix(record, meas);
+	errors |= this->ProcessIndexPrefix(record, meas);
 	++currentHeader;
 }
 
 void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint8_t>>& meas)
 {
-	this->_OnIndexPrefix(record, meas);
+	errors |= this->ProcessIndexPrefix(record, meas);
 	++currentHeader;
 }
 
 void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint8_t>>& meas)
 {
-	this->_OnIndexPrefix(record, meas);
+	errors |= this->ProcessIndexPrefix(record, meas);
 	++currentHeader;
 }
 
 void APDUHandlerBase::OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas)
 {
-	this->_OnRange(record, ModeFromType(record.enumeration), meas);
+	errors |= this->ProcessRange(record, ModeFromType(record.enumeration), meas);
 	++currentHeader;
 }
 
 void APDUHandlerBase::OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas)
 {
-	this->_OnRange(record, ModeFromType(record.enumeration), meas);
+	errors |= this->ProcessRange(record, ModeFromType(record.enumeration), meas);
 	++currentHeader;
 }
 
 void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas)
 {
-	this->_OnIndexPrefix(record, ModeFromType(record.enumeration), meas);
+	errors |= this->ProcessIndexPrefix(record, ModeFromType(record.enumeration), meas);
 	++currentHeader;
 }
 
 void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas)
 {
-	this->_OnIndexPrefix(record, ModeFromType(record.enumeration), meas);
+	errors |= this->ProcessIndexPrefix(record, ModeFromType(record.enumeration), meas);
 	++currentHeader;
 }
 
@@ -403,178 +401,182 @@ void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBu
 	this->OnIndexPrefix(record, transform);
 }
 
-void APDUHandlerBase::_AllObjects(const HeaderRecord& record)
+IINField APDUHandlerBase::ProcessUnsupportedHeader()
 {
 	++ignoredHeaders;
+	return IINField(IINBit::FUNC_NOT_SUPPORTED);
 }
 
-void APDUHandlerBase::_OnRangeRequest(const HeaderRecord& record, const Range& range)
+IINField APDUHandlerBase::ProcessAllObjects(const HeaderRecord& record)
 {
-	++ignoredHeaders;
+	return ProcessUnsupportedHeader();
 }
 
-void APDUHandlerBase::_OnCountRequest(const HeaderRecord& record, uint16_t count)
+IINField APDUHandlerBase::ProcessRangeRequest(const HeaderRecord& record, const Range& range)
 {
-	++ignoredHeaders;
+	return ProcessUnsupportedHeader();
 }
 
-void APDUHandlerBase::_OnIIN(const HeaderRecord& record, const IterableBuffer<IndexedValue<bool, uint16_t>>& meas)
+IINField APDUHandlerBase::ProcessCountRequest(const HeaderRecord& record, uint16_t count)
 {
-	++ignoredHeaders;
+	return ProcessUnsupportedHeader();
 }
 
-void APDUHandlerBase::_OnCountOf(const HeaderRecord& record, const IterableBuffer<Group50Var1>& objects)
+IINField APDUHandlerBase::ProcessIIN(const HeaderRecord& record, const IterableBuffer<IndexedValue<bool, uint16_t>>& meas)
 {
-	++ignoredHeaders;
+	return ProcessUnsupportedHeader();
 }
 
-void APDUHandlerBase::_OnCountOf(const HeaderRecord& record, const IterableBuffer<Group52Var2>&)
+IINField APDUHandlerBase::ProcessCountOf(const HeaderRecord& record, const IterableBuffer<Group50Var1>& objects)
 {
-	++ignoredHeaders;
+	return ProcessUnsupportedHeader();
 }
 
-void APDUHandlerBase::_OnRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)
+IINField APDUHandlerBase::ProcessCountOf(const HeaderRecord& record, const IterableBuffer<Group52Var2>&)
 {
-	++ignoredHeaders;
+	return ProcessUnsupportedHeader();
 }
 
-void APDUHandlerBase::_OnRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas)
+IINField APDUHandlerBase::ProcessRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)
 {
-	++ignoredHeaders;
+	return ProcessUnsupportedHeader();
 }
 
-
-void APDUHandlerBase::_OnRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas)
+IINField APDUHandlerBase::ProcessRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas)
 {
-	++ignoredHeaders;
-}
-
-void APDUHandlerBase::_OnRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)
-{
-	++ignoredHeaders;
-}
-
-void APDUHandlerBase::_OnRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas)
-{
-	++ignoredHeaders;
-}
-
-void APDUHandlerBase::_OnRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)
-{
-	++ignoredHeaders;
-}
-
-void APDUHandlerBase::_OnRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas)
-{
-	++ignoredHeaders;
-}
-
-void APDUHandlerBase::_OnRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas)
-{
-	++ignoredHeaders;
-}
-
-void APDUHandlerBase::_OnRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas)
-{
-	++ignoredHeaders;
-}
-
-void APDUHandlerBase::_OnIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)
-{
-	++ignoredHeaders;
-}
-
-void APDUHandlerBase::_OnIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas)
-{
-	++ignoredHeaders;
-}
-
-void APDUHandlerBase::_OnIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)
-{
-	++ignoredHeaders;
-}
-
-void APDUHandlerBase::_OnIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas)
-{
-	++ignoredHeaders;
-}
-
-void APDUHandlerBase::_OnIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas)
-{
-	++ignoredHeaders;
-}
-
-void APDUHandlerBase::_OnIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)
-{
-	++ignoredHeaders;
-}
-
-void APDUHandlerBase::_OnIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas)
-{
-	++ignoredHeaders;
-}
-
-void APDUHandlerBase::_OnIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas)
-{
-	++ignoredHeaders;
-}
-
-void APDUHandlerBase::_OnIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas)
-{
-	++ignoredHeaders;
+	return ProcessUnsupportedHeader();
 }
 
 
-void APDUHandlerBase::_OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint16_t>>& meas)
+IINField APDUHandlerBase::ProcessRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas)
 {
-	++ignoredHeaders;
+	return ProcessUnsupportedHeader();
 }
 
-void APDUHandlerBase::_OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint16_t>>& meas)
+IINField APDUHandlerBase::ProcessRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)
 {
-	++ignoredHeaders;
+	return ProcessUnsupportedHeader();
 }
 
-void APDUHandlerBase::_OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt32, uint16_t>>& meas)
+IINField APDUHandlerBase::ProcessRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas)
 {
-	++ignoredHeaders;
+	return ProcessUnsupportedHeader();
 }
 
-void APDUHandlerBase::_OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint16_t>>& meas)
+IINField APDUHandlerBase::ProcessRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)
 {
-	++ignoredHeaders;
+	return ProcessUnsupportedHeader();
 }
 
-void APDUHandlerBase::_OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint16_t>>& meas)
+IINField APDUHandlerBase::ProcessRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas)
 {
-	++ignoredHeaders;
+	return ProcessUnsupportedHeader();
 }
 
-void APDUHandlerBase::_OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint8_t>>& meas)
+IINField APDUHandlerBase::ProcessRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas)
 {
-	++ignoredHeaders;
+	return ProcessUnsupportedHeader();
 }
 
-void APDUHandlerBase::_OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint8_t>>& meas)
+IINField APDUHandlerBase::ProcessRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas)
 {
-	++ignoredHeaders;
+	return ProcessUnsupportedHeader();
 }
 
-void APDUHandlerBase::_OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt32, uint8_t>>& meas)
+IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)
 {
-	++ignoredHeaders;
+	return ProcessUnsupportedHeader();
 }
 
-void APDUHandlerBase::_OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint8_t>>& meas)
+IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas)
 {
-	++ignoredHeaders;
+	return ProcessUnsupportedHeader();
 }
 
-void APDUHandlerBase::_OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint8_t>>& meas)
+IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)
 {
-	++ignoredHeaders;
+	return ProcessUnsupportedHeader();
 }
 
+IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas)
+{
+	return ProcessUnsupportedHeader();
+}
+
+IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas)
+{
+	return ProcessUnsupportedHeader();
+}
+
+IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)
+{
+	return ProcessUnsupportedHeader();
+}
+
+IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas)
+{
+	return ProcessUnsupportedHeader();
+}
+
+IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas)
+{
+	return ProcessUnsupportedHeader();
+}
+
+IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas)
+{
+	return ProcessUnsupportedHeader();
+}
+
+IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint16_t>>& meas)
+{
+	return ProcessUnsupportedHeader();
+}
+
+IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint16_t>>& meas)
+{
+	return ProcessUnsupportedHeader();
+}
+
+IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt32, uint16_t>>& meas)
+{
+	return ProcessUnsupportedHeader();
+}
+
+IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint16_t>>& meas)
+{
+	return ProcessUnsupportedHeader();
+}
+
+IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint16_t>>& meas)
+{
+	return ProcessUnsupportedHeader();
+}
+
+IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint8_t>>& meas)
+{
+	return ProcessUnsupportedHeader();
+}
+
+IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint8_t>>& meas)
+{
+	return ProcessUnsupportedHeader();
+}
+
+IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt32, uint8_t>>& meas)
+{
+	return ProcessUnsupportedHeader();
+}
+
+IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint8_t>>& meas)
+{
+	return ProcessUnsupportedHeader();
+}
+
+IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint8_t>>& meas)
+{
+	return ProcessUnsupportedHeader();
+}
 
 TimestampMode APDUHandlerBase::GetCTO(uint64_t& cto_)
 {
@@ -589,8 +591,4 @@ TimestampMode APDUHandlerBase::GetCTO(uint64_t& cto_)
 	}
 }
 
-
-
 }
-
-

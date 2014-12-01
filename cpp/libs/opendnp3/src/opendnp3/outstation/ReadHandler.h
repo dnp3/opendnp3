@@ -36,13 +36,13 @@ public:
 
 	ReadHandler(openpal::Logger logger, IStaticSelector& staticSelector, IEventSelector& eventSelector);
 
-	virtual void _AllObjects(const HeaderRecord& record) override final;
-
-	virtual void _OnRangeRequest(const HeaderRecord& record, const Range& range) override final;
-
-	virtual void _OnCountRequest(const HeaderRecord& record, uint16_t count) override final;
-
 private:
+
+	virtual IINField ProcessAllObjects(const HeaderRecord& record) override final;
+
+	virtual IINField ProcessRangeRequest(const HeaderRecord& record, const Range& range) override final;
+
+	virtual IINField ProcessCountRequest(const HeaderRecord& record, uint16_t count) override final;
 
 	IStaticSelector* pStaticSelector;
 	IEventSelector* pEventSelector;

@@ -37,12 +37,12 @@ public:
 
 	ClassBasedRequestHandler(openpal::Logger& logger);
 
-	virtual void _AllObjects(const HeaderRecord& record) override final;
-
 	ClassField GetClassField() const { return classField; }
 
 private:
 
+	virtual IINField ProcessAllObjects(const HeaderRecord& record) override final;
+	
 	ClassField classField;
 };
 

@@ -47,33 +47,50 @@ public:
 		timeOut(0)
 	{}
 
-	virtual void _OnCountOf(const HeaderRecord& record, const IterableBuffer<Group52Var2>& times) override final
-	{
-		if(times.Count() == 1)
-		{
-			valid = true;
-			times.foreach([this](const Group52Var2 & obj)
-			{
-				timeOut = obj.time;
-			});
-		}
-		else
-		{
-			FORMAT_LOG_BLOCK(logger, flags::WARN, "Ignoring unexpected time delay count of %i", times.Count());
-		}
-	}
-
 	bool GetTimeDelay(uint16_t& time)
 	{
-		if(this->errors.Any()) return false;
+		if (this->Errors().Any())
+		{
+			return false;
+		}
 		else
 		{
-			if(valid) time = timeOut;
+			if (valid) 
+			{
+				time = timeOut;
+			}
 			return valid;
 		}
 	}
 
 private:
+
+	virtual IINField ProcessCountOf(const HeaderRecord& record, const IterableBuffer<Group52Var2>& times) override final
+	{
+		if(times.Count() == 1)
+		{
+			if (valid)
+			{
+				FORMAT_LOG_BLOCK(logger, flags::WARN, "Ignoring duplicate time delay object", times.Count());
+				return IINBit::PARAM_ERROR;
+			}
+			else
+			{
+				valid = true;
+				times.foreach([this](const Group52Var2 & obj)
+				{
+					timeOut = obj.time;
+				});
+				return IINField();
+			}
+		}
+		else
+		{
+			FORMAT_LOG_BLOCK(logger, flags::WARN, "Ignoring unexpected time delay count of %i", times.Count());
+			return IINBit::PARAM_ERROR;
+		}
+	}
+
 	bool valid;
 	uint16_t timeOut;
 
