@@ -135,25 +135,19 @@ IINField Database::SelectAll(const GroupVariationRecord& record)
 		switch (record.enumeration)
 		{
 			case(GroupVariation::Group1Var0):
-				this->SelectAll<Binary>();
-				return IINField();
+				return this->SelectAll<Binary>();				
 			case(GroupVariation::Group1Var2) :
-				this->SelectAllUsing<Binary>(StaticBinaryResponse::Group1Var2);
-				return IINField();
+				return this->SelectAllUsing<Binary>(StaticBinaryResponse::Group1Var2);				
 
 			case(GroupVariation::Group3Var0) :
-				this->SelectAll<DoubleBitBinary>();
-				return IINField();
+				return this->SelectAll<DoubleBitBinary>();				
 			case(GroupVariation::Group3Var2) :
-				this->SelectAllUsing<DoubleBitBinary>(StaticDoubleBinaryResponse::Group3Var2);
-				return IINField();
+				return this->SelectAllUsing<DoubleBitBinary>(StaticDoubleBinaryResponse::Group3Var2);				
 
 			case(GroupVariation::Group10Var0) :
-				this->SelectAll<BinaryOutputStatus>();
-				return IINField();
+				return this->SelectAll<BinaryOutputStatus>();
 			case(GroupVariation::Group10Var2) :
-				this->SelectAllUsing<BinaryOutputStatus>(StaticBinaryOutputStatusResponse::Group10Var2);
-				return IINField();
+				return this->SelectAllUsing<BinaryOutputStatus>(StaticBinaryOutputStatusResponse::Group10Var2);				
 
 			default:
 				return IINField(IINBit::FUNC_NOT_SUPPORTED);
