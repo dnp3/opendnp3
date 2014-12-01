@@ -34,7 +34,15 @@ ReadHandler::ReadHandler(openpal::Logger logger, IStaticSelector& staticSelector
 
 void ReadHandler::_AllObjects(const HeaderRecord& record)
 {
-	//errors |= pRspContext->ReadAllObjects(record);
+	switch (record.type)
+	{
+		case(GroupVariationType::STATIC) :
+			errors |= pStaticSelector->SelectAll(record.enumeration);
+		case(GroupVariationType::EVENT) :
+			errors |= pEventSelector->SelectAll(record.enumeration);
+		default:
+			errors |= IINField(IINBit::FUNC_NOT_SUPPORTED);
+	}	
 }
 
 void ReadHandler::_OnRangeRequest(const HeaderRecord& record, const Range& range)
