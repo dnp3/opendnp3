@@ -61,7 +61,15 @@ public:
 	
 	// -------- Misc ---------------
 	
+	/**
+	* Returns a view of all the static data for configuration purposes
+	*/
 	StaticBufferView GetStaticView() { return buffers.current.GetView(); }	
+
+	/**
+	* Returns a selector interface for marking values to be read
+	*/
+	IStaticSelector& GetSelector() { return buffers;  }
 
 private:	
 
