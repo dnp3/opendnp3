@@ -48,18 +48,19 @@ public:
 	{}
 
 	Range Intersection(const Range& other) const
-	{
-		if (other.IsValid() && this->IsValid())
-		{			
-			return Range(
-				openpal::Max<uint16_t>(other.start, start), 
-				openpal::Min<uint16_t>(other.stop, stop)
-			);
-		}
-		else
-		{
-			return Range::Invalid();
-		}
+	{				
+		return Range(
+			openpal::Max<uint16_t>(start, other.start), 
+			openpal::Min<uint16_t>(stop, other.stop)
+		);		
+	}
+
+	Range Union(const Range& other) const
+	{		
+		return Range(
+			openpal::Min<uint16_t>(start, other.start),
+			openpal::Max<uint16_t>(stop, other.stop)
+		);		
 	}
 
 	bool Equals(const Range& other) const

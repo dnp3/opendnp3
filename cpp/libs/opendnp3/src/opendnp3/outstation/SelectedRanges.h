@@ -43,7 +43,14 @@ public:
 	Range GetRange() { return GetRangeRef<T>(); }
 
 	template <class T>
-	void SetRange(const Range& range) { GetRangeRef<T>() = range; }
+	void IncorporateRange(const Range& range) 
+	{ 
+		auto& ref = GetRangeRef<T>();
+		ref = ref.Union(range);
+	}
+
+	template <class T>
+	void ClearRange() { GetRangeRef<T>() = Range::Invalid(); }
 	
 private:
 

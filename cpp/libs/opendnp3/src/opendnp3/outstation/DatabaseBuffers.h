@@ -58,7 +58,7 @@ private:
 	template <class T>
 	void Deselect()
 	{
-		auto& range = ranges.GetRange<T>();
+		auto range = ranges.GetRange<T>();
 		if (range.IsValid())
 		{
 			auto view = selected.GetArrayView<T>();
@@ -66,8 +66,8 @@ private:
 			{
 				view[i].selected = false;
 			}
-		}
-		range = Range::Invalid();
+			ranges.ClearRange<T>();
+		}		
 	}
 
 
@@ -140,7 +140,7 @@ IINField DatabaseBuffers::GenericSelect(
 				}				
 			}
 
-			ranges.SetRange<T>(allowed);
+			ranges.IncorporateRange<T>(allowed);
 
 			return ret;
 		}
