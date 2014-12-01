@@ -74,7 +74,7 @@ private:
 	static Range RangeOf(const openpal::HasSize<uint16_t>& sized);
 
 	template <class T>
-	static IINField GenericSelect(
+	IINField GenericSelect(
 		Range range,
 		openpal::ArrayView<MeasurementCell<T>, uint16_t> current,
 		openpal::ArrayView<BufferedCell<T>, uint16_t> frozen,	
@@ -139,6 +139,8 @@ IINField DatabaseBuffers::GenericSelect(
 					selected[i].variation = useDefault ? current[i].variation : variation;
 				}				
 			}
+
+			ranges.SetRange<T>(allowed);
 
 			return ret;
 		}

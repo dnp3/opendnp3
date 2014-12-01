@@ -40,33 +40,39 @@ class SelectedRanges : private openpal::Uncopyable
 public:
 
 	template <class T>
-	Range& GetRange();
+	Range GetRange() { return GetRangeRef<T>(); }
 
-	template <>
-	Range& GetRange<Binary>() { return binaries; }
-
-	template <>
-	Range& GetRange<DoubleBitBinary>() { return doubleBinaries; }
-
-	template <>
-	Range& GetRange<Analog>() { return analogs; }
-
-	template <>
-	Range& GetRange<Counter>() { return counters; }
-
-	template <>
-	Range& GetRange<FrozenCounter>() { return frozenCounters; }
-
-	template <>
-	Range& GetRange<BinaryOutputStatus>() { return binaryOutputStatii; }
-
-	template <>
-	Range& GetRange<AnalogOutputStatus>() { return analogOutputStatii; }
-
-	template <>
-	Range& GetRange<TimeAndInterval>() { return timeAndIntervals; }
-
+	template <class T>
+	void SetRange(const Range& range) { GetRangeRef<T>() = range; }
+	
 private:
+
+	template <class T>
+	Range& GetRangeRef();	
+
+	template <>
+	Range& GetRangeRef<Binary>() { return binaries; }
+
+	template <>
+	Range& GetRangeRef<DoubleBitBinary>() { return doubleBinaries; }
+
+	template <>
+	Range& GetRangeRef<Analog>() { return analogs; }
+
+	template <>
+	Range& GetRangeRef<Counter>() { return counters; }
+
+	template <>
+	Range& GetRangeRef<FrozenCounter>() { return frozenCounters; }
+
+	template <>
+	Range& GetRangeRef<BinaryOutputStatus>() { return binaryOutputStatii; }
+
+	template <>
+	Range& GetRangeRef<AnalogOutputStatus>() { return analogOutputStatii; }
+
+	template <>
+	Range& GetRangeRef<TimeAndInterval>() { return timeAndIntervals; }
 
 	Range binaries;
 	Range doubleBinaries;
