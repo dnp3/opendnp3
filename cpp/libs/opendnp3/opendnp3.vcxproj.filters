@@ -720,6 +720,9 @@
     <ClInclude Include="src\opendnp3\outstation\IStaticSelector.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\DatabaseBuffers.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\AnalogOutput.cpp">
@@ -1137,6 +1140,9 @@
       <Filter>Source\master</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\Database.cpp">
+      <Filter>Source\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\DatabaseBuffers.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
   </ItemGroup>

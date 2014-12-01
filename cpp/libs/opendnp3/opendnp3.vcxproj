@@ -190,6 +190,7 @@
     <ClInclude Include="src\opendnp3\outstation\CommandActionAdapter.h" />
     <ClInclude Include="src\opendnp3\outstation\CommandResponseHandler.h" />
     <ClInclude Include="src\opendnp3\outstation\ConstantCommandAction.h" />
+    <ClInclude Include="src\opendnp3\outstation\DatabaseBuffers.h" />
     <ClInclude Include="src\opendnp3\outstation\IStaticSelector.h" />
     <ClInclude Include="src\opendnp3\outstation\StaticBufferView.h" />
     <ClInclude Include="src\opendnp3\outstation\Database.h" />
@@ -354,6 +355,7 @@
     <ClCompile Include="src\opendnp3\outstation\CommandActionAdapter.cpp" />
     <ClCompile Include="src\opendnp3\outstation\CommandResponseHandler.cpp" />
     <ClCompile Include="src\opendnp3\outstation\Database.cpp" />
+    <ClCompile Include="src\opendnp3\outstation\DatabaseBuffers.cpp" />
     <ClCompile Include="src\opendnp3\outstation\EventBufferConfig.cpp" />
     <ClCompile Include="src\opendnp3\outstation\EventCount.cpp" />
     <ClCompile Include="src\opendnp3\outstation\EventResponseConfig.cpp" />
