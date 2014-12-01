@@ -113,7 +113,7 @@ TEST_CASE(SUITE("AnalogNoChange"))
 {
 	DatabaseTestObject t(DatabaseTemplate::AnalogOnly(1));
 	auto view = t.db.GetStaticView();
-	view.binaries[0].metadata.clazz = PointClass::Class1;
+	view.analogs[0].metadata.clazz = PointClass::Class1;
 	TestBufferForEvent(false, Analog(0, ToUnderlying(AnalogQuality::RESTART)), t, t.buffer.analogEvents);
 }
 
