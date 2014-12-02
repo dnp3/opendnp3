@@ -43,7 +43,7 @@ public:
 
 	// ------- IStaticSelector -------------
 
-	virtual void DeselectAll() override final;
+	virtual void Unselect() override final;
 	virtual IINField SelectAll(GroupVariation gv) override final;
 	virtual IINField SelectRange(GroupVariation gv, const Range& range) override final;
 

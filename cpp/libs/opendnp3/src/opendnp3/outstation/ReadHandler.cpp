@@ -29,7 +29,8 @@ ReadHandler::ReadHandler(openpal::Logger logger, IStaticSelector& staticSelector
 	pStaticSelector(&staticSelector),
 	pEventSelector(&eventSelector)
 {
-
+	pStaticSelector->Unselect();
+	pEventSelector->Unselect();
 }
 
 IINField ReadHandler::ProcessAllObjects(const HeaderRecord& record)

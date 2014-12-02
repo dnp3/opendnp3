@@ -38,7 +38,7 @@ DatabaseBuffers::DatabaseBuffers(const DatabaseTemplate& dbTemplate) :
 
 }
 
-void DatabaseBuffers::DeselectAll()
+void DatabaseBuffers::Unselect()
 {
 	this->Deselect<Binary>();
 	this->Deselect<DoubleBitBinary>();

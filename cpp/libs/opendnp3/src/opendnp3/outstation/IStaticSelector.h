@@ -32,7 +32,7 @@ class IStaticSelector
 {
 public:
 
-	virtual void DeselectAll() = 0;
+	virtual void Unselect() = 0;
 
 	virtual IINField SelectAll(GroupVariation gv) = 0;
 

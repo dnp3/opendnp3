@@ -31,6 +31,8 @@ class IEventSelector
 {
 public:
 
+	virtual void Unselect() = 0;
+
 	virtual IINField SelectAll(GroupVariation gv) = 0;
 
 	virtual IINField SelectCount(GroupVariation gv, uint16_t count) = 0;
