@@ -29,7 +29,6 @@
 #include "opendnp3/app/Range.h"
 #include "opendnp3/app/APDUResponse.h"
 
-#include "opendnp3/outstation/StaticLoader.h"
 #include "opendnp3/outstation/OutstationParams.h"
 #include "opendnp3/outstation/StaticResponseConfig.h"
 #include "opendnp3/outstation/StaticLoadFunctions.h"

@@ -345,9 +345,6 @@
     <ClInclude Include="src\opendnp3\outstation\SimpleCommandHandler.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\StaticLoader.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\StaticResponseContext.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>

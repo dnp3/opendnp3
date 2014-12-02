@@ -29,16 +29,20 @@
 #include <openpal/container/Settable.h>
 
 #include "opendnp3/LayerInterfaces.h"
-#include "opendnp3/outstation/ResponseContext.h"
-#include "opendnp3/outstation/OutstationConfig.h"
+
 #include "opendnp3/app/IINField.h"
 #include "opendnp3/app/HeaderWriter.h"
 #include "opendnp3/app/APDUHeader.h"
 #include "opendnp3/app/APDUResponse.h"
+
+#include "opendnp3/outstation/Database.h"
+#include "opendnp3/outstation/ResponseContext.h"
+#include "opendnp3/outstation/OutstationConfig.h"
 #include "opendnp3/outstation/ICommandHandler.h"
 #include "opendnp3/outstation/IOutstationApplication.h"
 #include "opendnp3/outstation/OutstationSolicitedStates.h"
 #include "opendnp3/outstation/OutstationUnsolicitedStates.h"
+#include "opendnp3/outstation/OutstationEventBuffer.h"
 #include "opendnp3/outstation/DeferredRequest.h"
 
 namespace opendnp3

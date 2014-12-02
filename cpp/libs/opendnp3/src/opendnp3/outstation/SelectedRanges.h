@@ -40,17 +40,23 @@ class SelectedRanges : private openpal::Uncopyable
 public:
 
 	template <class T>
-	Range GetRange() { return GetRangeRef<T>(); }
+	Range Get() { return GetRangeRef<T>(); }
 
 	template <class T>
-	void IncorporateRange(const Range& range) 
+	void Set(const Range& range)
+	{
+		GetRangeRef<T>() = range;
+	}
+
+	template <class T>
+	void Merge(const Range& range) 
 	{ 
 		auto& ref = GetRangeRef<T>();
 		ref = ref.Union(range);
 	}
 
 	template <class T>
-	void ClearRange() { GetRangeRef<T>() = Range::Invalid(); }
+	void Clear() { Set<T>(Range::Invalid()); }
 
 	bool HasAnySelection() const
 	{

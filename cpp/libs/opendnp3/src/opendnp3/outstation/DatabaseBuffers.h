@@ -30,7 +30,7 @@
 
 #include "opendnp3/outstation/IStaticLoader.h"
 #include "opendnp3/outstation/IStaticSelector.h"
-
+#include "opendnp3/outstation/StaticLoadFunctions.h"
 
 namespace opendnp3
 {
@@ -61,10 +61,7 @@ public:
 private:
 
 	StaticSelection selected;
-	SelectedRanges ranges;
-
-	bool LoadType1(HeaderWriter& writer);
-	bool LoadType2(HeaderWriter& writer);
+	SelectedRanges ranges;	
 
 	template <class T>
 	bool LoadType(HeaderWriter& writer);
@@ -72,7 +69,7 @@ private:
 	template <class T>
 	void Deselect()
 	{
-		auto range = ranges.GetRange<T>();
+		auto range = ranges.Get<T>();
 		if (range.IsValid())
 		{
 			auto view = selected.GetArrayView<T>();
@@ -80,7 +77,7 @@ private:
 			{
 				view[i].selected = false;
 			}
-			ranges.ClearRange<T>();
+			ranges.Clear<T>();
 		}		
 	}
 
@@ -154,7 +151,7 @@ IINField DatabaseBuffers::GenericSelect(
 				}				
 			}
 
-			ranges.IncorporateRange<T>(allowed);
+			ranges.Merge<T>(allowed);
 
 			return ret;
 		}
@@ -167,6 +164,45 @@ IINField DatabaseBuffers::GenericSelect(
 	{
 		return IINField();
 	}
+}
+
+template <class T>
+bool DatabaseBuffers::LoadType(HeaderWriter& writer)
+{
+	auto range = ranges.Get<T>();
+	if (range.IsValid())
+	{
+		auto view = selected.GetArrayView<T>();
+
+		bool spaceRemaining = true;
+
+		// ... load values, manipulate the range
+		while (spaceRemaining && range.IsValid())
+		{
+			if (view[range.start].selected)
+			{
+				/// lookup the specific write function based on the reporting variation
+				auto writeFun = GetStaticWriter(view[range.start].variation);
+
+				// start writing a header, the invoked function will advance the range appropriately				
+				spaceRemaining = writeFun(view, writer, range);
+			}
+			else
+			{
+				// just skip over values that are not selected
+				range.Advance();
+			}			
+		} 		
+
+		ranges.Set<T>(range);
+
+		return spaceRemaining;
+	}
+	else
+	{
+		// no data to load
+		return true;
+	}	
 }
 
 }

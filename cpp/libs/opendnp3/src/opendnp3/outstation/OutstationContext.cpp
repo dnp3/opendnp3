@@ -402,7 +402,7 @@ OutstationSolicitedStateBase* OutstationContext::ContinueMultiFragResponse(uint8
 	auto writer = response.GetWriter();
 	response.SetFunction(FunctionCode::RESPONSE);	
 	Transaction tx(database);	
-	auto control = this->rspContext.LoadResponse(writer);
+	auto control = this->rspContext.LoadResponse(writer, database.GetLoader());
 	control.SEQ = seq;
 	expectedSolConfirmSeq = seq;
 	response.SetControl(control);
@@ -558,7 +558,7 @@ Pair<IINField, AppControlField> OutstationContext::HandleRead(const openpal::Rea
 	auto result = APDUParser::ParseTwoPass(objects, &handler, &logger, APDUParser::Context(false)); // don't expect range/count context on a READ
 	if (result == APDUParser::Result::OK)
 	{				
-		auto control = rspContext.LoadResponse(writer);
+		auto control = rspContext.LoadResponse(writer, database.GetLoader());
 		return Pair<IINField, AppControlField>(handler.Errors(), control);
 	}
 	else

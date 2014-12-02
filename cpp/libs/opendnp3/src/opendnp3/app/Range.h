@@ -47,6 +47,30 @@ public:
 	Range() : start(1), stop(0)
 	{}
 
+	bool Advance()
+	{
+		if (this->IsValid())
+		{
+			if (start < stop)
+			{
+				++start;				
+			}
+			else
+			{
+				// make the range invalid
+				start = 1;
+				stop = 0;
+			}
+
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	/// @return A new range with only values found in both ranges
 	Range Intersection(const Range& other) const
 	{				
 		return Range(
@@ -55,13 +79,14 @@ public:
 		);		
 	}
 
+	/// @return A new range with min start and the max stop of both ranges
 	Range Union(const Range& other) const
 	{		
 		return Range(
 			openpal::Min<uint16_t>(start, other.start),
 			openpal::Max<uint16_t>(stop, other.stop)
 		);		
-	}
+	}	
 
 	bool Equals(const Range& other) const
 	{

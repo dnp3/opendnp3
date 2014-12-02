@@ -72,6 +72,11 @@ public:
 	*/
 	IStaticSelector& GetSelector() { return buffers;  }
 
+	/**
+	* @returns Loader interface used for creating static responses
+	*/
+	IStaticLoader& GetLoader() { return buffers; }
+
 private:	
 
 	// stores the most recent values, selected values, and metadata

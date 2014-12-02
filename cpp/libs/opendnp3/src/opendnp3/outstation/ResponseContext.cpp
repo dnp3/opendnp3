@@ -24,8 +24,7 @@
 namespace opendnp3
 {
 
-ResponseContext::ResponseContext() :
-	fragmentCount(0)	
+ResponseContext::ResponseContext() : fragmentCount(0)	
 {
 
 }
@@ -35,85 +34,11 @@ void ResponseContext::Reset()
 	fragmentCount = 0;	
 }
 
-AppControlField ResponseContext::LoadResponse(HeaderWriter& writer)
+AppControlField ResponseContext::LoadResponse(HeaderWriter& writer, IStaticLoader& staticLoader)
 {
-	/*
 	auto fir = fragmentCount == 0;
-	++fragmentCount;
-	
-	auto preLoadSize = writer.Remaining();
-
-	auto allEventsLoaded = eventContext.Load(writer);
-	auto wereEventsWritten = writer.Remaining() < preLoadSize;
-		
-	if (allEventsLoaded)
-	{		
-		auto complete = staticContext.Load(writer);
-		return GetControl(fir, complete, wereEventsWritten);
-	}
-	else
-	{				
-		return GetControl(fir, false, wereEventsWritten);
-	}
-	*/
-
-	return AppControlField(false, false, false, false, 0);
+	auto complete = staticLoader.Load(writer);	
+	return AppControlField(fir, complete, false, false);	
 }
-
-AppControlField ResponseContext::GetControl(bool fir, bool fin, bool hasEvents)
-{	
-	auto con = (!fin) || hasEvents; // request confirmation on any non-fin fragment or if it has events
-	return AppControlField(fir, fin, con, false);		
-}
-
-
-IINField ResponseContext::ReadAllObjects(const GroupVariationRecord& record)
-{
-	/*
-	switch (record.type)
-	{
-		case(GroupVariationType::STATIC) :
-			return staticContext.ReadAll(record);
-		case(GroupVariationType::EVENT) :
-			return eventContext.ReadAll(record);
-		default:
-			return IINField(IINBit::FUNC_NOT_SUPPORTED);
-	}
-	*/
-
-	return IINField(IINBit::FUNC_NOT_SUPPORTED);
-}
-
-IINField ResponseContext::ReadRange(const GroupVariationRecord& record, const Range& range)
-{
-	/*
-	switch (record.type)
-	{
-	case(GroupVariationType::STATIC) :
-		return staticContext.ReadRange(record, range);
-	default:
-		return IINField(IINBit::FUNC_NOT_SUPPORTED);
-	}
-	*/
-
-	return IINField(IINBit::FUNC_NOT_SUPPORTED);
-}
-
-
-IINField ResponseContext::ReadCount(const GroupVariationRecord& record, uint32_t count)
-{
-	/*
-	switch (record.type)
-	{	
-		case(GroupVariationType::EVENT) :
-			return eventContext.ReadCount(record, count);
-		default:
-			return IINField(IINBit::FUNC_NOT_SUPPORTED);
-	}
-	*/
-
-	return IINField(IINBit::FUNC_NOT_SUPPORTED);
-}
-
 
 }

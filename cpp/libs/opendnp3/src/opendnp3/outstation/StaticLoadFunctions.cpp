@@ -34,89 +34,88 @@ using namespace openpal;
 namespace opendnp3
 {
 
-/*
-StaticLoadFun StaticLoadFunctions::Get(StaticBinaryResponse)
+
+StaticWriter<Binary>::Function GetStaticWriter(StaticBinaryResponse variation)
 {
-	return &StaticLoader::LoadFixedSizeStartStop<Group1Var2>;
+	return &WriteWithSerializer<Group1Var2>;
 }
 
-StaticLoadFun StaticLoadFunctions::Get(StaticDoubleBinaryResponse rsp)
+StaticWriter<DoubleBitBinary>::Function GetStaticWriter(StaticDoubleBinaryResponse variation)
 {
-	switch (rsp)
+	switch (variation)
 	{
 		case(StaticDoubleBinaryResponse::Group3Var2) :
-			return &StaticLoader::LoadFixedSizeStartStop<Group3Var2>;
+			return &WriteWithSerializer<Group3Var2>;
 		default:
-			return &StaticLoader::LoadFixedSizeStartStop<Group3Var2>;
+			return &WriteWithSerializer<Group3Var2>;
 	}
 }
 
-StaticLoadFun StaticLoadFunctions::Get(StaticAnalogResponse rsp)
+StaticWriter<Analog>::Function GetStaticWriter(StaticAnalogResponse variation)
 {
-	switch(rsp)
+	switch (variation)
 	{
-	case(StaticAnalogResponse::Group30Var1): return &StaticLoader::LoadFixedSizeStartStop<Group30Var1>;
-	case(StaticAnalogResponse::Group30Var2): return &StaticLoader::LoadFixedSizeStartStop<Group30Var2>;
-	case(StaticAnalogResponse::Group30Var3): return &StaticLoader::LoadFixedSizeStartStop<Group30Var3>;
-	case(StaticAnalogResponse::Group30Var4): return &StaticLoader::LoadFixedSizeStartStop<Group30Var4>;
-	case(StaticAnalogResponse::Group30Var5): return &StaticLoader::LoadFixedSizeStartStop<Group30Var5>;
-	case(StaticAnalogResponse::Group30Var6): return &StaticLoader::LoadFixedSizeStartStop<Group30Var6>;
+	case(StaticAnalogResponse::Group30Var1): return &WriteWithSerializer<Group30Var1>;
+	case(StaticAnalogResponse::Group30Var2): return &WriteWithSerializer<Group30Var2>;
+	case(StaticAnalogResponse::Group30Var3): return &WriteWithSerializer<Group30Var3>;
+	case(StaticAnalogResponse::Group30Var4): return &WriteWithSerializer<Group30Var4>;
+	case(StaticAnalogResponse::Group30Var5): return &WriteWithSerializer<Group30Var5>;
+	case(StaticAnalogResponse::Group30Var6): return &WriteWithSerializer<Group30Var6>;
 	default:
-		return &StaticLoader::LoadFixedSizeStartStop<Group30Var1>;
+		return &WriteWithSerializer<Group30Var1>;
 	}
 }
 
-StaticLoadFun StaticLoadFunctions::Get(StaticCounterResponse rsp)
+StaticWriter<Counter>::Function GetStaticWriter(StaticCounterResponse variation)
 {
-	switch(rsp)
+	switch (variation)
 	{
-	case(StaticCounterResponse::Group20Var1): return &StaticLoader::LoadFixedSizeStartStop<Group20Var1>;
-	case(StaticCounterResponse::Group20Var2): return &StaticLoader::LoadFixedSizeStartStop<Group20Var2>;
-	case(StaticCounterResponse::Group20Var5): return &StaticLoader::LoadFixedSizeStartStop<Group20Var5>;
-	case(StaticCounterResponse::Group20Var6): return &StaticLoader::LoadFixedSizeStartStop<Group20Var6>;
+	case(StaticCounterResponse::Group20Var1): return &WriteWithSerializer<Group20Var1>;
+	case(StaticCounterResponse::Group20Var2): return &WriteWithSerializer<Group20Var2>;
+	case(StaticCounterResponse::Group20Var5): return &WriteWithSerializer<Group20Var5>;
+	case(StaticCounterResponse::Group20Var6): return &WriteWithSerializer<Group20Var6>;
 	default:
-		return &StaticLoader::LoadFixedSizeStartStop<Group20Var1>;
+		return &WriteWithSerializer<Group20Var1>;
 	}
 }
 
-StaticLoadFun StaticLoadFunctions::Get(StaticFrozenCounterResponse rsp)
+StaticWriter<FrozenCounter>::Function GetStaticWriter(StaticFrozenCounterResponse variation)
 {
-	switch(rsp)
+	switch (variation)
 	{
-	case(StaticFrozenCounterResponse::Group21Var1): return &StaticLoader::LoadFixedSizeStartStop<Group21Var1>;
+	case(StaticFrozenCounterResponse::Group21Var1): return &WriteWithSerializer<Group21Var1>;
 	default:
-		return &StaticLoader::LoadFixedSizeStartStop<Group21Var1>;
+		return &WriteWithSerializer<Group21Var1>;
 	}
 }
 
-StaticLoadFun StaticLoadFunctions::Get(StaticBinaryOutputStatusResponse rsp)
+StaticWriter<BinaryOutputStatus>::Function GetStaticWriter(StaticBinaryOutputStatusResponse variation)
 {
-	switch(rsp)
+	switch (variation)
 	{
-	case(StaticBinaryOutputStatusResponse::Group10Var2): return &StaticLoader::LoadFixedSizeStartStop<Group10Var2>;
+	case(StaticBinaryOutputStatusResponse::Group10Var2): return &WriteWithSerializer<Group10Var2>;
 	default:
-		return &StaticLoader::LoadFixedSizeStartStop<Group10Var2>;
+		return &WriteWithSerializer<Group10Var2>;
 	}
 }
 
-StaticLoadFun StaticLoadFunctions::Get(StaticAnalogOutputStatusResponse rsp)
+StaticWriter<AnalogOutputStatus>::Function GetStaticWriter(StaticAnalogOutputStatusResponse variation)
 {
-	switch(rsp)
+	switch (variation)
 	{
-	case(StaticAnalogOutputStatusResponse::Group40Var1): return &StaticLoader::LoadFixedSizeStartStop<Group40Var1>;
-	case(StaticAnalogOutputStatusResponse::Group40Var2): return &StaticLoader::LoadFixedSizeStartStop<Group40Var2>;
-	case(StaticAnalogOutputStatusResponse::Group40Var3): return &StaticLoader::LoadFixedSizeStartStop<Group40Var3>;
-	case(StaticAnalogOutputStatusResponse::Group40Var4): return &StaticLoader::LoadFixedSizeStartStop<Group40Var4>;
-	default:
-		return &StaticLoader::LoadFixedSizeStartStop<Group40Var1>;
+		case(StaticAnalogOutputStatusResponse::Group40Var1): return &WriteWithSerializer<Group40Var1>;
+		case(StaticAnalogOutputStatusResponse::Group40Var2): return &WriteWithSerializer<Group40Var2>;
+		case(StaticAnalogOutputStatusResponse::Group40Var3): return &WriteWithSerializer<Group40Var3>;
+		case(StaticAnalogOutputStatusResponse::Group40Var4): return &WriteWithSerializer<Group40Var4>;
+		default:
+			return &WriteWithSerializer<Group40Var1>;
 	}
 }
 
-StaticLoadFun StaticLoadFunctions::Get(StaticTimeAndIntervalResponse)
+StaticWriter<TimeAndInterval>::Function GetStaticWriter(StaticTimeAndIntervalResponse variation)
 {
-	return &StaticLoader::LoadFixedSizeStartStop<Group50Var4>;	
+	return &WriteWithSerializer<Group50Var4>;	
 }
-*/
 
 }
 

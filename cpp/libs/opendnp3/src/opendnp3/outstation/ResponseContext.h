@@ -24,10 +24,11 @@
 #include <openpal/util/Uncopyable.h>
 
 #include "opendnp3/app/Range.h"
-#include "opendnp3/app/APDUResponse.h"
+#include "opendnp3/app/HeaderWriter.h"
+#include "opendnp3/app/AppControlField.h"
+#include "opendnp3/outstation/IStaticLoader.h"
 
-#include  "opendnp3/outstation/StaticResponseContext.h"
-#include  "opendnp3/outstation/EventResponseContext.h"
+
 
 namespace opendnp3
 {
@@ -42,15 +43,11 @@ class ResponseContext : private openpal::Uncopyable
 
 public:
 
-	ResponseContext();
+	ResponseContext();	
 
-	IINField ReadAllObjects(const GroupVariationRecord& record);
-	IINField ReadRange(const GroupVariationRecord& record, const Range& range);
-	IINField ReadCount(const GroupVariationRecord& record, uint32_t count);
+	void Reset();
 
-	void Reset();	
-
-	AppControlField LoadResponse(HeaderWriter& writer);
+	AppControlField LoadResponse(HeaderWriter& writer, IStaticLoader& staticLoader);
 
 private:
 

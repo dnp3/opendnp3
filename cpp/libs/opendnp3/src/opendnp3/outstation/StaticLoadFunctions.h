@@ -22,32 +22,74 @@
 #ifndef OPENDNP3_STATICLOADFUNCTIONS_H
 #define OPENDNP3_STATICLOADFUNCTIONS_H
 
-#include "opendnp3/outstation/StaticResponseConfig.h"
-#include "opendnp3/outstation/StaticLoader.h"
+#include "opendnp3/app/Range.h"
+#include "opendnp3/app/HeaderWriter.h"
+#include "opendnp3/app/TimeAndInterval.h"
+#include "opendnp3/app/MeasurementTypes.h"
+#include "opendnp3/outstation/MeasurementCell.h"
+
+#include <openpal/container/ArrayView.h>
 
 namespace opendnp3
 {
 
-/**
- * Reads a outstation config object and and translates the configuration to
- * singletons.
- */
-/*
-class StaticLoadFunctions : openpal::PureStatic
+template <class T>
+struct StaticWriter
 {
-public:
-
-	static StaticLoadFun Get(StaticBinaryResponse rsp);
-	static StaticLoadFun Get(StaticDoubleBinaryResponse rsp);
-	static StaticLoadFun Get(StaticCounterResponse rsp);
-	static StaticLoadFun Get(StaticFrozenCounterResponse rsp);
-	static StaticLoadFun Get(StaticAnalogResponse rsp);
-	static StaticLoadFun Get(StaticAnalogOutputStatusResponse rsp);
-	static StaticLoadFun Get(StaticBinaryOutputStatusResponse rsp);
-	static StaticLoadFun Get(StaticTimeAndIntervalResponse rsp);
-
+	typedef bool (*Function)(openpal::ArrayView<BufferedCell<T>, uint16_t>& view, HeaderWriter& writer, Range& range);
 };
-*/
+
+StaticWriter<Binary>::Function GetStaticWriter(StaticBinaryResponse variation);
+
+StaticWriter<DoubleBitBinary>::Function GetStaticWriter(StaticDoubleBinaryResponse variation);
+
+StaticWriter<Counter>::Function GetStaticWriter(StaticCounterResponse variation);
+
+StaticWriter<FrozenCounter>::Function GetStaticWriter(StaticFrozenCounterResponse variation);
+
+StaticWriter<Analog>::Function GetStaticWriter(StaticAnalogResponse variation);
+
+StaticWriter<AnalogOutputStatus>::Function GetStaticWriter(StaticAnalogOutputStatusResponse variation);
+
+StaticWriter<BinaryOutputStatus>::Function GetStaticWriter(StaticBinaryOutputStatusResponse variation);
+
+StaticWriter<TimeAndInterval>::Function GetStaticWriter(StaticTimeAndIntervalResponse variation);
+
+template <class Serializer>
+bool WriteWithSerializer(openpal::ArrayView<BufferedCell<typename Serializer::Target>, uint16_t>& view, HeaderWriter& writer, Range& range)
+{
+	if (range.IsOneByte())
+	{
+		auto iter = writer.IterateOverRange<openpal::UInt8, typename Serializer::Target>(QualifierCode::UINT8_START_STOP, Serializer::Inst(), static_cast<uint8_t>(range.start));
+		return LoadWithRangeIterator<typename Serializer::Target, openpal::UInt8>(view, iter, range);
+	}
+	else
+	{
+		auto iter = writer.IterateOverRange<openpal::UInt16, typename Serializer::Target>(QualifierCode::UINT16_START_STOP, Serializer::Inst(), range.start);
+		return LoadWithRangeIterator<typename Serializer::Target, openpal::UInt16>(view, iter, range);
+	}
+}
+
+template <class Target, class IndexType>
+bool LoadWithRangeIterator(openpal::ArrayView<BufferedCell<Target>, uint16_t>& view, RangeWriteIterator<IndexType, Target>& iterator, Range& range)
+{		
+	// TODO validate that the variation matches what's required
+	while (range.IsValid() && view[range.start].selected)
+	{			
+		if (iterator.Write(view[range.start].value))
+		{
+			// deselect the value and advance the range
+			view[range.start].selected = false;
+			range.Advance();
+		}
+		else
+		{
+			return false;
+		}		
+	}
+
+	return true;	
+}
 
 }
 
