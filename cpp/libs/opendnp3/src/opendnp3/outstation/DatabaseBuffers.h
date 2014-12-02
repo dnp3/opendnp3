@@ -26,8 +26,11 @@
 #include "opendnp3/outstation/DatabaseTemplate.h"
 #include "opendnp3/outstation/StaticBuffers.h"
 #include "opendnp3/outstation/StaticSelection.h"
-#include "opendnp3/outstation/IStaticSelector.h"
 #include "opendnp3/outstation/SelectedRanges.h"
+
+#include "opendnp3/outstation/IStaticLoader.h"
+#include "opendnp3/outstation/IStaticSelector.h"
+
 
 namespace opendnp3
 {
@@ -35,7 +38,7 @@ namespace opendnp3
 /**
 The database coordinates all updates of measurement data
 */
-class DatabaseBuffers : public IStaticSelector, private openpal::Uncopyable
+class DatabaseBuffers : public IStaticSelector, public IStaticLoader, private openpal::Uncopyable
 {
 public:
 
@@ -47,13 +50,24 @@ public:
 	virtual IINField SelectAll(GroupVariation gv) override final;
 	virtual IINField SelectRange(GroupVariation gv, const Range& range) override final;
 
-	// stores the most revent values and event information
-	StaticBuffers current;
+	// ------- IStaticLoader -------------
+	
+	virtual bool Load(HeaderWriter& writer) override final;
+	virtual bool HasAnySelection() const override final { return ranges.HasAnySelection(); }
+	
+	// stores the most revent values and event information	
+	StaticBuffers current;	
 
 private:
 
 	StaticSelection selected;
 	SelectedRanges ranges;
+
+	bool LoadType1(HeaderWriter& writer);
+	bool LoadType2(HeaderWriter& writer);
+
+	template <class T>
+	bool LoadType(HeaderWriter& writer);
 
 	template <class T>
 	void Deselect()

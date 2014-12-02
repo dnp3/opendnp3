@@ -51,6 +51,19 @@ public:
 
 	template <class T>
 	void ClearRange() { GetRangeRef<T>() = Range::Invalid(); }
+
+	bool HasAnySelection() const
+	{
+		return
+			binaries.IsValid() ||
+			doubleBinaries.IsValid() ||
+			analogs.IsValid() ||
+			counters.IsValid() ||
+			frozenCounters.IsValid() ||
+			binaryOutputStatii.IsValid() ||
+			analogOutputStatii.IsValid() ||
+			timeAndIntervals.IsValid();
+	}
 	
 private:
 

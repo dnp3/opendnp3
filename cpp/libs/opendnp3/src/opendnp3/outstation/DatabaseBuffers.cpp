@@ -25,6 +25,7 @@
 #include "opendnp3/ErrorCodes.h"
 
 #include <assert.h>
+#include <array>
 
 using namespace openpal;
 
@@ -222,6 +223,33 @@ IINField DatabaseBuffers::SelectRange(GroupVariation gv, const Range& range)
 	default:
 		return IINField(IINBit::FUNC_NOT_SUPPORTED);
 	}
+}
+
+bool DatabaseBuffers::Load(HeaderWriter& writer)
+{
+	typedef bool (DatabaseBuffers::*LoadFun)(HeaderWriter& writer);	
+
+	std::array<LoadFun, 8> loaders{{
+			&DatabaseBuffers::LoadType<Binary>,
+			&DatabaseBuffers::LoadType<DoubleBitBinary>,
+			&DatabaseBuffers::LoadType<Counter>,
+			&DatabaseBuffers::LoadType<FrozenCounter>,
+			&DatabaseBuffers::LoadType<Analog>,
+			&DatabaseBuffers::LoadType<BinaryOutputStatus>,
+			&DatabaseBuffers::LoadType<AnalogOutputStatus>,
+			&DatabaseBuffers::LoadType < TimeAndInterval >
+	}};
+
+	for (LoadFun fun : loaders)
+	{
+		if (!(this->*fun)(writer))
+		{
+			// return early because the APDU is full
+			return false;
+		}		
+	}	
+
+	return true;
 }
 
 Range DatabaseBuffers::RangeOf(const HasSize<uint16_t>& sized)
