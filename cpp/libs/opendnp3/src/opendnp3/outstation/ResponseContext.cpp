@@ -24,21 +24,29 @@
 namespace opendnp3
 {
 
-ResponseContext::ResponseContext() : fragmentCount(0)	
+ResponseContext::ResponseContext(IStaticLoader& staticLoader) : fragmentCount(0), pStaticLoader(&staticLoader)
 {
 
+}
+
+bool ResponseContext::HasSelection() const
+{
+	return pStaticLoader->HasAnySelection();
 }
 
 void ResponseContext::Reset()
-{
-	fragmentCount = 0;	
+{	
+	fragmentCount = 0;
 }
 
-AppControlField ResponseContext::LoadResponse(HeaderWriter& writer, IStaticLoader& staticLoader)
+AppControlField ResponseContext::LoadResponse(HeaderWriter& writer)
 {
 	auto fir = fragmentCount == 0;
-	auto complete = staticLoader.Load(writer);	
-	return AppControlField(fir, complete, false, false);	
+	auto fin = pStaticLoader->Load(writer);	
+
+	++fragmentCount;
+
+	return AppControlField(fir, fin, !fin, false);	
 }
 
 }

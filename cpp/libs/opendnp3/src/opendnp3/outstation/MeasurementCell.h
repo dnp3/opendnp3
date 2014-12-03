@@ -36,6 +36,9 @@ struct MeasurementCell
 template <class ValueType>
 struct BufferedCell
 {	
+	BufferedCell() : selected(false)
+	{}
+
 	bool selected;
 	ValueType value;	
 	typename ValueType::StaticVariation variation;

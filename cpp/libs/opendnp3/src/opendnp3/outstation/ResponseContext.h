@@ -43,17 +43,20 @@ class ResponseContext : private openpal::Uncopyable
 
 public:
 
-	ResponseContext();	
+	ResponseContext(IStaticLoader& staticLoader);
 
-	void Reset();
+	bool HasSelection() const;
 
-	AppControlField LoadResponse(HeaderWriter& writer, IStaticLoader& staticLoader);
+	void Reset();	
+
+	AppControlField LoadResponse(HeaderWriter& writer);
 
 private:
 
 	static AppControlField GetControl(bool fir, bool fin, bool hasEvents);
 
 	uint16_t fragmentCount;	
+	IStaticLoader* pStaticLoader;
 };
 
 }

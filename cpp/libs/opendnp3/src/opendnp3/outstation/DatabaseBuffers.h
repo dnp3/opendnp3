@@ -137,7 +137,7 @@ IINField DatabaseBuffers::GenericSelect(
 			// return code depends on if the range was truncated to match the database
 			IINField ret = allowed.Equals(range) ? IINField() : IINBit::PARAM_ERROR;
 
-			for (uint16_t i = allowed.start; i < allowed.stop; ++i)
+			for (uint16_t i = allowed.start; i <= allowed.stop; ++i)
 			{
 				if (selected[i].selected)
 				{

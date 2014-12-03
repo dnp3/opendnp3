@@ -78,6 +78,7 @@ OutstationContext::OutstationContext(
 	expectedSolConfirmSeq(0),
 	expectedUnsolConfirmSeq(0),
 	completedNullUnsol(false),	
+	rspContext(database.GetLoader()),
 	pLower(&lower),
 	rxBuffer(params.maxRxFragSize),
 	solTxBuffer(params.maxTxFragSize),
@@ -400,9 +401,8 @@ OutstationSolicitedStateBase* OutstationContext::ContinueMultiFragResponse(uint8
 {
 	auto response = this->StartNewSolicitedResponse();
 	auto writer = response.GetWriter();
-	response.SetFunction(FunctionCode::RESPONSE);	
-	Transaction tx(database);	
-	auto control = this->rspContext.LoadResponse(writer, database.GetLoader());
+	response.SetFunction(FunctionCode::RESPONSE);		
+	auto control = this->rspContext.LoadResponse(writer);
 	control.SEQ = seq;
 	expectedSolConfirmSeq = seq;
 	response.SetControl(control);
@@ -558,7 +558,7 @@ Pair<IINField, AppControlField> OutstationContext::HandleRead(const openpal::Rea
 	auto result = APDUParser::ParseTwoPass(objects, &handler, &logger, APDUParser::Context(false)); // don't expect range/count context on a READ
 	if (result == APDUParser::Result::OK)
 	{				
-		auto control = rspContext.LoadResponse(writer, database.GetLoader());
+		auto control = rspContext.LoadResponse(writer);
 		return Pair<IINField, AppControlField>(handler.Errors(), control);
 	}
 	else

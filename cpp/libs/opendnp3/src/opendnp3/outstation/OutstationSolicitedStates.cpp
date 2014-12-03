@@ -175,19 +175,19 @@ OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnConfirm(Out
 {	
 	if (header.control.SEQ == pContext->expectedSolConfirmSeq)
 	{
-		// clear the event buffer and cancel confirm timer
-		pContext->CancelConfirmTimer();			
+		pContext->CancelConfirmTimer();
+
+		// Lock the database for the remainder of this method as we will be manipulating the buffers
+		Transaction tx(pContext->database);				
 		pContext->eventBuffer.Clear();
 
-		if (true) //TODO
-		{
-			assert(false);
-			return &OutstationSolicitedStateIdle::Inst();			
+		if (pContext->rspContext.HasSelection())
+		{						
+			return pContext->ContinueMultiFragResponse(AppControlField::NextSeq(header.control.SEQ));			
 		}
 		else 
 		{
-			// Continue response - next state depends on if there are more confirms or not
-			return pContext->ContinueMultiFragResponse(AppControlField::NextSeq(header.control.SEQ));
+			return &OutstationSolicitedStateIdle::Inst();
 		}
 	}
 	else
