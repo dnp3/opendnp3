@@ -91,17 +91,18 @@ TEST_CASE(SUITE("RejectsAssignClassWithParamErrorIfRangeIsInvalid"))
 	t.application.supportsAssignClass = true;
 	t.LowerLayerUp();
 
-	// assign binaries 0 - 6 (invalid range) to class 2
+	// assign binaries 0 -> 5 (invalid range) to class 2
 	t.SendToOutstation("C0 16 3C 03 06 01 00 01 00 00 05 00");
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 04");
 
+	//despite the invalid range, the outstation should assign the values that it does have
 	auto view = t.outstation.GetStaticBufferView();
 	for (uint16_t i = 0; i < NUM_BINARY; ++i)
 	{
-		REQUIRE(view.binaries[0].metadata.clazz == PointClass::Class1);
+		REQUIRE(view.binaries[0].metadata.clazz == PointClass::Class2);
 	}
 
-	REQUIRE(t.application.classAssignments.empty());	
+	REQUIRE(t.application.classAssignments.size() == 1);	
 }
 
 TEST_CASE(SUITE("AcceptsAssignClassViaStartStop"))

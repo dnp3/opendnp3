@@ -282,17 +282,17 @@ Range DatabaseBuffers::AssignClassToRange(AssignClassType type, PointClass clazz
 		case(AssignClassType::BinaryInput) :
 			return AssignClassTo<Binary>(clazz, range);
 		case(AssignClassType::DoubleBinaryInput) :
-			return AssignClassTo<Binary>(clazz, range);
+			return AssignClassTo<DoubleBitBinary>(clazz, range);
 		case(AssignClassType::Counter) :
-			return AssignClassTo<Binary>(clazz, range);
+			return AssignClassTo<Counter>(clazz, range);
 		case(AssignClassType::FrozenCounter) :
-			return AssignClassTo<Binary>(clazz, range);
+			return AssignClassTo<FrozenCounter>(clazz, range);
 		case(AssignClassType::AnalogInput) :
-			return AssignClassTo<Binary>(clazz, range);
+			return AssignClassTo<Analog>(clazz, range);
 		case(AssignClassType::BinaryOutputStatus) :
-			return AssignClassTo<Binary>(clazz, range);
+			return AssignClassTo<BinaryOutputStatus>(clazz, range);
 		case(AssignClassType::AnalogOutputStatus) :
-			return AssignClassTo<Binary>(clazz, range);
+			return AssignClassTo<AnalogOutputStatus>(clazz, range);
 		default:
 			return Range::Invalid();
 	}
