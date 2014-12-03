@@ -262,6 +262,25 @@ TEST_CASE(SUITE("BlankIntegrityPoll"))
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00");
 }
 
+TEST_CASE(SUITE("MixedVariationAssignments"))
+{
+	OutstationConfig config;
+	OutstationTestObject t(config, DatabaseTemplate::AnalogOnly(2));
+
+	{	// configure two different default variations
+		auto view = t.outstation.GetStaticBufferView();
+		view.analogs[0].variation = StaticAnalogResponse::Group30Var1;
+		view.analogs[1].variation = StaticAnalogResponse::Group30Var2;
+	}
+
+	t.LowerLayerUp();
+
+	t.SendToOutstation("C0 01 3C 01 06"); // Read class 0
+
+	// check that the response uses both g30v1 & g30v2
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00 1E 01 00 00 00 02 00 00 00 00 1E 02 00 01 01 02 00 00");
+}
+
 TEST_CASE(SUITE("ReadClass0MultiFragAnalog"))
 {
 	OutstationConfig config;

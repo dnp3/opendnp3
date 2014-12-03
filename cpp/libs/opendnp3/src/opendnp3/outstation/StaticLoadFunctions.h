@@ -73,8 +73,11 @@ bool WriteWithSerializer(openpal::ArrayView<BufferedCell<typename Serializer::Ta
 template <class Target, class IndexType>
 bool LoadWithRangeIterator(openpal::ArrayView<BufferedCell<Target>, uint16_t>& view, RangeWriteIterator<IndexType, Target>& iterator, Range& range)
 {		
+	// record the initial variation for the header, if it changes we can abort this header
+	auto variation = view[range.start].variation;
+
 	// TODO validate that the variation matches what's required
-	while (range.IsValid() && view[range.start].selected)
+	while (range.IsValid() && view[range.start].selected && view[range.start].variation == variation)
 	{			
 		if (iterator.Write(view[range.start].value))
 		{
