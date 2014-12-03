@@ -29,56 +29,78 @@
 namespace opendnp3
 {
 
-AssignClassHandler::AssignClassHandler(openpal::Logger& logger, openpal::IExecutor& executor, IOutstationApplication& application, Database& database) :
+AssignClassHandler::AssignClassHandler(openpal::Logger& logger, openpal::IExecutor& executor, IOutstationApplication& application, IClassAssigner& assigner) :
 	APDUHandlerBase(logger),
 	classHeader(-1),
 	clazz(PointClass::Class0),
 	pExecutor(&executor),
 	pApplication(&application),
-	pDatabase(&database)
+	pAssigner(&assigner)
 {
 
 }
 
 IINField AssignClassHandler::ProcessAllObjects(const HeaderRecord& record)
-{
-	return IINBit::FUNC_NOT_SUPPORTED;
-	/*
+{		
 	if (IsExpectingAssignment())
 	{		
 		switch (record.enumeration)
 		{
 			case(GroupVariation::Group1Var0) :
-				this->ProcessAssignment(AssignClassType::BinaryInput, clazz, pDatabase->FullRange<Binary>());
-				break;
+				return this->ProcessAssignAll(AssignClassType::BinaryInput, clazz);
 			case(GroupVariation::Group3Var0) :
-				this->ProcessAssignment(AssignClassType::DoubleBinaryInput, clazz, pDatabase->FullRange<DoubleBitBinary>());
-				break;
+				return this->ProcessAssignAll(AssignClassType::DoubleBinaryInput, clazz);
 			case(GroupVariation::Group10Var0) :
-				this->ProcessAssignment(AssignClassType::BinaryOutputStatus, clazz, pDatabase->FullRange<BinaryOutputStatus>());
-				break;
+				return this->ProcessAssignAll(AssignClassType::BinaryOutputStatus, clazz);
 			case(GroupVariation::Group20Var0) :
-				this->ProcessAssignment(AssignClassType::Counter, clazz, pDatabase->FullRange<Counter>());
-				break;
+				return this->ProcessAssignAll(AssignClassType::Counter, clazz);
 			case(GroupVariation::Group21Var0) :
-				this->ProcessAssignment(AssignClassType::FrozenCounter, clazz, pDatabase->FullRange<FrozenCounter>());
-				break;
+				return this->ProcessAssignAll(AssignClassType::FrozenCounter, clazz);
 			case(GroupVariation::Group30Var0) :
-				this->ProcessAssignment(AssignClassType::AnalogInput, clazz, pDatabase->FullRange<Analog>());
-				break;
+				return this->ProcessAssignAll(AssignClassType::AnalogInput, clazz);
 			case(GroupVariation::Group40Var0) :
-				this->ProcessAssignment(AssignClassType::AnalogOutputStatus, clazz, pDatabase->FullRange<AnalogOutputStatus>());
-				break;
+				return this->ProcessAssignAll(AssignClassType::AnalogOutputStatus, clazz);
 			default:	
-				errors.SetBit(IINBit::FUNC_NOT_SUPPORTED);
-				break;
+				return IINBit::FUNC_NOT_SUPPORTED;				
 		}		
 	}
 	else
 	{	
-		this->RecordClass(record.enumeration);
-	}
-	*/
+		return this->RecordClass(record.enumeration);
+	}	
+}
+
+
+
+IINField AssignClassHandler::ProcessRangeRequest(const HeaderRecord& record, const Range& range)
+{	
+	if (IsExpectingAssignment())
+	{
+		switch (record.enumeration)
+		{
+			
+		case(GroupVariation::Group1Var0) :			
+			return ProcessAssignRange(AssignClassType::BinaryInput, clazz, range);
+		case(GroupVariation::Group3Var0) :
+			return ProcessAssignRange(AssignClassType::DoubleBinaryInput, clazz, range);
+		case(GroupVariation::Group10Var0) :
+			return ProcessAssignRange(AssignClassType::BinaryOutputStatus, clazz, range);            
+		case(GroupVariation::Group20Var0) :
+			return ProcessAssignRange(AssignClassType::Counter, clazz, range);            
+		case(GroupVariation::Group21Var0) :
+			return ProcessAssignRange(AssignClassType::FrozenCounter, clazz, range);            
+		case(GroupVariation::Group30Var0) :
+			return ProcessAssignRange(AssignClassType::AnalogInput, clazz, range);
+		case(GroupVariation::Group40Var0) :
+			return ProcessAssignRange(AssignClassType::AnalogOutputStatus, clazz, range);
+		default:
+			return IINBit::FUNC_NOT_SUPPORTED;
+		}
+	}	
+	else
+	{
+		return IINBit::PARAM_ERROR;
+	}	
 }
 
 bool AssignClassHandler::IsExpectingAssignment()
@@ -86,7 +108,7 @@ bool AssignClassHandler::IsExpectingAssignment()
 	int32_t current = static_cast<int32_t>(this->GetCurrentHeader());
 
 	if (current > 0 && ((current - 1) == this->classHeader))
-	{ 
+	{
 		this->classHeader = -1;
 		return true;
 	}
@@ -96,102 +118,40 @@ bool AssignClassHandler::IsExpectingAssignment()
 	}
 }
 
-IINField AssignClassHandler::ProcessRangeRequest(const HeaderRecord& record, const Range& range)
+IINField AssignClassHandler::ProcessAssignRange(AssignClassType type, PointClass clazz, const Range& range)
 {
-	return IINBit::FUNC_NOT_SUPPORTED;
-	/* TODO
-	if (IsExpectingAssignment())
-	{
-		switch (record.enumeration)
-		{
-			
-		case(GroupVariation::Group1Var0) :
-            {
-            Range range(pDatabase->FullRange<Binary>());
-            range.ClipTo(range);
-			this->ProcessAssignment(AssignClassType::BinaryInput, clazz, range);
-            }
-			break;
-		case(GroupVariation::Group3Var0) :
-            {
-            StaticRange staticrange(pDatabase->FullRange<DoubleBitBinary>());
-            staticrange.ClipTo(range);
-			this->ProcessAssignment(AssignClassType::DoubleBinaryInput, clazz, staticrange);
-            }
-			break;
-		case(GroupVariation::Group10Var0) :
-            {
-            StaticRange staticrange(pDatabase->FullRange<BinaryOutputStatus>());
-            staticrange.ClipTo(range);
-			this->ProcessAssignment(AssignClassType::BinaryOutputStatus, clazz, staticrange);
-            }
-			break;
-		case(GroupVariation::Group20Var0) :
-            {
-            StaticRange staticrange(pDatabase->FullRange<Counter>());
-            staticrange.ClipTo(range);
-			this->ProcessAssignment(AssignClassType::Counter, clazz, staticrange);
-            }
-			break;
-		case(GroupVariation::Group21Var0) :
-            {
-            StaticRange staticrange(pDatabase->FullRange<FrozenCounter>());
-            staticrange.ClipTo(range);
-			this->ProcessAssignment(AssignClassType::FrozenCounter, clazz, staticrange);
-            }
-			break;
-		case(GroupVariation::Group30Var0) :
-            {
-            StaticRange staticrange(pDatabase->FullRange<Analog>());
-            staticrange.ClipTo(range);
-			this->ProcessAssignment(AssignClassType::AnalogInput, clazz, staticrange);
-            }
-			break;
-		case(GroupVariation::Group40Var0) :
-            {
-            StaticRange staticrange(pDatabase->FullRange<AnalogOutputStatus>());
-            staticrange.ClipTo(range);
-			this->ProcessAssignment(AssignClassType::AnalogOutputStatus, clazz, staticrange);
-            }
-			break;			
-		default:
-			errors.SetBit(IINBit::FUNC_NOT_SUPPORTED);
-			break;
-		}
-	}	
-	else
-	{
-		errors.SetBit(IINBit::FUNC_NOT_SUPPORTED);
-	}
-	*/
+	auto actual  = pAssigner->AssignClassToRange(type, clazz, range);
+
+	this->NotifyApplicationOfAssignment(type, clazz, actual);	
+
+	// if the range was clipped or invalid return parameter error
+	return actual.Equals(range) ? IINField() : IINBit::PARAM_ERROR;	
 }
 
-IINField AssignClassHandler::ProcessAssignment(AssignClassType type, PointClass clazz, const Range& range)
+IINField AssignClassHandler::ProcessAssignAll(AssignClassType type, PointClass clazz)
 {
-	return IINBit::PARAM_ERROR;
-	/* TODO
-	if (!range.IsClipped() && pDatabase->AssignClass(type, clazz, range))
-	{
-		auto start = range.start;
-		auto stop = range.stop;
+	auto full = pAssigner->AssignClassToAll(type, clazz);
+
+	this->NotifyApplicationOfAssignment(type, clazz, full);
+
+	return full.IsValid() ? IINField() : IINBit::PARAM_ERROR;
+}
+
+void AssignClassHandler::NotifyApplicationOfAssignment(AssignClassType type, PointClass clazz, const Range& range)
+{
+	if (range.IsValid() && pApplication)
+	{		
 		auto pApplication = this->pApplication;
-		auto callback = [pApplication, start, stop, clazz, type]()
+		auto callback = [pApplication, range, clazz, type]()
 		{
-			pApplication->RecordClassAssignment(type, clazz, start, stop);
+			pApplication->RecordClassAssignment(type, clazz, range.start, range.stop);
 		};
 
 		pExecutor->PostLambda(callback);
 	}
-	else
-	{
-	
-		errors.SetBit(IINBit::PARAM_ERROR);
-	//}
-	*/
-	
 }
 
-void AssignClassHandler::RecordClass(GroupVariation gv)
+IINField AssignClassHandler::RecordClass(GroupVariation gv)
 {
 	classHeader = this->GetCurrentHeader();
 
@@ -199,19 +159,19 @@ void AssignClassHandler::RecordClass(GroupVariation gv)
 	{
 		case(GroupVariation::Group60Var1) :
 			clazz = PointClass::Class0;				
-			break;
+			return IINField();
 		case(GroupVariation::Group60Var2) :
 			clazz = PointClass::Class1;		
-			break;
+			return IINField();
 		case(GroupVariation::Group60Var3) :
 			clazz = PointClass::Class2;		
-			break;
+			return IINField();
 		case(GroupVariation::Group60Var4) :
 			clazz = PointClass::Class3;		
-			break;
+			return IINField();
 		default:		
 			classHeader = -1;
-			break;
+			return IINBit::PARAM_ERROR;
 	}
 }
 

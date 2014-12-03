@@ -30,6 +30,7 @@
 
 #include "opendnp3/outstation/IStaticLoader.h"
 #include "opendnp3/outstation/IStaticSelector.h"
+#include "opendnp3/outstation/IClassAssigner.h"
 #include "opendnp3/outstation/StaticLoadFunctions.h"
 
 namespace opendnp3
@@ -38,7 +39,7 @@ namespace opendnp3
 /**
 The database coordinates all updates of measurement data
 */
-class DatabaseBuffers : public IStaticSelector, public IStaticLoader, private openpal::Uncopyable
+class DatabaseBuffers : public IStaticSelector, public IStaticLoader, public IClassAssigner, private openpal::Uncopyable
 {
 public:
 
@@ -54,6 +55,11 @@ public:
 	
 	virtual bool Load(HeaderWriter& writer) override final;
 	virtual bool HasAnySelection() const override final { return ranges.HasAnySelection(); }
+
+	// ------- IClassAssigner -------------
+
+	virtual Range AssignClassToAll(AssignClassType type, PointClass clazz) override final;
+	virtual Range AssignClassToRange(AssignClassType type, PointClass clazz, const Range& range) override final;
 	
 	// stores the most revent values and event information	
 	StaticBuffers current;	
@@ -82,7 +88,7 @@ private:
 	}
 
 
-	static Range RangeOf(const openpal::HasSize<uint16_t>& sized);
+	static Range RangeOf(uint16_t size);
 
 	template <class T>
 	IINField GenericSelect(
@@ -94,17 +100,20 @@ private:
 	);
 
 	template <class T>
+	Range AssignClassTo(PointClass clazz, const Range& range);
+
+	template <class T>
 	IINField SelectAll()
 	{
 		auto view = current.GetArrayView<T>();		
-		return GenericSelect(RangeOf(view), view, selected.GetArrayView<T>(), true, typename T::StaticVariation());
+		return GenericSelect(RangeOf(view.Size()), view, selected.GetArrayView<T>(), true, typename T::StaticVariation());
 	}
 
 	template <class T>
 	IINField SelectAllUsing(typename T::StaticVariation variation)
 	{
 		auto view = current.GetArrayView<T>();
-		return GenericSelect(RangeOf(view), view, selected.GetArrayView<T>(), false, variation);
+		return GenericSelect(RangeOf(view.Size()), view, selected.GetArrayView<T>(), false, variation);
 	}
 
 	template <class T>
@@ -130,7 +139,7 @@ IINField DatabaseBuffers::GenericSelect(
 {
 	if (range.IsValid())
 	{		
-		auto allowed = range.Intersection(RangeOf(current));
+		auto allowed = range.Intersection(RangeOf(current.Size()));
 
 		if (allowed.IsValid())
 		{
@@ -203,6 +212,18 @@ bool DatabaseBuffers::LoadType(HeaderWriter& writer)
 		// no data to load
 		return true;
 	}	
+}
+
+template <class T>
+Range DatabaseBuffers::AssignClassTo(PointClass clazz, const Range& range)
+{
+	auto view = current.GetArrayView<T>();	
+	auto clipped = range.Intersection(RangeOf(view.Size()));
+	for (auto i = clipped.start; i <= clipped.stop; ++i)
+	{
+		view[i].metadata.clazz = clazz;
+	}
+	return clipped;
 }
 
 }

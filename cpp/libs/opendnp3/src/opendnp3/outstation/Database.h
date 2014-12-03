@@ -77,6 +77,11 @@ public:
 	*/
 	IStaticLoader& GetLoader() { return buffers; }
 
+	/**
+	* @returns Interface used to process class assignments
+	*/
+	IClassAssigner& GetClassAssigner() { return buffers;  }
+
 private:	
 
 	// stores the most recent values, selected values, and metadata

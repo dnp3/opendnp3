@@ -742,7 +742,7 @@ IINField OutstationContext::HandleAssignClass(const openpal::ReadOnlyBuffer& obj
 {
 	if (pApplication->SupportsAssignClass())
 	{
-		AssignClassHandler handler(logger, *pExecutor, *pApplication, database);
+		AssignClassHandler handler(logger, *pExecutor, *pApplication, database.GetClassAssigner());
 		auto result = APDUParser::ParseTwoPass(objects, &handler, &logger, APDUParser::Context(false));
 		if (result == APDUParser::Result::OK)
 		{

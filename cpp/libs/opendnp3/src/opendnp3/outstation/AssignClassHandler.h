@@ -25,7 +25,7 @@
 
 #include "opendnp3/gen/AssignClassType.h"
 
-#include "opendnp3/outstation/Database.h"
+#include "opendnp3/outstation/IClassAssigner.h"
 #include "opendnp3/outstation/IOutstationApplication.h"
 
 #include <openpal/logging/Logger.h>
@@ -38,7 +38,7 @@ class AssignClassHandler : public APDUHandlerBase
 {
 public:
 
-	AssignClassHandler(openpal::Logger& logger, openpal::IExecutor& executor, IOutstationApplication& application, Database& db);	
+	AssignClassHandler(openpal::Logger& logger, openpal::IExecutor& executor, IOutstationApplication& application, IClassAssigner& assigner);
 
 private:
 
@@ -46,18 +46,22 @@ private:
 
 	virtual IINField ProcessRangeRequest(const HeaderRecord& record, const Range& range) override final;
 
-	void RecordClass(GroupVariation gv);	
+	IINField RecordClass(GroupVariation gv);	
 
 	bool IsExpectingAssignment();
 
-	IINField ProcessAssignment(AssignClassType type, PointClass clazz, const Range& range);
+	IINField ProcessAssignAll(AssignClassType type, PointClass clazz);
+
+	IINField ProcessAssignRange(AssignClassType type, PointClass clazz, const Range& range);
+
+	void NotifyApplicationOfAssignment(AssignClassType type, PointClass clazz, const Range& range);	
 	
 	int32_t classHeader;
 	PointClass clazz;
 
 	openpal::IExecutor* pExecutor;
 	IOutstationApplication* pApplication;
-	Database* pDatabase;
+	IClassAssigner* pAssigner;
 };
 
 }

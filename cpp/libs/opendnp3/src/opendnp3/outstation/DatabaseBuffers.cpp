@@ -252,9 +252,55 @@ bool DatabaseBuffers::Load(HeaderWriter& writer)
 	return true;
 }
 
-Range DatabaseBuffers::RangeOf(const HasSize<uint16_t>& sized)
+Range DatabaseBuffers::AssignClassToAll(AssignClassType type, PointClass clazz)
 {
-	return sized.IsEmpty() ? Range::Invalid() : Range::From(0, sized.Size() - 1);
+	switch (type)
+	{
+		case(AssignClassType::BinaryInput) :
+			return AssignClassToRange(type, clazz, RangeOf(current.GetArrayView<Binary>().Size()));
+		case(AssignClassType::DoubleBinaryInput) :
+			return AssignClassToRange(type, clazz, RangeOf(current.GetArrayView<DoubleBitBinary>().Size()));
+		case(AssignClassType::Counter) :
+			return AssignClassToRange(type, clazz, RangeOf(current.GetArrayView<Counter>().Size()));
+		case(AssignClassType::FrozenCounter) :
+			return AssignClassToRange(type, clazz, RangeOf(current.GetArrayView<FrozenCounter>().Size()));
+		case(AssignClassType::AnalogInput) :
+			return AssignClassToRange(type, clazz, RangeOf(current.GetArrayView<Analog>().Size()));
+		case(AssignClassType::BinaryOutputStatus) :
+			return AssignClassToRange(type, clazz, RangeOf(current.GetArrayView<BinaryOutputStatus>().Size()));
+		case(AssignClassType::AnalogOutputStatus) :
+			return AssignClassToRange(type, clazz, RangeOf(current.GetArrayView<AnalogOutputStatus>().Size()));
+		default:
+			return Range::Invalid();
+	}
+}
+
+Range DatabaseBuffers::AssignClassToRange(AssignClassType type, PointClass clazz, const Range& range)
+{
+	switch (type)
+	{
+		case(AssignClassType::BinaryInput) :
+			return AssignClassTo<Binary>(clazz, range);
+		case(AssignClassType::DoubleBinaryInput) :
+			return AssignClassTo<Binary>(clazz, range);
+		case(AssignClassType::Counter) :
+			return AssignClassTo<Binary>(clazz, range);
+		case(AssignClassType::FrozenCounter) :
+			return AssignClassTo<Binary>(clazz, range);
+		case(AssignClassType::AnalogInput) :
+			return AssignClassTo<Binary>(clazz, range);
+		case(AssignClassType::BinaryOutputStatus) :
+			return AssignClassTo<Binary>(clazz, range);
+		case(AssignClassType::AnalogOutputStatus) :
+			return AssignClassTo<Binary>(clazz, range);
+		default:
+			return Range::Invalid();
+	}
+}
+
+Range DatabaseBuffers::RangeOf(uint16_t size)
+{
+	return size > 0 ? Range::From(0, size - 1) : Range::Invalid();
 }
 
 
