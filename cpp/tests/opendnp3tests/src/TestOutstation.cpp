@@ -480,9 +480,11 @@ TEST_CASE(SUITE("ReadDiscontiguousIndexes"))
 }
 
 template <class PointType>
-void TestStaticType(const OutstationConfig& config, const DatabaseTemplate& tmp, PointType value, const std::string& rsp)
+void TestStaticType(const OutstationConfig& config, const DatabaseTemplate& tmp, PointType value, const std::string& rsp, const std::function<void (StaticBufferView&)>& configure)
 {
-	OutstationTestObject t(config, tmp);
+	OutstationTestObject t(config, tmp);	
+
+	configure(t.outstation.GetStaticBufferView());
 
 	t.LowerLayerUp();
 
@@ -497,10 +499,11 @@ void TestStaticType(const OutstationConfig& config, const DatabaseTemplate& tmp,
 }
 
 template <class T>
-void TestStaticCounter(StaticCounterResponse rspType, T aValue, const std::string& response)
+void TestStaticCounter(StaticCounterResponse variation, T value, const std::string& response)
 {
-	OutstationConfig cfg; cfg.defaultStaticResponses.counter = rspType;
-	TestStaticType<Counter>(cfg, DatabaseTemplate::CounterOnly(1), aValue, response);
+	OutstationConfig cfg;
+	auto configure = [variation](StaticBufferView& view) { view.counters[0].variation = variation; };
+	TestStaticType<Counter>(cfg, DatabaseTemplate::CounterOnly(1), value, response, configure);
 }
 
 TEST_CASE(SUITE("ReadGrp20Var1"))
@@ -524,10 +527,11 @@ TEST_CASE(SUITE("ReadGrp20Var6"))
 }
 
 template <class T>
-void TestStaticAnalog(StaticAnalogResponse rspType, T aVal, const std::string& response)
+void TestStaticAnalog(StaticAnalogResponse variation, T value, const std::string& response)
 {
-	OutstationConfig cfg; cfg.defaultStaticResponses.analog = rspType;
-	TestStaticType<Analog>(cfg, DatabaseTemplate::AnalogOnly(1), aVal, response);
+	OutstationConfig cfg;
+	auto configure = [variation](StaticBufferView& view) { view.analogs[0].variation = variation; };
+	TestStaticType<Analog>(cfg, DatabaseTemplate::AnalogOnly(1), value, response, configure);
 }
 
 TEST_CASE(SUITE("ReadGrp30Var2"))
@@ -574,10 +578,11 @@ TEST_CASE(SUITE("ReadGrp10Var2"))
 }
 
 template <class T>
-void TestStaticAnalogOutputStatus(StaticAnalogOutputStatusResponse aRsp, T aVal, const string& response)
+void TestStaticAnalogOutputStatus(StaticAnalogOutputStatusResponse variation, T value, const string& response)
 {
-	OutstationConfig cfg; cfg.defaultStaticResponses.analogOutputStatus = aRsp;
-	TestStaticType<AnalogOutputStatus>(cfg, DatabaseTemplate::AnalogOutputStatusOnly(1), aVal, response);
+	OutstationConfig cfg;
+	auto configure = [variation](StaticBufferView& view) { view.analogOutputStatii[0].variation = variation; };
+	TestStaticType<AnalogOutputStatus>(cfg, DatabaseTemplate::AnalogOutputStatusOnly(1), value, response, configure);
 }
 
 TEST_CASE(SUITE("ReadGrp40Var1"))

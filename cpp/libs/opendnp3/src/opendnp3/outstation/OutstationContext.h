@@ -65,8 +65,7 @@ class OutstationContext : private INewEventDataHandler
 
 	// ------ Unchanging variables and self managing variables -------
 
-	OutstationParams params;
-	EventResponseConfig eventConfig;
+	OutstationParams params;	
 	openpal::Logger logger;
 	openpal::IExecutor* pExecutor;	
 	ICommandHandler* pCommandHandler;

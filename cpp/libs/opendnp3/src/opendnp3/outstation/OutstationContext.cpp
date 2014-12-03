@@ -56,8 +56,7 @@ OutstationContext::OutstationContext(
 		IOutstationApplication& application
 		) :
 	
-	params(config.params),
-	eventConfig(config.defaultEventResponses),
+	params(config.params),	
 	logger(root.GetLogger()),	
 	pExecutor(&executor),	
 	pCommandHandler(&commandHandler),
@@ -478,7 +477,8 @@ void OutstationContext::CheckForUnsolicited()
 			// are there events to be reported?
 			if (eventBuffer.TotalEventMask().Intersects(params.unsolClassMask))
 			{
-				SelectionCriteria criteria(eventConfig);
+				EventResponseConfig cfg; // TODO
+				SelectionCriteria criteria(cfg);
 				criteria.RecordViaClassField(params.unsolClassMask);
 				auto unsolResponse = this->StartNewUnsolicitedResponse();
 				auto objectWriter = unsolResponse.GetWriter();				

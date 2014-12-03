@@ -46,13 +46,7 @@ struct OutstationConfig
 	OutstationParams params;
 
 	/// Describes the sizes in the event buffer
-	EventBufferConfig eventBufferConfig;
-
-	/// Default static response types
-	StaticResponseConfig defaultStaticResponses;
-	
-	/// Default event response types
-	EventResponseConfig defaultEventResponses;
+	EventBufferConfig eventBufferConfig;	
 };
 
 }
