@@ -26,7 +26,7 @@
 #include "opendnp3/app/HeaderWriter.h"
 #include "opendnp3/app/TimeAndInterval.h"
 #include "opendnp3/app/MeasurementTypes.h"
-#include "opendnp3/outstation/MeasurementCell.h"
+#include "opendnp3/outstation/Cell.h"
 
 #include <openpal/container/ArrayView.h>
 
@@ -36,7 +36,7 @@ namespace opendnp3
 template <class T>
 struct StaticWriter
 {
-	typedef bool (*Function)(openpal::ArrayView<BufferedCell<T>, uint16_t>& view, HeaderWriter& writer, Range& range);
+	typedef bool (*Function)(openpal::ArrayView<Cell<T>, uint16_t>& view, HeaderWriter& writer, Range& range);
 };
 
 StaticWriter<Binary>::Function GetStaticWriter(StaticBinaryResponse variation);
@@ -56,7 +56,7 @@ StaticWriter<BinaryOutputStatus>::Function GetStaticWriter(StaticBinaryOutputSta
 StaticWriter<TimeAndInterval>::Function GetStaticWriter(StaticTimeAndIntervalResponse variation);
 
 template <class Serializer>
-bool WriteWithSerializer(openpal::ArrayView<BufferedCell<typename Serializer::Target>, uint16_t>& view, HeaderWriter& writer, Range& range)
+bool WriteWithSerializer(openpal::ArrayView<Cell<typename Serializer::Target>, uint16_t>& view, HeaderWriter& writer, Range& range)
 {
 	if (range.IsOneByte())
 	{
@@ -71,18 +71,18 @@ bool WriteWithSerializer(openpal::ArrayView<BufferedCell<typename Serializer::Ta
 }
 
 template <class Target, class IndexType>
-bool LoadWithRangeIterator(openpal::ArrayView<BufferedCell<Target>, uint16_t>& view, RangeWriteIterator<IndexType, Target>& iterator, Range& range)
+bool LoadWithRangeIterator(openpal::ArrayView<Cell<Target>, uint16_t>& view, RangeWriteIterator<IndexType, Target>& iterator, Range& range)
 {		
 	// record the initial variation for the header, if it changes we can abort this header
-	auto variation = view[range.start].variation;
+	auto variation = view[range.start].selection.variation;
 
 	// TODO validate that the variation matches what's required
-	while (range.IsValid() && view[range.start].selected && view[range.start].variation == variation)
+	while (range.IsValid() && view[range.start].selection.selected && view[range.start].selection.variation == variation)
 	{			
-		if (iterator.Write(view[range.start].value))
+		if (iterator.Write(view[range.start].selection.value))
 		{
 			// deselect the value and advance the range
-			view[range.start].selected = false;
+			view[range.start].selection.selected = false;
 			range.Advance();
 		}
 		else

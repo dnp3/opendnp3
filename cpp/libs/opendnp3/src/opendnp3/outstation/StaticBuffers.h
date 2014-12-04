@@ -23,6 +23,7 @@
 
 #include "StaticBufferView.h"
 
+#include "opendnp3/outstation/Cell.h"
 #include "opendnp3/outstation/DatabaseTemplate.h"
 
 #include <openpal/executor/IMutex.h>
@@ -65,43 +66,43 @@ public:
 	}	
 
 	template <class T>
-	openpal::ArrayView<MeasurementCell<T>, uint16_t> GetArrayView();
+	openpal::ArrayView<Cell<T>, uint16_t> GetArrayView();
 
 	template <>
-	openpal::ArrayView<MeasurementCell<Binary>, uint16_t> GetArrayView() { return binaries.ToView(); }
+	openpal::ArrayView<Cell<Binary>, uint16_t> GetArrayView() { return binaries.ToView(); }
 
 	template <>
-	openpal::ArrayView<MeasurementCell<DoubleBitBinary>, uint16_t> GetArrayView() { return doubleBinaries.ToView(); }
+	openpal::ArrayView<Cell<DoubleBitBinary>, uint16_t> GetArrayView() { return doubleBinaries.ToView(); }
 
 	template <>
-	openpal::ArrayView<MeasurementCell<Counter>, uint16_t> GetArrayView() { return counters.ToView(); }
+	openpal::ArrayView<Cell<Counter>, uint16_t> GetArrayView() { return counters.ToView(); }
 
 	template <>
-	openpal::ArrayView<MeasurementCell<FrozenCounter>, uint16_t> GetArrayView() { return frozenCounters.ToView(); }
+	openpal::ArrayView<Cell<FrozenCounter>, uint16_t> GetArrayView() { return frozenCounters.ToView(); }
 
 	template <>
-	openpal::ArrayView<MeasurementCell<Analog>, uint16_t> GetArrayView() { return analogs.ToView(); }
+	openpal::ArrayView<Cell<Analog>, uint16_t> GetArrayView() { return analogs.ToView(); }
 
 	template <>
-	openpal::ArrayView<MeasurementCell<BinaryOutputStatus>, uint16_t> GetArrayView() { return binaryOutputStatii.ToView(); }
+	openpal::ArrayView<Cell<BinaryOutputStatus>, uint16_t> GetArrayView() { return binaryOutputStatii.ToView(); }
 
 	template <>
-	openpal::ArrayView<MeasurementCell<AnalogOutputStatus>, uint16_t> GetArrayView() { return analogOutputStatii.ToView(); }
+	openpal::ArrayView<Cell<AnalogOutputStatus>, uint16_t> GetArrayView() { return analogOutputStatii.ToView(); }
 
 	template <>
-	openpal::ArrayView<MeasurementCell<TimeAndInterval>, uint16_t> GetArrayView() { return timeAndIntervals.ToView(); }
+	openpal::ArrayView<Cell<TimeAndInterval>, uint16_t> GetArrayView() { return timeAndIntervals.ToView(); }
 
 
 private:
 		
-	openpal::DynamicArray<MeasurementCell<Binary>, uint16_t> binaries;
-	openpal::DynamicArray<MeasurementCell<DoubleBitBinary>, uint16_t> doubleBinaries;
-	openpal::DynamicArray<MeasurementCell<Analog>, uint16_t> analogs;
-	openpal::DynamicArray<MeasurementCell<Counter>, uint16_t> counters;
-	openpal::DynamicArray<MeasurementCell<FrozenCounter>, uint16_t> frozenCounters;
-	openpal::DynamicArray<MeasurementCell<BinaryOutputStatus>, uint16_t> binaryOutputStatii;
-	openpal::DynamicArray<MeasurementCell<AnalogOutputStatus>, uint16_t> analogOutputStatii;
-	openpal::DynamicArray<MeasurementCell<TimeAndInterval>, uint16_t> timeAndIntervals;
+	openpal::DynamicArray<Cell<Binary>, uint16_t> binaries;
+	openpal::DynamicArray<Cell<DoubleBitBinary>, uint16_t> doubleBinaries;
+	openpal::DynamicArray<Cell<Analog>, uint16_t> analogs;
+	openpal::DynamicArray<Cell<Counter>, uint16_t> counters;
+	openpal::DynamicArray<Cell<FrozenCounter>, uint16_t> frozenCounters;
+	openpal::DynamicArray<Cell<BinaryOutputStatus>, uint16_t> binaryOutputStatii;
+	openpal::DynamicArray<Cell<AnalogOutputStatus>, uint16_t> analogOutputStatii;
+	openpal::DynamicArray<Cell<TimeAndInterval>, uint16_t> timeAndIntervals;
 };
 
 }

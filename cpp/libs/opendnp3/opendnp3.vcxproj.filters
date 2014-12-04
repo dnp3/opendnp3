@@ -693,9 +693,6 @@
     <ClInclude Include="src\opendnp3\app\EventMetadata.h">
       <Filter>Header\app</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\MeasurementCell.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\IEventReceiver.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
@@ -709,9 +706,6 @@
       <Filter>Header\outstation</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\StaticBufferView.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\StaticSelection.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\IStaticSelector.h">
@@ -730,6 +724,9 @@
       <Filter>Header\outstation</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\IClassAssigner.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\Cell.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
   </ItemGroup>

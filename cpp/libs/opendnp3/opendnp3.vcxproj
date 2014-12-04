@@ -216,7 +216,7 @@
     <ClInclude Include="src\opendnp3\outstation\IEventReceiver.h" />
     <ClInclude Include="src\opendnp3\outstation\IINHelpers.h" />
     <ClInclude Include="src\opendnp3\outstation\IOutstationApplication.h" />
-    <ClInclude Include="src\opendnp3\outstation\MeasurementCell.h" />
+    <ClInclude Include="src\opendnp3\outstation\Cell.h" />
     <ClInclude Include="src\opendnp3\outstation\Outstation.h" />
     <ClInclude Include="src\opendnp3\outstation\OutstationConfig.h" />
     <ClInclude Include="src\opendnp3\outstation\OutstationSolicitedStates.h" />
@@ -234,7 +234,6 @@
     <ClInclude Include="src\opendnp3\outstation\StaticResponseConfig.h" />
     <ClInclude Include="src\opendnp3\outstation\StaticResponseContext.h" />
     <ClInclude Include="src\opendnp3\outstation\StaticLoadFunctions.h" />
-    <ClInclude Include="src\opendnp3\outstation\StaticSelection.h" />
     <ClInclude Include="src\opendnp3\outstation\StaticTypeBitfield.h" />
     <ClInclude Include="src\opendnp3\outstation\TimeTransaction.h" />
     <ClInclude Include="src\opendnp3\outstation\ValueMetadataPair.h" />

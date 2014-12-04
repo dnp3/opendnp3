@@ -25,7 +25,6 @@
 
 #include "opendnp3/outstation/DatabaseTemplate.h"
 #include "opendnp3/outstation/StaticBuffers.h"
-#include "opendnp3/outstation/StaticSelection.h"
 #include "opendnp3/outstation/SelectedRanges.h"
 
 #include "opendnp3/outstation/IStaticLoader.h"
@@ -62,11 +61,10 @@ public:
 	virtual Range AssignClassToRange(AssignClassType type, PointClass clazz, const Range& range) override final;
 	
 	// stores the most revent values and event information	
-	StaticBuffers current;	
+	StaticBuffers buffers;	
 
 private:
-
-	StaticSelection selected;
+	
 	SelectedRanges ranges;	
 
 	template <class T>
@@ -78,10 +76,10 @@ private:
 		auto range = ranges.Get<T>();
 		if (range.IsValid())
 		{
-			auto view = selected.GetArrayView<T>();
+			auto view = buffers.GetArrayView<T>();
 			for (uint16_t i = range.start; i <= range.stop; ++i)
 			{
-				view[i].selected = false;
+				view[i].selection.selected = false;
 			}
 			ranges.Clear<T>();
 		}		
@@ -93,8 +91,7 @@ private:
 	template <class T>
 	IINField GenericSelect(
 		Range range,
-		openpal::ArrayView<MeasurementCell<T>, uint16_t> current,
-		openpal::ArrayView<BufferedCell<T>, uint16_t> frozen,	
+		openpal::ArrayView<Cell<T>, uint16_t> view,		
 		bool useDefault,
 		typename T::StaticVariation variation
 	);
@@ -105,41 +102,40 @@ private:
 	template <class T>
 	IINField SelectAll()
 	{
-		auto view = current.GetArrayView<T>();		
-		return GenericSelect(RangeOf(view.Size()), view, selected.GetArrayView<T>(), true, typename T::StaticVariation());
+		auto view = buffers.GetArrayView<T>();		
+		return GenericSelect(RangeOf(view.Size()), view, true, typename T::StaticVariation());
 	}
 
 	template <class T>
 	IINField SelectAllUsing(typename T::StaticVariation variation)
 	{
-		auto view = current.GetArrayView<T>();
-		return GenericSelect(RangeOf(view.Size()), view, selected.GetArrayView<T>(), false, variation);
+		auto view = buffers.GetArrayView<T>();
+		return GenericSelect(RangeOf(view.Size()), view, false, variation);
 	}
 
 	template <class T>
 	IINField SelectRange(const Range& range)
 	{		
-		return GenericSelect(range, current.GetArrayView<T>(), selected.GetArrayView<T>(), true, typename T::StaticVariation());
+		return GenericSelect(range, buffers.GetArrayView<T>(), true, typename T::StaticVariation());
 	}
 
 	template <class T>
 	IINField SelectRangeUsing(const Range& range, typename T::StaticVariation variation)
 	{		
-		return GenericSelect(range, current.GetArrayView<T>(), selected.GetArrayView<T>(), false, variation);
+		return GenericSelect(range, buffers.GetArrayView<T>(), false, variation);
 	}		
 };
 
 template <class T>
 IINField DatabaseBuffers::GenericSelect(
 	Range range,
-	openpal::ArrayView<MeasurementCell<T>, uint16_t> current,
-	openpal::ArrayView<BufferedCell<T>, uint16_t> selected,
+	openpal::ArrayView<Cell<T>, uint16_t> view,	
 	bool useDefault,
 	typename T::StaticVariation variation)
 {
 	if (range.IsValid())
 	{		
-		auto allowed = range.Intersection(RangeOf(current.Size()));
+		auto allowed = range.Intersection(RangeOf(view.Size()));
 
 		if (allowed.IsValid())
 		{
@@ -148,15 +144,15 @@ IINField DatabaseBuffers::GenericSelect(
 
 			for (uint16_t i = allowed.start; i <= allowed.stop; ++i)
 			{
-				if (selected[i].selected)
+				if (view[i].selection.selected)
 				{
 					ret |= IINBit::PARAM_ERROR;
 				}
 				else
 				{
-					selected[i].selected = true;
-					selected[i].value = current[i].value;
-					selected[i].variation = useDefault ? current[i].variation : variation;
+					view[i].selection.selected = true;
+					view[i].selection.value = view[i].value;
+					view[i].selection.variation = useDefault ? view[i].variation : variation;
 				}				
 			}
 
@@ -181,17 +177,17 @@ bool DatabaseBuffers::LoadType(HeaderWriter& writer)
 	auto range = ranges.Get<T>();
 	if (range.IsValid())
 	{
-		auto view = selected.GetArrayView<T>();
+		auto view = buffers.GetArrayView<T>();
 
 		bool spaceRemaining = true;
 
 		// ... load values, manipulate the range
 		while (spaceRemaining && range.IsValid())
 		{
-			if (view[range.start].selected)
+			if (view[range.start].selection.selected)
 			{
 				/// lookup the specific write function based on the reporting variation
-				auto writeFun = GetStaticWriter(view[range.start].variation);
+				auto writeFun = GetStaticWriter(view[range.start].selection.variation);
 
 				// start writing a header, the invoked function will advance the range appropriately				
 				spaceRemaining = writeFun(view, writer, range);
@@ -217,7 +213,7 @@ bool DatabaseBuffers::LoadType(HeaderWriter& writer)
 template <class T>
 Range DatabaseBuffers::AssignClassTo(PointClass clazz, const Range& range)
 {
-	auto view = current.GetArrayView<T>();	
+	auto view = buffers.GetArrayView<T>();	
 	auto clipped = range.Intersection(RangeOf(view.Size()));
 	for (auto i = clipped.start; i <= clipped.stop; ++i)
 	{

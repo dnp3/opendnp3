@@ -32,11 +32,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-DatabaseBuffers::DatabaseBuffers(const DatabaseTemplate& dbTemplate) :
-	current(dbTemplate),
-	selected(dbTemplate)
+DatabaseBuffers::DatabaseBuffers(const DatabaseTemplate& dbTemplate) : buffers(dbTemplate)	
 {
-
 }
 
 void DatabaseBuffers::Unselect()
@@ -257,19 +254,19 @@ Range DatabaseBuffers::AssignClassToAll(AssignClassType type, PointClass clazz)
 	switch (type)
 	{
 		case(AssignClassType::BinaryInput) :
-			return AssignClassToRange(type, clazz, RangeOf(current.GetArrayView<Binary>().Size()));
+			return AssignClassToRange(type, clazz, RangeOf(buffers.GetArrayView<Binary>().Size()));
 		case(AssignClassType::DoubleBinaryInput) :
-			return AssignClassToRange(type, clazz, RangeOf(current.GetArrayView<DoubleBitBinary>().Size()));
+			return AssignClassToRange(type, clazz, RangeOf(buffers.GetArrayView<DoubleBitBinary>().Size()));
 		case(AssignClassType::Counter) :
-			return AssignClassToRange(type, clazz, RangeOf(current.GetArrayView<Counter>().Size()));
+			return AssignClassToRange(type, clazz, RangeOf(buffers.GetArrayView<Counter>().Size()));
 		case(AssignClassType::FrozenCounter) :
-			return AssignClassToRange(type, clazz, RangeOf(current.GetArrayView<FrozenCounter>().Size()));
+			return AssignClassToRange(type, clazz, RangeOf(buffers.GetArrayView<FrozenCounter>().Size()));
 		case(AssignClassType::AnalogInput) :
-			return AssignClassToRange(type, clazz, RangeOf(current.GetArrayView<Analog>().Size()));
+			return AssignClassToRange(type, clazz, RangeOf(buffers.GetArrayView<Analog>().Size()));
 		case(AssignClassType::BinaryOutputStatus) :
-			return AssignClassToRange(type, clazz, RangeOf(current.GetArrayView<BinaryOutputStatus>().Size()));
+			return AssignClassToRange(type, clazz, RangeOf(buffers.GetArrayView<BinaryOutputStatus>().Size()));
 		case(AssignClassType::AnalogOutputStatus) :
-			return AssignClassToRange(type, clazz, RangeOf(current.GetArrayView<AnalogOutputStatus>().Size()));
+			return AssignClassToRange(type, clazz, RangeOf(buffers.GetArrayView<AnalogOutputStatus>().Size()));
 		default:
 			return Range::Invalid();
 	}

@@ -65,7 +65,7 @@ public:
 	/**
 	* @return A view of all the static data for configuration purposes
 	*/
-	StaticBufferView GetStaticView() { return buffers.current.GetView(); }	
+	StaticBufferView GetStaticView() { return buffers.buffers.GetView(); }	
 
 	/**
 	* @returns Selector interface for marking values to be read
@@ -106,7 +106,7 @@ private:
 template <class T>
 bool Database::UpdateEvent(const T& value, uint16_t index)
 {	
-	auto values = buffers.current.GetArrayView<T>();
+	auto values = buffers.buffers.GetArrayView<T>();
 
 	if (values.Contains(index))
 	{

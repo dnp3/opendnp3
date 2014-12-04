@@ -86,14 +86,15 @@ int main(int argc, char* argv[])
 	stackConfig.link.LocalAddr = 10;
 	stackConfig.link.RemoteAddr = 1;
 	
-	// You can optionally change the default reporting variations
-	stackConfig.outstation.defaultEventResponses.binary = EventBinaryResponse::Group2Var2;
-	stackConfig.outstation.defaultEventResponses.analog = EventAnalogResponse::Group32Var3;
-	
 	// Create a new outstation with a log level, command handler, and
 	// config info this	returns a thread-safe interface used for
 	// updating the outstation's database.
 	auto pOutstation = pChannel->AddOutstation("outstation", SuccessCommandHandler::Instance(), DefaultOutstationApplication::Instance(), stackConfig);
+
+
+	// You can optionally change the default reporting variations
+	// stackConfig.outstation.defaultEventResponses.binary = EventBinaryResponse::Group2Var2;
+	// stackConfig.outstation.defaultEventResponses.analog = EventAnalogResponse::Group32Var3;
 
 	// Enable the outstation and start communications
 	pOutstation->Enable();	

@@ -18,31 +18,37 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_MEASUREMENTCELL_H
-#define OPENDNP3_MEASUREMENTCELL_H
+#ifndef OPENDNP3_CELL_H
+#define OPENDNP3_CELL_H
 
 
 namespace opendnp3
 {
 
 template <class ValueType>
-struct MeasurementCell
-{			
+struct SelectedValue
+{
+	SelectedValue() : selected(false) {}
+
+	bool selected;
 	ValueType value;
 	typename ValueType::StaticVariation variation;
-	typename ValueType::MetadataType metadata;	
 };
 
 template <class ValueType>
-struct BufferedCell
-{	
-	BufferedCell() : selected(false)
-	{}
-
-	bool selected;
-	ValueType value;	
+struct Cell
+{			
+	ValueType value;
+	uint16_t index;
 	typename ValueType::StaticVariation variation;
+	typename ValueType::MetadataType metadata;
+
+	SelectedValue<ValueType> selection;
 };
+
+
+
+
 
 }
 

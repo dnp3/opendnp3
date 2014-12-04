@@ -101,7 +101,7 @@ bool Database::Update(const AnalogOutputStatus& value, uint16_t index)
 
 bool Database::Update(const TimeAndInterval& value, uint16_t index)
 {		
-	auto view = buffers.current.GetArrayView<TimeAndInterval>();
+	auto view = buffers.buffers.GetArrayView<TimeAndInterval>();
 
 	if (view.Contains(index))
 	{		
