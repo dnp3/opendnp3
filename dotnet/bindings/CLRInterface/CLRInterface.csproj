@@ -55,14 +55,10 @@
     <Compile Include="ClassField.cs" />
     <Compile Include="CommandTypes.cs" />
     <Compile Include="config\DatabaseTemplate.cs" />
-    <Compile Include="config\EventResponseConfig.cs" />
     <Compile Include="config\OutstationConfig.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="config\OutstationParams.cs" />
-    <Compile Include="config\StaticResponseConfig.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="config\StaticTypeBitfield.cs" />
     <Compile Include="Conversions.cs" />
     <Compile Include="config\EventBufferConfig.cs" />
@@ -76,13 +72,13 @@
     <Compile Include="gen\CounterQuality.cs" />
     <Compile Include="gen\DoubleBit.cs" />
     <Compile Include="gen\DoubleBitBinaryQuality.cs" />
-    <Compile Include="gen\EventAnalogOutputStatusResponse.cs" />
-    <Compile Include="gen\EventAnalogResponse.cs" />
-    <Compile Include="gen\EventBinaryOutputStatusResponse.cs" />
-    <Compile Include="gen\EventBinaryResponse.cs" />
-    <Compile Include="gen\EventCounterResponse.cs" />
-    <Compile Include="gen\EventDoubleBinaryResponse.cs" />
-    <Compile Include="gen\EventFrozenCounterResponse.cs" />
+    <Compile Include="gen\EventAnalogOutputStatusVariation.cs" />
+    <Compile Include="gen\EventAnalogVariation.cs" />
+    <Compile Include="gen\EventBinaryOutputStatusVariation.cs" />
+    <Compile Include="gen\EventBinaryVariation.cs" />
+    <Compile Include="gen\EventCounterVariation.cs" />
+    <Compile Include="gen\EventDoubleBinaryVariation.cs" />
+    <Compile Include="gen\EventFrozenCounterVariation.cs" />
     <Compile Include="gen\GroupVariation.cs" />
     <Compile Include="gen\IINField.cs" />
     <Compile Include="gen\IntervalUnits.cs" />
@@ -90,14 +86,14 @@
     <Compile Include="gen\PointClass.cs" />
     <Compile Include="gen\QualifierCode.cs" />
     <Compile Include="gen\RestartMode.cs" />
-    <Compile Include="gen\StaticAnalogResponse.cs" />
-    <Compile Include="gen\StaticBinaryOutputStatusResponse.cs" />
-    <Compile Include="gen\StaticBinaryResponse.cs" />
-    <Compile Include="gen\StaticCounterResponse.cs" />
-    <Compile Include="gen\StaticAnalogOutputStatusResponse.cs" />
-    <Compile Include="gen\StaticDoubleBinaryResponse.cs" />
-    <Compile Include="gen\StaticFrozenCounterResponse.cs" />
-    <Compile Include="gen\StaticTimeAndIntervalResponse.cs" />
+    <Compile Include="gen\StaticAnalogOutputStatusVariation.cs" />
+    <Compile Include="gen\StaticAnalogVariation.cs" />
+    <Compile Include="gen\StaticBinaryOutputStatusVariation.cs" />
+    <Compile Include="gen\StaticBinaryVariation.cs" />
+    <Compile Include="gen\StaticCounterVariation.cs" />
+    <Compile Include="gen\StaticDoubleBinaryVariation.cs" />
+    <Compile Include="gen\StaticFrozenCounterVariation.cs" />
+    <Compile Include="gen\StaticTimeAndIntervalVariation.cs" />
     <Compile Include="gen\StaticTypeBitmask.cs" />
     <Compile Include="gen\TaskCompletion.cs" />
     <Compile Include="gen\TimestampMode.cs" />

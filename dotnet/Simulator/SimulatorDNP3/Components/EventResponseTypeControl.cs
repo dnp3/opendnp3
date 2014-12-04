@@ -18,13 +18,13 @@ namespace Automatak.Simulator.DNP3.Components
         {
             InitializeComponent();
 
-            this.ComboBoxBinary.DataSource = Enum.GetValues(typeof(EventBinaryResponse));
-            this.ComboBoxDoubleBinary.DataSource = Enum.GetValues(typeof(EventDoubleBinaryResponse));
-            this.ComboBoxCounter.DataSource = Enum.GetValues(typeof(EventCounterResponse));
-            this.ComboBoxFrozenCounter.DataSource = Enum.GetValues(typeof(EventFrozenCounterResponse));
-            this.ComboBoxAnalog.DataSource = Enum.GetValues(typeof(EventAnalogResponse));
-            this.ComboBoxBinaryOutputStatus.DataSource = Enum.GetValues(typeof(EventBinaryOutputStatusResponse));
-            this.ComboBoxAnalogOutputStatus.DataSource = Enum.GetValues(typeof(EventAnalogOutputStatusResponse));
+            this.ComboBoxBinary.DataSource = Enum.GetValues(typeof(EventBinaryVariation));
+            this.ComboBoxDoubleBinary.DataSource = Enum.GetValues(typeof(EventDoubleBinaryVariation));
+            this.ComboBoxCounter.DataSource = Enum.GetValues(typeof(EventCounterVariation));
+            this.ComboBoxFrozenCounter.DataSource = Enum.GetValues(typeof(EventFrozenCounterVariation));
+            this.ComboBoxAnalog.DataSource = Enum.GetValues(typeof(EventAnalogVariation));
+            this.ComboBoxBinaryOutputStatus.DataSource = Enum.GetValues(typeof(EventBinaryOutputStatusVariation));
+            this.ComboBoxAnalogOutputStatus.DataSource = Enum.GetValues(typeof(EventAnalogOutputStatusVariation));
         }
 
         public EventResponseConfig Configuration
@@ -33,13 +33,13 @@ namespace Automatak.Simulator.DNP3.Components
             {
                 var config = new EventResponseConfig();
                 
-                config.binary = (EventBinaryResponse) this.ComboBoxBinary.SelectedValue;
-                config.doubleBinary = (EventDoubleBinaryResponse) this.ComboBoxDoubleBinary.SelectedValue;
-                config.counter = (EventCounterResponse) this.ComboBoxCounter.SelectedValue;
-                config.frozenCounter = (EventFrozenCounterResponse) this.ComboBoxFrozenCounter.SelectedValue;
-                config.analog = (EventAnalogResponse) this.ComboBoxAnalog.SelectedValue;
-                config.binaryOutputStatus = (EventBinaryOutputStatusResponse) this.ComboBoxBinaryOutputStatus.SelectedValue;
-                config.analogOutputStatus = (EventAnalogOutputStatusResponse) this.ComboBoxAnalogOutputStatus.SelectedValue;
+                config.binary = (EventBinaryVariation) this.ComboBoxBinary.SelectedValue;
+                config.doubleBinary = (EventDoubleBinaryVariation) this.ComboBoxDoubleBinary.SelectedValue;
+                config.counter = (EventCounterVariation) this.ComboBoxCounter.SelectedValue;
+                config.frozenCounter = (EventFrozenCounterVariation) this.ComboBoxFrozenCounter.SelectedValue;
+                config.analog = (EventAnalogVariation) this.ComboBoxAnalog.SelectedValue;
+                config.binaryOutputStatus = (EventBinaryOutputStatusVariation) this.ComboBoxBinaryOutputStatus.SelectedValue;
+                config.analogOutputStatus = (EventAnalogOutputStatusVariation) this.ComboBoxAnalogOutputStatus.SelectedValue;
 
                 return config;
             }

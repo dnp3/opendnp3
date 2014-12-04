@@ -39,21 +39,21 @@ struct StaticWriter
 	typedef bool (*Function)(openpal::ArrayView<Cell<T>, uint16_t>& view, HeaderWriter& writer, Range& range);
 };
 
-StaticWriter<Binary>::Function GetStaticWriter(StaticBinaryResponse variation);
+StaticWriter<Binary>::Function GetStaticWriter(StaticBinaryVariation variation);
 
-StaticWriter<DoubleBitBinary>::Function GetStaticWriter(StaticDoubleBinaryResponse variation);
+StaticWriter<DoubleBitBinary>::Function GetStaticWriter(StaticDoubleBinaryVariation variation);
 
-StaticWriter<Counter>::Function GetStaticWriter(StaticCounterResponse variation);
+StaticWriter<Counter>::Function GetStaticWriter(StaticCounterVariation variation);
 
-StaticWriter<FrozenCounter>::Function GetStaticWriter(StaticFrozenCounterResponse variation);
+StaticWriter<FrozenCounter>::Function GetStaticWriter(StaticFrozenCounterVariation variation);
 
-StaticWriter<Analog>::Function GetStaticWriter(StaticAnalogResponse variation);
+StaticWriter<Analog>::Function GetStaticWriter(StaticAnalogVariation variation);
 
-StaticWriter<AnalogOutputStatus>::Function GetStaticWriter(StaticAnalogOutputStatusResponse variation);
+StaticWriter<AnalogOutputStatus>::Function GetStaticWriter(StaticAnalogOutputStatusVariation variation);
 
-StaticWriter<BinaryOutputStatus>::Function GetStaticWriter(StaticBinaryOutputStatusResponse variation);
+StaticWriter<BinaryOutputStatus>::Function GetStaticWriter(StaticBinaryOutputStatusVariation variation);
 
-StaticWriter<TimeAndInterval>::Function GetStaticWriter(StaticTimeAndIntervalResponse variation);
+StaticWriter<TimeAndInterval>::Function GetStaticWriter(StaticTimeAndIntervalVariation variation);
 
 template <class Serializer>
 bool WriteWithSerializer(openpal::ArrayView<Cell<typename Serializer::Target>, uint16_t>& view, HeaderWriter& writer, Range& range)

@@ -17,7 +17,7 @@ object JavaEnumGenerator {
       def filePath = dest.resolve(fileName)
     }
 
-    def events = EventTypes.enums.map(m => EnumConfig(m, path))
+    def events = DefaultVariations.enums.map(m => EnumConfig(m, path))
 
     def enums : List[EnumConfig] = List(
       CommandStatus(),

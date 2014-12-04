@@ -20,15 +20,5 @@ namespace Automatak.DNP3.Interface
         /// Configuration of the outstation event buffer
         /// </summary>
         public EventBufferConfig buffer = new EventBufferConfig();
-
-        /// <summary>
-        /// Default static responses
-        /// </summary>
-        public StaticResponseConfig staticConfig = new StaticResponseConfig();
-
-        /// <summary>
-        /// Default event responses
-        /// </summary>
-        public EventResponseConfig eventConfig = new EventResponseConfig();         
     }  
 }

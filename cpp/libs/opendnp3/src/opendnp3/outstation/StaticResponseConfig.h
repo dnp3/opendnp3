@@ -23,14 +23,14 @@
 
 #include <assert.h>
 
-#include "opendnp3/gen/StaticAnalogResponse.h"
-#include "opendnp3/gen/StaticBinaryResponse.h"
-#include "opendnp3/gen/StaticDoubleBinaryResponse.h"
-#include "opendnp3/gen/StaticCounterResponse.h"
-#include "opendnp3/gen/StaticFrozenCounterResponse.h"
-#include "opendnp3/gen/StaticBinaryOutputStatusResponse.h"
-#include "opendnp3/gen/StaticAnalogOutputStatusResponse.h"
-#include "opendnp3/gen/StaticTimeAndIntervalResponse.h"
+#include "opendnp3/gen/StaticAnalogVariation.h"
+#include "opendnp3/gen/StaticBinaryVariation.h"
+#include "opendnp3/gen/StaticDoubleBinaryVariation.h"
+#include "opendnp3/gen/StaticCounterVariation.h"
+#include "opendnp3/gen/StaticFrozenCounterVariation.h"
+#include "opendnp3/gen/StaticBinaryOutputStatusVariation.h"
+#include "opendnp3/gen/StaticAnalogOutputStatusVariation.h"
+#include "opendnp3/gen/StaticTimeAndIntervalVariation.h"
 
 namespace opendnp3
 {
@@ -40,28 +40,28 @@ struct StaticResponseConfig
 	StaticResponseConfig();
 
 	/// The default group/variation to use for static binary responses
-	StaticBinaryResponse binary;
+	StaticBinaryVariation binary;
 
 	/// The default group/variation to use for static double-bit binary responses
-	StaticDoubleBinaryResponse doubleBinary;
+	StaticDoubleBinaryVariation doubleBinary;
 
 	/// The default group/variation to use for static analog responses
-	StaticAnalogResponse analog;
+	StaticAnalogVariation analog;
 
 	/// The default group/variation to use for static counter responses
-	StaticCounterResponse counter;
+	StaticCounterVariation counter;
 
 	/// The default group/variation to use for static counter responses
-	StaticFrozenCounterResponse frozenCounter;
+	StaticFrozenCounterVariation frozenCounter;
 
 	/// The default group/variation to use for static control status responses
-	StaticBinaryOutputStatusResponse binaryOutputStatus;
+	StaticBinaryOutputStatusVariation binaryOutputStatus;
 
 	/// The default group/variation to use for static setpoint status responses
-	StaticAnalogOutputStatusResponse analogOutputStatus;
+	StaticAnalogOutputStatusVariation analogOutputStatus;
 
 	/// The default group/variation to use for static time and interval responses
-	StaticTimeAndIntervalResponse timeAndInterval;
+	StaticTimeAndIntervalVariation timeAndInterval;
 };
 
 }

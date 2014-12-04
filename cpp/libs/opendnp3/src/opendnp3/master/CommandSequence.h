@@ -57,25 +57,18 @@ public:
 
 	virtual IINField ProcessIndexPrefix(const HeaderRecord&, const IterableBuffer<IndexedValue<CommandType, uint16_t>>& meas) override final
 	{
-		if(this->IsFirstHeader())
-		{
-			IndexedValue<CommandType, uint16_t> received;
-			if(meas.ReadOnlyValue(received))
+		IndexedValue<CommandType, uint16_t> received;
+		if (this->IsFirstHeader() && meas.ReadOnlyValue(received))
+		{			
+			if(received.index == command.index && received.value.ValuesEqual(command.value))
 			{
-				if(received.index == command.index && received.value.ValuesEqual(command.value))
-				{
-					response = CommandResponse(TaskCompletion::SUCCESS, received.value.status);
-					return IINField();
-				}
-				else
-				{
-					return IINBit::PARAM_ERROR;
-				}
+				response = CommandResponse(TaskCompletion::SUCCESS, received.value.status);
+				return IINField();
 			}
 			else
 			{
 				return IINBit::PARAM_ERROR;
-			}
+			}			
 		}
 		else
 		{

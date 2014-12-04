@@ -270,42 +270,10 @@ namespace Automatak
 				opendnp3::OutstationConfig oc;
 
 				oc.params = ConvertConfig(config->config);
-				oc.eventBufferConfig = ConvertConfig(config->buffer);
-				oc.defaultStaticResponses = ConvertConfig(config->staticConfig);
-				oc.defaultEventResponses = ConvertConfig(config->eventConfig);
+				oc.eventBufferConfig = ConvertConfig(config->buffer);				
 
 				return oc;
-			}
-
-			opendnp3::StaticResponseConfig Conversions::ConvertConfig(StaticResponseConfig^ config)
-			{
-				opendnp3::StaticResponseConfig ret;
-
-				ret.analog = (opendnp3::StaticAnalogResponse) config->analog;
-				ret.analogOutputStatus = (opendnp3::StaticAnalogOutputStatusResponse) config->analogOutputStatus;
-				ret.binary = (opendnp3::StaticBinaryResponse) config->binary;
-				ret.binaryOutputStatus = (opendnp3::StaticBinaryOutputStatusResponse) config->binaryOutputStatus;
-				ret.counter = (opendnp3::StaticCounterResponse) config->counter;
-				ret.doubleBinary = (opendnp3::StaticDoubleBinaryResponse) config->doubleBinary;
-				ret.frozenCounter = (opendnp3::StaticFrozenCounterResponse) config->frozenCounter;
-
-				return ret;
-			}
-
-			opendnp3::EventResponseConfig Conversions::ConvertConfig(EventResponseConfig^ config)
-			{
-				opendnp3::EventResponseConfig ret;
-
-				ret.analog = (opendnp3::EventAnalogResponse) config->analog;
-				ret.analogOutputStatus = (opendnp3::EventAnalogOutputStatusResponse) config->analogOutputStatus;
-				ret.binary = (opendnp3::EventBinaryResponse) config->binary;
-				ret.binaryOutputStatus = (opendnp3::EventBinaryOutputStatusResponse) config->binaryOutputStatus;
-				ret.counter = (opendnp3::EventCounterResponse) config->counter;
-				ret.doubleBinary = (opendnp3::EventDoubleBinaryResponse) config->doubleBinary;
-				ret.frozenCounter = (opendnp3::EventFrozenCounterResponse) config->frozenCounter;
-
-				return ret;
-			}
+			}			
 
 			opendnp3::OutstationParams Conversions::ConvertConfig(OutstationParams^ config)
 			{

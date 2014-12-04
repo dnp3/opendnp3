@@ -25,14 +25,14 @@ namespace opendnp3
 {
 
 	StaticResponseConfig::StaticResponseConfig() :
-		binary(StaticBinaryResponse::Group1Var2),
-		doubleBinary(StaticDoubleBinaryResponse::Group3Var2),
-		analog(StaticAnalogResponse::Group30Var1),
-		counter(StaticCounterResponse::Group20Var1),
-		frozenCounter(StaticFrozenCounterResponse::Group21Var1),
-		binaryOutputStatus(StaticBinaryOutputStatusResponse::Group10Var2),
-		analogOutputStatus(StaticAnalogOutputStatusResponse::Group40Var1),
-		timeAndInterval(StaticTimeAndIntervalResponse::Group50Var4)
+		binary(StaticBinaryVariation::Group1Var2),
+		doubleBinary(StaticDoubleBinaryVariation::Group3Var2),
+		analog(StaticAnalogVariation::Group30Var1),
+		counter(StaticCounterVariation::Group20Var1),
+		frozenCounter(StaticFrozenCounterVariation::Group21Var1),
+		binaryOutputStatus(StaticBinaryOutputStatusVariation::Group10Var2),
+		analogOutputStatus(StaticAnalogOutputStatusVariation::Group40Var1),
+		timeAndInterval(StaticTimeAndIntervalVariation::Group50Var4)
 	{}
 
 

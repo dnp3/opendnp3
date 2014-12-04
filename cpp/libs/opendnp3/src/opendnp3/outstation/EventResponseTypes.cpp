@@ -35,15 +35,15 @@
 
 namespace opendnp3
 {	
-	EventHeaderWriteFunc EventResponseTypes::Lookup(EventBinaryResponse enumeration)
+	EventHeaderWriteFunc EventResponseTypes::Lookup(EventBinaryVariation enumeration)
 	{
 		switch (enumeration)
 		{
-		case(EventBinaryResponse::Group2Var1) :
+		case(EventBinaryVariation::Group2Var1) :
 			return &EventWriteFunctions::WriteFixedSize<Group2Var1>;
-		case(EventBinaryResponse::Group2Var2) :
+		case(EventBinaryVariation::Group2Var2) :
 			return &EventWriteFunctions::WriteFixedSize<Group2Var2>;
-		case(EventBinaryResponse::Group2Var3) :
+		case(EventBinaryVariation::Group2Var3) :
 			return &EventWriteFunctions::WriteFixedSizeWithCTO<Group2Var3, Group51Var1>;
 		default:
 			return &EventWriteFunctions::WriteFixedSize<Group2Var1>;
@@ -51,112 +51,112 @@ namespace opendnp3
 	}
 
 	
-	EventHeaderWriteFunc EventResponseTypes::Lookup(EventDoubleBinaryResponse enumeration)
+	EventHeaderWriteFunc EventResponseTypes::Lookup(EventDoubleBinaryVariation enumeration)
 	{
 		switch (enumeration)
 		{
-		case(EventDoubleBinaryResponse::Group4Var1) :
+		case(EventDoubleBinaryVariation::Group4Var1) :
 			return &EventWriteFunctions::WriteFixedSize<Group4Var1>;
-		case(EventDoubleBinaryResponse::Group4Var2) :
+		case(EventDoubleBinaryVariation::Group4Var2) :
 			return &EventWriteFunctions::WriteFixedSize<Group4Var2>;
-		case(EventDoubleBinaryResponse::Group4Var3) :
+		case(EventDoubleBinaryVariation::Group4Var3) :
 			return &EventWriteFunctions::WriteFixedSizeWithCTO<Group4Var3, Group51Var1>;
 		default:
 			return &EventWriteFunctions::WriteFixedSize<Group4Var1>;
 		}
 	}
 
-	EventHeaderWriteFunc EventResponseTypes::Lookup(EventCounterResponse enumeration)
+	EventHeaderWriteFunc EventResponseTypes::Lookup(EventCounterVariation enumeration)
 	{
 		switch (enumeration)
 		{
-		case(EventCounterResponse::Group22Var1) :
+		case(EventCounterVariation::Group22Var1) :
 				return &EventWriteFunctions::WriteFixedSize<Group22Var1>;
-			case(EventCounterResponse::Group22Var2) :
+			case(EventCounterVariation::Group22Var2) :
 				return &EventWriteFunctions::WriteFixedSize<Group22Var2>;
-			case(EventCounterResponse::Group22Var5) :
+			case(EventCounterVariation::Group22Var5) :
 				return &EventWriteFunctions::WriteFixedSize<Group22Var5>;
-			case(EventCounterResponse::Group22Var6) :
+			case(EventCounterVariation::Group22Var6) :
 				return &EventWriteFunctions::WriteFixedSize<Group22Var6>;
 			default:
 				return &EventWriteFunctions::WriteFixedSize<Group22Var1>;
 		}
 	}
 
-	EventHeaderWriteFunc EventResponseTypes::Lookup(EventFrozenCounterResponse enumeration)
+	EventHeaderWriteFunc EventResponseTypes::Lookup(EventFrozenCounterVariation enumeration)
 	{
 		switch (enumeration)
 		{
-			case(EventFrozenCounterResponse::Group23Var1) :
+			case(EventFrozenCounterVariation::Group23Var1) :
 				return &EventWriteFunctions::WriteFixedSize<Group23Var1>;
-			case(EventFrozenCounterResponse::Group23Var2) :
+			case(EventFrozenCounterVariation::Group23Var2) :
 				return &EventWriteFunctions::WriteFixedSize<Group23Var2>;
-			case(EventFrozenCounterResponse::Group23Var5) :
+			case(EventFrozenCounterVariation::Group23Var5) :
 				return &EventWriteFunctions::WriteFixedSize<Group23Var5>;
-			case(EventFrozenCounterResponse::Group23Var6) :
+			case(EventFrozenCounterVariation::Group23Var6) :
 				return &EventWriteFunctions::WriteFixedSize<Group23Var6>;
 			default:
 				return &EventWriteFunctions::WriteFixedSize<Group23Var1>;
 		}
 	}
 
-	EventHeaderWriteFunc EventResponseTypes::Lookup(EventAnalogResponse enumeration)
+	EventHeaderWriteFunc EventResponseTypes::Lookup(EventAnalogVariation enumeration)
 	{
 		switch (enumeration)
 		{
-			case(EventAnalogResponse::Group32Var1) :
+			case(EventAnalogVariation::Group32Var1) :
 				return &EventWriteFunctions::WriteFixedSize<Group32Var1>;
-			case(EventAnalogResponse::Group32Var2) :
+			case(EventAnalogVariation::Group32Var2) :
 				return &EventWriteFunctions::WriteFixedSize<Group32Var2>;
-			case(EventAnalogResponse::Group32Var3) :
+			case(EventAnalogVariation::Group32Var3) :
 				return &EventWriteFunctions::WriteFixedSize<Group32Var3>;
-			case(EventAnalogResponse::Group32Var4) :
+			case(EventAnalogVariation::Group32Var4) :
 				return &EventWriteFunctions::WriteFixedSize<Group32Var4>;
-			case(EventAnalogResponse::Group32Var5) :
+			case(EventAnalogVariation::Group32Var5) :
 				return &EventWriteFunctions::WriteFixedSize<Group32Var5>;
-			case(EventAnalogResponse::Group32Var6) :
+			case(EventAnalogVariation::Group32Var6) :
 				return &EventWriteFunctions::WriteFixedSize<Group32Var6>;
-			case(EventAnalogResponse::Group32Var7) :
+			case(EventAnalogVariation::Group32Var7) :
 				return &EventWriteFunctions::WriteFixedSize<Group32Var7>;
-			case(EventAnalogResponse::Group32Var8) :
+			case(EventAnalogVariation::Group32Var8) :
 				return &EventWriteFunctions::WriteFixedSize<Group32Var8>;
 			default:
 				return &EventWriteFunctions::WriteFixedSize<Group32Var1>;
 		}
 	}
 
-	EventHeaderWriteFunc EventResponseTypes::Lookup(EventBinaryOutputStatusResponse enumeration)
+	EventHeaderWriteFunc EventResponseTypes::Lookup(EventBinaryOutputStatusVariation enumeration)
 	{
 		switch (enumeration)
 		{
-			case(EventBinaryOutputStatusResponse::Group11Var1) :
+			case(EventBinaryOutputStatusVariation::Group11Var1) :
 				return &EventWriteFunctions::WriteFixedSize<Group11Var1>;
-			case(EventBinaryOutputStatusResponse::Group11Var2) :
+			case(EventBinaryOutputStatusVariation::Group11Var2) :
 				return &EventWriteFunctions::WriteFixedSize<Group11Var2>;
 			default:
 				return &EventWriteFunctions::WriteFixedSize<Group11Var1>;
 		}
 	}
 
-	EventHeaderWriteFunc EventResponseTypes::Lookup(EventAnalogOutputStatusResponse enumeration)
+	EventHeaderWriteFunc EventResponseTypes::Lookup(EventAnalogOutputStatusVariation enumeration)
 	{
 		switch (enumeration)
 		{
-		case(EventAnalogOutputStatusResponse::Group42Var1) :
+		case(EventAnalogOutputStatusVariation::Group42Var1) :
 			return &EventWriteFunctions::WriteFixedSize<Group42Var1>;
-		case(EventAnalogOutputStatusResponse::Group42Var2) :
+		case(EventAnalogOutputStatusVariation::Group42Var2) :
 			return &EventWriteFunctions::WriteFixedSize<Group42Var2>;
-		case(EventAnalogOutputStatusResponse::Group42Var3) :
+		case(EventAnalogOutputStatusVariation::Group42Var3) :
 			return &EventWriteFunctions::WriteFixedSize<Group42Var3>;
-		case(EventAnalogOutputStatusResponse::Group42Var4) :
+		case(EventAnalogOutputStatusVariation::Group42Var4) :
 			return &EventWriteFunctions::WriteFixedSize<Group42Var4>;
-		case(EventAnalogOutputStatusResponse::Group42Var5) :
+		case(EventAnalogOutputStatusVariation::Group42Var5) :
 			return &EventWriteFunctions::WriteFixedSize<Group42Var5>;
-		case(EventAnalogOutputStatusResponse::Group42Var6) :
+		case(EventAnalogOutputStatusVariation::Group42Var6) :
 			return &EventWriteFunctions::WriteFixedSize<Group42Var6>;
-		case(EventAnalogOutputStatusResponse::Group42Var7) :
+		case(EventAnalogOutputStatusVariation::Group42Var7) :
 			return &EventWriteFunctions::WriteFixedSize<Group42Var7>;
-		case(EventAnalogOutputStatusResponse::Group42Var8) :
+		case(EventAnalogOutputStatusVariation::Group42Var8) :
 			return &EventWriteFunctions::WriteFixedSize<Group42Var8>;
 		default:
 			return &EventWriteFunctions::WriteFixedSize<Group42Var1>;

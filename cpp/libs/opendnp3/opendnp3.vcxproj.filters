@@ -144,24 +144,6 @@
     <ClInclude Include="src\opendnp3\app\WriteConversionTemplates.h">
       <Filter>Header\app</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\StaticFrozenCounterResponse.h">
-      <Filter>Header\gen</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\StaticCounterResponse.h">
-      <Filter>Header\gen</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\StaticBinaryResponse.h">
-      <Filter>Header\gen</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\StaticBinaryOutputStatusResponse.h">
-      <Filter>Header\gen</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\StaticAnalogResponse.h">
-      <Filter>Header\gen</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\StaticAnalogOutputStatusResponse.h">
-      <Filter>Header\gen</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\gen\QualifierCode.h">
       <Filter>Header\gen</Filter>
     </ClInclude>
@@ -169,15 +151,6 @@
       <Filter>Header\gen</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\gen\FunctionCode.h">
-      <Filter>Header\gen</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\EventCounterResponse.h">
-      <Filter>Header\gen</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\EventBinaryResponse.h">
-      <Filter>Header\gen</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\EventAnalogResponse.h">
       <Filter>Header\gen</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\gen\ControlCode.h">
@@ -414,21 +387,6 @@
     <ClInclude Include="src\opendnp3\app\EventTriggers.h">
       <Filter>Header\app</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\EventAnalogOutputStatusResponse.h">
-      <Filter>Header\gen</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\EventBinaryOutputStatusResponse.h">
-      <Filter>Header\gen</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\EventDoubleBinaryResponse.h">
-      <Filter>Header\gen</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\EventFrozenCounterResponse.h">
-      <Filter>Header\gen</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\StaticDoubleBinaryResponse.h">
-      <Filter>Header\gen</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\OutstationStackConfig.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
@@ -663,9 +621,6 @@
     <ClInclude Include="src\opendnp3\app\TimeAndInterval.h">
       <Filter>Header\app</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\StaticTimeAndIntervalResponse.h">
-      <Filter>Header\gen</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\gen\StaticTypeBitmask.h">
       <Filter>Header\gen</Filter>
     </ClInclude>
@@ -729,6 +684,51 @@
     <ClInclude Include="src\opendnp3\outstation\Cell.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\EventAnalogOutputStatusVariation.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\EventAnalogVariation.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\EventBinaryOutputStatusVariation.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\EventBinaryVariation.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\EventCounterVariation.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\EventDoubleBinaryVariation.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\EventFrozenCounterVariation.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\StaticAnalogOutputStatusVariation.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\StaticAnalogVariation.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\StaticBinaryOutputStatusVariation.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\StaticBinaryVariation.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\StaticCounterVariation.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\StaticDoubleBinaryVariation.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\StaticFrozenCounterVariation.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\StaticTimeAndIntervalVariation.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\AnalogOutput.cpp">
@@ -764,24 +764,6 @@
     <ClCompile Include="src\opendnp3\app\OctetData.cpp">
       <Filter>Source\app</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\gen\StaticFrozenCounterResponse.cpp">
-      <Filter>Source\gen</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\gen\StaticCounterResponse.cpp">
-      <Filter>Source\gen</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\gen\StaticBinaryResponse.cpp">
-      <Filter>Source\gen</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\gen\StaticBinaryOutputStatusResponse.cpp">
-      <Filter>Source\gen</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\gen\StaticAnalogResponse.cpp">
-      <Filter>Source\gen</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\gen\StaticAnalogOutputStatusResponse.cpp">
-      <Filter>Source\gen</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\gen\QualifierCode.cpp">
       <Filter>Source\gen</Filter>
     </ClCompile>
@@ -789,15 +771,6 @@
       <Filter>Source\gen</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\gen\FunctionCode.cpp">
-      <Filter>Source\gen</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\gen\EventCounterResponse.cpp">
-      <Filter>Source\gen</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\gen\EventBinaryResponse.cpp">
-      <Filter>Source\gen</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\gen\EventAnalogResponse.cpp">
       <Filter>Source\gen</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\gen\ControlCode.cpp">
@@ -968,21 +941,6 @@
     <ClCompile Include="src\opendnp3\app\EventTriggers.cpp">
       <Filter>Source\app</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\gen\StaticDoubleBinaryResponse.cpp">
-      <Filter>Source\gen</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\gen\EventFrozenCounterResponse.cpp">
-      <Filter>Source\gen</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\gen\EventDoubleBinaryResponse.cpp">
-      <Filter>Source\gen</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\gen\EventBinaryOutputStatusResponse.cpp">
-      <Filter>Source\gen</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\gen\EventAnalogOutputStatusResponse.cpp">
-      <Filter>Source\gen</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\IINHelpers.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
@@ -1128,9 +1086,6 @@
       <Filter>Source\app</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\gen\IntervalUnits.cpp">
-      <Filter>Source\gen</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\gen\StaticTimeAndIntervalResponse.cpp">
       <Filter>Source\gen</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\master\EventScanTask.cpp">

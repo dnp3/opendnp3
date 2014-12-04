@@ -25,13 +25,13 @@ namespace opendnp3
 {
 
 	EventResponseConfig::EventResponseConfig() :
-		binary(EventBinaryResponse::Group2Var1),
-		doubleBinary(EventDoubleBinaryResponse::Group4Var1),
-		analog(EventAnalogResponse::Group32Var1),
-		counter(EventCounterResponse::Group22Var1),
-		frozenCounter(EventFrozenCounterResponse::Group23Var1),
-		binaryOutputStatus(EventBinaryOutputStatusResponse::Group11Var1),
-		analogOutputStatus(EventAnalogOutputStatusResponse::Group42Var1)
+		binary(EventBinaryVariation::Group2Var1),
+		doubleBinary(EventDoubleBinaryVariation::Group4Var1),
+		analog(EventAnalogVariation::Group32Var1),
+		counter(EventCounterVariation::Group22Var1),
+		frozenCounter(EventFrozenCounterVariation::Group23Var1),
+		binaryOutputStatus(EventBinaryOutputStatusVariation::Group11Var1),
+		analogOutputStatus(EventAnalogOutputStatusVariation::Group42Var1)
 	{}
 
 

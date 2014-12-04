@@ -93,8 +93,8 @@ int main(int argc, char* argv[])
 
 
 	// You can optionally change the default reporting variations
-	// stackConfig.outstation.defaultEventResponses.binary = EventBinaryResponse::Group2Var2;
-	// stackConfig.outstation.defaultEventResponses.analog = EventAnalogResponse::Group32Var3;
+	// stackConfig.outstation.defaultEventResponses.binary = EventBinaryVariation::Group2Var2;
+	// stackConfig.outstation.defaultEventResponses.analog = EventAnalogVariation::Group32Var3;
 
 	// Enable the outstation and start communications
 	pOutstation->Enable();	

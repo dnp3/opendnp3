@@ -21,13 +21,13 @@
 #ifndef OPENDNP3_EVENTRESPONSECONFIG_H
 #define OPENDNP3_EVENTRESPONSECONFIG_H
 
-#include "opendnp3/gen/EventAnalogResponse.h"
-#include "opendnp3/gen/EventBinaryResponse.h"
-#include "opendnp3/gen/EventDoubleBinaryResponse.h"
-#include "opendnp3/gen/EventCounterResponse.h"
-#include "opendnp3/gen/EventFrozenCounterResponse.h"
-#include "opendnp3/gen/EventBinaryOutputStatusResponse.h"
-#include "opendnp3/gen/EventAnalogOutputStatusResponse.h"
+#include "opendnp3/gen/EventAnalogVariation.h"
+#include "opendnp3/gen/EventBinaryVariation.h"
+#include "opendnp3/gen/EventDoubleBinaryVariation.h"
+#include "opendnp3/gen/EventCounterVariation.h"
+#include "opendnp3/gen/EventFrozenCounterVariation.h"
+#include "opendnp3/gen/EventBinaryOutputStatusVariation.h"
+#include "opendnp3/gen/EventAnalogOutputStatusVariation.h"
 
 namespace opendnp3
 {
@@ -37,25 +37,25 @@ struct EventResponseConfig
 	EventResponseConfig();
 
 	/// The default group/variation to use for binary events
-	EventBinaryResponse binary;
+	EventBinaryVariation binary;
 
 	/// The default group/variation to use for double-bit binary events
-	EventDoubleBinaryResponse doubleBinary;
+	EventDoubleBinaryVariation doubleBinary;
 
 	/// The default group/variation to use for analog events
-	EventAnalogResponse analog;
+	EventAnalogVariation analog;
 
 	/// The default group/variation to use for counter events
-	EventCounterResponse counter;
+	EventCounterVariation counter;
 
 	/// The default group/variation to use for frozen counter events
-	EventFrozenCounterResponse frozenCounter;
+	EventFrozenCounterVariation frozenCounter;
 
 	/// The default group/variation to use for binary output status events
-	EventBinaryOutputStatusResponse binaryOutputStatus;
+	EventBinaryOutputStatusVariation binaryOutputStatus;
 
 	/// The default group/variation to use for binary output status events
-	EventAnalogOutputStatusResponse analogOutputStatus;
+	EventAnalogOutputStatusVariation analogOutputStatus;
 
 
 };

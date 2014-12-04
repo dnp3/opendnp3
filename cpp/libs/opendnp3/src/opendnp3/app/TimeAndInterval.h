@@ -22,7 +22,7 @@
 #define OPENDNP3_TIMEANDINTERVAL_H
 
 #include "opendnp3/gen/IntervalUnits.h"
-#include "opendnp3/gen/StaticTimeAndIntervalResponse.h"
+#include "opendnp3/gen/StaticTimeAndIntervalVariation.h"
 #include "opendnp3/gen/StaticTypeBitmask.h"
 
 #include "opendnp3/app/EventMetadata.h"
@@ -53,7 +53,7 @@ public:
 
 	const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::TimeAndInterval;
 
-	typedef StaticTimeAndIntervalResponse StaticVariation;
+	typedef StaticTimeAndIntervalVariation StaticVariation;
 	typedef EmptyMetadata MetadataType;
 };
 

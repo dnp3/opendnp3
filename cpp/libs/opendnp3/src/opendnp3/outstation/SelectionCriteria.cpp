@@ -111,87 +111,87 @@ IINField SelectionCriteria::RecordCountOfObjects(GroupVariation enumeration, uin
 		/// --- specific binary variations ------
 
 		case(GroupVariation::Group2Var1) :
-			return RecordType<Binary>(EventBinaryResponse::Group2Var1, count);
+			return RecordType<Binary>(EventBinaryVariation::Group2Var1, count);
 		case(GroupVariation::Group2Var2) :
-			return RecordType<Binary>(EventBinaryResponse::Group2Var2, count);
+			return RecordType<Binary>(EventBinaryVariation::Group2Var2, count);
 		case(GroupVariation::Group2Var3) :
-			return RecordType<Binary>(EventBinaryResponse::Group2Var3, count);
+			return RecordType<Binary>(EventBinaryVariation::Group2Var3, count);
 
 		/// --- specific double binary variations ------
 		
 		case(GroupVariation::Group4Var1) :
-			return RecordType<DoubleBitBinary>(EventDoubleBinaryResponse::Group4Var1, count);
+			return RecordType<DoubleBitBinary>(EventDoubleBinaryVariation::Group4Var1, count);
 		case(GroupVariation::Group4Var2) :
-			return RecordType<DoubleBitBinary>(EventDoubleBinaryResponse::Group4Var2, count);
+			return RecordType<DoubleBitBinary>(EventDoubleBinaryVariation::Group4Var2, count);
 		case(GroupVariation::Group4Var3) :
-			return RecordType<DoubleBitBinary>(EventDoubleBinaryResponse::Group4Var3, count);
+			return RecordType<DoubleBitBinary>(EventDoubleBinaryVariation::Group4Var3, count);
 
 		/// --- specific binary output status variations ------
 
 		case(GroupVariation::Group11Var1) :
-			return RecordType<BinaryOutputStatus>(EventBinaryOutputStatusResponse::Group11Var1, count);
+			return RecordType<BinaryOutputStatus>(EventBinaryOutputStatusVariation::Group11Var1, count);
 		case(GroupVariation::Group11Var2) :
-			return RecordType<BinaryOutputStatus>(EventBinaryOutputStatusResponse::Group11Var2, count);
+			return RecordType<BinaryOutputStatus>(EventBinaryOutputStatusVariation::Group11Var2, count);
 
 		/// --- specific counter variations ------
 
 		case(GroupVariation::Group22Var1) :
-			return RecordType<Counter>(EventCounterResponse::Group22Var1, count);
+			return RecordType<Counter>(EventCounterVariation::Group22Var1, count);
 		case(GroupVariation::Group22Var2) :
-			return RecordType<Counter>(EventCounterResponse::Group22Var2, count);
+			return RecordType<Counter>(EventCounterVariation::Group22Var2, count);
 		case(GroupVariation::Group22Var5) :
-			return RecordType<Counter>(EventCounterResponse::Group22Var5, count);
+			return RecordType<Counter>(EventCounterVariation::Group22Var5, count);
 		case(GroupVariation::Group22Var6) :
-			return RecordType<Counter>(EventCounterResponse::Group22Var6, count);
+			return RecordType<Counter>(EventCounterVariation::Group22Var6, count);
 
 		/// --- specific frozen counter variations ------
 		
 		case(GroupVariation::Group23Var1) :
-			return RecordType<FrozenCounter>(EventFrozenCounterResponse::Group23Var1, count);
+			return RecordType<FrozenCounter>(EventFrozenCounterVariation::Group23Var1, count);
 		case(GroupVariation::Group23Var2) :
-			return RecordType<FrozenCounter>(EventFrozenCounterResponse::Group23Var2, count);
+			return RecordType<FrozenCounter>(EventFrozenCounterVariation::Group23Var2, count);
 		case(GroupVariation::Group23Var5) :
-			return RecordType<FrozenCounter>(EventFrozenCounterResponse::Group23Var5, count);
+			return RecordType<FrozenCounter>(EventFrozenCounterVariation::Group23Var5, count);
 		case(GroupVariation::Group23Var6) :
-			return RecordType<FrozenCounter>(EventFrozenCounterResponse::Group23Var6, count);
+			return RecordType<FrozenCounter>(EventFrozenCounterVariation::Group23Var6, count);
 
 		/// --- specific analog variations ------
 		
 		case(GroupVariation::Group32Var1) :
-			return RecordType<Analog>(EventAnalogResponse::Group32Var1, count);
+			return RecordType<Analog>(EventAnalogVariation::Group32Var1, count);
 		case(GroupVariation::Group32Var2) :
-			return RecordType<Analog>(EventAnalogResponse::Group32Var2, count);
+			return RecordType<Analog>(EventAnalogVariation::Group32Var2, count);
 		case(GroupVariation::Group32Var3) :
-			return RecordType<Analog>(EventAnalogResponse::Group32Var3, count);
+			return RecordType<Analog>(EventAnalogVariation::Group32Var3, count);
 		case(GroupVariation::Group32Var4) :
-			return RecordType<Analog>(EventAnalogResponse::Group32Var4, count);
+			return RecordType<Analog>(EventAnalogVariation::Group32Var4, count);
 		case(GroupVariation::Group32Var5) :
-			return RecordType<Analog>(EventAnalogResponse::Group32Var5, count);
+			return RecordType<Analog>(EventAnalogVariation::Group32Var5, count);
 		case(GroupVariation::Group32Var6) :
-			return RecordType<Analog>(EventAnalogResponse::Group32Var6, count);
+			return RecordType<Analog>(EventAnalogVariation::Group32Var6, count);
 		case(GroupVariation::Group32Var7) :
-			return RecordType<Analog>(EventAnalogResponse::Group32Var7, count);
+			return RecordType<Analog>(EventAnalogVariation::Group32Var7, count);
 		case(GroupVariation::Group32Var8) :
-			return RecordType<Analog>(EventAnalogResponse::Group32Var8, count);
+			return RecordType<Analog>(EventAnalogVariation::Group32Var8, count);
 
 		/// --- specific analog output status variations ------
 
 		case(GroupVariation::Group42Var1) :
-			return RecordType<AnalogOutputStatus>(EventAnalogOutputStatusResponse::Group42Var1, count);
+			return RecordType<AnalogOutputStatus>(EventAnalogOutputStatusVariation::Group42Var1, count);
 		case(GroupVariation::Group42Var2) :
-			return RecordType<AnalogOutputStatus>(EventAnalogOutputStatusResponse::Group42Var2, count);
+			return RecordType<AnalogOutputStatus>(EventAnalogOutputStatusVariation::Group42Var2, count);
 		case(GroupVariation::Group42Var3) :
-			return RecordType<AnalogOutputStatus>(EventAnalogOutputStatusResponse::Group42Var3, count);
+			return RecordType<AnalogOutputStatus>(EventAnalogOutputStatusVariation::Group42Var3, count);
 		case(GroupVariation::Group42Var4) :
-			return RecordType<AnalogOutputStatus>(EventAnalogOutputStatusResponse::Group42Var4, count);
+			return RecordType<AnalogOutputStatus>(EventAnalogOutputStatusVariation::Group42Var4, count);
 		case(GroupVariation::Group42Var5) :
-			return RecordType<AnalogOutputStatus>(EventAnalogOutputStatusResponse::Group42Var5, count);
+			return RecordType<AnalogOutputStatus>(EventAnalogOutputStatusVariation::Group42Var5, count);
 		case(GroupVariation::Group42Var6) :
-			return RecordType<AnalogOutputStatus>(EventAnalogOutputStatusResponse::Group42Var6, count);
+			return RecordType<AnalogOutputStatus>(EventAnalogOutputStatusVariation::Group42Var6, count);
 		case(GroupVariation::Group42Var7) :
-			return RecordType<AnalogOutputStatus>(EventAnalogOutputStatusResponse::Group42Var7, count);
+			return RecordType<AnalogOutputStatus>(EventAnalogOutputStatusVariation::Group42Var7, count);
 		case(GroupVariation::Group42Var8) :
-			return RecordType<AnalogOutputStatus>(EventAnalogOutputStatusResponse::Group42Var8, count);
+			return RecordType<AnalogOutputStatus>(EventAnalogOutputStatusVariation::Group42Var8, count);
 
 		default:
 			return IINField(IINBit::FUNC_NOT_SUPPORTED);

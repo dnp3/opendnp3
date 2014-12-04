@@ -29,23 +29,23 @@
 
 #include "opendnp3/gen/DoubleBit.h"
 
-#include "opendnp3/gen/StaticBinaryResponse.h"
-#include "opendnp3/gen/StaticDoubleBinaryResponse.h"
-#include "opendnp3/gen/StaticBinaryOutputStatusResponse.h"
-#include "opendnp3/gen/StaticCounterResponse.h"
-#include "opendnp3/gen/StaticFrozenCounterResponse.h"
-#include "opendnp3/gen/StaticAnalogResponse.h"
-#include "opendnp3/gen/StaticAnalogOutputStatusResponse.h"
+#include "opendnp3/gen/StaticBinaryVariation.h"
+#include "opendnp3/gen/StaticDoubleBinaryVariation.h"
+#include "opendnp3/gen/StaticBinaryOutputStatusVariation.h"
+#include "opendnp3/gen/StaticCounterVariation.h"
+#include "opendnp3/gen/StaticFrozenCounterVariation.h"
+#include "opendnp3/gen/StaticAnalogVariation.h"
+#include "opendnp3/gen/StaticAnalogOutputStatusVariation.h"
 
 #include "opendnp3/gen/StaticTypeBitmask.h"
 
-#include "opendnp3/gen/EventBinaryResponse.h"
-#include "opendnp3/gen/EventDoubleBinaryResponse.h"
-#include "opendnp3/gen/EventBinaryOutputStatusResponse.h"
-#include "opendnp3/gen/EventCounterResponse.h"
-#include "opendnp3/gen/EventFrozenCounterResponse.h"
-#include "opendnp3/gen/EventAnalogResponse.h"
-#include "opendnp3/gen/EventAnalogOutputStatusResponse.h"
+#include "opendnp3/gen/EventBinaryVariation.h"
+#include "opendnp3/gen/EventDoubleBinaryVariation.h"
+#include "opendnp3/gen/EventBinaryOutputStatusVariation.h"
+#include "opendnp3/gen/EventCounterVariation.h"
+#include "opendnp3/gen/EventFrozenCounterVariation.h"
+#include "opendnp3/gen/EventAnalogVariation.h"
+#include "opendnp3/gen/EventAnalogOutputStatusVariation.h"
 
 
 
@@ -91,8 +91,8 @@ public:
 	const static EventType EventTypeEnum = EventType::Binary;
 	const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::BinaryInput;
 	
-	typedef EventBinaryResponse EventVariation;
-	typedef StaticBinaryResponse StaticVariation;
+	typedef EventBinaryVariation EventVariation;
+	typedef StaticBinaryVariation StaticVariation;
 	typedef SimpleEventMetadata<Binary> MetadataType;
 };
 
@@ -122,8 +122,8 @@ public:
 	const static EventType EventTypeEnum = EventType::DoubleBitBinary;
 	const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::DoubleBinaryInput;
 
-	typedef EventDoubleBinaryResponse EventVariation;
-	typedef StaticDoubleBinaryResponse StaticVariation;
+	typedef EventDoubleBinaryVariation EventVariation;
+	typedef StaticDoubleBinaryVariation StaticVariation;
 	typedef SimpleEventMetadata<DoubleBitBinary> MetadataType;
 
 private:
@@ -163,8 +163,8 @@ public:
 	const static EventType EventTypeEnum = EventType::BinaryOutputStatus;
 	const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::BinaryOutputStatus;
 
-	typedef EventBinaryOutputStatusResponse EventVariation;
-	typedef StaticBinaryOutputStatusResponse StaticVariation;
+	typedef EventBinaryOutputStatusVariation EventVariation;
+	typedef StaticBinaryOutputStatusVariation StaticVariation;
 	typedef SimpleEventMetadata<BinaryOutputStatus> MetadataType;
 };
 
@@ -190,8 +190,8 @@ public:
 	const static EventType EventTypeEnum = EventType::Analog;
 	const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::AnalogInput;
 
-	typedef EventAnalogResponse EventVariation;
-	typedef StaticAnalogResponse StaticVariation;
+	typedef EventAnalogVariation EventVariation;
+	typedef StaticAnalogVariation StaticVariation;
 	typedef DeadbandMetadata<Analog, double> MetadataType;	
 };
 
@@ -216,8 +216,8 @@ public:
 	const static EventType EventTypeEnum = EventType::Counter;
 	const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::Counter;
 
-	typedef EventCounterResponse EventVariation;
-	typedef StaticCounterResponse StaticVariation;
+	typedef EventCounterVariation EventVariation;
+	typedef StaticCounterVariation StaticVariation;
 	typedef DeadbandMetadata<Counter, uint32_t> MetadataType;
 };
 
@@ -241,8 +241,8 @@ public:
 	const static EventType EventTypeEnum = EventType::FrozenCounter;
 	const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::FrozenCounter;
 
-	typedef EventFrozenCounterResponse EventVariation;
-	typedef StaticFrozenCounterResponse StaticVariation;
+	typedef EventFrozenCounterVariation EventVariation;
+	typedef StaticFrozenCounterVariation StaticVariation;
 	typedef DeadbandMetadata<FrozenCounter, uint32_t> MetadataType;
 };
 
@@ -267,8 +267,8 @@ public:
 	const static EventType EventTypeEnum = EventType::AnalogOutputStatus;
 	const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::AnalogOutputStatus;
 
-	typedef EventAnalogOutputStatusResponse EventVariation;
-	typedef StaticAnalogOutputStatusResponse StaticVariation;
+	typedef EventAnalogOutputStatusVariation EventVariation;
+	typedef StaticAnalogOutputStatusVariation StaticVariation;
 	typedef DeadbandMetadata<AnalogOutputStatus, double> MetadataType;
 };
 

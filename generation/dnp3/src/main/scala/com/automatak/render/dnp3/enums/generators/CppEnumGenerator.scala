@@ -36,7 +36,7 @@ object CppEnumGenerator {
       EnumConfig(RestartMode(), false, false),
       EnumConfig(TimestampMode(), false, false),
       EnumConfig(QualifierCode(), true, true)
-    ) ::: EventTypes.enums.map(m => EnumConfig(m, true, false)) ::: QualityMasks.enums.map(m => EnumConfig(m, false, false))
+    ) ::: DefaultVariations.enums.map(m => EnumConfig(m, false, false)) ::: QualityMasks.enums.map(m => EnumConfig(m, false, false))
 
     // list of all enumerations that we want to generate
     def sourceEnums = List(FunctionCode(), QualifierCode(), LinkFunction()).map(em => EnumConfig.apply(em, true, true))

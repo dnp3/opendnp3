@@ -38,13 +38,13 @@ class EventResponseTypes : openpal::PureStatic
 
 public:
 
-	static EventHeaderWriteFunc Lookup(EventBinaryResponse enumeration);
-	static EventHeaderWriteFunc Lookup(EventDoubleBinaryResponse enumeration);
-	static EventHeaderWriteFunc Lookup(EventCounterResponse enumeration);
-	static EventHeaderWriteFunc Lookup(EventFrozenCounterResponse enumeration);
-	static EventHeaderWriteFunc Lookup(EventAnalogResponse enumeration);
-	static EventHeaderWriteFunc Lookup(EventBinaryOutputStatusResponse enumeration);
-	static EventHeaderWriteFunc Lookup(EventAnalogOutputStatusResponse enumeration);
+	static EventHeaderWriteFunc Lookup(EventBinaryVariation enumeration);
+	static EventHeaderWriteFunc Lookup(EventDoubleBinaryVariation enumeration);
+	static EventHeaderWriteFunc Lookup(EventCounterVariation enumeration);
+	static EventHeaderWriteFunc Lookup(EventFrozenCounterVariation enumeration);
+	static EventHeaderWriteFunc Lookup(EventAnalogVariation enumeration);
+	static EventHeaderWriteFunc Lookup(EventBinaryOutputStatusVariation enumeration);
+	static EventHeaderWriteFunc Lookup(EventAnalogOutputStatusVariation enumeration);
 	
 };
 

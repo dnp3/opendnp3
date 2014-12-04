@@ -114,9 +114,7 @@ namespace Automatak
 				static opendnp3::LinkConfig ConvertConfig(LinkConfig^ config);
 				static opendnp3::MasterParams ConvertConfig(MasterConfig^ config);
 				static opendnp3::OutstationConfig ConvertConfig(OutstationConfig^ config);
-				static opendnp3::OutstationParams ConvertConfig(OutstationParams^ config);
-				static opendnp3::StaticResponseConfig ConvertConfig(StaticResponseConfig^ config);
-				static opendnp3::EventResponseConfig ConvertConfig(EventResponseConfig^ config);
+				static opendnp3::OutstationParams ConvertConfig(OutstationParams^ config);				
 				static opendnp3::MasterStackConfig ConvertConfig(MasterStackConfig^ config);
 				static opendnp3::OutstationStackConfig ConvertConfig(OutstationStackConfig^ config);
 

@@ -18,13 +18,13 @@ namespace Automatak.Simulator.DNP3.Components
         {
             InitializeComponent();
 
-            this.ComboBoxBinary.DataSource = Enum.GetValues(typeof(StaticBinaryResponse));
-            this.ComboBoxDoubleBinary.DataSource = Enum.GetValues(typeof(StaticDoubleBinaryResponse));
-            this.ComboBoxCounter.DataSource = Enum.GetValues(typeof(StaticCounterResponse));
-            this.ComboBoxFrozenCounter.DataSource = Enum.GetValues(typeof(StaticFrozenCounterResponse));
-            this.ComboBoxAnalog.DataSource = Enum.GetValues(typeof(StaticAnalogResponse));
-            this.ComboBoxBinaryOutputStatus.DataSource = Enum.GetValues(typeof(StaticBinaryOutputStatusResponse));
-            this.ComboBoxAnalogOutputStatus.DataSource = Enum.GetValues(typeof(StaticAnalogOutputStatusResponse));
+            this.ComboBoxBinary.DataSource = Enum.GetValues(typeof(StaticBinaryVariation));
+            this.ComboBoxDoubleBinary.DataSource = Enum.GetValues(typeof(StaticDoubleBinaryVariation));
+            this.ComboBoxCounter.DataSource = Enum.GetValues(typeof(StaticCounterVariation));
+            this.ComboBoxFrozenCounter.DataSource = Enum.GetValues(typeof(StaticFrozenCounterVariation));
+            this.ComboBoxAnalog.DataSource = Enum.GetValues(typeof(StaticAnalogVariation));
+            this.ComboBoxBinaryOutputStatus.DataSource = Enum.GetValues(typeof(StaticBinaryOutputStatusVariation));
+            this.ComboBoxAnalogOutputStatus.DataSource = Enum.GetValues(typeof(StaticAnalogOutputStatusVariation));
         }
 
         public StaticResponseConfig Configuration
@@ -33,13 +33,13 @@ namespace Automatak.Simulator.DNP3.Components
             {
                 var config = new StaticResponseConfig();
 
-                config.binary = (StaticBinaryResponse) this.ComboBoxBinary.SelectedValue;
-                config.doubleBinary = (StaticDoubleBinaryResponse) this.ComboBoxDoubleBinary.SelectedValue;
-                config.counter = (StaticCounterResponse) this.ComboBoxCounter.SelectedValue;
-                config.frozenCounter = (StaticFrozenCounterResponse) this.ComboBoxFrozenCounter.SelectedValue;
-                config.analog = (StaticAnalogResponse)this.ComboBoxAnalog.SelectedValue;
-                config.binaryOutputStatus = (StaticBinaryOutputStatusResponse) this.ComboBoxBinaryOutputStatus.SelectedValue;
-                config.analogOutputStatus = (StaticAnalogOutputStatusResponse) this.ComboBoxAnalogOutputStatus.SelectedValue;
+                config.binary = (StaticBinaryVariation) this.ComboBoxBinary.SelectedValue;
+                config.doubleBinary = (StaticDoubleBinaryVariation) this.ComboBoxDoubleBinary.SelectedValue;
+                config.counter = (StaticCounterVariation) this.ComboBoxCounter.SelectedValue;
+                config.frozenCounter = (StaticFrozenCounterVariation) this.ComboBoxFrozenCounter.SelectedValue;
+                config.analog = (StaticAnalogVariation)this.ComboBoxAnalog.SelectedValue;
+                config.binaryOutputStatus = (StaticBinaryOutputStatusVariation) this.ComboBoxBinaryOutputStatus.SelectedValue;
+                config.analogOutputStatus = (StaticAnalogOutputStatusVariation) this.ComboBoxAnalogOutputStatus.SelectedValue;
 
                 return config;
             }

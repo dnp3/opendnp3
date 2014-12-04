@@ -35,84 +35,84 @@ namespace opendnp3
 {
 
 
-StaticWriter<Binary>::Function GetStaticWriter(StaticBinaryResponse variation)
+StaticWriter<Binary>::Function GetStaticWriter(StaticBinaryVariation variation)
 {
 	return &WriteWithSerializer<Group1Var2>;
 }
 
-StaticWriter<DoubleBitBinary>::Function GetStaticWriter(StaticDoubleBinaryResponse variation)
+StaticWriter<DoubleBitBinary>::Function GetStaticWriter(StaticDoubleBinaryVariation variation)
 {
 	switch (variation)
 	{
-		case(StaticDoubleBinaryResponse::Group3Var2) :
+		case(StaticDoubleBinaryVariation::Group3Var2) :
 			return &WriteWithSerializer<Group3Var2>;
 		default:
 			return &WriteWithSerializer<Group3Var2>;
 	}
 }
 
-StaticWriter<Analog>::Function GetStaticWriter(StaticAnalogResponse variation)
+StaticWriter<Analog>::Function GetStaticWriter(StaticAnalogVariation variation)
 {
 	switch (variation)
 	{
-	case(StaticAnalogResponse::Group30Var1): return &WriteWithSerializer<Group30Var1>;
-	case(StaticAnalogResponse::Group30Var2): return &WriteWithSerializer<Group30Var2>;
-	case(StaticAnalogResponse::Group30Var3): return &WriteWithSerializer<Group30Var3>;
-	case(StaticAnalogResponse::Group30Var4): return &WriteWithSerializer<Group30Var4>;
-	case(StaticAnalogResponse::Group30Var5): return &WriteWithSerializer<Group30Var5>;
-	case(StaticAnalogResponse::Group30Var6): return &WriteWithSerializer<Group30Var6>;
+	case(StaticAnalogVariation::Group30Var1): return &WriteWithSerializer<Group30Var1>;
+	case(StaticAnalogVariation::Group30Var2): return &WriteWithSerializer<Group30Var2>;
+	case(StaticAnalogVariation::Group30Var3): return &WriteWithSerializer<Group30Var3>;
+	case(StaticAnalogVariation::Group30Var4): return &WriteWithSerializer<Group30Var4>;
+	case(StaticAnalogVariation::Group30Var5): return &WriteWithSerializer<Group30Var5>;
+	case(StaticAnalogVariation::Group30Var6): return &WriteWithSerializer<Group30Var6>;
 	default:
 		return &WriteWithSerializer<Group30Var1>;
 	}
 }
 
-StaticWriter<Counter>::Function GetStaticWriter(StaticCounterResponse variation)
+StaticWriter<Counter>::Function GetStaticWriter(StaticCounterVariation variation)
 {
 	switch (variation)
 	{
-	case(StaticCounterResponse::Group20Var1): return &WriteWithSerializer<Group20Var1>;
-	case(StaticCounterResponse::Group20Var2): return &WriteWithSerializer<Group20Var2>;
-	case(StaticCounterResponse::Group20Var5): return &WriteWithSerializer<Group20Var5>;
-	case(StaticCounterResponse::Group20Var6): return &WriteWithSerializer<Group20Var6>;
+	case(StaticCounterVariation::Group20Var1): return &WriteWithSerializer<Group20Var1>;
+	case(StaticCounterVariation::Group20Var2): return &WriteWithSerializer<Group20Var2>;
+	case(StaticCounterVariation::Group20Var5): return &WriteWithSerializer<Group20Var5>;
+	case(StaticCounterVariation::Group20Var6): return &WriteWithSerializer<Group20Var6>;
 	default:
 		return &WriteWithSerializer<Group20Var1>;
 	}
 }
 
-StaticWriter<FrozenCounter>::Function GetStaticWriter(StaticFrozenCounterResponse variation)
+StaticWriter<FrozenCounter>::Function GetStaticWriter(StaticFrozenCounterVariation variation)
 {
 	switch (variation)
 	{
-	case(StaticFrozenCounterResponse::Group21Var1): return &WriteWithSerializer<Group21Var1>;
+	case(StaticFrozenCounterVariation::Group21Var1): return &WriteWithSerializer<Group21Var1>;
 	default:
 		return &WriteWithSerializer<Group21Var1>;
 	}
 }
 
-StaticWriter<BinaryOutputStatus>::Function GetStaticWriter(StaticBinaryOutputStatusResponse variation)
+StaticWriter<BinaryOutputStatus>::Function GetStaticWriter(StaticBinaryOutputStatusVariation variation)
 {
 	switch (variation)
 	{
-	case(StaticBinaryOutputStatusResponse::Group10Var2): return &WriteWithSerializer<Group10Var2>;
+	case(StaticBinaryOutputStatusVariation::Group10Var2): return &WriteWithSerializer<Group10Var2>;
 	default:
 		return &WriteWithSerializer<Group10Var2>;
 	}
 }
 
-StaticWriter<AnalogOutputStatus>::Function GetStaticWriter(StaticAnalogOutputStatusResponse variation)
+StaticWriter<AnalogOutputStatus>::Function GetStaticWriter(StaticAnalogOutputStatusVariation variation)
 {
 	switch (variation)
 	{
-		case(StaticAnalogOutputStatusResponse::Group40Var1): return &WriteWithSerializer<Group40Var1>;
-		case(StaticAnalogOutputStatusResponse::Group40Var2): return &WriteWithSerializer<Group40Var2>;
-		case(StaticAnalogOutputStatusResponse::Group40Var3): return &WriteWithSerializer<Group40Var3>;
-		case(StaticAnalogOutputStatusResponse::Group40Var4): return &WriteWithSerializer<Group40Var4>;
+		case(StaticAnalogOutputStatusVariation::Group40Var1): return &WriteWithSerializer<Group40Var1>;
+		case(StaticAnalogOutputStatusVariation::Group40Var2): return &WriteWithSerializer<Group40Var2>;
+		case(StaticAnalogOutputStatusVariation::Group40Var3): return &WriteWithSerializer<Group40Var3>;
+		case(StaticAnalogOutputStatusVariation::Group40Var4): return &WriteWithSerializer<Group40Var4>;
 		default:
 			return &WriteWithSerializer<Group40Var1>;
 	}
 }
 
-StaticWriter<TimeAndInterval>::Function GetStaticWriter(StaticTimeAndIntervalResponse variation)
+StaticWriter<TimeAndInterval>::Function GetStaticWriter(StaticTimeAndIntervalVariation variation)
 {
 	return &WriteWithSerializer<Group50Var4>;	
 }

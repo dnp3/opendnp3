@@ -16,7 +16,7 @@ object CSharpEnumGenerator {
       def filePath = dest.resolve(fileName)
     }
 
-    def events = EventTypes.enums.map(m => EnumConfig(m, dir))
+    def events = DefaultVariations.enums.map(m => EnumConfig(m, dir))
 
     def qualityMasks = QualityMasks.enums.map(m => EnumConfig(m, dir))
 

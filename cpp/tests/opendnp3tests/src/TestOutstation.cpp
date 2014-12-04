@@ -269,8 +269,8 @@ TEST_CASE(SUITE("MixedVariationAssignments"))
 
 	{	// configure two different default variations
 		auto view = t.outstation.GetStaticBufferView();
-		view.analogs[0].variation = StaticAnalogResponse::Group30Var1;
-		view.analogs[1].variation = StaticAnalogResponse::Group30Var2;
+		view.analogs[0].variation = StaticAnalogVariation::Group30Var1;
+		view.analogs[1].variation = StaticAnalogVariation::Group30Var2;
 	}
 
 	t.LowerLayerUp();
@@ -518,7 +518,7 @@ void TestStaticType(const OutstationConfig& config, const DatabaseTemplate& tmp,
 }
 
 template <class T>
-void TestStaticCounter(StaticCounterResponse variation, T value, const std::string& response)
+void TestStaticCounter(StaticCounterVariation variation, T value, const std::string& response)
 {
 	OutstationConfig cfg;
 	auto configure = [variation](StaticBufferView& view) { view.counters[0].variation = variation; };
@@ -527,26 +527,26 @@ void TestStaticCounter(StaticCounterResponse variation, T value, const std::stri
 
 TEST_CASE(SUITE("ReadGrp20Var1"))
 {
-	TestStaticCounter(StaticCounterResponse::Group20Var1, 5, "C0 81 80 00 14 01 00 00 00 01 05 00 00 00");
+	TestStaticCounter(StaticCounterVariation::Group20Var1, 5, "C0 81 80 00 14 01 00 00 00 01 05 00 00 00");
 }
 
 TEST_CASE(SUITE("ReadGrp20Var2"))
 {
-	TestStaticCounter(StaticCounterResponse::Group20Var2, 5, "C0 81 80 00 14 02 00 00 00 01 05 00");
+	TestStaticCounter(StaticCounterVariation::Group20Var2, 5, "C0 81 80 00 14 02 00 00 00 01 05 00");
 }
 
 TEST_CASE(SUITE("ReadGrp20Var5"))
 {
-	TestStaticCounter(StaticCounterResponse::Group20Var5, 5, "C0 81 80 00 14 05 00 00 00 05 00 00 00");
+	TestStaticCounter(StaticCounterVariation::Group20Var5, 5, "C0 81 80 00 14 05 00 00 00 05 00 00 00");
 }
 
 TEST_CASE(SUITE("ReadGrp20Var6"))
 {
-	TestStaticCounter(StaticCounterResponse::Group20Var6, 5, "C0 81 80 00 14 06 00 00 00 05 00");
+	TestStaticCounter(StaticCounterVariation::Group20Var6, 5, "C0 81 80 00 14 06 00 00 00 05 00");
 }
 
 template <class T>
-void TestStaticAnalog(StaticAnalogResponse variation, T value, const std::string& response)
+void TestStaticAnalog(StaticAnalogVariation variation, T value, const std::string& response)
 {
 	OutstationConfig cfg;
 	auto configure = [variation](StaticBufferView& view) { view.analogs[0].variation = variation; };
@@ -555,27 +555,27 @@ void TestStaticAnalog(StaticAnalogResponse variation, T value, const std::string
 
 TEST_CASE(SUITE("ReadGrp30Var2"))
 {
-	TestStaticAnalog(StaticAnalogResponse::Group30Var2, 100, "C0 81 80 00 1E 02 00 00 00 01 64 00");
+	TestStaticAnalog(StaticAnalogVariation::Group30Var2, 100, "C0 81 80 00 1E 02 00 00 00 01 64 00");
 }
 
 TEST_CASE(SUITE("ReadGrp30Var3"))
 {
-	TestStaticAnalog(StaticAnalogResponse::Group30Var3, 65536, "C0 81 80 00 1E 03 00 00 00 00 00 01 00");
+	TestStaticAnalog(StaticAnalogVariation::Group30Var3, 65536, "C0 81 80 00 1E 03 00 00 00 00 00 01 00");
 }
 
 TEST_CASE(SUITE("ReadGrp30Var4"))
 {
-	TestStaticAnalog(StaticAnalogResponse::Group30Var4, 100, "C0 81 80 00 1E 04 00 00 00 64 00");
+	TestStaticAnalog(StaticAnalogVariation::Group30Var4, 100, "C0 81 80 00 1E 04 00 00 00 64 00");
 }
 
 TEST_CASE(SUITE("ReadGrp30Var5"))
 {
-	TestStaticAnalog(StaticAnalogResponse::Group30Var5, 95.6, "C0 81 80 00 1E 05 00 00 00 01 33 33 BF 42");
+	TestStaticAnalog(StaticAnalogVariation::Group30Var5, 95.6, "C0 81 80 00 1E 05 00 00 00 01 33 33 BF 42");
 }
 
 TEST_CASE(SUITE("ReadGrp30Var6"))
 {
-	TestStaticAnalog(StaticAnalogResponse::Group30Var6, -20, "C0 81 80 00 1E 06 00 00 00 01 00 00 00 00 00 00 34 C0");
+	TestStaticAnalog(StaticAnalogVariation::Group30Var6, -20, "C0 81 80 00 1E 06 00 00 00 01 00 00 00 00 00 00 34 C0");
 }
 
 template <class T>
@@ -597,7 +597,7 @@ TEST_CASE(SUITE("ReadGrp10Var2"))
 }
 
 template <class T>
-void TestStaticAnalogOutputStatus(StaticAnalogOutputStatusResponse variation, T value, const string& response)
+void TestStaticAnalogOutputStatus(StaticAnalogOutputStatusVariation variation, T value, const string& response)
 {
 	OutstationConfig cfg;
 	auto configure = [variation](StaticBufferView& view) { view.analogOutputStatii[0].variation = variation; };
@@ -606,20 +606,20 @@ void TestStaticAnalogOutputStatus(StaticAnalogOutputStatusResponse variation, T 
 
 TEST_CASE(SUITE("ReadGrp40Var1"))
 {
-	TestStaticAnalogOutputStatus(StaticAnalogOutputStatusResponse::Group40Var1, 100, "C0 81 80 00 28 01 00 00 00 01 64 00 00 00");
+	TestStaticAnalogOutputStatus(StaticAnalogOutputStatusVariation::Group40Var1, 100, "C0 81 80 00 28 01 00 00 00 01 64 00 00 00");
 }
 
 TEST_CASE(SUITE("ReadGrp40Var2"))
 {
-	TestStaticAnalogOutputStatus(StaticAnalogOutputStatusResponse::Group40Var2, 100, "C0 81 80 00 28 02 00 00 00 01 64 00");
+	TestStaticAnalogOutputStatus(StaticAnalogOutputStatusVariation::Group40Var2, 100, "C0 81 80 00 28 02 00 00 00 01 64 00");
 }
 
 TEST_CASE(SUITE("ReadGrp40Var3"))
 {
-	TestStaticAnalogOutputStatus(StaticAnalogOutputStatusResponse::Group40Var3, 95.6, "C0 81 80 00 28 03 00 00 00 01 33 33 BF 42");
+	TestStaticAnalogOutputStatus(StaticAnalogOutputStatusVariation::Group40Var3, 95.6, "C0 81 80 00 28 03 00 00 00 01 33 33 BF 42");
 }
 
 TEST_CASE(SUITE("ReadGrp40Var4"))
 {
-	TestStaticAnalogOutputStatus(StaticAnalogOutputStatusResponse::Group40Var4, -20.0, "C0 81 80 00 28 04 00 00 00 01 00 00 00 00 00 00 34 C0");
+	TestStaticAnalogOutputStatus(StaticAnalogOutputStatusVariation::Group40Var4, -20.0, "C0 81 80 00 28 04 00 00 00 01 00 00 00 00 00 00 34 C0");
 }
