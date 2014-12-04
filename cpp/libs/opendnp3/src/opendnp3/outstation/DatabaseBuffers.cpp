@@ -69,6 +69,8 @@ IINField DatabaseBuffers::SelectAll(GroupVariation gv)
 		{
 			case(GroupVariation::Group1Var0):
 				return this->SelectAll<Binary>();				
+			case(GroupVariation::Group1Var1) :
+				return this->SelectAllUsing<Binary>(StaticBinaryVariation::Group1Var1);
 			case(GroupVariation::Group1Var2) :
 				return this->SelectAllUsing<Binary>(StaticBinaryVariation::Group1Var2);				
 
@@ -149,6 +151,8 @@ IINField DatabaseBuffers::SelectRange(GroupVariation gv, const Range& range)
 	{
 	case(GroupVariation::Group1Var0) :
 		return this->SelectRange<Binary>(range);
+	case(GroupVariation::Group1Var1) :
+		return this->SelectRangeUsing<Binary>(range, StaticBinaryVariation::Group1Var1);
 	case(GroupVariation::Group1Var2) :
 		return this->SelectRangeUsing<Binary>(range, StaticBinaryVariation::Group1Var2);
 

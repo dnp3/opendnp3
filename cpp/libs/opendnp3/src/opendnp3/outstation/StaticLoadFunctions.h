@@ -55,6 +55,21 @@ StaticWriter<BinaryOutputStatus>::Function GetStaticWriter(StaticBinaryOutputSta
 
 StaticWriter<TimeAndInterval>::Function GetStaticWriter(StaticTimeAndIntervalVariation variation);
 
+template <class T, class GV>
+bool WriteSingleBitfield(openpal::ArrayView<Cell<T>, uint16_t>& view, HeaderWriter& writer, Range& range)
+{
+	if (range.IsOneByte())
+	{
+		auto iter = writer.IterateOverSingleBitfield<UInt8>(GV::ID(), QualifierCode::UINT8_START_STOP, static_cast<uint8_t>(range.start));
+		return LoadWithBitfieldIterator<T, openpal::UInt8>(view, iter, range);
+	}
+	else
+	{
+		auto iter = writer.IterateOverSingleBitfield<UInt16>(GV::ID(), QualifierCode::UINT16_START_STOP, range.start);		
+		return LoadWithBitfieldIterator<T, openpal::UInt16>(view, iter, range);
+	}
+}
+
 template <class Serializer>
 bool WriteWithSerializer(openpal::ArrayView<Cell<typename Serializer::Target>, uint16_t>& view, HeaderWriter& writer, Range& range)
 {
@@ -92,6 +107,30 @@ bool LoadWithRangeIterator(openpal::ArrayView<Cell<Target>, uint16_t>& view, Ran
 	}
 
 	return true;	
+}
+
+template <class Target, class IndexType>
+bool LoadWithBitfieldIterator(openpal::ArrayView<Cell<Target>, uint16_t>& view, BitfieldRangeWriteIterator<IndexType>& iterator, Range& range)
+{
+	// record the initial variation for the header, if it changes we can abort this header
+	auto variation = view[range.start].selection.variation;
+
+	// TODO validate that the variation matches what's required
+	while (range.IsValid() && view[range.start].selection.selected && view[range.start].selection.variation == variation)
+	{
+		if (iterator.Write(view[range.start].selection.value.value))
+		{
+			// deselect the value and advance the range
+			view[range.start].selection.selected = false;
+			range.Advance();
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	return true;
 }
 
 }

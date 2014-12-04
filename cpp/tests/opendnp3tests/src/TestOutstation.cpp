@@ -525,6 +525,23 @@ void TestStaticCounter(StaticCounterVariation variation, T value, const std::str
 	TestStaticType<Counter>(cfg, DatabaseTemplate::CounterOnly(1), value, response, configure);
 }
 
+TEST_CASE(SUITE("ReadGrp1Var1"))
+{
+	OutstationConfig cfg;
+	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOnly(10));
+
+	{
+		auto view = t.outstation.GetStaticBufferView();		
+		view.binaries.foreach([](Cell<Binary>& cell){ cell.variation = StaticBinaryVariation::Group1Var1; });
+	}
+
+	t.LowerLayerUp();
+
+	t.SendToOutstation("C0 01 3C 01 06"); // Read class 0
+
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00 01 01 00 00 09 00 00");
+}
+
 TEST_CASE(SUITE("ReadGrp20Var1"))
 {
 	TestStaticCounter(StaticCounterVariation::Group20Var1, 5, "C0 81 80 00 14 01 00 00 00 01 05 00 00 00");

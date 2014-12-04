@@ -54,21 +54,23 @@ public:
 		}
 	}
 
-	bool Complete()
+	~BitfieldRangeWriteIterator()
 	{
-		if(isNull || count == 0) return false;
-		else
+		if (!isNull && count > 0)		
 		{
 			auto stop = start + count - 1;
 			IndexType::Write(range, stop);
 
 			auto num = count / 8;
-			if ((count % 8) > 0) ++num;
-			pPosition->Advance(num);
 
-			return true;
+			if ((count % 8) > 0)
+			{
+				++num;
+			}
+
+			pPosition->Advance(num);			
 		}
-	}
+	}	
 
 	bool Write(bool value)
 	{

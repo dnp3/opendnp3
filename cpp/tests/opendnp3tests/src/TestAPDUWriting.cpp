@@ -223,10 +223,11 @@ TEST_CASE(SUITE("WriteIINRestart"))
 	APDURequest request(APDUHelpers::Request(FunctionCode::WRITE));
 	auto writer = request.GetWriter();
 
-	auto iter = writer.IterateOverSingleBitfield<UInt8>(GroupVariationID(80, 1), QualifierCode::UINT8_START_STOP, 7);
-	iter.Write(true);
-	iter.Write(true);
-	iter.Complete();
+	{
+		auto iter = writer.IterateOverSingleBitfield<UInt8>(GroupVariationID(80, 1), QualifierCode::UINT8_START_STOP, 7);
+		iter.Write(true);
+		iter.Write(true);
+	}
 
 	REQUIRE("C0 02 50 01 00 07 08 03" ==  toHex(request.ToReadOnly()));
 }

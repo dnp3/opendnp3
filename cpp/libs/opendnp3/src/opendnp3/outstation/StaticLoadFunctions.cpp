@@ -37,7 +37,13 @@ namespace opendnp3
 
 StaticWriter<Binary>::Function GetStaticWriter(StaticBinaryVariation variation)
 {
-	return &WriteWithSerializer<Group1Var2>;
+	switch (variation)
+	{
+		case(StaticBinaryVariation::Group1Var1) :
+			return &WriteSingleBitfield<Binary, Group1Var1>;
+		default:
+			return &WriteWithSerializer<Group1Var2>;
+	}	
 }
 
 StaticWriter<DoubleBitBinary>::Function GetStaticWriter(StaticDoubleBinaryVariation variation)
