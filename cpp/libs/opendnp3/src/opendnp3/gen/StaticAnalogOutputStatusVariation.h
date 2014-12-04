@@ -25,7 +25,7 @@
 
 namespace opendnp3 {
 
-enum class StaticAnalogOutputStatusVariation : int
+enum class StaticAnalogOutputStatusVariation : uint8_t
 {
   Group40Var1 = 0,
   Group40Var2 = 1,

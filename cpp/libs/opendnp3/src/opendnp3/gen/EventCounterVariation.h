@@ -25,7 +25,7 @@
 
 namespace opendnp3 {
 
-enum class EventCounterVariation : int
+enum class EventCounterVariation : uint8_t
 {
   Group22Var1 = 0,
   Group22Var2 = 1,

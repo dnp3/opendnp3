@@ -22,7 +22,7 @@ namespace Automatak.DNP3.Interface
 {
   /// <summary>
   /// </summary>
-  public enum StaticTimeAndIntervalVariation : int
+  public enum StaticTimeAndIntervalVariation : byte
   {
     Group50Var4 = 0
   }

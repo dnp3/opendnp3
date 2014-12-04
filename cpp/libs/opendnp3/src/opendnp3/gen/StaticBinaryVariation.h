@@ -25,7 +25,7 @@
 
 namespace opendnp3 {
 
-enum class StaticBinaryVariation : int
+enum class StaticBinaryVariation : uint8_t
 {
   Group1Var1 = 0,
   Group1Var2 = 1

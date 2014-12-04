@@ -25,7 +25,7 @@
 
 namespace opendnp3 {
 
-enum class StaticCounterVariation : int
+enum class StaticCounterVariation : uint8_t
 {
   Group20Var1 = 0,
   Group20Var2 = 1,

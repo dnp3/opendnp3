@@ -22,7 +22,7 @@ namespace Automatak.DNP3.Interface
 {
   /// <summary>
   /// </summary>
-  public enum EventCounterVariation : int
+  public enum EventCounterVariation : byte
   {
     Group22Var1 = 0,
     Group22Var2 = 1,

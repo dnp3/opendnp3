@@ -25,7 +25,7 @@
 
 namespace opendnp3 {
 
-enum class EventBinaryOutputStatusVariation : int
+enum class EventBinaryOutputStatusVariation : uint8_t
 {
   Group11Var1 = 0,
   Group11Var2 = 1

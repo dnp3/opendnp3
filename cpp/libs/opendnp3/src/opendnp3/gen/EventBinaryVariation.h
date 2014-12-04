@@ -25,7 +25,7 @@
 
 namespace opendnp3 {
 
-enum class EventBinaryVariation : int
+enum class EventBinaryVariation : uint8_t
 {
   Group2Var1 = 0,
   Group2Var2 = 1,

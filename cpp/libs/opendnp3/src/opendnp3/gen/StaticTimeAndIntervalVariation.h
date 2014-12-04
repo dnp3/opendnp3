@@ -25,7 +25,7 @@
 
 namespace opendnp3 {
 
-enum class StaticTimeAndIntervalVariation : int
+enum class StaticTimeAndIntervalVariation : uint8_t
 {
   Group50Var4 = 0
 };

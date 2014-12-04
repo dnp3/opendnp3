@@ -25,7 +25,7 @@
 
 namespace opendnp3 {
 
-enum class StaticAnalogVariation : int
+enum class StaticAnalogVariation : uint8_t
 {
   Group30Var1 = 0,
   Group30Var2 = 1,

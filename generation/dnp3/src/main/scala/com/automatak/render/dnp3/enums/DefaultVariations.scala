@@ -4,7 +4,7 @@ import com.automatak.render.{EnumValue, Base10, EnumValues, EnumModel}
 
 object DefaultVariations {
 
-  private def create(name: String, values: List[EnumValue]): EnumModel = EnumModel(name, Nil, EnumModel.Integer, values, Base10)
+  private def create(name: String, values: List[EnumValue]): EnumModel = EnumModel(name, Nil, EnumModel.UInt8, values, Base10)
 
   private def group(i: Int)(vars: Int*): List[EnumValue] = EnumValues.from(vars.map(v => List("Group",i.toString,"Var", v.toString).mkString).toList)
 

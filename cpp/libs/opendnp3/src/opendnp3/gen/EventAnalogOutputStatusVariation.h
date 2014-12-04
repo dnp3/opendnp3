@@ -25,7 +25,7 @@
 
 namespace opendnp3 {
 
-enum class EventAnalogOutputStatusVariation : int
+enum class EventAnalogOutputStatusVariation : uint8_t
 {
   Group42Var1 = 0,
   Group42Var2 = 1,

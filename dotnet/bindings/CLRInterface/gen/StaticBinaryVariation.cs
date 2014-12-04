@@ -22,7 +22,7 @@ namespace Automatak.DNP3.Interface
 {
   /// <summary>
   /// </summary>
-  public enum StaticBinaryVariation : int
+  public enum StaticBinaryVariation : byte
   {
     Group1Var1 = 0,
     Group1Var2 = 1

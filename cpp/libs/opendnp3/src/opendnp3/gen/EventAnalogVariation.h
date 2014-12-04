@@ -25,7 +25,7 @@
 
 namespace opendnp3 {
 
-enum class EventAnalogVariation : int
+enum class EventAnalogVariation : uint8_t
 {
   Group32Var1 = 0,
   Group32Var2 = 1,

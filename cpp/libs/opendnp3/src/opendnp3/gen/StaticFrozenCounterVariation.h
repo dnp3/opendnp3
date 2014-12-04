@@ -25,7 +25,7 @@
 
 namespace opendnp3 {
 
-enum class StaticFrozenCounterVariation : int
+enum class StaticFrozenCounterVariation : uint8_t
 {
   Group21Var1 = 0,
   Group21Var2 = 1,

@@ -22,7 +22,7 @@ namespace Automatak.DNP3.Interface
 {
   /// <summary>
   /// </summary>
-  public enum StaticCounterVariation : int
+  public enum StaticCounterVariation : byte
   {
     Group20Var1 = 0,
     Group20Var2 = 1,
