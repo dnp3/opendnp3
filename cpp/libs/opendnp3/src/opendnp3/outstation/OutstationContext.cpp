@@ -555,7 +555,7 @@ Pair<IINField, AppControlField> OutstationContext::HandleRead(const openpal::Rea
 	// Do a transaction (lock) on the database  for multi-threaded environments
 	Transaction tx(database);
 	ReadHandler handler(logger, database.GetSelector(), eventBuffer);
-	auto result = APDUParser::ParseTwoPass(objects, &handler, &logger, APDUParser::Context(false)); // don't expect range/count context on a READ
+	auto result = APDUParser::ParseTwoPass(objects, &handler, &logger, APDUParser::Settings::NoContents()); // don't expect range/count context on a READ
 	if (result == APDUParser::Result::OK)
 	{				
 		auto control = rspContext.LoadResponse(writer);
@@ -741,17 +741,13 @@ IINField OutstationContext::HandleRestart(const openpal::ReadOnlyBuffer& objects
 IINField OutstationContext::HandleAssignClass(const openpal::ReadOnlyBuffer& objects)
 {
 	if (pApplication->SupportsAssignClass())
-	{
+	{		
 		AssignClassHandler handler(logger, *pExecutor, *pApplication, database.GetClassAssigner());
-		auto result = APDUParser::ParseTwoPass(objects, &handler, &logger, APDUParser::Context(false));
-		if (result == APDUParser::Result::OK)
-		{
-			return handler.Errors();
-		}
-		else
-		{
-			return IINFromParseResult(result);
-		}
+
+		// Lock the db as this can adjust configuration values in the database
+		Transaction tx(database);
+		auto result = APDUParser::ParseTwoPass(objects, &handler, &logger, APDUParser::Settings::NoContents());
+		return (result == APDUParser::Result::OK) ? handler.Errors() : IINFromParseResult(result);
 	}
 	else
 	{

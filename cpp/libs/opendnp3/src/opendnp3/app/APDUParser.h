@@ -65,19 +65,24 @@ class APDUParser : private openpal::PureStatic
 {
 public:
 
-	class Context
+	class Settings
 	{
 	public:
 
-		static Context Default()
+		static Settings NoContents(int32_t filters = flags::APP_OBJECT_RX)
 		{
-			return Context();
+			return Settings(false, filters);
 		}
 
-		Context(bool expectContents_ = true, int32_t logFilters_ = flags::APP_OBJECT_RX) :
-			expectContents(expectContents_),
-			logFilters(logFilters_)			
-		{}
+		static Settings Default(int32_t filters = flags::APP_OBJECT_RX)
+		{
+			return Settings(true, filters);
+		}
+
+		static Settings Create(bool expectContents = true, int32_t filters = flags::APP_OBJECT_RX)
+		{
+			return Settings(expectContents, filters);
+		}
 
 		inline bool ExpectsContents() const
 		{
@@ -90,6 +95,11 @@ public:
 		}
 
 	private:
+
+		Settings(bool expectContents_ = true, int32_t logFilters_ = flags::APP_OBJECT_RX) :
+			expectContents(expectContents_),
+			logFilters(logFilters_)
+		{}
 
 
 		const bool expectContents;
@@ -111,30 +121,30 @@ public:
 	    COUNT_OF_ZERO
 	};
 
-	static Result ParseTwoPass(const openpal::ReadOnlyBuffer& buffer, IAPDUHandler* pHandler, openpal::Logger* pLogger, Context context = Context::Default());
+	static Result ParseTwoPass(const openpal::ReadOnlyBuffer& buffer, IAPDUHandler* pHandler, openpal::Logger* pLogger, Settings settings = Settings::Default());
 
 private:
 
-	static Result ParseSinglePass(const openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, IAPDUHandler* pHandler, Context context);
+	static Result ParseSinglePass(const openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, IAPDUHandler* pHandler, const Settings& settings);
 
-	static Result ParseHeaders(const openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, Context context, IAPDUHandler* pHandler);
+	static Result ParseHeaders(const openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, const Settings& settings, IAPDUHandler* pHandler);
 
-	static Result ParseHeader(openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, Context& context, IAPDUHandler* pHandler);
-
-	template <class IndexType>
-	static Result ParseCountHeader(openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, Context& context, const HeaderRecord& record, IAPDUHandler* pHandler);
-
-	template <class ParserType, class CountType>
-	static Result ParseRangeHeader(openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, Context& context, const HeaderRecord& record, IAPDUHandler* pHandler);
+	static Result ParseHeader(openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, const Settings& settings, IAPDUHandler* pHandler);
 
 	template <class IndexType>
-	static Result ParseIndexPrefixHeader(openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, Context& context, const HeaderRecord& record, IAPDUHandler* pHandler);
+	static Result ParseCountHeader(openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, const Settings& settings, const HeaderRecord& record, IAPDUHandler* pHandler);
 
 	template <class ParserType, class CountType>
-	static Result ParseRange(openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, Context& context, Range& range);
+	static Result ParseRangeHeader(openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, const Settings& settings, const HeaderRecord& record, IAPDUHandler* pHandler);
+
+	template <class IndexType>
+	static Result ParseIndexPrefixHeader(openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, const Settings& settings, const HeaderRecord& record, IAPDUHandler* pHandler);
+
+	template <class ParserType, class CountType>
+	static Result ParseRange(openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, const Settings& settings, Range& range);
 
 	template <class ParserType>
-	static Result ParseCount(openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, Context& context, typename ParserType::Type& count);
+	static Result ParseCount(openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, const Settings& settings, typename ParserType::Type& count);
 
 	static Result ParseRangeOfObjects(openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, const HeaderRecord& record, const Range& range, IAPDUHandler* pHandler);
 
@@ -194,13 +204,13 @@ private:
 };
 
 template <class IndexType>
-APDUParser::Result APDUParser::ParseCountHeader(openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, Context& context, const HeaderRecord& record, IAPDUHandler* pHandler)
+APDUParser::Result APDUParser::ParseCountHeader(openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, const Settings& settings, const HeaderRecord& record, IAPDUHandler* pHandler)
 {
 	typename IndexType::Type count;
-	auto res = ParseCount<IndexType>(buffer, pLogger, context, count);
+	auto res = ParseCount<IndexType>(buffer, pLogger, settings, count);
 	if(res == Result::OK)
 	{
-		FORMAT_LOGGER_BLOCK(pLogger, context.Filters(),
+		FORMAT_LOGGER_BLOCK(pLogger, settings.Filters(),
 			"%03u,%03u %s, %s [%u]",
 			record.group,
 			record.variation,
@@ -208,7 +218,7 @@ APDUParser::Result APDUParser::ParseCountHeader(openpal::ReadOnlyBuffer& buffer,
 			QualifierCodeToString(record.qualifier),
 			count);		
 
-		if(context.ExpectsContents())
+		if (settings.ExpectsContents())
 		{
 			return ParseCountOfObjects(buffer, pLogger, record, count, pHandler);
 		}
@@ -229,13 +239,13 @@ APDUParser::Result APDUParser::ParseCountHeader(openpal::ReadOnlyBuffer& buffer,
 }
 
 template <class ParserType, class CountType>
-APDUParser::Result APDUParser::ParseRangeHeader(openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, Context& context, const HeaderRecord& record, IAPDUHandler* pHandler)
+APDUParser::Result APDUParser::ParseRangeHeader(openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, const Settings& settings, const HeaderRecord& record, IAPDUHandler* pHandler)
 {
 	Range range;
-	auto res = ParseRange<ParserType, CountType>(buffer, pLogger, context, range);
+	auto res = ParseRange<ParserType, CountType>(buffer, pLogger, settings, range);
 	if(res == Result::OK)
 	{
-		FORMAT_LOGGER_BLOCK(pLogger, context.Filters(),
+		FORMAT_LOGGER_BLOCK(pLogger, settings.Filters(),
 			"%03u,%03u %s, %s [%u, %u]",
 			record.group,
 			record.variation,
@@ -244,7 +254,7 @@ APDUParser::Result APDUParser::ParseRangeHeader(openpal::ReadOnlyBuffer& buffer,
 			range.start,
 			range.stop);		
 
-		if(context.ExpectsContents())
+		if(settings.ExpectsContents())
 		{
 			return ParseRangeOfObjects(buffer, pLogger, record, range, pHandler);
 		}
@@ -264,14 +274,14 @@ APDUParser::Result APDUParser::ParseRangeHeader(openpal::ReadOnlyBuffer& buffer,
 }
 
 template <class IndexType>
-APDUParser::Result APDUParser::ParseIndexPrefixHeader(openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, Context& context, const HeaderRecord& record, IAPDUHandler* pHandler)
+APDUParser::Result APDUParser::ParseIndexPrefixHeader(openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, const Settings& settings, const HeaderRecord& record, IAPDUHandler* pHandler)
 {
 	typename IndexType::Type count;
-	auto res = ParseCount<IndexType>(buffer, pLogger, context, count);
+	auto res = ParseCount<IndexType>(buffer, pLogger, settings, count);
 	if(res == Result::OK)
 	{
 
-		FORMAT_LOGGER_BLOCK(pLogger, context.Filters(),
+		FORMAT_LOGGER_BLOCK(pLogger, settings.Filters(),
 			"%03u,%03u %s, %s [%u]",
 			record.group,
 			record.variation,
@@ -472,7 +482,7 @@ APDUParser::Result APDUParser::ParseObjectsWithIndexPrefix(openpal::ReadOnlyBuff
 }
 
 template <class ParserType, class RangeType>
-APDUParser::Result APDUParser::ParseRange(openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, Context& context, Range& range)
+APDUParser::Result APDUParser::ParseRange(openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, const Settings& settings, Range& range)
 {
 	if (buffer.Size() < (2 * ParserType::Size))
 	{
@@ -498,7 +508,7 @@ APDUParser::Result APDUParser::ParseRange(openpal::ReadOnlyBuffer& buffer, openp
 }
 
 template <class ParserType>
-APDUParser::Result APDUParser::ParseCount(openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, Context& context, typename ParserType::Type& count)
+APDUParser::Result APDUParser::ParseCount(openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, const Settings& settings, typename ParserType::Type& count)
 {
 	if (buffer.Size() < ParserType::Size)
 	{

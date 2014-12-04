@@ -31,15 +31,15 @@ using namespace openpal;
 namespace opendnp3
 {
 
-APDUParser::Result APDUParser::ParseTwoPass(const openpal::ReadOnlyBuffer& buffer, IAPDUHandler* pHandler, openpal::Logger* pLogger, Context context)
+APDUParser::Result APDUParser::ParseTwoPass(const openpal::ReadOnlyBuffer& buffer, IAPDUHandler* pHandler, openpal::Logger* pLogger, Settings settings)
 {
 	if(pHandler)
 	{
 		// do a single pass without the callbacks to validate that the message is well formed
-		auto result = ParseSinglePass(buffer, pLogger, nullptr, context);
+		auto result = ParseSinglePass(buffer, pLogger, nullptr, settings);
 		if (result == Result::OK)
 		{
-			return ParseSinglePass(buffer, nullptr, pHandler, context);
+			return ParseSinglePass(buffer, nullptr, pHandler, settings);
 		}
 		else
 		{
@@ -48,16 +48,16 @@ APDUParser::Result APDUParser::ParseTwoPass(const openpal::ReadOnlyBuffer& buffe
 	}
 	else
 	{
-		return ParseSinglePass(buffer, pLogger, pHandler, context);
+		return ParseSinglePass(buffer, pLogger, pHandler, settings);
 	}
 }
 
-APDUParser::Result APDUParser::ParseSinglePass(const openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, IAPDUHandler* pHandler, Context context)
+APDUParser::Result APDUParser::ParseSinglePass(const openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, IAPDUHandler* pHandler, const Settings& settings)
 {
 	ReadOnlyBuffer copy(buffer);
 	while(copy.Size() > 0)
 	{
-		auto result = ParseHeader(copy, pLogger, context, pHandler);
+		auto result = ParseHeader(copy, pLogger, settings, pHandler);
 		if (result != Result::OK)
 		{
 			return result;
@@ -66,7 +66,7 @@ APDUParser::Result APDUParser::ParseSinglePass(const openpal::ReadOnlyBuffer& bu
 	return Result::OK;
 }
 
-APDUParser::Result APDUParser::ParseHeader(ReadOnlyBuffer& buffer, openpal::Logger* pLogger, Context& context, IAPDUHandler* pHandler)
+APDUParser::Result APDUParser::ParseHeader(ReadOnlyBuffer& buffer, openpal::Logger* pLogger, const Settings& settings, IAPDUHandler* pHandler)
 {
 	if (buffer.Size() < 3)
 	{
@@ -99,7 +99,7 @@ APDUParser::Result APDUParser::ParseHeader(ReadOnlyBuffer& buffer, openpal::Logg
 						pHandler->AllObjects(record);
 					}		
 
-					FORMAT_LOGGER_BLOCK(pLogger, context.Filters(),
+					FORMAT_LOGGER_BLOCK(pLogger, settings.Filters(),
 						"%03u,%03u - %s - %s",
 						group,
 						variation,
@@ -110,22 +110,22 @@ APDUParser::Result APDUParser::ParseHeader(ReadOnlyBuffer& buffer, openpal::Logg
 				}
 
 			case(QualifierCode::UINT8_CNT) :
-				return ParseCountHeader<UInt8>(buffer, pLogger, context, record, pHandler);
+				return ParseCountHeader<UInt8>(buffer, pLogger, settings, record, pHandler);
 
 			case(QualifierCode::UINT16_CNT) :
-				return ParseCountHeader<UInt16>(buffer, pLogger, context, record, pHandler);
+				return ParseCountHeader<UInt16>(buffer, pLogger, settings, record, pHandler);
 
 			case(QualifierCode::UINT8_START_STOP) :
-				return ParseRangeHeader<UInt8, uint16_t>(buffer, pLogger, context, record, pHandler);
+				return ParseRangeHeader<UInt8, uint16_t>(buffer, pLogger, settings, record, pHandler);
 
 			case(QualifierCode::UINT16_START_STOP) :
-				return ParseRangeHeader<UInt16, uint32_t>(buffer, pLogger, context, record, pHandler);
+				return ParseRangeHeader<UInt16, uint32_t>(buffer, pLogger, settings, record, pHandler);
 
 			case(QualifierCode::UINT8_CNT_UINT8_INDEX) :
-				return ParseIndexPrefixHeader<UInt8>(buffer, pLogger, context, record, pHandler);
+				return ParseIndexPrefixHeader<UInt8>(buffer, pLogger, settings, record, pHandler);
 
 			case(QualifierCode::UINT16_CNT_UINT16_INDEX) :
-				return ParseIndexPrefixHeader<UInt16>(buffer, pLogger, context, record, pHandler);
+				return ParseIndexPrefixHeader<UInt16>(buffer, pLogger, settings, record, pHandler);
 
 			default:
 				FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_UNKNOWN_QUALIFIER, "Unknown qualifier %x", rawQualifier);
