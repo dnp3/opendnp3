@@ -55,7 +55,7 @@ public:
 		response(CommandResponse(TaskCompletion::FAILURE_BAD_RESPONSE))
 	{}	
 
-	virtual void _OnIndexPrefix(const HeaderRecord&, const IterableBuffer<IndexedValue<CommandType, uint16_t>>& meas)
+	virtual IINField ProcessIndexPrefix(const HeaderRecord&, const IterableBuffer<IndexedValue<CommandType, uint16_t>>& meas) override final
 	{
 		if(this->IsFirstHeader())
 		{
@@ -65,8 +65,21 @@ public:
 				if(received.index == command.index && received.value.ValuesEqual(command.value))
 				{
 					response = CommandResponse(TaskCompletion::SUCCESS, received.value.status);
+					return IINField();
+				}
+				else
+				{
+					return IINBit::PARAM_ERROR;
 				}
 			}
+			else
+			{
+				return IINBit::PARAM_ERROR;
+			}
+		}
+		else
+		{
+			return IINBit::PARAM_ERROR;
 		}
 	}
 
