@@ -42,7 +42,7 @@
 #include "opendnp3/outstation/IOutstationApplication.h"
 #include "opendnp3/outstation/OutstationSolicitedStates.h"
 #include "opendnp3/outstation/OutstationUnsolicitedStates.h"
-#include "opendnp3/outstation/OutstationEventBuffer.h"
+#include "opendnp3/outstation/EventBuffer.h"
 #include "opendnp3/outstation/DeferredRequest.h"
 
 namespace opendnp3
@@ -70,7 +70,7 @@ class OutstationContext : private INewEventDataHandler
 	openpal::IExecutor* pExecutor;	
 	ICommandHandler* pCommandHandler;
 	IOutstationApplication* pApplication;	
-	OutstationEventBuffer eventBuffer;
+	EventBuffer eventBuffer;
 	Database database;
 
 	// ------ Dynamic "state", i.e. things that must be managed or cleanup on close ------

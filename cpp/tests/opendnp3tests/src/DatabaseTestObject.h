@@ -33,39 +33,39 @@ class MockEventBuffer : public IEventReceiver
 {
 public:
 
-	void Update(const Event<Binary>& aEvent) override final
+	void Update(const Event<Binary>& evt, EventBinaryVariation var) override final
 	{
-		binaryEvents.push_back(aEvent);
+		binaryEvents.push_back(evt);
 	}
 
-	void Update(const Event<DoubleBitBinary>& aEvent) override final
+	void Update(const Event<DoubleBitBinary>& evt, EventDoubleBinaryVariation var) override final
 	{
-		doubleBinaryEvents.push_back(aEvent);
+		doubleBinaryEvents.push_back(evt);
 	}
 
-	void Update(const Event<Analog>& aEvent) override final
+	void Update(const Event<Analog>& evt, EventAnalogVariation var) override final
 	{
-		analogEvents.push_back(aEvent);
+		analogEvents.push_back(evt);
 	}
 
-	void Update(const Event<Counter>& aEvent) override final
+	void Update(const Event<Counter>& evt, EventCounterVariation var) override final
 	{
-		counterEvents.push_back(aEvent);
+		counterEvents.push_back(evt);
 	}
 
-	void Update(const Event<FrozenCounter>& aEvent) override final
+	void Update(const Event<FrozenCounter>& evt, EventFrozenCounterVariation var) override final
 	{
-		frozenCounterEvents.push_back(aEvent);
+		frozenCounterEvents.push_back(evt);
 	}
 
-	void Update(const Event<BinaryOutputStatus>& aEvent) override final
+	void Update(const Event<BinaryOutputStatus>& evt, EventBinaryOutputStatusVariation var) override final
 	{
-		binaryOutputStatusEvents.push_back(aEvent);
+		binaryOutputStatusEvents.push_back(evt);
 	}
 
-	void Update(const Event<AnalogOutputStatus>& aEvent) override final
+	void Update(const Event<AnalogOutputStatus>& evt, EventAnalogOutputStatusVariation var) override final
 	{
-		analogOutputStatusEvents.push_back(aEvent);
+		analogOutputStatusEvents.push_back(evt);
 	}
 
 	std::deque<Event<Binary>> binaryEvents;

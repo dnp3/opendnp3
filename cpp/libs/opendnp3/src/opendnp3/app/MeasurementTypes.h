@@ -92,7 +92,7 @@ public:
 
 	const static EventType EventTypeEnum = EventType::Binary;
 	const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::BinaryInput;
-	
+		
 	typedef bool ValueType;
 	typedef EventBinaryVariation EventVariation;
 	typedef StaticBinaryVariation StaticVariation;

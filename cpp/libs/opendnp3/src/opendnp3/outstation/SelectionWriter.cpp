@@ -21,14 +21,14 @@
 
 #include "SelectionWriter.h"
 
-#include "OutstationEventBuffer.h"
+#include "EventBuffer.h"
 
 using namespace openpal;
 
 namespace opendnp3
 {
 
-SelectionWriter::SelectionWriter(OutstationEventBuffer& buffer) : 
+SelectionWriter::SelectionWriter(EventBuffer& buffer) : 
 	pBuffer(&buffer)
 	//iterator(buffer.sequenceOfEvents.Iterate()) 
 {

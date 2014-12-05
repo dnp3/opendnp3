@@ -179,7 +179,7 @@ OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnConfirm(Out
 
 		// Lock the database for the remainder of this method as we will be manipulating the buffers
 		Transaction tx(pContext->database);				
-		pContext->eventBuffer.Clear();
+		pContext->eventBuffer.ClearWritten();
 
 		if (pContext->rspContext.HasSelection())
 		{						

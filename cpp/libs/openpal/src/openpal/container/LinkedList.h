@@ -169,6 +169,32 @@ public:
 		return pNode;
 	}
 
+	template <class Selector, class Action>
+	IndexType RemoveAll(Selector match, Action action)
+	{
+		IndexType count = 0;
+				
+		auto iter = this->Iterate();
+		auto pCurrent = iter.Next();
+		while (pCurrent)
+		{
+			if (match(pCurrent->value))
+			{				
+				auto pRemoved = pCurrent;
+				pCurrent = iter.Next();				
+				action(pRemoved->value);
+				this->Remove(pRemoved);
+				++count;
+			}
+			else
+			{
+				pCurrent = iter.next();
+			}
+		}
+		
+		return count;
+	}
+
 	bool Remove(const ValueType& value)
 	{
 		auto iter = this->Iterate();

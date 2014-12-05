@@ -31,11 +31,11 @@
 namespace opendnp3
 {
 
-class OutstationEventBuffer;
+class EventBuffer;
 
 class SelectionWriter
 {
-	friend class OutstationEventBuffer;
+	friend class EventBuffer;
 
 public:	
 
@@ -43,9 +43,9 @@ public:
 
 private:
 	
-	SelectionWriter(OutstationEventBuffer& buffer);	
+	SelectionWriter(EventBuffer& buffer);	
 
-	OutstationEventBuffer* pBuffer;
+	EventBuffer* pBuffer;
 	//openpal::LinkedListIterator<SOERecord> iterator;
 	
 	//static bool SeekNextUnselectedNode(openpal::LinkedListIterator<SOERecord>& iterator);

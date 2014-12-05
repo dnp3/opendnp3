@@ -94,7 +94,7 @@ void OutstationContext::OnNewEventData()
 
 IINField OutstationContext::GetDynamicIIN()
 {	
-	auto classField = eventBuffer.UnselectedEventMask();
+	auto classField = eventBuffer.UnwrittenClassField();
 
 	IINField ret;
 	ret.SetBitToValue(IINBit::CLASS1_EVENTS, classField.HasClass1());
@@ -473,11 +473,12 @@ void OutstationContext::CheckForUnsolicited()
 	if(params.allowUnsolicited)
 	{
 		if (completedNullUnsol)
-		{										
+		{		
+			/*
 			// are there events to be reported?
 			if (eventBuffer.TotalEventMask().Intersects(params.unsolClassMask))
 			{
-				/*
+			
 				criteria.RecordViaClassField(params.unsolClassMask);
 				auto unsolResponse = this->StartNewUnsolicitedResponse();
 				auto objectWriter = unsolResponse.GetWriter();				
@@ -494,8 +495,9 @@ void OutstationContext::CheckForUnsolicited()
 				this->StartUnsolicitedConfirmTimer();
 				this->pUnsolicitedState = &OutstationUnsolicitedStateConfirmWait::Inst();
 				this->BeginUnsolTx(unsolResponse.ToReadOnly());
-				*/
+				
 			}
+			*/
 		}
 		else
 		{

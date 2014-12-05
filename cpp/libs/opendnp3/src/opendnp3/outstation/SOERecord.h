@@ -33,8 +33,8 @@ template <class T>
 struct ValueAndVariation
 {	
 	typename T::ValueType value;	
-	typename T::StaticVariation defaultVariation;
-	typename T::StaticVariation selectedVariation;
+	typename T::EventVariation defaultVariation;
+	typename T::EventVariation selectedVariation;
 };
 
 template <class ValueType>
@@ -42,7 +42,7 @@ struct EventInstance
 {
 	ValueType value;
 	uint16_t index;
-	typename ValueType::StaticVariation variation;
+	typename ValueType::EventVariation variation;
 };
 
 union EventValue
@@ -62,13 +62,13 @@ public:
 
 	SOERecord();
 
-	SOERecord(const Binary& meas, uint16_t index, EventClass clazz, StaticBinaryVariation var);
-	SOERecord(const DoubleBitBinary& meas, uint16_t index, EventClass clazz, StaticDoubleBinaryVariation var);
-	SOERecord(const BinaryOutputStatus& meas, uint16_t index, EventClass clazz, StaticBinaryOutputStatusVariation var);
-	SOERecord(const Counter& meas, uint16_t index, EventClass clazz, StaticCounterVariation var);
-	SOERecord(const FrozenCounter& meas, uint16_t index, EventClass clazz, StaticFrozenCounterVariation var);
-	SOERecord(const Analog& meas, uint16_t index, EventClass clazz, StaticAnalogVariation var);
-	SOERecord(const AnalogOutputStatus& meas, uint16_t index, EventClass clazz, StaticAnalogOutputStatusVariation var);
+	SOERecord(const Binary& meas, uint16_t index, EventClass clazz, EventBinaryVariation var);
+	SOERecord(const DoubleBitBinary& meas, uint16_t index, EventClass clazz, EventDoubleBinaryVariation var);
+	SOERecord(const BinaryOutputStatus& meas, uint16_t index, EventClass clazz, EventBinaryOutputStatusVariation var);
+	SOERecord(const Counter& meas, uint16_t index, EventClass clazz, EventCounterVariation var);
+	SOERecord(const FrozenCounter& meas, uint16_t index, EventClass clazz, EventFrozenCounterVariation var);
+	SOERecord(const Analog& meas, uint16_t index, EventClass clazz, EventAnalogVariation var);
+	SOERecord(const AnalogOutputStatus& meas, uint16_t index, EventClass clazz, EventAnalogOutputStatusVariation var);
 
 	template <class T>
 	EventInstance<T> Read();
@@ -76,7 +76,9 @@ public:
 	EventType type;	
 	EventClass clazz;
 	bool selected;
-	bool reported;
+	bool written;
+
+	void Reset();
 
 private:
 

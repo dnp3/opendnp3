@@ -19,16 +19,17 @@
  * to you under the terms of the License.
  */
 
-#ifndef OPENDNP3_OUTSTATIONEVENTBUFFER_H
-#define OPENDNP3_OUTSTATIONEVENTBUFFER_H
+#ifndef OPENDNP3_EVENTBUFFER_H
+#define OPENDNP3_EVENTBUFFER_H
 
 #include "opendnp3/outstation/IEventReceiver.h"
 #include "opendnp3/outstation/IEventSelector.h"
 #include "opendnp3/outstation/EventCount.h"
 #include "opendnp3/outstation/SelectionWriter.h"
 #include "opendnp3/outstation/EventBufferConfig.h"
+#include "opendnp3/outstation/SOERecord.h"
 
-#include <openpal/container/Stack.h>
+#include <openpal/container/LinkedList.h>
 
 namespace opendnp3
 {
@@ -48,23 +49,22 @@ namespace opendnp3
 	the selection criteria.
 */
 
-class OutstationEventBuffer : public IEventReceiver, public IEventSelector
+class EventBuffer : public IEventReceiver, public IEventSelector
 {
-	friend class SelectionWriter;
-
-
+	
 public:
-	OutstationEventBuffer(const EventBufferConfig& config);
+
+	EventBuffer(const EventBufferConfig& config);
 	
 	// ------- IEventReceiver ------ 
 
-	virtual void Update(const Event<Binary>& evt) override final;
-	virtual void Update(const Event<Analog>& evt) override final;
-	virtual void Update(const Event<Counter>& evt) override final;
-	virtual void Update(const Event<FrozenCounter>& evt) override final;
-	virtual void Update(const Event<DoubleBitBinary>& evt) override final;
-	virtual void Update(const Event<BinaryOutputStatus>& evt) override final;
-	virtual void Update(const Event<AnalogOutputStatus>& evt) override final;
+	virtual void Update(const Event<Binary>& evt, EventBinaryVariation var) override final { this->UpdateAny(evt, var); }	
+	virtual void Update(const Event<DoubleBitBinary>& evt, EventDoubleBinaryVariation var) override final { this->UpdateAny(evt, var); }		
+	virtual void Update(const Event<Analog>& evt, EventAnalogVariation var) override final { this->UpdateAny(evt, var); }	
+	virtual void Update(const Event<Counter>& evt, EventCounterVariation var) override final { this->UpdateAny(evt, var); }	
+	virtual void Update(const Event<FrozenCounter>&  evt, EventFrozenCounterVariation var) override final { this->UpdateAny(evt, var); }	
+	virtual void Update(const Event<BinaryOutputStatus>& evt, EventBinaryOutputStatusVariation var) override final { this->UpdateAny(evt, var); }	
+	virtual void Update(const Event<AnalogOutputStatus>& evt, EventAnalogOutputStatusVariation var) override final { this->UpdateAny(evt, var); }
 
 	// ------- IEventSelector ------ 
 
@@ -77,19 +77,21 @@ public:
 	// ------- Misc -------
 
 	void Reset(); // called when a transmission fails
-	void Clear(); // called when a transmission succeeds
 
-	SelectionWriter Iterate();	
+	void ClearWritten(); // called when a transmission succeeds
 
-	ClassField TotalEventMask() const;
-	ClassField UnselectedEventMask() const;
+	ClassField UnwrittenClassField() const;
 	
 	bool IsOverflown();
 
-	template <class T>
-	void UpdateAny(const Event<T>& evt, EventType type);
-
 private:
+
+	void RemoveFromCounts(const SOERecord& record);
+
+	bool RemoveOldestEventOfType(EventType type);
+
+	template <class T>
+	void UpdateAny(const Event<T>& evt,  typename T::EventVariation var);
 
 	bool IsAnyTypeOverflown() const;
 	bool IsTypeOverflown(EventType type) const;	
@@ -98,50 +100,35 @@ private:
 
 	EventBufferConfig config;
 			
-	//openpal::LinkedList<SOERecord, uint32_t> sequenceOfEvents;
-	//openpal::Stack<openpal::ListNode<SOERecord>*, uint32_t> selectedEvents;	
+	openpal::LinkedList<SOERecord, uint32_t> events;
 
-	EventCount totalTracker;
-	EventCount selectedTracker;	
+	// ---- trakcers
+
+	EventCount totalCounts;
+	EventCount selectedCounts;
+	EventCount writtenCounts;
 
 	bool HasEnoughSpaceToClearOverflow() const;	
 };
 
 template <class T>
-void OutstationEventBuffer::UpdateAny(const Event<T>& evt, EventType type)
-{
-	/*
-	auto maxForType = config.GetMaxEventsForType(type);
-
+void EventBuffer::UpdateAny(const Event<T>& evt, typename T::EventVariation var)
+{		
+	auto maxForType = config.GetMaxEventsForType(T::EventTypeEnum);
+	
 	if (maxForType > 0)
 	{
-		auto currentCount = totalTracker.NumOfType(type);
-
-		if (currentCount >= maxForType || sequenceOfEvents.IsFull())
+		auto currentCount = totalCounts.NumOfType(T::EventTypeEnum);
+		
+		if (currentCount >= maxForType || events.IsFull())
 		{
 			this->overflow = true;
-			// find the first event of this type in the SOE, and discard it
-			auto isMatch = [type](const SOERecord& rec) { return rec.type == type; };
-			auto pNode = sequenceOfEvents.FindFirst(isMatch);
-			if (pNode)
-			{
-				totalTracker.Decrement(pNode->value.clazz, type);
-				
-				if (pNode->value.selected)
-				{
-					pNode->value.selected = false;
-					selectedTracker.Decrement(pNode->value.clazz, type);
-				}
-
-				sequenceOfEvents.Remove(pNode);
-			}
+			RemoveOldestEventOfType(T::EventTypeEnum);			
 		}
 
-		totalTracker.Increment(evt.clazz, type);		
-		SOERecord record(evt.value, evt.index, evt.clazz);
-		sequenceOfEvents.Add(record);
-	}
-	*/
+		events.Add(SOERecord(evt.value, evt.index, evt.clazz, var));
+		totalCounts.Increment(evt.clazz, T::EventTypeEnum);
+	}	
 }
 
 }

@@ -31,6 +31,33 @@ EventCount::EventCount()
 	this->Clear();
 }
 
+EventCount::EventCount(const EventCount& ec)
+{
+	for (uint16_t clazz = 0; clazz < NUM_CLASSES; ++clazz)
+	{
+		for (uint16_t type = 0; type < NUM_TYPES; ++type)
+		{
+			numOfTypeAndClass[clazz][type] = ec.numOfTypeAndClass[clazz][type];
+		}
+	}
+}
+
+EventCount& EventCount::operator=(const EventCount& ec)
+{
+	if (this != &ec)
+	{
+		for (uint16_t clazz = 0; clazz < NUM_CLASSES; ++clazz)
+		{
+			for (uint16_t type = 0; type < NUM_TYPES; ++type)
+			{
+				numOfTypeAndClass[clazz][type] = ec.numOfTypeAndClass[clazz][type];
+			}
+		}
+	}
+
+	return *this;
+}
+
 void EventCount::Clear()
 {
 	for (uint16_t clazz = 0; clazz < NUM_CLASSES; ++clazz)

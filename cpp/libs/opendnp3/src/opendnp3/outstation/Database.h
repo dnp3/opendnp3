@@ -119,7 +119,7 @@ bool Database::UpdateEvent(const T& value, uint16_t index, bool forceEvent)
 
 			if (pEventReceiver)
 			{
-				pEventReceiver->Update(Event<T>(value, index, ec));
+				pEventReceiver->Update(Event<T>(value, index, ec), metadata.variation);
 				transactionHasEvents = true;
 			}
 		}

@@ -62,7 +62,7 @@ OutstationUnsolicitedStateBase* OutstationUnsolicitedStateConfirmWait::OnConfirm
 		pContext->CancelConfirmTimer();
 		if (pContext->completedNullUnsol)
 		{			
-			pContext->eventBuffer.Clear();
+			pContext->eventBuffer.ClearWritten();
 		}
 		else
 		{

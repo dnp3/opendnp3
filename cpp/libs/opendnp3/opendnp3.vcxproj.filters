@@ -306,9 +306,6 @@
     <ClInclude Include="src\opendnp3\outstation\IINHelpers.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\OutstationEventBuffer.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\ReadHandler.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
@@ -714,6 +711,9 @@
     <ClInclude Include="src\opendnp3\gen\StaticTimeAndIntervalVariation.h">
       <Filter>Header\gen</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\EventBuffer.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\AnalogOutput.cpp">
@@ -798,9 +798,6 @@
       <Filter>Source\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\EventCount.cpp">
-      <Filter>Source\outstation</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\OutstationEventBuffer.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\ReadHandler.cpp">
@@ -1074,6 +1071,9 @@
       <Filter>Source\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\DatabaseBuffers.cpp">
+      <Filter>Source\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\EventBuffer.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
   </ItemGroup>

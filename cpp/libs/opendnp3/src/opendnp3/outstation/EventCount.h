@@ -32,20 +32,23 @@
 namespace opendnp3
 {
 
-class EventCount : openpal::Uncopyable
+class EventCount
 {
 	static const uint16_t NUM_CLASSES = 3;
 	static const uint16_t NUM_TYPES = 7;
 	
 public:
 
-	EventCount();	
+	EventCount();
+
+	EventCount(const EventCount& ec);
+
+	EventCount& operator=(const EventCount& ec);
 
 	ClassField ToClassField() const;
 
 	uint32_t NumOfClass(EventClass clazz) const;
 	uint32_t NumOfType(EventType type) const;
-
 	ClassField Subtract(const EventCount& rhs) const;
 
 	void Increment(EventClass clazz, EventType type, uint32_t count = 1);
