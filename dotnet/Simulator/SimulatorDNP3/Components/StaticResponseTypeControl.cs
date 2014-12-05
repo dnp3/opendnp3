@@ -25,24 +25,6 @@ namespace Automatak.Simulator.DNP3.Components
             this.ComboBoxAnalog.DataSource = Enum.GetValues(typeof(StaticAnalogVariation));
             this.ComboBoxBinaryOutputStatus.DataSource = Enum.GetValues(typeof(StaticBinaryOutputStatusVariation));
             this.ComboBoxAnalogOutputStatus.DataSource = Enum.GetValues(typeof(StaticAnalogOutputStatusVariation));
-        }
-
-        public StaticResponseConfig Configuration
-        {
-            get
-            {
-                var config = new StaticResponseConfig();
-
-                config.binary = (StaticBinaryVariation) this.ComboBoxBinary.SelectedValue;
-                config.doubleBinary = (StaticDoubleBinaryVariation) this.ComboBoxDoubleBinary.SelectedValue;
-                config.counter = (StaticCounterVariation) this.ComboBoxCounter.SelectedValue;
-                config.frozenCounter = (StaticFrozenCounterVariation) this.ComboBoxFrozenCounter.SelectedValue;
-                config.analog = (StaticAnalogVariation)this.ComboBoxAnalog.SelectedValue;
-                config.binaryOutputStatus = (StaticBinaryOutputStatusVariation) this.ComboBoxBinaryOutputStatus.SelectedValue;
-                config.analogOutputStatus = (StaticAnalogOutputStatusVariation) this.ComboBoxAnalogOutputStatus.SelectedValue;
-
-                return config;
-            }
-        }
+        }        
     }
 }

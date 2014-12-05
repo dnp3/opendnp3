@@ -62,9 +62,7 @@ namespace Automatak.Simulator.DNP3.Components
                 var oc = new OutstationStackConfig();
                 oc.link = this.linkConfigControl.Configuration;
                 oc.outstation.config = this.OutstationParameters;
-                oc.outstation.buffer = this.eventBufferConfigControl1.Configuration;
-                oc.outstation.staticConfig = this.staticResponseTypeControl1.Configuration;
-                oc.outstation.eventConfig = this.eventResponseTypeControl1.Configuration;
+                oc.outstation.buffer = this.eventBufferConfigControl1.Configuration;                
             
                 var alias = this.comboBoxTemplate.SelectedItem.ToString();
                 var template = config.GetTemplateMaybeNull(alias);
