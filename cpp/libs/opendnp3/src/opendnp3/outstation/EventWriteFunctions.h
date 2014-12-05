@@ -58,12 +58,10 @@ bool EventWriteFunctions::WriteFixedSize(const EventWriteLimits& limits, HeaderW
 
 template <class Serializer, class CTOType>
 bool EventWriteFunctions::WriteFixedSizeWithCTO(const EventWriteLimits& limits, HeaderWriter& writer, openpal::ListNode<SOERecord>* start, const ListIterator& writeCallback)
-{
-	typename Serializer::Target meas;
-	start->value.Read(meas);
-	CTOType cto = { meas.time };
-	//cto.time = meas.time;
-
+{	
+	EventInstance<typename Serializer::Target> meas = start->value.Read<typename Serializer::Target>();	
+	CTOType cto = { meas.value.time };
+	
 	auto iter = writer.IterateOverCountWithPrefixAndCTO<openpal::UInt16, typename Serializer::Target>(QualifierCode::UINT16_CNT_UINT16_INDEX, Serializer::Inst(), cto);
 
 	return WriteFixedSizeWithPrefixIteratorAndCTO(limits, iter, start, writeCallback, cto);
@@ -77,15 +75,13 @@ bool EventWriteFunctions::WriteFixedSizeWithPrefixIterator(const EventWriteLimit
 
 	if (writer.IsValid())
 	{
-		auto pNode = start;
-
-		Target measurement;
+		auto pNode = start;		
 
 		while (pNode && (pNode->value.type == Target::EventTypeEnum) && remainder.CanWrite(pNode->value.clazz))
 		{
-			pNode->value.Read(measurement);
+			auto instance = pNode->value.Read<Target>();
 
-			if (writer.Write(measurement, pNode->value.index))
+			if (writer.Write(instance.value, instance.index))
 			{
 				remainder.Decrement(pNode->value.clazz);
 				// inform that we wrote this node, and get the next node
@@ -114,22 +110,21 @@ bool EventWriteFunctions::WriteFixedSizeWithPrefixIteratorAndCTO(const EventWrit
 
 	if (writer.IsValid())
 	{
-		auto pNode = start;
-
-		Target measurement;		
+		auto pNode = start;		
 
 		while (pNode && (pNode->value.type == Target::EventTypeEnum) && remainder.CanWrite(pNode->value.clazz))
 		{
-			pNode->value.Read(measurement);
+			auto instance = pNode->value.Read<Target>();
 
-			if (measurement.time < cto.time)
+			if (instance.value.time < cto.time)
 			{
 				// can't write this because the timestamp is less than the CTO
 				return true;
 			}
 			else
 			{
-				auto diff = measurement.time - cto.time;
+				auto diff = instance.value.time - cto.time;
+
 				if (diff > openpal::UInt16::Max)
 				{
 					// can't write this measurement because the timestamp difference is buffer than 2^16 - 1
@@ -137,8 +132,8 @@ bool EventWriteFunctions::WriteFixedSizeWithPrefixIteratorAndCTO(const EventWrit
 				}
 				else
 				{					
-					measurement.time = diff;
-					if (writer.Write(measurement, pNode->value.index))
+					instance.value.time = diff;
+					if (writer.Write(instance.value, instance.index))
 					{
 						remainder.Decrement(pNode->value.clazz);
 						// inform that we wrote this node, and get the next node

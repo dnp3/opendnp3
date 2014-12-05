@@ -93,6 +93,7 @@ public:
 	const static EventType EventTypeEnum = EventType::Binary;
 	const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::BinaryInput;
 	
+	typedef bool ValueType;
 	typedef EventBinaryVariation EventVariation;
 	typedef StaticBinaryVariation StaticVariation;
 	typedef SimpleEventMetadata<Binary> MetadataType;
@@ -124,6 +125,7 @@ public:
 	const static EventType EventTypeEnum = EventType::DoubleBitBinary;
 	const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::DoubleBinaryInput;
 
+	typedef DoubleBit ValueType;
 	typedef EventDoubleBinaryVariation EventVariation;
 	typedef StaticDoubleBinaryVariation StaticVariation;
 	typedef SimpleEventMetadata<DoubleBitBinary> MetadataType;
@@ -165,6 +167,7 @@ public:
 	const static EventType EventTypeEnum = EventType::BinaryOutputStatus;
 	const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::BinaryOutputStatus;
 
+	typedef bool ValueType;
 	typedef EventBinaryOutputStatusVariation EventVariation;
 	typedef StaticBinaryOutputStatusVariation StaticVariation;
 	typedef SimpleEventMetadata<BinaryOutputStatus> MetadataType;
@@ -192,6 +195,7 @@ public:
 	const static EventType EventTypeEnum = EventType::Analog;
 	const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::AnalogInput;
 
+	typedef double ValueType;
 	typedef EventAnalogVariation EventVariation;
 	typedef StaticAnalogVariation StaticVariation;
 	typedef DeadbandMetadata<Analog, double> MetadataType;	
@@ -218,6 +222,7 @@ public:
 	const static EventType EventTypeEnum = EventType::Counter;
 	const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::Counter;
 
+	typedef uint32_t ValueType;
 	typedef EventCounterVariation EventVariation;
 	typedef StaticCounterVariation StaticVariation;
 	typedef DeadbandMetadata<Counter, uint32_t> MetadataType;
@@ -243,6 +248,7 @@ public:
 	const static EventType EventTypeEnum = EventType::FrozenCounter;
 	const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::FrozenCounter;
 
+	typedef uint32_t ValueType;
 	typedef EventFrozenCounterVariation EventVariation;
 	typedef StaticFrozenCounterVariation StaticVariation;
 	typedef DeadbandMetadata<FrozenCounter, uint32_t> MetadataType;
@@ -269,6 +275,7 @@ public:
 	const static EventType EventTypeEnum = EventType::AnalogOutputStatus;
 	const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::AnalogOutputStatus;
 
+	typedef double ValueType;
 	typedef EventAnalogOutputStatusVariation EventVariation;
 	typedef StaticAnalogOutputStatusVariation StaticVariation;
 	typedef DeadbandMetadata<AnalogOutputStatus, double> MetadataType;

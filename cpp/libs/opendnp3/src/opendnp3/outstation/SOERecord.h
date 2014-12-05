@@ -29,12 +29,31 @@
 namespace opendnp3
 {
 
-union MeasValue
+template <class T>
+struct ValueAndVariation
+{	
+	typename T::ValueType value;	
+	typename T::StaticVariation defaultVariation;
+	typename T::StaticVariation selectedVariation;
+};
+
+template <class ValueType>
+struct EventInstance
 {
-	bool boolValue;
-	double analogValue;
-	DoubleBit doubleBitValue;
-	uint32_t uintValue;
+	ValueType value;
+	uint16_t index;
+	typename ValueType::StaticVariation variation;
+};
+
+union EventValue
+{
+	ValueAndVariation<Binary> binary;
+	ValueAndVariation<DoubleBitBinary> doubleBinary;
+	ValueAndVariation<BinaryOutputStatus> binaryOutputStatus;
+	ValueAndVariation<Counter> counter;
+	ValueAndVariation<FrozenCounter> frozenCounter;
+	ValueAndVariation<Analog> analog;
+	ValueAndVariation<AnalogOutputStatus> analogOutputStatus;
 };
 
 class SOERecord
@@ -43,27 +62,38 @@ public:
 
 	SOERecord();
 
-	SOERecord(const Binary& meas, uint16_t index_, EventClass clazz_);
-	SOERecord(const DoubleBitBinary& meas, uint16_t index_, EventClass clazz_);
-	SOERecord(const BinaryOutputStatus& meas, uint16_t index_, EventClass clazz_);
-	SOERecord(const Counter& meas, uint16_t index_, EventClass clazz_);
-	SOERecord(const FrozenCounter& meas, uint16_t index_, EventClass clazz_);
-	SOERecord(const Analog& meas, uint16_t index_, EventClass clazz_);
-	SOERecord(const AnalogOutputStatus& meas, uint16_t index_, EventClass clazz_);
+	SOERecord(const Binary& meas, uint16_t index, EventClass clazz, StaticBinaryVariation var);
+	SOERecord(const DoubleBitBinary& meas, uint16_t index, EventClass clazz, StaticDoubleBinaryVariation var);
+	SOERecord(const BinaryOutputStatus& meas, uint16_t index, EventClass clazz, StaticBinaryOutputStatusVariation var);
+	SOERecord(const Counter& meas, uint16_t index, EventClass clazz, StaticCounterVariation var);
+	SOERecord(const FrozenCounter& meas, uint16_t index, EventClass clazz, StaticFrozenCounterVariation var);
+	SOERecord(const Analog& meas, uint16_t index, EventClass clazz, StaticAnalogVariation var);
+	SOERecord(const AnalogOutputStatus& meas, uint16_t index, EventClass clazz, StaticAnalogOutputStatusVariation var);
 
 	template <class T>
-	void Read(T& meas);
-
+	EventInstance<T> Read();
 
 	EventType type;	
-	uint16_t index;
 	EventClass clazz;
 	bool selected;
+	bool reported;
 
 private:
 
+	template <class T>
+	EventInstance<T> Convert(const ValueAndVariation<T>& value)
+	{
+		return EventInstance < T > {
+			T(value.value, flags, time),
+			index,
+			value.selectedVariation
+		};
+	}
+
+
 	// the actual value;
-	MeasValue value;
+	EventValue value;
+	uint16_t index;
 	uint64_t time;
 	uint8_t flags;
 
