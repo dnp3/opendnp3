@@ -38,6 +38,12 @@ struct SelectedValue
 template <class ValueType>
 struct Cell
 {			
+	void SetInitialValue(const ValueType& value_)
+	{
+		value = value_;
+		metadata.SetEventValue(value_);
+	}
+
 	ValueType value;
 	uint16_t index;
 	typename ValueType::StaticVariation variation;

@@ -85,6 +85,25 @@ private:
 		}		
 	}
 
+	template <class T>
+	static typename T::StaticVariation  CheckForPromotion(const T& value, typename T::StaticVariation variation)
+	{
+		return variation;
+	}
+
+	// specialization for binary
+	template <>
+	static StaticBinaryVariation CheckForPromotion<Binary>(const Binary& value, StaticBinaryVariation variation)
+	{
+		if (variation == StaticBinaryVariation::Group1Var1)
+		{
+			return value.IsQualityOnlineOnly() ? variation : StaticBinaryVariation::Group1Var2;
+		}
+		else
+		{
+			return variation;
+		}
+	}
 
 	static Range RangeOf(uint16_t size);
 
@@ -152,7 +171,8 @@ IINField DatabaseBuffers::GenericSelect(
 				{
 					view[i].selection.selected = true;
 					view[i].selection.value = view[i].value;
-					view[i].selection.variation = useDefault ? view[i].variation : variation;
+					auto var = useDefault ? view[i].variation : variation;
+					view[i].selection.variation = CheckForPromotion<T>(view[i].selection.value, var);
 				}				
 			}
 

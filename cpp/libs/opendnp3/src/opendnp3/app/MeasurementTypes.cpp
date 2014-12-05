@@ -59,6 +59,15 @@ Binary::Binary(bool value, uint8_t quality) : TypedMeasurement(value, quality::G
 Binary::Binary(bool value, uint8_t quality, uint64_t aTime) : TypedMeasurement(value, quality::GetBinaryQuality(quality, value), aTime)
 {}
 
+bool Binary::IsQualityOnlineOnly() const
+{
+	bool isOnline = quality & static_cast<uint8_t>(BinaryQuality::ONLINE);
+	uint8_t allowedBits = static_cast<uint8_t>(BinaryQuality::ONLINE) | static_cast<uint8_t>(BinaryQuality::STATE);
+	bool otherBitsClear = (quality & ~allowedBits) == 0;
+
+	return isOnline && otherBitsClear;	
+}
+
 bool Binary::IsEvent(const Binary& newValue) const
 {
 	return quality != newValue.quality;

@@ -28,7 +28,10 @@ namespace opendnp3
 {
 
 // A null object for types that have no metadata
-struct EmptyMetadata {};
+template <class Target>
+struct EmptyMetadata {
+	void SetEventValue(const Target& value) {}
+};
 
 // Base class for different types of event metadata
 template <class Target>
@@ -37,6 +40,11 @@ struct EventMetadata
 	PointClass clazz;
 	Target lastEvent;
 	typename Target::EventVariation variation;
+
+	void SetEventValue(const Target& value)
+	{
+		lastEvent = value;
+	}
 
 	protected:
 

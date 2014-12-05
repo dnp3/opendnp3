@@ -532,7 +532,10 @@ TEST_CASE(SUITE("ReadGrp1Var1"))
 
 	{
 		auto view = t.outstation.GetStaticBufferView();		
-		view.binaries.foreach([](Cell<Binary>& cell){ cell.variation = StaticBinaryVariation::Group1Var1; });
+		view.binaries.foreach([](Cell<Binary>& cell){ 
+			cell.SetInitialValue(Binary(false));
+			cell.variation = StaticBinaryVariation::Group1Var1; 
+		});
 	}
 
 	t.LowerLayerUp();
@@ -540,6 +543,26 @@ TEST_CASE(SUITE("ReadGrp1Var1"))
 	t.SendToOutstation("C0 01 3C 01 06"); // Read class 0
 
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00 01 01 00 00 09 00 00");
+}
+
+TEST_CASE(SUITE("Grp1Var1IsPromotedToGrp1Var2IfQualityNotOnline"))
+{
+	OutstationConfig cfg;
+	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOnly(2));
+
+	{
+		auto view = t.outstation.GetStaticBufferView();
+		view.binaries.foreach([](Cell<Binary>& cell)
+		{			
+			cell.variation = StaticBinaryVariation::Group1Var1;
+		});
+	}
+
+	t.LowerLayerUp();
+
+	t.SendToOutstation("C0 01 3C 01 06"); // Read class 0
+
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00 01 02 00 00 01 02 02");
 }
 
 TEST_CASE(SUITE("ReadGrp20Var1"))

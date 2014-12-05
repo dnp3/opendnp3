@@ -54,7 +54,7 @@ public:
 	const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::TimeAndInterval;
 
 	typedef StaticTimeAndIntervalVariation StaticVariation;
-	typedef EmptyMetadata MetadataType;
+	typedef EmptyMetadata<TimeAndInterval> MetadataType;
 };
 
 }

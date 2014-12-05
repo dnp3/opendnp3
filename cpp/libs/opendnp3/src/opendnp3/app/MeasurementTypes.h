@@ -86,6 +86,8 @@ public:
 
 	Binary(bool value, uint8_t quality, uint64_t aTime);
 
+	bool IsQualityOnlineOnly() const;
+
 	bool IsEvent(const Binary& newValue) const;
 
 	const static EventType EventTypeEnum = EventType::Binary;
