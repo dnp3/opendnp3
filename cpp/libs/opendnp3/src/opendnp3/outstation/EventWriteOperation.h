@@ -32,7 +32,6 @@
 #include "opendnp3/app/ClassField.h"
 #include "opendnp3/app/HeaderWriter.h"
 #include "opendnp3/outstation/SOERecord.h"
-#include "opendnp3/outstation/EventResponseConfig.h"
 
 namespace opendnp3
 {

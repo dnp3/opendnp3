@@ -21,8 +21,6 @@
 #ifndef OPENDNP3_EVENTRESPONSETYPES_H
 #define OPENDNP3_EVENTRESPONSETYPES_H
 
-#include "opendnp3/outstation/EventResponseConfig.h"
-
 #include "opendnp3/outstation/EventWriteOperation.h"
 
 #include <openpal/util/Uncopyable.h>

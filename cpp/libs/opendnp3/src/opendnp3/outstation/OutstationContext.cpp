@@ -477,8 +477,7 @@ void OutstationContext::CheckForUnsolicited()
 			// are there events to be reported?
 			if (eventBuffer.TotalEventMask().Intersects(params.unsolClassMask))
 			{
-				EventResponseConfig cfg; // TODO
-				SelectionCriteria criteria(cfg);
+				/*
 				criteria.RecordViaClassField(params.unsolClassMask);
 				auto unsolResponse = this->StartNewUnsolicitedResponse();
 				auto objectWriter = unsolResponse.GetWriter();				
@@ -495,6 +494,7 @@ void OutstationContext::CheckForUnsolicited()
 				this->StartUnsolicitedConfirmTimer();
 				this->pUnsolicitedState = &OutstationUnsolicitedStateConfirmWait::Inst();
 				this->BeginUnsolTx(unsolResponse.ToReadOnly());
+				*/
 			}
 		}
 		else

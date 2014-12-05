@@ -26,15 +26,16 @@ namespace opendnp3
 
 OutstationEventBuffer::OutstationEventBuffer(const EventBufferConfig& config_) :
 	overflow(false),
-	config(config_),		
-	sequenceOfEvents(config.TotalEvents()),	
-	selectedEvents(config.TotalEvents())
+	config(config_)		
+	//sequenceOfEvents(config.TotalEvents()),	
+	//selectedEvents(config.TotalEvents())
 {
 
 }
 
 void OutstationEventBuffer::Reset()
 {
+	/*
 	while(selectedEvents.IsNotEmpty())
 	{
 		auto pNode = selectedEvents.Pop();		
@@ -42,6 +43,7 @@ void OutstationEventBuffer::Reset()
 	}
 
 	selectedTracker.Clear();
+	*/
 }
 
 bool OutstationEventBuffer::IsOverflown()
@@ -56,6 +58,7 @@ bool OutstationEventBuffer::IsOverflown()
 
 void OutstationEventBuffer::Clear()
 {
+	/*
 	while(selectedEvents.IsNotEmpty())
 	{		
 		auto pNode = selectedEvents.Pop();
@@ -67,6 +70,7 @@ void OutstationEventBuffer::Clear()
 	}
 	
 	selectedTracker.Clear();
+	*/
 }
 
 ClassField OutstationEventBuffer::TotalEventMask() const
@@ -141,10 +145,14 @@ bool OutstationEventBuffer::IsAnyTypeOverflown() const
 
 bool OutstationEventBuffer::HasEnoughSpaceToClearOverflow() const
 {
+	/*
 	auto soeHasSpace = sequenceOfEvents.Size() < sequenceOfEvents.Capacity();
 
 	return soeHasSpace && !IsAnyTypeOverflown();
-		
+
+	
+	*/
+	return true;
 }
 
 SelectionWriter OutstationEventBuffer::Iterate()

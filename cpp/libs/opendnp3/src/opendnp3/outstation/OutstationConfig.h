@@ -24,9 +24,7 @@
 #include <openpal/executor/TimeDuration.h>
 
 #include "opendnp3/outstation/OutstationParams.h"
-#include "opendnp3/outstation/StaticResponseConfig.h"
 #include "opendnp3/outstation/EventBufferConfig.h"
-#include "opendnp3/outstation/EventResponseConfig.h"
 
 
 namespace opendnp3

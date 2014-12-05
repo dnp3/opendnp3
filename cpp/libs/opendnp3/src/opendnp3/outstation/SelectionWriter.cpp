@@ -29,12 +29,13 @@ namespace opendnp3
 {
 
 SelectionWriter::SelectionWriter(OutstationEventBuffer& buffer) : 
-	pBuffer(&buffer),
-	iterator(buffer.sequenceOfEvents.Iterate()) 
+	pBuffer(&buffer)
+	//iterator(buffer.sequenceOfEvents.Iterate()) 
 {
 
 }
 
+/*
 bool SelectionWriter::WriteAllEvents(SelectionCriteria& criteria, HeaderWriter& writer)
 {		
 	bool hasSpace = true;
@@ -71,6 +72,7 @@ bool SelectionWriter::WriteAllEvents(SelectionCriteria& criteria, HeaderWriter& 
 	return hasSpace;
 }
 
+
 bool SelectionWriter::SeekNextUnselectedNode(openpal::LinkedListIterator<SOERecord>& iterator)
 {
 	while (iterator.CurrentValue())
@@ -87,6 +89,7 @@ bool SelectionWriter::SeekNextUnselectedNode(openpal::LinkedListIterator<SOEReco
 
 	return false;
 }
+*/
 
 /*
 void SelectionWriter::SelectCurrent()

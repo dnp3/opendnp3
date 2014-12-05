@@ -26,7 +26,7 @@
 
 #include "opendnp3/app/EventType.h"
 #include "opendnp3/app/HeaderWriter.h"
-#include "opendnp3/outstation/SelectionCriteria.h"
+
 
 namespace opendnp3
 {
@@ -39,16 +39,16 @@ class SelectionWriter
 
 public:	
 
-	bool WriteAllEvents(SelectionCriteria& criteria, HeaderWriter& writer);
+	//bool WriteAllEvents(SelectionCriteria& criteria, HeaderWriter& writer);
 
 private:
 	
 	SelectionWriter(OutstationEventBuffer& buffer);	
 
 	OutstationEventBuffer* pBuffer;
-	openpal::LinkedListIterator<SOERecord> iterator;
+	//openpal::LinkedListIterator<SOERecord> iterator;
 	
-	static bool SeekNextUnselectedNode(openpal::LinkedListIterator<SOERecord>& iterator);
+	//static bool SeekNextUnselectedNode(openpal::LinkedListIterator<SOERecord>& iterator);
 };
 
 }

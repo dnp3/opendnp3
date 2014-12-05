@@ -24,7 +24,6 @@
 
 #include "opendnp3/outstation/IEventReceiver.h"
 #include "opendnp3/outstation/IEventSelector.h"
-#include "opendnp3/outstation/SelectionCriteria.h"
 #include "opendnp3/outstation/EventCount.h"
 #include "opendnp3/outstation/SelectionWriter.h"
 #include "opendnp3/outstation/EventBufferConfig.h"
@@ -99,8 +98,8 @@ private:
 
 	EventBufferConfig config;
 			
-	openpal::LinkedList<SOERecord, uint32_t> sequenceOfEvents;
-	openpal::Stack<openpal::ListNode<SOERecord>*, uint32_t> selectedEvents;	
+	//openpal::LinkedList<SOERecord, uint32_t> sequenceOfEvents;
+	//openpal::Stack<openpal::ListNode<SOERecord>*, uint32_t> selectedEvents;	
 
 	EventCount totalTracker;
 	EventCount selectedTracker;	
@@ -111,6 +110,7 @@ private:
 template <class T>
 void OutstationEventBuffer::UpdateAny(const Event<T>& evt, EventType type)
 {
+	/*
 	auto maxForType = config.GetMaxEventsForType(type);
 
 	if (maxForType > 0)
@@ -141,6 +141,7 @@ void OutstationEventBuffer::UpdateAny(const Event<T>& evt, EventType type)
 		SOERecord record(evt.value, evt.index, evt.clazz);
 		sequenceOfEvents.Add(record);
 	}
+	*/
 }
 
 }

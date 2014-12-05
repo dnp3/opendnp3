@@ -312,9 +312,6 @@
     <ClInclude Include="src\opendnp3\outstation\ReadHandler.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\SelectionCriteria.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\SimpleCommandHandler.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
@@ -375,9 +372,6 @@
     <ClInclude Include="src\opendnp3\outstation\EventBufferConfig.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\EventResponseContext.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\ResponseContext.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
@@ -391,9 +385,6 @@
       <Filter>Header\transport</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\OutstationContext.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\StaticResponseConfig.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\OutstationParams.h">
@@ -460,9 +451,6 @@
       <Filter>Header\outstation</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\OutstationUnsolicitedStates.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\EventResponseConfig.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\link\LinkChannelStatistics.h">
@@ -920,13 +908,7 @@
     <ClCompile Include="src\opendnp3\link\IOpenDelayStrategy.cpp">
       <Filter>Source\link</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\SelectionCriteria.cpp">
-      <Filter>Source\outstation</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\EventBufferConfig.cpp">
-      <Filter>Source\outstation</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\EventResponseContext.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\ResponseContext.cpp">
@@ -942,12 +924,6 @@
       <Filter>Header\transport</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\OutstationContext.cpp">
-      <Filter>Source\outstation</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\StaticResponseConfig.cpp">
-      <Filter>Source\outstation</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\EventResponseConfig.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\OutstationParams.cpp">

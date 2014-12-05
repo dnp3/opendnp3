@@ -205,8 +205,6 @@
     <ClInclude Include="src\opendnp3\outstation\Event.h" />
     <ClInclude Include="src\opendnp3\outstation\EventBufferConfig.h" />
     <ClInclude Include="src\opendnp3\outstation\EventCount.h" />
-    <ClInclude Include="src\opendnp3\outstation\EventResponseConfig.h" />
-    <ClInclude Include="src\opendnp3\outstation\EventResponseContext.h" />
     <ClInclude Include="src\opendnp3\outstation\EventResponseTypes.h" />
     <ClInclude Include="src\opendnp3\outstation\EventWriteFunctions.h" />
     <ClInclude Include="src\opendnp3\outstation\EventWriteOperation.h" />
@@ -226,12 +224,10 @@
     <ClInclude Include="src\opendnp3\outstation\OutstationUnsolicitedStates.h" />
     <ClInclude Include="src\opendnp3\outstation\ReadHandler.h" />
     <ClInclude Include="src\opendnp3\outstation\ResponseContext.h" />
-    <ClInclude Include="src\opendnp3\outstation\SelectionCriteria.h" />
     <ClInclude Include="src\opendnp3\outstation\SelectionWriter.h" />
     <ClInclude Include="src\opendnp3\outstation\SimpleCommandHandler.h" />
     <ClInclude Include="src\opendnp3\outstation\OutstationStackConfig.h" />
     <ClInclude Include="src\opendnp3\outstation\SOERecord.h" />
-    <ClInclude Include="src\opendnp3\outstation\StaticResponseConfig.h" />
     <ClInclude Include="src\opendnp3\outstation\StaticLoadFunctions.h" />
     <ClInclude Include="src\opendnp3\outstation\StaticTypeBitfield.h" />
     <ClInclude Include="src\opendnp3\outstation\TimeTransaction.h" />
@@ -344,8 +340,6 @@
     <ClCompile Include="src\opendnp3\outstation\DatabaseBuffers.cpp" />
     <ClCompile Include="src\opendnp3\outstation\EventBufferConfig.cpp" />
     <ClCompile Include="src\opendnp3\outstation\EventCount.cpp" />
-    <ClCompile Include="src\opendnp3\outstation\EventResponseConfig.cpp" />
-    <ClCompile Include="src\opendnp3\outstation\EventResponseContext.cpp" />
     <ClCompile Include="src\opendnp3\outstation\EventResponseTypes.cpp" />
     <ClCompile Include="src\opendnp3\outstation\EventWriteOperation.cpp" />
     <ClCompile Include="src\opendnp3\outstation\IINHelpers.cpp" />
@@ -358,11 +352,9 @@
     <ClCompile Include="src\opendnp3\outstation\OutstationUnsolicitedStates.cpp" />
     <ClCompile Include="src\opendnp3\outstation\ReadHandler.cpp" />
     <ClCompile Include="src\opendnp3\outstation\ResponseContext.cpp" />
-    <ClCompile Include="src\opendnp3\outstation\SelectionCriteria.cpp" />
     <ClCompile Include="src\opendnp3\outstation\SelectionWriter.cpp" />
     <ClCompile Include="src\opendnp3\outstation\SimpleCommandHandler.cpp" />
     <ClCompile Include="src\opendnp3\outstation\SOERecord.cpp" />
-    <ClCompile Include="src\opendnp3\outstation\StaticResponseConfig.cpp" />
     <ClCompile Include="src\opendnp3\outstation\StaticLoadFunctions.cpp" />
     <ClCompile Include="src\opendnp3\outstation\TimeTransaction.cpp" />
     <ClCompile Include="src\opendnp3\outstation\WriteHandler.cpp" />
