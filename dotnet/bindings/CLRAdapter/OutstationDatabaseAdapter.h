@@ -18,13 +18,13 @@ namespace Automatak
 				OutstationDatabaseAdapter(opendnp3::IDatabase& proxy);
 
 				virtual void Start();
-				virtual void Update(Automatak::DNP3::Interface::Binary^ meas, System::UInt16 index);
-				virtual void Update(Automatak::DNP3::Interface::DoubleBitBinary^ meas, System::UInt16 index);
-				virtual void Update(Automatak::DNP3::Interface::Analog^ meas, System::UInt16 index);
-				virtual void Update(Automatak::DNP3::Interface::Counter^ meas, System::UInt16 index);
-				virtual void Update(Automatak::DNP3::Interface::FrozenCounter^ meas, System::UInt16 index);
-				virtual void Update(Automatak::DNP3::Interface::BinaryOutputStatus^ meas, System::UInt16 index);
-				virtual void Update(Automatak::DNP3::Interface::AnalogOutputStatus^ meas, System::UInt16 index);
+				virtual void Update(Automatak::DNP3::Interface::Binary^ meas, System::UInt16 index, bool forceEvent);
+				virtual void Update(Automatak::DNP3::Interface::DoubleBitBinary^ meas, System::UInt16 index, bool forceEvent);
+				virtual void Update(Automatak::DNP3::Interface::Analog^ meas, System::UInt16 index, bool forceEvent);
+				virtual void Update(Automatak::DNP3::Interface::Counter^ meas, System::UInt16 index, bool forceEvent);
+				virtual void Update(Automatak::DNP3::Interface::FrozenCounter^ meas, System::UInt16 index, bool forceEvent);
+				virtual void Update(Automatak::DNP3::Interface::BinaryOutputStatus^ meas, System::UInt16 index, bool forceEvent);
+				virtual void Update(Automatak::DNP3::Interface::AnalogOutputStatus^ meas, System::UInt16 index, bool forceEvent);
 				virtual void Update(Automatak::DNP3::Interface::TimeAndInterval^ meas, System::UInt16 index);
 				virtual void End();
 

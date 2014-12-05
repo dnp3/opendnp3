@@ -64,7 +64,7 @@ namespace DotNetOutstationDemo
                 value = !value;
                 System.Console.WriteLine("Change Binary 1 to: " + value);
                 database.Start();
-                database.Update(new Binary(value, 1, DateTime.Now), 0);
+                database.Update(new Binary(value, 1, DateTime.Now), 0);                
                 database.End();
             }
         }

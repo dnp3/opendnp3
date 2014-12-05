@@ -64,39 +64,39 @@ void Database::End()
 	}
 }
 
-bool Database::Update(const Binary& value, uint16_t index)
+bool Database::Update(const Binary& value, uint16_t index, bool forceEvent)
 {
-	return this->UpdateEvent(value, index);
+	return this->UpdateEvent(value, index, forceEvent);
 }
 
-bool Database::Update(const DoubleBitBinary& value, uint16_t index)
+bool Database::Update(const DoubleBitBinary& value, uint16_t index, bool forceEvent)
 {
-	return this->UpdateEvent(value, index);
+	return this->UpdateEvent(value, index, forceEvent);
 }
 
-bool Database::Update(const Analog& value, uint16_t index)
+bool Database::Update(const Analog& value, uint16_t index, bool forceEvent)
 {
-	return this->UpdateEvent(value, index);
+	return this->UpdateEvent(value, index, forceEvent);
 }
 
-bool Database::Update(const Counter& value, uint16_t index)
+bool Database::Update(const Counter& value, uint16_t index, bool forceEvent)
 {
-	return this->UpdateEvent(value, index);
+	return this->UpdateEvent(value, index, forceEvent);
 }
 
-bool Database::Update(const FrozenCounter& value, uint16_t index)
+bool Database::Update(const FrozenCounter& value, uint16_t index, bool forceEvent)
 {
-	return this->UpdateEvent(value, index);
+	return this->UpdateEvent(value, index, forceEvent);
 }
 
-bool Database::Update(const BinaryOutputStatus& value, uint16_t index)
+bool Database::Update(const BinaryOutputStatus& value, uint16_t index, bool forceEvent)
 {
-	return this->UpdateEvent(value, index);
+	return this->UpdateEvent(value, index, forceEvent);
 }
 
-bool Database::Update(const AnalogOutputStatus& value, uint16_t index)
+bool Database::Update(const AnalogOutputStatus& value, uint16_t index, bool forceEvent)
 {
-	return this->UpdateEvent(value, index);
+	return this->UpdateEvent(value, index, forceEvent);
 }
 
 bool Database::Update(const TimeAndInterval& value, uint16_t index)

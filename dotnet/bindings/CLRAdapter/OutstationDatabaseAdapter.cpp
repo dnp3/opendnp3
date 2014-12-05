@@ -20,39 +20,39 @@ namespace Automatak
 				opendnp3::Transaction::Start(pProxy);
 			}
 
-			void OutstationDatabaseAdapter::Update(Binary^ meas, System::UInt16 index)
+			void OutstationDatabaseAdapter::Update(Binary^ meas, System::UInt16 index, bool forceEvent)
 			{
-				pProxy->Update(Conversions::ConvertMeas(meas), index);
+				pProxy->Update(Conversions::ConvertMeas(meas), index, forceEvent);
 			}
 
-			void OutstationDatabaseAdapter::Update(DoubleBitBinary^ meas, System::UInt16 index)
+			void OutstationDatabaseAdapter::Update(DoubleBitBinary^ meas, System::UInt16 index, bool forceEvent)
 			{
-				pProxy->Update(Conversions::ConvertMeas(meas), index);
+				pProxy->Update(Conversions::ConvertMeas(meas), index, forceEvent);
 			}
 
-			void OutstationDatabaseAdapter::Update(Analog^ meas, System::UInt16 index)
+			void OutstationDatabaseAdapter::Update(Analog^ meas, System::UInt16 index, bool forceEvent)
 			{
-				pProxy->Update(Conversions::ConvertMeas(meas), index);
+				pProxy->Update(Conversions::ConvertMeas(meas), index, forceEvent);
 			}
 
-			void OutstationDatabaseAdapter::Update(Counter^ meas, System::UInt16 index)
+			void OutstationDatabaseAdapter::Update(Counter^ meas, System::UInt16 index, bool forceEvent)
 			{
-				pProxy->Update(Conversions::ConvertMeas(meas), index);
+				pProxy->Update(Conversions::ConvertMeas(meas), index, forceEvent);
 			}
 
-			void OutstationDatabaseAdapter::Update(FrozenCounter^ meas, System::UInt16 index)
+			void OutstationDatabaseAdapter::Update(FrozenCounter^ meas, System::UInt16 index, bool forceEvent)
 			{
-				pProxy->Update(Conversions::ConvertMeas(meas), index);
+				pProxy->Update(Conversions::ConvertMeas(meas), index, forceEvent);
 			}
 
-			void OutstationDatabaseAdapter::Update(BinaryOutputStatus^ meas, System::UInt16 index)
+			void OutstationDatabaseAdapter::Update(BinaryOutputStatus^ meas, System::UInt16 index, bool forceEvent)
 			{
-				pProxy->Update(Conversions::ConvertMeas(meas), index);
+				pProxy->Update(Conversions::ConvertMeas(meas), index, forceEvent);
 			}
 
-			void OutstationDatabaseAdapter::Update(AnalogOutputStatus^ meas, System::UInt16 index)
+			void OutstationDatabaseAdapter::Update(AnalogOutputStatus^ meas, System::UInt16 index, bool forceEvent)
 			{
-				pProxy->Update(Conversions::ConvertMeas(meas), index);
+				pProxy->Update(Conversions::ConvertMeas(meas), index, forceEvent);
 			}
 
 			void OutstationDatabaseAdapter::Update(TimeAndInterval^ meas, System::UInt16 index)

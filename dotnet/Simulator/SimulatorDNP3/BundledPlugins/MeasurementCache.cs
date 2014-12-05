@@ -168,37 +168,37 @@ namespace Automatak.Simulator.DNP3
             Monitor.Enter(mutex);
         }
 
-        void IDatabase.Update(Binary update, ushort index)
+        void IDatabase.Update(Binary update, ushort index, bool forceEvent)
         {
             binaries.Update(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED));
         }
 
-        void IDatabase.Update(DoubleBitBinary update, ushort index)
+        void IDatabase.Update(DoubleBitBinary update, ushort index, bool forceEvent)
         {
             doubleBinaries.Update(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED));
         }
 
-        void IDatabase.Update(Analog update, ushort index)
+        void IDatabase.Update(Analog update, ushort index, bool forceEvent)
         {
             analogs.Update(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED));
         }
 
-        void IDatabase.Update(Counter update, ushort index)
+        void IDatabase.Update(Counter update, ushort index, bool forceEvent)
         {
             counters.Update(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED));
         }
 
-        void IDatabase.Update(FrozenCounter update, ushort index)
+        void IDatabase.Update(FrozenCounter update, ushort index, bool forceEvent)
         {
             frozenCounters.Update(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED));
         }
 
-        void IDatabase.Update(BinaryOutputStatus update, ushort index)
+        void IDatabase.Update(BinaryOutputStatus update, ushort index, bool forceEvent)
         {
             binaryOutputStatii.Update(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED));
         }
 
-        void IDatabase.Update(AnalogOutputStatus update, ushort index)
+        void IDatabase.Update(AnalogOutputStatus update, ushort index, bool forceEvent)
         {
             analogOutputStatii.Update(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED));
         }

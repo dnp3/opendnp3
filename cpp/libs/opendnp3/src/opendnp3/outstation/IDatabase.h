@@ -56,50 +56,56 @@ public:
 	* Update a Binary measurement, must have transaction started
 	* @param meas measurement to be processed
 	* @param index index of the measurement
+	* @param forceEvent If true, bypass normal event detection and force the creation of a new event
 	*/
-	virtual bool Update(const Binary& meas, uint16_t index) = 0;
+	virtual bool Update(const Binary& meas, uint16_t index, bool forceEvent = false) = 0;
 
 	/**
 	* Update a DoubleBitBinary measurement, must have transaction started
 	* @param meas measurement to be processed
 	* @param index index of the measurement
+	* @param forceEvent If true, bypass normal event detection and force the creation of a new event
 	*/
-	virtual bool Update(const DoubleBitBinary& meas, uint16_t index) = 0;
+	virtual bool Update(const DoubleBitBinary& meas, uint16_t index, bool forceEvent = false) = 0;
 
 	/**
 	* Update an Analog measurement, must have transaction started
 	* @param meas measurement to be processed
 	* @param index index of the measurement
+	* @param forceEvent If true, bypass normal event detection and force the creation of a new event
 	*/
-	virtual bool Update(const Analog& meas, uint16_t index) = 0;
+	virtual bool Update(const Analog& meas, uint16_t index, bool forceEvent = false) = 0;
 
 	/**
 	* Update a Counter measurement, must have transaction started
 	* @param meas measurement to be processed
 	* @param index index of the measurement
 	*/
-	virtual bool Update(const Counter& meas, uint16_t index) = 0;
+	virtual bool Update(const Counter& meas, uint16_t index, bool forceEvent = false) = 0;
 
 	/**
 	* Update a FrozenCounter measurement, must have transaction started
 	* @param meas measurement to be processed
 	* @param index index of the measurement
+	* @param forceEvent If true, bypass normal event detection and force the creation of a new event
 	*/
-	virtual bool Update(const FrozenCounter& meas, uint16_t index) = 0;
+	virtual bool Update(const FrozenCounter& meas, uint16_t index, bool forceEvent = false) = 0;
 
 	/**
 	* Update a BinaryOutputStatus measurement, must have transaction started
 	* @param meas measurement to be processed
 	* @param index index of the measurement
+	* @param forceEvent If true, bypass normal event detection and force the creation of a new event
 	*/
-	virtual bool Update(const BinaryOutputStatus& meas, uint16_t index) = 0;
+	virtual bool Update(const BinaryOutputStatus& meas, uint16_t index, bool forceEvent = false) = 0;
 
 	/**
 	* Update a AnalogOutputStatus measurement, must have transaction started
 	* @param meas measurement to be processed
 	* @param index index of the measurement
+	* @param forceEvent If true, bypass normal event detection and force the creation of a new event
 	*/
-	virtual bool Update(const AnalogOutputStatus& meas, uint16_t index) = 0;
+	virtual bool Update(const AnalogOutputStatus& meas, uint16_t index, bool forceEvent = false) = 0;
 
 	/**
 	* Update a TimeAndInterval value, must have transaction started

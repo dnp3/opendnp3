@@ -51,14 +51,14 @@ public:
 
 	// ------- IDatabase --------------
 
-	virtual bool Update(const Binary& value, uint16_t) override final;
-	virtual bool Update(const DoubleBitBinary& value, uint16_t) override final;
-	virtual bool Update(const Analog& value, uint16_t) override final;
-	virtual bool Update(const Counter& value, uint16_t) override final;
-	virtual bool Update(const FrozenCounter& value, uint16_t) override final;
-	virtual bool Update(const BinaryOutputStatus& value, uint16_t) override final;
-	virtual bool Update(const AnalogOutputStatus& value, uint16_t) override final;
-	virtual bool Update(const TimeAndInterval& value, uint16_t) override final;
+	virtual bool Update(const Binary&, uint16_t, bool = false) override final;
+	virtual bool Update(const DoubleBitBinary&, uint16_t, bool = false) override final;
+	virtual bool Update(const Analog&, uint16_t, bool = false) override final;
+	virtual bool Update(const Counter&, uint16_t, bool = false) override final;
+	virtual bool Update(const FrozenCounter&, uint16_t, bool = false) override final;
+	virtual bool Update(const BinaryOutputStatus&, uint16_t, bool = false) override final;
+	virtual bool Update(const AnalogOutputStatus&, uint16_t, bool = false) override final;
+	virtual bool Update(const TimeAndInterval&, uint16_t) override final;
 	
 	// ------- Misc ---------------
 	
@@ -96,7 +96,7 @@ private:
 	static bool ConvertToEventClass(PointClass pc, EventClass& ec);	
 
 	template <class T>
-	bool UpdateEvent(const T& value, uint16_t index);	
+	bool UpdateEvent(const T& value, uint16_t index, bool forceEvent);
 
 	// ITransactable  functions, proxies to the given transactable
 	virtual void Start() override final;
@@ -104,7 +104,7 @@ private:
 };
 
 template <class T>
-bool Database::UpdateEvent(const T& value, uint16_t index)
+bool Database::UpdateEvent(const T& value, uint16_t index, bool forceEvent)
 {	
 	auto values = buffers.buffers.GetArrayView<T>();
 
@@ -113,7 +113,7 @@ bool Database::UpdateEvent(const T& value, uint16_t index)
 		auto& metadata = values[index].metadata;
 
 		EventClass ec;
-		if (ConvertToEventClass(metadata.clazz, ec) && metadata.IsEvent(value))
+		if (ConvertToEventClass(metadata.clazz, ec) && (forceEvent || metadata.IsEvent(value)))
 		{
 			metadata.lastEvent = value;
 

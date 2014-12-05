@@ -43,49 +43,49 @@ namespace Automatak.DNP3.Interface
         /// </summary>
         /// <param name="update">measurement to update</param>
         /// <param name="index">index of measurement</param>        
-		void Update(Binary update, System.UInt16 index);
+		void Update(Binary update, System.UInt16 index, bool forceEvent = false);
 
         /// <summary>
         /// Update a Binary input
         /// </summary>
         /// <param name="update">measurement to update</param>
         /// <param name="index">index of measurement</param>        
-        void Update(DoubleBitBinary update, System.UInt16 index);
+        void Update(DoubleBitBinary update, System.UInt16 index, bool forceEvent = false);
 
         /// <summary>
         /// Update an Analog input
         /// </summary>
         /// <param name="update">measurement to update</param>
         /// <param name="index">index of measurement</param>
-		void Update(Analog update, System.UInt16 index);
+        void Update(Analog update, System.UInt16 index, bool forceEvent = false);
 
         /// <summary>
         /// Update a Counter
         /// </summary>
         /// <param name="update">measurement to update</param>
         /// <param name="index">index of measurement</param>
-		void Update(Counter update, System.UInt16 index);
+        void Update(Counter update, System.UInt16 index, bool forceEvent = false);
 
         /// <summary>
         /// Update a FrozenCounter
         /// </summary>
         /// <param name="update">measurement to update</param>
         /// <param name="index">index of measurement</param>
-        void Update(FrozenCounter update, System.UInt16 index);
+        void Update(FrozenCounter update, System.UInt16 index, bool forceEvent = false);
 
         /// <summary>
         /// Update a BinaryOutputStatus
         /// </summary>
         /// <param name="update">measurement to update</param>
         /// <param name="index">index of measurement</param>
-		void Update(BinaryOutputStatus update, System.UInt16 index);
+        void Update(BinaryOutputStatus update, System.UInt16 index, bool forceEvent = false);
 
         /// <summary>
         /// Update an AnalogOutputStatus
         /// </summary>
         /// <param name="update">measurement to update</param>
         /// <param name="index">index of measurement</param>
-		void Update(AnalogOutputStatus update, System.UInt16 index);
+        void Update(AnalogOutputStatus update, System.UInt16 index, bool forceEvent = false);
 
         /// <summary>
         /// Update a TimeAndInterval
