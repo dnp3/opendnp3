@@ -169,8 +169,8 @@ public:
 		return pNode;
 	}
 
-	template <class Selector, class Action>
-	IndexType RemoveAll(Selector match, Action action)
+	template <class Selector>
+	IndexType RemoveAll(Selector match)
 	{
 		IndexType count = 0;
 				
@@ -181,14 +181,13 @@ public:
 			if (match(pCurrent->value))
 			{				
 				auto pRemoved = pCurrent;
-				pCurrent = iter.Next();				
-				action(pRemoved->value);
+				pCurrent = iter.Next();								
 				this->Remove(pRemoved);
 				++count;
 			}
 			else
 			{
-				pCurrent = iter.next();
+				pCurrent = iter.Next();
 			}
 		}
 		

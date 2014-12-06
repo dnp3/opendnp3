@@ -101,6 +101,32 @@ TEST_CASE(SUITE("CanRemoveMiddle"))
 	REQUIRE(four == two); // these pointers should be the same
 }
 
+TEST_CASE(SUITE("RemoveAllComplexQuery"))
+{
+	LinkedList<int, uint16_t> list(10);
+
+	list.Add(2);
+	list.Add(3);
+	list.Add(4);
+	list.Add(7);
+	list.Add(20);
+	list.Add(8);
+
+	auto isEven = [](int num) { return (num % 2) == 0; };
+	auto count = list.RemoveAll(isEven);
+
+	REQUIRE(count == 4);
+	REQUIRE(list.Size() == 2);
+
+	std::vector<int> remaining;
+	auto pushToVector = [&](int num) { remaining.push_back(num);  };
+	list.Foreach(pushToVector);
+
+	REQUIRE(remaining.size() == 2);
+	REQUIRE(remaining[0] == 3);
+	REQUIRE(remaining[1] == 7);
+}
+
 TEST_CASE(SUITE("CanIterateOverValues"))
 {	
 	LinkedList<int, uint16_t> list(3);

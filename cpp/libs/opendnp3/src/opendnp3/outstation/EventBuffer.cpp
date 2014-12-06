@@ -87,15 +87,20 @@ bool EventBuffer::RemoveOldestEventOfType(EventType type)
 
 void EventBuffer::ClearWritten()
 {
-	auto writtenEvents = [](const SOERecord& record) { return record.written; };
+	auto writtenEvents = [this](const SOERecord& record) 
+	{ 
+		if (record.written)
+		{
+			this->RemoveFromCounts(record);
+			return true;
+		}
+		else
+		{
+			return false;
+		}		
+	};	
 
-	auto andDecrement = [this](SOERecord& record)
-	{
-		this->RemoveFromCounts(record);
-		record.Reset();
-	};
-
-	events.RemoveAll(writtenEvents, andDecrement);
+	events.RemoveAll(writtenEvents);
 }
 
 bool EventBuffer::IsTypeOverflown(EventType type) const

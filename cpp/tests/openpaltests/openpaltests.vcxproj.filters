@@ -16,9 +16,6 @@
     <ClCompile Include="src\LinkedListAdapterTestSuite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\LinkedListAdapterTestSuite.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\StaticQueueTestSuite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -26,6 +23,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\ManagedPointerTestSuite.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LinkedListTestSuite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

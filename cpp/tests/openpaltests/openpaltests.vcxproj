@@ -159,7 +159,7 @@
   <ItemGroup>
     <ClCompile Include="src\CatchTestStart.cpp" />
     <ClCompile Include="src\FunctionalTestSuite.cpp" />
-    <ClCompile Include="src\LinkedListAdapterTestSuite.cpp" />
+    <ClCompile Include="src\LinkedListTestSuite.cpp" />
     <ClCompile Include="src\ManagedPointerTestSuite.cpp" />
     <ClCompile Include="src\StaticQueueTestSuite.cpp" />
     <ClCompile Include="src\StackAdapterTestSuite.cpp" />
