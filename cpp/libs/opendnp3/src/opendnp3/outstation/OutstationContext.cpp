@@ -140,7 +140,7 @@ void OutstationContext::SetOffline()
 	pUnsolicitedState = &OutstationUnsolicitedStateIdle::Inst();
 	lastValidRequest.Clear();
 	deferredRequest.Clear();
-	eventBuffer.Reset();
+	eventBuffer.Unselect();
 	rspContext.Reset();
 	CancelConfirmTimer();	
 }

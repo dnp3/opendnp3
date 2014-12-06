@@ -68,15 +68,13 @@ public:
 
 	// ------- IEventSelector ------ 
 
-	virtual void Unselect() {}
+	virtual void Unselect();
 
-	virtual IINField SelectAll(GroupVariation gv) override final { return IINField(); }
+	virtual IINField SelectAll(GroupVariation gv) override final;
 
-	virtual IINField SelectCount(GroupVariation gv, uint16_t count) override final { return IINField(); }
+	virtual IINField SelectCount(GroupVariation gv, uint16_t count) override final;
 
-	// ------- Misc -------
-
-	void Reset(); // called when a transmission fails
+	// ------- Misc -------	
 
 	void ClearWritten(); // called when a transmission succeeds
 
@@ -126,7 +124,8 @@ void EventBuffer::UpdateAny(const Event<T>& evt, typename T::EventVariation var)
 			RemoveOldestEventOfType(T::EventTypeEnum);			
 		}
 
-		events.Add(SOERecord(evt.value, evt.index, evt.clazz, var));
+		// Add the event, the Reset() ensures that selected/written == false
+		events.Add(SOERecord(evt.value, evt.index, evt.clazz, var))->value.Reset();		
 		totalCounts.Increment(evt.clazz, T::EventTypeEnum);
 	}	
 }

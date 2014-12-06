@@ -32,9 +32,36 @@ EventBuffer::EventBuffer(const EventBufferConfig& config_) :
 
 }
 
-void EventBuffer::Reset()
+void EventBuffer::Unselect()
 {
-	
+	auto unselect = [this](SOERecord& record) 
+	{
+		if (record.selected)
+		{			
+			selectedCounts.Decrement(record.clazz, record.type);
+			record.selected = false;
+		}
+
+		if (record.written)
+		{
+			writtenCounts.Decrement(record.clazz, record.type);
+			record.written = false;
+		}
+
+		return this->selectedCounts.TotatCount() > 0;
+	};
+
+	events.While(unselect);
+}
+
+IINField EventBuffer::SelectAll(GroupVariation gv)
+{
+	return IINField();
+}
+
+IINField EventBuffer::SelectCount(GroupVariation gv, uint16_t count)
+{
+	return IINField();
 }
 
 ClassField EventBuffer::UnwrittenClassField() const
@@ -87,7 +114,7 @@ bool EventBuffer::RemoveOldestEventOfType(EventType type)
 
 void EventBuffer::ClearWritten()
 {
-	auto writtenEvents = [this](const SOERecord& record) 
+	auto written = [this](const SOERecord& record) 
 	{ 
 		if (record.written)
 		{
@@ -100,7 +127,7 @@ void EventBuffer::ClearWritten()
 		}		
 	};	
 
-	events.RemoveAll(writtenEvents);
+	events.RemoveAll(written);
 }
 
 bool EventBuffer::IsTypeOverflown(EventType type) const

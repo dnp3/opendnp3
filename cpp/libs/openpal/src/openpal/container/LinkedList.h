@@ -149,6 +149,17 @@ public:
 	ListNode<ValueType>* Add(const ValueType& value);
 
 	template <class Selector>
+	void While(Selector select)
+	{
+		auto iter = this->Iterate();
+		bool result = true;
+		while (result && iter.HasNext())
+		{
+			result = select(iter.Next()->value);
+		}
+	}
+
+	template <class Selector>
 	void Foreach(Selector select)
 	{
 		auto iter = this->Iterate();

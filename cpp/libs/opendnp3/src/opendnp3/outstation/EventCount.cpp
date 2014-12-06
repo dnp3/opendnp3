@@ -26,12 +26,12 @@
 namespace opendnp3
 {
 
-EventCount::EventCount()
+EventCount::EventCount() : total(0)
 {
 	this->Clear();
 }
 
-EventCount::EventCount(const EventCount& ec)
+EventCount::EventCount(const EventCount& ec) : total(ec.total)
 {
 	for (uint16_t clazz = 0; clazz < NUM_CLASSES; ++clazz)
 	{
@@ -46,6 +46,8 @@ EventCount& EventCount::operator=(const EventCount& ec)
 {
 	if (this != &ec)
 	{
+		this->total = ec.total;
+
 		for (uint16_t clazz = 0; clazz < NUM_CLASSES; ++clazz)
 		{
 			for (uint16_t type = 0; type < NUM_TYPES; ++type)
@@ -60,6 +62,8 @@ EventCount& EventCount::operator=(const EventCount& ec)
 
 void EventCount::Clear()
 {
+	total = 0;
+
 	for (uint16_t clazz = 0; clazz < NUM_CLASSES; ++clazz)
 	{
 		for (uint16_t type = 0; type < NUM_TYPES; ++type)
@@ -76,8 +80,10 @@ ClassField EventCount::Subtract(const EventCount& rhs) const
 	for (uint16_t clazz = 0; clazz < NUM_CLASSES; ++clazz)
 	{
 		for (uint16_t type = 0; type < NUM_TYPES; ++type)
-		{
-			count.numOfTypeAndClass[clazz][type] = numOfTypeAndClass[clazz][type] - rhs.numOfTypeAndClass[clazz][type];
+		{			
+			auto diff = numOfTypeAndClass[clazz][type] - rhs.numOfTypeAndClass[clazz][type];
+			count.numOfTypeAndClass[clazz][type] = diff;
+			count.total += diff;
 		}
 	}
 
@@ -124,11 +130,13 @@ bool EventCount::IsEmpty() const
 
 void EventCount::Increment(EventClass clazz, EventType type, uint32_t count)
 {
+	++total;
 	numOfTypeAndClass[static_cast<int>(clazz)][static_cast<int>(type)] += count;
 }
 
 void EventCount::Decrement(EventClass clazz, EventType type, uint32_t count)
 {
+	--total;
 	numOfTypeAndClass[static_cast<int>(clazz)][static_cast<int>(type)] -= count;
 }
 

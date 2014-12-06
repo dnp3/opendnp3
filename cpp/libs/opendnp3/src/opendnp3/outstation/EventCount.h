@@ -49,6 +49,8 @@ public:
 
 	uint32_t NumOfClass(EventClass clazz) const;
 	uint32_t NumOfType(EventType type) const;
+	uint32_t TotatCount() const { return total; }
+
 	ClassField Subtract(const EventCount& rhs) const;
 
 	void Increment(EventClass clazz, EventType type, uint32_t count = 1);
@@ -60,6 +62,7 @@ public:
 
 private:
 
+	uint32_t total;
 	uint16_t numOfTypeAndClass[NUM_CLASSES][NUM_TYPES];	
 };
 

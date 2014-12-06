@@ -167,7 +167,7 @@ OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::Abort(Outstat
 	// abandon the confirmed response sequence
 	pContext->CancelConfirmTimer();
 	pContext->rspContext.Reset();
-	pContext->eventBuffer.Reset();
+	pContext->eventBuffer.Unselect();
 	return &OutstationSolicitedStateIdle::Inst();
 }
 
@@ -201,7 +201,7 @@ OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnConfirmTime
 {	
 	SIMPLE_LOG_BLOCK(pContext->logger, flags::WARN, "Solicited confirm timeout");
 	pContext->pConfirmTimer = nullptr;		
-	pContext->eventBuffer.Reset();
+	pContext->eventBuffer.Unselect();
 	pContext->rspContext.Reset();
 	return &OutstationSolicitedStateIdle::Inst();	
 }
