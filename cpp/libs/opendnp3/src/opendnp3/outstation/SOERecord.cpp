@@ -32,6 +32,35 @@ void SOERecord::Reset()
 	selected = written = false;
 }
 
+void SOERecord::SelectDefault()
+{
+	selected = true;
+	switch (type)
+	{
+		case(EventType::Binary) :
+			value.binary.SelectDefaultVariation();
+			break;
+		case(EventType::DoubleBitBinary) :
+			value.doubleBinary.SelectDefaultVariation();
+			break;
+		case(EventType::Counter) :
+			value.counter.SelectDefaultVariation();
+			break;
+		case(EventType::FrozenCounter) :
+			value.frozenCounter.SelectDefaultVariation();
+			break;
+		case(EventType::Analog) :
+			value.analog.SelectDefaultVariation();
+			break;
+		case(EventType::BinaryOutputStatus) :
+			value.binaryOutputStatus.SelectDefaultVariation();
+			break;
+		case(EventType::AnalogOutputStatus) :
+			value.analogOutputStatus.SelectDefaultVariation();
+			break;
+	}
+}
+
 SOERecord::SOERecord(const Binary& meas, uint16_t index_, EventClass clazz_, EventBinaryVariation var) :
 	type(EventType::Binary), clazz(clazz_), selected(false), written(false), index(index_), time(meas.time), flags(meas.quality)
 {
@@ -72,6 +101,48 @@ SOERecord::SOERecord(const AnalogOutputStatus& meas, uint16_t index_, EventClass
 	type(EventType::AnalogOutputStatus), clazz(clazz_), selected(false), written(false), index(index_), time(meas.time), flags(meas.quality)
 {
 	this->value.analogOutputStatus = ValueAndVariation < AnalogOutputStatus > { meas.value, var, var };
+}
+
+void SOERecord::Select(EventBinaryVariation var)
+{
+	this->selected = true;
+	value.binary.selectedVariation = var;
+}
+
+void SOERecord::Select(EventDoubleBinaryVariation var)
+{
+	this->selected = true;
+	value.doubleBinary.selectedVariation = var;
+}
+
+void SOERecord::Select(EventBinaryOutputStatusVariation var)
+{
+	this->selected = true;
+	value.binaryOutputStatus.selectedVariation = var;
+}
+
+void SOERecord::Select(EventCounterVariation var)
+{
+	this->selected = true;
+	value.counter.selectedVariation = var;
+}
+
+void SOERecord::Select(EventFrozenCounterVariation var)
+{
+	this->selected = true;
+	value.frozenCounter.selectedVariation = var;
+}
+
+void SOERecord::Select(EventAnalogVariation var)
+{
+	this->selected = true;
+	value.analog.selectedVariation = var;
+}
+
+void SOERecord::Select(EventAnalogOutputStatusVariation var)
+{
+	this->selected = true;
+	value.analogOutputStatus.selectedVariation = var;
 }
 
 template <>

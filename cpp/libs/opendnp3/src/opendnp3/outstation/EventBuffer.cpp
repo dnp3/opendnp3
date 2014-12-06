@@ -56,12 +56,25 @@ void EventBuffer::Unselect()
 
 IINField EventBuffer::SelectAll(GroupVariation gv)
 {
-	return IINField();
+	return SelectCount(gv, openpal::MaxValue<uint32_t>());
 }
 
 IINField EventBuffer::SelectCount(GroupVariation gv, uint16_t count)
 {
-	return IINField();
+	switch (gv)
+	{
+		case(GroupVariation::Group60Var2) :
+			this->SelectByClass(EventClass::EC1, count);
+			return IINField();
+		case(GroupVariation::Group60Var3):
+			this->SelectByClass(EventClass::EC2, count);
+			return IINField();
+		case(GroupVariation::Group60Var4):
+			this->SelectByClass(EventClass::EC3, count);
+			return IINField();
+		default:
+			return IINBit::FUNC_NOT_SUPPORTED;
+	}
 }
 
 ClassField EventBuffer::UnwrittenClassField() const
@@ -77,6 +90,26 @@ bool EventBuffer::IsOverflown()
 	}
 
 	return overflow;
+}
+
+uint32_t EventBuffer::SelectByClass(EventClass ec, uint32_t max)
+{
+	uint32_t num = 0;
+	auto iter = events.Iterate();
+	const uint32_t remaining = totalCounts.NumOfClass(ec) - selectedCounts.NumOfClass(ec);
+
+	while (iter.HasNext() && (num < remaining) && (num < max))
+	{
+		auto pNode = iter.Next();
+		if (pNode->value.clazz == ec)
+		{
+			pNode->value.SelectDefault();			
+			selectedCounts.Increment(pNode->value.clazz, pNode->value.type);
+			++num;
+		}
+	}	
+
+	return num;
 }
 
 void EventBuffer::RemoveFromCounts(const SOERecord& record)

@@ -35,6 +35,11 @@ struct ValueAndVariation
 	typename T::ValueType value;	
 	typename T::EventVariation defaultVariation;
 	typename T::EventVariation selectedVariation;
+
+	void SelectDefaultVariation()
+	{
+		selectedVariation = defaultVariation;
+	}
 };
 
 template <class ValueType>
@@ -73,6 +78,16 @@ public:
 	template <class T>
 	EventInstance<T> Read();
 
+	void SelectDefault();
+
+	void Select(EventBinaryVariation var);
+	void Select(EventDoubleBinaryVariation var);
+	void Select(EventBinaryOutputStatusVariation var);
+	void Select(EventCounterVariation var);
+	void Select(EventFrozenCounterVariation var);
+	void Select(EventAnalogVariation var);
+	void Select(EventAnalogOutputStatusVariation var);
+	
 	EventType type;	
 	EventClass clazz;
 	bool selected;

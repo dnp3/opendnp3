@@ -34,12 +34,8 @@
 namespace opendnp3
 {
 
-/*
-	The event buffer doesn't actually own the buffers, it just creates
-    collection facades around the indexable buffers it's given.
-	This is done so that the buffers can either be statically or dynamically allocated.
-
-	The sequence of events list in the facade is a doubly linked-list implemented
+/*	
+	The sequence of events list is a doubly linked-list implemented
 	in a finite array.  The list is desired for O(1) remove operations from
 	arbitrary parts of the list depending on what the user asks for in terms
 	of event type or Class1/2/3.
@@ -83,6 +79,11 @@ public:
 	bool IsOverflown();
 
 private:
+
+	uint32_t SelectByClass(EventClass ec, uint32_t max);
+
+	template <class T>
+	uint32_t SelectByType(typename T::EventVariation var, uint32_t max);
 
 	void RemoveFromCounts(const SOERecord& record);
 
@@ -128,6 +129,28 @@ void EventBuffer::UpdateAny(const Event<T>& evt, typename T::EventVariation var)
 		events.Add(SOERecord(evt.value, evt.index, evt.clazz, var))->value.Reset();		
 		totalCounts.Increment(evt.clazz, T::EventTypeEnum);
 	}	
+}
+
+template <class T>
+uint32_t EventBuffer::SelectByType(typename T::EventVariation var, uint32_t max)
+{
+	uint32_t num = 0;
+	auto iter = events.Iterate();
+	const uint32_t remaining = totalCounts.NumOfType(T::EventTypeEnum) - selectedCounts.NumOfClass(T::EventTypeEnum);
+	
+	while (iter.HasNext() && (num < remaining) && (num < max))
+	{
+		auto pNode = iter.Next();
+
+		if (pNode->value.type == T::EventTypeEnum)
+		{
+			pNode->value.Select(var);			
+			selectedCounts.Increment(pNode->value.clazz, pNode->value.type);
+			++num;
+		}
+	}
+
+	return num;
 }
 
 }
