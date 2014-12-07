@@ -51,22 +51,22 @@ public:
 
 	// ------- IDatabase --------------
 
-	virtual bool Update(const Binary&, uint16_t, bool = false) override final;
-	virtual bool Update(const DoubleBitBinary&, uint16_t, bool = false) override final;
-	virtual bool Update(const Analog&, uint16_t, bool = false) override final;
-	virtual bool Update(const Counter&, uint16_t, bool = false) override final;
-	virtual bool Update(const FrozenCounter&, uint16_t, bool = false) override final;
-	virtual bool Update(const BinaryOutputStatus&, uint16_t, bool = false) override final;
-	virtual bool Update(const AnalogOutputStatus&, uint16_t, bool = false) override final;
+	virtual bool Update(const Binary&, uint16_t, EventMode = EventMode::Detect) override final;
+	virtual bool Update(const DoubleBitBinary&, uint16_t, EventMode = EventMode::Detect) override final;
+	virtual bool Update(const Analog&, uint16_t, EventMode = EventMode::Detect) override final;
+	virtual bool Update(const Counter&, uint16_t, EventMode = EventMode::Detect) override final;
+	virtual bool Update(const FrozenCounter&, uint16_t, EventMode = EventMode::Detect) override final;
+	virtual bool Update(const BinaryOutputStatus&, uint16_t, EventMode = EventMode::Detect) override final;
+	virtual bool Update(const AnalogOutputStatus&, uint16_t, EventMode = EventMode::Detect) override final;
 	virtual bool Update(const TimeAndInterval&, uint16_t) override final;
 
-	virtual bool Modify(const openpal::Function1<const Binary&, Binary>& modify, uint16_t, bool = false) override final;
-	virtual bool Modify(const openpal::Function1<const DoubleBitBinary&, DoubleBitBinary>& modify, uint16_t, bool = false) override final;
-	virtual bool Modify(const openpal::Function1<const Analog&, Analog>& modify, uint16_t, bool = false) override final;
-	virtual bool Modify(const openpal::Function1<const Counter&, Counter>& modify, uint16_t, bool = false) override final;
-	virtual bool Modify(const openpal::Function1<const FrozenCounter&, FrozenCounter>& modify, uint16_t, bool = false) override final;
-	virtual bool Modify(const openpal::Function1<const BinaryOutputStatus&, BinaryOutputStatus>& modify, uint16_t, bool = false) override final;
-	virtual bool Modify(const openpal::Function1<const AnalogOutputStatus&, AnalogOutputStatus>& modify, uint16_t, bool = false) override final;
+	virtual bool Modify(const openpal::Function1<const Binary&, Binary>& modify, uint16_t, EventMode = EventMode::Detect) override final;
+	virtual bool Modify(const openpal::Function1<const DoubleBitBinary&, DoubleBitBinary>& modify, uint16_t, EventMode = EventMode::Detect) override final;
+	virtual bool Modify(const openpal::Function1<const Analog&, Analog>& modify, uint16_t, EventMode = EventMode::Detect) override final;
+	virtual bool Modify(const openpal::Function1<const Counter&, Counter>& modify, uint16_t, EventMode = EventMode::Detect) override final;
+	virtual bool Modify(const openpal::Function1<const FrozenCounter&, FrozenCounter>& modify, uint16_t, EventMode = EventMode::Detect) override final;
+	virtual bool Modify(const openpal::Function1<const BinaryOutputStatus&, BinaryOutputStatus>& modify, uint16_t, EventMode = EventMode::Detect) override final;
+	virtual bool Modify(const openpal::Function1<const AnalogOutputStatus&, AnalogOutputStatus>& modify, uint16_t, EventMode = EventMode::Detect) override final;
 	virtual bool Modify(const openpal::Function1<const TimeAndInterval&, TimeAndInterval>& modify, uint16_t index) override final;
 	
 	// ------- Misc ---------------
@@ -105,13 +105,13 @@ private:
 	static bool ConvertToEventClass(PointClass pc, EventClass& ec);	
 
 	template <class T>
-	bool UpdateEvent(const T& value, uint16_t index, bool forceEvent);
+	bool UpdateEvent(const T& value, uint16_t index, EventMode mode);
 
 	template <class T>
-	bool ModifyEvent(const openpal::Function1<const T&, T>& modify, uint16_t index, bool forceEvent);
+	bool ModifyEvent(const openpal::Function1<const T&, T>& modify, uint16_t index, EventMode mode);
 
 	template <class T>
-	bool UpdateAny(Cell<T>& cell, const T& value, uint16_t index, bool forceEvent);
+	bool UpdateAny(Cell<T>& cell, const T& value, uint16_t index, EventMode mode);
 
 	// ITransactable  functions, proxies to the given transactable
 	virtual void Start() override final;
@@ -119,13 +119,13 @@ private:
 };
 
 template <class T>
-bool Database::UpdateEvent(const T& value, uint16_t index, bool forceEvent)
+bool Database::UpdateEvent(const T& value, uint16_t index, EventMode mode)
 {	
 	auto view = buffers.buffers.GetArrayView<T>();
 
 	if (view.Contains(index))
 	{
-		this->UpdateAny(view[index], value, index, forceEvent);
+		this->UpdateAny(view[index], value, index, mode);
 		return true;
 	}
 	else
@@ -135,13 +135,13 @@ bool Database::UpdateEvent(const T& value, uint16_t index, bool forceEvent)
 }
 
 template <class T>
-bool Database::ModifyEvent(const openpal::Function1<const T&, T>& modify, uint16_t index, bool forceEvent)
+bool Database::ModifyEvent(const openpal::Function1<const T&, T>& modify, uint16_t index, EventMode mode)
 {
 	auto view = buffers.buffers.GetArrayView<T>();
 
 	if (view.Contains(index))
 	{
-		this->UpdateAny(view[index], modify.Apply(view[index].value), index, forceEvent);
+		this->UpdateAny(view[index], modify.Apply(view[index].value), index, mode);
 		return true;
 	}
 	else
@@ -151,18 +151,35 @@ bool Database::ModifyEvent(const openpal::Function1<const T&, T>& modify, uint16
 }
 
 template <class T>
-bool Database::UpdateAny(Cell<T>& cell, const T& value, uint16_t index, bool forceEvent)
+bool Database::UpdateAny(Cell<T>& cell, const T& value, uint16_t index, EventMode mode)
 {
 	EventClass ec;
-	if (ConvertToEventClass(cell.metadata.clazz, ec) && (forceEvent || cell.metadata.IsEvent(value)))
+	if (ConvertToEventClass(cell.metadata.clazz, ec))
 	{
-		cell.metadata.lastEvent = value;
+		bool createEvent = false;
 
-		if (pEventReceiver)
+		switch (mode)
 		{
-			pEventReceiver->Update(Event<T>(value, index, ec), cell.metadata.variation);
-			transactionHasEvents = true;
+			case(EventMode::Force) :
+				createEvent = true;
+				break;
+			case(EventMode::Detect):
+				createEvent = cell.metadata.IsEvent(value);
+				break;
+			default:
+				break;
 		}
+
+		if (createEvent)
+		{
+			cell.metadata.lastEvent = value;
+
+			if (pEventReceiver)
+			{
+				pEventReceiver->Update(Event<T>(value, index, ec), cell.metadata.variation);
+				transactionHasEvents = true;
+			}
+		}		
 	}
 
 	cell.value = value;

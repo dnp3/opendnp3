@@ -64,39 +64,39 @@ void Database::End()
 	}
 }
 
-bool Database::Update(const Binary& value, uint16_t index, bool forceEvent)
+bool Database::Update(const Binary& value, uint16_t index, EventMode mode)
 {
-	return this->UpdateEvent(value, index, forceEvent);
+	return this->UpdateEvent(value, index, mode);
 }
 
-bool Database::Update(const DoubleBitBinary& value, uint16_t index, bool forceEvent)
+bool Database::Update(const DoubleBitBinary& value, uint16_t index, EventMode mode)
 {
-	return this->UpdateEvent(value, index, forceEvent);
+	return this->UpdateEvent(value, index, mode);
 }
 
-bool Database::Update(const Analog& value, uint16_t index, bool forceEvent)
+bool Database::Update(const Analog& value, uint16_t index, EventMode mode)
 {
-	return this->UpdateEvent(value, index, forceEvent);
+	return this->UpdateEvent(value, index, mode);
 }
 
-bool Database::Update(const Counter& value, uint16_t index, bool forceEvent)
+bool Database::Update(const Counter& value, uint16_t index, EventMode mode)
 {
-	return this->UpdateEvent(value, index, forceEvent);
+	return this->UpdateEvent(value, index, mode);
 }
 
-bool Database::Update(const FrozenCounter& value, uint16_t index, bool forceEvent)
+bool Database::Update(const FrozenCounter& value, uint16_t index, EventMode mode)
 {
-	return this->UpdateEvent(value, index, forceEvent);
+	return this->UpdateEvent(value, index, mode);
 }
 
-bool Database::Update(const BinaryOutputStatus& value, uint16_t index, bool forceEvent)
+bool Database::Update(const BinaryOutputStatus& value, uint16_t index, EventMode mode)
 {
-	return this->UpdateEvent(value, index, forceEvent);
+	return this->UpdateEvent(value, index, mode);
 }
 
-bool Database::Update(const AnalogOutputStatus& value, uint16_t index, bool forceEvent)
+bool Database::Update(const AnalogOutputStatus& value, uint16_t index, EventMode mode)
 {
-	return this->UpdateEvent(value, index, forceEvent);
+	return this->UpdateEvent(value, index, mode);
 }
 
 bool Database::Update(const TimeAndInterval& value, uint16_t index)
@@ -115,39 +115,39 @@ bool Database::Update(const TimeAndInterval& value, uint16_t index)
 }
 
 
-bool Database::Modify(const openpal::Function1<const Binary&, Binary>& modify, uint16_t index, bool forceEvent)
+bool Database::Modify(const openpal::Function1<const Binary&, Binary>& modify, uint16_t index, EventMode mode)
 {
-	return this->ModifyEvent(modify, index, forceEvent);
+	return this->ModifyEvent(modify, index, mode);
 }
 
-bool Database::Modify(const openpal::Function1<const DoubleBitBinary&, DoubleBitBinary>& modify, uint16_t index, bool forceEvent)
+bool Database::Modify(const openpal::Function1<const DoubleBitBinary&, DoubleBitBinary>& modify, uint16_t index, EventMode mode)
 {
-	return this->ModifyEvent(modify, index, forceEvent);
+	return this->ModifyEvent(modify, index, mode);
 }
 
-bool Database::Modify(const openpal::Function1<const Analog&, Analog>& modify, uint16_t index, bool forceEvent)
+bool Database::Modify(const openpal::Function1<const Analog&, Analog>& modify, uint16_t index, EventMode mode)
 {
-	return this->ModifyEvent(modify, index, forceEvent);
+	return this->ModifyEvent(modify, index, mode);
 }
 
-bool Database::Modify(const openpal::Function1<const Counter&, Counter>& modify, uint16_t index, bool forceEvent)
+bool Database::Modify(const openpal::Function1<const Counter&, Counter>& modify, uint16_t index, EventMode mode)
 {
-	return this->ModifyEvent(modify, index, forceEvent);
+	return this->ModifyEvent(modify, index, mode);
 }
 
-bool Database::Modify(const openpal::Function1<const FrozenCounter&, FrozenCounter>& modify, uint16_t index, bool forceEvent)
+bool Database::Modify(const openpal::Function1<const FrozenCounter&, FrozenCounter>& modify, uint16_t index, EventMode mode)
 {
-	return this->ModifyEvent(modify, index, forceEvent);
+	return this->ModifyEvent(modify, index, mode);
 }
 
-bool Database::Modify(const openpal::Function1<const BinaryOutputStatus&, BinaryOutputStatus>& modify, uint16_t index, bool forceEvent)
+bool Database::Modify(const openpal::Function1<const BinaryOutputStatus&, BinaryOutputStatus>& modify, uint16_t index, EventMode mode)
 {
-	return this->ModifyEvent(modify, index, forceEvent);
+	return this->ModifyEvent(modify, index, mode);
 }
 
-bool Database::Modify(const openpal::Function1<const AnalogOutputStatus&, AnalogOutputStatus>& modify, uint16_t index, bool forceEvent)
+bool Database::Modify(const openpal::Function1<const AnalogOutputStatus&, AnalogOutputStatus>& modify, uint16_t index, EventMode mode)
 {
-	return this->ModifyEvent(modify, index, forceEvent);
+	return this->ModifyEvent(modify, index, mode);
 }
 
 bool Database::Modify(const openpal::Function1<const TimeAndInterval&, TimeAndInterval>& modify, uint16_t index)

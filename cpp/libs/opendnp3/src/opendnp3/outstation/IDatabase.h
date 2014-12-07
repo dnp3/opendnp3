@@ -25,6 +25,8 @@
 #include "opendnp3/app/MeasurementTypes.h"
 #include "opendnp3/app/TimeAndInterval.h"
 
+#include "opendnp3/gen/EventMode.h"
+
 #include <openpal/executor/Function1.h>
 
 namespace opendnp3
@@ -58,68 +60,69 @@ public:
 	* Update a Binary measurement, must have transaction started
 	* @param meas measurement to be processed
 	* @param index index of the measurement
-	* @param forceEvent If true, bypass normal event detection and force the creation of a new event
+	* @param mode Describes how event generation is handled for this method
 	* @return true if the value exists and it was updated
 	*/
-	virtual bool Update(const Binary& meas, uint16_t index, bool forceEvent = false) = 0;
+	virtual bool Update(const Binary& meas, uint16_t index, EventMode mode = EventMode::Detect) = 0;
 
 	/**
 	* Update a DoubleBitBinary measurement, must have transaction started
 	* @param meas measurement to be processed
 	* @param index index of the measurement
-	* @param forceEvent If true, bypass normal event detection and force the creation of a new event
+	* @param mode Describes how event generation is handled for this method
 	* @return true if the value exists and it was updated
 	*/
-	virtual bool Update(const DoubleBitBinary& meas, uint16_t index, bool forceEvent = false) = 0;
+	virtual bool Update(const DoubleBitBinary& meas, uint16_t index, EventMode mode = EventMode::Detect) = 0;
 
 	/**
 	* Update an Analog measurement, must have transaction started
 	* @param meas measurement to be processed
 	* @param index index of the measurement
-	* @param forceEvent If true, bypass normal event detection and force the creation of a new event
+	* @param mode Describes how event generation is handled for this method
 	* @return true if the value exists and it was updated
 	*/
-	virtual bool Update(const Analog& meas, uint16_t index, bool forceEvent = false) = 0;
+	virtual bool Update(const Analog& meas, uint16_t index, EventMode mode = EventMode::Detect) = 0;
 
 	/**
 	* Update a Counter measurement, must have transaction started
 	* @param meas measurement to be processed
 	* @param index index of the measurement
+	* @param mode Describes how event generation is handled for this method
 	* @return true if the value exists and it was updated
 	*/
-	virtual bool Update(const Counter& meas, uint16_t index, bool forceEvent = false) = 0;
+	virtual bool Update(const Counter& meas, uint16_t index, EventMode mode = EventMode::Detect) = 0;
 
 	/**
 	* Update a FrozenCounter measurement, must have transaction started
 	* @param meas measurement to be processed
 	* @param index index of the measurement
-	* @param forceEvent If true, bypass normal event detection and force the creation of a new event
+	* @param mode Describes how event generation is handled for this method
 	* @return true if the value exists and it was updated
 	*/
-	virtual bool Update(const FrozenCounter& meas, uint16_t index, bool forceEvent = false) = 0;
+	virtual bool Update(const FrozenCounter& meas, uint16_t index, EventMode mode = EventMode::Detect) = 0;
 
 	/**
 	* Update a BinaryOutputStatus measurement, must have transaction started
 	* @param meas measurement to be processed
 	* @param index index of the measurement
-	* @param forceEvent If true, bypass normal event detection and force the creation of a new event
+	* @param mode Describes how event generation is handled for this method
 	* @return true if the value exists and it was updated
 	*/
-	virtual bool Update(const BinaryOutputStatus& meas, uint16_t index, bool forceEvent = false) = 0;
+	virtual bool Update(const BinaryOutputStatus& meas, uint16_t index, EventMode mode = EventMode::Detect) = 0;
 
 	/**
 	* Update a AnalogOutputStatus measurement, must have transaction started
 	* @param meas measurement to be processed
 	* @param index index of the measurement
-	* @param forceEvent If true, bypass normal event detection and force the creation of a new event
+	* @param mode Describes how event generation is handled for this method
 	* @return true if the value exists and it was updated
 	*/
-	virtual bool Update(const AnalogOutputStatus& meas, uint16_t index, bool forceEvent = false) = 0;
+	virtual bool Update(const AnalogOutputStatus& meas, uint16_t index, EventMode mode = EventMode::Detect) = 0;
 
 	/**
 	* Update a TimeAndInterval value, must have transaction started
 	* @param meas measurement to be processed
-	* @param index index of the measurement
+	* @param index index of the measurement	
 	* @return true if the value exists and it was updated
 	*/
 	virtual bool Update(const TimeAndInterval& meas, uint16_t index) = 0;
@@ -128,64 +131,64 @@ public:
 	* Modify a value using the current value, must have transaction started
 	* @param modify Functor that takes a measurement and returns a new one based on the old value
 	* @param index index of the measurement
-	* @param forceEvent If true, bypass normal event detection and force the creation of a new event
+	* @param mode Describes how event generation is handled for this method
 	* @return true if the value exists and it was updated
 	*/
-	virtual bool Modify(const openpal::Function1<const Binary&, Binary>& modify, uint16_t index, bool forceEvent = false) = 0;
+	virtual bool Modify(const openpal::Function1<const Binary&, Binary>& modify, uint16_t index, EventMode mode = EventMode::Detect) = 0;
 
 	/**
 	* Modify a value using the current value, must have transaction started
 	* @param modify Functor that takes a measurement and returns a new one based on the old value
 	* @param index index of the measurement
-	* @param forceEvent If true, bypass normal event detection and force the creation of a new event
+	* @param mode Describes how event generation is handled for this method
 	* @return true if the value exists and it was updated
 	*/
-	virtual bool Modify(const openpal::Function1<const DoubleBitBinary&, DoubleBitBinary>& modify, uint16_t index, bool forceEvent = false) = 0;
+	virtual bool Modify(const openpal::Function1<const DoubleBitBinary&, DoubleBitBinary>& modify, uint16_t index, EventMode mode = EventMode::Detect) = 0;
 
 	/**
 	* Modify a value using the current value, must have transaction started
 	* @param modify Functor that takes a measurement and returns a new one based on the old value
 	* @param index index of the measurement
-	* @param forceEvent If true, bypass normal event detection and force the creation of a new event
+	* @param mode Describes how event generation is handled for this method
 	* @return true if the value exists and it was updated
 	*/
-	virtual bool Modify(const openpal::Function1<const Analog&, Analog>& modify, uint16_t index, bool forceEvent = false) = 0;
+	virtual bool Modify(const openpal::Function1<const Analog&, Analog>& modify, uint16_t index, EventMode mode = EventMode::Detect) = 0;
 
 	/**
 	* Modify a value using the current value, must have transaction started
 	* @param modify Functor that takes a measurement and returns a new one based on the old value
 	* @param index index of the measurement
-	* @param forceEvent If true, bypass normal event detection and force the creation of a new event
+	* @param mode Describes how event generation is handled for this method
 	* @return true if the value exists and it was updated
 	*/
-	virtual bool Modify(const openpal::Function1<const Counter&, Counter>& modify, uint16_t index, bool forceEvent = false) = 0;
+	virtual bool Modify(const openpal::Function1<const Counter&, Counter>& modify, uint16_t index, EventMode mode = EventMode::Detect) = 0;
 
 	/**
 	* Modify a value using the current value, must have transaction started
 	* @param modify Functor that takes a measurement and returns a new one based on the old value
 	* @param index index of the measurement
-	* @param forceEvent If true, bypass normal event detection and force the creation of a new event
+	* @param mode Describes how event generation is handled for this method
 	* @return true if the value exists and it was updated
 	*/
-	virtual bool Modify(const openpal::Function1<const FrozenCounter&, FrozenCounter>& modify, uint16_t index, bool forceEvent = false) = 0;
+	virtual bool Modify(const openpal::Function1<const FrozenCounter&, FrozenCounter>& modify, uint16_t index, EventMode mode = EventMode::Detect) = 0;
 
 	/**
 	* Modify a value using the current value, must have transaction started
 	* @param modify Functor that takes a measurement and returns a new one based on the old value
 	* @param index index of the measurement
-	* @param forceEvent If true, bypass normal event detection and force the creation of a new event
+	* @param mode Describes how event generation is handled for this method
 	* @return true if the value exists and it was updated
 	*/
-	virtual bool Modify(const openpal::Function1<const BinaryOutputStatus&, BinaryOutputStatus>& modify, uint16_t index, bool forceEvent = false) = 0;
+	virtual bool Modify(const openpal::Function1<const BinaryOutputStatus&, BinaryOutputStatus>& modify, uint16_t index, EventMode mode = EventMode::Detect) = 0;
 
 	/**
 	* Modify a value using the current value, must have transaction started
 	* @param modify Functor that takes a measurement and returns a new one based on the old value
 	* @param index index of the measurement
-	* @param forceEvent If true, bypass normal event detection and force the creation of a new event
+	* @param mode Describes how event generation is handled for this method
 	* @return true if the value exists and it was updated
 	*/
-	virtual bool Modify(const openpal::Function1<const AnalogOutputStatus&, AnalogOutputStatus>& modify, uint16_t index, bool forceEvent = false) = 0;
+	virtual bool Modify(const openpal::Function1<const AnalogOutputStatus&, AnalogOutputStatus>& modify, uint16_t index, EventMode mode = EventMode::Detect) = 0;
 
 	/**
 	* Modify a value using the current value, must have transaction started

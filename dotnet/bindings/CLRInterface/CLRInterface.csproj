@@ -79,6 +79,7 @@
     <Compile Include="gen\EventCounterVariation.cs" />
     <Compile Include="gen\EventDoubleBinaryVariation.cs" />
     <Compile Include="gen\EventFrozenCounterVariation.cs" />
+    <Compile Include="gen\EventMode.cs" />
     <Compile Include="gen\GroupVariation.cs" />
     <Compile Include="gen\IINField.cs" />
     <Compile Include="gen\IntervalUnits.cs" />
