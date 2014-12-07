@@ -80,17 +80,31 @@ public:
 
 private:
 
-	uint32_t SelectByClass(EventClass ec, uint32_t max);
+	IINField SelectByClass(EventClass ec, uint32_t max);
 
 	template <class T>
-	uint32_t SelectByType(typename T::EventVariation var, uint32_t max);
+	uint32_t GenericSelectByType(uint32_t max, bool useDefault, typename T::EventVariation var);
+
+	template <class T>
+	IINField SelectByType(int32_t max) 
+	{ 
+		GenericSelectByType<T>(max, true, T::EventVariation());
+		return IINField();
+	}
+
+	template <class T>
+	IINField SelectByType(int32_t max, typename T::EventVariation var) 
+	{ 
+		GenericSelectByType<T>(max, false, var);
+		return IINField();
+	}
 
 	void RemoveFromCounts(const SOERecord& record);
 
 	bool RemoveOldestEventOfType(EventType type);
 
 	template <class T>
-	void UpdateAny(const Event<T>& evt,  typename T::EventVariation var);
+	void UpdateAny(const Event<T>& evt, typename T::EventVariation var);
 
 	bool IsAnyTypeOverflown() const;
 	bool IsTypeOverflown(EventType type) const;	
@@ -132,11 +146,11 @@ void EventBuffer::UpdateAny(const Event<T>& evt, typename T::EventVariation var)
 }
 
 template <class T>
-uint32_t EventBuffer::SelectByType(typename T::EventVariation var, uint32_t max)
+uint32_t EventBuffer::GenericSelectByType(uint32_t max, bool useDefault, typename T::EventVariation var)
 {
 	uint32_t num = 0;
 	auto iter = events.Iterate();
-	const uint32_t remaining = totalCounts.NumOfType(T::EventTypeEnum) - selectedCounts.NumOfClass(T::EventTypeEnum);
+	const uint32_t remaining = totalCounts.NumOfType(T::EventTypeEnum) - selectedCounts.NumOfType(T::EventTypeEnum);
 	
 	while (iter.HasNext() && (num < remaining) && (num < max))
 	{
@@ -144,7 +158,15 @@ uint32_t EventBuffer::SelectByType(typename T::EventVariation var, uint32_t max)
 
 		if (pNode->value.type == T::EventTypeEnum)
 		{
-			pNode->value.Select(var);			
+			if (useDefault)
+			{
+				pNode->value.SelectDefault();
+			}
+			else
+			{
+				pNode->value.Select(var);
+			}
+			
 			selectedCounts.Increment(pNode->value.clazz, pNode->value.type);
 			++num;
 		}

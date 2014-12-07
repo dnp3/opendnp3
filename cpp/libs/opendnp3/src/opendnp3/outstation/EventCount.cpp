@@ -35,11 +35,14 @@ EventCount::EventCount(const EventCount& ec) : total(ec.total)
 {
 	for (uint16_t clazz = 0; clazz < NUM_CLASSES; ++clazz)
 	{
-		for (uint16_t type = 0; type < NUM_TYPES; ++type)
-		{
-			numOfTypeAndClass[clazz][type] = ec.numOfTypeAndClass[clazz][type];
-		}
+		numOfClass[clazz] = ec.numOfClass[clazz];
 	}
+
+
+	for (uint16_t type = 0; type < NUM_TYPES; ++type)
+	{
+		numOfType[type] = ec.numOfType[type];
+	}	
 }
 
 EventCount& EventCount::operator=(const EventCount& ec)
@@ -50,10 +53,13 @@ EventCount& EventCount::operator=(const EventCount& ec)
 
 		for (uint16_t clazz = 0; clazz < NUM_CLASSES; ++clazz)
 		{
-			for (uint16_t type = 0; type < NUM_TYPES; ++type)
-			{
-				numOfTypeAndClass[clazz][type] = ec.numOfTypeAndClass[clazz][type];
-			}
+			numOfClass[clazz] = ec.numOfClass[clazz];
+		}
+
+
+		for (uint16_t type = 0; type < NUM_TYPES; ++type)
+		{
+			numOfType[type] = ec.numOfType[type];
 		}
 	}
 
@@ -66,28 +72,29 @@ void EventCount::Clear()
 
 	for (uint16_t clazz = 0; clazz < NUM_CLASSES; ++clazz)
 	{
-		for (uint16_t type = 0; type < NUM_TYPES; ++type)
-		{
-			numOfTypeAndClass[clazz][type] = 0;
-		}
+		numOfClass[clazz] = 0;
+	}
+
+
+	for (uint16_t type = 0; type < NUM_TYPES; ++type)
+	{
+		numOfType[type] = 0;
 	}
 }
 
 ClassField EventCount::Subtract(const EventCount& rhs) const
-{	
-	EventCount count;
+{			
+	return ClassField(
+		false,
+		!SameNumberForClass(rhs, EventClass::EC1),
+		!SameNumberForClass(rhs, EventClass::EC2),
+		!SameNumberForClass(rhs, EventClass::EC3)
+	);
+}
 
-	for (uint16_t clazz = 0; clazz < NUM_CLASSES; ++clazz)
-	{
-		for (uint16_t type = 0; type < NUM_TYPES; ++type)
-		{			
-			auto diff = numOfTypeAndClass[clazz][type] - rhs.numOfTypeAndClass[clazz][type];
-			count.numOfTypeAndClass[clazz][type] = diff;
-			count.total += diff;
-		}
-	}
-
-	return count.ToClassField();
+bool EventCount::SameNumberForClass(const EventCount& rhs, EventClass clazz) const
+{
+	return (numOfClass[static_cast<uint8_t>(clazz)] == rhs.numOfClass[static_cast<uint8_t>(clazz)]);
 }
 
 ClassField EventCount::ToClassField() const
@@ -101,26 +108,12 @@ ClassField EventCount::ToClassField() const
 
 uint32_t EventCount::NumOfClass(EventClass clazz) const
 {
-	uint32_t total = 0;
-
-	for (uint16_t type = 0; type < NUM_TYPES; ++type)
-	{
-		total += numOfTypeAndClass[static_cast<int>(clazz)][type];
-	}
-
-	return total;
+	return numOfClass[static_cast<uint8_t>(clazz)];
 }
 
 uint32_t EventCount::NumOfType(EventType type) const
 {
-	uint32_t total = 0;
-
-	for (uint16_t clazz = 0; clazz < NUM_CLASSES; ++clazz)
-	{
-		total += numOfTypeAndClass[clazz][static_cast<int>(type)];
-	}
-
-	return total;
+	return numOfType[static_cast<uint8_t>(type)];
 }
 
 bool EventCount::IsEmpty() const
@@ -128,16 +121,18 @@ bool EventCount::IsEmpty() const
 	return ToClassField().IsEmpty();	
 }
 
-void EventCount::Increment(EventClass clazz, EventType type, uint32_t count)
+void EventCount::Increment(EventClass clazz, EventType type)
 {
 	++total;
-	numOfTypeAndClass[static_cast<int>(clazz)][static_cast<int>(type)] += count;
+	++numOfClass[static_cast<int>(clazz)];
+	++numOfType[static_cast<int>(type)];
 }
 
-void EventCount::Decrement(EventClass clazz, EventType type, uint32_t count)
+void EventCount::Decrement(EventClass clazz, EventType type)
 {
 	--total;
-	numOfTypeAndClass[static_cast<int>(clazz)][static_cast<int>(type)] -= count;
+	--numOfType[static_cast<int>(type)];
+	--numOfClass[static_cast<int>(clazz)];
 }
 
 }

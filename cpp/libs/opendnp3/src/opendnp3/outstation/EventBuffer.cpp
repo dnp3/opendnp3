@@ -63,15 +63,98 @@ IINField EventBuffer::SelectCount(GroupVariation gv, uint16_t count)
 {
 	switch (gv)
 	{
+		case(GroupVariation::Group2Var0) :		
+			return this->SelectByType<Binary>(count);			
+		case(GroupVariation::Group2Var1) :
+			return this->SelectByType<Binary>(count, EventBinaryVariation::Group2Var1);			
+		case(GroupVariation::Group2Var2) :
+			return this->SelectByType<Binary>(count, EventBinaryVariation::Group2Var2);			
+		case(GroupVariation::Group2Var3) :
+			return this->SelectByType<Binary>(count, EventBinaryVariation::Group2Var3);
+			
+		case(GroupVariation::Group4Var0) :
+			return this->SelectByType<DoubleBitBinary>(count);			
+		case(GroupVariation::Group4Var1) :
+			return this->SelectByType<DoubleBitBinary>(count, EventDoubleBinaryVariation::Group4Var1);			
+		case(GroupVariation::Group4Var2) :
+			return this->SelectByType<DoubleBitBinary>(count, EventDoubleBinaryVariation::Group4Var2);			
+		case(GroupVariation::Group4Var3) :
+			return this->SelectByType<DoubleBitBinary>(count, EventDoubleBinaryVariation::Group4Var3);			
+
+		case(GroupVariation::Group11Var0) :
+			return this->SelectByType<BinaryOutputStatus>(count);			
+		case(GroupVariation::Group11Var1) :
+			return this->SelectByType<BinaryOutputStatus>(count, EventBinaryOutputStatusVariation::Group11Var1);			
+		case(GroupVariation::Group11Var2) :
+			return this->SelectByType<BinaryOutputStatus>(count, EventBinaryOutputStatusVariation::Group11Var2);			
+		
+		case(GroupVariation::Group22Var0) :
+			return this->SelectByType<Counter>(count);			
+		case(GroupVariation::Group22Var1) :
+			return this->SelectByType<Counter>(count, EventCounterVariation::Group22Var1);			
+		case(GroupVariation::Group22Var2) :
+			return this->SelectByType<Counter>(count, EventCounterVariation::Group22Var2);			
+		case(GroupVariation::Group22Var5) :
+			return this->SelectByType<Counter>(count, EventCounterVariation::Group22Var5);			
+		case(GroupVariation::Group22Var6) :
+			return this->SelectByType<Counter>(count, EventCounterVariation::Group22Var6);			
+
+		case(GroupVariation::Group23Var0) :
+			return this->SelectByType<FrozenCounter>(count);			
+		case(GroupVariation::Group23Var1) :
+			return this->SelectByType<FrozenCounter>(count, EventFrozenCounterVariation::Group23Var1);			
+		case(GroupVariation::Group23Var2) :
+			return this->SelectByType<FrozenCounter>(count, EventFrozenCounterVariation::Group23Var2);			
+		case(GroupVariation::Group23Var5) :
+			return this->SelectByType<FrozenCounter>(count, EventFrozenCounterVariation::Group23Var5);			
+		case(GroupVariation::Group23Var6) :
+			return this->SelectByType<FrozenCounter>(count, EventFrozenCounterVariation::Group23Var6);			
+			
+		case(GroupVariation::Group32Var0) :
+			return this->SelectByType<Analog>(count);			
+		case(GroupVariation::Group32Var1) :
+			return this->SelectByType<Analog>(count, EventAnalogVariation::Group32Var1);
+		case(GroupVariation::Group32Var2) :
+			return this->SelectByType<Analog>(count, EventAnalogVariation::Group32Var2);
+		case(GroupVariation::Group32Var3) :
+			return this->SelectByType<Analog>(count, EventAnalogVariation::Group32Var3);
+		case(GroupVariation::Group32Var4) :
+			return this->SelectByType<Analog>(count, EventAnalogVariation::Group32Var4);
+		case(GroupVariation::Group32Var5) :
+			return this->SelectByType<Analog>(count, EventAnalogVariation::Group32Var5);
+		case(GroupVariation::Group32Var6) :
+			return this->SelectByType<Analog>(count, EventAnalogVariation::Group32Var6);
+		case(GroupVariation::Group32Var7) :
+			return this->SelectByType<Analog>(count, EventAnalogVariation::Group32Var7);
+		case(GroupVariation::Group32Var8) :
+			return this->SelectByType<Analog>(count, EventAnalogVariation::Group32Var8);
+
+		case(GroupVariation::Group42Var0) :
+			return this->SelectByType<AnalogOutputStatus>(count);
+		case(GroupVariation::Group42Var1) :
+			return this->SelectByType<AnalogOutputStatus>(count, EventAnalogOutputStatusVariation::Group42Var1);
+		case(GroupVariation::Group42Var2) :
+			return this->SelectByType<AnalogOutputStatus>(count, EventAnalogOutputStatusVariation::Group42Var2);
+		case(GroupVariation::Group42Var3) :
+			return this->SelectByType<AnalogOutputStatus>(count, EventAnalogOutputStatusVariation::Group42Var3);
+		case(GroupVariation::Group42Var4) :
+			return this->SelectByType<AnalogOutputStatus>(count, EventAnalogOutputStatusVariation::Group42Var4);
+		case(GroupVariation::Group42Var5) :
+			return this->SelectByType<AnalogOutputStatus>(count, EventAnalogOutputStatusVariation::Group42Var5);
+		case(GroupVariation::Group42Var6) :
+			return this->SelectByType<AnalogOutputStatus>(count, EventAnalogOutputStatusVariation::Group42Var6);
+		case(GroupVariation::Group42Var7) :
+			return this->SelectByType<AnalogOutputStatus>(count, EventAnalogOutputStatusVariation::Group42Var7);
+		case(GroupVariation::Group42Var8) :
+			return this->SelectByType<AnalogOutputStatus>(count, EventAnalogOutputStatusVariation::Group42Var8);
+
+
 		case(GroupVariation::Group60Var2) :
-			this->SelectByClass(EventClass::EC1, count);
-			return IINField();
+			return this->SelectByClass(EventClass::EC1, count);			
 		case(GroupVariation::Group60Var3):
-			this->SelectByClass(EventClass::EC2, count);
-			return IINField();
+			return this->SelectByClass(EventClass::EC2, count);			
 		case(GroupVariation::Group60Var4):
-			this->SelectByClass(EventClass::EC3, count);
-			return IINField();
+			return this->SelectByClass(EventClass::EC3, count);			
 		default:
 			return IINBit::FUNC_NOT_SUPPORTED;
 	}
@@ -92,7 +175,7 @@ bool EventBuffer::IsOverflown()
 	return overflow;
 }
 
-uint32_t EventBuffer::SelectByClass(EventClass ec, uint32_t max)
+IINField EventBuffer::SelectByClass(EventClass ec, uint32_t max)
 {
 	uint32_t num = 0;
 	auto iter = events.Iterate();
@@ -109,7 +192,7 @@ uint32_t EventBuffer::SelectByClass(EventClass ec, uint32_t max)
 		}
 	}	
 
-	return num;
+	return IINField();
 }
 
 void EventBuffer::RemoveFromCounts(const SOERecord& record)
