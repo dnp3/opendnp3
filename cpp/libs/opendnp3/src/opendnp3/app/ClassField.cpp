@@ -24,6 +24,11 @@
 namespace opendnp3
 {
 
+ClassField ClassField::None()
+{
+	return ClassField();
+}
+
 ClassField ClassField::AllClasses()
 {
 	return ClassField(ALL_CLASSES);

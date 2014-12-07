@@ -33,7 +33,7 @@ assignClass(app, params.taskRetryPeriod, logger),
 startupIntegrity(app, SOEHandler, params.startupIntegrityClassMask, params.taskRetryPeriod, logger),
 disableUnsol(app, params.disableUnsolOnStartup, params.taskRetryPeriod, logger),
 timeSync(app, logger),
-eventScan(app, SOEHandler, params.taskRetryPeriod, logger)
+eventScan(app, SOEHandler, params.eventScanOnEventsAvailableClassMask, params.taskRetryPeriod, logger)
 {
 	
 }
