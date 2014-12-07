@@ -24,7 +24,17 @@
 namespace opendnp3
 {
 
-SOERecord::SOERecord() : type(EventType::Analog), clazz(EventClass::EC1), selected(false), flags(0)
+SOERecord::SOERecord() : SOERecord(EventType::Analog, EventClass::EC1, 0, 0 ,0)
+{}
+
+SOERecord::SOERecord(EventType type_, EventClass clazz_, uint16_t index_, uint64_t time_, uint8_t flags_) :
+	type(type_),
+	clazz(clazz_),
+	selected(false),
+	written(false), 
+	index(index_),
+	time(time_),
+	flags(flags_)
 {}
 
 void SOERecord::Reset()
@@ -62,43 +72,43 @@ void SOERecord::SelectDefault()
 }
 
 SOERecord::SOERecord(const Binary& meas, uint16_t index_, EventClass clazz_, EventBinaryVariation var) :
-	type(EventType::Binary), clazz(clazz_), selected(false), written(false), index(index_), time(meas.time), flags(meas.quality)
+	SOERecord(EventType::Binary, clazz_, index_, meas.time, meas.quality)
 {
 	this->value.binary = ValueAndVariation <Binary> { meas.value, var, var };
 }
 
 SOERecord::SOERecord(const DoubleBitBinary& meas, uint16_t index_, EventClass clazz_, EventDoubleBinaryVariation var) :
-	type(EventType::DoubleBitBinary), clazz(clazz_), selected(false), written(false), index(index_), time(meas.time), flags(meas.quality)
+	SOERecord(EventType::DoubleBitBinary, clazz_, index_, meas.time, meas.quality)
 {
 	this->value.doubleBinary = ValueAndVariation<DoubleBitBinary> { meas.value, var, var };
 }
 
 SOERecord::SOERecord(const BinaryOutputStatus& meas, uint16_t index_, EventClass clazz_, EventBinaryOutputStatusVariation var) :
-	type(EventType::BinaryOutputStatus), clazz(clazz_), selected(false), written(false), index(index_), time(meas.time), flags(meas.quality)
+	SOERecord(EventType::BinaryOutputStatus, clazz_, index_, meas.time, meas.quality)
 {
 	this->value.binaryOutputStatus = ValueAndVariation < BinaryOutputStatus > { meas.value, var, var };
 }
 
 SOERecord::SOERecord(const Counter& meas, uint16_t index_, EventClass clazz_, EventCounterVariation var) :
-	type(EventType::Counter), clazz(clazz_), selected(false), written(false), index(index_), time(meas.time), flags(meas.quality)
+	SOERecord(EventType::Counter, clazz_, index_, meas.time, meas.quality)
 {
 	this->value.counter = ValueAndVariation < Counter > { meas.value, var, var };
 }
 
 SOERecord::SOERecord(const FrozenCounter& meas, uint16_t index_, EventClass clazz_, EventFrozenCounterVariation var) :
-	type(EventType::FrozenCounter), clazz(clazz_), selected(false), written(false), index(index_), time(meas.time), flags(meas.quality)
+	SOERecord(EventType::FrozenCounter, clazz_, index_, meas.time, meas.quality)
 {
 	this->value.frozenCounter = ValueAndVariation < FrozenCounter > { meas.value, var, var };
 }
 
 SOERecord::SOERecord(const Analog& meas, uint16_t index_, EventClass clazz_, EventAnalogVariation var) :
-	type(EventType::Analog), clazz(clazz_), selected(false), written(false), index(index_), time(meas.time), flags(meas.quality)
+	SOERecord(EventType::Analog, clazz_, index_, meas.time, meas.quality)
 {
 	this->value.analog = ValueAndVariation < Analog > { meas.value, var, var };
 }
 
 SOERecord::SOERecord(const AnalogOutputStatus& meas, uint16_t index_, EventClass clazz_, EventAnalogOutputStatusVariation var) :
-	type(EventType::AnalogOutputStatus), clazz(clazz_), selected(false), written(false), index(index_), time(meas.time), flags(meas.quality)
+	SOERecord(EventType::AnalogOutputStatus, clazz_, index_, meas.time, meas.quality)
 {
 	this->value.analogOutputStatus = ValueAndVariation < AnalogOutputStatus > { meas.value, var, var };
 }
