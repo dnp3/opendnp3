@@ -25,68 +25,84 @@ namespace Automatak.Simulator.DNP3
             }
         }
 
-        void IDatabase.Update(Binary update, ushort index, bool forceEvent)
+        bool IDatabase.Update(Binary update, ushort index, bool forceEvent)
         {
+            bool ret = true;
             foreach (var db in databases)
             {
-                db.Update(update, index, forceEvent);
+                ret &= db.Update(update, index, forceEvent);
             }
+            return ret;
         }
 
-        void IDatabase.Update(DoubleBitBinary update, ushort index, bool forceEvent)
+        bool IDatabase.Update(DoubleBitBinary update, ushort index, bool forceEvent)
         {
+            bool ret = true;
             foreach (var db in databases)
             {
-                db.Update(update, index, forceEvent);
+                ret &= db.Update(update, index, forceEvent);
             }
+            return ret;
         }
 
-        void IDatabase.Update(Analog update, ushort index, bool forceEvent)
+        bool IDatabase.Update(Analog update, ushort index, bool forceEvent)
         {
+            bool ret = true;
             foreach (var db in databases)
             {
-                db.Update(update, index, forceEvent);
+                ret &= db.Update(update, index, forceEvent);
             }
+            return ret;
         }
 
-        void IDatabase.Update(Counter update, ushort index, bool forceEvent)
+        bool IDatabase.Update(Counter update, ushort index, bool forceEvent)
         {
+            bool ret = true;
             foreach (var db in databases)
             {
-                db.Update(update, index, forceEvent);
+                ret &= db.Update(update, index, forceEvent);
             }
+            return ret;
         }
 
-        void IDatabase.Update(FrozenCounter update, ushort index, bool forceEvent)
+        bool IDatabase.Update(FrozenCounter update, ushort index, bool forceEvent)
         {
+            bool ret = true;
             foreach (var db in databases)
             {
-                db.Update(update, index, forceEvent);
+                ret &= db.Update(update, index, forceEvent);
             }
+            return ret;
         }
 
-        void IDatabase.Update(BinaryOutputStatus update, ushort index, bool forceEvent)
+        bool IDatabase.Update(BinaryOutputStatus update, ushort index, bool forceEvent)
         {
+            bool ret = true;
             foreach (var db in databases)
             {
-                db.Update(update, index, forceEvent);
+                ret &= db.Update(update, index, forceEvent);
             }
+            return ret;
         }
 
-        void IDatabase.Update(AnalogOutputStatus update, ushort index, bool forceEvent)
+        bool IDatabase.Update(AnalogOutputStatus update, ushort index, bool forceEvent)
         {
+            bool ret = true;
             foreach (var db in databases)
             {
-                db.Update(update, index, forceEvent);
+                ret &= db.Update(update, index, forceEvent);
             }
+            return ret;
         }
 
-        void IDatabase.Update(TimeAndInterval update, ushort index)
+        bool IDatabase.Update(TimeAndInterval update, ushort index)
         {
+            bool ret = true;
             foreach (var db in databases)
             {
-                db.Update(update, index);
+                ret &= db.Update(update, index);
             }
+            return ret;
         }
 
         void IDatabase.End()

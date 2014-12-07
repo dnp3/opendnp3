@@ -59,6 +59,15 @@ public:
 	virtual bool Update(const BinaryOutputStatus&, uint16_t, bool = false) override final;
 	virtual bool Update(const AnalogOutputStatus&, uint16_t, bool = false) override final;
 	virtual bool Update(const TimeAndInterval&, uint16_t) override final;
+
+	virtual bool Modify(const openpal::Function1<const Binary&, Binary>& modify, uint16_t, bool = false) override final;
+	virtual bool Modify(const openpal::Function1<const DoubleBitBinary&, DoubleBitBinary>& modify, uint16_t, bool = false) override final;
+	virtual bool Modify(const openpal::Function1<const Analog&, Analog>& modify, uint16_t, bool = false) override final;
+	virtual bool Modify(const openpal::Function1<const Counter&, Counter>& modify, uint16_t, bool = false) override final;
+	virtual bool Modify(const openpal::Function1<const FrozenCounter&, FrozenCounter>& modify, uint16_t, bool = false) override final;
+	virtual bool Modify(const openpal::Function1<const BinaryOutputStatus&, BinaryOutputStatus>& modify, uint16_t, bool = false) override final;
+	virtual bool Modify(const openpal::Function1<const AnalogOutputStatus&, AnalogOutputStatus>& modify, uint16_t, bool = false) override final;
+	virtual bool Modify(const openpal::Function1<const TimeAndInterval&, TimeAndInterval>& modify, uint16_t index) override final;
 	
 	// ------- Misc ---------------
 	
@@ -98,6 +107,12 @@ private:
 	template <class T>
 	bool UpdateEvent(const T& value, uint16_t index, bool forceEvent);
 
+	template <class T>
+	bool ModifyEvent(const openpal::Function1<const T&, T>& modify, uint16_t index, bool forceEvent);
+
+	template <class T>
+	bool UpdateAny(Cell<T>& cell, const T& value, uint16_t index, bool forceEvent);
+
 	// ITransactable  functions, proxies to the given transactable
 	virtual void Start() override final;
 	virtual void End() override final;
@@ -106,31 +121,52 @@ private:
 template <class T>
 bool Database::UpdateEvent(const T& value, uint16_t index, bool forceEvent)
 {	
-	auto values = buffers.buffers.GetArrayView<T>();
+	auto view = buffers.buffers.GetArrayView<T>();
 
-	if (values.Contains(index))
+	if (view.Contains(index))
 	{
-		auto& metadata = values[index].metadata;
-
-		EventClass ec;
-		if (ConvertToEventClass(metadata.clazz, ec) && (forceEvent || metadata.IsEvent(value)))
-		{
-			metadata.lastEvent = value;
-
-			if (pEventReceiver)
-			{
-				pEventReceiver->Update(Event<T>(value, index, ec), metadata.variation);
-				transactionHasEvents = true;
-			}
-		}
-
-		values[index].value = value;
+		this->UpdateAny(view[index], value, index, forceEvent);
 		return true;
 	}
 	else
 	{
 		return false;
 	}
+}
+
+template <class T>
+bool Database::ModifyEvent(const openpal::Function1<const T&, T>& modify, uint16_t index, bool forceEvent)
+{
+	auto view = buffers.buffers.GetArrayView<T>();
+
+	if (view.Contains(index))
+	{
+		this->UpdateAny(view[index], modify.Apply(view[index].value), index, forceEvent);
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+template <class T>
+bool Database::UpdateAny(Cell<T>& cell, const T& value, uint16_t index, bool forceEvent)
+{
+	EventClass ec;
+	if (ConvertToEventClass(cell.metadata.clazz, ec) && (forceEvent || cell.metadata.IsEvent(value)))
+	{
+		cell.metadata.lastEvent = value;
+
+		if (pEventReceiver)
+		{
+			pEventReceiver->Update(Event<T>(value, index, ec), cell.metadata.variation);
+			transactionHasEvents = true;
+		}
+	}
+
+	cell.value = value;
+	return true;
 }
 
 }

@@ -53,7 +53,7 @@ void Database::End()
 	if (transactionHasEvents)
 	{
 		notify = true;
-		transactionHasEvents = false;			
+		transactionHasEvents = false;
 	}
 
 	openpal::CriticalSection::Unlock(pMutex);
@@ -106,6 +106,57 @@ bool Database::Update(const TimeAndInterval& value, uint16_t index)
 	if (view.Contains(index))
 	{		
 		view[index].value = value;
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+
+bool Database::Modify(const openpal::Function1<const Binary&, Binary>& modify, uint16_t index, bool forceEvent)
+{
+	return this->ModifyEvent(modify, index, forceEvent);
+}
+
+bool Database::Modify(const openpal::Function1<const DoubleBitBinary&, DoubleBitBinary>& modify, uint16_t index, bool forceEvent)
+{
+	return this->ModifyEvent(modify, index, forceEvent);
+}
+
+bool Database::Modify(const openpal::Function1<const Analog&, Analog>& modify, uint16_t index, bool forceEvent)
+{
+	return this->ModifyEvent(modify, index, forceEvent);
+}
+
+bool Database::Modify(const openpal::Function1<const Counter&, Counter>& modify, uint16_t index, bool forceEvent)
+{
+	return this->ModifyEvent(modify, index, forceEvent);
+}
+
+bool Database::Modify(const openpal::Function1<const FrozenCounter&, FrozenCounter>& modify, uint16_t index, bool forceEvent)
+{
+	return this->ModifyEvent(modify, index, forceEvent);
+}
+
+bool Database::Modify(const openpal::Function1<const BinaryOutputStatus&, BinaryOutputStatus>& modify, uint16_t index, bool forceEvent)
+{
+	return this->ModifyEvent(modify, index, forceEvent);
+}
+
+bool Database::Modify(const openpal::Function1<const AnalogOutputStatus&, AnalogOutputStatus>& modify, uint16_t index, bool forceEvent)
+{
+	return this->ModifyEvent(modify, index, forceEvent);
+}
+
+bool Database::Modify(const openpal::Function1<const TimeAndInterval&, TimeAndInterval>& modify, uint16_t index)
+{
+	auto view = buffers.buffers.GetArrayView<TimeAndInterval>();
+
+	if (view.Contains(index))
+	{
+		view[index].value = modify.Apply(view[index].value);
 		return true;
 	}
 	else
