@@ -44,15 +44,17 @@ struct Evented : public Indexed<uint16_t>
 template <typename ValueType>
 struct Event : public Evented
 {
-	Event(const ValueType& value_, uint16_t index_, EventClass clazz_) :
+	Event(const ValueType& value_, uint16_t index_, EventClass clazz_, typename ValueType::EventVariation variation_) :
 		Evented(index_, clazz_),
-		value(value_)
+		value(value_),
+		variation(variation_)
 	{}
 
-	Event() : Evented(), value()
+	Event() : Evented(), value(), variation()
 	{}
 
 	ValueType value;
+	typename ValueType::EventVariation variation;
 };
 
 } //end namespace

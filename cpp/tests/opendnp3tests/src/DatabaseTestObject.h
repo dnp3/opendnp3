@@ -33,37 +33,37 @@ class MockEventBuffer : public IEventReceiver
 {
 public:
 
-	void Update(const Event<Binary>& evt, EventBinaryVariation var) override final
+	void Update(const Event<Binary>& evt) override final
 	{
 		binaryEvents.push_back(evt);
 	}
 
-	void Update(const Event<DoubleBitBinary>& evt, EventDoubleBinaryVariation var) override final
+	void Update(const Event<DoubleBitBinary>& evt) override final
 	{
 		doubleBinaryEvents.push_back(evt);
 	}
 
-	void Update(const Event<Analog>& evt, EventAnalogVariation var) override final
+	void Update(const Event<Analog>& evt) override final
 	{
 		analogEvents.push_back(evt);
 	}
 
-	void Update(const Event<Counter>& evt, EventCounterVariation var) override final
+	void Update(const Event<Counter>& evt) override final
 	{
 		counterEvents.push_back(evt);
 	}
 
-	void Update(const Event<FrozenCounter>& evt, EventFrozenCounterVariation var) override final
+	void Update(const Event<FrozenCounter>& evt) override final
 	{
 		frozenCounterEvents.push_back(evt);
 	}
 
-	void Update(const Event<BinaryOutputStatus>& evt, EventBinaryOutputStatusVariation var) override final
+	void Update(const Event<BinaryOutputStatus>& evt) override final
 	{
 		binaryOutputStatusEvents.push_back(evt);
 	}
 
-	void Update(const Event<AnalogOutputStatus>& evt, EventAnalogOutputStatusVariation var) override final
+	void Update(const Event<AnalogOutputStatus>& evt) override final
 	{
 		analogOutputStatusEvents.push_back(evt);
 	}

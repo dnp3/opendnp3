@@ -54,13 +54,13 @@ public:
 	
 	// ------- IEventReceiver ------ 
 
-	virtual void Update(const Event<Binary>& evt, EventBinaryVariation var) override final { this->UpdateAny(evt, var); }	
-	virtual void Update(const Event<DoubleBitBinary>& evt, EventDoubleBinaryVariation var) override final { this->UpdateAny(evt, var); }		
-	virtual void Update(const Event<Analog>& evt, EventAnalogVariation var) override final { this->UpdateAny(evt, var); }	
-	virtual void Update(const Event<Counter>& evt, EventCounterVariation var) override final { this->UpdateAny(evt, var); }	
-	virtual void Update(const Event<FrozenCounter>&  evt, EventFrozenCounterVariation var) override final { this->UpdateAny(evt, var); }	
-	virtual void Update(const Event<BinaryOutputStatus>& evt, EventBinaryOutputStatusVariation var) override final { this->UpdateAny(evt, var); }	
-	virtual void Update(const Event<AnalogOutputStatus>& evt, EventAnalogOutputStatusVariation var) override final { this->UpdateAny(evt, var); }
+	virtual void Update(const Event<Binary>& evt) override final { this->UpdateAny(evt); }	
+	virtual void Update(const Event<DoubleBitBinary>& evt) override final { this->UpdateAny(evt); }		
+	virtual void Update(const Event<Analog>& evt) override final { this->UpdateAny(evt); }	
+	virtual void Update(const Event<Counter>& evt) override final { this->UpdateAny(evt); }	
+	virtual void Update(const Event<FrozenCounter>&  evt) override final { this->UpdateAny(evt); }	
+	virtual void Update(const Event<BinaryOutputStatus>& evt) override final { this->UpdateAny(evt); }	
+	virtual void Update(const Event<AnalogOutputStatus>& evt) override final { this->UpdateAny(evt); }
 
 	// ------- IEventSelector ------ 
 
@@ -104,7 +104,7 @@ private:
 	bool RemoveOldestEventOfType(EventType type);
 
 	template <class T>
-	void UpdateAny(const Event<T>& evt, typename T::EventVariation var);
+	void UpdateAny(const Event<T>& evt);
 
 	bool IsAnyTypeOverflown() const;
 	bool IsTypeOverflown(EventType type) const;	
@@ -125,7 +125,7 @@ private:
 };
 
 template <class T>
-void EventBuffer::UpdateAny(const Event<T>& evt, typename T::EventVariation var)
+void EventBuffer::UpdateAny(const Event<T>& evt)
 {		
 	auto maxForType = config.GetMaxEventsForType(T::EventTypeEnum);
 	
@@ -140,7 +140,7 @@ void EventBuffer::UpdateAny(const Event<T>& evt, typename T::EventVariation var)
 		}
 
 		// Add the event, the Reset() ensures that selected/written == false
-		events.Add(SOERecord(evt.value, evt.index, evt.clazz, var))->value.Reset();		
+		events.Add(SOERecord(evt.value, evt.index, evt.clazz, evt.variation))->value.Reset();		
 		totalCounts.Increment(evt.clazz, T::EventTypeEnum);
 	}	
 }

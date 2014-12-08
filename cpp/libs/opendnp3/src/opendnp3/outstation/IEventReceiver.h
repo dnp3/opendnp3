@@ -37,19 +37,19 @@ public:
 
 	virtual ~IEventReceiver() {}
 
-	virtual void Update(const Event<Binary>& evt, EventBinaryVariation var) = 0;
+	virtual void Update(const Event<Binary>& evt) = 0;
 
-	virtual void Update(const Event<DoubleBitBinary>& evt, EventDoubleBinaryVariation var) = 0;
+	virtual void Update(const Event<DoubleBitBinary>& evt) = 0;
 
-	virtual void Update(const Event<Analog>& evt, EventAnalogVariation var) = 0;
+	virtual void Update(const Event<Analog>& evt) = 0;
 
-	virtual void Update(const Event<Counter>& evt, EventCounterVariation var) = 0;
+	virtual void Update(const Event<Counter>& evt) = 0;
 
-	virtual void Update(const Event<FrozenCounter>&  evt, EventFrozenCounterVariation var) = 0;
+	virtual void Update(const Event<FrozenCounter>&  evt) = 0;
 
-	virtual void Update(const Event<BinaryOutputStatus>& evt, EventBinaryOutputStatusVariation var) = 0;
+	virtual void Update(const Event<BinaryOutputStatus>& evt) = 0;
 
-	virtual void Update(const Event<AnalogOutputStatus>& evt, EventAnalogOutputStatusVariation var) = 0;
+	virtual void Update(const Event<AnalogOutputStatus>& evt) = 0;
 
 };
 

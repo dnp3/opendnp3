@@ -176,7 +176,7 @@ bool Database::UpdateAny(Cell<T>& cell, const T& value, uint16_t index, EventMod
 
 			if (pEventReceiver)
 			{
-				pEventReceiver->Update(Event<T>(value, index, ec), cell.metadata.variation);
+				pEventReceiver->Update(Event<T>(value, index, ec, cell.metadata.variation));
 				transactionHasEvents = true;
 			}
 		}		
