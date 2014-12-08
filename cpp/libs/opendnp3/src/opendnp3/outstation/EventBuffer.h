@@ -87,6 +87,8 @@ public:
 
 private:
 
+	IINField SelectMaxCount(GroupVariation gv, uint32_t maximum);
+
 	IINField SelectByClass(EventClass ec, uint32_t max);
 
 	template <class T>
