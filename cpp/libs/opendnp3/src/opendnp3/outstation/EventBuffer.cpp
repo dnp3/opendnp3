@@ -21,6 +21,8 @@
 
 #include "EventBuffer.h"
 
+#include "EventWriter.h"
+
 namespace opendnp3
 {
 
@@ -167,12 +169,23 @@ IINField EventBuffer::SelectMaxCount(GroupVariation gv, uint32_t maximum)
 
 bool EventBuffer::HasAnySelection() const
 {
-	return false;
+	// are there any selected, but unwritten, events
+	return selectedCounts.TotatCount() > writtenCounts.TotatCount();
 }
 
 bool EventBuffer::Load(HeaderWriter& writer)
 {
-	return true;
+	return EventWriter::Write(writer, *this, events);
+}
+
+bool EventBuffer::HasMoreUnwrittenEvents() const
+{
+	return HasAnySelection();
+}
+
+void EventBuffer::RecordWritten(EventClass ec, EventType et)
+{
+	writtenCounts.Increment(ec, et);
 }
 
 ClassField EventBuffer::UnwrittenClassField() const

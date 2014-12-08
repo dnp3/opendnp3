@@ -192,7 +192,9 @@
     <ClInclude Include="src\opendnp3\outstation\CommandResponseHandler.h" />
     <ClInclude Include="src\opendnp3\outstation\ConstantCommandAction.h" />
     <ClInclude Include="src\opendnp3\outstation\DatabaseBuffers.h" />
+    <ClInclude Include="src\opendnp3\outstation\EventWriter.h" />
     <ClInclude Include="src\opendnp3\outstation\IClassAssigner.h" />
+    <ClInclude Include="src\opendnp3\outstation\IEventRecorder.h" />
     <ClInclude Include="src\opendnp3\outstation\IEventSelector.h" />
     <ClInclude Include="src\opendnp3\outstation\IResponseLoader.h" />
     <ClInclude Include="src\opendnp3\outstation\IStaticSelector.h" />
@@ -343,6 +345,7 @@
     <ClCompile Include="src\opendnp3\outstation\EventCount.cpp" />
     <ClCompile Include="src\opendnp3\outstation\EventResponseTypes.cpp" />
     <ClCompile Include="src\opendnp3\outstation\EventWriteOperation.cpp" />
+    <ClCompile Include="src\opendnp3\outstation\EventWriter.cpp" />
     <ClCompile Include="src\opendnp3\outstation\IINHelpers.cpp" />
     <ClCompile Include="src\opendnp3\outstation\IOutstationApplication.cpp" />
     <ClCompile Include="src\opendnp3\outstation\Outstation.cpp" />
