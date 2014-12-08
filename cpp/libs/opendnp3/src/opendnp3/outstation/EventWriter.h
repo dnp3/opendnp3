@@ -39,7 +39,7 @@ class EventWriter : openpal::PureStatic
 
 	static bool Write(HeaderWriter& writer, IEventRecorder& recorder, openpal::LinkedListIterator<SOERecord> iterator);
 	
-	private:	
+	private:
 
 	class Result
 	{
@@ -57,11 +57,23 @@ class EventWriter : openpal::PureStatic
 		Result() = delete;
 	};
 
-	typedef Result(*EventLoadFun)(HeaderWriter& writer, IEventRecorder& recorder, openpal::LinkedListIterator<SOERecord> iterator);
-
-	static EventLoadFun GetLoadFunction(const SOERecord& record);
-
+	static Result LoadHeader(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation);
+	static Result LoadHeaderBinary(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation);
+	static Result LoadHeaderDoubleBinary(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation);
+	static Result LoadHeaderCounter(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation);
+	static Result LoadHeaderFrozenCounter(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation);
+	static Result LoadHeaderAnalog(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation);
+	static Result LoadHeaderBinaryOutputStatus(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation);
+	static Result LoadHeaderAnalogOutputStatus(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation);
+	
 	inline static bool IsWritable(const SOERecord& record) { return record.selected && !record.written; }
+
+	template <class T>
+	Result WriteTypeWithSerializer(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation)
+	{
+	
+	}
+
 };
 
 }

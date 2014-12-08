@@ -21,6 +21,8 @@
 
 #include "EventWriter.h"
 
+using namespace openpal;
+
 namespace opendnp3
 {
 	bool EventWriter::Write(HeaderWriter& writer, IEventRecorder& recorder, openpal::LinkedListIterator<SOERecord> iterator)
@@ -28,10 +30,10 @@ namespace opendnp3
 		while (iterator.HasNext() && recorder.HasMoreUnwrittenEvents())
 		{
 			auto pCurrent = iterator.Next();
+
 			if (IsWritable(pCurrent->value))
-			{
-				auto function = GetLoadFunction(pCurrent->value);
-				auto result = function(writer, recorder, iterator);
+			{				
+				auto result = LoadHeader(writer, recorder, pCurrent);
 				iterator = result.location;
 
 				if (result.isFragmentFull)
@@ -42,6 +44,64 @@ namespace opendnp3
 		}
 
 		return true;
-	}	
+	}
+
+	EventWriter::Result EventWriter::LoadHeader(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation)
+	{
+		switch (pLocation->value.type)
+		{
+			case(EventType::Binary) :
+				return LoadHeaderBinary(writer, recorder, pLocation);
+			case(EventType::DoubleBitBinary) :
+				return LoadHeaderDoubleBinary(writer, recorder, pLocation);
+			case(EventType::Counter):
+				return LoadHeaderCounter(writer, recorder, pLocation);
+			case(EventType::FrozenCounter):
+				return LoadHeaderFrozenCounter(writer, recorder, pLocation);
+			case(EventType::Analog):
+				return LoadHeaderAnalog(writer, recorder, pLocation);
+			case(EventType::BinaryOutputStatus):
+				return LoadHeaderBinaryOutputStatus(writer, recorder, pLocation);
+			case(EventType::AnalogOutputStatus) :
+				return LoadHeaderAnalogOutputStatus(writer, recorder, pLocation);
+			default:				
+				return Result(false, LinkedListIterator<SOERecord>::Undefined());
+		}
+	}
+
+	EventWriter::Result EventWriter::LoadHeaderBinary(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation)
+	{
+		return Result(false, LinkedListIterator<SOERecord>::Undefined());
+	}
+	
+	EventWriter::Result EventWriter::LoadHeaderDoubleBinary(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation)
+	{
+		return Result(false, LinkedListIterator<SOERecord>::Undefined());
+	}
+	
+	EventWriter::Result EventWriter::LoadHeaderCounter(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation)
+	{
+		return Result(false, LinkedListIterator<SOERecord>::Undefined());
+	}
+	
+	EventWriter::Result EventWriter::LoadHeaderFrozenCounter(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation)
+	{
+		return Result(false, LinkedListIterator<SOERecord>::Undefined());
+	}
+	
+	EventWriter::Result EventWriter::LoadHeaderAnalog(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation)
+	{
+		return Result(false, LinkedListIterator<SOERecord>::Undefined());
+	}
+	
+	EventWriter::Result EventWriter::LoadHeaderBinaryOutputStatus(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation)
+	{
+		return Result(false, LinkedListIterator<SOERecord>::Undefined());
+	}
+	
+	EventWriter::Result EventWriter::LoadHeaderAnalogOutputStatus(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation)
+	{
+		return Result(false, LinkedListIterator<SOERecord>::Undefined());
+	}
 
 }

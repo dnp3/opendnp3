@@ -92,6 +92,7 @@ public:
 	EventClass clazz;
 	bool selected;
 	bool written;
+	EventValue value;
 
 	void Reset();
 
@@ -110,8 +111,7 @@ private:
 	}
 
 
-	// the actual value;
-	EventValue value;
+	// the actual value;	
 	uint16_t index;
 	uint64_t time;
 	uint8_t flags;

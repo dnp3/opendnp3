@@ -53,6 +53,11 @@ template <class ValueType>
 class LinkedListIterator
 {
 public:
+	static LinkedListIterator<ValueType> Undefined()
+	{
+		return LinkedListIterator(nullptr);
+	}
+
 	LinkedListIterator(ListNode< ValueType>* pStart) : pCurrent(pStart)
 	{}
 
