@@ -26,7 +26,7 @@
 #include "ILogHandler.h"
 #include "LogMacros.h"
 
-#include <cstring>
+#include "StringFormatting.h"
 
 namespace openpal
 {
@@ -36,7 +36,7 @@ LogRoot::LogRoot(ILogHandler* pHandler_, char const* alias_, const LogFilters& f
 	filters(filters_),
 	alias(AllocateCopy(alias_))
 {			
-	alias = AllocateCopy(alias_);
+	
 }
 
 LogRoot::LogRoot(const LogRoot& copy, char const* alias_) :
@@ -45,13 +45,6 @@ LogRoot::LogRoot(const LogRoot& copy, char const* alias_) :
 	alias(AllocateCopy(alias_))
 { 
 	
-}
-
-char* LogRoot::AllocateCopy(char const* str)
-{
-	char* tmp = new char[strlen(str) + 1];
-	strcpy(tmp, str);
-	return tmp;
 }
 
 LogRoot::~LogRoot()
