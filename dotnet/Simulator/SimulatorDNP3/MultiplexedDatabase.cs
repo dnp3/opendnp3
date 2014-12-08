@@ -25,84 +25,44 @@ namespace Automatak.Simulator.DNP3
             }
         }
 
-        bool IDatabase.Update(Binary update, ushort index, bool forceEvent)
+        bool IDatabase.Update(Binary update, ushort index, EventMode mode)
         {
-            bool ret = true;
-            foreach (var db in databases)
-            {
-                ret &= db.Update(update, index, forceEvent);
-            }
-            return ret;
+            return databases.Aggregate(true, (sum, db) => sum && db.Update(update, index, mode));
         }
 
-        bool IDatabase.Update(DoubleBitBinary update, ushort index, bool forceEvent)
+        bool IDatabase.Update(DoubleBitBinary update, ushort index, EventMode mode)
         {
-            bool ret = true;
-            foreach (var db in databases)
-            {
-                ret &= db.Update(update, index, forceEvent);
-            }
-            return ret;
+            return databases.Aggregate(true, (sum, db) => sum && db.Update(update, index, mode));
         }
 
-        bool IDatabase.Update(Analog update, ushort index, bool forceEvent)
+        bool IDatabase.Update(Analog update, ushort index, EventMode mode)
         {
-            bool ret = true;
-            foreach (var db in databases)
-            {
-                ret &= db.Update(update, index, forceEvent);
-            }
-            return ret;
+            return databases.Aggregate(true, (sum, db) => sum && db.Update(update, index, mode));
         }
 
-        bool IDatabase.Update(Counter update, ushort index, bool forceEvent)
+        bool IDatabase.Update(Counter update, ushort index, EventMode mode)
         {
-            bool ret = true;
-            foreach (var db in databases)
-            {
-                ret &= db.Update(update, index, forceEvent);
-            }
-            return ret;
+            return databases.Aggregate(true, (sum, db) => sum && db.Update(update, index, mode));
         }
 
-        bool IDatabase.Update(FrozenCounter update, ushort index, bool forceEvent)
+        bool IDatabase.Update(FrozenCounter update, ushort index, EventMode mode)
         {
-            bool ret = true;
-            foreach (var db in databases)
-            {
-                ret &= db.Update(update, index, forceEvent);
-            }
-            return ret;
+            return databases.Aggregate(true, (sum, db) => sum && db.Update(update, index, mode));
         }
 
-        bool IDatabase.Update(BinaryOutputStatus update, ushort index, bool forceEvent)
+        bool IDatabase.Update(BinaryOutputStatus update, ushort index, EventMode mode)
         {
-            bool ret = true;
-            foreach (var db in databases)
-            {
-                ret &= db.Update(update, index, forceEvent);
-            }
-            return ret;
+            return databases.Aggregate(true, (sum, db) => sum && db.Update(update, index, mode));
         }
 
-        bool IDatabase.Update(AnalogOutputStatus update, ushort index, bool forceEvent)
+        bool IDatabase.Update(AnalogOutputStatus update, ushort index, EventMode mode)
         {
-            bool ret = true;
-            foreach (var db in databases)
-            {
-                ret &= db.Update(update, index, forceEvent);
-            }
-            return ret;
+            return databases.Aggregate(true, (sum, db) => sum && db.Update(update, index, mode));
         }
 
         bool IDatabase.Update(TimeAndInterval update, ushort index)
         {
-            bool ret = true;
-            foreach (var db in databases)
-            {
-                ret &= db.Update(update, index);
-            }
-            return ret;
+            return databases.Aggregate(true, (sum, db) => sum && db.Update(update, index));
         }
 
         void IDatabase.End()
@@ -111,6 +71,47 @@ namespace Automatak.Simulator.DNP3
             {
                 db.End();
             }
-        }        
+        }
+
+
+        bool IDatabase.Modify(Func<Binary, Binary> update, ushort index, EventMode mode)
+        {
+            return databases.Aggregate(true, (sum, db) => sum && db.Modify(update, index, mode));
+        }
+
+        bool IDatabase.Modify(Func<DoubleBitBinary, DoubleBitBinary> update, ushort index, EventMode mode)
+        {
+            return databases.Aggregate(true, (sum, db) => sum && db.Modify(update, index, mode));
+        }
+
+        bool IDatabase.Modify(Func<Analog, Analog> update, ushort index, EventMode mode)
+        {
+            return databases.Aggregate(true, (sum, db) => sum && db.Modify(update, index, mode));
+        }
+
+        bool IDatabase.Modify(Func<Counter, Counter> update, ushort index, EventMode mode)
+        {
+            return databases.Aggregate(true, (sum, db) => sum && db.Modify(update, index, mode));
+        }
+
+        bool IDatabase.Modify(Func<FrozenCounter, FrozenCounter> update, ushort index, EventMode mode)
+        {
+            return databases.Aggregate(true, (sum, db) => sum && db.Modify(update, index, mode));
+        }
+
+        bool IDatabase.Modify(Func<BinaryOutputStatus, BinaryOutputStatus> update, ushort index, EventMode mode)
+        {
+            return databases.Aggregate(true, (sum, db) => sum && db.Modify(update, index, mode));
+        }
+
+        bool IDatabase.Modify(Func<AnalogOutputStatus, AnalogOutputStatus> update, ushort index, EventMode mode)
+        {
+            return databases.Aggregate(true, (sum, db) => sum && db.Modify(update, index, mode));
+        }
+
+        bool IDatabase.Modify(Func<TimeAndInterval, TimeAndInterval> update, ushort index)
+        {
+            return databases.Aggregate(true, (sum, db) => sum && db.Modify(update, index));
+        }
     }
 }

@@ -71,9 +71,6 @@ void SOERecord::SelectDefault()
 	}
 }
 
-#include <openpal/executor/Function1.h>
-
-
 SOERecord::SOERecord(const Binary& meas, uint16_t index_, EventClass clazz_, EventBinaryVariation var) :
 	SOERecord(EventType::Binary, clazz_, index_, meas.time, meas.quality)
 {		
