@@ -80,15 +80,21 @@ class EventWriter : openpal::PureStatic
 
 		openpal::ListNode<SOERecord>* pCurrent = nullptr;
 		
-		while (pCurrent = iter.Next())
+		while (recorder.HasMoreUnwrittenEvents() && (pCurrent = iter.Next()))
 		{
-			if (IsWritable(pCurrent->value))
-			{
-				if ((pCurrent->value.type == T::EventTypeEnum) && (pCurrent->value.GetValue<T>().selectedVariation == variation))
+			auto& record = pCurrent->value;
+
+			if (IsWritable(record))
+			{				
+				if ((record.type == T::EventTypeEnum) && (record.GetValue<T>().selectedVariation == variation))
 				{
-					auto evt = pCurrent->value.ReadEvent<T>();
-					if (!header.Write(evt.value, evt.index))
+					auto evt = record.ReadEvent<T>();
+					if (header.Write(evt.value, evt.index))
 					{						
+						recorder.RecordWritten(record.clazz, record.type);
+					}
+					else
+					{
 						auto location = pFirstSelected ? LinkedListIterator<SOERecord>::From(pFirstSelected) : iter;
 						return Result(true, location);
 					}
