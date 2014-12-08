@@ -23,8 +23,24 @@
 
 namespace opendnp3
 {
-	bool EventWriter::Write(HeaderWriter& writer, IEventRecorder& recorder, openpal::LinkedList<SOERecord, uint32_t>& events)
-	{
+	bool EventWriter::Write(HeaderWriter& writer, IEventRecorder& recorder, openpal::LinkedListIterator<SOERecord> iterator)
+	{		
+		while (iterator.HasNext() && recorder.HasMoreUnwrittenEvents())
+		{
+			auto pCurrent = iterator.Next();
+			if (IsWritable(pCurrent->value))
+			{
+				auto function = GetLoadFunction(pCurrent->value);
+				auto result = function(writer, recorder, iterator);
+				iterator = result.location;
+
+				if (result.isFragmentFull)
+				{
+					return false;
+				}				
+			}			
+		}
+
 		return true;
 	}	
 

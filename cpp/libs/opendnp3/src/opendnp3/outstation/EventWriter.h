@@ -35,11 +35,33 @@ namespace opendnp3
 
 class EventWriter : openpal::PureStatic
 {
-	public:
+	public:	
 
-	static bool Write(HeaderWriter& writer, IEventRecorder& recorder, openpal::LinkedList<SOERecord, uint32_t>& events);
+	static bool Write(HeaderWriter& writer, IEventRecorder& recorder, openpal::LinkedListIterator<SOERecord> iterator);
 	
-	
+	private:	
+
+	class Result
+	{
+		public:
+
+			Result(bool isFragmentFull_, openpal::LinkedListIterator<SOERecord> location_) : isFragmentFull(isFragmentFull_), location(location_)
+		{}
+
+		bool isFragmentFull;
+		openpal::LinkedListIterator<SOERecord> location;
+		
+
+		private:
+		
+		Result() = delete;
+	};
+
+	typedef Result(*EventLoadFun)(HeaderWriter& writer, IEventRecorder& recorder, openpal::LinkedListIterator<SOERecord> iterator);
+
+	static EventLoadFun GetLoadFunction(const SOERecord& record);
+
+	inline static bool IsWritable(const SOERecord& record) { return record.selected && !record.written; }
 };
 
 }

@@ -175,7 +175,7 @@ bool EventBuffer::HasAnySelection() const
 
 bool EventBuffer::Load(HeaderWriter& writer)
 {
-	return EventWriter::Write(writer, *this, events);
+	return EventWriter::Write(writer, *this, events.Iterate());
 }
 
 bool EventBuffer::HasMoreUnwrittenEvents() const
