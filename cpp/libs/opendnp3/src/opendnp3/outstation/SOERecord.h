@@ -47,7 +47,6 @@ struct EventInstance
 {
 	ValueType value;
 	uint16_t index;
-	typename ValueType::EventVariation variation;
 };
 
 union EventValue
@@ -76,7 +75,13 @@ public:
 	SOERecord(const AnalogOutputStatus& meas, uint16_t index, EventClass clazz, EventAnalogOutputStatusVariation var);
 
 	template <class T>
-	EventInstance<T> Read();
+	EventInstance<T> ReadEvent()
+	{		
+		return EventInstance < T > { T(GetValue<T>().value, flags, time), index };
+	}
+
+	template <class T>
+	const ValueAndVariation<T>& GetValue();
 
 	void SelectDefault();
 
@@ -92,8 +97,6 @@ public:
 	EventClass clazz;
 	bool selected;
 	bool written;
-	EventValue value;
-
 	void Reset();
 
 private:
@@ -112,6 +115,7 @@ private:
 
 
 	// the actual value;	
+	EventValue value;
 	uint16_t index;
 	uint64_t time;
 	uint8_t flags;

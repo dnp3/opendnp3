@@ -27,6 +27,7 @@
 namespace opendnp3
 {
 
+	/*
 class EventWriteFunctions : openpal::PureStatic
 {
 
@@ -155,7 +156,7 @@ bool EventWriteFunctions::WriteFixedSizeWithPrefixIteratorAndCTO(const EventWrit
 		return false;
 	}
 }
-
+*/
 
 }
 

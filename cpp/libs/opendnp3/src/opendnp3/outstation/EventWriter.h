@@ -58,6 +58,7 @@ class EventWriter : openpal::PureStatic
 	};
 
 	static Result LoadHeader(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation);
+
 	static Result LoadHeaderBinary(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation);
 	static Result LoadHeaderDoubleBinary(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation);
 	static Result LoadHeaderCounter(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation);
@@ -69,9 +70,39 @@ class EventWriter : openpal::PureStatic
 	inline static bool IsWritable(const SOERecord& record) { return record.selected && !record.written; }
 
 	template <class T>
-	Result WriteTypeWithSerializer(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation)
+	static Result WriteTypeWithSerializer(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation, opendnp3::DNP3Serializer<T> serializer, typename T::EventVariation variation)
 	{
-	
+		auto iter = LinkedListIterator<SOERecord>::From(pLocation);
+
+		openpal::ListNode<SOERecord>* pFirstSelected = nullptr;
+
+		auto header = writer.IterateOverCountWithPrefix<UInt16, T>(QualifierCode::UINT16_CNT_UINT16_INDEX, serializer);
+
+		openpal::ListNode<SOERecord>* pCurrent = nullptr;
+		
+		while (pCurrent = iter.Next())
+		{
+			if (IsWritable(pCurrent->value))
+			{
+				if ((pCurrent->value.type == T::EventTypeEnum) && (pCurrent->value.GetValue<T>().selectedVariation == variation))
+				{
+					auto evt = pCurrent->value.ReadEvent<T>();
+					if (!header.Write(evt.value, evt.index))
+					{						
+						auto location = pFirstSelected ? LinkedListIterator<SOERecord>::From(pFirstSelected) : iter;
+						return Result(true, location);
+					}
+				}
+				else
+				{
+					// drop out and return from current location
+					break;
+				}
+			}			
+		}
+
+		auto location = pFirstSelected ? LinkedListIterator<SOERecord>::From(pFirstSelected) : iter;
+		return Result(false, location);
 	}
 
 };

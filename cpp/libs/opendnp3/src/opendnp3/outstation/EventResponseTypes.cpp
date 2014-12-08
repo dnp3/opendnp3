@@ -35,6 +35,7 @@
 
 namespace opendnp3
 {	
+	/*
 	EventHeaderWriteFunc EventResponseTypes::Lookup(EventBinaryVariation enumeration)
 	{
 		switch (enumeration)
@@ -162,6 +163,6 @@ namespace opendnp3
 			return &EventWriteFunctions::WriteFixedSize<Group42Var1>;
 		}
 	}
-	
+	*/
 
 }

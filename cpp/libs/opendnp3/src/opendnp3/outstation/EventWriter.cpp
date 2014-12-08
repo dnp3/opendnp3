@@ -21,6 +21,8 @@
 
 #include "EventWriter.h"
 
+#include "opendnp3/objects/Group2.h"
+
 using namespace openpal;
 
 namespace opendnp3
@@ -71,7 +73,15 @@ namespace opendnp3
 
 	EventWriter::Result EventWriter::LoadHeaderBinary(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation)
 	{
-		return Result(false, LinkedListIterator<SOERecord>::Undefined());
+		switch (pLocation->value.GetValue<Binary>().selectedVariation)
+		{
+			case(EventBinaryVariation::Group2Var1):
+				return WriteTypeWithSerializer<Binary>(writer, recorder, pLocation, Group2Var1::Inst(), EventBinaryVariation::Group2Var1);
+			case(EventBinaryVariation::Group2Var2):
+				return WriteTypeWithSerializer<Binary>(writer, recorder, pLocation, Group2Var2::Inst(), EventBinaryVariation::Group2Var2);
+			default:
+				return WriteTypeWithSerializer<Binary>(writer, recorder, pLocation, Group2Var1::Inst(), EventBinaryVariation::Group2Var1);
+		}
 	}
 	
 	EventWriter::Result EventWriter::LoadHeaderDoubleBinary(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation)

@@ -156,45 +156,26 @@ void SOERecord::Select(EventAnalogOutputStatusVariation var)
 }
 
 template <>
-EventInstance<Binary> SOERecord::Read<Binary>()
-{
-	return Convert<Binary>(value.binary);	
-}
+const ValueAndVariation<Binary>& SOERecord::GetValue() { return value.binary; }
 
 template <>
-EventInstance<DoubleBitBinary> SOERecord::Read<DoubleBitBinary>()
-{
-	return Convert<DoubleBitBinary>(value.doubleBinary);	
-}
+const ValueAndVariation<DoubleBitBinary>& SOERecord::GetValue() { return value.doubleBinary; }
 
 template <>
-EventInstance<BinaryOutputStatus> SOERecord::Read<BinaryOutputStatus>()
-{
-	return Convert<BinaryOutputStatus>(value.binaryOutputStatus);
-}
+const ValueAndVariation<Counter>& SOERecord::GetValue() { return value.counter; }
 
 template <>
-EventInstance<Counter> SOERecord::Read()
-{
-	return Convert<Counter>(value.counter);
-}
+const ValueAndVariation<FrozenCounter>& SOERecord::GetValue() { return value.frozenCounter; }
 
 template <>
-EventInstance<FrozenCounter> SOERecord::Read()
-{
-	return Convert<FrozenCounter>(value.frozenCounter);
-}
+const ValueAndVariation<Analog>& SOERecord::GetValue() { return value.analog; }
 
 template <>
-EventInstance<Analog> SOERecord::Read()
-{
-	return Convert<Analog>(value.analog);
-}
+const ValueAndVariation<BinaryOutputStatus>& SOERecord::GetValue() { return value.binaryOutputStatus; }
 
 template <>
-EventInstance<AnalogOutputStatus> SOERecord::Read()
-{
-	return Convert<AnalogOutputStatus>(value.analogOutputStatus);
-}
+const ValueAndVariation<AnalogOutputStatus>& SOERecord::GetValue() { return value.analogOutputStatus; }
+
+
 
 }

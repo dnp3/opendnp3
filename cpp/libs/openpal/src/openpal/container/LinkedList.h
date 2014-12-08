@@ -58,8 +58,12 @@ public:
 		return LinkedListIterator(nullptr);
 	}
 
-	LinkedListIterator(ListNode< ValueType>* pStart) : pCurrent(pStart)
-	{}
+	static LinkedListIterator<ValueType> From(ListNode< ValueType>* pStart)
+	{
+		return LinkedListIterator(pStart);
+	}
+
+	
 
 	bool HasNext() const
 	{
@@ -98,6 +102,10 @@ public:
 	}
 
 private:
+
+	LinkedListIterator(ListNode< ValueType>* pStart) : pCurrent(pStart)
+	{}
+
 	ListNode<ValueType>* pCurrent;
 };
 
@@ -145,7 +153,7 @@ public:
 
 	Iterator Iterate() const
 	{
-		return Iterator(pHead);
+		return Iterator::From(pHead);
 	}
 
 	template <class Selector>
