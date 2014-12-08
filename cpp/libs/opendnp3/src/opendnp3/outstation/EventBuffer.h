@@ -24,6 +24,7 @@
 
 #include "opendnp3/outstation/IEventReceiver.h"
 #include "opendnp3/outstation/IEventSelector.h"
+#include "opendnp3/outstation/IResponseLoader.h"
 #include "opendnp3/outstation/EventCount.h"
 #include "opendnp3/outstation/SelectionWriter.h"
 #include "opendnp3/outstation/EventBufferConfig.h"
@@ -45,7 +46,7 @@ namespace opendnp3
 	the selection criteria.
 */
 
-class EventBuffer : public IEventReceiver, public IEventSelector
+class EventBuffer : public IEventReceiver, public IEventSelector, public IResponseLoader
 {
 	
 public:
@@ -69,6 +70,12 @@ public:
 	virtual IINField SelectAll(GroupVariation gv) override final;
 
 	virtual IINField SelectCount(GroupVariation gv, uint16_t count) override final;
+
+	// ------- IResponseLoader -------
+
+	virtual bool HasAnySelection() const override final;
+	
+	virtual bool Load(HeaderWriter& writer) override final;
 
 	// ------- Misc -------	
 

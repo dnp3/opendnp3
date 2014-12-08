@@ -27,7 +27,7 @@
 #include "opendnp3/outstation/StaticBuffers.h"
 #include "opendnp3/outstation/SelectedRanges.h"
 
-#include "opendnp3/outstation/IStaticLoader.h"
+#include "opendnp3/outstation/IResponseLoader.h"
 #include "opendnp3/outstation/IStaticSelector.h"
 #include "opendnp3/outstation/IClassAssigner.h"
 #include "opendnp3/outstation/StaticLoadFunctions.h"
@@ -38,7 +38,7 @@ namespace opendnp3
 /**
 The database coordinates all updates of measurement data
 */
-class DatabaseBuffers : public IStaticSelector, public IStaticLoader, public IClassAssigner, private openpal::Uncopyable
+class DatabaseBuffers : public IStaticSelector, public IResponseLoader, public IClassAssigner, private openpal::Uncopyable
 {
 public:
 
@@ -50,7 +50,7 @@ public:
 	virtual IINField SelectAll(GroupVariation gv) override final;
 	virtual IINField SelectRange(GroupVariation gv, const Range& range) override final;
 
-	// ------- IStaticLoader -------------
+	// ------- IResponseLoader -------------
 	
 	virtual bool Load(HeaderWriter& writer) override final;
 	virtual bool HasAnySelection() const override final { return ranges.HasAnySelection(); }

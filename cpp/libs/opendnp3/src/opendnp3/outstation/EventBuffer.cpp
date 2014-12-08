@@ -160,6 +160,16 @@ IINField EventBuffer::SelectCount(GroupVariation gv, uint16_t count)
 	}
 }
 
+bool EventBuffer::HasAnySelection() const
+{
+	return false;
+}
+
+bool EventBuffer::Load(HeaderWriter& writer)
+{
+	return true;
+}
+
 ClassField EventBuffer::UnwrittenClassField() const
 {
 	return totalCounts.Subtract(writtenCounts);

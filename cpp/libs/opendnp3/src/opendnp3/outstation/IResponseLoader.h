@@ -18,15 +18,15 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_ISTATICLOADER_H
-#define OPENDNP3_ISTATICLOADER_H
+#ifndef OPENDNP3_IRESPONSELOADER_H
+#define OPENDNP3_IRESPONSELOADER_H
 
 #include "opendnp3/app/HeaderWriter.h"
 
 namespace opendnp3
 {
 
-class IStaticLoader
+class IResponseLoader
 {
 public:
 

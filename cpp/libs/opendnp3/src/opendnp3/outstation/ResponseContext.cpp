@@ -24,14 +24,17 @@
 namespace opendnp3
 {
 
-ResponseContext::ResponseContext(IStaticLoader& staticLoader) : fragmentCount(0), pStaticLoader(&staticLoader)
+ResponseContext::ResponseContext(IResponseLoader& staticLoader, IResponseLoader& eventLoader) : 
+	fragmentCount(0),
+	pStaticLoader(&staticLoader),
+	pEventLoader(&eventLoader)
 {
 
 }
 
 bool ResponseContext::HasSelection() const
 {
-	return pStaticLoader->HasAnySelection();
+	return pStaticLoader->HasAnySelection() || pEventLoader->HasAnySelection();
 }
 
 void ResponseContext::Reset()
@@ -40,13 +43,24 @@ void ResponseContext::Reset()
 }
 
 AppControlField ResponseContext::LoadResponse(HeaderWriter& writer)
-{
-	auto fir = fragmentCount == 0;
-	auto fin = pStaticLoader->Load(writer);	
-
+{	
+	bool fir = fragmentCount == 0;
 	++fragmentCount;
 
-	return AppControlField(fir, fin, !fin, false);	
+	uint32_t startingSize = writer.Remaining();
+	bool notFull = pEventLoader->Load(writer);
+	bool someEventsWritten = writer.Remaining() < startingSize;
+
+	if (notFull)
+	{
+		auto fin = pStaticLoader->Load(writer);
+		auto con = !fin || someEventsWritten;
+		return AppControlField(fir, fin, con, false);
+	}	
+	else
+	{
+		return AppControlField(fir, false, true, false);
+	}	
 }
 
 }

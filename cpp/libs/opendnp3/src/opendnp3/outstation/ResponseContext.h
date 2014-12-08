@@ -26,7 +26,7 @@
 #include "opendnp3/app/Range.h"
 #include "opendnp3/app/HeaderWriter.h"
 #include "opendnp3/app/AppControlField.h"
-#include "opendnp3/outstation/IStaticLoader.h"
+#include "opendnp3/outstation/IResponseLoader.h"
 
 
 
@@ -43,7 +43,7 @@ class ResponseContext : private openpal::Uncopyable
 
 public:
 
-	ResponseContext(IStaticLoader& staticLoader);
+	ResponseContext(IResponseLoader& staticLoader, IResponseLoader& eventLoader);
 
 	bool HasSelection() const;
 
@@ -51,12 +51,13 @@ public:
 
 	AppControlField LoadResponse(HeaderWriter& writer);
 
-private:
+private:	
 
 	static AppControlField GetControl(bool fir, bool fin, bool hasEvents);
 
 	uint16_t fragmentCount;	
-	IStaticLoader* pStaticLoader;
+	IResponseLoader* pStaticLoader;
+	IResponseLoader* pEventLoader;
 };
 
 }

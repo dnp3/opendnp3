@@ -77,7 +77,7 @@ OutstationContext::OutstationContext(
 	expectedSolConfirmSeq(0),
 	expectedUnsolConfirmSeq(0),
 	completedNullUnsol(false),	
-	rspContext(database.GetLoader()),
+	rspContext(database.GetStaticLoader(), eventBuffer),
 	pLower(&lower),
 	rxBuffer(params.maxRxFragSize),
 	solTxBuffer(params.maxTxFragSize),

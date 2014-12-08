@@ -657,9 +657,6 @@
     <ClInclude Include="src\opendnp3\outstation\SelectedRanges.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\IStaticLoader.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\IClassAssigner.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
@@ -716,6 +713,9 @@
     </ClInclude>
     <ClInclude Include="src\opendnp3\gen\EventMode.h">
       <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\IResponseLoader.h">
+      <Filter>Header\outstation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

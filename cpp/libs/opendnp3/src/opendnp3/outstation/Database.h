@@ -84,7 +84,7 @@ public:
 	/**
 	* @returns Loader interface used for creating static responses
 	*/
-	IStaticLoader& GetLoader() { return buffers; }
+	IResponseLoader& GetStaticLoader() { return buffers; }
 
 	/**
 	* @returns Interface used to process class assignments
