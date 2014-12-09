@@ -164,9 +164,11 @@ cpp/libs/opendnp3/src/opendnp3/outstation/OutstationSolicitedStates.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/OutstationUnsolicitedStates.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/ReadHandler.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/ResponseContext.cpp \
+cpp/libs/opendnp3/src/opendnp3/outstation/SelectedRanges.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/SelectionWriter.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/SimpleCommandHandler.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/SOERecord.cpp \
+cpp/libs/opendnp3/src/opendnp3/outstation/StaticBuffers.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/StaticLoadFunctions.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/TimeTransaction.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/WriteHandler.cpp \

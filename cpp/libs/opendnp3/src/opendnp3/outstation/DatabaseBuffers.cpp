@@ -299,6 +299,19 @@ Range DatabaseBuffers::AssignClassToRange(AssignClassType type, PointClass clazz
 	}
 }
 
+template <>
+StaticBinaryVariation DatabaseBuffers::CheckForPromotion<Binary>(const Binary& value, StaticBinaryVariation variation)
+{
+	if (variation == StaticBinaryVariation::Group1Var1)
+	{
+		return value.IsQualityOnlineOnly() ? variation : StaticBinaryVariation::Group1Var2;
+	}
+	else
+	{
+		return variation;
+	}
+}
+
 Range DatabaseBuffers::RangeOf(uint16_t size)
 {
 	return size > 0 ? Range::From(0, size - 1) : Range::Invalid();

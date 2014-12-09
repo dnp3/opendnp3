@@ -85,25 +85,12 @@ private:
 		}		
 	}
 
+	//specialization for binary in cpp file
 	template <class T>
 	static typename T::StaticVariation  CheckForPromotion(const T& value, typename T::StaticVariation variation)
 	{
 		return variation;
-	}
-
-	// specialization for binary
-	template <>
-	static StaticBinaryVariation CheckForPromotion<Binary>(const Binary& value, StaticBinaryVariation variation)
-	{
-		if (variation == StaticBinaryVariation::Group1Var1)
-		{
-			return value.IsQualityOnlineOnly() ? variation : StaticBinaryVariation::Group1Var2;
-		}
-		else
-		{
-			return variation;
-		}
-	}
+	}	
 
 	static Range RangeOf(uint16_t size);
 
