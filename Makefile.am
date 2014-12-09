@@ -76,37 +76,19 @@ cpp/libs/opendnp3/src/opendnp3/app/IINField.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/MeasurementTypes.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/ObjectWriter.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/OctetData.cpp \
-cpp/libs/opendnp3/src/opendnp3/app/PointIndexes.cpp \
-cpp/libs/opendnp3/src/opendnp3/app/StaticRange.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/TimeAndInterval.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/ChannelState.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/CommandStatus.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/ControlCode.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/DoubleBit.cpp \
-cpp/libs/opendnp3/src/opendnp3/gen/EventAnalogOutputStatusResponse.cpp \
-cpp/libs/opendnp3/src/opendnp3/gen/EventAnalogResponse.cpp \
-cpp/libs/opendnp3/src/opendnp3/gen/EventBinaryOutputStatusResponse.cpp \
-cpp/libs/opendnp3/src/opendnp3/gen/EventBinaryResponse.cpp \
-cpp/libs/opendnp3/src/opendnp3/gen/EventCounterResponse.cpp \
-cpp/libs/opendnp3/src/opendnp3/gen/EventDoubleBinaryResponse.cpp \
-cpp/libs/opendnp3/src/opendnp3/gen/EventFrozenCounterResponse.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/FunctionCode.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/GroupVariation.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/IntervalUnits.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/LinkFunction.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/PointClass.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/QualifierCode.cpp \
-cpp/libs/opendnp3/src/opendnp3/gen/StaticAnalogOutputStatusResponse.cpp \
-cpp/libs/opendnp3/src/opendnp3/gen/StaticAnalogResponse.cpp \
-cpp/libs/opendnp3/src/opendnp3/gen/StaticBinaryOutputStatusResponse.cpp \
-cpp/libs/opendnp3/src/opendnp3/gen/StaticBinaryResponse.cpp \
-cpp/libs/opendnp3/src/opendnp3/gen/StaticCounterResponse.cpp \
-cpp/libs/opendnp3/src/opendnp3/gen/StaticDoubleBinaryResponse.cpp \
-cpp/libs/opendnp3/src/opendnp3/gen/StaticFrozenCounterResponse.cpp \
-cpp/libs/opendnp3/src/opendnp3/gen/StaticTimeAndIntervalResponse.cpp \
-cpp/libs/opendnp3/src/opendnp3/gen/TaskState.cpp \
+cpp/libs/opendnp3/src/opendnp3/gen/TaskCompletion.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/TimeSyncMode.cpp \
-cpp/libs/opendnp3/src/opendnp3/gen/UserTaskResult.cpp \
 cpp/libs/opendnp3/src/opendnp3/link/CRC.cpp \
 cpp/libs/opendnp3/src/opendnp3/link/IOpenDelayStrategy.cpp \
 cpp/libs/opendnp3/src/opendnp3/link/LinkFrame.cpp \
@@ -126,6 +108,7 @@ cpp/libs/opendnp3/src/opendnp3/master/DisableUnsolicitedTask.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/EnableUnsolicitedTask.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/EventScanTask.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/IMasterState.cpp \
+cpp/libs/opendnp3/src/opendnp3/master/IMasterTask.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/ISOEHandler.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/ITaskLock.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/MasterContext.cpp \
@@ -135,10 +118,8 @@ cpp/libs/opendnp3/src/opendnp3/master/MasterScan.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/MasterScheduler.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/MasterTasks.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/MeasurementHandler.cpp \
-cpp/libs/opendnp3/src/opendnp3/master/NullResponseTask.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/PollTaskBase.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/SerialTimeSyncTask.cpp \
-cpp/libs/opendnp3/src/opendnp3/master/SingleResponseTask.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/StartupIntegrityPoll.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/TaskRecord.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/UserPollTask.cpp \
@@ -171,35 +152,28 @@ cpp/libs/opendnp3/src/opendnp3/outstation/CommandResponseHandler.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/DatabaseBuffers.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/Database.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/EventBufferConfig.cpp \
+cpp/libs/opendnp3/src/opendnp3/outstation/EventBuffer.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/EventCount.cpp \
-cpp/libs/opendnp3/src/opendnp3/outstation/EventResponseConfig.cpp \
-cpp/libs/opendnp3/src/opendnp3/outstation/EventResponseContext.cpp \
-cpp/libs/opendnp3/src/opendnp3/outstation/EventResponseTypes.cpp \
-cpp/libs/opendnp3/src/opendnp3/outstation/EventWriteOperation.cpp \
+cpp/libs/opendnp3/src/opendnp3/outstation/EventWriter.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/IINHelpers.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/IOutstationApplication.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/OutstationContext.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/Outstation.cpp \
-cpp/libs/opendnp3/src/opendnp3/outstation/OutstationEventBuffer.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/OutstationParams.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/OutstationSolicitedStates.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/OutstationUnsolicitedStates.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/ReadHandler.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/ResponseContext.cpp \
-cpp/libs/opendnp3/src/opendnp3/outstation/SelectionCriteria.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/SelectionWriter.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/SimpleCommandHandler.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/SOERecord.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/StaticLoadFunctions.cpp \
-cpp/libs/opendnp3/src/opendnp3/outstation/StaticResponseConfig.cpp \
-cpp/libs/opendnp3/src/opendnp3/outstation/StaticResponseContext.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/TimeTransaction.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/WriteHandler.cpp \
 cpp/libs/opendnp3/src/opendnp3/transport/TransportLayer.cpp \
 cpp/libs/opendnp3/src/opendnp3/transport/TransportRx.cpp \
 cpp/libs/opendnp3/src/opendnp3/transport/TransportStack.cpp \
 cpp/libs/opendnp3/src/opendnp3/transport/TransportTx.cpp
-
 
 #ls cpp/libs/asiodnp3/src/asiodnp3/*.cpp -1 | awk '{print $0" \\"}'
 libasiodnp3_la_CPPFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) -I$(ASIODNP3_INCLUDE) $(ASIO_CONFIG)
