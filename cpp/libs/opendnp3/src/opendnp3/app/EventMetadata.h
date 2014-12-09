@@ -57,7 +57,7 @@ struct SimpleEventMetadata : EventMetadata<Target>
 {
 	bool IsEvent(const Target& newValue) const
 	{
-		return lastEvent.IsEvent(newValue);		
+		return this->lastEvent.IsEvent(newValue);		
 	}
 };
 
@@ -70,7 +70,7 @@ struct DeadbandMetadata : EventMetadata<Target>
 
 	bool IsEvent(const Target& newValue) const
 	{
-		return lastEvent.IsEvent(newValue, deadband);
+		return this->lastEvent.IsEvent(newValue, deadband);
 	}
 
 	DeadbandType deadband;
