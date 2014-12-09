@@ -24,6 +24,7 @@
 #include "ArrayView.h"
 
 #include <assert.h>
+#include <cstdint>
 
 namespace openpal
 {
