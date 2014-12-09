@@ -91,6 +91,9 @@ public:
 	*/
 	IClassAssigner& GetClassAssigner() { return buffers;  }
 
+	// used to clear the static selection for a new read
+	void Unselect() { buffers.Unselect(); }
+
 private:	
 
 	// stores the most recent values, selected values, and metadata

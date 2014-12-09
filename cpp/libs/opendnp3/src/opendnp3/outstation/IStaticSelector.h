@@ -30,9 +30,7 @@ namespace opendnp3
 
 class IStaticSelector
 {
-public:
-
-	virtual void Unselect() = 0;
+public:	
 
 	virtual IINField SelectAll(GroupVariation gv) = 0;
 

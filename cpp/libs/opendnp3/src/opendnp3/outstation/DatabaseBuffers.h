@@ -45,8 +45,7 @@ public:
 	DatabaseBuffers(const DatabaseTemplate&);
 
 	// ------- IStaticSelector -------------
-
-	virtual void Unselect() override final;
+	
 	virtual IINField SelectAll(GroupVariation gv) override final;
 	virtual IINField SelectRange(GroupVariation gv, const Range& range) override final;
 
@@ -59,6 +58,9 @@ public:
 
 	virtual Range AssignClassToAll(AssignClassType type, PointClass clazz) override final;
 	virtual Range AssignClassToRange(AssignClassType type, PointClass clazz, const Range& range) override final;
+
+	//used to unselect selected points
+	void Unselect();
 	
 	// stores the most revent values and event information	
 	StaticBuffers buffers;	

@@ -29,9 +29,7 @@ namespace opendnp3
 
 class IEventSelector
 {
-public:
-
-	virtual void Unselect() = 0;
+public:	
 
 	virtual IINField SelectAll(GroupVariation gv) = 0;
 

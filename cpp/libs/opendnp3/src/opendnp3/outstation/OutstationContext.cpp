@@ -555,8 +555,9 @@ Pair<IINField, AppControlField> OutstationContext::HandleRead(const openpal::Rea
 	rspContext.Reset();
 
 	// Do a transaction (lock) on the database  for multi-threaded environments
-	Transaction tx(database);
+	Transaction tx(database);	
 	eventBuffer.Unselect(); // always unselect any perviously selected points when we start a new read request
+	database.Unselect();
 	ReadHandler handler(logger, database.GetSelector(), eventBuffer);
 	auto result = APDUParser::ParseTwoPass(objects, &handler, &logger, APDUParser::Settings::NoContents()); // don't expect range/count context on a READ
 	if (result == APDUParser::Result::OK)
