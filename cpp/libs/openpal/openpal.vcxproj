@@ -35,7 +35,6 @@
     <ClInclude Include="src\openpal\container\RingBuffer.h" />
     <ClInclude Include="src\openpal\container\Settable.h" />
     <ClInclude Include="src\openpal\container\Stack.h" />
-    <ClInclude Include="src\openpal\container\Queue.h" />
     <ClInclude Include="src\openpal\container\WriteBuffer.h" />
     <ClInclude Include="src\openpal\executor\Erasure.h" />
     <ClInclude Include="src\openpal\executor\Function0.h" />

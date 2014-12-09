@@ -166,9 +166,6 @@
     <ClInclude Include="src\openpal\container\DynamicBuffer.h">
       <Filter>Header\container</Filter>
     </ClInclude>
-    <ClInclude Include="src\openpal\container\Queue.h">
-      <Filter>Header\container</Filter>
-    </ClInclude>
     <ClInclude Include="src\openpal\serialization\Serializer.h">
       <Filter>Header\serialization</Filter>
     </ClInclude>

@@ -13,12 +13,6 @@
     <ClCompile Include="src\StackAdapterTestSuite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\LinkedListAdapterTestSuite.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\StaticQueueTestSuite.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\FunctionalTestSuite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

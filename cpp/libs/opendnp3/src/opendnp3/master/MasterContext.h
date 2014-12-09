@@ -25,7 +25,6 @@
 
 #include <openpal/executor/IExecutor.h>
 #include <openpal/logging/LogRoot.h>
-#include <openpal/container/Queue.h>
 #include <openpal/container/DynamicBuffer.h>
 
 #include "opendnp3/master/ICommandProcessor.h"
