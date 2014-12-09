@@ -77,7 +77,6 @@ ReadOnlyBuffer TransportRx::ProcessReceive(const ReadOnlyBuffer& input)
 				if (pStatistics) ++pStatistics->numTransportErrorRx;
 				SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, TLERR_BUFFER_FULL, "Exceeded the buffer size before a complete fragment was read");
 				numBytesRead = 0;
-				if (pStatistics) ++pStatistics->numTransportErrorRx;
 				return ReadOnlyBuffer::Empty();
 			}
 			else   //passed all validation
