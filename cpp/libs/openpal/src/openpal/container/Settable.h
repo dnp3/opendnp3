@@ -33,9 +33,6 @@ public:
 	Settable() : valueIsSet(false)
 	{}	
 
-	Settable(const T& value) : valueIsSet(true), value(value_)
-	{}
-
 	bool IsSet() const
 	{
 		return valueIsSet;
