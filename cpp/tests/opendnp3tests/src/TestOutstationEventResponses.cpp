@@ -234,9 +234,8 @@ TEST_CASE(SUITE("MixedClassLimitedCount"))
 		db.Update(Binary(false, 0x01), 2);
 	};
 
-	// read 1 class 2 event and 1 class 3 event, 1 of each event type left in buffer
-	// In theory this type of request could be satisfied with a single header, but this is permissible	
-	TestEventRead("C0 01 3C 03 07 01 3C 04 07 01", "E0 81 8E 00 02 01 28 01 00 01 00 81 02 01 28 01 00 02 00 81", update, configure);
+	// read 1 class 2 event and 1 class 3 event, 1 of each event type left in buffer	
+	TestEventRead("C0 01 3C 03 07 01 3C 04 07 01", "E0 81 8E 00 02 01 28 02 00 01 00 81 02 00 81", update, configure);
 }
 
 TEST_CASE(SUITE("ReadGrp2Var0"))

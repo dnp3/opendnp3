@@ -96,7 +96,7 @@ class EventWriter : openpal::PureStatic
 					}
 					else
 					{
-						auto location = pFirstSelected ? LinkedListIterator<SOERecord>::From(pFirstSelected) : iter;
+						auto location = LinkedListIterator<SOERecord>::From(pFirstSelected ? pFirstSelected : pCurrent);
 						return Result(true, location);
 					}
 				}
@@ -108,7 +108,7 @@ class EventWriter : openpal::PureStatic
 			}			
 		}
 
-		auto location = pFirstSelected ? LinkedListIterator<SOERecord>::From(pFirstSelected) : iter;
+		auto location = LinkedListIterator<SOERecord>::From(pFirstSelected ? pFirstSelected : pCurrent);
 		return Result(false, location);
 	}
 

@@ -554,6 +554,8 @@ void OutstationContext::OnUnsolConfirmTimeout()
 
 Pair<IINField, AppControlField> OutstationContext::HandleRead(const openpal::ReadOnlyBuffer& objects, HeaderWriter& writer)
 {
+	rspContext.Reset();
+
 	// Do a transaction (lock) on the database  for multi-threaded environments
 	Transaction tx(database);
 	ReadHandler handler(logger, database.GetSelector(), eventBuffer);
