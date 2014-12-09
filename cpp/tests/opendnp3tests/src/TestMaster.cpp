@@ -437,7 +437,7 @@ TEST_CASE(SUITE("ReceiveIINUnsol"))
 TEST_CASE(SUITE("EventScanOnEventsAvailableIIN"))
 {
 	auto params = NoStartupTasks();
-	params.eventScanOnEventsAvailableIIN = true;
+	params.eventScanOnEventsAvailableClassMask = ClassField::CLASS_1 | ClassField::CLASS_2;
 	MasterTestObject t(params);
 	
 	t.master.OnLowerLayerUp();
@@ -446,8 +446,21 @@ TEST_CASE(SUITE("EventScanOnEventsAvailableIIN"))
 	
 	t.exe.RunMany();
 	
-	REQUIRE(t.lower.PopWriteAsHex() == hex::EventPoll(0));
+	REQUIRE(t.lower.PopWriteAsHex() == hex::EventPoll(0, params.eventScanOnEventsAvailableClassMask));
 	t.master.OnSendResult(true);
+
+	t.SendToMaster(hex::EmptyResponse(0, IINField(IINBit::CLASS2_EVENTS)));
+
+	t.exe.RunMany();
+
+	REQUIRE(t.lower.PopWriteAsHex() == hex::EventPoll(1, params.eventScanOnEventsAvailableClassMask));
+	t.master.OnSendResult(true);
+
+	t.SendToMaster(hex::EmptyResponse(1, IINField(IINBit::CLASS3_EVENTS)));
+
+	t.exe.RunMany();
+
+	REQUIRE(t.lower.NumWrites() == 0);
 }
 
 TEST_CASE(SUITE("AdhocScanWorksWithUnsolicitedDisabled"))

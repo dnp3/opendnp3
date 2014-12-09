@@ -37,8 +37,9 @@ using namespace openpal;
 namespace opendnp3
 {
 
-	EventScanTask::EventScanTask(IMasterApplication& application, ISOEHandler& soeHandler, TimeDuration retryPeriod_, openpal::Logger logger) :
+	EventScanTask::EventScanTask(IMasterApplication& application, ISOEHandler& soeHandler, ClassField classes_, TimeDuration retryPeriod_, openpal::Logger logger) :
 		PollTaskBase(application, soeHandler, MonotonicTimestamp::Max(), logger, nullptr, -1),
+		classes(classes_.OnlyEventClasses()),
 		retryPeriod(retryPeriod_)
 	{
 
@@ -46,8 +47,13 @@ namespace opendnp3
 
 	void EventScanTask::BuildRequest(APDURequest& request, uint8_t seq)
 	{		
-		build::ClassRequest(request, FunctionCode::READ, ClassField::AllEventClasses(), seq);
-	}	
+		build::ClassRequest(request, FunctionCode::READ, classes, seq);
+	}
+
+	bool EventScanTask::IsEnabled() const
+	{
+		return classes.HasEventClass();
+	}
 
 	void EventScanTask::OnResponseOK(openpal::MonotonicTimestamp)
 	{
