@@ -28,6 +28,7 @@
 #include "opendnp3/objects/Group23.h"
 #include "opendnp3/objects/Group32.h"
 #include "opendnp3/objects/Group42.h"
+#include "opendnp3/objects/Group51.h"
 
 using namespace openpal;
 
@@ -88,8 +89,7 @@ namespace opendnp3
 			case(EventBinaryVariation::Group2Var2):
 				return WriteTypeWithSerializer<Binary>(writer, recorder, pLocation, Group2Var2::Inst(), variation);
 			case(EventBinaryVariation::Group2Var3) :
-				// TODO
-				
+				return WriteCTOTypeWithSerializer<Binary, Group51Var1>(writer, recorder, pLocation, Group2Var3::Inst(), variation);				
 			default:
 				return WriteTypeWithSerializer<Binary>(writer, recorder, pLocation, Group2Var1::Inst(), variation);
 		}
@@ -106,8 +106,7 @@ namespace opendnp3
 			case(EventDoubleBinaryVariation::Group4Var2) :
 				return WriteTypeWithSerializer<DoubleBitBinary>(writer, recorder, pLocation, Group4Var2::Inst(), variation);
 			case(EventDoubleBinaryVariation::Group4Var3) :
-				// TODO
-
+				return WriteCTOTypeWithSerializer<DoubleBitBinary, Group51Var1>(writer, recorder, pLocation, Group4Var3::Inst(), variation);
 			default:
 				return WriteTypeWithSerializer<DoubleBitBinary>(writer, recorder, pLocation, Group4Var1::Inst(), variation);
 		}

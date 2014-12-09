@@ -303,7 +303,7 @@ TEST_CASE(SUITE("ReadGrp2Var2"))
 	TestEventRead("C0 01 02 02 06", "E0 81 80 00 02 02 28 01 00 03 00 01 71 45 00 00 00 00", update); // 1 byte count == 1, ONLINE quality
 }
 
-TEST_CASE(SUITE("ReadGrp2Var3SingelValue"))
+TEST_CASE(SUITE("ReadGrp2Var3SingleValue"))
 {
 	auto update = [](IDatabase & db)
 	{

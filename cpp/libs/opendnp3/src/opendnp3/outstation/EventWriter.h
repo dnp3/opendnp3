@@ -112,6 +112,68 @@ class EventWriter : openpal::PureStatic
 		return Result(false, location);
 	}
 
+	template <class T, class CTOType>
+	static Result WriteCTOTypeWithSerializer(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation, opendnp3::DNP3Serializer<T> serializer, typename T::EventVariation variation)
+	{
+		auto iter = LinkedListIterator<SOERecord>::From(pLocation);
+
+		openpal::ListNode<SOERecord>* pFirstSelected = nullptr;
+		CTOType cto = { pLocation->value.GetTime() };
+
+		auto header = writer.IterateOverCountWithPrefixAndCTO<UInt16, T, CTOType>(QualifierCode::UINT16_CNT_UINT16_INDEX, serializer, cto);
+
+		openpal::ListNode<SOERecord>* pCurrent = nullptr;
+
+		while (recorder.HasMoreUnwrittenEvents() && (pCurrent = iter.Next()))
+		{
+			auto& record = pCurrent->value;
+
+			if (IsWritable(record))
+			{
+				if ((record.type == T::EventTypeEnum) && (record.GetValue<T>().selectedVariation == variation))
+				{
+					if (record.GetTime() < cto.time)
+					{
+						// drop out and return from current location
+						break;
+					}
+					else
+					{
+						auto diff = record.GetTime() - cto.time;
+						if (diff > openpal::UInt16::Max)
+						{
+							// drop out and return from current location
+							break;
+						}
+						else
+						{
+							auto evt = record.ReadEvent<T>();
+							evt.value.time = diff;
+							if (header.Write(evt.value, evt.index))
+							{
+								record.written = true;
+								recorder.RecordWritten(record.clazz, record.type);
+							}
+							else
+							{
+								auto location = LinkedListIterator<SOERecord>::From(pFirstSelected ? pFirstSelected : pCurrent);
+								return Result(true, location);
+							}
+						}
+					}					
+				}
+				else
+				{
+					// drop out and return from current location
+					break;
+				}
+			}
+		}
+
+		auto location = LinkedListIterator<SOERecord>::From(pFirstSelected ? pFirstSelected : pCurrent);
+		return Result(false, location);
+	}
+
 };
 
 }

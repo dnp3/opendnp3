@@ -99,6 +99,8 @@ public:
 	bool written;
 	void Reset();
 
+	uint64_t GetTime() const { return time; }
+
 private:
 
 	SOERecord(EventType type, EventClass clazz, uint16_t index, uint64_t time, uint8_t flags);
