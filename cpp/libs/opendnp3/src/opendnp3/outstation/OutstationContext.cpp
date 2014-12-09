@@ -476,7 +476,7 @@ void OutstationContext::CheckForUnsolicited()
 		if (completedNullUnsol)
 		{				
 			// are there events to be reported?
-			if (params.unsolClassMask.HasEventClass() && eventBuffer.UnwrittenClassField().Intersects(params.unsolClassMask))
+			if (params.unsolClassMask.Intersects(eventBuffer.UnwrittenClassField()))
 			{			
 				
 				auto unsolResponse = this->StartNewUnsolicitedResponse();
