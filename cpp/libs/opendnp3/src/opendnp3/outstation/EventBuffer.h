@@ -111,7 +111,7 @@ private:
 	template <class T>
 	IINField SelectByType(int32_t max) 
 	{ 
-		GenericSelectByType<T>(max, true, T::EventVariation());
+		GenericSelectByType<T>(max, true, typename T::EventVariation());
 		return IINField();
 	}
 

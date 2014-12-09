@@ -217,9 +217,9 @@ openpaltest_LDFLAGS = -pthread
 openpaltest_LDADD = libopenpal.la
 openpaltest_SOURCES = \
 cpp/tests/openpaltests/src/CatchTestStart.cpp \
-cpp/tests/openpaltests/src/LinkedListAdapterTestSuite.cpp \
-cpp/tests/openpaltests/src/StackAdapterTestSuite.cpp \
-cpp/tests/openpaltests/src/StaticQueueTestSuite.cpp
+cpp/tests/openpaltests/src/FunctionalTestSuite.cpp \
+cpp/tests/openpaltests/src/LinkedListTestSuite.cpp \
+cpp/tests/openpaltests/src/ManagedPointerTestSuite.cpp
 
 #ls cpp/tests/opendnp3tests/src/*.cpp -1 | awk '{print $0" \\"}'
 dnp3test_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) -I$(ASIODNP3_INCLUDE) -I$(CATCH_INCLUDE) $(ASIO_CONFIG)
@@ -247,7 +247,6 @@ cpp/tests/opendnp3tests/src/MockPhysicalLayer.cpp \
 cpp/tests/opendnp3tests/src/MockPhysicalLayerMonitor.cpp \
 cpp/tests/opendnp3tests/src/MockTransportLayer.cpp \
 cpp/tests/opendnp3tests/src/MockUpperLayer.cpp \
-cpp/tests/opendnp3tests/src/MultiplexingDataObserver.cpp \
 cpp/tests/opendnp3tests/src/OutstationTestObject.cpp \
 cpp/tests/opendnp3tests/src/PhysBaseTest.cpp \
 cpp/tests/opendnp3tests/src/PhysLoopback.cpp \

@@ -503,7 +503,8 @@ void TestStaticType(const OutstationConfig& config, const DatabaseTemplate& tmp,
 {
 	OutstationTestObject t(config, tmp);	
 
-	configure(t.outstation.GetStaticBufferView());
+	auto view = t.outstation.GetStaticBufferView();
+	configure(view);
 
 	t.LowerLayerUp();
 

@@ -72,11 +72,11 @@ class EventWriter : openpal::PureStatic
 	template <class T>
 	static Result WriteTypeWithSerializer(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation, opendnp3::DNP3Serializer<T> serializer, typename T::EventVariation variation)
 	{
-		auto iter = LinkedListIterator<SOERecord>::From(pLocation);
+		auto iter = openpal::LinkedListIterator<SOERecord>::From(pLocation);
 
 		openpal::ListNode<SOERecord>* pFirstSelected = nullptr;
 
-		auto header = writer.IterateOverCountWithPrefix<UInt16, T>(QualifierCode::UINT16_CNT_UINT16_INDEX, serializer);
+		auto header = writer.IterateOverCountWithPrefix<openpal::UInt16, T>(QualifierCode::UINT16_CNT_UINT16_INDEX, serializer);
 
 		openpal::ListNode<SOERecord>* pCurrent = nullptr;
 		
@@ -96,7 +96,7 @@ class EventWriter : openpal::PureStatic
 					}
 					else
 					{
-						auto location = LinkedListIterator<SOERecord>::From(pFirstSelected ? pFirstSelected : pCurrent);
+						auto location = openpal::LinkedListIterator<SOERecord>::From(pFirstSelected ? pFirstSelected : pCurrent);
 						return Result(true, location);
 					}
 				}
@@ -108,19 +108,19 @@ class EventWriter : openpal::PureStatic
 			}			
 		}
 
-		auto location = LinkedListIterator<SOERecord>::From(pFirstSelected ? pFirstSelected : pCurrent);
+		auto location = openpal::LinkedListIterator<SOERecord>::From(pFirstSelected ? pFirstSelected : pCurrent);
 		return Result(false, location);
 	}
 
 	template <class T, class CTOType>
 	static Result WriteCTOTypeWithSerializer(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation, opendnp3::DNP3Serializer<T> serializer, typename T::EventVariation variation)
 	{
-		auto iter = LinkedListIterator<SOERecord>::From(pLocation);
+		auto iter = openpal::LinkedListIterator<SOERecord>::From(pLocation);
 
 		openpal::ListNode<SOERecord>* pFirstSelected = nullptr;
 		CTOType cto = { pLocation->value.GetTime() };
 
-		auto header = writer.IterateOverCountWithPrefixAndCTO<UInt16, T, CTOType>(QualifierCode::UINT16_CNT_UINT16_INDEX, serializer, cto);
+		auto header = writer.IterateOverCountWithPrefixAndCTO<openpal::UInt16, T, CTOType>(QualifierCode::UINT16_CNT_UINT16_INDEX, serializer, cto);
 
 		openpal::ListNode<SOERecord>* pCurrent = nullptr;
 
@@ -156,7 +156,7 @@ class EventWriter : openpal::PureStatic
 							}
 							else
 							{
-								auto location = LinkedListIterator<SOERecord>::From(pFirstSelected ? pFirstSelected : pCurrent);
+								auto location = openpal::LinkedListIterator<SOERecord>::From(pFirstSelected ? pFirstSelected : pCurrent);
 								return Result(true, location);
 							}
 						}
@@ -170,7 +170,7 @@ class EventWriter : openpal::PureStatic
 			}
 		}
 
-		auto location = LinkedListIterator<SOERecord>::From(pFirstSelected ? pFirstSelected : pCurrent);
+		auto location = openpal::LinkedListIterator<SOERecord>::From(pFirstSelected ? pFirstSelected : pCurrent);
 		return Result(false, location);
 	}
 
