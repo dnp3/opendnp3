@@ -91,6 +91,7 @@ class EventWriter : openpal::PureStatic
 					auto evt = record.ReadEvent<T>();
 					if (header.Write(evt.value, evt.index))
 					{						
+						record.written = true;
 						recorder.RecordWritten(record.clazz, record.type);
 					}
 					else
