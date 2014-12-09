@@ -486,6 +486,7 @@ void OutstationContext::CheckForUnsolicited()
 					// even though we're not loading static data, we need to lock 
 					// the database since it updates the event buffer					
 					Transaction tx(database);
+					eventBuffer.Unselect();
 					eventBuffer.SelectAllByClass(params.unsolClassMask);
 					eventBuffer.Load(writer);
 				}
@@ -556,6 +557,7 @@ Pair<IINField, AppControlField> OutstationContext::HandleRead(const openpal::Rea
 
 	// Do a transaction (lock) on the database  for multi-threaded environments
 	Transaction tx(database);
+	eventBuffer.Unselect(); // always unselect any perviously selected points when we start a new read request
 	ReadHandler handler(logger, database.GetSelector(), eventBuffer);
 	auto result = APDUParser::ParseTwoPass(objects, &handler, &logger, APDUParser::Settings::NoContents()); // don't expect range/count context on a READ
 	if (result == APDUParser::Result::OK)
