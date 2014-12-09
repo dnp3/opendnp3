@@ -18,64 +18,49 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_SELECTEDRANGES_H
-#define OPENDNP3_SELECTEDRANGES_H
 
-#include <openpal/util/Uncopyable.h>
-
-#include "opendnp3/app/Range.h"
-#include "opendnp3/app/TimeAndInterval.h"
-#include "opendnp3/app/MeasurementTypes.h"
-
+#include "SelectedRanges.h"
 
 namespace opendnp3
+{	
+
+bool SelectedRanges::HasAnySelection() const
 {
-
-/**
-* Selected ranges for each static datatype
-*/
-class SelectedRanges : private openpal::Uncopyable
-{
-
-public:
-
-	template <class T>
-	Range Get() { return GetRangeRef<T>(); }
-
-	template <class T>
-	void Set(const Range& range)
-	{
-		GetRangeRef<T>() = range;
-	}
-
-	template <class T>
-	void Merge(const Range& range) 
-	{ 
-		auto& ref = GetRangeRef<T>();
-		ref = ref.Union(range);
-	}
-
-	template <class T>
-	void Clear() { Set<T>(Range::Invalid()); }
-
-	bool HasAnySelection() const;
+	return
+		binaries.IsValid() ||
+		doubleBinaries.IsValid() ||
+		analogs.IsValid() ||
+		counters.IsValid() ||
+		frozenCounters.IsValid() ||
+		binaryOutputStatii.IsValid() ||
+		analogOutputStatii.IsValid() ||
+		timeAndIntervals.IsValid();
+}
 	
-private:
+template <>
+Range& SelectedRanges::GetRangeRef<Binary>() { return binaries; }
 
-	// specializations in cpp file
-	template <class T>
-	Range& GetRangeRef();		
+template <>
+Range& SelectedRanges::GetRangeRef<DoubleBitBinary>() { return doubleBinaries; }
 
-	Range binaries;
-	Range doubleBinaries;
-	Range analogs;
-	Range counters;
-	Range frozenCounters;
-	Range binaryOutputStatii;
-	Range analogOutputStatii;
-	Range timeAndIntervals;
-};
+template <>
+Range& SelectedRanges::GetRangeRef<Analog>() { return analogs; }
+
+template <>
+Range& SelectedRanges::GetRangeRef<Counter>() { return counters; }
+
+template <>
+Range& SelectedRanges::GetRangeRef<FrozenCounter>() { return frozenCounters; }
+
+template <>
+Range& SelectedRanges::GetRangeRef<BinaryOutputStatus>() { return binaryOutputStatii; }
+
+template <>
+Range& SelectedRanges::GetRangeRef<AnalogOutputStatus>() { return analogOutputStatii; }
+
+template <>
+Range& SelectedRanges::GetRangeRef<TimeAndInterval>() { return timeAndIntervals; }
 
 }
 
-#endif
+

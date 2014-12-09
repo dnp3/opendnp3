@@ -351,9 +351,11 @@
     <ClCompile Include="src\opendnp3\outstation\OutstationUnsolicitedStates.cpp" />
     <ClCompile Include="src\opendnp3\outstation\ReadHandler.cpp" />
     <ClCompile Include="src\opendnp3\outstation\ResponseContext.cpp" />
+    <ClCompile Include="src\opendnp3\outstation\SelectedRanges.cpp" />
     <ClCompile Include="src\opendnp3\outstation\SelectionWriter.cpp" />
     <ClCompile Include="src\opendnp3\outstation\SimpleCommandHandler.cpp" />
     <ClCompile Include="src\opendnp3\outstation\SOERecord.cpp" />
+    <ClCompile Include="src\opendnp3\outstation\StaticBuffers.cpp" />
     <ClCompile Include="src\opendnp3\outstation\StaticLoadFunctions.cpp" />
     <ClCompile Include="src\opendnp3\outstation\TimeTransaction.cpp" />
     <ClCompile Include="src\opendnp3\outstation\WriteHandler.cpp" />

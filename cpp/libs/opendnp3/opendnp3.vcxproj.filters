@@ -1073,5 +1073,11 @@
     <ClCompile Include="src\opendnp3\outstation\EventWriter.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\SelectedRanges.cpp">
+      <Filter>Source\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\StaticBuffers.cpp">
+      <Filter>Source\outstation</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

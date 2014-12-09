@@ -40,58 +40,13 @@ class StaticBuffers : private openpal::Uncopyable
 
 public:
 
-	StaticBuffers(const DatabaseTemplate& dbTemplate) :
-		binaries(dbTemplate.numBinary),
-		doubleBinaries(dbTemplate.numDoubleBinary),
-		analogs(dbTemplate.numAnalog),
-		counters(dbTemplate.numCounter),
-		frozenCounters(dbTemplate.numFrozenCounter),
-		binaryOutputStatii(dbTemplate.numBinaryOutputStatus),
-		analogOutputStatii(dbTemplate.numAnalogOutputStatus),
-		timeAndIntervals(dbTemplate.numTimeAndInterval)
-	{}	
+	StaticBuffers(const DatabaseTemplate& dbTemplate);
 
-	StaticBufferView GetView() const
-	{
-		return StaticBufferView(
-			binaries.ToView(),
-			doubleBinaries.ToView(),
-			analogs.ToView(),
-			counters.ToView(),
-			frozenCounters.ToView(),
-			binaryOutputStatii.ToView(),
-			analogOutputStatii.ToView(),
-			timeAndIntervals.ToView()
-		);
-	}	
+	StaticBufferView GetView() const;
 
+	// specializations in cpp file
 	template <class T>
 	openpal::ArrayView<Cell<T>, uint16_t> GetArrayView();
-
-	template <>
-	openpal::ArrayView<Cell<Binary>, uint16_t> GetArrayView() { return binaries.ToView(); }
-
-	template <>
-	openpal::ArrayView<Cell<DoubleBitBinary>, uint16_t> GetArrayView() { return doubleBinaries.ToView(); }
-
-	template <>
-	openpal::ArrayView<Cell<Counter>, uint16_t> GetArrayView() { return counters.ToView(); }
-
-	template <>
-	openpal::ArrayView<Cell<FrozenCounter>, uint16_t> GetArrayView() { return frozenCounters.ToView(); }
-
-	template <>
-	openpal::ArrayView<Cell<Analog>, uint16_t> GetArrayView() { return analogs.ToView(); }
-
-	template <>
-	openpal::ArrayView<Cell<BinaryOutputStatus>, uint16_t> GetArrayView() { return binaryOutputStatii.ToView(); }
-
-	template <>
-	openpal::ArrayView<Cell<AnalogOutputStatus>, uint16_t> GetArrayView() { return analogOutputStatii.ToView(); }
-
-	template <>
-	openpal::ArrayView<Cell<TimeAndInterval>, uint16_t> GetArrayView() { return timeAndIntervals.ToView(); }
-
 
 private:
 		
