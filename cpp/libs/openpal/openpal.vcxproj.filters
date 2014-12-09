@@ -175,16 +175,10 @@
     <ClInclude Include="src\openpal\container\LinkedList.h">
       <Filter>Header\container</Filter>
     </ClInclude>
-    <ClInclude Include="src\openpal\container\Stack.h">
-      <Filter>Header\container</Filter>
-    </ClInclude>
     <ClInclude Include="src\openpal\container\ManagedPtr.h">
       <Filter>Header\container</Filter>
     </ClInclude>
     <ClInclude Include="src\openpal\container\ArrayView.h">
-      <Filter>Header\container</Filter>
-    </ClInclude>
-    <ClInclude Include="src\openpal\container\ArrayViewIterator.h">
       <Filter>Header\container</Filter>
     </ClInclude>
   </ItemGroup>

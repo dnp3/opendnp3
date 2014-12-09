@@ -23,6 +23,8 @@
 
 #include "ArrayView.h"
 
+#include <assert.h>
+
 namespace openpal
 {
 

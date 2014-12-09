@@ -23,8 +23,6 @@
 
 #include "HasSize.h"
 
-#include "ArrayViewIterator.h"
-
 namespace openpal
 {
 
@@ -54,11 +52,6 @@ public:
 	{
 		return (start < stop) && Contains(stop);
 	}	
-
-	ArrayViewIterator<ValueType, IndexType> FullRange() const
-	{
-		return ArrayViewIterator<ValueType, IndexType>(*this);
-	}
 
 	inline ValueType& operator[](IndexType index)
 	{

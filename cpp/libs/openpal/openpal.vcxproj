@@ -27,14 +27,12 @@
     <ClInclude Include="src\openpal\container\DynamicBuffer.h" />
     <ClInclude Include="src\openpal\container\HasSize.h" />
     <ClInclude Include="src\openpal\container\ArrayView.h" />
-    <ClInclude Include="src\openpal\container\ArrayViewIterator.h" />
     <ClInclude Include="src\openpal\container\LinkedList.h" />
     <ClInclude Include="src\openpal\container\ManagedPtr.h" />
     <ClInclude Include="src\openpal\container\Pair.h" />
     <ClInclude Include="src\openpal\container\ReadOnlyBuffer.h" />
     <ClInclude Include="src\openpal\container\RingBuffer.h" />
     <ClInclude Include="src\openpal\container\Settable.h" />
-    <ClInclude Include="src\openpal\container\Stack.h" />
     <ClInclude Include="src\openpal\container\WriteBuffer.h" />
     <ClInclude Include="src\openpal\executor\Erasure.h" />
     <ClInclude Include="src\openpal\executor\Function0.h" />
