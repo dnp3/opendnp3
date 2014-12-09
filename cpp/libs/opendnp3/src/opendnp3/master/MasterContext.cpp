@@ -280,7 +280,9 @@ void MasterContext::OnReceiveIIN(const IINField& iin)
 		tasks.timeSync.Demand();
 	}	
 
-	if (params.eventScanOnEventsAvailableIIN && (iin.IsSet(IINBit::CLASS1_EVENTS) || iin.IsSet(IINBit::CLASS2_EVENTS) || iin.IsSet(IINBit::CLASS3_EVENTS)))
+	if ((iin.IsSet(IINBit::CLASS1_EVENTS) && params.eventScanOnEventsAvailableClassMask.HasClass1()) ||
+		(iin.IsSet(IINBit::CLASS2_EVENTS) && params.eventScanOnEventsAvailableClassMask.HasClass2()) ||
+		(iin.IsSet(IINBit::CLASS3_EVENTS) && params.eventScanOnEventsAvailableClassMask.HasClass3()))
 	{
 		tasks.eventScan.Demand();
 	}

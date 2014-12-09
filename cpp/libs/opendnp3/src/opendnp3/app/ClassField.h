@@ -72,6 +72,7 @@ class ClassField
 	bool HasEventClass() const;
 	bool HasAnyClass() const;
 
+	static ClassField None();
 	static ClassField AllClasses();
 	static ClassField AllEventClasses();	
 	

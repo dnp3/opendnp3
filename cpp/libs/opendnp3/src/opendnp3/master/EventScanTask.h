@@ -21,6 +21,8 @@
 #ifndef OPENDNP3_EVENTSCANTASK_H
 #define OPENDNP3_EVENTSCANTASK_H
 
+#include "opendnp3/app/ClassField.h"
+
 #include "opendnp3/master/PollTaskBase.h"
 #include "opendnp3/master/TaskPriority.h"
 
@@ -36,7 +38,7 @@ namespace opendnp3
 
 	public:
 
-		EventScanTask(IMasterApplication& application, ISOEHandler& soeHandler, openpal::TimeDuration retryPeriod, openpal::Logger logger);
+		EventScanTask(IMasterApplication& application, ISOEHandler& soeHandler, ClassField classes, openpal::TimeDuration retryPeriod, openpal::Logger logger);
 
 		virtual bool IsRecurring() const override final { return true; }
 
@@ -48,11 +50,13 @@ namespace opendnp3
 
 	private:	
 
+		ClassField classes;
+
 		openpal::TimeDuration retryPeriod;
 
 		virtual MasterTaskType GetTaskType() const override final { return MasterTaskType::AUTO_EVENT_SCAN; }
 
-		virtual bool IsEnabled() const override final { return true; }
+		virtual bool IsEnabled() const override final;
 
 		virtual void OnResponseError(openpal::MonotonicTimestamp now) override final;
 

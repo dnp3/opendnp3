@@ -56,8 +56,8 @@ struct MasterParams
 	/// Defines whether an integrity scan will be performed when the EventBufferOverflow IIN is detected
 	bool integrityOnEventOverflowIIN;
 
-	/// Defines whether an event scan will be performed when Class 1/2/3 event data available IIN is detected
-	bool eventScanOnEventsAvailableIIN;
+	/// Which classes should be requested in an event scan when detecting corresponding events available IIN
+	ClassField eventScanOnEventsAvailableClassMask;
 
 	/// Time delay beforce retrying a failed task
 	openpal::TimeDuration taskRetryPeriod;
