@@ -387,9 +387,6 @@
     <ClInclude Include="src\opendnp3\outstation\OutstationParams.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\EventResponseTypes.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\master\MasterContext.h">
       <Filter>Header\master</Filter>
     </ClInclude>
@@ -525,17 +522,11 @@
     <ClInclude Include="src\opendnp3\outstation\SelectionWriter.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\EventWriteOperation.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\SOERecord.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\app\EventType.h">
       <Filter>Header\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\EventWriteFunctions.h">
-      <Filter>Header\outstation</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\StaticLoadFunctions.h">
       <Filter>Header\outstation</Filter>
@@ -935,9 +926,6 @@
     <ClCompile Include="src\opendnp3\outstation\OutstationParams.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\EventResponseTypes.cpp">
-      <Filter>Source\outstation</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\master\MasterContext.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
@@ -1035,9 +1023,6 @@
       <Filter>Source\app</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\SelectionWriter.cpp">
-      <Filter>Source\outstation</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\EventWriteOperation.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\SOERecord.cpp">

@@ -494,8 +494,7 @@ void OutstationContext::CheckForUnsolicited()
 				this->ConfigureUnsolHeader(unsolResponse);
 				this->StartUnsolicitedConfirmTimer();
 				this->pUnsolicitedState = &OutstationUnsolicitedStateConfirmWait::Inst();
-				this->BeginUnsolTx(unsolResponse.ToReadOnly());
-				
+				this->BeginUnsolTx(unsolResponse.ToReadOnly());				
 			}			
 		}
 		else
