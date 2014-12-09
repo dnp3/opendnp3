@@ -82,21 +82,6 @@ void EventCount::Clear()
 	}
 }
 
-ClassField EventCount::Subtract(const EventCount& rhs) const
-{			
-	return ClassField(
-		false,
-		!SameNumberForClass(rhs, EventClass::EC1),
-		!SameNumberForClass(rhs, EventClass::EC2),
-		!SameNumberForClass(rhs, EventClass::EC3)
-	);
-}
-
-bool EventCount::SameNumberForClass(const EventCount& rhs, EventClass clazz) const
-{
-	return (numOfClass[static_cast<uint8_t>(clazz)] == rhs.numOfClass[static_cast<uint8_t>(clazz)]);
-}
-
 ClassField EventCount::ToClassField() const
 {
 	bool class1 = this->NumOfClass(EventClass::EC1) > 0;
@@ -104,6 +89,17 @@ ClassField EventCount::ToClassField() const
 	bool class3 = this->NumOfClass(EventClass::EC3) > 0;
 
 	return ClassField(false, class1, class2, class3);
+}
+
+uint32_t EventCount::NumOfClass(ClassField field) const
+{
+	uint32_t ret = 0;
+
+	if (field.HasClass1()) ret += NumOfClass(EventClass::EC1);
+	if (field.HasClass2()) ret += NumOfClass(EventClass::EC2);
+	if (field.HasClass3()) ret += NumOfClass(EventClass::EC3);
+
+	return ret;
 }
 
 uint32_t EventCount::NumOfClass(EventClass clazz) const

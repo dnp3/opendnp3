@@ -81,6 +81,21 @@ void ClassField::Set(const ClassField& field)
 	bitfield |= field.bitfield;
 }
 
+bool ClassField::HasEventType(EventClass ec) const
+{
+	switch (ec)
+	{
+	case(EventClass::EC1) :
+		return HasClass1();
+	case(EventClass::EC2) :
+		return HasClass2();
+	case(EventClass::EC3) :
+		return HasClass3();
+	default:
+		return false;
+	}
+}
+
 bool ClassField::HasClass0() const
 {
 	return (bitfield & CLASS_0) != 0;

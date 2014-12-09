@@ -157,11 +157,11 @@ IINField EventBuffer::SelectMaxCount(GroupVariation gv, uint32_t maximum)
 
 
 		case(GroupVariation::Group60Var2) :
-			return this->SelectByClass(EventClass::EC1, maximum);			
+			return this->SelectByClass(ClassField(PointClass::Class1), maximum);			
 		case(GroupVariation::Group60Var3):
-			return this->SelectByClass(EventClass::EC2, maximum);			
+			return this->SelectByClass(ClassField(PointClass::Class2), maximum);
 		case(GroupVariation::Group60Var4):
-			return this->SelectByClass(EventClass::EC3, maximum);			
+			return this->SelectByClass(ClassField(PointClass::Class3), maximum);
 		default:
 			return IINBit::FUNC_NOT_SUPPORTED;
 	}
@@ -189,8 +189,12 @@ void EventBuffer::RecordWritten(EventClass ec, EventType et)
 }
 
 ClassField EventBuffer::UnwrittenClassField() const
-{
-	return totalCounts.Subtract(writtenCounts);
+{	
+	return ClassField(false,
+		HasUnwrittenEvents(EventClass::EC1),
+		HasUnwrittenEvents(EventClass::EC2),
+		HasUnwrittenEvents(EventClass::EC3)
+	);
 }
 
 bool EventBuffer::IsOverflown()
@@ -203,16 +207,16 @@ bool EventBuffer::IsOverflown()
 	return overflow;
 }
 
-IINField EventBuffer::SelectByClass(EventClass ec, uint32_t max)
+IINField EventBuffer::SelectByClass(const ClassField& field, uint32_t max)
 {
 	uint32_t num = 0;
 	auto iter = events.Iterate();
-	const uint32_t remaining = totalCounts.NumOfClass(ec) - selectedCounts.NumOfClass(ec);
+	const uint32_t remaining = totalCounts.NumOfClass(field) - selectedCounts.NumOfClass(field);
 
 	while (iter.HasNext() && (num < remaining) && (num < max))
 	{
 		auto pNode = iter.Next();
-		if (pNode->value.clazz == ec)
+		if (field.HasEventType(pNode->value.clazz))
 		{
 			pNode->value.SelectDefault();			
 			selectedCounts.Increment(pNode->value.clazz, pNode->value.type);
@@ -254,6 +258,11 @@ bool EventBuffer::RemoveOldestEventOfType(EventType type)
 	{
 		return false;
 	}
+}
+
+void EventBuffer::SelectAllByClass(const ClassField& field)
+{
+	this->SelectByClass(field, openpal::MaxValue<uint32_t>());
 }
 
 void EventBuffer::ClearWritten()

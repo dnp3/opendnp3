@@ -34,6 +34,7 @@
 #include "opendnp3/outstation/CommandActionAdapter.h"
 #include "opendnp3/outstation/CommandResponseHandler.h"
 #include "opendnp3/outstation/ConstantCommandAction.h"
+#include "opendnp3/outstation/EventWriter.h"
 
 #include "opendnp3/outstation/ClassBasedRequestHandler.h"
 #include "opendnp3/outstation/AssignClassHandler.h"
@@ -473,22 +474,20 @@ void OutstationContext::CheckForUnsolicited()
 	if(params.allowUnsolicited)
 	{
 		if (completedNullUnsol)
-		{		
-			/*
+		{				
 			// are there events to be reported?
-			if (eventBuffer.TotalEventMask().Intersects(params.unsolClassMask))
-			{
-			
-				criteria.RecordViaClassField(params.unsolClassMask);
+			if (params.unsolClassMask.HasEventClass() && eventBuffer.UnwrittenClassField().Intersects(params.unsolClassMask))
+			{			
+				
 				auto unsolResponse = this->StartNewUnsolicitedResponse();
-				auto objectWriter = unsolResponse.GetWriter();				
+				auto writer = unsolResponse.GetWriter();				
 						
 				{
 					// even though we're not loading static data, we need to lock 
 					// the database since it updates the event buffer					
-					Transaction tx(database);					
-					auto writer = eventBuffer.Iterate();
-					writer.WriteAllEvents(criteria, objectWriter);					
+					Transaction tx(database);
+					eventBuffer.SelectAllByClass(params.unsolClassMask);
+					eventBuffer.Load(writer);
 				}
 							
 				this->ConfigureUnsolHeader(unsolResponse);
@@ -496,8 +495,7 @@ void OutstationContext::CheckForUnsolicited()
 				this->pUnsolicitedState = &OutstationUnsolicitedStateConfirmWait::Inst();
 				this->BeginUnsolTx(unsolResponse.ToReadOnly());
 				
-			}
-			*/
+			}			
 		}
 		else
 		{

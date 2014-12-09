@@ -86,6 +86,8 @@ public:
 
 	// ------- Misc -------	
 
+	void SelectAllByClass(const ClassField& field);
+
 	void ClearWritten(); // called when a transmission succeeds
 
 	ClassField UnwrittenClassField() const;
@@ -94,9 +96,14 @@ public:
 
 private:
 
+	inline bool HasUnwrittenEvents(EventClass ec) const
+	{
+		return (totalCounts.NumOfClass(ec) - writtenCounts.NumOfClass(ec)) > 0;
+	}
+
 	IINField SelectMaxCount(GroupVariation gv, uint32_t maximum);
 
-	IINField SelectByClass(EventClass ec, uint32_t max);
+	IINField SelectByClass(const ClassField& field, uint32_t max);
 
 	template <class T>
 	uint32_t GenericSelectByType(uint32_t max, bool useDefault, typename T::EventVariation var);

@@ -48,11 +48,10 @@ public:
 	ClassField ToClassField() const;
 
 	uint32_t NumOfClass(EventClass clazz) const;
+	uint32_t NumOfClass(ClassField field) const;
 	uint32_t NumOfType(EventType type) const;
 
 	uint32_t TotatCount() const { return total; }
-
-	ClassField Subtract(const EventCount& rhs) const;
 
 	void Increment(EventClass clazz, EventType type);
 	void Decrement(EventClass clazz, EventType type);

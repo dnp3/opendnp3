@@ -23,6 +23,7 @@
 
 #include <cstdint>
 
+#include "EventType.h"
 #include "opendnp3/gen/PointClass.h"
 
 namespace opendnp3
@@ -60,6 +61,8 @@ class ClassField
 	static const uint8_t CLASS_3 = static_cast<uint8_t>(PointClass::Class3);
 	static const uint8_t EVENT_CLASSES = CLASS_1 | CLASS_2 | CLASS_3;
 	static const uint8_t ALL_CLASSES = EVENT_CLASSES | CLASS_0;
+
+	bool HasEventType(EventClass ec) const;
 
 	bool HasClass0() const;
 	bool HasClass1() const;
