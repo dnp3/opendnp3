@@ -35,9 +35,9 @@ class DynamicArray : public HasSize<IndexType>
 
 public:
 
-	DynamicArray(IndexType aSize) :
-		HasSize<IndexType>(aSize),
-		buffer(new ValueType[aSize])
+	DynamicArray(IndexType size) :
+		HasSize<IndexType>(size),
+		buffer(new ValueType[size]())
 	{}
 
 	DynamicArray() :
