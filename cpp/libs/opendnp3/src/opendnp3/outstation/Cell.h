@@ -28,7 +28,7 @@ namespace opendnp3
 template <class ValueType>
 struct SelectedValue
 {
-	SelectedValue() : selected(false), value(), variation() 
+	SelectedValue() : selected(false), value(), variation(ValueType::DefaultStaticVariation) 
 	{}
 
 	bool selected;
@@ -39,6 +39,9 @@ struct SelectedValue
 template <class ValueType>
 struct Cell
 {			
+	Cell() : value(), vIndex(0), variation(ValueType::DefaultStaticVariation)
+	{}
+
 	void SetInitialValue(const ValueType& value_)
 	{
 		value = value_;
@@ -46,7 +49,7 @@ struct Cell
 	}
 
 	ValueType value;
-	uint16_t index;
+	uint16_t vIndex; // virtual index for discontiguous data, as opposed to the raw array index
 	typename ValueType::StaticVariation variation;
 	typename ValueType::MetadataType metadata;
 

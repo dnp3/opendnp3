@@ -48,13 +48,16 @@ struct EventMetadata
 
 	protected:
 
-	EventMetadata() : clazz(PointClass::Class1), lastEvent(), variation()
+	EventMetadata() : clazz(PointClass::Class1), lastEvent(), variation(Target::DefaultEventVariation)
 	{}
 };
 
 template <class Target>
 struct SimpleEventMetadata : EventMetadata<Target>
 {
+	SimpleEventMetadata() : EventMetadata<Target>()
+	{}
+
 	bool IsEvent(const Target& newValue) const
 	{
 		return this->lastEvent.IsEvent(newValue);		
@@ -65,7 +68,7 @@ struct SimpleEventMetadata : EventMetadata<Target>
 template <class Target, class DeadbandType>
 struct DeadbandMetadata : EventMetadata<Target>
 {
-	DeadbandMetadata() : deadband(0)
+	DeadbandMetadata() : EventMetadata<Target>(), deadband(0)
 	{}
 
 	bool IsEvent(const Target& newValue) const

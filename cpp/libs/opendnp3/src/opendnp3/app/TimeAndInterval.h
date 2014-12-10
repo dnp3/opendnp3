@@ -52,6 +52,7 @@ public:
 	uint8_t units;	
 
 	const static StaticTypeBitmask StaticTypeEnum = StaticTypeBitmask::TimeAndInterval;
+	const static StaticTimeAndIntervalVariation DefaultStaticVariation = StaticTimeAndIntervalVariation::Group50Var4;
 
 	typedef StaticTimeAndIntervalVariation StaticVariation;
 	typedef EmptyMetadata<TimeAndInterval> MetadataType;
