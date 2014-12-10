@@ -48,7 +48,7 @@ struct EventMetadata
 
 	protected:
 
-	EventMetadata() : clazz(PointClass::Class1)
+	EventMetadata() : clazz(PointClass::Class1), lastEvent(), variation()
 	{}
 };
 

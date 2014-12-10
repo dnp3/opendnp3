@@ -28,7 +28,8 @@ namespace opendnp3
 template <class ValueType>
 struct SelectedValue
 {
-	SelectedValue() : selected(false) {}
+	SelectedValue() : selected(false), value(), variation() 
+	{}
 
 	bool selected;
 	ValueType value;
