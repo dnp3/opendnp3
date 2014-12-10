@@ -51,7 +51,7 @@ public:
 		const opendnp3::OutstationStackConfig& config,
 	    const StackActionHandler& handler);
 
-	virtual opendnp3::StaticBufferView GetStaticBufferView() override final;
+	virtual opendnp3::DatabaseConfigView GetConfigView() override final;
 
 	virtual opendnp3::IDatabase& GetDatabase() override final;
 

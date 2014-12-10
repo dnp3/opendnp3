@@ -74,7 +74,7 @@ public:
 	/**
 	* @return A view of all the static data for configuration purposes
 	*/
-	StaticBufferView GetStaticView() { return buffers.buffers.GetView(); }	
+	DatabaseConfigView GetConfigView() { return buffers.buffers.GetView(); }
 
 	/**
 	* @returns Selector interface for marking values to be read

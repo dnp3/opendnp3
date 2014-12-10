@@ -102,12 +102,12 @@ namespace Automatak
 					pOutstation->DeleteOnDestruct(pCommand);
 					pOutstation->DeleteOnDestruct(pApplication);
 
-					ApplyDatabaseSettings(pOutstation->GetStaticBufferView(), config->databaseTemplate);
+					ApplyDatabaseSettings(pOutstation->GetConfigView(), config->databaseTemplate);
 					return gcnew OutstationAdapter(pOutstation);
 				}
 			}
 
-			void ChannelAdapter::ApplyDatabaseSettings(opendnp3::StaticBufferView view, DatabaseTemplate^ dbTemplate)
+			void ChannelAdapter::ApplyDatabaseSettings(opendnp3::DatabaseConfigView view, DatabaseTemplate^ dbTemplate)
 			{
 				ApplyClassSettings(dbTemplate->binaries, view.binaries);
 				ApplyClassSettings(dbTemplate->binaryOutputStatii, view.binaryOutputStatii);

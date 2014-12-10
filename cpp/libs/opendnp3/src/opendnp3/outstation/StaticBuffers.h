@@ -21,7 +21,7 @@
 #ifndef OPENDNP3_STATICBUFFERS_H
 #define OPENDNP3_STATICBUFFERS_H
 
-#include "StaticBufferView.h"
+#include "DatabaseConfigView.h"
 
 #include "opendnp3/outstation/Cell.h"
 #include "opendnp3/outstation/DatabaseTemplate.h"
@@ -42,7 +42,7 @@ public:
 
 	StaticBuffers(const DatabaseTemplate& dbTemplate);
 
-	StaticBufferView GetView() const;
+	DatabaseConfigView GetView() const;
 
 	// specializations in cpp file
 	template <class T>

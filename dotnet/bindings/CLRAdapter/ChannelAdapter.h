@@ -42,7 +42,7 @@ namespace Automatak
 
 				asiodnp3::IChannel* pChannel;
 
-				static void ApplyDatabaseSettings(opendnp3::StaticBufferView view, DatabaseTemplate^ dbTemplate);
+				static void ApplyDatabaseSettings(opendnp3::DatabaseConfigView view, DatabaseTemplate^ dbTemplate);
 
 				template <class Source, class Target>
 				static void ApplyClassSettings(Source^ source, Target& target)

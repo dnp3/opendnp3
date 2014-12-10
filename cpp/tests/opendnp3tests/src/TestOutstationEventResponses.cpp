@@ -135,7 +135,7 @@ TEST_CASE(SUITE("MultipleClasses"))
 	OutstationTestObject t(config, DatabaseTemplate::AllTypes(1));
 	t.LowerLayerUp();
 
-	auto view = t.outstation.GetStaticBufferView();
+	auto view = t.outstation.GetConfigView();
 
 	view.binaries[0].metadata.clazz = PointClass::Class1;
 	view.analogs[0].metadata.clazz = PointClass::Class2;
@@ -176,7 +176,7 @@ TEST_CASE(SUITE("MultipleClasses"))
 void TestEventRead(	const std::string& request, 
 					const std::string& response, 
 					const std::function<void(IDatabase& db)>& loadFun, 
-					const std::function<void(StaticBufferView& db)>& configure = [](StaticBufferView& view){}
+					const std::function<void(DatabaseConfigView& db)>& configure = [](DatabaseConfigView& view){}
 				  )
 {
 
@@ -184,7 +184,7 @@ void TestEventRead(	const std::string& request,
 	config.eventBufferConfig = EventBufferConfig::AllTypes(10);
 	OutstationTestObject t(config, DatabaseTemplate::AllTypes(5));
 
-	auto view = t.outstation.GetStaticBufferView();
+	auto view = t.outstation.GetConfigView();
 	configure(view);
 
 	t.LowerLayerUp();
@@ -232,7 +232,7 @@ TEST_CASE(SUITE("Class1TwoByteLimitedCount"))
 
 TEST_CASE(SUITE("MixedClassLimitedCount"))
 {
-	auto configure = [](StaticBufferView& view)
+	auto configure = [](DatabaseConfigView& view)
 	{
 		view.binaries[0].metadata.clazz = PointClass::Class1;
 		view.binaries[1].metadata.clazz = PointClass::Class2;

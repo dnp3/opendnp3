@@ -46,9 +46,9 @@ OutstationStackImpl::OutstationStackImpl(
 	stack.transport.SetAppLayer(&outstation);
 }
 
-opendnp3::StaticBufferView OutstationStackImpl::GetStaticBufferView()
+opendnp3::DatabaseConfigView OutstationStackImpl::GetConfigView()
 {
-	return outstation.GetStaticBufferView();
+	return outstation.GetConfigView();
 }
 
 opendnp3::IDatabase& OutstationStackImpl::GetDatabase()

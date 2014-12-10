@@ -104,7 +104,7 @@ TEST_CASE(SUITE("AnalogNoEventNegative"))
 TEST_CASE(SUITE("BinaryNoChange"))
 {
 	DatabaseTestObject t(DatabaseTemplate::BinaryOnly(1));
-	auto view = t.db.GetStaticView();	
+	auto view = t.db.GetConfigView();	
 	view.binaries[0].metadata.clazz = PointClass::Class1;
 	TestBufferForEvent(false, Binary(false, ToUnderlying(BinaryQuality::RESTART)), t, t.buffer.binaryEvents);
 }
@@ -112,7 +112,7 @@ TEST_CASE(SUITE("BinaryNoChange"))
 TEST_CASE(SUITE("AnalogNoChange"))
 {
 	DatabaseTestObject t(DatabaseTemplate::AnalogOnly(1));
-	auto view = t.db.GetStaticView();
+	auto view = t.db.GetConfigView();
 	view.analogs[0].metadata.clazz = PointClass::Class1;
 	TestBufferForEvent(false, Analog(0, ToUnderlying(AnalogQuality::RESTART)), t, t.buffer.analogEvents);
 }
@@ -120,7 +120,7 @@ TEST_CASE(SUITE("AnalogNoChange"))
 TEST_CASE(SUITE("CounterNoChange"))
 {
 	DatabaseTestObject t(DatabaseTemplate::CounterOnly(1));
-	auto view = t.db.GetStaticView();
+	auto view = t.db.GetConfigView();
 	view.counters[0].metadata.clazz = PointClass::Class1;
 	TestBufferForEvent(false, Counter(0, ToUnderlying(CounterQuality::RESTART)), t, t.buffer.counterEvents);
 }
@@ -129,7 +129,7 @@ TEST_CASE(SUITE("CounterNoChange"))
 TEST_CASE(SUITE("BinaryChange"))
 {
 	DatabaseTestObject t(DatabaseTemplate::BinaryOnly(1));
-	auto view = t.db.GetStaticView();
+	auto view = t.db.GetConfigView();
 	view.binaries[0].metadata.clazz = PointClass::Class1;
 	TestBufferForEvent(true, Binary(false, ToUnderlying(BinaryQuality::ONLINE)), t, t.buffer.binaryEvents);
 }
@@ -137,7 +137,7 @@ TEST_CASE(SUITE("BinaryChange"))
 TEST_CASE(SUITE("AnalogChange"))
 {
 	DatabaseTestObject t(DatabaseTemplate::AnalogOnly(1));
-	auto view = t.db.GetStaticView();
+	auto view = t.db.GetConfigView();
 	view.analogs[0].metadata.clazz = PointClass::Class1;
 	TestBufferForEvent(true, Analog(0, ToUnderlying(AnalogQuality::ONLINE)), t, t.buffer.analogEvents);
 }
@@ -145,7 +145,7 @@ TEST_CASE(SUITE("AnalogChange"))
 TEST_CASE(SUITE("CounterChange"))
 {
 	DatabaseTestObject t(DatabaseTemplate::CounterOnly(1));
-	auto view = t.db.GetStaticView();
+	auto view = t.db.GetConfigView();
 	view.counters[0].metadata.clazz = PointClass::Class1;
 	TestBufferForEvent(true, Counter(0, ToUnderlying(CounterQuality::ONLINE)), t, t.buffer.counterEvents);
 }
@@ -154,7 +154,7 @@ TEST_CASE(SUITE("CounterChange"))
 TEST_CASE(SUITE("AnalogLastReportedChange"))
 {
 	DatabaseTestObject t(DatabaseTemplate::AnalogOnly(1));
-	auto view = t.db.GetStaticView();
+	auto view = t.db.GetConfigView();
 	view.analogs[0].metadata.clazz = PointClass::Class1;
 	view.analogs[0].metadata.deadband = 5; //value must change by more than 5 before being reported
 
@@ -168,7 +168,7 @@ TEST_CASE(SUITE("AnalogLastReportedChange"))
 TEST_CASE(SUITE("CounterLastReportedChange"))
 {
 	DatabaseTestObject t(DatabaseTemplate::CounterOnly(1));
-	auto view = t.db.GetStaticView();
+	auto view = t.db.GetConfigView();
 	view.counters[0].metadata.clazz = PointClass::Class1;
 	view.counters[0].metadata.deadband = 5;
 

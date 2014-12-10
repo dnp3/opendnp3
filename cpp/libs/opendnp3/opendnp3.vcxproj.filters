@@ -633,9 +633,6 @@
     <ClInclude Include="src\opendnp3\outstation\IDatabase.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\StaticBufferView.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\IStaticSelector.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
@@ -719,6 +716,12 @@
     </ClInclude>
     <ClInclude Include="src\opendnp3\gen\IndexMode.h">
       <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\DatabaseView.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\DatabaseConfigView.h">
+      <Filter>Header\outstation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1083,6 +1086,9 @@
       <Filter>Source\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\StaticBuffers.cpp">
+      <Filter>Source\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\DatabaseConfigView.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
   </ItemGroup>

@@ -44,9 +44,9 @@ StaticBuffers::StaticBuffers(const DatabaseTemplate& dbTemplate) :
 	this->SetDefaultIndices<TimeAndInterval>();
 }	
 
-StaticBufferView StaticBuffers::GetView() const
+DatabaseConfigView StaticBuffers::GetView() const
 {
-	return StaticBufferView(
+	return DatabaseConfigView(
 		binaries.ToView(),
 		doubleBinaries.ToView(),
 		analogs.ToView(),

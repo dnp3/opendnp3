@@ -268,7 +268,7 @@ TEST_CASE(SUITE("MixedVariationAssignments"))
 	OutstationTestObject t(config, DatabaseTemplate::AnalogOnly(2));
 
 	{	// configure two different default variations
-		auto view = t.outstation.GetStaticBufferView();
+		auto view = t.outstation.GetConfigView();
 		view.analogs[0].variation = StaticAnalogVariation::Group30Var1;
 		view.analogs[1].variation = StaticAnalogVariation::Group30Var2;
 	}
@@ -489,11 +489,11 @@ std::string QueryDiscontiguousBinary(const std::string& request)
 	OutstationTestObject t(config, DatabaseTemplate::BinaryOnly(3));
 
 	// assign virtual indices to the database specified above
-	auto view = t.outstation.GetStaticBufferView();
+	auto view = t.outstation.GetConfigView();
 	view.binaries[0].vIndex = 2;
 	view.binaries[1].vIndex = 4;
 	view.binaries[2].vIndex = 5;
-
+	
 	t.LowerLayerUp();
 
 	t.Transaction([](IDatabase& db){
@@ -502,7 +502,7 @@ std::string QueryDiscontiguousBinary(const std::string& request)
 	});
 
 	t.SendToOutstation(request);
-	return t.lower.PopWriteAsHex();	
+	return t.lower.PopWriteAsHex();
 }
 
 TEST_CASE(SUITE("ReadDiscontiguousClass0"))
@@ -560,11 +560,11 @@ TEST_CASE(SUITE("ReadDiscontiguousAllDataWithRangeError"))
 }
 
 template <class PointType>
-void TestStaticType(const OutstationConfig& config, const DatabaseTemplate& tmp, PointType value, const std::string& rsp, const std::function<void (StaticBufferView&)>& configure)
+void TestStaticType(const OutstationConfig& config, const DatabaseTemplate& tmp, PointType value, const std::string& rsp, const std::function<void (DatabaseConfigView&)>& configure)
 {
 	OutstationTestObject t(config, tmp);	
 
-	auto view = t.outstation.GetStaticBufferView();
+	auto view = t.outstation.GetConfigView();
 	configure(view);
 
 	t.LowerLayerUp();
@@ -583,7 +583,7 @@ template <class T>
 void TestStaticCounter(StaticCounterVariation variation, T value, const std::string& response)
 {
 	OutstationConfig cfg;
-	auto configure = [variation](StaticBufferView& view) { view.counters[0].variation = variation; };
+	auto configure = [variation](DatabaseConfigView& view) { view.counters[0].variation = variation; };
 	TestStaticType<Counter>(cfg, DatabaseTemplate::CounterOnly(1), value, response, configure);
 }
 
@@ -593,7 +593,7 @@ TEST_CASE(SUITE("ReadGrp1Var1"))
 	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOnly(10));
 
 	{
-		auto view = t.outstation.GetStaticBufferView();		
+		auto view = t.outstation.GetConfigView();
 		view.binaries.foreach([](Cell<Binary>& cell){ 
 			cell.SetInitialValue(Binary(false));
 			cell.variation = StaticBinaryVariation::Group1Var1; 
@@ -613,7 +613,7 @@ TEST_CASE(SUITE("Grp1Var1IsPromotedToGrp1Var2IfQualityNotOnline"))
 	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOnly(2));
 
 	{
-		auto view = t.outstation.GetStaticBufferView();
+		auto view = t.outstation.GetConfigView();
 		view.binaries.foreach([](Cell<Binary>& cell)
 		{			
 			cell.variation = StaticBinaryVariation::Group1Var1;
@@ -651,7 +651,7 @@ template <class T>
 void TestStaticAnalog(StaticAnalogVariation variation, T value, const std::string& response)
 {
 	OutstationConfig cfg;
-	auto configure = [variation](StaticBufferView& view) { view.analogs[0].variation = variation; };
+	auto configure = [variation](DatabaseConfigView& view) { view.analogs[0].variation = variation; };
 	TestStaticType<Analog>(cfg, DatabaseTemplate::AnalogOnly(1), value, response, configure);
 }
 
@@ -702,7 +702,7 @@ template <class T>
 void TestStaticAnalogOutputStatus(StaticAnalogOutputStatusVariation variation, T value, const string& response)
 {
 	OutstationConfig cfg;
-	auto configure = [variation](StaticBufferView& view) { view.analogOutputStatii[0].variation = variation; };
+	auto configure = [variation](DatabaseConfigView& view) { view.analogOutputStatii[0].variation = variation; };
 	TestStaticType<AnalogOutputStatus>(cfg, DatabaseTemplate::AnalogOutputStatusOnly(1), value, response, configure);
 }
 

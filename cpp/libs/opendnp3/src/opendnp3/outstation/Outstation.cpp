@@ -103,9 +103,9 @@ IDatabase& Outstation::GetDatabase()
 	return context.database;
 }
 
-StaticBufferView Outstation::GetStaticBufferView()
+DatabaseConfigView Outstation::GetConfigView()
 {
-	return context.database.GetStaticView();
+	return context.database.GetConfigView();
 }
 	
 }

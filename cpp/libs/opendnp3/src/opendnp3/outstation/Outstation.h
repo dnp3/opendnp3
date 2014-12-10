@@ -24,7 +24,7 @@
 #include "opendnp3/LayerInterfaces.h"
 
 #include "opendnp3/outstation/OutstationContext.h"
-#include "opendnp3/outstation/StaticBufferView.h"
+#include "opendnp3/outstation/DatabaseConfigView.h"
 
 namespace opendnp3
 {
@@ -59,7 +59,7 @@ class Outstation : public IUpperLayer
 
 	IDatabase& GetDatabase();
 
-	StaticBufferView GetStaticBufferView();
+	DatabaseConfigView GetConfigView();
 	
 	
 	private:			

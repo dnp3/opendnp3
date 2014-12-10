@@ -193,6 +193,7 @@
     <ClInclude Include="src\opendnp3\outstation\CommandResponseHandler.h" />
     <ClInclude Include="src\opendnp3\outstation\ConstantCommandAction.h" />
     <ClInclude Include="src\opendnp3\outstation\DatabaseBuffers.h" />
+    <ClInclude Include="src\opendnp3\outstation\DatabaseConfigView.h" />
     <ClInclude Include="src\opendnp3\outstation\EventWriter.h" />
     <ClInclude Include="src\opendnp3\outstation\IClassAssigner.h" />
     <ClInclude Include="src\opendnp3\outstation\IEventRecorder.h" />
@@ -201,7 +202,7 @@
     <ClInclude Include="src\opendnp3\outstation\IResponseLoader.h" />
     <ClInclude Include="src\opendnp3\outstation\IStaticSelector.h" />
     <ClInclude Include="src\opendnp3\outstation\SelectedRanges.h" />
-    <ClInclude Include="src\opendnp3\outstation\StaticBufferView.h" />
+    <ClInclude Include="src\opendnp3\outstation\DatabaseView.h" />
     <ClInclude Include="src\opendnp3\outstation\Database.h" />
     <ClInclude Include="src\opendnp3\outstation\DatabaseTemplate.h" />
     <ClInclude Include="src\opendnp3\outstation\DeferredRequest.h" />
@@ -340,6 +341,7 @@
     <ClCompile Include="src\opendnp3\outstation\CommandResponseHandler.cpp" />
     <ClCompile Include="src\opendnp3\outstation\Database.cpp" />
     <ClCompile Include="src\opendnp3\outstation\DatabaseBuffers.cpp" />
+    <ClCompile Include="src\opendnp3\outstation\DatabaseConfigView.cpp" />
     <ClCompile Include="src\opendnp3\outstation\EventBufferConfig.cpp" />
     <ClCompile Include="src\opendnp3\outstation\EventCount.cpp" />
     <ClCompile Include="src\opendnp3\outstation\EventWriter.cpp" />

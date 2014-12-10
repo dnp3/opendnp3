@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_STATICBUFFERVIEW_H
-#define OPENDNP3_STATICBUFFERVIEW_H
+#ifndef OPENDNP3_DATABASECONFIGVIEW_H
+#define OPENDNP3_DATABASECONFIGVIEW_H
 
 #include "opendnp3/app/TimeAndInterval.h"
 #include "opendnp3/app/MeasurementTypes.h"
@@ -32,14 +32,22 @@ namespace opendnp3
 {
 
 /**
-* StaticBufferView provides abstracted access to storage for current measurement values and associated metadata
+* DatabaseConfigView provides abstracted access to the raw buffers in outstation database.
+* 
+* Use this object to congfigure:
+*
+*  1) Inital values if you want something besides false/zero with 0x02 restart quality
+*  2) Default static/event reporting variations for each point
+*  3) Class assignments (0,1,2,3) for each point
+*  4) deadbands for analogs / counters / etc
+*
 */
-class StaticBufferView
+class DatabaseConfigView
 {
 
 public:	
 
-	StaticBufferView(
+	DatabaseConfigView(
 		openpal::ArrayView<Cell<Binary>, uint16_t> binaries_,
 		openpal::ArrayView<Cell<DoubleBitBinary>, uint16_t> doubleBinaries_,
 		openpal::ArrayView<Cell<Analog>, uint16_t> analogs_,
@@ -48,16 +56,18 @@ public:
 		openpal::ArrayView<Cell<BinaryOutputStatus>, uint16_t> binaryOutputStatii_,
 		openpal::ArrayView<Cell<AnalogOutputStatus>, uint16_t> analogOutputStatii_,
 		openpal::ArrayView<Cell<TimeAndInterval>, uint16_t> timeAndIntervals_
-		) :
-		binaries(binaries_),
-		doubleBinaries(doubleBinaries_),
-		analogs(analogs_),
-		counters(counters_),
-		frozenCounters(frozenCounters_),
-		binaryOutputStatii(binaryOutputStatii_),
-		analogOutputStatii(analogOutputStatii_),
-		timeAndIntervals(timeAndIntervals_)
-	{}
+		);
+	
+	// ------------ Helper functions for setting initial value ------
+
+	void SetInitialValue(const Binary& meas, uint16_t index);
+	void SetInitialValue(const DoubleBitBinary& meas, uint16_t index);
+	void SetInitialValue(const Analog& meas, uint16_t index);
+	void SetInitialValue(const Counter& meas, uint16_t index);
+	void SetInitialValue(const FrozenCounter& meas, uint16_t index);
+	void SetInitialValue(const BinaryOutputStatus& meas, uint16_t index);
+	void SetInitialValue(const AnalogOutputStatus& meas, uint16_t index);
+	void SetInitialValue(const TimeAndInterval& meas, uint16_t index);
 
 	//  ----------- Views of the underlying storage ---------
 
