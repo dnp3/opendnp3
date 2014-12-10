@@ -481,47 +481,82 @@ TEST_CASE(SUITE("ContiguousIndexesInDiscontiguousModeRangeScan"))
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00 01 02 00 00 01 02 02");
 }
 
-TEST_CASE(SUITE("ReadDiscontiguousIndexes"))
+std::string QueryDiscontiguousBinary(const std::string& request)
 {
-	/* TODO
 	OutstationConfig config;
-    
-    uint32_t points[3];
-    points[0] = 2;
-    points[1] = 4;
-    points[2] = 5;
-    
-	PointIndexes binaryIndexes(ArrayView<uint32_t, uint32_t>(points, 3));
-	OutstationTestObject t(config, DatabaseTemplate(binaryIndexes));
+	config.params.indexMode = IndexMode::Discontiguous;
+
+	OutstationTestObject t(config, DatabaseTemplate::BinaryOnly(3));
+
+	// assign virtual indices to the database specified above
+	auto view = t.outstation.GetStaticBufferView();
+	view.binaries[0].vIndex = 2;
+	view.binaries[1].vIndex = 4;
+	view.binaries[2].vIndex = 5;
+
 	t.LowerLayerUp();
-    
-	t.Transaction([](Database& db){
-		db.Update(Binary(true, 0x01), 2);
-		db.Update(Binary(false, 0x01), 4);
+
+	t.Transaction([](IDatabase& db){
+		db.Update(Binary(true, 0x01), 2, EventMode::Suppress);
+		db.Update(Binary(false, 0x01), 4, EventMode::Suppress);
 	});
 
-    t.SendToOutstation("C0 01 3C 01 06"); // Read class 0
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00 01 02 00 02 02 81 01 02 00 04 05 01 02");
-    t.OnSendResult(true);
-	t.SendToOutstation("C2 01 01 02 00 02 02"); // read 01 var 2, [02 : 02]
-	REQUIRE(t.lower.PopWriteAsHex() == "C2 81 80 00 01 02 00 02 02 81");
-    t.OnSendResult(true);
-	t.SendToOutstation("C2 01 01 02 00 04 05"); // read 01 var 2, [04 : 05]
-	REQUIRE(t.lower.PopWriteAsHex() == "C2 81 80 00 01 02 00 04 05 01 02");
-    t.OnSendResult(true);
-	t.SendToOutstation("C2 01 01 02 00 05 06"); // read 01 var 2, [05 : 06]
-	REQUIRE(t.lower.PopWriteAsHex() == "C2 81 80 04 01 02 00 05 05 02");
-    t.OnSendResult(true);
-	t.SendToOutstation("C2 01 01 02 00 02 02 01 02 00 04 05"); // read 01 var 2, [02 : 02]; read 01 var 2, [04 : 05]
-	REQUIRE(t.lower.PopWriteAsHex() == "C2 81 80 00 01 02 00 02 02 81 01 02 00 04 05 01 02");
-    t.OnSendResult(true);
-	t.SendToOutstation("C2 01 01 02 00 02 03 01 02 00 04 05"); // read 01 var 2, [02 : 03]; read 01 var 2, [04 : 05]
-	REQUIRE(t.lower.PopWriteAsHex() == "C2 81 80 04 01 02 00 02 02 81 01 02 00 04 05 01 02");
-    t.OnSendResult(true);
-	t.SendToOutstation("C2 01 01 02 00 02 05"); // read 01 var 2, [02 : 05]
-	REQUIRE(t.lower.PopWriteAsHex() == "C2 81 80 04 01 02 00 02 02 81 01 02 00 04 05 01 02");
-    t.OnSendResult(true);
-	*/
+	t.SendToOutstation(request);
+	return t.lower.PopWriteAsHex();	
+}
+
+TEST_CASE(SUITE("ReadDiscontiguousClass0"))
+{
+	REQUIRE(QueryDiscontiguousBinary("C0 01 3C 01 06") == "C0 81 80 00 01 02 00 02 02 81 01 02 00 04 05 01 02");
+}
+
+TEST_CASE(SUITE("ReadDiscontiguousBadRangeBelow"))
+{
+	// read 01 var 2, [00 : 01]
+	REQUIRE(QueryDiscontiguousBinary("C0 01 01 02 00 00 01") == "C0 81 80 04");
+}
+
+TEST_CASE(SUITE("ReadDiscontiguousBadRangeAbove"))
+{
+	// read 01 var 2, [06 : 09]
+	REQUIRE(QueryDiscontiguousBinary("C0 01 01 02 00 06 09") == "C0 81 80 04");
+}
+
+
+TEST_CASE(SUITE("ReadDiscontiguousSingleRange"))
+{
+	// read 01 var 2, [02 : 02]
+	REQUIRE(QueryDiscontiguousBinary("C0 01 01 02 00 02 02") == "C0 81 80 00 01 02 00 02 02 81");
+}
+
+TEST_CASE(SUITE("ReadDiscontiguousDoubleRange"))
+{
+	// read 01 var 2, [04 : 05]
+	REQUIRE(QueryDiscontiguousBinary("C0 01 01 02 00 04 05") == "C0 81 80 00 01 02 00 04 05 01 02");
+}
+
+TEST_CASE(SUITE("ReadDiscontiguousPastUpperBound"))
+{
+	// read 01 var 2, [05 : 06]
+	REQUIRE(QueryDiscontiguousBinary("C0 01 01 02 00 05 06") == "C0 81 80 04 01 02 00 05 05 02");
+}
+
+TEST_CASE(SUITE("ReadDiscontiguousAllDataWithMultipleRanges"))
+{
+	// read 01 var 2, [02 : 02]; read 01 var 2, [04 : 05]
+	REQUIRE(QueryDiscontiguousBinary("C0 01 01 02 00 02 02 01 02 00 04 05") == "C0 81 80 00 01 02 00 02 02 81 01 02 00 04 05 01 02");
+}
+
+TEST_CASE(SUITE("ReadDiscontiguousAllDataWithMultipleRangesAndRangeError"))
+{
+	// read 01 var 2, [02 : 03]; read 01 var 2, [04 : 05]
+	REQUIRE(QueryDiscontiguousBinary("C0 01 01 02 00 02 03 01 02 00 04 05") == "C0 81 80 04 01 02 00 02 02 81 01 02 00 04 05 01 02");
+}
+
+TEST_CASE(SUITE("ReadDiscontiguousAllDataWithRangeError"))
+{
+	// read 01 var 2, [02 : 05]
+	REQUIRE(QueryDiscontiguousBinary("C0 01 01 02 00 02 05") == "C0 81 80 04 01 02 00 02 02 81 01 02 00 04 05 01 02");
 }
 
 template <class PointType>
