@@ -31,9 +31,10 @@ using namespace openpal;
 namespace opendnp3
 {
 
-Database::Database(const DatabaseTemplate& dbTemplate, IEventReceiver& eventReceiver, INewEventDataHandler& handler, openpal::IMutex* pMutex_) :
-	buffers(dbTemplate),	
+Database::Database(const DatabaseTemplate& dbTemplate, IEventReceiver& eventReceiver, INewEventDataHandler& handler, IndexMode indexMode_, openpal::IMutex* pMutex_) :
+	buffers(dbTemplate, indexMode_),
 	pEventReceiver(&eventReceiver),
+	indexMode(indexMode_),
 	pMutex(pMutex_),
 	pEventHandler(&handler),
 	transactionHasEvents(false)
@@ -101,11 +102,12 @@ bool Database::Update(const AnalogOutputStatus& value, uint16_t index, EventMode
 
 bool Database::Update(const TimeAndInterval& value, uint16_t index)
 {		
-	auto view = buffers.buffers.GetArrayView<TimeAndInterval>();
+	auto rawIndex = GetRawIndex<TimeAndInterval>(index);
+	auto view = buffers.buffers.GetArrayView<TimeAndInterval>();	
 
-	if (view.Contains(index))
+	if (view.Contains(rawIndex))
 	{		
-		view[index].value = value;
+		view[rawIndex].value = value;
 		return true;
 	}
 	else
@@ -152,11 +154,13 @@ bool Database::Modify(const openpal::Function1<const AnalogOutputStatus&, Analog
 
 bool Database::Modify(const openpal::Function1<const TimeAndInterval&, TimeAndInterval>& modify, uint16_t index)
 {
+	auto rawIndex = GetRawIndex<TimeAndInterval>(index);
+	
 	auto view = buffers.buffers.GetArrayView<TimeAndInterval>();
 
-	if (view.Contains(index))
+	if (view.Contains(rawIndex))
 	{
-		view[index].value = modify.Apply(view[index].value);
+		view[rawIndex].value = modify.Apply(view[rawIndex].value);
 		return true;
 	}
 	else

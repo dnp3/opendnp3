@@ -37,7 +37,7 @@ public:
 	static Range From(uint16_t start, uint16_t stop)
 	{
 		return Range(start, stop);
-	}
+	}	
 
 	static Range Invalid()
 	{
@@ -46,6 +46,11 @@ public:
 
 	Range() : start(1), stop(0)
 	{}
+
+	uint32_t Count() const
+	{
+		return IsValid() ? (static_cast<uint32_t>(stop)-static_cast<uint32_t>(start) + 1) : 0;
+	}
 
 	bool Advance()
 	{
@@ -91,12 +96,7 @@ public:
 	bool Equals(const Range& other) const
 	{
 		return (other.start == start) && (other.stop == stop);
-	}
-   	
-	uint32_t Count() const
-	{
-		return (stop - start) + 1;
-	}
+	}   	
 
 	bool IsValid() const
 	{

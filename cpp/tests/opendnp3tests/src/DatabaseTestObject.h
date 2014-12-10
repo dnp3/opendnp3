@@ -81,9 +81,9 @@ class DatabaseTestObject : private INewEventDataHandler
 {
 public:
 	
-	DatabaseTestObject(const DatabaseTemplate& dbTemplate) : 
+	DatabaseTestObject(const DatabaseTemplate& dbTemplate, IndexMode mode = IndexMode::Contiguous) : 
 		buffer(),
-		db(dbTemplate, buffer, *this, nullptr)
+		db(dbTemplate, buffer, *this, mode, nullptr)
 	{
 		
 	}

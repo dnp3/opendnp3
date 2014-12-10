@@ -63,7 +63,7 @@ OutstationContext::OutstationContext(
 	pCommandHandler(&commandHandler),
 	pApplication(&application),	
 	eventBuffer(config.eventBufferConfig),
-	database(dbTemplate, eventBuffer, *this, pDBMutex),
+	database(dbTemplate, eventBuffer, *this, config.params.indexMode, pDBMutex),
 	isOnline(false),
 	pSolicitedState(&OutstationSolicitedStateIdle::Inst()),
 	pUnsolicitedState(&OutstationUnsolicitedStateIdle::Inst()),

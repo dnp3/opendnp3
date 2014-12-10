@@ -23,6 +23,9 @@
 
 #include "opendnp3/app/Range.h"
 
+#include "opendnp3/gen/IndexMode.h"
+
+#include "opendnp3/outstation/IndexSearch.h"
 #include "opendnp3/outstation/DatabaseTemplate.h"
 #include "opendnp3/outstation/StaticBuffers.h"
 #include "opendnp3/outstation/SelectedRanges.h"
@@ -42,7 +45,7 @@ class DatabaseBuffers : public IStaticSelector, public IResponseLoader, public I
 {
 public:
 
-	DatabaseBuffers(const DatabaseTemplate&);
+	DatabaseBuffers(const DatabaseTemplate&, IndexMode indexMode);
 
 	// ------- IStaticSelector -------------
 	
@@ -66,6 +69,8 @@ public:
 	StaticBuffers buffers;	
 
 private:
+
+	IndexMode indexMode;
 	
 	SelectedRanges ranges;	
 
@@ -118,19 +123,43 @@ private:
 	IINField SelectAllUsing(typename T::StaticVariation variation)
 	{
 		auto view = buffers.GetArrayView<T>();
-		return GenericSelect(RangeOf(view.Size()), view, false, variation);
+		return GenericSelect(RangeOf(view.Size()), view, false, variation);		
+	}
+
+	template <class T>
+	IINField SelectVirtualRange(const Range& range, bool usedefault, typename T::StaticVariation variation)
+	{
+		if (indexMode == IndexMode::Discontiguous)
+		{
+			auto view = buffers.GetArrayView<T>();
+			auto mapped = IndexSearch::FindRawRange(view, range);
+			if (mapped.IsValid())
+			{
+				// detect if any values were requested that aren't actually there
+				IINField clipped = (range.Count() == mapped.Count()) ? IINField() : IINField(IINBit::PARAM_ERROR);
+				return clipped | GenericSelect(mapped, buffers.GetArrayView<T>(), usedefault, variation);
+			}
+			else
+			{
+				return IINField(IINBit::PARAM_ERROR);
+			}
+		}
+		else
+		{
+			return GenericSelect(range, buffers.GetArrayView<T>(), usedefault, variation);
+		}
 	}
 
 	template <class T>
 	IINField SelectRange(const Range& range)
-	{		
-		return GenericSelect(range, buffers.GetArrayView<T>(), true, typename T::StaticVariation());
-	}
+	{
+		return SelectVirtualRange<T>(range, true, typename T::StaticVariation());
+	}	
 
 	template <class T>
 	IINField SelectRangeUsing(const Range& range, typename T::StaticVariation variation)
-	{		
-		return GenericSelect(range, buffers.GetArrayView<T>(), false, variation);
+	{	
+		return SelectVirtualRange<T>(range, false, variation);
 	}		
 };
 

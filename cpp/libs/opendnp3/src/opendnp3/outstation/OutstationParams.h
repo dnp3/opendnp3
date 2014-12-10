@@ -23,6 +23,8 @@
 
 #include <openpal/executor/TimeDuration.h>
 
+#include "opendnp3/gen/IndexMode.h"
+
 #include "opendnp3/app/ClassField.h"
 
 #include "opendnp3/outstation/StaticTypeBitfield.h"
@@ -33,6 +35,9 @@ namespace opendnp3
 struct OutstationParams
 {
 	OutstationParams();
+
+	/// Controls the index mode (defaults to contiguous)
+	IndexMode indexMode;
 
 	/// The maximum number of controls the outstation will attempt to process from a single APDU
 	uint8_t maxControlsPerRequest;			

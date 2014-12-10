@@ -23,7 +23,7 @@
 
 #include <openpal/executor/IMutex.h>
 
-
+#include "opendnp3/gen/IndexMode.h"
 #include "opendnp3/gen/AssignClassType.h"
 
 #include "opendnp3/outstation/IDatabase.h"
@@ -47,7 +47,7 @@ class Database : public IDatabase, private openpal::Uncopyable
 {
 public:
 
-	Database(const DatabaseTemplate&, IEventReceiver& eventReceiver, INewEventDataHandler& handler, openpal::IMutex* pMutex);
+	Database(const DatabaseTemplate&, IEventReceiver& eventReceiver, INewEventDataHandler& handler, IndexMode indexMode, openpal::IMutex* pMutex);
 
 	// ------- IDatabase --------------
 
@@ -96,11 +96,16 @@ public:
 
 private:	
 
+	template <class T>
+	uint16_t GetRawIndex(uint16_t index);
+	
+
 	// stores the most recent values, selected values, and metadata
 	DatabaseBuffers buffers;
 
 	IEventReceiver* pEventReceiver;
 	openpal::IMutex* pMutex;
+	IndexMode indexMode;
 		
 	INewEventDataHandler* pEventHandler;
 	bool transactionHasEvents;
@@ -114,7 +119,7 @@ private:
 	bool ModifyEvent(const openpal::Function1<const T&, T>& modify, uint16_t index, EventMode mode);
 
 	template <class T>
-	bool UpdateAny(Cell<T>& cell, const T& value, uint16_t index, EventMode mode);
+	bool UpdateAny(Cell<T>& cell, const T& value, EventMode mode);
 
 	// ITransactable  functions, proxies to the given transactable
 	virtual void Start() override final;
@@ -122,13 +127,29 @@ private:
 };
 
 template <class T>
+uint16_t Database::GetRawIndex(uint16_t index)
+{
+	if (indexMode == IndexMode::Contiguous)
+	{
+		return index;
+	}
+	else
+	{
+		auto view = buffers.buffers.GetArrayView<TimeAndInterval>();
+		auto result = IndexSearch::FindClosestRawIndex(view, index);
+		return result.match ? result.index : openpal::MaxValue<uint16_t>();				
+	}
+}
+
+template <class T>
 bool Database::UpdateEvent(const T& value, uint16_t index, EventMode mode)
 {	
+	auto rawIndex = GetRawIndex<T>(index);
 	auto view = buffers.buffers.GetArrayView<T>();
 
-	if (view.Contains(index))
+	if (view.Contains(rawIndex))
 	{
-		this->UpdateAny(view[index], value, index, mode);
+		this->UpdateAny(view[rawIndex], value, mode);
 		return true;
 	}
 	else
@@ -140,11 +161,12 @@ bool Database::UpdateEvent(const T& value, uint16_t index, EventMode mode)
 template <class T>
 bool Database::ModifyEvent(const openpal::Function1<const T&, T>& modify, uint16_t index, EventMode mode)
 {
+	auto rawIndex = GetRawIndex<T>(index);
 	auto view = buffers.buffers.GetArrayView<T>();
 
-	if (view.Contains(index))
+	if (view.Contains(rawIndex))
 	{
-		this->UpdateAny(view[index], modify.Apply(view[index].value), index, mode);
+		this->UpdateAny(view[rawIndex], modify.Apply(view[rawIndex].value), mode);
 		return true;
 	}
 	else
@@ -154,7 +176,7 @@ bool Database::ModifyEvent(const openpal::Function1<const T&, T>& modify, uint16
 }
 
 template <class T>
-bool Database::UpdateAny(Cell<T>& cell, const T& value, uint16_t index, EventMode mode)
+bool Database::UpdateAny(Cell<T>& cell, const T& value, EventMode mode)
 {
 	EventClass ec;
 	if (ConvertToEventClass(cell.metadata.clazz, ec))
@@ -179,7 +201,7 @@ bool Database::UpdateAny(Cell<T>& cell, const T& value, uint16_t index, EventMod
 
 			if (pEventReceiver)
 			{
-				pEventReceiver->Update(Event<T>(value, index, ec, cell.metadata.variation));
+				pEventReceiver->Update(Event<T>(value, cell.vIndex, ec, cell.metadata.variation));
 				transactionHasEvents = true;
 			}
 		}		

@@ -32,8 +32,11 @@ using namespace openpal;
 namespace opendnp3
 {
 
-DatabaseBuffers::DatabaseBuffers(const DatabaseTemplate& dbTemplate) : buffers(dbTemplate)	
+DatabaseBuffers::DatabaseBuffers(const DatabaseTemplate& dbTemplate, IndexMode indexMode_) :
+	buffers(dbTemplate),
+	indexMode(indexMode_)
 {
+
 }
 
 void DatabaseBuffers::Unselect()

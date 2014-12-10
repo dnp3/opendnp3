@@ -29,6 +29,7 @@ namespace opendnp3
 {
 
 OutstationParams::OutstationParams() :
+	indexMode(IndexMode::Contiguous),
 	maxControlsPerRequest(16),
 	selectTimeout(TimeDuration::Seconds(10)),
 	solConfirmTimeout(TimeDuration::Seconds(5)),

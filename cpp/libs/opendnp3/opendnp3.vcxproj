@@ -87,6 +87,7 @@
     <ClInclude Include="src\opendnp3\gen\EventFrozenCounterVariation.h" />
     <ClInclude Include="src\opendnp3\gen\EventMode.h" />
     <ClInclude Include="src\opendnp3\gen\GroupVariation.h" />
+    <ClInclude Include="src\opendnp3\gen\IndexMode.h" />
     <ClInclude Include="src\opendnp3\gen\IntervalUnits.h" />
     <ClInclude Include="src\opendnp3\gen\MasterTaskType.h" />
     <ClInclude Include="src\opendnp3\gen\PointClass.h" />
