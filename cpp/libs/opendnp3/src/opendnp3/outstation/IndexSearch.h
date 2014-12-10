@@ -51,14 +51,14 @@ public:
 		const bool match;
 		const uint16_t index;
 
-		private:		
+		private:
 
 		Result() = delete;
 	};
 
 	template <class T>
 	static Range FindRawRange(const openpal::ArrayView<Cell<T>, uint16_t>& view, const Range& range);
-	
+
 	template <class T>
 	static Result FindClosestRawIndex(const openpal::ArrayView<Cell<T>, uint16_t>& view, uint16_t vIndex);
 
@@ -68,14 +68,13 @@ private:
 	{
 		return ((upper - lower) / 2) + lower;
 	}
-	
 };
 
 template <class T>
-static Range IndexSearch::FindRawRange(const openpal::ArrayView<Cell<T>, uint16_t>& view, const Range& range)
+Range IndexSearch::FindRawRange(const openpal::ArrayView<Cell<T>, uint16_t>& view, const Range& range)
 {
 	if (range.IsValid() && view.IsNotEmpty())
-	{				
+	{
 		uint16_t start = FindClosestRawIndex(view, range.start).index;
 		uint16_t stop = FindClosestRawIndex(view, range.stop).index;
 

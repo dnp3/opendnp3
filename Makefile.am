@@ -263,6 +263,7 @@ cpp/tests/opendnp3tests/src/TestCastLongLongDouble.cpp \
 cpp/tests/opendnp3tests/src/TestCRC.cpp \
 cpp/tests/opendnp3tests/src/TestDatabase.cpp \
 cpp/tests/opendnp3tests/src/TestDNP3Manager.cpp \
+cpp/tests/opendnp3tests/src/TestIndexSearch.cpp \
 cpp/tests/opendnp3tests/src/TestLazyCollection.cpp \
 cpp/tests/opendnp3tests/src/TestLinkFrame.cpp \
 cpp/tests/opendnp3tests/src/TestLinkLayer.cpp \
