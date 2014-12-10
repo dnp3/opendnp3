@@ -135,7 +135,7 @@ uint16_t Database::GetRawIndex(uint16_t index)
 	}
 	else
 	{
-		auto view = buffers.buffers.GetArrayView<TimeAndInterval>();
+		auto view = buffers.buffers.GetArrayView<T>();
 		auto result = IndexSearch::FindClosestRawIndex(view, index);
 		return result.match ? result.index : openpal::MaxValue<uint16_t>();				
 	}

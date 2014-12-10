@@ -45,6 +45,22 @@ TEST_CASE(SUITE("BlankExceptionScan"))
 	REQUIRE(t.lower.PopWriteAsHex() ==  "C0 81 80 00");
 }
 
+TEST_CASE(SUITE("ReadDiscontiguousEvent"))
+{
+	OutstationConfig config;
+	config.eventBufferConfig = EventBufferConfig(5);
+	config.params.indexMode = IndexMode::Discontiguous;
+	OutstationTestObject t(config, DatabaseTemplate::BinaryOnly(1));	
+	t.LowerLayerUp();
+
+	t.Transaction([](IDatabase& db) {
+		db.Update(Binary(true), 0);
+	});
+
+	t.SendToOutstation("C0 01 3C 02 06"); // Read class 1
+	REQUIRE(t.lower.PopWriteAsHex() == "E0 81 80 00 02 01 28 01 00 00 00 81");
+}
+
 TEST_CASE(SUITE("ReceiveNewRequestSolConfirmWait"))
 {
 	OutstationConfig config;

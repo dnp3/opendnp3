@@ -455,6 +455,32 @@ TEST_CASE(SUITE("ReadByRangeHeader"))
 	REQUIRE(t.lower.PopWriteAsHex() == "C2 81 80 00 1E 02 00 05 06 01 2A 00 01 29 00");
 }
 
+TEST_CASE(SUITE("ContiguousIndexesInDiscontiguousModeIntegrityScan"))
+{
+	// this will tell the outstation to use discontiguous index mode, but we won't change the address assignments
+	OutstationConfig config;
+	config.params.indexMode = IndexMode::Discontiguous;
+	OutstationTestObject t(config, DatabaseTemplate::BinaryOnly(2));
+	t.LowerLayerUp();
+
+	t.SendToOutstation(hex::IntegrityPoll(0));
+
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00 01 02 00 00 01 02 02");
+}
+
+TEST_CASE(SUITE("ContiguousIndexesInDiscontiguousModeRangeScan"))
+{
+	// this will tell the outstation to use discontiguous index mode, but we won't change the address assignments
+	OutstationConfig config;
+	config.params.indexMode = IndexMode::Discontiguous;
+	OutstationTestObject t(config, DatabaseTemplate::BinaryOnly(2));
+	t.LowerLayerUp();
+
+	t.SendToOutstation("C0 01 01 02 00 00 01");
+
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00 01 02 00 00 01 02 02");
+}
+
 TEST_CASE(SUITE("ReadDiscontiguousIndexes"))
 {
 	/* TODO
