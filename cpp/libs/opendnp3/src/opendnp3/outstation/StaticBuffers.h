@@ -49,6 +49,15 @@ public:
 	openpal::ArrayView<Cell<T>, uint16_t> GetArrayView();
 
 private:
+
+	template <class T>
+	static void SetDefaultIndices(openpal::DynamicArray<Cell<Binary>, uint16_t>& arr)
+	{
+		for (uint16_t i = 0; i < arr.Size(); ++i)
+		{
+			arr[i].vIndex = i;
+		}
+	}
 		
 	openpal::DynamicArray<Cell<Binary>, uint16_t> binaries;
 	openpal::DynamicArray<Cell<DoubleBitBinary>, uint16_t> doubleBinaries;
