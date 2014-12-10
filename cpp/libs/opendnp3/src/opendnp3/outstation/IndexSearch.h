@@ -22,6 +22,8 @@
 #define OPENDNP3_INDEXSEARCH_H
 
 #include "opendnp3/outstation/Cell.h"
+
+#include "opendnp3/app/Range.h"
 #include "opendnp3/app/MeasurementTypes.h"
 
 #include <openpal/container/ArrayView.h>
@@ -53,6 +55,9 @@ public:
 
 		Result() = delete;
 	};
+
+	template <class T>
+	static Range FindRawRange(const openpal::ArrayView<Cell<T>, uint16_t>& view, const Range& range);
 	
 	template <class T>
 	static Result FindClosestRawIndex(const openpal::ArrayView<Cell<T>, uint16_t>& view, uint16_t vIndex);
@@ -65,6 +70,46 @@ private:
 	}
 	
 };
+
+template <class T>
+static Range IndexSearch::FindRawRange(const openpal::ArrayView<Cell<T>, uint16_t>& view, const Range& range)
+{
+	if (range.IsValid() && view.IsNotEmpty())
+	{				
+		uint16_t start = FindClosestRawIndex(view, range.start).index;
+		uint16_t stop = FindClosestRawIndex(view, range.stop).index;
+
+		if (view[start].vIndex < range.start)
+		{
+			if (start < openpal::MaxValue<uint16_t>())
+			{
+				++start;
+			}
+			else
+			{
+				return Range::Invalid();
+			}
+		}
+
+		if (view[stop].vIndex > range.stop)
+		{
+			if (stop > 0)
+			{
+				--stop;
+			}
+			else
+			{
+				return Range::Invalid();
+			}
+		}
+
+		return (view.Contains(start) && view.Contains(stop)) ? Range::From(start, stop) : Range::Invalid();
+	}
+	else
+	{
+		return Range::Invalid();
+	}
+}
 
 template <class T>
 IndexSearch::Result IndexSearch::FindClosestRawIndex(const openpal::ArrayView<Cell<T>, uint16_t>& view, uint16_t vIndex)

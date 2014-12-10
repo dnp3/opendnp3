@@ -82,3 +82,75 @@ TEST_CASE(SUITE("FindsNextBiggestIndex"))
 	REQUIRE(!result.match);
 	REQUIRE(result.index == 3);
 }
+
+Range TestRangeSearch(const Range& range)
+{
+	DynamicArray<Cell<Binary>, uint16_t> values(4);
+	values[0].vIndex = 1;
+	values[1].vIndex = 3;
+	values[2].vIndex = 7;
+	values[3].vIndex = 9;
+
+	return IndexSearch::FindRawRange(values.ToView(), range);
+}
+
+TEST_CASE(SUITE("FindsFullRangeIfInputBracketsEntireRange"))
+{
+	auto range = TestRangeSearch(Range::From(0, 20));
+	REQUIRE(range.start == 0);
+	REQUIRE(range.stop == 3);
+}
+
+TEST_CASE(SUITE("FindsInvalidRangeIfBeneathRange"))
+{
+	auto range = TestRangeSearch(Range::From(0, 0));
+	REQUIRE(!range.IsValid());	
+}
+
+TEST_CASE(SUITE("FindsInvalidRangeIfAboveRange"))
+{
+	auto range = TestRangeSearch(Range::From(10, 10));
+	REQUIRE(!range.IsValid());
+}
+
+TEST_CASE(SUITE("FindsInvalidRangeIfNoMatchInside"))
+{
+	auto range = TestRangeSearch(Range::From(4, 6));
+	REQUIRE(!range.IsValid());
+}
+
+TEST_CASE(SUITE("FindsSingleValueExactMatch"))
+{
+	auto range = TestRangeSearch(Range::From(3, 3));
+	REQUIRE(range.start == 1);
+	REQUIRE(range.stop == 1);
+}
+
+TEST_CASE(SUITE("FindsSingleValuePartialMatch"))
+{
+	auto range = TestRangeSearch(Range::From(2, 6));
+	REQUIRE(range.start == 1);
+	REQUIRE(range.stop == 1);
+}
+
+TEST_CASE(SUITE("FindsSubRangeAtFront"))
+{
+	auto range = TestRangeSearch(Range::From(0, 8));
+	REQUIRE(range.start == 0);
+	REQUIRE(range.stop == 2);
+}
+
+TEST_CASE(SUITE("FindsSubRangeInMiddle"))
+{
+	auto range = TestRangeSearch(Range::From(3, 7));
+	REQUIRE(range.start == 1);
+	REQUIRE(range.stop == 2);
+}
+
+TEST_CASE(SUITE("FindsSubRangeAtEnd"))
+{
+	auto range = TestRangeSearch(Range::From(5, 11));
+	REQUIRE(range.start == 2);
+	REQUIRE(range.stop == 3);
+}
+
