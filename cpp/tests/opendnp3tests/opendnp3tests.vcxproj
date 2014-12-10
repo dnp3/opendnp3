@@ -237,6 +237,7 @@
     <ClCompile Include="src\PhysBaseTest.cpp" />
     <ClCompile Include="src\PhysTestObject.cpp" />
     <ClCompile Include="src\SerialTestObject.cpp" />
+    <ClCompile Include="src\TestIndexSearch.cpp" />
     <ClCompile Include="src\TestMasterAssignClass.cpp" />
     <ClCompile Include="src\TestMasterMultidrop.cpp" />
     <ClCompile Include="src\TestMasterUnsolBehaviors.cpp" />

@@ -196,6 +196,7 @@
     <ClInclude Include="src\opendnp3\outstation\IClassAssigner.h" />
     <ClInclude Include="src\opendnp3\outstation\IEventRecorder.h" />
     <ClInclude Include="src\opendnp3\outstation\IEventSelector.h" />
+    <ClInclude Include="src\opendnp3\outstation\IndexSearch.h" />
     <ClInclude Include="src\opendnp3\outstation\IResponseLoader.h" />
     <ClInclude Include="src\opendnp3\outstation\IStaticSelector.h" />
     <ClInclude Include="src\opendnp3\outstation\SelectedRanges.h" />

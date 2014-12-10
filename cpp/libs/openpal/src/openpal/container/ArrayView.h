@@ -23,6 +23,8 @@
 
 #include "HasSize.h"
 
+#include <assert.h>
+
 namespace openpal
 {
 

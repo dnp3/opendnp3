@@ -34,14 +34,14 @@ StaticBuffers::StaticBuffers(const DatabaseTemplate& dbTemplate) :
 	analogOutputStatii(dbTemplate.numAnalogOutputStatus),
 	timeAndIntervals(dbTemplate.numTimeAndInterval)
 {
-	this->SetDefaultIndices<Binary>(binaries);
-	this->SetDefaultIndices<DoubleBitBinary>(binaries);
-	this->SetDefaultIndices<Counter>(binaries);
-	this->SetDefaultIndices<FrozenCounter>(binaries);
-	this->SetDefaultIndices<Analog>(binaries);
-	this->SetDefaultIndices<BinaryOutputStatus>(binaries);
-	this->SetDefaultIndices<AnalogOutputStatus>(binaries);	
-	this->SetDefaultIndices<TimeAndInterval>(binaries);
+	this->SetDefaultIndices<Binary>();
+	this->SetDefaultIndices<DoubleBitBinary>();
+	this->SetDefaultIndices<Counter>();
+	this->SetDefaultIndices<FrozenCounter>();
+	this->SetDefaultIndices<Analog>();
+	this->SetDefaultIndices<BinaryOutputStatus>();
+	this->SetDefaultIndices<AnalogOutputStatus>();	
+	this->SetDefaultIndices<TimeAndInterval>();
 }	
 
 StaticBufferView StaticBuffers::GetView() const

@@ -51,11 +51,12 @@ public:
 private:
 
 	template <class T>
-	static void SetDefaultIndices(openpal::DynamicArray<Cell<Binary>, uint16_t>& arr)
+	void SetDefaultIndices()
 	{
-		for (uint16_t i = 0; i < arr.Size(); ++i)
+		auto view = GetArrayView<T>();
+		for (uint16_t i = 0; i < view.Size(); ++i)
 		{
-			arr[i].vIndex = i;
+			view[i].vIndex = i;
 		}
 	}
 		
