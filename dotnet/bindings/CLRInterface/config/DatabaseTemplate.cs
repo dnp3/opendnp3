@@ -26,67 +26,7 @@ using System.Linq;
 using System.Text;
 
 namespace Automatak.DNP3.Interface
-{           
-    /// <summary>
-    /// Point record type that is assigned an event class 
-    /// </summary>
-    public class EventPointRecord
-    {
-        public EventPointRecord(PointClass pointClass, System.Byte quality)
-        {            
-            this.pointClass = pointClass;
-            this.quality = quality;
-        }
-
-        public EventPointRecord(PointClass pointClass) : this(pointClass, 0x02)
-        {
-
-        }
-
-        public EventPointRecord() : this(PointClass.Class1)
-        { 
-        
-        }
-
-        public PointClass pointClass;
-        public System.Byte quality;
-    };
-
-    /// <summary>
-    /// Point record type that is assigned an event class and deadband tolerance
-    /// </summary>
-    public class DeadbandEventPointRecord<T> : EventPointRecord
-    {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="pointClass">Class that will be evented when the value changes</param>
-        /// <param name="deadband">Value can change within this tolerance without producing an event</param>
-        public DeadbandEventPointRecord(PointClass pointClass, T deadband) : base(pointClass)
-        {
-            this.deadband = deadband;
-        }
-
-        public DeadbandEventPointRecord(PointClass pointClass)
-            : base(pointClass)
-        {
-            this.deadband = default(T);
-        }
-
-        /// <summary>
-        /// Default constructor with Class 0 and 0.1 tolerance
-        /// </summary>
-        public DeadbandEventPointRecord(): base()
-        {
-            this.deadband = default(T);
-        }
-
-        /// <summary>
-        /// Value can change within this tolerance without producing an event
-        /// </summary>
-        public T deadband;
-    };    
-
+{               
     /// <summary>
     /// Defines the database layout for an outstation
     /// </summary>
@@ -111,21 +51,21 @@ namespace Automatak.DNP3.Interface
                                   System.UInt16 numAnalogOutputStatus,
                                   System.UInt16 numTimeAndInterval)
         {
-            binaries = Enumerable.Range(0, numBinary).Select(i => new EventPointRecord(PointClass.Class1)).ToList();
+            this.binaries = Enumerable.Range(0, numBinary).Select(i => new BinaryRecord(Convert.ToUInt16(i))).ToList();
 
-            doubleBinaries = Enumerable.Range(0, numDoubleBinary).Select(i => new EventPointRecord(PointClass.Class1)).ToList();
-            
-            counters = Enumerable.Range(0, numCounter).Select(i => new DeadbandEventPointRecord<System.UInt32>(PointClass.Class1, 0)).ToList();
-            
-            frozenCounters = Enumerable.Range(0, numFrozenCounter).Select(i => new DeadbandEventPointRecord<System.UInt32>(PointClass.Class1, 0)).ToList();
-            
-            analogs = Enumerable.Range(0, numAnalog).Select(i => new DeadbandEventPointRecord<double>(PointClass.Class1, 0.0)).ToList();
-            
-            binaryOutputStatii = Enumerable.Range(0, numBinaryOutputStatus).Select(i => new EventPointRecord(PointClass.Class1)).ToList();
-            
-            analogOutputStatii = Enumerable.Range(0, numAnalogOutputStatus).Select(i => new DeadbandEventPointRecord<double>(PointClass.Class1, 0.0)).ToList();
+            this.doubleBinaries = Enumerable.Range(0, numDoubleBinary).Select(i => new DoubleBinaryRecord(Convert.ToUInt16(i))).ToList();
 
-            this.numTimeAndInterval = numTimeAndInterval;
+            this.counters = Enumerable.Range(0, numCounter).Select(i => new CounterRecord(Convert.ToUInt16(i))).ToList();
+
+            this.frozenCounters = Enumerable.Range(0, numFrozenCounter).Select(i => new FrozenCounterRecord(Convert.ToUInt16(i))).ToList();
+
+            this.analogs = Enumerable.Range(0, numAnalog).Select(i => new AnalogRecord(Convert.ToUInt16(i))).ToList();
+
+            this.binaryOutputStatii = Enumerable.Range(0, numBinaryOutputStatus).Select(i => new BinaryOutputStatusRecord(Convert.ToUInt16(i))).ToList();
+
+            this.analogOutputStatii = Enumerable.Range(0, numAnalogOutputStatus).Select(i => new AnalogOutputStatusRecord(Convert.ToUInt16(i))).ToList();
+
+            this.timeAndIntervals = Enumerable.Range(0, numTimeAndInterval).Select(i => new TimeAndIntervalRecord(Convert.ToUInt16(i))).ToList();
         }
 
         /// <summary>
@@ -137,38 +77,40 @@ namespace Automatak.DNP3.Interface
         /// <summary>
         /// Default constructor that sets up 10 of every type
         /// </summary>
-        public DatabaseTemplate() : this(10)
+        public DatabaseTemplate() : this(0)
         { }
 
         /// <summary>
         /// Modify individual binary configuration here
         /// </summary>
-        public IList<EventPointRecord> binaries;
+        public IReadOnlyList<BinaryRecord> binaries;
         /// <summary>
         /// Modify individual double binary configuration here
         /// </summary>
-        public IList<EventPointRecord> doubleBinaries;
+        public IReadOnlyList<DoubleBinaryRecord> doubleBinaries;
         /// <summary>
         /// Modify individual analog configuration here
         /// </summary>
-        public IList<DeadbandEventPointRecord<System.UInt32>> counters;
+        public IReadOnlyList<CounterRecord> counters;
         /// <summary>
         /// Modify individual analog configuration here
         /// </summary>
-        public IList<DeadbandEventPointRecord<System.UInt32>> frozenCounters;
+        public IReadOnlyList<FrozenCounterRecord> frozenCounters;
         /// <summary>
         /// Modify individual counter configuration here
         /// </summary>
-        public IList<DeadbandEventPointRecord<double>> analogs;
+        public IReadOnlyList<AnalogRecord> analogs;
         /// <summary>
         /// Modify individual binary output status configuration here
         /// </summary>
-        public IList<EventPointRecord> binaryOutputStatii;
+        public IReadOnlyList<BinaryOutputStatusRecord> binaryOutputStatii;
         /// <summary>
         /// Modify individual analog output status configuration here
         /// </summary>
-        public IList<DeadbandEventPointRecord<double>> analogOutputStatii;
-
-        public readonly UInt16 numTimeAndInterval;
+        public IReadOnlyList<AnalogOutputStatusRecord> analogOutputStatii;
+        /// <summary>
+        ///  Modify individual time and interval configuration here
+        /// </summary>
+        public IReadOnlyList<TimeAndIntervalRecord> timeAndIntervals;
     };    
 }

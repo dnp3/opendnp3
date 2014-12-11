@@ -13,7 +13,12 @@ namespace Automatak.DNP3.Interface
     /// when the master requests class data or variation 0.
     /// </summary>
     public class OutstationParams
-    {             
+    {
+        /// <summary>
+        /// Specifies the index mode is contiguous or dis-contiguous
+        /// </summary>
+        public IndexMode indexMode = IndexMode.Contiguous;
+
         /// <summary>
         /// The maximum number of controls the outstation will attempt to process from a single APDU
         /// </summary>

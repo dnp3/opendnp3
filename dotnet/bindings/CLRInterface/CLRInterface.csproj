@@ -59,6 +59,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="config\OutstationParams.cs" />
+    <Compile Include="config\PointRecords.cs" />
     <Compile Include="config\StaticTypeBitfield.cs" />
     <Compile Include="Conversions.cs" />
     <Compile Include="config\EventBufferConfig.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="gen\EventMode.cs" />
     <Compile Include="gen\GroupVariation.cs" />
     <Compile Include="gen\IINField.cs" />
+    <Compile Include="gen\IndexMode.cs" />
     <Compile Include="gen\IntervalUnits.cs" />
     <Compile Include="gen\MasterTaskType.cs" />
     <Compile Include="gen\PointClass.cs" />

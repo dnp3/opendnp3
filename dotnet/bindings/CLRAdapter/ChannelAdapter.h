@@ -1,6 +1,7 @@
 #ifndef __CHANNEL_ADAPTER_H_
 #define __CHANNEL_ADAPTER_H_
 
+using namespace System::Collections::Generic;
 using namespace System::Collections::ObjectModel;
 
 #include <asiodnp3/IChannel.h>
@@ -44,38 +45,43 @@ namespace Automatak
 
 				static void ApplyDatabaseSettings(opendnp3::DatabaseConfigView view, DatabaseTemplate^ dbTemplate);
 
-				template <class Source, class Target>
-				static void ApplyClassSettings(Source^ source, Target& target)
-				{
-					int i = 0;
-					for each(auto src in source)
-					{
-						if (target.Contains(i))
-						{
-							target[i].value.quality = src->quality;
-							target[i].metadata.clazz = (opendnp3::PointClass) src->pointClass;
-						}
+				static void ApplySettings(IReadOnlyList<BinaryRecord^>^ list, openpal::ArrayView < opendnp3::Cell<opendnp3::Binary>, uint16_t>& view);
 
-						++i;
+				template <class Managed, class Native>
+				static void ApplyStaticVariation(IReadOnlyList<Managed^>^ list, openpal::ArrayView < opendnp3::Cell<Native>, uint16_t>& view)
+				{
+					for (int i = 0; i < view.Size(); ++i)
+					{
+						view[i].vIndex = list[i]->index;
+						view[i].variation = (typename Native::StaticVariation) list[i]->staticVariation;						
 					}
 				}
 
-				template <class Source, class Target>
-				static void ApplyClassAndDeadbandSettings(Source^ source, Target& target)
+				template <class Managed, class Native>
+				static void ApplyIndexClazzAndVariations(IReadOnlyList<Managed^>^ list, openpal::ArrayView < opendnp3::Cell<Native>, uint16_t>& view)
 				{
-					int i = 0;
-					for each(auto src in source)
-					{
-						if (target.Contains(i))
-						{
-							target[i].value.quality = src->quality;
-							target[i].metadata.clazz = (opendnp3::PointClass) src->pointClass;
-							target[i].metadata.deadband = src->deadband;
-						}						
-
-						++i;
+					for (int i = 0; i < view.Size(); ++i)
+					{						
+						view[i].vIndex = list[i]->index;						
+						view[i].variation = (typename Native::StaticVariation) list[i]->staticVariation;
+						view[i].metadata.variation = (typename Native::EventVariation) list[i]->eventVariation;
+						view[i].metadata.clazz = (opendnp3::PointClass) list[i]->clazz;
 					}
 				}
+
+				template <class Managed, class Native>
+				static void ApplyIndexClazzDeadbandsAndVariations(IReadOnlyList<Managed^>^ list, openpal::ArrayView < opendnp3::Cell<Native>, uint16_t>& view)
+				{
+					for (int i = 0; i < view.Size(); ++i)
+					{
+						view[i].vIndex = list[i]->index;
+						view[i].variation = (typename Native::StaticVariation) list[i]->staticVariation;
+						view[i].metadata.variation = (typename Native::EventVariation) list[i]->eventVariation;
+						view[i].metadata.deadband = list[i]->deadband;
+						view[i].metadata.clazz = (opendnp3::PointClass) list[i]->clazz;
+					}
+				}
+				
 			};
 
 		}

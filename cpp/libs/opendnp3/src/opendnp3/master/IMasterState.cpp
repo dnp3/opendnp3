@@ -133,7 +133,8 @@ IMasterState* MasterStateWaitForResponse::OnResponse(MasterContext* pContext, co
 				return this;
 			case(IMasterTask::ResponseResult::OK_REPEAT) :
 				return MasterStateTaskReady::Instance().OnStart(pContext);
-			default:								
+			default:
+				// task completed or failed, either way go back to idle
 				pContext->ReleaseActiveTask();												
 				pContext->pTaskLock->Release(*pContext);
 				pContext->PostCheckForTask();								

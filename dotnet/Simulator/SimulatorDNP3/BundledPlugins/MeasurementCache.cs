@@ -44,14 +44,15 @@ namespace Automatak.Simulator.DNP3
 
             ISOEHandler handler = this;
 
-            handler.OnReceiveHeader(info, template.binaries.SelectWithIndex((m, i) => new IndexedValue<Binary>(new Binary(m.quality), i)));
+            /*
+            handler.OnReceiveHeader(info, template.binaries.SelectWithIndex((m, i) => new IndexedValue<Binary>(new Binary(false), i)));
             handler.OnReceiveHeader(info, template.doubleBinaries.SelectWithIndex((m, i) => new IndexedValue<DoubleBitBinary>(new DoubleBitBinary(m.quality), i)));
             handler.OnReceiveHeader(info, template.counters.SelectWithIndex((m, i) => new IndexedValue<Counter>(new Counter(m.quality), i)));
             handler.OnReceiveHeader(info, template.frozenCounters.SelectWithIndex((m, i) => new IndexedValue<FrozenCounter>(new FrozenCounter(m.quality), i)));
             handler.OnReceiveHeader(info, template.analogs.SelectWithIndex((m, i) => new IndexedValue<Analog>(new Analog(m.quality), i)));
             handler.OnReceiveHeader(info, template.binaryOutputStatii.SelectWithIndex((m, i) => new IndexedValue<BinaryOutputStatus>(new BinaryOutputStatus(m.quality), i)));
             handler.OnReceiveHeader(info, template.analogOutputStatii.SelectWithIndex((m, i) => new IndexedValue<AnalogOutputStatus>(new AnalogOutputStatus(m.quality), i)));
-            //handler.OnReceiveHeader(info, template.analogOutputStatii.SelectWithIndex((m, i) => new IndexedValue<TimeAndInterval>(new TimeAndInterval(m.quality), i)));            
+            */
         }
 
         public MeasurementCache()

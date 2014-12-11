@@ -279,6 +279,7 @@ namespace Automatak
 			{
 				opendnp3::OutstationParams params;
 
+				params.indexMode = (opendnp3::IndexMode) config->indexMode;
 				params.allowUnsolicited = config->allowUnsolicited;
 				params.typesAllowedInClass0 = opendnp3::StaticTypeBitField(config->typesAllowedInClass0.mask);
 				params.maxControlsPerRequest = config->maxControlsPerRequest;
@@ -328,7 +329,7 @@ namespace Automatak
 
 			opendnp3::DatabaseTemplate Conversions::ConvertConfig(DatabaseTemplate^ config)
 			{
-				opendnp3::DatabaseTemplate dbTemplate(
+				return opendnp3::DatabaseTemplate(
 					config->binaries->Count,
 					config->doubleBinaries->Count,
 					config->analogs->Count,
@@ -336,10 +337,8 @@ namespace Automatak
 					config->frozenCounters->Count,
 					config->binaryOutputStatii->Count,
 					config->analogOutputStatii->Count,
-					config->numTimeAndInterval
-				);				
-
-				return dbTemplate;
+					config->timeAndIntervals->Count
+				);								
 			}
 
 		}

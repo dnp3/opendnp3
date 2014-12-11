@@ -101,7 +101,6 @@ namespace Automatak
 				{
 					pOutstation->DeleteOnDestruct(pCommand);
 					pOutstation->DeleteOnDestruct(pApplication);
-
 					ApplyDatabaseSettings(pOutstation->GetConfigView(), config->databaseTemplate);
 					return gcnew OutstationAdapter(pOutstation);
 				}
@@ -109,15 +108,21 @@ namespace Automatak
 
 			void ChannelAdapter::ApplyDatabaseSettings(opendnp3::DatabaseConfigView view, DatabaseTemplate^ dbTemplate)
 			{
-				ApplyClassSettings(dbTemplate->binaries, view.binaries);
-				ApplyClassSettings(dbTemplate->binaryOutputStatii, view.binaryOutputStatii);
-				ApplyClassSettings(dbTemplate->doubleBinaries, view.doubleBinaries);
+				ApplyIndexClazzAndVariations<BinaryRecord, opendnp3::Binary>(dbTemplate->binaries, view.binaries);
+				ApplyIndexClazzAndVariations<DoubleBinaryRecord, opendnp3::DoubleBitBinary>(dbTemplate->doubleBinaries, view.doubleBinaries);
+				ApplyIndexClazzAndVariations<BinaryOutputStatusRecord, opendnp3::BinaryOutputStatus>(dbTemplate->binaryOutputStatii, view.binaryOutputStatii);
+				
+				ApplyIndexClazzDeadbandsAndVariations<CounterRecord, opendnp3::Counter>(dbTemplate->counters, view.counters);
+				ApplyIndexClazzDeadbandsAndVariations<FrozenCounterRecord, opendnp3::FrozenCounter>(dbTemplate->frozenCounters, view.frozenCounters);
+				ApplyIndexClazzDeadbandsAndVariations<AnalogRecord, opendnp3::Analog>(dbTemplate->analogs, view.analogs);
+				ApplyIndexClazzDeadbandsAndVariations<AnalogOutputStatusRecord, opendnp3::AnalogOutputStatus>(dbTemplate->analogOutputStatii, view.analogOutputStatii);
 
-				ApplyClassAndDeadbandSettings(dbTemplate->analogs, view.analogs);
-				ApplyClassAndDeadbandSettings(dbTemplate->counters, view.counters);
-				ApplyClassAndDeadbandSettings(dbTemplate->frozenCounters, view.frozenCounters);
-				ApplyClassAndDeadbandSettings(dbTemplate->analogOutputStatii, view.analogOutputStatii);
+				ApplyStaticVariation<TimeAndIntervalRecord, opendnp3::TimeAndInterval>(dbTemplate->timeAndIntervals, view.timeAndIntervals);				
+			}
 
+			void ChannelAdapter::ApplySettings(IReadOnlyList<BinaryRecord^>^ list, openpal::ArrayView < opendnp3::Cell<opendnp3::Binary>, uint16_t>& view)
+			{
+				ApplyIndexClazzAndVariations<BinaryRecord, opendnp3::Binary>(list, view);
 			}
 
 			void ChannelAdapter::Shutdown()

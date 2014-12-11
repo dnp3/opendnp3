@@ -44,7 +44,7 @@ namespace DotNetOutstationDemo
 
             // configure the various measurements in our database
             config.databaseTemplate = new DatabaseTemplate(4, 1, 1, 1, 1, 1, 1, 0);
-            config.databaseTemplate.binaries[0].pointClass = PointClass.Class2;
+            config.databaseTemplate.binaries[0].clazz = PointClass.Class2;            
             // ....           
 
             // Optional: setup your stack configuration here
