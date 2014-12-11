@@ -1,3 +1,9 @@
+### 2.0.0 ###
+* Fixed an issue in openpal::Synchronized where the stack would deadlock under heavy contention
+* Fixed bug where counter 'numTransportErrorRx' was incremented twice
+* The log alias in LogRoot is now dynamically sized removed the artificial limitation
+
+
 ### 2.0.0-RC3 ###
 * Dynamic memory allocation now allowed in core library during initialization.
   * Removed various redundant static container types in openpal
