@@ -1,0 +1,102 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Automatak.DNP3.Interface
+{
+    public class Header
+    {
+        public readonly Byte group;
+        public readonly Byte variation;
+        public readonly QualifierCode qualifier;
+
+        protected Header(Byte group, Byte variation, QualifierCode qualifier)
+        {
+            this.group = group;
+            this.variation = variation;
+            this.qualifier = qualifier;
+        }
+
+        /// <summary>
+        /// Header requesting all objects of the given type or class (in the case of Group 60 objects) are returned.
+        /// </summary>
+        /// <param name="groupVariation">Group and Variation being requested.</param>
+        /// <returns>A Header with Qualifier 0x06.</returns>
+        public static Header AllObjects(Byte group, Byte variation)
+        {
+            return new Header(group, variation, QualifierCode.ALL_OBJECTS);
+        }
+
+        /// <summary>
+        /// Header requesting that the first "x" indexes are returned, where x is the quantity.
+        /// </summary>
+        /// <param name="groupVariation">Group and Variation being requested.</param>
+        /// <param name="quantity">The number of objects to return.</param>
+        /// <returns>A Header with Qualifier 0x07.</returns>
+        public static Header Count8(Byte group, Byte variation, Byte quantity)
+        {
+            return new CountHeader(group, variation, QualifierCode.UINT8_CNT, Convert.ToUInt16(quantity));
+        }
+
+        /// <summary>
+        /// Header requesting that the first "x" indexes are returned, where x is the quantity.
+        /// </summary>
+        /// <param name="groupVariation">Group and Variation being requested.</param>
+        /// <param name="quantity">The number of objects to return.</param>
+        /// <returns>A Header with Qualifier 0x08.</returns>
+        public static Header Count16(Byte group, Byte variation, UInt16 quantity)
+        {
+            return new CountHeader(group, variation, QualifierCode.UINT16_CNT, quantity);
+        }        
+
+        /// <summary>
+        /// Similar to a Count Header except both the start and stop indexes are provided.
+        /// </summary>
+        /// <param name="groupVariation">Group and Variation being requested.</param>
+        /// <param name="startIndex">The index to start at.</param>
+        /// <param name="stopIndex">The index to stop at.</param>
+        /// <returns>A Header with Qualifier 0x00</returns>
+        public static Header Range8(Byte group, Byte variation, Byte startIndex, Byte stopIndex)
+        {
+            return new RangeHeader(group, variation, QualifierCode.UINT8_START_STOP, Convert.ToUInt16(startIndex), Convert.ToUInt16(stopIndex));
+        }
+
+        /// <summary>
+        /// Similar to a Count Header except both the start and stop indexes are provided.
+        /// </summary>
+        /// <param name="groupVariation">Group and Variation being requested.</param>
+        /// <param name="startIndex">The index to start at.</param>
+        /// <param name="stopIndex">The index to stop at.</param>
+        /// <returns>A Header with Qualifier 0x01</returns>
+        public static Header Range16(Byte group, Byte variation, UInt16 startIndex, UInt16 stopIndex)
+        {
+            return new RangeHeader(group, variation, QualifierCode.UINT16_START_STOP, startIndex, stopIndex);
+        }
+    }
+
+    public class CountHeader : Header
+    {
+        public readonly UInt16 count;
+
+        internal CountHeader(Byte group, Byte variation, QualifierCode qualifierCode, UInt16 count)
+            : base(group, variation, qualifierCode)
+        {
+            this.count = count;
+        }
+    }   
+
+    public class RangeHeader : Header
+    {
+        public readonly UInt16 start;
+        public readonly UInt16 stop;
+
+        internal RangeHeader(Byte group, Byte variation, QualifierCode qualifier, UInt16 start, UInt16 stop)
+            : base(group, variation, qualifier)
+        {
+            this.start = start;
+            this.stop = stop;
+        }
+    }
+}

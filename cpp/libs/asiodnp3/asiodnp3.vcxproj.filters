@@ -62,6 +62,9 @@
     <ClCompile Include="src\asiodnp3\BlockingCommandCallback.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\asiodnp3\HeaderTypes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\asiodnp3\DestructorHook.h">
@@ -122,6 +125,9 @@
       <Filter>Header Files\impl</Filter>
     </ClInclude>
     <ClInclude Include="src\asiodnp3\BlockingCommandCallback.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\asiodnp3\HeaderTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

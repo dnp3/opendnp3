@@ -53,6 +53,9 @@ public:
 	template <class IndexType>
 	bool WriteRangeHeader(QualifierCode qc, GroupVariationID gvId, typename IndexType::Type start, typename IndexType::Type stop);
 
+	template <class IndexType>
+	bool WriteCountHeader(QualifierCode qc, GroupVariationID gvId, typename IndexType::Type count);
+
 	template <class CountType, class WriteType>
 	CountWriteIterator<CountType, WriteType> IterateOverCount(QualifierCode qc, const DNP3Serializer<WriteType>& serializer);
 
@@ -101,6 +104,20 @@ bool HeaderWriter::WriteRangeHeader(QualifierCode qc, GroupVariationID gvId, typ
 	{
 		IndexType::WriteBuffer(*position, start);
 		IndexType::WriteBuffer(*position, stop);
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+template <class IndexType>
+bool HeaderWriter::WriteCountHeader(QualifierCode qc, GroupVariationID gvId, typename IndexType::Type count)
+{
+	if (WriteHeaderWithReserve(gvId, qc, IndexType::Size))
+	{
+		IndexType::WriteBuffer(*position, count);		
 		return true;
 	}
 	else

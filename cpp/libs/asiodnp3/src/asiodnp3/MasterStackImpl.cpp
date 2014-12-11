@@ -90,6 +90,12 @@ opendnp3::ILinkSession* MasterStackImpl::GetLinkContext()
 	return &stack.link;
 }
 
+opendnp3::MasterScan MasterStackImpl::AddScan(openpal::TimeDuration period, const std::vector<Header>& headers, opendnp3::ITaskCallback* pCallback, int userId)
+{
+	auto func = ConvertToLambda(headers);
+	return this->AddScan(period, func, pCallback, userId);
+}
+
 MasterScan MasterStackImpl::AddScan(TimeDuration period, const std::function<void(HeaderWriter&)>& builder, opendnp3::ITaskCallback* pCallback, int userId)
 {
 	auto add = [this, period, builder, pCallback, userId]() { return master.AddScan(period, builder, pCallback, userId); };
@@ -112,6 +118,12 @@ MasterScan  MasterStackImpl::AddRangeScan(opendnp3::GroupVariationID gvId, uint1
 {	
 	auto add = [this, gvId, start, stop, period, pCallback, userId]() { return master.AddRangeScan(gvId, start, stop, period, pCallback, userId); };
 	return asiopal::SynchronouslyGet<MasterScan>(handler.GetExecutor()->strand, add);
+}
+
+void MasterStackImpl::Scan(const std::vector<Header>& headers, opendnp3::ITaskCallback* pCallback, int userId)
+{
+	auto func = ConvertToLambda(headers);
+	this->Scan(func, pCallback, userId);
 }
 
 void MasterStackImpl::Scan(const std::function<void(opendnp3::HeaderWriter&)>& builder, opendnp3::ITaskCallback* pCallback, int userId)
@@ -142,6 +154,16 @@ void MasterStackImpl::Write(const TimeAndInterval& value, uint16_t index, opendn
 {
 	auto add = [this, value, index, pCallback, userId]() { master.Write(value, index, pCallback, userId); };
 	return asiopal::SynchronouslyExecute(handler.GetExecutor()->strand, add);
+}
+
+std::function<void(opendnp3::HeaderWriter&)> MasterStackImpl::ConvertToLambda(const std::vector<Header>& headers)
+{
+	return[headers](opendnp3::HeaderWriter& writer){
+		for (auto header : headers)
+		{
+			header.WriteTo(writer);
+		}
+	};
 }
 
 }

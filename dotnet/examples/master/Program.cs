@@ -49,9 +49,15 @@ namespace DotNetMasterDemo
             var master = channel.AddMaster("master", PrintingSOEHandler.Instance, DefaultMasterApplication.Instance, config);            
             
             // you a can optionally add various kinds of polls
-            var integrityPoll = master.AddClassScan(ClassField.AllClasses, TimeSpan.FromMinutes(1));
+            var integrityPoll = master.AddClassScan(ClassField.AllClasses, TimeSpan.FromMinutes(1));            
             var rangePoll = master.AddRangeScan(30, 2, 5, 7, TimeSpan.FromSeconds(20));
             var classPoll = master.AddClassScan(ClassField.AllEventClasses, TimeSpan.FromSeconds(5));                                   
+            
+            /* you can also do very custom scans
+            var headers = new Header[] { Header.Range8(1, 2, 7, 8), Header.Count8(2, 3, 7) };
+            var weirdPoll = master.AddScan(headers, TimeSpan.FromSeconds(20));
+            */
+            
 
             master.Enable(); // enable communications
 

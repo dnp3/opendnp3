@@ -47,7 +47,8 @@ public:
 		opendnp3::IMasterApplication& application,
 		const opendnp3::MasterStackConfig& config,
 		const StackActionHandler& handler,
-		opendnp3::ITaskLock& taskLock);
+		opendnp3::ITaskLock& taskLock
+	);
 
 	virtual bool Enable() override final;
 
@@ -61,6 +62,8 @@ public:
 
 	// ------- Periodic scan API ---------
 
+	virtual opendnp3::MasterScan AddScan(openpal::TimeDuration period, const std::vector<Header>& headers, opendnp3::ITaskCallback* pCallback, int userId) override final;
+
 	virtual opendnp3::MasterScan AddScan(openpal::TimeDuration period, const std::function<void(opendnp3::HeaderWriter&)>& builder, opendnp3::ITaskCallback* pCallback, int userId) override final;
 
 	virtual opendnp3::MasterScan AddAllObjectsScan(opendnp3::GroupVariationID gvId, openpal::TimeDuration period, opendnp3::ITaskCallback* pCallback, int userId) override final;
@@ -70,6 +73,8 @@ public:
 	virtual opendnp3::MasterScan AddRangeScan(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, opendnp3::ITaskCallback* pCallback, int userId) override final;
 
 	// ------- Adhoc scan API ---------
+
+	virtual void Scan(const std::vector<Header>& headers, opendnp3::ITaskCallback* pCallback, int userId) override final;
 	
 	virtual void Scan(const std::function<void(opendnp3::HeaderWriter&)>& builder, opendnp3::ITaskCallback* pCallback, int userId) override final;
 
@@ -93,6 +98,9 @@ public:
 
 
 private:
+
+	static std::function<void(opendnp3::HeaderWriter&)> ConvertToLambda(const std::vector<Header>& headers);	
+
 	openpal::LogRoot root;
 	openpal::Action0 shutdownAction;
 	opendnp3::StackStatistics statistics;

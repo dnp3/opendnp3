@@ -23,12 +23,15 @@
 
 #include "IStack.h"
 #include "StackActionHandler.h"
+#include "HeaderTypes.h"
 
 #include <opendnp3/app/ClassField.h>
 #include <opendnp3/app/TimeAndInterval.h>
 #include <opendnp3/master/MasterScan.h>
 #include <opendnp3/master/ICommandProcessor.h>
 #include <openpal/executor/TimeDuration.h>
+
+#include <vector>
 
 namespace asiodnp3
 {
@@ -46,6 +49,12 @@ public:
 	* @return stack statistics counters
 	*/
 	virtual opendnp3::StackStatistics GetStackStatistics() = 0;
+
+	/**
+	* Add a recurring user-defined scan from a vector of headers
+	* @ return A proxy class used to manipulate the scan
+	*/
+	virtual opendnp3::MasterScan AddScan(openpal::TimeDuration period, const std::vector<Header>& headers, opendnp3::ITaskCallback* pCallback = nullptr, int userId = -1) = 0;
 
 	/**
 	* Add a recurring user-defined scan (via a lambda)
@@ -70,6 +79,11 @@ public:
 	* @return A proxy class used to manipulate the scan
 	*/
 	virtual opendnp3::MasterScan AddRangeScan(opendnp3::GroupVariationID gvId, uint16_t start, uint16_t stop, openpal::TimeDuration period, opendnp3::ITaskCallback* pCallback = nullptr, int userId = -1) = 0;
+
+	/**
+	* Initiate a single user defined scan via a vector of headers
+	*/
+	virtual void Scan(const std::vector<Header>& headers, opendnp3::ITaskCallback* pCallback = nullptr, int userId = -1) = 0;
 
 	/**
 	* Initiate a single user defined scan via a lambda	

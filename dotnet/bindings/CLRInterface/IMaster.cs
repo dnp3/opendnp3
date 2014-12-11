@@ -39,6 +39,13 @@ namespace Automatak.DNP3.Interface
         ICommandProcessor GetCommandProcessor();
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="headers"></param>
+        /// <param name="callback"></param>
+        void Scan(IEnumerable<Header> headers, ITaskCallback callback = null);
+
+        /// <summary>
         /// Adds a periodic all objects scan that uses the 0x06 qualifier
         /// </summary>
         /// <param name="group"></param>
@@ -68,6 +75,13 @@ namespace Automatak.DNP3.Interface
         IMasterScan AddRangeScan(byte group, byte variation, System.UInt16 start, System.UInt16 stop, TimeSpan period, ITaskCallback callback = null);
 
         /// <summary>
+        /// Adds a custom scan to the master.
+        /// </summary>
+        /// <param name="header">A collection of Headers to add</param>
+        /// <returns>>a new master scan interface</returns>
+        IMasterScan AddScan(IEnumerable<Header> headers, TimeSpan period, ITaskCallback callback = null);
+
+        /// <summary>
         /// Perform an immediate adhoc scan that uses the 0x06 qualifier
         /// </summary>
         /// <param name="group"></param>
@@ -81,20 +95,29 @@ namespace Automatak.DNP3.Interface
         /// <param name="period">period, negative for non-periodic</param>                
         void ScanClasses(ClassField field, ITaskCallback callback = null);
 
-        /// <summary>        
+        /// <summary>
         /// Perform an immediate adhoc range-based (start/stop) scan
-        /// </summary>                
+        /// </summary>
         /// <param name="group"></param>
         /// <param name="variation"></param>
         /// <param name="start"></param>
-        /// <param name="stop"></param>                
+        /// <param name="stop"></param>
+        /// <param name="callback"></param>
         void ScanRange(byte group, byte variation, System.UInt16 start, System.UInt16 stop, ITaskCallback callback = null);
 
         /// <summary>
-        /// Write a time and interval object to a specific index
+        /// 
+        /// </summary>
+        /// <param name="callback"></param>
+        /// <param name="headers">A collection of Headers to add</param>
+        //void Scan(IEnumerable<Header> headers, ITaskCallback callback = null);
+
+        /// <summary>
+        /// 
         /// </summary>
         /// <param name="value"></param>
-        /// <param name="index"></param>        
+        /// <param name="index"></param>
+        /// <param name="callback"></param>
         void Write(TimeAndInterval value, System.UInt16 index, ITaskCallback callback = null);
     }
 }
