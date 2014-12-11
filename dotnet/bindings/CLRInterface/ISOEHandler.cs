@@ -24,6 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Automatak.DNP3.Interface.Automatak.DNP3.Interface;
 
 namespace Automatak.DNP3.Interface
 {
@@ -53,17 +54,14 @@ namespace Automatak.DNP3.Interface
         }
     }
 
-    public class HeaderInfo
+    public class HeaderInfo : Header 
     {
         public HeaderInfo(GroupVariation variation, QualifierCode qualifier, TimestampMode tsmode)
+            : base(variation, qualifier) 
         {
-            this.variation = variation;
-            this.qualifier = qualifier;
             this.tsmode = tsmode;
         }
 
-        public readonly GroupVariation variation;
-        public readonly QualifierCode qualifier;
         public readonly TimestampMode tsmode;
     }
 
