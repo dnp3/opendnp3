@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Automatak.DNP3.Interface.Automatak.DNP3.Interface;
 
 namespace Automatak.DNP3.Interface
 {
@@ -66,5 +67,13 @@ namespace Automatak.DNP3.Interface
        /// <param name="period"></param>
        /// <returns></returns>
        IMasterScan AddRangeScan(byte group, byte variation, System.UInt16 start, System.UInt16 stop, TimeSpan period);
+
+       /// <summary>
+       /// Adds a custom scan to the master.
+       /// </summary>
+       /// <param name="header">A list of Headers to add.</param>
+       /// <returns>A master scan using the supplied Headers.</returns>
+       IMasterScan AddScan(params Header[] header);
+
     }
 }
