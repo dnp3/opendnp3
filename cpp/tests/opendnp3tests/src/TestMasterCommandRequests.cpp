@@ -55,7 +55,6 @@ TEST_CASE(SUITE("ControlExecutionClosedState"))
 		REQUIRE((CommandResponse(TaskCompletion::FAILURE_NO_COMMS) == callback.responses.front()));
 		callback.responses.pop_front();
 	}
-
 }
 
 TEST_CASE(SUITE("SelectAndOperate"))
@@ -82,6 +81,39 @@ TEST_CASE(SUITE("SelectAndOperate"))
 	t.master.OnSendResult(true);
 	t.SendToMaster("C1 81 00 00 " + crob);
 
+	t.exe.RunMany();
+
+	REQUIRE(t.lower.PopWriteAsHex() == ""); //nore more packets
+	REQUIRE(1 == callback.responses.size());
+	REQUIRE((CommandResponse::OK(CommandStatus::SUCCESS) == callback.responses.front()));
+}
+
+TEST_CASE(SUITE("SelectAndOperateWithConfirmResponse"))
+{
+	MasterTestObject t(NoStartupTasks());
+	t.master.OnLowerLayerUp();
+
+	ControlRelayOutputBlock bo(ControlCode::PULSE);
+
+	MockCommandCallback callback;
+	t.master.GetCommandProcessor().SelectAndOperate(bo, 1, callback);
+	t.exe.RunMany();
+
+	// Group 12 Var1, 1 byte count/index, index = 1, time on/off = 1000, CommandStatus::SUCCESS
+	std::string crob = "0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 00";
+
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 03 " + crob); // SELECT
+	t.master.OnSendResult(true);
+	t.SendToMaster("E0 81 00 00 " + crob); // confirm bit set
+	t.exe.RunMany();
+
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 00"); // confirm
+	t.master.OnSendResult(true);
+	t.exe.RunMany();
+
+	REQUIRE(t.lower.PopWriteAsHex() == "C1 04 " + crob); // OPERATE
+	t.master.OnSendResult(true);
+	t.SendToMaster("C1 81 00 00 " + crob);
 	t.exe.RunMany();
 
 	REQUIRE(t.lower.PopWriteAsHex() == ""); //nore more packets
