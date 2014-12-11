@@ -43,7 +43,7 @@ namespace Automatak.DNP3.Interface
         /// </summary>
         /// <param name="headers"></param>
         /// <param name="callback"></param>
-        void Scan(IEnumerable<Header> headers, ITaskCallback callback = null);
+        void Scan(IEnumerable<Header> headers, ITaskCallback callback = null, int userId = -1);
 
         /// <summary>
         /// Adds a periodic all objects scan that uses the 0x06 qualifier
@@ -52,7 +52,7 @@ namespace Automatak.DNP3.Interface
         /// <param name="variation"></param>
         /// <param name="period"></param>        
         /// <returns>a new master scan interface</returns>
-        IMasterScan AddAllObjectsScan(byte group, byte variation, TimeSpan period, ITaskCallback callback = null);
+        IMasterScan AddAllObjectsScan(byte group, byte variation, TimeSpan period, ITaskCallback callback = null, int userId = -1);
 
         /// <summary>
         /// Adds a periodic class scan to the master
@@ -60,7 +60,7 @@ namespace Automatak.DNP3.Interface
         /// <param name="field">bitfield of class values</param>
         /// <param name="period">period, negative for non-periodic</param>                
         /// <returns>a new master scan interface</returns>
-        IMasterScan AddClassScan(ClassField field, TimeSpan period, ITaskCallback callback = null);
+        IMasterScan AddClassScan(ClassField field, TimeSpan period, ITaskCallback callback = null, int userId = -1);
 
         /// <summary>        
         /// Adds a periodic range-based (start/stop) scan to the master
@@ -72,28 +72,28 @@ namespace Automatak.DNP3.Interface
         /// <param name="stop"></param>
         /// <param name="period"></param>        
         /// <returns>a new master scan interface</returns>
-        IMasterScan AddRangeScan(byte group, byte variation, System.UInt16 start, System.UInt16 stop, TimeSpan period, ITaskCallback callback = null);
+        IMasterScan AddRangeScan(byte group, byte variation, System.UInt16 start, System.UInt16 stop, TimeSpan period, ITaskCallback callback = null, int userId = -1);
 
         /// <summary>
         /// Adds a custom scan to the master.
         /// </summary>
         /// <param name="header">A collection of Headers to add</param>
         /// <returns>>a new master scan interface</returns>
-        IMasterScan AddScan(IEnumerable<Header> headers, TimeSpan period, ITaskCallback callback = null);
+        IMasterScan AddScan(IEnumerable<Header> headers, TimeSpan period, ITaskCallback callback = null, int userId = -1);
 
         /// <summary>
         /// Perform an immediate adhoc scan that uses the 0x06 qualifier
         /// </summary>
         /// <param name="group"></param>
         /// <param name="variation"></param>                
-        void ScanAllObjects(byte group, byte variation, ITaskCallback callback = null);
+        void ScanAllObjects(byte group, byte variation, ITaskCallback callback = null, int userId = -1);
 
         /// <summary>
         /// Perform an immediate adhoc class scan
         /// </summary>
         /// <param name="field">bitfield of class values</param>
         /// <param name="period">period, negative for non-periodic</param>                
-        void ScanClasses(ClassField field, ITaskCallback callback = null);
+        void ScanClasses(ClassField field, ITaskCallback callback = null, int userId = -1);
 
         /// <summary>
         /// Perform an immediate adhoc range-based (start/stop) scan
@@ -103,7 +103,7 @@ namespace Automatak.DNP3.Interface
         /// <param name="start"></param>
         /// <param name="stop"></param>
         /// <param name="callback"></param>
-        void ScanRange(byte group, byte variation, System.UInt16 start, System.UInt16 stop, ITaskCallback callback = null);
+        void ScanRange(byte group, byte variation, System.UInt16 start, System.UInt16 stop, ITaskCallback callback = null, int userId = -1);
 
         /// <summary>
         /// 
@@ -118,6 +118,6 @@ namespace Automatak.DNP3.Interface
         /// <param name="value"></param>
         /// <param name="index"></param>
         /// <param name="callback"></param>
-        void Write(TimeAndInterval value, System.UInt16 index, ITaskCallback callback = null);
+        void Write(TimeAndInterval value, System.UInt16 index, ITaskCallback callback = null, int userId = -1);
     }
 }

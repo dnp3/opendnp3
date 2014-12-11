@@ -30,23 +30,23 @@ namespace Automatak
 
 				virtual void Shutdown();
 			
-				virtual void Scan(IEnumerable<Header^>^ headers, ITaskCallback^ callback);
+				virtual void Scan(IEnumerable<Header^>^ headers, ITaskCallback^ callback, int userId);
 
-				virtual void ScanAllObjects(System::Byte group, System::Byte variation, ITaskCallback^ callback);
+				virtual void ScanAllObjects(System::Byte group, System::Byte variation, ITaskCallback^ callback, int userId);
 
-				virtual void ScanClasses(ClassField field, ITaskCallback^ callback);
+				virtual void ScanClasses(ClassField field, ITaskCallback^ callback, int userId);
 				
-				virtual void ScanRange(System::Byte group, System::Byte variation, System::UInt16 start, System::UInt16 stop, ITaskCallback^ callback);
+				virtual void ScanRange(System::Byte group, System::Byte variation, System::UInt16 start, System::UInt16 stop, ITaskCallback^ callback, int userId);
 
-				virtual IMasterScan^ AddScan(IEnumerable<Header^>^ headers, System::TimeSpan period, ITaskCallback^ callback);
+				virtual IMasterScan^ AddScan(IEnumerable<Header^>^ headers, System::TimeSpan period, ITaskCallback^ callback, int userId);
 
-				virtual IMasterScan^ AddAllObjectsScan(System::Byte group, System::Byte variation, System::TimeSpan period, ITaskCallback^ callback);
+				virtual IMasterScan^ AddAllObjectsScan(System::Byte group, System::Byte variation, System::TimeSpan period, ITaskCallback^ callback, int userId);
 
-				virtual IMasterScan^ AddClassScan(ClassField field, System::TimeSpan period, ITaskCallback^ callback);
+				virtual IMasterScan^ AddClassScan(ClassField field, System::TimeSpan period, ITaskCallback^ callback, int userId);
 
-				virtual IMasterScan^ AddRangeScan(System::Byte group, System::Byte variation, System::UInt16 start, System::UInt16 stop, System::TimeSpan period, ITaskCallback^ callback);
+				virtual IMasterScan^ AddRangeScan(System::Byte group, System::Byte variation, System::UInt16 start, System::UInt16 stop, System::TimeSpan period, ITaskCallback^ callback, int userId);
 				
-				virtual void Write(TimeAndInterval^ value, System::UInt16 index, ITaskCallback^ callback);				
+				virtual void Write(TimeAndInterval^ value, System::UInt16 index, ITaskCallback^ callback, int userId);
 
 			private:
 
