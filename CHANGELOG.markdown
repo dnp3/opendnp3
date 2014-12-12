@@ -1,3 +1,26 @@
+
+### 2.0.1-RC1 ###
+* Added support for Group50Var4 (Time and Interval) objects. These are static only objects (no events) that can are read/write.
+* Added support for the ASSIGN_CLASS function code.
+  * Assignment to the outstation db is automatic, but there is a callback on IOutstationApplication for any desired user action
+  * The master can assign class automatically during the startup handshaking based on callbacks in IMasterApplication
+* Substantially refactored/simplified the master scheduler to make extension easier.
+  * Most tasks that are explicitly rejected via IIN bits (e.g. enable/disable unsol) no longer retry on failure
+* Added support for discontigous outstation databases based on an earlier contriubtion from Alan Murray
+  * Virtual (dnp3) indices are now assigned after creation of the outstation, but before enabling it
+  * Note: Discontigous mode must be set in the OutstationConfig in C++, automatically detected in C#
+  * Discontiguous mode is slightly less performant on range-based READ's because of O(log(n)) binary search
+* Static and event response types can now be configured on a per-point basis
+  * In C++ this occurs after creating the outstation instance, but before enabling it.
+  * In C#, all values are specified in the DatabaseTemplate
+* Fixed a minor conformance issue: Group1Var1 is now promoted to Group1Var2 if the quality != ONLINE
+* The are now two methods for monitoring master tasks
+  * Callbacks on IMasterApplication for built-in tasks and ones that were created with a userId
+  * Optional per-task callback interfaces supplied when the task was created
+* Arbitrary master scans (qualifiers 0x06, 0x00/0x01, 0x07/0x08) can now be created in C# using an API contributed by Damon Sutherland
+
+
+
 ### 2.0.0 ###
 * Fixed an issue in openpal::Synchronized where the stack would deadlock under heavy contention
 * Fixed bug where counter 'numTransportErrorRx' was incremented twice
