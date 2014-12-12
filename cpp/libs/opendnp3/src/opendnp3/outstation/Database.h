@@ -47,7 +47,7 @@ class Database : public IDatabase, private openpal::Uncopyable
 {
 public:
 
-	Database(const DatabaseTemplate&, IEventReceiver& eventReceiver, INewEventDataHandler& handler, IndexMode indexMode, openpal::IMutex* pMutex);
+	Database(const DatabaseTemplate&, IEventReceiver& eventReceiver, INewEventDataHandler& handler, IndexMode indexMode, StaticTypeBitField allowedClass0Types, openpal::IMutex* pMutex);
 
 	// ------- IDatabase --------------
 

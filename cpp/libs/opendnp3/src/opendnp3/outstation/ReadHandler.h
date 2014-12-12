@@ -26,6 +26,7 @@
 
 #include "opendnp3/outstation/IEventSelector.h"
 #include "opendnp3/outstation/IStaticSelector.h"
+#include "opendnp3/outstation/StaticTypeBitfield.h"
 
 namespace opendnp3
 {
@@ -43,7 +44,7 @@ private:
 	virtual IINField ProcessRangeRequest(const HeaderRecord& record, const Range& range) override final;
 
 	virtual IINField ProcessCountRequest(const HeaderRecord& record, uint16_t count) override final;
-
+	
 	IStaticSelector* pStaticSelector;
 	IEventSelector* pEventSelector;
 

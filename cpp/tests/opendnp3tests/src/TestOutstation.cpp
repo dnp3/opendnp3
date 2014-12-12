@@ -281,6 +281,17 @@ TEST_CASE(SUITE("MixedVariationAssignments"))
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00 1E 01 00 00 00 02 00 00 00 00 1E 02 00 01 01 02 00 00");
 }
 
+TEST_CASE(SUITE("TypesCanBeOmittedFromClass0ViaConfig"))
+{
+	OutstationConfig config;
+	config.params.typesAllowedInClass0 = StaticTypeBitField::AllTypes().Except(StaticTypeBitmask::DoubleBinaryInput);
+	OutstationTestObject t(config, DatabaseTemplate(1,1)); // 1 binary and 1 double binary
+
+	t.LowerLayerUp();
+	t.SendToOutstation("C0 01 3C 01 06"); // Read class 0
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00 01 02 00 00 00 02");
+}
+
 TEST_CASE(SUITE("ReadClass0MultiFragAnalog"))
 {
 	OutstationConfig config;

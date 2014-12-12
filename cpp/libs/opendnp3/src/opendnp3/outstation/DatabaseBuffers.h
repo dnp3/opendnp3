@@ -25,10 +25,12 @@
 
 #include "opendnp3/gen/IndexMode.h"
 
+
 #include "opendnp3/outstation/IndexSearch.h"
 #include "opendnp3/outstation/DatabaseTemplate.h"
 #include "opendnp3/outstation/StaticBuffers.h"
 #include "opendnp3/outstation/SelectedRanges.h"
+#include "opendnp3/outstation/StaticTypeBitfield.h"
 
 #include "opendnp3/outstation/IResponseLoader.h"
 #include "opendnp3/outstation/IStaticSelector.h"
@@ -45,7 +47,7 @@ class DatabaseBuffers : public IStaticSelector, public IResponseLoader, public I
 {
 public:
 
-	DatabaseBuffers(const DatabaseTemplate&, IndexMode indexMode);
+	DatabaseBuffers(const DatabaseTemplate&, StaticTypeBitField allowedClass0Types, IndexMode indexMode);
 
 	// ------- IStaticSelector -------------
 	
@@ -70,6 +72,7 @@ public:
 
 private:
 
+	StaticTypeBitField class0;
 	IndexMode indexMode;
 	
 	SelectedRanges ranges;	
@@ -113,8 +116,17 @@ private:
 	Range AssignClassTo(PointClass clazz, const Range& range);
 
 	template <class T>
-	IINField SelectAll()
+	void SelectAllClass0()
 	{
+		if (class0.IsSet(T::StaticTypeEnum))
+		{
+			this->SelectAll<T>();			
+		}		
+	}
+
+	template <class T>
+	IINField SelectAll()
+	{		
 		auto view = buffers.GetArrayView<T>();		
 		return GenericSelect(RangeOf(view.Size()), view, true, typename T::StaticVariation());
 	}

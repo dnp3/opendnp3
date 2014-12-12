@@ -31,8 +31,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-Database::Database(const DatabaseTemplate& dbTemplate, IEventReceiver& eventReceiver, INewEventDataHandler& handler, IndexMode indexMode_, openpal::IMutex* pMutex_) :
-	buffers(dbTemplate, indexMode_),
+Database::Database(const DatabaseTemplate& dbTemplate, IEventReceiver& eventReceiver, INewEventDataHandler& handler, IndexMode indexMode_, StaticTypeBitField allowedClass0Types, openpal::IMutex* pMutex_) :
+	buffers(dbTemplate, allowedClass0Types, indexMode_),
 	pEventReceiver(&eventReceiver),
 	indexMode(indexMode_),
 	pMutex(pMutex_),

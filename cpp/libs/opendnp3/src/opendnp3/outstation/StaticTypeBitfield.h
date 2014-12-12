@@ -36,15 +36,22 @@ struct StaticTypeBitField
 	StaticTypeBitField(uint16_t mask_) : mask(mask_)
 	{}
 
+	static StaticTypeBitField AllTypes()
+	{
+		return StaticTypeBitField(~0);
+	}
+
 	bool IsSet(StaticTypeBitmask type) const
 	{
 		return (mask & static_cast<uint16_t>(type)) != 0;
 	}
 
-	static StaticTypeBitField AllTypes()
-	{		
-		return StaticTypeBitField(~0);
-	}
+	StaticTypeBitField Except(StaticTypeBitmask type) const
+	{
+		return StaticTypeBitField(mask & ~static_cast<uint16_t>(type));
+	}	
+
+private:
 
 	uint16_t mask;
 };

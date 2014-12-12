@@ -32,8 +32,9 @@ using namespace openpal;
 namespace opendnp3
 {
 
-DatabaseBuffers::DatabaseBuffers(const DatabaseTemplate& dbTemplate, IndexMode indexMode_) :
+DatabaseBuffers::DatabaseBuffers(const DatabaseTemplate& dbTemplate, StaticTypeBitField allowedClass0Types, IndexMode indexMode_) :
 	buffers(dbTemplate),
+	class0(allowedClass0Types),
 	indexMode(indexMode_)
 {
 
@@ -55,14 +56,14 @@ IINField DatabaseBuffers::SelectAll(GroupVariation gv)
 {
 	if (gv == GroupVariation::Group60Var1)
 	{		
-		this->SelectAll<Binary>();
-		this->SelectAll<DoubleBitBinary>();
-		this->SelectAll<Counter>();
-		this->SelectAll<FrozenCounter>();
-		this->SelectAll<Analog>();
-		this->SelectAll<BinaryOutputStatus>();
-		this->SelectAll<AnalogOutputStatus>();
-		this->SelectAll<TimeAndInterval>();
+		this->SelectAllClass0<Binary>();
+		this->SelectAllClass0<DoubleBitBinary>();
+		this->SelectAllClass0<Counter>();
+		this->SelectAllClass0<FrozenCounter>();
+		this->SelectAllClass0<Analog>();
+		this->SelectAllClass0<BinaryOutputStatus>();
+		this->SelectAllClass0<AnalogOutputStatus>();
+		this->SelectAllClass0<TimeAndInterval>();
 
 		return IINField::Empty();
 	}
