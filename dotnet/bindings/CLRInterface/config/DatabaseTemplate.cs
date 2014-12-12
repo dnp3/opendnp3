@@ -80,6 +80,25 @@ namespace Automatak.DNP3.Interface
         public DatabaseTemplate() : this(0)
         { }
 
+        public IndexMode GetIndexMode()
+        {
+            var lists = new Tuple<IReadOnlyList<PointRecord>, string>[] {
+                CreateTuple(binaries, "binary"),
+                CreateTuple(doubleBinaries, "analog"),
+                CreateTuple(counters, "counter"),
+                CreateTuple(frozenCounters, "frozen counter"),
+                CreateTuple(analogs, "analog"),
+                CreateTuple(binaryOutputStatii, "binary output status"),
+                CreateTuple(analogOutputStatii, "analog output status"),
+                CreateTuple(timeAndIntervals, "time and interval")
+            };
+
+            // this can throw an exception if any of the sub lists have bad discontiguous indices
+            var allContiguous = lists.Aggregate(true, (sum, pair) => sum && IsContiguous(pair.Item1, pair.Item2));
+
+            return allContiguous ? IndexMode.Contiguous : IndexMode.Discontiguous;
+        }
+
         /// <summary>
         /// Modify individual binary configuration here
         /// </summary>
@@ -112,5 +131,34 @@ namespace Automatak.DNP3.Interface
         ///  Modify individual time and interval configuration here
         /// </summary>
         public IReadOnlyList<TimeAndIntervalRecord> timeAndIntervals;
+
+        private Tuple<IReadOnlyList<PointRecord>, string> CreateTuple(IReadOnlyList<PointRecord> list, string name)
+        {
+            return Tuple.Create(list, name);
+        }
+
+        private static bool IsContiguous(IReadOnlyList<PointRecord> records, string name)
+        {
+            int lastIndex = records.Any() ? (records[0].index - 1) : -1;
+            System.UInt16 rawIndex = 0;
+            bool contiguous = true;
+            foreach (var rec in records)
+            {
+                if (rec.index <= lastIndex)
+                {
+                    throw new ArgumentException(String.Format("Bad discontiguous index {0} found at raw index {1} for type {2}", rec.index, rawIndex, name));
+                }
+                else
+                { 
+                    if(rec.index != (lastIndex + 1))
+                    {
+                        contiguous = false;
+                    }                        
+                    lastIndex = rec.index;                    
+                }
+            }
+
+            return contiguous;
+        }
     };    
 }

@@ -265,21 +265,21 @@ namespace Automatak
 				return config;
 			}
 
-			opendnp3::OutstationConfig Conversions::ConvertConfig(OutstationConfig^ config)
+			opendnp3::OutstationConfig Conversions::ConvertConfig(OutstationConfig^ config, opendnp3::IndexMode indexMode)
 			{
-				opendnp3::OutstationConfig oc;
+				opendnp3::OutstationConfig oc;				
 
-				oc.params = ConvertConfig(config->config);
+				oc.params = ConvertConfig(config->config, indexMode);
 				oc.eventBufferConfig = ConvertConfig(config->buffer);				
 
 				return oc;
 			}			
 
-			opendnp3::OutstationParams Conversions::ConvertConfig(OutstationParams^ config)
+			opendnp3::OutstationParams Conversions::ConvertConfig(OutstationParams^ config, opendnp3::IndexMode indexMode)
 			{
 				opendnp3::OutstationParams params;
 
-				params.indexMode = (opendnp3::IndexMode) config->indexMode;
+				params.indexMode = indexMode;
 				params.allowUnsolicited = config->allowUnsolicited;
 				params.typesAllowedInClass0 = opendnp3::StaticTypeBitField(config->typesAllowedInClass0.mask);
 				params.maxControlsPerRequest = config->maxControlsPerRequest;
@@ -322,7 +322,8 @@ namespace Automatak
 			{
 				opendnp3::OutstationStackConfig cfg;
 				cfg.dbTemplate = ConvertConfig(config->databaseTemplate);
-				cfg.outstation = ConvertConfig(config->outstation);
+				IndexMode indexMode = config->databaseTemplate->GetIndexMode();
+				cfg.outstation = ConvertConfig(config->outstation, (opendnp3::IndexMode) indexMode);
 				cfg.link = ConvertConfig(config->link);
 				return cfg;
 			}
