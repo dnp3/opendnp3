@@ -45,7 +45,7 @@ struct Group120Var1
 	ChallengeReason reason;	
 	openpal::ReadBufferView challengeData;
 	
-	bool Read(const openpal::ReadBufferView& data, Group120Var1& output, openpal::Logger* pLogger);
+	static bool Read(const openpal::ReadBufferView& data, Group120Var1& output, openpal::Logger* pLogger);
 
 	private:
 

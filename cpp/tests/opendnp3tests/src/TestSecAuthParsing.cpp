@@ -23,6 +23,8 @@
 #include "BufferHelpers.h"
 #include "HexConversions.h"
 
+#include <opendnp3/objects/Group120.h>
+
 #include <openpal/util/ToHex.h>
 
 using namespace openpal;
@@ -30,11 +32,36 @@ using namespace opendnp3;
 
 #define SUITE(name) "SecAuthParsingTestSuite - " name
 
-TEST_CASE(SUITE("HeaderParsingEmptySring"))
+TEST_CASE(SUITE("EmptyBufferReturnsFalse"))
 {
 	HexSequence buffer("");
-	
+
+	Group120Var1 output;
+	bool success = Group120Var1::Read(buffer.ToReadOnly(), output, nullptr);
+	REQUIRE(!success);
 }
 
+TEST_CASE(SUITE("Accepts minimum of four bytes of challenge data"))
+{
+	// SEQ = 1, USER = 7, HMAC = 5 (SHA-1-8), REASON = 1, challenge = 0xDEADBEEF
+	HexSequence buffer("01 00 00 00 07 00 05 01 DE AD BE EF");
+
+	Group120Var1 output;	
+	REQUIRE(Group120Var1::Read(buffer.ToReadOnly(), output, nullptr));
+	REQUIRE(output.challengeSeqNum == 1);
+	REQUIRE(output.userNum == 7);
+	REQUIRE(output.hmacType == HMACType::HMAC_SHA1_TRUNC_8);
+	REQUIRE(output.reason == ChallengeReason::CRITICAL);
+	REQUIRE(toHex(output.challengeData) == "DE AD BE EF");
+}
+
+TEST_CASE(SUITE("Rejects three bytes of challenge data"))
+{
+	// SEQ = 1, USER = 7, HMAC = 5 (SHA-1-8), REASON = 1, challenge length of 3
+	HexSequence buffer("01 00 00 00 07 00 05 01 DE AD BE");
+
+	Group120Var1 output;
+	REQUIRE(!Group120Var1::Read(buffer.ToReadOnly(), output, nullptr));
+}
 
 
