@@ -38,7 +38,8 @@ object CppEnumGenerator {
       EnumConfig(QualifierCode(), true, true),
       EnumConfig(EventMode(), false, false),
       EnumConfig(IndexMode(), false, false),
-      EnumConfig(HMACType(), true, true)
+      EnumConfig(HMACType(), true, true),
+      EnumConfig(ChallengeReason(), true, true)
     ) ::: DefaultVariations.enums.map(m => EnumConfig(m, false, false)) ::: QualityMasks.enums.map(m => EnumConfig(m, false, false))
 
     // list of all enumerations that we want to generate

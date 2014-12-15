@@ -76,6 +76,7 @@
     <ClInclude Include="src\opendnp3\gen\AssignClassType.h" />
     <ClInclude Include="src\opendnp3\gen\BinaryOutputStatusQuality.h" />
     <ClInclude Include="src\opendnp3\gen\BinaryQuality.h" />
+    <ClInclude Include="src\opendnp3\gen\ChallengeReason.h" />
     <ClInclude Include="src\opendnp3\gen\CounterQuality.h" />
     <ClInclude Include="src\opendnp3\gen\DoubleBitBinaryQuality.h" />
     <ClInclude Include="src\opendnp3\gen\EventAnalogOutputStatusVariation.h" />
@@ -172,6 +173,7 @@
     <ClInclude Include="src\opendnp3\objects\Group10.h" />
     <ClInclude Include="src\opendnp3\objects\Group11.h" />
     <ClInclude Include="src\opendnp3\objects\Group12.h" />
+    <ClInclude Include="src\opendnp3\objects\Group120.h" />
     <ClInclude Include="src\opendnp3\objects\Group2.h" />
     <ClInclude Include="src\opendnp3\objects\Group20.h" />
     <ClInclude Include="src\opendnp3\objects\Group21.h" />
@@ -268,6 +270,7 @@
     <ClCompile Include="src\opendnp3\app\ObjectWriter.cpp" />
     <ClCompile Include="src\opendnp3\app\OctetData.cpp" />
     <ClCompile Include="src\opendnp3\app\TimeAndInterval.cpp" />
+    <ClCompile Include="src\opendnp3\gen\ChallengeReason.cpp" />
     <ClCompile Include="src\opendnp3\gen\ChannelState.cpp" />
     <ClCompile Include="src\opendnp3\gen\CommandStatus.cpp" />
     <ClCompile Include="src\opendnp3\gen\ControlCode.cpp" />
