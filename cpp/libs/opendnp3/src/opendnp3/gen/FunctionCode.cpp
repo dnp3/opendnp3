@@ -92,10 +92,16 @@ FunctionCode FunctionCodeFromType(uint8_t arg)
       return FunctionCode::AUTHENTICATE_FILE;
     case(0x1E):
       return FunctionCode::ABORT_FILE;
+    case(0x20):
+      return FunctionCode::AUTH_REQUEST;
+    case(0x20):
+      return FunctionCode::AUTH_REQUEST_NO_ACK;
     case(0x81):
       return FunctionCode::RESPONSE;
     case(0x82):
       return FunctionCode::UNSOLICITED_RESPONSE;
+    case(0x83):
+      return FunctionCode::AUTH_RESPONSE;
     case(0xFF):
       return FunctionCode::UNKNOWN;
   }
@@ -167,10 +173,16 @@ char const* FunctionCodeToString(FunctionCode arg)
       return "AUTHENTICATE_FILE";
     case(FunctionCode::ABORT_FILE):
       return "ABORT_FILE";
+    case(FunctionCode::AUTH_REQUEST):
+      return "AUTH_REQUEST";
+    case(FunctionCode::AUTH_REQUEST_NO_ACK):
+      return "AUTH_REQUEST_NO_ACK";
     case(FunctionCode::RESPONSE):
       return "RESPONSE";
     case(FunctionCode::UNSOLICITED_RESPONSE):
       return "UNSOLICITED_RESPONSE";
+    case(FunctionCode::AUTH_RESPONSE):
+      return "AUTH_RESPONSE";
     case(FunctionCode::UNKNOWN):
       return "UNKNOWN";
   }
