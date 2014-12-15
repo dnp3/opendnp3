@@ -19,8 +19,8 @@ libopenpal_la_LDFLAGS = -version-info 1:1:0
 libopenpal_la_CXXFLAGS = -I$(OPENPAL_INCLUDE)
 libopenpal_la_SOURCES = \
 cpp/libs/openpal/src/openpal/container/DynamicBuffer.cpp \
-cpp/libs/openpal/src/openpal/container/ReadOnlyBuffer.cpp \
-cpp/libs/openpal/src/openpal/container/WriteBuffer.cpp \
+cpp/libs/openpal/src/openpal/container/ReadBufferView.cpp \
+cpp/libs/openpal/src/openpal/container/WriteBufferView.cpp \
 cpp/libs/openpal/src/openpal/executor/Erasure.cpp \
 cpp/libs/openpal/src/openpal/executor/MonotonicTimestamp.cpp \
 cpp/libs/openpal/src/openpal/executor/Runnable.cpp \
@@ -150,6 +150,7 @@ cpp/libs/opendnp3/src/opendnp3/outstation/ClassBasedRequestHandler.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/CommandActionAdapter.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/CommandResponseHandler.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/DatabaseBuffers.cpp \
+cpp/libs/opendnp3/src/opendnp3/outstation/DatabaseConfigView.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/Database.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/EventBufferConfig.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/EventBuffer.cpp \
@@ -191,6 +192,7 @@ cpp/libs/asiodnp3/src/asiodnp3/DefaultMasterApplication.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/DestructorHook.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/DNP3Channel.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/DNP3Manager.cpp \
+cpp/libs/asiodnp3/src/asiodnp3/HeaderTypes.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/MasterStackImpl.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/MultidropTaskLock.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/OutstationStackImpl.cpp \
