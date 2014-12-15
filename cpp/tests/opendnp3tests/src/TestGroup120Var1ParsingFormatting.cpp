@@ -26,13 +26,14 @@
 #include <opendnp3/objects/Group120.h>
 
 #include <openpal/util/ToHex.h>
+#include <openpal/container/DynamicBuffer.h>
 
 using namespace openpal;
 using namespace opendnp3;
 
-#define SUITE(name) "SecAuthParsingTestSuite - " name
+#define SUITE(name) "Group120Var1ParsingFormattingTestSuite - " name
 
-TEST_CASE(SUITE("EmptyBufferReturnsFalse"))
+TEST_CASE(SUITE("Parser rejects empty buffer"))
 {
 	HexSequence buffer("");
 
@@ -41,7 +42,7 @@ TEST_CASE(SUITE("EmptyBufferReturnsFalse"))
 	REQUIRE(!success);
 }
 
-TEST_CASE(SUITE("Accepts minimum of four bytes of challenge data"))
+TEST_CASE(SUITE("Parser accepts minimum of four bytes of challenge data"))
 {
 	// SEQ = 1, USER = 7, HMAC = 5 (SHA-1-8), REASON = 1, challenge = 0xDEADBEEF
 	HexSequence buffer("01 00 00 00 07 00 05 01 DE AD BE EF");
@@ -55,7 +56,7 @@ TEST_CASE(SUITE("Accepts minimum of four bytes of challenge data"))
 	REQUIRE(toHex(output.challengeData) == "DE AD BE EF");
 }
 
-TEST_CASE(SUITE("Rejects three bytes of challenge data"))
+TEST_CASE(SUITE("Parser rejects three bytes of challenge data"))
 {
 	// SEQ = 1, USER = 7, HMAC = 5 (SHA-1-8), REASON = 1, challenge length of 3
 	HexSequence buffer("01 00 00 00 07 00 05 01 DE AD BE");
@@ -64,4 +65,20 @@ TEST_CASE(SUITE("Rejects three bytes of challenge data"))
 	REQUIRE(!Group120Var1::Read(buffer.ToReadOnly(), output, nullptr));
 }
 
+TEST_CASE(SUITE("Formatter returns false when insufficient space"))
+{
+	std::string challengeData = "DE AD BE EF AB BA"; // 6 bytes
 
+	HexSequence buffer(challengeData);
+	DynamicBuffer output(64);
+	
+	Group120Var1 challenge(9, 3, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, buffer.ToReadOnly());
+	const uint32_t OBJECT_SIZE = 14;
+	REQUIRE(challenge.Size() == OBJECT_SIZE);
+
+	auto dest = output.GetWriteBufferView();
+	REQUIRE(Group120Var1::Write(challenge, dest));
+	REQUIRE(dest.Size() == (output.Size() - OBJECT_SIZE));
+
+	REQUIRE(toHex(output.ToReadOnly().Take(OBJECT_SIZE)) == "09 00 00 00 03 00 04 01 DE AD BE EF AB BA");
+}

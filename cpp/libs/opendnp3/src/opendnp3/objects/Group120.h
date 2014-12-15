@@ -37,7 +37,17 @@ struct Group120Var1
 {
 	Group120Var1();
 
-	static GroupVariationID ID() { return GroupVariationID(120,1); }	
+	Group120Var1(
+		uint32_t challengeSeqNum,
+		uint16_t userNum,
+		HMACType hmacType,
+		ChallengeReason reason,
+		const openpal::ReadBufferView& challengeData
+	);
+
+	static GroupVariationID ID() { return GroupVariationID(120,1); }
+
+	uint32_t Size() const;
 	
 	uint32_t challengeSeqNum;
 	uint16_t userNum;
@@ -45,7 +55,9 @@ struct Group120Var1
 	ChallengeReason reason;	
 	openpal::ReadBufferView challengeData;
 	
-	static bool Read(const openpal::ReadBufferView& data, Group120Var1& output, openpal::Logger* pLogger);
+	static bool Read(const openpal::ReadBufferView& buffer, Group120Var1& output, openpal::Logger* pLogger);
+
+	static bool Write(const Group120Var1& output, openpal::WriteBufferView& buffer);
 
 	private:
 

@@ -412,7 +412,7 @@
     <ClCompile Include="src\TestIndexSearch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\TestSecAuthParsing.cpp">
+    <ClCompile Include="src\TestGroup120Var1ParsingFormatting.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

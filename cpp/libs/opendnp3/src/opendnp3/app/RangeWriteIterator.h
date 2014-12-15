@@ -51,7 +51,7 @@ public:
 	{
 		if (isValid)
 		{
-			IndexType::WriteBufferView(range, start);
+			IndexType::WriteBuffer(range, start);
 			pPosition->Advance(2 * IndexType::Size);
 		}
 	}

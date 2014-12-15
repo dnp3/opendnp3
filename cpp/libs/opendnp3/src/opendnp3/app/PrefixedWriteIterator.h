@@ -70,7 +70,7 @@ public:
 	{
 		if (isValid && (pPosition->Size() >= sizeOfTypePlusIndex))
 		{
-			PrefixType::WriteBufferView(*pPosition, index);
+			PrefixType::WriteBuffer(*pPosition, index);
 			serializer.Write(value, *pPosition);
 			++count;
 			return true;			

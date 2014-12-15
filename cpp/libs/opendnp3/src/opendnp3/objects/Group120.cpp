@@ -39,6 +39,27 @@ Group120Var1::Group120Var1() :
 		
 }
 
+Group120Var1::Group120Var1(
+	uint32_t challengeSeqNum_,
+	uint16_t userNum_,
+	HMACType hmacType_,
+	ChallengeReason reason_,
+	const openpal::ReadBufferView& challengeData_
+	) : 
+	challengeSeqNum(challengeSeqNum_),
+	userNum(userNum_),
+	hmacType(hmacType_),
+	reason(reason_),
+	challengeData(challengeData_)
+{
+
+}
+
+uint32_t Group120Var1::Size() const
+{
+	return 8 + challengeData.Size();
+}
+
 bool Group120Var1::Read(const openpal::ReadBufferView& data, Group120Var1& output, openpal::Logger* pLogger)
 {
 	if (data.Size() < MIN_SIZE)
@@ -54,6 +75,23 @@ bool Group120Var1::Read(const openpal::ReadBufferView& data, Group120Var1& outpu
 		output.hmacType = HMACTypeFromType(UInt8::ReadBuffer(copy));
 		output.reason = ChallengeReasonFromType(UInt8::ReadBuffer(copy));
 		output.challengeData = copy;
+		return true;
+	}
+}
+
+bool Group120Var1::Write(const Group120Var1& output, openpal::WriteBufferView& buffer)
+{
+	if (buffer.Size() < output.Size())
+	{
+		return false;
+	}
+	else
+	{
+		UInt32::WriteBuffer(buffer, output.challengeSeqNum);
+		UInt16::WriteBuffer(buffer, output.userNum);
+		UInt8::WriteBuffer(buffer, HMACTypeToType(output.hmacType));
+		UInt8::WriteBuffer(buffer, ChallengeReasonToType(output.reason));
+		buffer.Advance(output.challengeData.CopyTo(buffer).Size());
 		return true;
 	}
 }
