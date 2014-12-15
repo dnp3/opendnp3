@@ -23,7 +23,7 @@
 #define OPENDNP3_LINKLAYERPARSER_H
 
 
-#include <openpal/container/WriteBuffer.h>
+#include <openpal/container/WriteBufferView.h>
 #include <openpal/logging/Logger.h>
 
 #include "opendnp3/ErrorCodes.h"
@@ -61,7 +61,7 @@ public:
 	void OnRead(uint32_t numBytes, IFrameSink* pSink);	
 	
 	/// @return Buffer that can currently be used for writing	
-	openpal::WriteBuffer WriteBuff() const;
+	openpal::WriteBufferView WriteBuff() const;
 
 	/// Resets the state of parser	
 	void Reset();
@@ -91,7 +91,7 @@ private:
 
 	State state;
 	uint32_t frameSize;
-	openpal::ReadOnlyBuffer userData;
+	openpal::ReadBufferView userData;
 
 	// buffer where received data is written
 	uint8_t rxBuffer[LPDU_MAX_FRAME_SIZE];

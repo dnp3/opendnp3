@@ -28,7 +28,7 @@ using namespace openpal;
 
 namespace opendnp3 {
 
-Group20Var1 Group20Var1::Read(ReadOnlyBuffer& buffer)
+Group20Var1 Group20Var1::Read(ReadBufferView& buffer)
 {
   Group20Var1 obj;
   obj.flags = UInt8::Read(buffer);
@@ -38,7 +38,7 @@ Group20Var1 Group20Var1::Read(ReadOnlyBuffer& buffer)
   return obj;
 }
 
-void Group20Var1::Write(const Group20Var1& arg, openpal::WriteBuffer& buffer)
+void Group20Var1::Write(const Group20Var1& arg, openpal::WriteBufferView& buffer)
 {
   UInt8::Write(buffer, arg.flags);
   buffer.Advance(1);
@@ -47,19 +47,19 @@ void Group20Var1::Write(const Group20Var1& arg, openpal::WriteBuffer& buffer)
 }
 
 
-Counter Group20Var1::ReadTarget(ReadOnlyBuffer& buff)
+Counter Group20Var1::ReadTarget(ReadBufferView& buff)
 {
   auto gv = Group20Var1::Read(buff);
   return CounterFactory::From(gv.flags, gv.value);
 }
 
-void Group20Var1::WriteTarget(const Counter& value, openpal::WriteBuffer& buff)
+void Group20Var1::WriteTarget(const Counter& value, openpal::WriteBufferView& buff)
 {
   Group20Var1::Write(ConvertGroup20Var1::Apply(value), buff);
 }
 
 
-Group20Var2 Group20Var2::Read(ReadOnlyBuffer& buffer)
+Group20Var2 Group20Var2::Read(ReadBufferView& buffer)
 {
   Group20Var2 obj;
   obj.flags = UInt8::Read(buffer);
@@ -69,7 +69,7 @@ Group20Var2 Group20Var2::Read(ReadOnlyBuffer& buffer)
   return obj;
 }
 
-void Group20Var2::Write(const Group20Var2& arg, openpal::WriteBuffer& buffer)
+void Group20Var2::Write(const Group20Var2& arg, openpal::WriteBufferView& buffer)
 {
   UInt8::Write(buffer, arg.flags);
   buffer.Advance(1);
@@ -78,19 +78,19 @@ void Group20Var2::Write(const Group20Var2& arg, openpal::WriteBuffer& buffer)
 }
 
 
-Counter Group20Var2::ReadTarget(ReadOnlyBuffer& buff)
+Counter Group20Var2::ReadTarget(ReadBufferView& buff)
 {
   auto gv = Group20Var2::Read(buff);
   return CounterFactory::From(gv.flags, gv.value);
 }
 
-void Group20Var2::WriteTarget(const Counter& value, openpal::WriteBuffer& buff)
+void Group20Var2::WriteTarget(const Counter& value, openpal::WriteBufferView& buff)
 {
   Group20Var2::Write(ConvertGroup20Var2::Apply(value), buff);
 }
 
 
-Group20Var5 Group20Var5::Read(ReadOnlyBuffer& buffer)
+Group20Var5 Group20Var5::Read(ReadBufferView& buffer)
 {
   Group20Var5 obj;
   obj.value = UInt32::Read(buffer);
@@ -98,26 +98,26 @@ Group20Var5 Group20Var5::Read(ReadOnlyBuffer& buffer)
   return obj;
 }
 
-void Group20Var5::Write(const Group20Var5& arg, openpal::WriteBuffer& buffer)
+void Group20Var5::Write(const Group20Var5& arg, openpal::WriteBufferView& buffer)
 {
   UInt32::Write(buffer, arg.value);
   buffer.Advance(4);
 }
 
 
-Counter Group20Var5::ReadTarget(ReadOnlyBuffer& buff)
+Counter Group20Var5::ReadTarget(ReadBufferView& buff)
 {
   auto gv = Group20Var5::Read(buff);
   return CounterFactory::From(gv.value);
 }
 
-void Group20Var5::WriteTarget(const Counter& value, openpal::WriteBuffer& buff)
+void Group20Var5::WriteTarget(const Counter& value, openpal::WriteBufferView& buff)
 {
   Group20Var5::Write(ConvertGroup20Var5::Apply(value), buff);
 }
 
 
-Group20Var6 Group20Var6::Read(ReadOnlyBuffer& buffer)
+Group20Var6 Group20Var6::Read(ReadBufferView& buffer)
 {
   Group20Var6 obj;
   obj.value = UInt16::Read(buffer);
@@ -125,20 +125,20 @@ Group20Var6 Group20Var6::Read(ReadOnlyBuffer& buffer)
   return obj;
 }
 
-void Group20Var6::Write(const Group20Var6& arg, openpal::WriteBuffer& buffer)
+void Group20Var6::Write(const Group20Var6& arg, openpal::WriteBufferView& buffer)
 {
   UInt16::Write(buffer, arg.value);
   buffer.Advance(2);
 }
 
 
-Counter Group20Var6::ReadTarget(ReadOnlyBuffer& buff)
+Counter Group20Var6::ReadTarget(ReadBufferView& buff)
 {
   auto gv = Group20Var6::Read(buff);
   return CounterFactory::From(gv.value);
 }
 
-void Group20Var6::WriteTarget(const Counter& value, openpal::WriteBuffer& buff)
+void Group20Var6::WriteTarget(const Counter& value, openpal::WriteBufferView& buff)
 {
   Group20Var6::Write(ConvertGroup20Var6::Apply(value), buff);
 }

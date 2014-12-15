@@ -57,7 +57,7 @@ private:
 
 	virtual void _OnResponseTimeout(openpal::MonotonicTimestamp now) override final;
 
-	virtual ResponseResult _OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects) override final;
+	virtual ResponseResult _OnResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects) override final;
 
 	virtual void OnResponseError(openpal::MonotonicTimestamp now) override final;
 

@@ -73,7 +73,7 @@ private:
 
 	virtual void Initialize() override final;
 
-	virtual ResponseResult _OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects) override final;
+	virtual ResponseResult _OnResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects) override final;
 
 	virtual void OnResponseError(openpal::MonotonicTimestamp now) override final;
 
@@ -85,7 +85,7 @@ private:
 
 	CommandTask(IMasterApplication& app, ICommandSequence* pSequence_, ICommandCallback& callback, openpal::Logger logger);
 
-	ResponseResult ProcessResponse(const openpal::ReadOnlyBuffer& objects);
+	ResponseResult ProcessResponse(const openpal::ReadBufferView& objects);
 
 	void LoadSelectAndOperate();
 	void LoadDirectOperate();

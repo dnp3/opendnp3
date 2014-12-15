@@ -70,7 +70,7 @@ void CommandTask::BuildRequest(APDURequest& request, uint8_t seq)
 	}
 }
 
-IMasterTask::ResponseResult CommandTask::_OnResponse(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects)
+IMasterTask::ResponseResult CommandTask::_OnResponse(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
 {
 	return ValidateSingleResponse(header) ? ProcessResponse(objects) : ResponseResult::ERROR_BAD_RESPONSE;
 }
@@ -100,7 +100,7 @@ void CommandTask::Initialize()
 	response = CommandResponse::NoResponse(TaskCompletion::FAILURE_BAD_RESPONSE);
 }
 
-IMasterTask::ResponseResult CommandTask::ProcessResponse(const openpal::ReadOnlyBuffer& objects)
+IMasterTask::ResponseResult CommandTask::ProcessResponse(const openpal::ReadBufferView& objects)
 {
 	auto result = APDUParser::ParseTwoPass(objects, pSequence.get(), &logger);
 	if(result == APDUParser::Result::OK)

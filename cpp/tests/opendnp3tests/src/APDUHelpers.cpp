@@ -26,7 +26,7 @@ uint8_t APDUHelpers::fixedBuffer[SIZE];
 opendnp3::APDURequest APDUHelpers::Request(opendnp3::FunctionCode code, uint32_t size)
 {
 	assert(size <= SIZE);
-	openpal::WriteBuffer buffer(fixedBuffer, size);
+	openpal::WriteBufferView buffer(fixedBuffer, size);
 	opendnp3::APDURequest request(buffer);
 	request.SetFunction(code);
 	request.SetControl(opendnp3::AppControlField(true, true, false, false, 0));
@@ -36,7 +36,7 @@ opendnp3::APDURequest APDUHelpers::Request(opendnp3::FunctionCode code, uint32_t
 opendnp3::APDUResponse APDUHelpers::Response(uint32_t size)
 {
 	assert(size <= SIZE);
-	openpal::WriteBuffer buffer(fixedBuffer, size);
+	openpal::WriteBufferView buffer(fixedBuffer, size);
 	opendnp3::APDUResponse response(buffer);
 	response.SetFunction(opendnp3::FunctionCode::RESPONSE);
 	response.SetControl(opendnp3::AppControlField(true, true, false, false, 0));

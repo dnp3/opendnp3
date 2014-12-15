@@ -43,8 +43,8 @@ public:
 
 	/* Implement the shared client/server actions */
 	void DoClose();
-	void DoRead(openpal::WriteBuffer&);
-	void DoWrite(const openpal::ReadOnlyBuffer&);
+	void DoRead(openpal::WriteBufferView&);
+	void DoWrite(const openpal::ReadBufferView&);
 	void DoOpenFailure();
 
 protected:

@@ -73,7 +73,7 @@ bool TransportScalabilityTestObject::AllLayersUp()
 	return true;
 }
 
-bool TransportScalabilityTestObject::AllLayerEqual(const openpal::ReadOnlyBuffer& arBuffer)
+bool TransportScalabilityTestObject::AllLayerEqual(const openpal::ReadBufferView& arBuffer)
 {
 	for(TransportStackPair * pPair : mPairs)
 	{
@@ -95,7 +95,7 @@ bool TransportScalabilityTestObject::AllLayerReceived(size_t aNumBytes)
 	return true;
 }
 
-void TransportScalabilityTestObject::SendToAll(const openpal::ReadOnlyBuffer& arBuffer)
+void TransportScalabilityTestObject::SendToAll(const openpal::ReadBufferView& arBuffer)
 {
 	for(TransportStackPair * pPair : mPairs)
 	{

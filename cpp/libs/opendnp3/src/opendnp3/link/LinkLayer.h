@@ -66,8 +66,8 @@ public:
 	virtual void TestLinkStatus(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc) override final;
 	virtual void ResetLinkStates(bool aIsMaster, uint16_t aDest, uint16_t aSrc) override final;
 	virtual void RequestLinkStatus(bool aIsMaster, uint16_t aDest, uint16_t aSrc) override final;
-	virtual void ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const openpal::ReadOnlyBuffer& arBuffer) override final;
-	virtual void UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const openpal::ReadOnlyBuffer& arBuffer) override final;
+	virtual void ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const openpal::ReadBufferView& arBuffer) override final;
+	virtual void UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const openpal::ReadBufferView& arBuffer) override final;
 
 	// ------------- ILinkLayer --------------------
 	virtual void Send(ITransportSegment& segments) override final;
@@ -81,7 +81,7 @@ public:
 		return logger;
 	}
 
-	void DoDataUp(const openpal::ReadOnlyBuffer& arBuffer)
+	void DoDataUp(const openpal::ReadBufferView& arBuffer)
 	{
 		if (pUpperLayer)
 		{
@@ -149,26 +149,26 @@ public:
 		return numRetryRemaining;
 	}
 
-	void QueueTransmit(const openpal::ReadOnlyBuffer& buffer, bool primary);	
+	void QueueTransmit(const openpal::ReadBufferView& buffer, bool primary);	
 
 	// buffers used for primary and secondary requests	
 	uint8_t priTxBuffer[LPDU_MAX_FRAME_SIZE];
 	uint8_t secTxBuffer[LPDU_HEADER_SIZE];
 	
 
-	openpal::ReadOnlyBuffer FormatPrimaryBufferWithUnconfirmed(const openpal::ReadOnlyBuffer& tpdu);
+	openpal::ReadBufferView FormatPrimaryBufferWithUnconfirmed(const openpal::ReadBufferView& tpdu);
 
-	openpal::ReadOnlyBuffer FormatPrimaryBufferWithConfirmed(const openpal::ReadOnlyBuffer& tpdu, bool FCB);
+	openpal::ReadBufferView FormatPrimaryBufferWithConfirmed(const openpal::ReadBufferView& tpdu, bool FCB);
 
 	ITransportSegment* pSegments;
 
 private:
 
 	TransmitMode txMode;
-	openpal::Settable<openpal::ReadOnlyBuffer> pendingPriTx;
-	openpal::Settable<openpal::ReadOnlyBuffer> pendingSecTx;
+	openpal::Settable<openpal::ReadBufferView> pendingPriTx;
+	openpal::Settable<openpal::ReadBufferView> pendingSecTx;
 
-	void CheckPendingTx(openpal::Settable<openpal::ReadOnlyBuffer>& pending, bool primary);
+	void CheckPendingTx(openpal::Settable<openpal::ReadBufferView>& pending, bool primary);
 
 	uint32_t numRetryRemaining;
 

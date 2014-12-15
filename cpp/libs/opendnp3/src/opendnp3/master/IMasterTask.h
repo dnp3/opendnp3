@@ -99,7 +99,7 @@ public:
 	/**
 	 * Handler for responses	 
 	 */	
-	ResponseResult OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, openpal::MonotonicTimestamp now);
+	ResponseResult OnResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects, openpal::MonotonicTimestamp now);
 	
 	/**
 	 * Called when a response times out	 
@@ -137,7 +137,7 @@ public:
 	// called when _OnResponse() returns OK_FINAL. Use this to reconfigurre the state.
 	virtual void OnResponseOK(openpal::MonotonicTimestamp now) = 0;
 
-	virtual ResponseResult _OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects) = 0;
+	virtual ResponseResult _OnResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects) = 0;
 
 	virtual void _OnResponseTimeout(openpal::MonotonicTimestamp now) = 0;
 
@@ -154,8 +154,8 @@ public:
 
 	// Validation helpers for various behaviors to avoid deep inheritance
 	bool ValidateSingleResponse(const APDUResponseHeader& header);
-	bool ValidateNullResponse(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects);	
-	bool ValidateNoObjects(const openpal::ReadOnlyBuffer& objects);
+	bool ValidateNullResponse(const APDUResponseHeader& header, const openpal::ReadBufferView& objects);	
+	bool ValidateNoObjects(const openpal::ReadBufferView& objects);
 	bool ValidateInternalIndications(const APDUResponseHeader& header);
 
 	void NotifyResult(TaskCompletion result);

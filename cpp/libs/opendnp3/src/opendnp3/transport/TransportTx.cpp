@@ -42,7 +42,7 @@ TransportTx::TransportTx(const openpal::Logger& logger_, StackStatistics* pStati
 	tpduCount(0)
 {}
 
-void TransportTx::Configure(const openpal::ReadOnlyBuffer& output)
+void TransportTx::Configure(const openpal::ReadBufferView& output)
 {
 	assert(output.IsNotEmpty());
 	txSegment.Clear();
@@ -55,7 +55,7 @@ bool TransportTx::HasValue() const
 	return apdu.Size() > 0;
 }
 
-openpal::ReadOnlyBuffer TransportTx::GetSegment()
+openpal::ReadBufferView TransportTx::GetSegment()
 {	
 	if (txSegment.IsSet())
 	{
@@ -75,7 +75,7 @@ openpal::ReadOnlyBuffer TransportTx::GetSegment()
 			++pStatistics->numTransportTx;
 		}
 
-		ReadOnlyBuffer segment(tpduBuffer, numToSend + 1);
+		ReadBufferView segment(tpduBuffer, numToSend + 1);
 		txSegment.Set(segment);
 		return segment;
 	}

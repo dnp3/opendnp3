@@ -21,8 +21,8 @@
 #ifndef OPENDNP3_LAYERINTERFACES_H
 #define OPENDNP3_LAYERINTERFACES_H
 
-#include <openpal/container/WriteBuffer.h>
-#include <openpal/container/ReadOnlyBuffer.h>
+#include <openpal/container/WriteBufferView.h>
+#include <openpal/container/ReadBufferView.h>
 
 #include "Route.h"
 
@@ -61,7 +61,7 @@ public:
 
 	// Called by the lower layer when data arrives
 
-	virtual void OnReceive(const openpal::ReadOnlyBuffer&) = 0;
+	virtual void OnReceive(const openpal::ReadBufferView&) = 0;
 
 	// Called by lower layer when a previously requested send operation succeeds or fails.
 	// Layers can only have 1 outstanding send operation. The callback is guaranteed
@@ -77,7 +77,7 @@ public:
 
 	virtual ~ILowerLayer() {}	
 
-	virtual void BeginTransmit(const openpal::ReadOnlyBuffer&) = 0;
+	virtual void BeginTransmit(const openpal::ReadBufferView&) = 0;
 
 };
 

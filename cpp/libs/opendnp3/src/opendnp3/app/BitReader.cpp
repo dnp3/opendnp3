@@ -34,7 +34,7 @@ uint32_t NumBytesInBits(uint32_t numBits)
 	return ((numBits % 8) == 0) ? numBytes : numBytes + 1;
 }
 
-bool GetBit(const openpal::ReadOnlyBuffer& buffer, uint32_t position)
+bool GetBit(const openpal::ReadBufferView& buffer, uint32_t position)
 {
 	uint32_t byte = position / 8;
 	uint32_t bit = position % 8;
@@ -48,7 +48,7 @@ uint32_t NumBytesInDoubleBits(uint32_t numBits)
 	return ((numBits % 4) == 0) ? numBytes : numBytes + 1;
 }
 
-DoubleBit GetDoubleBit(const openpal::ReadOnlyBuffer& buffer, uint32_t index)
+DoubleBit GetDoubleBit(const openpal::ReadBufferView& buffer, uint32_t index)
 {
 	uint32_t byteNumber = index / 4;
 	assert(byteNumber < buffer.Size());

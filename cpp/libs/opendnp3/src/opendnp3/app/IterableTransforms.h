@@ -39,7 +39,7 @@ public:
 	{}
 
 protected:
-	virtual U ValueAt(openpal::ReadOnlyBuffer& buff, uint32_t pos) const final
+	virtual U ValueAt(openpal::ReadBufferView& buff, uint32_t pos) const final
 	{
 		return mapFun(pProxy->ValueAt(buff, pos));
 	}

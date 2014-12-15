@@ -47,15 +47,15 @@ private:
 	void DoOpen();
 	void DoClose();
 	void DoOpenSuccess();
-	void DoRead(openpal::WriteBuffer&);
-	void DoWrite(const openpal::ReadOnlyBuffer&);
+	void DoRead(openpal::WriteBufferView&);
+	void DoWrite(const openpal::ReadBufferView&);
 
 
 	void CheckForReadDispatch();
 
 	std::deque<uint8_t> mWritten;
 
-	openpal::WriteBuffer mBytesForReading;
+	openpal::WriteBufferView mBytesForReading;
 };
 }
 

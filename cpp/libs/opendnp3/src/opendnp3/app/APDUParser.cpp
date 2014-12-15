@@ -31,7 +31,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-APDUParser::Result APDUParser::ParseTwoPass(const openpal::ReadOnlyBuffer& buffer, IAPDUHandler* pHandler, openpal::Logger* pLogger, Settings settings)
+APDUParser::Result APDUParser::ParseTwoPass(const openpal::ReadBufferView& buffer, IAPDUHandler* pHandler, openpal::Logger* pLogger, Settings settings)
 {
 	if(pHandler)
 	{
@@ -52,9 +52,9 @@ APDUParser::Result APDUParser::ParseTwoPass(const openpal::ReadOnlyBuffer& buffe
 	}
 }
 
-APDUParser::Result APDUParser::ParseSinglePass(const openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, IAPDUHandler* pHandler, const Settings& settings)
+APDUParser::Result APDUParser::ParseSinglePass(const openpal::ReadBufferView& buffer, openpal::Logger* pLogger, IAPDUHandler* pHandler, const Settings& settings)
 {
-	ReadOnlyBuffer copy(buffer);
+	ReadBufferView copy(buffer);
 	while(copy.Size() > 0)
 	{
 		auto result = ParseHeader(copy, pLogger, settings, pHandler);
@@ -66,7 +66,7 @@ APDUParser::Result APDUParser::ParseSinglePass(const openpal::ReadOnlyBuffer& bu
 	return Result::OK;
 }
 
-APDUParser::Result APDUParser::ParseHeader(ReadOnlyBuffer& buffer, openpal::Logger* pLogger, const Settings& settings, IAPDUHandler* pHandler)
+APDUParser::Result APDUParser::ParseHeader(ReadBufferView& buffer, openpal::Logger* pLogger, const Settings& settings, IAPDUHandler* pHandler)
 {
 	if (buffer.Size() < 3)
 	{
@@ -149,7 +149,7 @@ IndexedValue<BinaryOutputStatus, uint16_t> APDUParser::BoolToBinaryOutputStatus(
 	case(GroupVariation::descriptor): \
 	return ParseRangeFixedSize(record, descriptor::Inst(), buffer, pLogger, range, pHandler);
 
-APDUParser::Result APDUParser::ParseRangeOfObjects(openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, const HeaderRecord& record, const Range& range, IAPDUHandler* pHandler)
+APDUParser::Result APDUParser::ParseRangeOfObjects(openpal::ReadBufferView& buffer, openpal::Logger* pLogger, const HeaderRecord& record, const Range& range, IAPDUHandler* pHandler)
 {
 	switch(record.enumeration)
 	{
@@ -251,7 +251,7 @@ APDUParser::Result APDUParser::ParseRangeOfObjects(openpal::ReadOnlyBuffer& buff
 	}
 }
 
-APDUParser::Result APDUParser::ParseCountOfObjects(openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, const HeaderRecord& record, uint16_t count, IAPDUHandler* pHandler)
+APDUParser::Result APDUParser::ParseCountOfObjects(openpal::ReadBufferView& buffer, openpal::Logger* pLogger, const HeaderRecord& record, uint16_t count, IAPDUHandler* pHandler)
 {
 	switch(record.enumeration)
 	{
@@ -272,7 +272,7 @@ APDUParser::Result APDUParser::ParseCountOfObjects(openpal::ReadOnlyBuffer& buff
 }
 
 APDUParser::Result APDUParser::ParseRangeOfOctetData(
-    openpal::ReadOnlyBuffer& buffer,
+    openpal::ReadBufferView& buffer,
     openpal::Logger* pLogger,
     const HeaderRecord& record,
     const Range& range,
@@ -290,7 +290,7 @@ APDUParser::Result APDUParser::ParseRangeOfOctetData(
 		{
 			if (pHandler)
 			{
-				auto collection = CreateLazyIterable<IndexedValue<OctetString, uint16_t>>(buffer, range.Count(), [record, range](ReadOnlyBuffer & buff, uint32_t pos)
+				auto collection = CreateLazyIterable<IndexedValue<OctetString, uint16_t>>(buffer, range.Count(), [record, range](ReadBufferView & buff, uint32_t pos)
 				{
 					OctetString octets(buff.Take(record.variation));
 					IndexedValue<OctetString, uint16_t> value(octets, range.start + pos);

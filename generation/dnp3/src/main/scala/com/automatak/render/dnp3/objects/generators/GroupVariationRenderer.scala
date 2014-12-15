@@ -49,9 +49,9 @@ object GroupVariationHeaderRenderer extends ModelRenderer[GroupVariation]{
 
     def sizeSignature: Iterator[String] = Iterator("static uint32_t Size() { return " + x.size + "; }")
 
-    def readSignature: Iterator[String] = Iterator("static " + x.name + " Read(openpal::ReadOnlyBuffer&);")
+    def readSignature: Iterator[String] = Iterator("static " + x.name + " Read(openpal::ReadBufferView&);")
 
-    def writeSignature: Iterator[String] = Iterator("static void Write(const " + x.name + "&, openpal::WriteBuffer&);")
+    def writeSignature: Iterator[String] = Iterator("static void Write(const " + x.name + "&, openpal::WriteBufferView&);")
 
     def definition : Iterator[String] = struct(x.name) {
       idDeclaration(x) ++
@@ -115,9 +115,9 @@ object GroupVariationImplRenderer extends ModelRenderer[GroupVariation]{
 
     def advance(i: Int): String = "buffer.Advance("+i+");"
 
-    def readSignature: Iterator[String] = Iterator(x.name + " " + x.name + "::" + "Read(ReadOnlyBuffer& buffer)")
+    def readSignature: Iterator[String] = Iterator(x.name + " " + x.name + "::" + "Read(ReadBufferView& buffer)")
 
-    def writeSignature: Iterator[String] = Iterator("void " + x.name + "::Write(const " + x.name + "& arg, openpal::WriteBuffer& buffer)")
+    def writeSignature: Iterator[String] = Iterator("void " + x.name + "::Write(const " + x.name + "& arg, openpal::WriteBufferView& buffer)")
 
 
 

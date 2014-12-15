@@ -21,7 +21,7 @@
 #ifndef OPENDNP3_APDUHEADERPARSER_H
 #define OPENDNP3_APDUHEADERPARSER_H
 
-#include <openpal/container/ReadOnlyBuffer.h>
+#include <openpal/container/ReadBufferView.h>
 #include <openpal/util/Uncopyable.h>
 #include <openpal/logging/Logger.h>
 
@@ -36,9 +36,9 @@ class APDUHeaderParser : private openpal::PureStatic
 
 public:
 	
-	static bool ParseRequest(const openpal::ReadOnlyBuffer& apdu, APDUHeader& header, openpal::Logger* pLogger = nullptr);
+	static bool ParseRequest(const openpal::ReadBufferView& apdu, APDUHeader& header, openpal::Logger* pLogger = nullptr);
 
-	static bool ParseResponse(const openpal::ReadOnlyBuffer& apdu, APDUResponseHeader& header, openpal::Logger* pLogger = nullptr);
+	static bool ParseResponse(const openpal::ReadBufferView& apdu, APDUResponseHeader& header, openpal::Logger* pLogger = nullptr);
 
 };
 

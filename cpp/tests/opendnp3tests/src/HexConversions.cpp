@@ -42,7 +42,7 @@ std::string toHex(const uint8_t* apBuff, size_t aLength, bool spaced)
 	return oss.str();
 }
 
-std::string toHex(const ReadOnlyBuffer& buffer, bool spaced)
+std::string toHex(const ReadBufferView& buffer, bool spaced)
 {
 	return toHex(buffer, buffer.Size(), spaced);
 }

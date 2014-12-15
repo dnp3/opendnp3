@@ -20,7 +20,7 @@
  */
 #include "OctetData.h"
 
-#include <openpal/container/WriteBuffer.h>
+#include <openpal/container/WriteBufferView.h>
 
 using namespace openpal;
 
@@ -32,15 +32,15 @@ OctetData::OctetData() :  size(0)
 
 }
 
-OctetData::OctetData(const ReadOnlyBuffer& buffer)
+OctetData::OctetData(const ReadBufferView& buffer)
 {
 	Initialize(buffer);
 }
 
-void OctetData::Initialize(const ReadOnlyBuffer& buffer)
+void OctetData::Initialize(const ReadBufferView& buffer)
 {
 	size = static_cast<uint8_t>((buffer.Size() > MAX_SIZE) ? MAX_SIZE : buffer.Size());
-	WriteBuffer dest(pData, MAX_SIZE);
+	WriteBufferView dest(pData, MAX_SIZE);
 	buffer.Take(size).CopyTo(dest);
 }
 
@@ -58,9 +58,9 @@ OctetData::OctetData(const OctetData& copy) : size(0)
 	this->Initialize(copy.ToReadOnly());
 }
 
-openpal::ReadOnlyBuffer OctetData::ToReadOnly() const
+openpal::ReadBufferView OctetData::ToReadOnly() const
 {
-	return ReadOnlyBuffer(pData, size);
+	return ReadBufferView(pData, size);
 }
 
 }

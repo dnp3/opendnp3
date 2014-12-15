@@ -69,7 +69,7 @@ void Outstation::OnLowerLayerDown()
 	}
 }
 
-void Outstation::OnReceive(const openpal::ReadOnlyBuffer& fragment)
+void Outstation::OnReceive(const openpal::ReadBufferView& fragment)
 {
 	if (context.isOnline)
 	{

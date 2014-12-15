@@ -44,9 +44,9 @@ public:
 	
 protected:	
 
-	virtual ResponseResult _OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects) override final;
+	virtual ResponseResult _OnResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects) override final;
 
-	ResponseResult ProcessMeasurements(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects);
+	ResponseResult ProcessMeasurements(const APDUResponseHeader& header, const openpal::ReadBufferView& objects);
 
 	virtual void Initialize() override final;		
 		

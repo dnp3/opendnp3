@@ -18,58 +18,77 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "WriteBuffer.h"
+#include "ReadBufferView.h"
 
 #include "openpal/util/Comparisons.h"
-#include "ReadOnlyBuffer.h"
+
+#include "WriteBufferView.h"
 
 #include <cstring>
 
 namespace openpal
 {
 
-WriteBuffer WriteBuffer::Empty()
+ReadBufferView ReadBufferView::Empty()
 {
-	return WriteBuffer();
+	return ReadBufferView();
 }
 
-WriteBuffer::WriteBuffer(): 
-	HasSize(0),
-	pBuffer(nullptr)
+ReadBufferView::ReadBufferView(): HasSize(0), pBuffer(nullptr)
 {}
 
-WriteBuffer::WriteBuffer(uint8_t* pBuffer_, uint32_t size) :
+ReadBufferView::ReadBufferView(uint8_t const* pBuffer, uint32_t size) :
 	HasSize(size),
-	pBuffer(pBuffer_)
+	pBuffer(pBuffer)
 {}
 
-uint32_t WriteBuffer::ReadFrom(const ReadOnlyBuffer& buffer)
+ReadBufferView ReadBufferView::CopyTo(WriteBufferView& dest) const
 {
-	auto num = openpal::Min(buffer.Size(), size);
-	memcpy(pBuffer, buffer, num);
-	this->Advance(num);
-	return num;
+	if (dest.Size() < size)
+	{
+		return ReadBufferView::Empty();
+	}
+	else
+	{
+		memcpy(dest, pBuffer, size);
+		return ReadBufferView(dest, size);
+	}
 }
 
-void WriteBuffer::Clear()
+ReadBufferView ReadBufferView::Take(uint32_t count) const
+{	
+	return ReadBufferView(pBuffer, openpal::Min(size, count));
+}
+
+ReadBufferView ReadBufferView::Skip(uint32_t count) const
+{
+	auto num = openpal::Min(size, count);
+	return ReadBufferView(pBuffer + num, size - num);
+}
+
+void ReadBufferView::Clear()
 {
 	pBuffer = nullptr;
 	size = 0;
 }
 
-uint32_t WriteBuffer::Advance(uint32_t count)
+bool ReadBufferView::Equals(const ReadBufferView& rhs) const
 {
-	auto num = openpal::Min(count, size);
+	if (this->Size() == rhs.Size())
+	{
+		return memcmp(pBuffer, rhs.pBuffer, Size()) == 0;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+void ReadBufferView::Advance(uint32_t count)
+{
+	auto num = openpal::Min(size, count);
 	pBuffer += num;
 	size -= num;
-	return num;
-}
-
-ReadOnlyBuffer WriteBuffer::ToReadOnly() const
-{
-	return ReadOnlyBuffer(pBuffer, size);
 }
 
 }
-
-

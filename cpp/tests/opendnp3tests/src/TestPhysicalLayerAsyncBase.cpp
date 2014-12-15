@@ -31,7 +31,7 @@ TEST_CASE(SUITE("ClosedState"))
 {
 	PhysBaseTest t;
 	uint8_t buff;
-	WriteBuffer wb(&buff, 1);
+	WriteBufferView wb(&buff, 1);
 
 	t.phys.BeginClose();
 	REQUIRE(t.log.PopOneEntry(flags::ERR));

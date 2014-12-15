@@ -49,13 +49,13 @@ void TransportRx::Reset()
 	sequence = 0;
 }
 
-ReadOnlyBuffer TransportRx::ProcessReceive(const ReadOnlyBuffer& input)
+ReadBufferView TransportRx::ProcessReceive(const ReadBufferView& input)
 {
 	if (input.Size() == 0)
 	{
 		FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::WARN, TLERR_NO_HEADER, "Received tpdu with no header");
 		if (pStatistics) ++pStatistics->numTransportErrorRx;
-		return ReadOnlyBuffer::Empty();
+		return ReadBufferView::Empty();
 	}	
 	else
 	{
@@ -77,7 +77,7 @@ ReadOnlyBuffer TransportRx::ProcessReceive(const ReadOnlyBuffer& input)
 				if (pStatistics) ++pStatistics->numTransportErrorRx;
 				SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, TLERR_BUFFER_FULL, "Exceeded the buffer size before a complete fragment was read");
 				numBytesRead = 0;
-				return ReadOnlyBuffer::Empty();
+				return ReadBufferView::Empty();
 			}
 			else   //passed all validation
 			{
@@ -89,20 +89,20 @@ ReadOnlyBuffer TransportRx::ProcessReceive(const ReadOnlyBuffer& input)
 
 				if(last)
 				{				
-					ReadOnlyBuffer ret(rxBuffer(), numBytesRead);
+					ReadBufferView ret(rxBuffer(), numBytesRead);
 					numBytesRead = 0;					
 					return ret;
 				}
 				else
 				{
-					return ReadOnlyBuffer::Empty();
+					return ReadBufferView::Empty();
 				}
 			}
 		}
 		else
 		{
 			if (pStatistics) ++pStatistics->numTransportErrorRx;
-			return ReadOnlyBuffer::Empty();
+			return ReadBufferView::Empty();
 		}
 	}
 

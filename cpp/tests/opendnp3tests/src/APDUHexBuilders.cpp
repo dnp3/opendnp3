@@ -35,7 +35,7 @@ namespace hex
 	std::string ClassTask(FunctionCode fc, uint8_t seq, const ClassField& field)
 	{		
 		uint8_t buffer[2048];
-		APDURequest request(WriteBuffer(buffer, 2048));
+		APDURequest request(WriteBufferView(buffer, 2048));
 		opendnp3::build::ClassRequest(request, fc, field, seq);
 		return toHex(request.ToReadOnly());
 	}
@@ -58,7 +58,7 @@ namespace hex
 	std::string ClearRestartIIN(uint8_t seq)
 	{
 		uint8_t buffer[2048];
-		APDURequest request(WriteBuffer(buffer, 2048));
+		APDURequest request(WriteBufferView(buffer, 2048));
 		build::ClearRestartIIN(request, seq);
 		return toHex(request.ToReadOnly());
 	}
@@ -66,7 +66,7 @@ namespace hex
 	std::string MeasureDelay(uint8_t seq)
 	{
 		uint8_t buffer[2048];
-		APDURequest request(WriteBuffer(buffer, 2048));
+		APDURequest request(WriteBufferView(buffer, 2048));
 		build::MeasureDelay(request, seq);
 		return toHex(request.ToReadOnly());
 	}
@@ -74,7 +74,7 @@ namespace hex
 	std::string EmptyResponse(uint8_t seq, const opendnp3::IINField& iin)
 	{
 		uint8_t buffer[2048];
-		APDUResponse response(WriteBuffer(buffer, 2048));
+		APDUResponse response(WriteBufferView(buffer, 2048));
 		response.SetFunction(FunctionCode::RESPONSE);
 		response.SetControl(AppControlField(true, true, false, false, seq));
 		response.SetIIN(iin);
@@ -84,7 +84,7 @@ namespace hex
 	std::string NullUnsolicited(uint8_t seq, const IINField& iin)
 	{
 		uint8_t buffer[2048];
-		APDUResponse response(WriteBuffer(buffer, 2048));
+		APDUResponse response(WriteBufferView(buffer, 2048));
 		build::NullUnsolicited(response, seq, iin);
 		return toHex(response.ToReadOnly());
 	}	
@@ -102,7 +102,7 @@ namespace hex
 	std::string Confirm(uint8_t seq, bool unsol)
 	{
 		uint8_t buffer[2048];
-		APDURequest apdu(WriteBuffer(buffer, 2048));
+		APDURequest apdu(WriteBufferView(buffer, 2048));
 		apdu.SetControl(AppControlField(true, true, false, unsol, seq));
 		apdu.SetFunction(FunctionCode::CONFIRM);
 		return toHex(apdu.ToReadOnly());

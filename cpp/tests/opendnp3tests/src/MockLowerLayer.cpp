@@ -41,7 +41,7 @@ size_t MockLowerLayer::NumWrites() const
 	return sendQueue.size();
 }
 
-openpal::ReadOnlyBuffer MockLowerLayer::PopWrite()
+openpal::ReadBufferView MockLowerLayer::PopWrite()
 {
 	auto ret = sendQueue.front();
 	sendQueue.pop();
@@ -62,12 +62,12 @@ std::string MockLowerLayer::PopWriteAsHex()
 	}
 }
 
-void MockLowerLayer::BeginTransmit(const openpal::ReadOnlyBuffer& output)
+void MockLowerLayer::BeginTransmit(const openpal::ReadBufferView& output)
 {
 	this->sendQueue.push(output);	
 }
 
-void MockLowerLayer::SendUp(const openpal::ReadOnlyBuffer& arBuffer)
+void MockLowerLayer::SendUp(const openpal::ReadBufferView& arBuffer)
 {
 	if(pUpperLayer)
 	{

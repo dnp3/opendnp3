@@ -118,8 +118,8 @@ public:
 	/* Implement IPhysicalLayer - Events from the outside */
 	virtual void BeginOpen() override final;
 	virtual void BeginClose() override final;
-	virtual void BeginWrite(const  openpal::ReadOnlyBuffer&) override final;
-	virtual void BeginRead(openpal::WriteBuffer&) override final;
+	virtual void BeginWrite(const  openpal::ReadBufferView&) override final;
+	virtual void BeginRead(openpal::WriteBufferView&) override final;
 
 	// Not an event delegated to the states
 	void SetHandler(openpal::IPhysicalLayerCallbacks* apHandler);
@@ -132,8 +132,8 @@ public:
 	{
 		DoClose();    //optionally override this action
 	}
-	virtual void DoRead(openpal::WriteBuffer&) = 0;
-	virtual void DoWrite(const  openpal::ReadOnlyBuffer&) = 0;
+	virtual void DoRead(openpal::WriteBufferView&) = 0;
+	virtual void DoWrite(const  openpal::ReadBufferView&) = 0;
 
 	// These can be optionally overriden to do something more interesting, i.e. specific logging
 	virtual void DoOpenCallback() {}
@@ -142,7 +142,7 @@ public:
 
 	void DoWriteSuccess();
 	void DoThisLayerDown();
-	void DoReadCallback(const  openpal::ReadOnlyBuffer& arBuffer);
+	void DoReadCallback(const  openpal::ReadBufferView& arBuffer);
 
 	//Error reporting function(s)
 	openpal::Logger& GetLogger()

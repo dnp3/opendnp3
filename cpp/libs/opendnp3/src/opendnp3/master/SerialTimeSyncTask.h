@@ -60,11 +60,11 @@ private:
 
 	void _OnLowerLayerClose(openpal::MonotonicTimestamp now) override final;
 
-	virtual ResponseResult _OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects) override final;
+	virtual ResponseResult _OnResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects) override final;
 
-	ResponseResult OnResponseDelayMeas(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects);
+	ResponseResult OnResponseDelayMeas(const APDUResponseHeader& response, const openpal::ReadBufferView& objects);
 
-	ResponseResult OnResponseWriteTime(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects);
+	ResponseResult OnResponseWriteTime(const APDUResponseHeader& response, const openpal::ReadBufferView& objects);
 
 	virtual void Initialize() override final;
 

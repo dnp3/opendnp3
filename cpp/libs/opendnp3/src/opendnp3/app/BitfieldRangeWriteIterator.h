@@ -21,7 +21,7 @@
 #ifndef OPENDNP3_BITFIELDRANGEWRITEITERATOR_H
 #define OPENDNP3_BITFIELDRANGEWRITEITERATOR_H
 
-#include <openpal/container/WriteBuffer.h>
+#include <openpal/container/WriteBufferView.h>
 
 namespace opendnp3
 {
@@ -34,11 +34,11 @@ public:
 
 	static BitfieldRangeWriteIterator Null()
 	{
-		auto buffer = openpal::WriteBuffer::Empty();
+		auto buffer = openpal::WriteBufferView::Empty();
 		return BitfieldRangeWriteIterator(0, buffer);
 	}
 
-	BitfieldRangeWriteIterator(typename IndexType::Type start_, openpal::WriteBuffer& position_) :
+	BitfieldRangeWriteIterator(typename IndexType::Type start_, openpal::WriteBufferView& position_) :
 		start(start_),
 		count(0),
 		maxCount(0),
@@ -48,7 +48,7 @@ public:
 	{
 		if(!isNull)
 		{
-			IndexType::WriteBuffer(range, start_);
+			IndexType::WriteBufferView(range, start_);
 			pPosition->Advance(2 * IndexType::Size);
 			maxCount = pPosition->Size() * 8;
 		}
@@ -109,8 +109,8 @@ private:
 
 	bool isNull;
 
-	openpal::WriteBuffer range;  // make a copy to record where we write the range
-	openpal::WriteBuffer* pPosition;
+	openpal::WriteBufferView range;  // make a copy to record where we write the range
+	openpal::WriteBufferView* pPosition;
 };
 
 }

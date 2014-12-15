@@ -136,7 +136,7 @@ bool BufferSegment::HasValue() const
 	return remainder.Size() > 0;
 }
 
-openpal::ReadOnlyBuffer BufferSegment::GetSegment()
+openpal::ReadBufferView BufferSegment::GetSegment()
 {
 	auto size = std::min(segmentSize, remainder.Size());
 	auto chunk = remainder.Take(size);

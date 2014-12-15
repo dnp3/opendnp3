@@ -37,7 +37,7 @@ MockUpperLayer::MockUpperLayer() : isOnline(false)
 
 }
 
-void MockUpperLayer::OnReceive(const openpal::ReadOnlyBuffer& input)
+void MockUpperLayer::OnReceive(const openpal::ReadBufferView& input)
 {
 	this->WriteToBuffer(input);
 
@@ -71,7 +71,7 @@ void MockUpperLayer::OnLowerLayerDown()
 	++mState.mNumLayerDown;
 }
 
-void MockUpperLayer::SendDown(const openpal::ReadOnlyBuffer& buffer)
+void MockUpperLayer::SendDown(const openpal::ReadBufferView& buffer)
 {
 	if (this->pLowerLayer)
 	{

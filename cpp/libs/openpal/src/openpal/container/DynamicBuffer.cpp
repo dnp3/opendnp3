@@ -26,25 +26,25 @@ namespace openpal
 	DynamicBuffer::DynamicBuffer(uint32_t size) : DynamicArray<uint8_t, uint32_t>(size)
 	{}
 
-	ReadOnlyBuffer DynamicBuffer::ToReadOnly() const
+	ReadBufferView DynamicBuffer::ToReadOnly() const
 	{
-		return ReadOnlyBuffer(this->buffer, this->size);
+		return ReadBufferView(this->buffer, this->size);
 	}
 
-	WriteBuffer DynamicBuffer::GetWriteBuffer()
+	WriteBufferView DynamicBuffer::GetWriteBufferView()
 	{
-		return WriteBuffer(this->buffer, this->Size());
+		return WriteBufferView(this->buffer, this->Size());
 	}
 
-	WriteBuffer DynamicBuffer::GetWriteBuffer(uint32_t maxSize)
+	WriteBufferView DynamicBuffer::GetWriteBufferView(uint32_t maxSize)
 	{		
 		if (maxSize <= this->Size())
 		{
-			return WriteBuffer(this->buffer, maxSize);
+			return WriteBufferView(this->buffer, maxSize);
 		}
 		else
 		{
-			return GetWriteBuffer();
+			return GetWriteBufferView();
 		}
 	}
 }

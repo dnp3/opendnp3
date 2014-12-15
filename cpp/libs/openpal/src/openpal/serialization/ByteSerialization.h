@@ -24,8 +24,8 @@
 #include <cstdint>
 #include <cstring>
 
-#include "openpal/container/WriteBuffer.h"
-#include "openpal/container/ReadOnlyBuffer.h"
+#include "openpal/container/WriteBufferView.h"
+#include "openpal/container/ReadBufferView.h"
 
 namespace openpal
 {
@@ -39,14 +39,14 @@ public:
 		return (*apStart);
 	}
 
-	inline static uint8_t ReadBuffer(ReadOnlyBuffer& arBuffer)
+	inline static uint8_t ReadBuffer(ReadBufferView& arBuffer)
 	{
 		auto ret = Read(arBuffer);
 		arBuffer.Advance(Size);
 		return ret;
 	}
 
-	static void WriteBuffer(WriteBuffer& buffer, uint8_t aValue)
+	static void WriteBufferView(WriteBufferView& buffer, uint8_t aValue)
 	{
 		Write(buffer, aValue);
 		buffer.Advance(Size);

@@ -21,8 +21,8 @@
 #ifndef OPENDNP3_SHIFTABLEBUFFER_H
 #define OPENDNP3_SHIFTABLEBUFFER_H
 
-#include <openpal/container/WriteBuffer.h>
-#include <openpal/container/ReadOnlyBuffer.h>
+#include <openpal/container/WriteBufferView.h>
+#include <openpal/container/ReadBufferView.h>
 
 namespace opendnp3
 {
@@ -45,7 +45,7 @@ public:
 	uint32_t NumBytesRead() const { return writePos - readPos; }
 
 	/// @return Pointer to the next byte to be read in the buffer
-	openpal::ReadOnlyBuffer ReadBuffer() const { return openpal::ReadOnlyBuffer(pBuffer + readPos, NumBytesRead()); }
+	openpal::ReadBufferView ReadBuffer() const { return openpal::ReadBufferView(pBuffer + readPos, NumBytesRead()); }
 
 	/// Signal that some bytes don't have to be stored any longer. They'll be recovered during the next shift operation.
 	void AdvanceRead(uint32_t aNumBytes);

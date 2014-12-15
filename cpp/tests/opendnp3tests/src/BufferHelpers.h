@@ -50,7 +50,7 @@ class HexSequence : public ByteStr
 public:
 	HexSequence(const std::string& aSequence);
 
-	operator openpal::ReadOnlyBuffer()
+	operator openpal::ReadBufferView()
 	{
 		return this->ToReadOnly();
 	}
@@ -69,7 +69,7 @@ public:
 
 	virtual bool HasValue() const override final;
 
-	virtual openpal::ReadOnlyBuffer GetSegment() override final;
+	virtual openpal::ReadBufferView GetSegment() override final;
 
 	virtual bool Advance() override final;
 
@@ -78,7 +78,7 @@ public:
 private:
 	uint32_t segmentSize;
 	HexSequence hs;
-	openpal::ReadOnlyBuffer remainder;
+	openpal::ReadBufferView remainder;
 };
 
 

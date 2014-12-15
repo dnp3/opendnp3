@@ -46,7 +46,7 @@ bool AssignClassTask::IsEnabled() const
 	return pApplication->AssignClassDuringStartup();
 }
 
-IMasterTask::ResponseResult AssignClassTask::_OnResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects)
+IMasterTask::ResponseResult AssignClassTask::_OnResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects)
 {	
 	return ValidateNullResponse(header, objects) ? ResponseResult::OK_FINAL : ResponseResult::ERROR_BAD_RESPONSE;
 }

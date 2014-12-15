@@ -23,8 +23,8 @@
 
 #include "ChannelStatistics.h"
 
-#include "openpal/container/ReadOnlyBuffer.h"
-#include "openpal/container/WriteBuffer.h"
+#include "openpal/container/ReadBufferView.h"
+#include "openpal/container/WriteBufferView.h"
 
 namespace openpal
 {
@@ -113,20 +113,20 @@ public:
 	 *						remain available until the write callback or
 	 *                      close occurs.
 	 */
-	virtual void BeginWrite(const ReadOnlyBuffer& arBuffer) = 0;
+	virtual void BeginWrite(const ReadBufferView& arBuffer) = 0;
 
 	/**
 	 * Starts a read operation.
 	 *
 	 * Use SetHandler to provide a callback that is called by
-	 * OnReceive(const ReadOnlyBuffer&) or a failure will
+	 * OnReceive(const ReadBufferView&) or a failure will
 	 * result in the layer closing.
 	 *
 	 * @param arBuffer		Read into the underlying buffer
 	 *                      defined by the wrapper.  The underlying buffer
 	 *                      must remain available until the read callback
 	 */
-	virtual void BeginRead(WriteBuffer& arBuffer) = 0;
+	virtual void BeginRead(WriteBufferView& arBuffer) = 0;
 
 	/**
 	 * Set the handler interface for callbacks. A read interface has

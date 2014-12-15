@@ -26,12 +26,12 @@ using namespace openpal;
 namespace opendnp3
 {
 
-APDURequest::APDURequest(const openpal::WriteBuffer& aBuffer) : APDUWrapper(aBuffer)
+APDURequest::APDURequest(const openpal::WriteBufferView& aBuffer) : APDUWrapper(aBuffer)
 {
 
 }
 
-APDUEquality APDURequest::Compare(const openpal::ReadOnlyBuffer& lhs, const openpal::ReadOnlyBuffer& rhs)
+APDUEquality APDURequest::Compare(const openpal::ReadBufferView& lhs, const openpal::ReadBufferView& rhs)
 {
 	return APDUWrapper::Compare(2, lhs, rhs);
 }

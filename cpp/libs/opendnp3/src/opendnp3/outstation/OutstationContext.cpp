@@ -113,12 +113,12 @@ IINField OutstationContext::GetResponseIIN()
 
 APDUResponse OutstationContext::StartNewSolicitedResponse()
 {	
-	return APDUResponse(solTxBuffer.GetWriteBuffer(params.maxTxFragSize));
+	return APDUResponse(solTxBuffer.GetWriteBufferView(params.maxTxFragSize));
 }
 
 APDUResponse OutstationContext::StartNewUnsolicitedResponse()
 {
-	return APDUResponse(unsolTxBuffer.GetWriteBuffer(params.maxTxFragSize));
+	return APDUResponse(unsolTxBuffer.GetWriteBufferView(params.maxTxFragSize));
 }
 
 void OutstationContext::ConfigureUnsolHeader(APDUResponse& unsol)
@@ -177,7 +177,7 @@ bool OutstationContext::CancelTimer(openpal::ITimer*& pTimer)
 	}
 }
 
-void OutstationContext::OnReceiveAPDU(const openpal::ReadOnlyBuffer& apdu)
+void OutstationContext::OnReceiveAPDU(const openpal::ReadBufferView& apdu)
 {
 	++rxFragCount;
 
@@ -247,12 +247,12 @@ void OutstationContext::OnSendResult(bool isSuccess)
 	}	
 }
 
-OutstationSolicitedStateBase* OutstationContext::OnReceiveSolRequest(const APDUHeader& header, const openpal::ReadOnlyBuffer& apdu)
+OutstationSolicitedStateBase* OutstationContext::OnReceiveSolRequest(const APDUHeader& header, const openpal::ReadBufferView& apdu)
 {
 	// analyze this request to see how it compares to the last request
 	auto firstRequest = lastValidRequest.IsEmpty();
 	auto equality = APDURequest::Compare(apdu, lastValidRequest);
-	auto dest = rxBuffer.GetWriteBuffer();
+	auto dest = rxBuffer.GetWriteBufferView();
 	this->deferredRequest.Clear();
 	this->lastValidRequest = apdu.CopyTo(dest);
 	auto objects = apdu.Skip(APDU_HEADER_SIZE);	
@@ -289,7 +289,7 @@ OutstationSolicitedStateBase* OutstationContext::OnReceiveSolRequest(const APDUH
 	}	
 }
 
-OutstationSolicitedStateBase* OutstationContext::ProcessNewRequest(const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, bool objectsEqualToLastRequest)
+OutstationSolicitedStateBase* OutstationContext::ProcessNewRequest(const APDUHeader& header, const openpal::ReadBufferView& objects, bool objectsEqualToLastRequest)
 {
 	this->solSeqN = header.control.SEQ;
 	if (header.function == FunctionCode::READ)
@@ -302,7 +302,7 @@ OutstationSolicitedStateBase* OutstationContext::ProcessNewRequest(const APDUHea
 	}
 }
 
-OutstationSolicitedStateBase* OutstationContext::RespondToNonReadRequest(const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, bool objectsEqualToLastRequest)
+OutstationSolicitedStateBase* OutstationContext::RespondToNonReadRequest(const APDUHeader& header, const openpal::ReadBufferView& objects, bool objectsEqualToLastRequest)
 {
 	auto response = StartNewSolicitedResponse();
 	auto writer = response.GetWriter();
@@ -314,7 +314,7 @@ OutstationSolicitedStateBase* OutstationContext::RespondToNonReadRequest(const A
 	return &OutstationSolicitedStateIdle::Inst();
 }
 
-OutstationSolicitedStateBase* OutstationContext::RespondToReadRequest(uint8_t seq, const openpal::ReadOnlyBuffer& objects)
+OutstationSolicitedStateBase* OutstationContext::RespondToReadRequest(uint8_t seq, const openpal::ReadBufferView& objects)
 {
 	auto response = StartNewSolicitedResponse();
 	auto writer = response.GetWriter();
@@ -337,7 +337,7 @@ OutstationSolicitedStateBase* OutstationContext::RespondToReadRequest(uint8_t se
 	}	
 }
 
-void OutstationContext::ProcessNoResponseFunction(const APDUHeader& header, const openpal::ReadOnlyBuffer& objects)
+void OutstationContext::ProcessNoResponseFunction(const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
 	switch (header.function)
 	{
@@ -351,7 +351,7 @@ void OutstationContext::ProcessNoResponseFunction(const APDUHeader& header, cons
 	
 }
 
-void OutstationContext::BeginResponseTx(const ReadOnlyBuffer& response)
+void OutstationContext::BeginResponseTx(const ReadBufferView& response)
 {		
 	logging::ParseAndLogResponseTx(&logger, response);
 	this->isTransmitting = true;
@@ -359,7 +359,7 @@ void OutstationContext::BeginResponseTx(const ReadOnlyBuffer& response)
 	pLower->BeginTransmit(response);	
 }
 
-void OutstationContext::BeginUnsolTx(const ReadOnlyBuffer& response)
+void OutstationContext::BeginUnsolTx(const ReadBufferView& response)
 {	
 	logging::ParseAndLogResponseTx(&logger, response);
 	this->isTransmitting = true;
@@ -368,7 +368,7 @@ void OutstationContext::BeginUnsolTx(const ReadOnlyBuffer& response)
 	pLower->BeginTransmit(response);
 }
 
-IINField OutstationContext::BuildNonReadResponse(const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, HeaderWriter& writer, bool objectsEqualToLastRequest)
+IINField OutstationContext::BuildNonReadResponse(const APDUHeader& header, const openpal::ReadBufferView& objects, HeaderWriter& writer, bool objectsEqualToLastRequest)
 {
 	switch (header.function)
 	{				
@@ -550,7 +550,7 @@ void OutstationContext::OnUnsolConfirmTimeout()
 	this->PostCheckForActions();
 }
 
-Pair<IINField, AppControlField> OutstationContext::HandleRead(const openpal::ReadOnlyBuffer& objects, HeaderWriter& writer)
+Pair<IINField, AppControlField> OutstationContext::HandleRead(const openpal::ReadBufferView& objects, HeaderWriter& writer)
 {
 	rspContext.Reset();
 
@@ -572,7 +572,7 @@ Pair<IINField, AppControlField> OutstationContext::HandleRead(const openpal::Rea
 	}
 }
 
-IINField OutstationContext::HandleWrite(const openpal::ReadOnlyBuffer& objects)
+IINField OutstationContext::HandleWrite(const openpal::ReadBufferView& objects)
 {
 	WriteHandler handler(logger, *pApplication, &staticIIN);
 	auto result = APDUParser::ParseTwoPass(objects, &handler, &logger);
@@ -586,7 +586,7 @@ IINField OutstationContext::HandleWrite(const openpal::ReadOnlyBuffer& objects)
 	}
 }
 
-IINField OutstationContext::HandleDirectOperate(const openpal::ReadOnlyBuffer& objects, HeaderWriter* pWriter)
+IINField OutstationContext::HandleDirectOperate(const openpal::ReadBufferView& objects, HeaderWriter* pWriter)
 {
 	// since we're echoing, make sure there's enough size before beginning
 	if (pWriter && (objects.Size() > pWriter->Remaining()))
@@ -610,7 +610,7 @@ IINField OutstationContext::HandleDirectOperate(const openpal::ReadOnlyBuffer& o
 	}
 }
 
-IINField OutstationContext::HandleSelect(const openpal::ReadOnlyBuffer& objects, HeaderWriter& writer)
+IINField OutstationContext::HandleSelect(const openpal::ReadBufferView& objects, HeaderWriter& writer)
 {
 	// since we're echoing, make sure there's enough size before beginning
 	if (objects.Size() > writer.Remaining())
@@ -641,7 +641,7 @@ IINField OutstationContext::HandleSelect(const openpal::ReadOnlyBuffer& objects,
 	}
 }
 
-IINField OutstationContext::HandleOperate(const openpal::ReadOnlyBuffer& objects, HeaderWriter& writer, bool objectsEqualToLastRequest)
+IINField OutstationContext::HandleOperate(const openpal::ReadBufferView& objects, HeaderWriter& writer, bool objectsEqualToLastRequest)
 {
 	// since we're echoing, make sure there's enough size before beginning
 	if (objects.Size() > writer.Remaining())
@@ -688,7 +688,7 @@ IINField OutstationContext::HandleOperate(const openpal::ReadOnlyBuffer& objects
 	}
 }
 
-IINField OutstationContext::HandleDelayMeasure(const openpal::ReadOnlyBuffer& objects, HeaderWriter& writer)
+IINField OutstationContext::HandleDelayMeasure(const openpal::ReadBufferView& objects, HeaderWriter& writer)
 {
 	if (objects.IsEmpty())
 	{		
@@ -703,7 +703,7 @@ IINField OutstationContext::HandleDelayMeasure(const openpal::ReadOnlyBuffer& ob
 	}
 }
 
-IINField OutstationContext::HandleRestart(const openpal::ReadOnlyBuffer& objects, bool isWarmRestart, HeaderWriter* pWriter)
+IINField OutstationContext::HandleRestart(const openpal::ReadBufferView& objects, bool isWarmRestart, HeaderWriter* pWriter)
 {
 	if (objects.IsEmpty())
 	{
@@ -742,7 +742,7 @@ IINField OutstationContext::HandleRestart(const openpal::ReadOnlyBuffer& objects
 	}
 }
 
-IINField OutstationContext::HandleAssignClass(const openpal::ReadOnlyBuffer& objects)
+IINField OutstationContext::HandleAssignClass(const openpal::ReadBufferView& objects)
 {
 	if (pApplication->SupportsAssignClass())
 	{		
@@ -759,7 +759,7 @@ IINField OutstationContext::HandleAssignClass(const openpal::ReadOnlyBuffer& obj
 	}	
 }
 
-IINField OutstationContext::HandleDisableUnsolicited(const openpal::ReadOnlyBuffer& objects, HeaderWriter& writer)
+IINField OutstationContext::HandleDisableUnsolicited(const openpal::ReadBufferView& objects, HeaderWriter& writer)
 {
 	ClassBasedRequestHandler handler(logger);
 	auto result = APDUParser::ParseTwoPass(objects, &handler, &logger);
@@ -774,7 +774,7 @@ IINField OutstationContext::HandleDisableUnsolicited(const openpal::ReadOnlyBuff
 	}
 }
 
-IINField OutstationContext::HandleEnableUnsolicited(const openpal::ReadOnlyBuffer& objects, HeaderWriter& writer)
+IINField OutstationContext::HandleEnableUnsolicited(const openpal::ReadBufferView& objects, HeaderWriter& writer)
 {	
 	ClassBasedRequestHandler handler(logger);
 	auto result = APDUParser::ParseTwoPass(objects, &handler, &logger);
@@ -789,7 +789,7 @@ IINField OutstationContext::HandleEnableUnsolicited(const openpal::ReadOnlyBuffe
 	}
 }
 
-IINField OutstationContext::HandleCommandWithConstant(const openpal::ReadOnlyBuffer& objects, HeaderWriter& writer, CommandStatus status)
+IINField OutstationContext::HandleCommandWithConstant(const openpal::ReadBufferView& objects, HeaderWriter& writer, CommandStatus status)
 {
 	ConstantCommandAction constant(status);
 	CommandResponseHandler handler(logger, params.maxControlsPerRequest, &constant, &writer);

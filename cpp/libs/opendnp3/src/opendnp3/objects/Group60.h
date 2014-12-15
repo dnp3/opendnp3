@@ -21,8 +21,8 @@
 #ifndef OPENDNP3_GROUP60_H
 #define OPENDNP3_GROUP60_H
 
-#include <openpal/container/ReadOnlyBuffer.h>
-#include <openpal/container/WriteBuffer.h>
+#include <openpal/container/ReadBufferView.h>
+#include <openpal/container/WriteBufferView.h>
 #include "opendnp3/app/GroupVariationID.h"
 
 namespace opendnp3 {

@@ -23,7 +23,7 @@
 #define OPENDNP3_IMASTERSTATE_H
 
 #include <openpal/util/Uncopyable.h>
-#include <openpal/container/ReadOnlyBuffer.h>
+#include <openpal/container/ReadBufferView.h>
 
 #include <opendnp3/app/APDUHeader.h>
 
@@ -38,7 +38,7 @@ class IMasterState : private openpal::Uncopyable
 
 	virtual IMasterState* OnStart(MasterContext*pContext);
 	
-	virtual IMasterState* OnResponse(MasterContext*pContext, const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects);
+	virtual IMasterState* OnResponse(MasterContext*pContext, const APDUResponseHeader& response, const openpal::ReadBufferView& objects);
 
 	virtual IMasterState* OnResponseTimeout(MasterContext*pContext);
 };
@@ -81,7 +81,7 @@ public:
 
 	static IMasterState& Instance() { return instance; }	
 
-	virtual IMasterState* OnResponse(MasterContext*pContext, const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects) override final;
+	virtual IMasterState* OnResponse(MasterContext*pContext, const APDUResponseHeader& response, const openpal::ReadBufferView& objects) override final;
 
 	virtual IMasterState* OnResponseTimeout(MasterContext*pContext)  override final;
 

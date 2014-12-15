@@ -41,7 +41,7 @@ public:
 	LinkLayerTest(LinkConfig arCfg = DefaultConfig());
 
 	//ILinkRouter interface
-	virtual void BeginTransmit(const openpal::ReadOnlyBuffer& buffer, ILinkSession* pContext) override final;
+	virtual void BeginTransmit(const openpal::ReadBufferView& buffer, ILinkSession* pContext) override final;
 
 	static LinkConfig DefaultConfig();
 
@@ -50,7 +50,7 @@ public:
 	LinkLayer link;
 	MockTransportLayer upper;
 
-	openpal::ReadOnlyBuffer lastWrite;
+	openpal::ReadBufferView lastWrite;
 	uint32_t numWrites;
 };
 

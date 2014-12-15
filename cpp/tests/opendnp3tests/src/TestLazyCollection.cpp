@@ -42,7 +42,7 @@ TEST_CASE(SUITE("ReadSimpleTypes"))
 	HexSequence hex("AB 01 01 CD 02 00");
 
 	auto collection = CreateLazyIterable<Group30Var2>(hex.ToReadOnly(), 2,
-	                  [](ReadOnlyBuffer & b, uint32_t)
+	                  [](ReadBufferView & b, uint32_t)
 	{
 		return Group30Var2::Read(b);
 	}
@@ -72,7 +72,7 @@ TEST_CASE(SUITE("SingleBitValue"))
 {
 	HexSequence hex("01");
 	auto collection = CreateLazyIterable<Binary>(hex.ToReadOnly(), 1,
-	                  [](ReadOnlyBuffer & buff, uint32_t pos)
+	                  [](ReadBufferView & buff, uint32_t pos)
 	{
 		return Binary(GetBit(buff, pos));
 	}
@@ -90,7 +90,7 @@ TEST_CASE(SUITE("ComplexBitCount"))
 {
 	HexSequence hex("FF 00 00");
 	auto collection = CreateLazyIterable<bool>(hex.ToReadOnly(), 17,
-	                  [](ReadOnlyBuffer & buff, uint32_t pos)
+	                  [](ReadBufferView & buff, uint32_t pos)
 	{
 		return GetBit(buff, pos);
 	}
@@ -111,7 +111,7 @@ TEST_CASE(SUITE("HighestBitSet"))
 	HexSequence hex("80");
 
 	auto collection = CreateLazyIterable<bool>(hex.ToReadOnly(), 8,
-	                  [](ReadOnlyBuffer & buffer, uint32_t pos)
+	                  [](ReadBufferView & buffer, uint32_t pos)
 	{
 		return GetBit(buffer, pos);
 	}

@@ -21,7 +21,7 @@
 #ifndef OPENDNP3_ITRANSPORTSEGMENT_H
 #define OPENDNP3_ITRANSPORTSEGMENT_H
 
-#include <openpal/container/ReadOnlyBuffer.h>
+#include <openpal/container/ReadBufferView.h>
 
 namespace opendnp3
 {
@@ -36,7 +36,7 @@ public:
 	virtual bool HasValue() const = 0;
 
 	// Read the current segment with a specified max size
-	virtual openpal::ReadOnlyBuffer GetSegment() = 0;
+	virtual openpal::ReadBufferView GetSegment() = 0;
 
 	// move to the next segment, true if more segments available
 	virtual bool Advance() = 0;

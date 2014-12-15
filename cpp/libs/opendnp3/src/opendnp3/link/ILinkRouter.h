@@ -22,7 +22,7 @@
 #ifndef OPENDNP3_ILINKROUTER_H
 #define OPENDNP3_ILINKROUTER_H
 
-#include <openpal/container/ReadOnlyBuffer.h>
+#include <openpal/container/ReadBufferView.h>
 
 #include "opendnp3/link/ILinkSession.h"
 
@@ -40,7 +40,7 @@ public:
 	/**
 	* Begin transmission of a frame. Callback happens OFF the call stack (via executor)
 	*/
-	virtual void BeginTransmit(const openpal::ReadOnlyBuffer& buffer, ILinkSession* pContext) = 0;
+	virtual void BeginTransmit(const openpal::ReadBufferView& buffer, ILinkSession* pContext) = 0;
 
 };
 

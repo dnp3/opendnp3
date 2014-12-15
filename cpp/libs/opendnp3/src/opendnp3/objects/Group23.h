@@ -21,8 +21,8 @@
 #ifndef OPENDNP3_GROUP23_H
 #define OPENDNP3_GROUP23_H
 
-#include <openpal/container/ReadOnlyBuffer.h>
-#include <openpal/container/WriteBuffer.h>
+#include <openpal/container/ReadBufferView.h>
+#include <openpal/container/WriteBufferView.h>
 #include "opendnp3/app/GroupVariationID.h"
 #include "opendnp3/app/DNP3Serializer.h"
 #include "opendnp3/app/MeasurementTypes.h"
@@ -33,14 +33,14 @@ struct Group23Var1
 {
   static GroupVariationID ID() { return GroupVariationID(23,1); }
   static uint32_t Size() { return 5; }
-  static Group23Var1 Read(openpal::ReadOnlyBuffer&);
-  static void Write(const Group23Var1&, openpal::WriteBuffer&);
+  static Group23Var1 Read(openpal::ReadBufferView&);
+  static void Write(const Group23Var1&, openpal::WriteBufferView&);
 
   static DNP3Serializer<FrozenCounter> Inst() { return DNP3Serializer<FrozenCounter>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef FrozenCounter Target;
-  static FrozenCounter ReadTarget(openpal::ReadOnlyBuffer&);
-  static void WriteTarget(const FrozenCounter&, openpal::WriteBuffer&);
+  static FrozenCounter ReadTarget(openpal::ReadBufferView&);
+  static void WriteTarget(const FrozenCounter&, openpal::WriteBufferView&);
 
   typedef uint32_t ValueType;
   uint8_t flags;
@@ -51,14 +51,14 @@ struct Group23Var2
 {
   static GroupVariationID ID() { return GroupVariationID(23,2); }
   static uint32_t Size() { return 3; }
-  static Group23Var2 Read(openpal::ReadOnlyBuffer&);
-  static void Write(const Group23Var2&, openpal::WriteBuffer&);
+  static Group23Var2 Read(openpal::ReadBufferView&);
+  static void Write(const Group23Var2&, openpal::WriteBufferView&);
 
   static DNP3Serializer<FrozenCounter> Inst() { return DNP3Serializer<FrozenCounter>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef FrozenCounter Target;
-  static FrozenCounter ReadTarget(openpal::ReadOnlyBuffer&);
-  static void WriteTarget(const FrozenCounter&, openpal::WriteBuffer&);
+  static FrozenCounter ReadTarget(openpal::ReadBufferView&);
+  static void WriteTarget(const FrozenCounter&, openpal::WriteBufferView&);
 
   typedef uint16_t ValueType;
   uint8_t flags;
@@ -69,14 +69,14 @@ struct Group23Var5
 {
   static GroupVariationID ID() { return GroupVariationID(23,5); }
   static uint32_t Size() { return 11; }
-  static Group23Var5 Read(openpal::ReadOnlyBuffer&);
-  static void Write(const Group23Var5&, openpal::WriteBuffer&);
+  static Group23Var5 Read(openpal::ReadBufferView&);
+  static void Write(const Group23Var5&, openpal::WriteBufferView&);
 
   static DNP3Serializer<FrozenCounter> Inst() { return DNP3Serializer<FrozenCounter>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef FrozenCounter Target;
-  static FrozenCounter ReadTarget(openpal::ReadOnlyBuffer&);
-  static void WriteTarget(const FrozenCounter&, openpal::WriteBuffer&);
+  static FrozenCounter ReadTarget(openpal::ReadBufferView&);
+  static void WriteTarget(const FrozenCounter&, openpal::WriteBufferView&);
 
   typedef uint32_t ValueType;
   uint8_t flags;
@@ -88,14 +88,14 @@ struct Group23Var6
 {
   static GroupVariationID ID() { return GroupVariationID(23,6); }
   static uint32_t Size() { return 9; }
-  static Group23Var6 Read(openpal::ReadOnlyBuffer&);
-  static void Write(const Group23Var6&, openpal::WriteBuffer&);
+  static Group23Var6 Read(openpal::ReadBufferView&);
+  static void Write(const Group23Var6&, openpal::WriteBufferView&);
 
   static DNP3Serializer<FrozenCounter> Inst() { return DNP3Serializer<FrozenCounter>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef FrozenCounter Target;
-  static FrozenCounter ReadTarget(openpal::ReadOnlyBuffer&);
-  static void WriteTarget(const FrozenCounter&, openpal::WriteBuffer&);
+  static FrozenCounter ReadTarget(openpal::ReadBufferView&);
+  static void WriteTarget(const FrozenCounter&, openpal::WriteBufferView&);
 
   typedef uint16_t ValueType;
   uint8_t flags;

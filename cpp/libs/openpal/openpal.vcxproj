@@ -30,10 +30,10 @@
     <ClInclude Include="src\openpal\container\LinkedList.h" />
     <ClInclude Include="src\openpal\container\ManagedPtr.h" />
     <ClInclude Include="src\openpal\container\Pair.h" />
-    <ClInclude Include="src\openpal\container\ReadOnlyBuffer.h" />
+    <ClInclude Include="src\openpal\container\ReadBufferView.h" />
     <ClInclude Include="src\openpal\container\RingBuffer.h" />
     <ClInclude Include="src\openpal\container\Settable.h" />
-    <ClInclude Include="src\openpal\container\WriteBuffer.h" />
+    <ClInclude Include="src\openpal\container\WriteBufferView.h" />
     <ClInclude Include="src\openpal\executor\Erasure.h" />
     <ClInclude Include="src\openpal\executor\Function0.h" />
     <ClInclude Include="src\openpal\executor\Function1.h" />
@@ -68,8 +68,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\openpal\container\DynamicBuffer.cpp" />
-    <ClCompile Include="src\openpal\container\ReadOnlyBuffer.cpp" />
-    <ClCompile Include="src\openpal\container\WriteBuffer.cpp" />
+    <ClCompile Include="src\openpal\container\ReadBufferView.cpp" />
+    <ClCompile Include="src\openpal\container\WriteBufferView.cpp" />
     <ClCompile Include="src\openpal\executor\Erasure.cpp" />
     <ClCompile Include="src\openpal\executor\MonotonicTimestamp.cpp" />
     <ClCompile Include="src\openpal\executor\Runnable.cpp" />

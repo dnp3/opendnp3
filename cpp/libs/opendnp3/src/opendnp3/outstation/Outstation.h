@@ -48,7 +48,7 @@ class Outstation : public IUpperLayer
 	
 	virtual void OnLowerLayerDown() override final;
 
-	virtual void OnReceive(const openpal::ReadOnlyBuffer&) override final;
+	virtual void OnReceive(const openpal::ReadBufferView&) override final;
 	
 	virtual void OnSendResult(bool isSucccess) override final;
 

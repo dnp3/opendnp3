@@ -21,8 +21,8 @@
 #ifndef OPENDNP3_GROUP52_H
 #define OPENDNP3_GROUP52_H
 
-#include <openpal/container/ReadOnlyBuffer.h>
-#include <openpal/container/WriteBuffer.h>
+#include <openpal/container/ReadBufferView.h>
+#include <openpal/container/WriteBufferView.h>
 #include "opendnp3/app/GroupVariationID.h"
 
 namespace opendnp3 {
@@ -31,8 +31,8 @@ struct Group52Var1
 {
   static GroupVariationID ID() { return GroupVariationID(52,1); }
   static uint32_t Size() { return 2; }
-  static Group52Var1 Read(openpal::ReadOnlyBuffer&);
-  static void Write(const Group52Var1&, openpal::WriteBuffer&);
+  static Group52Var1 Read(openpal::ReadBufferView&);
+  static void Write(const Group52Var1&, openpal::WriteBufferView&);
   uint16_t time;
 };
 
@@ -40,8 +40,8 @@ struct Group52Var2
 {
   static GroupVariationID ID() { return GroupVariationID(52,2); }
   static uint32_t Size() { return 2; }
-  static Group52Var2 Read(openpal::ReadOnlyBuffer&);
-  static void Write(const Group52Var2&, openpal::WriteBuffer&);
+  static Group52Var2 Read(openpal::ReadBufferView&);
+  static void Write(const Group52Var2&, openpal::WriteBufferView&);
   uint16_t time;
 };
 

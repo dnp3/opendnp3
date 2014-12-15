@@ -24,8 +24,8 @@
 #include "opendnp3/gen/FunctionCode.h"
 #include "opendnp3/gen/LinkFunction.h"
 
-#include <openpal/container/ReadOnlyBuffer.h>
-#include <openpal/container/WriteBuffer.h>
+#include <openpal/container/ReadBufferView.h>
+#include <openpal/container/WriteBufferView.h>
 #include <openpal/util/Uncopyable.h>
 
 namespace openpal
@@ -45,20 +45,20 @@ public:
 	//	Functions for formatting outgoing Sec to Pri frames
 	////////////////////////////////////////////////
 
-	static openpal::ReadOnlyBuffer FormatAck(openpal::WriteBuffer& output, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
-	static openpal::ReadOnlyBuffer FormatNack(openpal::WriteBuffer& output, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
-	static openpal::ReadOnlyBuffer FormatLinkStatus(openpal::WriteBuffer& output, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
-	static openpal::ReadOnlyBuffer FormatNotSupported(openpal::WriteBuffer& output, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
+	static openpal::ReadBufferView FormatAck(openpal::WriteBufferView& output, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
+	static openpal::ReadBufferView FormatNack(openpal::WriteBufferView& output, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
+	static openpal::ReadBufferView FormatLinkStatus(openpal::WriteBufferView& output, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
+	static openpal::ReadBufferView FormatNotSupported(openpal::WriteBufferView& output, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
 
 	////////////////////////////////////////////////
 	//	Functions for formatting outgoing Pri to Sec frames
 	////////////////////////////////////////////////
 
-	static openpal::ReadOnlyBuffer FormatTestLinkStatus(openpal::WriteBuffer& output, bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
-	static openpal::ReadOnlyBuffer FormatResetLinkStates(openpal::WriteBuffer& output, bool aIsMaster, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
-	static openpal::ReadOnlyBuffer FormatRequestLinkStatus(openpal::WriteBuffer& output, bool aIsMaster, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
-	static openpal::ReadOnlyBuffer FormatConfirmedUserData(openpal::WriteBuffer& output, bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, uint8_t aDataLength, openpal::Logger* pLogger);
-	static openpal::ReadOnlyBuffer FormatUnconfirmedUserData(openpal::WriteBuffer& output, bool aIsMaster, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, uint8_t aDataLength, openpal::Logger* pLogger);
+	static openpal::ReadBufferView FormatTestLinkStatus(openpal::WriteBufferView& output, bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
+	static openpal::ReadBufferView FormatResetLinkStates(openpal::WriteBufferView& output, bool aIsMaster, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
+	static openpal::ReadBufferView FormatRequestLinkStatus(openpal::WriteBufferView& output, bool aIsMaster, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
+	static openpal::ReadBufferView FormatConfirmedUserData(openpal::WriteBufferView& output, bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, uint8_t aDataLength, openpal::Logger* pLogger);
+	static openpal::ReadBufferView FormatUnconfirmedUserData(openpal::WriteBufferView& output, bool aIsMaster, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, uint8_t aDataLength, openpal::Logger* pLogger);
 
 	////////////////////////////////////////////////
 	//	Reusable static formatting functions to any buffer
@@ -93,7 +93,7 @@ private:
 	static void WriteUserData(const uint8_t* pSrc, uint8_t* pDest, uint8_t length);
 
 	/** Write 10 header bytes to to buffer including 0x0564, all fields, and CRC */
-	static openpal::ReadOnlyBuffer FormatHeader(openpal::WriteBuffer& output, uint8_t aDataLength, bool aIsMaster, bool aFcb, bool aFcvDfc, LinkFunction aCode, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
+	static openpal::ReadBufferView FormatHeader(openpal::WriteBufferView& output, uint8_t aDataLength, bool aIsMaster, bool aFcb, bool aFcvDfc, LinkFunction aCode, uint16_t aDest, uint16_t aSrc, openpal::Logger* pLogger);
 
 };
 

@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENPAL_READONLYBUFFER_H
-#define OPENPAL_READONLYBUFFER_H
+#ifndef OPENPAL_READBUFFERVIEW_H
+#define OPENPAL_READBUFFERVIEW_H
 
 #include "HasSize.h"
 
@@ -28,28 +28,28 @@
 namespace openpal
 {
 
-class WriteBuffer;
+class WriteBufferView;
 
-class ReadOnlyBuffer : public HasSize<uint32_t>
+class ReadBufferView : public HasSize<uint32_t>
 {
 
 public:
 
-	static ReadOnlyBuffer Empty();
+	static ReadBufferView Empty();
 
-	ReadOnlyBuffer();
+	ReadBufferView();
 
-	ReadOnlyBuffer(uint8_t const* pBuffer, uint32_t size);
+	ReadBufferView(uint8_t const* pBuffer, uint32_t size);
 
 	void Clear();
 
-	ReadOnlyBuffer CopyTo(WriteBuffer&) const;
+	ReadBufferView CopyTo(WriteBufferView&) const;
 
-	ReadOnlyBuffer Take(uint32_t count) const;
+	ReadBufferView Take(uint32_t count) const;
 
-	ReadOnlyBuffer Skip(uint32_t count) const;	
+	ReadBufferView Skip(uint32_t count) const;	
 
-	bool Equals(const ReadOnlyBuffer& rhs) const;
+	bool Equals(const ReadBufferView& rhs) const;
 
 	void Advance(uint32_t count);
 

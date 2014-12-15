@@ -18,51 +18,58 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENPAL_WRITEBUFFER_H
-#define OPENPAL_WRITEBUFFER_H
+#include "WriteBufferView.h"
 
-#include "HasSize.h"
+#include "openpal/util/Comparisons.h"
+#include "ReadBufferView.h"
 
-#include <cstdint>
+#include <cstring>
 
 namespace openpal
 {
 
-class ReadOnlyBuffer;
-
-class WriteBuffer : public HasSize<uint32_t>
+WriteBufferView WriteBufferView::Empty()
 {
-public:
+	return WriteBufferView();
+}
 
-	static WriteBuffer Empty();
+WriteBufferView::WriteBufferView(): 
+	HasSize(0),
+	pBuffer(nullptr)
+{}
 
-	WriteBuffer();	
-	WriteBuffer(uint8_t* pBuffer, uint32_t size);
+WriteBufferView::WriteBufferView(uint8_t* pBuffer_, uint32_t size) :
+	HasSize(size),
+	pBuffer(pBuffer_)
+{}
 
-	uint32_t ReadFrom(const ReadOnlyBuffer& buffer);
+uint32_t WriteBufferView::ReadFrom(const ReadBufferView& buffer)
+{
+	auto num = openpal::Min(buffer.Size(), size);
+	memcpy(pBuffer, buffer, num);
+	this->Advance(num);
+	return num;
+}
 
-	void Clear();
+void WriteBufferView::Clear()
+{
+	pBuffer = nullptr;
+	size = 0;
+}
 
-	uint32_t Advance(uint32_t count);
+uint32_t WriteBufferView::Advance(uint32_t count)
+{
+	auto num = openpal::Min(count, size);
+	pBuffer += num;
+	size -= num;
+	return num;
+}
 
-	ReadOnlyBuffer ToReadOnly() const;
-
-	operator uint8_t* ()
-	{
-		return pBuffer;
-	};
-
-	operator uint8_t const* () const
-	{
-		return pBuffer;
-	};
-
-private:
-
-	uint8_t* pBuffer;
-};
-
+ReadBufferView WriteBufferView::ToReadOnly() const
+{
+	return ReadBufferView(pBuffer, size);
+}
 
 }
 
-#endif
+

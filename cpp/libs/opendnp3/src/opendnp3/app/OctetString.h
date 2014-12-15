@@ -36,7 +36,7 @@ public:
 	OctetString(const OctetString& arData) : OctetData(arData)
 	{}
 
-	OctetString(const openpal::ReadOnlyBuffer& buffer) : OctetData(buffer)
+	OctetString(const openpal::ReadBufferView& buffer) : OctetData(buffer)
 	{}
 
 };

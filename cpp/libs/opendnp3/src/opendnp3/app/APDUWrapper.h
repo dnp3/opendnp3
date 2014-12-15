@@ -21,8 +21,8 @@
 #ifndef OPENDNP3_APDUWRAPPER_H
 #define OPENDNP3_APDUWRAPPER_H
 
-#include <openpal/container/ReadOnlyBuffer.h>
-#include <openpal/container/WriteBuffer.h>
+#include <openpal/container/ReadBufferView.h>
+#include <openpal/container/WriteBufferView.h>
 
 #include "opendnp3/gen/FunctionCode.h"
 #include "opendnp3/app/AppControlField.h"
@@ -45,7 +45,7 @@ public:
 
 	APDUWrapper();
 
-	APDUWrapper(const openpal::WriteBuffer& aBuffer);
+	APDUWrapper(const openpal::WriteBufferView& aBuffer);
 
 	bool IsValid() const;
 
@@ -57,7 +57,7 @@ public:
 
 	uint32_t Size() const;
 
-	openpal::ReadOnlyBuffer ToReadOnly() const;
+	openpal::ReadBufferView ToReadOnly() const;
 
 	HeaderWriter GetWriter();
 
@@ -65,11 +65,11 @@ public:
 
 protected:
 
-	static APDUEquality Compare(uint32_t headerSize, const openpal::ReadOnlyBuffer& lhs, const openpal::ReadOnlyBuffer& rhs);
+	static APDUEquality Compare(uint32_t headerSize, const openpal::ReadBufferView& lhs, const openpal::ReadBufferView& rhs);
 
 	bool valid;
-	openpal::WriteBuffer buffer;
-	openpal::WriteBuffer remaining;
+	openpal::WriteBufferView buffer;
+	openpal::WriteBufferView remaining;
 };
 
 }
