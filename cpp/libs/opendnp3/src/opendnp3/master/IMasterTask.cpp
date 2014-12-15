@@ -51,7 +51,7 @@ openpal::MonotonicTimestamp IMasterTask::ExpirationTime() const
 	return (!disabled && this->IsEnabled()) ? expiration : MonotonicTimestamp::Max();
 }
 
-IMasterTask::ResponseResult IMasterTask::OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects, openpal::MonotonicTimestamp now)
+IMasterTask::ResponseResult IMasterTask::OnResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects, openpal::MonotonicTimestamp now)
 {	
 	auto result = _OnResponse(response, objects);
 	
@@ -119,7 +119,7 @@ bool IMasterTask::ValidateSingleResponse(const APDUResponseHeader& header)
 	}
 }
 
-bool IMasterTask::ValidateNullResponse(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects)
+bool IMasterTask::ValidateNullResponse(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
 {
 	return ValidateSingleResponse(header) && ValidateNoObjects(objects) && ValidateInternalIndications(header);
 }
@@ -138,7 +138,7 @@ bool IMasterTask::ValidateInternalIndications(const APDUResponseHeader& header)
 	}
 }
 
-bool IMasterTask::ValidateNoObjects(const openpal::ReadOnlyBuffer& objects)
+bool IMasterTask::ValidateNoObjects(const openpal::ReadBufferView& objects)
 {
 	if (objects.IsEmpty())
 	{

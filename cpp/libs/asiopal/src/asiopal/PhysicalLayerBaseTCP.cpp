@@ -53,7 +53,7 @@ void PhysicalLayerBaseTCP::DoClose()
 	this->CloseSocket();
 }
 
-void PhysicalLayerBaseTCP::DoRead(WriteBuffer& buff)
+void PhysicalLayerBaseTCP::DoRead(WriteBufferView& buff)
 {
 	uint8_t* pBuff = buff;	
 	
@@ -65,7 +65,7 @@ void PhysicalLayerBaseTCP::DoRead(WriteBuffer& buff)
 	socket.async_read_some(buffer(pBuff, buff.Size()), executor.strand.wrap(callback));
 }
 
-void PhysicalLayerBaseTCP::DoWrite(const ReadOnlyBuffer& buff)
+void PhysicalLayerBaseTCP::DoWrite(const ReadBufferView& buff)
 {
 	auto callback = [this](const std::error_code & code, size_t  numWritten)
 	{

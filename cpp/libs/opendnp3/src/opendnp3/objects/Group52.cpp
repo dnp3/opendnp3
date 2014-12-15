@@ -26,7 +26,7 @@ using namespace openpal;
 
 namespace opendnp3 {
 
-Group52Var1 Group52Var1::Read(ReadOnlyBuffer& buffer)
+Group52Var1 Group52Var1::Read(ReadBufferView& buffer)
 {
   Group52Var1 obj;
   obj.time = UInt16::Read(buffer);
@@ -34,14 +34,14 @@ Group52Var1 Group52Var1::Read(ReadOnlyBuffer& buffer)
   return obj;
 }
 
-void Group52Var1::Write(const Group52Var1& arg, openpal::WriteBuffer& buffer)
+void Group52Var1::Write(const Group52Var1& arg, openpal::WriteBufferView& buffer)
 {
   UInt16::Write(buffer, arg.time);
   buffer.Advance(2);
 }
 
 
-Group52Var2 Group52Var2::Read(ReadOnlyBuffer& buffer)
+Group52Var2 Group52Var2::Read(ReadBufferView& buffer)
 {
   Group52Var2 obj;
   obj.time = UInt16::Read(buffer);
@@ -49,7 +49,7 @@ Group52Var2 Group52Var2::Read(ReadOnlyBuffer& buffer)
   return obj;
 }
 
-void Group52Var2::Write(const Group52Var2& arg, openpal::WriteBuffer& buffer)
+void Group52Var2::Write(const Group52Var2& arg, openpal::WriteBufferView& buffer)
 {
   UInt16::Write(buffer, arg.time);
   buffer.Advance(2);

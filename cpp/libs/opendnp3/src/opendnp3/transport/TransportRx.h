@@ -24,7 +24,7 @@
 #include "opendnp3/transport/TransportConstants.h"
 #include "opendnp3/StackStatistics.h"
 
-#include <openpal/container/ReadOnlyBuffer.h>
+#include <openpal/container/ReadBufferView.h>
 #include <openpal/container/DynamicBuffer.h>
 #include <openpal/logging/Logger.h>
 
@@ -42,7 +42,7 @@ class TransportRx
 public:
 	TransportRx(const openpal::Logger&, uint32_t maxRxFragSize, StackStatistics* pStatistics);
 
-	openpal::ReadOnlyBuffer ProcessReceive(const openpal::ReadOnlyBuffer& input);
+	openpal::ReadBufferView ProcessReceive(const openpal::ReadBufferView& input);
 
 	void Reset();
 

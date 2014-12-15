@@ -58,7 +58,7 @@ void Master::OnLowerLayerDown()
 	context.OnLayerDown();
 }
 
-void Master::OnReceive(const openpal::ReadOnlyBuffer& apdu)
+void Master::OnReceive(const openpal::ReadBufferView& apdu)
 {
 	context.OnReceive(apdu);
 }

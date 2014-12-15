@@ -45,7 +45,7 @@ void PollTaskBase::Initialize()
 	rxCount = 0;
 }
 	
-IMasterTask::ResponseResult PollTaskBase::_OnResponse(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects)
+IMasterTask::ResponseResult PollTaskBase::_OnResponse(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
 {
 	if (header.control.FIR)
 	{
@@ -73,7 +73,7 @@ IMasterTask::ResponseResult PollTaskBase::_OnResponse(const APDUResponseHeader& 
 	}
 }
 
-IMasterTask::ResponseResult PollTaskBase::ProcessMeasurements(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects)
+IMasterTask::ResponseResult PollTaskBase::ProcessMeasurements(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
 {	
 	++rxCount;
 

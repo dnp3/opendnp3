@@ -24,8 +24,8 @@
 #include <cstdint>
 #include <cstring>
 
-#include "openpal/container/ReadOnlyBuffer.h"
-#include "openpal/container/WriteBuffer.h"
+#include "openpal/container/ReadBufferView.h"
+#include "openpal/container/WriteBufferView.h"
 
 #include "openpal/util/Limits.h"
 
@@ -50,13 +50,13 @@ public:
 		*(++apStart) = static_cast<uint8_t>((aValue >> 8) & 0xFF);
 	}
 
-	static void WriteBuffer(WriteBuffer& buffer, T aValue)
+	static void WriteBufferView(WriteBufferView& buffer, T aValue)
 	{
 		Write(buffer, aValue);
 		buffer.Advance(Size);
 	}
 
-	inline static T ReadBuffer(ReadOnlyBuffer& arBuffer)
+	inline static T ReadBuffer(ReadBufferView& arBuffer)
 	{
 		auto ret = Read(arBuffer);
 		arBuffer.Advance(Size);
@@ -97,13 +97,13 @@ public:
 		*(++apStart) = static_cast<uint8_t>((aValue >> 24) & 0xFF);
 	}
 
-	static void WriteBuffer(WriteBuffer& buffer, T aValue)
+	static void WriteBufferView(WriteBufferView& buffer, T aValue)
 	{
 		Write(buffer, aValue);
 		buffer.Advance(Size);
 	}
 
-	inline static T ReadBuffer(ReadOnlyBuffer& arBuffer)
+	inline static T ReadBuffer(ReadBufferView& arBuffer)
 	{
 		auto ret = Read(arBuffer);
 		arBuffer.Advance(Size);

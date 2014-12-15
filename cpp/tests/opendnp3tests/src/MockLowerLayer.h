@@ -36,7 +36,7 @@ class MockLowerLayer : public ILowerLayer, public HasUpperLayer
 public:
 	MockLowerLayer(openpal::LogRoot& root);
 
-	void SendUp(const openpal::ReadOnlyBuffer& arBuffer);
+	void SendUp(const openpal::ReadBufferView& arBuffer);
 	void SendUp(const std::string&);
 	void SendSuccess();
 	void SendFailure();
@@ -47,16 +47,16 @@ public:
 	void DisableAutoSendCallback();
 
 	size_t NumWrites() const;
-	openpal::ReadOnlyBuffer PopWrite();
+	openpal::ReadBufferView PopWrite();
 	std::string PopWriteAsHex();
 
-	virtual void BeginTransmit(const openpal::ReadOnlyBuffer& arBuffer) override final;
+	virtual void BeginTransmit(const openpal::ReadBufferView& arBuffer) override final;
 
 private:
 
 	openpal::Logger logger;	
 
-	std::queue<openpal::ReadOnlyBuffer> sendQueue;
+	std::queue<openpal::ReadBufferView> sendQueue;
 };
 
 }

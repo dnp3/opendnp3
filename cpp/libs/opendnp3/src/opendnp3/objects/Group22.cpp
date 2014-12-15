@@ -28,7 +28,7 @@ using namespace openpal;
 
 namespace opendnp3 {
 
-Group22Var1 Group22Var1::Read(ReadOnlyBuffer& buffer)
+Group22Var1 Group22Var1::Read(ReadBufferView& buffer)
 {
   Group22Var1 obj;
   obj.flags = UInt8::Read(buffer);
@@ -38,7 +38,7 @@ Group22Var1 Group22Var1::Read(ReadOnlyBuffer& buffer)
   return obj;
 }
 
-void Group22Var1::Write(const Group22Var1& arg, openpal::WriteBuffer& buffer)
+void Group22Var1::Write(const Group22Var1& arg, openpal::WriteBufferView& buffer)
 {
   UInt8::Write(buffer, arg.flags);
   buffer.Advance(1);
@@ -47,19 +47,19 @@ void Group22Var1::Write(const Group22Var1& arg, openpal::WriteBuffer& buffer)
 }
 
 
-Counter Group22Var1::ReadTarget(ReadOnlyBuffer& buff)
+Counter Group22Var1::ReadTarget(ReadBufferView& buff)
 {
   auto gv = Group22Var1::Read(buff);
   return CounterFactory::From(gv.flags, gv.value);
 }
 
-void Group22Var1::WriteTarget(const Counter& value, openpal::WriteBuffer& buff)
+void Group22Var1::WriteTarget(const Counter& value, openpal::WriteBufferView& buff)
 {
   Group22Var1::Write(ConvertGroup22Var1::Apply(value), buff);
 }
 
 
-Group22Var2 Group22Var2::Read(ReadOnlyBuffer& buffer)
+Group22Var2 Group22Var2::Read(ReadBufferView& buffer)
 {
   Group22Var2 obj;
   obj.flags = UInt8::Read(buffer);
@@ -69,7 +69,7 @@ Group22Var2 Group22Var2::Read(ReadOnlyBuffer& buffer)
   return obj;
 }
 
-void Group22Var2::Write(const Group22Var2& arg, openpal::WriteBuffer& buffer)
+void Group22Var2::Write(const Group22Var2& arg, openpal::WriteBufferView& buffer)
 {
   UInt8::Write(buffer, arg.flags);
   buffer.Advance(1);
@@ -78,19 +78,19 @@ void Group22Var2::Write(const Group22Var2& arg, openpal::WriteBuffer& buffer)
 }
 
 
-Counter Group22Var2::ReadTarget(ReadOnlyBuffer& buff)
+Counter Group22Var2::ReadTarget(ReadBufferView& buff)
 {
   auto gv = Group22Var2::Read(buff);
   return CounterFactory::From(gv.flags, gv.value);
 }
 
-void Group22Var2::WriteTarget(const Counter& value, openpal::WriteBuffer& buff)
+void Group22Var2::WriteTarget(const Counter& value, openpal::WriteBufferView& buff)
 {
   Group22Var2::Write(ConvertGroup22Var2::Apply(value), buff);
 }
 
 
-Group22Var5 Group22Var5::Read(ReadOnlyBuffer& buffer)
+Group22Var5 Group22Var5::Read(ReadBufferView& buffer)
 {
   Group22Var5 obj;
   obj.flags = UInt8::Read(buffer);
@@ -102,7 +102,7 @@ Group22Var5 Group22Var5::Read(ReadOnlyBuffer& buffer)
   return obj;
 }
 
-void Group22Var5::Write(const Group22Var5& arg, openpal::WriteBuffer& buffer)
+void Group22Var5::Write(const Group22Var5& arg, openpal::WriteBufferView& buffer)
 {
   UInt8::Write(buffer, arg.flags);
   buffer.Advance(1);
@@ -113,19 +113,19 @@ void Group22Var5::Write(const Group22Var5& arg, openpal::WriteBuffer& buffer)
 }
 
 
-Counter Group22Var5::ReadTarget(ReadOnlyBuffer& buff)
+Counter Group22Var5::ReadTarget(ReadBufferView& buff)
 {
   auto gv = Group22Var5::Read(buff);
   return CounterFactory::From(gv.flags, gv.value, gv.time);
 }
 
-void Group22Var5::WriteTarget(const Counter& value, openpal::WriteBuffer& buff)
+void Group22Var5::WriteTarget(const Counter& value, openpal::WriteBufferView& buff)
 {
   Group22Var5::Write(ConvertGroup22Var5::Apply(value), buff);
 }
 
 
-Group22Var6 Group22Var6::Read(ReadOnlyBuffer& buffer)
+Group22Var6 Group22Var6::Read(ReadBufferView& buffer)
 {
   Group22Var6 obj;
   obj.flags = UInt8::Read(buffer);
@@ -137,7 +137,7 @@ Group22Var6 Group22Var6::Read(ReadOnlyBuffer& buffer)
   return obj;
 }
 
-void Group22Var6::Write(const Group22Var6& arg, openpal::WriteBuffer& buffer)
+void Group22Var6::Write(const Group22Var6& arg, openpal::WriteBufferView& buffer)
 {
   UInt8::Write(buffer, arg.flags);
   buffer.Advance(1);
@@ -148,13 +148,13 @@ void Group22Var6::Write(const Group22Var6& arg, openpal::WriteBuffer& buffer)
 }
 
 
-Counter Group22Var6::ReadTarget(ReadOnlyBuffer& buff)
+Counter Group22Var6::ReadTarget(ReadBufferView& buff)
 {
   auto gv = Group22Var6::Read(buff);
   return CounterFactory::From(gv.flags, gv.value, gv.time);
 }
 
-void Group22Var6::WriteTarget(const Counter& value, openpal::WriteBuffer& buff)
+void Group22Var6::WriteTarget(const Counter& value, openpal::WriteBufferView& buff)
 {
   Group22Var6::Write(ConvertGroup22Var6::Apply(value), buff);
 }

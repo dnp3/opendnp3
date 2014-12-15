@@ -140,7 +140,7 @@ TEST_CASE(SUITE("ReadACK"))
 {
 	DynamicBuffer buffer(292);
 
-	auto writeTo = buffer.GetWriteBuffer();
+	auto writeTo = buffer.GetWriteBufferView();
 	auto frame = LinkFrame::FormatAck(writeTo, true, false, 1, 2, nullptr);
 
 	LinkParserTest t;
@@ -153,7 +153,7 @@ TEST_CASE(SUITE("ReadACK"))
 TEST_CASE(SUITE("ReadNACK"))
 {
 	DynamicBuffer buffer(292);
-	auto writeTo = buffer.GetWriteBuffer();
+	auto writeTo = buffer.GetWriteBufferView();
 	auto frame = LinkFrame::FormatNack(writeTo, false, true, 1, 2, nullptr);
 
 	LinkParserTest t;
@@ -166,7 +166,7 @@ TEST_CASE(SUITE("ReadNACK"))
 TEST_CASE(SUITE("LinkStatus"))
 {
 	DynamicBuffer buffer(292);
-	auto writeTo = buffer.GetWriteBuffer();
+	auto writeTo = buffer.GetWriteBufferView();
 	auto frame = LinkFrame::FormatLinkStatus(writeTo, true, true, 1, 2, nullptr);
 
 	LinkParserTest t;
@@ -179,7 +179,7 @@ TEST_CASE(SUITE("LinkStatus"))
 TEST_CASE(SUITE("NotSupported"))
 {
 	DynamicBuffer buffer(292);
-	auto writeTo = buffer.GetWriteBuffer();
+	auto writeTo = buffer.GetWriteBufferView();
 	auto frame = LinkFrame::FormatNotSupported(writeTo, true, false, 1, 2, nullptr);
 
 	LinkParserTest t;
@@ -196,7 +196,7 @@ TEST_CASE(SUITE("NotSupported"))
 TEST_CASE(SUITE("TestLinkStates"))
 {
 	DynamicBuffer buffer(292);
-	auto writeTo = buffer.GetWriteBuffer();
+	auto writeTo = buffer.GetWriteBufferView();
 	auto frame = LinkFrame::FormatTestLinkStatus(writeTo, false, true, 1, 2, nullptr);
 
 	LinkParserTest t;
@@ -209,7 +209,7 @@ TEST_CASE(SUITE("TestLinkStates"))
 TEST_CASE(SUITE("ResetLinkStates"))
 {
 	DynamicBuffer buffer(292);
-	auto writeTo = buffer.GetWriteBuffer();
+	auto writeTo = buffer.GetWriteBufferView();
 	auto frame = LinkFrame::FormatResetLinkStates(writeTo, false, 1, 2, nullptr);
 
 	LinkParserTest t;
@@ -222,7 +222,7 @@ TEST_CASE(SUITE("ResetLinkStates"))
 TEST_CASE(SUITE("RequestLinkStatus"))
 {
 	DynamicBuffer buffer(292);
-	auto writeTo = buffer.GetWriteBuffer();
+	auto writeTo = buffer.GetWriteBufferView();
 	auto frame = LinkFrame::FormatRequestLinkStatus(writeTo, true, 1, 2, nullptr);
 
 	LinkParserTest t;
@@ -237,7 +237,7 @@ TEST_CASE(SUITE("UnconfirmedUserData"))
 	ByteStr data(250, 0); //initializes a buffer with increasing value
 
 	DynamicBuffer buffer(292);
-	auto writeTo = buffer.GetWriteBuffer();
+	auto writeTo = buffer.GetWriteBufferView();
 	auto frame = LinkFrame::FormatUnconfirmedUserData(writeTo, true, 1, 2, data, data.Size(), nullptr);
 
 	LinkParserTest t;
@@ -253,7 +253,7 @@ TEST_CASE(SUITE("ConfirmedUserData"))
 	ByteStr data(250, 0); //initializes a buffer with increasing value
 
 	DynamicBuffer buffer(292);
-	auto writeTo = buffer.GetWriteBuffer();
+	auto writeTo = buffer.GetWriteBufferView();
 	auto frame = LinkFrame::FormatConfirmedUserData(writeTo, true, true, 1, 2, data, data.Size(), nullptr);
 
 	LinkParserTest t;
@@ -302,7 +302,7 @@ TEST_CASE(SUITE("ManyReceives"))
 {
 
 	DynamicBuffer buffer(292);
-	auto writeTo = buffer.GetWriteBuffer();
+	auto writeTo = buffer.GetWriteBufferView();
 	auto frame = LinkFrame::FormatAck(writeTo, true, false, 1, 2, nullptr);
 
 	LinkParserTest t;

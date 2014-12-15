@@ -130,7 +130,7 @@ void MasterContext::CheckForTask()
 
 void MasterContext::StartTask(IMasterTask& task)
 {				
-	APDURequest request(txBuffer.GetWriteBuffer());
+	APDURequest request(txBuffer.GetWriteBufferView());
 	task.BuildRequest(request, solSeq);
 	this->StartResponseTimer();
 	this->Transmit(request.ToReadOnly());	
@@ -198,7 +198,7 @@ void MasterContext::OnSendResult(bool isSucccess)
 	}
 }
 
-void MasterContext::OnReceive(const ReadOnlyBuffer& apdu)
+void MasterContext::OnReceive(const ReadBufferView& apdu)
 {
 	if (isOnline)
 	{
@@ -245,7 +245,7 @@ void MasterContext::OnReceive(const ReadOnlyBuffer& apdu)
 }
 
 
-void MasterContext::OnUnsolicitedResponse(const APDUResponseHeader& header, const ReadOnlyBuffer& objects)
+void MasterContext::OnUnsolicitedResponse(const APDUResponseHeader& header, const ReadBufferView& objects)
 {
 	if (header.control.UNS)
 	{		
@@ -322,7 +322,7 @@ bool MasterContext::CheckConfirmTransmit()
 	if (!isSending && !confirmQueue.empty())
 	{
 		auto pConfirm = confirmQueue.front();
-		APDUWrapper wrapper(txBuffer.GetWriteBuffer());
+		APDUWrapper wrapper(txBuffer.GetWriteBufferView());
 		wrapper.SetFunction(pConfirm.function);
 		wrapper.SetControl(pConfirm.control);
 		this->Transmit(wrapper.ToReadOnly());
@@ -335,7 +335,7 @@ bool MasterContext::CheckConfirmTransmit()
 	}
 }
 
-void MasterContext::Transmit(const ReadOnlyBuffer& output)
+void MasterContext::Transmit(const ReadBufferView& output)
 {
 	logging::ParseAndLogRequestTx(&logger, output);	
 	assert(!isSending);

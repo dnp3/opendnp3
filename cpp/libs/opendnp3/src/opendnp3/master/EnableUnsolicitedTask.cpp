@@ -49,7 +49,7 @@ bool EnableUnsolicitedTask::IsEnabled() const
 	return enabledClasses.HasEventClass();
 }
 
-IMasterTask::ResponseResult EnableUnsolicitedTask::_OnResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects)
+IMasterTask::ResponseResult EnableUnsolicitedTask::_OnResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects)
 {
 	return ValidateNullResponse(header, objects) ? ResponseResult::OK_FINAL : ResponseResult::ERROR_BAD_RESPONSE;
 }

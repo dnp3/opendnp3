@@ -43,7 +43,7 @@ public:
 
 	TransportTx(const openpal::Logger& logger, StackStatistics* pStatistics);
 
-	void Configure(const openpal::ReadOnlyBuffer& output);
+	void Configure(const openpal::ReadBufferView& output);
 
 	static uint8_t GetHeader(bool fir, bool fin, uint8_t sequence);
 
@@ -51,16 +51,16 @@ public:
 
 	virtual bool HasValue() const override final;
 
-	virtual openpal::ReadOnlyBuffer GetSegment() override final;
+	virtual openpal::ReadBufferView GetSegment() override final;
 
 	virtual bool Advance() override final;
 
 private:
 
 	// A wrapper to the APDU buffer that we're segmenting
-	openpal::ReadOnlyBuffer apdu;
+	openpal::ReadBufferView apdu;
 
-	openpal::Settable<openpal::ReadOnlyBuffer> txSegment;
+	openpal::Settable<openpal::ReadBufferView> txSegment;
 
 	// Static buffer where we store tpdus that are being transmitted
 	uint8_t tpduBuffer[MAX_TPDU_LENGTH];	

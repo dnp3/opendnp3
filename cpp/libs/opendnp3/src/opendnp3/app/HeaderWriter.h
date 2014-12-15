@@ -88,13 +88,13 @@ public:
 
 private:
 
-	HeaderWriter(openpal::WriteBuffer* position_);
+	HeaderWriter(openpal::WriteBufferView* position_);
 
 	bool WriteHeaderWithReserve(GroupVariationID id, QualifierCode qc, uint32_t reserve);
 
-	openpal::WriteBuffer* position;
+	openpal::WriteBufferView* position;
 
-	openpal::Settable<openpal::WriteBuffer> mark;
+	openpal::Settable<openpal::WriteBufferView> mark;
 };
 
 template <class IndexType>
@@ -102,8 +102,8 @@ bool HeaderWriter::WriteRangeHeader(QualifierCode qc, GroupVariationID gvId, typ
 {
 	if (WriteHeaderWithReserve(gvId, qc, 2 * IndexType::Size))
 	{
-		IndexType::WriteBuffer(*position, start);
-		IndexType::WriteBuffer(*position, stop);
+		IndexType::WriteBufferView(*position, start);
+		IndexType::WriteBufferView(*position, stop);
 		return true;
 	}
 	else
@@ -117,7 +117,7 @@ bool HeaderWriter::WriteCountHeader(QualifierCode qc, GroupVariationID gvId, typ
 {
 	if (WriteHeaderWithReserve(gvId, qc, IndexType::Size))
 	{
-		IndexType::WriteBuffer(*position, count);		
+		IndexType::WriteBufferView(*position, count);		
 		return true;
 	}
 	else
@@ -132,7 +132,7 @@ bool HeaderWriter::WriteSingleValue(QualifierCode qc, const DNP3Serializer<Value
 	auto reserveSize = CountType::Size + serializer.Size();
 	if(this->WriteHeaderWithReserve(ValueType::ID, qc, reserveSize))
 	{
-		CountType::WriteBuffer(*position, 1); //write the count
+		CountType::WriteBufferView(*position, 1); //write the count
 		serializer.Write(value, *position);
 		return true;
 	}
@@ -145,7 +145,7 @@ bool HeaderWriter::WriteSingleValue(QualifierCode qc, const WriteType& value)
 	uint32_t reserveSize = CountType::Size + WriteType::Size();
 	if(this->WriteHeaderWithReserve(WriteType::ID(), qc, reserveSize))
 	{
-		CountType::WriteBuffer(*position, 1); //write the count
+		CountType::WriteBufferView(*position, 1); //write the count
 		WriteType::Write(value, *position);
 		return true;
 	}
@@ -161,8 +161,8 @@ bool HeaderWriter::WriteSingleIndexedValue(QualifierCode qc, const DNP3Serialize
 	uint32_t reserveSize = 2 * CountType::Size + serializer.Size();
 	if(this->WriteHeaderWithReserve(serializer.ID(), qc, reserveSize))
 	{
-		CountType::WriteBuffer(*position, 1); //write the count
-		CountType::WriteBuffer(*position, index); // write the index
+		CountType::WriteBufferView(*position, 1); //write the count
+		CountType::WriteBufferView(*position, index); // write the index
 		serializer.Write(value, *position);
 		return true;
 	}

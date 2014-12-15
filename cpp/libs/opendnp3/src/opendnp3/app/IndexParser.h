@@ -21,7 +21,7 @@
 #ifndef OPENDNP3_INDEXPARSER_H
 #define OPENDNP3_INDEXPARSER_H
 
-#include <openpal/container/ReadOnlyBuffer.h>
+#include <openpal/container/ReadBufferView.h>
 #include <openpal/serialization/Serialization.h>
 
 namespace opendnp3
@@ -38,7 +38,7 @@ public:
 		*
 		* @return The value of the index
 		*/
-	virtual uint32_t ReadIndex(openpal::ReadOnlyBuffer& buffer) = 0;
+	virtual uint32_t ReadIndex(openpal::ReadBufferView& buffer) = 0;
 
 	/**
 	* @return The size of the index prefix in bytes (e.g. 1,2,4)
@@ -57,7 +57,7 @@ public:
 		return &mInstance;
 	}
 
-	virtual uint32_t ReadIndex(openpal::ReadOnlyBuffer& buffer) override
+	virtual uint32_t ReadIndex(openpal::ReadBufferView& buffer) override
 	{
 		return ParserType::ReadBuffer(buffer);
 	}

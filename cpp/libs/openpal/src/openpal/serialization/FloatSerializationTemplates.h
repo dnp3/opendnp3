@@ -24,8 +24,8 @@
 #include <cstdint>
 #include <cstring>
 
-#include "openpal/container/ReadOnlyBuffer.h"
-#include "openpal/container/WriteBuffer.h"
+#include "openpal/container/ReadBufferView.h"
+#include "openpal/container/WriteBufferView.h"
 
 #include "openpal/util/Limits.h"
 
@@ -42,14 +42,14 @@ public:
 	const static T Max;
 	const static T Min;
 
-	inline static T ReadBuffer(ReadOnlyBuffer& arBuffer)
+	inline static T ReadBuffer(ReadBufferView& arBuffer)
 	{
 		auto ret = Read(arBuffer);
 		arBuffer.Advance(Size);
 		return ret;
 	}
 
-	static void WriteBuffer(WriteBuffer& buffer, T aValue)
+	static void WriteBufferView(WriteBufferView& buffer, T aValue)
 	{
 		Write(buffer, aValue);
 		buffer.Advance(Size);

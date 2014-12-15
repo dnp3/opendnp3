@@ -23,8 +23,8 @@
 
 #include <cstdint>
 
-#include "openpal/container/ReadOnlyBuffer.h"
-#include "openpal/container/WriteBuffer.h"
+#include "openpal/container/ReadBufferView.h"
+#include "openpal/container/WriteBufferView.h"
 
 namespace openpal
 {
@@ -34,8 +34,8 @@ class Serializer
 {
 public:
 
-	typedef T (*ReadFunc)(ReadOnlyBuffer& buffer);
-	typedef void (*WriteFunc)(const T& value, WriteBuffer& buffer);
+	typedef T (*ReadFunc)(ReadBufferView& buffer);
+	typedef void (*WriteFunc)(const T& value, WriteBufferView& buffer);
 
 	Serializer() : size(0), pReadFunc(nullptr), pWriteFunc(nullptr)
 	{}
@@ -55,7 +55,7 @@ public:
 	/**
 	* reads the value and advances the read buffer
 	*/
-	T Read(ReadOnlyBuffer& buffer) const
+	T Read(ReadBufferView& buffer) const
 	{
 		return (*pReadFunc)(buffer);
 	}
@@ -63,7 +63,7 @@ public:
 	/**
 	* writes the value and advances the write buffer
 	*/
-	void Write(const T& value, WriteBuffer& buffer) const
+	void Write(const T& value, WriteBufferView& buffer) const
 	{
 		(*pWriteFunc)(value, buffer);
 	}

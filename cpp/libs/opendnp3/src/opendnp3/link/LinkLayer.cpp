@@ -216,7 +216,7 @@ void LinkLayer::OnTransmitResult(bool success)
 	}			
 }
 
-void LinkLayer::CheckPendingTx(openpal::Settable<ReadOnlyBuffer>& pending, bool primary)
+void LinkLayer::CheckPendingTx(openpal::Settable<ReadBufferView>& pending, bool primary)
 {
 	if (txMode == TransmitMode::Idle && pending.IsSet())
 	{
@@ -226,23 +226,23 @@ void LinkLayer::CheckPendingTx(openpal::Settable<ReadOnlyBuffer>& pending, bool 
 	}
 }
 
-openpal::ReadOnlyBuffer LinkLayer::FormatPrimaryBufferWithConfirmed(const openpal::ReadOnlyBuffer& tpdu, bool FCB)
+openpal::ReadBufferView LinkLayer::FormatPrimaryBufferWithConfirmed(const openpal::ReadBufferView& tpdu, bool FCB)
 {
-	auto buffer = WriteBuffer(priTxBuffer, LPDU_MAX_FRAME_SIZE);
+	auto buffer = WriteBufferView(priTxBuffer, LPDU_MAX_FRAME_SIZE);
 	auto output = LinkFrame::FormatConfirmedUserData(buffer, config.IsMaster, FCB, config.RemoteAddr, config.LocalAddr, tpdu, tpdu.Size(), &logger);
 	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, output, 10, 18);
 	return output;	
 }
 
-ReadOnlyBuffer LinkLayer::FormatPrimaryBufferWithUnconfirmed(const openpal::ReadOnlyBuffer& tpdu)
+ReadBufferView LinkLayer::FormatPrimaryBufferWithUnconfirmed(const openpal::ReadBufferView& tpdu)
 {
-	auto buffer = WriteBuffer(priTxBuffer, LPDU_MAX_FRAME_SIZE);
+	auto buffer = WriteBufferView(priTxBuffer, LPDU_MAX_FRAME_SIZE);
 	auto output = LinkFrame::FormatUnconfirmedUserData(buffer, config.IsMaster, config.RemoteAddr, config.LocalAddr, tpdu, tpdu.Size(), &logger);
 	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, output, 10, 18);
 	return output;
 }
 
-void LinkLayer::QueueTransmit(const ReadOnlyBuffer& buffer, bool primary)
+void LinkLayer::QueueTransmit(const ReadBufferView& buffer, bool primary)
 {	
 	if (txMode == TransmitMode::Idle)
 	{
@@ -264,7 +264,7 @@ void LinkLayer::QueueTransmit(const ReadOnlyBuffer& buffer, bool primary)
 
 void LinkLayer::QueueAck()
 {
-	auto writeTo = WriteBuffer(secTxBuffer, LPDU_HEADER_SIZE);
+	auto writeTo = WriteBufferView(secTxBuffer, LPDU_HEADER_SIZE);
 	auto buffer = LinkFrame::FormatAck(writeTo, config.IsMaster, false, config.RemoteAddr, config.LocalAddr, &logger);
 	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, buffer, 10, 18);
 	this->QueueTransmit(buffer, false);
@@ -272,7 +272,7 @@ void LinkLayer::QueueAck()
 
 void LinkLayer::QueueLinkStatus()
 {
-	auto writeTo = WriteBuffer(secTxBuffer, LPDU_HEADER_SIZE);
+	auto writeTo = WriteBufferView(secTxBuffer, LPDU_HEADER_SIZE);
 	auto buffer = LinkFrame::FormatLinkStatus(writeTo, config.IsMaster, false, config.RemoteAddr, config.LocalAddr, &logger);
 	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, buffer, 10, 18);
 	this->QueueTransmit(buffer, false);
@@ -280,7 +280,7 @@ void LinkLayer::QueueLinkStatus()
 
 void LinkLayer::QueueResetLinks()
 {
-	auto writeTo = WriteBuffer(priTxBuffer, LPDU_MAX_FRAME_SIZE);
+	auto writeTo = WriteBufferView(priTxBuffer, LPDU_MAX_FRAME_SIZE);
 	auto buffer = LinkFrame::FormatResetLinkStates(writeTo, config.IsMaster, config.RemoteAddr, config.LocalAddr, &logger);
 	FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, buffer, 10, 18);
 	this->QueueTransmit(buffer, true);
@@ -378,7 +378,7 @@ void LinkLayer::RequestLinkStatus(bool aIsMaster, uint16_t aDest, uint16_t aSrc)
 	}
 }
 
-void LinkLayer::ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const ReadOnlyBuffer& input)
+void LinkLayer::ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const ReadBufferView& input)
 {
 	if (this->Validate(aIsMaster, aSrc, aDest))
 	{
@@ -386,7 +386,7 @@ void LinkLayer::ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uin
 	}
 }
 
-void LinkLayer::UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const ReadOnlyBuffer& input)
+void LinkLayer::UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const ReadBufferView& input)
 {
 	if (this->Validate(aIsMaster, aSrc, aDest))
 	{

@@ -88,7 +88,7 @@ public:
 	}
 
 	// these are the NVII delegates
-	virtual void OnReceive(const openpal::ReadOnlyBuffer& buffer) override final;
+	virtual void OnReceive(const openpal::ReadBufferView& buffer) override final;
 	virtual void OnSendResult(bool isSuccess) override final;
 	virtual void OnLowerLayerUp() override final;
 	virtual void OnLowerLayerDown() override final;

@@ -22,7 +22,7 @@
 #define OPENDNP3_COUNTWRITEITERATOR_H
 
 
-#include <openpal/container/WriteBuffer.h>
+#include <openpal/container/WriteBufferView.h>
 #include <openpal/serialization/Serializer.h>
 
 namespace opendnp3
@@ -42,7 +42,7 @@ public:
 	CountWriteIterator() : count(0), pPosition(nullptr), isValid(false)
 	{}
 
-	CountWriteIterator(const openpal::Serializer<WriteType>& serializer_, openpal::WriteBuffer& position) :
+	CountWriteIterator(const openpal::Serializer<WriteType>& serializer_, openpal::WriteBufferView& position) :
 		count(0),
 		serializer(serializer_),
 		countPosition(position),
@@ -89,8 +89,8 @@ private:
 
 	bool isValid;
 
-	openpal::WriteBuffer countPosition;  // make a copy to record where we write the count
-	openpal::WriteBuffer* pPosition;
+	openpal::WriteBufferView countPosition;  // make a copy to record where we write the count
+	openpal::WriteBufferView* pPosition;
 };
 
 }

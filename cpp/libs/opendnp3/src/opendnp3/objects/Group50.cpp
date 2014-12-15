@@ -28,7 +28,7 @@ using namespace openpal;
 
 namespace opendnp3 {
 
-Group50Var1 Group50Var1::Read(ReadOnlyBuffer& buffer)
+Group50Var1 Group50Var1::Read(ReadBufferView& buffer)
 {
   Group50Var1 obj;
   obj.time = UInt48::Read(buffer);
@@ -36,14 +36,14 @@ Group50Var1 Group50Var1::Read(ReadOnlyBuffer& buffer)
   return obj;
 }
 
-void Group50Var1::Write(const Group50Var1& arg, openpal::WriteBuffer& buffer)
+void Group50Var1::Write(const Group50Var1& arg, openpal::WriteBufferView& buffer)
 {
   UInt48::Write(buffer, arg.time);
   buffer.Advance(6);
 }
 
 
-Group50Var4 Group50Var4::Read(ReadOnlyBuffer& buffer)
+Group50Var4 Group50Var4::Read(ReadBufferView& buffer)
 {
   Group50Var4 obj;
   obj.time = UInt48::Read(buffer);
@@ -55,7 +55,7 @@ Group50Var4 Group50Var4::Read(ReadOnlyBuffer& buffer)
   return obj;
 }
 
-void Group50Var4::Write(const Group50Var4& arg, openpal::WriteBuffer& buffer)
+void Group50Var4::Write(const Group50Var4& arg, openpal::WriteBufferView& buffer)
 {
   UInt48::Write(buffer, arg.time);
   buffer.Advance(6);
@@ -66,13 +66,13 @@ void Group50Var4::Write(const Group50Var4& arg, openpal::WriteBuffer& buffer)
 }
 
 
-TimeAndInterval Group50Var4::ReadTarget(ReadOnlyBuffer& buff)
+TimeAndInterval Group50Var4::ReadTarget(ReadBufferView& buff)
 {
   auto gv = Group50Var4::Read(buff);
   return TimeAndIntervalFactory::From(gv.time, gv.interval, gv.units);
 }
 
-void Group50Var4::WriteTarget(const TimeAndInterval& value, openpal::WriteBuffer& buff)
+void Group50Var4::WriteTarget(const TimeAndInterval& value, openpal::WriteBufferView& buff)
 {
   Group50Var4::Write(ConvertGroup50Var4::Apply(value), buff);
 }

@@ -84,11 +84,11 @@ class MasterContext : public ICommandProcessor, public IScheduleCallback
 	bool OnLayerUp();
 	bool OnLayerDown();
 	void OnSendResult(bool isSucccess);
-	void OnReceive(const openpal::ReadOnlyBuffer& apdu);
+	void OnReceive(const openpal::ReadBufferView& apdu);
 
 	// ------- internal events -------
 	
-	void OnUnsolicitedResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects);
+	void OnUnsolicitedResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects);
 	void OnReceiveIIN(const IINField& iin);
 
 	// ------- command events ----------
@@ -131,7 +131,7 @@ class MasterContext : public ICommandProcessor, public IScheduleCallback
 
 	bool CheckConfirmTransmit();
 
-	void Transmit(const openpal::ReadOnlyBuffer& output);	
+	void Transmit(const openpal::ReadBufferView& output);	
 
 	template <class T>
 	void SelectAndOperateT(const T& command, uint16_t index, ICommandCallback& callback, const DNP3Serializer<T>& serializer);

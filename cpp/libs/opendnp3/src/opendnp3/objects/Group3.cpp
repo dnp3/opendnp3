@@ -28,7 +28,7 @@ using namespace openpal;
 
 namespace opendnp3 {
 
-Group3Var2 Group3Var2::Read(ReadOnlyBuffer& buffer)
+Group3Var2 Group3Var2::Read(ReadBufferView& buffer)
 {
   Group3Var2 obj;
   obj.flags = UInt8::Read(buffer);
@@ -36,20 +36,20 @@ Group3Var2 Group3Var2::Read(ReadOnlyBuffer& buffer)
   return obj;
 }
 
-void Group3Var2::Write(const Group3Var2& arg, openpal::WriteBuffer& buffer)
+void Group3Var2::Write(const Group3Var2& arg, openpal::WriteBufferView& buffer)
 {
   UInt8::Write(buffer, arg.flags);
   buffer.Advance(1);
 }
 
 
-DoubleBitBinary Group3Var2::ReadTarget(ReadOnlyBuffer& buff)
+DoubleBitBinary Group3Var2::ReadTarget(ReadBufferView& buff)
 {
   auto gv = Group3Var2::Read(buff);
   return DoubleBitBinaryFactory::From(gv.flags);
 }
 
-void Group3Var2::WriteTarget(const DoubleBitBinary& value, openpal::WriteBuffer& buff)
+void Group3Var2::WriteTarget(const DoubleBitBinary& value, openpal::WriteBufferView& buff)
 {
   Group3Var2::Write(ConvertGroup3Var2::Apply(value), buff);
 }

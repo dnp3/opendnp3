@@ -51,19 +51,19 @@ OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnConfirmTimeout(Out
 	return this;
 }
 
-OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnNewReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects)
+OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnNewReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
 	pContext->deferredRequest.Set(DeferredRequest(header, false, false));
 	return this;
 }
 
-OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnNewNonReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, bool headersEqualToLast)
+OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnNewNonReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadBufferView& objects, bool headersEqualToLast)
 {
 	pContext->deferredRequest.Set(DeferredRequest(header, false, headersEqualToLast));
 	return this;
 }
 
-OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnRepeatNonReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects)
+OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnRepeatNonReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
 	pContext->deferredRequest.Set(DeferredRequest(header, true, false));
 	return this;
@@ -79,7 +79,7 @@ OutstationSolicitedStateBase& OutstationSolicitedStateIdle::Inst()
 	return instance;
 }
 
-OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects)
+OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
 	if (!pContext->isTransmitting && pContext->pUnsolicitedState == &OutstationUnsolicitedStateIdle::Inst())
 	{
@@ -92,7 +92,7 @@ OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewReadRequest(Out
 	}
 }
 
-OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewNonReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, bool lastHeadersEqual)
+OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewNonReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadBufferView& objects, bool lastHeadersEqual)
 {
 	if (pContext->isTransmitting)
 	{
@@ -113,7 +113,7 @@ OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewNonReadRequest(
 	}
 }
 
-OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnRepeatNonReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects)
+OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnRepeatNonReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
 	if (pContext->isTransmitting)
 	{
@@ -149,14 +149,14 @@ OutstationSolicitedStateBase& OutstationStateSolicitedConfirmWait::Inst()
 	return instance;
 }
 
-OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnNewReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects)
+OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnNewReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {	
 	pContext->deferredRequest.Set(DeferredRequest(header, false, false));
 	return Abort(pContext);
 			
 }
 
-OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnNewNonReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadOnlyBuffer& objects, bool headersEqual)
+OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnNewNonReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadBufferView& objects, bool headersEqual)
 {
 	pContext->deferredRequest.Set(DeferredRequest(header, false, headersEqual));
 	return Abort(pContext);

@@ -25,7 +25,7 @@
 #include <memory>
 #include <sstream>
 
-#include <openpal/container/ReadOnlyBuffer.h>
+#include <openpal/container/ReadBufferView.h>
 
 namespace opendnp3
 {
@@ -44,7 +44,7 @@ public:
 	CopyableBuffer();
 	// Construct based on starting size of buffer
 	CopyableBuffer(uint32_t aSize);
-	CopyableBuffer(const openpal::ReadOnlyBuffer&);
+	CopyableBuffer(const openpal::ReadBufferView&);
 	CopyableBuffer(const uint8_t* apBuff, uint32_t aSize);
 	CopyableBuffer(const CopyableBuffer&);
 	CopyableBuffer& operator=(const CopyableBuffer&);
@@ -56,9 +56,9 @@ public:
 		return ! (*this == other);
 	}
 
-	openpal::ReadOnlyBuffer ToReadOnly() const
+	openpal::ReadBufferView ToReadOnly() const
 	{
-		return openpal::ReadOnlyBuffer(mpBuff, mSize);
+		return openpal::ReadBufferView(mpBuff, mSize);
 	}
 
 	operator const uint8_t* () const

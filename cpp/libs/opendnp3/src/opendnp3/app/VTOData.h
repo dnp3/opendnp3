@@ -36,7 +36,7 @@ public:
 	VtoData(const VtoData& arData) : OctetData(arData)
 	{}
 
-	VtoData(const openpal::ReadOnlyBuffer& buff) : OctetData(buff)
+	VtoData(const openpal::ReadBufferView& buff) : OctetData(buff)
 	{}
 
 };

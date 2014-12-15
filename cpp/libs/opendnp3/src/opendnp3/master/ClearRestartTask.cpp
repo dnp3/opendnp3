@@ -49,7 +49,7 @@ void ClearRestartTask::_OnResponseTimeout(openpal::MonotonicTimestamp now)
 	expiration = now.Add(retryPeriod);
 }
 
-IMasterTask::ResponseResult ClearRestartTask::_OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects)
+IMasterTask::ResponseResult ClearRestartTask::_OnResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects)
 {
 	// we only care that the response to this has FIR/FIN
 	if (ValidateSingleResponse(response))

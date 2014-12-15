@@ -36,7 +36,7 @@ APDUWrapper::APDUWrapper() : valid(false)
 
 }
 
-APDUEquality APDUWrapper::Compare(uint32_t headerSize, const ReadOnlyBuffer& lhs, const ReadOnlyBuffer& rhs)
+APDUEquality APDUWrapper::Compare(uint32_t headerSize, const ReadBufferView& lhs, const ReadBufferView& rhs)
 {
 	if (lhs.Size() < headerSize || rhs.Size() < headerSize)
 	{
@@ -58,7 +58,7 @@ APDUEquality APDUWrapper::Compare(uint32_t headerSize, const ReadOnlyBuffer& lhs
 	}
 }
 
-APDUWrapper::APDUWrapper(const openpal::WriteBuffer& buffer_) : valid(true), buffer(buffer_), remaining(buffer_)
+APDUWrapper::APDUWrapper(const openpal::WriteBufferView& buffer_) : valid(true), buffer(buffer_), remaining(buffer_)
 {
 	assert(buffer.Size() >= 2); // need a control & function at a minimum
 	remaining.Advance(2);
@@ -107,7 +107,7 @@ uint32_t APDUWrapper::Size() const
 	return buffer.Size() - remaining.Size();
 }
 
-openpal::ReadOnlyBuffer APDUWrapper::ToReadOnly() const
+openpal::ReadBufferView APDUWrapper::ToReadOnly() const
 {	
 	return buffer.ToReadOnly().Take(this->Size());
 }

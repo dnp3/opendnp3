@@ -175,7 +175,7 @@ void PhysicalLayerBase::StartClose()
 	}
 }
 
-void PhysicalLayerBase::BeginWrite(const openpal::ReadOnlyBuffer& buffer)
+void PhysicalLayerBase::BeginWrite(const openpal::ReadBufferView& buffer)
 {
 	if (state.CanWrite())
 	{
@@ -200,7 +200,7 @@ void PhysicalLayerBase::BeginWrite(const openpal::ReadOnlyBuffer& buffer)
 	}
 }
 
-void PhysicalLayerBase::BeginRead(WriteBuffer& buffer)
+void PhysicalLayerBase::BeginRead(WriteBufferView& buffer)
 {
 	if(state.CanRead())
 	{
@@ -214,7 +214,7 @@ void PhysicalLayerBase::BeginRead(WriteBuffer& buffer)
 			SIMPLE_LOG_BLOCK(logger, logflags::ERR, "Client read a length of 0");
 			auto callback = [this, buffer]()
 			{
-				this->DoReadCallback(ReadOnlyBuffer());
+				this->DoReadCallback(ReadBufferView());
 			};
 			pExecutor->PostLambda(callback);
 		}
@@ -306,7 +306,7 @@ void PhysicalLayerBase::OnReadCallback(const std::error_code& err, uint8_t* pBuf
 
 			if (!state.isClosing)
 			{
-				ReadOnlyBuffer buffer(pBuffer, numRead);
+				ReadBufferView buffer(pBuffer, numRead);
 				this->DoReadCallback(buffer);
 			}
 		}
@@ -371,7 +371,7 @@ void PhysicalLayerBase::DoThisLayerDown()
 	}
 }
 
-void PhysicalLayerBase::DoReadCallback(const ReadOnlyBuffer& arBuffer)
+void PhysicalLayerBase::DoReadCallback(const ReadBufferView& arBuffer)
 {
 	if (pCallbacks)
 	{

@@ -13,8 +13,8 @@ class ArbitraryConversion(name: String, incHeaders: List[String], cppHeaders: Li
   def signatures : Iterator[String] = {
     Iterator(
       "typedef " + name + " Target;",
-      "static " + name + " ReadTarget(openpal::ReadOnlyBuffer&);",
-      "static void WriteTarget(const " + name + "&, openpal::WriteBuffer&);"
+      "static " + name + " ReadTarget(openpal::ReadBufferView&);",
+      "static void WriteTarget(const " + name + "&, openpal::WriteBufferView&);"
     )
   }
 
@@ -24,14 +24,14 @@ class ArbitraryConversion(name: String, incHeaders: List[String], cppHeaders: Li
     def args : String = fs.fields.map(f => "gv."+f.name).mkString(", ")
 
     def func1 = {
-      Iterator(name + " " + fs.name + "::ReadTarget(ReadOnlyBuffer& buff)") ++ bracket {
+      Iterator(name + " " + fs.name + "::ReadTarget(ReadBufferView& buff)") ++ bracket {
         Iterator("auto gv = "+ fs.name + "::Read(buff);",
           "return " + name + "Factory::From(" + args + ");")
       }
     }
 
     def func2 = {
-      Iterator("void " + fs.name + "::WriteTarget(const " + name + "& value, openpal::WriteBuffer& buff)") ++ bracket {
+      Iterator("void " + fs.name + "::WriteTarget(const " + name + "& value, openpal::WriteBufferView& buff)") ++ bracket {
         Iterator(fs.name+"::Write(Convert" + fs.name + "::Apply(value), buff);")
       }
     }

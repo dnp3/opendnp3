@@ -39,7 +39,7 @@ void MockTransportLayer::SendDown(ITransportSegment& segments)
 	pLinkLayer->Send(segments);
 }
 
-void MockTransportLayer::OnReceive(const openpal::ReadOnlyBuffer& buffer)
+void MockTransportLayer::OnReceive(const openpal::ReadBufferView& buffer)
 {
 	receivedQueue.push_back(toHex(buffer));
 }

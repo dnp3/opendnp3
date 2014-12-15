@@ -29,7 +29,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-APDUResponse::APDUResponse(const openpal::WriteBuffer& buffer) : APDUWrapper(buffer)
+APDUResponse::APDUResponse(const openpal::WriteBufferView& buffer) : APDUWrapper(buffer)
 {
 	assert(buffer.Size() >= 4);
 	remaining.Advance(2);

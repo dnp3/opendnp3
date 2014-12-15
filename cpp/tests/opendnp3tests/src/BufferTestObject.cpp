@@ -50,7 +50,7 @@ void BufferTestObject::ClearBuffer()
 	mBuffer.clear();
 }
 
-bool BufferTestObject::BufferEquals(const openpal::ReadOnlyBuffer& arBuffer) const
+bool BufferTestObject::BufferEquals(const openpal::ReadBufferView& arBuffer) const
 {
 	return BufferEquals(arBuffer, arBuffer.Size());
 }
@@ -103,7 +103,7 @@ bool BufferTestObject::BufferEqualsString(const std::string& arData) const
 	return true;
 }
 
-void BufferTestObject::WriteToBuffer(const ReadOnlyBuffer& input)
+void BufferTestObject::WriteToBuffer(const ReadBufferView& input)
 {
 	if((mBuffer.size() + input.Size()) > MAX_SIZE )
 	{

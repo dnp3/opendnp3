@@ -31,14 +31,14 @@ class LazyIterable : public IterableBuffer<T>
 {
 public:
 
-	LazyIterable(const openpal::ReadOnlyBuffer& buffer, uint32_t aSize, const ReadFunc& aReadFunc):
+	LazyIterable(const openpal::ReadBufferView& buffer, uint32_t aSize, const ReadFunc& aReadFunc):
 		IterableBuffer<T>(buffer, aSize),
 		readFunc(aReadFunc)
 	{}
 
 protected:
 
-	virtual T ValueAt(openpal::ReadOnlyBuffer& buff, uint32_t aPos) const final
+	virtual T ValueAt(openpal::ReadBufferView& buff, uint32_t aPos) const final
 	{
 		return readFunc(buff, aPos);
 	}
@@ -49,7 +49,7 @@ private:
 };
 
 template <class T, class ReadFunc>
-LazyIterable<T, ReadFunc> CreateLazyIterable(const openpal::ReadOnlyBuffer& buffer, uint32_t aSize, const ReadFunc& aReadFunc)
+LazyIterable<T, ReadFunc> CreateLazyIterable(const openpal::ReadBufferView& buffer, uint32_t aSize, const ReadFunc& aReadFunc)
 {
 	return LazyIterable<T, ReadFunc>(buffer, aSize, aReadFunc);
 }

@@ -83,12 +83,12 @@ void SerialTimeSyncTask::OnResponseOK(openpal::MonotonicTimestamp now)
 	expiration = MonotonicTimestamp::Max();
 }
 
-IMasterTask::ResponseResult SerialTimeSyncTask::_OnResponse(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects)
+IMasterTask::ResponseResult SerialTimeSyncTask::_OnResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects)
 {	
 	return (delay < 0) ? OnResponseDelayMeas(response, objects) : OnResponseWriteTime(response, objects);				
 }
 
-IMasterTask::ResponseResult SerialTimeSyncTask::OnResponseDelayMeas(const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects)
+IMasterTask::ResponseResult SerialTimeSyncTask::OnResponseDelayMeas(const APDUResponseHeader& response, const openpal::ReadBufferView& objects)
 {	
 	if (ValidateSingleResponse(response))
 	{
@@ -123,7 +123,7 @@ IMasterTask::ResponseResult SerialTimeSyncTask::OnResponseDelayMeas(const APDURe
 	}	
 }
 
-IMasterTask::ResponseResult SerialTimeSyncTask::OnResponseWriteTime(const APDUResponseHeader& header, const openpal::ReadOnlyBuffer& objects)
+IMasterTask::ResponseResult SerialTimeSyncTask::OnResponseWriteTime(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
 {
 	return ValidateNullResponse(header, objects) ? ResponseResult::OK_FINAL : ResponseResult::ERROR_BAD_RESPONSE;
 }

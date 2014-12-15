@@ -28,7 +28,7 @@ using namespace openpal;
 
 namespace opendnp3 {
 
-Group40Var1 Group40Var1::Read(ReadOnlyBuffer& buffer)
+Group40Var1 Group40Var1::Read(ReadBufferView& buffer)
 {
   Group40Var1 obj;
   obj.flags = UInt8::Read(buffer);
@@ -38,7 +38,7 @@ Group40Var1 Group40Var1::Read(ReadOnlyBuffer& buffer)
   return obj;
 }
 
-void Group40Var1::Write(const Group40Var1& arg, openpal::WriteBuffer& buffer)
+void Group40Var1::Write(const Group40Var1& arg, openpal::WriteBufferView& buffer)
 {
   UInt8::Write(buffer, arg.flags);
   buffer.Advance(1);
@@ -47,19 +47,19 @@ void Group40Var1::Write(const Group40Var1& arg, openpal::WriteBuffer& buffer)
 }
 
 
-AnalogOutputStatus Group40Var1::ReadTarget(ReadOnlyBuffer& buff)
+AnalogOutputStatus Group40Var1::ReadTarget(ReadBufferView& buff)
 {
   auto gv = Group40Var1::Read(buff);
   return AnalogOutputStatusFactory::From(gv.flags, gv.value);
 }
 
-void Group40Var1::WriteTarget(const AnalogOutputStatus& value, openpal::WriteBuffer& buff)
+void Group40Var1::WriteTarget(const AnalogOutputStatus& value, openpal::WriteBufferView& buff)
 {
   Group40Var1::Write(ConvertGroup40Var1::Apply(value), buff);
 }
 
 
-Group40Var2 Group40Var2::Read(ReadOnlyBuffer& buffer)
+Group40Var2 Group40Var2::Read(ReadBufferView& buffer)
 {
   Group40Var2 obj;
   obj.flags = UInt8::Read(buffer);
@@ -69,7 +69,7 @@ Group40Var2 Group40Var2::Read(ReadOnlyBuffer& buffer)
   return obj;
 }
 
-void Group40Var2::Write(const Group40Var2& arg, openpal::WriteBuffer& buffer)
+void Group40Var2::Write(const Group40Var2& arg, openpal::WriteBufferView& buffer)
 {
   UInt8::Write(buffer, arg.flags);
   buffer.Advance(1);
@@ -78,19 +78,19 @@ void Group40Var2::Write(const Group40Var2& arg, openpal::WriteBuffer& buffer)
 }
 
 
-AnalogOutputStatus Group40Var2::ReadTarget(ReadOnlyBuffer& buff)
+AnalogOutputStatus Group40Var2::ReadTarget(ReadBufferView& buff)
 {
   auto gv = Group40Var2::Read(buff);
   return AnalogOutputStatusFactory::From(gv.flags, gv.value);
 }
 
-void Group40Var2::WriteTarget(const AnalogOutputStatus& value, openpal::WriteBuffer& buff)
+void Group40Var2::WriteTarget(const AnalogOutputStatus& value, openpal::WriteBufferView& buff)
 {
   Group40Var2::Write(ConvertGroup40Var2::Apply(value), buff);
 }
 
 
-Group40Var3 Group40Var3::Read(ReadOnlyBuffer& buffer)
+Group40Var3 Group40Var3::Read(ReadBufferView& buffer)
 {
   Group40Var3 obj;
   obj.flags = UInt8::Read(buffer);
@@ -100,7 +100,7 @@ Group40Var3 Group40Var3::Read(ReadOnlyBuffer& buffer)
   return obj;
 }
 
-void Group40Var3::Write(const Group40Var3& arg, openpal::WriteBuffer& buffer)
+void Group40Var3::Write(const Group40Var3& arg, openpal::WriteBufferView& buffer)
 {
   UInt8::Write(buffer, arg.flags);
   buffer.Advance(1);
@@ -109,19 +109,19 @@ void Group40Var3::Write(const Group40Var3& arg, openpal::WriteBuffer& buffer)
 }
 
 
-AnalogOutputStatus Group40Var3::ReadTarget(ReadOnlyBuffer& buff)
+AnalogOutputStatus Group40Var3::ReadTarget(ReadBufferView& buff)
 {
   auto gv = Group40Var3::Read(buff);
   return AnalogOutputStatusFactory::From(gv.flags, gv.value);
 }
 
-void Group40Var3::WriteTarget(const AnalogOutputStatus& value, openpal::WriteBuffer& buff)
+void Group40Var3::WriteTarget(const AnalogOutputStatus& value, openpal::WriteBufferView& buff)
 {
   Group40Var3::Write(ConvertGroup40Var3::Apply(value), buff);
 }
 
 
-Group40Var4 Group40Var4::Read(ReadOnlyBuffer& buffer)
+Group40Var4 Group40Var4::Read(ReadBufferView& buffer)
 {
   Group40Var4 obj;
   obj.flags = UInt8::Read(buffer);
@@ -131,7 +131,7 @@ Group40Var4 Group40Var4::Read(ReadOnlyBuffer& buffer)
   return obj;
 }
 
-void Group40Var4::Write(const Group40Var4& arg, openpal::WriteBuffer& buffer)
+void Group40Var4::Write(const Group40Var4& arg, openpal::WriteBufferView& buffer)
 {
   UInt8::Write(buffer, arg.flags);
   buffer.Advance(1);
@@ -140,13 +140,13 @@ void Group40Var4::Write(const Group40Var4& arg, openpal::WriteBuffer& buffer)
 }
 
 
-AnalogOutputStatus Group40Var4::ReadTarget(ReadOnlyBuffer& buff)
+AnalogOutputStatus Group40Var4::ReadTarget(ReadBufferView& buff)
 {
   auto gv = Group40Var4::Read(buff);
   return AnalogOutputStatusFactory::From(gv.flags, gv.value);
 }
 
-void Group40Var4::WriteTarget(const AnalogOutputStatus& value, openpal::WriteBuffer& buff)
+void Group40Var4::WriteTarget(const AnalogOutputStatus& value, openpal::WriteBufferView& buff)
 {
   Group40Var4::Write(ConvertGroup40Var4::Apply(value), buff);
 }

@@ -35,7 +35,7 @@ class MockUpperLayer : public IUpperLayer, public HasLowerLayer, public BufferTe
 {
 public:
 
-	typedef std::function<void (const openpal::ReadOnlyBuffer&)> OnReceiveHandler;
+	typedef std::function<void (const openpal::ReadBufferView&)> OnReceiveHandler;
 
 	struct State
 	{
@@ -64,7 +64,7 @@ public:
 	}
 
 	void SendDown(const std::string&);
-	void SendDown(const openpal::ReadOnlyBuffer& arBuffer);
+	void SendDown(const openpal::ReadBufferView& arBuffer);
 
 	bool CountersEqual(size_t success, size_t failure)
 	{
@@ -94,7 +94,7 @@ public:
 	}
 
 	//these are the NVII delegates
-	virtual void OnReceive(const openpal::ReadOnlyBuffer& buffer) override final;
+	virtual void OnReceive(const openpal::ReadBufferView& buffer) override final;
 	virtual void OnSendResult(bool isSuccess) override final;
 	virtual void OnLowerLayerUp() override final;
 	virtual void OnLowerLayerDown() override final;

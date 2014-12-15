@@ -261,18 +261,18 @@ void LinkLayerRouter::RequestLinkStatus(bool aIsMaster, uint16_t aDest, uint16_t
 	ILinkSession* pDest = GetDestination(aDest, aSrc);
 	if(pDest) pDest->RequestLinkStatus(aIsMaster, aDest, aSrc);
 }
-void LinkLayerRouter::ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const ReadOnlyBuffer& arBuffer)
+void LinkLayerRouter::ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const ReadBufferView& arBuffer)
 {
 	ILinkSession* pDest = GetDestination(aDest, aSrc);
 	if(pDest) pDest->ConfirmedUserData(aIsMaster, aFcb, aDest, aSrc, arBuffer);
 }
-void LinkLayerRouter::UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const ReadOnlyBuffer& arBuffer)
+void LinkLayerRouter::UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const ReadBufferView& arBuffer)
 {
 	ILinkSession* pDest = GetDestination(aDest, aSrc);
 	if(pDest) pDest->UnconfirmedUserData(aIsMaster, aDest, aSrc, arBuffer);
 }
 
-void LinkLayerRouter::OnReceive(const openpal::ReadOnlyBuffer& input)
+void LinkLayerRouter::OnReceive(const openpal::ReadBufferView& input)
 {
 	// The order is important here. You must let the receiver process the byte or another read could write
 	// over the buffer before it is processed	
@@ -284,7 +284,7 @@ void LinkLayerRouter::OnReceive(const openpal::ReadOnlyBuffer& input)
 	}	
 }
 
-void LinkLayerRouter::BeginTransmit(const openpal::ReadOnlyBuffer& buffer, ILinkSession* pContext)
+void LinkLayerRouter::BeginTransmit(const openpal::ReadBufferView& buffer, ILinkSession* pContext)
 {
 	if (this->IsOnline())
 	{

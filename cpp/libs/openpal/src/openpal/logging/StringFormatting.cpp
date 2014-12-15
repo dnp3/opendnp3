@@ -22,7 +22,7 @@
 #include "StringFormatting.h"
 
 #include "openpal/util/ToHex.h"
-#include "openpal/container/ReadOnlyBuffer.h"
+#include "openpal/container/ReadBufferView.h"
 
 #include <cstdio>
 #include <cstdlib>
@@ -42,10 +42,10 @@ namespace openpal
 		return tmp;
 	}
 
-	void LogHex(Logger& logger, const openpal::LogFilters& filters, const openpal::ReadOnlyBuffer& source, uint32_t firstRowSize, uint32_t otherRowSize)
+	void LogHex(Logger& logger, const openpal::LogFilters& filters, const openpal::ReadBufferView& source, uint32_t firstRowSize, uint32_t otherRowSize)
 	{
 		char buffer[MAX_LOG_ENTRY_SIZE];
-		ReadOnlyBuffer copy(source);
+		ReadBufferView copy(source);
 		uint32_t rowCount = 0;
 		while (copy.IsNotEmpty())
 		{

@@ -24,7 +24,7 @@
 #include <cstdint>
 #include <string>
 
-#include <openpal/container/ReadOnlyBuffer.h>
+#include <openpal/container/ReadBufferView.h>
 
 namespace opendnp3
 {
@@ -33,7 +33,7 @@ std::string ByteToHex(uint8_t b);
 
 std::string toHex(const uint8_t* pBuff, size_t length, bool spaced = false);
 
-std::string toHex(const openpal::ReadOnlyBuffer& buffer, bool spaced = true);
+std::string toHex(const openpal::ReadBufferView& buffer, bool spaced = true);
 
 }
 

@@ -40,7 +40,7 @@ public:
 	virtual void RequestLinkStatus(LinkLayer*) = 0;
 
 	virtual void TestLinkStatus(LinkLayer*, bool aFcb) = 0;
-	virtual void ConfirmedUserData(LinkLayer*, bool aFcb, const openpal::ReadOnlyBuffer&) = 0;
+	virtual void ConfirmedUserData(LinkLayer*, bool aFcb, const openpal::ReadBufferView&) = 0;
 
 	virtual void OnTransmitResult(LinkLayer* apLL, bool success);
 
@@ -66,7 +66,7 @@ public:
 	virtual void ResetLinkStates(LinkLayer*) override final;
 	virtual void RequestLinkStatus(LinkLayer*) override final;
 	virtual void TestLinkStatus(LinkLayer*, bool aFcb) override final;
-	virtual void ConfirmedUserData(LinkLayer*, bool aFcb, const openpal::ReadOnlyBuffer&) override final;
+	virtual void ConfirmedUserData(LinkLayer*, bool aFcb, const openpal::ReadBufferView&) override final;
 };
 
 
@@ -96,7 +96,7 @@ void SLLS_TransmitWaitBase<NextState>::TestLinkStatus(LinkLayer* apLL, bool aFcb
 }
 
 template <class NextState>
-void SLLS_TransmitWaitBase<NextState>::ConfirmedUserData(LinkLayer* apLL, bool aFcb, const openpal::ReadOnlyBuffer&)
+void SLLS_TransmitWaitBase<NextState>::ConfirmedUserData(LinkLayer* apLL, bool aFcb, const openpal::ReadBufferView&)
 {
 	SIMPLE_LOG_BLOCK(apLL->GetLogger(), flags::WARN, "Ignoring link frame, remote is flooding");
 }
@@ -108,7 +108,7 @@ class SLLS_NotReset : public SecStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(SLLS_NotReset);
 
-	virtual void ConfirmedUserData(LinkLayer*, bool aFcb, const openpal::ReadOnlyBuffer&) override final;
+	virtual void ConfirmedUserData(LinkLayer*, bool aFcb, const openpal::ReadBufferView&) override final;
 
 	virtual void ResetLinkStates(LinkLayer*) override final;
 	virtual void RequestLinkStatus(LinkLayer*) override final;
@@ -122,7 +122,7 @@ class SLLS_Reset : public SecStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(SLLS_Reset);
 
-	virtual void ConfirmedUserData(LinkLayer*, bool aFcb, const openpal::ReadOnlyBuffer&) override final;
+	virtual void ConfirmedUserData(LinkLayer*, bool aFcb, const openpal::ReadBufferView&) override final;
 
 	virtual void ResetLinkStates(LinkLayer*) override final;
 	virtual void RequestLinkStatus(LinkLayer*) override final;

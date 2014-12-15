@@ -25,7 +25,7 @@
 #include <memory.h>
 
 #include <openpal/util/ToHex.h>
-#include <openpal/container/WriteBuffer.h>
+#include <openpal/container/WriteBufferView.h>
 
 namespace opendnp3
 {
@@ -50,11 +50,11 @@ CopyableBuffer::CopyableBuffer(uint32_t aSize) :
 	this->Zero();
 }
 
-CopyableBuffer::CopyableBuffer(const openpal::ReadOnlyBuffer& buffer) :
+CopyableBuffer::CopyableBuffer(const openpal::ReadBufferView& buffer) :
 	mpBuff(new uint8_t[buffer.Size()]),
 	mSize(buffer.Size())
 {
-	openpal::WriteBuffer dest(mpBuff, mSize);
+	openpal::WriteBufferView dest(mpBuff, mSize);
 	buffer.CopyTo(dest);
 }
 

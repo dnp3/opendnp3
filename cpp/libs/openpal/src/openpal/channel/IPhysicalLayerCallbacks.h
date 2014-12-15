@@ -21,7 +21,7 @@
 #ifndef OPENPAL_IPHYSICALLAYERCALLBACKS_H
 #define OPENPAL_IPHYSICALLAYERCALLBACKS_H
 
-#include "openpal/container/ReadOnlyBuffer.h"
+#include "openpal/container/ReadBufferView.h"
 
 namespace openpal
 {
@@ -43,7 +43,7 @@ public:
 	virtual void OnOpenFailure() = 0;
 
 	// Called by the physical layer when data arrives
-	virtual void OnReceive(const ReadOnlyBuffer&) = 0;
+	virtual void OnReceive(const ReadBufferView&) = 0;
 
 	// Called by lower layer when a previously requested send operation succeeds or fails.
 	// Layers can only have 1 outstanding send operation. The callback is guaranteed

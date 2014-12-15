@@ -47,11 +47,11 @@ public:
 
 	/// ILowerLayer	
 
-	virtual void BeginTransmit(const openpal::ReadOnlyBuffer&) override final;
+	virtual void BeginTransmit(const openpal::ReadBufferView&) override final;
 
 	/// IUpperLayer
 
-	virtual void OnReceive(const openpal::ReadOnlyBuffer&) override final;
+	virtual void OnReceive(const openpal::ReadBufferView&) override final;
 	virtual void OnLowerLayerUp() override final;
 	virtual void OnLowerLayerDown() override final;
 	virtual void OnSendResult(bool isSuccess) override final;

@@ -32,7 +32,7 @@ IMasterState* IMasterState::OnStart(MasterContext*pContext)
 	return this;
 }
 
-IMasterState* IMasterState::OnResponse(MasterContext*pContext, const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects)
+IMasterState* IMasterState::OnResponse(MasterContext*pContext, const APDUResponseHeader& response, const openpal::ReadBufferView& objects)
 {
 	FORMAT_LOG_BLOCK(pContext->logger, flags::WARN, "Not expecting a response, sequence: %u", response.control.SEQ);
 	return this;
@@ -109,7 +109,7 @@ IMasterState* MasterStateTaskReady::OnStart(MasterContext* pContext)
 
 MasterStateWaitForResponse MasterStateWaitForResponse::instance;
 
-IMasterState* MasterStateWaitForResponse::OnResponse(MasterContext* pContext, const APDUResponseHeader& response, const openpal::ReadOnlyBuffer& objects)
+IMasterState* MasterStateWaitForResponse::OnResponse(MasterContext* pContext, const APDUResponseHeader& response, const openpal::ReadBufferView& objects)
 {
 	if (response.control.SEQ == pContext->solSeq)
 	{

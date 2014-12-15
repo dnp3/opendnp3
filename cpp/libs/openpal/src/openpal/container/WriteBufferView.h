@@ -18,36 +18,50 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENPAL_DYNAMICBUFFER_H
-#define OPENPAL_DYNAMICBUFFER_H
+#ifndef OPENPAL_WriteBufferView_H
+#define OPENPAL_WriteBufferView_H
 
-#include "DynamicArray.h"
-
-#include "openpal/container/WriteBufferView.h"
-#include "openpal/container/ReadBufferView.h"
+#include "HasSize.h"
 
 #include <cstdint>
 
 namespace openpal
 {
 
-class DynamicBuffer : public DynamicArray<uint8_t, uint32_t>
-{
+class ReadBufferView;
 
+class WriteBufferView : public HasSize<uint32_t>
+{
 public:
 
-	DynamicBuffer(uint32_t size);
+	static WriteBufferView Empty();
+
+	WriteBufferView();	
+	WriteBufferView(uint8_t* pBuffer, uint32_t size);
+
+	uint32_t ReadFrom(const ReadBufferView& buffer);
+
+	void Clear();
+
+	uint32_t Advance(uint32_t count);
 
 	ReadBufferView ToReadOnly() const;
 
-	WriteBufferView GetWriteBufferView();
+	operator uint8_t* ()
+	{
+		return pBuffer;
+	};
 
-	WriteBufferView GetWriteBufferView(uint32_t maxSize);
+	operator uint8_t const* () const
+	{
+		return pBuffer;
+	};
 
-	const uint8_t* operator()() const { return buffer; }
+private:
 
-	uint8_t* operator()() { return buffer; }
+	uint8_t* pBuffer;
 };
+
 
 }
 

@@ -145,12 +145,6 @@
     <ClInclude Include="src\openpal\container\HasSize.h">
       <Filter>Header\container</Filter>
     </ClInclude>
-    <ClInclude Include="src\openpal\container\ReadOnlyBuffer.h">
-      <Filter>Header\container</Filter>
-    </ClInclude>
-    <ClInclude Include="src\openpal\container\WriteBuffer.h">
-      <Filter>Header\container</Filter>
-    </ClInclude>
     <ClInclude Include="src\openpal\executor\IMutex.h">
       <Filter>Header\executor</Filter>
     </ClInclude>
@@ -179,6 +173,12 @@
       <Filter>Header\container</Filter>
     </ClInclude>
     <ClInclude Include="src\openpal\container\ArrayView.h">
+      <Filter>Header\container</Filter>
+    </ClInclude>
+    <ClInclude Include="src\openpal\container\ReadBufferView.h">
+      <Filter>Header\container</Filter>
+    </ClInclude>
+    <ClInclude Include="src\openpal\container\WriteBufferView.h">
       <Filter>Header\container</Filter>
     </ClInclude>
   </ItemGroup>
@@ -216,16 +216,16 @@
     <ClCompile Include="src\openpal\util\ToHex.cpp">
       <Filter>Source\util</Filter>
     </ClCompile>
-    <ClCompile Include="src\openpal\container\ReadOnlyBuffer.cpp">
-      <Filter>Source\container</Filter>
-    </ClCompile>
-    <ClCompile Include="src\openpal\container\WriteBuffer.cpp">
-      <Filter>Source\container</Filter>
-    </ClCompile>
     <ClCompile Include="src\openpal\executor\Erasure.cpp">
       <Filter>Source\executor</Filter>
     </ClCompile>
     <ClCompile Include="src\openpal\container\DynamicBuffer.cpp">
+      <Filter>Source\container</Filter>
+    </ClCompile>
+    <ClCompile Include="src\openpal\container\ReadBufferView.cpp">
+      <Filter>Source\container</Filter>
+    </ClCompile>
+    <ClCompile Include="src\openpal\container\WriteBufferView.cpp">
       <Filter>Source\container</Filter>
     </ClCompile>
   </ItemGroup>

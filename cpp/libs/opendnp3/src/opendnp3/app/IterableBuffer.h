@@ -21,7 +21,7 @@
 #ifndef OPENDNP3_ITERABLEBUFFER_H
 #define OPENDNP3_ITERABLEBUFFER_H
 
-#include <openpal/container/ReadOnlyBuffer.h>
+#include <openpal/container/ReadBufferView.h>
 
 #include <assert.h>
 
@@ -34,7 +34,7 @@ class BufferWithCount
 
 protected:
 
-	BufferWithCount(const openpal::ReadOnlyBuffer& aBuffer, uint32_t aCount) :
+	BufferWithCount(const openpal::ReadBufferView& aBuffer, uint32_t aCount) :
 		count(aCount),
 		buffer(aBuffer)
 	{}
@@ -57,7 +57,7 @@ public:
 protected:
 
 	uint32_t count;
-	openpal::ReadOnlyBuffer buffer;
+	openpal::ReadBufferView buffer;
 };
 
 template <class T>
@@ -96,7 +96,7 @@ public:
 
 		private:
 			uint32_t pos;
-			openpal::ReadOnlyBuffer copy;
+			openpal::ReadBufferView copy;
 			const IterableBuffer* pBuffer;
 	};
 
@@ -105,7 +105,7 @@ public:
 	template <class A, class B, class MapToU> friend class MappedIterableBuffer;
 
 
-	IterableBuffer(const openpal::ReadOnlyBuffer& aBuffer, uint32_t aSize) : BufferWithCount(aBuffer, aSize)
+	IterableBuffer(const openpal::ReadBufferView& aBuffer, uint32_t aSize) : BufferWithCount(aBuffer, aSize)
 	{}
 
 	Iterator Iterate() const
@@ -117,7 +117,7 @@ public:
 	{
 		if(count == 1)
 		{
-			openpal::ReadOnlyBuffer copy(this->buffer);
+			openpal::ReadBufferView copy(this->buffer);
 			value = ValueAt(copy, 0);
 			return true;
 		}
@@ -127,7 +127,7 @@ public:
 	template <class IterFunc>
 	void foreach(const IterFunc& fun) const
 	{
-		openpal::ReadOnlyBuffer copy(this->buffer);  // iterate over a mutable copy of the buffer
+		openpal::ReadBufferView copy(this->buffer);  // iterate over a mutable copy of the buffer
 		for (uint32_t pos = 0; pos < count; ++pos)
 		{
 			fun(ValueAt(copy, pos));
@@ -136,7 +136,7 @@ public:
 
 protected:
 
-	virtual T ValueAt(openpal::ReadOnlyBuffer&, uint32_t pos) const = 0;
+	virtual T ValueAt(openpal::ReadBufferView&, uint32_t pos) const = 0;
 };
 
 

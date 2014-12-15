@@ -30,7 +30,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-HeaderWriter::HeaderWriter(openpal::WriteBuffer* position_) : position(position_)
+HeaderWriter::HeaderWriter(openpal::WriteBufferView* position_) : position(position_)
 {}
 
 uint32_t  HeaderWriter::Remaining() const
@@ -62,9 +62,9 @@ bool HeaderWriter::WriteHeader(GroupVariationID id, QualifierCode qc)
 	if(position->Size() < 3) return false;
 	else
 	{
-		UInt8::WriteBuffer(*position, id.group);
-		UInt8::WriteBuffer(*position, id.variation);
-		UInt8::WriteBuffer(*position, QualifierCodeToType(qc));
+		UInt8::WriteBufferView(*position, id.group);
+		UInt8::WriteBufferView(*position, id.variation);
+		UInt8::WriteBufferView(*position, QualifierCodeToType(qc));
 		return true;
 	}
 }

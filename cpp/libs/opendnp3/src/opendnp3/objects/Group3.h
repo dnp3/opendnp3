@@ -21,8 +21,8 @@
 #ifndef OPENDNP3_GROUP3_H
 #define OPENDNP3_GROUP3_H
 
-#include <openpal/container/ReadOnlyBuffer.h>
-#include <openpal/container/WriteBuffer.h>
+#include <openpal/container/ReadBufferView.h>
+#include <openpal/container/WriteBufferView.h>
 #include "opendnp3/app/GroupVariationID.h"
 #include "opendnp3/app/DNP3Serializer.h"
 #include "opendnp3/app/MeasurementTypes.h"
@@ -43,14 +43,14 @@ struct Group3Var2
 {
   static GroupVariationID ID() { return GroupVariationID(3,2); }
   static uint32_t Size() { return 1; }
-  static Group3Var2 Read(openpal::ReadOnlyBuffer&);
-  static void Write(const Group3Var2&, openpal::WriteBuffer&);
+  static Group3Var2 Read(openpal::ReadBufferView&);
+  static void Write(const Group3Var2&, openpal::WriteBufferView&);
 
   static DNP3Serializer<DoubleBitBinary> Inst() { return DNP3Serializer<DoubleBitBinary>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef DoubleBitBinary Target;
-  static DoubleBitBinary ReadTarget(openpal::ReadOnlyBuffer&);
-  static void WriteTarget(const DoubleBitBinary&, openpal::WriteBuffer&);
+  static DoubleBitBinary ReadTarget(openpal::ReadBufferView&);
+  static void WriteTarget(const DoubleBitBinary&, openpal::WriteBufferView&);
 
   uint8_t flags;
 };
