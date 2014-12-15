@@ -19,41 +19,43 @@
 * to you under the terms of the License.
 */
 
-#ifndef OPENDNP3_GROUP120_H
-#define OPENDNP3_GROUP120_H
+#include "Group120.h"
 
-#include <openpal/logging/Logger.h>
-#include <openpal/container/ReadBufferView.h>
-#include <openpal/container/WriteBufferView.h>
+#include <openpal/logging/LogMacros.h>
+#include <openpal/serialization/Serialization.h>
 
+#include <opendnp3/LogLevels.h>
 
-#include "opendnp3/gen/HMACType.h"
-#include "opendnp3/gen/ChallengeReason.h"
-#include "opendnp3/app/GroupVariationID.h"
+using namespace openpal;
 
 namespace opendnp3 {
 
-struct Group120Var1
+Group120Var1::Group120Var1() : 
+	challengeSeqNum(0),
+	userNum(0),
+	hmacType(HMACType::Unknown),
+	reason(ChallengeReason::UNKNOWN)	
 {
-	Group120Var1();
-
-	static GroupVariationID ID() { return GroupVariationID(120,1); }	
-	
-	uint32_t challengeSeqNum;
-	uint16_t userNum;
-	HMACType hmacType;
-	ChallengeReason reason;	
-	openpal::ReadBufferView challengeData;
-	
-	bool Read(const openpal::ReadBufferView& data, Group120Var1& output, openpal::Logger* pLogger);
-
-	private:
-
-	static const uint32_t MIN_SIZE = 12;	
-};
-
-
-
+		
 }
 
-#endif
+bool Group120Var1::Read(const openpal::ReadBufferView& data, Group120Var1& output, openpal::Logger* pLogger)
+{
+	if (data.Size() < MIN_SIZE)
+	{
+		SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for g120v1 object");
+		return false;
+	}
+	else
+	{
+		ReadBufferView copy(data);
+		output.challengeSeqNum = UInt32::ReadBuffer(copy);		
+		output.userNum = UInt16::ReadBuffer(copy);
+		output.hmacType = HMACTypeFromType(UInt8::ReadBuffer(copy));
+		output.reason = ChallengeReasonFromType(UInt8::ReadBuffer(copy));
+		output.challengeData = copy;
+		return true;
+	}
+}
+
+}

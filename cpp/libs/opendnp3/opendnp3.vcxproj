@@ -323,6 +323,7 @@
     <ClCompile Include="src\opendnp3\objects\Group10.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group11.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group12.cpp" />
+    <ClCompile Include="src\opendnp3\objects\Group120.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group2.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group20.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group21.cpp" />

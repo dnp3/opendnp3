@@ -1106,5 +1106,8 @@
     <ClCompile Include="src\opendnp3\gen\ChallengeReason.cpp">
       <Filter>Source\gen</Filter>
     </ClCompile>
+    <ClCompile Include="src\opendnp3\objects\Group120.cpp">
+      <Filter>Source\objects</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
