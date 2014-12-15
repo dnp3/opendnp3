@@ -95,7 +95,7 @@ enum class FunctionCode : uint8_t
   /// The master uses this function code when sending authentication requests to the outstation
   AUTH_REQUEST = 0x20,
   /// The master uses this function code when sending authentication requests to the outstation that do no require acknowledgement
-  AUTH_REQUEST_NO_ACK = 0x20,
+  AUTH_REQUEST_NO_ACK = 0x21,
   /// Master shall interpret this fragment as an Application Layer response to an ApplicationLayer request
   RESPONSE = 0x81,
   /// Master shall interpret this fragment as an unsolicited response that was not prompted by an explicit request

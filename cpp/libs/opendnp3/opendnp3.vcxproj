@@ -87,6 +87,7 @@
     <ClInclude Include="src\opendnp3\gen\EventFrozenCounterVariation.h" />
     <ClInclude Include="src\opendnp3\gen\EventMode.h" />
     <ClInclude Include="src\opendnp3\gen\GroupVariation.h" />
+    <ClInclude Include="src\opendnp3\gen\HMACType.h" />
     <ClInclude Include="src\opendnp3\gen\IndexMode.h" />
     <ClInclude Include="src\opendnp3\gen\IntervalUnits.h" />
     <ClInclude Include="src\opendnp3\gen\MasterTaskType.h" />
@@ -273,6 +274,7 @@
     <ClCompile Include="src\opendnp3\gen\DoubleBit.cpp" />
     <ClCompile Include="src\opendnp3\gen\FunctionCode.cpp" />
     <ClCompile Include="src\opendnp3\gen\GroupVariation.cpp" />
+    <ClCompile Include="src\opendnp3\gen\HMACType.cpp" />
     <ClCompile Include="src\opendnp3\gen\IntervalUnits.cpp" />
     <ClCompile Include="src\opendnp3\gen\LinkFunction.cpp" />
     <ClCompile Include="src\opendnp3\gen\PointClass.cpp" />

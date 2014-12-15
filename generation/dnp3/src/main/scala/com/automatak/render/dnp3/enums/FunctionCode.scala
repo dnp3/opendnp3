@@ -42,7 +42,7 @@ object FunctionCode {
     EnumValue("AUTHENTICATE_FILE", 29, "Outstation shall return a file authentication key"),
     EnumValue("ABORT_FILE", 30, "Outstation shall abort a file transfer operation"),
     EnumValue("AUTH_REQUEST", 32, "The master uses this function code when sending authentication requests to the outstation"),
-    EnumValue("AUTH_REQUEST_NO_ACK", 32, "The master uses this function code when sending authentication requests to the outstation that do no require acknowledgement"),
+    EnumValue("AUTH_REQUEST_NO_ACK", 33, "The master uses this function code when sending authentication requests to the outstation that do no require acknowledgement"),
     EnumValue("RESPONSE", 129, "Master shall interpret this fragment as an Application Layer response to an ApplicationLayer request"),
     EnumValue("UNSOLICITED_RESPONSE", 130, "Master shall interpret this fragment as an unsolicited response that was not prompted by an explicit request"),
     EnumValue("AUTH_RESPONSE", 131, "The outstation uses this function code to issue authentication messages to the master"),

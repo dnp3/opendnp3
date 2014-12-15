@@ -723,6 +723,9 @@
     <ClInclude Include="src\opendnp3\outstation\DatabaseConfigView.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\HMACType.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\AnalogOutput.cpp">
@@ -1090,6 +1093,9 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\DatabaseConfigView.cpp">
       <Filter>Source\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\gen\HMACType.cpp">
+      <Filter>Source\gen</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -94,7 +94,7 @@ FunctionCode FunctionCodeFromType(uint8_t arg)
       return FunctionCode::ABORT_FILE;
     case(0x20):
       return FunctionCode::AUTH_REQUEST;
-    case(0x20):
+    case(0x21):
       return FunctionCode::AUTH_REQUEST_NO_ACK;
     case(0x81):
       return FunctionCode::RESPONSE;
