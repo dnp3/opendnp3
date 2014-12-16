@@ -38,7 +38,7 @@ TEST_CASE(SUITE("Parser rejects empty buffer"))
 	HexSequence buffer("");
 
 	Group120Var1 output;
-	bool success = Group120Var1::Read(buffer.ToReadOnly(), output, nullptr);
+	bool success = Group120Var1::Read(buffer.ToReadOnly(), output);
 	REQUIRE(!success);
 }
 
@@ -48,7 +48,7 @@ TEST_CASE(SUITE("Parser accepts minimum of four bytes of challenge data"))
 	HexSequence buffer("01 00 00 00 07 00 05 01 DE AD BE EF");
 
 	Group120Var1 output;	
-	REQUIRE(Group120Var1::Read(buffer.ToReadOnly(), output, nullptr));
+	REQUIRE(Group120Var1::Read(buffer.ToReadOnly(), output));
 	REQUIRE(output.challengeSeqNum == 1);
 	REQUIRE(output.userNum == 7);
 	REQUIRE(output.hmacType == HMACType::HMAC_SHA1_TRUNC_8);
@@ -56,13 +56,23 @@ TEST_CASE(SUITE("Parser accepts minimum of four bytes of challenge data"))
 	REQUIRE(toHex(output.challengeData) == "DE AD BE EF");
 }
 
-TEST_CASE(SUITE("Parser rejects three bytes of challenge data"))
+TEST_CASE(SUITE("Parser accepts empty challenge data"))
 {
 	// SEQ = 1, USER = 7, HMAC = 5 (SHA-1-8), REASON = 1, challenge length of 3
-	HexSequence buffer("01 00 00 00 07 00 05 01 DE AD BE");
+	HexSequence buffer("01 00 00 00 07 00 05 01");
 
 	Group120Var1 output;
-	REQUIRE(!Group120Var1::Read(buffer.ToReadOnly(), output, nullptr));
+	REQUIRE(Group120Var1::Read(buffer.ToReadOnly(), output));
+	REQUIRE(output.challengeData.Size() == 0);
+}
+
+TEST_CASE(SUITE("Parser rejects one less than minimum required data"))
+{
+	// SEQ = 1, USER = 7, HMAC = 5 (SHA-1-8), REASON = ???? missing
+	HexSequence buffer("01 00 00 00 07 00 05");
+
+	Group120Var1 output;
+	REQUIRE(!Group120Var1::Read(buffer.ToReadOnly(), output));	
 }
 
 TEST_CASE(SUITE("Formatter returns false when insufficient space"))
