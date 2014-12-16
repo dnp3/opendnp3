@@ -173,6 +173,7 @@
     <ClInclude Include="src\opendnp3\objects\Group10.h" />
     <ClInclude Include="src\opendnp3\objects\Group11.h" />
     <ClInclude Include="src\opendnp3\objects\Group12.h" />
+    <ClInclude Include="src\opendnp3\objects\Group120.h" />
     <ClInclude Include="src\opendnp3\objects\Group120Var1.h" />
     <ClInclude Include="src\opendnp3\objects\Group120Var2.h" />
     <ClInclude Include="src\opendnp3\objects\Group2.h" />
@@ -324,6 +325,7 @@
     <ClCompile Include="src\opendnp3\objects\Group10.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group11.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group12.cpp" />
+    <ClCompile Include="src\opendnp3\objects\Group120.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group120Var1.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group120Var2.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group2.cpp" />

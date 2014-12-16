@@ -735,6 +735,9 @@
     <ClInclude Include="src\opendnp3\objects\Group120Var2.h">
       <Filter>Header\objects</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\objects\Group120.h">
+      <Filter>Header\objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\AnalogOutput.cpp">
@@ -1113,6 +1116,9 @@
       <Filter>Source\objects</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\objects\Group120Var2.cpp">
+      <Filter>Source\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\objects\Group120.cpp">
       <Filter>Source\objects</Filter>
     </ClCompile>
   </ItemGroup>
