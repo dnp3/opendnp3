@@ -19,8 +19,8 @@
 * to you under the terms of the License.
 */
 
-#ifndef OPENDNP3_GROUP120_H
-#define OPENDNP3_GROUP120_H
+#ifndef OPENDNP3_GROUP120VAR1_H
+#define OPENDNP3_GROUP120VAR1_H
 
 #include <openpal/logging/Logger.h>
 #include <openpal/container/ReadBufferView.h>
@@ -63,8 +63,6 @@ struct Group120Var1
 
 	static const uint32_t MIN_SIZE = 12;	
 };
-
-
 
 }
 

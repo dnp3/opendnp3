@@ -729,7 +729,10 @@
     <ClInclude Include="src\opendnp3\gen\ChallengeReason.h">
       <Filter>Header\gen</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\objects\Group120.h">
+    <ClInclude Include="src\opendnp3\objects\Group120Var1.h">
+      <Filter>Header\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\objects\Group120Var2.h">
       <Filter>Header\objects</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1106,7 +1109,10 @@
     <ClCompile Include="src\opendnp3\gen\ChallengeReason.cpp">
       <Filter>Source\gen</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\objects\Group120.cpp">
+    <ClCompile Include="src\opendnp3\objects\Group120Var1.cpp">
+      <Filter>Source\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\objects\Group120Var2.cpp">
       <Filter>Source\objects</Filter>
     </ClCompile>
   </ItemGroup>

@@ -19,7 +19,7 @@
 * to you under the terms of the License.
 */
 
-#include "Group120.h"
+#include "Group120Var2.h"
 
 #include <openpal/logging/LogMacros.h>
 #include <openpal/serialization/Serialization.h>
@@ -30,37 +30,31 @@ using namespace openpal;
 
 namespace opendnp3 {
 
-Group120Var1::Group120Var1() : 
+Group120Var2::Group120Var2() : 
 	challengeSeqNum(0),
-	userNum(0),
-	hmacType(HMACType::Unknown),
-	reason(ChallengeReason::UNKNOWN)	
+	userNum(0)	
 {
 		
 }
 
-Group120Var1::Group120Var1(
+Group120Var2::Group120Var2(
 	uint32_t challengeSeqNum_,
-	uint16_t userNum_,
-	HMACType hmacType_,
-	ChallengeReason reason_,
+	uint16_t userNum_,	
 	const openpal::ReadBufferView& challengeData_
 	) : 
 	challengeSeqNum(challengeSeqNum_),
-	userNum(userNum_),
-	hmacType(hmacType_),
-	reason(reason_),
+	userNum(userNum_),	
 	challengeData(challengeData_)
 {
 
 }
 
-uint32_t Group120Var1::Size() const
+uint32_t Group120Var2::Size() const
 {
-	return 8 + challengeData.Size();
+	return 6 + challengeData.Size();
 }
 
-bool Group120Var1::Read(const openpal::ReadBufferView& data, Group120Var1& output, openpal::Logger* pLogger)
+bool Group120Var2::Read(const openpal::ReadBufferView& data, Group120Var2& output, openpal::Logger* pLogger)
 {
 	if (data.Size() < MIN_SIZE)
 	{
@@ -71,15 +65,13 @@ bool Group120Var1::Read(const openpal::ReadBufferView& data, Group120Var1& outpu
 	{
 		ReadBufferView copy(data);
 		output.challengeSeqNum = UInt32::ReadBuffer(copy);		
-		output.userNum = UInt16::ReadBuffer(copy);
-		output.hmacType = HMACTypeFromType(UInt8::ReadBuffer(copy));
-		output.reason = ChallengeReasonFromType(UInt8::ReadBuffer(copy));
+		output.userNum = UInt16::ReadBuffer(copy);		
 		output.challengeData = copy;
 		return true;
 	}
 }
 
-bool Group120Var1::Write(const Group120Var1& output, openpal::WriteBufferView& buffer)
+bool Group120Var2::Write(const Group120Var2& output, openpal::WriteBufferView& buffer)
 {
 	if (buffer.Size() < output.Size())
 	{
@@ -88,9 +80,7 @@ bool Group120Var1::Write(const Group120Var1& output, openpal::WriteBufferView& b
 	else
 	{
 		UInt32::WriteBuffer(buffer, output.challengeSeqNum);
-		UInt16::WriteBuffer(buffer, output.userNum);
-		UInt8::WriteBuffer(buffer, HMACTypeToType(output.hmacType));
-		UInt8::WriteBuffer(buffer, ChallengeReasonToType(output.reason));
+		UInt16::WriteBuffer(buffer, output.userNum);		
 		buffer.Advance(output.challengeData.CopyTo(buffer).Size());
 		return true;
 	}

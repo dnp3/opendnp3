@@ -293,7 +293,7 @@
     <ClCompile Include="src\TestPhysicalLayerAsyncTCP.cpp" />
     <ClCompile Include="src\TestPhysicalLayerLoopback.cpp" />
     <ClCompile Include="src\TestPhysicalLayerMonitor.cpp" />
-    <ClCompile Include="src\TestGroup120Var1ParsingFormatting.cpp" />
+    <ClCompile Include="src\TestGroup120Var1.cpp" />
     <ClCompile Include="src\TestSerialization.cpp" />
     <ClCompile Include="src\TestShiftableBuffer.cpp" />
     <ClCompile Include="src\TestTime.cpp" />

@@ -23,7 +23,7 @@
 #include "BufferHelpers.h"
 #include "HexConversions.h"
 
-#include <opendnp3/objects/Group120.h>
+#include <opendnp3/objects/Group120Var1.h>
 
 #include <openpal/util/ToHex.h>
 #include <openpal/container/DynamicBuffer.h>
@@ -31,7 +31,7 @@
 using namespace openpal;
 using namespace opendnp3;
 
-#define SUITE(name) "Group120Var1ParsingFormattingTestSuite - " name
+#define SUITE(name) "Group120Var1TestSuite - " name
 
 TEST_CASE(SUITE("Parser rejects empty buffer"))
 {
