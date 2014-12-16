@@ -284,6 +284,29 @@ TEST_CASE(SUITE("ParsesOctetStringResponseSizeOfOne"))
 	REQUIRE("AA" ==  toHex(t.meas.octetStringSOE[3].meas.ToReadOnly()));
 }
 
+TEST_CASE(SUITE("ParsesGroup2Var3Correctly"))
+{
+	auto config = NoStartupTasks();
+	config.startupIntegrityClassMask = ClassField(~0);
+	MasterTestObject t(config);
+	t.master.OnLowerLayerUp();
+
+	REQUIRE(t.exe.RunMany() > 0);
+
+	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
+	t.master.OnSendResult(true);
+
+	// g51v1, t = 3, g2v3, index 7, t = 2, true/online
+	t.SendToMaster("C0 81 00 00 33 01 07 01 03 00 00 00 00 00 02 03 17 01 07 81 02 00");
+
+	REQUIRE(t.meas.binarySOE.size() == 1);
+	auto record = t.meas.binarySOE[7];
+	REQUIRE(record.meas.time == 5);
+	REQUIRE(record.header.enumeration == GroupVariation::Group2Var3);
+	REQUIRE(record.header.group == 2);
+	REQUIRE(record.header.variation == 3);	
+}
+
 TEST_CASE(SUITE("ParsesGroup50Var4"))
 {
 	auto config = NoStartupTasks();
