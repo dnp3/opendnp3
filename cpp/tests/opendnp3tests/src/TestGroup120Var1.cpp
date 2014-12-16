@@ -42,7 +42,7 @@ TEST_CASE(SUITE("Parser rejects empty buffer"))
 	REQUIRE(!success);
 }
 
-TEST_CASE(SUITE("Parser accepts minimum of four bytes of challenge data"))
+TEST_CASE(SUITE("Parser correctly interprets challenge data"))
 {
 	// SEQ = 1, USER = 7, HMAC = 5 (SHA-1-8), REASON = 1, challenge = 0xDEADBEEF
 	HexSequence buffer("01 00 00 00 07 00 05 01 DE AD BE EF");
