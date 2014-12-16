@@ -45,5 +45,20 @@ void Group120Var3::Write(const Group120Var3& arg, openpal::WriteBufferView& buff
 }
 
 
+Group120Var4 Group120Var4::Read(ReadBufferView& buffer)
+{
+  Group120Var4 obj;
+  obj.userNum = UInt16::Read(buffer);
+  buffer.Advance(2);
+  return obj;
+}
+
+void Group120Var4::Write(const Group120Var4& arg, openpal::WriteBufferView& buffer)
+{
+  UInt16::Write(buffer, arg.userNum);
+  buffer.Advance(2);
+}
+
+
 
 }

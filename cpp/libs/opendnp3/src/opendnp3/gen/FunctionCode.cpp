@@ -102,10 +102,9 @@ FunctionCode FunctionCodeFromType(uint8_t arg)
       return FunctionCode::UNSOLICITED_RESPONSE;
     case(0x83):
       return FunctionCode::AUTH_RESPONSE;
-    case(0xFF):
+    default:
       return FunctionCode::UNKNOWN;
   }
-  return FunctionCode::UNKNOWN;
 }
 char const* FunctionCodeToString(FunctionCode arg)
 {
@@ -183,10 +182,9 @@ char const* FunctionCodeToString(FunctionCode arg)
       return "UNSOLICITED_RESPONSE";
     case(FunctionCode::AUTH_RESPONSE):
       return "AUTH_RESPONSE";
-    case(FunctionCode::UNKNOWN):
+    default:
       return "UNKNOWN";
   }
-  return "UNKNOWN";
 }
 
 }

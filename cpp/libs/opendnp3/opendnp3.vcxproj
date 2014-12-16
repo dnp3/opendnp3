@@ -91,6 +91,7 @@
     <ClInclude Include="src\opendnp3\gen\HMACType.h" />
     <ClInclude Include="src\opendnp3\gen\IndexMode.h" />
     <ClInclude Include="src\opendnp3\gen\IntervalUnits.h" />
+    <ClInclude Include="src\opendnp3\gen\KeyWrapAlgorithm.h" />
     <ClInclude Include="src\opendnp3\gen\MasterTaskType.h" />
     <ClInclude Include="src\opendnp3\gen\PointClass.h" />
     <ClInclude Include="src\opendnp3\gen\RestartMode.h" />
@@ -176,6 +177,7 @@
     <ClInclude Include="src\opendnp3\objects\Group120.h" />
     <ClInclude Include="src\opendnp3\objects\Group120Var1.h" />
     <ClInclude Include="src\opendnp3\objects\Group120Var2.h" />
+    <ClInclude Include="src\opendnp3\objects\Group120Var5.h" />
     <ClInclude Include="src\opendnp3\objects\Group2.h" />
     <ClInclude Include="src\opendnp3\objects\Group20.h" />
     <ClInclude Include="src\opendnp3\objects\Group21.h" />
@@ -281,11 +283,10 @@
     <ClCompile Include="src\opendnp3\gen\GroupVariation.cpp" />
     <ClCompile Include="src\opendnp3\gen\HMACType.cpp" />
     <ClCompile Include="src\opendnp3\gen\IntervalUnits.cpp" />
+    <ClCompile Include="src\opendnp3\gen\KeyWrapAlgorithm.cpp" />
     <ClCompile Include="src\opendnp3\gen\LinkFunction.cpp" />
-    <ClCompile Include="src\opendnp3\gen\PointClass.cpp" />
     <ClCompile Include="src\opendnp3\gen\QualifierCode.cpp" />
     <ClCompile Include="src\opendnp3\gen\TaskCompletion.cpp" />
-    <ClCompile Include="src\opendnp3\gen\TimeSyncMode.cpp" />
     <ClCompile Include="src\opendnp3\link\CRC.cpp" />
     <ClCompile Include="src\opendnp3\link\IOpenDelayStrategy.cpp" />
     <ClCompile Include="src\opendnp3\link\LinkFrame.cpp" />

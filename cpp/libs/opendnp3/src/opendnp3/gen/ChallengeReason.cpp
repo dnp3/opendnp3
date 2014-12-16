@@ -32,10 +32,9 @@ ChallengeReason ChallengeReasonFromType(uint8_t arg)
   {
     case(0x1):
       return ChallengeReason::CRITICAL;
-    case(0xFF):
+    default:
       return ChallengeReason::UNKNOWN;
   }
-  return ChallengeReason::UNKNOWN;
 }
 char const* ChallengeReasonToString(ChallengeReason arg)
 {
@@ -43,10 +42,9 @@ char const* ChallengeReasonToString(ChallengeReason arg)
   {
     case(ChallengeReason::CRITICAL):
       return "CRITICAL";
-    case(ChallengeReason::UNKNOWN):
+    default:
       return "UNKNOWN";
   }
-  return "UNKNOWN";
 }
 
 }

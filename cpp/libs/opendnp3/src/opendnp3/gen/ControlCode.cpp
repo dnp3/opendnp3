@@ -42,10 +42,9 @@ ControlCode ControlCodeFromType(uint8_t arg)
       return ControlCode::PULSE_CLOSE;
     case(0x81):
       return ControlCode::PULSE_TRIP;
-    case(0xFF):
+    default:
       return ControlCode::UNDEFINED;
   }
-  return ControlCode::UNDEFINED;
 }
 char const* ControlCodeToString(ControlCode arg)
 {
@@ -63,10 +62,9 @@ char const* ControlCodeToString(ControlCode arg)
       return "PULSE_CLOSE";
     case(ControlCode::PULSE_TRIP):
       return "PULSE_TRIP";
-    case(ControlCode::UNDEFINED):
+    default:
       return "UNDEFINED";
   }
-  return "UNDEFINED";
 }
 
 }

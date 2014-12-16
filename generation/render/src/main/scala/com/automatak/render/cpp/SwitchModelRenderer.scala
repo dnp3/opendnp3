@@ -2,29 +2,36 @@ package com.automatak.render.cpp
 
 import com.automatak.render._
 
-object ReturnSwitchModelRenderer {
+/*
+object DefaultSwitchModelRenderer {
 
   def wrap[A](f: A => String): A => String = { (a: A) => "return " + f(a) + ";" }
 
 }
 
-class ReturnSwitchModelRenderer[A](fCase: A => String)(fAction: A => String) extends SwitchModelRenderer(fCase)(ReturnSwitchModelRenderer.wrap(fAction))
+class DefaultSwitchModelRenderer[A](fCase: A => String)(fAction: A => String) extends SwitchModelRenderer(fCase)(DefaultSwitchModelRenderer.wrap(fAction))
+*/
 
-class SwitchModelRenderer[A](fCase: A => String)(fAction: A => String) extends ModelRenderer[List[A]] {
+class SwitchModelRenderer[A](fCase: A => String)(fAction: A => String) {
 
-  def render(a: List[A])(implicit indent: Indentation): Iterator[String] = {
+  def render(nonDefaults: List[A], default: A)(implicit indent: Indentation): Iterator[String] = {
 
     def switch = Iterator("switch(arg)")
 
-    def cases = a.toIterator.map { c =>
-      Iterator(List("case(", fCase(c),"):").mkString) ++
+    def nonDefaultCases: Iterator[String] = nonDefaults.toIterator.map { c =>
+      Iterator(List("case(", fCase(c), "):").mkString) ++
         indent {
-          Iterator(List(fAction(c)).mkString)
+          Iterator("return " + fAction(c) + ";")
         }
     }.flatten.toIterator
 
+    def defaultCase: Iterator[String] = {
+      Iterator("default:") ++ indent { Iterator("return " + fAction(default) + ";") }
+    }
+
     switch ++ bracket {
-      cases
+      nonDefaultCases ++
+      defaultCase
     }
   }
 }

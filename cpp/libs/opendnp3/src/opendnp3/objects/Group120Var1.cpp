@@ -33,7 +33,7 @@ namespace opendnp3 {
 Group120Var1::Group120Var1() : 
 	challengeSeqNum(0),
 	userNum(0),
-	hmacType(HMACType::Unknown),
+	hmacType(HMACType::UNKNOWN),
 	reason(ChallengeReason::UNKNOWN)	
 {
 		

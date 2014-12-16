@@ -9,7 +9,9 @@ object IntervalUnit {
     "Time internal units"
   )
 
-  def apply(): EnumModel = EnumModel("IntervalUnits", comments, EnumModel.UInt8, codes, Hex)
+  private val defaultValue = EnumValue("Undefined", 127, "11-127 are reserved for future use")
+
+  def apply(): EnumModel = EnumModel("IntervalUnits", comments, EnumModel.UInt8, codes, Some(defaultValue), Hex)
 
   private val codes = List(
     EnumValue("NoRepeat", 0, "The outstation does not repeat the action regardless of the value in the interval count"),
@@ -22,8 +24,7 @@ object IntervalUnit {
     EnumValue("Months7", 7, "On the same day of each month at the same time of day that is specified in the start time"),
     EnumValue("Months8", 8, "At the same time of day on the same day of the week after the beginning of the month as the day specified in the start time"),
     EnumValue("Months9", 9, "Months on Same Day of Week from End of Month—The outstation shall interpret this setting as in Months8, but the day of the week shall be measured from the end of the month,"),
-    EnumValue("Seasons", 10, "The definition of a season is specific to the outstation"),
-    EnumValue("Undefined", 127, "11-127 are reserved for future use")
+    EnumValue("Seasons", 10, "The definition of a season is specific to the outstation")
   )
 
 }

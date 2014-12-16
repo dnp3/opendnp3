@@ -37,6 +37,15 @@ struct Group120Var3
   uint16_t userNum;
 };
 
+struct Group120Var4
+{
+  static GroupVariationID ID() { return GroupVariationID(120,4); }
+  static uint32_t Size() { return 2; }
+  static Group120Var4 Read(openpal::ReadBufferView&);
+  static void Write(const Group120Var4&, openpal::WriteBufferView&);
+  uint16_t userNum;
+};
+
 
 }
 

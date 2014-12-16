@@ -44,10 +44,9 @@ QualifierCode QualifierCodeFromType(uint8_t arg)
       return QualifierCode::UINT8_CNT_UINT8_INDEX;
     case(0x28):
       return QualifierCode::UINT16_CNT_UINT16_INDEX;
-    case(0xFF):
+    default:
       return QualifierCode::UNDEFINED;
   }
-  return QualifierCode::UNDEFINED;
 }
 char const* QualifierCodeToString(QualifierCode arg)
 {
@@ -67,10 +66,9 @@ char const* QualifierCodeToString(QualifierCode arg)
       return "8-bit count and prefix";
     case(QualifierCode::UINT16_CNT_UINT16_INDEX):
       return "16-bit count and prefix";
-    case(QualifierCode::UNDEFINED):
+    default:
       return "unknown";
   }
-  return "UNDEFINED";
 }
 
 }

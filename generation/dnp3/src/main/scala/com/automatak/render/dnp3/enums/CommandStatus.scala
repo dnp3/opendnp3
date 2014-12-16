@@ -10,7 +10,9 @@ object CommandStatus {
     "These correspond to those defined in the DNP3 standard"
   )
 
-  def apply(): EnumModel = EnumModel("CommandStatus", comments, EnumModel.UInt8, codes, Base10)
+  def apply(): EnumModel = EnumModel("CommandStatus", comments, EnumModel.UInt8, codes, Some(defaultValue), Base10)
+
+  private val defaultValue = EnumValue("UNDEFINED", 127, "10 to 126 are currently reserved")
 
   private val codes = List(
     EnumValue("SUCCESS", 0, "command was successfully received and handled"),
@@ -22,8 +24,7 @@ object CommandStatus {
     EnumValue("HARDWARE_ERROR", 6, "something is stopping the command, often a local/remote interlock"),
     EnumValue("LOCAL", 7, "the function governed by the control is in local only control"),
     EnumValue("TOO_MANY_OPS", 8, "the command has been done too often and has been throttled"),
-    EnumValue("NOT_AUTHORIZED", 9, "the command was rejected because the device denied it or an RTU intercepted it"),
-    EnumValue("UNDEFINED", 127, "10 to 126 are currently reserved")
+    EnumValue("NOT_AUTHORIZED", 9, "the command was rejected because the device denied it or an RTU intercepted it")
   )
 
 

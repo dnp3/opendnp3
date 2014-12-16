@@ -40,10 +40,9 @@ HMACType HMACTypeFromType(uint8_t arg)
       return HMACType::HMAC_SHA1_TRUNC_8;
     case(0x6):
       return HMACType::AES_GMAC;
-    case(0xFF):
-      return HMACType::Unknown;
+    default:
+      return HMACType::UNKNOWN;
   }
-  return HMACType::Unknown;
 }
 char const* HMACTypeToString(HMACType arg)
 {
@@ -59,10 +58,9 @@ char const* HMACTypeToString(HMACType arg)
       return "HMAC_SHA1_TRUNC_8";
     case(HMACType::AES_GMAC):
       return "AES_GMAC";
-    case(HMACType::Unknown):
-      return "Unknown";
+    default:
+      return "UNKNOWN";
   }
-  return "Unknown";
 }
 
 }

@@ -8,11 +8,11 @@ object QualityMasks {
 
 
   def enums: List[EnumModel] = List(
-    EnumModel("BinaryQuality", comments("binary"), EnumModel.UInt8, binaryValues, Hex),
-    EnumModel("DoubleBitBinaryQuality", comments("double bit binary"), EnumModel.UInt8, doubleBinaryValues, Hex),
-    EnumModel("CounterQuality", comments("counter"), EnumModel.UInt8, counterValues, Hex),
-    EnumModel("AnalogQuality", comments("analog"), EnumModel.UInt8, analogValues, Hex),
-    EnumModel("BinaryOutputStatusQuality", comments("binary output status"), EnumModel.UInt8, binaryOutputValues, Hex)
+    EnumModel("BinaryQuality", comments("binary"), EnumModel.UInt8, binaryValues, None, Hex),
+    EnumModel("DoubleBitBinaryQuality", comments("double bit binary"), EnumModel.UInt8, doubleBinaryValues, None, Hex),
+    EnumModel("CounterQuality", comments("counter"), EnumModel.UInt8, counterValues, None, Hex),
+    EnumModel("AnalogQuality", comments("analog"), EnumModel.UInt8, analogValues, None, Hex),
+    EnumModel("BinaryOutputStatusQuality", comments("binary output status"), EnumModel.UInt8, binaryOutputValues, None, Hex)
   )
 
   private def bits() : Iterator[Int] = Iterator.iterate(1)(x => x << 1)

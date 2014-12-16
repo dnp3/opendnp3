@@ -7,7 +7,9 @@ object FunctionCode {
 
   private val comments = List("Application layer function code enumeration")
 
-  def apply(): EnumModel = EnumModel("FunctionCode", comments, EnumModel.UInt8, codes, Hex)
+  def apply(): EnumModel = EnumModel("FunctionCode", comments, EnumModel.UInt8, codes, Some(defaultValue), Hex)
+
+  private val defaultValue = EnumValue("UNKNOWN", 255, "Unknown function code. Used internally in opendnp3 to indicate the code didn't match anything known")
 
   private val codes = List(
     EnumValue("CONFIRM",0, "Master sends this to an outstation to confirm the receipt of an Application Layer fragment"),
@@ -45,8 +47,7 @@ object FunctionCode {
     EnumValue("AUTH_REQUEST_NO_ACK", 33, "The master uses this function code when sending authentication requests to the outstation that do no require acknowledgement"),
     EnumValue("RESPONSE", 129, "Master shall interpret this fragment as an Application Layer response to an ApplicationLayer request"),
     EnumValue("UNSOLICITED_RESPONSE", 130, "Master shall interpret this fragment as an unsolicited response that was not prompted by an explicit request"),
-    EnumValue("AUTH_RESPONSE", 131, "The outstation uses this function code to issue authentication messages to the master"),
-    EnumValue("UNKNOWN", 255, "Unknown function code. Used internally in opendnp3 to indicate the code didn't match anything known")
+    EnumValue("AUTH_RESPONSE", 131, "The outstation uses this function code to issue authentication messages to the master")
     )
 
 }

@@ -214,10 +214,9 @@ GroupVariation GroupVariationFromType(uint16_t arg)
       return GroupVariation::Group110AnyVar;
     case(0x6F00):
       return GroupVariation::Group111AnyVar;
-    case(0xFFFF):
+    default:
       return GroupVariation::UNKNOWN;
   }
-  return GroupVariation::UNKNOWN;
 }
 char const* GroupVariationToString(GroupVariation arg)
 {
@@ -407,10 +406,9 @@ char const* GroupVariationToString(GroupVariation arg)
       return "Octet String";
     case(GroupVariation::Group111AnyVar):
       return "Octet String Event";
-    case(GroupVariation::UNKNOWN):
+    default:
       return "UNKNOWN";
   }
-  return "UNKNOWN";
 }
 
 }

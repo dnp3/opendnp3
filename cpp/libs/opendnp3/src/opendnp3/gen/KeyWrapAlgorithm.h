@@ -18,43 +18,29 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#include "PointClass.h"
+#ifndef OPENDNP3_KEYWRAPALGORITHM_H
+#define OPENDNP3_KEYWRAPALGORITHM_H
+
+#include <cstdint>
 
 namespace opendnp3 {
 
-uint8_t PointClassToType(PointClass arg)
+/**
+  Enumerates possible key-wrap algorithms
+*/
+enum class KeyWrapAlgorithm : uint8_t
 {
-  return static_cast<uint8_t>(arg);
-}
-PointClass PointClassFromType(uint8_t arg)
-{
-  switch(arg)
-  {
-    case(0x1):
-      return PointClass::Class0;
-    case(0x2):
-      return PointClass::Class1;
-    case(0x4):
-      return PointClass::Class2;
-    case(0x8):
-      return PointClass::Class3;
-  }
-  return PointClass::Class3;
-}
-char const* PointClassToString(PointClass arg)
-{
-  switch(arg)
-  {
-    case(PointClass::Class0):
-      return "Class0";
-    case(PointClass::Class1):
-      return "Class1";
-    case(PointClass::Class2):
-      return "Class2";
-    case(PointClass::Class3):
-      return "Class3";
-  }
-  return "Class3";
-}
+  /// AES 128 Key Wrap Algorithm
+  AES_128 = 0x1,
+  /// AES 256 Key Wrap Algorithm
+  AES_256 = 0x2,
+  UNDEFINED = 0xFF
+};
+
+uint8_t KeyWrapAlgorithmToType(KeyWrapAlgorithm arg);
+KeyWrapAlgorithm KeyWrapAlgorithmFromType(uint8_t arg);
+char const* KeyWrapAlgorithmToString(KeyWrapAlgorithm arg);
 
 }
+
+#endif

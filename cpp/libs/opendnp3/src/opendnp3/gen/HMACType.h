@@ -41,7 +41,7 @@ enum class HMACType : uint8_t
   /// 12 octet output for serial or network
   AES_GMAC = 0x6,
   /// Unknown HMAC algorithm
-  Unknown = 0xFF
+  UNKNOWN = 0xFF
 };
 
 uint8_t HMACTypeToType(HMACType arg);

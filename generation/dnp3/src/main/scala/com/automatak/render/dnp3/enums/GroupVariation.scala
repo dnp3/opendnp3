@@ -91,6 +91,8 @@ object GroupVariation {
 
   private val group60 = List(1 -> "Class 0 data", 2 -> "Class 1 data", 3 -> "Class 2 data", 4 -> "Class 3 data")
 
+  private val defaultValue = EnumValue("UNKNOWN", value(0xFF, 0xFF))
+
   // defined using syntactic sugar above
   private def values : List[EnumValue] = List(
 
@@ -122,9 +124,7 @@ object GroupVariation {
 
     List(EnumValue("Group110AnyVar", value(110,0), None, Some("Octet String"))),
 
-    List(EnumValue("Group111AnyVar", value(111,0), None, Some("Octet String Event"))),
-
-    List(EnumValue("UNKNOWN", value(0xFF, 0xFF)))
+    List(EnumValue("Group111AnyVar", value(111,0), None, Some("Octet String Event")))
 
   ).flatten
 
@@ -134,6 +134,7 @@ object GroupVariation {
     List("Comprehensive list of supported groups and variations"),
     EnumModel.UInt16,
     values,
+    Some(defaultValue),
     Hex
   )
 

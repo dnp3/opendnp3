@@ -738,6 +738,12 @@
     <ClInclude Include="src\opendnp3\objects\Group120.h">
       <Filter>Header\objects</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\objects\Group120Var5.h">
+      <Filter>Header\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\KeyWrapAlgorithm.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\AnalogOutput.cpp">
@@ -1022,14 +1028,8 @@
     <ClCompile Include="src\opendnp3\master\TaskRecord.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\gen\TimeSyncMode.cpp">
-      <Filter>Source\gen</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\app\ClassField.cpp">
       <Filter>Source\app</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\gen\PointClass.cpp">
-      <Filter>Source\gen</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\IOutstationApplication.cpp">
       <Filter>Source\outstation</Filter>
@@ -1079,9 +1079,6 @@
     <ClCompile Include="src\opendnp3\master\WriteTask.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\gen\TaskCompletion.cpp">
-      <Filter>Source\gen</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\master\IMasterTask.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
@@ -1120,6 +1117,12 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\objects\Group120.cpp">
       <Filter>Source\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\gen\KeyWrapAlgorithm.cpp">
+      <Filter>Source\gen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\gen\TaskCompletion.cpp">
+      <Filter>Source\gen</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

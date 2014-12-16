@@ -9,7 +9,7 @@ object IndexMode {
     "Select contiguous or dis-contiguous index mode"
   )
 
-  def apply(): EnumModel = EnumModel("IndexMode", comments, EnumModel.UInt8, codes, Hex)
+  def apply(): EnumModel = EnumModel("IndexMode", comments, EnumModel.UInt8, codes, None, Hex)
 
   private val codes = List(
     EnumValue("Contiguous", 0, "Indices are contiguous. Most efficient as direct indexing is used."),

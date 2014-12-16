@@ -48,10 +48,9 @@ LinkFunction LinkFunctionFromType(uint8_t arg)
       return LinkFunction::SEC_LINK_STATUS;
     case(0xF):
       return LinkFunction::SEC_NOT_SUPPORTED;
-    case(0xFF):
+    default:
       return LinkFunction::INVALID;
   }
-  return LinkFunction::INVALID;
 }
 char const* LinkFunctionToString(LinkFunction arg)
 {
@@ -75,10 +74,9 @@ char const* LinkFunctionToString(LinkFunction arg)
       return "SEC_LINK_STATUS";
     case(LinkFunction::SEC_NOT_SUPPORTED):
       return "SEC_NOT_SUPPORTED";
-    case(LinkFunction::INVALID):
+    default:
       return "INVALID";
   }
-  return "INVALID";
 }
 
 }

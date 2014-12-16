@@ -6,7 +6,7 @@ object LogLevel {
 
   private val comments = List("Enumeration for log levels")
 
-  def apply(): EnumModel = EnumModel("LogLevel", comments, EnumModel.UInt32, codes, Hex)
+  def apply(): EnumModel = EnumModel("LogLevel", comments, EnumModel.UInt32, codes, None, Hex)
 
   private val codes = EnumValues.bitmask(levels)
 
