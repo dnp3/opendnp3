@@ -85,3 +85,40 @@ TEST_CASE(SUITE("Parser rejects if specified challenge data is missing"))
 	Group120Var5 output;
 	REQUIRE(!Group120Var5::Read(buffer.ToReadOnly(), output));
 }
+
+TEST_CASE(SUITE("Formatter correctly writes when sufficient space"))
+{
+	HexSequence challenge("DE AD"); 
+	HexSequence hmac("BE EF");
+
+	Group120Var5 status(8, 3, KeyWrapAlgorithm::AES_256, KeyStatus::OK, HMACType::HMAC_SHA1_TRUNC_8, challenge, hmac);	
+	const uint32_t SIZE = status.Size();
+
+	REQUIRE(SIZE == 15);
+
+	DynamicBuffer output(SIZE);
+
+	auto dest = output.GetWriteBufferView();
+	REQUIRE(Group120Var5::Write(status, dest));	
+	uint32_t numWritten = output.Size() - dest.Size();
+
+	REQUIRE(numWritten == SIZE);	
+	REQUIRE(toHex(output.ToReadOnly().Take(SIZE)) == "08 00 00 00 03 00 02 01 05 02 00 DE AD BE EF");	
+}
+
+TEST_CASE(SUITE("Formatter rejects when one less than required space"))
+{
+	HexSequence challenge("DE AD BE EF");
+	HexSequence hmac("AB BA");
+
+	Group120Var5 status(8, 3, KeyWrapAlgorithm::AES_256, KeyStatus::OK, HMACType::HMAC_SHA1_TRUNC_8, challenge, hmac);
+	const uint32_t SIZE = status.Size();
+
+	REQUIRE(SIZE == 17);
+
+	DynamicBuffer output(SIZE - 1);
+
+	auto dest = output.GetWriteBufferView();
+	REQUIRE(!Group120Var5::Write(status, dest));
+	REQUIRE(dest.Size() == output.Size());
+}

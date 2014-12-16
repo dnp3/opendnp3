@@ -75,20 +75,30 @@ TEST_CASE(SUITE("Parser rejects one less than minimum required data"))
 	REQUIRE(!Group120Var1::Read(buffer.ToReadOnly(), output));	
 }
 
-TEST_CASE(SUITE("Formatter returns false when insufficient space"))
+TEST_CASE(SUITE("Formatter correctly writes when sufficient space"))
 {
-	std::string challengeData = "DE AD BE EF AB BA"; // 6 bytes
+	HexSequence challengeData("DE AD BE EF AB BA"); // 6 bytes
+		
+	Group120Var1 challenge(9, 3, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, challengeData.ToReadOnly());
+	const uint32_t SIZE = challenge.Size();	
 
-	HexSequence buffer(challengeData);
 	DynamicBuffer output(64);
-	
-	Group120Var1 challenge(9, 3, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, buffer.ToReadOnly());
-	const uint32_t OBJECT_SIZE = 14;
-	REQUIRE(challenge.Size() == OBJECT_SIZE);
-
 	auto dest = output.GetWriteBufferView();
 	REQUIRE(Group120Var1::Write(challenge, dest));
-	REQUIRE(dest.Size() == (output.Size() - OBJECT_SIZE));
+	auto written = output.Size() - dest.Size();
 
-	REQUIRE(toHex(output.ToReadOnly().Take(OBJECT_SIZE)) == "09 00 00 00 03 00 04 01 DE AD BE EF AB BA");
+	REQUIRE(written == SIZE);
+	REQUIRE(toHex(output.ToReadOnly().Take(SIZE)) == "09 00 00 00 03 00 04 01 DE AD BE EF AB BA");
+}
+
+TEST_CASE(SUITE("Formatter return false when insufficient space"))
+{	
+	HexSequence challengeData("DE AD BE EF AB BA"); // 6 bytes
+		
+	Group120Var1 challenge(9, 3, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, challengeData.ToReadOnly());
+	const uint32_t SIZE = challenge.Size();
+
+	DynamicBuffer output(SIZE - 1);		
+	auto dest = output.GetWriteBufferView();
+	REQUIRE(!Group120Var1::Write(challenge, dest));	
 }
