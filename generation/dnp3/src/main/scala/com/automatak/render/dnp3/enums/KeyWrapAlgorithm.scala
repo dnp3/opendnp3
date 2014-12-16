@@ -6,7 +6,7 @@ import com.automatak.render._
 object KeyWrapAlgorithm {
 
   private val comments = List("Enumerates possible key-wrap algorithms")
-  private val defaultValue = EnumValue("UNDEFINED", 255)
+  private val defaultValue = EnumValue("UNDEFINED", 0)
 
   def apply(): EnumModel = EnumModel("KeyWrapAlgorithm", comments, EnumModel.UInt8, codes, Some(defaultValue), Hex)
 

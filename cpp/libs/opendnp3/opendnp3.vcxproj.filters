@@ -744,6 +744,9 @@
     <ClInclude Include="src\opendnp3\gen\KeyWrapAlgorithm.h">
       <Filter>Header\gen</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\KeyStatus.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\AnalogOutput.cpp">
@@ -1123,6 +1126,12 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\gen\TaskCompletion.cpp">
       <Filter>Source\gen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\gen\KeyStatus.cpp">
+      <Filter>Source\gen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\objects\Group120Var5.cpp">
+      <Filter>Source\objects</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

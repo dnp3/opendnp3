@@ -18,28 +18,32 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef OPENDNP3_KEYWRAPALGORITHM_H
-#define OPENDNP3_KEYWRAPALGORITHM_H
+#ifndef OPENDNP3_KEYSTATUS_H
+#define OPENDNP3_KEYSTATUS_H
 
 #include <cstdint>
 
 namespace opendnp3 {
 
 /**
-  Enumerates possible key-wrap algorithms
+  Describes the status of the two session keys as known by the outstation
 */
-enum class KeyWrapAlgorithm : uint8_t
+enum class KeyStatus : uint8_t
 {
-  /// AES 128 Key Wrap Algorithm
-  AES_128 = 0x1,
-  /// AES 256 Key Wrap Algorithm
-  AES_256 = 0x2,
+  /// Session keys are valid
+  OK = 0x1,
+  /// Sessions keys are not valid due to no init or interval expiration
+  NOT_INIT = 0x2,
+  /// Session keys are not valid due to communications failure
+  COMM_FAIL = 0x3,
+  /// Session keys are not valid due to an authentication failure
+  AUTH_FAIL = 0x4,
   UNDEFINED = 0x0
 };
 
-uint8_t KeyWrapAlgorithmToType(KeyWrapAlgorithm arg);
-KeyWrapAlgorithm KeyWrapAlgorithmFromType(uint8_t arg);
-char const* KeyWrapAlgorithmToString(KeyWrapAlgorithm arg);
+uint8_t KeyStatusToType(KeyStatus arg);
+KeyStatus KeyStatusFromType(uint8_t arg);
+char const* KeyStatusToString(KeyStatus arg);
 
 }
 

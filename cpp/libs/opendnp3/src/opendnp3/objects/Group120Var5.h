@@ -22,14 +22,15 @@
 #ifndef OPENDNP3_GROUP120VAR5_H
 #define OPENDNP3_GROUP120VAR5_H
 
-#include <openpal/logging/Logger.h>
 #include <openpal/container/ReadBufferView.h>
 #include <openpal/container/WriteBufferView.h>
 
-
 #include "opendnp3/gen/HMACType.h"
+#include "opendnp3/gen/KeyStatus.h"
 #include "opendnp3/gen/ChallengeReason.h"
+#include "opendnp3/gen/KeyWrapAlgorithm.h"
 #include "opendnp3/app/GroupVariationID.h"
+
 
 namespace opendnp3 {
 
@@ -40,28 +41,32 @@ struct Group120Var5
 	Group120Var5(
 		uint32_t keyChangeSeqNum,
 		uint16_t userNum,
+		KeyWrapAlgorithm keywrapAlgorithm,
+		KeyStatus  keyStatus,
 		HMACType hmacType,
-		ChallengeReason reason,
-		const openpal::ReadBufferView& challengeData
+		openpal::ReadBufferView challengeData,
+		openpal::ReadBufferView hmacValue
 	);
 
-	static GroupVariationID ID() { return GroupVariationID(120,1); }
+	static GroupVariationID ID() { return GroupVariationID(120,5); }
 
 	uint32_t Size() const;
 	
 	uint32_t keyChangeSeqNum;
 	uint16_t userNum;
+	KeyWrapAlgorithm keywrapAlgorithm;
+	KeyStatus  keyStatus;	
 	HMACType hmacType;
-	ChallengeReason reason;	
 	openpal::ReadBufferView challengeData;
+	openpal::ReadBufferView hmacValue;
 	
-	static bool Read(const openpal::ReadBufferView& buffer, Group120Var1& output, openpal::Logger* pLogger);
-
-	static bool Write(const Group120Var1& output, openpal::WriteBufferView& buffer);
+	static bool Read(const openpal::ReadBufferView& buffer, Group120Var5& output);
+	static bool Write(const Group120Var5& output, openpal::WriteBufferView& buffer);	
 
 	private:
 
-	static const uint32_t MIN_SIZE = 12;	
+	// The size of all the fixed size fields in the serialized object
+	static const uint32_t FIXED_BASE_SIZE = 11;
 };
 
 }

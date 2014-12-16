@@ -91,6 +91,7 @@
     <ClInclude Include="src\opendnp3\gen\HMACType.h" />
     <ClInclude Include="src\opendnp3\gen\IndexMode.h" />
     <ClInclude Include="src\opendnp3\gen\IntervalUnits.h" />
+    <ClInclude Include="src\opendnp3\gen\KeyStatus.h" />
     <ClInclude Include="src\opendnp3\gen\KeyWrapAlgorithm.h" />
     <ClInclude Include="src\opendnp3\gen\MasterTaskType.h" />
     <ClInclude Include="src\opendnp3\gen\PointClass.h" />
@@ -283,6 +284,7 @@
     <ClCompile Include="src\opendnp3\gen\GroupVariation.cpp" />
     <ClCompile Include="src\opendnp3\gen\HMACType.cpp" />
     <ClCompile Include="src\opendnp3\gen\IntervalUnits.cpp" />
+    <ClCompile Include="src\opendnp3\gen\KeyStatus.cpp" />
     <ClCompile Include="src\opendnp3\gen\KeyWrapAlgorithm.cpp" />
     <ClCompile Include="src\opendnp3\gen\LinkFunction.cpp" />
     <ClCompile Include="src\opendnp3\gen\QualifierCode.cpp" />
@@ -329,6 +331,7 @@
     <ClCompile Include="src\opendnp3\objects\Group120.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group120Var1.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group120Var2.cpp" />
+    <ClCompile Include="src\opendnp3\objects\Group120Var5.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group2.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group20.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group21.cpp" />

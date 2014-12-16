@@ -60,11 +60,10 @@ uint32_t Group120Var1::Size() const
 	return 8 + challengeData.Size();
 }
 
-bool Group120Var1::Read(const openpal::ReadBufferView& data, Group120Var1& output, openpal::Logger* pLogger)
+bool Group120Var1::Read(const openpal::ReadBufferView& data, Group120Var1& output)
 {
-	if (data.Size() < MIN_SIZE)
-	{
-		SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for g120v1 object");
+	if (data.Size() < FIXED_BASE_SIZE)
+	{		
 		return false;
 	}
 	else

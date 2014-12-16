@@ -18,29 +18,45 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef OPENDNP3_KEYWRAPALGORITHM_H
-#define OPENDNP3_KEYWRAPALGORITHM_H
-
-#include <cstdint>
+#include "KeyStatus.h"
 
 namespace opendnp3 {
 
-/**
-  Enumerates possible key-wrap algorithms
-*/
-enum class KeyWrapAlgorithm : uint8_t
+uint8_t KeyStatusToType(KeyStatus arg)
 {
-  /// AES 128 Key Wrap Algorithm
-  AES_128 = 0x1,
-  /// AES 256 Key Wrap Algorithm
-  AES_256 = 0x2,
-  UNDEFINED = 0x0
-};
-
-uint8_t KeyWrapAlgorithmToType(KeyWrapAlgorithm arg);
-KeyWrapAlgorithm KeyWrapAlgorithmFromType(uint8_t arg);
-char const* KeyWrapAlgorithmToString(KeyWrapAlgorithm arg);
-
+  return static_cast<uint8_t>(arg);
+}
+KeyStatus KeyStatusFromType(uint8_t arg)
+{
+  switch(arg)
+  {
+    case(0x1):
+      return KeyStatus::OK;
+    case(0x2):
+      return KeyStatus::NOT_INIT;
+    case(0x3):
+      return KeyStatus::COMM_FAIL;
+    case(0x4):
+      return KeyStatus::AUTH_FAIL;
+    default:
+      return KeyStatus::UNDEFINED;
+  }
+}
+char const* KeyStatusToString(KeyStatus arg)
+{
+  switch(arg)
+  {
+    case(KeyStatus::OK):
+      return "OK";
+    case(KeyStatus::NOT_INIT):
+      return "NOT_INIT";
+    case(KeyStatus::COMM_FAIL):
+      return "COMM_FAIL";
+    case(KeyStatus::AUTH_FAIL):
+      return "AUTH_FAIL";
+    default:
+      return "UNDEFINED";
+  }
 }
 
-#endif
+}
