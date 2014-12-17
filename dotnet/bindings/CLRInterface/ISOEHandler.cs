@@ -56,7 +56,9 @@ namespace Automatak.DNP3.Interface
     public class HeaderInfo
     {
         public HeaderInfo(GroupVariation variation, QualifierCode qualifier, TimestampMode tsmode)
-        {            
+        {
+            this.variation = variation;
+            this.qualifier = qualifier;
             this.tsmode = tsmode;
         }
         
