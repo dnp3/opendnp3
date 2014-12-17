@@ -417,7 +417,9 @@ APDUParser::Result APDUParser::ParseObjectsWithIndexPrefix(openpal::ReadBufferVi
 
 	case(GroupVariation::Group11Var1):
 		return ParseCountFixedSizeWithIndex<BinaryOutputStatus, IndexType>(record, buffer, pLogger, count, Group11Var1::Inst(), pHandler);
-		
+	case(GroupVariation::Group11Var2) :
+		return ParseCountFixedSizeWithIndex<BinaryOutputStatus, IndexType>(record, buffer, pLogger, count, Group11Var2::Inst(), pHandler);
+
 	case(GroupVariation::Group12Var1) :
 		return ParseCountFixedSizeWithIndex<ControlRelayOutputBlock, IndexType>(record, buffer, pLogger, count, Group12Var1::Inst(), pHandler);
 
