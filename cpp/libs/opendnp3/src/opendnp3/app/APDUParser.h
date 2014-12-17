@@ -54,6 +54,7 @@
 #include "opendnp3/objects/Group32.h"
 #include "opendnp3/objects/Group40.h"
 #include "opendnp3/objects/Group41.h"
+#include "opendnp3/objects/Group42.h"
 #include "opendnp3/objects/Group50.h"
 #include "opendnp3/objects/Group51.h"
 #include "opendnp3/objects/Group52.h"
@@ -417,7 +418,9 @@ APDUParser::Result APDUParser::ParseObjectsWithIndexPrefix(openpal::ReadBufferVi
 
 	case(GroupVariation::Group11Var1):
 		return ParseCountFixedSizeWithIndex<BinaryOutputStatus, IndexType>(record, buffer, pLogger, count, Group11Var1::Inst(), pHandler);
-		
+	case(GroupVariation::Group11Var2) :
+		return ParseCountFixedSizeWithIndex<BinaryOutputStatus, IndexType>(record, buffer, pLogger, count, Group11Var2::Inst(), pHandler);
+
 	case(GroupVariation::Group12Var1) :
 		return ParseCountFixedSizeWithIndex<ControlRelayOutputBlock, IndexType>(record, buffer, pLogger, count, Group12Var1::Inst(), pHandler);
 
@@ -464,6 +467,23 @@ APDUParser::Result APDUParser::ParseObjectsWithIndexPrefix(openpal::ReadBufferVi
 		return ParseCountFixedSizeWithIndex<AnalogOutputFloat32, IndexType>(record, buffer, pLogger, count, Group41Var3::Inst(), pHandler);
 	case(GroupVariation::Group41Var4) :
 		return ParseCountFixedSizeWithIndex<AnalogOutputDouble64, IndexType>(record, buffer, pLogger, count, Group41Var4::Inst(), pHandler);
+
+	case(GroupVariation::Group42Var1) :
+		return ParseCountFixedSizeWithIndex<AnalogOutputStatus, IndexType>(record, buffer, pLogger, count, Group42Var1::Inst(), pHandler);
+	case(GroupVariation::Group42Var2) :
+		return ParseCountFixedSizeWithIndex<AnalogOutputStatus, IndexType>(record, buffer, pLogger, count, Group42Var2::Inst(), pHandler);
+	case(GroupVariation::Group42Var3) :
+		return ParseCountFixedSizeWithIndex<AnalogOutputStatus, IndexType>(record, buffer, pLogger, count, Group42Var3::Inst(), pHandler);
+	case(GroupVariation::Group42Var4) :
+		return ParseCountFixedSizeWithIndex<AnalogOutputStatus, IndexType>(record, buffer, pLogger, count, Group42Var4::Inst(), pHandler);
+	case(GroupVariation::Group42Var5) :
+		return ParseCountFixedSizeWithIndex<AnalogOutputStatus, IndexType>(record, buffer, pLogger, count, Group42Var5::Inst(), pHandler);
+	case(GroupVariation::Group42Var6) :
+		return ParseCountFixedSizeWithIndex<AnalogOutputStatus, IndexType>(record, buffer, pLogger, count, Group42Var6::Inst(), pHandler);
+	case(GroupVariation::Group42Var7) :
+		return ParseCountFixedSizeWithIndex<AnalogOutputStatus, IndexType>(record, buffer, pLogger, count, Group42Var7::Inst(), pHandler);
+	case(GroupVariation::Group42Var8) :
+		return ParseCountFixedSizeWithIndex<AnalogOutputStatus, IndexType>(record, buffer, pLogger, count, Group42Var8::Inst(), pHandler);
 
 	case(GroupVariation::Group50Var4) :
 		return ParseCountFixedSizeWithIndex<TimeAndInterval, IndexType>(record, buffer, pLogger, count, Group50Var4::Inst(), pHandler);

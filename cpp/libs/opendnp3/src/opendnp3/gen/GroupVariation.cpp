@@ -380,7 +380,7 @@ char const* GroupVariationToString(GroupVariation arg)
     case(GroupVariation::Group42Var7):
       return "Analog Output Event - Single-precision With Flag and Time";
     case(GroupVariation::Group42Var8):
-      return "Analog Output Event - Double-precision With Flag abd Time";
+      return "Analog Output Event - Double-precision With Flag and Time";
     case(GroupVariation::Group50Var1):
       return "Time and Date - Absolute Time";
     case(GroupVariation::Group50Var4):
