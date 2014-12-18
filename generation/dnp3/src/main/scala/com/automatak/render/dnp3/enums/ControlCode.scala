@@ -16,7 +16,9 @@ object ControlCode {
     "These correspond to those defined in the DNP3 standard"
   )
 
-  def apply(): EnumModel = EnumModel("ControlCode", comments, EnumModel.UInt8, codes, Hex)
+  def apply(): EnumModel = EnumModel("ControlCode", comments, EnumModel.UInt8, codes, Some(defaultValue), Hex)
+
+  private val defaultValue = EnumValue("UNDEFINED", 0xFF, " undefined command (used by DNP standard)")
 
   private val codes = List(
     EnumValue("NUL", 0x00, "illegal command code (used internally)"),
@@ -24,8 +26,7 @@ object ControlCode {
     EnumValue("LATCH_ON", 0x03, "a 'light-switch' moved to the ON position"),
     EnumValue("LATCH_OFF", 0x04, "a 'light-switch' moved to the OFF position"),
     EnumValue("PULSE_CLOSE", 0x41, " a 'doorbell' that rings while the button is depressed"),
-    EnumValue("PULSE_TRIP", 0x81, " a 'doorbell' that stops ringing (is normally on) while depressed"),
-    EnumValue("UNDEFINED", 0xFF, " undefined command (used by DNP standard)")
+    EnumValue("PULSE_TRIP", 0x81, " a 'doorbell' that stops ringing (is normally on) while depressed")
   )
 
 }

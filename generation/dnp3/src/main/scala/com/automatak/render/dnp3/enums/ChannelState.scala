@@ -5,15 +5,15 @@ import com.automatak.render._
 object ChannelState {
 
   private val comments = List("Enumeration for possible states of a channel")
+  private val defaultValue = EnumValue("SHUTDOWN", 4, "stopped and will never do anything again")
 
-  def apply(): EnumModel = EnumModel("ChannelState", comments, EnumModel.Integer, codes, Base10)
+  def apply(): EnumModel = EnumModel("ChannelState", comments, EnumModel.Integer, codes, Some(defaultValue), Base10)
 
   private val codes = List(
     EnumValue("CLOSED", 0, "offline and idle"),
     EnumValue("OPENING", 1, "trying to open"),
     EnumValue("WAITING", 2, "waiting to open"),
-    EnumValue("OPEN", 3, "open"),
-    EnumValue("SHUTDOWN", 4, "stopped and will never do anything again")
+    EnumValue("OPEN", 3, "open")
   )
 
 }

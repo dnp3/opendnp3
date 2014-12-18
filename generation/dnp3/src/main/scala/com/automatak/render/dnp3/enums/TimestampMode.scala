@@ -6,7 +6,7 @@ object TimestampMode {
 
   private val comments = List("Indicates the validity of a timestamp values for an entire object header")
 
-  def apply(): EnumModel = EnumModel("TimestampMode", comments, EnumModel.Integer, codes, Base10)
+  def apply(): EnumModel = EnumModel("TimestampMode", comments, EnumModel.Integer, codes, None, Base10)
 
   private val codes = List(
     EnumValue("INVALID", 0, "Timestamp is not valid, ignore the value and use a local timestamp"),

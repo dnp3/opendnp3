@@ -19,7 +19,7 @@
 package com.automatak.render.java
 
 import com.automatak.render._
-import com.automatak.render.cpp.ReturnSwitchModelRenderer
+import com.automatak.render.cpp.SwitchModelRenderer
 
 object EnumModelRenderer extends ModelRenderer[EnumModel] {
 
@@ -40,9 +40,9 @@ object EnumModelRenderer extends ModelRenderer[EnumModel] {
       Iterator("/**") ++ comments.map("* " + _) ++ Iterator("*/")
     }
 
-    def comments: Iterator[Option[Iterator[String]]] = enum.values.map(ev => ev.comment.map(c => summary(Iterator(c)))).iterator
+    def comments: Iterator[Option[Iterator[String]]] = enum.allValues.map(ev => ev.comment.map(c => summary(Iterator(c)))).iterator
 
-    def definitions : Iterator[String] = commaDelimitedWithSemicolon(enum.values.map(noCast(enum.render)).iterator)
+    def definitions : Iterator[String] = commaDelimitedWithSemicolon(enum.allValues.map(noCast(enum.render)).iterator)
 
     def id = Iterator(List("private final", getEnumType(enum.enumType),"id;").spaced)
 
@@ -58,9 +58,7 @@ object EnumModelRenderer extends ModelRenderer[EnumModel] {
       inner
     }
 
-    def switch = new ReturnSwitchModelRenderer[EnumValue](v => enum.render(v.value))(v => v.name).render(enum.values)
-
-    def returnDefault = Iterator("return " + enum.default.name + ";")
+    def switch = new SwitchModelRenderer[EnumValue](v => enum.render(v.value))(v => v.name).render(enum.nonDefaultValues, enum.default)
 
 
     summary(enum.comments.toIterator) ++
@@ -70,8 +68,7 @@ object EnumModelRenderer extends ModelRenderer[EnumModel] {
       constructor ++ space ++
       toType ++ space ++
       fromType {
-        switch ++
-        returnDefault
+        switch
       }
     }
 

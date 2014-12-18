@@ -9,7 +9,7 @@ object StaticTypeBitmask {
     "Bitmask values for all the static types"
   )
 
-  def apply(): EnumModel = EnumModel("StaticTypeBitmask", comments, EnumModel.UInt16, codes, Hex)
+  def apply(): EnumModel = EnumModel("StaticTypeBitmask", comments, EnumModel.UInt16, codes, None, Hex)
 
   private val codes = List(
     EnumValue("BinaryInput", 0x01),

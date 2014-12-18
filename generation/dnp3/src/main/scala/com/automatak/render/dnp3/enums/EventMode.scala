@@ -9,7 +9,7 @@ object EventMode {
     "Describes how a transaction behaves with respect to event generation"
   )
 
-  def apply(): EnumModel = EnumModel("EventMode", comments, EnumModel.UInt8, codes, Hex)
+  def apply(): EnumModel = EnumModel("EventMode", comments, EnumModel.UInt8, codes, None, Hex)
 
   private val codes = List(
     EnumValue("Detect", 0, "Detect events using the specific mechanism for that type"),

@@ -36,13 +36,11 @@ object EnumToString extends HeaderImplModelRender[EnumModel] {
     def render(em: EnumModel)(implicit indent: Indentation) : Iterator[String] = {
 
       def header = Iterator(signature(em.name))
-      def smr = new ReturnSwitchModelRenderer[EnumValue](ev => em.qualified(ev))(ev => quoted(ev.displayName))
-      def switch = smr.render(em.values)
-      def returnDefault = Iterator(List("return ", quoted(em.default.name),";").mkString)
+      def smr = new SwitchModelRenderer[EnumValue](ev => em.qualified(ev))(ev => quoted(ev.displayName))
+      def switch = smr.render(em.nonDefaultValues, em.default)
 
       header ++ bracket {
-        switch ++
-          returnDefault
+        switch
       }
     }
   }

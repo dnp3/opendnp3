@@ -9,7 +9,7 @@ object AssignClassType {
     "groups that can be used inconjunction with the ASSIGN_CLASS function code"
   )
 
-  def apply(): EnumModel = EnumModel("AssignClassType", comments, EnumModel.UInt8, codes, Hex)
+  def apply(): EnumModel = EnumModel("AssignClassType", comments, EnumModel.UInt8, codes, None, Hex)
 
   private val codes = List(
     EnumValue("BinaryInput", 0),

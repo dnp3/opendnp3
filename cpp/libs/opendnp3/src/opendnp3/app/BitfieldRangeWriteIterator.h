@@ -48,7 +48,7 @@ public:
 	{
 		if(!isNull)
 		{
-			IndexType::WriteBufferView(range, start_);
+			IndexType::WriteBuffer(range, start_);
 			pPosition->Advance(2 * IndexType::Size);
 			maxCount = pPosition->Size() * 8;
 		}

@@ -27,7 +27,7 @@ object CppEnumGenerator {
       EnumConfig(IntervalUnit(), true, true),
       EnumConfig(GroupVariation(), true, true),
       EnumConfig(DoubleBit(), true, true),
-      EnumConfig(PointClass(), true, true),
+      EnumConfig(PointClass(), false, false),
       EnumConfig(CommandStatus(), true, true),
       EnumConfig(TaskCompletion(), false, true),
       EnumConfig(ControlCode(), true, true),
@@ -37,7 +37,11 @@ object CppEnumGenerator {
       EnumConfig(TimestampMode(), false, false),
       EnumConfig(QualifierCode(), true, true),
       EnumConfig(EventMode(), false, false),
-      EnumConfig(IndexMode(), false, false)
+      EnumConfig(IndexMode(), false, false),
+      EnumConfig(HMACType(), true, true),
+      EnumConfig(ChallengeReason(), true, true),
+      EnumConfig(KeyWrapAlgorithm(), true, true),
+      EnumConfig(KeyStatus(), true, true)
     ) ::: DefaultVariations.enums.map(m => EnumConfig(m, false, false)) ::: QualityMasks.enums.map(m => EnumConfig(m, false, false))
 
     // list of all enumerations that we want to generate

@@ -52,10 +52,9 @@ IntervalUnits IntervalUnitsFromType(uint8_t arg)
       return IntervalUnits::Months9;
     case(0xA):
       return IntervalUnits::Seasons;
-    case(0x7F):
+    default:
       return IntervalUnits::Undefined;
   }
-  return IntervalUnits::Undefined;
 }
 char const* IntervalUnitsToString(IntervalUnits arg)
 {
@@ -83,10 +82,9 @@ char const* IntervalUnitsToString(IntervalUnits arg)
       return "Months9";
     case(IntervalUnits::Seasons):
       return "Seasons";
-    case(IntervalUnits::Undefined):
+    default:
       return "Undefined";
   }
-  return "Undefined";
 }
 
 }

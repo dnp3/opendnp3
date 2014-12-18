@@ -50,7 +50,7 @@ public:
 		*(++apStart) = static_cast<uint8_t>((aValue >> 8) & 0xFF);
 	}
 
-	static void WriteBufferView(WriteBufferView& buffer, T aValue)
+	static void WriteBuffer(WriteBufferView& buffer, T aValue)
 	{
 		Write(buffer, aValue);
 		buffer.Advance(Size);
@@ -97,7 +97,7 @@ public:
 		*(++apStart) = static_cast<uint8_t>((aValue >> 24) & 0xFF);
 	}
 
-	static void WriteBufferView(WriteBufferView& buffer, T aValue)
+	static void WriteBuffer(WriteBufferView& buffer, T aValue)
 	{
 		Write(buffer, aValue);
 		buffer.Advance(Size);

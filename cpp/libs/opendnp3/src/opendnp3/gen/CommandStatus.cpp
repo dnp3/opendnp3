@@ -50,10 +50,9 @@ CommandStatus CommandStatusFromType(uint8_t arg)
       return CommandStatus::TOO_MANY_OPS;
     case(9):
       return CommandStatus::NOT_AUTHORIZED;
-    case(127):
+    default:
       return CommandStatus::UNDEFINED;
   }
-  return CommandStatus::UNDEFINED;
 }
 char const* CommandStatusToString(CommandStatus arg)
 {
@@ -79,10 +78,9 @@ char const* CommandStatusToString(CommandStatus arg)
       return "TOO_MANY_OPS";
     case(CommandStatus::NOT_AUTHORIZED):
       return "NOT_AUTHORIZED";
-    case(CommandStatus::UNDEFINED):
+    default:
       return "UNDEFINED";
   }
-  return "UNDEFINED";
 }
 
 }

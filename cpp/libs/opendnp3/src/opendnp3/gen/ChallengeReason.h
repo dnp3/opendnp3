@@ -18,43 +18,28 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#include "PointClass.h"
+#ifndef OPENDNP3_CHALLENGEREASON_H
+#define OPENDNP3_CHALLENGEREASON_H
+
+#include <cstdint>
 
 namespace opendnp3 {
 
-uint8_t PointClassToType(PointClass arg)
+/**
+  Enumerates reasons for a sec-auth challenge
+*/
+enum class ChallengeReason : uint8_t
 {
-  return static_cast<uint8_t>(arg);
-}
-PointClass PointClassFromType(uint8_t arg)
-{
-  switch(arg)
-  {
-    case(0x1):
-      return PointClass::Class0;
-    case(0x2):
-      return PointClass::Class1;
-    case(0x4):
-      return PointClass::Class2;
-    case(0x8):
-      return PointClass::Class3;
-  }
-  return PointClass::Class3;
-}
-char const* PointClassToString(PointClass arg)
-{
-  switch(arg)
-  {
-    case(PointClass::Class0):
-      return "Class0";
-    case(PointClass::Class1):
-      return "Class1";
-    case(PointClass::Class2):
-      return "Class2";
-    case(PointClass::Class3):
-      return "Class3";
-  }
-  return "Class3";
-}
+  /// Challenging a critical function
+  CRITICAL = 0x1,
+  /// Unknown reason
+  UNKNOWN = 0xFF
+};
+
+uint8_t ChallengeReasonToType(ChallengeReason arg);
+ChallengeReason ChallengeReasonFromType(uint8_t arg);
+char const* ChallengeReasonToString(ChallengeReason arg);
 
 }
+
+#endif

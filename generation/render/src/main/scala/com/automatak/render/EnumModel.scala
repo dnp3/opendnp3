@@ -49,8 +49,17 @@ sealed trait IntRender { def apply(i: Int): String }
 case object Hex extends IntRender { def apply(i: Int): String = "0x"+Integer.toHexString(i).toUpperCase }
 case object Base10 extends IntRender { def apply(i: Int): String = i.toString }
 
+case class EnumModel(name: String, comments: List[String], enumType: EnumModel.Type, nonDefaultValues: List[EnumValue], defaultValue: Option[EnumValue], render: IntRender = Base10) {
 
-case class EnumModel(name: String, comments: List[String], enumType: EnumModel.Type, values: List[EnumValue], render: IntRender = Base10) {
-  def default: EnumValue = values.last
+  def allValues: List[EnumValue] = defaultValue match {
+    case Some(d) => nonDefaultValues ::: List(d)
+    case None => nonDefaultValues
+  }
+
+  def default : EnumValue = defaultValue match {
+    case Some(x) => x
+    case None => throw new Exception(name + " does not have a default value")
+  }
+
   def qualified(ev: EnumValue): String = List(name,"::",ev.name).mkString
 }

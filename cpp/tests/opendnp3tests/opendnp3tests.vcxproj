@@ -237,6 +237,7 @@
     <ClCompile Include="src\PhysBaseTest.cpp" />
     <ClCompile Include="src\PhysTestObject.cpp" />
     <ClCompile Include="src\SerialTestObject.cpp" />
+    <ClCompile Include="src\TestGroup120Var5.cpp" />
     <ClCompile Include="src\TestIndexSearch.cpp" />
     <ClCompile Include="src\TestMasterAssignClass.cpp" />
     <ClCompile Include="src\TestMasterMultidrop.cpp" />
@@ -293,6 +294,7 @@
     <ClCompile Include="src\TestPhysicalLayerAsyncTCP.cpp" />
     <ClCompile Include="src\TestPhysicalLayerLoopback.cpp" />
     <ClCompile Include="src\TestPhysicalLayerMonitor.cpp" />
+    <ClCompile Include="src\TestGroup120Var1.cpp" />
     <ClCompile Include="src\TestSerialization.cpp" />
     <ClCompile Include="src\TestShiftableBuffer.cpp" />
     <ClCompile Include="src\TestTime.cpp" />

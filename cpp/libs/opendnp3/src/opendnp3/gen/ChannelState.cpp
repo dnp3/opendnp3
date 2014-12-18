@@ -34,10 +34,9 @@ char const* ChannelStateToString(ChannelState arg)
       return "WAITING";
     case(ChannelState::OPEN):
       return "OPEN";
-    case(ChannelState::SHUTDOWN):
+    default:
       return "SHUTDOWN";
   }
-  return "SHUTDOWN";
 }
 
 }

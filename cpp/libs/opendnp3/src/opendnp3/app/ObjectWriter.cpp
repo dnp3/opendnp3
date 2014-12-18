@@ -59,20 +59,22 @@ bool HeaderWriter::Rollback()
 
 bool HeaderWriter::WriteHeader(GroupVariationID id, QualifierCode qc)
 {
-	if(position->Size() < 3) return false;
+	if (position->Size() < 3)
+	{
+		return false;
+	}
 	else
 	{
-		UInt8::WriteBufferView(*position, id.group);
-		UInt8::WriteBufferView(*position, id.variation);
-		UInt8::WriteBufferView(*position, QualifierCodeToType(qc));
+		UInt8::WriteBuffer(*position, id.group);
+		UInt8::WriteBuffer(*position, id.variation);
+		UInt8::WriteBuffer(*position, QualifierCodeToType(qc));
 		return true;
 	}
 }
 
 bool HeaderWriter::WriteHeaderWithReserve(GroupVariationID id, QualifierCode qc, uint32_t reserve)
 {
-	if(position->Size() < (3 + reserve)) return false;
-	else return WriteHeader(id, qc);
+	return (position->Size() < (3 + reserve)) ? false : WriteHeader(id, qc);
 }
 
 }

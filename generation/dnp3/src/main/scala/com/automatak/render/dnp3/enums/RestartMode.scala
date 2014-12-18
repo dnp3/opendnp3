@@ -6,7 +6,7 @@ object RestartMode {
 
   private val comments = List("Enumeration describing restart mode support of an outstation")
 
-  def apply(): EnumModel = EnumModel("RestartMode", comments, EnumModel.Integer, codes, Base10)
+  def apply(): EnumModel = EnumModel("RestartMode", comments, EnumModel.Integer, codes, None, Base10)
 
   private val codes = List(
     EnumValue("UNSUPPORTED", 0, "Device does not support restart"),

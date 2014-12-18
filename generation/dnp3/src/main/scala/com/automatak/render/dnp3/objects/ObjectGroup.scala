@@ -24,7 +24,8 @@ object ObjectGroup {
     Group50,
     Group51,
     Group52,
-    Group60
+    Group60,
+    Group120
   )
 
 }

@@ -9,7 +9,7 @@ object PointClass {
     "Class assignment for a measurement point"
   )
 
-  def apply(): EnumModel = EnumModel("PointClass", comments, EnumModel.UInt8, codes, Hex)
+  def apply(): EnumModel = EnumModel("PointClass", comments, EnumModel.UInt8, codes, None, Hex)
 
   private val codes = List(
     EnumValue("Class0", 0x01, "No event class assignment"),

@@ -32,10 +32,9 @@ char const* TaskCompletionToString(TaskCompletion arg)
       return "FAILURE_BAD_RESPONSE";
     case(TaskCompletion::FAILURE_RESPONSE_TIMEOUT):
       return "FAILURE_RESPONSE_TIMEOUT";
-    case(TaskCompletion::FAILURE_NO_COMMS):
+    default:
       return "FAILURE_NO_COMMS";
   }
-  return "FAILURE_NO_COMMS";
 }
 
 }

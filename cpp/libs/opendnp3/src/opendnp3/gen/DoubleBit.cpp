@@ -36,10 +36,9 @@ DoubleBit DoubleBitFromType(uint8_t arg)
       return DoubleBit::DETERMINED_OFF;
     case(0x2):
       return DoubleBit::DETERMINED_ON;
-    case(0x3):
+    default:
       return DoubleBit::INDETERMINATE;
   }
-  return DoubleBit::INDETERMINATE;
 }
 char const* DoubleBitToString(DoubleBit arg)
 {
@@ -51,10 +50,9 @@ char const* DoubleBitToString(DoubleBit arg)
       return "DETERMINED_OFF";
     case(DoubleBit::DETERMINED_ON):
       return "DETERMINED_ON";
-    case(DoubleBit::INDETERMINATE):
+    default:
       return "INDETERMINATE";
   }
-  return "INDETERMINATE";
 }
 
 }
