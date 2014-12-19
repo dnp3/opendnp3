@@ -90,7 +90,7 @@ bool Group120Var1::Write(const Group120Var1& output, openpal::WriteBufferView& b
 		UInt16::WriteBuffer(buffer, output.userNum);
 		UInt8::WriteBuffer(buffer, HMACTypeToType(output.hmacType));
 		UInt8::WriteBuffer(buffer, ChallengeReasonToType(output.reason));
-		buffer.Advance(output.challengeData.CopyTo(buffer).Size());
+		buffer.ReadFrom(output.challengeData);		
 		return true;
 	}
 }

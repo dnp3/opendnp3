@@ -103,10 +103,10 @@ public:
 		buffer.Advance(Size);
 	}
 
-	inline static T ReadBuffer(ReadBufferView& arBuffer)
+	inline static T ReadBuffer(ReadBufferView& buffer)
 	{
-		auto ret = Read(arBuffer);
-		arBuffer.Advance(Size);
+		auto ret = Read(buffer);
+		buffer.Advance(Size);
 		return ret;
 	}
 

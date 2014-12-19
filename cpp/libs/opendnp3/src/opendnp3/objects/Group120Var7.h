@@ -19,62 +19,50 @@
 * to you under the terms of the License.
 */
 
-#include "SeqUserData.h"
+#ifndef OPENDNP3_GROUP120VAR7_H
+#define OPENDNP3_GROUP120VAR7_H
 
-#include <openpal/serialization/Serialization.h>
+#include <openpal/container/ReadBufferView.h>
+#include <openpal/container/WriteBufferView.h>
 
-using namespace openpal;
+#include "opendnp3/gen/AuthErrorCode.h"
+#include "opendnp3/app/GroupVariationID.h"
 
 namespace opendnp3 {
 
-SeqUserData::SeqUserData() : seq(0), user(0)
-{}
-
-SeqUserData::SeqUserData(
-	uint32_t seq_,
-	uint16_t user_,
-	const openpal::ReadBufferView& data_
-	) :
-	seq(seq_),
-	user(user_),
-	data(data_)
-{}
-
-uint32_t SeqUserData::Size() const
+struct Group120Var7
 {
-	return MIN_SIZE + data.Size();
-}
+	Group120Var7();
 	
-bool SeqUserData::Read(const openpal::ReadBufferView& buffer, SeqUserData& output)
-{
-	if (buffer.Size() < MIN_SIZE)
-	{		
-		return false;
-	}
-	else
-	{
-		ReadBufferView copy(buffer);
-		output.seq = UInt32::ReadBuffer(copy);
-		output.user = UInt16::ReadBuffer(copy);
-		output.data = copy;
-		return true;
-	}
-}
+	Group120Var7(
+		uint32_t seqNum,
+		uint16_t userNum,
+		uint16_t associationID,
+		AuthErrorCode errorCode,
+		uint64_t timeOfError,
+		openpal::ReadBufferView errorText
+	);
 
-bool SeqUserData::Write(const SeqUserData& output, openpal::WriteBufferView& buffer)
-{
-	if (buffer.Size() < output.Size())
-	{
-		return false;
-	}
-	else
-	{
-		UInt32::WriteBuffer(buffer, output.seq);
-		UInt16::WriteBuffer(buffer, output.user);
-		buffer.ReadFrom(output.data);		
-		return true;
-	}
-}
+	static GroupVariationID ID() { return GroupVariationID(120,7); }
+
+	uint32_t Size() const;
 	
+	uint32_t seqNum;
+	uint16_t userNum;
+	uint16_t associationID;
+	AuthErrorCode errorCode;
+	uint64_t timeOfError;
+	openpal::ReadBufferView errorText;
+	
+	static bool Read(const openpal::ReadBufferView& buffer, Group120Var7& output);
+
+	static bool Write(const Group120Var7& output, openpal::WriteBufferView& buffer);
+
+	private:
+
+	static const uint32_t FIXED_BASE_SIZE = 15;	
+};
+
 }
 
+#endif
