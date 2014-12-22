@@ -19,39 +19,40 @@
 * to you under the terms of the License.
 */
 
-#ifndef OPENDNP3_GROUP120VAR2_H
-#define OPENDNP3_GROUP120VAR2_H
+#ifndef OPENDNP3_SEQUSERDATA_H
+#define OPENDNP3_SEQUSERDATA_H
 
-#include "SeqUserData.h"
+#include <openpal/logging/Logger.h>
+#include <openpal/container/ReadBufferView.h>
+#include <openpal/container/WriteBufferView.h>
 
 #include "opendnp3/app/GroupVariationID.h"
 
 namespace opendnp3 {
 
-struct Group120Var2 : public SeqUserData
+/// Reusable structure that appears in multiple g120 variations
+struct SeqUserData
 {
-	Group120Var2() : SeqUserData()
-	{}
+	SeqUserData();
 
-	Group120Var2(
-		uint32_t challengeSeqNum,
-		uint16_t userNum,
-		const openpal::ReadBufferView& challengeData
-		) :
-		SeqUserData(challengeSeqNum, userNum, challengeData)
-	{}
+	SeqUserData(
+		uint32_t seq,
+		uint16_t user,		
+		const openpal::ReadBufferView& data
+	);	
 
-	static GroupVariationID ID() { return GroupVariationID(120,2); }		
+	uint32_t Size() const;	
 	
-	inline static bool Read(const openpal::ReadBufferView& buffer, Group120Var2& output)
-	{
-		return SeqUserData::Read(buffer, output);
-	}
+	uint32_t seq;
+	uint16_t user;
+	openpal::ReadBufferView data;
 
-	inline static bool Write(const Group120Var2& output, openpal::WriteBufferView& buffer)
-	{
-		return SeqUserData::Write(output, buffer);
-	}
+	protected:
+
+	static bool Read(const openpal::ReadBufferView& buffer, SeqUserData& output);
+	static bool Write(const SeqUserData& output, openpal::WriteBufferView& buffer);
+
+	static const uint32_t MIN_SIZE = 6;	
 };
 
 }

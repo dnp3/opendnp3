@@ -19,59 +19,49 @@
 * to you under the terms of the License.
 */
 
-#include "Group120Var2.h"
+#include "SeqUserData.h"
 
-#include <openpal/logging/LogMacros.h>
 #include <openpal/serialization/Serialization.h>
-
-#include <opendnp3/LogLevels.h>
 
 using namespace openpal;
 
 namespace opendnp3 {
 
-Group120Var2::Group120Var2() : 
-	challengeSeqNum(0),
-	userNum(0)	
+SeqUserData::SeqUserData() : seq(0), user(0)
+{}
+
+SeqUserData::SeqUserData(
+	uint32_t seq_,
+	uint16_t user_,
+	const openpal::ReadBufferView& data_
+	) :
+	seq(seq_),
+	user(user_),
+	data(data_)
+{}
+
+uint32_t SeqUserData::Size() const
 {
-		
+	return MIN_SIZE + data.Size();
 }
-
-Group120Var2::Group120Var2(
-	uint32_t challengeSeqNum_,
-	uint16_t userNum_,	
-	const openpal::ReadBufferView& challengeData_
-	) : 
-	challengeSeqNum(challengeSeqNum_),
-	userNum(userNum_),	
-	challengeData(challengeData_)
+	
+bool SeqUserData::Read(const openpal::ReadBufferView& buffer, SeqUserData& output)
 {
-
-}
-
-uint32_t Group120Var2::Size() const
-{
-	return 6 + challengeData.Size();
-}
-
-bool Group120Var2::Read(const openpal::ReadBufferView& data, Group120Var2& output, openpal::Logger* pLogger)
-{
-	if (data.Size() < MIN_SIZE)
-	{
-		SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for g120v1 object");
+	if (buffer.Size() < MIN_SIZE)
+	{		
 		return false;
 	}
 	else
 	{
-		ReadBufferView copy(data);
-		output.challengeSeqNum = UInt32::ReadBuffer(copy);		
-		output.userNum = UInt16::ReadBuffer(copy);		
-		output.challengeData = copy;
+		ReadBufferView copy(buffer);
+		output.seq = UInt32::ReadBuffer(copy);
+		output.user = UInt16::ReadBuffer(copy);
+		output.data = copy;
 		return true;
 	}
 }
 
-bool Group120Var2::Write(const Group120Var2& output, openpal::WriteBufferView& buffer)
+bool SeqUserData::Write(const SeqUserData& output, openpal::WriteBufferView& buffer)
 {
 	if (buffer.Size() < output.Size())
 	{
@@ -79,11 +69,12 @@ bool Group120Var2::Write(const Group120Var2& output, openpal::WriteBufferView& b
 	}
 	else
 	{
-		UInt32::WriteBuffer(buffer, output.challengeSeqNum);
-		UInt16::WriteBuffer(buffer, output.userNum);		
-		buffer.Advance(output.challengeData.CopyTo(buffer).Size());
+		UInt32::WriteBuffer(buffer, output.seq);
+		UInt16::WriteBuffer(buffer, output.user);
+		buffer.ReadFrom(output.data);		
 		return true;
 	}
 }
-
+	
 }
+

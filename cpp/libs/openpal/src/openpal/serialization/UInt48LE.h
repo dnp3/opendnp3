@@ -44,7 +44,7 @@ public:
 		return ret;
 	}
 
-	static void WriteBufferView(WriteBufferView& buffer, int64_t aValue)
+	static void WriteBuffer(WriteBufferView& buffer, int64_t aValue)
 	{
 		Write(buffer, aValue);
 		buffer.Advance(Size);

@@ -19,39 +19,48 @@
 * to you under the terms of the License.
 */
 
-#ifndef OPENDNP3_GROUP120VAR2_H
-#define OPENDNP3_GROUP120VAR2_H
+#ifndef OPENDNP3_GROUP120VAR7_H
+#define OPENDNP3_GROUP120VAR7_H
 
-#include "SeqUserData.h"
+#include <openpal/container/ReadBufferView.h>
+#include <openpal/container/WriteBufferView.h>
 
+#include "opendnp3/gen/AuthErrorCode.h"
 #include "opendnp3/app/GroupVariationID.h"
 
 namespace opendnp3 {
 
-struct Group120Var2 : public SeqUserData
+struct Group120Var7
 {
-	Group120Var2() : SeqUserData()
-	{}
-
-	Group120Var2(
-		uint32_t challengeSeqNum,
-		uint16_t userNum,
-		const openpal::ReadBufferView& challengeData
-		) :
-		SeqUserData(challengeSeqNum, userNum, challengeData)
-	{}
-
-	static GroupVariationID ID() { return GroupVariationID(120,2); }		
+	Group120Var7();
 	
-	inline static bool Read(const openpal::ReadBufferView& buffer, Group120Var2& output)
-	{
-		return SeqUserData::Read(buffer, output);
-	}
+	Group120Var7(
+		uint32_t seqNum,
+		uint16_t userNum,
+		uint16_t associationID,
+		AuthErrorCode errorCode,
+		uint64_t timeOfError,
+		openpal::ReadBufferView errorText
+	);
 
-	inline static bool Write(const Group120Var2& output, openpal::WriteBufferView& buffer)
-	{
-		return SeqUserData::Write(output, buffer);
-	}
+	static GroupVariationID ID() { return GroupVariationID(120,7); }
+
+	uint32_t Size() const;
+	
+	uint32_t seqNum;
+	uint16_t userNum;
+	uint16_t associationID;
+	AuthErrorCode errorCode;
+	uint64_t timeOfError;
+	openpal::ReadBufferView errorText;
+	
+	static bool Read(const openpal::ReadBufferView& buffer, Group120Var7& output);
+
+	static bool Write(const Group120Var7& output, openpal::WriteBufferView& buffer);
+
+	private:
+
+	static const uint32_t FIXED_BASE_SIZE = 15;	
 };
 
 }

@@ -747,6 +747,18 @@
     <ClInclude Include="src\opendnp3\gen\KeyStatus.h">
       <Filter>Header\gen</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\objects\SeqUserData.h">
+      <Filter>Header\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\objects\Group120Var6.h">
+      <Filter>Header\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\objects\Group120Var7.h">
+      <Filter>Header\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\AuthErrorCode.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\AnalogOutput.cpp">
@@ -1115,9 +1127,6 @@
     <ClCompile Include="src\opendnp3\objects\Group120Var1.cpp">
       <Filter>Source\objects</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\objects\Group120Var2.cpp">
-      <Filter>Source\objects</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\objects\Group120.cpp">
       <Filter>Source\objects</Filter>
     </ClCompile>
@@ -1131,6 +1140,15 @@
       <Filter>Source\gen</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\objects\Group120Var5.cpp">
+      <Filter>Source\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\objects\SeqUserData.cpp">
+      <Filter>Source\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\gen\AuthErrorCode.cpp">
+      <Filter>Source\gen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\objects\Group120Var7.cpp">
       <Filter>Source\objects</Filter>
     </ClCompile>
   </ItemGroup>

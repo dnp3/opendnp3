@@ -41,7 +41,8 @@ object CppEnumGenerator {
       EnumConfig(HMACType(), true, true),
       EnumConfig(ChallengeReason(), true, true),
       EnumConfig(KeyWrapAlgorithm(), true, true),
-      EnumConfig(KeyStatus(), true, true)
+      EnumConfig(KeyStatus(), true, true),
+      EnumConfig(AuthErrorCode(), true, true)
     ) ::: DefaultVariations.enums.map(m => EnumConfig(m, false, false)) ::: QualityMasks.enums.map(m => EnumConfig(m, false, false))
 
     // list of all enumerations that we want to generate

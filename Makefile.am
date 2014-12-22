@@ -77,18 +77,21 @@ cpp/libs/opendnp3/src/opendnp3/app/MeasurementTypes.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/ObjectWriter.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/OctetData.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/TimeAndInterval.cpp \
+cpp/libs/opendnp3/src/opendnp3/gen/AuthErrorCode.cpp \
+cpp/libs/opendnp3/src/opendnp3/gen/ChallengeReason.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/ChannelState.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/CommandStatus.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/ControlCode.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/DoubleBit.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/FunctionCode.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/GroupVariation.cpp \
+cpp/libs/opendnp3/src/opendnp3/gen/HMACType.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/IntervalUnits.cpp \
+cpp/libs/opendnp3/src/opendnp3/gen/KeyStatus.cpp \
+cpp/libs/opendnp3/src/opendnp3/gen/KeyWrapAlgorithm.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/LinkFunction.cpp \
-cpp/libs/opendnp3/src/opendnp3/gen/PointClass.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/QualifierCode.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/TaskCompletion.cpp \
-cpp/libs/opendnp3/src/opendnp3/gen/TimeSyncMode.cpp \
 cpp/libs/opendnp3/src/opendnp3/link/CRC.cpp \
 cpp/libs/opendnp3/src/opendnp3/link/IOpenDelayStrategy.cpp \
 cpp/libs/opendnp3/src/opendnp3/link/LinkFrame.cpp \
@@ -126,6 +129,10 @@ cpp/libs/opendnp3/src/opendnp3/master/UserPollTask.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/WriteTask.cpp \
 cpp/libs/opendnp3/src/opendnp3/objects/Group10.cpp \
 cpp/libs/opendnp3/src/opendnp3/objects/Group11.cpp \
+cpp/libs/opendnp3/src/opendnp3/objects/Group120.cpp \
+cpp/libs/opendnp3/src/opendnp3/objects/Group120Var1.cpp \
+cpp/libs/opendnp3/src/opendnp3/objects/Group120Var5.cpp \
+cpp/libs/opendnp3/src/opendnp3/objects/Group120Var7.cpp \
 cpp/libs/opendnp3/src/opendnp3/objects/Group12.cpp \
 cpp/libs/opendnp3/src/opendnp3/objects/Group1.cpp \
 cpp/libs/opendnp3/src/opendnp3/objects/Group20.cpp \
@@ -144,6 +151,7 @@ cpp/libs/opendnp3/src/opendnp3/objects/Group50.cpp \
 cpp/libs/opendnp3/src/opendnp3/objects/Group51.cpp \
 cpp/libs/opendnp3/src/opendnp3/objects/Group52.cpp \
 cpp/libs/opendnp3/src/opendnp3/objects/Group60.cpp \
+cpp/libs/opendnp3/src/opendnp3/objects/SeqUserData.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/ApplicationIIN.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/AssignClassHandler.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/ClassBasedRequestHandler.cpp \
@@ -177,6 +185,7 @@ cpp/libs/opendnp3/src/opendnp3/transport/TransportLayer.cpp \
 cpp/libs/opendnp3/src/opendnp3/transport/TransportRx.cpp \
 cpp/libs/opendnp3/src/opendnp3/transport/TransportStack.cpp \
 cpp/libs/opendnp3/src/opendnp3/transport/TransportTx.cpp
+
 
 #ls cpp/libs/asiodnp3/src/asiodnp3/*.cpp -1 | awk '{print $0" \\"}'
 libasiodnp3_la_CPPFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) -I$(ASIODNP3_INCLUDE) $(ASIO_CONFIG)
@@ -265,6 +274,9 @@ cpp/tests/opendnp3tests/src/TestCastLongLongDouble.cpp \
 cpp/tests/opendnp3tests/src/TestCRC.cpp \
 cpp/tests/opendnp3tests/src/TestDatabase.cpp \
 cpp/tests/opendnp3tests/src/TestDNP3Manager.cpp \
+cpp/tests/opendnp3tests/src/TestGroup120Var1.cpp \
+cpp/tests/opendnp3tests/src/TestGroup120Var2.cpp \
+cpp/tests/opendnp3tests/src/TestGroup120Var5.cpp \
 cpp/tests/opendnp3tests/src/TestIndexSearch.cpp \
 cpp/tests/opendnp3tests/src/TestLazyCollection.cpp \
 cpp/tests/opendnp3tests/src/TestLinkFrame.cpp \
