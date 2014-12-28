@@ -165,7 +165,6 @@
     <ClInclude Include="src\opendnp3\master\SerialTimeSyncTask.h" />
     <ClInclude Include="src\opendnp3\master\MasterTasks.h" />
     <ClInclude Include="src\opendnp3\master\TaskPriority.h" />
-    <ClInclude Include="src\opendnp3\master\TaskRecord.h" />
     <ClInclude Include="src\opendnp3\master\TimeSyncHandler.h" />
     <ClInclude Include="src\opendnp3\objects\Group1.h" />
     <ClInclude Include="src\opendnp3\objects\Group10.h" />
@@ -310,7 +309,6 @@
     <ClCompile Include="src\opendnp3\master\Master.cpp" />
     <ClCompile Include="src\opendnp3\master\PollTaskBase.cpp" />
     <ClCompile Include="src\opendnp3\master\MasterTasks.cpp" />
-    <ClCompile Include="src\opendnp3\master\TaskRecord.cpp" />
     <ClCompile Include="src\opendnp3\master\WriteTask.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group1.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group10.cpp" />

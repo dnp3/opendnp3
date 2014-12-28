@@ -468,9 +468,6 @@
     <ClInclude Include="src\opendnp3\master\ITaskLock.h">
       <Filter>Header\master</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\master\TaskRecord.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\master\IScheduleCallback.h">
       <Filter>Header\master</Filter>
     </ClInclude>
@@ -993,9 +990,6 @@
       <Filter>Source\master</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\master\ITaskLock.cpp">
-      <Filter>Source\master</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\master\TaskRecord.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\gen\TimeSyncMode.cpp">

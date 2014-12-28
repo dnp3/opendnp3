@@ -28,7 +28,6 @@
 
 #include "opendnp3/master/UserPollTask.h"
 #include "opendnp3/master/IMasterTask.h"
-#include "opendnp3/master/TaskRecord.h"
 #include "opendnp3/master/IScheduleCallback.h"
 
 #include <vector>
