@@ -21,9 +21,9 @@ libopenpal_la_SOURCES = \
 cpp/libs/openpal/src/openpal/container/DynamicBuffer.cpp \
 cpp/libs/openpal/src/openpal/container/ReadBufferView.cpp \
 cpp/libs/openpal/src/openpal/container/WriteBufferView.cpp \
+cpp/libs/openpal/src/openpal/executor/Action0.cpp \
 cpp/libs/openpal/src/openpal/executor/Erasure.cpp \
 cpp/libs/openpal/src/openpal/executor/MonotonicTimestamp.cpp \
-cpp/libs/openpal/src/openpal/executor/Runnable.cpp \
 cpp/libs/openpal/src/openpal/executor/TimeDuration.cpp \
 cpp/libs/openpal/src/openpal/logging/LogEntry.cpp \
 cpp/libs/openpal/src/openpal/logging/Logger.cpp \
@@ -143,7 +143,6 @@ cpp/libs/opendnp3/src/opendnp3/objects/Group4.cpp \
 cpp/libs/opendnp3/src/opendnp3/objects/Group50.cpp \
 cpp/libs/opendnp3/src/opendnp3/objects/Group51.cpp \
 cpp/libs/opendnp3/src/opendnp3/objects/Group52.cpp \
-cpp/libs/opendnp3/src/opendnp3/objects/Group60.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/ApplicationIIN.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/AssignClassHandler.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/ClassBasedRequestHandler.cpp \
