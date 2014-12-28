@@ -302,9 +302,7 @@ TEST_CASE(SUITE("ParsesGroup2Var3Correctly"))
 	REQUIRE(t.meas.binarySOE.size() == 1);
 	auto record = t.meas.binarySOE[7];
 	REQUIRE(record.meas.time == 5);
-	REQUIRE(record.header.enumeration == GroupVariation::Group2Var3);
-	REQUIRE(record.header.group == 2);
-	REQUIRE(record.header.variation == 3);	
+	REQUIRE(record.info.gv == GroupVariation::Group2Var3);	
 }
 
 TEST_CASE(SUITE("ParsesGroup50Var4"))
@@ -408,7 +406,7 @@ TEST_CASE(SUITE("ReceiveCTOSynchronized"))
 	auto record = t.meas.binarySOE[7];
 	bool equal = record.meas == Binary(true, 0x01, 0x04); //timestamp is 4
 	REQUIRE(equal);
-	REQUIRE(record.tsmode == TimestampMode::SYNCHRONIZED);
+	REQUIRE(record.info.tsmode == TimestampMode::SYNCHRONIZED);
 }
 
 TEST_CASE(SUITE("ReceiveCTOUnsynchronized"))
@@ -424,7 +422,7 @@ TEST_CASE(SUITE("ReceiveCTOUnsynchronized"))
 	auto record = t.meas.binarySOE[7];
 	bool equal = record.meas == Binary(true, 0x01, 0x04); //timestamp is 4
 	REQUIRE(equal); 
-	REQUIRE(record.tsmode == TimestampMode::UNSYNCHRONIZED);
+	REQUIRE(record.info.tsmode == TimestampMode::UNSYNCHRONIZED);
 }
 
 TEST_CASE(SUITE("ReceiveIINinResponses"))
