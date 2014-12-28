@@ -26,7 +26,6 @@
 #include "opendnp3/app/APDUHeaderParser.h"
 #include "opendnp3/app/APDULogging.h"
 #include "opendnp3/master/MeasurementHandler.h"
-#include "opendnp3/master/ConstantCommandProcessor.h"
 
 #include "opendnp3/objects/Group12.h"
 #include "opendnp3/objects/Group41.h"

@@ -201,9 +201,6 @@
     <ClInclude Include="src\opendnp3\master\CommandTask.h">
       <Filter>Header\master</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\master\ConstantCommandProcessor.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\master\ICommandProcessor.h">
       <Filter>Header\master</Filter>
     </ClInclude>
@@ -780,9 +777,6 @@
       <Filter>Source\master</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\master\CommandTask.cpp">
-      <Filter>Source\master</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\master\ConstantCommandProcessor.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\master\ISOEHandler.cpp">
