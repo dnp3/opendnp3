@@ -21,7 +21,7 @@
 namespace Automatak.DNP3.Interface
 {
   /// <summary>
-  /// Indicates the validity of a timestamp values for an entire object header
+  /// Indicates the validity of timestamp values for an entire object header
   /// </summary>
   public enum TimestampMode : byte
   {
