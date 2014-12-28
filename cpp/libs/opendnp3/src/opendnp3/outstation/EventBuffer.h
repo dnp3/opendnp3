@@ -27,7 +27,6 @@
 #include "opendnp3/outstation/IResponseLoader.h"
 #include "opendnp3/outstation/IEventRecorder.h"
 #include "opendnp3/outstation/EventCount.h"
-#include "opendnp3/outstation/SelectionWriter.h"
 #include "opendnp3/outstation/EventBufferConfig.h"
 #include "opendnp3/outstation/SOERecord.h"
 
