@@ -91,20 +91,25 @@ package object render {
 
     def commaDelimited(s: Iterator[String]) : Iterator[String] = delimited(",")(s)
 
-    def writeTo(path: Path)(lines: => Iterator[String]): Unit = {
+    def writeTo(path: Path)(lines: Iterator[String]): Unit = {
 
-      if(!Files.exists(path.getParent)) Files.createDirectory(path.getParent)
-      if(!Files.exists(path)) Files.createFile(path)
+      if(!lines.isEmpty)
+      {
+        if(!Files.exists(path.getParent)) Files.createDirectory(path.getParent)
+        if(!Files.exists(path)) Files.createFile(path)
 
-      val writer = Files.newBufferedWriter( path, Charset.defaultCharset, StandardOpenOption.TRUNCATE_EXISTING)
+        val writer = Files.newBufferedWriter( path, Charset.defaultCharset, StandardOpenOption.TRUNCATE_EXISTING)
 
-      def writeLine(s: String) = {
-        writer.write(s)
-        writer.write(System.lineSeparator)
+        def writeLine(s: String) = {
+          writer.write(s)
+          writer.write(System.lineSeparator)
+        }
+
+        try { lines.foreach(writeLine) }
+        finally { writer.close() }
       }
 
-      try { lines.foreach(writeLine) }
-      finally { writer.close() }
+
 
     }
 }

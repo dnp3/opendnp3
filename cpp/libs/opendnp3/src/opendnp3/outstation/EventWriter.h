@@ -72,9 +72,7 @@ class EventWriter : openpal::PureStatic
 	template <class T>
 	static Result WriteTypeWithSerializer(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation, opendnp3::DNP3Serializer<T> serializer, typename T::EventVariation variation)
 	{
-		auto iter = openpal::LinkedListIterator<SOERecord>::From(pLocation);
-
-		openpal::ListNode<SOERecord>* pFirstSelected = nullptr;
+		auto iter = openpal::LinkedListIterator<SOERecord>::From(pLocation);		
 
 		auto header = writer.IterateOverCountWithPrefix<openpal::UInt16, T>(QualifierCode::UINT16_CNT_UINT16_INDEX, serializer);
 
@@ -96,19 +94,20 @@ class EventWriter : openpal::PureStatic
 					}
 					else
 					{
-						auto location = openpal::LinkedListIterator<SOERecord>::From(pFirstSelected ? pFirstSelected : pCurrent);
+						auto location = openpal::LinkedListIterator<SOERecord>::From(pCurrent);
 						return Result(true, location);
 					}
 				}
 				else
 				{
-					// drop out and return from current location
+
+					// drop out and return from current location					
 					break;
 				}
 			}			
 		}
 
-		auto location = openpal::LinkedListIterator<SOERecord>::From(pFirstSelected ? pFirstSelected : pCurrent);
+		auto location = openpal::LinkedListIterator<SOERecord>::From(pCurrent);
 		return Result(false, location);
 	}
 
@@ -116,8 +115,7 @@ class EventWriter : openpal::PureStatic
 	static Result WriteCTOTypeWithSerializer(HeaderWriter& writer, IEventRecorder& recorder, openpal::ListNode<SOERecord>* pLocation, opendnp3::DNP3Serializer<T> serializer, typename T::EventVariation variation)
 	{
 		auto iter = openpal::LinkedListIterator<SOERecord>::From(pLocation);
-
-		openpal::ListNode<SOERecord>* pFirstSelected = nullptr;
+		
 		CTOType cto = { pLocation->value.GetTime() };
 
 		auto header = writer.IterateOverCountWithPrefixAndCTO<openpal::UInt16, T, CTOType>(QualifierCode::UINT16_CNT_UINT16_INDEX, serializer, cto);
@@ -156,7 +154,7 @@ class EventWriter : openpal::PureStatic
 							}
 							else
 							{
-								auto location = openpal::LinkedListIterator<SOERecord>::From(pFirstSelected ? pFirstSelected : pCurrent);
+								auto location = openpal::LinkedListIterator<SOERecord>::From(pCurrent);
 								return Result(true, location);
 							}
 						}
@@ -164,13 +162,13 @@ class EventWriter : openpal::PureStatic
 				}
 				else
 				{
-					// drop out and return from current location
+					// drop out and return from current location					
 					break;
 				}
 			}
 		}
 
-		auto location = openpal::LinkedListIterator<SOERecord>::From(pFirstSelected ? pFirstSelected : pCurrent);
+		auto location = openpal::LinkedListIterator<SOERecord>::From(pCurrent);
 		return Result(false, location);
 	}
 

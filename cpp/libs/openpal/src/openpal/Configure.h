@@ -27,13 +27,13 @@
 // They are liberally set by default for x64 
 // but can be reduced for embedded systems.
 
-#ifndef OPENPAL_MACRO_MAX_ERASURE_SIZE
-#define OPENPAL_MACRO_MAX_ERASURE_SIZE 128
+#ifndef OPENPAL_ERASURE_MULTIPLE
+#define OPENPAL_ERASURE_MULTIPLE 8
 #endif
 
 namespace openpal { namespace sizes {
 
-	static const uint16_t MAX_ERASURE_SIZE = OPENPAL_MACRO_MAX_ERASURE_SIZE;
+	static const uint16_t MAX_ERASURE_SIZE = OPENPAL_ERASURE_MULTIPLE * sizeof(void*);
 
 }}
 

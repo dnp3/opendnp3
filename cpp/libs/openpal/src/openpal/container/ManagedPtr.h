@@ -21,6 +21,8 @@
 #ifndef OPENPAL_MANAGEDPTR_H
 #define OPENPAL_MANAGEDPTR_H
 
+#include <assert.h>
+
 namespace openpal
 {
 

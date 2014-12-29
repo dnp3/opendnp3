@@ -35,7 +35,6 @@
     <ClInclude Include="src\openpal\container\Settable.h" />
     <ClInclude Include="src\openpal\container\WriteBufferView.h" />
     <ClInclude Include="src\openpal\executor\Erasure.h" />
-    <ClInclude Include="src\openpal\executor\Function0.h" />
     <ClInclude Include="src\openpal\executor\Function1.h" />
     <ClInclude Include="src\openpal\executor\IExecutor.h" />
     <ClInclude Include="src\openpal\executor\IMutex.h" />
@@ -72,7 +71,7 @@
     <ClCompile Include="src\openpal\container\WriteBufferView.cpp" />
     <ClCompile Include="src\openpal\executor\Erasure.cpp" />
     <ClCompile Include="src\openpal\executor\MonotonicTimestamp.cpp" />
-    <ClCompile Include="src\openpal\executor\Runnable.cpp" />
+    <ClCompile Include="src\openpal\executor\Action0.cpp" />
     <ClCompile Include="src\openpal\executor\TimeDuration.cpp" />
     <ClCompile Include="src\openpal\logging\LogEntry.cpp" />
     <ClCompile Include="src\openpal\logging\Logger.cpp" />

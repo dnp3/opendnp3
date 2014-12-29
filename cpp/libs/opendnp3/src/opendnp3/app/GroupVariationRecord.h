@@ -26,7 +26,9 @@
 #include <openpal/util/Uncopyable.h>
 
 #include "opendnp3/gen/QualifierCode.h"
+#include "opendnp3/gen/TimestampMode.h"
 #include "opendnp3/gen/GroupVariation.h"
+
 
 namespace opendnp3
 {

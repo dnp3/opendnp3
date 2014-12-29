@@ -201,9 +201,6 @@
     <ClInclude Include="src\opendnp3\master\CommandTask.h">
       <Filter>Header\master</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\master\ConstantCommandProcessor.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\master\ICommandProcessor.h">
       <Filter>Header\master</Filter>
     </ClInclude>
@@ -471,9 +468,6 @@
     <ClInclude Include="src\opendnp3\master\ITaskLock.h">
       <Filter>Header\master</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\master\TaskRecord.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\master\IScheduleCallback.h">
       <Filter>Header\master</Filter>
     </ClInclude>
@@ -518,9 +512,6 @@
     </ClInclude>
     <ClInclude Include="src\opendnp3\app\FunctionHelpers.h">
       <Filter>Header\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\SelectionWriter.h">
-      <Filter>Header\outstation</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\SOERecord.h">
       <Filter>Header\outstation</Filter>
@@ -759,6 +750,9 @@
     <ClInclude Include="src\opendnp3\gen\AuthErrorCode.h">
       <Filter>Header\gen</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\master\HeaderInfo.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\AnalogOutput.cpp">
@@ -818,9 +812,6 @@
     <ClCompile Include="src\opendnp3\master\CommandTask.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\master\ConstantCommandProcessor.cpp">
-      <Filter>Source\master</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\master\ISOEHandler.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
@@ -856,9 +847,6 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\WriteHandler.cpp">
       <Filter>Source\outstation</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\objects\Group60.cpp">
-      <Filter>Source\objects</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\objects\Group52.cpp">
       <Filter>Source\objects</Filter>
@@ -1040,8 +1028,13 @@
     <ClCompile Include="src\opendnp3\master\ITaskLock.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="src\opendnp3\master\TaskRecord.cpp">
       <Filter>Source\master</Filter>
+=======
+    <ClCompile Include="src\opendnp3\gen\TimeSyncMode.cpp">
+      <Filter>Source\gen</Filter>
+>>>>>>> 2.0.x-feature
     </ClCompile>
     <ClCompile Include="src\opendnp3\app\ClassField.cpp">
       <Filter>Source\app</Filter>
@@ -1060,9 +1053,6 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\app\FunctionHelpers.cpp">
       <Filter>Source\app</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\SelectionWriter.cpp">
-      <Filter>Source\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\SOERecord.cpp">
       <Filter>Source\outstation</Filter>

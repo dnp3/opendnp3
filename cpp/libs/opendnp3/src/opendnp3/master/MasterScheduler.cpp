@@ -21,8 +21,6 @@
 
 #include "MasterScheduler.h"
 
-#include "opendnp3/master/ConstantCommandProcessor.h"
-
 #include <openpal/executor/MonotonicTimestamp.h>
 
 #include <algorithm>

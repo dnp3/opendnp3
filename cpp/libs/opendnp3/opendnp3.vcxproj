@@ -143,10 +143,10 @@
     <ClInclude Include="src\opendnp3\master\CommandResponse.h" />
     <ClInclude Include="src\opendnp3\master\CommandSequence.h" />
     <ClInclude Include="src\opendnp3\master\CommandTask.h" />
-    <ClInclude Include="src\opendnp3\master\ConstantCommandProcessor.h" />
     <ClInclude Include="src\opendnp3\master\DisableUnsolicitedTask.h" />
     <ClInclude Include="src\opendnp3\master\EnableUnsolicitedTask.h" />
     <ClInclude Include="src\opendnp3\master\EventScanTask.h" />
+    <ClInclude Include="src\opendnp3\master\HeaderInfo.h" />
     <ClInclude Include="src\opendnp3\master\IMasterTask.h" />
     <ClInclude Include="src\opendnp3\master\WriteTask.h" />
     <ClInclude Include="src\opendnp3\master\ITaskCallback.h" />
@@ -170,7 +170,6 @@
     <ClInclude Include="src\opendnp3\master\SerialTimeSyncTask.h" />
     <ClInclude Include="src\opendnp3\master\MasterTasks.h" />
     <ClInclude Include="src\opendnp3\master\TaskPriority.h" />
-    <ClInclude Include="src\opendnp3\master\TaskRecord.h" />
     <ClInclude Include="src\opendnp3\master\TimeSyncHandler.h" />
     <ClInclude Include="src\opendnp3\objects\Group1.h" />
     <ClInclude Include="src\opendnp3\objects\Group10.h" />
@@ -239,7 +238,6 @@
     <ClInclude Include="src\opendnp3\outstation\OutstationUnsolicitedStates.h" />
     <ClInclude Include="src\opendnp3\outstation\ReadHandler.h" />
     <ClInclude Include="src\opendnp3\outstation\ResponseContext.h" />
-    <ClInclude Include="src\opendnp3\outstation\SelectionWriter.h" />
     <ClInclude Include="src\opendnp3\outstation\SimpleCommandHandler.h" />
     <ClInclude Include="src\opendnp3\outstation\OutstationStackConfig.h" />
     <ClInclude Include="src\opendnp3\outstation\SOERecord.h" />
@@ -308,7 +306,6 @@
     <ClCompile Include="src\opendnp3\master\CommandMarshaller.cpp" />
     <ClCompile Include="src\opendnp3\master\CommandResponse.cpp" />
     <ClCompile Include="src\opendnp3\master\CommandTask.cpp" />
-    <ClCompile Include="src\opendnp3\master\ConstantCommandProcessor.cpp" />
     <ClCompile Include="src\opendnp3\master\DisableUnsolicitedTask.cpp" />
     <ClCompile Include="src\opendnp3\master\EnableUnsolicitedTask.cpp" />
     <ClCompile Include="src\opendnp3\master\EventScanTask.cpp" />
@@ -327,7 +324,6 @@
     <ClCompile Include="src\opendnp3\master\Master.cpp" />
     <ClCompile Include="src\opendnp3\master\PollTaskBase.cpp" />
     <ClCompile Include="src\opendnp3\master\MasterTasks.cpp" />
-    <ClCompile Include="src\opendnp3\master\TaskRecord.cpp" />
     <ClCompile Include="src\opendnp3\master\WriteTask.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group1.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group10.cpp" />
@@ -352,7 +348,6 @@
     <ClCompile Include="src\opendnp3\objects\Group50.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group51.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group52.cpp" />
-    <ClCompile Include="src\opendnp3\objects\Group60.cpp" />
     <ClCompile Include="src\opendnp3\objects\SeqUserData.cpp" />
     <ClCompile Include="src\opendnp3\outstation\ApplicationIIN.cpp" />
     <ClCompile Include="src\opendnp3\outstation\AssignClassHandler.cpp" />
@@ -376,7 +371,6 @@
     <ClCompile Include="src\opendnp3\outstation\ReadHandler.cpp" />
     <ClCompile Include="src\opendnp3\outstation\ResponseContext.cpp" />
     <ClCompile Include="src\opendnp3\outstation\SelectedRanges.cpp" />
-    <ClCompile Include="src\opendnp3\outstation\SelectionWriter.cpp" />
     <ClCompile Include="src\opendnp3\outstation\SimpleCommandHandler.cpp" />
     <ClCompile Include="src\opendnp3\outstation\SOERecord.cpp" />
     <ClCompile Include="src\opendnp3\outstation\StaticBuffers.cpp" />

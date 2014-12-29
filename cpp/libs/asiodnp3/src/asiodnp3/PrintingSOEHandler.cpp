@@ -28,44 +28,44 @@ namespace opendnp3
 
 PrintingSOEHandler PrintingSOEHandler::instance;
 
-void PrintingSOEHandler::OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)
+void PrintingSOEHandler::OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)
 {
-	Print(header, meas, tsmode);
+	Print(info, meas);
 }
 
-void PrintingSOEHandler::OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas)
+void PrintingSOEHandler::OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas)
 {
-	Print(header, meas, tsmode);
+	Print(info, meas);
 }
 
-void PrintingSOEHandler::OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)
+void PrintingSOEHandler::OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)
 {
-	Print(header, meas, tsmode);
+	Print(info, meas);
 }
 
-void PrintingSOEHandler::OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)
+void PrintingSOEHandler::OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)
 {
-	Print(header, meas, tsmode);
+	Print(info, meas);
 }
 
-void PrintingSOEHandler::OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas)
+void PrintingSOEHandler::OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas)
 {
-	Print(header, meas, tsmode);
+	Print(info, meas);
 }
 
-void PrintingSOEHandler::OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas)
+void PrintingSOEHandler::OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas)
 {
-	Print(header, meas, tsmode);
+	Print(info, meas);
 }
 
-void PrintingSOEHandler::OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas)
+void PrintingSOEHandler::OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas)
 {
-	Print(header, meas, tsmode);
+	Print(info, meas);
 }
 
-void PrintingSOEHandler::OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas)
+void PrintingSOEHandler::OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas)
 {
-	PrintHeaderInfo(header, tsmode);
+	PrintHeaderInfo(info);
 
 	meas.foreach([&](const IndexedValue<TimeAndInterval, uint16_t>& pair)
 	{		
@@ -77,9 +77,9 @@ void PrintingSOEHandler::OnReceiveHeader(const HeaderRecord& header, TimestampMo
 	});
 }
 
-void PrintingSOEHandler::OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas)
+void PrintingSOEHandler::OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas)
 {
-	this->PrintHeaderInfo(header, tsmode);
+	this->PrintHeaderInfo(info);
 
 	meas.foreach([&](const IndexedValue<OctetString, uint16_t>& pair)
 	{

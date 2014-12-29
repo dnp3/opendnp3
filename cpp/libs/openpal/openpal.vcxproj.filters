@@ -151,9 +151,6 @@
     <ClInclude Include="src\openpal\executor\Action0.h">
       <Filter>Header\executor</Filter>
     </ClInclude>
-    <ClInclude Include="src\openpal\executor\Function0.h">
-      <Filter>Header\executor</Filter>
-    </ClInclude>
     <ClInclude Include="src\openpal\executor\Function1.h">
       <Filter>Header\executor</Filter>
     </ClInclude>
@@ -184,9 +181,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\openpal\executor\MonotonicTimestamp.cpp">
-      <Filter>Source\executor</Filter>
-    </ClCompile>
-    <ClCompile Include="src\openpal\executor\Runnable.cpp">
       <Filter>Source\executor</Filter>
     </ClCompile>
     <ClCompile Include="src\openpal\executor\TimeDuration.cpp">
@@ -227,6 +221,9 @@
     </ClCompile>
     <ClCompile Include="src\openpal\container\WriteBufferView.cpp">
       <Filter>Source\container</Filter>
+    </ClCompile>
+    <ClCompile Include="src\openpal\executor\Action0.cpp">
+      <Filter>Source\executor</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
