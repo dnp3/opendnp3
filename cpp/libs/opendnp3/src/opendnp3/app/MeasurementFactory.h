@@ -142,14 +142,14 @@ struct BinaryOutputStatusFactory: private openpal::PureStatic
 
 struct BinaryCommandEventFactory : private openpal::PureStatic
 {
-	inline static BinaryCommandEvent From(bool aValue, CommandStatus aStatus)
+	inline static BinaryCommandEvent From(uint8_t flags)
 	{
-		return BinaryCommandEvent(aValue, aStatus);
+		return BinaryCommandEvent(flags);
 	}
 
-	inline static BinaryCommandEvent From(bool aValue, CommandStatus aStatus, uint64_t aTime)
+	inline static BinaryCommandEvent From(uint8_t flags, uint64_t aTime)
 	{
-		return BinaryCommandEvent(aValue, aStatus, aTime);
+		return BinaryCommandEvent(flags, aTime);
 	}
 };
 

@@ -9,5 +9,5 @@ object Group13 extends ObjectGroup {
   def group: Byte = 13
 }
 
-object Group13Var1 extends FixedSize(Group13, 1)(commandStateAndStatus) with ConversionToBinaryCommandEvent
-object Group13Var2 extends FixedSize(Group13, 2)(commandStateAndStatus, time48) with ConversionToBinaryCommandEvent
+object Group13Var1 extends FixedSize(Group13, 1)(flags) with ConversionToBinaryCommandEvent
+object Group13Var2 extends FixedSize(Group13, 2)(flags, time48) with ConversionToBinaryCommandEvent

@@ -43,8 +43,7 @@ struct Group13Var1
 	static BinaryCommandEvent ReadTarget(openpal::ReadBufferView&);
 	static void WriteTarget(const BinaryCommandEvent&, openpal::WriteBufferView&);
 
-	bool value;
-	CommandStatus status;
+	uint8_t flags;
 };
 
 struct Group13Var2
@@ -60,8 +59,7 @@ struct Group13Var2
 	static BinaryCommandEvent ReadTarget(openpal::ReadBufferView&);
 	static void WriteTarget(const BinaryCommandEvent&, openpal::WriteBufferView&);
 
-	bool value;
-	CommandStatus status;
+	uint8_t flags;
 	uint64_t time;
 };
 

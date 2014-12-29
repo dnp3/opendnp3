@@ -35,6 +35,10 @@ public:
 
 	BinaryCommandEvent();
 
+	BinaryCommandEvent(uint8_t flags);
+
+	BinaryCommandEvent(uint8_t flags, uint64_t aTime);
+
 	BinaryCommandEvent(bool aValue, CommandStatus aStatus);
 
 	BinaryCommandEvent(bool aValue, CommandStatus aStatus, uint64_t aTime);
@@ -43,7 +47,17 @@ public:
 	CommandStatus status;
 	uint64_t time;
 
+	uint8_t GetFlags() const;
+
 	bool operator==(const BinaryCommandEvent& arRHS) const;
+
+private:
+
+	static const uint8_t ValueMask = 0x80;
+	static const uint8_t StatusMask = 0x7F;
+
+	static bool GetValueFromFlags(uint8_t flags);
+	static CommandStatus GetStatusFromFlags(uint8_t flags);
 };
 
 }

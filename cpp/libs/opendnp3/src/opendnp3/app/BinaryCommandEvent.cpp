@@ -30,6 +30,18 @@ BinaryCommandEvent::BinaryCommandEvent() :
 	time(0)
 {}
 
+BinaryCommandEvent::BinaryCommandEvent(uint8_t aValue) :
+	value(GetValueFromFlags(aValue)),
+	status(GetStatusFromFlags(aValue)),
+	time(0)
+{}
+
+BinaryCommandEvent::BinaryCommandEvent(uint8_t aValue, uint64_t aTime) :
+	value(GetValueFromFlags(aValue)),
+	status(GetStatusFromFlags(aValue)),
+	time(aTime)
+{}
+
 BinaryCommandEvent::BinaryCommandEvent(bool aValue, CommandStatus aStatus) :
 	value(aValue),
 	status(aStatus),
@@ -42,9 +54,24 @@ BinaryCommandEvent::BinaryCommandEvent(bool aValue, CommandStatus aStatus, uint6
 	time(aTime)
 {}
 
+uint8_t BinaryCommandEvent::GetFlags() const
+{
+	return (static_cast<uint8_t>(value) << 7) | (CommandStatusToType(status));
+}
+
 bool BinaryCommandEvent::operator==(const BinaryCommandEvent& arRHS) const
 {
 	return value == arRHS.value && status == arRHS.status && time == arRHS.time;
+}
+
+bool BinaryCommandEvent::GetValueFromFlags(uint8_t flags)
+{
+	return (flags & ValueMask) == ValueMask;
+}
+
+CommandStatus BinaryCommandEvent::GetStatusFromFlags(uint8_t flags)
+{
+	return CommandStatusFromType(flags & StatusMask);
 }
 
 }

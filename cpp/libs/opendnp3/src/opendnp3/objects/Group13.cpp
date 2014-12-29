@@ -31,22 +31,21 @@ namespace opendnp3 {
 Group13Var1 Group13Var1::Read(ReadBufferView& buffer)
 {
 	Group13Var1 obj;
-	obj.value = (UInt8::Read(buffer) & 0x80) == 0x80;
-	obj.status = CommandStatusFromType(UInt8::Read(buffer) & 0x7F);
+	obj.flags = UInt8::Read(buffer);
 	buffer.Advance(1);
 	return obj;
 }
 
 void Group13Var1::Write(const Group13Var1& arg, openpal::WriteBufferView& buffer)
 {
-	UInt8::Write(buffer, (arg.value << 7) | CommandStatusToType(arg.status));
+	UInt8::Write(buffer, arg.flags);
 	buffer.Advance(1);
 }
 
 BinaryCommandEvent Group13Var1::ReadTarget(ReadBufferView& buff)
 {
 	auto gv = Group13Var1::Read(buff);
-	return BinaryCommandEventFactory::From(gv.value, gv.status);
+	return BinaryCommandEventFactory::From(gv.flags);
 }
 
 void Group13Var1::WriteTarget(const BinaryCommandEvent& value, openpal::WriteBufferView& buff)
@@ -57,8 +56,7 @@ void Group13Var1::WriteTarget(const BinaryCommandEvent& value, openpal::WriteBuf
 Group13Var2 Group13Var2::Read(ReadBufferView& buffer)
 {
 	Group13Var2 obj;
-	obj.value = (UInt8::Read(buffer) & 0x80) == 0x80;
-	obj.status = CommandStatusFromType(UInt8::Read(buffer) & 0x7F);
+	obj.flags = UInt8::Read(buffer);
 	buffer.Advance(1);
 	obj.time = UInt48::Read(buffer);
 	buffer.Advance(6);
@@ -67,7 +65,7 @@ Group13Var2 Group13Var2::Read(ReadBufferView& buffer)
 
 void Group13Var2::Write(const Group13Var2& arg, openpal::WriteBufferView& buffer)
 {
-	UInt8::Write(buffer, (arg.value << 7) | CommandStatusToType(arg.status));
+	UInt8::Write(buffer, arg.flags);
 	buffer.Advance(1);
 	UInt48::Write(buffer, arg.time);
 	buffer.Advance(6);
@@ -76,7 +74,7 @@ void Group13Var2::Write(const Group13Var2& arg, openpal::WriteBufferView& buffer
 BinaryCommandEvent Group13Var2::ReadTarget(ReadBufferView& buff)
 {
 	auto gv = Group13Var2::Read(buff);
-	return BinaryCommandEventFactory::From(gv.value, gv.status, gv.time);
+	return BinaryCommandEventFactory::From(gv.flags, gv.time);
 }
 
 void Group13Var2::WriteTarget(const BinaryCommandEvent& value, openpal::WriteBufferView& buff)

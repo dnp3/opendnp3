@@ -91,8 +91,7 @@ struct ConvertGroup13Var1 : private openpal::PureStatic
 	static Group13Var1 Apply(const BinaryCommandEvent& ev)
 	{
 		Group13Var1 ret;
-		ret.value = ev.value;
-		ret.status = ev.status;
+		ret.flags = ev.GetFlags();
 		return ret;
 	}
 };
@@ -102,8 +101,7 @@ struct ConvertGroup13Var2 : private openpal::PureStatic
 	static Group13Var2 Apply(const BinaryCommandEvent& ev)
 	{
 		Group13Var2 ret;
-		ret.value = ev.value;
-		ret.status = ev.status;
+		ret.flags = ev.GetFlags();
 		ret.time = ev.time;
 		return ret;
 	}
