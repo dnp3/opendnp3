@@ -284,6 +284,34 @@ TEST_CASE(SUITE("Group2Var1CountWithAllIndexSizes"))
 	TestComplex("02 01 28 01 00 09 00 81", APDUParser::Result::OK, 1, validator);
 }
 
+TEST_CASE(SUITE("Group13Var1CountWithAllIndexSizes"))
+{
+	auto validator = [](MockApduHeaderHandler & mock)
+	{
+		REQUIRE(1 == mock.binaryCommandEvents.size());
+		IndexedValue<BinaryCommandEvent, uint16_t> value(BinaryCommandEvent(true, CommandStatus::TIMEOUT), 9);
+		REQUIRE((value == mock.binaryCommandEvents[0]));
+	};
+
+	// 1 byte count, 1 byte index, index == 09, value = 0x81
+	TestComplex("0D 01 17 01 09 81", APDUParser::Result::OK, 1, validator);
+	TestComplex("0D 01 28 01 00 09 00 81", APDUParser::Result::OK, 1, validator);
+}
+
+TEST_CASE(SUITE("Group13Var2CountWithAllIndexSizes"))
+{
+	auto validator = [](MockApduHeaderHandler & mock)
+	{
+		REQUIRE(1 == mock.binaryCommandEvents.size());
+		IndexedValue<BinaryCommandEvent, uint16_t> value(BinaryCommandEvent(true, CommandStatus::TIMEOUT, 1419802341000), 9);
+		REQUIRE((value == mock.binaryCommandEvents[0]));
+	};
+
+	// 1 byte count, 1 byte index, index == 09, value = 0x81, time = 1419802341000 (014A92D06E88 in hex / 886ED0924A01 little endian)
+	TestComplex("0D 02 17 01 09 81 88 6E D0 92 4A 01", APDUParser::Result::OK, 1, validator);
+	TestComplex("0D 02 28 01 00 09 00 81 88 6E D0 92 4A 01", APDUParser::Result::OK, 1, validator);
+}
+
 TEST_CASE(SUITE("Group1Var1ByRange"))
 {
 	// 1 byte start/stop 3 -> 6

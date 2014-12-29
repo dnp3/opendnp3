@@ -129,6 +129,14 @@ namespace Automatak.DNP3.Interface
             }
         }
 
+        private void Print(IEnumerable<IndexedValue<BinaryCommandEvent>> values)
+        {
+            foreach (var pair in values)
+            {
+                Console.WriteLine(String.Format("BinaryCommandEvent[{0}] {1}", pair.Index, pair.Value));
+            }
+        }
+
 
         void ISOEHandler.OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<Binary>> values)
         {
@@ -179,6 +187,12 @@ namespace Automatak.DNP3.Interface
         }
 
         void ISOEHandler.OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<TimeAndInterval>> values)
+        {
+            this.PrintHeaderInfo(info);
+            this.Print(values);
+        }
+
+        void ISOEHandler.OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<BinaryCommandEvent>> values)
         {
             this.PrintHeaderInfo(info);
             this.Print(values);

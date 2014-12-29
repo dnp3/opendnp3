@@ -26,6 +26,7 @@
 #include "opendnp3/app/IndexedValue.h"
 #include "opendnp3/app/MeasurementTypes.h"
 #include "opendnp3/app/TimeAndInterval.h"
+#include "opendnp3/app/BinaryCommandEvent.h"
 #include "opendnp3/app/OctetString.h"
 #include "opendnp3/app/GroupVariationRecord.h"
 #include "opendnp3/gen/TimestampMode.h"
@@ -53,6 +54,7 @@ public:
 	virtual void OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas) = 0;
 	virtual void OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) = 0;
 	virtual void OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas) = 0;
+	virtual void OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<BinaryCommandEvent, uint16_t>>& meas) = 0;
 
 	virtual ~ISOEHandler() {}
 };
@@ -77,6 +79,7 @@ public:
 	virtual void OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas)  override final {}
 	virtual void OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas)  override final {}
 	virtual void OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas) override final {}
+	virtual void OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<BinaryCommandEvent, uint16_t>>& meas) override final {}
 
 protected:
 

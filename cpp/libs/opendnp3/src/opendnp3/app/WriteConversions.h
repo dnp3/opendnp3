@@ -31,6 +31,7 @@
 #include "opendnp3/objects/Group10.h"
 #include "opendnp3/objects/Group11.h"
 #include "opendnp3/objects/Group12.h"
+#include "opendnp3/objects/Group13.h"
 #include "opendnp3/objects/Group20.h"
 #include "opendnp3/objects/Group21.h"
 #include "opendnp3/objects/Group22.h"
@@ -79,6 +80,30 @@ struct ConvertGroup12Var1 : private openpal::PureStatic
 		ret.onTime = crob.onTimeMS;
 		ret.offTime = crob.offTimeMS;
 		ret.status = crob.status;
+		return ret;
+	}
+};
+
+// Group 13
+struct ConvertGroup13Var1 : private openpal::PureStatic
+{
+	static Group13Var1 Apply(const BinaryCommandEvent& ev)
+	{
+		Group13Var1 ret;
+		ret.value = ev.value;
+		ret.status = ev.status;
+		return ret;
+	}
+};
+
+struct ConvertGroup13Var2 : private openpal::PureStatic
+{
+	static Group13Var2 Apply(const BinaryCommandEvent& ev)
+	{
+		Group13Var2 ret;
+		ret.value = ev.value;
+		ret.status = ev.status;
+		ret.time = ev.time;
 		return ret;
 	}
 };

@@ -277,6 +277,11 @@ namespace Automatak.Simulator.DNP3
             octetStrings.Update(converted);
         }
 
+        void ISOEHandler.OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<BinaryCommandEvent>> values)
+        {
+            // TODO
+        }
+
 
         bool IDatabase.Modify(Func<Binary, Binary> update, ushort index, EventMode mode)
         {

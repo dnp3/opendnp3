@@ -33,6 +33,7 @@
     <ClInclude Include="src\opendnp3\app\APDUWrapper.h" />
     <ClInclude Include="src\opendnp3\app\AppControlField.h" />
     <ClInclude Include="src\opendnp3\app\BaseMeasurementTypes.h" />
+    <ClInclude Include="src\opendnp3\app\BinaryCommandEvent.h" />
     <ClInclude Include="src\opendnp3\app\BinaryWriteState.h" />
     <ClInclude Include="src\opendnp3\app\BitfieldRangeWriteIterator.h" />
     <ClInclude Include="src\opendnp3\app\BitReader.h" />
@@ -80,6 +81,7 @@
     <ClInclude Include="src\opendnp3\gen\DoubleBitBinaryQuality.h" />
     <ClInclude Include="src\opendnp3\gen\EventAnalogOutputStatusVariation.h" />
     <ClInclude Include="src\opendnp3\gen\EventAnalogVariation.h" />
+    <ClInclude Include="src\opendnp3\gen\EventBinaryCommandEventVariation.h" />
     <ClInclude Include="src\opendnp3\gen\EventBinaryOutputStatusVariation.h" />
     <ClInclude Include="src\opendnp3\gen\EventBinaryVariation.h" />
     <ClInclude Include="src\opendnp3\gen\EventCounterVariation.h" />
@@ -171,6 +173,7 @@
     <ClInclude Include="src\opendnp3\objects\Group10.h" />
     <ClInclude Include="src\opendnp3\objects\Group11.h" />
     <ClInclude Include="src\opendnp3\objects\Group12.h" />
+    <ClInclude Include="src\opendnp3\objects\Group13.h" />
     <ClInclude Include="src\opendnp3\objects\Group2.h" />
     <ClInclude Include="src\opendnp3\objects\Group20.h" />
     <ClInclude Include="src\opendnp3\objects\Group21.h" />
@@ -255,6 +258,7 @@
     <ClCompile Include="src\opendnp3\app\APDUResponse.cpp" />
     <ClCompile Include="src\opendnp3\app\APDUWrapper.cpp" />
     <ClCompile Include="src\opendnp3\app\AppControlField.cpp" />
+    <ClCompile Include="src\opendnp3\app\BinaryCommandEvent.cpp" />
     <ClCompile Include="src\opendnp3\app\BitReader.cpp" />
     <ClCompile Include="src\opendnp3\app\ClassField.cpp" />
     <ClCompile Include="src\opendnp3\app\ControlRelayOutputBlock.cpp" />
@@ -318,6 +322,7 @@
     <ClCompile Include="src\opendnp3\objects\Group10.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group11.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group12.cpp" />
+    <ClCompile Include="src\opendnp3\objects\Group13.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group2.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group20.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group21.cpp" />

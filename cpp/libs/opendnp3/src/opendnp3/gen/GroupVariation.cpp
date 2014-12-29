@@ -74,6 +74,10 @@ GroupVariation GroupVariationFromType(uint16_t arg)
       return GroupVariation::Group12Var0;
     case(0xC01):
       return GroupVariation::Group12Var1;
+	case(0xD01):
+	  return GroupVariation::Group13Var1;
+	case(0xD02):
+	  return GroupVariation::Group13Var2;
     case(0x1400):
       return GroupVariation::Group20Var0;
     case(0x1401):

@@ -24,6 +24,7 @@
 #include <openpal/util/Uncopyable.h>
 #include "opendnp3/app/MeasurementTypes.h"
 #include "opendnp3/app/TimeAndInterval.h"
+#include "opendnp3/app/BinaryCommandEvent.h"
 #include "opendnp3/app/ControlRelayOutputBlock.h"
 #include "opendnp3/app/AnalogOutput.h"
 
@@ -138,6 +139,18 @@ struct BinaryOutputStatusFactory: private openpal::PureStatic
 	}
 };
 
+struct BinaryCommandEventFactory : private openpal::PureStatic
+{
+	inline static BinaryCommandEvent From(bool aValue, CommandStatus aStatus)
+	{
+		return BinaryCommandEvent(aValue, aStatus);
+	}
+
+	inline static BinaryCommandEvent From(bool aValue, CommandStatus aStatus, uint64_t aTime)
+	{
+		return BinaryCommandEvent(aValue, aStatus, aTime);
+	}
+};
 
 struct AnalogOutputStatusFactory: private openpal::PureStatic
 {

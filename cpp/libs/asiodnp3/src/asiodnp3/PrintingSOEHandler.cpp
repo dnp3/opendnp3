@@ -77,6 +77,20 @@ void PrintingSOEHandler::OnReceiveHeader(const HeaderRecord& header, TimestampMo
 	});
 }
 
+void PrintingSOEHandler::OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<BinaryCommandEvent, uint16_t>>& meas)
+{
+	PrintHeaderInfo(header, tsmode);
+
+	meas.foreach([&](const IndexedValue<BinaryCommandEvent, uint16_t>& pair)
+	{
+		std::cout << "BinaryCommandEvent: " <<
+			"[" << pair.index << "] : " <<
+			pair.value.time << " : " <<
+			pair.value.value << " : " <<
+			CommandStatusToString(pair.value.status) << std::endl;
+	});
+}
+
 void PrintingSOEHandler::OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas)
 {
 	this->PrintHeaderInfo(header, tsmode);

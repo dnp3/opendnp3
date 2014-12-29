@@ -52,6 +52,8 @@ enum class GroupVariation : uint16_t
   Group11Var2 = 0xB02,
   Group12Var0 = 0xC00,
   Group12Var1 = 0xC01,
+  Group13Var1 = 0xD01,
+  Group13Var2 = 0xD02,
   Group20Var0 = 0x1400,
   Group20Var1 = 0x1401,
   Group20Var2 = 0x1402,

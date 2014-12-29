@@ -46,6 +46,7 @@
 #include "opendnp3/objects/Group10.h"
 #include "opendnp3/objects/Group11.h"
 #include "opendnp3/objects/Group12.h"
+#include "opendnp3/objects/Group13.h"
 #include "opendnp3/objects/Group20.h"
 #include "opendnp3/objects/Group21.h"
 #include "opendnp3/objects/Group22.h"
@@ -423,6 +424,11 @@ APDUParser::Result APDUParser::ParseObjectsWithIndexPrefix(openpal::ReadBufferVi
 
 	case(GroupVariation::Group12Var1) :
 		return ParseCountFixedSizeWithIndex<ControlRelayOutputBlock, IndexType>(record, buffer, pLogger, count, Group12Var1::Inst(), pHandler);
+
+	case(GroupVariation::Group13Var1) :
+		return ParseCountFixedSizeWithIndex<BinaryCommandEvent, IndexType>(record, buffer, pLogger, count, Group13Var1::Inst(), pHandler);
+	case(GroupVariation::Group13Var2) :
+		return ParseCountFixedSizeWithIndex<BinaryCommandEvent, IndexType>(record, buffer, pLogger, count, Group13Var2::Inst(), pHandler);
 
 	case(GroupVariation::Group22Var1) :
 		return ParseCountFixedSizeWithIndex<Counter, IndexType>(record, buffer, pLogger, count, Group22Var1::Inst(), pHandler);
