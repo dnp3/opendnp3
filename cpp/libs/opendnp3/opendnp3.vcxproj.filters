@@ -726,9 +726,6 @@
     <ClInclude Include="src\opendnp3\objects\Group13.h">
       <Filter>Header\objects</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\EventBinaryCommandEventVariation.h">
-      <Filter>Header\gen</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\app\BinaryCommandEvent.h">
       <Filter>Header\app</Filter>
     </ClInclude>
