@@ -102,7 +102,10 @@ class EventWriter : openpal::PureStatic
 				}
 				else
 				{
+
 					// drop out and return from current location
+					// TODO - this could be optional based on what types most be in SOE order
+					pFirstSelected = pCurrent;
 					break;
 				}
 			}			
@@ -165,6 +168,8 @@ class EventWriter : openpal::PureStatic
 				else
 				{
 					// drop out and return from current location
+					// TODO - this could be optional based on what types most be in SOE order
+					pFirstSelected = pCurrent;
 					break;
 				}
 			}
