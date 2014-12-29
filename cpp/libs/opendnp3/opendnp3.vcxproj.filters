@@ -1,57 +1,75 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source">
-      <UniqueIdentifier>{f1ddd634-12b5-4b1c-9269-6db548db8416}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header">
-      <UniqueIdentifier>{f3f71f8d-05b5-4943-972f-dd4988b84258}</UniqueIdentifier>
+      <UniqueIdentifier>{f178c6e3-e78c-42b9-b0ce-2d1af167844b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{27622f9c-c9f3-4075-9f17-34a06b02002d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header\app">
-      <UniqueIdentifier>{ad3b8860-0a50-4361-bfff-fdb8c019e8db}</UniqueIdentifier>
+      <UniqueIdentifier>{892fad2d-aed9-4e8e-ade1-f99ec8374edb}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header\gen">
-      <UniqueIdentifier>{558b79f1-9b26-4122-b7e9-d5d40f1d5bb8}</UniqueIdentifier>
+      <UniqueIdentifier>{c553d0a8-cc8b-4d93-b03f-95acc9c7c770}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header\link">
-      <UniqueIdentifier>{93ff5021-80c7-4860-9a2a-680c67326c01}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header\master">
-      <UniqueIdentifier>{1196a627-d865-463c-94aa-655487fd7fb1}</UniqueIdentifier>
+      <UniqueIdentifier>{78402d94-7422-4f3f-8e4d-16ce66071ba1}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header\objects">
-      <UniqueIdentifier>{6b8364db-8857-4658-acd1-7fca2bf25f1a}</UniqueIdentifier>
+      <UniqueIdentifier>{ee55c9c0-efa8-43d5-93b5-1deb92275704}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\master">
+      <UniqueIdentifier>{1fe52e8d-3fbc-4464-81c7-ef5f46b018b5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header\outstation">
-      <UniqueIdentifier>{e28689da-0049-4ea9-8b15-1b52d3836239}</UniqueIdentifier>
+      <UniqueIdentifier>{4e8cf75f-a11e-4f28-852e-33cd33f16f47}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header\transport">
-      <UniqueIdentifier>{750fb7f5-23b4-4de4-876c-1245554bd75b}</UniqueIdentifier>
+      <UniqueIdentifier>{debc7fb5-e167-4cdd-80f5-79b818c80565}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\app">
-      <UniqueIdentifier>{5c51f8a8-c20f-445a-bb23-ed01f580c3e2}</UniqueIdentifier>
+      <UniqueIdentifier>{ff996f5a-38a5-41d0-b09a-01c480cd862c}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\gen">
-      <UniqueIdentifier>{89855a19-c3f8-4b9b-a00a-37c6af066a81}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\master">
-      <UniqueIdentifier>{05ea3448-a659-4d2b-a290-c9c574152b3e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\transport">
-      <UniqueIdentifier>{af1a5819-cc6f-40c0-b519-84a3f8cb9901}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\outstation">
-      <UniqueIdentifier>{b89d6a8b-0bab-4a4c-98d1-d513e747e629}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\objects">
-      <UniqueIdentifier>{f03b4ade-a247-4ea5-90a7-780c37001938}</UniqueIdentifier>
+      <UniqueIdentifier>{2ff088ba-c6a4-4918-ae43-65c03d5aa29f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\link">
-      <UniqueIdentifier>{c4a0ef96-6633-47b7-b4fe-01d480acfe75}</UniqueIdentifier>
+      <UniqueIdentifier>{5eb4114c-137d-40ea-9491-254d0946b6e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\master">
+      <UniqueIdentifier>{c057150a-f3fb-4a8a-ab7b-fc84f09e12ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\transport">
+      <UniqueIdentifier>{8c15881a-01d1-4b38-aac7-bff6e408e4a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\outstation">
+      <UniqueIdentifier>{ee8fafae-a5fd-49e7-9a12-2ebff095ca2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\objects">
+      <UniqueIdentifier>{0b493176-d799-4316-ab2e-a4420d0a486e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\opendnp3\ErrorCodes.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\LayerInterfaces.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\LogLevels.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\Route.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\StackStatistics.h">
+      <Filter>Header</Filter>
+    </ClInclude>
     <ClInclude Include="src\opendnp3\app\AnalogOutput.h">
+      <Filter>Header\app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\app\APDUBuilders.h">
       <Filter>Header\app</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\app\APDUHandlerBase.h">
@@ -61,6 +79,9 @@
       <Filter>Header\app</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\app\APDUHeaderParser.h">
+      <Filter>Header\app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\app\APDULogging.h">
       <Filter>Header\app</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\app\APDUParser.h">
@@ -75,10 +96,13 @@
     <ClInclude Include="src\opendnp3\app\APDUWrapper.h">
       <Filter>Header\app</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\app\AppConstants.h">
+      <Filter>Header\app</Filter>
+    </ClInclude>
     <ClInclude Include="src\opendnp3\app\AppControlField.h">
       <Filter>Header\app</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\app\BinaryWriteState.h">
+    <ClInclude Include="src\opendnp3\app\BaseMeasurementTypes.h">
       <Filter>Header\app</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\app\BitfieldRangeWriteIterator.h">
@@ -87,13 +111,40 @@
     <ClInclude Include="src\opendnp3\app\BitReader.h">
       <Filter>Header\app</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\app\ClassField.h">
+      <Filter>Header\app</Filter>
+    </ClInclude>
     <ClInclude Include="src\opendnp3\app\ControlRelayOutputBlock.h">
       <Filter>Header\app</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\app\CountWriteIterator.h">
       <Filter>Header\app</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\app\DNP3Serializer.h">
+      <Filter>Header\app</Filter>
+    </ClInclude>
     <ClInclude Include="src\opendnp3\app\DownSampling.h">
+      <Filter>Header\app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\app\EventMetadata.h">
+      <Filter>Header\app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\app\EventTriggers.h">
+      <Filter>Header\app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\app\EventType.h">
+      <Filter>Header\app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\app\FunctionHelpers.h">
+      <Filter>Header\app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\app\GroupVariationID.h">
+      <Filter>Header\app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\app\GroupVariationRecord.h">
+      <Filter>Header\app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\app\HeaderWriter.h">
       <Filter>Header\app</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\app\IAPDUHandler.h">
@@ -114,7 +165,16 @@
     <ClInclude Include="src\opendnp3\app\IterableTransforms.h">
       <Filter>Header\app</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\app\ITransactable.h">
+      <Filter>Header\app</Filter>
+    </ClInclude>
     <ClInclude Include="src\opendnp3\app\LazyIterable.h">
+      <Filter>Header\app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\app\MeasurementFactory.h">
+      <Filter>Header\app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\app\MeasurementTypes.h">
       <Filter>Header\app</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\app\OctetData.h">
@@ -129,13 +189,16 @@
     <ClInclude Include="src\opendnp3\app\QualityMasks.h">
       <Filter>Header\app</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\app\Range.h">
+      <Filter>Header\app</Filter>
+    </ClInclude>
     <ClInclude Include="src\opendnp3\app\RangeWriteIterator.h">
       <Filter>Header\app</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\app\SequenceInfo.h">
       <Filter>Header\app</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\app\VTOData.h">
+    <ClInclude Include="src\opendnp3\app\TimeAndInterval.h">
       <Filter>Header\app</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\app\WriteConversions.h">
@@ -144,358 +207,13 @@
     <ClInclude Include="src\opendnp3\app\WriteConversionTemplates.h">
       <Filter>Header\app</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\QualifierCode.h">
-      <Filter>Header\gen</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\LinkFunction.h">
-      <Filter>Header\gen</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\FunctionCode.h">
-      <Filter>Header\gen</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\ControlCode.h">
-      <Filter>Header\gen</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\CommandStatus.h">
-      <Filter>Header\gen</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\ChannelState.h">
-      <Filter>Header\gen</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\link\IFrameSink.h">
-      <Filter>Header\link</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\link\ILinkRouter.h">
-      <Filter>Header\link</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\link\LinkConfig.h">
-      <Filter>Header\link</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\link\LinkFrame.h">
-      <Filter>Header\link</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\link\LinkHeader.h">
-      <Filter>Header\link</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\link\LinkLayer.h">
-      <Filter>Header\link</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\link\LinkLayerConstants.h">
-      <Filter>Header\link</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\link\PriLinkLayerStates.h">
-      <Filter>Header\link</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\link\SecLinkLayerStates.h">
-      <Filter>Header\link</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\link\ShiftableBuffer.h">
-      <Filter>Header\link</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\CommandResponse.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\CommandSequence.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\CommandTask.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\ICommandProcessor.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\ISOEHandler.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\MasterScan.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\MasterStackConfig.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\MeasurementHandler.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\ScanResult.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\TimeSyncHandler.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\objects\Group60.h">
-      <Filter>Header\objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\objects\Group52.h">
-      <Filter>Header\objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\objects\Group51.h">
-      <Filter>Header\objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\objects\Group50.h">
-      <Filter>Header\objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\objects\Group42.h">
-      <Filter>Header\objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\objects\Group41.h">
-      <Filter>Header\objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\objects\Group40.h">
-      <Filter>Header\objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\objects\Group32.h">
-      <Filter>Header\objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\objects\Group30.h">
-      <Filter>Header\objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\objects\Group23.h">
-      <Filter>Header\objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\objects\Group22.h">
-      <Filter>Header\objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\objects\Group21.h">
-      <Filter>Header\objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\objects\Group20.h">
-      <Filter>Header\objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\objects\Group12.h">
-      <Filter>Header\objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\objects\Group11.h">
-      <Filter>Header\objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\objects\Group10.h">
-      <Filter>Header\objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\objects\Group2.h">
-      <Filter>Header\objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\objects\Group1.h">
-      <Filter>Header\objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\CommandActionAdapter.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\ConstantCommandAction.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\DatabaseTemplate.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\DualValue.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\Event.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\EventCount.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\ICommandAction.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\ICommandHandler.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\IINHelpers.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\ReadHandler.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\SimpleCommandHandler.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\TimeTransaction.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\ValueMetadataPair.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\WriteHandler.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\transport\TransportConstants.h">
-      <Filter>Header\transport</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\transport\TransportLayer.h">
-      <Filter>Header\transport</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\transport\TransportRx.h">
-      <Filter>Header\transport</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\transport\TransportTx.h">
-      <Filter>Header\transport</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\app\Range.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\app\MeasurementFactory.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\app\GroupVariationID.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\objects\Group3.h">
-      <Filter>Header\objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\objects\Group4.h">
-      <Filter>Header\objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\app\MeasurementTypes.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\app\BaseMeasurementTypes.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\DoubleBit.h">
-      <Filter>Header\gen</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\link\IOpenDelayStrategy.h">
-      <Filter>Header\link</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\link\ILinkLayer.h">
-      <Filter>Header\link</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\LogLevels.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\EventBufferConfig.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\ResponseContext.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\app\EventTriggers.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\OutstationStackConfig.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\transport\TransportStack.h">
-      <Filter>Header\transport</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\OutstationContext.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\OutstationParams.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\MasterContext.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\MasterScheduler.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\MasterParams.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\app\APDUBuilders.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\app\APDULogging.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\CommandMarshaller.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\DisableUnsolicitedTask.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\EnableUnsolicitedTask.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\StartupIntegrityPoll.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\Outstation.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\OutstationConfig.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\Master.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\ClearRestartTask.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\SerialTimeSyncTask.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\MasterTasks.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\link\ITransportSegment.h">
-      <Filter>Header\link</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\link\LinkLayerParser.h">
-      <Filter>Header\link</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\DeferredRequest.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\OutstationSolicitedStates.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\OutstationUnsolicitedStates.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\link\LinkChannelStatistics.h">
-      <Filter>Header\link</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\link\CRC.h">
-      <Filter>Header\link</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\StackStatistics.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\link\IChannelStateListener.h">
-      <Filter>Header\link</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\app\ITransactable.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\ErrorCodes.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\IMasterState.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\ITaskLock.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\IScheduleCallback.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\TimeSyncMode.h">
-      <Filter>Header\gen</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\app\ClassMash.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\app\ClassField.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\PointClass.h">
-      <Filter>Header\gen</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\IOutstationApplication.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\IMasterApplication.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\GroupVariation.h">
-      <Filter>Header\gen</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\app\GroupVariationRecord.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\gen\AnalogQuality.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\AssignClassType.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\AuthErrorCode.h">
       <Filter>Header\gen</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\gen\BinaryOutputStatusQuality.h">
@@ -504,143 +222,29 @@
     <ClInclude Include="src\opendnp3\gen\BinaryQuality.h">
       <Filter>Header\gen</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\CertificateType.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\ChallengeReason.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\ChannelState.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\CommandStatus.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\ControlCode.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
     <ClInclude Include="src\opendnp3\gen\CounterQuality.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\DoubleBit.h">
       <Filter>Header\gen</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\gen\DoubleBitBinaryQuality.h">
       <Filter>Header\gen</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\app\FunctionHelpers.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\SOERecord.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\app\EventType.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\StaticLoadFunctions.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\app\HeaderWriter.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\RestartMode.h">
-      <Filter>Header\gen</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\TimestampMode.h">
-      <Filter>Header\gen</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\app\DynamicPointIndexes.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\app\StaticPointIndexes.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\LayerInterfaces.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\Route.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="AppConstants.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\app\DNP3Serializer.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\link\ILinkSession.h">
-      <Filter>Header\link</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\CommandResponseHandler.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\ClassBasedRequestHandler.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\AssignClassHandler.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\AssignClassType.h">
-      <Filter>Header\gen</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\TaskPriority.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\UserPollTask.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\PollTaskBase.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="..\openpal\src\openpal\util\Limits.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\AssignClassTask.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\IntervalUnits.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\app\TimeAndInterval.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\StaticTypeBitmask.h">
-      <Filter>Header\gen</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\StaticTypeBitfield.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\ITaskCallback.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\EventScanTask.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\WriteTask.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\IMasterTask.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\TaskCompletion.h">
-      <Filter>Header\gen</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\MasterTaskType.h">
-      <Filter>Header\gen</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\app\EventMetadata.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\IEventReceiver.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\StaticBuffers.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\Database.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\IDatabase.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\IStaticSelector.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\DatabaseBuffers.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\IEventSelector.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\SelectedRanges.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\IClassAssigner.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\Cell.h">
-      <Filter>Header\outstation</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\gen\EventAnalogOutputStatusVariation.h">
       <Filter>Header\gen</Filter>
@@ -661,6 +265,45 @@
       <Filter>Header\gen</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\gen\EventFrozenCounterVariation.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\EventMode.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\FunctionCode.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\GroupVariation.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\HMACType.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\IndexMode.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\IntervalUnits.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\KeyStatus.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\KeyWrapAlgorithm.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\LinkFunction.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\MasterTaskType.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\PointClass.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\QualifierCode.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\RestartMode.h">
       <Filter>Header\gen</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\gen\StaticAnalogOutputStatusVariation.h">
@@ -687,38 +330,137 @@
     <ClInclude Include="src\opendnp3\gen\StaticTimeAndIntervalVariation.h">
       <Filter>Header\gen</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\EventBuffer.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\EventMode.h">
+    <ClInclude Include="src\opendnp3\gen\StaticTypeBitmask.h">
       <Filter>Header\gen</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\IResponseLoader.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\EventWriter.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\IEventRecorder.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\IndexSearch.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\IndexMode.h">
+    <ClInclude Include="src\opendnp3\gen\TaskCompletion.h">
       <Filter>Header\gen</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\DatabaseView.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\DatabaseConfigView.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\HMACType.h">
+    <ClInclude Include="src\opendnp3\gen\TimestampMode.h">
       <Filter>Header\gen</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\ChallengeReason.h">
+    <ClInclude Include="src\opendnp3\gen\TimeSyncMode.h">
       <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\link\CRC.h">
+      <Filter>Header\link</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\link\IChannelStateListener.h">
+      <Filter>Header\link</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\link\IFrameSink.h">
+      <Filter>Header\link</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\link\ILinkLayer.h">
+      <Filter>Header\link</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\link\ILinkRouter.h">
+      <Filter>Header\link</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\link\ILinkSession.h">
+      <Filter>Header\link</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\link\IOpenDelayStrategy.h">
+      <Filter>Header\link</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\link\ITransportSegment.h">
+      <Filter>Header\link</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\link\LinkChannelStatistics.h">
+      <Filter>Header\link</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\link\LinkConfig.h">
+      <Filter>Header\link</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\link\LinkFrame.h">
+      <Filter>Header\link</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\link\LinkHeader.h">
+      <Filter>Header\link</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\link\LinkLayer.h">
+      <Filter>Header\link</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\link\LinkLayerConstants.h">
+      <Filter>Header\link</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\link\LinkLayerParser.h">
+      <Filter>Header\link</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\link\PriLinkLayerStates.h">
+      <Filter>Header\link</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\link\SecLinkLayerStates.h">
+      <Filter>Header\link</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\link\ShiftableBuffer.h">
+      <Filter>Header\link</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\link\Singleton.h">
+      <Filter>Header\link</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\objects\Group1.h">
+      <Filter>Header\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\objects\Group2.h">
+      <Filter>Header\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\objects\Group3.h">
+      <Filter>Header\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\objects\Group4.h">
+      <Filter>Header\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\objects\Group10.h">
+      <Filter>Header\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\objects\Group11.h">
+      <Filter>Header\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\objects\Group12.h">
+      <Filter>Header\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\objects\Group20.h">
+      <Filter>Header\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\objects\Group21.h">
+      <Filter>Header\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\objects\Group22.h">
+      <Filter>Header\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\objects\Group23.h">
+      <Filter>Header\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\objects\Group30.h">
+      <Filter>Header\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\objects\Group32.h">
+      <Filter>Header\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\objects\Group40.h">
+      <Filter>Header\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\objects\Group41.h">
+      <Filter>Header\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\objects\Group42.h">
+      <Filter>Header\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\objects\Group50.h">
+      <Filter>Header\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\objects\Group51.h">
+      <Filter>Header\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\objects\Group52.h">
+      <Filter>Header\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\objects\Group60.h">
+      <Filter>Header\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\objects\Group120.h">
+      <Filter>Header\objects</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\objects\Group120Var1.h">
       <Filter>Header\objects</Filter>
@@ -726,19 +468,7 @@
     <ClInclude Include="src\opendnp3\objects\Group120Var2.h">
       <Filter>Header\objects</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\objects\Group120.h">
-      <Filter>Header\objects</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\objects\Group120Var5.h">
-      <Filter>Header\objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\KeyWrapAlgorithm.h">
-      <Filter>Header\gen</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\KeyStatus.h">
-      <Filter>Header\gen</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\objects\SeqUserData.h">
       <Filter>Header\objects</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\objects\Group120Var6.h">
@@ -747,163 +477,391 @@
     <ClInclude Include="src\opendnp3\objects\Group120Var7.h">
       <Filter>Header\objects</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\AuthErrorCode.h">
-      <Filter>Header\gen</Filter>
+    <ClInclude Include="src\opendnp3\objects\SeqUserData.h">
+      <Filter>Header\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\AssignClassTask.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\ClearRestartTask.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\CommandMarshaller.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\CommandResponse.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\CommandSequence.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\CommandTask.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\DisableUnsolicitedTask.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\EnableUnsolicitedTask.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\EventScanTask.h">
+      <Filter>Header\master</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\master\HeaderInfo.h">
       <Filter>Header\master</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\master\ICommandProcessor.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\IMasterApplication.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\IMasterState.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\IMasterTask.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\IScheduleCallback.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\ISOEHandler.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\ITaskCallback.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\ITaskLock.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\Master.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\MasterContext.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\MasterParams.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\MasterScan.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\MasterScheduler.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\MasterStackConfig.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\MasterTasks.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\MeasurementHandler.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\PollTaskBase.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\ScanResult.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\SerialTimeSyncTask.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\StartupIntegrityPoll.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\TaskPriority.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\TimeSyncHandler.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\UserPollTask.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\WriteTask.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\transport\TransportConstants.h">
+      <Filter>Header\transport</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\transport\TransportLayer.h">
+      <Filter>Header\transport</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\transport\TransportRx.h">
+      <Filter>Header\transport</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\transport\TransportStack.h">
+      <Filter>Header\transport</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\transport\TransportTx.h">
+      <Filter>Header\transport</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\ApplicationIIN.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\AssignClassHandler.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\Cell.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\ClassBasedRequestHandler.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\CommandActionAdapter.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\CommandResponseHandler.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\ConstantCommandAction.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\Database.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\DatabaseBuffers.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\DatabaseConfigView.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\DatabaseTemplate.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\DeferredRequest.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\DualValue.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\Event.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\EventBuffer.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\EventBufferConfig.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\EventCount.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\EventWriter.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\IClassAssigner.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\ICommandAction.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\ICommandHandler.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\IDatabase.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\IEventReceiver.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\IEventRecorder.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\IEventSelector.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\IINHelpers.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\IndexSearch.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\IOutstationApplication.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\IResponseLoader.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\IStaticSelector.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\Outstation.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\OutstationConfig.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\OutstationContext.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\OutstationParams.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\OutstationSolicitedStates.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\OutstationStackConfig.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\OutstationUnsolicitedStates.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\ReadHandler.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\ResponseContext.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\SelectedRanges.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\SimpleCommandHandler.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\SOERecord.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\StaticBuffers.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\StaticLoadFunctions.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\StaticTypeBitfield.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\TimeTransaction.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\ValueMetadataPair.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\WriteHandler.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\opendnp3\app\AnalogOutput.cpp">
-      <Filter>Source\app</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\app\APDUHeaderParser.cpp">
-      <Filter>Source\app</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\app\APDUParser.cpp">
-      <Filter>Source\app</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\app\APDURequest.cpp">
-      <Filter>Source\app</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\app\APDUResponse.cpp">
-      <Filter>Source\app</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\app\APDUWrapper.cpp">
-      <Filter>Source\app</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\app\AppControlField.cpp">
-      <Filter>Source\app</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\app\BitReader.cpp">
-      <Filter>Source\app</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\app\ControlRelayOutputBlock.cpp">
-      <Filter>Source\app</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\app\IINField.cpp">
+    <ClCompile Include="src\opendnp3\app\TimeAndInterval.cpp">
       <Filter>Source\app</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\app\OctetData.cpp">
       <Filter>Source\app</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\gen\QualifierCode.cpp">
+    <ClCompile Include="src\opendnp3\app\ObjectWriter.cpp">
+      <Filter>Source\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\app\MeasurementTypes.cpp">
+      <Filter>Source\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\app\IINField.cpp">
+      <Filter>Source\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\app\GroupVariationRecord.cpp">
+      <Filter>Source\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\app\FunctionHelpers.cpp">
+      <Filter>Source\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\app\EventTriggers.cpp">
+      <Filter>Source\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\app\ControlRelayOutputBlock.cpp">
+      <Filter>Source\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\app\ClassField.cpp">
+      <Filter>Source\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\app\BitReader.cpp">
+      <Filter>Source\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\app\AppControlField.cpp">
+      <Filter>Source\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\app\APDUWrapper.cpp">
+      <Filter>Source\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\app\APDUResponse.cpp">
+      <Filter>Source\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\app\APDURequest.cpp">
+      <Filter>Source\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\app\APDUParser.cpp">
+      <Filter>Source\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\app\APDULogging.cpp">
+      <Filter>Source\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\app\APDUHeaderParser.cpp">
+      <Filter>Source\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\app\APDUHeader.cpp">
+      <Filter>Source\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\app\APDUHandlerBase.cpp">
+      <Filter>Source\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\app\APDUBuilders.cpp">
+      <Filter>Source\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\app\AnalogOutput.cpp">
+      <Filter>Source\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\gen\AuthErrorCode.cpp">
       <Filter>Source\gen</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\gen\LinkFunction.cpp">
+    <ClCompile Include="src\opendnp3\gen\CertificateType.cpp">
       <Filter>Source\gen</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\gen\FunctionCode.cpp">
-      <Filter>Source\gen</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\gen\ControlCode.cpp">
-      <Filter>Source\gen</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\gen\CommandStatus.cpp">
+    <ClCompile Include="src\opendnp3\gen\ChallengeReason.cpp">
       <Filter>Source\gen</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\gen\ChannelState.cpp">
       <Filter>Source\gen</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\master\CommandResponse.cpp">
-      <Filter>Source\master</Filter>
+    <ClCompile Include="src\opendnp3\gen\CommandStatus.cpp">
+      <Filter>Source\gen</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\master\CommandTask.cpp">
-      <Filter>Source\master</Filter>
+    <ClCompile Include="src\opendnp3\gen\ControlCode.cpp">
+      <Filter>Source\gen</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\master\ISOEHandler.cpp">
-      <Filter>Source\master</Filter>
+    <ClCompile Include="src\opendnp3\gen\DoubleBit.cpp">
+      <Filter>Source\gen</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\master\MasterScan.cpp">
-      <Filter>Source\master</Filter>
+    <ClCompile Include="src\opendnp3\gen\FunctionCode.cpp">
+      <Filter>Source\gen</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\master\MeasurementHandler.cpp">
-      <Filter>Source\master</Filter>
+    <ClCompile Include="src\opendnp3\gen\GroupVariation.cpp">
+      <Filter>Source\gen</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\transport\TransportLayer.cpp">
-      <Filter>Source\transport</Filter>
+    <ClCompile Include="src\opendnp3\gen\HMACType.cpp">
+      <Filter>Source\gen</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\transport\TransportRx.cpp">
-      <Filter>Source\transport</Filter>
+    <ClCompile Include="src\opendnp3\gen\IntervalUnits.cpp">
+      <Filter>Source\gen</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\transport\TransportTx.cpp">
-      <Filter>Source\transport</Filter>
+    <ClCompile Include="src\opendnp3\gen\KeyStatus.cpp">
+      <Filter>Source\gen</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\CommandActionAdapter.cpp">
-      <Filter>Source\outstation</Filter>
+    <ClCompile Include="src\opendnp3\gen\KeyWrapAlgorithm.cpp">
+      <Filter>Source\gen</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\EventCount.cpp">
-      <Filter>Source\outstation</Filter>
+    <ClCompile Include="src\opendnp3\gen\LinkFunction.cpp">
+      <Filter>Source\gen</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\ReadHandler.cpp">
-      <Filter>Source\outstation</Filter>
+    <ClCompile Include="src\opendnp3\gen\QualifierCode.cpp">
+      <Filter>Source\gen</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\SimpleCommandHandler.cpp">
-      <Filter>Source\outstation</Filter>
+    <ClCompile Include="src\opendnp3\gen\TaskCompletion.cpp">
+      <Filter>Source\gen</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\TimeTransaction.cpp">
-      <Filter>Source\outstation</Filter>
+    <ClCompile Include="src\opendnp3\link\CRC.cpp">
+      <Filter>Source\link</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\WriteHandler.cpp">
-      <Filter>Source\outstation</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\objects\Group52.cpp">
-      <Filter>Source\objects</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\objects\Group51.cpp">
-      <Filter>Source\objects</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\objects\Group50.cpp">
-      <Filter>Source\objects</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\objects\Group42.cpp">
-      <Filter>Source\objects</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\objects\Group41.cpp">
-      <Filter>Source\objects</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\objects\Group40.cpp">
-      <Filter>Source\objects</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\objects\Group32.cpp">
-      <Filter>Source\objects</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\objects\Group30.cpp">
-      <Filter>Source\objects</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\objects\Group23.cpp">
-      <Filter>Source\objects</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\objects\Group22.cpp">
-      <Filter>Source\objects</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\objects\Group21.cpp">
-      <Filter>Source\objects</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\objects\Group20.cpp">
-      <Filter>Source\objects</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\objects\Group12.cpp">
-      <Filter>Source\objects</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\objects\Group11.cpp">
-      <Filter>Source\objects</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\objects\Group10.cpp">
-      <Filter>Source\objects</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\objects\Group2.cpp">
-      <Filter>Source\objects</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\objects\Group1.cpp">
-      <Filter>Source\objects</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\app\ObjectWriter.cpp">
-      <Filter>Source\app</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\CommandResponseHandler.cpp">
-      <Filter>Source\outstation</Filter>
+    <ClCompile Include="src\opendnp3\link\IOpenDelayStrategy.cpp">
+      <Filter>Source\link</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\link\LinkFrame.cpp">
       <Filter>Source\link</Filter>
@@ -912,6 +870,9 @@
       <Filter>Source\link</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\link\LinkLayer.cpp">
+      <Filter>Source\link</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\link\LinkLayerParser.cpp">
       <Filter>Source\link</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\link\PriLinkLayerStates.cpp">
@@ -923,94 +884,199 @@
     <ClCompile Include="src\opendnp3\link\ShiftableBuffer.cpp">
       <Filter>Source\link</Filter>
     </ClCompile>
+    <ClCompile Include="src\opendnp3\master\AssignClassTask.cpp">
+      <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\ClearRestartTask.cpp">
+      <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\CommandMarshaller.cpp">
+      <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\CommandResponse.cpp">
+      <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\CommandTask.cpp">
+      <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\DisableUnsolicitedTask.cpp">
+      <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\EnableUnsolicitedTask.cpp">
+      <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\EventScanTask.cpp">
+      <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\IMasterState.cpp">
+      <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\IMasterTask.cpp">
+      <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\ISOEHandler.cpp">
+      <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\ITaskLock.cpp">
+      <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\Master.cpp">
+      <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\MasterContext.cpp">
+      <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\MasterParams.cpp">
+      <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\MasterScan.cpp">
+      <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\MasterScheduler.cpp">
+      <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\MasterTasks.cpp">
+      <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\MeasurementHandler.cpp">
+      <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\PollTaskBase.cpp">
+      <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\SerialTimeSyncTask.cpp">
+      <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\StartupIntegrityPoll.cpp">
+      <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\UserPollTask.cpp">
+      <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\WriteTask.cpp">
+      <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\objects\Group1.cpp">
+      <Filter>Source\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\objects\Group2.cpp">
+      <Filter>Source\objects</Filter>
+    </ClCompile>
     <ClCompile Include="src\opendnp3\objects\Group3.cpp">
       <Filter>Source\objects</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\objects\Group4.cpp">
       <Filter>Source\objects</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\gen\DoubleBit.cpp">
-      <Filter>Source\gen</Filter>
+    <ClCompile Include="src\opendnp3\objects\Group10.cpp">
+      <Filter>Source\objects</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\app\APDUHandlerBase.cpp">
-      <Filter>Source\app</Filter>
+    <ClCompile Include="src\opendnp3\objects\Group11.cpp">
+      <Filter>Source\objects</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\link\IOpenDelayStrategy.cpp">
-      <Filter>Source\link</Filter>
+    <ClCompile Include="src\opendnp3\objects\Group12.cpp">
+      <Filter>Source\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\objects\Group20.cpp">
+      <Filter>Source\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\objects\Group21.cpp">
+      <Filter>Source\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\objects\Group22.cpp">
+      <Filter>Source\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\objects\Group23.cpp">
+      <Filter>Source\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\objects\Group30.cpp">
+      <Filter>Source\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\objects\Group32.cpp">
+      <Filter>Source\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\objects\Group40.cpp">
+      <Filter>Source\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\objects\Group41.cpp">
+      <Filter>Source\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\objects\Group42.cpp">
+      <Filter>Source\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\objects\Group50.cpp">
+      <Filter>Source\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\objects\Group51.cpp">
+      <Filter>Source\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\objects\Group52.cpp">
+      <Filter>Source\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\objects\Group120.cpp">
+      <Filter>Source\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\objects\Group120Var1.cpp">
+      <Filter>Source\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\objects\Group120Var5.cpp">
+      <Filter>Source\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\objects\Group120Var7.cpp">
+      <Filter>Source\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\objects\SeqUserData.cpp">
+      <Filter>Source\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\ApplicationIIN.cpp">
+      <Filter>Source\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\AssignClassHandler.cpp">
+      <Filter>Source\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\ClassBasedRequestHandler.cpp">
+      <Filter>Source\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\CommandActionAdapter.cpp">
+      <Filter>Source\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\CommandResponseHandler.cpp">
+      <Filter>Source\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\Database.cpp">
+      <Filter>Source\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\DatabaseBuffers.cpp">
+      <Filter>Source\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\DatabaseConfigView.cpp">
+      <Filter>Source\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\EventBuffer.cpp">
+      <Filter>Source\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\EventBufferConfig.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\ResponseContext.cpp">
+    <ClCompile Include="src\opendnp3\outstation\EventCount.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\app\EventTriggers.cpp">
-      <Filter>Source\app</Filter>
+    <ClCompile Include="src\opendnp3\outstation\EventWriter.cpp">
+      <Filter>Source\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\IINHelpers.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\transport\TransportStack.cpp">
-      <Filter>Header\transport</Filter>
+    <ClCompile Include="src\opendnp3\outstation\IOutstationApplication.cpp">
+      <Filter>Source\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\Outstation.cpp">
+      <Filter>Source\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\OutstationContext.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\OutstationParams.cpp">
-      <Filter>Source\outstation</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\master\MasterContext.cpp">
-      <Filter>Source\master</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\master\MasterScheduler.cpp">
-      <Filter>Source\master</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\master\MasterParams.cpp">
-      <Filter>Source\master</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\app\APDUHeader.cpp">
-      <Filter>Source\app</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\app\APDUBuilders.cpp">
-      <Filter>Source\app</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\app\APDULogging.cpp">
-      <Filter>Source\app</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\master\CommandMarshaller.cpp">
-      <Filter>Source\master</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\master\DisableUnsolicitedTask.cpp">
-      <Filter>Source\master</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\master\StartupIntegrityPoll.cpp">
-      <Filter>Source\master</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\master\PollTaskBase.cpp">
-      <Filter>Source\master</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\master\EnableUnsolicitedTask.cpp">
-      <Filter>Source\master</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\master\Master.cpp">
-      <Filter>Source\master</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\master\ClearRestartTask.cpp">
-      <Filter>Source\master</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\master\SerialTimeSyncTask.cpp">
-      <Filter>Source\master</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\master\MasterTasks.cpp">
-      <Filter>Source\master</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\Outstation.cpp">
-      <Filter>Source\outstation</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\link\LinkLayerParser.cpp">
-      <Filter>Source\link</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\ClassBasedRequestHandler.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\OutstationSolicitedStates.cpp">
@@ -1019,127 +1085,44 @@
     <ClCompile Include="src\opendnp3\outstation\OutstationUnsolicitedStates.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\link\CRC.cpp">
-      <Filter>Source\link</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\master\IMasterState.cpp">
-      <Filter>Source\master</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\master\ITaskLock.cpp">
-      <Filter>Source\master</Filter>
-    </ClCompile>
-<<<<<<< HEAD
-    <ClCompile Include="src\opendnp3\master\TaskRecord.cpp">
-      <Filter>Source\master</Filter>
-=======
-    <ClCompile Include="src\opendnp3\gen\TimeSyncMode.cpp">
-      <Filter>Source\gen</Filter>
->>>>>>> 2.0.x-feature
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\app\ClassField.cpp">
-      <Filter>Source\app</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\IOutstationApplication.cpp">
+    <ClCompile Include="src\opendnp3\outstation\ReadHandler.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\gen\GroupVariation.cpp">
-      <Filter>Source\gen</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\app\GroupVariationRecord.cpp">
-      <Filter>Source\app</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\app\MeasurementTypes.cpp">
-      <Filter>Source\app</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\app\FunctionHelpers.cpp">
-      <Filter>Source\app</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\SOERecord.cpp">
-      <Filter>Source\outstation</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\StaticLoadFunctions.cpp">
-      <Filter>Source\outstation</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\ApplicationIIN.cpp">
-      <Filter>Source\outstation</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\AssignClassHandler.cpp">
-      <Filter>Header\outstation</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\master\UserPollTask.cpp">
-      <Filter>Source\master</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\master\AssignClassTask.cpp">
-      <Filter>Source\master</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\app\TimeAndInterval.cpp">
-      <Filter>Source\app</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\gen\IntervalUnits.cpp">
-      <Filter>Source\gen</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\master\EventScanTask.cpp">
-      <Filter>Source\master</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\master\WriteTask.cpp">
-      <Filter>Source\master</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\master\IMasterTask.cpp">
-      <Filter>Source\master</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\Database.cpp">
-      <Filter>Source\outstation</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\DatabaseBuffers.cpp">
-      <Filter>Source\outstation</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\EventBuffer.cpp">
-      <Filter>Source\outstation</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\EventWriter.cpp">
+    <ClCompile Include="src\opendnp3\outstation\ResponseContext.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\SelectedRanges.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\SimpleCommandHandler.cpp">
+      <Filter>Source\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\SOERecord.cpp">
+      <Filter>Source\outstation</Filter>
+    </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\StaticBuffers.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\DatabaseConfigView.cpp">
+    <ClCompile Include="src\opendnp3\outstation\StaticLoadFunctions.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\gen\HMACType.cpp">
-      <Filter>Source\gen</Filter>
+    <ClCompile Include="src\opendnp3\outstation\TimeTransaction.cpp">
+      <Filter>Source\outstation</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\gen\ChallengeReason.cpp">
-      <Filter>Source\gen</Filter>
+    <ClCompile Include="src\opendnp3\outstation\WriteHandler.cpp">
+      <Filter>Source\outstation</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\objects\Group120Var1.cpp">
-      <Filter>Source\objects</Filter>
+    <ClCompile Include="src\opendnp3\transport\TransportLayer.cpp">
+      <Filter>Source\transport</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\objects\Group120.cpp">
-      <Filter>Source\objects</Filter>
+    <ClCompile Include="src\opendnp3\transport\TransportRx.cpp">
+      <Filter>Source\transport</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\gen\KeyWrapAlgorithm.cpp">
-      <Filter>Source\gen</Filter>
+    <ClCompile Include="src\opendnp3\transport\TransportStack.cpp">
+      <Filter>Source\transport</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\gen\TaskCompletion.cpp">
-      <Filter>Source\gen</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\gen\KeyStatus.cpp">
-      <Filter>Source\gen</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\objects\Group120Var5.cpp">
-      <Filter>Source\objects</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\objects\SeqUserData.cpp">
-      <Filter>Source\objects</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\gen\AuthErrorCode.cpp">
-      <Filter>Source\gen</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\objects\Group120Var7.cpp">
-      <Filter>Source\objects</Filter>
+    <ClCompile Include="src\opendnp3\transport\TransportTx.cpp">
+      <Filter>Source\transport</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
