@@ -22,14 +22,12 @@
 #ifndef OPENDNP3_MASTERSCHEDULER_H
 #define OPENDNP3_MASTERSCHEDULER_H
 
-#include <openpal/executor/Function0.h>
 #include <openpal/executor/IExecutor.h>
 #include <openpal/container/Settable.h>
 #include <openpal/container/ManagedPtr.h>
 
 #include "opendnp3/master/UserPollTask.h"
 #include "opendnp3/master/IMasterTask.h"
-#include "opendnp3/master/TaskRecord.h"
 #include "opendnp3/master/IScheduleCallback.h"
 
 #include <vector>

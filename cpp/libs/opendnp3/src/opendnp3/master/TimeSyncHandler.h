@@ -71,7 +71,7 @@ private:
 		{
 			if (valid)
 			{
-				FORMAT_LOG_BLOCK(logger, flags::WARN, "Ignoring duplicate time delay object", times.Count());
+				FORMAT_LOG_BLOCK(logger, flags::WARN, "Ignoring duplicate time delay object");
 				return IINBit::PARAM_ERROR;
 			}
 			else

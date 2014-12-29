@@ -18,32 +18,41 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef OPENDNP3_HEADERINFO_H
+#define OPENDNP3_HEADERINFO_H
 
-#include "TaskRecord.h"
-
-using namespace openpal;
+#include "opendnp3/gen/QualifierCode.h"
+#include "opendnp3/gen/TimestampMode.h"
+#include "opendnp3/gen/GroupVariation.h"
 
 namespace opendnp3
-{	
-
-bool TaskRecord::TimeLessThan::lt(const TaskRecord& lhs, const TaskRecord& rhs)
 {
-	return lhs.expiration.milliseconds < rhs.expiration.milliseconds;
-}
+
+class HeaderInfo
+{
+public:
+
+	HeaderInfo() : 
+		gv(GroupVariation::UNKNOWN),
+		qualifier(QualifierCode::UNDEFINED),
+		tsmode(TimestampMode::INVALID)
+	{}
 	
-TaskRecord::TaskRecord() : pTask(nullptr), expiration(MonotonicTimestamp::Max())
-{
+	HeaderInfo(
+		GroupVariation gv_,
+		QualifierCode qualifier_,
+		TimestampMode tsmode_
+	) : 
+		gv(gv_),
+		qualifier(qualifier_),
+		tsmode(tsmode_)
+	{}
+
+	GroupVariation gv;
+	QualifierCode qualifier;
+	TimestampMode tsmode;
+};
 
 }
 
-TaskRecord::TaskRecord(IMasterTask& task) : pTask(&task), expiration(MonotonicTimestamp::Min())
-{
-
-}
-
-TaskRecord::TaskRecord(IMasterTask& task, const openpal::MonotonicTimestamp& expiration_) : pTask(&task), expiration(expiration_)
-{
-
-}
-
-}
+#endif

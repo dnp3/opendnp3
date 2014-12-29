@@ -26,15 +26,15 @@
 namespace opendnp3 {
 
 /**
-  Indicates the validity of a timestamp values for an entire object header
+  Indicates the validity of timestamp values for an entire object header
 */
-enum class TimestampMode : int
+enum class TimestampMode : uint8_t
 {
   /// Timestamp is not valid, ignore the value and use a local timestamp
   INVALID = 0,
-  /// The timestamp is UTC synchronzied at the remote device
+  /// The timestamp is UTC synchronized at the remote device
   SYNCHRONIZED = 1,
-  /// The device indicate the timstamp may be unsynchronized
+  /// The device indicate the timestamp may be unsynchronized
   UNSYNCHRONIZED = 2
 };
 

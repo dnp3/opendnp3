@@ -21,9 +21,9 @@ libopenpal_la_SOURCES = \
 cpp/libs/openpal/src/openpal/container/DynamicBuffer.cpp \
 cpp/libs/openpal/src/openpal/container/ReadBufferView.cpp \
 cpp/libs/openpal/src/openpal/container/WriteBufferView.cpp \
+cpp/libs/openpal/src/openpal/executor/Action0.cpp \
 cpp/libs/openpal/src/openpal/executor/Erasure.cpp \
 cpp/libs/openpal/src/openpal/executor/MonotonicTimestamp.cpp \
-cpp/libs/openpal/src/openpal/executor/Runnable.cpp \
 cpp/libs/openpal/src/openpal/executor/TimeDuration.cpp \
 cpp/libs/openpal/src/openpal/logging/LogEntry.cpp \
 cpp/libs/openpal/src/openpal/logging/Logger.cpp \
@@ -103,7 +103,6 @@ cpp/libs/opendnp3/src/opendnp3/master/ClearRestartTask.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/CommandMarshaller.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/CommandResponse.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/CommandTask.cpp \
-cpp/libs/opendnp3/src/opendnp3/master/ConstantCommandProcessor.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/DisableUnsolicitedTask.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/EnableUnsolicitedTask.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/EventScanTask.cpp \
@@ -121,7 +120,6 @@ cpp/libs/opendnp3/src/opendnp3/master/MeasurementHandler.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/PollTaskBase.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/SerialTimeSyncTask.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/StartupIntegrityPoll.cpp \
-cpp/libs/opendnp3/src/opendnp3/master/TaskRecord.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/UserPollTask.cpp \
 cpp/libs/opendnp3/src/opendnp3/master/WriteTask.cpp \
 cpp/libs/opendnp3/src/opendnp3/objects/Group10.cpp \
@@ -143,7 +141,6 @@ cpp/libs/opendnp3/src/opendnp3/objects/Group4.cpp \
 cpp/libs/opendnp3/src/opendnp3/objects/Group50.cpp \
 cpp/libs/opendnp3/src/opendnp3/objects/Group51.cpp \
 cpp/libs/opendnp3/src/opendnp3/objects/Group52.cpp \
-cpp/libs/opendnp3/src/opendnp3/objects/Group60.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/ApplicationIIN.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/AssignClassHandler.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/ClassBasedRequestHandler.cpp \
@@ -166,7 +163,6 @@ cpp/libs/opendnp3/src/opendnp3/outstation/OutstationUnsolicitedStates.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/ReadHandler.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/ResponseContext.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/SelectedRanges.cpp \
-cpp/libs/opendnp3/src/opendnp3/outstation/SelectionWriter.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/SimpleCommandHandler.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/SOERecord.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/StaticBuffers.cpp \

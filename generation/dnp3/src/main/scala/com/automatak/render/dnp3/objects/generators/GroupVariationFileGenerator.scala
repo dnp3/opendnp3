@@ -78,17 +78,20 @@ object GroupVariationFileGenerator {
       }
     }
 
-
-
     def implFile(group: ObjectGroup): Iterator[String] = {
-      commented(LicenseHeader()) ++ space ++
-        includeHeader(group) ++ space ++
-        optionalCppIncludes(group) ++
-        Iterator("#include <openpal/serialization/Serialization.h>") ++ space ++
-        Iterator("using namespace openpal;") ++ space ++
-        namespace("opendnp3") {
-          definitions(GroupVariationImplRenderer)(group)
-        }
+      val defs = definitions(GroupVariationImplRenderer)(group)
+      if(defs.isEmpty) Iterator.empty
+      else
+      {
+        commented(LicenseHeader()) ++ space ++
+          includeHeader(group) ++ space ++
+          optionalCppIncludes(group) ++
+          Iterator("#include <openpal/serialization/Serialization.h>") ++ space ++
+          Iterator("using namespace openpal;") ++ space ++
+          namespace("opendnp3") {
+            defs
+          }
+      }
     }
 
     ObjectGroup.all.foreach { g =>
