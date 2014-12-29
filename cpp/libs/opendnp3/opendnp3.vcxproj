@@ -81,7 +81,6 @@
     <ClInclude Include="src\opendnp3\gen\DoubleBitBinaryQuality.h" />
     <ClInclude Include="src\opendnp3\gen\EventAnalogOutputStatusVariation.h" />
     <ClInclude Include="src\opendnp3\gen\EventAnalogVariation.h" />
-    <ClInclude Include="src\opendnp3\gen\EventBinaryCommandEventVariation.h" />
     <ClInclude Include="src\opendnp3\gen\EventBinaryOutputStatusVariation.h" />
     <ClInclude Include="src\opendnp3\gen\EventBinaryVariation.h" />
     <ClInclude Include="src\opendnp3\gen\EventCounterVariation.h" />
