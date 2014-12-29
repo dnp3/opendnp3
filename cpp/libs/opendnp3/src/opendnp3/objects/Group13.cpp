@@ -31,17 +31,15 @@ namespace opendnp3 {
 Group13Var1 Group13Var1::Read(ReadBufferView& buffer)
 {
 	Group13Var1 obj;
-	uint8_t val = UInt8::Read(buffer);
-	obj.value = (val & 0x80) == 0x80;
-	obj.status = CommandStatusFromType(val & 0x7F);
+	obj.value = (UInt8::Read(buffer) & 0x80) == 0x80;
+	obj.status = CommandStatusFromType(UInt8::Read(buffer) & 0x7F);
 	buffer.Advance(1);
 	return obj;
 }
 
 void Group13Var1::Write(const Group13Var1& arg, openpal::WriteBufferView& buffer)
 {
-	uint8_t val = arg.value << 7;
-	UInt8::Write(buffer, val | CommandStatusToType(arg.status));
+	UInt8::Write(buffer, (arg.value << 7) | CommandStatusToType(arg.status));
 	buffer.Advance(1);
 }
 
@@ -59,9 +57,8 @@ void Group13Var1::WriteTarget(const BinaryCommandEvent& value, openpal::WriteBuf
 Group13Var2 Group13Var2::Read(ReadBufferView& buffer)
 {
 	Group13Var2 obj;
-	uint8_t val = UInt8::Read(buffer);
-	obj.value = (val & 0x80) == 0x80;
-	obj.status = CommandStatusFromType(val & 0x7F);
+	obj.value = (UInt8::Read(buffer) & 0x80) == 0x80;
+	obj.status = CommandStatusFromType(UInt8::Read(buffer) & 0x7F);
 	buffer.Advance(1);
 	obj.time = UInt48::Read(buffer);
 	buffer.Advance(6);
@@ -70,8 +67,7 @@ Group13Var2 Group13Var2::Read(ReadBufferView& buffer)
 
 void Group13Var2::Write(const Group13Var2& arg, openpal::WriteBufferView& buffer)
 {
-	uint8_t val = arg.value << 7;
-	UInt8::Write(buffer, val | CommandStatusToType(arg.status));
+	UInt8::Write(buffer, (arg.value << 7) | CommandStatusToType(arg.status));
 	buffer.Advance(1);
 	UInt48::Write(buffer, arg.time);
 	buffer.Advance(6);

@@ -36,16 +36,20 @@ object GroupVariationHeaderRenderer extends ModelRenderer[GroupVariation]{
       case Float32Field => "float"
       case Float64Field => "double"
       case EnumField(model: EnumModel) => model.name
+      case CommandStateAndStatusField => "bool"
     }
 
-    def getFieldString(x: FixedSizeField): String = getFieldTypeString(x.typ) + " " + x.name + ";"
+    def getFieldString(x: FixedSizeField): Iterator[String] = x.typ match {
+      case CommandStateAndStatusField => Iterator("bool value;", "CommandStatus status;")
+      case _ => Iterator(getFieldTypeString(x.typ) + " " + x.name + ";")
+    }
 
     def typedefs(x: FixedSizeField): Iterator[String] = {
       if(x.name == "value") Iterator("typedef " + getFieldTypeString(x.typ) + " ValueType;")
       else Iterator.empty
     }
 
-    def members: Iterator[String] =  x.fields.map(f => typedefs(f)).iterator.flatten ++ x.fields.map(f => getFieldString(f)).iterator
+    def members: Iterator[String] =  x.fields.map(f => typedefs(f)).iterator.flatten ++ x.fields.map(f => getFieldString(f)).iterator.flatten
 
     def sizeSignature: Iterator[String] = Iterator("static uint32_t Size() { return " + x.size + "; }")
 
@@ -98,6 +102,10 @@ object GroupVariationImplRenderer extends ModelRenderer[GroupVariation]{
     }
 
     def readOperation(x: FixedSizeField): Iterator[String] = x.typ match {
+      case CommandStateAndStatusField =>
+        Iterator("obj.value = (UInt8::Read(buffer) & 0x80) == 0x80;", 
+                 "obj.status = CommandStatusFromType(UInt8::Read(buffer) & 0x7F);", 
+                 advance(x.typ.numBytes))
       case EnumField(model) =>
         Iterator("obj."+x.name + " = " + getFieldTypeParser(x.typ) + "FromType(UInt8::Read(buffer));", advance(x.typ.numBytes))
       case _ =>
@@ -106,6 +114,8 @@ object GroupVariationImplRenderer extends ModelRenderer[GroupVariation]{
 
     def writeOperation(x: FixedSizeField): Iterator[String] = {
       x.typ match {
+        case CommandStateAndStatusField =>
+          Iterator("UInt8::Write(buffer, (arg.value << 7) | CommandStatusToType(arg.status));")
         case EnumField(model) =>
           Iterator("UInt8::Write(buffer, " + model.name + "ToType(arg." + x.name + "));", advance(x.typ.numBytes))
         case _ =>
