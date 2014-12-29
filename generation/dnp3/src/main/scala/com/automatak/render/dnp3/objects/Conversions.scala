@@ -48,6 +48,7 @@ object ConversionHeaders {
   val crob = quoted("opendnp3/app/ControlRelayOutputBlock.h")
   val ao = quoted("opendnp3/app/AnalogOutput.h")
   val binaryCommandEvent = quoted("opendnp3/app/BinaryCommandEvent.h")
+  val analogCommandEvent = quoted("opendnp3/app/AnalogCommandEvent.h")
   val factory = quoted("opendnp3/app/MeasurementFactory.h")
   val serializer = quoted("opendnp3/app/DNP3Serializer.h")
   val conversions = quoted("opendnp3/app/WriteConversions.h")
@@ -71,6 +72,7 @@ object AnalogOutputFloat32Conversion extends ArbitraryConversion("AnalogOutputFl
 object AnalogOutputDouble64Conversion extends ArbitraryConversion("AnalogOutputDouble64", List(serializer, ao), cppIncldues)
 object TimeAndIntervalConversion extends ArbitraryConversion("TimeAndInterval", List(serializer,timeAndInterval), cppIncldues)
 object BinaryCommandEventConversion extends ArbitraryConversion("BinaryCommandEvent", List(serializer,binaryCommandEvent), cppIncldues)
+object AnalogCommandEventConversion extends ArbitraryConversion("AnalogCommandEvent", List(serializer,binaryCommandEvent), cppIncldues)
 
 trait ConversionToBinary {
   self : FixedSize =>
@@ -140,5 +142,10 @@ trait ConversionToTimeAndInterval {
 trait ConversionToBinaryCommandEvent {
   self : FixedSize =>
   override def conversion: Option[Conversion] = Some(BinaryCommandEventConversion)
+}
+
+trait ConversionToAnalogCommandEvent {
+  self : FixedSize =>
+  override def conversion: Option[Conversion] = Some(AnalogCommandEventConversion)
 }
 
