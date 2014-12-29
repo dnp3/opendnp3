@@ -115,6 +115,11 @@ public:
 		this->RecordAny(header, tsmode, meas, binaryCommandEventSOE);
 	}
 
+	void OnReceiveHeader(const HeaderRecord& header, TimestampMode tsmode, const IterableBuffer<IndexedValue<AnalogCommandEvent, uint16_t>>& meas) override final
+	{
+		this->RecordAny(header, tsmode, meas, analogCommandEventSOE);
+	}
+
 
 
 	void Clear()
@@ -131,6 +136,7 @@ public:
 		octetStringSOE.clear();
 		timeAndIntervalSOE.clear();
 		binaryCommandEventSOE.clear();
+		analogCommandEventSOE.clear();
 	}	
 
 	std::map<uint16_t, Record<Binary>> binarySOE;
@@ -143,6 +149,7 @@ public:
 	std::map<uint16_t, Record<OctetString>> octetStringSOE;
 	std::map<uint16_t, Record<TimeAndInterval>> timeAndIntervalSOE;
 	std::map<uint16_t, Record<BinaryCommandEvent>> binaryCommandEventSOE;
+	std::map<uint16_t, Record<AnalogCommandEvent>> analogCommandEventSOE;
 
 protected:
 

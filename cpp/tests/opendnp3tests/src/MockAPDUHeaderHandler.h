@@ -169,6 +169,16 @@ public:
 		return IINField();
 	}
 
+	virtual IINField ProcessRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<AnalogCommandEvent, uint16_t>>& meas) override
+	{
+		records.push_back(record);
+		meas.foreach([&](const IndexedValue<AnalogCommandEvent, uint16_t>& v)
+		{
+			analogCommandEvents.push_back(v);
+		});
+		return IINField();
+	}
+
 	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override
 	{
 		records.push_back(record);
@@ -235,6 +245,16 @@ public:
 		meas.foreach([&](const IndexedValue<BinaryCommandEvent, uint16_t>& v)
 		{
 			binaryCommandEvents.push_back(v);
+		});
+		return IINField();
+	}
+
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<AnalogCommandEvent, uint16_t>>& meas) override
+	{
+		records.push_back(record);
+		meas.foreach([&](const IndexedValue<AnalogCommandEvent, uint16_t>& v)
+		{
+			analogCommandEvents.push_back(v);
 		});
 		return IINField();
 	}
@@ -373,6 +393,8 @@ public:
 	std::vector<IndexedValue<OctetString, uint16_t>> rangedOctets;
 
 	std::vector<IndexedValue<BinaryCommandEvent, uint16_t>> binaryCommandEvents;
+
+	std::vector<IndexedValue<AnalogCommandEvent, uint16_t>> analogCommandEvents;
 };
 
 }

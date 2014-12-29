@@ -371,4 +371,23 @@ namespace Automatak.DNP3.Interface
         public readonly CommandStatus status;
         public readonly UInt64 time;
     }
+
+    public class AnalogCommandEvent
+    {
+        public AnalogCommandEvent(double value, CommandStatus status, UInt64 time)
+        {
+            this.value = value;
+            this.status = status;
+            this.time = time;
+        }
+
+        public override string ToString()
+        {
+            return String.Format("value: {0} status: {1} time: {2}", value, status, time);
+        }
+
+        public readonly double value;
+        public readonly CommandStatus status;
+        public readonly UInt64 time;
+    }
 }

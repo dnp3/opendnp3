@@ -192,6 +192,22 @@ GroupVariation GroupVariationFromType(uint16_t arg)
       return GroupVariation::Group42Var7;
     case(0x2A08):
       return GroupVariation::Group42Var8;
+	case(0x2B01) :
+	  return GroupVariation::Group43Var1;
+	case(0x2B02) :
+	  return GroupVariation::Group43Var2;
+	case(0x2B03) :
+	  return GroupVariation::Group43Var3;
+	case(0x2B04) :
+	  return GroupVariation::Group43Var4;
+	case(0x2B05) :
+	  return GroupVariation::Group43Var5;
+	case(0x2B06) :
+	  return GroupVariation::Group43Var6;
+	case(0x2B07) :
+	  return GroupVariation::Group43Var7;
+	case(0x2B08) :
+	  return GroupVariation::Group43Var8;
     case(0x3201):
       return GroupVariation::Group50Var1;
     case(0x3204):

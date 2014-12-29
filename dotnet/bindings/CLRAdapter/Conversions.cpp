@@ -185,6 +185,11 @@ namespace Automatak
 				return gcnew BinaryCommandEvent(meas.value, ConvertCommandStatus(meas.status), meas.time);
 			}
 
+			AnalogCommandEvent^ Conversions::ConvertMeas(const opendnp3::AnalogCommandEvent& meas)
+			{
+				return gcnew AnalogCommandEvent(meas.value, ConvertCommandStatus(meas.status), meas.time);
+			}
+
 			opendnp3::Binary Conversions::ConvertMeas(Binary^ meas)
 			{
 				return opendnp3::Binary(meas->Value, meas->Quality, TimeStamp::Convert(meas->Timestamp));
@@ -223,6 +228,11 @@ namespace Automatak
 			opendnp3::BinaryCommandEvent Conversions::ConvertMeas(BinaryCommandEvent^ meas)
 			{
 				return opendnp3::BinaryCommandEvent(meas->value, ConvertCommandStatus(meas->status), meas->time);
+			}
+
+			opendnp3::AnalogCommandEvent Conversions::ConvertMeas(AnalogCommandEvent^ meas)
+			{
+				return opendnp3::AnalogCommandEvent(meas->value, ConvertCommandStatus(meas->status), meas->time);
 			}
 
 			opendnp3::BinaryOutputStatus Conversions::ConvertMeas(BinaryOutputStatus^ meas)

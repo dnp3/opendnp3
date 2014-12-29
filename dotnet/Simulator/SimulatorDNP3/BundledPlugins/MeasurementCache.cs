@@ -282,6 +282,11 @@ namespace Automatak.Simulator.DNP3
             // TODO
         }
 
+        void ISOEHandler.OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<AnalogCommandEvent>> values)
+        {
+            // TODO
+        }
+
 
         bool IDatabase.Modify(Func<Binary, Binary> update, ushort index, EventMode mode)
         {

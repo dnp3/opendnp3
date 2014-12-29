@@ -422,4 +422,32 @@ TEST_CASE(SUITE("Group13Var2CountWithAllIndexSizes"))
 	TestComplex("0D 02 28 01 00 09 00 81 88 6E D0 92 4A 01", APDUParser::Result::OK, 1, validator);
 }
 
+TEST_CASE(SUITE("Group43Var1CountWithAllIndexSizes"))
+{
+	auto validator = [](MockApduHeaderHandler & mock)
+	{
+		REQUIRE(1 == mock.analogCommandEvents.size());
+		IndexedValue<AnalogCommandEvent, uint16_t> value(AnalogCommandEvent(50, CommandStatus::TIMEOUT), 9);
+		REQUIRE((value == mock.analogCommandEvents[0]));
+	};
+
+	// 1 byte count, 1 byte index, index == 09, status = 0x01, value = 0x32
+	TestComplex("2B 01 17 01 09 01 32 00 00 00", APDUParser::Result::OK, 1, validator);
+	TestComplex("2B 01 28 01 00 09 00 01 32 00 00 00", APDUParser::Result::OK, 1, validator);
+}
+
+TEST_CASE(SUITE("Group43Var3CountWithAllIndexSizes"))
+{
+	auto validator = [](MockApduHeaderHandler & mock)
+	{
+		REQUIRE(1 == mock.analogCommandEvents.size());
+		IndexedValue<AnalogCommandEvent, uint16_t> value(AnalogCommandEvent(50, CommandStatus::TIMEOUT, 1419802341000), 9);
+		REQUIRE((value == mock.analogCommandEvents[0]));
+	};
+
+	// 1 byte count, 1 byte index, index == 09, status = 0x01, value = 0x32, time = 1419802341000 (014A92D06E88 in hex / 886ED0924A01 little endian)
+	TestComplex("2B 03 17 01 09 01 32 00 00 00 88 6E D0 92 4A 01", APDUParser::Result::OK, 1, validator);
+	TestComplex("2B 03 28 01 00 09 00 01 32 00 00 00 88 6E D0 92 4A 01", APDUParser::Result::OK, 1, validator);
+}
+
 
