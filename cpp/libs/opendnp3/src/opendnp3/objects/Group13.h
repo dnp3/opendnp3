@@ -24,7 +24,6 @@
 #include <openpal/container/ReadBufferView.h>
 #include <openpal/container/WriteBufferView.h>
 #include "opendnp3/app/GroupVariationID.h"
-#include "opendnp3/gen/CommandStatus.h"
 #include "opendnp3/app/DNP3Serializer.h"
 #include "opendnp3/app/BinaryCommandEvent.h"
 
@@ -32,36 +31,37 @@ namespace opendnp3 {
 
 struct Group13Var1
 {
-	static GroupVariationID ID() { return GroupVariationID(13, 1); }
-	static uint32_t Size() { return 1; }
-	static Group13Var1 Read(openpal::ReadBufferView&);
-	static void Write(const Group13Var1&, openpal::WriteBufferView&);
+  static GroupVariationID ID() { return GroupVariationID(13,1); }
+  static uint32_t Size() { return 1; }
+  static Group13Var1 Read(openpal::ReadBufferView&);
+  static void Write(const Group13Var1&, openpal::WriteBufferView&);
 
-	static DNP3Serializer<BinaryCommandEvent> Inst() { return DNP3Serializer<BinaryCommandEvent>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  static DNP3Serializer<BinaryCommandEvent> Inst() { return DNP3Serializer<BinaryCommandEvent>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
-	typedef BinaryCommandEvent Target;
-	static BinaryCommandEvent ReadTarget(openpal::ReadBufferView&);
-	static void WriteTarget(const BinaryCommandEvent&, openpal::WriteBufferView&);
+  typedef BinaryCommandEvent Target;
+  static BinaryCommandEvent ReadTarget(openpal::ReadBufferView&);
+  static void WriteTarget(const BinaryCommandEvent&, openpal::WriteBufferView&);
 
-	uint8_t flags;
+  uint8_t flags;
 };
 
 struct Group13Var2
 {
-	static GroupVariationID ID() { return GroupVariationID(13, 2); }
-	static uint32_t Size() { return 7; }
-	static Group13Var2 Read(openpal::ReadBufferView&);
-	static void Write(const Group13Var2&, openpal::WriteBufferView&);
+  static GroupVariationID ID() { return GroupVariationID(13,2); }
+  static uint32_t Size() { return 7; }
+  static Group13Var2 Read(openpal::ReadBufferView&);
+  static void Write(const Group13Var2&, openpal::WriteBufferView&);
 
-	static DNP3Serializer<BinaryCommandEvent> Inst() { return DNP3Serializer<BinaryCommandEvent>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  static DNP3Serializer<BinaryCommandEvent> Inst() { return DNP3Serializer<BinaryCommandEvent>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
-	typedef BinaryCommandEvent Target;
-	static BinaryCommandEvent ReadTarget(openpal::ReadBufferView&);
-	static void WriteTarget(const BinaryCommandEvent&, openpal::WriteBufferView&);
+  typedef BinaryCommandEvent Target;
+  static BinaryCommandEvent ReadTarget(openpal::ReadBufferView&);
+  static void WriteTarget(const BinaryCommandEvent&, openpal::WriteBufferView&);
 
-	uint8_t flags;
-	uint64_t time;
+  uint8_t flags;
+  uint64_t time;
 };
+
 
 }
 

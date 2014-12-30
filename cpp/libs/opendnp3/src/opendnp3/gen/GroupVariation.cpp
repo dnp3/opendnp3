@@ -74,10 +74,10 @@ GroupVariation GroupVariationFromType(uint16_t arg)
       return GroupVariation::Group12Var0;
     case(0xC01):
       return GroupVariation::Group12Var1;
-	case(0xD01):
-	  return GroupVariation::Group13Var1;
-	case(0xD02):
-	  return GroupVariation::Group13Var2;
+    case(0xD01):
+      return GroupVariation::Group13Var1;
+    case(0xD02):
+      return GroupVariation::Group13Var2;
     case(0x1400):
       return GroupVariation::Group20Var0;
     case(0x1401):
@@ -192,22 +192,22 @@ GroupVariation GroupVariationFromType(uint16_t arg)
       return GroupVariation::Group42Var7;
     case(0x2A08):
       return GroupVariation::Group42Var8;
-	case(0x2B01) :
-	  return GroupVariation::Group43Var1;
-	case(0x2B02) :
-	  return GroupVariation::Group43Var2;
-	case(0x2B03) :
-	  return GroupVariation::Group43Var3;
-	case(0x2B04) :
-	  return GroupVariation::Group43Var4;
-	case(0x2B05) :
-	  return GroupVariation::Group43Var5;
-	case(0x2B06) :
-	  return GroupVariation::Group43Var6;
-	case(0x2B07) :
-	  return GroupVariation::Group43Var7;
-	case(0x2B08) :
-	  return GroupVariation::Group43Var8;
+    case(0x2B01):
+      return GroupVariation::Group43Var1;
+    case(0x2B02):
+      return GroupVariation::Group43Var2;
+    case(0x2B03):
+      return GroupVariation::Group43Var3;
+    case(0x2B04):
+      return GroupVariation::Group43Var4;
+    case(0x2B05):
+      return GroupVariation::Group43Var5;
+    case(0x2B06):
+      return GroupVariation::Group43Var6;
+    case(0x2B07):
+      return GroupVariation::Group43Var7;
+    case(0x2B08):
+      return GroupVariation::Group43Var8;
     case(0x3201):
       return GroupVariation::Group50Var1;
     case(0x3204):
@@ -287,6 +287,10 @@ char const* GroupVariationToString(GroupVariation arg)
       return "Binary Command - Any Variation";
     case(GroupVariation::Group12Var1):
       return "Binary Command - CROB";
+    case(GroupVariation::Group13Var1):
+      return "Binary Command Event - Without Time";
+    case(GroupVariation::Group13Var2):
+      return "Binary Command Event - With Time";
     case(GroupVariation::Group20Var0):
       return "Counter - Any Variation";
     case(GroupVariation::Group20Var1):
@@ -362,7 +366,7 @@ char const* GroupVariationToString(GroupVariation arg)
     case(GroupVariation::Group32Var7):
       return "Analog Input Event - Single-precision With Flag and Time";
     case(GroupVariation::Group32Var8):
-      return "Analog Input Event - Double-precision With Flag abd Time";
+      return "Analog Input Event - Double-precision With Flag and Time";
     case(GroupVariation::Group40Var0):
       return "Analog Output Status - Any Variation";
     case(GroupVariation::Group40Var1):
@@ -401,6 +405,22 @@ char const* GroupVariationToString(GroupVariation arg)
       return "Analog Output Event - Single-precision With Flag and Time";
     case(GroupVariation::Group42Var8):
       return "Analog Output Event - Double-precision With Flag and Time";
+    case(GroupVariation::Group43Var1):
+      return "Analog Command Event - 32-bit";
+    case(GroupVariation::Group43Var2):
+      return "Analog Command Event - 16-bit";
+    case(GroupVariation::Group43Var3):
+      return "Analog Command Event - 32-bit With Time";
+    case(GroupVariation::Group43Var4):
+      return "Analog Command Event - 16-bit With Time";
+    case(GroupVariation::Group43Var5):
+      return "Analog Command Event - Single-precision";
+    case(GroupVariation::Group43Var6):
+      return "Analog Command Event - Double-precision";
+    case(GroupVariation::Group43Var7):
+      return "Analog Command Event - Single-precision With Time";
+    case(GroupVariation::Group43Var8):
+      return "Analog Command Event - Double-precision With Time";
     case(GroupVariation::Group50Var1):
       return "Time and Date - Absolute Time";
     case(GroupVariation::Group50Var4):
