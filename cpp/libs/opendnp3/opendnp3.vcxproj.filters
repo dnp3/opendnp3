@@ -717,6 +717,18 @@
     <ClInclude Include="src\opendnp3\master\HeaderInfo.h">
       <Filter>Header\master</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\objects\Group13.h">
+      <Filter>Header\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\app\BinaryCommandEvent.h">
+      <Filter>Header\app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\app\AnalogCommandEvent.h">
+      <Filter>Header\app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\objects\Group43.h">
+      <Filter>Header\objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\AnalogOutput.cpp">
@@ -1072,6 +1084,18 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\DatabaseConfigView.cpp">
       <Filter>Source\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\objects\Group13.cpp">
+      <Filter>Source\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\app\BinaryCommandEvent.cpp">
+      <Filter>Source\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\app\AnalogCommandEvent.cpp">
+      <Filter>Source\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\objects\Group43.cpp">
+      <Filter>Source\objects</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="..\openpal\src\openpal\util\Limits.h" />
     <ClInclude Include="AppConstants.h" />
+    <ClInclude Include="src\opendnp3\app\AnalogCommandEvent.h" />
     <ClInclude Include="src\opendnp3\app\AnalogOutput.h" />
     <ClInclude Include="src\opendnp3\app\APDUBuilders.h" />
     <ClInclude Include="src\opendnp3\app\APDUHandlerBase.h" />
@@ -33,6 +34,7 @@
     <ClInclude Include="src\opendnp3\app\APDUWrapper.h" />
     <ClInclude Include="src\opendnp3\app\AppControlField.h" />
     <ClInclude Include="src\opendnp3\app\BaseMeasurementTypes.h" />
+    <ClInclude Include="src\opendnp3\app\BinaryCommandEvent.h" />
     <ClInclude Include="src\opendnp3\app\BinaryWriteState.h" />
     <ClInclude Include="src\opendnp3\app\BitfieldRangeWriteIterator.h" />
     <ClInclude Include="src\opendnp3\app\BitReader.h" />
@@ -170,6 +172,7 @@
     <ClInclude Include="src\opendnp3\objects\Group10.h" />
     <ClInclude Include="src\opendnp3\objects\Group11.h" />
     <ClInclude Include="src\opendnp3\objects\Group12.h" />
+    <ClInclude Include="src\opendnp3\objects\Group13.h" />
     <ClInclude Include="src\opendnp3\objects\Group2.h" />
     <ClInclude Include="src\opendnp3\objects\Group20.h" />
     <ClInclude Include="src\opendnp3\objects\Group21.h" />
@@ -182,6 +185,7 @@
     <ClInclude Include="src\opendnp3\objects\Group40.h" />
     <ClInclude Include="src\opendnp3\objects\Group41.h" />
     <ClInclude Include="src\opendnp3\objects\Group42.h" />
+    <ClInclude Include="src\opendnp3\objects\Group43.h" />
     <ClInclude Include="src\opendnp3\objects\Group50.h" />
     <ClInclude Include="src\opendnp3\objects\Group51.h" />
     <ClInclude Include="src\opendnp3\objects\Group52.h" />
@@ -243,6 +247,7 @@
     <ClInclude Include="src\opendnp3\transport\TransportTx.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\opendnp3\app\AnalogCommandEvent.cpp" />
     <ClCompile Include="src\opendnp3\app\AnalogOutput.cpp" />
     <ClCompile Include="src\opendnp3\app\APDUBuilders.cpp" />
     <ClCompile Include="src\opendnp3\app\APDUHeader.cpp" />
@@ -253,6 +258,7 @@
     <ClCompile Include="src\opendnp3\app\APDUResponse.cpp" />
     <ClCompile Include="src\opendnp3\app\APDUWrapper.cpp" />
     <ClCompile Include="src\opendnp3\app\AppControlField.cpp" />
+    <ClCompile Include="src\opendnp3\app\BinaryCommandEvent.cpp" />
     <ClCompile Include="src\opendnp3\app\BitReader.cpp" />
     <ClCompile Include="src\opendnp3\app\ClassField.cpp" />
     <ClCompile Include="src\opendnp3\app\ControlRelayOutputBlock.cpp" />
@@ -314,6 +320,7 @@
     <ClCompile Include="src\opendnp3\objects\Group10.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group11.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group12.cpp" />
+    <ClCompile Include="src\opendnp3\objects\Group13.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group2.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group20.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group21.cpp" />
@@ -326,6 +333,7 @@
     <ClCompile Include="src\opendnp3\objects\Group40.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group41.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group42.cpp" />
+    <ClCompile Include="src\opendnp3\objects\Group43.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group50.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group51.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group52.cpp" />

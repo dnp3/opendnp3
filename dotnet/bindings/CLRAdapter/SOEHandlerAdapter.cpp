@@ -81,6 +81,18 @@ namespace Automatak
 				auto values = ToEnumerable<TimeAndInterval^>(meas);
 				proxy->OnReceiveHeader(GetInfo(info), values);
 			}
+
+			void SOEHandlerAdapter::OnReceiveHeader(const opendnp3::HeaderInfo& info, const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::BinaryCommandEvent, uint16_t>>& meas)
+			{
+				auto values = ToEnumerable<BinaryCommandEvent^>(meas);
+				proxy->OnReceiveHeader(GetInfo(info), values);
+			}
+
+			void SOEHandlerAdapter::OnReceiveHeader(const opendnp3::HeaderInfo& info, const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::AnalogCommandEvent, uint16_t>>& meas)
+			{
+				auto values = ToEnumerable<AnalogCommandEvent^>(meas);
+				proxy->OnReceiveHeader(GetInfo(info), values);
+			}
 		}
 	}
 }

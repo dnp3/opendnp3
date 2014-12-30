@@ -83,6 +83,8 @@ namespace Automatak.DNP3.Interface
             void OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<BinaryOutputStatus>> values);
             void OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<AnalogOutputStatus>> values);
             void OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<OctetString>> values);
-            void OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<TimeAndInterval>> values);	  
+            void OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<TimeAndInterval>> values);
+            void OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<BinaryCommandEvent>> values);
+            void OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<AnalogCommandEvent>> values);	 
 	}
 }

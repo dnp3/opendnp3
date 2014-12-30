@@ -77,6 +77,34 @@ void PrintingSOEHandler::OnReceiveHeader(const HeaderInfo& info, const IterableB
 	});
 }
 
+void PrintingSOEHandler::OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<BinaryCommandEvent, uint16_t>>& meas)
+{
+	PrintHeaderInfo(info);
+
+	meas.foreach([&](const IndexedValue<BinaryCommandEvent, uint16_t>& pair)
+	{
+		std::cout << "BinaryCommandEvent: " <<
+			"[" << pair.index << "] : " <<
+			pair.value.time << " : " <<
+			pair.value.value << " : " <<
+			CommandStatusToString(pair.value.status) << std::endl;
+	});
+}
+
+void PrintingSOEHandler::OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<AnalogCommandEvent, uint16_t>>& meas)
+{
+	PrintHeaderInfo(info);
+
+	meas.foreach([&](const IndexedValue<AnalogCommandEvent, uint16_t>& pair)
+	{
+		std::cout << "AnalogCommandEvent: " <<
+			"[" << pair.index << "] : " <<
+			pair.value.time << " : " <<
+			pair.value.value << " : " <<
+			CommandStatusToString(pair.value.status) << std::endl;
+	});
+}
+
 void PrintingSOEHandler::OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas)
 {
 	this->PrintHeaderInfo(info);
