@@ -72,7 +72,7 @@ object AnalogOutputFloat32Conversion extends ArbitraryConversion("AnalogOutputFl
 object AnalogOutputDouble64Conversion extends ArbitraryConversion("AnalogOutputDouble64", List(serializer, ao), cppIncldues)
 object TimeAndIntervalConversion extends ArbitraryConversion("TimeAndInterval", List(serializer,timeAndInterval), cppIncldues)
 object BinaryCommandEventConversion extends ArbitraryConversion("BinaryCommandEvent", List(serializer,binaryCommandEvent), cppIncldues)
-object AnalogCommandEventConversion extends ArbitraryConversion("AnalogCommandEvent", List(serializer,binaryCommandEvent), cppIncldues)
+object AnalogCommandEventConversion extends ArbitraryConversion("AnalogCommandEvent", List(serializer,analogCommandEvent), cppIncldues)
 
 trait ConversionToBinary {
   self : FixedSize =>
