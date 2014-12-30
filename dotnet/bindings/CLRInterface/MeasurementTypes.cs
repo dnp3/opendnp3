@@ -355,7 +355,7 @@ namespace Automatak.DNP3.Interface
 
     public class BinaryCommandEvent
     {
-        public BinaryCommandEvent(bool value, CommandStatus status, UInt64 time)
+        public BinaryCommandEvent(bool value, CommandStatus status, DateTime time)
         {
             this.value = value;
             this.status = status;
@@ -367,14 +367,18 @@ namespace Automatak.DNP3.Interface
             return String.Format("value: {0} status: {1} time: {2}", value, status, time);
         }
 
-        public readonly bool value;
-        public readonly CommandStatus status;
-        public readonly UInt64 time;
+        private readonly bool value;
+        private readonly CommandStatus status;
+        private readonly DateTime time;
+
+        public bool Value { get { return this.value; } }
+        public CommandStatus Status { get { return this.status; } }
+        public DateTime Timestamp { get { return this.time; } }
     }
 
     public class AnalogCommandEvent
     {
-        public AnalogCommandEvent(double value, CommandStatus status, UInt64 time)
+        public AnalogCommandEvent(double value, CommandStatus status, DateTime time)
         {
             this.value = value;
             this.status = status;
@@ -386,8 +390,12 @@ namespace Automatak.DNP3.Interface
             return String.Format("value: {0} status: {1} time: {2}", value, status, time);
         }
 
-        public readonly double value;
-        public readonly CommandStatus status;
-        public readonly UInt64 time;
+        private readonly double value;
+        private readonly CommandStatus status;
+        private readonly DateTime time;
+
+        public double Value { get { return this.value; } }
+        public CommandStatus Status { get { return this.status; } }
+        public DateTime Timestamp { get { return this.time; } }
     }
 }
