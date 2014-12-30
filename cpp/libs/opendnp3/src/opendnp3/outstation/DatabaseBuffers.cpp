@@ -25,7 +25,6 @@
 #include "opendnp3/ErrorCodes.h"
 
 #include <assert.h>
-#include <array>
 
 using namespace openpal;
 
@@ -234,7 +233,7 @@ bool DatabaseBuffers::Load(HeaderWriter& writer)
 {
 	typedef bool (DatabaseBuffers::*LoadFun)(HeaderWriter& writer);	
 
-	std::array<LoadFun, 8> loaders{{
+	LoadFun functions[8]= {
 			&DatabaseBuffers::LoadType<Binary>,
 			&DatabaseBuffers::LoadType<DoubleBitBinary>,
 			&DatabaseBuffers::LoadType<Counter>,
@@ -242,12 +241,12 @@ bool DatabaseBuffers::Load(HeaderWriter& writer)
 			&DatabaseBuffers::LoadType<Analog>,
 			&DatabaseBuffers::LoadType<BinaryOutputStatus>,
 			&DatabaseBuffers::LoadType<AnalogOutputStatus>,
-			&DatabaseBuffers::LoadType < TimeAndInterval >
-	}};
+			&DatabaseBuffers::LoadType<TimeAndInterval>
+	};
 
-	for (LoadFun fun : loaders)
+	for (int i = 0; i < 8; ++i)
 	{
-		if (!(this->*fun)(writer))
+		if (!(this->*functions[i])(writer))
 		{
 			// return early because the APDU is full
 			return false;

@@ -170,13 +170,13 @@
       <SubType>compile</SubType>
       <Link>channel\IPhysicalLayerCallbacks.h</Link>
     </Compile>
-    <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\channel\LayerInterfaces.h">
-      <SubType>compile</SubType>
-      <Link>channel\LayerInterfaces.h</Link>
-    </Compile>
     <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\Configure.h">
       <SubType>compile</SubType>
       <Link>Configure.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\container\ArrayView.h">
+      <SubType>compile</SubType>
+      <Link>container\ArrayView.h</Link>
     </Compile>
     <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\container\DynamicArray.h">
       <SubType>compile</SubType>
@@ -194,25 +194,29 @@
       <SubType>compile</SubType>
       <Link>container\HasSize.h</Link>
     </Compile>
-    <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\container\Indexable.h">
+    <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\container\LinkedList.h">
       <SubType>compile</SubType>
-      <Link>container\Indexable.h</Link>
+      <Link>container\LinkedList.h</Link>
     </Compile>
-    <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\container\IndexableIterator.h">
+    <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\container\ManagedPtr.h">
       <SubType>compile</SubType>
-      <Link>container\IndexableIterator.h</Link>
+      <Link>container\ManagedPtr.h</Link>
     </Compile>
     <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\container\Pair.h">
       <SubType>compile</SubType>
       <Link>container\Pair.h</Link>
     </Compile>
-    <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\container\ReadOnlyBuffer.cpp">
+    <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\container\Queue.h">
       <SubType>compile</SubType>
-      <Link>container\ReadOnlyBuffer.cpp</Link>
+      <Link>container\Queue.h</Link>
     </Compile>
-    <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\container\ReadOnlyBuffer.h">
+    <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\container\ReadBufferView.cpp">
       <SubType>compile</SubType>
-      <Link>container\ReadOnlyBuffer.h</Link>
+      <Link>container\ReadBufferView.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\container\ReadBufferView.h">
+      <SubType>compile</SubType>
+      <Link>container\ReadBufferView.h</Link>
     </Compile>
     <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\container\RingBuffer.h">
       <SubType>compile</SubType>
@@ -222,21 +226,21 @@
       <SubType>compile</SubType>
       <Link>container\Settable.h</Link>
     </Compile>
-    <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\container\WriteBuffer.cpp">
+    <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\container\WriteBufferView.cpp">
       <SubType>compile</SubType>
-      <Link>container\WriteBuffer.cpp</Link>
+      <Link>container\WriteBufferView.cpp</Link>
     </Compile>
-    <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\container\WriteBuffer.h">
+    <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\container\WriteBufferView.h">
       <SubType>compile</SubType>
-      <Link>container\WriteBuffer.h</Link>
+      <Link>container\WriteBufferView.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\executor\Action0.cpp">
+      <SubType>compile</SubType>
+      <Link>executor\Action0.cpp</Link>
     </Compile>
     <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\executor\Action0.h">
       <SubType>compile</SubType>
       <Link>executor\Action0.h</Link>
-    </Compile>
-    <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\executor\Action1.h">
-      <SubType>compile</SubType>
-      <Link>executor\Action1.h</Link>
     </Compile>
     <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\executor\Erasure.cpp">
       <SubType>compile</SubType>
@@ -246,9 +250,9 @@
       <SubType>compile</SubType>
       <Link>executor\Erasure.h</Link>
     </Compile>
-    <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\executor\Function0.h">
+    <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\executor\Function1.h">
       <SubType>compile</SubType>
-      <Link>executor\Function0.h</Link>
+      <Link>executor\Function1.h</Link>
     </Compile>
     <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\executor\IExecutor.h">
       <SubType>compile</SubType>
@@ -273,10 +277,6 @@
     <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\executor\MonotonicTimestamp.h">
       <SubType>compile</SubType>
       <Link>executor\MonotonicTimestamp.h</Link>
-    </Compile>
-    <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\executor\Runnable.cpp">
-      <SubType>compile</SubType>
-      <Link>executor\Runnable.cpp</Link>
     </Compile>
     <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\executor\TimeDuration.cpp">
       <SubType>compile</SubType>
@@ -333,6 +333,14 @@
     <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\logging\LogRoot.h">
       <SubType>compile</SubType>
       <Link>logging\LogRoot.h</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\logging\StringFormatting.cpp">
+      <SubType>compile</SubType>
+      <Link>logging\StringFormatting.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\logging\StringFormatting.h">
+      <SubType>compile</SubType>
+      <Link>logging\StringFormatting.h</Link>
     </Compile>
     <Compile Include="..\..\..\cpp\libs\openpal\src\openpal\serialization\ByteSerialization.cpp">
       <SubType>compile</SubType>

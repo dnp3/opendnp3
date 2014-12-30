@@ -23,6 +23,8 @@
 
 #include "ArrayView.h"
 
+#include "openpal/Configure.h"
+
 #include <assert.h>
 #include <cstdint>
 

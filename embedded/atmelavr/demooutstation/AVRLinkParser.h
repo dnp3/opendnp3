@@ -21,7 +21,7 @@ class AVRLinkParser : public opendnp3::ILinkRouter
 
 	AVRLinkParser(openpal::LogRoot& root, openpal::IExecutor& exe, opendnp3::ILinkSession& context);
 	
-	virtual void BeginTransmit(const openpal::ReadOnlyBuffer& buffer, opendnp3::ILinkSession* pContext) final override;	
+	virtual void BeginTransmit(const openpal::ReadBufferView& buffer, opendnp3::ILinkSession* pContext) final override;	
 	
 	// called from the rxReady ISR
 	void Receive(uint8_t rxByte);
@@ -42,7 +42,7 @@ class AVRLinkParser : public opendnp3::ILinkRouter
 	openpal::RingBuffer<16> txBuffer;
 	
 	bool isTransmitting;
-	openpal::ReadOnlyBuffer transmission;		
+	openpal::ReadBufferView transmission;		
 	
 	openpal::IExecutor* pExecutor;
 	opendnp3::ILinkSession* pContext;		

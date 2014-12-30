@@ -18,7 +18,7 @@
 using namespace opendnp3;
 using namespace openpal;
 
-void ToggleValuesEvery3Seconds(IExecutor* pExecutor, Database* pDatabase);
+void ToggleValuesEvery3Seconds(IExecutor* pExecutor, IDatabase* pDatabase);
 
 const uint16_t NUM_BINARY = 5;
 const uint32_t MAX_APDU_SIZE = 249;
@@ -37,9 +37,7 @@ OutstationConfig GetOutstationConfig()
 	config.params.maxTxFragSize = MAX_APDU_SIZE;
 	config.params.maxRxFragSize = MAX_APDU_SIZE;
 	config.eventBufferConfig = EventBufferConfig(5,0,2);
-	config.params.allowUnsolicited = true;
-	config.defaultEventResponses.binary = EventBinaryResponse::Group2Var2;
-	config.defaultEventResponses.analog = EventAnalogResponse::Group32Var1;
+	config.params.allowUnsolicited = true;		
 	return config;
 }
 
@@ -58,15 +56,22 @@ int main()
 	
 	LogRoot root(nullptr, "root", 0);
 		
-	TransportStack stack(root, &exe, MAX_APDU_SIZE, nullptr, LinkConfig(false, false));		
-	
-	Database database(DatabaseTemplate(NUM_BINARY,0,1));
+	TransportStack stack(root, &exe, MAX_APDU_SIZE, nullptr, LinkConfig(false, false));			
 	
 	// Object that handles command (CROB / analog output) requests
 	// This example can toggle an LED on the Arduino board
 	CommandHandlerImpl commandHandler;						
 						
-	Outstation outstation(GetOutstationConfig(), exe, root, stack.transport, commandHandler, DefaultOutstationApplication::Instance(), database);
+	Outstation outstation(
+		GetOutstationConfig(), 
+		DatabaseTemplate(NUM_BINARY,0,1),
+		nullptr, // no synchronization required
+		exe,
+		root,
+		stack.transport,
+		commandHandler,
+		DefaultOutstationApplication::Instance()
+	);
 		
 	stack.transport.SetAppLayer(&outstation);
 			
@@ -86,7 +91,7 @@ int main()
 	// Set LED as output
 	SET(DDRB, BIT(7));	
 	
-	ToggleValuesEvery3Seconds(&exe, &database);
+	ToggleValuesEvery3Seconds(&exe, &outstation.GetDatabase());
 		
 	int loopCount = 0;		
 				
@@ -137,7 +142,7 @@ void Sleep()
 	sleep_disable(); /* First thing to do is disable sleep. */
 }
 
-void ToggleValuesEvery3Seconds(IExecutor* pExecutor, Database* pDatabase)
+void ToggleValuesEvery3Seconds(IExecutor* pExecutor, IDatabase* pDatabase)
 {				
 	auto currentIndex = index;
 	auto currentValue = value;

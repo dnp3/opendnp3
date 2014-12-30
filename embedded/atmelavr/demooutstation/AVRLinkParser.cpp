@@ -90,7 +90,7 @@ void AVRLinkParser::CheckRx()
 	}		
 }
 	
-void AVRLinkParser::BeginTransmit(const openpal::ReadOnlyBuffer& buffer, opendnp3::ILinkSession* pContext)
+void AVRLinkParser::BeginTransmit(const openpal::ReadBufferView& buffer, opendnp3::ILinkSession* pContext)
 {
 	if(isTransmitting)
 	{
