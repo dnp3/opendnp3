@@ -1,6 +1,7 @@
 
 ### 2.0.1-RC1 ###
 * Added support for Group50Var4 (Time and Interval) objects. These are static only objects (no events) that can are read/write.
+* Added support for Binary/Analog command events to the parser and the master API courtesy of Sid Hoda.
 * Added support for the ASSIGN_CLASS function code.
   * Assignment to the outstation db is automatic, but there is a callback on IOutstationApplication for any desired user action
   * The master can assign class automatically during the startup handshaking based on callbacks in IMasterApplication
