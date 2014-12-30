@@ -55,6 +55,7 @@ cpp/libs/asiopal/src/asiopal/UTCTimeSource.cpp
 libopendnp3_la_LDFLAGS = -version-info 2:0:0
 libopendnp3_la_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I $(OPENDNP3_INCLUDE)
 libopendnp3_la_SOURCES = \
+cpp/libs/opendnp3/src/opendnp3/app/AnalogCommandEvent.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/AnalogOutput.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/APDUBuilders.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/APDUHandlerBase.cpp \
@@ -66,6 +67,7 @@ cpp/libs/opendnp3/src/opendnp3/app/APDURequest.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/APDUResponse.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/APDUWrapper.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/AppControlField.cpp \
+cpp/libs/opendnp3/src/opendnp3/app/BinaryCommandEvent.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/BitReader.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/ClassField.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/ControlRelayOutputBlock.cpp \
@@ -125,6 +127,7 @@ cpp/libs/opendnp3/src/opendnp3/master/WriteTask.cpp \
 cpp/libs/opendnp3/src/opendnp3/objects/Group10.cpp \
 cpp/libs/opendnp3/src/opendnp3/objects/Group11.cpp \
 cpp/libs/opendnp3/src/opendnp3/objects/Group12.cpp \
+cpp/libs/opendnp3/src/opendnp3/objects/Group13.cpp \
 cpp/libs/opendnp3/src/opendnp3/objects/Group1.cpp \
 cpp/libs/opendnp3/src/opendnp3/objects/Group20.cpp \
 cpp/libs/opendnp3/src/opendnp3/objects/Group21.cpp \
@@ -137,6 +140,7 @@ cpp/libs/opendnp3/src/opendnp3/objects/Group3.cpp \
 cpp/libs/opendnp3/src/opendnp3/objects/Group40.cpp \
 cpp/libs/opendnp3/src/opendnp3/objects/Group41.cpp \
 cpp/libs/opendnp3/src/opendnp3/objects/Group42.cpp \
+cpp/libs/opendnp3/src/opendnp3/objects/Group43.cpp \
 cpp/libs/opendnp3/src/opendnp3/objects/Group4.cpp \
 cpp/libs/opendnp3/src/opendnp3/objects/Group50.cpp \
 cpp/libs/opendnp3/src/opendnp3/objects/Group51.cpp \
