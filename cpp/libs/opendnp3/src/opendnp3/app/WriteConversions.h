@@ -31,6 +31,7 @@
 #include "opendnp3/objects/Group10.h"
 #include "opendnp3/objects/Group11.h"
 #include "opendnp3/objects/Group12.h"
+#include "opendnp3/objects/Group13.h"
 #include "opendnp3/objects/Group20.h"
 #include "opendnp3/objects/Group21.h"
 #include "opendnp3/objects/Group22.h"
@@ -40,6 +41,7 @@
 #include "opendnp3/objects/Group40.h"
 #include "opendnp3/objects/Group41.h"
 #include "opendnp3/objects/Group42.h"
+#include "opendnp3/objects/Group43.h"
 #include "opendnp3/objects/Group50.h"
 
 namespace opendnp3
@@ -79,6 +81,28 @@ struct ConvertGroup12Var1 : private openpal::PureStatic
 		ret.onTime = crob.onTimeMS;
 		ret.offTime = crob.offTimeMS;
 		ret.status = crob.status;
+		return ret;
+	}
+};
+
+// Group 13
+struct ConvertGroup13Var1 : private openpal::PureStatic
+{
+	static Group13Var1 Apply(const BinaryCommandEvent& ev)
+	{
+		Group13Var1 ret;
+		ret.flags = ev.GetFlags();
+		return ret;
+	}
+};
+
+struct ConvertGroup13Var2 : private openpal::PureStatic
+{
+	static Group13Var2 Apply(const BinaryCommandEvent& ev)
+	{
+		Group13Var2 ret;
+		ret.flags = ev.GetFlags();
+		ret.time = ev.time;
 		return ret;
 	}
 };
@@ -151,6 +175,63 @@ typedef ConvertQVRangeCheck<Group42Var5, AnalogOutputStatus, 0x20> ConvertGroup4
 typedef ConvertQV<Group42Var6, AnalogOutputStatus> ConvertGroup42Var6;
 typedef ConvertQVTRangeCheck<Group42Var7, AnalogOutputStatus, 0x20> ConvertGroup42Var7;
 typedef ConvertQVT<Group42Var8, AnalogOutputStatus> ConvertGroup42Var8;
+
+// Group 43
+template <class Target>
+struct ConvertGroup43RangeCheck : private openpal::PureStatic
+{
+	static Target Apply(const AnalogCommandEvent& src)
+	{
+		Target t;
+		DownSampling<double, typename Target::ValueType>::Apply(src.value, t.value);
+		t.status = src.status;
+		return t;
+	}
+};
+
+template <class Target>
+struct ConvertGroup43WithTimeRangeCheck : private openpal::PureStatic
+{
+	static Target Apply(const AnalogCommandEvent& src)
+	{
+		Target t;
+		DownSampling<double, typename Target::ValueType>::Apply(src.value, t.value);
+		t.status = src.status;
+		t.time = src.time;
+		return t;
+	}
+};
+
+typedef ConvertGroup43RangeCheck<Group43Var1> ConvertGroup43Var1;
+typedef ConvertGroup43RangeCheck<Group43Var2> ConvertGroup43Var2;
+typedef ConvertGroup43WithTimeRangeCheck<Group43Var3> ConvertGroup43Var3;
+typedef ConvertGroup43WithTimeRangeCheck<Group43Var4> ConvertGroup43Var4;
+typedef ConvertGroup43RangeCheck<Group43Var5> ConvertGroup43Var5;
+
+struct ConvertGroup43Var6 : private openpal::PureStatic
+{
+	static Group43Var6 Apply(const AnalogCommandEvent& src)
+	{
+		Group43Var6 t;
+		t.value = src.value;
+		t.status = src.status;
+		return t;
+	}
+};
+
+typedef ConvertGroup43WithTimeRangeCheck<Group43Var7> ConvertGroup43Var7;
+
+struct ConvertGroup43Var8 : private openpal::PureStatic
+{
+	static Group43Var8 Apply(const AnalogCommandEvent& src)
+	{
+		Group43Var8 t;
+		t.value = src.value;
+		t.status = src.status;
+		t.time = src.time;
+		return t;
+	}
+};
 
 // Group 50
 struct ConvertGroup50Var4 : private openpal::PureStatic

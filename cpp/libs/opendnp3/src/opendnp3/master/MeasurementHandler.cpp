@@ -106,6 +106,16 @@ IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, TimestampM
 	return this->LoadAny(record, tsmode, meas);
 }
 
+IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<BinaryCommandEvent, uint16_t>>& meas)
+{
+	return this->LoadAny(record, tsmode, meas);
+}
+
+IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<AnalogCommandEvent, uint16_t>>& meas)
+{
+	return this->LoadAny(record, tsmode, meas);
+}
+
 IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)
 {
 	return this->LoadAny(record, tsmode, meas);
@@ -142,6 +152,16 @@ IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, Time
 }
 
 IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas)
+{
+	return this->LoadAny(record, tsmode, meas);
+}
+
+IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<BinaryCommandEvent, uint16_t>>& meas)
+{
+	return this->LoadAny(record, tsmode, meas);
+}
+
+IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<AnalogCommandEvent, uint16_t>>& meas)
 {
 	return this->LoadAny(record, tsmode, meas);
 }

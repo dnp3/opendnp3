@@ -18,6 +18,7 @@ object GroupVariation {
   private val anyVariation = 0 -> "Any Variation"
   private val packedFormat = "Packed Format"
   private val withFlags = "With Flags"
+  private val withTime = "With Time"
   private val withoutTime = "Without Time"
   private val withAbsoluteTime = "With Absolute Time"
   private val withRelativeTime = "With Relative Time"
@@ -25,6 +26,10 @@ object GroupVariation {
   private val outputStatusWithTime = "Output Status With Time"
   private val outputStatusWithoutTime = "Output Status Without Time"
   private val crob = "CROB"
+  private val bit32 = "32-bit"
+  private val bit16 = "16-bit"
+  private val bit32WithTime = "32-bit With Time"
+  private val bit16WithTime = "16-bit With Time"
   private val bit32WithFlag = "32-bit With Flag"
   private val bit16WithFlag = "16-bit With Flag"
   private val bit32WithoutFlag = "32-bit Without Flag"
@@ -33,10 +38,12 @@ object GroupVariation {
   private val bit16WithFlagTime = "16-bit With Flag and Time"
   private val singlePrecision = "Single-precision"
   private val doublePrecision = "Double-precision"
+  private val singlePrecisionWithTime = "Single-precision With Time"
+  private val doublePrecisionWithTime = "Double-precision With Time"
   private val singlePrecisionWithFlag = "Single-precision With Flag"
   private val doublePrecisionWithFlag = "Double-precision With Flag"
   private val singlePrecisionWithFlagTime = "Single-precision With Flag and Time"
-  private val doublePrecisionWithFlagTime = "Double-precision With Flag abd Time"
+  private val doublePrecisionWithFlagTime = "Double-precision With Flag and Time"
 
   private val group1 = List(anyVariation, 1 -> packedFormat, 2 -> withFlags)
 
@@ -51,6 +58,8 @@ object GroupVariation {
   private val group11 = List(anyVariation, 1 -> outputStatusWithoutTime, 2-> outputStatusWithTime)
 
   private val group12 = List(anyVariation, 1 -> crob)
+
+  private val group13 = List(1 -> withoutTime, 2 -> withTime)
 
   private val group20 = List(anyVariation, 1 -> bit32WithFlag, 2 -> bit16WithFlag, 5 ->bit32WithoutFlag, 6 -> bit16WithoutFlag)
 
@@ -89,6 +98,17 @@ object GroupVariation {
     8 -> doublePrecisionWithFlagTime
   )
 
+  private val group43 = List(
+    1 -> bit32,
+    2 -> bit16,
+    3 -> bit32WithTime,
+    4 -> bit16WithTime,
+    5 -> singlePrecision,
+    6 -> doublePrecision,
+    7 -> singlePrecisionWithTime,
+    8 -> doublePrecisionWithTime
+  )
+
   private val group60 = List(1 -> "Class 0 data", 2 -> "Class 1 data", 3 -> "Class 2 data", 4 -> "Class 3 data")
 
   private val defaultValue = EnumValue("UNKNOWN", value(0xFF, 0xFF))
@@ -103,6 +123,7 @@ object GroupVariation {
     group(10, "Binary Output", group10),
     group(11, "Binary Output Event", group11),
     group(12, "Binary Command", group12),
+    group(13, "Binary Command Event", group13),
     group(20, "Counter", group20),
     group(21, "Frozen Counter", group21),
     group(22, "Counter Event", group22),
@@ -112,6 +133,7 @@ object GroupVariation {
     group(40, "Analog Output Status", group40),
     group(41, "Analog Output", group41),
     group(42, "Analog Output Event", group42),
+    group(43, "Analog Command Event", group43),
 
     group(50, "Time and Date", List(1 -> "Absolute Time", 4 -> "Indexed absolute time and long interval")),
     group(51, "Time and Date CTO", List(1 -> "Absolute time, synchronized", 2 -> "Absolute time, synchronized")),

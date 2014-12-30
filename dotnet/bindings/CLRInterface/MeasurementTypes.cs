@@ -352,4 +352,50 @@ namespace Automatak.DNP3.Interface
         public readonly UInt32 interval;
         public readonly Byte units;	
     }
+
+    public class BinaryCommandEvent
+    {
+        public BinaryCommandEvent(bool value, CommandStatus status, DateTime time)
+        {
+            this.value = value;
+            this.status = status;
+            this.time = time;
+        }
+
+        public override string ToString()
+        {
+            return String.Format("value: {0} status: {1} time: {2}", value, status, time);
+        }
+
+        private readonly bool value;
+        private readonly CommandStatus status;
+        private readonly DateTime time;
+
+        public bool Value { get { return this.value; } }
+        public CommandStatus Status { get { return this.status; } }
+        public DateTime Timestamp { get { return this.time; } }
+    }
+
+    public class AnalogCommandEvent
+    {
+        public AnalogCommandEvent(double value, CommandStatus status, DateTime time)
+        {
+            this.value = value;
+            this.status = status;
+            this.time = time;
+        }
+
+        public override string ToString()
+        {
+            return String.Format("value: {0} status: {1} time: {2}", value, status, time);
+        }
+
+        private readonly double value;
+        private readonly CommandStatus status;
+        private readonly DateTime time;
+
+        public double Value { get { return this.value; } }
+        public CommandStatus Status { get { return this.status; } }
+        public DateTime Timestamp { get { return this.time; } }
+    }
 }

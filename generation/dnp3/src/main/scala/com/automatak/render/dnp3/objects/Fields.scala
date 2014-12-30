@@ -16,7 +16,6 @@ case object Float32Field extends FixedSizeFieldType(4)
 case object Float64Field extends FixedSizeFieldType(8)
 case class EnumField(model: EnumModel) extends FixedSizeFieldType(1)
 
-
 object FixedSizeField {
 
   //common flags field
@@ -36,7 +35,6 @@ object FixedSizeField {
   val value32 = FixedSizeField("value", SInt32Field)
   val float32 = FixedSizeField("value", Float32Field)
   val float64 = FixedSizeField("value", Float64Field)
-
 
   //enums
   val commandStatus = FixedSizeField("status", EnumField(CommandStatus()))
