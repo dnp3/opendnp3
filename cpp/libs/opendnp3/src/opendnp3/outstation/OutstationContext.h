@@ -56,7 +56,7 @@ class OutstationContext : private INewEventDataHandler
 
 	OutstationContext(	const OutstationConfig& config,
 						const DatabaseTemplate& dbTemplate,
-						openpal::IMutex* pDBMutex,
+						openpal::IMutex* pMutex,
 						openpal::IExecutor& executor,
 						openpal::LogRoot& root, 
 						ILowerLayer& lower,
@@ -76,13 +76,13 @@ class OutstationContext : private INewEventDataHandler
 	// ------ Dynamic "state", i.e. things that must be managed or cleanup on close ------
 	
 	bool isOnline;	
+	bool pendingTaskCheckFlag; // true if there is already an event check pending
 	OutstationSolicitedStateBase*	pSolicitedState;
 	OutstationUnsolicitedStateBase*	pUnsolicitedState;
-
+	
 	IINField staticIIN;
 
-	openpal::ITimer* pConfirmTimer;
-	//openpal::ITimer* pUnsolTimer;						// gets used for both retries and "pack" timer
+	openpal::ITimer* pConfirmTimer;	
 	bool unsolPackTimerExpired;
 	
 	uint32_t rxFragCount;

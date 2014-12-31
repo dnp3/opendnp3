@@ -49,7 +49,7 @@ namespace opendnp3
 OutstationContext::OutstationContext(
 		const OutstationConfig& config,
 		const DatabaseTemplate& dbTemplate,
-		openpal::IMutex* pDBMutex,
+		openpal::IMutex* pMutex_,
 		IExecutor& executor,
 		LogRoot& root,
 		ILowerLayer& lower,
@@ -59,12 +59,13 @@ OutstationContext::OutstationContext(
 	
 	params(config.params),	
 	logger(root.GetLogger()),	
-	pExecutor(&executor),	
+	pExecutor(&executor),		
 	pCommandHandler(&commandHandler),
 	pApplication(&application),	
 	eventBuffer(config.eventBufferConfig),
-	database(dbTemplate, eventBuffer, *this, config.params.indexMode, config.params.typesAllowedInClass0, pDBMutex),
+	database(dbTemplate, eventBuffer, *this, config.params.indexMode, config.params.typesAllowedInClass0, pMutex_),
 	isOnline(false),
+	pendingTaskCheckFlag(false),
 	pSolicitedState(&OutstationSolicitedStateIdle::Inst()),
 	pUnsolicitedState(&OutstationUnsolicitedStateIdle::Inst()),
 	pConfirmTimer(nullptr),	
@@ -88,9 +89,8 @@ OutstationContext::OutstationContext(
 }
 
 void OutstationContext::OnNewEventData()
-{
-	auto notify = [this]() { this->CheckForTaskStart(); };
-	pExecutor->PostLambda(notify);
+{		
+	this->PostCheckForActions();			
 }
 
 IINField OutstationContext::GetDynamicIIN()
@@ -422,13 +422,20 @@ OutstationSolicitedStateBase* OutstationContext::ContinueMultiFragResponse(uint8
 
 void OutstationContext::PostCheckForActions()
 {
-	// post these calls so the stack can unwind
-	auto lambda = [this]() { this->CheckForTaskStart(); };
-	pExecutor->PostLambda(lambda);
+	// using this flag ensures that rapid event loading doesn't cause more than one event check to be queued at a time	
+	if (!pendingTaskCheckFlag)
+	{
+		pendingTaskCheckFlag = true;
+		auto lambda = [this]() { this->CheckForTaskStart(); };
+		pExecutor->PostLambda(lambda);
+	}
 }
 
 void OutstationContext::CheckForTaskStart()
 {	
+	// set this flag to false, any new events should retrigger
+	pendingTaskCheckFlag = false;
+
 	// if we're online, the solicited state is idle, and the unsolicited state 
 	// is not transmitting we may be able to do a task
 	if (isOnline && !isTransmitting && pSolicitedState == &OutstationSolicitedStateIdle::Inst())
