@@ -265,7 +265,7 @@ void OutstationContext::ExamineASDU(const APDUHeader& header, const openpal::Rea
 OutstationSolicitedStateBase* OutstationContext::OnReceiveSolRequest(const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
 	// analyze this request to see how it compares to the last request
-	auto firstRequest = requestHistory.CurrentState() == RequestHistory::State::FIRST;	
+	auto firstRequest = requestHistory.IsFirst();
 	auto equality = this->requestHistory.RecordLastRequest(header, objects);		
 
 	if (firstRequest)
@@ -448,21 +448,19 @@ void OutstationContext::CheckForTaskStart()
 	// is not transmitting we may be able to do a task
 	if (isOnline && !isTransmitting && pSolicitedState == &OutstationSolicitedStateIdle::Inst())
 	{
-		if (requestHistory.CurrentState() == RequestHistory::State::DEFERED)
-		{
-			DeferredRequest dr = requestHistory.GetDeferedRequest();
-			if (dr.header.function == FunctionCode::READ)
+		if (requestHistory.HasDefered())
+		{			
+			if (requestHistory.GetDeferedFunction() == FunctionCode::READ)
 			{
 				if (pUnsolicitedState == &OutstationUnsolicitedStateIdle::Inst())
 				{
-					requestHistory.ClearDeferedRequest();
+					DeferredRequest dr = requestHistory.PopDeferedRequest();					
 					pSolicitedState = pSolicitedState->OnNewReadRequest(this, dr.header, dr.objects);
 				}
 			}
 			else
 			{
-				// non-read
-				requestHistory.ClearDeferedRequest();
+				DeferredRequest dr = requestHistory.PopDeferedRequest();
 				if (dr.isRepeat)
 				{
 					pSolicitedState = pSolicitedState->OnRepeatNonReadRequest(this, dr.header, dr.objects);

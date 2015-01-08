@@ -56,28 +56,29 @@ APDUEquality RequestHistory::RecordLastRequest(const APDUHeader& header, const o
 	}
 }
 
-DeferredRequest RequestHistory::GetDeferedRequest()
-{
-	return defered;
-}
-
-void RequestHistory::ClearDeferedRequest()
+DeferredRequest RequestHistory::PopDeferedRequest()
 {
 	if (state == State::DEFERED)
 	{
+		// the defered request now becomes a previous request
 		state = State::PREVIOUS;
+		return defered;
 	}
+	else
+	{
+		return DeferredRequest();
+	}	
+}
+
+FunctionCode RequestHistory::GetDeferedFunction() const
+{
+	return (state == State::DEFERED) ? defered.header.function : FunctionCode::UNKNOWN;	
 }
 
 void RequestHistory::DeferRequest(const APDUHeader& header, const openpal::ReadBufferView& objects, bool isRepeat, bool objectsEqualToLast)
 {
 	state = State::DEFERED;	
 	this->defered = DeferredRequest(header, objects.CopyTo(buffer.GetWriteBufferView()), isRepeat, objectsEqualToLast);
-}
-
-RequestHistory::State RequestHistory::CurrentState() const
-{
-	return state;
 }
 
 }

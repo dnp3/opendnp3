@@ -37,6 +37,20 @@ namespace opendnp3
 class RequestHistory
 {	
 	public:
+	
+	RequestHistory(uint32_t maxFragSize);
+
+	bool IsFirst() const { return state == State::FIRST; }
+	bool HasDefered() const { return state == State::DEFERED; }
+
+	void Reset();	
+	APDUEquality RecordLastRequest(const APDUHeader& header, const openpal::ReadBufferView& objects);
+	void DeferRequest(const APDUHeader& header, const openpal::ReadBufferView& objects, bool isRepeat, bool objectsEqualToLast);
+
+	DeferredRequest PopDeferedRequest();
+	FunctionCode GetDeferedFunction() const;
+
+	private:
 
 	/// describes the various states
 	enum class State
@@ -46,17 +60,7 @@ class RequestHistory
 		DEFERED		// A defered request is buffered to be processed when possible
 	};
 
-	RequestHistory(uint32_t maxFragSize);
-
-	void Reset();
-	State CurrentState() const;
-	APDUEquality RecordLastRequest(const APDUHeader& header, const openpal::ReadBufferView& objects);
-	void DeferRequest(const APDUHeader& header, const openpal::ReadBufferView& objects, bool isRepeat, bool objectsEqualToLast);
-
-	DeferredRequest GetDeferedRequest();
 	void ClearDeferedRequest();
-
-	private:
 
 	State state;		
 	DeferredRequest defered;	   // info about the stored request

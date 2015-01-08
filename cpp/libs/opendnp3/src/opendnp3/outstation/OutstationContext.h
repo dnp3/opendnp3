@@ -103,7 +103,6 @@ class OutstationContext : private INewEventDataHandler
 	
 	openpal::ReadBufferView lastResponse; // points to bytes in txBuffer	
 	
-
 	ResponseContext rspContext;
 
 	// ------ Helper methods for dealing with state ------	
