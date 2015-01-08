@@ -124,6 +124,8 @@ class OutstationContext : private INewEventDataHandler
 
 	void OnReceiveAPDU(const openpal::ReadBufferView& apdu);
 
+	void ExamineASDU(const APDUHeader& header, const openpal::ReadBufferView& apdu);
+
 	void OnSendResult(bool isSuccess);
 
 	OutstationSolicitedStateBase* OnReceiveSolRequest(const APDUHeader& header, const openpal::ReadBufferView& apdu);	

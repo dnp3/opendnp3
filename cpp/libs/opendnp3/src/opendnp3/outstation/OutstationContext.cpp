@@ -193,31 +193,10 @@ void OutstationContext::OnReceiveAPDU(const openpal::ReadBufferView& apdu)
 			header.control.SEQ,
 			FunctionCodeToString(header.function));
 
-		// outstations should only process single fragment messages
+		// outstations should only process single fragment messages that don't request confirmation
 		if ((header.control.FIR && header.control.FIN) && !header.control.CON)
 		{
-			if (header.control.UNS)
-			{
-				if (header.function == FunctionCode::CONFIRM)
-				{
-					pUnsolicitedState = pUnsolicitedState->OnConfirm(this, header);					
-				}
-				else
-				{
-					FORMAT_LOG_BLOCK(logger, flags::WARN, "Ignoring unsol with invalid function code: %s", FunctionCodeToString(header.function));
-				}				
-			}
-			else
-			{
-				if (header.function == FunctionCode::CONFIRM)
-				{
-					pSolicitedState = pSolicitedState->OnConfirm(this, header);					
-				}
-				else
-				{
-					pSolicitedState = this->OnReceiveSolRequest(header, apdu);
-				}				
-			}
+			this->ExamineASDU(header, apdu);
 		}
 		else
 		{
@@ -235,7 +214,7 @@ void OutstationContext::OnReceiveAPDU(const openpal::ReadBufferView& apdu)
 
 
 	//regardless of what the event is, see if we need to schedule an action
-	this->PostCheckForActions();
+	this->CheckForTaskStart();
 }
 
 void OutstationContext::OnSendResult(bool isSuccess)
@@ -245,6 +224,32 @@ void OutstationContext::OnSendResult(bool isSuccess)
 		isTransmitting = false;		
 		this->PostCheckForActions();
 	}	
+}
+
+void OutstationContext::ExamineASDU(const APDUHeader& header, const openpal::ReadBufferView& apdu)
+{
+	if (header.control.UNS)
+	{
+		if (header.function == FunctionCode::CONFIRM)
+		{
+			pUnsolicitedState = pUnsolicitedState->OnConfirm(this, header);
+		}
+		else
+		{
+			FORMAT_LOG_BLOCK(logger, flags::WARN, "Ignoring unsol with invalid function code: %s", FunctionCodeToString(header.function));
+		}
+	}
+	else
+	{
+		if (header.function == FunctionCode::CONFIRM)
+		{
+			pSolicitedState = pSolicitedState->OnConfirm(this, header);
+		}
+		else
+		{
+			pSolicitedState = this->OnReceiveSolRequest(header, apdu);
+		}
+	}
 }
 
 OutstationSolicitedStateBase* OutstationContext::OnReceiveSolRequest(const APDUHeader& header, const openpal::ReadBufferView& apdu)
