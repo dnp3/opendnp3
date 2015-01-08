@@ -64,7 +64,7 @@ class OutstationContext : private INewEventDataHandler
 						ILowerLayer& lower,
 						ICommandHandler& commandHandler,
 						IOutstationApplication& application,
-						IOutstationAuthProvider* pAuthProvider = nullptr);
+						IOutstationAuthProvider& authProvider);
 
 	// ------ Unchanging variables and self managing variables -------
 
@@ -125,7 +125,7 @@ class OutstationContext : private INewEventDataHandler
 
 	void OnReceiveAPDU(const openpal::ReadBufferView& apdu);
 
-	void ExamineASDU(const APDUHeader& header, const openpal::ReadBufferView& apdu);
+	void ExamineASDU(const APDUHeader& header, const openpal::ReadBufferView& objects);
 
 	void OnSendResult(bool isSuccess);
 

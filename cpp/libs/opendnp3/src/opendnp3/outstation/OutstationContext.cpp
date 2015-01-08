@@ -55,7 +55,7 @@ OutstationContext::OutstationContext(
 		ILowerLayer& lower,
 		ICommandHandler& commandHandler,
 		IOutstationApplication& application,
-		IOutstationAuthProvider* pAuthProvider_
+		IOutstationAuthProvider& authProvider
 		) :
 	
 	params(config.params),	
@@ -63,7 +63,7 @@ OutstationContext::OutstationContext(
 	pExecutor(&executor),	
 	pCommandHandler(&commandHandler),
 	pApplication(&application),	
-	pAuthProvider(pAuthProvider_),
+	pAuthProvider(&authProvider),
 	eventBuffer(config.eventBufferConfig),
 	database(dbTemplate, eventBuffer, *this, config.params.indexMode, config.params.typesAllowedInClass0, pDBMutex),
 	isOnline(false),
@@ -198,15 +198,7 @@ void OutstationContext::OnReceiveAPDU(const openpal::ReadBufferView& apdu)
 		if ((header.control.FIR && header.control.FIN) && !header.control.CON)
 		{
 			auto objects = apdu.Skip(APDU_HEADER_SIZE);
-
-			if (pAuthProvider)
-			{
-				pAuthProvider->ExamineASDU(*this, header, objects);
-			}
-			else
-			{
-				this->ExamineASDU(header, objects);
-			}
+			pAuthProvider->ExamineASDU(*this, header, objects);			
 		}
 		else
 		{

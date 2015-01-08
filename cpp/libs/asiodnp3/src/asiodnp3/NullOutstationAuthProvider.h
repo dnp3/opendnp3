@@ -18,57 +18,35 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_OUTSTATION_H
-#define OPENDNP3_OUTSTATION_H
+#ifndef ASIODNP3_NULLOUTSTATIONAUTHPROVIDER_H
+#define ASIODNP3_NULLOUTSTATIONAUTHPROVIDER_H
 
-#include "opendnp3/LayerInterfaces.h"
+#include <opendnp3/outstation/IOutstationAuthProvider.h>
 
-#include "opendnp3/outstation/OutstationContext.h"
-#include "opendnp3/outstation/DatabaseConfigView.h"
+#include <openpal/util/Uncopyable.h>
 
-namespace opendnp3
+namespace asiodnp3
 {
 
-class Outstation : public IUpperLayer
+/**
+	NULL authentication provider for the outstation
+*/
+class NullOutstationAuthProvider : private openpal::Uncopyable, public opendnp3::IOutstationAuthProvider
 {
 	public:
+		
+	virtual void ExamineASDU(opendnp3::OutstationContext& ctx, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects) override final;
 
-	Outstation(		const OutstationConfig& config,
-					const DatabaseTemplate& dbTemplate,
-					openpal::IMutex* pDBMutex,
-					openpal::IExecutor& executor, 
-					openpal::LogRoot& root, 
-					ILowerLayer& lower,
-					ICommandHandler& commandHandler,
-					IOutstationApplication& application,
-					IOutstationAuthProvider& authProvider);
-	
-	/// ----- Implement IUpperLayer ------
+	static opendnp3::IOutstationAuthProvider& Instance() { return instance; }
 
-	virtual void OnLowerLayerUp() override final;
-	
-	virtual void OnLowerLayerDown() override final;
+	private:
 
-	virtual void OnReceive(const openpal::ReadBufferView&) override final;
-	
-	virtual void OnSendResult(bool isSucccess) override final;
+	NullOutstationAuthProvider() {}
 
-	
-	/// ---- Other public members
-
-	void SetRestartIIN();
-
-	IDatabase& GetDatabase();
-
-	DatabaseConfigView GetConfigView();
-	
-	
-	private:			
-
-	OutstationContext context;
-
+	static NullOutstationAuthProvider instance;
 };
 
 }
 
 #endif
+

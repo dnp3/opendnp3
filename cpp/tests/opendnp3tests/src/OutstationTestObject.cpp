@@ -22,7 +22,10 @@
 #include "OutstationTestObject.h"
 #include "BufferHelpers.h"
 
+#include <asiodnp3\NullOutstationAuthProvider.h>
+
 using namespace openpal;
+using namespace asiodnp3;
 
 namespace opendnp3
 {
@@ -33,7 +36,7 @@ OutstationTestObject::OutstationTestObject(const OutstationConfig& config, const
 	lower(log.root),			
 	cmdHandler(CommandStatus::SUCCESS),
 	application(),
-	outstation(config, dbTemplate, nullptr, exe, log.root, lower, cmdHandler, application)
+	outstation(config, dbTemplate, nullptr, exe, log.root, lower, cmdHandler, application, NullOutstationAuthProvider::Instance())
 {
 	lower.SetUpperLayer(outstation);
 }

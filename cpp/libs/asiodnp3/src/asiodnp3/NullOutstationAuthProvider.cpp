@@ -19,29 +19,20 @@
  * to you under the terms of the License.
  */
 
-#ifndef OPENDNP3_IOUTSTATIONAUTHPROVIDER_H
-#define OPENDNP3_IOUTSTATIONAUTHPROVIDER_H
+#include "NullOutstationAuthProvider.h"
 
-#include "opendnp3/app/APDUHeader.h"
-#include <openpal/container/ReadBufferView.h>
+#include <opendnp3/outstation/OutstationContext.h>
 
-namespace opendnp3
+namespace asiodnp3
 {
 
-class OutstationContext;
+NullOutstationAuthProvider NullOutstationAuthProvider::instance;
 
-///
-/// @summary Interface used inside the outstation to provide multiple forms of authentication like NULL or SAv5
-///
-class IOutstationAuthProvider
+void NullOutstationAuthProvider::ExamineASDU(opendnp3::OutstationContext& ctx, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects)
 {
-	public:
-
-	virtual void ExamineASDU(OutstationContext& ctx, const APDUHeader& header, const openpal::ReadBufferView& objects) = 0;
-	
-	virtual ~IOutstationAuthProvider() {}	
-};
+	ctx.ExamineASDU(header, objects);
+}
 
 }
 
-#endif
+

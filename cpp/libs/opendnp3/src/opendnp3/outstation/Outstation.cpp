@@ -39,8 +39,9 @@ Outstation::Outstation(
 		openpal::LogRoot& root,
 		ILowerLayer& lower,
 		ICommandHandler& commandHandler,
-		IOutstationApplication& application) :
-		context(config, dbTemplate, pDBMutex, executor, root, lower, commandHandler, application)
+		IOutstationApplication& application,
+		IOutstationAuthProvider& authProvider) :
+		context(config, dbTemplate, pDBMutex, executor, root, lower, commandHandler, application, authProvider)
 {
 	
 }
