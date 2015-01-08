@@ -33,7 +33,9 @@ ControlCode ControlCodeFromType(uint8_t arg)
     case(0x0):
       return ControlCode::NUL;
     case(0x1):
-      return ControlCode::PULSE;
+      return ControlCode::PULSE_ON;
+    case(0x2):
+      return ControlCode::PULSE_OFF;
     case(0x3):
       return ControlCode::LATCH_ON;
     case(0x4):
@@ -53,8 +55,10 @@ char const* ControlCodeToString(ControlCode arg)
   {
     case(ControlCode::NUL):
       return "NUL";
-    case(ControlCode::PULSE):
-      return "PULSE";
+    case(ControlCode::PULSE_ON):
+      return "PULSE_ON";
+    case(ControlCode::PULSE_OFF):
+      return "PULSE_OFF";
     case(ControlCode::LATCH_ON):
       return "LATCH_ON";
     case(ControlCode::LATCH_OFF):

@@ -23,7 +23,7 @@ namespace Automatak.DNP3.Interface
   /// <summary>
   /// There are a number of types of controls. The best way to understand this 
   /// difference is to think about the hardware controls the communication protocols are 
-  /// emulating. The most common to use are PULSE, LATCH_ON and LATCH_OFF
+  /// emulating. The most common to use are PULSE_ON, LATCH_ON and LATCH_OFF
   /// 
   /// NOTE: Current implementation doesn't support queue/clear.
   /// 
@@ -39,7 +39,11 @@ namespace Automatak.DNP3.Interface
     /// <summary>
     /// a 'push-button' interface, can only be pressed one way (reset button on pedometer)
     /// </summary>
-    PULSE = 0x1,
+    PULSE_ON = 0x1,
+    /// <summary>
+    /// a 'push-button' interface with output remaining active following pulse
+    /// </summary>
+    PULSE_OFF = 0x2,
     /// <summary>
     /// a 'light-switch' moved to the ON position
     /// </summary>
