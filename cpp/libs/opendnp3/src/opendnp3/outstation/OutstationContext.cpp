@@ -82,7 +82,7 @@ OutstationContext::OutstationContext(
 	completedNullUnsol(false),	
 	rspContext(database.GetStaticLoader(), eventBuffer),
 	pLower(&lower),
-	deferedHeaders(params.maxRxFragSize),
+	requestHistory(params.maxRxFragSize),
 	solTxBuffer(params.maxTxFragSize),
 	unsolTxBuffer(params.maxTxFragSize)
 {	
@@ -141,8 +141,7 @@ void OutstationContext::SetOffline()
 	unsolPackTimerExpired = false;
 	pSolicitedState = &OutstationSolicitedStateIdle::Inst();
 	pUnsolicitedState = &OutstationUnsolicitedStateIdle::Inst();
-	requestHistory.Reset();
-	deferredRequest.Clear();
+	requestHistory.Reset();	
 	eventBuffer.Unselect();
 	rspContext.Reset();
 	CancelConfirmTimer();	
@@ -266,9 +265,8 @@ void OutstationContext::ExamineASDU(const APDUHeader& header, const openpal::Rea
 OutstationSolicitedStateBase* OutstationContext::OnReceiveSolRequest(const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
 	// analyze this request to see how it compares to the last request
-	auto firstRequest = !requestHistory.HasLastRequest();					
-	this->deferredRequest.Clear();
-	auto equality = this->requestHistory.RecordLastRequest(header.function, objects);		
+	auto firstRequest = requestHistory.CurrentState() == RequestHistory::State::FIRST;	
+	auto equality = this->requestHistory.RecordLastRequest(header, objects);		
 
 	if (firstRequest)
 	{			
@@ -365,8 +363,7 @@ void OutstationContext::ProcessNoResponseFunction(const APDUHeader& header, cons
 
 void OutstationContext::DeferRequest(const APDUHeader& header, const openpal::ReadBufferView& objects, bool isRepeat, bool objectsEqualToLast)
 {
-	auto view = objects.CopyTo(deferedHeaders.GetWriteBufferView());
-	this->deferredRequest.Set(DeferredRequest(header, view, isRepeat, objectsEqualToLast));
+	requestHistory.DeferRequest(header, objects, isRepeat, objectsEqualToLast);
 }
 
 void OutstationContext::BeginResponseTx(const ReadBufferView& response)
@@ -451,21 +448,21 @@ void OutstationContext::CheckForTaskStart()
 	// is not transmitting we may be able to do a task
 	if (isOnline && !isTransmitting && pSolicitedState == &OutstationSolicitedStateIdle::Inst())
 	{
-		if (deferredRequest.IsSet())
+		if (requestHistory.CurrentState() == RequestHistory::State::DEFERED)
 		{
-			DeferredRequest dr = deferredRequest.Get();
+			DeferredRequest dr = requestHistory.GetDeferedRequest();
 			if (dr.header.function == FunctionCode::READ)
 			{
 				if (pUnsolicitedState == &OutstationUnsolicitedStateIdle::Inst())
 				{
-					deferredRequest.Clear();
+					requestHistory.ClearDeferedRequest();
 					pSolicitedState = pSolicitedState->OnNewReadRequest(this, dr.header, dr.objects);
 				}
 			}
 			else
 			{
 				// non-read
-				deferredRequest.Clear();
+				requestHistory.ClearDeferedRequest();
 				if (dr.isRepeat)
 				{
 					pSolicitedState = pSolicitedState->OnRepeatNonReadRequest(this, dr.header, dr.objects);

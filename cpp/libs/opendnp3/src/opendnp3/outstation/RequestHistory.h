@@ -24,6 +24,8 @@
 #include "opendnp3/app/APDUHeader.h"
 #include "opendnp3/app/APDUWrapper.h"
 
+#include "opendnp3/outstation/DeferredRequest.h"
+
 #include <cstdint>
 
 #include <openpal/container/DynamicBuffer.h>
@@ -33,25 +35,32 @@ namespace opendnp3
 
 /// Tracks the state of the last request ASDU
 class RequestHistory
-{
-	
-	public:		
+{	
+	public:
 
-	RequestHistory();
+	/// describes the various states
+	enum class State
+	{
+		FIRST,		// no previous requests
+		PREVIOUS,	// A previously processed request is buffered for comparison purposes
+		DEFERED		// A defered request is buffered to be processed when possible
+	};
+
+	RequestHistory(uint32_t maxFragSize);
 
 	void Reset();
-	bool HasLastRequest() const;
-	APDUEquality RecordLastRequest(FunctionCode fc, const openpal::ReadBufferView& headers);		
+	State CurrentState() const;
+	APDUEquality RecordLastRequest(const APDUHeader& header, const openpal::ReadBufferView& objects);
+	void DeferRequest(const APDUHeader& header, const openpal::ReadBufferView& objects, bool isRepeat, bool objectsEqualToLast);
+
+	DeferredRequest GetDeferedRequest();
+	void ClearDeferedRequest();
 
 	private:
 
-	bool hasLastRequest;
-	FunctionCode lastRequestFunction;
-	uint32_t lastRequestLength;
-
-	// We're going to reuse the link layer CRC to produce a simple 16-bit digest of the message
-	// This reduces the collision probablity sufficiently without saving the full message
-	uint16_t lastRequestDigest;
+	State state;		
+	DeferredRequest defered;	   // info about the stored request
+	openpal::DynamicBuffer buffer; // the underlying storage
 };
 
 

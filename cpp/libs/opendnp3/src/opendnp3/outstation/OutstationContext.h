@@ -198,11 +198,9 @@ class OutstationContext : private INewEventDataHandler
 
 	IINField HandleCommandWithConstant(const openpal::ReadBufferView& objects, HeaderWriter& writer, CommandStatus status);
 
-	RequestHistory requestHistory;
-	openpal::Settable<DeferredRequest> deferredRequest;
+	RequestHistory requestHistory;	
 
-	// ------ buffers -------	
-	openpal::DynamicBuffer deferedHeaders;
+	// ------ tx buffers -------		
 	openpal::DynamicBuffer solTxBuffer;
 	openpal::DynamicBuffer unsolTxBuffer;
 };

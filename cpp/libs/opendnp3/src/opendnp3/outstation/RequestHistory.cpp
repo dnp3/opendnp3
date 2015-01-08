@@ -26,52 +26,58 @@
 namespace opendnp3
 {
 
-RequestHistory::RequestHistory() : 
-	hasLastRequest(false),
-	lastRequestFunction(FunctionCode::UNKNOWN),
-	lastRequestLength(0),
-	lastRequestDigest(0)
+RequestHistory::RequestHistory(uint32_t maxFragSize) : state(State::FIRST), buffer(maxFragSize)
 {
 	
 }
 
 void RequestHistory::Reset()
 {
-	hasLastRequest = false;
-	lastRequestFunction = FunctionCode::UNKNOWN;
-	lastRequestLength = 0;
-	lastRequestDigest = 0;
+	state = State::FIRST;
 }
 
-APDUEquality RequestHistory::RecordLastRequest(FunctionCode fc, const openpal::ReadBufferView& headers)
+APDUEquality RequestHistory::RecordLastRequest(const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
-	auto digest = CRC::CalcCrc(headers, headers.Size());
+	auto objectsEqual = (state == State::PREVIOUS) ? this->defered.objects.Equals(objects) : false;
+	auto functionsEqual = (this->defered.header.function == header.function);
 	
-	auto lengthsEqual = (headers.Size() == lastRequestLength);
-	auto digestEqual = (digest == lastRequestDigest);
-	auto headersEqual = lengthsEqual && digestEqual;
-	auto functionsEqual = (fc == lastRequestFunction);
-
 	// now swap the values for the new ones
-	hasLastRequest = true;
-	lastRequestFunction = fc;
-	lastRequestLength = headers.Size();
-	lastRequestDigest = digest;
+	state = State::PREVIOUS;
+	this->defered = DeferredRequest(header, objects.CopyTo(buffer.GetWriteBufferView()), false, false);	
 
 	// return the correct equality type
 	if (functionsEqual)
 	{
-		return headersEqual ? APDUEquality::FULL_EQUALITY : APDUEquality::NONE;
+		return objectsEqual ? APDUEquality::FULL_EQUALITY : APDUEquality::NONE;
 	}
 	else
 	{
-		return headersEqual ? APDUEquality::OBJECT_HEADERS_EQUAL : APDUEquality::NONE;
+		return objectsEqual ? APDUEquality::OBJECT_HEADERS_EQUAL : APDUEquality::NONE;
 	}
 }
 
-bool RequestHistory::HasLastRequest() const
+DeferredRequest RequestHistory::GetDeferedRequest()
 {
-	return hasLastRequest;
+	return defered;
+}
+
+void RequestHistory::ClearDeferedRequest()
+{
+	if (state == State::DEFERED)
+	{
+		state = State::PREVIOUS;
+	}
+}
+
+void RequestHistory::DeferRequest(const APDUHeader& header, const openpal::ReadBufferView& objects, bool isRepeat, bool objectsEqualToLast)
+{
+	state = State::DEFERED;	
+	this->defered = DeferredRequest(header, objects.CopyTo(buffer.GetWriteBufferView()), isRepeat, objectsEqualToLast);
+}
+
+RequestHistory::State RequestHistory::CurrentState() const
+{
+	return state;
 }
 
 }
