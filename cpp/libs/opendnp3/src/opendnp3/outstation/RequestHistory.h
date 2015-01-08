@@ -18,58 +18,46 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_APDUWRAPPER_H
-#define OPENDNP3_APDUWRAPPER_H
+#ifndef OPENDNP3_REQUESTHISTORY_H
+#define OPENDNP3_REQUESTHISTORY_H
 
-#include <openpal/container/ReadBufferView.h>
-#include <openpal/container/WriteBufferView.h>
+#include "opendnp3/app/APDUHeader.h"
+#include "opendnp3/app/APDUWrapper.h"
 
-#include "opendnp3/gen/FunctionCode.h"
-#include "opendnp3/app/AppControlField.h"
-#include "opendnp3/app/HeaderWriter.h"
+#include <cstdint>
+
+#include <openpal/container/DynamicBuffer.h>
 
 namespace opendnp3
 {
 
-enum class APDUEquality
+/// Tracks the state of the last request ASDU
+class RequestHistory
 {
-	FULL_EQUALITY,
-	OBJECT_HEADERS_EQUAL,
-	NONE
+	
+	public:		
+
+	RequestHistory();
+
+	void Reset();
+	bool HasLastRequest() const;
+	APDUEquality RecordLastRequest(FunctionCode fc, const openpal::ReadBufferView& headers);		
+
+	private:
+
+	bool hasLastRequest;
+	FunctionCode lastRequestFunction;
+	uint32_t lastRequestLength;
+
+	// We're going to reuse the link layer CRC to produce a simple 16-bit digest of the message
+	// This reduces the collision probablity sufficiently without saving the full message
+	uint16_t lastRequestDigest;
 };
 
-// This class is used to write to an underlying buffer
-class APDUWrapper
-{
-public:	
-
-	APDUWrapper();
-
-	APDUWrapper(const openpal::WriteBufferView& aBuffer);
-
-	bool IsValid() const;
-
-	void SetFunction(FunctionCode code);
-	FunctionCode GetFunction() const;
-
-	AppControlField GetControl() const;
-	void SetControl(AppControlField control);
-
-	uint32_t Size() const;
-
-	openpal::ReadBufferView ToReadOnly() const;
-
-	HeaderWriter GetWriter();
-
-	uint32_t Remaining() const;
-
-protected:	
-
-	bool valid;
-	openpal::WriteBufferView buffer;
-	openpal::WriteBufferView remaining;
-};
 
 }
 
+
+
 #endif
+

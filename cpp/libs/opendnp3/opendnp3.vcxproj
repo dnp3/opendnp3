@@ -237,6 +237,7 @@
     <ClInclude Include="src\opendnp3\outstation\OutstationStackConfig.h" />
     <ClInclude Include="src\opendnp3\outstation\OutstationUnsolicitedStates.h" />
     <ClInclude Include="src\opendnp3\outstation\ReadHandler.h" />
+    <ClInclude Include="src\opendnp3\outstation\RequestHistory.h" />
     <ClInclude Include="src\opendnp3\outstation\ResponseContext.h" />
     <ClInclude Include="src\opendnp3\outstation\SelectedRanges.h" />
     <ClInclude Include="src\opendnp3\outstation\SimpleCommandHandler.h" />
@@ -375,6 +376,7 @@
     <ClCompile Include="src\opendnp3\outstation\OutstationSolicitedStates.cpp" />
     <ClCompile Include="src\opendnp3\outstation\OutstationUnsolicitedStates.cpp" />
     <ClCompile Include="src\opendnp3\outstation\ReadHandler.cpp" />
+    <ClCompile Include="src\opendnp3\outstation\RequestHistory.cpp" />
     <ClCompile Include="src\opendnp3\outstation\ResponseContext.cpp" />
     <ClCompile Include="src\opendnp3\outstation\SelectedRanges.cpp" />
     <ClCompile Include="src\opendnp3\outstation\SimpleCommandHandler.cpp" />

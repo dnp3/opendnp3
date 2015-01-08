@@ -33,6 +33,8 @@ class OutstationContext;
 class IOutstationAuthProvider
 {
 	public:
+
+	virtual void ExamineASDU(OutstationContext& ctx, const APDUHeader& header, const openpal::ReadBufferView& objects) = 0;
 	
 	virtual ~IOutstationAuthProvider() {}	
 };

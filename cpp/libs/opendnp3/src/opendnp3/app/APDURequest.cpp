@@ -31,10 +31,5 @@ APDURequest::APDURequest(const openpal::WriteBufferView& aBuffer) : APDUWrapper(
 
 }
 
-APDUEquality APDURequest::Compare(const openpal::ReadBufferView& lhs, const openpal::ReadBufferView& rhs)
-{
-	return APDUWrapper::Compare(2, lhs, rhs);
-}
-
 }
 

@@ -36,28 +36,6 @@ APDUWrapper::APDUWrapper() : valid(false)
 
 }
 
-APDUEquality APDUWrapper::Compare(uint32_t headerSize, const ReadBufferView& lhs, const ReadBufferView& rhs)
-{
-	if (lhs.Size() < headerSize || rhs.Size() < headerSize)
-	{
-		return APDUEquality::NONE;
-	}
-	else
-	{
-		
-		auto bodyEqual = lhs.Skip(headerSize).Equals(rhs.Skip(headerSize));
-		if (bodyEqual)
-		{
-			auto headerEqual = lhs.Take(headerSize).Equals(rhs.Take(headerSize));
-			return headerEqual ? APDUEquality::FULL_EQUALITY : APDUEquality::OBJECT_HEADERS_EQUAL;
-		}
-		else
-		{
-			return APDUEquality::NONE;
-		}
-	}
-}
-
 APDUWrapper::APDUWrapper(const openpal::WriteBufferView& buffer_) : valid(true), buffer(buffer_), remaining(buffer_)
 {
 	assert(buffer.Size() >= 2); // need a control & function at a minimum

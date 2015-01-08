@@ -54,7 +54,8 @@ OutstationContext::OutstationContext(
 		LogRoot& root,
 		ILowerLayer& lower,
 		ICommandHandler& commandHandler,
-		IOutstationApplication& application
+		IOutstationApplication& application,
+		IOutstationAuthProvider* pAuthProvider_
 		) :
 	
 	params(config.params),	
@@ -62,6 +63,7 @@ OutstationContext::OutstationContext(
 	pExecutor(&executor),	
 	pCommandHandler(&commandHandler),
 	pApplication(&application),	
+	pAuthProvider(pAuthProvider_),
 	eventBuffer(config.eventBufferConfig),
 	database(dbTemplate, eventBuffer, *this, config.params.indexMode, config.params.typesAllowedInClass0, pDBMutex),
 	isOnline(false),
@@ -76,11 +78,11 @@ OutstationContext::OutstationContext(
 	solSeqN(0),
 	unsolSeqN(0),
 	expectedSolConfirmSeq(0),
-	expectedUnsolConfirmSeq(0),
+	expectedUnsolConfirmSeq(0),	
 	completedNullUnsol(false),	
 	rspContext(database.GetStaticLoader(), eventBuffer),
 	pLower(&lower),
-	rxBuffer(params.maxRxFragSize),
+	deferedHeaders(params.maxRxFragSize),
 	solTxBuffer(params.maxTxFragSize),
 	unsolTxBuffer(params.maxTxFragSize)
 {	
@@ -139,7 +141,7 @@ void OutstationContext::SetOffline()
 	unsolPackTimerExpired = false;
 	pSolicitedState = &OutstationSolicitedStateIdle::Inst();
 	pUnsolicitedState = &OutstationUnsolicitedStateIdle::Inst();
-	lastValidRequest.Clear();
+	requestHistory.Reset();
 	deferredRequest.Clear();
 	eventBuffer.Unselect();
 	rspContext.Reset();
@@ -196,7 +198,16 @@ void OutstationContext::OnReceiveAPDU(const openpal::ReadBufferView& apdu)
 		// outstations should only process single fragment messages that don't request confirmation
 		if ((header.control.FIR && header.control.FIN) && !header.control.CON)
 		{
-			this->ExamineASDU(header, apdu);
+			auto objects = apdu.Skip(APDU_HEADER_SIZE);
+
+			if (pAuthProvider)
+			{
+				pAuthProvider->ExamineASDU(*this, header, objects);
+			}
+			else
+			{
+				this->ExamineASDU(header, objects);
+			}
 		}
 		else
 		{
@@ -213,7 +224,7 @@ void OutstationContext::OnReceiveAPDU(const openpal::ReadBufferView& apdu)
 	}
 
 
-	//regardless of what the event is, see if we need to schedule an action
+	// regardless of what the event is, see if we need to schedule an action
 	this->CheckForTaskStart();
 }
 
@@ -252,19 +263,16 @@ void OutstationContext::ExamineASDU(const APDUHeader& header, const openpal::Rea
 	}
 }
 
-OutstationSolicitedStateBase* OutstationContext::OnReceiveSolRequest(const APDUHeader& header, const openpal::ReadBufferView& apdu)
+OutstationSolicitedStateBase* OutstationContext::OnReceiveSolRequest(const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
 	// analyze this request to see how it compares to the last request
-	auto firstRequest = lastValidRequest.IsEmpty();
-	auto equality = APDURequest::Compare(apdu, lastValidRequest);
-	auto dest = rxBuffer.GetWriteBufferView();
+	auto firstRequest = !requestHistory.HasLastRequest();					
 	this->deferredRequest.Clear();
-	this->lastValidRequest = apdu.CopyTo(dest);
-	auto objects = apdu.Skip(APDU_HEADER_SIZE);	
+	auto equality = this->requestHistory.RecordLastRequest(header.function, objects);		
 
 	if (firstRequest)
 	{			
-		return ProcessNewRequest(header, objects, equality == APDUEquality::OBJECT_HEADERS_EQUAL);
+		return ProcessNewRequest(header, objects, false);
 	}
 	else
 	{		
@@ -352,8 +360,13 @@ void OutstationContext::ProcessNoResponseFunction(const APDUHeader& header, cons
 		default:
 			FORMAT_LOG_BLOCK(logger, flags::WARN, "Ignoring NR function code: %s", FunctionCodeToString(header.function));
 			break;
-	}
-	
+	}	
+}
+
+void OutstationContext::DeferRequest(const APDUHeader& header, const openpal::ReadBufferView& objects, bool isRepeat, bool objectsEqualToLast)
+{
+	auto view = objects.CopyTo(deferedHeaders.GetWriteBufferView());
+	this->deferredRequest.Set(DeferredRequest(header, view, isRepeat, objectsEqualToLast));
 }
 
 void OutstationContext::BeginResponseTx(const ReadBufferView& response)
@@ -446,20 +459,20 @@ void OutstationContext::CheckForTaskStart()
 				if (pUnsolicitedState == &OutstationUnsolicitedStateIdle::Inst())
 				{
 					deferredRequest.Clear();
-					pSolicitedState = pSolicitedState->OnNewReadRequest(this, dr.header, lastValidRequest.Skip(APDU_HEADER_SIZE));
+					pSolicitedState = pSolicitedState->OnNewReadRequest(this, dr.header, dr.objects);
 				}
 			}
 			else
 			{
-				//non-read
+				// non-read
 				deferredRequest.Clear();
 				if (dr.isRepeat)
 				{
-					pSolicitedState = pSolicitedState->OnRepeatNonReadRequest(this, dr.header, lastValidRequest.Skip(APDU_HEADER_SIZE));
+					pSolicitedState = pSolicitedState->OnRepeatNonReadRequest(this, dr.header, dr.objects);
 				}
 				else
 				{
-					pSolicitedState = pSolicitedState->OnNewNonReadRequest(this, dr.header, lastValidRequest.Skip(APDU_HEADER_SIZE), dr.objectsEqualToLast);
+					pSolicitedState = pSolicitedState->OnNewNonReadRequest(this, dr.header, dr.objects, dr.objectsEqualToLast);
 				}				
 			}
 		}

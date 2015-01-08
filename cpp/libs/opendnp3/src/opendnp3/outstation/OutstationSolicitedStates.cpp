@@ -53,19 +53,19 @@ OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnConfirmTimeout(Out
 
 OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnNewReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
-	pContext->deferredRequest.Set(DeferredRequest(header, false, false));
+	pContext->DeferRequest(header, objects, false, false);	
 	return this;
 }
 
 OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnNewNonReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadBufferView& objects, bool headersEqualToLast)
 {
-	pContext->deferredRequest.Set(DeferredRequest(header, false, headersEqualToLast));
+	pContext->DeferRequest(header, objects, false, headersEqualToLast);
 	return this;
 }
 
 OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnRepeatNonReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
-	pContext->deferredRequest.Set(DeferredRequest(header, true, false));
+	pContext->DeferRequest(header, objects, true, false);	
 	return this;
 }
 
@@ -87,7 +87,7 @@ OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewReadRequest(Out
 	}
 	else
 	{
-		pContext->deferredRequest.Set(DeferredRequest(header, false, false));
+		pContext->DeferRequest(header, objects, false, false);		
 		return this;
 	}
 }
@@ -96,7 +96,8 @@ OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewNonReadRequest(
 {
 	if (pContext->isTransmitting)
 	{
-		pContext->deferredRequest.Set(DeferredRequest(header, false, lastHeadersEqual));
+		
+		pContext->DeferRequest(header, objects, false, lastHeadersEqual);
 		return this;		
 	}
 	else
@@ -117,7 +118,7 @@ OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnRepeatNonReadReque
 {
 	if (pContext->isTransmitting)
 	{
-		pContext->deferredRequest.Set(DeferredRequest(header, true, false));
+		pContext->DeferRequest(header, objects, true, false);		
 		return this;		
 	}
 	else
@@ -151,14 +152,14 @@ OutstationSolicitedStateBase& OutstationStateSolicitedConfirmWait::Inst()
 
 OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnNewReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {	
-	pContext->deferredRequest.Set(DeferredRequest(header, false, false));
+	pContext->DeferRequest(header, objects, false, false);	
 	return Abort(pContext);
 			
 }
 
 OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnNewNonReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadBufferView& objects, bool headersEqual)
 {
-	pContext->deferredRequest.Set(DeferredRequest(header, false, headersEqual));
+	pContext->DeferRequest(header, objects, false, headersEqual);
 	return Abort(pContext);
 }
 

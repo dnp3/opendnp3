@@ -37,6 +37,7 @@
 
 #include "opendnp3/outstation/Database.h"
 #include "opendnp3/outstation/ResponseContext.h"
+#include "opendnp3/outstation/RequestHistory.h"
 #include "opendnp3/outstation/OutstationConfig.h"
 #include "opendnp3/outstation/ICommandHandler.h"
 #include "opendnp3/outstation/IOutstationApplication.h"
@@ -44,6 +45,7 @@
 #include "opendnp3/outstation/OutstationUnsolicitedStates.h"
 #include "opendnp3/outstation/EventBuffer.h"
 #include "opendnp3/outstation/DeferredRequest.h"
+#include "opendnp3/outstation/IOutstationAuthProvider.h"
 
 namespace opendnp3
 {
@@ -61,7 +63,8 @@ class OutstationContext : private INewEventDataHandler
 						openpal::LogRoot& root, 
 						ILowerLayer& lower,
 						ICommandHandler& commandHandler,
-						IOutstationApplication& application);
+						IOutstationApplication& application,
+						IOutstationAuthProvider* pAuthProvider = nullptr);
 
 	// ------ Unchanging variables and self managing variables -------
 
@@ -70,6 +73,7 @@ class OutstationContext : private INewEventDataHandler
 	openpal::IExecutor* pExecutor;	
 	ICommandHandler* pCommandHandler;
 	IOutstationApplication* pApplication;	
+	IOutstationAuthProvider* pAuthProvider;
 	EventBuffer eventBuffer;
 	Database database;
 
@@ -96,11 +100,9 @@ class OutstationContext : private INewEventDataHandler
 	uint8_t expectedSolConfirmSeq;	
 	uint8_t expectedUnsolConfirmSeq;
 	bool completedNullUnsol;
-
-	openpal::ReadBufferView lastValidRequest;			// points to bytes in rxBuffer
-	openpal::ReadBufferView lastResponse;				// points to bytes in txBuffer
-
-	openpal::Settable<DeferredRequest> deferredRequest;
+	
+	openpal::ReadBufferView lastResponse; // points to bytes in txBuffer	
+	
 
 	ResponseContext rspContext;
 
@@ -128,7 +130,7 @@ class OutstationContext : private INewEventDataHandler
 
 	void OnSendResult(bool isSuccess);
 
-	OutstationSolicitedStateBase* OnReceiveSolRequest(const APDUHeader& header, const openpal::ReadBufferView& apdu);	
+	OutstationSolicitedStateBase* OnReceiveSolRequest(const APDUHeader& header, const openpal::ReadBufferView& objects);	
 
 	void BeginResponseTx(const openpal::ReadBufferView& response);
 
@@ -143,6 +145,8 @@ class OutstationContext : private INewEventDataHandler
 	OutstationSolicitedStateBase* RespondToReadRequest(uint8_t seq, const openpal::ReadBufferView& objects);
 
 	void ProcessNoResponseFunction(const APDUHeader& header, const openpal::ReadBufferView& objects);
+
+	void DeferRequest(const APDUHeader& header, const openpal::ReadBufferView& objects, bool isRepeat, bool objectsEqualToLast);
 
 	private:
 
@@ -194,9 +198,11 @@ class OutstationContext : private INewEventDataHandler
 
 	IINField HandleCommandWithConstant(const openpal::ReadBufferView& objects, HeaderWriter& writer, CommandStatus status);
 
-	// ------ buffers -------
+	RequestHistory requestHistory;
+	openpal::Settable<DeferredRequest> deferredRequest;
 
-	openpal::DynamicBuffer rxBuffer;
+	// ------ buffers -------	
+	openpal::DynamicBuffer deferedHeaders;
 	openpal::DynamicBuffer solTxBuffer;
 	openpal::DynamicBuffer unsolTxBuffer;
 };
