@@ -195,18 +195,14 @@ void OutstationContext::OnReceiveAPDU(const openpal::ReadBufferView& apdu)
 			FunctionCodeToString(header.function));
 
 		// outstations should only process single fragment messages that don't request confirmation
-		if ((header.control.FIR && header.control.FIN) && !header.control.CON)
+		if (header.control.IsFirAndFin() && !header.control.CON)
 		{
-			auto objects = apdu.Skip(APDU_HEADER_SIZE);
+			auto objects = apdu.Skip(APDU_REQUEST_HEADER_SIZE);
 			pAuthProvider->ExamineASDU(*this, header, objects);			
 		}
 		else
 		{
-			FORMAT_LOG_BLOCK(logger, flags::WARN,
-				"Ignoring fragment with unexpected control field - FIR: %u FIN: %u CON: %u",
-				header.control.FIN,
-				header.control.FIN,
-				header.control.CON);
+			SIMPLE_LOG_BLOCK(logger, flags::WARN, "Ignoring fragment. Requst must be FIR/FIN/!CON");
 		}
 	}
 	else

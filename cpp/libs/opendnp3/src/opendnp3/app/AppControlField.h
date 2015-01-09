@@ -43,7 +43,9 @@ struct AppControlField
 
 	AppControlField(bool aFIR, bool aFIN, bool aCON, bool aUNS, uint8_t aSEQ = 0);
 
-	uint8_t ToByte() const;	
+	uint8_t ToByte() const;
+
+	bool IsFirAndFin() const { return FIR && FIN; }
 
 	bool FIR;
 	bool FIN;

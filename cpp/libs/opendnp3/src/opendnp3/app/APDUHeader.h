@@ -28,7 +28,7 @@
 namespace opendnp3
 {
 
-const uint32_t APDU_HEADER_SIZE = 2;
+const uint32_t APDU_REQUEST_HEADER_SIZE = 2;
 const uint32_t APDU_RESPONSE_HEADER_SIZE = 4;
 
 struct APDUHeader

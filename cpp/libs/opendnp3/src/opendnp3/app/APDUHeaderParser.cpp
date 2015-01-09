@@ -33,7 +33,7 @@ namespace opendnp3
 
 bool APDUHeaderParser::ParseRequest(const openpal::ReadBufferView& apdu, APDUHeader& header, openpal::Logger* pLogger)
 {
-	if (apdu.Size() < APDU_HEADER_SIZE)
+	if (apdu.Size() < APDU_REQUEST_HEADER_SIZE)
 	{
 		FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Request fragment  with insufficient size of %u bytes", apdu.Size());
 		return false;
