@@ -18,25 +18,63 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENPAL_ITIMER_H
-#define OPENPAL_ITIMER_H
 
-#include "MonotonicTimestamp.h"
+#include "TimerRef.h"
 
 namespace openpal
 {
 
-/**
- * Timer are used to defer events for a later time on an executor.
- */
-class ITimer
+TimerRef::TimerRef(openpal::IExecutor& executor) : pExecutor(&executor), pTimer(nullptr)
+{}
+
+
+bool TimerRef::IsActive() const
+{ 
+	return (pTimer != nullptr); 
+}
+
+void TimerRef::Reset()
 {
-public:
-	virtual ~ITimer() {}
-	virtual void Cancel() = 0;
-	virtual MonotonicTimestamp ExpiresAt() = 0;
-};
+	pTimer = nullptr;
+}
+
+bool TimerRef::Cancel()
+{
+	if (pTimer)
+	{
+		pTimer->Cancel();
+		pTimer = nullptr;
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+bool TimerRef::Start(TimeDuration expiration, const openpal::Action0& action)
+{
+	if (pTimer)
+	{
+		return false;
+	}
+	else
+	{
+		pTimer = pExecutor->Start(expiration, action);
+		return true;
+	}
+}
+
+void TimerRef::Restart(TimeDuration expiration, const openpal::Action0& action)
+{
+	if (pTimer)
+	{
+		pTimer->Cancel();
+	}
+
+	pTimer = pExecutor->Start(expiration, action);
+}
 
 }
 
-#endif
+

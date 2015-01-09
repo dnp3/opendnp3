@@ -178,6 +178,9 @@
     <ClInclude Include="src\openpal\container\WriteBufferView.h">
       <Filter>Header\container</Filter>
     </ClInclude>
+    <ClInclude Include="src\openpal\executor\TimerRef.h">
+      <Filter>Header\executor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\openpal\executor\MonotonicTimestamp.cpp">
@@ -223,6 +226,9 @@
       <Filter>Source\container</Filter>
     </ClCompile>
     <ClCompile Include="src\openpal\executor\Action0.cpp">
+      <Filter>Source\executor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\openpal\executor\TimerRef.cpp">
       <Filter>Source\executor</Filter>
     </ClCompile>
   </ItemGroup>

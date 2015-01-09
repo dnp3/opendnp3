@@ -123,11 +123,11 @@ void OutstationContext::SetOffline()
 	ostate.isTransmitting = false;	
 	ostate.pSolicitedState = &OutstationSolicitedStateIdle::Inst();
 	ostate.pUnsolicitedState = &OutstationUnsolicitedStateIdle::Inst();
+	ostate.confirmTimer.Cancel();
 
 	requestHistory.Reset();	
 	eventBuffer.Unselect();
-	rspContext.Reset();
-	CancelConfirmTimer();	
+	rspContext.Reset();		
 }
 
 bool OutstationContext::IsOperateSequenceValid()
@@ -140,25 +140,6 @@ bool OutstationContext::IsIdle()
 	return ostate.isOnline &&
 		ostate.pSolicitedState == &OutstationSolicitedStateIdle::Inst() &&
 		ostate.pUnsolicitedState == &OutstationUnsolicitedStateIdle::Inst();
-}
-
-bool OutstationContext::CancelConfirmTimer()
-{
-	return CancelTimer(ostate.pConfirmTimer);
-}
-
-bool OutstationContext::CancelTimer(openpal::ITimer*& pTimer)
-{
-	if (pTimer)
-	{
-		pTimer->Cancel();
-		pTimer = nullptr;
-		return true;
-	}
-	else
-	{
-		return false;
-	}
 }
 
 void OutstationContext::OnReceiveAPDU(const openpal::ReadBufferView& apdu)
@@ -496,40 +477,26 @@ void OutstationContext::CheckForUnsolicited()
 
 bool OutstationContext::StartSolicitedConfirmTimer()
 {
-	if (ostate.pConfirmTimer)
-	{	
-		return false;		
-	}
-	else
-	{
-		auto timeout = [this]() { this->OnSolConfirmTimeout(); };
-		ostate.pConfirmTimer = ostate.pExecutor->Start(ostate.params.solConfirmTimeout, Action0::Bind(timeout));
-		return true;
-	}
+	auto timeout = [this]() { this->OnSolConfirmTimeout(); };
+	return ostate.confirmTimer.Start(ostate.params.unsolConfirmTimeout, Action0::Bind(timeout));
 }
 
 bool OutstationContext::StartUnsolicitedConfirmTimer()
 {
-	if (ostate.pConfirmTimer)
-	{
-		return false;
-	}
-	else
-	{
-		auto timeout = [this]() { this->OnUnsolConfirmTimeout(); };
-		ostate.pConfirmTimer = ostate.pExecutor->Start(ostate.params.unsolConfirmTimeout, Action0::Bind(timeout));
-		return true;
-	}
+	auto timeout = [this]() { this->OnUnsolConfirmTimeout(); };
+	return ostate.confirmTimer.Start(ostate.params.unsolConfirmTimeout, Action0::Bind(timeout));
 }
 
 void OutstationContext::OnSolConfirmTimeout()
 {
+	ostate.confirmTimer.Reset();
 	ostate.pSolicitedState = this->ostate.pSolicitedState->OnConfirmTimeout(this);
 	this->PostCheckForActions();
 }
 
 void OutstationContext::OnUnsolConfirmTimeout()
 {
+	ostate.confirmTimer.Reset();
 	ostate.pUnsolicitedState = this->ostate.pUnsolicitedState->OnConfirmTimeout(this);
 	this->PostCheckForActions();
 }

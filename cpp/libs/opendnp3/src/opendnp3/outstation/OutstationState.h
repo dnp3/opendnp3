@@ -29,8 +29,7 @@
 #include "opendnp3/outstation/OutstationSolicitedStates.h"
 #include "opendnp3/outstation/OutstationUnsolicitedStates.h"
 
-
-#include <openpal/executor/IExecutor.h>
+#include <openpal/executor/TimerRef.h>
 #include <openpal/logging/LogRoot.h>
 
 
@@ -65,7 +64,7 @@ class OutstationState
 	bool isTransmitting;
 	IINField staticIIN;
 	uint32_t rxFragCount;
-	openpal::ITimer* pConfirmTimer;
+	openpal::TimerRef confirmTimer;
 
 	// ------ Dynamic state related to controls ------
 	openpal::MonotonicTimestamp selectTime;

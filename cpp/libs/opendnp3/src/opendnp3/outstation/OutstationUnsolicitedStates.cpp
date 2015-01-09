@@ -59,7 +59,8 @@ OutstationUnsolicitedStateBase* OutstationUnsolicitedStateConfirmWait::OnConfirm
 {
 	if (header.control.SEQ == pContext->ostate.expectedUnsolConfirmSeq)
 	{
-		pContext->CancelConfirmTimer();
+		pContext->ostate.confirmTimer.Cancel();
+
 		if (pContext->ostate.completedNullUnsol)
 		{			
 			pContext->eventBuffer.ClearWritten();
@@ -79,7 +80,6 @@ OutstationUnsolicitedStateBase* OutstationUnsolicitedStateConfirmWait::OnConfirm
 OutstationUnsolicitedStateBase* OutstationUnsolicitedStateConfirmWait::OnConfirmTimeout(OutstationContext* pContext)
 {
 	SIMPLE_LOG_BLOCK(pContext->ostate.logger, flags::WARN, "Unsolicited confirm timeout");
-	pContext->ostate.pConfirmTimer = nullptr;
 	pContext->eventBuffer.Unselect();
 	return &OutstationUnsolicitedStateIdle::Inst();
 }

@@ -166,7 +166,8 @@ OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnNewNonReadR
 OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::Abort(OutstationContext* pContext)
 {
 	// abandon the confirmed response sequence
-	pContext->CancelConfirmTimer();	
+	pContext->ostate.confirmTimer.Cancel();
+
 	return &OutstationSolicitedStateIdle::Inst();
 }
 
@@ -174,7 +175,7 @@ OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnConfirm(Out
 {	
 	if (header.control.SEQ == pContext->ostate.expectedSolConfirmSeq)
 	{
-		pContext->CancelConfirmTimer();
+		pContext->ostate.confirmTimer.Cancel();
 
 		// Lock the database for the remainder of this method as we will be manipulating the buffers
 		Transaction tx(pContext->database);				
@@ -198,8 +199,7 @@ OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnConfirm(Out
 
 OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnConfirmTimeout(OutstationContext* pContext)
 {	
-	SIMPLE_LOG_BLOCK(pContext->ostate.logger, flags::WARN, "Solicited confirm timeout");
-	pContext->ostate.pConfirmTimer = nullptr;
+	SIMPLE_LOG_BLOCK(pContext->ostate.logger, flags::WARN, "Solicited confirm timeout");	
 	return &OutstationSolicitedStateIdle::Inst();	
 }
 

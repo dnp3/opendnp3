@@ -42,7 +42,7 @@ OutstationState::OutstationState(
 	isTransmitting(false),
 	staticIIN(IINBit::DEVICE_RESTART),
 	rxFragCount(0),
-	pConfirmTimer(nullptr),
+	confirmTimer(executor),
 
 	operateExpectedSeq(0),
 	operateExpectedFragCount(0),

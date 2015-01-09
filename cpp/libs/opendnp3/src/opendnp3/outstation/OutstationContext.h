@@ -58,12 +58,11 @@ class OutstationContext : private INewEventDataHandler
 						ICommandHandler& commandHandler,
 						IOutstationApplication& application,
 						IOutstationAuthProvider& authProvider);
-
-	// ------ Unchanging variables and self managing variables -------
+	
 
 	OutstationState ostate;
 	
-	
+	// ------ Unchanging variables and self managing variables -------
 	ICommandHandler* pCommandHandler;
 	IOutstationApplication* pApplication;	
 	IOutstationAuthProvider* pAuthProvider;
@@ -83,9 +82,7 @@ class OutstationContext : private INewEventDataHandler
 	void SetOffline();
 	
 	bool IsOperateSequenceValid();
-	bool IsIdle();
-
-	bool CancelConfirmTimer();	
+	bool IsIdle();	
 	
 	bool StartSolicitedConfirmTimer();
 	bool StartUnsolicitedConfirmTimer();	
@@ -124,8 +121,6 @@ class OutstationContext : private INewEventDataHandler
 		
 
 	// ------ Helpers ---------
-
-	static bool CancelTimer(openpal::ITimer*& pTimer);	
 
 	IINField GetDynamicIIN();
 

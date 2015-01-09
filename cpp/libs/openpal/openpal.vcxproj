@@ -43,6 +43,7 @@
     <ClInclude Include="src\openpal\executor\MonotonicTimestamp.h" />
     <ClInclude Include="src\openpal\executor\Action0.h" />
     <ClInclude Include="src\openpal\executor\TimeDuration.h" />
+    <ClInclude Include="src\openpal\executor\TimerRef.h" />
     <ClInclude Include="src\openpal\executor\UTCTimestamp.h" />
     <ClInclude Include="src\openpal\logging\ILogHandler.h" />
     <ClInclude Include="src\openpal\logging\Location.h" />
@@ -73,6 +74,7 @@
     <ClCompile Include="src\openpal\executor\MonotonicTimestamp.cpp" />
     <ClCompile Include="src\openpal\executor\Action0.cpp" />
     <ClCompile Include="src\openpal\executor\TimeDuration.cpp" />
+    <ClCompile Include="src\openpal\executor\TimerRef.cpp" />
     <ClCompile Include="src\openpal\logging\LogEntry.cpp" />
     <ClCompile Include="src\openpal\logging\Logger.cpp" />
     <ClCompile Include="src\openpal\logging\LogRoot.cpp" />
