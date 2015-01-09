@@ -35,19 +35,19 @@ OutstationUnsolicitedStateIdle OutstationUnsolicitedStateIdle::instance;
 
 OutstationUnsolicitedStateBase* OutstationUnsolicitedStateIdle::OnConfirm(OutstationContext* pContext, const APDUHeader& header)
 {
-	FORMAT_LOG_BLOCK(pContext->logger, flags::WARN, "Unexpected unsolicted confirm with sequence: %u", header.control.SEQ);
+	FORMAT_LOG_BLOCK(pContext->ostate.logger, flags::WARN, "Unexpected unsolicted confirm with sequence: %u", header.control.SEQ);
 	return this;
 }
 
 OutstationUnsolicitedStateBase* OutstationUnsolicitedStateIdle::OnSendResult(OutstationContext* pContext, bool isSucccess)
 {
-	SIMPLE_LOG_BLOCK(pContext->logger, flags::WARN, "Unexpected unsolcitied send result callback");
+	SIMPLE_LOG_BLOCK(pContext->ostate.logger, flags::WARN, "Unexpected unsolcitied send result callback");
 	return this;
 }
 
 OutstationUnsolicitedStateBase* OutstationUnsolicitedStateIdle::OnConfirmTimeout(OutstationContext* pContext)
 {
-	SIMPLE_LOG_BLOCK(pContext->logger, flags::WARN, "Unexpected unsolicited confirm timeout");
+	SIMPLE_LOG_BLOCK(pContext->ostate.logger, flags::WARN, "Unexpected unsolicited confirm timeout");
 	return this;
 }
 
@@ -57,16 +57,16 @@ OutstationUnsolicitedStateConfirmWait OutstationUnsolicitedStateConfirmWait::ins
 
 OutstationUnsolicitedStateBase* OutstationUnsolicitedStateConfirmWait::OnConfirm(OutstationContext* pContext, const APDUHeader& header)
 {
-	if (header.control.SEQ == pContext->expectedUnsolConfirmSeq)
+	if (header.control.SEQ == pContext->ostate.expectedUnsolConfirmSeq)
 	{
 		pContext->CancelConfirmTimer();
-		if (pContext->completedNullUnsol)
+		if (pContext->ostate.completedNullUnsol)
 		{			
 			pContext->eventBuffer.ClearWritten();
 		}
 		else
 		{
-			pContext->completedNullUnsol = true;
+			pContext->ostate.completedNullUnsol = true;
 		}		
 		return &OutstationUnsolicitedStateIdle::Inst();
 	}
@@ -78,8 +78,8 @@ OutstationUnsolicitedStateBase* OutstationUnsolicitedStateConfirmWait::OnConfirm
 
 OutstationUnsolicitedStateBase* OutstationUnsolicitedStateConfirmWait::OnConfirmTimeout(OutstationContext* pContext)
 {
-	SIMPLE_LOG_BLOCK(pContext->logger, flags::WARN, "Unsolicited confirm timeout");
-	pContext->pConfirmTimer = nullptr;
+	SIMPLE_LOG_BLOCK(pContext->ostate.logger, flags::WARN, "Unsolicited confirm timeout");
+	pContext->ostate.pConfirmTimer = nullptr;
 	pContext->eventBuffer.Unselect();
 	return &OutstationUnsolicitedStateIdle::Inst();
 }

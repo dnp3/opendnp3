@@ -21,30 +21,23 @@
 #ifndef OPENDNP3_OUTSTATIONCONTEXT_H
 #define OPENDNP3_OUTSTATIONCONTEXT_H
 
-#include <openpal/logging/LogRoot.h>
-#include <openpal/executor/IExecutor.h>
-
 #include <openpal/container/DynamicBuffer.h>
 #include <openpal/container/Pair.h>
 #include <openpal/container/Settable.h>
-
-#include "opendnp3/LayerInterfaces.h"
 
 #include "opendnp3/app/IINField.h"
 #include "opendnp3/app/HeaderWriter.h"
 #include "opendnp3/app/APDUHeader.h"
 #include "opendnp3/app/APDUResponse.h"
 
+#include "opendnp3/outstation/OutstationState.h"
 #include "opendnp3/outstation/Database.h"
 #include "opendnp3/outstation/ResponseContext.h"
 #include "opendnp3/outstation/RequestHistory.h"
 #include "opendnp3/outstation/OutstationConfig.h"
 #include "opendnp3/outstation/ICommandHandler.h"
 #include "opendnp3/outstation/IOutstationApplication.h"
-#include "opendnp3/outstation/OutstationSolicitedStates.h"
-#include "opendnp3/outstation/OutstationUnsolicitedStates.h"
 #include "opendnp3/outstation/EventBuffer.h"
-#include "opendnp3/outstation/DeferredRequest.h"
 #include "opendnp3/outstation/IOutstationAuthProvider.h"
 
 namespace opendnp3
@@ -68,41 +61,15 @@ class OutstationContext : private INewEventDataHandler
 
 	// ------ Unchanging variables and self managing variables -------
 
-	OutstationParams params;	
-	openpal::Logger logger;
-	openpal::IExecutor* pExecutor;	
+	OutstationState ostate;
+	
+	
 	ICommandHandler* pCommandHandler;
 	IOutstationApplication* pApplication;	
 	IOutstationAuthProvider* pAuthProvider;
 	EventBuffer eventBuffer;
-	Database database;
-
-	// ------ Dynamic "state", i.e. things that must be managed or cleanup on close ------
-	
-	bool isOnline;	
-	OutstationSolicitedStateBase*	pSolicitedState;
-	OutstationUnsolicitedStateBase*	pUnsolicitedState;
-
-	IINField staticIIN;
-
-	openpal::ITimer* pConfirmTimer;
-	//openpal::ITimer* pUnsolTimer;						// gets used for both retries and "pack" timer
-	bool unsolPackTimerExpired;
-	
-	uint32_t rxFragCount;
-	openpal::MonotonicTimestamp selectTime;
-	uint8_t operateExpectedSeq;
-	uint32_t operateExpectedFragCount;
-
-	bool isTransmitting;
-	uint8_t solSeqN;
-	uint8_t unsolSeqN;
-	uint8_t expectedSolConfirmSeq;	
-	uint8_t expectedUnsolConfirmSeq;
-	bool completedNullUnsol;
-	
+	Database database;		
 	openpal::ReadBufferView lastResponse; // points to bytes in txBuffer	
-	
 	ResponseContext rspContext;
 
 	// ------ Helper methods for dealing with state ------	
@@ -154,10 +121,7 @@ class OutstationContext : private INewEventDataHandler
 	void PostCheckForActions();
 
 	OutstationSolicitedStateBase* ProcessNewRequest(const APDUHeader& header, const openpal::ReadBufferView& objects, bool objectsEqualToLastRequest);
-
-	// private variables not available from the states
-
-	ILowerLayer* pLower;
+		
 
 	// ------ Helpers ---------
 
@@ -194,7 +158,6 @@ class OutstationContext : private INewEventDataHandler
 	IINField HandleAssignClass(const openpal::ReadBufferView& objects);
 	IINField HandleDisableUnsolicited(const openpal::ReadBufferView& objects, HeaderWriter& writer);
 	IINField HandleEnableUnsolicited(const openpal::ReadBufferView& objects, HeaderWriter& writer);
-
 	IINField HandleCommandWithConstant(const openpal::ReadBufferView& objects, HeaderWriter& writer, CommandStatus status);
 
 	RequestHistory requestHistory;	

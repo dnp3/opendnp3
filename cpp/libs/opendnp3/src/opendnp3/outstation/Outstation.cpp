@@ -48,9 +48,9 @@ Outstation::Outstation(
 	
 void Outstation::OnLowerLayerUp()
 {
-	if (context.isOnline)
+	if (context.ostate.isOnline)
 	{
-		SIMPLE_LOG_BLOCK(context.logger, flags::ERR, "already online");		
+		SIMPLE_LOG_BLOCK(context.ostate.logger, flags::ERR, "already online");
 	}
 	else
 	{
@@ -60,43 +60,43 @@ void Outstation::OnLowerLayerUp()
 	
 void Outstation::OnLowerLayerDown()
 {
-	if (context.isOnline)
+	if (context.ostate.isOnline)
 	{
 		context.SetOffline();
 	}
 	else
 	{
-		SIMPLE_LOG_BLOCK(context.logger, flags::ERR, "not online");
+		SIMPLE_LOG_BLOCK(context.ostate.logger, flags::ERR, "not online");
 	}
 }
 
 void Outstation::OnReceive(const openpal::ReadBufferView& fragment)
 {
-	if (context.isOnline)
+	if (context.ostate.isOnline)
 	{
 		context.OnReceiveAPDU(fragment);		
 	}
 	else
 	{
-		SIMPLE_LOG_BLOCK(context.logger, flags::ERR, "ignoring received data while offline");
+		SIMPLE_LOG_BLOCK(context.ostate.logger, flags::ERR, "ignoring received data while offline");
 	}
 }
 
 void Outstation::OnSendResult(bool isSuccess)
 {	
-	if (context.isOnline)
+	if (context.ostate.isOnline)
 	{		
 		context.OnSendResult(isSuccess);		
 	}
 	else
 	{
-		SIMPLE_LOG_BLOCK(context.logger, flags::ERR, "Unexpected send callback");
+		SIMPLE_LOG_BLOCK(context.ostate.logger, flags::ERR, "Unexpected send callback");
 	}	
 }
 
 void Outstation::SetRestartIIN()
 {
-	context.staticIIN.SetBit(IINBit::DEVICE_RESTART);
+	context.ostate.staticIIN.SetBit(IINBit::DEVICE_RESTART);
 }
 
 IDatabase& Outstation::GetDatabase()

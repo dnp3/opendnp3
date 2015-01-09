@@ -35,19 +35,19 @@ namespace opendnp3
 
 OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnConfirm(OutstationContext* pContext, const APDUHeader& header)
 {
-	FORMAT_LOG_BLOCK(pContext->logger, flags::WARN, "Unexpected solicted confirm with sequence: %u", header.control.SEQ);
+	FORMAT_LOG_BLOCK(pContext->ostate.logger, flags::WARN, "Unexpected solicted confirm with sequence: %u", header.control.SEQ);
 	return this;
 }
 
 OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnSendResult(OutstationContext* pContext, bool isSucccess)
 {
-	SIMPLE_LOG_BLOCK(pContext->logger, flags::WARN, "Unexpected send result callback");
+	SIMPLE_LOG_BLOCK(pContext->ostate.logger, flags::WARN, "Unexpected send result callback");
 	return this;
 }
 
 OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnConfirmTimeout(OutstationContext* pContext)
 {
-	SIMPLE_LOG_BLOCK(pContext->logger, flags::WARN, "Unexpected confirm timeout");
+	SIMPLE_LOG_BLOCK(pContext->ostate.logger, flags::WARN, "Unexpected confirm timeout");
 	return this;
 }
 
@@ -81,7 +81,7 @@ OutstationSolicitedStateBase& OutstationSolicitedStateIdle::Inst()
 
 OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
-	if (!pContext->isTransmitting && pContext->pUnsolicitedState == &OutstationUnsolicitedStateIdle::Inst())
+	if (!pContext->ostate.isTransmitting && pContext->ostate.pUnsolicitedState == &OutstationUnsolicitedStateIdle::Inst())
 	{
 		return pContext->RespondToReadRequest(header.control.SEQ, objects);
 	}
@@ -94,7 +94,7 @@ OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewReadRequest(Out
 
 OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewNonReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadBufferView& objects, bool lastHeadersEqual)
 {
-	if (pContext->isTransmitting)
+	if (pContext->ostate.isTransmitting)
 	{
 		
 		pContext->DeferRequest(header, objects, false, lastHeadersEqual);
@@ -116,7 +116,7 @@ OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewNonReadRequest(
 
 OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnRepeatNonReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
-	if (pContext->isTransmitting)
+	if (pContext->ostate.isTransmitting)
 	{
 		pContext->DeferRequest(header, objects, true, false);		
 		return this;		
@@ -132,7 +132,7 @@ OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnRepeatNonReadReque
 			if (header.function == FunctionCode::SELECT)
 			{
 				// repeat selects are allowed, but they do not reset the select timer
-				pContext->operateExpectedFragCount = pContext->rxFragCount + 1;
+				pContext->ostate.operateExpectedFragCount = pContext->ostate.rxFragCount + 1;
 			}
 
 			pContext->BeginResponseTx(pContext->lastResponse);
@@ -172,7 +172,7 @@ OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::Abort(Outstat
 
 OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnConfirm(OutstationContext* pContext, const APDUHeader& header)
 {	
-	if (header.control.SEQ == pContext->expectedSolConfirmSeq)
+	if (header.control.SEQ == pContext->ostate.expectedSolConfirmSeq)
 	{
 		pContext->CancelConfirmTimer();
 
@@ -191,15 +191,15 @@ OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnConfirm(Out
 	}
 	else
 	{
-		FORMAT_LOG_BLOCK(pContext->logger, flags::WARN, "Confirm with wrong seq: %u", header.control.SEQ);
+		FORMAT_LOG_BLOCK(pContext->ostate.logger, flags::WARN, "Confirm with wrong seq: %u", header.control.SEQ);
 		return this;
 	}			
 }
 
 OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnConfirmTimeout(OutstationContext* pContext)
 {	
-	SIMPLE_LOG_BLOCK(pContext->logger, flags::WARN, "Solicited confirm timeout");
-	pContext->pConfirmTimer = nullptr;	
+	SIMPLE_LOG_BLOCK(pContext->ostate.logger, flags::WARN, "Solicited confirm timeout");
+	pContext->ostate.pConfirmTimer = nullptr;
 	return &OutstationSolicitedStateIdle::Inst();	
 }
 
