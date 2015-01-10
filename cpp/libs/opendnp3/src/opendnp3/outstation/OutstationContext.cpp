@@ -119,26 +119,12 @@ void OutstationContext::SetOnline()
 
 void OutstationContext::SetOffline()
 {
-	ostate.isOnline = false;
-	ostate.isTransmitting = false;	
-	ostate.sol.pState = &OutstationSolicitedStateIdle::Inst();
-	ostate.unsol.pState = &OutstationUnsolicitedStateIdle::Inst();
-	ostate.confirmTimer.Cancel();
-
+	ostate.SetOffline();
 	requestHistory.Reset();	
 	eventBuffer.Unselect();
 	rspContext.Reset();		
 }
 
-bool OutstationContext::IsOperateSequenceValid()
-{	
-	return (ostate.rxFragCount == ostate.operateExpectedFragCount) && (ostate.sol.seqN == ostate.operateExpectedSeq);
-}
-
-bool OutstationContext::IsIdle()
-{
-	return ostate.isOnline && ostate.sol.IsIdle() && ostate.unsol.IsIdle();
-}
 
 void OutstationContext::OnReceiveAPDU(const openpal::ReadBufferView& apdu)
 {
@@ -606,7 +592,7 @@ IINField OutstationContext::HandleOperate(const openpal::ReadBufferView& objects
 	}
 	else
 	{
-		if (this->IsOperateSequenceValid())
+		if (this->ostate.IsOperateSequenceValid())
 		{
 			auto elapsed = ostate.pExecutor->GetTime().milliseconds - ostate.selectTime.milliseconds;
 			if (elapsed < ostate.params.selectTimeout.GetMilliseconds())

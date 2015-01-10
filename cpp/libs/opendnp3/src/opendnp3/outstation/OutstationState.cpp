@@ -50,6 +50,15 @@ OutstationState::OutstationState(
 	
 }
 
+void OutstationState::SetOffline()
+{
+	isOnline = false;
+	isTransmitting = false;
+	sol.pState = &OutstationSolicitedStateIdle::Inst();
+	unsol.pState = &OutstationUnsolicitedStateIdle::Inst();
+	confirmTimer.Cancel();
+}
+
 
 }
 

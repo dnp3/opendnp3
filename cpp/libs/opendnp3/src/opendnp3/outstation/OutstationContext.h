@@ -79,10 +79,7 @@ class OutstationContext : private INewEventDataHandler
 	void ConfigureUnsolHeader(APDUResponse& unsol);	
 
 	void SetOnline();
-	void SetOffline();
-	
-	bool IsOperateSequenceValid();
-	bool IsIdle();	
+	void SetOffline();		
 	
 	bool StartSolicitedConfirmTimer();
 	bool StartUnsolicitedConfirmTimer();	

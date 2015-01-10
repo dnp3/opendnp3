@@ -47,6 +47,12 @@ class OutstationState
 					openpal::LogRoot& root,
 					ILowerLayer& lower);
 
+	void SetOffline();
+
+	bool IsOperateSequenceValid() const
+	{
+		return (rxFragCount == operateExpectedFragCount) && (sol.seqN == operateExpectedSeq);
+	}
 
 	// ------ External resources --------
 	openpal::IExecutor* pExecutor;
