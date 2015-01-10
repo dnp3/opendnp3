@@ -121,7 +121,7 @@ void OutstationContext::SetOffline()
 {
 	ostate.isOnline = false;
 	ostate.isTransmitting = false;	
-	ostate.pSolicitedState = &OutstationSolicitedStateIdle::Inst();
+	ostate.sol.pState = &OutstationSolicitedStateIdle::Inst();
 	ostate.pUnsolicitedState = &OutstationUnsolicitedStateIdle::Inst();
 	ostate.confirmTimer.Cancel();
 
@@ -132,13 +132,13 @@ void OutstationContext::SetOffline()
 
 bool OutstationContext::IsOperateSequenceValid()
 {	
-	return (ostate.rxFragCount == ostate.operateExpectedFragCount) && (ostate.solicited.seqN == ostate.operateExpectedSeq);
+	return (ostate.rxFragCount == ostate.operateExpectedFragCount) && (ostate.sol.seqN == ostate.operateExpectedSeq);
 }
 
 bool OutstationContext::IsIdle()
 {
 	return ostate.isOnline &&
-		ostate.pSolicitedState == &OutstationSolicitedStateIdle::Inst() &&
+		ostate.sol.pState == &OutstationSolicitedStateIdle::Inst() &&
 		ostate.pUnsolicitedState == &OutstationUnsolicitedStateIdle::Inst();
 }
 
@@ -205,11 +205,11 @@ void OutstationContext::ExamineASDU(const APDUHeader& header, const openpal::Rea
 	{
 		if (header.function == FunctionCode::CONFIRM)
 		{
-			ostate.pSolicitedState = ostate.pSolicitedState->OnConfirm(this, header);
+			ostate.sol.pState = ostate.sol.pState->OnConfirm(this, header);
 		}
 		else
 		{
-			ostate.pSolicitedState = this->OnReceiveSolRequest(header, apdu);
+			ostate.sol.pState = this->OnReceiveSolRequest(header, apdu);
 		}
 	}
 }
@@ -226,18 +226,18 @@ OutstationSolicitedStateBase* OutstationContext::OnReceiveSolRequest(const APDUH
 	}
 	else
 	{		
-		if (this->ostate.solicited.seqN == header.control.SEQ)
+		if (this->ostate.sol.seqN == header.control.SEQ)
 		{
 			if (equality == APDUEquality::FULL_EQUALITY)
 			{
 				if (header.function == FunctionCode::READ)
 				{
 					SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "Ignoring repeat read request");
-					return ostate.pSolicitedState;
+					return ostate.sol.pState;
 				}
 				else
 				{
-					return this->ostate.pSolicitedState->OnRepeatNonReadRequest(this, header, objects);
+					return this->ostate.sol.pState->OnRepeatNonReadRequest(this, header, objects);
 				}				
 			}
 			else // new operation with same SEQ
@@ -254,14 +254,14 @@ OutstationSolicitedStateBase* OutstationContext::OnReceiveSolRequest(const APDUH
 
 OutstationSolicitedStateBase* OutstationContext::ProcessNewRequest(const APDUHeader& header, const openpal::ReadBufferView& objects, bool objectsEqualToLastRequest)
 {
-	this->ostate.solicited.seqN = header.control.SEQ;
+	this->ostate.sol.seqN = header.control.SEQ;
 	if (header.function == FunctionCode::READ)
 	{
-		return this->ostate.pSolicitedState->OnNewReadRequest(this, header, objects);
+		return this->ostate.sol.pState->OnNewReadRequest(this, header, objects);
 	}
 	else
 	{
-		return this->ostate.pSolicitedState->OnNewNonReadRequest(this, header, objects, objectsEqualToLastRequest);
+		return this->ostate.sol.pState->OnNewNonReadRequest(this, header, objects, objectsEqualToLastRequest);
 	}
 }
 
@@ -284,7 +284,7 @@ OutstationSolicitedStateBase* OutstationContext::RespondToReadRequest(uint8_t se
 	response.SetFunction(FunctionCode::RESPONSE);	
 	auto result = this->HandleRead(objects, writer);
 	result.second.SEQ = seq;
-	ostate.solicited.expectedConSeqN = seq;
+	ostate.sol.expectedConSeqN = seq;
 	response.SetControl(result.second);
 	response.SetIIN(result.first | this->GetResponseIIN());
 	this->BeginResponseTx(response.ToReadOnly());
@@ -371,7 +371,7 @@ OutstationSolicitedStateBase* OutstationContext::ContinueMultiFragResponse(uint8
 	response.SetFunction(FunctionCode::RESPONSE);		
 	auto control = this->rspContext.LoadResponse(writer);
 	control.SEQ = seq;
-	ostate.solicited.expectedConSeqN = seq;
+	ostate.sol.expectedConSeqN = seq;
 	response.SetControl(control);
 	response.SetIIN(this->ostate.staticIIN | this->GetDynamicIIN());
 	this->BeginResponseTx(response.ToReadOnly());
@@ -398,7 +398,7 @@ void OutstationContext::CheckForTaskStart()
 {	
 	// if we're online, the solicited state is idle, and the unsolicited state 
 	// is not transmitting we may be able to do a task
-	if (ostate.isOnline && !ostate.isTransmitting && ostate.pSolicitedState == &OutstationSolicitedStateIdle::Inst())
+	if (ostate.isOnline && !ostate.isTransmitting && ostate.sol.pState == &OutstationSolicitedStateIdle::Inst())
 	{
 		if (requestHistory.HasDefered())
 		{			
@@ -407,7 +407,7 @@ void OutstationContext::CheckForTaskStart()
 				if (ostate.pUnsolicitedState == &OutstationUnsolicitedStateIdle::Inst())
 				{
 					DeferredRequest dr = requestHistory.PopDeferedRequest();					
-					ostate.pSolicitedState = ostate.pSolicitedState->OnNewReadRequest(this, dr.header, dr.objects);
+					ostate.sol.pState = ostate.sol.pState->OnNewReadRequest(this, dr.header, dr.objects);
 				}
 			}
 			else
@@ -415,11 +415,11 @@ void OutstationContext::CheckForTaskStart()
 				DeferredRequest dr = requestHistory.PopDeferedRequest();
 				if (dr.isRepeat)
 				{
-					ostate.pSolicitedState = ostate.pSolicitedState->OnRepeatNonReadRequest(this, dr.header, dr.objects);
+					ostate.sol.pState = ostate.sol.pState->OnRepeatNonReadRequest(this, dr.header, dr.objects);
 				}
 				else
 				{
-					ostate.pSolicitedState = ostate.pSolicitedState->OnNewNonReadRequest(this, dr.header, dr.objects, dr.objectsEqualToLast);
+					ostate.sol.pState = ostate.sol.pState->OnNewNonReadRequest(this, dr.header, dr.objects, dr.objectsEqualToLast);
 				}				
 			}
 		}
@@ -490,7 +490,7 @@ bool OutstationContext::StartUnsolicitedConfirmTimer()
 void OutstationContext::OnSolConfirmTimeout()
 {
 	ostate.confirmTimer.Reset();
-	ostate.pSolicitedState = this->ostate.pSolicitedState->OnConfirmTimeout(this);
+	ostate.sol.pState = this->ostate.sol.pState->OnConfirmTimeout(this);
 	this->PostCheckForActions();
 }
 
@@ -579,7 +579,7 @@ IINField OutstationContext::HandleSelect(const openpal::ReadBufferView& objects,
 			if (handler.AllCommandsSuccessful())
 			{				
 				ostate.operateExpectedFragCount = ostate.rxFragCount + 1;
-				ostate.operateExpectedSeq = AppControlField::NextSeq(ostate.solicited.seqN);
+				ostate.operateExpectedSeq = AppControlField::NextSeq(ostate.sol.seqN);
 				ostate.selectTime = ostate.pExecutor->GetTime();
 			}
 			

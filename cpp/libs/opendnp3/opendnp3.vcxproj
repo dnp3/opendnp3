@@ -230,6 +230,7 @@
     <ClInclude Include="src\opendnp3\outstation\IResponseLoader.h" />
     <ClInclude Include="src\opendnp3\outstation\IStaticSelector.h" />
     <ClInclude Include="src\opendnp3\outstation\Outstation.h" />
+    <ClInclude Include="src\opendnp3\outstation\OutstationChannelStates.h" />
     <ClInclude Include="src\opendnp3\outstation\OutstationConfig.h" />
     <ClInclude Include="src\opendnp3\outstation\OutstationContext.h" />
     <ClInclude Include="src\opendnp3\outstation\OutstationParams.h" />

@@ -25,10 +25,8 @@
 
 #include "opendnp3/outstation/OutstationParams.h"
 #include "opendnp3/outstation/RequestHistory.h"
-
+#include "opendnp3/outstation/OutstationChannelStates.h"
 #include "opendnp3/outstation/OutstationSeqNum.h"
-#include "opendnp3/outstation/OutstationSolicitedStates.h"
-#include "opendnp3/outstation/OutstationUnsolicitedStates.h"
 
 #include <openpal/executor/TimerRef.h>
 #include <openpal/logging/LogRoot.h>
@@ -73,11 +71,10 @@ class OutstationState
 	// ------ Dynamic state related to unsolicited mode ------		
 	OutstationSeqNum unsolicited;
 	OutstationUnsolicitedStateBase*	pUnsolicitedState;
+	bool completedNullUnsol;
 
 	// ------ Dynamic state related to solicited mode ------			
-	OutstationSeqNum solicited;
-	bool completedNullUnsol;
-	OutstationSolicitedStateBase* pSolicitedState;
+	OutstationSolState  sol;
 };
 
 
