@@ -36,23 +36,39 @@ class ControlState
 	
 	public:	
 	
-	ControlState() : 
-		rxFragCount(0),
-		operateExpectedSeq(0),
-		operateExpectedFragCount(0)
+	ControlState() : expectedSeq(0)		
 	{}
 
 	// Is this sequence number what's expected for the OPERATE
 	bool IsOperateSequenceValid(uint8_t seqN) const
-	{
-		return (rxFragCount == operateExpectedFragCount) && (seqN == operateExpectedSeq);
+	{		
+		return (seqN == expectedSeq);
 	}
 
+	bool IsSelectTimeValid(const openpal::MonotonicTimestamp& now, const openpal::TimeDuration& timeout) const
+	{
+		if (selectTime.milliseconds < now.milliseconds)
+		{
+			auto elapsed = now.milliseconds - selectTime.milliseconds;
+			return elapsed < timeout;
+		}
+		else
+		{
+			return false;
+		}		
+	}
+
+	void Select(uint8_t currentSeqN, const openpal::MonotonicTimestamp& now)
+	{
+		selectTime = now;
+		expectedSeq = AppControlField::NextSeq(currentSeqN);
+	}
+
+	private:
 	
+	uint8_t expectedSeq;
 	openpal::MonotonicTimestamp selectTime;	
-	uint32_t rxFragCount;
-	uint8_t operateExpectedSeq;
-	uint32_t operateExpectedFragCount;	
+	
 };
 
 

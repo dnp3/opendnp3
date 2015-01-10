@@ -633,9 +633,6 @@
     <ClInclude Include="src\opendnp3\outstation\DeferredRequest.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\DualValue.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\Event.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>

@@ -127,9 +127,7 @@ void OutstationContext::SetOffline()
 
 
 void OutstationContext::OnReceiveAPDU(const openpal::ReadBufferView& apdu)
-{
-	++ostate.control.rxFragCount;
-
+{	
 	APDUHeader header;	
 	if (APDUHeaderParser::ParseRequest(apdu, header, &ostate.logger))
 	{
@@ -567,10 +565,8 @@ IINField OutstationContext::HandleSelect(const openpal::ReadBufferView& objects,
 		if (result == APDUParser::Result::OK)
 		{
 			if (handler.AllCommandsSuccessful())
-			{				
-				ostate.control.operateExpectedFragCount = ostate.control.rxFragCount + 1;
-				ostate.control.operateExpectedSeq = AppControlField::NextSeq(ostate.sol.seqN);
-				ostate.control.selectTime = ostate.pExecutor->GetTime();
+			{						
+				ostate.control.Select(ostate.sol.seqN, ostate.pExecutor->GetTime());				
 			}
 			
 			return handler.Errors();
@@ -594,8 +590,9 @@ IINField OutstationContext::HandleOperate(const openpal::ReadBufferView& objects
 	{
 		if (this->ostate.control.IsOperateSequenceValid(ostate.sol.seqN))
 		{
-			auto elapsed = ostate.pExecutor->GetTime().milliseconds - ostate.control.selectTime.milliseconds;
-			if (elapsed < ostate.params.selectTimeout.GetMilliseconds())
+			auto now = ostate.pExecutor->GetTime();
+			
+			if (ostate.control.IsSelectTimeValid(now, ostate.params.selectTimeout))
 			{
 				if (objectsEqualToLastRequest)
 				{					
