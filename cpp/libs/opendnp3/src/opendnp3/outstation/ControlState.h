@@ -47,7 +47,7 @@ class ControlState
 
 	bool IsSelectTimeValid(const openpal::MonotonicTimestamp& now, const openpal::TimeDuration& timeout) const
 	{
-		if (selectTime.milliseconds < now.milliseconds)
+		if (selectTime.milliseconds <= now.milliseconds)
 		{
 			auto elapsed = now.milliseconds - selectTime.milliseconds;
 			return elapsed < timeout;

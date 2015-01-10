@@ -46,13 +46,13 @@ public:
 	virtual MonotonicTimestamp GetTime() = 0;
 
 	/// @return a new timer based on a relative time duration
-	virtual ITimer* Start(const TimeDuration& arDuration, const Action0& action) = 0;
+	virtual ITimer* Start(const TimeDuration& duration, const Action0& action) = 0;
 
 	/// @return a new timer based on an absolute timestamp of the monotonic clock
-	virtual ITimer* Start(const MonotonicTimestamp&, const Action0& action) = 0;
+	virtual ITimer* Start(const MonotonicTimestamp& expiration, const Action0& action) = 0;
 
 	/// @return Thread-safe way to post an event to be handled asynchronously
-	virtual void Post(const Action0& runnable) = 0;
+	virtual void Post(const Action0& action) = 0;
 
 	template <class Lambda>
 	void PostLambda(Lambda& lambda)
