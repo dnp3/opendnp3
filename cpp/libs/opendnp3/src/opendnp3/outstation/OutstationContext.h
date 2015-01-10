@@ -131,10 +131,6 @@ class OutstationContext : private INewEventDataHandler
 
 	void CheckForUnsolicited();
 
-	void OnSolConfirmTimeout();
-
-	void OnUnsolConfirmTimeout();	
-
 	// ------ Function Handlers ------
 
 	// reads are special due to multi-frag

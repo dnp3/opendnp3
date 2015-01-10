@@ -461,32 +461,20 @@ bool OutstationContext::StartSolicitedConfirmTimer()
 {
 	auto timeout = [this]() 
 	{ 
-		this->ostate.confirmTimer.Reset();
-		this->OnSolConfirmTimeout(); 
+		ostate.sol.pState = this->ostate.sol.pState->OnConfirmTimeout(this);
+		this->CheckForTaskStart();
 	};
-	return ostate.confirmTimer.Start(ostate.params.unsolConfirmTimeout, Action0::Bind(timeout));
+	return ostate.confirmTimer.Start(ostate.params.unsolConfirmTimeout, timeout);
 }
 
 bool OutstationContext::StartUnsolicitedConfirmTimer()
 {
 	auto timeout = [this]() 
 	{ 
-		this->ostate.confirmTimer.Reset();
-		this->OnUnsolConfirmTimeout();
+		ostate.unsol.pState = this->ostate.unsol.pState->OnConfirmTimeout(this);
+		this->CheckForTaskStart();
 	};
-	return ostate.confirmTimer.Start(ostate.params.unsolConfirmTimeout, Action0::Bind(timeout));
-}
-
-void OutstationContext::OnSolConfirmTimeout()
-{	
-	ostate.sol.pState = this->ostate.sol.pState->OnConfirmTimeout(this);
-	this->CheckForTaskStart();
-}
-
-void OutstationContext::OnUnsolConfirmTimeout()
-{	
-	ostate.unsol.pState = this->ostate.unsol.pState->OnConfirmTimeout(this);
-	this->CheckForTaskStart();
+	return ostate.confirmTimer.Start(ostate.params.unsolConfirmTimeout, timeout);
 }
 
 Pair<IINField, AppControlField> OutstationContext::HandleRead(const openpal::ReadBufferView& objects, HeaderWriter& writer)

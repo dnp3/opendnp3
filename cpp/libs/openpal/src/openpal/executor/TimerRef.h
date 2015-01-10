@@ -40,25 +40,56 @@ public:
 	TimerRef(openpal::IExecutor& executor);
 
 	// Called to see if the timer is currently active
-	bool IsActive() const;
-
-	// Called to reset the reference when the timer has elapsed and is no longer valid
-	void Reset();
+	bool IsActive() const;	
 
 	// cancels any existing timer, returning true if the timer was active, false otherwise
 	bool Cancel();
 
 	// Attempts to start a new timer
 	// returns false if timer is already active, true otherwise
+	template <class Lambda>
+	bool Start(TimeDuration expiration, const Lambda& action);
+
+	// Start a new timer, canceling any existing timer
+	template <class Lambda>
+	void Restart(TimeDuration expiration, const Lambda& action);
+	
+
+private:	
+	
 	bool Start(TimeDuration expiration, const openpal::Action0& action);
 
 	// Start a new timer, canceling any existing timer
 	void Restart(TimeDuration expiration, const openpal::Action0& action);
 
-private:
 	IExecutor* pExecutor;
 	ITimer* pTimer;
 };
+
+// Attempts to start a new timer
+// returns false if timer is already active, true otherwise
+template <class Lambda>
+bool TimerRef::Start(TimeDuration expiration, const Lambda& action)
+{
+	auto proxy = [this, action] 
+	{
+		pTimer = nullptr;
+		action();
+	};
+	return this->Start(expiration, Action0::Bind(proxy));
+}
+
+// Start a new timer, canceling any existing timer
+template <class Lambda>
+void TimerRef::Restart(TimeDuration expiration, const Lambda& action)
+{
+	auto proxy = [this, action]
+	{
+		pTimer = nullptr;
+		action();
+	};
+	this->Restart(expiration, Action0::Bind(proxy));
+}
 
 }
 

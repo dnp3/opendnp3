@@ -33,11 +33,6 @@ bool TimerRef::IsActive() const
 	return (pTimer != nullptr); 
 }
 
-void TimerRef::Reset()
-{
-	pTimer = nullptr;
-}
-
 bool TimerRef::Cancel()
 {
 	if (pTimer)
