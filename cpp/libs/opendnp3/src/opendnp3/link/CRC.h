@@ -23,6 +23,8 @@
 
 #include <cstdint>
 
+#include <openpal/container/ReadBufferView.h>
+
 namespace opendnp3
 {
 
@@ -31,6 +33,8 @@ class CRC
 public:
 
 	static uint16_t CalcCrc(const uint8_t* input, uint32_t length);
+
+	static uint16_t CalcCrc(const openpal::ReadBufferView& view);
 
 	static void AddCrc(uint8_t* input, uint32_t length);
 

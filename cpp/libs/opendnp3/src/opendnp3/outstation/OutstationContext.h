@@ -96,17 +96,17 @@ class OutstationContext : private INewEventDataHandler
 
 	void BeginUnsolTx(const openpal::ReadBufferView& response);
 
-	IINField BuildNonReadResponse(const APDUHeader& header, const openpal::ReadBufferView& objects, HeaderWriter& writer, bool objectsEqualToLastRequest);
+	IINField BuildNonReadResponse(const APDUHeader& header, const openpal::ReadBufferView& objects, HeaderWriter& writer);
 
 	OutstationSolicitedStateBase* ContinueMultiFragResponse(uint8_t seq);
 	
-	OutstationSolicitedStateBase* RespondToNonReadRequest(const APDUHeader& header, const openpal::ReadBufferView& objects, bool objectsEqualToLastRequest);
+	OutstationSolicitedStateBase* RespondToNonReadRequest(const APDUHeader& header, const openpal::ReadBufferView& objects);
 
 	OutstationSolicitedStateBase* RespondToReadRequest(uint8_t seq, const openpal::ReadBufferView& objects);
 
 	void ProcessNoResponseFunction(const APDUHeader& header, const openpal::ReadBufferView& objects);
 
-	void DeferRequest(const APDUHeader& header, const openpal::ReadBufferView& objects, bool isRepeat, bool objectsEqualToLast);
+	void DeferRequest(const APDUHeader& header, const openpal::ReadBufferView& objects, bool isRepeat);
 
 	private:
 
@@ -114,7 +114,7 @@ class OutstationContext : private INewEventDataHandler
 
 	void PostCheckForActions();
 
-	OutstationSolicitedStateBase* ProcessNewRequest(const APDUHeader& header, const openpal::ReadBufferView& objects, bool objectsEqualToLastRequest);
+	OutstationSolicitedStateBase* ProcessNewRequest(const APDUHeader& header, const openpal::ReadBufferView& objects);
 		
 
 	// ------ Helpers ---------
@@ -139,7 +139,7 @@ class OutstationContext : private INewEventDataHandler
 
 	IINField HandleWrite(const openpal::ReadBufferView& objects);	
 	IINField HandleSelect(const openpal::ReadBufferView& objects, HeaderWriter& writer);
-	IINField HandleOperate(const openpal::ReadBufferView& objects, HeaderWriter& writer, bool objectsEqualToLastRequest);
+	IINField HandleOperate(const openpal::ReadBufferView& objects, HeaderWriter& writer);
 	IINField HandleDirectOperate(const openpal::ReadBufferView& objects, HeaderWriter* pWriter);
 	IINField HandleDelayMeasure(const openpal::ReadBufferView& objects, HeaderWriter& writer);
 	IINField HandleRestart(const openpal::ReadBufferView& objects, bool isWarmRestart, HeaderWriter* pWriter);

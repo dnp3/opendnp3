@@ -24,6 +24,9 @@
 
 #include <openpal/executor/MonotonicTimestamp.h>
 
+#include "opendnp3/gen/CommandStatus.h"
+#include "opendnp3/link/CRC.h"
+
 
 namespace opendnp3
 {
@@ -36,38 +39,57 @@ class ControlState
 	
 	public:	
 	
-	ControlState() : expectedSeq(0)		
-	{}
+	ControlState() : expectedSeq(0), digest(0), length(0)
+	{}	
 
-	// Is this sequence number what's expected for the OPERATE
-	bool IsOperateSequenceValid(uint8_t seqN) const
-	{		
-		return (seqN == expectedSeq);
-	}
-
-	bool IsSelectTimeValid(const openpal::MonotonicTimestamp& now, const openpal::TimeDuration& timeout) const
+	CommandStatus ValidateSelection(uint8_t seqN, const openpal::MonotonicTimestamp& now, const openpal::TimeDuration& timeout, const openpal::ReadBufferView& objects) const
 	{
-		if (selectTime.milliseconds <= now.milliseconds)
+		if (seqN == expectedSeq)
 		{
-			auto elapsed = now.milliseconds - selectTime.milliseconds;
-			return elapsed < timeout;
+			if (selectTime.milliseconds <= now.milliseconds)
+			{
+				auto elapsed = now.milliseconds - selectTime.milliseconds;
+				if (elapsed < timeout)
+				{
+					if (length == objects.Size() && digest == CRC::CalcCrc(objects))
+					{
+						return CommandStatus::SUCCESS;
+					}
+					else
+					{
+						return CommandStatus::NO_SELECT;
+					}
+				}
+				else
+				{
+					return CommandStatus::TIMEOUT;
+				}
+			}
+			else
+			{
+				return CommandStatus::TIMEOUT;
+			}
 		}
 		else
 		{
-			return false;
-		}		
+			return CommandStatus::NO_SELECT;
+		}
 	}
 
-	void Select(uint8_t currentSeqN, const openpal::MonotonicTimestamp& now)
+	void Select(uint8_t currentSeqN, const openpal::MonotonicTimestamp& now, const openpal::ReadBufferView& objects)
 	{
 		selectTime = now;
 		expectedSeq = AppControlField::NextSeq(currentSeqN);
+		digest = CRC::CalcCrc(objects);
+		length = objects.Size();
 	}
 
 	private:
 	
 	uint8_t expectedSeq;
-	openpal::MonotonicTimestamp selectTime;	
+	openpal::MonotonicTimestamp selectTime;
+	uint16_t digest;
+	uint32_t length;
 	
 };
 

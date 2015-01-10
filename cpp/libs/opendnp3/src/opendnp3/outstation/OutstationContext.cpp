@@ -204,7 +204,7 @@ OutstationSolicitedStateBase* OutstationContext::OnReceiveSolRequest(const APDUH
 
 	if (firstRequest)
 	{			
-		return ProcessNewRequest(header, objects, false);
+		return ProcessNewRequest(header, objects);
 	}
 	else
 	{		
@@ -224,17 +224,17 @@ OutstationSolicitedStateBase* OutstationContext::OnReceiveSolRequest(const APDUH
 			}
 			else // new operation with same SEQ
 			{
-				return ProcessNewRequest(header, objects, equality == APDUEquality::OBJECT_HEADERS_EQUAL);
+				return ProcessNewRequest(header, objects);
 			}
 		}
 		else  // completely new sequence #
 		{
-			return ProcessNewRequest(header, objects, equality == APDUEquality::OBJECT_HEADERS_EQUAL);
+			return ProcessNewRequest(header, objects);
 		}		
 	}	
 }
 
-OutstationSolicitedStateBase* OutstationContext::ProcessNewRequest(const APDUHeader& header, const openpal::ReadBufferView& objects, bool objectsEqualToLastRequest)
+OutstationSolicitedStateBase* OutstationContext::ProcessNewRequest(const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
 	this->ostate.sol.seqN = header.control.SEQ;
 	if (header.function == FunctionCode::READ)
@@ -243,17 +243,17 @@ OutstationSolicitedStateBase* OutstationContext::ProcessNewRequest(const APDUHea
 	}
 	else
 	{
-		return this->ostate.sol.pState->OnNewNonReadRequest(this, header, objects, objectsEqualToLastRequest);
+		return this->ostate.sol.pState->OnNewNonReadRequest(this, header, objects);
 	}
 }
 
-OutstationSolicitedStateBase* OutstationContext::RespondToNonReadRequest(const APDUHeader& header, const openpal::ReadBufferView& objects, bool objectsEqualToLastRequest)
+OutstationSolicitedStateBase* OutstationContext::RespondToNonReadRequest(const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
 	auto response = StartNewSolicitedResponse();
 	auto writer = response.GetWriter();
 	response.SetFunction(FunctionCode::RESPONSE);
 	response.SetControl(AppControlField(true, true, false, false, header.control.SEQ));
-	auto iin = this->BuildNonReadResponse(header, objects, writer, objectsEqualToLastRequest);
+	auto iin = this->BuildNonReadResponse(header, objects, writer);
 	response.SetIIN(iin | this->GetResponseIIN());		
 	this->BeginResponseTx(response.ToReadOnly());
 	return &OutstationSolicitedStateIdle::Inst();
@@ -295,9 +295,9 @@ void OutstationContext::ProcessNoResponseFunction(const APDUHeader& header, cons
 	}	
 }
 
-void OutstationContext::DeferRequest(const APDUHeader& header, const openpal::ReadBufferView& objects, bool isRepeat, bool objectsEqualToLast)
+void OutstationContext::DeferRequest(const APDUHeader& header, const openpal::ReadBufferView& objects, bool isRepeat)
 {
-	requestHistory.DeferRequest(header, objects, isRepeat, objectsEqualToLast);
+	requestHistory.DeferRequest(header, objects, isRepeat);
 }
 
 void OutstationContext::BeginResponseTx(const ReadBufferView& response)
@@ -317,7 +317,7 @@ void OutstationContext::BeginUnsolTx(const ReadBufferView& response)
 	ostate.pLower->BeginTransmit(response);
 }
 
-IINField OutstationContext::BuildNonReadResponse(const APDUHeader& header, const openpal::ReadBufferView& objects, HeaderWriter& writer, bool objectsEqualToLastRequest)
+IINField OutstationContext::BuildNonReadResponse(const APDUHeader& header, const openpal::ReadBufferView& objects, HeaderWriter& writer)
 {
 	switch (header.function)
 	{				
@@ -326,7 +326,7 @@ IINField OutstationContext::BuildNonReadResponse(const APDUHeader& header, const
 		case(FunctionCode::SELECT) :
 			return HandleSelect(objects, writer);
 		case(FunctionCode::OPERATE) :
-			return HandleOperate(objects, writer, objectsEqualToLastRequest);
+			return HandleOperate(objects, writer);
 		case(FunctionCode::DIRECT_OPERATE) :
 			return HandleDirectOperate(objects, &writer);
 		case(FunctionCode::COLD_RESTART) :
@@ -401,7 +401,7 @@ void OutstationContext::CheckForTaskStart()
 				}
 				else
 				{
-					ostate.sol.pState = ostate.sol.pState->OnNewNonReadRequest(this, dr.header, dr.objects, dr.objectsEqualToLast);
+					ostate.sol.pState = ostate.sol.pState->OnNewNonReadRequest(this, dr.header, dr.objects);
 				}				
 			}
 		}
@@ -554,7 +554,7 @@ IINField OutstationContext::HandleSelect(const openpal::ReadBufferView& objects,
 		{
 			if (handler.AllCommandsSuccessful())
 			{						
-				ostate.control.Select(ostate.sol.seqN, ostate.pExecutor->GetTime());				
+				ostate.control.Select(ostate.sol.seqN, ostate.pExecutor->GetTime(), objects);				
 			}
 			
 			return handler.Errors();
@@ -566,7 +566,7 @@ IINField OutstationContext::HandleSelect(const openpal::ReadBufferView& objects,
 	}
 }
 
-IINField OutstationContext::HandleOperate(const openpal::ReadBufferView& objects, HeaderWriter& writer, bool objectsEqualToLastRequest)
+IINField OutstationContext::HandleOperate(const openpal::ReadBufferView& objects, HeaderWriter& writer)
 {
 	// since we're echoing, make sure there's enough size before beginning
 	if (objects.Size() > writer.Remaining())
@@ -576,40 +576,26 @@ IINField OutstationContext::HandleOperate(const openpal::ReadBufferView& objects
 	}
 	else
 	{
-		if (this->ostate.control.IsOperateSequenceValid(ostate.sol.seqN))
+		auto now = ostate.pExecutor->GetTime();
+		auto result = ostate.control.ValidateSelection(ostate.sol.seqN, now, ostate.params.selectTimeout, objects);
+
+		if (result == CommandStatus::SUCCESS)
 		{
-			auto now = ostate.pExecutor->GetTime();
-			
-			if (ostate.control.IsSelectTimeValid(now, ostate.params.selectTimeout))
+			CommandActionAdapter adapter(pCommandHandler, false);
+			CommandResponseHandler handler(ostate.logger, ostate.params.maxControlsPerRequest, &adapter, &writer);
+			auto result = APDUParser::ParseTwoPass(objects, &handler, &ostate.logger);
+			if (result == APDUParser::Result::OK)
 			{
-				if (objectsEqualToLastRequest)
-				{					
-					CommandActionAdapter adapter(pCommandHandler, false);
-					CommandResponseHandler handler(ostate.logger, ostate.params.maxControlsPerRequest, &adapter, &writer);
-					auto result = APDUParser::ParseTwoPass(objects, &handler, &ostate.logger);
-					if (result == APDUParser::Result::OK)
-					{
-						return handler.Errors();
-					}
-					else
-					{
-						return IINFromParseResult(result);
-					}					
-				}
-				else
-				{
-					return HandleCommandWithConstant(objects, writer, CommandStatus::NO_SELECT);
-				}
+				return handler.Errors();
 			}
 			else
 			{
-				return HandleCommandWithConstant(objects, writer, CommandStatus::TIMEOUT);
-
+				return IINFromParseResult(result);
 			}
 		}
 		else
 		{
-			return HandleCommandWithConstant(objects, writer, CommandStatus::NO_SELECT);
+			return HandleCommandWithConstant(objects, writer, result);
 		}
 	}
 }

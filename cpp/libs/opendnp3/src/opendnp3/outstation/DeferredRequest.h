@@ -37,20 +37,18 @@ class DeferredRequest
 
 	public:
 
-	DeferredRequest() : isRepeat(false), objectsEqualToLast(false)
+	DeferredRequest() : isRepeat(false)
 	{}
 
-	DeferredRequest(APDUHeader header_, openpal::ReadBufferView objects_, bool isRepeat_, bool objectsEqualToLast_) :
+	DeferredRequest(APDUHeader header_, openpal::ReadBufferView objects_, bool isRepeat_) :
 		header(header_),
 		objects(objects_),
-		isRepeat(isRepeat_),
-		objectsEqualToLast(objectsEqualToLast_)
+		isRepeat(isRepeat_)		
 	{}
 
 	APDUHeader header;
 	openpal::ReadBufferView objects;
-	bool isRepeat;
-	bool objectsEqualToLast;
+	bool isRepeat;	
 };
 
 }

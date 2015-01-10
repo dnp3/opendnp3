@@ -74,6 +74,11 @@ uint16_t CRC::CalcCrc(const uint8_t* input, uint32_t length)
 	return ~CRC;
 }
 
+uint16_t CRC::CalcCrc(const openpal::ReadBufferView& view)
+{
+	return CalcCrc(view, view.Size());
+}
+
 void CRC::AddCrc(uint8_t* input, uint32_t length)
 {
 	uint16_t crc = CRC::CalcCrc(input, length);

@@ -43,7 +43,7 @@ APDUEquality RequestHistory::RecordLastRequest(const APDUHeader& header, const o
 	
 	// now swap the values for the new ones
 	state = State::PREVIOUS;
-	this->defered = DeferredRequest(header, objects.CopyTo(buffer.GetWriteBufferView()), false, false);	
+	this->defered = DeferredRequest(header, objects.CopyTo(buffer.GetWriteBufferView()), false);	
 
 	// return the correct equality type
 	if (functionsEqual)
@@ -75,10 +75,10 @@ FunctionCode RequestHistory::GetDeferedFunction() const
 	return (state == State::DEFERED) ? defered.header.function : FunctionCode::UNKNOWN;	
 }
 
-void RequestHistory::DeferRequest(const APDUHeader& header, const openpal::ReadBufferView& objects, bool isRepeat, bool objectsEqualToLast)
+void RequestHistory::DeferRequest(const APDUHeader& header, const openpal::ReadBufferView& objects, bool isRepeat)
 {
 	state = State::DEFERED;	
-	this->defered = DeferredRequest(header, objects.CopyTo(buffer.GetWriteBufferView()), isRepeat, objectsEqualToLast);
+	this->defered = DeferredRequest(header, objects.CopyTo(buffer.GetWriteBufferView()), isRepeat);
 }
 
 }

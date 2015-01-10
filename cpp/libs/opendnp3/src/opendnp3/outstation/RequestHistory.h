@@ -45,7 +45,7 @@ class RequestHistory
 
 	void Reset();	
 	APDUEquality RecordLastRequest(const APDUHeader& header, const openpal::ReadBufferView& objects);
-	void DeferRequest(const APDUHeader& header, const openpal::ReadBufferView& objects, bool isRepeat, bool objectsEqualToLast);
+	void DeferRequest(const APDUHeader& header, const openpal::ReadBufferView& objects, bool isRepeat);
 
 	DeferredRequest PopDeferedRequest();
 	FunctionCode GetDeferedFunction() const;

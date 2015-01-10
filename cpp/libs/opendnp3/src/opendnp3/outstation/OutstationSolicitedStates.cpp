@@ -53,19 +53,19 @@ OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnConfirmTimeout(Out
 
 OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnNewReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
-	pContext->DeferRequest(header, objects, false, false);	
+	pContext->DeferRequest(header, objects, false);	
 	return this;
 }
 
-OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnNewNonReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadBufferView& objects, bool headersEqualToLast)
+OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnNewNonReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
-	pContext->DeferRequest(header, objects, false, headersEqualToLast);
+	pContext->DeferRequest(header, objects, false);
 	return this;
 }
 
 OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnRepeatNonReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
-	pContext->DeferRequest(header, objects, true, false);	
+	pContext->DeferRequest(header, objects, true);	
 	return this;
 }
 
@@ -87,17 +87,17 @@ OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewReadRequest(Out
 	}
 	else
 	{
-		pContext->DeferRequest(header, objects, false, false);		
+		pContext->DeferRequest(header, objects, false);		
 		return this;
 	}
 }
 
-OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewNonReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadBufferView& objects, bool lastHeadersEqual)
+OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewNonReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
 	if (pContext->ostate.isTransmitting)
 	{
 		
-		pContext->DeferRequest(header, objects, false, lastHeadersEqual);
+		pContext->DeferRequest(header, objects, false);
 		return this;		
 	}
 	else
@@ -109,7 +109,7 @@ OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewNonReadRequest(
 		}
 		else
 		{
-			return pContext->RespondToNonReadRequest(header, objects, lastHeadersEqual);
+			return pContext->RespondToNonReadRequest(header, objects);
 		}		
 	}
 }
@@ -118,7 +118,7 @@ OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnRepeatNonReadReque
 {
 	if (pContext->ostate.isTransmitting)
 	{
-		pContext->DeferRequest(header, objects, true, false);		
+		pContext->DeferRequest(header, objects, true);		
 		return this;		
 	}
 	else
@@ -146,14 +146,14 @@ OutstationSolicitedStateBase& OutstationStateSolicitedConfirmWait::Inst()
 
 OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnNewReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {	
-	pContext->DeferRequest(header, objects, false, false);	
+	pContext->DeferRequest(header, objects, false);	
 	return Abort(pContext);
 			
 }
 
-OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnNewNonReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadBufferView& objects, bool headersEqual)
+OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnNewNonReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
-	pContext->DeferRequest(header, objects, false, headersEqual);
+	pContext->DeferRequest(header, objects, false);
 	return Abort(pContext);
 }
 
