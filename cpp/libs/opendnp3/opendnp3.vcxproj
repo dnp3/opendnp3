@@ -242,6 +242,7 @@
     <ClInclude Include="src\opendnp3\outstation\ReadHandler.h" />
     <ClInclude Include="src\opendnp3\outstation\RequestHistory.h" />
     <ClInclude Include="src\opendnp3\outstation\ResponseContext.h" />
+    <ClInclude Include="src\opendnp3\outstation\ControlState.h" />
     <ClInclude Include="src\opendnp3\outstation\SelectedRanges.h" />
     <ClInclude Include="src\opendnp3\outstation\SimpleCommandHandler.h" />
     <ClInclude Include="src\opendnp3\outstation\SOERecord.h" />

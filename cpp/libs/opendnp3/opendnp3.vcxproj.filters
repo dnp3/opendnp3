@@ -768,6 +768,9 @@
     <ClInclude Include="src\opendnp3\outstation\OutstationChannelStates.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\ControlState.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\TimeAndInterval.cpp">

@@ -26,6 +26,7 @@
 #include "opendnp3/outstation/OutstationParams.h"
 #include "opendnp3/outstation/RequestHistory.h"
 #include "opendnp3/outstation/OutstationChannelStates.h"
+#include "opendnp3/outstation/ControlState.h"
 #include "opendnp3/outstation/OutstationSeqNum.h"
 
 #include <openpal/executor/TimerRef.h>
@@ -47,12 +48,8 @@ class OutstationState
 					openpal::LogRoot& root,
 					ILowerLayer& lower);
 
-	void SetOffline();
-
-	bool IsOperateSequenceValid() const
-	{
-		return (rxFragCount == operateExpectedFragCount) && (sol.seqN == operateExpectedSeq);
-	}
+	// reset important variables to their initial state
+	void SetOffline();	
 
 	// ------ External resources --------
 	openpal::IExecutor* pExecutor;
@@ -65,14 +62,11 @@ class OutstationState
 	// ------ Shared dynamic state --------
 	bool isOnline;
 	bool isTransmitting;
-	IINField staticIIN;
-	uint32_t rxFragCount;
+	IINField staticIIN;	
 	openpal::TimerRef confirmTimer;
 
 	// ------ Dynamic state related to controls ------
-	openpal::MonotonicTimestamp selectTime;
-	uint8_t operateExpectedSeq;
-	uint32_t operateExpectedFragCount;	
+	ControlState control;
 
 	// ------ Dynamic state related to solicited and unsolicited modes ------			
 	OutstationSolState  sol;

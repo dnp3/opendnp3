@@ -18,42 +18,44 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef OPENDNP3_CONTROLSTATE_H
+#define OPENDNP3_CONTROLSTATE_H
 
-#include "OutstationState.h"
 
-using namespace openpal;
+#include <openpal/executor/MonotonicTimestamp.h>
+
 
 namespace opendnp3
 {
 
-OutstationState::OutstationState(
-		const OutstationParams& params_,
-		openpal::IExecutor& executor,
-		openpal::LogRoot& root,
-		ILowerLayer& lower) :
-	
-	pExecutor(&executor),
-	pLower(&lower),
-	logger(root.GetLogger()),
-	params(params_),	
-	isOnline(false),
-	isTransmitting(false),
-	staticIIN(IINBit::DEVICE_RESTART),	
-	confirmTimer(executor)
-	
-{	
-	
-}
-
-void OutstationState::SetOffline()
+///
+/// Represent all of the mutable state for SBO controls
+///
+class ControlState
 {
-	isOnline = false;
-	isTransmitting = false;
-	sol.pState = &OutstationSolicitedStateIdle::Inst();
-	unsol.pState = &OutstationUnsolicitedStateIdle::Inst();
-	confirmTimer.Cancel();
-}
+	
+	public:	
+	
+	ControlState() : 
+		rxFragCount(0),
+		operateExpectedSeq(0),
+		operateExpectedFragCount(0)
+	{}
+
+	// Is this sequence number what's expected for the OPERATE
+	bool IsOperateSequenceValid(uint8_t seqN) const
+	{
+		return (rxFragCount == operateExpectedFragCount) && (seqN == operateExpectedSeq);
+	}
+
+	
+	openpal::MonotonicTimestamp selectTime;	
+	uint32_t rxFragCount;
+	uint8_t operateExpectedSeq;
+	uint32_t operateExpectedFragCount;	
+};
 
 
 }
 
+#endif
