@@ -81,7 +81,7 @@ OutstationSolicitedStateBase& OutstationSolicitedStateIdle::Inst()
 
 OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
-	if (!pContext->ostate.isTransmitting && pContext->ostate.pUnsolicitedState == &OutstationUnsolicitedStateIdle::Inst())
+	if (!pContext->ostate.isTransmitting && pContext->ostate.unsol.IsIdle())
 	{
 		return pContext->RespondToReadRequest(header.control.SEQ, objects);
 	}

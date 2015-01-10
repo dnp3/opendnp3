@@ -57,17 +57,17 @@ OutstationUnsolicitedStateConfirmWait OutstationUnsolicitedStateConfirmWait::ins
 
 OutstationUnsolicitedStateBase* OutstationUnsolicitedStateConfirmWait::OnConfirm(OutstationContext* pContext, const APDUHeader& header)
 {
-	if (header.control.SEQ == pContext->ostate.unsolicited.expectedConSeqN)
+	if (header.control.SEQ == pContext->ostate.unsol.expectedConSeqN)
 	{
 		pContext->ostate.confirmTimer.Cancel();
 
-		if (pContext->ostate.completedNullUnsol)
+		if (pContext->ostate.unsol.completedNull)
 		{			
 			pContext->eventBuffer.ClearWritten();
 		}
 		else
 		{
-			pContext->ostate.completedNullUnsol = true;
+			pContext->ostate.unsol.completedNull = true;
 		}		
 		return &OutstationUnsolicitedStateIdle::Inst();
 	}

@@ -66,15 +66,11 @@ class OutstationState
 	// ------ Dynamic state related to controls ------
 	openpal::MonotonicTimestamp selectTime;
 	uint8_t operateExpectedSeq;
-	uint32_t operateExpectedFragCount;
+	uint32_t operateExpectedFragCount;	
 
-	// ------ Dynamic state related to unsolicited mode ------		
-	OutstationSeqNum unsolicited;
-	OutstationUnsolicitedStateBase*	pUnsolicitedState;
-	bool completedNullUnsol;
-
-	// ------ Dynamic state related to solicited mode ------			
+	// ------ Dynamic state related to solicited and unsolicited modes ------			
 	OutstationSolState  sol;
+	OutstationUnsolState unsol;
 };
 
 

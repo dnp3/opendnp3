@@ -34,8 +34,23 @@ class OutstationSolState : public OutstationSeqNum
 
 	OutstationSolState() : pState(&OutstationSolicitedStateIdle::Inst())
 	{}
+
+	bool IsIdle() const { return pState == &OutstationSolicitedStateIdle::Inst(); };
 	
 	OutstationSolicitedStateBase*	pState;
+};
+
+class OutstationUnsolState : public OutstationSeqNum
+{
+public:
+
+	OutstationUnsolState() : completedNull(false), pState(&OutstationUnsolicitedStateIdle::Inst())
+	{}
+
+	bool IsIdle() const { return pState == &OutstationUnsolicitedStateIdle::Inst(); };
+
+	bool completedNull;
+	OutstationUnsolicitedStateBase*	pState;	
 };
 
 }

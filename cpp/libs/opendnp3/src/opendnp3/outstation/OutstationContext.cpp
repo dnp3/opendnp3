@@ -108,7 +108,7 @@ APDUResponse OutstationContext::StartNewUnsolicitedResponse()
 
 void OutstationContext::ConfigureUnsolHeader(APDUResponse& unsol)
 {	
-	build::NullUnsolicited(unsol, this->ostate.unsolicited.seqN, this->GetResponseIIN());
+	build::NullUnsolicited(unsol, this->ostate.unsol.seqN, this->GetResponseIIN());
 }
 
 void OutstationContext::SetOnline()
@@ -122,7 +122,7 @@ void OutstationContext::SetOffline()
 	ostate.isOnline = false;
 	ostate.isTransmitting = false;	
 	ostate.sol.pState = &OutstationSolicitedStateIdle::Inst();
-	ostate.pUnsolicitedState = &OutstationUnsolicitedStateIdle::Inst();
+	ostate.unsol.pState = &OutstationUnsolicitedStateIdle::Inst();
 	ostate.confirmTimer.Cancel();
 
 	requestHistory.Reset();	
@@ -137,9 +137,7 @@ bool OutstationContext::IsOperateSequenceValid()
 
 bool OutstationContext::IsIdle()
 {
-	return ostate.isOnline &&
-		ostate.sol.pState == &OutstationSolicitedStateIdle::Inst() &&
-		ostate.pUnsolicitedState == &OutstationUnsolicitedStateIdle::Inst();
+	return ostate.isOnline && ostate.sol.IsIdle() && ostate.unsol.IsIdle();
 }
 
 void OutstationContext::OnReceiveAPDU(const openpal::ReadBufferView& apdu)
@@ -194,7 +192,7 @@ void OutstationContext::ExamineASDU(const APDUHeader& header, const openpal::Rea
 	{
 		if (header.function == FunctionCode::CONFIRM)
 		{
-			ostate.pUnsolicitedState = ostate.pUnsolicitedState->OnConfirm(this, header);
+			ostate.unsol.pState = ostate.unsol.pState->OnConfirm(this, header);
 		}
 		else
 		{
@@ -330,8 +328,8 @@ void OutstationContext::BeginUnsolTx(const ReadBufferView& response)
 {	
 	logging::ParseAndLogResponseTx(&ostate.logger, response);
 	this->ostate.isTransmitting = true;
-	this->ostate.unsolicited.expectedConSeqN = ostate.unsolicited.seqN;
-	this->ostate.unsolicited.seqN = AppControlField::NextSeq(ostate.unsolicited.seqN);
+	this->ostate.unsol.expectedConSeqN = ostate.unsol.seqN;
+	this->ostate.unsol.seqN = AppControlField::NextSeq(ostate.unsol.seqN);
 	ostate.pLower->BeginTransmit(response);
 }
 
@@ -398,13 +396,13 @@ void OutstationContext::CheckForTaskStart()
 {	
 	// if we're online, the solicited state is idle, and the unsolicited state 
 	// is not transmitting we may be able to do a task
-	if (ostate.isOnline && !ostate.isTransmitting && ostate.sol.pState == &OutstationSolicitedStateIdle::Inst())
+	if (ostate.isOnline && !ostate.isTransmitting && ostate.sol.IsIdle())
 	{
 		if (requestHistory.HasDefered())
 		{			
 			if (requestHistory.GetDeferedFunction() == FunctionCode::READ)
 			{
-				if (ostate.pUnsolicitedState == &OutstationUnsolicitedStateIdle::Inst())
+				if (ostate.unsol.IsIdle())
 				{
 					DeferredRequest dr = requestHistory.PopDeferedRequest();					
 					ostate.sol.pState = ostate.sol.pState->OnNewReadRequest(this, dr.header, dr.objects);
@@ -425,7 +423,7 @@ void OutstationContext::CheckForTaskStart()
 		}
 		else
 		{
-			if (ostate.pUnsolicitedState == &OutstationUnsolicitedStateIdle::Inst())
+			if (ostate.unsol.IsIdle())
 			{
 				this->CheckForUnsolicited();
 			}
@@ -438,7 +436,7 @@ void OutstationContext::CheckForUnsolicited()
 
 	if (ostate.params.allowUnsolicited)
 	{
-		if (ostate.completedNullUnsol)
+		if (ostate.unsol.completedNull)
 		{				
 			// are there events to be reported?
 			if (ostate.params.unsolClassMask.Intersects(eventBuffer.UnwrittenClassField()))
@@ -458,7 +456,7 @@ void OutstationContext::CheckForUnsolicited()
 							
 				this->ConfigureUnsolHeader(unsolResponse);
 				this->StartUnsolicitedConfirmTimer();
-				this->ostate.pUnsolicitedState = &OutstationUnsolicitedStateConfirmWait::Inst();
+				this->ostate.unsol.pState = &OutstationUnsolicitedStateConfirmWait::Inst();
 				this->BeginUnsolTx(unsolResponse.ToReadOnly());				
 			}			
 		}
@@ -469,7 +467,7 @@ void OutstationContext::CheckForUnsolicited()
 			auto unsol = this->StartNewUnsolicitedResponse();
 			this->ConfigureUnsolHeader(unsol);
 			this->StartUnsolicitedConfirmTimer();
-			this->ostate.pUnsolicitedState = &OutstationUnsolicitedStateConfirmWait::Inst();
+			this->ostate.unsol.pState = &OutstationUnsolicitedStateConfirmWait::Inst();
 			this->BeginUnsolTx(unsol.ToReadOnly());
 		}
 	}	
@@ -477,28 +475,34 @@ void OutstationContext::CheckForUnsolicited()
 
 bool OutstationContext::StartSolicitedConfirmTimer()
 {
-	auto timeout = [this]() { this->OnSolConfirmTimeout(); };
+	auto timeout = [this]() 
+	{ 
+		this->ostate.confirmTimer.Reset();
+		this->OnSolConfirmTimeout(); 
+	};
 	return ostate.confirmTimer.Start(ostate.params.unsolConfirmTimeout, Action0::Bind(timeout));
 }
 
 bool OutstationContext::StartUnsolicitedConfirmTimer()
 {
-	auto timeout = [this]() { this->OnUnsolConfirmTimeout(); };
+	auto timeout = [this]() 
+	{ 
+		this->ostate.confirmTimer.Reset();
+		this->OnUnsolConfirmTimeout();
+	};
 	return ostate.confirmTimer.Start(ostate.params.unsolConfirmTimeout, Action0::Bind(timeout));
 }
 
 void OutstationContext::OnSolConfirmTimeout()
-{
-	ostate.confirmTimer.Reset();
+{	
 	ostate.sol.pState = this->ostate.sol.pState->OnConfirmTimeout(this);
-	this->PostCheckForActions();
+	this->CheckForTaskStart();
 }
 
 void OutstationContext::OnUnsolConfirmTimeout()
-{
-	ostate.confirmTimer.Reset();
-	ostate.pUnsolicitedState = this->ostate.pUnsolicitedState->OnConfirmTimeout(this);
-	this->PostCheckForActions();
+{	
+	ostate.unsol.pState = this->ostate.unsol.pState->OnConfirmTimeout(this);
+	this->CheckForTaskStart();
 }
 
 Pair<IINField, AppControlField> OutstationContext::HandleRead(const openpal::ReadBufferView& objects, HeaderWriter& writer)

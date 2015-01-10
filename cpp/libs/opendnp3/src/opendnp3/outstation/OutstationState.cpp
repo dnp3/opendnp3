@@ -45,10 +45,7 @@ OutstationState::OutstationState(
 	confirmTimer(executor),
 
 	operateExpectedSeq(0),
-	operateExpectedFragCount(0),		
-
-	completedNullUnsol(false),
-	pUnsolicitedState(&OutstationUnsolicitedStateIdle::Inst())	
+	operateExpectedFragCount(0)	
 {	
 	
 }
