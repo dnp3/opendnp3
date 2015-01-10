@@ -108,7 +108,7 @@ APDUResponse OutstationContext::StartNewUnsolicitedResponse()
 
 void OutstationContext::ConfigureUnsolHeader(APDUResponse& unsol)
 {	
-	build::NullUnsolicited(unsol, this->ostate.unsolSeqN, this->GetResponseIIN());
+	build::NullUnsolicited(unsol, this->ostate.unsolicited.seqN, this->GetResponseIIN());
 }
 
 void OutstationContext::SetOnline()
@@ -132,7 +132,7 @@ void OutstationContext::SetOffline()
 
 bool OutstationContext::IsOperateSequenceValid()
 {	
-	return (ostate.rxFragCount == ostate.operateExpectedFragCount) && (ostate.solSeqN == ostate.operateExpectedSeq);
+	return (ostate.rxFragCount == ostate.operateExpectedFragCount) && (ostate.solicited.seqN == ostate.operateExpectedSeq);
 }
 
 bool OutstationContext::IsIdle()
@@ -226,7 +226,7 @@ OutstationSolicitedStateBase* OutstationContext::OnReceiveSolRequest(const APDUH
 	}
 	else
 	{		
-		if (this->ostate.solSeqN == header.control.SEQ)
+		if (this->ostate.solicited.seqN == header.control.SEQ)
 		{
 			if (equality == APDUEquality::FULL_EQUALITY)
 			{
@@ -254,7 +254,7 @@ OutstationSolicitedStateBase* OutstationContext::OnReceiveSolRequest(const APDUH
 
 OutstationSolicitedStateBase* OutstationContext::ProcessNewRequest(const APDUHeader& header, const openpal::ReadBufferView& objects, bool objectsEqualToLastRequest)
 {
-	this->ostate.solSeqN = header.control.SEQ;
+	this->ostate.solicited.seqN = header.control.SEQ;
 	if (header.function == FunctionCode::READ)
 	{
 		return this->ostate.pSolicitedState->OnNewReadRequest(this, header, objects);
@@ -284,7 +284,7 @@ OutstationSolicitedStateBase* OutstationContext::RespondToReadRequest(uint8_t se
 	response.SetFunction(FunctionCode::RESPONSE);	
 	auto result = this->HandleRead(objects, writer);
 	result.second.SEQ = seq;
-	ostate.expectedSolConfirmSeq = seq;
+	ostate.solicited.expectedConSeqN = seq;
 	response.SetControl(result.second);
 	response.SetIIN(result.first | this->GetResponseIIN());
 	this->BeginResponseTx(response.ToReadOnly());
@@ -330,8 +330,8 @@ void OutstationContext::BeginUnsolTx(const ReadBufferView& response)
 {	
 	logging::ParseAndLogResponseTx(&ostate.logger, response);
 	this->ostate.isTransmitting = true;
-	this->ostate.expectedUnsolConfirmSeq = ostate.unsolSeqN;
-	this->ostate.unsolSeqN = AppControlField::NextSeq(ostate.unsolSeqN);
+	this->ostate.unsolicited.expectedConSeqN = ostate.unsolicited.seqN;
+	this->ostate.unsolicited.seqN = AppControlField::NextSeq(ostate.unsolicited.seqN);
 	ostate.pLower->BeginTransmit(response);
 }
 
@@ -371,7 +371,7 @@ OutstationSolicitedStateBase* OutstationContext::ContinueMultiFragResponse(uint8
 	response.SetFunction(FunctionCode::RESPONSE);		
 	auto control = this->rspContext.LoadResponse(writer);
 	control.SEQ = seq;
-	ostate.expectedSolConfirmSeq = seq;
+	ostate.solicited.expectedConSeqN = seq;
 	response.SetControl(control);
 	response.SetIIN(this->ostate.staticIIN | this->GetDynamicIIN());
 	this->BeginResponseTx(response.ToReadOnly());
@@ -579,7 +579,7 @@ IINField OutstationContext::HandleSelect(const openpal::ReadBufferView& objects,
 			if (handler.AllCommandsSuccessful())
 			{				
 				ostate.operateExpectedFragCount = ostate.rxFragCount + 1;
-				ostate.operateExpectedSeq = AppControlField::NextSeq(ostate.solSeqN);
+				ostate.operateExpectedSeq = AppControlField::NextSeq(ostate.solicited.seqN);
 				ostate.selectTime = ostate.pExecutor->GetTime();
 			}
 			

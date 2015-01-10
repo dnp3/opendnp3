@@ -173,7 +173,7 @@ OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::Abort(Outstat
 
 OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnConfirm(OutstationContext* pContext, const APDUHeader& header)
 {	
-	if (header.control.SEQ == pContext->ostate.expectedSolConfirmSeq)
+	if (header.control.SEQ == pContext->ostate.solicited.expectedConSeqN)
 	{
 		pContext->ostate.confirmTimer.Cancel();
 

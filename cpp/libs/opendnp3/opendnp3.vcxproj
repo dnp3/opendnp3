@@ -233,6 +233,7 @@
     <ClInclude Include="src\opendnp3\outstation\OutstationConfig.h" />
     <ClInclude Include="src\opendnp3\outstation\OutstationContext.h" />
     <ClInclude Include="src\opendnp3\outstation\OutstationParams.h" />
+    <ClInclude Include="src\opendnp3\outstation\OutstationSeqNum.h" />
     <ClInclude Include="src\opendnp3\outstation\OutstationSolicitedStates.h" />
     <ClInclude Include="src\opendnp3\outstation\OutstationStackConfig.h" />
     <ClInclude Include="src\opendnp3\outstation\OutstationState.h" />

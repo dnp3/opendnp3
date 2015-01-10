@@ -26,13 +26,12 @@
 #include "opendnp3/outstation/OutstationParams.h"
 #include "opendnp3/outstation/RequestHistory.h"
 
+#include "opendnp3/outstation/OutstationSeqNum.h"
 #include "opendnp3/outstation/OutstationSolicitedStates.h"
 #include "opendnp3/outstation/OutstationUnsolicitedStates.h"
 
 #include <openpal/executor/TimerRef.h>
 #include <openpal/logging/LogRoot.h>
-
-
 
 namespace opendnp3
 {
@@ -72,13 +71,11 @@ class OutstationState
 	uint32_t operateExpectedFragCount;
 
 	// ------ Dynamic state related to unsolicited mode ------		
-	uint8_t unsolSeqN;
-	uint8_t expectedUnsolConfirmSeq;
+	OutstationSeqNum unsolicited;
 	OutstationUnsolicitedStateBase*	pUnsolicitedState;
 
 	// ------ Dynamic state related to solicited mode ------			
-	uint8_t solSeqN;
-	uint8_t expectedSolConfirmSeq;
+	OutstationSeqNum solicited;
 	bool completedNullUnsol;
 	OutstationSolicitedStateBase* pSolicitedState;
 };

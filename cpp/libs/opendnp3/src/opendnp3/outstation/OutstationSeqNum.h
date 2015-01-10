@@ -18,43 +18,29 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef OPENDNP3_OUTSTATIONSEQNUM_H
+#define OPENDNP3_OUTSTATIONSEQNUM_H
 
-#include "OutstationState.h"
-
-using namespace openpal;
+#include <cstdint>
 
 namespace opendnp3
 {
 
-OutstationState::OutstationState(
-		const OutstationParams& params_,
-		openpal::IExecutor& executor,
-		openpal::LogRoot& root,
-		ILowerLayer& lower) :
-	
-	pExecutor(&executor),
-	pLower(&lower),
-	logger(root.GetLogger()),
-
-	params(params_),	
-	
-	isOnline(false),
-	isTransmitting(false),
-	staticIIN(IINBit::DEVICE_RESTART),
-	rxFragCount(0),
-	confirmTimer(executor),
-
-	operateExpectedSeq(0),
-	operateExpectedFragCount(0),
-	
-	pSolicitedState(&OutstationSolicitedStateIdle::Inst()),
-
-	completedNullUnsol(false),
-	pUnsolicitedState(&OutstationUnsolicitedStateIdle::Inst())	
+///
+/// Sequence numbers for one channel (sol or unsol)
+///
+class OutstationSeqNum
 {	
-	
-}
+	public:		
+
+	OutstationSeqNum() : seqN(0), expectedConSeqN(0)
+	{}
+
+	uint8_t seqN;
+	uint8_t expectedConSeqN;	
+};
 
 
 }
 
+#endif
