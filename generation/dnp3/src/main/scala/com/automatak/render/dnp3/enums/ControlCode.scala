@@ -8,7 +8,7 @@ object ControlCode {
   private val comments = List(
     "There are a number of types of controls. The best way to understand this ",
     "difference is to think about the hardware controls the communication protocols are ",
-    "emulating. The most common to use are PULSE, LATCH_ON and LATCH_OFF",
+    "emulating. The most common to use are PULSE_ON, LATCH_ON and LATCH_OFF",
     "",
     "NOTE: Current implementation doesn't support queue/clear.",
     "",
@@ -20,7 +20,8 @@ object ControlCode {
 
   private val codes = List(
     EnumValue("NUL", 0x00, "illegal command code (used internally)"),
-    EnumValue("PULSE", 0x01, "a 'push-button' interface, can only be pressed one way (reset button on pedometer)"),
+    EnumValue("PULSE_ON", 0x01, "a 'push-button' interface, can only be pressed one way (reset button on pedometer)"),
+    EnumValue("PULSE_OFF", 0x02, "a 'push-button' interface with output remaining active following pulse"),
     EnumValue("LATCH_ON", 0x03, "a 'light-switch' moved to the ON position"),
     EnumValue("LATCH_OFF", 0x04, "a 'light-switch' moved to the OFF position"),
     EnumValue("PULSE_CLOSE", 0x41, " a 'doorbell' that rings while the button is depressed"),

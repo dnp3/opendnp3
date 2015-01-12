@@ -67,7 +67,47 @@ namespace Automatak.DNP3.Interface
     /// </summary>
     NOT_AUTHORIZED = 9,
     /// <summary>
-    /// 10 to 126 are currently reserved
+    /// command not accepted because it was prevented or inhibited by a local automation process, such as interlocking logic or synchrocheck
+    /// </summary>
+    AUTOMATION_INHIBIT = 10,
+    /// <summary>
+    /// command not accepted because the device cannot process any more activities than are presently in progress
+    /// </summary>
+    PROCESSING_LIMITED = 11,
+    /// <summary>
+    /// command not accepted because the value is outside the acceptable range permitted for this point
+    /// </summary>
+    OUT_OF_RANGE = 12,
+    /// <summary>
+    /// command not accepted because the outstation is forwarding the request to another downstream device which reported LOCAL
+    /// </summary>
+    DOWNSTREAM_LOCAL = 13,
+    /// <summary>
+    /// command not accepted because the outstation has already completed the requested operation
+    /// </summary>
+    ALREADY_COMPLETE = 14,
+    /// <summary>
+    /// command not accepted because the requested function is specifically blocked at the outstation
+    /// </summary>
+    BLOCKED = 15,
+    /// <summary>
+    /// command not accepted because the operation was cancelled
+    /// </summary>
+    CANCELLED = 16,
+    /// <summary>
+    /// command not accepted because another master is communicating with the outstation and has exclusive rights to operate this control point
+    /// </summary>
+    BLOCKED_OTHER_MASTER = 17,
+    /// <summary>
+    /// command not accepted because the outstation is forwarding the request to another downstream device which cannot be reached or is otherwise incapable of performing the request
+    /// </summary>
+    DOWNSTREAM_FAIL = 18,
+    /// <summary>
+    /// (deprecated) indicates the outstation shall not issue or perform the control operation
+    /// </summary>
+    NON_PARTICIPATING = 126,
+    /// <summary>
+    /// command not accepted because of some other undefined reason
     /// </summary>
     UNDEFINED = 127
   }

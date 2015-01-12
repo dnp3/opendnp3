@@ -44,7 +44,7 @@ TEST_CASE(SUITE("ControlExecutionClosedState"))
 
 	auto pCmdProcessor = &t.master.GetCommandProcessor();
 
-	ControlRelayOutputBlock bo(ControlCode::PULSE);
+	ControlRelayOutputBlock bo(ControlCode::PULSE_ON);
 	MockCommandCallback callback;
 
 	for(int i = 0; i < 10; ++i)
@@ -62,7 +62,7 @@ TEST_CASE(SUITE("SelectAndOperate"))
 	MasterTestObject t(NoStartupTasks());
 	t.master.OnLowerLayerUp();
 
-	ControlRelayOutputBlock bo(ControlCode::PULSE);
+	ControlRelayOutputBlock bo(ControlCode::PULSE_ON);
 
 	MockCommandCallback callback;
 	t.master.GetCommandProcessor().SelectAndOperate(bo, 1, callback);
@@ -93,7 +93,7 @@ TEST_CASE(SUITE("SelectAndOperateWithConfirmResponse"))
 	MasterTestObject t(NoStartupTasks());
 	t.master.OnLowerLayerUp();
 
-	ControlRelayOutputBlock bo(ControlCode::PULSE);
+	ControlRelayOutputBlock bo(ControlCode::PULSE_ON);
 
 	MockCommandCallback callback;
 	t.master.GetCommandProcessor().SelectAndOperate(bo, 1, callback);
@@ -128,7 +128,7 @@ TEST_CASE(SUITE("ControlExecutionSelectTimeout"))
 	t.master.OnLowerLayerUp();
 
 	MockCommandCallback callback;
-	t.master.GetCommandProcessor().SelectAndOperate(ControlRelayOutputBlock(ControlCode::PULSE), 1, callback);
+	t.master.GetCommandProcessor().SelectAndOperate(ControlRelayOutputBlock(ControlCode::PULSE_ON), 1, callback);
 	t.exe.RunMany();
 
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 03 " + crob); // SELECT
@@ -148,7 +148,7 @@ TEST_CASE(SUITE("ControlExecutionSelectLayerDown"))
 	t.master.OnLowerLayerUp();
 
 	MockCommandCallback callback;
-	t.master.GetCommandProcessor().SelectAndOperate(ControlRelayOutputBlock(ControlCode::PULSE), 1, callback);
+	t.master.GetCommandProcessor().SelectAndOperate(ControlRelayOutputBlock(ControlCode::PULSE_ON), 1, callback);
 	t.exe.RunMany();
 
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 03 " + crob); // SELECT
@@ -167,7 +167,7 @@ TEST_CASE(SUITE("ControlExecutionSelectErrorResponse"))
 	t.master.OnLowerLayerUp();
 
 	MockCommandCallback callback;
-	t.master.GetCommandProcessor().SelectAndOperate(ControlRelayOutputBlock(ControlCode::PULSE), 1, callback);
+	t.master.GetCommandProcessor().SelectAndOperate(ControlRelayOutputBlock(ControlCode::PULSE_ON), 1, callback);
 	t.exe.RunMany();
 	t.master.OnSendResult(true);
 	t.SendToMaster("C0 81 00 00 0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 04"); // not supported
@@ -185,7 +185,7 @@ TEST_CASE(SUITE("ControlExecutionSelectPartialResponse"))
 	t.master.OnLowerLayerUp();
 
 	MockCommandCallback callback;
-	t.master.GetCommandProcessor().SelectAndOperate(ControlRelayOutputBlock(ControlCode::PULSE), 1, callback);
+	t.master.GetCommandProcessor().SelectAndOperate(ControlRelayOutputBlock(ControlCode::PULSE_ON), 1, callback);
 	t.exe.RunMany();
 	t.master.OnSendResult(true);
 
@@ -212,7 +212,7 @@ TEST_CASE(SUITE("DeferredControlExecution"))
 	t.master.OnSendResult(true);
 	
 	//issue a command while the master is waiting for a response from the outstation
-	ControlRelayOutputBlock bo(ControlCode::PULSE);
+	ControlRelayOutputBlock bo(ControlCode::PULSE_ON);
 	MockCommandCallback callback;
 	t.master.GetCommandProcessor().SelectAndOperate(bo, 1, callback);
 	REQUIRE(t.exe.RunMany() > 0);

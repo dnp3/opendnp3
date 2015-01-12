@@ -72,7 +72,7 @@ namespace DotNetMasterDemo
                         master.ScanAllObjects(30, 0);
                         break;
                     case "c":
-                        var crob = new ControlRelayOutputBlock(ControlCode.PULSE, 1, 100, 100);
+                        var crob = new ControlRelayOutputBlock(ControlCode.PULSE_ON, 1, 100, 100);
                         var future = master.GetCommandProcessor().SelectAndOperate(crob, 0);
                         future.Listen((result) => Console.WriteLine("Result: " + result));
                         break;
