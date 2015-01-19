@@ -42,10 +42,10 @@ class PhysicalLayerASIO : public PhysicalLayerBase
 public:
 	
 	PhysicalLayerASIO(openpal::LogRoot& root, asio::io_service& service) :
-		executor(service),
-		PhysicalLayerBase(root, executor)		
+		PhysicalLayerBase(root),
+		executor(service)		
 	{
-	
+		this->SetExecutor(executor);
 	}
 
 	virtual ~PhysicalLayerASIO() {}	

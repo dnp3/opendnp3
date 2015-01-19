@@ -66,7 +66,9 @@ class PhysicalLayerBase : public openpal::IPhysicalLayer
 	};
 
 public:
-	PhysicalLayerBase(openpal::LogRoot& root, openpal::IExecutor& executor);
+	PhysicalLayerBase(openpal::LogRoot& root);
+
+	void SetExecutor(openpal::IExecutor& executor);
 
 	// destructor should only be called once the object is totally finished with all of its async operations
 	// to avoid segfaulting. There are a # of asserts that make sure the object has been shutdown properly.

@@ -286,9 +286,6 @@
     <ClCompile Include="src\TestTransportLoopback.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\TestTransportScalability.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\TestTypes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
