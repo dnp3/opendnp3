@@ -26,30 +26,40 @@
 namespace opendnp3 {
 
 /**
-  There are a number of types of controls. The best way to understand this 
-  difference is to think about the hardware controls the communication protocols are 
-  emulating. The most common to use are PULSE, LATCH_ON and LATCH_OFF
-
-  NOTE: Current implementation doesn't support queue/clear.
-
-  An enumeration of result codes received from an outstation in response to command request.
-  These correspond to those defined in the DNP3 standard
+  Defines the interoperable values of the Control Code
+  Refer to pages 506-510 of 1815 for a full description
 */
 enum class ControlCode : uint8_t
 {
-  /// illegal command code (used internally)
+  /// Does not initiate an action or change an in-progress or pending command.
   NUL = 0x0,
-  /// a 'push-button' interface, can only be pressed one way (reset button on pedometer)
-  PULSE = 0x1,
-  /// a 'light-switch' moved to the ON position
+  /// Cancel in-progress and pending commands. Take no additional action.
+  NUL_CANCEL = 0x20,
+  /// For activation model, set output to active for the duration of the On-time. For both complementary models, return NOT_SUPPORTED status.
+  PULSE_ON = 0x1,
+  /// Cancel in-progress and pending commands, process the remainder of the fields as if the control code were PULSE_ON
+  PULSE_ON_CANCEL = 0x21,
+  /// Non-interoperable code. Do not use for new applications. return NOT_SUPPORTED
+  PULSE_OFF = 0x2,
+  /// Non-interoperable code. Do not use for new applications. Cancel in-progress and pending commands, process remainder of fields as if the control code were PULSE_OFF
+  PULSE_OFF_CANCEL = 0x22,
+  /// For activation model, set output to active for the duration of the On-time. For complementary latch model, set the output to active. For complementary two-output model, set the close output to active for the duration of the On-time.
   LATCH_ON = 0x3,
-  /// a 'light-switch' moved to the OFF position
+  /// Cancel in-progress and pending commands, process the remainder of the fields as if the control code were LATCH_ON.
+  LATCH_ON_CANCEL = 0x23,
+  /// For activation model, set output to active for the duration of the On-time. For complementary latch model, set the output to inactive. For complementary two-output model, set the trip output to active for the duration of the On-time.
   LATCH_OFF = 0x4,
-  ///  a 'doorbell' that rings while the button is depressed
-  PULSE_CLOSE = 0x41,
-  ///  a 'doorbell' that stops ringing (is normally on) while depressed
-  PULSE_TRIP = 0x81,
-  ///  undefined command (used by DNP standard)
+  /// Cancel in-progress and pending commands, process the remainder of the fields as if the control code were LATCH_OFF.
+  LATCH_OFF_CANCEL = 0x24,
+  /// For activation model, set output to active for the duration of the On-time. For complementary latch model, set the output to active. For complementary two-output model, set the close output to active for the duration of the On-time.
+  CLOSE_PULSE_ON = 0x41,
+  /// Cancel in-progress and pending commands, process the remainder of the fields as if the control code were CLOSE_PULSE_ON.
+  CLOSE_PULSE_ON_CANCEL = 0x61,
+  /// For activation model, set output to active for the duration of the On-time. For complementary latch model, set the output to inactive. For complementary two-output model, set the trip output to active for the duration of the On-time.
+  TRIP_PULSE_ON = 0x81,
+  /// Cancel in-progress and pending commands, process the remainder of the fields as if the control code were TRIP_PULSE_ON.
+  TRIP_PULSE_ON_CANCEL = 0xA1,
+  /// Undefined command
   UNDEFINED = 0xFF
 };
 
