@@ -296,7 +296,6 @@ cpp/tests/opendnp3tests/src/TestTime.cpp \
 cpp/tests/opendnp3tests/src/TestTimers.cpp \
 cpp/tests/opendnp3tests/src/TestTransportLayer.cpp \
 cpp/tests/opendnp3tests/src/TestTransportLoopback.cpp \
-cpp/tests/opendnp3tests/src/TestTransportScalability.cpp \
 cpp/tests/opendnp3tests/src/TestTypes.cpp \
 cpp/tests/opendnp3tests/src/TestUtil.cpp \
 cpp/tests/opendnp3tests/src/TestWriteConversions.cpp \
