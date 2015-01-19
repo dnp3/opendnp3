@@ -61,8 +61,7 @@ class OutstationContext : private INewEventDataHandler
 	
 	OutstationState ostate;
 
-	// ------ Unchanging variables and self managing variables -------
-	bool pendingTaskCheckFlag;
+	// ------ Unchanging variables and self managing variables -------	
 	ICommandHandler* pCommandHandler;
 	IOutstationApplication* pApplication;
 	IOutstationAuthProvider* pAuthProvider;

@@ -38,6 +38,7 @@ OutstationState::OutstationState(
 	params(params_),	
 	isOnline(false),
 	isTransmitting(false),
+	pendingTaskCheckFlag(false),
 	staticIIN(IINBit::DEVICE_RESTART),	
 	confirmTimer(executor)
 	
@@ -49,6 +50,7 @@ void OutstationState::SetOffline()
 {
 	isOnline = false;
 	isTransmitting = false;
+	pendingTaskCheckFlag = false;
 	sol.pState = &OutstationSolicitedStateIdle::Inst();
 	unsol.pState = &OutstationUnsolicitedStateIdle::Inst();
 	confirmTimer.Cancel();

@@ -62,6 +62,7 @@ class OutstationState
 	// ------ Shared dynamic state --------
 	bool isOnline;
 	bool isTransmitting;
+	bool pendingTaskCheckFlag;
 	IINField staticIIN;	
 	openpal::TimerRef confirmTimer;
 

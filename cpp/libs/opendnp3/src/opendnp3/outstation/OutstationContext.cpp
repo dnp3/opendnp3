@@ -58,8 +58,7 @@ OutstationContext::OutstationContext(
 		IOutstationAuthProvider& authProvider
 		) :
 	
-		ostate(config.params, executor, root, lower),
-		pendingTaskCheckFlag(false),
+		ostate(config.params, executor, root, lower),		
 		pCommandHandler(&commandHandler),
 		pApplication(&application),
 		pAuthProvider(&authProvider),
@@ -372,9 +371,9 @@ OutstationSolicitedStateBase* OutstationContext::ContinueMultiFragResponse(uint8
 void OutstationContext::PostCheckForActions()
 {
 	// using this flag ensures that rapid event loading doesn't cause more than one event check to be queued at a time	
-	if (!pendingTaskCheckFlag)
+	if (!ostate.pendingTaskCheckFlag)
 	{
-		pendingTaskCheckFlag = true;
+		ostate.pendingTaskCheckFlag = true;
 		// post these calls so the stack can unwind
 		auto lambda = [this]() { this->CheckForTaskStart(); };
 		ostate.pExecutor->PostLambda(lambda);
@@ -384,7 +383,7 @@ void OutstationContext::PostCheckForActions()
 void OutstationContext::CheckForTaskStart()
 {	
 	// set this flag to false, any new events should retrigger
-	pendingTaskCheckFlag = false;
+	ostate.pendingTaskCheckFlag = false;
 
 	// if we're online, the solicited state is idle, and the unsolicited state 
 	// is not transmitting we may be able to do a task
