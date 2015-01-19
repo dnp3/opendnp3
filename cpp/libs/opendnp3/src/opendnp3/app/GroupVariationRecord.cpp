@@ -37,6 +37,8 @@ bool TypeHasTimestamp(GroupVariation gv)
 
 	case(GroupVariation::Group11Var2) :
 
+	case(GroupVariation::Group13Var2) :
+
 	// group 21 (frozen counters) is the only static type with a timestamp
 	case(GroupVariation::Group21Var5) :
 	case(GroupVariation::Group21Var6) :
@@ -56,6 +58,11 @@ bool TypeHasTimestamp(GroupVariation gv)
 	case(GroupVariation::Group42Var4) :
 	case(GroupVariation::Group42Var7) :
 	case(GroupVariation::Group42Var8) :
+
+	case(GroupVariation::Group43Var3) :
+	case(GroupVariation::Group43Var4) :
+	case(GroupVariation::Group43Var7) :
+	case(GroupVariation::Group43Var8) :
 
 		return true;
 	default:
@@ -130,6 +137,9 @@ GroupVariationType GroupVariationRecord::GetType(uint8_t group, uint8_t variatio
 	case(11) :
 		return GroupVariationType::EVENT;
 
+	case(13) :
+		return GroupVariationType::EVENT;
+
 	case(20) :
 		return GroupVariationType::STATIC;
 
@@ -155,6 +165,9 @@ GroupVariationType GroupVariationRecord::GetType(uint8_t group, uint8_t variatio
 		return GroupVariationType::EVENT;
 
 	case(42) :
+		return GroupVariationType::EVENT;
+
+	case(43) :
 		return GroupVariationType::EVENT;
 
 	case(50) :
