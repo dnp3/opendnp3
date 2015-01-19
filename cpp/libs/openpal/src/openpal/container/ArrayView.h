@@ -45,12 +45,12 @@ public:
 	ArrayView(ValueType* start, IndexType aSize) : HasSize<IndexType>(aSize), buffer(start)
 	{}
 
-	inline const bool Contains(IndexType index) const
+	inline bool Contains(IndexType index) const
 	{
 		return index < this->size;
 	}
 
-	inline const bool Contains(IndexType start, IndexType stop) const
+	inline bool Contains(IndexType start, IndexType stop) const
 	{
 		return (start < stop) && Contains(stop);
 	}	

@@ -26,7 +26,7 @@
 namespace openpal
 {
 
-Action0::Action0() : pInvoke(nullptr)
+Action0::Action0() : Erasure(), pInvoke(nullptr)
 {}
 
 Action0::Action0(Invoke pInvoke_, uint32_t size_) : Erasure(size_), pInvoke(pInvoke_)
@@ -48,7 +48,7 @@ Action0& Action0::operator=(const Action0& other)
 	return (*this);
 }
 
-Action0::Action0(const Action0& other) : pInvoke(other.pInvoke)
+Action0::Action0(const Action0& other) : Erasure(), pInvoke(other.pInvoke)
 {
 	this->CopyErasure(other);
 }
