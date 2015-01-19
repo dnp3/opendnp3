@@ -23,6 +23,8 @@
 
 #include "ArrayView.h"
 
+#include "openpal/Configure.h"
+
 #include <assert.h>
 #include <cstdint>
 
@@ -57,7 +59,7 @@ public:
 		return ArrayView<ValueType, IndexType>(buffer, this->size);
 	}
 
-	inline const bool Contains(IndexType index) const
+	inline bool Contains(IndexType index) const
 	{
 		return index < this->size;
 	}

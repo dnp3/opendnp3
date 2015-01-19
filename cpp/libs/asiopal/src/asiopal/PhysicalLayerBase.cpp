@@ -114,12 +114,17 @@ bool PhysicalLayerBase::State::CheckForClose()
 // PhysicalLayerBase
 ///////////////////////////////////
 
-PhysicalLayerBase::PhysicalLayerBase(openpal::LogRoot& root, openpal::IExecutor& executor) :
+PhysicalLayerBase::PhysicalLayerBase(openpal::LogRoot& root) :
 	logger(root.GetLogger()),
-	pExecutor(&executor),
+	pExecutor(nullptr),
 	pCallbacks(nullptr)
 {
 
+}
+
+void PhysicalLayerBase::SetExecutor(IExecutor& executor)
+{
+	pExecutor = &executor;
 }
 
 ////////////////////////////////////

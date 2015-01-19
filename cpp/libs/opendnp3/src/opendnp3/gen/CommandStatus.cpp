@@ -50,6 +50,26 @@ CommandStatus CommandStatusFromType(uint8_t arg)
       return CommandStatus::TOO_MANY_OPS;
     case(9):
       return CommandStatus::NOT_AUTHORIZED;
+    case(10):
+      return CommandStatus::AUTOMATION_INHIBIT;
+    case(11):
+      return CommandStatus::PROCESSING_LIMITED;
+    case(12):
+      return CommandStatus::OUT_OF_RANGE;
+    case(13):
+      return CommandStatus::DOWNSTREAM_LOCAL;
+    case(14):
+      return CommandStatus::ALREADY_COMPLETE;
+    case(15):
+      return CommandStatus::BLOCKED;
+    case(16):
+      return CommandStatus::CANCELLED;
+    case(17):
+      return CommandStatus::BLOCKED_OTHER_MASTER;
+    case(18):
+      return CommandStatus::DOWNSTREAM_FAIL;
+    case(126):
+      return CommandStatus::NON_PARTICIPATING;
     default:
       return CommandStatus::UNDEFINED;
   }
@@ -78,6 +98,26 @@ char const* CommandStatusToString(CommandStatus arg)
       return "TOO_MANY_OPS";
     case(CommandStatus::NOT_AUTHORIZED):
       return "NOT_AUTHORIZED";
+    case(CommandStatus::AUTOMATION_INHIBIT):
+      return "AUTOMATION_INHIBIT";
+    case(CommandStatus::PROCESSING_LIMITED):
+      return "PROCESSING_LIMITED";
+    case(CommandStatus::OUT_OF_RANGE):
+      return "OUT_OF_RANGE";
+    case(CommandStatus::DOWNSTREAM_LOCAL):
+      return "DOWNSTREAM_LOCAL";
+    case(CommandStatus::ALREADY_COMPLETE):
+      return "ALREADY_COMPLETE";
+    case(CommandStatus::BLOCKED):
+      return "BLOCKED";
+    case(CommandStatus::CANCELLED):
+      return "CANCELLED";
+    case(CommandStatus::BLOCKED_OTHER_MASTER):
+      return "BLOCKED_OTHER_MASTER";
+    case(CommandStatus::DOWNSTREAM_FAIL):
+      return "DOWNSTREAM_FAIL";
+    case(CommandStatus::NON_PARTICIPATING):
+      return "NON_PARTICIPATING";
     default:
       return "UNDEFINED";
   }

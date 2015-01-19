@@ -19,6 +19,7 @@
   * Callbacks on IMasterApplication for built-in tasks and ones that were created with a userId
   * Optional per-task callback interfaces supplied when the task was created
 * Arbitrary master scans (qualifiers 0x06, 0x00/0x01, 0x07/0x08) can now be created in C# using an API contributed by Damon Sutherland
+* Added a flag to the outstation that limits the number of queued event checks to 1. This was done for determinism on embedded systems with limited space to queue executor actions.
 
 
 

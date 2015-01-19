@@ -18,78 +18,105 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENPAL_ARRAYVIEW_H
-#define OPENPAL_ARRAYVIEW_H
-
-#include "HasSize.h"
+#ifndef OPENPAL_QUEUE_H
+#define OPENPAL_QUEUE_H
 
 #include <assert.h>
+
+#include "openpal/container/DynamicArray.h"
 
 namespace openpal
 {
 
-/**
-* Acts as a safe facade around an underlying array
-*/
 template <class ValueType, class IndexType>
-class ArrayView : public HasSize<IndexType>
+class Queue
 {
 
 public:
 
-	static ArrayView<ValueType, IndexType> Empty()
-	{
-		return ArrayView(nullptr, 0);
-	}	
-
-	ArrayView(ValueType* start, IndexType aSize) : HasSize<IndexType>(aSize), buffer(start)
+	Queue(IndexType size) : count(0), first(0), nextInsert(0), buffer(size)
 	{}
 
-	inline bool Contains(IndexType index) const
+	IndexType Size() const
 	{
-		return index < this->size;
-	}
-
-	inline bool Contains(IndexType start, IndexType stop) const
-	{
-		return (start < stop) && Contains(stop);
+		return count;
 	}	
 
-	inline ValueType& operator[](IndexType index)
+	IndexType Capacity() const
 	{
-		assert(index < this->size);
-		return buffer[index];
+		return buffer.Size();
 	}
 
-	inline const ValueType& operator[](IndexType index) const
+	bool IsEmpty() const
 	{
-		assert(index < this->size);
-		return buffer[index];
+		return count == 0;
 	}
 
-	template <class Action>
-	void foreach(const Action& action)
+	bool IsNotEmpty() const
 	{
-		for (IndexType i = 0; i < this->size; ++i)
+		return count > 0;
+	}
+
+	bool IsFull() const
+	{
+		return count == buffer.Size();
+	}
+
+	void Clear()
+	{
+		count = first = nextInsert = 0;
+	}	
+
+	ValueType* Peek()
+	{
+		if (IsEmpty())
 		{
-			action(buffer[i]);
+			return nullptr;
 		}
+		else
+		{
+			return &buffer[first];
+		}		
 	}
 
-	template <class Action>
-	void foreachIndex(const Action& action)
+	ValueType* Pop()
 	{
-		for (IndexType i = 0; i < this->size; ++i)
+		if (IsEmpty())
 		{
-			action(buffer[i], i);
+			return nullptr;
+		}
+		else
+		{
+			IndexType ret = first;
+			first = (first + 1) % buffer.Size();
+			--count;
+			return &buffer[ret];
+		}		
+	}
+
+	bool Enqueue(const ValueType& value)
+	{
+		if (IsFull())
+		{
+			return false;
+		}
+		else
+		{
+			buffer[nextInsert] = value;
+			nextInsert = (nextInsert + 1) % buffer.Size();
+			++count;
+			return true;
 		}
 	}
 
 private:
-	ValueType* buffer;
+
+	IndexType count;
+	IndexType first;
+	IndexType nextInsert;
+	
+	openpal::DynamicArray<ValueType, IndexType> buffer;
 };
-
-
 
 }
 

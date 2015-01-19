@@ -49,7 +49,7 @@ namespace opendnp3
 OutstationContext::OutstationContext(
 		const OutstationConfig& config,
 		const DatabaseTemplate& dbTemplate,
-		openpal::IMutex* pDBMutex,
+		openpal::IMutex* pMutex,
 		IExecutor& executor,
 		LogRoot& root,
 		ILowerLayer& lower,
@@ -58,24 +58,24 @@ OutstationContext::OutstationContext(
 		IOutstationAuthProvider& authProvider
 		) :
 	
-	ostate(config.params, executor, root, lower),
-	pCommandHandler(&commandHandler),
-	pApplication(&application),	
-	pAuthProvider(&authProvider),
-	eventBuffer(config.eventBufferConfig),
-	database(dbTemplate, eventBuffer, *this, config.params.indexMode, config.params.typesAllowedInClass0, pDBMutex),	
-	rspContext(database.GetStaticLoader(), eventBuffer),	
-	requestHistory(config.params.maxRxFragSize),
-	solTxBuffer(config.params.maxTxFragSize),
-	unsolTxBuffer(config.params.maxTxFragSize)
+		ostate(config.params, executor, root, lower),
+		pendingTaskCheckFlag(false),
+		pCommandHandler(&commandHandler),
+		pApplication(&application),
+		pAuthProvider(&authProvider),
+		eventBuffer(config.eventBufferConfig),
+		database(dbTemplate, eventBuffer, *this, config.params.indexMode, config.params.typesAllowedInClass0, pMutex),
+		rspContext(database.GetStaticLoader(), eventBuffer),
+		requestHistory(config.params.maxRxFragSize),
+		solTxBuffer(config.params.maxTxFragSize),
+		unsolTxBuffer(config.params.maxTxFragSize)
 {	
 	
 }
 
 void OutstationContext::OnNewEventData()
 {
-	auto notify = [this]() { this->CheckForTaskStart(); };
-	ostate.pExecutor->PostLambda(notify);
+	this->PostCheckForActions();			
 }
 
 IINField OutstationContext::GetDynamicIIN()
@@ -371,13 +371,21 @@ OutstationSolicitedStateBase* OutstationContext::ContinueMultiFragResponse(uint8
 
 void OutstationContext::PostCheckForActions()
 {
-	// post these calls so the stack can unwind
-	auto lambda = [this]() { this->CheckForTaskStart(); };
-	ostate.pExecutor->PostLambda(lambda);
+	// using this flag ensures that rapid event loading doesn't cause more than one event check to be queued at a time	
+	if (!pendingTaskCheckFlag)
+	{
+		pendingTaskCheckFlag = true;
+		// post these calls so the stack can unwind
+		auto lambda = [this]() { this->CheckForTaskStart(); };
+		ostate.pExecutor->PostLambda(lambda);
+	}
 }
 
 void OutstationContext::CheckForTaskStart()
 {	
+	// set this flag to false, any new events should retrigger
+	pendingTaskCheckFlag = false;
+
 	// if we're online, the solicited state is idle, and the unsolicited state 
 	// is not transmitting we may be able to do a task
 	if (ostate.isOnline && !ostate.isTransmitting && ostate.sol.IsIdle())

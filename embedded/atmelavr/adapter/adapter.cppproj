@@ -147,6 +147,9 @@
     <None Include="cstdio">
       <SubType>compile</SubType>
     </None>
+    <None Include="cstdlib">
+      <SubType>compile</SubType>
+    </None>
     <None Include="cstring">
       <SubType>compile</SubType>
     </None>

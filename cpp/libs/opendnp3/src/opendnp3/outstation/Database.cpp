@@ -48,21 +48,14 @@ void Database::Start()
 }
 
 void Database::End()
-{
-	bool notify = false;
-	
+{		
 	if (transactionHasEvents)
-	{
-		notify = true;
+	{		
 		transactionHasEvents = false;
+		pEventHandler->OnNewEventData();
 	}
 
 	openpal::CriticalSection::Unlock(pMutex);
-
-	if (notify && pEventHandler)
-	{
-		pEventHandler->OnNewEventData();
-	}
 }
 
 bool Database::Update(const Binary& value, uint16_t index, EventMode mode)

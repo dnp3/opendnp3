@@ -44,7 +44,7 @@ public:
 
 	openpal::IExecutor* GetExecutor()
 	{
-		return mpExecutor;
+		return pExecutor;
 	}
 
 	void SignalOpenSuccess();
@@ -117,7 +117,7 @@ private:
 
 	bool mIsAutoOpenSuccess;
 
-	openpal::IExecutor* mpExecutor;
+	//openpal::IExecutor* mpExecutor;
 };
 
 }

@@ -23,6 +23,7 @@
 
 #include "openpal/util/ToHex.h"
 #include "openpal/container/ReadBufferView.h"
+#include "openpal/Configure.h"
 
 #include <cstdio>
 #include <cstdlib>

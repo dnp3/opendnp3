@@ -51,7 +51,7 @@ class OutstationContext : private INewEventDataHandler
 
 	OutstationContext(	const OutstationConfig& config,
 						const DatabaseTemplate& dbTemplate,
-						openpal::IMutex* pDBMutex,
+						openpal::IMutex* pMutex,
 						openpal::IExecutor& executor,
 						openpal::LogRoot& root, 
 						ILowerLayer& lower,
@@ -59,15 +59,15 @@ class OutstationContext : private INewEventDataHandler
 						IOutstationApplication& application,
 						IOutstationAuthProvider& authProvider);
 	
-
 	OutstationState ostate;
-	
+
 	// ------ Unchanging variables and self managing variables -------
+	bool pendingTaskCheckFlag;
 	ICommandHandler* pCommandHandler;
-	IOutstationApplication* pApplication;	
+	IOutstationApplication* pApplication;
 	IOutstationAuthProvider* pAuthProvider;
 	EventBuffer eventBuffer;
-	Database database;		
+	Database database;
 	openpal::ReadBufferView lastResponse; // points to bytes in txBuffer	
 	ResponseContext rspContext;
 
