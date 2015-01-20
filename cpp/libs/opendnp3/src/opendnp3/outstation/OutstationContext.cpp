@@ -77,7 +77,11 @@ void OutstationContext::OnNewEventData()
 	{
 		ostate.pendingTaskCheckFlag = true;
 		// post these calls so the stack can unwind
-		auto lambda = [this]() { this->CheckForTaskStart(); };
+		auto lambda = [this]() 
+		{ 
+			this->ostate.pendingTaskCheckFlag = false;
+			this->CheckForTaskStart(); 
+		};
 		ostate.pExecutor->PostLambda(lambda);
 	}
 }
@@ -366,10 +370,7 @@ OutstationSolicitedStateBase* OutstationContext::ContinueMultiFragResponse(uint8
 }
 
 void OutstationContext::CheckForTaskStart()
-{	
-	// set this flag to false, any new events should retrigger
-	ostate.pendingTaskCheckFlag = false;
-
+{		
 	// if we're online, the solicited state is idle, and the unsolicited state 
 	// is not transmitting we may be able to do a task
 	if (ostate.isOnline && !ostate.isTransmitting && ostate.sol.IsIdle())
