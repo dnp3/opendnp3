@@ -33,8 +33,6 @@
 #include "opendnp3/outstation/OutstationState.h"
 #include "opendnp3/outstation/Database.h"
 #include "opendnp3/outstation/ResponseContext.h"
-#include "opendnp3/outstation/RequestHistory.h"
-#include "opendnp3/outstation/DeferredRequest.h"
 #include "opendnp3/outstation/OutstationConfig.h"
 #include "opendnp3/outstation/ICommandHandler.h"
 #include "opendnp3/outstation/IOutstationApplication.h"
@@ -117,7 +115,6 @@ class OutstationContext : private INewEventDataHandler
 
 	OutstationSolicitedStateBase* ProcessNewRequest(const APDUHeader& header, const openpal::ReadBufferView& objects);
 		
-
 	// ------ Helpers ---------
 
 	IINField GetDynamicIIN();
@@ -147,10 +144,7 @@ class OutstationContext : private INewEventDataHandler
 	IINField HandleAssignClass(const openpal::ReadBufferView& objects);
 	IINField HandleDisableUnsolicited(const openpal::ReadBufferView& objects, HeaderWriter& writer);
 	IINField HandleEnableUnsolicited(const openpal::ReadBufferView& objects, HeaderWriter& writer);
-	IINField HandleCommandWithConstant(const openpal::ReadBufferView& objects, HeaderWriter& writer, CommandStatus status);
-
-	RequestHistory requestHistory;
-	DeferredRequest deferredRequest;
+	IINField HandleCommandWithConstant(const openpal::ReadBufferView& objects, HeaderWriter& writer, CommandStatus status);	
 
 	// ------ tx buffers -------		
 	openpal::DynamicBuffer solTxBuffer;

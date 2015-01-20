@@ -25,6 +25,7 @@
 
 #include "opendnp3/outstation/OutstationParams.h"
 #include "opendnp3/outstation/RequestHistory.h"
+#include "opendnp3/outstation/DeferredRequest.h"
 #include "opendnp3/outstation/OutstationChannelStates.h"
 #include "opendnp3/outstation/ControlState.h"
 #include "opendnp3/outstation/OutstationSeqNum.h"
@@ -49,7 +50,7 @@ class OutstationState
 					ILowerLayer& lower);
 
 	// reset important variables to their initial state
-	void SetOffline();	
+	void Reset();	
 
 	// ------ External resources --------
 	openpal::IExecutor* pExecutor;
@@ -65,6 +66,8 @@ class OutstationState
 	bool pendingTaskCheckFlag;
 	IINField staticIIN;
 	openpal::TimerRef confirmTimer;
+	RequestHistory history;
+	DeferredRequest deferred;
 
 	// ------ Dynamic state related to controls ------
 	ControlState control;

@@ -39,20 +39,22 @@ OutstationState::OutstationState(
 	isOnline(false),
 	isTransmitting(false),
 	pendingTaskCheckFlag(false),
-	staticIIN(IINBit::DEVICE_RESTART),	
-	confirmTimer(executor)
-	
+	staticIIN(IINBit::DEVICE_RESTART),
+	deferred(params_.maxRxFragSize),
+	confirmTimer(executor)	
 {	
 	
 }
 
-void OutstationState::SetOffline()
+void OutstationState::Reset()
 {
 	isOnline = false;
 	isTransmitting = false;
 	pendingTaskCheckFlag = false;
 	sol.pState = &OutstationSolicitedStateIdle::Inst();
 	unsol.pState = &OutstationUnsolicitedStateIdle::Inst();
+	history.Reset();
+	deferred.Reset();
 	confirmTimer.Cancel();
 }
 

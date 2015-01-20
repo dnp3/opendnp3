@@ -64,8 +64,7 @@ OutstationContext::OutstationContext(
 		pAuthProvider(&authProvider),
 		eventBuffer(config.eventBufferConfig),
 		database(dbTemplate, eventBuffer, *this, config.params.indexMode, config.params.typesAllowedInClass0, pMutex),
-		rspContext(database.GetStaticLoader(), eventBuffer),	
-		deferredRequest(config.params.maxRxFragSize),
+		rspContext(database.GetStaticLoader(), eventBuffer),			
 		solTxBuffer(config.params.maxTxFragSize),
 		unsolTxBuffer(config.params.maxTxFragSize)
 {	
@@ -118,9 +117,7 @@ void OutstationContext::SetOnline()
 
 void OutstationContext::SetOffline()
 {
-	ostate.SetOffline();
-	requestHistory.Reset();	
-	deferredRequest.Reset();
+	ostate.Reset();	
 	eventBuffer.Unselect();
 	rspContext.Reset();		
 }
@@ -192,7 +189,7 @@ void OutstationContext::ExamineASDU(const APDUHeader& header, const openpal::Rea
 		else
 		{
 			ostate.sol.pState = this->OnReceiveSolRequest(header, objects);
-			requestHistory.RecordLastRequest(header, objects);
+			ostate.history.RecordLastRequest(header, objects);
 		}
 	}
 }
@@ -200,11 +197,11 @@ void OutstationContext::ExamineASDU(const APDUHeader& header, const openpal::Rea
 OutstationSolicitedStateBase* OutstationContext::OnReceiveSolRequest(const APDUHeader& header, const openpal::ReadBufferView& objects)
 {			
 	// analyze this request to see how it compares to the last request
-	if (requestHistory.HasLastRequest())
+	if (ostate.history.HasLastRequest())
 	{		
 		if (this->ostate.sol.seqN == header.control.SEQ)
 		{			
-			if (requestHistory.FullyEqualsLastRequest(header, objects))
+			if (ostate.history.FullyEqualsLastRequest(header, objects))
 			{
 				if (header.function == FunctionCode::READ)
 				{
@@ -295,7 +292,7 @@ void OutstationContext::ProcessNoResponseFunction(const APDUHeader& header, cons
 
 void OutstationContext::DeferRequest(const APDUHeader& header, const openpal::ReadBufferView& objects, bool isRepeat)
 {	
-	deferredRequest.Set(header, objects, isRepeat);
+	ostate.deferred.Set(header, objects, isRepeat);
 }
 
 void OutstationContext::BeginResponseTx(const ReadBufferView& response)
@@ -388,9 +385,9 @@ void OutstationContext::CheckForTaskStart()
 	// is not transmitting we may be able to do a task
 	if (ostate.isOnline && !ostate.isTransmitting && ostate.sol.IsIdle())
 	{		
-		if (deferredRequest.IsSet())
+		if (ostate.deferred.IsSet())
 		{			
-			if (deferredRequest.GetFunction() == FunctionCode::READ)
+			if (ostate.deferred.GetFunction() == FunctionCode::READ)
 			{
 				if (ostate.unsol.IsIdle())
 				{					
@@ -398,7 +395,7 @@ void OutstationContext::CheckForTaskStart()
 					{
 						ostate.sol.pState = ostate.sol.pState->OnNewReadRequest(this, header, objects);
 					};
-					deferredRequest.Process(handler);
+					ostate.deferred.Process(handler);
 				}
 			}
 			else
@@ -415,7 +412,7 @@ void OutstationContext::CheckForTaskStart()
 					}
 				};
 
-				deferredRequest.Process(handler);								
+				ostate.deferred.Process(handler);
 			}
 		}
 		else
@@ -430,7 +427,6 @@ void OutstationContext::CheckForTaskStart()
 
 void OutstationContext::CheckForUnsolicited()
 {
-
 	if (ostate.params.allowUnsolicited)
 	{
 		if (ostate.unsol.completedNull)
