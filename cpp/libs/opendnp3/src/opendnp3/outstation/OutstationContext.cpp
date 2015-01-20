@@ -73,7 +73,13 @@ OutstationContext::OutstationContext(
 
 void OutstationContext::OnNewEventData()
 {
-	this->PostCheckForActions();			
+	if (!ostate.pendingTaskCheckFlag)
+	{
+		ostate.pendingTaskCheckFlag = true;
+		// post these calls so the stack can unwind
+		auto lambda = [this]() { this->CheckForTaskStart(); };
+		ostate.pExecutor->PostLambda(lambda);
+	}
 }
 
 IINField OutstationContext::GetDynamicIIN()
@@ -112,7 +118,7 @@ void OutstationContext::ConfigureUnsolHeader(APDUResponse& unsol)
 void OutstationContext::SetOnline()
 {
 	ostate.isOnline = true;
-	this->PostCheckForActions();
+	this->CheckForTaskStart();
 }
 
 void OutstationContext::SetOffline()
@@ -163,7 +169,7 @@ void OutstationContext::OnSendResult(bool isSuccess)
 	if (ostate.isOnline && ostate.isTransmitting)
 	{
 		ostate.isTransmitting = false;
-		this->PostCheckForActions();
+		this->CheckForTaskStart();		
 	}	
 }
 
@@ -357,18 +363,6 @@ OutstationSolicitedStateBase* OutstationContext::ContinueMultiFragResponse(uint8
 	{
 		return &OutstationSolicitedStateIdle::Inst();
 	}	
-}
-
-void OutstationContext::PostCheckForActions()
-{
-	// using this flag ensures that rapid event loading doesn't cause more than one event check to be queued at a time	
-	if (!ostate.pendingTaskCheckFlag)
-	{
-		ostate.pendingTaskCheckFlag = true;
-		// post these calls so the stack can unwind
-		auto lambda = [this]() { this->CheckForTaskStart(); };
-		ostate.pExecutor->PostLambda(lambda);
-	}
 }
 
 void OutstationContext::CheckForTaskStart()

@@ -107,9 +107,7 @@ class OutstationContext : private INewEventDataHandler
 
 	private:
 
-	virtual void OnNewEventData() override final;
-
-	void PostCheckForActions();
+	virtual void OnNewEventData() override final;	
 
 	OutstationSolicitedStateBase* ProcessNewRequest(const APDUHeader& header, const openpal::ReadBufferView& objects);
 		
