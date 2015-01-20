@@ -34,8 +34,8 @@
 namespace opendnp3
 {
 
-/** Implements the DNP3 transport layer as a generic
-asynchronous protocol stack layer
+/** 
+	Implements the DNP3 transport layer
 */
 class TransportLayer : public IUpperLayer, public ILowerLayer
 {		

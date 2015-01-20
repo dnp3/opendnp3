@@ -123,8 +123,6 @@ class OutstationContext : private INewEventDataHandler
 
 	void CheckForTaskStart();
 
-	void CheckDeferredRequest();
-
 	void CheckForUnsolicited();
 
 	// ------ Function Handlers ------
