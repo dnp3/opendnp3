@@ -40,6 +40,7 @@ OutstationState::OutstationState(
 	isTransmitting(false),
 	pendingTaskCheckFlag(false),
 	staticIIN(IINBit::DEVICE_RESTART),
+	txBuffers(params.maxTxFragSize),
 	deferred(params_.maxRxFragSize),
 	confirmTimer(executor)	
 {	

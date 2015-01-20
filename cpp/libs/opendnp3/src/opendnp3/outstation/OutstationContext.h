@@ -65,15 +65,10 @@ class OutstationContext : private INewEventDataHandler
 	IOutstationApplication* pApplication;
 	IOutstationAuthProvider* pAuthProvider;
 	EventBuffer eventBuffer;
-	Database database;
-	openpal::ReadBufferView lastResponse; // points to bytes in txBuffer	
-	
+	Database database;		
 	ResponseContext rspContext;
 
-	// ------ Helper methods for dealing with state ------	
-
-	APDUResponse StartNewSolicitedResponse();
-	APDUResponse StartNewUnsolicitedResponse();
+	// ------ Helper methods for dealing with state ------		
 
 	void ConfigureUnsolHeader(APDUResponse& unsol);	
 
@@ -138,11 +133,7 @@ class OutstationContext : private INewEventDataHandler
 	IINField HandleAssignClass(const openpal::ReadBufferView& objects);
 	IINField HandleDisableUnsolicited(const openpal::ReadBufferView& objects, HeaderWriter& writer);
 	IINField HandleEnableUnsolicited(const openpal::ReadBufferView& objects, HeaderWriter& writer);
-	IINField HandleCommandWithConstant(const openpal::ReadBufferView& objects, HeaderWriter& writer, CommandStatus status);	
-
-	// ------ tx buffers -------		
-	openpal::DynamicBuffer solTxBuffer;
-	openpal::DynamicBuffer unsolTxBuffer;
+	IINField HandleCommandWithConstant(const openpal::ReadBufferView& objects, HeaderWriter& writer, CommandStatus status);		
 };
 
 

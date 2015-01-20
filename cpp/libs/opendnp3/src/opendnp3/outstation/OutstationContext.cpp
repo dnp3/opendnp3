@@ -64,9 +64,7 @@ OutstationContext::OutstationContext(
 		pAuthProvider(&authProvider),
 		eventBuffer(config.eventBufferConfig),
 		database(dbTemplate, eventBuffer, *this, config.params.indexMode, config.params.typesAllowedInClass0, pMutex),
-		rspContext(database.GetStaticLoader(), eventBuffer),			
-		solTxBuffer(config.params.maxTxFragSize),
-		unsolTxBuffer(config.params.maxTxFragSize)
+		rspContext(database.GetStaticLoader(), eventBuffer)		
 {	
 	
 }
@@ -102,16 +100,6 @@ IINField OutstationContext::GetDynamicIIN()
 IINField OutstationContext::GetResponseIIN()
 {
 	return this->ostate.staticIIN | GetDynamicIIN() | pApplication->GetApplicationIIN().ToIIN();
-}
-
-APDUResponse OutstationContext::StartNewSolicitedResponse()
-{	
-	return APDUResponse(solTxBuffer.GetWriteBufferView(ostate.params.maxTxFragSize));
-}
-
-APDUResponse OutstationContext::StartNewUnsolicitedResponse()
-{
-	return APDUResponse(unsolTxBuffer.GetWriteBufferView(ostate.params.maxTxFragSize));
 }
 
 void OutstationContext::ConfigureUnsolHeader(APDUResponse& unsol)
@@ -254,29 +242,34 @@ OutstationSolicitedStateBase* OutstationContext::ProcessNewRequest(const APDUHea
 
 OutstationSolicitedStateBase* OutstationContext::RespondToNonReadRequest(const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
-	auto response = StartNewSolicitedResponse();
-	auto writer = response.GetWriter();
-	response.SetFunction(FunctionCode::RESPONSE);
-	response.SetControl(AppControlField(true, true, false, false, header.control.SEQ));
-	auto iin = this->BuildNonReadResponse(header, objects, writer);
-	response.SetIIN(iin | this->GetResponseIIN());		
+	auto format = [&](APDUResponse& response) {
+		auto writer = response.GetWriter();
+		response.SetFunction(FunctionCode::RESPONSE);
+		response.SetControl(AppControlField(true, true, false, false, header.control.SEQ));
+		auto iin = this->BuildNonReadResponse(header, objects, writer);
+		response.SetIIN(iin | this->GetResponseIIN());
+	};
+
+	auto response = ostate.txBuffers.FormatSolicited(format);		
 	this->BeginResponseTx(response.ToReadOnly());
 	return &OutstationSolicitedStateIdle::Inst();
 }
 
 OutstationSolicitedStateBase* OutstationContext::RespondToReadRequest(uint8_t seq, const openpal::ReadBufferView& objects)
 {
-	auto response = StartNewSolicitedResponse();
-	auto writer = response.GetWriter();
-	response.SetFunction(FunctionCode::RESPONSE);	
-	auto result = this->HandleRead(objects, writer);
-	result.second.SEQ = seq;
-	ostate.sol.expectedConSeqN = seq;
-	response.SetControl(result.second);
-	response.SetIIN(result.first | this->GetResponseIIN());
-	this->BeginResponseTx(response.ToReadOnly());
-	
-	if (result.second.CON)
+	auto format = [&](APDUResponse& response) {
+		auto writer = response.GetWriter();
+		response.SetFunction(FunctionCode::RESPONSE);
+		auto result = this->HandleRead(objects, writer);
+		result.second.SEQ = seq;
+		ostate.sol.expectedConSeqN = seq;
+		response.SetControl(result.second);
+		response.SetIIN(result.first | this->GetResponseIIN());
+	};
+
+	auto response = ostate.txBuffers.FormatSolicited(format);
+	this->BeginResponseTx(response.ToReadOnly());	
+	if (response.GetControl().CON)
 	{
 		this->StartSolicitedConfirmTimer();
 		return &OutstationStateSolicitedConfirmWait::Inst();
@@ -303,8 +296,7 @@ void OutstationContext::ProcessNoResponseFunction(const APDUHeader& header, cons
 void OutstationContext::BeginResponseTx(const ReadBufferView& response)
 {		
 	logging::ParseAndLogResponseTx(&ostate.logger, response);
-	this->ostate.isTransmitting = true;
-	lastResponse = response;
+	this->ostate.isTransmitting = true;	
 	ostate.pLower->BeginTransmit(response);
 }
 
@@ -347,18 +339,21 @@ IINField OutstationContext::BuildNonReadResponse(const APDUHeader& header, const
 }
 
 OutstationSolicitedStateBase* OutstationContext::ContinueMultiFragResponse(uint8_t seq)
-{
-	auto response = this->StartNewSolicitedResponse();
-	auto writer = response.GetWriter();
-	response.SetFunction(FunctionCode::RESPONSE);		
-	auto control = this->rspContext.LoadResponse(writer);
-	control.SEQ = seq;
-	ostate.sol.expectedConSeqN = seq;
-	response.SetControl(control);
-	response.SetIIN(this->ostate.staticIIN | this->GetDynamicIIN());
+{	
+	auto format = [&](APDUResponse& response) {
+		auto writer = response.GetWriter();
+		response.SetFunction(FunctionCode::RESPONSE);
+		auto control = this->rspContext.LoadResponse(writer);
+		control.SEQ = seq;
+		ostate.sol.expectedConSeqN = seq;
+		response.SetControl(control);
+		response.SetIIN(this->ostate.staticIIN | this->GetDynamicIIN());
+	};
+
+	auto response = ostate.txBuffers.FormatSolicited(format);
 	this->BeginResponseTx(response.ToReadOnly());
 	
-	if (control.CON)
+	if (response.GetControl().CON)
 	{
 		this->StartSolicitedConfirmTimer();
 		return &OutstationStateSolicitedConfirmWait::Inst();
@@ -424,34 +419,36 @@ void OutstationContext::CheckForUnsolicited()
 			// are there events to be reported?
 			if (ostate.params.unsolClassMask.Intersects(eventBuffer.UnwrittenClassField()))
 			{			
-				
-				auto unsolResponse = this->StartNewUnsolicitedResponse();
-				auto writer = unsolResponse.GetWriter();				
-						
+				auto format = [this](APDUResponse& response) 
 				{
+					auto writer = response.GetWriter();
 					// even though we're not loading static data, we need to lock 
-					// the database since it updates the event buffer					
+					// the database since it updates the event buffer
 					Transaction tx(database);
 					eventBuffer.Unselect();
 					eventBuffer.SelectAllByClass(ostate.params.unsolClassMask);
 					eventBuffer.Load(writer);
-				}
-							
-				this->ConfigureUnsolHeader(unsolResponse);
+					this->ConfigureUnsolHeader(response);
+				};
+			
+				auto response = ostate.txBuffers.FormatUnsolicited(format);								
 				this->StartUnsolicitedConfirmTimer();
 				this->ostate.unsol.pState = &OutstationUnsolicitedStateConfirmWait::Inst();
-				this->BeginUnsolTx(unsolResponse.ToReadOnly());				
+				this->BeginUnsolTx(response.ToReadOnly());								
 			}			
 		}
 		else
 		{
 			// send a NULL unsolcited message			
+			auto format = [this](APDUResponse& response) 
+			{
+				this->ConfigureUnsolHeader(response);
+			};
 			
-			auto unsol = this->StartNewUnsolicitedResponse();
-			this->ConfigureUnsolHeader(unsol);
+			auto response = ostate.txBuffers.FormatUnsolicited(format);
 			this->StartUnsolicitedConfirmTimer();
 			this->ostate.unsol.pState = &OutstationUnsolicitedStateConfirmWait::Inst();
-			this->BeginUnsolTx(unsol.ToReadOnly());
+			this->BeginUnsolTx(response.ToReadOnly());
 		}
 	}	
 }

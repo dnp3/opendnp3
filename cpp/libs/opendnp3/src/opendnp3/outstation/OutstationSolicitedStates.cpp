@@ -129,7 +129,7 @@ OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnRepeatNonReadReque
 		}
 		else
 		{			
-			pContext->BeginResponseTx(pContext->lastResponse);
+			pContext->BeginResponseTx(pContext->ostate.txBuffers.GetLastSolResponse());
 			return this;
 		}		
 	}	

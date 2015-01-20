@@ -249,6 +249,7 @@
     <ClInclude Include="src\opendnp3\outstation\StaticLoadFunctions.h" />
     <ClInclude Include="src\opendnp3\outstation\StaticTypeBitfield.h" />
     <ClInclude Include="src\opendnp3\outstation\TimeTransaction.h" />
+    <ClInclude Include="src\opendnp3\outstation\TxBuffers.h" />
     <ClInclude Include="src\opendnp3\outstation\ValueMetadataPair.h" />
     <ClInclude Include="src\opendnp3\outstation\WriteHandler.h" />
     <ClInclude Include="src\opendnp3\Route.h" />
