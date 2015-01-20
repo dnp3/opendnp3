@@ -512,14 +512,7 @@ IINField OutstationContext::HandleWrite(const openpal::ReadBufferView& objects)
 {
 	WriteHandler handler(ostate.logger, *pApplication, &ostate.staticIIN);
 	auto result = APDUParser::ParseTwoPass(objects, &handler, &ostate.logger);
-	if (result == APDUParser::Result::OK)
-	{
-		return handler.Errors();
-	}
-	else
-	{
-		return IINFromParseResult(result);
-	}
+	return (result == APDUParser::Result::OK) ? handler.Errors() : IINFromParseResult(result);
 }
 
 IINField OutstationContext::HandleDirectOperate(const openpal::ReadBufferView& objects, HeaderWriter* pWriter)
@@ -535,14 +528,7 @@ IINField OutstationContext::HandleDirectOperate(const openpal::ReadBufferView& o
 		CommandActionAdapter adapter(pCommandHandler, false);
 		CommandResponseHandler handler(ostate.logger, ostate.params.maxControlsPerRequest, &adapter, pWriter);
 		auto result = APDUParser::ParseTwoPass(objects, &handler, &ostate.logger);
-		if (result == APDUParser::Result::OK)
-		{
-			return handler.Errors();
-		}
-		else
-		{
-			return IINFromParseResult(result);
-		}		
+		return (result == APDUParser::Result::OK) ? handler.Errors() : IINFromParseResult(result);
 	}
 }
 
@@ -593,14 +579,7 @@ IINField OutstationContext::HandleOperate(const openpal::ReadBufferView& objects
 			CommandActionAdapter adapter(pCommandHandler, false);
 			CommandResponseHandler handler(ostate.logger, ostate.params.maxControlsPerRequest, &adapter, &writer);
 			auto result = APDUParser::ParseTwoPass(objects, &handler, &ostate.logger);
-			if (result == APDUParser::Result::OK)
-			{
-				return handler.Errors();
-			}
-			else
-			{
-				return IINFromParseResult(result);
-			}
+			return (result == APDUParser::Result::OK) ? handler.Errors() : IINFromParseResult(result);
 		}
 		else
 		{
