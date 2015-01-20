@@ -64,8 +64,8 @@ OutstationContext::OutstationContext(
 		pAuthProvider(&authProvider),
 		eventBuffer(config.eventBufferConfig),
 		database(dbTemplate, eventBuffer, *this, config.params.indexMode, config.params.typesAllowedInClass0, pMutex),
-		rspContext(database.GetStaticLoader(), eventBuffer),
-		requestHistory(config.params.maxRxFragSize),
+		rspContext(database.GetStaticLoader(), eventBuffer),	
+		deferredRequest(config.params.maxRxFragSize),
 		solTxBuffer(config.params.maxTxFragSize),
 		unsolTxBuffer(config.params.maxTxFragSize)
 {	
@@ -169,7 +169,7 @@ void OutstationContext::OnSendResult(bool isSuccess)
 	}	
 }
 
-void OutstationContext::ExamineASDU(const APDUHeader& header, const openpal::ReadBufferView& apdu)
+void OutstationContext::ExamineASDU(const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
 	if (header.control.UNS)
 	{
@@ -190,26 +190,20 @@ void OutstationContext::ExamineASDU(const APDUHeader& header, const openpal::Rea
 		}
 		else
 		{
-			ostate.sol.pState = this->OnReceiveSolRequest(header, apdu);
+			ostate.sol.pState = this->OnReceiveSolRequest(header, objects);
+			requestHistory.RecordLastRequest(header, objects);
 		}
 	}
 }
 
 OutstationSolicitedStateBase* OutstationContext::OnReceiveSolRequest(const APDUHeader& header, const openpal::ReadBufferView& objects)
-{
+{			
 	// analyze this request to see how it compares to the last request
-	auto firstRequest = requestHistory.IsFirst();
-	auto equality = this->requestHistory.RecordLastRequest(header, objects);		
-
-	if (firstRequest)
-	{			
-		return ProcessNewRequest(header, objects);
-	}
-	else
+	if (requestHistory.HasLastRequest())
 	{		
 		if (this->ostate.sol.seqN == header.control.SEQ)
-		{
-			if (equality == APDUEquality::FULL_EQUALITY)
+		{			
+			if (requestHistory.FullyEqualsLastRequest(header, objects))
 			{
 				if (header.function == FunctionCode::READ)
 				{
@@ -219,7 +213,7 @@ OutstationSolicitedStateBase* OutstationContext::OnReceiveSolRequest(const APDUH
 				else
 				{
 					return this->ostate.sol.pState->OnRepeatNonReadRequest(this, header, objects);
-				}				
+				}
 			}
 			else // new operation with same SEQ
 			{
@@ -230,6 +224,10 @@ OutstationSolicitedStateBase* OutstationContext::OnReceiveSolRequest(const APDUH
 		{
 			return ProcessNewRequest(header, objects);
 		}		
+	}
+	else
+	{		
+		return ProcessNewRequest(header, objects);
 	}	
 }
 
@@ -295,8 +293,8 @@ void OutstationContext::ProcessNoResponseFunction(const APDUHeader& header, cons
 }
 
 void OutstationContext::DeferRequest(const APDUHeader& header, const openpal::ReadBufferView& objects, bool isRepeat)
-{
-	requestHistory.DeferRequest(header, objects, isRepeat);
+{	
+	deferredRequest.Set(header, objects, isRepeat);
 }
 
 void OutstationContext::BeginResponseTx(const ReadBufferView& response)
@@ -388,32 +386,39 @@ void OutstationContext::CheckForTaskStart()
 	// if we're online, the solicited state is idle, and the unsolicited state 
 	// is not transmitting we may be able to do a task
 	if (ostate.isOnline && !ostate.isTransmitting && ostate.sol.IsIdle())
-	{
-		if (requestHistory.HasDefered())
+	{		
+		if (deferredRequest.IsSet())
 		{			
-			if (requestHistory.GetDeferedFunction() == FunctionCode::READ)
+			if (deferredRequest.GetFunction() == FunctionCode::READ)
 			{
 				if (ostate.unsol.IsIdle())
-				{
-					DeferredRequest dr = requestHistory.PopDeferedRequest();					
-					ostate.sol.pState = ostate.sol.pState->OnNewReadRequest(this, dr.header, dr.objects);
+				{					
+					auto handler = [this](const APDUHeader& header, ReadBufferView objects, bool)
+					{
+						ostate.sol.pState = ostate.sol.pState->OnNewReadRequest(this, header, objects);
+					};
+					deferredRequest.Process(handler);
 				}
 			}
 			else
 			{
-				DeferredRequest dr = requestHistory.PopDeferedRequest();
-				if (dr.isRepeat)
+				auto handler = [this](const APDUHeader& header, ReadBufferView objects, bool isRepeat)
 				{
-					ostate.sol.pState = ostate.sol.pState->OnRepeatNonReadRequest(this, dr.header, dr.objects);
-				}
-				else
-				{
-					ostate.sol.pState = ostate.sol.pState->OnNewNonReadRequest(this, dr.header, dr.objects);
-				}				
+					if (isRepeat)
+					{
+						ostate.sol.pState = ostate.sol.pState->OnRepeatNonReadRequest(this, header, objects);
+					}
+					else
+					{
+						ostate.sol.pState = ostate.sol.pState->OnNewNonReadRequest(this, header, objects);
+					}
+				};
+
+				deferredRequest.Process(handler);								
 			}
 		}
 		else
-		{
+		{		
 			if (ostate.unsol.IsIdle())
 			{
 				this->CheckForUnsolicited();

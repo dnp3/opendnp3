@@ -42,6 +42,11 @@ struct APDUHeader
 
 	APDUHeader(const AppControlField& control_) : function(FunctionCode::UNKNOWN), control(control_)
 	{}
+
+	bool Equals(const APDUHeader& header) const 
+	{ 
+		return (header.function == function) && (header.control.ToByte() == control.ToByte());
+	}
 	
 	FunctionCode function;
 	AppControlField control;

@@ -367,6 +367,7 @@
     <ClCompile Include="src\opendnp3\outstation\Database.cpp" />
     <ClCompile Include="src\opendnp3\outstation\DatabaseBuffers.cpp" />
     <ClCompile Include="src\opendnp3\outstation\DatabaseConfigView.cpp" />
+    <ClCompile Include="src\opendnp3\outstation\DeferredRequest.cpp" />
     <ClCompile Include="src\opendnp3\outstation\EventBuffer.cpp" />
     <ClCompile Include="src\opendnp3\outstation\EventBufferConfig.cpp" />
     <ClCompile Include="src\opendnp3\outstation\EventCount.cpp" />

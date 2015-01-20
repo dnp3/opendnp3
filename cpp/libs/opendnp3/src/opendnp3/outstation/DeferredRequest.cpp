@@ -18,47 +18,39 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_REQUESTHISTORY_H
-#define OPENDNP3_REQUESTHISTORY_H
 
-#include <cstdint>
-
-#include "opendnp3/app/APDUHeader.h"
-
-#include <openpal/container/ReadBufferView.h>
-
+#include "DeferredRequest.h"
 
 namespace opendnp3
 {
 
-/// Tracks the state of the last request ASDU
-class RequestHistory
-{	
-	public:
+DeferredRequest::DeferredRequest(uint32_t maxAPDUSize) : isSet(false), equalsLastRequest(false), buffer(maxAPDUSize)
+{}
+
+void DeferredRequest::Reset()
+{
+	isSet = false;
+}
+
+bool DeferredRequest::IsSet() const
+{
+	return isSet;
+}
+
+FunctionCode DeferredRequest::GetFunction() const
+{
+	return header.function;
+}
+
+void DeferredRequest::Set(APDUHeader header_, openpal::ReadBufferView objects_, bool equalsLastRequest_)
+{
+	this->isSet = true;
+	this->header = header_;
+	this->objects = objects_.CopyTo(buffer.GetWriteBufferView());
+	this->equalsLastRequest = equalsLastRequest_;
+}
 	
-	RequestHistory();
-
-	bool HasLastRequest() const { return hasLast; }
-
-	void Reset();	
-	void RecordLastRequest(const APDUHeader& header, const openpal::ReadBufferView& objects);	
-	
-	APDUHeader GetLastHeader() const;
-	bool EqualsLastObjects(const openpal::ReadBufferView& objects) const;
-	bool FullyEqualsLastRequest(const APDUHeader& header, const openpal::ReadBufferView& objects) const;
-
-	private:
-
-	bool hasLast;
-	APDUHeader lastHeader;
-	uint16_t lastDigest;
-	uint32_t lastObjectsLength;	
-};
-
 
 }
 
-
-
-#endif
 

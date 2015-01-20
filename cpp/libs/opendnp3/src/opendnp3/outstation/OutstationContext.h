@@ -34,6 +34,7 @@
 #include "opendnp3/outstation/Database.h"
 #include "opendnp3/outstation/ResponseContext.h"
 #include "opendnp3/outstation/RequestHistory.h"
+#include "opendnp3/outstation/DeferredRequest.h"
 #include "opendnp3/outstation/OutstationConfig.h"
 #include "opendnp3/outstation/ICommandHandler.h"
 #include "opendnp3/outstation/IOutstationApplication.h"
@@ -68,6 +69,7 @@ class OutstationContext : private INewEventDataHandler
 	EventBuffer eventBuffer;
 	Database database;
 	openpal::ReadBufferView lastResponse; // points to bytes in txBuffer	
+	
 	ResponseContext rspContext;
 
 	// ------ Helper methods for dealing with state ------	
@@ -147,7 +149,8 @@ class OutstationContext : private INewEventDataHandler
 	IINField HandleEnableUnsolicited(const openpal::ReadBufferView& objects, HeaderWriter& writer);
 	IINField HandleCommandWithConstant(const openpal::ReadBufferView& objects, HeaderWriter& writer, CommandStatus status);
 
-	RequestHistory requestHistory;	
+	RequestHistory requestHistory;
+	DeferredRequest deferredRequest;
 
 	// ------ tx buffers -------		
 	openpal::DynamicBuffer solTxBuffer;

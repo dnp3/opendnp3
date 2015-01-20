@@ -22,9 +22,10 @@
 #ifndef OPENDNP3_DEFERREDREQUEST_H
 #define OPENDNP3_DEFERREDREQUEST_H
 
-#include "opendnp3/gen/FunctionCode.h"
-#include "opendnp3/app/APDUWrapper.h"
+#include "opendnp3/app/APDUHeader.h"
 
+#include <openpal/container/DynamicBuffer.h>
+#include <openpal/util/Uncopyable.h>
 
 namespace opendnp3
 {
@@ -32,24 +33,45 @@ namespace opendnp3
 /**
 * Records metadata about deferred requests
 */
-class DeferredRequest
+class DeferredRequest : private openpal::Uncopyable
 {
 
 	public:
 
-	DeferredRequest() : isRepeat(false)
-	{}
+	DeferredRequest(uint32_t maxAPDUSize);
 
-	DeferredRequest(APDUHeader header_, openpal::ReadBufferView objects_, bool isRepeat_) :
-		header(header_),
-		objects(objects_),
-		isRepeat(isRepeat_)		
-	{}
+	void Reset();
 
+	bool IsSet() const;
+
+	FunctionCode GetFunction() const;
+
+	void Set(APDUHeader header, openpal::ReadBufferView objects, bool equalsLastRequest);
+
+	template <class Fun>
+	void Process(const Fun& handler);
+	
+	private:
+
+	DeferredRequest() = delete;
+
+	bool isSet;
+	bool equalsLastRequest;
 	APDUHeader header;
 	openpal::ReadBufferView objects;
-	bool isRepeat;	
+	openpal::DynamicBuffer buffer;
+	
 };
+
+template <class Fun>
+void DeferredRequest::Process(const Fun& handler)
+{
+	if (isSet)
+	{
+		isSet = false;
+		handler(header, objects, equalsLastRequest);
+	}
+}
 
 }
 

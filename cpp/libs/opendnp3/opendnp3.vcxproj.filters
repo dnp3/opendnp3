@@ -1169,5 +1169,8 @@
     <ClCompile Include="src\opendnp3\outstation\OutstationState.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\DeferredRequest.cpp">
+      <Filter>Source\outstation</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
