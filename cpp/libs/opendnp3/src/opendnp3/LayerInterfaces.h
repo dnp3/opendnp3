@@ -75,10 +75,9 @@ class ILowerLayer
 
 public:
 
-	virtual ~ILowerLayer() {}	
-
+	virtual ~ILowerLayer() {}		
+	
 	virtual void BeginTransmit(const openpal::ReadBufferView&) = 0;
-
 };
 
 class HasLowerLayer

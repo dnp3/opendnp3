@@ -290,11 +290,6 @@ void OutstationContext::ProcessNoResponseFunction(const APDUHeader& header, cons
 	}	
 }
 
-void OutstationContext::DeferRequest(const APDUHeader& header, const openpal::ReadBufferView& objects, bool isRepeat)
-{	
-	ostate.deferred.Set(header, objects, isRepeat);
-}
-
 void OutstationContext::BeginResponseTx(const ReadBufferView& response)
 {		
 	logging::ParseAndLogResponseTx(&ostate.logger, response);

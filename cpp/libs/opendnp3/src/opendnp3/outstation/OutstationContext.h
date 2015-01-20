@@ -103,9 +103,7 @@ class OutstationContext : private INewEventDataHandler
 
 	OutstationSolicitedStateBase* RespondToReadRequest(uint8_t seq, const openpal::ReadBufferView& objects);
 
-	void ProcessNoResponseFunction(const APDUHeader& header, const openpal::ReadBufferView& objects);
-
-	void DeferRequest(const APDUHeader& header, const openpal::ReadBufferView& objects, bool isRepeat);
+	void ProcessNoResponseFunction(const APDUHeader& header, const openpal::ReadBufferView& objects);	
 
 	private:
 

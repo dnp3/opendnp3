@@ -38,14 +38,13 @@ namespace opendnp3
 asynchronous protocol stack layer
 */
 class TransportLayer : public IUpperLayer, public ILowerLayer
-{	
-	friend class TransportTx;
+{		
 
 public:
 
 	TransportLayer(openpal::LogRoot& root, openpal::IExecutor* pExecutor_, uint32_t maxRxFragSize, StackStatistics* pStatistics_ = nullptr);
 
-	/// ILowerLayer	
+	/// ILowerLayer		
 
 	virtual void BeginTransmit(const openpal::ReadBufferView&) override final;
 
@@ -71,7 +70,6 @@ private:
 
 	openpal::IExecutor* pExecutor;
 	
-
 	// ----- Transmitter and Receiver Classes ------
 	TransportRx receiver;
 	TransportTx transmitter;
