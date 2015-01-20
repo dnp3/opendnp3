@@ -120,6 +120,7 @@ void OutstationContext::SetOffline()
 {
 	ostate.SetOffline();
 	requestHistory.Reset();	
+	deferredRequest.Reset();
 	eventBuffer.Unselect();
 	rspContext.Reset();		
 }
