@@ -29,7 +29,7 @@
 namespace opendnp3
 {
 
-class OutstationContext;
+class OState;
 
 /**
  * Base class for various outstation states
@@ -38,17 +38,17 @@ class OutstationSolicitedStateBase
 {
 public:	
 
-	virtual OutstationSolicitedStateBase* OnConfirm(OutstationContext*, const APDUHeader& frag);
+	virtual OutstationSolicitedStateBase* OnConfirm(OState&, const APDUHeader& frag);
 
-	virtual OutstationSolicitedStateBase* OnSendResult(OutstationContext*, bool isSucccess);
+	virtual OutstationSolicitedStateBase* OnSendResult(OState&, bool isSucccess);
 
-	virtual OutstationSolicitedStateBase* OnConfirmTimeout(OutstationContext*);
+	virtual OutstationSolicitedStateBase* OnConfirmTimeout(OState&);
 
-	virtual OutstationSolicitedStateBase* OnNewReadRequest(OutstationContext*, const APDUHeader& header, const openpal::ReadBufferView& objects);
+	virtual OutstationSolicitedStateBase* OnNewReadRequest(OState&, const APDUHeader& header, const openpal::ReadBufferView& objects);
 
-	virtual OutstationSolicitedStateBase* OnNewNonReadRequest(OutstationContext*, const APDUHeader& header, const openpal::ReadBufferView& objects);
+	virtual OutstationSolicitedStateBase* OnNewNonReadRequest(OState&, const APDUHeader& header, const openpal::ReadBufferView& objects);
 
-	virtual OutstationSolicitedStateBase* OnRepeatNonReadRequest(OutstationContext*, const APDUHeader& header, const openpal::ReadBufferView& objects);
+	virtual OutstationSolicitedStateBase* OnRepeatNonReadRequest(OState&, const APDUHeader& header, const openpal::ReadBufferView& objects);
 
 protected:
 
@@ -61,11 +61,11 @@ public:
 
 	static OutstationSolicitedStateBase& Inst();
 
-	virtual OutstationSolicitedStateBase* OnNewReadRequest(OutstationContext*, const APDUHeader& header, const openpal::ReadBufferView& objects) override final;
+	virtual OutstationSolicitedStateBase* OnNewReadRequest(OState&, const APDUHeader& header, const openpal::ReadBufferView& objects) override final;
 
-	virtual OutstationSolicitedStateBase* OnNewNonReadRequest(OutstationContext*, const APDUHeader& header, const openpal::ReadBufferView& objects)  override final;
+	virtual OutstationSolicitedStateBase* OnNewNonReadRequest(OState&, const APDUHeader& header, const openpal::ReadBufferView& objects)  override final;
 
-	virtual OutstationSolicitedStateBase* OnRepeatNonReadRequest(OutstationContext*, const APDUHeader& header, const openpal::ReadBufferView& objects)  override final;
+	virtual OutstationSolicitedStateBase* OnRepeatNonReadRequest(OState&, const APDUHeader& header, const openpal::ReadBufferView& objects)  override final;
 
 private:
 
@@ -86,17 +86,15 @@ public:
 
 	static OutstationSolicitedStateBase& Inst();
 
-	virtual OutstationSolicitedStateBase* OnNewReadRequest(OutstationContext*, const APDUHeader& header, const openpal::ReadBufferView& objects) override final;
+	virtual OutstationSolicitedStateBase* OnNewReadRequest(OState&, const APDUHeader& header, const openpal::ReadBufferView& objects) override final;
 
-	virtual OutstationSolicitedStateBase* OnNewNonReadRequest(OutstationContext*, const APDUHeader& header, const openpal::ReadBufferView& objects)  override final;	
+	virtual OutstationSolicitedStateBase* OnNewNonReadRequest(OState&, const APDUHeader& header, const openpal::ReadBufferView& objects)  override final;	
 
-	virtual OutstationSolicitedStateBase* OnConfirm(OutstationContext* pContext, const APDUHeader& frag) override final;
+	virtual OutstationSolicitedStateBase* OnConfirm(OState&, const APDUHeader& frag) override final;
 
-	virtual OutstationSolicitedStateBase* OnConfirmTimeout(OutstationContext* pContext) override final;
+	virtual OutstationSolicitedStateBase* OnConfirmTimeout(OState&) override final;
 
-private:
-
-	static OutstationSolicitedStateBase* Abort(OutstationContext* pContext);
+private:	
 
 	static OutstationStateSolicitedConfirmWait instance;
 

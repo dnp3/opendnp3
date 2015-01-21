@@ -30,7 +30,7 @@ NullOutstationAuthProvider NullOutstationAuthProvider::instance;
 
 void NullOutstationAuthProvider::ExamineASDU(opendnp3::OutstationContext& ctx, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects)
 {
-	ctx.ExamineASDU(header, objects);
+	//ctx.ExamineASDU(header, objects);
 }
 
 }

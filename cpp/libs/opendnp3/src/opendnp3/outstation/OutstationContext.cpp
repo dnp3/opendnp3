@@ -46,40 +46,22 @@ using namespace openpal;
 namespace opendnp3
 {
 
-OutstationContext::OutstationContext(
-		const OutstationConfig& config,
-		const DatabaseTemplate& dbTemplate,
-		openpal::IMutex* pMutex,
-		IExecutor& executor,
-		LogRoot& root,
-		INewEventDataHandler& dataHandler,
-		ILowerLayer& lower,
-		ICommandHandler& commandHandler,
-		IOutstationApplication& application,
-		IOutstationAuthProvider& authProvider
-		) :
-	
-		ostate(config, dbTemplate, pMutex, dataHandler, executor, root, lower, commandHandler, application, authProvider)
-{	
-	
-}
-
-void OutstationContext::OnNewEventData()
+void OutstationContext::OnNewEventData(OState& ostate)
 {
 	if (!ostate.pendingTaskCheckFlag)
 	{
 		ostate.pendingTaskCheckFlag = true;
 		// post these calls so the stack can unwind
-		auto lambda = [this]() 
+		auto lambda = [&]() 
 		{ 
-			this->ostate.pendingTaskCheckFlag = false;
-			this->CheckForTaskStart(); 
+			ostate.pendingTaskCheckFlag = false;
+			OutstationContext::CheckForTaskStart(ostate);
 		};
 		ostate.pExecutor->PostLambda(lambda);
 	}
 }
 
-IINField OutstationContext::GetDynamicIIN()
+IINField OutstationContext::GetDynamicIIN(OState& ostate)
 {	
 	auto classField = ostate.eventBuffer.UnwrittenClassField();
 
@@ -92,29 +74,17 @@ IINField OutstationContext::GetDynamicIIN()
 	return ret;
 }
 
-IINField OutstationContext::GetResponseIIN()
+IINField OutstationContext::GetResponseIIN(OState& ostate)
 {
-	return this->ostate.staticIIN | GetDynamicIIN() | ostate.pApplication->GetApplicationIIN().ToIIN();
+	return ostate.staticIIN | GetDynamicIIN(ostate) | ostate.pApplication->GetApplicationIIN().ToIIN();
 }
 
-void OutstationContext::ConfigureUnsolHeader(APDUResponse& unsol)
+void OutstationContext::ConfigureUnsolHeader(OState& ostate, APDUResponse& unsol)
 {	
-	build::NullUnsolicited(unsol, this->ostate.unsol.seqN, this->GetResponseIIN());
+	build::NullUnsolicited(unsol, ostate.unsol.seqN, GetResponseIIN(ostate));
 }
 
-void OutstationContext::SetOnline()
-{
-	ostate.isOnline = true;
-	this->CheckForTaskStart();
-}
-
-void OutstationContext::SetOffline()
-{
-	ostate.Reset();		
-}
-
-
-void OutstationContext::OnReceiveAPDU(const openpal::ReadBufferView& apdu)
+void OutstationContext::OnReceiveAPDU(OState& ostate, const openpal::ReadBufferView& apdu)
 {	
 	APDUHeader header;	
 	if (APDUHeaderParser::ParseRequest(apdu, header, &ostate.logger))
@@ -132,7 +102,8 @@ void OutstationContext::OnReceiveAPDU(const openpal::ReadBufferView& apdu)
 		if (header.control.IsFirAndFin() && !header.control.CON)
 		{
 			auto objects = apdu.Skip(APDU_REQUEST_HEADER_SIZE);
-			ostate.pAuthProvider->ExamineASDU(*this, header, objects);
+			OutstationContext::ExamineASDU(ostate, header, objects);			
+			OutstationContext::CheckForTaskStart(ostate);
 		}
 		else
 		{
@@ -142,29 +113,25 @@ void OutstationContext::OnReceiveAPDU(const openpal::ReadBufferView& apdu)
 	else
 	{
 		SIMPLE_LOG_BLOCK(ostate.logger, flags::ERR, "ignoring malformed request header");
-	}
-
-
-	// regardless of what the event is, see if we need to schedule an action
-	this->CheckForTaskStart();
+	}	
 }
 
-void OutstationContext::OnSendResult(bool isSuccess)
+void OutstationContext::OnSendResult(OState& ostate, bool isSuccess)
 {
 	if (ostate.isOnline && ostate.isTransmitting)
 	{
 		ostate.isTransmitting = false;
-		this->CheckForTaskStart();		
+		OutstationContext::CheckForTaskStart(ostate);
 	}	
 }
 
-void OutstationContext::ExamineASDU(const APDUHeader& header, const openpal::ReadBufferView& objects)
+void OutstationContext::ExamineASDU(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
 	if (header.control.UNS)
 	{
 		if (header.function == FunctionCode::CONFIRM)
 		{
-			ostate.unsol.pState = ostate.unsol.pState->OnConfirm(this, header);
+			ostate.unsol.pState = ostate.unsol.pState->OnConfirm(ostate, header);
 		}
 		else
 		{
@@ -175,22 +142,22 @@ void OutstationContext::ExamineASDU(const APDUHeader& header, const openpal::Rea
 	{
 		if (header.function == FunctionCode::CONFIRM)
 		{
-			ostate.sol.pState = ostate.sol.pState->OnConfirm(this, header);
+			ostate.sol.pState = ostate.sol.pState->OnConfirm(ostate, header);
 		}
 		else
 		{
-			ostate.sol.pState = this->OnReceiveSolRequest(header, objects);
+			ostate.sol.pState = OutstationContext::OnReceiveSolRequest(ostate, header, objects);
 			ostate.history.RecordLastRequest(header, objects);
 		}
 	}
 }
 
-OutstationSolicitedStateBase* OutstationContext::OnReceiveSolRequest(const APDUHeader& header, const openpal::ReadBufferView& objects)
+OutstationSolicitedStateBase* OutstationContext::OnReceiveSolRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {			
 	// analyze this request to see how it compares to the last request
 	if (ostate.history.HasLastRequest())
 	{		
-		if (this->ostate.sol.seqN == header.control.SEQ)
+		if (ostate.sol.seqN == header.control.SEQ)
 		{			
 			if (ostate.history.FullyEqualsLastRequest(header, objects))
 			{
@@ -201,70 +168,71 @@ OutstationSolicitedStateBase* OutstationContext::OnReceiveSolRequest(const APDUH
 				}
 				else
 				{
-					return this->ostate.sol.pState->OnRepeatNonReadRequest(this, header, objects);
+					return ostate.sol.pState->OnRepeatNonReadRequest(ostate, header, objects);
 				}
 			}
 			else // new operation with same SEQ
 			{
-				return ProcessNewRequest(header, objects);
+				return ProcessNewRequest(ostate, header, objects);
 			}
 		}
 		else  // completely new sequence #
 		{
-			return ProcessNewRequest(header, objects);
+			return ProcessNewRequest(ostate, header, objects);
 		}		
 	}
 	else
 	{		
-		return ProcessNewRequest(header, objects);
+		return ProcessNewRequest(ostate, header, objects);
 	}	
 }
 
-OutstationSolicitedStateBase* OutstationContext::ProcessNewRequest(const APDUHeader& header, const openpal::ReadBufferView& objects)
+OutstationSolicitedStateBase* OutstationContext::ProcessNewRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
-	this->ostate.sol.seqN = header.control.SEQ;
+	ostate.sol.seqN = header.control.SEQ;
+
 	if (header.function == FunctionCode::READ)
 	{
-		return this->ostate.sol.pState->OnNewReadRequest(this, header, objects);
+		return ostate.sol.pState->OnNewReadRequest(ostate, header, objects);
 	}
 	else
 	{
-		return this->ostate.sol.pState->OnNewNonReadRequest(this, header, objects);
+		return ostate.sol.pState->OnNewNonReadRequest(ostate, header, objects);
 	}
 }
 
-OutstationSolicitedStateBase* OutstationContext::RespondToNonReadRequest(const APDUHeader& header, const openpal::ReadBufferView& objects)
+OutstationSolicitedStateBase* OutstationContext::RespondToNonReadRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
 	auto format = [&](APDUResponse& response) {
 		auto writer = response.GetWriter();
 		response.SetFunction(FunctionCode::RESPONSE);
 		response.SetControl(AppControlField(true, true, false, false, header.control.SEQ));
-		auto iin = this->BuildNonReadResponse(header, objects, writer);
-		response.SetIIN(iin | this->GetResponseIIN());
+		auto iin = BuildNonReadResponse(ostate, header, objects, writer);
+		response.SetIIN(iin | GetResponseIIN(ostate));
 	};
 
 	auto response = ostate.txBuffers.FormatSolicited(format);		
-	this->BeginResponseTx(response.ToReadOnly());
+	OutstationContext::BeginResponseTx(ostate, response.ToReadOnly());
 	return &OutstationSolicitedStateIdle::Inst();
 }
 
-OutstationSolicitedStateBase* OutstationContext::RespondToReadRequest(uint8_t seq, const openpal::ReadBufferView& objects)
+OutstationSolicitedStateBase* OutstationContext::RespondToReadRequest(OState& ostate, uint8_t seq, const openpal::ReadBufferView& objects)
 {
 	auto format = [&](APDUResponse& response) {
 		auto writer = response.GetWriter();
 		response.SetFunction(FunctionCode::RESPONSE);
-		auto result = this->HandleRead(objects, writer);
+		auto result = OutstationContext::HandleRead(ostate, objects, writer);
 		result.second.SEQ = seq;
 		ostate.sol.expectedConSeqN = seq;
 		response.SetControl(result.second);
-		response.SetIIN(result.first | this->GetResponseIIN());
+		response.SetIIN(result.first | OutstationContext::GetResponseIIN(ostate));
 	};
 
 	auto response = ostate.txBuffers.FormatSolicited(format);
-	this->BeginResponseTx(response.ToReadOnly());	
+	OutstationContext::BeginResponseTx(ostate, response.ToReadOnly());
 	if (response.GetControl().CON)
 	{
-		this->StartSolicitedConfirmTimer();
+		OutstationContext::StartSolicitedConfirmTimer(ostate);
 		return &OutstationStateSolicitedConfirmWait::Inst();
 	}
 	else
@@ -273,12 +241,12 @@ OutstationSolicitedStateBase* OutstationContext::RespondToReadRequest(uint8_t se
 	}	
 }
 
-void OutstationContext::ProcessNoResponseFunction(const APDUHeader& header, const openpal::ReadBufferView& objects)
+void OutstationContext::ProcessNoResponseFunction(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
 	switch (header.function)
 	{
 		case(FunctionCode::DIRECT_OPERATE_NR) :
-			this->HandleDirectOperate(objects, nullptr); // no object writer, this is a no ack code
+			OutstationContext::HandleDirectOperate(ostate, objects, nullptr); // no object writer, this is a no ack code
 			break;
 		default:
 			FORMAT_LOG_BLOCK(ostate.logger, flags::WARN, "Ignoring NR function code: %s", FunctionCodeToString(header.function));
@@ -286,69 +254,69 @@ void OutstationContext::ProcessNoResponseFunction(const APDUHeader& header, cons
 	}	
 }
 
-void OutstationContext::BeginResponseTx(const ReadBufferView& response)
+void OutstationContext::BeginResponseTx(OState& ostate, const ReadBufferView& response)
 {		
 	logging::ParseAndLogResponseTx(&ostate.logger, response);
-	this->ostate.isTransmitting = true;	
+	ostate.isTransmitting = true;	
 	ostate.pLower->BeginTransmit(response);
 }
 
-void OutstationContext::BeginUnsolTx(const ReadBufferView& response)
+void OutstationContext::BeginUnsolTx(OState& ostate, const ReadBufferView& response)
 {	
 	logging::ParseAndLogResponseTx(&ostate.logger, response);
-	this->ostate.isTransmitting = true;
-	this->ostate.unsol.expectedConSeqN = ostate.unsol.seqN;
-	this->ostate.unsol.seqN = AppControlField::NextSeq(ostate.unsol.seqN);
+	ostate.isTransmitting = true;
+	ostate.unsol.expectedConSeqN = ostate.unsol.seqN;
+	ostate.unsol.seqN = AppControlField::NextSeq(ostate.unsol.seqN);
 	ostate.pLower->BeginTransmit(response);
 }
 
-IINField OutstationContext::BuildNonReadResponse(const APDUHeader& header, const openpal::ReadBufferView& objects, HeaderWriter& writer)
+IINField OutstationContext::BuildNonReadResponse(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects, HeaderWriter& writer)
 {
 	switch (header.function)
 	{				
 		case(FunctionCode::WRITE) :
-			return HandleWrite(objects);
+			return HandleWrite(ostate, objects);
 		case(FunctionCode::SELECT) :
-			return HandleSelect(objects, writer);
+			return HandleSelect(ostate, objects, writer);
 		case(FunctionCode::OPERATE) :
-			return HandleOperate(objects, writer);
+			return HandleOperate(ostate, objects, writer);
 		case(FunctionCode::DIRECT_OPERATE) :
-			return HandleDirectOperate(objects, &writer);
+			return HandleDirectOperate(ostate, objects, &writer);
 		case(FunctionCode::COLD_RESTART) :
-			return HandleRestart(objects, false, &writer);
+			return HandleRestart(ostate, objects, false, &writer);
 		case(FunctionCode::WARM_RESTART) :
-			return HandleRestart(objects, true, &writer);
+			return HandleRestart(ostate, objects, true, &writer);
 		case(FunctionCode::ASSIGN_CLASS) :
-			return HandleAssignClass(objects);
+			return HandleAssignClass(ostate, objects);
 		case(FunctionCode::DELAY_MEASURE) :
-			return HandleDelayMeasure(objects, writer);
+			return HandleDelayMeasure(ostate, objects, writer);
 		case(FunctionCode::DISABLE_UNSOLICITED) :
-			return ostate.params.allowUnsolicited ? HandleDisableUnsolicited(objects, writer) : IINField(IINBit::FUNC_NOT_SUPPORTED);
+			return ostate.params.allowUnsolicited ? HandleDisableUnsolicited(ostate, objects, writer) : IINField(IINBit::FUNC_NOT_SUPPORTED);
 		case(FunctionCode::ENABLE_UNSOLICITED) :
-			return ostate.params.allowUnsolicited ? HandleEnableUnsolicited(objects, writer) : IINField(IINBit::FUNC_NOT_SUPPORTED);
+			return ostate.params.allowUnsolicited ? HandleEnableUnsolicited(ostate, objects, writer) : IINField(IINBit::FUNC_NOT_SUPPORTED);
 		default:
 			return	IINField(IINBit::FUNC_NOT_SUPPORTED);
 	}
 }
 
-OutstationSolicitedStateBase* OutstationContext::ContinueMultiFragResponse(uint8_t seq)
+OutstationSolicitedStateBase* OutstationContext::ContinueMultiFragResponse(OState& ostate, uint8_t seq)
 {	
 	auto format = [&](APDUResponse& response) {
 		auto writer = response.GetWriter();
 		response.SetFunction(FunctionCode::RESPONSE);
-		auto control = this->ostate.rspContext.LoadResponse(writer);
+		auto control = ostate.rspContext.LoadResponse(writer);
 		control.SEQ = seq;
 		ostate.sol.expectedConSeqN = seq;
 		response.SetControl(control);
-		response.SetIIN(this->ostate.staticIIN | this->GetDynamicIIN());
+		response.SetIIN(ostate.staticIIN | GetDynamicIIN(ostate));
 	};
 
 	auto response = ostate.txBuffers.FormatSolicited(format);
-	this->BeginResponseTx(response.ToReadOnly());
+	OutstationContext::BeginResponseTx(ostate, response.ToReadOnly());
 	
 	if (response.GetControl().CON)
 	{
-		this->StartSolicitedConfirmTimer();
+		OutstationContext::StartSolicitedConfirmTimer(ostate);
 		return &OutstationStateSolicitedConfirmWait::Inst();
 	}
 	else
@@ -357,7 +325,7 @@ OutstationSolicitedStateBase* OutstationContext::ContinueMultiFragResponse(uint8
 	}	
 }
 
-void OutstationContext::CheckForTaskStart()
+void OutstationContext::CheckForTaskStart(OState& ostate)
 {		
 	// if we're online, the solicited state is idle, and the unsolicited state 
 	// is not transmitting we may be able to do a task
@@ -369,24 +337,24 @@ void OutstationContext::CheckForTaskStart()
 			{
 				if (ostate.unsol.IsIdle())
 				{					
-					auto handler = [this](const APDUHeader& header, ReadBufferView objects, bool)
+					auto handler = [&](const APDUHeader& header, ReadBufferView objects, bool)
 					{
-						ostate.sol.pState = ostate.sol.pState->OnNewReadRequest(this, header, objects);
+						ostate.sol.pState = ostate.sol.pState->OnNewReadRequest(ostate, header, objects);
 					};
 					ostate.deferred.Process(handler);
 				}
 			}
 			else
 			{
-				auto handler = [this](const APDUHeader& header, ReadBufferView objects, bool isRepeat)
+				auto handler = [&](const APDUHeader& header, ReadBufferView objects, bool isRepeat)
 				{
 					if (isRepeat)
 					{
-						ostate.sol.pState = ostate.sol.pState->OnRepeatNonReadRequest(this, header, objects);
+						ostate.sol.pState = ostate.sol.pState->OnRepeatNonReadRequest(ostate, header, objects);
 					}
 					else
 					{
-						ostate.sol.pState = ostate.sol.pState->OnNewNonReadRequest(this, header, objects);
+						ostate.sol.pState = ostate.sol.pState->OnNewNonReadRequest(ostate, header, objects);
 					}
 				};
 
@@ -397,13 +365,13 @@ void OutstationContext::CheckForTaskStart()
 		{		
 			if (ostate.unsol.IsIdle())
 			{
-				this->CheckForUnsolicited();
+				OutstationContext::CheckForUnsolicited(ostate);
 			}
 		}
 	}	
 }
 
-void OutstationContext::CheckForUnsolicited()
+void OutstationContext::CheckForUnsolicited(OState& ostate)
 {
 	if (ostate.params.allowUnsolicited)
 	{
@@ -412,7 +380,7 @@ void OutstationContext::CheckForUnsolicited()
 			// are there events to be reported?
 			if (ostate.params.unsolClassMask.Intersects(ostate.eventBuffer.UnwrittenClassField()))
 			{			
-				auto format = [this](APDUResponse& response) 
+				auto format = [&](APDUResponse& response) 
 				{
 					auto writer = response.GetWriter();
 					// even though we're not loading static data, we need to lock 
@@ -421,52 +389,52 @@ void OutstationContext::CheckForUnsolicited()
 					ostate.eventBuffer.Unselect();
 					ostate.eventBuffer.SelectAllByClass(ostate.params.unsolClassMask);
 					ostate.eventBuffer.Load(writer);
-					this->ConfigureUnsolHeader(response);
+					OutstationContext::ConfigureUnsolHeader(ostate, response);
 				};
 			
 				auto response = ostate.txBuffers.FormatUnsolicited(format);								
-				this->StartUnsolicitedConfirmTimer();
-				this->ostate.unsol.pState = &OutstationUnsolicitedStateConfirmWait::Inst();
-				this->BeginUnsolTx(response.ToReadOnly());								
+				OutstationContext::StartUnsolicitedConfirmTimer(ostate);
+				ostate.unsol.pState = &OutstationUnsolicitedStateConfirmWait::Inst();
+				OutstationContext::BeginUnsolTx(ostate, response.ToReadOnly());
 			}			
 		}
 		else
 		{
 			// send a NULL unsolcited message			
-			auto format = [this](APDUResponse& response) 
+			auto format = [&](APDUResponse& response) 
 			{
-				this->ConfigureUnsolHeader(response);
+				OutstationContext::ConfigureUnsolHeader(ostate, response);
 			};
 			
 			auto response = ostate.txBuffers.FormatUnsolicited(format);
-			this->StartUnsolicitedConfirmTimer();
-			this->ostate.unsol.pState = &OutstationUnsolicitedStateConfirmWait::Inst();
-			this->BeginUnsolTx(response.ToReadOnly());
+			OutstationContext::StartUnsolicitedConfirmTimer(ostate);
+			ostate.unsol.pState = &OutstationUnsolicitedStateConfirmWait::Inst();
+			OutstationContext::BeginUnsolTx(ostate, response.ToReadOnly());
 		}
 	}	
 }
 
-bool OutstationContext::StartSolicitedConfirmTimer()
+bool OutstationContext::StartSolicitedConfirmTimer(OState& ostate)
 {
-	auto timeout = [this]() 
+	auto timeout = [&]() 
 	{ 
-		ostate.sol.pState = this->ostate.sol.pState->OnConfirmTimeout(this);
-		this->CheckForTaskStart();
+		ostate.sol.pState = ostate.sol.pState->OnConfirmTimeout(ostate);
+		OutstationContext::CheckForTaskStart(ostate);
 	};
 	return ostate.confirmTimer.Start(ostate.params.unsolConfirmTimeout, timeout);
 }
 
-bool OutstationContext::StartUnsolicitedConfirmTimer()
+bool OutstationContext::StartUnsolicitedConfirmTimer(OState& ostate)
 {
-	auto timeout = [this]() 
+	auto timeout = [&]() 
 	{ 
-		ostate.unsol.pState = this->ostate.unsol.pState->OnConfirmTimeout(this);
-		this->CheckForTaskStart();
+		ostate.unsol.pState = ostate.unsol.pState->OnConfirmTimeout(ostate);
+		OutstationContext::CheckForTaskStart(ostate);
 	};
 	return ostate.confirmTimer.Start(ostate.params.unsolConfirmTimeout, timeout);
 }
 
-Pair<IINField, AppControlField> OutstationContext::HandleRead(const openpal::ReadBufferView& objects, HeaderWriter& writer)
+Pair<IINField, AppControlField> OutstationContext::HandleRead(OState& ostate, const openpal::ReadBufferView& objects, HeaderWriter& writer)
 {
 	ostate.rspContext.Reset();
 
@@ -488,14 +456,14 @@ Pair<IINField, AppControlField> OutstationContext::HandleRead(const openpal::Rea
 	}
 }
 
-IINField OutstationContext::HandleWrite(const openpal::ReadBufferView& objects)
+IINField OutstationContext::HandleWrite(OState& ostate, const openpal::ReadBufferView& objects)
 {
 	WriteHandler handler(ostate.logger, *ostate.pApplication, &ostate.staticIIN);
 	auto result = APDUParser::ParseTwoPass(objects, &handler, &ostate.logger);
 	return (result == APDUParser::Result::OK) ? handler.Errors() : IINFromParseResult(result);
 }
 
-IINField OutstationContext::HandleDirectOperate(const openpal::ReadBufferView& objects, HeaderWriter* pWriter)
+IINField OutstationContext::HandleDirectOperate(OState& ostate, const openpal::ReadBufferView& objects, HeaderWriter* pWriter)
 {
 	// since we're echoing, make sure there's enough size before beginning
 	if (pWriter && (objects.Size() > pWriter->Remaining()))
@@ -512,7 +480,7 @@ IINField OutstationContext::HandleDirectOperate(const openpal::ReadBufferView& o
 	}
 }
 
-IINField OutstationContext::HandleSelect(const openpal::ReadBufferView& objects, HeaderWriter& writer)
+IINField OutstationContext::HandleSelect(OState& ostate, const openpal::ReadBufferView& objects, HeaderWriter& writer)
 {
 	// since we're echoing, make sure there's enough size before beginning
 	if (objects.Size() > writer.Remaining())
@@ -541,7 +509,7 @@ IINField OutstationContext::HandleSelect(const openpal::ReadBufferView& objects,
 	}
 }
 
-IINField OutstationContext::HandleOperate(const openpal::ReadBufferView& objects, HeaderWriter& writer)
+IINField OutstationContext::HandleOperate(OState& ostate, const openpal::ReadBufferView& objects, HeaderWriter& writer)
 {
 	// since we're echoing, make sure there's enough size before beginning
 	if (objects.Size() > writer.Remaining())
@@ -563,12 +531,12 @@ IINField OutstationContext::HandleOperate(const openpal::ReadBufferView& objects
 		}
 		else
 		{
-			return HandleCommandWithConstant(objects, writer, result);
+			return HandleCommandWithConstant(ostate, objects, writer, result);
 		}
 	}
 }
 
-IINField OutstationContext::HandleDelayMeasure(const openpal::ReadBufferView& objects, HeaderWriter& writer)
+IINField OutstationContext::HandleDelayMeasure(OState& ostate, const openpal::ReadBufferView& objects, HeaderWriter& writer)
 {
 	if (objects.IsEmpty())
 	{		
@@ -583,7 +551,7 @@ IINField OutstationContext::HandleDelayMeasure(const openpal::ReadBufferView& ob
 	}
 }
 
-IINField OutstationContext::HandleRestart(const openpal::ReadBufferView& objects, bool isWarmRestart, HeaderWriter* pWriter)
+IINField OutstationContext::HandleRestart(OState& ostate, const openpal::ReadBufferView& objects, bool isWarmRestart, HeaderWriter* pWriter)
 {
 	if (objects.IsEmpty())
 	{
@@ -622,7 +590,7 @@ IINField OutstationContext::HandleRestart(const openpal::ReadBufferView& objects
 	}
 }
 
-IINField OutstationContext::HandleAssignClass(const openpal::ReadBufferView& objects)
+IINField OutstationContext::HandleAssignClass(OState& ostate, const openpal::ReadBufferView& objects)
 {
 	if (ostate.pApplication->SupportsAssignClass())
 	{		
@@ -639,7 +607,7 @@ IINField OutstationContext::HandleAssignClass(const openpal::ReadBufferView& obj
 	}	
 }
 
-IINField OutstationContext::HandleDisableUnsolicited(const openpal::ReadBufferView& objects, HeaderWriter& writer)
+IINField OutstationContext::HandleDisableUnsolicited(OState& ostate, const openpal::ReadBufferView& objects, HeaderWriter& writer)
 {
 	ClassBasedRequestHandler handler(ostate.logger);
 	auto result = APDUParser::ParseTwoPass(objects, &handler, &ostate.logger);
@@ -654,7 +622,7 @@ IINField OutstationContext::HandleDisableUnsolicited(const openpal::ReadBufferVi
 	}
 }
 
-IINField OutstationContext::HandleEnableUnsolicited(const openpal::ReadBufferView& objects, HeaderWriter& writer)
+IINField OutstationContext::HandleEnableUnsolicited(OState& ostate, const openpal::ReadBufferView& objects, HeaderWriter& writer)
 {	
 	ClassBasedRequestHandler handler(ostate.logger);
 	auto result = APDUParser::ParseTwoPass(objects, &handler, &ostate.logger);
@@ -669,7 +637,7 @@ IINField OutstationContext::HandleEnableUnsolicited(const openpal::ReadBufferVie
 	}
 }
 
-IINField OutstationContext::HandleCommandWithConstant(const openpal::ReadBufferView& objects, HeaderWriter& writer, CommandStatus status)
+IINField OutstationContext::HandleCommandWithConstant(OState& ostate, const openpal::ReadBufferView& objects, HeaderWriter& writer, CommandStatus status)
 {
 	ConstantCommandAction constant(status);
 	CommandResponseHandler handler(ostate.logger, ostate.params.maxControlsPerRequest, &constant, &writer);

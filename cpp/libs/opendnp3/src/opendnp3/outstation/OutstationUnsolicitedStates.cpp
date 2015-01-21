@@ -33,21 +33,21 @@ namespace opendnp3
 
 OutstationUnsolicitedStateIdle OutstationUnsolicitedStateIdle::instance;
 
-OutstationUnsolicitedStateBase* OutstationUnsolicitedStateIdle::OnConfirm(OutstationContext* pContext, const APDUHeader& header)
+OutstationUnsolicitedStateBase* OutstationUnsolicitedStateIdle::OnConfirm(OState& ostate, const APDUHeader& header)
 {
-	FORMAT_LOG_BLOCK(pContext->ostate.logger, flags::WARN, "Unexpected unsolicted confirm with sequence: %u", header.control.SEQ);
+	FORMAT_LOG_BLOCK(ostate.logger, flags::WARN, "Unexpected unsolicted confirm with sequence: %u", header.control.SEQ);
 	return this;
 }
 
-OutstationUnsolicitedStateBase* OutstationUnsolicitedStateIdle::OnSendResult(OutstationContext* pContext, bool isSucccess)
+OutstationUnsolicitedStateBase* OutstationUnsolicitedStateIdle::OnSendResult(OState& ostate, bool isSucccess)
 {
-	SIMPLE_LOG_BLOCK(pContext->ostate.logger, flags::WARN, "Unexpected unsolcitied send result callback");
+	SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "Unexpected unsolcitied send result callback");
 	return this;
 }
 
-OutstationUnsolicitedStateBase* OutstationUnsolicitedStateIdle::OnConfirmTimeout(OutstationContext* pContext)
+OutstationUnsolicitedStateBase* OutstationUnsolicitedStateIdle::OnConfirmTimeout(OState& ostate)
 {
-	SIMPLE_LOG_BLOCK(pContext->ostate.logger, flags::WARN, "Unexpected unsolicited confirm timeout");
+	SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "Unexpected unsolicited confirm timeout");
 	return this;
 }
 
@@ -55,20 +55,21 @@ OutstationUnsolicitedStateBase* OutstationUnsolicitedStateIdle::OnConfirmTimeout
 
 OutstationUnsolicitedStateConfirmWait OutstationUnsolicitedStateConfirmWait::instance;
 
-OutstationUnsolicitedStateBase* OutstationUnsolicitedStateConfirmWait::OnConfirm(OutstationContext* pContext, const APDUHeader& header)
+OutstationUnsolicitedStateBase* OutstationUnsolicitedStateConfirmWait::OnConfirm(OState& ostate, const APDUHeader& header)
 {
-	if (header.control.SEQ == pContext->ostate.unsol.expectedConSeqN)
+	if (header.control.SEQ == ostate.unsol.expectedConSeqN)
 	{
-		pContext->ostate.confirmTimer.Cancel();
+		ostate.confirmTimer.Cancel();
 
-		if (pContext->ostate.unsol.completedNull)
+		if (ostate.unsol.completedNull)
 		{			
-			pContext->ostate.eventBuffer.ClearWritten();
+			ostate.eventBuffer.ClearWritten();
 		}
 		else
 		{
-			pContext->ostate.unsol.completedNull = true;
-		}		
+			ostate.unsol.completedNull = true;
+		}
+
 		return &OutstationUnsolicitedStateIdle::Inst();
 	}
 	else
@@ -77,10 +78,10 @@ OutstationUnsolicitedStateBase* OutstationUnsolicitedStateConfirmWait::OnConfirm
 	}
 }
 
-OutstationUnsolicitedStateBase* OutstationUnsolicitedStateConfirmWait::OnConfirmTimeout(OutstationContext* pContext)
+OutstationUnsolicitedStateBase* OutstationUnsolicitedStateConfirmWait::OnConfirmTimeout(OState& ostate)
 {
-	SIMPLE_LOG_BLOCK(pContext->ostate.logger, flags::WARN, "Unsolicited confirm timeout");
-	pContext->ostate.eventBuffer.Unselect();
+	SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "Unsolicited confirm timeout");
+	ostate.eventBuffer.Unselect();
 	return &OutstationUnsolicitedStateIdle::Inst();
 }
 

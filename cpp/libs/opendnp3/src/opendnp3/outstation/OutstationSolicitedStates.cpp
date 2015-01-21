@@ -33,39 +33,39 @@ namespace opendnp3
 
 // --------------------- OutstationSolicitedStateBase ----------------------
 
-OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnConfirm(OutstationContext* pContext, const APDUHeader& header)
+OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnConfirm(OState& ostate, const APDUHeader& header)
 {
-	FORMAT_LOG_BLOCK(pContext->ostate.logger, flags::WARN, "Unexpected solicted confirm with sequence: %u", header.control.SEQ);
+	FORMAT_LOG_BLOCK(ostate.logger, flags::WARN, "Unexpected solicted confirm with sequence: %u", header.control.SEQ);
 	return this;
 }
 
-OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnSendResult(OutstationContext* pContext, bool isSucccess)
+OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnSendResult(OState& ostate, bool isSucccess)
 {
-	SIMPLE_LOG_BLOCK(pContext->ostate.logger, flags::WARN, "Unexpected send result callback");
+	SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "Unexpected send result callback");
 	return this;
 }
 
-OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnConfirmTimeout(OutstationContext* pContext)
+OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnConfirmTimeout(OState& ostate)
 {
-	SIMPLE_LOG_BLOCK(pContext->ostate.logger, flags::WARN, "Unexpected confirm timeout");
+	SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "Unexpected confirm timeout");
 	return this;
 }
 
-OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnNewReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadBufferView& objects)
+OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnNewReadRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
-	pContext->ostate.deferred.Set(header, objects, false);	
+	ostate.deferred.Set(header, objects, false);	
 	return this;
 }
 
-OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnNewNonReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadBufferView& objects)
+OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnNewNonReadRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
-	pContext->ostate.deferred.Set(header, objects, false);
+	ostate.deferred.Set(header, objects, false);
 	return this;
 }
 
-OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnRepeatNonReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadBufferView& objects)
+OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnRepeatNonReadRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
-	pContext->ostate.deferred.Set(header, objects, true);
+	ostate.deferred.Set(header, objects, true);
 	return this;
 }
 
@@ -79,46 +79,46 @@ OutstationSolicitedStateBase& OutstationSolicitedStateIdle::Inst()
 	return instance;
 }
 
-OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadBufferView& objects)
+OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewReadRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
-	if (!pContext->ostate.isTransmitting && pContext->ostate.unsol.IsIdle())
+	if (!ostate.isTransmitting && ostate.unsol.IsIdle())
 	{
-		return pContext->RespondToReadRequest(header.control.SEQ, objects);
+		return OutstationContext::RespondToReadRequest(ostate, header.control.SEQ, objects);
 	}
 	else
 	{
-		pContext->ostate.deferred.Set(header, objects, false);
+		ostate.deferred.Set(header, objects, false);
 		return this;
 	}
 }
 
-OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewNonReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadBufferView& objects)
+OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewNonReadRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
-	if (pContext->ostate.isTransmitting)
+	if (ostate.isTransmitting)
 	{
 		
-		pContext->ostate.deferred.Set(header, objects, false);
+		ostate.deferred.Set(header, objects, false);
 		return this;		
 	}
 	else
 	{
 		if (IsNoAckCode(header.function))
 		{
-			pContext->ProcessNoResponseFunction(header, objects);
+			OutstationContext::ProcessNoResponseFunction(ostate, header, objects);
 			return this;
 		}
 		else
 		{
-			return pContext->RespondToNonReadRequest(header, objects);
+			return OutstationContext::RespondToNonReadRequest(ostate, header, objects);
 		}		
 	}
 }
 
-OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnRepeatNonReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadBufferView& objects)
+OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnRepeatNonReadRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
-	if (pContext->ostate.isTransmitting)
+	if (ostate.isTransmitting)
 	{
-		pContext->ostate.deferred.Set(header, objects, true);
+		ostate.deferred.Set(header, objects, true);
 		return this;		
 	}
 	else
@@ -129,7 +129,7 @@ OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnRepeatNonReadReque
 		}
 		else
 		{			
-			pContext->BeginResponseTx(pContext->ostate.txBuffers.GetLastSolResponse());
+			OutstationContext::BeginResponseTx(ostate, ostate.txBuffers.GetLastSolResponse());
 			return this;
 		}		
 	}	
@@ -144,40 +144,34 @@ OutstationSolicitedStateBase& OutstationStateSolicitedConfirmWait::Inst()
 	return instance;
 }
 
-OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnNewReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadBufferView& objects)
+OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnNewReadRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {	
-	pContext->ostate.deferred.Set(header, objects, false);
-	return Abort(pContext);
+	ostate.deferred.Set(header, objects, false);
+	ostate.confirmTimer.Cancel();
+	return &OutstationSolicitedStateIdle::Inst();
 			
 }
 
-OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnNewNonReadRequest(OutstationContext* pContext, const APDUHeader& header, const openpal::ReadBufferView& objects)
+OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnNewNonReadRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
-	pContext->ostate.deferred.Set(header, objects, false);
-	return Abort(pContext);
-}
-
-OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::Abort(OutstationContext* pContext)
-{
-	// abandon the confirmed response sequence
-	pContext->ostate.confirmTimer.Cancel();
-
+	ostate.deferred.Set(header, objects, false);
+	ostate.confirmTimer.Cancel();
 	return &OutstationSolicitedStateIdle::Inst();
 }
 
-OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnConfirm(OutstationContext* pContext, const APDUHeader& header)
+OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnConfirm(OState& ostate, const APDUHeader& header)
 {	
-	if (header.control.SEQ == pContext->ostate.sol.expectedConSeqN)
+	if (header.control.SEQ == ostate.sol.expectedConSeqN)
 	{
-		pContext->ostate.confirmTimer.Cancel();
+		ostate.confirmTimer.Cancel();
 
 		// Lock the database for the remainder of this method as we will be manipulating the buffers
-		Transaction tx(pContext->ostate.database);				
-		pContext->ostate.eventBuffer.ClearWritten();
+		Transaction tx(ostate.database);				
+		ostate.eventBuffer.ClearWritten();
 
-		if (pContext->ostate.rspContext.HasSelection())
+		if (ostate.rspContext.HasSelection())
 		{						
-			return pContext->ContinueMultiFragResponse(AppControlField::NextSeq(header.control.SEQ));			
+			return OutstationContext::ContinueMultiFragResponse(ostate, AppControlField::NextSeq(header.control.SEQ));			
 		}
 		else 
 		{
@@ -186,14 +180,14 @@ OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnConfirm(Out
 	}
 	else
 	{
-		FORMAT_LOG_BLOCK(pContext->ostate.logger, flags::WARN, "Confirm with wrong seq: %u", header.control.SEQ);
+		FORMAT_LOG_BLOCK(ostate.logger, flags::WARN, "Confirm with wrong seq: %u", header.control.SEQ);
 		return this;
 	}			
 }
 
-OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnConfirmTimeout(OutstationContext* pContext)
+OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnConfirmTimeout(OState& ostate)
 {	
-	SIMPLE_LOG_BLOCK(pContext->ostate.logger, flags::WARN, "Solicited confirm timeout");	
+	SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "Solicited confirm timeout");	
 	return &OutstationSolicitedStateIdle::Inst();	
 }
 

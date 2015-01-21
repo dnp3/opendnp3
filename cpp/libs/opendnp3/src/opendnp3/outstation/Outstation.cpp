@@ -23,6 +23,7 @@
 
 #include "opendnp3/app/APDUResponse.h"
 #include "opendnp3/LogLevels.h"
+#include "opendnp3/outstation/OutstationContext.h"
 
 #include <openpal/logging/LogMacros.h>
 
@@ -41,77 +42,78 @@ Outstation::Outstation(
 		ICommandHandler& commandHandler,
 		IOutstationApplication& application,
 		IOutstationAuthProvider& authProvider) :
-		context(config, dbTemplate, pDBMutex, executor, root, *this, lower, commandHandler, application, authProvider)
+		ostate(config, dbTemplate, pDBMutex, *this, executor, root, lower, commandHandler, application, authProvider)
 {
 	
 }
 	
 void Outstation::OnLowerLayerUp()
 {
-	if (context.ostate.isOnline)
+	if (ostate.isOnline)
 	{
-		SIMPLE_LOG_BLOCK(context.ostate.logger, flags::ERR, "already online");
+		SIMPLE_LOG_BLOCK(ostate.logger, flags::ERR, "already online");
 	}
 	else
 	{
-		context.SetOnline();		
+		ostate.isOnline = true;
+		OutstationContext::CheckForTaskStart(ostate);		
 	}
 }
 	
 void Outstation::OnLowerLayerDown()
 {
-	if (context.ostate.isOnline)
+	if (ostate.isOnline)
 	{
-		context.SetOffline();
+		ostate.Reset();		
 	}
 	else
 	{
-		SIMPLE_LOG_BLOCK(context.ostate.logger, flags::ERR, "not online");
+		SIMPLE_LOG_BLOCK(ostate.logger, flags::ERR, "not online");
 	}
 }
 
 void Outstation::OnReceive(const openpal::ReadBufferView& fragment)
 {
-	if (context.ostate.isOnline)
+	if (ostate.isOnline)
 	{
-		context.OnReceiveAPDU(fragment);		
+		OutstationContext::OnReceiveAPDU(ostate, fragment);
 	}
 	else
 	{
-		SIMPLE_LOG_BLOCK(context.ostate.logger, flags::ERR, "ignoring received data while offline");
+		SIMPLE_LOG_BLOCK(ostate.logger, flags::ERR, "ignoring received data while offline");
 	}
 }
 
 void Outstation::OnSendResult(bool isSuccess)
 {	
-	if (context.ostate.isOnline)
+	if (ostate.isOnline)
 	{		
-		context.OnSendResult(isSuccess);		
+		OutstationContext::OnSendResult(ostate, isSuccess);
 	}
 	else
 	{
-		SIMPLE_LOG_BLOCK(context.ostate.logger, flags::ERR, "Unexpected send callback");
+		SIMPLE_LOG_BLOCK(ostate.logger, flags::ERR, "Unexpected send callback");
 	}	
 }
 
 void Outstation::OnNewEventData()
 {
-	context.OnNewEventData();
+	OutstationContext::OnNewEventData(ostate);	
 }
 
 void Outstation::SetRestartIIN()
 {
-	context.ostate.staticIIN.SetBit(IINBit::DEVICE_RESTART);
+	ostate.staticIIN.SetBit(IINBit::DEVICE_RESTART);
 }
 
 IDatabase& Outstation::GetDatabase()
 {
-	return context.ostate.database;
+	return ostate.database;
 }
 
 DatabaseConfigView Outstation::GetConfigView()
 {
-	return context.ostate.database.GetConfigView();
+	return ostate.database.GetConfigView();
 }
 	
 }

@@ -21,14 +21,8 @@
 #ifndef OPENDNP3_OUTSTATIONCONTEXT_H
 #define OPENDNP3_OUTSTATIONCONTEXT_H
 
-#include <openpal/container/DynamicBuffer.h>
 #include <openpal/container/Pair.h>
-#include <openpal/container/Settable.h>
-
-#include "opendnp3/app/IINField.h"
-#include "opendnp3/app/HeaderWriter.h"
-#include "opendnp3/app/APDUHeader.h"
-#include "opendnp3/app/APDUResponse.h"
+#include <openpal/util/Uncopyable.h>
 
 #include "opendnp3/outstation/OutstationState.h"
 
@@ -36,90 +30,67 @@ namespace opendnp3
 {
 
 /// Represent all of the "state" and configuration for an outstation
-class OutstationContext
+class OutstationContext : private openpal::PureStatic
 {
 	
-	public:		
+	public:			
 
-	OutstationContext(	const OutstationConfig& config,
-						const DatabaseTemplate& dbTemplate,
-						openpal::IMutex* pMutex,
-						openpal::IExecutor& executor,
-						openpal::LogRoot& root, 
-						INewEventDataHandler& dataHandler,
-						ILowerLayer& lower,
-						ICommandHandler& commandHandler,
-						IOutstationApplication& application,
-						IOutstationAuthProvider& authProvider);
+	static void ConfigureUnsolHeader(OState& ostate, APDUResponse& unsol);
+
+	static void OnNewEventData(OState& ostate);
+
+	static IINField GetResponseIIN(OState& ostate);
+
+	static IINField GetDynamicIIN(OState& ostate);
+
+	static void CheckForTaskStart(OState& ostate);
 	
-	OState ostate;
+	static bool StartSolicitedConfirmTimer(OState& ostate);
+
+	static bool StartUnsolicitedConfirmTimer(OState& ostate);
+
+	static void OnReceiveAPDU(OState& ostate, const openpal::ReadBufferView& apdu);
+
+	static void ExamineASDU(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
+
+	static void OnSendResult(OState& ostate, bool isSuccess);
+
+	static OutstationSolicitedStateBase* OnReceiveSolRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
+
+	static void BeginResponseTx(OState& ostate, const openpal::ReadBufferView& response);
+
+	static void BeginUnsolTx(OState& ostate, const openpal::ReadBufferView& response);
+
+	static IINField BuildNonReadResponse(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects, HeaderWriter& writer);
+
+	static OutstationSolicitedStateBase* ContinueMultiFragResponse(OState& ostate, uint8_t seq);
 	
-	// ------ Helper methods for dealing with state ------		
+	static OutstationSolicitedStateBase* RespondToNonReadRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
 
-	void ConfigureUnsolHeader(APDUResponse& unsol);	
+	static OutstationSolicitedStateBase* RespondToReadRequest(OState& ostate, uint8_t seq, const openpal::ReadBufferView& objects);
 
-	void SetOnline();
-	void SetOffline();		
+	static void ProcessNoResponseFunction(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
 	
-	bool StartSolicitedConfirmTimer();
-	bool StartUnsolicitedConfirmTimer();	
+	static OutstationSolicitedStateBase* ProcessNewRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
 
-	void OnReceiveAPDU(const openpal::ReadBufferView& apdu);
-
-	void ExamineASDU(const APDUHeader& header, const openpal::ReadBufferView& objects);
-
-	void OnSendResult(bool isSuccess);
-
-	OutstationSolicitedStateBase* OnReceiveSolRequest(const APDUHeader& header, const openpal::ReadBufferView& objects);	
-
-	void BeginResponseTx(const openpal::ReadBufferView& response);
-
-	void BeginUnsolTx(const openpal::ReadBufferView& response);
-
-	IINField BuildNonReadResponse(const APDUHeader& header, const openpal::ReadBufferView& objects, HeaderWriter& writer);
-
-	OutstationSolicitedStateBase* ContinueMultiFragResponse(uint8_t seq);
-	
-	OutstationSolicitedStateBase* RespondToNonReadRequest(const APDUHeader& header, const openpal::ReadBufferView& objects);
-
-	OutstationSolicitedStateBase* RespondToReadRequest(uint8_t seq, const openpal::ReadBufferView& objects);
-
-	void ProcessNoResponseFunction(const APDUHeader& header, const openpal::ReadBufferView& objects);	
-
-	void OnNewEventData();
-
-	private:	
-
-	OutstationSolicitedStateBase* ProcessNewRequest(const APDUHeader& header, const openpal::ReadBufferView& objects);
-		
-	// ------ Helpers ---------
-
-	IINField GetDynamicIIN();
-
-	IINField GetResponseIIN();
-
-	// ------ Internal Events -------
-
-	void CheckForTaskStart();
-
-	void CheckForUnsolicited();
+	static void CheckForUnsolicited(OState& ostate);
 
 	// ------ Function Handlers ------
 
 	// reads are special due to multi-frag
 	// returns an IIN field and a partial AppControlField (missing sequence info)
-	openpal::Pair<IINField, AppControlField> HandleRead(const openpal::ReadBufferView& objects, HeaderWriter& writer);
+	static openpal::Pair<IINField, AppControlField> HandleRead(OState& ostate, const openpal::ReadBufferView& objects, HeaderWriter& writer);
 
-	IINField HandleWrite(const openpal::ReadBufferView& objects);	
-	IINField HandleSelect(const openpal::ReadBufferView& objects, HeaderWriter& writer);
-	IINField HandleOperate(const openpal::ReadBufferView& objects, HeaderWriter& writer);
-	IINField HandleDirectOperate(const openpal::ReadBufferView& objects, HeaderWriter* pWriter);
-	IINField HandleDelayMeasure(const openpal::ReadBufferView& objects, HeaderWriter& writer);
-	IINField HandleRestart(const openpal::ReadBufferView& objects, bool isWarmRestart, HeaderWriter* pWriter);
-	IINField HandleAssignClass(const openpal::ReadBufferView& objects);
-	IINField HandleDisableUnsolicited(const openpal::ReadBufferView& objects, HeaderWriter& writer);
-	IINField HandleEnableUnsolicited(const openpal::ReadBufferView& objects, HeaderWriter& writer);
-	IINField HandleCommandWithConstant(const openpal::ReadBufferView& objects, HeaderWriter& writer, CommandStatus status);		
+	static IINField HandleWrite(OState& ostate, const openpal::ReadBufferView& objects);
+	static IINField HandleSelect(OState& ostate, const openpal::ReadBufferView& objects, HeaderWriter& writer);
+	static IINField HandleOperate(OState& ostate, const openpal::ReadBufferView& objects, HeaderWriter& writer);
+	static IINField HandleDirectOperate(OState& ostate, const openpal::ReadBufferView& objects, HeaderWriter* pWriter);
+	static IINField HandleDelayMeasure(OState& ostate, const openpal::ReadBufferView& objects, HeaderWriter& writer);
+	static IINField HandleRestart(OState& ostate, const openpal::ReadBufferView& objects, bool isWarmRestart, HeaderWriter* pWriter);
+	static IINField HandleAssignClass(OState& ostate, const openpal::ReadBufferView& objects);
+	static IINField HandleDisableUnsolicited(OState& ostate, const openpal::ReadBufferView& objects, HeaderWriter& writer);
+	static IINField HandleEnableUnsolicited(OState& ostate, const openpal::ReadBufferView& objects, HeaderWriter& writer);
+	static IINField HandleCommandWithConstant(OState& ostate, const openpal::ReadBufferView& objects, HeaderWriter& writer, CommandStatus status);
 };
 
 
