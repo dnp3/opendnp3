@@ -31,12 +31,9 @@
 #include "opendnp3/app/APDUResponse.h"
 
 #include "opendnp3/outstation/OutstationState.h"
-#include "opendnp3/outstation/Database.h"
-#include "opendnp3/outstation/ResponseContext.h"
 #include "opendnp3/outstation/OutstationConfig.h"
 #include "opendnp3/outstation/ICommandHandler.h"
 #include "opendnp3/outstation/IOutstationApplication.h"
-#include "opendnp3/outstation/EventBuffer.h"
 #include "opendnp3/outstation/IOutstationAuthProvider.h"
 
 namespace opendnp3
@@ -64,10 +61,7 @@ class OutstationContext : private INewEventDataHandler
 	ICommandHandler* pCommandHandler;
 	IOutstationApplication* pApplication;
 	IOutstationAuthProvider* pAuthProvider;
-	EventBuffer eventBuffer;
-	Database database;		
-	ResponseContext rspContext;
-
+	
 	// ------ Helper methods for dealing with state ------		
 
 	void ConfigureUnsolHeader(APDUResponse& unsol);	

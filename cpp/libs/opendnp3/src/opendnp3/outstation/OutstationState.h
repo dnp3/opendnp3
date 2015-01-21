@@ -23,13 +23,16 @@
 
 #include "opendnp3/LayerInterfaces.h"
 
-#include "opendnp3/outstation/OutstationParams.h"
+#include "opendnp3/outstation/OutstationConfig.h"
 #include "opendnp3/outstation/RequestHistory.h"
 #include "opendnp3/outstation/DeferredRequest.h"
 #include "opendnp3/outstation/OutstationChannelStates.h"
 #include "opendnp3/outstation/ControlState.h"
 #include "opendnp3/outstation/OutstationSeqNum.h"
 #include "opendnp3/outstation/TxBuffers.h"
+#include "opendnp3/outstation/Database.h"
+#include "opendnp3/outstation/EventBuffer.h"
+#include "opendnp3/outstation/ResponseContext.h"
 
 #include <openpal/executor/TimerRef.h>
 #include <openpal/logging/LogRoot.h>
@@ -45,7 +48,10 @@ class OutstationState
 	
 	public:		
 
-	OutstationState(const OutstationParams& params,										
+	OutstationState(const OutstationConfig& config,	
+					const DatabaseTemplate& dbTemplate,
+					openpal::IMutex* pMutex,
+					INewEventDataHandler& handler,
 					openpal::IExecutor& executor,
 					openpal::LogRoot& root,
 					ILowerLayer& lower);
@@ -57,6 +63,11 @@ class OutstationState
 	openpal::IExecutor* pExecutor;
 	ILowerLayer* pLower;
 	openpal::Logger logger;
+
+	// ------ Database, event buffer, and response tracking
+	EventBuffer eventBuffer;
+	Database database;
+	ResponseContext rspContext;
 
 	// ------ Static configuration -------
 	OutstationParams params;	

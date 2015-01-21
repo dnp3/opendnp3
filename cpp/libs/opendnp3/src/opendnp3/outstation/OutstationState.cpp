@@ -27,7 +27,10 @@ namespace opendnp3
 {
 
 OutstationState::OutstationState(
-		const OutstationParams& params_,
+		const OutstationConfig& config,
+		const DatabaseTemplate& dbTemplate,
+		openpal::IMutex* pMutex,
+		INewEventDataHandler& handler,
 		openpal::IExecutor& executor,
 		openpal::LogRoot& root,
 		ILowerLayer& lower) :
@@ -35,13 +38,16 @@ OutstationState::OutstationState(
 	pExecutor(&executor),
 	pLower(&lower),
 	logger(root.GetLogger()),
-	params(params_),	
+	eventBuffer(config.eventBufferConfig),
+	database(dbTemplate, eventBuffer, handler, config.params.indexMode, config.params.typesAllowedInClass0, pMutex),
+	rspContext(database.GetStaticLoader(), eventBuffer),
+	params(config.params),	
 	isOnline(false),
 	isTransmitting(false),
 	pendingTaskCheckFlag(false),
 	staticIIN(IINBit::DEVICE_RESTART),
-	txBuffers(params.maxTxFragSize),
-	deferred(params_.maxRxFragSize),
+	txBuffers(config.params.maxTxFragSize),
+	deferred(config.params.maxRxFragSize),
 	confirmTimer(executor)	
 {	
 	
@@ -56,6 +62,8 @@ void OutstationState::Reset()
 	unsol.pState = &OutstationUnsolicitedStateIdle::Inst();
 	history.Reset();
 	deferred.Reset();
+	eventBuffer.Unselect();
+	rspContext.Reset();
 	confirmTimer.Cancel();
 }
 

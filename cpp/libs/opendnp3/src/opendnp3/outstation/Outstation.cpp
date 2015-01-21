@@ -101,12 +101,12 @@ void Outstation::SetRestartIIN()
 
 IDatabase& Outstation::GetDatabase()
 {
-	return context.database;
+	return context.ostate.database;
 }
 
 DatabaseConfigView Outstation::GetConfigView()
 {
-	return context.database.GetConfigView();
+	return context.ostate.database.GetConfigView();
 }
 	
 }

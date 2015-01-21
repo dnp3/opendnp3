@@ -172,10 +172,10 @@ OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnConfirm(Out
 		pContext->ostate.confirmTimer.Cancel();
 
 		// Lock the database for the remainder of this method as we will be manipulating the buffers
-		Transaction tx(pContext->database);				
-		pContext->eventBuffer.ClearWritten();
+		Transaction tx(pContext->ostate.database);				
+		pContext->ostate.eventBuffer.ClearWritten();
 
-		if (pContext->rspContext.HasSelection())
+		if (pContext->ostate.rspContext.HasSelection())
 		{						
 			return pContext->ContinueMultiFragResponse(AppControlField::NextSeq(header.control.SEQ));			
 		}

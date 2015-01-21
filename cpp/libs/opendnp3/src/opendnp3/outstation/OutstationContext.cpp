@@ -58,13 +58,10 @@ OutstationContext::OutstationContext(
 		IOutstationAuthProvider& authProvider
 		) :
 	
-		ostate(config.params, executor, root, lower),		
+		ostate(config, dbTemplate, pMutex, *this, executor, root, lower),		
 		pCommandHandler(&commandHandler),
 		pApplication(&application),
-		pAuthProvider(&authProvider),
-		eventBuffer(config.eventBufferConfig),
-		database(dbTemplate, eventBuffer, *this, config.params.indexMode, config.params.typesAllowedInClass0, pMutex),
-		rspContext(database.GetStaticLoader(), eventBuffer)		
+		pAuthProvider(&authProvider)		
 {	
 	
 }
@@ -86,13 +83,13 @@ void OutstationContext::OnNewEventData()
 
 IINField OutstationContext::GetDynamicIIN()
 {	
-	auto classField = eventBuffer.UnwrittenClassField();
+	auto classField = ostate.eventBuffer.UnwrittenClassField();
 
 	IINField ret;
 	ret.SetBitToValue(IINBit::CLASS1_EVENTS, classField.HasClass1());
 	ret.SetBitToValue(IINBit::CLASS2_EVENTS, classField.HasClass2());
 	ret.SetBitToValue(IINBit::CLASS3_EVENTS, classField.HasClass3());
-	ret.SetBitToValue(IINBit::EVENT_BUFFER_OVERFLOW, eventBuffer.IsOverflown());
+	ret.SetBitToValue(IINBit::EVENT_BUFFER_OVERFLOW, ostate.eventBuffer.IsOverflown());
 	
 	return ret;
 }
@@ -115,9 +112,7 @@ void OutstationContext::SetOnline()
 
 void OutstationContext::SetOffline()
 {
-	ostate.Reset();	
-	eventBuffer.Unselect();
-	rspContext.Reset();		
+	ostate.Reset();		
 }
 
 
@@ -343,7 +338,7 @@ OutstationSolicitedStateBase* OutstationContext::ContinueMultiFragResponse(uint8
 	auto format = [&](APDUResponse& response) {
 		auto writer = response.GetWriter();
 		response.SetFunction(FunctionCode::RESPONSE);
-		auto control = this->rspContext.LoadResponse(writer);
+		auto control = this->ostate.rspContext.LoadResponse(writer);
 		control.SEQ = seq;
 		ostate.sol.expectedConSeqN = seq;
 		response.SetControl(control);
@@ -417,17 +412,17 @@ void OutstationContext::CheckForUnsolicited()
 		if (ostate.unsol.completedNull)
 		{				
 			// are there events to be reported?
-			if (ostate.params.unsolClassMask.Intersects(eventBuffer.UnwrittenClassField()))
+			if (ostate.params.unsolClassMask.Intersects(ostate.eventBuffer.UnwrittenClassField()))
 			{			
 				auto format = [this](APDUResponse& response) 
 				{
 					auto writer = response.GetWriter();
 					// even though we're not loading static data, we need to lock 
 					// the database since it updates the event buffer
-					Transaction tx(database);
-					eventBuffer.Unselect();
-					eventBuffer.SelectAllByClass(ostate.params.unsolClassMask);
-					eventBuffer.Load(writer);
+					Transaction tx(ostate.database);
+					ostate.eventBuffer.Unselect();
+					ostate.eventBuffer.SelectAllByClass(ostate.params.unsolClassMask);
+					ostate.eventBuffer.Load(writer);
 					this->ConfigureUnsolHeader(response);
 				};
 			
@@ -475,22 +470,22 @@ bool OutstationContext::StartUnsolicitedConfirmTimer()
 
 Pair<IINField, AppControlField> OutstationContext::HandleRead(const openpal::ReadBufferView& objects, HeaderWriter& writer)
 {
-	rspContext.Reset();
+	ostate.rspContext.Reset();
 
 	// Do a transaction (lock) on the database  for multi-threaded environments
-	Transaction tx(database);	
-	eventBuffer.Unselect(); // always unselect any perviously selected points when we start a new read request
-	database.Unselect();
-	ReadHandler handler(ostate.logger, database.GetSelector(), eventBuffer);
+	Transaction tx(ostate.database);
+	ostate.eventBuffer.Unselect(); // always unselect any perviously selected points when we start a new read request
+	ostate.database.Unselect();
+	ReadHandler handler(ostate.logger, ostate.database.GetSelector(), ostate.eventBuffer);
 	auto result = APDUParser::ParseTwoPass(objects, &handler, &ostate.logger, APDUParser::Settings::NoContents()); // don't expect range/count context on a READ
 	if (result == APDUParser::Result::OK)
 	{				
-		auto control = rspContext.LoadResponse(writer);
+		auto control = ostate.rspContext.LoadResponse(writer);
 		return Pair<IINField, AppControlField>(handler.Errors(), control);
 	}
 	else
 	{
-		rspContext.Reset();		
+		ostate.rspContext.Reset();
 		return Pair<IINField, AppControlField>(IINFromParseResult(result), AppControlField(true, true, false, false));
 	}
 }
@@ -633,10 +628,10 @@ IINField OutstationContext::HandleAssignClass(const openpal::ReadBufferView& obj
 {
 	if (pApplication->SupportsAssignClass())
 	{		
-		AssignClassHandler handler(ostate.logger, *ostate.pExecutor, *pApplication, database.GetClassAssigner());
+		AssignClassHandler handler(ostate.logger, *ostate.pExecutor, *pApplication, ostate.database.GetClassAssigner());
 
 		// Lock the db as this can adjust configuration values in the database
-		Transaction tx(database);
+		Transaction tx(ostate.database);
 		auto result = APDUParser::ParseTwoPass(objects, &handler, &ostate.logger, APDUParser::Settings::NoContents());
 		return (result == APDUParser::Result::OK) ? handler.Errors() : IINFromParseResult(result);
 	}
