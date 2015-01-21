@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_OUTSTATIONCONTEXT_H
-#define OPENDNP3_OUTSTATIONCONTEXT_H
+#ifndef OPENDNP3_OUTSTATIONACTIONS_H
+#define OPENDNP3_OUTSTATIONACTIONS_H
 
 #include <openpal/container/Pair.h>
 #include <openpal/util/Uncopyable.h>
@@ -29,8 +29,8 @@
 namespace opendnp3
 {
 
-/// Represent all of the "state" and configuration for an outstation
-class OutstationContext : private openpal::PureStatic
+/// Reusable actions that operate on oustation state
+class OActions : private openpal::PureStatic
 {
 	
 	public:			
@@ -55,13 +55,13 @@ class OutstationContext : private openpal::PureStatic
 
 	static void OnSendResult(OState& ostate, bool isSuccess);
 
-	static OutstationSolicitedStateBase* OnReceiveSolRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
+	static void CheckForUnsolicited(OState& ostate);
 
 	static void BeginResponseTx(OState& ostate, const openpal::ReadBufferView& response);
 
 	static void BeginUnsolTx(OState& ostate, const openpal::ReadBufferView& response);
 
-	static IINField BuildNonReadResponse(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects, HeaderWriter& writer);
+	static OutstationSolicitedStateBase* OnReceiveSolRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
 
 	static OutstationSolicitedStateBase* ContinueMultiFragResponse(OState& ostate, uint8_t seq);
 	
@@ -69,28 +69,10 @@ class OutstationContext : private openpal::PureStatic
 
 	static OutstationSolicitedStateBase* RespondToReadRequest(OState& ostate, uint8_t seq, const openpal::ReadBufferView& objects);
 
-	static void ProcessNoResponseFunction(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
-	
 	static OutstationSolicitedStateBase* ProcessNewRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
+	
 
-	static void CheckForUnsolicited(OState& ostate);
-
-	// ------ Function Handlers ------
-
-	// reads are special due to multi-frag
-	// returns an IIN field and a partial AppControlField (missing sequence info)
-	static openpal::Pair<IINField, AppControlField> HandleRead(OState& ostate, const openpal::ReadBufferView& objects, HeaderWriter& writer);
-
-	static IINField HandleWrite(OState& ostate, const openpal::ReadBufferView& objects);
-	static IINField HandleSelect(OState& ostate, const openpal::ReadBufferView& objects, HeaderWriter& writer);
-	static IINField HandleOperate(OState& ostate, const openpal::ReadBufferView& objects, HeaderWriter& writer);
-	static IINField HandleDirectOperate(OState& ostate, const openpal::ReadBufferView& objects, HeaderWriter* pWriter);
-	static IINField HandleDelayMeasure(OState& ostate, const openpal::ReadBufferView& objects, HeaderWriter& writer);
-	static IINField HandleRestart(OState& ostate, const openpal::ReadBufferView& objects, bool isWarmRestart, HeaderWriter* pWriter);
-	static IINField HandleAssignClass(OState& ostate, const openpal::ReadBufferView& objects);
-	static IINField HandleDisableUnsolicited(OState& ostate, const openpal::ReadBufferView& objects, HeaderWriter& writer);
-	static IINField HandleEnableUnsolicited(OState& ostate, const openpal::ReadBufferView& objects, HeaderWriter& writer);
-	static IINField HandleCommandWithConstant(OState& ostate, const openpal::ReadBufferView& objects, HeaderWriter& writer, CommandStatus status);
+	
 };
 
 

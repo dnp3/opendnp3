@@ -23,7 +23,7 @@
 
 #include "opendnp3/app/APDUResponse.h"
 #include "opendnp3/LogLevels.h"
-#include "opendnp3/outstation/OutstationContext.h"
+#include "opendnp3/outstation/OutstationActions.h"
 
 #include <openpal/logging/LogMacros.h>
 
@@ -56,7 +56,7 @@ void Outstation::OnLowerLayerUp()
 	else
 	{
 		ostate.isOnline = true;
-		OutstationContext::CheckForTaskStart(ostate);		
+		OActions::CheckForTaskStart(ostate);
 	}
 }
 	
@@ -76,7 +76,7 @@ void Outstation::OnReceive(const openpal::ReadBufferView& fragment)
 {
 	if (ostate.isOnline)
 	{
-		OutstationContext::OnReceiveAPDU(ostate, fragment);
+		OActions::OnReceiveAPDU(ostate, fragment);
 	}
 	else
 	{
@@ -88,7 +88,7 @@ void Outstation::OnSendResult(bool isSuccess)
 {	
 	if (ostate.isOnline)
 	{		
-		OutstationContext::OnSendResult(ostate, isSuccess);
+		OActions::OnSendResult(ostate, isSuccess);
 	}
 	else
 	{
@@ -98,7 +98,7 @@ void Outstation::OnSendResult(bool isSuccess)
 
 void Outstation::OnNewEventData()
 {
-	OutstationContext::OnNewEventData(ostate);	
+	OActions::OnNewEventData(ostate);
 }
 
 void Outstation::SetRestartIIN()

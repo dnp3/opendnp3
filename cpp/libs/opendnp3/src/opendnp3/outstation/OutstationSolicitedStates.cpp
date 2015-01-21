@@ -22,7 +22,8 @@
 #include "OutstationSolicitedStates.h"
 
 #include "opendnp3/LogLevels.h"
-#include "opendnp3/outstation/OutstationContext.h"
+#include "opendnp3/outstation/OutstationActions.h"
+#include "opendnp3/outstation/OutstationFunctions.h"
 #include "opendnp3/app/FunctionHelpers.h"
 
 
@@ -83,7 +84,7 @@ OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewReadRequest(OSt
 {
 	if (!ostate.isTransmitting && ostate.unsol.IsIdle())
 	{
-		return OutstationContext::RespondToReadRequest(ostate, header.control.SEQ, objects);
+		return OActions::RespondToReadRequest(ostate, header.control.SEQ, objects);
 	}
 	else
 	{
@@ -104,12 +105,12 @@ OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewNonReadRequest(
 	{
 		if (IsNoAckCode(header.function))
 		{
-			OutstationContext::ProcessNoResponseFunction(ostate, header, objects);
+			OFunctions::HandleNoResponseFunction(ostate, header, objects);
 			return this;
 		}
 		else
 		{
-			return OutstationContext::RespondToNonReadRequest(ostate, header, objects);
+			return OActions::RespondToNonReadRequest(ostate, header, objects);
 		}		
 	}
 }
@@ -129,7 +130,7 @@ OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnRepeatNonReadReque
 		}
 		else
 		{			
-			OutstationContext::BeginResponseTx(ostate, ostate.txBuffers.GetLastSolResponse());
+			OActions::BeginResponseTx(ostate, ostate.txBuffers.GetLastSolResponse());
 			return this;
 		}		
 	}	
@@ -171,7 +172,7 @@ OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnConfirm(OSt
 
 		if (ostate.rspContext.HasSelection())
 		{						
-			return OutstationContext::ContinueMultiFragResponse(ostate, AppControlField::NextSeq(header.control.SEQ));			
+			return OActions::ContinueMultiFragResponse(ostate, AppControlField::NextSeq(header.control.SEQ));
 		}
 		else 
 		{

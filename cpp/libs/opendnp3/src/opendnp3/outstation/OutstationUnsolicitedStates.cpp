@@ -22,7 +22,7 @@
 #include "OutstationUnsolicitedStates.h"
 
 #include "opendnp3/LogLevels.h"
-#include "opendnp3/outstation/OutstationContext.h"
+#include "opendnp3/outstation/OutstationActions.h"
 
 #include <openpal/logging/LogMacros.h>
 

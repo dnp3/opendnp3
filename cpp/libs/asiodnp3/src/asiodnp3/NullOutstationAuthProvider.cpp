@@ -21,7 +21,7 @@
 
 #include "NullOutstationAuthProvider.h"
 
-#include <opendnp3/outstation/OutstationContext.h>
+#include <opendnp3/outstation/OutstationActions.h>
 
 namespace asiodnp3
 {

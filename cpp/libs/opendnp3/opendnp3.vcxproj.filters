@@ -690,9 +690,6 @@
     <ClInclude Include="src\opendnp3\outstation\OutstationConfig.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\OutstationContext.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\OutstationParams.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
@@ -769,6 +766,12 @@
       <Filter>Header\outstation</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\TxBuffers.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\OutstationActions.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\OutstationFunctions.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1103,9 +1106,6 @@
     <ClCompile Include="src\opendnp3\outstation\Outstation.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\OutstationContext.cpp">
-      <Filter>Source\outstation</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\OutstationParams.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
@@ -1173,6 +1173,12 @@
       <Filter>Source\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\DeferredRequest.cpp">
+      <Filter>Source\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\OutstationActions.cpp">
+      <Filter>Source\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\OutstationFunctions.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
   </ItemGroup>
