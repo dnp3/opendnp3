@@ -29,7 +29,6 @@
 #include "opendnp3/outstation/OutstationChannelStates.h"
 #include "opendnp3/outstation/ControlState.h"
 #include "opendnp3/outstation/OutstationSeqNum.h"
-#include "opendnp3/outstation/TxBuffers.h"
 #include "opendnp3/outstation/Database.h"
 #include "opendnp3/outstation/EventBuffer.h"
 #include "opendnp3/outstation/ResponseContext.h"
@@ -89,7 +88,6 @@ class OState
 	openpal::TimerRef confirmTimer;
 	RequestHistory history;
 	DeferredRequest deferred;
-	TxBuffers txBuffers;
 
 	// ------ Dynamic state related to controls ------
 	ControlState control;

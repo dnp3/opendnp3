@@ -765,13 +765,13 @@
     <ClInclude Include="src\opendnp3\outstation\ControlState.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\TxBuffers.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\OutstationActions.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\OutstationFunctions.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\TxBuffer.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
   </ItemGroup>

@@ -24,33 +24,56 @@
 #include "opendnp3/outstation/OutstationSeqNum.h"
 #include "opendnp3/outstation/OutstationSolicitedStates.h"
 #include "opendnp3/outstation/OutstationUnsolicitedStates.h"
+#include "opendnp3/outstation/TxBuffer.h"
+
+#include <openpal/util/Uncopyable.h>
 
 namespace opendnp3
 {
 
-class OutstationSolState : public OutstationSeqNum
+class OutstationSolState : private openpal::Uncopyable
 {
 	public:
 
-	OutstationSolState() : pState(&OutstationSolicitedStateIdle::Inst())
+	OutstationSolState(uint32_t maxTxSize) : 
+		pState(&OutstationSolicitedStateIdle::Inst()),
+		tx(maxTxSize)
 	{}
+
+	void Reset()
+	{
+		pState = &OutstationSolicitedStateIdle::Inst();
+	}
 
 	bool IsIdle() const { return pState == &OutstationSolicitedStateIdle::Inst(); };
 	
 	OutstationSolicitedStateBase*	pState;
+	OutstationSeqNum seq;
+	TxBuffer tx;
 };
 
-class OutstationUnsolState : public OutstationSeqNum
+class OutstationUnsolState : private openpal::Uncopyable
 {
 public:
 
-	OutstationUnsolState() : completedNull(false), pState(&OutstationUnsolicitedStateIdle::Inst())
+	OutstationUnsolState(uint32_t maxTxSize) :
+		completedNull(false), 
+		pState(&OutstationUnsolicitedStateIdle::Inst()),
+		tx(maxTxSize)
 	{}
 
 	bool IsIdle() const { return pState == &OutstationUnsolicitedStateIdle::Inst(); };
 
+	void Reset()
+	{
+		completedNull = false;
+		pState = &OutstationUnsolicitedStateIdle::Inst();		
+	}
+
 	bool completedNull;
-	OutstationUnsolicitedStateBase*	pState;	
+	OutstationUnsolicitedStateBase*	pState;
+	OutstationSeqNum seq;
+	TxBuffer tx;
 };
 
 }

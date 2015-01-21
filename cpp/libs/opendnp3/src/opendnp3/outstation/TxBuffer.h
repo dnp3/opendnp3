@@ -18,63 +18,43 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_TXBUFFERS_H
-#define OPENDNP3_TXBUFFERS_H
+#ifndef OPENDNP3_TXBUFFER_H
+#define OPENDNP3_TXBUFFER_H
 
 #include <openpal/container/DynamicBuffer.h>
-#include <opendnp3/app/AppControlField.h>
 #include <opendnp3/app/APDUResponse.h>
-
-#include "opendnp3/LayerInterfaces.h"
 
 namespace opendnp3
 {
 
-class TxBuffers
-{
-	
+class TxBuffer
+{	
 	public:	
 
-	TxBuffers(uint32_t maxTxSize) :
-		solTxBuffer(maxTxSize),
-		unsolTxBuffer(maxTxSize)
+	TxBuffer(uint32_t maxTxSize) : buffer(maxTxSize)		
 	{}		
+	
+	APDUResponse Start()
+	{
+		APDUResponse response(buffer.GetWriteBufferView());
+		return response;
+	}
+	
+	void Record(const openpal::ReadBufferView& view)
+	{
+		lastResponse = view;
+	}
 
-	template <class Fun>
-	APDUResponse FormatSolicited(const Fun& txFun);	
-
-	template <class Fun>
-	APDUResponse FormatUnsolicited(const Fun& txFun);
-
-	openpal::ReadBufferView GetLastSolResponse() const { return lastSolResponse;  }
-
+	openpal::ReadBufferView GetLastResponse()
+	{
+		return lastResponse;
+	}
+	
 	private:
 			
-	openpal::ReadBufferView lastSolResponse;
-	openpal::ReadBufferView lastUnsolResponse;
-
-	openpal::DynamicBuffer solTxBuffer;
-	openpal::DynamicBuffer unsolTxBuffer;
+	openpal::ReadBufferView lastResponse;	
+	openpal::DynamicBuffer buffer;	
 };
-
-template <class Formatter>
-APDUResponse TxBuffers::FormatSolicited(const Formatter& format)
-{
-	APDUResponse response(solTxBuffer.GetWriteBufferView());
-	format(response);
-	lastSolResponse = response.ToReadOnly();
-	return response;
-}
-
-template <class Formatter>
-APDUResponse TxBuffers::FormatUnsolicited(const Formatter& format)
-{
-	APDUResponse response(unsolTxBuffer.GetWriteBufferView());
-	format(response);
-	lastUnsolResponse = response.ToReadOnly();
-	return response;
-}
-
 
 }
 

@@ -130,7 +130,7 @@ OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnRepeatNonReadReque
 		}
 		else
 		{			
-			OActions::BeginResponseTx(ostate, ostate.txBuffers.GetLastSolResponse());
+			OActions::BeginResponseTx(ostate, ostate.sol.tx.GetLastResponse());
 			return this;
 		}		
 	}	
@@ -162,7 +162,7 @@ OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnNewNonReadR
 
 OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnConfirm(OState& ostate, const APDUHeader& header)
 {	
-	if (header.control.SEQ == ostate.sol.expectedConSeqN)
+	if (header.control.SEQ == ostate.sol.seq.expectedConSeqN)
 	{
 		ostate.confirmTimer.Cancel();
 

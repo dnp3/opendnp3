@@ -76,7 +76,7 @@ IINField OActions::GetResponseIIN(OState& ostate)
 
 void OActions::ConfigureUnsolHeader(OState& ostate, APDUResponse& unsol)
 {	
-	build::NullUnsolicited(unsol, ostate.unsol.seqN, GetResponseIIN(ostate));
+	build::NullUnsolicited(unsol, ostate.unsol.seq.seqN, GetResponseIIN(ostate));
 }
 
 void OActions::OnReceiveAPDU(OState& ostate, const openpal::ReadBufferView& apdu)
@@ -152,7 +152,7 @@ OutstationSolicitedStateBase* OActions::OnReceiveSolRequest(OState& ostate, cons
 	// analyze this request to see how it compares to the last request
 	if (ostate.history.HasLastRequest())
 	{		
-		if (ostate.sol.seqN == header.control.SEQ)
+		if (ostate.sol.seq.seqN == header.control.SEQ)
 		{			
 			if (ostate.history.FullyEqualsLastRequest(header, objects))
 			{
@@ -184,7 +184,7 @@ OutstationSolicitedStateBase* OActions::OnReceiveSolRequest(OState& ostate, cons
 
 OutstationSolicitedStateBase* OActions::ProcessNewRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
-	ostate.sol.seqN = header.control.SEQ;
+	ostate.sol.seq.seqN = header.control.SEQ;
 
 	if (header.function == FunctionCode::READ)
 	{
@@ -198,33 +198,28 @@ OutstationSolicitedStateBase* OActions::ProcessNewRequest(OState& ostate, const 
 
 OutstationSolicitedStateBase* OActions::RespondToNonReadRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
-	auto format = [&](APDUResponse& response) {
-		auto writer = response.GetWriter();
-		response.SetFunction(FunctionCode::RESPONSE);
-		response.SetControl(AppControlField(true, true, false, false, header.control.SEQ));
-		auto iin = OFunctions::HandleNonReadResponse(ostate, header, objects, writer);
-		response.SetIIN(iin | GetResponseIIN(ostate));
-	};
-
-	auto response = ostate.txBuffers.FormatSolicited(format);		
+	auto response = ostate.sol.tx.Start();
+	auto writer = response.GetWriter();
+	response.SetFunction(FunctionCode::RESPONSE);
+	response.SetControl(AppControlField(true, true, false, false, header.control.SEQ));
+	auto iin = OFunctions::HandleNonReadResponse(ostate, header, objects, writer);
+	response.SetIIN(iin | GetResponseIIN(ostate));
 	OActions::BeginResponseTx(ostate, response.ToReadOnly());
 	return &OutstationSolicitedStateIdle::Inst();
 }
 
 OutstationSolicitedStateBase* OActions::RespondToReadRequest(OState& ostate, uint8_t seq, const openpal::ReadBufferView& objects)
 {
-	auto format = [&](APDUResponse& response) {
-		auto writer = response.GetWriter();
-		response.SetFunction(FunctionCode::RESPONSE);
-		auto result = OFunctions::HandleRead(ostate, objects, writer);
-		result.second.SEQ = seq;
-		ostate.sol.expectedConSeqN = seq;
-		response.SetControl(result.second);
-		response.SetIIN(result.first | OActions::GetResponseIIN(ostate));
-	};
-
-	auto response = ostate.txBuffers.FormatSolicited(format);
+	auto response = ostate.sol.tx.Start();
+	auto writer = response.GetWriter();
+	response.SetFunction(FunctionCode::RESPONSE);
+	auto result = OFunctions::HandleRead(ostate, objects, writer);
+	result.second.SEQ = seq;
+	ostate.sol.seq.expectedConSeqN = seq;
+	response.SetControl(result.second);
+	response.SetIIN(result.first | OActions::GetResponseIIN(ostate));		
 	OActions::BeginResponseTx(ostate, response.ToReadOnly());
+
 	if (response.GetControl().CON)
 	{
 		OActions::StartSolicitedConfirmTimer(ostate);
@@ -239,6 +234,7 @@ OutstationSolicitedStateBase* OActions::RespondToReadRequest(OState& ostate, uin
 void OActions::BeginResponseTx(OState& ostate, const ReadBufferView& response)
 {		
 	logging::ParseAndLogResponseTx(&ostate.logger, response);
+	ostate.sol.tx.Record(response);
 	ostate.isTransmitting = true;	
 	ostate.pLower->BeginTransmit(response);
 }
@@ -246,25 +242,23 @@ void OActions::BeginResponseTx(OState& ostate, const ReadBufferView& response)
 void OActions::BeginUnsolTx(OState& ostate, const ReadBufferView& response)
 {	
 	logging::ParseAndLogResponseTx(&ostate.logger, response);
+	ostate.unsol.tx.Record(response);
 	ostate.isTransmitting = true;
-	ostate.unsol.expectedConSeqN = ostate.unsol.seqN;
-	ostate.unsol.seqN = AppControlField::NextSeq(ostate.unsol.seqN);
+	ostate.unsol.seq.expectedConSeqN = ostate.unsol.seq.seqN;
+	ostate.unsol.seq.seqN = AppControlField::NextSeq(ostate.unsol.seq.seqN);
 	ostate.pLower->BeginTransmit(response);
 }
 
 OutstationSolicitedStateBase* OActions::ContinueMultiFragResponse(OState& ostate, uint8_t seq)
 {	
-	auto format = [&](APDUResponse& response) {
-		auto writer = response.GetWriter();
-		response.SetFunction(FunctionCode::RESPONSE);
-		auto control = ostate.rspContext.LoadResponse(writer);
-		control.SEQ = seq;
-		ostate.sol.expectedConSeqN = seq;
-		response.SetControl(control);
-		response.SetIIN(ostate.staticIIN | GetDynamicIIN(ostate));
-	};
-
-	auto response = ostate.txBuffers.FormatSolicited(format);
+	auto response = ostate.sol.tx.Start();	
+	auto writer = response.GetWriter();
+	response.SetFunction(FunctionCode::RESPONSE);
+	auto control = ostate.rspContext.LoadResponse(writer);
+	control.SEQ = seq;
+	ostate.sol.seq.expectedConSeqN = seq;
+	response.SetControl(control);
+	response.SetIIN(ostate.staticIIN | GetDynamicIIN(ostate));		
 	OActions::BeginResponseTx(ostate, response.ToReadOnly());
 	
 	if (response.GetControl().CON)
@@ -333,19 +327,20 @@ void OActions::CheckForUnsolicited(OState& ostate)
 			// are there events to be reported?
 			if (ostate.params.unsolClassMask.Intersects(ostate.eventBuffer.UnwrittenClassField()))
 			{			
-				auto format = [&](APDUResponse& response) 
+				
+				auto response = ostate.unsol.tx.Start();
+				auto writer = response.GetWriter();
+
 				{
-					auto writer = response.GetWriter();
 					// even though we're not loading static data, we need to lock 
 					// the database since it updates the event buffer
 					Transaction tx(ostate.database);
 					ostate.eventBuffer.Unselect();
 					ostate.eventBuffer.SelectAllByClass(ostate.params.unsolClassMask);
-					ostate.eventBuffer.Load(writer);
-					OActions::ConfigureUnsolHeader(ostate, response);
-				};
-			
-				auto response = ostate.txBuffers.FormatUnsolicited(format);								
+					ostate.eventBuffer.Load(writer);					
+				}
+					
+				OActions::ConfigureUnsolHeader(ostate, response);
 				OActions::StartUnsolicitedConfirmTimer(ostate);
 				ostate.unsol.pState = &OutstationUnsolicitedStateConfirmWait::Inst();
 				OActions::BeginUnsolTx(ostate, response.ToReadOnly());
@@ -353,13 +348,9 @@ void OActions::CheckForUnsolicited(OState& ostate)
 		}
 		else
 		{
-			// send a NULL unsolcited message			
-			auto format = [&](APDUResponse& response) 
-			{
-				OActions::ConfigureUnsolHeader(ostate, response);
-			};
-			
-			auto response = ostate.txBuffers.FormatUnsolicited(format);
+			// send a NULL unsolcited message									
+			auto response = ostate.unsol.tx.Start();
+			OActions::ConfigureUnsolHeader(ostate, response);
 			OActions::StartUnsolicitedConfirmTimer(ostate);
 			ostate.unsol.pState = &OutstationUnsolicitedStateConfirmWait::Inst();
 			OActions::BeginUnsolTx(ostate, response.ToReadOnly());

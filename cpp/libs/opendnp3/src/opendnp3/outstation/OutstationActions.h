@@ -57,9 +57,13 @@ class OActions : private openpal::PureStatic
 
 	static void CheckForUnsolicited(OState& ostate);
 
+	/// ---- Helper functions for begining solicited and unsolcited transmissions ----
+
 	static void BeginResponseTx(OState& ostate, const openpal::ReadBufferView& response);
 
 	static void BeginUnsolTx(OState& ostate, const openpal::ReadBufferView& response);
+
+	/// ---- Helper functions that operate on the current solicited state, and may return a new solicited state ----
 
 	static OutstationSolicitedStateBase* OnReceiveSolRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
 

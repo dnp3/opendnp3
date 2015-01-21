@@ -51,10 +51,11 @@ namespace opendnp3
 	isOnline(false),
 	isTransmitting(false),
 	pendingTaskCheckFlag(false),
-	staticIIN(IINBit::DEVICE_RESTART),
-	txBuffers(config.params.maxTxFragSize),
+	staticIIN(IINBit::DEVICE_RESTART),	
 	deferred(config.params.maxRxFragSize),
-	confirmTimer(executor)	
+	confirmTimer(executor),
+	sol(config.params.maxTxFragSize),
+	unsol(config.params.maxTxFragSize)
 {	
 	
 }
@@ -64,8 +65,9 @@ void OState::Reset()
 	isOnline = false;
 	isTransmitting = false;
 	pendingTaskCheckFlag = false;
-	sol.pState = &OutstationSolicitedStateIdle::Inst();
-	unsol.pState = &OutstationUnsolicitedStateIdle::Inst();
+
+	sol.Reset();
+	unsol.Reset();
 	history.Reset();
 	deferred.Reset();
 	eventBuffer.Unselect();
