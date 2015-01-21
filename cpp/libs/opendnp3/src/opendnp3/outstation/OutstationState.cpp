@@ -33,11 +33,17 @@ OutstationState::OutstationState(
 		INewEventDataHandler& handler,
 		openpal::IExecutor& executor,
 		openpal::LogRoot& root,
-		ILowerLayer& lower) :
+		ILowerLayer& lower,
+		ICommandHandler& commandHandler,
+		IOutstationApplication& application,
+		IOutstationAuthProvider& authProvider) :
 	
 	pExecutor(&executor),
 	pLower(&lower),
 	logger(root.GetLogger()),
+	pCommandHandler(&commandHandler),
+	pApplication(&application),
+	pAuthProvider(&authProvider),
 	eventBuffer(config.eventBufferConfig),
 	database(dbTemplate, eventBuffer, handler, config.params.indexMode, config.params.typesAllowedInClass0, pMutex),
 	rspContext(database.GetStaticLoader(), eventBuffer),

@@ -31,10 +31,6 @@
 #include "opendnp3/app/APDUResponse.h"
 
 #include "opendnp3/outstation/OutstationState.h"
-#include "opendnp3/outstation/OutstationConfig.h"
-#include "opendnp3/outstation/ICommandHandler.h"
-#include "opendnp3/outstation/IOutstationApplication.h"
-#include "opendnp3/outstation/IOutstationAuthProvider.h"
 
 namespace opendnp3
 {
@@ -55,12 +51,7 @@ class OutstationContext : private INewEventDataHandler
 						IOutstationApplication& application,
 						IOutstationAuthProvider& authProvider);
 	
-	OutstationState ostate;
-
-	// ------ Unchanging variables and self managing variables -------	
-	ICommandHandler* pCommandHandler;
-	IOutstationApplication* pApplication;
-	IOutstationAuthProvider* pAuthProvider;
+	OutstationState ostate;	
 	
 	// ------ Helper methods for dealing with state ------		
 

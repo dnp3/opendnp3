@@ -33,6 +33,9 @@
 #include "opendnp3/outstation/Database.h"
 #include "opendnp3/outstation/EventBuffer.h"
 #include "opendnp3/outstation/ResponseContext.h"
+#include "opendnp3/outstation/ICommandHandler.h"
+#include "opendnp3/outstation/IOutstationApplication.h"
+#include "opendnp3/outstation/IOutstationAuthProvider.h"
 
 #include <openpal/executor/TimerRef.h>
 #include <openpal/logging/LogRoot.h>
@@ -54,7 +57,10 @@ class OutstationState
 					INewEventDataHandler& handler,
 					openpal::IExecutor& executor,
 					openpal::LogRoot& root,
-					ILowerLayer& lower);
+					ILowerLayer& lower,
+					ICommandHandler& commandHandler,
+					IOutstationApplication& application,
+					IOutstationAuthProvider& authProvider);
 
 	// reset important variables to their initial state
 	void Reset();	
@@ -63,6 +69,9 @@ class OutstationState
 	openpal::IExecutor* pExecutor;
 	ILowerLayer* pLower;
 	openpal::Logger logger;
+	ICommandHandler* pCommandHandler;
+	IOutstationApplication* pApplication;
+	IOutstationAuthProvider* pAuthProvider;
 
 	// ------ Database, event buffer, and response tracking
 	EventBuffer eventBuffer;

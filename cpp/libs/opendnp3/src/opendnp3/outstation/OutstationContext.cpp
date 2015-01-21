@@ -58,10 +58,7 @@ OutstationContext::OutstationContext(
 		IOutstationAuthProvider& authProvider
 		) :
 	
-		ostate(config, dbTemplate, pMutex, *this, executor, root, lower),		
-		pCommandHandler(&commandHandler),
-		pApplication(&application),
-		pAuthProvider(&authProvider)		
+		ostate(config, dbTemplate, pMutex, *this, executor, root, lower, commandHandler, application, authProvider)
 {	
 	
 }
@@ -96,7 +93,7 @@ IINField OutstationContext::GetDynamicIIN()
 
 IINField OutstationContext::GetResponseIIN()
 {
-	return this->ostate.staticIIN | GetDynamicIIN() | pApplication->GetApplicationIIN().ToIIN();
+	return this->ostate.staticIIN | GetDynamicIIN() | ostate.pApplication->GetApplicationIIN().ToIIN();
 }
 
 void OutstationContext::ConfigureUnsolHeader(APDUResponse& unsol)
@@ -134,7 +131,7 @@ void OutstationContext::OnReceiveAPDU(const openpal::ReadBufferView& apdu)
 		if (header.control.IsFirAndFin() && !header.control.CON)
 		{
 			auto objects = apdu.Skip(APDU_REQUEST_HEADER_SIZE);
-			pAuthProvider->ExamineASDU(*this, header, objects);			
+			ostate.pAuthProvider->ExamineASDU(*this, header, objects);
 		}
 		else
 		{
@@ -492,7 +489,7 @@ Pair<IINField, AppControlField> OutstationContext::HandleRead(const openpal::Rea
 
 IINField OutstationContext::HandleWrite(const openpal::ReadBufferView& objects)
 {
-	WriteHandler handler(ostate.logger, *pApplication, &ostate.staticIIN);
+	WriteHandler handler(ostate.logger, *ostate.pApplication, &ostate.staticIIN);
 	auto result = APDUParser::ParseTwoPass(objects, &handler, &ostate.logger);
 	return (result == APDUParser::Result::OK) ? handler.Errors() : IINFromParseResult(result);
 }
@@ -507,7 +504,7 @@ IINField OutstationContext::HandleDirectOperate(const openpal::ReadBufferView& o
 	}
 	else
 	{
-		CommandActionAdapter adapter(pCommandHandler, false);
+		CommandActionAdapter adapter(ostate.pCommandHandler, false);
 		CommandResponseHandler handler(ostate.logger, ostate.params.maxControlsPerRequest, &adapter, pWriter);
 		auto result = APDUParser::ParseTwoPass(objects, &handler, &ostate.logger);
 		return (result == APDUParser::Result::OK) ? handler.Errors() : IINFromParseResult(result);
@@ -524,7 +521,7 @@ IINField OutstationContext::HandleSelect(const openpal::ReadBufferView& objects,
 	}
 	else
 	{
-		CommandActionAdapter adapter(pCommandHandler, true);
+		CommandActionAdapter adapter(ostate.pCommandHandler, true);
 		CommandResponseHandler handler(ostate.logger, ostate.params.maxControlsPerRequest, &adapter, &writer);
 		auto result = APDUParser::ParseTwoPass(objects, &handler, &ostate.logger);
 		if (result == APDUParser::Result::OK)
@@ -558,7 +555,7 @@ IINField OutstationContext::HandleOperate(const openpal::ReadBufferView& objects
 
 		if (result == CommandStatus::SUCCESS)
 		{
-			CommandActionAdapter adapter(pCommandHandler, false);
+			CommandActionAdapter adapter(ostate.pCommandHandler, false);
 			CommandResponseHandler handler(ostate.logger, ostate.params.maxControlsPerRequest, &adapter, &writer);
 			auto result = APDUParser::ParseTwoPass(objects, &handler, &ostate.logger);
 			return (result == APDUParser::Result::OK) ? handler.Errors() : IINFromParseResult(result);
@@ -589,7 +586,7 @@ IINField OutstationContext::HandleRestart(const openpal::ReadBufferView& objects
 {
 	if (objects.IsEmpty())
 	{
-		auto mode = isWarmRestart ? pApplication->WarmRestartSupport() : pApplication->ColdRestartSupport();		
+		auto mode = isWarmRestart ? ostate.pApplication->WarmRestartSupport() : ostate.pApplication->ColdRestartSupport();
 
 		switch (mode)
 		{
@@ -597,7 +594,7 @@ IINField OutstationContext::HandleRestart(const openpal::ReadBufferView& objects
 				return IINField(IINBit::FUNC_NOT_SUPPORTED);
 			case(RestartMode::SUPPORTED_DELAY_COARSE) :
 			{
-				auto delay = isWarmRestart ? pApplication->WarmRestart() : pApplication->ColdRestart();
+				auto delay = isWarmRestart ? ostate.pApplication->WarmRestart() : ostate.pApplication->ColdRestart();
 				if (pWriter)
 				{
 					Group52Var1 coarse = { delay };
@@ -607,7 +604,7 @@ IINField OutstationContext::HandleRestart(const openpal::ReadBufferView& objects
 			}
 			default:
 			{
-				auto delay = isWarmRestart ? pApplication->WarmRestart() : pApplication->ColdRestart();
+				auto delay = isWarmRestart ? ostate.pApplication->WarmRestart() : ostate.pApplication->ColdRestart();
 				if (pWriter)
 				{
 					Group52Var2 fine = { delay };
@@ -626,9 +623,9 @@ IINField OutstationContext::HandleRestart(const openpal::ReadBufferView& objects
 
 IINField OutstationContext::HandleAssignClass(const openpal::ReadBufferView& objects)
 {
-	if (pApplication->SupportsAssignClass())
+	if (ostate.pApplication->SupportsAssignClass())
 	{		
-		AssignClassHandler handler(ostate.logger, *ostate.pExecutor, *pApplication, ostate.database.GetClassAssigner());
+		AssignClassHandler handler(ostate.logger, *ostate.pExecutor, *ostate.pApplication, ostate.database.GetClassAssigner());
 
 		// Lock the db as this can adjust configuration values in the database
 		Transaction tx(ostate.database);
