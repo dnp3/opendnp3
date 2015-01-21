@@ -46,21 +46,21 @@ namespace opendnp3
 ///
 /// Represent all of the mutable state in an outstation
 ///
-class OutstationState
+class OState
 {
 	
 	public:		
 
-	OutstationState(const OutstationConfig& config,	
-					const DatabaseTemplate& dbTemplate,
-					openpal::IMutex* pMutex,
-					INewEventDataHandler& handler,
-					openpal::IExecutor& executor,
-					openpal::LogRoot& root,
-					ILowerLayer& lower,
-					ICommandHandler& commandHandler,
-					IOutstationApplication& application,
-					IOutstationAuthProvider& authProvider);
+	OState(	const OutstationConfig& config,	
+			const DatabaseTemplate& dbTemplate,
+			openpal::IMutex* pMutex,
+			INewEventDataHandler& handler,
+			openpal::IExecutor& executor,
+			openpal::LogRoot& root,
+			ILowerLayer& lower,
+			ICommandHandler& commandHandler,
+			IOutstationApplication& application,
+			IOutstationAuthProvider& authProvider);
 
 	// reset important variables to their initial state
 	void Reset();	

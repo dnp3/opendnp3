@@ -29,7 +29,7 @@
 namespace opendnp3
 {
 
-class Outstation : public IUpperLayer
+class Outstation : public IUpperLayer, private INewEventDataHandler
 {
 	public:
 
@@ -53,6 +53,9 @@ class Outstation : public IUpperLayer
 	
 	virtual void OnSendResult(bool isSucccess) override final;
 
+	/// ----- Implement INewEventDataHandler ------
+
+	virtual void OnNewEventData() override final;
 	
 	/// ---- Other public members
 

@@ -26,7 +26,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-OutstationState::OutstationState(
+	OState::OState(
 		const OutstationConfig& config,
 		const DatabaseTemplate& dbTemplate,
 		openpal::IMutex* pMutex,
@@ -59,7 +59,7 @@ OutstationState::OutstationState(
 	
 }
 
-void OutstationState::Reset()
+void OState::Reset()
 {
 	isOnline = false;
 	isTransmitting = false;

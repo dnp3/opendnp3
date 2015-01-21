@@ -41,7 +41,7 @@ Outstation::Outstation(
 		ICommandHandler& commandHandler,
 		IOutstationApplication& application,
 		IOutstationAuthProvider& authProvider) :
-		context(config, dbTemplate, pDBMutex, executor, root, lower, commandHandler, application, authProvider)
+		context(config, dbTemplate, pDBMutex, executor, root, *this, lower, commandHandler, application, authProvider)
 {
 	
 }
@@ -92,6 +92,11 @@ void Outstation::OnSendResult(bool isSuccess)
 	{
 		SIMPLE_LOG_BLOCK(context.ostate.logger, flags::ERR, "Unexpected send callback");
 	}	
+}
+
+void Outstation::OnNewEventData()
+{
+	context.OnNewEventData();
 }
 
 void Outstation::SetRestartIIN()

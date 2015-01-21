@@ -52,13 +52,14 @@ OutstationContext::OutstationContext(
 		openpal::IMutex* pMutex,
 		IExecutor& executor,
 		LogRoot& root,
+		INewEventDataHandler& dataHandler,
 		ILowerLayer& lower,
 		ICommandHandler& commandHandler,
 		IOutstationApplication& application,
 		IOutstationAuthProvider& authProvider
 		) :
 	
-		ostate(config, dbTemplate, pMutex, *this, executor, root, lower, commandHandler, application, authProvider)
+		ostate(config, dbTemplate, pMutex, dataHandler, executor, root, lower, commandHandler, application, authProvider)
 {	
 	
 }

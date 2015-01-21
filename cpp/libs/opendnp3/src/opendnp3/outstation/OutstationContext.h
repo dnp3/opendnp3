@@ -36,7 +36,7 @@ namespace opendnp3
 {
 
 /// Represent all of the "state" and configuration for an outstation
-class OutstationContext : private INewEventDataHandler
+class OutstationContext
 {
 	
 	public:		
@@ -46,12 +46,13 @@ class OutstationContext : private INewEventDataHandler
 						openpal::IMutex* pMutex,
 						openpal::IExecutor& executor,
 						openpal::LogRoot& root, 
+						INewEventDataHandler& dataHandler,
 						ILowerLayer& lower,
 						ICommandHandler& commandHandler,
 						IOutstationApplication& application,
 						IOutstationAuthProvider& authProvider);
 	
-	OutstationState ostate;	
+	OState ostate;
 	
 	// ------ Helper methods for dealing with state ------		
 
@@ -85,9 +86,9 @@ class OutstationContext : private INewEventDataHandler
 
 	void ProcessNoResponseFunction(const APDUHeader& header, const openpal::ReadBufferView& objects);	
 
-	private:
+	void OnNewEventData();
 
-	virtual void OnNewEventData() override final;	
+	private:	
 
 	OutstationSolicitedStateBase* ProcessNewRequest(const APDUHeader& header, const openpal::ReadBufferView& objects);
 		
