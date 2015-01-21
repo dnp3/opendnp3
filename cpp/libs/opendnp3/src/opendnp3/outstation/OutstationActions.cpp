@@ -280,47 +280,47 @@ void OActions::CheckForTaskStart(OState& ostate)
 	{		
 		if (ostate.deferred.IsSet())
 		{			
-			if (ostate.deferred.GetFunction() == FunctionCode::READ)
-			{
-				if (ostate.unsol.IsIdle())
-				{					
-					auto handler = [&](const APDUHeader& header, ReadBufferView objects, bool)
-					{
-						ostate.sol.pState = ostate.sol.pState->OnNewReadRequest(ostate, header, objects);
-					};
-					ostate.deferred.Process(handler);
-				}
-			}
-			else
-			{
-				auto handler = [&](const APDUHeader& header, ReadBufferView objects, bool isRepeat)
-				{
-					if (isRepeat)
-					{
-						ostate.sol.pState = ostate.sol.pState->OnRepeatNonReadRequest(ostate, header, objects);
-					}
-					else
-					{
-						ostate.sol.pState = ostate.sol.pState->OnNewNonReadRequest(ostate, header, objects);
-					}
-				};
-
-				ostate.deferred.Process(handler);
-			}
+			ostate.deferred.Process(ostate, ProcessDeferredRequest);
 		}
 		else
-		{		
-			if (ostate.unsol.IsIdle())
-			{
-				OActions::CheckForUnsolicited(ostate);
-			}
+		{					
+			OActions::CheckForUnsolicited(ostate);
 		}
 	}	
 }
 
+bool OActions::ProcessDeferredRequest(OState& ostate, APDUHeader header, openpal::ReadBufferView objects, bool equalsLastRequest)
+{
+	if (header.function == FunctionCode::READ)
+	{
+		if (ostate.unsol.IsIdle())
+		{
+			ostate.sol.pState = ostate.sol.pState->OnNewReadRequest(ostate, header, objects);
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else
+	{
+		if (equalsLastRequest)
+		{
+			ostate.sol.pState = ostate.sol.pState->OnRepeatNonReadRequest(ostate, header, objects);
+		}
+		else
+		{
+			ostate.sol.pState = ostate.sol.pState->OnNewNonReadRequest(ostate, header, objects);
+		}
+
+		return true;
+	}
+}
+
 void OActions::CheckForUnsolicited(OState& ostate)
 {
-	if (ostate.params.allowUnsolicited)
+	if (ostate.unsol.IsIdle() && ostate.params.allowUnsolicited)
 	{
 		if (ostate.unsol.completedNull)
 		{				

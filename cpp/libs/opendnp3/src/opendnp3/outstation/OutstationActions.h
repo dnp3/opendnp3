@@ -44,6 +44,8 @@ class OActions : private openpal::PureStatic
 	static IINField GetDynamicIIN(OState& ostate);
 
 	static void CheckForTaskStart(OState& ostate);
+
+	static bool ProcessDeferredRequest(OState& ostate, APDUHeader header, openpal::ReadBufferView objects, bool equalsLastRequest);
 	
 	static bool StartSolicitedConfirmTimer(OState& ostate);
 

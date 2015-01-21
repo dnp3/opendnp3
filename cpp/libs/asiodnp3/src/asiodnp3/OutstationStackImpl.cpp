@@ -43,7 +43,7 @@ OutstationStackImpl::OutstationStackImpl(
 	root(root_, id),
 	handler(handler_),
 	stack(root, &executor, config.outstation.params.maxRxFragSize, &statistics, config.link),		
-	outstation(config.outstation, config.dbTemplate, &mutex, executor, root, stack.transport, commandHandler, application, NullOutstationAuthProvider::Instance())
+	outstation(config.outstation, config.dbTemplate, root.GetLogger(), &mutex, executor, stack.transport, commandHandler, application, NullOutstationAuthProvider::Instance())
 {
 	stack.transport.SetAppLayer(&outstation);
 }

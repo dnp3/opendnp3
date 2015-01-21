@@ -35,14 +35,14 @@ namespace opendnp3
 Outstation::Outstation(
 		const OutstationConfig& config,
 		const DatabaseTemplate& dbTemplate,
+		openpal::Logger logger,
 		openpal::IMutex* pDBMutex,
-		IExecutor& executor,
-		openpal::LogRoot& root,
+		IExecutor& executor,		
 		ILowerLayer& lower,
 		ICommandHandler& commandHandler,
 		IOutstationApplication& application,
 		IOutstationAuthProvider& authProvider) :
-		ostate(config, dbTemplate, pDBMutex, *this, executor, root, lower, commandHandler, application, authProvider)
+		ostate(config, dbTemplate, logger, pDBMutex, *this, executor, lower, commandHandler, application, authProvider)
 {
 	
 }

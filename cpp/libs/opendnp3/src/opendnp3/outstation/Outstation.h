@@ -35,9 +35,9 @@ class Outstation : public IUpperLayer, private INewEventDataHandler
 
 	Outstation(		const OutstationConfig& config,
 					const DatabaseTemplate& dbTemplate,
+					openpal::Logger logger,
 					openpal::IMutex* pDBMutex,
-					openpal::IExecutor& executor, 
-					openpal::LogRoot& root, 
+					openpal::IExecutor& executor, 					
 					ILowerLayer& lower,
 					ICommandHandler& commandHandler,
 					IOutstationApplication& application,

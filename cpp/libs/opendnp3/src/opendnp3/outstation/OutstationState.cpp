@@ -29,18 +29,18 @@ namespace opendnp3
 	OState::OState(
 		const OutstationConfig& config,
 		const DatabaseTemplate& dbTemplate,
+		openpal::Logger logger_,
 		openpal::IMutex* pMutex,
 		INewEventDataHandler& handler,
-		openpal::IExecutor& executor,
-		openpal::LogRoot& root,
+		openpal::IExecutor& executor,		
 		ILowerLayer& lower,
 		ICommandHandler& commandHandler,
 		IOutstationApplication& application,
 		IOutstationAuthProvider& authProvider) :
 	
+	logger(logger_),
 	pExecutor(&executor),
-	pLower(&lower),
-	logger(root.GetLogger()),
+	pLower(&lower),	
 	pCommandHandler(&commandHandler),
 	pApplication(&application),
 	pAuthProvider(&authProvider),
@@ -61,7 +61,7 @@ namespace opendnp3
 }
 
 void OState::Reset()
-{
+{	
 	isOnline = false;
 	isTransmitting = false;
 	pendingTaskCheckFlag = false;

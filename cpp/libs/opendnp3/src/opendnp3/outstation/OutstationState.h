@@ -52,10 +52,10 @@ class OState
 
 	OState(	const OutstationConfig& config,	
 			const DatabaseTemplate& dbTemplate,
+			openpal::Logger logger,
 			openpal::IMutex* pMutex,
 			INewEventDataHandler& handler,
-			openpal::IExecutor& executor,
-			openpal::LogRoot& root,
+			openpal::IExecutor& executor,			
 			ILowerLayer& lower,
 			ICommandHandler& commandHandler,
 			IOutstationApplication& application,
@@ -64,13 +64,13 @@ class OState
 	// reset important variables to their initial state
 	void Reset();	
 
-	// ------ External resources --------
-	openpal::IExecutor* pExecutor;
-	ILowerLayer* pLower;
+	// ------ resources --------
 	openpal::Logger logger;
-	ICommandHandler* pCommandHandler;
-	IOutstationApplication* pApplication;
-	IOutstationAuthProvider* pAuthProvider;
+	openpal::IExecutor* const pExecutor;
+	ILowerLayer* const pLower;	
+	ICommandHandler* const pCommandHandler;
+	IOutstationApplication* const pApplication;
+	IOutstationAuthProvider* const pAuthProvider;
 
 	// ------ Database, event buffer, and response tracking
 	EventBuffer eventBuffer;
