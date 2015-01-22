@@ -35,7 +35,7 @@ class NullOutstationAuthProvider : private openpal::Uncopyable, public opendnp3:
 {
 	public:
 		
-	virtual void ExamineASDU(opendnp3::OutstationContext& ctx, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects) override final;
+	virtual void ExamineASDU(opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects) override final;
 
 	static opendnp3::IOutstationAuthProvider& Instance() { return instance; }
 

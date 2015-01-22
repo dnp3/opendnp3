@@ -28,9 +28,9 @@ namespace asiodnp3
 
 NullOutstationAuthProvider NullOutstationAuthProvider::instance;
 
-void NullOutstationAuthProvider::ExamineASDU(opendnp3::OutstationContext& ctx, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects)
+void NullOutstationAuthProvider::ExamineASDU(opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects)
 {
-	//ctx.ExamineASDU(header, objects);
+	opendnp3::OActions::ExamineASDU(ostate, header, objects);
 }
 
 }

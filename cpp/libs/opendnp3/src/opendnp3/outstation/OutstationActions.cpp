@@ -83,8 +83,8 @@ void OActions::OnReceiveAPDU(OState& ostate, const openpal::ReadBufferView& apdu
 		// outstations should only process single fragment messages that don't request confirmation
 		if (header.control.IsFirAndFin() && !header.control.CON)
 		{
-			auto objects = apdu.Skip(APDU_REQUEST_HEADER_SIZE);
-			OActions::ExamineASDU(ostate, header, objects);			
+			auto objects = apdu.Skip(APDU_REQUEST_HEADER_SIZE);			
+			ostate.pAuthProvider->ExamineASDU(ostate, header, objects);									
 			OActions::CheckForTaskStart(ostate);
 		}
 		else
@@ -357,7 +357,7 @@ bool OActions::StartSolicitedConfirmTimer(OState& ostate)
 
 bool OActions::StartUnsolicitedConfirmTimer(OState& ostate)
 {
-	auto timeout = [&]() 
+	auto timeout = [&]()
 	{ 
 		ostate.unsol.pState = ostate.unsol.pState->OnConfirmTimeout(ostate);
 		OActions::CheckForTaskStart(ostate);
