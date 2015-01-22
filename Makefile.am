@@ -25,6 +25,7 @@ cpp/libs/openpal/src/openpal/executor/Action0.cpp \
 cpp/libs/openpal/src/openpal/executor/Erasure.cpp \
 cpp/libs/openpal/src/openpal/executor/MonotonicTimestamp.cpp \
 cpp/libs/openpal/src/openpal/executor/TimeDuration.cpp \
+cpp/libs/openpal/src/openpal/executor/TimerRef.cpp \
 cpp/libs/openpal/src/openpal/logging/LogEntry.cpp \
 cpp/libs/openpal/src/openpal/logging/Logger.cpp \
 cpp/libs/openpal/src/openpal/logging/LogRoot.cpp \
@@ -169,6 +170,7 @@ cpp/libs/opendnp3/src/opendnp3/outstation/EventCount.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/EventWriter.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/IINHelpers.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/IOutstationApplication.cpp \
+cpp/libs/opendnp3/src/opendnp3/outstation/NullOutstationAuthProvider.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/OutstationActions.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/Outstation.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/OutstationFunctions.cpp \
