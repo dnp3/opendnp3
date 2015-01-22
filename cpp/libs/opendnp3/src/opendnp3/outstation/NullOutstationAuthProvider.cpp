@@ -18,35 +18,21 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_NULLOUTSTATIONAUTHPROVIDER_H
-#define ASIODNP3_NULLOUTSTATIONAUTHPROVIDER_H
 
-#include <opendnp3/outstation/IOutstationAuthProvider.h>
+#include "NullOutstationAuthProvider.h"
 
-#include <openpal/util/Uncopyable.h>
+#include "opendnp3/outstation/OutstationActions.h"
 
-namespace asiodnp3
+namespace opendnp3
 {
 
-/**
-	NULL authentication provider for the outstation
-*/
-class NullOutstationAuthProvider : private openpal::Uncopyable, public opendnp3::IOutstationAuthProvider
+NullOutstationAuthProvider NullOutstationAuthProvider::instance;
+
+void NullOutstationAuthProvider::ExamineASDU(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
-	public:
-		
-	virtual void ExamineASDU(opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects) override final;
-
-	static opendnp3::IOutstationAuthProvider& Instance() { return instance; }
-
-	private:
-
-	NullOutstationAuthProvider() {}
-
-	static NullOutstationAuthProvider instance;
-};
+	OActions::ExamineASDU(ostate, header, objects);
+}
 
 }
 
-#endif
 

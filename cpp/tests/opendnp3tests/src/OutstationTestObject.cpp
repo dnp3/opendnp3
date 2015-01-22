@@ -22,10 +22,9 @@
 #include "OutstationTestObject.h"
 #include "BufferHelpers.h"
 
-#include <asiodnp3\NullOutstationAuthProvider.h>
+#include <opendnp3/outstation/NullOutstationAuthProvider.h>
 
 using namespace openpal;
-using namespace asiodnp3;
 
 namespace opendnp3
 {

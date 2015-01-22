@@ -23,7 +23,7 @@
 #include <asiopal/ASIOExecutor.h>
 #include <asiopal/StrandGetters.h>
 
-#include "NullOutstationAuthProvider.h"
+#include <opendnp3/outstation/NullOutstationAuthProvider.h>
 
 using namespace opendnp3;
 

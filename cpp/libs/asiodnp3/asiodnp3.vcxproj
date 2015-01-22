@@ -32,7 +32,6 @@
     <ClCompile Include="src\asiodnp3\impl\PhysicalLayerMonitorStates.cpp" />
     <ClCompile Include="src\asiodnp3\MasterStackImpl.cpp" />
     <ClCompile Include="src\asiodnp3\MultidropTaskLock.cpp" />
-    <ClCompile Include="src\asiodnp3\NullOutstationAuthProvider.cpp" />
     <ClCompile Include="src\asiodnp3\OutstationStackImpl.cpp" />
     <ClCompile Include="src\asiodnp3\PrintingSOEHandler.cpp" />
     <ClCompile Include="src\asiodnp3\StackActionHandler.cpp" />
@@ -56,7 +55,6 @@
     <ClInclude Include="src\asiodnp3\MasterStackImpl.h" />
     <ClInclude Include="src\asiodnp3\MultidropTaskLock.h" />
     <ClInclude Include="src\asiodnp3\Mutex.h" />
-    <ClInclude Include="src\asiodnp3\NullOutstationAuthProvider.h" />
     <ClInclude Include="src\asiodnp3\OutstationStackImpl.h" />
     <ClInclude Include="src\asiodnp3\PrintingSOEHandler.h" />
     <ClInclude Include="src\asiodnp3\StackActionHandler.h" />
