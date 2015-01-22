@@ -72,7 +72,7 @@ class OActions : private openpal::PureStatic
 	
 	static OutstationSolicitedStateBase* RespondToNonReadRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
 
-	static OutstationSolicitedStateBase* RespondToReadRequest(OState& ostate, uint8_t seq, const openpal::ReadBufferView& objects);
+	static OutstationSolicitedStateBase* RespondToReadRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
 
 	static OutstationSolicitedStateBase* ProcessNewRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
 	

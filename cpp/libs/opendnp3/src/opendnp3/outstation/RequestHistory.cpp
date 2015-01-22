@@ -39,7 +39,7 @@ void RequestHistory::Reset()
 	hasLast = false;
 }
 
-void RequestHistory::RecordLastRequest(const APDUHeader& header, const openpal::ReadBufferView& objects)
+void RequestHistory::RecordLastProcessedRequest(const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
 	hasLast = true;
 	lastHeader = header;

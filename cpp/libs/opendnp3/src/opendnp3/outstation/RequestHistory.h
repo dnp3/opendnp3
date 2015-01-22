@@ -41,7 +41,7 @@ class RequestHistory
 	bool HasLastRequest() const { return hasLast; }
 
 	void Reset();	
-	void RecordLastRequest(const APDUHeader& header, const openpal::ReadBufferView& objects);	
+	void RecordLastProcessedRequest(const APDUHeader& header, const openpal::ReadBufferView& objects);	
 	
 	APDUHeader GetLastHeader() const;
 	bool EqualsLastObjects(const openpal::ReadBufferView& objects) const;

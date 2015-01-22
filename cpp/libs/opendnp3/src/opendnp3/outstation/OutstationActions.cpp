@@ -139,8 +139,7 @@ void OActions::ProcessRequest(OState& ostate, const APDUHeader& header, const op
 	}
 	else
 	{		
-		ostate.sol.pState = OActions::OnReceiveSolRequest(ostate, header, objects);
-		ostate.history.RecordLastRequest(header, objects);
+		ostate.sol.pState = OActions::OnReceiveSolRequest(ostate, header, objects);		
 	}
 }
 
@@ -207,6 +206,8 @@ OutstationSolicitedStateBase* OActions::ProcessNewRequest(OState& ostate, const 
 
 OutstationSolicitedStateBase* OActions::RespondToNonReadRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
+	ostate.history.RecordLastProcessedRequest(header, objects);
+
 	auto response = ostate.sol.tx.Start();
 	auto writer = response.GetWriter();
 	response.SetFunction(FunctionCode::RESPONSE);
@@ -217,19 +218,21 @@ OutstationSolicitedStateBase* OActions::RespondToNonReadRequest(OState& ostate, 
 	return &OutstationSolicitedStateIdle::Inst();
 }
 
-OutstationSolicitedStateBase* OActions::RespondToReadRequest(OState& ostate, uint8_t seq, const openpal::ReadBufferView& objects)
+OutstationSolicitedStateBase* OActions::RespondToReadRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
+	ostate.history.RecordLastProcessedRequest(header, objects);
+
 	auto response = ostate.sol.tx.Start();
 	auto writer = response.GetWriter();
 	response.SetFunction(FunctionCode::RESPONSE);
 	auto result = OFunctions::HandleRead(ostate, objects, writer);
-	result.second.SEQ = seq;
-	ostate.sol.seq.confirmNum = seq;
+	result.second.SEQ = header.control.SEQ;
+	ostate.sol.seq.confirmNum = header.control.SEQ;
 	response.SetControl(result.second);
 	response.SetIIN(result.first | OActions::GetResponseIIN(ostate));		
 	OActions::BeginResponseTx(ostate, response.ToReadOnly());
 
-	if (response.GetControl().CON)
+	if (result.second.CON)
 	{
 		OActions::StartSolicitedConfirmTimer(ostate);
 		return &OutstationStateSolicitedConfirmWait::Inst();

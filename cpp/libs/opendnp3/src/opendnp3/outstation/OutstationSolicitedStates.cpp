@@ -84,7 +84,7 @@ OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewReadRequest(OSt
 {
 	if (ostate.unsol.IsIdle())
 	{
-		return OActions::RespondToReadRequest(ostate, header.control.SEQ, objects);
+		return OActions::RespondToReadRequest(ostate, header, objects);
 	}
 	else
 	{

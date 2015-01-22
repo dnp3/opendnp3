@@ -336,7 +336,7 @@ TEST_CASE(SUITE("DirectOperateNoResponseGroup12Var1"))
 	// Direct operate (no response) group 12 Var 1, count = 1, index = 3
 	auto directOperateNoACK = "C1 06 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00";
 
-	/// no-ack codes ignore sequence numbers or repeats
+	/// no-ack codes ignore sequence numbers and repeat requests
 	for (uint32_t i = 1; i < 5; ++i)
 	{
 		t.SendToOutstation(directOperateNoACK);
