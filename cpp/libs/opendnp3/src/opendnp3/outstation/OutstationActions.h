@@ -33,21 +33,13 @@ namespace opendnp3
 class OActions : private openpal::PureStatic
 {
 	
-	public:			
-
-	static void ConfigureUnsolHeader(OState& ostate, APDUResponse& unsol);
+	public:				
 
 	static void OnNewEventData(OState& ostate);
 
 	static IINField GetResponseIIN(OState& ostate);	
 
-	static void CheckForTaskStart(OState& ostate);
-
-	static bool ProcessDeferredRequest(OState& ostate, APDUHeader header, openpal::ReadBufferView objects, bool equalsLastRequest);
-	
-	static bool StartSolicitedConfirmTimer(OState& ostate);
-
-	static bool StartUnsolicitedConfirmTimer(OState& ostate);
+	static void CheckForTaskStart(OState& ostate);	
 
 	static void OnReceiveAPDU(OState& ostate, const openpal::ReadBufferView& apdu);
 
@@ -60,6 +52,7 @@ class OActions : private openpal::PureStatic
 	static void BeginResponseTx(OState& ostate, const openpal::ReadBufferView& response);
 
 	static void BeginUnsolTx(OState& ostate, const openpal::ReadBufferView& response);
+	
 
 	/// ---- Helper functions that operate on the current solicited state, and may return a new solicited state ----
 
@@ -74,7 +67,15 @@ class OActions : private openpal::PureStatic
 	static OutstationSolicitedStateBase* ProcessNewRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
 	
 
-	private:
+	private:		
+
+	static bool ProcessDeferredRequest(OState& ostate, APDUHeader header, openpal::ReadBufferView objects, bool equalsLastRequest);
+
+	static bool StartSolicitedConfirmTimer(OState& ostate);
+
+	static bool StartUnsolicitedConfirmTimer(OState& ostate);
+
+	static void ConfigureUnsolHeader(OState& ostate, APDUResponse& unsol);
 
 	static void CheckForUnsolicited(OState& ostate);
 
