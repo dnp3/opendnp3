@@ -43,13 +43,8 @@ class IOutstationAuthProvider
 	virtual bool IsOnline() const = 0;
 
 	/// Receive a new request and treat it as a function requiring a response
-	virtual void OnReceiveRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects) = 0;
+	virtual void OnReceive(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects) = 0;
 
-	/// Receive a new request and treat it as a "no-acknowlegement" request, i.e. there will be no response
-	virtual void OnReceiveRequestNoAck(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects) = 0;
-
-	/// Receive a confirm message
-	virtual void OnReceiveConfirm(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects) = 0;
 };
 
 }

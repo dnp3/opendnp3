@@ -47,9 +47,9 @@ class OActions : private openpal::PureStatic
 
 	/// ---- Processing functions --------
 
-	static void ProcessRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
+	static void ProcessHeaderAndObjects(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
 
-	static void ProcessNoAckRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
+	static void ProcessRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);	
 
 	static void ProcessConfirm(OState& ostate, const APDUHeader& header);
 
@@ -79,9 +79,8 @@ class OActions : private openpal::PureStatic
 
 	private:		
 
-	static void ExamineHeader(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
 
-	static bool ExamineDeferredRequest(OState& ostate, APDUHeader header, openpal::ReadBufferView objects);
+	static bool ProcessDeferredRequest(OState& ostate, APDUHeader header, openpal::ReadBufferView objects);
 
 	static bool StartSolicitedConfirmTimer(OState& ostate);
 

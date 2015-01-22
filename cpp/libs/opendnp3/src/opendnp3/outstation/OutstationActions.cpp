@@ -81,7 +81,7 @@ void OActions::OnReceiveAPDU(OState& ostate, const openpal::ReadBufferView& apdu
 		if (header.control.IsFirAndFin() && !header.control.CON)
 		{
 			auto objects = apdu.Skip(APDU_REQUEST_HEADER_SIZE);
-			OActions::ExamineHeader(ostate, header, objects);
+			ostate.pAuthProvider->OnReceive(ostate, header, objects);			
 		}
 		else
 		{
@@ -94,13 +94,13 @@ void OActions::OnReceiveAPDU(OState& ostate, const openpal::ReadBufferView& apdu
 	}	
 }
 
-void OActions::ExamineHeader(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
+void OActions::ProcessHeaderAndObjects(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {	
 	if (IsNoAckFuncCode(header.function))
 	{
-		// this is the only request we can definitely process while we are transmitting
-		// because it doesn't require a respons e of any kind
-		ostate.pAuthProvider->OnReceiveRequestNoAck(ostate, header, objects);
+		// this is the only request we process while we are transmitting
+		// because it doesn't require a response of any kind
+		OFunctions::ProcessRequestNoAck(ostate, header, objects);
 	}
 	else
 	{
@@ -112,11 +112,11 @@ void OActions::ExamineHeader(OState& ostate, const APDUHeader& header, const ope
 		{
 			if (header.function == FunctionCode::CONFIRM)
 			{
-				ostate.pAuthProvider->OnReceiveConfirm(ostate, header, objects);
+				OActions::ProcessConfirm(ostate, header);				
 			}
 			else
 			{
-				ostate.pAuthProvider->OnReceiveRequest(ostate, header, objects);
+				OActions::ProcessRequest(ostate, header, objects);				
 			}
 		}
 	}
@@ -302,7 +302,7 @@ void OActions::CheckForTaskStart(OState& ostate)
 	{	
 		if (ostate.deferred.IsSet())
 		{
-			ostate.deferred.Process(ostate, ExamineDeferredRequest);
+			ostate.deferred.Process(ostate, ProcessDeferredRequest);
 		}
 		else
 		{
@@ -311,11 +311,11 @@ void OActions::CheckForTaskStart(OState& ostate)
 	}	
 }
 
-bool OActions::ExamineDeferredRequest(OState& ostate, APDUHeader header, openpal::ReadBufferView objects)
+bool OActions::ProcessDeferredRequest(OState& ostate, APDUHeader header, openpal::ReadBufferView objects)
 {
 	if (header.function == FunctionCode::CONFIRM)
 	{
-		OActions::ExamineHeader(ostate, header, objects);
+		OActions::ProcessConfirm(ostate, header);
 		return true;
 	}
 	else
@@ -324,7 +324,7 @@ bool OActions::ExamineDeferredRequest(OState& ostate, APDUHeader header, openpal
 		{
 			if (ostate.unsol.IsIdle())
 			{
-				OActions::ExamineHeader(ostate, header, objects);
+				OActions::ProcessRequest(ostate, header, objects);
 				return true;
 			}
 			else
@@ -334,7 +334,7 @@ bool OActions::ExamineDeferredRequest(OState& ostate, APDUHeader header, openpal
 		}
 		else
 		{
-			OActions::ExamineHeader(ostate, header, objects);
+			OActions::ProcessRequest(ostate, header, objects);
 			return true;
 		}
 	}

@@ -29,19 +29,10 @@ namespace opendnp3
 
 NullOutstationAuthProvider NullOutstationAuthProvider::instance;
 
-void NullOutstationAuthProvider::OnReceiveRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
+void NullOutstationAuthProvider::OnReceive(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
-	OActions::ProcessRequest(ostate, header, objects);
-}
-
-void NullOutstationAuthProvider::OnReceiveRequestNoAck(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
-{
-	OFunctions::ProcessNoAckFunction(ostate, header, objects);
-}
-
-void NullOutstationAuthProvider::OnReceiveConfirm(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
-{	
-	OActions::ProcessConfirm(ostate, header);
+	// null auth provider just skips any authentication and goes directly to processing
+	OActions::ProcessHeaderAndObjects(ostate, header, objects);
 }
 
 }

@@ -46,7 +46,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-void OFunctions::ProcessNoAckFunction(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
+void OFunctions::ProcessRequestNoAck(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
 	switch (header.function)
 	{
