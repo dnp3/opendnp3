@@ -56,19 +56,6 @@ void OActions::OnNewEventData(OState& ostate)
 	}
 }
 
-IINField OActions::GetDynamicIIN(OState& ostate)
-{	
-	auto classField = ostate.eventBuffer.UnwrittenClassField();
-
-	IINField ret;
-	ret.SetBitToValue(IINBit::CLASS1_EVENTS, classField.HasClass1());
-	ret.SetBitToValue(IINBit::CLASS2_EVENTS, classField.HasClass2());
-	ret.SetBitToValue(IINBit::CLASS3_EVENTS, classField.HasClass3());
-	ret.SetBitToValue(IINBit::EVENT_BUFFER_OVERFLOW, ostate.eventBuffer.IsOverflown());
-	
-	return ret;
-}
-
 IINField OActions::GetResponseIIN(OState& ostate)
 {
 	return ostate.staticIIN | GetDynamicIIN(ostate) | ostate.pApplication->GetApplicationIIN().ToIIN();
@@ -215,7 +202,7 @@ OutstationSolicitedStateBase* OActions::RespondToReadRequest(OState& ostate, uin
 	response.SetFunction(FunctionCode::RESPONSE);
 	auto result = OFunctions::HandleRead(ostate, objects, writer);
 	result.second.SEQ = seq;
-	ostate.sol.seq.expectedConSeqN = seq;
+	ostate.sol.seq.confirmNum = seq;
 	response.SetControl(result.second);
 	response.SetIIN(result.first | OActions::GetResponseIIN(ostate));		
 	OActions::BeginResponseTx(ostate, response.ToReadOnly());
@@ -244,7 +231,7 @@ void OActions::BeginUnsolTx(OState& ostate, const ReadBufferView& response)
 	logging::ParseAndLogResponseTx(&ostate.logger, response);
 	ostate.unsol.tx.Record(response);
 	ostate.isTransmitting = true;
-	ostate.unsol.seq.expectedConSeqN = ostate.unsol.seq.num;
+	ostate.unsol.seq.confirmNum = ostate.unsol.seq.num;
 	ostate.unsol.seq.num = AppControlField::NextSeq(ostate.unsol.seq.num);
 	ostate.pLower->BeginTransmit(response);
 }
@@ -256,12 +243,12 @@ OutstationSolicitedStateBase* OActions::ContinueMultiFragResponse(OState& ostate
 	response.SetFunction(FunctionCode::RESPONSE);
 	auto control = ostate.rspContext.LoadResponse(writer);
 	control.SEQ = seq;
-	ostate.sol.seq.expectedConSeqN = seq;
+	ostate.sol.seq.confirmNum = seq;
 	response.SetControl(control);
-	response.SetIIN(ostate.staticIIN | GetDynamicIIN(ostate));		
+	response.SetIIN(GetResponseIIN(ostate));
 	OActions::BeginResponseTx(ostate, response.ToReadOnly());
 	
-	if (response.GetControl().CON)
+	if (control.CON)
 	{
 		OActions::StartSolicitedConfirmTimer(ostate);
 		return &OutstationStateSolicitedConfirmWait::Inst();
@@ -376,6 +363,19 @@ bool OActions::StartUnsolicitedConfirmTimer(OState& ostate)
 		OActions::CheckForTaskStart(ostate);
 	};
 	return ostate.confirmTimer.Start(ostate.params.unsolConfirmTimeout, timeout);
+}
+
+IINField OActions::GetDynamicIIN(OState& ostate)
+{
+	auto classField = ostate.eventBuffer.UnwrittenClassField();
+
+	IINField ret;
+	ret.SetBitToValue(IINBit::CLASS1_EVENTS, classField.HasClass1());
+	ret.SetBitToValue(IINBit::CLASS2_EVENTS, classField.HasClass2());
+	ret.SetBitToValue(IINBit::CLASS3_EVENTS, classField.HasClass3());
+	ret.SetBitToValue(IINBit::EVENT_BUFFER_OVERFLOW, ostate.eventBuffer.IsOverflown());
+
+	return ret;
 }
 
 }

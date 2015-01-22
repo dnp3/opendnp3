@@ -162,7 +162,7 @@ OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnNewNonReadR
 
 OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnConfirm(OState& ostate, const APDUHeader& header)
 {	
-	if (header.control.SEQ == ostate.sol.seq.expectedConSeqN)
+	if (header.control.SEQ == ostate.sol.seq.confirmNum)
 	{
 		ostate.confirmTimer.Cancel();
 

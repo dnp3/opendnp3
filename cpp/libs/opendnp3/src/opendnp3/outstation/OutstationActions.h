@@ -39,9 +39,7 @@ class OActions : private openpal::PureStatic
 
 	static void OnNewEventData(OState& ostate);
 
-	static IINField GetResponseIIN(OState& ostate);
-
-	static IINField GetDynamicIIN(OState& ostate);
+	static IINField GetResponseIIN(OState& ostate);	
 
 	static void CheckForTaskStart(OState& ostate);
 
@@ -55,9 +53,7 @@ class OActions : private openpal::PureStatic
 
 	static void ExamineASDU(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
 
-	static void OnSendResult(OState& ostate, bool isSuccess);
-
-	static void CheckForUnsolicited(OState& ostate);
+	static void OnSendResult(OState& ostate, bool isSuccess);	
 
 	/// ---- Helper functions for begining solicited and unsolcited transmissions ----
 
@@ -78,7 +74,11 @@ class OActions : private openpal::PureStatic
 	static OutstationSolicitedStateBase* ProcessNewRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
 	
 
-	
+	private:
+
+	static void CheckForUnsolicited(OState& ostate);
+
+	static IINField GetDynamicIIN(OState& ostate);
 };
 
 
