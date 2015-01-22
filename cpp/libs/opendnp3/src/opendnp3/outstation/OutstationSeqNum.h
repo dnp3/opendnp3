@@ -33,10 +33,10 @@ class OutstationSeqNum
 {	
 	public:		
 
-	OutstationSeqNum() : seqN(0), expectedConSeqN(0)
+	OutstationSeqNum() : num(0), expectedConSeqN(0)
 	{}
 
-	uint8_t seqN;
+	uint8_t num;
 	uint8_t expectedConSeqN;	
 };
 

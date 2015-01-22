@@ -76,7 +76,7 @@ IINField OActions::GetResponseIIN(OState& ostate)
 
 void OActions::ConfigureUnsolHeader(OState& ostate, APDUResponse& unsol)
 {	
-	build::NullUnsolicited(unsol, ostate.unsol.seq.seqN, GetResponseIIN(ostate));
+	build::NullUnsolicited(unsol, ostate.unsol.seq.num, GetResponseIIN(ostate));
 }
 
 void OActions::OnReceiveAPDU(OState& ostate, const openpal::ReadBufferView& apdu)
@@ -152,7 +152,7 @@ OutstationSolicitedStateBase* OActions::OnReceiveSolRequest(OState& ostate, cons
 	// analyze this request to see how it compares to the last request
 	if (ostate.history.HasLastRequest())
 	{		
-		if (ostate.sol.seq.seqN == header.control.SEQ)
+		if (ostate.sol.seq.num == header.control.SEQ)
 		{			
 			if (ostate.history.FullyEqualsLastRequest(header, objects))
 			{
@@ -184,7 +184,7 @@ OutstationSolicitedStateBase* OActions::OnReceiveSolRequest(OState& ostate, cons
 
 OutstationSolicitedStateBase* OActions::ProcessNewRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
-	ostate.sol.seq.seqN = header.control.SEQ;
+	ostate.sol.seq.num = header.control.SEQ;
 
 	if (header.function == FunctionCode::READ)
 	{
@@ -244,8 +244,8 @@ void OActions::BeginUnsolTx(OState& ostate, const ReadBufferView& response)
 	logging::ParseAndLogResponseTx(&ostate.logger, response);
 	ostate.unsol.tx.Record(response);
 	ostate.isTransmitting = true;
-	ostate.unsol.seq.expectedConSeqN = ostate.unsol.seq.seqN;
-	ostate.unsol.seq.seqN = AppControlField::NextSeq(ostate.unsol.seq.seqN);
+	ostate.unsol.seq.expectedConSeqN = ostate.unsol.seq.num;
+	ostate.unsol.seq.num = AppControlField::NextSeq(ostate.unsol.seq.num);
 	ostate.pLower->BeginTransmit(response);
 }
 

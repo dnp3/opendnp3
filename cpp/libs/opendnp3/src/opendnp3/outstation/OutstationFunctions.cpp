@@ -151,7 +151,7 @@ IINField OFunctions::HandleSelect(OState& ostate, const openpal::ReadBufferView&
 		{
 			if (handler.AllCommandsSuccessful())
 			{						
-				ostate.control.Select(ostate.sol.seq.seqN, ostate.pExecutor->GetTime(), objects);				
+				ostate.control.Select(ostate.sol.seq.num, ostate.pExecutor->GetTime(), objects);
 			}
 			
 			return handler.Errors();
@@ -174,7 +174,7 @@ IINField OFunctions::HandleOperate(OState& ostate, const openpal::ReadBufferView
 	else
 	{
 		auto now = ostate.pExecutor->GetTime();
-		auto result = ostate.control.ValidateSelection(ostate.sol.seq.seqN, now, ostate.params.selectTimeout, objects);
+		auto result = ostate.control.ValidateSelection(ostate.sol.seq.num, now, ostate.params.selectTimeout, objects);
 
 		if (result == CommandStatus::SUCCESS)
 		{
