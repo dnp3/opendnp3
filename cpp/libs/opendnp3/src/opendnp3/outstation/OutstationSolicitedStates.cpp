@@ -54,19 +54,19 @@ OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnConfirmTimeout(OSt
 
 OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnNewReadRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
-	ostate.deferred.Set(header, objects, false);	
+	ostate.deferred.Set(header, objects);	
 	return this;
 }
 
 OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnNewNonReadRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
-	ostate.deferred.Set(header, objects, false);
+	ostate.deferred.Set(header, objects);
 	return this;
 }
 
 OutstationSolicitedStateBase* OutstationSolicitedStateBase::OnRepeatNonReadRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
-	ostate.deferred.Set(header, objects, true);
+	ostate.deferred.Set(header, objects);
 	return this;
 }
 
@@ -82,58 +82,26 @@ OutstationSolicitedStateBase& OutstationSolicitedStateIdle::Inst()
 
 OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewReadRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
-	if (!ostate.isTransmitting && ostate.unsol.IsIdle())
+	if (ostate.unsol.IsIdle())
 	{
 		return OActions::RespondToReadRequest(ostate, header.control.SEQ, objects);
 	}
 	else
 	{
-		ostate.deferred.Set(header, objects, false);
+		ostate.deferred.Set(header, objects);
 		return this;
 	}
 }
 
 OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnNewNonReadRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
-	if (ostate.isTransmitting)
-	{
-		
-		ostate.deferred.Set(header, objects, false);
-		return this;		
-	}
-	else
-	{
-		if (IsNoAckCode(header.function))
-		{
-			OFunctions::HandleNoResponseFunction(ostate, header, objects);
-			return this;
-		}
-		else
-		{
-			return OActions::RespondToNonReadRequest(ostate, header, objects);
-		}		
-	}
+	return OActions::RespondToNonReadRequest(ostate, header, objects);			
 }
 
 OutstationSolicitedStateBase* OutstationSolicitedStateIdle::OnRepeatNonReadRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
-{
-	if (ostate.isTransmitting)
-	{
-		ostate.deferred.Set(header, objects, true);
-		return this;		
-	}
-	else
-	{
-		if (IsNoAckCode(header.function))
-		{
-			return this;
-		}
-		else
-		{			
-			OActions::BeginResponseTx(ostate, ostate.sol.tx.GetLastResponse());
-			return this;
-		}		
-	}	
+{					
+	OActions::BeginResponseTx(ostate, ostate.sol.tx.GetLastResponse());
+	return this;			
 }
 
 // --------------------- OutstationStateSolConfirmWait ----------------------
@@ -147,7 +115,7 @@ OutstationSolicitedStateBase& OutstationStateSolicitedConfirmWait::Inst()
 
 OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnNewReadRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {	
-	ostate.deferred.Set(header, objects, false);
+	ostate.deferred.Set(header, objects);
 	ostate.confirmTimer.Cancel();
 	return &OutstationSolicitedStateIdle::Inst();
 			
@@ -155,7 +123,7 @@ OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnNewReadRequ
 
 OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnNewNonReadRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
-	ostate.deferred.Set(header, objects, false);
+	ostate.deferred.Set(header, objects);
 	ostate.confirmTimer.Cancel();
 	return &OutstationSolicitedStateIdle::Inst();
 }

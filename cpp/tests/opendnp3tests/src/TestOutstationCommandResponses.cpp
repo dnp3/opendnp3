@@ -331,26 +331,18 @@ TEST_CASE(SUITE("DirectOperateNoResponseGroup12Var1"))
 {
 	OutstationConfig config;
 	OutstationTestObject t(config);
-	t.LowerLayerUp();	
-		
-	// Direct operate (no response) group 12 Var 1, count = 1, index = 3	
-	t.SendToOutstation("C1 06 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
-	REQUIRE(t.lower.PopWriteAsHex() == "");
+	t.LowerLayerUp();
 
-	// command should have operated
-	REQUIRE(t.cmdHandler.NumInvocations() == 1);
+	// Direct operate (no response) group 12 Var 1, count = 1, index = 3
+	auto directOperateNoACK = "C1 06 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00";
 
-	t.SendToOutstation("C1 06 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
-	REQUIRE(t.lower.PopWriteAsHex() == "");
-
-	// shoudl be ignored due to sequence number
-	REQUIRE(t.cmdHandler.NumInvocations() == 1);
-
-	t.SendToOutstation("C2 06 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
-	REQUIRE(t.lower.PopWriteAsHex() == "");
-
-	// shoudl be ignored due to sequence number
-	REQUIRE(t.cmdHandler.NumInvocations() == 2);
+	/// no-ack codes ignore sequence numbers or repeats
+	for (uint32_t i = 1; i < 5; ++i)
+	{
+		t.SendToOutstation(directOperateNoACK);
+		REQUIRE(t.lower.PopWriteAsHex() == "");
+		REQUIRE(t.cmdHandler.NumInvocations() == i);
+	}
 }
 
 TEST_CASE(SUITE("DirectOperateGroup41Var1"))

@@ -25,7 +25,7 @@
 
 namespace opendnp3
 {
-	bool IsNoAckCode(FunctionCode code);
+	bool IsNoAckFuncCode(FunctionCode code);
 }
 
 #endif

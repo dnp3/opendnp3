@@ -41,18 +41,28 @@ class OActions : private openpal::PureStatic
 
 	static void CheckForTaskStart(OState& ostate);	
 
-	static void OnReceiveAPDU(OState& ostate, const openpal::ReadBufferView& apdu);
-
-	static void ExamineASDU(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
+	static void OnReceiveAPDU(OState& ostate, const openpal::ReadBufferView& apdu);	
 
 	static void OnSendResult(OState& ostate, bool isSuccess);	
+
+	/// ---- Processing functions --------
+
+	static void ProcessRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
+
+	static void ProcessNoAckRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
+
+	static void ProcessConfirm(OState& ostate, const APDUHeader& header);
+
+	static void ProcessSolicitedConfirm(OState& ostate, const APDUHeader& header);
+
+	static void ProcessUnsolicitedConfirm(OState& ostate, const APDUHeader& header);
 
 	/// ---- Helper functions for begining solicited and unsolcited transmissions ----
 
 	static void BeginResponseTx(OState& ostate, const openpal::ReadBufferView& response);
 
 	static void BeginUnsolTx(OState& ostate, const openpal::ReadBufferView& response);
-	
+		
 
 	/// ---- Helper functions that operate on the current solicited state, and may return a new solicited state ----
 
@@ -69,13 +79,13 @@ class OActions : private openpal::PureStatic
 
 	private:		
 
-	static bool ProcessDeferredRequest(OState& ostate, APDUHeader header, openpal::ReadBufferView objects, bool equalsLastRequest);
+	static void ExamineHeader(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
+
+	static bool ExamineDeferredRequest(OState& ostate, APDUHeader header, openpal::ReadBufferView objects);
 
 	static bool StartSolicitedConfirmTimer(OState& ostate);
 
-	static bool StartUnsolicitedConfirmTimer(OState& ostate);
-
-	static void ConfigureUnsolHeader(OState& ostate, APDUResponse& unsol);
+	static bool StartUnsolicitedConfirmTimer(OState& ostate);	
 
 	static void CheckForUnsolicited(OState& ostate);
 

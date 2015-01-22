@@ -40,7 +40,7 @@ class DeferredRequest : private openpal::Uncopyable
 
 	public:
 
-	typedef bool (*Handler)(OState& ostate, APDUHeader header, openpal::ReadBufferView objects, bool equalsLastRequest);
+	typedef bool (*Handler)(OState& ostate, APDUHeader header, openpal::ReadBufferView objects);
 
 	DeferredRequest(uint32_t maxAPDUSize);
 
@@ -50,7 +50,7 @@ class DeferredRequest : private openpal::Uncopyable
 
 	FunctionCode GetFunction() const;
 
-	void Set(APDUHeader header, openpal::ReadBufferView objects, bool equalsLastRequest);
+	void Set(APDUHeader header, openpal::ReadBufferView objects);
 	
 	bool Process(OState& state, Handler handler);
 	
@@ -58,8 +58,7 @@ class DeferredRequest : private openpal::Uncopyable
 
 	DeferredRequest() = delete;
 
-	bool isSet;
-	bool equalsLastRequest;
+	bool isSet;	
 	APDUHeader header;
 	openpal::ReadBufferView objects;
 	openpal::DynamicBuffer buffer;

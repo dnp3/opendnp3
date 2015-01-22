@@ -22,17 +22,27 @@
 #include "NullOutstationAuthProvider.h"
 
 #include "opendnp3/outstation/OutstationActions.h"
+#include "opendnp3/outstation/OutstationFunctions.h"
 
 namespace opendnp3
 {
 
 NullOutstationAuthProvider NullOutstationAuthProvider::instance;
 
-void NullOutstationAuthProvider::ExamineASDU(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
+void NullOutstationAuthProvider::OnReceiveRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
-	OActions::ExamineASDU(ostate, header, objects);
+	OActions::ProcessRequest(ostate, header, objects);
+}
+
+void NullOutstationAuthProvider::OnReceiveRequestNoAck(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
+{
+	OFunctions::ProcessNoAckFunction(ostate, header, objects);
+}
+
+void NullOutstationAuthProvider::OnReceiveConfirm(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
+{	
+	OActions::ProcessConfirm(ostate, header);
 }
 
 }
-
 

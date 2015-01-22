@@ -24,7 +24,7 @@
 namespace opendnp3
 {
 
-DeferredRequest::DeferredRequest(uint32_t maxAPDUSize) : isSet(false), equalsLastRequest(false), buffer(maxAPDUSize)
+DeferredRequest::DeferredRequest(uint32_t maxAPDUSize) : isSet(false), buffer(maxAPDUSize)
 {}
 
 void DeferredRequest::Reset()
@@ -42,20 +42,19 @@ FunctionCode DeferredRequest::GetFunction() const
 	return header.function;
 }
 
-void DeferredRequest::Set(APDUHeader header_, openpal::ReadBufferView objects_, bool equalsLastRequest_)
+void DeferredRequest::Set(APDUHeader header_, openpal::ReadBufferView objects_)
 {
 	this->isSet = true;
 	this->header = header_;
 	auto dest = buffer.GetWriteBufferView();
-	this->objects = objects_.CopyTo(dest);
-	this->equalsLastRequest = equalsLastRequest_;
+	this->objects = objects_.CopyTo(dest);	
 }
 
 bool DeferredRequest::Process(OState& ostate, Handler handler)
 {
 	if (isSet)
 	{		
-		auto processed = handler(ostate, header, objects, equalsLastRequest);
+		auto processed = handler(ostate, header, objects);
 		isSet = !processed;
 		return processed;
 	}

@@ -34,8 +34,14 @@ namespace opendnp3
 class NullOutstationAuthProvider : private openpal::Uncopyable, public IOutstationAuthProvider
 {
 	public:
+
+	virtual bool IsOnline() const override final { return true; }
 		
-	virtual void ExamineASDU(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects) override final;
+	virtual void OnReceiveRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects) override final;
+	
+	virtual void OnReceiveRequestNoAck(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects) override final;
+	
+	virtual void OnReceiveConfirm(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects) override final;
 
 	static IOutstationAuthProvider& Instance() { return instance; }
 

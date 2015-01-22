@@ -44,7 +44,7 @@ class OFunctions : private openpal::PureStatic
 	static openpal::Pair<IINField, AppControlField> HandleRead(OState& ostate, const openpal::ReadBufferView& objects, HeaderWriter& writer);
 
 	/// Handles no-response function codes.
-	static void HandleNoResponseFunction(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
+	static void ProcessNoAckFunction(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
 
 	private:
 

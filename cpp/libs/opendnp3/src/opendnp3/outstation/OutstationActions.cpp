@@ -26,6 +26,7 @@
 #include "opendnp3/app/APDULogging.h"
 #include "opendnp3/app/APDUBuilders.h"
 #include "opendnp3/app/APDUHeaderParser.h"
+#include "opendnp3/app/FunctionHelpers.h"
 
 #include "opendnp3/outstation/IINHelpers.h"
 #include "opendnp3/outstation/CommandActionAdapter.h"
@@ -33,6 +34,7 @@
 #include "opendnp3/outstation/ConstantCommandAction.h"
 #include "opendnp3/outstation/EventWriter.h"
 #include "opendnp3/outstation/OutstationFunctions.h"
+
 
 #include <openpal/logging/LogMacros.h>
 
@@ -61,11 +63,6 @@ IINField OActions::GetResponseIIN(OState& ostate)
 	return ostate.staticIIN | GetDynamicIIN(ostate) | ostate.pApplication->GetApplicationIIN().ToIIN();
 }
 
-void OActions::ConfigureUnsolHeader(OState& ostate, APDUResponse& unsol)
-{	
-	build::NullUnsolicited(unsol, ostate.unsol.seq.num, GetResponseIIN(ostate));
-}
-
 void OActions::OnReceiveAPDU(OState& ostate, const openpal::ReadBufferView& apdu)
 {	
 	APDUHeader header;	
@@ -83,9 +80,8 @@ void OActions::OnReceiveAPDU(OState& ostate, const openpal::ReadBufferView& apdu
 		// outstations should only process single fragment messages that don't request confirmation
 		if (header.control.IsFirAndFin() && !header.control.CON)
 		{
-			auto objects = apdu.Skip(APDU_REQUEST_HEADER_SIZE);			
-			ostate.pAuthProvider->ExamineASDU(ostate, header, objects);									
-			OActions::CheckForTaskStart(ostate);
+			auto objects = apdu.Skip(APDU_REQUEST_HEADER_SIZE);
+			OActions::ExamineHeader(ostate, header, objects);
 		}
 		else
 		{
@@ -98,39 +94,65 @@ void OActions::OnReceiveAPDU(OState& ostate, const openpal::ReadBufferView& apdu
 	}	
 }
 
+void OActions::ExamineHeader(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
+{	
+	if (IsNoAckFuncCode(header.function))
+	{
+		// this is the only request we can definitely process while we are transmitting
+		// because it doesn't require a respons e of any kind
+		ostate.pAuthProvider->OnReceiveRequestNoAck(ostate, header, objects);
+	}
+	else
+	{
+		if (ostate.isTransmitting)
+		{			
+			ostate.deferred.Set(header, objects);
+		}
+		else
+		{
+			if (header.function == FunctionCode::CONFIRM)
+			{
+				ostate.pAuthProvider->OnReceiveConfirm(ostate, header, objects);
+			}
+			else
+			{
+				ostate.pAuthProvider->OnReceiveRequest(ostate, header, objects);
+			}
+		}
+	}
+}
+
 void OActions::OnSendResult(OState& ostate, bool isSuccess)
 {
-	if (ostate.isOnline && ostate.isTransmitting)
+	if (ostate.isTransmitting)
 	{
 		ostate.isTransmitting = false;
 		OActions::CheckForTaskStart(ostate);
 	}	
 }
 
-void OActions::ExamineASDU(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
+void OActions::ProcessRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
+{
+	if (header.control.UNS)
+	{		
+		FORMAT_LOG_BLOCK(ostate.logger, flags::WARN, "Ignoring unsol with invalid function code: %s", FunctionCodeToString(header.function));		
+	}
+	else
+	{		
+		ostate.sol.pState = OActions::OnReceiveSolRequest(ostate, header, objects);
+		ostate.history.RecordLastRequest(header, objects);
+	}
+}
+
+void OActions::ProcessConfirm(OState& ostate, const APDUHeader& header)
 {
 	if (header.control.UNS)
 	{
-		if (header.function == FunctionCode::CONFIRM)
-		{
-			ostate.unsol.pState = ostate.unsol.pState->OnConfirm(ostate, header);
-		}
-		else
-		{
-			FORMAT_LOG_BLOCK(ostate.logger, flags::WARN, "Ignoring unsol with invalid function code: %s", FunctionCodeToString(header.function));
-		}
+		OActions::ProcessUnsolicitedConfirm(ostate, header);
 	}
 	else
 	{
-		if (header.function == FunctionCode::CONFIRM)
-		{
-			ostate.sol.pState = ostate.sol.pState->OnConfirm(ostate, header);
-		}
-		else
-		{
-			ostate.sol.pState = OActions::OnReceiveSolRequest(ostate, header, objects);
-			ostate.history.RecordLastRequest(header, objects);
-		}
+		OActions::ProcessSolicitedConfirm(ostate, header);
 	}
 }
 
@@ -236,6 +258,16 @@ void OActions::BeginUnsolTx(OState& ostate, const ReadBufferView& response)
 	ostate.pLower->BeginTransmit(response);
 }
 
+void OActions::ProcessSolicitedConfirm(OState& ostate, const APDUHeader& header)
+{
+	ostate.sol.pState = ostate.sol.pState->OnConfirm(ostate, header);
+}
+
+void OActions::ProcessUnsolicitedConfirm(OState& ostate, const APDUHeader& header)
+{
+	ostate.unsol.pState = ostate.unsol.pState->OnConfirm(ostate, header);
+}
+
 OutstationSolicitedStateBase* OActions::ContinueMultiFragResponse(OState& ostate, uint8_t seq)
 {	
 	auto response = ostate.sol.tx.Start();	
@@ -263,51 +295,51 @@ void OActions::CheckForTaskStart(OState& ostate)
 {		
 	// if we're online, the solicited state is idle, and the unsolicited state 
 	// is not transmitting we may be able to do a task
-	if (ostate.isOnline && !ostate.isTransmitting && ostate.sol.IsIdle())
-	{		
+	if (ostate.isOnline && !ostate.isTransmitting)
+	{	
 		if (ostate.deferred.IsSet())
-		{			
-			ostate.deferred.Process(ostate, ProcessDeferredRequest);
+		{
+			ostate.deferred.Process(ostate, ExamineDeferredRequest);
 		}
 		else
-		{					
+		{
 			OActions::CheckForUnsolicited(ostate);
-		}
+		}		
 	}	
 }
 
-bool OActions::ProcessDeferredRequest(OState& ostate, APDUHeader header, openpal::ReadBufferView objects, bool equalsLastRequest)
+bool OActions::ExamineDeferredRequest(OState& ostate, APDUHeader header, openpal::ReadBufferView objects)
 {
-	if (header.function == FunctionCode::READ)
+	if (header.function == FunctionCode::CONFIRM)
 	{
-		if (ostate.unsol.IsIdle())
-		{
-			ostate.sol.pState = ostate.sol.pState->OnNewReadRequest(ostate, header, objects);
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		OActions::ExamineHeader(ostate, header, objects);
+		return true;
 	}
 	else
 	{
-		if (equalsLastRequest)
+		if (header.function == FunctionCode::READ)
 		{
-			ostate.sol.pState = ostate.sol.pState->OnRepeatNonReadRequest(ostate, header, objects);
+			if (ostate.unsol.IsIdle())
+			{
+				OActions::ExamineHeader(ostate, header, objects);
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
 		else
 		{
-			ostate.sol.pState = ostate.sol.pState->OnNewNonReadRequest(ostate, header, objects);
+			OActions::ExamineHeader(ostate, header, objects);
+			return true;
 		}
-
-		return true;
 	}
 }
 
 void OActions::CheckForUnsolicited(OState& ostate)
 {
-	if (ostate.unsol.IsIdle() && ostate.params.allowUnsolicited)
+	if (!ostate.isTransmitting && ostate.unsol.IsIdle() && ostate.params.allowUnsolicited)
 	{
 		if (ostate.unsol.completedNull)
 		{				
@@ -326,8 +358,7 @@ void OActions::CheckForUnsolicited(OState& ostate)
 					ostate.eventBuffer.SelectAllByClass(ostate.params.unsolClassMask);
 					ostate.eventBuffer.Load(writer);					
 				}
-					
-				OActions::ConfigureUnsolHeader(ostate, response);
+				build::NullUnsolicited(response, ostate.unsol.seq.num, GetResponseIIN(ostate));				
 				OActions::StartUnsolicitedConfirmTimer(ostate);
 				ostate.unsol.pState = &OutstationUnsolicitedStateConfirmWait::Inst();
 				OActions::BeginUnsolTx(ostate, response.ToReadOnly());
@@ -337,7 +368,7 @@ void OActions::CheckForUnsolicited(OState& ostate)
 		{
 			// send a NULL unsolcited message									
 			auto response = ostate.unsol.tx.Start();
-			OActions::ConfigureUnsolHeader(ostate, response);
+			build::NullUnsolicited(response, ostate.unsol.seq.num, GetResponseIIN(ostate));
 			OActions::StartUnsolicitedConfirmTimer(ostate);
 			ostate.unsol.pState = &OutstationUnsolicitedStateConfirmWait::Inst();
 			OActions::BeginUnsolTx(ostate, response.ToReadOnly());
