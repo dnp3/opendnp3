@@ -21,12 +21,20 @@
 
 #include "SAv5OutstationAuthProvider.h"
 
+#include <openpal/logging/LogMacros.h>
+#include <openpal/logging/Logger.h>
+
+#include "opendnp3/LogLevels.h"
+
+#include "opendnp3/outstation/OutstationState.h"
+
 namespace opendnp3
 {
 
-SAv5OutstationAuthProvider::SAv5OutstationAuthProvider(ICryptoProvider& crypto) : 
-	keyStatus(KeyStatus::NOT_INIT),
-	pCrypto(&crypto)
+SAv5OutstationAuthProvider::SAv5OutstationAuthProvider(uint32_t maxRxASDUSize, ICryptoProvider& crypto) :
+	deferred(maxRxASDUSize),
+	pCrypto(&crypto),
+	keyStatus(KeyStatus::NOT_INIT)
 {
 
 }
@@ -35,15 +43,39 @@ void SAv5OutstationAuthProvider::Reset()
 {
 	keyStatus = KeyStatus::NOT_INIT;
 }
-
-bool SAv5OutstationAuthProvider::IsOnline() const
-{
-	return (keyStatus == KeyStatus::OK);
-}
 		
 void SAv5OutstationAuthProvider::OnReceive(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
-{
+{	
+	// examine the function code to determine what kind of ASDU it is
+	switch (header.function)
+	{
+		case(FunctionCode::AUTH_REQUEST) :
+			this->OnAuthRequest(ostate, header, objects);
+		case(FunctionCode::AUTH_RESPONSE) :
+			this->OnAuthResponse(ostate, header, objects);
+		case(FunctionCode::AUTH_REQUEST_NO_ACK) :
+			SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "AuthRequestNoAck not supported");
+			break;
+		default:
+			this->OnUnknownRequest(ostate, header, objects);
+			break;
+	}	
 
+}
+
+void SAv5OutstationAuthProvider::OnAuthRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
+{
+	SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "AuthRequest not supported yet");
+}
+
+void SAv5OutstationAuthProvider::OnAuthResponse(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
+{
+	SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "AuthResponse not supported yet");
+}
+
+void SAv5OutstationAuthProvider::OnUnknownRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
+{
+	SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "UnknownRequest not supported yet");
 }
 
 }

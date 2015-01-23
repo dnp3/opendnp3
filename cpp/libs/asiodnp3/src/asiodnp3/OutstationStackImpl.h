@@ -25,6 +25,7 @@
 #include <opendnp3/outstation/Database.h>
 #include <opendnp3/outstation/Outstation.h>
 #include <opendnp3/outstation/IOutstationApplication.h>
+#include <opendnp3/outstation/IOutstationAuthProvider.h>
 #include <opendnp3/link/ILinkRouter.h>
 #include <opendnp3/transport/TransportStack.h>
 
@@ -48,6 +49,7 @@ public:
 		openpal::IExecutor& executor,		
 		opendnp3::ICommandHandler& commandHandler,
 		opendnp3::IOutstationApplication& application,
+		opendnp3::IOutstationAuthProvider& auth,
 		const opendnp3::OutstationStackConfig& config,
 	    const StackActionHandler& handler);
 

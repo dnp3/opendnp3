@@ -44,7 +44,7 @@
     <ClInclude Include="src\opendnp3\app\EventMetadata.h" />
     <ClInclude Include="src\opendnp3\app\EventTriggers.h" />
     <ClInclude Include="src\opendnp3\app\EventType.h" />
-    <ClInclude Include="src\opendnp3\app\FunctionHelpers.h" />
+    <ClInclude Include="src\opendnp3\app\Functions.h" />
     <ClInclude Include="src\opendnp3\app\GroupVariationID.h" />
     <ClInclude Include="src\opendnp3\app\GroupVariationRecord.h" />
     <ClInclude Include="src\opendnp3\app\HeaderWriter.h" />
@@ -282,7 +282,7 @@
     <ClCompile Include="src\opendnp3\app\ClassField.cpp" />
     <ClCompile Include="src\opendnp3\app\ControlRelayOutputBlock.cpp" />
     <ClCompile Include="src\opendnp3\app\EventTriggers.cpp" />
-    <ClCompile Include="src\opendnp3\app\FunctionHelpers.cpp" />
+    <ClCompile Include="src\opendnp3\app\Functions.cpp" />
     <ClCompile Include="src\opendnp3\app\GroupVariationRecord.cpp" />
     <ClCompile Include="src\opendnp3\app\IINField.cpp" />
     <ClCompile Include="src\opendnp3\app\MeasurementTypes.cpp" />

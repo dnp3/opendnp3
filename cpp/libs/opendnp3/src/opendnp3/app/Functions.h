@@ -18,25 +18,23 @@
 * may have been made to this file. Automatak, LLC licenses these modifications
 * to you under the terms of the License.
 */
+#ifndef OPENDNP3_FUNCTIONS_H
+#define OPENDNP3_FUNCTIONS_H
 
-#include "FunctionHelpers.h"
+#include "opendnp3/gen/FunctionCode.h"
+
+#include <openpal/util/Uncopyable.h>
 
 namespace opendnp3
 {
 
-	bool IsNoAckFuncCode(FunctionCode code)
-	{
-		switch (code)
-		{
-			case(FunctionCode::DIRECT_OPERATE_NR) :
-			case(FunctionCode::IMMED_FREEZE_NR) :
-			case(FunctionCode::FREEZE_AT_TIME_NR) :
-			case(FunctionCode::FREEZE_CLEAR_NR) :
-				return true;
-			default:
-				return false;
-		}
-	}
+class Functions : private openpal::PureStatic
+{
+public:
 
+	static bool IsNoAckFuncCode(FunctionCode code);	
+};
 
 }
+
+#endif

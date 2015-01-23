@@ -23,8 +23,6 @@
 #include <asiopal/ASIOExecutor.h>
 #include <asiopal/StrandGetters.h>
 
-#include <opendnp3/outstation/NullOutstationAuthProvider.h>
-
 using namespace opendnp3;
 
 namespace asiodnp3
@@ -36,14 +34,16 @@ OutstationStackImpl::OutstationStackImpl(
     openpal::IExecutor& executor,	
 	opendnp3::ICommandHandler& commandHandler,
 	IOutstationApplication& application,
+	opendnp3::IOutstationAuthProvider& auth,
     const OutstationStackConfig& config,
+
     const StackActionHandler& handler_) :	
 	
 	mutex(),
 	root(root_, id),
 	handler(handler_),
 	stack(root, &executor, config.outstation.params.maxRxFragSize, &statistics, config.link),		
-	outstation(config.outstation, config.dbTemplate, root.GetLogger(), &mutex, executor, stack.transport, commandHandler, application, NullOutstationAuthProvider::Instance())
+	outstation(config.outstation, config.dbTemplate, root.GetLogger(), &mutex, executor, stack.transport, commandHandler, application, auth)
 {
 	stack.transport.SetAppLayer(&outstation);
 }

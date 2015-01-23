@@ -26,8 +26,11 @@
 #include "MasterStackImpl.h"
 #include "OutstationStackImpl.h"
 
-#include <opendnp3/LogLevels.h>
 #include <openpal/logging/LogMacros.h>
+
+#include <opendnp3/LogLevels.h>
+#include <opendnp3/outstation/NullOutstationAuthProvider.h>
+
 
 using namespace openpal;
 using namespace opendnp3;
@@ -198,7 +201,18 @@ IOutstation* DNP3Channel::_AddOutstation(char const* id,
 	else
 	{
 		StackActionHandler handler(router, *pExecutor);
-		auto pOutstation = new OutstationStackImpl(id, *pLogRoot, *pExecutor, commandHandler, application, config, handler);
+
+		auto pOutstation = new OutstationStackImpl(
+			id, 
+			*pLogRoot, 
+			*pExecutor, 
+			commandHandler, 
+			application, 
+			NullOutstationAuthProvider::Instance(),
+			config, 
+			handler
+		);
+				
 		auto onShutdown = [this, pOutstation](){ this->OnShutdown(pOutstation); };
 		pOutstation->SetShutdownAction(Action0::Bind(onShutdown));
 		pOutstation->SetLinkRouter(router);

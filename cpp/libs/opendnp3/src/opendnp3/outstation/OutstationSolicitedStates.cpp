@@ -24,7 +24,6 @@
 #include "opendnp3/LogLevels.h"
 #include "opendnp3/outstation/OutstationActions.h"
 #include "opendnp3/outstation/OutstationFunctions.h"
-#include "opendnp3/app/FunctionHelpers.h"
 
 
 #include <openpal/logging/LogMacros.h>

@@ -23,10 +23,10 @@
 
 #include "opendnp3/LogLevels.h"
 
+#include "opendnp3/app/Functions.h"
 #include "opendnp3/app/APDULogging.h"
 #include "opendnp3/app/APDUBuilders.h"
 #include "opendnp3/app/APDUHeaderParser.h"
-#include "opendnp3/app/FunctionHelpers.h"
 
 #include "opendnp3/outstation/IINHelpers.h"
 #include "opendnp3/outstation/CommandActionAdapter.h"
@@ -96,7 +96,7 @@ void OActions::OnReceiveAPDU(OState& ostate, const openpal::ReadBufferView& apdu
 
 void OActions::ProcessHeaderAndObjects(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {	
-	if (IsNoAckFuncCode(header.function))
+	if (Functions::IsNoAckFuncCode(header.function))
 	{
 		// this is the only request we process while we are transmitting
 		// because it doesn't require a response of any kind
