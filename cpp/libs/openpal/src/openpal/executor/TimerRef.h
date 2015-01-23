@@ -39,6 +39,9 @@ class TimerRef : openpal::Uncopyable
 public:
 	TimerRef(openpal::IExecutor& executor);
 
+	// automatically cancels any active timers on destructive
+	~TimerRef();
+
 	// Called to see if the timer is currently active
 	bool IsActive() const;	
 

@@ -27,6 +27,11 @@ namespace openpal
 TimerRef::TimerRef(openpal::IExecutor& executor) : pExecutor(&executor), pTimer(nullptr)
 {}
 
+TimerRef::~TimerRef()
+{
+	this->Cancel();
+}
+
 
 bool TimerRef::IsActive() const
 { 
