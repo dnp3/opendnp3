@@ -49,6 +49,15 @@
     <Filter Include="Source\objects">
       <UniqueIdentifier>{0b493176-d799-4316-ab2e-a4420d0a486e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header\authv5">
+      <UniqueIdentifier>{0971b8ad-f610-4d9e-b8cd-417046f721a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header\outstation\authv5">
+      <UniqueIdentifier>{fffd1339-2423-405e-99d9-20de3036b491}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\outstation\authv5">
+      <UniqueIdentifier>{1b5b0a02-2da2-43a5-b7a1-45008b99f6ab}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\opendnp3\ErrorCodes.h">
@@ -777,6 +786,12 @@
     <ClInclude Include="src\opendnp3\outstation\NullOutstationAuthProvider.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\authv5\SAv5OutstationAuthProvider.h">
+      <Filter>Header\outstation\authv5</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\authv5\ICryptoProvider.h">
+      <Filter>Header\authv5</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\TimeAndInterval.cpp">
@@ -1186,6 +1201,9 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\NullOutstationAuthProvider.cpp">
       <Filter>Source\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\authv5\SAv5OutstationAuthProvider.cpp">
+      <Filter>Source\outstation\authv5</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

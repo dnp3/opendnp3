@@ -18,36 +18,21 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_NULLOUTSTATIONAUTHPROVIDER_H
-#define OPENDNP3_NULLOUTSTATIONAUTHPROVIDER_H
-
-#include "opendnp3/outstation/IOutstationAuthProvider.h"
-
-#include <openpal/util/Uncopyable.h>
+#ifndef OPENDNP3_ICRYPTOPROVIDER_H
+#define OPENDNP3_ICRYPTOPROVIDER_H
 
 namespace opendnp3
 {
 
 /**
-	NULL authentication provider for the outstation
+	A cryptography provider for implementing SA. This could be backed by openssl-crypto, another library, or
+	a mock provider for testing purposes.
 */
-class NullOutstationAuthProvider : private openpal::Uncopyable, public IOutstationAuthProvider
+class ICryptoProvider
 {
-	public:
+	public:		
 
-	virtual void Reset() override final {}
-
-	virtual bool IsOnline() const override final { return true; }
-		
-	virtual void OnReceive(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects) override final;	
-
-	static IOutstationAuthProvider& Instance() { return instance; }
-
-	private:
-
-	NullOutstationAuthProvider() {}
-
-	static NullOutstationAuthProvider instance;
+	virtual ~ICryptoProvider() {}
 };
 
 }

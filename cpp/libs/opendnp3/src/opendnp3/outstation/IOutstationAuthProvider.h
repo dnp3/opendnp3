@@ -39,10 +39,13 @@ class IOutstationAuthProvider
 
 	virtual ~IOutstationAuthProvider() {}
 
-	/// Ask the auth provider if it is online. This will generally have to do with the session keys being initialized or not.
+	/// Reset the state of the auth provider when lower layer goes offline
+	virtual void Reset() = 0;
+
+	/// Ask the auth provider if it is online and can arbitrate transmissions or not
 	virtual bool IsOnline() const = 0;
 
-	/// Receive a new request and treat it as a function requiring a response
+	/// Receive a new request
 	virtual void OnReceive(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects) = 0;
 
 };

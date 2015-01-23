@@ -68,6 +68,7 @@
     <ClInclude Include="src\opendnp3\app\TimeAndInterval.h" />
     <ClInclude Include="src\opendnp3\app\WriteConversions.h" />
     <ClInclude Include="src\opendnp3\app\WriteConversionTemplates.h" />
+    <ClInclude Include="src\opendnp3\authv5\ICryptoProvider.h" />
     <ClInclude Include="src\opendnp3\ErrorCodes.h" />
     <ClInclude Include="src\opendnp3\gen\AnalogQuality.h" />
     <ClInclude Include="src\opendnp3\gen\AssignClassType.h" />
@@ -200,6 +201,7 @@
     <ClInclude Include="src\opendnp3\objects\SeqUserData.h" />
     <ClInclude Include="src\opendnp3\outstation\ApplicationIIN.h" />
     <ClInclude Include="src\opendnp3\outstation\AssignClassHandler.h" />
+    <ClInclude Include="src\opendnp3\outstation\authv5\SAv5OutstationAuthProvider.h" />
     <ClInclude Include="src\opendnp3\outstation\Cell.h" />
     <ClInclude Include="src\opendnp3\outstation\ClassBasedRequestHandler.h" />
     <ClInclude Include="src\opendnp3\outstation\CommandActionAdapter.h" />
@@ -364,6 +366,7 @@
     <ClCompile Include="src\opendnp3\objects\SeqUserData.cpp" />
     <ClCompile Include="src\opendnp3\outstation\ApplicationIIN.cpp" />
     <ClCompile Include="src\opendnp3\outstation\AssignClassHandler.cpp" />
+    <ClCompile Include="src\opendnp3\outstation\authv5\SAv5OutstationAuthProvider.cpp" />
     <ClCompile Include="src\opendnp3\outstation\ClassBasedRequestHandler.cpp" />
     <ClCompile Include="src\opendnp3\outstation\CommandActionAdapter.cpp" />
     <ClCompile Include="src\opendnp3\outstation\CommandResponseHandler.cpp" />

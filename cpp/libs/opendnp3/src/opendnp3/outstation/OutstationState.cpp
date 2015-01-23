@@ -73,6 +73,7 @@ void OState::Reset()
 	eventBuffer.Unselect();
 	rspContext.Reset();
 	confirmTimer.Cancel();
+	pAuthProvider->Reset();
 }
 
 

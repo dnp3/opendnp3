@@ -18,10 +18,13 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_NULLOUTSTATIONAUTHPROVIDER_H
-#define OPENDNP3_NULLOUTSTATIONAUTHPROVIDER_H
+#ifndef OPENDNP3_SAV5OUTSTATIONAUTHPROVIDER_H
+#define OPENDNP3_SAV5OUTSTATIONAUTHPROVIDER_H
 
 #include "opendnp3/outstation/IOutstationAuthProvider.h"
+
+#include "opendnp3/authv5/ICryptoProvider.h"
+#include "opendnp3/gen/KeyStatus.h"
 
 #include <openpal/util/Uncopyable.h>
 
@@ -31,23 +34,23 @@ namespace opendnp3
 /**
 	NULL authentication provider for the outstation
 */
-class NullOutstationAuthProvider : private openpal::Uncopyable, public IOutstationAuthProvider
+class SAv5OutstationAuthProvider : private openpal::Uncopyable, public IOutstationAuthProvider
 {
 	public:
 
-	virtual void Reset() override final {}
+	SAv5OutstationAuthProvider(ICryptoProvider& crypto);
 
-	virtual bool IsOnline() const override final { return true; }
+	virtual void Reset() override final;
+
+	virtual bool IsOnline() const override final;
 		
-	virtual void OnReceive(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects) override final;	
-
-	static IOutstationAuthProvider& Instance() { return instance; }
+	virtual void OnReceive(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects) override final;
 
 	private:
 
-	NullOutstationAuthProvider() {}
-
-	static NullOutstationAuthProvider instance;
+	ICryptoProvider* const pCrypto;
+	KeyStatus keyStatus;
+	
 };
 
 }
