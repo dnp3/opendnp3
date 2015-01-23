@@ -18,20 +18,29 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef OPENDNP3_OUTSTATIONAUTHCONFIG_H
+#define OPENDNP3_OUTSTATIONAUTHCONFIG_H
 
-#include "NullOutstationAuthProvider.h"
-
-#include "opendnp3/outstation/OutstationActions.h"
-#include "opendnp3/outstation/OutstationFunctions.h"
+#include "opendnp3/gen/ConfigAuthMode.h"
 
 namespace opendnp3
 {
 
-void NullOutstationAuthProvider::OnReceive(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
+/** 
+	A composite configuration struct that contains all the config
+	information for a dnp3 outstation stack
+*/
+struct OutstationAuthConfig
 {
-	// null auth provider just skips any authentication and goes directly to processing
-	OActions::ProcessHeaderAndObjects(ostate, header, objects);
-}
+
+	OutstationAuthConfig() : mode(ConfigAuthMode::NONE)
+	{}
+
+	ConfigAuthMode mode;
+
+};
 
 }
+
+#endif
 

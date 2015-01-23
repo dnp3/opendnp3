@@ -79,6 +79,7 @@
     <ClInclude Include="src\opendnp3\gen\ChallengeReason.h" />
     <ClInclude Include="src\opendnp3\gen\ChannelState.h" />
     <ClInclude Include="src\opendnp3\gen\CommandStatus.h" />
+    <ClInclude Include="src\opendnp3\gen\ConfigAuthMode.h" />
     <ClInclude Include="src\opendnp3\gen\ControlCode.h" />
     <ClInclude Include="src\opendnp3\gen\CounterQuality.h" />
     <ClInclude Include="src\opendnp3\gen\DoubleBit.h" />
@@ -232,6 +233,9 @@
     <ClInclude Include="src\opendnp3\outstation\IStaticSelector.h" />
     <ClInclude Include="src\opendnp3\outstation\NullOutstationAuthProvider.h" />
     <ClInclude Include="src\opendnp3\outstation\Outstation.h" />
+    <ClInclude Include="src\opendnp3\outstation\OutstationAuth.h" />
+    <ClInclude Include="src\opendnp3\outstation\OutstationAuthConfig.h" />
+    <ClInclude Include="src\opendnp3\outstation\OutstationAuthFactory.h" />
     <ClInclude Include="src\opendnp3\outstation\OutstationChannelStates.h" />
     <ClInclude Include="src\opendnp3\outstation\OutstationConfig.h" />
     <ClInclude Include="src\opendnp3\outstation\OutstationActions.h" />
@@ -383,6 +387,7 @@
     <ClCompile Include="src\opendnp3\outstation\NullOutstationAuthProvider.cpp" />
     <ClCompile Include="src\opendnp3\outstation\Outstation.cpp" />
     <ClCompile Include="src\opendnp3\outstation\OutstationActions.cpp" />
+    <ClCompile Include="src\opendnp3\outstation\OutstationAuthFactory.cpp" />
     <ClCompile Include="src\opendnp3\outstation\OutstationFunctions.cpp" />
     <ClCompile Include="src\opendnp3\outstation\OutstationParams.cpp" />
     <ClCompile Include="src\opendnp3\outstation\OutstationSolicitedStates.cpp" />

@@ -33,6 +33,8 @@
 #include "Mutex.h"
 #include "StackActionHandler.h"
 
+#include <memory>
+
 namespace asiodnp3
 {
 
@@ -48,10 +50,9 @@ public:
 	    openpal::LogRoot&,
 		openpal::IExecutor& executor,		
 		opendnp3::ICommandHandler& commandHandler,
-		opendnp3::IOutstationApplication& application,
-		opendnp3::IOutstationAuthProvider& auth,
+		opendnp3::IOutstationApplication& application,		
 		const opendnp3::OutstationStackConfig& config,
-	    const StackActionHandler& handler);
+	    const StackActionHandler& handler);	
 
 	virtual opendnp3::DatabaseConfigView GetConfigView() override final;
 
@@ -81,7 +82,8 @@ private:
 	openpal::Action0 shutdownAction;
 	opendnp3::StackStatistics statistics;	
 	StackActionHandler handler;
-	opendnp3::TransportStack stack;		
+	opendnp3::TransportStack stack;	
+	std::unique_ptr<opendnp3::IOutstationAuthProvider> auth;
 	opendnp3::Outstation outstation;
 };
 

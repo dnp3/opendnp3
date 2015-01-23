@@ -792,6 +792,18 @@
     <ClInclude Include="src\opendnp3\app\Functions.h">
       <Filter>Header\app</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\ConfigAuthMode.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\OutstationAuth.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\OutstationAuthFactory.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\OutstationAuthConfig.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\TimeAndInterval.cpp">
@@ -1204,6 +1216,9 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\app\Functions.cpp">
       <Filter>Source\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\OutstationAuthFactory.cpp">
+      <Filter>Source\outstation</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

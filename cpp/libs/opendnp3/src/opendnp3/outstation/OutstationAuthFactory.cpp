@@ -19,19 +19,25 @@
  * to you under the terms of the License.
  */
 
-#include "NullOutstationAuthProvider.h"
 
-#include "opendnp3/outstation/OutstationActions.h"
-#include "opendnp3/outstation/OutstationFunctions.h"
+#include "OutstationAuthFactory.h"
+
+#include "opendnp3/outstation/NullOutstationAuthProvider.h"
 
 namespace opendnp3
 {
-
-void NullOutstationAuthProvider::OnReceive(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
-{
-	// null auth provider just skips any authentication and goes directly to processing
-	OActions::ProcessHeaderAndObjects(ostate, header, objects);
+	std::unique_ptr<IOutstationAuthProvider> OutstationAuthFactory::Create(const OutstationAuthConfig& config, ICryptoProvider* pCrypto)
+	{
+		switch (config.mode)
+		{
+			case(ConfigAuthMode::SAV5):
+				throw std::exception("SAv5 is not supported");
+			case(ConfigAuthMode::NONE) :
+				return std::make_unique<NullOutstationAuthProvider>();
+			default:
+				throw std::exception("Unknown auth mode");
+		}
+	}
 }
 
-}
 

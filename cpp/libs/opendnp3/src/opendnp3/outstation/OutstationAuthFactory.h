@@ -18,20 +18,30 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef OPENDNP3_OUTSTATIONAUTHFACTORY_H
+#define OPENDNP3_OUTSTATIONAUTHFACTORY_H
 
-#include "NullOutstationAuthProvider.h"
+#include <openpal/util/Uncopyable.h>
 
-#include "opendnp3/outstation/OutstationActions.h"
-#include "opendnp3/outstation/OutstationFunctions.h"
+#include "opendnp3/outstation/OutstationAuthConfig.h"
+#include "opendnp3/outstation/IOutstationAuthProvider.h"
+#include "opendnp3/authv5/ICryptoProvider.h"
+
+#include <memory>
 
 namespace opendnp3
 {
+	/** 
+		Factory methods which create an auth provider from configuration and a ICryptoProvider instance
+	*/
+	class OutstationAuthFactory : private openpal::PureStatic
+	{
+		public:
 
-void NullOutstationAuthProvider::OnReceive(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
-{
-	// null auth provider just skips any authentication and goes directly to processing
-	OActions::ProcessHeaderAndObjects(ostate, header, objects);
+		static std::unique_ptr<IOutstationAuthProvider> Create(const OutstationAuthConfig& config, ICryptoProvider* pCrypto);
+	};
+
 }
 
-}
+#endif
 

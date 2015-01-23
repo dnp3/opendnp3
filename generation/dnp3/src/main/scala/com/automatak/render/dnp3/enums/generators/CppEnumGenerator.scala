@@ -43,7 +43,8 @@ object CppEnumGenerator {
       EnumConfig(KeyWrapAlgorithm(), true, true),
       EnumConfig(KeyStatus(), true, true),
       EnumConfig(AuthErrorCode(), true, true),
-      EnumConfig(CertificateType(), true, true)
+      EnumConfig(CertificateType(), true, true),
+      EnumConfig(ConfigAuthMode(), false, false)
     ) ::: DefaultVariations.enums.map(m => EnumConfig(m, false, false)) ::: QualityMasks.enums.map(m => EnumConfig(m, false, false))
 
     // list of all enumerations that we want to generate

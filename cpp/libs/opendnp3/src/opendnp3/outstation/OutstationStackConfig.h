@@ -22,6 +22,7 @@
 #define OPENDNP3_OUTSTATIONSTACKCONFIG_H
 
 #include "opendnp3/outstation/OutstationConfig.h"
+#include "opendnp3/outstation/OutstationAuthConfig.h"
 #include "opendnp3/outstation/EventBufferConfig.h"
 #include "opendnp3/outstation/DatabaseTemplate.h"
 #include "opendnp3/link/LinkConfig.h"
@@ -29,7 +30,8 @@
 namespace opendnp3
 {
 
-/** A composite configuration struct that contains all the config
+/** 
+	A composite configuration struct that contains all the config
 	information for a dnp3 outstation stack
 */
 struct OutstationStackConfig
@@ -50,6 +52,9 @@ struct OutstationStackConfig
 	
 	/// Outstation config
 	OutstationConfig outstation;
+
+	/// Authentication config
+	OutstationAuthConfig authentication;
 	
 	/// Link layer config
 	LinkConfig link;

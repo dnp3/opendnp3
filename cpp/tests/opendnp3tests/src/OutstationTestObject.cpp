@@ -35,7 +35,8 @@ OutstationTestObject::OutstationTestObject(const OutstationConfig& config, const
 	lower(log.root),			
 	cmdHandler(CommandStatus::SUCCESS),
 	application(),
-	outstation(config, dbTemplate, log.root.GetLogger(), nullptr, exe, lower, cmdHandler, application, NullOutstationAuthProvider::Instance())
+	auth(),
+	outstation(config, dbTemplate, log.root.GetLogger(), nullptr, exe, lower, cmdHandler, application, auth)
 {
 	lower.SetUpperLayer(outstation);
 }

@@ -37,15 +37,7 @@ class NullOutstationAuthProvider : private openpal::Uncopyable, public IOutstati
 
 	virtual void Reset() override final {}	
 		
-	virtual void OnReceive(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects) override final;	
-
-	static IOutstationAuthProvider& Instance() { return instance; }
-
-	private:
-
-	NullOutstationAuthProvider() {}
-
-	static NullOutstationAuthProvider instance;
+	virtual void OnReceive(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects) override final;		
 };
 
 }

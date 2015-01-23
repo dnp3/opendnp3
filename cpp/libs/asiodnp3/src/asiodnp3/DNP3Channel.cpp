@@ -207,8 +207,7 @@ IOutstation* DNP3Channel::_AddOutstation(char const* id,
 			*pLogRoot, 
 			*pExecutor, 
 			commandHandler, 
-			application, 
-			NullOutstationAuthProvider::Instance(),
+			application, 			
 			config, 
 			handler
 		);
