@@ -38,13 +38,13 @@ OutstationStackImpl::OutstationStackImpl(
 	IOutstationApplication& application,	
     const OutstationStackConfig& config,
     const StackActionHandler& handler_,
-	opendnp3::ICryptoProvider* pProvider) :
+	std::unique_ptr<opendnp3::IOutstationAuthProvider> auth_) :
 	
 	mutex(),
 	root(root_, id),
 	handler(handler_),
 	stack(root, &executor, config.outstation.params.maxRxFragSize, &statistics, config.link),		
-	auth(OutstationAuthFactory::Create(config, pProvider)),
+	auth(std::move(auth_)),
 	outstation(config.outstation, config.dbTemplate, root.GetLogger(), &mutex, executor, stack.transport, commandHandler, application, *auth)
 {
 	stack.transport.SetAppLayer(&outstation);

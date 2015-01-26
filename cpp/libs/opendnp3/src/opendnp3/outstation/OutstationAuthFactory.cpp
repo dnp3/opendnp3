@@ -33,12 +33,10 @@ namespace opendnp3
 		{
 			case(ConfigAuthMode::SAV5) :
 				return CreateSAv5Provider(config, pCrypto);
-			case(ConfigAuthMode::NONE) :
-				return std::make_unique<NullOutstationAuthProvider>();
 			default:
-				throw std::exception("Unknown auth mode");
+				return std::make_unique<NullOutstationAuthProvider>();
 		}
-	}
+	}	
 
 	std::unique_ptr<IOutstationAuthProvider> OutstationAuthFactory::CreateSAv5Provider(const OutstationStackConfig& config, ICryptoProvider* pCrypto)
 	{

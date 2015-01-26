@@ -24,6 +24,7 @@
 #include <openpal/logging/LogRoot.h>
 
 #include <opendnp3/authv5/ICryptoProvider.h>
+#include <opendnp3/outstation/IOutstationAuthProvider.h>
 #include <opendnp3/outstation/OutstationStackConfig.h>
 #include <opendnp3/link/LinkChannelStatistics.h>
 
@@ -105,6 +106,7 @@ private:
 	IOutstation* _AddOutstation(char const* id,
 		opendnp3::ICommandHandler& commandHandler,
 		opendnp3::IOutstationApplication& application,
+		std::unique_ptr<opendnp3::IOutstationAuthProvider> auth,
 		const opendnp3::OutstationStackConfig& config);
 
 	void InitiateShutdown(asiopal::Synchronized<bool>& handler);

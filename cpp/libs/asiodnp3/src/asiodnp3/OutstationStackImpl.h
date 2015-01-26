@@ -55,7 +55,7 @@ public:
 		opendnp3::IOutstationApplication& application,		
 		const opendnp3::OutstationStackConfig& config,
 	    const StackActionHandler& handler,
-		opendnp3::ICryptoProvider* pProvider);
+		std::unique_ptr<opendnp3::IOutstationAuthProvider> auth);
 
 	virtual opendnp3::DatabaseConfigView GetConfigView() override final;
 

@@ -31,6 +31,8 @@
 #include <opendnp3/LogLevels.h>
 #include <opendnp3/outstation/NullOutstationAuthProvider.h>
 
+#include <opendnp3/outstation/OutstationAuthFactory.h>
+
 
 using namespace openpal;
 using namespace opendnp3;
@@ -153,9 +155,11 @@ IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler& SOEHandler, IMaster
 
 IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler& commandHandler, IOutstationApplication& application, const OutstationStackConfig& config)
 {
-	auto add = [this, id, &commandHandler, &application, config]() 
+	auto auth = OutstationAuthFactory::Create(config, pCrypto);
+
+	auto add = [this, id, &auth, &commandHandler, &application, config]() 
 	{ 
-		return this->_AddOutstation(id, commandHandler, application, config);
+		return this->_AddOutstation(id, commandHandler, application, std::move(auth), config);
 	};
 	return asiopal::SynchronouslyGet<IOutstation*>(pExecutor->strand, add);
 }
@@ -192,6 +196,7 @@ IMaster* DNP3Channel::_AddMaster(char const* id,
 IOutstation* DNP3Channel::_AddOutstation(char const* id,
 	opendnp3::ICommandHandler& commandHandler,
 	opendnp3::IOutstationApplication& application,
+	std::unique_ptr<IOutstationAuthProvider> auth,
 	const opendnp3::OutstationStackConfig& config)
 {
 	Route route(config.link.RemoteAddr, config.link.LocalAddr);
@@ -212,7 +217,7 @@ IOutstation* DNP3Channel::_AddOutstation(char const* id,
 			application, 			
 			config, 
 			handler,
-			pCrypto
+			std::move(auth)
 		);
 				
 		auto onShutdown = [this, pOutstation](){ this->OnShutdown(pOutstation); };

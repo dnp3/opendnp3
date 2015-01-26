@@ -75,6 +75,9 @@ int main(int argc, char* argv[])
 	// You must specify the shape of your database and the size of the event buffers
 	stackConfig.dbTemplate = DatabaseTemplate::AllTypes(10);
 	stackConfig.outstation.eventBufferConfig = EventBufferConfig::AllTypes(10);
+
+	// configure SAv5
+	stackConfig.authentication.mode = ConfigAuthMode::SAV5;
 	
 	// you can override an default outstation parameters here
 	// in this example, we've enabled the oustation to use unsolicted reporting
