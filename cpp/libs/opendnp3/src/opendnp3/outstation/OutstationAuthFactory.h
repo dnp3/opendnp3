@@ -23,7 +23,7 @@
 
 #include <openpal/util/Uncopyable.h>
 
-#include "opendnp3/outstation/OutstationAuthConfig.h"
+#include "opendnp3/outstation/OutstationStackConfig.h"
 #include "opendnp3/outstation/IOutstationAuthProvider.h"
 #include "opendnp3/authv5/ICryptoProvider.h"
 
@@ -38,7 +38,11 @@ namespace opendnp3
 	{
 		public:
 
-		static std::unique_ptr<IOutstationAuthProvider> Create(const OutstationAuthConfig& config, ICryptoProvider* pCrypto);
+		static std::unique_ptr<IOutstationAuthProvider> Create(const OutstationStackConfig& config, ICryptoProvider* pCrypto);
+
+		private:
+
+		static std::unique_ptr<IOutstationAuthProvider> CreateSAv5Provider(const OutstationStackConfig& config, ICryptoProvider* pCrypto);
 	};
 
 }

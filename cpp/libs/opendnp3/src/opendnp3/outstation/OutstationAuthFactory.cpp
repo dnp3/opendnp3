@@ -23,19 +23,32 @@
 #include "OutstationAuthFactory.h"
 
 #include "opendnp3/outstation/NullOutstationAuthProvider.h"
+#include "opendnp3/outstation/authv5/SAv5OutstationAuthProvider.h"
 
 namespace opendnp3
 {
-	std::unique_ptr<IOutstationAuthProvider> OutstationAuthFactory::Create(const OutstationAuthConfig& config, ICryptoProvider* pCrypto)
+	std::unique_ptr<IOutstationAuthProvider> OutstationAuthFactory::Create(const OutstationStackConfig& config, ICryptoProvider* pCrypto)
 	{
-		switch (config.mode)
+		switch (config.authentication.mode)
 		{
-			case(ConfigAuthMode::SAV5):
-				throw std::exception("SAv5 is not supported");
+			case(ConfigAuthMode::SAV5) :
+				return CreateSAv5Provider(config, pCrypto);
 			case(ConfigAuthMode::NONE) :
 				return std::make_unique<NullOutstationAuthProvider>();
 			default:
 				throw std::exception("Unknown auth mode");
+		}
+	}
+
+	std::unique_ptr<IOutstationAuthProvider> OutstationAuthFactory::CreateSAv5Provider(const OutstationStackConfig& config, ICryptoProvider* pCrypto)
+	{
+		if (pCrypto)
+		{
+			return std::make_unique<SAv5OutstationAuthProvider>(config.outstation.params.maxRxFragSize, *pCrypto);
+		}
+		else
+		{
+			throw std::exception("SAv5 requires a crypto provider");
 		}
 	}
 }

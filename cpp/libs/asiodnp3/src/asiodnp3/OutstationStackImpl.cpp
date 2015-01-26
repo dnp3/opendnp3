@@ -37,13 +37,14 @@ OutstationStackImpl::OutstationStackImpl(
 	opendnp3::ICommandHandler& commandHandler,
 	IOutstationApplication& application,	
     const OutstationStackConfig& config,
-    const StackActionHandler& handler_) :	
+    const StackActionHandler& handler_,
+	opendnp3::ICryptoProvider* pProvider) :
 	
 	mutex(),
 	root(root_, id),
 	handler(handler_),
 	stack(root, &executor, config.outstation.params.maxRxFragSize, &statistics, config.link),		
-	auth(OutstationAuthFactory::Create(config.authentication, nullptr)),
+	auth(OutstationAuthFactory::Create(config, pProvider)),
 	outstation(config.outstation, config.dbTemplate, root.GetLogger(), &mutex, executor, stack.transport, commandHandler, application, *auth)
 {
 	stack.transport.SetAppLayer(&outstation);

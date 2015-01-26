@@ -41,6 +41,7 @@ namespace asiodnp3
 DNP3Channel::DNP3Channel(
 	LogRoot* pLogRoot_,
 	asiopal::ASIOExecutor& executor,
+	opendnp3::ICryptoProvider* pCrypto_,
     openpal::TimeDuration minOpenRetry,
     openpal::TimeDuration maxOpenRetry,
     IOpenDelayStrategy& strategy,
@@ -49,6 +50,7 @@ DNP3Channel::DNP3Channel(
 		pPhys(pPhys_),
 		pLogRoot(pLogRoot_),
 		pExecutor(&executor),
+		pCrypto(pCrypto_),
 		logger(pLogRoot->GetLogger()),		
 		pShutdownHandler(nullptr),
 		channelState(ChannelState::CLOSED),
@@ -205,11 +207,12 @@ IOutstation* DNP3Channel::_AddOutstation(char const* id,
 		auto pOutstation = new OutstationStackImpl(
 			id, 
 			*pLogRoot, 
-			*pExecutor, 
+			*pExecutor,
 			commandHandler, 
 			application, 			
 			config, 
-			handler
+			handler,
+			pCrypto
 		);
 				
 		auto onShutdown = [this, pOutstation](){ this->OnShutdown(pOutstation); };

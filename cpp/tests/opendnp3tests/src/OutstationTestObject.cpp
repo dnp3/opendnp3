@@ -89,5 +89,5 @@ uint32_t OutstationTestObject::AdvanceTime(const openpal::TimeDuration& td)
 	return exe.RunMany();
 }
 
-
 }
+

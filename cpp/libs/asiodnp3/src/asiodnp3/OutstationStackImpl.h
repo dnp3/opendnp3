@@ -21,6 +21,8 @@
 #ifndef ASIODNP3_OUTSTATIONSTACKIMPL_H
 #define ASIODNP3_OUTSTATIONSTACKIMPL_H
 
+#include <opendnp3/authv5/ICryptoProvider.h>
+
 #include <opendnp3/outstation/OutstationStackConfig.h>
 #include <opendnp3/outstation/Database.h>
 #include <opendnp3/outstation/Outstation.h>
@@ -52,7 +54,8 @@ public:
 		opendnp3::ICommandHandler& commandHandler,
 		opendnp3::IOutstationApplication& application,		
 		const opendnp3::OutstationStackConfig& config,
-	    const StackActionHandler& handler);	
+	    const StackActionHandler& handler,
+		opendnp3::ICryptoProvider* pProvider);
 
 	virtual opendnp3::DatabaseConfigView GetConfigView() override final;
 

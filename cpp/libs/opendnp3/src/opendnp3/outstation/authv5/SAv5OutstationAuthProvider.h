@@ -34,7 +34,7 @@ namespace opendnp3
 {
 
 /**
-	NULL authentication provider for the outstation
+	SAv5 authentication provider
 */
 class SAv5OutstationAuthProvider : private openpal::Uncopyable, public IOutstationAuthProvider
 {
@@ -55,7 +55,7 @@ class SAv5OutstationAuthProvider : private openpal::Uncopyable, public IOutstati
 	void OnUnknownRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
 
 	DeferredRequest deferred;
-	ICryptoProvider* const pCrypto;
+	ICryptoProvider* pCrypto;
 	KeyStatus keyStatus;
 	
 };

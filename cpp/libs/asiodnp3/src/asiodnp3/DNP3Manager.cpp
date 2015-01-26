@@ -37,7 +37,12 @@ namespace asiodnp3
 {
 
 
-DNP3Manager::DNP3Manager(uint32_t concurrencyHint, std::function<void()> onThreadStart, std::function<void()> onThreadExit) :
+DNP3Manager::DNP3Manager(
+		uint32_t concurrencyHint, 
+		opendnp3::ICryptoProvider* pCrypto_,
+		std::function<void()> onThreadStart,
+		std::function<void()> onThreadExit) :
+	pCrypto(pCrypto_),
 	pFanoutHandler(new asiopal::LogFanoutHandler()),
 	pThreadPool(new asiopal::IOServiceThreadPool(pFanoutHandler.get(), opendnp3::flags::INFO, concurrencyHint, onThreadStart, onThreadExit)),
 	pChannelSet(new ChannelSet())
@@ -71,7 +76,7 @@ IChannel* DNP3Manager::AddTCPClient(
 {
 	auto pRoot = new LogRoot(pFanoutHandler.get(), id, levels);
 	auto pPhys = new asiopal::PhysicalLayerTCPClient(*pRoot, pThreadPool->GetIOService(), host, port);
-	return pChannelSet->CreateChannel(pRoot, pPhys->executor, minOpenRetry, maxOpenRetry, pPhys, strategy);
+	return pChannelSet->CreateChannel(pRoot, pPhys->executor, pCrypto, minOpenRetry, maxOpenRetry, pPhys, strategy);
 }
 
 IChannel* DNP3Manager::AddTCPServer(
@@ -85,7 +90,7 @@ IChannel* DNP3Manager::AddTCPServer(
 {
 	auto pRoot = new LogRoot(pFanoutHandler.get(), id, levels);
 	auto pPhys = new asiopal::PhysicalLayerTCPServer(*pRoot, pThreadPool->GetIOService(), endpoint, port);
-	return pChannelSet->CreateChannel(pRoot, pPhys->executor, minOpenRetry, maxOpenRetry, pPhys, strategy);
+	return pChannelSet->CreateChannel(pRoot, pPhys->executor, pCrypto, minOpenRetry, maxOpenRetry, pPhys, strategy);
 }
 
 IChannel* DNP3Manager::AddSerial(
@@ -98,7 +103,7 @@ IChannel* DNP3Manager::AddSerial(
 {
 	auto pRoot = new LogRoot(pFanoutHandler.get(), id, levels);
 	auto pPhys = new asiopal::PhysicalLayerSerial(*pRoot, pThreadPool->GetIOService(), aSettings);
-	return pChannelSet->CreateChannel(pRoot, pPhys->executor, minOpenRetry, maxOpenRetry, pPhys, strategy);
+	return pChannelSet->CreateChannel(pRoot, pPhys->executor, pCrypto, minOpenRetry, maxOpenRetry, pPhys, strategy);
 }
 
 }
