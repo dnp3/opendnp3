@@ -43,7 +43,7 @@ namespace asiodnp3
 DNP3Channel::DNP3Channel(
 	LogRoot* pLogRoot_,
 	asiopal::ASIOExecutor& executor,
-	opendnp3::ICryptoProvider* pCrypto_,
+	openpal::ICryptoProvider* pCrypto_,
     openpal::TimeDuration minOpenRetry,
     openpal::TimeDuration maxOpenRetry,
     IOpenDelayStrategy& strategy,

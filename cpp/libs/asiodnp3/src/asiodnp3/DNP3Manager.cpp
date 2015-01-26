@@ -39,7 +39,7 @@ namespace asiodnp3
 
 DNP3Manager::DNP3Manager(
 		uint32_t concurrencyHint, 
-		opendnp3::ICryptoProvider* pCrypto_,
+		openpal::ICryptoProvider* pCrypto_,
 		std::function<void()> onThreadStart,
 		std::function<void()> onThreadExit) :
 	pCrypto(pCrypto_),

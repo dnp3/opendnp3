@@ -22,8 +22,8 @@
 #define ASIODNP3_DNP3CHANNEL_H
 
 #include <openpal/logging/LogRoot.h>
+#include <openpal/crypto/ICryptoProvider.h>
 
-#include <opendnp3/authv5/ICryptoProvider.h>
 #include <opendnp3/outstation/IOutstationAuthProvider.h>
 #include <opendnp3/outstation/OutstationStackConfig.h>
 #include <opendnp3/link/LinkChannelStatistics.h>
@@ -65,7 +65,7 @@ public:
 	DNP3Channel(
 		openpal::LogRoot* pLogRoot_,
 		asiopal::ASIOExecutor& executor,
-		opendnp3::ICryptoProvider* pCrypto,
+		openpal::ICryptoProvider* pCrypto,
 	    openpal::TimeDuration minOpenRetry,
 	    openpal::TimeDuration maxOpenRetry,
 		opendnp3::IOpenDelayStrategy& strategy,
@@ -125,7 +125,7 @@ private:
 	std::unique_ptr<openpal::IPhysicalLayer> pPhys;
 	std::unique_ptr<openpal::LogRoot> pLogRoot;
 	asiopal::ASIOExecutor* pExecutor;
-	opendnp3::ICryptoProvider* pCrypto;
+	openpal::ICryptoProvider* pCrypto;
 	openpal::Logger logger;
 	
 	asiopal::Synchronized<bool>* pShutdownHandler;

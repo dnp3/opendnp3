@@ -21,7 +21,7 @@
 #ifndef ASIODNP3_OUTSTATIONSTACKIMPL_H
 #define ASIODNP3_OUTSTATIONSTACKIMPL_H
 
-#include <opendnp3/authv5/ICryptoProvider.h>
+#include <openpal/crypto/ICryptoProvider.h>
 
 #include <opendnp3/outstation/OutstationStackConfig.h>
 #include <opendnp3/outstation/Database.h>

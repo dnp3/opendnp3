@@ -68,7 +68,6 @@
     <ClInclude Include="src\opendnp3\app\TimeAndInterval.h" />
     <ClInclude Include="src\opendnp3\app\WriteConversions.h" />
     <ClInclude Include="src\opendnp3\app\WriteConversionTemplates.h" />
-    <ClInclude Include="src\opendnp3\authv5\ICryptoProvider.h" />
     <ClInclude Include="src\opendnp3\ErrorCodes.h" />
     <ClInclude Include="src\opendnp3\gen\AnalogQuality.h" />
     <ClInclude Include="src\opendnp3\gen\AssignClassType.h" />

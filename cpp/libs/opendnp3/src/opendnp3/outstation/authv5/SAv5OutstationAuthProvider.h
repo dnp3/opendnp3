@@ -22,12 +22,11 @@
 #define OPENDNP3_SAV5OUTSTATIONAUTHPROVIDER_H
 
 #include "opendnp3/outstation/IOutstationAuthProvider.h"
-
-#include "opendnp3/authv5/ICryptoProvider.h"
 #include "opendnp3/gen/KeyStatus.h"
 
 #include "opendnp3/outstation/DeferredRequest.h"
 
+#include <openpal/crypto/ICryptoProvider.h>
 #include <openpal/util/Uncopyable.h>
 
 namespace opendnp3
@@ -40,7 +39,7 @@ class SAv5OutstationAuthProvider : private openpal::Uncopyable, public IOutstati
 {
 	public:
 
-	SAv5OutstationAuthProvider(uint32_t maxRxASDUSize, ICryptoProvider& crypto);
+	SAv5OutstationAuthProvider(uint32_t maxRxASDUSize, openpal::ICryptoProvider& crypto);
 
 	virtual void Reset() override final;	
 		
@@ -55,7 +54,7 @@ class SAv5OutstationAuthProvider : private openpal::Uncopyable, public IOutstati
 	void OnUnknownRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
 
 	DeferredRequest deferred;
-	ICryptoProvider* pCrypto;
+	openpal::ICryptoProvider* pCrypto;
 	KeyStatus keyStatus;
 	
 };

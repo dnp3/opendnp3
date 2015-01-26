@@ -41,6 +41,9 @@
     <Filter Include="Source\util">
       <UniqueIdentifier>{008ecbbf-559a-4d65-a31f-0d13eaf5ec92}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header\crypto">
+      <UniqueIdentifier>{a8861a57-9f92-4cec-a6f8-9151b6387b9e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\openpal\Configure.h">
@@ -180,6 +183,9 @@
     </ClInclude>
     <ClInclude Include="src\openpal\executor\TimerRef.h">
       <Filter>Header\executor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\openpal\crypto\ICryptoProvider.h">
+      <Filter>Header\crypto</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

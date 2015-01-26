@@ -29,10 +29,11 @@
 
 #include <openpal/logging/ILogHandler.h>
 #include <openpal/executor/TimeDuration.h>
+#include <openpal/crypto/ICryptoProvider.h>
 
 #include <opendnp3/gen/ChannelState.h>
 #include <opendnp3/link/IOpenDelayStrategy.h>
-#include <opendnp3/authv5/ICryptoProvider.h>
+
 
 #include <asiodnp3/IChannel.h>
 #include <asiodnp3/IMaster.h>
@@ -58,7 +59,7 @@ public:
 
 	DNP3Manager(
 	    uint32_t concurrencyHint,
-		opendnp3::ICryptoProvider* pCrypto = nullptr,
+		openpal::ICryptoProvider* pCrypto = nullptr,
 		std::function<void()> onThreadStart = []() {},
 		std::function<void()> onThreadExit = []() {}
 	);	
@@ -134,7 +135,7 @@ public:
 
 private:
 
-	opendnp3::ICryptoProvider* pCrypto;
+	openpal::ICryptoProvider* pCrypto;
 	std::unique_ptr<asiopal::LogFanoutHandler> pFanoutHandler;
 	std::unique_ptr<asiopal::IOServiceThreadPool> pThreadPool;
 	std::unique_ptr<ChannelSet> pChannelSet;

@@ -50,7 +50,7 @@ void ChannelSet::Shutdown()
 IChannel* ChannelSet::CreateChannel(
 	openpal::LogRoot* pLogRoot,
 	asiopal::ASIOExecutor& executor,
-	opendnp3::ICryptoProvider* pCrypto,
+	openpal::ICryptoProvider* pCrypto,
     openpal::TimeDuration minOpenRetry,
     openpal::TimeDuration maxOpenRetry,
 	PhysicalLayerBase* apPhys,    

@@ -18,22 +18,18 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_ICRYPTOPROVIDER_H
-#define OPENDNP3_ICRYPTOPROVIDER_H
+#ifndef OPENPAL_ICRYPTOPROVIDER_H
+#define OPENPAL_ICRYPTOPROVIDER_H
 
-namespace opendnp3
+namespace openpal
 {
+	// A provider of cryptographic services
+	class ICryptoProvider
+	{
+	public:
+		virtual ~ICryptoProvider() {}
 
-/**
-	A cryptography provider for implementing SA. This could be backed by openssl-crypto, another library, or
-	a mock provider for testing purposes.
-*/
-class ICryptoProvider
-{
-	public:		
-
-	virtual ~ICryptoProvider() {}
-};
+	};
 
 }
 

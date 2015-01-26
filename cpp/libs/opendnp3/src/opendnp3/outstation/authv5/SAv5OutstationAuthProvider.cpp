@@ -31,7 +31,7 @@
 namespace opendnp3
 {
 
-SAv5OutstationAuthProvider::SAv5OutstationAuthProvider(uint32_t maxRxASDUSize, ICryptoProvider& crypto) :
+SAv5OutstationAuthProvider::SAv5OutstationAuthProvider(uint32_t maxRxASDUSize, openpal::ICryptoProvider& crypto) :
 	deferred(maxRxASDUSize),
 	pCrypto(&crypto),
 	keyStatus(KeyStatus::NOT_INIT)

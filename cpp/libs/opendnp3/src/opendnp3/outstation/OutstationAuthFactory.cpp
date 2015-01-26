@@ -27,7 +27,7 @@
 
 namespace opendnp3
 {
-	std::unique_ptr<IOutstationAuthProvider> OutstationAuthFactory::Create(const OutstationStackConfig& config, ICryptoProvider* pCrypto)
+	std::unique_ptr<IOutstationAuthProvider> OutstationAuthFactory::Create(const OutstationStackConfig& config, openpal::ICryptoProvider* pCrypto)
 	{
 		switch (config.authentication.mode)
 		{
@@ -38,7 +38,7 @@ namespace opendnp3
 		}
 	}	
 
-	std::unique_ptr<IOutstationAuthProvider> OutstationAuthFactory::CreateSAv5Provider(const OutstationStackConfig& config, ICryptoProvider* pCrypto)
+	std::unique_ptr<IOutstationAuthProvider> OutstationAuthFactory::CreateSAv5Provider(const OutstationStackConfig& config, openpal::ICryptoProvider* pCrypto)
 	{
 		if (pCrypto)
 		{

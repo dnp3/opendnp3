@@ -18,77 +18,10 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\openpal\channel\ChannelStatistics.h" />
-    <ClInclude Include="src\openpal\channel\IPhysicalLayer.h" />
-    <ClInclude Include="src\openpal\channel\IPhysicalLayerCallbacks.h" />
-    <ClInclude Include="src\openpal\Configure.h" />
-    <ClInclude Include="src\openpal\container\DynamicArray.h" />
-    <ClInclude Include="src\openpal\container\DynamicBuffer.h" />
-    <ClInclude Include="src\openpal\container\HasSize.h" />
-    <ClInclude Include="src\openpal\container\ArrayView.h" />
-    <ClInclude Include="src\openpal\container\LinkedList.h" />
-    <ClInclude Include="src\openpal\container\ManagedPtr.h" />
-    <ClInclude Include="src\openpal\container\Pair.h" />
-    <ClInclude Include="src\openpal\container\ReadBufferView.h" />
-    <ClInclude Include="src\openpal\container\RingBuffer.h" />
-    <ClInclude Include="src\openpal\container\Settable.h" />
-    <ClInclude Include="src\openpal\container\WriteBufferView.h" />
-    <ClInclude Include="src\openpal\crypto\ICryptoProvider.h" />
-    <ClInclude Include="src\openpal\executor\Erasure.h" />
-    <ClInclude Include="src\openpal\executor\Function1.h" />
-    <ClInclude Include="src\openpal\executor\IExecutor.h" />
-    <ClInclude Include="src\openpal\executor\IMutex.h" />
-    <ClInclude Include="src\openpal\executor\ITimer.h" />
-    <ClInclude Include="src\openpal\executor\IUTCTimeSource.h" />
-    <ClInclude Include="src\openpal\executor\MonotonicTimestamp.h" />
-    <ClInclude Include="src\openpal\executor\Action0.h" />
-    <ClInclude Include="src\openpal\executor\TimeDuration.h" />
-    <ClInclude Include="src\openpal\executor\TimerRef.h" />
-    <ClInclude Include="src\openpal\executor\UTCTimestamp.h" />
-    <ClInclude Include="src\openpal\logging\ILogHandler.h" />
-    <ClInclude Include="src\openpal\logging\Location.h" />
-    <ClInclude Include="src\openpal\logging\LogEntry.h" />
-    <ClInclude Include="src\openpal\logging\LogFilters.h" />
-    <ClInclude Include="src\openpal\logging\Logger.h" />
-    <ClInclude Include="src\openpal\logging\LogLevels.h" />
-    <ClInclude Include="src\openpal\logging\LogMacros.h" />
-    <ClInclude Include="src\openpal\logging\LogRoot.h" />
-    <ClInclude Include="src\openpal\logging\StringFormatting.h" />
-    <ClInclude Include="src\openpal\serialization\ByteSerialization.h" />
-    <ClInclude Include="src\openpal\serialization\FloatSerializationTemplates.h" />
-    <ClInclude Include="src\openpal\serialization\Serializer.h" />
-    <ClInclude Include="src\openpal\serialization\Serialization.h" />
-    <ClInclude Include="src\openpal\serialization\SerializationTemplatesBE.h" />
-    <ClInclude Include="src\openpal\serialization\SerializationTemplatesLE.h" />
-    <ClInclude Include="src\openpal\serialization\UInt48LE.h" />
-    <ClInclude Include="src\openpal\util\Comparisons.h" />
-    <ClInclude Include="src\openpal\util\Limits.h" />
-    <ClInclude Include="src\openpal\util\ToHex.h" />
-    <ClInclude Include="src\openpal\util\Uncopyable.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\openpal\container\DynamicBuffer.cpp" />
-    <ClCompile Include="src\openpal\container\ReadBufferView.cpp" />
-    <ClCompile Include="src\openpal\container\WriteBufferView.cpp" />
-    <ClCompile Include="src\openpal\executor\Erasure.cpp" />
-    <ClCompile Include="src\openpal\executor\MonotonicTimestamp.cpp" />
-    <ClCompile Include="src\openpal\executor\Action0.cpp" />
-    <ClCompile Include="src\openpal\executor\TimeDuration.cpp" />
-    <ClCompile Include="src\openpal\executor\TimerRef.cpp" />
-    <ClCompile Include="src\openpal\logging\LogEntry.cpp" />
-    <ClCompile Include="src\openpal\logging\Logger.cpp" />
-    <ClCompile Include="src\openpal\logging\LogRoot.cpp" />
-    <ClCompile Include="src\openpal\logging\StringFormatting.cpp" />
-    <ClCompile Include="src\openpal\serialization\ByteSerialization.cpp" />
-    <ClCompile Include="src\openpal\serialization\UInt48LE.cpp" />
-    <ClCompile Include="src\openpal\util\Limits.cpp" />
-    <ClCompile Include="src\openpal\util\ToHex.cpp" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{ABF09BDA-75A5-47D7-9F15-D7B7EC69F1E7}</ProjectGuid>
+    <ProjectGuid>{6571DD15-D2F7-4D3F-A580-FDC5E55B2844}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>openpal</RootNamespace>
+    <RootNamespace>osslcryptoprovider</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -122,23 +55,15 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(SolutionDir)\config\output_dirs.props" />
-    <Import Project="$(SolutionDir)\config\openpal_include.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(SolutionDir)\config\output_dirs.props" />
-    <Import Project="$(SolutionDir)\config\openpal_include.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(SolutionDir)\config\output_dirs.props" />
-    <Import Project="$(SolutionDir)\config\openpal_include.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="$(SolutionDir)\config\output_dirs.props" />
-    <Import Project="$(SolutionDir)\config\openpal_include.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />
@@ -149,9 +74,6 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <MinimalRebuild>false</MinimalRebuild>
-      <ExceptionHandling>false</ExceptionHandling>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -165,9 +87,6 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <MinimalRebuild>false</MinimalRebuild>
-      <ExceptionHandling>false</ExceptionHandling>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -183,8 +102,6 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <ExceptionHandling>false</ExceptionHandling>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -202,8 +119,6 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <ExceptionHandling>false</ExceptionHandling>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
