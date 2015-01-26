@@ -25,14 +25,12 @@
 
 #include <asiopal/UTCTimeSource.h>
 
-
 #include <opendnp3/outstation/TimeTransaction.h>
-
 #include <opendnp3/outstation/SimpleCommandHandler.h>
-
 #include <opendnp3/outstation/Database.h>
-
 #include <opendnp3/LogLevels.h>
+
+#include <openpal/crypto/MockCryptoProvider.h>
 
 #include <string>
 #include <thread>
@@ -51,9 +49,11 @@ int main(int argc, char* argv[])
 	// You can add all the comms logging by uncommenting below.
 	const uint32_t FILTERS = levels::NORMAL; // | levels::ALL_COMMS;
 
+	MockCryptoProvider crypto;
+
 	// This is the main point of interaction with the stack
 	// Allocate a single thread to the pool since this is a single outstation
-	DNP3Manager manager(1);
+	DNP3Manager manager(1, &crypto);
 
 	// send log messages to the console
 	manager.AddLogSubscriber(&ConsoleLogger::Instance());

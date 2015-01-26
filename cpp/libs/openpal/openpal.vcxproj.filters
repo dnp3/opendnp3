@@ -187,6 +187,9 @@
     <ClInclude Include="src\openpal\crypto\ICryptoProvider.h">
       <Filter>Header\crypto</Filter>
     </ClInclude>
+    <ClInclude Include="src\openpal\crypto\MockCryptoProvider.h">
+      <Filter>Header\crypto</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\openpal\executor\MonotonicTimestamp.cpp">
