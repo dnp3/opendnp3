@@ -146,11 +146,7 @@ private:
 	    openpal::Logger* pLogger,
 	    uint32_t count,
 	    const openpal::Serializer<Target>& serializer,
-	    IAPDUHandler* pHandler);
-
-	static IndexedValue<Binary, uint16_t> BoolToBinary(const IndexedValue<bool, uint16_t>& v);
-
-	static IndexedValue<BinaryOutputStatus, uint16_t> BoolToBinaryOutputStatus(const IndexedValue<bool, uint16_t>& v);
+	    IAPDUHandler* pHandler);	
 };
 
 template <class IndexType>

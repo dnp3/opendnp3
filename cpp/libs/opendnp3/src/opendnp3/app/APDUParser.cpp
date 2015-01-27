@@ -133,16 +133,6 @@ ParseResult APDUParser::ParseHeader(ReadBufferView& buffer, openpal::Logger* pLo
 	}
 }
 
-IndexedValue<Binary, uint16_t> APDUParser::BoolToBinary(const IndexedValue<bool, uint16_t>& v)
-{
-	return IndexedValue<Binary, uint16_t>(Binary(v.value), v.index);
-}
-
-IndexedValue<BinaryOutputStatus, uint16_t> APDUParser::BoolToBinaryOutputStatus(const IndexedValue<bool, uint16_t>& v)
-{
-	return IndexedValue<BinaryOutputStatus, uint16_t>(BinaryOutputStatus(v.value), v.index);
-}
-
 #define MACRO_PARSE_OBJECTS_WITH_RANGE(descriptor) \
 	case(GroupVariation::descriptor): \
 	return ParseRangeFixedSize(record, descriptor::Inst(), buffer, pLogger, range, pHandler);
