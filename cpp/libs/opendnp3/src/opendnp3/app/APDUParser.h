@@ -83,14 +83,7 @@ private:
 
 	static ParseResult HandleQualifier(openpal::ReadBufferView& buffer, openpal::Logger* pLogger, const HeaderRecord& record, const ParserSettings& settings, IAPDUHandler* pHandler);
 
-	static void HandleAllObjectsHeader(openpal::Logger* pLogger, const HeaderRecord& record, const ParserSettings& settings, IAPDUHandler* pHandler);
-
-	static ParseResult ParseCountHeader(openpal::ReadBufferView& buffer, openpal::Logger* pLogger, const NumParser& numParser, const ParserSettings& settings, const HeaderRecord& record, IAPDUHandler* pHandler);
-
-	static ParseResult ParseCountOfObjects(openpal::ReadBufferView& buffer, openpal::Logger* pLogger, const HeaderRecord& record, uint16_t count, IAPDUHandler* pHandler);
-	
-	template <class Descriptor>
-	static ParseResult ParseCountOf(openpal::ReadBufferView& buffer, openpal::Logger* pLogger, const HeaderRecord& record, uint32_t count, IAPDUHandler* pHandler);
+	static void HandleAllObjectsHeader(openpal::Logger* pLogger, const HeaderRecord& record, const ParserSettings& settings, IAPDUHandler* pHandler);	
 
 	/*
 
@@ -473,30 +466,6 @@ ParseResult APDUParser::ParseRangeFixedSize(const HeaderRecord& record, const op
 	}
 }
 */
-
-template <class Descriptor>
-ParseResult APDUParser::ParseCountOf(openpal::ReadBufferView& buffer, openpal::Logger* pLogger, const HeaderRecord& record, uint32_t count, IAPDUHandler* pHandler)
-{
-	uint32_t size = count * Descriptor::Size();
-	if (buffer.Size() < size)
-	{
-		SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified objects");
-		return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
-	}
-	else
-	{
-		if(pHandler)
-		{
-			auto collection = CreateLazyIterable<Descriptor>(buffer, count, [](openpal::ReadBufferView & buffer, uint32_t)
-			{
-				return Descriptor::Read(buffer);
-			});
-			pHandler->OnCountOf(record, collection);
-		}
-		buffer.Advance(size);
-		return ParseResult::OK;
-	}
-}
 
 /*
 template <class Target>

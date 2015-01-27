@@ -26,6 +26,7 @@
 #include "opendnp3/app/GroupVariationRecord.h"
 #include "opendnp3/app/MeasurementFactory.h"
 #include "opendnp3/app/ObjectHeaderParser.h"
+#include "opendnp3/app/CountParser.h"
 
 using namespace openpal;
 
@@ -99,10 +100,10 @@ ParseResult APDUParser::HandleQualifier(ReadBufferView& buffer, openpal::Logger*
 			return ParseResult::OK;
 
 		case(QualifierCode::UINT8_CNT) :
-			return ParseCountHeader(buffer, pLogger, NumParser::OneByte(), settings, record, pHandler);
+			return CountParser::ParseHeader(buffer, NumParser::OneByte(), settings, record, pLogger, pHandler);
 
 		case(QualifierCode::UINT16_CNT) :
-			return ParseCountHeader(buffer, pLogger, NumParser::TwoByte(), settings, record, pHandler);
+			return CountParser::ParseHeader(buffer, NumParser::TwoByte(), settings, record, pLogger, pHandler);
 
 /*
 		case(QualifierCode::UINT8_START_STOP) :
@@ -136,40 +137,6 @@ void APDUParser::HandleAllObjectsHeader(openpal::Logger* pLogger, const HeaderRe
 	if (pHandler)
 	{
 		pHandler->AllObjects(record);
-	}
-}
-
-ParseResult APDUParser::ParseCountHeader(openpal::ReadBufferView& buffer, openpal::Logger* pLogger, const NumParser& numParser, const ParserSettings& settings, const HeaderRecord& record, IAPDUHandler* pHandler)
-{
-	uint16_t count;
-	auto result = numParser.ParseCount(buffer, count, pLogger);
-	if (result == ParseResult::OK)
-	{
-		FORMAT_LOGGER_BLOCK(pLogger, settings.Filters(),
-			"%03u,%03u %s, %s [%u]",
-			record.group,
-			record.variation,
-			GroupVariationToString(record.enumeration),
-			QualifierCodeToString(record.GetQualifierCode()),
-			count);
-
-		if (settings.ExpectsContents())
-		{
-			return ParseCountOfObjects(buffer, pLogger, record, count, pHandler);
-		}
-		else
-		{
-			if (pHandler)
-			{
-				pHandler->OnCountRequest(record, count);
-			}
-
-			return ParseResult::OK;
-		}
-	}	
-	else
-	{
-		return result;
 	}
 }
 
@@ -303,27 +270,6 @@ ParseResult APDUParser::ParseRangeOfObjects(openpal::ReadBufferView& buffer, ope
 	}
 }
 */
-
-
-ParseResult APDUParser::ParseCountOfObjects(openpal::ReadBufferView& buffer, openpal::Logger* pLogger, const HeaderRecord& record, uint16_t count, IAPDUHandler* pHandler)
-{
-	switch(record.enumeration)
-	{
-		case(GroupVariation::Group50Var1) :
-			return ParseCountOf<Group50Var1>(buffer, pLogger, record, count, pHandler);
-
-		case(GroupVariation::Group51Var1) :
-			return ParseCountOf<Group51Var1>(buffer, pLogger, record, count, pHandler);
-
-		case(GroupVariation::Group51Var2) :
-			return ParseCountOf<Group51Var2>(buffer, pLogger, record, count, pHandler);
-
-		case(GroupVariation::Group52Var2) :
-			return ParseCountOf<Group52Var2>(buffer, pLogger, record, count, pHandler);
-		default:
-			return ParseResult::INVALID_OBJECT_QUALIFIER;
-	}		
-}
 
 
 /*

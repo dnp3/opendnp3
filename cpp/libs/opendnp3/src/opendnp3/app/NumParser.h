@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_COUNTPARSER_H
-#define OPENDNP3_COUNTPARSER_H
+#ifndef OPENDNP3_NUMPARSER_H
+#define OPENDNP3_NUMPARSER_H
 
 #include <openpal/logging/Logger.h>
 #include <openpal/container/ReadBufferView.h>
