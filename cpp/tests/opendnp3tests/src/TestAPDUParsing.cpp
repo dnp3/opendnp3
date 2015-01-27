@@ -167,7 +167,7 @@ TEST_CASE(SUITE("Group1Var2RangeAsReadRange"))
 {
 	HexSequence buffer("01 02 00 03 05");
 	MockApduHeaderHandler mock;
-	auto result = APDUParser::ParseTwoPass(buffer.ToReadOnly(), &mock, nullptr, APDUParser::Settings::NoContents());
+	auto result = APDUParser::ParseTwoPass(buffer.ToReadOnly(), &mock, nullptr, ParserSettings::NoContents());
 	REQUIRE((result == ParseResult::OK));
 }
 

@@ -51,7 +51,7 @@ void ParseAndLogRequestTx(openpal::Logger* pLogger, const openpal::ReadBufferVie
 			if (pLogger->IsEnabled(flags::APP_OBJECT_TX))
 			{
 				auto expectsContents = header.function != FunctionCode::READ;
-				APDUParser::ParseTwoPass(apdu.Skip(APDU_REQUEST_HEADER_SIZE), nullptr, pLogger, APDUParser::Settings::Create(expectsContents, flags::APP_OBJECT_TX));
+				APDUParser::ParseTwoPass(apdu.Skip(APDU_REQUEST_HEADER_SIZE), nullptr, pLogger, ParserSettings::Create(expectsContents, flags::APP_OBJECT_TX));
 			}
 		}
 	}
@@ -83,7 +83,7 @@ void ParseAndLogResponseTx(openpal::Logger* pLogger, const openpal::ReadBufferVi
 
 			if (pLogger->IsEnabled(flags::APP_OBJECT_TX))
 			{				
-				APDUParser::ParseTwoPass(apdu.Skip(APDU_RESPONSE_HEADER_SIZE), nullptr, pLogger, APDUParser::Settings::Create(true, flags::APP_OBJECT_TX));
+				APDUParser::ParseTwoPass(apdu.Skip(APDU_RESPONSE_HEADER_SIZE), nullptr, pLogger, ParserSettings::Create(true, flags::APP_OBJECT_TX));
 			}
 		}
 	}

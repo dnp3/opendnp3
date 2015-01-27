@@ -97,7 +97,7 @@ Pair<IINField, AppControlField> OFunctions::HandleRead(OState& ostate, const ope
 	ostate.eventBuffer.Unselect(); // always unselect any perviously selected points when we start a new read request
 	ostate.database.Unselect();
 	ReadHandler handler(ostate.logger, ostate.database.GetSelector(), ostate.eventBuffer);
-	auto result = APDUParser::ParseTwoPass(objects, &handler, &ostate.logger, APDUParser::Settings::NoContents()); // don't expect range/count context on a READ
+	auto result = APDUParser::ParseTwoPass(objects, &handler, &ostate.logger, ParserSettings::NoContents()); // don't expect range/count context on a READ
 	if (result == ParseResult::OK)
 	{				
 		auto control = ostate.rspContext.LoadResponse(writer);
@@ -252,7 +252,7 @@ IINField OFunctions::HandleAssignClass(OState& ostate, const openpal::ReadBuffer
 
 		// Lock the db as this can adjust configuration values in the database
 		Transaction tx(ostate.database);
-		auto result = APDUParser::ParseTwoPass(objects, &handler, &ostate.logger, APDUParser::Settings::NoContents());
+		auto result = APDUParser::ParseTwoPass(objects, &handler, &ostate.logger, ParserSettings::NoContents());
 		return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
 	}
 	else

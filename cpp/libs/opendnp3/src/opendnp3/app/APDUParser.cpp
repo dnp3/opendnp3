@@ -31,7 +31,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-ParseResult APDUParser::ParseTwoPass(const openpal::ReadBufferView& buffer, IAPDUHandler* pHandler, openpal::Logger* pLogger, Settings settings)
+ParseResult APDUParser::ParseTwoPass(const openpal::ReadBufferView& buffer, IAPDUHandler* pHandler, openpal::Logger* pLogger, ParserSettings settings)
 {
 	if(pHandler)
 	{
@@ -52,7 +52,7 @@ ParseResult APDUParser::ParseTwoPass(const openpal::ReadBufferView& buffer, IAPD
 	}
 }
 
-ParseResult APDUParser::ParseSinglePass(const openpal::ReadBufferView& buffer, openpal::Logger* pLogger, IAPDUHandler* pHandler, const Settings& settings)
+ParseResult APDUParser::ParseSinglePass(const openpal::ReadBufferView& buffer, openpal::Logger* pLogger, IAPDUHandler* pHandler, const ParserSettings& settings)
 {
 	ReadBufferView copy(buffer);
 	while(copy.Size() > 0)
@@ -66,7 +66,7 @@ ParseResult APDUParser::ParseSinglePass(const openpal::ReadBufferView& buffer, o
 	return ParseResult::OK;
 }
 
-ParseResult APDUParser::ParseHeader(ReadBufferView& buffer, openpal::Logger* pLogger, const Settings& settings, IAPDUHandler* pHandler)
+ParseResult APDUParser::ParseHeader(ReadBufferView& buffer, openpal::Logger* pLogger, const ParserSettings& settings, IAPDUHandler* pHandler)
 {
 	if (buffer.Size() < 3)
 	{
