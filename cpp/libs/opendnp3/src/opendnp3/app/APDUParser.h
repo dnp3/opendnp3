@@ -68,7 +68,7 @@ namespace opendnp3
 
 class APDUParser : private openpal::PureStatic
 {
-public:	
+public:
 
 	static ParseResult ParseTwoPass(const openpal::ReadBufferView& buffer, IAPDUHandler* pHandler, openpal::Logger* pLogger, ParserSettings settings = ParserSettings::Default());
 
@@ -149,6 +149,7 @@ private:
 	    IAPDUHandler* pHandler);
 
 	static IndexedValue<Binary, uint16_t> BoolToBinary(const IndexedValue<bool, uint16_t>& v);
+
 	static IndexedValue<BinaryOutputStatus, uint16_t> BoolToBinaryOutputStatus(const IndexedValue<bool, uint16_t>& v);
 };
 

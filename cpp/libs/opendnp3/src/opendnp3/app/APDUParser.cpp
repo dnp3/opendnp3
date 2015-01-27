@@ -25,6 +25,7 @@
 #include "opendnp3/LogLevels.h"
 #include "opendnp3/app/GroupVariationRecord.h"
 #include "opendnp3/app/MeasurementFactory.h"
+#include "opendnp3/app/ObjectHeaderParser.h"
 
 using namespace openpal;
 
@@ -68,46 +69,39 @@ ParseResult APDUParser::ParseSinglePass(const openpal::ReadBufferView& buffer, o
 
 ParseResult APDUParser::ParseHeader(ReadBufferView& buffer, openpal::Logger* pLogger, const ParserSettings& settings, IAPDUHandler* pHandler)
 {
-	if (buffer.Size() < 3)
+	ObjectHeader header;
+	auto result = ObjectHeaderParser::ParseObjectHeader(header, buffer, pLogger);
+	if (result == ParseResult::OK)
 	{
-		SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_HEADER, "Not enough data for header");
-		return ParseResult::NOT_ENOUGH_DATA_FOR_HEADER;
-	}
-	else
-	{
-		uint8_t group = UInt8::ReadBuffer(buffer);
-		uint8_t variation = UInt8::ReadBuffer(buffer);
-		auto gv = GroupVariationRecord::GetRecord(group, variation);
+		auto gv = GroupVariationRecord::GetRecord(header.group, header.variation);
 		if (gv.enumeration == GroupVariation::UNKNOWN)
 		{
 			FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_UNKNOWN_GROUP_VAR, "Unknown object %i / %i", gv.group, gv.variation);
 			return ParseResult::UNKNOWN_OBJECT;
 		}
 		else
-		{
-			uint8_t rawQualifier = UInt8::ReadBuffer(buffer);
-			QualifierCode qualifier = QualifierCodeFromType(rawQualifier);
-			HeaderRecord record(gv, qualifier);			
+		{						
+			HeaderRecord record(gv, QualifierCodeFromType(header.qualifier));
 
-			switch (qualifier)
+			switch (record.qualifier)
 			{
 
 			case(QualifierCode::ALL_OBJECTS) :
+			{
+				FORMAT_LOGGER_BLOCK(pLogger, settings.Filters(),
+					"%03u,%03u - %s - %s",
+					header.group,
+					header.variation,
+					GroupVariationToString(gv.enumeration),
+					QualifierCodeToString(record.qualifier));
+
+				if (pHandler)
 				{
-					if (pHandler)
-					{
-						pHandler->AllObjects(record);
-					}		
-
-					FORMAT_LOGGER_BLOCK(pLogger, settings.Filters(),
-						"%03u,%03u - %s - %s",
-						group,
-						variation,
-						GroupVariationToString(gv.enumeration),
-						QualifierCodeToString(qualifier));
-
-					return ParseResult::OK;
+					pHandler->AllObjects(record);
 				}
+		
+				return ParseResult::OK;
+			}
 
 			case(QualifierCode::UINT8_CNT) :
 				return ParseCountHeader<UInt8>(buffer, pLogger, settings, record, pHandler);
@@ -128,10 +122,14 @@ ParseResult APDUParser::ParseHeader(ReadBufferView& buffer, openpal::Logger* pLo
 				return ParseIndexPrefixHeader<UInt16>(buffer, pLogger, settings, record, pHandler);
 
 			default:
-				FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_UNKNOWN_QUALIFIER, "Unknown qualifier %x", rawQualifier);
+				FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_UNKNOWN_QUALIFIER, "Unknown qualifier %x", header.qualifier);
 				return ParseResult::UNKNOWN_QUALIFIER;
 			}
 		}
+	}	
+	else
+	{
+		return result;
 	}
 }
 

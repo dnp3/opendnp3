@@ -807,6 +807,9 @@
     <ClInclude Include="src\opendnp3\app\ParserSettings.h">
       <Filter>Header\app</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\app\ObjectHeaderParser.h">
+      <Filter>Header\app</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\TimeAndInterval.cpp">
@@ -1222,6 +1225,9 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\OutstationAuthFactory.cpp">
       <Filter>Source\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\app\ObjectHeaderParser.cpp">
+      <Filter>Source\app</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

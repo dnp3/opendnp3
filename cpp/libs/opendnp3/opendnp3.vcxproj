@@ -58,6 +58,7 @@
     <ClInclude Include="src\opendnp3\app\LazyIterable.h" />
     <ClInclude Include="src\opendnp3\app\MeasurementFactory.h" />
     <ClInclude Include="src\opendnp3\app\MeasurementTypes.h" />
+    <ClInclude Include="src\opendnp3\app\ObjectHeaderParser.h" />
     <ClInclude Include="src\opendnp3\app\OctetData.h" />
     <ClInclude Include="src\opendnp3\app\OctetString.h" />
     <ClInclude Include="src\opendnp3\app\ParseResult.h" />
@@ -292,6 +293,7 @@
     <ClCompile Include="src\opendnp3\app\GroupVariationRecord.cpp" />
     <ClCompile Include="src\opendnp3\app\IINField.cpp" />
     <ClCompile Include="src\opendnp3\app\MeasurementTypes.cpp" />
+    <ClCompile Include="src\opendnp3\app\ObjectHeaderParser.cpp" />
     <ClCompile Include="src\opendnp3\app\ObjectWriter.cpp" />
     <ClCompile Include="src\opendnp3\app\OctetData.cpp" />
     <ClCompile Include="src\opendnp3\app\TimeAndInterval.cpp" />
