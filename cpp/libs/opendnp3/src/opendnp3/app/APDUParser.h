@@ -81,7 +81,7 @@ private:
 
 	static ParseResult ParseHeader(openpal::ReadBufferView& buffer, openpal::Logger* pLogger, const ParserSettings& settings, IAPDUHandler* pHandler);
 
-	static ParseResult HandleQualifier(openpal::ReadBufferView& buffer, openpal::Logger* pLogger, const HeaderRecord& record, const ParserSettings& settings, IAPDUHandler* pHandler);
+	static ParseResult ParseQualifier(openpal::ReadBufferView& buffer, openpal::Logger* pLogger, const HeaderRecord& record, const ParserSettings& settings, IAPDUHandler* pHandler);
 
 	static void HandleAllObjectsHeader(openpal::Logger* pLogger, const HeaderRecord& record, const ParserSettings& settings, IAPDUHandler* pHandler);	
 
@@ -98,9 +98,7 @@ private:
 	static ParseResult ParseRange(openpal::ReadBufferView& buffer, openpal::Logger* pLogger, const ParserSettings& settings, Range& range);	
 
 	static ParseResult ParseRangeOfObjects(openpal::ReadBufferView& buffer, openpal::Logger* pLogger, const HeaderRecord& record, const Range& range, IAPDUHandler* pHandler);
-
 	
-
 	template <class Fun>
 	static ParseResult ParseRangeAsBitField(
 	    openpal::ReadBufferView& buffer,

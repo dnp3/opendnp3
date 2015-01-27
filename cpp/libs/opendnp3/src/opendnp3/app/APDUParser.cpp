@@ -26,7 +26,7 @@
 #include "opendnp3/app/GroupVariationRecord.h"
 #include "opendnp3/app/MeasurementFactory.h"
 #include "opendnp3/app/ObjectHeaderParser.h"
-#include "opendnp3/app/CountParser.h"
+#include "opendnp3/app/CountHandler.h"
 
 using namespace openpal;
 
@@ -75,6 +75,7 @@ ParseResult APDUParser::ParseHeader(ReadBufferView& buffer, openpal::Logger* pLo
 	if (result == ParseResult::OK)
 	{
 		auto gv = GroupVariationRecord::GetRecord(header.group, header.variation);
+
 		if (gv.enumeration == GroupVariation::UNKNOWN)
 		{
 			FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_UNKNOWN_GROUP_VAR, "Unknown object %i / %i", gv.group, gv.variation);
@@ -82,7 +83,7 @@ ParseResult APDUParser::ParseHeader(ReadBufferView& buffer, openpal::Logger* pLo
 		}
 		else
 		{									
-			return APDUParser::HandleQualifier(buffer, pLogger, HeaderRecord(gv, header.qualifier), settings, pHandler);
+			return APDUParser::ParseQualifier(buffer, pLogger, HeaderRecord(gv, header.qualifier), settings, pHandler);
 		}
 	}	
 	else
@@ -91,7 +92,7 @@ ParseResult APDUParser::ParseHeader(ReadBufferView& buffer, openpal::Logger* pLo
 	}
 }
 
-ParseResult APDUParser::HandleQualifier(ReadBufferView& buffer, openpal::Logger* pLogger, const HeaderRecord& record, const ParserSettings& settings, IAPDUHandler* pHandler)
+ParseResult APDUParser::ParseQualifier(ReadBufferView& buffer, openpal::Logger* pLogger, const HeaderRecord& record, const ParserSettings& settings, IAPDUHandler* pHandler)
 {
 	switch (record.GetQualifierCode())
 	{
@@ -100,10 +101,10 @@ ParseResult APDUParser::HandleQualifier(ReadBufferView& buffer, openpal::Logger*
 			return ParseResult::OK;
 
 		case(QualifierCode::UINT8_CNT) :
-			return CountParser::ParseHeader(buffer, NumParser::OneByte(), settings, record, pLogger, pHandler);
+			return CountHandler::ParseHeader(buffer, NumParser::OneByte(), settings, record, pLogger, pHandler);
 
 		case(QualifierCode::UINT16_CNT) :
-			return CountParser::ParseHeader(buffer, NumParser::TwoByte(), settings, record, pLogger, pHandler);
+			return CountHandler::ParseHeader(buffer, NumParser::TwoByte(), settings, record, pLogger, pHandler);
 
 /*
 		case(QualifierCode::UINT8_START_STOP) :

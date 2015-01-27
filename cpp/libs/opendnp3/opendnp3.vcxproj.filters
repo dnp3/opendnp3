@@ -813,7 +813,7 @@
     <ClInclude Include="src\opendnp3\app\NumParser.h">
       <Filter>Header\app</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\app\CountParser.h">
+    <ClInclude Include="src\opendnp3\app\CountHandler.h">
       <Filter>Header\app</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1238,7 +1238,7 @@
     <ClCompile Include="src\opendnp3\app\NumParser.cpp">
       <Filter>Source\app</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\app\CountParser.cpp">
+    <ClCompile Include="src\opendnp3\app\CountHandler.cpp">
       <Filter>Source\app</Filter>
     </ClCompile>
   </ItemGroup>
