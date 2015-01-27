@@ -31,13 +31,13 @@ using namespace openpal;
 namespace opendnp3
 {
 
-APDUParser::Result APDUParser::ParseTwoPass(const openpal::ReadBufferView& buffer, IAPDUHandler* pHandler, openpal::Logger* pLogger, Settings settings)
+ParseResult APDUParser::ParseTwoPass(const openpal::ReadBufferView& buffer, IAPDUHandler* pHandler, openpal::Logger* pLogger, Settings settings)
 {
 	if(pHandler)
 	{
 		// do a single pass without the callbacks to validate that the message is well formed
 		auto result = ParseSinglePass(buffer, pLogger, nullptr, settings);
-		if (result == Result::OK)
+		if (result == ParseResult::OK)
 		{
 			return ParseSinglePass(buffer, nullptr, pHandler, settings);
 		}
@@ -52,26 +52,26 @@ APDUParser::Result APDUParser::ParseTwoPass(const openpal::ReadBufferView& buffe
 	}
 }
 
-APDUParser::Result APDUParser::ParseSinglePass(const openpal::ReadBufferView& buffer, openpal::Logger* pLogger, IAPDUHandler* pHandler, const Settings& settings)
+ParseResult APDUParser::ParseSinglePass(const openpal::ReadBufferView& buffer, openpal::Logger* pLogger, IAPDUHandler* pHandler, const Settings& settings)
 {
 	ReadBufferView copy(buffer);
 	while(copy.Size() > 0)
 	{
 		auto result = ParseHeader(copy, pLogger, settings, pHandler);
-		if (result != Result::OK)
+		if (result != ParseResult::OK)
 		{
 			return result;
 		}
 	}
-	return Result::OK;
+	return ParseResult::OK;
 }
 
-APDUParser::Result APDUParser::ParseHeader(ReadBufferView& buffer, openpal::Logger* pLogger, const Settings& settings, IAPDUHandler* pHandler)
+ParseResult APDUParser::ParseHeader(ReadBufferView& buffer, openpal::Logger* pLogger, const Settings& settings, IAPDUHandler* pHandler)
 {
 	if (buffer.Size() < 3)
 	{
 		SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_HEADER, "Not enough data for header");
-		return Result::NOT_ENOUGH_DATA_FOR_HEADER;
+		return ParseResult::NOT_ENOUGH_DATA_FOR_HEADER;
 	}
 	else
 	{
@@ -81,7 +81,7 @@ APDUParser::Result APDUParser::ParseHeader(ReadBufferView& buffer, openpal::Logg
 		if (gv.enumeration == GroupVariation::UNKNOWN)
 		{
 			FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_UNKNOWN_GROUP_VAR, "Unknown object %i / %i", gv.group, gv.variation);
-			return Result::UNKNOWN_OBJECT;
+			return ParseResult::UNKNOWN_OBJECT;
 		}
 		else
 		{
@@ -106,7 +106,7 @@ APDUParser::Result APDUParser::ParseHeader(ReadBufferView& buffer, openpal::Logg
 						GroupVariationToString(gv.enumeration),
 						QualifierCodeToString(qualifier));
 
-					return Result::OK;
+					return ParseResult::OK;
 				}
 
 			case(QualifierCode::UINT8_CNT) :
@@ -129,7 +129,7 @@ APDUParser::Result APDUParser::ParseHeader(ReadBufferView& buffer, openpal::Logg
 
 			default:
 				FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_UNKNOWN_QUALIFIER, "Unknown qualifier %x", rawQualifier);
-				return Result::UNKNOWN_QUALIFIER;
+				return ParseResult::UNKNOWN_QUALIFIER;
 			}
 		}
 	}
@@ -149,7 +149,7 @@ IndexedValue<BinaryOutputStatus, uint16_t> APDUParser::BoolToBinaryOutputStatus(
 	case(GroupVariation::descriptor): \
 	return ParseRangeFixedSize(record, descriptor::Inst(), buffer, pLogger, range, pHandler);
 
-APDUParser::Result APDUParser::ParseRangeOfObjects(openpal::ReadBufferView& buffer, openpal::Logger* pLogger, const HeaderRecord& record, const Range& range, IAPDUHandler* pHandler)
+ParseResult APDUParser::ParseRangeOfObjects(openpal::ReadBufferView& buffer, openpal::Logger* pLogger, const HeaderRecord& record, const Range& range, IAPDUHandler* pHandler)
 {
 	switch(record.enumeration)
 	{
@@ -247,11 +247,11 @@ APDUParser::Result APDUParser::ParseRangeOfObjects(openpal::ReadBufferView& buff
 			"Unsupported qualifier/object - %s - %i / %i",
 			QualifierCodeToString(record.qualifier), record.group, record.variation);
 
-		return Result::INVALID_OBJECT_QUALIFIER;
+		return ParseResult::INVALID_OBJECT_QUALIFIER;
 	}
 }
 
-APDUParser::Result APDUParser::ParseCountOfObjects(openpal::ReadBufferView& buffer, openpal::Logger* pLogger, const HeaderRecord& record, uint16_t count, IAPDUHandler* pHandler)
+ParseResult APDUParser::ParseCountOfObjects(openpal::ReadBufferView& buffer, openpal::Logger* pLogger, const HeaderRecord& record, uint16_t count, IAPDUHandler* pHandler)
 {
 	switch(record.enumeration)
 	{
@@ -267,11 +267,11 @@ APDUParser::Result APDUParser::ParseCountOfObjects(openpal::ReadBufferView& buff
 		case(GroupVariation::Group52Var2) :
 			return ParseCountOf<Group52Var2>(buffer, pLogger, record, count, pHandler);
 		default:
-			return Result::INVALID_OBJECT_QUALIFIER;
+			return ParseResult::INVALID_OBJECT_QUALIFIER;
 	}		
 }
 
-APDUParser::Result APDUParser::ParseRangeOfOctetData(
+ParseResult APDUParser::ParseRangeOfOctetData(
     openpal::ReadBufferView& buffer,
     openpal::Logger* pLogger,
     const HeaderRecord& record,
@@ -284,7 +284,7 @@ APDUParser::Result APDUParser::ParseRangeOfOctetData(
 		if (buffer.Size() < size)
 		{
 			SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified octet objects");
-			return Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
+			return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
 		}
 		else
 		{
@@ -300,13 +300,13 @@ APDUParser::Result APDUParser::ParseRangeOfOctetData(
 				pHandler->OnRange(record, collection);
 			}
 			buffer.Advance(size);
-			return Result::OK;
+			return ParseResult::OK;
 		}
 	}
 	else
 	{
 		SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Octet string variation 0 may only be used in requests");
-		return Result::INVALID_OBJECT;
+		return ParseResult::INVALID_OBJECT;
 	}
 
 }

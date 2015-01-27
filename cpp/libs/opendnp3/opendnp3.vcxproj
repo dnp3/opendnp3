@@ -60,6 +60,7 @@
     <ClInclude Include="src\opendnp3\app\MeasurementTypes.h" />
     <ClInclude Include="src\opendnp3\app\OctetData.h" />
     <ClInclude Include="src\opendnp3\app\OctetString.h" />
+    <ClInclude Include="src\opendnp3\app\ParseResult.h" />
     <ClInclude Include="src\opendnp3\app\PrefixedWriteIterator.h" />
     <ClInclude Include="src\opendnp3\app\QualityMasks.h" />
     <ClInclude Include="src\opendnp3\app\Range.h" />
@@ -201,6 +202,7 @@
     <ClInclude Include="src\opendnp3\objects\SeqUserData.h" />
     <ClInclude Include="src\opendnp3\outstation\ApplicationIIN.h" />
     <ClInclude Include="src\opendnp3\outstation\AssignClassHandler.h" />
+    <ClInclude Include="src\opendnp3\outstation\authv5\AuthRequestParser.h" />
     <ClInclude Include="src\opendnp3\outstation\authv5\SAv5OutstationAuthProvider.h" />
     <ClInclude Include="src\opendnp3\outstation\Cell.h" />
     <ClInclude Include="src\opendnp3\outstation\ClassBasedRequestHandler.h" />

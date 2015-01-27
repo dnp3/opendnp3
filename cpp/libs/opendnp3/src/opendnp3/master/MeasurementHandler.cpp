@@ -33,7 +33,7 @@ bool MeasurementHandler::ProcessMeasurements(const openpal::ReadBufferView& obje
 {
 	MeasurementHandler handler(*pLogger, pHandler);
 	auto result = APDUParser::ParseTwoPass(objects, &handler, pLogger);
-	return (result == APDUParser::Result::OK);
+	return (result == ParseResult::OK);
 }
 
 MeasurementHandler::MeasurementHandler(const openpal::Logger& logger, ISOEHandler* pSOEHandler_) : 

@@ -18,16 +18,28 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_IINHELPERS_H
-#define OPENDNP3_IINHELPERS_H
+#ifndef OPENDNP3_PARSERESULT_H
+#define OPENDNP3_PARSERESULT_H
 
-#include "opendnp3/app/IINField.h"
-#include "opendnp3/app/ParseResult.h"
+#include <cstdint>
 
 namespace opendnp3
 {
-	
-IINField IINFromParseResult(ParseResult result);
+
+	enum class ParseResult : uint8_t
+	{
+		OK,
+		NOT_ENOUGH_DATA_FOR_HEADER,
+		NOT_ENOUGH_DATA_FOR_RANGE,
+		NOT_ENOUGH_DATA_FOR_OBJECTS,
+		UNREASONABLE_OBJECT_COUNT,
+		UNKNOWN_OBJECT,
+		UNKNOWN_QUALIFIER,
+		INVALID_OBJECT_QUALIFIER,
+		INVALID_OBJECT,
+		BAD_START_STOP,
+		COUNT_OF_ZERO
+	};
 
 }
 

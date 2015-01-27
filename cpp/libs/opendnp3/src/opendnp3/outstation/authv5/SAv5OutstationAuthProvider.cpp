@@ -46,13 +46,17 @@ void SAv5OutstationAuthProvider::Reset()
 		
 void SAv5OutstationAuthProvider::OnReceive(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {	
+	FORMAT_HEX_BLOCK(ostate.logger, flags::APP_OBJECT_RX, objects, 16, 16);
+
 	// examine the function code to determine what kind of ASDU it is
 	switch (header.function)
 	{
 		case(FunctionCode::AUTH_REQUEST) :
 			this->OnAuthRequest(ostate, header, objects);
+			break;
 		case(FunctionCode::AUTH_RESPONSE) :
 			this->OnAuthResponse(ostate, header, objects);
+			break;
 		case(FunctionCode::AUTH_REQUEST_NO_ACK) :
 			SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "AuthRequestNoAck not supported");
 			break;

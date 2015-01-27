@@ -98,7 +98,7 @@ Pair<IINField, AppControlField> OFunctions::HandleRead(OState& ostate, const ope
 	ostate.database.Unselect();
 	ReadHandler handler(ostate.logger, ostate.database.GetSelector(), ostate.eventBuffer);
 	auto result = APDUParser::ParseTwoPass(objects, &handler, &ostate.logger, APDUParser::Settings::NoContents()); // don't expect range/count context on a READ
-	if (result == APDUParser::Result::OK)
+	if (result == ParseResult::OK)
 	{				
 		auto control = ostate.rspContext.LoadResponse(writer);
 		return Pair<IINField, AppControlField>(handler.Errors(), control);
@@ -114,7 +114,7 @@ IINField OFunctions::HandleWrite(OState& ostate, const openpal::ReadBufferView& 
 {
 	WriteHandler handler(ostate.logger, *ostate.pApplication, &ostate.staticIIN);
 	auto result = APDUParser::ParseTwoPass(objects, &handler, &ostate.logger);
-	return (result == APDUParser::Result::OK) ? handler.Errors() : IINFromParseResult(result);
+	return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
 }
 
 IINField OFunctions::HandleDirectOperate(OState& ostate, const openpal::ReadBufferView& objects, HeaderWriter* pWriter)
@@ -130,7 +130,7 @@ IINField OFunctions::HandleDirectOperate(OState& ostate, const openpal::ReadBuff
 		CommandActionAdapter adapter(ostate.pCommandHandler, false);
 		CommandResponseHandler handler(ostate.logger, ostate.params.maxControlsPerRequest, &adapter, pWriter);
 		auto result = APDUParser::ParseTwoPass(objects, &handler, &ostate.logger);
-		return (result == APDUParser::Result::OK) ? handler.Errors() : IINFromParseResult(result);
+		return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
 	}
 }
 
@@ -147,7 +147,7 @@ IINField OFunctions::HandleSelect(OState& ostate, const openpal::ReadBufferView&
 		CommandActionAdapter adapter(ostate.pCommandHandler, true);
 		CommandResponseHandler handler(ostate.logger, ostate.params.maxControlsPerRequest, &adapter, &writer);
 		auto result = APDUParser::ParseTwoPass(objects, &handler, &ostate.logger);
-		if (result == APDUParser::Result::OK)
+		if (result == ParseResult::OK)
 		{
 			if (handler.AllCommandsSuccessful())
 			{						
@@ -181,7 +181,7 @@ IINField OFunctions::HandleOperate(OState& ostate, const openpal::ReadBufferView
 			CommandActionAdapter adapter(ostate.pCommandHandler, false);
 			CommandResponseHandler handler(ostate.logger, ostate.params.maxControlsPerRequest, &adapter, &writer);
 			auto result = APDUParser::ParseTwoPass(objects, &handler, &ostate.logger);
-			return (result == APDUParser::Result::OK) ? handler.Errors() : IINFromParseResult(result);
+			return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
 		}
 		else
 		{
@@ -253,7 +253,7 @@ IINField OFunctions::HandleAssignClass(OState& ostate, const openpal::ReadBuffer
 		// Lock the db as this can adjust configuration values in the database
 		Transaction tx(ostate.database);
 		auto result = APDUParser::ParseTwoPass(objects, &handler, &ostate.logger, APDUParser::Settings::NoContents());
-		return (result == APDUParser::Result::OK) ? handler.Errors() : IINFromParseResult(result);
+		return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
 	}
 	else
 	{
@@ -265,7 +265,7 @@ IINField OFunctions::HandleDisableUnsolicited(OState& ostate, const openpal::Rea
 {
 	ClassBasedRequestHandler handler(ostate.logger);
 	auto result = APDUParser::ParseTwoPass(objects, &handler, &ostate.logger);
-	if (result == APDUParser::Result::OK)
+	if (result == ParseResult::OK)
 	{
 		ostate.params.unsolClassMask.Clear(handler.GetClassField());
 		return handler.Errors();
@@ -280,7 +280,7 @@ IINField OFunctions::HandleEnableUnsolicited(OState& ostate, const openpal::Read
 {	
 	ClassBasedRequestHandler handler(ostate.logger);
 	auto result = APDUParser::ParseTwoPass(objects, &handler, &ostate.logger);
-	if (result == APDUParser::Result::OK)
+	if (result == ParseResult::OK)
 	{
 		ostate.params.unsolClassMask.Set(handler.GetClassField());
 		return handler.Errors();

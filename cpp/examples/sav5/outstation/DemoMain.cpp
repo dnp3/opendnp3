@@ -47,7 +47,7 @@ int main(int argc, char* argv[])
 
 	// Specify what log levels to use. NORMAL is warning and above
 	// You can add all the comms logging by uncommenting below.
-	const uint32_t FILTERS = levels::NORMAL; // | levels::ALL_COMMS;
+	const uint32_t FILTERS = levels::NORMAL | flags::APP_HEADER_RX | flags::APP_OBJECT_RX; // | levels::ALL_COMMS;
 
 	MockCryptoProvider crypto;
 
@@ -82,7 +82,7 @@ int main(int argc, char* argv[])
 	// you can override an default outstation parameters here
 	// in this example, we've enabled the oustation to use unsolicted reporting
 	// if the master enables it
-	stackConfig.outstation.params.allowUnsolicited = true;
+	stackConfig.outstation.params.allowUnsolicited = false;
 
 	// You can override the default link layer settings here
 	// in this example we've changed the default link layer addressing

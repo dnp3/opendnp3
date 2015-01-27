@@ -24,13 +24,13 @@
 namespace opendnp3
 {
 
-IINField IINFromParseResult(APDUParser::Result result)
+IINField IINFromParseResult(ParseResult result)
 {
 	switch(result)
 	{
-	case(APDUParser::Result::OK):
+	case(ParseResult::OK):
 		return IINField::Empty();
-	case(APDUParser::Result::UNKNOWN_OBJECT):
+	case(ParseResult::UNKNOWN_OBJECT):
 		return IINField(IINBit::OBJECT_UNKNOWN);
 	default:
 		return IINField(IINBit::PARAM_ERROR);

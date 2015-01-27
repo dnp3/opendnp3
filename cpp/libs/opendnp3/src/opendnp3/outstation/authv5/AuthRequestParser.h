@@ -18,17 +18,40 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_IINHELPERS_H
-#define OPENDNP3_IINHELPERS_H
-
-#include "opendnp3/app/IINField.h"
-#include "opendnp3/app/ParseResult.h"
+#ifndef OPENDNP3_AUTHREQUESTPARSER_H
+#define OPENDNP3_AUTHREQUESTPARSER_H
 
 namespace opendnp3
 {
+
+/**
+	SAv5 authentication provider
+*/
+class AuthRequestParser : private openpal::PureStatic
+{
+	public:
+
+	SAv5OutstationAuthProvider(uint32_t maxRxASDUSize, openpal::ICryptoProvider& crypto);
+
+	virtual void Reset() override final;	
+		
+	virtual void OnReceive(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects) override final;
+
+	private:
+
+	void OnAuthRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
+
+	void OnAuthResponse(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
+
+	void OnUnknownRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
+
+	DeferredRequest deferred;
+	openpal::ICryptoProvider* pCrypto;
+	KeyStatus keyStatus;
 	
-IINField IINFromParseResult(ParseResult result);
+};
 
 }
 
 #endif
+

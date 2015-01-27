@@ -94,7 +94,7 @@ IMasterTask::ResponseResult SerialTimeSyncTask::OnResponseDelayMeas(const APDURe
 	{
 		TimeSyncHandler handler(logger);
 		auto result = APDUParser::ParseTwoPass(objects, &handler, &logger);
-		if (result == APDUParser::Result::OK)
+		if (result == ParseResult::OK)
 		{
 			uint16_t rtuTurnAroundTime;
 			if (handler.GetTimeDelay(rtuTurnAroundTime))
