@@ -80,6 +80,10 @@ private:
 
 	static ParseResult ParseHeader(openpal::ReadBufferView& buffer, openpal::Logger* pLogger, const ParserSettings& settings, IAPDUHandler* pHandler);
 
+	static ParseResult HandleQualifier(openpal::ReadBufferView& buffer, openpal::Logger* pLogger, const HeaderRecord& record, const ParserSettings& settings, IAPDUHandler* pHandler);
+
+	static void HandleAllObjectsHeader(openpal::Logger* pLogger, const HeaderRecord& record, const ParserSettings& settings, IAPDUHandler* pHandler);
+
 	template <class IndexType>
 	static ParseResult ParseCountHeader(openpal::ReadBufferView& buffer, openpal::Logger* pLogger, const ParserSettings& settings, const HeaderRecord& record, IAPDUHandler* pHandler);
 
@@ -161,7 +165,7 @@ ParseResult APDUParser::ParseCountHeader(openpal::ReadBufferView& buffer, openpa
 			record.group,
 			record.variation,
 			GroupVariationToString(record.enumeration),			
-			QualifierCodeToString(record.qualifier),
+			QualifierCodeToString(record.GetQualifierCode()),
 			count);		
 
 		if (settings.ExpectsContents())
@@ -196,7 +200,7 @@ ParseResult APDUParser::ParseRangeHeader(openpal::ReadBufferView& buffer, openpa
 			record.group,
 			record.variation,
 			GroupVariationToString(record.enumeration),
-			QualifierCodeToString(record.qualifier),
+			QualifierCodeToString(record.GetQualifierCode()),
 			range.start,
 			range.stop);		
 
@@ -232,7 +236,7 @@ ParseResult APDUParser::ParseIndexPrefixHeader(openpal::ReadBufferView& buffer, 
 			record.group,
 			record.variation,
 			GroupVariationToString(record.enumeration),
-			QualifierCodeToString(record.qualifier),
+			QualifierCodeToString(record.GetQualifierCode()),
 			count);
 
 		return ParseObjectsWithIndexPrefix<IndexType>(buffer, pLogger, record, count, pHandler);
@@ -462,7 +466,7 @@ ParseResult APDUParser::ParseObjectsWithIndexPrefix(openpal::ReadBufferView& buf
 		
 		FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_ILLEGAL_QUALIFIER_AND_OBJECT, 
 			"Unsupported qualifier/object - %s - %i / %i",
-			QualifierCodeToString(record.qualifier), record.group, record.variation);
+			QualifierCodeToString(record.GetQualifierCode()), record.group, record.variation);
 
 		return ParseResult::INVALID_OBJECT_QUALIFIER;
 	}

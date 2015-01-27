@@ -79,12 +79,14 @@ class HeaderRecord : public GroupVariationRecord
 {
 public:
 
-	HeaderRecord() : qualifier(QualifierCode::UNDEFINED)
+	HeaderRecord() : qualifier(0)
 	{}
 
-	HeaderRecord(const GroupVariationRecord& gv, QualifierCode qualifier_);	
+	HeaderRecord(const GroupVariationRecord& gv, uint8_t qualifier);
 
-	QualifierCode qualifier;
+	QualifierCode GetQualifierCode() const;	
+
+	uint8_t qualifier;	
 };
 
 }

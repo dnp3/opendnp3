@@ -79,8 +79,16 @@ GroupVariationRecord::GroupVariationRecord(uint8_t group_, uint8_t variation_, G
 
 }
 
-HeaderRecord::HeaderRecord(const GroupVariationRecord& gv, QualifierCode qualifier_) : GroupVariationRecord(gv), qualifier(qualifier_)
+HeaderRecord::HeaderRecord(const GroupVariationRecord& gv, uint8_t qualifier_) : 
+	GroupVariationRecord(gv), 
+	qualifier(qualifier_)	
 {
+
+}
+
+QualifierCode HeaderRecord::GetQualifierCode() const
+{
+	return QualifierCodeFromType(qualifier);
 }
 
 GroupVariationRecord GroupVariationRecord::GetRecord(uint8_t group, uint8_t variation)

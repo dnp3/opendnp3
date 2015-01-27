@@ -81,7 +81,7 @@ private:
 	IINField LoadAny(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<T, uint16_t>>& meas)
 	{		
 		this->CheckForTxStart();
-		pSOEHandler->OnReceiveHeader(HeaderInfo(record.enumeration, record.qualifier, tsmode), meas);
+		pSOEHandler->OnReceiveHeader(HeaderInfo(record.enumeration, record.GetQualifierCode(), tsmode), meas);
 		return IINField();
 	}
 

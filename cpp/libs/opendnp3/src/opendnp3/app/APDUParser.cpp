@@ -80,56 +80,60 @@ ParseResult APDUParser::ParseHeader(ReadBufferView& buffer, openpal::Logger* pLo
 			return ParseResult::UNKNOWN_OBJECT;
 		}
 		else
-		{						
-			HeaderRecord record(gv, QualifierCodeFromType(header.qualifier));
-
-			switch (record.qualifier)
-			{
-
-			case(QualifierCode::ALL_OBJECTS) :
-			{
-				FORMAT_LOGGER_BLOCK(pLogger, settings.Filters(),
-					"%03u,%03u - %s - %s",
-					header.group,
-					header.variation,
-					GroupVariationToString(gv.enumeration),
-					QualifierCodeToString(record.qualifier));
-
-				if (pHandler)
-				{
-					pHandler->AllObjects(record);
-				}
-		
-				return ParseResult::OK;
-			}
-
-			case(QualifierCode::UINT8_CNT) :
-				return ParseCountHeader<UInt8>(buffer, pLogger, settings, record, pHandler);
-
-			case(QualifierCode::UINT16_CNT) :
-				return ParseCountHeader<UInt16>(buffer, pLogger, settings, record, pHandler);
-
-			case(QualifierCode::UINT8_START_STOP) :
-				return ParseRangeHeader<UInt8, uint16_t>(buffer, pLogger, settings, record, pHandler);
-
-			case(QualifierCode::UINT16_START_STOP) :
-				return ParseRangeHeader<UInt16, uint32_t>(buffer, pLogger, settings, record, pHandler);
-
-			case(QualifierCode::UINT8_CNT_UINT8_INDEX) :
-				return ParseIndexPrefixHeader<UInt8>(buffer, pLogger, settings, record, pHandler);
-
-			case(QualifierCode::UINT16_CNT_UINT16_INDEX) :
-				return ParseIndexPrefixHeader<UInt16>(buffer, pLogger, settings, record, pHandler);
-
-			default:
-				FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_UNKNOWN_QUALIFIER, "Unknown qualifier %x", header.qualifier);
-				return ParseResult::UNKNOWN_QUALIFIER;
-			}
+		{									
+			return APDUParser::HandleQualifier(buffer, pLogger, HeaderRecord(gv, header.qualifier), settings, pHandler);
 		}
 	}	
 	else
 	{
 		return result;
+	}
+}
+
+ParseResult APDUParser::HandleQualifier(ReadBufferView& buffer, openpal::Logger* pLogger, const HeaderRecord& record, const ParserSettings& settings, IAPDUHandler* pHandler)
+{
+	switch (record.GetQualifierCode())
+	{
+		case(QualifierCode::ALL_OBJECTS) :
+			HandleAllObjectsHeader(pLogger, record, settings, pHandler);
+			return ParseResult::OK;
+
+		case(QualifierCode::UINT8_CNT) :
+			return ParseCountHeader<UInt8>(buffer, pLogger, settings, record, pHandler);
+
+		case(QualifierCode::UINT16_CNT) :
+			return ParseCountHeader<UInt16>(buffer, pLogger, settings, record, pHandler);
+
+		case(QualifierCode::UINT8_START_STOP) :
+			return ParseRangeHeader<UInt8, uint16_t>(buffer, pLogger, settings, record, pHandler);
+
+		case(QualifierCode::UINT16_START_STOP) :
+			return ParseRangeHeader<UInt16, uint32_t>(buffer, pLogger, settings, record, pHandler);
+
+		case(QualifierCode::UINT8_CNT_UINT8_INDEX) :
+			return ParseIndexPrefixHeader<UInt8>(buffer, pLogger, settings, record, pHandler);
+
+		case(QualifierCode::UINT16_CNT_UINT16_INDEX) :
+			return ParseIndexPrefixHeader<UInt16>(buffer, pLogger, settings, record, pHandler);
+
+		default:
+			FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_UNKNOWN_QUALIFIER, "Unknown qualifier %x", record.qualifier);
+			return ParseResult::UNKNOWN_QUALIFIER;
+	}
+}
+
+void APDUParser::HandleAllObjectsHeader(openpal::Logger* pLogger, const HeaderRecord& record, const ParserSettings& settings, IAPDUHandler* pHandler)
+{
+	FORMAT_LOGGER_BLOCK(pLogger, settings.Filters(),
+		"%03u,%03u - %s - %s",
+		record.group,		
+		record.variation,
+		GroupVariationToString(record.enumeration),
+		QualifierCodeToString(QualifierCode::ALL_OBJECTS));
+
+	if (pHandler)
+	{
+		pHandler->AllObjects(record);
 	}
 }
 
@@ -233,7 +237,7 @@ ParseResult APDUParser::ParseRangeOfObjects(openpal::ReadBufferView& buffer, ope
 	default:
 		FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_ILLEGAL_QUALIFIER_AND_OBJECT,
 			"Unsupported qualifier/object - %s - %i / %i",
-			QualifierCodeToString(record.qualifier), record.group, record.variation);
+			QualifierCodeToString(record.GetQualifierCode()), record.group, record.variation);
 
 		return ParseResult::INVALID_OBJECT_QUALIFIER;
 	}
