@@ -99,11 +99,12 @@ ParseResult APDUParser::HandleQualifier(ReadBufferView& buffer, openpal::Logger*
 			return ParseResult::OK;
 
 		case(QualifierCode::UINT8_CNT) :
-			return ParseCountHeader<UInt8>(buffer, pLogger, settings, record, pHandler);
+			return ParseCountHeader(buffer, pLogger, NumParser::OneByte(), settings, record, pHandler);
 
 		case(QualifierCode::UINT16_CNT) :
-			return ParseCountHeader<UInt16>(buffer, pLogger, settings, record, pHandler);
+			return ParseCountHeader(buffer, pLogger, NumParser::TwoByte(), settings, record, pHandler);
 
+/*
 		case(QualifierCode::UINT8_START_STOP) :
 			return ParseRangeHeader<UInt8, uint16_t>(buffer, pLogger, settings, record, pHandler);
 
@@ -115,6 +116,7 @@ ParseResult APDUParser::HandleQualifier(ReadBufferView& buffer, openpal::Logger*
 
 		case(QualifierCode::UINT16_CNT_UINT16_INDEX) :
 			return ParseIndexPrefixHeader<UInt16>(buffer, pLogger, settings, record, pHandler);
+*/
 
 		default:
 			FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_UNKNOWN_QUALIFIER, "Unknown qualifier %x", record.qualifier);
@@ -134,6 +136,64 @@ void APDUParser::HandleAllObjectsHeader(openpal::Logger* pLogger, const HeaderRe
 	if (pHandler)
 	{
 		pHandler->AllObjects(record);
+	}
+}
+
+ParseResult APDUParser::ParseCountHeader(openpal::ReadBufferView& buffer, openpal::Logger* pLogger, const NumParser& numParser, const ParserSettings& settings, const HeaderRecord& record, IAPDUHandler* pHandler)
+{
+	uint16_t count;
+	auto result = numParser.ParseCount(buffer, count, pLogger);
+	if (result == ParseResult::OK)
+	{
+		FORMAT_LOGGER_BLOCK(pLogger, settings.Filters(),
+			"%03u,%03u %s, %s [%u]",
+			record.group,
+			record.variation,
+			GroupVariationToString(record.enumeration),
+			QualifierCodeToString(record.GetQualifierCode()),
+			count);
+
+		if (settings.ExpectsContents())
+		{
+			return ParseCountOfObjects(buffer, pLogger, record, count, pHandler);
+		}
+		else
+		{
+			if (pHandler)
+			{
+				pHandler->OnCountRequest(record, count);
+			}
+
+			return ParseResult::OK;
+		}
+	}	
+	else
+	{
+		return result;
+	}
+}
+
+/*
+ParseResult APDUParser::ParseIndexPrefixHeader(openpal::ReadBufferView& buffer, openpal::Logger* pLogger, const NumParser& numParser, const ParserSettings& settings, const HeaderRecord& record, IAPDUHandler* pHandler)
+{
+	uint16_t count;
+	auto res = numParser.ParseCount(buffer, count, pLogger);
+	if (res == ParseResult::OK)
+	{
+
+		FORMAT_LOGGER_BLOCK(pLogger, settings.Filters(),
+			"%03u,%03u %s, %s [%u]",
+			record.group,
+			record.variation,
+			GroupVariationToString(record.enumeration),
+			QualifierCodeToString(record.GetQualifierCode()),
+			count);
+
+		return ParseObjectsWithIndexPrefix(buffer, pLogger, record, count, pHandler);
+	}
+	else
+	{
+		return res;
 	}
 }
 
@@ -242,6 +302,8 @@ ParseResult APDUParser::ParseRangeOfObjects(openpal::ReadBufferView& buffer, ope
 		return ParseResult::INVALID_OBJECT_QUALIFIER;
 	}
 }
+*/
+
 
 ParseResult APDUParser::ParseCountOfObjects(openpal::ReadBufferView& buffer, openpal::Logger* pLogger, const HeaderRecord& record, uint16_t count, IAPDUHandler* pHandler)
 {
@@ -262,6 +324,9 @@ ParseResult APDUParser::ParseCountOfObjects(openpal::ReadBufferView& buffer, ope
 			return ParseResult::INVALID_OBJECT_QUALIFIER;
 	}		
 }
+
+
+/*
 
 ParseResult APDUParser::ParseRangeOfOctetData(
     openpal::ReadBufferView& buffer,
@@ -302,6 +367,7 @@ ParseResult APDUParser::ParseRangeOfOctetData(
 	}
 
 }
+*/
 
 }
 
