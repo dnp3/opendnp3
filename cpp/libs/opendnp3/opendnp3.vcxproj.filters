@@ -111,9 +111,6 @@
     <ClInclude Include="src\opendnp3\app\BitfieldRangeWriteIterator.h">
       <Filter>Header\app</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\app\BitReader.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\app\ClassField.h">
       <Filter>Header\app</Filter>
     </ClInclude>
@@ -151,9 +148,6 @@
       <Filter>Header\app</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\app\IndexedValue.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\app\IndexParser.h">
       <Filter>Header\app</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\app\IterableBuffer.h">
@@ -831,6 +825,9 @@
     <ClInclude Include="src\opendnp3\app\parsing\NumParser.h">
       <Filter>Header\app\parsing</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\app\parsing\BitReader.h">
+      <Filter>Header\app\parsing</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\TimeAndInterval.cpp">
@@ -858,9 +855,6 @@
       <Filter>Source\app</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\app\ClassField.cpp">
-      <Filter>Source\app</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\app\BitReader.cpp">
       <Filter>Source\app</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\app\AppControlField.cpp">
@@ -1260,6 +1254,9 @@
       <Filter>Source\app\parsing</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\app\parsing\NumParser.cpp">
+      <Filter>Source\app\parsing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\app\parsing\BitReader.cpp">
       <Filter>Source\app\parsing</Filter>
     </ClCompile>
   </ItemGroup>

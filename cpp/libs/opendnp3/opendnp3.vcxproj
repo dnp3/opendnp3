@@ -32,7 +32,6 @@
     <ClInclude Include="src\opendnp3\app\BaseMeasurementTypes.h" />
     <ClInclude Include="src\opendnp3\app\BinaryCommandEvent.h" />
     <ClInclude Include="src\opendnp3\app\BitfieldRangeWriteIterator.h" />
-    <ClInclude Include="src\opendnp3\app\BitReader.h" />
     <ClInclude Include="src\opendnp3\app\ClassField.h" />
     <ClInclude Include="src\opendnp3\app\ControlRelayOutputBlock.h" />
     <ClInclude Include="src\opendnp3\app\IINValue.h" />
@@ -48,7 +47,6 @@
     <ClInclude Include="src\opendnp3\app\HeaderWriter.h" />
     <ClInclude Include="src\opendnp3\app\IINField.h" />
     <ClInclude Include="src\opendnp3\app\IndexedValue.h" />
-    <ClInclude Include="src\opendnp3\app\IndexParser.h" />
     <ClInclude Include="src\opendnp3\app\IterableBuffer.h" />
     <ClInclude Include="src\opendnp3\app\IterableTransforms.h" />
     <ClInclude Include="src\opendnp3\app\ITransactable.h" />
@@ -61,6 +59,7 @@
     <ClInclude Include="src\opendnp3\app\parsing\APDUHandlerBase.h" />
     <ClInclude Include="src\opendnp3\app\parsing\APDUHeaderParser.h" />
     <ClInclude Include="src\opendnp3\app\parsing\APDUParser.h" />
+    <ClInclude Include="src\opendnp3\app\parsing\BitReader.h" />
     <ClInclude Include="src\opendnp3\app\parsing\CountIndexParser.h" />
     <ClInclude Include="src\opendnp3\app\parsing\CountParser.h" />
     <ClInclude Include="src\opendnp3\app\parsing\IAPDUHandler.h" />
@@ -287,7 +286,6 @@
     <ClCompile Include="src\opendnp3\app\APDUWrapper.cpp" />
     <ClCompile Include="src\opendnp3\app\AppControlField.cpp" />
     <ClCompile Include="src\opendnp3\app\BinaryCommandEvent.cpp" />
-    <ClCompile Include="src\opendnp3\app\BitReader.cpp" />
     <ClCompile Include="src\opendnp3\app\ClassField.cpp" />
     <ClCompile Include="src\opendnp3\app\ControlRelayOutputBlock.cpp" />
     <ClCompile Include="src\opendnp3\app\EventTriggers.cpp" />
@@ -301,6 +299,7 @@
     <ClCompile Include="src\opendnp3\app\parsing\APDUHandlerBase.cpp" />
     <ClCompile Include="src\opendnp3\app\parsing\APDUHeaderParser.cpp" />
     <ClCompile Include="src\opendnp3\app\parsing\APDUParser.cpp" />
+    <ClCompile Include="src\opendnp3\app\parsing\BitReader.cpp" />
     <ClCompile Include="src\opendnp3\app\parsing\CountIndexParser.cpp" />
     <ClCompile Include="src\opendnp3\app\parsing\CountParser.cpp" />
     <ClCompile Include="src\opendnp3\app\parsing\NumParser.cpp" />

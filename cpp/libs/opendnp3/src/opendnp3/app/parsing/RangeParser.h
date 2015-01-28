@@ -29,10 +29,11 @@
 #include "opendnp3/app/parsing/ParseResult.h"
 #include "opendnp3/app/parsing/NumParser.h"
 #include "opendnp3/app/parsing/ParserSettings.h"
+#include "opendnp3/app/parsing/BitReader.h"
 
 #include "opendnp3/app/LazyIterable.h"
 #include "opendnp3/app/Range.h"
-#include "opendnp3/app/BitReader.h"
+
 
 namespace opendnp3
 {
