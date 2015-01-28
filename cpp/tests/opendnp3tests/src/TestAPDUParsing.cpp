@@ -332,8 +332,8 @@ TEST_CASE(SUITE("TestIINValue"))
 	TestComplex("50 01 00 07 07 00", ParseResult::OK, 1, [&](MockApduHeaderHandler & mock)
 	{
 		REQUIRE(1 ==  mock.iinBits.size());
-		IndexedValue<bool, uint16_t> value(false, 7);
-		REQUIRE((value == mock.iinBits[0]));
+		IndexedValue<IINValue, uint16_t> value(false, 7);
+		REQUIRE((value.value.value == mock.iinBits[0].value.value));
 	});
 }
 

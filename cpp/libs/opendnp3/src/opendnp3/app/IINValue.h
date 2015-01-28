@@ -18,43 +18,24 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_WRITEHANDLER_H
-#define OPENDNP3_WRITEHANDLER_H
-
-#include "opendnp3/app/APDUHandlerBase.h"
-#include "opendnp3/app/IINField.h"
-
-#include "opendnp3/outstation/IOutstationApplication.h"
-
-#include <openpal/logging/Logger.h>
+#ifndef OPENDNP3_IINVALUE_H
+#define OPENDNP3_IINVALUE_H
 
 namespace opendnp3
 {
+	// a simple wrapper type to differentiate an IIN from a bool
+	class IINValue
+	{
+		public:
 
-class WriteHandler : public APDUHandlerBase
-{
-public:
+		IINValue() : value(false)
+		{}
 
-	WriteHandler(openpal::Logger& logger, IOutstationApplication& application, IINField* pWriteIIN_);
-	
-private:
+		IINValue(bool value_) : value(value_)
+		{}
 
-	virtual IINField ProcessIIN(const HeaderRecord& record, const IterableBuffer<IndexedValue<IINValue, uint16_t>>& meas) override final;
-
-	virtual IINField ProcessCountOf(const HeaderRecord& record, const IterableBuffer<Group50Var1>& times) override final;
-
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas) override final;
-
-	IOutstationApplication* pApplication;
-	IINField* pWriteIIN;
-
-	bool wroteTime;
-	bool wroteIIN;
-};
-
+		bool value;
+	};
 }
 
-
-
 #endif
-

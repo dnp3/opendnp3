@@ -26,7 +26,8 @@
 #include "opendnp3/app/GroupVariationRecord.h"
 #include "opendnp3/app/MeasurementFactory.h"
 #include "opendnp3/app/ObjectHeaderParser.h"
-#include "opendnp3/app/CountHandler.h"
+#include "opendnp3/app/CountParser.h"
+#include "opendnp3/app/RangeParser.h"
 
 using namespace openpal;
 
@@ -97,22 +98,20 @@ ParseResult APDUParser::ParseQualifier(ReadBufferView& buffer, openpal::Logger* 
 	switch (record.GetQualifierCode())
 	{
 		case(QualifierCode::ALL_OBJECTS) :
-			HandleAllObjectsHeader(pLogger, record, settings, pHandler);
-			return ParseResult::OK;
-
+			return HandleAllObjectsHeader(pLogger, record, settings, pHandler);			 
+			 
 		case(QualifierCode::UINT8_CNT) :
-			return CountHandler::ParseHeader(buffer, NumParser::OneByte(), settings, record, pLogger, pHandler);
+			return CountParser::ParseHeader(buffer, NumParser::OneByte(), settings, record, pLogger, pHandler);
 
 		case(QualifierCode::UINT16_CNT) :
-			return CountHandler::ParseHeader(buffer, NumParser::TwoByte(), settings, record, pLogger, pHandler);
+			return CountParser::ParseHeader(buffer, NumParser::TwoByte(), settings, record, pLogger, pHandler);
 
-/*
 		case(QualifierCode::UINT8_START_STOP) :
-			return ParseRangeHeader<UInt8, uint16_t>(buffer, pLogger, settings, record, pHandler);
+			return RangeParser::ParseHeader(buffer, NumParser::OneByte(), settings, record, pLogger, pHandler);
 
 		case(QualifierCode::UINT16_START_STOP) :
-			return ParseRangeHeader<UInt16, uint32_t>(buffer, pLogger, settings, record, pHandler);
-
+			return RangeParser::ParseHeader(buffer, NumParser::TwoByte(), settings, record, pLogger, pHandler);
+/*
 		case(QualifierCode::UINT8_CNT_UINT8_INDEX) :
 			return ParseIndexPrefixHeader<UInt8>(buffer, pLogger, settings, record, pHandler);
 
@@ -126,7 +125,7 @@ ParseResult APDUParser::ParseQualifier(ReadBufferView& buffer, openpal::Logger* 
 	}
 }
 
-void APDUParser::HandleAllObjectsHeader(openpal::Logger* pLogger, const HeaderRecord& record, const ParserSettings& settings, IAPDUHandler* pHandler)
+ParseResult APDUParser::HandleAllObjectsHeader(openpal::Logger* pLogger, const HeaderRecord& record, const ParserSettings& settings, IAPDUHandler* pHandler)
 {
 	FORMAT_LOGGER_BLOCK(pLogger, settings.Filters(),
 		"%03u,%03u - %s - %s",
@@ -139,6 +138,8 @@ void APDUParser::HandleAllObjectsHeader(openpal::Logger* pLogger, const HeaderRe
 	{
 		pHandler->AllObjects(record);
 	}
+
+	return ParseResult::OK;
 }
 
 /*
@@ -163,156 +164,6 @@ ParseResult APDUParser::ParseIndexPrefixHeader(openpal::ReadBufferView& buffer, 
 	{
 		return res;
 	}
-}
-
-#define MACRO_PARSE_OBJECTS_WITH_RANGE(descriptor) \
-	case(GroupVariation::descriptor): \
-	return ParseRangeFixedSize(record, descriptor::Inst(), buffer, pLogger, range, pHandler);
-
-ParseResult APDUParser::ParseRangeOfObjects(openpal::ReadBufferView& buffer, openpal::Logger* pLogger, const HeaderRecord& record, const Range& range, IAPDUHandler* pHandler)
-{
-	switch(record.enumeration)
-	{
-	case(GroupVariation::Group1Var1):
-		return ParseRangeAsBitField(buffer, pLogger, record, range, [pHandler, record](const IterableBuffer<IndexedValue<bool, uint16_t>>& values)
-		{
-			if(pHandler)
-			{
-				auto mapped = MapIterableBuffer<IndexedValue<bool, uint16_t>, IndexedValue<Binary, uint16_t>>(&values,
-				              [](const IndexedValue<bool, uint16_t>& v)
-				{
-					return IndexedValue<Binary, uint16_t>(Binary(v.value), v.index);
-				}
-				                                                                                             );
-				pHandler->OnRange(record, mapped);
-			}
-		});
-
-		MACRO_PARSE_OBJECTS_WITH_RANGE(Group1Var2);
-
-	case(GroupVariation::Group3Var1) :
-		return ParseRangeAsDoubleBitField(buffer, pLogger, record, range, [pHandler, record](const IterableBuffer<IndexedValue<DoubleBit, uint16_t>>& values)
-		{
-			if (pHandler)
-			{
-				auto mapped = MapIterableBuffer<IndexedValue<DoubleBit, uint16_t>, IndexedValue<DoubleBitBinary, uint16_t>>(&values,
-				              [](const IndexedValue<DoubleBit, uint16_t>& v)
-				{
-					return IndexedValue<DoubleBitBinary, uint16_t>(DoubleBitBinary(v.value), v.index);
-				}
-				                                                                                                           );
-				pHandler->OnRange(record, mapped);
-			}
-		});
-
-	case(GroupVariation::Group10Var1):
-		return ParseRangeAsBitField(buffer, pLogger, record, range, [pHandler, record](IterableBuffer<IndexedValue<bool, uint16_t>>& values)
-		{
-			if(pHandler)
-			{
-				auto mapped = MapIterableBuffer<IndexedValue<bool, uint16_t>, IndexedValue<BinaryOutputStatus, uint16_t>>(&values,
-				              [](const IndexedValue<bool, uint16_t>& v)
-				{
-					return IndexedValue<BinaryOutputStatus, uint16_t>(BinaryOutputStatus(v.value), v.index);
-				}
-				                                                                                                         );
-				pHandler->OnRange(record, mapped);
-			}
-		});
-
-		MACRO_PARSE_OBJECTS_WITH_RANGE(Group3Var2);
-
-		MACRO_PARSE_OBJECTS_WITH_RANGE(Group10Var2);
-
-		MACRO_PARSE_OBJECTS_WITH_RANGE(Group20Var1);
-		MACRO_PARSE_OBJECTS_WITH_RANGE(Group20Var2);
-		MACRO_PARSE_OBJECTS_WITH_RANGE(Group20Var5);
-		MACRO_PARSE_OBJECTS_WITH_RANGE(Group20Var6);
-
-		MACRO_PARSE_OBJECTS_WITH_RANGE(Group21Var1);
-		MACRO_PARSE_OBJECTS_WITH_RANGE(Group21Var2);
-		MACRO_PARSE_OBJECTS_WITH_RANGE(Group21Var5);
-		MACRO_PARSE_OBJECTS_WITH_RANGE(Group21Var6);
-		MACRO_PARSE_OBJECTS_WITH_RANGE(Group21Var9);
-		MACRO_PARSE_OBJECTS_WITH_RANGE(Group21Var10);
-
-		MACRO_PARSE_OBJECTS_WITH_RANGE(Group30Var1);
-		MACRO_PARSE_OBJECTS_WITH_RANGE(Group30Var2);
-		MACRO_PARSE_OBJECTS_WITH_RANGE(Group30Var3);
-		MACRO_PARSE_OBJECTS_WITH_RANGE(Group30Var4);
-		MACRO_PARSE_OBJECTS_WITH_RANGE(Group30Var5);
-		MACRO_PARSE_OBJECTS_WITH_RANGE(Group30Var6);
-
-		MACRO_PARSE_OBJECTS_WITH_RANGE(Group40Var1);
-		MACRO_PARSE_OBJECTS_WITH_RANGE(Group40Var2);
-		MACRO_PARSE_OBJECTS_WITH_RANGE(Group40Var3);
-		MACRO_PARSE_OBJECTS_WITH_RANGE(Group40Var4);
-
-		MACRO_PARSE_OBJECTS_WITH_RANGE(Group50Var4);
-
-	case(GroupVariation::Group80Var1):
-		return ParseRangeAsBitField(buffer, pLogger, record, range, [pHandler, record](const IterableBuffer<IndexedValue<bool, uint16_t>>& values)
-		{
-			if(pHandler)
-			{
-				pHandler->OnIIN(record, values);
-			}
-		});
-
-	case(GroupVariation::Group110AnyVar):
-		return ParseRangeOfOctetData(buffer, pLogger, record, range, pHandler);
-
-	default:
-		FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_ILLEGAL_QUALIFIER_AND_OBJECT,
-			"Unsupported qualifier/object - %s - %i / %i",
-			QualifierCodeToString(record.GetQualifierCode()), record.group, record.variation);
-
-		return ParseResult::INVALID_OBJECT_QUALIFIER;
-	}
-}
-*/
-
-
-/*
-
-ParseResult APDUParser::ParseRangeOfOctetData(
-    openpal::ReadBufferView& buffer,
-    openpal::Logger* pLogger,
-    const HeaderRecord& record,
-    const Range& range,
-    IAPDUHandler* pHandler)
-{
-	if (record.variation > 0)
-	{
-		uint32_t size = record.variation * range.Count();
-		if (buffer.Size() < size)
-		{
-			SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified octet objects");
-			return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
-		}
-		else
-		{
-			if (pHandler)
-			{
-				auto collection = CreateLazyIterable<IndexedValue<OctetString, uint16_t>>(buffer, range.Count(), [record, range](ReadBufferView & buff, uint32_t pos)
-				{
-					OctetString octets(buff.Take(record.variation));
-					IndexedValue<OctetString, uint16_t> value(octets, range.start + pos);
-					buff.Advance(record.variation);
-					return value;
-				});
-				pHandler->OnRange(record, collection);
-			}
-			buffer.Advance(size);
-			return ParseResult::OK;
-		}
-	}
-	else
-	{
-		SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Octet string variation 0 may only be used in requests");
-		return ParseResult::INVALID_OBJECT;
-	}
-
 }
 */
 

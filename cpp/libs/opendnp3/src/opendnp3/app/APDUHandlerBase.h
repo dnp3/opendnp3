@@ -61,7 +61,7 @@ public:
 
 	virtual void OnCountRequest(const HeaderRecord& record, uint16_t count) override final;
 
-	virtual void OnIIN(const HeaderRecord& record, const IterableBuffer<IndexedValue<bool, uint16_t>>& meas) override final;
+	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<IINValue, uint16_t>>& meas) override final;
 
 	virtual void OnCountOf(const HeaderRecord& record, const opendnp3::IterableBuffer<Group50Var1>&) override final;
 
@@ -149,7 +149,7 @@ protected:
 
 	virtual IINField ProcessCountRequest(const HeaderRecord& record, uint16_t count);
 
-	virtual IINField ProcessIIN(const HeaderRecord& record, const IterableBuffer<IndexedValue<bool, uint16_t>>& meas);
+	virtual IINField ProcessIIN(const HeaderRecord& record, const IterableBuffer<IndexedValue<IINValue, uint16_t>>& meas);
 
 	virtual IINField ProcessCountOf(const HeaderRecord& record, const IterableBuffer<Group50Var1>& objects);
 	virtual IINField ProcessCountOf(const HeaderRecord& record, const IterableBuffer<Group52Var2>&);

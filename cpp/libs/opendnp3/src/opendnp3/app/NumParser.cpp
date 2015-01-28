@@ -65,7 +65,31 @@ ParseResult NumParser::ParseCount(openpal::ReadBufferView& buffer, uint16_t& cou
 	}
 }
 
-bool NumParser::Read(uint16_t& count, openpal::ReadBufferView& buffer) const
+ParseResult NumParser::ParseRange(openpal::ReadBufferView& buffer, Range& range, openpal::Logger* pLogger) const
+{
+	if (buffer.Size() < (2 * static_cast<uint32_t>(size)))
+	{
+		SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_HEADER, "Not enough data for start / stop");
+		return ParseResult::NOT_ENOUGH_DATA_FOR_RANGE;
+	}
+	else
+	{		
+		this->Read(range.start, buffer);
+		this->Read(range.stop, buffer);
+
+		if (range.IsValid())
+		{
+			return ParseResult::OK;			
+		}
+		else
+		{
+			SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_START_STOP_MISMATCH, "start > stop");
+			return ParseResult::BAD_START_STOP;			
+		}
+	}
+}
+
+bool NumParser::Read(uint16_t& num, openpal::ReadBufferView& buffer) const
 {
 	if (buffer.Size() < size)
 	{
@@ -73,7 +97,7 @@ bool NumParser::Read(uint16_t& count, openpal::ReadBufferView& buffer) const
 	}
 	else
 	{
-		count = pReadFun(buffer);
+		num = pReadFun(buffer);
 		return true;
 	}
 }

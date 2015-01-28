@@ -57,10 +57,10 @@ public:
 		return IINField();
 	}
 
-	virtual IINField ProcessIIN(const HeaderRecord& record, const IterableBuffer<IndexedValue<bool, uint16_t>>& bits) override
+	virtual IINField ProcessIIN(const HeaderRecord& record, const IterableBuffer<IndexedValue<IINValue, uint16_t>>& bits) override
 	{
 		records.push_back(record);
-		bits.foreach([&](const IndexedValue<bool, uint16_t>& v)
+		bits.foreach([&](const IndexedValue<IINValue, uint16_t>& v)
 		{
 			iinBits.push_back(v);
 		});
@@ -361,7 +361,7 @@ public:
 
 	std::vector<HeaderRecord> records;
 
-	std::vector<IndexedValue<bool, uint16_t>> iinBits;
+	std::vector<IndexedValue<IINValue, uint16_t>> iinBits;
 
 	std::vector<IndexedValue<Binary, uint16_t>> eventBinaries;
 	std::vector<IndexedValue<Binary, uint16_t>> staticBinaries;

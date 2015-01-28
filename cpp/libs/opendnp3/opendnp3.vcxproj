@@ -38,6 +38,7 @@
     <ClInclude Include="src\opendnp3\app\BitReader.h" />
     <ClInclude Include="src\opendnp3\app\ClassField.h" />
     <ClInclude Include="src\opendnp3\app\ControlRelayOutputBlock.h" />
+    <ClInclude Include="src\opendnp3\app\IINValue.h" />
     <ClInclude Include="src\opendnp3\app\NumParser.h" />
     <ClInclude Include="src\opendnp3\app\CountWriteIterator.h" />
     <ClInclude Include="src\opendnp3\app\DNP3Serializer.h" />
@@ -67,10 +68,11 @@
     <ClInclude Include="src\opendnp3\app\PrefixedWriteIterator.h" />
     <ClInclude Include="src\opendnp3\app\QualityMasks.h" />
     <ClInclude Include="src\opendnp3\app\Range.h" />
+    <ClInclude Include="src\opendnp3\app\RangeParser.h" />
     <ClInclude Include="src\opendnp3\app\RangeWriteIterator.h" />
     <ClInclude Include="src\opendnp3\app\SequenceInfo.h" />
     <ClInclude Include="src\opendnp3\app\TimeAndInterval.h" />
-    <ClInclude Include="src\opendnp3\app\CountHandler.h" />
+    <ClInclude Include="src\opendnp3\app\CountParser.h" />
     <ClInclude Include="src\opendnp3\app\WriteConversions.h" />
     <ClInclude Include="src\opendnp3\app\WriteConversionTemplates.h" />
     <ClInclude Include="src\opendnp3\ErrorCodes.h" />
@@ -290,7 +292,7 @@
     <ClCompile Include="src\opendnp3\app\BitReader.cpp" />
     <ClCompile Include="src\opendnp3\app\ClassField.cpp" />
     <ClCompile Include="src\opendnp3\app\ControlRelayOutputBlock.cpp" />
-    <ClCompile Include="src\opendnp3\app\CountHandler.cpp" />
+    <ClCompile Include="src\opendnp3\app\CountParser.cpp" />
     <ClCompile Include="src\opendnp3\app\NumParser.cpp" />
     <ClCompile Include="src\opendnp3\app\EventTriggers.cpp" />
     <ClCompile Include="src\opendnp3\app\Functions.cpp" />
@@ -300,6 +302,7 @@
     <ClCompile Include="src\opendnp3\app\ObjectHeaderParser.cpp" />
     <ClCompile Include="src\opendnp3\app\ObjectWriter.cpp" />
     <ClCompile Include="src\opendnp3\app\OctetData.cpp" />
+    <ClCompile Include="src\opendnp3\app\RangeParser.cpp" />
     <ClCompile Include="src\opendnp3\app\TimeAndInterval.cpp" />
     <ClCompile Include="src\opendnp3\gen\AuthErrorCode.cpp" />
     <ClCompile Include="src\opendnp3\gen\CertificateType.cpp" />

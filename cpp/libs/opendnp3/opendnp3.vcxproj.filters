@@ -813,7 +813,13 @@
     <ClInclude Include="src\opendnp3\app\NumParser.h">
       <Filter>Header\app</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\app\CountHandler.h">
+    <ClInclude Include="src\opendnp3\app\CountParser.h">
+      <Filter>Header\app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\app\RangeParser.h">
+      <Filter>Header\app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\app\IINValue.h">
       <Filter>Header\app</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1238,7 +1244,10 @@
     <ClCompile Include="src\opendnp3\app\NumParser.cpp">
       <Filter>Source\app</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\app\CountHandler.cpp">
+    <ClCompile Include="src\opendnp3\app\CountParser.cpp">
+      <Filter>Source\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\app\RangeParser.cpp">
       <Filter>Source\app</Filter>
     </ClCompile>
   </ItemGroup>

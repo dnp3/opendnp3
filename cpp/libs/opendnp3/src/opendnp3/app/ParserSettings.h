@@ -64,7 +64,7 @@ namespace opendnp3
 
 
 		const bool expectContents;
-		int32_t logFilters;		
+		const int32_t logFilters;		
 	};	
 }
 

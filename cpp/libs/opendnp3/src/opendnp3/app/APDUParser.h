@@ -83,45 +83,12 @@ private:
 
 	static ParseResult ParseQualifier(openpal::ReadBufferView& buffer, openpal::Logger* pLogger, const HeaderRecord& record, const ParserSettings& settings, IAPDUHandler* pHandler);
 
-	static void HandleAllObjectsHeader(openpal::Logger* pLogger, const HeaderRecord& record, const ParserSettings& settings, IAPDUHandler* pHandler);	
+	static ParseResult HandleAllObjectsHeader(openpal::Logger* pLogger, const HeaderRecord& record, const ParserSettings& settings, IAPDUHandler* pHandler);
 
 	/*
-
 	static ParseResult ParseIndexPrefixHeader(openpal::ReadBufferView& buffer, openpal::Logger* pLogger, const NumParser& numParser, const ParserSettings& settings, const HeaderRecord& record, IAPDUHandler* pHandler);
 
 	static ParseResult ParseObjectsWithIndexPrefix(openpal::ReadBufferView& buffer, openpal::Logger* pLogger, const NumParser& numParser, const HeaderRecord& record, uint32_t count, IAPDUHandler* pHandler);
-
-	template <class ParserType, class CountType>
-	static ParseResult ParseRangeHeader(openpal::ReadBufferView& buffer, openpal::Logger* pLogger, const ParserSettings& settings, const HeaderRecord& record, IAPDUHandler* pHandler);	
-
-	template <class ParserType, class CountType>
-	static ParseResult ParseRange(openpal::ReadBufferView& buffer, openpal::Logger* pLogger, const ParserSettings& settings, Range& range);	
-
-	static ParseResult ParseRangeOfObjects(openpal::ReadBufferView& buffer, openpal::Logger* pLogger, const HeaderRecord& record, const Range& range, IAPDUHandler* pHandler);
-	
-	template <class Fun>
-	static ParseResult ParseRangeAsBitField(
-	    openpal::ReadBufferView& buffer,
-	    openpal::Logger* pLogger,
-	    const HeaderRecord& record,
-	    const Range& range,
-	    const Fun& action);
-
-	template <class Fun>
-	static ParseResult ParseRangeAsDoubleBitField(
-	    openpal::ReadBufferView& buffer,
-	    openpal::Logger* pLogger,
-	    const HeaderRecord& record,
-	    const Range& range,
-	    const Fun& action);
-
-	static ParseResult ParseRangeOfOctetData(
-	    openpal::ReadBufferView& buffer,
-	    openpal::Logger* pLogger,
-	    const HeaderRecord& record,
-	    const Range& range,
-	    IAPDUHandler* pHandler);
-
 	
 	static ParseResult ParseIndexPrefixedOctetData(
 	    openpal::ReadBufferView& buffer,
@@ -129,12 +96,7 @@ private:
 	    const HeaderRecord& record,
 		const NumParser& numParser,
 	    uint32_t count,
-	    IAPDUHandler* pHandler);
-
-	template <class Target>
-	static ParseResult ParseRangeFixedSize(const HeaderRecord& record, const openpal::Serializer<Target>& serializer, openpal::ReadBufferView& buffer, openpal::Logger* pLogger, const Range& range, IAPDUHandler* pHandler);
-
-	
+	    IAPDUHandler* pHandler);	
 
 	template <class Target>
 	static ParseResult ParseCountFixedSizeWithIndex(
@@ -149,99 +111,6 @@ private:
 };
 
 /*
-template <class ParserType, class CountType>
-ParseResult APDUParser::ParseRangeHeader(openpal::ReadBufferView& buffer, openpal::Logger* pLogger, const ParserSettings& settings, const HeaderRecord& record, IAPDUHandler* pHandler)
-{
-	Range range;
-	auto res = ParseRange<ParserType, CountType>(buffer, pLogger, settings, range);
-	if (res == ParseResult::OK)
-	{
-		FORMAT_LOGGER_BLOCK(pLogger, settings.Filters(),
-			"%03u,%03u %s, %s [%u, %u]",
-			record.group,
-			record.variation,
-			GroupVariationToString(record.enumeration),
-			QualifierCodeToString(record.GetQualifierCode()),
-			range.start,
-			range.stop);		
-
-		if(settings.ExpectsContents())
-		{
-			return ParseRangeOfObjects(buffer, pLogger, record, range, pHandler);
-		}
-		else
-		{
-			if(pHandler)
-			{
-				pHandler->OnRangeRequest(record, range);
-			}
-			return ParseResult::OK;
-		}
-	}
-	else
-	{
-		return res;
-	}
-}
-
-
-
-template <class Callback>
-ParseResult APDUParser::ParseRangeAsBitField(
-    openpal::ReadBufferView& buffer,
-    openpal::Logger* pLogger,
-    const HeaderRecord& record,
-    const Range& range,
-    const Callback& callback)
-{
-	uint32_t numBytes = NumBytesInBits(range.Count());
-	if (buffer.Size() < numBytes)
-	{
-		SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified bitfield objects");
-		return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
-	}
-	else
-	{
-		auto collection = CreateLazyIterable<IndexedValue<bool, uint16_t>>(buffer, range.Count(),
-		                  [range](openpal::ReadBufferView & buffer, uint32_t pos)
-		{
-			return IndexedValue<bool, uint16_t>(GetBit(buffer, pos), pos + range.start);
-		}
-		                                                                  );
-		callback(collection);
-		buffer.Advance(numBytes);
-		return ParseResult::OK;
-	}
-}
-
-template <class Callback>
-ParseResult APDUParser::ParseRangeAsDoubleBitField(
-    openpal::ReadBufferView& buffer,
-    openpal::Logger* pLogger,
-    const HeaderRecord& record,
-    const Range& range,
-    const Callback& callback)
-{
-	uint32_t numBytes = NumBytesInDoubleBits(range.Count());
-	if (buffer.Size() < numBytes)
-	{
-		SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified double bitfield objects");
-		return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
-	}
-	else
-	{
-		auto collection = CreateLazyIterable<IndexedValue<DoubleBit, uint16_t>>(buffer, range.Count(),
-		                  [range](openpal::ReadBufferView & buffer, uint32_t pos)
-		{
-			return IndexedValue<DoubleBit, uint16_t>(GetDoubleBit(buffer, pos), pos + range.start);
-		}
-		                                                                       );
-		callback(collection);
-		buffer.Advance(numBytes);
-		return ParseResult::OK;
-	}
-}
-
 ParseResult APDUParser::ParseIndexPrefixedOctetData(
     openpal::ReadBufferView& buffer,
     openpal::Logger* pLogger,
@@ -408,59 +277,6 @@ ParseResult APDUParser::ParseObjectsWithIndexPrefix(openpal::ReadBufferView& buf
 			QualifierCodeToString(record.GetQualifierCode()), record.group, record.variation);
 
 		return ParseResult::INVALID_OBJECT_QUALIFIER;
-	}
-}
-
-template <class ParserType, class RangeType>
-ParseResult APDUParser::ParseRange(openpal::ReadBufferView& buffer, openpal::Logger* pLogger, const ParserSettings& settings, Range& range)
-{
-	if (buffer.Size() < (2 * ParserType::Size))
-	{
-		SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_HEADER, "Not enough data for start / stop");
-		return ParseResult::NOT_ENOUGH_DATA_FOR_RANGE;
-	}
-	else
-	{
-		auto start = ParserType::ReadBuffer(buffer);
-		auto stop = ParserType::ReadBuffer(buffer);
-		if (start > stop)
-		{
-			SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_START_STOP_MISMATCH, "start > stop");
-			return ParseResult::BAD_START_STOP;
-		}
-		else
-		{					
-			range.start = start;
-			range.stop = stop;
-			return ParseResult::OK;
-		}
-	}
-}
-
-
-template <class Target>
-ParseResult APDUParser::ParseRangeFixedSize(const HeaderRecord& record, const openpal::Serializer<Target>& serializer, openpal::ReadBufferView& buffer, openpal::Logger* pLogger, const Range& range, IAPDUHandler* pHandler)
-{
-	uint32_t size = range.Count() * serializer.Size();
-	if (buffer.Size() < size)
-	{
-		SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified objects");
-		return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
-	}
-	else
-	{
-
-		if(pHandler)
-		{
-			auto pSerializer = &serializer;
-			auto collection = CreateLazyIterable<IndexedValue<Target, uint16_t>>(buffer, range.Count(), [range, pSerializer](openpal::ReadBufferView & buffer, uint32_t pos)
-			{
-				return IndexedValue<Target, uint16_t>(pSerializer->Read(buffer), range.start + pos);
-			});
-			pHandler->OnRange(record, collection);
-		}
-		buffer.Advance(size);
-		return ParseResult::OK;
 	}
 }
 */

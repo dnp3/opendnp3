@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "CountHandler.h"
+#include "CountParser.h"
 
 #include "opendnp3/ErrorCodes.h"
 #include "opendnp3/LogLevels.h"
@@ -29,7 +29,7 @@
 namespace opendnp3
 {
 
-CountHandler::CountHandler(uint16_t count_, uint32_t requiredSize_, HandleFun handler_) :		
+CountParser::CountParser(uint16_t count_, uint32_t requiredSize_, HandleFun handler_) :
 	count(count_),
 	requiredSize(requiredSize_),
 	handler(handler_)
@@ -37,24 +37,12 @@ CountHandler::CountHandler(uint16_t count_, uint32_t requiredSize_, HandleFun ha
 	
 }
 
-ParseResult CountHandler::Process(const HeaderRecord& record, openpal::ReadBufferView& buffer, IAPDUHandler* pHandler, openpal::Logger* pLogger)
-{
-	if (this->Invoke(record, buffer, pHandler))
-	{
-		return ParseResult::OK;
-	}
-	else
-	{
-		SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified objects");
-		return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
-	}
-}
-
-bool CountHandler::Invoke(const HeaderRecord& record, const openpal::ReadBufferView& buffer, IAPDUHandler* pHandler) const
+ParseResult CountParser::Process(const HeaderRecord& record, openpal::ReadBufferView& buffer, IAPDUHandler* pHandler, openpal::Logger* pLogger) const
 {
 	if (buffer.Size() < requiredSize)
 	{
-		return false;
+		SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified objects");
+		return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	}
 	else
 	{
@@ -62,11 +50,12 @@ bool CountHandler::Invoke(const HeaderRecord& record, const openpal::ReadBufferV
 		{
 			handler(record, count, buffer, *pHandler);			
 		}	
-		return true;
+		buffer.Advance(requiredSize);
+		return ParseResult::OK;
 	}
 }
 
-ParseResult CountHandler::ParseHeader(openpal::ReadBufferView& buffer, const NumParser& numParser, const ParserSettings& settings, const HeaderRecord& record, openpal::Logger* pLogger, IAPDUHandler* pHandler)
+ParseResult CountParser::ParseHeader(openpal::ReadBufferView& buffer, const NumParser& numParser, const ParserSettings& settings, const HeaderRecord& record, openpal::Logger* pLogger, IAPDUHandler* pHandler)
 {
 	uint16_t count;
 	auto result = numParser.ParseCount(buffer, count, pLogger);
@@ -100,24 +89,24 @@ ParseResult CountHandler::ParseHeader(openpal::ReadBufferView& buffer, const Num
 	}
 }
 
-ParseResult CountHandler::ParseCountOfObjects(openpal::ReadBufferView& buffer, const HeaderRecord& record, uint16_t count, openpal::Logger* pLogger, IAPDUHandler* pHandler)
+ParseResult CountParser::ParseCountOfObjects(openpal::ReadBufferView& buffer, const HeaderRecord& record, uint16_t count, openpal::Logger* pLogger, IAPDUHandler* pHandler)
 {
 	switch (record.enumeration)
 	{
-	case(GroupVariation::Group50Var1) :
-		return CountHandler::From<Group50Var1>(count).Process(record, buffer, pHandler, pLogger);
+		case(GroupVariation::Group50Var1) :
+			return CountParser::From<Group50Var1>(count).Process(record, buffer, pHandler, pLogger);
 
-	case(GroupVariation::Group51Var1) :
-		return CountHandler::From<Group51Var1>(count).Process(record, buffer, pHandler, pLogger);
+		case(GroupVariation::Group51Var1) :
+			return CountParser::From<Group51Var1>(count).Process(record, buffer, pHandler, pLogger);
 
-	case(GroupVariation::Group51Var2) :
-		return CountHandler::From<Group51Var2>(count).Process(record, buffer, pHandler, pLogger);
+		case(GroupVariation::Group51Var2) :
+			return CountParser::From<Group51Var2>(count).Process(record, buffer, pHandler, pLogger);
 
-	case(GroupVariation::Group52Var2) :
-		return CountHandler::From<Group52Var2>(count).Process(record, buffer, pHandler, pLogger);
+		case(GroupVariation::Group52Var2) :
+			return CountParser::From<Group52Var2>(count).Process(record, buffer, pHandler, pLogger);
 
-	default:
-		return ParseResult::INVALID_OBJECT_QUALIFIER;
+		default:
+			return ParseResult::INVALID_OBJECT_QUALIFIER;
 	}
 }
 

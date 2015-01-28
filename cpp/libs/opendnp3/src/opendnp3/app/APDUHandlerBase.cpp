@@ -75,7 +75,7 @@ void APDUHandlerBase::OnCountRequest(const HeaderRecord& record, uint16_t count)
 	++currentHeader;
 }
 
-void APDUHandlerBase::OnIIN(const HeaderRecord& record, const IterableBuffer<IndexedValue<bool, uint16_t>>& meas)
+void APDUHandlerBase::OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<IINValue, uint16_t>>& meas)
 {
 	errors |= this->ProcessIIN(record, meas);
 	++currentHeader;
@@ -468,7 +468,7 @@ IINField APDUHandlerBase::ProcessCountRequest(const HeaderRecord& record, uint16
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessIIN(const HeaderRecord& record, const IterableBuffer<IndexedValue<bool, uint16_t>>& meas)
+IINField APDUHandlerBase::ProcessIIN(const HeaderRecord& record, const IterableBuffer<IndexedValue<IINValue, uint16_t>>& meas)
 {
 	return ProcessUnsupportedHeader();
 }

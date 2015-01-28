@@ -38,9 +38,9 @@ WriteHandler::WriteHandler(openpal::Logger& aLogger, IOutstationApplication& app
 	wroteIIN(false)
 {}
 
-IINField WriteHandler::ProcessIIN(const HeaderRecord&, const IterableBuffer<IndexedValue<bool, uint16_t>>& meas)
+IINField WriteHandler::ProcessIIN(const HeaderRecord&, const IterableBuffer<IndexedValue<IINValue, uint16_t>>& meas)
 {
-	IndexedValue<bool, uint16_t> v;
+	IndexedValue<IINValue, uint16_t> v;
 	if(meas.ReadOnlyValue(v))
 	{
 		if (wroteIIN)
@@ -51,7 +51,7 @@ IINField WriteHandler::ProcessIIN(const HeaderRecord&, const IterableBuffer<Inde
 		{
 			if (v.index == static_cast<int>(IINBit::DEVICE_RESTART))
 			{
-				if (v.value)
+				if (v.value.value)
 				{
 					return IINBit::PARAM_ERROR;
 				}

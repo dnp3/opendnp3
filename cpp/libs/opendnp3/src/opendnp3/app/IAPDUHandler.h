@@ -25,6 +25,7 @@
 
 #include "opendnp3/app/IterableBuffer.h"
 #include "opendnp3/app/MeasurementTypes.h"
+#include "opendnp3/app/IINValue.h"
 #include "opendnp3/app/ControlRelayOutputBlock.h"
 #include "opendnp3/app/AnalogOutput.h"
 #include "opendnp3/app/BinaryCommandEvent.h"
@@ -63,7 +64,7 @@ public:
 
 	virtual void OnCountOf(const HeaderRecord& record, const IterableBuffer<Group52Var2>& times) = 0;
 
-	virtual void OnIIN(const HeaderRecord& record, const IterableBuffer<IndexedValue<bool, uint16_t>>& meas) = 0;
+	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<IINValue, uint16_t>>& meas) = 0;
 
 	// static values
 	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) = 0;

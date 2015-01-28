@@ -24,8 +24,8 @@
 #include <openpal/logging/Logger.h>
 #include <openpal/container/ReadBufferView.h>
 
-
 #include "opendnp3/app/ParseResult.h"
+#include "opendnp3/app/Range.h"
 
 namespace opendnp3
 {
@@ -41,6 +41,7 @@ public:
 	uint8_t NumBytes() const;
 
 	ParseResult ParseCount(openpal::ReadBufferView& buffer, uint16_t& count, openpal::Logger* pLogger) const;
+	ParseResult ParseRange(openpal::ReadBufferView& buffer, Range& range, openpal::Logger* pLogger) const;
 	
 	static NumParser OneByte();
 	static NumParser TwoByte();
@@ -49,7 +50,7 @@ private:
 
 	// read the number, consuming from the buffer
 	// return true if there is enough bytes, false otherwise
-	bool Read(uint16_t& count, openpal::ReadBufferView& buffer) const;
+	bool Read(uint16_t& num, openpal::ReadBufferView& buffer) const;
 
 	static uint16_t ReadByte(openpal::ReadBufferView& buffer);
 
