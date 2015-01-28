@@ -45,16 +45,10 @@ ParseResult APDUParser::ParseTwoPass(const openpal::ReadBufferView& buffer, IAPD
 {
 	if(pHandler)
 	{
-		// do a single pass without the callbacks to validate that the message is well formed
+		// do two state parsing process with logging byt no handling on the first pass
 		auto result = ParseSinglePass(buffer, pLogger, nullptr, settings);
-		if (result == ParseResult::OK)
-		{
-			return ParseSinglePass(buffer, nullptr, pHandler, settings);
-		}
-		else
-		{
-			return result;
-		}		
+		// if the first pass was successful, do a 2nd pass with the handler but no logging
+		return (result == ParseResult::OK) ? ParseSinglePass(buffer, nullptr, pHandler, settings) : result;			
 	}
 	else
 	{
