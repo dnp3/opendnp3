@@ -21,7 +21,7 @@
 #ifndef OPENDNP3_COMMANDSEQUENCE_H
 #define OPENDNP3_COMMANDSEQUENCE_H
 
-#include "opendnp3/app/APDUHandlerBase.h"
+#include "opendnp3/app/parsing/APDUHandlerBase.h"
 
 #include <openpal/serialization/Serialization.h>
 

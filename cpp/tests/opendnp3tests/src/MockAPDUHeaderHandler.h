@@ -21,7 +21,7 @@
 #ifndef __MOCK_APDU_HEADER_HANDLER_H_
 #define __MOCK_APDU_HEADER_HANDLER_H_
 
-#include <opendnp3/app/APDUHandlerBase.h>
+#include <opendnp3/app/parsing/APDUHandlerBase.h>
 
 #include "LogTester.h"
 

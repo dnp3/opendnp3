@@ -29,8 +29,8 @@
 #include <openpal/util/ToHex.h>
 
 #include <opendnp3/LogLevels.h>
-#include <opendnp3/app/APDUParser.h>
-#include <opendnp3/app/APDUHeaderParser.h>
+#include <opendnp3/app/parsing/APDUParser.h>
+#include <opendnp3/app/parsing/APDUHeaderParser.h>
 #include <opendnp3/app/ControlRelayOutputBlock.h>
 #include <opendnp3/app/IndexedValue.h>
 

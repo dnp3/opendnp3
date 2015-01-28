@@ -24,7 +24,7 @@
 #include <openpal/logging/Logger.h>
 
 #include "opendnp3/master/ISOEHandler.h"
-#include "opendnp3/app/APDUHandlerBase.h"
+#include "opendnp3/app/parsing/APDUHandlerBase.h"
 #include "opendnp3/app/APDUHeader.h"
 
 namespace opendnp3

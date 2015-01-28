@@ -22,7 +22,7 @@
 #define OPENDNP3_IINHELPERS_H
 
 #include "opendnp3/app/IINField.h"
-#include "opendnp3/app/ParseResult.h"
+#include "opendnp3/app/parsing/ParseResult.h"
 
 namespace opendnp3
 {

@@ -21,7 +21,7 @@
 #ifndef OPENDNP3_COMMANDRESPONSEHANDLER_H
 #define OPENDNP3_COMMANDRESPONSEHANDLER_H
 
-#include "opendnp3/app/APDUHandlerBase.h"
+#include "opendnp3/app/parsing/APDUHandlerBase.h"
 #include "opendnp3/app/APDUResponse.h"
 #include "opendnp3/outstation/ICommandAction.h"
 

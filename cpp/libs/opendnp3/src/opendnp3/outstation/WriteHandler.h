@@ -21,7 +21,7 @@
 #ifndef OPENDNP3_WRITEHANDLER_H
 #define OPENDNP3_WRITEHANDLER_H
 
-#include "opendnp3/app/APDUHandlerBase.h"
+#include "opendnp3/app/parsing/APDUHandlerBase.h"
 #include "opendnp3/app/IINField.h"
 
 #include "opendnp3/outstation/IOutstationApplication.h"

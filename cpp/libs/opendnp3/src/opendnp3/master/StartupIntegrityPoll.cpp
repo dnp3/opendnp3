@@ -23,7 +23,7 @@
 
 #include "MasterTasks.h"
 
-#include "opendnp3/app/APDUParser.h"
+#include "opendnp3/app/parsing/APDUParser.h"
 #include "opendnp3/app/APDUBuilders.h"
 
 #include "opendnp3/master/MeasurementHandler.h"

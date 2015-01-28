@@ -55,6 +55,12 @@
     <Filter Include="Source\outstation\authv5">
       <UniqueIdentifier>{1b5b0a02-2da2-43a5-b7a1-45008b99f6ab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header\app\parsing">
+      <UniqueIdentifier>{b1556352-0d0f-4db2-bd28-8ff0c724c954}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\app\parsing">
+      <UniqueIdentifier>{04f71170-4bab-4fb7-8672-4ce00873b595}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\opendnp3\ErrorCodes.h">
@@ -78,19 +84,10 @@
     <ClInclude Include="src\opendnp3\app\APDUBuilders.h">
       <Filter>Header\app</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\app\APDUHandlerBase.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\app\APDUHeader.h">
       <Filter>Header\app</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\app\APDUHeaderParser.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\app\APDULogging.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\app\APDUParser.h">
       <Filter>Header\app</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\app\APDURequest.h">
@@ -148,9 +145,6 @@
       <Filter>Header\app</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\app\HeaderWriter.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\app\IAPDUHandler.h">
       <Filter>Header\app</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\app\IINField.h">
@@ -801,29 +795,41 @@
     <ClInclude Include="src\opendnp3\outstation\authv5\AuthRequestParser.h">
       <Filter>Header\outstation\authv5</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\app\ParseResult.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\app\ParserSettings.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\app\ObjectHeaderParser.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\app\NumParser.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\app\CountParser.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\app\RangeParser.h">
       <Filter>Header\app</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\app\IINValue.h">
       <Filter>Header\app</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\app\CountIndexParser.h">
-      <Filter>Header\app</Filter>
+    <ClInclude Include="src\opendnp3\app\parsing\APDUHeaderParser.h">
+      <Filter>Header\app\parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\app\parsing\APDUParser.h">
+      <Filter>Header\app\parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\app\parsing\APDUHandlerBase.h">
+      <Filter>Header\app\parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\app\parsing\IAPDUHandler.h">
+      <Filter>Header\app\parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\app\parsing\CountIndexParser.h">
+      <Filter>Header\app\parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\app\parsing\CountParser.h">
+      <Filter>Header\app\parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\app\parsing\RangeParser.h">
+      <Filter>Header\app\parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\app\parsing\ParseResult.h">
+      <Filter>Header\app\parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\app\parsing\ParserSettings.h">
+      <Filter>Header\app\parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\app\parsing\NumParser.h">
+      <Filter>Header\app\parsing</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -869,19 +875,10 @@
     <ClCompile Include="src\opendnp3\app\APDURequest.cpp">
       <Filter>Source\app</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\app\APDUParser.cpp">
-      <Filter>Source\app</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\app\APDULogging.cpp">
       <Filter>Source\app</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\app\APDUHeaderParser.cpp">
-      <Filter>Source\app</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\app\APDUHeader.cpp">
-      <Filter>Source\app</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\app\APDUHandlerBase.cpp">
       <Filter>Source\app</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\app\APDUBuilders.cpp">
@@ -1244,17 +1241,26 @@
     <ClCompile Include="src\opendnp3\app\ObjectHeaderParser.cpp">
       <Filter>Source\app</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\app\NumParser.cpp">
-      <Filter>Source\app</Filter>
+    <ClCompile Include="src\opendnp3\app\parsing\APDUHeaderParser.cpp">
+      <Filter>Source\app\parsing</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\app\CountParser.cpp">
-      <Filter>Source\app</Filter>
+    <ClCompile Include="src\opendnp3\app\parsing\APDUParser.cpp">
+      <Filter>Source\app\parsing</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\app\RangeParser.cpp">
-      <Filter>Source\app</Filter>
+    <ClCompile Include="src\opendnp3\app\parsing\APDUHandlerBase.cpp">
+      <Filter>Source\app\parsing</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\app\CountIndexParser.cpp">
-      <Filter>Source\app</Filter>
+    <ClCompile Include="src\opendnp3\app\parsing\CountIndexParser.cpp">
+      <Filter>Source\app\parsing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\app\parsing\CountParser.cpp">
+      <Filter>Source\app\parsing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\app\parsing\RangeParser.cpp">
+      <Filter>Source\app\parsing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\app\parsing\NumParser.cpp">
+      <Filter>Source\app\parsing</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

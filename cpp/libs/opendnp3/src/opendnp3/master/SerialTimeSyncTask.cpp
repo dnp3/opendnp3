@@ -22,7 +22,7 @@
 #include "SerialTimeSyncTask.h"
 
 #include "opendnp3/objects/Group50.h"
-#include "opendnp3/app/APDUParser.h"
+#include "opendnp3/app/parsing/APDUParser.h"
 #include "opendnp3/app/APDUBuilders.h"
 #include "opendnp3/master/TimeSyncHandler.h"
 

@@ -21,7 +21,7 @@
 #ifndef OPENDNP3_TIMESYNCHANDLER_H
 #define OPENDNP3_TIMESYNCHANDLER_H
 
-#include "opendnp3/app/APDUHandlerBase.h"
+#include "opendnp3/app/parsing/APDUHandlerBase.h"
 
 #include "opendnp3/LogLevels.h"
 

@@ -23,7 +23,7 @@
 
 #include "opendnp3/LogLevels.h"
 #include "opendnp3/app/APDUWrapper.h"
-#include "opendnp3/app/APDUHeaderParser.h"
+#include "opendnp3/app/parsing/APDUHeaderParser.h"
 #include "opendnp3/app/APDULogging.h"
 #include "opendnp3/master/MeasurementHandler.h"
 

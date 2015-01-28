@@ -22,7 +22,7 @@
 
 #include <openpal/logging/LogMacros.h>
 
-#include "opendnp3/app/APDUParser.h"
+#include "opendnp3/app/parsing/APDUParser.h"
 #include "opendnp3/LogLevels.h"
 
 using namespace openpal;

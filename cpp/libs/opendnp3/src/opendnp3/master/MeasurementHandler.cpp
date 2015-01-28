@@ -20,7 +20,7 @@
  */
 #include "MeasurementHandler.h"
 
-#include "opendnp3/app/APDUParser.h"
+#include "opendnp3/app/parsing/APDUParser.h"
 
 #include <openpal/logging/LogMacros.h>
 

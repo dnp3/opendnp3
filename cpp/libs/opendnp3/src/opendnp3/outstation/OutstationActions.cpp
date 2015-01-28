@@ -26,7 +26,7 @@
 #include "opendnp3/app/Functions.h"
 #include "opendnp3/app/APDULogging.h"
 #include "opendnp3/app/APDUBuilders.h"
-#include "opendnp3/app/APDUHeaderParser.h"
+#include "opendnp3/app/parsing/APDUHeaderParser.h"
 
 #include "opendnp3/outstation/IINHelpers.h"
 #include "opendnp3/outstation/CommandActionAdapter.h"

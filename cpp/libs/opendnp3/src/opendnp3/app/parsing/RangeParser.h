@@ -24,11 +24,12 @@
 #include <openpal/container/ReadBufferView.h>
 #include <openpal/logging/Logger.h>
 
-#include "opendnp3/app/ParseResult.h"
-#include "opendnp3/app/IAPDUHandler.h"
-#include "opendnp3/app/ParseResult.h"
-#include "opendnp3/app/NumParser.h"
-#include "opendnp3/app/ParserSettings.h"
+#include "opendnp3/app/parsing/ParseResult.h"
+#include "opendnp3/app/parsing/IAPDUHandler.h"
+#include "opendnp3/app/parsing/ParseResult.h"
+#include "opendnp3/app/parsing/NumParser.h"
+#include "opendnp3/app/parsing/ParserSettings.h"
+
 #include "opendnp3/app/LazyIterable.h"
 #include "opendnp3/app/Range.h"
 #include "opendnp3/app/BitReader.h"

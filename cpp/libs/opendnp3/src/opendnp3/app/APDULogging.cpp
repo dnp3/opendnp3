@@ -21,8 +21,8 @@
 
 #include "APDULogging.h"
 
-#include "opendnp3/app/APDUHeaderParser.h"
-#include "opendnp3/app/APDUParser.h"
+#include "opendnp3/app/parsing/APDUHeaderParser.h"
+#include "opendnp3/app/parsing/APDUParser.h"
 
 #include <openpal/logging/LogMacros.h>
 

@@ -24,7 +24,7 @@
 #include <openpal/logging/Logger.h>
 #include <openpal/container/ReadBufferView.h>
 
-#include "opendnp3/app/ParseResult.h"
+#include "opendnp3/app/parsing/ParseResult.h"
 #include "opendnp3/app/Range.h"
 
 namespace opendnp3

@@ -22,7 +22,7 @@
 #define OPENDNP3_READHANDLER_H
 
 
-#include "opendnp3/app/APDUHandlerBase.h"
+#include "opendnp3/app/parsing/APDUHandlerBase.h"
 
 #include "opendnp3/outstation/IEventSelector.h"
 #include "opendnp3/outstation/IStaticSelector.h"

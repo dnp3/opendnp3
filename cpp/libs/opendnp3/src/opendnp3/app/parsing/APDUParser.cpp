@@ -29,9 +29,10 @@
 #include "opendnp3/app/GroupVariationRecord.h"
 #include "opendnp3/app/MeasurementFactory.h"
 #include "opendnp3/app/ObjectHeaderParser.h"
-#include "opendnp3/app/CountParser.h"
-#include "opendnp3/app/RangeParser.h"
-#include "opendnp3/app/CountIndexParser.h"
+
+#include "opendnp3/app/parsing/CountParser.h"
+#include "opendnp3/app/parsing/RangeParser.h"
+#include "opendnp3/app/parsing/CountIndexParser.h"
 
 #include <openpal/logging/LogMacros.h>
 

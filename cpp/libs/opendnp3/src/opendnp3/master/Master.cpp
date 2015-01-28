@@ -21,7 +21,7 @@
 
 #include "Master.h"
 
-#include "opendnp3/app/APDUHeaderParser.h"
+#include "opendnp3/app/parsing/APDUHeaderParser.h"
 #include "opendnp3/app/APDUBuilders.h"
 #include "opendnp3/LogLevels.h"
 

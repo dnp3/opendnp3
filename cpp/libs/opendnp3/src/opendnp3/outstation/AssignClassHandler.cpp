@@ -21,7 +21,7 @@
 
 #include "AssignClassHandler.h"
 
-#include "opendnp3/app/APDUHandlerBase.h"
+#include "opendnp3/app/parsing/APDUHandlerBase.h"
 #include "opendnp3/outstation/IOutstationApplication.h"
 
 #include <openpal/logging/Logger.h>
