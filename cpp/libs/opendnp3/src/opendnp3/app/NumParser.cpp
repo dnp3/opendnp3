@@ -74,9 +74,9 @@ ParseResult NumParser::ParseRange(openpal::ReadBufferView& buffer, Range& range,
 	}
 	else
 	{		
-		this->Read(range.start, buffer);
-		this->Read(range.stop, buffer);
-
+		range.start = this->ReadNum(buffer);
+		range.stop = this->ReadNum(buffer);
+		
 		if (range.IsValid())
 		{
 			return ParseResult::OK;			
@@ -87,6 +87,11 @@ ParseResult NumParser::ParseRange(openpal::ReadBufferView& buffer, Range& range,
 			return ParseResult::BAD_START_STOP;			
 		}
 	}
+}
+
+uint16_t NumParser::ReadNum(openpal::ReadBufferView& buffer) const
+{
+	return pReadFun(buffer);
 }
 
 bool NumParser::Read(uint16_t& num, openpal::ReadBufferView& buffer) const

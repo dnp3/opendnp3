@@ -822,6 +822,9 @@
     <ClInclude Include="src\opendnp3\app\IINValue.h">
       <Filter>Header\app</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\app\CountIndexParser.h">
+      <Filter>Header\app</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\TimeAndInterval.cpp">
@@ -1248,6 +1251,9 @@
       <Filter>Source\app</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\app\RangeParser.cpp">
+      <Filter>Source\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\app\CountIndexParser.cpp">
       <Filter>Source\app</Filter>
     </ClCompile>
   </ItemGroup>

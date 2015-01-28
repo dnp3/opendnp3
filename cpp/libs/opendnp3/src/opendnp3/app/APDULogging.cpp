@@ -24,6 +24,8 @@
 #include "opendnp3/app/APDUHeaderParser.h"
 #include "opendnp3/app/APDUParser.h"
 
+#include <openpal/logging/LogMacros.h>
+
 namespace opendnp3
 {
 namespace logging

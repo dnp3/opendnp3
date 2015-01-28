@@ -21,13 +21,20 @@
 
 #include "APDUParser.h"
 
-#include "opendnp3/gen/QualifierCode.h"
+
 #include "opendnp3/LogLevels.h"
+#include "opendnp3/ErrorCodes.h"
+
+#include "opendnp3/gen/QualifierCode.h"
 #include "opendnp3/app/GroupVariationRecord.h"
 #include "opendnp3/app/MeasurementFactory.h"
 #include "opendnp3/app/ObjectHeaderParser.h"
 #include "opendnp3/app/CountParser.h"
 #include "opendnp3/app/RangeParser.h"
+#include "opendnp3/app/CountIndexParser.h"
+
+#include <openpal/logging/LogMacros.h>
+
 
 using namespace openpal;
 
@@ -111,13 +118,12 @@ ParseResult APDUParser::ParseQualifier(ReadBufferView& buffer, openpal::Logger* 
 
 		case(QualifierCode::UINT16_START_STOP) :
 			return RangeParser::ParseHeader(buffer, NumParser::TwoByte(), settings, record, pLogger, pHandler);
-/*
+
 		case(QualifierCode::UINT8_CNT_UINT8_INDEX) :
-			return ParseIndexPrefixHeader<UInt8>(buffer, pLogger, settings, record, pHandler);
+			return CountIndexParser::ParseHeader(buffer, NumParser::OneByte(), settings, record, pLogger, pHandler);
 
 		case(QualifierCode::UINT16_CNT_UINT16_INDEX) :
-			return ParseIndexPrefixHeader<UInt16>(buffer, pLogger, settings, record, pHandler);
-*/
+			return CountIndexParser::ParseHeader(buffer, NumParser::TwoByte(), settings, record, pLogger, pHandler);
 
 		default:
 			FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_UNKNOWN_QUALIFIER, "Unknown qualifier %x", record.qualifier);
@@ -141,31 +147,6 @@ ParseResult APDUParser::HandleAllObjectsHeader(openpal::Logger* pLogger, const H
 
 	return ParseResult::OK;
 }
-
-/*
-ParseResult APDUParser::ParseIndexPrefixHeader(openpal::ReadBufferView& buffer, openpal::Logger* pLogger, const NumParser& numParser, const ParserSettings& settings, const HeaderRecord& record, IAPDUHandler* pHandler)
-{
-	uint16_t count;
-	auto res = numParser.ParseCount(buffer, count, pLogger);
-	if (res == ParseResult::OK)
-	{
-
-		FORMAT_LOGGER_BLOCK(pLogger, settings.Filters(),
-			"%03u,%03u %s, %s [%u]",
-			record.group,
-			record.variation,
-			GroupVariationToString(record.enumeration),
-			QualifierCodeToString(record.GetQualifierCode()),
-			count);
-
-		return ParseObjectsWithIndexPrefix(buffer, pLogger, record, count, pHandler);
-	}
-	else
-	{
-		return res;
-	}
-}
-*/
 
 }
 

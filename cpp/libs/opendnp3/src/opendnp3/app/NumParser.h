@@ -42,6 +42,8 @@ public:
 
 	ParseResult ParseCount(openpal::ReadBufferView& buffer, uint16_t& count, openpal::Logger* pLogger) const;
 	ParseResult ParseRange(openpal::ReadBufferView& buffer, Range& range, openpal::Logger* pLogger) const;
+
+	uint16_t ReadNum(openpal::ReadBufferView& buffer) const;
 	
 	static NumParser OneByte();
 	static NumParser TwoByte();
