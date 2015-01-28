@@ -54,10 +54,19 @@ public:
 	{}
 
 	template <class T>
+	IndexedValue<ValueType, T> Narrow() const
+	{
+		static_assert(sizeof(IndexType) > sizeof(T), "Not a narrowing cast");
+		T narrower = static_cast<T>(this->index);
+		return IndexedValue<ValueType, T>(this->value, narrower);
+	}
+
+	template <class T>
 	IndexedValue<ValueType, T> Widen() const
 	{
-		T widerIndex = this->index;
-		return IndexedValue<ValueType, T>(this->value, widerIndex);
+		static_assert(sizeof(IndexType) < sizeof(T), "Not a widening cast");
+		T wider = this->index;
+		return IndexedValue<ValueType, T>(this->value, wider);
 	}
 
 	IndexedValue(): Indexed<IndexType>(), value()

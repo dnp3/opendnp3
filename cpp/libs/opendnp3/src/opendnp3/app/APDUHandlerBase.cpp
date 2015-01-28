@@ -218,62 +218,32 @@ void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBu
 }
 
 void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint16_t>>& meas)
-{
-	errors |= this->ProcessIndexPrefix(record, meas);
+{		
+	errors |= this->ProcessIndexPrefixNarrow(record, meas);	
 	++currentHeader;
 }
 
 void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint16_t>>& meas)
 {
-	errors |= this->ProcessIndexPrefix(record, meas);
+	errors |= this->ProcessIndexPrefixNarrow(record, meas);
 	++currentHeader;
 }
 
 void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt32, uint16_t>>& meas)
 {
-	errors |= this->ProcessIndexPrefix(record, meas);
+	errors |= this->ProcessIndexPrefixNarrow(record, meas);
 	++currentHeader;
 }
 
 void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint16_t>>& meas)
 {
-	errors |= this->ProcessIndexPrefix(record, meas);
+	errors |= this->ProcessIndexPrefixNarrow(record, meas);
 	++currentHeader;
 }
 
 void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint16_t>>& meas)
 {
-	errors |= this->ProcessIndexPrefix(record, meas);
-	++currentHeader;
-}
-
-void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint8_t>>& meas)
-{
-	errors |= this->ProcessIndexPrefix(record, meas);
-	++currentHeader;
-}
-
-void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint8_t>>& meas)
-{
-	errors |= this->ProcessIndexPrefix(record, meas);
-	++currentHeader;
-}
-
-void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt32, uint8_t>>& meas)
-{
-	errors |= this->ProcessIndexPrefix(record, meas);
-	++currentHeader;
-}
-
-void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint8_t>>& meas)
-{
-	errors |= this->ProcessIndexPrefix(record, meas);
-	++currentHeader;
-}
-
-void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint8_t>>& meas)
-{
-	errors |= this->ProcessIndexPrefix(record, meas);
+	errors |= this->ProcessIndexPrefixNarrow(record, meas);
 	++currentHeader;
 }
 
@@ -323,128 +293,6 @@ void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBu
 {
 	errors |= this->ProcessIndexPrefix(record, ModeFromType(record.enumeration), meas);
 	++currentHeader;
-}
-
-void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint8_t>>& meas)
-{
-	auto transform = MapIterableBuffer<IndexedValue<Binary, uint8_t>, IndexedValue<Binary, uint16_t>>(&meas,
-	                 [](const IndexedValue<Binary, uint8_t>& value)
-	{
-		return value.Widen<uint16_t>();
-	});
-
-	this->OnIndexPrefix(record, transform);
-}
-
-void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint8_t>>& meas)
-{
-	auto transform = MapIterableBuffer<IndexedValue<BinaryOutputStatus, uint8_t>, IndexedValue<BinaryOutputStatus, uint16_t>>(&meas,
-	                 [](const IndexedValue<BinaryOutputStatus, uint8_t>& value)
-	{
-		return value.Widen<uint16_t>();
-	});
-
-	this->OnIndexPrefix(record, transform);
-}
-
-void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<DoubleBitBinary, uint8_t>>& meas)
-{
-	auto transform = MapIterableBuffer<IndexedValue<DoubleBitBinary, uint8_t>, IndexedValue<DoubleBitBinary, uint16_t>>(&meas,
-	                 [](const IndexedValue<DoubleBitBinary, uint8_t>& value)
-	{
-		return value.Widen<uint16_t>();
-	}
-	                                                                                                                   );
-	this->OnIndexPrefix(record, transform);
-}
-
-void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Counter, uint8_t>>& meas)
-{
-	auto transform = MapIterableBuffer<IndexedValue<Counter, uint8_t>, IndexedValue<Counter, uint16_t>>(&meas,
-	                 [](const IndexedValue<Counter, uint8_t>& value)
-	{
-		return value.Widen<uint16_t>();
-	}
-	                                                                                                   );
-	this->OnIndexPrefix(record, transform);
-}
-
-void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<FrozenCounter, uint8_t>>& meas)
-{
-	auto transform = MapIterableBuffer<IndexedValue<FrozenCounter, uint8_t>, IndexedValue<FrozenCounter, uint16_t>>(&meas,
-	                 [](const IndexedValue<FrozenCounter, uint8_t>& value)
-	{
-		return value.Widen<uint16_t>();
-	}
-	                                                                                                               );
-	this->OnIndexPrefix(record, transform);
-}
-
-void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Analog, uint8_t>>& meas)
-{
-	auto transform = MapIterableBuffer<IndexedValue<Analog, uint8_t>, IndexedValue<Analog, uint16_t>>(&meas,
-	                 [](const IndexedValue<Analog, uint8_t>& value)
-	{
-		return value.Widen<uint16_t>();
-	});
-
-	this->OnIndexPrefix(record, transform);
-}
-
-void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint8_t>>& meas)
-{
-	auto transform = MapIterableBuffer<IndexedValue<AnalogOutputStatus, uint8_t>, IndexedValue<AnalogOutputStatus, uint16_t>>(&meas,
-	                 [](const IndexedValue<AnalogOutputStatus, uint8_t>& value)
-	{
-		return value.Widen<uint16_t>();
-	});
-
-	this->OnIndexPrefix(record, transform);
-}
-
-
-void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<OctetString, uint8_t>>& meas)
-{
-	auto transform = MapIterableBuffer<IndexedValue<OctetString, uint8_t>, IndexedValue<OctetString, uint16_t>>(&meas,
-	                 [](const IndexedValue<OctetString, uint8_t>& value)
-	{
-		return value.Widen<uint16_t>();
-	}
-	                                                                                                           );
-	this->OnIndexPrefix(record, transform);
-}
-
-void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<TimeAndInterval, uint8_t>>& meas)
-{
-	auto transform = MapIterableBuffer<IndexedValue<TimeAndInterval, uint8_t>, IndexedValue<TimeAndInterval, uint16_t>>(&meas,
-		[](const IndexedValue<TimeAndInterval, uint8_t>& value)
-	{
-		return value.Widen<uint16_t>();
-	}
-	);
-	this->OnIndexPrefix(record, transform);
-}
-
-void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryCommandEvent, uint8_t>>& meas)
-{
-	auto transform = MapIterableBuffer<IndexedValue<BinaryCommandEvent, uint8_t>, IndexedValue<BinaryCommandEvent, uint16_t>>(&meas,
-		[](const IndexedValue<BinaryCommandEvent, uint8_t>& value)
-	{
-		return value.Widen<uint16_t>();
-	}
-	);
-	this->OnIndexPrefix(record, transform);
-}
-
-void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogCommandEvent, uint8_t>>& meas)
-{
-	auto transform = MapIterableBuffer<IndexedValue<AnalogCommandEvent, uint8_t>, IndexedValue<AnalogCommandEvent, uint16_t>>(&meas,
-		[](const IndexedValue<AnalogCommandEvent, uint8_t>& value)
-	{
-		return value.Widen<uint16_t>();
-	}
-	);
-	this->OnIndexPrefix(record, transform);
 }
 
 IINField APDUHandlerBase::ProcessUnsupportedHeader()

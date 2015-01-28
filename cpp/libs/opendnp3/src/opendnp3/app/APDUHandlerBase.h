@@ -96,36 +96,13 @@ public:
 	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryCommandEvent, uint16_t>>& meas) override final;
 	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogCommandEvent, uint16_t>>& meas) override final;
 
-	// events - 8bit indices
-
-	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint8_t>>& meas) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint8_t>>& meas) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<DoubleBitBinary, uint8_t>>& meas) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Counter, uint8_t>>& meas) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<FrozenCounter, uint8_t>>& meas) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Analog, uint8_t>>& meas) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint8_t>>& meas) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<OctetString, uint8_t>>& meas) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<TimeAndInterval, uint8_t>>& meas) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryCommandEvent, uint8_t>>& meas) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogCommandEvent, uint8_t>>& meas) override final;
-
 	// commands - 16bit indices
 
 	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint16_t>>& meas) override final;
 	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint16_t>>& meas) override final;
 	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt32, uint16_t>>& meas) override final;
 	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint16_t>>& meas) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint16_t>>& meas) override final;
-
-	// commands - 8bit indices
-
-	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint8_t>>& meas) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint8_t>>& meas) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt32, uint8_t>>& meas) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint8_t>>& meas) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint8_t>>& meas) override final;
-
+	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint16_t>>& meas) override final;	
 
 protected:
 
@@ -210,14 +187,26 @@ private:
 	uint32_t currentHeader;
 
 	template <class T>
-	static IndexedValue<T, uint16_t> Widen(const IndexedValue<T, uint8_t> value)
-	{
-		return value.template Widen<uint16_t>();
-	}
+	IINField ProcessIndexPrefixNarrow(const HeaderRecord& record, const IterableBuffer<IndexedValue<T, uint16_t>>& values);
 
 	template <class T>
 	IINField ProcessIndexPrefixCTO(const HeaderRecord& record, const IterableBuffer<IndexedValue<T, uint16_t>>& meas);
 };
+
+template <class T>
+IINField APDUHandlerBase::ProcessIndexPrefixNarrow(const HeaderRecord& record, const IterableBuffer<IndexedValue<T, uint16_t>>& values)
+{
+	if ((record.GetQualifierCode() == QualifierCode::UINT16_CNT_UINT16_INDEX))
+	{
+		return this->ProcessIndexPrefix(record, values);
+	}
+	else
+	{
+		auto narrow = [](const IndexedValue<T, uint16_t>& value) { return value.Narrow<uint8_t>(); };
+		auto transform = MapIterableBuffer<IndexedValue<T, uint16_t>, IndexedValue<T, uint8_t>>(&values, narrow);
+		return this->ProcessIndexPrefix(record, transform);
+	}
+}
 
 template <class T>
 IINField APDUHandlerBase::ProcessIndexPrefixCTO(const HeaderRecord& record, const IterableBuffer<IndexedValue<T, uint16_t>>& meas)
