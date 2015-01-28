@@ -29,7 +29,7 @@
 #include "opendnp3/gen/AssignClassType.h"
 
 #include "opendnp3/app/IndexedValue.h"
-#include "opendnp3/app/IterableBuffer.h"
+#include "opendnp3/app/parsing/IterableBuffer.h"
 #include "opendnp3/app/TimeAndInterval.h"
 
 #include "opendnp3/outstation/ApplicationIIN.h"

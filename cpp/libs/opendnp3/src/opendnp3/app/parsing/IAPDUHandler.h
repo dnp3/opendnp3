@@ -23,7 +23,8 @@
 
 #include "opendnp3/app/GroupVariationRecord.h"
 
-#include "opendnp3/app/IterableBuffer.h"
+#include "opendnp3/app/parsing/IterableBuffer.h"
+
 #include "opendnp3/app/MeasurementTypes.h"
 #include "opendnp3/app/IINValue.h"
 #include "opendnp3/app/ControlRelayOutputBlock.h"

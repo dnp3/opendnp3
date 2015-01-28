@@ -150,16 +150,7 @@
     <ClInclude Include="src\opendnp3\app\IndexedValue.h">
       <Filter>Header\app</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\app\IterableBuffer.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\app\IterableTransforms.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\app\ITransactable.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\app\LazyIterable.h">
       <Filter>Header\app</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\app\MeasurementFactory.h">
@@ -826,6 +817,15 @@
       <Filter>Header\app\parsing</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\app\parsing\BitReader.h">
+      <Filter>Header\app\parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\app\parsing\IterableBuffer.h">
+      <Filter>Header\app\parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\app\parsing\IterableTransforms.h">
+      <Filter>Header\app\parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\app\parsing\LazyIterable.h">
       <Filter>Header\app\parsing</Filter>
     </ClInclude>
   </ItemGroup>

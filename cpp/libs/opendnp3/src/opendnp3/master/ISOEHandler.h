@@ -22,7 +22,7 @@
 #define OPENDNP3_ISOEHANDLER_H
 
 #include "opendnp3/app/ITransactable.h"
-#include "opendnp3/app/IterableBuffer.h"
+#include "opendnp3/app/parsing/IterableBuffer.h"
 #include "opendnp3/app/IndexedValue.h"
 #include "opendnp3/app/MeasurementTypes.h"
 #include "opendnp3/app/TimeAndInterval.h"

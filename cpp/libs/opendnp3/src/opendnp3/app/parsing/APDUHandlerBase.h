@@ -22,7 +22,9 @@
 #define OPENDNP3_APDUHANDLERBASE_H
 
 #include "opendnp3/app/IINField.h"
-#include "opendnp3/app/IterableTransforms.h"
+
+#include "opendnp3/app/parsing/IterableTransforms.h"
+
 #include "opendnp3/app/parsing/IAPDUHandler.h"
 
 #include "opendnp3/gen/TimestampMode.h"

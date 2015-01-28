@@ -47,10 +47,7 @@
     <ClInclude Include="src\opendnp3\app\HeaderWriter.h" />
     <ClInclude Include="src\opendnp3\app\IINField.h" />
     <ClInclude Include="src\opendnp3\app\IndexedValue.h" />
-    <ClInclude Include="src\opendnp3\app\IterableBuffer.h" />
-    <ClInclude Include="src\opendnp3\app\IterableTransforms.h" />
     <ClInclude Include="src\opendnp3\app\ITransactable.h" />
-    <ClInclude Include="src\opendnp3\app\LazyIterable.h" />
     <ClInclude Include="src\opendnp3\app\MeasurementFactory.h" />
     <ClInclude Include="src\opendnp3\app\MeasurementTypes.h" />
     <ClInclude Include="src\opendnp3\app\ObjectHeaderParser.h" />
@@ -63,6 +60,9 @@
     <ClInclude Include="src\opendnp3\app\parsing\CountIndexParser.h" />
     <ClInclude Include="src\opendnp3\app\parsing\CountParser.h" />
     <ClInclude Include="src\opendnp3\app\parsing\IAPDUHandler.h" />
+    <ClInclude Include="src\opendnp3\app\parsing\IterableBuffer.h" />
+    <ClInclude Include="src\opendnp3\app\parsing\IterableTransforms.h" />
+    <ClInclude Include="src\opendnp3\app\parsing\LazyIterable.h" />
     <ClInclude Include="src\opendnp3\app\parsing\NumParser.h" />
     <ClInclude Include="src\opendnp3\app\parsing\ParseResult.h" />
     <ClInclude Include="src\opendnp3\app\parsing\ParserSettings.h" />

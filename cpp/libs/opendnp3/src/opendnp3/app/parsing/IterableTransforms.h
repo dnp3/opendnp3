@@ -21,7 +21,7 @@
 #ifndef OPENDNP3_ITERABLETRANSFORMS_H
 #define OPENDNP3_ITERABLETRANSFORMS_H
 
-#include "opendnp3/app/LazyIterable.h"
+#include "opendnp3/app/parsing/LazyIterable.h"
 
 #include <openpal/util/Uncopyable.h>
 

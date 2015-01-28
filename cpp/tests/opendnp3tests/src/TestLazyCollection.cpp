@@ -23,10 +23,10 @@
 #include "BufferHelpers.h"
 #include "MeasurementComparisons.h"
 
-#include <opendnp3/app/IterableTransforms.h>
+#include <opendnp3/app/parsing/BitReader.h>
+#include <opendnp3/app/parsing/IterableTransforms.h>
 
 #include <opendnp3/app/MeasurementTypes.h>
-#include <opendnp3/app/parsing/BitReader.h>
 #include <opendnp3/objects/Group30.h>
 
 #include <iostream>
