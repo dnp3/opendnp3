@@ -102,7 +102,7 @@ IINField WriteHandler::ProcessCountOf(const HeaderRecord&, const IterableBuffer<
 	}
 }
 
-IINField  WriteHandler::ProcessIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas)
+IINField  WriteHandler::ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas)
 {
 	if (pApplication->SupportsWriteTimeAndInterval())
 	{

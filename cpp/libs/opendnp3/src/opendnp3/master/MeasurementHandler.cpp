@@ -52,6 +52,12 @@ MeasurementHandler::~MeasurementHandler()
 	}
 }
 
+TimestampMode MeasurementHandler::ModeFromType(GroupVariation gv)
+{
+	return TypeHasTimestamp(gv) ? TimestampMode::SYNCHRONIZED : TimestampMode::INVALID;
+}
+
+
 void MeasurementHandler::CheckForTxStart()
 {
 	if (!txInitiated)
@@ -61,109 +67,109 @@ void MeasurementHandler::CheckForTxStart()
 	}
 }
 
-IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)
+IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)
 {
-	return this->LoadAny(record, tsmode, meas);	
+	return this->LoadAny(record, ModeFromType(record.enumeration), meas);
 }
 
-IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas)
+IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas)
 {
-	return this->LoadAny(record, tsmode, meas);
+	return this->LoadAny(record, ModeFromType(record.enumeration), meas);
 }
 
-IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas)
+IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas)
 {
-	return this->LoadAny(record, tsmode, meas);
+	return this->LoadAny(record, ModeFromType(record.enumeration), meas);
 }
 
-IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)
+IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)
 {
-	return this->LoadAny(record, tsmode, meas);
+	return this->LoadAny(record, ModeFromType(record.enumeration), meas);
 }
 
-IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas)
+IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas)
 {
-	return this->LoadAny(record, tsmode, meas);
+	return this->LoadAny(record, ModeFromType(record.enumeration), meas);
 }
 
-IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)
+IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)
 {
-	return this->LoadAny(record, tsmode, meas);
+	return this->LoadAny(record, ModeFromType(record.enumeration), meas);
 }
 
-IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas)
+IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas)
 {
-	return this->LoadAny(record, tsmode, meas);
+	return this->LoadAny(record, ModeFromType(record.enumeration), meas);
 }
 
-IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas)
+IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas)
 {
-	return this->LoadAny(record, tsmode, meas);
+	return this->LoadAny(record, ModeFromType(record.enumeration), meas);
 }
 
-IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas)
+IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas)
 {
-	return this->LoadAny(record, tsmode, meas);
+	return this->LoadAny(record, ModeFromType(record.enumeration), meas);
 }
 
-IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<BinaryCommandEvent, uint16_t>>& meas)
+IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryCommandEvent, uint16_t>>& meas)
 {
-	return this->LoadAny(record, tsmode, meas);
+	return this->LoadAny(record, ModeFromType(record.enumeration), meas);
 }
 
-IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<AnalogCommandEvent, uint16_t>>& meas)
+IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogCommandEvent, uint16_t>>& meas)
 {
-	return this->LoadAny(record, tsmode, meas);
+	return this->LoadAny(record, ModeFromType(record.enumeration), meas);
 }
 
-IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)
+IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)
 {
-	return this->LoadAny(record, tsmode, meas);
+	return this->LoadAny(record, ModeFromType(record.enumeration), meas);
 }
 
-IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas)
+IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas)
 {
-	return this->LoadAny(record, tsmode, meas);
+	return this->LoadAny(record, ModeFromType(record.enumeration), meas);
 }
 
-IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas)
+IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas)
 {
-	return this->LoadAny(record, tsmode, meas);
+	return this->LoadAny(record, ModeFromType(record.enumeration), meas);
 }
 
-IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)
+IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)
 {
-	return this->LoadAny(record, tsmode, meas);
+	return this->LoadAny(record, ModeFromType(record.enumeration), meas);
 }
 
-IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas)
+IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas)
 {
-	return this->LoadAny(record, tsmode, meas);
+	return this->LoadAny(record, ModeFromType(record.enumeration), meas);
 }
 
-IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)
+IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)
 {
-	return this->LoadAny(record, tsmode, meas);
+	return this->LoadAny(record, ModeFromType(record.enumeration), meas);
 }
 
-IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas)
+IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas)
 {
-	return this->LoadAny(record, tsmode, meas);
+	return this->LoadAny(record, ModeFromType(record.enumeration), meas);
 }
 
-IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas)
+IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas)
 {
-	return this->LoadAny(record, tsmode, meas);
+	return this->LoadAny(record, ModeFromType(record.enumeration), meas);
 }
 
-IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<BinaryCommandEvent, uint16_t>>& meas)
+IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryCommandEvent, uint16_t>>& meas)
 {
-	return this->LoadAny(record, tsmode, meas);
+	return this->LoadAny(record, ModeFromType(record.enumeration), meas);
 }
 
-IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<AnalogCommandEvent, uint16_t>>& meas)
+IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogCommandEvent, uint16_t>>& meas)
 {
-	return this->LoadAny(record, tsmode, meas);
+	return this->LoadAny(record, ModeFromType(record.enumeration), meas);
 }
 
 }

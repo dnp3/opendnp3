@@ -43,7 +43,7 @@ private:
 
 	virtual IINField ProcessCountOf(const HeaderRecord& record, const IterableBuffer<Group50Var1>& times) override final;
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas) override final;
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas) override final;
 
 	IOutstationApplication* pApplication;
 	IINField* pWriteIIN;

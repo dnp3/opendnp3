@@ -79,7 +79,7 @@ public:
 		return IINField();
 	}
 
-	virtual IINField ProcessRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override
+	virtual IINField ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override
 	{
 		records.push_back(record);
 		meas.foreach([&](const IndexedValue<Binary, uint16_t>& v)
@@ -89,7 +89,7 @@ public:
 		return IINField();
 	}
 
-	virtual IINField ProcessRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) override
+	virtual IINField ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) override
 	{
 		records.push_back(record);
 		meas.foreach([&](const IndexedValue<DoubleBitBinary, uint16_t>& v)
@@ -99,7 +99,7 @@ public:
 		return IINField();
 	}
 
-	virtual IINField ProcessRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) override
+	virtual IINField ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) override
 	{
 		records.push_back(record);
 		meas.foreach([&](const IndexedValue<BinaryOutputStatus, uint16_t>& v)
@@ -109,7 +109,7 @@ public:
 		return IINField();
 	}
 
-	virtual IINField ProcessRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) override
+	virtual IINField ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) override
 	{
 		records.push_back(record);
 		meas.foreach([&](const IndexedValue<Counter, uint16_t>& v)
@@ -119,7 +119,7 @@ public:
 		return IINField();
 	}
 
-	virtual IINField ProcessRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) override
+	virtual IINField ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) override
 	{
 		records.push_back(record);
 		meas.foreach([&](const IndexedValue<FrozenCounter, uint16_t>& v)
@@ -129,7 +129,7 @@ public:
 		return IINField();
 	}
 
-	virtual IINField ProcessRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)  override
+	virtual IINField ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)  override
 	{
 		records.push_back(record);
 		meas.foreach([&](const IndexedValue<Analog, uint16_t>& v)
@@ -139,7 +139,7 @@ public:
 		return IINField();
 	}
 
-	virtual IINField ProcessRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas) override
+	virtual IINField ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas) override
 	{
 		records.push_back(record);
 		meas.foreach([&](const IndexedValue<AnalogOutputStatus, uint16_t>& v)
@@ -149,7 +149,7 @@ public:
 		return IINField();
 	}
 
-	virtual IINField ProcessRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) override
+	virtual IINField ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) override
 	{
 		records.push_back(record);
 		meas.foreach([&](const IndexedValue<OctetString, uint16_t>& v)
@@ -159,7 +159,7 @@ public:
 		return IINField();
 	}
 
-	virtual IINField ProcessRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<BinaryCommandEvent, uint16_t>>& meas) override
+	virtual IINField ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryCommandEvent, uint16_t>>& meas) override
 	{
 		records.push_back(record);
 		meas.foreach([&](const IndexedValue<BinaryCommandEvent, uint16_t>& v)
@@ -169,7 +169,7 @@ public:
 		return IINField();
 	}
 
-	virtual IINField ProcessRange(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<AnalogCommandEvent, uint16_t>>& meas) override
+	virtual IINField ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogCommandEvent, uint16_t>>& meas) override
 	{
 		records.push_back(record);
 		meas.foreach([&](const IndexedValue<AnalogCommandEvent, uint16_t>& v)
@@ -179,7 +179,7 @@ public:
 		return IINField();
 	}
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override
 	{
 		records.push_back(record);
 		meas.foreach([&](const IndexedValue<Binary, uint16_t>& v)
@@ -189,7 +189,7 @@ public:
 		return IINField();
 	}
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) override
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) override
 	{
 		records.push_back(record);
 		meas.foreach([&](const IndexedValue<DoubleBitBinary, uint16_t>& v)
@@ -199,7 +199,7 @@ public:
 		return IINField();
 	}
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)  override
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)  override
 	{
 		records.push_back(record);
 		meas.foreach([&](const IndexedValue<Counter, uint16_t>& v)
@@ -209,7 +209,7 @@ public:
 		return IINField();
 	}
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas)  override
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas)  override
 	{
 		records.push_back(record);
 		meas.foreach([&](const IndexedValue<FrozenCounter, uint16_t>& v)
@@ -219,7 +219,7 @@ public:
 		return IINField();
 	}
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)  override
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)  override
 	{
 		records.push_back(record);
 		meas.foreach([&](const IndexedValue<Analog, uint16_t>& v)
@@ -229,7 +229,7 @@ public:
 		return IINField();
 	}
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) override
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) override
 	{
 		records.push_back(record);
 		meas.foreach([&](const IndexedValue<OctetString, uint16_t>& v)
@@ -239,7 +239,7 @@ public:
 		return IINField();
 	}
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<BinaryCommandEvent, uint16_t>>& meas) override
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryCommandEvent, uint16_t>>& meas) override
 	{
 		records.push_back(record);
 		meas.foreach([&](const IndexedValue<BinaryCommandEvent, uint16_t>& v)
@@ -249,7 +249,7 @@ public:
 		return IINField();
 	}
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<AnalogCommandEvent, uint16_t>>& meas) override
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogCommandEvent, uint16_t>>& meas) override
 	{
 		records.push_back(record);
 		meas.foreach([&](const IndexedValue<AnalogCommandEvent, uint16_t>& v)
