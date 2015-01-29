@@ -25,6 +25,9 @@
 #include "opendnp3/outstation/NullOutstationAuthProvider.h"
 #include "opendnp3/outstation/authv5/SAv5OutstationAuthProvider.h"
 
+#include <memory>
+#include <stdexcept>
+
 namespace opendnp3
 {
 	std::unique_ptr<IOutstationAuthProvider> OutstationAuthFactory::Create(const OutstationStackConfig& config, openpal::ICryptoProvider* pCrypto)
@@ -34,7 +37,7 @@ namespace opendnp3
 			case(ConfigAuthMode::SAV5) :
 				return CreateSAv5Provider(config, pCrypto);
 			default:
-				return std::make_unique<NullOutstationAuthProvider>();
+				return std::unique_ptr<IOutstationAuthProvider>(new NullOutstationAuthProvider());
 		}
 	}	
 
@@ -42,11 +45,13 @@ namespace opendnp3
 	{
 		if (pCrypto)
 		{
-			return std::make_unique<SAv5OutstationAuthProvider>(config.outstation.params.maxRxFragSize, *pCrypto);
+			return std::unique_ptr<IOutstationAuthProvider>(
+				new SAv5OutstationAuthProvider(config.outstation.params.maxRxFragSize, *pCrypto)
+			);
 		}
 		else
 		{
-			throw std::exception("SAv5 requires a crypto provider");
+			throw std::runtime_error("SAv5 requires a crypto provider");
 		}
 	}
 }

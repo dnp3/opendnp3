@@ -59,27 +59,32 @@ libopendnp3_la_SOURCES = \
 cpp/libs/opendnp3/src/opendnp3/app/AnalogCommandEvent.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/AnalogOutput.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/APDUBuilders.cpp \
-cpp/libs/opendnp3/src/opendnp3/app/APDUHandlerBase.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/APDUHeader.cpp \
-cpp/libs/opendnp3/src/opendnp3/app/APDUHeaderParser.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/APDULogging.cpp \
-cpp/libs/opendnp3/src/opendnp3/app/APDUParser.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/APDURequest.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/APDUResponse.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/APDUWrapper.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/AppControlField.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/BinaryCommandEvent.cpp \
-cpp/libs/opendnp3/src/opendnp3/app/BitReader.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/ClassField.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/ControlRelayOutputBlock.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/EventTriggers.cpp \
-cpp/libs/opendnp3/src/opendnp3/app/FunctionHelpers.cpp \
+cpp/libs/opendnp3/src/opendnp3/app/Functions.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/GroupVariationRecord.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/IINField.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/MeasurementTypes.cpp \
+cpp/libs/opendnp3/src/opendnp3/app/ObjectHeaderParser.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/ObjectWriter.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/OctetData.cpp \
 cpp/libs/opendnp3/src/opendnp3/app/TimeAndInterval.cpp \
+cpp/libs/opendnp3/src/opendnp3/app/parsing/APDUHandlerBase.cpp \
+cpp/libs/opendnp3/src/opendnp3/app/parsing/APDUHeaderParser.cpp \
+cpp/libs/opendnp3/src/opendnp3/app/parsing/APDUParser.cpp \
+cpp/libs/opendnp3/src/opendnp3/app/parsing/BitReader.cpp \
+cpp/libs/opendnp3/src/opendnp3/app/parsing/CountIndexParser.cpp \
+cpp/libs/opendnp3/src/opendnp3/app/parsing/CountParser.cpp \
+cpp/libs/opendnp3/src/opendnp3/app/parsing/NumParser.cpp \
+cpp/libs/opendnp3/src/opendnp3/app/parsing/RangeParser.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/AuthErrorCode.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/CertificateType.cpp \
 cpp/libs/opendnp3/src/opendnp3/gen/ChallengeReason.cpp \
@@ -172,6 +177,7 @@ cpp/libs/opendnp3/src/opendnp3/outstation/IINHelpers.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/IOutstationApplication.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/NullOutstationAuthProvider.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/OutstationActions.cpp \
+cpp/libs/opendnp3/src/opendnp3/outstation/OutstationAuthFactory.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/Outstation.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/OutstationFunctions.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/OutstationParams.cpp \
@@ -188,10 +194,12 @@ cpp/libs/opendnp3/src/opendnp3/outstation/StaticBuffers.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/StaticLoadFunctions.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/TimeTransaction.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/WriteHandler.cpp \
+cpp/libs/opendnp3/src/opendnp3/outstation/authv5/SAv5OutstationAuthProvider.cpp \
 cpp/libs/opendnp3/src/opendnp3/transport/TransportLayer.cpp \
 cpp/libs/opendnp3/src/opendnp3/transport/TransportRx.cpp \
 cpp/libs/opendnp3/src/opendnp3/transport/TransportStack.cpp \
 cpp/libs/opendnp3/src/opendnp3/transport/TransportTx.cpp
+
 
 
 #ls cpp/libs/asiodnp3/src/asiodnp3/*.cpp -1 | awk '{print $0" \\"}'

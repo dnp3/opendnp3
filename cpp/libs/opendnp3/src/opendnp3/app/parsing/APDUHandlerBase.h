@@ -204,7 +204,9 @@ IINField APDUHandlerBase::ProcessIndexPrefixNarrow(const HeaderRecord& record, c
 	}
 	else
 	{
-		auto narrow = [](const IndexedValue<T, uint16_t>& value) { return value.Narrow<uint8_t>(); };
+		auto narrow = [](const IndexedValue<T, uint16_t>& value) { 
+			return value.template Narrow<uint8_t >(); 
+		};
 		auto transform = MapIterableBuffer<IndexedValue<T, uint16_t>, IndexedValue<T, uint8_t>>(&values, narrow);
 		return this->ProcessIndexPrefix(record, transform);
 	}
