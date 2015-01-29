@@ -39,7 +39,10 @@ bool MeasurementHandler::ProcessMeasurements(const openpal::ReadBufferView& obje
 MeasurementHandler::MeasurementHandler(const openpal::Logger& logger, ISOEHandler* pSOEHandler_) : 
 	APDUHandlerBase(logger),
 	txInitiated(false),
-	pSOEHandler(pSOEHandler_)
+	pSOEHandler(pSOEHandler_),
+	ctoMode(TimestampMode::INVALID),
+	ctoHeader(0),
+	commonTimeOccurence(0)
 {
 	
 }
@@ -65,6 +68,31 @@ void MeasurementHandler::CheckForTxStart()
 		txInitiated = true;
 		Transaction::Start(pSOEHandler);
 	}
+}
+
+IINField MeasurementHandler::ProcessCountOf(const HeaderRecord& record, const IterableBuffer<Group51Var1>& values)
+{
+	Group51Var1 object;
+	if (values.ReadOnlyValue(object))
+	{
+		ctoMode = TimestampMode::SYNCHRONIZED;
+		commonTimeOccurence = object.time;
+		ctoHeader = this->GetCurrentHeader();
+		
+	}
+	return IINField::Empty();
+}
+
+IINField MeasurementHandler::ProcessCountOf(const HeaderRecord& record, const IterableBuffer<Group51Var2>& values)
+{
+	Group51Var2 object;
+	if (values.ReadOnlyValue(object))
+	{
+		ctoMode = TimestampMode::UNSYNCHRONIZED;
+		commonTimeOccurence = object.time;
+		ctoHeader = this->GetCurrentHeader();
+	}
+	return IINField::Empty();
 }
 
 IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)
@@ -124,7 +152,14 @@ IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, const Iter
 
 IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)
 {
-	return this->LoadAny(record, ModeFromType(record.enumeration), meas);
+	if (record.enumeration == GroupVariation::Group2Var3)
+	{
+		return this->ProcessWithCTO(record, meas);
+	}
+	else
+	{
+		return this->LoadAny(record, ModeFromType(record.enumeration), meas);
+	}
 }
 
 IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas)
@@ -134,7 +169,14 @@ IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, cons
 
 IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas)
 {
-	return this->LoadAny(record, ModeFromType(record.enumeration), meas);
+	if (record.enumeration == GroupVariation::Group4Var3)
+	{
+		return this->ProcessWithCTO(record, meas);
+	}
+	else
+	{
+		return this->LoadAny(record, ModeFromType(record.enumeration), meas);
+	}
 }
 
 IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)

@@ -182,22 +182,22 @@ void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBu
 
 void APDUHandlerBase::OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& values)
 {
-	Record(ProcessIndexPrefix(record, values));
+	Record(ProcessRange(record, values));
 }
 
 void APDUHandlerBase::OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& values)
 {
-	Record(ProcessIndexPrefix(record, values));
+	Record(ProcessRange(record, values));
 }
 
 void APDUHandlerBase::OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryCommandEvent, uint16_t>>& values)
 {
-	Record(ProcessIndexPrefix(record, values));
+	Record(ProcessRange(record, values));
 }
 
 void APDUHandlerBase::OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogCommandEvent, uint16_t>>& values)
 {
-	Record(ProcessIndexPrefix(record, values));
+	Record(ProcessRange(record, values));
 }
 
 void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& values)

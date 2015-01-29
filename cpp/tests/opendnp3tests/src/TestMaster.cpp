@@ -316,9 +316,7 @@ TEST_CASE(SUITE("ParsesGroup50Var4"))
 
 	REQUIRE(t.lower.PopWriteAsHex() == hex::IntegrityPoll(0));
 	t.master.OnSendResult(true);
-
-	// octet strings shouldn't be found in class 0 polls, but we'll test that we can process them anyway
-	// Group 110 (0x6E) Variation(length), start = 3, stop = 3
+	
 	t.SendToMaster("C0 81 00 00 32 04 00 00 00 09 00 00 00 00 00 03 00 00 00 05");
 
 	REQUIRE(1 == t.meas.timeAndIntervalSOE.size());

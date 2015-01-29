@@ -25,6 +25,7 @@
 
 #include "opendnp3/master/ISOEHandler.h"
 #include "opendnp3/app/parsing/APDUHandlerBase.h"
+#include "opendnp3/app/parsing/IterableTransforms.h"
 #include "opendnp3/app/APDUHeader.h"
 
 namespace opendnp3
@@ -46,7 +47,7 @@ public:
 	/**
 	* Creates a new ResponseLoader instance.
 	*
-	* @param arLogger	the Logger that the loader should use for message reporting
+	* @param logger	the Logger that the loader should use for message reporting
 	*/
 	MeasurementHandler(const openpal::Logger& logger, ISOEHandler* pSOEHandler);
 
@@ -55,6 +56,10 @@ public:
 private:
 
 	static TimestampMode ModeFromType(GroupVariation gv);
+
+	// Handle the CTO objects
+	IINField ProcessCountOf(const HeaderRecord& record, const IterableBuffer<Group51Var1>&) override final;
+	IINField ProcessCountOf(const HeaderRecord& record, const IterableBuffer<Group51Var2>&) override final;
 
 	IINField ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override final;
 	IINField ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) override final;
@@ -87,13 +92,48 @@ private:
 		return IINField();
 	}
 
+	template <class T>
+	IINField ProcessWithCTO(const HeaderRecord& record, const IterableBuffer<IndexedValue<T, uint16_t>>& meas);
+
 
 	bool txInitiated;
 	ISOEHandler* pSOEHandler;
 
+	TimestampMode ctoMode;
+	uint32_t ctoHeader;
+	uint64_t commonTimeOccurence;
+
 	void CheckForTxStart();
 
 };
+
+template <class T>
+IINField MeasurementHandler::ProcessWithCTO(const HeaderRecord& record, const IterableBuffer<IndexedValue<T, uint16_t>>& meas)
+{	
+	if (ctoMode != TimestampMode::INVALID && ((ctoHeader+1) == GetCurrentHeader()))
+	{
+		auto mode = this->ctoMode;
+		auto timestamp = this->commonTimeOccurence;
+
+		auto addTime = [timestamp](const IndexedValue<T, uint16_t>& value)
+		{
+			T copy(value.value);
+			copy.time += timestamp;
+			return IndexedValue<T, uint16_t>(copy, value.index);
+		};
+
+		auto transform = MapIterableBuffer< IndexedValue<T, uint16_t>, IndexedValue<T, uint16_t> >(&meas, addTime);
+
+		this->ctoMode = TimestampMode::INVALID;
+
+		return this->LoadAny(record, mode, transform);
+	}
+	else
+	{
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "No prior CTO objects for %s", GroupVariationToString(record.enumeration));
+		return IINField(IINBit::PARAM_ERROR);
+	}
+}
 
 }
 

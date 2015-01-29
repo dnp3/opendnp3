@@ -24,11 +24,8 @@
 #include "opendnp3/app/IINField.h"
 
 #include "opendnp3/app/parsing/IAPDUHandler.h"
-#include "opendnp3/app/parsing/IterableTransforms.h"
-
-#include "opendnp3/gen/TimestampMode.h"
-
 #include "opendnp3/LogLevels.h"
+
 #include <openpal/logging/LogMacros.h>
 #include <openpal/logging/Logger.h>
 
@@ -125,8 +122,8 @@ protected:
 	virtual IINField ProcessIIN(const HeaderRecord& record, const IterableBuffer<IndexedValue<IINValue, uint16_t>>& meas);
 
 	virtual IINField ProcessCountOf(const HeaderRecord& record, const IterableBuffer<Group50Var1>& objects);
-	virtual IINField ProcessCountOf(const HeaderRecord& record, const opendnp3::IterableBuffer<Group51Var1>&);
-	virtual IINField ProcessCountOf(const HeaderRecord& record, const opendnp3::IterableBuffer<Group51Var2>&);
+	virtual IINField ProcessCountOf(const HeaderRecord& record, const IterableBuffer<Group51Var1>&);
+	virtual IINField ProcessCountOf(const HeaderRecord& record, const IterableBuffer<Group51Var2>&);
 	virtual IINField ProcessCountOf(const HeaderRecord& record, const IterableBuffer<Group52Var2>&);
 	
 	virtual IINField ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas);
@@ -181,36 +178,6 @@ private:
 	uint32_t numTotalHeaders;
 	uint32_t numIgnoredHeaders;			
 };
-
-/*
-template <class T>
-IINField APDUHandlerBase::ProcessIndexPrefixCTO(const HeaderRecord& record, const IterableBuffer<IndexedValue<T, uint16_t>>& meas)
-{
-	uint64_t commonTime;
-	auto mode = GetCTO(commonTime);
-	if (mode != TimestampMode::INVALID)
-	{
-		auto transform = MapIterableBuffer< IndexedValue<T, uint16_t>, IndexedValue<T, uint16_t> >(&meas,
-
-		                 [commonTime](const IndexedValue<T, uint16_t>& value)
-		{
-			T copy(value.value);
-			copy.time += commonTime;
-			return IndexedValue<T, uint16_t>(copy, value.index);
-		}
-
-		                                                                                          );
-		return this->ProcessIndexPrefix(record, mode, transform);
-	}
-	else
-	{
-		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Received CTO objects without preceding common time, discarding");		
-		return IINField(IINBit::PARAM_ERROR);
-	}
-}
-*/
-
-
 
 }
 
