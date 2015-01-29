@@ -23,9 +23,8 @@
 
 #include "opendnp3/app/IINField.h"
 
-#include "opendnp3/app/parsing/IterableTransforms.h"
-
 #include "opendnp3/app/parsing/IAPDUHandler.h"
+#include "opendnp3/app/parsing/IterableTransforms.h"
 
 #include "opendnp3/gen/TimestampMode.h"
 
@@ -161,13 +160,7 @@ protected:
 	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint16_t>>& meas);
 	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt32, uint16_t>>& meas);
 	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint16_t>>& meas);
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint16_t>>& meas);
-
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint8_t>>& meas);
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint8_t>>& meas);
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt32, uint8_t>>& meas);
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint8_t>>& meas);
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint8_t>>& meas);
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint16_t>>& meas);	
 
 protected:
 
@@ -186,31 +179,11 @@ private:
 	uint32_t ctoHeader;
 	TimestampMode ctoMode;
 
-	uint32_t currentHeader;
-
-	template <class T>
-	IINField ProcessIndexPrefixNarrow(const HeaderRecord& record, const IterableBuffer<IndexedValue<T, uint16_t>>& values);
+	uint32_t currentHeader;	
 
 	template <class T>
 	IINField ProcessIndexPrefixCTO(const HeaderRecord& record, const IterableBuffer<IndexedValue<T, uint16_t>>& meas);
 };
-
-template <class T>
-IINField APDUHandlerBase::ProcessIndexPrefixNarrow(const HeaderRecord& record, const IterableBuffer<IndexedValue<T, uint16_t>>& values)
-{
-	if ((record.GetQualifierCode() == QualifierCode::UINT16_CNT_UINT16_INDEX))
-	{
-		return this->ProcessIndexPrefix(record, values);
-	}
-	else
-	{
-		auto narrow = [](const IndexedValue<T, uint16_t>& value) { 
-			return value.template Narrow<uint8_t >(); 
-		};
-		auto transform = MapIterableBuffer<IndexedValue<T, uint16_t>, IndexedValue<T, uint8_t>>(&values, narrow);
-		return this->ProcessIndexPrefix(record, transform);
-	}
-}
 
 template <class T>
 IINField APDUHandlerBase::ProcessIndexPrefixCTO(const HeaderRecord& record, const IterableBuffer<IndexedValue<T, uint16_t>>& meas)

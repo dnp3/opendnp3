@@ -219,31 +219,31 @@ void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBu
 
 void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint16_t>>& meas)
 {		
-	errors |= this->ProcessIndexPrefixNarrow(record, meas);	
+	errors |= this->ProcessIndexPrefix(record, meas);	
 	++currentHeader;
 }
 
 void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint16_t>>& meas)
 {
-	errors |= this->ProcessIndexPrefixNarrow(record, meas);
+	errors |= this->ProcessIndexPrefix(record, meas);
 	++currentHeader;
 }
 
 void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt32, uint16_t>>& meas)
 {
-	errors |= this->ProcessIndexPrefixNarrow(record, meas);
+	errors |= this->ProcessIndexPrefix(record, meas);
 	++currentHeader;
 }
 
 void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint16_t>>& meas)
 {
-	errors |= this->ProcessIndexPrefixNarrow(record, meas);
+	errors |= this->ProcessIndexPrefix(record, meas);
 	++currentHeader;
 }
 
 void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint16_t>>& meas)
 {
-	errors |= this->ProcessIndexPrefixNarrow(record, meas);
+	errors |= this->ProcessIndexPrefix(record, meas);
 	++currentHeader;
 }
 
@@ -463,31 +463,6 @@ IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const I
 }
 
 IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint16_t>>& meas)
-{
-	return ProcessUnsupportedHeader();
-}
-
-IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint8_t>>& meas)
-{
-	return ProcessUnsupportedHeader();
-}
-
-IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint8_t>>& meas)
-{
-	return ProcessUnsupportedHeader();
-}
-
-IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt32, uint8_t>>& meas)
-{
-	return ProcessUnsupportedHeader();
-}
-
-IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint8_t>>& meas)
-{
-	return ProcessUnsupportedHeader();
-}
-
-IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint8_t>>& meas)
 {
 	return ProcessUnsupportedHeader();
 }

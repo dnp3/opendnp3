@@ -308,56 +308,7 @@ public:
 		});
 		return IINField();
 	}
-
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint8_t>>& meas) override
-	{
-		records.push_back(record);
-		meas.foreach([&](const IndexedValue<ControlRelayOutputBlock, uint8_t>& v)
-		{
-			crobRequests.push_back(v.Widen<uint16_t>());
-		});
-		return IINField();
-	}
-
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint8_t>>& meas) override
-	{
-		records.push_back(record);
-		meas.foreach([&](const IndexedValue<AnalogOutputInt16, uint8_t>& v)
-		{
-			aoInt16Requests.push_back(v.Widen<uint16_t>());
-		});
-		return IINField();
-	}
-
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt32, uint8_t>>& meas) override
-	{
-		records.push_back(record);
-		meas.foreach([&](const IndexedValue<AnalogOutputInt32, uint8_t>& v)
-		{
-			aoInt32Requests.push_back(v.Widen<uint16_t>());
-		});
-		return IINField();
-	}
-
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint8_t>>& meas) override
-	{
-		records.push_back(record);
-		meas.foreach([&](const IndexedValue<AnalogOutputFloat32, uint8_t>& v)
-		{
-			aoFloat32Requests.push_back(v.Widen<uint16_t>());
-		});
-		return IINField();
-	}
-
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint8_t>>& meas) override
-	{
-		records.push_back(record);
-		meas.foreach([&](const IndexedValue<AnalogOutputDouble64, uint8_t>& v)
-		{
-			aoDouble64Requests.push_back(v.Widen<uint16_t>());
-		});
-		return IINField();
-	}
+	
 
 	std::vector<HeaderRecord> records;
 

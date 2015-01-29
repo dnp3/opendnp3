@@ -52,22 +52,17 @@ class IAPDUHandler
 public:
 
 	virtual void AllObjects(const HeaderRecord& record) = 0;
-
 	virtual void OnRangeRequest(const HeaderRecord& record, const Range& range) = 0;
-
 	virtual void OnCountRequest(const HeaderRecord& record, uint16_t count) = 0;
 
 	virtual void OnCountOf(const HeaderRecord& record, const IterableBuffer<Group50Var1>& times) = 0;
-
 	virtual void OnCountOf(const HeaderRecord& record, const IterableBuffer<Group51Var1>& times) = 0;
-
 	virtual void OnCountOf(const HeaderRecord& record, const IterableBuffer<Group51Var2>& times) = 0;
-
 	virtual void OnCountOf(const HeaderRecord& record, const IterableBuffer<Group52Var2>& times) = 0;
 
 	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<IINValue, uint16_t>>& meas) = 0;
 
-	// static values
+	// static values by range
 	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) = 0;
 	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) = 0;
 	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) = 0;
@@ -80,7 +75,7 @@ public:
 	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryCommandEvent, uint16_t>>& meas) = 0;
 	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogCommandEvent, uint16_t>>& meas) = 0;
 
-	// events - 16 bit indices
+	// event values
 	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) = 0;
 	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) = 0;
 	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) = 0;
@@ -93,7 +88,7 @@ public:
 	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryCommandEvent, uint16_t>>& meas) = 0;
 	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogCommandEvent, uint16_t>>& meas) = 0;	
 
-	// commmands - 16 bit indices
+	// commmands
 	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint16_t>>& meas) = 0;
 	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint16_t>>& meas) = 0;
 	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt32, uint16_t>>& meas) = 0;
