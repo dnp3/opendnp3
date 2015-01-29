@@ -88,7 +88,9 @@ void CountIndexParser::InvokeCountOf(const HeaderRecord& record, uint16_t count,
 {	
 	auto reader = [numparser](openpal::ReadBufferView & buffer, uint32_t) 
 	{ 		
-		return IndexedValue<typename Descriptor::Target, uint16_t>(Descriptor::ReadTarget(buffer), numparser.ReadNum(buffer));
+		auto index = numparser.ReadNum(buffer);
+		auto meas = Descriptor::ReadTarget(buffer);
+		return IndexedValue<typename Descriptor::Target, uint16_t>(meas, index);
 	};		
 	auto collection = CreateLazyIterable<IndexedValue<typename Descriptor::Target, uint16_t>>(buffer, count, reader);
 	handler.OnIndexPrefix(record, collection);
