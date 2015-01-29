@@ -349,19 +349,15 @@ TEST_CASE(SUITE("Group60Var1Var2Var3Var4"))
 	});
 }
 
-TEST_CASE(SUITE("TestDoubleBitCommonTimeOccurence"))
+TEST_CASE(SUITE("TestDoubleBitCTO"))
 {
-	// 123456789 in hex == 0x75BCD15 -> 0x15CD5B070000 little endian
-
-	// "33 01 07 01 15 CD 5B 07 00 00"
-
-	TestComplex("33 01 07 01 15 CD 5B 07 00 00 04 03 17 02 03 C1 07 00 05 41 09 00", ParseResult::OK, 1, [&](MockApduHeaderHandler & mock)
+	TestComplex("04 03 17 02 03 C1 07 00 05 41 09 00", ParseResult::OK, 1, [&](MockApduHeaderHandler & mock)
 	{
 		REQUIRE(1 == mock.records.size());
 		REQUIRE(2 ==  mock.eventDoubleBinaries.size());
 
-		IndexedValue<DoubleBitBinary, uint16_t> event1(DoubleBitBinary(DoubleBit::INDETERMINATE, 0x01, 123456789 + 7), 3);
-		IndexedValue<DoubleBitBinary, uint16_t> event2(DoubleBitBinary(DoubleBit::DETERMINED_OFF, 0x01, 123456789 + 9), 5);
+		IndexedValue<DoubleBitBinary, uint16_t> event1(DoubleBitBinary(DoubleBit::INDETERMINATE, 0x01, 7), 3);
+		IndexedValue<DoubleBitBinary, uint16_t> event2(DoubleBitBinary(DoubleBit::DETERMINED_OFF, 0x01, 9), 5);
 
 		REQUIRE((event1 == mock.eventDoubleBinaries[0]));
 		REQUIRE((event2 == mock.eventDoubleBinaries[1]));

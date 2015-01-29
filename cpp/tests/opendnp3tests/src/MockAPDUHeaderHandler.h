@@ -73,6 +73,18 @@ public:
 		return IINField();
 	}
 
+	virtual IINField ProcessCountOf(const HeaderRecord& record, const IterableBuffer<Group51Var1>& times) override
+	{
+		records.push_back(record);
+		return IINField();
+	}
+
+	virtual IINField ProcessCountOf(const HeaderRecord& record, const IterableBuffer<Group51Var2>& times) override
+	{
+		records.push_back(record);
+		return IINField();
+	}
+
 	virtual IINField ProcessCountOf(const HeaderRecord& record, const IterableBuffer<Group52Var2>& times) override
 	{
 		records.push_back(record);
