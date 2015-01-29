@@ -27,7 +27,7 @@ namespace opendnp3
 
 APDUHandlerBase::APDUHandlerBase(openpal::Logger logger_) :
 	logger(logger_),
-	ignoredHeaders(0),
+	numIgnoredHeaders(0),
 	errors(),
 	cto(0),
 	ctoHeader(-1),
@@ -44,7 +44,7 @@ TimestampMode APDUHandlerBase::ModeFromType(GroupVariation gv)
 
 void APDUHandlerBase::Reset()
 {
-	ignoredHeaders = 0;
+	numIgnoredHeaders = 0;
 	errors.Clear();
 	cto = 0;
 	ctoHeader = 0;
@@ -297,7 +297,7 @@ void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBu
 
 IINField APDUHandlerBase::ProcessUnsupportedHeader()
 {
-	++ignoredHeaders;
+	++numIgnoredHeaders;
 	return IINField(IINBit::FUNC_NOT_SUPPORTED);
 }
 

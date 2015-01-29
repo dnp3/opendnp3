@@ -45,13 +45,13 @@ class APDUHandlerBase : public IAPDUHandler
 public:
 
 	/**
-	 * @param arLogger	the Logger that the loader should use for message reporting
+	 * @param logger the Logger that the loader should use for message reporting
 	 */
 	APDUHandlerBase(openpal::Logger logger);
 
 	uint32_t NumIgnoredHeaders() const
 	{
-		return ignoredHeaders;
+		return numIgnoredHeaders;
 	}
 
 	IINField Errors() const;
@@ -170,7 +170,7 @@ private:
 
 	IINField ProcessUnsupportedHeader();
 
-	uint32_t ignoredHeaders;
+	uint32_t numIgnoredHeaders;
 	IINField errors;
 
 	static TimestampMode ModeFromType(GroupVariation gv);
