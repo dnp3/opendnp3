@@ -28,7 +28,7 @@ namespace opendnp3
 PhysTestObject::PhysTestObject(uint32_t filters, bool aAutoRead) :
 	TestObjectASIO(),
 	log(),
-	mTCPClient(log.root, this->GetService(), "127.0.0.1", 50000),
+	mTCPClient(log.root, this->GetService(), "127.0.0.1", "127.0.0.1", 50000),
 	mTCPServer(log.root, this->GetService(), "127.0.0.1", 50000),
 	mClientAdapter(log.GetLogger(), &mTCPClient, aAutoRead),
 	mServerAdapter(log.GetLogger(), &mTCPServer, aAutoRead)

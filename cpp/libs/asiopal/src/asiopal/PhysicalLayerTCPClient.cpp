@@ -39,13 +39,16 @@ PhysicalLayerTCPClient::PhysicalLayerTCPClient(
 	openpal::LogRoot& root,
 	asio::io_service& service,
     const std::string& host_,
+	const std::string& localAddress_,
     uint16_t port,
     std::function<void (asio::ip::tcp::socket&)> aConfigure) :
 
 	PhysicalLayerBaseTCP(root, service),
 	condition(logger),
 	host(host_),
+	localAddress(localAddress_),
 	remoteEndpoint(ip::tcp::v4(), port),
+	localEndpoint(),
 	resolver(service),
 	configure(aConfigure)
 {
@@ -56,21 +59,45 @@ PhysicalLayerTCPClient::PhysicalLayerTCPClient(
 void PhysicalLayerTCPClient::DoOpen()
 {
 	std::error_code ec;
-	auto address = asio::ip::address::from_string(host, ec);
+	this->BindToLocalAddress(ec);
 	if (ec)
 	{
-		auto callback = [this](const std::error_code & code, ip::tcp::resolver::iterator endpoints)
-		{
-			this->HandleResolve(code, endpoints);
-		};
-		ip::tcp::resolver::query query(host, "20000");
-		resolver.async_resolve(query, executor.strand.wrap(callback));
+		auto callback = [this, ec]() { this->OnOpenCallback(ec); };
+		executor.strand.post(callback);
 	}
 	else
 	{
-		remoteEndpoint.address(address);
-		auto callback = [this](const std::error_code & code) { this->OnOpenCallback(code); };
-		socket.async_connect(remoteEndpoint, executor.strand.wrap(callback));
+		auto address = asio::ip::address::from_string(host, ec);
+		if (ec)
+		{
+			auto callback = [this](const std::error_code & code, ip::tcp::resolver::iterator endpoints)
+			{
+				this->HandleResolve(code, endpoints);
+			};
+			ip::tcp::resolver::query query(host, "20000");
+			resolver.async_resolve(query, executor.strand.wrap(callback));
+		}
+		else
+		{
+			remoteEndpoint.address(address);
+			auto callback = [this](const std::error_code & code) { this->OnOpenCallback(code); };
+			socket.async_connect(remoteEndpoint, executor.strand.wrap(callback));
+		}
+	}			
+}
+
+void PhysicalLayerTCPClient::BindToLocalAddress(std::error_code& ec)
+{	
+	auto string = localAddress.empty() ? "0.0.0.0" : localAddress;
+	auto addr = asio::ip::address::from_string(string, ec);
+	if (!ec)
+	{
+		localEndpoint.address(addr);
+		socket.open(ip::tcp::v4(), ec);
+		if (!ec)
+		{
+			socket.bind(localEndpoint, ec);
+		}
 	}
 }
 

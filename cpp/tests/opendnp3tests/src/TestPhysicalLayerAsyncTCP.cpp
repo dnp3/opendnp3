@@ -235,7 +235,7 @@ TEST_CASE(SUITE("Loopback"))
 	PhysLoopback loopback(root, server.executor, &server);
 	loopback.Start();
 
-	PhysicalLayerTCPClient client(root, test.GetService(), "127.0.0.1", 30000);
+	PhysicalLayerTCPClient client(root, test.GetService(), "127.0.0.1", "127.0.0.1", 30000);
 	LowerLayerToPhysAdapter adapter(root.GetLogger(), &client);
 	MockUpperLayer upper;
 	adapter.SetUpperLayer(upper);
