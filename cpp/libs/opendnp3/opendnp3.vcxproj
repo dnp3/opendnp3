@@ -50,7 +50,6 @@
     <ClInclude Include="src\opendnp3\app\ITransactable.h" />
     <ClInclude Include="src\opendnp3\app\MeasurementFactory.h" />
     <ClInclude Include="src\opendnp3\app\MeasurementTypes.h" />
-    <ClInclude Include="src\opendnp3\app\ObjectHeaderParser.h" />
     <ClInclude Include="src\opendnp3\app\OctetData.h" />
     <ClInclude Include="src\opendnp3\app\OctetString.h" />
     <ClInclude Include="src\opendnp3\app\parsing\APDUHandlerBase.h" />
@@ -64,6 +63,7 @@
     <ClInclude Include="src\opendnp3\app\parsing\IterableTransforms.h" />
     <ClInclude Include="src\opendnp3\app\parsing\LazyIterable.h" />
     <ClInclude Include="src\opendnp3\app\parsing\NumParser.h" />
+    <ClInclude Include="src\opendnp3\app\parsing\ObjectHeaderParser.h" />
     <ClInclude Include="src\opendnp3\app\parsing\ParseResult.h" />
     <ClInclude Include="src\opendnp3\app\parsing\ParserSettings.h" />
     <ClInclude Include="src\opendnp3\app\parsing\RangeParser.h" />
@@ -209,6 +209,8 @@
     <ClInclude Include="src\opendnp3\outstation\ApplicationIIN.h" />
     <ClInclude Include="src\opendnp3\outstation\AssignClassHandler.h" />
     <ClInclude Include="src\opendnp3\outstation\authv5\AuthRequestParser.h" />
+    <ClInclude Include="src\opendnp3\outstation\authv5\DefaultAuthRequestHandler.h" />
+    <ClInclude Include="src\opendnp3\outstation\authv5\IAuthRequestHandler.h" />
     <ClInclude Include="src\opendnp3\outstation\authv5\SAv5OutstationAuthProvider.h" />
     <ClInclude Include="src\opendnp3\outstation\Cell.h" />
     <ClInclude Include="src\opendnp3\outstation\ClassBasedRequestHandler.h" />
@@ -293,7 +295,6 @@
     <ClCompile Include="src\opendnp3\app\GroupVariationRecord.cpp" />
     <ClCompile Include="src\opendnp3\app\IINField.cpp" />
     <ClCompile Include="src\opendnp3\app\MeasurementTypes.cpp" />
-    <ClCompile Include="src\opendnp3\app\ObjectHeaderParser.cpp" />
     <ClCompile Include="src\opendnp3\app\ObjectWriter.cpp" />
     <ClCompile Include="src\opendnp3\app\OctetData.cpp" />
     <ClCompile Include="src\opendnp3\app\parsing\APDUHandlerBase.cpp" />
@@ -303,6 +304,7 @@
     <ClCompile Include="src\opendnp3\app\parsing\CountIndexParser.cpp" />
     <ClCompile Include="src\opendnp3\app\parsing\CountParser.cpp" />
     <ClCompile Include="src\opendnp3\app\parsing\NumParser.cpp" />
+    <ClCompile Include="src\opendnp3\app\parsing\ObjectHeaderParser.cpp" />
     <ClCompile Include="src\opendnp3\app\parsing\RangeParser.cpp" />
     <ClCompile Include="src\opendnp3\app\TimeAndInterval.cpp" />
     <ClCompile Include="src\opendnp3\gen\AuthErrorCode.cpp" />
@@ -382,6 +384,8 @@
     <ClCompile Include="src\opendnp3\objects\SeqUserData.cpp" />
     <ClCompile Include="src\opendnp3\outstation\ApplicationIIN.cpp" />
     <ClCompile Include="src\opendnp3\outstation\AssignClassHandler.cpp" />
+    <ClCompile Include="src\opendnp3\outstation\authv5\AuthRequestParser.cpp" />
+    <ClCompile Include="src\opendnp3\outstation\authv5\DefaultAuthRequestHandler.cpp" />
     <ClCompile Include="src\opendnp3\outstation\authv5\SAv5OutstationAuthProvider.cpp" />
     <ClCompile Include="src\opendnp3\outstation\ClassBasedRequestHandler.cpp" />
     <ClCompile Include="src\opendnp3\outstation\CommandActionAdapter.cpp" />

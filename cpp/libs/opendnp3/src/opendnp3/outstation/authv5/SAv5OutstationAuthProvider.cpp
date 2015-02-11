@@ -27,6 +27,9 @@
 #include "opendnp3/LogLevels.h"
 
 #include "opendnp3/outstation/OutstationState.h"
+#include "opendnp3/outstation/authv5/DefaultAuthRequestHandler.h"
+
+#include "AuthRequestParser.h"
 
 namespace opendnp3
 {
@@ -55,7 +58,7 @@ void SAv5OutstationAuthProvider::OnReceive(OState& ostate, const APDUHeader& hea
 			this->OnAuthRequest(ostate, header, objects);
 			break;
 		case(FunctionCode::AUTH_RESPONSE) :
-			this->OnAuthResponse(ostate, header, objects);
+			SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "Auth response not valid for outstation");
 			break;
 		case(FunctionCode::AUTH_REQUEST_NO_ACK) :
 			SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "AuthRequestNoAck not supported");
@@ -69,12 +72,8 @@ void SAv5OutstationAuthProvider::OnReceive(OState& ostate, const APDUHeader& hea
 
 void SAv5OutstationAuthProvider::OnAuthRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
-	SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "AuthRequest not supported yet");
-}
-
-void SAv5OutstationAuthProvider::OnAuthResponse(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
-{
-	SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "AuthResponse not supported yet");
+	DefaultAuthRequestHandler handler;	
+	AuthRequestParser::Parse(header, objects, handler, &ostate.logger);
 }
 
 void SAv5OutstationAuthProvider::OnUnknownRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)

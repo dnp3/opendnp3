@@ -49,14 +49,11 @@ class SAv5OutstationAuthProvider : private openpal::Uncopyable, public IOutstati
 
 	void OnAuthRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
 
-	void OnAuthResponse(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
-
 	void OnUnknownRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
 
 	DeferredRequest deferred;
 	openpal::ICryptoProvider* pCrypto;
-	KeyStatus keyStatus;
-	
+	KeyStatus keyStatus;	
 };
 
 }

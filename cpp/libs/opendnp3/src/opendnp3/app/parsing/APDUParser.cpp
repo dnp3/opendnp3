@@ -28,8 +28,8 @@
 #include "opendnp3/gen/QualifierCode.h"
 #include "opendnp3/app/GroupVariationRecord.h"
 #include "opendnp3/app/MeasurementFactory.h"
-#include "opendnp3/app/ObjectHeaderParser.h"
 
+#include "opendnp3/app/parsing/ObjectHeaderParser.h"
 #include "opendnp3/app/parsing/CountParser.h"
 #include "opendnp3/app/parsing/RangeParser.h"
 #include "opendnp3/app/parsing/CountIndexParser.h"
@@ -46,7 +46,7 @@ ParseResult APDUParser::ParseTwoPass(const openpal::ReadBufferView& buffer, IAPD
 {
 	if(pHandler)
 	{
-		// do two state parsing process with logging byt no handling on the first pass
+		// do two state parsing process with logging but no handling on the first pass
 		auto result = ParseSinglePass(buffer, pLogger, nullptr, settings);
 		// if the first pass was successful, do a 2nd pass with the handler but no logging
 		return (result == ParseResult::OK) ? ParseSinglePass(buffer, nullptr, pHandler, settings) : result;			

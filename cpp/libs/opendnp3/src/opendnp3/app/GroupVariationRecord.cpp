@@ -97,13 +97,15 @@ GroupVariationRecord GroupVariationRecord::GetRecord(uint8_t group, uint8_t vari
 	return GroupVariationRecord(group, variation, pair.enumeration, pair.type);
 }
 
-EnumAndType GroupVariationRecord::GetEnumAndType(uint8_t group, uint8_t variation)
+uint16_t GroupVariationRecord::GetGroupVar(uint8_t group, uint8_t variation)
 {
-	uint16_t gvenum = (group << 8) | variation;
+	return (group << 8) | variation;
+}
 
+EnumAndType GroupVariationRecord::GetEnumAndType(uint8_t group, uint8_t variation)
+{	
 	auto type = GetType(group, variation);	
-
-	auto enumeration = GroupVariationFromType(gvenum);
+	auto enumeration = GroupVariationFromType(GetGroupVar(group, variation));
 
 	if (enumeration == GroupVariation::UNKNOWN)
 	{

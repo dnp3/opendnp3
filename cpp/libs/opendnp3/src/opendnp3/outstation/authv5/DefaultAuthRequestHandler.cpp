@@ -18,31 +18,26 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_AUTHREQUESTPARSER_H
-#define OPENDNP3_AUTHREQUESTPARSER_H
 
-#include <openpal/util/Uncopyable.h>
-#include <openpal/container/ReadBufferView.h>
-#include <openpal/logging/Logger.h>
-
-#include "opendnp3/app/parsing/ParseResult.h"
-#include "opendnp3/outstation/authv5/IAuthRequestHandler.h"
+#include "DefaultAuthRequestHandler.h"
 
 namespace opendnp3
 {
 
-/**
-	Parser for the specialized AuthRequest (0x20) function code
-*/
-class AuthRequestParser : private openpal::PureStatic
+void DefaultAuthRequestHandler::OnAuthChallenge(const APDUHeader& header, const Group120Var1& challenge)
 {
-	public:
-		
-		static ParseResult Parse(const APDUHeader& header, const openpal::ReadBufferView& objects, IAuthRequestHandler& handler, openpal::Logger* pLogger);
+	
+}
 
-};
+void DefaultAuthRequestHandler::OnAuthReply(const APDUHeader& header, const Group120Var2& reply)
+{
+	
+}
+
+void DefaultAuthRequestHandler::OnChangeSessionKeys(const APDUHeader& header, const Group120Var6& keyChange)
+{
 
 }
 
-#endif
+}
 

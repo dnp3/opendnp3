@@ -60,6 +60,8 @@ public:
 
 	static EnumAndType GetEnumAndType(uint8_t group, uint8_t variation);
 
+	static uint16_t GetGroupVar(uint8_t group, uint8_t variation);
+
 	static GroupVariationRecord GetRecord(uint8_t group, uint8_t variation);
 
 	static GroupVariationType GetType(uint8_t group, uint8_t variation);
