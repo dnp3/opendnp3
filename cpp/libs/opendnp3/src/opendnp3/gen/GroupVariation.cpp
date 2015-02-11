@@ -234,6 +234,22 @@ GroupVariation GroupVariationFromType(uint16_t arg)
       return GroupVariation::Group110AnyVar;
     case(0x6F00):
       return GroupVariation::Group111AnyVar;
+    case(0x7801):
+      return GroupVariation::Group120Var1;
+    case(0x7802):
+      return GroupVariation::Group120Var2;
+    case(0x7803):
+      return GroupVariation::Group120Var3;
+    case(0x7804):
+      return GroupVariation::Group120Var4;
+    case(0x7805):
+      return GroupVariation::Group120Var5;
+    case(0x7806):
+      return GroupVariation::Group120Var6;
+    case(0x7807):
+      return GroupVariation::Group120Var7;
+    case(0x7809):
+      return GroupVariation::Group120Var9;
     default:
       return GroupVariation::UNKNOWN;
   }
@@ -446,6 +462,22 @@ char const* GroupVariationToString(GroupVariation arg)
       return "Octet String";
     case(GroupVariation::Group111AnyVar):
       return "Octet String Event";
+    case(GroupVariation::Group120Var1):
+      return "Authentication - Challenge";
+    case(GroupVariation::Group120Var2):
+      return "Authentication - Reply";
+    case(GroupVariation::Group120Var3):
+      return "Authentication - Aggressive Mode Request";
+    case(GroupVariation::Group120Var4):
+      return "Authentication - Session Key Status Request";
+    case(GroupVariation::Group120Var5):
+      return "Authentication - Session Key Status";
+    case(GroupVariation::Group120Var6):
+      return "Authentication - Session Key Change";
+    case(GroupVariation::Group120Var7):
+      return "Authentication - Error";
+    case(GroupVariation::Group120Var9):
+      return "Authentication - HMAC";
     default:
       return "UNKNOWN";
   }

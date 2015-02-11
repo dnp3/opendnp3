@@ -40,11 +40,11 @@ namespace opendnp3
 		ReadBufferView copy(objects);
 
 		auto result = ObjectHeaderParser::ParseObjectHeader(ohdr, copy, pLogger);
-		HeaderRecord record(GroupVariationRecord::GetRecord(ohdr.group, ohdr.variation), ohdr.qualifier);
-
+		
 		if (result == ParseResult::OK)
-		{	
-			switch (QualifierCodeFromType(ohdr.qualifier))
+		{
+			HeaderRecord record(GroupVariationRecord::GetRecord(ohdr.group, ohdr.variation), ohdr.qualifier);
+			switch (record.GetQualifierCode())
 			{
 				case(QualifierCode::UINT8_CNT) :
 					return ParseOneOctetCount(header, record, copy, handler, pLogger);

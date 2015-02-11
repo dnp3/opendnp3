@@ -111,7 +111,19 @@ object GroupVariation {
 
   private val group60 = List(1 -> "Class 0 data", 2 -> "Class 1 data", 3 -> "Class 2 data", 4 -> "Class 3 data")
 
+  private val group120 = List(
+    1 -> "Challenge",
+    2 -> "Reply",
+    3 -> "Aggressive Mode Request",
+    4 -> "Session Key Status Request",
+    5 -> "Session Key Status",
+    6 -> "Session Key Change",
+    7 -> "Error",
+    9 -> "HMAC"
+  )
+
   private val defaultValue = EnumValue("UNKNOWN", value(0xFF, 0xFF))
+
 
   // defined using syntactic sugar above
   private def values : List[EnumValue] = List(
@@ -146,7 +158,9 @@ object GroupVariation {
 
     List(EnumValue("Group110AnyVar", value(110,0), None, Some("Octet String"))),
 
-    List(EnumValue("Group111AnyVar", value(111,0), None, Some("Octet String Event")))
+    List(EnumValue("Group111AnyVar", value(111,0), None, Some("Octet String Event"))),
+
+    group(120, "Authentication", group120)
 
   ).flatten
 
