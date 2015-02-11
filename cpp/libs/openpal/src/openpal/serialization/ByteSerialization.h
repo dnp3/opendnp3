@@ -34,27 +34,27 @@ class UInt8Simple
 {
 public:
 
-	inline static uint8_t Read(const uint8_t* apStart)
+	inline static uint8_t Read(const uint8_t* pStart)
 	{
-		return (*apStart);
+		return (*pStart);
 	}
 
-	inline static uint8_t ReadBuffer(ReadBufferView& arBuffer)
+	inline static uint8_t ReadBuffer(ReadBufferView& buffer)
 	{
-		auto ret = Read(arBuffer);
-		arBuffer.Advance(Size);
+		auto ret = Read(buffer);
+		buffer.Advance(Size);
 		return ret;
 	}
 
-	static void WriteBuffer(WriteBufferView& buffer, uint8_t aValue)
+	static void WriteBuffer(WriteBufferView& buffer, uint8_t value)
 	{
-		Write(buffer, aValue);
+		Write(buffer, value);
 		buffer.Advance(Size);
 	}
 
-	inline static void Write(uint8_t* apStart, uint8_t aValue)
+	inline static void Write(uint8_t* pStart, uint8_t value)
 	{
-		*(apStart) = aValue;
+		*(pStart) = value;
 	}
 
 	const static size_t Size = 1;

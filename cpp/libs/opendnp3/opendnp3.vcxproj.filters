@@ -1262,11 +1262,13 @@
     <ClCompile Include="src\opendnp3\app\parsing\BitReader.cpp">
       <Filter>Source\app\parsing</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\authv5\AuthRequestParser.cpp" />
     <ClCompile Include="src\opendnp3\app\parsing\ObjectHeaderParser.cpp">
       <Filter>Source\app\parsing</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\authv5\DefaultAuthRequestHandler.cpp">
+      <Filter>Source\outstation\authv5</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\authv5\AuthRequestParser.cpp">
       <Filter>Source\outstation\authv5</Filter>
     </ClCompile>
   </ItemGroup>

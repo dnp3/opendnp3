@@ -27,6 +27,7 @@
 
 #include "opendnp3/app/parsing/ObjectHeaderParser.h"
 #include "opendnp3/app/parsing/ParseResult.h"
+#include "opendnp3/app/GroupVariationRecord.h"
 #include "opendnp3/outstation/authv5/IAuthRequestHandler.h"
 
 namespace opendnp3
@@ -43,7 +44,7 @@ class AuthRequestParser : private openpal::PureStatic
 
 	private:
 
-		static ParseResult ParseOneOctetCount(const APDUHeader& header, const ObjectHeader& oheader, const openpal::ReadBufferView& objects, IAuthRequestHandler& handler, openpal::Logger* pLogger);
+		static ParseResult ParseOneOctetCount(const APDUHeader& header, const HeaderRecord& record, openpal::ReadBufferView& objects, IAuthRequestHandler& handler, openpal::Logger* pLogger);
 };
 
 }

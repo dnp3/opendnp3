@@ -51,7 +51,7 @@ ParseResult NumParser::ParseCount(openpal::ReadBufferView& buffer, uint16_t& cou
 		if (count == 0)
 		{
 			SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_COUNT_OF_ZERO, "count of 0");
-			return ParseResult::COUNT_OF_ZERO;
+			return ParseResult::BAD_COUNT;
 		}
 		else
 		{

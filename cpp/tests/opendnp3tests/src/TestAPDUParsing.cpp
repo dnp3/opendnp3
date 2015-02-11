@@ -175,7 +175,7 @@ TEST_CASE(SUITE("Group1Var2RangeAsReadRange"))
 TEST_CASE(SUITE("Group1Var2CountOfZero"))
 {
 	// 1 byte count == 0, 0 octets data
-	TestSimple("01 02 07 00", ParseResult::COUNT_OF_ZERO, 0);
+	TestSimple("01 02 07 00", ParseResult::BAD_COUNT, 0);
 }
 
 TEST_CASE(SUITE("Group1Var2With2Headers"))

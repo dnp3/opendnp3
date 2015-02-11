@@ -25,7 +25,9 @@
 #include "opendnp3/app/GroupVariationRecord.h"
 #include "opendnp3/LogLevels.h"
 
+#include <openpal/serialization/Serialization.h>
 #include <openpal/logging/LogMacros.h>
+
 
 using namespace openpal;
 
@@ -36,14 +38,16 @@ namespace opendnp3
 	{
 		ObjectHeader ohdr;
 		ReadBufferView copy(objects);
+
 		auto result = ObjectHeaderParser::ParseObjectHeader(ohdr, copy, pLogger);
+		HeaderRecord record(GroupVariationRecord::GetRecord(ohdr.group, ohdr.variation), ohdr.qualifier);
+
 		if (result == ParseResult::OK)
 		{	
 			switch (QualifierCodeFromType(ohdr.qualifier))
 			{
 				case(QualifierCode::UINT8_CNT) :
-					return ParseOneOctetCount(header, ohdr, objects, handler, pLogger);
-
+					return ParseOneOctetCount(header, record, copy, handler, pLogger);
 				default:
 					FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Unsupported qualifier code in AuthRequest: %i", ohdr.qualifier);
 					return ParseResult::UNKNOWN_QUALIFIER;
@@ -55,9 +59,39 @@ namespace opendnp3
 		}
 	}
 
-	ParseResult AuthRequestParser::ParseOneOctetCount(const APDUHeader& header, const ObjectHeader& oheader, const openpal::ReadBufferView& objects, IAuthRequestHandler& handler, openpal::Logger* pLogger)
+	ParseResult AuthRequestParser::ParseOneOctetCount(const APDUHeader& header, const HeaderRecord& record, openpal::ReadBufferView& objects, IAuthRequestHandler& handler, openpal::Logger* pLogger)
 	{
-		return ParseResult::INVALID_OBJECT_QUALIFIER;
+		if (objects.Size() < 1)
+		{
+			FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for one byte count");
+			return ParseResult::NOT_ENOUGH_DATA_FOR_HEADER;
+		}
+		else
+		{
+			uint8_t count = UInt8::ReadBuffer(objects);
+			if (count == 1) // only a count of 1 is allowed in this parser
+			{
+				switch (record.enumeration)
+				{
+					
+
+					default:
+						FORMAT_LOGGER_BLOCK(
+							pLogger, flags::WARN, 
+							"Unknown object (%i, %i) and qualifer (%i) in AuthRequest", 
+							record.group, 
+							record.variation,
+							record.qualifier							
+						);
+						return ParseResult::INVALID_OBJECT_QUALIFIER;
+				}
+			}
+			else
+			{
+				FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Bad count in AuthRequest: %i", count);
+				return ParseResult::BAD_COUNT;
+			}
+		}		
 	}
 
 }
