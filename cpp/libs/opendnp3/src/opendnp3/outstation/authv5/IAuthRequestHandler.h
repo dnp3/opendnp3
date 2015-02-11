@@ -22,9 +22,9 @@
 #define OPENDNP3_IAUTHREQUESTHANDLER_H
 
 #include "opendnp3/app/APDUHeader.h"
+#include "opendnp3/objects/Group120.h"
 #include "opendnp3/objects/Group120Var1.h"
 #include "opendnp3/objects/Group120Var2.h"
-//#include "opendnp3/objects/Group120Var4.h"
 #include "opendnp3/objects/Group120Var6.h"
 
 namespace opendnp3
@@ -37,7 +37,8 @@ class IAuthRequestHandler
 
 		virtual void OnAuthChallenge(const APDUHeader& header, const Group120Var1& challenge) = 0;
 		virtual void OnAuthReply(const APDUHeader& header, const Group120Var2& reply) = 0;
-		virtual void OnChangeSessionKeys(const APDUHeader& header, const Group120Var6& keyChange) = 0;
+		virtual void OnRequestKeyStatus(const APDUHeader& header, const Group120Var4& status) = 0;
+		virtual void OnChangeSessionKeys(const APDUHeader& header, const Group120Var6& change) = 0;
 };
 
 

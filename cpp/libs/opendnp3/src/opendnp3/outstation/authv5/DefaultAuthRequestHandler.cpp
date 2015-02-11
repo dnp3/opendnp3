@@ -39,5 +39,10 @@ void DefaultAuthRequestHandler::OnChangeSessionKeys(const APDUHeader& header, co
 
 }
 
+void DefaultAuthRequestHandler::OnRequestKeyStatus(const APDUHeader& header, const Group120Var4& status)
+{
+	
+}
+
 }
 

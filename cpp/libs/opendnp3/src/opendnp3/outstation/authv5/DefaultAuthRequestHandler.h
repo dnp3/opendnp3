@@ -34,6 +34,8 @@ class DefaultAuthRequestHandler : public IAuthRequestHandler
 		virtual void OnAuthChallenge(const APDUHeader& header, const Group120Var1& challenge) override final;
 		virtual void OnAuthReply(const APDUHeader& header, const Group120Var2& reply) override final;	
 		virtual void OnChangeSessionKeys(const APDUHeader& header, const Group120Var6& keyChange) override final;
+		virtual void OnRequestKeyStatus(const APDUHeader& header, const Group120Var4& status) override final;
+
 };
 
 

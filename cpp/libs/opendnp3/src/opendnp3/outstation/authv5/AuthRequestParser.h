@@ -25,6 +25,7 @@
 #include <openpal/container/ReadBufferView.h>
 #include <openpal/logging/Logger.h>
 
+#include "opendnp3/app/parsing/ObjectHeaderParser.h"
 #include "opendnp3/app/parsing/ParseResult.h"
 #include "opendnp3/outstation/authv5/IAuthRequestHandler.h"
 
@@ -40,6 +41,9 @@ class AuthRequestParser : private openpal::PureStatic
 		
 		static ParseResult Parse(const APDUHeader& header, const openpal::ReadBufferView& objects, IAuthRequestHandler& handler, openpal::Logger* pLogger);
 
+	private:
+
+		static ParseResult ParseOneOctetCount(const APDUHeader& header, const ObjectHeader& oheader, const openpal::ReadBufferView& objects, IAuthRequestHandler& handler, openpal::Logger* pLogger);
 };
 
 }

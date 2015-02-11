@@ -41,7 +41,8 @@ namespace opendnp3
 		{	
 			switch (QualifierCodeFromType(ohdr.qualifier))
 			{
-				//case(QualifierCode::)
+				case(QualifierCode::UINT8_CNT) :
+					return ParseOneOctetCount(header, ohdr, objects, handler, pLogger);
 
 				default:
 					FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Unsupported qualifier code in AuthRequest: %i", ohdr.qualifier);
@@ -52,6 +53,11 @@ namespace opendnp3
 		{
 			return result;
 		}
+	}
+
+	ParseResult AuthRequestParser::ParseOneOctetCount(const APDUHeader& header, const ObjectHeader& oheader, const openpal::ReadBufferView& objects, IAuthRequestHandler& handler, openpal::Logger* pLogger)
+	{
+		return ParseResult::INVALID_OBJECT_QUALIFIER;
 	}
 
 }
