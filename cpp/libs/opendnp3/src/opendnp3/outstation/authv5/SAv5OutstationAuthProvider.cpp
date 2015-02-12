@@ -35,16 +35,14 @@ namespace opendnp3
 {
 
 SAv5OutstationAuthProvider::SAv5OutstationAuthProvider(uint32_t maxRxASDUSize, openpal::ICryptoProvider& crypto) :
-	deferred(maxRxASDUSize),
-	pCrypto(&crypto),
-	keyStatus(KeyStatus::NOT_INIT)
+	sstate(maxRxASDUSize, crypto)
 {
 
 }
 
 void SAv5OutstationAuthProvider::Reset()
 {
-	keyStatus = KeyStatus::NOT_INIT;
+	sstate.Reset();
 }
 		
 void SAv5OutstationAuthProvider::OnReceive(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
@@ -72,7 +70,7 @@ void SAv5OutstationAuthProvider::OnReceive(OState& ostate, const APDUHeader& hea
 
 void SAv5OutstationAuthProvider::OnAuthRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
-	DefaultAuthRequestHandler handler;	
+	DefaultAuthRequestHandler handler(header, ostate, sstate);
 	AuthRequestParser::Parse(objects, handler, &ostate.logger);
 }
 

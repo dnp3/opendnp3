@@ -19,40 +19,22 @@
  * to you under the terms of the License.
  */
 
-#include "DefaultAuthRequestHandler.h"
+#include "SecurityState.h"
 
 namespace opendnp3
 {
 
+	SecurityState::SecurityState(uint32_t maxRxASDUSize, openpal::ICryptoProvider& crypto) :
+		deferred(maxRxASDUSize),
+		pCrypto(&crypto),
+		keyStatus(KeyStatus::NOT_INIT)
+	{}
 
-DefaultAuthRequestHandler::DefaultAuthRequestHandler(const APDUHeader& header_, OState& ostate, SecurityState& sstate) :
-	header(header_),
-	pOState(&ostate),
-	pSState(&sstate)
-{
-	
-}
-
-
-void DefaultAuthRequestHandler::OnAuthChallenge(const Group120Var1& challenge)
-{
-	
-}
-
-void DefaultAuthRequestHandler::OnAuthReply(const Group120Var2& reply)
-{
-	
-}
-
-void DefaultAuthRequestHandler::OnChangeSessionKeys(const Group120Var6& keyChange)
-{
+	void SecurityState::Reset()
+	{
+		keyStatus = KeyStatus::NOT_INIT;
+	}
 
 }
 
-void DefaultAuthRequestHandler::OnRequestKeyStatus(const Group120Var4& status)
-{
-	
-}
-
-}
 

@@ -18,41 +18,32 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef OPENDNP3_SECURITYSTATE_H
+#define OPENDNP3_SECURITYSTATE_H
 
-#include "DefaultAuthRequestHandler.h"
+#include "opendnp3/gen/KeyStatus.h"
+#include "opendnp3/outstation/DeferredRequest.h"
+
+#include <openpal/crypto/ICryptoProvider.h>
+
 
 namespace opendnp3
 {
 
-
-DefaultAuthRequestHandler::DefaultAuthRequestHandler(const APDUHeader& header_, OState& ostate, SecurityState& sstate) :
-	header(header_),
-	pOState(&ostate),
-	pSState(&sstate)
+class SecurityState
 {
-	
-}
+	public:
 
+	SecurityState(uint32_t maxRxASDUSize, openpal::ICryptoProvider& crypto);	
 
-void DefaultAuthRequestHandler::OnAuthChallenge(const Group120Var1& challenge)
-{
-	
-}
+	void Reset();
 
-void DefaultAuthRequestHandler::OnAuthReply(const Group120Var2& reply)
-{
-	
-}
-
-void DefaultAuthRequestHandler::OnChangeSessionKeys(const Group120Var6& keyChange)
-{
+	DeferredRequest deferred;
+	openpal::ICryptoProvider* pCrypto;
+	KeyStatus keyStatus;	
+};
 
 }
 
-void DefaultAuthRequestHandler::OnRequestKeyStatus(const Group120Var4& status)
-{
-	
-}
-
-}
+#endif
 

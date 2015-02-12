@@ -24,18 +24,27 @@
 #include "opendnp3/outstation/authv5/IAuthRequestHandler.h"
 #include "opendnp3/outstation/authv5/SAv5OutstationAuthProvider.h"
 
+#include "opendnp3/outstation/OutstationState.h"
+
 namespace opendnp3
 {
 
-class DefaultAuthRequestHandler : public IAuthRequestHandler
+class DefaultAuthRequestHandler : public IAuthRequestHandler, private openpal::Uncopyable
 {
 	public:		
+
+		DefaultAuthRequestHandler(const APDUHeader& header, OState& ostate, SecurityState& sstate);
 
 		virtual void OnAuthChallenge(const Group120Var1& challenge) override final;
 		virtual void OnAuthReply(const Group120Var2& reply) override final;	
 		virtual void OnChangeSessionKeys(const Group120Var6& keyChange) override final;
 		virtual void OnRequestKeyStatus(const Group120Var4& status) override final;
 
+	private:
+		APDUHeader header;
+		OState* pOState;
+		SecurityState* pSState;
+		
 };
 
 
