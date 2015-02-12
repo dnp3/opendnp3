@@ -50,7 +50,7 @@ namespace Automatak
 				std::string stdAddress = Conversions::ConvertString(address);
 				uint16_t stdPort = port;
 
-				auto pChannel = pManager->AddTCPClient(stdName.c_str(), filters, Conversions::ConvertTimespan(minRetryDelay), Conversions::ConvertTimespan(maxRetryDelay), stdAddress, stdPort);
+				auto pChannel = pManager->AddTCPClient(stdName.c_str(), filters, Conversions::ConvertTimespan(minRetryDelay), Conversions::ConvertTimespan(maxRetryDelay), stdAddress, "", stdPort);
 				if (pChannel)
 				{
 					auto adapter = gcnew ChannelAdapter(pChannel);

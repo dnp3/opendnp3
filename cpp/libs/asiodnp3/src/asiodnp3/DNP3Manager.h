@@ -94,6 +94,7 @@ public:
 	    openpal::TimeDuration minOpenRetry,
 	    openpal::TimeDuration maxOpenRetry,
 	    const std::string& host,
+		const std::string& local,
 	    uint16_t port,	    
 	    opendnp3::IOpenDelayStrategy& strategy = opendnp3::ExponentialBackoffStrategy::Instance());
 

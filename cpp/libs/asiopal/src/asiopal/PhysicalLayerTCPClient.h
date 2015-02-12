@@ -35,7 +35,8 @@ public:
 	PhysicalLayerTCPClient(
 		openpal::LogRoot& root,
 		asio::io_service& service,
-	    const std::string& host_,
+	    const std::string& host,
+		const std::string& localAddress,
 	    uint16_t port,
 	std::function<void (asio::ip::tcp::socket&)> configure = [](asio::ip::tcp::socket&) {});
 
@@ -45,6 +46,8 @@ public:
 	void DoOpenSuccess();
 
 private:
+
+	void BindToLocalAddress(std::error_code& code);
 
 	struct ConnectionCondition
 	{
@@ -68,7 +71,9 @@ private:
 
 	ConnectionCondition condition;
 	const std::string host;
+	const std::string localAddress;
 	asio::ip::tcp::endpoint remoteEndpoint;
+	asio::ip::tcp::endpoint localEndpoint;
 	asio::ip::tcp::resolver resolver;
 	std::function<void (asio::ip::tcp::socket&)> configure;
 };

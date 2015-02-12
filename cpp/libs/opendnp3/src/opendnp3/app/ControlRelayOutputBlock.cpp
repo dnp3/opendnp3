@@ -24,13 +24,24 @@
 namespace opendnp3
 {
 
-ControlRelayOutputBlock::ControlRelayOutputBlock(ControlCode aCode, uint8_t aCount, uint32_t aOnTime, uint32_t aOffTime, CommandStatus aStatus) :
-	functionCode(aCode),
-	rawCode(static_cast<uint8_t>(aCode)),
-	count(aCount),
-	onTimeMS(aOnTime),
-	offTimeMS(aOffTime),
-	status(aStatus)
+ControlRelayOutputBlock::ControlRelayOutputBlock(ControlCode code_, uint8_t count_, uint32_t onTime_, uint32_t offTime_, CommandStatus status_) :
+	functionCode(code_),
+	rawCode(ControlCodeToType(code_)),
+	count(count_),
+	onTimeMS(onTime_),
+	offTimeMS(offTime_),
+	status(status_)
+{
+
+}
+
+ControlRelayOutputBlock::ControlRelayOutputBlock(uint8_t rawCode_, uint8_t count_, uint32_t onTime_, uint32_t offTime_, CommandStatus status_) :
+	functionCode(ControlCodeFromType((rawCode))),
+	rawCode(rawCode_),
+	count(count_),
+	onTimeMS(onTime_),
+	offTimeMS(offTime_),
+	status(status_)
 {
 
 }

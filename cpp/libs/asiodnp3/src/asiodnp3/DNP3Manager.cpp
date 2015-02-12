@@ -71,11 +71,12 @@ IChannel* DNP3Manager::AddTCPClient(
     openpal::TimeDuration minOpenRetry,
     openpal::TimeDuration maxOpenRetry,
     const std::string& host,
+	const std::string& local,
     uint16_t port,    
     opendnp3::IOpenDelayStrategy& strategy)
 {
 	auto pRoot = new LogRoot(pFanoutHandler.get(), id, levels);
-	auto pPhys = new asiopal::PhysicalLayerTCPClient(*pRoot, pThreadPool->GetIOService(), host, port);
+	auto pPhys = new asiopal::PhysicalLayerTCPClient(*pRoot, pThreadPool->GetIOService(), host, local, port);
 	return pChannelSet->CreateChannel(pRoot, pPhys->executor, pCrypto, minOpenRetry, maxOpenRetry, pPhys, strategy);
 }
 
