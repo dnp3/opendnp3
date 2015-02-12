@@ -111,9 +111,13 @@ namespace opendnp3
 				switch (record.enumeration)
 				{
 					case(GroupVariation::Group120Var1) :
-						return ParseFreeFormat(header, record, SIZE, objects, handler, ParseAuthChallenge, pLogger);
+						return ParseFreeFormat(ParseAuthChallenge, header, record, SIZE, objects, handler, pLogger);
+
 					case(GroupVariation::Group120Var2) :
-						return ParseFreeFormat(header, record, SIZE, objects, handler, ParseAuthReply, pLogger);
+						return ParseFreeFormat(ParseAuthReply, header, record, SIZE, objects, handler, pLogger);
+
+					case(GroupVariation::Group120Var6) :
+						return ParseFreeFormat(ParseSessionKeyChange, header, record, SIZE, objects, handler, pLogger);
 
 					default:
 						FORMAT_LOGGER_BLOCK(
@@ -156,7 +160,18 @@ namespace opendnp3
 		return success;
 	}
 
-	ParseResult AuthRequestParser::ParseFreeFormat(const APDUHeader& header, const HeaderRecord& record, uint16_t size, openpal::ReadBufferView& objects, IAuthRequestHandler& handler, FreeFormatHandler parser, openpal::Logger* pLogger)
+	bool AuthRequestParser::ParseSessionKeyChange(const APDUHeader& header, openpal::ReadBufferView& objects, IAuthRequestHandler& handler)
+	{
+		Group120Var6 keyChange;
+		auto success = Group120Var6::Read(objects, keyChange);
+		if (success)
+		{
+			handler.OnChangeSessionKeys(header, keyChange);
+		}
+		return success;
+	}
+
+	ParseResult AuthRequestParser::ParseFreeFormat(FreeFormatHandler parser, const APDUHeader& header, const HeaderRecord& record, uint16_t size, openpal::ReadBufferView& objects, IAuthRequestHandler& handler, openpal::Logger* pLogger)
 	{
 		if (size == objects.Size()) //must be exactly equal since no trailing objects allowed
 		{			

@@ -50,13 +50,15 @@ class AuthRequestParser : private openpal::PureStatic
 
 		static ParseResult ParseTwoOctetFreeFormat(const APDUHeader& header, const HeaderRecord& record, openpal::ReadBufferView& objects, IAuthRequestHandler& handler, openpal::Logger* pLogger);
 
-		static ParseResult ParseFreeFormat(const APDUHeader& header, const HeaderRecord& record, uint16_t size, openpal::ReadBufferView& objects, IAuthRequestHandler& handler, openpal::Logger* pLogger);
+		static ParseResult ParseFreeFormat(FreeFormatHandler parser, const APDUHeader& header, const HeaderRecord& record, uint16_t size, openpal::ReadBufferView& objects, IAuthRequestHandler& handler, openpal::Logger* pLogger);
 
 		// Free format handlers
 
 		static bool ParseAuthChallenge(const APDUHeader& header, openpal::ReadBufferView& objects, IAuthRequestHandler& handler);
 
 		static bool ParseAuthReply(const APDUHeader& header, openpal::ReadBufferView& objects, IAuthRequestHandler& handler);
+
+		static bool ParseSessionKeyChange(const APDUHeader& header, openpal::ReadBufferView& objects, IAuthRequestHandler& handler);
 };
 
 }
