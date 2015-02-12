@@ -81,12 +81,12 @@ void SAv5OutstationAuthProvider::OnRegularRequest(OState& ostate, const APDUHead
 
 void SAv5OutstationAuthProvider::OnAuthChallenge(OState& ostate, const APDUHeader& header, const Group120Var1& challenge)
 {
-	
+	SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "Auth challenge not supported yet");
 }
 
 void SAv5OutstationAuthProvider::OnAuthReply(OState& ostate, const APDUHeader& header, const Group120Var2& reply)
 {
-	
+	SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "Auth reply not supported yet");
 }
 
 void SAv5OutstationAuthProvider::OnRequestKeyStatus(OState& ostate, const APDUHeader& header, const Group120Var4& status)
@@ -96,7 +96,7 @@ void SAv5OutstationAuthProvider::OnRequestKeyStatus(OState& ostate, const APDUHe
 
 void SAv5OutstationAuthProvider::OnChangeSessionKeys(OState& ostate, const APDUHeader& header, const Group120Var6& change)
 {
-	
+	SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "Session key change not supported yet");
 }
 
 }
