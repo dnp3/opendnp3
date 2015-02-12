@@ -32,6 +32,7 @@
 #include <asiodnp3/ConsoleLogger.h>
 
 #include <functional>
+#include <vector>
 
 using namespace std;
 using namespace openpal;
@@ -42,26 +43,38 @@ using namespace asiodnp3;
 
 class MockAuthRequestHandler : public IAuthRequestHandler
 {
+public:
+	
+
 	virtual void OnAuthChallenge(const Group120Var1& challenge) override
 	{
-		
+		challenges.push_back(challenge);
 	}
 
 	virtual void OnAuthReply(const Group120Var2& reply) override
 	{
-		
+		replys.push_back(reply);
 	}
 
 	virtual void OnRequestKeyStatus(const Group120Var4& status) override
 	{
-		
+		statii.push_back(status);
 	}
 
 	virtual void OnChangeSessionKeys(const Group120Var6& change) override
 	{
-		
+		changes.push_back(change);
 	}
 
+	size_t NumReceived() const
+	{
+		return challenges.size() + replys.size() + statii.size() + changes.size();
+	}
+
+	std::vector<Group120Var1> challenges;
+	std::vector<Group120Var2> replys;
+	std::vector<Group120Var4> statii;
+	std::vector<Group120Var6> changes;
 };
 
 
@@ -95,6 +108,17 @@ TEST_CASE(SUITE("RejectsTooMuchFreeFormatData"))
 	MockAuthRequestHandler handler;
 	auto result = AuthRequestParser::Parse(buffer.ToReadOnly(), handler, nullptr);
 	REQUIRE(result == ParseResult::TOO_MUCH_DATA_FOR_OBJECTS);
+}
+
+TEST_CASE(SUITE("AcceptsMatchingFreeFormatData"))
+{
+	HexSequence buffer("78 01 5B 08 00 11 22 33 44 FF FF FF FF");
+	MockAuthRequestHandler handler;
+	auto result = AuthRequestParser::Parse(buffer.ToReadOnly(), handler, nullptr);
+	REQUIRE(result == ParseResult::OK);
+	REQUIRE(handler.NumReceived() == 1);
+	REQUIRE(handler.challenges.size() == 1);
+	REQUIRE(handler.challenges[0].challengeSeqNum == 0x44332211);
 }
 
 
