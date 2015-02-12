@@ -109,7 +109,7 @@ namespace opendnp3
 		else
 		{
 			FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Unexpected size in (%i, %i)", record.group, record.variation);
-			return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
+			return (objects.Size() < Group120Var4::Size()) ? ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS : ParseResult::TOO_MUCH_DATA_FOR_OBJECTS;
 		}
 	}
 

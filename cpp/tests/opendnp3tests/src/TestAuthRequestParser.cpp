@@ -121,5 +121,28 @@ TEST_CASE(SUITE("AcceptsMatchingFreeFormatData"))
 	REQUIRE(handler.challenges[0].challengeSeqNum == 0x44332211);
 }
 
+TEST_CASE(SUITE("RejectsKeyStatusRequestWithCountNotEqualToOne"))
+{
+	HexSequence buffer("78 04 07 02 00 00");
+	MockAuthRequestHandler handler;
+	auto result = AuthRequestParser::Parse(buffer.ToReadOnly(), handler, nullptr);
+	REQUIRE(result == ParseResult::BAD_COUNT);
+}
 
+TEST_CASE(SUITE("RejectsKeyStatusRequestWithExtraData"))
+{
+	HexSequence buffer("78 04 07 01 09 00 FF");
+	MockAuthRequestHandler handler;	
+	auto result = AuthRequestParser::Parse(buffer.ToReadOnly(), handler, nullptr);
+	REQUIRE(result == ParseResult::TOO_MUCH_DATA_FOR_OBJECTS);		
+}
 
+TEST_CASE(SUITE("AcceptsKeyStatusRequest"))
+{
+	HexSequence buffer("78 04 07 01 09 00");
+	MockAuthRequestHandler handler;
+	auto result = AuthRequestParser::Parse(buffer.ToReadOnly(), handler, nullptr);
+	REQUIRE(result == ParseResult::OK);
+	REQUIRE(handler.statii.size() == 1);
+	REQUIRE(handler.statii[0].userNum == 9);
+}
