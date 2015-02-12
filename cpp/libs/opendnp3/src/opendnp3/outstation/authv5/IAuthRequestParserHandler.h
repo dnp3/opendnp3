@@ -18,35 +18,28 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_DEFAULTAUTHREQUESTHANDLER_H
-#define OPENDNP3_DEFAULTAUTHREQUESTHANDLER_H
+#ifndef OPENDNP3_IAUTHREQUESTPARSERHANDLER_H
+#define OPENDNP3_IAUTHREQUESTPARSERHANDLER_H
 
-#include "opendnp3/outstation/authv5/IAuthRequestHandler.h"
-#include "opendnp3/outstation/authv5/SAv5OutstationAuthProvider.h"
 
-#include "opendnp3/outstation/OutstationState.h"
+#include "opendnp3/objects/Group120.h"
+#include "opendnp3/objects/Group120Var1.h"
+#include "opendnp3/objects/Group120Var2.h"
+#include "opendnp3/objects/Group120Var6.h"
 
 namespace opendnp3
 {
 
-class DefaultAuthRequestHandler : public IAuthRequestHandler, private openpal::Uncopyable
+// handles auth request types
+class IAuthRequestParserHandler
 {
-	public:		
+	public:
 
-		DefaultAuthRequestHandler(const APDUHeader& header, OState& ostate, SecurityState& sstate);
-
-		virtual void OnAuthChallenge(const Group120Var1& challenge) override final;
-		virtual void OnAuthReply(const Group120Var2& reply) override final;	
-		virtual void OnChangeSessionKeys(const Group120Var6& keyChange) override final;
-		virtual void OnRequestKeyStatus(const Group120Var4& status) override final;
-
-	private:
-		APDUHeader header;
-		OState* pOState;
-		SecurityState* pSState;
-		
+		virtual void OnAuthChallenge(const Group120Var1& challenge) = 0;
+		virtual void OnAuthReply(const Group120Var2& reply) = 0;
+		virtual void OnRequestKeyStatus(const Group120Var4& status) = 0;
+		virtual void OnChangeSessionKeys(const Group120Var6& change) = 0;
 };
-
 
 }
 

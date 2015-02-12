@@ -19,39 +19,43 @@
  * to you under the terms of the License.
  */
 
-#include "DefaultAuthRequestHandler.h"
+#include "AuthRequestAdapter.h"
+
+#include <openpal/logging/LogMacros.h>
+
+#include "opendnp3/LogLevels.h"
 
 namespace opendnp3
 {
 
 
-DefaultAuthRequestHandler::DefaultAuthRequestHandler(const APDUHeader& header_, OState& ostate, SecurityState& sstate) :
+AuthRequestAdapter::AuthRequestAdapter(const APDUHeader& header_, OState& ostate, IAuthRequestHandler& handler) :
 	header(header_),
 	pOState(&ostate),
-	pSState(&sstate)
+	pHandler(&handler)
 {
 	
 }
 
 
-void DefaultAuthRequestHandler::OnAuthChallenge(const Group120Var1& challenge)
+void AuthRequestAdapter::OnAuthChallenge(const Group120Var1& challenge)
 {
-	
+	pHandler->OnAuthChallenge(header, *pOState, challenge);
 }
 
-void DefaultAuthRequestHandler::OnAuthReply(const Group120Var2& reply)
+void AuthRequestAdapter::OnAuthReply(const Group120Var2& reply)
 {
-	
+	pHandler->OnAuthReply(header, *pOState, reply);
 }
 
-void DefaultAuthRequestHandler::OnChangeSessionKeys(const Group120Var6& keyChange)
+void AuthRequestAdapter::OnChangeSessionKeys(const Group120Var6& keyChange)
 {
-
+	pHandler->OnChangeSessionKeys(header, *pOState, keyChange);
 }
 
-void DefaultAuthRequestHandler::OnRequestKeyStatus(const Group120Var4& status)
-{
-	
+void AuthRequestAdapter::OnRequestKeyStatus(const Group120Var4& status)
+{		
+	pHandler->OnRequestKeyStatus(header, *pOState, status);
 }
 
 }

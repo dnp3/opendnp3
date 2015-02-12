@@ -828,13 +828,13 @@
     <ClInclude Include="src\opendnp3\app\parsing\ObjectHeaderParser.h">
       <Filter>Header\app\parsing</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\authv5\IAuthRequestHandler.h">
-      <Filter>Header\outstation\authv5</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\authv5\DefaultAuthRequestHandler.h">
-      <Filter>Header\outstation\authv5</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\authv5\SecurityState.h">
+      <Filter>Header\outstation\authv5</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\authv5\IAuthRequestParserHandler.h">
+      <Filter>Header\outstation\authv5</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\authv5\AuthRequestAdapter.h">
       <Filter>Header\outstation\authv5</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1268,13 +1268,13 @@
     <ClCompile Include="src\opendnp3\app\parsing\ObjectHeaderParser.cpp">
       <Filter>Source\app\parsing</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\authv5\DefaultAuthRequestHandler.cpp">
-      <Filter>Source\outstation\authv5</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\authv5\AuthRequestParser.cpp">
       <Filter>Source\outstation\authv5</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\authv5\SecurityState.cpp">
+      <Filter>Source\outstation\authv5</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\authv5\AuthRequestAdapter.cpp">
       <Filter>Source\outstation\authv5</Filter>
     </ClCompile>
   </ItemGroup>

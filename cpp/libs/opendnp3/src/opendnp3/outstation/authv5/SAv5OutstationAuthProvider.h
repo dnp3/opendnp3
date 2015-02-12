@@ -24,6 +24,7 @@
 #include "opendnp3/outstation/IOutstationAuthProvider.h"
 
 #include "opendnp3/outstation/authv5/SecurityState.h"
+#include "opendnp3/outstation/authv5/IAuthRequestHandler.h"
 
 #include <openpal/util/Uncopyable.h>
 
@@ -33,7 +34,7 @@ namespace opendnp3
 /**
 	SAv5 authentication provider
 */
-class SAv5OutstationAuthProvider : private openpal::Uncopyable, public IOutstationAuthProvider
+class SAv5OutstationAuthProvider : private openpal::Uncopyable, public IOutstationAuthProvider, private IAuthRequestHandler
 {
 	public:
 
@@ -47,7 +48,17 @@ class SAv5OutstationAuthProvider : private openpal::Uncopyable, public IOutstati
 
 	void OnAuthRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
 
-	void OnUnknownRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
+	void OnRegularRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
+
+	//// --- IAuthRequestHandler ----
+
+	virtual void OnAuthChallenge(const APDUHeader& header, OState& ostate, const Group120Var1& challenge) override final;
+
+	virtual void OnAuthReply(const APDUHeader& header, OState& ostate, const Group120Var2& reply) override final;
+
+	virtual void OnRequestKeyStatus(const APDUHeader& header, OState& ostate, const Group120Var4& status) override final;
+
+	virtual void OnChangeSessionKeys(const APDUHeader& header, OState& ostate, const Group120Var6& change) override final;
 
 	SecurityState sstate;
 };

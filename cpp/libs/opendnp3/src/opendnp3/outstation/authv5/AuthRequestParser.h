@@ -28,7 +28,7 @@
 #include "opendnp3/app/parsing/ObjectHeaderParser.h"
 #include "opendnp3/app/parsing/ParseResult.h"
 #include "opendnp3/app/GroupVariationRecord.h"
-#include "opendnp3/outstation/authv5/IAuthRequestHandler.h"
+#include "opendnp3/outstation/authv5/IAuthRequestParserHandler.h"
 
 namespace opendnp3
 {
@@ -40,29 +40,29 @@ class AuthRequestParser : private openpal::PureStatic
 {
 	public:
 		
-		static ParseResult Parse(const openpal::ReadBufferView& objects, IAuthRequestHandler& handler, openpal::Logger* pLogger);
+		static ParseResult Parse(const openpal::ReadBufferView& objects, IAuthRequestParserHandler& handler, openpal::Logger* pLogger);
 
 	private:
 
-		typedef bool(*FreeFormatHandler)(openpal::ReadBufferView& objects, IAuthRequestHandler& handler);
+		typedef bool(*FreeFormatHandler)(openpal::ReadBufferView& objects, IAuthRequestParserHandler& handler);
 
-		static ParseResult ParseOneOctetCount(const HeaderRecord& record, openpal::ReadBufferView& objects, IAuthRequestHandler& handler, openpal::Logger* pLogger);
+		static ParseResult ParseOneOctetCount(const HeaderRecord& record, openpal::ReadBufferView& objects, IAuthRequestParserHandler& handler, openpal::Logger* pLogger);
 
-		static ParseResult ParseTwoOctetFreeFormat(const HeaderRecord& record, openpal::ReadBufferView& objects, IAuthRequestHandler& handler, openpal::Logger* pLogger);
+		static ParseResult ParseTwoOctetFreeFormat(const HeaderRecord& record, openpal::ReadBufferView& objects, IAuthRequestParserHandler& handler, openpal::Logger* pLogger);
 
-		static ParseResult ParseFreeFormat(FreeFormatHandler parser, const HeaderRecord& record, uint16_t size, openpal::ReadBufferView& objects, IAuthRequestHandler& handler, openpal::Logger* pLogger);
+		static ParseResult ParseFreeFormat(FreeFormatHandler parser, const HeaderRecord& record, uint16_t size, openpal::ReadBufferView& objects, IAuthRequestParserHandler& handler, openpal::Logger* pLogger);
 
 		// Free format handlers
 
-		static bool ParseAuthChallenge(openpal::ReadBufferView& objects, IAuthRequestHandler& handler);
+		static bool ParseAuthChallenge(openpal::ReadBufferView& objects, IAuthRequestParserHandler& handler);
 
-		static bool ParseAuthReply(openpal::ReadBufferView& objects, IAuthRequestHandler& handler);
+		static bool ParseAuthReply(openpal::ReadBufferView& objects, IAuthRequestParserHandler& handler);
 
-		static bool ParseSessionKeyChange(openpal::ReadBufferView& objects, IAuthRequestHandler& handler);
+		static bool ParseSessionKeyChange(openpal::ReadBufferView& objects, IAuthRequestParserHandler& handler);
 
 		// Fixed size parsers
 
-		static ParseResult ParseRequestSessionKeyStatus(const HeaderRecord& record, openpal::ReadBufferView& objects, IAuthRequestHandler& handler, openpal::Logger* pLogger);
+		static ParseResult ParseRequestSessionKeyStatus(const HeaderRecord& record, openpal::ReadBufferView& objects, IAuthRequestParserHandler& handler, openpal::Logger* pLogger);
 };
 
 }

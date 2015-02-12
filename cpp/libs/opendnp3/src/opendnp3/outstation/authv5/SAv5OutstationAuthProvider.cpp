@@ -27,7 +27,7 @@
 #include "opendnp3/LogLevels.h"
 
 #include "opendnp3/outstation/OutstationState.h"
-#include "opendnp3/outstation/authv5/DefaultAuthRequestHandler.h"
+#include "opendnp3/outstation/authv5/AuthRequestAdapter.h"
 
 #include "AuthRequestParser.h"
 
@@ -47,7 +47,7 @@ void SAv5OutstationAuthProvider::Reset()
 		
 void SAv5OutstationAuthProvider::OnReceive(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {	
-	FORMAT_HEX_BLOCK(ostate.logger, flags::APP_OBJECT_RX, objects, 16, 16);
+	//FORMAT_HEX_BLOCK(ostate.logger, flags::APP_OBJECT_RX, objects, 16, 16);
 
 	// examine the function code to determine what kind of ASDU it is
 	switch (header.function)
@@ -62,7 +62,7 @@ void SAv5OutstationAuthProvider::OnReceive(OState& ostate, const APDUHeader& hea
 			SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "AuthRequestNoAck not supported");
 			break;
 		default:
-			this->OnUnknownRequest(ostate, header, objects);
+			this->OnRegularRequest(ostate, header, objects);
 			break;
 	}	
 
@@ -70,13 +70,33 @@ void SAv5OutstationAuthProvider::OnReceive(OState& ostate, const APDUHeader& hea
 
 void SAv5OutstationAuthProvider::OnAuthRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
-	DefaultAuthRequestHandler handler(header, ostate, sstate);
-	AuthRequestParser::Parse(objects, handler, &ostate.logger);
+	AuthRequestAdapter adapter(header, ostate, *this);
+	AuthRequestParser::Parse(objects, adapter, &ostate.logger);
 }
 
-void SAv5OutstationAuthProvider::OnUnknownRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
+void SAv5OutstationAuthProvider::OnRegularRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
-	SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "UnknownRequest not supported yet");
+	SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "Regular requests not supported yet");
+}
+
+void SAv5OutstationAuthProvider::OnAuthChallenge(const APDUHeader& header, OState& ostate, const Group120Var1& challenge)
+{
+	
+}
+
+void SAv5OutstationAuthProvider::OnAuthReply(const APDUHeader& header, OState& ostate, const Group120Var2& reply)
+{
+	
+}
+
+void SAv5OutstationAuthProvider::OnRequestKeyStatus(const APDUHeader& header, OState& ostate, const Group120Var4& status)
+{
+	SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "Key status not supported yet");
+}
+
+void SAv5OutstationAuthProvider::OnChangeSessionKeys(const APDUHeader& header, OState& ostate, const Group120Var6& change)
+{
+	
 }
 
 }

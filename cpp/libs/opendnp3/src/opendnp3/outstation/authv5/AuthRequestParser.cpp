@@ -34,7 +34,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-	ParseResult AuthRequestParser::Parse(const ReadBufferView& objects, IAuthRequestHandler& handler, Logger* pLogger)
+	ParseResult AuthRequestParser::Parse(const ReadBufferView& objects, IAuthRequestParserHandler& handler, Logger* pLogger)
 	{
 		ObjectHeader ohdr;
 		ReadBufferView copy(objects);
@@ -62,7 +62,7 @@ namespace opendnp3
 		}
 	}
 
-	ParseResult AuthRequestParser::ParseOneOctetCount(const HeaderRecord& record, openpal::ReadBufferView& objects, IAuthRequestHandler& handler, openpal::Logger* pLogger)
+	ParseResult AuthRequestParser::ParseOneOctetCount(const HeaderRecord& record, openpal::ReadBufferView& objects, IAuthRequestParserHandler& handler, openpal::Logger* pLogger)
 	{
 		if (objects.Size() < 1)
 		{
@@ -98,7 +98,7 @@ namespace opendnp3
 		}		
 	}
 
-	ParseResult AuthRequestParser::ParseRequestSessionKeyStatus(const HeaderRecord& record, openpal::ReadBufferView& objects, IAuthRequestHandler& handler, openpal::Logger* pLogger)
+	ParseResult AuthRequestParser::ParseRequestSessionKeyStatus(const HeaderRecord& record, openpal::ReadBufferView& objects, IAuthRequestParserHandler& handler, openpal::Logger* pLogger)
 	{
 		if (objects.Size() == Group120Var4::Size())
 		{
@@ -113,7 +113,7 @@ namespace opendnp3
 		}
 	}
 
-	ParseResult AuthRequestParser::ParseTwoOctetFreeFormat(const HeaderRecord& record, openpal::ReadBufferView& objects, IAuthRequestHandler& handler, openpal::Logger* pLogger)
+	ParseResult AuthRequestParser::ParseTwoOctetFreeFormat(const HeaderRecord& record, openpal::ReadBufferView& objects, IAuthRequestParserHandler& handler, openpal::Logger* pLogger)
 	{
 		if (objects.Size() < 2)
 		{
@@ -155,7 +155,7 @@ namespace opendnp3
 		}
 	}
 
-	bool AuthRequestParser::ParseAuthChallenge(openpal::ReadBufferView& objects, IAuthRequestHandler& handler)
+	bool AuthRequestParser::ParseAuthChallenge(openpal::ReadBufferView& objects, IAuthRequestParserHandler& handler)
 	{		
 			Group120Var1 challenge;
 			auto success = Group120Var1::Read(objects, challenge);
@@ -166,7 +166,7 @@ namespace opendnp3
 			return success;
 	}
 
-	bool AuthRequestParser::ParseAuthReply(openpal::ReadBufferView& objects, IAuthRequestHandler& handler)
+	bool AuthRequestParser::ParseAuthReply(openpal::ReadBufferView& objects, IAuthRequestParserHandler& handler)
 	{		
 		Group120Var2 reply;
 		auto success = Group120Var2::Read(objects, reply);
@@ -177,7 +177,7 @@ namespace opendnp3
 		return success;
 	}
 
-	bool AuthRequestParser::ParseSessionKeyChange(openpal::ReadBufferView& objects, IAuthRequestHandler& handler)
+	bool AuthRequestParser::ParseSessionKeyChange(openpal::ReadBufferView& objects, IAuthRequestParserHandler& handler)
 	{
 		Group120Var6 keyChange;
 		auto success = Group120Var6::Read(objects, keyChange);
@@ -188,7 +188,7 @@ namespace opendnp3
 		return success;
 	}
 
-	ParseResult AuthRequestParser::ParseFreeFormat(FreeFormatHandler parser, const HeaderRecord& record, uint16_t size, openpal::ReadBufferView& objects, IAuthRequestHandler& handler, openpal::Logger* pLogger)
+	ParseResult AuthRequestParser::ParseFreeFormat(FreeFormatHandler parser, const HeaderRecord& record, uint16_t size, openpal::ReadBufferView& objects, IAuthRequestParserHandler& handler, openpal::Logger* pLogger)
 	{				
 		if (parser(objects, handler))
 		{
