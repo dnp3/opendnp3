@@ -75,7 +75,7 @@ namespace opendnp3
 			{
 				switch (record.enumeration)
 				{
-					
+						
 
 					default:
 						FORMAT_LOGGER_BLOCK(
@@ -110,17 +110,20 @@ namespace opendnp3
 			{
 				switch (record.enumeration)
 				{
+					case(GroupVariation::Group120Var1) :
+						return ParseFreeFormat(header, record, SIZE, objects, handler, ParseAuthChallenge, pLogger);
+					case(GroupVariation::Group120Var2) :
+						return ParseFreeFormat(header, record, SIZE, objects, handler, ParseAuthReply, pLogger);
 
-
-				default:
-					FORMAT_LOGGER_BLOCK(
-						pLogger, flags::WARN,
-						"Unknown object (%i, %i) and qualifer (%i) in AuthRequest",
-						record.group,
-						record.variation,
-						record.qualifier
-						);
-					return ParseResult::INVALID_OBJECT_QUALIFIER;
+					default:
+						FORMAT_LOGGER_BLOCK(
+							pLogger, flags::WARN,
+							"Unknown object (%i, %i) and qualifer (%i) in AuthRequest",
+							record.group,
+							record.variation,
+							record.qualifier
+							);
+						return ParseResult::INVALID_OBJECT_QUALIFIER;
 				}
 			}
 			else
@@ -128,6 +131,49 @@ namespace opendnp3
 				FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough: %i", SIZE);
 				return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
 			}
+		}
+	}
+
+	bool AuthRequestParser::ParseAuthChallenge(const APDUHeader& header, openpal::ReadBufferView& objects, IAuthRequestHandler& handler)
+	{		
+			Group120Var1 challenge;
+			auto success = Group120Var1::Read(objects, challenge);
+			if (success)
+			{
+				handler.OnAuthChallenge(header, challenge);			
+			}
+			return success;
+	}
+
+	bool AuthRequestParser::ParseAuthReply(const APDUHeader& header, openpal::ReadBufferView& objects, IAuthRequestHandler& handler)
+	{		
+		Group120Var2 reply;
+		auto success = Group120Var2::Read(objects, reply);
+		if (success)
+		{
+			handler.OnAuthReply(header, reply);			
+		}
+		return success;
+	}
+
+	ParseResult AuthRequestParser::ParseFreeFormat(const APDUHeader& header, const HeaderRecord& record, uint16_t size, openpal::ReadBufferView& objects, IAuthRequestHandler& handler, FreeFormatHandler parser, openpal::Logger* pLogger)
+	{
+		if (size == objects.Size()) //must be exactly equal since no trailing objects allowed
+		{			
+			if (parser(header, objects, handler))
+			{
+				return ParseResult::OK;
+			}
+			else
+			{
+				FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for (%i, %i)", record.group, record.variation);
+				return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
+			}
+		}
+		else
+		{
+			FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Unexpected size in (%i, %i)", record.group, record.variation);
+			return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
 		}
 	}
 
