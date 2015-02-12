@@ -59,6 +59,10 @@ class AuthRequestParser : private openpal::PureStatic
 		static bool ParseAuthReply(const APDUHeader& header, openpal::ReadBufferView& objects, IAuthRequestHandler& handler);
 
 		static bool ParseSessionKeyChange(const APDUHeader& header, openpal::ReadBufferView& objects, IAuthRequestHandler& handler);
+
+		// Fixed size parsers
+
+		static ParseResult ParseRequestSessionKeyStatus(const APDUHeader& header, const HeaderRecord& record, openpal::ReadBufferView& objects, IAuthRequestHandler& handler, openpal::Logger* pLogger);
 };
 
 }

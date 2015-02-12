@@ -57,6 +57,7 @@ namespace opendnp3
 		}
 		else
 		{
+			SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for object header");
 			return result;
 		}
 	}
@@ -75,7 +76,8 @@ namespace opendnp3
 			{
 				switch (record.enumeration)
 				{
-						
+					case(GroupVariation::Group120Var4) :
+						return ParseRequestSessionKeyStatus(header, record, objects, handler, pLogger);
 
 					default:
 						FORMAT_LOGGER_BLOCK(
@@ -94,6 +96,21 @@ namespace opendnp3
 				return ParseResult::BAD_COUNT;
 			}
 		}		
+	}
+
+	ParseResult AuthRequestParser::ParseRequestSessionKeyStatus(const APDUHeader& header, const HeaderRecord& record, openpal::ReadBufferView& objects, IAuthRequestHandler& handler, openpal::Logger* pLogger)
+	{
+		if (objects.Size() == Group120Var4::Size())
+		{
+			auto request = Group120Var4::Read(objects);
+			handler.OnRequestKeyStatus(header, request);
+			return ParseResult::OK;
+		}
+		else
+		{
+			FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Unexpected size in (%i, %i)", record.group, record.variation);
+			return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
+		}
 	}
 
 	ParseResult AuthRequestParser::ParseTwoOctetFreeFormat(const APDUHeader& header, const HeaderRecord& record, openpal::ReadBufferView& objects, IAuthRequestHandler& handler, openpal::Logger* pLogger)
