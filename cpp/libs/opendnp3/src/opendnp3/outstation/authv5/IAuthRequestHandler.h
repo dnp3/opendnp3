@@ -37,10 +37,10 @@ class IAuthRequestHandler
 {
 	public:
 
-		virtual void OnAuthChallenge(const APDUHeader& header, OState& ostate, const Group120Var1& challenge) = 0;
-		virtual void OnAuthReply(const APDUHeader& header, OState& ostate, const Group120Var2& reply) = 0;
-		virtual void OnRequestKeyStatus(const APDUHeader& header, OState& ostate, const Group120Var4& status) = 0;
-		virtual void OnChangeSessionKeys(const APDUHeader& header, OState& ostate, const Group120Var6& change) = 0;
+		virtual void OnAuthChallenge(OState& ostate, const APDUHeader& header, const Group120Var1& challenge) = 0;
+		virtual void OnAuthReply(OState& ostate, const APDUHeader& header, const Group120Var2& reply) = 0;
+		virtual void OnRequestKeyStatus(OState& ostate, const APDUHeader& header, const Group120Var4& status) = 0;
+		virtual void OnChangeSessionKeys(OState& ostate, const APDUHeader& header, const Group120Var6& change) = 0;
 };
 
 }

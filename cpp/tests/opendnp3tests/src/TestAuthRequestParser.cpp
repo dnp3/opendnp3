@@ -41,7 +41,7 @@ using namespace asiodnp3;
 
 #define SUITE(name) "AuthRequestParserTestSuite - " name
 
-class MockAuthRequestHandler : public IAuthRequestHandler
+class MockAuthRequestHandler : public IAuthRequestParserHandler
 {
 public:
 	

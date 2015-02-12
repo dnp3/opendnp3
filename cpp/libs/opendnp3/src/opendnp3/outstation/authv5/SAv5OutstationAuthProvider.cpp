@@ -79,22 +79,22 @@ void SAv5OutstationAuthProvider::OnRegularRequest(OState& ostate, const APDUHead
 	SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "Regular requests not supported yet");
 }
 
-void SAv5OutstationAuthProvider::OnAuthChallenge(const APDUHeader& header, OState& ostate, const Group120Var1& challenge)
+void SAv5OutstationAuthProvider::OnAuthChallenge(OState& ostate, const APDUHeader& header, const Group120Var1& challenge)
 {
 	
 }
 
-void SAv5OutstationAuthProvider::OnAuthReply(const APDUHeader& header, OState& ostate, const Group120Var2& reply)
+void SAv5OutstationAuthProvider::OnAuthReply(OState& ostate, const APDUHeader& header, const Group120Var2& reply)
 {
 	
 }
 
-void SAv5OutstationAuthProvider::OnRequestKeyStatus(const APDUHeader& header, OState& ostate, const Group120Var4& status)
+void SAv5OutstationAuthProvider::OnRequestKeyStatus(OState& ostate, const APDUHeader& header, const Group120Var4& status)
 {
 	SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "Key status not supported yet");
 }
 
-void SAv5OutstationAuthProvider::OnChangeSessionKeys(const APDUHeader& header, OState& ostate, const Group120Var6& change)
+void SAv5OutstationAuthProvider::OnChangeSessionKeys(OState& ostate, const APDUHeader& header, const Group120Var6& change)
 {
 	
 }

@@ -40,22 +40,22 @@ AuthRequestAdapter::AuthRequestAdapter(const APDUHeader& header_, OState& ostate
 
 void AuthRequestAdapter::OnAuthChallenge(const Group120Var1& challenge)
 {
-	pHandler->OnAuthChallenge(header, *pOState, challenge);
+	pHandler->OnAuthChallenge(*pOState, header, challenge);
 }
 
 void AuthRequestAdapter::OnAuthReply(const Group120Var2& reply)
 {
-	pHandler->OnAuthReply(header, *pOState, reply);
+	pHandler->OnAuthReply(*pOState, header, reply);
 }
 
 void AuthRequestAdapter::OnChangeSessionKeys(const Group120Var6& keyChange)
 {
-	pHandler->OnChangeSessionKeys(header, *pOState, keyChange);
+	pHandler->OnChangeSessionKeys(*pOState, header, keyChange);
 }
 
 void AuthRequestAdapter::OnRequestKeyStatus(const Group120Var4& status)
 {		
-	pHandler->OnRequestKeyStatus(header, *pOState, status);
+	pHandler->OnRequestKeyStatus(*pOState, header, status);
 }
 
 }

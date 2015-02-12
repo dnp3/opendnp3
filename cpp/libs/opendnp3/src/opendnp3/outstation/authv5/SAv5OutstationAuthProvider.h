@@ -52,13 +52,15 @@ class SAv5OutstationAuthProvider : private openpal::Uncopyable, public IOutstati
 
 	//// --- IAuthRequestHandler ----
 
-	virtual void OnAuthChallenge(const APDUHeader& header, OState& ostate, const Group120Var1& challenge) override final;
+	virtual void OnAuthChallenge(OState& ostate, const APDUHeader& header, const Group120Var1& challenge) override final;
 
-	virtual void OnAuthReply(const APDUHeader& header, OState& ostate, const Group120Var2& reply) override final;
+	virtual void OnAuthReply(OState& ostate, const APDUHeader& header, const Group120Var2& reply) override final;
 
-	virtual void OnRequestKeyStatus(const APDUHeader& header, OState& ostate, const Group120Var4& status) override final;
+	virtual void OnRequestKeyStatus(OState& ostate, const APDUHeader& header, const Group120Var4& status) override final;
 
-	virtual void OnChangeSessionKeys(const APDUHeader& header, OState& ostate, const Group120Var6& change) override final;
+	virtual void OnChangeSessionKeys(OState& ostate, const APDUHeader& header, const Group120Var6& change) override final;
+
+	/// --- State ---
 
 	SecurityState sstate;
 };
