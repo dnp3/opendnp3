@@ -41,10 +41,14 @@ class SAv5OutstationAuthProvider : private openpal::Uncopyable, public IOutstati
 	SAv5OutstationAuthProvider(uint32_t maxRxASDUSize, openpal::ICryptoProvider& crypto);
 
 	virtual void Reset() override final;	
+
+	virtual void CheckState(OState& ostate) override final;
 		
 	virtual void OnReceive(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects) override final;
 
 	private:
+
+	virtual void Process(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
 
 	void OnAuthRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
 

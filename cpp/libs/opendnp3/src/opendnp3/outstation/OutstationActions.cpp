@@ -302,7 +302,11 @@ void OActions::CheckForTaskStart(OState& ostate)
 	{	
 		if (ostate.deferred.IsSet())
 		{
-			ostate.deferred.Process(ostate, ProcessDeferredRequest);
+			auto handler = [&ostate](const APDUHeader& header, const ReadBufferView& objects) 
+			{
+				return OActions::ProcessDeferredRequest(ostate, header, objects);
+			};
+			ostate.deferred.Process(handler);
 		}
 		else
 		{

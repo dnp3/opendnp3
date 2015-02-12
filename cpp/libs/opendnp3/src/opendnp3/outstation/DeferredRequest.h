@@ -30,8 +30,6 @@
 namespace opendnp3
 {
 
-class OState;
-
 /**
 * Records metadata about deferred requests
 */
@@ -40,7 +38,7 @@ class DeferredRequest : private openpal::Uncopyable
 
 	public:
 
-	typedef bool (*Handler)(OState& ostate, APDUHeader header, openpal::ReadBufferView objects);
+	//typedef bool (*Handler)(OState& ostate, APDUHeader header, openpal::ReadBufferView objects);
 
 	DeferredRequest(uint32_t maxAPDUSize);
 
@@ -52,7 +50,8 @@ class DeferredRequest : private openpal::Uncopyable
 
 	void Set(APDUHeader header, openpal::ReadBufferView objects);
 	
-	bool Process(OState& state, Handler handler);
+	template <class Handler>
+	bool Process(const Handler& handler);
 	
 	private:
 
@@ -64,6 +63,21 @@ class DeferredRequest : private openpal::Uncopyable
 	openpal::DynamicBuffer buffer;
 	
 };
+
+template <class Handler>
+bool DeferredRequest::Process(const Handler& handler)
+{
+	if (isSet)
+	{
+		bool processed = handler(header, objects);
+		isSet = !processed;
+		return processed;
+	}
+	else
+	{
+		return false;
+	}
+}
 
 }
 

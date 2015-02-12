@@ -31,6 +31,8 @@
 
 #include "AuthRequestParser.h"
 
+using namespace openpal;
+
 namespace opendnp3
 {
 
@@ -44,28 +46,51 @@ void SAv5OutstationAuthProvider::Reset()
 {
 	sstate.Reset();
 }
+
+void SAv5OutstationAuthProvider::CheckState(OState& ostate)
+{
+	if (sstate.deferred.IsSet() && !ostate.isTransmitting)
+	{
+		auto handler = [&ostate, this](const APDUHeader& header, const ReadBufferView& objects)
+		{
+			this->Process(ostate, header, objects);
+			return true;
+		};
+
+		sstate.deferred.Process(handler);
+	}	
+}
 		
 void SAv5OutstationAuthProvider::OnReceive(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {	
-	//FORMAT_HEX_BLOCK(ostate.logger, flags::APP_OBJECT_RX, objects, 16, 16);
+	if (ostate.isTransmitting)
+	{
+		sstate.deferred.Set(header, objects);
+	}
+	else
+	{
+		this->Process(ostate, header, objects);
+	}	
+}
 
+void SAv5OutstationAuthProvider::Process(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
+{
 	// examine the function code to determine what kind of ASDU it is
 	switch (header.function)
 	{
-		case(FunctionCode::AUTH_REQUEST) :
-			this->OnAuthRequest(ostate, header, objects);
-			break;
-		case(FunctionCode::AUTH_RESPONSE) :
-			SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "Auth response not valid for outstation");
-			break;
-		case(FunctionCode::AUTH_REQUEST_NO_ACK) :
-			SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "AuthRequestNoAck not supported");
-			break;
-		default:
-			this->OnRegularRequest(ostate, header, objects);
-			break;
-	}	
-
+	case(FunctionCode::AUTH_REQUEST) :
+		this->OnAuthRequest(ostate, header, objects);
+		break;
+	case(FunctionCode::AUTH_RESPONSE) :
+		SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "Auth response not valid for outstation");
+		break;
+	case(FunctionCode::AUTH_REQUEST_NO_ACK) :
+		SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "AuthRequestNoAck not supported");
+		break;
+	default:
+		this->OnRegularRequest(ostate, header, objects);
+		break;
+	}
 }
 
 void SAv5OutstationAuthProvider::OnAuthRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)

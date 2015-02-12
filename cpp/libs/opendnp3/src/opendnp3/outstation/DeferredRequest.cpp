@@ -50,21 +50,6 @@ void DeferredRequest::Set(APDUHeader header_, openpal::ReadBufferView objects_)
 	this->objects = objects_.CopyTo(dest);	
 }
 
-bool DeferredRequest::Process(OState& ostate, Handler handler)
-{
-	if (isSet)
-	{		
-		auto processed = handler(ostate, header, objects);
-		isSet = !processed;
-		return processed;
-	}
-	else
-	{
-		return false;
-	}
-}
-	
-
 }
 
 

@@ -42,6 +42,9 @@ class IOutstationAuthProvider
 	/// Reset the state of the auth provider when lower layer goes offline
 	virtual void Reset() = 0;	
 
+	/// See if any progress can be made
+	virtual void CheckState(OState& ostate) = 0;
+
 	/// Receive a new request
 	virtual void OnReceive(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects) = 0;
 
