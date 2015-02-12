@@ -48,6 +48,8 @@ namespace opendnp3
 			{
 				case(QualifierCode::UINT8_CNT) :
 					return ParseOneOctetCount(header, record, copy, handler, pLogger);
+				case(QualifierCode::UINT16_FREE_FORMAT):
+					return ParseTwoOctetFreeFormat(header, record, copy, handler, pLogger);
 				default:
 					FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Unsupported qualifier code in AuthRequest: %i", ohdr.qualifier);
 					return ParseResult::UNKNOWN_QUALIFIER;
@@ -92,6 +94,41 @@ namespace opendnp3
 				return ParseResult::BAD_COUNT;
 			}
 		}		
+	}
+
+	ParseResult AuthRequestParser::ParseTwoOctetFreeFormat(const APDUHeader& header, const HeaderRecord& record, openpal::ReadBufferView& objects, IAuthRequestHandler& handler, openpal::Logger* pLogger)
+	{
+		if (objects.Size() < 2)
+		{
+			FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for two byte free format length");
+			return ParseResult::NOT_ENOUGH_DATA_FOR_HEADER;
+		}
+		else
+		{
+			const uint16_t SIZE = UInt16::ReadBuffer(objects);
+			if (SIZE > objects.Size()) // only a count of 1 is allowed in this parser
+			{
+				switch (record.enumeration)
+				{
+
+
+				default:
+					FORMAT_LOGGER_BLOCK(
+						pLogger, flags::WARN,
+						"Unknown object (%i, %i) and qualifer (%i) in AuthRequest",
+						record.group,
+						record.variation,
+						record.qualifier
+						);
+					return ParseResult::INVALID_OBJECT_QUALIFIER;
+				}
+			}
+			else
+			{
+				FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough: %i", SIZE);
+				return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
+			}
+		}
 	}
 
 }

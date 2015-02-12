@@ -44,6 +44,8 @@ QualifierCode QualifierCodeFromType(uint8_t arg)
       return QualifierCode::UINT8_CNT_UINT8_INDEX;
     case(0x28):
       return QualifierCode::UINT16_CNT_UINT16_INDEX;
+    case(0x5B):
+      return QualifierCode::UINT16_FREE_FORMAT;
     default:
       return QualifierCode::UNDEFINED;
   }
@@ -66,6 +68,8 @@ char const* QualifierCodeToString(QualifierCode arg)
       return "8-bit count and prefix";
     case(QualifierCode::UINT16_CNT_UINT16_INDEX):
       return "16-bit count and prefix";
+    case(QualifierCode::UINT16_FREE_FORMAT):
+      return "16-bit free format";
     default:
       return "unknown";
   }
