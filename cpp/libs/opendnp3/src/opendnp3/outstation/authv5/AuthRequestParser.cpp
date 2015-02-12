@@ -34,7 +34,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-	ParseResult AuthRequestParser::Parse(const APDUHeader& header, const ReadBufferView& objects, IAuthRequestHandler& handler, Logger* pLogger)
+	ParseResult AuthRequestParser::Parse(const ReadBufferView& objects, IAuthRequestHandler& handler, Logger* pLogger)
 	{
 		ObjectHeader ohdr;
 		ReadBufferView copy(objects);
@@ -47,9 +47,9 @@ namespace opendnp3
 			switch (record.GetQualifierCode())
 			{
 				case(QualifierCode::UINT8_CNT) :
-					return ParseOneOctetCount(header, record, copy, handler, pLogger);
+					return ParseOneOctetCount(record, copy, handler, pLogger);
 				case(QualifierCode::UINT16_FREE_FORMAT):
-					return ParseTwoOctetFreeFormat(header, record, copy, handler, pLogger);
+					return ParseTwoOctetFreeFormat(record, copy, handler, pLogger);
 				default:
 					FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Unsupported qualifier code in AuthRequest: %i", ohdr.qualifier);
 					return ParseResult::UNKNOWN_QUALIFIER;
@@ -62,7 +62,7 @@ namespace opendnp3
 		}
 	}
 
-	ParseResult AuthRequestParser::ParseOneOctetCount(const APDUHeader& header, const HeaderRecord& record, openpal::ReadBufferView& objects, IAuthRequestHandler& handler, openpal::Logger* pLogger)
+	ParseResult AuthRequestParser::ParseOneOctetCount(const HeaderRecord& record, openpal::ReadBufferView& objects, IAuthRequestHandler& handler, openpal::Logger* pLogger)
 	{
 		if (objects.Size() < 1)
 		{
@@ -77,7 +77,7 @@ namespace opendnp3
 				switch (record.enumeration)
 				{
 					case(GroupVariation::Group120Var4) :
-						return ParseRequestSessionKeyStatus(header, record, objects, handler, pLogger);
+						return ParseRequestSessionKeyStatus(record, objects, handler, pLogger);
 
 					default:
 						FORMAT_LOGGER_BLOCK(
@@ -98,12 +98,12 @@ namespace opendnp3
 		}		
 	}
 
-	ParseResult AuthRequestParser::ParseRequestSessionKeyStatus(const APDUHeader& header, const HeaderRecord& record, openpal::ReadBufferView& objects, IAuthRequestHandler& handler, openpal::Logger* pLogger)
+	ParseResult AuthRequestParser::ParseRequestSessionKeyStatus(const HeaderRecord& record, openpal::ReadBufferView& objects, IAuthRequestHandler& handler, openpal::Logger* pLogger)
 	{
 		if (objects.Size() == Group120Var4::Size())
 		{
 			auto request = Group120Var4::Read(objects);
-			handler.OnRequestKeyStatus(header, request);
+			handler.OnRequestKeyStatus(request);
 			return ParseResult::OK;
 		}
 		else
@@ -113,7 +113,7 @@ namespace opendnp3
 		}
 	}
 
-	ParseResult AuthRequestParser::ParseTwoOctetFreeFormat(const APDUHeader& header, const HeaderRecord& record, openpal::ReadBufferView& objects, IAuthRequestHandler& handler, openpal::Logger* pLogger)
+	ParseResult AuthRequestParser::ParseTwoOctetFreeFormat(const HeaderRecord& record, openpal::ReadBufferView& objects, IAuthRequestHandler& handler, openpal::Logger* pLogger)
 	{
 		if (objects.Size() < 2)
 		{
@@ -123,18 +123,18 @@ namespace opendnp3
 		else
 		{
 			const uint16_t SIZE = UInt16::ReadBuffer(objects);
-			if (SIZE > objects.Size()) // only a count of 1 is allowed in this parser
+			if (SIZE == objects.Size()) // must be exactly equal to the remainder
 			{
 				switch (record.enumeration)
 				{
 					case(GroupVariation::Group120Var1) :
-						return ParseFreeFormat(ParseAuthChallenge, header, record, SIZE, objects, handler, pLogger);
+						return ParseFreeFormat(ParseAuthChallenge, record, SIZE, objects, handler, pLogger);
 
 					case(GroupVariation::Group120Var2) :
-						return ParseFreeFormat(ParseAuthReply, header, record, SIZE, objects, handler, pLogger);
+						return ParseFreeFormat(ParseAuthReply, record, SIZE, objects, handler, pLogger);
 
 					case(GroupVariation::Group120Var6) :
-						return ParseFreeFormat(ParseSessionKeyChange, header, record, SIZE, objects, handler, pLogger);
+						return ParseFreeFormat(ParseSessionKeyChange, record, SIZE, objects, handler, pLogger);
 
 					default:
 						FORMAT_LOGGER_BLOCK(
@@ -149,64 +149,56 @@ namespace opendnp3
 			}
 			else
 			{
-				FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough: %i", SIZE);
-				return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
+				FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Unexpected size (%i) in free format (%i, %i)", SIZE, record.group, record.variation);
+				return objects.Size() < SIZE ? ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS : ParseResult::TOO_MUCH_DATA_FOR_OBJECTS;
 			}
 		}
 	}
 
-	bool AuthRequestParser::ParseAuthChallenge(const APDUHeader& header, openpal::ReadBufferView& objects, IAuthRequestHandler& handler)
+	bool AuthRequestParser::ParseAuthChallenge(openpal::ReadBufferView& objects, IAuthRequestHandler& handler)
 	{		
 			Group120Var1 challenge;
 			auto success = Group120Var1::Read(objects, challenge);
 			if (success)
 			{
-				handler.OnAuthChallenge(header, challenge);			
+				handler.OnAuthChallenge(challenge);			
 			}
 			return success;
 	}
 
-	bool AuthRequestParser::ParseAuthReply(const APDUHeader& header, openpal::ReadBufferView& objects, IAuthRequestHandler& handler)
+	bool AuthRequestParser::ParseAuthReply(openpal::ReadBufferView& objects, IAuthRequestHandler& handler)
 	{		
 		Group120Var2 reply;
 		auto success = Group120Var2::Read(objects, reply);
 		if (success)
 		{
-			handler.OnAuthReply(header, reply);			
+			handler.OnAuthReply(reply);			
 		}
 		return success;
 	}
 
-	bool AuthRequestParser::ParseSessionKeyChange(const APDUHeader& header, openpal::ReadBufferView& objects, IAuthRequestHandler& handler)
+	bool AuthRequestParser::ParseSessionKeyChange(openpal::ReadBufferView& objects, IAuthRequestHandler& handler)
 	{
 		Group120Var6 keyChange;
 		auto success = Group120Var6::Read(objects, keyChange);
 		if (success)
 		{
-			handler.OnChangeSessionKeys(header, keyChange);
+			handler.OnChangeSessionKeys(keyChange);
 		}
 		return success;
 	}
 
-	ParseResult AuthRequestParser::ParseFreeFormat(FreeFormatHandler parser, const APDUHeader& header, const HeaderRecord& record, uint16_t size, openpal::ReadBufferView& objects, IAuthRequestHandler& handler, openpal::Logger* pLogger)
-	{
-		if (size == objects.Size()) //must be exactly equal since no trailing objects allowed
-		{			
-			if (parser(header, objects, handler))
-			{
-				return ParseResult::OK;
-			}
-			else
-			{
-				FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for (%i, %i)", record.group, record.variation);
-				return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
-			}
+	ParseResult AuthRequestParser::ParseFreeFormat(FreeFormatHandler parser, const HeaderRecord& record, uint16_t size, openpal::ReadBufferView& objects, IAuthRequestHandler& handler, openpal::Logger* pLogger)
+	{				
+		if (parser(objects, handler))
+		{
+			return ParseResult::OK;
 		}
 		else
 		{
-			FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Unexpected size in (%i, %i)", record.group, record.variation);
+			FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for (%i, %i)", record.group, record.variation);
 			return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
-		}
+		}		
 	}
 
 }

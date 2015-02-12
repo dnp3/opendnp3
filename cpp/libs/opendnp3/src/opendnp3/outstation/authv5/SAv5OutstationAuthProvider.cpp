@@ -73,7 +73,7 @@ void SAv5OutstationAuthProvider::OnReceive(OState& ostate, const APDUHeader& hea
 void SAv5OutstationAuthProvider::OnAuthRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
 	DefaultAuthRequestHandler handler;	
-	AuthRequestParser::Parse(header, objects, handler, &ostate.logger);
+	AuthRequestParser::Parse(objects, handler, &ostate.logger);
 }
 
 void SAv5OutstationAuthProvider::OnUnknownRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)

@@ -24,22 +24,22 @@
 namespace opendnp3
 {
 
-void DefaultAuthRequestHandler::OnAuthChallenge(const APDUHeader& header, const Group120Var1& challenge)
+void DefaultAuthRequestHandler::OnAuthChallenge(const Group120Var1& challenge)
 {
 	
 }
 
-void DefaultAuthRequestHandler::OnAuthReply(const APDUHeader& header, const Group120Var2& reply)
+void DefaultAuthRequestHandler::OnAuthReply(const Group120Var2& reply)
 {
 	
 }
 
-void DefaultAuthRequestHandler::OnChangeSessionKeys(const APDUHeader& header, const Group120Var6& keyChange)
+void DefaultAuthRequestHandler::OnChangeSessionKeys(const Group120Var6& keyChange)
 {
 
 }
 
-void DefaultAuthRequestHandler::OnRequestKeyStatus(const APDUHeader& header, const Group120Var4& status)
+void DefaultAuthRequestHandler::OnRequestKeyStatus(const Group120Var4& status)
 {
 	
 }
