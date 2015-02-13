@@ -65,20 +65,20 @@ TEST_CASE(SUITE("TestThatMultiThreadingDoesNotCrash"))
 	const int NUM_THREADS = 100;
 	const int NUM_RAND_FETCH = 100;
 
-	for (int i = 0; i < 100; ++i)
+	auto runner = [&]()
 	{
-		auto runner = [&]() 
-		{ 
-			DynamicBuffer buffer(100);
-			for (int i = 0; i < NUM_RAND_FETCH; ++i)
+		DynamicBuffer buffer(100);
+		for (int i = 0; i < NUM_RAND_FETCH; ++i)
+		{
+			if (provider.GetSecureRandom(buffer.GetWriteBufferView()))
 			{
-				if(provider.GetSecureRandom(buffer.GetWriteBufferView()))
-				{
-					++randCount;
-				}
+				++randCount;
 			}
-		};
+		}
+	};
 
+	for (int i = 0; i < 100; ++i)
+	{		
 		threads.push_back(std::make_unique<std::thread>(runner));
 	}
 
