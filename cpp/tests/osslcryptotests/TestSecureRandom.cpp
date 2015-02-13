@@ -45,16 +45,6 @@ TEST_CASE(SUITE("BasicInstantiationAndRequestRandomWorks"))
 	}	
 }
 
-void RunRandIterations(CryptoProvider& provider, int iterations)
-{
-	DynamicBuffer buffer(100);
-
-	for (int i = 0; i < iterations; ++i)
-	{
-		REQUIRE(provider.GetSecureRandom(buffer.GetWriteBufferView()));
-	}
-}
-
 TEST_CASE(SUITE("TestThatMultiThreadingDoesNotCrash"))
 {
 	CryptoProvider provider;
@@ -62,7 +52,15 @@ TEST_CASE(SUITE("TestThatMultiThreadingDoesNotCrash"))
 
 	for (int i = 0; i < 100; ++i)
 	{
-		auto runner = [&provider]() { RunRandIterations(provider, 100); };
+		auto runner = [&provider]() { 
+
+			DynamicBuffer buffer(100);
+			for (int i = 0; i < 100; ++i)
+			{
+				REQUIRE(provider.GetSecureRandom(buffer.GetWriteBufferView()));
+			}
+		};
+
 		threads.push_back(std::make_unique<std::thread>(runner));
 	}
 
