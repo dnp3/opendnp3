@@ -57,7 +57,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sav5", "sav5", "{DD9C39EB-C
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "outstationSAdemo", "cpp\examples\sav5\outstation\outstationSAdemo.vcxproj", "{496DA9B6-AA62-44E9-9557-AF9C7BCCF0A1}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "osslcryptoprovider", "cpp\libs\osslcryptoprovider\osslcryptoprovider.vcxproj", "{6571DD15-D2F7-4D3F-A580-FDC5E55B2844}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "osslcryptoprovider", "cpp\libs\osslcrypto\osslcryptoprovider.vcxproj", "{6571DD15-D2F7-4D3F-A580-FDC5E55B2844}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

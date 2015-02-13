@@ -21,13 +21,19 @@
 #ifndef OPENPAL_ICRYPTOPROVIDER_H
 #define OPENPAL_ICRYPTOPROVIDER_H
 
+#include <openpal/container/WriteBufferView.h>
+
 namespace openpal
 {
 	// A provider of cryptographic services
 	class ICryptoProvider
 	{
 	public:
+		
 		virtual ~ICryptoProvider() {}
+
+		// return true if the specified buffer can be completely filled with secure random numbers
+		virtual bool GetSecureRandom(const WriteBufferView& buffer) = 0;
 
 	};
 
