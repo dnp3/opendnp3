@@ -18,27 +18,6 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENPAL_ICRYPTOPROVIDER_H
-#define OPENPAL_ICRYPTOPROVIDER_H
 
-#include <openpal/container/WriteBufferView.h>
-
-namespace openpal
-{
-	// A provider of cryptographic services
-	class ICryptoProvider
-	{
-	public:
-		
-		virtual ~ICryptoProvider() {}
-
-		// return true if the specified buffer can be completely filled with secure random numbers
-		// Implementations could return false for any reason including lack of entropy
-		virtual bool GetSecureRandom(WriteBufferView& buffer) = 0;
-
-	};
-
-}
-
-#endif
-
+#define CATCH_CONFIG_MAIN
+#include <catch.hpp>
