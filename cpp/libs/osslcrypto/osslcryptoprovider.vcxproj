@@ -28,6 +28,7 @@
     <ProjectGuid>{6571DD15-D2F7-4D3F-A580-FDC5E55B2844}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>osslcryptoprovider</RootNamespace>
+    <ProjectName>osslcrypto</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

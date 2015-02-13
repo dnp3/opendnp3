@@ -26,6 +26,7 @@
 #include <openpal/util/ToHex.h>
 
 #include <thread>
+#include <atomic>
 
 #define SUITE(name) "SecureRandomTestSuite - " name
 
@@ -39,25 +40,42 @@ TEST_CASE(SUITE("BasicInstantiationAndRequestRandomWorks"))
 
 	DynamicBuffer buffer(10);
 
-	for (int i = 0; i < 10; ++i)
+	const int NUM_RAND_FETCH = 100;
+
+	int count = 0;
+
+	for (int i = 0; i < NUM_RAND_FETCH; ++i)
 	{
-		REQUIRE(provider.GetSecureRandom(buffer.GetWriteBufferView()));		
+		if (provider.GetSecureRandom(buffer.GetWriteBufferView()))
+		{
+			++count;
+		}
 	}	
+
+	REQUIRE(count == NUM_RAND_FETCH);
 }
 
 TEST_CASE(SUITE("TestThatMultiThreadingDoesNotCrash"))
 {
 	CryptoProvider provider;
+	std::atomic<uint32_t> randCount;
+
 	vector<unique_ptr<thread>> threads;
+
+	const int NUM_THREADS = 100;
+	const int NUM_RAND_FETCH = 100;
 
 	for (int i = 0; i < 100; ++i)
 	{
-		auto runner = [&provider]() 
+		auto runner = [&]() 
 		{ 
 			DynamicBuffer buffer(100);
-			for (int i = 0; i < 100; ++i)
+			for (int i = 0; i < NUM_RAND_FETCH; ++i)
 			{
-				REQUIRE(provider.GetSecureRandom(buffer.GetWriteBufferView()));
+				if(provider.GetSecureRandom(buffer.GetWriteBufferView()))
+				{
+					++randCount;
+				}
 			}
 		};
 
@@ -68,5 +86,6 @@ TEST_CASE(SUITE("TestThatMultiThreadingDoesNotCrash"))
 	{
 		t->join();
 	}
-	
+
+	REQUIRE(randCount == NUM_THREADS*NUM_RAND_FETCH);	
 }
