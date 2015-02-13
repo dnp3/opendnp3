@@ -21,12 +21,49 @@
 
 #include "CryptoProvider.h"
 
+#include <openssl/rand.h>
+#include <openssl/crypto.h>
+#include <assert.h>
+
 namespace osslcrypto
 {
 
-bool CrytpoProvider::GetSecureRandom(const openpal::WriteBufferView& buffer)
+const int CryptoProvider::NUM_MUTEX = Initialize();
+
+int CryptoProvider::Initialize()
 {
-	return false;
+	auto num = CRYPTO_num_locks();
+
+	mutexes = std::unique_ptr<std::mutex[]>(new std::mutex[num]);
+
+	// specific the function that will lock and unlock the various mutexes
+	CRYPTO_set_locking_callback(LockingFunction);
+
+	return num;
+}
+
+void CryptoProvider::LockingFunction(int mode, int n, const char *file, int line)
+{
+	assert(n < NUM_MUTEX);
+
+	if (mode & CRYPTO_LOCK) 
+	{
+		mutexes[n].lock();		
+	}
+	else 
+	{
+		mutexes[n].unlock();		
+	}
+}
+
+CryptoProvider::CryptoProvider()
+{
+	
+}
+
+bool CryptoProvider::GetSecureRandom(openpal::WriteBufferView& buffer)
+{	
+	return RAND_bytes(buffer, buffer.Size()) > 0;
 }
 
 

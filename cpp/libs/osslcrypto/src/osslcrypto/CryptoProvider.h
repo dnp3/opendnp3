@@ -21,15 +21,30 @@
 
 #include <openpal/crypto/ICryptoProvider.h>
 
+#include <mutex>
+#include <memory>
+
 namespace osslcrypto
 {
 
 /***
 * An ICryptoProvider based on openssl
 */
-class CrytpoProvider : public openpal::ICryptoProvider
+class CryptoProvider : public openpal::ICryptoProvider
 {	
-	virtual bool GetSecureRandom(const openpal::WriteBufferView& buffer) override final;	
+	public:
+
+	CryptoProvider();
+
+	virtual bool GetSecureRandom(openpal::WriteBufferView& buffer) override final;	
+
+	private:
+
+	static void LockingFunction(int mode, int n, const char *file, int line);
+			
+	static int Initialize();
+	static const int NUM_MUTEX;
+	static std::unique_ptr<std::mutex[]> mutexes;
 };
 
 }

@@ -33,7 +33,7 @@ namespace openpal
 		virtual ~ICryptoProvider() {}
 
 		// return true if the specified buffer can be completely filled with secure random numbers
-		virtual bool GetSecureRandom(const WriteBufferView& buffer) = 0;
+		virtual bool GetSecureRandom(WriteBufferView& buffer) = 0;
 
 	};
 

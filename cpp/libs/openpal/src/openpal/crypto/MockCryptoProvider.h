@@ -28,11 +28,14 @@ namespace openpal
 	// A provider of cryptographic services
 	class MockCryptoProvider : public ICryptoProvider
 	{		
-		virtual bool GetSecureRandom(const WriteBufferView& buffer) override final
+		virtual bool GetSecureRandom(WriteBufferView& buffer) override final
 		{
+			for (uint32_t i = 0; i < buffer.Size(); ++i)
+			{
+				buffer[i] = 0xFF;
+			}
 			return true;
 		}
-
 	};
 
 }
