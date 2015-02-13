@@ -28,31 +28,33 @@
 namespace osslcrypto
 {
 
-const int CryptoProvider::NUM_MUTEX = Initialize();
+std::vector < std::unique_ptr<std::mutex> > CryptoProvider::mutexes;
+bool CryptoProvider::initialized = Initialize();
 
-int CryptoProvider::Initialize()
+bool CryptoProvider::Initialize()
 {
-	auto num = CRYPTO_num_locks();
-
-	mutexes = std::unique_ptr<std::mutex[]>(new std::mutex[num]);
+	for (int i = 0; i < CRYPTO_num_locks(); ++i)
+	{
+		mutexes.push_back(std::make_unique<std::mutex>());
+	}	
 
 	// specific the function that will lock and unlock the various mutexes
 	CRYPTO_set_locking_callback(LockingFunction);
 
-	return num;
+	return true;
 }
 
 void CryptoProvider::LockingFunction(int mode, int n, const char *file, int line)
 {
-	assert(n < NUM_MUTEX);
+	assert(n < mutexes.size());
 
 	if (mode & CRYPTO_LOCK) 
 	{
-		mutexes[n].lock();		
+		mutexes[n]->lock();		
 	}
 	else 
 	{
-		mutexes[n].unlock();		
+		mutexes[n]->unlock();		
 	}
 }
 

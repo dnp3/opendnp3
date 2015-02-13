@@ -22,6 +22,7 @@
 #include <openpal/crypto/ICryptoProvider.h>
 
 #include <mutex>
+#include <vector>
 #include <memory>
 
 namespace osslcrypto
@@ -42,9 +43,12 @@ class CryptoProvider : public openpal::ICryptoProvider
 
 	static void LockingFunction(int mode, int n, const char *file, int line);
 			
-	static int Initialize();
-	static const int NUM_MUTEX;
-	static std::unique_ptr<std::mutex[]> mutexes;
+	static bool Initialize();
+	
+	
+	static std::vector < std::unique_ptr<std::mutex> > mutexes;
+	static bool initialized;
+		
 };
 
 }

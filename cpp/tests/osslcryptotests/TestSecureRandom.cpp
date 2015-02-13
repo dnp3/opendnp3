@@ -20,11 +20,24 @@
 */
 #include <catch.hpp>
 
-using namespace std;
+#include <osslcrypto/CryptoProvider.h>
+
+#include <openpal/container/DynamicBuffer.h>
+#include <openpal/util/ToHex.h>
 
 #define SUITE(name) "SecureRandomTestSuite - " name
 
-TEST_CASE(SUITE("BLAH"))
+using namespace openpal;
+using namespace osslcrypto;
+
+TEST_CASE(SUITE("BasicInstantiationAndRequestRandomWorks"))
 {
-	
+	CryptoProvider provider;
+
+	DynamicBuffer buffer(10);
+
+	for (int i = 0; i < 10; ++i)
+	{
+		REQUIRE(provider.GetSecureRandom(buffer.GetWriteBufferView()));		
+	}	
 }
