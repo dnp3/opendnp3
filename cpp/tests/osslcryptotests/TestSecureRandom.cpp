@@ -25,8 +25,11 @@
 #include <openpal/container/DynamicBuffer.h>
 #include <openpal/util/ToHex.h>
 
+#include <thread>
+
 #define SUITE(name) "SecureRandomTestSuite - " name
 
+using namespace std;
 using namespace openpal;
 using namespace osslcrypto;
 
@@ -40,4 +43,32 @@ TEST_CASE(SUITE("BasicInstantiationAndRequestRandomWorks"))
 	{
 		REQUIRE(provider.GetSecureRandom(buffer.GetWriteBufferView()));		
 	}	
+}
+
+void RunRandIterations(CryptoProvider& provider, int iterations)
+{
+	DynamicBuffer buffer(100);
+
+	for (int i = 0; i < iterations; ++i)
+	{
+		REQUIRE(provider.GetSecureRandom(buffer.GetWriteBufferView()));
+	}
+}
+
+TEST_CASE(SUITE("TestThatMultiThreadingDoesNotCrash"))
+{
+	CryptoProvider provider;
+	vector<unique_ptr<thread>> threads;
+
+	for (int i = 0; i < 100; ++i)
+	{
+		auto runner = [&provider]() { RunRandIterations(provider, 100); };
+		threads.push_back(std::make_unique<std::thread>(runner));
+	}
+
+	for (auto& t : threads)
+	{
+		t->join();
+	}
+	
 }
