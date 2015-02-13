@@ -20,6 +20,7 @@
 */
 
 #include <openpal/crypto/ICryptoProvider.h>
+#include <openpal/util/Uncopyable.h>
 
 #include <mutex>
 #include <vector>
@@ -28,10 +29,10 @@
 namespace osslcrypto
 {
 
-/***
+/**
 * An ICryptoProvider based on openssl
 */
-class CryptoProvider : public openpal::ICryptoProvider
+class CryptoProvider : public openpal::ICryptoProvider, private openpal::Uncopyable
 {	
 	public:	
 
@@ -42,11 +43,9 @@ class CryptoProvider : public openpal::ICryptoProvider
 	static void LockingFunction(int mode, int n, const char *file, int line);
 			
 	static bool Initialize();
-	
-	
+		
 	static std::vector < std::unique_ptr<std::mutex> > mutexes;
 	static bool initialized;
-		
 };
 
 }

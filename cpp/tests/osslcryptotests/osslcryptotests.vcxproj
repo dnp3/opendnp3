@@ -67,6 +67,7 @@
     <Import Project="..\..\..\config\openpal_include.props" />
     <Import Project="..\..\..\config\osslcrypto-include.props" />
     <Import Project="..\..\..\config\output_dirs.props" />
+    <Import Project="..\..\..\config\ossl-lib64.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -82,6 +83,7 @@
     <Import Project="..\..\..\config\openpal_include.props" />
     <Import Project="..\..\..\config\osslcrypto-include.props" />
     <Import Project="..\..\..\config\output_dirs.props" />
+    <Import Project="..\..\..\config\ossl-lib64.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

@@ -52,8 +52,8 @@ TEST_CASE(SUITE("TestThatMultiThreadingDoesNotCrash"))
 
 	for (int i = 0; i < 100; ++i)
 	{
-		auto runner = [&provider]() { 
-
+		auto runner = [&provider]() 
+		{ 
 			DynamicBuffer buffer(100);
 			for (int i = 0; i < 100; ++i)
 			{
