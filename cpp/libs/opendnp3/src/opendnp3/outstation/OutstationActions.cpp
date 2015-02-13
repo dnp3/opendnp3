@@ -296,23 +296,22 @@ OutstationSolicitedStateBase* OActions::ContinueMultiFragResponse(OState& ostate
 
 void OActions::CheckForTaskStart(OState& ostate)
 {		
-	// if we're online, the solicited state is idle, and the unsolicited state 
-	// is not transmitting we may be able to do a task
-	if (ostate.isOnline && !ostate.isTransmitting)
-	{	
-		if (ostate.deferred.IsSet())
+	// do these checks in order of priority
+	ostate.pAuthProvider->CheckState(ostate);
+	OActions::CheckForDeferredRequest(ostate);
+	OActions::CheckForUnsolicited(ostate);
+}
+
+void OActions::CheckForDeferredRequest(OState& ostate)
+{
+	if (ostate.CanTransmit() && ostate.deferred.IsSet())
+	{		
+		auto handler = [&ostate](const APDUHeader& header, const ReadBufferView& objects)
 		{
-			auto handler = [&ostate](const APDUHeader& header, const ReadBufferView& objects) 
-			{
-				return OActions::ProcessDeferredRequest(ostate, header, objects);
-			};
-			ostate.deferred.Process(handler);
-		}
-		else
-		{
-			OActions::CheckForUnsolicited(ostate);
-		}		
-	}	
+			return OActions::ProcessDeferredRequest(ostate, header, objects);
+		};
+		ostate.deferred.Process(handler);
+	}
 }
 
 bool OActions::ProcessDeferredRequest(OState& ostate, APDUHeader header, openpal::ReadBufferView objects)
@@ -346,7 +345,7 @@ bool OActions::ProcessDeferredRequest(OState& ostate, APDUHeader header, openpal
 
 void OActions::CheckForUnsolicited(OState& ostate)
 {
-	if (!ostate.isTransmitting && ostate.unsol.IsIdle() && ostate.params.allowUnsolicited)
+	if (ostate.CanTransmit() && ostate.unsol.IsIdle() && ostate.params.allowUnsolicited)
 	{
 		if (ostate.unsol.completedNull)
 		{				
@@ -385,7 +384,7 @@ void OActions::CheckForUnsolicited(OState& ostate)
 
 bool OActions::StartSolicitedConfirmTimer(OState& ostate)
 {
-	auto timeout = [&]() 
+	auto timeout = [&]()
 	{ 
 		ostate.sol.pState = ostate.sol.pState->OnConfirmTimeout(ostate);
 		OActions::CheckForTaskStart(ostate);

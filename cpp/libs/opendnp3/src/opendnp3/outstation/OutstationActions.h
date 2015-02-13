@@ -77,8 +77,9 @@ class OActions : private openpal::PureStatic
 	static OutstationSolicitedStateBase* ProcessNewRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
 	
 
-	private:		
+	private:	
 
+	static void CheckForDeferredRequest(OState& ostate);
 
 	static bool ProcessDeferredRequest(OState& ostate, APDUHeader header, openpal::ReadBufferView objects);
 

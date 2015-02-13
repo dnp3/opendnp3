@@ -48,7 +48,7 @@ class SAv5OutstationAuthProvider : private openpal::Uncopyable, public IOutstati
 
 	private:
 
-	virtual void Process(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
+	void Process(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
 
 	void OnAuthRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
 

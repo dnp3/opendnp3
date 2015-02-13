@@ -64,6 +64,9 @@ class OState
 	// reset important variables to their initial state
 	void Reset();	
 
+	// returns true if the layer is online and not transmitting
+	bool CanTransmit() const;
+
 	// ------ resources --------
 	openpal::Logger logger;
 	openpal::IExecutor* const pExecutor;

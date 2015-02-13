@@ -76,6 +76,11 @@ void OState::Reset()
 	pAuthProvider->Reset();
 }
 
+bool OState::CanTransmit() const
+{
+	return isOnline && !isTransmitting;
+}
+
 
 }
 

@@ -49,7 +49,7 @@ void SAv5OutstationAuthProvider::Reset()
 
 void SAv5OutstationAuthProvider::CheckState(OState& ostate)
 {
-	if (sstate.deferred.IsSet() && !ostate.isTransmitting)
+	if (ostate.isOnline && !ostate.isTransmitting && sstate.deferred.IsSet())
 	{
 		auto handler = [&ostate, this](const APDUHeader& header, const ReadBufferView& objects)
 		{
@@ -70,7 +70,7 @@ void SAv5OutstationAuthProvider::OnReceive(OState& ostate, const APDUHeader& hea
 	else
 	{
 		this->Process(ostate, header, objects);
-	}	
+	}
 }
 
 void SAv5OutstationAuthProvider::Process(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
