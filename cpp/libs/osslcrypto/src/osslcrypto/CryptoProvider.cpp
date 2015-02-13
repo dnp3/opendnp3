@@ -46,7 +46,8 @@ bool CryptoProvider::Initialize()
 
 void CryptoProvider::LockingFunction(int mode, int n, const char *file, int line)
 {
-	assert(n < mutexes.size());
+	assert(n > 0);
+	assert(static_cast<size_t>(n) < mutexes.size());
 
 	if (mode & CRYPTO_LOCK) 
 	{
@@ -56,11 +57,6 @@ void CryptoProvider::LockingFunction(int mode, int n, const char *file, int line
 	{
 		mutexes[n]->unlock();		
 	}
-}
-
-CryptoProvider::CryptoProvider()
-{
-	
 }
 
 bool CryptoProvider::GetSecureRandom(openpal::WriteBufferView& buffer)

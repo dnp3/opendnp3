@@ -33,9 +33,7 @@ namespace osslcrypto
 */
 class CryptoProvider : public openpal::ICryptoProvider
 {	
-	public:
-
-	CryptoProvider();
+	public:	
 
 	virtual bool GetSecureRandom(openpal::WriteBufferView& buffer) override final;	
 
