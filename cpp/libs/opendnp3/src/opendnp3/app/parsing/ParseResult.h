@@ -29,6 +29,7 @@ namespace opendnp3
 	enum class ParseResult : uint8_t
 	{
 		OK,
+		NOT_ON_WHITELIST,
 		NOT_ENOUGH_DATA_FOR_HEADER,
 		NOT_ENOUGH_DATA_FOR_RANGE,
 		NOT_ENOUGH_DATA_FOR_OBJECTS,

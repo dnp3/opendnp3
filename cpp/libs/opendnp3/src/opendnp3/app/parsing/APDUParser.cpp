@@ -42,26 +42,31 @@ using namespace openpal;
 namespace opendnp3
 {
 
-ParseResult APDUParser::ParseAndHandle(const openpal::ReadBufferView& buffer, IAPDUHandler& handler, openpal::Logger* pLogger, ParserSettings settings)
+ParseResult APDUParser::ParseAndHandle(const openpal::ReadBufferView& buffer, IAPDUHandler& handler, WhiteListRef whiteList, openpal::Logger* pLogger, ParserSettings settings)
 {	
-	// do two state parsing process with logging but no handling on the first pass
-	auto result = ParseSinglePass(buffer, pLogger, nullptr, settings);
-	// if the first pass was successful, do a 2nd pass with the handler but no logging
-	return (result == ParseResult::OK) ? ParseSinglePass(buffer, nullptr, &handler, settings) : result;			
+	// do two state parsing process with logging and white-listing first but no handling on the first pass
+	auto result = ParseSinglePass(buffer, pLogger, nullptr, &whiteList, settings);
+	// if the first pass was successful, do a 2nd pass with the handler but no logging or white-list
+	return (result == ParseResult::OK) ? ParseSinglePass(buffer, nullptr, &handler, nullptr, settings) : result;			
+}
+
+ParseResult APDUParser::ParseAllAndHandle(const openpal::ReadBufferView& buffer, IAPDUHandler& handler, openpal::Logger* pLogger, ParserSettings settings)
+{
+	return ParseAndHandle(buffer, handler, AllowAll, pLogger, settings);
 }
 
 ParseResult APDUParser::ParseAndLog(const openpal::ReadBufferView& buffer, openpal::Logger* pLogger, ParserSettings settings)
 {
-	return ParseSinglePass(buffer, pLogger, nullptr, settings);
+	return ParseSinglePass(buffer, pLogger, nullptr, nullptr, settings);
 }
 
-ParseResult APDUParser::ParseSinglePass(const openpal::ReadBufferView& buffer, openpal::Logger* pLogger, IAPDUHandler* pHandler, const ParserSettings& settings)
+ParseResult APDUParser::ParseSinglePass(const openpal::ReadBufferView& buffer, openpal::Logger* pLogger, IAPDUHandler* pHandler, WhiteListPtr whiteList, const ParserSettings& settings)
 {
 	uint32_t count = 0;
 	ReadBufferView copy(buffer);
 	while(copy.Size() > 0)
 	{
-		auto result = ParseHeader(copy, pLogger, count, settings, pHandler);
+		auto result = ParseHeader(copy, pLogger, count, settings, pHandler, whiteList);
 		++count;
 		if (result != ParseResult::OK)
 		{
@@ -71,7 +76,7 @@ ParseResult APDUParser::ParseSinglePass(const openpal::ReadBufferView& buffer, o
 	return ParseResult::OK;
 }
 
-ParseResult APDUParser::ParseHeader(ReadBufferView& buffer, openpal::Logger* pLogger, uint32_t count, const ParserSettings& settings, IAPDUHandler* pHandler)
+ParseResult APDUParser::ParseHeader(ReadBufferView& buffer, openpal::Logger* pLogger, uint32_t count, const ParserSettings& settings, IAPDUHandler* pHandler, WhiteListPtr whiteList)
 {
 	ObjectHeader header;
 	auto result = ObjectHeaderParser::ParseObjectHeader(header, buffer, pLogger);
@@ -85,8 +90,25 @@ ParseResult APDUParser::ParseHeader(ReadBufferView& buffer, openpal::Logger* pLo
 			return ParseResult::UNKNOWN_OBJECT;
 		}
 		else
-		{							
-			return APDUParser::ParseQualifier(buffer, pLogger, HeaderRecord(gv, header.qualifier), settings, pHandler);
+		{						
+			// if a white-list is defined and it doesn't validate, exit early
+			if (whiteList && !whiteList(count, gv.enumeration, QualifierCodeFromType(header.qualifier)))
+			{				
+				FORMAT_LOGGER_BLOCK(
+					pLogger,
+					flags::WARN,
+					"Header (%i) w/ Object (%i,%i) and qualifier (%i) failed whitelist",
+					count,
+					header.group,
+					header.variation,
+					header.qualifier);
+
+				return ParseResult::NOT_ON_WHITELIST;
+			}
+			else
+			{
+				return APDUParser::ParseQualifier(buffer, pLogger, HeaderRecord(gv, header.qualifier), settings, pHandler);
+			}					
 		}
 	}	
 	else

@@ -33,7 +33,7 @@ namespace opendnp3
 */
 class ICommandSequence : public APDUHandlerBase
 {
-public:
+public:	
 
 	ICommandSequence(openpal::Logger logger) : APDUHandlerBase(logger) {}
 

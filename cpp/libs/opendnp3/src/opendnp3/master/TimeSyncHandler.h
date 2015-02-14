@@ -43,8 +43,7 @@ public:
 	*/
 	TimeSyncHandler(openpal::Logger& aLogger) :
 		APDUHandlerBase(aLogger),
-		valid(false),
-		timeOut(0)
+		valid(false)		
 	{}
 
 	bool GetTimeDelay(uint16_t& time)
@@ -57,42 +56,35 @@ public:
 		{
 			if (valid) 
 			{
-				time = timeOut;
+				time = value.time;
 			}
 			return valid;
 		}
 	}
 
+	static bool WhiteList(uint32_t headerCount, GroupVariation gv, QualifierCode)
+	{
+		return (headerCount == 0) && (gv == GroupVariation::Group52Var2);
+	}
+
 private:
 
 	virtual IINField ProcessCountOf(const HeaderRecord& record, const IterableBuffer<Group52Var2>& times) override final
-	{
-		if(times.Count() == 1)
+	{		
+		if (times.ReadOnlyValue(value))
 		{
-			if (valid)
-			{
-				FORMAT_LOG_BLOCK(logger, flags::WARN, "Ignoring duplicate time delay object");
-				return IINBit::PARAM_ERROR;
-			}
-			else
-			{
-				valid = true;
-				times.foreach([this](const Group52Var2 & obj)
-				{
-					timeOut = obj.time;
-				});
-				return IINField();
-			}
+			valid = true;
+			return IINField::Empty();
 		}
 		else
 		{
-			FORMAT_LOG_BLOCK(logger, flags::WARN, "Ignoring unexpected time delay count of %i", times.Count());
+			FORMAT_LOG_BLOCK(logger, flags::WARN, "Ignoring count of %i", times.Count());
 			return IINBit::PARAM_ERROR;
 		}
 	}
 
 	bool valid;
-	uint16_t timeOut;
+	Group52Var2 value;
 
 };
 

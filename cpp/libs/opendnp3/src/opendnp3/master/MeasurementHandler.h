@@ -49,7 +49,7 @@ public:
 	*
 	* @param logger	the Logger that the loader should use for message reporting
 	*/
-	MeasurementHandler(const openpal::Logger& logger, ISOEHandler* pSOEHandler);
+	MeasurementHandler(const openpal::Logger& logger, ISOEHandler* pSOEHandler);	
 
 	~MeasurementHandler();
 
