@@ -42,7 +42,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-ParseResult APDUParser::ParseAndHandle(const openpal::ReadBufferView& buffer, IAPDUHandler& handler, WhiteListRef whiteList, openpal::Logger* pLogger, ParserSettings settings)
+ParseResult APDUParser::ParseSome(const openpal::ReadBufferView& buffer, IAPDUHandler& handler, WhiteListRef whiteList, openpal::Logger* pLogger, ParserSettings settings)
 {	
 	// do two state parsing process with logging and white-listing first but no handling on the first pass
 	auto result = ParseSinglePass(buffer, pLogger, nullptr, &whiteList, settings);
@@ -50,12 +50,12 @@ ParseResult APDUParser::ParseAndHandle(const openpal::ReadBufferView& buffer, IA
 	return (result == ParseResult::OK) ? ParseSinglePass(buffer, nullptr, &handler, nullptr, settings) : result;			
 }
 
-ParseResult APDUParser::ParseAllAndHandle(const openpal::ReadBufferView& buffer, IAPDUHandler& handler, openpal::Logger* pLogger, ParserSettings settings)
+ParseResult APDUParser::ParseAll(const openpal::ReadBufferView& buffer, IAPDUHandler& handler, openpal::Logger* pLogger, ParserSettings settings)
 {
-	return ParseAndHandle(buffer, handler, AllowAll, pLogger, settings);
+	return ParseSome(buffer, handler, AllowAll, pLogger, settings);
 }
 
-ParseResult APDUParser::ParseAndLog(const openpal::ReadBufferView& buffer, openpal::Logger* pLogger, ParserSettings settings)
+ParseResult APDUParser::ParseAndLogAll(const openpal::ReadBufferView& buffer, openpal::Logger* pLogger, ParserSettings settings)
 {
 	return ParseSinglePass(buffer, pLogger, nullptr, nullptr, settings);
 }

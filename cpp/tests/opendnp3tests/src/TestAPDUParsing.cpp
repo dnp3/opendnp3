@@ -48,7 +48,7 @@ void TestComplex(const std::string& hex, ParseResult expected, size_t numCalls, 
 	HexSequence buffer(hex);
 	MockApduHeaderHandler mock;
 	auto logger = mock.root.GetLogger();
-	auto result = APDUParser::ParseAllAndHandle(buffer.ToReadOnly(), mock, &logger);
+	auto result = APDUParser::ParseAll(buffer.ToReadOnly(), mock, &logger);
 
 	if (result != expected)
 	{
@@ -167,7 +167,7 @@ TEST_CASE(SUITE("Group1Var2RangeAsReadRange"))
 {
 	HexSequence buffer("01 02 00 03 05");
 	MockApduHeaderHandler mock;
-	auto result = APDUParser::ParseAllAndHandle(buffer.ToReadOnly(), mock, nullptr, ParserSettings::NoContents());
+	auto result = APDUParser::ParseAll(buffer.ToReadOnly(), mock, nullptr, ParserSettings::NoContents());
 	REQUIRE((result == ParseResult::OK));
 }
 
@@ -258,7 +258,7 @@ TEST_CASE(SUITE("ParserDoesNotAllowEmptyOctetStrings"))
 	HexSequence buffer("6E 00 00 00 FF"); // 255 + 256
 	MockApduHeaderHandler mock;
 
-	auto result = APDUParser::ParseAllAndHandle(buffer.ToReadOnly(), mock, nullptr);
+	auto result = APDUParser::ParseAll(buffer.ToReadOnly(), mock, nullptr);
 
 	REQUIRE((result == ParseResult::INVALID_OBJECT));
 	REQUIRE(0 == mock.records.size());

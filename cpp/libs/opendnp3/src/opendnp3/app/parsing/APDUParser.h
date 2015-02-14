@@ -40,11 +40,11 @@ public:
 	typedef bool(&WhiteListRef)(uint32_t headerCount, GroupVariation gv, QualifierCode qc);
 	typedef bool(*WhiteListPtr)(uint32_t headerCount, GroupVariation gv, QualifierCode qc);
 
-	static ParseResult ParseAndHandle(const openpal::ReadBufferView& buffer, IAPDUHandler& handler, WhiteListRef whiteList, openpal::Logger* pLogger, ParserSettings settings = ParserSettings::Default());
+	static ParseResult ParseSome(const openpal::ReadBufferView& buffer, IAPDUHandler& handler, WhiteListRef whiteList, openpal::Logger* pLogger, ParserSettings settings = ParserSettings::Default());
 
-	static ParseResult ParseAllAndHandle(const openpal::ReadBufferView& buffer, IAPDUHandler& handler, openpal::Logger* pLogger, ParserSettings settings = ParserSettings::Default());
+	static ParseResult ParseAll(const openpal::ReadBufferView& buffer, IAPDUHandler& handler, openpal::Logger* pLogger, ParserSettings settings = ParserSettings::Default());
 
-	static ParseResult ParseAndLog(const openpal::ReadBufferView& buffer, openpal::Logger* pLogger, ParserSettings settings = ParserSettings::Default());	
+	static ParseResult ParseAndLogAll(const openpal::ReadBufferView& buffer, openpal::Logger* pLogger, ParserSettings settings = ParserSettings::Default());	
 
 private:
 
