@@ -30,7 +30,7 @@
 #include <opendnp3/outstation/Database.h>
 #include <opendnp3/LogLevels.h>
 
-#include <openpal/crypto/MockCryptoProvider.h>
+#include <osslcrypto/CryptoProvider.h>
 
 #include <string>
 #include <thread>
@@ -47,9 +47,9 @@ int main(int argc, char* argv[])
 
 	// Specify what log levels to use. NORMAL is warning and above
 	// You can add all the comms logging by uncommenting below.
-	const uint32_t FILTERS = levels::NORMAL | flags::APP_HEADER_RX | flags::APP_OBJECT_RX; // | levels::ALL_COMMS;
-
-	MockCryptoProvider crypto;
+	const uint32_t FILTERS = ~0;// levels::NORMAL | flags::APP_HEADER_RX | flags::APP_OBJECT_RX | levels::ALL_COMMS;
+	
+	osslcrypto::CryptoProvider crypto;
 
 	// This is the main point of interaction with the stack
 	// Allocate a single thread to the pool since this is a single outstation

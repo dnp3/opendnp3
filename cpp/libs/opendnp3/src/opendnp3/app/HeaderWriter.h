@@ -65,6 +65,9 @@ public:
 	template <class CountType, class ValueType>
 	bool WriteSingleValue(QualifierCode qc, const DNP3Serializer<ValueType>& serializer, const ValueType&);
 
+	template <class ValueType>
+	bool WriteFreeFormat(const ValueType&);
+
 	template <class CountType, class WriteType>
 	bool WriteSingleValue(QualifierCode qc, const WriteType&);
 
@@ -147,6 +150,22 @@ bool HeaderWriter::WriteSingleValue(QualifierCode qc, const WriteType& value)
 	{
 		CountType::WriteBuffer(*position, 1); //write the count
 		WriteType::Write(value, *position);
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+template <class ValueType>
+bool HeaderWriter::WriteFreeFormat(const ValueType& value)
+{
+	uint32_t reserveSize = UInt16::Size + value.Size();	
+	if (this->WriteHeaderWithReserve(ValueType::ID(), QualifierCode::UINT16_FREE_FORMAT, reserveSize))
+	{		
+		UInt16::WriteBuffer(*position, value.Size());
+		ValueType::Write(value, *position);
 		return true;
 	}
 	else

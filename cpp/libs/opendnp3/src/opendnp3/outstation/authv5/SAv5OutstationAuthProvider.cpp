@@ -28,8 +28,11 @@
 
 #include "opendnp3/outstation/OutstationState.h"
 #include "opendnp3/outstation/authv5/AuthRequestAdapter.h"
+#include "opendnp3/outstation/OutstationActions.h"
 
 #include "AuthRequestParser.h"
+
+#include "opendnp3/objects/Group120Var5.h"
 
 using namespace openpal;
 
@@ -49,7 +52,7 @@ void SAv5OutstationAuthProvider::Reset()
 
 void SAv5OutstationAuthProvider::CheckState(OState& ostate)
 {
-	if (ostate.isOnline && !ostate.isTransmitting && sstate.deferred.IsSet())
+	if (ostate.CanTransmit() && sstate.deferred.IsSet())
 	{
 		auto handler = [&ostate, this](const APDUHeader& header, const ReadBufferView& objects)
 		{
@@ -63,13 +66,13 @@ void SAv5OutstationAuthProvider::CheckState(OState& ostate)
 		
 void SAv5OutstationAuthProvider::OnReceive(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {	
-	if (ostate.isTransmitting)
+	if (ostate.CanTransmit())
 	{
-		sstate.deferred.Set(header, objects);
+		this->Process(ostate, header, objects);		
 	}
 	else
 	{
-		this->Process(ostate, header, objects);
+		sstate.deferred.Set(header, objects);
 	}
 }
 
@@ -116,7 +119,25 @@ void SAv5OutstationAuthProvider::OnAuthReply(OState& ostate, const APDUHeader& h
 
 void SAv5OutstationAuthProvider::OnRequestKeyStatus(OState& ostate, const APDUHeader& header, const Group120Var4& status)
 {
-	SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "Key status not supported yet");
+	FORMAT_LOG_BLOCK(ostate.logger, flags::WARN, "Received key status request with user: %i", status.userNum);
+	/*
+	uint8_t data[4];
+	sstate.pCrypto->GetSecureRandom(WriteBufferView(data, 4));
+
+	Group120Var5 gv;
+	gv.keyChangeSeqNum = 1;
+	gv.userNum = 1;
+	gv.keywrapAlgorithm = KeyWrapAlgorithm::AES_128;
+	gv.keyStatus = KeyStatus::NOT_INIT;
+	gv.hmacType = HMACType::HMAC_SHA1_TRUNC_10;
+	gv.challengeData = ReadBufferView(data, 4);
+
+	auto rsp = ostate.sol.tx.Start();
+	rsp.SetControl(header.control);
+	rsp.SetFunction(FunctionCode::AUTH_RESPONSE);
+	rsp.GetWriter().WriteFreeFormat(gv);
+	OActions::BeginResponseTx(ostate, rsp.ToReadOnly());
+	*/
 }
 
 void SAv5OutstationAuthProvider::OnChangeSessionKeys(OState& ostate, const APDUHeader& header, const Group120Var6& change)
