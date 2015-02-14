@@ -36,7 +36,13 @@ class APDUParser : private openpal::PureStatic
 {
 public:
 
-	static ParseResult ParseTwoPass(const openpal::ReadBufferView& buffer, IAPDUHandler* pHandler, openpal::Logger* pLogger, ParserSettings settings = ParserSettings::Default());
+	// white-listing functions are used to filter headers for validity versus function code
+	typedef bool(&WhiteList)(uint32_t headerCount, GroupVariation gv, QualifierCode qc);
+	typedef bool(*WhiteListPtr)(uint32_t headerCount, GroupVariation gv, QualifierCode qc);
+
+	static ParseResult ParseAndHandle(const openpal::ReadBufferView& buffer, IAPDUHandler& handler, openpal::Logger* pLogger, ParserSettings settings = ParserSettings::Default());
+
+	static ParseResult ParseAndLog(const openpal::ReadBufferView& buffer, openpal::Logger* pLogger, ParserSettings settings = ParserSettings::Default());
 
 private:
 
@@ -44,7 +50,7 @@ private:
 
 	static ParseResult ParseHeaders(const openpal::ReadBufferView& buffer, openpal::Logger* pLogger, const ParserSettings& settings, IAPDUHandler* pHandler);
 
-	static ParseResult ParseHeader(openpal::ReadBufferView& buffer, openpal::Logger* pLogger, const ParserSettings& settings, IAPDUHandler* pHandler);
+	static ParseResult ParseHeader(openpal::ReadBufferView& buffer, openpal::Logger* pLogger, uint32_t count, const ParserSettings& settings, IAPDUHandler* pHandler);
 
 	static ParseResult ParseQualifier(openpal::ReadBufferView& buffer, openpal::Logger* pLogger, const HeaderRecord& record, const ParserSettings& settings, IAPDUHandler* pHandler);
 

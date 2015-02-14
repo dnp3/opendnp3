@@ -102,7 +102,7 @@ void CommandTask::Initialize()
 
 IMasterTask::ResponseResult CommandTask::ProcessResponse(const openpal::ReadBufferView& objects)
 {
-	auto result = APDUParser::ParseTwoPass(objects, pSequence.get(), &logger);
+	auto result = APDUParser::ParseAndHandle(objects, *pSequence.get(), &logger);
 	if(result == ParseResult::OK)
 	{
 		response = pSequence->Validate();

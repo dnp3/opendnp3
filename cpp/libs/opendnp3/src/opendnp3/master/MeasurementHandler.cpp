@@ -32,7 +32,7 @@ namespace opendnp3
 bool MeasurementHandler::ProcessMeasurements(const openpal::ReadBufferView& objects, openpal::Logger* pLogger, ISOEHandler* pHandler)
 {
 	MeasurementHandler handler(*pLogger, pHandler);
-	auto result = APDUParser::ParseTwoPass(objects, &handler, pLogger);
+	auto result = APDUParser::ParseAndHandle(objects, handler, pLogger);
 	return (result == ParseResult::OK);
 }
 

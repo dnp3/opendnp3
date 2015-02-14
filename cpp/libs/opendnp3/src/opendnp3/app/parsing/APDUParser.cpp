@@ -42,27 +42,27 @@ using namespace openpal;
 namespace opendnp3
 {
 
-ParseResult APDUParser::ParseTwoPass(const openpal::ReadBufferView& buffer, IAPDUHandler* pHandler, openpal::Logger* pLogger, ParserSettings settings)
+ParseResult APDUParser::ParseAndHandle(const openpal::ReadBufferView& buffer, IAPDUHandler& handler, openpal::Logger* pLogger, ParserSettings settings)
+{	
+	// do two state parsing process with logging but no handling on the first pass
+	auto result = ParseSinglePass(buffer, pLogger, nullptr, settings);
+	// if the first pass was successful, do a 2nd pass with the handler but no logging
+	return (result == ParseResult::OK) ? ParseSinglePass(buffer, nullptr, &handler, settings) : result;			
+}
+
+ParseResult APDUParser::ParseAndLog(const openpal::ReadBufferView& buffer, openpal::Logger* pLogger, ParserSettings settings)
 {
-	if(pHandler)
-	{
-		// do two state parsing process with logging but no handling on the first pass
-		auto result = ParseSinglePass(buffer, pLogger, nullptr, settings);
-		// if the first pass was successful, do a 2nd pass with the handler but no logging
-		return (result == ParseResult::OK) ? ParseSinglePass(buffer, nullptr, pHandler, settings) : result;			
-	}
-	else
-	{
-		return ParseSinglePass(buffer, pLogger, pHandler, settings);
-	}
+	return ParseSinglePass(buffer, pLogger, nullptr, settings);
 }
 
 ParseResult APDUParser::ParseSinglePass(const openpal::ReadBufferView& buffer, openpal::Logger* pLogger, IAPDUHandler* pHandler, const ParserSettings& settings)
 {
+	uint32_t count = 0;
 	ReadBufferView copy(buffer);
 	while(copy.Size() > 0)
 	{
-		auto result = ParseHeader(copy, pLogger, settings, pHandler);
+		auto result = ParseHeader(copy, pLogger, count, settings, pHandler);
+		++count;
 		if (result != ParseResult::OK)
 		{
 			return result;
@@ -71,7 +71,7 @@ ParseResult APDUParser::ParseSinglePass(const openpal::ReadBufferView& buffer, o
 	return ParseResult::OK;
 }
 
-ParseResult APDUParser::ParseHeader(ReadBufferView& buffer, openpal::Logger* pLogger, const ParserSettings& settings, IAPDUHandler* pHandler)
+ParseResult APDUParser::ParseHeader(ReadBufferView& buffer, openpal::Logger* pLogger, uint32_t count, const ParserSettings& settings, IAPDUHandler* pHandler)
 {
 	ObjectHeader header;
 	auto result = ObjectHeaderParser::ParseObjectHeader(header, buffer, pLogger);
@@ -85,7 +85,7 @@ ParseResult APDUParser::ParseHeader(ReadBufferView& buffer, openpal::Logger* pLo
 			return ParseResult::UNKNOWN_OBJECT;
 		}
 		else
-		{									
+		{							
 			return APDUParser::ParseQualifier(buffer, pLogger, HeaderRecord(gv, header.qualifier), settings, pHandler);
 		}
 	}	
