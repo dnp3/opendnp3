@@ -105,6 +105,9 @@ ParseResult CountParser::ParseCountOfObjects(openpal::ReadBufferView& buffer, co
 		case(GroupVariation::Group52Var2) :
 			return CountParser::From<Group52Var2>(count).Process(record, buffer, pHandler, pLogger);
 
+		case(GroupVariation::Group120Var4) :
+			return CountParser::From<Group120Var4>(count).Process(record, buffer, pHandler, pLogger);
+
 		default:
 			return ParseResult::INVALID_OBJECT_QUALIFIER;
 	}

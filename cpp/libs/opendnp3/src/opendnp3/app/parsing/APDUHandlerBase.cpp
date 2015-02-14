@@ -60,6 +60,21 @@ void APDUHandlerBase::OnCountRequest(const HeaderRecord& record, uint16_t count)
 	Record(this->ProcessCountRequest(record, count));	
 }
 
+void APDUHandlerBase::OnFreeFormat(const HeaderRecord& record, const Group120Var1& value)
+{
+	Record(this->ProcessFreeFormat(record, value));
+}
+
+void APDUHandlerBase::OnFreeFormat(const HeaderRecord& record, const Group120Var2& value)
+{
+	Record(this->ProcessFreeFormat(record, value));
+}
+
+void APDUHandlerBase::OnFreeFormat(const HeaderRecord& record, const Group120Var6& value)
+{
+	Record(this->ProcessFreeFormat(record, value));
+}
+
 void APDUHandlerBase::OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<IINValue, uint16_t>>& values)
 {
 	Record(this->ProcessIIN(record, values));	
@@ -81,6 +96,11 @@ void APDUHandlerBase::OnCountOf(const HeaderRecord& record, const opendnp3::Iter
 }
 
 void APDUHandlerBase::OnCountOf(const HeaderRecord& record, const IterableBuffer<Group52Var2>& values)
+{
+	Record(ProcessCountOf(record, values));
+}
+
+void APDUHandlerBase::OnCountOf(const HeaderRecord& record, const IterableBuffer<Group120Var4>& values)
 {
 	Record(ProcessCountOf(record, values));
 }
@@ -240,6 +260,21 @@ IINField APDUHandlerBase::ProcessIIN(const HeaderRecord& record, const IterableB
 	return ProcessUnsupportedHeader();
 }
 
+IINField APDUHandlerBase::ProcessFreeFormat(const HeaderRecord& record, const Group120Var1& value)
+{
+	return ProcessUnsupportedHeader();
+}
+
+IINField APDUHandlerBase::ProcessFreeFormat(const HeaderRecord& record, const Group120Var2& value)
+{
+	return ProcessUnsupportedHeader();
+}
+
+IINField APDUHandlerBase::ProcessFreeFormat(const HeaderRecord& record, const Group120Var6& value)
+{
+	return ProcessUnsupportedHeader();
+}
+
 IINField APDUHandlerBase::ProcessCountOf(const HeaderRecord& record, const IterableBuffer<Group50Var1>& values)
 {
 	return ProcessUnsupportedHeader();
@@ -256,6 +291,11 @@ IINField APDUHandlerBase::ProcessCountOf(const HeaderRecord& record, const opend
 }
 
 IINField APDUHandlerBase::ProcessCountOf(const HeaderRecord& record, const IterableBuffer<Group52Var2>&)
+{
+	return ProcessUnsupportedHeader();
+}
+
+IINField APDUHandlerBase::ProcessCountOf(const HeaderRecord& record, const IterableBuffer<Group120Var4>& values)
 {
 	return ProcessUnsupportedHeader();
 }

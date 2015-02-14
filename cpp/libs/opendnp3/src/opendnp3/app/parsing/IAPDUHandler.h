@@ -41,6 +41,11 @@
 #include "opendnp3/objects/Group51.h"
 #include "opendnp3/objects/Group52.h"
 
+#include "opendnp3/objects/Group120.h"
+#include "opendnp3/objects/Group120Var1.h"
+#include "opendnp3/objects/Group120Var2.h"
+#include "opendnp3/objects/Group120Var6.h"
+
 namespace opendnp3
 {
 
@@ -58,7 +63,12 @@ public:
 	virtual void OnCountOf(const HeaderRecord& record, const IterableBuffer<Group50Var1>& times) = 0;
 	virtual void OnCountOf(const HeaderRecord& record, const IterableBuffer<Group51Var1>& times) = 0;
 	virtual void OnCountOf(const HeaderRecord& record, const IterableBuffer<Group51Var2>& times) = 0;
-	virtual void OnCountOf(const HeaderRecord& record, const IterableBuffer<Group52Var2>& times) = 0;
+	virtual void OnCountOf(const HeaderRecord& record, const IterableBuffer<Group52Var2>& times) = 0;	
+	virtual void OnCountOf(const HeaderRecord& record, const IterableBuffer<Group120Var4>& values) = 0;	
+
+	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var1& value) = 0;
+	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var2& value) = 0;
+	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var6& value) = 0;
 
 	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<IINValue, uint16_t>>& meas) = 0;
 

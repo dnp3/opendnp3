@@ -33,6 +33,7 @@
 #include "opendnp3/app/parsing/CountParser.h"
 #include "opendnp3/app/parsing/RangeParser.h"
 #include "opendnp3/app/parsing/CountIndexParser.h"
+#include "opendnp3/app/parsing/FreeFormatParser.h"
 
 #include <openpal/logging/LogMacros.h>
 
@@ -141,6 +142,9 @@ ParseResult APDUParser::ParseQualifier(ReadBufferView& buffer, openpal::Logger* 
 
 		case(QualifierCode::UINT16_CNT_UINT16_INDEX) :
 			return CountIndexParser::ParseHeader(buffer, NumParser::TwoByte(), settings, record, pLogger, pHandler);
+
+		case(QualifierCode::UINT16_FREE_FORMAT) :
+			return FreeFormatParser::ParseHeader(buffer, settings, record, pLogger, pHandler);
 
 		default:
 			FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_UNKNOWN_QUALIFIER, "Unknown qualifier %x", record.qualifier);

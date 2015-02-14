@@ -58,6 +58,7 @@
     <ClInclude Include="src\opendnp3\app\parsing\BitReader.h" />
     <ClInclude Include="src\opendnp3\app\parsing\CountIndexParser.h" />
     <ClInclude Include="src\opendnp3\app\parsing\CountParser.h" />
+    <ClInclude Include="src\opendnp3\app\parsing\FreeFormatParser.h" />
     <ClInclude Include="src\opendnp3\app\parsing\IAPDUHandler.h" />
     <ClInclude Include="src\opendnp3\app\parsing\IterableBuffer.h" />
     <ClInclude Include="src\opendnp3\app\parsing\IterableTransforms.h" />
@@ -304,6 +305,7 @@
     <ClCompile Include="src\opendnp3\app\parsing\BitReader.cpp" />
     <ClCompile Include="src\opendnp3\app\parsing\CountIndexParser.cpp" />
     <ClCompile Include="src\opendnp3\app\parsing\CountParser.cpp" />
+    <ClCompile Include="src\opendnp3\app\parsing\FreeFormatParser.cpp" />
     <ClCompile Include="src\opendnp3\app\parsing\NumParser.cpp" />
     <ClCompile Include="src\opendnp3\app\parsing\ObjectHeaderParser.cpp" />
     <ClCompile Include="src\opendnp3\app\parsing\RangeParser.cpp" />

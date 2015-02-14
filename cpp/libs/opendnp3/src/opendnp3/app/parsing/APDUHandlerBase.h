@@ -59,12 +59,18 @@ public:
 
 	virtual void OnCountRequest(const HeaderRecord& record, uint16_t count) override final;
 
-	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<IINValue, uint16_t>>& meas) override final;
+	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var1& value) override final;
+	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var2& value) override final;
+	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var6& value) override final;
+	
 
 	virtual void OnCountOf(const HeaderRecord& record, const opendnp3::IterableBuffer<Group50Var1>&) override final;
 	virtual void OnCountOf(const HeaderRecord& record, const opendnp3::IterableBuffer<Group51Var1>&) override final;
 	virtual void OnCountOf(const HeaderRecord& record, const opendnp3::IterableBuffer<Group51Var2>&) override final;
 	virtual void OnCountOf(const HeaderRecord& record, const opendnp3::IterableBuffer<Group52Var2>&) override final;
+	virtual void OnCountOf(const HeaderRecord& record, const IterableBuffer<Group120Var4>& values) override final;
+
+	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<IINValue, uint16_t>>& meas) override final;
 
 	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override final;
 	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) override final;
@@ -119,12 +125,17 @@ protected:
 	virtual IINField ProcessRangeRequest(const HeaderRecord& record, const Range& range);
 	virtual IINField ProcessCountRequest(const HeaderRecord& record, uint16_t count);
 
+	virtual IINField ProcessFreeFormat(const HeaderRecord& record, const Group120Var1& value);
+	virtual IINField ProcessFreeFormat(const HeaderRecord& record, const Group120Var2& value);
+	virtual IINField ProcessFreeFormat(const HeaderRecord& record, const Group120Var6& value);
+
 	virtual IINField ProcessIIN(const HeaderRecord& record, const IterableBuffer<IndexedValue<IINValue, uint16_t>>& meas);
 
 	virtual IINField ProcessCountOf(const HeaderRecord& record, const IterableBuffer<Group50Var1>& objects);
 	virtual IINField ProcessCountOf(const HeaderRecord& record, const IterableBuffer<Group51Var1>&);
 	virtual IINField ProcessCountOf(const HeaderRecord& record, const IterableBuffer<Group51Var2>&);
 	virtual IINField ProcessCountOf(const HeaderRecord& record, const IterableBuffer<Group52Var2>&);
+	virtual IINField ProcessCountOf(const HeaderRecord& record, const IterableBuffer<Group120Var4>& values);
 	
 	virtual IINField ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas);
 	virtual IINField ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas);

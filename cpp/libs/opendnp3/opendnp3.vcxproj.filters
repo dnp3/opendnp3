@@ -837,6 +837,9 @@
     <ClInclude Include="src\opendnp3\outstation\authv5\AuthRequestAdapter.h">
       <Filter>Header\outstation\authv5</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\app\parsing\FreeFormatParser.h">
+      <Filter>Header\app\parsing</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\TimeAndInterval.cpp">
@@ -1276,6 +1279,9 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\authv5\AuthRequestAdapter.cpp">
       <Filter>Source\outstation\authv5</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\app\parsing\FreeFormatParser.cpp">
+      <Filter>Source\app\parsing</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
