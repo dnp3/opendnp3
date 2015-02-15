@@ -33,12 +33,22 @@ bool CryptoProvider::initialized = Initialize();
 
 bool CryptoProvider::Initialize()
 {
+	return ConfigureMultithreading();
+}
+
+bool CryptoProvider::ConfigureMultithreading()
+{
+	// openssl is not thread-safe by default.
+	// If this isn't done and functions like RAND_bytes are called
+	// from multiple threads you'll get random crashes.
+
 	for (int i = 0; i < CRYPTO_num_locks(); ++i)
 	{
 		mutexes.push_back(std::make_unique<std::mutex>());
-	}	
+	}
 
 	// specific the function that will lock and unlock the various mutexes
+	
 	CRYPTO_set_locking_callback(LockingFunction);
 
 	return true;

@@ -43,6 +43,7 @@ class CryptoProvider : public openpal::ICryptoProvider, private openpal::Uncopya
 	static void LockingFunction(int mode, int n, const char *file, int line);
 			
 	static bool Initialize();
+	static bool ConfigureMultithreading();
 		
 	static std::vector < std::unique_ptr<std::mutex> > mutexes;
 	static bool initialized;

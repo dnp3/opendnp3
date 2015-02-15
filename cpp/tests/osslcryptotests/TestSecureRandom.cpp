@@ -63,7 +63,7 @@ TEST_CASE(SUITE("TestThatMultiThreadingDoesNotCrash"))
 	vector<unique_ptr<thread>> threads;
 
 	const int NUM_THREADS = 100;
-	const int NUM_RAND_FETCH = 100;
+	const int NUM_RAND_FETCH = 1000;
 
 	auto runner = [&]()
 	{
