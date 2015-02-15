@@ -21,7 +21,7 @@
 #include <catch.hpp>
 
 #include "BufferHelpers.h"
-#include "HexConversions.h"
+#include <testlib/HexConversions.h>
 
 #include <opendnp3/objects/Group120Var2.h>
 
@@ -30,6 +30,7 @@
 
 using namespace openpal;
 using namespace opendnp3;
+using namespace testlib;
 
 #define SUITE(name) "Group120Var2TestSuite - " name
 
@@ -50,7 +51,7 @@ TEST_CASE(SUITE("Parser identifies data field"))
 	REQUIRE(Group120Var2::Read(buffer.ToReadOnly(), output));
 	REQUIRE(output.seq == 4);
 	REQUIRE(output.user == 265);
-	REQUIRE(toHex(output.data) == "AB BA");
+	REQUIRE(ToHex(output.data) == "AB BA");
 }
 
 TEST_CASE(SUITE("Parser allows empty data field"))

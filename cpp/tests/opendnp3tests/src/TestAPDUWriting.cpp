@@ -36,11 +36,12 @@
 
 #include <assert.h>
 
+#include "APDUHelpers.h"
+#include <testlib/HexConversions.h>
+
 using namespace openpal;
 using namespace opendnp3;
-
-#include "APDUHelpers.h"
-#include "HexConversions.h"
+using namespace testlib;
 
 #define SUITE(name) "APDUWritingTestSuite - " name
 
@@ -54,11 +55,11 @@ TEST_CASE(SUITE("AllObjectsAndRollback"))
 	writer.WriteHeader(Group60Var3::ID(), QualifierCode::ALL_OBJECTS);
 	writer.WriteHeader(Group60Var4::ID(), QualifierCode::ALL_OBJECTS);
 
-	REQUIRE("C0 01 3C 01 06 3C 02 06 3C 03 06 3C 04 06" ==  toHex(request.ToReadOnly()));
+	REQUIRE("C0 01 3C 01 06 3C 02 06 3C 03 06 3C 04 06" ==  ToHex(request.ToReadOnly()));
 
 	writer.Rollback();
 
-	REQUIRE("C0 01 3C 01 06 3C 02 06" ==  toHex(request.ToReadOnly()));
+	REQUIRE("C0 01 3C 01 06 3C 02 06" ==  ToHex(request.ToReadOnly()));
 }
 
 TEST_CASE(SUITE("AllObjectsReturnsFalseWhenFull"))
@@ -69,7 +70,7 @@ TEST_CASE(SUITE("AllObjectsReturnsFalseWhenFull"))
 	REQUIRE(writer.WriteHeader(Group60Var1::ID(), QualifierCode::ALL_OBJECTS));
 	REQUIRE(!writer.WriteHeader(Group60Var1::ID(), QualifierCode::ALL_OBJECTS));
 
-	REQUIRE("C0 01 3C 01 06" ==  toHex(request.ToReadOnly()));
+	REQUIRE("C0 01 3C 01 06" ==  ToHex(request.ToReadOnly()));
 }
 
 
@@ -84,7 +85,7 @@ TEST_CASE(SUITE("RangeWriteIteratorStartStop"))
 		REQUIRE(iterator.Write(Counter(7)));
 	}
 
-	REQUIRE("C0 81 00 00 14 06 00 02 03 09 00 07 00" ==  toHex(response.ToReadOnly()));
+	REQUIRE("C0 81 00 00 14 06 00 02 03 09 00 07 00" ==  ToHex(response.ToReadOnly()));
 }
 
 TEST_CASE(SUITE("EmptyHeadersWhenNotEnoughSpaceForSingleValue"))
@@ -96,7 +97,7 @@ TEST_CASE(SUITE("EmptyHeadersWhenNotEnoughSpaceForSingleValue"))
 
 	REQUIRE(!iterator.IsValid());
 
-	REQUIRE("C0 81 00 00" ==  toHex(response.ToReadOnly()));
+	REQUIRE("C0 81 00 00" ==  ToHex(response.ToReadOnly()));
 }
 
 TEST_CASE(SUITE("CountWriteIteratorAllowsCountOfZero"))
@@ -106,7 +107,7 @@ TEST_CASE(SUITE("CountWriteIteratorAllowsCountOfZero"))
 	
 	writer.IterateOverCount<UInt16, Analog>(QualifierCode::UINT16_CNT, Group30Var1::Inst());	
 
-	REQUIRE("C0 81 00 00 1E 01 08 00 00" ==  toHex(response.ToReadOnly()));
+	REQUIRE("C0 81 00 00 1E 01 08 00 00" ==  ToHex(response.ToReadOnly()));
 
 }
 
@@ -123,7 +124,7 @@ TEST_CASE(SUITE("CountWriteIteratorFillsUpCorrectly"))
 		REQUIRE(!iter.Write(Analog(7, 0xFF))); //we're full	
 	}
 
-	REQUIRE("C0 81 00 00 1E 02 07 02 FF 09 00 FF 07 00" ==  toHex(response.ToReadOnly()));
+	REQUIRE("C0 81 00 00 1E 02 07 02 FF 09 00 FF 07 00" ==  ToHex(response.ToReadOnly()));
 }
 
 TEST_CASE(SUITE("PrefixWriteIteratorWithSingleCROB"))
@@ -138,7 +139,7 @@ TEST_CASE(SUITE("PrefixWriteIteratorWithSingleCROB"))
 		REQUIRE(iter.Write(crob, 0x21));
 	}
 
-	REQUIRE("C0 81 00 00 0C 01 17 01 21 03 1F 10 00 00 00 AA 00 00 00 07" ==  toHex(response.ToReadOnly()));
+	REQUIRE("C0 81 00 00 0C 01 17 01 21 03 1F 10 00 00 00 AA 00 00 00 07" ==  ToHex(response.ToReadOnly()));
 }
 
 TEST_CASE(SUITE("PrefixWriteIteratorCTO"))
@@ -157,7 +158,7 @@ TEST_CASE(SUITE("PrefixWriteIteratorCTO"))
 		REQUIRE(iter.Write(Binary(true, 0x01, 0x0C), 7));		
 	}
 
-	REQUIRE("C0 81 00 00 33 01 07 01 AA 00 00 00 00 00 02 03 28 02 00 06 00 81 0B 00 07 00 81 0C 00" == toHex(response.ToReadOnly()));
+	REQUIRE("C0 81 00 00 33 01 07 01 AA 00 00 00 00 00 02 03 28 02 00 06 00 81 0B 00 07 00 81 0C 00" == ToHex(response.ToReadOnly()));
 }
 
 TEST_CASE(SUITE("PrefixWriteIteratorCTOSpaceForOnly1Value"))
@@ -175,7 +176,7 @@ TEST_CASE(SUITE("PrefixWriteIteratorCTOSpaceForOnly1Value"))
 		REQUIRE(!iter.Write(Binary(true, 0x01, 0x0C), 7));
 	}
 
-	REQUIRE("C0 81 00 00 33 01 07 01 AA 00 00 00 00 00 02 03 28 01 00 06 00 81 0B 00" == toHex(response.ToReadOnly()));
+	REQUIRE("C0 81 00 00 33 01 07 01 AA 00 00 00 00 00 02 03 28 01 00 06 00 81 0B 00" == ToHex(response.ToReadOnly()));
 }
 
 TEST_CASE(SUITE("PrefixWriteIteratorNotEnoughSpaceForAValue"))
@@ -191,7 +192,7 @@ TEST_CASE(SUITE("PrefixWriteIteratorNotEnoughSpaceForAValue"))
 		REQUIRE(!iter.IsValid());		
 	}
 
-	REQUIRE("C0 81 00 00" == toHex(response.ToReadOnly()));
+	REQUIRE("C0 81 00 00" == ToHex(response.ToReadOnly()));
 }
 
 
@@ -204,7 +205,7 @@ TEST_CASE(SUITE("SingleValueWithIndexCROB"))
 
 	REQUIRE(writer.WriteSingleIndexedValue<UInt16>(QualifierCode::UINT16_CNT, Group12Var1::Inst(), crob, 0x21));
 
-	REQUIRE("C0 03 0C 01 08 01 00 21 00 03 1F 10 00 00 00 AA 00 00 00 07" ==  toHex(request.ToReadOnly()));
+	REQUIRE("C0 03 0C 01 08 01 00 21 00 03 1F 10 00 00 00 AA 00 00 00 07" ==  ToHex(request.ToReadOnly()));
 }
 
 TEST_CASE(SUITE("WriteSingleValue"))
@@ -215,7 +216,7 @@ TEST_CASE(SUITE("WriteSingleValue"))
 	Group50Var1 obj = { 0x1234 };
 	REQUIRE(writer.WriteSingleValue<UInt8>(QualifierCode::UINT8_CNT, obj));
 
-	REQUIRE("C0 02 32 01 07 01 34 12 00 00 00 00" ==  toHex(request.ToReadOnly()));
+	REQUIRE("C0 02 32 01 07 01 34 12 00 00 00 00" ==  ToHex(request.ToReadOnly()));
 }
 
 TEST_CASE(SUITE("WriteIINRestart"))
@@ -229,7 +230,7 @@ TEST_CASE(SUITE("WriteIINRestart"))
 		iter.Write(true);
 	}
 
-	REQUIRE("C0 02 50 01 00 07 08 03" ==  toHex(request.ToReadOnly()));
+	REQUIRE("C0 02 50 01 00 07 08 03" ==  ToHex(request.ToReadOnly()));
 }
 
 

@@ -21,7 +21,7 @@
 #include <catch.hpp>
 
 #include "BufferHelpers.h"
-#include "HexConversions.h"
+#include <testlib/HexConversions.h>
 
 #include <opendnp3/objects/Group120Var1.h>
 
@@ -30,6 +30,7 @@
 
 using namespace openpal;
 using namespace opendnp3;
+using namespace testlib;
 
 #define SUITE(name) "Group120Var1TestSuite - " name
 
@@ -53,7 +54,7 @@ TEST_CASE(SUITE("Parser correctly interprets challenge data"))
 	REQUIRE(output.userNum == 7);
 	REQUIRE(output.hmacType == HMACType::HMAC_SHA1_TRUNC_8);
 	REQUIRE(output.reason == ChallengeReason::CRITICAL);
-	REQUIRE(toHex(output.challengeData) == "DE AD BE EF");
+	REQUIRE(ToHex(output.challengeData) == "DE AD BE EF");
 }
 
 TEST_CASE(SUITE("Parser accepts empty challenge data"))
@@ -88,7 +89,7 @@ TEST_CASE(SUITE("Formatter correctly writes when sufficient space"))
 	auto written = output.Size() - dest.Size();
 
 	REQUIRE(written == SIZE);
-	REQUIRE(toHex(output.ToReadOnly().Take(SIZE)) == "09 00 00 00 03 00 04 01 DE AD BE EF AB BA");
+	REQUIRE(ToHex(output.ToReadOnly().Take(SIZE)) == "09 00 00 00 03 00 04 01 DE AD BE EF AB BA");
 }
 
 TEST_CASE(SUITE("Formatter return false when insufficient space"))

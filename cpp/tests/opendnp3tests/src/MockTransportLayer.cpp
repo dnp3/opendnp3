@@ -22,11 +22,12 @@
 #include "MockTransportLayer.h"
 
 #include "BufferHelpers.h"
-#include "HexConversions.h"
+#include <testlib/HexConversions.h>
 
 #include <openpal/util/ToHex.h>
 
 using namespace openpal;
+using namespace testlib;
 
 namespace opendnp3
 {
@@ -41,7 +42,7 @@ void MockTransportLayer::SendDown(ITransportSegment& segments)
 
 void MockTransportLayer::OnReceive(const openpal::ReadBufferView& buffer)
 {
-	receivedQueue.push_back(toHex(buffer));
+	receivedQueue.push_back(ToHex(buffer));
 }
 
 void MockTransportLayer::OnSendResult(bool isSuccess)

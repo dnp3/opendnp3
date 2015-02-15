@@ -20,19 +20,21 @@
  */
 #include "CopyableBuffer.h"
 
-#include "HexConversions.h"
+#include <testlib/HexConversions.h>
 
 #include <memory.h>
 
 #include <openpal/util/ToHex.h>
 #include <openpal/container/WriteBufferView.h>
 
+using namespace testlib;
+
 namespace opendnp3
 {
 
 std::ostream& operator<<(std::ostream& output, const CopyableBuffer& arBuff)
 {
-	output << "[" << toHex(arBuff.ToReadOnly(), true) << "]";
+	output << "[" << ToHex(arBuff.ToReadOnly(), true) << "]";
 	return output;
 }
 

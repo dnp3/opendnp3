@@ -23,12 +23,17 @@
 
 #include <openssl/rand.h>
 #include <openssl/crypto.h>
+#include <openssl/aes.h>
+
 #include <assert.h>
+
+using namespace openpal;
 
 namespace osslcrypto
 {
 
-std::vector < std::unique_ptr<std::mutex> > CryptoProvider::mutexes;
+std::vector < std::unique_ptr<std::mutex> > CryptoProvider::mutexes(CRYPTO_num_locks());
+
 bool CryptoProvider::initialized = Initialize();
 
 bool CryptoProvider::Initialize()
@@ -42,7 +47,7 @@ bool CryptoProvider::ConfigureMultithreading()
 	// If this isn't done and functions like RAND_bytes are called
 	// from multiple threads you'll get random crashes.
 
-	for (int i = 0; i < CRYPTO_num_locks(); ++i)
+	for (size_t i = 0; i < mutexes.capacity(); ++i)
 	{
 		mutexes.push_back(std::make_unique<std::mutex>());
 	}
@@ -69,10 +74,28 @@ void CryptoProvider::LockingFunction(int mode, int n, const char *file, int line
 	}
 }
 
-bool CryptoProvider::GetSecureRandom(openpal::WriteBufferView& buffer)
+bool CryptoProvider::GetSecureRandom(WriteBufferView& buffer)
 {	
 	return RAND_bytes(buffer, buffer.Size()) > 0;
 }
 
+bool CryptoProvider::Aes128KeyWrap(const ReadBufferView& kek, const ReadBufferView& input, WriteBufferView& output)
+{
+	// If iv is null, the default IV is used
+	if (kek.Size() != 128)
+	{
+		return false;
+	}
+
+	AES_KEY key;
+	if (!AES_set_encrypt_key(kek, 128, &key))
+	{
+		return false;
+	}	
+
+	return AES_wrap_key(&key, nullptr, output, input, input.Size()) > 0;
+
+	return false;
+}
 
 }

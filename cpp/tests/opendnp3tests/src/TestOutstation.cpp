@@ -23,13 +23,14 @@
 
 #include "OutstationTestObject.h"
 #include "APDUHexBuilders.h"
-#include "HexConversions.h"
+#include <testlib/HexConversions.h>
 
 #include <opendnp3/ErrorCodes.h>
 
 using namespace std;
 using namespace opendnp3;
 using namespace openpal;
+using namespace testlib;
 
 #define SUITE(name) "OutstationTestSuite - " name
 
@@ -146,7 +147,7 @@ TEST_CASE(SUITE("NoResponseToNoAckCodes"))
 		AppControlField control(true, true, false, false, sequence);
 		bytes[0] = control.ToByte();
 		bytes[1] = static_cast<uint8_t>(code);
-		auto request = toHex(bytes, 2, true);
+		auto request = ToHex(bytes, 2, true);
 
 		t.SendToOutstation(request);
 		REQUIRE(t.lower.PopWriteAsHex() == "");

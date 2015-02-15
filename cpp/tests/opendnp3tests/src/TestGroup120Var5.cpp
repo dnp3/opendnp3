@@ -21,7 +21,7 @@
 #include <catch.hpp>
 
 #include "BufferHelpers.h"
-#include "HexConversions.h"
+#include <testlib/HexConversions.h>
 
 #include <opendnp3/objects/Group120Var5.h>
 
@@ -30,6 +30,7 @@
 
 using namespace openpal;
 using namespace opendnp3;
+using namespace testlib;
 
 #define SUITE(name) "Group120Var5TestSuite - " name
 
@@ -64,8 +65,8 @@ TEST_CASE(SUITE("Parser correctly interprets challenge data and hmac value"))
 
 	Group120Var5 output;
 	REQUIRE(Group120Var5::Read(buffer.ToReadOnly(), output));	
-	REQUIRE(toHex(output.challengeData) == "DE AD BE");
-	REQUIRE(toHex(output.hmacValue) == "EF");
+	REQUIRE(ToHex(output.challengeData) == "DE AD BE");
+	REQUIRE(ToHex(output.hmacValue) == "EF");
 }
 
 TEST_CASE(SUITE("Parser rejects one less than minimum required data"))
@@ -103,7 +104,7 @@ TEST_CASE(SUITE("Formatter correctly writes when sufficient space"))
 	uint32_t numWritten = output.Size() - dest.Size();
 
 	REQUIRE(numWritten == SIZE);	
-	REQUIRE(toHex(output.ToReadOnly().Take(SIZE)) == "08 00 00 00 03 00 02 01 05 02 00 DE AD BE EF");	
+	REQUIRE(ToHex(output.ToReadOnly().Take(SIZE)) == "08 00 00 00 03 00 02 01 05 02 00 DE AD BE EF");	
 }
 
 TEST_CASE(SUITE("Formatter rejects when one less than required space"))

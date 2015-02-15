@@ -21,11 +21,12 @@
 #include "MockLowerLayer.h"
 
 #include "BufferHelpers.h"
-#include "HexConversions.h"
+#include <testlib/HexConversions.h>
 
 #include <assert.h>
 
 using namespace openpal;
+using namespace testlib;
 
 namespace opendnp3
 {
@@ -58,7 +59,7 @@ std::string MockLowerLayer::PopWriteAsHex()
 	{
 		auto ret = sendQueue.front();
 		sendQueue.pop();
-		return toHex(ret);
+		return ToHex(ret);
 	}
 }
 

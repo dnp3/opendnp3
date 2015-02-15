@@ -26,7 +26,7 @@
 namespace openpal
 {
 
-char toHex(char c);
+char ToHexChar(char c);
 
 }
 

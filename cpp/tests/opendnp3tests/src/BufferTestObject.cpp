@@ -24,11 +24,12 @@
 
 #include <memory>
 
-#include "HexConversions.h"
+#include <testlib/HexConversions.h>
 
 #include <openpal/util/ToHex.h>
 
 using namespace openpal;
+using namespace testlib;
 
 namespace opendnp3
 {
@@ -82,7 +83,7 @@ std::string BufferTestObject::GetBufferAsHexString(bool spaced) const
 {
 	CopyableBuffer buffer(static_cast<uint32_t>(mBuffer.size()));
 	for(size_t i = 0; i < mBuffer.size(); ++i) buffer[i] = mBuffer[i];
-	return toHex(buffer.ToReadOnly(), spaced);
+	return ToHex(buffer.ToReadOnly(), spaced);
 }
 
 

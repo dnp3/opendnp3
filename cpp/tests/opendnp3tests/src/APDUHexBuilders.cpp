@@ -25,10 +25,11 @@
 #include <opendnp3/app/APDUResponse.h>
 #include <opendnp3/app/APDUBuilders.h>
 
-#include "HexConversions.h"
+#include <testlib/HexConversions.h>
 
 using namespace openpal;
 using namespace opendnp3;
+using namespace testlib;
 
 namespace hex
 {
@@ -37,7 +38,7 @@ namespace hex
 		uint8_t buffer[2048];
 		APDURequest request(WriteBufferView(buffer, 2048));
 		opendnp3::build::ClassRequest(request, fc, field, seq);
-		return toHex(request.ToReadOnly());
+		return ToHex(request.ToReadOnly());
 	}
 
 	std::string IntegrityPoll(uint8_t seq, const ClassField& field)
@@ -60,7 +61,7 @@ namespace hex
 		uint8_t buffer[2048];
 		APDURequest request(WriteBufferView(buffer, 2048));
 		build::ClearRestartIIN(request, seq);
-		return toHex(request.ToReadOnly());
+		return ToHex(request.ToReadOnly());
 	}
 
 	std::string MeasureDelay(uint8_t seq)
@@ -68,7 +69,7 @@ namespace hex
 		uint8_t buffer[2048];
 		APDURequest request(WriteBufferView(buffer, 2048));
 		build::MeasureDelay(request, seq);
-		return toHex(request.ToReadOnly());
+		return ToHex(request.ToReadOnly());
 	}
 
 	std::string EmptyResponse(uint8_t seq, const opendnp3::IINField& iin)
@@ -78,7 +79,7 @@ namespace hex
 		response.SetFunction(FunctionCode::RESPONSE);
 		response.SetControl(AppControlField(true, true, false, false, seq));
 		response.SetIIN(iin);
-		return toHex(response.ToReadOnly());
+		return ToHex(response.ToReadOnly());
 	}
 
 	std::string NullUnsolicited(uint8_t seq, const IINField& iin)
@@ -86,7 +87,7 @@ namespace hex
 		uint8_t buffer[2048];
 		APDUResponse response(WriteBufferView(buffer, 2048));
 		build::NullUnsolicited(response, seq, iin);
-		return toHex(response.ToReadOnly());
+		return ToHex(response.ToReadOnly());
 	}	
 
 	std::string SolicitedConfirm(uint8_t seq)
@@ -105,7 +106,7 @@ namespace hex
 		APDURequest apdu(WriteBufferView(buffer, 2048));
 		apdu.SetControl(AppControlField(true, true, false, unsol, seq));
 		apdu.SetFunction(FunctionCode::CONFIRM);
-		return toHex(apdu.ToReadOnly());
+		return ToHex(apdu.ToReadOnly());
 	}
 }
 

@@ -18,42 +18,23 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "HexConversions.h"
+#ifndef __HEX_CONVERSIONS_H_
+#define __HEX_CONVERSIONS_H_
 
-#include <openpal/util/ToHex.h>
+#include <cstdint>
+#include <string>
 
-#include <sstream>
+#include <openpal/container/ReadBufferView.h>
 
-using namespace openpal;
-
-namespace opendnp3
+namespace testlib
 {
 
-std::string toHex(const uint8_t* apBuff, size_t aLength, bool spaced)
-{
-	std::ostringstream oss;
-	size_t last = aLength - 1;
-	for (size_t i = 0; i < aLength; i++)
-	{
-		char c = apBuff[i];
-		oss << openpal::toHex((c & 0xf0) >> 4) << openpal::toHex(c & 0xf);
-		if (spaced && i != last)oss << " ";
-	}
-	return oss.str();
-}
+std::string ByteToHex(uint8_t b);
 
-std::string toHex(const ReadBufferView& buffer, bool spaced)
-{
-	return toHex(buffer, buffer.Size(), spaced);
-}
+std::string ToHex(const uint8_t* pBuff, size_t length, bool spaced = false);
 
-
-std::string ByteToHex(uint8_t b)
-{
-	std::ostringstream oss;
-	oss << openpal::toHex((b & 0xf0) >> 4) << openpal::toHex(b & 0xf);
-	return oss.str();
-}
+std::string ToHex(const openpal::ReadBufferView& buffer, bool spaced = true);
 
 }
 
+#endif

@@ -30,10 +30,11 @@
 #include "LinkLayerRouterTest.h"
 #include "MockFrameSink.h"
 #include "BufferHelpers.h"
-#include "HexConversions.h"
+#include <testlib/HexConversions.h>
 
 using namespace opendnp3;
 using namespace openpal;
+using namespace testlib;
 
 #define SUITE(name) "LinkLayerRouterSuite - " name
 
@@ -119,7 +120,7 @@ TEST_CASE(SUITE("CloseBehavior"))
 
 	t.router.BeginTransmit(buffer.ToReadOnly(), &mfs);
 	REQUIRE(t.phys.NumWrites() ==  2);
-	REQUIRE(t.phys.GetBufferAsHexString() == toHex(buffer.ToReadOnly()));
+	REQUIRE(t.phys.GetBufferAsHexString() == ToHex(buffer.ToReadOnly()));
 	t.phys.SignalSendSuccess();
 	REQUIRE(t.phys.NumWrites() ==  2);
 }
@@ -138,7 +139,7 @@ TEST_CASE(SUITE("ReentrantCloseWorks"))
 	DynamicBuffer buffer(292);
 	auto writeTo = buffer.GetWriteBufferView();
 	auto frame = LinkFrame::FormatAck(writeTo, true, false, 1024, 1, nullptr);
-	t.phys.TriggerRead(toHex(frame));
+	t.phys.TriggerRead(ToHex(frame));
 
 	REQUIRE(t.log.IsLogErrorFree());
 }
@@ -211,7 +212,7 @@ TEST_CASE(SUITE("LinkLayerRouterClearsBufferOnLowerLayerDown"))
 	DynamicBuffer buffer(292);
 	auto writeTo = buffer.GetWriteBufferView();
 	auto frame = LinkFrame::FormatAck(writeTo, true, false, 1024, 1, nullptr);
-	t.phys.TriggerRead(toHex(frame));
+	t.phys.TriggerRead(ToHex(frame));
 
 	REQUIRE(1 ==  mfs.mNumFrames);
 }

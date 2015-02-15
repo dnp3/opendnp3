@@ -18,37 +18,26 @@
 * may have been made to this file. Automatak, LLC licenses these modifications
 * to you under the terms of the License.
 */
+#include <catch.hpp>
 
-#include <openpal/crypto/ICryptoProvider.h>
-#include <openpal/util/Uncopyable.h>
+#include <osslcrypto/CryptoProvider.h>
 
-#include <mutex>
-#include <vector>
-#include <memory>
+#include <openpal/container/DynamicBuffer.h>
+#include <openpal/util/ToHex.h>
 
-namespace osslcrypto
+#include <thread>
+#include <atomic>
+
+#define SUITE(name) "AESKeyWrapTestSuite - " name
+
+using namespace std;
+using namespace openpal;
+using namespace osslcrypto;
+
+TEST_CASE(SUITE("TestKeyWrap"))
 {
+	CryptoProvider provider;	
 
-/**
-* An ICryptoProvider based on openssl
-*/
-class CryptoProvider : public openpal::ICryptoProvider, private openpal::Uncopyable
-{	
-	public:	
-
-	virtual bool GetSecureRandom(openpal::WriteBufferView& buffer) override final;	
-
-	virtual bool Aes128KeyWrap(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output) override final;
-
-	private:	
-
-	static void LockingFunction(int mode, int n, const char *file, int line);
-			
-	static bool Initialize();
-	static bool ConfigureMultithreading();
-		
-	static std::vector < std::unique_ptr<std::mutex> > mutexes;
-	static bool initialized;
-};
-
+	//auto success = provider.Aes128KeyWrap()
 }
+

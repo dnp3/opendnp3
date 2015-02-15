@@ -30,6 +30,7 @@
 
 using namespace std;
 using namespace openpal;
+using namespace testlib;
 
 namespace opendnp3
 {
@@ -63,7 +64,7 @@ std::string TransportTestObject::GetData(const std::string& arHdr, uint8_t aSeed
 
 	ostringstream oss;
 	if(arHdr.size() > 0) oss << arHdr << " ";
-	oss << toHex(buff, buff.Size(), true);
+	oss << ToHex(buff, buff.Size(), true);
 	return oss.str();
 }
 
@@ -79,7 +80,7 @@ std::string TransportTestObject::GeneratePacketSequence(vector< std::string >& a
 		uint8_t hdr = TransportTx::GetHeader(fir, fin, seq);
 		std::string data = this->GetData("", 0, len); //raw data with no header
 		oss << ((i == 0) ? "" : " ") << data; //cache the data in the string stream
-		arVec.push_back(toHex(&hdr, 1, true) + " " + data);
+		arVec.push_back(ToHex(&hdr, 1, true) + " " + data);
 	}
 
 	return oss.str();

@@ -22,7 +22,7 @@
 
 #include "MasterTestObject.h"
 #include "APDUHexBuilders.h"
-#include "HexConversions.h"
+#include <testlib/HexConversions.h>
 
 using namespace std;
 using namespace opendnp3;

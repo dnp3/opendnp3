@@ -21,7 +21,7 @@
 #include <catch.hpp>
 
 #include "MasterTestObject.h"
-#include "HexConversions.h"
+#include <testlib/HexConversions.h>
 #include "APDUHexBuilders.h"
 
 #include <asiodnp3/MultidropTaskLock.h>

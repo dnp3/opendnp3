@@ -22,7 +22,7 @@
 
 #include "MasterTestObject.h"
 #include "MeasurementComparisons.h"
-#include "HexConversions.h"
+#include <testlib/HexConversions.h>
 #include "MockCommandCallback.h"
 #include "APDUHexBuilders.h"
 

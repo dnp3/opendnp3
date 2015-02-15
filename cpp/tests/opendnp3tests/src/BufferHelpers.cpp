@@ -22,7 +22,7 @@
 
 #include <openpal/util/ToHex.h>
 
-#include "HexConversions.h"
+#include <testlib/HexConversions.h>
 
 #include <memory.h>
 #include <sstream>
@@ -32,6 +32,7 @@
 
 using namespace std;
 using namespace openpal;
+using namespace testlib;
 
 namespace opendnp3
 {
@@ -63,7 +64,7 @@ bool ByteStr::operator==(const ByteStr& arRHS) const
 
 std::string ByteStr::ToHex() const
 {
-	return toHex(ToReadOnly());
+	return testlib::ToHex(ToReadOnly());
 }
 
 HexSequence::HexSequence( const std::string& aSequence) :

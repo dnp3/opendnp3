@@ -22,7 +22,7 @@
 
 #include "OutstationTestObject.h"
 #include "APDUHexBuilders.h"
-#include "HexConversions.h"
+#include <testlib/HexConversions.h>
 
 #include <opendnp3/ErrorCodes.h>
 

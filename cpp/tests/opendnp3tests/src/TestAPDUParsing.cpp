@@ -24,7 +24,7 @@
 #include "BufferHelpers.h"
 #include "MockAPDUHeaderHandler.h"
 #include "MeasurementComparisons.h"
-#include "HexConversions.h"
+#include <testlib/HexConversions.h>
 
 #include <openpal/util/ToHex.h>
 
@@ -42,6 +42,7 @@ using namespace std;
 using namespace openpal;
 using namespace asiodnp3;
 using namespace opendnp3;
+using namespace testlib;
 
 void TestComplex(const std::string& hex, ParseResult expected, size_t numCalls, std::function<void (MockApduHeaderHandler&)> validate)
 {
@@ -88,7 +89,7 @@ TEST_CASE(SUITE("HeaderParsesReqeust"))
 	REQUIRE(APDUHeaderParser::ParseRequest(buffer.ToReadOnly(), header));
 	REQUIRE(header.control.ToByte() == AppControlField(true, true, false, false, 0).ToByte());
 	REQUIRE(header.function == FunctionCode::WRITE);
-	REQUIRE("AB CD" ==  toHex(buffer.ToReadOnly().Skip(2)));
+	REQUIRE("AB CD" ==  ToHex(buffer.ToReadOnly().Skip(2)));
 }
 
 TEST_CASE(SUITE("ResponseLessThanFour"))
@@ -106,7 +107,7 @@ TEST_CASE(SUITE("HeaderParsesResponse"))
 	REQUIRE(header.control.ToByte() == AppControlField(true, true, false, false, 0).ToByte());
 	REQUIRE(header.function == FunctionCode::WRITE);
 	REQUIRE(header.IIN == IINField(01, 02));
-	REQUIRE("BE EF" ==  toHex(buffer.ToReadOnly().Skip(4)));
+	REQUIRE("BE EF" ==  ToHex(buffer.ToReadOnly().Skip(4)));
 }
 
 

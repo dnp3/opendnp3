@@ -21,6 +21,7 @@
 #ifndef OPENPAL_ICRYPTOPROVIDER_H
 #define OPENPAL_ICRYPTOPROVIDER_H
 
+#include <openpal/container/ReadBufferView.h>
 #include <openpal/container/WriteBufferView.h>
 
 namespace openpal
@@ -35,6 +36,8 @@ namespace openpal
 		// return true if the specified buffer can be completely filled with secure random numbers
 		// Implementations could return false for any reason including lack of entropy
 		virtual bool GetSecureRandom(WriteBufferView& buffer) = 0;
+
+		virtual bool Aes128KeyWrap(const ReadBufferView& kek, const ReadBufferView& input, WriteBufferView& output) = 0;
 
 	};
 

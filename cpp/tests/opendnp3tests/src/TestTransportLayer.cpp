@@ -33,6 +33,7 @@ using namespace std;
 using namespace openpal;
 using namespace opendnp3;
 using namespace asiodnp3;
+using namespace testlib;
 
 #define SUITE(name) "TransportLayerTestSuite - " name
 
@@ -45,11 +46,11 @@ TEST_CASE(SUITE("RepeatSendsDoNotLogOrChangeStatistics"))
 	transmitter.Configure(hs.ToReadOnly());
 	
 	auto segment1 = transmitter.GetSegment();
-	REQUIRE("C0 12 34 56" == toHex(segment1));
+	REQUIRE("C0 12 34 56" == ToHex(segment1));
 	REQUIRE(1 == stats.numTransportTx);
 
 	auto segment2 = transmitter.GetSegment();
-	REQUIRE("C0 12 34 56" == toHex(segment2));
+	REQUIRE("C0 12 34 56" == ToHex(segment2));
 	REQUIRE(1 == stats.numTransportTx);	
 }
 
