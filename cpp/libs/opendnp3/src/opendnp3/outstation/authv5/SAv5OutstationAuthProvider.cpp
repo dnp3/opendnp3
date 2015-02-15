@@ -121,13 +121,13 @@ void SAv5OutstationAuthProvider::OnAuthReply(OState& ostate, const APDUHeader& h
 void SAv5OutstationAuthProvider::OnRequestKeyStatus(OState& ostate, const APDUHeader& header, const Group120Var4& status)
 {
 	FORMAT_LOG_BLOCK(ostate.logger, flags::WARN, "Received key status request for user: %i", status.userNum);
-	/*
+	
 	uint8_t data[4];
 	sstate.pCrypto->GetSecureRandom(WriteBufferView(data, 4));
 
 	Group120Var5 gv;
 	gv.keyChangeSeqNum = 1;
-	gv.userNum = 1;
+	gv.userNum = status.userNum;
 	gv.keywrapAlgorithm = KeyWrapAlgorithm::AES_128;
 	gv.keyStatus = KeyStatus::NOT_INIT;
 	gv.hmacType = HMACType::HMAC_SHA1_TRUNC_10;
@@ -138,7 +138,7 @@ void SAv5OutstationAuthProvider::OnRequestKeyStatus(OState& ostate, const APDUHe
 	rsp.SetFunction(FunctionCode::AUTH_RESPONSE);
 	rsp.GetWriter().WriteFreeFormat(gv);
 	OActions::BeginResponseTx(ostate, rsp.ToReadOnly());
-	*/
+	
 }
 
 void SAv5OutstationAuthProvider::OnChangeSessionKeys(OState& ostate, const APDUHeader& header, const Group120Var6& change)

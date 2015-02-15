@@ -62,7 +62,7 @@ TEST_CASE(SUITE("RejectsUnknownQualifierWithWhiteListError"))
 
 TEST_CASE(SUITE("RejectsInsufficientFreeFormatData"))
 {
-	HexSequence buffer("78 01 5B 08 00 FF FF FF FF FF FF FF");
+	HexSequence buffer("78 01 5B 01 08 00 FF FF FF FF FF FF FF");
 	MockApduHeaderHandler handler;
 	auto result = APDUParser::ParseSome(buffer.ToReadOnly(), handler, AuthRequestHandler::WhiteList, nullptr);
 	REQUIRE(result == ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS);
@@ -70,7 +70,7 @@ TEST_CASE(SUITE("RejectsInsufficientFreeFormatData"))
 
 TEST_CASE(SUITE("RejectsTrailingData"))
 {
-	HexSequence buffer("78 01 5B 08 00 FF FF FF FF FF FF FF FF FF");
+	HexSequence buffer("78 01 5B 01 08 00 FF FF FF FF FF FF FF FF FF");
 	MockApduHeaderHandler handler;
 	auto result = APDUParser::ParseSome(buffer.ToReadOnly(), handler, AuthRequestHandler::WhiteList, nullptr);
 	REQUIRE(result == ParseResult::NOT_ENOUGH_DATA_FOR_HEADER);
@@ -78,7 +78,7 @@ TEST_CASE(SUITE("RejectsTrailingData"))
 
 TEST_CASE(SUITE("AcceptsMatchingFreeFormatData"))
 {
-	HexSequence buffer("78 01 5B 08 00 11 22 33 44 FF FF FF FF");
+	HexSequence buffer("78 01 5B 01 08 00 11 22 33 44 FF FF FF FF");
 	MockApduHeaderHandler handler;
 	auto result = APDUParser::ParseSome(buffer.ToReadOnly(), handler, AuthRequestHandler::WhiteList, nullptr);
 	REQUIRE(result == ParseResult::OK);

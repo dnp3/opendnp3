@@ -33,16 +33,17 @@ using namespace openpal;
 
 namespace opendnp3
 {
-	ParseResult FreeFormatParser::ParseHeader(openpal::ReadBufferView& objects, const ParserSettings& settings, const HeaderRecord& record, openpal::Logger* pLogger, IAPDUHandler* pHandler)
+	ParseResult FreeFormatParser::ParseHeader(openpal::ReadBufferView& buffer, const ParserSettings& settings, const HeaderRecord& record, openpal::Logger* pLogger, IAPDUHandler* pHandler)
 	{
-		if (objects.Size() < UInt16::Size)
+		if (buffer.Size() < (UInt8::Size + UInt16::Size))
 		{
-			FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for two byte free format length");
+			FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for free format data");
 			return ParseResult::NOT_ENOUGH_DATA_FOR_HEADER;
 		}
 		else
 		{
-			const uint16_t FREE_FORMAT_SIZE = UInt16::ReadBuffer(objects);
+			const uint8_t FREE_FORMAT_COUNT = UInt8::ReadBuffer(buffer);
+			const uint16_t FREE_FORMAT_SIZE = UInt16::ReadBuffer(buffer);
 
 			FORMAT_LOGGER_BLOCK(pLogger, settings.Filters(),
 				"%03u, %03u %s, %s [%u]",
@@ -50,14 +51,14 @@ namespace opendnp3
 				record.variation,
 				GroupVariationToString(record.enumeration),
 				QualifierCodeToString(record.GetQualifierCode()),
-				FREE_FORMAT_SIZE
+				FREE_FORMAT_COUNT
 			);
 
 
-			if (FREE_FORMAT_SIZE <= objects.Size())
+			if (FREE_FORMAT_SIZE <= buffer.Size())
 			{
-				ReadBufferView copy(objects.Take(FREE_FORMAT_SIZE));
-				objects = objects.Skip(FREE_FORMAT_SIZE);
+				ReadBufferView copy(buffer.Take(FREE_FORMAT_SIZE));
+				buffer = buffer.Skip(FREE_FORMAT_SIZE);
 
 				switch (record.enumeration)
 				{
@@ -83,7 +84,7 @@ namespace opendnp3
 			}
 			else
 			{
-				FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Insufficient data (%i) for free format size of (%i)", objects.Size(), FREE_FORMAT_SIZE);
+				FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Insufficient data (%i) for free format size of (%i)", buffer.Size(), FREE_FORMAT_SIZE);
 				return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
 			}
 		}
