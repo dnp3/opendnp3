@@ -68,12 +68,12 @@ TEST_CASE(SUITE("RejectsInsufficientFreeFormatData"))
 	REQUIRE(result == ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS);
 }
 
-TEST_CASE(SUITE("RejectsTooMuchFreeFormatData"))
+TEST_CASE(SUITE("RejectsTrailingData"))
 {
 	HexSequence buffer("78 01 5B 08 00 FF FF FF FF FF FF FF FF FF");
 	MockApduHeaderHandler handler;
 	auto result = APDUParser::ParseSome(buffer.ToReadOnly(), handler, AuthRequestHandler::WhiteList, nullptr);
-	REQUIRE(result == ParseResult::TOO_MUCH_DATA_FOR_OBJECTS);
+	REQUIRE(result == ParseResult::NOT_ENOUGH_DATA_FOR_HEADER);
 }
 
 TEST_CASE(SUITE("AcceptsMatchingFreeFormatData"))
@@ -87,20 +87,20 @@ TEST_CASE(SUITE("AcceptsMatchingFreeFormatData"))
 	REQUIRE(handler.authChallenges[0].challengeSeqNum == 0x44332211);
 }
 
-TEST_CASE(SUITE("RejectsKeyStatusRequestWithCountNotEqualToOne"))
+TEST_CASE(SUITE("ParsersKeyStatusRequest"))
 {
-	HexSequence buffer("78 04 07 02 00 00");
+	HexSequence buffer("78 04 07 01 00 00");
 	MockApduHeaderHandler handler;
 	auto result = APDUParser::ParseSome(buffer.ToReadOnly(), handler, AuthRequestHandler::WhiteList, nullptr);
-	REQUIRE(result == ParseResult::BAD_COUNT);
+	REQUIRE(result == ParseResult::OK);
 }
 
-TEST_CASE(SUITE("RejectsKeyStatusRequestWithExtraData"))
+TEST_CASE(SUITE("RejectsDuplicateKeyStatusRequestViaWhitelistError"))
 {
-	HexSequence buffer("78 04 07 01 09 00 FF");
+	HexSequence buffer("78 04 07 01 00 00 78 04 07 01 00 00");
 	MockApduHeaderHandler handler;
 	auto result = APDUParser::ParseSome(buffer.ToReadOnly(), handler, AuthRequestHandler::WhiteList, nullptr);
-	REQUIRE(result == ParseResult::TOO_MUCH_DATA_FOR_OBJECTS);		
+	REQUIRE(result == ParseResult::NOT_ON_WHITELIST);		
 }
 
 TEST_CASE(SUITE("AcceptsKeyStatusRequest"))

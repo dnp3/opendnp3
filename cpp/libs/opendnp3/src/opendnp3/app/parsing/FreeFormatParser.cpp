@@ -45,17 +45,19 @@ namespace opendnp3
 			const uint16_t FREE_FORMAT_SIZE = UInt16::ReadBuffer(objects);
 			if (FREE_FORMAT_SIZE <= objects.Size())
 			{
+				ReadBufferView copy(objects.Take(FREE_FORMAT_SIZE));
+				objects = objects.Skip(FREE_FORMAT_SIZE);
 
 				switch (record.enumeration)
 				{
 					case(GroupVariation::Group120Var1) :
-						return ParseFreeFormat(ParseAny<Group120Var1>, record, FREE_FORMAT_SIZE, objects, pHandler, pLogger);
+						return ParseFreeFormat(ParseAny<Group120Var1>, record, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
 
 					case(GroupVariation::Group120Var2) :
-						return ParseFreeFormat(ParseAny<Group120Var2>, record, FREE_FORMAT_SIZE, objects, pHandler, pLogger);
+						return ParseFreeFormat(ParseAny<Group120Var2>, record, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
 
 					case(GroupVariation::Group120Var6) :
-						return ParseFreeFormat(ParseAny<Group120Var6>, record, FREE_FORMAT_SIZE, objects, pHandler, pLogger);
+						return ParseFreeFormat(ParseAny<Group120Var6>, record, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
 
 					default:
 						FORMAT_LOGGER_BLOCK(
@@ -84,7 +86,7 @@ namespace opendnp3
 		}
 		else
 		{
-			FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for (%i, %i)", record.group, record.variation);
+			FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Error parsing free-format (%i, %i)", record.group, record.variation);
 			return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
 		}		
 	}
