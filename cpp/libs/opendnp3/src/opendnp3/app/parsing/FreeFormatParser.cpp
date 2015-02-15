@@ -43,6 +43,17 @@ namespace opendnp3
 		else
 		{
 			const uint16_t FREE_FORMAT_SIZE = UInt16::ReadBuffer(objects);
+
+			FORMAT_LOGGER_BLOCK(pLogger, settings.Filters(),
+				"%03u, %03u %s, %s [%u]",
+				record.group,
+				record.variation,
+				GroupVariationToString(record.enumeration),
+				QualifierCodeToString(record.GetQualifierCode()),
+				FREE_FORMAT_SIZE
+			);
+
+
 			if (FREE_FORMAT_SIZE <= objects.Size())
 			{
 				ReadBufferView copy(objects.Take(FREE_FORMAT_SIZE));
