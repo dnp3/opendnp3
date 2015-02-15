@@ -21,7 +21,7 @@
 #include <catch.hpp>
 
 
-#include "BufferHelpers.h"
+#include <testlib/BufferHelpers.h>
 
 #include <opendnp3/link/CRC.h>
 
@@ -32,6 +32,7 @@
 
 using namespace std;
 using namespace opendnp3;
+using namespace testlib;
 
 #define SUITE(name) "CRC - " name
 

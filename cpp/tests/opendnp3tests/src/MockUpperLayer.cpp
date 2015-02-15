@@ -20,7 +20,7 @@
  */
 #include "MockUpperLayer.h"
 
-#include "BufferHelpers.h"
+#include <testlib/BufferHelpers.h>
 
 #include <openpal/util/ToHex.h>
 #include <openpal/logging/LogMacros.h>
@@ -28,6 +28,7 @@
 #include <memory>
 
 using namespace openpal;
+using namespace testlib;
 
 namespace opendnp3
 {

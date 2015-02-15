@@ -20,7 +20,7 @@
  */
 #include <catch.hpp>
 
-#include "BufferHelpers.h"
+#include <testlib/BufferHelpers.h>
 
 #include <openpal/serialization/Serialization.h>
 #include <openpal/util/Comparisons.h>
@@ -28,7 +28,7 @@
 #include <memory>
 
 using namespace openpal;
-using namespace opendnp3;
+using namespace testlib;
 
 using namespace std;
 

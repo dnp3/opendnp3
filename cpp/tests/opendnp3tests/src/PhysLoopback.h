@@ -23,7 +23,7 @@
 
 #include <asiodnp3/impl/PhysicalLayerMonitor.h>
 
-#include "CopyableBuffer.h"
+#include <testlib/CopyableBuffer.h>
 
 namespace opendnp3
 {
@@ -43,7 +43,7 @@ private:
 
 	size_t mBytesReadWritten;
 
-	CopyableBuffer mBuffer;
+	testlib::CopyableBuffer mBuffer;
 
 
 	virtual void OnPhysicalLayerOpenSuccessCallback() override final;

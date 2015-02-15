@@ -19,9 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\testlib\BufferHelpers.h" />
+    <ClInclude Include="src\testlib\CopyableBuffer.h" />
     <ClInclude Include="src\testlib\HexConversions.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\testlib\BufferHelpers.cpp" />
+    <ClCompile Include="src\testlib\CopyableBuffer.cpp" />
     <ClCompile Include="src\testlib\HexConversions.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -26,8 +26,9 @@
 #include <openpal/util/ToHex.h>
 #include <openpal/container/DynamicBuffer.h>
 
-#include "BufferHelpers.h"
+#include "BufferSegment.h"
 #include "LinkLayerTest.h"
+
 #include <testlib/HexConversions.h>
 
 #include <iostream>

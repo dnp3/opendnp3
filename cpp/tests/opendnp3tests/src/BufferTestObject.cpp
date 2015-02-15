@@ -20,7 +20,7 @@
  */
 #include "BufferTestObject.h"
 
-#include "BufferHelpers.h"
+#include <testlib/BufferHelpers.h>
 
 #include <memory>
 

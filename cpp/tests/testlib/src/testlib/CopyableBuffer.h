@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __COPYABLE_BUFFER_H_
-#define __COPYABLE_BUFFER_H_
+#ifndef TESTLIB_COPYABLEBUFFER_H_
+#define TESTLIB_COPYABLEBUFFER_H_
 
 #include <stddef.h>
 #include <memory>
@@ -27,7 +27,7 @@
 
 #include <openpal/container/ReadBufferView.h>
 
-namespace opendnp3
+namespace testlib
 {
 
 /** Implements a dynamic buffer with a safe

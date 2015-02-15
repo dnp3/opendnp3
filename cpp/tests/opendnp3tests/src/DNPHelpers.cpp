@@ -27,7 +27,7 @@
 
 #include <openpal/util/ToHex.h>
 
-#include "BufferHelpers.h"
+#include <testlib/BufferHelpers.h>
 #include <testlib/HexConversions.h>
 
 using namespace testlib;

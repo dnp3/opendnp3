@@ -26,7 +26,7 @@
 #include <openpal/util/ToHex.h>
 #include <opendnp3/link/ILinkLayer.h>
 
-#include "BufferHelpers.h"
+#include <testlib/BufferHelpers.h>
 #include <testlib/HexConversions.h>
 
 namespace opendnp3
@@ -56,7 +56,7 @@ public:
 
 	void SendUp(const std::string& hex)
 	{
-		HexSequence hs(hex);
+		testlib::HexSequence hs(hex);
 		if (pUpperLayer)
 		{
 			auto buffer = hs.ToReadOnly();			

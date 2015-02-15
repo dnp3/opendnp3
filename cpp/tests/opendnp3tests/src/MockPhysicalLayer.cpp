@@ -20,13 +20,14 @@
  */
 #include "MockPhysicalLayer.h"
 
-#include "BufferHelpers.h"
+#include <testlib/BufferHelpers.h>
 #include <openpal/executor/IExecutor.h>
 
 #include <memory.h>
 #include <functional>
 
 using namespace openpal;
+using namespace testlib;
 
 namespace opendnp3
 {

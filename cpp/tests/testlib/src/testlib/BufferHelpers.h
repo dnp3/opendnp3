@@ -18,54 +18,46 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __LINK_PARSER_TEST_H_
-#define __LINK_PARSER_TEST_H_
+#ifndef TESTLIB_BUFFERHELPERS_H_
+#define TESTLIB_BUFFERHELPERS_H_
 
-#include <opendnp3/link/LinkLayerParser.h>
-#include <opendnp3/LogLevels.h>
+#include "CopyableBuffer.h"
 
-#include "LogTester.h"
-#include <testlib/BufferHelpers.h>
-#include "MockFrameSink.h"
+#include <string>
 
-#include <cstring>
-#include <assert.h>
-
-namespace opendnp3
+namespace testlib
 {
 
-class LinkParserTest
+class ByteStr : public CopyableBuffer
+{
+
+public:
+	ByteStr(uint32_t aLength, uint8_t aSeed = 0);
+	ByteStr(const uint8_t* apData, uint32_t aLength);
+	ByteStr(const std::string& aChars);
+	bool operator==(const ByteStr& arRHS) const;
+	std::string ToHex() const;
+};
+
+/**
+ * A sequence of hex values in the form "01 02 03 04" that are stored as a ByteStr.
+ */
+class HexSequence : public ByteStr
 {
 public:
-	LinkParserTest(bool aImmediate = false) :
-		log(),
-		sink(),
-		parser(log.GetLogger())
-	{}
+	HexSequence(const std::string& aSequence);
 
-	void WriteData(const openpal::ReadBufferView& input)
+	operator openpal::ReadBufferView()
 	{
-		auto buff = parser.WriteBuff();
-		assert(input.Size() <= buff.Size());
-		input.CopyTo(buff);
-		parser.OnRead(input.Size(), &sink);
+		return this->ToReadOnly();
 	}
 
-	void WriteData(const std::string& hex)
-	{
-		testlib::HexSequence hs(hex);
-		auto buff = parser.WriteBuff();
-		assert(hs.Size() <= buff.Size());
-		memcpy(buff, hs, hs.Size());
-		parser.OnRead(hs.Size(), &sink);
-	}
-
-	LogTester log;
-	MockFrameSink sink;
-	LinkLayerParser parser;
+private:
+	std::string RemoveSpaces(const std::string& aSequence);
+	void RemoveSpacesInPlace(std::string& aSequence);
+	static uint32_t Validate(const std::string& aSequence);
 };
 
 }
 
 #endif
-

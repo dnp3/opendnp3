@@ -20,7 +20,7 @@
  */
 #include "MockLowerLayer.h"
 
-#include "BufferHelpers.h"
+#include <testlib/BufferHelpers.h>
 #include <testlib/HexConversions.h>
 
 #include <assert.h>

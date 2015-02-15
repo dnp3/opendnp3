@@ -20,7 +20,7 @@
  */
 #include <catch.hpp>
 
-#include "BufferHelpers.h"
+#include <testlib/BufferHelpers.h>
 #include "MeasurementComparisons.h"
 
 #include <opendnp3/app/parsing/BitReader.h>
@@ -34,6 +34,7 @@
 using namespace std;
 using namespace openpal;
 using namespace opendnp3;
+using namespace testlib;
 
 #define SUITE(name) "LazyCollectionTestSuite - " name
 

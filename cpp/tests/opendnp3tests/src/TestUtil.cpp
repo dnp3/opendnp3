@@ -20,13 +20,10 @@
  */
 #include <catch.hpp>
 
-
-
-
-#include "BufferHelpers.h"
+#include <testlib/BufferHelpers.h>
 
 using namespace std;
-using namespace opendnp3;
+using namespace testlib;
 
 
 #define SUITE(name) "UtilSuite - " name

@@ -21,7 +21,7 @@
 #include <catch.hpp>
 
 
-#include "BufferHelpers.h"
+#include <testlib/BufferHelpers.h>
 #include <testlib/HexConversions.h>
 #include "MockAPDUHeaderHandler.h"
 
@@ -40,6 +40,7 @@ using namespace std;
 using namespace openpal;
 using namespace opendnp3;
 using namespace asiodnp3;
+using namespace testlib;
 
 #define SUITE(name) "AuthRequestParserTestSuite - " name
 

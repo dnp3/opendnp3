@@ -20,7 +20,7 @@
  */
 #include "TransportTestObject.h"
 
-#include "BufferHelpers.h"
+#include <testlib/BufferHelpers.h>
 
 #include <openpal/util/ToHex.h>
 #include <opendnp3/app/AppConstants.h>
@@ -54,7 +54,7 @@ TransportTestObject::TransportTestObject(bool aOpenOnStart, uint32_t filters, bo
 
 std::string TransportTestObject::GetData(const std::string& arHdr, uint8_t aSeed, uint32_t aLength)
 {
-	ByteStr buff(aLength);
+	testlib::ByteStr buff(aLength);
 	uint8_t val = aSeed;
 	for(size_t i = 0; i < aLength; ++i)
 	{

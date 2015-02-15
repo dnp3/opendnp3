@@ -20,11 +20,12 @@
  */
 
 #include "OutstationTestObject.h"
-#include "BufferHelpers.h"
+#include <testlib/BufferHelpers.h>
 
 #include <opendnp3/outstation/NullOutstationAuthProvider.h>
 
 using namespace openpal;
+using namespace testlib;
 
 namespace opendnp3
 {

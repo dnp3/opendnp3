@@ -21,9 +21,11 @@
 #include <catch.hpp>
 
 #include <asiodnp3/impl/PhysicalLayerMonitor.h>
-#include "CopyableBuffer.h"
+#include <testlib/CopyableBuffer.h>
 
 #include <queue>
+
+using namespace testlib;
 
 namespace opendnp3
 {

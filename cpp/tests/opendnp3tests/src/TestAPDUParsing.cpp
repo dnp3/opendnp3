@@ -21,7 +21,7 @@
 #include <catch.hpp>
 
 
-#include "BufferHelpers.h"
+#include <testlib/BufferHelpers.h>
 #include "MockAPDUHeaderHandler.h"
 #include "MeasurementComparisons.h"
 #include <testlib/HexConversions.h>

@@ -20,7 +20,7 @@
  */
 #include "SerialTestObject.h"
 
-#include "BufferHelpers.h"
+#include <testlib/BufferHelpers.h>
 
 #include <asio.hpp>
 #include <catch.hpp>

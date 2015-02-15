@@ -20,7 +20,7 @@
  */
 #include <catch.hpp>
 
-#include "BufferHelpers.h"
+#include <testlib/BufferHelpers.h>
 #include <testlib/HexConversions.h>
 
 #include <opendnp3/objects/Group120Var2.h>

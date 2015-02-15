@@ -21,7 +21,7 @@
 
 #include "MockTransportLayer.h"
 
-#include "BufferHelpers.h"
+#include <testlib/BufferHelpers.h>
 #include <testlib/HexConversions.h>
 
 #include <openpal/util/ToHex.h>

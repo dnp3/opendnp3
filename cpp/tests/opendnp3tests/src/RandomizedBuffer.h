@@ -21,13 +21,13 @@
 #ifndef __RANDOMIZED_BUFFER_H_
 #define __RANDOMIZED_BUFFER_H_
 
-#include "CopyableBuffer.h"
+#include <testlib/CopyableBuffer.h>
 #include "Random.h"
 
 namespace opendnp3
 {
 
-class RandomizedBuffer : public CopyableBuffer
+class RandomizedBuffer : public testlib::CopyableBuffer
 {
 
 public:

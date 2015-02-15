@@ -30,14 +30,14 @@
 #include <opendnp3/app/AppConstants.h>
 
 #include "ProtocolUtil.h"
-#include "BufferHelpers.h"
+#include <testlib/BufferHelpers.h>
 #include "LoopbackPhysicalLayer.h"
 
 using namespace std;
 using namespace opendnp3;
 using namespace openpal;
 using namespace asiopal;
-using namespace boost;
+using namespace testlib;
 
 #define SUITE(name) "TransportLoopbackTestSuite - " name
 

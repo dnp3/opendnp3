@@ -20,7 +20,7 @@
  */
 #include "CopyableBuffer.h"
 
-#include <testlib/HexConversions.h>
+#include "HexConversions.h"
 
 #include <memory.h>
 
@@ -29,7 +29,7 @@
 
 using namespace testlib;
 
-namespace opendnp3
+namespace testlib
 {
 
 std::ostream& operator<<(std::ostream& output, const CopyableBuffer& arBuff)

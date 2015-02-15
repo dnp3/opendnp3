@@ -31,7 +31,7 @@
 #include "RandomizedBuffer.h"
 #include "PhysLoopback.h"
 
-#include "BufferHelpers.h"
+#include <testlib/BufferHelpers.h>
 #include "TestObjectASIO.h"
 #include "PhysTestObject.h"
 
@@ -41,6 +41,7 @@ using namespace opendnp3;
 using namespace boost;
 using namespace openpal;
 using namespace asiopal;
+using namespace testlib;
 
 
 #define SUITE(name) "PhysicalLayerTCPSuite - " name

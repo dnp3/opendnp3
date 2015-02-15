@@ -23,7 +23,9 @@
 
 #include <asiodnp3/DefaultMasterApplication.h>
 
-#include "BufferHelpers.h"
+#include <testlib/BufferHelpers.h>
+
+using namespace testlib;
 
 namespace opendnp3
 {

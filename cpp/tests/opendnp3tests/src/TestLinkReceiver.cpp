@@ -23,10 +23,13 @@
 #include "LinkReceiverTest.h"
 #include "DNPHelpers.h"
 
+#include <testlib/BufferHelpers.h>
+
 #include <openpal/container/DynamicBuffer.h>
 
 using namespace openpal;
 using namespace opendnp3;
+using namespace testlib;
 
 
 #define SUITE(name) "LinkParserTestSuite - " name

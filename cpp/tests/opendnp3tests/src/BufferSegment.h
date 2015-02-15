@@ -18,48 +18,16 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __BUFFER_HELPERS_H_
-#define __BUFFER_HELPERS_H_
+#ifndef __BUFFER_SEGMENT_H_
+#define __BUFFER_SEGMENT_H_
 
-#include "CopyableBuffer.h"
-
+#include <testlib/BufferHelpers.h>
 #include <opendnp3/link/ITransportSegment.h>
 
 #include <string>
 
 namespace opendnp3
 {
-
-
-class ByteStr : public CopyableBuffer
-{
-
-public:
-	ByteStr(uint32_t aLength, uint8_t aSeed = 0);
-	ByteStr(const uint8_t* apData, uint32_t aLength);
-	ByteStr(const std::string& aChars);
-	bool operator==(const ByteStr& arRHS) const;
-	std::string ToHex() const;
-};
-
-/**
- * A sequence of hex values in the form "01 02 03 04" that are stored as a ByteStr.
- */
-class HexSequence : public ByteStr
-{
-public:
-	HexSequence(const std::string& aSequence);
-
-	operator openpal::ReadBufferView()
-	{
-		return this->ToReadOnly();
-	}
-
-private:
-	std::string RemoveSpaces(const std::string& aSequence);
-	void RemoveSpacesInPlace(std::string& aSequence);
-	static uint32_t Validate(const std::string& aSequence);
-};
 
 class BufferSegment : public ITransportSegment
 {
@@ -77,7 +45,7 @@ public:
 
 private:
 	uint32_t segmentSize;
-	HexSequence hs;
+	testlib::HexSequence hs;
 	openpal::ReadBufferView remainder;
 };
 

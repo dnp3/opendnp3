@@ -29,7 +29,6 @@
 
 namespace opendnp3
 {
-class ByteStr;
 
 class BufferTestObject
 {
