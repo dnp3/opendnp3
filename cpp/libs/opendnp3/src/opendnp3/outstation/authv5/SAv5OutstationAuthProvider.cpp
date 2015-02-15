@@ -26,11 +26,12 @@
 
 #include "opendnp3/LogLevels.h"
 
+#include "opendnp3/app/parsing/APDUParser.h"
 #include "opendnp3/outstation/OutstationState.h"
-#include "opendnp3/outstation/authv5/AuthRequestAdapter.h"
+#include "opendnp3/outstation/authv5/AuthRequestHandler.h"
 #include "opendnp3/outstation/OutstationActions.h"
 
-#include "AuthRequestParser.h"
+
 
 #include "opendnp3/objects/Group120Var5.h"
 
@@ -98,8 +99,8 @@ void SAv5OutstationAuthProvider::Process(OState& ostate, const APDUHeader& heade
 
 void SAv5OutstationAuthProvider::OnAuthRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
-	AuthRequestAdapter adapter(header, ostate, *this);
-	AuthRequestParser::Parse(objects, adapter, &ostate.logger);
+	AuthRequestHandler handler(header, ostate, *this);
+	APDUParser::ParseSome(objects, handler, AuthRequestHandler::WhiteList, &ostate.logger);
 }
 
 void SAv5OutstationAuthProvider::OnRegularRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)

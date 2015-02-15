@@ -42,19 +42,20 @@ namespace opendnp3
 		}
 		else
 		{
-			const uint16_t SIZE = UInt16::ReadBuffer(objects);
-			if (SIZE == objects.Size()) // must be exactly equal to the remainder
+			const uint16_t FREE_FORMAT_SIZE = UInt16::ReadBuffer(objects);
+			if (FREE_FORMAT_SIZE <= objects.Size())
 			{
+
 				switch (record.enumeration)
 				{
 					case(GroupVariation::Group120Var1) :
-						return ParseFreeFormat(ParseAny<Group120Var1>, record, SIZE, objects, pHandler, pLogger);
+						return ParseFreeFormat(ParseAny<Group120Var1>, record, FREE_FORMAT_SIZE, objects, pHandler, pLogger);
 
 					case(GroupVariation::Group120Var2) :
-						return ParseFreeFormat(ParseAny<Group120Var2>, record, SIZE, objects, pHandler, pLogger);
+						return ParseFreeFormat(ParseAny<Group120Var2>, record, FREE_FORMAT_SIZE, objects, pHandler, pLogger);
 
 					case(GroupVariation::Group120Var6) :
-						return ParseFreeFormat(ParseAny<Group120Var6>, record, SIZE, objects, pHandler, pLogger);
+						return ParseFreeFormat(ParseAny<Group120Var6>, record, FREE_FORMAT_SIZE, objects, pHandler, pLogger);
 
 					default:
 						FORMAT_LOGGER_BLOCK(
@@ -69,8 +70,8 @@ namespace opendnp3
 			}
 			else
 			{
-				FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Unexpected size (%i) in free format (%i, %i)", SIZE, record.group, record.variation);
-				return objects.Size() < SIZE ? ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS : ParseResult::TOO_MUCH_DATA_FOR_OBJECTS;
+				FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Insufficient data (%i) for free format size of (%i)", objects.Size(), FREE_FORMAT_SIZE);
+				return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
 			}
 		}
 	}

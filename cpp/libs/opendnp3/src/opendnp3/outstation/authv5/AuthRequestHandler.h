@@ -18,28 +18,36 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_IAUTHREQUESTPARSERHANDLER_H
-#define OPENDNP3_IAUTHREQUESTPARSERHANDLER_H
+#ifndef OPENDNP3_AUTHREQUESTHANDLER_H
+#define OPENDNP3_AUTHREQUESTHANDLER_H
 
+#include "opendnp3/app/parsing/APDUHandlerBase.h"
+#include "opendnp3/outstation/authv5/IAuthRequestHandler.h"
 
-#include "opendnp3/objects/Group120.h"
-#include "opendnp3/objects/Group120Var1.h"
-#include "opendnp3/objects/Group120Var2.h"
-#include "opendnp3/objects/Group120Var6.h"
+#include "opendnp3/outstation/OutstationState.h"
 
 namespace opendnp3
 {
 
-// handles auth request types
-class IAuthRequestParserHandler
+class AuthRequestHandler : public APDUHandlerBase, private openpal::Uncopyable
 {
 	public:
 
-		virtual void OnAuthChallenge(const Group120Var1& challenge) = 0;
-		virtual void OnAuthReply(const Group120Var2& reply) = 0;
-		virtual void OnRequestKeyStatus(const Group120Var4& status) = 0;
-		virtual void OnChangeSessionKeys(const Group120Var6& change) = 0;
+		AuthRequestHandler(const APDUHeader& header, OState& ostate, IAuthRequestHandler& handler);
+
+		virtual IINField ProcessCountOf(const HeaderRecord& record, const IterableBuffer<Group120Var4>& values) override final;
+		virtual IINField ProcessFreeFormat(const HeaderRecord& record, const Group120Var1& value) override final;
+		virtual IINField ProcessFreeFormat(const HeaderRecord& record, const Group120Var2& value) override final;
+		virtual IINField ProcessFreeFormat(const HeaderRecord& record, const Group120Var6& value) override final;
+
+		static bool WhiteList(uint32_t count, GroupVariation gv, QualifierCode qc);
+
+	private:
+		APDUHeader header;
+		OState* pOState;
+		IAuthRequestHandler* pHandler;
 };
+
 
 }
 

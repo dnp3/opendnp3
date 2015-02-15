@@ -777,9 +777,6 @@
     <ClInclude Include="src\opendnp3\outstation\OutstationAuthConfig.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\authv5\AuthRequestParser.h">
-      <Filter>Header\outstation\authv5</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\app\IINValue.h">
       <Filter>Header\app</Filter>
     </ClInclude>
@@ -831,14 +828,11 @@
     <ClInclude Include="src\opendnp3\outstation\authv5\SecurityState.h">
       <Filter>Header\outstation\authv5</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\authv5\IAuthRequestParserHandler.h">
-      <Filter>Header\outstation\authv5</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\authv5\AuthRequestAdapter.h">
-      <Filter>Header\outstation\authv5</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\app\parsing\FreeFormatParser.h">
       <Filter>Header\app\parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\authv5\AuthRequestHandler.h">
+      <Filter>Header\outstation\authv5</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1271,17 +1265,14 @@
     <ClCompile Include="src\opendnp3\app\parsing\ObjectHeaderParser.cpp">
       <Filter>Source\app\parsing</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\authv5\AuthRequestParser.cpp">
-      <Filter>Source\outstation\authv5</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\authv5\SecurityState.cpp">
-      <Filter>Source\outstation\authv5</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\authv5\AuthRequestAdapter.cpp">
       <Filter>Source\outstation\authv5</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\app\parsing\FreeFormatParser.cpp">
       <Filter>Source\app\parsing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\authv5\AuthRequestHandler.cpp">
+      <Filter>Source\outstation\authv5</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
