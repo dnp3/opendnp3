@@ -35,6 +35,7 @@
     <ClInclude Include="src\openpal\container\Settable.h" />
     <ClInclude Include="src\openpal\container\WriteBufferView.h" />
     <ClInclude Include="src\openpal\crypto\ICryptoProvider.h" />
+    <ClInclude Include="src\openpal\crypto\IHashProvider.h" />
     <ClInclude Include="src\openpal\crypto\MockCryptoProvider.h" />
     <ClInclude Include="src\openpal\executor\Erasure.h" />
     <ClInclude Include="src\openpal\executor\Function1.h" />

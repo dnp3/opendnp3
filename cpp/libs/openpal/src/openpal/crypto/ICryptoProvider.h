@@ -21,36 +21,13 @@
 #ifndef OPENPAL_ICRYPTOPROVIDER_H
 #define OPENPAL_ICRYPTOPROVIDER_H
 
-#include <openpal/container/ReadBufferView.h>
-#include <openpal/container/WriteBufferView.h>
+#include "IHashProvider.h"
 
 #include <memory>
 
 
 namespace openpal
 {
-	/**
-	* Provides an abstract interface to a hashing algorithm
-	*/
-	class IHashProvider
-	{
-	public:
-		virtual ~IHashProvider() {}
-
-		// Describes the required output size
-		virtual uint16_t OutputSizeInBytes() const = 0;
-
-		// Called to reset the state of the provider
-		virtual bool Init() = 0;
-
-		// Add the buffer to the running hash calculation
-		virtual bool Add(const ReadBufferView& input) = 0;
-
-		// copy the digest into the output buffer and reset the state
-		virtual bool Complete(WriteBufferView& output) = 0;
-	};
-
-
 	/**
 	* A provider of cryptographic services. All function are assumed to be thread-safe
 	* such that multiple threads can safely share a single instance of this class.
