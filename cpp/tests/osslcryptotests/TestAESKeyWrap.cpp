@@ -37,35 +37,9 @@ using namespace openpal;
 using namespace osslcrypto;
 using namespace testlib;
 
-void TestKeyWrap(
-	const std::string& kek,
-	const std::string& input,
-	const std::string& ciphertext,
-	bool is256Bit
-	)
-{
-	CryptoProvider provider;
-	HexSequence kekBuffer(kek);
-	HexSequence inputBuffer(input);	
-
-	const uint32_t OUTPUT_SIZE = inputBuffer.Size() + 8;
-
-	DynamicBuffer out(OUTPUT_SIZE);
-	auto outputBuffer = out.GetWriteBufferView();	
-	if (is256Bit)
-	{
-		REQUIRE(provider.WrapKeyAES256(kekBuffer, inputBuffer, outputBuffer));		
-	}
-	else
-	{
-		REQUIRE(provider.WrapKeyAES128(kekBuffer, inputBuffer, outputBuffer));
-	}
-	
-	REQUIRE(outputBuffer.IsEmpty());
-	REQUIRE(ToHex(out.ToReadOnly().Take(OUTPUT_SIZE), false) == ciphertext);
-}
-
-
+// signatures for common testing functions
+void TestKeyWrap(const std::string& kek, const std::string& input, const std::string& ciphertext, bool is256Bit);
+void TestKeyUnwrap(const std::string& kek, const std::string& input, const std::string& ciphertext, bool is256Bit);
 
 /*
 From rfc3394		- 128 bits of Key Data with a 128 - bit KEK
@@ -73,14 +47,14 @@ KEK:				000102030405060708090A0B0C0D0E0F
 Input:				00112233445566778899AABBCCDDEEFF
 Ciphertext:			1FA68B0A8112B447AEF34BD8FB5A7B82 9D3E862371D2CFE5
 */
-TEST_CASE(SUITE("TestKeyWrap128KEK128Data"))
-{	
-	TestKeyWrap(
-		"000102030405060708090A0B0C0D0E0F",
-		"00112233445566778899AABBCCDDEEFF",
-		"1FA68B0A8112B447AEF34BD8FB5A7B829D3E862371D2CFE5",
-		false
-	);	
+TEST_CASE(SUITE("TestKeyWrapUnWrap-128KEK-128Data"))
+{
+	auto kek = "000102030405060708090A0B0C0D0E0F";
+	auto input = "00112233445566778899AABBCCDDEEFF";
+	auto ciphertext = "1FA68B0A8112B447AEF34BD8FB5A7B829D3E862371D2CFE5";
+
+	TestKeyWrap(kek, input, ciphertext, false);
+	TestKeyUnwrap(kek, input, ciphertext, false);
 }
 
 /*
@@ -90,13 +64,68 @@ KEK:				000102030405060708090A0B0C0D0E0F101112131415161718191A1B1C1D1E1F
 Input:				00112233445566778899AABBCCDDEEFF
 Ciphertext:			64E8C3F9CE0F5BA263E9777905818A2A 93C8191E7D6E8AE7
 */
-TEST_CASE(SUITE("TestKeyWrap256KEK128Data"))
-{
-	TestKeyWrap(
-		"000102030405060708090A0B0C0D0E0F101112131415161718191A1B1C1D1E1F",
-		"00112233445566778899AABBCCDDEEFF",		
-		"64E8C3F9CE0F5BA263E9777905818A2A93C8191E7D6E8AE7",
-		true
-		);
+TEST_CASE(SUITE("TestKeyWrapUnWrap-256KEK-128Data"))
+{	
+	auto kek = "000102030405060708090A0B0C0D0E0F101112131415161718191A1B1C1D1E1F";
+	auto input = "00112233445566778899AABBCCDDEEFF";
+	auto ciphertext = "64E8C3F9CE0F5BA263E9777905818A2A93C8191E7D6E8AE7";
+
+	TestKeyWrap(kek, input, ciphertext, true);
+	TestKeyUnwrap(kek, input, ciphertext, true);
 }
 
+void TestKeyWrap(
+	const std::string& kek,
+	const std::string& input,
+	const std::string& ciphertext,
+	bool is256Bit
+	)
+{
+	CryptoProvider provider;
+	HexSequence kekBuffer(kek);
+	HexSequence inputBuffer(input);
+
+	const uint32_t OUTPUT_SIZE = inputBuffer.Size() + 8;
+
+	DynamicBuffer out(OUTPUT_SIZE);
+	auto outputBuffer = out.GetWriteBufferView();
+	if (is256Bit)
+	{
+		REQUIRE(provider.WrapKeyAES256(kekBuffer, inputBuffer, outputBuffer));
+	}
+	else
+	{
+		REQUIRE(provider.WrapKeyAES128(kekBuffer, inputBuffer, outputBuffer));
+	}
+
+	REQUIRE(outputBuffer.IsEmpty());
+	REQUIRE(ToHex(out.ToReadOnly().Take(OUTPUT_SIZE), false) == ciphertext);
+}
+
+void TestKeyUnwrap(
+	const std::string& kek,
+	const std::string& input,
+	const std::string& ciphertext,
+	bool is256Bit
+	)
+{
+	CryptoProvider provider;
+	HexSequence kekBuffer(kek);
+	HexSequence inputBuffer(ciphertext);
+
+	const uint32_t OUTPUT_SIZE = inputBuffer.Size() - 8;
+
+	DynamicBuffer out(OUTPUT_SIZE);
+	auto outputBuffer = out.GetWriteBufferView();
+	if (is256Bit)
+	{
+		REQUIRE(provider.UnwrapKeyAES256(kekBuffer, inputBuffer, outputBuffer));
+	}
+	else
+	{
+		REQUIRE(provider.UnwrapKeyAES128(kekBuffer, inputBuffer, outputBuffer));
+	}
+
+	REQUIRE(outputBuffer.IsEmpty());
+	REQUIRE(ToHex(out.ToReadOnly().Take(OUTPUT_SIZE), false) == input);
+}

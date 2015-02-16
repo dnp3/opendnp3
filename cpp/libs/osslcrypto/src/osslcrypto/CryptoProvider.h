@@ -44,19 +44,17 @@ class CryptoProvider : public openpal::ICryptoProvider, private openpal::Uncopya
 
 	virtual bool GetSecureRandom(openpal::WriteBufferView& buffer) override final;	
 
-	virtual bool WrapKeyAES128(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output) override final
-	{
-		return WrapKeyAES(AESKeyLength::L128, kek, input, output);
-	}
+	virtual bool WrapKeyAES128(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output);
+	virtual bool WrapKeyAES256(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output);
 
-	virtual bool WrapKeyAES256(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output) override final
-	{
-		return WrapKeyAES(AESKeyLength::L256, kek, input, output);
-	}
+	virtual bool UnwrapKeyAES128(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output);
+	virtual bool UnwrapKeyAES256(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output);
 	
 	private:	
 
 	static bool WrapKeyAES(AESKeyLength length, const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output);
+
+	static bool UnwrapKeyAES(AESKeyLength length, const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output);
 
 	static void LockingFunction(int mode, int n, const char *file, int line);
 			

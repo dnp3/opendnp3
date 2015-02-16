@@ -79,6 +79,26 @@ bool CryptoProvider::GetSecureRandom(WriteBufferView& buffer)
 	return RAND_bytes(buffer, buffer.Size()) > 0;
 }
 
+bool CryptoProvider::WrapKeyAES128(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output)
+{
+	return WrapKeyAES(AESKeyLength::L128, kek, input, output);
+}
+
+bool CryptoProvider::WrapKeyAES256(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output)
+{
+	return WrapKeyAES(AESKeyLength::L256, kek, input, output);
+}
+
+bool CryptoProvider::UnwrapKeyAES128(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output)
+{
+	return UnwrapKeyAES(AESKeyLength::L128, kek, input, output);
+}
+
+bool CryptoProvider::UnwrapKeyAES256(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output)
+{
+	return UnwrapKeyAES(AESKeyLength::L256, kek, input, output);
+}
+
 bool CryptoProvider::WrapKeyAES(AESKeyLength length, const ReadBufferView& kek, const ReadBufferView& input, WriteBufferView& output)
 {
 	const int KEY_SIZE = (length == AESKeyLength::L128) ? 16 : 32;
@@ -112,6 +132,45 @@ bool CryptoProvider::WrapKeyAES(AESKeyLength length, const ReadBufferView& kek, 
 
 	// If iv is null, the default IV is used
 	AES_wrap_key(&key, nullptr, output, input, input.Size());
+
+	output.Advance(OUTPUT_SIZE);
+
+	return true;
+}
+
+bool CryptoProvider::UnwrapKeyAES(AESKeyLength length, const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output)
+{
+	const int KEY_SIZE = (length == AESKeyLength::L128) ? 16 : 32;
+	const int KEY_SIZE_BITS = (length == AESKeyLength::L128) ? 128 : 256;
+
+	// the key size must match
+	if (kek.Size() != KEY_SIZE)
+	{
+		return false;
+	}
+
+	// can only unwrap things pre-padded into 64-bit blocks
+	if ((input.Size() < 8) && input.Size() % 8 != 0)
+	{
+		return false;
+	}
+
+	// the wrapped data is always 8 bytes larger than what is output
+	const uint32_t OUTPUT_SIZE = input.Size() - 8;
+	
+	if (output.Size() < OUTPUT_SIZE)
+	{
+		return false;
+	}
+
+	AES_KEY key;
+	if (AES_set_decrypt_key(kek, KEY_SIZE_BITS, &key))
+	{
+		return false;
+	}
+
+	// If iv is null, the default IV is used
+	AES_unwrap_key(&key, nullptr, output, input, input.Size());
 
 	output.Advance(OUTPUT_SIZE);
 
