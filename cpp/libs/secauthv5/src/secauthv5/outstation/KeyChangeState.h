@@ -18,32 +18,23 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTHV5_SECURITYSTATE_H
-#define SECAUTHV5_SECURITYSTATE_H
+#ifndef SECAUTHV5_KEYCHANGESTATE_H
+#define SECAUTHV5_KEYCHANGESTATE_H
 
-#include <opendnp3/gen/KeyStatus.h>
-#include <opendnp3/outstation/DeferredRequest.h>
-
-#include <openpal/crypto/ICryptoProvider.h>
+#include <openpal/container/DynamicBuffer.h>
 
 namespace secauthv5
 {
 
-class IOAuthState;
-
-class SecurityState
+class KeyState
 {
 	public:
 
-	SecurityState(uint32_t maxRxAPDUSize, openpal::ICryptoProvider& crypto);	
-
-	void Reset();
-
-	opendnp3::DeferredRequest deferred;
-	uint32_t keyChangeSeqNum;	
-	openpal::ICryptoProvider* pCrypto;
-	opendnp3::KeyStatus keyStatus;
-	IOAuthState* pState;
+	KeyState();
+	
+	uint32_t keyChangeSeqNum;
+	openpal::DynamicBuffer challengeData;	
+	
 };
 
 }

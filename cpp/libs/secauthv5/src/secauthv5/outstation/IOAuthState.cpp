@@ -32,25 +32,25 @@ namespace secauthv5
 
 	IOAuthState* IOAuthState::IgnoreRegularRequest(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects)
 	{
-		SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "Ignoring regular request");
+		FORMAT_LOG_BLOCK(ostate.logger, flags::WARN, "AuthState: %s - Ignoring regular request", this->GetName());
 		return this;
 	}
 
 	IOAuthState* IOAuthState::IgnoreAuthChallenge(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge)
 	{
-		SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "Ignoring Auth challenge");
+		FORMAT_LOG_BLOCK(ostate.logger, flags::WARN, "AuthState: %s - Ignoring Auth challenge", this->GetName());
 		return this;
 	}
 
 	IOAuthState* IOAuthState::IgnoreAuthReply(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var2& reply)
 	{
-		SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "Ignoring Auth reply");
+		FORMAT_LOG_BLOCK(ostate.logger, flags::WARN, "AuthState: %s - Ignoring Auth reply", this->GetName());
 		return this;
 	}
 
 	IOAuthState* IOAuthState::IgnoreRequestKeyStatus(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var4& status)
 	{
-		FORMAT_LOG_BLOCK(ostate.logger, flags::WARN, "Ignoring key status request for user: %i", status.userNum);
+		FORMAT_LOG_BLOCK(ostate.logger, flags::WARN, "AuthState: %s - Ignoring key status request for user: %u", this->GetName(), status.userNum);
 		return this;
 	}
 

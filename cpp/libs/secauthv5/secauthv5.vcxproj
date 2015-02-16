@@ -19,9 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\secauthv5\AuthConstants.h" />
     <ClInclude Include="src\secauthv5\outstation\AuthRequestHandler.h" />
     <ClInclude Include="src\secauthv5\outstation\IAuthRequestHandler.h" />
     <ClInclude Include="src\secauthv5\outstation\IOAuthState.h" />
+    <ClInclude Include="src\secauthv5\outstation\KeyChangeState.h" />
     <ClInclude Include="src\secauthv5\outstation\OAuthStates.h" />
     <ClInclude Include="src\secauthv5\outstation\SAv5OutstationAuthProvider.h" />
     <ClInclude Include="src\secauthv5\outstation\SecurityState.h" />
@@ -73,24 +75,28 @@
     <Import Project="..\..\..\config\opendnp3_include.props" />
     <Import Project="..\..\..\config\openpal_include.props" />
     <Import Project="..\..\..\config\output_dirs.props" />
+    <Import Project="..\..\..\config\local_dir.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\config\opendnp3_include.props" />
     <Import Project="..\..\..\config\openpal_include.props" />
     <Import Project="..\..\..\config\output_dirs.props" />
+    <Import Project="..\..\..\config\local_dir.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\config\opendnp3_include.props" />
     <Import Project="..\..\..\config\openpal_include.props" />
     <Import Project="..\..\..\config\output_dirs.props" />
+    <Import Project="..\..\..\config\local_dir.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\config\opendnp3_include.props" />
     <Import Project="..\..\..\config\openpal_include.props" />
     <Import Project="..\..\..\config\output_dirs.props" />
+    <Import Project="..\..\..\config\local_dir.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />

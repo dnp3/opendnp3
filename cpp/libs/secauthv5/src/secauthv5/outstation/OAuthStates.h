@@ -37,9 +37,32 @@ namespace secauthv5
 		virtual IOAuthState* OnRequestKeyStatus(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var4& status) override final;
 
 	private:
+
+		virtual const char* GetName() override final { return "Idle"; };
+
 		static OAuthStateIdle instance;
 
 		OAuthStateIdle() {}
+	};
+
+	class OAuthStateWaitForReply : public IOAuthState, private openpal::Uncopyable
+	{
+	public:
+
+		static IOAuthState* Instance() { return &instance; }
+
+		virtual IOAuthState* OnRegularRequest(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects) override final;
+		virtual IOAuthState* OnAuthChallenge(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge) override final;
+		virtual IOAuthState* OnAuthReply(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var2& reply) override final;
+		virtual IOAuthState* OnRequestKeyStatus(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var4& status) override final;
+
+	private:
+
+		virtual const char* GetName() override final { return "WaitForReply"; };
+
+		static OAuthStateWaitForReply instance;
+
+		OAuthStateWaitForReply() {}
 	};
 }
 

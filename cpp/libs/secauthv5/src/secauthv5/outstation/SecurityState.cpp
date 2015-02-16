@@ -28,8 +28,9 @@ using namespace opendnp3;
 namespace secauthv5
 {
 
-	SecurityState::SecurityState(uint32_t maxRxASDUSize, openpal::ICryptoProvider& crypto) :
-		deferred(maxRxASDUSize),
+	SecurityState::SecurityState(uint32_t maxRxAPDUSize, openpal::ICryptoProvider& crypto) :
+		keyChangeSeqNum(0),
+		deferred(maxRxAPDUSize),
 		pCrypto(&crypto),
 		keyStatus(KeyStatus::NOT_INIT),
 		pState(OAuthStateIdle::Instance())
@@ -37,6 +38,7 @@ namespace secauthv5
 
 	void SecurityState::Reset()
 	{
+		keyChangeSeqNum = 0;
 		keyStatus = KeyStatus::NOT_INIT;
 		pState = OAuthStateIdle::Instance();
 	}

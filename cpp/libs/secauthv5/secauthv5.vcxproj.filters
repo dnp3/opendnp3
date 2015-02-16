@@ -35,6 +35,12 @@
     <ClInclude Include="src\secauthv5\outstation\OAuthStates.h">
       <Filter>Header Files\outstation</Filter>
     </ClInclude>
+    <ClInclude Include="src\secauthv5\outstation\KeyChangeState.h">
+      <Filter>Header Files\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\secauthv5\AuthConstants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\secauthv5\outstation\AuthRequestHandler.cpp">

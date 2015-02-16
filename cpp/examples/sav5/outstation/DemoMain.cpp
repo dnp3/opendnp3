@@ -46,8 +46,8 @@ int main(int argc, char* argv[])
 {
 
 	// Specify what log levels to use. NORMAL is warning and above
-	// You can add all the comms logging by uncommenting below.
-	const uint32_t FILTERS = ~0;// levels::NORMAL | flags::APP_HEADER_RX | flags::APP_OBJECT_RX | levels::ALL_COMMS;
+	// You can add all the communication logging by uncommenting below.
+	const uint32_t FILTERS = levels::NORMAL | levels::ALL_APP_COMMS;
 	
 	osslcrypto::CryptoProvider crypto;
 

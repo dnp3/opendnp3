@@ -54,5 +54,27 @@ namespace secauthv5
 	}
 
 	// -------- WaitForReply ----------
+
+	OAuthStateWaitForReply OAuthStateWaitForReply::instance;
+
+	IOAuthState* OAuthStateWaitForReply::OnRegularRequest(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects)
+	{
+		return this->IgnoreRegularRequest(sstate, ostate, header, objects);
+	}
+
+	IOAuthState* OAuthStateWaitForReply::OnAuthChallenge(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge)
+	{
+		return this->IgnoreAuthChallenge(sstate, ostate, header, challenge);
+	}
+
+	IOAuthState* OAuthStateWaitForReply::OnAuthReply(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var2& reply)
+	{
+		return this->IgnoreAuthReply(sstate, ostate, header, reply);
+	}
+
+	IOAuthState* OAuthStateWaitForReply::OnRequestKeyStatus(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var4& status)
+	{
+		return this->IgnoreRequestKeyStatus(sstate, ostate, header, status);
+	}
 }
 
