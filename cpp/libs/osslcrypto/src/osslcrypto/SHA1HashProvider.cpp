@@ -25,6 +25,20 @@
 
 namespace osslcrypto
 {
+	bool SHA1HashProvider::CalcHash(const openpal::ReadBufferView& input, openpal::WriteBufferView& output)
+	{
+		if (output.Size() < OUTPUT_SIZE)
+		{
+			return false;
+		}
+		else
+		{
+			SHA1(input, input.Size(), output);
+			output.Advance(OUTPUT_SIZE);
+			return true;
+		}
+	}
+
 	// Called to reset the state of the provider
 	bool SHA1HashProvider::Init()
 	{
@@ -40,7 +54,7 @@ namespace osslcrypto
 	// copy the digest into the output buffer and reset the state
 	bool SHA1HashProvider::Complete(openpal::WriteBufferView& output)
 	{
-		if (output.Size() < 20)
+		if (output.Size() < OUTPUT_SIZE)
 		{
 			return false;
 		}
@@ -50,7 +64,7 @@ namespace osslcrypto
 			bool success = SHA1_Final(output, &ctx) > 0;
 			if (success)
 			{
-				output.Advance(20);
+				output.Advance(OUTPUT_SIZE);
 			}
 			return success;
 		}		

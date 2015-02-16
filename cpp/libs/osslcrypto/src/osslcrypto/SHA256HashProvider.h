@@ -19,8 +19,8 @@
 * to you under the terms of the License.
 */
 
-#ifndef OSSLCRYPTO_SHA1HASHPROVIDER_H
-#define OSSLCRYPTO_SHA1HASHPROVIDER_H
+#ifndef OSSLCRYPTO_SHA256HASHPROVIDER_H
+#define OSSLCRYPTO_SHA256HASHPROVIDER_H
 
 #include <openpal/crypto/ICryptoProvider.h>
 #include <openpal/util/Uncopyable.h>
@@ -31,14 +31,13 @@
 namespace osslcrypto
 {
 
-	class SHA1HashProvider : public openpal::IHashProvider, private openpal::Uncopyable
+	class SHA256HashProvider : public openpal::IHashProvider, private openpal::Uncopyable
 	{
 		public:
 
-		static const uint16_t OUTPUT_SIZE = 20;
-
+		static const uint16_t OUTPUT_SIZE = 32;
 		static bool CalcHash(const openpal::ReadBufferView& input, openpal::WriteBufferView& output);
-		
+
 		virtual uint16_t OutputSizeInBytes() const override final { return OUTPUT_SIZE; }
 
 		// Called to reset the state of the provider
@@ -50,9 +49,9 @@ namespace osslcrypto
 		// copy the digest into the output buffer and reset the state
 		virtual bool Complete(openpal::WriteBufferView& output) override final;
 
-		private:		
-
-		SHA_CTX ctx;
+		private:
+		
+		SHA256_CTX ctx;
 	};
 }
 

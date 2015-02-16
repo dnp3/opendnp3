@@ -30,19 +30,20 @@
 #include <thread>
 #include <atomic>
 
-#define SUITE(name) "SHA1TestSuite - " name
+#define SUITE(name) "SHATestSuite - " name
 
 using namespace std;
 using namespace openpal;
 using namespace osslcrypto;
 using namespace testlib;
 
-std::string data = "DE AD BE EF";
-std::string digest = "D7 8F 8B B9 92 A5 6A 59 7F 6C 7A 1F B9 18 BB 78 27 13 67 EB";
+auto inputString = "DEADBEEF";
+auto digestSHA1 = "D78F8BB992A56A597F6C7A1FB918BB78271367EB";
+auto digestSHA256 = "5F78C33274E43FA9DE5659265C1D917E25C03722DCB0B8D27DB8D5FEAA813953";
 
-TEST_CASE(SUITE("TestSHA1"))
+TEST_CASE(SUITE("SHA1"))
 {			
-	HexSequence input(data);
+	HexSequence input(inputString);
 	DynamicBuffer output(20);
 
 	CryptoProvider crypto;
@@ -50,12 +51,12 @@ TEST_CASE(SUITE("TestSHA1"))
 	REQUIRE(crypto.CalcSHA1(input.ToReadOnly(), write));
 	REQUIRE(write.IsEmpty());
 
-	REQUIRE(ToHex(output.ToReadOnly()) == digest);
+	REQUIRE(ToHex(output.ToReadOnly(), false) == digestSHA1);
 }
 
-TEST_CASE(SUITE("TestIncrementalSHA1"))
+TEST_CASE(SUITE("IncrementalSHA1"))
 {
-	HexSequence input(data);
+	HexSequence input(inputString);
 	DynamicBuffer output(20);
 
 	CryptoProvider crypto;	
@@ -70,9 +71,40 @@ TEST_CASE(SUITE("TestIncrementalSHA1"))
 		REQUIRE(provider->Add(input.ToReadOnly().Skip(2)));
 		REQUIRE(provider->Complete(write));		
 		REQUIRE(write.IsEmpty());
-		REQUIRE(ToHex(output.ToReadOnly()) == digest);
-	}
-	
+		REQUIRE(ToHex(output.ToReadOnly(), false) == digestSHA1);
+	}	
+}
 
-	
+TEST_CASE(SUITE("SHA256"))
+{
+	HexSequence input(inputString);
+	DynamicBuffer output(32);
+
+	CryptoProvider crypto;
+	auto write = output.GetWriteBufferView();
+	REQUIRE(crypto.CalcSHA256(input.ToReadOnly(), write));
+	REQUIRE(write.IsEmpty());
+
+	REQUIRE(ToHex(output.ToReadOnly(), false) == digestSHA256);
+}
+
+TEST_CASE(SUITE("IncrementalSHA256"))
+{
+	HexSequence input(inputString);
+	DynamicBuffer output(32);
+
+	CryptoProvider crypto;
+
+	auto provider = crypto.CreateSHA256Provider();
+
+	for (int i = 0; i < 2; ++i)
+	{
+		auto write = output.GetWriteBufferView();
+		REQUIRE(provider->Init());
+		REQUIRE(provider->Add(input.ToReadOnly().Take(2)));
+		REQUIRE(provider->Add(input.ToReadOnly().Skip(2)));
+		REQUIRE(provider->Complete(write));
+		REQUIRE(write.IsEmpty());
+		REQUIRE(ToHex(output.ToReadOnly(), false) == digestSHA256);
+	}
 }

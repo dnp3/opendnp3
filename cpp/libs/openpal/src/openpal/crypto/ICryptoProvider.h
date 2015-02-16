@@ -82,7 +82,15 @@ namespace openpal
 		virtual std::unique_ptr<IHashProvider> CreateSHA1Provider() = 0;
 
 		// Calculates a SHA1 hash out in single input buffer
-		virtual bool CalcSHA1(const ReadBufferView& input, WriteBufferView& output) = 0;		
+		virtual bool CalcSHA1(const ReadBufferView& input, WriteBufferView& output) = 0;
+
+		/// --- Functions related to SHA256 ----
+
+		// Dynamically creates a provider that can incrementally calculate a SHA256 hash
+		virtual std::unique_ptr<IHashProvider> CreateSHA256Provider() = 0;
+
+		// Calculates a SHA1 hash out in single input buffer
+		virtual bool CalcSHA256(const ReadBufferView& input, WriteBufferView& output) = 0;
 	};
 
 }

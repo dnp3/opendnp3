@@ -53,8 +53,11 @@ class CryptoProvider : public openpal::ICryptoProvider, private openpal::Uncopya
 	virtual bool WrapKeyAES256(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output) override final;
 	virtual bool UnwrapKeyAES256(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output) override final;
 
-	virtual bool CalcSHA1(const openpal::ReadBufferView& input, openpal::WriteBufferView& output) override final;
 	virtual std::unique_ptr<openpal::IHashProvider> CreateSHA1Provider() override final;
+	virtual bool CalcSHA1(const openpal::ReadBufferView& input, openpal::WriteBufferView& output) override final;
+	
+	virtual std::unique_ptr<openpal::IHashProvider> CreateSHA256Provider() override final;
+	virtual bool CalcSHA256(const openpal::ReadBufferView& input, openpal::WriteBufferView& output) override final;
 	
 	private:	
 

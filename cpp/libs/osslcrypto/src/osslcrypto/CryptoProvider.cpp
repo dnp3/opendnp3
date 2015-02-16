@@ -20,7 +20,9 @@
 */
 
 #include "CryptoProvider.h"
+
 #include "SHA1HashProvider.h"
+#include "SHA256HashProvider.h"
 
 #include <openssl/rand.h>
 #include <openssl/crypto.h>
@@ -101,23 +103,24 @@ bool CryptoProvider::UnwrapKeyAES256(const openpal::ReadBufferView& kek, const o
 	return UnwrapKeyAES(AESKeyLength::L256, kek, input, output);
 }
 
-bool CryptoProvider::CalcSHA1(const ReadBufferView& input, WriteBufferView& output)
-{
-	if (output.Size() < 20)
-	{
-		return false;
-	}
-	else
-	{
-		SHA1(input, input.Size(), output);
-		output.Advance(20);
-		return true;
-	}	
-}
-
 std::unique_ptr<openpal::IHashProvider> CryptoProvider::CreateSHA1Provider()
 {
 	return std::make_unique<SHA1HashProvider>();
+}
+
+bool CryptoProvider::CalcSHA1(const ReadBufferView& input, WriteBufferView& output)
+{
+	return SHA1HashProvider::CalcHash(input, output);
+}
+
+std::unique_ptr<openpal::IHashProvider> CryptoProvider::CreateSHA256Provider()
+{
+	return std::make_unique<SHA256HashProvider>();
+}
+
+bool CryptoProvider::CalcSHA256(const openpal::ReadBufferView& input, openpal::WriteBufferView& output)
+{
+	return SHA256HashProvider::CalcHash(input, output);
 }
 
 bool CryptoProvider::WrapKeyAES(AESKeyLength length, const ReadBufferView& kek, const ReadBufferView& input, WriteBufferView& output)

@@ -19,41 +19,56 @@
 * to you under the terms of the License.
 */
 
-#ifndef OSSLCRYPTO_SHA1HASHPROVIDER_H
-#define OSSLCRYPTO_SHA1HASHPROVIDER_H
+#include "SHA256HashProvider.h"
 
-#include <openpal/crypto/ICryptoProvider.h>
-#include <openpal/util/Uncopyable.h>
-
-#include <openssl/sha.h>
-
+#include <assert.h>
 
 namespace osslcrypto
 {
-
-	class SHA1HashProvider : public openpal::IHashProvider, private openpal::Uncopyable
+	bool SHA256HashProvider::CalcHash(const openpal::ReadBufferView& input, openpal::WriteBufferView& output)
 	{
-		public:
+		if (output.Size() < OUTPUT_SIZE)
+		{
+			return false;
+		}
+		else
+		{
+			SHA256(input, input.Size(), output);
+			output.Advance(OUTPUT_SIZE);
+			return true;
+		}
+	}
 
-		static const uint16_t OUTPUT_SIZE = 20;
+	// Called to reset the state of the provider
+	bool SHA256HashProvider::Init()
+	{
+		return SHA256_Init(&ctx) > 0;
+	}
 
-		static bool CalcHash(const openpal::ReadBufferView& input, openpal::WriteBufferView& output);
-		
-		virtual uint16_t OutputSizeInBytes() const override final { return OUTPUT_SIZE; }
+	// Add the buffer to the running hash calculation
+	bool SHA256HashProvider::Add(const openpal::ReadBufferView& input)
+	{
+		return SHA256_Update(&ctx, input, input.Size()) > 0;
+	}
 
-		// Called to reset the state of the provider
-		virtual bool Init() override final;
+	// copy the digest into the output buffer and reset the state
+	bool SHA256HashProvider::Complete(openpal::WriteBufferView& output)
+	{
+		if (output.Size() < OUTPUT_SIZE)
+		{
+			return false;
+		}
+		else
+		{
 
-		// Add the buffer to the running hash calculation
-		virtual bool Add(const openpal::ReadBufferView& input) override final;
+			bool success = SHA256_Final(output, &ctx) > 0;
+			if (success)
+			{
+				output.Advance(OUTPUT_SIZE);
+			}
+			return success;
+		}		
+	}
 
-		// copy the digest into the output buffer and reset the state
-		virtual bool Complete(openpal::WriteBufferView& output) override final;
-
-		private:		
-
-		SHA_CTX ctx;
-	};
 }
 
-#endif
