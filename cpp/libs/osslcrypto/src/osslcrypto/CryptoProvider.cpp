@@ -79,23 +79,41 @@ bool CryptoProvider::GetSecureRandom(WriteBufferView& buffer)
 	return RAND_bytes(buffer, buffer.Size()) > 0;
 }
 
-bool CryptoProvider::Aes128KeyWrap(const ReadBufferView& kek, const ReadBufferView& input, WriteBufferView& output)
+bool CryptoProvider::WrapKeyAES(AESKeyLength length, const ReadBufferView& kek, const ReadBufferView& input, WriteBufferView& output)
 {
-	// If iv is null, the default IV is used
-	if (kek.Size() != 16)
+	const int KEY_SIZE = (length == AESKeyLength::L128) ? 16 : 32;
+	const int KEY_SIZE_BITS = (length == AESKeyLength::L128) ? 128 : 256;
+
+	// the key size must match
+	if (kek.Size() != KEY_SIZE)
 	{
 		return false;
 	}	
+
+	// can only wrap things pre-padded into 64-bit blocks
+	if (input.Size() % 8 != 0)
+	{
+		return false;
+	}
+
+	const uint32_t OUTPUT_SIZE = input.Size() + 8;
+
+	// the wrapped data is always 8 bytes larger than the input
+	if (output.Size() < OUTPUT_SIZE)
+	{
+		return false;
+	}
 
 	AES_KEY key;
-	if (AES_set_encrypt_key(kek, 128, &key))
+	if (AES_set_encrypt_key(kek, KEY_SIZE_BITS, &key))
 	{
 		return false;
 	}	
 
+	// If iv is null, the default IV is used
 	AES_wrap_key(&key, nullptr, output, input, input.Size());
 
-	output.Advance(input.Size() + 8);
+	output.Advance(OUTPUT_SIZE);
 
 	return true;
 }

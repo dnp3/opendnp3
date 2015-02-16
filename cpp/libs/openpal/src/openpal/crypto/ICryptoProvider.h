@@ -33,11 +33,17 @@ namespace openpal
 		
 		virtual ~ICryptoProvider() {}
 
-		// return true if the specified buffer can be completely filled with secure random numbers
-		// Implementations could return false for any reason including lack of entropy
+		/** 
+		 * Fill the specified buffer with secure random bytes
+		 *
+	     * @return true if the specified buffer can be completely filled with secure random numbers		 
+		*/
 		virtual bool GetSecureRandom(WriteBufferView& buffer) = 0;
+		
 
-		virtual bool Aes128KeyWrap(const ReadBufferView& kek, const ReadBufferView& input, WriteBufferView& output) = 0;
+		virtual bool WrapKeyAES128(const ReadBufferView& kek, const ReadBufferView& input, WriteBufferView& output) = 0;
+
+		virtual bool KeyWrapAES256(const ReadBufferView& kek, const ReadBufferView& input, WriteBufferView& output) = 0;
 
 	};
 

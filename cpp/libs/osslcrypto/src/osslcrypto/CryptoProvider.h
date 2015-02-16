@@ -34,13 +34,29 @@ namespace osslcrypto
 */
 class CryptoProvider : public openpal::ICryptoProvider, private openpal::Uncopyable
 {	
+	enum class AESKeyLength : uint8_t
+	{
+		L128,
+		L256
+	};
+
 	public:	
 
 	virtual bool GetSecureRandom(openpal::WriteBufferView& buffer) override final;	
 
-	virtual bool Aes128KeyWrap(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output) override final;
+	virtual bool WrapKeyAES128(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output) override final
+	{
+		return WrapKeyAES(AESKeyLength::L128, kek, input, output);
+	}
 
+	virtual bool KeyWrapAES256(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output) override final
+	{
+		return WrapKeyAES(AESKeyLength::L256, kek, input, output);
+	}
+	
 	private:	
+
+	static bool WrapKeyAES(AESKeyLength length, const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output);
 
 	static void LockingFunction(int mode, int n, const char *file, int line);
 			
