@@ -18,29 +18,29 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef SECAUTHV5_OAUTHSTATES_H
+#define SECAUTHV5_OAUTHSTATES_H
 
-#include "SecurityState.h"
-
-#include "OAuthStates.h"
-
-using namespace opendnp3;
+#include "IOAuthState.h"
 
 namespace secauthv5
 {
-
-	SecurityState::SecurityState(uint32_t maxRxASDUSize, openpal::ICryptoProvider& crypto) :
-		deferred(maxRxASDUSize),
-		pCrypto(&crypto),
-		keyStatus(KeyStatus::NOT_INIT),
-		pState(OAuthStateIdle::Instance())
-	{}
-
-	void SecurityState::Reset()
+	class OAuthStateIdle : public IOAuthState, private openpal::Uncopyable
 	{
-		keyStatus = KeyStatus::NOT_INIT;
-		pState = OAuthStateIdle::Instance();
-	}
+	public:
 
+		static IOAuthState* Instance() { return &instance; }
+
+		virtual IOAuthState* OnRegularRequest(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects) override final;
+		virtual IOAuthState* OnAuthChallenge(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge) override final;
+		virtual IOAuthState* OnAuthReply(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var2& reply) override final;
+		virtual IOAuthState* OnRequestKeyStatus(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var4& status) override final;
+
+	private:
+		static OAuthStateIdle instance;
+
+		OAuthStateIdle() {}
+	};
 }
 
-
+#endif

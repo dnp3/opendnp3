@@ -26,9 +26,10 @@
 
 #include <openpal/crypto/ICryptoProvider.h>
 
-
 namespace secauthv5
 {
+
+class IOAuthState;
 
 class SecurityState
 {
@@ -41,6 +42,7 @@ class SecurityState
 	opendnp3::DeferredRequest deferred;
 	openpal::ICryptoProvider* pCrypto;
 	opendnp3::KeyStatus keyStatus;
+	IOAuthState* pState;
 };
 
 }

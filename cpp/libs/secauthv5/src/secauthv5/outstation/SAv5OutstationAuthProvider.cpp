@@ -31,8 +31,8 @@
 #include "opendnp3/outstation/OutstationActions.h"
 
 #include "AuthRequestHandler.h"
+#include "IOAuthState.h"
 
-#include "opendnp3/objects/Group120Var5.h"
 
 using namespace openpal;
 using namespace opendnp3;
@@ -82,18 +82,18 @@ void SAv5OutstationAuthProvider::Process(OState& ostate, const APDUHeader& heade
 	// examine the function code to determine what kind of ASDU it is
 	switch (header.function)
 	{
-	case(FunctionCode::AUTH_REQUEST) :
-		this->OnAuthRequest(ostate, header, objects);
-		break;
-	case(FunctionCode::AUTH_RESPONSE) :
-		SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "Auth response not valid for outstation");
-		break;
-	case(FunctionCode::AUTH_REQUEST_NO_ACK) :
-		SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "AuthRequestNoAck not supported");
-		break;
-	default:
-		this->OnRegularRequest(ostate, header, objects);
-		break;
+		case(FunctionCode::AUTH_REQUEST) :
+			this->OnAuthRequest(ostate, header, objects);
+			break;
+		case(FunctionCode::AUTH_RESPONSE) :
+			SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "Auth response not valid for outstation");
+			break;
+		case(FunctionCode::AUTH_REQUEST_NO_ACK) :
+			SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "AuthRequestNoAck not supported");
+			break;
+		default:
+			this->OnRegularRequest(ostate, header, objects);
+			break;
 	}
 }
 
@@ -104,42 +104,43 @@ void SAv5OutstationAuthProvider::OnAuthRequest(OState& ostate, const APDUHeader&
 }
 
 void SAv5OutstationAuthProvider::OnRegularRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
-{
-	SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "Regular requests not supported yet");
+{	
+	sstate.pState = sstate.pState->OnRegularRequest(sstate, ostate, header, objects);
 }
 
 void SAv5OutstationAuthProvider::OnAuthChallenge(OState& ostate, const APDUHeader& header, const Group120Var1& challenge)
-{
-	SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "Auth challenge not supported yet");
+{	
+	sstate.pState = sstate.pState->OnAuthChallenge(sstate, ostate, header, challenge);
 }
 
 void SAv5OutstationAuthProvider::OnAuthReply(OState& ostate, const APDUHeader& header, const Group120Var2& reply)
-{
-	SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "Auth reply not supported yet");
+{	
+	sstate.pState = sstate.pState->OnAuthReply(sstate, ostate, header, reply);
 }
 
 void SAv5OutstationAuthProvider::OnRequestKeyStatus(OState& ostate, const APDUHeader& header, const Group120Var4& status)
-{
-	FORMAT_LOG_BLOCK(ostate.logger, flags::WARN, "Received key status request for user: %i", status.userNum);
-	
-	uint8_t data[4];
-	sstate.pCrypto->GetSecureRandom(WriteBufferView(data, 4));
-
-	Group120Var5 gv;
-	gv.keyChangeSeqNum = 1;
-	gv.userNum = status.userNum;
-	gv.keywrapAlgorithm = KeyWrapAlgorithm::AES_128;
-	gv.keyStatus = KeyStatus::NOT_INIT;
-	gv.hmacType = HMACType::HMAC_SHA1_TRUNC_10;
-	gv.challengeData = ReadBufferView(data, 4);
-
-	auto rsp = ostate.sol.tx.Start();
-	rsp.SetControl(header.control);
-	rsp.SetFunction(FunctionCode::AUTH_RESPONSE);
-	rsp.GetWriter().WriteFreeFormat(gv);
-	OActions::BeginResponseTx(ostate, rsp.ToReadOnly());
-	
+{	
+	sstate.pState = sstate.pState->OnRequestKeyStatus(sstate, ostate, header, status);	
 }
+
+/*
+uint8_t data[4];
+sstate.pCrypto->GetSecureRandom(WriteBufferView(data, 4));
+
+Group120Var5 gv;
+gv.keyChangeSeqNum = 1;
+gv.userNum = status.userNum;
+gv.keywrapAlgorithm = KeyWrapAlgorithm::AES_128;
+gv.keyStatus = KeyStatus::NOT_INIT;
+gv.hmacType = HMACType::HMAC_SHA1_TRUNC_10;
+gv.challengeData = ReadBufferView(data, 4);
+
+auto rsp = ostate.sol.tx.Start();
+rsp.SetControl(header.control);
+rsp.SetFunction(FunctionCode::AUTH_RESPONSE);
+rsp.GetWriter().WriteFreeFormat(gv);
+OActions::BeginResponseTx(ostate, rsp.ToReadOnly());
+*/
 
 void SAv5OutstationAuthProvider::OnChangeSessionKeys(OState& ostate, const APDUHeader& header, const Group120Var6& change)
 {
