@@ -18,36 +18,30 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_AUTHREQUESTHANDLER_H
-#define OPENDNP3_AUTHREQUESTHANDLER_H
+#ifndef SECAUTHV5_SECURITYSTATE_H
+#define SECAUTHV5_SECURITYSTATE_H
 
-#include "opendnp3/app/parsing/APDUHandlerBase.h"
-#include "opendnp3/outstation/authv5/IAuthRequestHandler.h"
+#include <opendnp3/gen/KeyStatus.h>
+#include <opendnp3/outstation/DeferredRequest.h>
 
-#include "opendnp3/outstation/OutstationState.h"
+#include <openpal/crypto/ICryptoProvider.h>
 
-namespace opendnp3
+
+namespace secauthv5
 {
 
-class AuthRequestHandler : public APDUHandlerBase, private openpal::Uncopyable
+class SecurityState
 {
 	public:
 
-		AuthRequestHandler(const APDUHeader& header, OState& ostate, IAuthRequestHandler& handler);
+	SecurityState(uint32_t maxRxASDUSize, openpal::ICryptoProvider& crypto);	
 
-		virtual IINField ProcessCountOf(const HeaderRecord& record, const IterableBuffer<Group120Var4>& values) override final;
-		virtual IINField ProcessFreeFormat(const HeaderRecord& record, const Group120Var1& value) override final;
-		virtual IINField ProcessFreeFormat(const HeaderRecord& record, const Group120Var2& value) override final;
-		virtual IINField ProcessFreeFormat(const HeaderRecord& record, const Group120Var6& value) override final;
+	void Reset();
 
-		static bool WhiteList(uint32_t count, GroupVariation gv, QualifierCode qc);
-
-	private:
-		APDUHeader header;
-		OState* pOState;
-		IAuthRequestHandler* pHandler;
+	opendnp3::DeferredRequest deferred;
+	openpal::ICryptoProvider* pCrypto;
+	opendnp3::KeyStatus keyStatus;
 };
-
 
 }
 

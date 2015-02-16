@@ -9,5 +9,36 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
+    <Filter Include="Header Files\outstation">
+      <UniqueIdentifier>{a428039b-52bd-467b-a90e-497383a1c444}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\outstation">
+      <UniqueIdentifier>{3496c871-23d7-4901-b49a-3849c7662daf}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\secauthv5\outstation\AuthRequestHandler.h">
+      <Filter>Header Files\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\secauthv5\outstation\IAuthRequestHandler.h">
+      <Filter>Header Files\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\secauthv5\outstation\SAv5OutstationAuthProvider.h">
+      <Filter>Header Files\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\secauthv5\outstation\SecurityState.h">
+      <Filter>Header Files\outstation</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\secauthv5\outstation\AuthRequestHandler.cpp">
+      <Filter>Source Files\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\secauthv5\outstation\SAv5OutstationAuthProvider.cpp">
+      <Filter>Source Files\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\secauthv5\outstation\SecurityState.cpp">
+      <Filter>Source Files\outstation</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

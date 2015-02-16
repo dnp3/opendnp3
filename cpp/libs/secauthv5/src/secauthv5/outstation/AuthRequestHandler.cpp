@@ -22,10 +22,11 @@
 #include "AuthRequestHandler.h"
 
 #include <openpal/logging/LogMacros.h>
+#include <opendnp3/LogLevels.h>
 
-#include "opendnp3/LogLevels.h"
+using namespace opendnp3;
 
-namespace opendnp3
+namespace secauthv5
 {
 
 

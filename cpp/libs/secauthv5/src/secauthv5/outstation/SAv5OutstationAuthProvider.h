@@ -23,18 +23,18 @@
 
 #include "opendnp3/outstation/IOutstationAuthProvider.h"
 
-#include "opendnp3/outstation/authv5/SecurityState.h"
-#include "opendnp3/outstation/authv5/IAuthRequestHandler.h"
+#include "SecurityState.h"
+#include "IAuthRequestHandler.h"
 
 #include <openpal/util/Uncopyable.h>
 
-namespace opendnp3
+namespace secauthv5
 {
 
 /**
 	SAv5 authentication provider
 */
-class SAv5OutstationAuthProvider : private openpal::Uncopyable, public IOutstationAuthProvider, private IAuthRequestHandler
+class SAv5OutstationAuthProvider : private openpal::Uncopyable, public opendnp3::IOutstationAuthProvider, private IAuthRequestHandler
 {
 	public:
 
@@ -42,27 +42,27 @@ class SAv5OutstationAuthProvider : private openpal::Uncopyable, public IOutstati
 
 	virtual void Reset() override final;	
 
-	virtual void CheckState(OState& ostate) override final;
+	virtual void CheckState(opendnp3::OState& ostate) override final;
 		
-	virtual void OnReceive(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects) override final;
+	virtual void OnReceive(opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects) override final;
 
 	private:
 
-	void Process(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
+		void Process(opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects);
 
-	void OnAuthRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
+		void OnAuthRequest(opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects);
 
-	void OnRegularRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
+		void OnRegularRequest(opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects);
 
 	//// --- IAuthRequestHandler ----
 
-	virtual void OnAuthChallenge(OState& ostate, const APDUHeader& header, const Group120Var1& challenge) override final;
+	virtual void OnAuthChallenge(opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge) override final;
 
-	virtual void OnAuthReply(OState& ostate, const APDUHeader& header, const Group120Var2& reply) override final;
+	virtual void OnAuthReply(opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var2& reply) override final;
 
-	virtual void OnRequestKeyStatus(OState& ostate, const APDUHeader& header, const Group120Var4& status) override final;
+	virtual void OnRequestKeyStatus(opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var4& status) override final;
 
-	virtual void OnChangeSessionKeys(OState& ostate, const APDUHeader& header, const Group120Var6& change) override final;
+	virtual void OnChangeSessionKeys(opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change) override final;
 
 	/// --- State ---
 

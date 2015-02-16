@@ -49,12 +49,6 @@
     <Filter Include="Source\objects">
       <UniqueIdentifier>{0b493176-d799-4316-ab2e-a4420d0a486e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header\outstation\authv5">
-      <UniqueIdentifier>{fffd1339-2423-405e-99d9-20de3036b491}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\outstation\authv5">
-      <UniqueIdentifier>{1b5b0a02-2da2-43a5-b7a1-45008b99f6ab}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header\app\parsing">
       <UniqueIdentifier>{b1556352-0d0f-4db2-bd28-8ff0c724c954}</UniqueIdentifier>
     </Filter>
@@ -759,9 +753,6 @@
     <ClInclude Include="src\opendnp3\outstation\NullOutstationAuthProvider.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\authv5\SAv5OutstationAuthProvider.h">
-      <Filter>Header\outstation\authv5</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\app\Functions.h">
       <Filter>Header\app</Filter>
     </ClInclude>
@@ -769,9 +760,6 @@
       <Filter>Header\gen</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\OutstationAuth.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\OutstationAuthFactory.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\OutstationAuthConfig.h">
@@ -825,14 +813,8 @@
     <ClInclude Include="src\opendnp3\app\parsing\ObjectHeaderParser.h">
       <Filter>Header\app\parsing</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\authv5\SecurityState.h">
-      <Filter>Header\outstation\authv5</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\app\parsing\FreeFormatParser.h">
       <Filter>Header\app\parsing</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\authv5\AuthRequestHandler.h">
-      <Filter>Header\outstation\authv5</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1229,14 +1211,8 @@
     <ClCompile Include="src\opendnp3\outstation\NullOutstationAuthProvider.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\authv5\SAv5OutstationAuthProvider.cpp">
-      <Filter>Source\outstation\authv5</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\app\Functions.cpp">
       <Filter>Source\app</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\OutstationAuthFactory.cpp">
-      <Filter>Source\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\app\parsing\APDUHeaderParser.cpp">
       <Filter>Source\app\parsing</Filter>
@@ -1265,14 +1241,8 @@
     <ClCompile Include="src\opendnp3\app\parsing\ObjectHeaderParser.cpp">
       <Filter>Source\app\parsing</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\authv5\SecurityState.cpp">
-      <Filter>Source\outstation\authv5</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\app\parsing\FreeFormatParser.cpp">
       <Filter>Source\app\parsing</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\authv5\AuthRequestHandler.cpp">
-      <Filter>Source\outstation\authv5</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -18,34 +18,25 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_OUTSTATIONAUTHFACTORY_H
-#define OPENDNP3_OUTSTATIONAUTHFACTORY_H
 
-#include <openpal/util/Uncopyable.h>
-#include <openpal/crypto/ICryptoProvider.h>
+#include "SecurityState.h"
 
-#include "opendnp3/outstation/OutstationStackConfig.h"
-#include "opendnp3/outstation/IOutstationAuthProvider.h"
+using namespace opendnp3;
 
-#include <memory>
-
-namespace opendnp3
+namespace secauthv5
 {
-	/** 
-		Factory methods which create an auth provider from configuration and a ICryptoProvider instance
-	*/
-	class OutstationAuthFactory : private openpal::PureStatic
+
+	SecurityState::SecurityState(uint32_t maxRxASDUSize, openpal::ICryptoProvider& crypto) :
+		deferred(maxRxASDUSize),
+		pCrypto(&crypto),
+		keyStatus(KeyStatus::NOT_INIT)
+	{}
+
+	void SecurityState::Reset()
 	{
-		public:
-
-		static std::unique_ptr<IOutstationAuthProvider> Create(const OutstationStackConfig& config, openpal::ICryptoProvider* pCrypto);
-
-		private:
-
-		static std::unique_ptr<IOutstationAuthProvider> CreateSAv5Provider(const OutstationStackConfig& config, openpal::ICryptoProvider* pCrypto);
-	};
+		keyStatus = KeyStatus::NOT_INIT;
+	}
 
 }
 
-#endif
 

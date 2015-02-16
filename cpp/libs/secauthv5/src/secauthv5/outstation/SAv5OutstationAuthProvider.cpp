@@ -28,16 +28,16 @@
 
 #include "opendnp3/app/parsing/APDUParser.h"
 #include "opendnp3/outstation/OutstationState.h"
-#include "opendnp3/outstation/authv5/AuthRequestHandler.h"
 #include "opendnp3/outstation/OutstationActions.h"
 
-
+#include "AuthRequestHandler.h"
 
 #include "opendnp3/objects/Group120Var5.h"
 
 using namespace openpal;
+using namespace opendnp3;
 
-namespace opendnp3
+namespace secauthv5
 {
 
 SAv5OutstationAuthProvider::SAv5OutstationAuthProvider(uint32_t maxRxASDUSize, openpal::ICryptoProvider& crypto) :

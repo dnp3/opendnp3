@@ -29,10 +29,8 @@
 #include <openpal/logging/LogMacros.h>
 
 #include <opendnp3/LogLevels.h>
-#include <opendnp3/outstation/NullOutstationAuthProvider.h>
 
-#include <opendnp3/outstation/OutstationAuthFactory.h>
-
+#include "OutstationAuthFactory.h"
 
 using namespace openpal;
 using namespace opendnp3;

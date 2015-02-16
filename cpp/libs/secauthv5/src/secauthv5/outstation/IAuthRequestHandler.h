@@ -18,42 +18,32 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef SECAUTHV5_IAUTHREQUESTHANDLER_H
+#define SECAUTHV5_IAUTHREQUESTHANDLER_H
 
+#include <opendnp3/app/APDUHeader.h>
+#include <opendnp3/outstation/OutstationState.h>
 
-#include "OutstationAuthFactory.h"
+#include <opendnp3/objects/Group120.h>
+#include <opendnp3/objects/Group120Var1.h>
+#include <opendnp3/objects/Group120Var2.h>
+#include <opendnp3/objects/Group120Var6.h>
 
-#include "opendnp3/outstation/NullOutstationAuthProvider.h"
-#include "opendnp3/outstation/authv5/SAv5OutstationAuthProvider.h"
-
-#include <memory>
-#include <stdexcept>
-
-namespace opendnp3
+namespace secauthv5
 {
-	std::unique_ptr<IOutstationAuthProvider> OutstationAuthFactory::Create(const OutstationStackConfig& config, openpal::ICryptoProvider* pCrypto)
-	{
-		switch (config.authentication.mode)
-		{
-			case(ConfigAuthMode::SAV5) :
-				return CreateSAv5Provider(config, pCrypto);
-			default:
-				return std::unique_ptr<IOutstationAuthProvider>(new NullOutstationAuthProvider());
-		}
-	}	
 
-	std::unique_ptr<IOutstationAuthProvider> OutstationAuthFactory::CreateSAv5Provider(const OutstationStackConfig& config, openpal::ICryptoProvider* pCrypto)
-	{
-		if (pCrypto)
-		{
-			return std::unique_ptr<IOutstationAuthProvider>(
-				new SAv5OutstationAuthProvider(config.outstation.params.maxRxFragSize, *pCrypto)
-			);
-		}
-		else
-		{
-			throw std::runtime_error("SAv5 requires a crypto provider");
-		}
-	}
+// handles auth request types
+class IAuthRequestHandler
+{
+	public:
+
+		virtual void OnAuthChallenge(opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge) = 0;
+		virtual void OnAuthReply(opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var2& reply) = 0;
+		virtual void OnRequestKeyStatus(opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var4& status) = 0;
+		virtual void OnChangeSessionKeys(opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change) = 0;
+};
+
 }
 
+#endif
 
