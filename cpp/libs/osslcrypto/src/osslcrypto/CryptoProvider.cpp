@@ -134,7 +134,7 @@ bool CryptoProvider::WrapKeyAES(AESKeyLength length, const ReadBufferView& kek, 
 		return false;
 	}	
 
-	// can only wrap things pre-padded into 64-bit blocks
+	// can only wrap things pre-padded into 8-byte blocks
 	if (input.Size() % 8 != 0)
 	{
 		return false;
@@ -155,11 +155,13 @@ bool CryptoProvider::WrapKeyAES(AESKeyLength length, const ReadBufferView& kek, 
 	}	
 
 	// If iv is null, the default IV is used
-	AES_wrap_key(&key, nullptr, output, input, input.Size());
+	bool success = AES_wrap_key(&key, nullptr, output, input, input.Size()) > 0;
+	if (success) 
+	{
+		output.Advance(OUTPUT_SIZE);
+	}
 
-	output.Advance(OUTPUT_SIZE);
-
-	return true;
+	return success;
 }
 
 bool CryptoProvider::UnwrapKeyAES(AESKeyLength length, const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output)
