@@ -28,6 +28,9 @@
     <ClCompile Include="src\testlib\CopyableBuffer.cpp" />
     <ClCompile Include="src\testlib\HexConversions.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\config\output_dirs.props" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{17E1D388-BE92-48AD-B082-345CF9BF603D}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
