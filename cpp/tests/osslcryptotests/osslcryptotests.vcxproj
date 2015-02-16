@@ -61,6 +61,7 @@
     <Import Project="..\..\..\config\output_dirs.props" />
     <Import Project="..\..\..\config\ossl_props\ossl-lib32.props" />
     <Import Project="..\..\..\config\ossl_props\libeay-MDd.props" />
+    <Import Project="..\..\..\config\testlib-include.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -70,6 +71,7 @@
     <Import Project="..\..\..\config\output_dirs.props" />
     <Import Project="..\..\..\config\ossl_props\ossl-lib64.props" />
     <Import Project="..\..\..\config\ossl_props\libeay-MDd.props" />
+    <Import Project="..\..\..\config\testlib-include.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -79,6 +81,7 @@
     <Import Project="..\..\..\config\output_dirs.props" />
     <Import Project="..\..\..\config\ossl_props\ossl-lib32.props" />
     <Import Project="..\..\..\config\ossl_props\libeay-MD.props" />
+    <Import Project="..\..\..\config\testlib-include.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -88,6 +91,7 @@
     <Import Project="..\..\..\config\output_dirs.props" />
     <Import Project="..\..\..\config\ossl_props\ossl-lib64.props" />
     <Import Project="..\..\..\config\ossl_props\libeay-MD.props" />
+    <Import Project="..\..\..\config\testlib-include.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -175,6 +179,9 @@
     </ProjectReference>
     <ProjectReference Include="..\..\libs\osslcrypto\osslcryptoprovider.vcxproj">
       <Project>{6571dd15-d2f7-4d3f-a580-fdc5e55b2844}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\testlib\testlib.vcxproj">
+      <Project>{17e1d388-be92-48ad-b082-345cf9bf603d}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

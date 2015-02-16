@@ -32,7 +32,7 @@ using namespace openpal;
 namespace osslcrypto
 {
 
-std::vector < std::unique_ptr<std::mutex> > CryptoProvider::mutexes(CRYPTO_num_locks());
+std::vector < std::unique_ptr<std::mutex> > CryptoProvider::mutexes;
 
 bool CryptoProvider::initialized = Initialize();
 
@@ -47,7 +47,7 @@ bool CryptoProvider::ConfigureMultithreading()
 	// If this isn't done and functions like RAND_bytes are called
 	// from multiple threads you'll get random crashes.
 
-	for (size_t i = 0; i < mutexes.capacity(); ++i)
+	for (int i = 0; i < CRYPTO_num_locks(); ++i)
 	{
 		mutexes.push_back(std::make_unique<std::mutex>());
 	}
@@ -82,20 +82,22 @@ bool CryptoProvider::GetSecureRandom(WriteBufferView& buffer)
 bool CryptoProvider::Aes128KeyWrap(const ReadBufferView& kek, const ReadBufferView& input, WriteBufferView& output)
 {
 	// If iv is null, the default IV is used
-	if (kek.Size() != 128)
-	{
-		return false;
-	}
-
-	AES_KEY key;
-	if (!AES_set_encrypt_key(kek, 128, &key))
+	if (kek.Size() != 16)
 	{
 		return false;
 	}	
 
-	return AES_wrap_key(&key, nullptr, output, input, input.Size()) > 0;
+	AES_KEY key;
+	if (AES_set_encrypt_key(kek, 128, &key))
+	{
+		return false;
+	}	
 
-	return false;
+	AES_wrap_key(&key, nullptr, output, input, input.Size());
+
+	output.Advance(input.Size() + 8);
+
+	return true;
 }
 
 }

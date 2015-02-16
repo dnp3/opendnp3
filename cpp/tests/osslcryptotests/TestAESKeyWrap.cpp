@@ -23,7 +23,9 @@
 #include <osslcrypto/CryptoProvider.h>
 
 #include <openpal/container/DynamicBuffer.h>
-#include <openpal/util/ToHex.h>
+
+#include <testlib/HexConversions.h>
+#include <testlib/BufferHelpers.h>
 
 #include <thread>
 #include <atomic>
@@ -33,11 +35,31 @@
 using namespace std;
 using namespace openpal;
 using namespace osslcrypto;
+using namespace testlib;
 
 TEST_CASE(SUITE("TestKeyWrap"))
-{
+{	
 	CryptoProvider provider;	
 
-	//auto success = provider.Aes128KeyWrap()
+	// From rfc3394 - 128 bit kek w/ 128 bit data
+	// KEK:       000102030405060708090A0B0C0D0E0F
+	// Key Data : 00112233445566778899AABBCCDDEEFF
+	HexSequence kek("000102030405060708090A0B0C0D0E0F");
+	HexSequence input("00112233445566778899AABBCCDDEEFF");
+	
+	// output Ciphertext:  1FA68B0A8112B447 AEF34BD8FB5A7B82 9D3E862371D2CFE5
+	auto ciphertext = "1FA68B0A8112B447AEF34BD8FB5A7B829D3E862371D2CFE5";
+
+	DynamicBuffer out(400);
+	auto output = out.GetWriteBufferView();
+	auto initialSize = output.Size();
+	auto success = provider.Aes128KeyWrap(kek, input, output);
+	REQUIRE(success);
+	auto written = initialSize - output.Size();
+	
+	REQUIRE(written == 24);	
+
+	REQUIRE(ToHex(out.ToReadOnly().Take(24), false) == ciphertext);
+	
 }
 
