@@ -27,6 +27,7 @@
     <ClCompile Include="src\asiodnp3\DNP3Channel.cpp" />
     <ClCompile Include="src\asiodnp3\ChannelSet.cpp" />
     <ClCompile Include="src\asiodnp3\HeaderTypes.cpp" />
+    <ClCompile Include="src\asiodnp3\IChannel.cpp" />
     <ClCompile Include="src\asiodnp3\impl\LinkLayerRouter.cpp" />
     <ClCompile Include="src\asiodnp3\impl\PhysicalLayerMonitor.cpp" />
     <ClCompile Include="src\asiodnp3\impl\PhysicalLayerMonitorStates.cpp" />
