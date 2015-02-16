@@ -40,10 +40,9 @@ namespace openpal
 		*/
 		virtual bool GetSecureRandom(WriteBufferView& buffer) = 0;
 		
-
 		virtual bool WrapKeyAES128(const ReadBufferView& kek, const ReadBufferView& input, WriteBufferView& output) = 0;
 
-		virtual bool KeyWrapAES256(const ReadBufferView& kek, const ReadBufferView& input, WriteBufferView& output) = 0;
+		virtual bool WrapKeyAES256(const ReadBufferView& kek, const ReadBufferView& input, WriteBufferView& output) = 0;
 
 	};
 

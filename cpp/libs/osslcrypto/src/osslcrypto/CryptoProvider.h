@@ -49,7 +49,7 @@ class CryptoProvider : public openpal::ICryptoProvider, private openpal::Uncopya
 		return WrapKeyAES(AESKeyLength::L128, kek, input, output);
 	}
 
-	virtual bool KeyWrapAES256(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output) override final
+	virtual bool WrapKeyAES256(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output) override final
 	{
 		return WrapKeyAES(AESKeyLength::L256, kek, input, output);
 	}
