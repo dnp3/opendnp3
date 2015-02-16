@@ -49,14 +49,13 @@ void ChannelSet::Shutdown()
 
 IChannel* ChannelSet::CreateChannel(
 	openpal::LogRoot* pLogRoot,
-	asiopal::ASIOExecutor& executor,
-	openpal::ICryptoProvider* pCrypto,
+	asiopal::ASIOExecutor& executor,	
     openpal::TimeDuration minOpenRetry,
     openpal::TimeDuration maxOpenRetry,
 	PhysicalLayerBase* apPhys,    
     IOpenDelayStrategy& strategy)
 {	
-	auto pChannel = new DNP3Channel(pLogRoot, executor, pCrypto, minOpenRetry, maxOpenRetry, strategy, apPhys);
+	auto pChannel = new DNP3Channel(pLogRoot, executor, minOpenRetry, maxOpenRetry, strategy, apPhys);
 	auto onShutdown = [this, pChannel]() { this->OnShutdown(pChannel); };
 	pChannel->SetShutdownHandler(Action0::Bind(onShutdown));
 	channels.insert(pChannel);

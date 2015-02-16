@@ -58,8 +58,7 @@ class DNP3Manager
 public:
 
 	DNP3Manager(
-	    uint32_t concurrencyHint,
-		openpal::ICryptoProvider* pCrypto = nullptr,
+	    uint32_t concurrencyHint,		
 		std::function<void()> onThreadStart = []() {},
 		std::function<void()> onThreadExit = []() {}
 	);	
@@ -135,8 +134,7 @@ public:
 	    opendnp3::IOpenDelayStrategy& strategy = opendnp3::ExponentialBackoffStrategy::Instance());
 
 private:
-
-	openpal::ICryptoProvider* pCrypto;
+	
 	std::unique_ptr<asiopal::LogFanoutHandler> pFanoutHandler;
 	std::unique_ptr<asiopal::IOServiceThreadPool> pThreadPool;
 	std::unique_ptr<ChannelSet> pChannelSet;

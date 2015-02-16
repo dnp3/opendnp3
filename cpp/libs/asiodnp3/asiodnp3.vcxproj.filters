@@ -65,9 +65,6 @@
     <ClCompile Include="src\asiodnp3\HeaderTypes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\asiodnp3\OutstationAuthFactory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\asiodnp3\DestructorHook.h">
@@ -131,9 +128,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\asiodnp3\HeaderTypes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\asiodnp3\OutstationAuthFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

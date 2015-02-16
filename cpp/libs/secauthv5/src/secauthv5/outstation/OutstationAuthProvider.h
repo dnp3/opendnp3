@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_SAV5OUTSTATIONAUTHPROVIDER_H
-#define OPENDNP3_SAV5OUTSTATIONAUTHPROVIDER_H
+#ifndef SECAUTHV5_OAUTHPROVIDER_H
+#define SECAUTHV5_OAUTHPROVIDER_H
 
 #include "opendnp3/outstation/IOutstationAuthProvider.h"
 
@@ -32,13 +32,16 @@ namespace secauthv5
 {
 
 /**
-	SAv5 authentication provider
+	SAv5 outstation authentication provider
 */
-class SAv5OutstationAuthProvider : private openpal::Uncopyable, public opendnp3::IOutstationAuthProvider, private IAuthRequestHandler
+class OutstationAuthProvider : private openpal::Uncopyable, public opendnp3::IOutstationAuthProvider, private IAuthRequestHandler
 {
 	public:
 
-	SAv5OutstationAuthProvider(uint32_t maxRxASDUSize, uint32_t maxTxASDUSize, openpal::ICryptoProvider& crypto);
+	OutstationAuthProvider(uint32_t maxRxASDUSize, uint32_t maxTxASDUSize, openpal::ICryptoProvider& crypto);
+
+	// factory function
+	static std::unique_ptr<opendnp3::IOutstationAuthProvider> Create(uint32_t maxRxASDUSize, uint32_t maxTxASDUSize, openpal::ICryptoProvider& crypto);
 
 	virtual void Reset() override final;	
 
@@ -48,11 +51,11 @@ class SAv5OutstationAuthProvider : private openpal::Uncopyable, public opendnp3:
 
 	private:
 
-		void Process(opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects);
+	void Process(opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects);
 
-		void OnAuthRequest(opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects);
+	void OnAuthRequest(opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects);
 
-		void OnRegularRequest(opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects);
+	void OnRegularRequest(opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects);
 
 	//// --- IAuthRequestHandler ----
 

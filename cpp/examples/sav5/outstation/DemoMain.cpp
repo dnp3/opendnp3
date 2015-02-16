@@ -31,6 +31,7 @@
 #include <opendnp3/LogLevels.h>
 
 #include <osslcrypto/CryptoProvider.h>
+#include <secauthv5/outstation/OutstationAuthProvider.h>
 
 #include <string>
 #include <thread>
@@ -42,6 +43,15 @@ using namespace openpal;
 using namespace asiopal;
 using namespace asiodnp3;
 
+std::unique_ptr<IOutstationAuthProvider> CreateAuthv5(const OutstationStackConfig& cfg, ICryptoProvider& crypto)
+{
+	return secauthv5::OutstationAuthProvider::Create(
+		cfg.outstation.params.maxRxFragSize,
+		cfg.outstation.params.maxTxFragSize,
+		crypto
+	);
+}
+
 int main(int argc, char* argv[])
 {
 
@@ -49,11 +59,13 @@ int main(int argc, char* argv[])
 	// You can add all the communication logging by uncommenting below.
 	const uint32_t FILTERS = levels::NORMAL | levels::ALL_APP_COMMS;
 	
+	// crypto provider we will use to create the outstation
+	// clean this up last since everything running in the manager depends on it
 	osslcrypto::CryptoProvider crypto;
 
 	// This is the main point of interaction with the stack
 	// Allocate a single thread to the pool since this is a single outstation
-	DNP3Manager manager(1, &crypto);
+	DNP3Manager manager(1);
 
 	// send log messages to the console
 	manager.AddLogSubscriber(&ConsoleLogger::Instance());
@@ -70,30 +82,33 @@ int main(int argc, char* argv[])
 
 	// The main object for a outstation. The defaults are useable, 
 	// but understanding the options are important.
-	OutstationStackConfig stackConfig;	
+	OutstationStackConfig config;	
 	
 	// You must specify the shape of your database and the size of the event buffers
-	stackConfig.dbTemplate = DatabaseTemplate::AllTypes(10);
-	stackConfig.outstation.eventBufferConfig = EventBufferConfig::AllTypes(10);
-
-	// configure SAv5
-	stackConfig.authentication.mode = ConfigAuthMode::SAV5;
+	config.dbTemplate = DatabaseTemplate::AllTypes(10);
+	config.outstation.eventBufferConfig = EventBufferConfig::AllTypes(10);	
 	
 	// you can override an default outstation parameters here
 	// in this example, we've enabled the oustation to use unsolicted reporting
 	// if the master enables it
-	stackConfig.outstation.params.allowUnsolicited = false;
+	config.outstation.params.allowUnsolicited = false;
 
 	// You can override the default link layer settings here
 	// in this example we've changed the default link layer addressing
-	stackConfig.link.LocalAddr = 10;
-	stackConfig.link.RemoteAddr = 1;
+	config.link.LocalAddr = 10;
+	config.link.RemoteAddr = 1;
+
+	// authv5 is configured by simply creating an auth provider	
 	
 	// Create a new outstation with a log level, command handler, and
 	// config info this	returns a thread-safe interface used for
 	// updating the outstation's database.
-	auto pOutstation = pChannel->AddOutstation("outstation", SuccessCommandHandler::Instance(), DefaultOutstationApplication::Instance(), stackConfig);
-
+	auto pOutstation = pChannel->AddOutstation(
+		"outstation",
+		SuccessCommandHandler::Instance(),
+		DefaultOutstationApplication::Instance(),
+		config,
+		CreateAuthv5(config, crypto));
 
 	// You can optionally change the default reporting variations
 	// stackConfig.outstation.defaultEventResponses.binary = EventBinaryVariation::Group2Var2;

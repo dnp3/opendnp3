@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "SAv5OutstationAuthProvider.h"
+#include "OutstationAuthProvider.h"
 
 #include <openpal/logging/LogMacros.h>
 #include <openpal/logging/Logger.h>
@@ -39,18 +39,23 @@ using namespace opendnp3;
 namespace secauthv5
 {
 
-SAv5OutstationAuthProvider::SAv5OutstationAuthProvider(uint32_t maxRxASDUSize, uint32_t maxTxASDUSize, openpal::ICryptoProvider& crypto) :
+OutstationAuthProvider::OutstationAuthProvider(uint32_t maxRxASDUSize, uint32_t maxTxASDUSize, openpal::ICryptoProvider& crypto) :
 	sstate(maxRxASDUSize, maxTxASDUSize, crypto)
 {
 
 }
 
-void SAv5OutstationAuthProvider::Reset()
+std::unique_ptr<opendnp3::IOutstationAuthProvider> OutstationAuthProvider::Create(uint32_t maxRxASDUSize, uint32_t maxTxASDUSize, openpal::ICryptoProvider& crypto)
+{
+	return std::make_unique<OutstationAuthProvider>(maxRxASDUSize, maxTxASDUSize, crypto);
+}
+
+void OutstationAuthProvider::Reset()
 {
 	sstate.Reset();
 }
 
-void SAv5OutstationAuthProvider::CheckState(OState& ostate)
+void OutstationAuthProvider::CheckState(OState& ostate)
 {
 	if (ostate.CanTransmit() && sstate.deferred.IsSet())
 	{
@@ -64,7 +69,7 @@ void SAv5OutstationAuthProvider::CheckState(OState& ostate)
 	}	
 }
 		
-void SAv5OutstationAuthProvider::OnReceive(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
+void OutstationAuthProvider::OnReceive(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {	
 	if (ostate.CanTransmit())
 	{
@@ -76,7 +81,7 @@ void SAv5OutstationAuthProvider::OnReceive(OState& ostate, const APDUHeader& hea
 	}
 }
 
-void SAv5OutstationAuthProvider::Process(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
+void OutstationAuthProvider::Process(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
 	// examine the function code to determine what kind of ASDU it is
 	switch (header.function)
@@ -96,35 +101,35 @@ void SAv5OutstationAuthProvider::Process(OState& ostate, const APDUHeader& heade
 	}
 }
 
-void SAv5OutstationAuthProvider::OnAuthRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
+void OutstationAuthProvider::OnAuthRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
 	AuthRequestHandler handler(header, ostate, *this);
 	APDUParser::ParseSome(objects, handler, AuthRequestHandler::WhiteList, &ostate.logger);
 }
 
-void SAv5OutstationAuthProvider::OnRegularRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
+void OutstationAuthProvider::OnRegularRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {	
 	sstate.pState = sstate.pState->OnRegularRequest(sstate, ostate, header, objects);
 }
 
-void SAv5OutstationAuthProvider::OnAuthChallenge(OState& ostate, const APDUHeader& header, const Group120Var1& challenge)
+void OutstationAuthProvider::OnAuthChallenge(OState& ostate, const APDUHeader& header, const Group120Var1& challenge)
 {	
 	sstate.pState = sstate.pState->OnAuthChallenge(sstate, ostate, header, challenge);
 }
 
-void SAv5OutstationAuthProvider::OnAuthReply(OState& ostate, const APDUHeader& header, const Group120Var2& reply)
+void OutstationAuthProvider::OnAuthReply(OState& ostate, const APDUHeader& header, const Group120Var2& reply)
 {	
 	sstate.pState = sstate.pState->OnAuthReply(sstate, ostate, header, reply);
 }
 
-void SAv5OutstationAuthProvider::OnRequestKeyStatus(OState& ostate, const APDUHeader& header, const Group120Var4& status)
+void OutstationAuthProvider::OnRequestKeyStatus(OState& ostate, const APDUHeader& header, const Group120Var4& status)
 {	
 	// TODO - Where to alert for max key request? Probably here
 
 	sstate.pState = sstate.pState->OnRequestKeyStatus(sstate, ostate, header, status);	
 }
 
-void SAv5OutstationAuthProvider::OnChangeSessionKeys(OState& ostate, const APDUHeader& header, const Group120Var6& change)
+void OutstationAuthProvider::OnChangeSessionKeys(OState& ostate, const APDUHeader& header, const Group120Var6& change)
 {
 	SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "Session key change not supported yet");
 }

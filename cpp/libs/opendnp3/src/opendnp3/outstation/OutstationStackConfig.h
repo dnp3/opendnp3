@@ -22,7 +22,6 @@
 #define OPENDNP3_OUTSTATIONSTACKCONFIG_H
 
 #include "opendnp3/outstation/OutstationConfig.h"
-#include "opendnp3/outstation/OutstationAuthConfig.h"
 #include "opendnp3/outstation/EventBufferConfig.h"
 #include "opendnp3/outstation/DatabaseTemplate.h"
 #include "opendnp3/link/LinkConfig.h"
@@ -51,10 +50,7 @@ struct OutstationStackConfig
 	DatabaseTemplate dbTemplate;	
 	
 	/// Outstation config
-	OutstationConfig outstation;
-
-	/// Authentication config
-	OutstationAuthConfig authentication;
+	OutstationConfig outstation;	
 	
 	/// Link layer config
 	LinkConfig link;

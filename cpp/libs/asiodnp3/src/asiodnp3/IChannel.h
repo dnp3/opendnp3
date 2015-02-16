@@ -31,6 +31,7 @@
 #include <opendnp3/outstation/OutstationStackConfig.h>
 #include <opendnp3/outstation/ICommandHandler.h>
 #include <opendnp3/outstation/IOutstationApplication.h>
+#include <opendnp3/outstation/NullOutstationAuthProvider.h>
 
 #include <openpal/executor/IUTCTimeSource.h>
 #include <openpal/logging/LogFilters.h>
@@ -106,7 +107,8 @@ public:
 	virtual IOutstation* AddOutstation( char const* id,
 										opendnp3::ICommandHandler& commandHandler,
 										opendnp3::IOutstationApplication& application,
-										const opendnp3::OutstationStackConfig& config) = 0;
+										const opendnp3::OutstationStackConfig& config,
+										std::unique_ptr<opendnp3::IOutstationAuthProvider> auth = std::make_unique<opendnp3::NullOutstationAuthProvider>()) = 0;
 };
 
 }

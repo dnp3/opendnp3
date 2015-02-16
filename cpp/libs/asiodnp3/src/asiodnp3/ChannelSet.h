@@ -29,7 +29,6 @@
 #include <openpal/logging/Logger.h>
 #include <openpal/executor/TimeDuration.h>
 #include <openpal/executor/IMutex.h>
-#include <openpal/crypto/ICryptoProvider.h>
 
 #include <opendnp3/link/IOpenDelayStrategy.h>
 
@@ -54,8 +53,7 @@ public:
 	~ChannelSet();
 
 	IChannel* CreateChannel(	openpal::LogRoot* pRoot,
-								asiopal::ASIOExecutor& executor,
-								openpal::ICryptoProvider* pCrypto,
+								asiopal::ASIOExecutor& executor,								
 	                            openpal::TimeDuration minOpenRetry,
 	                            openpal::TimeDuration maxOpenRetry,
 								asiopal::PhysicalLayerBase* pPhys,	                            

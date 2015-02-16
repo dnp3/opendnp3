@@ -64,8 +64,7 @@ public:
 
 	DNP3Channel(
 		openpal::LogRoot* pLogRoot_,
-		asiopal::ASIOExecutor& executor,
-		openpal::ICryptoProvider* pCrypto,
+		asiopal::ASIOExecutor& executor,		
 	    openpal::TimeDuration minOpenRetry,
 	    openpal::TimeDuration maxOpenRetry,
 		opendnp3::IOpenDelayStrategy& strategy,
@@ -90,7 +89,8 @@ public:
 	virtual IOutstation* AddOutstation(char const* id,
 								opendnp3::ICommandHandler& commandHandler,
 								opendnp3::IOutstationApplication& application,
-								const opendnp3::OutstationStackConfig& config) override final;
+								const opendnp3::OutstationStackConfig& config,
+								std::unique_ptr<opendnp3::IOutstationAuthProvider> auth) override final;
 
 	// Helper functions only available inside DNP3Manager
 	void SetShutdownHandler(const openpal::Action0& action);
@@ -124,8 +124,7 @@ private:
 	opendnp3::LinkChannelStatistics statistics;
 	std::unique_ptr<openpal::IPhysicalLayer> pPhys;
 	std::unique_ptr<openpal::LogRoot> pLogRoot;
-	asiopal::ASIOExecutor* pExecutor;
-	openpal::ICryptoProvider* pCrypto;
+	asiopal::ASIOExecutor* pExecutor;	
 	openpal::Logger logger;
 	
 	asiopal::Synchronized<bool>* pShutdownHandler;

@@ -23,9 +23,6 @@
     <ClInclude Include="src\secauthv5\outstation\IAuthRequestHandler.h">
       <Filter>Header Files\outstation</Filter>
     </ClInclude>
-    <ClInclude Include="src\secauthv5\outstation\SAv5OutstationAuthProvider.h">
-      <Filter>Header Files\outstation</Filter>
-    </ClInclude>
     <ClInclude Include="src\secauthv5\outstation\SecurityState.h">
       <Filter>Header Files\outstation</Filter>
     </ClInclude>
@@ -41,12 +38,12 @@
     <ClInclude Include="src\secauthv5\AuthConstants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\secauthv5\outstation\OutstationAuthProvider.h">
+      <Filter>Header Files\outstation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\secauthv5\outstation\AuthRequestHandler.cpp">
-      <Filter>Source Files\outstation</Filter>
-    </ClCompile>
-    <ClCompile Include="src\secauthv5\outstation\SAv5OutstationAuthProvider.cpp">
       <Filter>Source Files\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\secauthv5\outstation\SecurityState.cpp">
@@ -59,6 +56,9 @@
       <Filter>Source Files\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\secauthv5\outstation\KeyChangeState.cpp">
+      <Filter>Source Files\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\secauthv5\outstation\OutstationAuthProvider.cpp">
       <Filter>Source Files\outstation</Filter>
     </ClCompile>
   </ItemGroup>

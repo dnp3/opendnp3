@@ -32,7 +32,6 @@
     <ClCompile Include="src\asiodnp3\impl\PhysicalLayerMonitorStates.cpp" />
     <ClCompile Include="src\asiodnp3\MasterStackImpl.cpp" />
     <ClCompile Include="src\asiodnp3\MultidropTaskLock.cpp" />
-    <ClCompile Include="src\asiodnp3\OutstationAuthFactory.cpp" />
     <ClCompile Include="src\asiodnp3\OutstationStackImpl.cpp" />
     <ClCompile Include="src\asiodnp3\PrintingSOEHandler.cpp" />
     <ClCompile Include="src\asiodnp3\StackActionHandler.cpp" />
@@ -56,7 +55,6 @@
     <ClInclude Include="src\asiodnp3\MasterStackImpl.h" />
     <ClInclude Include="src\asiodnp3\MultidropTaskLock.h" />
     <ClInclude Include="src\asiodnp3\Mutex.h" />
-    <ClInclude Include="src\asiodnp3\OutstationAuthFactory.h" />
     <ClInclude Include="src\asiodnp3\OutstationStackImpl.h" />
     <ClInclude Include="src\asiodnp3\PrintingSOEHandler.h" />
     <ClInclude Include="src\asiodnp3\StackActionHandler.h" />
@@ -104,7 +102,6 @@
     <Import Project="$(SolutionDir)\config\asiodnp3_include.props" />
     <Import Project="$(SolutionDir)\config\asio_config.props" />
     <Import Project="$(SolutionDir)\config\asiopal_include.props" />
-    <Import Project="..\..\..\config\authv5-include.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -114,7 +111,6 @@
     <Import Project="$(SolutionDir)\config\asiodnp3_include.props" />
     <Import Project="$(SolutionDir)\config\asio_config.props" />
     <Import Project="$(SolutionDir)\config\asiopal_include.props" />
-    <Import Project="..\..\..\config\authv5-include.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -124,7 +120,6 @@
     <Import Project="$(SolutionDir)\config\asiodnp3_include.props" />
     <Import Project="$(SolutionDir)\config\asio_config.props" />
     <Import Project="$(SolutionDir)\config\asiopal_include.props" />
-    <Import Project="..\..\..\config\authv5-include.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -134,7 +129,6 @@
     <Import Project="$(SolutionDir)\config\asiodnp3_include.props" />
     <Import Project="$(SolutionDir)\config\asio_config.props" />
     <Import Project="$(SolutionDir)\config\asiopal_include.props" />
-    <Import Project="..\..\..\config\authv5-include.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />
