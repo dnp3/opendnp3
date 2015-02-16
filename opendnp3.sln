@@ -61,6 +61,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "osslcryptotests", "cpp\test
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "testlib", "cpp\tests\testlib\testlib.vcxproj", "{17E1D388-BE92-48AD-B082-345CF9BF603D}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "secauthv5", "cpp\libs\secauthv5\secauthv5.vcxproj", "{D4B3A5CB-BE31-44FC-BA64-977615980740}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -467,6 +469,24 @@ Global
 		{17E1D388-BE92-48AD-B082-345CF9BF603D}.Release|x64.Build.0 = Release|x64
 		{17E1D388-BE92-48AD-B082-345CF9BF603D}.Release|x86.ActiveCfg = Release|Win32
 		{17E1D388-BE92-48AD-B082-345CF9BF603D}.Release|x86.Build.0 = Release|Win32
+		{D4B3A5CB-BE31-44FC-BA64-977615980740}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{D4B3A5CB-BE31-44FC-BA64-977615980740}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{D4B3A5CB-BE31-44FC-BA64-977615980740}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{D4B3A5CB-BE31-44FC-BA64-977615980740}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D4B3A5CB-BE31-44FC-BA64-977615980740}.Debug|Win32.Build.0 = Debug|Win32
+		{D4B3A5CB-BE31-44FC-BA64-977615980740}.Debug|x64.ActiveCfg = Debug|x64
+		{D4B3A5CB-BE31-44FC-BA64-977615980740}.Debug|x64.Build.0 = Debug|x64
+		{D4B3A5CB-BE31-44FC-BA64-977615980740}.Debug|x86.ActiveCfg = Debug|Win32
+		{D4B3A5CB-BE31-44FC-BA64-977615980740}.Debug|x86.Build.0 = Debug|Win32
+		{D4B3A5CB-BE31-44FC-BA64-977615980740}.Release|Any CPU.ActiveCfg = Release|Win32
+		{D4B3A5CB-BE31-44FC-BA64-977615980740}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{D4B3A5CB-BE31-44FC-BA64-977615980740}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{D4B3A5CB-BE31-44FC-BA64-977615980740}.Release|Win32.ActiveCfg = Release|Win32
+		{D4B3A5CB-BE31-44FC-BA64-977615980740}.Release|Win32.Build.0 = Release|Win32
+		{D4B3A5CB-BE31-44FC-BA64-977615980740}.Release|x64.ActiveCfg = Release|x64
+		{D4B3A5CB-BE31-44FC-BA64-977615980740}.Release|x64.Build.0 = Release|x64
+		{D4B3A5CB-BE31-44FC-BA64-977615980740}.Release|x86.ActiveCfg = Release|Win32
+		{D4B3A5CB-BE31-44FC-BA64-977615980740}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -499,5 +519,6 @@ Global
 		{6571DD15-D2F7-4D3F-A580-FDC5E55B2844} = {2D704312-6653-4338-A589-03F509718D12}
 		{59EDE956-F37A-4C37-9DEA-B6FDD34CAD5C} = {A8B11537-25B4-4893-9444-BC5C0D213157}
 		{17E1D388-BE92-48AD-B082-345CF9BF603D} = {A8B11537-25B4-4893-9444-BC5C0D213157}
+		{D4B3A5CB-BE31-44FC-BA64-977615980740} = {2D704312-6653-4338-A589-03F509718D12}
 	EndGlobalSection
 EndGlobal
