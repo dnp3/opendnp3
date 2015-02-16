@@ -26,7 +26,10 @@
 
 namespace openpal
 {
-	// A provider of cryptographic services
+	/**
+	* A provider of cryptographic services. All function are assumed to be thread-safe
+	* such that multiple threads can safely share a single instance of this class.
+	*/
 	class ICryptoProvider
 	{
 	public:
@@ -35,18 +38,25 @@ namespace openpal
 
 		/** 
 		 * Fill the specified buffer with secure random bytes
-		 *
-	     * @return true if the specified buffer can be completely filled with secure random numbers		 
+		 * @return true if the specified buffer can be completely filled with secure random numbers	     		 
 		*/
 		virtual bool GetSecureRandom(WriteBufferView& buffer) = 0;
 		
+		/// --- Functions related to AES 128 Key Wrap Algorithm ----
+
 		virtual bool SupportsAES128KeyWrap() = 0;
 		virtual bool WrapKeyAES128(const ReadBufferView& kek, const ReadBufferView& input, WriteBufferView& output) = 0;
 		virtual bool UnwrapKeyAES128(const ReadBufferView& kek, const ReadBufferView& input, WriteBufferView& output) = 0;
 
+		/// --- Functions related to AES 256 Key Wrap Algorithm ----
+
 		virtual bool SupportsAES256KeyWrap() = 0;
 		virtual bool WrapKeyAES256(const ReadBufferView& kek, const ReadBufferView& input, WriteBufferView& output) = 0;
 		virtual bool UnwrapKeyAES256(const ReadBufferView& kek, const ReadBufferView& input, WriteBufferView& output) = 0;
+
+		/// --- Functions related to SHA1 ----
+		virtual bool SupportsSHA1() = 0;
+		virtual bool CalcSHA1(const ReadBufferView& input, WriteBufferView& output) = 0;
 
 	};
 

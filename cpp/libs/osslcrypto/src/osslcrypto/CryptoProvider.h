@@ -51,6 +51,9 @@ class CryptoProvider : public openpal::ICryptoProvider, private openpal::Uncopya
 	virtual bool SupportsAES256KeyWrap() override final { return true; }
 	virtual bool WrapKeyAES256(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output) override final;
 	virtual bool UnwrapKeyAES256(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output) override final;
+
+	virtual bool SupportsSHA1() { return true; }
+	virtual bool CalcSHA1(const openpal::ReadBufferView& input, openpal::WriteBufferView& output) override final;
 	
 	private:	
 

@@ -24,6 +24,7 @@
 #include <openssl/rand.h>
 #include <openssl/crypto.h>
 #include <openssl/aes.h>
+#include <openssl/sha.h>
 
 #include <assert.h>
 
@@ -97,6 +98,20 @@ bool CryptoProvider::UnwrapKeyAES128(const openpal::ReadBufferView& kek, const o
 bool CryptoProvider::UnwrapKeyAES256(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output)
 {
 	return UnwrapKeyAES(AESKeyLength::L256, kek, input, output);
+}
+
+bool CryptoProvider::CalcSHA1(const ReadBufferView& input, WriteBufferView& output)
+{
+	if (output.Size() < 20)
+	{
+		return false;
+	}
+	else
+	{
+		SHA1(input, input.Size(), output);
+		output.Advance(20);
+		return true;
+	}	
 }
 
 bool CryptoProvider::WrapKeyAES(AESKeyLength length, const ReadBufferView& kek, const ReadBufferView& input, WriteBufferView& output)
