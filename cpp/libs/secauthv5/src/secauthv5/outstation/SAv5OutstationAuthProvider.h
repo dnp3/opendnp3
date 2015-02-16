@@ -38,7 +38,7 @@ class SAv5OutstationAuthProvider : private openpal::Uncopyable, public opendnp3:
 {
 	public:
 
-	SAv5OutstationAuthProvider(uint32_t maxRxASDUSize, openpal::ICryptoProvider& crypto);
+	SAv5OutstationAuthProvider(uint32_t maxRxASDUSize, uint32_t maxTxASDUSize, openpal::ICryptoProvider& crypto);
 
 	virtual void Reset() override final;	
 

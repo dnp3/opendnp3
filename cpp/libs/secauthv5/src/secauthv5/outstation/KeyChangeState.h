@@ -22,18 +22,41 @@
 #define SECAUTHV5_KEYCHANGESTATE_H
 
 #include <openpal/container/DynamicBuffer.h>
+#include <openpal/crypto/ICryptoProvider.h>
+
+#include <opendnp3/objects/Group120Var5.h>
+#include <opendnp3/app/APDUResponse.h>
+
+#include "secauthv5/AuthConstants.h"
+
+
 
 namespace secauthv5
 {
 
-class KeyState
+class KeyChangeState
 {
 	public:
 
-	KeyState();
+	KeyChangeState(uint16_t userNum, uint8_t challengeSize, openpal::ICryptoProvider& provider);
 	
+	// Formats the key status response	
+	bool FormatKeyStatusResponse(
+		opendnp3::APDUResponse& rsp,
+		const opendnp3::AppControlField& control,
+		opendnp3::KeyStatus status,
+		const openpal::ReadBufferView& hmac = openpal::ReadBufferView::Empty()
+	);
+
+	private:
+
+	const uint16_t USER_NUM;
+	uint8_t challengeSize;
+	openpal::ICryptoProvider* pProvider;
 	uint32_t keyChangeSeqNum;
-	openpal::DynamicBuffer challengeData;	
+	uint8_t challengeBuffer[AuthConstants::MAX_CHALLENGE_DATA_SIZE];
+	opendnp3::Group120Var5 statusRsp;
+	
 	
 };
 

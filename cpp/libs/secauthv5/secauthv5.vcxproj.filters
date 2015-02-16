@@ -58,5 +58,8 @@
     <ClCompile Include="src\secauthv5\outstation\IOAuthState.cpp">
       <Filter>Source Files\outstation</Filter>
     </ClCompile>
+    <ClCompile Include="src\secauthv5\outstation\KeyChangeState.cpp">
+      <Filter>Source Files\outstation</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

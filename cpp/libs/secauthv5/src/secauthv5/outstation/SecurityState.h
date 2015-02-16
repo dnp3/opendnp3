@@ -23,8 +23,10 @@
 
 #include <opendnp3/gen/KeyStatus.h>
 #include <opendnp3/outstation/DeferredRequest.h>
-
 #include <openpal/crypto/ICryptoProvider.h>
+#include <opendnp3/outstation/TxBuffer.h>
+
+#include "KeyChangeState.h"
 
 namespace secauthv5
 {
@@ -35,15 +37,16 @@ class SecurityState
 {
 	public:
 
-	SecurityState(uint32_t maxRxAPDUSize, openpal::ICryptoProvider& crypto);	
+	SecurityState(uint32_t maxRxAPDUSize, uint32_t maxTxAPDUSize, openpal::ICryptoProvider& crypto);
 
 	void Reset();
 
-	opendnp3::DeferredRequest deferred;
-	uint32_t keyChangeSeqNum;	
+	opendnp3::DeferredRequest deferred;	
 	openpal::ICryptoProvider* pCrypto;
 	opendnp3::KeyStatus keyStatus;
 	IOAuthState* pState;
+	KeyChangeState keyChangeState;
+	opendnp3::TxBuffer txBuffer;
 };
 
 }

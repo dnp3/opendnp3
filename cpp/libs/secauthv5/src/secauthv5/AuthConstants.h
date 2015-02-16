@@ -22,6 +22,7 @@
 #define SECAUTHV5_AUTHCONSTANTS_H
 
 #include <openpal/util/Uncopyable.h>
+#include <openpal/util/Comparisons.h>
 
 #include <cstdint>
 
@@ -31,7 +32,12 @@ namespace secauthv5
 struct AuthConstants : openpal::PureStatic
 {	
 	const static uint8_t MIN_CHALLENGE_DATA_SIZE = 4;
-	const static uint8_t MAX_CHALLENGE_DATA_SIZE = 32;
+	const static uint8_t MAX_CHALLENGE_DATA_SIZE = 16;
+
+	static uint8_t GetBoundedChallengeSize(uint8_t challengeSize)
+	{
+		return openpal::Bounded(challengeSize, MIN_CHALLENGE_DATA_SIZE, MAX_CHALLENGE_DATA_SIZE);
+	}
 };
 
 }

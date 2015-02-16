@@ -25,6 +25,9 @@
 
 #include <openpal/logging/LogMacros.h>
 
+#include "opendnp3/outstation/OutstationActions.h"
+
+using namespace openpal;
 using namespace opendnp3;
 
 namespace secauthv5
@@ -50,7 +53,13 @@ namespace secauthv5
 	
 	IOAuthState* OAuthStateIdle::OnRequestKeyStatus(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var4& status)
 	{
-		return this->IgnoreRequestKeyStatus(sstate, ostate, header, status);
+		auto rsp = sstate.txBuffer.Start();
+		auto success = sstate.keyChangeState.FormatKeyStatusResponse(rsp, header.control, KeyStatus::NOT_INIT);
+		if (success)
+		{
+			OActions::BeginResponseTx(ostate, rsp.ToReadOnly());
+		}
+		return this;
 	}
 
 	// -------- WaitForReply ----------

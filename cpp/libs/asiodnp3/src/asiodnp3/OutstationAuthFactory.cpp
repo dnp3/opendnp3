@@ -49,7 +49,11 @@ namespace asiodnp3
 		if (pCrypto)
 		{
 			return std::unique_ptr<IOutstationAuthProvider>(
-				new SAv5OutstationAuthProvider(config.outstation.params.maxRxFragSize, *pCrypto)
+				new SAv5OutstationAuthProvider(
+					config.outstation.params.maxRxFragSize, 
+					config.outstation.params.maxTxFragSize,
+					*pCrypto
+				)
 			);
 		}
 		else

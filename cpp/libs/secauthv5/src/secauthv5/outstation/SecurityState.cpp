@@ -27,22 +27,20 @@ using namespace opendnp3;
 
 namespace secauthv5
 {
-
-	SecurityState::SecurityState(uint32_t maxRxAPDUSize, openpal::ICryptoProvider& crypto) :
-		keyChangeSeqNum(0),
+	SecurityState::SecurityState(uint32_t maxRxAPDUSize, uint32_t maxTxAPDUSize, openpal::ICryptoProvider& crypto) :
 		deferred(maxRxAPDUSize),
 		pCrypto(&crypto),
 		keyStatus(KeyStatus::NOT_INIT),
-		pState(OAuthStateIdle::Instance())
+		pState(OAuthStateIdle::Instance()),
+		keyChangeState(1, 4, crypto),
+		txBuffer(maxTxAPDUSize)
 	{}
 
 	void SecurityState::Reset()
-	{
-		keyChangeSeqNum = 0;
+	{		
 		keyStatus = KeyStatus::NOT_INIT;
 		pState = OAuthStateIdle::Instance();
 	}
-
 }
 
 

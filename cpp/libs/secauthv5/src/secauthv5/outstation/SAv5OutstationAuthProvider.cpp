@@ -28,7 +28,6 @@
 
 #include "opendnp3/app/parsing/APDUParser.h"
 #include "opendnp3/outstation/OutstationState.h"
-#include "opendnp3/outstation/OutstationActions.h"
 
 #include "AuthRequestHandler.h"
 #include "IOAuthState.h"
@@ -40,8 +39,8 @@ using namespace opendnp3;
 namespace secauthv5
 {
 
-SAv5OutstationAuthProvider::SAv5OutstationAuthProvider(uint32_t maxRxASDUSize, openpal::ICryptoProvider& crypto) :
-	sstate(maxRxASDUSize, crypto)
+SAv5OutstationAuthProvider::SAv5OutstationAuthProvider(uint32_t maxRxASDUSize, uint32_t maxTxASDUSize, openpal::ICryptoProvider& crypto) :
+	sstate(maxRxASDUSize, maxTxASDUSize, crypto)
 {
 
 }
@@ -120,27 +119,10 @@ void SAv5OutstationAuthProvider::OnAuthReply(OState& ostate, const APDUHeader& h
 
 void SAv5OutstationAuthProvider::OnRequestKeyStatus(OState& ostate, const APDUHeader& header, const Group120Var4& status)
 {	
+	// TODO - Where to alert for max key request? Probably here
+
 	sstate.pState = sstate.pState->OnRequestKeyStatus(sstate, ostate, header, status);	
 }
-
-/*
-uint8_t data[4];
-sstate.pCrypto->GetSecureRandom(WriteBufferView(data, 4));
-
-Group120Var5 gv;
-gv.keyChangeSeqNum = 1;
-gv.userNum = status.userNum;
-gv.keywrapAlgorithm = KeyWrapAlgorithm::AES_128;
-gv.keyStatus = KeyStatus::NOT_INIT;
-gv.hmacType = HMACType::HMAC_SHA1_TRUNC_10;
-gv.challengeData = ReadBufferView(data, 4);
-
-auto rsp = ostate.sol.tx.Start();
-rsp.SetControl(header.control);
-rsp.SetFunction(FunctionCode::AUTH_RESPONSE);
-rsp.GetWriter().WriteFreeFormat(gv);
-OActions::BeginResponseTx(ostate, rsp.ToReadOnly());
-*/
 
 void SAv5OutstationAuthProvider::OnChangeSessionKeys(OState& ostate, const APDUHeader& header, const Group120Var6& change)
 {
