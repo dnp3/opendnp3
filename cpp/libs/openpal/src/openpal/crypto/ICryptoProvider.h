@@ -24,8 +24,33 @@
 #include <openpal/container/ReadBufferView.h>
 #include <openpal/container/WriteBufferView.h>
 
+#include <memory>
+
+
 namespace openpal
 {
+	/**
+	* Provides an abstract interface to a hashing algorithm
+	*/
+	class IHashProvider
+	{
+	public:
+		virtual ~IHashProvider() {}
+
+		// Describes the required output size
+		virtual uint16_t OutputSizeInBytes() const = 0;
+
+		// Called to reset the state of the provider
+		virtual bool Init() = 0;
+
+		// Add the buffer to the running hash calculation
+		virtual bool Add(const ReadBufferView& input) = 0;
+
+		// copy the digest into the output buffer and reset the state
+		virtual bool Complete(WriteBufferView& output) = 0;
+	};
+
+
 	/**
 	* A provider of cryptographic services. All function are assumed to be thread-safe
 	* such that multiple threads can safely share a single instance of this class.
@@ -44,20 +69,20 @@ namespace openpal
 		
 		/// --- Functions related to AES 128 Key Wrap Algorithm ----
 
-		virtual bool SupportsAES128KeyWrap() = 0;
 		virtual bool WrapKeyAES128(const ReadBufferView& kek, const ReadBufferView& input, WriteBufferView& output) = 0;
 		virtual bool UnwrapKeyAES128(const ReadBufferView& kek, const ReadBufferView& input, WriteBufferView& output) = 0;
 
 		/// --- Functions related to AES 256 Key Wrap Algorithm ----
-
-		virtual bool SupportsAES256KeyWrap() = 0;
 		virtual bool WrapKeyAES256(const ReadBufferView& kek, const ReadBufferView& input, WriteBufferView& output) = 0;
 		virtual bool UnwrapKeyAES256(const ReadBufferView& kek, const ReadBufferView& input, WriteBufferView& output) = 0;
 
 		/// --- Functions related to SHA1 ----
-		virtual bool SupportsSHA1() = 0;
-		virtual bool CalcSHA1(const ReadBufferView& input, WriteBufferView& output) = 0;
 
+		// Dynamically creates a provider that can incrementally calculate a SHA1 hash
+		virtual std::unique_ptr<IHashProvider> CreateSHA1Provider() = 0;
+
+		// Calculates a SHA1 hash out in single input buffer
+		virtual bool CalcSHA1(const ReadBufferView& input, WriteBufferView& output) = 0;		
 	};
 
 }

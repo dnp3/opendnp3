@@ -37,19 +37,42 @@ using namespace openpal;
 using namespace osslcrypto;
 using namespace testlib;
 
+std::string data = "DE AD BE EF";
+std::string digest = "D7 8F 8B B9 92 A5 6A 59 7F 6C 7A 1F B9 18 BB 78 27 13 67 EB";
 
 TEST_CASE(SUITE("TestSHA1"))
 {			
-	auto hash = "D7 8F 8B B9 92 A5 6A 59 7F 6C 7A 1F B9 18 BB 78 27 13 67 EB";
-
-	HexSequence input("DEADBEEF");
+	HexSequence input(data);
 	DynamicBuffer output(20);
 
-	CryptoProvider provider;
+	CryptoProvider crypto;
 	auto write = output.GetWriteBufferView();
-	REQUIRE(provider.CalcSHA1(input.ToReadOnly(), write));
+	REQUIRE(crypto.CalcSHA1(input.ToReadOnly(), write));
 	REQUIRE(write.IsEmpty());
 
-	REQUIRE(ToHex(output.ToReadOnly()) == hash);
+	REQUIRE(ToHex(output.ToReadOnly()) == digest);
 }
 
+TEST_CASE(SUITE("TestIncrementalSHA1"))
+{
+	HexSequence input(data);
+	DynamicBuffer output(20);
+
+	CryptoProvider crypto;	
+	
+	auto provider = crypto.CreateSHA1Provider();
+	
+	for (int i = 0; i < 2; ++i)
+	{
+		auto write = output.GetWriteBufferView();
+		REQUIRE(provider->Init());
+		REQUIRE(provider->Add(input.ToReadOnly().Take(2)));
+		REQUIRE(provider->Add(input.ToReadOnly().Skip(2)));
+		REQUIRE(provider->Complete(write));		
+		REQUIRE(write.IsEmpty());
+		REQUIRE(ToHex(output.ToReadOnly()) == digest);
+	}
+	
+
+	
+}

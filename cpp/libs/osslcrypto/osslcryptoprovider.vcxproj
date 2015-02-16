@@ -20,9 +20,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\osslcrypto\CryptoProvider.h" />
+    <ClInclude Include="src\osslcrypto\SHA1HashProvider.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\osslcrypto\CryptoProvider.cpp" />
+    <ClCompile Include="src\osslcrypto\SHA1HashProvider.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{6571DD15-D2F7-4D3F-A580-FDC5E55B2844}</ProjectGuid>

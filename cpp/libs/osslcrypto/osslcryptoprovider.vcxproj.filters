@@ -14,9 +14,15 @@
     <ClInclude Include="src\osslcrypto\CryptoProvider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\osslcrypto\SHA1HashProvider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\osslcrypto\CryptoProvider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\osslcrypto\SHA1HashProvider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

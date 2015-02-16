@@ -19,6 +19,9 @@
 * to you under the terms of the License.
 */
 
+#ifndef OSSLCRYPTO_CRYPTOPROVIDER_H
+#define OSSLCRYPTO_CRYPTOPROVIDER_H
+
 #include <openpal/crypto/ICryptoProvider.h>
 #include <openpal/util/Uncopyable.h>
 
@@ -43,17 +46,15 @@ class CryptoProvider : public openpal::ICryptoProvider, private openpal::Uncopya
 	public:	
 
 	virtual bool GetSecureRandom(openpal::WriteBufferView& buffer) override final;	
-
-	virtual bool SupportsAES128KeyWrap() override final { return true; }
+	
 	virtual bool WrapKeyAES128(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output) override final;
 	virtual bool UnwrapKeyAES128(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output) override final;
-	
-	virtual bool SupportsAES256KeyWrap() override final { return true; }
+		
 	virtual bool WrapKeyAES256(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output) override final;
 	virtual bool UnwrapKeyAES256(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output) override final;
 
-	virtual bool SupportsSHA1() { return true; }
 	virtual bool CalcSHA1(const openpal::ReadBufferView& input, openpal::WriteBufferView& output) override final;
+	virtual std::unique_ptr<openpal::IHashProvider> CreateSHA1Provider() override final;
 	
 	private:	
 
@@ -68,5 +69,7 @@ class CryptoProvider : public openpal::ICryptoProvider, private openpal::Uncopya
 	static std::vector < std::unique_ptr<std::mutex> > mutexes;
 	static bool initialized;
 };
+
+#endif
 
 }
