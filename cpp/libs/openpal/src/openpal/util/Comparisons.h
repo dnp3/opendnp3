@@ -43,6 +43,12 @@ inline T Bounded(T value, T min, T max)
 }
 
 template <class T>
+inline bool WithinLimits(T value, T min, T max)
+{
+	return (value >= min) && (value <= max);
+}
+
+template <class T>
 bool FloatEqual(T a, T b, T eapllon = 1e-6)
 {
 	T diff = a - b;

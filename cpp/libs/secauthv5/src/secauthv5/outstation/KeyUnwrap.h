@@ -61,7 +61,7 @@ namespace secauthv5
 		// The takes into account the fields in the unwrapped data
 		static const uint32_t MAX_REQUIRED_BUFFER_SIZE = 
 			openpal::UInt16::Size + 
-			2 * AuthConstants::MAX_SESSION_KEY_SIZE + 
+			2 * AuthConstants::MAX_SESSION_KEY_SIZE_BYTES + 
 			opendnp3::Group120Var5::FIXED_BASE_SIZE + 
 			AuthConstants::MAX_CHALLENGE_DATA_SIZE;
 

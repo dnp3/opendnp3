@@ -21,6 +21,13 @@
 
 #include "KeyUnwrap.h"
 
+#include <openpal/logging/LogMacros.h>
+#include <openpal/logging/LogLevels.h>
+
+using namespace openpal;
+
+
+
 namespace secauthv5
 {
 	bool KeyUnwrapBuffer::Unwrap(
@@ -29,18 +36,45 @@ namespace secauthv5
 		openpal::ReadBufferView inputData,
 		UnwrappedKeyData& output,
 		openpal::Logger* pLogger)
-	{
-		auto write = buffer.GetWriteBuffer();
-		auto initialSize = write.Size();
+	{		
+		auto unwrapped = algo.UnwrapKey(updateKey, inputData, buffer.GetWriteBuffer(), pLogger);
 
-		if (algo.UnwrapKey(updateKey, inputData, buffer.GetWriteBuffer(), pLogger))
+		if (unwrapped.IsEmpty())
 		{
 			return false;
 		}
-		else
+
+		if (unwrapped.Size() < UInt16::Size)
 		{
+			SIMPLE_LOGGER_BLOCK(pLogger, logflags::WARN, "Not enough data for key length");
 			return false;
-		}		
+		}
+
+		uint16_t keyLength = UInt16::ReadBuffer(unwrapped);
+		
+		if (!AuthConstants::SessionKeySizeWithinLimits(keyLength))
+		{
+			SIMPLE_LOGGER_BLOCK(pLogger, logflags::WARN, "Session key size of %u not within limits");
+			return false;
+		}
+
+		const uint32_t REQUIRED_KEY_SIZE = 2 * keyLength;
+
+		if (unwrapped.Size() < REQUIRED_KEY_SIZE)
+		{
+			SIMPLE_LOGGER_BLOCK(pLogger, logflags::WARN, "Not enough data for session keys");
+			return false;
+		}
+
+		output.controlSessionKey = unwrapped.Take(keyLength);
+		unwrapped.Advance(keyLength);
+
+		output.monitorSessionKey = unwrapped.Take(keyLength);
+		unwrapped.Advance(keyLength);
+		
+		// anything left over is the key status message
+		output.keyStatusObject = unwrapped;
+		return true;
 	}
 }
 

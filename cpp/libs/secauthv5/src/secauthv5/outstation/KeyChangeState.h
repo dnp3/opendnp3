@@ -37,7 +37,7 @@ class KeyChangeState
 {
 	public:
 
-	KeyChangeState(uint16_t userNum, uint8_t challengeSize, openpal::Logger logger, openpal::ICryptoProvider& provider);
+	KeyChangeState(uint16_t userNum, uint16_t challengeSize, openpal::Logger logger, openpal::ICryptoProvider& provider);
 	
 	// Formats the key status response	
 	bool FormatKeyStatusResponse(
@@ -54,7 +54,7 @@ class KeyChangeState
 	private:
 
 	const uint16_t USER_NUM;
-	uint8_t challengeSize;
+	uint16_t challengeSize;
 	openpal::Logger logger;
 	openpal::ICryptoProvider* pProvider;
 	uint32_t keyChangeSeqNum;

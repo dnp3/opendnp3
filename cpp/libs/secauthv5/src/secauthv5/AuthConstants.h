@@ -33,15 +33,25 @@ namespace secauthv5
 
 struct AuthConstants : openpal::PureStatic
 {	
-	const static uint8_t MIN_CHALLENGE_DATA_SIZE = 4;
-	const static uint8_t MAX_CHALLENGE_DATA_SIZE = 64;
+	const static uint16_t MIN_CHALLENGE_DATA_SIZE = 4;
+	const static uint16_t MAX_CHALLENGE_DATA_SIZE = 64;
 
-	const static uint16_t MIN_SESSION_KEY_SIZE = 128;
-	const static uint16_t MAX_SESSION_KEY_SIZE = 256;	
+	const static uint16_t MIN_SESSION_KEY_SIZE_BYTES = 16;
+	const static uint16_t MAX_SESSION_KEY_SIZE_BYTES = 32;
 
-	static uint8_t GetBoundedChallengeSize(uint8_t challengeSize)
+	static uint16_t GetBoundedSessionKeySize(uint16_t size)
 	{
-		return openpal::Bounded(challengeSize, MIN_CHALLENGE_DATA_SIZE, MAX_CHALLENGE_DATA_SIZE);
+		return openpal::Bounded(size, MIN_SESSION_KEY_SIZE_BYTES, MAX_SESSION_KEY_SIZE_BYTES);
+	}
+
+	static bool SessionKeySizeWithinLimits(uint16_t size)
+	{
+		return openpal::WithinLimits(size, MIN_SESSION_KEY_SIZE_BYTES, MAX_SESSION_KEY_SIZE_BYTES);
+	}
+
+	static uint16_t GetBoundedChallengeSize(uint16_t size)
+	{
+		return openpal::Bounded(size, MIN_CHALLENGE_DATA_SIZE, MAX_CHALLENGE_DATA_SIZE);
 	}
 };
 

@@ -33,7 +33,7 @@ using namespace opendnp3;
 namespace secauthv5
 {
 
-	KeyChangeState::KeyChangeState(uint16_t userNum, uint8_t challengeSize_, openpal::Logger logger_, openpal::ICryptoProvider& provider) :
+	KeyChangeState::KeyChangeState(uint16_t userNum, uint16_t challengeSize_, openpal::Logger logger_, openpal::ICryptoProvider& provider) :
 		USER_NUM(userNum),
 		challengeSize(AuthConstants::GetBoundedChallengeSize(challengeSize_)),
 		logger(logger_),
