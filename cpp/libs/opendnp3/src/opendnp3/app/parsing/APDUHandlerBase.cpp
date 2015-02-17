@@ -70,6 +70,11 @@ void APDUHandlerBase::OnFreeFormat(const HeaderRecord& record, const Group120Var
 	Record(this->ProcessFreeFormat(record, value));
 }
 
+void APDUHandlerBase::OnFreeFormat(const HeaderRecord& record, const Group120Var5& value)
+{
+	Record(this->ProcessFreeFormat(record, value));
+}
+
 void APDUHandlerBase::OnFreeFormat(const HeaderRecord& record, const Group120Var6& value)
 {
 	Record(this->ProcessFreeFormat(record, value));
@@ -266,6 +271,11 @@ IINField APDUHandlerBase::ProcessFreeFormat(const HeaderRecord& record, const Gr
 }
 
 IINField APDUHandlerBase::ProcessFreeFormat(const HeaderRecord& record, const Group120Var2& value)
+{
+	return ProcessUnsupportedHeader();
+}
+
+IINField APDUHandlerBase::ProcessFreeFormat(const HeaderRecord& record, const Group120Var5& value)
 {
 	return ProcessUnsupportedHeader();
 }

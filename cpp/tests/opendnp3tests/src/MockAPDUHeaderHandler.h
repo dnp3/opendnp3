@@ -329,6 +329,12 @@ public:
 		authReplys.push_back(value);
 	}
 
+	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var5& value) override
+	{
+		records.push_back(record);
+		authKeyStatusResponses.push_back(value);
+	}
+
 	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var6& value) override
 	{
 		records.push_back(record);
@@ -342,6 +348,7 @@ public:
 	std::vector<Group120Var1> authChallenges;
 	std::vector<Group120Var2> authReplys;
 	std::vector<Group120Var4> authStatusRequsts;
+	std::vector<Group120Var5> authKeyStatusResponses;
 	std::vector<Group120Var6> authChanges;
 
 	std::vector<IndexedValue<IINValue, uint16_t>> iinBits;

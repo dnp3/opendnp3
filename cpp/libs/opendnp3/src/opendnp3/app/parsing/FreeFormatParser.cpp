@@ -76,6 +76,9 @@ namespace opendnp3
 		case(GroupVariation::Group120Var2) :
 			return ParseFreeFormat(ParseAny<Group120Var2>, record, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
 
+		case(GroupVariation::Group120Var5) :
+			return ParseFreeFormat(ParseAny<Group120Var5>, record, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
+
 		case(GroupVariation::Group120Var6) :
 			return ParseFreeFormat(ParseAny<Group120Var6>, record, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
 

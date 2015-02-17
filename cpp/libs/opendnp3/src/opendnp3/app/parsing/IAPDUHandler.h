@@ -44,6 +44,7 @@
 #include "opendnp3/objects/Group120.h"
 #include "opendnp3/objects/Group120Var1.h"
 #include "opendnp3/objects/Group120Var2.h"
+#include "opendnp3/objects/Group120Var5.h"
 #include "opendnp3/objects/Group120Var6.h"
 
 namespace opendnp3
@@ -68,6 +69,7 @@ public:
 
 	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var1& value) = 0;
 	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var2& value) = 0;
+	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var5& value) = 0;
 	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var6& value) = 0;
 
 	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<IINValue, uint16_t>>& meas) = 0;

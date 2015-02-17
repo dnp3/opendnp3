@@ -133,7 +133,7 @@ void OutstationAuthProvider::OnRequestKeyStatus(OState& ostate, const APDUHeader
 
 void OutstationAuthProvider::OnChangeSessionKeys(OState& ostate, const APDUHeader& header, const Group120Var6& change)
 {
-	SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "Session key change not supported yet");
+	sstate.pState = sstate.pState->OnChangeSessionKeys(sstate, ostate, header, change);	
 }
 
 }
