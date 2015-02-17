@@ -125,7 +125,7 @@ namespace osslcrypto
 			SIMPLE_LOGGER_BLOCK(pLogger, logflags::WARN, "Unspecified error wrapping key data");
 		}		
 
-		return true;
+		return success;
 	}
 }
 
