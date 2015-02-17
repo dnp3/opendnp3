@@ -54,5 +54,11 @@ namespace secauthv5
 		return this;
 	}
 
+	IOAuthState* IOAuthState::IgnoreChangeSessionKeys(SecurityState& sstate, opendnp3::OState& ostate, const APDUHeader& header, const Group120Var6& change)
+	{
+		FORMAT_LOG_BLOCK(ostate.logger, flags::WARN, "AuthState: %s - Ignoring change session keys for user: %u", this->GetName(), change.user);
+		return this;
+	}
+
 }
 
