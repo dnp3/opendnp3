@@ -20,13 +20,14 @@
  */
 
 #include "OSecActions.h"
+#include "KeyUnwrap.h"
 
 #include <opendnp3/LogLevels.h>
 #include <opendnp3/outstation/OutstationActions.h>
 
 #include <openpal/logging/LogMacros.h>
 
-
+using namespace openpal;
 using namespace opendnp3;
 
 namespace secauthv5
@@ -35,7 +36,33 @@ namespace secauthv5
 	{
 		if (change.user == 1)
 		{
-			
+			openpal::StaticBuffer<16> updateKey;
+			for (int i = 0; i < 16; ++i)
+			{
+				updateKey()[i] = 0xFF;
+			}
+
+			UnwrappedKeyData unwrapped;
+			KeyUnwrapBuffer buffer;
+			auto success = buffer.Unwrap(
+				sstate.pCrypto->GetAES128KeyWrap(),
+				updateKey.ToReadOnly(),
+				change.data,
+				unwrapped,
+				&ostate.logger
+			);
+
+			if (success)
+			{
+				SIMPLE_LOG_BLOCK(ostate.logger, flags::EVENT, "Unwrapped key data!");
+				FORMAT_HEX_BLOCK(ostate.logger, flags::EVENT, unwrapped.controlSessionKey, 18, 18);
+				FORMAT_HEX_BLOCK(ostate.logger, flags::EVENT, unwrapped.monitorSessionKey, 18, 18);
+				FORMAT_HEX_BLOCK(ostate.logger, flags::EVENT, unwrapped.keyStatusObject, 18, 18);
+			}
+			else
+			{
+				SIMPLE_LOG_BLOCK(ostate.logger, flags::EVENT, "Failed to unwrap key data!");
+			}
 		}
 		else
 		{
