@@ -59,14 +59,14 @@ namespace opendnp3
 			return ParseResult::UNREASONABLE_OBJECT_COUNT;
 		}
 
-		if (FREE_FORMAT_SIZE <= buffer.Size())
+		if (buffer.Size() < FREE_FORMAT_SIZE)
 		{
 			FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Insufficient data (%u) for free format object of size (%u)", buffer.Size(), FREE_FORMAT_SIZE);
 			return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
 		}
 	
 		ReadBufferView copy(buffer.Take(FREE_FORMAT_SIZE));
-		buffer = buffer.Skip(FREE_FORMAT_SIZE);
+		buffer.Advance(FREE_FORMAT_SIZE);
 
 		switch (record.enumeration)
 		{
