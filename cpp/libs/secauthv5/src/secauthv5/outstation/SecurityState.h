@@ -23,8 +23,10 @@
 
 #include <opendnp3/gen/KeyStatus.h>
 #include <opendnp3/outstation/DeferredRequest.h>
-#include <openpal/crypto/ICryptoProvider.h>
 #include <opendnp3/outstation/TxBuffer.h>
+
+#include <openpal/executor/IExecutor.h>
+#include <openpal/crypto/ICryptoProvider.h>
 
 #include "KeyChangeState.h"
 #include "OutstationAuthSettings.h"
@@ -38,11 +40,12 @@ class SecurityState
 {
 	public:
 
-	SecurityState(const OutstationAuthSettings& settings, openpal::Logger logger, openpal::ICryptoProvider& crypto);
+	SecurityState(const OutstationAuthSettings& settings, openpal::Logger logger, openpal::IExecutor& executor, openpal::ICryptoProvider& crypto);
 
 	void Reset();
 	
-	opendnp3::DeferredRequest deferred;	
+	opendnp3::DeferredRequest deferred;
+	openpal::IExecutor* pExecutor;
 	openpal::ICryptoProvider* pCrypto;
 	opendnp3::KeyStatus keyStatus;
 	IOAuthState* pState;

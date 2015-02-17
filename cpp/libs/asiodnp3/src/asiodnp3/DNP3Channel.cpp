@@ -151,7 +151,8 @@ IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler& command
 {
 	auto add = [this, id, &factory, &commandHandler, &application, config]() 
 	{ 		
-		return this->_AddOutstation(id, commandHandler, application, factory.Create(pLogRoot->GetLogger()), config);
+		auto auth = factory.Create(pLogRoot->GetLogger(), *pExecutor);
+		return this->_AddOutstation(id, commandHandler, application, std::move(auth), config);
 	};
 	return asiopal::SynchronouslyGet<IOutstation*>(pExecutor->strand, add);
 }

@@ -39,8 +39,8 @@ using namespace opendnp3;
 namespace secauthv5
 {
 
-OutstationAuthProvider::OutstationAuthProvider(const OutstationAuthSettings& settings, openpal::Logger logger, openpal::ICryptoProvider& crypto) :
-	sstate(settings, logger, crypto)
+OutstationAuthProvider::OutstationAuthProvider(const OutstationAuthSettings& settings, openpal::Logger logger, openpal::IExecutor& executor, openpal::ICryptoProvider& crypto) :
+	sstate(settings, logger, executor, crypto)
 {
 
 }

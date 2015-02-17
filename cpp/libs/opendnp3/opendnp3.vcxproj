@@ -234,6 +234,7 @@
     <ClInclude Include="src\opendnp3\outstation\IINHelpers.h" />
     <ClInclude Include="src\opendnp3\outstation\IndexSearch.h" />
     <ClInclude Include="src\opendnp3\outstation\IOutstationApplication.h" />
+    <ClInclude Include="src\opendnp3\outstation\IOutstationAuthFactory.h" />
     <ClInclude Include="src\opendnp3\outstation\IOutstationAuthProvider.h" />
     <ClInclude Include="src\opendnp3\outstation\IResponseLoader.h" />
     <ClInclude Include="src\opendnp3\outstation\IStaticSelector.h" />

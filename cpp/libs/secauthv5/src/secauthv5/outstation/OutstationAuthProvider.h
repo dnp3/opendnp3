@@ -39,7 +39,7 @@ class OutstationAuthProvider : public opendnp3::IOutstationAuthProvider, private
 {
 	public:
 
-	OutstationAuthProvider(const OutstationAuthSettings& settings, openpal::Logger logger, openpal::ICryptoProvider& crypto);	
+	OutstationAuthProvider(const OutstationAuthSettings& settings, openpal::Logger logger, openpal::IExecutor& executor, openpal::ICryptoProvider& crypto);
 
 	virtual void Reset() override final;	
 

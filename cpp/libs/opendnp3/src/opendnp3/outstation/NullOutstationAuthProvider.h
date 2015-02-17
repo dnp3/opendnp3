@@ -47,7 +47,7 @@ class NullOutstationAuthFactory : private openpal::Uncopyable, public IOutstatio
 {
 public:
 
-	virtual std::unique_ptr<IOutstationAuthProvider> Create(openpal::Logger logger) override final
+	virtual std::unique_ptr<IOutstationAuthProvider> Create(openpal::Logger, openpal::IExecutor&) override final
 	{
 		return std::make_unique<NullOutstationAuthProvider>();
 	}

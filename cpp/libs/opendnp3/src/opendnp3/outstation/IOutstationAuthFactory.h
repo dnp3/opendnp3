@@ -25,6 +25,7 @@
 #include "opendnp3/outstation/IOutstationAuthProvider.h"
 
 #include <openpal/logging/Logger.h>
+#include <openpal/executor/IExecutor.h>
 
 #include <memory>
 
@@ -38,7 +39,7 @@ class IOutstationAuthFactory
 {
 	public:
 
-	virtual std::unique_ptr<IOutstationAuthProvider> Create(openpal::Logger logger) = 0;
+	virtual std::unique_ptr<IOutstationAuthProvider> Create(openpal::Logger logger, openpal::IExecutor& executor) = 0;
 };
 
 }
