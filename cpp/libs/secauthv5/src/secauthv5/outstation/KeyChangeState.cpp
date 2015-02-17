@@ -73,18 +73,16 @@ namespace secauthv5
 		copy.hmacValue = ReadBufferView::Empty(); // exclude the HMAC from the comparison
 
 		const uint32_t MAX_SIZE = Group120Var5::FIXED_BASE_SIZE + AuthConstants::MAX_CHALLENGE_DATA_SIZE;
-		uint8_t buffer[MAX_SIZE];
-
-		WriteBufferView dest(buffer, MAX_SIZE);
-		if (!Group120Var5::Write(copy, dest))
+		openpal::StaticBuffer<MAX_SIZE> buffer;
+		
+		if (!Group120Var5::Write(copy, buffer.GetWriteBuffer()))
 		{
 			SIMPLE_LOG_BLOCK(logger, flags::ERR, "Unable to write last response to buffer");
 			return false;
 		}
 		else
-		{
-			ReadBufferView written(buffer, copy.Size());
-			return SecureEquals(written, unwrappedKeyStatus);
+		{			
+			return SecureEquals(buffer.ToReadOnly(copy.Size()), unwrappedKeyStatus);
 		}
 	}
 
