@@ -26,7 +26,6 @@
 
 #include <openssl/rand.h>
 #include <openssl/crypto.h>
-#include <openssl/aes.h>
 #include <openssl/sha.h>
 
 #include <assert.h>
@@ -36,8 +35,9 @@ using namespace openpal;
 namespace osslcrypto
 {
 
+AESKeyWrap128 CryptoProvider::keywrap128;
+AESKeyWrap256 CryptoProvider::keywrap256;
 std::vector < std::unique_ptr<std::mutex> > CryptoProvider::mutexes;
-
 bool CryptoProvider::initialized = Initialize();
 
 bool CryptoProvider::Initialize()
@@ -83,24 +83,14 @@ bool CryptoProvider::GetSecureRandom(WriteBufferView& buffer)
 	return RAND_bytes(buffer, buffer.Size()) > 0;
 }
 
-bool CryptoProvider::WrapKeyAES128(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output)
+openpal::IKeyWrapAlgo& CryptoProvider::GetAES128KeyWrap()
 {
-	return WrapKeyAES(AESKeyLength::L128, kek, input, output);
+	return keywrap128;
 }
 
-bool CryptoProvider::WrapKeyAES256(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output)
+openpal::IKeyWrapAlgo& CryptoProvider::GetAES256KeyWrap()
 {
-	return WrapKeyAES(AESKeyLength::L256, kek, input, output);
-}
-
-bool CryptoProvider::UnwrapKeyAES128(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output)
-{
-	return UnwrapKeyAES(AESKeyLength::L128, kek, input, output);
-}
-
-bool CryptoProvider::UnwrapKeyAES256(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output)
-{
-	return UnwrapKeyAES(AESKeyLength::L256, kek, input, output);
+	return keywrap256;
 }
 
 std::unique_ptr<openpal::IHashProvider> CryptoProvider::CreateSHA1Provider()
@@ -121,86 +111,6 @@ std::unique_ptr<openpal::IHashProvider> CryptoProvider::CreateSHA256Provider()
 bool CryptoProvider::CalcSHA256(const openpal::ReadBufferView& input, openpal::WriteBufferView& output)
 {
 	return SHA256HashProvider::CalcHash(input, output);
-}
-
-bool CryptoProvider::WrapKeyAES(AESKeyLength length, const ReadBufferView& kek, const ReadBufferView& input, WriteBufferView& output)
-{
-	const int KEY_SIZE = (length == AESKeyLength::L128) ? 16 : 32;
-	const int KEY_SIZE_BITS = (length == AESKeyLength::L128) ? 128 : 256;
-
-	// the key size must match
-	if (kek.Size() != KEY_SIZE)
-	{
-		return false;
-	}	
-
-	// can only wrap things pre-padded into 8-byte blocks
-	if (input.Size() % 8 != 0)
-	{
-		return false;
-	}
-
-	const uint32_t OUTPUT_SIZE = input.Size() + 8;
-
-	// the wrapped data is always 8 bytes larger than the input
-	if (output.Size() < OUTPUT_SIZE)
-	{
-		return false;
-	}
-
-	AES_KEY key;
-	if (AES_set_encrypt_key(kek, KEY_SIZE_BITS, &key))
-	{
-		return false;
-	}	
-
-	// If iv is null, the default IV is used
-	bool success = AES_wrap_key(&key, nullptr, output, input, input.Size()) > 0;
-	if (success) 
-	{
-		output.Advance(OUTPUT_SIZE);
-	}
-
-	return success;
-}
-
-bool CryptoProvider::UnwrapKeyAES(AESKeyLength length, const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output)
-{
-	const int KEY_SIZE = (length == AESKeyLength::L128) ? 16 : 32;
-	const int KEY_SIZE_BITS = (length == AESKeyLength::L128) ? 128 : 256;
-
-	// the key size must match
-	if (kek.Size() != KEY_SIZE)
-	{
-		return false;
-	}
-
-	// can only unwrap things pre-padded into 64-bit blocks
-	if ((input.Size() < 8) && input.Size() % 8 != 0)
-	{
-		return false;
-	}
-
-	// the wrapped data is always 8 bytes larger than what is output
-	const uint32_t OUTPUT_SIZE = input.Size() - 8;
-	
-	if (output.Size() < OUTPUT_SIZE)
-	{
-		return false;
-	}
-
-	AES_KEY key;
-	if (AES_set_decrypt_key(kek, KEY_SIZE_BITS, &key))
-	{
-		return false;
-	}
-
-	// If iv is null, the default IV is used
-	AES_unwrap_key(&key, nullptr, output, input, input.Size());
-
-	output.Advance(OUTPUT_SIZE);
-
-	return true;
 }
 
 }

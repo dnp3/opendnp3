@@ -18,34 +18,38 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTHV5_AUTHCONSTANTS_H
-#define SECAUTHV5_AUTHCONSTANTS_H
 
-#include <openpal/util/Uncopyable.h>
-#include <openpal/util/Comparisons.h>
+#include "OSecActions.h"
 
-#include <opendnp3/objects/Group120Var5.h>
+#include <opendnp3/LogLevels.h>
+#include <opendnp3/outstation/OutstationActions.h>
 
-#include <cstdint>
+#include <openpal/logging/LogMacros.h>
+
+
+using namespace opendnp3;
 
 namespace secauthv5
 {
-
-struct AuthConstants : openpal::PureStatic
-{	
-	const static uint8_t MIN_CHALLENGE_DATA_SIZE = 4;
-	const static uint8_t MAX_CHALLENGE_DATA_SIZE = 64;
-
-	const static uint16_t MIN_SESSION_KEY_SIZE = 128;
-	const static uint16_t MAX_SESSION_KEY_SIZE = 256;	
-
-	static uint8_t GetBoundedChallengeSize(uint8_t challengeSize)
+	void OSecActions::ProcessChangeSessionKeys(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change)
 	{
-		return openpal::Bounded(challengeSize, MIN_CHALLENGE_DATA_SIZE, MAX_CHALLENGE_DATA_SIZE);
+		if (change.user == 1)
+		{
+			
+		}
+		else
+		{
+			FORMAT_LOG_BLOCK(ostate.logger, flags::WARN, "Ignoring session key change request for user %u", change.user);
+		}
 	}
-};
-
+	
+	void OSecActions::ProcessRequestKeyStatus(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var4& status)
+	{
+		auto rsp = sstate.txBuffer.Start();
+		auto success = sstate.keyChangeState.FormatKeyStatusResponse(rsp, header.control, KeyStatus::NOT_INIT);
+		if (success)
+		{
+			OActions::BeginResponseTx(ostate, rsp.ToReadOnly());
+		}
+	}
 }
-
-#endif
-

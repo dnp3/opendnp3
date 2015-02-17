@@ -20,12 +20,14 @@
  */
 
 #include "OAuthStates.h"
+#include "OSecActions.h"
 
 #include <opendnp3/LogLevels.h>
 
 #include <openpal/logging/LogMacros.h>
 
 #include "opendnp3/outstation/OutstationActions.h"
+
 
 using namespace openpal;
 using namespace opendnp3;
@@ -53,18 +55,14 @@ namespace secauthv5
 	
 	IOAuthState* OAuthStateIdle::OnRequestKeyStatus(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var4& status)
 	{
-		auto rsp = sstate.txBuffer.Start();
-		auto success = sstate.keyChangeState.FormatKeyStatusResponse(rsp, header.control, KeyStatus::NOT_INIT);
-		if (success)
-		{
-			OActions::BeginResponseTx(ostate, rsp.ToReadOnly());
-		}
+		OSecActions::ProcessRequestKeyStatus(sstate, ostate, header, status);
 		return this;
 	}
 
 	IOAuthState* OAuthStateIdle::OnChangeSessionKeys(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change)
 	{
-		return this->IgnoreChangeSessionKeys(sstate, ostate, header, change);
+		OSecActions::ProcessChangeSessionKeys(sstate, ostate, header, change);		
+		return this;
 	}
 
 	// -------- WaitForReply ----------

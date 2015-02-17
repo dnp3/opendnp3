@@ -18,33 +18,26 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTHV5_AUTHCONSTANTS_H
-#define SECAUTHV5_AUTHCONSTANTS_H
+#ifndef OPENPAL_IKEYWRAPALGO_H
+#define OPENPAL_IKEYWRAPALGO_H
 
-#include <openpal/util/Uncopyable.h>
-#include <openpal/util/Comparisons.h>
+#include <openpal/container/ReadBufferView.h>
+#include <openpal/container/WriteBufferView.h>
 
-#include <opendnp3/objects/Group120Var5.h>
+#include <openpal/logging/Logger.h>
 
-#include <cstdint>
-
-namespace secauthv5
+namespace openpal
 {
-
-struct AuthConstants : openpal::PureStatic
-{	
-	const static uint8_t MIN_CHALLENGE_DATA_SIZE = 4;
-	const static uint8_t MAX_CHALLENGE_DATA_SIZE = 64;
-
-	const static uint16_t MIN_SESSION_KEY_SIZE = 128;
-	const static uint16_t MAX_SESSION_KEY_SIZE = 256;	
-
-	static uint8_t GetBoundedChallengeSize(uint8_t challengeSize)
+	/**
+	* Provides an abstract interface for a key wrapping algorithm
+	*/
+	class IKeyWrapAlgo
 	{
-		return openpal::Bounded(challengeSize, MIN_CHALLENGE_DATA_SIZE, MAX_CHALLENGE_DATA_SIZE);
-	}
-};
+		public:		
 
+		virtual bool WrapKey(const ReadBufferView& kek, const ReadBufferView& input, WriteBufferView& output, openpal::Logger* pLogger) const = 0;
+		virtual bool UnwrapKey(const ReadBufferView& kek, const ReadBufferView& input, WriteBufferView& output, openpal::Logger* pLogger) const = 0;
+	};
 }
 
 #endif

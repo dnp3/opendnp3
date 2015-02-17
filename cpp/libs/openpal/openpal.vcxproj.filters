@@ -202,6 +202,9 @@
     <ClInclude Include="src\openpal\container\StaticBuffer.h">
       <Filter>Header\container</Filter>
     </ClInclude>
+    <ClInclude Include="src\openpal\crypto\IKeyWrapAlgo.h">
+      <Filter>Header\crypto</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\openpal\executor\MonotonicTimestamp.cpp">

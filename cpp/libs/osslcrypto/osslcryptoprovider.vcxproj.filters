@@ -20,6 +20,9 @@
     <ClInclude Include="src\osslcrypto\SHA256HashProvider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\osslcrypto\AESKeyWrap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\osslcrypto\CryptoProvider.cpp">
@@ -29,6 +32,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\osslcrypto\SHA256HashProvider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\osslcrypto\AESKeyWrap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

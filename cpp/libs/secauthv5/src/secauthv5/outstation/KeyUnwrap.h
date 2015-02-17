@@ -18,32 +18,46 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTHV5_AUTHCONSTANTS_H
-#define SECAUTHV5_AUTHCONSTANTS_H
+#ifndef SECAUTHV5_KEYUNWRAP_H
+#define SECAUTHV5_KEYUNWRAP_H
 
-#include <openpal/util/Uncopyable.h>
-#include <openpal/util/Comparisons.h>
+#include <openpal/logging/Logger.h>
+#include <openpal/crypto/ICryptoProvider.h>
+#include <openpal/container/ReadBufferView.h>
+#include <openpal/container/StaticBuffer.h>
+#include <openpal/serialization/Serialization.h>
 
-#include <opendnp3/objects/Group120Var5.h>
 
-#include <cstdint>
+#include <opendnp3/objects/Group120Var6.h>
+
+#include "secauthv5/AuthConstants.h"
+
+
 
 namespace secauthv5
 {
 
-struct AuthConstants : openpal::PureStatic
-{	
-	const static uint8_t MIN_CHALLENGE_DATA_SIZE = 4;
-	const static uint8_t MAX_CHALLENGE_DATA_SIZE = 64;
-
-	const static uint16_t MIN_SESSION_KEY_SIZE = 128;
-	const static uint16_t MAX_SESSION_KEY_SIZE = 256;	
-
-	static uint8_t GetBoundedChallengeSize(uint8_t challengeSize)
+	class UnwrappedKeyData
 	{
-		return openpal::Bounded(challengeSize, MIN_CHALLENGE_DATA_SIZE, MAX_CHALLENGE_DATA_SIZE);
-	}
-};
+	public:
+		openpal::ReadBufferView controlSessionKey;
+		openpal::ReadBufferView monitorSessionKey;
+		openpal::ReadBufferView keyStatusObject;
+	};
+
+	class KeyUnwrapBuffer
+	{
+	public:
+
+		bool Unwrap(ICryptoProvider& crypto,)
+
+
+	private:
+
+		// The takes into account the fields in the unwrapped data
+		static const uint32_t MAX_REQUIRED_BUFFER_SIZE = openpal::UInt16::Size + 2 * AuthConstants::MAX_SESSION_KEY_SIZE + opendnp3::Group120Var5::FIXED_BASE_SIZE + AuthConstants::MAX_CHALLENGE_DATA_SIZE;
+		openpal::StaticBuffer<MAX_REQUIRED_BUFFER_SIZE> buffer;		
+	};
 
 }
 

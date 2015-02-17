@@ -25,6 +25,8 @@
 #include <openpal/crypto/ICryptoProvider.h>
 #include <openpal/util/Uncopyable.h>
 
+#include "AESKeyWrap.h"
+
 #include <mutex>
 #include <vector>
 #include <memory>
@@ -47,11 +49,8 @@ class CryptoProvider : public openpal::ICryptoProvider, private openpal::Uncopya
 
 	virtual bool GetSecureRandom(openpal::WriteBufferView& buffer) override final;	
 	
-	virtual bool WrapKeyAES128(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output) override final;
-	virtual bool UnwrapKeyAES128(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output) override final;
-		
-	virtual bool WrapKeyAES256(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output) override final;
-	virtual bool UnwrapKeyAES256(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output) override final;
+	virtual openpal::IKeyWrapAlgo& GetAES128KeyWrap() override final;
+	virtual openpal::IKeyWrapAlgo& GetAES256KeyWrap() override final;	
 
 	virtual std::unique_ptr<openpal::IHashProvider> CreateSHA1Provider() override final;
 	virtual bool CalcSHA1(const openpal::ReadBufferView& input, openpal::WriteBufferView& output) override final;
@@ -59,12 +58,13 @@ class CryptoProvider : public openpal::ICryptoProvider, private openpal::Uncopya
 	virtual std::unique_ptr<openpal::IHashProvider> CreateSHA256Provider() override final;
 	virtual bool CalcSHA256(const openpal::ReadBufferView& input, openpal::WriteBufferView& output) override final;
 	
-	private:	
-
-	static bool WrapKeyAES(AESKeyLength length, const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output);
-	static bool UnwrapKeyAES(AESKeyLength length, const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output);
+	private:
 
 	static void LockingFunction(int mode, int n, const char *file, int line);
+
+	// singleton values of the various key wrap algorithms
+	static AESKeyWrap128 keywrap128;
+	static AESKeyWrap256 keywrap256;
 			
 	static bool Initialize();
 	static bool ConfigureMultithreading();

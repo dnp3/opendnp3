@@ -19,11 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\osslcrypto\AESKeyWrap.h" />
     <ClInclude Include="src\osslcrypto\CryptoProvider.h" />
     <ClInclude Include="src\osslcrypto\SHA1HashProvider.h" />
     <ClInclude Include="src\osslcrypto\SHA256HashProvider.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\osslcrypto\AESKeyWrap.cpp" />
     <ClCompile Include="src\osslcrypto\CryptoProvider.cpp" />
     <ClCompile Include="src\osslcrypto\SHA1HashProvider.cpp" />
     <ClCompile Include="src\osslcrypto\SHA256HashProvider.cpp" />

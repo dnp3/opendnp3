@@ -24,7 +24,9 @@
     <ClInclude Include="src\secauthv5\outstation\IAuthRequestHandler.h" />
     <ClInclude Include="src\secauthv5\outstation\IOAuthState.h" />
     <ClInclude Include="src\secauthv5\outstation\KeyChangeState.h" />
+    <ClInclude Include="src\secauthv5\outstation\KeyUnwrap.h" />
     <ClInclude Include="src\secauthv5\outstation\OAuthStates.h" />
+    <ClInclude Include="src\secauthv5\outstation\OSecActions.h" />
     <ClInclude Include="src\secauthv5\outstation\OutstationAuthFactory.h" />
     <ClInclude Include="src\secauthv5\outstation\OutstationAuthProvider.h" />
     <ClInclude Include="src\secauthv5\outstation\OutstationAuthSettings.h" />
@@ -35,6 +37,7 @@
     <ClCompile Include="src\secauthv5\outstation\IOAuthState.cpp" />
     <ClCompile Include="src\secauthv5\outstation\KeyChangeState.cpp" />
     <ClCompile Include="src\secauthv5\outstation\OAuthStates.cpp" />
+    <ClCompile Include="src\secauthv5\outstation\OSecActions.cpp" />
     <ClCompile Include="src\secauthv5\outstation\OutstationAuthProvider.cpp" />
     <ClCompile Include="src\secauthv5\outstation\OutstationAuthSettings.cpp" />
     <ClCompile Include="src\secauthv5\outstation\SecurityState.cpp" />

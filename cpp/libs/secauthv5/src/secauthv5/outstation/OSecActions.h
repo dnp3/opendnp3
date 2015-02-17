@@ -18,34 +18,28 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTHV5_AUTHCONSTANTS_H
-#define SECAUTHV5_AUTHCONSTANTS_H
+#ifndef SECAUTHV5_OSECACTIONS_H
+#define SECAUTHV5_OSECACTIONS_H
 
 #include <openpal/util/Uncopyable.h>
-#include <openpal/util/Comparisons.h>
 
-#include <opendnp3/objects/Group120Var5.h>
+#include <opendnp3/outstation/OutstationState.h>
 
-#include <cstdint>
+#include <opendnp3/objects/Group120.h>
+#include <opendnp3/objects/Group120Var6.h>
+
+#include "SecurityState.h"
 
 namespace secauthv5
 {
-
-struct AuthConstants : openpal::PureStatic
-{	
-	const static uint8_t MIN_CHALLENGE_DATA_SIZE = 4;
-	const static uint8_t MAX_CHALLENGE_DATA_SIZE = 64;
-
-	const static uint16_t MIN_SESSION_KEY_SIZE = 128;
-	const static uint16_t MAX_SESSION_KEY_SIZE = 256;	
-
-	static uint8_t GetBoundedChallengeSize(uint8_t challengeSize)
+	class OSecActions : private openpal::PureStatic
 	{
-		return openpal::Bounded(challengeSize, MIN_CHALLENGE_DATA_SIZE, MAX_CHALLENGE_DATA_SIZE);
-	}
-};
+		public:
+			static void ProcessChangeSessionKeys(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change);
+			static void ProcessRequestKeyStatus(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var4& status);
+	};
 
+	
 }
 
 #endif
-

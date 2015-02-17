@@ -341,8 +341,6 @@ public:
 		authChanges.push_back(value);
 	}
 
-
-
 	std::vector<HeaderRecord> records;
 
 	std::vector<Group120Var1> authChallenges;

@@ -22,6 +22,7 @@
 #define OPENPAL_ICRYPTOPROVIDER_H
 
 #include "IHashProvider.h"
+#include "IKeyWrapAlgo.h"
 
 #include <memory>
 
@@ -44,14 +45,10 @@ namespace openpal
 		*/
 		virtual bool GetSecureRandom(WriteBufferView& buffer) = 0;
 		
-		/// --- Functions related to AES 128 Key Wrap Algorithm ----
+		/// --- Getters for key wrap algorithms ----
 
-		virtual bool WrapKeyAES128(const ReadBufferView& kek, const ReadBufferView& input, WriteBufferView& output) = 0;
-		virtual bool UnwrapKeyAES128(const ReadBufferView& kek, const ReadBufferView& input, WriteBufferView& output) = 0;
-
-		/// --- Functions related to AES 256 Key Wrap Algorithm ----
-		virtual bool WrapKeyAES256(const ReadBufferView& kek, const ReadBufferView& input, WriteBufferView& output) = 0;
-		virtual bool UnwrapKeyAES256(const ReadBufferView& kek, const ReadBufferView& input, WriteBufferView& output) = 0;
+		virtual IKeyWrapAlgo& GetAES256KeyWrap() = 0;
+		virtual IKeyWrapAlgo& GetAES128KeyWrap() = 0;
 
 		/// --- Functions related to SHA1 ----
 
