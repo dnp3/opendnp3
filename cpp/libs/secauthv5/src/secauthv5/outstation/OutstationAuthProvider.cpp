@@ -39,15 +39,15 @@ using namespace opendnp3;
 namespace secauthv5
 {
 
-OutstationAuthProvider::OutstationAuthProvider(uint32_t maxRxASDUSize, uint32_t maxTxASDUSize, openpal::ICryptoProvider& crypto) :
-	sstate(maxRxASDUSize, maxTxASDUSize, crypto)
+OutstationAuthProvider::OutstationAuthProvider(const OutstationSettings& settings, openpal::Logger logger, openpal::ICryptoProvider& crypto) :
+	sstate(settings, logger, crypto)
 {
 
 }
 
-std::unique_ptr<opendnp3::IOutstationAuthProvider> OutstationAuthProvider::Create(uint32_t maxRxASDUSize, uint32_t maxTxASDUSize, openpal::ICryptoProvider& crypto)
+std::unique_ptr<opendnp3::IOutstationAuthProvider> OutstationAuthProvider::Create(const OutstationSettings& settings, openpal::Logger logger, openpal::ICryptoProvider& crypto)
 {
-	return std::make_unique<OutstationAuthProvider>(maxRxASDUSize, maxTxASDUSize, crypto);
+	return std::make_unique<OutstationAuthProvider>(settings, logger, crypto);
 }
 
 void OutstationAuthProvider::Reset()

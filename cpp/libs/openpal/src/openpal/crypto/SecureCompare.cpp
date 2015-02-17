@@ -19,28 +19,29 @@
  * to you under the terms of the License.
  */
 
-#include "SecurityState.h"
+#include "SecureCompare.h"
 
-#include "OAuthStates.h"
-
-using namespace opendnp3;
-
-namespace secauthv5
+namespace openpal
 {
-	SecurityState::SecurityState(const OutstationSettings& settings, openpal::Logger logger, openpal::ICryptoProvider& crypto) :		
-		deferred(settings.maxRxASDUSize),
-		pCrypto(&crypto),
-		keyStatus(KeyStatus::NOT_INIT),
-		pState(OAuthStateIdle::Instance()),
-		keyChangeState(1, 4, logger, crypto),
-		txBuffer(settings.maxTxASDUSize)
-	{}
+	bool SecureEquals(const ReadBufferView& lhs, const ReadBufferView& rhs)
+	{
+		if (lhs.Size() != rhs.Size())
+		{
+			return false;
+		}
 
-	void SecurityState::Reset()
-	{		
-		keyStatus = KeyStatus::NOT_INIT;
-		pState = OAuthStateIdle::Instance();
+		// Mark this volatile so that the compiler doesn't try
+		//  to optimize away anything and return early
+		volatile bool equals = false;
+
+		for (uint32_t i = 0; i < lhs.Size(); ++i)
+		{
+			equals &= (lhs[i] == rhs[i]);
+		}
+
+		return equals;
 	}
 }
+
 
 

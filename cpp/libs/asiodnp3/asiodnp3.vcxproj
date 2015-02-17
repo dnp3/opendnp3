@@ -38,6 +38,7 @@
     <ClCompile Include="src\asiodnp3\StackActionHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\opendnp3\src\opendnp3\outstation\IOutstationAuthFactory.h" />
     <ClInclude Include="src\asiodnp3\BlockingCommandCallback.h" />
     <ClInclude Include="src\asiodnp3\ConsoleLogger.h" />
     <ClInclude Include="src\asiodnp3\DefaultMasterApplication.h" />

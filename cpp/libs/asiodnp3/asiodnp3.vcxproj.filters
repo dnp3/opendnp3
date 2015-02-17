@@ -133,5 +133,8 @@
     <ClInclude Include="src\asiodnp3\HeaderTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\opendnp3\src\opendnp3\outstation\IOutstationAuthFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

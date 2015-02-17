@@ -25,6 +25,8 @@
 #include "opendnp3/app/APDUHeader.h"
 #include <openpal/container/ReadBufferView.h>
 
+#include <memory>
+
 namespace opendnp3
 {
 

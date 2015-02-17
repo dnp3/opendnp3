@@ -147,11 +147,11 @@ IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler& SOEHandler, IMaster
 	return asiopal::SynchronouslyGet<IMaster*>(pExecutor->strand, add);
 }
 
-IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler& commandHandler, IOutstationApplication& application, const OutstationStackConfig& config, std::unique_ptr<opendnp3::IOutstationAuthProvider> auth)
+IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler& commandHandler, IOutstationApplication& application, const OutstationStackConfig& config, opendnp3::IOutstationAuthFactory& factory)
 {
-	auto add = [this, id, &auth, &commandHandler, &application, config]() 
-	{ 
-		return this->_AddOutstation(id, commandHandler, application, std::move(auth), config);
+	auto add = [this, id, &factory, &commandHandler, &application, config]() 
+	{ 		
+		return this->_AddOutstation(id, commandHandler, application, factory.Create(pLogRoot->GetLogger()), config);
 	};
 	return asiopal::SynchronouslyGet<IOutstation*>(pExecutor->strand, add);
 }

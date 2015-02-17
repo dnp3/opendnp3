@@ -24,6 +24,7 @@
 #include "opendnp3/outstation/IOutstationAuthProvider.h"
 
 #include "SecurityState.h"
+#include "OutstationSettings.h"
 #include "IAuthRequestHandler.h"
 
 #include <openpal/util/Uncopyable.h>
@@ -34,14 +35,14 @@ namespace secauthv5
 /**
 	SAv5 outstation authentication provider
 */
-class OutstationAuthProvider : private openpal::Uncopyable, public opendnp3::IOutstationAuthProvider, private IAuthRequestHandler
+class OutstationAuthProvider : public opendnp3::IOutstationAuthProvider, private openpal::Uncopyable, private IAuthRequestHandler
 {
 	public:
 
-	OutstationAuthProvider(uint32_t maxRxASDUSize, uint32_t maxTxASDUSize, openpal::ICryptoProvider& crypto);
+	OutstationAuthProvider(const OutstationSettings& settings, openpal::Logger logger, openpal::ICryptoProvider& crypto);
 
 	// factory function
-	static std::unique_ptr<opendnp3::IOutstationAuthProvider> Create(uint32_t maxRxASDUSize, uint32_t maxTxASDUSize, openpal::ICryptoProvider& crypto);
+	static std::unique_ptr<opendnp3::IOutstationAuthProvider> Create(const OutstationSettings& settings, openpal::Logger logger, openpal::ICryptoProvider& crypto);
 
 	virtual void Reset() override final;	
 

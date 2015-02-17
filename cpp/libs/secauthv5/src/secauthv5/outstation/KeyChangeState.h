@@ -23,6 +23,7 @@
 
 #include <openpal/container/DynamicBuffer.h>
 #include <openpal/crypto/ICryptoProvider.h>
+#include <openpal/logging/Logger.h>
 
 #include <opendnp3/objects/Group120Var5.h>
 #include <opendnp3/app/APDUResponse.h>
@@ -38,20 +39,25 @@ class KeyChangeState
 {
 	public:
 
-	KeyChangeState(uint16_t userNum, uint8_t challengeSize, openpal::ICryptoProvider& provider);
+	KeyChangeState(uint16_t userNum, uint8_t challengeSize, openpal::Logger logger, openpal::ICryptoProvider& provider);
 	
 	// Formats the key status response	
 	bool FormatKeyStatusResponse(
 		opendnp3::APDUResponse& rsp,
 		const opendnp3::AppControlField& control,
-		opendnp3::KeyStatus status,
+		opendnp3::KeyStatus status,		
 		const openpal::ReadBufferView& hmac = openpal::ReadBufferView::Empty()
 	);
+
+	// Securely compare the specified serialized object data to the serialization
+	// of the last status response
+	bool EqualsLastStatusResponse(const openpal::ReadBufferView& object);
 
 	private:
 
 	const uint16_t USER_NUM;
 	uint8_t challengeSize;
+	openpal::Logger logger;
 	openpal::ICryptoProvider* pProvider;
 	uint32_t keyChangeSeqNum;
 	uint8_t challengeBuffer[AuthConstants::MAX_CHALLENGE_DATA_SIZE];

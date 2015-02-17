@@ -18,29 +18,16 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef OPENPAL_SECURECOMPARE_H
+#define OPENPAL_SECURECOMPARE_H
 
-#include "SecurityState.h"
+#include <openpal/container/ReadBufferView.h>
 
-#include "OAuthStates.h"
-
-using namespace opendnp3;
-
-namespace secauthv5
+namespace openpal
 {
-	SecurityState::SecurityState(const OutstationSettings& settings, openpal::Logger logger, openpal::ICryptoProvider& crypto) :		
-		deferred(settings.maxRxASDUSize),
-		pCrypto(&crypto),
-		keyStatus(KeyStatus::NOT_INIT),
-		pState(OAuthStateIdle::Instance()),
-		keyChangeState(1, 4, logger, crypto),
-		txBuffer(settings.maxTxASDUSize)
-	{}
-
-	void SecurityState::Reset()
-	{		
-		keyStatus = KeyStatus::NOT_INIT;
-		pState = OAuthStateIdle::Instance();
-	}
+	// A buffer comparison function that doesn't leak timing info
+	bool SecureEquals(const ReadBufferView& lhs, const ReadBufferView& rhs);	
 }
 
+#endif
 

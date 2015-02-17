@@ -18,29 +18,26 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef SECAUTHV5_OUTSTATIONSETTINGS_H
+#define SECAUTHV5_OUTSTATIONSETTINGS_H
 
-#include "SecurityState.h"
-
-#include "OAuthStates.h"
-
-using namespace opendnp3;
+#include <opendnp3/outstation/OutstationParams.h>
 
 namespace secauthv5
 {
-	SecurityState::SecurityState(const OutstationSettings& settings, openpal::Logger logger, openpal::ICryptoProvider& crypto) :		
-		deferred(settings.maxRxASDUSize),
-		pCrypto(&crypto),
-		keyStatus(KeyStatus::NOT_INIT),
-		pState(OAuthStateIdle::Instance()),
-		keyChangeState(1, 4, logger, crypto),
-		txBuffer(settings.maxTxASDUSize)
-	{}
 
-	void SecurityState::Reset()
-	{		
-		keyStatus = KeyStatus::NOT_INIT;
-		pState = OAuthStateIdle::Instance();
-	}
+/**
+	SAv5 outstation authentication provider
+*/
+struct OutstationSettings
+{	
+	OutstationSettings(const opendnp3::OutstationParams&);
+
+	uint32_t maxRxASDUSize;
+	uint32_t maxTxASDUSize;	
+};
+
 }
 
+#endif
 

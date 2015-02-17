@@ -22,6 +22,7 @@
 #define OPENDNP3_NULLOUTSTATIONAUTHPROVIDER_H
 
 #include "opendnp3/outstation/IOutstationAuthProvider.h"
+#include "opendnp3/outstation/IOutstationAuthFactory.h"
 
 #include <openpal/util/Uncopyable.h>
 
@@ -40,6 +41,16 @@ class NullOutstationAuthProvider : private openpal::Uncopyable, public IOutstati
 	virtual void CheckState(OState& ostate) override final {}
 		
 	virtual void OnReceive(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects) override final;		
+};
+
+class NullOutstationAuthFactory : private openpal::Uncopyable, public IOutstationAuthFactory
+{
+public:
+
+	virtual std::unique_ptr<IOutstationAuthProvider> Create(openpal::Logger logger) override final
+	{
+		return std::make_unique<NullOutstationAuthProvider>();
+	}
 };
 
 }

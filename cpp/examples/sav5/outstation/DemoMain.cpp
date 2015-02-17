@@ -31,7 +31,7 @@
 #include <opendnp3/LogLevels.h>
 
 #include <osslcrypto/CryptoProvider.h>
-#include <secauthv5/outstation/OutstationAuthProvider.h>
+#include <secauthv5/outstation/OutstationAuthFactory.h>
 
 #include <string>
 #include <thread>
@@ -42,15 +42,7 @@ using namespace opendnp3;
 using namespace openpal;
 using namespace asiopal;
 using namespace asiodnp3;
-
-std::unique_ptr<IOutstationAuthProvider> CreateAuthv5(const OutstationStackConfig& cfg, ICryptoProvider& crypto)
-{
-	return secauthv5::OutstationAuthProvider::Create(
-		cfg.outstation.params.maxRxFragSize,
-		cfg.outstation.params.maxTxFragSize,
-		crypto
-	);
-}
+using namespace secauthv5;
 
 int main(int argc, char* argv[])
 {
@@ -80,7 +72,7 @@ int main(int argc, char* argv[])
 		std::cout << "channel state: " << ChannelStateToString(state) << std::endl;
 	});
 
-	// The main object for a outstation. The defaults are useable, 
+	// The main object for a outstation. The defaults are use-able, 
 	// but understanding the options are important.
 	OutstationStackConfig config;	
 	
@@ -89,7 +81,7 @@ int main(int argc, char* argv[])
 	config.outstation.eventBufferConfig = EventBufferConfig::AllTypes(10);	
 	
 	// you can override an default outstation parameters here
-	// in this example, we've enabled the oustation to use unsolicted reporting
+	// in this example, we've enabled the outstation to use unsolicted reporting
 	// if the master enables it
 	config.outstation.params.allowUnsolicited = false;
 
@@ -98,17 +90,18 @@ int main(int argc, char* argv[])
 	config.link.LocalAddr = 10;
 	config.link.RemoteAddr = 1;
 
-	// authv5 is configured by simply creating an auth provider	
+	// authv5 is configured by simply creating an auth factory and then passing that factory into AddOutstation
+	OutstationAuthFactory authFactory(OutstationSettings(config.outstation.params), crypto);
 	
 	// Create a new outstation with a log level, command handler, and
 	// config info this	returns a thread-safe interface used for
-	// updating the outstation's database.
+	// updating the outstation's database.	
 	auto pOutstation = pChannel->AddOutstation(
 		"outstation",
 		SuccessCommandHandler::Instance(),
 		DefaultOutstationApplication::Instance(),
 		config,
-		CreateAuthv5(config, crypto));
+		authFactory);
 
 	// You can optionally change the default reporting variations
 	// stackConfig.outstation.defaultEventResponses.binary = EventBinaryVariation::Group2Var2;

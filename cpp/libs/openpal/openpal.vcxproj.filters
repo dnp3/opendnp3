@@ -44,6 +44,9 @@
     <Filter Include="Header\crypto">
       <UniqueIdentifier>{a8861a57-9f92-4cec-a6f8-9151b6387b9e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\crypto">
+      <UniqueIdentifier>{734ba2e3-4dea-4776-ab0a-089f67255039}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\openpal\Configure.h">
@@ -193,6 +196,9 @@
     <ClInclude Include="src\openpal\crypto\IHashProvider.h">
       <Filter>Header\crypto</Filter>
     </ClInclude>
+    <ClInclude Include="src\openpal\crypto\SecureCompare.h">
+      <Filter>Header\crypto</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\openpal\executor\MonotonicTimestamp.cpp">
@@ -242,6 +248,9 @@
     </ClCompile>
     <ClCompile Include="src\openpal\executor\TimerRef.cpp">
       <Filter>Source\executor</Filter>
+    </ClCompile>
+    <ClCompile Include="src\openpal\crypto\SecureCompare.cpp">
+      <Filter>Source\crypto</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

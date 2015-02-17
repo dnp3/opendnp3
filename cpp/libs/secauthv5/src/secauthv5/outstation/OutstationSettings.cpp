@@ -19,28 +19,15 @@
  * to you under the terms of the License.
  */
 
-#include "SecurityState.h"
-
-#include "OAuthStates.h"
-
-using namespace opendnp3;
+#include "OutstationSettings.h"
 
 namespace secauthv5
 {
-	SecurityState::SecurityState(const OutstationSettings& settings, openpal::Logger logger, openpal::ICryptoProvider& crypto) :		
-		deferred(settings.maxRxASDUSize),
-		pCrypto(&crypto),
-		keyStatus(KeyStatus::NOT_INIT),
-		pState(OAuthStateIdle::Instance()),
-		keyChangeState(1, 4, logger, crypto),
-		txBuffer(settings.maxTxASDUSize)
+
+	OutstationSettings::OutstationSettings(const opendnp3::OutstationParams& params) :
+		maxRxASDUSize(params.maxRxFragSize),
+		maxTxASDUSize(params.maxTxFragSize)
 	{}
 
-	void SecurityState::Reset()
-	{		
-		keyStatus = KeyStatus::NOT_INIT;
-		pState = OAuthStateIdle::Instance();
-	}
 }
-
 

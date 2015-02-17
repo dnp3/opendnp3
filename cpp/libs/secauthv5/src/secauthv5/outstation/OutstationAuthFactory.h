@@ -18,29 +18,44 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef SECAUTHV5_OUTSTATIONAUTHFACTORY_H
+#define SECAUTHV5_OUTSTATIONAUTHFACTORY_H
 
-#include "SecurityState.h"
+#include <opendnp3/outstation/IOutstationAuthFactory.h>
 
-#include "OAuthStates.h"
+#include "OutstationAuthProvider.h"
 
-using namespace opendnp3;
+#include <openpal/util/Uncopyable.h>
 
 namespace secauthv5
 {
-	SecurityState::SecurityState(const OutstationSettings& settings, openpal::Logger logger, openpal::ICryptoProvider& crypto) :		
-		deferred(settings.maxRxASDUSize),
-		pCrypto(&crypto),
-		keyStatus(KeyStatus::NOT_INIT),
-		pState(OAuthStateIdle::Instance()),
-		keyChangeState(1, 4, logger, crypto),
-		txBuffer(settings.maxTxASDUSize)
-	{}
 
-	void SecurityState::Reset()
-	{		
-		keyStatus = KeyStatus::NOT_INIT;
-		pState = OAuthStateIdle::Instance();
+/**
+	SAv5 outstation authentication provider
+*/
+class OutstationAuthFactory : public opendnp3::IOutstationAuthFactory, private openpal::Uncopyable
+{
+	public:
+
+		OutstationAuthFactory(const OutstationSettings& settings_, openpal::ICryptoProvider& crypto) :
+			settings(settings_),
+			pCrypto(&crypto)
+		{}
+
+	virtual std::unique_ptr<opendnp3::IOutstationAuthProvider> Create(openpal::Logger logger) override final
+	{
+		return std::make_unique<OutstationAuthProvider>(settings, logger, *pCrypto);
 	}
+
+	private:
+
+	OutstationAuthFactory() = delete;
+
+	OutstationSettings settings;
+	openpal::ICryptoProvider* pCrypto;
+};
+
 }
 
+#endif
 

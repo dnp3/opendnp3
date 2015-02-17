@@ -61,12 +61,10 @@ struct Group120Var5
 	openpal::ReadBufferView hmacValue;
 	
 	static bool Read(const openpal::ReadBufferView& buffer, Group120Var5& output);
-	static bool Write(const Group120Var5& output, openpal::WriteBufferView& buffer);	
+	static bool Write(const Group120Var5& output, openpal::WriteBufferView& buffer);
 
-	private:
-
-	// The size of all the fixed size fields in the serialized object
-	static const uint32_t FIXED_BASE_SIZE = 11;
+	// The size of all the fixed size fields in the serialized object	
+	static const uint32_t FIXED_BASE_SIZE = 11;		
 };
 
 }

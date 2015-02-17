@@ -22,7 +22,6 @@
 #include "IChannel.h"
 
 #include <opendnp3/outstation/NullOutstationAuthProvider.h>
-#include <memory>
 
 namespace asiodnp3
 {	
@@ -31,7 +30,8 @@ namespace asiodnp3
 		opendnp3::IOutstationApplication& application,
 		const opendnp3::OutstationStackConfig& config)
 	{
-		return this->AddOutstation(id, commandHandler, application, config, std::make_unique<opendnp3::NullOutstationAuthProvider>());
+		opendnp3::NullOutstationAuthFactory factory;
+		return this->AddOutstation(id, commandHandler, application, config, factory);
 	}
 };
 

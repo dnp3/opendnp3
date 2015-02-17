@@ -22,8 +22,10 @@
 #include "KeyChangeState.h"
 
 #include <opendnp3/gen/KeyWrapAlgorithm.h>
+#include <opendnp3/LogLevels.h>
 
-
+#include <openpal/logging/LogMacros.h>
+#include <openpal/crypto/SecureCompare.h>
 
 using namespace openpal;
 using namespace opendnp3;
@@ -31,38 +33,61 @@ using namespace opendnp3;
 namespace secauthv5
 {
 
-KeyChangeState::KeyChangeState(uint16_t userNum, uint8_t challengeSize_, openpal::ICryptoProvider& provider) :
-	USER_NUM(userNum),
-	challengeSize(AuthConstants::GetBoundedChallengeSize(challengeSize_)),
-	pProvider(&provider),
-	keyChangeSeqNum(0)
-{}
+	KeyChangeState::KeyChangeState(uint16_t userNum, uint8_t challengeSize_, openpal::Logger logger_, openpal::ICryptoProvider& provider) :
+		USER_NUM(userNum),
+		challengeSize(AuthConstants::GetBoundedChallengeSize(challengeSize_)),
+		logger(logger_),
+		pProvider(&provider),
+		keyChangeSeqNum(0)
+	{}
 
-bool KeyChangeState::FormatKeyStatusResponse(opendnp3::APDUResponse& rsp, const opendnp3::AppControlField& control, opendnp3::KeyStatus status, const openpal::ReadBufferView& hmac)
-{
-	WriteBufferView buff(challengeBuffer, challengeSize);
-
-	if (pProvider->GetSecureRandom(buff))
+	bool KeyChangeState::FormatKeyStatusResponse(opendnp3::APDUResponse& rsp, const opendnp3::AppControlField& control, opendnp3::KeyStatus status, const openpal::ReadBufferView& hmac)
 	{
-		++keyChangeSeqNum;		
+		WriteBufferView buff(challengeBuffer, challengeSize);
 
-		rsp.SetFunction(FunctionCode::AUTH_RESPONSE);
-		rsp.SetControl(control);
+		if (pProvider->GetSecureRandom(buff))
+		{
+			++keyChangeSeqNum;
 
-		statusRsp.keyChangeSeqNum = keyChangeSeqNum;
-		statusRsp.userNum = USER_NUM;
-		statusRsp.keywrapAlgorithm = KeyWrapAlgorithm::AES_128;
-		statusRsp.keyStatus = KeyStatus::NOT_INIT;
-		statusRsp.hmacType = HMACType::HMAC_SHA1_TRUNC_10;
-		statusRsp.challengeData = buff.ToReadOnly();		
-		statusRsp.hmacValue = hmac;
+			rsp.SetFunction(FunctionCode::AUTH_RESPONSE);
+			rsp.SetControl(control);
 
-		return rsp.GetWriter().WriteFreeFormat(statusRsp);
+			statusRsp.keyChangeSeqNum = keyChangeSeqNum;
+			statusRsp.userNum = USER_NUM;
+			statusRsp.keywrapAlgorithm = KeyWrapAlgorithm::AES_128;
+			statusRsp.keyStatus = KeyStatus::NOT_INIT;
+			statusRsp.hmacType = HMACType::HMAC_SHA1_TRUNC_10;
+			statusRsp.challengeData = buff.ToReadOnly();
+			statusRsp.hmacValue = hmac;
+
+			return rsp.GetWriter().WriteFreeFormat(statusRsp);
+		}
+		else
+		{
+			SIMPLE_LOG_BLOCK(logger, flags::ERR, "Unable to get secure random data for KeyStatus response");
+			return false;
+		}
 	}
-	else
+
+	bool KeyChangeState::EqualsLastStatusResponse(const openpal::ReadBufferView& unwrappedKeyStatus)
 	{
-		return false;
-	}	
-}
-	
+		Group120Var5 copy(statusRsp);
+		copy.hmacValue = ReadBufferView::Empty(); // exclude the HMAC from the comparison
+
+		const uint32_t MAX_SIZE = Group120Var5::FIXED_BASE_SIZE + AuthConstants::MAX_CHALLENGE_DATA_SIZE;
+		uint8_t buffer[MAX_SIZE];
+
+		WriteBufferView dest(buffer, MAX_SIZE);
+		if (!Group120Var5::Write(copy, dest))
+		{
+			SIMPLE_LOG_BLOCK(logger, flags::ERR, "Unable to write last response to buffer");
+			return false;
+		}
+		else
+		{
+			ReadBufferView written(buffer, copy.Size());
+			return SecureEquals(written, unwrappedKeyStatus);
+		}
+	}
+
 }

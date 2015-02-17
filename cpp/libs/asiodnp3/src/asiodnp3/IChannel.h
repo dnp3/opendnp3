@@ -32,6 +32,7 @@
 #include <opendnp3/outstation/ICommandHandler.h>
 #include <opendnp3/outstation/IOutstationApplication.h>
 #include <opendnp3/outstation/IOutstationAuthProvider.h>
+#include <opendnp3/outstation/IOutstationAuthFactory.h>
 
 #include <openpal/executor/IUTCTimeSource.h>
 #include <openpal/logging/LogFilters.h>
@@ -42,7 +43,6 @@
 #include "DestructorHook.h"
 
 #include <memory>
-
 
 namespace asiodnp3
 {
@@ -68,7 +68,7 @@ public:
 	virtual opendnp3::LinkChannelStatistics GetChannelStatistics() = 0;
 	
 	/**
-	* sychronously shutdown the channel
+	* synchronously shutdown the channel
 	*/
 	virtual void Shutdown() = 0;	
 
@@ -110,7 +110,7 @@ public:
 										opendnp3::ICommandHandler& commandHandler,
 										opendnp3::IOutstationApplication& application,
 										const opendnp3::OutstationStackConfig& config,
-										std::unique_ptr<opendnp3::IOutstationAuthProvider> auth) = 0;
+										opendnp3::IOutstationAuthFactory& authFactory) = 0;
 
 	// over load that uses NULL authentication
 

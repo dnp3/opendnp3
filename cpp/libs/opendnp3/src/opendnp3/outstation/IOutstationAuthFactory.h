@@ -19,28 +19,28 @@
  * to you under the terms of the License.
  */
 
-#include "SecurityState.h"
+#ifndef OPENDNP3_IOUTSTATIONAUTHFACTORY_H
+#define OPENDNP3_IOUTSTATIONAUTHFACTORY_H
 
-#include "OAuthStates.h"
+#include "opendnp3/outstation/IOutstationAuthProvider.h"
 
-using namespace opendnp3;
+#include <openpal/logging/Logger.h>
 
-namespace secauthv5
+#include <memory>
+
+namespace opendnp3
 {
-	SecurityState::SecurityState(const OutstationSettings& settings, openpal::Logger logger, openpal::ICryptoProvider& crypto) :		
-		deferred(settings.maxRxASDUSize),
-		pCrypto(&crypto),
-		keyStatus(KeyStatus::NOT_INIT),
-		pState(OAuthStateIdle::Instance()),
-		keyChangeState(1, 4, logger, crypto),
-		txBuffer(settings.maxTxASDUSize)
-	{}
 
-	void SecurityState::Reset()
-	{		
-		keyStatus = KeyStatus::NOT_INIT;
-		pState = OAuthStateIdle::Instance();
-	}
+///
+/// @summary Interface used to create abstract IAuthProvider instances dynamically
+///
+class IOutstationAuthFactory
+{
+	public:
+
+	virtual std::unique_ptr<IOutstationAuthProvider> Create(openpal::Logger logger) = 0;
+};
+
 }
 
-
+#endif
