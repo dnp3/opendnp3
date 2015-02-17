@@ -36,6 +36,7 @@
     <ClCompile Include="src\secauthv5\outstation\AuthRequestHandler.cpp" />
     <ClCompile Include="src\secauthv5\outstation\IOAuthState.cpp" />
     <ClCompile Include="src\secauthv5\outstation\KeyChangeState.cpp" />
+    <ClCompile Include="src\secauthv5\outstation\KeyUnwrap.cpp" />
     <ClCompile Include="src\secauthv5\outstation\OAuthStates.cpp" />
     <ClCompile Include="src\secauthv5\outstation\OSecActions.cpp" />
     <ClCompile Include="src\secauthv5\outstation\OutstationAuthProvider.cpp" />

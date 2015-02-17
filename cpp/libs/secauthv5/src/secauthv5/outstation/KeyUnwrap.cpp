@@ -18,52 +18,18 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTHV5_KEYUNWRAP_H
-#define SECAUTHV5_KEYUNWRAP_H
 
-#include <openpal/logging/Logger.h>
-#include <openpal/crypto/IKeyWrapAlgo.h>
-#include <openpal/container/ReadBufferView.h>
-#include <openpal/container/StaticBuffer.h>
-#include <openpal/serialization/Serialization.h>
-
-
-#include <opendnp3/objects/Group120Var6.h>
-
-#include "secauthv5/AuthConstants.h"
-
-
+#include "KeyUnwrap.h"
 
 namespace secauthv5
 {
-
-	class UnwrappedKeyData
+	bool KeyUnwrapBuffer::Unwrap(openpal::IKeyWrapAlgo& algo, UnwrappedKeyData& output, openpal::Logger* pLogger)
 	{
-	public:
-		openpal::ReadBufferView controlSessionKey;
-		openpal::ReadBufferView monitorSessionKey;
-		openpal::ReadBufferView keyStatusObject;
-	};
+		
 
-	class KeyUnwrapBuffer
-	{
-	public:
-
-		bool Unwrap(openpal::IKeyWrapAlgo& algo, UnwrappedKeyData& output, openpal::Logger* pLogger);
-
-	private:
-
-		// The takes into account the fields in the unwrapped data
-		static const uint32_t MAX_REQUIRED_BUFFER_SIZE = 
-			openpal::UInt16::Size + 
-			2 * AuthConstants::MAX_SESSION_KEY_SIZE + 
-			opendnp3::Group120Var5::FIXED_BASE_SIZE + 
-			AuthConstants::MAX_CHALLENGE_DATA_SIZE;
-
-		openpal::StaticBuffer<MAX_REQUIRED_BUFFER_SIZE> buffer;		
-	};
-
+		return false;
+	}
 }
 
-#endif
+
 
