@@ -33,6 +33,7 @@
     <ClInclude Include="src\openpal\container\ReadBufferView.h" />
     <ClInclude Include="src\openpal\container\RingBuffer.h" />
     <ClInclude Include="src\openpal\container\Settable.h" />
+    <ClInclude Include="src\openpal\container\StaticBuffer.h" />
     <ClInclude Include="src\openpal\container\WriteBufferView.h" />
     <ClInclude Include="src\openpal\crypto\ICryptoProvider.h" />
     <ClInclude Include="src\openpal\crypto\IHashProvider.h" />

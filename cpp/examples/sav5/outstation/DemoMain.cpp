@@ -45,6 +45,8 @@ using namespace asiodnp3;
 
 int main(int argc, char* argv[])
 {
+	
+	
 
 	// Specify what log levels to use. NORMAL is warning and above
 	// You can add all the communication logging by uncommenting below.

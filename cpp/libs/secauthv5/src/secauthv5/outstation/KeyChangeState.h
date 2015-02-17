@@ -21,7 +21,7 @@
 #ifndef SECAUTHV5_KEYCHANGESTATE_H
 #define SECAUTHV5_KEYCHANGESTATE_H
 
-#include <openpal/container/DynamicBuffer.h>
+#include <openpal/container/StaticBuffer.h>
 #include <openpal/crypto/ICryptoProvider.h>
 #include <openpal/logging/Logger.h>
 
@@ -29,8 +29,6 @@
 #include <opendnp3/app/APDUResponse.h>
 
 #include "secauthv5/AuthConstants.h"
-
-
 
 namespace secauthv5
 {
@@ -60,7 +58,7 @@ class KeyChangeState
 	openpal::Logger logger;
 	openpal::ICryptoProvider* pProvider;
 	uint32_t keyChangeSeqNum;
-	uint8_t challengeBuffer[AuthConstants::MAX_CHALLENGE_DATA_SIZE];
+	openpal::StaticBuffer<AuthConstants::MAX_CHALLENGE_DATA_SIZE> challengeData;
 	opendnp3::Group120Var5 statusRsp;
 	
 	
