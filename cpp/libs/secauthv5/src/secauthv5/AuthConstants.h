@@ -32,7 +32,7 @@ namespace secauthv5
 struct AuthConstants : openpal::PureStatic
 {	
 	const static uint8_t MIN_CHALLENGE_DATA_SIZE = 4;
-	const static uint8_t MAX_CHALLENGE_DATA_SIZE = 16;
+	const static uint8_t MAX_CHALLENGE_DATA_SIZE = 64;
 
 	static uint8_t GetBoundedChallengeSize(uint8_t challengeSize)
 	{

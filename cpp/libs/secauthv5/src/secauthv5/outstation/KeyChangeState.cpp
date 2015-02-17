@@ -54,7 +54,7 @@ bool KeyChangeState::FormatKeyStatusResponse(opendnp3::APDUResponse& rsp, const 
 		statusRsp.keywrapAlgorithm = KeyWrapAlgorithm::AES_128;
 		statusRsp.keyStatus = KeyStatus::NOT_INIT;
 		statusRsp.hmacType = HMACType::HMAC_SHA1_TRUNC_10;
-		statusRsp.challengeData = openpal::ReadBufferView(challengeBuffer, challengeSize);
+		statusRsp.challengeData = buff.ToReadOnly();		
 		statusRsp.hmacValue = hmac;
 
 		return rsp.GetWriter().WriteFreeFormat(statusRsp);
