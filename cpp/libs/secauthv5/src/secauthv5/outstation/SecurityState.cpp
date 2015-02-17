@@ -27,7 +27,7 @@ using namespace opendnp3;
 
 namespace secauthv5
 {
-	SecurityState::SecurityState(const OutstationSettings& settings, openpal::Logger logger, openpal::ICryptoProvider& crypto) :		
+	SecurityState::SecurityState(const OutstationAuthSettings& settings, openpal::Logger logger, openpal::ICryptoProvider& crypto) :
 		deferred(settings.maxRxASDUSize),
 		pCrypto(&crypto),
 		keyStatus(KeyStatus::NOT_INIT),

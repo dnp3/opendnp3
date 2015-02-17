@@ -27,7 +27,7 @@
 #include <opendnp3/outstation/TxBuffer.h>
 
 #include "KeyChangeState.h"
-#include "OutstationSettings.h"
+#include "OutstationAuthSettings.h"
 
 namespace secauthv5
 {
@@ -38,7 +38,7 @@ class SecurityState
 {
 	public:
 
-	SecurityState(const OutstationSettings& settings, openpal::Logger logger, openpal::ICryptoProvider& crypto);
+	SecurityState(const OutstationAuthSettings& settings, openpal::Logger logger, openpal::ICryptoProvider& crypto);
 
 	void Reset();
 	

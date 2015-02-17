@@ -42,7 +42,6 @@ using namespace opendnp3;
 using namespace openpal;
 using namespace asiopal;
 using namespace asiodnp3;
-using namespace secauthv5;
 
 int main(int argc, char* argv[])
 {
@@ -81,7 +80,7 @@ int main(int argc, char* argv[])
 	config.outstation.eventBufferConfig = EventBufferConfig::AllTypes(10);	
 	
 	// you can override an default outstation parameters here
-	// in this example, we've enabled the outstation to use unsolicted reporting
+	// in this example, we've enabled the outstation to use unsolicited reporting
 	// if the master enables it
 	config.outstation.params.allowUnsolicited = false;
 
@@ -90,8 +89,9 @@ int main(int argc, char* argv[])
 	config.link.LocalAddr = 10;
 	config.link.RemoteAddr = 1;
 
-	// authv5 is configured by simply creating an auth factory and then passing that factory into AddOutstation
-	OutstationAuthFactory authFactory(OutstationSettings(config.outstation.params), crypto);
+	// authentication is configured by simply creating an auth factory and then 
+	// passing that factory into an overloaded version of AddOutstation
+	secauthv5::OutstationAuthFactory authFactory(secauthv5::OutstationAuthSettings(config.outstation.params), crypto);
 	
 	// Create a new outstation with a log level, command handler, and
 	// config info this	returns a thread-safe interface used for

@@ -24,7 +24,7 @@
 #include "opendnp3/outstation/IOutstationAuthProvider.h"
 
 #include "SecurityState.h"
-#include "OutstationSettings.h"
+#include "OutstationAuthSettings.h"
 #include "IAuthRequestHandler.h"
 
 #include <openpal/util/Uncopyable.h>
@@ -39,10 +39,7 @@ class OutstationAuthProvider : public opendnp3::IOutstationAuthProvider, private
 {
 	public:
 
-	OutstationAuthProvider(const OutstationSettings& settings, openpal::Logger logger, openpal::ICryptoProvider& crypto);
-
-	// factory function
-	static std::unique_ptr<opendnp3::IOutstationAuthProvider> Create(const OutstationSettings& settings, openpal::Logger logger, openpal::ICryptoProvider& crypto);
+	OutstationAuthProvider(const OutstationAuthSettings& settings, openpal::Logger logger, openpal::ICryptoProvider& crypto);	
 
 	virtual void Reset() override final;	
 

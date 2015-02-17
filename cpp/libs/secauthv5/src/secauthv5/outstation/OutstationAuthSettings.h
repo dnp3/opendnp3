@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTHV5_OUTSTATIONSETTINGS_H
-#define SECAUTHV5_OUTSTATIONSETTINGS_H
+#ifndef SECAUTHV5_OUTSTATIONAUTHSETTINGS_H
+#define SECAUTHV5_OUTSTATIONAUTHSETTINGS_H
 
 #include <opendnp3/outstation/OutstationParams.h>
 
@@ -29,9 +29,9 @@ namespace secauthv5
 /**
 	SAv5 outstation authentication provider
 */
-struct OutstationSettings
+	struct OutstationAuthSettings
 {	
-	OutstationSettings(const opendnp3::OutstationParams&);
+	OutstationAuthSettings(const opendnp3::OutstationParams&);
 
 	uint32_t maxRxASDUSize;
 	uint32_t maxTxASDUSize;	

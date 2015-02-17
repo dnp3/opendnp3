@@ -37,7 +37,7 @@ class OutstationAuthFactory : public opendnp3::IOutstationAuthFactory, private o
 {
 	public:
 
-		OutstationAuthFactory(const OutstationSettings& settings_, openpal::ICryptoProvider& crypto) :
+		OutstationAuthFactory(const OutstationAuthSettings& settings_, openpal::ICryptoProvider& crypto) :
 			settings(settings_),
 			pCrypto(&crypto)
 		{}
@@ -51,7 +51,7 @@ class OutstationAuthFactory : public opendnp3::IOutstationAuthFactory, private o
 
 	OutstationAuthFactory() = delete;
 
-	OutstationSettings settings;
+	OutstationAuthSettings settings;
 	openpal::ICryptoProvider* pCrypto;
 };
 

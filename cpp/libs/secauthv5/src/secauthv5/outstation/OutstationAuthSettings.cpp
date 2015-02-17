@@ -19,12 +19,12 @@
  * to you under the terms of the License.
  */
 
-#include "OutstationSettings.h"
+#include "OutstationAuthSettings.h"
 
 namespace secauthv5
 {
 
-	OutstationSettings::OutstationSettings(const opendnp3::OutstationParams& params) :
+	OutstationAuthSettings::OutstationAuthSettings(const opendnp3::OutstationParams& params) :
 		maxRxASDUSize(params.maxRxFragSize),
 		maxTxASDUSize(params.maxTxFragSize)
 	{}
