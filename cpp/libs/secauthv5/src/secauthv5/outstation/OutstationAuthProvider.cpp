@@ -90,7 +90,7 @@ void OutstationAuthProvider::Process(OState& ostate, const APDUHeader& header, c
 			this->OnAuthRequest(ostate, header, objects);
 			break;
 		case(FunctionCode::AUTH_RESPONSE) :
-			SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "Auth response not valid for outstation");
+			SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "AuthResponse not valid for outstation");
 			break;
 		case(FunctionCode::AUTH_REQUEST_NO_ACK) :
 			SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "AuthRequestNoAck not supported");
