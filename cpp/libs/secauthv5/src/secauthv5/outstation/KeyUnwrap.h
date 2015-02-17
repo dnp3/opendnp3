@@ -49,7 +49,12 @@ namespace secauthv5
 	{
 	public:
 
-		bool Unwrap(openpal::IKeyWrapAlgo& algo, UnwrappedKeyData& output, openpal::Logger* pLogger);
+		bool Unwrap(
+			openpal::IKeyWrapAlgo& algo,
+			openpal::ReadBufferView updateKey,
+			openpal::ReadBufferView inputData,			
+			UnwrappedKeyData& output, 
+			openpal::Logger* pLogger);
 
 	private:
 

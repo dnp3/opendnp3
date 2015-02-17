@@ -35,8 +35,8 @@ namespace openpal
 	{
 		public:		
 
-		virtual bool WrapKey(const ReadBufferView& kek, const ReadBufferView& input, WriteBufferView& output, openpal::Logger* pLogger) const = 0;
-		virtual bool UnwrapKey(const ReadBufferView& kek, const ReadBufferView& input, WriteBufferView& output, openpal::Logger* pLogger) const = 0;
+		virtual openpal::ReadBufferView WrapKey(const ReadBufferView& kek, const ReadBufferView& input, WriteBufferView& output, openpal::Logger* pLogger) const = 0;
+		virtual openpal::ReadBufferView UnwrapKey(const ReadBufferView& kek, const ReadBufferView& input, WriteBufferView& output, openpal::Logger* pLogger) const = 0;
 	};
 }
 

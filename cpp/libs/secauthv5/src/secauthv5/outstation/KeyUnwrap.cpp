@@ -23,11 +23,24 @@
 
 namespace secauthv5
 {
-	bool KeyUnwrapBuffer::Unwrap(openpal::IKeyWrapAlgo& algo, UnwrappedKeyData& output, openpal::Logger* pLogger)
+	bool KeyUnwrapBuffer::Unwrap(
+		openpal::IKeyWrapAlgo& algo,
+		openpal::ReadBufferView updateKey,
+		openpal::ReadBufferView inputData,
+		UnwrappedKeyData& output,
+		openpal::Logger* pLogger)
 	{
-		
+		auto write = buffer.GetWriteBuffer();
+		auto initialSize = write.Size();
 
-		return false;
+		if (algo.UnwrapKey(updateKey, inputData, buffer.GetWriteBuffer(), pLogger))
+		{
+			return false;
+		}
+		else
+		{
+			return false;
+		}		
 	}
 }
 

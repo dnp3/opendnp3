@@ -90,9 +90,10 @@ void TestKeyWrap(
 
 	DynamicBuffer out(OUTPUT_SIZE);
 	auto outputBuffer = out.GetWriteBufferView();
-	REQUIRE(algo.WrapKey(kekBuffer, inputBuffer, outputBuffer, nullptr));	
+	auto result = algo.WrapKey(kekBuffer, inputBuffer, outputBuffer, nullptr);
+	REQUIRE(result.IsNotEmpty());	
 	REQUIRE(outputBuffer.IsEmpty());
-	REQUIRE(ToHex(out.ToReadOnly().Take(OUTPUT_SIZE), false) == ciphertext);
+	REQUIRE(ToHex(result, false) == ciphertext);
 }
 
 void TestKeyUnwrap(
@@ -109,7 +110,8 @@ void TestKeyUnwrap(
 
 	DynamicBuffer out(OUTPUT_SIZE);
 	auto outputBuffer = out.GetWriteBufferView();
-	REQUIRE(algo.UnwrapKey(kekBuffer, inputBuffer, outputBuffer, nullptr));	
+	auto result = algo.UnwrapKey(kekBuffer, inputBuffer, outputBuffer, nullptr);
+	REQUIRE(result.IsNotEmpty());	
 	REQUIRE(outputBuffer.IsEmpty());
-	REQUIRE(ToHex(out.ToReadOnly().Take(OUTPUT_SIZE), false) == input);
+	REQUIRE(ToHex(result, false) == input);
 }

@@ -30,23 +30,22 @@ using namespace openpal;
 
 namespace osslcrypto
 {		
-	bool AESKeyWrap::WrapKeyAES(AESKeyLength length, const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output, openpal::Logger* pLogger)
+	openpal::ReadBufferView AESKeyWrap::WrapKeyAES(AESKeyLength length, const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output, openpal::Logger* pLogger)
 	{
-		const int KEY_SIZE = (length == AESKeyLength::L128) ? 16 : 32;
-		const int KEY_SIZE_BITS = (length == AESKeyLength::L128) ? 128 : 256;
+		const int KEY_SIZE_BYTES = (length == AESKeyLength::L128) ? 16 : 32;		
 
 		// the key size must match
-		if (kek.Size() != KEY_SIZE)
+		if (kek.Size() != KEY_SIZE_BYTES)
 		{
-			FORMAT_LOGGER_BLOCK(pLogger, logflags::WARN, "KEK size (%u) does not match expected size (%u)", kek.Size(), KEY_SIZE);
-			return false;
+			FORMAT_LOGGER_BLOCK(pLogger, logflags::WARN, "KEK size (%u) does not match expected size (%u)", kek.Size(), KEY_SIZE_BYTES);
+			return ReadBufferView::Empty();
 		}
 
 		// can only wrap things pre-padded into 8-byte blocks
 		if (input.Size() % 8 != 0)
 		{
 			FORMAT_LOGGER_BLOCK(pLogger, logflags::WARN, "Input data size (%u) not evenly divisible by 8", input.Size());
-			return false;
+			return ReadBufferView::Empty();
 		}
 
 		const uint32_t OUTPUT_SIZE = input.Size() + 8;
@@ -55,47 +54,47 @@ namespace osslcrypto
 		if (output.Size() < OUTPUT_SIZE)
 		{
 			FORMAT_LOGGER_BLOCK(pLogger, logflags::WARN, "Not enough space in buffer (%u) to write output (%u)", output.Size(), OUTPUT_SIZE);
-			return false;
+			return ReadBufferView::Empty();
 		}
 
 		AES_KEY key;
-		if (AES_set_encrypt_key(kek, KEY_SIZE_BITS, &key))
+		if (AES_set_encrypt_key(kek, KEY_SIZE_BYTES * 8, &key))
 		{
 			SIMPLE_LOGGER_BLOCK(pLogger, logflags::WARN, "Unable to create AES encryption key from kek");
-			return false;
+			return ReadBufferView::Empty();
 		}
 
 		// If iv is null, the default IV is used
 		bool success = AES_wrap_key(&key, nullptr, output, input, input.Size()) > 0;
 		if (success)
 		{
+			auto ret = output.ToReadOnly().Take(OUTPUT_SIZE);
 			output.Advance(OUTPUT_SIZE);
+			return ret;
 		}
 		else
 		{
 			SIMPLE_LOGGER_BLOCK(pLogger, logflags::WARN, "Unspecified error wrapping key data");
-		}
-
-		return success;
+			return ReadBufferView::Empty();
+		}		
 	}
 	
-	bool AESKeyWrap::UnwrapKeyAES(AESKeyLength length, const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output, openpal::Logger* pLogger)
+	openpal::ReadBufferView AESKeyWrap::UnwrapKeyAES(AESKeyLength length, const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output, openpal::Logger* pLogger)
 	{
-		const int KEY_SIZE = (length == AESKeyLength::L128) ? 16 : 32;
-		const int KEY_SIZE_BITS = (length == AESKeyLength::L128) ? 128 : 256;
+		const int KEY_SIZE_BYTES = (length == AESKeyLength::L128) ? 16 : 32;		
 
 		// the key size must match
-		if (kek.Size() != KEY_SIZE)
+		if (kek.Size() != KEY_SIZE_BYTES)
 		{
-			FORMAT_LOGGER_BLOCK(pLogger, logflags::WARN, "KEK size (%u) does not match expected size (%u)", kek.Size(), KEY_SIZE);
-			return false;
+			FORMAT_LOGGER_BLOCK(pLogger, logflags::WARN, "KEK size (%u) does not match expected size (%u)", kek.Size(), KEY_SIZE_BYTES);
+			return ReadBufferView::Empty();
 		}
 
 		// can only unwrap things pre-padded into 64-bit blocks
 		if ((input.Size() < 8) && input.Size() % 8 != 0)
 		{
 			FORMAT_LOGGER_BLOCK(pLogger, logflags::WARN, "Input data size (%u) not evenly divisible by 8", input.Size());
-			return false;
+			return ReadBufferView::Empty();
 		}
 
 		// the wrapped data is always 8 bytes larger than what is output
@@ -104,28 +103,29 @@ namespace osslcrypto
 		if (output.Size() < OUTPUT_SIZE)
 		{
 			FORMAT_LOGGER_BLOCK(pLogger, logflags::WARN, "Not enough space in buffer (%u) to write output (%u)", output.Size(), OUTPUT_SIZE);
-			return false;
+			return ReadBufferView::Empty();
 		}
 
 		AES_KEY key;
-		if (AES_set_decrypt_key(kek, KEY_SIZE_BITS, &key))
+		if (AES_set_decrypt_key(kek, KEY_SIZE_BYTES * 8, &key))
 		{
 			SIMPLE_LOGGER_BLOCK(pLogger, logflags::WARN, "Unable to create AES decryption key from kek");
-			return false;
+			return ReadBufferView::Empty();
 		}
 
 		// If iv is null, the default IV is used
 		bool success = AES_unwrap_key(&key, nullptr, output, input, input.Size()) > 0;
 		if (success)
 		{
+			auto ret = output.ToReadOnly().Take(OUTPUT_SIZE);
 			output.Advance(OUTPUT_SIZE);
+			return ret;
 		}		
 		else
 		{
 			SIMPLE_LOGGER_BLOCK(pLogger, logflags::WARN, "Unspecified error wrapping key data");
-		}		
-
-		return success;
+			return ReadBufferView::Empty();
+		}				
 	}
 }
 
