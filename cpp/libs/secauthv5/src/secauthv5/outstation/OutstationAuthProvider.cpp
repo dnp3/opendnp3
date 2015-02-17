@@ -103,8 +103,15 @@ void OutstationAuthProvider::Process(OState& ostate, const APDUHeader& header, c
 
 void OutstationAuthProvider::OnAuthRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
-	AuthRequestHandler handler(header, ostate, *this);
-	APDUParser::ParseSome(objects, handler, AuthRequestHandler::WhiteList, &ostate.logger);
+	if (header.control.UNS)
+	{
+		SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "Ignoring AuthRequest with UNS bit set");
+	}
+	else
+	{
+		AuthRequestHandler handler(header, ostate, *this);
+		APDUParser::ParseSome(objects, handler, AuthRequestHandler::WhiteList, &ostate.logger);
+	}
 }
 
 void OutstationAuthProvider::OnRegularRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
