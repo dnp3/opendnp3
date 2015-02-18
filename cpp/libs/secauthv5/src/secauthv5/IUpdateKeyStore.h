@@ -18,30 +18,30 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTHV5_OSECACTIONS_H
-#define SECAUTHV5_OSECACTIONS_H
+#ifndef SECAUTHV5_IUPDATEKEYSTORE_H
+#define SECAUTHV5_IUPDATEKEYSTORE_H
 
-#include <openpal/util/Uncopyable.h>
+#include "secauthv5/User.h"
 
-#include <opendnp3/outstation/OutstationState.h>
-
-#include <opendnp3/objects/Group120.h>
-#include <opendnp3/objects/Group120Var6.h>
-
-#include "SecurityState.h"
+#include <openpal/container/ReadBufferView.h>
 
 namespace secauthv5
 {
-	class OSecActions : private openpal::PureStatic
-	{
-		public:
-			
-			static void ProcessChangeSessionKeys(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change);
-			
-			static void ProcessRequestKeyStatus(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var4& status);
-	};
 
-	
+/** 
+	An interface for retrieving update keys
+
+	This interface may be given out to multiple outstation instances on multiple threads, 
+	and therefore should be thread-safe (or immutable).
+*/
+class IUpdateKeyStore
+{
+	public:
+		
+		virtual bool GetUpdateKey(const User& user, openpal::ReadBufferView& key) const = 0;
+};
+
 }
 
 #endif
+

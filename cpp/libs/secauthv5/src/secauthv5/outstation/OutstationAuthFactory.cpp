@@ -18,30 +18,22 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTHV5_OSECACTIONS_H
-#define SECAUTHV5_OSECACTIONS_H
 
-#include <openpal/util/Uncopyable.h>
-
-#include <opendnp3/outstation/OutstationState.h>
-
-#include <opendnp3/objects/Group120.h>
-#include <opendnp3/objects/Group120Var6.h>
-
-#include "SecurityState.h"
+#include "OutstationAuthFactory.h"
 
 namespace secauthv5
 {
-	class OSecActions : private openpal::PureStatic
-	{
-		public:
-			
-			static void ProcessChangeSessionKeys(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change);
-			
-			static void ProcessRequestKeyStatus(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var4& status);
-	};
 
-	
+	OutstationAuthFactory::OutstationAuthFactory(const OutstationAuthSettings& settings_, IUpdateKeyStore& updateKeys, openpal::ICryptoProvider& crypto) :
+		settings(settings_),
+		pUpdateKeys(&updateKeys),
+		pCrypto(&crypto)
+	{}
+
+	std::unique_ptr<opendnp3::IOutstationAuthProvider> OutstationAuthFactory::Create(openpal::Logger logger, openpal::IExecutor& executor)
+	{
+		return std::make_unique<OutstationAuthProvider>(settings, logger, executor, *pUpdateKeys, *pCrypto);
+	}
 }
 
-#endif
+

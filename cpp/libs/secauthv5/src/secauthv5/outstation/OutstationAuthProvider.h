@@ -27,6 +27,8 @@
 #include "OutstationAuthSettings.h"
 #include "IAuthRequestHandler.h"
 
+#include "secauthv5/IUpdateKeyStore.h"
+
 #include <openpal/util/Uncopyable.h>
 
 namespace secauthv5
@@ -39,7 +41,13 @@ class OutstationAuthProvider : public opendnp3::IOutstationAuthProvider, private
 {
 	public:
 
-	OutstationAuthProvider(const OutstationAuthSettings& settings, openpal::Logger logger, openpal::IExecutor& executor, openpal::ICryptoProvider& crypto);
+	OutstationAuthProvider(
+		const OutstationAuthSettings& settings,
+		openpal::Logger logger, 
+		openpal::IExecutor& executor, 
+		IUpdateKeyStore& updateKeys, 
+		openpal::ICryptoProvider& crypto
+	);
 
 	virtual void Reset() override final;	
 

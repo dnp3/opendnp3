@@ -28,6 +28,8 @@
 #include <openpal/executor/IExecutor.h>
 #include <openpal/crypto/ICryptoProvider.h>
 
+#include "secauthv5/IUpdateKeyStore.h"
+
 #include "KeyChangeState.h"
 #include "OutstationAuthSettings.h"
 
@@ -40,12 +42,13 @@ class SecurityState
 {
 	public:
 
-	SecurityState(const OutstationAuthSettings& settings, openpal::Logger logger, openpal::IExecutor& executor, openpal::ICryptoProvider& crypto);
+	SecurityState(const OutstationAuthSettings& settings, openpal::Logger logger, openpal::IExecutor& executor, IUpdateKeyStore& updateKeys, openpal::ICryptoProvider& crypto);
 
 	void Reset();
 	
 	opendnp3::DeferredRequest deferred;
 	openpal::IExecutor* pExecutor;
+	IUpdateKeyStore* pUpdateKeys;
 	openpal::ICryptoProvider* pCrypto;
 	opendnp3::KeyStatus keyStatus;
 	IOAuthState* pState;

@@ -38,6 +38,9 @@ public:
 
 	DynamicBuffer(uint32_t size);
 
+	// initialize with the exact size and contents of the view
+	DynamicBuffer(const ReadBufferView& input);
+
 	ReadBufferView ToReadOnly() const;
 
 	WriteBufferView GetWriteBufferView();

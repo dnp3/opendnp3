@@ -32,6 +32,7 @@
 
 #include <osslcrypto/CryptoProvider.h>
 #include <secauthv5/outstation/OutstationAuthFactory.h>
+#include <secauthv5/SimpleUpdateKeyStore.h>
 
 #include <string>
 #include <thread>
@@ -43,11 +44,16 @@ using namespace openpal;
 using namespace asiopal;
 using namespace asiodnp3;
 
+// Hard-wired configuration of the default user update key for demo purposes
+void AddDefaultKey(secauthv5::SimpleUpdateKeyStore& keyStore)
+{
+	// add a 128-bit demo key of all 0xFF
+	openpal::StaticBuffer<16> key(0xFF);
+	keyStore.AddUpdateKeyForUser(secauthv5::User::Default(), key.ToReadOnly());
+}
+
 int main(int argc, char* argv[])
 {
-	
-	
-
 	// Specify what log levels to use. NORMAL is warning and above
 	// You can add all the communication logging by uncommenting below.
 	const uint32_t FILTERS = levels::NORMAL | levels::ALL_APP_COMMS;
@@ -55,6 +61,10 @@ int main(int argc, char* argv[])
 	// crypto provider we will use to create the outstation
 	// clean this up last since everything running in the manager depends on it
 	osslcrypto::CryptoProvider crypto;
+
+	// Create an update key store for SA users
+	secauthv5::SimpleUpdateKeyStore keyStore;
+	AddDefaultKey(keyStore);
 
 	// This is the main point of interaction with the stack
 	// Allocate a single thread to the pool since this is a single outstation
@@ -93,7 +103,11 @@ int main(int argc, char* argv[])
 
 	// authentication is configured by simply creating an auth factory and then 
 	// passing that factory into an overloaded version of AddOutstation
-	secauthv5::OutstationAuthFactory authFactory(secauthv5::OutstationAuthSettings(config.outstation.params), crypto);
+	secauthv5::OutstationAuthFactory authFactory(
+		secauthv5::OutstationAuthSettings(config.outstation.params), 
+		keyStore,
+		crypto		
+	);
 	
 	// Create a new outstation with a log level, command handler, and
 	// config info this	returns a thread-safe interface used for

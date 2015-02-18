@@ -34,23 +34,26 @@ namespace secauthv5
 {
 	void OSecActions::ProcessChangeSessionKeys(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change)
 	{
-		if (change.user == 1)
-		{
-			openpal::StaticBuffer<16> updateKey;
-			for (int i = 0; i < 16; ++i)
-			{
-				updateKey()[i] = 0xFF;
-			}
+		User user(change.user);
 
+		if (user.IsDefault())
+		{
+			
+			openpal::ReadBufferView updateKey;
+			if (!sstate.pUpdateKeys->GetUpdateKey(user, updateKey))
+			{
+				return;
+			}
+			
 			UnwrappedKeyData unwrapped;
 			KeyUnwrapBuffer buffer;
 			auto success = buffer.Unwrap(
 				sstate.pCrypto->GetAES128KeyWrap(),
-				updateKey.ToReadOnly(),
+				updateKey,
 				change.data,
 				unwrapped,
 				&ostate.logger
-			);
+				);
 
 			if (success)
 			{
@@ -62,7 +65,7 @@ namespace secauthv5
 			else
 			{
 				SIMPLE_LOG_BLOCK(ostate.logger, flags::EVENT, "Failed to unwrap key data!");
-			}
+			}			
 		}
 		else
 		{

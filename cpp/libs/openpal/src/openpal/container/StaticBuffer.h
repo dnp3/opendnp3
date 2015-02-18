@@ -35,6 +35,17 @@ class StaticBuffer
 
 public:	
 
+	StaticBuffer()
+	{}
+
+	StaticBuffer(uint8_t value)
+	{
+		for (uint32_t i = 0; i < SIZE; ++i)
+		{
+			buffer[i] = value;
+		}
+	}
+
 	ReadBufferView ToReadOnly() const
 	{
 		return ReadBufferView(buffer, SIZE);
