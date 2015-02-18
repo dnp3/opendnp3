@@ -44,13 +44,15 @@ class SimpleUserDatabase : public IUserDatabase
 
 		virtual bool IsAuthorized(const User& user, opendnp3::FunctionCode code) const override final;
 
+		virtual void EnumerateUsers(std::function<void(User)> fun) const override final;
+
 		// copies the update key into the key store permanently
 		void ConfigureUser(const User& user, UpdateKeyType type, const openpal::ReadBufferView& key);
 
 	private:
 
 		typedef std::pair<UpdateKeyType, std::unique_ptr<openpal::DynamicBuffer>> StoredUserData;
-		std::map<uint16_t, StoredUserData> keyMap;
+		std::map<uint16_t, StoredUserData> userMap;
 };
 
 }

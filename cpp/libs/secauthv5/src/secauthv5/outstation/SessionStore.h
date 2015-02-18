@@ -18,10 +18,11 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTHV5_SESSIONKEYSTORE_H
-#define SECAUTHV5_SESSIONKEYSTORE_H
+#ifndef SECAUTHV5_SESSIONSTORE_H
+#define SECAUTHV5_SESSIONSTORE_H
 
 #include "secauthv5/SessionKeys.h"
+#include "secauthv5/IUserDatabase.h"
 #include "secauthv5/User.h"
 
 #include <opendnp3/gen/KeyStatus.h>
@@ -32,11 +33,12 @@
 
 namespace secauthv5
 {
-	class SessionKeyState
+	// models the state of a session for a particular user
+	class SessionState
 	{
 		public:
 
-		SessionKeyState();		
+		SessionState();
 
 		opendnp3::KeyStatus status;
 		SessionKeys keys;
@@ -47,9 +49,14 @@ namespace secauthv5
 
 
 	/// Stores session key info for all users
-	class SessionKeyStore : private openpal::Uncopyable
+	class SessionStore : private openpal::Uncopyable
 	{
-		SessionKeyStore(openpal::IMonotonicTimeSource& timeSource);
+		public:
+
+		SessionStore(			
+			openpal::IMonotonicTimeSource& timeSource,
+			IUserDatabase& userdb
+		);
 
 		// Session keys are only set if KeyStatus == OK
 		opendnp3::KeyStatus GetSessionKeys(const User& user, SessionKeysView& view);
@@ -60,13 +67,13 @@ namespace secauthv5
 
 		private:
 
-		opendnp3::KeyStatus CheckTimeValidity(SessionKeyState& state);
+		opendnp3::KeyStatus CheckTimeValidity(SessionState& state);
 
-		opendnp3::KeyStatus IncrementAuthCount(SessionKeyState& state);
+		opendnp3::KeyStatus IncrementAuthCount(SessionState& state);
 
 		openpal::IMonotonicTimeSource* pTimeSource;
 
-		std::map<uint16_t, std::unique_ptr<SessionKeyState>> stateMap;
+		std::map<uint16_t, std::unique_ptr<SessionState>> sessionMap;
 	};
 }
 

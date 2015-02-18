@@ -68,11 +68,11 @@
     <ClInclude Include="src\secauthv5\SessionKeys.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\secauthv5\outstation\SessionKeyStore.h">
-      <Filter>Header Files\outstation</Filter>
-    </ClInclude>
     <ClInclude Include="src\secauthv5\SessionKeysView.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\secauthv5\outstation\SessionStore.h">
+      <Filter>Header Files\outstation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -115,11 +115,11 @@
     <ClCompile Include="src\secauthv5\SessionKeys.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\secauthv5\outstation\SessionKeyStore.cpp">
-      <Filter>Source Files\outstation</Filter>
-    </ClCompile>
     <ClCompile Include="src\secauthv5\SessionKeysView.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\secauthv5\outstation\SessionStore.cpp">
+      <Filter>Source Files\outstation</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

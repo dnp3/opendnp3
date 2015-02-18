@@ -19,31 +19,40 @@
  * to you under the terms of the License.
  */
 
-#include "SessionKeyStore.h"
+#include "SessionStore.h"
 
 using namespace opendnp3;
 using namespace openpal;
 
 namespace secauthv5
 {
-	SessionKeyState::SessionKeyState() :
+	SessionState::SessionState() :
 		status(KeyStatus::NOT_INIT),
 		authCount(0),
 		authCountMax(0)
 	{}		
 	
-	SessionKeyStore::SessionKeyStore(IMonotonicTimeSource& timeSource) :
+	SessionStore::SessionStore(
+			IMonotonicTimeSource& timeSource,
+			IUserDatabase& userdb
+	) :
 		pTimeSource(&timeSource)
 	{
-	
-	}
-
-	opendnp3::KeyStatus SessionKeyStore::IncrementAuthCount(const User& user)
-	{
-		auto iter = stateMap.find(user.GetId());
-		if (iter == stateMap.end())
+		
+		auto addUser = [this](User user) 
 		{
-			return KeyStatus::NOT_INIT;
+			sessionMap[user.GetId()] = std::make_unique<SessionState>();
+		};
+
+		userdb.EnumerateUsers(addUser);
+	}	
+
+	opendnp3::KeyStatus SessionStore::IncrementAuthCount(const User& user)
+	{
+		auto iter = sessionMap.find(user.GetId());
+		if (iter == sessionMap.end())
+		{
+			return KeyStatus::UNDEFINED;
 		}
 		else
 		{
@@ -51,14 +60,12 @@ namespace secauthv5
 		}
 	}
 
-	opendnp3::KeyStatus SessionKeyStore::GetSessionKeys(const User& user, SessionKeysView& view)
+	opendnp3::KeyStatus SessionStore::GetSessionKeys(const User& user, SessionKeysView& view)
 	{
-		auto iter = stateMap.find(user.GetId());
-		if (iter == stateMap.end())
-		{
-			// create new session key status for this user
-			stateMap[user.GetId()] = std::make_unique<SessionKeyState>();
-			return KeyStatus::NOT_INIT;
+		auto iter = sessionMap.find(user.GetId());
+		if (iter == sessionMap.end())
+		{			
+			return KeyStatus::UNDEFINED;
 		}
 		else
 		{
@@ -72,7 +79,7 @@ namespace secauthv5
 		}
 	}
 
-	opendnp3::KeyStatus SessionKeyStore::CheckTimeValidity(SessionKeyState& state)
+	opendnp3::KeyStatus SessionStore::CheckTimeValidity(SessionState& state)
 	{
 		if (state.status == KeyStatus::OK)
 		{
@@ -85,7 +92,7 @@ namespace secauthv5
 		return state.status;
 	}
 
-	opendnp3::KeyStatus SessionKeyStore::IncrementAuthCount(SessionKeyState& state)
+	opendnp3::KeyStatus SessionStore::IncrementAuthCount(SessionState& state)
 	{
 		if (state.status == KeyStatus::OK)
 		{

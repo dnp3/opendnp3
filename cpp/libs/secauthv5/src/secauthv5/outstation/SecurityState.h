@@ -32,6 +32,7 @@
 
 #include "KeyChangeState.h"
 #include "OutstationAuthSettings.h"
+#include "SessionStore.h"
 
 namespace secauthv5
 {
@@ -42,7 +43,7 @@ class SecurityState
 {
 	public:
 
-	SecurityState(const OutstationAuthSettings& settings, openpal::Logger logger, openpal::IExecutor& executor, IUserDatabase& userDatabase, openpal::ICryptoProvider& crypto);
+	SecurityState(const OutstationAuthSettings& settings, openpal::Logger logger, openpal::IExecutor& executor, IUserDatabase& userdb, openpal::ICryptoProvider& crypto);
 
 	void Reset();
 	
@@ -53,6 +54,7 @@ class SecurityState
 	opendnp3::KeyStatus keyStatus;
 	IOAuthState* pState;
 	KeyChangeState keyChangeState;
+	SessionStore sessions;
 	opendnp3::TxBuffer txBuffer;
 };
 

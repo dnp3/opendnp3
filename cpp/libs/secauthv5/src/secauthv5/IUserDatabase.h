@@ -28,8 +28,10 @@
 
 #include <openpal/container/ReadBufferView.h>
 
+#include <functional>
+
 namespace secauthv5
-{
+{	
 
 /** 
 	An interface for retrieving info about users
@@ -46,6 +48,8 @@ class IUserDatabase
 		virtual bool IsAuthorized(const User& user, opendnp3::FunctionCode code) const = 0;
 		
 		virtual bool GetUpdateKey(const User& user, UpdateKeyType& type, openpal::ReadBufferView& key) const = 0;
+
+		virtual void EnumerateUsers(std::function<void (User)> fun) const = 0;
 };
 
 }

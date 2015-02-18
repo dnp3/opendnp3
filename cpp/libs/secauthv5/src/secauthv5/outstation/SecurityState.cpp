@@ -27,14 +27,15 @@ using namespace opendnp3;
 
 namespace secauthv5
 {
-	SecurityState::SecurityState(const OutstationAuthSettings& settings, openpal::Logger logger, openpal::IExecutor& executor, IUserDatabase& userDatabase, openpal::ICryptoProvider& crypto) :
+	SecurityState::SecurityState(const OutstationAuthSettings& settings, openpal::Logger logger, openpal::IExecutor& executor, IUserDatabase& userdb, openpal::ICryptoProvider& crypto) :
 		deferred(settings.maxRxASDUSize),
 		pExecutor(&executor),
-		pUserDatabase(&userDatabase),
+		pUserDatabase(&userdb),
 		pCrypto(&crypto),
 		keyStatus(KeyStatus::NOT_INIT),
 		pState(OAuthStateIdle::Instance()),
 		keyChangeState(1, 4, logger, crypto),
+		sessions(executor, userdb),
 		txBuffer(settings.maxTxASDUSize)
 	{}
 

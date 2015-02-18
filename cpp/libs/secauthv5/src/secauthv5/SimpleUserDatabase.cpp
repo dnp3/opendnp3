@@ -28,8 +28,8 @@ namespace secauthv5
 		
 bool SimpleUserDatabase::GetUpdateKey(const User& user, UpdateKeyType& type, openpal::ReadBufferView& key) const
 {
-	auto iter = this->keyMap.find(user.GetId());
-	if (iter == keyMap.end())
+	auto iter = this->userMap.find(user.GetId());
+	if (iter == userMap.end())
 	{
 		return false;
 	}
@@ -43,8 +43,8 @@ bool SimpleUserDatabase::GetUpdateKey(const User& user, UpdateKeyType& type, ope
 
 bool SimpleUserDatabase::GetUpdateKeyType(const User& user, UpdateKeyType& type) const
 {
-	auto iter = this->keyMap.find(user.GetId());
-	if (iter == keyMap.end())
+	auto iter = this->userMap.find(user.GetId());
+	if (iter == userMap.end())
 	{
 		return false;
 	}
@@ -58,13 +58,21 @@ bool SimpleUserDatabase::GetUpdateKeyType(const User& user, UpdateKeyType& type)
 bool SimpleUserDatabase::IsAuthorized(const User& user, opendnp3::FunctionCode code) const
 {
 	// for the time being, if the user exists they are authorized
-	auto iter = this->keyMap.find(user.GetId());
-	return iter != keyMap.end();
+	auto iter = this->userMap.find(user.GetId());
+	return iter != userMap.end();
+}
+
+void SimpleUserDatabase::EnumerateUsers(std::function<void(User)> fun) const
+{
+	for (auto& item : userMap)
+	{
+		fun(User(item.first));
+	}
 }
 
 void SimpleUserDatabase::ConfigureUser(const User& user, UpdateKeyType type, const openpal::ReadBufferView& key)
 {
-	keyMap[user.GetId()] = StoredUserData(type, std::make_unique<DynamicBuffer>(key));
+	userMap[user.GetId()] = StoredUserData(type, std::make_unique<DynamicBuffer>(key));
 }
 
 }
