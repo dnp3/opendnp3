@@ -85,12 +85,13 @@ namespace secauthv5
 			auto rsp = sstate.txBuffer.Start();
 			auto success = sstate.keyChangeState.FormatKeyStatusResponse(rsp, header.control, KeyStatus::NOT_INIT);
 			if (success)
-			{
+			{ 
 				OActions::BeginResponseTx(ostate, rsp.ToReadOnly());
 			}
 		}
 		else
 		{
+			// TODO  - the spec appears to just say "ignore users that don't exist"
 			FORMAT_LOG_BLOCK(ostate.logger, flags::WARN, "User %u does not exist", user.GetId());
 		}		
 	}

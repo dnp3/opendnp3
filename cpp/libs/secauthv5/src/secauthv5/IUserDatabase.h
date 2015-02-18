@@ -24,6 +24,8 @@
 #include "secauthv5/User.h"
 #include "UpdateKeyType.h"
 
+#include <opendnp3/gen/FunctionCode.h>
+
 #include <openpal/container/ReadBufferView.h>
 
 namespace secauthv5
@@ -37,9 +39,11 @@ namespace secauthv5
 */
 class IUserDatabase
 {
-	public:
+	public:		
 
 		virtual bool GetUpdateKeyType(const User& user, UpdateKeyType& type) const = 0;
+
+		virtual bool IsAuthorized(const User& user, opendnp3::FunctionCode code) const = 0;
 		
 		virtual bool GetUpdateKey(const User& user, UpdateKeyType& type, openpal::ReadBufferView& key) const = 0;
 };

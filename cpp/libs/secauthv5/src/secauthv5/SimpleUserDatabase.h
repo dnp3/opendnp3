@@ -42,6 +42,8 @@ class SimpleUserDatabase : public IUserDatabase
 
 		virtual bool GetUpdateKeyType(const User& user, UpdateKeyType& type) const override final;
 
+		virtual bool IsAuthorized(const User& user, opendnp3::FunctionCode code) const override final;
+
 		// copies the update key into the key store permanently
 		void ConfigureUser(const User& user, UpdateKeyType type, const openpal::ReadBufferView& key);
 

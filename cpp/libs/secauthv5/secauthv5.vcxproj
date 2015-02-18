@@ -32,6 +32,9 @@
     <ClInclude Include="src\secauthv5\outstation\OutstationAuthProvider.h" />
     <ClInclude Include="src\secauthv5\outstation\OutstationAuthSettings.h" />
     <ClInclude Include="src\secauthv5\outstation\SecurityState.h" />
+    <ClInclude Include="src\secauthv5\outstation\SessionKeyStore.h" />
+    <ClInclude Include="src\secauthv5\SessionKeys.h" />
+    <ClInclude Include="src\secauthv5\SessionKeysView.h" />
     <ClInclude Include="src\secauthv5\SimpleUserDatabase.h" />
     <ClInclude Include="src\secauthv5\UpdateKeyType.h" />
     <ClInclude Include="src\secauthv5\User.h" />
@@ -47,6 +50,9 @@
     <ClCompile Include="src\secauthv5\outstation\OutstationAuthProvider.cpp" />
     <ClCompile Include="src\secauthv5\outstation\OutstationAuthSettings.cpp" />
     <ClCompile Include="src\secauthv5\outstation\SecurityState.cpp" />
+    <ClCompile Include="src\secauthv5\outstation\SessionKeyStore.cpp" />
+    <ClCompile Include="src\secauthv5\SessionKeys.cpp" />
+    <ClCompile Include="src\secauthv5\SessionKeysView.cpp" />
     <ClCompile Include="src\secauthv5\SimpleUserDatabase.cpp" />
     <ClCompile Include="src\secauthv5\UpdateKeyType.cpp" />
   </ItemGroup>

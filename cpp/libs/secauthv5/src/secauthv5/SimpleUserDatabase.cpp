@@ -55,6 +55,13 @@ bool SimpleUserDatabase::GetUpdateKeyType(const User& user, UpdateKeyType& type)
 	}
 }
 
+bool SimpleUserDatabase::IsAuthorized(const User& user, opendnp3::FunctionCode code) const
+{
+	// for the time being, if the user exists they are authorized
+	auto iter = this->keyMap.find(user.GetId());
+	return iter != keyMap.end();
+}
+
 void SimpleUserDatabase::ConfigureUser(const User& user, UpdateKeyType type, const openpal::ReadBufferView& key)
 {
 	keyMap[user.GetId()] = StoredUserData(type, std::make_unique<DynamicBuffer>(key));

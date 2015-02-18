@@ -205,6 +205,9 @@
     <ClInclude Include="src\openpal\crypto\IKeyWrapAlgo.h">
       <Filter>Header\crypto</Filter>
     </ClInclude>
+    <ClInclude Include="src\openpal\executor\IMonotonicTimeSource.h">
+      <Filter>Header\executor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\openpal\executor\MonotonicTimestamp.cpp">

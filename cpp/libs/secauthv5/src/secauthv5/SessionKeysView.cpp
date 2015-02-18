@@ -18,47 +18,29 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENPAL_IEXECUTOR_H
-#define OPENPAL_IEXECUTOR_H
 
-#include "ITimer.h"
-#include "TimeDuration.h"
-#include "Action0.h"
-#include "IMonotonicTimeSource.h"
+#include "SessionKeysView.h"
 
+#include "secauthv5/AuthConstants.h"
 
-namespace openpal
-{
-
-/**
- * Interface for posting events to a queue.  Events can be posted for
- * immediate consumption or some time in the future.  Events are processed
- * in the order they are received.
- *
- */
-class IExecutor : public IMonotonicTimeSource
-{
-
-public:
-
-	virtual ~IExecutor() {}
+namespace secauthv5
+{	
+		SessionKeysView::SessionKeysView(
+			const openpal::ReadBufferView& controlKey_,
+			const openpal::ReadBufferView& monitorKey_
+			) : 
+			controlKey(controlKey_), 
+			monitorKey(monitorKey_)
+		{
 		
-	/// @return a new timer based on a relative time duration
-	virtual ITimer* Start(const TimeDuration& duration, const Action0& action) = 0;
+		}
 
-	/// @return a new timer based on an absolute timestamp of the monotonic clock
-	virtual ITimer* Start(const MonotonicTimestamp& expiration, const Action0& action) = 0;
-
-	/// @return Thread-safe way to post an event to be handled asynchronously
-	virtual void Post(const Action0& action) = 0;
-
-	template <class Lambda>
-	void PostLambda(Lambda& lambda)
-	{
-		this->Post(Action0::Bind<Lambda>(lambda));
-	}
-};
-
+		bool SessionKeysView::IsValid() const
+		{
+			return AuthConstants::SessionKeySizeWithinLimits(controlKey.Size()) &&
+				   AuthConstants::SessionKeySizeWithinLimits(monitorKey.Size());
+		}			
 }
 
-#endif
+
+
