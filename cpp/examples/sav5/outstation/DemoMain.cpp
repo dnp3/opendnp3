@@ -49,7 +49,11 @@ void AddDefaultKey(secauthv5::SimpleUpdateKeyStore& keyStore)
 {
 	// add a 128-bit demo key of all 0xFF
 	openpal::StaticBuffer<16> key(0xFF);
-	keyStore.AddUpdateKeyForUser(secauthv5::User::Default(), key.ToReadOnly());
+	keyStore.AddUpdateKeyForUser(
+		secauthv5::User::Default(), 
+		secauthv5::UpdateKeyType::AES128, 
+		key.ToReadOnly()
+	);
 }
 
 int main(int argc, char* argv[])

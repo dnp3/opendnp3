@@ -18,40 +18,22 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTHV5_SIMPLEUPDATEKEYSTORE_H
-#define SECAUTHV5_SIMPLEUPDATEKEYSTORE_H
 
-#include "IUpdateKeyStore.h"
-
-#include <openpal/container/DynamicBuffer.h>
-
-#include <map>
-#include <memory>
+#include "UpdateKeyType.h"
 
 namespace secauthv5
-{
-
-/** 
-	A very simple update key store for the default user
-*/
-class SimpleUpdateKeyStore : public IUpdateKeyStore
-{
-	public:		
-		
-		virtual bool GetUpdateKey(const User& user, UpdateKeyType& type, openpal::ReadBufferView& key) const override final;
-
-		virtual bool GetUpdateKeyType(const User& user, UpdateKeyType& type) const override final;
-
-		// copies the update key into the key store permanently
-		void AddUpdateKeyForUser(const User& user, UpdateKeyType type, const openpal::ReadBufferView& key);
-
-	private:
-
-		typedef std::pair<UpdateKeyType, std::unique_ptr<openpal::DynamicBuffer>> StoredKeyData;
-		std::map<uint16_t, StoredKeyData> keyMap;
-};
+{	
+	opendnp3::KeyWrapAlgorithm ToKeyWrapAlgorithm(UpdateKeyType keyType)
+	{
+		switch (keyType)
+		{
+			case(UpdateKeyType::AES128) :
+				return opendnp3::KeyWrapAlgorithm::AES_128;			
+			default:
+				return opendnp3::KeyWrapAlgorithm::AES_256;
+		}
+	}
 
 }
 
-#endif
 

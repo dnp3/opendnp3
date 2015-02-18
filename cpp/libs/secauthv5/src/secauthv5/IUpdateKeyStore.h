@@ -22,6 +22,7 @@
 #define SECAUTHV5_IUPDATEKEYSTORE_H
 
 #include "secauthv5/User.h"
+#include "UpdateKeyType.h"
 
 #include <openpal/container/ReadBufferView.h>
 
@@ -37,8 +38,10 @@ namespace secauthv5
 class IUpdateKeyStore
 {
 	public:
+
+		virtual bool GetUpdateKeyType(const User& user, UpdateKeyType& type) const = 0;
 		
-		virtual bool GetUpdateKey(const User& user, openpal::ReadBufferView& key) const = 0;
+		virtual bool GetUpdateKey(const User& user, UpdateKeyType& type, openpal::ReadBufferView& key) const = 0;
 };
 
 }

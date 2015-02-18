@@ -33,6 +33,7 @@
     <ClInclude Include="src\secauthv5\outstation\OutstationAuthSettings.h" />
     <ClInclude Include="src\secauthv5\outstation\SecurityState.h" />
     <ClInclude Include="src\secauthv5\SimpleUpdateKeyStore.h" />
+    <ClInclude Include="src\secauthv5\UpdateKeyType.h" />
     <ClInclude Include="src\secauthv5\User.h" />
   </ItemGroup>
   <ItemGroup>
@@ -47,6 +48,7 @@
     <ClCompile Include="src\secauthv5\outstation\OutstationAuthSettings.cpp" />
     <ClCompile Include="src\secauthv5\outstation\SecurityState.cpp" />
     <ClCompile Include="src\secauthv5\SimpleUpdateKeyStore.cpp" />
+    <ClCompile Include="src\secauthv5\UpdateKeyType.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D4B3A5CB-BE31-44FC-BA64-977615980740}</ProjectGuid>

@@ -39,8 +39,9 @@ namespace secauthv5
 		if (user.IsDefault())
 		{
 			
+			UpdateKeyType keyType;
 			openpal::ReadBufferView updateKey;
-			if (!sstate.pUpdateKeys->GetUpdateKey(user, updateKey))
+			if (!sstate.pUpdateKeys->GetUpdateKey(user, keyType, updateKey))
 			{
 				return;
 			}
