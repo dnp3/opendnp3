@@ -41,7 +41,7 @@ namespace secauthv5
 			
 			UpdateKeyType keyType;
 			openpal::ReadBufferView updateKey;
-			if (!sstate.pUpdateKeys->GetUpdateKey(user, keyType, updateKey))
+			if (!sstate.pUserDatabase->GetUpdateKey(user, keyType, updateKey))
 			{
 				return;
 			}
@@ -76,11 +76,22 @@ namespace secauthv5
 	
 	void OSecActions::ProcessRequestKeyStatus(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var4& status)
 	{
-		auto rsp = sstate.txBuffer.Start();
-		auto success = sstate.keyChangeState.FormatKeyStatusResponse(rsp, header.control, KeyStatus::NOT_INIT);
-		if (success)
+		User user(status.userNum);
+		UpdateKeyType type;
+		if (sstate.pUserDatabase->GetUpdateKeyType(user, type))
 		{
-			OActions::BeginResponseTx(ostate, rsp.ToReadOnly());
+			auto keyChangeAlgo = ToKeyWrapAlgorithm(type);
+
+			auto rsp = sstate.txBuffer.Start();
+			auto success = sstate.keyChangeState.FormatKeyStatusResponse(rsp, header.control, KeyStatus::NOT_INIT);
+			if (success)
+			{
+				OActions::BeginResponseTx(ostate, rsp.ToReadOnly());
+			}
 		}
+		else
+		{
+			FORMAT_LOG_BLOCK(ostate.logger, flags::WARN, "User %u does not exist", user.GetId());
+		}		
 	}
 }

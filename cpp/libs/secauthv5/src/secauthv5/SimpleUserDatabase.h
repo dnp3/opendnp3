@@ -21,7 +21,7 @@
 #ifndef SECAUTHV5_SIMPLEUPDATEKEYSTORE_H
 #define SECAUTHV5_SIMPLEUPDATEKEYSTORE_H
 
-#include "IUpdateKeyStore.h"
+#include "IUserDatabase.h"
 
 #include <openpal/container/DynamicBuffer.h>
 
@@ -34,7 +34,7 @@ namespace secauthv5
 /** 
 	A very simple update key store for the default user
 */
-class SimpleUpdateKeyStore : public IUpdateKeyStore
+class SimpleUserDatabase : public IUserDatabase
 {
 	public:		
 		
@@ -43,12 +43,12 @@ class SimpleUpdateKeyStore : public IUpdateKeyStore
 		virtual bool GetUpdateKeyType(const User& user, UpdateKeyType& type) const override final;
 
 		// copies the update key into the key store permanently
-		void AddUpdateKeyForUser(const User& user, UpdateKeyType type, const openpal::ReadBufferView& key);
+		void ConfigureUser(const User& user, UpdateKeyType type, const openpal::ReadBufferView& key);
 
 	private:
 
-		typedef std::pair<UpdateKeyType, std::unique_ptr<openpal::DynamicBuffer>> StoredKeyData;
-		std::map<uint16_t, StoredKeyData> keyMap;
+		typedef std::pair<UpdateKeyType, std::unique_ptr<openpal::DynamicBuffer>> StoredUserData;
+		std::map<uint16_t, StoredUserData> keyMap;
 };
 
 }

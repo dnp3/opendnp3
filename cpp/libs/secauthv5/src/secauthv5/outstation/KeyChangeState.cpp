@@ -53,7 +53,7 @@ namespace secauthv5
 			statusRsp.keyChangeSeqNum = keyChangeSeqNum;
 			statusRsp.userNum = USER_NUM;
 			statusRsp.keywrapAlgorithm = KeyWrapAlgorithm::AES_128;
-			statusRsp.keyStatus = KeyStatus::NOT_INIT;
+			statusRsp.keyStatus = status;
 			statusRsp.hmacType = HMACType::HMAC_SHA1_TRUNC_10;
 			statusRsp.challengeData = challengeData.ToReadOnly(challengeSize);
 			statusRsp.hmacValue = hmac;

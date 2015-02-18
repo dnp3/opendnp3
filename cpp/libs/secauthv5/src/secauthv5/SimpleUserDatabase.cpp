@@ -18,33 +18,49 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTHV5_IUPDATEKEYSTORE_H
-#define SECAUTHV5_IUPDATEKEYSTORE_H
 
-#include "secauthv5/User.h"
-#include "UpdateKeyType.h"
+#include "SimpleUserDatabase.h"
 
-#include <openpal/container/ReadBufferView.h>
+using namespace openpal;
 
 namespace secauthv5
 {
-
-/** 
-	An interface for retrieving update keys
-
-	This interface may be given out to multiple outstation instances on multiple threads, 
-	and therefore should be thread-safe (or immutable).
-*/
-class IUpdateKeyStore
-{
-	public:
-
-		virtual bool GetUpdateKeyType(const User& user, UpdateKeyType& type) const = 0;
 		
-		virtual bool GetUpdateKey(const User& user, UpdateKeyType& type, openpal::ReadBufferView& key) const = 0;
-};
+bool SimpleUserDatabase::GetUpdateKey(const User& user, UpdateKeyType& type, openpal::ReadBufferView& key) const
+{
+	auto iter = this->keyMap.find(user.GetId());
+	if (iter == keyMap.end())
+	{
+		return false;
+	}
+	else
+	{
+		type = iter->second.first;
+		key = iter->second.second->ToReadOnly();
+		return true;
+	}
+}
+
+bool SimpleUserDatabase::GetUpdateKeyType(const User& user, UpdateKeyType& type) const
+{
+	auto iter = this->keyMap.find(user.GetId());
+	if (iter == keyMap.end())
+	{
+		return false;
+	}
+	else
+	{
+		type = iter->second.first;		
+		return true;
+	}
+}
+
+void SimpleUserDatabase::ConfigureUser(const User& user, UpdateKeyType type, const openpal::ReadBufferView& key)
+{
+	keyMap[user.GetId()] = StoredUserData(type, std::make_unique<DynamicBuffer>(key));
+}
 
 }
 
-#endif
+
 

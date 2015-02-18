@@ -56,13 +56,13 @@
     <ClInclude Include="src\secauthv5\User.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\secauthv5\IUpdateKeyStore.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\secauthv5\SimpleUpdateKeyStore.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\secauthv5\UpdateKeyType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\secauthv5\IUserDatabase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\secauthv5\SimpleUserDatabase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -97,10 +97,10 @@
     <ClCompile Include="src\secauthv5\outstation\OutstationAuthFactory.cpp">
       <Filter>Source Files\outstation</Filter>
     </ClCompile>
-    <ClCompile Include="src\secauthv5\SimpleUpdateKeyStore.cpp">
+    <ClCompile Include="src\secauthv5\UpdateKeyType.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\secauthv5\UpdateKeyType.cpp">
+    <ClCompile Include="src\secauthv5\SimpleUserDatabase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

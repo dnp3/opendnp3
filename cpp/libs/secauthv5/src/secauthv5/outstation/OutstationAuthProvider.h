@@ -27,7 +27,7 @@
 #include "OutstationAuthSettings.h"
 #include "IAuthRequestHandler.h"
 
-#include "secauthv5/IUpdateKeyStore.h"
+#include "secauthv5/IUserDatabase.h"
 
 #include <openpal/util/Uncopyable.h>
 
@@ -45,7 +45,7 @@ class OutstationAuthProvider : public opendnp3::IOutstationAuthProvider, private
 		const OutstationAuthSettings& settings,
 		openpal::Logger logger, 
 		openpal::IExecutor& executor, 
-		IUpdateKeyStore& updateKeys, 
+		IUserDatabase& userDatabase,
 		openpal::ICryptoProvider& crypto
 	);
 

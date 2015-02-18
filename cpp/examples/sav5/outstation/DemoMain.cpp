@@ -32,7 +32,7 @@
 
 #include <osslcrypto/CryptoProvider.h>
 #include <secauthv5/outstation/OutstationAuthFactory.h>
-#include <secauthv5/SimpleUpdateKeyStore.h>
+#include <secauthv5/SimpleUserDatabase.h>
 
 #include <string>
 #include <thread>
@@ -45,11 +45,11 @@ using namespace asiopal;
 using namespace asiodnp3;
 
 // Hard-wired configuration of the default user update key for demo purposes
-void AddDefaultKey(secauthv5::SimpleUpdateKeyStore& keyStore)
+void AddDefaultKey(secauthv5::SimpleUserDatabase& db)
 {
 	// add a 128-bit demo key of all 0xFF
 	openpal::StaticBuffer<16> key(0xFF);
-	keyStore.AddUpdateKeyForUser(
+	db.ConfigureUser(
 		secauthv5::User::Default(), 
 		secauthv5::UpdateKeyType::AES128, 
 		key.ToReadOnly()
@@ -67,8 +67,8 @@ int main(int argc, char* argv[])
 	osslcrypto::CryptoProvider crypto;
 
 	// Create an update key store for SA users
-	secauthv5::SimpleUpdateKeyStore keyStore;
-	AddDefaultKey(keyStore);
+	secauthv5::SimpleUserDatabase userDatabase;
+	AddDefaultKey(userDatabase);
 
 	// This is the main point of interaction with the stack
 	// Allocate a single thread to the pool since this is a single outstation
@@ -109,7 +109,7 @@ int main(int argc, char* argv[])
 	// passing that factory into an overloaded version of AddOutstation
 	secauthv5::OutstationAuthFactory authFactory(
 		secauthv5::OutstationAuthSettings(config.outstation.params), 
-		keyStore,
+		userDatabase,
 		crypto		
 	);
 	
