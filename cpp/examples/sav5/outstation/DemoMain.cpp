@@ -45,10 +45,11 @@ using namespace asiopal;
 using namespace asiodnp3;
 
 // Hard-wired configuration of the default user update key for demo purposes
-void AddDefaultKey(secauthv5::SimpleUserDatabase& db)
+void AddDefaultUser(secauthv5::SimpleUserDatabase& db)
 {
 	// add a 128-bit demo key of all 0xFF
-	openpal::StaticBuffer<16> key(0xFF);
+	openpal::StaticBuffer<16> key;
+	key.GetWriteBuffer().SetAllTo(0xFF);
 	db.ConfigureUser(
 		secauthv5::User::Default(), 
 		secauthv5::UpdateKeyType::AES128, 
@@ -66,9 +67,10 @@ int main(int argc, char* argv[])
 	// clean this up last since everything running in the manager depends on it
 	osslcrypto::CryptoProvider crypto;
 
-	// Create an update key store for SA users
+	// Create a user database
 	secauthv5::SimpleUserDatabase userDatabase;
-	AddDefaultKey(userDatabase);
+	// setup the default user
+	AddDefaultUser(userDatabase);
 
 	// This is the main point of interaction with the stack
 	// Allocate a single thread to the pool since this is a single outstation

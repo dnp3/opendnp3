@@ -23,6 +23,7 @@
 
 #include "openpal/container/WriteBufferView.h"
 #include "openpal/container/ReadBufferView.h"
+#include "openpal/util/Uncopyable.h"
 
 #include <cstdint>
 
@@ -30,21 +31,13 @@ namespace openpal
 {
 
 template <uint32_t SIZE>
-class StaticBuffer
+class StaticBuffer : private Uncopyable
 {
 
 public:	
 
 	StaticBuffer()
-	{}
-
-	StaticBuffer(uint8_t value)
-	{
-		for (uint32_t i = 0; i < SIZE; ++i)
-		{
-			buffer[i] = value;
-		}
-	}
+	{}	
 
 	ReadBufferView ToReadOnly() const
 	{

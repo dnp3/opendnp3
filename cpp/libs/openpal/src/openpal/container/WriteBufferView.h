@@ -36,6 +36,8 @@ public:
 
 	static WriteBufferView Empty();
 
+	void SetAllTo(uint8_t value);
+
 	WriteBufferView();	
 	WriteBufferView(uint8_t* pBuffer, uint32_t size);
 
