@@ -24,15 +24,21 @@
 namespace secauthv5
 {
 
-	OutstationAuthFactory::OutstationAuthFactory(const OutstationAuthSettings& settings_, IUserDatabase& userDatabase, openpal::ICryptoProvider& crypto) :
+	OutstationAuthFactory::OutstationAuthFactory(
+			const OutstationAuthSettings& settings_, 
+			openpal::IUTCTimeSource& timeSource, 
+			IUserDatabase& userDatabase, 
+			openpal::ICryptoProvider& crypto) :
+
 		settings(settings_),
+		pTimeSource(&timeSource),
 		pUserDatabase(&userDatabase),
 		pCrypto(&crypto)
 	{}
 
 	std::unique_ptr<opendnp3::IOutstationAuthProvider> OutstationAuthFactory::Create(openpal::Logger logger, openpal::IExecutor& executor)
 	{
-		return std::make_unique<OutstationAuthProvider>(settings, logger, executor, *pUserDatabase, *pCrypto);
+		return std::make_unique<OutstationAuthProvider>(settings, logger, executor,  *pTimeSource, *pUserDatabase, *pCrypto);
 	}
 }
 

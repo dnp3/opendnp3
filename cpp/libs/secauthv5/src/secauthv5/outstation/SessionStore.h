@@ -48,7 +48,7 @@ namespace secauthv5
 		openpal::ReadBufferView lastKeyUpdateHMAC;
 
 		private:
-		openpal::StaticBuffer<AuthConstants::MAX_HMAC_SIZE> hmacBuffer;
+		openpal::StaticBuffer<AuthConstants::MAX_HMAC_TRUNC_SIZE> hmacBuffer;
 	};
 
 

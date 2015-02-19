@@ -18,46 +18,32 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTHV5_OUTSTATIONAUTHFACTORY_H
-#define SECAUTHV5_OUTSTATIONAUTHFACTORY_H
 
-#include <opendnp3/outstation/IOutstationAuthFactory.h>
-
-#include "OutstationAuthProvider.h"
-
-#include <openpal/util/Uncopyable.h>
+#include "HMACProvider.h"
 
 namespace secauthv5
-{
+{	
+	std::unique_ptr<openpal::IHashProvider> HMACProvider::GetHash(openpal::ICryptoProvider& provider, HMACMode mode)
+	{
+		switch (mode)
+		{
+		case(HMACMode::SHA1_TRUNC_8) :
+		case(HMACMode::SHA1_TRUNC_10) :
+			return provider.CreateSHA1Provider();
+		default:
+			return provider.CreateSHA256Provider();
+		}
+	}
 
-/**
-	SAv5 outstation authentication provider
-*/
-class OutstationAuthFactory : public opendnp3::IOutstationAuthFactory, private openpal::Uncopyable
-{
-	public:
-
-	OutstationAuthFactory(
-		const OutstationAuthSettings& settings_, 
-		openpal::IUTCTimeSource& timeSource,
-		IUserDatabase& userDatabase, 
-		openpal::ICryptoProvider& crypto
-	);
-		
-	virtual std::unique_ptr<opendnp3::IOutstationAuthProvider> Create(openpal::Logger logger, openpal::IExecutor& executor) override final;
-
-	private:
-
-	OutstationAuthFactory() = delete;
-
-	OutstationAuthSettings settings;
-	openpal::IUTCTimeSource* pTimeSource;
-	IUserDatabase* pUserDatabase;
-	openpal::ICryptoProvider* pCrypto;
+	HMACProvider::HMACProvider(openpal::ICryptoProvider& provider, HMACMode mode) :
+		hash(GetHash(provider, mode)),
+		TRUNC_SIZE(GetTruncationSize(mode))
+	{
 	
-};
+	}
+
 
 }
 
-#endif
+
 

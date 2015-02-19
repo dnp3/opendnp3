@@ -26,7 +26,8 @@ namespace secauthv5
 
 	OutstationAuthSettings::OutstationAuthSettings(const opendnp3::OutstationParams& params) :
 		maxRxASDUSize(params.maxRxFragSize),
-		maxTxASDUSize(params.maxTxFragSize)
+		maxTxASDUSize(params.maxTxFragSize),
+		assocId(0)
 	{}
 
 }

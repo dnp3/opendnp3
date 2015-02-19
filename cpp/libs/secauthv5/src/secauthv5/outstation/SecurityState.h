@@ -27,6 +27,7 @@
 
 #include <openpal/executor/IExecutor.h>
 #include <openpal/crypto/ICryptoProvider.h>
+#include <openpal/executor/IUTCTimeSource.h>
 
 #include "secauthv5/IUserDatabase.h"
 
@@ -43,12 +44,21 @@ class SecurityState
 {
 	public:
 
-	SecurityState(const OutstationAuthSettings& settings, openpal::Logger logger, openpal::IExecutor& executor, IUserDatabase& userdb, openpal::ICryptoProvider& crypto);
+	SecurityState(
+		const OutstationAuthSettings& settings, 
+		openpal::Logger logger, 
+		openpal::IExecutor& executor,
+		openpal::IUTCTimeSource& timeSource, 
+		IUserDatabase& userdb, 
+		openpal::ICryptoProvider& crypto
+	);
 
 	void Reset();
 	
+	const OutstationAuthSettings settings;
 	opendnp3::DeferredRequest deferred;
 	openpal::IExecutor* pExecutor;
+	openpal::IUTCTimeSource* pTimeSource;
 	IUserDatabase* pUserDatabase;
 	openpal::ICryptoProvider* pCrypto;
 	opendnp3::KeyStatus keyStatus;

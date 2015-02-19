@@ -24,6 +24,7 @@
 
 #include <opendnp3/LogLevels.h>
 #include <opendnp3/outstation/OutstationActions.h>
+#include <opendnp3/objects/Group120Var7.h>
 
 #include <openpal/logging/LogMacros.h>
 
@@ -34,23 +35,26 @@ namespace secauthv5
 {
 	void OSecActions::ProcessChangeSessionKeys(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change)
 	{
-		User user(change.user);
-		UpdateKeyType updateKeyType;
+		User user(change.user);		
+
+		if (sstate.keyChangeState.GetLastKeyChangeUser().GetId() != user.GetId())
+		{
+			FORMAT_LOG_BLOCK(ostate.logger, flags::WARN, "No prior key change status for user %u", change.user);
+			// TODO - look for a more suitable error code here
+			OSecActions::RespondWithAuthError(header, sstate, ostate, change.seq, user, AuthErrorCode::UNKNOWN_USER);
+			return;
+		}
+
+		UpdateKeyMode updateKeyType;
 		ReadBufferView updateKey;
 		
 		if (!sstate.pUserDatabase->GetUpdateKey(user, updateKeyType, updateKey))
 		{
 			FORMAT_LOG_BLOCK(ostate.logger, flags::WARN, "Ignoring session key change request for unknown user %u", change.user);
+			OSecActions::RespondWithAuthError(header, sstate, ostate, change.seq, user, AuthErrorCode::UNKNOWN_USER);
 			return;
 		}
-		
-		if (sstate.keyChangeState.GetLastKeyChangeUser().GetId() != user.GetId())
-		{
-			FORMAT_LOG_BLOCK(ostate.logger, flags::WARN, "No prior key change status for user %u", change.user);
-			return;
-		}
-
-
+				
 		UnwrappedKeyData unwrapped;
 		KeyUnwrapBuffer buffer;
 
@@ -65,22 +69,28 @@ namespace secauthv5
 		if (!unwrapSuccess)
 		{
 			SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "Failed to unwrap key data");
+			OSecActions::RespondWithAuthError(header, sstate, ostate, change.seq, user, AuthErrorCode::AUTHENTICATION_FAILED);
 			return;
 		}
 	
 		if (!sstate.keyChangeState.EqualsLastStatusResponse(unwrapped.keyStatusObject))
 		{
 			SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "Key change authentication failed");
+			OSecActions::RespondWithAuthError(header, sstate, ostate, change.seq, user, AuthErrorCode::AUTHENTICATION_FAILED);
 			return;
 		}		
 
-		SIMPLE_LOG_BLOCK(ostate.logger, flags::EVENT, "Key change authentication success");
+		// At this point, we've successfully authenticated the session key change for this user
+		// We now need to produce an HMAC value based on the full ASDU and the monitoring direction session key
+		
+		
+
 	}
 	
 	void OSecActions::ProcessRequestKeyStatus(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var4& status)
 	{
 		User user(status.userNum);
-		UpdateKeyType type;
+		UpdateKeyMode type;
 		if (sstate.pUserDatabase->GetUpdateKeyType(user, type))
 		{
 			ReadBufferView lastKeyChangeHMAC;
@@ -113,14 +123,42 @@ namespace secauthv5
 		}		
 	}
 
-	openpal::IKeyWrapAlgo& OSecActions::GetKeyWrapAlgo(openpal::ICryptoProvider& crypto, UpdateKeyType type)
+	openpal::IKeyWrapAlgo& OSecActions::GetKeyWrapAlgo(openpal::ICryptoProvider& crypto, UpdateKeyMode type)
 	{
 		switch (type)
 		{
-			case(UpdateKeyType::AES128) :
+			case(UpdateKeyMode::AES128) :
 				return crypto.GetAES128KeyWrap();
 			default:
 				return crypto.GetAES256KeyWrap();
 		}
 	}
+
+	void OSecActions::RespondWithAuthError(
+		const opendnp3::APDUHeader& header,
+		SecurityState& sstate,
+		opendnp3::OState& ostate,
+		uint32_t seqNum,
+		const User& user,
+		AuthErrorCode code
+		)
+	{
+		auto rsp = sstate.txBuffer.Start();
+		rsp.SetFunction(FunctionCode::AUTH_RESPONSE);
+		rsp.SetControl(header.control);
+		auto writer = rsp.GetWriter();
+		
+		Group120Var7 error;
+		error.seqNum = seqNum;
+		error.userNum = user.GetId();
+		error.associationID = sstate.settings.assocId;
+		error.errorCode = code;
+		error.timeOfError = sstate.pTimeSource->Now().msSinceEpoch;
+
+		writer.WriteFreeFormat(error);
+		
+		OActions::BeginResponseTx(ostate, rsp.ToReadOnly());
+	}
+
+
 }

@@ -87,23 +87,10 @@ namespace secauthv5
 		}
 		else
 		{	
-			
-
-
 			// this is what we sent
 			auto sent = buffer.ToReadOnly(copy.Size());
-			// the unwrapped data may be larger due to padding so truncate it to this length before comparing
+			// the unwrapped data may be larger due to padding so truncate it to the length of what we're expecting before comparing
 			auto unwrappedTrunc = unwrappedKeyStatus.Take(sent.Size());
-
-			SIMPLE_LOG_BLOCK(logger, flags::EVENT, "What we sent");
-			FORMAT_HEX_BLOCK(logger, flags::EVENT, sent, 16, 16);
-
-			SIMPLE_LOG_BLOCK(logger, flags::EVENT, "What we unwrapped");
-			FORMAT_HEX_BLOCK(logger, flags::EVENT, unwrappedKeyStatus, 16, 16);
-
-			SIMPLE_LOG_BLOCK(logger, flags::EVENT, "What we truncated");
-			FORMAT_HEX_BLOCK(logger, flags::EVENT, unwrappedTrunc, 16, 16);
-
 
 			return SecureEquals(sent, unwrappedTrunc);
 		}

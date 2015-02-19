@@ -43,6 +43,7 @@ namespace secauthv5
 		openpal::ReadBufferView controlSessionKey;
 		openpal::ReadBufferView monitorSessionKey;
 		openpal::ReadBufferView keyStatusObject;
+		bool isValid;
 	};
 
 	class KeyUnwrapBuffer

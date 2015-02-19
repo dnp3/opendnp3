@@ -18,45 +18,28 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTHV5_OSECACTIONS_H
-#define SECAUTHV5_OSECACTIONS_H
+#ifndef SECAUTHV5_HMACMODE_H
+#define SECAUTHV5_HMACMODE_H
 
-#include <openpal/util/Uncopyable.h>
+#include <cstdint>
 
-#include <opendnp3/outstation/OutstationState.h>
-
-#include <opendnp3/objects/Group120.h>
-#include <opendnp3/objects/Group120Var6.h>
-
-#include <opendnp3/gen/AuthErrorCode.h>
-
-#include "SecurityState.h"
+#include <opendnp3/gen/HMACType.h>
 
 namespace secauthv5
 {
-	class OSecActions : private openpal::PureStatic
+	// Specifies the configured HMAC mode
+	// This enum represents a subset of all HMAC types in the spec
+	enum class HMACMode : uint8_t
 	{
-		public:
-			
-			static void ProcessChangeSessionKeys(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change);			
-			static void ProcessRequestKeyStatus(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var4& status);
-			
-
-		private:
-		
-			static openpal::IKeyWrapAlgo& GetKeyWrapAlgo(openpal::ICryptoProvider& crypto, UpdateKeyMode type);
-
-			static void RespondWithAuthError(
-				const opendnp3::APDUHeader& header,
-				SecurityState& sstate,
-				opendnp3::OState& ostate,
-				uint32_t seqNum,
-				const User& user,
-				opendnp3::AuthErrorCode code
-			);
+		SHA1_TRUNC_10,
+		SHA1_TRUNC_8,
+		SHA256_TRUNC_8,
+		SHA256_TRUNC_16
 	};
 
-	
+	opendnp3::HMACType ToHMACType(HMACMode mode);
+	uint32_t GetTruncationSize(HMACMode mode);
 }
 
 #endif
+

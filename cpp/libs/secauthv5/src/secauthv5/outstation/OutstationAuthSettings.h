@@ -29,12 +29,13 @@ namespace secauthv5
 /**
 	SAv5 outstation authentication provider
 */
-	struct OutstationAuthSettings
+struct OutstationAuthSettings
 {	
 	OutstationAuthSettings(const opendnp3::OutstationParams&);
 
 	uint32_t maxRxASDUSize;
 	uint32_t maxTxASDUSize;	
+	uint16_t assocId;
 };
 
 }

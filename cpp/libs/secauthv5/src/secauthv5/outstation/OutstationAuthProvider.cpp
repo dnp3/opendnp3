@@ -43,10 +43,11 @@ OutstationAuthProvider::OutstationAuthProvider(
 		const OutstationAuthSettings& settings,
 		openpal::Logger logger,
 		openpal::IExecutor& executor,
+		openpal::IUTCTimeSource& timeSource,
 		IUserDatabase& userDatabase,
 		openpal::ICryptoProvider& crypto
 		) :
-		sstate(settings, logger, executor, userDatabase, crypto)
+		sstate(settings, logger, executor, timeSource, userDatabase, crypto)
 {
 
 }

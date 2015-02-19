@@ -30,6 +30,7 @@
 #include "secauthv5/IUserDatabase.h"
 
 #include <openpal/util/Uncopyable.h>
+#include <openpal/executor/IUTCTimeSource.h>
 
 namespace secauthv5
 {
@@ -44,7 +45,8 @@ class OutstationAuthProvider : public opendnp3::IOutstationAuthProvider, private
 	OutstationAuthProvider(
 		const OutstationAuthSettings& settings,
 		openpal::Logger logger, 
-		openpal::IExecutor& executor, 
+		openpal::IExecutor& executor,
+		openpal::IUTCTimeSource& timeSource,
 		IUserDatabase& userDatabase,
 		openpal::ICryptoProvider& crypto
 	);

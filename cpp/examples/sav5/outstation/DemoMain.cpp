@@ -30,6 +30,8 @@
 #include <opendnp3/outstation/Database.h>
 #include <opendnp3/LogLevels.h>
 
+#include <asiopal/UTCTimeSource.h>
+
 #include <osslcrypto/CryptoProvider.h>
 #include <secauthv5/outstation/OutstationAuthFactory.h>
 #include <secauthv5/SimpleUserDatabase.h>
@@ -52,7 +54,7 @@ void AddDefaultUser(secauthv5::SimpleUserDatabase& db)
 	key.GetWriteBuffer().SetAllTo(0xFF);
 	db.ConfigureUser(
 		secauthv5::User::Default(), 
-		secauthv5::UpdateKeyType::AES128, 
+		secauthv5::UpdateKeyMode::AES128, 
 		key.ToReadOnly()
 	);
 }
@@ -108,9 +110,12 @@ int main(int argc, char* argv[])
 	config.link.RemoteAddr = 1;
 
 	// authentication is configured by simply creating an auth factory and then 
-	// passing that factory into an overloaded version of AddOutstation
+	// passing that factory into an overloaded version of AddOutstation.
+	// This object can disappear after the call to add outstation, it doesn't
+	// need to persist on the stack
 	secauthv5::OutstationAuthFactory authFactory(
-		secauthv5::OutstationAuthSettings(config.outstation.params), 
+		secauthv5::OutstationAuthSettings(config.outstation.params),
+		asiopal::UTCTimeSource::Instance(), 
 		userDatabase,
 		crypto		
 	);

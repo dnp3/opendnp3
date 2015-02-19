@@ -18,23 +18,32 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTHV5_UPDATEKEYTYPE_H
-#define SECAUTHV5_UPDATEKEYTYPE_H
+#ifndef SECAUTHV5_HMACPROVIDER_H
+#define SECAUTHV5_HMACPROVIDER_H
 
 #include <cstdint>
 
-#include <opendnp3/gen/KeyWrapAlgorithm.h>
+#include "HMACMode.h"
+#include "AuthConstants.h"
+
+#include <openpal/crypto/ICryptoProvider.h>
+#include <openpal/container/StaticBuffer.h>
 
 namespace secauthv5
 {
-	// Specifies a type of update key
-	enum class UpdateKeyType : uint8_t
+	class HMACProvider
 	{
-		AES128,
-		AES256
-	};
+		public:
+			HMACProvider(openpal::ICryptoProvider& provider, HMACMode mode);
 
-	opendnp3::KeyWrapAlgorithm ToKeyWrapAlgorithm(UpdateKeyType keyType);
+		private:
+
+			static std::unique_ptr<openpal::IHashProvider> GetHash(openpal::ICryptoProvider& provider, HMACMode mode);
+
+			std::unique_ptr<openpal::IHashProvider> hash;
+			const uint32_t TRUNC_SIZE;
+			openpal::StaticBuffer<AuthConstants::MAX_HMAC_OUTPUT_SIZE> buffer;
+	};
 }
 
 #endif

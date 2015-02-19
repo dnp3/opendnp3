@@ -22,7 +22,7 @@
 #define SECAUTHV5_IUSERDATABASE_H
 
 #include "secauthv5/User.h"
-#include "UpdateKeyType.h"
+#include "UpdateKeyMode.h"
 
 #include <opendnp3/gen/FunctionCode.h>
 
@@ -43,11 +43,11 @@ class IUserDatabase
 {
 	public:		
 
-		virtual bool GetUpdateKeyType(const User& user, UpdateKeyType& type) const = 0;
+		virtual bool GetUpdateKeyType(const User& user, UpdateKeyMode& type) const = 0;
 
 		virtual bool IsAuthorized(const User& user, opendnp3::FunctionCode code) const = 0;
 		
-		virtual bool GetUpdateKey(const User& user, UpdateKeyType& type, openpal::ReadBufferView& key) const = 0;
+		virtual bool GetUpdateKey(const User& user, UpdateKeyMode& type, openpal::ReadBufferView& key) const = 0;
 
 		virtual void EnumerateUsers(std::function<void (User)> fun) const = 0;
 };

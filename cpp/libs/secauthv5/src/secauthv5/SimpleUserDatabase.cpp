@@ -26,7 +26,7 @@ using namespace openpal;
 namespace secauthv5
 {
 		
-bool SimpleUserDatabase::GetUpdateKey(const User& user, UpdateKeyType& type, openpal::ReadBufferView& key) const
+bool SimpleUserDatabase::GetUpdateKey(const User& user, UpdateKeyMode& type, openpal::ReadBufferView& key) const
 {
 	auto iter = this->userMap.find(user.GetId());
 	if (iter == userMap.end())
@@ -41,7 +41,7 @@ bool SimpleUserDatabase::GetUpdateKey(const User& user, UpdateKeyType& type, ope
 	}
 }
 
-bool SimpleUserDatabase::GetUpdateKeyType(const User& user, UpdateKeyType& type) const
+bool SimpleUserDatabase::GetUpdateKeyType(const User& user, UpdateKeyMode& type) const
 {
 	auto iter = this->userMap.find(user.GetId());
 	if (iter == userMap.end())
@@ -70,7 +70,7 @@ void SimpleUserDatabase::EnumerateUsers(std::function<void(User)> fun) const
 	}
 }
 
-void SimpleUserDatabase::ConfigureUser(const User& user, UpdateKeyType type, const openpal::ReadBufferView& key)
+void SimpleUserDatabase::ConfigureUser(const User& user, UpdateKeyMode type, const openpal::ReadBufferView& key)
 {
 	userMap[user.GetId()] = StoredUserData(type, std::make_unique<DynamicBuffer>(key));
 }

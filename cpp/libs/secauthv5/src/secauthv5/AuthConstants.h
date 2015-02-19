@@ -39,7 +39,8 @@ struct AuthConstants : openpal::PureStatic
 	const static uint32_t MIN_SESSION_KEY_SIZE_BYTES = 16;
 	const static uint32_t MAX_SESSION_KEY_SIZE_BYTES = 32;
 
-	const static uint16_t MAX_HMAC_SIZE = 16;	
+	const static uint16_t MAX_HMAC_TRUNC_SIZE = 16;  // SH
+	const static uint16_t MAX_HMAC_OUTPUT_SIZE = 32; // SHA256 output is 32 bytes
 
 	static uint32_t GetBoundedSessionKeySize(uint32_t size)
 	{

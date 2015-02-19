@@ -18,46 +18,22 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTHV5_OUTSTATIONAUTHFACTORY_H
-#define SECAUTHV5_OUTSTATIONAUTHFACTORY_H
 
-#include <opendnp3/outstation/IOutstationAuthFactory.h>
-
-#include "OutstationAuthProvider.h"
-
-#include <openpal/util/Uncopyable.h>
+#include "UpdateKeyMode.h"
 
 namespace secauthv5
-{
-
-/**
-	SAv5 outstation authentication provider
-*/
-class OutstationAuthFactory : public opendnp3::IOutstationAuthFactory, private openpal::Uncopyable
-{
-	public:
-
-	OutstationAuthFactory(
-		const OutstationAuthSettings& settings_, 
-		openpal::IUTCTimeSource& timeSource,
-		IUserDatabase& userDatabase, 
-		openpal::ICryptoProvider& crypto
-	);
-		
-	virtual std::unique_ptr<opendnp3::IOutstationAuthProvider> Create(openpal::Logger logger, openpal::IExecutor& executor) override final;
-
-	private:
-
-	OutstationAuthFactory() = delete;
-
-	OutstationAuthSettings settings;
-	openpal::IUTCTimeSource* pTimeSource;
-	IUserDatabase* pUserDatabase;
-	openpal::ICryptoProvider* pCrypto;
-	
-};
+{	
+	opendnp3::KeyWrapAlgorithm ToKeyWrapAlgorithm(UpdateKeyMode keyType)
+	{
+		switch (keyType)
+		{
+			case(UpdateKeyMode::AES128) :
+				return opendnp3::KeyWrapAlgorithm::AES_128;			
+			default:
+				return opendnp3::KeyWrapAlgorithm::AES_256;
+		}
+	}
 
 }
 
-#endif
 

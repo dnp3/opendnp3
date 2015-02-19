@@ -19,21 +19,41 @@
  * to you under the terms of the License.
  */
 
-#include "UpdateKeyType.h"
+#include "HMACMode.h"
+
+using namespace opendnp3;
 
 namespace secauthv5
-{	
-	opendnp3::KeyWrapAlgorithm ToKeyWrapAlgorithm(UpdateKeyType keyType)
+{
+	opendnp3::HMACType ToHMACType(HMACMode mode)
 	{
-		switch (keyType)
+		switch (mode)
 		{
-			case(UpdateKeyType::AES128) :
-				return opendnp3::KeyWrapAlgorithm::AES_128;			
+		case(HMACMode::SHA1_TRUNC_8) :
+			return HMACType::HMAC_SHA1_TRUNC_8;
+		case(HMACMode::SHA1_TRUNC_10) :
+			return HMACType::HMAC_SHA1_TRUNC_10;
+		case(HMACMode::SHA256_TRUNC_8) :
+			return HMACType::HMAC_SHA256_TRUNC_8;
+		default:
+			return HMACType::HMAC_SHA256_TRUNC_16;
+		}
+	}	
+
+	uint32_t GetTruncationSize(HMACMode mode)
+	{
+		switch (mode)
+		{
+			case(HMACMode::SHA1_TRUNC_8) :
+				return 8;
+			case(HMACMode::SHA1_TRUNC_10) :
+				return 10;
+			case(HMACMode::SHA256_TRUNC_8) :
+				return 8;
 			default:
-				return opendnp3::KeyWrapAlgorithm::AES_256;
+				return 16;
 		}
 	}
-
 }
 
 
