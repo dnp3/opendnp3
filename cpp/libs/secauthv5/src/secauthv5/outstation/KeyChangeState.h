@@ -41,8 +41,9 @@ class KeyChangeState
 	
 	// Formats the key status response	
 	bool FormatKeyStatusResponse(
-		opendnp3::APDUResponse& rsp,
-		const opendnp3::AppControlField& control,
+		opendnp3::HeaderWriter& writer,
+		opendnp3::HMACType hmacType,
+		opendnp3::KeyWrapAlgorithm keyWrapAlgo,
 		opendnp3::KeyStatus status,		
 		const openpal::ReadBufferView& hmac = openpal::ReadBufferView::Empty()
 	);

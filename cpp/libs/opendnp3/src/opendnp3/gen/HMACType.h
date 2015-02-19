@@ -30,6 +30,8 @@ namespace opendnp3 {
 */
 enum class HMACType : uint8_t
 {
+  /// No HMAC value in this message
+  NO_MAC_VALUE = 0x0,
   /// Networked version of SHA1
   HMAC_SHA1_TRUNC_10 = 0x2,
   /// Serial version of SHA256

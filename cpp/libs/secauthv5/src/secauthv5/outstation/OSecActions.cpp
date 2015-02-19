@@ -80,10 +80,23 @@ namespace secauthv5
 		UpdateKeyType type;
 		if (sstate.pUserDatabase->GetUpdateKeyType(user, type))
 		{
-			auto keyChangeAlgo = ToKeyWrapAlgorithm(type);
-
+			ReadBufferView lastKeyChangeHMAC;
+			auto keyStatus = sstate.sessions.GetKeyStatus(user, lastKeyChangeHMAC);
+			
 			auto rsp = sstate.txBuffer.Start();
-			auto success = sstate.keyChangeState.FormatKeyStatusResponse(rsp, header.control, KeyStatus::NOT_INIT);
+			rsp.SetFunction(FunctionCode::AUTH_RESPONSE);
+			rsp.SetControl(header.control);
+			auto writer = rsp.GetWriter();
+			auto hmacType = (keyStatus == KeyStatus::NOT_INIT) ? HMACType::NO_MAC_VALUE : HMACType::HMAC_SHA1_TRUNC_10; // TODO from configuration
+
+			auto success = sstate.keyChangeState.FormatKeyStatusResponse(
+				writer,
+				hmacType,
+				ToKeyWrapAlgorithm(type),
+				keyStatus,
+				lastKeyChangeHMAC
+			);
+
 			if (success)
 			{ 
 				OActions::BeginResponseTx(ostate, rsp.ToReadOnly());
@@ -91,7 +104,7 @@ namespace secauthv5
 		}
 		else
 		{
-			// TODO  - the spec appears to just say "ignore users that don't exist"
+			// TODO  - the spec appears to just say "ignore users that don't exist". Confirm this.
 			FORMAT_LOG_BLOCK(ostate.logger, flags::WARN, "User %u does not exist", user.GetId());
 		}		
 	}

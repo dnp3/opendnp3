@@ -41,24 +41,27 @@ namespace secauthv5
 		keyChangeSeqNum(0)
 	{}
 
-	bool KeyChangeState::FormatKeyStatusResponse(opendnp3::APDUResponse& rsp, const opendnp3::AppControlField& control, opendnp3::KeyStatus status, const openpal::ReadBufferView& hmac)
+	bool KeyChangeState::FormatKeyStatusResponse(
+			opendnp3::HeaderWriter& writer,
+			opendnp3::HMACType hmacType,
+			opendnp3::KeyWrapAlgorithm keyWrapAlgo,
+			opendnp3::KeyStatus status, 
+			const openpal::ReadBufferView& hmac
+		)
 	{				
 		if (pProvider->GetSecureRandom(challengeData.GetWriteBuffer(challengeSize)))
 		{
-			++keyChangeSeqNum;
-
-			rsp.SetFunction(FunctionCode::AUTH_RESPONSE);
-			rsp.SetControl(control);
+			++keyChangeSeqNum;			
 
 			statusRsp.keyChangeSeqNum = keyChangeSeqNum;
 			statusRsp.userNum = USER_NUM;
-			statusRsp.keywrapAlgorithm = KeyWrapAlgorithm::AES_128;
+			statusRsp.keywrapAlgorithm = keyWrapAlgo;
 			statusRsp.keyStatus = status;
-			statusRsp.hmacType = HMACType::HMAC_SHA1_TRUNC_10;
+			statusRsp.hmacType = hmacType;
 			statusRsp.challengeData = challengeData.ToReadOnly(challengeSize);
 			statusRsp.hmacValue = hmac;
 
-			return rsp.GetWriter().WriteFreeFormat(statusRsp);
+			return writer.WriteFreeFormat(statusRsp);
 		}
 		else
 		{

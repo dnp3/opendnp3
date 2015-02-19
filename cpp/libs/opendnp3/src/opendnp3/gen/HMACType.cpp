@@ -30,6 +30,8 @@ HMACType HMACTypeFromType(uint8_t arg)
 {
   switch(arg)
   {
+    case(0x0):
+      return HMACType::NO_MAC_VALUE;
     case(0x2):
       return HMACType::HMAC_SHA1_TRUNC_10;
     case(0x3):
@@ -48,6 +50,8 @@ char const* HMACTypeToString(HMACType arg)
 {
   switch(arg)
   {
+    case(HMACType::NO_MAC_VALUE):
+      return "NO_MAC_VALUE";
     case(HMACType::HMAC_SHA1_TRUNC_10):
       return "HMAC_SHA1_TRUNC_10";
     case(HMACType::HMAC_SHA256_TRUNC_8):

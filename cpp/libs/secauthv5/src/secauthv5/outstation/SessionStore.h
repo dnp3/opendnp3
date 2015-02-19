@@ -45,6 +45,10 @@ namespace secauthv5
 		openpal::MonotonicTimestamp expirationTime;
 		uint32_t authCount;
 		uint32_t authCountMax;
+		openpal::ReadBufferView lastKeyUpdateHMAC;
+
+		private:
+		openpal::StaticBuffer<AuthConstants::MAX_HMAC_SIZE> hmacBuffer;
 	};
 
 
@@ -60,6 +64,8 @@ namespace secauthv5
 
 		// Session keys are only set if KeyStatus == OK
 		opendnp3::KeyStatus GetSessionKeys(const User& user, SessionKeysView& view);
+		
+		opendnp3::KeyStatus GetKeyStatus(const User& user, openpal::ReadBufferView& lastKeyChangeHMAC);
 
 		// Increments the auth count for the specified users session keys
 		// this may invalidate the session keys

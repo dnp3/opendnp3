@@ -79,6 +79,25 @@ namespace secauthv5
 		}
 	}
 
+	opendnp3::KeyStatus SessionStore::GetKeyStatus(const User& user, openpal::ReadBufferView& lastKeyChangeHMAC)
+	{
+		auto iter = sessionMap.find(user.GetId());
+		if (iter == sessionMap.end())
+		{
+			return KeyStatus::UNDEFINED;
+		}
+		else
+		{
+			auto status = this->CheckTimeValidity(*iter->second);
+			if (status == KeyStatus::OK)
+			{				
+				lastKeyChangeHMAC = iter->second->lastKeyUpdateHMAC;				
+			}
+
+			return status;
+		}
+	}
+
 	opendnp3::KeyStatus SessionStore::CheckTimeValidity(SessionState& state)
 	{
 		if (state.status == KeyStatus::OK)
