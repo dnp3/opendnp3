@@ -32,7 +32,7 @@ namespace openpal
 
 		// Mark this volatile so that the compiler doesn't try
 		//  to optimize away anything and return early
-		volatile bool equals = false;
+		volatile bool equals = true;
 
 		for (uint32_t i = 0; i < lhs.Size(); ++i)
 		{

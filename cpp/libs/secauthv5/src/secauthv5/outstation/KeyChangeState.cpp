@@ -33,8 +33,7 @@ using namespace opendnp3;
 namespace secauthv5
 {
 
-	KeyChangeState::KeyChangeState(uint16_t userNum, uint16_t challengeSize_, openpal::Logger logger_, openpal::ICryptoProvider& provider) :
-		USER_NUM(userNum),
+	KeyChangeState::KeyChangeState(uint16_t userNum, uint16_t challengeSize_, openpal::Logger logger_, openpal::ICryptoProvider& provider) :		
 		challengeSize(AuthConstants::GetBoundedChallengeSize(challengeSize_)),
 		logger(logger_),
 		pProvider(&provider),
@@ -43,6 +42,7 @@ namespace secauthv5
 
 	bool KeyChangeState::FormatKeyStatusResponse(
 			opendnp3::HeaderWriter& writer,
+			const User& user,
 			opendnp3::HMACType hmacType,
 			opendnp3::KeyWrapAlgorithm keyWrapAlgo,
 			opendnp3::KeyStatus status, 
@@ -53,8 +53,10 @@ namespace secauthv5
 		{
 			++keyChangeSeqNum;			
 
+			this->lastUser = user;
+
 			statusRsp.keyChangeSeqNum = keyChangeSeqNum;
-			statusRsp.userNum = USER_NUM;
+			statusRsp.userNum = user.GetId();
 			statusRsp.keywrapAlgorithm = keyWrapAlgo;
 			statusRsp.keyStatus = status;
 			statusRsp.hmacType = hmacType;
@@ -84,8 +86,26 @@ namespace secauthv5
 			return false;
 		}
 		else
-		{			
-			return SecureEquals(buffer.ToReadOnly(copy.Size()), unwrappedKeyStatus);
+		{	
+			
+
+
+			// this is what we sent
+			auto sent = buffer.ToReadOnly(copy.Size());
+			// the unwrapped data may be larger due to padding so truncate it to this length before comparing
+			auto unwrappedTrunc = unwrappedKeyStatus.Take(sent.Size());
+
+			SIMPLE_LOG_BLOCK(logger, flags::EVENT, "What we sent");
+			FORMAT_HEX_BLOCK(logger, flags::EVENT, sent, 16, 16);
+
+			SIMPLE_LOG_BLOCK(logger, flags::EVENT, "What we unwrapped");
+			FORMAT_HEX_BLOCK(logger, flags::EVENT, unwrappedKeyStatus, 16, 16);
+
+			SIMPLE_LOG_BLOCK(logger, flags::EVENT, "What we truncated");
+			FORMAT_HEX_BLOCK(logger, flags::EVENT, unwrappedTrunc, 16, 16);
+
+
+			return SecureEquals(sent, unwrappedTrunc);
 		}
 	}
 

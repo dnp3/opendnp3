@@ -35,43 +35,46 @@ namespace secauthv5
 	void OSecActions::ProcessChangeSessionKeys(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change)
 	{
 		User user(change.user);
-
-		if (user.IsDefault())
+		UpdateKeyType updateKeyType;
+		ReadBufferView updateKey;
+		
+		if (!sstate.pUserDatabase->GetUpdateKey(user, updateKeyType, updateKey))
 		{
-			
-			UpdateKeyType keyType;
-			openpal::ReadBufferView updateKey;
-			if (!sstate.pUserDatabase->GetUpdateKey(user, keyType, updateKey))
-			{
-				return;
-			}
-			
-			UnwrappedKeyData unwrapped;
-			KeyUnwrapBuffer buffer;
-			auto success = buffer.Unwrap(
-				sstate.pCrypto->GetAES128KeyWrap(),
-				updateKey,
-				change.data,
-				unwrapped,
-				&ostate.logger
-				);
-
-			if (success)
-			{
-				SIMPLE_LOG_BLOCK(ostate.logger, flags::EVENT, "Unwrapped key data!");
-				FORMAT_HEX_BLOCK(ostate.logger, flags::EVENT, unwrapped.controlSessionKey, 18, 18);
-				FORMAT_HEX_BLOCK(ostate.logger, flags::EVENT, unwrapped.monitorSessionKey, 18, 18);
-				FORMAT_HEX_BLOCK(ostate.logger, flags::EVENT, unwrapped.keyStatusObject, 18, 18);
-			}
-			else
-			{
-				SIMPLE_LOG_BLOCK(ostate.logger, flags::EVENT, "Failed to unwrap key data!");
-			}			
+			FORMAT_LOG_BLOCK(ostate.logger, flags::WARN, "Ignoring session key change request for unknown user %u", change.user);
+			return;
 		}
-		else
+		
+		if (sstate.keyChangeState.GetLastKeyChangeUser().GetId() != user.GetId())
 		{
-			FORMAT_LOG_BLOCK(ostate.logger, flags::WARN, "Ignoring session key change request for user %u", change.user);
+			FORMAT_LOG_BLOCK(ostate.logger, flags::WARN, "No prior key change status for user %u", change.user);
+			return;
 		}
+
+
+		UnwrappedKeyData unwrapped;
+		KeyUnwrapBuffer buffer;
+
+		auto unwrapSuccess = buffer.Unwrap(
+			GetKeyWrapAlgo(*sstate.pCrypto, updateKeyType),
+			updateKey,
+			change.data,
+			unwrapped,
+			&ostate.logger
+		);
+
+		if (!unwrapSuccess)
+		{
+			SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "Failed to unwrap key data");
+			return;
+		}
+	
+		if (!sstate.keyChangeState.EqualsLastStatusResponse(unwrapped.keyStatusObject))
+		{
+			SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "Key change authentication failed");
+			return;
+		}		
+
+		SIMPLE_LOG_BLOCK(ostate.logger, flags::EVENT, "Key change authentication success");
 	}
 	
 	void OSecActions::ProcessRequestKeyStatus(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var4& status)
@@ -91,6 +94,7 @@ namespace secauthv5
 
 			auto success = sstate.keyChangeState.FormatKeyStatusResponse(
 				writer,
+				user,
 				hmacType,
 				ToKeyWrapAlgorithm(type),
 				keyStatus,
@@ -107,5 +111,16 @@ namespace secauthv5
 			// TODO  - the spec appears to just say "ignore users that don't exist". Confirm this.
 			FORMAT_LOG_BLOCK(ostate.logger, flags::WARN, "User %u does not exist", user.GetId());
 		}		
+	}
+
+	openpal::IKeyWrapAlgo& OSecActions::GetKeyWrapAlgo(openpal::ICryptoProvider& crypto, UpdateKeyType type)
+	{
+		switch (type)
+		{
+			case(UpdateKeyType::AES128) :
+				return crypto.GetAES128KeyWrap();
+			default:
+				return crypto.GetAES256KeyWrap();
+		}
 	}
 }

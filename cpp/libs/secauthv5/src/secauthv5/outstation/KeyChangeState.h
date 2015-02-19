@@ -29,6 +29,7 @@
 #include <opendnp3/app/APDUResponse.h>
 
 #include "secauthv5/AuthConstants.h"
+#include "secauthv5/User.h"
 
 namespace secauthv5
 {
@@ -42,6 +43,7 @@ class KeyChangeState
 	// Formats the key status response	
 	bool FormatKeyStatusResponse(
 		opendnp3::HeaderWriter& writer,
+		const User& user,
 		opendnp3::HMACType hmacType,
 		opendnp3::KeyWrapAlgorithm keyWrapAlgo,
 		opendnp3::KeyStatus status,		
@@ -52,9 +54,11 @@ class KeyChangeState
 	// of the last status response
 	bool EqualsLastStatusResponse(const openpal::ReadBufferView& object);
 
+	User GetLastKeyChangeUser() const  { return lastUser; }
+
 	private:
 
-	const uint16_t USER_NUM;
+	User lastUser;
 	uint16_t challengeSize;
 	openpal::Logger logger;
 	openpal::ICryptoProvider* pProvider;
