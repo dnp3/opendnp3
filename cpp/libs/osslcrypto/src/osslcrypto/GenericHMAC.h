@@ -34,6 +34,7 @@ namespace osslcrypto
 {
 	bool CalculateHMAC(
 		const EVP_MD* md,
+		uint32_t outputSize,
 		const openpal::ReadBufferView& key,
 		std::initializer_list<openpal::ReadBufferView> data, 
 		openpal::WriteBufferView& output

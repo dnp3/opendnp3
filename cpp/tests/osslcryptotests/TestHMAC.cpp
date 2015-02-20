@@ -45,6 +45,13 @@ void TestHMACSuccess(IHMACAlgo& algo, const openpal::ReadBufferView& key, const 
 	REQUIRE(resultStr == expected);
 }
 
+void TestInsufficientOutputSizeFails(IHMACAlgo& algo)
+{	
+	DynamicBuffer output(algo.OutputSize() - 1);
+	auto success = algo.Calculate(ReadBufferView(), { ReadBufferView() }, output.GetWriteBufferView());
+	REQUIRE(!success);
+}
+
 TEST_CASE(SUITE("SHA1-SHA256-SHORTKEY"))
 {		
 	/*
@@ -83,4 +90,11 @@ TEST_CASE(SUITE("SHA1-SHA256-LONGKEY"))
 
 	TestHMACSuccess(crypto.GetSHA1HMAC(), keyView, dataView, HMAC_SHA1);
 	TestHMACSuccess(crypto.GetSHA256HMAC(), keyView, dataView, HMAC_SHA256);
+}
+
+TEST_CASE(SUITE("InsufficientWriteBuffer"))
+{
+	CryptoProvider crypto;
+	TestInsufficientOutputSizeFails(crypto.GetSHA1HMAC());
+	TestInsufficientOutputSizeFails(crypto.GetSHA256HMAC());	
 }

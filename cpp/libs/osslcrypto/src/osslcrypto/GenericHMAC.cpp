@@ -25,11 +25,17 @@ namespace osslcrypto
 {
 	bool CalculateHMAC(
 		const EVP_MD* md,
+		uint32_t outputSize,
 		const openpal::ReadBufferView& key,
 		std::initializer_list<openpal::ReadBufferView> data,
 		openpal::WriteBufferView& output
 		)
 	{
+		if (output.Size() < outputSize)
+		{
+			return false;
+		}
+
 		HMAC_CTX ctx;
 		HMAC_CTX_init(&ctx);
 
@@ -46,7 +52,7 @@ namespace osslcrypto
 			}
 		}
 
-		auto length = output.Size();
+		unsigned int length = 0;
 		if (HMAC_Final(&ctx, output, &length) == 0)
 		{
 			return false;

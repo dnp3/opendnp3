@@ -29,7 +29,7 @@ namespace osslcrypto
 {
 	bool SHA256HMAC::Calculate(const ReadBufferView& key, std::initializer_list<ReadBufferView> data, WriteBufferView& output)
 	{
-		return CalculateHMAC(EVP_sha256(), key, data, output);
+		return CalculateHMAC(EVP_sha256(), OUTPUT_SIZE, key, data, output);
 	}
 
 }
