@@ -35,11 +35,16 @@ namespace secauthv5
 	{
 		public:
 			HMACProvider(openpal::ICryptoProvider& provider, HMACMode mode);
+			
+			opendnp3::HMACType GetType() const;
+			
+			openpal::ReadBufferView Compute(std::initializer_list<openpal::ReadBufferView> buffers);
 
 		private:
 
 			static std::unique_ptr<openpal::IHashProvider> GetHash(openpal::ICryptoProvider& provider, HMACMode mode);
 
+			HMACMode mode;
 			std::unique_ptr<openpal::IHashProvider> hash;
 			const uint32_t TRUNC_SIZE;
 			openpal::StaticBuffer<AuthConstants::MAX_HMAC_OUTPUT_SIZE> buffer;

@@ -35,14 +35,30 @@ namespace secauthv5
 		}
 	}
 
-	HMACProvider::HMACProvider(openpal::ICryptoProvider& provider, HMACMode mode) :
-		hash(GetHash(provider, mode)),
-		TRUNC_SIZE(GetTruncationSize(mode))
+	HMACProvider::HMACProvider(openpal::ICryptoProvider& provider, HMACMode mode_) :
+		mode(mode_),
+		hash(GetHash(provider, mode_)),
+		TRUNC_SIZE(GetTruncationSize(mode_))
 	{
 	
 	}
 
+	opendnp3::HMACType HMACProvider::GetType() const
+	{
+		return ToHMACType(mode);
+	}	
 
+	openpal::ReadBufferView HMACProvider::Compute(std::initializer_list<openpal::ReadBufferView> buffers)
+	{
+		hash->Init();
+		for (auto& bytes : buffers)
+		{
+			hash->Add(bytes);
+		}
+		auto dest = buffer.GetWriteBuffer();
+		hash->Complete(dest);
+		return buffer.ToReadOnly(TRUNC_SIZE);
+	}
 }
 
 
