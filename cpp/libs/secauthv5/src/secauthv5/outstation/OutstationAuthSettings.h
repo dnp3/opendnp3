@@ -23,6 +23,8 @@
 
 #include <opendnp3/outstation/OutstationParams.h>
 
+#include "secauthv5/HMACMode.h"
+
 namespace secauthv5
 {
 
@@ -36,6 +38,8 @@ struct OutstationAuthSettings
 	uint32_t maxRxASDUSize;
 	uint32_t maxTxASDUSize;	
 	uint16_t assocId;
+	HMACMode hmacMode;
+
 };
 
 }

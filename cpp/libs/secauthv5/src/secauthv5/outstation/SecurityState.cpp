@@ -36,6 +36,7 @@ namespace secauthv5
 			openpal::ICryptoProvider& crypto) :
 
 		settings(settings_),
+		hmac(crypto, settings_.hmacMode),
 		deferred(settings_.maxRxASDUSize),
 		pExecutor(&executor),
 		pTimeSource(&timeSource),

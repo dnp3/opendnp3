@@ -100,7 +100,7 @@ namespace secauthv5
 			rsp.SetFunction(FunctionCode::AUTH_RESPONSE);
 			rsp.SetControl(header.control);
 			auto writer = rsp.GetWriter();
-			auto hmacType = (keyStatus == KeyStatus::NOT_INIT) ? HMACType::NO_MAC_VALUE : HMACType::HMAC_SHA1_TRUNC_10; // TODO from configuration
+			auto hmacType = (keyStatus == KeyStatus::NOT_INIT) ? HMACType::NO_MAC_VALUE : sstate.hmac.GetType();
 
 			auto success = sstate.keyChangeState.FormatKeyStatusResponse(
 				writer,

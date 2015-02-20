@@ -30,10 +30,12 @@
 #include <openpal/executor/IUTCTimeSource.h>
 
 #include "secauthv5/IUserDatabase.h"
+#include "secauthv5/HMACProvider.h"
 
 #include "KeyChangeState.h"
 #include "OutstationAuthSettings.h"
 #include "SessionStore.h"
+
 
 namespace secauthv5
 {
@@ -56,6 +58,7 @@ class SecurityState
 	void Reset();
 	
 	const OutstationAuthSettings settings;
+	HMACProvider hmac;
 	opendnp3::DeferredRequest deferred;
 	openpal::IExecutor* pExecutor;
 	openpal::IUTCTimeSource* pTimeSource;
