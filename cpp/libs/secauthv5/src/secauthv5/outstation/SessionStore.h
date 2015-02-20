@@ -33,18 +33,17 @@
 
 namespace secauthv5
 {
-	// models the state of a session for a particular user
-	class SessionState
+	// All the info for a session
+	class Session
 	{
 		public:
 
-		SessionState();
+		Session();
 
 		opendnp3::KeyStatus status;
 		SessionKeys keys;
 		openpal::MonotonicTimestamp expirationTime;
-		uint32_t authCount;
-		uint32_t authCountMax;
+		uint32_t authCount;		
 		openpal::ReadBufferView lastKeyUpdateHMAC;
 
 		private:
@@ -62,6 +61,8 @@ namespace secauthv5
 			IUserDatabase& userdb
 		);
 
+		void SetSessionKeys(const User& user, const SessionKeysView& view, const openpal::ReadBufferView& keyUpdateHMAC);
+
 		// Session keys are only set if KeyStatus == OK
 		opendnp3::KeyStatus GetSessionKeys(const User& user, SessionKeysView& view);
 		
@@ -73,13 +74,19 @@ namespace secauthv5
 
 		private:
 
-		opendnp3::KeyStatus CheckTimeValidity(SessionState& state);
+		// TODO - make these configurable and change them
+		static const uint32_t AUTH_COUNT_MAX = 100;
+		static const uint8_t SESSION_KEY_EXP_MINUTES = 10;
 
-		opendnp3::KeyStatus IncrementAuthCount(SessionState& state);
+		opendnp3::KeyStatus CheckTimeValidity(Session& session);
+
+		opendnp3::KeyStatus IncrementAuthCount(Session& session);
+
+		void ConfigureSession(Session& session, const SessionKeysView& view, const openpal::ReadBufferView& keyUpdateHMAC);
 
 		openpal::IMonotonicTimeSource* pTimeSource;
 
-		std::map<uint16_t, std::unique_ptr<SessionState>> sessionMap;
+		std::map<uint16_t, std::unique_ptr<Session>> sessionMap;
 	};
 }
 

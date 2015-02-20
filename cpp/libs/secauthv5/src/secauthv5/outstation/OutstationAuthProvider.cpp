@@ -61,9 +61,9 @@ void OutstationAuthProvider::CheckState(OState& ostate)
 {
 	if (ostate.CanTransmit() && sstate.deferred.IsSet())
 	{
-		auto handler = [&ostate, this](const APDUHeader& header, const ReadBufferView& objects)
+		auto handler = [&ostate, this](const openpal::ReadBufferView& fragment, const APDUHeader& header, const ReadBufferView& objects)
 		{
-			this->Process(ostate, header, objects);
+			this->Process(ostate, fragment, header, objects);
 			return true;
 		};
 
@@ -71,25 +71,25 @@ void OutstationAuthProvider::CheckState(OState& ostate)
 	}	
 }
 		
-void OutstationAuthProvider::OnReceive(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
+void OutstationAuthProvider::OnReceive(OState& ostate, const openpal::ReadBufferView& fragment, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {	
 	if (ostate.CanTransmit())
 	{
-		this->Process(ostate, header, objects);		
+		this->Process(ostate, fragment, header, objects);		
 	}
 	else
 	{
-		sstate.deferred.Set(header, objects);
+		sstate.deferred.SetASDU(header, fragment);
 	}
 }
 
-void OutstationAuthProvider::Process(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
+void OutstationAuthProvider::Process(OState& ostate, const openpal::ReadBufferView& fragment, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
 	// examine the function code to determine what kind of ASDU it is
 	switch (header.function)
 	{
 		case(FunctionCode::AUTH_REQUEST) :
-			this->OnAuthRequest(ostate, header, objects);
+			this->OnAuthRequest(ostate, fragment, header, objects);
 			break;
 		case(FunctionCode::AUTH_RESPONSE) :
 			SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "AuthResponse not valid for outstation");
@@ -103,7 +103,7 @@ void OutstationAuthProvider::Process(OState& ostate, const APDUHeader& header, c
 	}
 }
 
-void OutstationAuthProvider::OnAuthRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
+void OutstationAuthProvider::OnAuthRequest(OState& ostate, const openpal::ReadBufferView& fragment, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
 	if (header.control.UNS)
 	{
@@ -111,7 +111,7 @@ void OutstationAuthProvider::OnAuthRequest(OState& ostate, const APDUHeader& hea
 	}
 	else
 	{
-		AuthRequestHandler handler(header, ostate, *this);
+		AuthRequestHandler handler(fragment, header, ostate, *this);
 		APDUParser::ParseSome(objects, handler, AuthRequestHandler::WhiteList, &ostate.logger);
 	}
 }
@@ -121,26 +121,26 @@ void OutstationAuthProvider::OnRegularRequest(OState& ostate, const APDUHeader& 
 	sstate.pState = sstate.pState->OnRegularRequest(sstate, ostate, header, objects);
 }
 
-void OutstationAuthProvider::OnAuthChallenge(OState& ostate, const APDUHeader& header, const Group120Var1& challenge)
+void OutstationAuthProvider::OnAuthChallenge(OState& ostate, const openpal::ReadBufferView& fragment, const APDUHeader& header, const Group120Var1& challenge)
 {	
 	sstate.pState = sstate.pState->OnAuthChallenge(sstate, ostate, header, challenge);
 }
 
-void OutstationAuthProvider::OnAuthReply(OState& ostate, const APDUHeader& header, const Group120Var2& reply)
+void OutstationAuthProvider::OnAuthReply(OState& ostate, const openpal::ReadBufferView& fragment, const APDUHeader& header, const Group120Var2& reply)
 {	
 	sstate.pState = sstate.pState->OnAuthReply(sstate, ostate, header, reply);
 }
 
-void OutstationAuthProvider::OnRequestKeyStatus(OState& ostate, const APDUHeader& header, const Group120Var4& status)
+void OutstationAuthProvider::OnRequestKeyStatus(OState& ostate, const openpal::ReadBufferView& fragment, const APDUHeader& header, const Group120Var4& status)
 {	
 	// TODO - Where to alert for max key request? Probably here
 
 	sstate.pState = sstate.pState->OnRequestKeyStatus(sstate, ostate, header, status);	
 }
 
-void OutstationAuthProvider::OnChangeSessionKeys(OState& ostate, const APDUHeader& header, const Group120Var6& change)
+void OutstationAuthProvider::OnChangeSessionKeys(OState& ostate, const openpal::ReadBufferView& fragment, const APDUHeader& header, const Group120Var6& change)
 {
-	sstate.pState = sstate.pState->OnChangeSessionKeys(sstate, ostate, header, change);	
+	sstate.pState = sstate.pState->OnChangeSessionKeys(sstate, ostate, fragment, header, change);	
 }
 
 }

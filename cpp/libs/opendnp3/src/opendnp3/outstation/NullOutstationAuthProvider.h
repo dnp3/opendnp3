@@ -40,7 +40,7 @@ class NullOutstationAuthProvider : private openpal::Uncopyable, public IOutstati
 
 	virtual void CheckState(OState& ostate) override final {}
 		
-	virtual void OnReceive(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects) override final;		
+	virtual void OnReceive(OState& ostate, const openpal::ReadBufferView& fragment, const APDUHeader& header, const openpal::ReadBufferView& objects) override final;
 };
 
 class NullOutstationAuthFactory : private openpal::Uncopyable, public IOutstationAuthFactory

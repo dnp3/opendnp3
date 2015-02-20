@@ -19,39 +19,36 @@
  * to you under the terms of the License.
  */
 
-#ifndef OPENDNP3_IOUTSTATIONAUTHPROVIDER_H
-#define OPENDNP3_IOUTSTATIONAUTHPROVIDER_H
+#include "DeferredASDU.h"
 
-#include "opendnp3/app/APDUHeader.h"
-#include <openpal/container/ReadBufferView.h>
+using namespace openpal;
+using namespace opendnp3;
 
-#include <memory>
 
-namespace opendnp3
+namespace secauthv5
 {
 
-class OState;
+DeferredASDU::DeferredASDU(uint32_t maxAPDUSize) : isSet(false), buffer(maxAPDUSize)
+{}
 
-///
-/// @summary Interface used inside the outstation to provide multiple forms of authentication like NULL or SAv5
-///
-class IOutstationAuthProvider
+void DeferredASDU::Reset()
 {
-	public:
+	isSet = false;
+}
 
-	virtual ~IOutstationAuthProvider() {}
+bool DeferredASDU::IsSet() const
+{
+	return isSet;
+}
 
-	/// Reset the state of the auth provider when lower layer goes offline
-	virtual void Reset() = 0;	
-
-	/// See if any progress can be made
-	virtual void CheckState(OState& ostate) = 0;
-
-	/// Receive a new request
-	virtual void OnReceive(OState& ostate, const openpal::ReadBufferView& fragment, const APDUHeader& header, const openpal::ReadBufferView& objects) = 0;
-
-};
+void DeferredASDU::SetASDU(APDUHeader header_, openpal::ReadBufferView asdu_)
+{
+	this->isSet = true;
+	this->header = header_;
+	auto dest = buffer.GetWriteBufferView();
+	this->asdu = asdu_.CopyTo(dest);	
+}
 
 }
 
-#endif
+

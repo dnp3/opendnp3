@@ -22,7 +22,6 @@
 #define SECAUTHV5_SECURITYSTATE_H
 
 #include <opendnp3/gen/KeyStatus.h>
-#include <opendnp3/outstation/DeferredRequest.h>
 #include <opendnp3/outstation/TxBuffer.h>
 
 #include <openpal/executor/IExecutor.h>
@@ -31,6 +30,7 @@
 
 #include "secauthv5/IUserDatabase.h"
 #include "secauthv5/HMACProvider.h"
+#include "secauthv5/DeferredASDU.h"
 
 #include "KeyChangeState.h"
 #include "OutstationAuthSettings.h"
@@ -59,7 +59,7 @@ class SecurityState
 	
 	const OutstationAuthSettings settings;
 	HMACProvider hmac;
-	opendnp3::DeferredRequest deferred;
+	DeferredASDU deferred;
 	openpal::IExecutor* pExecutor;
 	openpal::IUTCTimeSource* pTimeSource;
 	IUserDatabase* pUserDatabase;

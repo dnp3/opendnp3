@@ -81,7 +81,7 @@ void OActions::OnReceiveAPDU(OState& ostate, const openpal::ReadBufferView& apdu
 		if (header.control.IsFirAndFin() && !header.control.CON)
 		{
 			auto objects = apdu.Skip(APDU_REQUEST_HEADER_SIZE);
-			ostate.pAuthProvider->OnReceive(ostate, header, objects);			
+			ostate.pAuthProvider->OnReceive(ostate, apdu, header, objects);			
 		}
 		else
 		{

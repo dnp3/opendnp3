@@ -59,9 +59,9 @@ namespace secauthv5
 		return this;
 	}
 
-	IOAuthState* OAuthStateIdle::OnChangeSessionKeys(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change)
+	IOAuthState* OAuthStateIdle::OnChangeSessionKeys(SecurityState& sstate, opendnp3::OState& ostate, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change)
 	{
-		OSecActions::ProcessChangeSessionKeys(sstate, ostate, header, change);		
+		OSecActions::ProcessChangeSessionKeys(sstate, ostate, fragment, header, change);		
 		return this;
 	}
 
@@ -89,7 +89,7 @@ namespace secauthv5
 		return this->IgnoreRequestKeyStatus(sstate, ostate, header, status);
 	}
 
-	IOAuthState* OAuthStateWaitForReply::OnChangeSessionKeys(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change)
+	IOAuthState* OAuthStateWaitForReply::OnChangeSessionKeys(SecurityState& sstate, opendnp3::OState& ostate, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change)
 	{
 		return this->IgnoreChangeSessionKeys(sstate, ostate, header, change);
 	}

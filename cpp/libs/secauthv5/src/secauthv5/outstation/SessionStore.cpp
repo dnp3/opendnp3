@@ -26,10 +26,9 @@ using namespace openpal;
 
 namespace secauthv5
 {
-	SessionState::SessionState() :
+	Session::Session() :
 		status(KeyStatus::NOT_INIT),
-		authCount(0),
-		authCountMax(0)
+		authCount(0)
 	{}		
 	
 	SessionStore::SessionStore(
@@ -41,7 +40,7 @@ namespace secauthv5
 		
 		auto addUser = [this](User user) 
 		{
-			sessionMap[user.GetId()] = std::make_unique<SessionState>();
+			sessionMap[user.GetId()] = std::make_unique<Session>();
 		};
 
 		userdb.EnumerateUsers(addUser);
@@ -58,6 +57,15 @@ namespace secauthv5
 		{
 			return this->IncrementAuthCount(*iter->second);
 		}
+	}
+
+	void SessionStore::SetSessionKeys(const User& user, const SessionKeysView& view, const openpal::ReadBufferView& keyUpdateHMAC)
+	{
+		auto iter = sessionMap.find(user.GetId());
+		if (iter != sessionMap.end())
+		{
+			this->ConfigureSession(*iter->second, view, keyUpdateHMAC);
+		}		
 	}
 
 	opendnp3::KeyStatus SessionStore::GetSessionKeys(const User& user, SessionKeysView& view)
@@ -98,31 +106,40 @@ namespace secauthv5
 		}
 	}
 
-	opendnp3::KeyStatus SessionStore::CheckTimeValidity(SessionState& state)
+	void SessionStore::ConfigureSession(Session& session, const SessionKeysView& view, const ReadBufferView& keyUpdateHMAC)
 	{
-		if (state.status == KeyStatus::OK)
-		{
-			if (state.expirationTime < pTimeSource->GetTime())
-			{
-				state.status = KeyStatus::COMM_FAIL;
-			}
-		}
-
-		return state.status;
+		session.authCount = 0;
+		session.expirationTime = pTimeSource->GetTime().Add(TimeDuration::Minutes(SESSION_KEY_EXP_MINUTES));
+		session.keys.SetKeys(view);
+		session.lastKeyUpdateHMAC = keyUpdateHMAC;
+		session.status = KeyStatus::OK;
 	}
 
-	opendnp3::KeyStatus SessionStore::IncrementAuthCount(SessionState& state)
+	opendnp3::KeyStatus SessionStore::CheckTimeValidity(Session& session)
 	{
-		if (state.status == KeyStatus::OK)
+		if (session.status == KeyStatus::OK)
 		{
-			++state.authCount;
-			if (state.authCount > state.authCountMax)
+			if (session.expirationTime < pTimeSource->GetTime())
 			{
-				state.status = KeyStatus::COMM_FAIL;
+				session.status = KeyStatus::COMM_FAIL;
 			}
 		}
 
-		return state.status;
+		return session.status;
+	}
+
+	opendnp3::KeyStatus SessionStore::IncrementAuthCount(Session& session)
+	{
+		if (session.status == KeyStatus::OK)
+		{
+			++session.authCount;
+			if (session.authCount > AUTH_COUNT_MAX)
+			{
+				session.status = KeyStatus::COMM_FAIL;
+			}
+		}
+
+		return session.status;
 	}
 }
 

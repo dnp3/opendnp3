@@ -30,8 +30,9 @@ namespace secauthv5
 {
 
 
-AuthRequestHandler::AuthRequestHandler(const APDUHeader& header_, OState& ostate, IAuthRequestHandler& handler) :
+AuthRequestHandler::AuthRequestHandler(const openpal::ReadBufferView& fragment_, const APDUHeader& header_, OState& ostate, IAuthRequestHandler& handler) :
 	APDUHandlerBase(ostate.logger),
+	fragment(fragment_),
 	header(header_),
 	pOState(&ostate),
 	pHandler(&handler)
@@ -64,19 +65,19 @@ bool AuthRequestHandler::WhiteList(uint32_t count, GroupVariation gv, QualifierC
 
 IINField AuthRequestHandler::ProcessFreeFormat(const HeaderRecord& record, const Group120Var1& value)
 {
-	pHandler->OnAuthChallenge(*pOState, header, value);
+	pHandler->OnAuthChallenge(*pOState, fragment, header, value);
 	return IINField::Empty();
 }
 
 IINField AuthRequestHandler::ProcessFreeFormat(const HeaderRecord& record, const Group120Var2& value)
 {
-	pHandler->OnAuthReply(*pOState, header, value);
+	pHandler->OnAuthReply(*pOState, fragment, header, value);
 	return IINField::Empty();
 }
 
 IINField AuthRequestHandler::ProcessFreeFormat(const HeaderRecord& record, const Group120Var6& value)
 {
-	pHandler->OnChangeSessionKeys(*pOState, header, value);
+	pHandler->OnChangeSessionKeys(*pOState, fragment, header, value);
 	return IINField::Empty();
 }
 
@@ -85,7 +86,7 @@ IINField AuthRequestHandler::ProcessCountOf(const HeaderRecord& record, const It
 	Group120Var4 single;
 	if (values.ReadOnlyValue(single))
 	{
-		pHandler->OnRequestKeyStatus(*pOState, header, single);
+		pHandler->OnRequestKeyStatus(*pOState, fragment, header, single);
 		return IINField::Empty();
 	}
 	else

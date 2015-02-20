@@ -27,7 +27,7 @@
 namespace opendnp3
 {
 
-void NullOutstationAuthProvider::OnReceive(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
+void NullOutstationAuthProvider::OnReceive(OState& ostate, const openpal::ReadBufferView& fragment, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {
 	// null auth provider just skips any authentication and goes directly to processing
 	OActions::ProcessHeaderAndObjects(ostate, header, objects);

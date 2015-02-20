@@ -18,45 +18,60 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTHV5_OSECACTIONS_H
-#define SECAUTHV5_OSECACTIONS_H
 
+#ifndef SECAUTHV5_DEFERREDASDU_H
+#define SECAUTHV5_DEFERREDASDU_H
+
+#include <opendnp3/app/APDUHeader.h>
+
+#include <openpal/container/DynamicBuffer.h>
 #include <openpal/util/Uncopyable.h>
-
-#include <opendnp3/outstation/OutstationState.h>
-
-#include <opendnp3/objects/Group120.h>
-#include <opendnp3/objects/Group120Var6.h>
-
-#include <opendnp3/gen/AuthErrorCode.h>
-
-#include "SecurityState.h"
 
 namespace secauthv5
 {
-	class OSecActions : private openpal::PureStatic
-	{
-		public:
-			
-			static void ProcessChangeSessionKeys(SecurityState& sstate, opendnp3::OState& ostate, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change);
-			static void ProcessRequestKeyStatus(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var4& status);
-			
 
-		private:
-		
-			static openpal::IKeyWrapAlgo& GetKeyWrapAlgo(openpal::ICryptoProvider& crypto, UpdateKeyMode type);
+class DeferredASDU : private openpal::Uncopyable
+{
 
-			static void RespondWithAuthError(
-				const opendnp3::APDUHeader& header,
-				SecurityState& sstate,
-				opendnp3::OState& ostate,
-				uint32_t seqNum,
-				const User& user,
-				opendnp3::AuthErrorCode code
-			);
-	};
+	public:	
 
+	DeferredASDU(uint32_t maxAPDUSize);
+
+	void Reset();
+
+	bool IsSet() const;	
+
+	void SetASDU(opendnp3::APDUHeader header, openpal::ReadBufferView asdu);
 	
+	template <class Handler>
+	bool Process(const Handler& handler);
+	
+	private:
+
+	DeferredASDU() = delete;
+
+	bool isSet;	
+	opendnp3::APDUHeader header;
+	openpal::ReadBufferView asdu;
+	openpal::DynamicBuffer buffer;
+	
+};
+
+template <class Handler>
+bool DeferredASDU::Process(const Handler& handler)
+{
+	if (isSet)
+	{
+		bool processed = handler(asdu, header, asdu.Skip(opendnp3::APDU_REQUEST_HEADER_SIZE));
+		isSet = !processed;
+		return processed;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 }
 
 #endif

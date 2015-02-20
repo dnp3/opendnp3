@@ -33,7 +33,7 @@ using namespace opendnp3;
 
 namespace secauthv5
 {
-	void OSecActions::ProcessChangeSessionKeys(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change)
+	void OSecActions::ProcessChangeSessionKeys(SecurityState& sstate, opendnp3::OState& ostate, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change)
 	{
 		User user(change.user);		
 
@@ -81,8 +81,8 @@ namespace secauthv5
 		}		
 
 		// At this point, we've successfully authenticated the session key change for this user
-		// We now need to produce an HMAC value based on the full ASDU and the monitoring direction session key
-		
+		// We compute the HMAC based on the full ASDU and the monitoring direction session key
+		auto hmac = sstate.hmac.Compute({fragment, unwrapped.monitorSessionKey});
 		
 
 	}
