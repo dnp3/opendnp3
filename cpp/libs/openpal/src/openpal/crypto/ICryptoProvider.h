@@ -21,10 +21,8 @@
 #ifndef OPENPAL_ICRYPTOPROVIDER_H
 #define OPENPAL_ICRYPTOPROVIDER_H
 
-#include "IHashProvider.h"
+#include "IHMACAlgo.h"
 #include "IKeyWrapAlgo.h"
-
-#include <memory>
 
 
 namespace openpal
@@ -44,27 +42,16 @@ namespace openpal
 		 * @return true if the specified buffer can be completely filled with secure random numbers	     		 
 		*/
 		virtual bool GetSecureRandom(WriteBufferView& buffer) = 0;
+
+		/// --- Getters for HMAC algorithms ----
+
+		virtual IHMACAlgo& GetSHA1HMAC() = 0;
+		virtual IHMACAlgo& GetSHA256HMAC() = 0;
 		
 		/// --- Getters for key wrap algorithms ----
 
 		virtual IKeyWrapAlgo& GetAES256KeyWrap() = 0;
-		virtual IKeyWrapAlgo& GetAES128KeyWrap() = 0;
-
-		/// --- Functions related to SHA1 ----
-
-		// Dynamically creates a provider that can incrementally calculate a SHA1 hash
-		virtual std::unique_ptr<IHashProvider> CreateSHA1Provider() = 0;
-
-		// Calculates a SHA1 hash out in single input buffer
-		virtual bool CalcSHA1(const ReadBufferView& input, WriteBufferView& output) = 0;
-
-		/// --- Functions related to SHA256 ----
-
-		// Dynamically creates a provider that can incrementally calculate a SHA256 hash
-		virtual std::unique_ptr<IHashProvider> CreateSHA256Provider() = 0;
-
-		// Calculates a SHA1 hash out in single input buffer
-		virtual bool CalcSHA256(const ReadBufferView& input, WriteBufferView& output) = 0;
+		virtual IKeyWrapAlgo& GetAES128KeyWrap() = 0;		
 	};
 
 }

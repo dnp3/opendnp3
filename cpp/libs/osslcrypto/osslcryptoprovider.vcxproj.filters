@@ -14,13 +14,16 @@
     <ClInclude Include="src\osslcrypto\CryptoProvider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\osslcrypto\SHA1HashProvider.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\osslcrypto\SHA256HashProvider.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\osslcrypto\AESKeyWrap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\osslcrypto\SHA1HMAC.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\osslcrypto\SHA256HMAC.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\osslcrypto\GenericHMAC.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -28,13 +31,16 @@
     <ClCompile Include="src\osslcrypto\CryptoProvider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\osslcrypto\SHA1HashProvider.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\osslcrypto\SHA256HashProvider.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\osslcrypto\AESKeyWrap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\osslcrypto\SHA1HMAC.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\osslcrypto\SHA256HMAC.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\osslcrypto\GenericHMAC.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

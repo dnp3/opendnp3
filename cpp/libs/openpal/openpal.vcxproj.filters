@@ -193,9 +193,6 @@
     <ClInclude Include="src\openpal\crypto\MockCryptoProvider.h">
       <Filter>Header\crypto</Filter>
     </ClInclude>
-    <ClInclude Include="src\openpal\crypto\IHashProvider.h">
-      <Filter>Header\crypto</Filter>
-    </ClInclude>
     <ClInclude Include="src\openpal\crypto\SecureCompare.h">
       <Filter>Header\crypto</Filter>
     </ClInclude>
@@ -207,6 +204,9 @@
     </ClInclude>
     <ClInclude Include="src\openpal\executor\IMonotonicTimeSource.h">
       <Filter>Header\executor</Filter>
+    </ClInclude>
+    <ClInclude Include="src\openpal\crypto\IHMACAlgo.h">
+      <Filter>Header\crypto</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

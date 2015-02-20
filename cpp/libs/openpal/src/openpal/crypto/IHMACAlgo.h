@@ -18,33 +18,36 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENPAL_IHASHPROVIDER_H
-#define OPENPAL_IHASHPROVIDER_H
+#ifndef OPENPAL_IHMACALGO_H
+#define OPENPAL_IHMACALGO_H
 
 #include <openpal/container/ReadBufferView.h>
 #include <openpal/container/WriteBufferView.h>
 
+#include <initializer_list>
+
 namespace openpal
 {
 	/**
-	* Provides an abstract interface to a hashing algorithm
+	* Provides an abstract interface to an HMAC algorithm
 	*/
-	class IHashProvider
+	class IHMACAlgo
 	{
 	public:
-		virtual ~IHashProvider() {}
+		virtual ~IHMACAlgo() {}
 
 		// Describes the required output size
-		virtual uint16_t OutputSizeInBytes() const = 0;
+		virtual uint16_t OutputSize() const = 0;
 
-		// Called to reset the state of the provider
-		virtual bool Init() = 0;
+		// Calculate the HMAC value, writing the result into 'output'
+		// return true if successful, false otherwise
+		virtual bool Calculate(
+			const ReadBufferView& key,
+			std::initializer_list<ReadBufferView> data,
+			WriteBufferView& output
+		) = 0;
 
-		// Add the buffer to the running hash calculation
-		virtual bool Add(const ReadBufferView& input) = 0;
 
-		// copy the digest into the output buffer and reset the state
-		virtual bool Complete(WriteBufferView& output) = 0;
 	};
 }
 

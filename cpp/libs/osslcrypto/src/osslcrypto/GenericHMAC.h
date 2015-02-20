@@ -19,40 +19,25 @@
 * to you under the terms of the License.
 */
 
-#ifndef OSSLCRYPTO_SHA256HASHPROVIDER_H
-#define OSSLCRYPTO_SHA256HASHPROVIDER_H
+#ifndef OSSLCRYPTO_GENERICHMAC_H
+#define OSSLCRYPTO_GENERICHMAC_H
 
-#include <openpal/crypto/ICryptoProvider.h>
-#include <openpal/util/Uncopyable.h>
+#include <openpal/container/ReadBufferView.h>
+#include <openpal/container/WriteBufferView.h>
 
-#include <openssl/sha.h>
+#include <initializer_list>
+
+#include <openssl/hmac.h>
 
 
 namespace osslcrypto
 {
-
-	class SHA256HashProvider : public openpal::IHashProvider, private openpal::Uncopyable
-	{
-		public:
-
-		static const uint16_t OUTPUT_SIZE = 32;
-		static bool CalcHash(const openpal::ReadBufferView& input, openpal::WriteBufferView& output);
-
-		virtual uint16_t OutputSizeInBytes() const override final { return OUTPUT_SIZE; }
-
-		// Called to reset the state of the provider
-		virtual bool Init() override final;
-
-		// Add the buffer to the running hash calculation
-		virtual bool Add(const openpal::ReadBufferView& input) override final;
-
-		// copy the digest into the output buffer and reset the state
-		virtual bool Complete(openpal::WriteBufferView& output) override final;
-
-		private:
-		
-		SHA256_CTX ctx;
-	};
+	bool CalculateHMAC(
+		const EVP_MD* md,
+		const openpal::ReadBufferView& key,
+		std::initializer_list<openpal::ReadBufferView> data, 
+		openpal::WriteBufferView& output
+	);
 }
 
 #endif

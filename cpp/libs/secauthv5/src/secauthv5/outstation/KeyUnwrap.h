@@ -31,6 +31,7 @@
 #include <opendnp3/objects/Group120Var6.h>
 
 #include "secauthv5/AuthConstants.h"
+#include "secauthv5/SessionKeysView.h"
 
 
 
@@ -40,10 +41,8 @@ namespace secauthv5
 	class UnwrappedKeyData
 	{
 	public:
-		openpal::ReadBufferView controlSessionKey;
-		openpal::ReadBufferView monitorSessionKey;
-		openpal::ReadBufferView keyStatusObject;
-		bool isValid;
+		SessionKeysView keys;
+		openpal::ReadBufferView keyStatusObject;			
 	};
 
 	class KeyUnwrapBuffer

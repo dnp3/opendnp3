@@ -172,7 +172,7 @@
     <ClCompile Include="CatchTestStart.cpp" />
     <ClCompile Include="TestAESKeyWrap.cpp" />
     <ClCompile Include="TestSecureRandom.cpp" />
-    <ClCompile Include="TestSHA.cpp" />
+    <ClCompile Include="TestHMAC.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\libs\openpal\openpal.vcxproj">

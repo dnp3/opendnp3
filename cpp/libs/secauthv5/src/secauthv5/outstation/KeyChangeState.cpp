@@ -96,4 +96,21 @@ namespace secauthv5
 		}
 	}
 
+	bool KeyChangeState::CheckUserAndKSQMatches(const User& user, uint32_t keyChangeSeq)
+	{
+		if (lastUser.GetId() != user.GetId())
+		{
+			FORMAT_LOG_BLOCK(logger, flags::WARN, "No prior key change status for user %u", user.GetId());
+			return false;
+		}
+
+		if (keyChangeSeqNum != keyChangeSeq)
+		{
+			FORMAT_LOG_BLOCK(logger, flags::WARN, "KSQ of %u doesn't match expected KSQ of %u", keyChangeSeq, keyChangeSeqNum);
+			return false;
+		}
+			
+		return true;
+	}
+
 }

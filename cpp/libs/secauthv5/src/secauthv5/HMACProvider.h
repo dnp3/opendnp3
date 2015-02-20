@@ -38,14 +38,14 @@ namespace secauthv5
 			
 			opendnp3::HMACType GetType() const;
 			
-			openpal::ReadBufferView Compute(std::initializer_list<openpal::ReadBufferView> buffers);
+			openpal::ReadBufferView Compute(const openpal::ReadBufferView& key, std::initializer_list<openpal::ReadBufferView> buffers);
 
 		private:
 
-			static std::unique_ptr<openpal::IHashProvider> GetHash(openpal::ICryptoProvider& provider, HMACMode mode);
+			static openpal::IHMACAlgo& GetHMAC(openpal::ICryptoProvider& provider, HMACMode mode);
 
 			HMACMode mode;
-			std::unique_ptr<openpal::IHashProvider> hash;
+			openpal::IHMACAlgo* pHMAC;
 			const uint32_t TRUNC_SIZE;
 			openpal::StaticBuffer<AuthConstants::MAX_HMAC_OUTPUT_SIZE> buffer;
 	};

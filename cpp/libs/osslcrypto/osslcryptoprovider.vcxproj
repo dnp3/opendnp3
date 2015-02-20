@@ -21,14 +21,16 @@
   <ItemGroup>
     <ClInclude Include="src\osslcrypto\AESKeyWrap.h" />
     <ClInclude Include="src\osslcrypto\CryptoProvider.h" />
-    <ClInclude Include="src\osslcrypto\SHA1HashProvider.h" />
-    <ClInclude Include="src\osslcrypto\SHA256HashProvider.h" />
+    <ClInclude Include="src\osslcrypto\GenericHMAC.h" />
+    <ClInclude Include="src\osslcrypto\SHA1HMAC.h" />
+    <ClInclude Include="src\osslcrypto\SHA256HMAC.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\osslcrypto\AESKeyWrap.cpp" />
     <ClCompile Include="src\osslcrypto\CryptoProvider.cpp" />
-    <ClCompile Include="src\osslcrypto\SHA1HashProvider.cpp" />
-    <ClCompile Include="src\osslcrypto\SHA256HashProvider.cpp" />
+    <ClCompile Include="src\osslcrypto\GenericHMAC.cpp" />
+    <ClCompile Include="src\osslcrypto\SHA1HMAC.cpp" />
+    <ClCompile Include="src\osslcrypto\SHA256HMAC.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{6571DD15-D2F7-4D3F-A580-FDC5E55B2844}</ProjectGuid>

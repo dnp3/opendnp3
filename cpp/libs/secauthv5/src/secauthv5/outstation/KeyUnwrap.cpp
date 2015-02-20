@@ -66,11 +66,13 @@ namespace secauthv5
 			return false;
 		}
 
-		output.controlSessionKey = unwrapped.Take(keyLength);
+		auto controlKey = unwrapped.Take(keyLength);
 		unwrapped.Advance(keyLength);
 
-		output.monitorSessionKey = unwrapped.Take(keyLength);
+		auto monitorKey = unwrapped.Take(keyLength);
 		unwrapped.Advance(keyLength);
+
+		output.keys = SessionKeysView(controlKey, monitorKey);
 		
 		// anything left over is the key status message
 		output.keyStatusObject = unwrapped;

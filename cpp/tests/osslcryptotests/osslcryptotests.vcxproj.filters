@@ -16,7 +16,7 @@
     <ClCompile Include="TestAESKeyWrap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TestSHA.cpp">
+    <ClCompile Include="TestHMAC.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

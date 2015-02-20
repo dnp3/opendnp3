@@ -21,12 +21,11 @@
 
 #include "CryptoProvider.h"
 
-#include "SHA1HashProvider.h"
-#include "SHA256HashProvider.h"
+#include "SHA1HMAC.h"
+#include "SHA256HMAC.h"
 
 #include <openssl/rand.h>
 #include <openssl/crypto.h>
-#include <openssl/sha.h>
 
 #include <assert.h>
 
@@ -35,8 +34,12 @@ using namespace openpal;
 namespace osslcrypto
 {
 
+SHA1HMAC CryptoProvider::hmacSHA1;
+SHA256HMAC CryptoProvider::hmacSHA256;
+
 AESKeyWrap128 CryptoProvider::keywrap128;
 AESKeyWrap256 CryptoProvider::keywrap256;
+
 std::vector < std::unique_ptr<std::mutex> > CryptoProvider::mutexes;
 bool CryptoProvider::initialized = Initialize();
 
@@ -93,24 +96,14 @@ openpal::IKeyWrapAlgo& CryptoProvider::GetAES256KeyWrap()
 	return keywrap256;
 }
 
-std::unique_ptr<openpal::IHashProvider> CryptoProvider::CreateSHA1Provider()
+openpal::IHMACAlgo& CryptoProvider::GetSHA1HMAC()
 {
-	return std::make_unique<SHA1HashProvider>();
+	return hmacSHA1;
 }
 
-bool CryptoProvider::CalcSHA1(const ReadBufferView& input, WriteBufferView& output)
+openpal::IHMACAlgo& CryptoProvider::GetSHA256HMAC()
 {
-	return SHA1HashProvider::CalcHash(input, output);
-}
-
-std::unique_ptr<openpal::IHashProvider> CryptoProvider::CreateSHA256Provider()
-{
-	return std::make_unique<SHA256HashProvider>();
-}
-
-bool CryptoProvider::CalcSHA256(const openpal::ReadBufferView& input, openpal::WriteBufferView& output)
-{
-	return SHA256HashProvider::CalcHash(input, output);
+	return hmacSHA256;
 }
 
 }

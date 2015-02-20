@@ -23,24 +23,24 @@
 
 namespace secauthv5
 {	
-	std::unique_ptr<openpal::IHashProvider> HMACProvider::GetHash(openpal::ICryptoProvider& provider, HMACMode mode)
+	openpal::IHMACAlgo& HMACProvider::GetHMAC(openpal::ICryptoProvider& crypto, HMACMode mode)
 	{
 		switch (mode)
 		{
 		case(HMACMode::SHA1_TRUNC_8) :
 		case(HMACMode::SHA1_TRUNC_10) :
-			return provider.CreateSHA1Provider();
+			return crypto.GetSHA1HMAC();
 		default:
-			return provider.CreateSHA256Provider();
+			return crypto.GetSHA256HMAC();
 		}
 	}
 
-	HMACProvider::HMACProvider(openpal::ICryptoProvider& provider, HMACMode mode_) :
+	HMACProvider::HMACProvider(openpal::ICryptoProvider& crypto, HMACMode mode_) :
 		mode(mode_),
-		hash(GetHash(provider, mode_)),
+		pHMAC(&GetHMAC(crypto, mode_)),
 		TRUNC_SIZE(GetTruncationSize(mode_))
 	{
-	
+		
 	}
 
 	opendnp3::HMACType HMACProvider::GetType() const
@@ -48,16 +48,17 @@ namespace secauthv5
 		return ToHMACType(mode);
 	}	
 
-	openpal::ReadBufferView HMACProvider::Compute(std::initializer_list<openpal::ReadBufferView> buffers)
+	openpal::ReadBufferView HMACProvider::Compute(const openpal::ReadBufferView& key, std::initializer_list<openpal::ReadBufferView> buffers)
 	{
-		hash->Init();
-		for (auto& bytes : buffers)
-		{
-			hash->Add(bytes);
-		}
 		auto dest = buffer.GetWriteBuffer();
-		hash->Complete(dest);
-		return buffer.ToReadOnly(TRUNC_SIZE);
+		if (pHMAC->Calculate(key, buffers, dest))
+		{
+			return buffer.ToReadOnly(TRUNC_SIZE);
+		}
+		else
+		{
+			return openpal::ReadBufferView::Empty();
+		}		
 	}
 }
 

@@ -54,7 +54,7 @@ class KeyChangeState
 	// of the last status response
 	bool EqualsLastStatusResponse(const openpal::ReadBufferView& object);
 
-	User GetLastKeyChangeUser() const  { return lastUser; }
+	bool CheckUserAndKSQMatches(const User& user, uint32_t keyChangeSeq);
 
 	private:
 

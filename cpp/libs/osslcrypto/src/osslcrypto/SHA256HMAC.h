@@ -18,57 +18,26 @@
 * may have been made to this file. Automatak, LLC licenses these modifications
 * to you under the terms of the License.
 */
+#ifndef OSSLCRYPTO_SHA256HASHPROVIDER_H
+#define OSSLCRYPTO_SHA256HASHPROVIDER_H
 
-#include "SHA256HashProvider.h"
-
-#include <assert.h>
+#include <openpal/crypto/IHMACAlgo.h>
+#include <openpal/util/Uncopyable.h>
 
 namespace osslcrypto
 {
-	bool SHA256HashProvider::CalcHash(const openpal::ReadBufferView& input, openpal::WriteBufferView& output)
+
+	class SHA256HMAC : public openpal::IHMACAlgo, private openpal::Uncopyable
 	{
-		if (output.Size() < OUTPUT_SIZE)
-		{
-			return false;
-		}
-		else
-		{
-			SHA256(input, input.Size(), output);
-			output.Advance(OUTPUT_SIZE);
-			return true;
-		}
-	}
+		public:
+		
+		virtual uint16_t OutputSize() const override final { return OUTPUT_SIZE; }
+		virtual bool Calculate(const openpal::ReadBufferView& key, std::initializer_list<openpal::ReadBufferView> data, openpal::WriteBufferView& output) override final;		
 
-	// Called to reset the state of the provider
-	bool SHA256HashProvider::Init()
-	{
-		return SHA256_Init(&ctx) > 0;
-	}
+		private:
 
-	// Add the buffer to the running hash calculation
-	bool SHA256HashProvider::Add(const openpal::ReadBufferView& input)
-	{
-		return SHA256_Update(&ctx, input, input.Size()) > 0;
-	}
-
-	// copy the digest into the output buffer and reset the state
-	bool SHA256HashProvider::Complete(openpal::WriteBufferView& output)
-	{
-		if (output.Size() < OUTPUT_SIZE)
-		{
-			return false;
-		}
-		else
-		{
-
-			bool success = SHA256_Final(output, &ctx) > 0;
-			if (success)
-			{
-				output.Advance(OUTPUT_SIZE);
-			}
-			return success;
-		}		
-	}
-
+		static const uint16_t OUTPUT_SIZE = 32;
+	};
 }
 
+#endif

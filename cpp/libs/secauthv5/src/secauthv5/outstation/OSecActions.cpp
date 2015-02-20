@@ -35,12 +35,10 @@ namespace secauthv5
 {
 	void OSecActions::ProcessChangeSessionKeys(SecurityState& sstate, opendnp3::OState& ostate, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change)
 	{
-		User user(change.user);		
+		User user(change.user);
 
-		if (sstate.keyChangeState.GetLastKeyChangeUser().GetId() != user.GetId())
-		{
-			FORMAT_LOG_BLOCK(ostate.logger, flags::WARN, "No prior key change status for user %u", change.user);
-			// TODO - look for a more suitable error code here
+		if (!sstate.keyChangeState.CheckUserAndKSQMatches(user, change.seq))
+		{			
 			OSecActions::RespondWithAuthError(header, sstate, ostate, change.seq, user, AuthErrorCode::UNKNOWN_USER);
 			return;
 		}
@@ -81,10 +79,42 @@ namespace secauthv5
 		}		
 
 		// At this point, we've successfully authenticated the session key change for this user
-		// We compute the HMAC based on the full ASDU and the monitoring direction session key
-		auto hmac = sstate.hmac.Compute({fragment, unwrapped.monitorSessionKey});
-		
+		// We compute the HMAC based on the full ASDU and the monitoring direction session key		
+		auto hmac = sstate.hmac.Compute(unwrapped.keys.monitorKey,  { fragment });
 
+		/*
+		SIMPLE_LOG_BLOCK(ostate.logger, flags::INFO, "control key: ");
+		FORMAT_HEX_BLOCK(ostate.logger, flags::INFO, unwrapped.keys.controlKey, 17, 17);
+		SIMPLE_LOG_BLOCK(ostate.logger, flags::INFO, "monitor key: ");
+		FORMAT_HEX_BLOCK(ostate.logger, flags::INFO, unwrapped.keys.monitorKey, 17, 17);
+		SIMPLE_LOG_BLOCK(ostate.logger, flags::INFO, "");
+		SIMPLE_LOG_BLOCK(ostate.logger, flags::INFO, "Authenication, plain text");
+		FORMAT_HEX_BLOCK(ostate.logger, flags::INFO, fragment, 17, 17);
+		FORMAT_LOG_BLOCK(ostate.logger, flags::INFO, "Authenication, hased text %u", hmac.Size());
+		FORMAT_HEX_BLOCK(ostate.logger, flags::INFO, hmac, 17, 17);		
+		*/
+
+		sstate.sessions.SetSessionKeys(user, unwrapped.keys, hmac);
+		
+		auto rsp = sstate.txBuffer.Start();
+		rsp.SetFunction(FunctionCode::AUTH_RESPONSE);
+		rsp.SetControl(header.control);
+		auto writer = rsp.GetWriter();
+		auto hmacType = sstate.hmac.GetType();
+
+		auto success = sstate.keyChangeState.FormatKeyStatusResponse(
+			writer,
+			user,
+			hmacType,
+			ToKeyWrapAlgorithm(updateKeyType),
+			KeyStatus::OK,
+			hmac
+		);
+
+		if (success)
+		{
+			OActions::BeginResponseTx(ostate, rsp.ToReadOnly());
+		}
 	}
 	
 	void OSecActions::ProcessRequestKeyStatus(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var4& status)

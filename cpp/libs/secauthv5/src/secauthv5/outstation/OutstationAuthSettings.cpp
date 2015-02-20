@@ -28,7 +28,7 @@ namespace secauthv5
 		maxRxASDUSize(params.maxRxFragSize),
 		maxTxASDUSize(params.maxTxFragSize),
 		assocId(0),
-		hmacMode(HMACMode::SHA1_TRUNC_10)
+		hmacMode(HMACMode::SHA256_TRUNC_16) // strongest by default
 	{}
 
 }

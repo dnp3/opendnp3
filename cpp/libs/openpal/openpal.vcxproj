@@ -36,7 +36,7 @@
     <ClInclude Include="src\openpal\container\StaticBuffer.h" />
     <ClInclude Include="src\openpal\container\WriteBufferView.h" />
     <ClInclude Include="src\openpal\crypto\ICryptoProvider.h" />
-    <ClInclude Include="src\openpal\crypto\IHashProvider.h" />
+    <ClInclude Include="src\openpal\crypto\IHMACAlgo.h" />
     <ClInclude Include="src\openpal\crypto\IKeyWrapAlgo.h" />
     <ClInclude Include="src\openpal\crypto\MockCryptoProvider.h" />
     <ClInclude Include="src\openpal\crypto\SecureCompare.h" />
