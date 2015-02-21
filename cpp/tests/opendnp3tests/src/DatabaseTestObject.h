@@ -77,13 +77,13 @@ public:
 	std::deque<Event<AnalogOutputStatus>> analogOutputStatusEvents;
 };
 
-class DatabaseTestObject : private INewEventDataHandler
+class DatabaseTestObject
 {
 public:
 	
 	DatabaseTestObject(const DatabaseTemplate& dbTemplate, IndexMode mode = IndexMode::Contiguous, StaticTypeBitField allowedClass0 = StaticTypeBitField::AllTypes()) : 
 		buffer(),
-		db(dbTemplate, buffer, *this, mode, allowedClass0, nullptr)
+		db(dbTemplate, buffer, mode, allowedClass0)
 	{
 		
 	}
@@ -91,11 +91,6 @@ public:
 
 	MockEventBuffer buffer;
 	Database db;
-	uint32_t numEventNotifications;
-
-private:
-
-	virtual void OnNewEventData() override final { ++numEventNotifications; }
 };
 
 }

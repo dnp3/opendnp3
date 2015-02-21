@@ -32,8 +32,7 @@ using namespace opendnp3;
 
 template <class T>
 void TestBufferForEvent(bool aIsEvent, const T& arNewVal, DatabaseTestObject& test, std::deque< Event <T> >& arQueue)
-{
-	Transaction tr(&test.db);
+{	
 	test.db.Update(arNewVal, 0);
 
 	if(aIsEvent)
