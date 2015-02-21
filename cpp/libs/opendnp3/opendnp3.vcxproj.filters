@@ -309,9 +309,6 @@
     <ClInclude Include="src\opendnp3\outstation\SimpleCommandHandler.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\TimeTransaction.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\ValueMetadataPair.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
@@ -455,9 +452,6 @@
     </ClInclude>
     <ClInclude Include="src\opendnp3\link\IChannelStateListener.h">
       <Filter>Header\link</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\app\ITransactable.h">
-      <Filter>Header\app</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\ErrorCodes.h">
       <Filter>Header</Filter>
@@ -729,6 +723,9 @@
     <ClInclude Include="src\opendnp3\objects\Group43.h">
       <Filter>Header\objects</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\app\ITransactable.h">
+      <Filter>Source\app</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\AnalogOutput.cpp">
@@ -816,9 +813,6 @@
       <Filter>Source\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\SimpleCommandHandler.cpp">
-      <Filter>Source\outstation</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\TimeTransaction.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\WriteHandler.cpp">

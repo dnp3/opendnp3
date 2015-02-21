@@ -18,55 +18,35 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_OUTSTATION_H
-#define OPENDNP3_OUTSTATION_H
+#ifndef ASIODNP3_CHANGESET_H
+#define ASIODNP3_CHANGESET_H
 
-#include "opendnp3/LayerInterfaces.h"
+#include <opendnp3/outstation/IDatabase.h>
 
-#include "opendnp3/outstation/OutstationContext.h"
-#include "opendnp3/outstation/DatabaseConfigView.h"
+#include <openpal/util/Uncopyable.h>
 
-namespace opendnp3
+#include <vector>
+#include <functional>
+
+namespace asiodnp3
+{
+	
+class ChangeSet : private openpal::Uncopyable
 {
 
-class Outstation : public IUpperLayer
-{
-	public:
+public:
 
-	Outstation(		const OutstationConfig& config,
-					const DatabaseTemplate& dbTemplate,					
-					openpal::IExecutor& executor, 
-					openpal::LogRoot& root, 
-					ILowerLayer& lower,
-					ICommandHandler& commandHandler,
-					IOutstationApplication& application);
+	typedef std::function<void(opendnp3::IDatabase&)> UpdateFun;
+
+	void Add(const UpdateFun& fun);
+
+	void ApplyAll(opendnp3::IDatabase&);
+
+	bool NotEmpty() const;
 	
-	/// ----- Implement IUpperLayer ------
+private:
 
-	virtual void OnLowerLayerUp() override final;
-	
-	virtual void OnLowerLayerDown() override final;
-
-	virtual void OnReceive(const openpal::ReadBufferView&) override final;
-	
-	virtual void OnSendResult(bool isSucccess) override final;
-
-	
-	/// ---- Other public members
-
-	void SetRestartIIN();
-
-	void CheckForUpdates(); //force a check for updates
-
-	IDatabase& GetDatabase();
-
-	DatabaseConfigView GetConfigView();
-	
-	
-	private:			
-
-	OutstationContext context;
-
+	std::vector<UpdateFun> updates;
 };
 
 }

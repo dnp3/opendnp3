@@ -36,12 +36,11 @@ OutstationStackImpl::OutstationStackImpl(
 	IOutstationApplication& application,
     const OutstationStackConfig& config,
     const StackActionHandler& handler_) :	
-	
-	mutex(),
+		
 	root(root_, id),
 	handler(handler_),
 	stack(root, &executor, config.outstation.params.maxRxFragSize, &statistics, config.link),		
-	outstation(config.outstation, config.dbTemplate, &mutex, executor, root, stack.transport, commandHandler, application)
+	outstation(config.outstation, config.dbTemplate, executor, root, stack.transport, commandHandler, application)
 {
 	stack.transport.SetAppLayer(&outstation);
 }
@@ -51,9 +50,9 @@ opendnp3::DatabaseConfigView OutstationStackImpl::GetConfigView()
 	return outstation.GetConfigView();
 }
 
-opendnp3::IDatabase& OutstationStackImpl::GetDatabase()
+IMeasUpdater& OutstationStackImpl::GetUpdater()
 {
-	return outstation.GetDatabase();
+	return *this;
 }
 
 void OutstationStackImpl::SetRestartIIN()
@@ -98,6 +97,16 @@ void OutstationStackImpl::SetShutdownAction(const openpal::Action0& action)
 opendnp3::ILinkSession* OutstationStackImpl::GetLinkContext()
 {
 	return &stack.link;
+}
+
+openpal::IExecutor& OutstationStackImpl::GetExecutor()
+{
+	return *handler.GetExecutor();
+}
+
+void OutstationStackImpl::CheckForUpdates()
+{
+	outstation.CheckForUpdates();
 }
 
 }

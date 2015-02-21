@@ -18,42 +18,23 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_TIMETRANSACTION_H
-#define OPENDNP3_TIMETRANSACTION_H
+#ifndef ASIODNP3_IMEASUPATER_H
+#define ASIODNP3_IMEASUPATER_H
 
-#include "opendnp3/app/ITransactable.h"
+#include <opendnp3/outstation/IDatabase.h>
+#include <openpal/executor/IExecutor.h>
 
-#include <openpal/executor/UTCTimestamp.h>
-
-#include "opendnp3/outstation/IDatabase.h"
-
-namespace opendnp3
+namespace asiodnp3
 {
 
-class TimeTransaction : private Transaction
+class IMeasUpdater
 {
-public:
-	TimeTransaction(IDatabase& database, openpal::UTCTimestamp timestamp_);
+		friend class MeasUpdate;
 
-	void Update(const Binary& meas, uint16_t index);
-	void Update(const DoubleBitBinary& meas, uint16_t index);
-	void Update(const Analog& meas, uint16_t index);
-	void Update(const Counter& meas, uint16_t index);
-	void Update(const FrozenCounter& meas, uint16_t index);
-	void Update(const BinaryOutputStatus& meas, uint16_t index);
-	void Update(const AnalogOutputStatus& meas, uint16_t index);
-
-private:
-
-	template <class T>
-	void Load(T meas, uint16_t index)
-	{
-		meas.time = timestamp.msSinceEpoch;
-		pDatabase->Update(meas, index);
-	}
-
-	IDatabase* pDatabase;
-	openpal::UTCTimestamp timestamp;
+protected:
+		virtual opendnp3::IDatabase& GetDatabase() = 0;
+		virtual openpal::IExecutor& GetExecutor() = 0;
+		virtual void CheckForUpdates() = 0;
 };
 
 }

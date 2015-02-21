@@ -33,14 +33,13 @@ namespace opendnp3
 
 Outstation::Outstation(
 		const OutstationConfig& config,
-		const DatabaseTemplate& dbTemplate,
-		openpal::IMutex* pDBMutex,
+		const DatabaseTemplate& dbTemplate,		
 		IExecutor& executor,
 		openpal::LogRoot& root,
 		ILowerLayer& lower,
 		ICommandHandler& commandHandler,
 		IOutstationApplication& application) :
-		context(config, dbTemplate, pDBMutex, executor, root, lower, commandHandler, application)
+		context(config, dbTemplate, executor, root, lower, commandHandler, application)
 {
 	
 }
@@ -96,6 +95,11 @@ void Outstation::OnSendResult(bool isSuccess)
 void Outstation::SetRestartIIN()
 {
 	context.staticIIN.SetBit(IINBit::DEVICE_RESTART);
+}
+
+void Outstation::CheckForUpdates()
+{
+	context.CheckForNewEventData();
 }
 
 IDatabase& Outstation::GetDatabase()

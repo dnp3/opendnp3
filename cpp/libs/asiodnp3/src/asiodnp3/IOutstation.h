@@ -22,8 +22,8 @@
 #define ASIODNP3_IOUTSTATION_H
 
 #include "IStack.h"
+#include "IMeasUpdater.h"
 
-#include "opendnp3/outstation/IDatabase.h"
 #include "opendnp3/outstation/DatabaseConfigView.h"
 
 
@@ -61,10 +61,10 @@ class IOutstation : public IStack
 	virtual opendnp3::DatabaseConfigView GetConfigView() = 0;
 
 	/**
-	* Get a the database interface to load measurements into the outstation
-	* @return Database inteface used to load measurements into the outstation
+	* Get an upater interface we can use in conjunction with transaction objects
+	* to update measurements in the outstation database in a thread-safe way.
 	*/
-	virtual opendnp3::IDatabase& GetDatabase() = 0;
+	virtual IMeasUpdater& GetUpdater() = 0;
 };
 
 }

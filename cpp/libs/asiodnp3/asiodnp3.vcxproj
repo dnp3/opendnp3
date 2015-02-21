@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\asiodnp3\BlockingCommandCallback.cpp" />
+    <ClCompile Include="src\asiodnp3\ChangeSet.cpp" />
     <ClCompile Include="src\asiodnp3\ConsoleLogger.cpp" />
     <ClCompile Include="src\asiodnp3\DefaultMasterApplication.cpp" />
     <ClCompile Include="src\asiodnp3\DNP3Manager.cpp" />
@@ -35,9 +36,11 @@
     <ClCompile Include="src\asiodnp3\OutstationStackImpl.cpp" />
     <ClCompile Include="src\asiodnp3\PrintingSOEHandler.cpp" />
     <ClCompile Include="src\asiodnp3\StackActionHandler.cpp" />
+    <ClCompile Include="src\asiodnp3\MeasUpdate.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\asiodnp3\BlockingCommandCallback.h" />
+    <ClInclude Include="src\asiodnp3\ChangeSet.h" />
     <ClInclude Include="src\asiodnp3\ConsoleLogger.h" />
     <ClInclude Include="src\asiodnp3\DefaultMasterApplication.h" />
     <ClInclude Include="src\asiodnp3\DNP3Manager.h" />
@@ -52,12 +55,14 @@
     <ClInclude Include="src\asiodnp3\impl\PhysicalLayerMonitorStates.h" />
     <ClInclude Include="src\asiodnp3\IOutstation.h" />
     <ClInclude Include="src\asiodnp3\IStack.h" />
+    <ClInclude Include="src\asiodnp3\IMeasUpdater.h" />
     <ClInclude Include="src\asiodnp3\MasterStackImpl.h" />
     <ClInclude Include="src\asiodnp3\MultidropTaskLock.h" />
     <ClInclude Include="src\asiodnp3\Mutex.h" />
     <ClInclude Include="src\asiodnp3\OutstationStackImpl.h" />
     <ClInclude Include="src\asiodnp3\PrintingSOEHandler.h" />
     <ClInclude Include="src\asiodnp3\StackActionHandler.h" />
+    <ClInclude Include="src\asiodnp3\MeasUpdate.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{65495BE1-485C-4A8C-8C58-06C9A532D9CE}</ProjectGuid>

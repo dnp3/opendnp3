@@ -18,54 +18,26 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "TimeTransaction.h"
 
-using namespace openpal;
+#include "ChangeSet.h"
 
-namespace opendnp3
-{
+namespace asiodnp3
+{	
+	void ChangeSet::Add(const UpdateFun& fun)
+	{
+		updates.push_back(fun);
+	}
 
-TimeTransaction::TimeTransaction(IDatabase& database, UTCTimestamp timestamp_) :
-	Transaction(database),
-	pDatabase(&database),
-	timestamp(timestamp_)
-{
+	void ChangeSet::ApplyAll(opendnp3::IDatabase& db)
+	{
+		for (auto& update : updates)
+		{
+			update(db);
+		}
+	}
 
-}
-
-void TimeTransaction::Update(const Binary& meas, uint16_t index)
-{
-	this->Load(meas, index);
-}
-
-void TimeTransaction::Update(const DoubleBitBinary& meas, uint16_t index)
-{
-	this->Load(meas, index);
-}
-
-void TimeTransaction::Update(const Analog& meas, uint16_t index)
-{
-	this->Load(meas, index);
-}
-
-void TimeTransaction::Update(const Counter& meas, uint16_t index)
-{
-	this->Load(meas, index);
-}
-
-void TimeTransaction::Update(const FrozenCounter& meas, uint16_t index)
-{
-	this->Load(meas, index);
-}
-
-void TimeTransaction::Update(const BinaryOutputStatus& meas, uint16_t index)
-{
-	this->Load(meas, index);
-}
-
-void TimeTransaction::Update(const AnalogOutputStatus& meas, uint16_t index)
-{
-	this->Load(meas, index);
-}
-
+	bool ChangeSet::NotEmpty() const
+	{
+		return !updates.empty();
+	}
 }

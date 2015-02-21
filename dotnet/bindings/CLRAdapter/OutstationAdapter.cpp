@@ -16,7 +16,7 @@ namespace Automatak
 
 			OutstationAdapter::OutstationAdapter(asiodnp3::IOutstation* pOutstation_) :
 				pOutstation(pOutstation_),
-				databaseAdapter(gcnew OutstationDatabaseAdapter(pOutstation->GetDatabase()))
+				databaseAdapter(gcnew OutstationDatabaseAdapter(pOutstation->GetUpdater()))
 			{}
 
 			Automatak::DNP3::Interface::IDatabase^ OutstationAdapter::GetDatabase()

@@ -29,8 +29,8 @@
 #include <opendnp3/transport/TransportStack.h>
 
 #include "IOutstation.h"
-#include "Mutex.h"
 #include "StackActionHandler.h"
+#include "IMeasUpdater.h"
 
 namespace asiodnp3
 {
@@ -38,7 +38,7 @@ namespace asiodnp3
 class ILinkSession;
 
 /** @section desc A stack object for a master */
-class OutstationStackImpl : public IOutstation
+class OutstationStackImpl : public IOutstation, private IMeasUpdater
 {
 public:
 
@@ -53,7 +53,7 @@ public:
 
 	virtual opendnp3::DatabaseConfigView GetConfigView() override final;
 
-	virtual opendnp3::IDatabase& GetDatabase() override final;
+	virtual IMeasUpdater& GetUpdater() override final;
 
 	virtual void SetRestartIIN() override final;
 	
@@ -74,7 +74,12 @@ public:
 	opendnp3::ILinkSession* GetLinkContext();
 
 private:
-	Mutex mutex;
+
+	virtual opendnp3::IDatabase& GetDatabase() override final { return outstation.GetDatabase(); }
+	virtual openpal::IExecutor& GetExecutor() override final;
+	virtual void CheckForUpdates() override final;
+
+
 	openpal::LogRoot root;
 	openpal::Action0 shutdownAction;
 	opendnp3::StackStatistics statistics;	

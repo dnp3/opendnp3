@@ -173,10 +173,7 @@ OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnConfirm(Out
 {	
 	if (header.control.SEQ == pContext->expectedSolConfirmSeq)
 	{
-		pContext->CancelConfirmTimer();
-
-		// Lock the database for the remainder of this method as we will be manipulating the buffers
-		Transaction tx(pContext->database);				
+		pContext->CancelConfirmTimer();			
 		pContext->eventBuffer.ClearWritten();
 
 		if (pContext->rspContext.HasSelection())

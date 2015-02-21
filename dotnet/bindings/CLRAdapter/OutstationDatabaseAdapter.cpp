@@ -3,6 +3,8 @@
 #include "OutstationDatabaseAdapter.h"
 #include "Conversions.h"
 
+#include <asiodnp3/IMeasUpdater.h>
+
 namespace Automatak
 {
 	namespace DNP3
@@ -11,7 +13,7 @@ namespace Automatak
 		{
 
 
-			OutstationDatabaseAdapter::OutstationDatabaseAdapter(opendnp3::IDatabase& proxy) :
+			OutstationDatabaseAdapter::OutstationDatabaseAdapter(asiodnp3::IMeasUpdater& updater) :
 				pProxy(&proxy)
 			{}
 

@@ -42,7 +42,7 @@ namespace Automatak
 				
 			private:
 
-				opendnp3::IDatabase* pProxy;
+				asiodnp3::IMeasUpdater* pProxy;
 			};
 
 			
