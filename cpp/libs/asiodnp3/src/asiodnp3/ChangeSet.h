@@ -42,7 +42,7 @@ public:
 
 	void ApplyAll(opendnp3::IDatabase&);
 
-	bool NotEmpty() const;
+	bool IsEmpty() const;
 	
 private:
 

@@ -37,24 +37,24 @@ namespace asiodnp3
 
 	MeasUpdate::~MeasUpdate()
 	{
-		if (pChanges->NotEmpty())
-		{			
-			auto changeset = pChanges;			
-			pChanges = nullptr;
-			auto outstation = pOutstation;
-
-			auto update = [changeset, outstation]()
-			{				
-				changeset->ApplyAll(outstation->GetDatabase());
-				delete changeset;
-				outstation->CheckForUpdates();
-			};
-
-			outstation->GetExecutor().PostLambda(update);
+		if (pChanges->IsEmpty())
+		{		
+			// The user didn't add anything, just delete it here
+			delete pChanges;			
 		}
 		else
 		{
-			delete pChanges;
+			auto pChangeSet = pChanges;
+			auto pOut = pOutstation;
+
+			auto update = [pChangeSet, pOut]()
+			{
+				pChangeSet->ApplyAll(pOut->GetDatabase());
+				delete pChangeSet;
+				pOut->CheckForUpdates();
+			};
+
+			pOutstation->GetExecutor().PostLambda(update);
 		}
 	}
 

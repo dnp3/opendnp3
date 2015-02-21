@@ -36,8 +36,8 @@ namespace asiodnp3
 		}
 	}
 
-	bool ChangeSet::NotEmpty() const
+	bool ChangeSet::IsEmpty() const
 	{
-		return !updates.empty();
+		return updates.empty();
 	}
 }
