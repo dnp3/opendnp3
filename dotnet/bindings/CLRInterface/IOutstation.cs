@@ -33,10 +33,10 @@ namespace Automatak.DNP3.Interface
     public interface IOutstation: IStack
     {
         /// <summary>
-        /// Retrieve the interface used to load measurements
+        /// Load a set of measurement changes into an outstation
         /// </summary>
-        /// <returns>Interface used to load data into the outstation</returns>
-        IDatabase GetDatabase();       
+        /// <param name="changeFun"> A function object that allows for measurement changes to be applied to it</param>
+        void LoadChanges(Action<IDatabase> changeFun);
 
         /// <summary>
         /// Sets the restart IIN bit. Normally applications should not

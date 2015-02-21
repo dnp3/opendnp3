@@ -58,7 +58,6 @@ namespace DotNetMasterDemo
             var weirdPoll = master.AddScan(headers, TimeSpan.FromSeconds(20));
             */
             
-
             master.Enable(); // enable communications
 
             Console.WriteLine("Enter an index to send a command");

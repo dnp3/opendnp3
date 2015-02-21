@@ -15,15 +15,7 @@ namespace Automatak.Simulator.DNP3
         public MultiplexedDatabase(params IDatabase[] databases)
         {
             this.databases = new List<IDatabase>(databases);
-        }
-
-        void IDatabase.Start()
-        {
-            foreach (var db in databases)
-            {
-                db.Start();
-            }
-        }
+        }       
 
         bool IDatabase.Update(Binary update, ushort index, EventMode mode)
         {
