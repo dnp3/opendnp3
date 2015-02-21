@@ -28,8 +28,8 @@ using namespace opendnp3;
 
 namespace asiodnp3
 {
-	MeasUpdate::MeasUpdate(IMeasUpdater& updater) : 
-		pUpdater(&updater),
+	MeasUpdate::MeasUpdate(IOutstation* pOutstation_) :
+		pOutstation(pOutstation_),
 		pChanges(new ChangeSet())
 	{
 		
@@ -41,16 +41,16 @@ namespace asiodnp3
 		{			
 			auto changeset = pChanges;			
 			pChanges = nullptr;
-			auto updater = pUpdater;
+			auto outstation = pOutstation;
 
-			auto update = [changeset, updater]()
+			auto update = [changeset, outstation]()
 			{				
-				changeset->ApplyAll(updater->GetDatabase());
+				changeset->ApplyAll(outstation->GetDatabase());
 				delete changeset;
-				updater->CheckForUpdates();
+				outstation->CheckForUpdates();
 			};
 
-			pUpdater->GetExecutor().PostLambda(update);
+			outstation->GetExecutor().PostLambda(update);
 		}
 		else
 		{

@@ -22,10 +22,9 @@
 #define ASIODNP3_IOUTSTATION_H
 
 #include "IStack.h"
-#include "IMeasUpdater.h"
 
-#include "opendnp3/outstation/DatabaseConfigView.h"
-
+#include <opendnp3/outstation/IDatabase.h>
+#include <opendnp3/outstation/DatabaseConfigView.h>
 
 namespace asiodnp3
 {
@@ -39,6 +38,8 @@ namespace asiodnp3
 */
 class IOutstation : public IStack
 {
+	friend class MeasUpdate;
+
 	public:	
 		
 	virtual ~IOutstation() {}
@@ -60,11 +61,25 @@ class IOutstation : public IStack
 	*/
 	virtual opendnp3::DatabaseConfigView GetConfigView() = 0;
 
-	/**
-	* Get an upater interface we can use in conjunction with transaction objects
-	* to update measurements in the outstation database in a thread-safe way.
+protected:
+
+	//// --- These methods are protected and are only intened to be used by the MeasUpdate friend class ----
+
+	/*
+	* return the non-thread safe database the outstation uses
 	*/
-	virtual IMeasUpdater& GetUpdater() = 0;
+	virtual opendnp3::IDatabase& GetDatabase() = 0;
+	
+	/*
+	* return the executor used by the outstation
+	*/
+	virtual openpal::IExecutor& GetExecutor() = 0;
+	
+	/*
+	* force the outstation to check for updates
+	*/
+	virtual void CheckForUpdates() = 0;
+	
 };
 
 }

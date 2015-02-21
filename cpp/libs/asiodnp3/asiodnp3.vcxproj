@@ -55,7 +55,6 @@
     <ClInclude Include="src\asiodnp3\impl\PhysicalLayerMonitorStates.h" />
     <ClInclude Include="src\asiodnp3\IOutstation.h" />
     <ClInclude Include="src\asiodnp3\IStack.h" />
-    <ClInclude Include="src\asiodnp3\IMeasUpdater.h" />
     <ClInclude Include="src\asiodnp3\MasterStackImpl.h" />
     <ClInclude Include="src\asiodnp3\MultidropTaskLock.h" />
     <ClInclude Include="src\asiodnp3\Mutex.h" />

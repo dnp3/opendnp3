@@ -109,7 +109,7 @@ int main(int argc, char* argv[])
 		std::cout << "c = counter, b = binary, d = doublebit, a = analog, x = exit" << std::endl;
 		std::cin >> input;
 		
-		MeasUpdate tx(pOutstation->GetUpdater());
+		MeasUpdate tx(pOutstation);
 
 		for (char& c : input)
 		{

@@ -30,7 +30,6 @@
 
 #include "IOutstation.h"
 #include "StackActionHandler.h"
-#include "IMeasUpdater.h"
 
 namespace asiodnp3
 {
@@ -38,7 +37,7 @@ namespace asiodnp3
 class ILinkSession;
 
 /** @section desc A stack object for a master */
-class OutstationStackImpl : public IOutstation, private IMeasUpdater
+class OutstationStackImpl : public IOutstation
 {
 public:
 
@@ -51,9 +50,7 @@ public:
 		const opendnp3::OutstationStackConfig& config,
 	    const StackActionHandler& handler);
 
-	virtual opendnp3::DatabaseConfigView GetConfigView() override final;
-
-	virtual IMeasUpdater& GetUpdater() override final;
+	virtual opendnp3::DatabaseConfigView GetConfigView() override final;	
 
 	virtual void SetRestartIIN() override final;
 	
@@ -73,7 +70,7 @@ public:
 
 	opendnp3::ILinkSession* GetLinkContext();
 
-private:
+private:	
 
 	virtual opendnp3::IDatabase& GetDatabase() override final { return outstation.GetDatabase(); }
 	virtual openpal::IExecutor& GetExecutor() override final;

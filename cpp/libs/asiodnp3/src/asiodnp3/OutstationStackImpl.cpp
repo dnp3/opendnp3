@@ -50,11 +50,6 @@ opendnp3::DatabaseConfigView OutstationStackImpl::GetConfigView()
 	return outstation.GetConfigView();
 }
 
-IMeasUpdater& OutstationStackImpl::GetUpdater()
-{
-	return *this;
-}
-
 void OutstationStackImpl::SetRestartIIN()
 {
 	// this doesn't need to be synchronous, just post it

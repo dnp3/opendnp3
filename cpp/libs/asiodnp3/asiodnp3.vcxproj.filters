@@ -136,9 +136,6 @@
     <ClInclude Include="src\asiodnp3\HeaderTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\asiodnp3\IMeasUpdater.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\asiodnp3\MeasUpdate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
