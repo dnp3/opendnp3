@@ -145,9 +145,6 @@
     <ClInclude Include="src\openpal\container\HasSize.h">
       <Filter>Header\container</Filter>
     </ClInclude>
-    <ClInclude Include="src\openpal\executor\IMutex.h">
-      <Filter>Header\executor</Filter>
-    </ClInclude>
     <ClInclude Include="src\openpal\executor\Action0.h">
       <Filter>Header\executor</Filter>
     </ClInclude>

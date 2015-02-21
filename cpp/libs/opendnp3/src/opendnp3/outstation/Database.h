@@ -21,8 +21,6 @@
 #ifndef OPENDNP3_DATABASE_H
 #define OPENDNP3_DATABASE_H
 
-#include <openpal/executor/IMutex.h>
-
 #include "opendnp3/gen/IndexMode.h"
 #include "opendnp3/gen/AssignClassType.h"
 
