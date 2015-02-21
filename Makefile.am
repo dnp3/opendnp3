@@ -171,7 +171,6 @@ cpp/libs/opendnp3/src/opendnp3/outstation/SimpleCommandHandler.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/SOERecord.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/StaticBuffers.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/StaticLoadFunctions.cpp \
-cpp/libs/opendnp3/src/opendnp3/outstation/TimeTransaction.cpp \
 cpp/libs/opendnp3/src/opendnp3/outstation/WriteHandler.cpp \
 cpp/libs/opendnp3/src/opendnp3/transport/TransportLayer.cpp \
 cpp/libs/opendnp3/src/opendnp3/transport/TransportRx.cpp \
@@ -186,6 +185,7 @@ cpp/libs/asiodnp3/src/asiodnp3/impl/LinkLayerRouter.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/impl/PhysicalLayerMonitor.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/impl/PhysicalLayerMonitorStates.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/BlockingCommandCallback.cpp \
+cpp/libs/asiodnp3/src/asiodnp3/ChangeSet.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/ChannelSet.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/ConsoleLogger.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/DefaultMasterApplication.cpp \
@@ -193,6 +193,7 @@ cpp/libs/asiodnp3/src/asiodnp3/DestructorHook.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/DNP3Channel.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/DNP3Manager.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/HeaderTypes.cpp \
+cpp/libs/asiodnp3/src/asiodnp3/MeasUpdate.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/MasterStackImpl.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/MultidropTaskLock.cpp \
 cpp/libs/asiodnp3/src/asiodnp3/OutstationStackImpl.cpp \
