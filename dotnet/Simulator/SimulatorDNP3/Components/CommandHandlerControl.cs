@@ -63,9 +63,9 @@ namespace Automatak.Simulator.DNP3.Components
                 this.listBoxLog.Items.Add(output);
                 if (checkBoxMapAnalog.Checked)
                 {
-                    database.Start();
+                    // TODO database.Start();
                     database.Update(new AnalogOutputStatus(value, 0x01, DateTime.Now), index);
-                    database.End();
+                    //database.End();
                 }
             }
         }
@@ -98,9 +98,9 @@ namespace Automatak.Simulator.DNP3.Components
 
         void LoadSingleBinaryOutputStatus(bool value, ushort index)
         {
-            database.Start();
+            // TODO - database.Start();
             database.Update(new BinaryOutputStatus(value, 0x01, DateTime.Now), index);
-            database.End();
+            //database.End();
         }
 
         private void checkBoxEnabled_CheckedChanged(object sender, EventArgs e)

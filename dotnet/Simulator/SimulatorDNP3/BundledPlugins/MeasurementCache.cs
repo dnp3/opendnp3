@@ -161,66 +161,47 @@ namespace Automatak.Simulator.DNP3
                     return null;
             }
         }
+        
 
-
-
-        void IDatabase.Start()
+        void IDatabase.Update(Binary update, ushort index, EventMode mode)
         {
-            Monitor.Enter(mutex);
+            binaries.Update(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED));            
         }
 
-        bool IDatabase.Update(Binary update, ushort index, EventMode mode)
+        void IDatabase.Update(DoubleBitBinary update, ushort index, EventMode mode)
         {
-            binaries.Update(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED));
-            return true;
+            doubleBinaries.Update(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED));            
         }
 
-        bool IDatabase.Update(DoubleBitBinary update, ushort index, EventMode mode)
+        void IDatabase.Update(Analog update, ushort index, EventMode mode)
         {
-            doubleBinaries.Update(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED));
-            return true;
+            analogs.Update(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED));            
         }
 
-        bool IDatabase.Update(Analog update, ushort index, EventMode mode)
+        void IDatabase.Update(Counter update, ushort index, EventMode mode)
         {
-            analogs.Update(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED));
-            return true;
+            counters.Update(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED));            
         }
 
-        bool IDatabase.Update(Counter update, ushort index, EventMode mode)
+        void IDatabase.Update(FrozenCounter update, ushort index, EventMode mode)
         {
-            counters.Update(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED));
-            return true;
+            frozenCounters.Update(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED));            
         }
 
-        bool IDatabase.Update(FrozenCounter update, ushort index, EventMode mode)
+        void IDatabase.Update(BinaryOutputStatus update, ushort index, EventMode mode)
         {
-            frozenCounters.Update(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED));
-            return true;
+            binaryOutputStatii.Update(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED));            
         }
 
-        bool IDatabase.Update(BinaryOutputStatus update, ushort index, EventMode mode)
+        void IDatabase.Update(AnalogOutputStatus update, ushort index, EventMode mode)
         {
-            binaryOutputStatii.Update(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED));
-            return true;
+            analogOutputStatii.Update(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED));            
         }
 
-        bool IDatabase.Update(AnalogOutputStatus update, ushort index, EventMode mode)
+        void IDatabase.Update(TimeAndInterval update, ushort index)
         {
-            analogOutputStatii.Update(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED));
-            return true;
-        }
-
-        bool IDatabase.Update(TimeAndInterval update, ushort index)
-        {
-            timeAndIntervals.Update(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED));
-            return true;
-        }
-
-        void IDatabase.End()
-        {
-            Monitor.Exit(mutex);
-        }
+            timeAndIntervals.Update(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED));            
+        }        
 
 
         void ISOEHandler.OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<Binary>> values)
@@ -286,46 +267,6 @@ namespace Automatak.Simulator.DNP3
         {
             // TODO
         }
-
-
-        bool IDatabase.Modify(Func<Binary, Binary> update, ushort index, EventMode mode)
-        {
-            return false;
-        }
-
-        bool IDatabase.Modify(Func<DoubleBitBinary, DoubleBitBinary> update, ushort index, EventMode mode)
-        {
-            return false;
-        }
-
-        bool IDatabase.Modify(Func<Analog, Analog> update, ushort index, EventMode mode)
-        {
-            return false;
-        }
-
-        bool IDatabase.Modify(Func<Counter, Counter> update, ushort index, EventMode mode)
-        {
-            return false;
-        }
-
-        bool IDatabase.Modify(Func<FrozenCounter, FrozenCounter> update, ushort index, EventMode mode)
-        {
-            return false;
-        }
-
-        bool IDatabase.Modify(Func<BinaryOutputStatus, BinaryOutputStatus> update, ushort index, EventMode mode)
-        {
-            return false;
-        }
-
-        bool IDatabase.Modify(Func<AnalogOutputStatus, AnalogOutputStatus> update, ushort index, EventMode mode)
-        {
-            return false;
-        }
-
-        bool IDatabase.Modify(Func<TimeAndInterval, TimeAndInterval> update, ushort index)
-        {
-            return false;
-        }
+       
     }
 }

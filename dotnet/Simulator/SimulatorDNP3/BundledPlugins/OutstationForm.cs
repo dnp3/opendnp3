@@ -32,7 +32,7 @@ namespace Automatak.Simulator.DNP3
             this.cache = cache;
             this.proxy = proxy;
 
-            this.database = new MultiplexedDatabase(cache, outstation.GetDatabase());            
+            this.database = null; // TODO new MultiplexedDatabase(cache, outstation.GetDatabase());            
 
             this.Text = String.Format("DNP3 Outstation ({0})", alias);
             this.comboBoxTypes.DataSource = System.Enum.GetValues(typeof(MeasType));
@@ -209,12 +209,12 @@ namespace Automatak.Simulator.DNP3
         private void buttonApply_Click(object sender, EventArgs e)
         {          
                       
-           database.Start();            
+           /// TODO - database.Start();           
            foreach (var item in events)
            {
                item.Invoke(database);               
            }
-           database.End();
+           ///database.End();
            
            this.listBoxEvents.Items.Clear();
            this.events.Clear();

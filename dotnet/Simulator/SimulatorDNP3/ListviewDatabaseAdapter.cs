@@ -21,110 +21,59 @@ namespace Automatak.Simulator.DNP3
         public static void Process(IEnumerable<Action<IDatabase>> actions, ListBox listBox)
         {
             IDatabase adapter = new ListviewDatabaseAdapter(listBox);
-            
-            adapter.Start();
+
+            listBox.SuspendLayout();
             foreach (var action in actions)
             {
                 action.Invoke(adapter);
             }
-            adapter.End();
-        }
-
-        void IDatabase.Start()
-        {
-            listBox.SuspendLayout();
-        }
-
-        bool Add(Measurement meas, string label)
-        {
-            var text = string.Format("{0} ({1}) - {2} - {3}", label, meas.Index, meas.Value, meas.ShortFlags);        
-            listBox.Items.Add(text);
-            return true;
-        }
-
-        bool IDatabase.Update(Binary update, ushort index, EventMode mode)
-        {
-            return this.Add(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED), "Binary");
-        }
-
-        bool IDatabase.Update(DoubleBitBinary update, ushort index, EventMode mode)
-        {
-            return this.Add(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED), "DoubleBitBinary");
-        }
-
-        bool IDatabase.Update(Analog update, ushort index, EventMode mode)
-        {
-            return this.Add(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED), "Analog");
-        }
-
-        bool IDatabase.Update(Counter update, ushort index, EventMode mode)
-        {
-            return this.Add(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED), "Counter");
-        }
-
-        bool IDatabase.Update(FrozenCounter update, ushort index, EventMode mode)
-        {
-            return this.Add(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED), "FrozenCounter");
-        }
-
-        bool IDatabase.Update(BinaryOutputStatus update, ushort index, EventMode mode)
-        {
-            return this.Add(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED), "BinaryOutputStatus");
-        }
-
-        bool IDatabase.Update(AnalogOutputStatus update, ushort index, EventMode mode)
-        {
-            return this.Add(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED), "AnalogOutputStatus");
-        }
-
-        bool IDatabase.Update(TimeAndInterval update, ushort index)
-        {
-            return this.Add(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED), "TimeAndInterval");
-        }
-
-        void IDatabase.End()
-        {
             listBox.ResumeLayout();
         }        
 
-        bool IDatabase.Modify(Func<Binary, Binary> update, ushort index, EventMode mode)
+        void Add(Measurement meas, string label)
         {
-            return false;
+            var text = string.Format("{0} ({1}) - {2} - {3}", label, meas.Index, meas.Value, meas.ShortFlags);        
+            listBox.Items.Add(text);            
         }
 
-        bool IDatabase.Modify(Func<DoubleBitBinary, DoubleBitBinary> update, ushort index, EventMode mode)
+        void IDatabase.Update(Binary update, ushort index, EventMode mode)
         {
-            return false;
+            this.Add(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED), "Binary");
         }
 
-        bool IDatabase.Modify(Func<Analog, Analog> update, ushort index, EventMode mode)
+        void IDatabase.Update(DoubleBitBinary update, ushort index, EventMode mode)
         {
-            return false;
+            this.Add(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED), "DoubleBitBinary");
         }
 
-        bool IDatabase.Modify(Func<Counter, Counter> update, ushort index, EventMode mode)
+        void IDatabase.Update(Analog update, ushort index, EventMode mode)
         {
-            return false;
+            this.Add(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED), "Analog");
         }
 
-        bool IDatabase.Modify(Func<FrozenCounter, FrozenCounter> update, ushort index, EventMode mode)
+        void IDatabase.Update(Counter update, ushort index, EventMode mode)
         {
-            return false;
+            this.Add(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED), "Counter");
         }
 
-        bool IDatabase.Modify(Func<BinaryOutputStatus, BinaryOutputStatus> update, ushort index, EventMode mode)
+        void IDatabase.Update(FrozenCounter update, ushort index, EventMode mode)
         {
-            return false;
+            this.Add(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED), "FrozenCounter");
         }
 
-        bool IDatabase.Modify(Func<AnalogOutputStatus, AnalogOutputStatus> update, ushort index, EventMode mode)
+        void IDatabase.Update(BinaryOutputStatus update, ushort index, EventMode mode)
         {
-            return false;
+            this.Add(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED), "BinaryOutputStatus");
         }
 
-        bool IDatabase.Modify(Func<TimeAndInterval, TimeAndInterval> update, ushort index)
+        void IDatabase.Update(AnalogOutputStatus update, ushort index, EventMode mode)
         {
-            return false;
+            this.Add(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED), "AnalogOutputStatus");
         }
+
+        void IDatabase.Update(TimeAndInterval update, ushort index)
+        {
+            this.Add(update.ToMeasurement(index, TimestampMode.SYNCHRONIZED), "TimeAndInterval");
+        }         
     }
 }
