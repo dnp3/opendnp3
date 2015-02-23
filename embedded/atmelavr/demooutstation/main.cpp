@@ -18,7 +18,7 @@
 using namespace opendnp3;
 using namespace openpal;
 
-void ToggleValuesEvery3Seconds(IExecutor* pExecutor, IDatabase* pDatabase);
+void ToggleValuesEvery3Seconds(IExecutor* pExecutor, Outstation* pOutstation);
 
 const uint16_t NUM_BINARY = 5;
 const uint32_t MAX_APDU_SIZE = 249;
@@ -64,8 +64,7 @@ int main()
 						
 	Outstation outstation(
 		GetOutstationConfig(), 
-		DatabaseTemplate(NUM_BINARY,0,1),
-		nullptr, // no synchronization required
+		DatabaseTemplate(NUM_BINARY,0,1),		
 		exe,
 		root,
 		stack.transport,
@@ -91,7 +90,7 @@ int main()
 	// Set LED as output
 	SET(DDRB, BIT(7));	
 	
-	ToggleValuesEvery3Seconds(&exe, &outstation.GetDatabase());
+	ToggleValuesEvery3Seconds(&exe, &outstation);
 		
 	int loopCount = 0;		
 				
@@ -142,7 +141,7 @@ void Sleep()
 	sleep_disable(); /* First thing to do is disable sleep. */
 }
 
-void ToggleValuesEvery3Seconds(IExecutor* pExecutor, IDatabase* pDatabase)
+void ToggleValuesEvery3Seconds(IExecutor* pExecutor, Outstation* pOutstation)
 {				
 	auto currentIndex = index;
 	auto currentValue = value;
@@ -151,12 +150,11 @@ void ToggleValuesEvery3Seconds(IExecutor* pExecutor, IDatabase* pDatabase)
 	auto time = pExecutor->GetTime().milliseconds;
 	auto freeRAM = GetFreeRAM();
 				
-	{
-		Transaction tx(pDatabase);
-		pDatabase->Update(Analog(freeRAM, 0x01, time), 0);	
-		pDatabase->Update(Binary(currentValue, 0x01, time), currentIndex);
-	}	
-		
-	auto lambda = [pExecutor, pDatabase]() { ToggleValuesEvery3Seconds(pExecutor, pDatabase); };
+	auto& db = pOutstation->GetDatabase();				
+	db.Update(Analog(freeRAM, 0x01, time), 0);	
+	db.Update(Binary(currentValue, 0x01, time), currentIndex);
+	pOutstation->CheckForUpdates();
+			
+	auto lambda = [pExecutor, pOutstation]() { ToggleValuesEvery3Seconds(pExecutor, pOutstation); };
 	pExecutor->Start(TimeDuration::Seconds(10), Action0::Bind(lambda));			
 }
