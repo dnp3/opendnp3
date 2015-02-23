@@ -28,9 +28,6 @@
     <ClCompile Include="src\testlib\CopyableBuffer.cpp" />
     <ClCompile Include="src\testlib\HexConversions.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\..\config\output_dirs.props" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{17E1D388-BE92-48AD-B082-345CF9BF603D}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -69,18 +66,22 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\config\openpal_include.props" />
+    <Import Project="..\..\..\config\output_dirs.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\config\openpal_include.props" />
+    <Import Project="..\..\..\config\output_dirs.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\config\openpal_include.props" />
+    <Import Project="..\..\..\config\output_dirs.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\..\config\openpal_include.props" />
+    <Import Project="..\..\..\config\output_dirs.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />
