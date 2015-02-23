@@ -32,6 +32,11 @@ namespace opendnp3
 
 	bool MockCryptoProvider::GetSecureRandom(openpal::WriteBufferView& buffer)
 	{
+		while (buffer.IsNotEmpty())
+		{
+			buffer[0] = secureFill;
+			buffer.Advance(1);
+		}
 		return true;
 	}
 

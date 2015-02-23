@@ -27,6 +27,7 @@
 #include <secauthv5/SimpleUserDatabase.h>
 
 #include "MockUTCTimeSource.h"
+#include "MockCryptoProvider.h"
 
 using namespace std;
 using namespace opendnp3;
@@ -41,15 +42,16 @@ TEST_CASE(SUITE("InitialState"))
 	OutstationAuthSettings settings;
 	MockUTCTimeSource utc;
 	SimpleUserDatabase users;
-
-	/*
+	MockCryptoProvider crypto;
+	
 	OutstationAuthFactory factory(
-		OutstationAuthSettings(OutstationParams()),
+		settings,
 		utc,
 		users,
-		//crypto here.
+		crypto
 	);
-	*/
+	
+	OutstationTestObject test(OutstationConfig(), factory);
 
 
 }
