@@ -26,6 +26,7 @@
 #include <opendnp3/outstation/Outstation.h>
 #include <opendnp3/outstation/Database.h>
 #include <opendnp3/outstation/NullOutstationAuthProvider.h>
+#include <opendnp3/outstation/IOutstationAuthFactory.h>
 
 #include <functional>
 
@@ -43,6 +44,10 @@ class OutstationTestObject
 
 public:
 	OutstationTestObject(const OutstationConfig& config,
+						 const DatabaseTemplate& dbTemplate = DatabaseTemplate());
+
+	OutstationTestObject(const OutstationConfig& config,
+						 IOutstationAuthFactory& authFactory,	
 						 const DatabaseTemplate& dbTemplate = DatabaseTemplate());
 
 	
@@ -81,7 +86,7 @@ public:
 	MockLowerLayer lower;	
 	MockCommandHandler cmdHandler;
 	MockOutstationApplication application;
-	NullOutstationAuthProvider auth;
+	std::unique_ptr<IOutstationAuthProvider> auth;
 	Outstation outstation;	
 };
 

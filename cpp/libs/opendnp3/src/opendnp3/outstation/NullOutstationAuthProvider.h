@@ -47,10 +47,17 @@ class NullOutstationAuthFactory : private openpal::Uncopyable, public IOutstatio
 {
 public:
 
+	static IOutstationAuthFactory& Instance() { return instance; }
+
 	virtual std::unique_ptr<IOutstationAuthProvider> Create(openpal::Logger, openpal::IExecutor&) override final
 	{
 		return std::make_unique<NullOutstationAuthProvider>();
 	}
+private:
+
+	static NullOutstationAuthFactory instance;
+
+	NullOutstationAuthFactory() {}
 };
 
 }

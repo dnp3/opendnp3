@@ -29,9 +29,8 @@ namespace asiodnp3
 		opendnp3::ICommandHandler& commandHandler,
 		opendnp3::IOutstationApplication& application,
 		const opendnp3::OutstationStackConfig& config)
-	{
-		opendnp3::NullOutstationAuthFactory factory;
-		return this->AddOutstation(id, commandHandler, application, config, factory);
+	{		
+		return this->AddOutstation(id, commandHandler, application, config, opendnp3::NullOutstationAuthFactory::Instance());
 	}
 };
 

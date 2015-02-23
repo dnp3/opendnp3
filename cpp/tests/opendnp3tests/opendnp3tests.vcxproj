@@ -295,6 +295,7 @@
     <ClCompile Include="src\TestOutstationAssignClass.cpp" />
     <ClCompile Include="src\TestOutstationCommandResponses.cpp" />
     <ClCompile Include="src\TestOutstationEventResponses.cpp" />
+    <ClCompile Include="src\TestOutstationSecAuth.cpp" />
     <ClCompile Include="src\TestOutstationUnsolicitedResponses.cpp" />
     <ClCompile Include="src\TestPhysicalLayerAsyncBase.cpp" />
     <ClCompile Include="src\TestPhysicalLayerAsyncSerial.cpp" />

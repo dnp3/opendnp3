@@ -31,13 +31,23 @@ namespace opendnp3
 {
 
 OutstationTestObject::OutstationTestObject(const OutstationConfig& config, const DatabaseTemplate& dbTemplate) :
+	OutstationTestObject(config, NullOutstationAuthFactory::Instance(), dbTemplate)
+{
+	
+}
+
+OutstationTestObject::OutstationTestObject(
+	const OutstationConfig& config,
+	IOutstationAuthFactory& authFactory,
+	const DatabaseTemplate& dbTemplate
+	) :
 	log(),
 	exe(),
-	lower(log.root),			
+	lower(log.root),
 	cmdHandler(CommandStatus::SUCCESS),
 	application(),
-	auth(),
-	outstation(config, dbTemplate, log.root.GetLogger(), nullptr, exe, lower, cmdHandler, application, auth)
+	auth(authFactory.Create(log.root.GetLogger(), exe)),
+	outstation(config, dbTemplate, log.root.GetLogger(), nullptr, exe, lower, cmdHandler, application, *auth.get())
 {
 	lower.SetUpperLayer(outstation);
 }

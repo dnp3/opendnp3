@@ -18,22 +18,19 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#include <catch.hpp>
 
-#include "NullOutstationAuthProvider.h"
+#include "OutstationTestObject.h"
+#include <testlib/HexConversions.h>
 
-#include "opendnp3/outstation/OutstationActions.h"
-#include "opendnp3/outstation/OutstationFunctions.h"
+using namespace std;
+using namespace opendnp3;
+using namespace openpal;
+using namespace testlib;
 
-namespace opendnp3
+#define SUITE(name) "OutstationSecAuthTestSuite - " name
+
+TEST_CASE(SUITE("InitialState"))
 {
-
-NullOutstationAuthFactory NullOutstationAuthFactory::instance;
-
-void NullOutstationAuthProvider::OnReceive(OState& ostate, const openpal::ReadBufferView& fragment, const APDUHeader& header, const openpal::ReadBufferView& objects)
-{
-	// null auth provider just skips any authentication and goes directly to processing
-	OActions::ProcessHeaderAndObjects(ostate, header, objects);
+	
 }
-
-}
-
