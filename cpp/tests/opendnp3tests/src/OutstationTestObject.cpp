@@ -30,15 +30,8 @@ using namespace testlib;
 namespace opendnp3
 {
 
-OutstationTestObject::OutstationTestObject(const OutstationConfig& config, const DatabaseTemplate& dbTemplate) :
-	OutstationTestObject(config, NullOutstationAuthFactory::Instance(), dbTemplate)
-{
-	
-}
-
 OutstationTestObject::OutstationTestObject(
-	const OutstationConfig& config,
-	IOutstationAuthFactory& authFactory,
+	const OutstationConfig& config,	
 	const DatabaseTemplate& dbTemplate
 	) :
 	log(),
@@ -46,8 +39,8 @@ OutstationTestObject::OutstationTestObject(
 	lower(log.root),
 	cmdHandler(CommandStatus::SUCCESS),
 	application(),
-	auth(authFactory.Create(log.root.GetLogger(), exe)),
-	outstation(config, dbTemplate, log.root.GetLogger(), nullptr, exe, lower, cmdHandler, application, *auth.get())
+	auth(),
+	outstation(config, dbTemplate, log.root.GetLogger(), nullptr, exe, lower, cmdHandler, application, auth)
 {
 	lower.SetUpperLayer(outstation);
 }

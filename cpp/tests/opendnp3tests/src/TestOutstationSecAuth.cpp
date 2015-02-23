@@ -20,14 +20,7 @@
  */
 #include <catch.hpp>
 
-#include "OutstationTestObject.h"
-
-#include <testlib/HexConversions.h>
-#include <secauthv5/outstation/OutstationAuthFactory.h>
-#include <secauthv5/SimpleUserDatabase.h>
-
-#include "MockUTCTimeSource.h"
-#include "MockCryptoProvider.h"
+#include "OutstationSecAuthTest.h"
 
 using namespace std;
 using namespace opendnp3;
@@ -39,19 +32,9 @@ using namespace testlib;
 
 TEST_CASE(SUITE("InitialState"))
 {
-	OutstationAuthSettings settings;
-	MockUTCTimeSource utc;
-	SimpleUserDatabase users;
-	MockCryptoProvider crypto;
 	
-	OutstationAuthFactory factory(
-		settings,
-		utc,
-		users,
-		crypto
-	);
+	OutstationSecAuthTest test;
 	
-	OutstationTestObject test(OutstationConfig(), factory);
 
 
 }

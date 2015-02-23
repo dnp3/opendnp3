@@ -182,6 +182,9 @@
     <ClInclude Include="src\MockKeyWrap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\OutstationSecAuthTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BufferTestObject.cpp">
@@ -426,6 +429,9 @@
     </ClCompile>
     <ClCompile Include="src\MockCryptoProvider.cpp">
       <Filter>Source Files\Mocks</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OutstationSecAuthTest.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

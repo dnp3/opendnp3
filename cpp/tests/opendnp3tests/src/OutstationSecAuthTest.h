@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __OUTSTATION_TEST_OBJECT_H_
-#define __OUTSTATION_TEST_OBJECT_H_
+#ifndef __OUTSTATION_SECAUTH_TEST_H_
+#define __OUTSTATION_SECAUTH_TEST_H_
 
 #include <opendnp3/LogLevels.h>
 #include <opendnp3/app/ITransactable.h>
@@ -28,6 +28,9 @@
 #include <opendnp3/outstation/NullOutstationAuthProvider.h>
 #include <opendnp3/outstation/IOutstationAuthFactory.h>
 
+#include <secauthv5/outstation/OutstationAuthProvider.h>
+#include <secauthv5/SimpleUserDatabase.h>
+
 #include <functional>
 
 #include "MockExecutor.h"
@@ -35,54 +38,44 @@
 #include "MockCommandHandler.h"
 #include "MockLowerLayer.h"
 #include "MockOutstationApplication.h"
+#include "MockCryptoProvider.h"
+#include "MockUTCTimeSource.h"
 
 namespace opendnp3
 {
 
-class OutstationTestObject
+class OutstationSecAuthTest
 {
 
 public:
-	OutstationTestObject(const OutstationConfig& config,
-						 const DatabaseTemplate& dbTemplate = DatabaseTemplate());	
-
-	
+	OutstationSecAuthTest(
+		const OutstationConfig& config = OutstationConfig(),
+		const secauthv5::OutstationAuthSettings& authConfig = secauthv5::OutstationAuthSettings()
+	);
+														
 	uint32_t SendToOutstation(const std::string& hex);
 
 	uint32_t LowerLayerUp();
 
-	uint32_t LowerLayerDown();	
+	uint32_t LowerLayerDown();
 
 	uint32_t OnSendResult(bool isSuccess);
 
-	size_t NumPendingTimers() const;	
+	size_t NumPendingTimers() const;
 
 	bool AdvanceToNextTimer();
 
-	uint32_t AdvanceTime(const openpal::TimeDuration& td);	
+	uint32_t AdvanceTime(const openpal::TimeDuration& td);
 
 	LogTester log;
-	
-	uint32_t Transaction(const std::function<void (IDatabase&)>& apply)
-	{
-		{
-			auto& db = outstation.GetDatabase();
-			opendnp3::Transaction tx(db);
-			apply(db);
-		}
-		return exe.RunMany();
-	}
-
-private:
-
 	MockExecutor exe;
-
-public:
-
 	MockLowerLayer lower;	
 	MockCommandHandler cmdHandler;
 	MockOutstationApplication application;
-	NullOutstationAuthProvider auth;
+	MockUTCTimeSource utc;
+	secauthv5::SimpleUserDatabase users;
+	MockCryptoProvider crypto;	
+	secauthv5::OutstationAuthProvider auth;
 	Outstation outstation;	
 };
 
