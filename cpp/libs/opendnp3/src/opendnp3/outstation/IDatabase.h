@@ -21,7 +21,6 @@
 #ifndef OPENDNP3_IDATABASE_H
 #define OPENDNP3_IDATABASE_H
 
-#include "opendnp3/app/ITransactable.h"
 #include "opendnp3/app/MeasurementTypes.h"
 #include "opendnp3/app/TimeAndInterval.h"
 
@@ -50,7 +49,7 @@ exception-safe Transaction object.
 
 */
 
-class IDatabase : public ITransactable
+class IDatabase
 {
 public:
 

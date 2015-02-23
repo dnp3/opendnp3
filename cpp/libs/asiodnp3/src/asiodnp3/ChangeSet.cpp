@@ -18,37 +18,26 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_MUTEX_H
-#define ASIODNP3_MUTEX_H
 
-#include <mutex>
-
-#include <openpal/executor/IMutex.h>
+#include "ChangeSet.h"
 
 namespace asiodnp3
-{
-
-class Mutex : public openpal::IMutex
-{
-
-protected:
-
-
-	virtual void Lock() override final
+{	
+	void ChangeSet::Add(const UpdateFun& fun)
 	{
-		mutex.lock();
+		updates.push_back(fun);
 	}
 
-	virtual void Unlock() override final
+	void ChangeSet::ApplyAll(opendnp3::IDatabase& db)
 	{
-		mutex.unlock();
+		for (auto& update : updates)
+		{
+			update(db);
+		}
 	}
 
-private:
-
-	std::mutex mutex;
-};
-
+	bool ChangeSet::IsEmpty() const
+	{
+		return updates.empty();
+	}
 }
-
-#endif

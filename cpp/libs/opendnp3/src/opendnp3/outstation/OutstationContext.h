@@ -49,14 +49,13 @@ namespace opendnp3
 {
 
 /// Represent all of the "state" and configuration for an outstation
-class OutstationContext : private INewEventDataHandler
+class OutstationContext
 {
 	
 	public:		
 
 	OutstationContext(	const OutstationConfig& config,
-						const DatabaseTemplate& dbTemplate,
-						openpal::IMutex* pMutex,
+						const DatabaseTemplate& dbTemplate,						
 						openpal::IExecutor& executor,
 						openpal::LogRoot& root, 
 						ILowerLayer& lower,
@@ -142,9 +141,9 @@ class OutstationContext : private INewEventDataHandler
 
 	void ProcessNoResponseFunction(const APDUHeader& header, const openpal::ReadBufferView& objects);
 
-	private:
+	void CheckForNewEventData();
 
-	virtual void OnNewEventData() override final;
+	private:
 
 	void PostCheckForActions();
 

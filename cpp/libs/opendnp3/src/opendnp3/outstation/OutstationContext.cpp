@@ -48,8 +48,7 @@ namespace opendnp3
 
 OutstationContext::OutstationContext(
 		const OutstationConfig& config,
-		const DatabaseTemplate& dbTemplate,
-		openpal::IMutex* pMutex_,
+		const DatabaseTemplate& dbTemplate,		
 		IExecutor& executor,
 		LogRoot& root,
 		ILowerLayer& lower,
@@ -63,7 +62,7 @@ OutstationContext::OutstationContext(
 	pCommandHandler(&commandHandler),
 	pApplication(&application),	
 	eventBuffer(config.eventBufferConfig),
-	database(dbTemplate, eventBuffer, *this, config.params.indexMode, config.params.typesAllowedInClass0, pMutex_),
+	database(dbTemplate, eventBuffer, config.params.indexMode, config.params.typesAllowedInClass0),
 	isOnline(false),
 	pendingTaskCheckFlag(false),
 	pSolicitedState(&OutstationSolicitedStateIdle::Inst()),
@@ -88,9 +87,9 @@ OutstationContext::OutstationContext(
 	staticIIN.SetBit(IINBit::DEVICE_RESTART);		
 }
 
-void OutstationContext::OnNewEventData()
+void OutstationContext::CheckForNewEventData()
 {		
-	this->PostCheckForActions();			
+	this->CheckForTaskStart();
 }
 
 IINField OutstationContext::GetDynamicIIN()
@@ -488,15 +487,10 @@ void OutstationContext::CheckForUnsolicited()
 				
 				auto unsolResponse = this->StartNewUnsolicitedResponse();
 				auto writer = unsolResponse.GetWriter();				
-						
-				{
-					// even though we're not loading static data, we need to lock 
-					// the database since it updates the event buffer					
-					Transaction tx(database);
-					eventBuffer.Unselect();
-					eventBuffer.SelectAllByClass(params.unsolClassMask);
-					eventBuffer.Load(writer);
-				}
+								
+				eventBuffer.Unselect();
+				eventBuffer.SelectAllByClass(params.unsolClassMask);
+				eventBuffer.Load(writer);				
 							
 				this->ConfigureUnsolHeader(unsolResponse);
 				this->StartUnsolicitedConfirmTimer();
@@ -559,10 +553,7 @@ void OutstationContext::OnUnsolConfirmTimeout()
 
 Pair<IINField, AppControlField> OutstationContext::HandleRead(const openpal::ReadBufferView& objects, HeaderWriter& writer)
 {
-	rspContext.Reset();
-
-	// Do a transaction (lock) on the database  for multi-threaded environments
-	Transaction tx(database);	
+	rspContext.Reset();	
 	eventBuffer.Unselect(); // always unselect any perviously selected points when we start a new read request
 	database.Unselect();
 	ReadHandler handler(logger, database.GetSelector(), eventBuffer);
@@ -753,10 +744,7 @@ IINField OutstationContext::HandleAssignClass(const openpal::ReadBufferView& obj
 {
 	if (pApplication->SupportsAssignClass())
 	{		
-		AssignClassHandler handler(logger, *pExecutor, *pApplication, database.GetClassAssigner());
-
-		// Lock the db as this can adjust configuration values in the database
-		Transaction tx(database);
+		AssignClassHandler handler(logger, *pExecutor, *pApplication, database.GetClassAssigner());		
 		auto result = APDUParser::ParseTwoPass(objects, &handler, &logger, APDUParser::Settings::NoContents());
 		return (result == APDUParser::Result::OK) ? handler.Errors() : IINFromParseResult(result);
 	}

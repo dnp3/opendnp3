@@ -44,8 +44,9 @@ namespace DotNetOutstationDemo
 
             // configure the various measurements in our database
             config.databaseTemplate = new DatabaseTemplate(4, 1, 1, 1, 1, 1, 1, 0);
-            config.databaseTemplate.binaries[0].clazz = PointClass.Class2;            
+            config.databaseTemplate.binaries[0].clazz = PointClass.Class2;               
             // ....           
+            config.outstation.config.allowUnsolicited = true;
 
             // Optional: setup your stack configuration here
             config.link.localAddr = 10;
@@ -55,17 +56,21 @@ namespace DotNetOutstationDemo
 
             outstation.Enable(); // enable communications
 
-            Console.WriteLine("Press <Enter> to randomly change a value");
-            var database = outstation.GetDatabase();
-            bool value = false;
+            Console.WriteLine("Press <Enter> to change a value");            
+            bool binaryValue = false;
+            double analogValue = 0;
             while (true)
             {
                 Console.ReadLine();
-                value = !value;
-                System.Console.WriteLine("Change Binary 1 to: " + value);
-                database.Start();
-                database.Update(new Binary(value, 1, DateTime.Now), 0);                
-                database.End();
+                binaryValue = !binaryValue;
+                ++analogValue;
+                System.Console.WriteLine("Change Binary 0 to: " + binaryValue);
+                System.Console.WriteLine("Change Analog 9 to: " + analogValue);
+                outstation.LoadChanges(db => 
+                {
+                    db.Update(new Binary(binaryValue, 1, DateTime.Now), 0);
+                    db.Update(new Analog(analogValue, 1, DateTime.Now), 0);
+                });                
             }
         }
     }

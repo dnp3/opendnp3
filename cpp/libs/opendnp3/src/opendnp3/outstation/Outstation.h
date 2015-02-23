@@ -34,8 +34,7 @@ class Outstation : public IUpperLayer
 	public:
 
 	Outstation(		const OutstationConfig& config,
-					const DatabaseTemplate& dbTemplate,
-					openpal::IMutex* pDBMutex,
+					const DatabaseTemplate& dbTemplate,					
 					openpal::IExecutor& executor, 
 					openpal::LogRoot& root, 
 					ILowerLayer& lower,
@@ -56,6 +55,8 @@ class Outstation : public IUpperLayer
 	/// ---- Other public members
 
 	void SetRestartIIN();
+
+	void CheckForUpdates(); //force a check for updates
 
 	IDatabase& GetDatabase();
 

@@ -34,6 +34,8 @@
 #include "MockLowerLayer.h"
 #include "MockOutstationApplication.h"
 
+#include <functional>
+
 namespace opendnp3
 {
 
@@ -61,14 +63,11 @@ public:
 
 	LogTester log;
 	
-	uint32_t Transaction(const std::function<void (IDatabase&)>& apply)
-	{
-		{
-			auto& db = outstation.GetDatabase();
-			opendnp3::Transaction tx(db);
-			apply(db);
-		}
-		return exe.RunMany();
+	void Transaction(const std::function<void (IDatabase&)>& apply)
+	{		
+		auto& db = outstation.GetDatabase();			
+		apply(db);
+		outstation.CheckForUpdates();	
 	}
 
 private:

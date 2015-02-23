@@ -26,8 +26,8 @@
 #include "opendnp3/outstation/Cell.h"
 #include "opendnp3/outstation/DatabaseTemplate.h"
 
-#include <openpal/executor/IMutex.h>
 #include <openpal/container/DynamicArray.h>
+#include <openpal/util/Uncopyable.h>
 
 namespace opendnp3
 {

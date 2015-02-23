@@ -24,6 +24,8 @@
 
 #include "Erasure.h"
 
+#include <assert.h>
+
 namespace openpal
 {
 
