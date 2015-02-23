@@ -45,6 +45,18 @@ namespace opendnp3
 		lower.SetUpperLayer(outstation);
 	}
 
+	void OutstationSecAuthTest::AddUser(secauthv5::User, secauthv5::UpdateKeyMode mode, uint8_t keyRepeat)
+	{
+		auto keySize = (mode == UpdateKeyMode::AES128) ? 16 : 32;
+		openpal::DynamicBuffer key(keySize);
+		key.GetWriteBufferView().SetAllTo(keyRepeat);
+		users.ConfigureUser(
+			secauthv5::User::Default(),
+			mode,
+			key.ToReadOnly()
+		);		
+	}
+
 	uint32_t OutstationSecAuthTest::LowerLayerUp()
 	{
 		outstation.OnLowerLayerUp();

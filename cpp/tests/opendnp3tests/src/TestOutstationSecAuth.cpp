@@ -34,7 +34,7 @@ TEST_CASE(SUITE("InitialState"))
 {
 	
 	OutstationSecAuthTest test;
-	
+	test.AddUser(User::Default(), UpdateKeyMode::AES128, 0xFF);
 
 
 }

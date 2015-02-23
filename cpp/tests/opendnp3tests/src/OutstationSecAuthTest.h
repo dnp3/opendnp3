@@ -52,6 +52,8 @@ public:
 		const OutstationConfig& config = OutstationConfig(),
 		const secauthv5::OutstationAuthSettings& authConfig = secauthv5::OutstationAuthSettings()
 	);
+
+	void AddUser(secauthv5::User, secauthv5::UpdateKeyMode mode, uint8_t keyRepeat);
 														
 	uint32_t SendToOutstation(const std::string& hex);
 
