@@ -170,6 +170,18 @@
     <ClInclude Include="src\BufferSegment.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\MockUTCTimeSource.h">
+      <Filter>Header Files\Mocks</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MockCryptoProvider.h">
+      <Filter>Header Files\Mocks</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MockHMAC.h">
+      <Filter>Header Files\Mocks</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MockKeyWrap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BufferTestObject.cpp">
@@ -411,6 +423,9 @@
     </ClCompile>
     <ClCompile Include="src\TestOutstationSecAuth.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MockCryptoProvider.cpp">
+      <Filter>Source Files\Mocks</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

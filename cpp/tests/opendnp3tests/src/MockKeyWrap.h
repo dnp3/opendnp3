@@ -18,38 +18,46 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <catch.hpp>
+#ifndef __MOCK_KEYWRAP_H_
+#define __MOCK_KEYWRAP_H_
 
-#include "OutstationTestObject.h"
+#include <openpal/crypto/IKeyWrapAlgo.h>
 
-#include <testlib/HexConversions.h>
-#include <secauthv5/outstation/OutstationAuthFactory.h>
-#include <secauthv5/SimpleUserDatabase.h>
+#include <testlib/BufferHelpers.h>
 
-#include "MockUTCTimeSource.h"
+#include <stdexcept>
 
-using namespace std;
-using namespace opendnp3;
-using namespace secauthv5;
-using namespace openpal;
-using namespace testlib;
-
-#define SUITE(name) "OutstationSecAuthTestSuite - " name
-
-TEST_CASE(SUITE("InitialState"))
+namespace opendnp3
 {
-	OutstationAuthSettings settings;
-	MockUTCTimeSource utc;
-	SimpleUserDatabase users;
+	class MockKeyWrap : public openpal::IKeyWrapAlgo
+	{
+	public:		
 
-	/*
-	OutstationAuthFactory factory(
-		OutstationAuthSettings(OutstationParams()),
-		utc,
-		users,
-		//crypto here.
-	);
-	*/
+		virtual openpal::ReadBufferView WrapKey(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output, openpal::Logger* pLogger) const
+		{
+			throw std::logic_error("not implemented");
+		}
+		
+		virtual openpal::ReadBufferView UnwrapKey(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output, openpal::Logger* pLogger) const
+		{
+			if (kek.Size() < 128 || kek.Size() > 256)
+			{
+				throw std::logic_error("bad key size");
+			}
 
+			testlib::HexSequence hex(hexOutput);
+			auto data = hex.ToReadOnly();
+			if (output.Size() < data.Size())
+			{
+				throw std::logic_error("Output buffer too small");
+			}
 
+			return data.CopyTo(output);
+		}
+
+		std::string hexOutput;		
+	};
 }
+
+#endif
+

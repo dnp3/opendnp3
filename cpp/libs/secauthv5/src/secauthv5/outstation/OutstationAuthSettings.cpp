@@ -21,12 +21,21 @@
 
 #include "OutstationAuthSettings.h"
 
+#include <opendnp3/app/AppConstants.h>
+
 namespace secauthv5
 {
 
 	OutstationAuthSettings::OutstationAuthSettings(const opendnp3::OutstationParams& params) :
 		maxRxASDUSize(params.maxRxFragSize),
 		maxTxASDUSize(params.maxTxFragSize),
+		assocId(0),
+		hmacMode(HMACMode::SHA256_TRUNC_16) // strongest by default
+	{}
+
+	OutstationAuthSettings::OutstationAuthSettings() :
+		maxRxASDUSize(opendnp3::DEFAULT_MAX_APDU_SIZE),
+		maxTxASDUSize(opendnp3::DEFAULT_MAX_APDU_SIZE),
 		assocId(0),
 		hmacMode(HMACMode::SHA256_TRUNC_16) // strongest by default
 	{}

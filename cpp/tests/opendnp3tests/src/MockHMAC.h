@@ -18,38 +18,51 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <catch.hpp>
+#ifndef __MOCK_HMAC_H_
+#define __MOCK_HMAC_H_
 
-#include "OutstationTestObject.h"
+#include <openpal/crypto/IHMACAlgo.h>
 
-#include <testlib/HexConversions.h>
-#include <secauthv5/outstation/OutstationAuthFactory.h>
-#include <secauthv5/SimpleUserDatabase.h>
-
-#include "MockUTCTimeSource.h"
-
-using namespace std;
-using namespace opendnp3;
-using namespace secauthv5;
-using namespace openpal;
-using namespace testlib;
-
-#define SUITE(name) "OutstationSecAuthTestSuite - " name
-
-TEST_CASE(SUITE("InitialState"))
+namespace opendnp3
 {
-	OutstationAuthSettings settings;
-	MockUTCTimeSource utc;
-	SimpleUserDatabase users;
+	class MockHMAC : public openpal::IHMACAlgo
+	{
+	public:
 
-	/*
-	OutstationAuthFactory factory(
-		OutstationAuthSettings(OutstationParams()),
-		utc,
-		users,
-		//crypto here.
-	);
-	*/
+		MockHMAC(uint16_t size) : SIZE(size), fillByte(0xFF) {}
 
+		virtual uint16_t OutputSize() const { return SIZE; }
 
+		virtual bool Calculate(
+			const openpal::ReadBufferView& key,
+			std::initializer_list<openpal::ReadBufferView> data,
+			openpal::WriteBufferView& output
+			)
+		{
+			if (output.Size() < SIZE)
+			{
+				return false;
+			}
+			else
+			{
+				for (uint16_t i = 0; i < SIZE; ++i)
+				{
+					output[i] = fillByte;
+				}
+				output.Advance(SIZE);
+				return true;
+			}			
+		}
+
+		uint8_t fillByte;
+
+	private:
+
+		const uint16_t SIZE;
+
+		
+	};
 }
+
+#endif
+

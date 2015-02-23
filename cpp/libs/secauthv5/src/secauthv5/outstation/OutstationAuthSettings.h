@@ -33,7 +33,11 @@ namespace secauthv5
 */
 struct OutstationAuthSettings
 {	
+	OutstationAuthSettings();
+
 	OutstationAuthSettings(const opendnp3::OutstationParams&);
+
+	
 
 	uint32_t maxRxASDUSize;
 	uint32_t maxTxASDUSize;	

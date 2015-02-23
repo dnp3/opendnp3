@@ -18,38 +18,35 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <catch.hpp>
+#ifndef __MOCK_UTCTIMESOURCE_H_
+#define __MOCK_UTCTIMESOURCE_H_
 
-#include "OutstationTestObject.h"
+#include <openpal/executor/IUTCTimeSource.h>
 
-#include <testlib/HexConversions.h>
-#include <secauthv5/outstation/OutstationAuthFactory.h>
-#include <secauthv5/SimpleUserDatabase.h>
+#include <vector>
+#include <functional>
 
-#include "MockUTCTimeSource.h"
-
-using namespace std;
-using namespace opendnp3;
-using namespace secauthv5;
-using namespace openpal;
-using namespace testlib;
-
-#define SUITE(name) "OutstationSecAuthTestSuite - " name
-
-TEST_CASE(SUITE("InitialState"))
+namespace opendnp3
 {
-	OutstationAuthSettings settings;
-	MockUTCTimeSource utc;
-	SimpleUserDatabase users;
 
-	/*
-	OutstationAuthFactory factory(
-		OutstationAuthSettings(OutstationParams()),
-		utc,
-		users,
-		//crypto here.
-	);
-	*/
+class MockUTCTimeSource : public openpal::IUTCTimeSource
+{
+
+public:
+
+	MockUTCTimeSource() : time(0)
+	{}
+
+	virtual openpal::UTCTimestamp Now() override final
+	{
+		return openpal::UTCTimestamp(time);
+	}	
+	
+	uint64_t time;
+};
 
 
 }
+
+#endif
+

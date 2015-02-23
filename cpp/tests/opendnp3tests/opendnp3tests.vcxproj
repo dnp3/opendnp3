@@ -188,8 +188,12 @@
     <ClInclude Include="src\APDUHelpers.h" />
     <ClInclude Include="src\APDUHexBuilders.h" />
     <ClInclude Include="src\BufferSegment.h" />
+    <ClInclude Include="src\MockCryptoProvider.h" />
+    <ClInclude Include="src\MockHMAC.h" />
+    <ClInclude Include="src\MockKeyWrap.h" />
     <ClInclude Include="src\MockMasterApplication.h" />
     <ClInclude Include="src\MockTaskCallback.h" />
+    <ClInclude Include="src\MockUTCTimeSource.h" />
     <ClInclude Include="src\PhysBaseTest.h" />
     <ClInclude Include="src\PhysTestObject.h" />
     <ClInclude Include="src\SerialTestObject.h" />
@@ -241,6 +245,7 @@
     <ClCompile Include="src\APDUHelpers.cpp" />
     <ClCompile Include="src\APDUHexBuilders.cpp" />
     <ClCompile Include="src\BufferSegment.cpp" />
+    <ClCompile Include="src\MockCryptoProvider.cpp" />
     <ClCompile Include="src\PhysBaseTest.cpp" />
     <ClCompile Include="src\PhysTestObject.cpp" />
     <ClCompile Include="src\SerialTestObject.cpp" />

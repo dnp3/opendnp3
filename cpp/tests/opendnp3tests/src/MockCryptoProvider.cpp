@@ -18,38 +18,42 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <catch.hpp>
 
-#include "OutstationTestObject.h"
+#include "MockCryptoProvider.h"
 
-#include <testlib/HexConversions.h>
-#include <secauthv5/outstation/OutstationAuthFactory.h>
-#include <secauthv5/SimpleUserDatabase.h>
+namespace opendnp3
+{	
+	MockCryptoProvider::MockCryptoProvider() :
+		secureFill(0xAA),
+		sha1(20),
+		sha256(32)
+	{}
+	
 
-#include "MockUTCTimeSource.h"
+	bool MockCryptoProvider::GetSecureRandom(openpal::WriteBufferView& buffer)
+	{
+		return true;
+	}
 
-using namespace std;
-using namespace opendnp3;
-using namespace secauthv5;
-using namespace openpal;
-using namespace testlib;
+	openpal::IHMACAlgo& MockCryptoProvider::GetSHA1HMAC()
+	{
+		return sha1;
+	}
+	
+	openpal::IHMACAlgo& MockCryptoProvider::GetSHA256HMAC()
+	{
+		return sha256;
+	}
 
-#define SUITE(name) "OutstationSecAuthTestSuite - " name
-
-TEST_CASE(SUITE("InitialState"))
-{
-	OutstationAuthSettings settings;
-	MockUTCTimeSource utc;
-	SimpleUserDatabase users;
-
-	/*
-	OutstationAuthFactory factory(
-		OutstationAuthSettings(OutstationParams()),
-		utc,
-		users,
-		//crypto here.
-	);
-	*/
-
-
+	openpal::IKeyWrapAlgo& MockCryptoProvider::GetAES256KeyWrap()
+	{
+		return aes256;
+	}
+	
+	openpal::IKeyWrapAlgo& MockCryptoProvider::GetAES128KeyWrap()
+	{
+		return aes128;
+	}	
 }
+
+
