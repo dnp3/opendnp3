@@ -71,14 +71,24 @@ add_library(secauthv5
  ${secauthv5_SRC}
 )
 
+# ---- testlib library ----
+file(GLOB_RECURSE testlib_SRC 
+       ./cpp/tests/testlib/src/testlib/*.cpp)
+
+add_library(testlib
+ ${testlib_SRC}
+)
+
 # ---- declare linking dependencies, i.e. if A then B ----
 
 target_link_libraries(secauthv5 opendnp3)
 target_link_libraries(secauthv5 openpal)
 target_link_libraries(opendnp3 openpal)
+target_link_libraries(testlib openpal)
 target_link_libraries(asiopal openpal)
 target_link_libraries(asiodnp3 opendnp3)
 target_link_libraries(asiodnp3 asiopal)
+
 
 # ----- master demo executable -----
 
