@@ -28,8 +28,8 @@ using namespace secauthv5;
 namespace opendnp3
 {
 	OutstationSecAuthTest::OutstationSecAuthTest(
-		const OutstationConfig& config,
-		const secauthv5::OutstationAuthSettings& authConfig
+		const secauthv5::OutstationAuthSettings& authConfig,
+		const OutstationConfig& config
 	) : 
 		log(),
 		exe(),

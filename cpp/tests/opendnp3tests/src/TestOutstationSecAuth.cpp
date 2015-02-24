@@ -33,32 +33,49 @@ using namespace testlib;
 
 #define SUITE(name) "OutstationSecAuthTestSuite - " name\
 
-void TestSessionKeyChange(OutstationSecAuthTest& test, User user, KeyWrapAlgorithm keyWrap);
+void TestSessionKeyChange(OutstationSecAuthTest& test, User user, KeyWrapAlgorithm keyWrap, HMACMode hmacMode);
 void SetMockKeyWrapData(MockCryptoProvider& crypto, KeyWrapAlgorithm keyWrap, const std::string& lastStatusRsp);
 
-TEST_CASE(SUITE("ChangeSessionKeys-AES128"))
+TEST_CASE(SUITE("ChangeSessionKeys-AES128-SHA256-16"))
 {	
 	OutstationSecAuthTest test;
 	test.AddUser(User::Default(), UpdateKeyMode::AES128, 0xFF);
 	TestSessionKeyChange(
 		test, 
 		User::Default(),
-		KeyWrapAlgorithm::AES_128
+		KeyWrapAlgorithm::AES_128,
+		HMACMode::SHA256_TRUNC_16
 	);
 }
 
-TEST_CASE(SUITE("ChangeSessionKeys-AES256"))
+TEST_CASE(SUITE("ChangeSessionKeys-AES256-SHA256-16"))
 {
 	OutstationSecAuthTest test;
 	test.AddUser(User::Default(), UpdateKeyMode::AES256, 0xFF);
 	TestSessionKeyChange(
 		test,
 		User::Default(),
-		KeyWrapAlgorithm::AES_256
+		KeyWrapAlgorithm::AES_256,
+		HMACMode::SHA256_TRUNC_16
 	);
 }
 
-void TestSessionKeyChange(OutstationSecAuthTest& test, User user, KeyWrapAlgorithm keyWrap)
+TEST_CASE(SUITE("ChangeSessionKeys-AES256-SHA1-8"))
+{
+	OutstationAuthSettings settings;
+	settings.hmacMode = HMACMode::SHA1_TRUNC_8; // use a non-default HMAC mode
+
+	OutstationSecAuthTest test(settings);
+	test.AddUser(User::Default(), UpdateKeyMode::AES256, 0xFF);
+	TestSessionKeyChange(
+		test,
+		User::Default(),
+		KeyWrapAlgorithm::AES_256,
+		HMACMode::SHA1_TRUNC_8
+	);
+}
+
+void TestSessionKeyChange(OutstationSecAuthTest& test, User user, KeyWrapAlgorithm keyWrap, HMACMode hmacMode)
 {
 	test.LowerLayerUp();
 
@@ -93,9 +110,9 @@ void TestSessionKeyChange(OutstationSecAuthTest& test, User user, KeyWrapAlgorit
 		user.GetId(), // user
 		keyWrap,
 		KeyStatus::OK,
-		HMACType::HMAC_SHA256_TRUNC_16,
+		ToHMACType(hmacMode),
 		"AA AA AA AA", // challenge
-		RepeatHex(0xFF, 16));  // fixed value from hmac mock
+		RepeatHex(0xFF, GetTruncationSize(hmacMode)));  // fixed value from hmac mock
 
 	REQUIRE(test.lower.PopWriteAsHex() == keyStatusRspFinal);
 	test.outstation.OnSendResult(true);

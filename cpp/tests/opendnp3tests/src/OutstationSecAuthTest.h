@@ -49,8 +49,8 @@ class OutstationSecAuthTest
 
 public:
 	OutstationSecAuthTest(
-		const OutstationConfig& config = OutstationConfig(),
-		const secauthv5::OutstationAuthSettings& authConfig = secauthv5::OutstationAuthSettings()
+		const secauthv5::OutstationAuthSettings& authConfig = secauthv5::OutstationAuthSettings(),
+		const OutstationConfig& config = OutstationConfig()		
 	);
 
 	void AddUser(secauthv5::User, secauthv5::UpdateKeyMode mode, uint8_t keyRepeat);
