@@ -33,17 +33,34 @@ using namespace testlib;
 TEST_CASE(SUITE("CanChangeSessionKeys"))
 {	
 	OutstationSecAuthTest test;
+	test.log.WriteToStdIo();
 	test.AddUser(User::Default(), UpdateKeyMode::AES128, 0xFF);
 	test.LowerLayerUp();
 
-	REQUIRE(test.lower.PopWriteAsHex() == "");
+	REQUIRE(test.lower.HasNoData());
 
+	// -- request key status, user = 1 ---
 	test.SendToOutstation("C0 20 78 04 07 01 01 00");
 
 	//
+	// --- key status response ---
 	//
+	// KSQ = 0x01000000
+	// user = 0x0100
+	// key wrap = 0x01 (aes128)
+	// key status = 0x02 (not init)
+	// MAC = 0x00 (no mac)
+	// challenge length = 0x0400
+	// challenge data = 0xAAAAAAAA
 	//
 	auto status = "C0 83 00 00 78 05 5B 01 0F 00 01 00 00 00 01 00 01 02 00 04 00 AA AA AA AA";
-
 	REQUIRE(test.lower.PopWriteAsHex() == status);
+	test.outstation.OnSendResult(true);
+	REQUIRE(test.lower.HasNoData());
+
+	// -- session key change request --
+	test.SendToOutstation("C0 20 78 06 5B 01 CC CC 01 00 00 00 01 00 FF FF FF FF");
+
+	auto result = "FF";
+	REQUIRE(test.lower.PopWriteAsHex() == result);	
 }

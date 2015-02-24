@@ -51,9 +51,11 @@ class LogTester : public openpal::ILogHandler
 public:
 	LogTester(uint32_t filters = levels::NORMAL);
 
-	void Log(const std::string& aLocation, const std::string& aMessage);
+	void WriteToStdIo();
 
-	void Log( const openpal::LogEntry& arEntry );
+	void Log(const std::string& location, const std::string& msg);
+
+	void Log( const openpal::LogEntry& entry);
 
 	int32_t PopFilter();
 
@@ -73,10 +75,10 @@ public:
 	openpal::LogRoot root;
 
 protected:
-
 	
+	bool outputToStdIO;
 	openpal::Logger logger;
-	std::queue<LogRecord> mBuffer;
+	std::deque<LogRecord> messages;
 
 };
 

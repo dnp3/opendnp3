@@ -20,6 +20,10 @@
  */
 #include "LogTester.h"
 
+#include <asiodnp3/ConsoleLogger.h>
+
+#include <iostream>
+
 using namespace openpal;
 
 namespace opendnp3
@@ -43,7 +47,10 @@ LogRecord::LogRecord(const LogEntry& entry) :
 
 }
 
-LogTester::LogTester(uint32_t filters) : root(this, "test", filters), logger(root.GetLogger())
+LogTester::LogTester(uint32_t filters) : 
+	root(this, "test", filters), 
+	outputToStdIO(false),
+	logger(root.GetLogger())
 {
 
 }
@@ -51,15 +58,20 @@ LogTester::LogTester(uint32_t filters) : root(this, "test", filters), logger(roo
 
 void LogTester::Log( const LogEntry& entry )
 {
-	mBuffer.push(entry);
+	if (outputToStdIO)
+	{
+		asiodnp3::ConsoleLogger::Instance().Log(entry);
+	}
+
+	messages.push_back(entry);
 }
 
 int32_t LogTester::PopFilter()
 {
-	if (mBuffer.size() > 0)
+	if (messages.size() > 0)
 	{
-		auto flags = mBuffer.front().filters.GetBitfield();
-		mBuffer.pop();
+		auto flags = messages.front().filters.GetBitfield();
+		messages.pop_front();
 		return flags;	
 	}
 	else
@@ -70,11 +82,11 @@ int32_t LogTester::PopFilter()
 
 bool LogTester::PopOneEntry(int32_t filter)
 {
-	if (mBuffer.size() == 1)
+	if (messages.size() == 1)
 	{
-		if (mBuffer.front().filters.IsSet(filter))
+		if (messages.front().filters.IsSet(filter))
 		{
-			mBuffer.pop();
+			messages.pop_front();
 			return true;
 		}
 		else return false;
@@ -84,10 +96,10 @@ bool LogTester::PopOneEntry(int32_t filter)
 
 bool LogTester::PopUntil(int32_t filter)
 {
-	while (!mBuffer.empty())
+	while (!messages.empty())
 	{
-		bool match = mBuffer.front().filters.IsSet(filter);
-		mBuffer.pop();
+		bool match = messages.front().filters.IsSet(filter);
+		messages.pop_front();
 		if (match)
 		{
 			return true;
@@ -101,10 +113,10 @@ int LogTester::ClearLog()
 {
 	int max = -1;
 	LogEntry le;
-	while(!mBuffer.empty())
+	while (!messages.empty())
 	{
-		if(mBuffer.front().errorCode > max) max = le.GetErrorCode();
-		mBuffer.pop();
+		if (messages.front().errorCode > max) max = le.GetErrorCode();
+		messages.pop_front();
 	}
 
 	return max;
@@ -115,13 +127,18 @@ void LogTester::Log(const std::string& location, const std::string& message)
 	logger.Log(flags::EVENT, location.c_str(), message.c_str());
 }
 
+void LogTester::WriteToStdIo()
+{
+	this->outputToStdIO = true;
+}
+
 int LogTester::NextErrorCode()
 {
 	LogRecord rec;
-	while(!mBuffer.empty())
+	while (!messages.empty())
 	{
-		rec = mBuffer.front();
-		mBuffer.pop();
+		rec = messages.front();
+		messages.pop_front();
 		if (rec.errorCode >= 0)
 		{
 			return rec.errorCode;
@@ -132,11 +149,11 @@ int LogTester::NextErrorCode()
 
 bool LogTester::GetNextEntry(LogRecord& record)
 {
-	if(mBuffer.empty()) return false;
+	if (messages.empty()) return false;
 	else
 	{
-		record = mBuffer.front();
-		mBuffer.pop();
+		record = messages.front();
+		messages.pop_front();
 		return true;
 	}
 }

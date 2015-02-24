@@ -46,6 +46,8 @@ public:
 	void EnableAutoSendCallback(bool aIsSuccess);
 	void DisableAutoSendCallback();
 
+	bool HasNoData() const;
+
 	size_t NumWrites() const;
 	openpal::ReadBufferView PopWrite();
 	std::string PopWriteAsHex();

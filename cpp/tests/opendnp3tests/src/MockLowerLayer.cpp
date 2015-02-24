@@ -37,6 +37,11 @@ MockLowerLayer::MockLowerLayer(openpal::LogRoot& root) :
 
 }
 
+bool MockLowerLayer::HasNoData() const
+{
+	return sendQueue.empty();
+}
+
 size_t MockLowerLayer::NumWrites() const
 {
 	return sendQueue.size();
