@@ -28,10 +28,12 @@ stamp-h1
 INSTALL
 cpp/demos/INSTALL
 
-#cmake stuff
+# cmake stuff
 CMakeCache.txt
 CMakeFiles/
 cmake_install.cmake
+libopenpal.a
+libasiopal.a
 
 
 apdufuzzer

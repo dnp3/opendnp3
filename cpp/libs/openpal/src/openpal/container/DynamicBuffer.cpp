@@ -28,7 +28,8 @@ namespace openpal
 
 	DynamicBuffer::DynamicBuffer(const ReadBufferView& input) : DynamicArray<uint8_t, uint32_t>(input.Size())
 	{
-		input.CopyTo(this->GetWriteBufferView());
+		auto dest = this->GetWriteBufferView();
+		input.CopyTo(dest);
 	}
 
 	ReadBufferView DynamicBuffer::ToReadOnly() const
