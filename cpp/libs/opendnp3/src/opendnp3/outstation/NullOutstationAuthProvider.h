@@ -51,7 +51,7 @@ public:
 
 	virtual std::unique_ptr<IOutstationAuthProvider> Create(openpal::Logger, openpal::IExecutor&) override final
 	{
-		return std::make_unique<NullOutstationAuthProvider>();
+		return std::unique_ptr<IOutstationAuthProvider>(new NullOutstationAuthProvider());
 	}
 private:
 

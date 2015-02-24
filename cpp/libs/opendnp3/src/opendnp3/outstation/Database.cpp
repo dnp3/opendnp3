@@ -34,8 +34,8 @@ namespace opendnp3
 Database::Database(const DatabaseTemplate& dbTemplate, IEventReceiver& eventReceiver, INewEventDataHandler& handler, IndexMode indexMode_, StaticTypeBitField allowedClass0Types, openpal::IMutex* pMutex_) :
 	buffers(dbTemplate, allowedClass0Types, indexMode_),
 	pEventReceiver(&eventReceiver),
-	indexMode(indexMode_),
 	pMutex(pMutex_),
+	indexMode(indexMode_),
 	pEventHandler(&handler),
 	transactionHasEvents(false)
 {

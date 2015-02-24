@@ -45,8 +45,8 @@ public:
 
 private:
 	
-	IMasterTask* pTask;
 	openpal::IExecutor* pExecutor;			
+	IMasterTask* pTask;
 	std::function<void()> demandCallback;
 };
 

@@ -34,6 +34,8 @@ CMakeFiles/
 cmake_install.cmake
 libopenpal.a
 libasiopal.a
+libopendnp3.a
+libasiodnp3.a
 
 
 apdufuzzer

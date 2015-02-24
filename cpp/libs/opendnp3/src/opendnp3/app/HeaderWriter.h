@@ -161,11 +161,11 @@ bool HeaderWriter::WriteSingleValue(QualifierCode qc, const WriteType& value)
 template <class ValueType>
 bool HeaderWriter::WriteFreeFormat(const ValueType& value)
 {
-	uint32_t reserveSize = 1 + UInt16::Size + value.Size();	
+	uint32_t reserveSize = 1 + openpal::UInt16::Size + value.Size();	
 	if (this->WriteHeaderWithReserve(ValueType::ID(), QualifierCode::UINT16_FREE_FORMAT, reserveSize))
 	{	
-		UInt8::WriteBuffer(*position, 1);
-		UInt16::WriteBuffer(*position, value.Size());
+		openpal::UInt8::WriteBuffer(*position, 1);
+		openpal::UInt16::WriteBuffer(*position, value.Size());
 		ValueType::Write(value, *position);
 		return true;
 	}

@@ -52,8 +52,8 @@ namespace opendnp3
 	isTransmitting(false),
 	pendingTaskCheckFlag(false),
 	staticIIN(IINBit::DEVICE_RESTART),	
-	deferred(config.params.maxRxFragSize),
 	confirmTimer(executor),
+	deferred(config.params.maxRxFragSize),
 	sol(config.params.maxTxFragSize),
 	unsol(config.params.maxTxFragSize)
 {	

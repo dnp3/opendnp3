@@ -37,7 +37,7 @@ namespace opendnp3
 	{
 		if (buffer.Size() < (UInt8::Size + UInt16::Size))
 		{
-			FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for free format data");
+			SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for free format data");
 			return ParseResult::NOT_ENOUGH_DATA_FOR_HEADER;
 		}
 		
@@ -55,7 +55,7 @@ namespace opendnp3
 
 		if (FREE_FORMAT_COUNT != 1)
 		{
-			FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Unsupported free-format count of %u", buffer.Size(), FREE_FORMAT_COUNT);
+			FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Unsupported free-format count of %u", FREE_FORMAT_COUNT);
 			return ParseResult::UNREASONABLE_OBJECT_COUNT;
 		}
 

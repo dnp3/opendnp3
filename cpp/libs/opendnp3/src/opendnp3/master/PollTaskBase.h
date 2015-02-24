@@ -49,9 +49,9 @@ protected:
 	ResponseResult ProcessMeasurements(const APDUResponseHeader& header, const openpal::ReadBufferView& objects);
 
 	virtual void Initialize() override final;		
-		
+
+	uint16_t rxCount;		
 	ISOEHandler* pSOEHandler;
-	uint16_t rxCount;
 };
 
 } //end ns
