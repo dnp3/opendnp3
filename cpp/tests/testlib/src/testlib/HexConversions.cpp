@@ -20,10 +20,14 @@
  */
 #include "HexConversions.h"
 
+#include "BufferHelpers.h"
+
 #include <openpal/util/ToHex.h>
+#include <openpal/container/DynamicBuffer.h>
 
 #include <sstream>
 
+using namespace std;
 using namespace openpal;
 
 namespace testlib
@@ -52,6 +56,30 @@ std::string ByteToHex(uint8_t b)
 	std::ostringstream oss;
 	oss << openpal::ToHexChar((b & 0xf0) >> 4) << openpal::ToHexChar(b & 0xf);
 	return oss.str();
+}
+
+std::string AppendHex(std::initializer_list<std::string> segments)
+{
+	ostringstream oss;
+	for (auto& str : segments)
+	{
+		oss << str;
+	}
+	HexSequence output(oss.str());
+	return ToHex(output.ToReadOnly());
+}
+
+std::string SkipBytesHex(const std::string& input, uint32_t bytes)
+{
+	HexSequence buffer(input);
+	return ToHex(buffer.ToReadOnly().Skip(bytes));
+}
+
+std::string RepeatHex(uint8_t byte, uint16_t count)
+{
+	DynamicBuffer buffer(count);
+	buffer.GetWriteBufferView().SetAllTo(byte);
+	return ToHex(buffer.ToReadOnly());
 }
 
 }

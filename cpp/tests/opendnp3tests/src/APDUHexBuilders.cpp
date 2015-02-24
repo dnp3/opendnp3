@@ -24,9 +24,18 @@
 #include <opendnp3/app/APDURequest.h>
 #include <opendnp3/app/APDUResponse.h>
 #include <opendnp3/app/APDUBuilders.h>
+#include <opendnp3/app/AppConstants.h>
+
+#include <opendnp3/objects/Group120.h>
+#include <opendnp3/objects/Group120Var5.h>
+#include <opendnp3/objects/Group120Var6.h>
+
+#include <openpal/container/DynamicBuffer.h>
 
 #include <testlib/HexConversions.h>
+#include <testlib/BufferHelpers.h>
 
+using namespace std;
 using namespace openpal;
 using namespace opendnp3;
 using namespace testlib;
@@ -35,8 +44,8 @@ namespace hex
 {
 	std::string ClassTask(FunctionCode fc, uint8_t seq, const ClassField& field)
 	{		
-		uint8_t buffer[2048];
-		APDURequest request(WriteBufferView(buffer, 2048));
+		DynamicBuffer buffer(DEFAULT_MAX_APDU_SIZE);
+		APDURequest request(buffer.GetWriteBufferView());
 		opendnp3::build::ClassRequest(request, fc, field, seq);
 		return ToHex(request.ToReadOnly());
 	}
@@ -58,24 +67,24 @@ namespace hex
 
 	std::string ClearRestartIIN(uint8_t seq)
 	{
-		uint8_t buffer[2048];
-		APDURequest request(WriteBufferView(buffer, 2048));
+		DynamicBuffer buffer(DEFAULT_MAX_APDU_SIZE);
+		APDURequest request(buffer.GetWriteBufferView());
 		build::ClearRestartIIN(request, seq);
 		return ToHex(request.ToReadOnly());
 	}
 
 	std::string MeasureDelay(uint8_t seq)
 	{
-		uint8_t buffer[2048];
-		APDURequest request(WriteBufferView(buffer, 2048));
+		DynamicBuffer buffer(DEFAULT_MAX_APDU_SIZE);
+		APDURequest request(buffer.GetWriteBufferView());
 		build::MeasureDelay(request, seq);
 		return ToHex(request.ToReadOnly());
 	}
 
 	std::string EmptyResponse(uint8_t seq, const opendnp3::IINField& iin)
 	{
-		uint8_t buffer[2048];
-		APDUResponse response(WriteBufferView(buffer, 2048));
+		DynamicBuffer buffer(DEFAULT_MAX_APDU_SIZE);
+		APDUResponse response(buffer.GetWriteBufferView());
 		response.SetFunction(FunctionCode::RESPONSE);
 		response.SetControl(AppControlField(true, true, false, false, seq));
 		response.SetIIN(iin);
@@ -84,8 +93,8 @@ namespace hex
 
 	std::string NullUnsolicited(uint8_t seq, const IINField& iin)
 	{
-		uint8_t buffer[2048];
-		APDUResponse response(WriteBufferView(buffer, 2048));
+		DynamicBuffer buffer(DEFAULT_MAX_APDU_SIZE);
+		APDUResponse response(buffer.GetWriteBufferView());
 		build::NullUnsolicited(response, seq, iin);
 		return ToHex(response.ToReadOnly());
 	}	
@@ -102,12 +111,103 @@ namespace hex
 
 	std::string Confirm(uint8_t seq, bool unsol)
 	{
-		uint8_t buffer[2048];
-		APDURequest apdu(WriteBufferView(buffer, 2048));
+		DynamicBuffer buffer(DEFAULT_MAX_APDU_SIZE);
+		APDURequest apdu(buffer.GetWriteBufferView());
 		apdu.SetControl(AppControlField(true, true, false, unsol, seq));
 		apdu.SetFunction(FunctionCode::CONFIRM);
 		return ToHex(apdu.ToReadOnly());
 	}
+
+	// ----------- sec auth -------------
+
+	std::string RequestKeyStatus(uint8_t seq, uint16_t user)
+	{
+		DynamicBuffer buffer(DEFAULT_MAX_APDU_SIZE);
+		APDURequest apdu(buffer.GetWriteBufferView());
+		apdu.SetControl(AppControlField(true, true, false, false, seq));
+		apdu.SetFunction(FunctionCode::AUTH_REQUEST);		
+		Group120Var4 status;
+		status.userNum = user;		
+		apdu.GetWriter().WriteSingleValue<UInt8>(QualifierCode::UINT8_CNT, status);
+		return ToHex(apdu.ToReadOnly());
+	}
+
+	std::string KeyStatusResponse(
+		uint8_t seq,
+		uint32_t ksq,
+		uint16_t user,
+		KeyWrapAlgorithm keyWrap,
+		KeyStatus status,
+		HMACType hmacType,
+		const std::string& challenge,
+		const std::string& hmac
+		)
+	{
+		DynamicBuffer buffer(DEFAULT_MAX_APDU_SIZE);
+		APDUResponse apdu(buffer.GetWriteBufferView());
+		apdu.SetControl(AppControlField(true, true, false, false, seq));
+		apdu.SetFunction(FunctionCode::AUTH_RESPONSE);
+
+		HexSequence challengeBuff(challenge);
+		HexSequence hmacBuff(hmac);
+
+		Group120Var5 rsp;
+		rsp.keyChangeSeqNum = ksq;
+		rsp.userNum = user;
+		rsp.keywrapAlgorithm = keyWrap;
+		rsp.keyStatus = status;
+		rsp.hmacType = hmacType;
+		rsp.challengeData = challengeBuff.ToReadOnly();
+		rsp.hmacValue = hmacBuff.ToReadOnly();
+		
+		apdu.GetWriter().WriteFreeFormat(rsp);
+
+		return ToHex(apdu.ToReadOnly());
+	}
+
+	std::string KeyChangeRequest(
+		uint8_t seq,
+		uint32_t ksq,
+		uint16_t user,
+		const std::string& keyWrapData
+		)
+	{
+		DynamicBuffer buffer(DEFAULT_MAX_APDU_SIZE);
+		APDURequest apdu(buffer.GetWriteBufferView());
+		apdu.SetControl(AppControlField(true, true, false, false, seq));
+		apdu.SetFunction(FunctionCode::AUTH_REQUEST);
+
+		HexSequence keyBuffer(keyWrapData);
+		
+		Group120Var6 rsp;
+		rsp.seq = ksq;
+		rsp.user = user;
+		rsp.data = keyBuffer.ToReadOnly();		
+
+		apdu.GetWriter().WriteFreeFormat(rsp);
+
+		return ToHex(apdu.ToReadOnly());
+	}
+
+
+	std::string KeyWrapData(
+		uint16_t keyLengthBytes,
+		uint8_t keyRepeatValue,
+		std::string keyStatusMsg
+		)
+	{
+		DynamicBuffer key(keyLengthBytes);
+		key.GetWriteBufferView().SetAllTo(keyRepeatValue);			
+		auto keyHex = ToHex(key.ToReadOnly());
+		HexSequence statusBuffer(keyStatusMsg);
+
+		DynamicBuffer lengthBuff(2);
+		UInt16::WriteBuffer(lengthBuff.GetWriteBufferView(), keyLengthBytes);
+		auto lengthHex = ToHex(lengthBuff.ToReadOnly());
+		 
+		return AppendHex({lengthHex, keyHex, keyHex, keyStatusMsg});
+	}	
+
 }
 
 

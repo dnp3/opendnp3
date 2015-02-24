@@ -92,7 +92,14 @@ namespace secauthv5
 			// the unwrapped data may be larger due to padding so truncate it to the length of what we're expecting before comparing
 			auto unwrappedTrunc = unwrappedKeyStatus.Take(sent.Size());
 
-			return SecureEquals(sent, unwrappedTrunc);
+			auto equal = SecureEquals(sent, unwrappedTrunc);
+			
+			if (!equal)
+			{
+				SIMPLE_LOG_BLOCK(logger, flags::ERR, "Unwrapped key data did not equal last response");
+			}
+
+			return equal;
 		}
 	}
 

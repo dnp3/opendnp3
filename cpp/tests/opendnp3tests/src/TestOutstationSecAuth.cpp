@@ -21,6 +21,9 @@
 #include <catch.hpp>
 
 #include "OutstationSecAuthTest.h"
+#include "APDUHexBuilders.h"
+
+#include <testlib/HexConversions.h>
 
 using namespace std;
 using namespace opendnp3;
@@ -32,35 +35,49 @@ using namespace testlib;
 
 TEST_CASE(SUITE("CanChangeSessionKeys"))
 {	
-	OutstationSecAuthTest test;
-	test.log.WriteToStdIo();
+	OutstationSecAuthTest test;	
 	test.AddUser(User::Default(), UpdateKeyMode::AES128, 0xFF);
 	test.LowerLayerUp();
 
 	REQUIRE(test.lower.HasNoData());
+	
+	test.SendToOutstation(hex::RequestKeyStatus(0, 1));
+	
+	auto keyStatusRsp = hex::KeyStatusResponse(
+		0, // seq
+		1, // ksq
+		1, // user
+		KeyWrapAlgorithm::AES_128,
+		KeyStatus::NOT_INIT,
+		HMACType::NO_MAC_VALUE,
+		"AA AA AA AA", // challenge
+		"");  // no hmac
+				
 
-	// -- request key status, user = 1 ---
-	test.SendToOutstation("C0 20 78 04 07 01 01 00");
-
-	//
-	// --- key status response ---
-	//
-	// KSQ = 0x01000000
-	// user = 0x0100
-	// key wrap = 0x01 (aes128)
-	// key status = 0x02 (not init)
-	// MAC = 0x00 (no mac)
-	// challenge length = 0x0400
-	// challenge data = 0xAAAAAAAA
-	//
-	auto status = "C0 83 00 00 78 05 5B 01 0F 00 01 00 00 00 01 00 01 02 00 04 00 AA AA AA AA";
-	REQUIRE(test.lower.PopWriteAsHex() == status);
+	REQUIRE(test.lower.PopWriteAsHex() == keyStatusRsp);
 	test.outstation.OnSendResult(true);
 	REQUIRE(test.lower.HasNoData());
+	
+	// mock the key wrap output data, make the keys all 0xBB
+	test.crypto.aes128.hexOutput = hex::KeyWrapData(
+		16, // 128-bit keys
+		0xBB,
+		SkipBytesHex(keyStatusRsp, 10)  // skip to the actual object response 10 bytes in
+	);
 
-	// -- session key change request --
-	test.SendToOutstation("C0 20 78 06 5B 01 CC CC 01 00 00 00 01 00 FF FF FF FF");
+	// --- session key change request ---	
+	// the key wrap data doesn't matter b/c we've mocked the unwrap call above
+	test.SendToOutstation(hex::KeyChangeRequest(0, 1, 1, "DE AD BE EF"));
 
-	auto result = "FF";
-	REQUIRE(test.lower.PopWriteAsHex() == result);	
+	auto keyStatusRspFinal = hex::KeyStatusResponse(
+		0, // seq
+		2, // ksq
+		1, // user
+		KeyWrapAlgorithm::AES_128,
+		KeyStatus::OK,
+		HMACType::HMAC_SHA256_TRUNC_16,
+		"AA AA AA AA", // challenge
+		RepeatHex(0xFF, 16));  // fixed value from hmac mock
+	
+	REQUIRE(test.lower.PopWriteAsHex() == keyStatusRspFinal);
 }

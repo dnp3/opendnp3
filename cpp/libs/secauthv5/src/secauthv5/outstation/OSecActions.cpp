@@ -72,8 +72,7 @@ namespace secauthv5
 		}
 	
 		if (!sstate.keyChangeState.EqualsLastStatusResponse(unwrapped.keyStatusObject))
-		{
-			SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "Key change authentication failed");
+		{			
 			OSecActions::RespondWithAuthError(header, sstate, ostate, change.seq, user, AuthErrorCode::AUTHENTICATION_FAILED);
 			return;
 		}		

@@ -29,6 +29,9 @@
 #include <opendnp3/app/IINField.h>
 #include <opendnp3/gen/FunctionCode.h>
 #include <opendnp3/app/ClassField.h>
+#include <opendnp3/gen/KeyWrapAlgorithm.h>
+#include <opendnp3/gen/KeyStatus.h>
+#include <opendnp3/gen/HMACType.h>
 
 namespace hex
 {
@@ -59,6 +62,36 @@ namespace hex
 	std::string UnsolConfirm(uint8_t seq);
 
 	std::string Confirm(uint8_t seq, bool unsol);
+
+	// ----------- sec auth -------------
+
+	std::string RequestKeyStatus(uint8_t seq, uint16_t user);
+
+	std::string KeyStatusResponse(
+		uint8_t seq,
+		uint32_t ksq,
+		uint16_t user,
+		opendnp3::KeyWrapAlgorithm keyWrap,
+		opendnp3::KeyStatus status,
+		opendnp3::HMACType,
+		const std::string& challenge,
+		const std::string& hmac
+	);
+
+	std::string KeyChangeRequest(
+		uint8_t seq,
+		uint32_t ksq,
+		uint16_t user,		
+		const std::string& keyWrapData		
+	);
+
+	std::string KeyWrapData(	
+		uint16_t keyLengthBytes,
+		uint8_t keyRepeatValue,
+		std::string keyStatusMsg
+	);
+
+	
 }
 
 #endif

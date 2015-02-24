@@ -49,7 +49,7 @@ class LogTester : public openpal::ILogHandler
 {
 
 public:
-	LogTester(uint32_t filters = levels::NORMAL);
+	LogTester(uint32_t filters = ~0);
 
 	void WriteToStdIo();
 

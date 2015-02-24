@@ -35,6 +35,12 @@ std::string ToHex(const uint8_t* pBuff, size_t length, bool spaced = false);
 
 std::string ToHex(const openpal::ReadBufferView& buffer, bool spaced = true);
 
+std::string AppendHex(std::initializer_list<std::string> segments);
+
+std::string SkipBytesHex(const std::string& input, uint32_t bytes);
+
+std::string RepeatHex(uint8_t byte, uint16_t count);
+
 }
 
 #endif

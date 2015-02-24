@@ -40,7 +40,7 @@ namespace opendnp3
 		
 		virtual openpal::ReadBufferView UnwrapKey(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output, openpal::Logger* pLogger) const
 		{
-			if (kek.Size() < 128 || kek.Size() > 256)
+			if (kek.Size() < 16 || kek.Size() > 32)
 			{
 				throw std::logic_error("bad key size");
 			}
