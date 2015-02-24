@@ -32,7 +32,8 @@ namespace osslcrypto
 {		
 	openpal::ReadBufferView AESKeyWrap::WrapKeyAES(AESKeyLength length, const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output, openpal::Logger* pLogger)
 	{
-		const int KEY_SIZE_BYTES = (length == AESKeyLength::L128) ? 16 : 32;		
+		const uint32_t KEY_SIZE_BYTES = (length == AESKeyLength::L128) ? 16 : 32;
+		const int KEY_SIZE_BITS = static_cast<int>(KEY_SIZE_BYTES*8);
 
 		// the key size must match
 		if (kek.Size() != KEY_SIZE_BYTES)
@@ -58,7 +59,7 @@ namespace osslcrypto
 		}
 
 		AES_KEY key;
-		if (AES_set_encrypt_key(kek, KEY_SIZE_BYTES * 8, &key))
+		if (AES_set_encrypt_key(kek, KEY_SIZE_BITS, &key))
 		{
 			SIMPLE_LOGGER_BLOCK(pLogger, logflags::WARN, "Unable to create AES encryption key from kek");
 			return ReadBufferView::Empty();
@@ -81,7 +82,8 @@ namespace osslcrypto
 	
 	openpal::ReadBufferView AESKeyWrap::UnwrapKeyAES(AESKeyLength length, const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output, openpal::Logger* pLogger)
 	{
-		const int KEY_SIZE_BYTES = (length == AESKeyLength::L128) ? 16 : 32;		
+		const uint32_t KEY_SIZE_BYTES = (length == AESKeyLength::L128) ? 16 : 32;	
+		const int KEY_SIZE_BITS = static_cast<int>(KEY_SIZE_BYTES*8);	
 
 		// the key size must match
 		if (kek.Size() != KEY_SIZE_BYTES)
@@ -107,7 +109,7 @@ namespace osslcrypto
 		}
 
 		AES_KEY key;
-		if (AES_set_decrypt_key(kek, KEY_SIZE_BYTES * 8, &key))
+		if (AES_set_decrypt_key(kek, KEY_SIZE_BITS, &key))
 		{
 			SIMPLE_LOGGER_BLOCK(pLogger, logflags::WARN, "Unable to create AES decryption key from kek");
 			return ReadBufferView::Empty();

@@ -56,7 +56,7 @@ bool CryptoProvider::ConfigureMultithreading()
 
 	for (int i = 0; i < CRYPTO_num_locks(); ++i)
 	{
-		mutexes.push_back(std::make_unique<std::mutex>());
+		mutexes.push_back(std::unique_ptr<std::mutex>(new std::mutex()));
 	}
 
 	// specific the function that will lock and unlock the various mutexes

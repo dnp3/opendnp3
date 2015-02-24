@@ -37,6 +37,7 @@ libasiopal.a
 libopendnp3.a
 libasiodnp3.a
 libsecauthv5.a
+libosslcrypto.a
 libtestlib.a
 testopenpal
 testopendnp3

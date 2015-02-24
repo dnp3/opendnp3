@@ -24,6 +24,7 @@ include_directories(./cpp/libs/openpal/src)
 include_directories(./cpp/libs/opendnp3/src)
 include_directories(./cpp/libs/asiopal/src)
 include_directories(./cpp/libs/asiodnp3/src)
+include_directories(./cpp/libs/osslcrypto/src)
 include_directories(./cpp/tests/testlib/src)
 include_directories(./cpp/tests/catch)
 
@@ -71,6 +72,16 @@ file(GLOB_RECURSE secauthv5_SRC
 add_library(secauthv5
  ${secauthv5_SRC}
 )
+
+# ---- osslcrypto library ----
+file(GLOB_RECURSE osslcrypto_SRC 
+       ./cpp/libs/osslcrypto/src/osslcrypto/*.cpp)
+
+add_library(osslcrypto
+ ${osslcrypto_SRC}
+)
+
+
 
 # ---- testlib library ----
 file(GLOB_RECURSE testlib_SRC 
