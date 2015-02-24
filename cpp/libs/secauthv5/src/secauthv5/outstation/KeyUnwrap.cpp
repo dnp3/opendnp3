@@ -37,7 +37,8 @@ namespace secauthv5
 		UnwrappedKeyData& output,
 		openpal::Logger* pLogger)
 	{		
-		auto unwrapped = algo.UnwrapKey(updateKey, inputData, buffer.GetWriteBuffer(), pLogger);
+		auto dest = buffer.GetWriteBuffer();
+		auto unwrapped = algo.UnwrapKey(updateKey, inputData, dest, pLogger);
 
 		if (unwrapped.IsEmpty())
 		{

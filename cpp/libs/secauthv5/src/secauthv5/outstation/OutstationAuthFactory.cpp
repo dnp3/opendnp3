@@ -38,7 +38,9 @@ namespace secauthv5
 
 	std::unique_ptr<opendnp3::IOutstationAuthProvider> OutstationAuthFactory::Create(openpal::Logger logger, openpal::IExecutor& executor)
 	{
-		return std::make_unique<OutstationAuthProvider>(settings, logger, executor,  *pTimeSource, *pUserDatabase, *pCrypto);
+		return std::unique_ptr<opendnp3::IOutstationAuthProvider>(
+			new OutstationAuthProvider(settings, logger, executor,  *pTimeSource, *pUserDatabase, *pCrypto)
+		);
 	}
 }
 

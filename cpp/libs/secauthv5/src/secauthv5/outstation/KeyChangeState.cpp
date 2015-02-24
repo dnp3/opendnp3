@@ -49,7 +49,8 @@ namespace secauthv5
 			const openpal::ReadBufferView& hmac
 		)
 	{				
-		if (pProvider->GetSecureRandom(challengeData.GetWriteBuffer(challengeSize)))
+		auto dest = challengeData.GetWriteBuffer(challengeSize);
+		if (pProvider->GetSecureRandom(dest))
 		{
 			++keyChangeSeqNum;			
 
@@ -80,7 +81,8 @@ namespace secauthv5
 		const uint32_t MAX_SIZE = Group120Var5::FIXED_BASE_SIZE + AuthConstants::MAX_CHALLENGE_DATA_SIZE;
 		openpal::StaticBuffer<MAX_SIZE> buffer;
 		
-		if (!Group120Var5::Write(copy, buffer.GetWriteBuffer()))
+		auto dest = buffer.GetWriteBuffer();
+		if (!Group120Var5::Write(copy, dest))
 		{
 			SIMPLE_LOG_BLOCK(logger, flags::ERR, "Unable to write last response to buffer");
 			return false;

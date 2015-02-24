@@ -36,7 +36,7 @@ libopenpal.a
 libasiopal.a
 libopendnp3.a
 libasiodnp3.a
-
+libsecauthv5.a
 
 apdufuzzer
 outstationdemo

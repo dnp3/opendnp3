@@ -92,7 +92,7 @@ namespace secauthv5
 			if (pUsers->UserExists(user))
 			{
 				// initialize new session info
-				sessionMap[user.GetId()] = std::make_unique<Session>();
+				sessionMap[user.GetId()] = std::unique_ptr<Session>(new Session());
 				return KeyStatus::NOT_INIT;
 			}
 			else

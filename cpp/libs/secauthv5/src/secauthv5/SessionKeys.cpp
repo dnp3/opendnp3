@@ -28,8 +28,11 @@ namespace secauthv5
 		const SessionKeysView& view
 		)
 	{
-		controlKey = view.controlKey.CopyTo(controlBuffer.GetWriteBuffer());
-		monitorKey = view.monitorKey.CopyTo(monitorBuffer.GetWriteBuffer());
+		auto controlDest = controlBuffer.GetWriteBuffer();
+		controlKey = view.controlKey.CopyTo(controlDest);
+
+		auto monitorDest = controlBuffer.GetWriteBuffer();
+		monitorKey = view.monitorKey.CopyTo(monitorDest);
 	}
 
 	SessionKeysView SessionKeys::GetView() const

@@ -19,6 +19,7 @@ else()
 endif()
 
 # include paths for all the local libraries
+include_directories(./cpp/libs/secauthv5/src)
 include_directories(./cpp/libs/openpal/src)
 include_directories(./cpp/libs/opendnp3/src)
 include_directories(./cpp/libs/asiopal/src)
@@ -62,8 +63,18 @@ add_library(asiodnp3
  ${asiodnp3_SRC}
 )
 
+# ---- secauthv5 library ----
+file(GLOB_RECURSE secauthv5_SRC 
+       ./cpp/libs/secauthv5/src/secauthv5/*.cpp)
+
+add_library(secauthv5
+ ${secauthv5_SRC}
+)
+
 # ---- declare linking dependencies, i.e. if A then B ----
 
+target_link_libraries(secauthv5 opendnp3)
+target_link_libraries(secauthv5 openpal)
 target_link_libraries(opendnp3 openpal)
 target_link_libraries(asiopal openpal)
 target_link_libraries(asiodnp3 opendnp3)
