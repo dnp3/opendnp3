@@ -246,20 +246,23 @@ OutstationSolicitedStateBase* OActions::RespondToReadRequest(OState& ostate, con
 }
 
 void OActions::BeginResponseTx(OState& ostate, const ReadBufferView& response)
-{		
-	logging::ParseAndLogResponseTx(&ostate.logger, response);
+{	
 	ostate.sol.tx.Record(response);
-	ostate.isTransmitting = true;	
-	ostate.pLower->BeginTransmit(response);
+	BeginTx(ostate, response);	
 }
 
 void OActions::BeginUnsolTx(OState& ostate, const ReadBufferView& response)
-{	
-	logging::ParseAndLogResponseTx(&ostate.logger, response);
+{				
 	ostate.unsol.tx.Record(response);
-	ostate.isTransmitting = true;
 	ostate.unsol.seq.confirmNum = ostate.unsol.seq.num;
 	ostate.unsol.seq.num = AppControlField::NextSeq(ostate.unsol.seq.num);
+	BeginTx(ostate, response);	
+}
+
+void OActions::BeginTx(OState& ostate, const openpal::ReadBufferView& response)
+{
+	logging::ParseAndLogResponseTx(ostate.logger, response);
+	ostate.isTransmitting = true;
 	ostate.pLower->BeginTransmit(response);
 }
 

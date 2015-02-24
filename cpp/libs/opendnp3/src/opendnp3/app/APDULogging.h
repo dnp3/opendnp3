@@ -31,9 +31,9 @@ namespace opendnp3
 namespace logging
 {
 
-void ParseAndLogRequestTx(openpal::Logger* pLogger, const openpal::ReadBufferView& apdu);
+void ParseAndLogRequestTx(openpal::Logger logger, const openpal::ReadBufferView& apdu);
 
-void ParseAndLogResponseTx(openpal::Logger* pLogger, const openpal::ReadBufferView& apdu);
+void ParseAndLogResponseTx(openpal::Logger logger, const openpal::ReadBufferView& apdu);
 	
 }
 }

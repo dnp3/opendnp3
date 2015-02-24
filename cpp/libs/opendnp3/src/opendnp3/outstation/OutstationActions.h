@@ -62,6 +62,8 @@ class OActions : private openpal::PureStatic
 	static void BeginResponseTx(OState& ostate, const openpal::ReadBufferView& response);
 
 	static void BeginUnsolTx(OState& ostate, const openpal::ReadBufferView& response);
+
+	static void BeginTx(OState& ostate, const openpal::ReadBufferView& response);
 		
 
 	/// ---- Helper functions that operate on the current solicited state, and may return a new solicited state ----

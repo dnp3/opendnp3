@@ -336,7 +336,7 @@ bool MasterContext::CheckConfirmTransmit()
 
 void MasterContext::Transmit(const ReadBufferView& output)
 {
-	logging::ParseAndLogRequestTx(&logger, output);	
+	logging::ParseAndLogRequestTx(logger, output);	
 	assert(!isSending);
 	isSending = true;
 	pLower->BeginTransmit(output);	

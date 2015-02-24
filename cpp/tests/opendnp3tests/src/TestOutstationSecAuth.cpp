@@ -50,7 +50,7 @@ TEST_CASE(SUITE("ChangeSessionKeys-AES128-SHA256-16"))
 
 TEST_CASE(SUITE("ChangeSessionKeys-AES256-SHA256-16"))
 {
-	OutstationSecAuthTest test;
+	OutstationSecAuthTest test;	
 	test.AddUser(User::Default(), UpdateKeyMode::AES256, 0xFF);
 	TestSessionKeyChange(
 		test,
