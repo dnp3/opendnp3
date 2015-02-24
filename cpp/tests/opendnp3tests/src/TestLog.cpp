@@ -46,8 +46,6 @@ TEST_CASE(SUITE("LogErrorCounting"))
 
 TEST_CASE(SUITE("FORMAT_SAFE macro truncates and null terminates"))
 {
-	LogTester log;
-	auto logger = log.GetLogger();
 	char buffer[10];
 	auto text1 = "hello";
 	auto text2 = "my little friend";

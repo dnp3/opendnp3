@@ -39,7 +39,7 @@ using namespace openpal;
 
 #define SUITE(name) "DNP3ManagerTestSuite - " name
 
-const size_t ITERATIONS = 100;
+const int ITERATIONS = 100;
 
 TEST_CASE(SUITE("ConstructionDestruction"))
 {
