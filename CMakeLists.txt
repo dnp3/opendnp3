@@ -24,6 +24,7 @@ include_directories(./cpp/libs/openpal/src)
 include_directories(./cpp/libs/opendnp3/src)
 include_directories(./cpp/libs/asiopal/src)
 include_directories(./cpp/libs/asiodnp3/src)
+include_directories(./cpp/tests/testlib/src)
 include_directories(./cpp/tests/catch)
 
 # required for ASIO in C++11 only mode
@@ -106,14 +107,11 @@ file(GLOB_RECURSE openpal_TESTSRC
 add_executable (testopenpal ${openpal_TESTSRC})
 target_link_libraries (testopenpal LINK_PUBLIC openpal pthread)
 
+# ----- opendnp3 tests -----
 
-if(0)
 file(GLOB_RECURSE opendnp3_TESTSRC
        ./cpp/tests/opendnp3tests/src/*.cpp)
 
-add_executable (testopenpal ${openpal_TESTSRC})
-target_link_libraries (testopenpal LINK_PUBLIC asiodnp3 pthread)
-
 add_executable (testopendnp3 ${opendnp3_TESTSRC})
-target_link_libraries (testopendnp3 LINK_PUBLIC asiodnp3 pthread)
-endif(0)
+target_link_libraries (testopendnp3 LINK_PUBLIC asiodnp3 secauthv5 testlib pthread)
+

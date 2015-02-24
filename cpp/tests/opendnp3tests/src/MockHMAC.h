@@ -29,7 +29,7 @@ namespace opendnp3
 	{
 	public:
 
-		MockHMAC(uint16_t size) : SIZE(size), fillByte(0xFF) {}
+		MockHMAC(uint16_t size) : fillByte(0xFF), SIZE(size) {}
 
 		virtual uint16_t OutputSize() const { return SIZE; }
 

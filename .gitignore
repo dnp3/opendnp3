@@ -39,13 +39,10 @@ libasiodnp3.a
 libsecauthv5.a
 libtestlib.a
 testopenpal
-
-apdufuzzer
+testopendnp3
 outstationdemo
 masterdemo
-dnp3test
-apdufuzz
-openpaltest
+
 openpaltest.log
 openpaltest.trs
 dnp3test.log

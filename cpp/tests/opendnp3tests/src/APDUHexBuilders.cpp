@@ -202,7 +202,8 @@ namespace hex
 		HexSequence statusBuffer(keyStatusMsg);
 
 		DynamicBuffer lengthBuff(2);
-		UInt16::WriteBuffer(lengthBuff.GetWriteBufferView(), keyLengthBytes);
+		auto lenDest = lengthBuff.GetWriteBufferView();
+		UInt16::WriteBuffer(lenDest, keyLengthBytes);
 		auto lengthHex = ToHex(lengthBuff.ToReadOnly());
 		 
 		return AppendHex({lengthHex, keyHex, keyHex, keyStatusMsg});
