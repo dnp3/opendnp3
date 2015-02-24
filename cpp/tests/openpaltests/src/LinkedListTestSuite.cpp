@@ -55,8 +55,8 @@ TEST_CASE(SUITE("CanRemoveHead"))
 	LinkedList<int, uint16_t> list(3);
 
 	auto one = list.Add(1);
-	auto two = list.Add(2);
-	auto three = list.Add(3);
+	list.Add(2);
+	list.Add(3);
 
 	list.Remove(one);
 
@@ -71,8 +71,8 @@ TEST_CASE(SUITE("CanRemoveTail"))
 {	
 	LinkedList<int, uint16_t> list(3);
 
-	auto one = list.Add(1);
-	auto two = list.Add(2);
+	list.Add(1);
+	list.Add(2);
 	auto three = list.Add(3);
 
 	list.Remove(three);
@@ -88,9 +88,9 @@ TEST_CASE(SUITE("CanRemoveMiddle"))
 {	
 	LinkedList<int, uint16_t> list(3);
 
-	auto one = list.Add(1);
+	list.Add(1);
 	auto two = list.Add(2);
-	auto three = list.Add(3);
+	list.Add(3);
 
 	list.Remove(two);
 

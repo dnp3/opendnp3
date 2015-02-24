@@ -99,10 +99,15 @@ target_link_libraries (masterdemo LINK_PUBLIC asiodnp3 pthread)
 add_executable (outstationdemo ./cpp/examples/outstation/DemoMain.cpp)
 target_link_libraries (outstationdemo LINK_PUBLIC asiodnp3 pthread)
 
-if(0)
+# ----- openpal tests -----
 file(GLOB_RECURSE openpal_TESTSRC
        ./cpp/tests/openpaltests/src/*.cpp)
 
+add_executable (testopenpal ${openpal_TESTSRC})
+target_link_libraries (testopenpal LINK_PUBLIC openpal pthread)
+
+
+if(0)
 file(GLOB_RECURSE opendnp3_TESTSRC
        ./cpp/tests/opendnp3tests/src/*.cpp)
 

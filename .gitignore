@@ -38,6 +38,7 @@ libopendnp3.a
 libasiodnp3.a
 libsecauthv5.a
 libtestlib.a
+testopenpal
 
 apdufuzzer
 outstationdemo
