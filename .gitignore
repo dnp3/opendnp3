@@ -28,6 +28,12 @@ stamp-h1
 INSTALL
 cpp/demos/INSTALL
 
+#cmake stuff
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+
+
 apdufuzzer
 outstationdemo
 masterdemo
