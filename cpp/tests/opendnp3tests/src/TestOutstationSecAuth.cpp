@@ -31,39 +31,57 @@ using namespace secauthv5;
 using namespace openpal;
 using namespace testlib;
 
-#define SUITE(name) "OutstationSecAuthTestSuite - " name
+#define SUITE(name) "OutstationSecAuthTestSuite - " name\
 
-TEST_CASE(SUITE("CanChangeSessionKeys"))
+void TestSessionKeyChange(OutstationSecAuthTest& test, User user, KeyWrapAlgorithm keyWrap);
+void SetMockKeyWrapData(MockCryptoProvider& crypto, KeyWrapAlgorithm keyWrap, const std::string& lastStatusRsp);
+
+TEST_CASE(SUITE("ChangeSessionKeys-AES128"))
 {	
-	OutstationSecAuthTest test;	
+	OutstationSecAuthTest test;
 	test.AddUser(User::Default(), UpdateKeyMode::AES128, 0xFF);
+	TestSessionKeyChange(
+		test, 
+		User::Default(),
+		KeyWrapAlgorithm::AES_128
+	);
+}
+
+TEST_CASE(SUITE("ChangeSessionKeys-AES256"))
+{
+	OutstationSecAuthTest test;
+	test.AddUser(User::Default(), UpdateKeyMode::AES256, 0xFF);
+	TestSessionKeyChange(
+		test,
+		User::Default(),
+		KeyWrapAlgorithm::AES_256
+	);
+}
+
+void TestSessionKeyChange(OutstationSecAuthTest& test, User user, KeyWrapAlgorithm keyWrap)
+{
 	test.LowerLayerUp();
 
 	REQUIRE(test.lower.HasNoData());
-	
+
 	test.SendToOutstation(hex::RequestKeyStatus(0, 1));
-	
+
 	auto keyStatusRsp = hex::KeyStatusResponse(
 		0, // seq
 		1, // ksq
-		1, // user
-		KeyWrapAlgorithm::AES_128,
+		user.GetId(),
+		keyWrap,
 		KeyStatus::NOT_INIT,
 		HMACType::NO_MAC_VALUE,
 		"AA AA AA AA", // challenge
 		"");  // no hmac
-				
+
 
 	REQUIRE(test.lower.PopWriteAsHex() == keyStatusRsp);
 	test.outstation.OnSendResult(true);
-	REQUIRE(test.lower.HasNoData());
-	
-	// mock the key wrap output data, make the keys all 0xBB
-	test.crypto.aes128.hexOutput = hex::KeyWrapData(
-		16, // 128-bit keys
-		0xBB,
-		SkipBytesHex(keyStatusRsp, 10)  // skip to the actual object response 10 bytes in
-	);
+	REQUIRE(test.lower.HasNoData());	
+
+	SetMockKeyWrapData(test.crypto, keyWrap, SkipBytesHex(keyStatusRsp, 10));
 
 	// --- session key change request ---	
 	// the key wrap data doesn't matter b/c we've mocked the unwrap call above
@@ -72,12 +90,29 @@ TEST_CASE(SUITE("CanChangeSessionKeys"))
 	auto keyStatusRspFinal = hex::KeyStatusResponse(
 		0, // seq
 		2, // ksq
-		1, // user
-		KeyWrapAlgorithm::AES_128,
+		user.GetId(), // user
+		keyWrap,
 		KeyStatus::OK,
 		HMACType::HMAC_SHA256_TRUNC_16,
 		"AA AA AA AA", // challenge
 		RepeatHex(0xFF, 16));  // fixed value from hmac mock
-	
+
 	REQUIRE(test.lower.PopWriteAsHex() == keyStatusRspFinal);
+	test.outstation.OnSendResult(true);
+	REQUIRE(test.lower.HasNoData());
+}
+
+void SetMockKeyWrapData(MockCryptoProvider& crypto, KeyWrapAlgorithm keyWrap, const std::string& statusData)
+{
+	switch (keyWrap)
+	{
+	case(KeyWrapAlgorithm::AES_128) :
+		crypto.aes128.hexOutput = hex::KeyWrapData(16, 0xBB, statusData);
+		break;
+	case(KeyWrapAlgorithm::AES_256) :
+		crypto.aes256.hexOutput = hex::KeyWrapData(32, 0xBB, statusData);
+		break;
+	default:
+		throw std::logic_error("bad param");
+	}
 }
