@@ -58,16 +58,13 @@ bool SimpleUserDatabase::GetUpdateKeyType(const User& user, UpdateKeyMode& type)
 bool SimpleUserDatabase::IsAuthorized(const User& user, opendnp3::FunctionCode code) const
 {
 	// for the time being, if the user exists they are authorized
-	auto iter = this->userMap.find(user.GetId());
-	return iter != userMap.end();
+	return UserExists(user);
 }
 
-void SimpleUserDatabase::EnumerateUsers(std::function<void(User)> fun) const
+bool SimpleUserDatabase::UserExists(const User& user) const
 {
-	for (auto& item : userMap)
-	{
-		fun(User(item.first));
-	}
+	auto iter = this->userMap.find(user.GetId());
+	return iter != userMap.end();
 }
 
 void SimpleUserDatabase::ConfigureUser(const User& user, UpdateKeyMode type, const openpal::ReadBufferView& key)

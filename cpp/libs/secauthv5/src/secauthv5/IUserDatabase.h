@@ -49,7 +49,7 @@ class IUserDatabase
 		
 		virtual bool GetUpdateKey(const User& user, UpdateKeyMode& type, openpal::ReadBufferView& key) const = 0;
 
-		virtual void EnumerateUsers(std::function<void (User)> fun) const = 0;
+		virtual bool UserExists(const User& user) const = 0;
 };
 
 }

@@ -26,7 +26,7 @@ using namespace openpal;
 
 namespace secauthv5
 {
-	Session::Session() :
+	Session::Session() :		
 		status(KeyStatus::NOT_INIT),
 		authCount(0)
 	{}		
@@ -35,15 +35,12 @@ namespace secauthv5
 			IMonotonicTimeSource& timeSource,
 			IUserDatabase& userdb
 	) :
+		pUsers(&userdb),
 		pTimeSource(&timeSource)
+
 	{
 		
-		auto addUser = [this](User user) 
-		{
-			sessionMap[user.GetId()] = std::make_unique<Session>();
-		};
-
-		userdb.EnumerateUsers(addUser);
+		
 	}	
 
 	opendnp3::KeyStatus SessionStore::IncrementAuthCount(const User& user)
@@ -92,7 +89,16 @@ namespace secauthv5
 		auto iter = sessionMap.find(user.GetId());
 		if (iter == sessionMap.end())
 		{
-			return KeyStatus::UNDEFINED;
+			if (pUsers->UserExists(user))
+			{
+				// initialize new session info
+				sessionMap[user.GetId()] = std::make_unique<Session>();
+				return KeyStatus::NOT_INIT;
+			}
+			else
+			{
+				return KeyStatus::UNDEFINED;
+			}
 		}
 		else
 		{

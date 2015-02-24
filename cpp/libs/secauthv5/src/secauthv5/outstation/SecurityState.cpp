@@ -47,7 +47,9 @@ namespace secauthv5
 		keyChangeState(1, 4, logger, crypto),
 		sessions(executor, userdb),
 		txBuffer(settings_.maxTxASDUSize)
-	{}
+	{
+				
+	}
 
 	void SecurityState::Reset()
 	{		

@@ -74,6 +74,8 @@ namespace secauthv5
 
 		private:
 
+		IUserDatabase* pUsers;
+
 		// TODO - make these configurable and change them
 		static const uint32_t AUTH_COUNT_MAX = 100;
 		static const uint8_t SESSION_KEY_EXP_MINUTES = 10;

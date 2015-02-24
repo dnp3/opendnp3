@@ -30,11 +30,20 @@ using namespace testlib;
 
 #define SUITE(name) "OutstationSecAuthTestSuite - " name
 
-TEST_CASE(SUITE("InitialState"))
-{
-	
+TEST_CASE(SUITE("CanChangeSessionKeys"))
+{	
 	OutstationSecAuthTest test;
 	test.AddUser(User::Default(), UpdateKeyMode::AES128, 0xFF);
+	test.LowerLayerUp();
 
+	REQUIRE(test.lower.PopWriteAsHex() == "");
 
+	test.SendToOutstation("C0 20 78 04 07 01 01 00");
+
+	//
+	//
+	//
+	auto status = "C0 83 00 00 78 05 5B 01 0F 00 01 00 00 00 01 00 01 02 00 04 00 AA AA AA AA";
+
+	REQUIRE(test.lower.PopWriteAsHex() == status);
 }

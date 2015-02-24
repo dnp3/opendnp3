@@ -49,7 +49,7 @@ OutstationAuthProvider::OutstationAuthProvider(
 		) :
 		sstate(settings, logger, executor, timeSource, userDatabase, crypto)
 {
-
+	
 }
 
 void OutstationAuthProvider::Reset()
