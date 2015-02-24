@@ -38,7 +38,7 @@ void SetMockKeyWrapData(MockCryptoProvider& crypto, KeyWrapAlgorithm keyWrap, co
 
 TEST_CASE(SUITE("ChangeSessionKeys-AES128-SHA256-16"))
 {	
-	OutstationSecAuthTest test;
+	OutstationSecAuthTest test;	
 	test.AddUser(User::Default(), UpdateKeyMode::AES128, 0xFF);
 	TestSessionKeyChange(
 		test, 

@@ -36,6 +36,11 @@ void ParseAndLogRequestTx(openpal::Logger* pLogger, const openpal::ReadBufferVie
 
 #ifndef OPENPAL_STRIP_LOGGING
 
+	if (pLogger)
+	{
+		FORMAT_HEX_BLOCK((*pLogger), flags::APP_HEX_TX, apdu, 18, 18);
+	}
+
 	if (pLogger && pLogger->IsEnabled(flags::APP_HEADER_TX))
 	{
 		APDUHeader header;		
@@ -66,6 +71,11 @@ void ParseAndLogResponseTx(openpal::Logger* pLogger, const openpal::ReadBufferVi
 {
 
 #ifndef OPENPAL_STRIP_LOGGING
+
+	if (pLogger)
+	{
+		FORMAT_HEX_BLOCK((*pLogger), flags::APP_HEX_TX, apdu, 18, 18);
+	}
 
 	if (pLogger && pLogger->IsEnabled(flags::APP_HEADER_TX))
 	{

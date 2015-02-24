@@ -65,6 +65,8 @@ IINField OActions::GetResponseIIN(OState& ostate)
 
 void OActions::OnReceiveAPDU(OState& ostate, const openpal::ReadBufferView& apdu)
 {	
+	FORMAT_HEX_BLOCK(ostate.logger, flags::APP_HEX_RX, apdu, 18, 18);
+
 	APDUHeader header;	
 	if (APDUHeaderParser::ParseRequest(apdu, header, &ostate.logger))
 	{

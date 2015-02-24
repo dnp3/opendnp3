@@ -75,7 +75,7 @@ void Outstation::OnLowerLayerDown()
 void Outstation::OnReceive(const openpal::ReadBufferView& fragment)
 {
 	if (ostate.isOnline)
-	{
+	{		
 		OActions::OnReceiveAPDU(ostate, fragment);
 		OActions::CheckForTaskStart(ostate);
 	}

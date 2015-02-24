@@ -37,21 +37,25 @@ const int32_t WARN = openpal::logflags::WARN;
 const int32_t INFO = openpal::logflags::INFO;
 const int32_t DBG = openpal::logflags::DBG;
 
-// upshift the custom dnp3 filters
+// up-shift the custom dnp3 filters
+
 const int32_t LINK_RX = DBG << 1;
-const int32_t LINK_RX_HEX = LINK_RX << 1;
+const int32_t LINK_RX_HEX = DBG << 2;
 
-const int32_t LINK_TX = LINK_RX_HEX << 1;
-const int32_t LINK_TX_HEX = LINK_TX << 1;
+const int32_t LINK_TX = DBG << 3;
+const int32_t LINK_TX_HEX = DBG << 4;
 
-const int32_t TRANSPORT_RX = LINK_TX_HEX << 1;
-const int32_t TRANSPORT_TX = TRANSPORT_RX << 1;
+const int32_t TRANSPORT_RX = DBG << 5;
+const int32_t TRANSPORT_TX = DBG << 6;
 
-const int32_t APP_HEADER_RX = TRANSPORT_TX << 1;
-const int32_t APP_HEADER_TX = APP_HEADER_RX << 1;
+const int32_t APP_HEADER_RX = DBG << 7;
+const int32_t APP_HEADER_TX = DBG << 8;
 
-const int32_t APP_OBJECT_RX = APP_HEADER_TX << 1;
-const int32_t APP_OBJECT_TX = APP_OBJECT_RX << 1;
+const int32_t APP_OBJECT_RX = DBG << 9;
+const int32_t APP_OBJECT_TX = DBG << 10;
+
+const int32_t APP_HEX_RX = DBG << 11;
+const int32_t APP_HEX_TX = DBG << 12;
 
 }
 
@@ -61,7 +65,7 @@ namespace levels
 const int32_t NOTHING = 0;
 const int32_t ALL = ~NOTHING;
 const uint32_t NORMAL = flags::EVENT | flags::ERR | flags::WARN | flags::INFO;
-const uint32_t ALL_APP_COMMS = flags::APP_HEADER_RX | flags::APP_HEADER_TX | flags::APP_OBJECT_RX | flags::APP_OBJECT_TX;
+const uint32_t ALL_APP_COMMS = flags::APP_HEADER_RX | flags::APP_HEADER_TX | flags::APP_OBJECT_RX | flags::APP_OBJECT_TX | flags::APP_HEX_RX | flags::APP_HEX_TX;
 const uint32_t ALL_COMMS = flags::LINK_RX | flags::LINK_TX | flags::TRANSPORT_RX | flags::TRANSPORT_TX | ALL_APP_COMMS;
 
 }
