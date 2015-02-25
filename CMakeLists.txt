@@ -75,6 +75,7 @@ if(OSSL)
   add_library(osslcrypto ${osslcrypto_SRC})
   target_link_libraries(osslcrypto openpal)
   target_link_libraries(osslcrypto crypto)
+  target_link_libraries(osslcrypto pthread)
 endif()
 
 # ---- testlib library ----
