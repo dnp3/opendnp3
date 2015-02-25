@@ -40,13 +40,7 @@ namespace osslcrypto
 * An ICryptoProvider based on openssl
 */
 class CryptoProvider : public openpal::ICryptoProvider, private openpal::Uncopyable
-{	
-	enum class AESKeyLength : uint8_t
-	{
-		L128,
-		L256
-	};
-
+{		
 	public:	
 
 	virtual bool GetSecureRandom(openpal::WriteBufferView& buffer) override final;	
