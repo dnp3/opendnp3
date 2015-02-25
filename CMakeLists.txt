@@ -37,78 +37,48 @@ include_directories(./cpp/tests/testlib/src)
 include_directories(./cpp/tests/catch)
 include_directories(./cpp/libs/osslcrypto/src)
 
-
 # required for ASIO in C++11 only mode
 add_definitions(-DASIO_STANDALONE)
 
-
 # ---- openpal library ----
-file(GLOB_RECURSE openpal_SRC 
-       ./cpp/libs/openpal/src/openpal/*.cpp)
-
-add_library(openpal 
- ${openpal_SRC}
-)
+file(GLOB_RECURSE openpal_SRC ./cpp/libs/openpal/src/openpal/*.cpp)
+add_library(openpal ${openpal_SRC})
 
 # ---- opendnp3 library ----
-file(GLOB_RECURSE opendnp3_SRC 
-       ./cpp/libs/opendnp3/src/opendnp3/*.cpp)
-
-add_library(opendnp3
- ${opendnp3_SRC}
-)
+file(GLOB_RECURSE opendnp3_SRC ./cpp/libs/opendnp3/src/opendnp3/*.cpp)
+add_library(opendnp3 ${opendnp3_SRC})
 
 # ---- asiopal library ----
 
-file(GLOB_RECURSE asiopal_SRC 
-       ./cpp/libs/asiopal/src/asiopal/*.cpp)
-
-add_library(asiopal
- ${asiopal_SRC}
-)
+file(GLOB_RECURSE asiopal_SRC ./cpp/libs/asiopal/src/asiopal/*.cpp)
+add_library(asiopal ${asiopal_SRC})
 
 # ---- asiodnp3 library ----
-file(GLOB_RECURSE asiodnp3_SRC 
-       ./cpp/libs/asiodnp3/src/asiodnp3/*.cpp)
-
-add_library(asiodnp3
- ${asiodnp3_SRC}
-)
+file(GLOB_RECURSE asiodnp3_SRC ./cpp/libs/asiodnp3/src/asiodnp3/*.cpp)
+add_library(asiodnp3 ${asiodnp3_SRC})
 
 # ---- secauthv5 library ----
-file(GLOB_RECURSE secauthv5_SRC 
-       ./cpp/libs/secauthv5/src/secauthv5/*.cpp)
+file(GLOB_RECURSE secauthv5_SRC ./cpp/libs/secauthv5/src/secauthv5/*.cpp)
 
-add_library(secauthv5
- ${secauthv5_SRC}
-)
+add_library(secauthv5 ${secauthv5_SRC})
 
 if(OSSL)
-# ---- osslcrypto library ----
-file(GLOB_RECURSE osslcrypto_SRC 
-       ./cpp/libs/osslcrypto/src/osslcrypto/*.cpp)
-
-add_library(osslcrypto
- ${osslcrypto_SRC}
-)
+  # ---- osslcrypto library ----
+  file(GLOB_RECURSE osslcrypto_SRC ./cpp/libs/osslcrypto/src/osslcrypto/*.cpp)
+  add_library(osslcrypto ${osslcrypto_SRC})
 endif()
 
-
-
-# ---- testlib library ----
-file(GLOB_RECURSE testlib_SRC 
-       ./cpp/tests/testlib/src/testlib/*.cpp)
-
-add_library(testlib
- ${testlib_SRC}
-)
+if(TESTS)
+  # ---- testlib library ----
+  file(GLOB_RECURSE testlib_SRC ./cpp/tests/testlib/src/testlib/*.cpp)
+  add_library(testlib ${testlib_SRC})
+endif()
 
 # ---- declare linking dependencies, i.e. if A then B ----
 
 target_link_libraries(secauthv5 opendnp3)
 target_link_libraries(secauthv5 openpal)
 target_link_libraries(opendnp3 openpal)
-target_link_libraries(testlib openpal)
 target_link_libraries(asiopal openpal)
 target_link_libraries(asiodnp3 opendnp3)
 target_link_libraries(asiodnp3 asiopal)
@@ -128,18 +98,16 @@ add_executable (outstationdemoSAv5 ./cpp/examples/sav5/outstation/DemoMain.cpp)
 target_link_libraries (outstationdemoSAv5 LINK_PUBLIC asiodnp3 secauthv5 osslcrypto crypto pthread)
 endif()
 
-# ----- openpal tests -----
-file(GLOB_RECURSE openpal_TESTSRC
-       ./cpp/tests/openpaltests/src/*.cpp)
+if(TESTS)
+  # ----- openpal tests -----
+  file(GLOB_RECURSE openpal_TESTSRC ./cpp/tests/openpaltests/src/*.cpp)
+  add_executable (testopenpal ${openpal_TESTSRC})
+  target_link_libraries (testopenpal LINK_PUBLIC openpal pthread)
 
-add_executable (testopenpal ${openpal_TESTSRC})
-target_link_libraries (testopenpal LINK_PUBLIC openpal pthread)
+  # ----- opendnp3 tests -----
 
-# ----- opendnp3 tests -----
-
-file(GLOB_RECURSE opendnp3_TESTSRC
-       ./cpp/tests/opendnp3tests/src/*.cpp)
-
-add_executable (testopendnp3 ${opendnp3_TESTSRC})
-target_link_libraries (testopendnp3 LINK_PUBLIC asiodnp3 secauthv5 testlib pthread)
+  file(GLOB_RECURSE opendnp3_TESTSRC ./cpp/tests/opendnp3tests/src/*.cpp)
+  add_executable (testopendnp3 ${opendnp3_TESTSRC})
+  target_link_libraries (testopendnp3 LINK_PUBLIC asiodnp3 secauthv5 testlib pthread)
+endif()
 
