@@ -59,7 +59,7 @@ TEST_CASE(SUITE("BasicInstantiationAndRequestRandomWorks"))
 TEST_CASE(SUITE("TestThatMultiThreadingDoesNotCrash"))
 {
 	CryptoProvider provider;
-	std::atomic<uint32_t> randCount;
+	std::atomic<uint32_t> randCount(0);
 
 	vector<unique_ptr<thread>> threads;
 
