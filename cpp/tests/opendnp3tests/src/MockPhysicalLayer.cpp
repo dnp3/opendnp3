@@ -42,8 +42,7 @@ MockPhysicalLayer::MockPhysicalLayer(openpal::LogRoot& root, openpal::IExecutor&
 	mNumOpenSuccess(0),
 	mNumOpenFailure(0),
 	mNumClose(0),
-	mNumOpeningClose(0),
-	mIsAutoOpenSuccess(true)	
+	mNumOpeningClose(0)	
 {
 	this->SetExecutor(executor);
 }

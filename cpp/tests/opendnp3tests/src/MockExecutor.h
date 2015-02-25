@@ -94,7 +94,6 @@ private:
 	typedef std::vector<MockTimer*> TimerVector;
 
 	bool mPostIsSynchronous;
-	bool mAutoPost;
 	openpal::MonotonicTimestamp mCurrentTime;
 	
 	PostQueue postQueue;		

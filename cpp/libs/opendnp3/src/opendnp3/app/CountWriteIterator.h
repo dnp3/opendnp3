@@ -39,15 +39,15 @@ public:
 		return CountWriteIterator();
 	}
 
-	CountWriteIterator() : count(0), pPosition(nullptr), isValid(false)
+	CountWriteIterator() : count(0), isValid(false), pPosition(nullptr)
 	{}
 
 	CountWriteIterator(const openpal::Serializer<WriteType>& serializer_, openpal::WriteBufferView& position) :
 		count(0),
-		serializer(serializer_),
+		serializer(serializer_),		
+		isValid(position.Size() >= CountType::Size),
 		countPosition(position),
-		pPosition(&position),
-		isValid(position.Size() >= CountType::Size)
+		pPosition(&position)
 	{
 		if(isValid)
 		{

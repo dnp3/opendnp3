@@ -115,9 +115,6 @@ private:
 	uint32_t mNumClose;
 	uint32_t mNumOpeningClose;
 
-	bool mIsAutoOpenSuccess;
-
-	//openpal::IExecutor* mpExecutor;
 };
 
 }

@@ -8,11 +8,16 @@ set(OPENDNP3_VERSION ${OPENDNP3_MAJOR_VERSION}.${OPENDNP3_MINOR_VERSION}.${OPEND
 # options for the project you can enable
 option(LIBCPP "link with libc++ (required for clang)" OFF)
 option(OSSL "build the openssl crypto wrapper for SA" OFF)
+option(WERROR "Set all warnings to errors" OFF)
+
+set(CMAKE_CXX_FLAGS "-Wall -std=c++11")
+
+if (WERROR)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
+endif()
 
 if (LIBCPP)
-  set(CMAKE_CXX_FLAGS "-Wall -std=c++11 -stdlib=libc++")
-else()
-  set(CMAKE_CXX_FLAGS "-Wall -std=c++11")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
 endif()
 
 set(CMAKE_REQUIRED_FLAGS ${CMAKE_CXX_FLAGS})
