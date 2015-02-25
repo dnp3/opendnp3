@@ -68,8 +68,6 @@ namespace osslcrypto
 			return AESKeyWrap::UnwrapKeyAES(AESKeyLength::L256, kek, input, output, pLogger);
 		}
 	};
-
+}
 
 #endif
-
-}

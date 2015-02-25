@@ -32,7 +32,6 @@
 #include <opendnp3/transport/TransportStack.h>
 
 #include "IOutstation.h"
-#include "Mutex.h"
 #include "StackActionHandler.h"
 
 #include <memory>
@@ -57,9 +56,7 @@ public:
 	    const StackActionHandler& handler,
 		std::unique_ptr<opendnp3::IOutstationAuthProvider> auth);
 
-	virtual opendnp3::DatabaseConfigView GetConfigView() override final;
-
-	virtual opendnp3::IDatabase& GetDatabase() override final;
+	virtual opendnp3::DatabaseConfigView GetConfigView() override final;	
 
 	virtual void SetRestartIIN() override final;
 	
@@ -79,8 +76,13 @@ public:
 
 	opendnp3::ILinkSession* GetLinkContext();
 
-private:
-	Mutex mutex;
+private:	
+
+	virtual opendnp3::IDatabase& GetDatabase() override final { return outstation.GetDatabase(); }
+	virtual openpal::IExecutor& GetExecutor() override final;
+	virtual void CheckForUpdates() override final;
+
+
 	openpal::LogRoot root;
 	openpal::Action0 shutdownAction;
 	opendnp3::StackStatistics statistics;	

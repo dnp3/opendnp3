@@ -43,21 +43,6 @@ using namespace openpal;
 namespace opendnp3
 {
 
-void OActions::OnNewEventData(OState& ostate)
-{
-	if (!ostate.pendingTaskCheckFlag)
-	{
-		ostate.pendingTaskCheckFlag = true;
-		// post these calls so the stack can unwind
-		auto lambda = [&]() 
-		{ 
-			ostate.pendingTaskCheckFlag = false;
-			OActions::CheckForTaskStart(ostate);
-		};
-		ostate.pExecutor->PostLambda(lambda);
-	}
-}
-
 IINField OActions::GetResponseIIN(OState& ostate)
 {
 	return ostate.staticIIN | GetDynamicIIN(ostate) | ostate.pApplication->GetApplicationIIN().ToIIN();
@@ -360,15 +345,11 @@ void OActions::CheckForUnsolicited(OState& ostate)
 				
 				auto response = ostate.unsol.tx.Start();
 				auto writer = response.GetWriter();
-
-				{
-					// even though we're not loading static data, we need to lock 
-					// the database since it updates the event buffer
-					Transaction tx(ostate.database);
-					ostate.eventBuffer.Unselect();
-					ostate.eventBuffer.SelectAllByClass(ostate.params.unsolClassMask);
-					ostate.eventBuffer.Load(writer);					
-				}
+										
+				ostate.eventBuffer.Unselect();
+				ostate.eventBuffer.SelectAllByClass(ostate.params.unsolClassMask);
+				ostate.eventBuffer.Load(writer);					
+				
 				build::NullUnsolicited(response, ostate.unsol.seq.num, GetResponseIIN(ostate));				
 				OActions::StartUnsolicitedConfirmTimer(ostate);
 				ostate.unsol.pState = &OutstationUnsolicitedStateConfirmWait::Inst();

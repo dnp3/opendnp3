@@ -1222,14 +1222,6 @@
       <SubType>compile</SubType>
       <Link>outstation\StaticTypeBitfield.h</Link>
     </Compile>
-    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\TimeTransaction.cpp">
-      <SubType>compile</SubType>
-      <Link>outstation\TimeTransaction.cpp</Link>
-    </Compile>
-    <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\TimeTransaction.h">
-      <SubType>compile</SubType>
-      <Link>outstation\TimeTransaction.h</Link>
-    </Compile>
     <Compile Include="..\..\..\cpp\libs\opendnp3\src\opendnp3\outstation\ValueMetadataPair.h">
       <SubType>compile</SubType>
       <Link>outstation\ValueMetadataPair.h</Link>

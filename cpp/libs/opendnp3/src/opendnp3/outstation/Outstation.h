@@ -29,14 +29,13 @@
 namespace opendnp3
 {
 
-class Outstation : public IUpperLayer, private INewEventDataHandler
+class Outstation : public IUpperLayer
 {
 	public:
 
 	Outstation(		const OutstationConfig& config,
 					const DatabaseTemplate& dbTemplate,
-					openpal::Logger logger,
-					openpal::IMutex* pDBMutex,
+					openpal::Logger logger,					
 					openpal::IExecutor& executor, 					
 					ILowerLayer& lower,
 					ICommandHandler& commandHandler,
@@ -51,15 +50,13 @@ class Outstation : public IUpperLayer, private INewEventDataHandler
 
 	virtual void OnReceive(const openpal::ReadBufferView&) override final;
 	
-	virtual void OnSendResult(bool isSucccess) override final;
-
-	/// ----- Implement INewEventDataHandler ------
-
-	virtual void OnNewEventData() override final;
+	virtual void OnSendResult(bool isSucccess) override final;	
 	
 	/// ---- Other public members
 
 	void SetRestartIIN();
+
+	void CheckForUpdates(); //force a check for updates
 
 	IDatabase& GetDatabase();
 

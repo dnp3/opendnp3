@@ -131,10 +131,7 @@ OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnConfirm(OSt
 {	
 	if (header.control.SEQ == ostate.sol.seq.confirmNum)
 	{
-		ostate.confirmTimer.Cancel();
-
-		// Lock the database for the remainder of this method as we will be manipulating the buffers
-		Transaction tx(ostate.database);				
+		ostate.confirmTimer.Cancel();					
 		ostate.eventBuffer.ClearWritten();
 
 		if (ostate.rspContext.HasSelection())

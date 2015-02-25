@@ -196,7 +196,7 @@ TEST_CASE(SUITE("PrefixWriteIteratorNotEnoughSpaceForAValue"))
 }
 
 
-TEST_CASE(SUITE("SingleValueWithIndexCROB"))
+TEST_CASE(SUITE("SingleValueWithIndexCROBLatchOn"))
 {
 	APDURequest request(APDUHelpers::Request(FunctionCode::SELECT));
 	auto writer = request.GetWriter();
@@ -207,6 +207,19 @@ TEST_CASE(SUITE("SingleValueWithIndexCROB"))
 
 	REQUIRE("C0 03 0C 01 08 01 00 21 00 03 1F 10 00 00 00 AA 00 00 00 07" ==  ToHex(request.ToReadOnly()));
 }
+
+TEST_CASE(SUITE("SingleValueWithIndexCROBLatchOff"))
+{
+	APDURequest request(APDUHelpers::Request(FunctionCode::SELECT));
+	auto writer = request.GetWriter();
+
+	ControlRelayOutputBlock crob(ControlCode::LATCH_OFF, 0x1F, 0x10, 0xAA, CommandStatus::LOCAL);
+
+	REQUIRE(writer.WriteSingleIndexedValue<UInt16>(QualifierCode::UINT16_CNT, Group12Var1::Inst(), crob, 0x21));
+
+	REQUIRE("C0 03 0C 01 08 01 00 21 00 04 1F 10 00 00 00 AA 00 00 00 07" == ToHex(request.ToReadOnly()));
+}
+
 
 TEST_CASE(SUITE("WriteSingleValue"))
 {

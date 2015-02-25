@@ -22,10 +22,10 @@
 #include <asiodnp3/DNP3Manager.h>
 #include <asiodnp3/PrintingSOEHandler.h>
 #include <asiodnp3/ConsoleLogger.h>
+#include <asiodnp3/MeasUpdate.h>
 
 #include <asiopal/UTCTimeSource.h>
 
-#include <opendnp3/outstation/TimeTransaction.h>
 #include <opendnp3/outstation/SimpleCommandHandler.h>
 #include <opendnp3/outstation/Database.h>
 #include <opendnp3/LogLevels.h>
@@ -149,8 +149,8 @@ int main(int argc, char* argv[])
 		std::cout << "Enter one or more measurement changes then press <enter>" << std::endl;
 		std::cout << "c = counter, b = binary, d = doublebit, a = analog, x = exit" << std::endl;
 		std::cin >> input;
-
-		TimeTransaction tx(pOutstation->GetDatabase(), UTCTimeSource::Instance().Now());
+		
+		MeasUpdate tx(pOutstation);
 		for (char& c : input)
 		{
 			switch (c)

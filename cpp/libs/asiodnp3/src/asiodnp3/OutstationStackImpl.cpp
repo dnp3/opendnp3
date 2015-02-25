@@ -35,15 +35,17 @@ OutstationStackImpl::OutstationStackImpl(
 	opendnp3::ICommandHandler& commandHandler,
 	IOutstationApplication& application,	
     const OutstationStackConfig& config,
+
     const StackActionHandler& handler_,
 	std::unique_ptr<opendnp3::IOutstationAuthProvider> auth_) :
 	
-	mutex(),
 	root(root_, id),
 	handler(handler_),
 	stack(root, &executor, config.outstation.params.maxRxFragSize, &statistics, config.link),		
 	auth(std::move(auth_)),
-	outstation(config.outstation, config.dbTemplate, root.GetLogger(), &mutex, executor, stack.transport, commandHandler, application, *auth)
+	outstation(config.outstation, config.dbTemplate, root.GetLogger(), executor, stack.transport, commandHandler, application, *auth)
+
+   
 {
 	stack.transport.SetAppLayer(&outstation);
 }
@@ -51,11 +53,6 @@ OutstationStackImpl::OutstationStackImpl(
 opendnp3::DatabaseConfigView OutstationStackImpl::GetConfigView()
 {
 	return outstation.GetConfigView();
-}
-
-opendnp3::IDatabase& OutstationStackImpl::GetDatabase()
-{
-	return outstation.GetDatabase();
 }
 
 void OutstationStackImpl::SetRestartIIN()
@@ -100,6 +97,16 @@ void OutstationStackImpl::SetShutdownAction(const openpal::Action0& action)
 opendnp3::ILinkSession* OutstationStackImpl::GetLinkContext()
 {
 	return &stack.link;
+}
+
+openpal::IExecutor& OutstationStackImpl::GetExecutor()
+{
+	return *handler.GetExecutor();
+}
+
+void OutstationStackImpl::CheckForUpdates()
+{
+	outstation.CheckForUpdates();
 }
 
 }

@@ -21,8 +21,6 @@
 #ifndef OPENDNP3_DATABASE_H
 #define OPENDNP3_DATABASE_H
 
-#include <openpal/executor/IMutex.h>
-
 #include "opendnp3/gen/IndexMode.h"
 #include "opendnp3/gen/AssignClassType.h"
 
@@ -33,13 +31,6 @@
 namespace opendnp3
 {
 
-class INewEventDataHandler
-{
-public:
-	// called when a transaction produces new event data
-	virtual void OnNewEventData() = 0;
-};
-
 /**
 The database coordinates all updates of measurement data
 */
@@ -47,7 +38,7 @@ class Database : public IDatabase, private openpal::Uncopyable
 {
 public:
 
-	Database(const DatabaseTemplate&, IEventReceiver& eventReceiver, INewEventDataHandler& handler, IndexMode indexMode, StaticTypeBitField allowedClass0Types, openpal::IMutex* pMutex);
+	Database(const DatabaseTemplate&, IEventReceiver& eventReceiver, IndexMode indexMode, StaticTypeBitField allowedClass0Types);
 
 	// ------- IDatabase --------------
 
@@ -99,16 +90,11 @@ private:
 	template <class T>
 	uint16_t GetRawIndex(uint16_t index);
 	
-
 	// stores the most recent values, selected values, and metadata
 	DatabaseBuffers buffers;
-
-	IEventReceiver* pEventReceiver;
-	openpal::IMutex* pMutex;
+	IEventReceiver* pEventReceiver;	
 	IndexMode indexMode;
-		
-	INewEventDataHandler* pEventHandler;
-	bool transactionHasEvents;
+			
 
 	static bool ConvertToEventClass(PointClass pc, EventClass& ec);	
 
@@ -120,10 +106,6 @@ private:
 
 	template <class T>
 	bool UpdateAny(Cell<T>& cell, const T& value, EventMode mode);
-
-	// ITransactable  functions, proxies to the given transactable
-	virtual void Start() override final;
-	virtual void End() override final;
 };
 
 template <class T>
@@ -201,8 +183,7 @@ bool Database::UpdateAny(Cell<T>& cell, const T& value, EventMode mode)
 
 			if (pEventReceiver)
 			{
-				pEventReceiver->Update(Event<T>(value, cell.vIndex, ec, cell.metadata.variation));
-				transactionHasEvents = true;
+				pEventReceiver->Update(Event<T>(value, cell.vIndex, ec, cell.metadata.variation));				
 			}
 		}		
 	}

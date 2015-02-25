@@ -2,7 +2,7 @@
 #include "Stdafx.h"
 #include "OutstationAdapter.h"
 
-#include "OutstationDatabaseAdapter.h"
+#include "ChangeSetAdapter.h"
 #include "Conversions.h"
 
 #include <opendnp3/outstation/Database.h>
@@ -14,15 +14,15 @@ namespace Automatak
 		namespace Adapter
 		{
 
-			OutstationAdapter::OutstationAdapter(asiodnp3::IOutstation* pOutstation_) :
-				pOutstation(pOutstation_),
-				databaseAdapter(gcnew OutstationDatabaseAdapter(pOutstation->GetDatabase()))
+			OutstationAdapter::OutstationAdapter(asiodnp3::IOutstation* pOutstation_) : pOutstation(pOutstation_)				
 			{}
 
-			Automatak::DNP3::Interface::IDatabase^ OutstationAdapter::GetDatabase()
+			void OutstationAdapter::LoadChanges(System::Action<IDatabase^>^ changeFun)
 			{
-				return databaseAdapter;
-			}
+				auto adapter = gcnew ChangeSetAdapter(*pOutstation);
+				changeFun->Invoke(adapter);
+				adapter->Apply();
+			}			
 
 			void OutstationAdapter::SetRestartIIN()
 			{

@@ -17,9 +17,9 @@ namespace Automatak
 			{
 			public:
 
-				OutstationAdapter(asiodnp3::IOutstation* apOutstation);
+				OutstationAdapter(asiodnp3::IOutstation* pOutstation);
 
-				virtual Automatak::DNP3::Interface::IDatabase^ GetDatabase();
+				virtual void LoadChanges(System::Action<IDatabase^>^ changeFun);
 
 				virtual void SetRestartIIN();
 
@@ -32,8 +32,7 @@ namespace Automatak
 				virtual IStackStatistics^ GetStackStatistics();
 
 			private:
-				asiodnp3::IOutstation* pOutstation;
-				Automatak::DNP3::Interface::IDatabase^ databaseAdapter;
+				asiodnp3::IOutstation* pOutstation;				
 			};
 
 		}

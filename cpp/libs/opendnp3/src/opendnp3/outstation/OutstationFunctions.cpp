@@ -90,12 +90,10 @@ IINField OFunctions::HandleNonReadResponse(OState& ostate, const APDUHeader& hea
 
 Pair<IINField, AppControlField> OFunctions::HandleRead(OState& ostate, const openpal::ReadBufferView& objects, HeaderWriter& writer)
 {
-	ostate.rspContext.Reset();
-
-	// Do a transaction (lock) on the database  for multi-threaded environments
-	Transaction tx(ostate.database);
+	ostate.rspContext.Reset();	
 	ostate.eventBuffer.Unselect(); // always un-select any previously selected points when we start a new read request
 	ostate.database.Unselect();
+
 	ReadHandler handler(ostate.logger, ostate.database.GetSelector(), ostate.eventBuffer);
 	auto result = APDUParser::ParseAll(objects, handler, &ostate.logger, ParserSettings::NoContents()); // don't expect range/count context on a READ
 	if (result == ParseResult::OK)
@@ -248,10 +246,7 @@ IINField OFunctions::HandleAssignClass(OState& ostate, const openpal::ReadBuffer
 {
 	if (ostate.pApplication->SupportsAssignClass())
 	{		
-		AssignClassHandler handler(ostate.logger, *ostate.pExecutor, *ostate.pApplication, ostate.database.GetClassAssigner());
-
-		// Lock the db as this can adjust configuration values in the database
-		Transaction tx(ostate.database);
+		AssignClassHandler handler(ostate.logger, *ostate.pExecutor, *ostate.pApplication, ostate.database.GetClassAssigner());		
 		auto result = APDUParser::ParseAll(objects, handler, &ostate.logger, ParserSettings::NoContents());
 		return (result == ParseResult::OK) ? handler.Errors() : IINFromParseResult(result);
 	}

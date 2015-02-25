@@ -310,7 +310,7 @@ TEST_CASE(SUITE("Group1Var1ByRange"))
 	});
 }
 
-TEST_CASE(SUITE("Group12Var1WithIndexSizes"))
+TEST_CASE(SUITE("Group12Var1WithIndexSizesLatchOn"))
 {
 	auto hex = "0C 01 17 01 09 03 01 64 00 00 00 C8 00 00 00 00";
 
@@ -318,6 +318,24 @@ TEST_CASE(SUITE("Group12Var1WithIndexSizes"))
 	{
 		REQUIRE(1 ==  mock.crobRequests.size());
 		ControlRelayOutputBlock crob(ControlCode::LATCH_ON, 1, 100, 200);
+		IndexedValue<ControlRelayOutputBlock, uint16_t> value(crob, 9);
+		REQUIRE((value == mock.crobRequests[0]));
+
+		REQUIRE(1 == mock.records.size());
+	};
+
+
+	TestComplex(hex, ParseResult::OK, 1, validator);
+}
+
+TEST_CASE(SUITE("Group12Var1WithIndexSizesLatchOff"))
+{
+	auto hex = "0C 01 17 01 09 04 01 64 00 00 00 C8 00 00 00 00";
+
+	auto validator = [&](MockApduHeaderHandler & mock)
+	{
+		REQUIRE(1 == mock.crobRequests.size());
+		ControlRelayOutputBlock crob(ControlCode::LATCH_OFF, 1, 100, 200);
 		IndexedValue<ControlRelayOutputBlock, uint16_t> value(crob, 9);
 		REQUIRE((value == mock.crobRequests[0]));
 

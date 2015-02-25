@@ -429,6 +429,69 @@
     <ClInclude Include="src\opendnp3\objects\Group51.h">
       <Filter>Header\objects</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\CommandActionAdapter.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\ConstantCommandAction.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\DatabaseTemplate.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\DualValue.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\Event.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\EventCount.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\ICommandAction.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\ICommandHandler.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\IINHelpers.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\ReadHandler.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\SimpleCommandHandler.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\ValueMetadataPair.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\WriteHandler.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\transport\TransportConstants.h">
+      <Filter>Header\transport</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\transport\TransportLayer.h">
+      <Filter>Header\transport</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\transport\TransportRx.h">
+      <Filter>Header\transport</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\transport\TransportTx.h">
+      <Filter>Header\transport</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\app\Range.h">
+      <Filter>Header\app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\app\MeasurementFactory.h">
+      <Filter>Header\app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\app\GroupVariationID.h">
+      <Filter>Header\app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\objects\Group3.h">
+      <Filter>Header\objects</Filter>
+    </ClInclude>
     <ClInclude Include="src\opendnp3\objects\Group52.h">
       <Filter>Header\objects</Filter>
     </ClInclude>
@@ -521,6 +584,9 @@
     </ClInclude>
     <ClInclude Include="src\opendnp3\master\MasterScan.h">
       <Filter>Header\master</Filter>
+    </ClInclude>  
+    <ClInclude Include="src\opendnp3\ErrorCodes.h">
+      <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\master\MasterScheduler.h">
       <Filter>Header\master</Filter>
@@ -813,6 +879,9 @@
     <ClInclude Include="src\opendnp3\outstation\IOutstationAuthFactory.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\app\ITransactable.h">
+      <Filter>Source\app</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\TimeAndInterval.cpp">
@@ -1012,6 +1081,9 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\master\WriteTask.cpp">
       <Filter>Source\master</Filter>
+    </ClCompile>  
+    <ClCompile Include="src\opendnp3\outstation\WriteHandler.cpp">
+      <Filter>Source\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\objects\Group1.cpp">
       <Filter>Source\objects</Filter>

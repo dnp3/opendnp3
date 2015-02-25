@@ -52,9 +52,7 @@ class OState
 
 	OState(	const OutstationConfig& config,	
 			const DatabaseTemplate& dbTemplate,
-			openpal::Logger logger,
-			openpal::IMutex* pMutex,
-			INewEventDataHandler& handler,
+			openpal::Logger logger,						
 			openpal::IExecutor& executor,			
 			ILowerLayer& lower,
 			ICommandHandler& commandHandler,
@@ -85,8 +83,7 @@ class OState
 		
 	// ------ Shared dynamic state --------
 	bool isOnline;
-	bool isTransmitting;
-	bool pendingTaskCheckFlag;
+	bool isTransmitting;	
 	IINField staticIIN;
 	openpal::TimerRef confirmTimer;
 	RequestHistory history;

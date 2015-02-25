@@ -77,6 +77,6 @@ class CryptoProvider : public openpal::ICryptoProvider, private openpal::Uncopya
 	static bool initialized;
 };
 
-#endif
-
 }
+
+#endif

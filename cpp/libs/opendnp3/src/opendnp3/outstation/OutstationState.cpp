@@ -29,9 +29,7 @@ namespace opendnp3
 	OState::OState(
 		const OutstationConfig& config,
 		const DatabaseTemplate& dbTemplate,
-		openpal::Logger logger_,
-		openpal::IMutex* pMutex,
-		INewEventDataHandler& handler,
+		openpal::Logger logger_,				
 		openpal::IExecutor& executor,		
 		ILowerLayer& lower,
 		ICommandHandler& commandHandler,
@@ -45,12 +43,11 @@ namespace opendnp3
 	pApplication(&application),
 	pAuthProvider(&authProvider),
 	eventBuffer(config.eventBufferConfig),
-	database(dbTemplate, eventBuffer, handler, config.params.indexMode, config.params.typesAllowedInClass0, pMutex),
+	database(dbTemplate, eventBuffer, config.params.indexMode, config.params.typesAllowedInClass0),
 	rspContext(database.GetStaticLoader(), eventBuffer),
 	params(config.params),	
 	isOnline(false),
-	isTransmitting(false),
-	pendingTaskCheckFlag(false),
+	isTransmitting(false),	
 	staticIIN(IINBit::DEVICE_RESTART),	
 	confirmTimer(executor),
 	deferred(config.params.maxRxFragSize),
@@ -63,8 +60,7 @@ namespace opendnp3
 void OState::Reset()
 {	
 	isOnline = false;
-	isTransmitting = false;
-	pendingTaskCheckFlag = false;
+	isTransmitting = false;	
 
 	sol.Reset();
 	unsol.Reset();

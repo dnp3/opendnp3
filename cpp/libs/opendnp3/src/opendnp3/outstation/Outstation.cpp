@@ -35,14 +35,13 @@ namespace opendnp3
 Outstation::Outstation(
 		const OutstationConfig& config,
 		const DatabaseTemplate& dbTemplate,
-		openpal::Logger logger,
-		openpal::IMutex* pDBMutex,
+		openpal::Logger logger,		
 		IExecutor& executor,		
 		ILowerLayer& lower,
 		ICommandHandler& commandHandler,
 		IOutstationApplication& application,
 		IOutstationAuthProvider& authProvider) :
-		ostate(config, dbTemplate, logger, pDBMutex, *this, executor, lower, commandHandler, application, authProvider)
+		ostate(config, dbTemplate, logger, executor, lower, commandHandler, application, authProvider)
 {
 	
 }
@@ -97,14 +96,14 @@ void Outstation::OnSendResult(bool isSuccess)
 	}	
 }
 
-void Outstation::OnNewEventData()
-{
-	OActions::OnNewEventData(ostate);
-}
-
 void Outstation::SetRestartIIN()
 {
 	ostate.staticIIN.SetBit(IINBit::DEVICE_RESTART);
+}
+
+void Outstation::CheckForUpdates()
+{
+	OActions::CheckForTaskStart(ostate);
 }
 
 IDatabase& Outstation::GetDatabase()
