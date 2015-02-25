@@ -36,7 +36,7 @@ ControlRelayOutputBlock::ControlRelayOutputBlock(ControlCode code_, uint8_t coun
 }
 
 ControlRelayOutputBlock::ControlRelayOutputBlock(uint8_t rawCode_, uint8_t count_, uint32_t onTime_, uint32_t offTime_, CommandStatus status_) :
-	functionCode(ControlCodeFromType((rawCode))),
+	functionCode(ControlCodeFromType((rawCode_))),
 	rawCode(rawCode_),
 	count(count_),
 	onTimeMS(onTime_),
