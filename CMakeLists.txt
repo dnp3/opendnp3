@@ -5,9 +5,17 @@ set(OPENDNP3_MINOR_VERSION 0)
 set(OPENDNP3_MICRO_VERSION 1)
 set(OPENDNP3_VERSION ${OPENDNP3_MAJOR_VERSION}.${OPENDNP3_MINOR_VERSION}.${OPENDNP3_MICRO_VERSION})
 
-# Initialize CXXFLAGS.
-set(CMAKE_CXX_FLAGS "-Wall -std=c++11 -stdlib=libc++")
-#set(CMAKE_CXX_FLAGS "-Wall -std=c++11")
+# options for the project you can enable
+option(LIBCPP "link with libc++ (required for clang)" OFF)
+option(OSSL "build the openssl crypto wrapper for SA" OFF)
+
+if (LIBCPP)
+  message("Setting the stdlib to libc++")
+  set(CMAKE_CXX_FLAGS "-Wall -std=c++11 -stdlib=libc++")
+else()
+  set(CMAKE_CXX_FLAGS "-Wall -std=c++11")
+endif()
+
 set(CMAKE_REQUIRED_FLAGS ${CMAKE_CXX_FLAGS})
 set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g")
 
@@ -19,24 +27,16 @@ else()
   message(FATAL_ERROR "You must define ASIO_HOME to point to your ASIO include subdirectory")
 endif()
 
-#find_library(OPENSSL_CRYPTO_FOUND crypto)
-#if(OPENSSL_CRYPTO_FOUND)
-  #message("found libcrypto")
-#else()
-  #message(FATAL_ERROR "Libcrypto not found")
-#endif()
-
-#CHECK_INCLUDE_FILES(<openssl/hmac.h> HAVE_OPENSSL_H)
-
 # include paths for all the local libraries
 include_directories(./cpp/libs/secauthv5/src)
 include_directories(./cpp/libs/openpal/src)
 include_directories(./cpp/libs/opendnp3/src)
 include_directories(./cpp/libs/asiopal/src)
 include_directories(./cpp/libs/asiodnp3/src)
-include_directories(./cpp/libs/osslcrypto/src)
 include_directories(./cpp/tests/testlib/src)
 include_directories(./cpp/tests/catch)
+include_directories(./cpp/libs/osslcrypto/src)
+
 
 # required for ASIO in C++11 only mode
 add_definitions(-DASIO_STANDALONE)
@@ -83,6 +83,7 @@ add_library(secauthv5
  ${secauthv5_SRC}
 )
 
+if(OSSL)
 # ---- osslcrypto library ----
 file(GLOB_RECURSE osslcrypto_SRC 
        ./cpp/libs/osslcrypto/src/osslcrypto/*.cpp)
@@ -90,6 +91,7 @@ file(GLOB_RECURSE osslcrypto_SRC
 add_library(osslcrypto
  ${osslcrypto_SRC}
 )
+endif()
 
 
 
@@ -120,9 +122,11 @@ target_link_libraries (masterdemo LINK_PUBLIC asiodnp3 pthread)
 add_executable (outstationdemo ./cpp/examples/outstation/DemoMain.cpp)
 target_link_libraries (outstationdemo LINK_PUBLIC asiodnp3 pthread)
 
+if(OSSL)
 # ----- outstation SAv5 demo executable -----
 add_executable (outstationdemoSAv5 ./cpp/examples/sav5/outstation/DemoMain.cpp)
 target_link_libraries (outstationdemoSAv5 LINK_PUBLIC asiodnp3 secauthv5 osslcrypto crypto pthread)
+endif()
 
 # ----- openpal tests -----
 file(GLOB_RECURSE openpal_TESTSRC
