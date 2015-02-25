@@ -63,6 +63,8 @@ public:
 
 	bool PopUntil(int32_t filter);
 
+	bool PopErrorCode(int code);
+
 	int ClearLog();
 	int NextErrorCode();
 	bool GetNextEntry(LogRecord& record);

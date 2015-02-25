@@ -94,6 +94,21 @@ bool LogTester::PopOneEntry(int32_t filter)
 	else return false;
 }
 
+bool LogTester::PopErrorCode(int code)
+{
+	while (!messages.empty())
+	{
+		bool match = messages.front().errorCode == code;
+		messages.pop_front();
+		if (match)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 bool LogTester::PopUntil(int32_t filter)
 {
 	while (!messages.empty())

@@ -62,7 +62,7 @@ TEST_CASE(SUITE("ForwardsOnLowerLayerUp"))
 	t.link.OnLowerLayerUp();
 	REQUIRE(t.upper.IsOnline());
 	t.link.OnLowerLayerUp();
-	REQUIRE(t.log.PopOneEntry(flags::ERR));
+	REQUIRE(t.log.PopUntil(flags::ERR));
 }
 
 // Check that once the layer comes up, validation errors can occur
@@ -70,7 +70,7 @@ TEST_CASE(SUITE("ValidatesMasterOutstationBit"))
 {
 	LinkLayerTest t; t.link.OnLowerLayerUp();
 	t.link.Ack(true, false, 1, 1024);
-	REQUIRE(t.log.NextErrorCode() == DLERR_WRONG_MASTER_BIT);
+	REQUIRE(t.log.PopErrorCode(DLERR_WRONG_MASTER_BIT));
 }
 
 // Only process frames from your designated remote address
@@ -78,7 +78,7 @@ TEST_CASE(SUITE("ValidatesSourceAddress"))
 {
 	LinkLayerTest t; t.link.OnLowerLayerUp();
 	t.link.Ack(false, false, 1, 1023);
-	REQUIRE(t.log.NextErrorCode() ==  DLERR_UNKNOWN_SOURCE);
+	REQUIRE(t.log.PopErrorCode(DLERR_UNKNOWN_SOURCE));
 }
 
 // This should actually never happen when using the LinkLayerRouter
@@ -87,7 +87,7 @@ TEST_CASE(SUITE("ValidatesDestinationAddress"))
 {
 	LinkLayerTest t;  t.link.OnLowerLayerUp();
 	t.link.Ack(false, false, 2, 1024);
-	REQUIRE(t.log.NextErrorCode() ==  DLERR_UNKNOWN_DESTINATION);
+	REQUIRE(t.log.PopErrorCode(DLERR_UNKNOWN_DESTINATION));
 }
 
 // Show that the base state of idle logs SecToPri frames as errors
@@ -173,7 +173,7 @@ TEST_CASE(SUITE("SecAckWrongFCB"))
 
 	REQUIRE(ToHex(t.lastWrite) ==  ToHex(frame));
 	REQUIRE(t.upper.receivedQueue.empty()); //data should not be passed up!
-	REQUIRE(t.log.PopOneEntry(flags::WARN));
+	REQUIRE(t.log.PopUntil(flags::WARN));
 }
 
 // When we get another reset links when we're already reset,
@@ -218,7 +218,7 @@ TEST_CASE(SUITE("SecondaryResetConfirmedUserData"))
 	t.link.ConfirmedUserData(false, true, 1, 1024, bytes.ToReadOnly()); //send with wrong FCB
 	REQUIRE(t.numWrites ==  3); //should still get an ACK
 	REQUIRE(t.upper.receivedQueue.empty()); //but no data
-	REQUIRE(t.log.PopOneEntry(flags::WARN));
+	REQUIRE(t.log.PopUntil(flags::WARN));
 }
 
 TEST_CASE(SUITE("RequestStatusOfLink"))
