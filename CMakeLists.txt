@@ -21,7 +21,11 @@ if (LIBCPP)
 endif()
 
 set(CMAKE_REQUIRED_FLAGS ${CMAKE_CXX_FLAGS})
+
+# different release and debug flags
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g")
+
 
 if (DEFINED ENV{ASIO_HOME})
   message("ASIO_HOME defined: $ENV{ASIO_HOME}")
