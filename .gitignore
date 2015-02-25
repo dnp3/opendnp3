@@ -41,6 +41,7 @@ libosslcrypto.a
 libtestlib.a
 testopenpal
 testopendnp3
+testosslcrypto
 outstationdemo
 masterdemo
 outstationdemoSAv5

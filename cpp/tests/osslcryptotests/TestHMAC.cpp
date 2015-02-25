@@ -39,8 +39,9 @@ using namespace testlib;
 
 void TestHMACSuccess(IHMACAlgo& algo, const openpal::ReadBufferView& key, const openpal::ReadBufferView& data, const std::string& expected)
 {
-	DynamicBuffer output(algo.OutputSize());	
-	REQUIRE(algo.Calculate(key, { data }, output.GetWriteBufferView()));
+	DynamicBuffer output(algo.OutputSize());
+	auto dest = output.GetWriteBufferView();
+	REQUIRE(algo.Calculate(key, { data }, dest));
 	auto resultStr = ToHex(output.ToReadOnly(), false);
 	REQUIRE(resultStr == expected);
 }
@@ -48,7 +49,8 @@ void TestHMACSuccess(IHMACAlgo& algo, const openpal::ReadBufferView& key, const 
 void TestInsufficientOutputSizeFails(IHMACAlgo& algo)
 {	
 	DynamicBuffer output(algo.OutputSize() - 1);
-	auto success = algo.Calculate(ReadBufferView(), { ReadBufferView() }, output.GetWriteBufferView());
+	auto dest = output.GetWriteBufferView();
+	auto success = algo.Calculate(ReadBufferView(), { ReadBufferView() }, dest);
 	REQUIRE(!success);
 }
 

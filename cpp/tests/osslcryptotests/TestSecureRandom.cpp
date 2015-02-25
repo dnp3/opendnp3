@@ -46,7 +46,8 @@ TEST_CASE(SUITE("BasicInstantiationAndRequestRandomWorks"))
 
 	for (int i = 0; i < NUM_RAND_FETCH; ++i)
 	{
-		if (provider.GetSecureRandom(buffer.GetWriteBufferView()))
+		auto dest = buffer.GetWriteBufferView();
+		if (provider.GetSecureRandom(dest))
 		{
 			++count;
 		}
@@ -70,7 +71,8 @@ TEST_CASE(SUITE("TestThatMultiThreadingDoesNotCrash"))
 		DynamicBuffer buffer(100);
 		for (int i = 0; i < NUM_RAND_FETCH; ++i)
 		{
-			if (provider.GetSecureRandom(buffer.GetWriteBufferView()))
+			auto dest = buffer.GetWriteBufferView();
+			if (provider.GetSecureRandom(dest))
 			{
 				++randCount;
 			}
@@ -79,7 +81,7 @@ TEST_CASE(SUITE("TestThatMultiThreadingDoesNotCrash"))
 
 	for (int i = 0; i < 100; ++i)
 	{		
-		threads.push_back(std::make_unique<std::thread>(runner));
+		threads.push_back(std::unique_ptr<std::thread>(new std::thread(runner)));
 	}
 
 	for (auto& t : threads)
@@ -89,3 +91,4 @@ TEST_CASE(SUITE("TestThatMultiThreadingDoesNotCrash"))
 
 	REQUIRE(randCount == NUM_THREADS*NUM_RAND_FETCH);	
 }
+

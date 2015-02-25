@@ -46,42 +46,38 @@ add_library(openpal ${openpal_SRC})
 # ---- opendnp3 library ----
 file(GLOB_RECURSE opendnp3_SRC ./cpp/libs/opendnp3/src/opendnp3/*.cpp)
 add_library(opendnp3 ${opendnp3_SRC})
+target_link_libraries(opendnp3 openpal)
 
 # ---- asiopal library ----
-
 file(GLOB_RECURSE asiopal_SRC ./cpp/libs/asiopal/src/asiopal/*.cpp)
 add_library(asiopal ${asiopal_SRC})
+target_link_libraries(asiopal openpal)
 
 # ---- asiodnp3 library ----
 file(GLOB_RECURSE asiodnp3_SRC ./cpp/libs/asiodnp3/src/asiodnp3/*.cpp)
 add_library(asiodnp3 ${asiodnp3_SRC})
-
-# ---- secauthv5 library ----
-file(GLOB_RECURSE secauthv5_SRC ./cpp/libs/secauthv5/src/secauthv5/*.cpp)
-
-add_library(secauthv5 ${secauthv5_SRC})
-
-if(OSSL)
-  # ---- osslcrypto library ----
-  file(GLOB_RECURSE osslcrypto_SRC ./cpp/libs/osslcrypto/src/osslcrypto/*.cpp)
-  add_library(osslcrypto ${osslcrypto_SRC})
-endif()
-
-if(TESTS)
-  # ---- testlib library ----
-  file(GLOB_RECURSE testlib_SRC ./cpp/tests/testlib/src/testlib/*.cpp)
-  add_library(testlib ${testlib_SRC})
-endif()
-
-# ---- declare linking dependencies, i.e. if A then B ----
-
-target_link_libraries(secauthv5 opendnp3)
-target_link_libraries(secauthv5 openpal)
-target_link_libraries(opendnp3 openpal)
-target_link_libraries(asiopal openpal)
 target_link_libraries(asiodnp3 opendnp3)
 target_link_libraries(asiodnp3 asiopal)
 
+# ---- secauthv5 library ----
+file(GLOB_RECURSE secauthv5_SRC ./cpp/libs/secauthv5/src/secauthv5/*.cpp)
+add_library(secauthv5 ${secauthv5_SRC})
+target_link_libraries(secauthv5 opendnp3)
+
+# ---- osslcrypto library ----
+if(OSSL)
+  file(GLOB_RECURSE osslcrypto_SRC ./cpp/libs/osslcrypto/src/osslcrypto/*.cpp)
+  add_library(osslcrypto ${osslcrypto_SRC})
+  target_link_libraries(osslcrypto openpal)
+  target_link_libraries(osslcrypto crypto)
+endif()
+
+# ---- testlib library ----
+if(TESTS)
+  file(GLOB_RECURSE testlib_SRC ./cpp/tests/testlib/src/testlib/*.cpp)
+  add_library(testlib ${testlib_SRC})
+  target_link_libraries(testlib openpal)
+endif()
 
 # ----- master demo executable -----
 add_executable (masterdemo ./cpp/examples/master/DemoMain.cpp)
@@ -94,7 +90,7 @@ target_link_libraries (outstationdemo LINK_PUBLIC asiodnp3 pthread)
 if(OSSL)
   # ----- outstation SAv5 demo executable -----
   add_executable (outstationdemoSAv5 ./cpp/examples/sav5/outstation/DemoMain.cpp)
-  target_link_libraries (outstationdemoSAv5 LINK_PUBLIC asiodnp3 secauthv5 osslcrypto crypto pthread)
+  target_link_libraries (outstationdemoSAv5 LINK_PUBLIC asiodnp3 secauthv5 osslcrypto pthread)
 endif()
 
 if(TESTS)
@@ -110,13 +106,11 @@ if(TESTS)
   add_executable (testopendnp3 ${opendnp3_TESTSRC})
   target_link_libraries (testopendnp3 LINK_PUBLIC asiodnp3 secauthv5 testlib pthread)
 
+  # ----- opensslcrypto tests -----
   if(OSSL)
-
-    # ----- openpal tests -----
     file(GLOB_RECURSE osslcrypto_TESTSRC ./cpp/tests/osslcryptotests/*.cpp)
     add_executable (testosslcrypto ${osslcrypto_TESTSRC})
-    target_link_libraries (testosslcrypto LINK_PUBLIC openpal crypto pthread)
-
+    target_link_libraries (testosslcrypto LINK_PUBLIC testlib osslcrypto pthread)
   endif()
 
 endif()
