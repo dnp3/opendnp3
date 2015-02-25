@@ -96,7 +96,7 @@ target_link_libraries (outstationdemo LINK_PUBLIC asiodnp3 pthread)
 if(OSSL)
   # ----- outstation SAv5 demo executable -----
   add_executable (outstationdemoSAv5 ./cpp/examples/sav5/outstation/DemoMain.cpp)
-  target_link_libraries (outstationdemoSAv5 LINK_PUBLIC asiodnp3 secauthv5 osslcrypto pthread)
+  target_link_libraries (outstationdemoSAv5 LINK_PUBLIC asiodnp3 secauthv5 osslcrypto)
 endif()
 
 if(TESTS)
@@ -116,7 +116,7 @@ if(TESTS)
   if(OSSL)
     file(GLOB_RECURSE osslcrypto_TESTSRC ./cpp/tests/osslcryptotests/*.cpp)
     add_executable (testosslcrypto ${osslcrypto_TESTSRC})
-    target_link_libraries (testosslcrypto LINK_PUBLIC testlib osslcrypto pthread)
+    target_link_libraries (testosslcrypto LINK_PUBLIC testlib osslcrypto)
   endif()
 
 endif()
