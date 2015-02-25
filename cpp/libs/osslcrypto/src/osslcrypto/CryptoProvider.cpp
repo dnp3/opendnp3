@@ -34,12 +34,6 @@ using namespace openpal;
 namespace osslcrypto
 {
 
-SHA1HMAC CryptoProvider::hmacSHA1;
-SHA256HMAC CryptoProvider::hmacSHA256;
-
-AESKeyWrap128 CryptoProvider::keywrap128;
-AESKeyWrap256 CryptoProvider::keywrap256;
-
 std::vector < std::unique_ptr<std::mutex> > CryptoProvider::mutexes;
 bool CryptoProvider::initialized = Initialize();
 
@@ -84,26 +78,6 @@ void CryptoProvider::LockingFunction(int mode, int n, const char *file, int line
 bool CryptoProvider::GetSecureRandom(WriteBufferView& buffer)
 {	
 	return RAND_bytes(buffer, buffer.Size()) > 0;
-}
-
-openpal::IKeyWrapAlgo& CryptoProvider::GetAES128KeyWrap()
-{
-	return keywrap128;
-}
-
-openpal::IKeyWrapAlgo& CryptoProvider::GetAES256KeyWrap()
-{
-	return keywrap256;
-}
-
-openpal::IHMACAlgo& CryptoProvider::GetSHA1HMAC()
-{
-	return hmacSHA1;
-}
-
-openpal::IHMACAlgo& CryptoProvider::GetSHA256HMAC()
-{
-	return hmacSHA256;
 }
 
 }

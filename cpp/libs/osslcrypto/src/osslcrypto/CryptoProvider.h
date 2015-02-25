@@ -51,27 +51,26 @@ class CryptoProvider : public openpal::ICryptoProvider, private openpal::Uncopya
 
 	virtual bool GetSecureRandom(openpal::WriteBufferView& buffer) override final;	
 	
-	virtual openpal::IKeyWrapAlgo& GetAES128KeyWrap() override final;
-	virtual openpal::IKeyWrapAlgo& GetAES256KeyWrap() override final;	
+	virtual openpal::IKeyWrapAlgo& GetAES128KeyWrap() override final { return keywrap128; }
+	virtual openpal::IKeyWrapAlgo& GetAES256KeyWrap() override final { return keywrap256; }
 
-	virtual openpal::IHMACAlgo& GetSHA1HMAC() override final;
-	virtual openpal::IHMACAlgo& GetSHA256HMAC() override final;
+	virtual openpal::IHMACAlgo& GetSHA1HMAC() override final { return hmacSHA1;  }
+	virtual openpal::IHMACAlgo& GetSHA256HMAC() override final { return hmacSHA256; }
 	
 	private:
 
+	// state-less hmac algorithms
+	SHA1HMAC hmacSHA1;
+	SHA256HMAC hmacSHA256;	
+
+	// state-less key-wrap algorithms
+	AESKeyWrap128 keywrap128;
+	AESKeyWrap256 keywrap256;
+
 	static void LockingFunction(int mode, int n, const char *file, int line);
-
-	// singleton values of the various hmac algorithms
-	static SHA1HMAC hmacSHA1;
-	static SHA256HMAC hmacSHA256;
-
-	// singleton values of the various key wrap algorithms
-	static AESKeyWrap128 keywrap128;
-	static AESKeyWrap256 keywrap256;
 			
 	static bool Initialize();
-	static bool ConfigureMultithreading();	
-
+	static bool ConfigureMultithreading();
 
 	static std::vector < std::unique_ptr<std::mutex> > mutexes;
 	static bool initialized;
