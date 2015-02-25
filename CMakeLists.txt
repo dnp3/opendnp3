@@ -6,7 +6,8 @@ set(OPENDNP3_MICRO_VERSION 1)
 set(OPENDNP3_VERSION ${OPENDNP3_MAJOR_VERSION}.${OPENDNP3_MINOR_VERSION}.${OPENDNP3_MICRO_VERSION})
 
 # Initialize CXXFLAGS.
-set(CMAKE_CXX_FLAGS "-Wall -std=c++11")
+set(CMAKE_CXX_FLAGS "-Wall -std=c++11 -stdlib=libc++")
+#set(CMAKE_CXX_FLAGS "-Wall -std=c++11")
 set(CMAKE_REQUIRED_FLAGS ${CMAKE_CXX_FLAGS})
 set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g")
 
@@ -17,6 +18,15 @@ if (DEFINED ENV{ASIO_HOME})
 else()
   message(FATAL_ERROR "You must define ASIO_HOME to point to your ASIO include subdirectory")
 endif()
+
+#find_library(OPENSSL_CRYPTO_FOUND crypto)
+#if(OPENSSL_CRYPTO_FOUND)
+  #message("found libcrypto")
+#else()
+  #message(FATAL_ERROR "Libcrypto not found")
+#endif()
+
+#CHECK_INCLUDE_FILES(<openssl/hmac.h> HAVE_OPENSSL_H)
 
 # include paths for all the local libraries
 include_directories(./cpp/libs/secauthv5/src)
@@ -103,13 +113,16 @@ target_link_libraries(asiodnp3 asiopal)
 
 
 # ----- master demo executable -----
-
 add_executable (masterdemo ./cpp/examples/master/DemoMain.cpp)
 target_link_libraries (masterdemo LINK_PUBLIC asiodnp3 pthread)
 
 # ----- outstation demo executable -----
 add_executable (outstationdemo ./cpp/examples/outstation/DemoMain.cpp)
 target_link_libraries (outstationdemo LINK_PUBLIC asiodnp3 pthread)
+
+# ----- outstation SAv5 demo executable -----
+add_executable (outstationdemoSAv5 ./cpp/examples/sav5/outstation/DemoMain.cpp)
+target_link_libraries (outstationdemoSAv5 LINK_PUBLIC asiodnp3 secauthv5 osslcrypto crypto pthread)
 
 # ----- openpal tests -----
 file(GLOB_RECURSE openpal_TESTSRC
