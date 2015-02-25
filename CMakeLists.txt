@@ -10,7 +10,6 @@ option(LIBCPP "link with libc++ (required for clang)" OFF)
 option(OSSL "build the openssl crypto wrapper for SA" OFF)
 
 if (LIBCPP)
-  message("Setting the stdlib to libc++")
   set(CMAKE_CXX_FLAGS "-Wall -std=c++11 -stdlib=libc++")
 else()
   set(CMAKE_CXX_FLAGS "-Wall -std=c++11")
@@ -93,12 +92,13 @@ add_executable (outstationdemo ./cpp/examples/outstation/DemoMain.cpp)
 target_link_libraries (outstationdemo LINK_PUBLIC asiodnp3 pthread)
 
 if(OSSL)
-# ----- outstation SAv5 demo executable -----
-add_executable (outstationdemoSAv5 ./cpp/examples/sav5/outstation/DemoMain.cpp)
-target_link_libraries (outstationdemoSAv5 LINK_PUBLIC asiodnp3 secauthv5 osslcrypto crypto pthread)
+  # ----- outstation SAv5 demo executable -----
+  add_executable (outstationdemoSAv5 ./cpp/examples/sav5/outstation/DemoMain.cpp)
+  target_link_libraries (outstationdemoSAv5 LINK_PUBLIC asiodnp3 secauthv5 osslcrypto crypto pthread)
 endif()
 
 if(TESTS)
+
   # ----- openpal tests -----
   file(GLOB_RECURSE openpal_TESTSRC ./cpp/tests/openpaltests/src/*.cpp)
   add_executable (testopenpal ${openpal_TESTSRC})
@@ -109,5 +109,18 @@ if(TESTS)
   file(GLOB_RECURSE opendnp3_TESTSRC ./cpp/tests/opendnp3tests/src/*.cpp)
   add_executable (testopendnp3 ${opendnp3_TESTSRC})
   target_link_libraries (testopendnp3 LINK_PUBLIC asiodnp3 secauthv5 testlib pthread)
+
+  if(OSSL)
+
+    # ----- openpal tests -----
+    file(GLOB_RECURSE osslcrypto_TESTSRC ./cpp/tests/osslcryptotests/*.cpp)
+    add_executable (testosslcrypto ${osslcrypto_TESTSRC})
+    target_link_libraries (testosslcrypto LINK_PUBLIC openpal crypto pthread)
+
+  endif()
+
 endif()
+
+
+
 
