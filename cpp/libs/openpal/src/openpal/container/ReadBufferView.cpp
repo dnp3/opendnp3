@@ -50,8 +50,10 @@ ReadBufferView ReadBufferView::CopyTo(WriteBufferView& dest) const
 	}
 	else
 	{
-		memcpy(dest, pBuffer, size);
-		return ReadBufferView(dest, size);
+		WriteBufferView copy(dest);
+		memcpy(dest, pBuffer, size);		
+		dest.Advance(size);
+		return copy.ToReadOnly().Take(size);
 	}
 }
 
