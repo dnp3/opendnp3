@@ -43,6 +43,11 @@ namespace secauthv5
 		return this->IgnoreRegularRequest(sstate, ostate, header, objects);
 	}
 
+	IOAuthState* OAuthStateIdle::OnAggModeRequest(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects, const opendnp3::Group120Var3& aggModeRequest)
+	{
+		return this->IgnoreAggModeRequest(sstate, ostate, header, objects, aggModeRequest);
+	}
+
 	IOAuthState* OAuthStateIdle::OnAuthChallenge(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge)
 	{		
 		return this->IgnoreAuthChallenge(sstate, ostate, header, challenge);
@@ -72,6 +77,11 @@ namespace secauthv5
 	IOAuthState* OAuthStateWaitForReply::OnRegularRequest(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects)
 	{
 		return this->IgnoreRegularRequest(sstate, ostate, header, objects);
+	}
+
+	IOAuthState* OAuthStateWaitForReply::OnAggModeRequest(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects, const opendnp3::Group120Var3& aggModeRequest)
+	{
+		return this->IgnoreAggModeRequest(sstate, ostate, header, objects, aggModeRequest);
 	}
 
 	IOAuthState* OAuthStateWaitForReply::OnAuthChallenge(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge)

@@ -29,6 +29,8 @@
 #include "opendnp3/app/parsing/APDUParser.h"
 #include "opendnp3/outstation/OutstationState.h"
 
+#include "secauthv5/AggressiveModeParser.h"
+
 #include "AuthRequestHandler.h"
 #include "IOAuthState.h"
 
@@ -98,7 +100,7 @@ void OutstationAuthProvider::Process(OState& ostate, const openpal::ReadBufferVi
 			SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "AuthRequestNoAck not supported");
 			break;
 		default:
-			this->OnRegularRequest(ostate, header, objects);
+			this->OnUnknownRequest(ostate, fragment, header, objects);
 			break;
 	}
 }
@@ -116,9 +118,24 @@ void OutstationAuthProvider::OnAuthRequest(OState& ostate, const openpal::ReadBu
 	}
 }
 
-void OutstationAuthProvider::OnRegularRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects)
+void OutstationAuthProvider::OnUnknownRequest(OState& ostate, const openpal::ReadBufferView& fragment, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {	
-	sstate.pState = sstate.pState->OnRegularRequest(sstate, ostate, header, objects);
+	/// We have to determine if this is a regular request or an aggressive mode request
+	Group120Var3 aggModeRequest;
+	auto result = AggressiveModeParser::IsAggressiveMode(objects, aggModeRequest, &ostate.logger);
+	if (result.first == ParseResult::OK)
+	{
+		if (result.second)
+		{
+			// it's an aggressive mode request
+			sstate.pState = sstate.pState->OnAggModeRequest(sstate, ostate, header, objects, aggModeRequest);
+		}
+		else
+		{
+			// it's a normal DNP3 request
+			sstate.pState = sstate.pState->OnRegularRequest(sstate, ostate, header, objects);
+		}
+	}	
 }
 
 void OutstationAuthProvider::OnAuthChallenge(OState& ostate, const openpal::ReadBufferView& fragment, const APDUHeader& header, const Group120Var1& challenge)
@@ -133,8 +150,6 @@ void OutstationAuthProvider::OnAuthReply(OState& ostate, const openpal::ReadBuff
 
 void OutstationAuthProvider::OnRequestKeyStatus(OState& ostate, const openpal::ReadBufferView& fragment, const APDUHeader& header, const Group120Var4& status)
 {	
-	// TODO - Where to alert for max key request? Probably here
-
 	sstate.pState = sstate.pState->OnRequestKeyStatus(sstate, ostate, header, status);	
 }
 

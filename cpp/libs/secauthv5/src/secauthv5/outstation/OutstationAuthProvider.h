@@ -63,7 +63,7 @@ class OutstationAuthProvider : public opendnp3::IOutstationAuthProvider, private
 
 	void OnAuthRequest(opendnp3::OState& ostate, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects);
 
-	void OnRegularRequest(opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects);
+	void OnUnknownRequest(opendnp3::OState& ostate, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects);
 
 	//// --- IAuthRequestHandler ----
 

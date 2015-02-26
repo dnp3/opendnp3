@@ -438,9 +438,6 @@
     <ClInclude Include="src\opendnp3\outstation\DatabaseTemplate.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\DualValue.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\Event.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
@@ -584,7 +581,7 @@
     </ClInclude>
     <ClInclude Include="src\opendnp3\master\MasterScan.h">
       <Filter>Header\master</Filter>
-    </ClInclude>  
+    </ClInclude>
     <ClInclude Include="src\opendnp3\ErrorCodes.h">
       <Filter>Header</Filter>
     </ClInclude>
@@ -768,9 +765,6 @@
     <ClInclude Include="src\opendnp3\outstation\StaticTypeBitfield.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\TimeTransaction.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\ValueMetadataPair.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
@@ -881,6 +875,9 @@
     </ClInclude>
     <ClInclude Include="src\opendnp3\app\ITransactable.h">
       <Filter>Source\app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\objects\Group120Var9.h">
+      <Filter>Header\objects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1081,7 +1078,7 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\master\WriteTask.cpp">
       <Filter>Source\master</Filter>
-    </ClCompile>  
+    </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\WriteHandler.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
@@ -1232,9 +1229,6 @@
     <ClCompile Include="src\opendnp3\outstation\StaticLoadFunctions.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\TimeTransaction.cpp">
-      <Filter>Source\outstation</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\WriteHandler.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
@@ -1312,6 +1306,9 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\app\parsing\FreeFormatParser.cpp">
       <Filter>Source\app\parsing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\objects\Group120Var9.cpp">
+      <Filter>Source\objects</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -83,6 +83,9 @@
     <ClInclude Include="src\secauthv5\DeferredASDU.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\secauthv5\AggressiveModeParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\secauthv5\outstation\AuthRequestHandler.cpp">
@@ -137,6 +140,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\secauthv5\DeferredASDU.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\secauthv5\AggressiveModeParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

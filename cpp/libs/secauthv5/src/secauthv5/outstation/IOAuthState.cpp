@@ -36,6 +36,12 @@ namespace secauthv5
 		return this;
 	}
 
+	IOAuthState* IOAuthState::IgnoreAggModeRequest(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects, const Group120Var3& aggModeRequest)
+	{
+		FORMAT_LOG_BLOCK(ostate.logger, flags::WARN, "AuthState: %s - Ignoring Aggressive mode request", this->GetName());
+		return this;
+	}
+
 	IOAuthState* IOAuthState::IgnoreAuthChallenge(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge)
 	{
 		FORMAT_LOG_BLOCK(ostate.logger, flags::WARN, "AuthState: %s - Ignoring Auth challenge", this->GetName());
