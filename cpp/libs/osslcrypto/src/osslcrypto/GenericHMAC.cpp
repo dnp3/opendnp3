@@ -21,6 +21,10 @@
 
 #include "GenericHMAC.h"
 
+#include <openpal/util/Finally.h>
+
+using namespace openpal;
+
 namespace osslcrypto
 {
 	bool CalculateHMAC(
@@ -38,12 +42,13 @@ namespace osslcrypto
 
 		HMAC_CTX ctx;
 		HMAC_CTX_init(&ctx);
+		auto cleanup = Finally([&]() { HMAC_CTX_cleanup(&ctx); });
 
 		if (HMAC_Init_ex(&ctx, key, key.Size(), md, nullptr) == 0)
 		{
 			return false;
 		}
-
+					
 		for (auto& bytes : data)
 		{
 			if (HMAC_Update(&ctx, bytes, bytes.Size()) == 0)
