@@ -37,48 +37,79 @@ using namespace testlib;
 using namespace std;
 
 template <class T>
-bool TestReadWrite(typename T::Type aValue)
+bool TestReadWrite(T value)
 {
-	uint8_t data[2 * T::SIZE];
-	for (size_t i = 0; i < T::SIZE; ++i)
+	DynamicBuffer buffer(2 * sizeof(T));
+
+	for (uint32_t i = 0; i < sizeof(T); ++i)
 	{
-		uint8_t* pos = data + i;
-		T::Write(pos, aValue);
-		typename T::Type r = T::Read(pos);
-		if(aValue != r) return false;
+		auto dest = buffer.GetWriteBufferView();
+		dest.Advance(i);
+		if (!Format::Write(dest, value))
+		{
+			return false;
+		}
+
+		auto written = buffer.ToReadOnly().Skip(i);		
+		T readValue;
+		if (!(Parse::Read(written, readValue) && value == readValue))
+		{
+			return false;
+		}		
 	}
+
 	return true;
 }
 
 template <class T>
-bool TestReadWriteDouble(typename T::Type aValue)
+bool TestReadWriteFloat(T value)
 {
-	ByteStr data(2 * T::SIZE);
+	DynamicBuffer buffer(2 * sizeof(T));
 
-	for (size_t i = 0; i < T::SIZE; ++i)
+	for (uint32_t i = 0; i < sizeof(T); ++i)
 	{
-		uint8_t* pos = data + i;
-		T::Write(pos, aValue);
-		typename T::Type r = T::Read(pos);
-		if(!FloatEqual(aValue, r)) return false;
+		auto dest = buffer.GetWriteBufferView();
+		dest.Advance(i);
+		if (!Format::Write(dest, value))
+		{
+			return false;
+		}
+
+		auto written = buffer.ToReadOnly().Skip(i);
+		T readValue;
+		if (!(Parse::Read(written, readValue) && FloatEqual(value,readValue)))
+		{
+			return false;
+		}
 	}
+
 	return true;
 }
 
 template <class T>
-bool TestFloatParsing(std::string aHex, typename T::Type aValue)
+bool TestFloatParsing(std::string hex, typename T::Type value)
 {
-	HexSequence hs(aHex);
-	size_t type_size = sizeof(typename T::Type);
-	REQUIRE(hs.Size() ==  type_size);
+	HexSequence hs(hex);
+	const uint32_t TYPE_SIZE = static_cast<uint32_t>(sizeof(typename T::Type));
+	REQUIRE(hs.Size() == TYPE_SIZE);
 
-	ByteStr buff(static_cast<uint32_t>(2 * type_size));
+	DynamicBuffer buffer(2 * TYPE_SIZE);
 
-	for(size_t i = 0; i < type_size; ++i)
+	for (uint32_t i = 0; i < TYPE_SIZE; ++i)
 	{
-		memcpy(buff + i, hs, type_size);
-		typename T::Type val = T::Read(buff + i);
-		if(!openpal::FloatEqual(val, aValue)) return false;
+		auto dest = buffer.GetWriteBufferView();
+		dest.Advance(i);
+		if (!Format::Write(dest, value))
+		{
+			return false;
+		}
+		auto written = buffer.ToReadOnly().Skip(i);
+
+		typename T::Type val = 0;
+		if (!(Parse::Read(written, val) && openpal::FloatEqual(val, value)))
+		{
+			return false;
+		}		
 	}
 
 	return true;
@@ -105,62 +136,62 @@ TEST_CASE(SUITE("SinglePacking"))
 
 TEST_CASE(SUITE("DoubleFloat"))
 {
-	REQUIRE(TestReadWriteDouble<openpal::DoubleFloat>(0.0));
-	REQUIRE(TestReadWriteDouble<openpal::DoubleFloat>(-100000));
-	REQUIRE(TestReadWriteDouble<openpal::DoubleFloat>(-2.3258890344E3));
-	REQUIRE(TestReadWriteDouble<openpal::DoubleFloat>(1E20));
-	REQUIRE(TestReadWriteDouble<openpal::DoubleFloat>(100.0));
+	REQUIRE(TestReadWriteFloat<double>(0.0));
+	REQUIRE(TestReadWriteFloat<double>(-100000));
+	REQUIRE(TestReadWriteFloat<double>(-2.3258890344E3));
+	REQUIRE(TestReadWriteFloat<double>(1E20));
+	REQUIRE(TestReadWriteFloat<double>(100.0));
 }
 
 TEST_CASE(SUITE("SingleFloat"))
 {
-	REQUIRE(TestReadWriteDouble<openpal::SingleFloat>(0.0f));
-	REQUIRE(TestReadWriteDouble<openpal::SingleFloat>(-100000.0f));
-	REQUIRE(TestReadWriteDouble<openpal::SingleFloat>(-2.3258890344E3f));
-	REQUIRE(TestReadWriteDouble<openpal::SingleFloat>(1E20f));
-	REQUIRE(TestReadWriteDouble<openpal::SingleFloat>(100.0f));
+	REQUIRE(TestReadWriteFloat<float>(0.0f));
+	REQUIRE(TestReadWriteFloat<float>(-100000.0f));
+	REQUIRE(TestReadWriteFloat<float>(-2.3258890344E3f));
+	REQUIRE(TestReadWriteFloat<float>(1E20f));
+	REQUIRE(TestReadWriteFloat<float>(100.0f));
 }
 
 TEST_CASE(SUITE("UInt8"))
 {
-	REQUIRE(TestReadWrite<openpal::UInt8>(0));
-	REQUIRE(TestReadWrite<openpal::UInt8>(123));
-	REQUIRE(TestReadWrite<openpal::UInt8>(255));
+	REQUIRE(TestReadWrite<uint8_t>(0));
+	REQUIRE(TestReadWrite<uint8_t>(123));
+	REQUIRE(TestReadWrite<uint8_t>(255));
 }
 
 TEST_CASE(SUITE("UInt16"))
 {
-	REQUIRE(TestReadWrite<openpal::UInt16>(0));
-	REQUIRE(TestReadWrite<openpal::UInt16>(123));
-	REQUIRE(TestReadWrite<openpal::UInt16>(65535));
+	REQUIRE(TestReadWrite<uint16_t>(0));
+	REQUIRE(TestReadWrite<uint16_t>(123));
+	REQUIRE(TestReadWrite<uint16_t>(65535));
 }
 
 TEST_CASE(SUITE("Int16"))
 {
-	REQUIRE(TestReadWrite<openpal::Int16>(-32768));
-	REQUIRE(TestReadWrite<openpal::Int16>(0));
-	REQUIRE(TestReadWrite<openpal::Int16>(32767));
+	REQUIRE(TestReadWrite<int16_t>(-32768));
+	REQUIRE(TestReadWrite<int16_t>(0));
+	REQUIRE(TestReadWrite<int16_t>(32767));
 }
 
 TEST_CASE(SUITE("UInt32"))
 {
-	REQUIRE(TestReadWrite<openpal::UInt32>(0));
-	REQUIRE(TestReadWrite<openpal::UInt32>(123));
-	REQUIRE(TestReadWrite<openpal::UInt32>(4294967295UL));
+	REQUIRE(TestReadWrite<uint32_t>(0));
+	REQUIRE(TestReadWrite<uint32_t>(123));
+	REQUIRE(TestReadWrite<uint32_t>(4294967295UL));
 }
 
 TEST_CASE(SUITE("Int32"))
 {
-	REQUIRE(TestReadWrite<openpal::Int32>(0x80000000));
-	REQUIRE(TestReadWrite<openpal::Int32>(0));
-	REQUIRE(TestReadWrite<openpal::Int32>(0x7fffffff));
+	REQUIRE(TestReadWrite<int32_t>(0x80000000));
+	REQUIRE(TestReadWrite<int32_t>(0));
+	REQUIRE(TestReadWrite<int32_t>(0x7fffffff));
 }
 
 TEST_CASE(SUITE("UInt48LE"))
-{
-	REQUIRE(TestReadWrite<openpal::UInt48>(UInt48Type(0)));
-	REQUIRE(TestReadWrite<openpal::UInt48>(UInt48Type(123)));
-	REQUIRE(TestReadWrite<openpal::UInt48>(UInt48Type(281474976710655ULL)));
+{	
+	REQUIRE(TestReadWrite<UInt48Type>(UInt48Type(0)));
+	REQUIRE(TestReadWrite<UInt48Type>(UInt48Type(123)));
+	REQUIRE(TestReadWrite<UInt48Type>(UInt48Type(281474976710655ULL)));
 }
 
 TEST_CASE(SUITE("ParseMany"))
