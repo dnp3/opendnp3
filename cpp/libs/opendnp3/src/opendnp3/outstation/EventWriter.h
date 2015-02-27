@@ -146,7 +146,7 @@ class EventWriter : openpal::PureStatic
 						else
 						{
 							auto evt = record.ReadEvent<T>();
-							evt.value.time = UInt48Type(diff);
+							evt.value.time = DNPTime(diff);
 							if (header.Write(evt.value, evt.index))
 							{
 								record.written = true;
