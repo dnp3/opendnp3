@@ -22,6 +22,7 @@
 
 #include <testlib/BufferHelpers.h>
 
+#include <openpal/serialization/Parse.h>
 #include <openpal/serialization/Serialization.h>
 #include <openpal/util/Comparisons.h>
 
@@ -159,4 +160,26 @@ TEST_CASE(SUITE("UInt48LE"))
 	REQUIRE(TestReadWrite<openpal::UInt48>(UInt48Type(281474976710655ULL)));
 }
 
+TEST_CASE(SUITE("ParseMany"))
+{
+	HexSequence hex("FF AB BA 01 00 00 00 CC");
+		
+	uint8_t first = 0; 
+	uint16_t second = 0;
+	uint32_t third = 0;	
+
+	{
+		auto input = hex.ToReadOnly();		
+		REQUIRE(Parse::Many(input, first, second, third));
+		REQUIRE(first == 255);
+		REQUIRE(second == 0xBAAB);
+		REQUIRE(third == 1);
+		REQUIRE(input.Size() == 1); // 1 byte remaining
+	}
+
+	{
+		auto input = hex.ToReadOnly().Skip(2);		
+		REQUIRE_FALSE(Parse::Many(input, first, second, third));
+	}
+}
 

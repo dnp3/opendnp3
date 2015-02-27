@@ -211,6 +211,9 @@
     <ClInclude Include="src\openpal\serialization\UInt48Type.h">
       <Filter>Header\serialization</Filter>
     </ClInclude>
+    <ClInclude Include="src\openpal\serialization\Parse.h">
+      <Filter>Header\serialization</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\openpal\executor\MonotonicTimestamp.cpp">
@@ -263,6 +266,9 @@
     </ClCompile>
     <ClCompile Include="src\openpal\crypto\SecureCompare.cpp">
       <Filter>Source\crypto</Filter>
+    </ClCompile>
+    <ClCompile Include="src\openpal\serialization\Parse.cpp">
+      <Filter>Source\serialization</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
