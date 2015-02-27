@@ -41,17 +41,17 @@ object GroupVariationHeaderRenderer extends ModelRenderer[GroupVariation]{
     def getFieldString(x: FixedSizeField): String = getFieldTypeString(x.typ) + " " + x.name + ";"
 
     def typedefs(x: FixedSizeField): Iterator[String] = {
-      if(x.name == "value") Iterator("typedef " + getFieldTypeString(x.typ) + " ValueType;")
+      if(x.name == "value") Iterator("typedef %s ValueType;".format(getFieldTypeString(x.typ)))
       else Iterator.empty
     }
 
     def members: Iterator[String] =  x.fields.map(f => typedefs(f)).iterator.flatten ++ x.fields.map(f => getFieldString(f)).iterator
 
-    def sizeSignature: Iterator[String] = Iterator("static uint32_t Size() { return " + x.size + "; }")
+    def sizeSignature: Iterator[String] = Iterator("static uint32_t Size() { return %d; }".format(x.size))
 
-    def readSignature: Iterator[String] = Iterator("static " + x.name + " Read(openpal::ReadBufferView&);")
+    def readSignature: Iterator[String] = Iterator("static bool Read(openpal::ReadBufferView&, %s&);".format(x.name))
 
-    def writeSignature: Iterator[String] = Iterator("static void Write(const " + x.name + "&, openpal::WriteBufferView&);")
+    def writeSignature: Iterator[String] = Iterator("static void Write(const %s&, openpal::WriteBufferView&);".format(x.name))
 
     def definition : Iterator[String] = struct(x.name) {
       idDeclaration(x) ++
@@ -65,9 +65,9 @@ object GroupVariationHeaderRenderer extends ModelRenderer[GroupVariation]{
     def serializer: Iterator[String] = x.conversion match {
       case None => Iterator.empty
       case Some(conv) =>
-        val serializerType = "DNP3Serializer<"+conv.target+">"
+        val serializerType = "DNP3Serializer<%s>".format(conv.target)
         space ++
-        Iterator("static " + serializerType + " Inst() { return " + serializerType + "(ID(), Size(), &ReadTarget, &WriteTarget); }") ++
+        Iterator("static %s Inst() { return %s(ID(), Size(), &ReadTarget, &WriteTarget); }".format(serializerType, serializerType)) ++
         space ++ conv.signatures ++ space
     }
 
@@ -115,21 +115,21 @@ object GroupVariationImplRenderer extends ModelRenderer[GroupVariation]{
 
     def advance(i: Int): String = "buffer.Advance("+i+");"
 
-    def readSignature: Iterator[String] = Iterator(x.name + " " + x.name + "::" + "Read(ReadBufferView& buffer)")
+    def readSignature: Iterator[String] = Iterator("bool " + x.name + "::" + "Read(ReadBufferView& buffer, " + x.name + "& output)")
 
     def writeSignature: Iterator[String] = Iterator("void " + x.name + "::Write(const " + x.name + "& arg, openpal::WriteBufferView& buffer)")
-
-
 
     def convertFunction: Iterator[String] = x.conversion match {
       case Some(c) => space ++ c.impl(x) ++ space
       case None => Iterator.empty
     }
 
+    def fieldParams(x: FixedSize): String = {
+      x.fields.map(f => f.name).map(s => "output." + s).mkString(", ")
+    }
+
     def readFunction: Iterator[String] = readSignature ++ bracket {
-      Iterator(x.name + " obj;") ++
-        x.fields.iterator.map(readOperation).flatten ++
-        Iterator("return obj;")
+        Iterator("return Parse::Many(buffer, " + fieldParams(x) + ");")
     }
 
     def writeFunction: Iterator[String] = writeSignature ++ bracket {

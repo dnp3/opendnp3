@@ -87,7 +87,8 @@ object GroupVariationFileGenerator {
         commented(LicenseHeader()) ++ space ++
           includeHeader(group) ++ space ++
           optionalCppIncludes(group) ++
-          Iterator("#include <openpal/serialization/Serialization.h>") ++ space ++
+          Iterator("#include <openpal/serialization/Serialization.h>") ++
+          Iterator("#include <openpal/serialization/Parse.h>") ++ space ++
           Iterator("using namespace openpal;") ++ space ++
           namespace("opendnp3") {
             defs

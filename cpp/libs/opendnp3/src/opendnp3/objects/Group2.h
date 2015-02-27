@@ -39,13 +39,13 @@ struct Group2Var1
 {
   static GroupVariationID ID() { return GroupVariationID(2,1); }
   static uint32_t Size() { return 1; }
-  static Group2Var1 Read(openpal::ReadBufferView&);
+  static bool Read(openpal::ReadBufferView&, Group2Var1&);
   static void Write(const Group2Var1&, openpal::WriteBufferView&);
 
   static DNP3Serializer<Binary> Inst() { return DNP3Serializer<Binary>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef Binary Target;
-  static Binary ReadTarget(openpal::ReadBufferView&);
+  static bool ReadTarget(openpal::ReadBufferView&, Binary&);
   static void WriteTarget(const Binary&, openpal::WriteBufferView&);
 
   uint8_t flags;
@@ -55,13 +55,13 @@ struct Group2Var2
 {
   static GroupVariationID ID() { return GroupVariationID(2,2); }
   static uint32_t Size() { return 7; }
-  static Group2Var2 Read(openpal::ReadBufferView&);
+  static bool Read(openpal::ReadBufferView&, Group2Var2&);
   static void Write(const Group2Var2&, openpal::WriteBufferView&);
 
   static DNP3Serializer<Binary> Inst() { return DNP3Serializer<Binary>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef Binary Target;
-  static Binary ReadTarget(openpal::ReadBufferView&);
+  static bool ReadTarget(openpal::ReadBufferView&, Binary&);
   static void WriteTarget(const Binary&, openpal::WriteBufferView&);
 
   uint8_t flags;
@@ -72,13 +72,13 @@ struct Group2Var3
 {
   static GroupVariationID ID() { return GroupVariationID(2,3); }
   static uint32_t Size() { return 3; }
-  static Group2Var3 Read(openpal::ReadBufferView&);
+  static bool Read(openpal::ReadBufferView&, Group2Var3&);
   static void Write(const Group2Var3&, openpal::WriteBufferView&);
 
   static DNP3Serializer<Binary> Inst() { return DNP3Serializer<Binary>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef Binary Target;
-  static Binary ReadTarget(openpal::ReadBufferView&);
+  static bool ReadTarget(openpal::ReadBufferView&, Binary&);
   static void WriteTarget(const Binary&, openpal::WriteBufferView&);
 
   uint8_t flags;

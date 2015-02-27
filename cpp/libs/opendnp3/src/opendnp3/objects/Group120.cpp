@@ -21,19 +21,15 @@
 #include "Group120.h"
 
 #include <openpal/serialization/Serialization.h>
+#include <openpal/serialization/Parse.h>
 
 using namespace openpal;
 
 namespace opendnp3 {
 
-Group120Var3 Group120Var3::Read(ReadBufferView& buffer)
+bool Group120Var3::Read(ReadBufferView& buffer, Group120Var3& output)
 {
-  Group120Var3 obj;
-  obj.challengeSeqNum = UInt32::Read(buffer);
-  buffer.Advance(4);
-  obj.userNum = UInt16::Read(buffer);
-  buffer.Advance(2);
-  return obj;
+  return Parse::Many(buffer, output.challengeSeqNum, output.userNum);
 }
 
 void Group120Var3::Write(const Group120Var3& arg, openpal::WriteBufferView& buffer)
@@ -45,12 +41,9 @@ void Group120Var3::Write(const Group120Var3& arg, openpal::WriteBufferView& buff
 }
 
 
-Group120Var4 Group120Var4::Read(ReadBufferView& buffer)
+bool Group120Var4::Read(ReadBufferView& buffer, Group120Var4& output)
 {
-  Group120Var4 obj;
-  obj.userNum = UInt16::Read(buffer);
-  buffer.Advance(2);
-  return obj;
+  return Parse::Many(buffer, output.userNum);
 }
 
 void Group120Var4::Write(const Group120Var4& arg, openpal::WriteBufferView& buffer)

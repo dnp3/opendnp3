@@ -58,6 +58,16 @@ namespace openpal
 	{
 		return ParseType<UInt48>(input, output);
 	}
+
+	bool Parse::Read(ReadBufferView& input, int16_t& output)
+	{
+		return ParseType<Int16>(input, output);
+	}
+
+	bool Parse::Read(ReadBufferView& input, int32_t& output)
+	{
+		return ParseType<Int32>(input, output);
+	}
 	
 	bool Parse::Read(ReadBufferView& input, double& output)
 	{

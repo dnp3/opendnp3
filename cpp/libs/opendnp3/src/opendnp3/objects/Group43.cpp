@@ -23,34 +23,38 @@
 #include "opendnp3/app/MeasurementFactory.h"
 #include "opendnp3/app/WriteConversions.h"
 #include <openpal/serialization/Serialization.h>
+#include <openpal/serialization/Parse.h>
 
 using namespace openpal;
 
 namespace opendnp3 {
 
-Group43Var1 Group43Var1::Read(ReadBufferView& buffer)
+bool Group43Var1::Read(ReadBufferView& buffer, Group43Var1& output)
 {
-  Group43Var1 obj;
-  obj.status = CommandStatusFromType(UInt8::Read(buffer));
-  buffer.Advance(1);
-  obj.value = Int32::Read(buffer);
-  buffer.Advance(4);
-  return obj;
+  return Parse::Many(buffer, output.status, output.value);
 }
 
 void Group43Var1::Write(const Group43Var1& arg, openpal::WriteBufferView& buffer)
 {
-  UInt8::Write(buffer, CommandStatusToType(arg.status));
+  UInt8::Write(buffer, arg.status);
   buffer.Advance(1);
   Int32::Write(buffer, arg.value);
   buffer.Advance(4);
 }
 
 
-AnalogCommandEvent Group43Var1::ReadTarget(ReadBufferView& buff)
+bool Group43Var1::ReadTarget(ReadBufferView& buff, AnalogCommandEvent& output)
 {
-  auto gv = Group43Var1::Read(buff);
-  return AnalogCommandEventFactory::From(gv.status, gv.value);
+  Group43Var1 value;
+  if(Read(buff, value))
+  {
+    output = AnalogCommandEventFactory::From(value.status, value.value);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 void Group43Var1::WriteTarget(const AnalogCommandEvent& value, openpal::WriteBufferView& buff)
@@ -59,29 +63,32 @@ void Group43Var1::WriteTarget(const AnalogCommandEvent& value, openpal::WriteBuf
 }
 
 
-Group43Var2 Group43Var2::Read(ReadBufferView& buffer)
+bool Group43Var2::Read(ReadBufferView& buffer, Group43Var2& output)
 {
-  Group43Var2 obj;
-  obj.status = CommandStatusFromType(UInt8::Read(buffer));
-  buffer.Advance(1);
-  obj.value = Int16::Read(buffer);
-  buffer.Advance(2);
-  return obj;
+  return Parse::Many(buffer, output.status, output.value);
 }
 
 void Group43Var2::Write(const Group43Var2& arg, openpal::WriteBufferView& buffer)
 {
-  UInt8::Write(buffer, CommandStatusToType(arg.status));
+  UInt8::Write(buffer, arg.status);
   buffer.Advance(1);
   Int16::Write(buffer, arg.value);
   buffer.Advance(2);
 }
 
 
-AnalogCommandEvent Group43Var2::ReadTarget(ReadBufferView& buff)
+bool Group43Var2::ReadTarget(ReadBufferView& buff, AnalogCommandEvent& output)
 {
-  auto gv = Group43Var2::Read(buff);
-  return AnalogCommandEventFactory::From(gv.status, gv.value);
+  Group43Var2 value;
+  if(Read(buff, value))
+  {
+    output = AnalogCommandEventFactory::From(value.status, value.value);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 void Group43Var2::WriteTarget(const AnalogCommandEvent& value, openpal::WriteBufferView& buff)
@@ -90,21 +97,14 @@ void Group43Var2::WriteTarget(const AnalogCommandEvent& value, openpal::WriteBuf
 }
 
 
-Group43Var3 Group43Var3::Read(ReadBufferView& buffer)
+bool Group43Var3::Read(ReadBufferView& buffer, Group43Var3& output)
 {
-  Group43Var3 obj;
-  obj.status = CommandStatusFromType(UInt8::Read(buffer));
-  buffer.Advance(1);
-  obj.value = Int32::Read(buffer);
-  buffer.Advance(4);
-  obj.time = UInt48::Read(buffer);
-  buffer.Advance(6);
-  return obj;
+  return Parse::Many(buffer, output.status, output.value, output.time);
 }
 
 void Group43Var3::Write(const Group43Var3& arg, openpal::WriteBufferView& buffer)
 {
-  UInt8::Write(buffer, CommandStatusToType(arg.status));
+  UInt8::Write(buffer, arg.status);
   buffer.Advance(1);
   Int32::Write(buffer, arg.value);
   buffer.Advance(4);
@@ -113,10 +113,18 @@ void Group43Var3::Write(const Group43Var3& arg, openpal::WriteBufferView& buffer
 }
 
 
-AnalogCommandEvent Group43Var3::ReadTarget(ReadBufferView& buff)
+bool Group43Var3::ReadTarget(ReadBufferView& buff, AnalogCommandEvent& output)
 {
-  auto gv = Group43Var3::Read(buff);
-  return AnalogCommandEventFactory::From(gv.status, gv.value, gv.time);
+  Group43Var3 value;
+  if(Read(buff, value))
+  {
+    output = AnalogCommandEventFactory::From(value.status, value.value, value.time);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 void Group43Var3::WriteTarget(const AnalogCommandEvent& value, openpal::WriteBufferView& buff)
@@ -125,21 +133,14 @@ void Group43Var3::WriteTarget(const AnalogCommandEvent& value, openpal::WriteBuf
 }
 
 
-Group43Var4 Group43Var4::Read(ReadBufferView& buffer)
+bool Group43Var4::Read(ReadBufferView& buffer, Group43Var4& output)
 {
-  Group43Var4 obj;
-  obj.status = CommandStatusFromType(UInt8::Read(buffer));
-  buffer.Advance(1);
-  obj.value = Int16::Read(buffer);
-  buffer.Advance(2);
-  obj.time = UInt48::Read(buffer);
-  buffer.Advance(6);
-  return obj;
+  return Parse::Many(buffer, output.status, output.value, output.time);
 }
 
 void Group43Var4::Write(const Group43Var4& arg, openpal::WriteBufferView& buffer)
 {
-  UInt8::Write(buffer, CommandStatusToType(arg.status));
+  UInt8::Write(buffer, arg.status);
   buffer.Advance(1);
   Int16::Write(buffer, arg.value);
   buffer.Advance(2);
@@ -148,10 +149,18 @@ void Group43Var4::Write(const Group43Var4& arg, openpal::WriteBufferView& buffer
 }
 
 
-AnalogCommandEvent Group43Var4::ReadTarget(ReadBufferView& buff)
+bool Group43Var4::ReadTarget(ReadBufferView& buff, AnalogCommandEvent& output)
 {
-  auto gv = Group43Var4::Read(buff);
-  return AnalogCommandEventFactory::From(gv.status, gv.value, gv.time);
+  Group43Var4 value;
+  if(Read(buff, value))
+  {
+    output = AnalogCommandEventFactory::From(value.status, value.value, value.time);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 void Group43Var4::WriteTarget(const AnalogCommandEvent& value, openpal::WriteBufferView& buff)
@@ -160,29 +169,32 @@ void Group43Var4::WriteTarget(const AnalogCommandEvent& value, openpal::WriteBuf
 }
 
 
-Group43Var5 Group43Var5::Read(ReadBufferView& buffer)
+bool Group43Var5::Read(ReadBufferView& buffer, Group43Var5& output)
 {
-  Group43Var5 obj;
-  obj.status = CommandStatusFromType(UInt8::Read(buffer));
-  buffer.Advance(1);
-  obj.value = SingleFloat::Read(buffer);
-  buffer.Advance(4);
-  return obj;
+  return Parse::Many(buffer, output.status, output.value);
 }
 
 void Group43Var5::Write(const Group43Var5& arg, openpal::WriteBufferView& buffer)
 {
-  UInt8::Write(buffer, CommandStatusToType(arg.status));
+  UInt8::Write(buffer, arg.status);
   buffer.Advance(1);
   SingleFloat::Write(buffer, arg.value);
   buffer.Advance(4);
 }
 
 
-AnalogCommandEvent Group43Var5::ReadTarget(ReadBufferView& buff)
+bool Group43Var5::ReadTarget(ReadBufferView& buff, AnalogCommandEvent& output)
 {
-  auto gv = Group43Var5::Read(buff);
-  return AnalogCommandEventFactory::From(gv.status, gv.value);
+  Group43Var5 value;
+  if(Read(buff, value))
+  {
+    output = AnalogCommandEventFactory::From(value.status, value.value);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 void Group43Var5::WriteTarget(const AnalogCommandEvent& value, openpal::WriteBufferView& buff)
@@ -191,29 +203,32 @@ void Group43Var5::WriteTarget(const AnalogCommandEvent& value, openpal::WriteBuf
 }
 
 
-Group43Var6 Group43Var6::Read(ReadBufferView& buffer)
+bool Group43Var6::Read(ReadBufferView& buffer, Group43Var6& output)
 {
-  Group43Var6 obj;
-  obj.status = CommandStatusFromType(UInt8::Read(buffer));
-  buffer.Advance(1);
-  obj.value = DoubleFloat::Read(buffer);
-  buffer.Advance(8);
-  return obj;
+  return Parse::Many(buffer, output.status, output.value);
 }
 
 void Group43Var6::Write(const Group43Var6& arg, openpal::WriteBufferView& buffer)
 {
-  UInt8::Write(buffer, CommandStatusToType(arg.status));
+  UInt8::Write(buffer, arg.status);
   buffer.Advance(1);
   DoubleFloat::Write(buffer, arg.value);
   buffer.Advance(8);
 }
 
 
-AnalogCommandEvent Group43Var6::ReadTarget(ReadBufferView& buff)
+bool Group43Var6::ReadTarget(ReadBufferView& buff, AnalogCommandEvent& output)
 {
-  auto gv = Group43Var6::Read(buff);
-  return AnalogCommandEventFactory::From(gv.status, gv.value);
+  Group43Var6 value;
+  if(Read(buff, value))
+  {
+    output = AnalogCommandEventFactory::From(value.status, value.value);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 void Group43Var6::WriteTarget(const AnalogCommandEvent& value, openpal::WriteBufferView& buff)
@@ -222,21 +237,14 @@ void Group43Var6::WriteTarget(const AnalogCommandEvent& value, openpal::WriteBuf
 }
 
 
-Group43Var7 Group43Var7::Read(ReadBufferView& buffer)
+bool Group43Var7::Read(ReadBufferView& buffer, Group43Var7& output)
 {
-  Group43Var7 obj;
-  obj.status = CommandStatusFromType(UInt8::Read(buffer));
-  buffer.Advance(1);
-  obj.value = SingleFloat::Read(buffer);
-  buffer.Advance(4);
-  obj.time = UInt48::Read(buffer);
-  buffer.Advance(6);
-  return obj;
+  return Parse::Many(buffer, output.status, output.value, output.time);
 }
 
 void Group43Var7::Write(const Group43Var7& arg, openpal::WriteBufferView& buffer)
 {
-  UInt8::Write(buffer, CommandStatusToType(arg.status));
+  UInt8::Write(buffer, arg.status);
   buffer.Advance(1);
   SingleFloat::Write(buffer, arg.value);
   buffer.Advance(4);
@@ -245,10 +253,18 @@ void Group43Var7::Write(const Group43Var7& arg, openpal::WriteBufferView& buffer
 }
 
 
-AnalogCommandEvent Group43Var7::ReadTarget(ReadBufferView& buff)
+bool Group43Var7::ReadTarget(ReadBufferView& buff, AnalogCommandEvent& output)
 {
-  auto gv = Group43Var7::Read(buff);
-  return AnalogCommandEventFactory::From(gv.status, gv.value, gv.time);
+  Group43Var7 value;
+  if(Read(buff, value))
+  {
+    output = AnalogCommandEventFactory::From(value.status, value.value, value.time);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 void Group43Var7::WriteTarget(const AnalogCommandEvent& value, openpal::WriteBufferView& buff)
@@ -257,21 +273,14 @@ void Group43Var7::WriteTarget(const AnalogCommandEvent& value, openpal::WriteBuf
 }
 
 
-Group43Var8 Group43Var8::Read(ReadBufferView& buffer)
+bool Group43Var8::Read(ReadBufferView& buffer, Group43Var8& output)
 {
-  Group43Var8 obj;
-  obj.status = CommandStatusFromType(UInt8::Read(buffer));
-  buffer.Advance(1);
-  obj.value = DoubleFloat::Read(buffer);
-  buffer.Advance(8);
-  obj.time = UInt48::Read(buffer);
-  buffer.Advance(6);
-  return obj;
+  return Parse::Many(buffer, output.status, output.value, output.time);
 }
 
 void Group43Var8::Write(const Group43Var8& arg, openpal::WriteBufferView& buffer)
 {
-  UInt8::Write(buffer, CommandStatusToType(arg.status));
+  UInt8::Write(buffer, arg.status);
   buffer.Advance(1);
   DoubleFloat::Write(buffer, arg.value);
   buffer.Advance(8);
@@ -280,10 +289,18 @@ void Group43Var8::Write(const Group43Var8& arg, openpal::WriteBufferView& buffer
 }
 
 
-AnalogCommandEvent Group43Var8::ReadTarget(ReadBufferView& buff)
+bool Group43Var8::ReadTarget(ReadBufferView& buff, AnalogCommandEvent& output)
 {
-  auto gv = Group43Var8::Read(buff);
-  return AnalogCommandEventFactory::From(gv.status, gv.value, gv.time);
+  Group43Var8 value;
+  if(Read(buff, value))
+  {
+    output = AnalogCommandEventFactory::From(value.status, value.value, value.time);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 void Group43Var8::WriteTarget(const AnalogCommandEvent& value, openpal::WriteBufferView& buff)

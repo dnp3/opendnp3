@@ -23,19 +23,15 @@
 #include "opendnp3/app/MeasurementFactory.h"
 #include "opendnp3/app/WriteConversions.h"
 #include <openpal/serialization/Serialization.h>
+#include <openpal/serialization/Parse.h>
 
 using namespace openpal;
 
 namespace opendnp3 {
 
-Group42Var1 Group42Var1::Read(ReadBufferView& buffer)
+bool Group42Var1::Read(ReadBufferView& buffer, Group42Var1& output)
 {
-  Group42Var1 obj;
-  obj.flags = UInt8::Read(buffer);
-  buffer.Advance(1);
-  obj.value = Int32::Read(buffer);
-  buffer.Advance(4);
-  return obj;
+  return Parse::Many(buffer, output.flags, output.value);
 }
 
 void Group42Var1::Write(const Group42Var1& arg, openpal::WriteBufferView& buffer)
@@ -47,10 +43,18 @@ void Group42Var1::Write(const Group42Var1& arg, openpal::WriteBufferView& buffer
 }
 
 
-AnalogOutputStatus Group42Var1::ReadTarget(ReadBufferView& buff)
+bool Group42Var1::ReadTarget(ReadBufferView& buff, AnalogOutputStatus& output)
 {
-  auto gv = Group42Var1::Read(buff);
-  return AnalogOutputStatusFactory::From(gv.flags, gv.value);
+  Group42Var1 value;
+  if(Read(buff, value))
+  {
+    output = AnalogOutputStatusFactory::From(value.flags, value.value);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 void Group42Var1::WriteTarget(const AnalogOutputStatus& value, openpal::WriteBufferView& buff)
@@ -59,14 +63,9 @@ void Group42Var1::WriteTarget(const AnalogOutputStatus& value, openpal::WriteBuf
 }
 
 
-Group42Var2 Group42Var2::Read(ReadBufferView& buffer)
+bool Group42Var2::Read(ReadBufferView& buffer, Group42Var2& output)
 {
-  Group42Var2 obj;
-  obj.flags = UInt8::Read(buffer);
-  buffer.Advance(1);
-  obj.value = Int16::Read(buffer);
-  buffer.Advance(2);
-  return obj;
+  return Parse::Many(buffer, output.flags, output.value);
 }
 
 void Group42Var2::Write(const Group42Var2& arg, openpal::WriteBufferView& buffer)
@@ -78,10 +77,18 @@ void Group42Var2::Write(const Group42Var2& arg, openpal::WriteBufferView& buffer
 }
 
 
-AnalogOutputStatus Group42Var2::ReadTarget(ReadBufferView& buff)
+bool Group42Var2::ReadTarget(ReadBufferView& buff, AnalogOutputStatus& output)
 {
-  auto gv = Group42Var2::Read(buff);
-  return AnalogOutputStatusFactory::From(gv.flags, gv.value);
+  Group42Var2 value;
+  if(Read(buff, value))
+  {
+    output = AnalogOutputStatusFactory::From(value.flags, value.value);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 void Group42Var2::WriteTarget(const AnalogOutputStatus& value, openpal::WriteBufferView& buff)
@@ -90,16 +97,9 @@ void Group42Var2::WriteTarget(const AnalogOutputStatus& value, openpal::WriteBuf
 }
 
 
-Group42Var3 Group42Var3::Read(ReadBufferView& buffer)
+bool Group42Var3::Read(ReadBufferView& buffer, Group42Var3& output)
 {
-  Group42Var3 obj;
-  obj.flags = UInt8::Read(buffer);
-  buffer.Advance(1);
-  obj.value = Int32::Read(buffer);
-  buffer.Advance(4);
-  obj.time = UInt48::Read(buffer);
-  buffer.Advance(6);
-  return obj;
+  return Parse::Many(buffer, output.flags, output.value, output.time);
 }
 
 void Group42Var3::Write(const Group42Var3& arg, openpal::WriteBufferView& buffer)
@@ -113,10 +113,18 @@ void Group42Var3::Write(const Group42Var3& arg, openpal::WriteBufferView& buffer
 }
 
 
-AnalogOutputStatus Group42Var3::ReadTarget(ReadBufferView& buff)
+bool Group42Var3::ReadTarget(ReadBufferView& buff, AnalogOutputStatus& output)
 {
-  auto gv = Group42Var3::Read(buff);
-  return AnalogOutputStatusFactory::From(gv.flags, gv.value, gv.time);
+  Group42Var3 value;
+  if(Read(buff, value))
+  {
+    output = AnalogOutputStatusFactory::From(value.flags, value.value, value.time);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 void Group42Var3::WriteTarget(const AnalogOutputStatus& value, openpal::WriteBufferView& buff)
@@ -125,16 +133,9 @@ void Group42Var3::WriteTarget(const AnalogOutputStatus& value, openpal::WriteBuf
 }
 
 
-Group42Var4 Group42Var4::Read(ReadBufferView& buffer)
+bool Group42Var4::Read(ReadBufferView& buffer, Group42Var4& output)
 {
-  Group42Var4 obj;
-  obj.flags = UInt8::Read(buffer);
-  buffer.Advance(1);
-  obj.value = Int16::Read(buffer);
-  buffer.Advance(2);
-  obj.time = UInt48::Read(buffer);
-  buffer.Advance(6);
-  return obj;
+  return Parse::Many(buffer, output.flags, output.value, output.time);
 }
 
 void Group42Var4::Write(const Group42Var4& arg, openpal::WriteBufferView& buffer)
@@ -148,10 +149,18 @@ void Group42Var4::Write(const Group42Var4& arg, openpal::WriteBufferView& buffer
 }
 
 
-AnalogOutputStatus Group42Var4::ReadTarget(ReadBufferView& buff)
+bool Group42Var4::ReadTarget(ReadBufferView& buff, AnalogOutputStatus& output)
 {
-  auto gv = Group42Var4::Read(buff);
-  return AnalogOutputStatusFactory::From(gv.flags, gv.value, gv.time);
+  Group42Var4 value;
+  if(Read(buff, value))
+  {
+    output = AnalogOutputStatusFactory::From(value.flags, value.value, value.time);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 void Group42Var4::WriteTarget(const AnalogOutputStatus& value, openpal::WriteBufferView& buff)
@@ -160,14 +169,9 @@ void Group42Var4::WriteTarget(const AnalogOutputStatus& value, openpal::WriteBuf
 }
 
 
-Group42Var5 Group42Var5::Read(ReadBufferView& buffer)
+bool Group42Var5::Read(ReadBufferView& buffer, Group42Var5& output)
 {
-  Group42Var5 obj;
-  obj.flags = UInt8::Read(buffer);
-  buffer.Advance(1);
-  obj.value = SingleFloat::Read(buffer);
-  buffer.Advance(4);
-  return obj;
+  return Parse::Many(buffer, output.flags, output.value);
 }
 
 void Group42Var5::Write(const Group42Var5& arg, openpal::WriteBufferView& buffer)
@@ -179,10 +183,18 @@ void Group42Var5::Write(const Group42Var5& arg, openpal::WriteBufferView& buffer
 }
 
 
-AnalogOutputStatus Group42Var5::ReadTarget(ReadBufferView& buff)
+bool Group42Var5::ReadTarget(ReadBufferView& buff, AnalogOutputStatus& output)
 {
-  auto gv = Group42Var5::Read(buff);
-  return AnalogOutputStatusFactory::From(gv.flags, gv.value);
+  Group42Var5 value;
+  if(Read(buff, value))
+  {
+    output = AnalogOutputStatusFactory::From(value.flags, value.value);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 void Group42Var5::WriteTarget(const AnalogOutputStatus& value, openpal::WriteBufferView& buff)
@@ -191,14 +203,9 @@ void Group42Var5::WriteTarget(const AnalogOutputStatus& value, openpal::WriteBuf
 }
 
 
-Group42Var6 Group42Var6::Read(ReadBufferView& buffer)
+bool Group42Var6::Read(ReadBufferView& buffer, Group42Var6& output)
 {
-  Group42Var6 obj;
-  obj.flags = UInt8::Read(buffer);
-  buffer.Advance(1);
-  obj.value = DoubleFloat::Read(buffer);
-  buffer.Advance(8);
-  return obj;
+  return Parse::Many(buffer, output.flags, output.value);
 }
 
 void Group42Var6::Write(const Group42Var6& arg, openpal::WriteBufferView& buffer)
@@ -210,10 +217,18 @@ void Group42Var6::Write(const Group42Var6& arg, openpal::WriteBufferView& buffer
 }
 
 
-AnalogOutputStatus Group42Var6::ReadTarget(ReadBufferView& buff)
+bool Group42Var6::ReadTarget(ReadBufferView& buff, AnalogOutputStatus& output)
 {
-  auto gv = Group42Var6::Read(buff);
-  return AnalogOutputStatusFactory::From(gv.flags, gv.value);
+  Group42Var6 value;
+  if(Read(buff, value))
+  {
+    output = AnalogOutputStatusFactory::From(value.flags, value.value);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 void Group42Var6::WriteTarget(const AnalogOutputStatus& value, openpal::WriteBufferView& buff)
@@ -222,16 +237,9 @@ void Group42Var6::WriteTarget(const AnalogOutputStatus& value, openpal::WriteBuf
 }
 
 
-Group42Var7 Group42Var7::Read(ReadBufferView& buffer)
+bool Group42Var7::Read(ReadBufferView& buffer, Group42Var7& output)
 {
-  Group42Var7 obj;
-  obj.flags = UInt8::Read(buffer);
-  buffer.Advance(1);
-  obj.value = SingleFloat::Read(buffer);
-  buffer.Advance(4);
-  obj.time = UInt48::Read(buffer);
-  buffer.Advance(6);
-  return obj;
+  return Parse::Many(buffer, output.flags, output.value, output.time);
 }
 
 void Group42Var7::Write(const Group42Var7& arg, openpal::WriteBufferView& buffer)
@@ -245,10 +253,18 @@ void Group42Var7::Write(const Group42Var7& arg, openpal::WriteBufferView& buffer
 }
 
 
-AnalogOutputStatus Group42Var7::ReadTarget(ReadBufferView& buff)
+bool Group42Var7::ReadTarget(ReadBufferView& buff, AnalogOutputStatus& output)
 {
-  auto gv = Group42Var7::Read(buff);
-  return AnalogOutputStatusFactory::From(gv.flags, gv.value, gv.time);
+  Group42Var7 value;
+  if(Read(buff, value))
+  {
+    output = AnalogOutputStatusFactory::From(value.flags, value.value, value.time);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 void Group42Var7::WriteTarget(const AnalogOutputStatus& value, openpal::WriteBufferView& buff)
@@ -257,16 +273,9 @@ void Group42Var7::WriteTarget(const AnalogOutputStatus& value, openpal::WriteBuf
 }
 
 
-Group42Var8 Group42Var8::Read(ReadBufferView& buffer)
+bool Group42Var8::Read(ReadBufferView& buffer, Group42Var8& output)
 {
-  Group42Var8 obj;
-  obj.flags = UInt8::Read(buffer);
-  buffer.Advance(1);
-  obj.value = DoubleFloat::Read(buffer);
-  buffer.Advance(8);
-  obj.time = UInt48::Read(buffer);
-  buffer.Advance(6);
-  return obj;
+  return Parse::Many(buffer, output.flags, output.value, output.time);
 }
 
 void Group42Var8::Write(const Group42Var8& arg, openpal::WriteBufferView& buffer)
@@ -280,10 +289,18 @@ void Group42Var8::Write(const Group42Var8& arg, openpal::WriteBufferView& buffer
 }
 
 
-AnalogOutputStatus Group42Var8::ReadTarget(ReadBufferView& buff)
+bool Group42Var8::ReadTarget(ReadBufferView& buff, AnalogOutputStatus& output)
 {
-  auto gv = Group42Var8::Read(buff);
-  return AnalogOutputStatusFactory::From(gv.flags, gv.value, gv.time);
+  Group42Var8 value;
+  if(Read(buff, value))
+  {
+    output = AnalogOutputStatusFactory::From(value.flags, value.value, value.time);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 void Group42Var8::WriteTarget(const AnalogOutputStatus& value, openpal::WriteBufferView& buff)

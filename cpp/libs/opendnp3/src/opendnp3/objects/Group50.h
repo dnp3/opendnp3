@@ -34,7 +34,7 @@ struct Group50Var1
 {
   static GroupVariationID ID() { return GroupVariationID(50,1); }
   static uint32_t Size() { return 6; }
-  static Group50Var1 Read(openpal::ReadBufferView&);
+  static bool Read(openpal::ReadBufferView&, Group50Var1&);
   static void Write(const Group50Var1&, openpal::WriteBufferView&);
   DNPTime time;
 };
@@ -43,13 +43,13 @@ struct Group50Var4
 {
   static GroupVariationID ID() { return GroupVariationID(50,4); }
   static uint32_t Size() { return 11; }
-  static Group50Var4 Read(openpal::ReadBufferView&);
+  static bool Read(openpal::ReadBufferView&, Group50Var4&);
   static void Write(const Group50Var4&, openpal::WriteBufferView&);
 
   static DNP3Serializer<TimeAndInterval> Inst() { return DNP3Serializer<TimeAndInterval>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef TimeAndInterval Target;
-  static TimeAndInterval ReadTarget(openpal::ReadBufferView&);
+  static bool ReadTarget(openpal::ReadBufferView&, TimeAndInterval&);
   static void WriteTarget(const TimeAndInterval&, openpal::WriteBufferView&);
 
   DNPTime time;

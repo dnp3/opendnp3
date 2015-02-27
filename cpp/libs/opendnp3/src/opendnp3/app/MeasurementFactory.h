@@ -131,9 +131,9 @@ struct ControlRelayOutputBlockFactory: private openpal::PureStatic
 	    uint8_t count,
 	    uint32_t onTime,
 	    uint32_t offTime,
-	    CommandStatus status)
+		uint8_t status)
 	{		
-		return ControlRelayOutputBlock(code, count, onTime, offTime, status);
+		return ControlRelayOutputBlock(code, count, onTime, offTime, CommandStatusFromType(status));
 	}
 };
 
@@ -178,23 +178,23 @@ struct AnalogOutputStatusFactory: private openpal::PureStatic
 
 struct AnalogCommandEventFactory : private openpal::PureStatic
 {
-	inline static AnalogCommandEvent From(CommandStatus status, double value)
+	inline static AnalogCommandEvent From(uint8_t status, double value)
 	{
-		return AnalogCommandEvent(value, status);
+		return AnalogCommandEvent(value, CommandStatusFromType(status));
 	}
 
-	inline static AnalogCommandEvent From(CommandStatus status, double value, DNPTime time)
+	inline static AnalogCommandEvent From(uint8_t status, double value, DNPTime time)
 	{
-		return AnalogCommandEvent(value, status, time);
+		return AnalogCommandEvent(value, CommandStatusFromType(status), time);
 	}
 };
 
 template <class Target, class ValueType>
 struct AnalogOutputFactory: private openpal::PureStatic
 {
-	inline static Target From(ValueType value, CommandStatus status)
+	inline static Target From(ValueType value, uint8_t status)
 	{
-		return Target(value, status);
+		return Target(value, CommandStatusFromType(status));
 	}
 };
 

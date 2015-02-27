@@ -25,7 +25,6 @@
 #include <openpal/container/WriteBufferView.h>
 #include "opendnp3/Types.h"
 #include "opendnp3/app/GroupVariationID.h"
-#include "opendnp3/gen/CommandStatus.h"
 #include "opendnp3/app/DNP3Serializer.h"
 #include "opendnp3/app/AnalogCommandEvent.h"
 
@@ -35,17 +34,17 @@ struct Group43Var1
 {
   static GroupVariationID ID() { return GroupVariationID(43,1); }
   static uint32_t Size() { return 5; }
-  static Group43Var1 Read(openpal::ReadBufferView&);
+  static bool Read(openpal::ReadBufferView&, Group43Var1&);
   static void Write(const Group43Var1&, openpal::WriteBufferView&);
 
   static DNP3Serializer<AnalogCommandEvent> Inst() { return DNP3Serializer<AnalogCommandEvent>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef AnalogCommandEvent Target;
-  static AnalogCommandEvent ReadTarget(openpal::ReadBufferView&);
+  static bool ReadTarget(openpal::ReadBufferView&, AnalogCommandEvent&);
   static void WriteTarget(const AnalogCommandEvent&, openpal::WriteBufferView&);
 
   typedef int32_t ValueType;
-  CommandStatus status;
+  uint8_t status;
   int32_t value;
 };
 
@@ -53,17 +52,17 @@ struct Group43Var2
 {
   static GroupVariationID ID() { return GroupVariationID(43,2); }
   static uint32_t Size() { return 3; }
-  static Group43Var2 Read(openpal::ReadBufferView&);
+  static bool Read(openpal::ReadBufferView&, Group43Var2&);
   static void Write(const Group43Var2&, openpal::WriteBufferView&);
 
   static DNP3Serializer<AnalogCommandEvent> Inst() { return DNP3Serializer<AnalogCommandEvent>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef AnalogCommandEvent Target;
-  static AnalogCommandEvent ReadTarget(openpal::ReadBufferView&);
+  static bool ReadTarget(openpal::ReadBufferView&, AnalogCommandEvent&);
   static void WriteTarget(const AnalogCommandEvent&, openpal::WriteBufferView&);
 
   typedef int16_t ValueType;
-  CommandStatus status;
+  uint8_t status;
   int16_t value;
 };
 
@@ -71,17 +70,17 @@ struct Group43Var3
 {
   static GroupVariationID ID() { return GroupVariationID(43,3); }
   static uint32_t Size() { return 11; }
-  static Group43Var3 Read(openpal::ReadBufferView&);
+  static bool Read(openpal::ReadBufferView&, Group43Var3&);
   static void Write(const Group43Var3&, openpal::WriteBufferView&);
 
   static DNP3Serializer<AnalogCommandEvent> Inst() { return DNP3Serializer<AnalogCommandEvent>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef AnalogCommandEvent Target;
-  static AnalogCommandEvent ReadTarget(openpal::ReadBufferView&);
+  static bool ReadTarget(openpal::ReadBufferView&, AnalogCommandEvent&);
   static void WriteTarget(const AnalogCommandEvent&, openpal::WriteBufferView&);
 
   typedef int32_t ValueType;
-  CommandStatus status;
+  uint8_t status;
   int32_t value;
   DNPTime time;
 };
@@ -90,17 +89,17 @@ struct Group43Var4
 {
   static GroupVariationID ID() { return GroupVariationID(43,4); }
   static uint32_t Size() { return 9; }
-  static Group43Var4 Read(openpal::ReadBufferView&);
+  static bool Read(openpal::ReadBufferView&, Group43Var4&);
   static void Write(const Group43Var4&, openpal::WriteBufferView&);
 
   static DNP3Serializer<AnalogCommandEvent> Inst() { return DNP3Serializer<AnalogCommandEvent>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef AnalogCommandEvent Target;
-  static AnalogCommandEvent ReadTarget(openpal::ReadBufferView&);
+  static bool ReadTarget(openpal::ReadBufferView&, AnalogCommandEvent&);
   static void WriteTarget(const AnalogCommandEvent&, openpal::WriteBufferView&);
 
   typedef int16_t ValueType;
-  CommandStatus status;
+  uint8_t status;
   int16_t value;
   DNPTime time;
 };
@@ -109,17 +108,17 @@ struct Group43Var5
 {
   static GroupVariationID ID() { return GroupVariationID(43,5); }
   static uint32_t Size() { return 5; }
-  static Group43Var5 Read(openpal::ReadBufferView&);
+  static bool Read(openpal::ReadBufferView&, Group43Var5&);
   static void Write(const Group43Var5&, openpal::WriteBufferView&);
 
   static DNP3Serializer<AnalogCommandEvent> Inst() { return DNP3Serializer<AnalogCommandEvent>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef AnalogCommandEvent Target;
-  static AnalogCommandEvent ReadTarget(openpal::ReadBufferView&);
+  static bool ReadTarget(openpal::ReadBufferView&, AnalogCommandEvent&);
   static void WriteTarget(const AnalogCommandEvent&, openpal::WriteBufferView&);
 
   typedef float ValueType;
-  CommandStatus status;
+  uint8_t status;
   float value;
 };
 
@@ -127,17 +126,17 @@ struct Group43Var6
 {
   static GroupVariationID ID() { return GroupVariationID(43,6); }
   static uint32_t Size() { return 9; }
-  static Group43Var6 Read(openpal::ReadBufferView&);
+  static bool Read(openpal::ReadBufferView&, Group43Var6&);
   static void Write(const Group43Var6&, openpal::WriteBufferView&);
 
   static DNP3Serializer<AnalogCommandEvent> Inst() { return DNP3Serializer<AnalogCommandEvent>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef AnalogCommandEvent Target;
-  static AnalogCommandEvent ReadTarget(openpal::ReadBufferView&);
+  static bool ReadTarget(openpal::ReadBufferView&, AnalogCommandEvent&);
   static void WriteTarget(const AnalogCommandEvent&, openpal::WriteBufferView&);
 
   typedef double ValueType;
-  CommandStatus status;
+  uint8_t status;
   double value;
 };
 
@@ -145,17 +144,17 @@ struct Group43Var7
 {
   static GroupVariationID ID() { return GroupVariationID(43,7); }
   static uint32_t Size() { return 11; }
-  static Group43Var7 Read(openpal::ReadBufferView&);
+  static bool Read(openpal::ReadBufferView&, Group43Var7&);
   static void Write(const Group43Var7&, openpal::WriteBufferView&);
 
   static DNP3Serializer<AnalogCommandEvent> Inst() { return DNP3Serializer<AnalogCommandEvent>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef AnalogCommandEvent Target;
-  static AnalogCommandEvent ReadTarget(openpal::ReadBufferView&);
+  static bool ReadTarget(openpal::ReadBufferView&, AnalogCommandEvent&);
   static void WriteTarget(const AnalogCommandEvent&, openpal::WriteBufferView&);
 
   typedef float ValueType;
-  CommandStatus status;
+  uint8_t status;
   float value;
   DNPTime time;
 };
@@ -164,17 +163,17 @@ struct Group43Var8
 {
   static GroupVariationID ID() { return GroupVariationID(43,8); }
   static uint32_t Size() { return 15; }
-  static Group43Var8 Read(openpal::ReadBufferView&);
+  static bool Read(openpal::ReadBufferView&, Group43Var8&);
   static void Write(const Group43Var8&, openpal::WriteBufferView&);
 
   static DNP3Serializer<AnalogCommandEvent> Inst() { return DNP3Serializer<AnalogCommandEvent>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef AnalogCommandEvent Target;
-  static AnalogCommandEvent ReadTarget(openpal::ReadBufferView&);
+  static bool ReadTarget(openpal::ReadBufferView&, AnalogCommandEvent&);
   static void WriteTarget(const AnalogCommandEvent&, openpal::WriteBufferView&);
 
   typedef double ValueType;
-  CommandStatus status;
+  uint8_t status;
   double value;
   DNPTime time;
 };

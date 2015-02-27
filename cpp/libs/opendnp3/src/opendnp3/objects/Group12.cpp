@@ -23,25 +23,15 @@
 #include "opendnp3/app/MeasurementFactory.h"
 #include "opendnp3/app/WriteConversions.h"
 #include <openpal/serialization/Serialization.h>
+#include <openpal/serialization/Parse.h>
 
 using namespace openpal;
 
 namespace opendnp3 {
 
-Group12Var1 Group12Var1::Read(ReadBufferView& buffer)
+bool Group12Var1::Read(ReadBufferView& buffer, Group12Var1& output)
 {
-  Group12Var1 obj;
-  obj.code = UInt8::Read(buffer);
-  buffer.Advance(1);
-  obj.count = UInt8::Read(buffer);
-  buffer.Advance(1);
-  obj.onTime = UInt32::Read(buffer);
-  buffer.Advance(4);
-  obj.offTime = UInt32::Read(buffer);
-  buffer.Advance(4);
-  obj.status = CommandStatusFromType(UInt8::Read(buffer));
-  buffer.Advance(1);
-  return obj;
+  return Parse::Many(buffer, output.code, output.count, output.onTime, output.offTime, output.status);
 }
 
 void Group12Var1::Write(const Group12Var1& arg, openpal::WriteBufferView& buffer)
@@ -54,15 +44,23 @@ void Group12Var1::Write(const Group12Var1& arg, openpal::WriteBufferView& buffer
   buffer.Advance(4);
   UInt32::Write(buffer, arg.offTime);
   buffer.Advance(4);
-  UInt8::Write(buffer, CommandStatusToType(arg.status));
+  UInt8::Write(buffer, arg.status);
   buffer.Advance(1);
 }
 
 
-ControlRelayOutputBlock Group12Var1::ReadTarget(ReadBufferView& buff)
+bool Group12Var1::ReadTarget(ReadBufferView& buff, ControlRelayOutputBlock& output)
 {
-  auto gv = Group12Var1::Read(buff);
-  return ControlRelayOutputBlockFactory::From(gv.code, gv.count, gv.onTime, gv.offTime, gv.status);
+  Group12Var1 value;
+  if(Read(buff, value))
+  {
+    output = ControlRelayOutputBlockFactory::From(value.code, value.count, value.onTime, value.offTime, value.status);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 void Group12Var1::WriteTarget(const ControlRelayOutputBlock& value, openpal::WriteBufferView& buff)

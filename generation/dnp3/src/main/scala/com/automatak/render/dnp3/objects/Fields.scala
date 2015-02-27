@@ -37,7 +37,7 @@ object FixedSizeField {
   val float64 = FixedSizeField("value", Float64Field)
 
   //enums
-  val commandStatus = FixedSizeField("status", EnumField(CommandStatus()))
+  val commandStatus = FixedSizeField("status", UInt8Field)
   val intervalUnit = FixedSizeField("intervalUnit", EnumField(IntervalUnit()))
 
 }

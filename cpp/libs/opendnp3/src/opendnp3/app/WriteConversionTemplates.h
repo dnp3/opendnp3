@@ -181,7 +181,7 @@ struct ConvertQS : private openpal::PureStatic
 	{
 		Target t;
 		t.value = src.value;
-		t.status = src.status;
+		t.status = CommandStatusToType(src.status);
 		return t;
 	}
 };

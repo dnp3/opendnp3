@@ -23,19 +23,15 @@
 #include "opendnp3/app/MeasurementFactory.h"
 #include "opendnp3/app/WriteConversions.h"
 #include <openpal/serialization/Serialization.h>
+#include <openpal/serialization/Parse.h>
 
 using namespace openpal;
 
 namespace opendnp3 {
 
-Group22Var1 Group22Var1::Read(ReadBufferView& buffer)
+bool Group22Var1::Read(ReadBufferView& buffer, Group22Var1& output)
 {
-  Group22Var1 obj;
-  obj.flags = UInt8::Read(buffer);
-  buffer.Advance(1);
-  obj.value = UInt32::Read(buffer);
-  buffer.Advance(4);
-  return obj;
+  return Parse::Many(buffer, output.flags, output.value);
 }
 
 void Group22Var1::Write(const Group22Var1& arg, openpal::WriteBufferView& buffer)
@@ -47,10 +43,18 @@ void Group22Var1::Write(const Group22Var1& arg, openpal::WriteBufferView& buffer
 }
 
 
-Counter Group22Var1::ReadTarget(ReadBufferView& buff)
+bool Group22Var1::ReadTarget(ReadBufferView& buff, Counter& output)
 {
-  auto gv = Group22Var1::Read(buff);
-  return CounterFactory::From(gv.flags, gv.value);
+  Group22Var1 value;
+  if(Read(buff, value))
+  {
+    output = CounterFactory::From(value.flags, value.value);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 void Group22Var1::WriteTarget(const Counter& value, openpal::WriteBufferView& buff)
@@ -59,14 +63,9 @@ void Group22Var1::WriteTarget(const Counter& value, openpal::WriteBufferView& bu
 }
 
 
-Group22Var2 Group22Var2::Read(ReadBufferView& buffer)
+bool Group22Var2::Read(ReadBufferView& buffer, Group22Var2& output)
 {
-  Group22Var2 obj;
-  obj.flags = UInt8::Read(buffer);
-  buffer.Advance(1);
-  obj.value = UInt16::Read(buffer);
-  buffer.Advance(2);
-  return obj;
+  return Parse::Many(buffer, output.flags, output.value);
 }
 
 void Group22Var2::Write(const Group22Var2& arg, openpal::WriteBufferView& buffer)
@@ -78,10 +77,18 @@ void Group22Var2::Write(const Group22Var2& arg, openpal::WriteBufferView& buffer
 }
 
 
-Counter Group22Var2::ReadTarget(ReadBufferView& buff)
+bool Group22Var2::ReadTarget(ReadBufferView& buff, Counter& output)
 {
-  auto gv = Group22Var2::Read(buff);
-  return CounterFactory::From(gv.flags, gv.value);
+  Group22Var2 value;
+  if(Read(buff, value))
+  {
+    output = CounterFactory::From(value.flags, value.value);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 void Group22Var2::WriteTarget(const Counter& value, openpal::WriteBufferView& buff)
@@ -90,16 +97,9 @@ void Group22Var2::WriteTarget(const Counter& value, openpal::WriteBufferView& bu
 }
 
 
-Group22Var5 Group22Var5::Read(ReadBufferView& buffer)
+bool Group22Var5::Read(ReadBufferView& buffer, Group22Var5& output)
 {
-  Group22Var5 obj;
-  obj.flags = UInt8::Read(buffer);
-  buffer.Advance(1);
-  obj.value = UInt32::Read(buffer);
-  buffer.Advance(4);
-  obj.time = UInt48::Read(buffer);
-  buffer.Advance(6);
-  return obj;
+  return Parse::Many(buffer, output.flags, output.value, output.time);
 }
 
 void Group22Var5::Write(const Group22Var5& arg, openpal::WriteBufferView& buffer)
@@ -113,10 +113,18 @@ void Group22Var5::Write(const Group22Var5& arg, openpal::WriteBufferView& buffer
 }
 
 
-Counter Group22Var5::ReadTarget(ReadBufferView& buff)
+bool Group22Var5::ReadTarget(ReadBufferView& buff, Counter& output)
 {
-  auto gv = Group22Var5::Read(buff);
-  return CounterFactory::From(gv.flags, gv.value, gv.time);
+  Group22Var5 value;
+  if(Read(buff, value))
+  {
+    output = CounterFactory::From(value.flags, value.value, value.time);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 void Group22Var5::WriteTarget(const Counter& value, openpal::WriteBufferView& buff)
@@ -125,16 +133,9 @@ void Group22Var5::WriteTarget(const Counter& value, openpal::WriteBufferView& bu
 }
 
 
-Group22Var6 Group22Var6::Read(ReadBufferView& buffer)
+bool Group22Var6::Read(ReadBufferView& buffer, Group22Var6& output)
 {
-  Group22Var6 obj;
-  obj.flags = UInt8::Read(buffer);
-  buffer.Advance(1);
-  obj.value = UInt16::Read(buffer);
-  buffer.Advance(2);
-  obj.time = UInt48::Read(buffer);
-  buffer.Advance(6);
-  return obj;
+  return Parse::Many(buffer, output.flags, output.value, output.time);
 }
 
 void Group22Var6::Write(const Group22Var6& arg, openpal::WriteBufferView& buffer)
@@ -148,10 +149,18 @@ void Group22Var6::Write(const Group22Var6& arg, openpal::WriteBufferView& buffer
 }
 
 
-Counter Group22Var6::ReadTarget(ReadBufferView& buff)
+bool Group22Var6::ReadTarget(ReadBufferView& buff, Counter& output)
 {
-  auto gv = Group22Var6::Read(buff);
-  return CounterFactory::From(gv.flags, gv.value, gv.time);
+  Group22Var6 value;
+  if(Read(buff, value))
+  {
+    output = CounterFactory::From(value.flags, value.value, value.time);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 void Group22Var6::WriteTarget(const Counter& value, openpal::WriteBufferView& buff)

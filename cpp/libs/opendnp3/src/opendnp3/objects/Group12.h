@@ -25,7 +25,6 @@
 #include <openpal/container/WriteBufferView.h>
 #include "opendnp3/Types.h"
 #include "opendnp3/app/GroupVariationID.h"
-#include "opendnp3/gen/CommandStatus.h"
 #include "opendnp3/app/DNP3Serializer.h"
 #include "opendnp3/app/ControlRelayOutputBlock.h"
 
@@ -35,20 +34,20 @@ struct Group12Var1
 {
   static GroupVariationID ID() { return GroupVariationID(12,1); }
   static uint32_t Size() { return 11; }
-  static Group12Var1 Read(openpal::ReadBufferView&);
+  static bool Read(openpal::ReadBufferView&, Group12Var1&);
   static void Write(const Group12Var1&, openpal::WriteBufferView&);
 
   static DNP3Serializer<ControlRelayOutputBlock> Inst() { return DNP3Serializer<ControlRelayOutputBlock>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef ControlRelayOutputBlock Target;
-  static ControlRelayOutputBlock ReadTarget(openpal::ReadBufferView&);
+  static bool ReadTarget(openpal::ReadBufferView&, ControlRelayOutputBlock&);
   static void WriteTarget(const ControlRelayOutputBlock&, openpal::WriteBufferView&);
 
   uint8_t code;
   uint8_t count;
   uint32_t onTime;
   uint32_t offTime;
-  CommandStatus status;
+  uint8_t status;
 };
 
 

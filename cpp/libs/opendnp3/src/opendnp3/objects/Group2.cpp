@@ -23,17 +23,15 @@
 #include "opendnp3/app/MeasurementFactory.h"
 #include "opendnp3/app/WriteConversions.h"
 #include <openpal/serialization/Serialization.h>
+#include <openpal/serialization/Parse.h>
 
 using namespace openpal;
 
 namespace opendnp3 {
 
-Group2Var1 Group2Var1::Read(ReadBufferView& buffer)
+bool Group2Var1::Read(ReadBufferView& buffer, Group2Var1& output)
 {
-  Group2Var1 obj;
-  obj.flags = UInt8::Read(buffer);
-  buffer.Advance(1);
-  return obj;
+  return Parse::Many(buffer, output.flags);
 }
 
 void Group2Var1::Write(const Group2Var1& arg, openpal::WriteBufferView& buffer)
@@ -43,10 +41,18 @@ void Group2Var1::Write(const Group2Var1& arg, openpal::WriteBufferView& buffer)
 }
 
 
-Binary Group2Var1::ReadTarget(ReadBufferView& buff)
+bool Group2Var1::ReadTarget(ReadBufferView& buff, Binary& output)
 {
-  auto gv = Group2Var1::Read(buff);
-  return BinaryFactory::From(gv.flags);
+  Group2Var1 value;
+  if(Read(buff, value))
+  {
+    output = BinaryFactory::From(value.flags);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 void Group2Var1::WriteTarget(const Binary& value, openpal::WriteBufferView& buff)
@@ -55,14 +61,9 @@ void Group2Var1::WriteTarget(const Binary& value, openpal::WriteBufferView& buff
 }
 
 
-Group2Var2 Group2Var2::Read(ReadBufferView& buffer)
+bool Group2Var2::Read(ReadBufferView& buffer, Group2Var2& output)
 {
-  Group2Var2 obj;
-  obj.flags = UInt8::Read(buffer);
-  buffer.Advance(1);
-  obj.time = UInt48::Read(buffer);
-  buffer.Advance(6);
-  return obj;
+  return Parse::Many(buffer, output.flags, output.time);
 }
 
 void Group2Var2::Write(const Group2Var2& arg, openpal::WriteBufferView& buffer)
@@ -74,10 +75,18 @@ void Group2Var2::Write(const Group2Var2& arg, openpal::WriteBufferView& buffer)
 }
 
 
-Binary Group2Var2::ReadTarget(ReadBufferView& buff)
+bool Group2Var2::ReadTarget(ReadBufferView& buff, Binary& output)
 {
-  auto gv = Group2Var2::Read(buff);
-  return BinaryFactory::From(gv.flags, gv.time);
+  Group2Var2 value;
+  if(Read(buff, value))
+  {
+    output = BinaryFactory::From(value.flags, value.time);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 void Group2Var2::WriteTarget(const Binary& value, openpal::WriteBufferView& buff)
@@ -86,14 +95,9 @@ void Group2Var2::WriteTarget(const Binary& value, openpal::WriteBufferView& buff
 }
 
 
-Group2Var3 Group2Var3::Read(ReadBufferView& buffer)
+bool Group2Var3::Read(ReadBufferView& buffer, Group2Var3& output)
 {
-  Group2Var3 obj;
-  obj.flags = UInt8::Read(buffer);
-  buffer.Advance(1);
-  obj.time = UInt16::Read(buffer);
-  buffer.Advance(2);
-  return obj;
+  return Parse::Many(buffer, output.flags, output.time);
 }
 
 void Group2Var3::Write(const Group2Var3& arg, openpal::WriteBufferView& buffer)
@@ -105,10 +109,18 @@ void Group2Var3::Write(const Group2Var3& arg, openpal::WriteBufferView& buffer)
 }
 
 
-Binary Group2Var3::ReadTarget(ReadBufferView& buff)
+bool Group2Var3::ReadTarget(ReadBufferView& buff, Binary& output)
 {
-  auto gv = Group2Var3::Read(buff);
-  return BinaryFactory::From(gv.flags, gv.time);
+  Group2Var3 value;
+  if(Read(buff, value))
+  {
+    output = BinaryFactory::From(value.flags, value.time);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 void Group2Var3::WriteTarget(const Binary& value, openpal::WriteBufferView& buff)

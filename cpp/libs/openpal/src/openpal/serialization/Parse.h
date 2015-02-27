@@ -33,8 +33,14 @@ namespace openpal
 
 			static bool Read(ReadBufferView& input, uint8_t& output);
 			static bool Read(ReadBufferView& input, uint16_t& output);
+			
 			static bool Read(ReadBufferView& input, uint32_t& output);
 			static bool Read(ReadBufferView& input, UInt48Type& output);
+
+			static bool Read(ReadBufferView& input, int16_t& output);
+			static bool Read(ReadBufferView& input, int32_t& output);
+
+
 			static bool Read(ReadBufferView& input, double& output);
 			static bool Read(ReadBufferView& input, float& output);
 

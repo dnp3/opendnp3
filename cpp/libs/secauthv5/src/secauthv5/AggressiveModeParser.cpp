@@ -69,17 +69,17 @@ namespace secauthv5
 		{
 			FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Aggressive mode request contains bad count (%u)", count);
 			return pair<ParseResult, bool>(ParseResult::NOT_ON_WHITELIST, false);
+		}							
+
+		if (Group120Var3::Read(objects, request))
+		{
+			return pair<ParseResult, bool>(ParseResult::OK, true);
 		}
-			
-		if (objects.Size() < Group120Var3::Size())
+		else
 		{
 			SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Insufficient data for g120v3");
 			return pair<ParseResult, bool>(ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS, false);
-		}
-
-		request = Group120Var3::Read(objects);
-
-		return pair<ParseResult, bool>(ParseResult::OK, true);
+		}	
 	}
 
 }

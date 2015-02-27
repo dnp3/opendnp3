@@ -34,13 +34,13 @@ struct Group30Var1
 {
   static GroupVariationID ID() { return GroupVariationID(30,1); }
   static uint32_t Size() { return 5; }
-  static Group30Var1 Read(openpal::ReadBufferView&);
+  static bool Read(openpal::ReadBufferView&, Group30Var1&);
   static void Write(const Group30Var1&, openpal::WriteBufferView&);
 
   static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef Analog Target;
-  static Analog ReadTarget(openpal::ReadBufferView&);
+  static bool ReadTarget(openpal::ReadBufferView&, Analog&);
   static void WriteTarget(const Analog&, openpal::WriteBufferView&);
 
   typedef int32_t ValueType;
@@ -52,13 +52,13 @@ struct Group30Var2
 {
   static GroupVariationID ID() { return GroupVariationID(30,2); }
   static uint32_t Size() { return 3; }
-  static Group30Var2 Read(openpal::ReadBufferView&);
+  static bool Read(openpal::ReadBufferView&, Group30Var2&);
   static void Write(const Group30Var2&, openpal::WriteBufferView&);
 
   static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef Analog Target;
-  static Analog ReadTarget(openpal::ReadBufferView&);
+  static bool ReadTarget(openpal::ReadBufferView&, Analog&);
   static void WriteTarget(const Analog&, openpal::WriteBufferView&);
 
   typedef int16_t ValueType;
@@ -70,13 +70,13 @@ struct Group30Var3
 {
   static GroupVariationID ID() { return GroupVariationID(30,3); }
   static uint32_t Size() { return 4; }
-  static Group30Var3 Read(openpal::ReadBufferView&);
+  static bool Read(openpal::ReadBufferView&, Group30Var3&);
   static void Write(const Group30Var3&, openpal::WriteBufferView&);
 
   static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef Analog Target;
-  static Analog ReadTarget(openpal::ReadBufferView&);
+  static bool ReadTarget(openpal::ReadBufferView&, Analog&);
   static void WriteTarget(const Analog&, openpal::WriteBufferView&);
 
   typedef int32_t ValueType;
@@ -87,13 +87,13 @@ struct Group30Var4
 {
   static GroupVariationID ID() { return GroupVariationID(30,4); }
   static uint32_t Size() { return 2; }
-  static Group30Var4 Read(openpal::ReadBufferView&);
+  static bool Read(openpal::ReadBufferView&, Group30Var4&);
   static void Write(const Group30Var4&, openpal::WriteBufferView&);
 
   static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef Analog Target;
-  static Analog ReadTarget(openpal::ReadBufferView&);
+  static bool ReadTarget(openpal::ReadBufferView&, Analog&);
   static void WriteTarget(const Analog&, openpal::WriteBufferView&);
 
   typedef int16_t ValueType;
@@ -104,13 +104,13 @@ struct Group30Var5
 {
   static GroupVariationID ID() { return GroupVariationID(30,5); }
   static uint32_t Size() { return 5; }
-  static Group30Var5 Read(openpal::ReadBufferView&);
+  static bool Read(openpal::ReadBufferView&, Group30Var5&);
   static void Write(const Group30Var5&, openpal::WriteBufferView&);
 
   static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef Analog Target;
-  static Analog ReadTarget(openpal::ReadBufferView&);
+  static bool ReadTarget(openpal::ReadBufferView&, Analog&);
   static void WriteTarget(const Analog&, openpal::WriteBufferView&);
 
   typedef float ValueType;
@@ -122,13 +122,13 @@ struct Group30Var6
 {
   static GroupVariationID ID() { return GroupVariationID(30,6); }
   static uint32_t Size() { return 9; }
-  static Group30Var6 Read(openpal::ReadBufferView&);
+  static bool Read(openpal::ReadBufferView&, Group30Var6&);
   static void Write(const Group30Var6&, openpal::WriteBufferView&);
 
   static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef Analog Target;
-  static Analog ReadTarget(openpal::ReadBufferView&);
+  static bool ReadTarget(openpal::ReadBufferView&, Analog&);
   static void WriteTarget(const Analog&, openpal::WriteBufferView&);
 
   typedef double ValueType;

@@ -23,19 +23,15 @@
 #include "opendnp3/app/MeasurementFactory.h"
 #include "opendnp3/app/WriteConversions.h"
 #include <openpal/serialization/Serialization.h>
+#include <openpal/serialization/Parse.h>
 
 using namespace openpal;
 
 namespace opendnp3 {
 
-Group32Var1 Group32Var1::Read(ReadBufferView& buffer)
+bool Group32Var1::Read(ReadBufferView& buffer, Group32Var1& output)
 {
-  Group32Var1 obj;
-  obj.flags = UInt8::Read(buffer);
-  buffer.Advance(1);
-  obj.value = Int32::Read(buffer);
-  buffer.Advance(4);
-  return obj;
+  return Parse::Many(buffer, output.flags, output.value);
 }
 
 void Group32Var1::Write(const Group32Var1& arg, openpal::WriteBufferView& buffer)
@@ -47,10 +43,18 @@ void Group32Var1::Write(const Group32Var1& arg, openpal::WriteBufferView& buffer
 }
 
 
-Analog Group32Var1::ReadTarget(ReadBufferView& buff)
+bool Group32Var1::ReadTarget(ReadBufferView& buff, Analog& output)
 {
-  auto gv = Group32Var1::Read(buff);
-  return AnalogFactory::From(gv.flags, gv.value);
+  Group32Var1 value;
+  if(Read(buff, value))
+  {
+    output = AnalogFactory::From(value.flags, value.value);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 void Group32Var1::WriteTarget(const Analog& value, openpal::WriteBufferView& buff)
@@ -59,14 +63,9 @@ void Group32Var1::WriteTarget(const Analog& value, openpal::WriteBufferView& buf
 }
 
 
-Group32Var2 Group32Var2::Read(ReadBufferView& buffer)
+bool Group32Var2::Read(ReadBufferView& buffer, Group32Var2& output)
 {
-  Group32Var2 obj;
-  obj.flags = UInt8::Read(buffer);
-  buffer.Advance(1);
-  obj.value = Int16::Read(buffer);
-  buffer.Advance(2);
-  return obj;
+  return Parse::Many(buffer, output.flags, output.value);
 }
 
 void Group32Var2::Write(const Group32Var2& arg, openpal::WriteBufferView& buffer)
@@ -78,10 +77,18 @@ void Group32Var2::Write(const Group32Var2& arg, openpal::WriteBufferView& buffer
 }
 
 
-Analog Group32Var2::ReadTarget(ReadBufferView& buff)
+bool Group32Var2::ReadTarget(ReadBufferView& buff, Analog& output)
 {
-  auto gv = Group32Var2::Read(buff);
-  return AnalogFactory::From(gv.flags, gv.value);
+  Group32Var2 value;
+  if(Read(buff, value))
+  {
+    output = AnalogFactory::From(value.flags, value.value);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 void Group32Var2::WriteTarget(const Analog& value, openpal::WriteBufferView& buff)
@@ -90,16 +97,9 @@ void Group32Var2::WriteTarget(const Analog& value, openpal::WriteBufferView& buf
 }
 
 
-Group32Var3 Group32Var3::Read(ReadBufferView& buffer)
+bool Group32Var3::Read(ReadBufferView& buffer, Group32Var3& output)
 {
-  Group32Var3 obj;
-  obj.flags = UInt8::Read(buffer);
-  buffer.Advance(1);
-  obj.value = Int32::Read(buffer);
-  buffer.Advance(4);
-  obj.time = UInt48::Read(buffer);
-  buffer.Advance(6);
-  return obj;
+  return Parse::Many(buffer, output.flags, output.value, output.time);
 }
 
 void Group32Var3::Write(const Group32Var3& arg, openpal::WriteBufferView& buffer)
@@ -113,10 +113,18 @@ void Group32Var3::Write(const Group32Var3& arg, openpal::WriteBufferView& buffer
 }
 
 
-Analog Group32Var3::ReadTarget(ReadBufferView& buff)
+bool Group32Var3::ReadTarget(ReadBufferView& buff, Analog& output)
 {
-  auto gv = Group32Var3::Read(buff);
-  return AnalogFactory::From(gv.flags, gv.value, gv.time);
+  Group32Var3 value;
+  if(Read(buff, value))
+  {
+    output = AnalogFactory::From(value.flags, value.value, value.time);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 void Group32Var3::WriteTarget(const Analog& value, openpal::WriteBufferView& buff)
@@ -125,16 +133,9 @@ void Group32Var3::WriteTarget(const Analog& value, openpal::WriteBufferView& buf
 }
 
 
-Group32Var4 Group32Var4::Read(ReadBufferView& buffer)
+bool Group32Var4::Read(ReadBufferView& buffer, Group32Var4& output)
 {
-  Group32Var4 obj;
-  obj.flags = UInt8::Read(buffer);
-  buffer.Advance(1);
-  obj.value = Int16::Read(buffer);
-  buffer.Advance(2);
-  obj.time = UInt48::Read(buffer);
-  buffer.Advance(6);
-  return obj;
+  return Parse::Many(buffer, output.flags, output.value, output.time);
 }
 
 void Group32Var4::Write(const Group32Var4& arg, openpal::WriteBufferView& buffer)
@@ -148,10 +149,18 @@ void Group32Var4::Write(const Group32Var4& arg, openpal::WriteBufferView& buffer
 }
 
 
-Analog Group32Var4::ReadTarget(ReadBufferView& buff)
+bool Group32Var4::ReadTarget(ReadBufferView& buff, Analog& output)
 {
-  auto gv = Group32Var4::Read(buff);
-  return AnalogFactory::From(gv.flags, gv.value, gv.time);
+  Group32Var4 value;
+  if(Read(buff, value))
+  {
+    output = AnalogFactory::From(value.flags, value.value, value.time);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 void Group32Var4::WriteTarget(const Analog& value, openpal::WriteBufferView& buff)
@@ -160,14 +169,9 @@ void Group32Var4::WriteTarget(const Analog& value, openpal::WriteBufferView& buf
 }
 
 
-Group32Var5 Group32Var5::Read(ReadBufferView& buffer)
+bool Group32Var5::Read(ReadBufferView& buffer, Group32Var5& output)
 {
-  Group32Var5 obj;
-  obj.flags = UInt8::Read(buffer);
-  buffer.Advance(1);
-  obj.value = SingleFloat::Read(buffer);
-  buffer.Advance(4);
-  return obj;
+  return Parse::Many(buffer, output.flags, output.value);
 }
 
 void Group32Var5::Write(const Group32Var5& arg, openpal::WriteBufferView& buffer)
@@ -179,10 +183,18 @@ void Group32Var5::Write(const Group32Var5& arg, openpal::WriteBufferView& buffer
 }
 
 
-Analog Group32Var5::ReadTarget(ReadBufferView& buff)
+bool Group32Var5::ReadTarget(ReadBufferView& buff, Analog& output)
 {
-  auto gv = Group32Var5::Read(buff);
-  return AnalogFactory::From(gv.flags, gv.value);
+  Group32Var5 value;
+  if(Read(buff, value))
+  {
+    output = AnalogFactory::From(value.flags, value.value);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 void Group32Var5::WriteTarget(const Analog& value, openpal::WriteBufferView& buff)
@@ -191,14 +203,9 @@ void Group32Var5::WriteTarget(const Analog& value, openpal::WriteBufferView& buf
 }
 
 
-Group32Var6 Group32Var6::Read(ReadBufferView& buffer)
+bool Group32Var6::Read(ReadBufferView& buffer, Group32Var6& output)
 {
-  Group32Var6 obj;
-  obj.flags = UInt8::Read(buffer);
-  buffer.Advance(1);
-  obj.value = DoubleFloat::Read(buffer);
-  buffer.Advance(8);
-  return obj;
+  return Parse::Many(buffer, output.flags, output.value);
 }
 
 void Group32Var6::Write(const Group32Var6& arg, openpal::WriteBufferView& buffer)
@@ -210,10 +217,18 @@ void Group32Var6::Write(const Group32Var6& arg, openpal::WriteBufferView& buffer
 }
 
 
-Analog Group32Var6::ReadTarget(ReadBufferView& buff)
+bool Group32Var6::ReadTarget(ReadBufferView& buff, Analog& output)
 {
-  auto gv = Group32Var6::Read(buff);
-  return AnalogFactory::From(gv.flags, gv.value);
+  Group32Var6 value;
+  if(Read(buff, value))
+  {
+    output = AnalogFactory::From(value.flags, value.value);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 void Group32Var6::WriteTarget(const Analog& value, openpal::WriteBufferView& buff)
@@ -222,16 +237,9 @@ void Group32Var6::WriteTarget(const Analog& value, openpal::WriteBufferView& buf
 }
 
 
-Group32Var7 Group32Var7::Read(ReadBufferView& buffer)
+bool Group32Var7::Read(ReadBufferView& buffer, Group32Var7& output)
 {
-  Group32Var7 obj;
-  obj.flags = UInt8::Read(buffer);
-  buffer.Advance(1);
-  obj.value = SingleFloat::Read(buffer);
-  buffer.Advance(4);
-  obj.time = UInt48::Read(buffer);
-  buffer.Advance(6);
-  return obj;
+  return Parse::Many(buffer, output.flags, output.value, output.time);
 }
 
 void Group32Var7::Write(const Group32Var7& arg, openpal::WriteBufferView& buffer)
@@ -245,10 +253,18 @@ void Group32Var7::Write(const Group32Var7& arg, openpal::WriteBufferView& buffer
 }
 
 
-Analog Group32Var7::ReadTarget(ReadBufferView& buff)
+bool Group32Var7::ReadTarget(ReadBufferView& buff, Analog& output)
 {
-  auto gv = Group32Var7::Read(buff);
-  return AnalogFactory::From(gv.flags, gv.value, gv.time);
+  Group32Var7 value;
+  if(Read(buff, value))
+  {
+    output = AnalogFactory::From(value.flags, value.value, value.time);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 void Group32Var7::WriteTarget(const Analog& value, openpal::WriteBufferView& buff)
@@ -257,16 +273,9 @@ void Group32Var7::WriteTarget(const Analog& value, openpal::WriteBufferView& buf
 }
 
 
-Group32Var8 Group32Var8::Read(ReadBufferView& buffer)
+bool Group32Var8::Read(ReadBufferView& buffer, Group32Var8& output)
 {
-  Group32Var8 obj;
-  obj.flags = UInt8::Read(buffer);
-  buffer.Advance(1);
-  obj.value = DoubleFloat::Read(buffer);
-  buffer.Advance(8);
-  obj.time = UInt48::Read(buffer);
-  buffer.Advance(6);
-  return obj;
+  return Parse::Many(buffer, output.flags, output.value, output.time);
 }
 
 void Group32Var8::Write(const Group32Var8& arg, openpal::WriteBufferView& buffer)
@@ -280,10 +289,18 @@ void Group32Var8::Write(const Group32Var8& arg, openpal::WriteBufferView& buffer
 }
 
 
-Analog Group32Var8::ReadTarget(ReadBufferView& buff)
+bool Group32Var8::ReadTarget(ReadBufferView& buff, Analog& output)
 {
-  auto gv = Group32Var8::Read(buff);
-  return AnalogFactory::From(gv.flags, gv.value, gv.time);
+  Group32Var8 value;
+  if(Read(buff, value))
+  {
+    output = AnalogFactory::From(value.flags, value.value, value.time);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 void Group32Var8::WriteTarget(const Analog& value, openpal::WriteBufferView& buff)

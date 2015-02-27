@@ -45,9 +45,10 @@ TEST_CASE(SUITE("ReadSimpleTypes"))
 	auto collection = CreateLazyIterable<Group30Var2>(hex.ToReadOnly(), 2,
 	                  [](ReadBufferView & b, uint32_t)
 	{
-		return Group30Var2::Read(b);
-	}
-	                                                 );
+		Group30Var2 value;
+		Group30Var2::Read(b, value);
+		return value;
+	});
 
 	auto test = [&]()
 	{

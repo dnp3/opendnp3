@@ -107,7 +107,9 @@ void RangeParser::InvokeRangeOf(const HeaderRecord& record, const Range& range, 
 {	
 	auto reader = [range](openpal::ReadBufferView &buffer, uint32_t pos) 
 	{ 
-		return IndexedValue<typename Descriptor::Target, uint16_t>(Descriptor::ReadTarget(buffer), range.start + pos); 
+		typename Descriptor::Target target;
+		Descriptor::ReadTarget(buffer, target);
+		return IndexedValue<typename Descriptor::Target, uint16_t>(target, range.start + pos); 
 	};		
 	
 	auto collection = CreateLazyIterable<IndexedValue<typename Descriptor::Target, uint16_t>>(buffer, range.Count(), reader);

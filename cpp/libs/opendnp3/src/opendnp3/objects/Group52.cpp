@@ -21,17 +21,15 @@
 #include "Group52.h"
 
 #include <openpal/serialization/Serialization.h>
+#include <openpal/serialization/Parse.h>
 
 using namespace openpal;
 
 namespace opendnp3 {
 
-Group52Var1 Group52Var1::Read(ReadBufferView& buffer)
+bool Group52Var1::Read(ReadBufferView& buffer, Group52Var1& output)
 {
-  Group52Var1 obj;
-  obj.time = UInt16::Read(buffer);
-  buffer.Advance(2);
-  return obj;
+  return Parse::Many(buffer, output.time);
 }
 
 void Group52Var1::Write(const Group52Var1& arg, openpal::WriteBufferView& buffer)
@@ -41,12 +39,9 @@ void Group52Var1::Write(const Group52Var1& arg, openpal::WriteBufferView& buffer
 }
 
 
-Group52Var2 Group52Var2::Read(ReadBufferView& buffer)
+bool Group52Var2::Read(ReadBufferView& buffer, Group52Var2& output)
 {
-  Group52Var2 obj;
-  obj.time = UInt16::Read(buffer);
-  buffer.Advance(2);
-  return obj;
+  return Parse::Many(buffer, output.time);
 }
 
 void Group52Var2::Write(const Group52Var2& arg, openpal::WriteBufferView& buffer)

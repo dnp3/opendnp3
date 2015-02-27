@@ -23,17 +23,15 @@
 #include "opendnp3/app/MeasurementFactory.h"
 #include "opendnp3/app/WriteConversions.h"
 #include <openpal/serialization/Serialization.h>
+#include <openpal/serialization/Parse.h>
 
 using namespace openpal;
 
 namespace opendnp3 {
 
-Group11Var1 Group11Var1::Read(ReadBufferView& buffer)
+bool Group11Var1::Read(ReadBufferView& buffer, Group11Var1& output)
 {
-  Group11Var1 obj;
-  obj.flags = UInt8::Read(buffer);
-  buffer.Advance(1);
-  return obj;
+  return Parse::Many(buffer, output.flags);
 }
 
 void Group11Var1::Write(const Group11Var1& arg, openpal::WriteBufferView& buffer)
@@ -43,10 +41,18 @@ void Group11Var1::Write(const Group11Var1& arg, openpal::WriteBufferView& buffer
 }
 
 
-BinaryOutputStatus Group11Var1::ReadTarget(ReadBufferView& buff)
+bool Group11Var1::ReadTarget(ReadBufferView& buff, BinaryOutputStatus& output)
 {
-  auto gv = Group11Var1::Read(buff);
-  return BinaryOutputStatusFactory::From(gv.flags);
+  Group11Var1 value;
+  if(Read(buff, value))
+  {
+    output = BinaryOutputStatusFactory::From(value.flags);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 void Group11Var1::WriteTarget(const BinaryOutputStatus& value, openpal::WriteBufferView& buff)
@@ -55,14 +61,9 @@ void Group11Var1::WriteTarget(const BinaryOutputStatus& value, openpal::WriteBuf
 }
 
 
-Group11Var2 Group11Var2::Read(ReadBufferView& buffer)
+bool Group11Var2::Read(ReadBufferView& buffer, Group11Var2& output)
 {
-  Group11Var2 obj;
-  obj.flags = UInt8::Read(buffer);
-  buffer.Advance(1);
-  obj.time = UInt48::Read(buffer);
-  buffer.Advance(6);
-  return obj;
+  return Parse::Many(buffer, output.flags, output.time);
 }
 
 void Group11Var2::Write(const Group11Var2& arg, openpal::WriteBufferView& buffer)
@@ -74,10 +75,18 @@ void Group11Var2::Write(const Group11Var2& arg, openpal::WriteBufferView& buffer
 }
 
 
-BinaryOutputStatus Group11Var2::ReadTarget(ReadBufferView& buff)
+bool Group11Var2::ReadTarget(ReadBufferView& buff, BinaryOutputStatus& output)
 {
-  auto gv = Group11Var2::Read(buff);
-  return BinaryOutputStatusFactory::From(gv.flags, gv.time);
+  Group11Var2 value;
+  if(Read(buff, value))
+  {
+    output = BinaryOutputStatusFactory::From(value.flags, value.time);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 void Group11Var2::WriteTarget(const BinaryOutputStatus& value, openpal::WriteBufferView& buff)

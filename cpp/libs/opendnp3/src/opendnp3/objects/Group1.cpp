@@ -23,17 +23,15 @@
 #include "opendnp3/app/MeasurementFactory.h"
 #include "opendnp3/app/WriteConversions.h"
 #include <openpal/serialization/Serialization.h>
+#include <openpal/serialization/Parse.h>
 
 using namespace openpal;
 
 namespace opendnp3 {
 
-Group1Var2 Group1Var2::Read(ReadBufferView& buffer)
+bool Group1Var2::Read(ReadBufferView& buffer, Group1Var2& output)
 {
-  Group1Var2 obj;
-  obj.flags = UInt8::Read(buffer);
-  buffer.Advance(1);
-  return obj;
+  return Parse::Many(buffer, output.flags);
 }
 
 void Group1Var2::Write(const Group1Var2& arg, openpal::WriteBufferView& buffer)
@@ -43,10 +41,18 @@ void Group1Var2::Write(const Group1Var2& arg, openpal::WriteBufferView& buffer)
 }
 
 
-Binary Group1Var2::ReadTarget(ReadBufferView& buff)
+bool Group1Var2::ReadTarget(ReadBufferView& buff, Binary& output)
 {
-  auto gv = Group1Var2::Read(buff);
-  return BinaryFactory::From(gv.flags);
+  Group1Var2 value;
+  if(Read(buff, value))
+  {
+    output = BinaryFactory::From(value.flags);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 void Group1Var2::WriteTarget(const Binary& value, openpal::WriteBufferView& buff)

@@ -23,17 +23,15 @@
 #include "opendnp3/app/MeasurementFactory.h"
 #include "opendnp3/app/WriteConversions.h"
 #include <openpal/serialization/Serialization.h>
+#include <openpal/serialization/Parse.h>
 
 using namespace openpal;
 
 namespace opendnp3 {
 
-Group13Var1 Group13Var1::Read(ReadBufferView& buffer)
+bool Group13Var1::Read(ReadBufferView& buffer, Group13Var1& output)
 {
-  Group13Var1 obj;
-  obj.flags = UInt8::Read(buffer);
-  buffer.Advance(1);
-  return obj;
+  return Parse::Many(buffer, output.flags);
 }
 
 void Group13Var1::Write(const Group13Var1& arg, openpal::WriteBufferView& buffer)
@@ -43,10 +41,18 @@ void Group13Var1::Write(const Group13Var1& arg, openpal::WriteBufferView& buffer
 }
 
 
-BinaryCommandEvent Group13Var1::ReadTarget(ReadBufferView& buff)
+bool Group13Var1::ReadTarget(ReadBufferView& buff, BinaryCommandEvent& output)
 {
-  auto gv = Group13Var1::Read(buff);
-  return BinaryCommandEventFactory::From(gv.flags);
+  Group13Var1 value;
+  if(Read(buff, value))
+  {
+    output = BinaryCommandEventFactory::From(value.flags);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 void Group13Var1::WriteTarget(const BinaryCommandEvent& value, openpal::WriteBufferView& buff)
@@ -55,14 +61,9 @@ void Group13Var1::WriteTarget(const BinaryCommandEvent& value, openpal::WriteBuf
 }
 
 
-Group13Var2 Group13Var2::Read(ReadBufferView& buffer)
+bool Group13Var2::Read(ReadBufferView& buffer, Group13Var2& output)
 {
-  Group13Var2 obj;
-  obj.flags = UInt8::Read(buffer);
-  buffer.Advance(1);
-  obj.time = UInt48::Read(buffer);
-  buffer.Advance(6);
-  return obj;
+  return Parse::Many(buffer, output.flags, output.time);
 }
 
 void Group13Var2::Write(const Group13Var2& arg, openpal::WriteBufferView& buffer)
@@ -74,10 +75,18 @@ void Group13Var2::Write(const Group13Var2& arg, openpal::WriteBufferView& buffer
 }
 
 
-BinaryCommandEvent Group13Var2::ReadTarget(ReadBufferView& buff)
+bool Group13Var2::ReadTarget(ReadBufferView& buff, BinaryCommandEvent& output)
 {
-  auto gv = Group13Var2::Read(buff);
-  return BinaryCommandEventFactory::From(gv.flags, gv.time);
+  Group13Var2 value;
+  if(Read(buff, value))
+  {
+    output = BinaryCommandEventFactory::From(value.flags, value.time);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }
 
 void Group13Var2::WriteTarget(const BinaryCommandEvent& value, openpal::WriteBufferView& buff)

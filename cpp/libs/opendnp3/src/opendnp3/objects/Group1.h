@@ -39,13 +39,13 @@ struct Group1Var2
 {
   static GroupVariationID ID() { return GroupVariationID(1,2); }
   static uint32_t Size() { return 1; }
-  static Group1Var2 Read(openpal::ReadBufferView&);
+  static bool Read(openpal::ReadBufferView&, Group1Var2&);
   static void Write(const Group1Var2&, openpal::WriteBufferView&);
 
   static DNP3Serializer<Binary> Inst() { return DNP3Serializer<Binary>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef Binary Target;
-  static Binary ReadTarget(openpal::ReadBufferView&);
+  static bool ReadTarget(openpal::ReadBufferView&, Binary&);
   static void WriteTarget(const Binary&, openpal::WriteBufferView&);
 
   uint8_t flags;

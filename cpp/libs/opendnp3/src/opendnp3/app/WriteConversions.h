@@ -80,7 +80,7 @@ struct ConvertGroup12Var1 : private openpal::PureStatic
 		ret.count = crob.count;
 		ret.onTime = crob.onTimeMS;
 		ret.offTime = crob.offTimeMS;
-		ret.status = crob.status;
+		ret.status = CommandStatusToType(crob.status);
 		return ret;
 	}
 };
@@ -184,7 +184,7 @@ struct ConvertGroup43RangeCheck : private openpal::PureStatic
 	{
 		Target t;
 		DownSampling<double, typename Target::ValueType>::Apply(src.value, t.value);
-		t.status = src.status;
+		t.status = CommandStatusToType(src.status);
 		return t;
 	}
 };
@@ -196,7 +196,7 @@ struct ConvertGroup43WithTimeRangeCheck : private openpal::PureStatic
 	{
 		Target t;
 		DownSampling<double, typename Target::ValueType>::Apply(src.value, t.value);
-		t.status = src.status;
+		t.status = CommandStatusToType(src.status);
 		t.time = src.time;
 		return t;
 	}
@@ -214,7 +214,7 @@ struct ConvertGroup43Var6 : private openpal::PureStatic
 	{
 		Group43Var6 t;
 		t.value = src.value;
-		t.status = src.status;
+		t.status = CommandStatusToType(src.status);
 		return t;
 	}
 };
@@ -227,7 +227,7 @@ struct ConvertGroup43Var8 : private openpal::PureStatic
 	{
 		Group43Var8 t;
 		t.value = src.value;
-		t.status = src.status;
+		t.status = CommandStatusToType(src.status);
 		t.time = src.time;
 		return t;
 	}

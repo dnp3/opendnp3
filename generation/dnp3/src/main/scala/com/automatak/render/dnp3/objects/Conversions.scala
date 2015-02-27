@@ -12,9 +12,9 @@ class ArbitraryConversion(name: String, incHeaders: List[String], cppHeaders: Li
 
   def signatures : Iterator[String] = {
     Iterator(
-      "typedef " + name + " Target;",
-      "static " + name + " ReadTarget(openpal::ReadBufferView&);",
-      "static void WriteTarget(const " + name + "&, openpal::WriteBufferView&);"
+      "typedef %s Target;".format(name),
+      "static bool ReadTarget(openpal::ReadBufferView&, %s&);".format(name),
+      "static void WriteTarget(const %s&, openpal::WriteBufferView&);".format(name)
     )
   }
 
@@ -24,9 +24,16 @@ class ArbitraryConversion(name: String, incHeaders: List[String], cppHeaders: Li
     def args : String = fs.fields.map(f => "gv."+f.name).mkString(", ")
 
     def func1 = {
-      Iterator(name + " " + fs.name + "::ReadTarget(ReadBufferView& buff)") ++ bracket {
-        Iterator("auto gv = "+ fs.name + "::Read(buff);",
-          "return " + name + "Factory::From(" + args + ");")
+      val args =  fs.fields.map(f => "value." + f.name).mkString(", ")
+      Iterator("bool %s::ReadTarget(ReadBufferView& buff, %s& output)".format(fs.name, name)) ++ bracket {
+        Iterator("%s value;".format(fs.name)) ++
+        Iterator("if(Read(buff, value))") ++ bracket {
+          Iterator("output = %sFactory::From(%s);".format(name, args)) ++
+          Iterator("return true;")
+        } ++
+        Iterator("else") ++ bracket {
+          Iterator("return false;")
+        }
       }
     }
 
