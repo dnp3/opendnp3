@@ -24,6 +24,8 @@
 #include <cstdint>
 #include <cstring>
 
+#include "UInt48Type.h"
+
 #include "openpal/container/WriteBufferView.h"
 #include "openpal/container/ReadBufferView.h"
 
@@ -34,18 +36,18 @@ class UInt48LE
 {
 public:
 
-	static int64_t Read(const uint8_t* pStart);
+	static UInt48Type Read(const uint8_t* pStart);
 
-	static void Write(uint8_t* apStart, uint64_t aValue);
+	static void Write(uint8_t* apStart, UInt48Type aValue);
 
-	inline static int64_t ReadBuffer(ReadBufferView& buffer)
+	inline static UInt48Type ReadBuffer(ReadBufferView& buffer)
 	{
 		auto ret = Read(buffer);
 		buffer.Advance(SIZE);
 		return ret;
 	}
 
-	static void WriteBuffer(WriteBufferView& buffer, uint64_t aValue)
+	static void WriteBuffer(WriteBufferView& buffer, UInt48Type aValue)
 	{
 		Write(buffer, aValue);
 		buffer.Advance(SIZE);
@@ -53,7 +55,7 @@ public:
 
 	const static uint64_t MAX = 281474976710655ULL; // 2^48 -1
 	const static size_t SIZE = 6;
-	typedef uint64_t Type;
+	typedef UInt48Type Type;
 };
 
 }

@@ -28,12 +28,13 @@
 #include "openpal/container/WriteBufferView.h"
 
 #include "openpal/util/Limits.h"
+#include "openpal/util/Uncopyable.h"
 
 namespace openpal
 {
 
 template <class T>
-class Float
+class Float : private PureStatic
 {
 public:
 	typedef T Type;
@@ -49,7 +50,7 @@ public:
 		return ret;
 	}
 
-	static void WriteBufferView(WriteBufferView& buffer, T value)
+	inline static void WriteBuffer(WriteBufferView& buffer, T value)
 	{
 		Write(buffer, value);
 		buffer.Advance(SIZE);

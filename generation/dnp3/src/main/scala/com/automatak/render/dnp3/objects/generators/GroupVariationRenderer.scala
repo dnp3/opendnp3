@@ -30,7 +30,7 @@ object GroupVariationHeaderRenderer extends ModelRenderer[GroupVariation]{
       case UInt8Field => "uint8_t"
       case UInt16Field => "uint16_t"
       case UInt32Field => "uint32_t"
-      case UInt48Field => "uint64_t"
+      case UInt48Field => "DNPTime"
       case SInt16Field => "int16_t"
       case SInt32Field => "int32_t"
       case Float32Field => "float"

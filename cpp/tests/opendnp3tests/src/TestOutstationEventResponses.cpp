@@ -313,7 +313,7 @@ TEST_CASE(SUITE("ReadGrp2Var2"))
 {
 	auto update = [](IDatabase & db)
 	{		
-		db.Update(Binary(false, 0x01, 0x4571), 3);
+		db.Update(Binary(false, 0x01, DNPTime(0x4571)), 3);
 	};
 
 	TestEventRead("C0 01 02 02 06", "E0 81 80 00 02 02 28 01 00 03 00 01 71 45 00 00 00 00", update); // 1 byte count == 1, ONLINE quality
@@ -323,7 +323,7 @@ TEST_CASE(SUITE("ReadGrp2Var3SingleValue"))
 {
 	auto update = [](IDatabase & db)
 	{
-		db.Update(Binary(false, 0x01, 0x4571), 3);
+		db.Update(Binary(false, 0x01, DNPTime(0x4571)), 3);
 	};
 
 	TestEventRead("C0 01 02 03 06", "E0 81 80 00 33 01 07 01 71 45 00 00 00 00 02 03 28 01 00 03 00 01 00 00", update);
@@ -333,8 +333,8 @@ TEST_CASE(SUITE("ReadGrp2Var3TwoValues"))
 {
 	auto update = [](IDatabase & db)
 	{
-		db.Update(Binary(false, 0x01, 0x4571), 3);
-		db.Update(Binary(true, 0x01, 0x4579), 4);
+		db.Update(Binary(false, 0x01, DNPTime(0x4571)), 3);
+		db.Update(Binary(true, 0x01, DNPTime(0x4579)), 4);
 	};
 
 	auto rsp = "E0 81 80 00 33 01 07 01 71 45 00 00 00 00 02 03 28 02 00 03 00 01 00 00 04 00 81 08 00";
@@ -346,8 +346,8 @@ TEST_CASE(SUITE("ReadGrp2Var3TwoValuesNegativeDifference"))
 {
 	auto update = [](IDatabase & db)
 	{
-		db.Update(Binary(false, 0x01, 0x4571), 3);
-		db.Update(Binary(true, 0x01, 0x4570), 4);
+		db.Update(Binary(false, 0x01, DNPTime(0x4571)), 3);
+		db.Update(Binary(true, 0x01, DNPTime(0x4570)), 4);
 	};
 
 	std::string header =	"E0 81 80 00";
@@ -363,8 +363,8 @@ TEST_CASE(SUITE("ReadGrp2Var3TwoValuesDifferenceTooBigForCTO"))
 {
 	auto update = [](IDatabase & db)
 	{
-		db.Update(Binary(false, 0x01, 0x000000), 3);
-		db.Update(Binary(true, 0x01, 0x010000), 4);
+		db.Update(Binary(false, 0x01, DNPTime(0x000000)), 3);
+		db.Update(Binary(true, 0x01, DNPTime(0x010000)), 4);
 	};
 
 	std::string header = "E0 81 80 00";

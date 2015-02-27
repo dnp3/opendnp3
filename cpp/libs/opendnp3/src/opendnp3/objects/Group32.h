@@ -23,6 +23,7 @@
 
 #include <openpal/container/ReadBufferView.h>
 #include <openpal/container/WriteBufferView.h>
+#include "opendnp3/Types.h"
 #include "opendnp3/app/GroupVariationID.h"
 #include "opendnp3/app/DNP3Serializer.h"
 #include "opendnp3/app/MeasurementTypes.h"
@@ -81,7 +82,7 @@ struct Group32Var3
   typedef int32_t ValueType;
   uint8_t flags;
   int32_t value;
-  uint64_t time;
+  DNPTime time;
 };
 
 struct Group32Var4
@@ -100,7 +101,7 @@ struct Group32Var4
   typedef int16_t ValueType;
   uint8_t flags;
   int16_t value;
-  uint64_t time;
+  DNPTime time;
 };
 
 struct Group32Var5
@@ -155,7 +156,7 @@ struct Group32Var7
   typedef float ValueType;
   uint8_t flags;
   float value;
-  uint64_t time;
+  DNPTime time;
 };
 
 struct Group32Var8
@@ -174,7 +175,7 @@ struct Group32Var8
   typedef double ValueType;
   uint8_t flags;
   double value;
-  uint64_t time;
+  DNPTime time;
 };
 
 

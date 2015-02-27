@@ -23,6 +23,7 @@
 
 #include <openpal/container/ReadBufferView.h>
 #include <openpal/container/WriteBufferView.h>
+#include "opendnp3/Types.h"
 #include "opendnp3/app/GroupVariationID.h"
 #include "opendnp3/app/DNP3Serializer.h"
 #include "opendnp3/app/MeasurementTypes.h"
@@ -59,7 +60,7 @@ struct Group11Var2
   static void WriteTarget(const BinaryOutputStatus&, openpal::WriteBufferView&);
 
   uint8_t flags;
-  uint64_t time;
+  DNPTime time;
 };
 
 

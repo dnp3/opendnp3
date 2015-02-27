@@ -21,6 +21,8 @@
 
 #include "BinaryCommandEvent.h"
 
+using namespace openpal;
+
 namespace opendnp3
 {
 
@@ -30,28 +32,26 @@ BinaryCommandEvent::BinaryCommandEvent() :
 	time(0)
 {}
 
-BinaryCommandEvent::BinaryCommandEvent(uint8_t aValue) :
-	value(GetValueFromFlags(aValue)),
-	status(GetStatusFromFlags(aValue)),
-	time(0)
+BinaryCommandEvent::BinaryCommandEvent(uint8_t value_) :
+	value(GetValueFromFlags(value_)),
+	status(GetStatusFromFlags(value_))	
 {}
 
-BinaryCommandEvent::BinaryCommandEvent(uint8_t aValue, uint64_t aTime) :
-	value(GetValueFromFlags(aValue)),
-	status(GetStatusFromFlags(aValue)),
-	time(aTime)
+BinaryCommandEvent::BinaryCommandEvent(uint8_t value_, UInt48Type time_) :
+	value(GetValueFromFlags(value_)),
+	status(GetStatusFromFlags(value_)),
+	time(time_)
 {}
 
-BinaryCommandEvent::BinaryCommandEvent(bool aValue, CommandStatus aStatus) :
-	value(aValue),
-	status(aStatus),
-	time(0)
+BinaryCommandEvent::BinaryCommandEvent(bool value_, CommandStatus status_) :
+	value(value_),
+	status(status_)	
 {}
 
-BinaryCommandEvent::BinaryCommandEvent(bool aValue, CommandStatus aStatus, uint64_t aTime) :
-	value(aValue),
-	status(aStatus),
-	time(aTime)
+BinaryCommandEvent::BinaryCommandEvent(bool value_, CommandStatus status_, DNPTime time_) :
+	value(value_),
+	status(status_),
+	time(time_)
 {}
 
 uint8_t BinaryCommandEvent::GetFlags() const

@@ -23,6 +23,7 @@
 
 #include <openpal/container/ReadBufferView.h>
 #include <openpal/container/WriteBufferView.h>
+#include "opendnp3/Types.h"
 #include "opendnp3/app/GroupVariationID.h"
 #include "opendnp3/app/DNP3Serializer.h"
 #include "opendnp3/app/MeasurementTypes.h"

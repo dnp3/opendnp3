@@ -118,7 +118,7 @@ IINField MeasurementHandler::ProcessWithCTO(const HeaderRecord& record, const It
 		auto addTime = [timestamp](const IndexedValue<T, uint16_t>& value)
 		{
 			T copy(value.value);
-			copy.time += timestamp;
+			copy.time = UInt48Type(copy.time + timestamp);
 			return IndexedValue<T, uint16_t>(copy, value.index);
 		};
 

@@ -148,14 +148,14 @@ TEST_CASE(SUITE("PrefixWriteIteratorCTO"))
 	auto writer = response.GetWriter();
 
 	Group51Var1 cto;
-	cto.time = 0xAA;
+	cto.time = UInt48Type(0xAA);
 
 	{
 		auto iter = writer.IterateOverCountWithPrefixAndCTO<UInt16, Binary>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group2Var3::Inst(), cto);
 		REQUIRE(iter.IsValid());
 
-		REQUIRE(iter.Write(Binary(true, 0x01, 0x0B), 6));
-		REQUIRE(iter.Write(Binary(true, 0x01, 0x0C), 7));		
+		REQUIRE(iter.Write(Binary(true, 0x01, UInt48Type(0x0B)), 6));
+		REQUIRE(iter.Write(Binary(true, 0x01, UInt48Type(0x0C)), 7));
 	}
 
 	REQUIRE("C0 81 00 00 33 01 07 01 AA 00 00 00 00 00 02 03 28 02 00 06 00 81 0B 00 07 00 81 0C 00" == ToHex(response.ToReadOnly()));
@@ -166,14 +166,13 @@ TEST_CASE(SUITE("PrefixWriteIteratorCTOSpaceForOnly1Value"))
 	APDUResponse response(APDUHelpers::Response(26));
 	auto writer = response.GetWriter();
 
-	Group51Var1 cto;
-	cto.time = 0xAA;
+	Group51Var1 cto = { UInt48Type(0xAA) };	
 
 	{
 		auto iter = writer.IterateOverCountWithPrefixAndCTO<UInt16, Binary>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group2Var3::Inst(), cto);
 		REQUIRE(iter.IsValid());
-		REQUIRE(iter.Write(Binary(true, 0x01, 0x0B), 6));
-		REQUIRE(!iter.Write(Binary(true, 0x01, 0x0C), 7));
+		REQUIRE(iter.Write(Binary(true, 0x01, UInt48Type(0x0B)), 6));
+		REQUIRE(!iter.Write(Binary(true, 0x01, UInt48Type(0x0C)), 7));
 	}
 
 	REQUIRE("C0 81 00 00 33 01 07 01 AA 00 00 00 00 00 02 03 28 01 00 06 00 81 0B 00" == ToHex(response.ToReadOnly()));
@@ -184,8 +183,7 @@ TEST_CASE(SUITE("PrefixWriteIteratorNotEnoughSpaceForAValue"))
 	APDUResponse response(APDUHelpers::Response(23));
 	auto writer = response.GetWriter();
 
-	Group51Var1 cto;
-	cto.time = 0xAA;
+	Group51Var1 cto = { UInt48Type(0xAA) };	
 
 	{
 		auto iter = writer.IterateOverCountWithPrefixAndCTO<UInt16, Binary>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group2Var3::Inst(), cto);
@@ -226,7 +224,7 @@ TEST_CASE(SUITE("WriteSingleValue"))
 	APDURequest request(APDUHelpers::Request(FunctionCode::WRITE));
 	auto writer = request.GetWriter();
 
-	Group50Var1 obj = { 0x1234 };
+	Group50Var1 obj = { UInt48Type(0x1234) };
 	REQUIRE(writer.WriteSingleValue<UInt8>(QualifierCode::UINT8_CNT, obj));
 
 	REQUIRE("C0 02 32 01 07 01 34 12 00 00 00 00" ==  ToHex(request.ToReadOnly()));

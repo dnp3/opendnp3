@@ -23,6 +23,8 @@
 
 #include "opendnp3/gen/CommandStatus.h"
 
+#include "opendnp3/Types.h"
+
 namespace opendnp3
 {
 
@@ -35,15 +37,15 @@ public:
 
 	AnalogCommandEvent();
 
-	AnalogCommandEvent(double aValue, CommandStatus aStatus);
+	AnalogCommandEvent(double value, CommandStatus status);
 
-	AnalogCommandEvent(double aValue, CommandStatus aStatus, uint64_t aTime);
+	AnalogCommandEvent(double value, CommandStatus status, DNPTime time);
 
 	double value;
 	CommandStatus status;
-	uint64_t time;
+	DNPTime time;
 
-	bool operator==(const AnalogCommandEvent& arRHS) const;
+	bool operator==(const AnalogCommandEvent& rhs) const;
 };
 
 }

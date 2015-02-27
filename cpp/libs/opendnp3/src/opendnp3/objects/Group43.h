@@ -23,6 +23,7 @@
 
 #include <openpal/container/ReadBufferView.h>
 #include <openpal/container/WriteBufferView.h>
+#include "opendnp3/Types.h"
 #include "opendnp3/app/GroupVariationID.h"
 #include "opendnp3/gen/CommandStatus.h"
 #include "opendnp3/app/DNP3Serializer.h"
@@ -82,7 +83,7 @@ struct Group43Var3
   typedef int32_t ValueType;
   CommandStatus status;
   int32_t value;
-  uint64_t time;
+  DNPTime time;
 };
 
 struct Group43Var4
@@ -101,7 +102,7 @@ struct Group43Var4
   typedef int16_t ValueType;
   CommandStatus status;
   int16_t value;
-  uint64_t time;
+  DNPTime time;
 };
 
 struct Group43Var5
@@ -156,7 +157,7 @@ struct Group43Var7
   typedef float ValueType;
   CommandStatus status;
   float value;
-  uint64_t time;
+  DNPTime time;
 };
 
 struct Group43Var8
@@ -175,7 +176,7 @@ struct Group43Var8
   typedef double ValueType;
   CommandStatus status;
   double value;
-  uint64_t time;
+  DNPTime time;
 };
 
 

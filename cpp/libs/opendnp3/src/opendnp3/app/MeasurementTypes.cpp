@@ -50,13 +50,13 @@ Binary::Binary(bool value) : TypedMeasurement(value, quality::GetBinaryQuality(q
 Binary::Binary(uint8_t quality) : TypedMeasurement(quality::GetBinaryValue(quality), quality)
 {}
 
-Binary::Binary(uint8_t quality, uint64_t aTime) : TypedMeasurement(quality::GetBinaryValue(quality), quality, aTime)
+Binary::Binary(uint8_t quality, DNPTime time) : TypedMeasurement(quality::GetBinaryValue(quality), quality, time)
 {}
 
 Binary::Binary(bool value, uint8_t quality) : TypedMeasurement(value, quality::GetBinaryQuality(quality, value))
 {}
 
-Binary::Binary(bool value, uint8_t quality, uint64_t aTime) : TypedMeasurement(value, quality::GetBinaryQuality(quality, value), aTime)
+Binary::Binary(bool value, uint8_t quality, DNPTime time) : TypedMeasurement(value, quality::GetBinaryQuality(quality, value), time)
 {}
 
 bool Binary::IsQualityOnlineOnly() const
@@ -85,13 +85,13 @@ DoubleBitBinary::DoubleBitBinary(DoubleBit value) : TypedMeasurement(value, GetQ
 DoubleBitBinary::DoubleBitBinary(uint8_t quality) : TypedMeasurement(GetValue(quality), quality)
 {}
 
-DoubleBitBinary::DoubleBitBinary(uint8_t quality, uint64_t aTime) : TypedMeasurement(GetValue(quality), quality, aTime)
+DoubleBitBinary::DoubleBitBinary(uint8_t quality, DNPTime time) : TypedMeasurement(GetValue(quality), quality, time)
 {}
 
 DoubleBitBinary::DoubleBitBinary(DoubleBit value, uint8_t quality) : TypedMeasurement(value, GetQual(quality, value))
 {}
 
-DoubleBitBinary::DoubleBitBinary(DoubleBit value, uint8_t quality, uint64_t aTime) : TypedMeasurement(value, GetQual(quality, value), aTime)
+DoubleBitBinary::DoubleBitBinary(DoubleBit value, uint8_t quality, DNPTime time) : TypedMeasurement(value, GetQual(quality, value), time)
 {}
 
 bool DoubleBitBinary::IsEvent(const DoubleBitBinary& newValue) const
@@ -101,7 +101,7 @@ bool DoubleBitBinary::IsEvent(const DoubleBitBinary& newValue) const
 
 DoubleBit DoubleBitBinary::GetValue(uint8_t quality)
 {
-	// the value is the top 2 bits, so downshift 6
+	// the value is the top 2 bits, so down-shift 6
 	uint8_t value = quality >> 6;
 	return DoubleBitFromType(value);
 }
@@ -124,13 +124,13 @@ BinaryOutputStatus::BinaryOutputStatus(bool value) : TypedMeasurement(value, qua
 BinaryOutputStatus::BinaryOutputStatus(uint8_t quality) : TypedMeasurement(quality::GetBinaryValue(quality), quality)
 {}
 
-BinaryOutputStatus::BinaryOutputStatus(uint8_t quality, uint64_t aTime) : TypedMeasurement(quality::GetBinaryValue(quality), quality, aTime)
+BinaryOutputStatus::BinaryOutputStatus(uint8_t quality, DNPTime time) : TypedMeasurement(quality::GetBinaryValue(quality), quality, time)
 {}
 
 BinaryOutputStatus::BinaryOutputStatus(bool value, uint8_t quality) : TypedMeasurement(value, quality::GetBinaryQuality(quality, value))
 {}
 
-BinaryOutputStatus::BinaryOutputStatus(bool value, uint8_t quality, uint64_t aTime) : TypedMeasurement(value, quality::GetBinaryQuality(quality, value), aTime)
+BinaryOutputStatus::BinaryOutputStatus(bool value, uint8_t quality, DNPTime time) : TypedMeasurement(value, quality::GetBinaryQuality(quality, value), time)
 {}
 
 bool BinaryOutputStatus::IsEvent(const BinaryOutputStatus& newValue) const
@@ -149,7 +149,7 @@ Analog::Analog(double value) : TypedMeasurement(value, quality::ONLINE)
 Analog::Analog(double value, uint8_t quality) : TypedMeasurement(value, quality)
 {}
 
-Analog::Analog(double value, uint8_t quality, uint64_t aTime) : TypedMeasurement<double>(value, quality, aTime)
+Analog::Analog(double value, uint8_t quality, DNPTime time) : TypedMeasurement<double>(value, quality, time)
 {}
 
 bool Analog::IsEvent(const Analog& newValue, double deadband) const
@@ -169,7 +169,7 @@ Counter::Counter(uint32_t value) : TypedMeasurement<uint32_t>(value, quality::ON
 Counter::Counter(uint32_t value, uint8_t quality) : TypedMeasurement<uint32_t>(value, quality)
 {}
 
-Counter::Counter(uint32_t value, uint8_t quality, uint64_t aTime) : TypedMeasurement<uint32_t>(value, quality, aTime)
+Counter::Counter(uint32_t value, uint8_t quality, DNPTime time) : TypedMeasurement<uint32_t>(value, quality, time)
 {}
 
 bool Counter::IsEvent(const Counter& newValue, uint32_t aDeadband) const
@@ -192,7 +192,7 @@ FrozenCounter::FrozenCounter(uint32_t value) : TypedMeasurement<uint32_t>(value,
 FrozenCounter::FrozenCounter(uint32_t value, uint8_t quality) : TypedMeasurement<uint32_t>(value, quality)
 {}
 
-FrozenCounter::FrozenCounter(uint32_t value, uint8_t quality, uint64_t aTime) : TypedMeasurement<uint32_t>(value, quality, aTime)
+FrozenCounter::FrozenCounter(uint32_t value, uint8_t quality, DNPTime time) : TypedMeasurement<uint32_t>(value, quality, time)
 {}
 
 bool FrozenCounter::IsEvent(const FrozenCounter& newValue, uint32_t aDeadband) const
@@ -217,7 +217,7 @@ AnalogOutputStatus::AnalogOutputStatus(double value) : TypedMeasurement<double>(
 AnalogOutputStatus::AnalogOutputStatus(double value, uint8_t quality) : TypedMeasurement<double>(value, quality)
 {}
 
-AnalogOutputStatus::AnalogOutputStatus(double value, uint8_t quality, uint64_t aTime) : TypedMeasurement<double>(value, quality, aTime)
+AnalogOutputStatus::AnalogOutputStatus(double value, uint8_t quality, DNPTime time) : TypedMeasurement<double>(value, quality, time)
 {}
 
 bool AnalogOutputStatus::IsEvent(const AnalogOutputStatus& newValue, double deadband) const

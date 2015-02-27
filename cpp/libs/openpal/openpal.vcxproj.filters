@@ -208,6 +208,9 @@
     <ClInclude Include="src\openpal\util\Finally.h">
       <Filter>Header\util</Filter>
     </ClInclude>
+    <ClInclude Include="src\openpal\serialization\UInt48Type.h">
+      <Filter>Header\serialization</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\openpal\executor\MonotonicTimestamp.cpp">

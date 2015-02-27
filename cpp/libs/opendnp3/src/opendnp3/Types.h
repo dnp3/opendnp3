@@ -18,60 +18,14 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_BASEMEASUREMENTTYPES_H
-#define OPENDNP3_BASEMEASUREMENTTYPES_H
+#ifndef OPENDNP3_TYPES_H
+#define OPENDNP3_TYPES_H
 
-#include <cstdint>
-
-#include "opendnp3/Types.h"
+#include <openpal/serialization/UInt48Type.h>
 
 namespace opendnp3
 {
-
-/**
-  Base class shared by all of the DataPoint types.
-*/
-class Measurement
-{
-public:
-
-	virtual ~Measurement() {}
-
-	uint8_t quality;	//	bitfield that stores type specific quality information
-	DNPTime time;		//	timestamp associated with the measurement			
-
-protected:
-
-	Measurement() : quality(0)
-	{}
-
-	Measurement(uint8_t quality_) : quality(quality_)
-	{}
-
-	Measurement(uint8_t quality_, DNPTime time_) : quality(quality_), time(time_)
-	{}
-	
-};
-
-
-/// Common subclass to analogs and counters
-template <class T>
-class TypedMeasurement : public Measurement
-{
-public:	
-
-	T value;
-
-	typedef T Type;
-
-protected:
-
-	TypedMeasurement(): Measurement(), value(0) {}
-	TypedMeasurement(uint8_t quality) : Measurement(quality), value(0) {}
-	TypedMeasurement(T value, uint8_t quality) : Measurement(quality), value(value) {}
-	TypedMeasurement(T value, uint8_t quality, DNPTime time) : Measurement(quality, time), value(value) {}
-};
-
+	typedef openpal::UInt48Type DNPTime;
 }
 
 

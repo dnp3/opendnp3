@@ -27,13 +27,13 @@ namespace opendnp3
 TimeAndInterval::TimeAndInterval() : time(0), interval(0), units(0)
 {}
 
-TimeAndInterval::TimeAndInterval(uint64_t time_, uint32_t interval_, uint8_t units_) :
+TimeAndInterval::TimeAndInterval(DNPTime time_, uint32_t interval_, uint8_t units_) :
 	time(time_),
 	interval(interval_),
 	units(units_)
 {}
 
-TimeAndInterval::TimeAndInterval(uint64_t time_, uint32_t interval_, IntervalUnits units_) :
+TimeAndInterval::TimeAndInterval(DNPTime time_, uint32_t interval_, IntervalUnits units_) :
 	time(time_),
 	interval(interval_),
 	units(static_cast<uint8_t>(units_))

@@ -25,6 +25,7 @@
 #include <openpal/container/ReadBufferView.h>
 #include <openpal/container/WriteBufferView.h>
 
+#include "opendnp3/Types.h"
 #include "opendnp3/gen/AuthErrorCode.h"
 #include "opendnp3/app/GroupVariationID.h"
 
@@ -51,7 +52,7 @@ struct Group120Var7
 	uint16_t userNum;
 	uint16_t associationID;
 	AuthErrorCode errorCode;
-	uint64_t timeOfError;
+	DNPTime timeOfError;
 	openpal::ReadBufferView errorText;
 	
 	static bool Read(const openpal::ReadBufferView& buffer, Group120Var7& output);

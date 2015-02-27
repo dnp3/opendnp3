@@ -34,79 +34,91 @@ namespace opendnp3
 
 struct BinaryFactory: private openpal::PureStatic
 {
-	inline static Binary From(uint8_t aFlags)
+	inline static Binary From(uint8_t flags)
 	{
-		return Binary(aFlags);
+		return Binary(flags);
 	}
-	inline static Binary From(uint8_t aFlags, int64_t aTime)
+
+	inline static Binary From(uint8_t flags, uint16_t time)
 	{
-		return Binary(aFlags, aTime);
+		return From(flags, DNPTime(time));
+	}
+
+	inline static Binary From(uint8_t flags, DNPTime time)
+	{
+		return Binary(flags, time);
 	}
 };
 
 struct DoubleBitBinaryFactory : private openpal::PureStatic
 {
-	inline static DoubleBitBinary From(uint8_t aFlags)
+	inline static DoubleBitBinary From(uint8_t flags)
 	{
-		return DoubleBitBinary(aFlags);
+		return DoubleBitBinary(flags);
 	}
-	inline static DoubleBitBinary From(uint8_t aFlags, int64_t aTime)
+
+	inline static DoubleBitBinary From(uint8_t flags, uint16_t time)
 	{
-		return DoubleBitBinary(aFlags, aTime);
+		return From(flags, DNPTime(time));
+	}
+
+	inline static DoubleBitBinary From(uint8_t flags, DNPTime time)
+	{
+		return DoubleBitBinary(flags, time);
 	}
 };
 
 struct AnalogFactory: private openpal::PureStatic
 {
-	static Analog From(int32_t aCount)
+	static Analog From(int32_t count)
 	{
-		return Analog(aCount);
+		return Analog(count);
 	}
-	static Analog From(uint8_t aFlags, double aValue)
+	static Analog From(uint8_t flags, double value)
 	{
-		return Analog(aValue, aFlags);
+		return Analog(value, flags);
 	}
-	static Analog From(uint8_t aFlags, double aValue, int64_t aTime)
+	static Analog From(uint8_t flags, double value, DNPTime time)
 	{
-		return Analog(aValue, aFlags, aTime);
+		return Analog(value, flags, time);
 	}
 };
 
 struct CounterFactory: private openpal::PureStatic
 {
-	inline static Counter From(uint32_t aCount)
+	inline static Counter From(uint32_t count)
 	{
-		return Counter(aCount);
+		return Counter(count);
 	}
-	inline static Counter From(uint8_t aFlags, uint32_t aCount)
+	inline static Counter From(uint8_t flags, uint32_t count)
 	{
-		return Counter(aCount, aFlags);
+		return Counter(count, flags);
 	}
-	inline static Counter From(uint8_t aFlags, uint32_t aCount, int64_t aTime)
+	inline static Counter From(uint8_t flags, uint32_t count, DNPTime time)
 	{
-		return Counter(aCount, aFlags, aTime);
+		return Counter(count, flags, time);
 	}
 };
 
 struct FrozenCounterFactory: private openpal::PureStatic
 {
-	inline static FrozenCounter From(uint32_t aCount)
+	inline static FrozenCounter From(uint32_t count)
 	{
-		return FrozenCounter(aCount);
+		return FrozenCounter(count);
 	}
-	inline static FrozenCounter From(uint8_t aFlags, uint32_t aCount)
+	inline static FrozenCounter From(uint8_t flags, uint32_t count)
 	{
-		return FrozenCounter(aCount, aFlags);
+		return FrozenCounter(count, flags);
 	}
-	inline static FrozenCounter From(uint8_t aFlags, uint32_t aCount, int64_t aTime)
+	inline static FrozenCounter From(uint8_t flags, uint32_t count, DNPTime time)
 	{
-		return FrozenCounter(aCount, aFlags, aTime);
+		return FrozenCounter(count, flags, time);
 	}
 };
 
 struct TimeAndIntervalFactory : private openpal::PureStatic
 {	
-	inline static TimeAndInterval From(uint64_t time, uint32_t interval, uint8_t units)
+	inline static TimeAndInterval From(DNPTime time, uint32_t interval, uint8_t units)
 	{
 		return TimeAndInterval(time, interval, units);
 	}
@@ -115,15 +127,13 @@ struct TimeAndIntervalFactory : private openpal::PureStatic
 struct ControlRelayOutputBlockFactory: private openpal::PureStatic
 {
 	inline static ControlRelayOutputBlock From(
-	    uint8_t aCode,
-	    uint8_t aCount,
-	    uint32_t aOnTime,
-	    uint32_t aOffTime,
-	    CommandStatus aStatus)
-	{
-		ControlRelayOutputBlock crob(ControlCodeFromType(aCode), aCount, aOnTime, aOffTime, aStatus);
-		crob.rawCode = aCode;
-		return crob;
+	    uint8_t code,
+	    uint8_t count,
+	    uint32_t onTime,
+	    uint32_t offTime,
+	    CommandStatus status)
+	{		
+		return ControlRelayOutputBlock(code, count, onTime, offTime, status);
 	}
 };
 
@@ -134,7 +144,7 @@ struct BinaryOutputStatusFactory: private openpal::PureStatic
 		return BinaryOutputStatus(flags);
 	}
 
-	inline static BinaryOutputStatus From(uint8_t flags, int64_t time)
+	inline static BinaryOutputStatus From(uint8_t flags, DNPTime time)
 	{
 		return BinaryOutputStatus(flags, time);
 	}
@@ -147,9 +157,9 @@ struct BinaryCommandEventFactory : private openpal::PureStatic
 		return BinaryCommandEvent(flags);
 	}
 
-	inline static BinaryCommandEvent From(uint8_t flags, uint64_t aTime)
+	inline static BinaryCommandEvent From(uint8_t flags, DNPTime time)
 	{
-		return BinaryCommandEvent(flags, aTime);
+		return BinaryCommandEvent(flags, time);
 	}
 };
 
@@ -160,7 +170,7 @@ struct AnalogOutputStatusFactory: private openpal::PureStatic
 		return AnalogOutputStatus(value, flags);
 	}
 
-	inline static AnalogOutputStatus From(uint8_t flags, double value, int64_t time)
+	inline static AnalogOutputStatus From(uint8_t flags, double value, DNPTime time)
 	{
 		return AnalogOutputStatus(value, flags, time);
 	}
@@ -168,14 +178,14 @@ struct AnalogOutputStatusFactory: private openpal::PureStatic
 
 struct AnalogCommandEventFactory : private openpal::PureStatic
 {
-	inline static AnalogCommandEvent From(CommandStatus aStatus, double aValue)
+	inline static AnalogCommandEvent From(CommandStatus status, double value)
 	{
-		return AnalogCommandEvent(aValue, aStatus);
+		return AnalogCommandEvent(value, status);
 	}
 
-	inline static AnalogCommandEvent From(CommandStatus aStatus, double aValue, uint64_t aTime)
+	inline static AnalogCommandEvent From(CommandStatus status, double value, DNPTime time)
 	{
-		return AnalogCommandEvent(aValue, aStatus, aTime);
+		return AnalogCommandEvent(value, status, time);
 	}
 };
 

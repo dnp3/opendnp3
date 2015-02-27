@@ -67,6 +67,7 @@
     <ClInclude Include="src\openpal\serialization\SerializationTemplatesBE.h" />
     <ClInclude Include="src\openpal\serialization\SerializationTemplatesLE.h" />
     <ClInclude Include="src\openpal\serialization\UInt48LE.h" />
+    <ClInclude Include="src\openpal\serialization\UInt48Type.h" />
     <ClInclude Include="src\openpal\util\Comparisons.h" />
     <ClInclude Include="src\openpal\util\Finally.h" />
     <ClInclude Include="src\openpal\util\Limits.h" />

@@ -23,6 +23,7 @@
 
 #include <openpal/container/ReadBufferView.h>
 #include <openpal/container/WriteBufferView.h>
+#include "opendnp3/Types.h"
 #include "opendnp3/app/GroupVariationID.h"
 #include "opendnp3/app/DNP3Serializer.h"
 #include "opendnp3/app/TimeAndInterval.h"
@@ -35,7 +36,7 @@ struct Group50Var1
   static uint32_t Size() { return 6; }
   static Group50Var1 Read(openpal::ReadBufferView&);
   static void Write(const Group50Var1&, openpal::WriteBufferView&);
-  uint64_t time;
+  DNPTime time;
 };
 
 struct Group50Var4
@@ -51,7 +52,7 @@ struct Group50Var4
   static TimeAndInterval ReadTarget(openpal::ReadBufferView&);
   static void WriteTarget(const TimeAndInterval&, openpal::WriteBufferView&);
 
-  uint64_t time;
+  DNPTime time;
   uint32_t interval;
   uint8_t units;
 };

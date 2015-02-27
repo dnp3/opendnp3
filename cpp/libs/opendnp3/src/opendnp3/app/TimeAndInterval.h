@@ -27,13 +27,15 @@
 
 #include "opendnp3/app/EventMetadata.h"
 
+#include "opendnp3/Types.h"
+
 namespace opendnp3
 {
 
 /**
 	Maps to Group50Var4
 
-	This class is a bit of an outlier as an indexed type and is really only used in the DNP3 PV profile
+	This class is a bit of an out lier as an indexed type and is really only used in the DNP3 PV profile
 */
 class TimeAndInterval
 {
@@ -41,13 +43,13 @@ public:
 
 	TimeAndInterval();
 
-	TimeAndInterval(uint64_t time, uint32_t interval, uint8_t units);
+	TimeAndInterval(DNPTime time, uint32_t interval, uint8_t units);
 
-	TimeAndInterval(uint64_t time, uint32_t interval, IntervalUnits units);
+	TimeAndInterval(DNPTime time, uint32_t interval, IntervalUnits units);
 	
 	IntervalUnits GetUnitsEnum() const;
 	
-	uint64_t time;
+	DNPTime time;
 	uint32_t interval;	
 	uint8_t units;	
 

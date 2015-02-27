@@ -26,25 +26,23 @@ namespace opendnp3
 
 AnalogCommandEvent::AnalogCommandEvent() :
 	value(0),
-	status(CommandStatus::SUCCESS),
-	time(0)
+	status(CommandStatus::SUCCESS)	
 {}
 
-AnalogCommandEvent::AnalogCommandEvent(double aValue, CommandStatus aStatus) :
-	value(aValue),
-	status(aStatus),
-	time(0)
+AnalogCommandEvent::AnalogCommandEvent(double value_, CommandStatus status_) :
+	value(value_),
+	status(status_)	
 {}
 
-AnalogCommandEvent::AnalogCommandEvent(double aValue, CommandStatus aStatus, uint64_t aTime) :
-	value(aValue),
-	status(aStatus),
-	time(aTime)
+AnalogCommandEvent::AnalogCommandEvent(double value_, CommandStatus status_, DNPTime time_) :
+	value(value_),
+	status(status_),
+	time(time_)
 {}
 
-bool AnalogCommandEvent::operator==(const AnalogCommandEvent& arRHS) const
+bool AnalogCommandEvent::operator==(const AnalogCommandEvent& rhs) const
 {
-	return value == arRHS.value && status == arRHS.status && time == arRHS.time;
+	return (value == rhs.value) && (status == rhs.status) && (time == rhs.time);
 }
 
 }

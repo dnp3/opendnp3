@@ -154,9 +154,9 @@ TEST_CASE(SUITE("Int32"))
 
 TEST_CASE(SUITE("UInt48LE"))
 {
-	REQUIRE(TestReadWrite<openpal::UInt48>(0));
-	REQUIRE(TestReadWrite<openpal::UInt48>(123));
-	REQUIRE(TestReadWrite<openpal::UInt48>(281474976710655LL));
+	REQUIRE(TestReadWrite<openpal::UInt48>(UInt48Type(0)));
+	REQUIRE(TestReadWrite<openpal::UInt48>(UInt48Type(123)));
+	REQUIRE(TestReadWrite<openpal::UInt48>(UInt48Type(281474976710655ULL)));
 }
 
 

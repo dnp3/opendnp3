@@ -80,11 +80,11 @@ public:
 
 	Binary(uint8_t quality);
 
-	Binary(uint8_t quality, uint64_t aTime);
+	Binary(uint8_t quality, DNPTime time);
 
 	Binary(bool value, uint8_t quality);
 
-	Binary(bool value, uint8_t quality, uint64_t aTime);
+	Binary(bool value, uint8_t quality, DNPTime time);
 
 	bool IsQualityOnlineOnly() const;
 
@@ -116,11 +116,11 @@ public:
 
 	DoubleBitBinary(uint8_t quality);
 
-	DoubleBitBinary(uint8_t quality, uint64_t time);
+	DoubleBitBinary(uint8_t quality, DNPTime time);
 
 	DoubleBitBinary(DoubleBit value, uint8_t quality);
 
-	DoubleBitBinary(DoubleBit value, uint8_t quality, uint64_t time);
+	DoubleBitBinary(DoubleBit value, uint8_t quality, DNPTime time);
 
 	bool IsEvent(const DoubleBitBinary& newValue) const;
 
@@ -160,11 +160,11 @@ public:
 
 	BinaryOutputStatus(uint8_t quality);
 
-	BinaryOutputStatus(uint8_t quality, uint64_t time);
+	BinaryOutputStatus(uint8_t quality, DNPTime time);
 
 	BinaryOutputStatus(bool value, uint8_t quality);
 
-	BinaryOutputStatus(bool value, uint8_t quality, uint64_t aTime);
+	BinaryOutputStatus(bool value, uint8_t quality, DNPTime time);
 
 	bool IsEvent(const BinaryOutputStatus& newValue) const;
 
@@ -180,8 +180,8 @@ public:
 };
 
 /**
-	Analogs are used for variable data points that usuually reflect a real world value.
-	Good examples are current, voltage, sensor readouts, etc. Think of a speedometer gauge.
+	Analogs are used for variable data points that usually reflect a real world value.
+	Good examples are current, voltage, sensor readouts, etc. Think of a speedometer guage.
 */
 
 class Analog : public TypedMeasurement<double>
@@ -194,7 +194,7 @@ public:
 
 	Analog(double value, uint8_t quality);
 
-	Analog(double value, uint8_t quality, uint64_t time);
+	Analog(double value, uint8_t quality, DNPTime time);
 
 	bool IsEvent(const Analog& newValue, double deadband) const;
 
@@ -223,7 +223,7 @@ public:
 
 	Counter(uint32_t value, uint8_t quality);
 
-	Counter(uint32_t value, uint8_t quality, uint64_t aTime);
+	Counter(uint32_t value, uint8_t quality, DNPTime time);
 
 	bool IsEvent(const Counter& newValue, uint32_t aDeadband) const;
 
@@ -251,7 +251,7 @@ public:
 
 	FrozenCounter(uint32_t value, uint8_t quality);
 
-	FrozenCounter(uint32_t value, uint8_t quality, uint64_t aTime);
+	FrozenCounter(uint32_t value, uint8_t quality, DNPTime time);
 
 	bool IsEvent(const FrozenCounter& newValue, uint32_t aDeadband) const;
 
@@ -267,8 +267,8 @@ public:
 };
 
 /**
-	Describes the last set value of the setpoint. Like the BinaryOutputStatus data type it is not
-	well supportted and its generally better practice to use an explict analog.
+	Describes the last set value of the set-point. Like the BinaryOutputStatus data type it is not
+	well supported and its generally better practice to use an explicit analog.
 */
 class AnalogOutputStatus : public TypedMeasurement<double>
 {
@@ -280,7 +280,7 @@ public:
 
 	AnalogOutputStatus(double value, uint8_t quality);
 
-	AnalogOutputStatus(double value, uint8_t quality, uint64_t aTime);
+	AnalogOutputStatus(double value, uint8_t quality, DNPTime time);
 
 	bool IsEvent(const AnalogOutputStatus& newValue, double deadband) const;
 

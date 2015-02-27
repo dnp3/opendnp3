@@ -182,7 +182,7 @@ namespace secauthv5
 		error.userNum = user.GetId();
 		error.associationID = sstate.settings.assocId;
 		error.errorCode = code;
-		error.timeOfError = sstate.pTimeSource->Now().msSinceEpoch;
+		error.timeOfError = openpal::UInt48Type(sstate.pTimeSource->Now().msSinceEpoch);
 
 		writer.WriteFreeFormat(error);
 		

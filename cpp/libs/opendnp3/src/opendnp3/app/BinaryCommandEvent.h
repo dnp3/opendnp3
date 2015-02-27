@@ -23,6 +23,8 @@
 
 #include "opendnp3/gen/CommandStatus.h"
 
+#include "opendnp3/Types.h"
+
 namespace opendnp3
 {
 
@@ -37,19 +39,19 @@ public:
 
 	BinaryCommandEvent(uint8_t flags);
 
-	BinaryCommandEvent(uint8_t flags, uint64_t aTime);
+	BinaryCommandEvent(uint8_t flags, DNPTime time);
 
-	BinaryCommandEvent(bool aValue, CommandStatus aStatus);
+	BinaryCommandEvent(bool value, CommandStatus status);
 
-	BinaryCommandEvent(bool aValue, CommandStatus aStatus, uint64_t aTime);
+	BinaryCommandEvent(bool value, CommandStatus status, DNPTime time);
 
 	bool value;
 	CommandStatus status;
-	uint64_t time;
+	DNPTime time;
 
 	uint8_t GetFlags() const;
 
-	bool operator==(const BinaryCommandEvent& arRHS) const;
+	bool operator==(const BinaryCommandEvent& rhs) const;
 
 private:
 

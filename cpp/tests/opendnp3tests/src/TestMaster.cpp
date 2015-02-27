@@ -403,7 +403,7 @@ TEST_CASE(SUITE("ReceiveCTOSynchronized"))
 
 	REQUIRE(t.meas.TotalReceived() == 1);
 	auto record = t.meas.binarySOE[7];
-	bool equal = record.meas == Binary(true, 0x01, 0x04); //timestamp is 4
+	bool equal = record.meas == Binary(true, 0x01, DNPTime(0x04)); //timestamp is 4
 	REQUIRE(equal);
 	REQUIRE(record.info.tsmode == TimestampMode::SYNCHRONIZED);
 }
@@ -419,7 +419,7 @@ TEST_CASE(SUITE("ReceiveCTOUnsynchronized"))
 
 	REQUIRE(t.meas.TotalReceived() == 1);
 	auto record = t.meas.binarySOE[7];
-	bool equal = record.meas == Binary(true, 0x01, 0x04); //timestamp is 4
+	bool equal = record.meas == Binary(true, 0x01, DNPTime(0x04)); //timestamp is 4
 	REQUIRE(equal); 
 	REQUIRE(record.info.tsmode == TimestampMode::UNSYNCHRONIZED);
 }
@@ -523,7 +523,7 @@ TEST_CASE(SUITE("MasterWritesTimeAndInterval"))
 
 	MockTaskCallback callback;
 
-	t.master.Write(TimeAndInterval(3, 4, IntervalUnits::Days), 7, &callback);
+	t.master.Write(TimeAndInterval(DNPTime(3), 4, IntervalUnits::Days), 7, &callback);
 	REQUIRE(t.exe.RunMany() > 0);
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 02 32 04 28 01 00 07 00 03 00 00 00 00 00 04 00 00 00 05");
 	t.master.OnSendResult(true);	

@@ -70,7 +70,8 @@ object GroupVariationFileGenerator {
       includeGuards(group.name.toUpperCase) {
           Iterator("#include <openpal/container/ReadBufferView.h>") ++
           Iterator("#include <openpal/container/WriteBufferView.h>") ++
-          Iterator("#include \"opendnp3/app/GroupVariationID.h\"") ++
+          Iterator("""#include "opendnp3/Types.h"""") ++
+          Iterator("""#include "opendnp3/app/GroupVariationID.h"""") ++
         optionalIncludes(group) ++ space ++
         namespace("opendnp3") {
           definitions(GroupVariationHeaderRenderer)(group)

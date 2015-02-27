@@ -360,7 +360,7 @@ void TestTimeAndIntervalRead(const std::string& request)
 
 	t.Transaction(
 		[](IDatabase& db){
-			db.Update(TimeAndInterval(9, 3, IntervalUnits::Days), 0);
+		db.Update(TimeAndInterval(DNPTime(9), 3, IntervalUnits::Days), 0);
 		}
 	);
 

@@ -25,6 +25,8 @@
 #include "opendnp3/app/EventType.h"
 #include "opendnp3/app/MeasurementTypes.h"
 
+#include <openpal/serialization/UInt48Type.h>
+
 
 namespace opendnp3
 {
@@ -99,7 +101,7 @@ public:
 	bool written;
 	void Reset();
 
-	uint64_t GetTime() const { return time; }
+	DNPTime GetTime() const { return time; }
 
 private:
 
@@ -119,7 +121,7 @@ private:
 	// the actual value;	
 	EventValue value;
 	uint16_t index;
-	uint64_t time;
+	DNPTime time;
 	uint8_t flags;
 
 };
