@@ -26,22 +26,37 @@
 namespace openpal
 {
 
+template <typename Cleanup>
+class RAII;
+
+template <typename Cleanup>
+RAII<Cleanup> Finally(const Cleanup&);
+
 /** Finally is an RAII helper that takes a functor to run when it destructs
 */
-template <class CleanupFun>
-class RAII : private Uncopyable
+template <class Cleanup>
+class RAII
 {
 public:
-	RAII(const CleanupFun& fun_) : fun(fun_) {}
-	~RAII() { fun(); }
+	friend RAII Finally<Cleanup>(const Cleanup& fun);
+
+	~RAII() { fun(); }	
 
 private:
+
+	RAII() = delete;
+
+	RAII(const Cleanup& fun_) : fun(fun_) {}
 	
-	CleanupFun fun;
+	Cleanup fun;
 };
 
-template <class CleanupFun>
-RAII<CleanupFun> Finally(const CleanupFun& fun) { return RAII<CleanupFun>(fun); }
+template <class Cleanup>
+RAII<Cleanup> Finally(const Cleanup& fun)
+{
+	return RAII<Cleanup>(fun);
+}
+
 
 }
 

@@ -108,7 +108,7 @@ if(TESTS)
   # ----- openpal tests -----
   file(GLOB_RECURSE openpal_TESTSRC ./cpp/tests/openpaltests/src/*.cpp)
   add_executable (testopenpal ${openpal_TESTSRC})
-  target_link_libraries (testopenpal LINK_PUBLIC openpal pthread)
+  target_link_libraries (testopenpal LINK_PUBLIC testlib pthread)
 
   # ----- opendnp3 tests -----
 
