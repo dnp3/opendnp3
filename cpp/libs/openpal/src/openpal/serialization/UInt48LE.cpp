@@ -23,28 +23,28 @@
 namespace openpal
 {
 
-int64_t UInt48LE::Read(const uint8_t* apStart)
+int64_t UInt48LE::Read(const uint8_t* pStart)
 {
-	int64_t  ret = *(apStart);
-	ret |= static_cast<int64_t>(*(++apStart)) << 8;
-	ret |= static_cast<int64_t>(*(++apStart)) << 16;
-	ret |= static_cast<int64_t>(*(++apStart)) << 24;
-	ret |= static_cast<int64_t>(*(++apStart)) << 32;
-	ret |= static_cast<int64_t>(*(++apStart)) << 40;
+	int64_t  ret = *(pStart);
+	ret |= static_cast<int64_t>(*(++pStart)) << 8;
+	ret |= static_cast<int64_t>(*(++pStart)) << 16;
+	ret |= static_cast<int64_t>(*(++pStart)) << 24;
+	ret |= static_cast<int64_t>(*(++pStart)) << 32;
+	ret |= static_cast<int64_t>(*(++pStart)) << 40;
 
 	return ret;
 }
 
-void UInt48LE::Write(uint8_t* apStart, int64_t aValue)
+void UInt48LE::Write(uint8_t* pStart, uint64_t value)
 {
-	if(aValue > MAX) aValue = MAX;
+	if(value > MAX) value = MAX;
 
-	*(apStart) = static_cast<uint8_t>(aValue & 0xFF);
-	*(++apStart) = static_cast<uint8_t>((aValue >> 8) & 0xFF);
-	*(++apStart) = static_cast<uint8_t>((aValue >> 16) & 0xFF);
-	*(++apStart) = static_cast<uint8_t>((aValue >> 24) & 0xFF);
-	*(++apStart) = static_cast<uint8_t>((aValue >> 32) & 0xFF);
-	*(++apStart) = static_cast<uint8_t>((aValue >> 40) & 0xFF);
+	*(pStart) = static_cast<uint8_t>(value & 0xFF);
+	*(++pStart) = static_cast<uint8_t>((value >> 8) & 0xFF);
+	*(++pStart) = static_cast<uint8_t>((value >> 16) & 0xFF);
+	*(++pStart) = static_cast<uint8_t>((value >> 24) & 0xFF);
+	*(++pStart) = static_cast<uint8_t>((value >> 32) & 0xFF);
+	*(++pStart) = static_cast<uint8_t>((value >> 40) & 0xFF);
 }
 
 }

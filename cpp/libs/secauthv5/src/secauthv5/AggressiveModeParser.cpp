@@ -57,7 +57,7 @@ namespace secauthv5
 			return pair<ParseResult, bool>(ParseResult::INVALID_OBJECT_QUALIFIER, false);
 		}
 
-		if (objects.Size() < UInt8::Size)
+		if (objects.Size() < UInt8::SIZE)
 		{
 			SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Insufficient data for count");
 			return pair<ParseResult, bool>(ParseResult::NOT_ENOUGH_DATA_FOR_HEADER, false);

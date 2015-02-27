@@ -45,13 +45,13 @@ public:
 	CountWriteIterator(const openpal::Serializer<WriteType>& serializer_, openpal::WriteBufferView& position) :
 		count(0),
 		serializer(serializer_),		
-		isValid(position.Size() >= CountType::Size),
+		isValid(position.Size() >= CountType::SIZE),
 		countPosition(position),
 		pPosition(&position)
 	{
 		if(isValid)
 		{
-			position.Advance(CountType::Size);
+			position.Advance(CountType::SIZE);
 		}
 	}
 

@@ -45,14 +45,14 @@ public:
 		start(start_),
 		serializer(serializer_),
 		count(0),				
-		isValid(position.Size() >= 2 * IndexType::Size),
+		isValid(position.Size() >= 2 * IndexType::SIZE),
 		range(position),
 		pPosition(&position)
 	{
 		if (isValid)
 		{
 			IndexType::WriteBuffer(range, start);
-			pPosition->Advance(2 * IndexType::Size);
+			pPosition->Advance(2 * IndexType::SIZE);
 		}
 	}
 

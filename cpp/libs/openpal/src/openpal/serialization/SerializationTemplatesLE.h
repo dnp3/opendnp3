@@ -53,19 +53,19 @@ public:
 	static void WriteBuffer(WriteBufferView& buffer, T aValue)
 	{
 		Write(buffer, aValue);
-		buffer.Advance(Size);
+		buffer.Advance(SIZE);
 	}
 
 	inline static T ReadBuffer(ReadBufferView& arBuffer)
 	{
 		auto ret = Read(arBuffer);
-		arBuffer.Advance(Size);
+		arBuffer.Advance(SIZE);
 		return ret;
 	}
 
 	typedef T Type;
 
-	const static size_t Size = sizeof(T);
+	const static size_t SIZE = sizeof(T);
 	const static T Max;
 	const static T Min;
 };
@@ -100,19 +100,19 @@ public:
 	static void WriteBuffer(WriteBufferView& buffer, T aValue)
 	{
 		Write(buffer, aValue);
-		buffer.Advance(Size);
+		buffer.Advance(SIZE);
 	}
 
 	inline static T ReadBuffer(ReadBufferView& buffer)
 	{
 		auto ret = Read(buffer);
-		buffer.Advance(Size);
+		buffer.Advance(SIZE);
 		return ret;
 	}
 
 	typedef T Type;
 
-	const static size_t Size = sizeof(T);
+	const static size_t SIZE = sizeof(T);
 	const static T Max;
 	const static T Min;
 };

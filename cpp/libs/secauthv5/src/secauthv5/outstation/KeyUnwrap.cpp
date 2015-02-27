@@ -45,7 +45,7 @@ namespace secauthv5
 			return false;
 		}
 
-		if (unwrapped.Size() < UInt16::Size)
+		if (unwrapped.Size() < UInt16::SIZE)
 		{
 			SIMPLE_LOGGER_BLOCK(pLogger, logflags::WARN, "Not enough data for key length");
 			return false;

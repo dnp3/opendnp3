@@ -42,14 +42,14 @@ public:
 	inline static uint8_t ReadBuffer(ReadBufferView& buffer)
 	{
 		auto ret = Read(buffer);
-		buffer.Advance(Size);
+		buffer.Advance(SIZE);
 		return ret;
 	}
 
 	static void WriteBuffer(WriteBufferView& buffer, uint8_t value)
 	{
 		Write(buffer, value);
-		buffer.Advance(Size);
+		buffer.Advance(SIZE);
 	}
 
 	inline static void Write(uint8_t* pStart, uint8_t value)
@@ -57,7 +57,7 @@ public:
 		*(pStart) = value;
 	}
 
-	const static size_t Size = 1;
+	const static size_t SIZE = 1;
 	const static uint8_t Max;
 	const static uint8_t Min;
 

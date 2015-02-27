@@ -35,8 +35,8 @@ using namespace std;
 template <class T>
 bool TestReadWrite(typename T::Type aValue)
 {
-	uint8_t data[2 * T::Size];
-	for(size_t i = 0; i < T::Size; ++i)
+	uint8_t data[2 * T::SIZE];
+	for (size_t i = 0; i < T::SIZE; ++i)
 	{
 		uint8_t* pos = data + i;
 		T::Write(pos, aValue);
@@ -49,9 +49,9 @@ bool TestReadWrite(typename T::Type aValue)
 template <class T>
 bool TestReadWriteDouble(typename T::Type aValue)
 {
-	ByteStr data(2 * T::Size);
+	ByteStr data(2 * T::SIZE);
 
-	for(size_t i = 0; i < T::Size; ++i)
+	for (size_t i = 0; i < T::SIZE; ++i)
 	{
 		uint8_t* pos = data + i;
 		T::Write(pos, aValue);

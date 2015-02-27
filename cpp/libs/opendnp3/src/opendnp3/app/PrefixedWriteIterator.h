@@ -46,15 +46,15 @@ public:
 
 	PrefixedWriteIterator(const openpal::Serializer<WriteType>& serializer_, openpal::WriteBufferView& position) :
 		serializer(serializer_),
-		sizeOfTypePlusIndex(serializer.Size() + PrefixType::Size),
+		sizeOfTypePlusIndex(serializer.Size() + PrefixType::SIZE),
 		count(0),		
-		isValid(position.Size() >= PrefixType::Size),
+		isValid(position.Size() >= PrefixType::SIZE),
 		countPosition(position),		
 		pPosition(&position)
 	{
 		if(isValid)
 		{
-			pPosition->Advance(PrefixType::Size);
+			pPosition->Advance(PrefixType::SIZE);
 		}
 	}
 

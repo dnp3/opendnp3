@@ -38,7 +38,7 @@ class Float
 public:
 	typedef T Type;
 
-	const static size_t Size = sizeof(T);
+	const static size_t SIZE = sizeof(T);
 	const static T Max;
 	const static T Min;
 
@@ -52,7 +52,7 @@ public:
 	static void WriteBufferView(WriteBufferView& buffer, T aValue)
 	{
 		Write(buffer, aValue);
-		buffer.Advance(Size);
+		buffer.Advance(SIZE);
 	}
 
 	// Some platforms like ARM have WORD alignment issue when using reinterpret cast.
@@ -60,13 +60,13 @@ public:
 	inline static T Read(const uint8_t* apStart)
 	{
 		T d;
-		memcpy(&d, apStart, Size);
+		memcpy(&d, apStart, SIZE);
 		return d;
 	}
 
 	inline static void Write(uint8_t* apStart, T aValue)
 	{
-		memcpy(apStart, &aValue, Size);
+		memcpy(apStart, &aValue, SIZE);
 	}
 };
 

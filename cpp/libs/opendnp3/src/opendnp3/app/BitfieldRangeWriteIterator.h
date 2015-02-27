@@ -42,14 +42,14 @@ public:
 		start(start_),
 		count(0),
 		maxCount(0),
-		isNull(position_.Size() < 2 * IndexType::Size),
+		isNull(position_.Size() < 2 * IndexType::SIZE),
 		range(position_),
 		pPosition(&position_)				
 	{
 		if(!isNull)
 		{
 			IndexType::WriteBuffer(range, start_);
-			pPosition->Advance(2 * IndexType::Size);
+			pPosition->Advance(2 * IndexType::SIZE);
 			maxCount = pPosition->Size() * 8;
 		}
 	}

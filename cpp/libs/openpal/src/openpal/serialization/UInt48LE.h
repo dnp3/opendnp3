@@ -34,25 +34,26 @@ class UInt48LE
 {
 public:
 
-	static int64_t Read(const uint8_t* apStart);
-	static void Write(uint8_t* apStart, int64_t aValue);
+	static int64_t Read(const uint8_t* pStart);
+
+	static void Write(uint8_t* apStart, uint64_t aValue);
 
 	inline static int64_t ReadBuffer(ReadBufferView& buffer)
 	{
 		auto ret = Read(buffer);
-		buffer.Advance(Size);
+		buffer.Advance(SIZE);
 		return ret;
 	}
 
-	static void WriteBuffer(WriteBufferView& buffer, int64_t aValue)
+	static void WriteBuffer(WriteBufferView& buffer, uint64_t aValue)
 	{
 		Write(buffer, aValue);
-		buffer.Advance(Size);
+		buffer.Advance(SIZE);
 	}
 
-	const static int64_t MAX = 281474976710655ULL; // 2^48 -1
-	const static size_t Size = 6;
-	typedef int64_t Type;
+	const static uint64_t MAX = 281474976710655ULL; // 2^48 -1
+	const static size_t SIZE = 6;
+	typedef uint64_t Type;
 };
 
 }
