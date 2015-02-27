@@ -42,31 +42,31 @@ public:
 	const static T Max;
 	const static T Min;
 
-	inline static T ReadBuffer(ReadBufferView& arBuffer)
+	inline static T ReadBuffer(ReadBufferView& buffer)
 	{
-		auto ret = Read(arBuffer);
-		arBuffer.Advance(Size);
+		auto ret = Read(buffer);
+		buffer.Advance(SIZE);
 		return ret;
 	}
 
-	static void WriteBufferView(WriteBufferView& buffer, T aValue)
+	static void WriteBufferView(WriteBufferView& buffer, T value)
 	{
-		Write(buffer, aValue);
+		Write(buffer, value);
 		buffer.Advance(SIZE);
 	}
 
 	// Some platforms like ARM have WORD alignment issue when using reinterpret cast.
 	// The float/double read routines use intermediate buffer that the compiler word aligns
-	inline static T Read(const uint8_t* apStart)
+	inline static T Read(const uint8_t* pStart)
 	{
 		T d;
-		memcpy(&d, apStart, SIZE);
+		memcpy(&d, pStart, SIZE);
 		return d;
 	}
 
-	inline static void Write(uint8_t* apStart, T aValue)
+	inline static void Write(uint8_t* pStart, T value)
 	{
-		memcpy(apStart, &aValue, SIZE);
+		memcpy(pStart, &value, SIZE);
 	}
 };
 
