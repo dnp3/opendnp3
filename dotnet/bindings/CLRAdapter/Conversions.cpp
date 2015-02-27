@@ -192,52 +192,52 @@ namespace Automatak
 
 			opendnp3::Binary Conversions::ConvertMeas(Binary^ meas)
 			{
-				return opendnp3::Binary(meas->Value, meas->Quality, TimeStamp::Convert(meas->Timestamp));
+				return opendnp3::Binary(meas->Value, meas->Quality, opendnp3::DNPTime(TimeStamp::Convert(meas->Timestamp)));
 			}
 
 			opendnp3::DoubleBitBinary Conversions::ConvertMeas(DoubleBitBinary^ meas)
 			{
-				return opendnp3::DoubleBitBinary((opendnp3::DoubleBit) meas->Value, meas->Quality, TimeStamp::Convert(meas->Timestamp));
+				return opendnp3::DoubleBitBinary((opendnp3::DoubleBit) meas->Value, meas->Quality, opendnp3::DNPTime(TimeStamp::Convert(meas->Timestamp)));
 			}
 
 			opendnp3::Analog Conversions::ConvertMeas(Analog^ meas)
 			{
-				return opendnp3::Analog(meas->Value, meas->Quality, TimeStamp::Convert(meas->Timestamp));
+				return opendnp3::Analog(meas->Value, meas->Quality, opendnp3::DNPTime(TimeStamp::Convert(meas->Timestamp)));
 			}
 
 			opendnp3::Counter Conversions::ConvertMeas(Counter^ meas)
 			{
-				return opendnp3::Counter(meas->Value, meas->Quality, TimeStamp::Convert(meas->Timestamp));
+				return opendnp3::Counter(meas->Value, meas->Quality, opendnp3::DNPTime(TimeStamp::Convert(meas->Timestamp)));
 			}
 
 			opendnp3::FrozenCounter Conversions::ConvertMeas(FrozenCounter^ meas)
 			{
-				return opendnp3::FrozenCounter(meas->Value, meas->Quality, TimeStamp::Convert(meas->Timestamp));
+				return opendnp3::FrozenCounter(meas->Value, meas->Quality, opendnp3::DNPTime(TimeStamp::Convert(meas->Timestamp)));
 			}
 
 			opendnp3::AnalogOutputStatus Conversions::ConvertMeas(AnalogOutputStatus^ meas)
 			{
-				return opendnp3::AnalogOutputStatus(meas->Value, meas->Quality, TimeStamp::Convert(meas->Timestamp));
+				return opendnp3::AnalogOutputStatus(meas->Value, meas->Quality, opendnp3::DNPTime(TimeStamp::Convert(meas->Timestamp)));
 			}
 
 			opendnp3::TimeAndInterval Conversions::ConvertMeas(TimeAndInterval^ meas)
 			{
-				return opendnp3::TimeAndInterval(meas->time, meas->interval, meas->units);
+				return opendnp3::TimeAndInterval(opendnp3::DNPTime(meas->time), meas->interval, meas->units);
 			}
 
 			opendnp3::BinaryCommandEvent Conversions::ConvertMeas(BinaryCommandEvent^ meas)
 			{
-				return opendnp3::BinaryCommandEvent(meas->Value, ConvertCommandStatus(meas->Status), TimeStamp::Convert(meas->Timestamp));
+				return opendnp3::BinaryCommandEvent(meas->Value, ConvertCommandStatus(meas->Status), opendnp3::DNPTime(TimeStamp::Convert(meas->Timestamp)));
 			}
 
 			opendnp3::AnalogCommandEvent Conversions::ConvertMeas(AnalogCommandEvent^ meas)
 			{
-				return opendnp3::AnalogCommandEvent(meas->Value, ConvertCommandStatus(meas->Status), TimeStamp::Convert(meas->Timestamp));
+				return opendnp3::AnalogCommandEvent(meas->Value, ConvertCommandStatus(meas->Status), opendnp3::DNPTime(TimeStamp::Convert(meas->Timestamp)));
 			}
 
 			opendnp3::BinaryOutputStatus Conversions::ConvertMeas(BinaryOutputStatus^ meas)
 			{
-				return opendnp3::BinaryOutputStatus(meas->Value, meas->Quality, TimeStamp::Convert(meas->Timestamp));
+				return opendnp3::BinaryOutputStatus(meas->Value, meas->Quality, opendnp3::DNPTime(TimeStamp::Convert(meas->Timestamp)));
 			}
 
 			asiopal::SerialSettings Conversions::ConvertSerialSettings(SerialSettings^ settings)

@@ -20,7 +20,7 @@
 
 #include "Group51.h"
 
-#include <openpal/serialization/Serialization.h>git 
+#include <openpal/serialization/Serialization.h>
 
 using namespace openpal;
 
