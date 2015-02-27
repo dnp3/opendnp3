@@ -62,6 +62,7 @@
     <ClInclude Include="src\openpal\logging\StringFormatting.h" />
     <ClInclude Include="src\openpal\serialization\ByteSerialization.h" />
     <ClInclude Include="src\openpal\serialization\FloatSerializationTemplates.h" />
+    <ClInclude Include="src\openpal\serialization\Format.h" />
     <ClInclude Include="src\openpal\serialization\Parse.h" />
     <ClInclude Include="src\openpal\serialization\Serializer.h" />
     <ClInclude Include="src\openpal\serialization\Serialization.h" />
@@ -90,6 +91,7 @@
     <ClCompile Include="src\openpal\logging\LogRoot.cpp" />
     <ClCompile Include="src\openpal\logging\StringFormatting.cpp" />
     <ClCompile Include="src\openpal\serialization\ByteSerialization.cpp" />
+    <ClCompile Include="src\openpal\serialization\Format.cpp" />
     <ClCompile Include="src\openpal\serialization\Parse.cpp" />
     <ClCompile Include="src\openpal\serialization\UInt48LE.cpp" />
     <ClCompile Include="src\openpal\util\Limits.cpp" />

@@ -21,8 +21,11 @@
 #include <catch.hpp>
 
 #include <testlib/BufferHelpers.h>
+#include <testlib/HexConversions.h>
 
+#include <openpal/container/DynamicBuffer.h>
 #include <openpal/serialization/Parse.h>
+#include <openpal/serialization/Format.h>
 #include <openpal/serialization/Serialization.h>
 #include <openpal/util/Comparisons.h>
 
@@ -183,3 +186,28 @@ TEST_CASE(SUITE("ParseMany"))
 	}
 }
 
+
+TEST_CASE(SUITE("FormatMany"))
+{
+
+	uint8_t first = 255;
+	uint16_t second = 0xBAAB;
+	uint32_t third = 1;
+
+	const uint32_t SIZE = 7;
+
+	DynamicBuffer output(SIZE + 3);
+
+	{
+		auto dest = output.GetWriteBufferView();
+		REQUIRE(Format::Many(dest, first, second, third));
+		REQUIRE(dest.Size() == (output.Size() - SIZE));
+		auto written = ToHex(output.ToReadOnly().Take(SIZE));
+		REQUIRE(written == "FF AB BA 01 00 00 00");
+	}
+
+	{
+		auto dest = output.GetWriteBufferView(SIZE - 1);
+		REQUIRE_FALSE(Format::Many(dest, first, second, third));
+	}
+}
