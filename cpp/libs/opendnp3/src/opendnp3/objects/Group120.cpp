@@ -20,7 +20,7 @@
 
 #include "Group120.h"
 
-#include <openpal/serialization/Serialization.h>
+#include <openpal/serialization/Format.h>
 #include <openpal/serialization/Parse.h>
 
 using namespace openpal;
@@ -32,12 +32,9 @@ bool Group120Var3::Read(ReadBufferView& buffer, Group120Var3& output)
   return Parse::Many(buffer, output.challengeSeqNum, output.userNum);
 }
 
-void Group120Var3::Write(const Group120Var3& arg, openpal::WriteBufferView& buffer)
+bool Group120Var3::Write(const Group120Var3& arg, openpal::WriteBufferView& buffer)
 {
-  UInt32::Write(buffer, arg.challengeSeqNum);
-  buffer.Advance(4);
-  UInt16::Write(buffer, arg.userNum);
-  buffer.Advance(2);
+  return Format::Many(buffer, arg.challengeSeqNum, arg.userNum);
 }
 
 
@@ -46,10 +43,9 @@ bool Group120Var4::Read(ReadBufferView& buffer, Group120Var4& output)
   return Parse::Many(buffer, output.userNum);
 }
 
-void Group120Var4::Write(const Group120Var4& arg, openpal::WriteBufferView& buffer)
+bool Group120Var4::Write(const Group120Var4& arg, openpal::WriteBufferView& buffer)
 {
-  UInt16::Write(buffer, arg.userNum);
-  buffer.Advance(2);
+  return Format::Many(buffer, arg.userNum);
 }
 
 

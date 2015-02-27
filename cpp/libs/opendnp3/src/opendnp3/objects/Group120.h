@@ -33,7 +33,7 @@ struct Group120Var3
   static GroupVariationID ID() { return GroupVariationID(120,3); }
   static uint32_t Size() { return 6; }
   static bool Read(openpal::ReadBufferView&, Group120Var3&);
-  static void Write(const Group120Var3&, openpal::WriteBufferView&);
+  static bool Write(const Group120Var3&, openpal::WriteBufferView&);
   uint32_t challengeSeqNum;
   uint16_t userNum;
 };
@@ -43,7 +43,7 @@ struct Group120Var4
   static GroupVariationID ID() { return GroupVariationID(120,4); }
   static uint32_t Size() { return 2; }
   static bool Read(openpal::ReadBufferView&, Group120Var4&);
-  static void Write(const Group120Var4&, openpal::WriteBufferView&);
+  static bool Write(const Group120Var4&, openpal::WriteBufferView&);
   uint16_t userNum;
 };
 

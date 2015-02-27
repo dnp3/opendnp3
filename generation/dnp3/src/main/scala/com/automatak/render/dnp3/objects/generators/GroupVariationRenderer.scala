@@ -51,7 +51,7 @@ object GroupVariationHeaderRenderer extends ModelRenderer[GroupVariation]{
 
     def readSignature: Iterator[String] = Iterator("static bool Read(openpal::ReadBufferView&, %s&);".format(x.name))
 
-    def writeSignature: Iterator[String] = Iterator("static void Write(const %s&, openpal::WriteBufferView&);".format(x.name))
+    def writeSignature: Iterator[String] = Iterator("static bool Write(const %s&, openpal::WriteBufferView&);".format(x.name))
 
     def definition : Iterator[String] = struct(x.name) {
       idDeclaration(x) ++
@@ -117,24 +117,24 @@ object GroupVariationImplRenderer extends ModelRenderer[GroupVariation]{
 
     def readSignature: Iterator[String] = Iterator("bool " + x.name + "::" + "Read(ReadBufferView& buffer, " + x.name + "& output)")
 
-    def writeSignature: Iterator[String] = Iterator("void " + x.name + "::Write(const " + x.name + "& arg, openpal::WriteBufferView& buffer)")
+    def writeSignature: Iterator[String] = Iterator("bool " + x.name + "::Write(const " + x.name + "& arg, openpal::WriteBufferView& buffer)")
 
     def convertFunction: Iterator[String] = x.conversion match {
       case Some(c) => space ++ c.impl(x) ++ space
       case None => Iterator.empty
     }
 
-    def fieldParams(x: FixedSize): String = {
-      x.fields.map(f => f.name).map(s => "output." + s).mkString(", ")
+    def fieldParams(name: String) : String = {
+      x.fields.map(f => f.name).map(s => "%s.%s".format(name,s)).mkString(", ")
     }
 
     def readFunction: Iterator[String] = readSignature ++ bracket {
-        Iterator("return Parse::Many(buffer, " + fieldParams(x) + ");")
+        Iterator("return Parse::Many(buffer, " + fieldParams("output") + ");")
     }
 
     def writeFunction: Iterator[String] = writeSignature ++ bracket {
 
-        x.fields.iterator.map(writeOperation).flatten
+        Iterator("return Format::Many(buffer, %s);".format(fieldParams("arg")))
 
     }
 

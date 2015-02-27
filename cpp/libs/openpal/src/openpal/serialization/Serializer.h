@@ -35,7 +35,7 @@ class Serializer
 public:
 
 	typedef bool (*ReadFunc)(ReadBufferView& buffer, T& output);
-	typedef void (*WriteFunc)(const T& value, WriteBufferView& buffer);
+	typedef bool (*WriteFunc)(const T& value, WriteBufferView& buffer);
 
 	Serializer() : size(0), pReadFunc(nullptr), pWriteFunc(nullptr)
 	{}

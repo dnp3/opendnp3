@@ -22,7 +22,7 @@
 
 #include "opendnp3/app/MeasurementFactory.h"
 #include "opendnp3/app/WriteConversions.h"
-#include <openpal/serialization/Serialization.h>
+#include <openpal/serialization/Format.h>
 #include <openpal/serialization/Parse.h>
 
 using namespace openpal;
@@ -34,12 +34,9 @@ bool Group41Var1::Read(ReadBufferView& buffer, Group41Var1& output)
   return Parse::Many(buffer, output.value, output.status);
 }
 
-void Group41Var1::Write(const Group41Var1& arg, openpal::WriteBufferView& buffer)
+bool Group41Var1::Write(const Group41Var1& arg, openpal::WriteBufferView& buffer)
 {
-  Int32::Write(buffer, arg.value);
-  buffer.Advance(4);
-  UInt8::Write(buffer, arg.status);
-  buffer.Advance(1);
+  return Format::Many(buffer, arg.value, arg.status);
 }
 
 
@@ -57,9 +54,9 @@ bool Group41Var1::ReadTarget(ReadBufferView& buff, AnalogOutputInt32& output)
   }
 }
 
-void Group41Var1::WriteTarget(const AnalogOutputInt32& value, openpal::WriteBufferView& buff)
+bool Group41Var1::WriteTarget(const AnalogOutputInt32& value, openpal::WriteBufferView& buff)
 {
-  Group41Var1::Write(ConvertGroup41Var1::Apply(value), buff);
+  return Group41Var1::Write(ConvertGroup41Var1::Apply(value), buff);
 }
 
 
@@ -68,12 +65,9 @@ bool Group41Var2::Read(ReadBufferView& buffer, Group41Var2& output)
   return Parse::Many(buffer, output.value, output.status);
 }
 
-void Group41Var2::Write(const Group41Var2& arg, openpal::WriteBufferView& buffer)
+bool Group41Var2::Write(const Group41Var2& arg, openpal::WriteBufferView& buffer)
 {
-  Int16::Write(buffer, arg.value);
-  buffer.Advance(2);
-  UInt8::Write(buffer, arg.status);
-  buffer.Advance(1);
+  return Format::Many(buffer, arg.value, arg.status);
 }
 
 
@@ -91,9 +85,9 @@ bool Group41Var2::ReadTarget(ReadBufferView& buff, AnalogOutputInt16& output)
   }
 }
 
-void Group41Var2::WriteTarget(const AnalogOutputInt16& value, openpal::WriteBufferView& buff)
+bool Group41Var2::WriteTarget(const AnalogOutputInt16& value, openpal::WriteBufferView& buff)
 {
-  Group41Var2::Write(ConvertGroup41Var2::Apply(value), buff);
+  return Group41Var2::Write(ConvertGroup41Var2::Apply(value), buff);
 }
 
 
@@ -102,12 +96,9 @@ bool Group41Var3::Read(ReadBufferView& buffer, Group41Var3& output)
   return Parse::Many(buffer, output.value, output.status);
 }
 
-void Group41Var3::Write(const Group41Var3& arg, openpal::WriteBufferView& buffer)
+bool Group41Var3::Write(const Group41Var3& arg, openpal::WriteBufferView& buffer)
 {
-  SingleFloat::Write(buffer, arg.value);
-  buffer.Advance(4);
-  UInt8::Write(buffer, arg.status);
-  buffer.Advance(1);
+  return Format::Many(buffer, arg.value, arg.status);
 }
 
 
@@ -125,9 +116,9 @@ bool Group41Var3::ReadTarget(ReadBufferView& buff, AnalogOutputFloat32& output)
   }
 }
 
-void Group41Var3::WriteTarget(const AnalogOutputFloat32& value, openpal::WriteBufferView& buff)
+bool Group41Var3::WriteTarget(const AnalogOutputFloat32& value, openpal::WriteBufferView& buff)
 {
-  Group41Var3::Write(ConvertGroup41Var3::Apply(value), buff);
+  return Group41Var3::Write(ConvertGroup41Var3::Apply(value), buff);
 }
 
 
@@ -136,12 +127,9 @@ bool Group41Var4::Read(ReadBufferView& buffer, Group41Var4& output)
   return Parse::Many(buffer, output.value, output.status);
 }
 
-void Group41Var4::Write(const Group41Var4& arg, openpal::WriteBufferView& buffer)
+bool Group41Var4::Write(const Group41Var4& arg, openpal::WriteBufferView& buffer)
 {
-  DoubleFloat::Write(buffer, arg.value);
-  buffer.Advance(8);
-  UInt8::Write(buffer, arg.status);
-  buffer.Advance(1);
+  return Format::Many(buffer, arg.value, arg.status);
 }
 
 
@@ -159,9 +147,9 @@ bool Group41Var4::ReadTarget(ReadBufferView& buff, AnalogOutputDouble64& output)
   }
 }
 
-void Group41Var4::WriteTarget(const AnalogOutputDouble64& value, openpal::WriteBufferView& buff)
+bool Group41Var4::WriteTarget(const AnalogOutputDouble64& value, openpal::WriteBufferView& buff)
 {
-  Group41Var4::Write(ConvertGroup41Var4::Apply(value), buff);
+  return Group41Var4::Write(ConvertGroup41Var4::Apply(value), buff);
 }
 
 

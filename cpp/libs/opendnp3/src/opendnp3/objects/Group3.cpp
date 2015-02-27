@@ -22,7 +22,7 @@
 
 #include "opendnp3/app/MeasurementFactory.h"
 #include "opendnp3/app/WriteConversions.h"
-#include <openpal/serialization/Serialization.h>
+#include <openpal/serialization/Format.h>
 #include <openpal/serialization/Parse.h>
 
 using namespace openpal;
@@ -34,10 +34,9 @@ bool Group3Var2::Read(ReadBufferView& buffer, Group3Var2& output)
   return Parse::Many(buffer, output.flags);
 }
 
-void Group3Var2::Write(const Group3Var2& arg, openpal::WriteBufferView& buffer)
+bool Group3Var2::Write(const Group3Var2& arg, openpal::WriteBufferView& buffer)
 {
-  UInt8::Write(buffer, arg.flags);
-  buffer.Advance(1);
+  return Format::Many(buffer, arg.flags);
 }
 
 
@@ -55,9 +54,9 @@ bool Group3Var2::ReadTarget(ReadBufferView& buff, DoubleBitBinary& output)
   }
 }
 
-void Group3Var2::WriteTarget(const DoubleBitBinary& value, openpal::WriteBufferView& buff)
+bool Group3Var2::WriteTarget(const DoubleBitBinary& value, openpal::WriteBufferView& buff)
 {
-  Group3Var2::Write(ConvertGroup3Var2::Apply(value), buff);
+  return Group3Var2::Write(ConvertGroup3Var2::Apply(value), buff);
 }
 
 

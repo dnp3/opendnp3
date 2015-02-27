@@ -22,7 +22,7 @@
 
 #include "opendnp3/app/MeasurementFactory.h"
 #include "opendnp3/app/WriteConversions.h"
-#include <openpal/serialization/Serialization.h>
+#include <openpal/serialization/Format.h>
 #include <openpal/serialization/Parse.h>
 
 using namespace openpal;
@@ -34,10 +34,9 @@ bool Group13Var1::Read(ReadBufferView& buffer, Group13Var1& output)
   return Parse::Many(buffer, output.flags);
 }
 
-void Group13Var1::Write(const Group13Var1& arg, openpal::WriteBufferView& buffer)
+bool Group13Var1::Write(const Group13Var1& arg, openpal::WriteBufferView& buffer)
 {
-  UInt8::Write(buffer, arg.flags);
-  buffer.Advance(1);
+  return Format::Many(buffer, arg.flags);
 }
 
 
@@ -55,9 +54,9 @@ bool Group13Var1::ReadTarget(ReadBufferView& buff, BinaryCommandEvent& output)
   }
 }
 
-void Group13Var1::WriteTarget(const BinaryCommandEvent& value, openpal::WriteBufferView& buff)
+bool Group13Var1::WriteTarget(const BinaryCommandEvent& value, openpal::WriteBufferView& buff)
 {
-  Group13Var1::Write(ConvertGroup13Var1::Apply(value), buff);
+  return Group13Var1::Write(ConvertGroup13Var1::Apply(value), buff);
 }
 
 
@@ -66,12 +65,9 @@ bool Group13Var2::Read(ReadBufferView& buffer, Group13Var2& output)
   return Parse::Many(buffer, output.flags, output.time);
 }
 
-void Group13Var2::Write(const Group13Var2& arg, openpal::WriteBufferView& buffer)
+bool Group13Var2::Write(const Group13Var2& arg, openpal::WriteBufferView& buffer)
 {
-  UInt8::Write(buffer, arg.flags);
-  buffer.Advance(1);
-  UInt48::Write(buffer, arg.time);
-  buffer.Advance(6);
+  return Format::Many(buffer, arg.flags, arg.time);
 }
 
 
@@ -89,9 +85,9 @@ bool Group13Var2::ReadTarget(ReadBufferView& buff, BinaryCommandEvent& output)
   }
 }
 
-void Group13Var2::WriteTarget(const BinaryCommandEvent& value, openpal::WriteBufferView& buff)
+bool Group13Var2::WriteTarget(const BinaryCommandEvent& value, openpal::WriteBufferView& buff)
 {
-  Group13Var2::Write(ConvertGroup13Var2::Apply(value), buff);
+  return Group13Var2::Write(ConvertGroup13Var2::Apply(value), buff);
 }
 
 

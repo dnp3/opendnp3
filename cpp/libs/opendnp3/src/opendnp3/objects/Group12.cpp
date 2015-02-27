@@ -22,7 +22,7 @@
 
 #include "opendnp3/app/MeasurementFactory.h"
 #include "opendnp3/app/WriteConversions.h"
-#include <openpal/serialization/Serialization.h>
+#include <openpal/serialization/Format.h>
 #include <openpal/serialization/Parse.h>
 
 using namespace openpal;
@@ -34,18 +34,9 @@ bool Group12Var1::Read(ReadBufferView& buffer, Group12Var1& output)
   return Parse::Many(buffer, output.code, output.count, output.onTime, output.offTime, output.status);
 }
 
-void Group12Var1::Write(const Group12Var1& arg, openpal::WriteBufferView& buffer)
+bool Group12Var1::Write(const Group12Var1& arg, openpal::WriteBufferView& buffer)
 {
-  UInt8::Write(buffer, arg.code);
-  buffer.Advance(1);
-  UInt8::Write(buffer, arg.count);
-  buffer.Advance(1);
-  UInt32::Write(buffer, arg.onTime);
-  buffer.Advance(4);
-  UInt32::Write(buffer, arg.offTime);
-  buffer.Advance(4);
-  UInt8::Write(buffer, arg.status);
-  buffer.Advance(1);
+  return Format::Many(buffer, arg.code, arg.count, arg.onTime, arg.offTime, arg.status);
 }
 
 
@@ -63,9 +54,9 @@ bool Group12Var1::ReadTarget(ReadBufferView& buff, ControlRelayOutputBlock& outp
   }
 }
 
-void Group12Var1::WriteTarget(const ControlRelayOutputBlock& value, openpal::WriteBufferView& buff)
+bool Group12Var1::WriteTarget(const ControlRelayOutputBlock& value, openpal::WriteBufferView& buff)
 {
-  Group12Var1::Write(ConvertGroup12Var1::Apply(value), buff);
+  return Group12Var1::Write(ConvertGroup12Var1::Apply(value), buff);
 }
 
 

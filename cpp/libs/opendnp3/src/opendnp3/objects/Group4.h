@@ -35,13 +35,13 @@ struct Group4Var1
   static GroupVariationID ID() { return GroupVariationID(4,1); }
   static uint32_t Size() { return 1; }
   static bool Read(openpal::ReadBufferView&, Group4Var1&);
-  static void Write(const Group4Var1&, openpal::WriteBufferView&);
+  static bool Write(const Group4Var1&, openpal::WriteBufferView&);
 
   static DNP3Serializer<DoubleBitBinary> Inst() { return DNP3Serializer<DoubleBitBinary>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef DoubleBitBinary Target;
   static bool ReadTarget(openpal::ReadBufferView&, DoubleBitBinary&);
-  static void WriteTarget(const DoubleBitBinary&, openpal::WriteBufferView&);
+  static bool WriteTarget(const DoubleBitBinary&, openpal::WriteBufferView&);
 
   uint8_t flags;
 };
@@ -51,13 +51,13 @@ struct Group4Var2
   static GroupVariationID ID() { return GroupVariationID(4,2); }
   static uint32_t Size() { return 7; }
   static bool Read(openpal::ReadBufferView&, Group4Var2&);
-  static void Write(const Group4Var2&, openpal::WriteBufferView&);
+  static bool Write(const Group4Var2&, openpal::WriteBufferView&);
 
   static DNP3Serializer<DoubleBitBinary> Inst() { return DNP3Serializer<DoubleBitBinary>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef DoubleBitBinary Target;
   static bool ReadTarget(openpal::ReadBufferView&, DoubleBitBinary&);
-  static void WriteTarget(const DoubleBitBinary&, openpal::WriteBufferView&);
+  static bool WriteTarget(const DoubleBitBinary&, openpal::WriteBufferView&);
 
   uint8_t flags;
   DNPTime time;
@@ -68,13 +68,13 @@ struct Group4Var3
   static GroupVariationID ID() { return GroupVariationID(4,3); }
   static uint32_t Size() { return 3; }
   static bool Read(openpal::ReadBufferView&, Group4Var3&);
-  static void Write(const Group4Var3&, openpal::WriteBufferView&);
+  static bool Write(const Group4Var3&, openpal::WriteBufferView&);
 
   static DNP3Serializer<DoubleBitBinary> Inst() { return DNP3Serializer<DoubleBitBinary>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef DoubleBitBinary Target;
   static bool ReadTarget(openpal::ReadBufferView&, DoubleBitBinary&);
-  static void WriteTarget(const DoubleBitBinary&, openpal::WriteBufferView&);
+  static bool WriteTarget(const DoubleBitBinary&, openpal::WriteBufferView&);
 
   uint8_t flags;
   uint16_t time;

@@ -33,7 +33,7 @@ struct Group51Var1
   static GroupVariationID ID() { return GroupVariationID(51,1); }
   static uint32_t Size() { return 6; }
   static bool Read(openpal::ReadBufferView&, Group51Var1&);
-  static void Write(const Group51Var1&, openpal::WriteBufferView&);
+  static bool Write(const Group51Var1&, openpal::WriteBufferView&);
   DNPTime time;
 };
 
@@ -42,7 +42,7 @@ struct Group51Var2
   static GroupVariationID ID() { return GroupVariationID(51,2); }
   static uint32_t Size() { return 6; }
   static bool Read(openpal::ReadBufferView&, Group51Var2&);
-  static void Write(const Group51Var2&, openpal::WriteBufferView&);
+  static bool Write(const Group51Var2&, openpal::WriteBufferView&);
   DNPTime time;
 };
 

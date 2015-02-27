@@ -20,7 +20,7 @@
 
 #include "Group51.h"
 
-#include <openpal/serialization/Serialization.h>
+#include <openpal/serialization/Format.h>
 #include <openpal/serialization/Parse.h>
 
 using namespace openpal;
@@ -32,10 +32,9 @@ bool Group51Var1::Read(ReadBufferView& buffer, Group51Var1& output)
   return Parse::Many(buffer, output.time);
 }
 
-void Group51Var1::Write(const Group51Var1& arg, openpal::WriteBufferView& buffer)
+bool Group51Var1::Write(const Group51Var1& arg, openpal::WriteBufferView& buffer)
 {
-  UInt48::Write(buffer, arg.time);
-  buffer.Advance(6);
+  return Format::Many(buffer, arg.time);
 }
 
 
@@ -44,10 +43,9 @@ bool Group51Var2::Read(ReadBufferView& buffer, Group51Var2& output)
   return Parse::Many(buffer, output.time);
 }
 
-void Group51Var2::Write(const Group51Var2& arg, openpal::WriteBufferView& buffer)
+bool Group51Var2::Write(const Group51Var2& arg, openpal::WriteBufferView& buffer)
 {
-  UInt48::Write(buffer, arg.time);
-  buffer.Advance(6);
+  return Format::Many(buffer, arg.time);
 }
 
 

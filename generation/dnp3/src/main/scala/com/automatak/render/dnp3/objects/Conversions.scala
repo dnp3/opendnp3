@@ -14,7 +14,7 @@ class ArbitraryConversion(name: String, incHeaders: List[String], cppHeaders: Li
     Iterator(
       "typedef %s Target;".format(name),
       "static bool ReadTarget(openpal::ReadBufferView&, %s&);".format(name),
-      "static void WriteTarget(const %s&, openpal::WriteBufferView&);".format(name)
+      "static bool WriteTarget(const %s&, openpal::WriteBufferView&);".format(name)
     )
   }
 
@@ -38,8 +38,8 @@ class ArbitraryConversion(name: String, incHeaders: List[String], cppHeaders: Li
     }
 
     def func2 = {
-      Iterator("void " + fs.name + "::WriteTarget(const " + name + "& value, openpal::WriteBufferView& buff)") ++ bracket {
-        Iterator(fs.name+"::Write(Convert" + fs.name + "::Apply(value), buff);")
+      Iterator("bool " + fs.name + "::WriteTarget(const " + name + "& value, openpal::WriteBufferView& buff)") ++ bracket {
+        Iterator("return %s::Write(Convert%s::Apply(value), buff);".format(fs.name, fs.name))
       }
     }
 

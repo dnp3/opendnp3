@@ -35,13 +35,13 @@ struct Group12Var1
   static GroupVariationID ID() { return GroupVariationID(12,1); }
   static uint32_t Size() { return 11; }
   static bool Read(openpal::ReadBufferView&, Group12Var1&);
-  static void Write(const Group12Var1&, openpal::WriteBufferView&);
+  static bool Write(const Group12Var1&, openpal::WriteBufferView&);
 
   static DNP3Serializer<ControlRelayOutputBlock> Inst() { return DNP3Serializer<ControlRelayOutputBlock>(ID(), Size(), &ReadTarget, &WriteTarget); }
 
   typedef ControlRelayOutputBlock Target;
   static bool ReadTarget(openpal::ReadBufferView&, ControlRelayOutputBlock&);
-  static void WriteTarget(const ControlRelayOutputBlock&, openpal::WriteBufferView&);
+  static bool WriteTarget(const ControlRelayOutputBlock&, openpal::WriteBufferView&);
 
   uint8_t code;
   uint8_t count;

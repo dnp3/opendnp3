@@ -22,7 +22,7 @@
 
 #include "opendnp3/app/MeasurementFactory.h"
 #include "opendnp3/app/WriteConversions.h"
-#include <openpal/serialization/Serialization.h>
+#include <openpal/serialization/Format.h>
 #include <openpal/serialization/Parse.h>
 
 using namespace openpal;
@@ -34,10 +34,9 @@ bool Group50Var1::Read(ReadBufferView& buffer, Group50Var1& output)
   return Parse::Many(buffer, output.time);
 }
 
-void Group50Var1::Write(const Group50Var1& arg, openpal::WriteBufferView& buffer)
+bool Group50Var1::Write(const Group50Var1& arg, openpal::WriteBufferView& buffer)
 {
-  UInt48::Write(buffer, arg.time);
-  buffer.Advance(6);
+  return Format::Many(buffer, arg.time);
 }
 
 
@@ -46,14 +45,9 @@ bool Group50Var4::Read(ReadBufferView& buffer, Group50Var4& output)
   return Parse::Many(buffer, output.time, output.interval, output.units);
 }
 
-void Group50Var4::Write(const Group50Var4& arg, openpal::WriteBufferView& buffer)
+bool Group50Var4::Write(const Group50Var4& arg, openpal::WriteBufferView& buffer)
 {
-  UInt48::Write(buffer, arg.time);
-  buffer.Advance(6);
-  UInt32::Write(buffer, arg.interval);
-  buffer.Advance(4);
-  UInt8::Write(buffer, arg.units);
-  buffer.Advance(1);
+  return Format::Many(buffer, arg.time, arg.interval, arg.units);
 }
 
 
@@ -71,9 +65,9 @@ bool Group50Var4::ReadTarget(ReadBufferView& buff, TimeAndInterval& output)
   }
 }
 
-void Group50Var4::WriteTarget(const TimeAndInterval& value, openpal::WriteBufferView& buff)
+bool Group50Var4::WriteTarget(const TimeAndInterval& value, openpal::WriteBufferView& buff)
 {
-  Group50Var4::Write(ConvertGroup50Var4::Apply(value), buff);
+  return Group50Var4::Write(ConvertGroup50Var4::Apply(value), buff);
 }
 
 
