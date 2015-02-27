@@ -58,24 +58,28 @@
     <Import Project="$(SolutionDir)\config\output_dirs.props" />
     <Import Project="$(SolutionDir)\config\openpal_include.props" />
     <Import Project="$(SolutionDir)\config\catch.props" />
+    <Import Project="..\..\..\config\testlib-include.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(SolutionDir)\config\output_dirs.props" />
     <Import Project="$(SolutionDir)\config\openpal_include.props" />
     <Import Project="$(SolutionDir)\config\catch.props" />
+    <Import Project="..\..\..\config\testlib-include.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(SolutionDir)\config\output_dirs.props" />
     <Import Project="$(SolutionDir)\config\openpal_include.props" />
     <Import Project="$(SolutionDir)\config\catch.props" />
+    <Import Project="..\..\..\config\testlib-include.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(SolutionDir)\config\output_dirs.props" />
     <Import Project="$(SolutionDir)\config\openpal_include.props" />
     <Import Project="$(SolutionDir)\config\catch.props" />
+    <Import Project="..\..\..\config\testlib-include.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -161,10 +165,14 @@
     <ClCompile Include="src\FunctionalTestSuite.cpp" />
     <ClCompile Include="src\LinkedListTestSuite.cpp" />
     <ClCompile Include="src\ManagedPointerTestSuite.cpp" />
+    <ClCompile Include="src\TestSerialization.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\libs\openpal\openpal.vcxproj">
       <Project>{abf09bda-75a5-47d7-9f15-d7b7ec69f1e7}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\testlib\testlib.vcxproj">
+      <Project>{17e1d388-be92-48ad-b082-345cf9bf603d}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

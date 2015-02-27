@@ -81,6 +81,7 @@ bool TestFloatParsing(std::string aHex, typename T::Type aValue)
 }
 
 #define SUITE(name) "PackingUnpacking - " name
+
 TEST_CASE(SUITE("DoublePacking"))
 {
 	REQUIRE(TestFloatParsing<openpal::DoubleFloat>("20 74 85 2F C7 2B A2 C0", -2.3258890344E3));

@@ -271,9 +271,6 @@
     <ClCompile Include="src\TestPhysicalLayerMonitor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\TestSerialization.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\TestShiftableBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
