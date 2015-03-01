@@ -21,7 +21,7 @@
 #ifndef OPENDNP3_BITFIELDRANGEWRITEITERATOR_H
 #define OPENDNP3_BITFIELDRANGEWRITEITERATOR_H
 
-#include <openpal/container/WriteBufferView.h>
+#include <openpal/serialization/Format.h>
 
 namespace opendnp3
 {
@@ -47,8 +47,8 @@ public:
 		pPosition(&position_)				
 	{
 		if(isValid)
-		{
-			IndexType::WriteBuffer(range, start_);
+		{			
+			openpal::Format::Write(range, start_);
 			pPosition->Advance(2 * IndexType::SIZE);
 			maxCount = pPosition->Size() * 8;
 		}
@@ -58,8 +58,8 @@ public:
 	{
 		if (isValid && count > 0)
 		{
-			auto stop = start + count - 1;
-			IndexType::Write(range, stop);
+			typename IndexType::Type stop = start + count - 1;
+			openpal::Format::Write(range, stop);
 
 			auto num = count / 8;
 
