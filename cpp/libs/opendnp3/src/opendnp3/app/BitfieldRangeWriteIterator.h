@@ -42,11 +42,11 @@ public:
 		start(start_),
 		count(0),
 		maxCount(0),
-		isNull(position_.Size() < 2 * IndexType::SIZE),
+		isValid(position_.Size() >= (2 * IndexType::SIZE)),
 		range(position_),
 		pPosition(&position_)				
 	{
-		if(!isNull)
+		if(isValid)
 		{
 			IndexType::WriteBuffer(range, start_);
 			pPosition->Advance(2 * IndexType::SIZE);
@@ -56,7 +56,7 @@ public:
 
 	~BitfieldRangeWriteIterator()
 	{
-		if (!isNull && count > 0)		
+		if (isValid && count > 0)
 		{
 			auto stop = start + count - 1;
 			IndexType::Write(range, stop);
@@ -74,8 +74,7 @@ public:
 
 	bool Write(bool value)
 	{
-		if(isNull || count >= maxCount) return false;
-		else
+		if (isValid && count < maxCount)		
 		{
 			auto byte = count / 8;
 			auto bit = count % 8;
@@ -93,11 +92,15 @@ public:
 			++count;
 			return true;
 		}
+		else
+		{
+			return false;
+		}
 	}
 
-	bool IsNull() const
+	bool IsValid() const
 	{
-		return isNull;
+		return isValid;
 	}
 
 private:
@@ -107,7 +110,7 @@ private:
 
 	uint32_t maxCount;
 
-	bool isNull;
+	bool isValid;
 
 	openpal::WriteBufferView range;  // make a copy to record where we write the range
 	openpal::WriteBufferView* pPosition;
