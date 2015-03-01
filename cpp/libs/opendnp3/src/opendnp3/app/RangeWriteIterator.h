@@ -21,7 +21,7 @@
 #ifndef OPENDNP3_RANGEWRITEITERATOR_H
 #define OPENDNP3_RANGEWRITEITERATOR_H
 
-#include <openpal/container/WriteBufferView.h>
+#include <openpal/serialization/Format.h>
 #include <openpal/serialization/Serializer.h>
 
 namespace opendnp3
@@ -51,8 +51,8 @@ public:
 	{
 		if (isValid)
 		{
-			IndexType::WriteBuffer(range, start);
-			pPosition->Advance(2 * IndexType::SIZE);
+			openpal::Format::Write(range, start);
+			pPosition->Advance(2*IndexType::SIZE);
 		}
 	}
 
