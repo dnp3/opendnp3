@@ -50,7 +50,7 @@ public:
 	uint32_t Size() const
 	{
 		return size;
-	}
+	}	
 
 	/**
 	* reads the value and advances the read buffer
@@ -63,9 +63,9 @@ public:
 	/**
 	* writes the value and advances the write buffer
 	*/
-	void Write(const T& value, WriteBufferView& buffer) const
+	bool Write(const T& value, WriteBufferView& buffer) const
 	{
-		(*pWriteFunc)(value, buffer);
+		return (*pWriteFunc)(value, buffer);
 	}
 
 private:

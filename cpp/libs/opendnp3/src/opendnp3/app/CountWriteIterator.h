@@ -21,9 +21,7 @@
 #ifndef OPENDNP3_COUNTWRITEITERATOR_H
 #define OPENDNP3_COUNTWRITEITERATOR_H
 
-
-#include <openpal/container/WriteBufferView.h>
-#include <openpal/serialization/Serializer.h>
+#include <openpal/serialization/Format.h>
 
 namespace opendnp3
 {
@@ -59,22 +57,22 @@ public:
 	{
 		if (isValid)
 		{
-			CountType::Write(countPosition, count);			
+			openpal::Format::Write(countPosition, count);				
 		}		
 	}	
 
 	bool Write(const WriteType& value)
-	{
-		if (isValid && pPosition->Size() >= serializer.Size())
-		{
+	{		
+		if (isValid && (serializer.Size() <= pPosition->Size()))
+		{			
 			serializer.Write(value, *this->pPosition);
 			++count;
-			return true;			
+			return true;
 		}
 		else
 		{
 			return false;
-		}
+		}		
 	}
 
 	bool IsValid() const
