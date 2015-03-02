@@ -433,5 +433,8 @@
     <ClCompile Include="src\TestAggressiveModeParsing.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\TestAggressiveModeHMACParsing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
