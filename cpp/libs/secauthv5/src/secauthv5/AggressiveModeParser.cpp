@@ -148,7 +148,7 @@ namespace secauthv5
 
 		if (QualifierCodeFromType(header.qualifier) != QualifierCode::UINT16_FREE_FORMAT)
 		{
-			FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Aggressive mode hmac contains unexpected qualifier (%u)");
+			FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Aggressive mode hmac contains unexpected qualifier (%u)", header.qualifier);
 			return AggModeHMACResult(ParseResult::UNKNOWN_QUALIFIER);
 		}
 
@@ -160,14 +160,20 @@ namespace secauthv5
 			return AggModeHMACResult(ParseResult::NOT_ENOUGH_DATA_FOR_HEADER);
 		}
 
-		if (size == hmacSize && trailer.Size() == hmacSize)
+		if (size != trailer.Size())
+		{
+			SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Agg mode free-format header doesn't contain expected data");
+			return AggModeHMACResult(ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS);
+		}
+
+		if (size == hmacSize)
 		{
 			Group120Var9 hmac(trailer);
 			return AggModeHMACResult(hmac, objects);
 		}
 		else
 		{
-			SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Actual size of hmac (%u)");
+			FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Actual length of hmac (%u) doesn't match expected length of (%u)", size, hmacSize);
 			return AggModeHMACResult(ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS);
 		}
 	}
