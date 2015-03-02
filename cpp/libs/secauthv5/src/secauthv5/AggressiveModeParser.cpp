@@ -41,10 +41,11 @@ namespace secauthv5
 	
 	}
 	
-	AggModeResult::AggModeResult(const opendnp3::Group120Var3& request_) :
+	AggModeResult::AggModeResult(const opendnp3::Group120Var3& request_, const openpal::ReadBufferView& remainder_) :
 		result(ParseResult::OK),
 		isAggMode(true),
-		request(request_)
+		request(request_),
+		remainder(remainder_)
 	{
 	
 	}
@@ -88,7 +89,7 @@ namespace secauthv5
 		Group120Var3 value;
 		if (Group120Var3::Read(objects, value))
 		{
-			return AggModeResult(value);
+			return AggModeResult(value, objects);
 		}
 		else
 		{

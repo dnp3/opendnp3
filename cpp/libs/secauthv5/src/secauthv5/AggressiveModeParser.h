@@ -42,20 +42,22 @@ struct AggModeResult
 	AggModeResult(opendnp3::ParseResult result_);
 
 	// success constructor
-	AggModeResult(const opendnp3::Group120Var3& request);
+	AggModeResult(const opendnp3::Group120Var3& request, const openpal::ReadBufferView& remainder);
 	
 
 	opendnp3::ParseResult result;
 	bool isAggMode;
 	opendnp3::Group120Var3 request;
+	openpal::ReadBufferView remainder;
+
+	AggModeResult() = delete;
 };
 
 
 struct AggressiveModeParser : openpal::PureStatic
 {	
 	static AggModeResult IsAggressiveMode(openpal::ReadBufferView objects, openpal::Logger* pLogger);
-	
-
+		
 
 };
 

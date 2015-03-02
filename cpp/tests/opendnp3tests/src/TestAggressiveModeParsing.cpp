@@ -21,6 +21,7 @@
 #include <catch.hpp>
 
 #include <testlib/BufferHelpers.h>
+#include <testlib/HexConversions.h>
 #include <secauthv5/AggressiveModeParser.h>
 
 #include <functional>
@@ -44,12 +45,13 @@ void TestAggMode(const std::string& data, function<void(AggModeResult result)> v
 
 TEST_CASE(SUITE("AcceptsValidInput"))
 {
-	TestAggMode("78 03 07 01 04 00 00 00 09 00", [](AggModeResult result)
+	TestAggMode("78 03 07 01 04 00 00 00 09 00 DE AD BE EF", [](AggModeResult result)
 	{	
 		REQUIRE(result.result == ParseResult::OK);
 		REQUIRE(result.isAggMode);		
 		REQUIRE(result.request.challengeSeqNum == 4);
 		REQUIRE(result.request.userNum == 9);
+		REQUIRE(ToHex(result.remainder) == "DE AD BE EF");
 	});	
 }
 
