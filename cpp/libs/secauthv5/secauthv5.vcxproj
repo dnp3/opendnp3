@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="src\secauthv5\AggressiveModeParser.h" />
     <ClInclude Include="src\secauthv5\AuthConstants.h" />
+    <ClInclude Include="src\secauthv5\CriticalFunctions.h" />
     <ClInclude Include="src\secauthv5\DeferredASDU.h" />
     <ClInclude Include="src\secauthv5\HMACMode.h" />
     <ClInclude Include="src\secauthv5\HMACProvider.h" />
@@ -45,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\secauthv5\AggressiveModeParser.cpp" />
+    <ClCompile Include="src\secauthv5\CriticalFunctions.cpp" />
     <ClCompile Include="src\secauthv5\DeferredASDU.cpp" />
     <ClCompile Include="src\secauthv5\HMACMode.cpp" />
     <ClCompile Include="src\secauthv5\HMACProvider.cpp" />

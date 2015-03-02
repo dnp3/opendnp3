@@ -18,34 +18,40 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTHV5_OUTSTATIONAUTHSETTINGS_H
-#define SECAUTHV5_OUTSTATIONAUTHSETTINGS_H
+#ifndef SECAUTHV5_CRITICAL_FUNCTIONS_H
+#define SECAUTHV5_CRITICAL_FUNCTIONS_H
 
-#include <opendnp3/outstation/OutstationParams.h>
-
-#include "secauthv5/HMACMode.h"
-#include "secauthv5/CriticalFunctions.h"
+#include <opendnp3/gen/FunctionCode.h>
 
 namespace secauthv5
 {
 
-/**
-	SAv5 outstation authentication provider
-*/
-struct OutstationAuthSettings
+class CriticalFunctions
 {	
-	OutstationAuthSettings();
-
-	OutstationAuthSettings(const opendnp3::OutstationParams&);
-
+public:
 	
+	static CriticalFunctions AuthOptional();
+	static CriticalFunctions AuthEverything();
 
-	uint32_t maxRxASDUSize;
-	uint32_t maxTxASDUSize;	
-	uint16_t assocId;
-	HMACMode hmacMode;
-	CriticalFunctions functions;
+	bool authConfirm;
+	bool authRead;
+	bool authImmediateFreeze;
+	bool authImmediateFreezeNR;
+	bool authFreezeClear;
+	bool authFreezeClearNR;
+	bool authFreezeAtTime;
+	bool authFreezeAtTimeNR;
+	bool authInitData;
+	bool authAssignClass;
+	bool authDelayMeasure;
+	bool authResponse;
+	bool authUnsolicited;	
 
+	bool IsCritical(opendnp3::FunctionCode code) const;
+
+private:
+	CriticalFunctions() = delete;
+	CriticalFunctions(bool authOptionalCodes);
 
 };
 

@@ -30,14 +30,16 @@ namespace secauthv5
 		maxRxASDUSize(params.maxRxFragSize),
 		maxTxASDUSize(params.maxTxFragSize),
 		assocId(0),
-		hmacMode(HMACMode::SHA256_TRUNC_16) // strongest by default
+		hmacMode(HMACMode::SHA256_TRUNC_16), // strongest by default
+		functions(CriticalFunctions::AuthEverything())
 	{}
 
 	OutstationAuthSettings::OutstationAuthSettings() :
 		maxRxASDUSize(opendnp3::DEFAULT_MAX_APDU_SIZE),
 		maxTxASDUSize(opendnp3::DEFAULT_MAX_APDU_SIZE),
 		assocId(0),
-		hmacMode(HMACMode::SHA256_TRUNC_16) // strongest by default
+		hmacMode(HMACMode::SHA256_TRUNC_16), // strongest by default
+		functions(CriticalFunctions::AuthEverything())
 	{}
 
 }

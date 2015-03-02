@@ -40,7 +40,16 @@ namespace secauthv5
 
 	IOAuthState* OAuthStateIdle::OnRegularRequest(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects)
 	{
-		return this->IgnoreRegularRequest(sstate, ostate, header, objects);
+		if (sstate.settings.functions.IsCritical(header.function))
+		{
+			this->IgnoreRegularRequest(sstate, ostate, header, objects);
+			return this;
+		}
+		else
+		{
+			this->IgnoreRegularRequest(sstate, ostate, header, objects);
+			return this;
+		}		
 	}
 
 	IOAuthState* OAuthStateIdle::OnAggModeRequest(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects, const opendnp3::Group120Var3& aggModeRequest)

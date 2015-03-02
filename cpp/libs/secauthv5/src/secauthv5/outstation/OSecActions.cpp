@@ -152,6 +152,11 @@ namespace secauthv5
 		}		
 	}
 
+	void OSecActions::ProcessRegularRequest(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects)
+	{
+		
+	}
+
 	openpal::IKeyWrapAlgo& OSecActions::GetKeyWrapAlgo(openpal::ICryptoProvider& crypto, UpdateKeyMode type)
 	{
 		switch (type)
