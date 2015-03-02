@@ -1,4 +1,10 @@
 
+### 2.0.1-RC2 ###
+* DNPManager.AddTCPClient now takes an additional parameter for the local adapter address (0.0.0.0 == all adapters)
+* Overloaded CROB constructor allows for non-standard control codes to be specified.
+* Fixed a thread-safety issue in the outstation on data update. The API has shifted for updating the outstation database to accomodate this fix.
+* Fixed an uninitialized control code variable in the CROB introduced in 2.0.1-RC1.
+
 ### 2.0.1-RC1 ###
 * Added support for Group50Var4 (Time and Interval) objects. These are static only objects (no events) that can are read/write.
 * Added support for Binary/Analog command events to the parser and the master API courtesy of Sid Hoda.
