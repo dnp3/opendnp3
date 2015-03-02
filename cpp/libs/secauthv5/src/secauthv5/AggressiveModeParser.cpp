@@ -27,6 +27,7 @@
 
 #include <openpal/logging/LogMacros.h>
 #include <openpal/serialization/Serialization.h>
+#include <openpal/serialization/Parse.h>
 
 using namespace std;
 using namespace openpal;
@@ -46,6 +47,21 @@ namespace secauthv5
 		isAggMode(true),
 		request(request_),
 		remainder(remainder_)
+	{
+	
+	}
+
+	// failure constructor
+	AggModeHMACResult::AggModeHMACResult(opendnp3::ParseResult result_) : result(result_)
+	{
+	
+	}
+
+	// success constructor
+	AggModeHMACResult::AggModeHMACResult(const opendnp3::Group120Var9& hmac_, const openpal::ReadBufferView& objects_) :
+		result(ParseResult::OK),
+		hmac(hmac_),
+		objects(objects_)
 	{
 	
 	}
@@ -96,6 +112,64 @@ namespace secauthv5
 			SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Insufficient data for g120v3");
 			return AggModeResult(ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS);
 		}	
+	}
+
+	AggModeHMACResult AggressiveModeParser::ParseHMAC(openpal::ReadBufferView remainder, uint32_t hmacSize, openpal::Logger* pLogger)
+	{
+		// given the hmac size, how many bytes would be required for the header + HMAC
+		// 0x 78 09 5F 01 SS SS [HMACSize]
+		const uint32_t TRAILER_SIZE = 6 + hmacSize;
+		if (remainder.Size() < TRAILER_SIZE)
+		{
+			FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for aggressive mode hmac with expected length of (%u)", hmacSize);
+			return AggModeHMACResult(ParseResult::NOT_ENOUGH_DATA_FOR_HEADER);
+		}
+
+		const uint32_t OBJECTS_SIZE = remainder.Size() - TRAILER_SIZE;
+
+		// partition the remainder into the two pieces
+		auto objects = remainder.Take(OBJECTS_SIZE);
+		auto trailer = remainder.Skip(OBJECTS_SIZE);
+
+		ObjectHeader header;
+		auto result = ObjectHeaderParser::ParseObjectHeader(header, trailer, pLogger);
+		if (result != ParseResult::OK)
+		{
+			SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for aggressive mode hmac header");
+			return AggModeHMACResult(result);
+		}
+
+		auto record = GroupVariationRecord::GetRecord(header.group, header.variation);
+		if (record.enumeration != GroupVariation::Group120Var9)
+		{
+			SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Aggressive mode request doesn't contain g120v9 at expected position");
+			return AggModeHMACResult(ParseResult::UNKNOWN_OBJECT);
+		}
+
+		if (QualifierCodeFromType(header.qualifier) != QualifierCode::UINT16_FREE_FORMAT)
+		{
+			FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Aggressive mode hmac contains unexpected qualifier (%u)");
+			return AggModeHMACResult(ParseResult::UNKNOWN_QUALIFIER);
+		}
+
+		uint8_t count = 0;
+		uint16_t size = 0;
+		if (!openpal::Parse::Many(trailer, count, size))
+		{
+			SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for free-format count and/or size");
+			return AggModeHMACResult(ParseResult::NOT_ENOUGH_DATA_FOR_HEADER);
+		}
+
+		if (size == hmacSize && trailer.Size() == hmacSize)
+		{
+			Group120Var9 hmac(trailer);
+			return AggModeHMACResult(hmac, objects);
+		}
+		else
+		{
+			SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Actual size of hmac (%u)");
+			return AggModeHMACResult(ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS);
+		}
 	}
 
 }

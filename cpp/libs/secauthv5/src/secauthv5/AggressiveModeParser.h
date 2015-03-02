@@ -53,12 +53,28 @@ struct AggModeResult
 	AggModeResult() = delete;
 };
 
+struct AggModeHMACResult
+{
+	// failure constructor
+	AggModeHMACResult(opendnp3::ParseResult result_);
+
+	// success constructor
+	AggModeHMACResult(const opendnp3::Group120Var9& hmac, const openpal::ReadBufferView& objects);
+
+
+	opendnp3::ParseResult result;	
+	opendnp3::Group120Var9 hmac;
+	openpal::ReadBufferView objects;
+
+	AggModeHMACResult() = delete;
+};
+
 
 struct AggressiveModeParser : openpal::PureStatic
 {	
 	static AggModeResult IsAggressiveMode(openpal::ReadBufferView objects, openpal::Logger* pLogger);
 		
-
+	static AggModeHMACResult ParseHMAC(openpal::ReadBufferView remainder, uint32_t HMACSize, openpal::Logger* pLogger);
 };
 
 }
