@@ -34,33 +34,47 @@ using namespace opendnp3;
 
 namespace secauthv5
 {
+	AggModeResult::AggModeResult(opendnp3::ParseResult result_) :
+		result(result_),
+		isAggMode(false)
+	{
+	
+	}
+	
+	AggModeResult::AggModeResult(const opendnp3::Group120Var3& request_) :
+		result(ParseResult::OK),
+		isAggMode(true),
+		request(request_)
+	{
+	
+	}
 
-	std::pair<opendnp3::ParseResult, bool> AggressiveModeParser::IsAggressiveMode(openpal::ReadBufferView objects, opendnp3::Group120Var3& request, openpal::Logger* pLogger)
+	AggModeResult AggressiveModeParser::IsAggressiveMode(openpal::ReadBufferView objects, openpal::Logger* pLogger)
 	{		
 		ObjectHeader header;
 		auto result = ObjectHeaderParser::ParseObjectHeader(header, objects, pLogger);
 		if (result != ParseResult::OK)
 		{
-			return pair<ParseResult, bool>(result, false);
+			return AggModeResult(result);
 		}
 		
 		auto record = GroupVariationRecord::GetRecord(header.group, header.variation);
 
 		if (record.enumeration != GroupVariation::Group120Var3)
 		{
-			return pair<ParseResult, bool>(result, false);
+			return AggModeResult(result);
 		}
 
 		if (QualifierCodeFromType(header.qualifier) != QualifierCode::UINT8_CNT)
 		{
 			FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Aggressive mode request contains bad qualifier (%u)", header.qualifier);
-			return pair<ParseResult, bool>(ParseResult::INVALID_OBJECT_QUALIFIER, false);
+			return AggModeResult(ParseResult::INVALID_OBJECT_QUALIFIER);
 		}
 
 		if (objects.Size() < UInt8::SIZE)
 		{
 			SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Insufficient data for count");
-			return pair<ParseResult, bool>(ParseResult::NOT_ENOUGH_DATA_FOR_HEADER, false);
+			return AggModeResult(ParseResult::NOT_ENOUGH_DATA_FOR_HEADER);
 		}
 			
 		uint8_t count = UInt8::ReadBuffer(objects);
@@ -68,17 +82,18 @@ namespace secauthv5
 		if (count != 1)
 		{
 			FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Aggressive mode request contains bad count (%u)", count);
-			return pair<ParseResult, bool>(ParseResult::NOT_ON_WHITELIST, false);
+			return AggModeResult(ParseResult::NOT_ON_WHITELIST);
 		}							
 
-		if (Group120Var3::Read(objects, request))
+		Group120Var3 value;
+		if (Group120Var3::Read(objects, value))
 		{
-			return pair<ParseResult, bool>(ParseResult::OK, true);
+			return AggModeResult(value);
 		}
 		else
 		{
 			SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Insufficient data for g120v3");
-			return pair<ParseResult, bool>(ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS, false);
+			return AggModeResult(ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS);
 		}	
 	}
 

@@ -121,14 +121,13 @@ void OutstationAuthProvider::OnAuthRequest(OState& ostate, const openpal::ReadBu
 void OutstationAuthProvider::OnUnknownRequest(OState& ostate, const openpal::ReadBufferView& fragment, const APDUHeader& header, const openpal::ReadBufferView& objects)
 {	
 	/// We have to determine if this is a regular request or an aggressive mode request
-	Group120Var3 aggModeRequest;
-	auto result = AggressiveModeParser::IsAggressiveMode(objects, aggModeRequest, &ostate.logger);
-	if (result.first == ParseResult::OK)
+	AggModeResult result = AggressiveModeParser::IsAggressiveMode(objects, &ostate.logger);
+	if (result.result == ParseResult::OK)
 	{
-		if (result.second)
+		if (result.isAggMode)
 		{
 			// it's an aggressive mode request
-			sstate.pState = sstate.pState->OnAggModeRequest(sstate, ostate, header, objects, aggModeRequest);
+			sstate.pState = sstate.pState->OnAggModeRequest(sstate, ostate, header, objects, result.request);
 		}
 		else
 		{

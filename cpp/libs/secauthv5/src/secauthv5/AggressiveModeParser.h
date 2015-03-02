@@ -29,7 +29,6 @@
 #include <opendnp3/objects/Group120Var5.h>
 
 #include <cstdint>
-#include <utility>
 
 #include <opendnp3/objects/Group120.h>
 #include <opendnp3/objects/Group120Var9.h>
@@ -37,17 +36,24 @@
 namespace secauthv5
 {
 
-struct AggModeObjects
+struct AggModeResult
 {
+	// failure constructor
+	AggModeResult(opendnp3::ParseResult result_);
+
+	// success constructor
+	AggModeResult(const opendnp3::Group120Var3& request);
+	
+
+	opendnp3::ParseResult result;
+	bool isAggMode;
 	opendnp3::Group120Var3 request;
-	openpal::ReadBufferView objects;
-	opendnp3::Group120Var9 hmac;
 };
 
 
 struct AggressiveModeParser : openpal::PureStatic
 {	
-	static std::pair<opendnp3::ParseResult, bool> IsAggressiveMode(openpal::ReadBufferView objects, opendnp3::Group120Var3& request, openpal::Logger* pLogger);
+	static AggModeResult IsAggressiveMode(openpal::ReadBufferView objects, openpal::Logger* pLogger);
 	
 
 

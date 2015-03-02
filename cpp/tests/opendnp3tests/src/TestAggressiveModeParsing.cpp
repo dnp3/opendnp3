@@ -33,51 +33,50 @@ using namespace opendnp3;
 using namespace secauthv5;
 using namespace testlib;
 
-void TestAggMode(const std::string& data, function<void (std::pair<ParseResult, bool>, Group120Var3)> validate)
+void TestAggMode(const std::string& data, function<void(AggModeResult result)> validate)
 {
-	HexSequence objects(data);
-	Group120Var3 request;
-	auto result = AggressiveModeParser::IsAggressiveMode(objects.ToReadOnly(), request, nullptr);
-	validate(result, request);
+	HexSequence objects(data);	
+	auto result = AggressiveModeParser::IsAggressiveMode(objects.ToReadOnly(), nullptr);
+	validate(result);
 }
 
 #define SUITE(name) "AggressiveModeParsingTestSuite - " name
 
 TEST_CASE(SUITE("AcceptsValidInput"))
 {
-	TestAggMode("78 03 07 01 04 00 00 00 09 00", [](std::pair<ParseResult, bool> result, Group120Var3 request)
+	TestAggMode("78 03 07 01 04 00 00 00 09 00", [](AggModeResult result)
 	{	
-		REQUIRE(result.first == ParseResult::OK);
-		REQUIRE(result.second);		
-		REQUIRE(request.challengeSeqNum == 4);
-		REQUIRE(request.userNum == 9);
+		REQUIRE(result.result == ParseResult::OK);
+		REQUIRE(result.isAggMode);		
+		REQUIRE(result.request.challengeSeqNum == 4);
+		REQUIRE(result.request.userNum == 9);
 	});	
 }
 
 TEST_CASE(SUITE("RejectsBadHeader"))
 {
-	TestAggMode("78 03", [](std::pair<ParseResult, bool> result, Group120Var3 request)
+	TestAggMode("78 03", [](AggModeResult result)
 	{
-		REQUIRE(result.first == ParseResult::NOT_ENOUGH_DATA_FOR_HEADER);
-		REQUIRE(!result.second);		
+		REQUIRE(result.result == ParseResult::NOT_ENOUGH_DATA_FOR_HEADER);
+		REQUIRE(!result.isAggMode);		
 	});
 }
 
 TEST_CASE(SUITE("RejectsNormalObject"))
 {
-	TestAggMode("02 01 01", [](std::pair<ParseResult, bool> result, Group120Var3 request)
+	TestAggMode("02 01 01", [](AggModeResult result)
 	{
-		REQUIRE(result.first == ParseResult::OK);
-		REQUIRE(!result.second);		
+		REQUIRE(result.result == ParseResult::OK);
+		REQUIRE(!result.isAggMode);		
 	});
 }
 
 TEST_CASE(SUITE("RejectsInsufficientData"))
 {
-	TestAggMode("78 03 07 01 FF FF FF FF FF", [](std::pair<ParseResult, bool> result, Group120Var3 request)
+	TestAggMode("78 03 07 01 FF FF FF FF FF", [](AggModeResult result)
 	{
-		REQUIRE(result.first == ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS);
-		REQUIRE(!result.second);		
+		REQUIRE(result.result == ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS);
+		REQUIRE(!result.isAggMode);		
 	});
 }
 
