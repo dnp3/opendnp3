@@ -44,7 +44,7 @@ class OutstationAuthFactory : public opendnp3::IOutstationAuthFactory, private o
 		openpal::ICryptoProvider& crypto
 	);
 		
-	virtual std::unique_ptr<opendnp3::IOutstationAuthProvider> Create(openpal::Logger logger, openpal::IExecutor& executor) override final;
+	virtual opendnp3::IOutstationAuthProvider* Allocate(openpal::Logger logger, openpal::IExecutor& executor) override final;
 
 	private:
 

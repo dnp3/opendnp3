@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "NullOutstationAuthProvider.h"
+#include "OutstationAuthWrapper.h"
 
 #include "opendnp3/outstation/OutstationActions.h"
 #include "opendnp3/outstation/OutstationFunctions.h"
@@ -27,13 +27,40 @@
 namespace opendnp3
 {
 
-NullOutstationAuthFactory NullOutstationAuthFactory::instance;
+OutstationAuthWrapper::OutstationAuthWrapper(IOutstationAuthProvider* pProvider_) : pProvider(pProvider_)
+{}
 
-void NullOutstationAuthProvider::OnReceive(OState& ostate, const openpal::ReadBufferView& fragment, const APDUHeader& header, const openpal::ReadBufferView& objects)
+	/// Reset the state of the auth provider when lower layer goes offline
+void OutstationAuthWrapper::Reset()
 {
-	// null auth provider just skips any authentication and goes directly to processing
-	OActions::ProcessHeaderAndObjects(ostate, header, objects);
+	if (pProvider)
+	{
+		pProvider->Reset();
+	}
 }
+	
+void OutstationAuthWrapper::CheckState(OState& ostate)
+{
+	if (pProvider)
+	{
+		pProvider->CheckState(ostate);
+	}
+}
+
+	
+void OutstationAuthWrapper::OnReceive(OState& ostate, const openpal::ReadBufferView& fragment, const APDUHeader& header, const openpal::ReadBufferView& objects)
+{
+	if (pProvider)
+	{
+		pProvider->OnReceive(ostate, fragment, header, objects);
+	}
+	else
+	{
+		// no auth provider just skips any authentication and goes directly to processing
+		OActions::ProcessHeaderAndObjects(ostate, header, objects);
+	}
+}
+
 
 }
 

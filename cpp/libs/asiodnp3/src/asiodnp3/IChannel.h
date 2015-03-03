@@ -110,7 +110,7 @@ public:
 										opendnp3::ICommandHandler& commandHandler,
 										opendnp3::IOutstationApplication& application,
 										const opendnp3::OutstationStackConfig& config,
-										opendnp3::IOutstationAuthFactory& authFactory) = 0;
+										opendnp3::IOutstationAuthFactory* pAuthFactory) = 0;
 
 	// over load that uses NULL authentication
 

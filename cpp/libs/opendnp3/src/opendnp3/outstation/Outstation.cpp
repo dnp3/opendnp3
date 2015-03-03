@@ -40,8 +40,8 @@ Outstation::Outstation(
 		ILowerLayer& lower,
 		ICommandHandler& commandHandler,
 		IOutstationApplication& application,
-		IOutstationAuthProvider& authProvider) :
-		ostate(config, dbTemplate, logger, executor, lower, commandHandler, application, authProvider)
+		IOutstationAuthProvider* pAuthProvider) :
+		ostate(config, dbTemplate, logger, executor, lower, commandHandler, application, pAuthProvider)
 {
 	
 }

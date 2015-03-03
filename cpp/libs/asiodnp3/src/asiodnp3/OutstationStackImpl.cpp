@@ -35,17 +35,14 @@ OutstationStackImpl::OutstationStackImpl(
 	opendnp3::ICommandHandler& commandHandler,
 	IOutstationApplication& application,	
     const OutstationStackConfig& config,
-
     const StackActionHandler& handler_,
-	std::unique_ptr<opendnp3::IOutstationAuthProvider> auth_) :
+	IOutstationAuthFactory* pAuthFactory) :
 	
 	root(root_, id),
 	handler(handler_),
 	stack(root, &executor, config.outstation.params.maxRxFragSize, &statistics, config.link),		
-	auth(std::move(auth_)),
-	outstation(config.outstation, config.dbTemplate, root.GetLogger(), executor, stack.transport, commandHandler, application, *auth)
-
-   
+	auth(pAuthFactory ? pAuthFactory->Allocate(root.GetLogger(), executor) : nullptr),
+	outstation(config.outstation, config.dbTemplate, root.GetLogger(), executor, stack.transport, commandHandler, application, auth.get())   
 {
 	stack.transport.SetAppLayer(&outstation);
 }

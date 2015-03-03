@@ -810,9 +810,6 @@
     <ClInclude Include="src\opendnp3\outstation\TxBuffer.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\NullOutstationAuthProvider.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\app\Functions.h">
       <Filter>Header\app</Filter>
     </ClInclude>
@@ -878,6 +875,9 @@
     </ClInclude>
     <ClInclude Include="src\opendnp3\objects\Group120Var9.h">
       <Filter>Header\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\OutstationAuthWrapper.h">
+      <Filter>Header\outstation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1271,9 +1271,6 @@
     <ClCompile Include="src\opendnp3\outstation\OutstationFunctions.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\NullOutstationAuthProvider.cpp">
-      <Filter>Source\outstation</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\app\Functions.cpp">
       <Filter>Source\app</Filter>
     </ClCompile>
@@ -1309,6 +1306,9 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\objects\Group120Var9.cpp">
       <Filter>Source\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\OutstationAuthWrapper.cpp">
+      <Filter>Source\outstation</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

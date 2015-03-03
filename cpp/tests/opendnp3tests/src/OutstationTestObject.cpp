@@ -22,8 +22,6 @@
 #include "OutstationTestObject.h"
 #include <testlib/BufferHelpers.h>
 
-#include <opendnp3/outstation/NullOutstationAuthProvider.h>
-
 using namespace openpal;
 using namespace testlib;
 
@@ -38,9 +36,8 @@ OutstationTestObject::OutstationTestObject(
 	exe(),
 	lower(log.root),
 	cmdHandler(CommandStatus::SUCCESS),
-	application(),
-	auth(),
-	outstation(config, dbTemplate, log.root.GetLogger(), exe, lower, cmdHandler, application, auth)
+	application(),	
+	outstation(config, dbTemplate, log.root.GetLogger(), exe, lower, cmdHandler, application, nullptr)
 
 {
 	lower.SetUpperLayer(outstation);

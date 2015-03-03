@@ -35,6 +35,7 @@
 #include "opendnp3/outstation/ICommandHandler.h"
 #include "opendnp3/outstation/IOutstationApplication.h"
 #include "opendnp3/outstation/IOutstationAuthProvider.h"
+#include "opendnp3/outstation/OutstationAuthWrapper.h"
 
 #include <openpal/executor/TimerRef.h>
 #include <openpal/logging/LogRoot.h>
@@ -57,7 +58,7 @@ class OState
 			ILowerLayer& lower,
 			ICommandHandler& commandHandler,
 			IOutstationApplication& application,
-			IOutstationAuthProvider& authProvider);
+			IOutstationAuthProvider* pAuthProvider);
 
 	// reset important variables to their initial state
 	void Reset();	
@@ -71,7 +72,7 @@ class OState
 	ILowerLayer* const pLower;	
 	ICommandHandler* const pCommandHandler;
 	IOutstationApplication* const pApplication;
-	IOutstationAuthProvider* const pAuthProvider;
+	OutstationAuthWrapper auth;	
 
 	// ------ Database, event buffer, and response tracking
 	EventBuffer eventBuffer;
