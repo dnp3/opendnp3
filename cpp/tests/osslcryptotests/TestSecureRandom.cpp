@@ -47,7 +47,7 @@ TEST_CASE(SUITE("BasicInstantiationAndRequestRandomWorks"))
 	for (int i = 0; i < NUM_RAND_FETCH; ++i)
 	{
 		auto dest = buffer.GetWriteBufferView();
-		if (provider.GetSecureRandom(dest))
+		if (provider.GetSecureRandom(dest) && dest.IsEmpty())
 		{
 			++count;
 		}

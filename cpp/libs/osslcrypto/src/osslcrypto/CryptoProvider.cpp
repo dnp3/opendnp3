@@ -77,7 +77,12 @@ void CryptoProvider::LockingFunction(int mode, int n, const char *file, int line
 
 bool CryptoProvider::GetSecureRandom(WriteBufferView& buffer)
 {	
-	return RAND_bytes(buffer, buffer.Size()) > 0;
+	auto success  = RAND_bytes(buffer, buffer.Size()) > 0;	
+	if (success)
+	{
+		buffer.Advance(buffer.Size());
+	}
+	return success;
 }
 
 }

@@ -43,7 +43,7 @@ class CryptoProvider : public openpal::ICryptoProvider, private openpal::Uncopya
 {		
 	public:	
 
-	virtual bool GetSecureRandom(openpal::WriteBufferView& buffer) override final;	
+	virtual bool GetSecureRandom(openpal::WriteBufferView& buffer) override final;
 	
 	virtual openpal::IKeyWrapAlgo& GetAES128KeyWrap() override final { return keywrap128; }
 	virtual openpal::IKeyWrapAlgo& GetAES256KeyWrap() override final { return keywrap256; }
