@@ -42,10 +42,11 @@ struct OutstationAuthSettings
 
 	uint32_t maxRxASDUSize;
 	uint32_t maxTxASDUSize;	
+	openpal::TimeDuration challengeTimeout;
+	uint16_t challengeSize;
 	uint16_t assocId;
 	HMACMode hmacMode;
 	CriticalFunctions functions;
-
 
 };
 

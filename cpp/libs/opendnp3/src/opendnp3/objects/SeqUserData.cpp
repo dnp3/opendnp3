@@ -71,7 +71,7 @@ bool SeqUserData::Write(const SeqUserData& output, openpal::WriteBufferView& buf
 	{
 		UInt32::WriteBuffer(buffer, output.seq);
 		UInt16::WriteBuffer(buffer, output.user);
-		buffer.ReadFrom(output.data);		
+		output.data.CopyTo(buffer);		
 		return true;
 	}
 }

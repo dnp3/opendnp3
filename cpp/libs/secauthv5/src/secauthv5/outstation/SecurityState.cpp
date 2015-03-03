@@ -22,6 +22,7 @@
 #include "SecurityState.h"
 
 #include "OAuthStates.h"
+#include <opendnp3/outstation/OutstationActions.h>
 
 using namespace opendnp3;
 
@@ -36,6 +37,8 @@ namespace secauthv5
 			openpal::ICryptoProvider& crypto) :
 
 		settings(settings_),
+		challenge(settings.challengeSize, settings.maxRxASDUSize),
+		challengeTimer(executor),
 		hmac(crypto, settings_.hmacMode),
 		deferred(settings_.maxRxASDUSize),
 		pExecutor(&executor),
@@ -55,6 +58,13 @@ namespace secauthv5
 	{		
 		keyStatus = KeyStatus::NOT_INIT;
 		pState = OAuthStateIdle::Instance();
+	}
+
+	APDUResponse SecurityState::StartResponse(OState& ostate)
+	{
+		auto response = txBuffer.Start();
+		response.SetIIN(OActions::GetResponseIIN(ostate));
+		return response;
 	}
 }
 

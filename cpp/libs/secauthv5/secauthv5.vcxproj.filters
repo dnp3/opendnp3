@@ -89,6 +89,9 @@
     <ClInclude Include="src\secauthv5\CriticalFunctions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\secauthv5\outstation\ChallengeState.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\secauthv5\outstation\AuthRequestHandler.cpp">
@@ -150,6 +153,9 @@
     </ClCompile>
     <ClCompile Include="src\secauthv5\CriticalFunctions.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\secauthv5\outstation\ChallengeState.cpp">
+      <Filter>Source Files\outstation</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

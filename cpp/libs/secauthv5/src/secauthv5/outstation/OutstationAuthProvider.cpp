@@ -132,7 +132,7 @@ void OutstationAuthProvider::OnUnknownRequest(OState& ostate, const openpal::Rea
 		else
 		{
 			// it's a normal DNP3 request
-			sstate.pState = sstate.pState->OnRegularRequest(sstate, ostate, header, objects);
+			sstate.pState = sstate.pState->OnRegularRequest(sstate, ostate, fragment, header, objects);
 		}
 	}	
 }

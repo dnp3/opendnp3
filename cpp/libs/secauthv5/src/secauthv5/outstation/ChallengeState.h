@@ -18,51 +18,52 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENPAL_WriteBufferView_H
-#define OPENPAL_WriteBufferView_H
-
-#include "HasSize.h"
+#ifndef SECAUTHV5_CHALLENGESTATE_H
+#define SECAUTHV5_CHALLENGESTATE_H
 
 #include <cstdint>
 
-namespace openpal
+#include <openpal/container/StaticBuffer.h>
+
+#include <opendnp3/app/APDUResponse.h>
+#include <opendnp3/app/APDUHeader.h>
+
+#include "secauthv5/HMACProvider.h"
+#include "secauthv5/DeferredASDU.h"
+
+
+namespace secauthv5
 {
 
-class ReadBufferView;
-
-class WriteBufferView : public HasSize<uint32_t>
+class ChallengeState
 {
-public:
+	public:
 
-	static WriteBufferView Empty();
+	ChallengeState(uint16_t challengeSize, uint32_t maxRxASDUSize);
 
-	void SetAllTo(uint8_t value);
-
-	WriteBufferView();	
-	WriteBufferView(uint8_t* pBuffer, uint32_t size);
-
-	void Clear();
-
-	uint32_t Advance(uint32_t count);
-
-	ReadBufferView ToReadOnly() const;
-
-	operator uint8_t* ()
-	{
-		return pBuffer;
-	};
-
-	operator uint8_t const* () const
-	{
-		return pBuffer;
-	};
+	bool WriteChallenge(
+		const openpal::ReadBufferView& fragment,
+		const opendnp3::APDUHeader& header, 
+		opendnp3::APDUResponse& response, 
+		opendnp3::HMACType hmacType, 
+		openpal::ICryptoProvider& crypto,
+		openpal::Logger* pLogger
+	);
+	
 
 private:
 
-	uint8_t* pBuffer;
-};
+	const uint16_t CHALLENGE_SIZE;
 
+	DeferredASDU criticalASDU;
+
+	openpal::ReadBufferView challengeFragment;
+	openpal::StaticBuffer<AuthConstants::MAX_CHALLENGE_RESPONSE_FRAGMENT_SIZE> challengeFragmentBuffer;
+	
+	uint32_t seqNumber;
+};
 
 }
 
 #endif
+

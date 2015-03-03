@@ -95,7 +95,7 @@ namespace secauthv5
 
 		sstate.sessions.SetSessionKeys(user, unwrapped.keys, hmac);
 		
-		auto rsp = sstate.txBuffer.Start();
+		auto rsp = sstate.StartResponse(ostate);
 		rsp.SetFunction(FunctionCode::AUTH_RESPONSE);
 		rsp.SetControl(header.control);
 		auto writer = rsp.GetWriter();
@@ -125,7 +125,7 @@ namespace secauthv5
 			ReadBufferView lastKeyChangeHMAC;
 			auto keyStatus = sstate.sessions.GetKeyStatus(user, lastKeyChangeHMAC);
 			
-			auto rsp = sstate.txBuffer.Start();
+			auto rsp = sstate.StartResponse(ostate);
 			rsp.SetFunction(FunctionCode::AUTH_RESPONSE);
 			rsp.SetControl(header.control);
 			auto writer = rsp.GetWriter();
@@ -150,12 +150,18 @@ namespace secauthv5
 			// TODO  - the spec appears to just say "ignore users that don't exist". Confirm this.
 			FORMAT_LOG_BLOCK(ostate.logger, flags::WARN, "User %u does not exist", user.GetId());
 		}		
-	}
+	}	
 
-	void OSecActions::ProcessRegularRequest(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects)
+	bool OSecActions::TransmitChallenge(SecurityState& sstate, opendnp3::OState& ostate, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header)
 	{
-		
-	}
+		auto response = sstate.StartResponse(ostate);
+		auto success = sstate.challenge.WriteChallenge(fragment, header, response, sstate.hmac.GetType(), *sstate.pCrypto, &ostate.logger);
+		if (success)
+		{
+			OActions::BeginTx(ostate, response.ToReadOnly());
+		}
+		return success;
+	}		
 
 	openpal::IKeyWrapAlgo& OSecActions::GetKeyWrapAlgo(openpal::ICryptoProvider& crypto, UpdateKeyMode type)
 	{
@@ -177,7 +183,7 @@ namespace secauthv5
 		AuthErrorCode code
 		)
 	{
-		auto rsp = sstate.txBuffer.Start();
+		auto rsp = sstate.StartResponse(ostate);
 		rsp.SetFunction(FunctionCode::AUTH_RESPONSE);
 		rsp.SetControl(header.control);
 		auto writer = rsp.GetWriter();

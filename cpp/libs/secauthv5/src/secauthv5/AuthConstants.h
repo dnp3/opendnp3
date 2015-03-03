@@ -24,6 +24,7 @@
 #include <openpal/util/Uncopyable.h>
 #include <openpal/util/Comparisons.h>
 
+#include <opendnp3/objects/Group120Var1.h>
 #include <opendnp3/objects/Group120Var5.h>
 
 #include <cstdint>
@@ -34,13 +35,17 @@ namespace secauthv5
 struct AuthConstants : openpal::PureStatic
 {	
 	const static uint16_t MIN_CHALLENGE_DATA_SIZE = 4;
-	const static uint16_t MAX_CHALLENGE_DATA_SIZE = 64;
+	const static uint16_t MAX_CHALLENGE_DATA_SIZE = 16;
 
 	const static uint32_t MIN_SESSION_KEY_SIZE_BYTES = 16;
 	const static uint32_t MAX_SESSION_KEY_SIZE_BYTES = 32;
 
-	const static uint16_t MAX_HMAC_TRUNC_SIZE = 16;  // SH
+	const static uint16_t MAX_HMAC_TRUNC_SIZE = 16;  // SHA256 Trunc 16 has the longest length
 	const static uint16_t MAX_HMAC_OUTPUT_SIZE = 32; // SHA256 output is 32 bytes
+
+	// the maximum size of an outstation challenge response
+	// 4 bytes header + 6 bytes obj header  = 10	
+	const static uint32_t MAX_CHALLENGE_RESPONSE_FRAGMENT_SIZE = 10 + opendnp3::Group120Var1::MINIMUM_SIZE + MAX_CHALLENGE_DATA_SIZE;
 
 	static uint32_t GetBoundedSessionKeySize(uint32_t size)
 	{

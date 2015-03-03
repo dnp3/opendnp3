@@ -113,8 +113,8 @@ bool Group120Var5::Write(const Group120Var5& output, openpal::WriteBufferView& b
 		UInt16::WriteBuffer(buffer, challengeDataSize);
 		
 		// these will always work b/c of the total size check in the "if" above
-		buffer.ReadFrom(output.challengeData);
-		buffer.ReadFrom(output.hmacValue);
+		output.challengeData.CopyTo(buffer);
+		output.hmacValue.CopyTo(buffer);
 
 		return true;
 	}

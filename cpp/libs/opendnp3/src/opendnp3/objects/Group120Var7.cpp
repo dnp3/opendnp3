@@ -90,7 +90,7 @@ namespace opendnp3 {
 			UInt16::WriteBuffer(buffer, output.associationID);
 			UInt8::WriteBuffer(buffer, AuthErrorCodeToType(output.errorCode));
 			UInt48::WriteBuffer(buffer, output.timeOfError);
-			buffer.ReadFrom(output.errorText);							
+			output.errorText.CopyTo(buffer);
 			return true;
 		}
 	}
