@@ -78,7 +78,8 @@ namespace secauthv5
 		}		
 
 		// copy the fragment over so we can calculate the hmac later
-		this->challengeFragment = response.ToReadOnly().CopyTo(challengeBuffer.GetWriteBuffer());
+		auto asdu = response.ToReadOnly();
+		this->challengeFragment = asdu.CopyTo(this->challengeFragmentBuffer.GetWriteBuffer());
 
 		if (this->challengeFragment.IsEmpty())
 		{
