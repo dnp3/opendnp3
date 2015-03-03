@@ -90,7 +90,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\secauthv5\outstation\ChallengeState.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\outstation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

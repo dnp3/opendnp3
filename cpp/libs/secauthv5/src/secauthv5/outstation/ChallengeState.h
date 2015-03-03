@@ -59,6 +59,9 @@ private:
 
 	openpal::ReadBufferView challengeFragment;
 	openpal::StaticBuffer<AuthConstants::MAX_CHALLENGE_RESPONSE_FRAGMENT_SIZE> challengeFragmentBuffer;
+
+	openpal::ReadBufferView challengeData;
+	openpal::StaticBuffer<AuthConstants::MAX_CHALLENGE_DATA_SIZE> challengeDataBuffer;
 	
 	uint32_t seqNumber;
 };

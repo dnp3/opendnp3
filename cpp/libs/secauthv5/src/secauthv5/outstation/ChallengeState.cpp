@@ -51,15 +51,15 @@ namespace secauthv5
 		
 		// configure the basics of the response
 		response.SetFunction(FunctionCode::AUTH_RESPONSE);
-		response.SetControl(header.control);
-
-		StaticBuffer<AuthConstants::MAX_CHALLENGE_DATA_SIZE> challengeBuffer;
+		response.SetControl(header.control);		
 		
-		if (!crypto.GetSecureRandom(challengeBuffer.GetWriteBuffer(CHALLENGE_SIZE)))
+		if (!crypto.GetSecureRandom(challengeDataBuffer.GetWriteBuffer(CHALLENGE_SIZE)))
 		{
 			SIMPLE_LOGGER_BLOCK(pLogger, flags::ERR, "Unable to get secure random data for challenge");
 			return false;
 		}		
+
+		this->challengeData = challengeDataBuffer.ToReadOnly(CHALLENGE_SIZE);
 
 		++seqNumber; //increment the CSQ
 
@@ -68,7 +68,7 @@ namespace secauthv5
 			User::DEFAULT_ID,
 			hmacType,
 			ChallengeReason::CRITICAL,
-			challengeBuffer.ToReadOnly(CHALLENGE_SIZE)
+			challengeData
 		);
 						
 		if (!response.GetWriter().WriteFreeFormat(challenge))
