@@ -42,6 +42,10 @@ class DeferredASDU : private openpal::Uncopyable
 	bool IsSet() const;	
 
 	void SetASDU(opendnp3::APDUHeader header, openpal::ReadBufferView asdu);
+
+	openpal::ReadBufferView GetFragment() const { return asdu; }
+
+	opendnp3::APDUHeader GetHeader() const { return header; }
 	
 	template <class Handler>
 	bool Process(const Handler& handler);

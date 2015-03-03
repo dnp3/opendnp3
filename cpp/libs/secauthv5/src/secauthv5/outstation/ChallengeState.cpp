@@ -22,6 +22,8 @@
 #include "ChallengeState.h"
 
 #include <openpal/logging/LogMacros.h>
+#include <openpal/crypto/SecureCompare.h>
+
 #include <opendnp3/LogLevels.h>
 
 #include "secauthv5/User.h"
@@ -89,6 +91,32 @@ namespace secauthv5
 
 		return true;
 	}
+
+	bool ChallengeState::VerifyAuthenticity(const openpal::ReadBufferView& key, HMACProvider& provider, const openpal::ReadBufferView& hmac, openpal::Logger logger)
+	{
+		if (provider.OutputSize() != hmac.Size())
+		{
+			FORMAT_LOG_BLOCK(logger, flags::WARN, "Received HMAC length of %u did not match expected HMAC length of %u", hmac.Size(), provider.OutputSize());
+			return false;
+		}		
+
+		// calculate the hmac we expect		
+		auto hmacCalc = provider.Compute(key, { challengeFragment, criticalASDU.GetFragment() });
+		if (hmacCalc.IsEmpty())
+		{
+			SIMPLE_LOG_BLOCK(logger, flags::ERR, "HMAC calculation failed");
+			return false;
+		}
+		
+		if (!openpal::SecureEquals(hmac, hmacCalc))
+		{
+			FORMAT_LOG_BLOCK(logger, flags::WARN, "HMAC comparison failed.");			
+			return false;
+		}
+
+		return true;
+	}
+	
 
 }
 

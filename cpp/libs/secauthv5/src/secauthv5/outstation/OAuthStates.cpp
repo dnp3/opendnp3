@@ -122,7 +122,9 @@ namespace secauthv5
 
 	IOAuthState* OAuthStateWaitForReply::OnAuthReply(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var2& reply)
 	{
-		return this->IgnoreAuthReply(ostate.logger);
+		sstate.challengeTimer.Cancel();
+		OSecActions::ProcessAuthReply(sstate, ostate, header, reply);		
+		return OAuthStateIdle::Instance(); // no matter what, we return to idle
 	}
 
 	IOAuthState* OAuthStateWaitForReply::OnRequestKeyStatus(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var4& status)

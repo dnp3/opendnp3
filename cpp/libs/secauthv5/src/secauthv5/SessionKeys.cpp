@@ -31,7 +31,7 @@ namespace secauthv5
 		auto controlDest = controlBuffer.GetWriteBuffer();
 		controlKey = view.controlKey.CopyTo(controlDest);
 
-		auto monitorDest = controlBuffer.GetWriteBuffer();
+		auto monitorDest = monitorBuffer.GetWriteBuffer();
 		monitorKey = view.monitorKey.CopyTo(monitorDest);
 	}
 

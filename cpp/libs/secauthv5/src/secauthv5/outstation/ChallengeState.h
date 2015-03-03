@@ -49,8 +49,18 @@ class ChallengeState
 		openpal::ICryptoProvider& crypto,
 		openpal::Logger* pLogger
 	);
-	
 
+	bool VerifyAuthenticity(
+		const openpal::ReadBufferView& key,
+		HMACProvider& provider, 
+		const openpal::ReadBufferView& hmac, 
+		openpal::Logger logger
+	);
+
+	openpal::ReadBufferView GetCriticalASDU() const { return criticalASDU.GetFragment(); }
+
+	opendnp3::APDUHeader GetCriticalHeader() const { return criticalASDU.GetHeader(); }
+	
 private:
 
 	const uint16_t CHALLENGE_SIZE;

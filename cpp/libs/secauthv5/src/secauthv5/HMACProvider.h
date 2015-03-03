@@ -40,6 +40,8 @@ namespace secauthv5
 			
 			openpal::ReadBufferView Compute(const openpal::ReadBufferView& key, std::initializer_list<openpal::ReadBufferView> buffers);
 
+			uint32_t OutputSize() const { return TRUNC_SIZE; }
+
 		private:
 
 			static openpal::IHMACAlgo& GetHMAC(openpal::ICryptoProvider& provider, HMACMode mode);
