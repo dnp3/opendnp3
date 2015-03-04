@@ -75,6 +75,30 @@ TEST_CASE(SUITE("ChangeSessionKeys-AES256-SHA1-8"))
 	);
 }
 
+TEST_CASE(SUITE("CriticalRequestChallengedWithSessionKeysNotInit"))
+{
+	OutstationAuthSettings settings;
+	settings.challengeSize = 5; // try a non-default challenge size
+
+	OutstationSecAuthTest test(settings);
+	
+	test.LowerLayerUp();
+
+	test.SendToOutstation(hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ClassField::AllEventClasses()));
+
+	auto challenge = hex::ChallengeResponse(
+		IINBit::DEVICE_RESTART,
+		0, // app-seq
+		1, // csq
+		User::DEFAULT_ID,
+		HMACType::HMAC_SHA256_TRUNC_16,
+		ChallengeReason::CRITICAL,
+		"AA AA AA AA AA"
+	);
+
+	REQUIRE(test.lower.PopWriteAsHex() == challenge);
+}
+
 void TestSessionKeyChange(OutstationSecAuthTest& test, User user, KeyWrapAlgorithm keyWrap, HMACMode hmacMode)
 {
 	test.LowerLayerUp();

@@ -27,6 +27,7 @@
 #include <opendnp3/app/AppConstants.h>
 
 #include <opendnp3/objects/Group120.h>
+#include <opendnp3/objects/Group120Var1.h>
 #include <opendnp3/objects/Group120Var5.h>
 #include <opendnp3/objects/Group120Var6.h>
 
@@ -129,6 +130,38 @@ namespace hex
 		Group120Var4 status;
 		status.userNum = user;		
 		apdu.GetWriter().WriteSingleValue<UInt8>(QualifierCode::UINT8_CNT, status);
+		return ToHex(apdu.ToReadOnly());
+	}
+
+	std::string ChallengeResponse(
+		opendnp3::IINField iin,
+		uint8_t seq,
+		uint32_t csq,
+		uint16_t user,
+		HMACType hmacType,
+		ChallengeReason reason,
+		std::string challengeDataHex
+		)
+	{
+		DynamicBuffer buffer(DEFAULT_MAX_APDU_SIZE);
+		APDUResponse apdu(buffer.GetWriteBufferView());
+
+		apdu.SetControl(AppControlField(true, true, false, false, seq));
+		apdu.SetFunction(FunctionCode::AUTH_RESPONSE);
+		apdu.SetIIN(iin);
+
+		HexSequence challengeBuff(challengeDataHex);
+
+		Group120Var1 rsp(
+			csq,
+			user,
+			hmacType,
+			reason,
+			challengeBuff.ToReadOnly()
+		);
+
+		apdu.GetWriter().WriteFreeFormat(rsp);
+
 		return ToHex(apdu.ToReadOnly());
 	}
 

@@ -32,6 +32,7 @@
 #include <opendnp3/gen/KeyWrapAlgorithm.h>
 #include <opendnp3/gen/KeyStatus.h>
 #include <opendnp3/gen/HMACType.h>
+#include <opendnp3/gen/ChallengeReason.h>
 
 namespace hex
 {
@@ -66,6 +67,16 @@ namespace hex
 	// ----------- sec auth -------------
 
 	std::string RequestKeyStatus(uint8_t seq, uint16_t user);
+
+	std::string ChallengeResponse(
+		opendnp3::IINField iin,
+		uint8_t seq,
+		uint32_t csq,
+		uint16_t user,
+		opendnp3::HMACType hmacType,
+		opendnp3::ChallengeReason reason,
+		std::string challengeDataHex
+	);
 
 	std::string KeyStatusResponse(
 		opendnp3::IINField iin,
