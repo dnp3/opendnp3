@@ -41,8 +41,6 @@ public:
 	WriteBufferView();	
 	WriteBufferView(uint8_t* pBuffer, uint32_t size);
 
-	uint32_t ReadFrom(const ReadBufferView& buffer);
-
 	void Clear();
 
 	uint32_t Advance(uint32_t count);

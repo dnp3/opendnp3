@@ -39,9 +39,9 @@ namespace openpal
 
 		/** 
 		 * Fill the specified buffer with secure random bytes
-		 * @return true if the specified buffer can be completely filled with secure random numbers	     		 
+		 * @return false if the destination buffer cannot be completely filled, true otherwise.
 		*/
-		virtual bool GetSecureRandom(WriteBufferView& buffer) = 0;
+		virtual bool GetSecureRandom(WriteBufferView& dest) = 0;
 
 		/// --- Getters for HMAC algorithms ----
 

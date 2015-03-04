@@ -68,7 +68,7 @@ void OActions::OnReceiveAPDU(OState& ostate, const openpal::ReadBufferView& apdu
 		if (header.control.IsFirAndFin() && !header.control.CON)
 		{
 			auto objects = apdu.Skip(APDU_REQUEST_HEADER_SIZE);
-			ostate.pAuthProvider->OnReceive(ostate, apdu, header, objects);			
+			ostate.auth.OnReceive(ostate, apdu, header, objects);			
 		}
 		else
 		{
@@ -287,7 +287,7 @@ OutstationSolicitedStateBase* OActions::ContinueMultiFragResponse(OState& ostate
 void OActions::CheckForTaskStart(OState& ostate)
 {		
 	// do these checks in order of priority
-	ostate.pAuthProvider->CheckState(ostate);
+	ostate.auth.CheckState(ostate);
 	OActions::CheckForDeferredRequest(ostate);
 	OActions::CheckForUnsolicited(ostate);
 }

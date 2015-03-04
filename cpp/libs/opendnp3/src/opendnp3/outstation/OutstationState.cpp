@@ -34,14 +34,14 @@ namespace opendnp3
 		ILowerLayer& lower,
 		ICommandHandler& commandHandler,
 		IOutstationApplication& application,
-		IOutstationAuthProvider& authProvider) :
+		IOutstationAuthProvider* pAuthProvider) :
 	
 	logger(logger_),
 	pExecutor(&executor),
 	pLower(&lower),	
 	pCommandHandler(&commandHandler),
 	pApplication(&application),
-	pAuthProvider(&authProvider),
+	auth(pAuthProvider),
 	eventBuffer(config.eventBufferConfig),
 	database(dbTemplate, eventBuffer, config.params.indexMode, config.params.typesAllowedInClass0),
 	rspContext(database.GetStaticLoader(), eventBuffer),
@@ -69,7 +69,7 @@ void OState::Reset()
 	eventBuffer.Unselect();
 	rspContext.Reset();
 	confirmTimer.Cancel();
-	pAuthProvider->Reset();
+	auth.Reset();
 }
 
 bool OState::CanTransmit() const

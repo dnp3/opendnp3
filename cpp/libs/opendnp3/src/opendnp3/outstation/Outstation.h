@@ -40,7 +40,7 @@ class Outstation : public IUpperLayer
 					ILowerLayer& lower,
 					ICommandHandler& commandHandler,
 					IOutstationApplication& application,
-					IOutstationAuthProvider& authProvider);
+					IOutstationAuthProvider* pAuthProvider);
 	
 	/// ----- Implement IUpperLayer ------
 

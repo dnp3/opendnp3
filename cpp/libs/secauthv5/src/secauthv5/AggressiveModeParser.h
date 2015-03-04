@@ -29,7 +29,6 @@
 #include <opendnp3/objects/Group120Var5.h>
 
 #include <cstdint>
-#include <utility>
 
 #include <opendnp3/objects/Group120.h>
 #include <opendnp3/objects/Group120Var9.h>
@@ -37,20 +36,45 @@
 namespace secauthv5
 {
 
-struct AggModeObjects
+struct AggModeResult
 {
+	// failure constructor
+	AggModeResult(opendnp3::ParseResult result_);
+
+	// success constructor
+	AggModeResult(const opendnp3::Group120Var3& request, const openpal::ReadBufferView& remainder);
+	
+
+	opendnp3::ParseResult result;
+	bool isAggMode;
 	opendnp3::Group120Var3 request;
-	openpal::ReadBufferView objects;
+	openpal::ReadBufferView remainder;
+
+	AggModeResult() = delete;
+};
+
+struct AggModeHMACResult
+{
+	// failure constructor
+	AggModeHMACResult(opendnp3::ParseResult result_);
+
+	// success constructor
+	AggModeHMACResult(const opendnp3::Group120Var9& hmac, const openpal::ReadBufferView& objects);
+
+
+	opendnp3::ParseResult result;	
 	opendnp3::Group120Var9 hmac;
+	openpal::ReadBufferView objects;
+
+	AggModeHMACResult() = delete;
 };
 
 
 struct AggressiveModeParser : openpal::PureStatic
 {	
-	static std::pair<opendnp3::ParseResult, bool> IsAggressiveMode(openpal::ReadBufferView objects, opendnp3::Group120Var3& request, openpal::Logger* pLogger);
-	
-
-
+	static AggModeResult IsAggressiveMode(openpal::ReadBufferView objects, openpal::Logger* pLogger);
+		
+	static AggModeHMACResult ParseHMAC(openpal::ReadBufferView remainder, uint32_t HMACSize, openpal::Logger* pLogger);
 };
 
 }

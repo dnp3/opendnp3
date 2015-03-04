@@ -27,7 +27,7 @@
 #include <opendnp3/outstation/Database.h>
 #include <opendnp3/outstation/Outstation.h>
 #include <opendnp3/outstation/IOutstationApplication.h>
-#include <opendnp3/outstation/IOutstationAuthProvider.h>
+#include <opendnp3/outstation/IOutstationAuthFactory.h>
 #include <opendnp3/link/ILinkRouter.h>
 #include <opendnp3/transport/TransportStack.h>
 
@@ -54,7 +54,7 @@ public:
 		opendnp3::IOutstationApplication& application,		
 		const opendnp3::OutstationStackConfig& config,
 	    const StackActionHandler& handler,
-		std::unique_ptr<opendnp3::IOutstationAuthProvider> auth);
+		opendnp3::IOutstationAuthFactory* pAuthFactory);
 
 	virtual opendnp3::DatabaseConfigView GetConfigView() override final;	
 
@@ -76,7 +76,7 @@ public:
 
 	opendnp3::ILinkSession* GetLinkContext();
 
-private:	
+private:		
 
 	virtual opendnp3::IDatabase& GetDatabase() override final { return outstation.GetDatabase(); }
 	virtual openpal::IExecutor& GetExecutor() override final;

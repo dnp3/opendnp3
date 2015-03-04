@@ -23,10 +23,12 @@
 
 #include <opendnp3/gen/KeyStatus.h>
 #include <opendnp3/outstation/TxBuffer.h>
+#include <opendnp3/outstation/OutstationState.h>
 
 #include <openpal/executor/IExecutor.h>
 #include <openpal/crypto/ICryptoProvider.h>
 #include <openpal/executor/IUTCTimeSource.h>
+#include <openpal/executor/TimerRef.h>
 
 #include "secauthv5/IUserDatabase.h"
 #include "secauthv5/HMACProvider.h"
@@ -35,6 +37,7 @@
 #include "KeyChangeState.h"
 #include "OutstationAuthSettings.h"
 #include "SessionStore.h"
+#include "ChallengeState.h"
 
 
 namespace secauthv5
@@ -57,7 +60,9 @@ class SecurityState
 
 	void Reset();
 	
-	const OutstationAuthSettings settings;
+	OutstationAuthSettings settings;
+	ChallengeState challenge;
+	openpal::TimerRef challengeTimer;
 	HMACProvider hmac;
 	DeferredASDU deferred;
 	openpal::IExecutor* pExecutor;
@@ -68,7 +73,12 @@ class SecurityState
 	IOAuthState* pState;
 	KeyChangeState keyChangeState;
 	SessionStore sessions;
+
+	opendnp3::APDUResponse StartResponse(opendnp3::OState& ostate);
+	
+private:
 	opendnp3::TxBuffer txBuffer;
+
 };
 
 }

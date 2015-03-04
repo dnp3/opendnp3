@@ -24,10 +24,15 @@
 
 #include <cstdint>
 
+#include <openpal/executor/TimeDuration.h>
+
 namespace opendnp3
 {
 	// the default size for an APDU
 	const uint32_t DEFAULT_MAX_APDU_SIZE = 2048;
+
+	// default timeout in milliseconds for the application layer
+	const openpal::TimeDuration DEFAULT_APP_TIMEOUT = openpal::TimeDuration::Milliseconds(5000);
 }
 
 #endif

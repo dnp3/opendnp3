@@ -38,23 +38,25 @@ class IOAuthState
 {
 	public:
 
-		virtual IOAuthState* OnRegularRequest(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects) = 0;
+		virtual IOAuthState* OnRegularRequest(SecurityState& sstate, opendnp3::OState& ostate, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects) = 0;
 		virtual IOAuthState* OnAggModeRequest(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects, const opendnp3::Group120Var3& aggModeRequest) = 0;
 		virtual IOAuthState* OnAuthChallenge(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge) = 0;
 		virtual IOAuthState* OnAuthReply(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var2& reply) = 0;
 		virtual IOAuthState* OnRequestKeyStatus(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var4& status) = 0;
 		virtual IOAuthState* OnChangeSessionKeys(SecurityState& sstate, opendnp3::OState& ostate, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change) = 0;
+		virtual IOAuthState* OnChallengeTimeout(SecurityState& sstate, opendnp3::OState& ostate) = 0;
 
 		virtual const char* GetName() = 0;
 
 	protected:
 
-		IOAuthState* IgnoreRegularRequest(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects);
-		IOAuthState* IgnoreAggModeRequest(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects, const opendnp3::Group120Var3& aggModeRequest);
-		IOAuthState* IgnoreAuthChallenge(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge);
-		IOAuthState* IgnoreAuthReply(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var2& reply);
-		IOAuthState* IgnoreRequestKeyStatus(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var4& status);
-		IOAuthState* IgnoreChangeSessionKeys(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change);
+		IOAuthState* IgnoreRegularRequest(openpal::Logger& logger);
+		IOAuthState* IgnoreAggModeRequest(openpal::Logger& logger);
+		IOAuthState* IgnoreAuthChallenge(openpal::Logger& logger);
+		IOAuthState* IgnoreAuthReply(openpal::Logger& logger);
+		IOAuthState* IgnoreRequestKeyStatus(openpal::Logger& logger, uint16_t user);
+		IOAuthState* IgnoreChangeSessionKeys(openpal::Logger& logger, uint16_t user);
+		IOAuthState* IgnoreChallengeTimeout(openpal::Logger& logger);
 };
 
 }

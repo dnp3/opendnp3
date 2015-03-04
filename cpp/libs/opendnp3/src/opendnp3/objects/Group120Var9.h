@@ -34,9 +34,11 @@ struct Group120Var9
 {		
 	Group120Var9(const openpal::ReadBufferView& hmacValue);
 
+	Group120Var9() {}
+
 	static GroupVariationID ID() { return GroupVariationID(120,9); }
 
-	uint32_t Size() const;
+	uint32_t Size() const { return hmacValue.Size(); }
 	
 	openpal::ReadBufferView hmacValue;
 	

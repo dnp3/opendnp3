@@ -56,10 +56,10 @@ namespace secauthv5
 
 			static User Unknown() { return User(UNKNOWN_ID); }
 
-		private:
-
 			static const uint16_t UNKNOWN_ID = 0;
 			static const uint16_t DEFAULT_ID = 1;
+
+		private:			
 
 			uint16_t id;
 	};

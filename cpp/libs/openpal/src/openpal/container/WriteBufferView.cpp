@@ -51,14 +51,6 @@ WriteBufferView::WriteBufferView(uint8_t* pBuffer_, uint32_t size) :
 	pBuffer(pBuffer_)
 {}
 
-uint32_t WriteBufferView::ReadFrom(const ReadBufferView& buffer)
-{
-	auto num = openpal::Min(buffer.Size(), size);
-	memcpy(pBuffer, buffer, num);
-	this->Advance(num);
-	return num;
-}
-
 void WriteBufferView::Clear()
 {
 	pBuffer = nullptr;

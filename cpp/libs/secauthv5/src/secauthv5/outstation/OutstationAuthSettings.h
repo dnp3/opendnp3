@@ -24,6 +24,7 @@
 #include <opendnp3/outstation/OutstationParams.h>
 
 #include "secauthv5/HMACMode.h"
+#include "secauthv5/CriticalFunctions.h"
 
 namespace secauthv5
 {
@@ -41,8 +42,11 @@ struct OutstationAuthSettings
 
 	uint32_t maxRxASDUSize;
 	uint32_t maxTxASDUSize;	
+	openpal::TimeDuration challengeTimeout;
+	uint16_t challengeSize;
 	uint16_t assocId;
 	HMACMode hmacMode;
+	CriticalFunctions functions;
 
 };
 

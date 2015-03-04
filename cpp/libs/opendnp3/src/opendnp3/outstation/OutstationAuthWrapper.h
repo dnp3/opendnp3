@@ -18,11 +18,10 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_NULLOUTSTATIONAUTHPROVIDER_H
-#define OPENDNP3_NULLOUTSTATIONAUTHPROVIDER_H
+#ifndef OPENDNP3_OUTSTATIONAUTHWRAPPER_H
+#define OPENDNP3_OUTSTATIONAUTHWRAPPER_H
 
 #include "opendnp3/outstation/IOutstationAuthProvider.h"
-#include "opendnp3/outstation/IOutstationAuthFactory.h"
 
 #include <openpal/util/Uncopyable.h>
 
@@ -30,34 +29,28 @@ namespace opendnp3
 {
 
 /**
-	NULL authentication provider for the outstation
+	Proxies access to an IOutstationAuthProvider
 */
-class NullOutstationAuthProvider : private openpal::Uncopyable, public IOutstationAuthProvider
+class OutstationAuthWrapper : private openpal::Uncopyable
 {
 	public:
 
-	virtual void Reset() override final {}
+	OutstationAuthWrapper(IOutstationAuthProvider* pProvider);
 
-	virtual void CheckState(OState& ostate) override final {}
-		
-	virtual void OnReceive(OState& ostate, const openpal::ReadBufferView& fragment, const APDUHeader& header, const openpal::ReadBufferView& objects) override final;
-};
+	/// Reset the state of the auth provider when lower layer goes offline
+	void Reset();
 
-class NullOutstationAuthFactory : private openpal::Uncopyable, public IOutstationAuthFactory
-{
-public:
+	/// See if any progress can be made
+	void CheckState(OState& ostate);
 
-	static IOutstationAuthFactory& Instance() { return instance; }
+	/// Receive a new request
+	void OnReceive(OState& ostate, const openpal::ReadBufferView& fragment, const APDUHeader& header, const openpal::ReadBufferView& objects);
 
-	virtual std::unique_ptr<IOutstationAuthProvider> Create(openpal::Logger, openpal::IExecutor&) override final
-	{
-		return std::unique_ptr<IOutstationAuthProvider>(new NullOutstationAuthProvider());
-	}
-private:
+	private:
 
-	static NullOutstationAuthFactory instance;
+	OutstationAuthWrapper() = delete;
 
-	NullOutstationAuthFactory() {}
+	IOutstationAuthProvider* pProvider;
 };
 
 }

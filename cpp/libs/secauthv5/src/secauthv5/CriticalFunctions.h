@@ -18,39 +18,43 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTHV5_HMACPROVIDER_H
-#define SECAUTHV5_HMACPROVIDER_H
+#ifndef SECAUTHV5_CRITICAL_FUNCTIONS_H
+#define SECAUTHV5_CRITICAL_FUNCTIONS_H
 
-#include <cstdint>
-
-#include "HMACMode.h"
-#include "AuthConstants.h"
-
-#include <openpal/crypto/ICryptoProvider.h>
-#include <openpal/container/StaticBuffer.h>
+#include <opendnp3/gen/FunctionCode.h>
 
 namespace secauthv5
 {
-	class HMACProvider
-	{
-		public:
-			HMACProvider(openpal::ICryptoProvider& provider, HMACMode mode);
-			
-			opendnp3::HMACType GetType() const;
-			
-			openpal::ReadBufferView Compute(const openpal::ReadBufferView& key, std::initializer_list<openpal::ReadBufferView> buffers);
 
-			uint32_t OutputSize() const { return TRUNC_SIZE; }
+class CriticalFunctions
+{	
+public:
+	
+	static CriticalFunctions AuthOptional();
+	static CriticalFunctions AuthEverything();
 
-		private:
+	bool authConfirm;
+	bool authRead;
+	bool authImmediateFreeze;
+	bool authImmediateFreezeNR;
+	bool authFreezeClear;
+	bool authFreezeClearNR;
+	bool authFreezeAtTime;
+	bool authFreezeAtTimeNR;
+	bool authInitData;
+	bool authAssignClass;
+	bool authDelayMeasure;
+	bool authResponse;
+	bool authUnsolicited;	
 
-			static openpal::IHMACAlgo& GetHMAC(openpal::ICryptoProvider& provider, HMACMode mode);
+	bool IsCritical(opendnp3::FunctionCode code) const;
 
-			HMACMode mode;
-			openpal::IHMACAlgo* pHMAC;
-			const uint32_t TRUNC_SIZE;
-			openpal::StaticBuffer<AuthConstants::MAX_HMAC_OUTPUT_SIZE> buffer;
-	};
+private:
+	CriticalFunctions() = delete;
+	CriticalFunctions(bool authOptionalCodes);
+
+};
+
 }
 
 #endif

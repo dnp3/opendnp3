@@ -128,11 +128,7 @@ int main(int argc, char* argv[])
 		SuccessCommandHandler::Instance(),
 		DefaultOutstationApplication::Instance(),
 		config,
-		authFactory);
-
-	// You can optionally change the default reporting variations
-	// stackConfig.outstation.defaultEventResponses.binary = EventBinaryVariation::Group2Var2;
-	// stackConfig.outstation.defaultEventResponses.analog = EventAnalogVariation::Group32Var3;
+		&authFactory);	
 
 	// Enable the outstation and start communications
 	pOutstation->Enable();	

@@ -90,7 +90,7 @@ public:
 								opendnp3::ICommandHandler& commandHandler,
 								opendnp3::IOutstationApplication& application,
 								const opendnp3::OutstationStackConfig& config,
-								opendnp3::IOutstationAuthFactory& factory) override final;
+								opendnp3::IOutstationAuthFactory* pAuthFactory) override final;
 
 	// Helper functions only available inside DNP3Manager
 	void SetShutdownHandler(const openpal::Action0& action);
@@ -106,7 +106,7 @@ private:
 	IOutstation* _AddOutstation(char const* id,
 		opendnp3::ICommandHandler& commandHandler,
 		opendnp3::IOutstationApplication& application,
-		std::unique_ptr<opendnp3::IOutstationAuthProvider> auth,
+		opendnp3::IOutstationAuthFactory* pAuthFactory,
 		const opendnp3::OutstationStackConfig& config);
 
 	void InitiateShutdown(asiopal::Synchronized<bool>& handler);

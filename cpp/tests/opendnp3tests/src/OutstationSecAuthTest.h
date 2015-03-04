@@ -25,7 +25,6 @@
 #include <opendnp3/app/ITransactable.h>
 #include <opendnp3/outstation/Outstation.h>
 #include <opendnp3/outstation/Database.h>
-#include <opendnp3/outstation/NullOutstationAuthProvider.h>
 #include <opendnp3/outstation/IOutstationAuthFactory.h>
 
 #include <secauthv5/outstation/OutstationAuthProvider.h>

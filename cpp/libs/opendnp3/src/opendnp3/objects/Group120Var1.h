@@ -57,9 +57,9 @@ struct Group120Var1
 
 	static bool Write(const Group120Var1& output, openpal::WriteBufferView& buffer);
 
-	private:
 
-	static const uint32_t FIXED_BASE_SIZE = 8;	
+	static const uint32_t MINIMUM_SIZE = 8;
+		
 };
 
 }
