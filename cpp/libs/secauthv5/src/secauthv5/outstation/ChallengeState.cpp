@@ -55,7 +55,8 @@ namespace secauthv5
 		response.SetFunction(FunctionCode::AUTH_RESPONSE);
 		response.SetControl(header.control);		
 		
-		if (!crypto.GetSecureRandom(challengeDataBuffer.GetWriteBuffer(CHALLENGE_SIZE)))
+		auto challengeDest = challengeDataBuffer.GetWriteBuffer(CHALLENGE_SIZE);
+		if (!crypto.GetSecureRandom(challengeDest))
 		{
 			SIMPLE_LOGGER_BLOCK(pLogger, flags::ERR, "Unable to get secure random data for challenge");
 			return false;
@@ -81,7 +82,8 @@ namespace secauthv5
 
 		// copy the fragment over so we can calculate the hmac later
 		auto asdu = response.ToReadOnly();
-		this->challengeFragment = asdu.CopyTo(this->challengeFragmentBuffer.GetWriteBuffer());
+		auto challengeFragmentDest = this->challengeFragmentBuffer.GetWriteBuffer();
+		this->challengeFragment = asdu.CopyTo(challengeFragmentDest);
 
 		if (this->challengeFragment.IsEmpty())
 		{

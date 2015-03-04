@@ -68,6 +68,7 @@ namespace hex
 	std::string RequestKeyStatus(uint8_t seq, uint16_t user);
 
 	std::string KeyStatusResponse(
+		opendnp3::IINField iin,
 		uint8_t seq,
 		uint32_t ksq,
 		uint16_t user,
