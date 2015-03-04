@@ -48,31 +48,43 @@ include_directories(./cpp/libs/osslcrypto/src)
 # required for ASIO in C++11 only mode
 add_definitions(-DASIO_STANDALONE)
 
+# common pattern and exludes for all installed headers
+set(INSTALL_ARGS FILES_MATCHING PATTERN "*.h" PATTERN ".deps" EXCLUDE PATTERN ".libs" EXCLUDE)
+
 # ---- openpal library ----
 file(GLOB_RECURSE openpal_SRC ./cpp/libs/openpal/src/openpal/*.cpp)
 add_library(openpal ${openpal_SRC})
-install(DIRECTORY ./cpp/libs/openpal/src/openpal/ DESTINATION include/openpal FILES_MATCHING PATTERN "*.h" PATTERN ".deps" EXCLUDE PATTERN ".libs" EXCLUDE)
+install(TARGETS openpal DESTINATION lib)
+install(DIRECTORY ./cpp/libs/openpal/src/openpal/ DESTINATION include/openpal ${INSTALL_ARGS})
 
 # ---- opendnp3 library ----
 file(GLOB_RECURSE opendnp3_SRC ./cpp/libs/opendnp3/src/opendnp3/*.cpp)
 add_library(opendnp3 ${opendnp3_SRC})
 target_link_libraries(opendnp3 openpal)
+install(TARGETS opendnp3 DESTINATION lib)
+install(DIRECTORY ./cpp/libs/opendnp3/src/opendnp3/ DESTINATION include/opendnp3 ${INSTALL_ARGS})
 
 # ---- asiopal library ----
 file(GLOB_RECURSE asiopal_SRC ./cpp/libs/asiopal/src/asiopal/*.cpp)
 add_library(asiopal ${asiopal_SRC})
 target_link_libraries(asiopal openpal)
+install(TARGETS asiopal DESTINATION lib)
+install(DIRECTORY ./cpp/libs/asiopal/src/asiopal/ DESTINATION include/asiopal ${INSTALL_ARGS})
 
 # ---- asiodnp3 library ----
 file(GLOB_RECURSE asiodnp3_SRC ./cpp/libs/asiodnp3/src/asiodnp3/*.cpp)
 add_library(asiodnp3 ${asiodnp3_SRC})
 target_link_libraries(asiodnp3 opendnp3)
 target_link_libraries(asiodnp3 asiopal)
+install(TARGETS asiodnp3 DESTINATION lib)
+install(DIRECTORY ./cpp/libs/asiodnp3/src/asiodnp3/ DESTINATION include/asiodnp3 ${INSTALL_ARGS})
 
 # ---- secauthv5 library ----
 file(GLOB_RECURSE secauthv5_SRC ./cpp/libs/secauthv5/src/secauthv5/*.cpp)
 add_library(secauthv5 ${secauthv5_SRC})
 target_link_libraries(secauthv5 opendnp3)
+install(TARGETS secauthv5 DESTINATION lib)
+install(DIRECTORY ./cpp/libs/secauthv5/src/secauthv5/ DESTINATION include/secauthv5 ${INSTALL_ARGS})
 
 # ---- osslcrypto library ----
 if(OSSL)
@@ -81,6 +93,8 @@ if(OSSL)
   target_link_libraries(osslcrypto openpal)
   target_link_libraries(osslcrypto crypto)
   target_link_libraries(osslcrypto pthread)
+  install(TARGETS osslcrypto DESTINATION lib)
+  install(DIRECTORY ./cpp/libs/osslcrypto/src/osslcrypto/ DESTINATION include/osslcrypto ${INSTALL_ARGS})
 endif()
 
 # ---- testlib library ----
