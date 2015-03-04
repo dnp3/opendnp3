@@ -32,6 +32,7 @@ cpp/demos/INSTALL
 CMakeCache.txt
 CMakeFiles/
 cmake_install.cmake
+install_manifest.txt
 libopenpal.a
 libasiopal.a
 libopendnp3.a

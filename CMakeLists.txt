@@ -51,6 +51,7 @@ add_definitions(-DASIO_STANDALONE)
 # ---- openpal library ----
 file(GLOB_RECURSE openpal_SRC ./cpp/libs/openpal/src/openpal/*.cpp)
 add_library(openpal ${openpal_SRC})
+install(DIRECTORY ./cpp/libs/openpal/src/openpal/ DESTINATION include/openpal FILES_MATCHING PATTERN "*.h" PATTERN ".deps" EXCLUDE PATTERN ".libs" EXCLUDE)
 
 # ---- opendnp3 library ----
 file(GLOB_RECURSE opendnp3_SRC ./cpp/libs/opendnp3/src/opendnp3/*.cpp)
