@@ -133,6 +133,7 @@ namespace hex
 	}
 
 	std::string KeyStatusResponse(
+		IINField iin,
 		uint8_t seq,
 		uint32_t ksq,
 		uint16_t user,
@@ -147,6 +148,7 @@ namespace hex
 		APDUResponse apdu(buffer.GetWriteBufferView());
 		apdu.SetControl(AppControlField(true, true, false, false, seq));
 		apdu.SetFunction(FunctionCode::AUTH_RESPONSE);
+		apdu.SetIIN(iin);
 
 		HexSequence challengeBuff(challenge);
 		HexSequence hmacBuff(hmac);

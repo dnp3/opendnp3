@@ -84,6 +84,7 @@ void TestSessionKeyChange(OutstationSecAuthTest& test, User user, KeyWrapAlgorit
 	test.SendToOutstation(hex::RequestKeyStatus(0, 1));
 
 	auto keyStatusRsp = hex::KeyStatusResponse(
+		IINField(IINBit::DEVICE_RESTART),
 		0, // seq
 		1, // ksq
 		user.GetId(),
@@ -105,6 +106,7 @@ void TestSessionKeyChange(OutstationSecAuthTest& test, User user, KeyWrapAlgorit
 	test.SendToOutstation(hex::KeyChangeRequest(0, 1, 1, "DE AD BE EF"));
 
 	auto keyStatusRspFinal = hex::KeyStatusResponse(
+		IINField(IINBit::DEVICE_RESTART),
 		0, // seq
 		2, // ksq
 		user.GetId(), // user
