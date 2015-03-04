@@ -9,8 +9,15 @@ set(OPENDNP3_VERSION ${OPENDNP3_MAJOR_VERSION}.${OPENDNP3_MINOR_VERSION}.${OPEND
 option(LIBCPP "link with libc++ (required for clang)" OFF)
 option(OSSL "build the openssl crypto wrapper for SA" OFF)
 option(WERROR "Set all warnings to errors" OFF)
+option(STATICLIBS "Builds static versions of all installed libraries" OFF)
 
 set(CMAKE_CXX_FLAGS "-Wall -std=c++11")
+
+if(STATICLIBS)
+  set(LIB_TYPE STATIC)
+else()
+  set(LIB_TYPE SHARED)
+endif()
 
 if (WERROR)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
@@ -53,27 +60,27 @@ set(INSTALL_ARGS FILES_MATCHING PATTERN "*.h" PATTERN ".deps" EXCLUDE PATTERN ".
 
 # ---- openpal library ----
 file(GLOB_RECURSE openpal_SRC ./cpp/libs/openpal/src/openpal/*.cpp)
-add_library(openpal SHARED ${openpal_SRC})
+add_library(openpal ${LIB_TYPE} ${openpal_SRC})
 install(TARGETS openpal DESTINATION lib)
 install(DIRECTORY ./cpp/libs/openpal/src/openpal/ DESTINATION include/openpal ${INSTALL_ARGS})
 
 # ---- opendnp3 library ----
 file(GLOB_RECURSE opendnp3_SRC ./cpp/libs/opendnp3/src/opendnp3/*.cpp)
-add_library(opendnp3 SHARED ${opendnp3_SRC})
+add_library(opendnp3 ${LIB_TYPE} ${opendnp3_SRC})
 target_link_libraries(opendnp3 openpal)
 install(TARGETS opendnp3 DESTINATION lib)
 install(DIRECTORY ./cpp/libs/opendnp3/src/opendnp3/ DESTINATION include/opendnp3 ${INSTALL_ARGS})
 
 # ---- asiopal library ----
 file(GLOB_RECURSE asiopal_SRC ./cpp/libs/asiopal/src/asiopal/*.cpp)
-add_library(asiopal SHARED ${asiopal_SRC})
+add_library(asiopal ${LIB_TYPE} ${asiopal_SRC})
 target_link_libraries(asiopal openpal)
 install(TARGETS asiopal DESTINATION lib)
 install(DIRECTORY ./cpp/libs/asiopal/src/asiopal/ DESTINATION include/asiopal ${INSTALL_ARGS})
 
 # ---- asiodnp3 library ----
 file(GLOB_RECURSE asiodnp3_SRC ./cpp/libs/asiodnp3/src/asiodnp3/*.cpp)
-add_library(asiodnp3 SHARED ${asiodnp3_SRC})
+add_library(asiodnp3 ${LIB_TYPE} ${asiodnp3_SRC})
 target_link_libraries(asiodnp3 opendnp3)
 target_link_libraries(asiodnp3 asiopal)
 install(TARGETS asiodnp3 DESTINATION lib)
@@ -81,7 +88,7 @@ install(DIRECTORY ./cpp/libs/asiodnp3/src/asiodnp3/ DESTINATION include/asiodnp3
 
 # ---- secauthv5 library ----
 file(GLOB_RECURSE secauthv5_SRC ./cpp/libs/secauthv5/src/secauthv5/*.cpp)
-add_library(secauthv5 SHARED ${secauthv5_SRC})
+add_library(secauthv5 ${LIB_TYPE} ${secauthv5_SRC})
 target_link_libraries(secauthv5 opendnp3)
 install(TARGETS secauthv5 DESTINATION lib)
 install(DIRECTORY ./cpp/libs/secauthv5/src/secauthv5/ DESTINATION include/secauthv5 ${INSTALL_ARGS})
@@ -89,7 +96,7 @@ install(DIRECTORY ./cpp/libs/secauthv5/src/secauthv5/ DESTINATION include/secaut
 # ---- osslcrypto library ----
 if(OSSL)
   file(GLOB_RECURSE osslcrypto_SRC ./cpp/libs/osslcrypto/src/osslcrypto/*.cpp)
-  add_library(osslcrypto SHARED ${osslcrypto_SRC})
+  add_library(osslcrypto ${LIB_TYPE} ${osslcrypto_SRC})
   target_link_libraries(osslcrypto openpal)
   target_link_libraries(osslcrypto crypto)
   target_link_libraries(osslcrypto pthread)
