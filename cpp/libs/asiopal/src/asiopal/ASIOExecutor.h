@@ -55,6 +55,8 @@ public:
 
 private:
 
+	openpal::ITimer* Start(const std::chrono::steady_clock::time_point& tp, const openpal::Action0& runnable);
+
 	void InitiateShutdown(Synchronized<bool>& handler);
 
 	void CheckForShutdown();

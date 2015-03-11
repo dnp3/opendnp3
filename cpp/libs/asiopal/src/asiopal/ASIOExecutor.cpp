@@ -83,16 +83,20 @@ openpal::MonotonicTimestamp ASIOExecutor::GetTime()
 
 openpal::ITimer* ASIOExecutor::Start(const openpal::TimeDuration& delay, const openpal::Action0& runnable)
 {	
-	TimerASIO* pTimer = GetTimer();
-	pTimer->timer.expires_from_now(std::chrono::milliseconds(delay.GetMilliseconds()));
-	this->StartTimer(pTimer, runnable);
-	return pTimer;
+	auto expiration = std::chrono::steady_clock::now() + std::chrono::milliseconds(delay.GetMilliseconds());
+	return Start(expiration, runnable);
 }
 
 openpal::ITimer* ASIOExecutor::Start(const openpal::MonotonicTimestamp& time, const openpal::Action0& runnable)
 {	
-	TimerASIO* pTimer = GetTimer();
-	pTimer->timer.expires_at(std::chrono::steady_clock::time_point(std::chrono::milliseconds(time.milliseconds)));
+	std::chrono::steady_clock::time_point expiration(std::chrono::milliseconds(time.milliseconds));
+	return Start(expiration, runnable);
+}
+
+openpal::ITimer* ASIOExecutor::Start(const std::chrono::steady_clock::time_point& tp, const openpal::Action0& runnable)
+{
+	TimerASIO* pTimer = GetTimer();	
+	pTimer->timer.expires_at(tp);
 	this->StartTimer(pTimer, runnable);
 	return pTimer;
 }
