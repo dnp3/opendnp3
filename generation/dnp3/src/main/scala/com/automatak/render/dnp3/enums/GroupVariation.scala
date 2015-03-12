@@ -122,6 +122,10 @@ object GroupVariation {
     9 -> "HMAC"
   )
 
+  private val group121 = List(1 -> bit32WithFlag)
+
+  private val group122 = List(1 -> bit32WithFlag, 2 -> bit32WithFlagTime)
+
   private val defaultValue = EnumValue("UNKNOWN", value(0xFF, 0xFF))
 
 
@@ -160,7 +164,9 @@ object GroupVariation {
 
     List(EnumValue("Group111AnyVar", value(111,0), None, Some("Octet String Event"))),
 
-    group(120, "Authentication", group120)
+    group(120, "Authentication", group120),
+    group(121, "Security statistic", group121),
+    group(122, "Security statistic event", group122)
 
   ).flatten
 

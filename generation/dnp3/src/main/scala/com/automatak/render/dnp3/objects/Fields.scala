@@ -21,6 +21,8 @@ object FixedSizeField {
   //common flags field
   val flags = FixedSizeField("flags", UInt8Field)
 
+  // security association id
+  val assocId = FixedSizeField("assocId", UInt16Field)
 
   // timestamps
   val time16 = FixedSizeField("time", UInt16Field)

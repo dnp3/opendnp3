@@ -250,6 +250,12 @@ GroupVariation GroupVariationFromType(uint16_t arg)
       return GroupVariation::Group120Var7;
     case(0x7809):
       return GroupVariation::Group120Var9;
+    case(0x7901):
+      return GroupVariation::Group121Var1;
+    case(0x7A01):
+      return GroupVariation::Group122Var1;
+    case(0x7A02):
+      return GroupVariation::Group122Var2;
     default:
       return GroupVariation::UNKNOWN;
   }
@@ -478,6 +484,12 @@ char const* GroupVariationToString(GroupVariation arg)
       return "Authentication - Error";
     case(GroupVariation::Group120Var9):
       return "Authentication - HMAC";
+    case(GroupVariation::Group121Var1):
+      return "Security statistic - 32-bit With Flag";
+    case(GroupVariation::Group122Var1):
+      return "Security statistic event - 32-bit With Flag";
+    case(GroupVariation::Group122Var2):
+      return "Security statistic event - 32-bit With Flag and Time";
     default:
       return "UNKNOWN";
   }

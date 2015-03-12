@@ -135,6 +135,9 @@ namespace Automatak.DNP3.Interface
     Group120Var6 = 0x7806,
     Group120Var7 = 0x7807,
     Group120Var9 = 0x7809,
+    Group121Var1 = 0x7901,
+    Group122Var1 = 0x7A01,
+    Group122Var2 = 0x7A02,
     UNKNOWN = 0xFFFF
   }
 }

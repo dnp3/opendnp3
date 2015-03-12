@@ -96,10 +96,19 @@ object GroupVariationFileGenerator {
       }
     }
 
-    ObjectGroup.all.foreach { g =>
-        writeTo(headerPath(g))(headerFile(g))
-        (writeTo(implPath(g))(implFile(g)))
+    def writeHeaderAndImpl(g: ObjectGroup): Unit = {
+      val hpath = headerPath(g)
+      val cpppath = implPath(g)
+      writeTo(hpath)(headerFile(g))
+      println("Wrote: " + hpath)
+      writeTo(cpppath)(implFile(g))
+      println("Wrote: " + cpppath)
     }
+
+    ObjectGroup.all.foreach(og =>
+      writeHeaderAndImpl(og)
+
+    )
   }
 
 }
