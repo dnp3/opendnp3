@@ -1,17 +1,18 @@
 package com.automatak.render.dnp3.objects.groups
 
-import com.automatak.render.dnp3.objects.{ConversionToAnalogOutputStatus, FixedSize, FixedSizeField, ObjectGroup}
+import com.automatak.render.dnp3.objects._
 
 import FixedSizeField._
 import com.automatak.render.dnp3.objects.VariationNames._
 
 //analog output events
 object Group42 extends ObjectGroup {
-  def objects = List(Group42Var1, Group42Var2, Group42Var3, Group42Var4, Group42Var5, Group42Var6, Group42Var7, Group42Var8)
+  def objects = List( Group42Var0, Group42Var1, Group42Var2, Group42Var3, Group42Var4, Group42Var5, Group42Var6, Group42Var7, Group42Var8)
   def group: Byte = 42
   def desc: String = "Analog Output Event"
 }
 
+object Group42Var0 extends AnyVariation(Group42, 0)
 object Group42Var1 extends FixedSize(Group42, 1, bit32WithFlag)(flags, value32) with ConversionToAnalogOutputStatus
 object Group42Var2 extends FixedSize(Group42, 2, bit16WithFlag)(flags, value16) with ConversionToAnalogOutputStatus
 object Group42Var3 extends FixedSize(Group42, 3, bit32WithFlagTime)(flags, value32, time48) with ConversionToAnalogOutputStatus

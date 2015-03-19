@@ -13,7 +13,8 @@ class ArbitraryConversion(name: String, incHeaders: List[String], cppHeaders: Li
   def signatures : Iterator[String] = {
     Iterator(
       "typedef %s Target;".format(name),
-      "static bool ReadTarget(openpal::ReadBufferView&, %s&);".format(name)
+      "static bool ReadTarget(openpal::ReadBufferView&, %s&);".format(name),
+      "static bool WriteTarget(const %s&, openpal::WriteBufferView&);".format(name)
     )
   }
 
@@ -36,7 +37,13 @@ class ArbitraryConversion(name: String, incHeaders: List[String], cppHeaders: Li
       }
     }
 
-    readFunc
+    def writeFunc = {
+      Iterator("bool " + fs.name + "::WriteTarget(const " + name + "& value, openpal::WriteBufferView& buff)") ++ bracket {
+        Iterator("return %s::Write(Convert%s::Apply(value), buff);".format(fs.name, fs.name))
+      }
+    }
+
+    readFunc ++ space ++ writeFunc
   }
 
 }
@@ -51,27 +58,28 @@ object ConversionHeaders {
   val analogCommandEvent = quoted("opendnp3/app/AnalogCommandEvent.h")
   val factory = quoted("opendnp3/app/MeasurementFactory.h")
   val serializer = quoted("opendnp3/app/DNP3Serializer.h")
+  val conversions = quoted("opendnp3/app/WriteConversions.h")
 
-  val cppIncldues = List(factory)
+  val cppIncludes = List(factory, conversions)
 }
 
 import ConversionHeaders._
 
-object BinaryConversion extends ArbitraryConversion("Binary", List(serializer, dataTypes), cppIncldues)
-object DoubleBitBinaryConversion extends ArbitraryConversion("DoubleBitBinary", List(serializer, dataTypes), cppIncldues)
-object AnalogConversion extends ArbitraryConversion("Analog", List(serializer, dataTypes), cppIncldues)
-object CounterConversion extends ArbitraryConversion("Counter", List(serializer, dataTypes), cppIncldues)
-object FrozenCounterConversion extends ArbitraryConversion("FrozenCounter", List(serializer, dataTypes), cppIncldues)
-object BinaryOutputStatusConversion extends ArbitraryConversion("BinaryOutputStatus", List(serializer, dataTypes), cppIncldues)
-object AnalogOutputStatusConversion extends ArbitraryConversion("AnalogOutputStatus", List(serializer, dataTypes), cppIncldues)
-object CrobConversion extends ArbitraryConversion("ControlRelayOutputBlock", List(serializer, crob), cppIncldues)
-object AnalogOutputInt16Conversion extends ArbitraryConversion("AnalogOutputInt16", List(serializer, ao), cppIncldues)
-object AnalogOutputInt32Conversion extends ArbitraryConversion("AnalogOutputInt32", List(serializer, ao), cppIncldues)
-object AnalogOutputFloat32Conversion extends ArbitraryConversion("AnalogOutputFloat32", List(serializer, ao), cppIncldues)
-object AnalogOutputDouble64Conversion extends ArbitraryConversion("AnalogOutputDouble64", List(serializer, ao), cppIncldues)
-object TimeAndIntervalConversion extends ArbitraryConversion("TimeAndInterval", List(serializer,timeAndInterval), cppIncldues)
-object BinaryCommandEventConversion extends ArbitraryConversion("BinaryCommandEvent", List(serializer,binaryCommandEvent), cppIncldues)
-object AnalogCommandEventConversion extends ArbitraryConversion("AnalogCommandEvent", List(serializer,analogCommandEvent), cppIncldues)
+object BinaryConversion extends ArbitraryConversion("Binary", List(serializer, dataTypes), cppIncludes)
+object DoubleBitBinaryConversion extends ArbitraryConversion("DoubleBitBinary", List(serializer, dataTypes), cppIncludes)
+object AnalogConversion extends ArbitraryConversion("Analog", List(serializer, dataTypes), cppIncludes)
+object CounterConversion extends ArbitraryConversion("Counter", List(serializer, dataTypes), cppIncludes)
+object FrozenCounterConversion extends ArbitraryConversion("FrozenCounter", List(serializer, dataTypes), cppIncludes)
+object BinaryOutputStatusConversion extends ArbitraryConversion("BinaryOutputStatus", List(serializer, dataTypes), cppIncludes)
+object AnalogOutputStatusConversion extends ArbitraryConversion("AnalogOutputStatus", List(serializer, dataTypes), cppIncludes)
+object CrobConversion extends ArbitraryConversion("ControlRelayOutputBlock", List(serializer, crob), cppIncludes)
+object AnalogOutputInt16Conversion extends ArbitraryConversion("AnalogOutputInt16", List(serializer, ao), cppIncludes)
+object AnalogOutputInt32Conversion extends ArbitraryConversion("AnalogOutputInt32", List(serializer, ao), cppIncludes)
+object AnalogOutputFloat32Conversion extends ArbitraryConversion("AnalogOutputFloat32", List(serializer, ao), cppIncludes)
+object AnalogOutputDouble64Conversion extends ArbitraryConversion("AnalogOutputDouble64", List(serializer, ao), cppIncludes)
+object TimeAndIntervalConversion extends ArbitraryConversion("TimeAndInterval", List(serializer,timeAndInterval), cppIncludes)
+object BinaryCommandEventConversion extends ArbitraryConversion("BinaryCommandEvent", List(serializer,binaryCommandEvent), cppIncludes)
+object AnalogCommandEventConversion extends ArbitraryConversion("AnalogCommandEvent", List(serializer,analogCommandEvent), cppIncludes)
 
 trait ConversionToBinary {
   self : FixedSize =>

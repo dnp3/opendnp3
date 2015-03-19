@@ -4,7 +4,7 @@ import com.automatak.render.dnp3.objects._
 import com.automatak.render.dnp3.objects.VariationNames._
 
 object Group1 extends ObjectGroup {
-  def objects = List(Group1Var0, Group1Var2, Group1Var1)
+  def objects = List(Group1Var0, Group1Var1, Group1Var2)
   def desc: String = "Binary Input"
   def group: Byte = 1
 }
