@@ -33,7 +33,7 @@ using namespace opendnp3;
 
 namespace secauthv5
 {
-	void OSecActions::ProcessChangeSessionKeys(SecurityState& sstate, opendnp3::OState& ostate, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change)
+	void OSecActions::ProcessChangeSessionKeys(SecurityState& sstate, opendnp3::OState& ostate, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6Def& change)
 	{
 		User user(change.user);
 
@@ -152,7 +152,7 @@ namespace secauthv5
 		}		
 	}	
 
-	void OSecActions::ProcessAuthReply(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var2& reply)
+	void OSecActions::ProcessAuthReply(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var2Def& reply)
 	{
 		// first look-up the session for the specified user
 		User user(reply.user);
@@ -220,7 +220,7 @@ namespace secauthv5
 		rsp.SetControl(header.control);
 		auto writer = rsp.GetWriter();
 		
-		Group120Var7 error;
+		Group120Var7Def error;
 		error.seqNum = seqNum;
 		error.userNum = user.GetId();
 		error.associationID = sstate.settings.assocId;

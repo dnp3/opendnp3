@@ -34,11 +34,11 @@
 
 namespace opendnp3 {
 
-struct Group120Var5
+	struct Group120Var5Def
 {
-	Group120Var5();
+	Group120Var5Def();
 
-	Group120Var5(
+	Group120Var5Def(
 		uint32_t keyChangeSeqNum,
 		uint16_t userNum,
 		KeyWrapAlgorithm keywrapAlgorithm,
@@ -60,8 +60,8 @@ struct Group120Var5
 	openpal::ReadBufferView challengeData;
 	openpal::ReadBufferView hmacValue;
 	
-	static bool Read(const openpal::ReadBufferView& buffer, Group120Var5& output);
-	static bool Write(const Group120Var5& output, openpal::WriteBufferView& buffer);
+	static bool Read(const openpal::ReadBufferView& buffer, Group120Var5Def& output);
+	static bool Write(const Group120Var5Def& output, openpal::WriteBufferView& buffer);
 
 	// The size of all the fixed size fields in the serialized object	
 	static const uint32_t FIXED_BASE_SIZE = 11;		

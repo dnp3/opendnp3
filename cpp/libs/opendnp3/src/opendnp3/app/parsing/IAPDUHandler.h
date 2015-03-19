@@ -67,10 +67,10 @@ public:
 	virtual void OnCountOf(const HeaderRecord& record, const IterableBuffer<Group52Var2>& times) = 0;	
 	virtual void OnCountOf(const HeaderRecord& record, const IterableBuffer<Group120Var4>& values) = 0;	
 
-	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var1& value) = 0;
-	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var2& value) = 0;
-	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var5& value) = 0;
-	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var6& value) = 0;
+	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var1Def& value) = 0;
+	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var2Def& value) = 0;
+	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var5Def& value) = 0;
+	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var6Def& value) = 0;
 
 	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<IINValue, uint16_t>>& meas) = 0;
 

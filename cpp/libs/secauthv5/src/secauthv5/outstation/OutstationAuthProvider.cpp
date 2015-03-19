@@ -137,12 +137,12 @@ void OutstationAuthProvider::OnUnknownRequest(OState& ostate, const openpal::Rea
 	}	
 }
 
-void OutstationAuthProvider::OnAuthChallenge(OState& ostate, const openpal::ReadBufferView& fragment, const APDUHeader& header, const Group120Var1& challenge)
+void OutstationAuthProvider::OnAuthChallenge(OState& ostate, const openpal::ReadBufferView& fragment, const APDUHeader& header, const Group120Var1Def& challenge)
 {	
 	sstate.pState = sstate.pState->OnAuthChallenge(sstate, ostate, header, challenge);
 }
 
-void OutstationAuthProvider::OnAuthReply(OState& ostate, const openpal::ReadBufferView& fragment, const APDUHeader& header, const Group120Var2& reply)
+void OutstationAuthProvider::OnAuthReply(OState& ostate, const openpal::ReadBufferView& fragment, const APDUHeader& header, const Group120Var2Def& reply)
 {	
 	sstate.pState = sstate.pState->OnAuthReply(sstate, ostate, header, reply);
 }
@@ -152,7 +152,7 @@ void OutstationAuthProvider::OnRequestKeyStatus(OState& ostate, const openpal::R
 	sstate.pState = sstate.pState->OnRequestKeyStatus(sstate, ostate, header, status);	
 }
 
-void OutstationAuthProvider::OnChangeSessionKeys(OState& ostate, const openpal::ReadBufferView& fragment, const APDUHeader& header, const Group120Var6& change)
+void OutstationAuthProvider::OnChangeSessionKeys(OState& ostate, const openpal::ReadBufferView& fragment, const APDUHeader& header, const Group120Var6Def& change)
 {
 	sstate.pState = sstate.pState->OnChangeSessionKeys(sstate, ostate, fragment, header, change);	
 }

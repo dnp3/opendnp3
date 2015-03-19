@@ -38,8 +38,8 @@ TEST_CASE(SUITE("Parser rejects empty buffer"))
 {
 	HexSequence buffer("");
 
-	Group120Var5 output;	
-	REQUIRE(!Group120Var5::Read(buffer.ToReadOnly(), output));
+	Group120Var5Def output;
+	REQUIRE(!Group120Var5Def::Read(buffer.ToReadOnly(), output));
 }
 
 TEST_CASE(SUITE("Parser accepts empty challenge data and hmac"))
@@ -47,8 +47,8 @@ TEST_CASE(SUITE("Parser accepts empty challenge data and hmac"))
 	// SEQ = 1, USER = 7, KeyWrap = 2 (AES256), KeyStatus = 1 (OK), MacAlgo = 4 (SHA-256 trunc 16), challenge len = 0
 	HexSequence buffer("01 00 00 00 07 00 02 01 04 00 00");
 
-	Group120Var5 output;
-	REQUIRE(Group120Var5::Read(buffer.ToReadOnly(), output));
+	Group120Var5Def output;
+	REQUIRE(Group120Var5Def::Read(buffer.ToReadOnly(), output));
 	REQUIRE(output.keyChangeSeqNum == 1);
 	REQUIRE(output.userNum == 7);
 	REQUIRE(output.keywrapAlgorithm == KeyWrapAlgorithm::AES_256);
@@ -63,8 +63,8 @@ TEST_CASE(SUITE("Parser correctly interprets challenge data and hmac value"))
 	// SEQ = 1, USER = 7, KeyWrap = 2 (AES256), KeyStatus = 1 (OK), MacAlgo = 4 (SHA-256 trunc 16), challenge len = 3
 	HexSequence buffer("01 00 00 00 07 00 02 01 04 03 00 DE AD BE EF");
 
-	Group120Var5 output;
-	REQUIRE(Group120Var5::Read(buffer.ToReadOnly(), output));	
+	Group120Var5Def output;
+	REQUIRE(Group120Var5Def::Read(buffer.ToReadOnly(), output));
 	REQUIRE(ToHex(output.challengeData) == "DE AD BE");
 	REQUIRE(ToHex(output.hmacValue) == "EF");
 }
@@ -74,8 +74,8 @@ TEST_CASE(SUITE("Parser rejects one less than minimum required data"))
 	// SEQ = 1, USER = 7, KeyWrap = 2 (AES256), KeyStatus = 1 (OK), MacAlgo = 4 (SHA-256 trunc 16), challenge len = ??? missing
 	HexSequence buffer("01 00 00 00 07 00 02 01 04 00");
 
-	Group120Var5 output;
-	REQUIRE(!Group120Var5::Read(buffer.ToReadOnly(), output));	
+	Group120Var5Def output;
+	REQUIRE(!Group120Var5Def::Read(buffer.ToReadOnly(), output));
 }
 
 TEST_CASE(SUITE("Parser rejects if specified challenge data is missing"))
@@ -83,8 +83,8 @@ TEST_CASE(SUITE("Parser rejects if specified challenge data is missing"))
 	// SEQ = 1, USER = 7, KeyWrap = 2 (AES256), KeyStatus = 1 (OK), MacAlgo = 4 (SHA-256 trunc 16), challenge len = 1, missing data
 	HexSequence buffer("01 00 00 00 07 00 02 01 04 01 00");
 
-	Group120Var5 output;
-	REQUIRE(!Group120Var5::Read(buffer.ToReadOnly(), output));
+	Group120Var5Def output;
+	REQUIRE(!Group120Var5Def::Read(buffer.ToReadOnly(), output));
 }
 
 TEST_CASE(SUITE("Formatter correctly writes when sufficient space"))
@@ -92,7 +92,7 @@ TEST_CASE(SUITE("Formatter correctly writes when sufficient space"))
 	HexSequence challenge("DE AD"); 
 	HexSequence hmac("BE EF");
 
-	Group120Var5 status(8, 3, KeyWrapAlgorithm::AES_256, KeyStatus::OK, HMACType::HMAC_SHA1_TRUNC_8, challenge, hmac);	
+	Group120Var5Def status(8, 3, KeyWrapAlgorithm::AES_256, KeyStatus::OK, HMACType::HMAC_SHA1_TRUNC_8, challenge, hmac);
 	const uint32_t SIZE = status.Size();
 
 	REQUIRE(SIZE == 15);
@@ -100,7 +100,7 @@ TEST_CASE(SUITE("Formatter correctly writes when sufficient space"))
 	DynamicBuffer output(SIZE);
 
 	auto dest = output.GetWriteBufferView();
-	REQUIRE(Group120Var5::Write(status, dest));	
+	REQUIRE(Group120Var5Def::Write(status, dest));
 	uint32_t numWritten = output.Size() - dest.Size();
 
 	REQUIRE(numWritten == SIZE);	
@@ -112,7 +112,7 @@ TEST_CASE(SUITE("Formatter rejects when one less than required space"))
 	HexSequence challenge("DE AD BE EF");
 	HexSequence hmac("AB BA");
 
-	Group120Var5 status(8, 3, KeyWrapAlgorithm::AES_256, KeyStatus::OK, HMACType::HMAC_SHA1_TRUNC_8, challenge, hmac);
+	Group120Var5Def status(8, 3, KeyWrapAlgorithm::AES_256, KeyStatus::OK, HMACType::HMAC_SHA1_TRUNC_8, challenge, hmac);
 	const uint32_t SIZE = status.Size();
 
 	REQUIRE(SIZE == 17);
@@ -120,6 +120,6 @@ TEST_CASE(SUITE("Formatter rejects when one less than required space"))
 	DynamicBuffer output(SIZE - 1);
 
 	auto dest = output.GetWriteBufferView();
-	REQUIRE(!Group120Var5::Write(status, dest));
+	REQUIRE(!Group120Var5Def::Write(status, dest));
 	REQUIRE(dest.Size() == output.Size());
 }

@@ -152,7 +152,7 @@ namespace hex
 
 		HexSequence challengeBuff(challengeDataHex);
 
-		Group120Var1 rsp(
+		Group120Var1Def rsp(
 			csq,
 			user,
 			hmacType,
@@ -186,7 +186,7 @@ namespace hex
 		HexSequence challengeBuff(challenge);
 		HexSequence hmacBuff(hmac);
 
-		Group120Var5 rsp;
+		Group120Var5Def rsp;
 		rsp.keyChangeSeqNum = ksq;
 		rsp.userNum = user;
 		rsp.keywrapAlgorithm = keyWrap;
@@ -214,7 +214,7 @@ namespace hex
 
 		HexSequence keyBuffer(keyWrapData);
 		
-		Group120Var6 rsp;
+		Group120Var6Def rsp;
 		rsp.seq = ksq;
 		rsp.user = user;
 		rsp.data = keyBuffer.ToReadOnly();		

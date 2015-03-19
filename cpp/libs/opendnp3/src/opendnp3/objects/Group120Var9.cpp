@@ -23,15 +23,15 @@
 
 namespace opendnp3 {
 	
-	Group120Var9::Group120Var9(const openpal::ReadBufferView& hmacValue_) : hmacValue(hmacValue_) {}	
+	Group120Var9Def::Group120Var9Def(const openpal::ReadBufferView& hmacValue_) : hmacValue(hmacValue_) {}
 	
-	bool Group120Var9::Read(const openpal::ReadBufferView& buffer, Group120Var9& output)
+	bool Group120Var9Def::Read(const openpal::ReadBufferView& buffer, Group120Var9Def& output)
 	{
 		output.hmacValue = buffer;
 		return true;
 	}
 
-	bool Group120Var9::Write(const Group120Var9& output, openpal::WriteBufferView& buffer)
+	bool Group120Var9Def::Write(const Group120Var9Def& output, openpal::WriteBufferView& buffer)
 	{
 		if (buffer.Size() < output.Size())
 		{

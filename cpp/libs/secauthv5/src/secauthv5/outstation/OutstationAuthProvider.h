@@ -67,13 +67,13 @@ class OutstationAuthProvider : public opendnp3::IOutstationAuthProvider, private
 
 	//// --- IAuthRequestHandler ----
 
-	virtual void OnAuthChallenge(opendnp3::OState& ostate, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge) override final;
+	virtual void OnAuthChallenge(opendnp3::OState& ostate, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var1Def& challenge) override final;
 
-	virtual void OnAuthReply(opendnp3::OState& ostate, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var2& reply) override final;
+	virtual void OnAuthReply(opendnp3::OState& ostate, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var2Def& reply) override final;
 
 	virtual void OnRequestKeyStatus(opendnp3::OState& ostate, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var4& status) override final;
 
-	virtual void OnChangeSessionKeys(opendnp3::OState& ostate, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change) override final;
+	virtual void OnChangeSessionKeys(opendnp3::OState& ostate, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6Def& change) override final;
 
 	/// --- State ---
 

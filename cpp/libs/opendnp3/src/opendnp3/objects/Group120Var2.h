@@ -28,12 +28,12 @@
 
 namespace opendnp3 {
 
-struct Group120Var2 : public SeqUserData
+	struct Group120Var2Def : public SeqUserData
 {
-	Group120Var2() : SeqUserData()
+	Group120Var2Def() : SeqUserData()
 	{}
 
-	Group120Var2(
+	Group120Var2Def(
 		uint32_t challengeSeqNum,
 		uint16_t userNum,
 		const openpal::ReadBufferView& challengeData
@@ -43,12 +43,12 @@ struct Group120Var2 : public SeqUserData
 
 	static GroupVariationID ID() { return GroupVariationID(120,2); }		
 	
-	inline static bool Read(const openpal::ReadBufferView& buffer, Group120Var2& output)
+	inline static bool Read(const openpal::ReadBufferView& buffer, Group120Var2Def& output)
 	{
 		return SeqUserData::Read(buffer, output);
 	}
 
-	inline static bool Write(const Group120Var2& output, openpal::WriteBufferView& buffer)
+	inline static bool Write(const Group120Var2Def& output, openpal::WriteBufferView& buffer)
 	{
 		return SeqUserData::Write(output, buffer);
 	}

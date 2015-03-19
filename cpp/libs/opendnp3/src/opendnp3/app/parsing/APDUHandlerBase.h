@@ -59,10 +59,10 @@ public:
 
 	virtual void OnCountRequest(const HeaderRecord& record, uint16_t count) override final;
 
-	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var1& value) override final;
-	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var2& value) override final;
-	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var5& value) override final;
-	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var6& value) override final;
+	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var1Def& value) override final;
+	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var2Def& value) override final;
+	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var5Def& value) override final;
+	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var6Def& value) override final;
 
 
 	virtual void OnCountOf(const HeaderRecord& record, const opendnp3::IterableBuffer<Group50Var1>&) override final;
@@ -126,10 +126,10 @@ protected:
 	virtual IINField ProcessRangeRequest(const HeaderRecord& record, const Range& range);
 	virtual IINField ProcessCountRequest(const HeaderRecord& record, uint16_t count);
 
-	virtual IINField ProcessFreeFormat(const HeaderRecord& record, const Group120Var1& value);
-	virtual IINField ProcessFreeFormat(const HeaderRecord& record, const Group120Var2& value);
-	virtual IINField ProcessFreeFormat(const HeaderRecord& record, const Group120Var5& value);
-	virtual IINField ProcessFreeFormat(const HeaderRecord& record, const Group120Var6& value);
+	virtual IINField ProcessFreeFormat(const HeaderRecord& record, const Group120Var1Def& value);
+	virtual IINField ProcessFreeFormat(const HeaderRecord& record, const Group120Var2Def& value);
+	virtual IINField ProcessFreeFormat(const HeaderRecord& record, const Group120Var5Def& value);
+	virtual IINField ProcessFreeFormat(const HeaderRecord& record, const Group120Var6Def& value);
 
 	virtual IINField ProcessIIN(const HeaderRecord& record, const IterableBuffer<IndexedValue<IINValue, uint16_t>>& meas);
 

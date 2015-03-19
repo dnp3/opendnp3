@@ -75,14 +75,14 @@ namespace secauthv5
 
 	bool KeyChangeState::EqualsLastStatusResponse(const openpal::ReadBufferView& unwrappedKeyStatus)
 	{
-		Group120Var5 copy(statusRsp);
+		Group120Var5Def copy(statusRsp);
 		copy.hmacValue = ReadBufferView::Empty(); // exclude the HMAC from the comparison
 
-		const uint32_t MAX_SIZE = Group120Var5::FIXED_BASE_SIZE + AuthConstants::MAX_CHALLENGE_DATA_SIZE;
+		const uint32_t MAX_SIZE = Group120Var5Def::FIXED_BASE_SIZE + AuthConstants::MAX_CHALLENGE_DATA_SIZE;
 		openpal::StaticBuffer<MAX_SIZE> buffer;
 		
 		auto dest = buffer.GetWriteBuffer();
-		if (!Group120Var5::Write(copy, dest))
+		if (!Group120Var5Def::Write(copy, dest))
 		{
 			SIMPLE_LOG_BLOCK(logger, flags::ERR, "Unable to write last response to buffer");
 			return false;

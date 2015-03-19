@@ -18,41 +18,54 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef OPENDNP3_GROUP12_H
-#define OPENDNP3_GROUP12_H
+#ifndef OPENDNP3_GROUP70_H
+#define OPENDNP3_GROUP70_H
 
 #include <openpal/container/ReadBufferView.h>
 #include <openpal/container/WriteBufferView.h>
 #include "opendnp3/Types.h"
 #include "opendnp3/app/GroupVariationID.h"
-#include "opendnp3/app/DNP3Serializer.h"
-#include "opendnp3/app/ControlRelayOutputBlock.h"
 
 namespace opendnp3 {
 
-struct Group12Var0
+struct Group70Var1
 {
-  static GroupVariationID ID() { return GroupVariationID(12,0); }
+  static GroupVariationID ID() { return GroupVariationID(70,1); }
 };
 
-struct Group12Var1
+struct Group70Var2
 {
-  static GroupVariationID ID() { return GroupVariationID(12,1); }
-  static uint32_t Size() { return 11; }
-  static bool Read(openpal::ReadBufferView&, Group12Var1&);
-  static bool Write(const Group12Var1&, openpal::WriteBufferView&);
+  static GroupVariationID ID() { return GroupVariationID(70,2); }
+};
 
-  static DNP3Serializer<ControlRelayOutputBlock> Inst() { return DNP3Serializer<ControlRelayOutputBlock>(ID(), Size(), &ReadTarget, &WriteTarget); }
+struct Group70Var3
+{
+  static GroupVariationID ID() { return GroupVariationID(70,3); }
+};
 
-  typedef ControlRelayOutputBlock Target;
-  static bool ReadTarget(openpal::ReadBufferView&, ControlRelayOutputBlock&);
-  static bool WriteTarget(const ControlRelayOutputBlock&, openpal::WriteBufferView&);
+struct Group70Var4
+{
+  static GroupVariationID ID() { return GroupVariationID(70,4); }
+};
 
-  uint8_t code;
-  uint8_t count;
-  uint32_t onTime;
-  uint32_t offTime;
-  uint8_t status;
+struct Group70Var5
+{
+  static GroupVariationID ID() { return GroupVariationID(70,5); }
+};
+
+struct Group70Var6
+{
+  static GroupVariationID ID() { return GroupVariationID(70,6); }
+};
+
+struct Group70Var7
+{
+  static GroupVariationID ID() { return GroupVariationID(70,7); }
+};
+
+struct Group70Var8
+{
+  static GroupVariationID ID() { return GroupVariationID(70,8); }
 };
 
 

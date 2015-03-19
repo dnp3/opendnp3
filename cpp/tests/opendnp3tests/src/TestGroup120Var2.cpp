@@ -38,8 +38,8 @@ TEST_CASE(SUITE("Parser rejects empty buffer"))
 {
 	HexSequence buffer("");
 
-	Group120Var2 output;
-	bool success = Group120Var2::Read(buffer.ToReadOnly(), output);	
+	Group120Var2Def output;
+	bool success = Group120Var2Def::Read(buffer.ToReadOnly(), output);
 	REQUIRE(!success);
 }
 
@@ -47,8 +47,8 @@ TEST_CASE(SUITE("Parser identifies data field"))
 {
 	HexSequence buffer("04 00 00 00 09 01 AB BA");
 
-	Group120Var2 output;	
-	REQUIRE(Group120Var2::Read(buffer.ToReadOnly(), output));
+	Group120Var2Def output;
+	REQUIRE(Group120Var2Def::Read(buffer.ToReadOnly(), output));
 	REQUIRE(output.seq == 4);
 	REQUIRE(output.user == 265);
 	REQUIRE(ToHex(output.data) == "AB BA");
@@ -58,8 +58,8 @@ TEST_CASE(SUITE("Parser allows empty data field"))
 {
 	HexSequence buffer("04 00 00 00 09 01");
 
-	Group120Var2 output;
-	REQUIRE(Group120Var2::Read(buffer.ToReadOnly(), output));
+	Group120Var2Def output;
+	REQUIRE(Group120Var2Def::Read(buffer.ToReadOnly(), output));
 	REQUIRE(output.seq == 4);
 	REQUIRE(output.user == 265);
 	REQUIRE(output.data.IsEmpty());
@@ -68,6 +68,6 @@ TEST_CASE(SUITE("Parser allows empty data field"))
 TEST_CASE(SUITE("Parser rejects one less than min length"))
 {
 	HexSequence buffer("04 00 00 00 09");
-	Group120Var2 output;
-	REQUIRE(!Group120Var2::Read(buffer.ToReadOnly(), output));	
+	Group120Var2Def output;
+	REQUIRE(!Group120Var2Def::Read(buffer.ToReadOnly(), output));
 }

@@ -18,42 +18,19 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef OPENDNP3_GROUP1_H
-#define OPENDNP3_GROUP1_H
+#ifndef OPENDNP3_GROUP113_H
+#define OPENDNP3_GROUP113_H
 
 #include <openpal/container/ReadBufferView.h>
 #include <openpal/container/WriteBufferView.h>
 #include "opendnp3/Types.h"
 #include "opendnp3/app/GroupVariationID.h"
-#include "opendnp3/app/DNP3Serializer.h"
-#include "opendnp3/app/MeasurementTypes.h"
 
 namespace opendnp3 {
 
-struct Group1Var0
+struct Group113Var0
 {
-  static GroupVariationID ID() { return GroupVariationID(1,0); }
-};
-
-struct Group1Var1
-{
-  static GroupVariationID ID() { return GroupVariationID(1,1); }
-};
-
-struct Group1Var2
-{
-  static GroupVariationID ID() { return GroupVariationID(1,2); }
-  static uint32_t Size() { return 1; }
-  static bool Read(openpal::ReadBufferView&, Group1Var2&);
-  static bool Write(const Group1Var2&, openpal::WriteBufferView&);
-
-  static DNP3Serializer<Binary> Inst() { return DNP3Serializer<Binary>(ID(), Size(), &ReadTarget, &WriteTarget); }
-
-  typedef Binary Target;
-  static bool ReadTarget(openpal::ReadBufferView&, Binary&);
-  static bool WriteTarget(const Binary&, openpal::WriteBufferView&);
-
-  uint8_t flags;
+  static GroupVariationID ID() { return GroupVariationID(113,0); }
 };
 
 

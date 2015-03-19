@@ -112,10 +112,10 @@ EnumAndType GroupVariationRecord::GetEnumAndType(uint8_t group, uint8_t variatio
 		switch (group)
 		{
 		case(110) :
-			enumeration = GroupVariation::Group110AnyVar;
+			enumeration = GroupVariation::Group110Var0;
 			break;
 		case(111) :
-			enumeration = GroupVariation::Group111AnyVar;
+			enumeration = GroupVariation::Group110Var0;
 			break;
 		default:
 			break;

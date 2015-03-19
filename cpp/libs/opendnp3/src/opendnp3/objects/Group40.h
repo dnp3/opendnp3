@@ -30,6 +30,11 @@
 
 namespace opendnp3 {
 
+struct Group40Var0
+{
+  static GroupVariationID ID() { return GroupVariationID(40,0); }
+};
+
 struct Group40Var1
 {
   static GroupVariationID ID() { return GroupVariationID(40,1); }

@@ -30,11 +30,11 @@
 
 namespace opendnp3 {
 
-struct Group120Var9
+	struct Group120Var9Def
 {		
-	Group120Var9(const openpal::ReadBufferView& hmacValue);
+	Group120Var9Def(const openpal::ReadBufferView& hmacValue);
 
-	Group120Var9() {}
+	Group120Var9Def() {}
 
 	static GroupVariationID ID() { return GroupVariationID(120,9); }
 
@@ -42,9 +42,9 @@ struct Group120Var9
 	
 	openpal::ReadBufferView hmacValue;
 	
-	static bool Read(const openpal::ReadBufferView& buffer, Group120Var9& output);
+	static bool Read(const openpal::ReadBufferView& buffer, Group120Var9Def& output);
 
-	static bool Write(const Group120Var9& output, openpal::WriteBufferView& buffer);	
+	static bool Write(const Group120Var9Def& output, openpal::WriteBufferView& buffer);
 };
 
 }

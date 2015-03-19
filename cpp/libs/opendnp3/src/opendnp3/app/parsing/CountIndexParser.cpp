@@ -206,7 +206,7 @@ ParseResult CountIndexParser::ParseCountOfObjects(openpal::ReadBufferView& buffe
 		return CountIndexParser::From<Group43Var8>(count, numparser).Process(record, buffer, pHandler, pLogger);		
 	case(GroupVariation::Group50Var4) :
 		return CountIndexParser::From<Group50Var4>(count, numparser).Process(record, buffer, pHandler, pLogger);	
-	case(GroupVariation::Group111AnyVar) :
+	case(GroupVariation::Group111Var0) :
 		return ParseIndexPrefixedOctetData(buffer, record, numparser, count, pLogger, pHandler);
 	
 	default:

@@ -64,7 +64,7 @@ class KeyChangeState
 	openpal::ICryptoProvider* pProvider;
 	uint32_t keyChangeSeqNum;
 	openpal::StaticBuffer<AuthConstants::MAX_CHALLENGE_DATA_SIZE> challengeData;
-	opendnp3::Group120Var5 statusRsp;
+	opendnp3::Group120Var5Def statusRsp;
 	
 	
 };

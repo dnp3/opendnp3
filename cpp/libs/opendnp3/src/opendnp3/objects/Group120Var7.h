@@ -31,11 +31,11 @@
 
 namespace opendnp3 {
 
-struct Group120Var7
+struct Group120Var7Def
 {
-	Group120Var7();
+	Group120Var7Def();
 	
-	Group120Var7(
+	Group120Var7Def(
 		uint32_t seqNum,
 		uint16_t userNum,
 		uint16_t associationID,
@@ -55,9 +55,9 @@ struct Group120Var7
 	DNPTime timeOfError;
 	openpal::ReadBufferView errorText;
 	
-	static bool Read(const openpal::ReadBufferView& buffer, Group120Var7& output);
+	static bool Read(const openpal::ReadBufferView& buffer, Group120Var7Def& output);
 
-	static bool Write(const Group120Var7& output, openpal::WriteBufferView& buffer);
+	static bool Write(const Group120Var7Def& output, openpal::WriteBufferView& buffer);
 
 	private:
 

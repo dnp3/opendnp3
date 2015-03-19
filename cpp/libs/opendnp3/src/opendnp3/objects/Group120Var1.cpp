@@ -30,7 +30,7 @@ using namespace openpal;
 
 namespace opendnp3 {
 
-Group120Var1::Group120Var1() : 
+Group120Var1Def::Group120Var1Def() :
 	challengeSeqNum(0),
 	userNum(0),
 	hmacType(HMACType::UNKNOWN),
@@ -39,7 +39,7 @@ Group120Var1::Group120Var1() :
 		
 }
 
-Group120Var1::Group120Var1(
+Group120Var1Def::Group120Var1Def(
 	uint32_t challengeSeqNum_,
 	uint16_t userNum_,
 	HMACType hmacType_,
@@ -55,12 +55,12 @@ Group120Var1::Group120Var1(
 
 }
 
-uint32_t Group120Var1::Size() const
+uint32_t Group120Var1Def::Size() const
 {
 	return 8 + challengeData.Size();
 }
 
-bool Group120Var1::Read(const openpal::ReadBufferView& data, Group120Var1& output)
+bool Group120Var1Def::Read(const openpal::ReadBufferView& data, Group120Var1Def& output)
 {
 	if (data.Size() < MINIMUM_SIZE)
 	{		
@@ -78,7 +78,7 @@ bool Group120Var1::Read(const openpal::ReadBufferView& data, Group120Var1& outpu
 	}
 }
 
-bool Group120Var1::Write(const Group120Var1& output, openpal::WriteBufferView& buffer)
+bool Group120Var1Def::Write(const Group120Var1Def& output, openpal::WriteBufferView& buffer)
 {
 	if (buffer.Size() < output.Size())
 	{

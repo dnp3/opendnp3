@@ -27,7 +27,7 @@ using namespace openpal;
 
 namespace opendnp3 {
 
-Group120Var5::Group120Var5() :
+Group120Var5Def::Group120Var5Def() :
 	keyChangeSeqNum(0),
 	userNum(0),
 	keywrapAlgorithm(KeyWrapAlgorithm::UNDEFINED),
@@ -37,7 +37,7 @@ Group120Var5::Group120Var5() :
 	
 }
 
-Group120Var5::Group120Var5(
+Group120Var5Def::Group120Var5Def(
 		uint32_t keyChangeSeqNum_,
 		uint16_t userNum_,
 		KeyWrapAlgorithm keywrapAlgorithm_,
@@ -57,13 +57,13 @@ Group120Var5::Group120Var5(
 	
 }
 
-uint32_t Group120Var5::Size() const
+uint32_t Group120Var5Def::Size() const
 {
 	return FIXED_BASE_SIZE + challengeData.Size() + hmacValue.Size();
 }
 	
 	
-bool Group120Var5::Read(const openpal::ReadBufferView& buffer, Group120Var5& output)
+bool Group120Var5Def::Read(const openpal::ReadBufferView& buffer, Group120Var5Def& output)
 {
 	if (buffer.Size() < FIXED_BASE_SIZE)
 	{
@@ -96,7 +96,7 @@ bool Group120Var5::Read(const openpal::ReadBufferView& buffer, Group120Var5& out
 	}
 }
 
-bool Group120Var5::Write(const Group120Var5& output, openpal::WriteBufferView& buffer)
+bool Group120Var5Def::Write(const Group120Var5Def& output, openpal::WriteBufferView& buffer)
 {
 	if (	output.challengeData.Size() <= openpal::MaxValue<uint16_t>() &&
 			output.hmacValue.Size() <= openpal::MaxValue<uint16_t>() &&

@@ -27,7 +27,7 @@ using namespace openpal;
 
 namespace opendnp3 {
 
-	Group120Var7::Group120Var7() :
+	Group120Var7Def::Group120Var7Def() :
 		seqNum(0),
 		userNum(0),
 		associationID(0),
@@ -37,7 +37,7 @@ namespace opendnp3 {
 	
 	}
 	
-	Group120Var7::Group120Var7(
+	Group120Var7Def::Group120Var7Def(
 		uint32_t seqNum_,
 		uint16_t userNum_,
 		uint16_t associationID_,
@@ -53,12 +53,12 @@ namespace opendnp3 {
 		errorText(errorText_)
 	{}
 
-	uint32_t Group120Var7::Size() const
+	uint32_t Group120Var7Def::Size() const
 	{
 		return FIXED_BASE_SIZE + errorText.Size();
 	}
 	
-	bool Group120Var7::Read(const ReadBufferView& buffer, Group120Var7& output)
+	bool Group120Var7Def::Read(const ReadBufferView& buffer, Group120Var7Def& output)
 	{
 		if (buffer.Size() < output.Size())
 		{
@@ -77,7 +77,7 @@ namespace opendnp3 {
 		}
 	}
 
-	bool Group120Var7::Write(const Group120Var7& output, openpal::WriteBufferView& buffer)
+	bool Group120Var7Def::Write(const Group120Var7Def& output, openpal::WriteBufferView& buffer)
 	{
 		if (buffer.Size() < output.Size())
 		{

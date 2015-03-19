@@ -31,11 +31,11 @@
 
 namespace opendnp3 {
 
-struct Group120Var1
+struct Group120Var1Def
 {
-	Group120Var1();
+	Group120Var1Def();
 
-	Group120Var1(
+	Group120Var1Def(
 		uint32_t challengeSeqNum,
 		uint16_t userNum,
 		HMACType hmacType,
@@ -53,10 +53,9 @@ struct Group120Var1
 	ChallengeReason reason;	
 	openpal::ReadBufferView challengeData;
 	
-	static bool Read(const openpal::ReadBufferView& buffer, Group120Var1& output);
+	static bool Read(const openpal::ReadBufferView& buffer, Group120Var1Def& output);
 
-	static bool Write(const Group120Var1& output, openpal::WriteBufferView& buffer);
-
+	static bool Write(const Group120Var1Def& output, openpal::WriteBufferView& buffer);
 
 	static const uint32_t MINIMUM_SIZE = 8;
 		

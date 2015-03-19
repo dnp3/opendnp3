@@ -59,11 +59,11 @@ struct AggModeHMACResult
 	AggModeHMACResult(opendnp3::ParseResult result_);
 
 	// success constructor
-	AggModeHMACResult(const opendnp3::Group120Var9& hmac, const openpal::ReadBufferView& objects);
+	AggModeHMACResult(const opendnp3::Group120Var9Def& hmac, const openpal::ReadBufferView& objects);
 
 
 	opendnp3::ParseResult result;	
-	opendnp3::Group120Var9 hmac;
+	opendnp3::Group120Var9Def hmac;
 	openpal::ReadBufferView objects;
 
 	AggModeHMACResult() = delete;
