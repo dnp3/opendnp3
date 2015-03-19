@@ -3,7 +3,7 @@ package com.automatak.render.dnp3.objects.groups
 import com.automatak.render.dnp3.objects.{ConversionToAnalogCommandEvent, FixedSize, FixedSizeField, ObjectGroup}
 
 import FixedSizeField._
-import com.automatak.render.dnp3.objects.ObjectNames._
+import com.automatak.render.dnp3.objects.VariationNames._
 
 //analog output events
 object Group43 extends ObjectGroup {

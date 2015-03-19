@@ -10,5 +10,5 @@ object Group121 extends ObjectGroup {
   def desc: String = "Security statistic"
 }
 
-object Group121Var1 extends FixedSize(Group121, 1, ObjectNames.bit32WithFlag)(flags, assocId, count32)
+object Group121Var1 extends FixedSize(Group121, 1, VariationNames.bit32WithFlag)(flags, assocId, count32)
 

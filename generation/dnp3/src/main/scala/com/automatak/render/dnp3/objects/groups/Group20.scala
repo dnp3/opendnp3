@@ -1,7 +1,7 @@
 package com.automatak.render.dnp3.objects.groups
 
 import com.automatak.render.dnp3.objects.{ConversionToCounter, FixedSize, ObjectGroup, FixedSizeField}
-import com.automatak.render.dnp3.objects.ObjectNames._
+import com.automatak.render.dnp3.objects.VariationNames._
 import FixedSizeField._
 
 // counters

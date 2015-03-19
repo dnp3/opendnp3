@@ -3,7 +3,7 @@ package com.automatak.render.dnp3.objects.groups
 import com.automatak.render.dnp3.objects.{ConversionToCounter, FixedSize, FixedSizeField, ObjectGroup}
 
 import FixedSizeField._
-import com.automatak.render.dnp3.objects.ObjectNames._
+import com.automatak.render.dnp3.objects.VariationNames._
 
 // counter event
 object Group22 extends ObjectGroup {

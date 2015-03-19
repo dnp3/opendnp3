@@ -1,7 +1,7 @@
 package com.automatak.render.dnp3.objects.groups
 
 import com.automatak.render.dnp3.objects._
-import com.automatak.render.dnp3.objects.ObjectNames._
+import com.automatak.render.dnp3.objects.VariationNames._
 
 object Group1 extends ObjectGroup {
   def objects = List(Group1Var0, Group1Var2, Group1Var1)

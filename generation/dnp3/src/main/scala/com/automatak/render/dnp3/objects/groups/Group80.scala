@@ -1,7 +1,7 @@
 package com.automatak.render.dnp3.objects.groups
 
 import com.automatak.render.dnp3.objects.{SingleBitfield, ObjectGroup}
-import com.automatak.render.dnp3.objects.ObjectNames._
+import com.automatak.render.dnp3.objects.VariationNames._
 
 object Group80 extends ObjectGroup {
   def objects = List(Group80Var1)

@@ -2,7 +2,7 @@ package com.automatak.render.dnp3.objects.groups
 
 import com.automatak.render.dnp3.objects._
 import FixedSizeField._
-import com.automatak.render.dnp3.objects.ObjectNames._
+import com.automatak.render.dnp3.objects.VariationNames._
 
 // frozen counter events
 object Group23 extends ObjectGroup {

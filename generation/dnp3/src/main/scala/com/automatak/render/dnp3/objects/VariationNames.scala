@@ -1,6 +1,9 @@
 package com.automatak.render.dnp3.objects
 
-object ObjectNames {
+/*
+Common variation names
+ */
+object VariationNames {
   val anyVariation = "Any Variation"
   val packedFormat = "Packed Format"
   val withFlags = "With Flags"
