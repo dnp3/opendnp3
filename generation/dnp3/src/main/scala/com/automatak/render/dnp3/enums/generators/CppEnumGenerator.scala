@@ -21,36 +21,39 @@ object CppEnumGenerator {
 
     val nsopendnp3 = "opendnp3"
 
-    def enums = List(
-      EnumConfig(FunctionCode(), true, true),
-      EnumConfig(QualifierCode(), true, true),
-      EnumConfig(LinkFunction(), true, true),
-      EnumConfig(MasterTaskType(), false, false),
-      EnumConfig(AssignClassType(), false, false),
-      EnumConfig(StaticTypeBitmask(), false, false),
-      EnumConfig(IntervalUnit(), true, true),
-      EnumConfig(GroupVariationEnum(), true, true),
-      EnumConfig(DoubleBit(), true, true),
-      EnumConfig(PointClass(), false, false),
-      EnumConfig(CommandStatus(), true, true),
-      EnumConfig(TaskCompletion(), false, true),
-      EnumConfig(ControlCode(), true, true),
-      EnumConfig(ChannelState(), false, true),
-      EnumConfig(TimeSyncMode(), false, false),
-      EnumConfig(RestartMode(), false, false),
-      EnumConfig(TimestampMode(), false, false),
-      EnumConfig(QualifierCode(), true, true),
-      EnumConfig(EventMode(), false, false),
-      EnumConfig(IndexMode(), false, false),
-      EnumConfig(HMACType(), true, true),
-      EnumConfig(ChallengeReason(), true, true),
-      EnumConfig(KeyWrapAlgorithm(), true, true),
-      EnumConfig(KeyStatus(), true, true),
-      EnumConfig(AuthErrorCode(), true, true),
-      EnumConfig(CertificateType(), true, true),
-      EnumConfig(ConfigAuthMode(), false, false)
-    ) ::: DefaultVariations.enums.map(m => EnumConfig(m, false, false)) ::: QualityMasks.enums.map(m => EnumConfig(m, false, false))
+    def fullEnums = List(
+      FunctionCode(),
+      QualifierCode(),
+      LinkFunction(),
+      IntervalUnit(),
+      ControlCode(),
+      GroupVariationEnum(),
+      DoubleBit(),
+      CommandStatus(),
+      HMACType(),
+      ChallengeReason(),
+      KeyWrapAlgorithm(),
+      KeyStatus(),
+      AuthErrorCode(),
+      CertificateType()
+    ).map(x => EnumConfig(x, true, true))
 
+    def simpleEnums = (List(
+      MasterTaskType(),
+      AssignClassType(),
+      StaticTypeBitmask(),
+      PointClass(),
+      TimeSyncMode(),
+      RestartMode(),
+      TimestampMode(),
+      EventMode(),
+      IndexMode(),
+      ConfigAuthMode()
+    ) ::: DefaultVariations.enums ::: QualityMasks.enums).map(x => EnumConfig(x, false, false))
+
+    def stringOnlyEnums = List(TaskCompletion(), ChannelState()).map(x => EnumConfig(x, false, true))
+
+    def enums = List(fullEnums, simpleEnums, stringOnlyEnums).flatten
 
     implicit val indent = CppIndentation()
 
