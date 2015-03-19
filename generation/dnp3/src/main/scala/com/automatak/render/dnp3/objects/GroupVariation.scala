@@ -22,6 +22,7 @@ sealed trait GroupVariation {
   def variation: Byte
   def parent: ObjectGroup
   def desc: String
+  def isFixedSize: Boolean = false
 }
 
 class AnyVariation(g: ObjectGroup, v: Byte) extends BasicGroupVariation(g,v, "Any Variation")
@@ -46,6 +47,8 @@ trait Conversion {
 }
 
 class FixedSize(g: ObjectGroup, v: Byte, description: String)(fs: FixedSizeField*) extends BasicGroupVariation(g,v, description) {
+
+  final override def isFixedSize : Boolean = true
 
   def conversion: Option[Conversion] = None // overridable
 

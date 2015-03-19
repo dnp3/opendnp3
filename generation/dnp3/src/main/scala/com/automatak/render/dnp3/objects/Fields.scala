@@ -20,6 +20,7 @@ object FixedSizeField {
 
   //common flags field
   val flags = FixedSizeField("flags", UInt8Field)
+  val assocId = FixedSizeField("assocId", UInt16Field)
 
 
   // timestamps

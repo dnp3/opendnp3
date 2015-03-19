@@ -7,7 +7,8 @@ import com.automatak.render.dnp3.objects.FixedSizeField._
 object Group121 extends ObjectGroup {
   def objects = List(Group121Var1)
   def group: Byte = 121
+  def desc: String = "Security statistic"
 }
 
-object Group121Var1 extends FixedSize(Group121, 1)(flags, assocId, count32)
+object Group121Var1 extends FixedSize(Group121, 1, ObjectNames.bit32WithFlag)(flags, assocId, count32)
 
