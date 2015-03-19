@@ -3,7 +3,7 @@ package com.automatak.render.cpp
 import com.automatak.render.Indentation
 
 object CppIndentation {
-  def apply(): Indentation = IndentationImpl("  ")
+  def apply(): Indentation = IndentationImpl("\t")
 }
 
 

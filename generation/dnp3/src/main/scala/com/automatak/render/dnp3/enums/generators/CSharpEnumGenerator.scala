@@ -35,7 +35,7 @@ object CSharpEnumGenerator {
       RestartMode(),
       TimestampMode(),
       QualifierCode(),
-      GroupVariation(),
+      GroupVariationEnum(),
       EventMode(),
       IndexMode()
     ).map(e => EnumConfig.apply(e, dir)) ::: events ::: qualityMasks

@@ -87,16 +87,27 @@ package object cpp {
     }
   }
 
+  private def opendnp3Pattern(name: String) = "OPENDNP3_"+ name.toUpperCase + "_H"
+
   def includeGuards(name: String)(internals: => Iterator[String]): Iterator[String] = {
 
-    val pattern = "OPENDNP3_"+ name.toUpperCase + "_H"
-
-    Iterator.apply("#ifndef " + pattern) ++
-    Iterator.apply("#define " + pattern) ++
+    Iterator("#ifndef %s".format(opendnp3Pattern(name))) ++
+    Iterator("#define %s".format(opendnp3Pattern(name))) ++
     space ++
     internals ++
     space ++
-    Iterator.apply("#endif")
+    Iterator("#endif")
+
+  }
+
+  def includeGuardsRaw(name: String)(internals: => Iterator[String]): Iterator[String] = {
+
+    Iterator("#ifndef %s".format(name)) ++
+      Iterator("#define %s".format(name)) ++
+      space ++
+      internals ++
+      space ++
+      Iterator("#endif")
 
   }
 

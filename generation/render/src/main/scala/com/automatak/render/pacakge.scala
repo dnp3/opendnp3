@@ -33,6 +33,12 @@ package object render {
 
     def space: Iterator[String] = Iterator.apply("")
 
+    def externC(inner: => Iterator[String]): Iterator[String] = {
+      Iterator("#ifdef __cplusplus", """extern "C" {""", "#endif") ++ space ++
+      inner ++ space ++
+      Iterator("#ifdef __cplusplus", """}""", "#endif")
+    }
+
     def commented(lines: Iterator[String]): Iterator[String] = {
       Iterator("//") ++ lines.map(l => "// " + l) ++ Iterator("//")
     }
@@ -66,6 +72,8 @@ package object render {
 
 
     def bracketSemiColon[A](inner: => Iterator[String])(implicit indent: Indentation): Iterator[String] = bracketWithCap(indent,";")(inner)
+
+  def bracketSemiColon[A](cap: String)(inner: => Iterator[String])(implicit indent: Indentation): Iterator[String] = bracketWithCap(indent," %s;".format(cap))(inner)
 
     implicit class RichStringList(list: List[String]) {
 

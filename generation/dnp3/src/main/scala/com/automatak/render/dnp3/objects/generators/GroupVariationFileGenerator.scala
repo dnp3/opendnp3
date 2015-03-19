@@ -69,7 +69,6 @@ object GroupVariationFileGenerator {
       commented(LicenseHeader()) ++ space ++
       includeGuards(group.name.toUpperCase) {
           Iterator("#include <openpal/container/ReadBufferView.h>") ++
-          Iterator("#include <openpal/container/WriteBufferView.h>") ++
           Iterator("""#include "opendnp3/Types.h"""") ++
           Iterator("""#include "opendnp3/app/GroupVariationID.h"""") ++
         optionalIncludes(group) ++ space ++
@@ -87,7 +86,6 @@ object GroupVariationFileGenerator {
         commented(LicenseHeader()) ++ space ++
           includeHeader(group) ++ space ++
           optionalCppIncludes(group) ++
-          Iterator("#include <openpal/serialization/Format.h>") ++
           Iterator("#include <openpal/serialization/Parse.h>") ++ space ++
           Iterator("using namespace openpal;") ++ space ++
           namespace("opendnp3") {
@@ -96,19 +94,10 @@ object GroupVariationFileGenerator {
       }
     }
 
-    def writeHeaderAndImpl(g: ObjectGroup): Unit = {
-      val hpath = headerPath(g)
-      val cpppath = implPath(g)
-      writeTo(hpath)(headerFile(g))
-      println("Wrote: " + hpath)
-      writeTo(cpppath)(implFile(g))
-      println("Wrote: " + cpppath)
+    ObjectGroup.all.foreach { g =>
+        writeTo(headerPath(g))(headerFile(g))
+        (writeTo(implPath(g))(implFile(g)))
     }
-
-    ObjectGroup.all.foreach(og =>
-      writeHeaderAndImpl(og)
-
-    )
   }
 
 }

@@ -13,8 +13,11 @@ object GroupVariationHeaderRenderer extends ModelRenderer[GroupVariation]{
 
   def render(gv: GroupVariation)(implicit i: Indentation): Iterator[String] = gv match {
     case x: AnyVariation => renderIdOnly(x)
+    case x: ClassData => renderIdOnly(x)
     case x: SingleBitfield => renderIdOnly(x)
     case x: DoubleBitfield => renderIdOnly(x)
+    case x: SizedByVariation => renderIdOnly(x)
+    case x: VariableSize => renderIdOnly(x)
     case x: FixedSize => render(x)
   }
 
@@ -57,7 +60,6 @@ object GroupVariationHeaderRenderer extends ModelRenderer[GroupVariation]{
       idDeclaration(x) ++
       sizeSignature ++
       readSignature ++
-      writeSignature ++
       serializer ++
       members
     }
@@ -67,7 +69,7 @@ object GroupVariationHeaderRenderer extends ModelRenderer[GroupVariation]{
       case Some(conv) =>
         val serializerType = "DNP3Serializer<%s>".format(conv.target)
         space ++
-        Iterator("static %s Inst() { return %s(ID(), Size(), &ReadTarget, &WriteTarget); }".format(serializerType, serializerType)) ++
+        Iterator("static %s Inst() { return %s(ID(), Size(), &ReadTarget); }".format(serializerType, serializerType)) ++
         space ++ conv.signatures ++ space
     }
 
@@ -139,7 +141,6 @@ object GroupVariationImplRenderer extends ModelRenderer[GroupVariation]{
     }
 
     readFunction ++ space ++
-    writeFunction ++ space ++
     convertFunction
   }
 

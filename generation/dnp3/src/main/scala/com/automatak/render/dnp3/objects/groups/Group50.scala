@@ -8,9 +8,14 @@ import FixedSizeField._
 object Group50 extends ObjectGroup {
   def objects = List(Group50Var1, Group50Var4)
   def group: Byte = 50
+  def desc: String = "Time and Date"
 }
 
-object Group50Var1 extends FixedSize(Group50, 1)(time48)
+object Group50Var1 extends FixedSize(Group50, 1, "Absolute Time")(time48)
 
-object Group50Var4 extends FixedSize(Group50, 4)(time48, FixedSizeField("interval", UInt32Field), FixedSizeField("units", UInt8Field)) with ConversionToTimeAndInterval
+object Group50Var4 extends FixedSize(Group50, 4, "Indexed absolute time and long interval")(
+  time48,
+  FixedSizeField("interval", UInt32Field),
+  FixedSizeField("units", UInt8Field)
+) with ConversionToTimeAndInterval
 

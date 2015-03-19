@@ -2,6 +2,7 @@ package com.automatak.render.dnp3.enums.generators
 
 import _root_.java.nio.file.Path
 import com.automatak.render._
+import com.automatak.render.cpp.EnumModelRenderer
 import com.automatak.render.dnp3.enums._
 import com.automatak.render.cpp._
 
@@ -20,37 +21,27 @@ object CppEnumGenerator {
 
     val nsopendnp3 = "opendnp3"
 
-    def includeEnums = List(
-      EnumConfig(MasterTaskType(), false, false),
-      EnumConfig(AssignClassType(), false, false),
-      EnumConfig(StaticTypeBitmask(), false, false),
-      EnumConfig(IntervalUnit(), true, true),
-      EnumConfig(GroupVariation(), true, true),
-      EnumConfig(DoubleBit(), true, true),
-      EnumConfig(PointClass(), false, false),
-      EnumConfig(CommandStatus(), true, true),
-      EnumConfig(TaskCompletion(), false, true),
-      EnumConfig(ControlCode(), true, true),
-      EnumConfig(ChannelState(), false, true),
-      EnumConfig(TimeSyncMode(), false, false),
-      EnumConfig(RestartMode(), false, false),
-      EnumConfig(TimestampMode(), false, false),
+    def enums = List(
+      EnumConfig(FunctionCode(), true, true),
       EnumConfig(QualifierCode(), true, true),
-      EnumConfig(EventMode(), false, false),
-      EnumConfig(IndexMode(), false, false),
+      EnumConfig(LinkFunction(), true, true),
+      EnumConfig(IntervalUnit(), true, true),
+      EnumConfig(GroupVariationEnum(), true, true),
+      EnumConfig(DoubleBit(), true, true),
+      EnumConfig(CommandStatus(), true, true),
+      EnumConfig(ControlCode(), true, true),
+      EnumConfig(QualifierCode(), true, true),
       EnumConfig(HMACType(), true, true),
       EnumConfig(ChallengeReason(), true, true),
       EnumConfig(KeyWrapAlgorithm(), true, true),
       EnumConfig(KeyStatus(), true, true),
       EnumConfig(AuthErrorCode(), true, true),
       EnumConfig(CertificateType(), true, true),
-      EnumConfig(ConfigAuthMode(), false, false)
-    ) ::: DefaultVariations.enums.map(m => EnumConfig(m, false, false)) ::: QualityMasks.enums.map(m => EnumConfig(m, false, false))
+      EnumConfig(ConfigAuthMode(), false, false),
+      EnumConfig(GroupVariationType(), false, false),
+      EnumConfig(FilterResult(), false, true)
+    ) ::: QualityMasks.enums.map(m => EnumConfig(m, false, false))
 
-    // list of all enumerations that we want to generate
-    def sourceEnums = List(FunctionCode(), QualifierCode(), LinkFunction()).map(em => EnumConfig.apply(em, true, true))
-
-    val enums = sourceEnums ::: includeEnums
 
     implicit val indent = CppIndentation()
 

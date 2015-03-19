@@ -13,8 +13,7 @@ class ArbitraryConversion(name: String, incHeaders: List[String], cppHeaders: Li
   def signatures : Iterator[String] = {
     Iterator(
       "typedef %s Target;".format(name),
-      "static bool ReadTarget(openpal::ReadBufferView&, %s&);".format(name),
-      "static bool WriteTarget(const %s&, openpal::WriteBufferView&);".format(name)
+      "static bool ReadTarget(openpal::ReadBufferView&, %s&);".format(name)
     )
   }
 
@@ -23,7 +22,7 @@ class ArbitraryConversion(name: String, incHeaders: List[String], cppHeaders: Li
 
     def args : String = fs.fields.map(f => "gv."+f.name).mkString(", ")
 
-    def func1 = {
+    def readFunc = {
       val args =  fs.fields.map(f => "value." + f.name).mkString(", ")
       Iterator("bool %s::ReadTarget(ReadBufferView& buff, %s& output)".format(fs.name, name)) ++ bracket {
         Iterator("%s value;".format(fs.name)) ++
@@ -37,13 +36,7 @@ class ArbitraryConversion(name: String, incHeaders: List[String], cppHeaders: Li
       }
     }
 
-    def func2 = {
-      Iterator("bool " + fs.name + "::WriteTarget(const " + name + "& value, openpal::WriteBufferView& buff)") ++ bracket {
-        Iterator("return %s::Write(Convert%s::Apply(value), buff);".format(fs.name, fs.name))
-      }
-    }
-
-    func1 ++ space ++ func2
+    readFunc
   }
 
 }
@@ -58,9 +51,8 @@ object ConversionHeaders {
   val analogCommandEvent = quoted("opendnp3/app/AnalogCommandEvent.h")
   val factory = quoted("opendnp3/app/MeasurementFactory.h")
   val serializer = quoted("opendnp3/app/DNP3Serializer.h")
-  val conversions = quoted("opendnp3/app/WriteConversions.h")
 
-  val cppIncldues = List(factory, conversions)
+  val cppIncldues = List(factory)
 }
 
 import ConversionHeaders._

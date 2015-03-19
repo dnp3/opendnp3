@@ -27,17 +27,23 @@ object ObjectGroup {
     Group51,
     Group52,
     Group60,
-    Group120,
-    Group121,
-    Group122
+    Group70,
+    Group80,
+    Group110,
+    Group111,
+    Group112,
+    Group113,
+    Group120
   )
 
 }
 
 trait ObjectGroup {
+
   def objects: List[GroupVariation]
   def group: Byte
   def name: String = "Group"+group
+  def desc: String
 
   def hasSizedObjects: Boolean = objects.find(o => o.isInstanceOf[FixedSize]).isDefined
 }

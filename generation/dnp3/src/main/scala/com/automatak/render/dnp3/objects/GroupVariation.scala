@@ -16,19 +16,25 @@ sealed trait GroupVariation {
   final def group: Byte = parent.group
   final def id: Id = Id(group, variation)
   final def name: String = List("Group",group,"Var",variation).mkString
-
+  final def fullDesc: String = "%s - %s".format(parent.desc, desc)
+  final def shortValue : Int = group*256 + variation
 
   def variation: Byte
   def parent: ObjectGroup
+  def desc: String
 }
 
-class AnyVariation(g: ObjectGroup, v: Byte) extends BasicGroupVariation(g,v)
-class SingleBitfield(g: ObjectGroup, v: Byte) extends BasicGroupVariation(g,v)
-class DoubleBitfield(g: ObjectGroup, v: Byte) extends BasicGroupVariation(g,v)
+class AnyVariation(g: ObjectGroup, v: Byte) extends BasicGroupVariation(g,v, "Any Variation")
+class ClassData(g: ObjectGroup, v: Byte, desc: String) extends BasicGroupVariation(g,v, desc)
+class SizedByVariation(g: ObjectGroup, v: Byte) extends BasicGroupVariation(g,v, "Sized by variation")
+class VariableSize(g: ObjectGroup, v: Byte, description: String) extends BasicGroupVariation(g,v,description)
+class SingleBitfield(g: ObjectGroup, v: Byte, description: String) extends BasicGroupVariation(g,v,description)
+class DoubleBitfield(g: ObjectGroup, v: Byte, description: String) extends BasicGroupVariation(g,v,description)
 
-sealed abstract class BasicGroupVariation(g: ObjectGroup, v: Byte) extends  GroupVariation {
+sealed abstract class BasicGroupVariation(g: ObjectGroup, v: Byte, description: String) extends  GroupVariation {
   def variation: Byte = v
   def parent: ObjectGroup = g
+  def desc: String = description
 }
 
 trait Conversion {
@@ -39,7 +45,7 @@ trait Conversion {
   def implHeaders: List[String]
 }
 
-class FixedSize(g: ObjectGroup, v: Byte)(fs: FixedSizeField*) extends BasicGroupVariation(g,v) {
+class FixedSize(g: ObjectGroup, v: Byte, description: String)(fs: FixedSizeField*) extends BasicGroupVariation(g,v, description) {
 
   def conversion: Option[Conversion] = None // overridable
 
