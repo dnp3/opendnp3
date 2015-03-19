@@ -25,22 +25,31 @@ object CppEnumGenerator {
       EnumConfig(FunctionCode(), true, true),
       EnumConfig(QualifierCode(), true, true),
       EnumConfig(LinkFunction(), true, true),
+      EnumConfig(MasterTaskType(), false, false),
+      EnumConfig(AssignClassType(), false, false),
+      EnumConfig(StaticTypeBitmask(), false, false),
       EnumConfig(IntervalUnit(), true, true),
       EnumConfig(GroupVariationEnum(), true, true),
       EnumConfig(DoubleBit(), true, true),
+      EnumConfig(PointClass(), false, false),
       EnumConfig(CommandStatus(), true, true),
+      EnumConfig(TaskCompletion(), false, true),
       EnumConfig(ControlCode(), true, true),
+      EnumConfig(ChannelState(), false, true),
+      EnumConfig(TimeSyncMode(), false, false),
+      EnumConfig(RestartMode(), false, false),
+      EnumConfig(TimestampMode(), false, false),
       EnumConfig(QualifierCode(), true, true),
+      EnumConfig(EventMode(), false, false),
+      EnumConfig(IndexMode(), false, false),
       EnumConfig(HMACType(), true, true),
       EnumConfig(ChallengeReason(), true, true),
       EnumConfig(KeyWrapAlgorithm(), true, true),
       EnumConfig(KeyStatus(), true, true),
       EnumConfig(AuthErrorCode(), true, true),
       EnumConfig(CertificateType(), true, true),
-      EnumConfig(ConfigAuthMode(), false, false),
-      EnumConfig(GroupVariationType(), false, false),
-      EnumConfig(FilterResult(), false, true)
-    ) ::: QualityMasks.enums.map(m => EnumConfig(m, false, false))
+      EnumConfig(ConfigAuthMode(), false, false)
+    ) ::: DefaultVariations.enums.map(m => EnumConfig(m, false, false)) ::: QualityMasks.enums.map(m => EnumConfig(m, false, false))
 
 
     implicit val indent = CppIndentation()
