@@ -35,8 +35,8 @@ namespace Automatak.DNP3.Interface
         /// <summary>
         /// Load a set of measurement changes into an outstation
         /// </summary>
-        /// <param name="changeFun"> A function object that allows for measurement changes to be applied to it</param>
-        void LoadChanges(Action<IDatabase> changeFun);
+        /// <param name="updates">A change set object</param>
+        void Load(ChangeSet updates);
 
         /// <summary>
         /// Sets the restart IIN bit. Normally applications should not
