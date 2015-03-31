@@ -48,8 +48,9 @@ namespace Automatak.Simulator.DNP3.Components
                 template.frozenCounters = templateControlFrozenCounter.GetRecords().Select(rec => new FrozenCounterRecord(rec.index)).ToList();
                 template.analogs = templateControlAnalog.GetRecords().Select(rec => new AnalogRecord(rec.index)).ToList();
                 template.binaryOutputStatii = templateControlBOStatus.GetRecords().Select(rec => new BinaryOutputStatusRecord(rec.index)).ToList();
-                template.analogOutputStatii = templateControlAOStatus.GetRecords().Select(rec => new AnalogOutputStatusRecord(rec.index)).ToList();
-                
+                template.analogOutputStatii = templateControlAOStatus.GetRecords().Select(rec => new AnalogOutputStatusRecord(rec.index)).ToList();                                           
+
+
                 return template;
             }
         }

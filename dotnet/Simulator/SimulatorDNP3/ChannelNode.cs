@@ -93,9 +93,8 @@ namespace Automatak.Simulator.DNP3
         ISimulatorNode CreateOutstation(ISimulatorNodeCallbacks callbacks)
         {
             using (var dialog = new Components.OutstationDialog(config))
-            {
-                dialog.ShowDialog();
-                if (dialog.DialogResult == DialogResult.OK)
+            {                
+                if (dialog.ShowDialog() == DialogResult.OK)
                 {
                     var outstationConfig = dialog.Configuration;
                     var alias = dialog.SelectedAlias;

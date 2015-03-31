@@ -61,12 +61,14 @@ namespace Automatak.Simulator.DNP3.Components
             {
                 var oc = new OutstationStackConfig();
                 oc.link = this.linkConfigControl.Configuration;
+                
                 oc.outstation.config = this.OutstationParameters;
                 oc.outstation.buffer = this.eventBufferConfigControl1.Configuration;                
             
                 var alias = this.comboBoxTemplate.SelectedItem.ToString();
                 var template = config.GetTemplateMaybeNull(alias);
-                oc.databaseTemplate = template;
+                oc.databaseTemplate = (template == null) ? new DatabaseTemplate(0) : template;
+
                 return oc;
             }
         }
@@ -95,11 +97,16 @@ namespace Automatak.Simulator.DNP3.Components
         private void buttonNew_Click(object sender, EventArgs e)
         {
             using (var dialog = new TemplateDialog("template1", new DatabaseTemplate()))
-            {
-                dialog.ShowDialog();
-                if (dialog.DialogResult == DialogResult.OK)
+            {                
+                if (dialog.ShowDialog() == DialogResult.OK)
                 {
                     var template = dialog.ConfiguredTemplate;
+
+                    // TODO - let the dialog config these internally
+                    this.staticResponseTypeControl1.Configure(template);
+                    this.eventResponseTypeControl1.Configure(template);
+
+
                     config.AddTemplate(dialog.SelectedAlias, template);
                     this.comboBoxTemplate.DataSource = config.Templates.Select(kvp => kvp.Key).ToList();                    
                 }
