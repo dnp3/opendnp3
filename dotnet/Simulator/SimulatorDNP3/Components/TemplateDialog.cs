@@ -41,15 +41,15 @@ namespace Automatak.Simulator.DNP3.Components
             get
             {
                 var template = new DatabaseTemplate(0);
-                /* TODO
-                template.binaries = templateControlBinary.GetRecords().ToList();
-                template.doubleBinaries = templateControlDoubleBinary.GetRecords().ToList();
-                template.counters = templateControlCounter.GetRecords().Select(x => new DeadbandRecord<uint>(x.pointClass)).ToList();
-                template.frozenCounters = templateControlFrozenCounter.GetRecords().Select(x => new DeadbandRecord<uint>(x.pointClass)).ToList();
-                template.analogs = templateControlAnalog.GetRecords().Select(x => new DeadbandRecord<double>(x.pointClass)).ToList();
-                template.binaryOutputStatii = templateControlBOStatus.GetRecords().ToList();
-                template.analogOutputStatii = templateControlAOStatus.GetRecords().Select(x => new DeadbandRecord<double>(x.pointClass)).ToList();
-                 */
+                                
+                template.binaries = templateControlBinary.GetRecords().Select(rec => new BinaryRecord(rec.index)).ToList();
+                template.doubleBinaries = templateControlDoubleBinary.GetRecords().Select(rec => new DoubleBinaryRecord(rec.index)).ToList();
+                template.counters = templateControlCounter.GetRecords().Select(rec => new CounterRecord(rec.index)).ToList();
+                template.frozenCounters = templateControlFrozenCounter.GetRecords().Select(rec => new FrozenCounterRecord(rec.index)).ToList();
+                template.analogs = templateControlAnalog.GetRecords().Select(rec => new AnalogRecord(rec.index)).ToList();
+                template.binaryOutputStatii = templateControlBOStatus.GetRecords().Select(rec => new BinaryOutputStatusRecord(rec.index)).ToList();
+                template.analogOutputStatii = templateControlAOStatus.GetRecords().Select(rec => new AnalogOutputStatusRecord(rec.index)).ToList();
+                
                 return template;
             }
         }
