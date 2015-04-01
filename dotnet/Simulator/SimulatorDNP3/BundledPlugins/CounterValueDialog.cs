@@ -35,23 +35,23 @@ namespace Automatak.Simulator.DNP3
             this.Close();
         }
 
-        public IEnumerable<Action<IDatabase>> SelectedActions
-        {
+        public ChangeSet SelectedChanges
+        {        
             get
             {
                 var value = Decimal.ToUInt32(numericUpDown1.Value);
-                var timestamp = DateTime.Now;
                 var quality = qualitySelector.Quality;
-                
-
+                var timestamp = DateTime.Now;
+                var changes = new ChangeSet();            
                 if (isCounter)
                 {
-                    return indices.Select(i => MeasActions.GetCounterAction(value, quality, timestamp, i));                    
+                    indices.Each(i => changes.Update(new Counter(value, quality, timestamp), i));
                 }
                 else
                 {
-                    return indices.Select(i => MeasActions.GetFrozenCounterAction(value, quality, timestamp, i));
+                    indices.Each(i => changes.Update(new FrozenCounter(value, quality, timestamp), i));
                 }
+                return changes;
             }
         }        
     }

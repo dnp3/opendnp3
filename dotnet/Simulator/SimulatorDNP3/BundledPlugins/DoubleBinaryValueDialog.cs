@@ -42,6 +42,19 @@ namespace Automatak.Simulator.DNP3
                 
                 return indices.Select(i => MeasActions.GetDoubleBinaryAction(value, quality, timestamp, i));
             }
-        }        
+        }
+
+        public ChangeSet SelectedChanges
+        {
+            get
+            {
+                var value = (DoubleBit) comboBox1.SelectedItem;
+                var quality = qualitySelector.Quality;
+                var timestamp = DateTime.Now;
+                var changes = new ChangeSet();
+                indices.Each(i => changes.Update(new DoubleBitBinary(value, quality, timestamp), i));               
+                return changes;
+            }
+        } 
     }
 }

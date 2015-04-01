@@ -18,15 +18,12 @@ namespace Automatak.Simulator.DNP3
             this.listBox = listBox;
         }
 
-        public static void Process(IEnumerable<Action<IDatabase>> actions, ListBox listBox)
+        public static void Process(IChangeSet changes, ListBox listBox)
         {
             IDatabase adapter = new ListviewDatabaseAdapter(listBox);
 
             listBox.SuspendLayout();
-            foreach (var action in actions)
-            {
-                action.Invoke(adapter);
-            }
+            changes.Apply(adapter);
             listBox.ResumeLayout();
         }        
 

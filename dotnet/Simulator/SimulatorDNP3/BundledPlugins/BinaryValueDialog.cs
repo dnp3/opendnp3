@@ -32,20 +32,23 @@ namespace Automatak.Simulator.DNP3
             this.Close();
         }
 
-        public IEnumerable<Action<IDatabase>> SelectedActions
+        public ChangeSet SelectedChanges
         {
             get
             {
                 var timestamp = DateTime.Now;
+                var changes = new ChangeSet();
 
                 if (isBinary)
                 {
-                    return indices.Select(i => MeasActions.GetBinaryAction(checkBoxValue.Checked, qualitySelector.Quality, timestamp, i));                    
+                    indices.Each(i => changes.Update(new Binary(checkBoxValue.Checked, qualitySelector.Quality, timestamp), i));                    
                 }
                 else
                 {
-                    return indices.Select(i => MeasActions.GetBinaryOutputStatusAction(checkBoxValue.Checked, qualitySelector.Quality, timestamp, i));
+                    indices.Each(i => changes.Update(new BinaryOutputStatus(checkBoxValue.Checked, qualitySelector.Quality, timestamp), i));
                 }
+
+                return changes;
             }
         }        
     }

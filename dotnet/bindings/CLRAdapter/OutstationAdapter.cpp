@@ -17,7 +17,7 @@ namespace Automatak
 			OutstationAdapter::OutstationAdapter(asiodnp3::IOutstation* pOutstation_) : pOutstation(pOutstation_)				
 			{}
 
-			void OutstationAdapter::Load(ChangeSet^ changes)
+			void OutstationAdapter::Load(IChangeSet^ changes)
 			{
 				auto adapter = gcnew ChangeSetAdapter(*pOutstation);
 				changes->Apply(adapter);

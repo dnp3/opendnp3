@@ -15,7 +15,7 @@ namespace Automatak.Simulator.DNP3.Components
     partial class CommandHandlerControl : UserControl
     {   
         ProxyCommandHandler handler = null;
-        IDatabase database = null;
+        IMeasurementLoader loader = null;
 
         public CommandHandlerControl()
         {
@@ -43,10 +43,10 @@ namespace Automatak.Simulator.DNP3.Components
             this.RepopulateList();
         }
 
-        public void Configure(ProxyCommandHandler proxy, IDatabase database)
+        public void Configure(ProxyCommandHandler proxy, IMeasurementLoader loader)
         {
             this.handler = proxy;
-            this.database = database;
+            this.loader = loader;
             this.handler.BinaryCommandAccepted += handler_BinaryCommandAccepted;
             this.handler.AnalogCommandAccepted += handler_AnalogCommandAccepted;
         }
@@ -63,9 +63,9 @@ namespace Automatak.Simulator.DNP3.Components
                 this.listBoxLog.Items.Add(output);
                 if (checkBoxMapAnalog.Checked)
                 {
-                    // TODO database.Start();
-                    database.Update(new AnalogOutputStatus(value, 0x01, DateTime.Now), index);
-                    //database.End();
+                    var changes = new ChangeSet();
+                    changes.Update(new AnalogOutputStatus(value, 0x01, DateTime.Now), index);
+                    loader.Load(changes);                    
                 }
             }
         }
@@ -98,9 +98,9 @@ namespace Automatak.Simulator.DNP3.Components
 
         void LoadSingleBinaryOutputStatus(bool value, ushort index)
         {
-            // TODO - database.Start();
-            database.Update(new BinaryOutputStatus(value, 0x01, DateTime.Now), index);
-            //database.End();
+            var changes = new ChangeSet();
+            changes.Update(new BinaryOutputStatus(value, 0x01, DateTime.Now), index);
+            loader.Load(changes);            
         }
 
         private void checkBoxEnabled_CheckedChanged(object sender, EventArgs e)

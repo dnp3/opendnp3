@@ -6,17 +6,40 @@ using System.Threading.Tasks;
 
 namespace Automatak.DNP3.Interface
 {
-    public class ChangeSet : IDatabase
+    public interface IChangeSet
+    {
+        void Apply(IDatabase database);        
+    }
+
+    public class ChangeSet : IDatabase, IChangeSet
     {
         private IList<Action<IDatabase>> updates = new List<Action<IDatabase>>();
 
-        public void Apply(IDatabase database)
+        void IChangeSet.Apply(IDatabase database)
         {
             foreach(var action in updates) 
             {
                 action(database);
             }
-        }      
+        }        
+
+        public void Clear()
+        {
+            updates.Clear();
+        }
+
+        public bool IsEmpty()
+        {
+            return updates.Count == 0;
+        }
+
+        public int Count
+        {
+            get
+            {
+                return updates.Count;
+            }
+        }
 
         public void Update(Binary update, ushort index, EventMode mode = EventMode.Detect)
         {
@@ -57,5 +80,6 @@ namespace Automatak.DNP3.Interface
         {
             updates.Add((IDatabase db) => db.Update(update, index));
         }
+        
     }
 }

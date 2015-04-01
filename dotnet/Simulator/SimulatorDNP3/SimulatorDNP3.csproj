@@ -163,7 +163,7 @@
     <Compile Include="IDNP3Config.cs" />
     <Compile Include="IMeasurementCache.cs" />
     <Compile Include="ListviewDatabaseAdapter.cs" />
-    <Compile Include="MultiplexedDatabase.cs" />
+    <Compile Include="MultiplexedLoader.cs" />
     <Compile Include="OutstationNode.cs" />
     <Compile Include="NodeAction.cs" />
     <Compile Include="ActionNodeFactory.cs" />

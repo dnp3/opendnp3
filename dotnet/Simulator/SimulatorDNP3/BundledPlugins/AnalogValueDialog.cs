@@ -35,7 +35,7 @@ namespace Automatak.Simulator.DNP3
             this.Close();
         }
 
-        public IEnumerable<Action<IDatabase>> SelectedActions
+        public IEnumerable<Action<ChangeSet>> SelectedActions
         {
             get
             {
@@ -53,6 +53,26 @@ namespace Automatak.Simulator.DNP3
                     return indices.Select(i => MeasActions.GetAnalogOutputStatusAction(value, quality, timestamp, i));
                 }
             }
-        }        
+        }
+
+        public ChangeSet SelectedChanges
+        {
+            get
+            {
+                var value = Decimal.ToDouble(numericUpDown1.Value);
+                var quality = qualitySelector.Quality;
+                var timestamp = DateTime.Now;
+                var changes = new ChangeSet();            
+                if (isAnalog)
+                {
+                    indices.Each(i => changes.Update(new Analog(value, quality, timestamp), i));
+                }
+                else
+                {
+                    indices.Each(i => changes.Update(new AnalogOutputStatus(value, quality, timestamp), i));
+                }
+                return changes;
+            }
+        } 
     }
 }

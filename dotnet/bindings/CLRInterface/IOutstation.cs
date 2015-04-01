@@ -27,17 +27,20 @@ using System.Threading.Tasks;
 
 namespace Automatak.DNP3.Interface
 {
-    /// <summary>
-    /// Interface representing an outstation
-    /// </summary>
-    public interface IOutstation: IStack
+    public interface IMeasurementLoader
     {
         /// <summary>
         /// Load a set of measurement changes into an outstation
         /// </summary>
         /// <param name="updates">A change set object</param>
-        void Load(ChangeSet updates);
+        void Load(IChangeSet updates);
+    }
 
+    /// <summary>
+    /// Interface representing an outstation
+    /// </summary>
+    public interface IOutstation: IStack, IMeasurementLoader
+    {                
         /// <summary>
         /// Sets the restart IIN bit. Normally applications should not
 	    /// touch this bit, but it is provided for simulating restarts.

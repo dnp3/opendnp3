@@ -19,7 +19,7 @@ namespace Automatak
 
 				OutstationAdapter(asiodnp3::IOutstation* pOutstation);
 
-				virtual void Load(ChangeSet^ changes);
+				virtual void Load(IChangeSet^ changes);
 
 				virtual void SetRestartIIN();
 

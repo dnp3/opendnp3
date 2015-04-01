@@ -19,9 +19,9 @@ namespace Automatak.Simulator.DNP3
         readonly EventedOutstationApplication application;
         readonly MeasurementCache cache;
         readonly ProxyCommandHandler proxy;
-        readonly IDatabase database;        
+        readonly IMeasurementLoader loader;        
 
-        readonly IList<Action<IDatabase>> events = new List<Action<IDatabase>>();
+        readonly ChangeSet events = new ChangeSet();
 
         public OutstationForm(IOutstation outstation, EventedOutstationApplication application, MeasurementCache cache, ProxyCommandHandler proxy, String alias)
         {
@@ -32,12 +32,12 @@ namespace Automatak.Simulator.DNP3
             this.cache = cache;
             this.proxy = proxy;
 
-            this.database = null; // TODO new MultiplexedDatabase(cache, outstation.GetDatabase());            
+            this.loader = new MultiplexedLoader(outstation, cache);
 
             this.Text = String.Format("DNP3 Outstation ({0})", alias);
             this.comboBoxTypes.DataSource = System.Enum.GetValues(typeof(MeasType));
 
-            this.commandHandlerControl1.Configure(proxy, database);
+            this.commandHandlerControl1.Configure(proxy, loader);
 
             this.comboBoxColdRestartMode.DataSource = System.Enum.GetValues(typeof(RestartMode));
 
@@ -144,11 +144,10 @@ namespace Automatak.Simulator.DNP3
         void LoadBinaries(IEnumerable<ushort> indices, bool isBinary)
         {
             using (var dialog = new BinaryValueDialog(isBinary, indices))
-            {
-                dialog.ShowDialog();
-                if (dialog.DialogResult == DialogResult.OK)
+            {                
+                if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    this.AddActions(dialog.SelectedActions);
+                    this.AddChanges(dialog.SelectedChanges);
                 }
             }
         }
@@ -156,11 +155,10 @@ namespace Automatak.Simulator.DNP3
         void LoadDoubleBinaries(IEnumerable<ushort> indices)
         {
             using (var dialog = new DoubleBinaryValueDialog(indices))
-            {
-                dialog.ShowDialog();
-                if (dialog.DialogResult == DialogResult.OK)
+            {                
+                if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    this.AddActions(dialog.SelectedActions);
+                    this.AddChanges(dialog.SelectedChanges);
                 }
             }
         }
@@ -168,11 +166,10 @@ namespace Automatak.Simulator.DNP3
         void LoadAnalogs(IEnumerable<ushort> indices, bool isAnalog)
         {
             using (var dialog = new AnalogValueDialog(isAnalog, indices))
-            {
-                dialog.ShowDialog();
-                if (dialog.DialogResult == DialogResult.OK)
+            {                
+                if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    this.AddActions(dialog.SelectedActions);
+                    this.AddChanges(dialog.SelectedChanges);
                 }
             }
         }
@@ -180,24 +177,21 @@ namespace Automatak.Simulator.DNP3
         void LoadCounters(IEnumerable<ushort> indices, bool isCounter)
         {
             using (var dialog = new CounterValueDialog(isCounter, indices))
-            {
-                dialog.ShowDialog();
-                if (dialog.DialogResult == DialogResult.OK)
+            {                
+                if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    this.AddActions(dialog.SelectedActions);
+                    this.AddChanges(dialog.SelectedChanges);
                 }
             }
         }
 
-        void AddActions(IEnumerable<Action<IDatabase>> actions)
+        void AddChanges(IChangeSet changes)
         {
-            ListviewDatabaseAdapter.Process(actions, listBoxEvents);
+            ListviewDatabaseAdapter.Process(changes, listBoxEvents);
 
-            foreach (var action in actions)
-            {
-                this.events.Add(action);
-            }
-
+            // merge these changes onto the main changeset
+            changes.Apply(events);                        
+            
             this.CheckState();
         }
 
@@ -207,17 +201,11 @@ namespace Automatak.Simulator.DNP3
         }
 
         private void buttonApply_Click(object sender, EventArgs e)
-        {          
-                      
-           /// TODO - database.Start();           
-           foreach (var item in events)
-           {
-               item.Invoke(database);               
-           }
-           ///database.End();
+        {           
+           loader.Load(events);
+           events.Clear();           
            
-           this.listBoxEvents.Items.Clear();
-           this.events.Clear();
+           this.listBoxEvents.Items.Clear();           
            this.CheckState();
         }
 

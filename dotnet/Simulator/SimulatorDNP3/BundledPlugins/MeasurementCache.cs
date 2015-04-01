@@ -10,21 +10,9 @@ using Automatak.DNP3.Interface;
 
 namespace Automatak.Simulator.DNP3
 {
-    static class Helpers
-    { 
-        public static IEnumerable<B> SelectWithIndex<A,B>(this IEnumerable<A> seq, Func<A, ushort, B> selector)
-        {
-            ushort i = 0;
-            
-            return seq.Select(x => {
-                var num = i;
-                ++i;
-                return selector(x, num);
-            });
-        }
-    }
+       
 
-    class MeasurementCache: ISOEHandler, IMeasurementCache, IDatabase
+    class MeasurementCache: ISOEHandler, IMeasurementCache, IDatabase, IMeasurementLoader
     {
         readonly Object mutex = new Object();
 
@@ -38,21 +26,26 @@ namespace Automatak.Simulator.DNP3
         readonly MeasurementCollection octetStrings = new MeasurementCollection();
         readonly MeasurementCollection timeAndIntervals = new MeasurementCollection();
 
+        
+
         public MeasurementCache(DatabaseTemplate template)
+        {                        
+            var values = new ChangeSet();
+            template.binaries.EachIndex((m, i) => values.Update(new Binary(Flags.RESTART), Convert.ToUInt16(i)));
+            template.doubleBinaries.EachIndex((m, i) => values.Update(new DoubleBitBinary(Flags.RESTART), Convert.ToUInt16(i)));                       
+            template.counters.EachIndex((m, i) => values.Update(new Counter(Flags.RESTART), Convert.ToUInt16(i)));
+            template.frozenCounters.EachIndex((m, i) => values.Update(new FrozenCounter(Flags.RESTART), Convert.ToUInt16(i)));
+            template.analogs.EachIndex((m, i) => values.Update(new Analog(Flags.RESTART), Convert.ToUInt16(i)));
+            template.binaryOutputStatii.EachIndex((m, i) => values.Update(new BinaryOutputStatus(Flags.RESTART), Convert.ToUInt16(i)));
+            template.analogOutputStatii.EachIndex((m, i) => values.Update(new AnalogOutputStatus(Flags.RESTART), Convert.ToUInt16(i)));                            
+            template.timeAndIntervals.EachIndex((m, i) => values.Update(new TimeAndInterval(0, 0, IntervalUnits.Undefined), Convert.ToUInt16(i)));
+
+            this.Load(values);
+        }
+
+        public void Load(IChangeSet updates)
         {
-            var info = new HeaderInfo(GroupVariation.UNKNOWN, QualifierCode.UNDEFINED, TimestampMode.SYNCHRONIZED);
-
-            ISOEHandler handler = this;
-
-            /*
-            handler.OnReceiveHeader(info, template.binaries.SelectWithIndex((m, i) => new IndexedValue<Binary>(new Binary(false), i)));
-            handler.OnReceiveHeader(info, template.doubleBinaries.SelectWithIndex((m, i) => new IndexedValue<DoubleBitBinary>(new DoubleBitBinary(m.quality), i)));
-            handler.OnReceiveHeader(info, template.counters.SelectWithIndex((m, i) => new IndexedValue<Counter>(new Counter(m.quality), i)));
-            handler.OnReceiveHeader(info, template.frozenCounters.SelectWithIndex((m, i) => new IndexedValue<FrozenCounter>(new FrozenCounter(m.quality), i)));
-            handler.OnReceiveHeader(info, template.analogs.SelectWithIndex((m, i) => new IndexedValue<Analog>(new Analog(m.quality), i)));
-            handler.OnReceiveHeader(info, template.binaryOutputStatii.SelectWithIndex((m, i) => new IndexedValue<BinaryOutputStatus>(new BinaryOutputStatus(m.quality), i)));
-            handler.OnReceiveHeader(info, template.analogOutputStatii.SelectWithIndex((m, i) => new IndexedValue<AnalogOutputStatus>(new AnalogOutputStatus(m.quality), i)));
-            */
+            updates.Apply(this);
         }
 
         public MeasurementCache()
@@ -267,6 +260,6 @@ namespace Automatak.Simulator.DNP3
         {
             // TODO
         }
-       
+        
     }
 }

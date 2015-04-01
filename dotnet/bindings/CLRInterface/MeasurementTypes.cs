@@ -95,7 +95,7 @@ namespace Automatak.DNP3.Interface
         /// </summary>
         /// <param name="quality"></param>
         public Binary(byte quality) : base(Flags.ToBinaryValue(quality), quality)
-        { }
+        { }       
     }
 
     /// <summary>
