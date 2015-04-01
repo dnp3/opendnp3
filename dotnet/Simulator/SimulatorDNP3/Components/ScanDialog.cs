@@ -54,12 +54,12 @@ namespace Automatak.Simulator.DNP3.Components
             return headers;
         }
 
-        private static string Describe(IEnumerable<Header> headers)
+        private static string DetailedDescription(IEnumerable<Header> headers)
         {
             return String.Join(", ", headers);
         }
 
-        private string ClassDescription(ClassField classes)
+        private static string ClassDescription(ClassField classes)
         {
             ICollection<string> names = new List<string>();
 
@@ -75,8 +75,8 @@ namespace Automatak.Simulator.DNP3.Components
         {
             var period = TimeSpan.FromMilliseconds(Convert.ToDouble(this.numericUpDownPeriod.Value));
             var classes = classFieldControlScan.ClassFieldValue;
-            var headers = GetClassHeaders(classes);
-            var info = new ScanInfo(master.AddScan(headers, period), ClassDescription(classes), period, Describe(headers));
+            var headers = GetClassHeaders(classes);            
+            var info = new ScanInfo(master.AddScan(headers, period), ClassDescription(classes), period, DetailedDescription(headers));
             this.scans.Add(info);
             this.DialogResult = DialogResult.OK;
             this.Close();
