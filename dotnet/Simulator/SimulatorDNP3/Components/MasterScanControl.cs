@@ -16,13 +16,11 @@ namespace Automatak.Simulator.DNP3.Components
     {
         IMaster master = null;
 
-        readonly ICollection<IMasterScan> scans = new List<IMasterScan>();
+        readonly ICollection<ScanInfo> scans = new List<ScanInfo>();
 
         public MasterScanControl()
         {
-            InitializeComponent();
-
-            this.ContextMenuStrip = this.contextMenuStrip1;
+            InitializeComponent();            
         }
 
         public IMaster Master
@@ -39,9 +37,74 @@ namespace Automatak.Simulator.DNP3.Components
             {
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    var scans = dialog.ConfiguredScans;
+                    foreach (var scan in dialog.ConfiguredScans)
+                    {
+                        scans.Add(scan);
+                    }
+
+                    this.RefreshScanList();
                 }
             }
+        }
+
+        private void RefreshScanList()
+        {
+            this.listViewScans.SuspendLayout();
+
+            try
+            {
+                this.listViewScans.Items.Clear();
+                foreach (var info in scans)
+                {
+                    var item = new ListViewItem(new string[] { info.type, info.period.ToString(), info.details });
+                    item.Tag = info.scan;
+                    this.listViewScans.Items.Add(item);
+                }
+            }
+            finally
+            {
+                this.listViewScans.ResumeLayout();
+            }            
+        }
+
+        private void listViewScans_MouseDown(object sender, MouseEventArgs e)
+        {
+            
+            if (e.Button != System.Windows.Forms.MouseButtons.Right)
+            {
+                return;
+            }
+
+            ListViewItem choice = null;
+                      
+            foreach (ListViewItem item in listViewScans.Items)
+            {
+                if (item.Bounds.Contains(new Point(e.X, e.Y)))
+                {
+                        choice = item;
+                }
+            }
+
+
+            if (choice == null)
+            {
+                this.contextMenuStripAdd.Show(listViewScans, e.X, e.Y);
+            }
+            else
+            {
+                this.GetScanMenu(((IMasterScan)choice.Tag)).Show(listViewScans, e.X, e.Y);
+            }            
+        }
+
+        ContextMenuStrip GetScanMenu(IMasterScan scan)
+        {
+            var menu = new ContextMenuStrip();
+            var demand = new ToolStripMenuItem("Demand");
+            demand.Click += (object sender, EventArgs e) => {
+                scan.Demand();
+            };
+            menu.Items.Add(demand);
+            return menu;
         }
        
     }

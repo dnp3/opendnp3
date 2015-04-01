@@ -12,10 +12,13 @@ using Automatak.DNP3.Interface;
 
 namespace Automatak.Simulator.DNP3.Components
 {
+    
+
+
     public partial class ScanDialog : Form
     {
         readonly IMaster master;
-        readonly IList<IMasterScan> scans = new List<IMasterScan>();
+        readonly IList<ScanInfo> scans = new List<ScanInfo>();
 
         public ScanDialog(IMaster master)
         {
@@ -51,15 +54,22 @@ namespace Automatak.Simulator.DNP3.Components
             return headers;
         }
 
+        private static string Describe(IEnumerable<Header> headers)
+        {
+            return String.Join(", ", headers);
+        }
+
         private void buttonBind_Click(object sender, EventArgs e)
         {
             var period = TimeSpan.FromMilliseconds(Convert.ToDouble(this.numericUpDownPeriod.Value));
-            this.scans.Add(master.AddScan(GetClassHeaders(), period));
+            var headers = GetClassHeaders();
+            var info = new ScanInfo(master.AddScan(headers, period), "Class", period, Describe(headers));
+            this.scans.Add(info);
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
 
-        public IEnumerable<IMasterScan> ConfiguredScans
+        public IEnumerable<ScanInfo> ConfiguredScans
         {
             get
             {

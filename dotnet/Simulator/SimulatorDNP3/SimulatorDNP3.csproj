@@ -122,6 +122,7 @@
     <Compile Include="Components\ScanDialog.Designer.cs">
       <DependentUpon>ScanDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Components\ScanInfo.cs" />
     <Compile Include="ProxyCommandHandler.cs" />
     <Compile Include="Components\TemplateItemDialog.cs">
       <SubType>Form</SubType>

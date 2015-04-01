@@ -1,4 +1,6 @@
-﻿namespace Automatak.Simulator.DNP3.Components
+﻿using Automatak.DNP3.Interface;
+
+namespace Automatak.Simulator.DNP3.Components
 {
     partial class ScanDialog
     {
@@ -116,7 +118,7 @@
             // 
             // classFieldControlScan
             // 
-            this.classFieldControlScan.ClassFieldValue = ((Automatak.DNP3.Interface.ClassField)(resources.GetObject("classFieldControlScan.ClassFieldValue")));
+            this.classFieldControlScan.ClassFieldValue = ClassField.None;
             this.classFieldControlScan.Location = new System.Drawing.Point(22, 23);
             this.classFieldControlScan.Name = "classFieldControlScan";
             this.classFieldControlScan.Size = new System.Drawing.Size(77, 112);
@@ -129,8 +131,7 @@
             this.ClientSize = new System.Drawing.Size(385, 346);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.buttonBind);
-            this.Controls.Add(this.buttonOnce);
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Controls.Add(this.buttonOnce);            
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ScanDialog";
