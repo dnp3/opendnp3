@@ -34,12 +34,12 @@ namespace Automatak.Simulator.DNP3.Components
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.linkConfigControl = new Automatak.Simulator.DNP3.Components.LinkConfigControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.masterConfigControl = new Automatak.Simulator.DNP3.Components.MasterConfigControl();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label3 = new System.Windows.Forms.Label();
             this.textBoxID = new System.Windows.Forms.TextBox();
-            this.linkConfigControl = new Automatak.Simulator.DNP3.Components.LinkConfigControl();
-            this.masterConfigControl = new Automatak.Simulator.DNP3.Components.MasterConfigControl();
             this.statusStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -63,9 +63,9 @@ namespace Automatak.Simulator.DNP3.Components
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 440);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 441);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(507, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(502, 22);
             this.statusStrip1.SizingGrip = false;
             this.statusStrip1.TabIndex = 5;
             // 
@@ -96,6 +96,13 @@ namespace Automatak.Simulator.DNP3.Components
             this.tabPage1.Text = "Link";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // linkConfigControl
+            // 
+            this.linkConfigControl.Location = new System.Drawing.Point(6, 6);
+            this.linkConfigControl.Name = "linkConfigControl";
+            this.linkConfigControl.Size = new System.Drawing.Size(226, 222);
+            this.linkConfigControl.TabIndex = 6;
+            // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.masterConfigControl);
@@ -106,6 +113,13 @@ namespace Automatak.Simulator.DNP3.Components
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Master";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // masterConfigControl
+            // 
+            this.masterConfigControl.Location = new System.Drawing.Point(0, 0);
+            this.masterConfigControl.Name = "masterConfigControl";
+            this.masterConfigControl.Size = new System.Drawing.Size(282, 321);
+            this.masterConfigControl.TabIndex = 0;
             // 
             // groupBox1
             // 
@@ -136,26 +150,12 @@ namespace Automatak.Simulator.DNP3.Components
             this.textBoxID.TabIndex = 4;
             this.textBoxID.Text = "master";
             // 
-            // linkConfigControl
-            // 
-            this.linkConfigControl.Location = new System.Drawing.Point(6, 6);
-            this.linkConfigControl.Name = "linkConfigControl";
-            this.linkConfigControl.Size = new System.Drawing.Size(226, 222);
-            this.linkConfigControl.TabIndex = 6;
-            // 
-            // masterConfigControl
-            // 
-            this.masterConfigControl.Location = new System.Drawing.Point(0, 0);
-            this.masterConfigControl.Name = "masterConfigControl";
-            this.masterConfigControl.Size = new System.Drawing.Size(282, 321);
-            this.masterConfigControl.TabIndex = 0;
-            // 
             // MasterDialog
             // 
             this.AcceptButton = this.buttonAdd;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(507, 462);
+            this.ClientSize = new System.Drawing.Size(502, 463);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.statusStrip1);

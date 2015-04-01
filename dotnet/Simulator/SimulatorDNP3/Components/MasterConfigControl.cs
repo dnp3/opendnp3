@@ -22,7 +22,7 @@ namespace Automatak.Simulator.DNP3.Components
             this.comboBoxTimeSync.SelectedItem = TimeSyncMode.None;
 
             this.classFieldControlIntegrity.ClassFieldValue = ClassField.AllClasses;
-            this.classFieldControlEnableUnsol.ClassFieldValue = ClassField.AllEventClasses;
+            this.classFieldControlEnableUnsol.ClassFieldValue = ClassField.None;
             this.classFieldControlEnableUnsol.AllowClass0 = false;
         }
 

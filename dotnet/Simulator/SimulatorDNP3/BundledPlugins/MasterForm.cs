@@ -26,6 +26,8 @@ namespace Automatak.Simulator.DNP3
             this.cache = cache;
 
             this.Text = String.Format("DNP3 Master ({0})", alias);
+
+            this.masterScanControl1.Master = master;
         }                       
      
         void GUIMasterForm_FormClosing(object sender, FormClosingEventArgs e)

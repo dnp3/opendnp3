@@ -110,6 +110,18 @@
     <Compile Include="Components\EventBufferConfigControl.Designer.cs">
       <DependentUpon>EventBufferConfigControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Components\MasterScanControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\MasterScanControl.Designer.cs">
+      <DependentUpon>MasterScanControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Components\ScanDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Components\ScanDialog.Designer.cs">
+      <DependentUpon>ScanDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProxyCommandHandler.cs" />
     <Compile Include="Components\TemplateItemDialog.cs">
       <SubType>Form</SubType>
@@ -264,6 +276,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Components\EventBufferConfigControl.resx">
       <DependentUpon>EventBufferConfigControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\MasterScanControl.resx">
+      <DependentUpon>MasterScanControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\MasterConfigControl.resx">
+      <DependentUpon>MasterConfigControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\ScanDialog.resx">
+      <DependentUpon>ScanDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Components\TemplateItemDialog.resx">
       <DependentUpon>TemplateItemDialog.cs</DependentUpon>
