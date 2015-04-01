@@ -61,6 +61,12 @@ namespace Automatak.Simulator.DNP3
                     collection.AddObserver(this.measurementView);
                 }                
             }                      
+        }
+
+        private void buttonDirectOperate_Click(object sender, EventArgs e)
+        {
+            var crob = crobControl1.ControlValue;
+            var future = this.master.GetCommandProcessor().DirectOperate(crob, 0);
         }                                
         
     }

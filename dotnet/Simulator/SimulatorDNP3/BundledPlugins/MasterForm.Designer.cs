@@ -30,18 +30,24 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MasterForm));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.comboBoxTypes = new System.Windows.Forms.ComboBox();
-            this.measurementView = new Automatak.Simulator.DNP3.MeasurementView();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.masterScanControl1 = new Automatak.Simulator.DNP3.Components.MasterScanControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.comboBoxTypes = new System.Windows.Forms.ComboBox();
+            this.masterScanControl1 = new Automatak.Simulator.DNP3.Components.MasterScanControl();
+            this.measurementView = new Automatak.Simulator.DNP3.MeasurementView();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.crobControl1 = new Automatak.Simulator.DNP3.CROBControl();
+            this.buttonDirectOperate = new System.Windows.Forms.Button();
+            this.buttonSelectOperate = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -62,26 +68,6 @@
             this.splitContainer1.Size = new System.Drawing.Size(1056, 592);
             this.splitContainer1.SplitterDistance = 359;
             this.splitContainer1.TabIndex = 1;
-            // 
-            // comboBoxTypes
-            // 
-            this.comboBoxTypes.Dock = System.Windows.Forms.DockStyle.Top;
-            this.comboBoxTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxTypes.FormattingEnabled = true;
-            this.comboBoxTypes.Location = new System.Drawing.Point(5, 5);
-            this.comboBoxTypes.Name = "comboBoxTypes";
-            this.comboBoxTypes.Size = new System.Drawing.Size(349, 21);
-            this.comboBoxTypes.TabIndex = 0;
-            this.comboBoxTypes.SelectedIndexChanged += new System.EventHandler(this.comboBoxTypes_SelectedIndexChanged);
-            // 
-            // measurementView
-            // 
-            this.measurementView.AllowSelection = false;
-            this.measurementView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.measurementView.Location = new System.Drawing.Point(0, 0);
-            this.measurementView.Name = "measurementView";
-            this.measurementView.Size = new System.Drawing.Size(693, 592);
-            this.measurementView.TabIndex = 2;
             // 
             // tabControl1
             // 
@@ -109,6 +95,30 @@
             this.tabPage1.Text = "Scans";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.buttonSelectOperate);
+            this.tabPage2.Controls.Add(this.buttonDirectOperate);
+            this.tabPage2.Controls.Add(this.groupBox1);
+            this.tabPage2.Location = new System.Drawing.Point(23, 4);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(322, 543);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "CROB";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // comboBoxTypes
+            // 
+            this.comboBoxTypes.Dock = System.Windows.Forms.DockStyle.Top;
+            this.comboBoxTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxTypes.FormattingEnabled = true;
+            this.comboBoxTypes.Location = new System.Drawing.Point(5, 5);
+            this.comboBoxTypes.Name = "comboBoxTypes";
+            this.comboBoxTypes.Size = new System.Drawing.Size(349, 21);
+            this.comboBoxTypes.TabIndex = 0;
+            this.comboBoxTypes.SelectedIndexChanged += new System.EventHandler(this.comboBoxTypes_SelectedIndexChanged);
+            // 
             // masterScanControl1
             // 
             this.masterScanControl1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -117,15 +127,50 @@
             this.masterScanControl1.Size = new System.Drawing.Size(316, 537);
             this.masterScanControl1.TabIndex = 2;
             // 
-            // tabPage2
+            // measurementView
             // 
-            this.tabPage2.Location = new System.Drawing.Point(23, 4);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(322, 543);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "CROB";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.measurementView.AllowSelection = false;
+            this.measurementView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.measurementView.Location = new System.Drawing.Point(0, 0);
+            this.measurementView.Name = "measurementView";
+            this.measurementView.Size = new System.Drawing.Size(693, 592);
+            this.measurementView.TabIndex = 2;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.crobControl1);
+            this.groupBox1.Location = new System.Drawing.Point(17, 20);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(282, 147);
+            this.groupBox1.TabIndex = 0;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "groupBox1";
+            // 
+            // crobControl1
+            // 
+            this.crobControl1.Location = new System.Drawing.Point(6, 19);
+            this.crobControl1.Name = "crobControl1";
+            this.crobControl1.Size = new System.Drawing.Size(200, 93);
+            this.crobControl1.TabIndex = 0;
+            // 
+            // buttonDirectOperate
+            // 
+            this.buttonDirectOperate.Location = new System.Drawing.Point(17, 185);
+            this.buttonDirectOperate.Name = "buttonDirectOperate";
+            this.buttonDirectOperate.Size = new System.Drawing.Size(134, 47);
+            this.buttonDirectOperate.TabIndex = 1;
+            this.buttonDirectOperate.Text = "Direct Operate";
+            this.buttonDirectOperate.UseVisualStyleBackColor = true;
+            this.buttonDirectOperate.Click += new System.EventHandler(this.buttonDirectOperate_Click);
+            // 
+            // buttonSelectOperate
+            // 
+            this.buttonSelectOperate.Location = new System.Drawing.Point(165, 185);
+            this.buttonSelectOperate.Name = "buttonSelectOperate";
+            this.buttonSelectOperate.Size = new System.Drawing.Size(134, 47);
+            this.buttonSelectOperate.TabIndex = 2;
+            this.buttonSelectOperate.Text = "Select and Operate";
+            this.buttonSelectOperate.UseVisualStyleBackColor = true;
             // 
             // MasterForm
             // 
@@ -144,6 +189,8 @@
             this.splitContainer1.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -157,6 +204,10 @@
         private System.Windows.Forms.TabPage tabPage1;
         private Components.MasterScanControl masterScanControl1;
         private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.Button buttonDirectOperate;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private CROBControl crobControl1;
+        private System.Windows.Forms.Button buttonSelectOperate;
 
     }
 }
