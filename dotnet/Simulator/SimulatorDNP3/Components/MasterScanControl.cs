@@ -56,7 +56,8 @@ namespace Automatak.Simulator.DNP3.Components
                 this.listViewScans.Items.Clear();
                 foreach (var info in scans)
                 {
-                    var item = new ListViewItem(new string[] { info.type, info.period.ToString(), info.details });
+                    var item = new ListViewItem(new string[] { info.description, info.period.ToString() });
+                    item.ToolTipText = info.details;
                     item.Tag = info.scan;
                     this.listViewScans.Items.Add(item);
                 }

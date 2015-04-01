@@ -28,28 +28,28 @@ namespace Automatak.Simulator.DNP3.Components
         }
 
         private void buttonOnce_Click(object sender, EventArgs e)
-        {
-            master.Scan(GetClassHeaders());
+        {            
+            master.Scan(GetClassHeaders(classFieldControlScan.ClassFieldValue));
         }
 
-        private IEnumerable<Header> GetClassHeaders()
+        private static IEnumerable<Header> GetClassHeaders(ClassField classes)
         { 
-            IList<Header> headers = new List<Header>();
-            if (classFieldControlScan.ClassFieldValue.Class0)
-            {
-                headers.Add(Header.AllObjects(60, 1));
-            }
-            if (classFieldControlScan.ClassFieldValue.Class1)
+            IList<Header> headers = new List<Header>();            
+            if (classes.Class1)
             {
                 headers.Add(Header.AllObjects(60, 2));
             }
-            if (classFieldControlScan.ClassFieldValue.Class2)
+            if (classes.Class2)
             {
                 headers.Add(Header.AllObjects(60, 3));
             }
-            if (classFieldControlScan.ClassFieldValue.Class3)
+            if (classes.Class3)
             {
                 headers.Add(Header.AllObjects(60, 4));
+            }
+            if (classes.Class0)
+            {
+                headers.Add(Header.AllObjects(60, 1));
             }
             return headers;
         }
@@ -59,11 +59,24 @@ namespace Automatak.Simulator.DNP3.Components
             return String.Join(", ", headers);
         }
 
+        private string ClassDescription(ClassField classes)
+        {
+            ICollection<string> names = new List<string>();
+
+            if (classes.Class1) names.Add("1");
+            if (classes.Class2) names.Add("2");
+            if (classes.Class3) names.Add("3");
+            if (classes.Class0) names.Add("0");
+
+            return names.Any() ? String.Format("Class {0}", String.Join("/", names.ToArray())) : "Empty";
+        }
+
         private void buttonBind_Click(object sender, EventArgs e)
         {
             var period = TimeSpan.FromMilliseconds(Convert.ToDouble(this.numericUpDownPeriod.Value));
-            var headers = GetClassHeaders();
-            var info = new ScanInfo(master.AddScan(headers, period), "Class", period, Describe(headers));
+            var classes = classFieldControlScan.ClassFieldValue;
+            var headers = GetClassHeaders(classes);
+            var info = new ScanInfo(master.AddScan(headers, period), ClassDescription(classes), period, Describe(headers));
             this.scans.Add(info);
             this.DialogResult = DialogResult.OK;
             this.Close();

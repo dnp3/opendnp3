@@ -34,7 +34,6 @@ namespace Automatak.Simulator.DNP3.Components
             this.listViewScans = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.contextMenuStripAdd = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.addScanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStripAdd.SuspendLayout();
@@ -44,13 +43,13 @@ namespace Automatak.Simulator.DNP3.Components
             // 
             this.listViewScans.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
-            this.columnHeader2,
-            this.columnHeader3});
+            this.columnHeader2});
             this.listViewScans.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listViewScans.FullRowSelect = true;
             this.listViewScans.Location = new System.Drawing.Point(0, 0);
             this.listViewScans.MultiSelect = false;
             this.listViewScans.Name = "listViewScans";
+            this.listViewScans.ShowItemToolTips = true;
             this.listViewScans.Size = new System.Drawing.Size(420, 481);
             this.listViewScans.TabIndex = 0;
             this.listViewScans.UseCompatibleStateImageBehavior = false;
@@ -60,29 +59,24 @@ namespace Automatak.Simulator.DNP3.Components
             // columnHeader1
             // 
             this.columnHeader1.Text = "Type";
-            this.columnHeader1.Width = 65;
+            this.columnHeader1.Width = 93;
             // 
             // columnHeader2
             // 
             this.columnHeader2.Text = "Period";
-            this.columnHeader2.Width = 89;
-            // 
-            // columnHeader3
-            // 
-            this.columnHeader3.Text = "Details";
-            this.columnHeader3.Width = 133;
+            this.columnHeader2.Width = 132;
             // 
             // contextMenuStripAdd
             // 
             this.contextMenuStripAdd.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addScanToolStripMenuItem});
             this.contextMenuStripAdd.Name = "contextMenuStripAdd";
-            this.contextMenuStripAdd.Size = new System.Drawing.Size(153, 48);
+            this.contextMenuStripAdd.Size = new System.Drawing.Size(125, 26);
             // 
             // addScanToolStripMenuItem
             // 
             this.addScanToolStripMenuItem.Name = "addScanToolStripMenuItem";
-            this.addScanToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.addScanToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.addScanToolStripMenuItem.Text = "Add Scan";
             this.addScanToolStripMenuItem.Click += new System.EventHandler(this.addScanToolStripMenuItem_Click);
             // 
@@ -103,7 +97,6 @@ namespace Automatak.Simulator.DNP3.Components
         private System.Windows.Forms.ListView listViewScans;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
-        private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.ContextMenuStrip contextMenuStripAdd;
         private System.Windows.Forms.ToolStripMenuItem addScanToolStripMenuItem;
 

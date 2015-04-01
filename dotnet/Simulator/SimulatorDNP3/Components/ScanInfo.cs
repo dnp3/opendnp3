@@ -10,16 +10,16 @@ namespace Automatak.Simulator.DNP3.Components
 {
     public class ScanInfo
     {
-        public ScanInfo(IMasterScan scan, string type, TimeSpan period, string details)
+        public ScanInfo(IMasterScan scan, string description, TimeSpan period, string details)
         {
             this.scan = scan;
-            this.type = type;
+            this.description = description;
             this.period = period;
             this.details = details;
         }
 
         public readonly IMasterScan scan;
-        public readonly string type;
+        public readonly string description;
         public readonly TimeSpan period;
         public readonly string details;
     }

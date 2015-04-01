@@ -30,10 +30,10 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MasterForm));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.label1 = new System.Windows.Forms.Label();
             this.comboBoxTypes = new System.Windows.Forms.ComboBox();
             this.masterScanControl1 = new Automatak.Simulator.DNP3.Components.MasterScanControl();
             this.measurementView = new Automatak.Simulator.DNP3.MeasurementView();
-            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -57,37 +57,8 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.measurementView);
             this.splitContainer1.Size = new System.Drawing.Size(1048, 543);
-            this.splitContainer1.SplitterDistance = 430;
+            this.splitContainer1.SplitterDistance = 292;
             this.splitContainer1.TabIndex = 1;
-            // 
-            // comboBoxTypes
-            // 
-            this.comboBoxTypes.Dock = System.Windows.Forms.DockStyle.Top;
-            this.comboBoxTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxTypes.FormattingEnabled = true;
-            this.comboBoxTypes.Location = new System.Drawing.Point(5, 5);
-            this.comboBoxTypes.Name = "comboBoxTypes";
-            this.comboBoxTypes.Size = new System.Drawing.Size(420, 21);
-            this.comboBoxTypes.TabIndex = 0;
-            this.comboBoxTypes.SelectedIndexChanged += new System.EventHandler(this.comboBoxTypes_SelectedIndexChanged);
-            // 
-            // masterScanControl1
-            // 
-            this.masterScanControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.masterScanControl1.Location = new System.Drawing.Point(8, 70);
-            this.masterScanControl1.Name = "masterScanControl1";
-            this.masterScanControl1.Size = new System.Drawing.Size(414, 206);
-            this.masterScanControl1.TabIndex = 1;
-            // 
-            // measurementView
-            // 
-            this.measurementView.AllowSelection = false;
-            this.measurementView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.measurementView.Location = new System.Drawing.Point(0, 0);
-            this.measurementView.Name = "measurementView";
-            this.measurementView.Size = new System.Drawing.Size(614, 543);
-            this.measurementView.TabIndex = 2;
             // 
             // label1
             // 
@@ -97,6 +68,35 @@
             this.label1.Size = new System.Drawing.Size(37, 13);
             this.label1.TabIndex = 2;
             this.label1.Text = "Scans";
+            // 
+            // comboBoxTypes
+            // 
+            this.comboBoxTypes.Dock = System.Windows.Forms.DockStyle.Top;
+            this.comboBoxTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxTypes.FormattingEnabled = true;
+            this.comboBoxTypes.Location = new System.Drawing.Point(5, 5);
+            this.comboBoxTypes.Name = "comboBoxTypes";
+            this.comboBoxTypes.Size = new System.Drawing.Size(282, 21);
+            this.comboBoxTypes.TabIndex = 0;
+            this.comboBoxTypes.SelectedIndexChanged += new System.EventHandler(this.comboBoxTypes_SelectedIndexChanged);
+            // 
+            // masterScanControl1
+            // 
+            this.masterScanControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.masterScanControl1.Location = new System.Drawing.Point(8, 70);
+            this.masterScanControl1.Name = "masterScanControl1";
+            this.masterScanControl1.Size = new System.Drawing.Size(282, 176);
+            this.masterScanControl1.TabIndex = 1;
+            // 
+            // measurementView
+            // 
+            this.measurementView.AllowSelection = false;
+            this.measurementView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.measurementView.Location = new System.Drawing.Point(0, 0);
+            this.measurementView.Name = "measurementView";
+            this.measurementView.Size = new System.Drawing.Size(752, 543);
+            this.measurementView.TabIndex = 2;
             // 
             // MasterForm
             // 
