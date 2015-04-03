@@ -21,12 +21,34 @@ namespace Automatak.Simulator.DNP3
             this.comboBoxCode.DataSource = Enum.GetValues(typeof(ControlCode));
         }
 
-        public ControlRelayOutputBlock ControlValue
+        private IndexedValue<ControlRelayOutputBlock> ControlValue
         {
             get
             {
                 var code = (ControlCode)this.comboBoxCode.SelectedItem;
-                return new ControlRelayOutputBlock(code, 1, 1000, 1000);
+                var count = Convert.ToByte(this.numericUpDownCount.Value);
+                var onTime = Convert.ToUInt32(this.numericUpDownOnTime.Value);
+                var offTime = Convert.ToUInt32(this.numericUpDownOffTime.Value);
+                var crob = new ControlRelayOutputBlock(code, count, onTime, offTime);
+                var index = Convert.ToUInt16(this.numericUpDownIndex.Value);
+                return IndexedValue.From(crob, index);
+            }
+        }
+
+        public Func<ICommandProcessor, IFuture<CommandResponse>> DirectOperateAction
+        { 
+            get {
+                var crob = ControlValue;
+                return (ICommandProcessor cp) => cp.DirectOperate(crob.Value, crob.Index);
+            }
+        }
+
+        public Func<ICommandProcessor, IFuture<CommandResponse>>  SelectAndOperateAction
+        {
+            get
+            {
+                var crob = ControlValue;
+                return (ICommandProcessor cp) => cp.SelectAndOperate(crob.Value, crob.Index);
             }
         }
     }

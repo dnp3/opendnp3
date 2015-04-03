@@ -27,6 +27,14 @@ using System.Text;
 
 namespace Automatak.DNP3.Interface
 {
+    public static class IndexedValue
+    { 
+        public static IndexedValue<T> From<T>(T value, System.UInt16 index)
+        {
+            return new IndexedValue<T>(value, index);
+        }
+    }
+
     /// <summary>
     /// A measurement value and index pair
     /// </summary>

@@ -61,13 +61,39 @@ namespace Automatak.Simulator.DNP3
                     collection.AddObserver(this.measurementView);
                 }                
             }                      
-        }
+        }       
 
         private void buttonDirectOperate_Click(object sender, EventArgs e)
         {
-            var crob = crobControl1.ControlValue;
-            var future = this.master.GetCommandProcessor().DirectOperate(crob, 0);
-        }                                
+            DoCommandAction(this.crobControl.DirectOperateAction);
+        }
+
+        private void buttonSelectOperate_Click(object sender, EventArgs e)
+        {
+            DoCommandAction(this.crobControl.SelectAndOperateAction);
+        }
+        
+        private void buttonDOAO_Click(object sender, EventArgs e)
+        {
+            DoCommandAction(this.analogOutputControl.DirectOperateAction);
+        }
+
+        private void buttonSBOAO_Click(object sender, EventArgs e)
+        {
+            DoCommandAction(this.analogOutputControl.SelectAndOperateAction);
+        }
+
+        private void DoCommandAction(Func<ICommandProcessor, IFuture<CommandResponse>> func)
+        {
+            this.toolStripStatusLabel.Text = "Result: ... ";
+            var future = func(this.master.GetCommandProcessor());
+            future.Listen(cr =>
+                this.BeginInvoke(new Action(() =>
+                   this.toolStripStatusLabel.Text += cr.ToString()
+                ))
+            );
+
+        }
         
     }
 }

@@ -98,6 +98,12 @@
     <Compile Include="BundledPlugins\QualitySelector.Designer.cs">
       <DependentUpon>QualitySelector.cs</DependentUpon>
     </Compile>
+    <Compile Include="Components\AnalogOutputControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Components\AnalogOutputControl.Designer.cs">
+      <DependentUpon>AnalogOutputControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Components\CommandHandlerControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -277,6 +283,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="BundledPlugins\QualitySelector.resx">
       <DependentUpon>QualitySelector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\AnalogOutputControl.resx">
+      <DependentUpon>AnalogOutputControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Components\CommandHandlerControl.resx">
       <DependentUpon>CommandHandlerControl.cs</DependentUpon>
