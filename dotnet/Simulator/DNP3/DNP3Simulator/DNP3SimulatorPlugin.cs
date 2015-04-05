@@ -37,6 +37,10 @@ namespace Automatak.Simulator.DNP3
             imgList.Images.Add(Properties.Resources.satellite_dish);            
             imgList.Images.Add(Properties.Resources.network_monitor);
             imgList.Images.Add(Properties.Resources.send_container);
+
+            /*
+                Load outstation plugins here 
+            */
         }
 
         string ISimulatorPlugin.UniqueId

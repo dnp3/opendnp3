@@ -10,8 +10,7 @@ using Automatak.Simulator.API;
 namespace Automatak.Simulator.DNP3
 {
     class MasterNode : ISimulatorNode
-    {
-        readonly IDNP3Config config;
+    {        
         readonly MeasurementCache cache;
         readonly IMaster master;
         readonly ISimulatorNodeCallbacks callbacks;
@@ -30,9 +29,8 @@ namespace Automatak.Simulator.DNP3
             }
         }
 
-        public MasterNode(IDNP3Config config, MeasurementCache cache, IMaster master, ISimulatorNodeCallbacks callbacks, string alias)
-        {
-            this.config = config;
+        public MasterNode(MeasurementCache cache, IMaster master, ISimulatorNodeCallbacks callbacks, string alias)
+        {            
             this.cache = cache;
             this.master = master;
             this.callbacks = callbacks;

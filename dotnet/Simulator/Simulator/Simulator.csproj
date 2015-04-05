@@ -161,13 +161,13 @@
       <Project>{67c09f7a-3dd4-4c02-aa3b-6882fb6ea816}</Project>
       <Name>Commons</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DNP3\DNP3Simulator\DNP3Simulator.csproj">
+      <Project>{2edbd258-1a19-4527-9c92-7418191bee87}</Project>
+      <Name>DNP3Simulator</Name>
+    </ProjectReference>
     <ProjectReference Include="..\simulatorAPI\SimulatorAPI.csproj">
       <Project>{6a19318b-8cc5-4bc8-8e80-412180c420a5}</Project>
       <Name>SimulatorAPI</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SimulatorDNP3\SimulatorDNP3.csproj">
-      <Project>{2edbd258-1a19-4527-9c92-7418191bee87}</Project>
-      <Name>SimulatorDNP3</Name>
     </ProjectReference>
     <ProjectReference Include="..\SimulatorUI\SimulatorUI.csproj">
       <Project>{428ddb1f-13f8-401c-aa0e-f0b80af1fc00}</Project>

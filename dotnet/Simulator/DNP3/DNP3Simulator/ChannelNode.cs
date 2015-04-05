@@ -46,7 +46,7 @@ namespace Automatak.Simulator.DNP3
         }
 
         
-        NodeState GetNodeState(ChannelState state)
+        static NodeState GetNodeState(ChannelState state)
         {
             switch (state)
             { 
@@ -80,7 +80,7 @@ namespace Automatak.Simulator.DNP3
                     else
                     {                        
                         master.Enable();
-                        return new MasterNode(config, cache, master, callbacks, alias);
+                        return new MasterNode(cache, master, callbacks, alias);
                     }                    
                 }
                 else
