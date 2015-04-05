@@ -59,6 +59,7 @@
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
             this.splitContainer1.Name = "splitContainer1";
             // 
@@ -71,8 +72,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.measurementView);
-            this.splitContainer1.Size = new System.Drawing.Size(1050, 543);
-            this.splitContainer1.SplitterDistance = 297;
+            this.splitContainer1.Size = new System.Drawing.Size(1048, 519);
+            this.splitContainer1.SplitterDistance = 296;
             this.splitContainer1.TabIndex = 1;
             // 
             // tabControl1
@@ -88,7 +89,7 @@
             this.tabControl1.Multiline = true;
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(287, 502);
+            this.tabControl1.Size = new System.Drawing.Size(286, 478);
             this.tabControl1.TabIndex = 3;
             // 
             // tabPage1
@@ -158,7 +159,7 @@
             this.tabPage3.Location = new System.Drawing.Point(23, 4);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(260, 494);
+            this.tabPage3.Size = new System.Drawing.Size(259, 470);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "AO";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -197,7 +198,7 @@
             this.comboBoxTypes.FormattingEnabled = true;
             this.comboBoxTypes.Location = new System.Drawing.Point(5, 5);
             this.comboBoxTypes.Name = "comboBoxTypes";
-            this.comboBoxTypes.Size = new System.Drawing.Size(287, 21);
+            this.comboBoxTypes.Size = new System.Drawing.Size(286, 21);
             this.comboBoxTypes.TabIndex = 0;
             this.comboBoxTypes.SelectedIndexChanged += new System.EventHandler(this.comboBoxTypes_SelectedIndexChanged);
             // 
@@ -207,16 +208,16 @@
             this.measurementView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.measurementView.Location = new System.Drawing.Point(0, 0);
             this.measurementView.Name = "measurementView";
-            this.measurementView.Size = new System.Drawing.Size(749, 543);
+            this.measurementView.Size = new System.Drawing.Size(748, 519);
             this.measurementView.TabIndex = 2;
             // 
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 521);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 497);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1050, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1048, 22);
             this.statusStrip1.TabIndex = 5;
             this.statusStrip1.Text = "statusStrip";
             // 
@@ -229,7 +230,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1050, 543);
+            this.ClientSize = new System.Drawing.Size(1048, 519);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
