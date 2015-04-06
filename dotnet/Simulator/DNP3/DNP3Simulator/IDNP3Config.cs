@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Automatak.DNP3.Interface;
+using Automatak.Simulator.DNP3.API;
 
 namespace Automatak.Simulator.DNP3
 {
@@ -15,6 +16,11 @@ namespace Automatak.Simulator.DNP3
         DatabaseTemplate GetTemplateMaybeNull(string alias);
 
         IEnumerable<KeyValuePair<string, DatabaseTemplate>> Templates
+        {
+            get;
+        }
+
+        IEnumerable<IOutstationModule> OutstationModules
         {
             get;
         }

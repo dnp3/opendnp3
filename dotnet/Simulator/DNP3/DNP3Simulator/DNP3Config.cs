@@ -5,12 +5,27 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Automatak.DNP3.Interface;
+using Automatak.Simulator.DNP3.API;
 
 namespace Automatak.Simulator.DNP3
 {
     class DNP3Config : IDNP3Config
     {
-        IDictionary<string, DatabaseTemplate> templates = new Dictionary<string, DatabaseTemplate>();
+        readonly IDictionary<string, DatabaseTemplate> templates = new Dictionary<string, DatabaseTemplate>();
+        readonly IEnumerable<IOutstationModule> outstations;
+
+        public DNP3Config(IEnumerable<IOutstationModule> outstations)
+        {
+            this.outstations = outstations;
+        }
+
+        IEnumerable<IOutstationModule> IDNP3Config.OutstationModules
+        {
+            get
+            {
+                return outstations;
+            }
+        }
           
         IEnumerable<KeyValuePair<string, DatabaseTemplate>> IDNP3Config.Templates
         {
@@ -42,6 +57,12 @@ namespace Automatak.Simulator.DNP3
             {
                 return null;
             }
+        }
+
+
+        public IEnumerable<API.IOutstationModule> OutstationModules
+        {
+            get { throw new NotImplementedException(); }
         }
     }
 }

@@ -93,34 +93,44 @@ namespace Automatak.Simulator.DNP3
 
         ISimulatorNode CreateOutstation(ISimulatorNodeCallbacks callbacks)
         {
-            var module = Automatak.Simulator.DNP3.DefaultOutstationPlugin.OutstationModule.Instance;
-
-            using (var dialog = new Components.OutstationDialog(config))
-            {                
-                if (dialog.ShowDialog() == DialogResult.OK)
+            using (var dialogModules = new Components.OutstationModuleDialog(config.OutstationModules))
+            {
+                if (dialogModules.ShowDialog() == DialogResult.OK)
                 {
-                    var outstationConfig = dialog.Configuration;
-                    var alias = dialog.SelectedAlias;
-                    var factory = module.CreateFactory();
+                    var module = dialogModules.SelectedModule;
 
-                    var outstation = channel.AddOutstation(alias, factory.CommandHandler, factory.Application, outstationConfig);
-                    
-                    if (outstation == null)
+                    using (var dialog = new Components.OutstationDialog(config))
                     {
-                        return null;
+                        if (dialog.ShowDialog() == DialogResult.OK)
+                        {
+                            var outstationConfig = dialog.Configuration;
+                            var alias = dialog.SelectedAlias;
+                            var factory = module.CreateFactory();
+
+                            var outstation = channel.AddOutstation(alias, factory.CommandHandler, factory.Application, outstationConfig);
+
+                            if (outstation == null)
+                            {
+                                return null;
+                            }
+                            else
+                            {
+                                var instance = factory.CreateInstance(outstation, alias, outstationConfig);
+                                outstation.Enable();
+                                return new OutstationNode(outstation, instance, callbacks);
+                            }
+                        }
+                        else
+                        {
+                            return null;
+                        }
                     }
-                    else
-                    {
-                        var instance = factory.CreateInstance(outstation, alias, outstationConfig);
-                        outstation.Enable();                        
-                        return new OutstationNode(outstation, instance, callbacks);
-                    }                       
                 }
                 else
                 {
                     return null;
                 }
-            }
+            }            
         }
 
         void ISimulatorNode.Remove()

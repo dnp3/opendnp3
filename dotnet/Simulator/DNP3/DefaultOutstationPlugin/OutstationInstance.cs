@@ -13,6 +13,8 @@ namespace Automatak.Simulator.DNP3.DefaultOutstationPlugin
 {
     public class OutstationModule : IOutstationModule
     {
+        const string name = "DefaultOutstation";
+
         OutstationStackConfig IOutstationModule.DefaultConfig
         {
             get {
@@ -42,6 +44,21 @@ namespace Automatak.Simulator.DNP3.DefaultOutstationPlugin
         {}
 
         private static OutstationModule instance = new OutstationModule();
+
+        public override string ToString()
+        {
+            return name;
+        }
+
+        string IOutstationModule.Description
+        {
+            get { return "A default outstation simulator that allows database editing and other behaviors"; }
+        }
+
+        string IOutstationModule.Name
+        {
+            get { return name; }
+        }
     }
 
 

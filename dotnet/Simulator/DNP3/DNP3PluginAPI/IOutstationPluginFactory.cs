@@ -21,6 +21,16 @@ namespace Automatak.Simulator.DNP3.API
             get;
         }
 
+        string Description
+        {
+            get;
+        }
+
+        string Name
+        {
+            get;
+        }
+
         IOutstationFactory CreateFactory();
         
     }

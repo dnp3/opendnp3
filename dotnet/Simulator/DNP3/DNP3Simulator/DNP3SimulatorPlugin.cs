@@ -10,6 +10,7 @@ using Automatak.DNP3.Interface;
 
 using Automatak.Simulator.Commons;
 using Automatak.Simulator.API;
+using Automatak.Simulator.DNP3.API;
 
 namespace Automatak.Simulator.DNP3
 {
@@ -26,7 +27,9 @@ namespace Automatak.Simulator.DNP3
         readonly ImageList imgList = new ImageList();
         readonly IDNP3Manager manager = DNP3ManagerFactory.CreateManager();
         readonly ILogHandler logHandler;
-        readonly DNP3Config config = new DNP3Config();
+        readonly DNP3Config config = new DNP3Config(
+           new IOutstationModule[]{ Automatak.Simulator.DNP3.DefaultOutstationPlugin.OutstationModule.Instance }
+        );
 
         public DNP3SimulatorPlugin(ILog log)
         {

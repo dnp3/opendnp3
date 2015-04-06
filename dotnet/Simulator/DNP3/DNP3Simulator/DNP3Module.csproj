@@ -78,6 +78,12 @@
     <Compile Include="Components\MasterScanControl.Designer.cs">
       <DependentUpon>MasterScanControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Components\OutstationModuleDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Components\OutstationModuleDialog.Designer.cs">
+      <DependentUpon>OutstationModuleDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Components\ScanDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -209,6 +215,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Components\MasterConfigControl.resx">
       <DependentUpon>MasterConfigControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Components\OutstationModuleDialog.resx">
+      <DependentUpon>OutstationModuleDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Components\ScanDialog.resx">
       <DependentUpon>ScanDialog.cs</DependentUpon>
