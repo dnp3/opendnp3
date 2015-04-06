@@ -43,8 +43,9 @@ namespace Automatak.Simulator.DNP3
         }
         
         void ISimulatorNode.Remove()
-        {            
-            outstation.Shutdown();            
+        {
+            this.instance.Shutdown();
+            this.outstation.Shutdown();            
         }
 
         IEnumerable<Metric> ISimulatorNode.Metrics
