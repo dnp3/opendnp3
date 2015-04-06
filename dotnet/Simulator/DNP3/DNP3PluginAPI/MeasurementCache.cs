@@ -8,11 +8,10 @@ using System.Threading;
 
 using Automatak.DNP3.Interface;
 
-namespace Automatak.Simulator.DNP3
+namespace Automatak.Simulator.DNP3.API
 {
        
-
-    class MeasurementCache: ISOEHandler, IMeasurementCache, IDatabase, IMeasurementLoader
+    public class MeasurementCache: ISOEHandler, IMeasurementCache, IDatabase, IMeasurementLoader
     {
         readonly Object mutex = new Object();
 

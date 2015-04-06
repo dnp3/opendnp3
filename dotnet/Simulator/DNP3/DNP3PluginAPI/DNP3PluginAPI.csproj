@@ -40,7 +40,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EventedOutstationApplication.cs" />
+    <Compile Include="IMeasurementCache.cs" />
     <Compile Include="IOutstationPluginFactory.cs" />
+    <Compile Include="MeasActions.cs" />
+    <Compile Include="Measurement.cs" />
+    <Compile Include="MeasurementCache.cs" />
+    <Compile Include="MeasurementCollection.cs" />
+    <Compile Include="MeasurementConversion.cs" />
+    <Compile Include="MeasurementPoco.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProxyCommandHandler.cs" />
   </ItemGroup>

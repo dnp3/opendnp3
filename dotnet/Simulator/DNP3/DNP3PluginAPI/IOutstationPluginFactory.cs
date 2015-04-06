@@ -54,7 +54,7 @@ namespace Automatak.Simulator.DNP3.API
             get;
         }
 
-        IOutstationInstance Create(IOutstation outstation, OutstationStackConfig config);
+        IOutstationInstance Create(IOutstation outstation, string name, OutstationStackConfig config);
     }
 
 

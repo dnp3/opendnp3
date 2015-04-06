@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Automatak.Simulator.DNP3
+namespace Automatak.Simulator.DNP3.API
 {
-    interface IMeasurementCache
+    public interface IMeasurementCache
     {
         MeasurementCollection GetCollection(MeasType type);
 

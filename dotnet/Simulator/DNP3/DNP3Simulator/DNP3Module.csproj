@@ -78,8 +78,6 @@
     <Compile Include="BundledPlugins\AnalogValueDialog.Designer.cs">
       <DependentUpon>AnalogValueDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="BundledPlugins\MeasActions.cs" />
-    <Compile Include="BundledPlugins\MeasurementConversion.cs" />
     <Compile Include="BundledPlugins\OutstationForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -185,7 +183,6 @@
     </Compile>
     <Compile Include="DNP3Config.cs" />
     <Compile Include="IDNP3Config.cs" />
-    <Compile Include="IMeasurementCache.cs" />
     <Compile Include="ListviewDatabaseAdapter.cs" />
     <Compile Include="MultiplexedLoader.cs" />
     <Compile Include="OutstationNode.cs" />
@@ -203,16 +200,12 @@
     <Compile Include="BundledPlugins\MasterForm.Designer.cs">
       <DependentUpon>MasterForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="BundledPlugins\Measurement.cs" />
-    <Compile Include="BundledPlugins\MeasurementCollection.cs" />
-    <Compile Include="BundledPlugins\MeasurementPoco.cs" />
     <Compile Include="BundledPlugins\MeasurementView.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="BundledPlugins\MeasurementView.Designer.cs">
       <DependentUpon>MeasurementView.cs</DependentUpon>
     </Compile>
-    <Compile Include="BundledPlugins\MeasurementCache.cs" />
     <Compile Include="ChannelNode.cs" />
     <Compile Include="Components\ChannelDialog.cs">
       <SubType>Form</SubType>

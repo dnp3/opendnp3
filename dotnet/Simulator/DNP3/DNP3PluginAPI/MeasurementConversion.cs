@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 using Automatak.DNP3.Interface;
 
-namespace Automatak.Simulator.DNP3
+namespace Automatak.Simulator.DNP3.API
 {
-    static class MeasurementConversion
+    public static class MeasurementConversion
     {
         public static Measurement ToMeasurement(this Binary meas, UInt16 index, TimestampMode tsmode)
         {

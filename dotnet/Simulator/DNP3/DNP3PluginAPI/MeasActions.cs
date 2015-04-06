@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 using Automatak.DNP3.Interface;
 
-namespace Automatak.Simulator.DNP3
+namespace Automatak.Simulator.DNP3.API
 {
-    static class MeasActions
+    public static class MeasActions
     {
         public static Action<IDatabase> GetBinaryAction(bool value, byte quality, DateTime timestamp, ushort index)
         {

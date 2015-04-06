@@ -5,9 +5,9 @@ using System.Text;
 
 using Automatak.DNP3.Interface;
 
-namespace Automatak.Simulator.DNP3
+namespace Automatak.Simulator.DNP3.API
 {
-    enum MeasType
+    public enum MeasType
     {
         Binary,
         DoubleBitBinary,
@@ -20,7 +20,7 @@ namespace Automatak.Simulator.DNP3
         TimeAndInterval
     };
 
-    class Measurement
+    public class Measurement
     {
         public Measurement(string displayValue, MeasurementBase meas, TimestampMode tsmode, MeasType type, UInt16 index, IQualityBitInfo info)
         {

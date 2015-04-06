@@ -5,16 +5,16 @@ using System.Text;
 
 using System.Collections.ObjectModel;
 
-namespace Automatak.Simulator.DNP3
+namespace Automatak.Simulator.DNP3.API
 {
-    interface IMeasurementObserver
+    public interface IMeasurementObserver
     { 
         void Refresh(IEnumerable<Measurement> rows);
 
         void Update(Measurement meas);   
     }   
 
-    class MeasurementCollection
+    public class MeasurementCollection
     {
         private IDictionary<ushort, Measurement> map = new SortedDictionary<ushort, Measurement>();
 
