@@ -13,14 +13,11 @@ namespace Automatak.Simulator.DNP3
     {
         readonly MeasurementCache cache;
         readonly ProxyCommandHandler handler;
-        readonly EventedOutstationApplication application;
-        readonly IDNP3Config config;
+        readonly EventedOutstationApplication application;        
         readonly IOutstation outstation;
         readonly ISimulatorNodeCallbacks callbacks;
         readonly string alias;
-        readonly ISimulatorNodeAction openAction;
-
-        readonly Guid guid = new Guid();
+        readonly ISimulatorNodeAction openAction;        
         
 
         OutstationForm form = null;
@@ -37,8 +34,7 @@ namespace Automatak.Simulator.DNP3
         {
             this.cache = cache;
             this.handler = handler;
-            this.application = application;
-            this.config = config;
+            this.application = application;            
             this.outstation = outstation;
             this.callbacks = callbacks;
             this.alias = alias;
@@ -98,12 +94,6 @@ namespace Automatak.Simulator.DNP3
         IEnumerable<ISimulatorNodeFactory> ISimulatorNode.Children
         {
             get { return Enumerable.Empty<ISimulatorNodeFactory>(); }
-        }
-
-
-        Guid ISimulatorNode.UniqueID
-        {
-            get { return guid; }
-        }
+        }       
     }
 }

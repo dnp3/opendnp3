@@ -15,8 +15,7 @@ namespace Automatak.Simulator.DNP3
         readonly IDNP3Config config;
         readonly IChannel channel;
         readonly ISimulatorNodeCallbacks callbacks;
-        readonly string alias;
-        readonly Guid guid = new Guid();
+        readonly string alias;        
 
         readonly ISimulatorNodeFactory masterFactory;
         readonly ISimulatorNodeFactory outstationFactory;
@@ -164,12 +163,6 @@ namespace Automatak.Simulator.DNP3
                 yield return masterFactory;
                 yield return outstationFactory;
             }
-        }
-
-
-        Guid ISimulatorNode.UniqueID
-        {
-            get { return guid; }
         }
     }
 }

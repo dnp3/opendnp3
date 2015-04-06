@@ -15,9 +15,7 @@ namespace Automatak.Simulator.DNP3
         readonly IMaster master;
         readonly ISimulatorNodeCallbacks callbacks;
         readonly string alias;
-        readonly ISimulatorNodeAction openAction;
-
-        readonly Guid guid = new Guid();
+        readonly ISimulatorNodeAction openAction;        
 
         MasterForm form = null;
 
@@ -93,10 +91,11 @@ namespace Automatak.Simulator.DNP3
             get { return Enumerable.Empty<ISimulatorNodeFactory>(); }
         }
 
-
+        /*
         Guid ISimulatorNode.UniqueID
         {
             get { return guid; }
         }
+         * */
     }
 }

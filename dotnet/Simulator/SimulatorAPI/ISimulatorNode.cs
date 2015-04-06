@@ -54,10 +54,12 @@ namespace Automatak.Simulator.API
             get;
         }
 
+        /*
         Guid UniqueID
         {
             get;
         }
+        */ 
 
         IEnumerable<Metric> Metrics
         {

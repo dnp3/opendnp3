@@ -47,7 +47,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commons", "dotnet\simulator
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimulatorUI", "dotnet\simulator\SimulatorUI\SimulatorUI.csproj", "{428DDB1F-13F8-401C-AA0E-F0B80AF1FC00}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimulatorAPI", "dotnet\simulator\SimulatorAPI\SimulatorAPI.csproj", "{6A19318B-8CC5-4BC8-8E80-412180C420A5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModuleAPI", "dotnet\simulator\SimulatorAPI\ModuleAPI.csproj", "{6A19318B-8CC5-4BC8-8E80-412180C420A5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simulator", "dotnet\simulator\Simulator\Simulator.csproj", "{9850AA24-6847-4611-81DA-6F04F92B3400}"
 EndProject
@@ -55,7 +55,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DNP3", "DNP3", "{3016DD80-7
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DNP3PluginAPI", "dotnet\simulator\DNP3\DNP3PluginAPI\DNP3PluginAPI.csproj", "{A392B2A4-F62E-442C-813E-6B7F4BF63459}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DNP3Simulator", "dotnet\simulator\DNP3\DNP3Simulator\DNP3Simulator.csproj", "{2EDBD258-1A19-4527-9C92-7418191BEE87}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DNP3Module", "dotnet\simulator\DNP3\DNP3Simulator\DNP3Module.csproj", "{2EDBD258-1A19-4527-9C92-7418191BEE87}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

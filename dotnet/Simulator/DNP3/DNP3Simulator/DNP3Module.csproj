@@ -353,9 +353,9 @@
       <Project>{67c09f7a-3dd4-4c02-aa3b-6882fb6ea816}</Project>
       <Name>Commons</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\SimulatorAPI\SimulatorAPI.csproj">
+    <ProjectReference Include="..\..\SimulatorAPI\ModuleAPI.csproj">
       <Project>{6a19318b-8cc5-4bc8-8e80-412180c420a5}</Project>
-      <Name>SimulatorAPI</Name>
+      <Name>ModuleAPI</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

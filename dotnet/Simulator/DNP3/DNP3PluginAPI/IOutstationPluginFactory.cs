@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Automatak.DNP3.Interface;
+using Automatak.Simulator.API;
 
 namespace Automatak.Simulator.DNP3.API
 {   
@@ -25,8 +26,20 @@ namespace Automatak.Simulator.DNP3.API
     }
 
     public interface IOutstationInstance
-    { 
-        
+    {
+        bool HasForm
+        {
+            get;
+        }
+
+        void ShowForm();
+
+        void Shutdown();
+
+        IEnumerable<Metric> Metrics
+        {
+            get;
+        }
     }
 
     public interface IOutstationFactory
