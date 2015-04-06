@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using Automatak.DNP3.Interface;
 
-namespace Automatak.Simulator.DNP3
+namespace Automatak.Simulator.DNP3.API
 {
     public enum CommandType
     { 
@@ -17,7 +17,7 @@ namespace Automatak.Simulator.DNP3
         AnalogDouble
     }
 
-    class ProxyCommandHandler : ICommandHandler
+    public class ProxyCommandHandler : ICommandHandler
     {
         bool enabled = false;
         Object mutex = new Object();        

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 using Automatak.DNP3.Interface;
 
-namespace Automatak.Simulator.DNP3
+namespace Automatak.Simulator.DNP3.API
 {
-    class EventedOutstationApplication : IOutstationApplication
+    public class EventedOutstationApplication : IOutstationApplication
     {
         bool supportsWriteAbsoluteTime = false;
         ApplicationIIN appIIN = new ApplicationIIN();

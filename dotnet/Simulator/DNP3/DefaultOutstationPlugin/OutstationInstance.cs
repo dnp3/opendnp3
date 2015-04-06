@@ -6,20 +6,73 @@ using System.Threading.Tasks;
 
 using Automatak.DNP3.Interface;
 using Automatak.Simulator.DNP3.API;
-using Automatak.Simulator.API;
 
-namespace Automatak.Simulator.DNP3
+namespace Automatak.Simulator.DNP3.DefaultOutstationPlugin
 {
-    class OutstationNode : ISimulatorNode
+    public class OutstationModule : IOutstationModule
+    {
+        OutstationStackConfig IOutstationModule.DefaultConfig
+        {
+            get {
+                return new OutstationStackConfig();
+            }
+        }
+
+        bool IOutstationModule.AllowTemplateEditing
+        {
+            get { return true; }
+        }
+
+        IOutstationFactory IOutstationModule.CreateFactory()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IOutstationModule Instance
+        {
+            get
+            {
+                return instance;
+            }
+        }
+       
+        private OutstationModule()
+        {}
+
+        private static OutstationModule instance = new OutstationModule();
+    }
+
+
+    class OutstationFactory : IOutstationFactory
+    {        
+
+        ICommandHandler IOutstationFactory.CommandHandler
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        IOutstationApplication IOutstationFactory.Application
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        IOutstationInstance IOutstationFactory.Create(IOutstation outstation, OutstationStackConfig config)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    /*
+    class OutstationInstance : IOutstationInstance
     {
         readonly MeasurementCache cache;
         readonly ProxyCommandHandler handler;
-        readonly EventedOutstationApplication application;        
+        readonly EventedOutstationApplication application;
         readonly IOutstation outstation;
         readonly ISimulatorNodeCallbacks callbacks;
         readonly string alias;
-        readonly ISimulatorNodeAction openAction;        
-        
+        readonly ISimulatorNodeAction openAction;
+
 
         OutstationForm form = null;
 
@@ -35,7 +88,7 @@ namespace Automatak.Simulator.DNP3
         {
             this.cache = cache;
             this.handler = handler;
-            this.application = application;            
+            this.application = application;
             this.outstation = outstation;
             this.callbacks = callbacks;
             this.alias = alias;
@@ -54,7 +107,7 @@ namespace Automatak.Simulator.DNP3
 
             form.Show();
         }
-        
+
         void ISimulatorNode.Remove()
         {
             if (form != null)
@@ -63,7 +116,7 @@ namespace Automatak.Simulator.DNP3
                 form.Dispose();
                 form = null;
             }
-            outstation.Shutdown();            
+            outstation.Shutdown();
         }
 
         IEnumerable<Metric> ISimulatorNode.Metrics
@@ -95,6 +148,7 @@ namespace Automatak.Simulator.DNP3
         IEnumerable<ISimulatorNodeFactory> ISimulatorNode.Children
         {
             get { return Enumerable.Empty<ISimulatorNodeFactory>(); }
-        }       
+        }
     }
+    */
 }
