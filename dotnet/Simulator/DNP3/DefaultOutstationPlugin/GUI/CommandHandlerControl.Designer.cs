@@ -1,4 +1,4 @@
-﻿namespace Automatak.Simulator.DNP3.Components
+﻿namespace Automatak.Simulator.DNP3.DefaultOutstationPlugin
 {
     partial class CommandHandlerControl
     {

@@ -1,4 +1,4 @@
-﻿namespace Automatak.Simulator.DNP3.BundledPlugins
+﻿namespace Automatak.Simulator.DNP3.Commons
 {
     partial class DBListView
     {

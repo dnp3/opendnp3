@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 using Automatak.Simulator.DNP3.Commons;
 
-namespace Automatak.Simulator.DNP3
+namespace Automatak.Simulator.DNP3.Commons
 {
     public partial class MeasurementView : UserControl, IMeasurementObserver
     {

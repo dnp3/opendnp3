@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Automatak.DNP3.Interface;
+using Automatak.Simulator.DNP3.API;
 using Automatak.Simulator.DNP3.Commons;
 using Automatak.Simulator.API;
 
@@ -12,57 +13,37 @@ namespace Automatak.Simulator.DNP3
 {
     class OutstationNode : ISimulatorNode
     {
-        readonly MeasurementCache cache;
-        readonly ProxyCommandHandler handler;
-        readonly EventedOutstationApplication application;        
         readonly IOutstation outstation;
-        readonly ISimulatorNodeCallbacks callbacks;
-        readonly string alias;
-        readonly ISimulatorNodeAction openAction;        
-        
-
-        OutstationForm form = null;
-
+        readonly IOutstationInstance instance;                     
+        readonly ISimulatorNodeCallbacks callbacks;        
+        readonly ISimulatorNodeAction openAction;       
+                
         string ISimulatorNode.Alias
         {
             get
             {
-                return alias;
+                return instance.DisplayName;
             }
         }
 
-        public OutstationNode(MeasurementCache cache, ProxyCommandHandler handler, EventedOutstationApplication application, IDNP3Config config, IOutstation outstation, ISimulatorNodeCallbacks callbacks, string alias)
-        {
-            this.cache = cache;
-            this.handler = handler;
-            this.application = application;            
+        public OutstationNode(IOutstation outstation, IOutstationInstance instance, ISimulatorNodeCallbacks callbacks)
+        {            
             this.outstation = outstation;
-            this.callbacks = callbacks;
-            this.alias = alias;
-
-            this.callbacks.ChangeImage(IconIndex.Outstation);
+            this.instance = instance;
+            this.callbacks = callbacks;                     
 
             this.openAction = new NodeAction("Open", () => OpenForm());
+
+            this.callbacks.ChangeImage(IconIndex.Outstation);
         }
 
         void OpenForm()
         {
-            if (form == null)
-            {
-                form = new OutstationForm(outstation, application, cache, handler, alias);
-            }
-
-            form.Show();
+            this.instance.ShowForm();
         }
         
         void ISimulatorNode.Remove()
-        {
-            if (form != null)
-            {
-                form.Close();
-                form.Dispose();
-                form = null;
-            }
+        {            
             outstation.Shutdown();            
         }
 
@@ -81,7 +62,7 @@ namespace Automatak.Simulator.DNP3
 
         string ISimulatorNode.DisplayName
         {
-            get { return alias; }
+            get { return instance.DisplayName; }
         }
 
         IEnumerable<ISimulatorNodeAction> ISimulatorNode.Actions

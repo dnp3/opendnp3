@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Automatak.Simulator.DNP3.BundledPlugins
+namespace Automatak.Simulator.DNP3.Commons
 {
     public partial class DBListView : ListView
     {

@@ -60,53 +60,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BundledPlugins\DoubleBinaryValueDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="BundledPlugins\DoubleBinaryValueDialog.Designer.cs">
-      <DependentUpon>DoubleBinaryValueDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="BundledPlugins\CounterValueDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="BundledPlugins\CounterValueDialog.Designer.cs">
-      <DependentUpon>CounterValueDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="BundledPlugins\AnalogValueDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="BundledPlugins\AnalogValueDialog.Designer.cs">
-      <DependentUpon>AnalogValueDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="BundledPlugins\OutstationForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="BundledPlugins\OutstationForm.Designer.cs">
-      <DependentUpon>OutstationForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="BundledPlugins\BinaryValueDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="BundledPlugins\BinaryValueDialog.Designer.cs">
-      <DependentUpon>BinaryValueDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="BundledPlugins\QualitySelector.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="BundledPlugins\QualitySelector.Designer.cs">
-      <DependentUpon>QualitySelector.cs</DependentUpon>
-    </Compile>
     <Compile Include="Components\AnalogOutputControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Components\AnalogOutputControl.Designer.cs">
       <DependentUpon>AnalogOutputControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Components\CommandHandlerControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Components\CommandHandlerControl.Designer.cs">
-      <DependentUpon>CommandHandlerControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Components\EventBufferConfigControl.cs">
       <SubType>UserControl</SubType>
@@ -183,28 +141,14 @@
     </Compile>
     <Compile Include="DNP3Config.cs" />
     <Compile Include="IDNP3Config.cs" />
-    <Compile Include="ListviewDatabaseAdapter.cs" />
-    <Compile Include="MultiplexedLoader.cs" />
     <Compile Include="OutstationNode.cs" />
     <Compile Include="NodeAction.cs" />
     <Compile Include="ActionNodeFactory.cs" />
-    <Compile Include="BundledPlugins\DBListView.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="BundledPlugins\DBListView.Designer.cs">
-      <DependentUpon>DBListView.cs</DependentUpon>
-    </Compile>
     <Compile Include="BundledPlugins\MasterForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="BundledPlugins\MasterForm.Designer.cs">
       <DependentUpon>MasterForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="BundledPlugins\MeasurementView.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="BundledPlugins\MeasurementView.Designer.cs">
-      <DependentUpon>MeasurementView.cs</DependentUpon>
     </Compile>
     <Compile Include="ChannelNode.cs" />
     <Compile Include="Components\ChannelDialog.cs">
@@ -251,35 +195,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="BundledPlugins\DoubleBinaryValueDialog.resx">
-      <DependentUpon>DoubleBinaryValueDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="BundledPlugins\CounterValueDialog.resx">
-      <DependentUpon>CounterValueDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="BundledPlugins\AnalogValueDialog.resx">
-      <DependentUpon>AnalogValueDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="BundledPlugins\OutstationForm.resx">
-      <DependentUpon>OutstationForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="BundledPlugins\MasterForm.resx">
       <DependentUpon>MasterForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="BundledPlugins\MeasurementView.resx">
-      <DependentUpon>MeasurementView.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="BundledPlugins\BinaryValueDialog.resx">
-      <DependentUpon>BinaryValueDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="BundledPlugins\QualitySelector.resx">
-      <DependentUpon>QualitySelector.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Components\AnalogOutputControl.resx">
       <DependentUpon>AnalogOutputControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Components\CommandHandlerControl.resx">
-      <DependentUpon>CommandHandlerControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Components\EventBufferConfigControl.resx">
       <DependentUpon>EventBufferConfigControl.cs</DependentUpon>
@@ -347,6 +267,10 @@
     <ProjectReference Include="..\..\SimulatorAPI\ModuleAPI.csproj">
       <Project>{6a19318b-8cc5-4bc8-8e80-412180c420a5}</Project>
       <Name>ModuleAPI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DefaultOutstationPlugin\DefaultOutstationPlugin.csproj">
+      <Project>{1abc9a1a-6026-4803-bab4-c1190375a531}</Project>
+      <Name>DefaultOutstationPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\DNP3Commons\DNP3Commons.csproj">
       <Project>{bf90d749-22fb-49fd-b840-4ff875d12cc6}</Project>

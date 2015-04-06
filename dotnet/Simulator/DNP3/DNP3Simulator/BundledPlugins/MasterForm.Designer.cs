@@ -42,7 +42,7 @@
             this.buttonSBOAO = new System.Windows.Forms.Button();
             this.buttonDOAO = new System.Windows.Forms.Button();
             this.comboBoxTypes = new System.Windows.Forms.ComboBox();
-            this.measurementView = new Automatak.Simulator.DNP3.MeasurementView();
+            this.measurementView = new Automatak.Simulator.DNP3.Commons.MeasurementView();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -257,7 +257,7 @@
 
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.ComboBox comboBoxTypes;
-        private MeasurementView measurementView;
+        private Automatak.Simulator.DNP3.Commons.MeasurementView measurementView;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private Components.MasterScanControl masterScanControl1;

@@ -1,6 +1,6 @@
-﻿namespace Automatak.Simulator.DNP3
+﻿namespace Automatak.Simulator.DNP3.DefaultOutstationPlugin
 {
-    partial class AnalogValueDialog
+    partial class DoubleBinaryValueDialog
     {
         /// <summary>
         /// Required designer variable.
@@ -29,19 +29,18 @@
         private void InitializeComponent()
         {
             this.groupBoxButtons = new System.Windows.Forms.GroupBox();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.buttonSave = new System.Windows.Forms.Button();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.qualitySelector = new Automatak.Simulator.DNP3.QualitySelector();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.qualitySelector = new Automatak.Simulator.DNP3.DefaultOutstationPlugin.QualitySelector();
             this.groupBoxButtons.SuspendLayout();
             this.statusStrip.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBoxButtons
             // 
-            this.groupBoxButtons.Controls.Add(this.numericUpDown1);
+            this.groupBoxButtons.Controls.Add(this.comboBox1);
             this.groupBoxButtons.Controls.Add(this.buttonSave);
             this.groupBoxButtons.Location = new System.Drawing.Point(9, 129);
             this.groupBoxButtons.Name = "groupBoxButtons";
@@ -49,13 +48,23 @@
             this.groupBoxButtons.TabIndex = 0;
             this.groupBoxButtons.TabStop = false;
             // 
+            // comboBox1
+            // 
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(14, 26);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(148, 24);
+            this.comboBox1.TabIndex = 1;
+            // 
             // buttonSave
             // 
             this.buttonSave.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.buttonSave.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.buttonSave.Location = new System.Drawing.Point(153, 18);
+            this.buttonSave.Location = new System.Drawing.Point(171, 18);
             this.buttonSave.Name = "buttonSave";
-            this.buttonSave.Size = new System.Drawing.Size(116, 42);
+            this.buttonSave.Size = new System.Drawing.Size(98, 42);
             this.buttonSave.TabIndex = 0;
             this.buttonSave.Text = "Save";
             this.buttonSave.UseVisualStyleBackColor = true;
@@ -81,19 +90,10 @@
             // 
             this.qualitySelector.Location = new System.Drawing.Point(12, 12);
             this.qualitySelector.Name = "qualitySelector";
-            this.qualitySelector.Size = new System.Drawing.Size(279, 120);
+            this.qualitySelector.Size = new System.Drawing.Size(284, 120);
             this.qualitySelector.TabIndex = 6;
             // 
-            // numericUpDown1
-            // 
-            this.numericUpDown1.DecimalPlaces = 3;
-            this.numericUpDown1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numericUpDown1.Location = new System.Drawing.Point(16, 27);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(116, 26);
-            this.numericUpDown1.TabIndex = 1;
-            // 
-            // AnalogValueDialog
+            // DoubleBinaryValueDialog
             // 
             this.AcceptButton = this.buttonSave;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -105,7 +105,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "AnalogValueDialog";
+            this.Name = "DoubleBinaryValueDialog";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
@@ -114,7 +114,6 @@
             this.groupBoxButtons.ResumeLayout(false);
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -127,6 +126,6 @@
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private QualitySelector qualitySelector;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.ComboBox comboBox1;
     }
 }

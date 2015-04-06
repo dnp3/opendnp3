@@ -93,16 +93,17 @@ namespace Automatak.Simulator.DNP3
 
         ISimulatorNode CreateOutstation(ISimulatorNodeCallbacks callbacks)
         {
+            var module = Automatak.Simulator.DNP3.DefaultOutstationPlugin.OutstationModule.Instance;
+
             using (var dialog = new Components.OutstationDialog(config))
             {                
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
                     var outstationConfig = dialog.Configuration;
                     var alias = dialog.SelectedAlias;
-                    var cache = new MeasurementCache(outstationConfig.databaseTemplate);
-                    var handler = new ProxyCommandHandler();
-                    var application = new EventedOutstationApplication();
-                    var outstation = channel.AddOutstation(alias, handler, application, outstationConfig);
+                    var factory = module.CreateFactory();
+
+                    var outstation = channel.AddOutstation(alias, factory.CommandHandler, factory.Application, outstationConfig);
                     
                     if (outstation == null)
                     {
@@ -110,8 +111,9 @@ namespace Automatak.Simulator.DNP3
                     }
                     else
                     {
-                        outstation.Enable();
-                        return new OutstationNode(cache, handler, application, config, outstation, callbacks, alias);
+                        var instance = factory.CreateInstance(outstation, alias, outstationConfig);
+                        outstation.Enable();                        
+                        return new OutstationNode(outstation, instance, callbacks);
                     }                       
                 }
                 else

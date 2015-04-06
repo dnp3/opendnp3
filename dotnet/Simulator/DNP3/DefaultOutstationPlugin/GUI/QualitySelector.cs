@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 using Automatak.DNP3.Interface;
 
-namespace Automatak.Simulator.DNP3
+namespace Automatak.Simulator.DNP3.DefaultOutstationPlugin
 {
     public partial class QualitySelector : UserControl
     {

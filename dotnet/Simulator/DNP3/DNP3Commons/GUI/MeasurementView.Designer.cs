@@ -1,4 +1,4 @@
-﻿namespace Automatak.Simulator.DNP3
+﻿namespace Automatak.Simulator.DNP3.Commons
 {
     partial class MeasurementView
     {
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.listView = new Automatak.Simulator.DNP3.BundledPlugins.DBListView();
+            this.listView = new Automatak.Simulator.DNP3.Commons.DBListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -87,7 +87,7 @@
 
         #endregion
 
-        private BundledPlugins.DBListView listView;
+        private DBListView listView;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader3;

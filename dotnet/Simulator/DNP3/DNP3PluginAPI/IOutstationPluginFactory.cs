@@ -32,14 +32,14 @@ namespace Automatak.Simulator.DNP3.API
             get;
         }
 
-        void ShowForm();
-
-        void Shutdown();
-
-        IEnumerable<Metric> Metrics
+        string DisplayName
         {
             get;
         }
+
+        void ShowForm();
+
+        void Shutdown();        
     }
 
     public interface IOutstationFactory
@@ -54,7 +54,7 @@ namespace Automatak.Simulator.DNP3.API
             get;
         }
 
-        IOutstationInstance Create(IOutstation outstation, string name, OutstationStackConfig config);
+        IOutstationInstance CreateInstance(IOutstation outstation, string name, OutstationStackConfig config);
     }
 
 

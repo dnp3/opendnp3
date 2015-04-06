@@ -1,4 +1,4 @@
-﻿namespace Automatak.Simulator.DNP3
+﻿namespace Automatak.Simulator.DNP3.DefaultOutstationPlugin
 {
     partial class BinaryValueDialog
     {
@@ -33,7 +33,7 @@
             this.buttonSave = new System.Windows.Forms.Button();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.qualitySelector = new Automatak.Simulator.DNP3.QualitySelector();
+            this.qualitySelector = new Automatak.Simulator.DNP3.DefaultOutstationPlugin.QualitySelector();
             this.groupBoxButtons.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();

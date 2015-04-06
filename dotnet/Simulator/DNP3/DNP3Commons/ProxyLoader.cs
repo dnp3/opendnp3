@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 using Automatak.DNP3.Interface;
 
-namespace Automatak.Simulator.DNP3
+namespace Automatak.Simulator.DNP3.Commons
 {
-    class MultiplexedLoader : IMeasurementLoader
+    public class ProxyLoader : IMeasurementLoader
     {
         IEnumerable<IMeasurementLoader> loaders;
 
-        public MultiplexedLoader(params IMeasurementLoader[] loaders)
+        public ProxyLoader(params IMeasurementLoader[] loaders)
         {
             this.loaders = new List<IMeasurementLoader>(loaders);
         }              

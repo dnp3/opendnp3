@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using Automatak.DNP3.Interface;
-using Automatak.Simulator.DNP3.API;
-using Automatak.Simulator.DNP3.Commons;
 
-namespace Automatak.Simulator.DNP3
+namespace Automatak.Simulator.DNP3.Commons
 {
-    class ListviewDatabaseAdapter : IDatabase
+    public class ListviewDatabaseAdapter : IDatabase
     {
         readonly ListBox listBox;
 

@@ -1,4 +1,4 @@
-﻿namespace Automatak.Simulator.DNP3
+﻿namespace Automatak.Simulator.DNP3.DefaultOutstationPlugin
 {
     partial class OutstationForm
     {
@@ -35,7 +35,7 @@
             this.buttonEdit = new System.Windows.Forms.Button();
             this.comboBoxTypes = new System.Windows.Forms.ComboBox();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.measurementView = new Automatak.Simulator.DNP3.MeasurementView();
+            this.measurementView = new Automatak.Simulator.DNP3.Commons.MeasurementView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -43,7 +43,7 @@
             this.numericUpDownColdRestartTime = new System.Windows.Forms.NumericUpDown();
             this.checkBoxLocalMode = new System.Windows.Forms.CheckBox();
             this.checkBoxNeedTime = new System.Windows.Forms.CheckBox();
-            this.commandHandlerControl1 = new Automatak.Simulator.DNP3.Components.CommandHandlerControl();
+            this.commandHandlerControl1 = new Automatak.Simulator.DNP3.DefaultOutstationPlugin.CommandHandlerControl();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -164,7 +164,7 @@
             this.measurementView.Name = "measurementView";
             this.measurementView.Size = new System.Drawing.Size(877, 268);
             this.measurementView.TabIndex = 3;
-            this.measurementView.OnRowSelectionChanged += new Automatak.Simulator.DNP3.MeasurementView.RowSelectionEvent(this.measurementView_OnRowSelectionChanged);
+            this.measurementView.OnRowSelectionChanged += new Automatak.Simulator.DNP3.Commons.MeasurementView.RowSelectionEvent(this.measurementView_OnRowSelectionChanged);
             // 
             // groupBox1
             // 
@@ -287,11 +287,11 @@
         private System.Windows.Forms.ComboBox comboBoxTypes;
         private System.Windows.Forms.Button buttonEdit;
         private System.Windows.Forms.SplitContainer splitContainer2;
-        private MeasurementView measurementView;
+        private Automatak.Simulator.DNP3.Commons.MeasurementView measurementView;
         private System.Windows.Forms.Button buttonClear;
         private System.Windows.Forms.Button buttonApply;
         private System.Windows.Forms.ListBox listBoxEvents;
-        private Components.CommandHandlerControl commandHandlerControl1;
+        private CommandHandlerControl commandHandlerControl1;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.CheckBox checkBoxNeedTime;
         private System.Windows.Forms.CheckBox checkBoxLocalMode;

@@ -27,10 +27,10 @@ namespace Automatak.Simulator.DNP3.DefaultOutstationPlugin
 
         IOutstationFactory IOutstationModule.CreateFactory()
         {
-            throw new NotImplementedException();
+            return new OutstationFactory();
         }
 
-        public IOutstationModule Instance
+        public static IOutstationModule Instance
         {
             get
             {
@@ -61,118 +61,60 @@ namespace Automatak.Simulator.DNP3.DefaultOutstationPlugin
             get { return application; }
         }
 
-        IOutstationInstance IOutstationFactory.Create(IOutstation outstation, string name, OutstationStackConfig config)
+        IOutstationInstance IOutstationFactory.CreateInstance(IOutstation outstation, string name, OutstationStackConfig config)
         {
-            throw new NotImplementedException();
+            return new OutstationInstance(commandHandler, application, outstation, name);
         }
     }
 
     
     class OutstationInstance : IOutstationInstance
     {
-        /*
-        readonly MeasurementCache cache;
+        
+        readonly MeasurementCache cache = new MeasurementCache();
         readonly ProxyCommandHandler handler;
         readonly EventedOutstationApplication application;
-        readonly IOutstation outstation;        
-        readonly string alias;
-        */
+        readonly IOutstation outstation;
+        readonly string alias;        
 
-
-        //OutstationForm form = null;
-        /*
-        string ISimulatorNode.Alias
+        OutstationForm form = null;
+        
+        public OutstationInstance(ProxyCommandHandler handler, EventedOutstationApplication application, IOutstation outstation, string alias)
         {
-            get
-            {
-                return alias;
-            }
-        }
-
-        public OutstationNode(MeasurementCache cache, ProxyCommandHandler handler, EventedOutstationApplication application, IDNP3Config config, IOutstation outstation, ISimulatorNodeCallbacks callbacks, string alias)
-        {
-            this.cache = cache;
             this.handler = handler;
             this.application = application;
             this.outstation = outstation;
-            this.callbacks = callbacks;
             this.alias = alias;
-
-            this.callbacks.ChangeImage(IconIndex.Outstation);
-
-            this.openAction = new NodeAction("Open", () => OpenForm());
         }
 
-        void OpenForm()
+        string IOutstationInstance.DisplayName
         {
-            if (form == null)
+            get { return alias; }
+        }
+
+        bool IOutstationInstance.HasForm
+        {
+            get { return true; }
+        }
+
+        void IOutstationInstance.ShowForm()
+        {
+            if(this.form == null)
             {
-                form = new OutstationForm(outstation, application, cache, handler, alias);
+                this.form = new OutstationForm(outstation, application, cache, handler, alias);
             }
 
             form.Show();
         }
 
-        void ISimulatorNode.Remove()
-        {
+        void IOutstationInstance.Shutdown()
+        {            
             if (form != null)
             {
                 form.Close();
                 form.Dispose();
                 form = null;
-            }
-            outstation.Shutdown();
-        }
-
-        IEnumerable<Metric> ISimulatorNode.Metrics
-        {
-            get
-            {
-                var list = new List<Metric>();
-                var stats = outstation.GetStackStatistics();
-                list.Add(new Metric("Num transport rx", stats.NumTransportRx.ToString()));
-                list.Add(new Metric("Num transport tx", stats.NumTransportTx.ToString()));
-                list.Add(new Metric("Num transport error rx", stats.NumTransportErrorRx.ToString()));
-                return list;
-            }
-        }
-
-        string ISimulatorNode.DisplayName
-        {
-            get { return alias; }
-        }
-
-        IEnumerable<ISimulatorNodeAction> ISimulatorNode.Actions
-        {
-            get
-            {
-                yield return openAction;
-            }
-        }
-
-        IEnumerable<ISimulatorNodeFactory> ISimulatorNode.Children
-        {
-            get { return Enumerable.Empty<ISimulatorNodeFactory>(); }
-        }
-        */
-        bool IOutstationInstance.HasForm
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        void IOutstationInstance.ShowForm()
-        {
-            throw new NotImplementedException();
-        }
-
-        void IOutstationInstance.Shutdown()
-        {
-            throw new NotImplementedException();
-        }
-
-        IEnumerable<Metric> IOutstationInstance.Metrics
-        {
-            get { throw new NotImplementedException(); }
+            }         
         }
     }
     

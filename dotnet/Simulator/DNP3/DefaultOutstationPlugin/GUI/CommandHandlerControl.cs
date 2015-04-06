@@ -11,7 +11,7 @@ using System.Windows.Forms;
 using Automatak.DNP3.Interface;
 using Automatak.Simulator.DNP3.Commons;
 
-namespace Automatak.Simulator.DNP3.Components
+namespace Automatak.Simulator.DNP3.DefaultOutstationPlugin
 {
     partial class CommandHandlerControl : UserControl
     {   

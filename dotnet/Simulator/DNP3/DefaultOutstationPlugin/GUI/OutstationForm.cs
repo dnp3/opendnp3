@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using Automatak.DNP3.Interface;
 using Automatak.Simulator.DNP3.Commons;
 
-namespace Automatak.Simulator.DNP3
+namespace Automatak.Simulator.DNP3.DefaultOutstationPlugin
 {    
     partial class OutstationForm : Form
     {
@@ -33,7 +33,7 @@ namespace Automatak.Simulator.DNP3
             this.cache = cache;
             this.proxy = proxy;
 
-            this.loader = new MultiplexedLoader(outstation, cache);
+            this.loader = new ProxyLoader(outstation, cache);
 
             this.Text = String.Format("DNP3 Outstation ({0})", alias);
             this.comboBoxTypes.DataSource = System.Enum.GetValues(typeof(MeasType));

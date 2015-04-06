@@ -1,6 +1,6 @@
-﻿namespace Automatak.Simulator.DNP3
+﻿namespace Automatak.Simulator.DNP3.DefaultOutstationPlugin
 {
-    partial class CounterValueDialog
+    partial class AnalogValueDialog
     {
         /// <summary>
         /// Required designer variable.
@@ -29,14 +29,14 @@
         private void InitializeComponent()
         {
             this.groupBoxButtons = new System.Windows.Forms.GroupBox();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.buttonSave = new System.Windows.Forms.Button();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.qualitySelector = new Automatak.Simulator.DNP3.QualitySelector();
+            this.qualitySelector = new Automatak.Simulator.DNP3.DefaultOutstationPlugin.QualitySelector();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.groupBoxButtons.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.statusStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBoxButtons
@@ -48,14 +48,6 @@
             this.groupBoxButtons.Size = new System.Drawing.Size(282, 70);
             this.groupBoxButtons.TabIndex = 0;
             this.groupBoxButtons.TabStop = false;
-            // 
-            // numericUpDown1
-            // 
-            this.numericUpDown1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.numericUpDown1.Location = new System.Drawing.Point(16, 27);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(116, 26);
-            this.numericUpDown1.TabIndex = 1;
             // 
             // buttonSave
             // 
@@ -92,7 +84,16 @@
             this.qualitySelector.Size = new System.Drawing.Size(279, 120);
             this.qualitySelector.TabIndex = 6;
             // 
-            // CounterValueDialog
+            // numericUpDown1
+            // 
+            this.numericUpDown1.DecimalPlaces = 3;
+            this.numericUpDown1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.numericUpDown1.Location = new System.Drawing.Point(16, 27);
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(116, 26);
+            this.numericUpDown1.TabIndex = 1;
+            // 
+            // AnalogValueDialog
             // 
             this.AcceptButton = this.buttonSave;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -104,16 +105,16 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "CounterValueDialog";
+            this.Name = "AnalogValueDialog";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Update Values";
             this.TopMost = true;
             this.groupBoxButtons.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
