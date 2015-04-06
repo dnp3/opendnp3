@@ -5,11 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Automatak.DNP3.Interface;
-using Automatak.Simulator.API;
 
 namespace Automatak.Simulator.DNP3.API
 {   
-    public interface IOutstationPluginFactory
+    public interface IOutstationModule
     {
         OutstationStackConfig DefaultConfig
         {
@@ -21,11 +20,16 @@ namespace Automatak.Simulator.DNP3.API
             get;
         }
 
-        IOutstationInstanceFactory Create();
+        IOutstationFactory CreateFactory();
         
     }
 
-    public interface IOutstationInstanceFactory
+    public interface IOutstationInstance
+    { 
+        
+    }
+
+    public interface IOutstationFactory
     {
         ICommandHandler CommandHandler
         {
@@ -37,7 +41,7 @@ namespace Automatak.Simulator.DNP3.API
             get;
         }
 
-        ISimulatorNode Create(IOutstation outstation, OutstationStackConfig config);
+        IOutstationInstance Create(IOutstation outstation, OutstationStackConfig config);
     }
 
 
