@@ -5,7 +5,7 @@ using System.Text;
 
 using System.Collections.ObjectModel;
 
-namespace Automatak.Simulator.DNP3.API
+namespace Automatak.Simulator.DNP3.Commons
 {
     public interface IMeasurementObserver
     { 

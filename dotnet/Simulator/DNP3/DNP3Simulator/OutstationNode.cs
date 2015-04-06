@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Automatak.DNP3.Interface;
-using Automatak.Simulator.DNP3.API;
+using Automatak.Simulator.DNP3.Commons;
 using Automatak.Simulator.API;
 
 namespace Automatak.Simulator.DNP3

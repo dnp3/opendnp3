@@ -8,7 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 
 using Automatak.DNP3.Interface;
-using Automatak.Simulator.DNP3.API;
+using Automatak.Simulator.DNP3.Commons;
 
 namespace Automatak.Simulator.DNP3
 {    

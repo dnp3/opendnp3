@@ -348,6 +348,10 @@
       <Project>{6a19318b-8cc5-4bc8-8e80-412180c420a5}</Project>
       <Name>ModuleAPI</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DNP3Commons\DNP3Commons.csproj">
+      <Project>{bf90d749-22fb-49fd-b840-4ff875d12cc6}</Project>
+      <Name>DNP3Commons</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DNP3PluginAPI\DNP3PluginAPI.csproj">
       <Project>{a392b2a4-f62e-442c-813e-6b7f4bf63459}</Project>
       <Name>DNP3PluginAPI</Name>

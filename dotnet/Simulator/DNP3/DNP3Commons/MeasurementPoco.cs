@@ -7,7 +7,7 @@ using System.ComponentModel;
 
 using Automatak.DNP3.Interface;
 
-namespace Automatak.Simulator.DNP3.API
+namespace Automatak.Simulator.DNP3.Commons
 {    
     class MeasurementPoco : INotifyPropertyChanged
     {        

@@ -5,7 +5,7 @@ using System.Text;
 
 using Automatak.DNP3.Interface;
 
-namespace Automatak.Simulator.DNP3.API
+namespace Automatak.Simulator.DNP3.Commons
 {
     public enum MeasType
     {

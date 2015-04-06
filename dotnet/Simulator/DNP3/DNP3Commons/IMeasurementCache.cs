@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Automatak.Simulator.DNP3.API
+namespace Automatak.Simulator.DNP3.Commons
 {
     public interface IMeasurementCache
     {
