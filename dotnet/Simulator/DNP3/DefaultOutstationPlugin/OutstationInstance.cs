@@ -63,28 +63,29 @@ namespace Automatak.Simulator.DNP3.DefaultOutstationPlugin
 
         IOutstationInstance IOutstationFactory.CreateInstance(IOutstation outstation, string name, OutstationStackConfig config)
         {
-            return new OutstationInstance(commandHandler, application, outstation, name);
+            return new OutstationInstance(commandHandler, application, outstation, config, name);
         }
     }
 
     
     class OutstationInstance : IOutstationInstance
-    {
-        
-        readonly MeasurementCache cache = new MeasurementCache();
+    {        
         readonly ProxyCommandHandler handler;
         readonly EventedOutstationApplication application;
         readonly IOutstation outstation;
-        readonly string alias;        
+        readonly string alias;
+        readonly MeasurementCache cache;
 
         OutstationForm form = null;
         
-        public OutstationInstance(ProxyCommandHandler handler, EventedOutstationApplication application, IOutstation outstation, string alias)
+        public OutstationInstance(ProxyCommandHandler handler, EventedOutstationApplication application, IOutstation outstation, OutstationStackConfig config, string alias)
         {
             this.handler = handler;
             this.application = application;
             this.outstation = outstation;
             this.alias = alias;
+
+            this.cache = new MeasurementCache(config.databaseTemplate);
         }
 
         string IOutstationInstance.DisplayName
