@@ -29,6 +29,7 @@ namespace Automatak.Simulator.DNP3.Components
         /// </summary>
         private void InitializeComponent()
         {
+            Automatak.DNP3.Interface.LinkConfig linkConfig1 = new Automatak.DNP3.Interface.LinkConfig();
             this.groupBoxButtons = new System.Windows.Forms.GroupBox();
             this.label3 = new System.Windows.Forms.Label();
             this.buttonAdd = new System.Windows.Forms.Button();
@@ -57,7 +58,7 @@ namespace Automatak.Simulator.DNP3.Components
             this.staticResponseTypeControl1 = new Automatak.Simulator.DNP3.Components.StaticResponseTypeControl();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.eventResponseTypeControl1 = new Automatak.Simulator.DNP3.Components.EventResponseTypeControl();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBoxDatabase = new System.Windows.Forms.GroupBox();
             this.buttonEdit = new System.Windows.Forms.Button();
             this.buttonNew = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
@@ -75,7 +76,7 @@ namespace Automatak.Simulator.DNP3.Components
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSolConfirmTimeout)).BeginInit();
             this.tabPage3.SuspendLayout();
             this.tabPage4.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            this.groupBoxDatabase.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBoxButtons
@@ -159,6 +160,7 @@ namespace Automatak.Simulator.DNP3.Components
             // 
             // linkConfigControl
             // 
+            this.linkConfigControl.Configuration = linkConfig1;
             this.linkConfigControl.Location = new System.Drawing.Point(6, 6);
             this.linkConfigControl.Name = "linkConfigControl";
             this.linkConfigControl.Size = new System.Drawing.Size(226, 222);
@@ -427,18 +429,18 @@ namespace Automatak.Simulator.DNP3.Components
             this.eventResponseTypeControl1.Size = new System.Drawing.Size(260, 210);
             this.eventResponseTypeControl1.TabIndex = 0;
             // 
-            // groupBox1
+            // groupBoxDatabase
             // 
-            this.groupBox1.Controls.Add(this.buttonEdit);
-            this.groupBox1.Controls.Add(this.buttonNew);
-            this.groupBox1.Controls.Add(this.label9);
-            this.groupBox1.Controls.Add(this.comboBoxTemplate);
-            this.groupBox1.Location = new System.Drawing.Point(12, 285);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(558, 66);
-            this.groupBox1.TabIndex = 8;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Database";
+            this.groupBoxDatabase.Controls.Add(this.buttonEdit);
+            this.groupBoxDatabase.Controls.Add(this.buttonNew);
+            this.groupBoxDatabase.Controls.Add(this.label9);
+            this.groupBoxDatabase.Controls.Add(this.comboBoxTemplate);
+            this.groupBoxDatabase.Location = new System.Drawing.Point(12, 285);
+            this.groupBoxDatabase.Name = "groupBoxDatabase";
+            this.groupBoxDatabase.Size = new System.Drawing.Size(558, 66);
+            this.groupBoxDatabase.TabIndex = 8;
+            this.groupBoxDatabase.TabStop = false;
+            this.groupBoxDatabase.Text = "Database";
             // 
             // buttonEdit
             // 
@@ -488,7 +490,7 @@ namespace Automatak.Simulator.DNP3.Components
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(581, 454);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.groupBoxDatabase);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.groupBoxButtons);
@@ -518,8 +520,8 @@ namespace Automatak.Simulator.DNP3.Components
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownSolConfirmTimeout)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.groupBoxDatabase.ResumeLayout(false);
+            this.groupBoxDatabase.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -535,7 +537,7 @@ namespace Automatak.Simulator.DNP3.Components
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox groupBoxDatabase;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBoxID;
         private System.Windows.Forms.TabPage tabPage3;

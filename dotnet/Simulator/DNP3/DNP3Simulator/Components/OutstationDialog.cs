@@ -8,21 +8,35 @@ using System.Text;
 using System.Windows.Forms;
 
 using Automatak.DNP3.Interface;
+using Automatak.Simulator.DNP3.API;
 
 namespace Automatak.Simulator.DNP3.Components
 {
     partial class OutstationDialog : Form
     {
         readonly IDNP3Config config;
+        readonly bool allowTemplateEdit;
+        readonly OutstationStackConfig initialConfig;
 
-        public OutstationDialog(IDNP3Config config)
+        public OutstationDialog(IDNP3Config config, IOutstationModule module)
         {
             InitializeComponent();
 
             this.config = config;
-            this.linkConfigControl.IsMaster = false;
+            this.initialConfig = module.DefaultConfig;
+            this.allowTemplateEdit = module.AllowTemplateEditing;
+            this.textBoxID.Text = module.DefaultLogName;
 
-            comboBoxTemplate.DataSource = config.Templates.Select(kv => kv.Key).ToList();            
+            this.linkConfigControl.Configuration = initialConfig.link;
+
+            if (allowTemplateEdit)
+            {
+                comboBoxTemplate.DataSource = config.Templates.Select(kv => kv.Key).ToList();
+            }
+            else
+            {
+                groupBoxDatabase.Enabled = false;   
+            }
         }
 
         private void buttonADD_Click(object sender, EventArgs e)
@@ -64,10 +78,18 @@ namespace Automatak.Simulator.DNP3.Components
                 
                 oc.outstation.config = this.OutstationParameters;
                 oc.outstation.buffer = this.eventBufferConfigControl1.Configuration;                
-            
-                var alias = this.comboBoxTemplate.SelectedItem.ToString();
-                var template = config.GetTemplateMaybeNull(alias);
-                oc.databaseTemplate = (template == null) ? new DatabaseTemplate(0) : template;
+                            
+                if (this.allowTemplateEdit)
+                {
+                    var templateId = this.comboBoxTemplate.SelectedItem.ToString();
+                    var template = config.GetTemplateMaybeNull(templateId);
+                    oc.databaseTemplate = (template == null) ? initialConfig.databaseTemplate : template;
+                }
+                else
+                {
+                    oc.databaseTemplate = initialConfig.databaseTemplate;
+                }
+                
 
                 return oc;
             }
@@ -75,7 +97,7 @@ namespace Automatak.Simulator.DNP3.Components
 
         void CheckState()
         {
-            if (comboBoxTemplate.SelectedValue == null)
+            if (this.allowTemplateEdit && comboBoxTemplate.SelectedValue == null)
             {
                 this.buttonEdit.Enabled = false;
                 this.buttonAdd.Enabled = false;

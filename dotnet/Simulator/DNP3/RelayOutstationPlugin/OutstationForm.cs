@@ -27,5 +27,11 @@ namespace Automatak.Simulator.DNP3.RelayOutstationPlugin
         {
             
         }
+
+        private void OutstationForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = true;
+            this.Hide();
+        }
     }
 }

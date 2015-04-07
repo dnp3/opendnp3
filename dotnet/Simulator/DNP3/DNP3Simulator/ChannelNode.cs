@@ -96,41 +96,44 @@ namespace Automatak.Simulator.DNP3
             using (var dialogModules = new Components.OutstationModuleDialog(config.OutstationModules))
             {
                 if (dialogModules.ShowDialog() == DialogResult.OK)
-                {
-                    var module = dialogModules.SelectedModule;
-
-                    using (var dialog = new Components.OutstationDialog(config))
-                    {
-                        if (dialog.ShowDialog() == DialogResult.OK)
-                        {
-                            var outstationConfig = dialog.Configuration;
-                            var alias = dialog.SelectedAlias;
-                            var factory = module.CreateFactory();
-
-                            var outstation = channel.AddOutstation(alias, factory.CommandHandler, factory.Application, outstationConfig);
-
-                            if (outstation == null)
-                            {
-                                return null;
-                            }
-                            else
-                            {
-                                var instance = factory.CreateInstance(outstation, alias, outstationConfig);
-                                outstation.Enable();
-                                return new OutstationNode(outstation, instance, callbacks);
-                            }
-                        }
-                        else
-                        {
-                            return null;
-                        }
-                    }
+                {                    
+                    return CreateOutstation(callbacks, dialogModules.SelectedModule);                   
                 }
                 else
                 {
                     return null;
                 }
             }            
+        }
+
+        ISimulatorNode CreateOutstation(ISimulatorNodeCallbacks callbacks, IOutstationModule module)
+        {
+            using (var dialog = new Components.OutstationDialog(config, module))
+            {
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    var outstationConfig = dialog.Configuration;
+                    var alias = dialog.SelectedAlias;
+                    var factory = module.CreateFactory();
+
+                    var outstation = channel.AddOutstation(alias, factory.CommandHandler, factory.Application, outstationConfig);
+
+                    if (outstation == null)
+                    {
+                        return null;
+                    }
+                    else
+                    {
+                        var instance = factory.CreateInstance(outstation, alias, outstationConfig);
+                        outstation.Enable();
+                        return new OutstationNode(outstation, instance, callbacks);
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+            }
         }
 
         void ISimulatorNode.Remove()

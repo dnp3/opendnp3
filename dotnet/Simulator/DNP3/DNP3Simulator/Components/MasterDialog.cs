@@ -17,7 +17,7 @@ namespace Automatak.Simulator.DNP3.Components
         {
             InitializeComponent();
 
-            this.linkConfigControl.IsMaster = true;
+            this.linkConfigControl.Configuration = new LinkConfig(true, false);
         }
 
         private void buttonADD_Click(object sender, EventArgs e)

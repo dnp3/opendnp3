@@ -80,6 +80,7 @@
             this.Name = "OutstationForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Relay Simulator";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OutstationForm_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxRelay)).EndInit();
             this.ResumeLayout(false);
 

@@ -18,14 +18,16 @@ namespace Automatak.Simulator.DNP3.RelayOutstationPlugin
 
         OutstationStackConfig IOutstationModule.DefaultConfig
         {
-            get {
-                return new OutstationStackConfig();
+            get 
+            {
+                var config =  new OutstationStackConfig();
+                return config;
             }
         }
 
         bool IOutstationModule.AllowTemplateEditing
         {
-            get { return true; }
+            get { return false; }
         }
 
         IOutstationFactory IOutstationModule.CreateFactory()
@@ -59,6 +61,12 @@ namespace Automatak.Simulator.DNP3.RelayOutstationPlugin
         string IOutstationModule.Name
         {
             get { return name; }
+        }
+
+
+        string IOutstationModule.DefaultLogName
+        {
+            get { return "relay"; }
         }
     }
 

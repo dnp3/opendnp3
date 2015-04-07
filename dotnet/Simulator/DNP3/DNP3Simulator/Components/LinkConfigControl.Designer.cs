@@ -189,7 +189,7 @@
             this.Controls.Add(this.numericUpDownDest);
             this.Controls.Add(this.numericUpDownSource);
             this.Name = "LinkConfigControl";
-            this.Size = new System.Drawing.Size(270, 441);
+            this.Size = new System.Drawing.Size(232, 236);
             this.groupBoxConfirmed.ResumeLayout(false);
             this.groupBoxConfirmed.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownTimeout)).EndInit();

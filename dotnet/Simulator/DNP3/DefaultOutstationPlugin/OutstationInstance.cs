@@ -59,6 +59,11 @@ namespace Automatak.Simulator.DNP3.DefaultOutstationPlugin
         {
             get { return name; }
         }
+
+        string IOutstationModule.DefaultLogName
+        {
+            get { return "outstation"; }
+        }
     }
 
 

@@ -16,16 +16,7 @@ namespace Automatak.Simulator.DNP3.Components
         public LinkConfigControl()
         {
             InitializeComponent();
-        }
-
-        public bool IsMaster 
-        {
-            set
-            {
-                isMaster = value;
-                this.Configure();
-            }
-        }
+        }        
 
         public LinkConfig Configuration
         {
@@ -38,6 +29,11 @@ namespace Automatak.Simulator.DNP3.Components
                 config.timeoutMs = Decimal.ToUInt32(this.numericUpDownTimeout.Value);
                 return config;
             }
+            set
+            {
+                this.Configure(value);
+            
+            }
         }
 
         private void SetState()
@@ -45,13 +41,14 @@ namespace Automatak.Simulator.DNP3.Components
             this.groupBoxConfirmed.Enabled = this.checkBoxConfirmed.Checked;            
         }
 
-        private void Configure()
+        private void Configure(LinkConfig config)
         {
-            this.numericUpDownSource.Value = LinkConfig.GetDefaultSourceAddress(isMaster);
-            this.numericUpDownDest.Value = LinkConfig.GetDefaultDestinationAddress(isMaster);
-            this.numericUpDownTimeout.Value = LinkConfig.DefaultTimeoutMillisconds;
-            this.numericUpDownRetries.Value = LinkConfig.DefaultNumRetries;
-            this.checkBoxConfirmed.Checked = false;
+            this.isMaster = config.isMaster;
+            this.numericUpDownSource.Value = config.localAddr;
+            this.numericUpDownDest.Value = config.remoteAddr;
+            this.numericUpDownTimeout.Value = config.timeoutMs;
+            this.numericUpDownRetries.Value = config.numRetry;
+            this.checkBoxConfirmed.Checked = config.useConfirms;
 
             this.SetState();
         }
