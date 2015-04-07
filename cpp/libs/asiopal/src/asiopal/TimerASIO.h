@@ -27,6 +27,8 @@
 
 #include <openpal/executor/IExecutor.h>
 
+#include <asiopal/ASIOSteadyClock.h>
+
 namespace asiopal
 {
 
@@ -63,7 +65,7 @@ private:
 
 	bool canceled;
 
-	asio::basic_waitable_timer< std::chrono::steady_clock > timer;
+	asio::basic_waitable_timer< asiopal::ASIOSteadyClock > timer;
 };
 
 }
