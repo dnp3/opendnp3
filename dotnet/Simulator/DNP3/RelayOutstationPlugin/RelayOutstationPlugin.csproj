@@ -54,12 +54,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="TransparentButton.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="TransparentButton.Designer.cs">
-      <DependentUpon>TransparentButton.cs</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="OutstationForm.resx">
@@ -68,9 +62,6 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TransparentButton.resx">
-      <DependentUpon>TransparentButton.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

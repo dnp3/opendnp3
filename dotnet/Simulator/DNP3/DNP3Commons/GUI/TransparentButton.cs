@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Automatak.Simulator.DNP3.RelayOutstationPlugin
+namespace Automatak.Simulator.DNP3.Commons.GUI
 {
     public partial class TransparentButton : UserControl
     {
@@ -16,8 +16,10 @@ namespace Automatak.Simulator.DNP3.RelayOutstationPlugin
         {
             InitializeComponent();
 
+            //this.Cursor = Cursors.Hand;
             this.SetStyle(ControlStyles.SupportsTransparentBackColor, true);
-            this.BackColor = Color.Transparent;           
+            this.ForeColor = Color.Transparent;
+            this.BackColor = Color.Transparent;            
         }
 
         protected override CreateParams CreateParams
@@ -32,7 +34,7 @@ namespace Automatak.Simulator.DNP3.RelayOutstationPlugin
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            e.Graphics.FillRectangle(new SolidBrush(this.BackColor), this.ClientRectangle);
+            //e.Graphics.FillRectangle(new SolidBrush(this.BackColor), this.ClientRectangle);
         }
     }
 }

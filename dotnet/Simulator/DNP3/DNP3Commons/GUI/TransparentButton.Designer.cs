@@ -1,4 +1,4 @@
-﻿namespace Automatak.Simulator.DNP3.RelayOutstationPlugin
+﻿namespace Automatak.Simulator.DNP3.Commons.GUI
 {
     partial class TransparentButton
     {
@@ -35,7 +35,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Name = "TransparentButton";
-            this.Size = new System.Drawing.Size(134, 106);
+            this.Size = new System.Drawing.Size(120, 116);
             this.ResumeLayout(false);
 
         }

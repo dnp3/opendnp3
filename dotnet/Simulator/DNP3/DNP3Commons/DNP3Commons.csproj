@@ -50,7 +50,14 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="GUI\MeasurementView.Designer.cs" />
+    <Compile Include="GUI\TransparentButton.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\TransparentButton.Designer.cs">
+      <DependentUpon>TransparentButton.cs</DependentUpon>
+    </Compile>
     <Compile Include="IMeasurementCache.cs" />
+    <Compile Include="InfiniteEnumerable.cs" />
     <Compile Include="ListviewDatabaseAdapter.cs" />
     <Compile Include="MeasActions.cs" />
     <Compile Include="Measurement.cs" />
@@ -70,6 +77,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="GUI\MeasurementView.resx" />
+    <EmbeddedResource Include="GUI\TransparentButton.resx">
+      <DependentUpon>TransparentButton.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
