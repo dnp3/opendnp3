@@ -28,7 +28,10 @@ namespace Automatak.Simulator.DNP3
         readonly IDNP3Manager manager = DNP3ManagerFactory.CreateManager();
         readonly ILogHandler logHandler;
         readonly DNP3Config config = new DNP3Config(
-           new IOutstationModule[]{ Automatak.Simulator.DNP3.DefaultOutstationPlugin.OutstationModule.Instance }
+           new IOutstationModule[]{ 
+               Automatak.Simulator.DNP3.DefaultOutstationPlugin.OutstationModule.Instance,
+               Automatak.Simulator.DNP3.RelayOutstationPlugin.OutstationModule.Instance
+           }
         );
 
         public DNP3SimulatorPlugin(ILog log)

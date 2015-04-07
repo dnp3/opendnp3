@@ -61,6 +61,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DefaultOutstationPlugin", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DNP3Commons", "dotnet\simulator\DNP3\DNP3Commons\DNP3Commons.csproj", "{BF90D749-22FB-49FD-B840-4FF875D12CC6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RelayOutstationPlugin", "dotnet\Simulator\DNP3\RelayOutstationPlugin\RelayOutstationPlugin.csproj", "{2026D7BF-FB7C-49A8-882F-46122B2A5D7D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -455,6 +457,20 @@ Global
 		{BF90D749-22FB-49FD-B840-4FF875D12CC6}.Release|x64.Build.0 = Release|Any CPU
 		{BF90D749-22FB-49FD-B840-4FF875D12CC6}.Release|x86.ActiveCfg = Release|Any CPU
 		{BF90D749-22FB-49FD-B840-4FF875D12CC6}.Release|x86.Build.0 = Release|Any CPU
+		{2026D7BF-FB7C-49A8-882F-46122B2A5D7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2026D7BF-FB7C-49A8-882F-46122B2A5D7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2026D7BF-FB7C-49A8-882F-46122B2A5D7D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{2026D7BF-FB7C-49A8-882F-46122B2A5D7D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{2026D7BF-FB7C-49A8-882F-46122B2A5D7D}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{2026D7BF-FB7C-49A8-882F-46122B2A5D7D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2026D7BF-FB7C-49A8-882F-46122B2A5D7D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2026D7BF-FB7C-49A8-882F-46122B2A5D7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2026D7BF-FB7C-49A8-882F-46122B2A5D7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2026D7BF-FB7C-49A8-882F-46122B2A5D7D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{2026D7BF-FB7C-49A8-882F-46122B2A5D7D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{2026D7BF-FB7C-49A8-882F-46122B2A5D7D}.Release|Win32.ActiveCfg = Release|Any CPU
+		{2026D7BF-FB7C-49A8-882F-46122B2A5D7D}.Release|x64.ActiveCfg = Release|Any CPU
+		{2026D7BF-FB7C-49A8-882F-46122B2A5D7D}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -487,5 +503,6 @@ Global
 		{2EDBD258-1A19-4527-9C92-7418191BEE87} = {3016DD80-77CA-4690-872F-4EF43CFF10FB}
 		{1ABC9A1A-6026-4803-BAB4-C1190375A531} = {3016DD80-77CA-4690-872F-4EF43CFF10FB}
 		{BF90D749-22FB-49FD-B840-4FF875D12CC6} = {3016DD80-77CA-4690-872F-4EF43CFF10FB}
+		{2026D7BF-FB7C-49A8-882F-46122B2A5D7D} = {3016DD80-77CA-4690-872F-4EF43CFF10FB}
 	EndGlobalSection
 EndGlobal

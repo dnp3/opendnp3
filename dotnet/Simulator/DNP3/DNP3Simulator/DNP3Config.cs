@@ -62,7 +62,7 @@ namespace Automatak.Simulator.DNP3
 
         public IEnumerable<API.IOutstationModule> OutstationModules
         {
-            get { throw new NotImplementedException(); }
+            get { return outstations; }
         }
     }
 }
