@@ -91,16 +91,17 @@ namespace Automatak.Simulator.DNP3.RelayOutstationPlugin
         readonly ProxyCommandHandler handler;
         readonly EventedOutstationApplication application;
         readonly IOutstation outstation;
-        readonly string alias;        
-
-        OutstationForm form = null;
+        readonly string alias;
+        readonly OutstationForm form;
         
         public OutstationInstance(ProxyCommandHandler handler, EventedOutstationApplication application, IOutstation outstation, OutstationStackConfig config, string alias)
         {
             this.handler = handler;
             this.application = application;
             this.outstation = outstation;
-            this.alias = alias;            
+            this.alias = alias;
+
+            this.form = new OutstationForm();
         }
 
         string IOutstationInstance.DisplayName
@@ -114,23 +115,14 @@ namespace Automatak.Simulator.DNP3.RelayOutstationPlugin
         }
 
         void IOutstationInstance.ShowForm()
-        {
-            if(this.form == null)
-            {
-                this.form = new OutstationForm();
-            }
-
+        {            
             form.Show();
         }
 
         void IOutstationInstance.Shutdown()
-        {            
-            if (form != null)
-            {
-                form.Close();
-                form.Dispose();
-                form = null;
-            }         
+        {                        
+            form.Close();
+            form.Dispose();                            
         }
     }
     

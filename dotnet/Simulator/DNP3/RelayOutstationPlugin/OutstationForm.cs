@@ -20,12 +20,12 @@ namespace Automatak.Simulator.DNP3.RelayOutstationPlugin
 
         private void transparentButtonTrip_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Trip");
+            
         }
 
         private void transparentButtonClose_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Close");
+            
         }
     }
 }
