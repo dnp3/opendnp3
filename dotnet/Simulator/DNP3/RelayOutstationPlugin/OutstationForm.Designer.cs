@@ -34,10 +34,11 @@
             this.labelValueIA = new System.Windows.Forms.Label();
             this.labelValueIB = new System.Windows.Forms.Label();
             this.labelValueIC = new System.Windows.Forms.Label();
-            this.labelVC = new System.Windows.Forms.Label();
-            this.labelVB = new System.Windows.Forms.Label();
+            this.labelValueVC = new System.Windows.Forms.Label();
+            this.labelValueVB = new System.Windows.Forms.Label();
             this.labelValueVA = new System.Windows.Forms.Label();
             this.timerUpdate = new System.Windows.Forms.Timer(this.components);
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxRelay)).BeginInit();
             this.SuspendLayout();
             // 
@@ -80,28 +81,28 @@
             this.labelValueIC.TabIndex = 5;
             this.labelValueIC.Text = "<value IC>";
             // 
-            // labelVC
+            // labelValueVC
             // 
-            this.labelVC.AutoSize = true;
-            this.labelVC.Location = new System.Drawing.Point(156, 345);
-            this.labelVC.Name = "labelVC";
-            this.labelVC.Size = new System.Drawing.Size(62, 13);
-            this.labelVC.TabIndex = 8;
-            this.labelVC.Text = "<value VC>";
+            this.labelValueVC.AutoSize = true;
+            this.labelValueVC.Location = new System.Drawing.Point(159, 345);
+            this.labelValueVC.Name = "labelValueVC";
+            this.labelValueVC.Size = new System.Drawing.Size(62, 13);
+            this.labelValueVC.TabIndex = 8;
+            this.labelValueVC.Text = "<value VC>";
             // 
-            // labelVB
+            // labelValueVB
             // 
-            this.labelVB.AutoSize = true;
-            this.labelVB.Location = new System.Drawing.Point(156, 313);
-            this.labelVB.Name = "labelVB";
-            this.labelVB.Size = new System.Drawing.Size(62, 13);
-            this.labelVB.TabIndex = 7;
-            this.labelVB.Text = "<value VB>";
+            this.labelValueVB.AutoSize = true;
+            this.labelValueVB.Location = new System.Drawing.Point(159, 313);
+            this.labelValueVB.Name = "labelValueVB";
+            this.labelValueVB.Size = new System.Drawing.Size(62, 13);
+            this.labelValueVB.TabIndex = 7;
+            this.labelValueVB.Text = "<value VB>";
             // 
             // labelValueVA
             // 
             this.labelValueVA.AutoSize = true;
-            this.labelValueVA.Location = new System.Drawing.Point(156, 283);
+            this.labelValueVA.Location = new System.Drawing.Point(159, 283);
             this.labelValueVA.Name = "labelValueVA";
             this.labelValueVA.Size = new System.Drawing.Size(62, 13);
             this.labelValueVA.TabIndex = 6;
@@ -113,14 +114,28 @@
             this.timerUpdate.Interval = 1000;
             this.timerUpdate.Tick += new System.EventHandler(this.timerUpdate_Tick);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(277, 275);
+            this.label1.MaximumSize = new System.Drawing.Size(275, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(271, 90);
+            this.label1.TabIndex = 9;
+            this.label1.Text = "A very simple relay simulation. It reports 3-phase voltage and current, and respo" +
+    "nds to a CROB latch on/off on index 0.  The breaker can be manually operated via" +
+    " the buttons on the relay.";
+            // 
             // OutstationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(613, 396);
-            this.Controls.Add(this.labelVC);
-            this.Controls.Add(this.labelVB);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.labelValueVC);
+            this.Controls.Add(this.labelValueVB);
             this.Controls.Add(this.labelValueVA);
             this.Controls.Add(this.labelValueIC);
             this.Controls.Add(this.labelValueIB);
@@ -134,6 +149,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Relay Simulator";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OutstationForm_FormClosing);
+            this.Load += new System.EventHandler(this.OutstationForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxRelay)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -146,9 +162,10 @@
         private System.Windows.Forms.Label labelValueIA;
         private System.Windows.Forms.Label labelValueIB;
         private System.Windows.Forms.Label labelValueIC;
-        private System.Windows.Forms.Label labelVC;
-        private System.Windows.Forms.Label labelVB;
+        private System.Windows.Forms.Label labelValueVC;
+        private System.Windows.Forms.Label labelValueVB;
         private System.Windows.Forms.Label labelValueVA;
         private System.Windows.Forms.Timer timerUpdate;
+        private System.Windows.Forms.Label label1;
     }
 }

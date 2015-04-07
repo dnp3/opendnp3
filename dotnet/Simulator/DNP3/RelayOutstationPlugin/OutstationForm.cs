@@ -20,15 +20,20 @@ namespace Automatak.Simulator.DNP3.RelayOutstationPlugin
         readonly ProxyCommandHandler commandHandler;
         
         static readonly double[] currentValues = new double[] { 1243, 1237, 1241, 1242 };
+        static readonly double[] voltageValues = new double[] { 8031, 8022, 8017, 8034 };
 
         static readonly Rectangle tripBounds = new Rectangle(467, 174, 32, 32);
         static readonly Rectangle closeBounds = new Rectangle(467, 133, 32, 32);
 
-        
-        IEnumerator<double> currentA = InfiniteEnumerable.Create(currentValues).GetEnumerator();
-        IEnumerator<double> currentB = InfiniteEnumerable.Create(currentValues).Skip(1).GetEnumerator();
-        IEnumerator<double> currentC = InfiniteEnumerable.Create(currentValues).Skip(2).GetEnumerator();
+        readonly IEnumerator<double> currentA = InfiniteEnumerable.Create(currentValues).GetEnumerator();
+        readonly IEnumerator<double> currentB = InfiniteEnumerable.Create(currentValues).Skip(1).GetEnumerator();
+        readonly IEnumerator<double> currentC = InfiniteEnumerable.Create(currentValues).Skip(2).GetEnumerator();
 
+        readonly IEnumerator<double> voltageA = InfiniteEnumerable.Create(voltageValues).GetEnumerator();
+        readonly IEnumerator<double> voltageB = InfiniteEnumerable.Create(voltageValues).Skip(1).GetEnumerator();
+        readonly IEnumerator<double> voltageC = InfiniteEnumerable.Create(voltageValues).Skip(2).GetEnumerator();
+
+        // state of the breaker
         bool closed = true;        
 
         public OutstationForm(IOutstation outstation, ProxyCommandHandler commandHandler)
@@ -38,9 +43,7 @@ namespace Automatak.Simulator.DNP3.RelayOutstationPlugin
             this.outstation = outstation;
             this.commandHandler = commandHandler;
 
-            commandHandler.CommandProxy = this;
-
-            this.UpdateValues();
+            commandHandler.CommandProxy = this; // proxy commands to the form                     
         }
 
         private void transparentButtonTrip_Click(object sender, EventArgs e)
@@ -58,10 +61,12 @@ namespace Automatak.Simulator.DNP3.RelayOutstationPlugin
         private void UpdateValues()
         {
             var changes = new ChangeSet();
-            var now = DateTime.Now;            
+            var now = DateTime.Now;
+
+            changes.Update(new Binary(closed, 1, now), 0);
 
             if (closed)
-            {
+            {                
                 changes.Update(new Analog(currentA.Current, 1, now), 0);
                 changes.Update(new Analog(currentB.Current, 1, now), 1);
                 changes.Update(new Analog(currentC.Current, 1, now), 2);
@@ -84,6 +89,18 @@ namespace Automatak.Simulator.DNP3.RelayOutstationPlugin
                 this.labelValueIB.Text = String.Format("IB: {0}", 0);
                 this.labelValueIC.Text = String.Format("IC: {0}", 0);
             }
+
+            changes.Update(new Analog(voltageA.Current, 1, now), 3);
+            changes.Update(new Analog(voltageB.Current, 1, now), 4);
+            changes.Update(new Analog(voltageC.Current, 1, now), 5);
+
+            this.labelValueVA.Text = String.Format("VA: {0}", voltageA.Current);
+            this.labelValueVB.Text = String.Format("VB: {0}", voltageB.Current);
+            this.labelValueVC.Text = String.Format("VC: {0}", voltageC.Current);
+
+            voltageA.MoveNext();
+            voltageB.MoveNext();
+            voltageC.MoveNext();
 
             outstation.Load(changes);
         }
@@ -212,6 +229,11 @@ namespace Automatak.Simulator.DNP3.RelayOutstationPlugin
                 this.closed = true;
                 this.UpdateValues();
             }
+        }
+
+        private void OutstationForm_Load(object sender, EventArgs e)
+        {
+            this.UpdateValues();
         }
        
     }

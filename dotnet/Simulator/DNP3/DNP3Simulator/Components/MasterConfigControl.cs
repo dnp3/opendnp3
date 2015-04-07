@@ -20,9 +20,9 @@ namespace Automatak.Simulator.DNP3.Components
 
             this.comboBoxTimeSync.DataSource = Enum.GetValues(typeof(TimeSyncMode));
             this.comboBoxTimeSync.SelectedItem = TimeSyncMode.None;
-
+            
             this.classFieldControlIntegrity.ClassFieldValue = ClassField.AllClasses;
-            this.classFieldControlEnableUnsol.ClassFieldValue = ClassField.None;
+            this.classFieldControlEnableUnsol.ClassFieldValue = ClassField.AllEventClasses;
             this.classFieldControlEnableUnsol.AllowClass0 = false;
         }
 

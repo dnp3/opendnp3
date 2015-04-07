@@ -47,6 +47,11 @@ namespace Automatak.Simulator.DNP3.API
             get;
         }
 
+        bool ShowFormOnCreation
+        {
+            get;
+        }
+
         string DisplayName
         {
             get;

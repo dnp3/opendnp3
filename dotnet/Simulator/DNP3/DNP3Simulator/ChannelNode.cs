@@ -126,6 +126,12 @@ namespace Automatak.Simulator.DNP3
                     {
                         var instance = factory.CreateInstance(outstation, alias, outstationConfig);
                         outstation.Enable();
+
+                        if (instance.ShowFormOnCreation)
+                        {
+                            instance.ShowForm();
+                        }
+
                         return new OutstationNode(outstation, instance, callbacks);
                     }
                 }

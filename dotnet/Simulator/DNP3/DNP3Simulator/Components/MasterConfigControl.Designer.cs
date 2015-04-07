@@ -35,14 +35,14 @@ namespace Automatak.Simulator.DNP3.Components
             this.label1 = new System.Windows.Forms.Label();
             this.checkBoxDisableUnsolicited = new System.Windows.Forms.CheckBox();
             this.groupBoxIntegrity = new System.Windows.Forms.GroupBox();
+            this.classFieldControlIntegrity = new Automatak.Simulator.DNP3.Components.ClassFieldControl();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.classFieldControlEnableUnsol = new Automatak.Simulator.DNP3.Components.ClassFieldControl();
             this.checkBoxIntegrityOnOverflow = new System.Windows.Forms.CheckBox();
             this.numericUpDownResponseTimeout = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.numericUpDownTaskRetryDelay = new System.Windows.Forms.NumericUpDown();
-            this.classFieldControlEnableUnsol = new Automatak.Simulator.DNP3.Components.ClassFieldControl();
-            this.classFieldControlIntegrity = new Automatak.Simulator.DNP3.Components.ClassFieldControl();
             this.groupBoxIntegrity.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownResponseTimeout)).BeginInit();
@@ -70,6 +70,8 @@ namespace Automatak.Simulator.DNP3.Components
             // checkBoxDisableUnsolicited
             // 
             this.checkBoxDisableUnsolicited.AutoSize = true;
+            this.checkBoxDisableUnsolicited.Checked = true;
+            this.checkBoxDisableUnsolicited.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBoxDisableUnsolicited.Location = new System.Drawing.Point(20, 22);
             this.checkBoxDisableUnsolicited.Name = "checkBoxDisableUnsolicited";
             this.checkBoxDisableUnsolicited.Size = new System.Drawing.Size(170, 17);
@@ -87,6 +89,14 @@ namespace Automatak.Simulator.DNP3.Components
             this.groupBoxIntegrity.TabStop = false;
             this.groupBoxIntegrity.Text = "Startup Integrity";
             // 
+            // classFieldControlIntegrity
+            // 
+            this.classFieldControlIntegrity.ClassFieldValue = ((Automatak.DNP3.Interface.ClassField)(resources.GetObject("classFieldControlIntegrity.ClassFieldValue")));
+            this.classFieldControlIntegrity.Location = new System.Drawing.Point(6, 19);
+            this.classFieldControlIntegrity.Name = "classFieldControlIntegrity";
+            this.classFieldControlIntegrity.Size = new System.Drawing.Size(77, 112);
+            this.classFieldControlIntegrity.TabIndex = 3;
+            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.classFieldControlEnableUnsol);
@@ -96,6 +106,14 @@ namespace Automatak.Simulator.DNP3.Components
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Enable Unsolicited";
+            // 
+            // classFieldControlEnableUnsol
+            // 
+            this.classFieldControlEnableUnsol.ClassFieldValue = ((Automatak.DNP3.Interface.ClassField)(resources.GetObject("classFieldControlEnableUnsol.ClassFieldValue")));
+            this.classFieldControlEnableUnsol.Location = new System.Drawing.Point(6, 19);
+            this.classFieldControlEnableUnsol.Name = "classFieldControlEnableUnsol";
+            this.classFieldControlEnableUnsol.Size = new System.Drawing.Size(77, 112);
+            this.classFieldControlEnableUnsol.TabIndex = 3;
             // 
             // checkBoxIntegrityOnOverflow
             // 
@@ -180,22 +198,6 @@ namespace Automatak.Simulator.DNP3.Components
             0,
             0,
             0});
-            // 
-            // classFieldControlEnableUnsol
-            // 
-            this.classFieldControlEnableUnsol.ClassFieldValue = ((Automatak.DNP3.Interface.ClassField)(resources.GetObject("classFieldControlEnableUnsol.ClassFieldValue")));
-            this.classFieldControlEnableUnsol.Location = new System.Drawing.Point(6, 19);
-            this.classFieldControlEnableUnsol.Name = "classFieldControlEnableUnsol";
-            this.classFieldControlEnableUnsol.Size = new System.Drawing.Size(77, 112);
-            this.classFieldControlEnableUnsol.TabIndex = 3;
-            // 
-            // classFieldControlIntegrity
-            // 
-            this.classFieldControlIntegrity.ClassFieldValue = ((Automatak.DNP3.Interface.ClassField)(resources.GetObject("classFieldControlIntegrity.ClassFieldValue")));
-            this.classFieldControlIntegrity.Location = new System.Drawing.Point(6, 19);
-            this.classFieldControlIntegrity.Name = "classFieldControlIntegrity";
-            this.classFieldControlIntegrity.Size = new System.Drawing.Size(77, 112);
-            this.classFieldControlIntegrity.TabIndex = 3;
             // 
             // MasterConfigControl
             // 

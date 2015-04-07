@@ -120,6 +120,14 @@ namespace Automatak.Simulator.DNP3.DefaultOutstationPlugin
             get { return true; }
         }
 
+        bool IOutstationInstance.ShowFormOnCreation
+        {
+            get
+            {
+                return false;
+            }
+        }
+
         void IOutstationInstance.ShowForm()
         {
             if(this.form == null)

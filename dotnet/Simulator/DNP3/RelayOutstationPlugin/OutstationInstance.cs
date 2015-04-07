@@ -21,7 +21,7 @@ namespace Automatak.Simulator.DNP3.RelayOutstationPlugin
             get 
             {
                 var config =  new OutstationStackConfig();
-                config.databaseTemplate = new DatabaseTemplate(2, 0, 3, 0, 0, 0, 0, 0);
+                config.databaseTemplate = new DatabaseTemplate(1, 0, 6, 0, 0, 0, 0, 0);
                 return config;
             }
         }
@@ -121,6 +121,14 @@ namespace Automatak.Simulator.DNP3.RelayOutstationPlugin
         bool IOutstationInstance.HasForm
         {
             get { return true; }
+        }
+
+        bool IOutstationInstance.ShowFormOnCreation
+        {
+            get
+            {
+                return true;
+            }
         }
 
         void IOutstationInstance.ShowForm()

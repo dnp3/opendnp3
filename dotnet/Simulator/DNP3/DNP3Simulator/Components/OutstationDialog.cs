@@ -27,7 +27,7 @@ namespace Automatak.Simulator.DNP3.Components
             this.allowTemplateEdit = module.AllowTemplateEditing;
             this.textBoxID.Text = module.DefaultLogName;
 
-            this.linkConfigControl.Configuration = initialConfig.link;
+            this.linkConfigControl.Configuration = initialConfig.link;            
 
             if (allowTemplateEdit)
             {
