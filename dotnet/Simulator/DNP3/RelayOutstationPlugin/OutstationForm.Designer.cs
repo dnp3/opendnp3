@@ -38,7 +38,6 @@
             this.labelVB = new System.Windows.Forms.Label();
             this.labelValueVA = new System.Windows.Forms.Label();
             this.timerUpdate = new System.Windows.Forms.Timer(this.components);
-            this.labelPos = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxRelay)).BeginInit();
             this.SuspendLayout();
             // 
@@ -114,22 +113,12 @@
             this.timerUpdate.Interval = 1000;
             this.timerUpdate.Tick += new System.EventHandler(this.timerUpdate_Tick);
             // 
-            // labelPos
-            // 
-            this.labelPos.AutoSize = true;
-            this.labelPos.Location = new System.Drawing.Point(303, 283);
-            this.labelPos.Name = "labelPos";
-            this.labelPos.Size = new System.Drawing.Size(47, 13);
-            this.labelPos.TabIndex = 9;
-            this.labelPos.Text = "labelPos";
-            // 
             // OutstationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(613, 396);
-            this.Controls.Add(this.labelPos);
             this.Controls.Add(this.labelVC);
             this.Controls.Add(this.labelVB);
             this.Controls.Add(this.labelValueVA);
@@ -161,6 +150,5 @@
         private System.Windows.Forms.Label labelVB;
         private System.Windows.Forms.Label labelValueVA;
         private System.Windows.Forms.Timer timerUpdate;
-        private System.Windows.Forms.Label labelPos;
     }
 }

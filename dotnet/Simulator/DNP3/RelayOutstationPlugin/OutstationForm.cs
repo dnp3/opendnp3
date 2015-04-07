@@ -29,7 +29,7 @@ namespace Automatak.Simulator.DNP3.RelayOutstationPlugin
         IEnumerator<double> currentB = InfiniteEnumerable.Create(currentValues).Skip(1).GetEnumerator();
         IEnumerator<double> currentC = InfiniteEnumerable.Create(currentValues).Skip(2).GetEnumerator();
 
-        bool closed = true;
+        bool closed = true;        
 
         public OutstationForm(IOutstation outstation, ProxyCommandHandler commandHandler)
         {
@@ -94,9 +94,44 @@ namespace Automatak.Simulator.DNP3.RelayOutstationPlugin
             this.Hide();
         }
 
+        private void ProcessOperation(bool value)
+        { 
+            this.closed = value;
+            this.UpdateValues();         
+        }
+
+        private void QueueOperation(bool value)
+        {            
+            this.BeginInvoke(new Action(() => this.ProcessOperation(value)));
+        }
+
+        CommandStatus OnControl(ControlRelayOutputBlock command, ushort index, bool execute)
+        {
+            if (index == 0)
+            {
+                switch (command.code)
+                {
+                    case (ControlCode.LATCH_ON):
+                        if(execute) this.QueueOperation(true);
+                        return CommandStatus.SUCCESS;
+
+                    case (ControlCode.LATCH_OFF):
+                        if (execute) this.QueueOperation(false);
+                        return CommandStatus.SUCCESS;
+
+                    default:
+                        return CommandStatus.NOT_SUPPORTED;
+                }
+            }
+            else
+            {
+                return CommandStatus.NOT_SUPPORTED;
+            }
+        }
+
         CommandStatus ICommandHandler.Select(ControlRelayOutputBlock command, ushort index)
         {
-            return CommandStatus.NOT_SUPPORTED;
+            return OnControl(command, index, false);
         }
 
         CommandStatus ICommandHandler.Select(AnalogOutputInt32 command, ushort index)
@@ -121,7 +156,7 @@ namespace Automatak.Simulator.DNP3.RelayOutstationPlugin
 
         CommandStatus ICommandHandler.Operate(ControlRelayOutputBlock command, ushort index)
         {
-            return CommandStatus.NOT_SUPPORTED;
+            return OnControl(command, index, true);
         }
 
         CommandStatus ICommandHandler.Operate(AnalogOutputInt32 command, ushort index)
