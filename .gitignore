@@ -75,6 +75,9 @@ cpp/demos/outstation/Release
 *vcxproj.user
 cpp/unittest.log
 
+#installer
+dotnet/simulator/setup*
+
 #atmel studio
 *jlink*
 
