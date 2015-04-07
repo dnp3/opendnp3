@@ -25,19 +25,19 @@ using namespace std::chrono;
 namespace opendnp3
 {
 
-StopWatch::StopWatch() : mStartTime(std::chrono::steady_clock::now())
+StopWatch::StopWatch() : mStartTime(asiopal::ASIOSteadyClock::now())
 {
 
 }
 
-std::chrono::steady_clock::duration StopWatch::Elapsed(bool aReset)
+asiopal::ASIOSteadyClock::duration StopWatch::Elapsed(bool aReset)
 {
-	return std::chrono::steady_clock::now() - mStartTime;
+	return asiopal::ASIOSteadyClock::now() - mStartTime;
 }
 
 void StopWatch :: Restart()
 {
-	mStartTime = std::chrono::steady_clock::now();
+	mStartTime = asiopal::ASIOSteadyClock::now();
 }
 
 }
