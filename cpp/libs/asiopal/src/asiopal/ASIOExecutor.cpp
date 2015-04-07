@@ -25,6 +25,8 @@
 #include <asio.hpp>
 #include <functional>
 
+#include "ASIOSteadyClock.h"
+
 using namespace std;
 
 namespace asiopal
@@ -78,22 +80,22 @@ void ASIOExecutor::CheckForShutdown()
 
 openpal::MonotonicTimestamp ASIOExecutor::GetTime()
 {
-	return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
+	return std::chrono::duration_cast<std::chrono::milliseconds>(asiopal::ASIOSteadyClock::now().time_since_epoch()).count();
 }
 
 openpal::ITimer* ASIOExecutor::Start(const openpal::TimeDuration& delay, const openpal::Action0& runnable)
 {	
-	auto expiration = std::chrono::steady_clock::now() + std::chrono::milliseconds(delay.GetMilliseconds());
+	auto expiration = asiopal::ASIOSteadyClock::now() + std::chrono::milliseconds(delay.GetMilliseconds());
 	return Start(expiration, runnable);
 }
 
 openpal::ITimer* ASIOExecutor::Start(const openpal::MonotonicTimestamp& time, const openpal::Action0& runnable)
 {	
-	std::chrono::steady_clock::time_point expiration(std::chrono::milliseconds(time.milliseconds));
+	asiopal::ASIOSteadyClock::time_point expiration(std::chrono::milliseconds(time.milliseconds));
 	return Start(expiration, runnable);
 }
 
-openpal::ITimer* ASIOExecutor::Start(const std::chrono::steady_clock::time_point& tp, const openpal::Action0& runnable)
+openpal::ITimer* ASIOExecutor::Start(const asiopal::ASIOSteadyClock::time_point& tp, const openpal::Action0& runnable)
 {
 	TimerASIO* pTimer = GetTimer();	
 	pTimer->timer.expires_at(tp);

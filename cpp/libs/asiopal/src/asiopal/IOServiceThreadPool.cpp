@@ -26,6 +26,8 @@
 #include <chrono>
 #include <sstream>
 
+#include <asiopal/ASIOSteadyClock.h>
+
 using namespace std;
 using namespace std::chrono;
 using namespace openpal;
@@ -56,7 +58,7 @@ IOServiceThreadPool::IOServiceThreadPool(
 		aConcurrency = 1;
 		SIMPLE_LOG_BLOCK(logger, logflags::WARN, "Concurrency was set to 0, defaulting to 1 thread");
 	}
-	infiniteTimer.expires_at(std::chrono::steady_clock::time_point::max());
+	infiniteTimer.expires_at(asiopal::ASIOSteadyClock::time_point::max());
 	infiniteTimer.async_wait([](const std::error_code&){});
 	for(uint32_t i = 0; i < aConcurrency; ++i)
 	{
