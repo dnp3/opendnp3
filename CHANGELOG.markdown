@@ -1,3 +1,7 @@
+### 2.0.1-RC3 ###
+* Workaround for broken std::chrono::steady_clock impl thanks to Liam MacIsaac.
+* Based on user feedback, the .NET outstation API now uses a more intuitive "ChangeSet" to update values in the outstation.
+* The .NET "simulator" has been restored with more features surfaced and outstation plugins can now be written to simulate devices.
 
 ### 2.0.1-RC2 ###
 * DNPManager.AddTCPClient now takes an additional parameter for the local adapter address (0.0.0.0 == all adapters)
