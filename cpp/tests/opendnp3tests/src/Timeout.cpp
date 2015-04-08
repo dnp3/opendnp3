@@ -25,20 +25,20 @@ using namespace std::chrono;
 namespace opendnp3
 {
 
-Timeout::Timeout(std::chrono::steady_clock::duration aTimeout)
-	: mExpireTime(std::chrono::steady_clock::now() + aTimeout)
+	Timeout::Timeout(asiopal::ASIOSteadyClock::duration aTimeout)
+		: mExpireTime(asiopal::ASIOSteadyClock::now() + aTimeout)
 {
 
 }
 
 bool Timeout :: IsExpired()
 {
-	return std::chrono::steady_clock::now() >= mExpireTime;
+	return asiopal::ASIOSteadyClock::now() >= mExpireTime;
 }
 
-std::chrono::steady_clock::duration Timeout::Remaining()
+asiopal::ASIOSteadyClock::duration Timeout::Remaining()
 {
-	return mExpireTime - std::chrono::steady_clock::now();
+	return mExpireTime - asiopal::ASIOSteadyClock::now();
 }
 
 }
