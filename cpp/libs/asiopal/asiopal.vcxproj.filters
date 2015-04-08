@@ -56,7 +56,7 @@
     <ClInclude Include="src\asiopal\Synchronized.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\asiopal\ASIOSteadyClock.h">
+    <ClInclude Include="src\asiopal\SteadyClock.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

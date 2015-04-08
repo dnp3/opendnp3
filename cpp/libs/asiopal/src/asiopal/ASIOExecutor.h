@@ -29,7 +29,7 @@
 #include <queue>
 #include <set>
 
-#include <asiopal/ASIOSteadyClock.h>
+#include <asiopal/SteadyClock.h>
 
 namespace asiopal
 {
@@ -57,7 +57,7 @@ public:
 
 private:
 
-	openpal::ITimer* Start(const asiopal::ASIOSteadyClock::time_point& tp, const openpal::Action0& runnable);
+	openpal::ITimer* Start(const asiopal::asiopal_steady_clock::time_point& tp, const openpal::Action0& runnable);
 
 	void InitiateShutdown(Synchronized<bool>& handler);
 

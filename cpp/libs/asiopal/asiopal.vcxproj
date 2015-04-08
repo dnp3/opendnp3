@@ -20,7 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\asiopal\ASIOExecutor.h" />
-    <ClInclude Include="src\asiopal\ASIOSteadyClock.h" />
+    <ClInclude Include="src\asiopal\SteadyClock.h" />
     <ClInclude Include="src\asiopal\StrandGetters.h" />
     <ClInclude Include="src\asiopal\ASIOSerialHelpers.h" />
     <ClInclude Include="src\asiopal\IOServiceThreadPool.h" />

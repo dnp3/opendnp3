@@ -27,7 +27,7 @@
 
 #include <openpal/executor/IExecutor.h>
 
-#include <asiopal/ASIOSteadyClock.h>
+#include <asiopal/SteadyClock.h>
 
 namespace asiopal
 {
@@ -65,7 +65,7 @@ private:
 
 	bool canceled;
 
-	asio::basic_waitable_timer< asiopal::ASIOSteadyClock > timer;
+	asio::basic_waitable_timer< asiopal::asiopal_steady_clock > timer;
 };
 
 }
