@@ -10,6 +10,10 @@ option(LIBCPP "link with libc++ (required for clang)" OFF)
 option(OSSL "build the openssl crypto wrapper for SA" OFF)
 option(WERROR "Set all warnings to errors" OFF)
 option(STATICLIBS "Builds static versions of all installed libraries" OFF)
+option(FUZZCOV "Builds openpal and opendnp3 with clang coverage flags" OFF)
+
+# only used for opendnp3/openpal when FUZZCOV=ON
+set(FUZZFLAGS "-fsanitize=address -fsanitize-coverage=3")
 
 set(CMAKE_CXX_FLAGS "-Wall -std=c++11")
 
@@ -63,6 +67,9 @@ file(GLOB_RECURSE openpal_SRC ./cpp/libs/openpal/src/openpal/*.cpp)
 add_library(openpal ${LIB_TYPE} ${openpal_SRC})
 install(TARGETS openpal DESTINATION lib)
 install(DIRECTORY ./cpp/libs/openpal/src/openpal/ DESTINATION include/openpal ${INSTALL_ARGS})
+if(FUZZCOV)
+  set_target_properties(openpal PROPERTIES COMPILE_FLAGS ${FUZZFLAGS})
+endif()
 
 # ---- opendnp3 library ----
 file(GLOB_RECURSE opendnp3_SRC ./cpp/libs/opendnp3/src/opendnp3/*.cpp)
