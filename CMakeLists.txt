@@ -11,9 +11,10 @@ option(OSSL "build the openssl crypto wrapper for SA" OFF)
 option(WERROR "Set all warnings to errors" OFF)
 option(STATICLIBS "Builds static versions of all installed libraries" OFF)
 option(FUZZCOV "Builds openpal and opendnp3 with clang coverage flags" OFF)
+option(DEMOS "Builds demo applications" OFF)
 
 # only used for opendnp3/openpal when FUZZCOV=ON
-set(FUZZFLAGS "-fsanitize=address -fsanitize-coverage=3")
+set(FUZZFLAGS "-fsanitize=address -fsanitize-coverage=4")
 
 set(CMAKE_CXX_FLAGS "-Wall -std=c++11")
 
@@ -118,13 +119,17 @@ if(TESTS)
   target_link_libraries(testlib openpal)
 endif()
 
-# ----- master demo executable -----
-add_executable (masterdemo ./cpp/examples/master/DemoMain.cpp)
-target_link_libraries (masterdemo LINK_PUBLIC asiodnp3 pthread)
+if(DEMOS)
 
-# ----- outstation demo executable -----
-add_executable (outstationdemo ./cpp/examples/outstation/DemoMain.cpp)
-target_link_libraries (outstationdemo LINK_PUBLIC asiodnp3 pthread)
+  # ----- master demo executable -----
+  add_executable (masterdemo ./cpp/examples/master/DemoMain.cpp)
+  target_link_libraries (masterdemo LINK_PUBLIC asiodnp3 pthread)
+
+  # ----- outstation demo executable -----
+  add_executable (outstationdemo ./cpp/examples/outstation/DemoMain.cpp)
+  target_link_libraries (outstationdemo LINK_PUBLIC asiodnp3 pthread)
+
+endif()
 
 if(OSSL)
   # ----- outstation SAv5 demo executable -----
