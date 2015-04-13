@@ -40,9 +40,11 @@ libasiodnp3.*
 libsecauthv5.*
 libosslcrypto.*
 libtestlib.*
+libclangfuzzer.*
 testopenpal
 testopendnp3
 testosslcrypto
+dnp3fuzzer
 outstationdemo
 masterdemo
 outstationdemoSAv5

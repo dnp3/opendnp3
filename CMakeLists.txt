@@ -14,7 +14,8 @@ option(FUZZCOV "Builds openpal and opendnp3 with clang coverage flags" OFF)
 option(DEMOS "Builds demo applications" OFF)
 
 # only used for opendnp3/openpal when FUZZCOV=ON
-set(FUZZFLAGS "-fsanitize=address -fsanitize-coverage=4")
+set(FUZZ_LINK_FLAGS "-fsanitize=address")
+set(FUZZ_COMPILE_FLAGS "${FUZZ_LINK_FLAGS} -fsanitize-coverage=4")
 
 set(CMAKE_CXX_FLAGS "-Wall -std=c++11")
 
@@ -69,7 +70,7 @@ add_library(openpal ${LIB_TYPE} ${openpal_SRC})
 install(TARGETS openpal DESTINATION lib)
 install(DIRECTORY ./cpp/libs/openpal/src/openpal/ DESTINATION include/openpal ${INSTALL_ARGS})
 if(FUZZCOV)
-  set_target_properties(openpal PROPERTIES COMPILE_FLAGS ${FUZZFLAGS})
+  set_target_properties(openpal PROPERTIES COMPILE_FLAGS ${FUZZ_COMPILE_FLAGS})
 endif()
 
 # ---- opendnp3 library ----
@@ -79,7 +80,7 @@ target_link_libraries(opendnp3 openpal)
 install(TARGETS opendnp3 DESTINATION lib)
 install(DIRECTORY ./cpp/libs/opendnp3/src/opendnp3/ DESTINATION include/opendnp3 ${INSTALL_ARGS})
 if(FUZZCOV)
-  set_target_properties(openpal PROPERTIES COMPILE_FLAGS ${FUZZFLAGS})
+  set_target_properties(openpal PROPERTIES COMPILE_FLAGS ${FUZZ_COMPILE_FLAGS})
 endif()
 
 # ---- asiopal library ----
@@ -172,6 +173,8 @@ if(FUZZCOV)
   file(GLOB bindings_TESTSRC ./cpp/tests/fuzzer/Bindings.cpp)
   add_executable (dnp3fuzzer ${bindings_TESTSRC})
   target_link_libraries (dnp3fuzzer LINK_PUBLIC clangfuzzer opendnp3 openpal)
+  set_target_properties(dnp3fuzzer PROPERTIES COMPILE_FLAGS ${FUZZ_COMPILE_FLAGS})
+  set_target_properties(dnp3fuzzer PROPERTIES LINK_FLAGS ${FUZZ_LINK_FLAGS})
 
 endif()
 
