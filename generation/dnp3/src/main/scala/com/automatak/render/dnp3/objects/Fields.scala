@@ -20,7 +20,20 @@ object FixedSizeField {
 
   //common flags field
   val flags = FixedSizeField("flags", UInt8Field)
+
+
+  // SA stuff
+  val csq = FixedSizeField("challengeSeqNum", UInt32Field)
+  val ksq = FixedSizeField("keyChangeSeqNum", UInt32Field)
+  val user = FixedSizeField("userNum", UInt16Field)
   val assocId = FixedSizeField("assocId", UInt16Field)
+  val macAlgo = FixedSizeField("macAlgo", UInt8Field)
+  val keyWrapAlgo = FixedSizeField("keyWrapAlgo", UInt8Field)
+  val keyStatus = FixedSizeField("keyStatus", UInt8Field)
+  val challengeReason = FixedSizeField("challengeReason", UInt8Field)
+  val errorCode = FixedSizeField("errorCode", UInt8Field)
+  val keyChangeMethod = FixedSizeField("keyChangeMethod", UInt8Field)
+  val certificateType = FixedSizeField("certificateType", UInt8Field)
 
 
   // timestamps
@@ -43,6 +56,16 @@ object FixedSizeField {
 
 }
 
+object VariableFields {
+  val challengeData = VariableField("challengeData", Some(4))
+  val hmac = VariableField("hmac", Some(4))
+  val keyWrapData = VariableField("keyWrapData", None)
+  val errorText = VariableField("errorText", None)
+  val certificate = VariableField("certificate", None)
+}
 
 case class FixedSizeField(name: String, typ: FixedSizeFieldType)
+
+case class VariableField(name: String, minLength: Option[Int])
+
 

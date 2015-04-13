@@ -2,6 +2,9 @@ package com.automatak.render.dnp3.objects.groups
 
 import com.automatak.render.dnp3.objects._
 
+import com.automatak.render.dnp3.objects.FixedSizeField._
+import com.automatak.render.dnp3.objects.VariableFields._
+
 object Group120 extends ObjectGroup {
 
   def objects = List(
@@ -26,26 +29,55 @@ object Group120 extends ObjectGroup {
   def desc: String = "Authentication"
 }
 
-object Group120Var1 extends VariableSize(Group120, 1, "Challenge")
-object Group120Var2 extends VariableSize(Group120, 2, "Reply")
-
-object Group120Var3 extends FixedSize(Group120, 3, "Aggressive Mode Request")(
-  FixedSizeField("challengeSeqNum", UInt32Field),
-  FixedSizeField("userNum", UInt16Field)
+object Group120Var1 extends AuthVariableSize(Group120, 1, "Challenge",
+  List(csq, user, macAlgo, challengeReason),
+  Nil,
+  Some(VariableFields.challengeData)
 )
 
-object Group120Var4 extends FixedSize(Group120, 4, "Session Key Status Request")(
-  FixedSizeField("userNum", UInt16Field)
+
+object Group120Var2 extends AuthVariableSize(Group120, 2, "Reply",
+  List(csq, user),
+  Nil,
+  Some(hmac)
 )
 
-object Group120Var5 extends VariableSize(Group120, 5, "Session Key Status")
-object Group120Var6 extends VariableSize(Group120, 6, "Session Key Change")
-object Group120Var7 extends VariableSize(Group120, 7, "Error")
-object Group120Var8 extends VariableSize(Group120, 8, "User Certificate")
-object Group120Var9 extends VariableSize(Group120, 9, "HMAC")
-object Group120Var10 extends VariableSize(Group120, 10, "User Status Change")
-object Group120Var11 extends VariableSize(Group120, 11, "Update Key Change Request")
-object Group120Var12 extends VariableSize(Group120, 12, "Update Key Change Reply")
-object Group120Var13 extends VariableSize(Group120, 13, "Update Key Change")
-object Group120Var14 extends VariableSize(Group120, 14, "Update Key Change Signature")
-object Group120Var15 extends VariableSize(Group120, 15, "Update Key Change Confirmation")
+object Group120Var3 extends FixedSize(Group120, 3, "Aggressive Mode Request")(csq, user)
+
+object Group120Var4 extends FixedSize(Group120, 4, "Session Key Status Request")(user)
+
+object Group120Var5 extends AuthVariableSize(Group120, 5, "Session Key Status",
+  List(ksq, user, keyWrapAlgo, keyStatus, macAlgo),
+  List(challengeData),
+  Some(hmac)
+)
+
+
+object Group120Var6 extends AuthVariableSize(Group120, 6, "Session Key Change",
+  List(ksq,user),
+  Nil,
+  Some(keyWrapData)
+)
+
+object Group120Var7 extends AuthVariableSize(Group120, 7, "Error",
+  List(csq, user, assocId, errorCode, time48),
+  Nil,
+  Some(errorText)
+)
+
+object Group120Var8 extends AuthVariableSize(Group120, 8, "User Certificate",
+  List(keyChangeMethod, certificateType),
+  Nil,
+  Some(certificate)
+)
+
+
+object Group120Var9 extends AuthVariableSize(Group120, 9, "HMAC", Nil, Nil, Some(hmac))
+
+object Group120Var10 extends DefaultVariableSize(Group120, 10, "User Status Change") // TODO - this object is irregular- WTF?
+
+object Group120Var11 extends DefaultVariableSize(Group120, 11, "Update Key Change Request")
+object Group120Var12 extends DefaultVariableSize(Group120, 12, "Update Key Change Reply")
+object Group120Var13 extends DefaultVariableSize(Group120, 13, "Update Key Change")
+object Group120Var14 extends DefaultVariableSize(Group120, 14, "Update Key Change Signature")
+object Group120Var15 extends DefaultVariableSize(Group120, 15, "Update Key Change Confirmation")

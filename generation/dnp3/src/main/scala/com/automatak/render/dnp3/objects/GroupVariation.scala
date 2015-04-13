@@ -28,7 +28,7 @@ sealed trait GroupVariation {
 class AnyVariation(g: ObjectGroup, v: Byte) extends BasicGroupVariation(g,v, "Any Variation")
 class ClassData(g: ObjectGroup, v: Byte, desc: String) extends BasicGroupVariation(g,v, desc)
 class SizedByVariation(g: ObjectGroup, v: Byte) extends BasicGroupVariation(g,v, "Sized by variation")
-class VariableSize(g: ObjectGroup, v: Byte, description: String) extends BasicGroupVariation(g,v,description)
+abstract class DefaultVariableSize(g: ObjectGroup, v: Byte, description: String) extends BasicGroupVariation(g,v,description)
 class SingleBitfield(g: ObjectGroup, v: Byte, description: String) extends BasicGroupVariation(g,v,description)
 class DoubleBitfield(g: ObjectGroup, v: Byte, description: String) extends BasicGroupVariation(g,v,description)
 
@@ -46,11 +46,23 @@ trait Conversion {
   def implHeaders: List[String]
 }
 
+abstract class AuthVariableSize(g: ObjectGroup, v: Byte, description: String, fs: List[FixedSizeField], ls: List[VariableField], rf: Option[VariableField]) extends BasicGroupVariation(g,v,description)
+{
+  final def fixedFields : List[FixedSizeField] = fs
+
+  // variable length field preceded by a UInt16 length prefix
+  def lengthVariables: List[VariableField] = ls
+
+  // final remainder field that assumes the length of what ever is left over in a free-format header
+  def remainder : Option[VariableField] = rf
+
+}
+
 class FixedSize(g: ObjectGroup, v: Byte, description: String)(fs: FixedSizeField*) extends BasicGroupVariation(g,v, description) {
 
   final override def isFixedSize : Boolean = true
 
-  def conversion: Option[Conversion] = None // overridable
+  def conversion: Option[Conversion] = None
 
   def size: Int = fields.foldLeft(0)((sum, f) => sum + f.typ.numBytes)
 

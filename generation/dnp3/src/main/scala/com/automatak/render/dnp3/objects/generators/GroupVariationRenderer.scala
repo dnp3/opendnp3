@@ -17,7 +17,8 @@ object GroupVariationHeaderRenderer extends ModelRenderer[GroupVariation]{
     case x: SingleBitfield => renderIdOnly(x)
     case x: DoubleBitfield => renderIdOnly(x)
     case x: SizedByVariation => renderIdOnly(x)
-    case x: VariableSize => renderIdOnly(x)
+    case x: DefaultVariableSize => renderIdOnly(x)
+    case x: AuthVariableSize => renderIdOnly(x)
     case x: FixedSize => render(x)
   }
 
