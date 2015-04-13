@@ -166,7 +166,12 @@ if(FUZZCOV)
 
   # ------ libfuzzer coverage -------
   file(GLOB fuzzer_TESTSRC ../Fuzzer/*.cpp)
-  add_executable (fuzzer ${fuzzer_TESTSRC})
+  add_library (clangfuzzer ${fuzzer_TESTSRC})		
+
+  # ------ fuzzer executable -------
+  file(GLOB bindings_TESTSRC ./cpp/tests/fuzzer/Bindings.cpp)
+  add_executable (dnp3fuzzer ${bindings_TESTSRC})
+  target_link_libraries (dnp3fuzzer LINK_PUBLIC clangfuzzer opendnp3 openpal)
 
 endif()
 
