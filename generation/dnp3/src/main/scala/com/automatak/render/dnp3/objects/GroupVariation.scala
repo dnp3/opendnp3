@@ -46,15 +46,17 @@ trait Conversion {
   def implHeaders: List[String]
 }
 
-abstract class AuthVariableSize(g: ObjectGroup, v: Byte, description: String, fs: List[FixedSizeField], ls: List[VariableField], rf: Option[VariableField]) extends BasicGroupVariation(g,v,description)
+abstract class AuthVariableSize(g: ObjectGroup, v: Byte, description: String, val fixedFields: List[FixedSizeField], val lengthFields: List[VariableField], val remainder: Option[VariableField]) extends BasicGroupVariation(g,v,description)
 {
-  final def fixedFields : List[FixedSizeField] = fs
+  /// The total minimum size for the aggregate object
+  def minimumSize : Int = {
 
-  // variable length field preceded by a UInt16 length prefix
-  def lengthVariables: List[VariableField] = ls
+    val fixedSize = fixedFields.foldLeft(0)((sum, f) => sum + f.typ.numBytes)
+    val variableSize = lengthFields.foldLeft(0)((sum, v) => 2 + v.minLength.getOrElse(0))
+    val remainderSize = remainder.map(r => r.minLength.getOrElse(0)).getOrElse(0)
 
-  // final remainder field that assumes the length of what ever is left over in a free-format header
-  def remainder : Option[VariableField] = rf
+    fixedSize + variableSize + remainderSize
+  }
 
 }
 
