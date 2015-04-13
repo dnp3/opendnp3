@@ -78,6 +78,9 @@ add_library(opendnp3 ${LIB_TYPE} ${opendnp3_SRC})
 target_link_libraries(opendnp3 openpal)
 install(TARGETS opendnp3 DESTINATION lib)
 install(DIRECTORY ./cpp/libs/opendnp3/src/opendnp3/ DESTINATION include/opendnp3 ${INSTALL_ARGS})
+if(FUZZCOV)
+  set_target_properties(openpal PROPERTIES COMPILE_FLAGS ${FUZZFLAGS})
+endif()
 
 # ---- asiopal library ----
 file(GLOB_RECURSE asiopal_SRC ./cpp/libs/asiopal/src/asiopal/*.cpp)
@@ -156,6 +159,14 @@ if(TESTS)
     add_executable (testosslcrypto ${osslcrypto_TESTSRC})
     target_link_libraries (testosslcrypto LINK_PUBLIC testlib osslcrypto)
   endif()
+
+endif()
+
+if(FUZZCOV)
+
+  # ------ libfuzzer coverage -------
+  file(GLOB_RECURSE fuzzer_TESTSRC ../Fuzzer/*.cpp)
+  add_executable (fuzzer ${fuzzer_TESTSRC})
 
 endif()
 
