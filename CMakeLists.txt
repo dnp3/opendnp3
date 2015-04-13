@@ -165,7 +165,7 @@ endif()
 if(FUZZCOV)
 
   # ------ libfuzzer coverage -------
-  file(GLOB_RECURSE fuzzer_TESTSRC ../Fuzzer/*.cpp)
+  file(GLOB fuzzer_TESTSRC ../Fuzzer/*.cpp)
   add_executable (fuzzer ${fuzzer_TESTSRC})
 
 endif()
