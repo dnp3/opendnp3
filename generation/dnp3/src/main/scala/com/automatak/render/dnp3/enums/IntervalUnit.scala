@@ -23,7 +23,7 @@ object IntervalUnit {
     EnumValue("Weeks", 6, "On the same day of the week at the same time of day that is specified in the start time"),
     EnumValue("Months7", 7, "On the same day of each month at the same time of day that is specified in the start time"),
     EnumValue("Months8", 8, "At the same time of day on the same day of the week after the beginning of the month as the day specified in the start time"),
-    EnumValue("Months9", 9, "Months on Same Day of Week from End of Month—The outstation shall interpret this setting as in Months8, but the day of the week shall be measured from the end of the month,"),
+    EnumValue("Months9", 9, "Months on Same Day of Week from End of Month - The outstation shall interpret this setting as in Months8, but the day of the week shall be measured from the end of the month,"),
     EnumValue("Seasons", 10, "The definition of a season is specific to the outstation")
   )
 
