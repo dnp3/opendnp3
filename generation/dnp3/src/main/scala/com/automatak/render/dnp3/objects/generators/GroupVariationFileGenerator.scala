@@ -32,46 +32,18 @@ object GroupVariationFileGenerator {
         }
       }
 
-      def getConversionHeaders(gv: GroupVariation):  List[String] = {
-
-        gv match {
-          case fs : FixedSize => fs.conversion match {
-            case Some(con) => con.includeHeaders
-            case None => Nil
-          }
-          case _ => Nil
-        }
-      }
 
       def include(file: String): String = "#include " + file
 
-      group.objects.flatMap(o => getEnums(o) ++ getConversionHeaders(o)).map(include).toSet
+      group.objects.flatMap(o => getEnums(o)).map(include).toSet
     }
 
     def includeHeader(group: ObjectGroup): Iterator[String] = Iterator("#include " + quoted(group.name+".h"))
 
-    def optionalCppIncludes(group: ObjectGroup) : Set[String] = {
-
-      def getConversionHeaders(gv: GroupVariation):  List[String] = gv match {
-          case fs : FixedSize => fs.conversion match {
-            case Some(con) => con.implHeaders
-            case None => Nil
-          }
-          case _ => Nil
-      }
-
-      def include(file: String): String = "#include " + file
-
-      group.objects.flatMap(o => getConversionHeaders(o)).map(include).toSet
-    }
-
     def headerFile(group: ObjectGroup): Iterator[String] = {
       commented(LicenseHeader()) ++ space ++
       includeGuards(group.name.toUpperCase) {
-          Iterator("#include <openpal/container/ReadBufferView.h>") ++
-          Iterator("#include <openpal/container/WriteBufferView.h>") ++
-          Iterator("""#include "opendnp3/Types.h"""") ++
-          Iterator("""#include "opendnp3/app/GroupVariationID.h"""") ++
+        headerIncludes(group) ++
         optionalIncludes(group) ++ space ++
         namespace("opendnp3") {
           definitions(GroupVariationHeaderRenderer)(group)
@@ -86,14 +58,20 @@ object GroupVariationFileGenerator {
       {
         commented(LicenseHeader()) ++ space ++
           includeHeader(group) ++ space ++
-          optionalCppIncludes(group) ++
-          Iterator("#include <openpal/serialization/Format.h>") ++
-          Iterator("#include <openpal/serialization/Parse.h>") ++ space ++
+          headerIncludes(group) ++ space ++
           Iterator("using namespace openpal;") ++ space ++
           namespace("opendnp3") {
             defs
           }
       }
+    }
+
+    def headerIncludes(group: ObjectGroup): Iterator[String] = {
+      group.objects.flatMap(_.headerIncludes).distinct.map(x => "#include %s".format(x)).toIterator
+    }
+
+    def implIncludes(group: ObjectGroup): Iterator[String] = {
+      group.objects.flatMap(_.implIncludes).distinct.map(x => "#include %s".format(x)).toIterator
     }
 
     ObjectGroup.all.foreach { g =>

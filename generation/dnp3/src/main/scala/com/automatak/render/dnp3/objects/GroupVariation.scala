@@ -23,6 +23,11 @@ sealed trait GroupVariation {
   def parent: ObjectGroup
   def desc: String
   def isFixedSize: Boolean = false
+
+  def headerIncludes : List[String] = List(""""opendnp3/app/GroupVariationID.h"""") // always included in headers
+
+  def implIncludes : List[String] = Nil
+
 }
 
 class AnyVariation(g: ObjectGroup, v: Byte) extends BasicGroupVariation(g,v, "Any Variation")
@@ -39,11 +44,11 @@ sealed abstract class BasicGroupVariation(g: ObjectGroup, v: Byte, description: 
 }
 
 trait Conversion {
+
   def target: String
   def signatures : Iterator[String]
   def impl(fields: FixedSize)(implicit indent: Indentation): Iterator[String]
-  def includeHeaders: List[String]
-  def implHeaders: List[String]
+
 }
 
 abstract class AuthVariableSize(g: ObjectGroup, v: Byte, description: String, val fixedFields: List[FixedSizeField], val lengthFields: List[VariableField], val remainder: Option[VariableField]) extends BasicGroupVariation(g,v,description)
@@ -63,6 +68,16 @@ abstract class AuthVariableSize(g: ObjectGroup, v: Byte, description: String, va
 class FixedSize(g: ObjectGroup, v: Byte, description: String)(fs: FixedSizeField*) extends BasicGroupVariation(g,v, description) {
 
   final override def isFixedSize : Boolean = true
+
+  override def headerIncludes = super.headerIncludes ++ Iterator(
+    "<openpal/container/ReadBufferView.h>",
+    "<openpal/container/WriteBufferView.h>",
+    """"opendnp3/Types.h""""
+  )
+
+  override def implIncludes = super.headerIncludes ++ Iterator(
+    "<openpal/serialization/Format.h>", "<openpal/serialization/Parse.h>"
+  )
 
   def conversion: Option[Conversion] = None
 
