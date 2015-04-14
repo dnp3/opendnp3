@@ -75,7 +75,7 @@ class FixedSize(g: ObjectGroup, v: Byte, description: String)(fs: FixedSizeField
     """"opendnp3/Types.h""""
   )
 
-  override def implIncludes = super.headerIncludes ++ Iterator(
+  override def implIncludes = super.implIncludes ++ Iterator(
     "<openpal/serialization/Format.h>", "<openpal/serialization/Parse.h>"
   )
 

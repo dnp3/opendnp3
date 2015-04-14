@@ -58,7 +58,7 @@ object GroupVariationFileGenerator {
       {
         commented(LicenseHeader()) ++ space ++
           includeHeader(group) ++ space ++
-          headerIncludes(group) ++ space ++
+          implIncludes(group) ++ space ++
           Iterator("using namespace openpal;") ++ space ++
           namespace("opendnp3") {
             defs

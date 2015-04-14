@@ -21,10 +21,10 @@
 #ifndef OPENDNP3_GROUP32_H
 #define OPENDNP3_GROUP32_H
 
+#include "opendnp3/app/GroupVariationID.h"
 #include <openpal/container/ReadBufferView.h>
 #include <openpal/container/WriteBufferView.h>
 #include "opendnp3/Types.h"
-#include "opendnp3/app/GroupVariationID.h"
 #include "opendnp3/app/DNP3Serializer.h"
 #include "opendnp3/app/MeasurementTypes.h"
 

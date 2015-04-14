@@ -20,10 +20,10 @@
 
 #include "Group2.h"
 
-#include "opendnp3/app/MeasurementFactory.h"
-#include "opendnp3/app/WriteConversions.h"
 #include <openpal/serialization/Format.h>
 #include <openpal/serialization/Parse.h>
+#include "opendnp3/app/MeasurementFactory.h"
+#include "opendnp3/app/WriteConversions.h"
 
 using namespace openpal;
 
