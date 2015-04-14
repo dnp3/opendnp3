@@ -23,8 +23,7 @@
         <maven-source-plugin.version>2.1.2</maven-source-plugin.version>
         <maven-bundle.version>2.1.0</maven-bundle.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <scala.version.short>2.10</scala.version.short>
-        <scala.version>2.11.1</scala.version>
+        <scala.version>2.11.6</scala.version>
         <scalatest.version>2.2.2</scalatest.version>
         <surefire-plugin.version>2.12.4</surefire-plugin.version>
     </properties>
