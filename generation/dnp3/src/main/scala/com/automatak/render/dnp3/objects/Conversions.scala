@@ -3,11 +3,28 @@ package com.automatak.render.dnp3.objects
 import com.automatak.render._
 import com.automatak.render.cpp._
 
+object ConversionHeaders {
+
+  val dataTypes = quoted("opendnp3/app/MeasurementTypes.h")
+  val timeAndInterval = quoted("opendnp3/app/TimeAndInterval.h")
+  val crob = quoted("opendnp3/app/ControlRelayOutputBlock.h")
+  val ao = quoted("opendnp3/app/AnalogOutput.h")
+  val binaryCommandEvent = quoted("opendnp3/app/BinaryCommandEvent.h")
+  val analogCommandEvent = quoted("opendnp3/app/AnalogCommandEvent.h")
+  val factory = quoted("opendnp3/app/MeasurementFactory.h")
+  val serializer = quoted("opendnp3/app/DNP3Serializer.h")
+  val conversions = quoted("opendnp3/app/WriteConversions.h")
+
+  val cppIncludes = List(factory, conversions)
+}
+
+import ConversionHeaders._
+
 trait Conversion extends FixedSize {
 
   def target : String
   def convHeaderIncludes : List[String]
-  def convImplIncludes : List[String]
+  def convImplIncludes : List[String] = cppIncludes
 
   // override things from GroupVariation w/ additional material
 
@@ -61,111 +78,81 @@ trait Conversion extends FixedSize {
 
 }
 
-object ConversionHeaders {
 
-  val dataTypes = quoted("opendnp3/app/MeasurementTypes.h")
-  val timeAndInterval = quoted("opendnp3/app/TimeAndInterval.h")
-  val crob = quoted("opendnp3/app/ControlRelayOutputBlock.h")
-  val ao = quoted("opendnp3/app/AnalogOutput.h")
-  val binaryCommandEvent = quoted("opendnp3/app/BinaryCommandEvent.h")
-  val analogCommandEvent = quoted("opendnp3/app/AnalogCommandEvent.h")
-  val factory = quoted("opendnp3/app/MeasurementFactory.h")
-  val serializer = quoted("opendnp3/app/DNP3Serializer.h")
-  val conversions = quoted("opendnp3/app/WriteConversions.h")
-
-  val cppIncludes = List(factory, conversions)
-}
-
-import ConversionHeaders._
 
 trait ConversionToBinary extends Conversion {
   def target = "Binary"
   def convHeaderIncludes : List[String] = List(serializer, dataTypes)
-  def convImplIncludes : List[String] = cppIncludes
 }
 
 trait ConversionToDoubleBitBinary extends Conversion {
   def target = "DoubleBitBinary"
   def convHeaderIncludes : List[String] = List(serializer, dataTypes)
-  def convImplIncludes : List[String] = cppIncludes
 }
 
 trait ConversionToAnalog extends Conversion {
   def target = "Analog"
   def convHeaderIncludes : List[String] = List(serializer, dataTypes)
-  def convImplIncludes : List[String] = cppIncludes
 }
 
 trait ConversionToCounter extends Conversion {
   def target = "Counter"
   def convHeaderIncludes : List[String] = List(serializer, dataTypes)
-  def convImplIncludes : List[String] = cppIncludes
 }
 
 trait ConversionToFrozenCounter extends Conversion {
   def target = "FrozenCounter"
   def convHeaderIncludes : List[String] = List(serializer, dataTypes)
-  def convImplIncludes : List[String] = cppIncludes
 }
 
 
 trait ConversionToBinaryOutputStatus extends Conversion {
   def target = "BinaryOutputStatus"
   def convHeaderIncludes : List[String] = List(serializer, dataTypes)
-  def convImplIncludes : List[String] = cppIncludes
 }
 
 trait ConversionToAnalogOutputStatus extends Conversion {
   def target = "AnalogOutputStatus"
   def convHeaderIncludes : List[String] = List(serializer, dataTypes)
-  def convImplIncludes : List[String] = cppIncludes
 }
 
 trait ConversionToCROB extends Conversion {
   def target = "ControlRelayOutputBlock"
   def convHeaderIncludes : List[String] = List(serializer, crob)
-  def convImplIncludes : List[String] = cppIncludes
 }
 
 trait ConversionToAnalogOutputInt16 extends Conversion {
   def target = "AnalogOutputInt16"
   def convHeaderIncludes : List[String] = List(serializer, ao)
-  def convImplIncludes : List[String] = cppIncludes
 }
 
 trait ConversionToAnalogOutputInt32 extends Conversion {
   def target = "AnalogOutputInt32"
   def convHeaderIncludes : List[String] = List(serializer, ao)
-  def convImplIncludes : List[String] = cppIncludes
 }
 
 trait ConversionToAnalogOutputFloat32 extends Conversion {
   def target = "AnalogOutputFloat32"
   def convHeaderIncludes : List[String] = List(serializer, ao)
-  def convImplIncludes : List[String] = cppIncludes
 }
 
 trait ConversionToAnalogOutputDouble64 extends Conversion {
   def target = "AnalogOutputDouble64"
   def convHeaderIncludes : List[String] = List(serializer, ao)
-  def convImplIncludes : List[String] = cppIncludes
 }
 
 trait ConversionToTimeAndInterval extends Conversion {
   def target = "TimeAndInterval"
   def convHeaderIncludes : List[String] = List(serializer, timeAndInterval)
-  def convImplIncludes : List[String] = cppIncludes
 }
 
 trait ConversionToBinaryCommandEvent extends Conversion {
   def target = "BinaryCommandEvent"
   def convHeaderIncludes : List[String] = List(serializer, binaryCommandEvent)
-  def convImplIncludes : List[String] = cppIncludes
 }
 
 trait ConversionToAnalogCommandEvent extends Conversion {
   def target = "AnalogCommandEvent"
   def convHeaderIncludes : List[String] = List(serializer, analogCommandEvent)
-  def convImplIncludes : List[String] = cppIncludes
 }
 
