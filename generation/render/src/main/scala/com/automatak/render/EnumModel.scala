@@ -37,11 +37,13 @@ case class EnumValue(name: String, value: Int, comment: Option[String] = None, s
 
 object EnumModel {
 
-  sealed trait Type
-  case object UInt8 extends Type
-  case object UInt16 extends Type
-  case object UInt32 extends Type
-  case object Integer extends Type
+  sealed trait Type {
+    def sizeInBytes: Int
+  }
+
+  case object UInt8 extends Type { def sizeInBytes = 1 }
+  case object UInt16 extends Type { def sizeInBytes = 2 }
+  case object UInt32 extends Type { def sizeInBytes = 4 }
 
 }
 

@@ -31,7 +31,6 @@ object EnumModelRenderer extends ModelRenderer[EnumModel] {
       case EnumModel.UInt8 => "int"
       case EnumModel.UInt16 => "int"
       case EnumModel.UInt32 => "int"
-      case EnumModel.Integer => "int"
     }
 
     def header: Iterator[String] = Iterator(List("public", "enum", enum.name).spaced)

@@ -28,7 +28,7 @@ namespace opendnp3 {
 /**
   Enumeration of internal tasks
 */
-enum class MasterTaskType : int
+enum class MasterTaskType : uint8_t
 {
   CLEAR_RESTART = 0,
   DISABLE_UNSOLICITED = 1,

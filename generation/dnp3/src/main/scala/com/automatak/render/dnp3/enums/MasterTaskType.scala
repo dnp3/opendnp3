@@ -7,7 +7,7 @@ object MasterTaskType {
 
   private val comments = List("Enumeration of internal tasks")
 
-  def apply(): EnumModel = EnumModel("MasterTaskType", comments, EnumModel.Integer, codes, None, Base10)
+  def apply(): EnumModel = EnumModel("MasterTaskType", comments, EnumModel.UInt8, codes, None, Base10)
 
   private val codes = List(
       EnumValue("CLEAR_RESTART", 0),

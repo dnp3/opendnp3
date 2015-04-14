@@ -9,7 +9,7 @@ object TaskCompletion {
 
   private val defaultValue = EnumValue("FAILURE_NO_COMMS", 3, "There is no communication with the outstation, so the task was not attempted")
 
-  def apply(): EnumModel = EnumModel("TaskCompletion", comments, EnumModel.Integer, codes, Some(defaultValue), Base10)
+  def apply(): EnumModel = EnumModel("TaskCompletion", comments, EnumModel.UInt8, codes, Some(defaultValue), Base10)
 
   private val codes = List(
        EnumValue("SUCCESS", 0, "A valid response was received from the outstation"),

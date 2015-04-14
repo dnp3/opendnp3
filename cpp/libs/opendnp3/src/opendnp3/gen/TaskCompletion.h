@@ -28,7 +28,7 @@ namespace opendnp3 {
 /**
   Enum that describes if a master task succeeded or failed
 */
-enum class TaskCompletion : int
+enum class TaskCompletion : uint8_t
 {
   /// A valid response was received from the outstation
   SUCCESS = 0,

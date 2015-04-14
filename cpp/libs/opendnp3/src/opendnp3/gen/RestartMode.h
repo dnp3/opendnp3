@@ -28,7 +28,7 @@ namespace opendnp3 {
 /**
   Enumeration describing restart mode support of an outstation
 */
-enum class RestartMode : int
+enum class RestartMode : uint8_t
 {
   /// Device does not support restart
   UNSUPPORTED = 0,

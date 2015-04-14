@@ -28,7 +28,7 @@ namespace opendnp3 {
 /**
   Enumeration for possible states of a channel
 */
-enum class ChannelState : int
+enum class ChannelState : uint8_t
 {
   /// offline and idle
   CLOSED = 0,
