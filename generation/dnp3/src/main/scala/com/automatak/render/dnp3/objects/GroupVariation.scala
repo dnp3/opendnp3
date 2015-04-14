@@ -1,7 +1,7 @@
 package com.automatak.render.dnp3.objects
 
 import com.automatak.render.Indentation
-import com.automatak.render.dnp3.objects.generators.{FixedSizeGenerator, GroupVariationLines}
+import com.automatak.render.dnp3.objects.generators.{GroupVariationIncludes, FixedSizeGenerator, GroupVariationLines}
 
 object GroupVariation {
   case class Id(group: Byte, variation: Byte)
@@ -51,12 +51,18 @@ sealed abstract class BasicGroupVariation(g: ObjectGroup, v: Byte, description: 
 
 class AuthVariableSize(g: ObjectGroup, v: Byte, description: String, val fixedFields: List[FixedSizeField], val lengthFields: List[VariableField], val remainder: Option[VariableField]) extends BasicGroupVariation(g,v,description)
 {
+  override def headerIncludes = super.headerIncludes ++ GroupVariationIncludes.headerReadWrite
+  override def implIncludes = super.implIncludes ++ GroupVariationIncludes.implReadWrite
+
+  override def headerLines(implicit i : Indentation) : Iterator[String] = super.headerLines // TODO
+  override def implLines(implicit i : Indentation) : Iterator[String] = super.implLines // TODO
+
   /// The total minimum size for the aggregate object
   def minimumSize : Int = {
 
-    val fixedSize = fixedFields.foldLeft(0)((sum, f) => sum + f.typ.numBytes)
-    val variableSize = lengthFields.foldLeft(0)((sum, v) => 2 + v.minLength.getOrElse(0))
-    val remainderSize = remainder.map(r => r.minLength.getOrElse(0)).getOrElse(0)
+    def fixedSize = fixedFields.map(x => x.typ.numBytes).sum
+    def variableSize = lengthFields.map(x => x.minLength.getOrElse(0)).sum
+    def remainderSize = remainder.map(r => r.minLength.getOrElse(0)).getOrElse(0)
 
     fixedSize + variableSize + remainderSize
   }
@@ -65,21 +71,13 @@ class AuthVariableSize(g: ObjectGroup, v: Byte, description: String, val fixedFi
 
 class FixedSize(g: ObjectGroup, v: Byte, description: String)(fs: FixedSizeField*) extends BasicGroupVariation(g,v, description) {
 
-  override def headerIncludes = super.headerIncludes ++ Iterator(
-    "<openpal/container/ReadBufferView.h>",
-    "<openpal/container/WriteBufferView.h>",
-    """"opendnp3/Types.h""""
-  )
-
-  override def implIncludes = super.implIncludes ++ Iterator(
-    "<openpal/serialization/Format.h>", "<openpal/serialization/Parse.h>"
-  )
+  override def headerIncludes = super.headerIncludes ++ GroupVariationIncludes.headerReadWrite
+  override def implIncludes = super.implIncludes ++ GroupVariationIncludes.implReadWrite
 
   override def headerLines(implicit i : Indentation) : Iterator[String] = super.headerLines ++ FixedSizeGenerator.header(this)
   override def implLines(implicit i : Indentation) : Iterator[String] = super.implLines ++ FixedSizeGenerator.implementation(this)
 
-  def size: Int = fields.foldLeft(0)((sum, f) => sum + f.typ.numBytes)
-
-  final def fields : List[FixedSizeField] = fs.toList
+  def fields : List[FixedSizeField] = fs.toList
+  def size: Int = fs.map(x => x.typ.numBytes).sum
 
 }
