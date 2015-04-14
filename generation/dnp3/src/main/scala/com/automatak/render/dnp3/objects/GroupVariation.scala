@@ -16,14 +16,14 @@ trait GroupVariation {
 
   final def group: Byte = parent.group
   final def id: Id = Id(group, variation)
-  final def name: String = List("Group",group,"Var",variation).mkString
+  final def name: String = "%sVar%s".format(parent.name, variation)
   final def fullDesc: String = "%s - %s".format(parent.desc, desc)
   final def shortValue : Int = group*256 + variation
 
   def variation: Byte
   def parent: ObjectGroup
   def desc: String
-  def isFixedSize: Boolean = false
+  //def isFixedSize: Boolean = false
 
   /// --- Includes for h/cpp files ----
 
@@ -49,7 +49,7 @@ sealed abstract class BasicGroupVariation(g: ObjectGroup, v: Byte, description: 
   def desc: String = description
 }
 
-abstract class AuthVariableSize(g: ObjectGroup, v: Byte, description: String, val fixedFields: List[FixedSizeField], val lengthFields: List[VariableField], val remainder: Option[VariableField]) extends BasicGroupVariation(g,v,description)
+class AuthVariableSize(g: ObjectGroup, v: Byte, description: String, val fixedFields: List[FixedSizeField], val lengthFields: List[VariableField], val remainder: Option[VariableField]) extends BasicGroupVariation(g,v,description)
 {
   /// The total minimum size for the aggregate object
   def minimumSize : Int = {
@@ -64,8 +64,6 @@ abstract class AuthVariableSize(g: ObjectGroup, v: Byte, description: String, va
 }
 
 class FixedSize(g: ObjectGroup, v: Byte, description: String)(fs: FixedSizeField*) extends BasicGroupVariation(g,v, description) {
-
-  final override def isFixedSize : Boolean = true
 
   override def headerIncludes = super.headerIncludes ++ Iterator(
     "<openpal/container/ReadBufferView.h>",

@@ -1,6 +1,7 @@
 package com.automatak.render.dnp3.objects.groups
 
-import com.automatak.render.dnp3.objects.{ConversionToBinaryCommandEvent, FixedSize, FixedSizeField, ObjectGroup}
+import com.automatak.render.dnp3.objects.generators.ConversionToBinaryCommandEvent
+import com.automatak.render.dnp3.objects.{FixedSize, FixedSizeField, ObjectGroup}
 import com.automatak.render.dnp3.objects.VariationNames._
 
 import FixedSizeField._

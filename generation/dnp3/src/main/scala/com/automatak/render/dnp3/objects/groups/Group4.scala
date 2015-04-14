@@ -1,6 +1,7 @@
 package com.automatak.render.dnp3.objects.groups
 
-import com.automatak.render.dnp3.objects.{AnyVariation, ConversionToDoubleBitBinary, FixedSize, ObjectGroup}
+import com.automatak.render.dnp3.objects.generators.ConversionToDoubleBitBinary
+import com.automatak.render.dnp3.objects.{AnyVariation, FixedSize, ObjectGroup}
 
 import com.automatak.render.dnp3.objects.FixedSizeField._
 import com.automatak.render.dnp3.objects.VariationNames._

@@ -4,6 +4,7 @@ import com.automatak.render.dnp3.objects._
 
 import FixedSizeField._
 import com.automatak.render.dnp3.objects.VariationNames._
+import com.automatak.render.dnp3.objects.generators.ConversionToFrozenCounter
 
 // frozen counters
 object Group21 extends ObjectGroup {

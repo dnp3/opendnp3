@@ -44,8 +44,8 @@ trait ObjectGroup {
 
   def objects: List[GroupVariation]
   def group: Byte
-  def name: String = "Group"+group
+  def name: String = "Group%s".format(group)
   def desc: String
 
-  def hasSizedObjects: Boolean = objects.find(_.isFixedSize).isDefined
+  def hasSizedObjects: Boolean = objects.find(x => x.isInstanceOf[FixedSizeField]).isDefined
 }

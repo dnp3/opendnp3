@@ -4,6 +4,7 @@ import com.automatak.render.dnp3.objects._
 
 import FixedSizeField._
 import com.automatak.render.dnp3.objects.VariationNames._
+import com.automatak.render.dnp3.objects.generators.ConversionToDoubleBitBinary
 
 object Group3 extends ObjectGroup {
   def objects = List(Group3Var0, Group3Var1, Group3Var2)

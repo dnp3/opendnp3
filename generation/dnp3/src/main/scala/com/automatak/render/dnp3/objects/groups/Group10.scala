@@ -4,6 +4,7 @@ import com.automatak.render.dnp3.objects._
 import com.automatak.render.dnp3.objects.VariationNames._
 
 import FixedSizeField._
+import com.automatak.render.dnp3.objects.generators.ConversionToBinaryOutputStatus
 
 object Group10 extends ObjectGroup {
   def objects = List(Group10Var0, Group10Var1, Group10Var2)

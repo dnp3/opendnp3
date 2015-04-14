@@ -2,6 +2,7 @@ package com.automatak.render.dnp3.objects.groups
 
 import com.automatak.render.dnp3.objects._
 import com.automatak.render.dnp3.objects.VariationNames._
+import com.automatak.render.dnp3.objects.generators.ConversionToBinary
 
 object Group1 extends ObjectGroup {
   def objects = List(Group1Var0, Group1Var1, Group1Var2)

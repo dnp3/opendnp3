@@ -3,6 +3,7 @@ package com.automatak.render.dnp3.objects.groups
 import com.automatak.render.dnp3.objects._
 
 import FixedSizeField._
+import com.automatak.render.dnp3.objects.generators.ConversionToTimeAndInterval
 
 // absolute time
 object Group50 extends ObjectGroup {

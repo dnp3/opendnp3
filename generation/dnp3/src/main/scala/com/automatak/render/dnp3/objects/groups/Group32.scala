@@ -4,6 +4,7 @@ import com.automatak.render.dnp3.objects._
 
 import FixedSizeField._
 import com.automatak.render.dnp3.objects.VariationNames._
+import com.automatak.render.dnp3.objects.generators.ConversionToAnalog
 
 // analog input event
 object Group32 extends ObjectGroup {

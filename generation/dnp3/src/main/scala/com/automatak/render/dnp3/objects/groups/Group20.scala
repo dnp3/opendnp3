@@ -3,6 +3,7 @@ package com.automatak.render.dnp3.objects.groups
 import com.automatak.render.dnp3.objects._
 import com.automatak.render.dnp3.objects.VariationNames._
 import FixedSizeField._
+import com.automatak.render.dnp3.objects.generators.ConversionToCounter
 
 // counters
 object Group20 extends ObjectGroup {

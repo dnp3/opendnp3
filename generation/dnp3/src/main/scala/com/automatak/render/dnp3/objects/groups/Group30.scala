@@ -4,6 +4,7 @@ import com.automatak.render.dnp3.objects._
 
 import FixedSizeField._
 import com.automatak.render.dnp3.objects.VariationNames._
+import com.automatak.render.dnp3.objects.generators.ConversionToAnalog
 
 object Group30 extends ObjectGroup {
   def objects = List(Group30Var0, Group30Var1, Group30Var2, Group30Var3, Group30Var4, Group30Var5, Group30Var6)

@@ -1,7 +1,8 @@
-package com.automatak.render.dnp3.objects
+package com.automatak.render.dnp3.objects.generators
 
 import com.automatak.render._
 import com.automatak.render.cpp._
+import com.automatak.render.dnp3.objects.FixedSize
 
 object ConversionHeaders {
 
@@ -18,7 +19,7 @@ object ConversionHeaders {
   val cppIncludes = List(factory, conversions)
 }
 
-import ConversionHeaders._
+import com.automatak.render.dnp3.objects.generators.ConversionHeaders._
 
 trait Conversion extends FixedSize {
 
@@ -30,7 +31,7 @@ trait Conversion extends FixedSize {
 
   override def headerLines(implicit i : Indentation) : Iterator[String] = super.headerLines ++ space ++ convHeaderLines
   override def implLines(implicit i : Indentation): Iterator[String] = super.implLines ++ space ++ convImplLines(this)
-  override def headerIncludes : List[String] = super.headerIncludes ++ convHeaderIncludes
+  override def headerIncludes : List[String] = super.headerIncludes ++ (serializer :: convHeaderIncludes)
   override def implIncludes : List[String] = super.implIncludes ++ convImplIncludes
 
 
@@ -82,77 +83,77 @@ trait Conversion extends FixedSize {
 
 trait ConversionToBinary extends Conversion {
   def target = "Binary"
-  def convHeaderIncludes : List[String] = List(serializer, dataTypes)
+  def convHeaderIncludes = List(dataTypes)
 }
 
 trait ConversionToDoubleBitBinary extends Conversion {
   def target = "DoubleBitBinary"
-  def convHeaderIncludes : List[String] = List(serializer, dataTypes)
+  def convHeaderIncludes = List(dataTypes)
 }
 
 trait ConversionToAnalog extends Conversion {
   def target = "Analog"
-  def convHeaderIncludes : List[String] = List(serializer, dataTypes)
+  def convHeaderIncludes = List(dataTypes)
 }
 
 trait ConversionToCounter extends Conversion {
   def target = "Counter"
-  def convHeaderIncludes : List[String] = List(serializer, dataTypes)
+  def convHeaderIncludes = List(dataTypes)
 }
 
 trait ConversionToFrozenCounter extends Conversion {
   def target = "FrozenCounter"
-  def convHeaderIncludes : List[String] = List(serializer, dataTypes)
+  def convHeaderIncludes = List(dataTypes)
 }
 
 
 trait ConversionToBinaryOutputStatus extends Conversion {
   def target = "BinaryOutputStatus"
-  def convHeaderIncludes : List[String] = List(serializer, dataTypes)
+  def convHeaderIncludes = List(dataTypes)
 }
 
 trait ConversionToAnalogOutputStatus extends Conversion {
   def target = "AnalogOutputStatus"
-  def convHeaderIncludes : List[String] = List(serializer, dataTypes)
+  def convHeaderIncludes = List(dataTypes)
 }
 
 trait ConversionToCROB extends Conversion {
   def target = "ControlRelayOutputBlock"
-  def convHeaderIncludes : List[String] = List(serializer, crob)
+  def convHeaderIncludes = List(crob)
 }
 
 trait ConversionToAnalogOutputInt16 extends Conversion {
   def target = "AnalogOutputInt16"
-  def convHeaderIncludes : List[String] = List(serializer, ao)
+  def convHeaderIncludes = List(ao)
 }
 
 trait ConversionToAnalogOutputInt32 extends Conversion {
   def target = "AnalogOutputInt32"
-  def convHeaderIncludes : List[String] = List(serializer, ao)
+  def convHeaderIncludes = List(ao)
 }
 
 trait ConversionToAnalogOutputFloat32 extends Conversion {
   def target = "AnalogOutputFloat32"
-  def convHeaderIncludes : List[String] = List(serializer, ao)
+  def convHeaderIncludes = List(ao)
 }
 
 trait ConversionToAnalogOutputDouble64 extends Conversion {
   def target = "AnalogOutputDouble64"
-  def convHeaderIncludes : List[String] = List(serializer, ao)
+  def convHeaderIncludes = List(ao)
 }
 
 trait ConversionToTimeAndInterval extends Conversion {
   def target = "TimeAndInterval"
-  def convHeaderIncludes : List[String] = List(serializer, timeAndInterval)
+  def convHeaderIncludes = List(timeAndInterval)
 }
 
 trait ConversionToBinaryCommandEvent extends Conversion {
   def target = "BinaryCommandEvent"
-  def convHeaderIncludes : List[String] = List(serializer, binaryCommandEvent)
+  def convHeaderIncludes = List(binaryCommandEvent)
 }
 
 trait ConversionToAnalogCommandEvent extends Conversion {
   def target = "AnalogCommandEvent"
-  def convHeaderIncludes : List[String] = List(serializer, analogCommandEvent)
+  def convHeaderIncludes = List(analogCommandEvent)
 }
 

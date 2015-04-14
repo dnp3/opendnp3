@@ -4,6 +4,7 @@ import com.automatak.render.dnp3.objects._
 
 import FixedSizeField._
 import com.automatak.render.dnp3.objects.VariationNames._
+import com.automatak.render.dnp3.objects.generators.{ConversionToAnalogOutputDouble64, ConversionToAnalogOutputFloat32, ConversionToAnalogOutputInt32, ConversionToAnalogOutputInt16}
 
 
 object Group41 extends ObjectGroup {

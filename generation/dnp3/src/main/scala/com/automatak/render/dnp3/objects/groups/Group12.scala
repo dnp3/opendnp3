@@ -4,6 +4,7 @@ import com.automatak.render.dnp3.objects._
 import com.automatak.render.dnp3.objects.VariationNames._
 
 import FixedSizeField._
+import com.automatak.render.dnp3.objects.generators.ConversionToCROB
 
 object Group12 extends ObjectGroup {
   def objects = List(Group12Var0, Group12Var1)

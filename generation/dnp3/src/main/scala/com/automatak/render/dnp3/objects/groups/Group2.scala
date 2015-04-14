@@ -4,6 +4,7 @@ import com.automatak.render.dnp3.objects._
 
 import FixedSizeField._
 import com.automatak.render.dnp3.objects.VariationNames._
+import com.automatak.render.dnp3.objects.generators.ConversionToBinary
 
 object Group2 extends ObjectGroup {
   val objects = List(Group2Var0, Group2Var1, Group2Var2, Group2Var3)
