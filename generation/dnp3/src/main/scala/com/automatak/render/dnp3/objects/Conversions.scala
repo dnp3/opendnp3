@@ -3,29 +3,45 @@ package com.automatak.render.dnp3.objects
 import com.automatak.render._
 import com.automatak.render.cpp._
 
-class ArbitraryConversion(name: String) extends Conversion {
+trait Conversion extends FixedSize {
 
-  def target: String = name
+  def target : String
+  def convHeaderIncludes : List[String]
+  def convImplIncludes : List[String]
 
-  def signatures : Iterator[String] = {
+  // override things from GroupVariation w/ additional material
+
+  override def headerLines(implicit i : Indentation) : Iterator[String] = super.headerLines ++ space ++ convHeaderLines
+  override def implLines(implicit i : Indentation): Iterator[String] = super.implLines ++ space ++ convImplLines(this)
+  override def headerIncludes : List[String] = super.headerIncludes ++ convHeaderIncludes
+  override def implIncludes : List[String] = super.implIncludes ++ convImplIncludes
+
+
+  private def convHeaderLines : Iterator[String] = {
     Iterator(
-      "typedef %s Target;".format(name),
-      "static bool ReadTarget(openpal::ReadBufferView&, %s&);".format(name),
-      "static bool WriteTarget(const %s&, openpal::WriteBufferView&);".format(name)
+      "typedef %s Target;".format(target),
+      "static bool ReadTarget(openpal::ReadBufferView&, %s&);".format(target),
+      "static bool WriteTarget(const %s&, openpal::WriteBufferView&);".format(target),
+      serializerInstance
     )
   }
 
+  def serializerInstance : String  = {
+      val serializerType = "DNP3Serializer<%s>".format(target)
+      "static %s Inst() { return %s(ID(), Size(), &ReadTarget, &WriteTarget); }".format(serializerType, serializerType)
+  }
 
-  def impl(fs: FixedSize)(implicit indent: Indentation): Iterator[String] = {
+
+  private def convImplLines(fs: FixedSize)(implicit indent: Indentation): Iterator[String] = {
 
     def args : String = fs.fields.map(f => "gv."+f.name).mkString(", ")
 
     def readFunc = {
       val args =  fs.fields.map(f => "value." + f.name).mkString(", ")
-      Iterator("bool %s::ReadTarget(ReadBufferView& buff, %s& output)".format(fs.name, name)) ++ bracket {
+      Iterator("bool %s::ReadTarget(ReadBufferView& buff, %s& output)".format(fs.name, target)) ++ bracket {
         Iterator("%s value;".format(fs.name)) ++
         Iterator("if(Read(buff, value))") ++ bracket {
-          Iterator("output = %sFactory::From(%s);".format(name, args)) ++
+          Iterator("output = %sFactory::From(%s);".format(target, args)) ++
           Iterator("return true;")
         } ++
         Iterator("else") ++ bracket {
@@ -35,7 +51,7 @@ class ArbitraryConversion(name: String) extends Conversion {
     }
 
     def writeFunc = {
-      Iterator("bool " + fs.name + "::WriteTarget(const " + name + "& value, openpal::WriteBufferView& buff)") ++ bracket {
+      Iterator("bool " + fs.name + "::WriteTarget(const " + target + "& value, openpal::WriteBufferView& buff)") ++ bracket {
         Iterator("return %s::Write(Convert%s::Apply(value), buff);".format(fs.name, fs.name))
       }
     }
@@ -62,111 +78,94 @@ object ConversionHeaders {
 
 import ConversionHeaders._
 
-object BinaryConversion extends ArbitraryConversion("Binary")
-object DoubleBitBinaryConversion extends ArbitraryConversion("DoubleBitBinary")
-object AnalogConversion extends ArbitraryConversion("Analog")
-object CounterConversion extends ArbitraryConversion("Counter")
-object FrozenCounterConversion extends ArbitraryConversion("FrozenCounter")
-object BinaryOutputStatusConversion extends ArbitraryConversion("BinaryOutputStatus")
-object AnalogOutputStatusConversion extends ArbitraryConversion("AnalogOutputStatus")
-object CrobConversion extends ArbitraryConversion("ControlRelayOutputBlock")
-object AnalogOutputInt16Conversion extends ArbitraryConversion("AnalogOutputInt16")
-object AnalogOutputInt32Conversion extends ArbitraryConversion("AnalogOutputInt32")
-object AnalogOutputFloat32Conversion extends ArbitraryConversion("AnalogOutputFloat32")
-object AnalogOutputDouble64Conversion extends ArbitraryConversion("AnalogOutputDouble64")
-object TimeAndIntervalConversion extends ArbitraryConversion("TimeAndInterval")
-object BinaryCommandEventConversion extends ArbitraryConversion("BinaryCommandEvent")
-object AnalogCommandEventConversion extends ArbitraryConversion("AnalogCommandEvent")
-
-trait ConversionToBinary extends FixedSize {
-
-  override def headerIncludes : List[String] = super.headerIncludes ++ List(serializer, dataTypes)
-  override def implIncludes : List[String] = super.implIncludes ++ cppIncludes
-  override def conversion: Option[Conversion] = Some(BinaryConversion)
-
+trait ConversionToBinary extends Conversion {
+  def target = "Binary"
+  def convHeaderIncludes : List[String] = List(serializer, dataTypes)
+  def convImplIncludes : List[String] = cppIncludes
 }
 
-trait ConversionToDoubleBitBinary extends FixedSize {
-  override def headerIncludes : List[String] = super.headerIncludes ++ List(serializer, dataTypes)
-  override def implIncludes : List[String] = super.implIncludes ++ cppIncludes
-  override def conversion: Option[Conversion] = Some(DoubleBitBinaryConversion)
-}
-trait ConversionToAnalog extends FixedSize {
-  override def headerIncludes : List[String] = super.headerIncludes ++ List(serializer, dataTypes)
-  override def implIncludes : List[String] = super.implIncludes ++ cppIncludes
-  override def conversion: Option[Conversion] = Some(AnalogConversion)
+trait ConversionToDoubleBitBinary extends Conversion {
+  def target = "DoubleBitBinary"
+  def convHeaderIncludes : List[String] = List(serializer, dataTypes)
+  def convImplIncludes : List[String] = cppIncludes
 }
 
-trait ConversionToCounter extends FixedSize {
-  override def headerIncludes : List[String] = super.headerIncludes ++ List(serializer, dataTypes)
-  override def implIncludes : List[String] = super.implIncludes ++ cppIncludes
-  override def conversion: Option[Conversion] = Some(CounterConversion)
+trait ConversionToAnalog extends Conversion {
+  def target = "Analog"
+  def convHeaderIncludes : List[String] = List(serializer, dataTypes)
+  def convImplIncludes : List[String] = cppIncludes
 }
 
-trait ConversionToFrozenCounter extends FixedSize {
-  override def headerIncludes : List[String] = super.headerIncludes ++ List(serializer, dataTypes)
-  override def implIncludes : List[String] = super.implIncludes ++ cppIncludes
-  override def conversion: Option[Conversion] = Some(FrozenCounterConversion)
+trait ConversionToCounter extends Conversion {
+  def target = "Counter"
+  def convHeaderIncludes : List[String] = List(serializer, dataTypes)
+  def convImplIncludes : List[String] = cppIncludes
+}
+
+trait ConversionToFrozenCounter extends Conversion {
+  def target = "FrozenCounter"
+  def convHeaderIncludes : List[String] = List(serializer, dataTypes)
+  def convImplIncludes : List[String] = cppIncludes
 }
 
 
-trait ConversionToBinaryOutputStatus extends FixedSize {
-  override def headerIncludes : List[String] = super.headerIncludes ++ List(serializer, dataTypes)
-  override def implIncludes : List[String] = super.implIncludes ++ cppIncludes
-  override def conversion: Option[Conversion] = Some(BinaryOutputStatusConversion)
+trait ConversionToBinaryOutputStatus extends Conversion {
+  def target = "BinaryOutputStatus"
+  def convHeaderIncludes : List[String] = List(serializer, dataTypes)
+  def convImplIncludes : List[String] = cppIncludes
 }
 
-trait ConversionToAnalogOutputStatus extends FixedSize {
-  override def headerIncludes : List[String] = super.headerIncludes ++ List(serializer, dataTypes)
-  override def implIncludes : List[String] = super.implIncludes ++ cppIncludes
-  override def conversion: Option[Conversion] = Some(AnalogOutputStatusConversion)
+trait ConversionToAnalogOutputStatus extends Conversion {
+  def target = "AnalogOutputStatus"
+  def convHeaderIncludes : List[String] = List(serializer, dataTypes)
+  def convImplIncludes : List[String] = cppIncludes
 }
 
-trait ConversionToCROB extends FixedSize {
-  override def headerIncludes : List[String] = super.headerIncludes ++ List(serializer, crob)
-  override def implIncludes : List[String] = super.implIncludes ++ cppIncludes
-  override def conversion: Option[Conversion] = Some(CrobConversion)
+trait ConversionToCROB extends Conversion {
+  def target = "ControlRelayOutputBlock"
+  def convHeaderIncludes : List[String] = List(serializer, crob)
+  def convImplIncludes : List[String] = cppIncludes
 }
 
-trait ConversionToAnalogOutputInt16 extends FixedSize {
-  override def headerIncludes : List[String] = super.headerIncludes ++ List(serializer, ao)
-  override def implIncludes : List[String] = super.implIncludes ++ cppIncludes
-  override def conversion: Option[Conversion] = Some(AnalogOutputInt16Conversion)
+trait ConversionToAnalogOutputInt16 extends Conversion {
+  def target = "AnalogOutputInt16"
+  def convHeaderIncludes : List[String] = List(serializer, ao)
+  def convImplIncludes : List[String] = cppIncludes
 }
 
-trait ConversionToAnalogOutputInt32 extends FixedSize {
-  override def headerIncludes : List[String] = super.headerIncludes ++ List(serializer, ao)
-  override def implIncludes : List[String] = super.implIncludes ++ cppIncludes
-  override def conversion: Option[Conversion] = Some(AnalogOutputInt32Conversion)
+trait ConversionToAnalogOutputInt32 extends Conversion {
+  def target = "AnalogOutputInt32"
+  def convHeaderIncludes : List[String] = List(serializer, ao)
+  def convImplIncludes : List[String] = cppIncludes
 }
 
-trait ConversionToAnalogOutputFloat32 extends FixedSize {
-  override def headerIncludes : List[String] = super.headerIncludes ++ List(serializer, ao)
-  override def implIncludes : List[String] = super.implIncludes ++ cppIncludes
-  override def conversion: Option[Conversion] = Some(AnalogOutputFloat32Conversion)
+trait ConversionToAnalogOutputFloat32 extends Conversion {
+  def target = "AnalogOutputFloat32"
+  def convHeaderIncludes : List[String] = List(serializer, ao)
+  def convImplIncludes : List[String] = cppIncludes
 }
 
-trait ConversionToAnalogOutputDouble64 extends FixedSize {
-  override def headerIncludes : List[String] = super.headerIncludes ++ List(serializer, ao)
-  override def implIncludes : List[String] = super.implIncludes ++ cppIncludes
-  override def conversion: Option[Conversion] = Some(AnalogOutputDouble64Conversion)
+trait ConversionToAnalogOutputDouble64 extends Conversion {
+  def target = "AnalogOutputDouble64"
+  def convHeaderIncludes : List[String] = List(serializer, ao)
+  def convImplIncludes : List[String] = cppIncludes
 }
 
-trait ConversionToTimeAndInterval extends FixedSize {
-  override def headerIncludes : List[String] = super.headerIncludes ++ List(serializer, timeAndInterval)
-  override def implIncludes : List[String] = super.implIncludes ++ cppIncludes
-  override def conversion: Option[Conversion] = Some(TimeAndIntervalConversion)
+trait ConversionToTimeAndInterval extends Conversion {
+  def target = "TimeAndInterval"
+  def convHeaderIncludes : List[String] = List(serializer, timeAndInterval)
+  def convImplIncludes : List[String] = cppIncludes
 }
 
-trait ConversionToBinaryCommandEvent extends FixedSize {
-  override def headerIncludes : List[String] = super.headerIncludes ++ List(serializer, binaryCommandEvent)
-  override def implIncludes : List[String] = super.implIncludes ++ cppIncludes
-  override def conversion: Option[Conversion] = Some(BinaryCommandEventConversion)
+trait ConversionToBinaryCommandEvent extends Conversion {
+  def target = "BinaryCommandEvent"
+  def convHeaderIncludes : List[String] = List(serializer, binaryCommandEvent)
+  def convImplIncludes : List[String] = cppIncludes
 }
 
-trait ConversionToAnalogCommandEvent extends FixedSize {
-  override def headerIncludes : List[String] = super.headerIncludes ++ List(serializer, analogCommandEvent)
-  override def implIncludes : List[String] = super.implIncludes ++ cppIncludes
-  override def conversion: Option[Conversion] = Some(AnalogCommandEventConversion)
+trait ConversionToAnalogCommandEvent extends Conversion {
+  def target = "AnalogCommandEvent"
+  def convHeaderIncludes : List[String] = List(serializer, analogCommandEvent)
+  def convImplIncludes : List[String] = cppIncludes
 }
 

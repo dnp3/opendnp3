@@ -42,13 +42,12 @@ struct Group4Var1
   static bool Read(openpal::ReadBufferView&, Group4Var1&);
   static bool Write(const Group4Var1&, openpal::WriteBufferView&);
 
-  static DNP3Serializer<DoubleBitBinary> Inst() { return DNP3Serializer<DoubleBitBinary>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  uint8_t flags;
 
   typedef DoubleBitBinary Target;
   static bool ReadTarget(openpal::ReadBufferView&, DoubleBitBinary&);
   static bool WriteTarget(const DoubleBitBinary&, openpal::WriteBufferView&);
-
-  uint8_t flags;
+  static DNP3Serializer<DoubleBitBinary> Inst() { return DNP3Serializer<DoubleBitBinary>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
 struct Group4Var2
@@ -58,14 +57,13 @@ struct Group4Var2
   static bool Read(openpal::ReadBufferView&, Group4Var2&);
   static bool Write(const Group4Var2&, openpal::WriteBufferView&);
 
-  static DNP3Serializer<DoubleBitBinary> Inst() { return DNP3Serializer<DoubleBitBinary>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  uint8_t flags;
+  DNPTime time;
 
   typedef DoubleBitBinary Target;
   static bool ReadTarget(openpal::ReadBufferView&, DoubleBitBinary&);
   static bool WriteTarget(const DoubleBitBinary&, openpal::WriteBufferView&);
-
-  uint8_t flags;
-  DNPTime time;
+  static DNP3Serializer<DoubleBitBinary> Inst() { return DNP3Serializer<DoubleBitBinary>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
 struct Group4Var3
@@ -75,14 +73,13 @@ struct Group4Var3
   static bool Read(openpal::ReadBufferView&, Group4Var3&);
   static bool Write(const Group4Var3&, openpal::WriteBufferView&);
 
-  static DNP3Serializer<DoubleBitBinary> Inst() { return DNP3Serializer<DoubleBitBinary>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  uint8_t flags;
+  uint16_t time;
 
   typedef DoubleBitBinary Target;
   static bool ReadTarget(openpal::ReadBufferView&, DoubleBitBinary&);
   static bool WriteTarget(const DoubleBitBinary&, openpal::WriteBufferView&);
-
-  uint8_t flags;
-  uint16_t time;
+  static DNP3Serializer<DoubleBitBinary> Inst() { return DNP3Serializer<DoubleBitBinary>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
 

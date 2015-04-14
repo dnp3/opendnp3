@@ -34,23 +34,12 @@ object FixedSizeGenerator {
 
     def writeSignature: Iterator[String] = Iterator("static bool Write(const %s&, openpal::WriteBufferView&);".format(x.name))
 
-    def definition : Iterator[String] =
-        sizeSignature ++
-        readSignature ++
-        writeSignature ++
-        serializer ++
-        members
+    sizeSignature ++
+    readSignature ++
+    writeSignature ++
+    space ++
+    members
 
-    def serializer: Iterator[String] = x.conversion match {
-      case None => Iterator.empty
-      case Some(conv) =>
-        val serializerType = "DNP3Serializer<%s>".format(conv.target)
-        space ++
-          Iterator("static %s Inst() { return %s(ID(), Size(), &ReadTarget, &WriteTarget); }".format(serializerType, serializerType)) ++
-          space ++ conv.signatures ++ space
-    }
-
-    definition
   }
 
   def implementation(x: FixedSize)(implicit i: Indentation): Iterator[String] = {
@@ -89,10 +78,12 @@ object FixedSizeGenerator {
 
     def writeSignature: Iterator[String] = Iterator("bool " + x.name + "::Write(const " + x.name + "& arg, openpal::WriteBufferView& buffer)")
 
+    /*
     def convertFunction: Iterator[String] = x.conversion match {
       case Some(c) => space ++ c.impl(x) ++ space
       case None => Iterator.empty
     }
+    */
 
     def fieldParams(name: String) : String = {
       x.fields.map(f => f.name).map(s => "%s.%s".format(name,s)).mkString(", ")
@@ -108,8 +99,6 @@ object FixedSizeGenerator {
 
     }
 
-    readFunction ++ space ++
-      writeFunction ++ space ++
-      convertFunction
+    readFunction ++ space ++ writeFunction
   }
 }

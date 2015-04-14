@@ -34,6 +34,7 @@ struct Group121Var1
   static uint32_t Size() { return 7; }
   static bool Read(openpal::ReadBufferView&, Group121Var1&);
   static bool Write(const Group121Var1&, openpal::WriteBufferView&);
+
   typedef uint32_t ValueType;
   uint8_t flags;
   uint16_t assocId;

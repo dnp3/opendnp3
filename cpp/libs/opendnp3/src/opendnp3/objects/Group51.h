@@ -34,6 +34,7 @@ struct Group51Var1
   static uint32_t Size() { return 6; }
   static bool Read(openpal::ReadBufferView&, Group51Var1&);
   static bool Write(const Group51Var1&, openpal::WriteBufferView&);
+
   DNPTime time;
 };
 
@@ -43,6 +44,7 @@ struct Group51Var2
   static uint32_t Size() { return 6; }
   static bool Read(openpal::ReadBufferView&, Group51Var2&);
   static bool Write(const Group51Var2&, openpal::WriteBufferView&);
+
   DNPTime time;
 };
 

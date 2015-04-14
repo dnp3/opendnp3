@@ -42,15 +42,14 @@ struct Group41Var1
   static bool Read(openpal::ReadBufferView&, Group41Var1&);
   static bool Write(const Group41Var1&, openpal::WriteBufferView&);
 
-  static DNP3Serializer<AnalogOutputInt32> Inst() { return DNP3Serializer<AnalogOutputInt32>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  typedef int32_t ValueType;
+  int32_t value;
+  uint8_t status;
 
   typedef AnalogOutputInt32 Target;
   static bool ReadTarget(openpal::ReadBufferView&, AnalogOutputInt32&);
   static bool WriteTarget(const AnalogOutputInt32&, openpal::WriteBufferView&);
-
-  typedef int32_t ValueType;
-  int32_t value;
-  uint8_t status;
+  static DNP3Serializer<AnalogOutputInt32> Inst() { return DNP3Serializer<AnalogOutputInt32>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
 struct Group41Var2
@@ -60,15 +59,14 @@ struct Group41Var2
   static bool Read(openpal::ReadBufferView&, Group41Var2&);
   static bool Write(const Group41Var2&, openpal::WriteBufferView&);
 
-  static DNP3Serializer<AnalogOutputInt16> Inst() { return DNP3Serializer<AnalogOutputInt16>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  typedef int16_t ValueType;
+  int16_t value;
+  uint8_t status;
 
   typedef AnalogOutputInt16 Target;
   static bool ReadTarget(openpal::ReadBufferView&, AnalogOutputInt16&);
   static bool WriteTarget(const AnalogOutputInt16&, openpal::WriteBufferView&);
-
-  typedef int16_t ValueType;
-  int16_t value;
-  uint8_t status;
+  static DNP3Serializer<AnalogOutputInt16> Inst() { return DNP3Serializer<AnalogOutputInt16>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
 struct Group41Var3
@@ -78,15 +76,14 @@ struct Group41Var3
   static bool Read(openpal::ReadBufferView&, Group41Var3&);
   static bool Write(const Group41Var3&, openpal::WriteBufferView&);
 
-  static DNP3Serializer<AnalogOutputFloat32> Inst() { return DNP3Serializer<AnalogOutputFloat32>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  typedef float ValueType;
+  float value;
+  uint8_t status;
 
   typedef AnalogOutputFloat32 Target;
   static bool ReadTarget(openpal::ReadBufferView&, AnalogOutputFloat32&);
   static bool WriteTarget(const AnalogOutputFloat32&, openpal::WriteBufferView&);
-
-  typedef float ValueType;
-  float value;
-  uint8_t status;
+  static DNP3Serializer<AnalogOutputFloat32> Inst() { return DNP3Serializer<AnalogOutputFloat32>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
 struct Group41Var4
@@ -96,15 +93,14 @@ struct Group41Var4
   static bool Read(openpal::ReadBufferView&, Group41Var4&);
   static bool Write(const Group41Var4&, openpal::WriteBufferView&);
 
-  static DNP3Serializer<AnalogOutputDouble64> Inst() { return DNP3Serializer<AnalogOutputDouble64>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  typedef double ValueType;
+  double value;
+  uint8_t status;
 
   typedef AnalogOutputDouble64 Target;
   static bool ReadTarget(openpal::ReadBufferView&, AnalogOutputDouble64&);
   static bool WriteTarget(const AnalogOutputDouble64&, openpal::WriteBufferView&);
-
-  typedef double ValueType;
-  double value;
-  uint8_t status;
+  static DNP3Serializer<AnalogOutputDouble64> Inst() { return DNP3Serializer<AnalogOutputDouble64>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
 

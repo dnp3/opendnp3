@@ -42,15 +42,14 @@ struct Group32Var1
   static bool Read(openpal::ReadBufferView&, Group32Var1&);
   static bool Write(const Group32Var1&, openpal::WriteBufferView&);
 
-  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  typedef int32_t ValueType;
+  uint8_t flags;
+  int32_t value;
 
   typedef Analog Target;
   static bool ReadTarget(openpal::ReadBufferView&, Analog&);
   static bool WriteTarget(const Analog&, openpal::WriteBufferView&);
-
-  typedef int32_t ValueType;
-  uint8_t flags;
-  int32_t value;
+  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
 struct Group32Var2
@@ -60,15 +59,14 @@ struct Group32Var2
   static bool Read(openpal::ReadBufferView&, Group32Var2&);
   static bool Write(const Group32Var2&, openpal::WriteBufferView&);
 
-  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  typedef int16_t ValueType;
+  uint8_t flags;
+  int16_t value;
 
   typedef Analog Target;
   static bool ReadTarget(openpal::ReadBufferView&, Analog&);
   static bool WriteTarget(const Analog&, openpal::WriteBufferView&);
-
-  typedef int16_t ValueType;
-  uint8_t flags;
-  int16_t value;
+  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
 struct Group32Var3
@@ -78,16 +76,15 @@ struct Group32Var3
   static bool Read(openpal::ReadBufferView&, Group32Var3&);
   static bool Write(const Group32Var3&, openpal::WriteBufferView&);
 
-  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
-
-  typedef Analog Target;
-  static bool ReadTarget(openpal::ReadBufferView&, Analog&);
-  static bool WriteTarget(const Analog&, openpal::WriteBufferView&);
-
   typedef int32_t ValueType;
   uint8_t flags;
   int32_t value;
   DNPTime time;
+
+  typedef Analog Target;
+  static bool ReadTarget(openpal::ReadBufferView&, Analog&);
+  static bool WriteTarget(const Analog&, openpal::WriteBufferView&);
+  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
 struct Group32Var4
@@ -97,16 +94,15 @@ struct Group32Var4
   static bool Read(openpal::ReadBufferView&, Group32Var4&);
   static bool Write(const Group32Var4&, openpal::WriteBufferView&);
 
-  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
-
-  typedef Analog Target;
-  static bool ReadTarget(openpal::ReadBufferView&, Analog&);
-  static bool WriteTarget(const Analog&, openpal::WriteBufferView&);
-
   typedef int16_t ValueType;
   uint8_t flags;
   int16_t value;
   DNPTime time;
+
+  typedef Analog Target;
+  static bool ReadTarget(openpal::ReadBufferView&, Analog&);
+  static bool WriteTarget(const Analog&, openpal::WriteBufferView&);
+  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
 struct Group32Var5
@@ -116,15 +112,14 @@ struct Group32Var5
   static bool Read(openpal::ReadBufferView&, Group32Var5&);
   static bool Write(const Group32Var5&, openpal::WriteBufferView&);
 
-  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  typedef float ValueType;
+  uint8_t flags;
+  float value;
 
   typedef Analog Target;
   static bool ReadTarget(openpal::ReadBufferView&, Analog&);
   static bool WriteTarget(const Analog&, openpal::WriteBufferView&);
-
-  typedef float ValueType;
-  uint8_t flags;
-  float value;
+  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
 struct Group32Var6
@@ -134,15 +129,14 @@ struct Group32Var6
   static bool Read(openpal::ReadBufferView&, Group32Var6&);
   static bool Write(const Group32Var6&, openpal::WriteBufferView&);
 
-  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  typedef double ValueType;
+  uint8_t flags;
+  double value;
 
   typedef Analog Target;
   static bool ReadTarget(openpal::ReadBufferView&, Analog&);
   static bool WriteTarget(const Analog&, openpal::WriteBufferView&);
-
-  typedef double ValueType;
-  uint8_t flags;
-  double value;
+  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
 struct Group32Var7
@@ -152,16 +146,15 @@ struct Group32Var7
   static bool Read(openpal::ReadBufferView&, Group32Var7&);
   static bool Write(const Group32Var7&, openpal::WriteBufferView&);
 
-  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
-
-  typedef Analog Target;
-  static bool ReadTarget(openpal::ReadBufferView&, Analog&);
-  static bool WriteTarget(const Analog&, openpal::WriteBufferView&);
-
   typedef float ValueType;
   uint8_t flags;
   float value;
   DNPTime time;
+
+  typedef Analog Target;
+  static bool ReadTarget(openpal::ReadBufferView&, Analog&);
+  static bool WriteTarget(const Analog&, openpal::WriteBufferView&);
+  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
 struct Group32Var8
@@ -171,16 +164,15 @@ struct Group32Var8
   static bool Read(openpal::ReadBufferView&, Group32Var8&);
   static bool Write(const Group32Var8&, openpal::WriteBufferView&);
 
-  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
-
-  typedef Analog Target;
-  static bool ReadTarget(openpal::ReadBufferView&, Analog&);
-  static bool WriteTarget(const Analog&, openpal::WriteBufferView&);
-
   typedef double ValueType;
   uint8_t flags;
   double value;
   DNPTime time;
+
+  typedef Analog Target;
+  static bool ReadTarget(openpal::ReadBufferView&, Analog&);
+  static bool WriteTarget(const Analog&, openpal::WriteBufferView&);
+  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
 

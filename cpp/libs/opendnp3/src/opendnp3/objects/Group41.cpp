@@ -39,7 +39,6 @@ bool Group41Var1::Write(const Group41Var1& arg, openpal::WriteBufferView& buffer
   return Format::Many(buffer, arg.value, arg.status);
 }
 
-
 bool Group41Var1::ReadTarget(ReadBufferView& buff, AnalogOutputInt32& output)
 {
   Group41Var1 value;
@@ -59,7 +58,6 @@ bool Group41Var1::WriteTarget(const AnalogOutputInt32& value, openpal::WriteBuff
   return Group41Var1::Write(ConvertGroup41Var1::Apply(value), buff);
 }
 
-
 bool Group41Var2::Read(ReadBufferView& buffer, Group41Var2& output)
 {
   return Parse::Many(buffer, output.value, output.status);
@@ -69,7 +67,6 @@ bool Group41Var2::Write(const Group41Var2& arg, openpal::WriteBufferView& buffer
 {
   return Format::Many(buffer, arg.value, arg.status);
 }
-
 
 bool Group41Var2::ReadTarget(ReadBufferView& buff, AnalogOutputInt16& output)
 {
@@ -90,7 +87,6 @@ bool Group41Var2::WriteTarget(const AnalogOutputInt16& value, openpal::WriteBuff
   return Group41Var2::Write(ConvertGroup41Var2::Apply(value), buff);
 }
 
-
 bool Group41Var3::Read(ReadBufferView& buffer, Group41Var3& output)
 {
   return Parse::Many(buffer, output.value, output.status);
@@ -100,7 +96,6 @@ bool Group41Var3::Write(const Group41Var3& arg, openpal::WriteBufferView& buffer
 {
   return Format::Many(buffer, arg.value, arg.status);
 }
-
 
 bool Group41Var3::ReadTarget(ReadBufferView& buff, AnalogOutputFloat32& output)
 {
@@ -121,7 +116,6 @@ bool Group41Var3::WriteTarget(const AnalogOutputFloat32& value, openpal::WriteBu
   return Group41Var3::Write(ConvertGroup41Var3::Apply(value), buff);
 }
 
-
 bool Group41Var4::Read(ReadBufferView& buffer, Group41Var4& output)
 {
   return Parse::Many(buffer, output.value, output.status);
@@ -131,7 +125,6 @@ bool Group41Var4::Write(const Group41Var4& arg, openpal::WriteBufferView& buffer
 {
   return Format::Many(buffer, arg.value, arg.status);
 }
-
 
 bool Group41Var4::ReadTarget(ReadBufferView& buff, AnalogOutputDouble64& output)
 {
@@ -151,7 +144,6 @@ bool Group41Var4::WriteTarget(const AnalogOutputDouble64& value, openpal::WriteB
 {
   return Group41Var4::Write(ConvertGroup41Var4::Apply(value), buff);
 }
-
 
 
 }

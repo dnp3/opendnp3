@@ -36,6 +36,7 @@ struct Group50Var1
   static uint32_t Size() { return 6; }
   static bool Read(openpal::ReadBufferView&, Group50Var1&);
   static bool Write(const Group50Var1&, openpal::WriteBufferView&);
+
   DNPTime time;
 };
 
@@ -46,15 +47,14 @@ struct Group50Var4
   static bool Read(openpal::ReadBufferView&, Group50Var4&);
   static bool Write(const Group50Var4&, openpal::WriteBufferView&);
 
-  static DNP3Serializer<TimeAndInterval> Inst() { return DNP3Serializer<TimeAndInterval>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  DNPTime time;
+  uint32_t interval;
+  uint8_t units;
 
   typedef TimeAndInterval Target;
   static bool ReadTarget(openpal::ReadBufferView&, TimeAndInterval&);
   static bool WriteTarget(const TimeAndInterval&, openpal::WriteBufferView&);
-
-  DNPTime time;
-  uint32_t interval;
-  uint8_t units;
+  static DNP3Serializer<TimeAndInterval> Inst() { return DNP3Serializer<TimeAndInterval>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
 

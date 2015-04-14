@@ -1,6 +1,7 @@
 package com.automatak.render.dnp3.objects
 
 import com.automatak.render.Indentation
+import com.automatak.render.dnp3.objects.generators.{FixedSizeGenerator, GroupVariationLines}
 
 object GroupVariation {
   case class Id(group: Byte, variation: Byte)
@@ -9,7 +10,7 @@ object GroupVariation {
 /**
  * Base trait for DNP3 objects
  */
-sealed trait GroupVariation {
+trait GroupVariation {
 
   import GroupVariation.Id
 
@@ -24,10 +25,15 @@ sealed trait GroupVariation {
   def desc: String
   def isFixedSize: Boolean = false
 
-  def headerIncludes : List[String] = List(""""opendnp3/app/GroupVariationID.h"""") // always included in headers
+  /// --- Includes for h/cpp files ----
 
+  def headerIncludes : List[String] = List(""""opendnp3/app/GroupVariationID.h"""") // always included in headers
   def implIncludes : List[String] = Nil
 
+  /// --- actual source lines for the h/cpp ---
+
+  def headerLines(implicit i : Indentation) : Iterator[String] = GroupVariationLines.idDeclaration(this)
+  def implLines(implicit i : Indentation) : Iterator[String] = Iterator.empty
 }
 
 class AnyVariation(g: ObjectGroup, v: Byte) extends BasicGroupVariation(g,v, "Any Variation")
@@ -41,14 +47,6 @@ sealed abstract class BasicGroupVariation(g: ObjectGroup, v: Byte, description: 
   def variation: Byte = v
   def parent: ObjectGroup = g
   def desc: String = description
-}
-
-trait Conversion {
-
-  def target: String
-  def signatures : Iterator[String]
-  def impl(fields: FixedSize)(implicit indent: Indentation): Iterator[String]
-
 }
 
 abstract class AuthVariableSize(g: ObjectGroup, v: Byte, description: String, val fixedFields: List[FixedSizeField], val lengthFields: List[VariableField], val remainder: Option[VariableField]) extends BasicGroupVariation(g,v,description)
@@ -79,7 +77,8 @@ class FixedSize(g: ObjectGroup, v: Byte, description: String)(fs: FixedSizeField
     "<openpal/serialization/Format.h>", "<openpal/serialization/Parse.h>"
   )
 
-  def conversion: Option[Conversion] = None
+  override def headerLines(implicit i : Indentation) : Iterator[String] = super.headerLines ++ FixedSizeGenerator.header(this)
+  override def implLines(implicit i : Indentation) : Iterator[String] = super.implLines ++ FixedSizeGenerator.implementation(this)
 
   def size: Int = fields.foldLeft(0)((sum, f) => sum + f.typ.numBytes)
 

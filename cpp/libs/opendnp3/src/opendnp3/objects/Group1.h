@@ -47,13 +47,12 @@ struct Group1Var2
   static bool Read(openpal::ReadBufferView&, Group1Var2&);
   static bool Write(const Group1Var2&, openpal::WriteBufferView&);
 
-  static DNP3Serializer<Binary> Inst() { return DNP3Serializer<Binary>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  uint8_t flags;
 
   typedef Binary Target;
   static bool ReadTarget(openpal::ReadBufferView&, Binary&);
   static bool WriteTarget(const Binary&, openpal::WriteBufferView&);
-
-  uint8_t flags;
+  static DNP3Serializer<Binary> Inst() { return DNP3Serializer<Binary>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
 

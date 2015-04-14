@@ -38,5 +38,4 @@ bool Group121Var1::Write(const Group121Var1& arg, openpal::WriteBufferView& buff
 }
 
 
-
 }

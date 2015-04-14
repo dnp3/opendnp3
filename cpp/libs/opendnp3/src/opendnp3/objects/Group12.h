@@ -42,17 +42,16 @@ struct Group12Var1
   static bool Read(openpal::ReadBufferView&, Group12Var1&);
   static bool Write(const Group12Var1&, openpal::WriteBufferView&);
 
-  static DNP3Serializer<ControlRelayOutputBlock> Inst() { return DNP3Serializer<ControlRelayOutputBlock>(ID(), Size(), &ReadTarget, &WriteTarget); }
-
-  typedef ControlRelayOutputBlock Target;
-  static bool ReadTarget(openpal::ReadBufferView&, ControlRelayOutputBlock&);
-  static bool WriteTarget(const ControlRelayOutputBlock&, openpal::WriteBufferView&);
-
   uint8_t code;
   uint8_t count;
   uint32_t onTime;
   uint32_t offTime;
   uint8_t status;
+
+  typedef ControlRelayOutputBlock Target;
+  static bool ReadTarget(openpal::ReadBufferView&, ControlRelayOutputBlock&);
+  static bool WriteTarget(const ControlRelayOutputBlock&, openpal::WriteBufferView&);
+  static DNP3Serializer<ControlRelayOutputBlock> Inst() { return DNP3Serializer<ControlRelayOutputBlock>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
 

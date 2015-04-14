@@ -39,7 +39,6 @@ bool Group21Var1::Write(const Group21Var1& arg, openpal::WriteBufferView& buffer
   return Format::Many(buffer, arg.flags, arg.value);
 }
 
-
 bool Group21Var1::ReadTarget(ReadBufferView& buff, FrozenCounter& output)
 {
   Group21Var1 value;
@@ -59,7 +58,6 @@ bool Group21Var1::WriteTarget(const FrozenCounter& value, openpal::WriteBufferVi
   return Group21Var1::Write(ConvertGroup21Var1::Apply(value), buff);
 }
 
-
 bool Group21Var2::Read(ReadBufferView& buffer, Group21Var2& output)
 {
   return Parse::Many(buffer, output.flags, output.value);
@@ -69,7 +67,6 @@ bool Group21Var2::Write(const Group21Var2& arg, openpal::WriteBufferView& buffer
 {
   return Format::Many(buffer, arg.flags, arg.value);
 }
-
 
 bool Group21Var2::ReadTarget(ReadBufferView& buff, FrozenCounter& output)
 {
@@ -90,7 +87,6 @@ bool Group21Var2::WriteTarget(const FrozenCounter& value, openpal::WriteBufferVi
   return Group21Var2::Write(ConvertGroup21Var2::Apply(value), buff);
 }
 
-
 bool Group21Var5::Read(ReadBufferView& buffer, Group21Var5& output)
 {
   return Parse::Many(buffer, output.flags, output.value, output.time);
@@ -100,7 +96,6 @@ bool Group21Var5::Write(const Group21Var5& arg, openpal::WriteBufferView& buffer
 {
   return Format::Many(buffer, arg.flags, arg.value, arg.time);
 }
-
 
 bool Group21Var5::ReadTarget(ReadBufferView& buff, FrozenCounter& output)
 {
@@ -121,7 +116,6 @@ bool Group21Var5::WriteTarget(const FrozenCounter& value, openpal::WriteBufferVi
   return Group21Var5::Write(ConvertGroup21Var5::Apply(value), buff);
 }
 
-
 bool Group21Var6::Read(ReadBufferView& buffer, Group21Var6& output)
 {
   return Parse::Many(buffer, output.flags, output.value, output.time);
@@ -131,7 +125,6 @@ bool Group21Var6::Write(const Group21Var6& arg, openpal::WriteBufferView& buffer
 {
   return Format::Many(buffer, arg.flags, arg.value, arg.time);
 }
-
 
 bool Group21Var6::ReadTarget(ReadBufferView& buff, FrozenCounter& output)
 {
@@ -152,7 +145,6 @@ bool Group21Var6::WriteTarget(const FrozenCounter& value, openpal::WriteBufferVi
   return Group21Var6::Write(ConvertGroup21Var6::Apply(value), buff);
 }
 
-
 bool Group21Var9::Read(ReadBufferView& buffer, Group21Var9& output)
 {
   return Parse::Many(buffer, output.value);
@@ -162,7 +154,6 @@ bool Group21Var9::Write(const Group21Var9& arg, openpal::WriteBufferView& buffer
 {
   return Format::Many(buffer, arg.value);
 }
-
 
 bool Group21Var9::ReadTarget(ReadBufferView& buff, FrozenCounter& output)
 {
@@ -183,7 +174,6 @@ bool Group21Var9::WriteTarget(const FrozenCounter& value, openpal::WriteBufferVi
   return Group21Var9::Write(ConvertGroup21Var9::Apply(value), buff);
 }
 
-
 bool Group21Var10::Read(ReadBufferView& buffer, Group21Var10& output)
 {
   return Parse::Many(buffer, output.value);
@@ -193,7 +183,6 @@ bool Group21Var10::Write(const Group21Var10& arg, openpal::WriteBufferView& buff
 {
   return Format::Many(buffer, arg.value);
 }
-
 
 bool Group21Var10::ReadTarget(ReadBufferView& buff, FrozenCounter& output)
 {
@@ -213,7 +202,6 @@ bool Group21Var10::WriteTarget(const FrozenCounter& value, openpal::WriteBufferV
 {
   return Group21Var10::Write(ConvertGroup21Var10::Apply(value), buff);
 }
-
 
 
 }

@@ -42,13 +42,12 @@ struct Group11Var1
   static bool Read(openpal::ReadBufferView&, Group11Var1&);
   static bool Write(const Group11Var1&, openpal::WriteBufferView&);
 
-  static DNP3Serializer<BinaryOutputStatus> Inst() { return DNP3Serializer<BinaryOutputStatus>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  uint8_t flags;
 
   typedef BinaryOutputStatus Target;
   static bool ReadTarget(openpal::ReadBufferView&, BinaryOutputStatus&);
   static bool WriteTarget(const BinaryOutputStatus&, openpal::WriteBufferView&);
-
-  uint8_t flags;
+  static DNP3Serializer<BinaryOutputStatus> Inst() { return DNP3Serializer<BinaryOutputStatus>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
 struct Group11Var2
@@ -58,14 +57,13 @@ struct Group11Var2
   static bool Read(openpal::ReadBufferView&, Group11Var2&);
   static bool Write(const Group11Var2&, openpal::WriteBufferView&);
 
-  static DNP3Serializer<BinaryOutputStatus> Inst() { return DNP3Serializer<BinaryOutputStatus>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  uint8_t flags;
+  DNPTime time;
 
   typedef BinaryOutputStatus Target;
   static bool ReadTarget(openpal::ReadBufferView&, BinaryOutputStatus&);
   static bool WriteTarget(const BinaryOutputStatus&, openpal::WriteBufferView&);
-
-  uint8_t flags;
-  DNPTime time;
+  static DNP3Serializer<BinaryOutputStatus> Inst() { return DNP3Serializer<BinaryOutputStatus>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
 

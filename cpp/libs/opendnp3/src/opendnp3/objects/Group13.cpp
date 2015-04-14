@@ -39,7 +39,6 @@ bool Group13Var1::Write(const Group13Var1& arg, openpal::WriteBufferView& buffer
   return Format::Many(buffer, arg.flags);
 }
 
-
 bool Group13Var1::ReadTarget(ReadBufferView& buff, BinaryCommandEvent& output)
 {
   Group13Var1 value;
@@ -59,7 +58,6 @@ bool Group13Var1::WriteTarget(const BinaryCommandEvent& value, openpal::WriteBuf
   return Group13Var1::Write(ConvertGroup13Var1::Apply(value), buff);
 }
 
-
 bool Group13Var2::Read(ReadBufferView& buffer, Group13Var2& output)
 {
   return Parse::Many(buffer, output.flags, output.time);
@@ -69,7 +67,6 @@ bool Group13Var2::Write(const Group13Var2& arg, openpal::WriteBufferView& buffer
 {
   return Format::Many(buffer, arg.flags, arg.time);
 }
-
 
 bool Group13Var2::ReadTarget(ReadBufferView& buff, BinaryCommandEvent& output)
 {
@@ -89,7 +86,6 @@ bool Group13Var2::WriteTarget(const BinaryCommandEvent& value, openpal::WriteBuf
 {
   return Group13Var2::Write(ConvertGroup13Var2::Apply(value), buff);
 }
-
 
 
 }

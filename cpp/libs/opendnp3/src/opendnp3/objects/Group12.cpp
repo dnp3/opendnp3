@@ -39,7 +39,6 @@ bool Group12Var1::Write(const Group12Var1& arg, openpal::WriteBufferView& buffer
   return Format::Many(buffer, arg.code, arg.count, arg.onTime, arg.offTime, arg.status);
 }
 
-
 bool Group12Var1::ReadTarget(ReadBufferView& buff, ControlRelayOutputBlock& output)
 {
   Group12Var1 value;
@@ -58,7 +57,6 @@ bool Group12Var1::WriteTarget(const ControlRelayOutputBlock& value, openpal::Wri
 {
   return Group12Var1::Write(ConvertGroup12Var1::Apply(value), buff);
 }
-
 
 
 }

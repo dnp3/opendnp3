@@ -42,15 +42,14 @@ struct Group30Var1
   static bool Read(openpal::ReadBufferView&, Group30Var1&);
   static bool Write(const Group30Var1&, openpal::WriteBufferView&);
 
-  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  typedef int32_t ValueType;
+  uint8_t flags;
+  int32_t value;
 
   typedef Analog Target;
   static bool ReadTarget(openpal::ReadBufferView&, Analog&);
   static bool WriteTarget(const Analog&, openpal::WriteBufferView&);
-
-  typedef int32_t ValueType;
-  uint8_t flags;
-  int32_t value;
+  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
 struct Group30Var2
@@ -60,15 +59,14 @@ struct Group30Var2
   static bool Read(openpal::ReadBufferView&, Group30Var2&);
   static bool Write(const Group30Var2&, openpal::WriteBufferView&);
 
-  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  typedef int16_t ValueType;
+  uint8_t flags;
+  int16_t value;
 
   typedef Analog Target;
   static bool ReadTarget(openpal::ReadBufferView&, Analog&);
   static bool WriteTarget(const Analog&, openpal::WriteBufferView&);
-
-  typedef int16_t ValueType;
-  uint8_t flags;
-  int16_t value;
+  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
 struct Group30Var3
@@ -78,14 +76,13 @@ struct Group30Var3
   static bool Read(openpal::ReadBufferView&, Group30Var3&);
   static bool Write(const Group30Var3&, openpal::WriteBufferView&);
 
-  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  typedef int32_t ValueType;
+  int32_t value;
 
   typedef Analog Target;
   static bool ReadTarget(openpal::ReadBufferView&, Analog&);
   static bool WriteTarget(const Analog&, openpal::WriteBufferView&);
-
-  typedef int32_t ValueType;
-  int32_t value;
+  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
 struct Group30Var4
@@ -95,14 +92,13 @@ struct Group30Var4
   static bool Read(openpal::ReadBufferView&, Group30Var4&);
   static bool Write(const Group30Var4&, openpal::WriteBufferView&);
 
-  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  typedef int16_t ValueType;
+  int16_t value;
 
   typedef Analog Target;
   static bool ReadTarget(openpal::ReadBufferView&, Analog&);
   static bool WriteTarget(const Analog&, openpal::WriteBufferView&);
-
-  typedef int16_t ValueType;
-  int16_t value;
+  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
 struct Group30Var5
@@ -112,15 +108,14 @@ struct Group30Var5
   static bool Read(openpal::ReadBufferView&, Group30Var5&);
   static bool Write(const Group30Var5&, openpal::WriteBufferView&);
 
-  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  typedef float ValueType;
+  uint8_t flags;
+  float value;
 
   typedef Analog Target;
   static bool ReadTarget(openpal::ReadBufferView&, Analog&);
   static bool WriteTarget(const Analog&, openpal::WriteBufferView&);
-
-  typedef float ValueType;
-  uint8_t flags;
-  float value;
+  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
 struct Group30Var6
@@ -130,15 +125,14 @@ struct Group30Var6
   static bool Read(openpal::ReadBufferView&, Group30Var6&);
   static bool Write(const Group30Var6&, openpal::WriteBufferView&);
 
-  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
+  typedef double ValueType;
+  uint8_t flags;
+  double value;
 
   typedef Analog Target;
   static bool ReadTarget(openpal::ReadBufferView&, Analog&);
   static bool WriteTarget(const Analog&, openpal::WriteBufferView&);
-
-  typedef double ValueType;
-  uint8_t flags;
-  double value;
+  static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
 

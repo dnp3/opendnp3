@@ -39,7 +39,6 @@ bool Group11Var1::Write(const Group11Var1& arg, openpal::WriteBufferView& buffer
   return Format::Many(buffer, arg.flags);
 }
 
-
 bool Group11Var1::ReadTarget(ReadBufferView& buff, BinaryOutputStatus& output)
 {
   Group11Var1 value;
@@ -59,7 +58,6 @@ bool Group11Var1::WriteTarget(const BinaryOutputStatus& value, openpal::WriteBuf
   return Group11Var1::Write(ConvertGroup11Var1::Apply(value), buff);
 }
 
-
 bool Group11Var2::Read(ReadBufferView& buffer, Group11Var2& output)
 {
   return Parse::Many(buffer, output.flags, output.time);
@@ -69,7 +67,6 @@ bool Group11Var2::Write(const Group11Var2& arg, openpal::WriteBufferView& buffer
 {
   return Format::Many(buffer, arg.flags, arg.time);
 }
-
 
 bool Group11Var2::ReadTarget(ReadBufferView& buff, BinaryOutputStatus& output)
 {
@@ -89,7 +86,6 @@ bool Group11Var2::WriteTarget(const BinaryOutputStatus& value, openpal::WriteBuf
 {
   return Group11Var2::Write(ConvertGroup11Var2::Apply(value), buff);
 }
-
 
 
 }

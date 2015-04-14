@@ -39,7 +39,6 @@ bool Group4Var1::Write(const Group4Var1& arg, openpal::WriteBufferView& buffer)
   return Format::Many(buffer, arg.flags);
 }
 
-
 bool Group4Var1::ReadTarget(ReadBufferView& buff, DoubleBitBinary& output)
 {
   Group4Var1 value;
@@ -59,7 +58,6 @@ bool Group4Var1::WriteTarget(const DoubleBitBinary& value, openpal::WriteBufferV
   return Group4Var1::Write(ConvertGroup4Var1::Apply(value), buff);
 }
 
-
 bool Group4Var2::Read(ReadBufferView& buffer, Group4Var2& output)
 {
   return Parse::Many(buffer, output.flags, output.time);
@@ -69,7 +67,6 @@ bool Group4Var2::Write(const Group4Var2& arg, openpal::WriteBufferView& buffer)
 {
   return Format::Many(buffer, arg.flags, arg.time);
 }
-
 
 bool Group4Var2::ReadTarget(ReadBufferView& buff, DoubleBitBinary& output)
 {
@@ -90,7 +87,6 @@ bool Group4Var2::WriteTarget(const DoubleBitBinary& value, openpal::WriteBufferV
   return Group4Var2::Write(ConvertGroup4Var2::Apply(value), buff);
 }
 
-
 bool Group4Var3::Read(ReadBufferView& buffer, Group4Var3& output)
 {
   return Parse::Many(buffer, output.flags, output.time);
@@ -100,7 +96,6 @@ bool Group4Var3::Write(const Group4Var3& arg, openpal::WriteBufferView& buffer)
 {
   return Format::Many(buffer, arg.flags, arg.time);
 }
-
 
 bool Group4Var3::ReadTarget(ReadBufferView& buff, DoubleBitBinary& output)
 {
@@ -120,7 +115,6 @@ bool Group4Var3::WriteTarget(const DoubleBitBinary& value, openpal::WriteBufferV
 {
   return Group4Var3::Write(ConvertGroup4Var3::Apply(value), buff);
 }
-
 
 
 }

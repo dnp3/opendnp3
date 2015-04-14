@@ -39,7 +39,6 @@ bool Group3Var2::Write(const Group3Var2& arg, openpal::WriteBufferView& buffer)
   return Format::Many(buffer, arg.flags);
 }
 
-
 bool Group3Var2::ReadTarget(ReadBufferView& buff, DoubleBitBinary& output)
 {
   Group3Var2 value;
@@ -58,7 +57,6 @@ bool Group3Var2::WriteTarget(const DoubleBitBinary& value, openpal::WriteBufferV
 {
   return Group3Var2::Write(ConvertGroup3Var2::Apply(value), buff);
 }
-
 
 
 }

@@ -39,7 +39,6 @@ bool Group50Var1::Write(const Group50Var1& arg, openpal::WriteBufferView& buffer
   return Format::Many(buffer, arg.time);
 }
 
-
 bool Group50Var4::Read(ReadBufferView& buffer, Group50Var4& output)
 {
   return Parse::Many(buffer, output.time, output.interval, output.units);
@@ -49,7 +48,6 @@ bool Group50Var4::Write(const Group50Var4& arg, openpal::WriteBufferView& buffer
 {
   return Format::Many(buffer, arg.time, arg.interval, arg.units);
 }
-
 
 bool Group50Var4::ReadTarget(ReadBufferView& buff, TimeAndInterval& output)
 {
@@ -69,7 +67,6 @@ bool Group50Var4::WriteTarget(const TimeAndInterval& value, openpal::WriteBuffer
 {
   return Group50Var4::Write(ConvertGroup50Var4::Apply(value), buff);
 }
-
 
 
 }

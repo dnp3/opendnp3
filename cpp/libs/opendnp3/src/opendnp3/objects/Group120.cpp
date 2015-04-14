@@ -37,7 +37,6 @@ bool Group120Var3::Write(const Group120Var3& arg, openpal::WriteBufferView& buff
   return Format::Many(buffer, arg.challengeSeqNum, arg.userNum);
 }
 
-
 bool Group120Var4::Read(ReadBufferView& buffer, Group120Var4& output)
 {
   return Parse::Many(buffer, output.userNum);
@@ -47,7 +46,6 @@ bool Group120Var4::Write(const Group120Var4& arg, openpal::WriteBufferView& buff
 {
   return Format::Many(buffer, arg.userNum);
 }
-
 
 
 }

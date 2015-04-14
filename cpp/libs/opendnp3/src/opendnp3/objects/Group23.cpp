@@ -39,7 +39,6 @@ bool Group23Var1::Write(const Group23Var1& arg, openpal::WriteBufferView& buffer
   return Format::Many(buffer, arg.flags, arg.value);
 }
 
-
 bool Group23Var1::ReadTarget(ReadBufferView& buff, FrozenCounter& output)
 {
   Group23Var1 value;
@@ -59,7 +58,6 @@ bool Group23Var1::WriteTarget(const FrozenCounter& value, openpal::WriteBufferVi
   return Group23Var1::Write(ConvertGroup23Var1::Apply(value), buff);
 }
 
-
 bool Group23Var2::Read(ReadBufferView& buffer, Group23Var2& output)
 {
   return Parse::Many(buffer, output.flags, output.value);
@@ -69,7 +67,6 @@ bool Group23Var2::Write(const Group23Var2& arg, openpal::WriteBufferView& buffer
 {
   return Format::Many(buffer, arg.flags, arg.value);
 }
-
 
 bool Group23Var2::ReadTarget(ReadBufferView& buff, FrozenCounter& output)
 {
@@ -90,7 +87,6 @@ bool Group23Var2::WriteTarget(const FrozenCounter& value, openpal::WriteBufferVi
   return Group23Var2::Write(ConvertGroup23Var2::Apply(value), buff);
 }
 
-
 bool Group23Var5::Read(ReadBufferView& buffer, Group23Var5& output)
 {
   return Parse::Many(buffer, output.flags, output.value, output.time);
@@ -100,7 +96,6 @@ bool Group23Var5::Write(const Group23Var5& arg, openpal::WriteBufferView& buffer
 {
   return Format::Many(buffer, arg.flags, arg.value, arg.time);
 }
-
 
 bool Group23Var5::ReadTarget(ReadBufferView& buff, FrozenCounter& output)
 {
@@ -121,7 +116,6 @@ bool Group23Var5::WriteTarget(const FrozenCounter& value, openpal::WriteBufferVi
   return Group23Var5::Write(ConvertGroup23Var5::Apply(value), buff);
 }
 
-
 bool Group23Var6::Read(ReadBufferView& buffer, Group23Var6& output)
 {
   return Parse::Many(buffer, output.flags, output.value, output.time);
@@ -131,7 +125,6 @@ bool Group23Var6::Write(const Group23Var6& arg, openpal::WriteBufferView& buffer
 {
   return Format::Many(buffer, arg.flags, arg.value, arg.time);
 }
-
 
 bool Group23Var6::ReadTarget(ReadBufferView& buff, FrozenCounter& output)
 {
@@ -151,7 +144,6 @@ bool Group23Var6::WriteTarget(const FrozenCounter& value, openpal::WriteBufferVi
 {
   return Group23Var6::Write(ConvertGroup23Var6::Apply(value), buff);
 }
-
 
 
 }

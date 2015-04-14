@@ -34,6 +34,7 @@ struct Group122Var1
   static uint32_t Size() { return 7; }
   static bool Read(openpal::ReadBufferView&, Group122Var1&);
   static bool Write(const Group122Var1&, openpal::WriteBufferView&);
+
   typedef uint32_t ValueType;
   uint8_t flags;
   uint16_t assocId;
@@ -46,6 +47,7 @@ struct Group122Var2
   static uint32_t Size() { return 13; }
   static bool Read(openpal::ReadBufferView&, Group122Var2&);
   static bool Write(const Group122Var2&, openpal::WriteBufferView&);
+
   typedef uint32_t ValueType;
   uint8_t flags;
   uint16_t assocId;
