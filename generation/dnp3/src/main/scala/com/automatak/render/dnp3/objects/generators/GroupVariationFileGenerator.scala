@@ -15,7 +15,9 @@ object GroupVariationFileGenerator {
     def headerPath(group: ObjectGroup): Path = path.resolve(group.name+".h")
     def implPath(group: ObjectGroup): Path = path.resolve(group.name+".cpp")
 
-    def definitions(r: ModelRenderer[GroupVariation])(group: ObjectGroup): Iterator[String] = spaced(group.objects.iterator.map(o => r.render(o)))
+    def definitions(group: ObjectGroup): Iterator[String] = spaced(group.objects.iterator.map(o => comment(o.fullDesc) ++ o.declaration))
+
+    def implementations(group: ObjectGroup): Iterator[String] = spaced(group.objects.iterator.map(o => o.implLines))
 
     def optionalIncludes(group: ObjectGroup) : Set[String] = {
 
@@ -46,13 +48,13 @@ object GroupVariationFileGenerator {
         headerIncludes(group) ++
         optionalIncludes(group) ++ space ++
         namespace("opendnp3") {
-          definitions(GroupVariationHeaderRenderer)(group)
+          definitions(group)
         }
       }
     }
 
     def implFile(group: ObjectGroup): Iterator[String] = {
-      val defs = definitions(GroupVariationImplRenderer)(group)
+      val defs = implementations(group)
       if(defs.isEmpty) Iterator.empty
       else
       {

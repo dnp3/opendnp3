@@ -1,6 +1,7 @@
 package com.automatak.render.dnp3.objects
 
 import com.automatak.render.Indentation
+import com.automatak.render.cpp._
 import com.automatak.render.dnp3.objects.generators._
 
 object GroupVariation {
@@ -23,6 +24,8 @@ trait GroupVariation {
   def variation: Byte
   def parent: ObjectGroup
   def desc: String
+  def declaration(implicit i : Indentation): Iterator[String] = struct(name) { headerLines }
+
   //def isFixedSize: Boolean = false
 
   /// --- Includes for h/cpp files ----
@@ -49,10 +52,17 @@ sealed abstract class BasicGroupVariation(g: ObjectGroup, v: Byte, description: 
   def desc: String = description
 }
 
-class AuthVariableSize(g: ObjectGroup, v: Byte, description: String, val fixedFields: List[FixedSizeField], val lengthFields: List[VariableField], val remainder: Option[VariableField]) extends BasicGroupVariation(g,v,description)
-{
-  override def headerIncludes = super.headerIncludes ++ GroupVariationIncludes.headerReadWrite ++ FixedSizeHelpers.fieldHeaders(fixedFields)
+class AuthVariableSize( g: ObjectGroup,
+                        v: Byte,
+                        description: String,
+                        val fixedFields: List[FixedSizeField],
+                        val lengthFields: List[VariableField],
+                        val remainder: Option[VariableField]) extends BasicGroupVariation(g,v,description)  {
+
+  override def headerIncludes = super.headerIncludes ++ GroupVariationIncludes.headerReadWrite ++ GroupVariationIncludes.variableLength ++ FixedSizeHelpers.fieldHeaders(fixedFields)
   override def implIncludes = super.implIncludes ++ GroupVariationIncludes.implReadWrite
+
+  override def declaration(implicit i : Indentation) : Iterator[String] = struct(name, Some("IVariableLength"))(headerLines)
 
   override def headerLines(implicit i : Indentation) : Iterator[String] = super.headerLines ++ AuthVariableSizeGenerator.header(this)
   override def implLines(implicit i : Indentation) : Iterator[String] = super.implLines ++ AuthVariableSizeGenerator.implementation(this)

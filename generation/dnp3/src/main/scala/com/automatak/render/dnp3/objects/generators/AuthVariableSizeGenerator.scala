@@ -18,15 +18,19 @@ object AuthVariableSizeGenerator {
       x.remainder.map(f => getVariableFieldString(f.name))
     }
 
-    def readSignature: Iterator[String] = Iterator("static bool Read(openpal::ReadBufferView&, %s&);".format(x.name))
+    def defaultConstructor = Iterator("%s();".format(x.name))
 
-    def writeSignature: Iterator[String] = Iterator("static bool Write(const %s&, openpal::WriteBufferView&);".format(x.name))
+    def sizeSignature: Iterator[String] = Iterator("virtual uint32_t Size() const override final;")
 
-    /*
+    def readSignature: Iterator[String] = Iterator("virtual bool Read(openpal::ReadBufferView&) override final;")
+
+    def writeSignature: Iterator[String] = Iterator("virtual bool Write(openpal::WriteBufferView&) const override final;")
+
+    defaultConstructor ++
+    sizeSignature ++
     readSignature ++
     writeSignature ++
     space ++
-    */
     Iterator("static const uint32_t MIN_SIZE = %s;".format(x.minimumSize)) ++
     space ++
     comment("member variables") ++

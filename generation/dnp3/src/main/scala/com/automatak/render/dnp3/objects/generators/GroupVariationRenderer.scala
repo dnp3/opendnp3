@@ -7,12 +7,7 @@ import com.automatak.render.cpp._
 
 object GroupVariationHeaderRenderer extends ModelRenderer[GroupVariation]{
 
-  def render(gv: GroupVariation)(implicit i: Indentation): Iterator[String] = {
-    comment(gv.fullDesc) ++
-    struct(gv.name) {
-      gv.headerLines
-    }
-  }
+  def render(gv: GroupVariation)(implicit i: Indentation): Iterator[String] = comment(gv.fullDesc) ++ gv.declaration
 
 }
 

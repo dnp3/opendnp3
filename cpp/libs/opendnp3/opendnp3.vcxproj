@@ -48,6 +48,7 @@
     <ClInclude Include="src\opendnp3\app\IINField.h" />
     <ClInclude Include="src\opendnp3\app\IndexedValue.h" />
     <ClInclude Include="src\opendnp3\app\ITransactable.h" />
+    <ClInclude Include="src\opendnp3\app\IVariableLength.h" />
     <ClInclude Include="src\opendnp3\app\MeasurementFactory.h" />
     <ClInclude Include="src\opendnp3\app\MeasurementTypes.h" />
     <ClInclude Include="src\opendnp3\app\OctetData.h" />

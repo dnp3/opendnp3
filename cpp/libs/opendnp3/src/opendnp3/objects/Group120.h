@@ -25,14 +25,20 @@
 #include <openpal/container/ReadBufferView.h>
 #include <openpal/container/WriteBufferView.h>
 #include "opendnp3/Types.h"
+#include "opendnp3/app/IVariableLength.h"
 #include "opendnp3/gen/HMACType.h"
 
 namespace opendnp3 {
 
 // Authentication - Challenge
-struct Group120Var1
+struct Group120Var1 : public IVariableLength
 {
   static GroupVariationID ID() { return GroupVariationID(120,1); }
+  Group120Var1();
+  virtual uint32_t Size() const override final;
+  virtual bool Read(openpal::ReadBufferView&) override final;
+  virtual bool Write(openpal::WriteBufferView&) const override final;
+
   static const uint32_t MIN_SIZE = 8;
 
   // member variables
@@ -44,9 +50,14 @@ struct Group120Var1
 };
 
 // Authentication - Reply
-struct Group120Var2
+struct Group120Var2 : public IVariableLength
 {
   static GroupVariationID ID() { return GroupVariationID(120,2); }
+  Group120Var2();
+  virtual uint32_t Size() const override final;
+  virtual bool Read(openpal::ReadBufferView&) override final;
+  virtual bool Write(openpal::WriteBufferView&) const override final;
+
   static const uint32_t MIN_SIZE = 6;
 
   // member variables
@@ -79,9 +90,14 @@ struct Group120Var4
 };
 
 // Authentication - Session Key Status
-struct Group120Var5
+struct Group120Var5 : public IVariableLength
 {
   static GroupVariationID ID() { return GroupVariationID(120,5); }
+  Group120Var5();
+  virtual uint32_t Size() const override final;
+  virtual bool Read(openpal::ReadBufferView&) override final;
+  virtual bool Write(openpal::WriteBufferView&) const override final;
+
   static const uint32_t MIN_SIZE = 11;
 
   // member variables
@@ -95,9 +111,14 @@ struct Group120Var5
 };
 
 // Authentication - Session Key Change
-struct Group120Var6
+struct Group120Var6 : public IVariableLength
 {
   static GroupVariationID ID() { return GroupVariationID(120,6); }
+  Group120Var6();
+  virtual uint32_t Size() const override final;
+  virtual bool Read(openpal::ReadBufferView&) override final;
+  virtual bool Write(openpal::WriteBufferView&) const override final;
+
   static const uint32_t MIN_SIZE = 6;
 
   // member variables
@@ -107,9 +128,14 @@ struct Group120Var6
 };
 
 // Authentication - Error
-struct Group120Var7
+struct Group120Var7 : public IVariableLength
 {
   static GroupVariationID ID() { return GroupVariationID(120,7); }
+  Group120Var7();
+  virtual uint32_t Size() const override final;
+  virtual bool Read(openpal::ReadBufferView&) override final;
+  virtual bool Write(openpal::WriteBufferView&) const override final;
+
   static const uint32_t MIN_SIZE = 15;
 
   // member variables
@@ -122,9 +148,14 @@ struct Group120Var7
 };
 
 // Authentication - User Certificate
-struct Group120Var8
+struct Group120Var8 : public IVariableLength
 {
   static GroupVariationID ID() { return GroupVariationID(120,8); }
+  Group120Var8();
+  virtual uint32_t Size() const override final;
+  virtual bool Read(openpal::ReadBufferView&) override final;
+  virtual bool Write(openpal::WriteBufferView&) const override final;
+
   static const uint32_t MIN_SIZE = 2;
 
   // member variables
@@ -134,9 +165,14 @@ struct Group120Var8
 };
 
 // Authentication - HMAC
-struct Group120Var9
+struct Group120Var9 : public IVariableLength
 {
   static GroupVariationID ID() { return GroupVariationID(120,9); }
+  Group120Var9();
+  virtual uint32_t Size() const override final;
+  virtual bool Read(openpal::ReadBufferView&) override final;
+  virtual bool Write(openpal::WriteBufferView&) const override final;
+
   static const uint32_t MIN_SIZE = 0;
 
   // member variables

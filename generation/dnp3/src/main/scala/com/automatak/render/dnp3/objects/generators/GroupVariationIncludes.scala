@@ -13,4 +13,8 @@ object GroupVariationIncludes {
     "<openpal/serialization/Parse.h>"
   )
 
+  def variableLength: Iterator[String] = Iterator(
+    """"opendnp3/app/IVariableLength.h""""
+  )
+
  }
