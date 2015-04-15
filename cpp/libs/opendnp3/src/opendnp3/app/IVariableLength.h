@@ -40,7 +40,7 @@ public:
 	virtual bool Write(openpal::WriteBufferView& dest) const = 0;
 
 	// attempt to read the object from the input buffer
-	virtual bool Read(openpal::ReadBufferView& input) = 0;
+	virtual bool Read(const openpal::ReadBufferView& input) = 0;
 
 };
 

@@ -59,8 +59,8 @@ class AuthVariableSize( g: ObjectGroup,
                         val lengthFields: List[VariableField],
                         val remainder: Option[VariableField]) extends BasicGroupVariation(g,v,description)  {
 
-  override def headerIncludes = super.headerIncludes ++ GroupVariationIncludes.headerReadWrite ++ GroupVariationIncludes.variableLength ++ FixedSizeHelpers.fieldHeaders(fixedFields)
-  override def implIncludes = super.implIncludes ++ GroupVariationIncludes.implReadWrite
+  override def headerIncludes = super.headerIncludes ++ GroupVariationIncludes.headerReadWrite ++ GroupVariationIncludes.headerVariableLength ++ FixedSizeHelpers.fieldHeaders(fixedFields)
+  override def implIncludes = super.implIncludes ++ GroupVariationIncludes.implVariableLength ++ GroupVariationIncludes.implReadWrite
 
   override def declaration(implicit i : Indentation) : Iterator[String] = struct(name, Some("IVariableLength"))(headerLines)
 

@@ -16,7 +16,7 @@ case object SInt16Field extends FixedSizeFieldType(2)
 case object SInt32Field extends FixedSizeFieldType(4)
 case object Float32Field extends FixedSizeFieldType(4)
 case object Float64Field extends FixedSizeFieldType(8)
-case class EnumField(model: EnumModel) extends FixedSizeFieldType(1) {
+case class EnumFieldType(model: EnumModel) extends FixedSizeFieldType(1) {
   override def defaultValue: String = "%s::%s".format(model.name, model.default.displayName)
 }
 
@@ -31,11 +31,11 @@ object FixedSizeField {
   val ksq = FixedSizeField("keyChangeSeqNum", UInt32Field)
   val user = FixedSizeField("userNum", UInt16Field)
   val assocId = FixedSizeField("assocId", UInt16Field)
-  val macAlgo = FixedSizeField("macAlgo", EnumField(HMACType()))
-  val keyWrapAlgo = FixedSizeField("keyWrapAlgo", EnumField(KeyWrapAlgorithm()))
-  val keyStatus = FixedSizeField("keyStatus", EnumField(KeyStatus()))
-  val challengeReason = FixedSizeField("challengeReason", EnumField(ChallengeReason()))
-  val errorCode = FixedSizeField("errorCode", EnumField(AuthErrorCode()))
+  val macAlgo = FixedSizeField("macAlgo", EnumFieldType(HMACType()))
+  val keyWrapAlgo = FixedSizeField("keyWrapAlgo", EnumFieldType(KeyWrapAlgorithm()))
+  val keyStatus = FixedSizeField("keyStatus", EnumFieldType(KeyStatus()))
+  val challengeReason = FixedSizeField("challengeReason", EnumFieldType(ChallengeReason()))
+  val errorCode = FixedSizeField("errorCode", EnumFieldType(AuthErrorCode()))
 
 
   // timestamps
@@ -54,7 +54,7 @@ object FixedSizeField {
 
   //enums
   val commandStatus = FixedSizeField("status", UInt8Field)
-  val intervalUnit = FixedSizeField("intervalUnit", EnumField(IntervalUnit()))
+  val intervalUnit = FixedSizeField("intervalUnit", EnumFieldType(IntervalUnit()))
 
 }
 

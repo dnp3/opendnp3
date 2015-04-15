@@ -40,7 +40,7 @@ struct Group120Var1 : public IVariableLength
   static GroupVariationID ID() { return GroupVariationID(120,1); }
   Group120Var1();
   virtual uint32_t Size() const override final;
-  virtual bool Read(openpal::ReadBufferView&) override final;
+  virtual bool Read(const openpal::ReadBufferView&) override final;
   virtual bool Write(openpal::WriteBufferView&) const override final;
 
   static const uint32_t MIN_SIZE = 8;
@@ -59,7 +59,7 @@ struct Group120Var2 : public IVariableLength
   static GroupVariationID ID() { return GroupVariationID(120,2); }
   Group120Var2();
   virtual uint32_t Size() const override final;
-  virtual bool Read(openpal::ReadBufferView&) override final;
+  virtual bool Read(const openpal::ReadBufferView&) override final;
   virtual bool Write(openpal::WriteBufferView&) const override final;
 
   static const uint32_t MIN_SIZE = 6;
@@ -99,7 +99,7 @@ struct Group120Var5 : public IVariableLength
   static GroupVariationID ID() { return GroupVariationID(120,5); }
   Group120Var5();
   virtual uint32_t Size() const override final;
-  virtual bool Read(openpal::ReadBufferView&) override final;
+  virtual bool Read(const openpal::ReadBufferView&) override final;
   virtual bool Write(openpal::WriteBufferView&) const override final;
 
   static const uint32_t MIN_SIZE = 11;
@@ -120,7 +120,7 @@ struct Group120Var6 : public IVariableLength
   static GroupVariationID ID() { return GroupVariationID(120,6); }
   Group120Var6();
   virtual uint32_t Size() const override final;
-  virtual bool Read(openpal::ReadBufferView&) override final;
+  virtual bool Read(const openpal::ReadBufferView&) override final;
   virtual bool Write(openpal::WriteBufferView&) const override final;
 
   static const uint32_t MIN_SIZE = 6;
@@ -137,7 +137,7 @@ struct Group120Var7 : public IVariableLength
   static GroupVariationID ID() { return GroupVariationID(120,7); }
   Group120Var7();
   virtual uint32_t Size() const override final;
-  virtual bool Read(openpal::ReadBufferView&) override final;
+  virtual bool Read(const openpal::ReadBufferView&) override final;
   virtual bool Write(openpal::WriteBufferView&) const override final;
 
   static const uint32_t MIN_SIZE = 15;
@@ -163,7 +163,7 @@ struct Group120Var9 : public IVariableLength
   static GroupVariationID ID() { return GroupVariationID(120,9); }
   Group120Var9();
   virtual uint32_t Size() const override final;
-  virtual bool Read(openpal::ReadBufferView&) override final;
+  virtual bool Read(const openpal::ReadBufferView&) override final;
   virtual bool Write(openpal::WriteBufferView&) const override final;
 
   static const uint32_t MIN_SIZE = 0;

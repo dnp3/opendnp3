@@ -20,6 +20,7 @@
 
 #include "Group120.h"
 
+#include <openpal/serialization/Serialization.h>
 #include <openpal/serialization/Format.h>
 #include <openpal/serialization/Parse.h>
 
@@ -38,6 +39,26 @@ uint32_t Group120Var1::Size() const
   return MIN_SIZE + challengeData.Size();
 }
 
+bool Group120Var1::Read(const ReadBufferView& buffer)
+{
+  return false;
+}
+
+bool Group120Var1::Write(openpal::WriteBufferView& buffer) const
+{
+  if(buffer.Size() < this->Size())
+  {
+    return false;
+  }
+
+  openpal::UInt32::WriteBuffer(buffer, this->challengeSeqNum);
+  openpal::UInt16::WriteBuffer(buffer, this->userNum);
+  openpal::UInt8::WriteBuffer(buffer, HMACTypeToType(this->macAlgo));
+  openpal::UInt8::WriteBuffer(buffer, ChallengeReasonToType(this->challengeReason));
+  challengeData.CopyTo(buffer);
+  return true;
+}
+
 // ------- Group120Var2 -------
 
 Group120Var2::Group120Var2() : 
@@ -47,6 +68,24 @@ Group120Var2::Group120Var2() :
 uint32_t Group120Var2::Size() const
 {
   return MIN_SIZE + hmac.Size();
+}
+
+bool Group120Var2::Read(const ReadBufferView& buffer)
+{
+  return false;
+}
+
+bool Group120Var2::Write(openpal::WriteBufferView& buffer) const
+{
+  if(buffer.Size() < this->Size())
+  {
+    return false;
+  }
+
+  openpal::UInt32::WriteBuffer(buffer, this->challengeSeqNum);
+  openpal::UInt16::WriteBuffer(buffer, this->userNum);
+  hmac.CopyTo(buffer);
+  return true;
 }
 
 // ------- Group120Var3 -------
@@ -84,6 +123,28 @@ uint32_t Group120Var5::Size() const
   return MIN_SIZE + challengeData.Size() + hmac.Size();
 }
 
+bool Group120Var5::Read(const ReadBufferView& buffer)
+{
+  return false;
+}
+
+bool Group120Var5::Write(openpal::WriteBufferView& buffer) const
+{
+  if(buffer.Size() < this->Size())
+  {
+    return false;
+  }
+
+  openpal::UInt32::WriteBuffer(buffer, this->keyChangeSeqNum);
+  openpal::UInt16::WriteBuffer(buffer, this->userNum);
+  openpal::UInt8::WriteBuffer(buffer, KeyWrapAlgorithmToType(this->keyWrapAlgo));
+  openpal::UInt8::WriteBuffer(buffer, KeyStatusToType(this->keyStatus));
+  openpal::UInt8::WriteBuffer(buffer, HMACTypeToType(this->macAlgo));
+  challengeData.CopyTo(buffer);
+  hmac.CopyTo(buffer);
+  return true;
+}
+
 // ------- Group120Var6 -------
 
 Group120Var6::Group120Var6() : 
@@ -93,6 +154,24 @@ Group120Var6::Group120Var6() :
 uint32_t Group120Var6::Size() const
 {
   return MIN_SIZE + keyWrapData.Size();
+}
+
+bool Group120Var6::Read(const ReadBufferView& buffer)
+{
+  return false;
+}
+
+bool Group120Var6::Write(openpal::WriteBufferView& buffer) const
+{
+  if(buffer.Size() < this->Size())
+  {
+    return false;
+  }
+
+  openpal::UInt32::WriteBuffer(buffer, this->keyChangeSeqNum);
+  openpal::UInt16::WriteBuffer(buffer, this->userNum);
+  keyWrapData.CopyTo(buffer);
+  return true;
 }
 
 // ------- Group120Var7 -------
@@ -106,6 +185,27 @@ uint32_t Group120Var7::Size() const
   return MIN_SIZE + errorText.Size();
 }
 
+bool Group120Var7::Read(const ReadBufferView& buffer)
+{
+  return false;
+}
+
+bool Group120Var7::Write(openpal::WriteBufferView& buffer) const
+{
+  if(buffer.Size() < this->Size())
+  {
+    return false;
+  }
+
+  openpal::UInt32::WriteBuffer(buffer, this->challengeSeqNum);
+  openpal::UInt16::WriteBuffer(buffer, this->userNum);
+  openpal::UInt16::WriteBuffer(buffer, this->assocId);
+  openpal::UInt8::WriteBuffer(buffer, AuthErrorCodeToType(this->errorCode));
+  openpal::UInt48::WriteBuffer(buffer, this->time);
+  errorText.CopyTo(buffer);
+  return true;
+}
+
 // ------- Group120Var9 -------
 
 Group120Var9::Group120Var9()
@@ -114,6 +214,22 @@ Group120Var9::Group120Var9()
 uint32_t Group120Var9::Size() const
 {
   return MIN_SIZE + hmac.Size();
+}
+
+bool Group120Var9::Read(const ReadBufferView& buffer)
+{
+  return false;
+}
+
+bool Group120Var9::Write(openpal::WriteBufferView& buffer) const
+{
+  if(buffer.Size() < this->Size())
+  {
+    return false;
+  }
+
+  hmac.CopyTo(buffer);
+  return true;
 }
 
 

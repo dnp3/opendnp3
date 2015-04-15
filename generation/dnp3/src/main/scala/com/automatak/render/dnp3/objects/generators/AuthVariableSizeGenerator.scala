@@ -22,7 +22,7 @@ object AuthVariableSizeGenerator {
 
     def sizeSignature: Iterator[String] = Iterator("virtual uint32_t Size() const override final;")
 
-    def readSignature: Iterator[String] = Iterator("virtual bool Read(openpal::ReadBufferView&) override final;")
+    def readSignature: Iterator[String] = Iterator("virtual bool Read(const openpal::ReadBufferView&) override final;")
 
     def writeSignature: Iterator[String] = Iterator("virtual bool Write(openpal::WriteBufferView&) const override final;")
 
@@ -48,30 +48,67 @@ object AuthVariableSizeGenerator {
       else Iterator("%s::%s() : ".format(x.name, x.name)) ++ initializers ++ Iterator("{}")
     }
 
-    def readSignature: Iterator[String] = Iterator("bool %s::Read(ReadBufferView& buffer, %s& output)".format(x.name, x.name))
+    def readSignature: Iterator[String] = Iterator("bool %s::Read(const ReadBufferView& buffer)".format(x.name))
 
-    def writeSignature: Iterator[String] = Iterator("bool %s::Write(const %s& arg, openpal::WriteBufferView& buffer)".format(x.name, x.name))
+    def writeSignature: Iterator[String] = Iterator("bool %s::Write(openpal::WriteBufferView& buffer) const".format(x.name))
 
     def fieldParams(name: String) : String = {
       x.fixedFields.map(f => f.name).map(s => "%s.%s".format(name,s)).mkString(", ")
     }
 
-    def variableFieldSizes: String = (x.lengthFields ::: x.remainder.toList).map(f => "%s.Size()".format(f.name)).mkString(" + ")
+    def variableFields: List[VariableField] = x.lengthFields ::: x.remainder.toList
+
+    def variableFieldSizeSumation: String = variableFields.map(f => "%s.Size()".format(f.name)).mkString(" + ")
 
     def sizeFunction: Iterator[String] = Iterator("uint32_t %s::Size() const".format(x.name)) ++ bracket {
-      Iterator("return MIN_SIZE + %s;".format(variableFieldSizes))
+      Iterator("return MIN_SIZE + %s;".format(variableFieldSizeSumation))
     }
 
     def readFunction: Iterator[String] = readSignature ++ bracket {
-      Iterator("return Parse::Many(buffer, %s);".format(fieldParams("output")))
+      Iterator("return false;")
     }
 
-    def writeFunction: Iterator[String] = writeSignature ++ bracket {
-      Iterator("return Format::Many(buffer, %s);".format(fieldParams("arg")))
+    def writeFunction: Iterator[String] = {
+
+      def sizeBailout = Iterator("if(buffer.Size() < this->Size())") ++ bracket(Iterator("return false;"))
+
+      def fixedWrites : Iterator[String] = {
+
+        def toNumericWriteOp(fs: FixedSizeField) : String = {
+          "openpal::%s::WriteBuffer(buffer, this->%s);".format(FixedSizeHelpers.getCppFieldTypeParser(fs.typ), fs.name)
+        }
+
+        def toEnumWriteOp(fs: FixedSizeField, e: EnumFieldType) : String = {
+          "openpal::UInt8::WriteBuffer(buffer, %sToType(this->%s));".format(e.model.name, fs.name)
+        }
+
+
+        def toWriteOp(fs: FixedSizeField) : String = fs.typ match {
+          case x : EnumFieldType => toEnumWriteOp(fs, x)
+          case _ => toNumericWriteOp(fs)
+        }
+
+        x.fixedFields.map(toWriteOp).iterator
+      }
+
+      def variableWrites: Iterator[String] = variableFields.map(f => "%s.CopyTo(buffer);".format(f.name)).toIterator
+
+
+      writeSignature ++ bracket {
+          sizeBailout ++
+          space ++
+          fixedWrites ++
+          variableWrites ++ // TODO - need to write length fields and enforce UInt16 lengths
+          Iterator("return true;")
+      }
     }
 
     defaultConstructor ++
     space ++
-    sizeFunction
+    sizeFunction ++
+    space ++
+    readFunction ++
+    space ++
+    writeFunction
   }
 }

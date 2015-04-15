@@ -15,7 +15,7 @@ object FixedSizeHelpers {
     case SInt32Field => "int32_t"
     case Float32Field => "float"
     case Float64Field => "double"
-    case EnumField(model: EnumModel) => model.name
+    case EnumFieldType(model: EnumModel) => model.name
   }
 
   def getCppFieldTypeParser(x: FixedSizeFieldType): String = x match {
@@ -27,13 +27,13 @@ object FixedSizeHelpers {
     case SInt32Field => "Int32"
     case Float32Field => "SingleFloat"
     case Float64Field => "DoubleFloat"
-    case EnumField(model: EnumModel) => model.name
+    case EnumFieldType(model: EnumModel) => model.name
   }
 
   // Any special headers required for fixed-size fields
   def fieldHeaders(fields: List[FixedSizeField]): List[String] = fields.map { f =>
      f.typ match {
-       case ef : EnumField => List(quoted("opendnp3/gen/%s.h".format(ef.model.name)))
+       case ef : EnumFieldType => List(quoted("opendnp3/gen/%s.h".format(ef.model.name)))
        case _ => Nil
      }
   }.flatten
