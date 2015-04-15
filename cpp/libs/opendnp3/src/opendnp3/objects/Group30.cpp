@@ -29,6 +29,8 @@ using namespace openpal;
 
 namespace opendnp3 {
 
+// ------- Group30Var1 -------
+
 bool Group30Var1::Read(ReadBufferView& buffer, Group30Var1& output)
 {
   return Parse::Many(buffer, output.flags, output.value);
@@ -57,6 +59,8 @@ bool Group30Var1::WriteTarget(const Analog& value, openpal::WriteBufferView& buf
 {
   return Group30Var1::Write(ConvertGroup30Var1::Apply(value), buff);
 }
+
+// ------- Group30Var2 -------
 
 bool Group30Var2::Read(ReadBufferView& buffer, Group30Var2& output)
 {
@@ -87,6 +91,8 @@ bool Group30Var2::WriteTarget(const Analog& value, openpal::WriteBufferView& buf
   return Group30Var2::Write(ConvertGroup30Var2::Apply(value), buff);
 }
 
+// ------- Group30Var3 -------
+
 bool Group30Var3::Read(ReadBufferView& buffer, Group30Var3& output)
 {
   return Parse::Many(buffer, output.value);
@@ -115,6 +121,8 @@ bool Group30Var3::WriteTarget(const Analog& value, openpal::WriteBufferView& buf
 {
   return Group30Var3::Write(ConvertGroup30Var3::Apply(value), buff);
 }
+
+// ------- Group30Var4 -------
 
 bool Group30Var4::Read(ReadBufferView& buffer, Group30Var4& output)
 {
@@ -145,6 +153,8 @@ bool Group30Var4::WriteTarget(const Analog& value, openpal::WriteBufferView& buf
   return Group30Var4::Write(ConvertGroup30Var4::Apply(value), buff);
 }
 
+// ------- Group30Var5 -------
+
 bool Group30Var5::Read(ReadBufferView& buffer, Group30Var5& output)
 {
   return Parse::Many(buffer, output.flags, output.value);
@@ -173,6 +183,8 @@ bool Group30Var5::WriteTarget(const Analog& value, openpal::WriteBufferView& buf
 {
   return Group30Var5::Write(ConvertGroup30Var5::Apply(value), buff);
 }
+
+// ------- Group30Var6 -------
 
 bool Group30Var6::Read(ReadBufferView& buffer, Group30Var6& output)
 {

@@ -29,6 +29,8 @@ using namespace openpal;
 
 namespace opendnp3 {
 
+// ------- Group13Var1 -------
+
 bool Group13Var1::Read(ReadBufferView& buffer, Group13Var1& output)
 {
   return Parse::Many(buffer, output.flags);
@@ -57,6 +59,8 @@ bool Group13Var1::WriteTarget(const BinaryCommandEvent& value, openpal::WriteBuf
 {
   return Group13Var1::Write(ConvertGroup13Var1::Apply(value), buff);
 }
+
+// ------- Group13Var2 -------
 
 bool Group13Var2::Read(ReadBufferView& buffer, Group13Var2& output)
 {

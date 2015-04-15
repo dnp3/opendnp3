@@ -65,7 +65,7 @@ class AuthVariableSize( g: ObjectGroup,
   override def declaration(implicit i : Indentation) : Iterator[String] = struct(name, Some("IVariableLength"))(headerLines)
 
   override def headerLines(implicit i : Indentation) : Iterator[String] = super.headerLines ++ AuthVariableSizeGenerator.header(this)
-  override def implLines(implicit i : Indentation) : Iterator[String] = super.implLines ++ AuthVariableSizeGenerator.implementation(this)
+  override def implLines(implicit i : Indentation) : Iterator[String] = super.implLines ++ GroupVariationLines.implComments(this) ++ AuthVariableSizeGenerator.implementation(this)
 
   /// The total minimum size for the aggregate object
   def minimumSize : Int = {
@@ -84,7 +84,7 @@ class FixedSize(g: ObjectGroup, v: Byte, description: String)(fs: FixedSizeField
   override def implIncludes = super.implIncludes ++ GroupVariationIncludes.implReadWrite
 
   override def headerLines(implicit i : Indentation) : Iterator[String] = super.headerLines ++ FixedSizeGenerator.header(this)
-  override def implLines(implicit i : Indentation) : Iterator[String] = super.implLines ++ FixedSizeGenerator.implementation(this)
+  override def implLines(implicit i : Indentation) : Iterator[String] = super.implLines ++ GroupVariationLines.implComments(this) ++ FixedSizeGenerator.implementation(this)
 
   def fields : List[FixedSizeField] = fs.toList
   def size: Int = fs.map(x => x.typ.numBytes).sum

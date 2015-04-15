@@ -27,6 +27,22 @@ using namespace openpal;
 
 namespace opendnp3 {
 
+// ------- Group120Var1 -------
+
+uint32_t Group120Var1::Size() const
+{
+  return MIN_SIZE + challengeData.Size();
+}
+
+// ------- Group120Var2 -------
+
+uint32_t Group120Var2::Size() const
+{
+  return MIN_SIZE + hmac.Size();
+}
+
+// ------- Group120Var3 -------
+
 bool Group120Var3::Read(ReadBufferView& buffer, Group120Var3& output)
 {
   return Parse::Many(buffer, output.challengeSeqNum, output.userNum);
@@ -37,6 +53,8 @@ bool Group120Var3::Write(const Group120Var3& arg, openpal::WriteBufferView& buff
   return Format::Many(buffer, arg.challengeSeqNum, arg.userNum);
 }
 
+// ------- Group120Var4 -------
+
 bool Group120Var4::Read(ReadBufferView& buffer, Group120Var4& output)
 {
   return Parse::Many(buffer, output.userNum);
@@ -45,6 +63,34 @@ bool Group120Var4::Read(ReadBufferView& buffer, Group120Var4& output)
 bool Group120Var4::Write(const Group120Var4& arg, openpal::WriteBufferView& buffer)
 {
   return Format::Many(buffer, arg.userNum);
+}
+
+// ------- Group120Var5 -------
+
+uint32_t Group120Var5::Size() const
+{
+  return MIN_SIZE + challengeData.Size() + hmac.Size();
+}
+
+// ------- Group120Var6 -------
+
+uint32_t Group120Var6::Size() const
+{
+  return MIN_SIZE + keyWrapData.Size();
+}
+
+// ------- Group120Var7 -------
+
+uint32_t Group120Var7::Size() const
+{
+  return MIN_SIZE + errorText.Size();
+}
+
+// ------- Group120Var9 -------
+
+uint32_t Group120Var9::Size() const
+{
+  return MIN_SIZE + hmac.Size();
 }
 
 

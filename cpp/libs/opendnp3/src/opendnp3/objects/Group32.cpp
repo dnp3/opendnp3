@@ -29,6 +29,8 @@ using namespace openpal;
 
 namespace opendnp3 {
 
+// ------- Group32Var1 -------
+
 bool Group32Var1::Read(ReadBufferView& buffer, Group32Var1& output)
 {
   return Parse::Many(buffer, output.flags, output.value);
@@ -57,6 +59,8 @@ bool Group32Var1::WriteTarget(const Analog& value, openpal::WriteBufferView& buf
 {
   return Group32Var1::Write(ConvertGroup32Var1::Apply(value), buff);
 }
+
+// ------- Group32Var2 -------
 
 bool Group32Var2::Read(ReadBufferView& buffer, Group32Var2& output)
 {
@@ -87,6 +91,8 @@ bool Group32Var2::WriteTarget(const Analog& value, openpal::WriteBufferView& buf
   return Group32Var2::Write(ConvertGroup32Var2::Apply(value), buff);
 }
 
+// ------- Group32Var3 -------
+
 bool Group32Var3::Read(ReadBufferView& buffer, Group32Var3& output)
 {
   return Parse::Many(buffer, output.flags, output.value, output.time);
@@ -115,6 +121,8 @@ bool Group32Var3::WriteTarget(const Analog& value, openpal::WriteBufferView& buf
 {
   return Group32Var3::Write(ConvertGroup32Var3::Apply(value), buff);
 }
+
+// ------- Group32Var4 -------
 
 bool Group32Var4::Read(ReadBufferView& buffer, Group32Var4& output)
 {
@@ -145,6 +153,8 @@ bool Group32Var4::WriteTarget(const Analog& value, openpal::WriteBufferView& buf
   return Group32Var4::Write(ConvertGroup32Var4::Apply(value), buff);
 }
 
+// ------- Group32Var5 -------
+
 bool Group32Var5::Read(ReadBufferView& buffer, Group32Var5& output)
 {
   return Parse::Many(buffer, output.flags, output.value);
@@ -173,6 +183,8 @@ bool Group32Var5::WriteTarget(const Analog& value, openpal::WriteBufferView& buf
 {
   return Group32Var5::Write(ConvertGroup32Var5::Apply(value), buff);
 }
+
+// ------- Group32Var6 -------
 
 bool Group32Var6::Read(ReadBufferView& buffer, Group32Var6& output)
 {
@@ -203,6 +215,8 @@ bool Group32Var6::WriteTarget(const Analog& value, openpal::WriteBufferView& buf
   return Group32Var6::Write(ConvertGroup32Var6::Apply(value), buff);
 }
 
+// ------- Group32Var7 -------
+
 bool Group32Var7::Read(ReadBufferView& buffer, Group32Var7& output)
 {
   return Parse::Many(buffer, output.flags, output.value, output.time);
@@ -231,6 +245,8 @@ bool Group32Var7::WriteTarget(const Analog& value, openpal::WriteBufferView& buf
 {
   return Group32Var7::Write(ConvertGroup32Var7::Apply(value), buff);
 }
+
+// ------- Group32Var8 -------
 
 bool Group32Var8::Read(ReadBufferView& buffer, Group32Var8& output)
 {

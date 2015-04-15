@@ -29,6 +29,8 @@ using namespace openpal;
 
 namespace opendnp3 {
 
+// ------- Group42Var1 -------
+
 bool Group42Var1::Read(ReadBufferView& buffer, Group42Var1& output)
 {
   return Parse::Many(buffer, output.flags, output.value);
@@ -57,6 +59,8 @@ bool Group42Var1::WriteTarget(const AnalogOutputStatus& value, openpal::WriteBuf
 {
   return Group42Var1::Write(ConvertGroup42Var1::Apply(value), buff);
 }
+
+// ------- Group42Var2 -------
 
 bool Group42Var2::Read(ReadBufferView& buffer, Group42Var2& output)
 {
@@ -87,6 +91,8 @@ bool Group42Var2::WriteTarget(const AnalogOutputStatus& value, openpal::WriteBuf
   return Group42Var2::Write(ConvertGroup42Var2::Apply(value), buff);
 }
 
+// ------- Group42Var3 -------
+
 bool Group42Var3::Read(ReadBufferView& buffer, Group42Var3& output)
 {
   return Parse::Many(buffer, output.flags, output.value, output.time);
@@ -115,6 +121,8 @@ bool Group42Var3::WriteTarget(const AnalogOutputStatus& value, openpal::WriteBuf
 {
   return Group42Var3::Write(ConvertGroup42Var3::Apply(value), buff);
 }
+
+// ------- Group42Var4 -------
 
 bool Group42Var4::Read(ReadBufferView& buffer, Group42Var4& output)
 {
@@ -145,6 +153,8 @@ bool Group42Var4::WriteTarget(const AnalogOutputStatus& value, openpal::WriteBuf
   return Group42Var4::Write(ConvertGroup42Var4::Apply(value), buff);
 }
 
+// ------- Group42Var5 -------
+
 bool Group42Var5::Read(ReadBufferView& buffer, Group42Var5& output)
 {
   return Parse::Many(buffer, output.flags, output.value);
@@ -173,6 +183,8 @@ bool Group42Var5::WriteTarget(const AnalogOutputStatus& value, openpal::WriteBuf
 {
   return Group42Var5::Write(ConvertGroup42Var5::Apply(value), buff);
 }
+
+// ------- Group42Var6 -------
 
 bool Group42Var6::Read(ReadBufferView& buffer, Group42Var6& output)
 {
@@ -203,6 +215,8 @@ bool Group42Var6::WriteTarget(const AnalogOutputStatus& value, openpal::WriteBuf
   return Group42Var6::Write(ConvertGroup42Var6::Apply(value), buff);
 }
 
+// ------- Group42Var7 -------
+
 bool Group42Var7::Read(ReadBufferView& buffer, Group42Var7& output)
 {
   return Parse::Many(buffer, output.flags, output.value, output.time);
@@ -231,6 +245,8 @@ bool Group42Var7::WriteTarget(const AnalogOutputStatus& value, openpal::WriteBuf
 {
   return Group42Var7::Write(ConvertGroup42Var7::Apply(value), buff);
 }
+
+// ------- Group42Var8 -------
 
 bool Group42Var8::Read(ReadBufferView& buffer, Group42Var8& output)
 {

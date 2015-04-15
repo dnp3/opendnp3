@@ -29,6 +29,8 @@ using namespace openpal;
 
 namespace opendnp3 {
 
+// ------- Group3Var2 -------
+
 bool Group3Var2::Read(ReadBufferView& buffer, Group3Var2& output)
 {
   return Parse::Many(buffer, output.flags);

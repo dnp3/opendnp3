@@ -65,11 +65,7 @@ object Group120Var7 extends AuthVariableSize(Group120, 7, "Error",
   Some(errorText)
 )
 
-object Group120Var8 extends AuthVariableSize(Group120, 8, "User Certificate",
-  List(keyChangeMethod, certificateType),
-  Nil,
-  Some(certificate)
-)
+object Group120Var8 extends DefaultVariableSize(Group120, 8, "User Certificate")
 
 
 object Group120Var9 extends AuthVariableSize(Group120, 9, "HMAC", Nil, Nil, Some(hmac))

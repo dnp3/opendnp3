@@ -48,6 +48,12 @@ object AuthVariableSizeGenerator {
       x.fixedFields.map(f => f.name).map(s => "%s.%s".format(name,s)).mkString(", ")
     }
 
+    def variableFieldSizes: String = (x.lengthFields ::: x.remainder.toList).map(f => "%s.Size()".format(f.name)).mkString(" + ")
+
+    def sizeFunction: Iterator[String] = Iterator("uint32_t %s::Size() const".format(x.name)) ++ bracket {
+      Iterator("return MIN_SIZE + %s;".format(variableFieldSizes))
+    }
+
     def readFunction: Iterator[String] = readSignature ++ bracket {
       Iterator("return Parse::Many(buffer, %s);".format(fieldParams("output")))
     }
@@ -56,7 +62,6 @@ object AuthVariableSizeGenerator {
       Iterator("return Format::Many(buffer, %s);".format(fieldParams("arg")))
     }
 
-    //readFunction ++ space ++ writeFunction
-    Iterator.empty
+    sizeFunction
   }
 }

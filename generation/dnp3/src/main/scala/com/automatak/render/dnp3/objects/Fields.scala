@@ -1,7 +1,7 @@
 package com.automatak.render.dnp3.objects
 
 import com.automatak.render.EnumModel
-import com.automatak.render.dnp3.enums.{HMACType, IntervalUnit, ControlCode, CommandStatus}
+import com.automatak.render.dnp3.enums._
 
 sealed trait FieldType
 class FixedSizeFieldType(val numBytes: Int) extends FieldType
@@ -28,12 +28,10 @@ object FixedSizeField {
   val user = FixedSizeField("userNum", UInt16Field)
   val assocId = FixedSizeField("assocId", UInt16Field)
   val macAlgo = FixedSizeField("macAlgo", EnumField(HMACType()))
-  val keyWrapAlgo = FixedSizeField("keyWrapAlgo", UInt8Field)
-  val keyStatus = FixedSizeField("keyStatus", UInt8Field)
-  val challengeReason = FixedSizeField("challengeReason", UInt8Field)
-  val errorCode = FixedSizeField("errorCode", UInt8Field)
-  val keyChangeMethod = FixedSizeField("keyChangeMethod", UInt8Field)
-  val certificateType = FixedSizeField("certificateType", UInt8Field)
+  val keyWrapAlgo = FixedSizeField("keyWrapAlgo", EnumField(KeyWrapAlgorithm()))
+  val keyStatus = FixedSizeField("keyStatus", EnumField(KeyStatus()))
+  val challengeReason = FixedSizeField("challengeReason", EnumField(ChallengeReason()))
+  val errorCode = FixedSizeField("errorCode", EnumField(AuthErrorCode()))
 
 
   // timestamps

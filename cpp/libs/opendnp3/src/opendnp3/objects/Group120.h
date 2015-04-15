@@ -27,6 +27,10 @@
 #include "opendnp3/Types.h"
 #include "opendnp3/app/IVariableLength.h"
 #include "opendnp3/gen/HMACType.h"
+#include "opendnp3/gen/ChallengeReason.h"
+#include "opendnp3/gen/KeyWrapAlgorithm.h"
+#include "opendnp3/gen/KeyStatus.h"
+#include "opendnp3/gen/AuthErrorCode.h"
 
 namespace opendnp3 {
 
@@ -45,7 +49,7 @@ struct Group120Var1 : public IVariableLength
   uint32_t challengeSeqNum;
   uint16_t userNum;
   HMACType macAlgo;
-  uint8_t challengeReason;
+  ChallengeReason challengeReason;
   openpal::ReadBufferView challengeData;
 };
 
@@ -103,8 +107,8 @@ struct Group120Var5 : public IVariableLength
   // member variables
   uint32_t keyChangeSeqNum;
   uint16_t userNum;
-  uint8_t keyWrapAlgo;
-  uint8_t keyStatus;
+  KeyWrapAlgorithm keyWrapAlgo;
+  KeyStatus keyStatus;
   HMACType macAlgo;
   openpal::ReadBufferView challengeData;
   openpal::ReadBufferView hmac;
@@ -142,26 +146,15 @@ struct Group120Var7 : public IVariableLength
   uint32_t challengeSeqNum;
   uint16_t userNum;
   uint16_t assocId;
-  uint8_t errorCode;
+  AuthErrorCode errorCode;
   DNPTime time;
   openpal::ReadBufferView errorText;
 };
 
 // Authentication - User Certificate
-struct Group120Var8 : public IVariableLength
+struct Group120Var8
 {
   static GroupVariationID ID() { return GroupVariationID(120,8); }
-  Group120Var8();
-  virtual uint32_t Size() const override final;
-  virtual bool Read(openpal::ReadBufferView&) override final;
-  virtual bool Write(openpal::WriteBufferView&) const override final;
-
-  static const uint32_t MIN_SIZE = 2;
-
-  // member variables
-  uint8_t keyChangeMethod;
-  uint8_t certificateType;
-  openpal::ReadBufferView certificate;
 };
 
 // Authentication - HMAC

@@ -29,6 +29,8 @@ using namespace openpal;
 
 namespace opendnp3 {
 
+// ------- Group50Var1 -------
+
 bool Group50Var1::Read(ReadBufferView& buffer, Group50Var1& output)
 {
   return Parse::Many(buffer, output.time);
@@ -38,6 +40,8 @@ bool Group50Var1::Write(const Group50Var1& arg, openpal::WriteBufferView& buffer
 {
   return Format::Many(buffer, arg.time);
 }
+
+// ------- Group50Var4 -------
 
 bool Group50Var4::Read(ReadBufferView& buffer, Group50Var4& output)
 {

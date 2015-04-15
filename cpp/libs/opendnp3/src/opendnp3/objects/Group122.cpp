@@ -27,6 +27,8 @@ using namespace openpal;
 
 namespace opendnp3 {
 
+// ------- Group122Var1 -------
+
 bool Group122Var1::Read(ReadBufferView& buffer, Group122Var1& output)
 {
   return Parse::Many(buffer, output.flags, output.assocId, output.value);
@@ -36,6 +38,8 @@ bool Group122Var1::Write(const Group122Var1& arg, openpal::WriteBufferView& buff
 {
   return Format::Many(buffer, arg.flags, arg.assocId, arg.value);
 }
+
+// ------- Group122Var2 -------
 
 bool Group122Var2::Read(ReadBufferView& buffer, Group122Var2& output)
 {
