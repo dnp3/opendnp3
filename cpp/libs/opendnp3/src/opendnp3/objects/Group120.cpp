@@ -29,12 +29,20 @@ namespace opendnp3 {
 
 // ------- Group120Var1 -------
 
+Group120Var1::Group120Var1() : 
+  challengeSeqNum(0), userNum(0), macAlgo(HMACType::UNKNOWN), challengeReason(ChallengeReason::UNKNOWN)
+{}
+
 uint32_t Group120Var1::Size() const
 {
   return MIN_SIZE + challengeData.Size();
 }
 
 // ------- Group120Var2 -------
+
+Group120Var2::Group120Var2() : 
+  challengeSeqNum(0), userNum(0)
+{}
 
 uint32_t Group120Var2::Size() const
 {
@@ -67,12 +75,20 @@ bool Group120Var4::Write(const Group120Var4& arg, openpal::WriteBufferView& buff
 
 // ------- Group120Var5 -------
 
+Group120Var5::Group120Var5() : 
+  keyChangeSeqNum(0), userNum(0), keyWrapAlgo(KeyWrapAlgorithm::UNDEFINED), keyStatus(KeyStatus::UNDEFINED), macAlgo(HMACType::UNKNOWN)
+{}
+
 uint32_t Group120Var5::Size() const
 {
   return MIN_SIZE + challengeData.Size() + hmac.Size();
 }
 
 // ------- Group120Var6 -------
+
+Group120Var6::Group120Var6() : 
+  keyChangeSeqNum(0), userNum(0)
+{}
 
 uint32_t Group120Var6::Size() const
 {
@@ -81,12 +97,19 @@ uint32_t Group120Var6::Size() const
 
 // ------- Group120Var7 -------
 
+Group120Var7::Group120Var7() : 
+  challengeSeqNum(0), userNum(0), assocId(0), errorCode(AuthErrorCode::UNKNOWN), time(0)
+{}
+
 uint32_t Group120Var7::Size() const
 {
   return MIN_SIZE + errorText.Size();
 }
 
 // ------- Group120Var9 -------
+
+Group120Var9::Group120Var9()
+{}
 
 uint32_t Group120Var9::Size() const
 {

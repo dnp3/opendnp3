@@ -38,7 +38,15 @@ object AuthVariableSizeGenerator {
 
   }
 
-  def implementation(x: AuthVariableSize)(implicit i: Indentation): Iterator[String] = {
+  def implementation(x: AuthVariableSize)(implicit indent: Indentation): Iterator[String] = {
+
+    def defaultConstructor: Iterator[String] = {
+
+      def initializers : Iterator[String] = indent(Iterator(x.fixedFields.map(f => "%s(%s)".format(f.name, f.typ.defaultValue)).mkString(", ")))
+
+      if(x.fixedFields.isEmpty) Iterator("%s::%s()".format(x.name, x.name),"{}")
+      else Iterator("%s::%s() : ".format(x.name, x.name)) ++ initializers ++ Iterator("{}")
+    }
 
     def readSignature: Iterator[String] = Iterator("bool %s::Read(ReadBufferView& buffer, %s& output)".format(x.name, x.name))
 
@@ -62,6 +70,8 @@ object AuthVariableSizeGenerator {
       Iterator("return Format::Many(buffer, %s);".format(fieldParams("arg")))
     }
 
+    defaultConstructor ++
+    space ++
     sizeFunction
   }
 }
