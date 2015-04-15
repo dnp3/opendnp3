@@ -28,6 +28,7 @@
 
 namespace opendnp3 {
 
+// Time and Date CTO - Absolute time, synchronized
 struct Group51Var1
 {
   static GroupVariationID ID() { return GroupVariationID(51,1); }
@@ -38,6 +39,7 @@ struct Group51Var1
   DNPTime time;
 };
 
+// Time and Date CTO - Absolute time, unsynchronized
 struct Group51Var2
 {
   static GroupVariationID ID() { return GroupVariationID(51,2); }

@@ -30,11 +30,13 @@
 
 namespace opendnp3 {
 
+// Binary Output Event - Any Variation
 struct Group11Var0
 {
   static GroupVariationID ID() { return GroupVariationID(11,0); }
 };
 
+// Binary Output Event - Output Status Without Time
 struct Group11Var1
 {
   static GroupVariationID ID() { return GroupVariationID(11,1); }
@@ -50,6 +52,7 @@ struct Group11Var1
   static DNP3Serializer<BinaryOutputStatus> Inst() { return DNP3Serializer<BinaryOutputStatus>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
+// Binary Output Event - Output Status With Time
 struct Group11Var2
 {
   static GroupVariationID ID() { return GroupVariationID(11,2); }

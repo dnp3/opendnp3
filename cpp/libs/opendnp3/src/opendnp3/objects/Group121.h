@@ -28,6 +28,7 @@
 
 namespace opendnp3 {
 
+// Security statistic - 32-bit With Flag
 struct Group121Var1
 {
   static GroupVariationID ID() { return GroupVariationID(121,1); }

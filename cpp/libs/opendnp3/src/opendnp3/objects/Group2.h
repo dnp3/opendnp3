@@ -30,11 +30,13 @@
 
 namespace opendnp3 {
 
+// Binary Input Event - Any Variation
 struct Group2Var0
 {
   static GroupVariationID ID() { return GroupVariationID(2,0); }
 };
 
+// Binary Input Event - Without Time
 struct Group2Var1
 {
   static GroupVariationID ID() { return GroupVariationID(2,1); }
@@ -50,6 +52,7 @@ struct Group2Var1
   static DNP3Serializer<Binary> Inst() { return DNP3Serializer<Binary>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
+// Binary Input Event - With Absolute Time
 struct Group2Var2
 {
   static GroupVariationID ID() { return GroupVariationID(2,2); }
@@ -66,6 +69,7 @@ struct Group2Var2
   static DNP3Serializer<Binary> Inst() { return DNP3Serializer<Binary>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
+// Binary Input Event - With Relative Time
 struct Group2Var3
 {
   static GroupVariationID ID() { return GroupVariationID(2,3); }

@@ -25,6 +25,7 @@
 
 namespace opendnp3 {
 
+// Octet String Event - Sized by variation
 struct Group111Var0
 {
   static GroupVariationID ID() { return GroupVariationID(111,0); }

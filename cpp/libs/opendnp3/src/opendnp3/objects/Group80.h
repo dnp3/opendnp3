@@ -25,6 +25,7 @@
 
 namespace opendnp3 {
 
+// Internal Indications - Packed Format
 struct Group80Var1
 {
   static GroupVariationID ID() { return GroupVariationID(80,1); }

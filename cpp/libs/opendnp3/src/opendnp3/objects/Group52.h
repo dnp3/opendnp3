@@ -28,6 +28,7 @@
 
 namespace opendnp3 {
 
+// Time Delay - Coarse
 struct Group52Var1
 {
   static GroupVariationID ID() { return GroupVariationID(52,1); }
@@ -38,6 +39,7 @@ struct Group52Var1
   uint16_t time;
 };
 
+// Time Delay - Fine
 struct Group52Var2
 {
   static GroupVariationID ID() { return GroupVariationID(52,2); }

@@ -30,11 +30,13 @@
 
 namespace opendnp3 {
 
+// Analog Input Event - Any Variation
 struct Group32Var0
 {
   static GroupVariationID ID() { return GroupVariationID(32,0); }
 };
 
+// Analog Input Event - 32-bit With Flag
 struct Group32Var1
 {
   static GroupVariationID ID() { return GroupVariationID(32,1); }
@@ -52,6 +54,7 @@ struct Group32Var1
   static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
+// Analog Input Event - 16-bit With Flag
 struct Group32Var2
 {
   static GroupVariationID ID() { return GroupVariationID(32,2); }
@@ -69,6 +72,7 @@ struct Group32Var2
   static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
+// Analog Input Event - 32-bit With Flag and Time
 struct Group32Var3
 {
   static GroupVariationID ID() { return GroupVariationID(32,3); }
@@ -87,6 +91,7 @@ struct Group32Var3
   static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
+// Analog Input Event - 16-bit With Flag and Time
 struct Group32Var4
 {
   static GroupVariationID ID() { return GroupVariationID(32,4); }
@@ -105,6 +110,7 @@ struct Group32Var4
   static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
+// Analog Input Event - Single-precision With Flag
 struct Group32Var5
 {
   static GroupVariationID ID() { return GroupVariationID(32,5); }
@@ -122,6 +128,7 @@ struct Group32Var5
   static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
+// Analog Input Event - Double-precision With Flag
 struct Group32Var6
 {
   static GroupVariationID ID() { return GroupVariationID(32,6); }
@@ -139,6 +146,7 @@ struct Group32Var6
   static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
+// Analog Input Event - Single-precision With Flag and Time
 struct Group32Var7
 {
   static GroupVariationID ID() { return GroupVariationID(32,7); }
@@ -157,6 +165,7 @@ struct Group32Var7
   static DNP3Serializer<Analog> Inst() { return DNP3Serializer<Analog>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
+// Analog Input Event - Double-precision With Flag and Time
 struct Group32Var8
 {
   static GroupVariationID ID() { return GroupVariationID(32,8); }

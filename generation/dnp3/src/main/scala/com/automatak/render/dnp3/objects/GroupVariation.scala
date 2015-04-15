@@ -1,7 +1,7 @@
 package com.automatak.render.dnp3.objects
 
 import com.automatak.render.Indentation
-import com.automatak.render.dnp3.objects.generators.{GroupVariationIncludes, FixedSizeGenerator, GroupVariationLines}
+import com.automatak.render.dnp3.objects.generators._
 
 object GroupVariation {
   case class Id(group: Byte, variation: Byte)
@@ -51,20 +51,19 @@ sealed abstract class BasicGroupVariation(g: ObjectGroup, v: Byte, description: 
 
 class AuthVariableSize(g: ObjectGroup, v: Byte, description: String, val fixedFields: List[FixedSizeField], val lengthFields: List[VariableField], val remainder: Option[VariableField]) extends BasicGroupVariation(g,v,description)
 {
-  override def headerIncludes = super.headerIncludes ++ GroupVariationIncludes.headerReadWrite
+  override def headerIncludes = super.headerIncludes ++ GroupVariationIncludes.headerReadWrite ++ FixedSizeHelpers.fieldHeaders(fixedFields)
   override def implIncludes = super.implIncludes ++ GroupVariationIncludes.implReadWrite
 
-  override def headerLines(implicit i : Indentation) : Iterator[String] = super.headerLines // TODO
-  override def implLines(implicit i : Indentation) : Iterator[String] = super.implLines // TODO
+  override def headerLines(implicit i : Indentation) : Iterator[String] = super.headerLines ++ AuthVariableSizeGenerator.header(this)
+  override def implLines(implicit i : Indentation) : Iterator[String] = super.implLines ++ AuthVariableSizeGenerator.implementation(this)
 
   /// The total minimum size for the aggregate object
   def minimumSize : Int = {
 
     def fixedSize = fixedFields.map(x => x.typ.numBytes).sum
-    def variableSize = lengthFields.map(x => x.minLength.getOrElse(0)).sum
-    def remainderSize = remainder.map(r => r.minLength.getOrElse(0)).getOrElse(0)
+    def variableSize = 2*lengthFields.length
 
-    fixedSize + variableSize + remainderSize
+    fixedSize + variableSize
   }
 
 }

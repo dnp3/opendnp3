@@ -30,11 +30,13 @@
 
 namespace opendnp3 {
 
+// Binary Command - Any Variation
 struct Group12Var0
 {
   static GroupVariationID ID() { return GroupVariationID(12,0); }
 };
 
+// Binary Command - CROB
 struct Group12Var1
 {
   static GroupVariationID ID() { return GroupVariationID(12,1); }

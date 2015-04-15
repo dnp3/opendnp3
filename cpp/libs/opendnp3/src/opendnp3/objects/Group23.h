@@ -30,11 +30,13 @@
 
 namespace opendnp3 {
 
+// Frozen Counter Event - Any Variation
 struct Group23Var0
 {
   static GroupVariationID ID() { return GroupVariationID(23,0); }
 };
 
+// Frozen Counter Event - 32-bit With Flag
 struct Group23Var1
 {
   static GroupVariationID ID() { return GroupVariationID(23,1); }
@@ -52,6 +54,7 @@ struct Group23Var1
   static DNP3Serializer<FrozenCounter> Inst() { return DNP3Serializer<FrozenCounter>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
+// Frozen Counter Event - 16-bit With Flag
 struct Group23Var2
 {
   static GroupVariationID ID() { return GroupVariationID(23,2); }
@@ -69,6 +72,7 @@ struct Group23Var2
   static DNP3Serializer<FrozenCounter> Inst() { return DNP3Serializer<FrozenCounter>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
+// Frozen Counter Event - 32-bit With Flag and Time
 struct Group23Var5
 {
   static GroupVariationID ID() { return GroupVariationID(23,5); }
@@ -87,6 +91,7 @@ struct Group23Var5
   static DNP3Serializer<FrozenCounter> Inst() { return DNP3Serializer<FrozenCounter>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
+// Frozen Counter Event - 16-bit With Flag and Time
 struct Group23Var6
 {
   static GroupVariationID ID() { return GroupVariationID(23,6); }

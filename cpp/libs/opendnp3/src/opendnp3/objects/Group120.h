@@ -25,19 +25,37 @@
 #include <openpal/container/ReadBufferView.h>
 #include <openpal/container/WriteBufferView.h>
 #include "opendnp3/Types.h"
+#include "opendnp3/gen/HMACType.h"
 
 namespace opendnp3 {
 
+// Authentication - Challenge
 struct Group120Var1
 {
   static GroupVariationID ID() { return GroupVariationID(120,1); }
+  static const uint32_t MIN_SIZE = 8;
+
+  // member variables
+  uint32_t challengeSeqNum;
+  uint16_t userNum;
+  HMACType macAlgo;
+  uint8_t challengeReason;
+  openpal::ReadBufferView challengeData;
 };
 
+// Authentication - Reply
 struct Group120Var2
 {
   static GroupVariationID ID() { return GroupVariationID(120,2); }
+  static const uint32_t MIN_SIZE = 6;
+
+  // member variables
+  uint32_t challengeSeqNum;
+  uint16_t userNum;
+  openpal::ReadBufferView hmac;
 };
 
+// Authentication - Aggressive Mode Request
 struct Group120Var3
 {
   static GroupVariationID ID() { return GroupVariationID(120,3); }
@@ -49,6 +67,7 @@ struct Group120Var3
   uint16_t userNum;
 };
 
+// Authentication - Session Key Status Request
 struct Group120Var4
 {
   static GroupVariationID ID() { return GroupVariationID(120,4); }
@@ -59,56 +78,102 @@ struct Group120Var4
   uint16_t userNum;
 };
 
+// Authentication - Session Key Status
 struct Group120Var5
 {
   static GroupVariationID ID() { return GroupVariationID(120,5); }
+  static const uint32_t MIN_SIZE = 11;
+
+  // member variables
+  uint32_t keyChangeSeqNum;
+  uint16_t userNum;
+  uint8_t keyWrapAlgo;
+  uint8_t keyStatus;
+  HMACType macAlgo;
+  openpal::ReadBufferView challengeData;
+  openpal::ReadBufferView hmac;
 };
 
+// Authentication - Session Key Change
 struct Group120Var6
 {
   static GroupVariationID ID() { return GroupVariationID(120,6); }
+  static const uint32_t MIN_SIZE = 6;
+
+  // member variables
+  uint32_t keyChangeSeqNum;
+  uint16_t userNum;
+  openpal::ReadBufferView keyWrapData;
 };
 
+// Authentication - Error
 struct Group120Var7
 {
   static GroupVariationID ID() { return GroupVariationID(120,7); }
+  static const uint32_t MIN_SIZE = 15;
+
+  // member variables
+  uint32_t challengeSeqNum;
+  uint16_t userNum;
+  uint16_t assocId;
+  uint8_t errorCode;
+  DNPTime time;
+  openpal::ReadBufferView errorText;
 };
 
+// Authentication - User Certificate
 struct Group120Var8
 {
   static GroupVariationID ID() { return GroupVariationID(120,8); }
+  static const uint32_t MIN_SIZE = 2;
+
+  // member variables
+  uint8_t keyChangeMethod;
+  uint8_t certificateType;
+  openpal::ReadBufferView certificate;
 };
 
+// Authentication - HMAC
 struct Group120Var9
 {
   static GroupVariationID ID() { return GroupVariationID(120,9); }
+  static const uint32_t MIN_SIZE = 0;
+
+  // member variables
+  openpal::ReadBufferView hmac;
 };
 
+// Authentication - User Status Change
 struct Group120Var10
 {
   static GroupVariationID ID() { return GroupVariationID(120,10); }
 };
 
+// Authentication - Update Key Change Request
 struct Group120Var11
 {
   static GroupVariationID ID() { return GroupVariationID(120,11); }
 };
 
+// Authentication - Update Key Change Reply
 struct Group120Var12
 {
   static GroupVariationID ID() { return GroupVariationID(120,12); }
 };
 
+// Authentication - Update Key Change
 struct Group120Var13
 {
   static GroupVariationID ID() { return GroupVariationID(120,13); }
 };
 
+// Authentication - Update Key Change Signature
 struct Group120Var14
 {
   static GroupVariationID ID() { return GroupVariationID(120,14); }
 };
 
+// Authentication - Update Key Change Confirmation
 struct Group120Var15
 {
   static GroupVariationID ID() { return GroupVariationID(120,15); }

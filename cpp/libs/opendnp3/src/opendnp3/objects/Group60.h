@@ -25,21 +25,25 @@
 
 namespace opendnp3 {
 
+// Class Data - Class 0
 struct Group60Var1
 {
   static GroupVariationID ID() { return GroupVariationID(60,1); }
 };
 
+// Class Data - Class 1
 struct Group60Var2
 {
   static GroupVariationID ID() { return GroupVariationID(60,2); }
 };
 
+// Class Data - Class 2
 struct Group60Var3
 {
   static GroupVariationID ID() { return GroupVariationID(60,3); }
 };
 
+// Class Data - Class 3
 struct Group60Var4
 {
   static GroupVariationID ID() { return GroupVariationID(60,4); }

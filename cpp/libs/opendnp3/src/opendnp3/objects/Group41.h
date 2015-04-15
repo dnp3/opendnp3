@@ -30,11 +30,13 @@
 
 namespace opendnp3 {
 
+// Analog Output - Any Variation
 struct Group41Var0
 {
   static GroupVariationID ID() { return GroupVariationID(41,0); }
 };
 
+// Analog Output - 32-bit With Flag
 struct Group41Var1
 {
   static GroupVariationID ID() { return GroupVariationID(41,1); }
@@ -52,6 +54,7 @@ struct Group41Var1
   static DNP3Serializer<AnalogOutputInt32> Inst() { return DNP3Serializer<AnalogOutputInt32>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
+// Analog Output - 16-bit With Flag
 struct Group41Var2
 {
   static GroupVariationID ID() { return GroupVariationID(41,2); }
@@ -69,6 +72,7 @@ struct Group41Var2
   static DNP3Serializer<AnalogOutputInt16> Inst() { return DNP3Serializer<AnalogOutputInt16>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
+// Analog Output - Single-precision
 struct Group41Var3
 {
   static GroupVariationID ID() { return GroupVariationID(41,3); }
@@ -86,6 +90,7 @@ struct Group41Var3
   static DNP3Serializer<AnalogOutputFloat32> Inst() { return DNP3Serializer<AnalogOutputFloat32>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
+// Analog Output - Double-precision
 struct Group41Var4
 {
   static GroupVariationID ID() { return GroupVariationID(41,4); }

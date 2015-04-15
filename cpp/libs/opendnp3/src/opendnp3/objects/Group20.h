@@ -30,11 +30,13 @@
 
 namespace opendnp3 {
 
+// Counter - Any Variation
 struct Group20Var0
 {
   static GroupVariationID ID() { return GroupVariationID(20,0); }
 };
 
+// Counter - 32-bit With Flag
 struct Group20Var1
 {
   static GroupVariationID ID() { return GroupVariationID(20,1); }
@@ -52,6 +54,7 @@ struct Group20Var1
   static DNP3Serializer<Counter> Inst() { return DNP3Serializer<Counter>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
+// Counter - 16-bit With Flag
 struct Group20Var2
 {
   static GroupVariationID ID() { return GroupVariationID(20,2); }
@@ -69,6 +72,7 @@ struct Group20Var2
   static DNP3Serializer<Counter> Inst() { return DNP3Serializer<Counter>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
+// Counter - 32-bit Without Flag
 struct Group20Var5
 {
   static GroupVariationID ID() { return GroupVariationID(20,5); }
@@ -85,6 +89,7 @@ struct Group20Var5
   static DNP3Serializer<Counter> Inst() { return DNP3Serializer<Counter>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
+// Counter - 16-bit Without Flag
 struct Group20Var6
 {
   static GroupVariationID ID() { return GroupVariationID(20,6); }

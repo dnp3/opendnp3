@@ -30,6 +30,7 @@
 
 namespace opendnp3 {
 
+// Binary Command Event - Without Time
 struct Group13Var1
 {
   static GroupVariationID ID() { return GroupVariationID(13,1); }
@@ -45,6 +46,7 @@ struct Group13Var1
   static DNP3Serializer<BinaryCommandEvent> Inst() { return DNP3Serializer<BinaryCommandEvent>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
+// Binary Command Event - With Time
 struct Group13Var2
 {
   static GroupVariationID ID() { return GroupVariationID(13,2); }

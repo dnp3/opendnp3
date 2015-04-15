@@ -60,6 +60,8 @@ package object cpp {
 
   }
 
+  def comment(comment: String)(implicit i: Indentation): Iterator[String] = Iterator("// %s".format(comment))
+
   def privateSection(inner: => Iterator[String]): Iterator[String] = Iterator("private:") ++ space ++ inner
 
   def classPublic(inner: => Iterator[String])(implicit i: Indentation): Iterator[String] = Iterator("public:","") ++ inner

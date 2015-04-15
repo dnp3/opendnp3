@@ -25,6 +25,7 @@
 
 namespace opendnp3 {
 
+// Virtual Terminal Event Data - Sized by variation
 struct Group113Var0
 {
   static GroupVariationID ID() { return GroupVariationID(113,0); }

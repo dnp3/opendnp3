@@ -28,6 +28,7 @@
 
 namespace opendnp3 {
 
+// Security Statistic event - 32-bit With Flag
 struct Group122Var1
 {
   static GroupVariationID ID() { return GroupVariationID(122,1); }
@@ -41,6 +42,7 @@ struct Group122Var1
   uint32_t value;
 };
 
+// Security Statistic event - 32-bit With Flag and Time
 struct Group122Var2
 {
   static GroupVariationID ID() { return GroupVariationID(122,2); }

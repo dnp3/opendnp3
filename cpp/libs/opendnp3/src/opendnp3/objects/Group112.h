@@ -25,6 +25,7 @@
 
 namespace opendnp3 {
 
+// Virtual Terminal Output Block - Sized by variation
 struct Group112Var0
 {
   static GroupVariationID ID() { return GroupVariationID(112,0); }

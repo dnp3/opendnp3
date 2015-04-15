@@ -30,11 +30,13 @@
 
 namespace opendnp3 {
 
+// Analog Output Status - Any Variation
 struct Group40Var0
 {
   static GroupVariationID ID() { return GroupVariationID(40,0); }
 };
 
+// Analog Output Status - 32-bit With Flag
 struct Group40Var1
 {
   static GroupVariationID ID() { return GroupVariationID(40,1); }
@@ -52,6 +54,7 @@ struct Group40Var1
   static DNP3Serializer<AnalogOutputStatus> Inst() { return DNP3Serializer<AnalogOutputStatus>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
+// Analog Output Status - 16-bit With Flag
 struct Group40Var2
 {
   static GroupVariationID ID() { return GroupVariationID(40,2); }
@@ -69,6 +72,7 @@ struct Group40Var2
   static DNP3Serializer<AnalogOutputStatus> Inst() { return DNP3Serializer<AnalogOutputStatus>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
+// Analog Output Status - Single-precision With Flag
 struct Group40Var3
 {
   static GroupVariationID ID() { return GroupVariationID(40,3); }
@@ -86,6 +90,7 @@ struct Group40Var3
   static DNP3Serializer<AnalogOutputStatus> Inst() { return DNP3Serializer<AnalogOutputStatus>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
+// Analog Output Status - Double-precision With Flag
 struct Group40Var4
 {
   static GroupVariationID ID() { return GroupVariationID(40,4); }

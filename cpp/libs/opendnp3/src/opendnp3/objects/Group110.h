@@ -25,6 +25,7 @@
 
 namespace opendnp3 {
 
+// Octet String - Sized by variation
 struct Group110Var0
 {
   static GroupVariationID ID() { return GroupVariationID(110,0); }

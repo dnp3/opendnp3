@@ -30,6 +30,7 @@
 
 namespace opendnp3 {
 
+// Analog Command Event - 32-bit
 struct Group43Var1
 {
   static GroupVariationID ID() { return GroupVariationID(43,1); }
@@ -47,6 +48,7 @@ struct Group43Var1
   static DNP3Serializer<AnalogCommandEvent> Inst() { return DNP3Serializer<AnalogCommandEvent>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
+// Analog Command Event - 16-bit
 struct Group43Var2
 {
   static GroupVariationID ID() { return GroupVariationID(43,2); }
@@ -64,6 +66,7 @@ struct Group43Var2
   static DNP3Serializer<AnalogCommandEvent> Inst() { return DNP3Serializer<AnalogCommandEvent>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
+// Analog Command Event - 32-bit With Time
 struct Group43Var3
 {
   static GroupVariationID ID() { return GroupVariationID(43,3); }
@@ -82,6 +85,7 @@ struct Group43Var3
   static DNP3Serializer<AnalogCommandEvent> Inst() { return DNP3Serializer<AnalogCommandEvent>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
+// Analog Command Event - 16-bit With Time
 struct Group43Var4
 {
   static GroupVariationID ID() { return GroupVariationID(43,4); }
@@ -100,6 +104,7 @@ struct Group43Var4
   static DNP3Serializer<AnalogCommandEvent> Inst() { return DNP3Serializer<AnalogCommandEvent>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
+// Analog Command Event - Single-precision
 struct Group43Var5
 {
   static GroupVariationID ID() { return GroupVariationID(43,5); }
@@ -117,6 +122,7 @@ struct Group43Var5
   static DNP3Serializer<AnalogCommandEvent> Inst() { return DNP3Serializer<AnalogCommandEvent>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
+// Analog Command Event - Double-precision
 struct Group43Var6
 {
   static GroupVariationID ID() { return GroupVariationID(43,6); }
@@ -134,6 +140,7 @@ struct Group43Var6
   static DNP3Serializer<AnalogCommandEvent> Inst() { return DNP3Serializer<AnalogCommandEvent>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
+// Analog Command Event - Single-precision With Time
 struct Group43Var7
 {
   static GroupVariationID ID() { return GroupVariationID(43,7); }
@@ -152,6 +159,7 @@ struct Group43Var7
   static DNP3Serializer<AnalogCommandEvent> Inst() { return DNP3Serializer<AnalogCommandEvent>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
+// Analog Command Event - Double-precision With Time
 struct Group43Var8
 {
   static GroupVariationID ID() { return GroupVariationID(43,8); }

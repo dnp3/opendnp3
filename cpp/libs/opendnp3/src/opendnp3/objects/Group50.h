@@ -30,6 +30,7 @@
 
 namespace opendnp3 {
 
+// Time and Date - Absolute Time
 struct Group50Var1
 {
   static GroupVariationID ID() { return GroupVariationID(50,1); }
@@ -40,6 +41,7 @@ struct Group50Var1
   DNPTime time;
 };
 
+// Time and Date - Indexed absolute time and long interval
 struct Group50Var4
 {
   static GroupVariationID ID() { return GroupVariationID(50,4); }

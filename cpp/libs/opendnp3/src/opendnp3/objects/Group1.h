@@ -30,16 +30,19 @@
 
 namespace opendnp3 {
 
+// Binary Input - Any Variation
 struct Group1Var0
 {
   static GroupVariationID ID() { return GroupVariationID(1,0); }
 };
 
+// Binary Input - Packed Format
 struct Group1Var1
 {
   static GroupVariationID ID() { return GroupVariationID(1,1); }
 };
 
+// Binary Input - With Flags
 struct Group1Var2
 {
   static GroupVariationID ID() { return GroupVariationID(1,2); }

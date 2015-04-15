@@ -30,11 +30,13 @@
 
 namespace opendnp3 {
 
+// Analog Output Event - Any Variation
 struct Group42Var0
 {
   static GroupVariationID ID() { return GroupVariationID(42,0); }
 };
 
+// Analog Output Event - 32-bit With Flag
 struct Group42Var1
 {
   static GroupVariationID ID() { return GroupVariationID(42,1); }
@@ -52,6 +54,7 @@ struct Group42Var1
   static DNP3Serializer<AnalogOutputStatus> Inst() { return DNP3Serializer<AnalogOutputStatus>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
+// Analog Output Event - 16-bit With Flag
 struct Group42Var2
 {
   static GroupVariationID ID() { return GroupVariationID(42,2); }
@@ -69,6 +72,7 @@ struct Group42Var2
   static DNP3Serializer<AnalogOutputStatus> Inst() { return DNP3Serializer<AnalogOutputStatus>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
+// Analog Output Event - 32-bit With Flag and Time
 struct Group42Var3
 {
   static GroupVariationID ID() { return GroupVariationID(42,3); }
@@ -87,6 +91,7 @@ struct Group42Var3
   static DNP3Serializer<AnalogOutputStatus> Inst() { return DNP3Serializer<AnalogOutputStatus>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
+// Analog Output Event - 16-bit With Flag and Time
 struct Group42Var4
 {
   static GroupVariationID ID() { return GroupVariationID(42,4); }
@@ -105,6 +110,7 @@ struct Group42Var4
   static DNP3Serializer<AnalogOutputStatus> Inst() { return DNP3Serializer<AnalogOutputStatus>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
+// Analog Output Event - Single-precision With Flag
 struct Group42Var5
 {
   static GroupVariationID ID() { return GroupVariationID(42,5); }
@@ -122,6 +128,7 @@ struct Group42Var5
   static DNP3Serializer<AnalogOutputStatus> Inst() { return DNP3Serializer<AnalogOutputStatus>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
+// Analog Output Event - Double-precision With Flag
 struct Group42Var6
 {
   static GroupVariationID ID() { return GroupVariationID(42,6); }
@@ -139,6 +146,7 @@ struct Group42Var6
   static DNP3Serializer<AnalogOutputStatus> Inst() { return DNP3Serializer<AnalogOutputStatus>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
+// Analog Output Event - Single-precision With Flag and Time
 struct Group42Var7
 {
   static GroupVariationID ID() { return GroupVariationID(42,7); }
@@ -157,6 +165,7 @@ struct Group42Var7
   static DNP3Serializer<AnalogOutputStatus> Inst() { return DNP3Serializer<AnalogOutputStatus>(ID(), Size(), &ReadTarget, &WriteTarget); }
 };
 
+// Analog Output Event - Double-precision With Flag and Time
 struct Group42Var8
 {
   static GroupVariationID ID() { return GroupVariationID(42,8); }
