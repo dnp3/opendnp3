@@ -181,6 +181,10 @@
     <ClInclude Include="src\opendnp3\objects\Group1.h" />
     <ClInclude Include="src\opendnp3\objects\Group10.h" />
     <ClInclude Include="src\opendnp3\objects\Group11.h" />
+    <ClInclude Include="src\opendnp3\objects\Group110.h" />
+    <ClInclude Include="src\opendnp3\objects\Group111.h" />
+    <ClInclude Include="src\opendnp3\objects\Group112.h" />
+    <ClInclude Include="src\opendnp3\objects\Group113.h" />
     <ClInclude Include="src\opendnp3\objects\Group12.h" />
     <ClInclude Include="src\opendnp3\objects\Group120Var9.h" />
     <ClInclude Include="src\opendnp3\objects\Group121.h" />
@@ -209,6 +213,8 @@
     <ClInclude Include="src\opendnp3\objects\Group51.h" />
     <ClInclude Include="src\opendnp3\objects\Group52.h" />
     <ClInclude Include="src\opendnp3\objects\Group60.h" />
+    <ClInclude Include="src\opendnp3\objects\Group70.h" />
+    <ClInclude Include="src\opendnp3\objects\Group80.h" />
     <ClInclude Include="src\opendnp3\objects\SeqUserData.h" />
     <ClInclude Include="src\opendnp3\outstation\ApplicationIIN.h" />
     <ClInclude Include="src\opendnp3\outstation\AssignClassHandler.h" />
