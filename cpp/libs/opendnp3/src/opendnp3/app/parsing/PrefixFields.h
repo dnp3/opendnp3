@@ -43,14 +43,14 @@ namespace opendnp3
 
 			uint16_t lengths[sizeof...(Args)];
 
-			for (int i = 0; i < sizeof...(Args); ++i)
+			for (size_t i = 0; i < sizeof...(Args); ++i)
 			{
 				lengths[i] = openpal::UInt16::ReadBuffer(input);
 			}
 
 			uint32_t sum = 0;
 
-			for (int i = 0; i < sizeof...(Args); ++i)
+			for (size_t i = 0; i < sizeof...(Args); ++i)
 			{
 				sum += lengths[i];
 			}
@@ -66,7 +66,44 @@ namespace opendnp3
 			return true;
 		}
 
+		template <typename... Args>
+		static bool Write(openpal::WriteBufferView& dest, const Args&... fields)
+		{
+			if (!IsUInt16(fields...))
+			{
+				return false;
+			}
+
+			const uint32_t TOTAL_SIZE = (sizeof...(Args)*openpal::UInt16::SIZE) + SumSizes(fields...);
+
+			if (dest.Size() < TOTAL_SIZE)
+			{				
+				return false;
+			}
+
+			WriteLengths(dest, fields...);
+			WriteFields(dest, fields...);
+
+			return true;
+		}
+		
 		private:
+
+		template <typename... Args>
+		static uint32_t SumSizes(const openpal::ReadBufferView& arg1, Args&... fields)
+		{
+			return arg1.Size() + SumSizes(fields...);
+		}
+
+		template <typename... Args>
+		static bool IsUInt16(const openpal::ReadBufferView& arg1, Args&... fields)
+		{
+			return (arg1.Size() <= openpal::MaxValue<uint16_t>()) && IsUInt16(fields...);
+		}
+
+		static bool IsUInt16() { return true; }		
+
+		static uint32_t SumSizes() { return 0; }
 		
 		template <typename... Args>
 		static void ReadFields(openpal::ReadBufferView& input, uint16_t* pLength, openpal::ReadBufferView& output, Args&... fields)
@@ -77,6 +114,24 @@ namespace opendnp3
 		}
 		
 		static void ReadFields(openpal::ReadBufferView& input, uint16_t* pLength) {}
+		
+		template <typename... Args>
+		static void WriteLengths(openpal::WriteBufferView& dest, const openpal::ReadBufferView& arg1, Args&... fields)
+		{
+			openpal::UInt16::WriteBuffer(dest, static_cast<uint16_t>(arg1.Size()));
+			WriteLengths(dest, fields...);
+		}
+
+		static void WriteLengths(openpal::WriteBufferView& dest) {}
+
+		template <typename... Args>
+		static void WriteFields(openpal::WriteBufferView& dest, const openpal::ReadBufferView& arg1, Args&... fields)
+		{
+			arg1.CopyTo(dest);
+			WriteFields(dest, fields...);
+		}
+
+		static void WriteFields(openpal::WriteBufferView& dest) {}
 		
 		
 	};

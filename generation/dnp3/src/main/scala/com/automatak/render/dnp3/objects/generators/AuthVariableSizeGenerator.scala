@@ -196,13 +196,14 @@ object AuthVariableSizeGenerator {
         if(x.fixedFields.isEmpty) Iterator.empty else x.fixedFields.map(toWriteOp).iterator ++ space
       }
 
-      def prefixedWrite(x : VariableField) : Iterator[String] = Iterator(
-        "UInt16::WriteBuffer(buffer, static_cast<uint16_t>(%s.Size()));".format(x.name),
-        "%s.CopyTo(buffer);".format(x.name)
-      )
+      def prefixedWriteClause : Iterator[String] = {
+        val fields = x.lengthFields.map(f => f.name).mkString(", ")
+        bailoutIf("!PrefixFields::Write(buffer, %s)".format(fields))
+      }
+
 
       def prefixedWrites : Iterator[String] = if(x.lengthFields.isEmpty) Iterator.empty else {
-        x.lengthFields.map(prefixedWrite).flatten.toIterator ++ space
+        prefixedWriteClause ++ space
       }
 
       def remainderWrite: Iterator[String] = x.remainder match {

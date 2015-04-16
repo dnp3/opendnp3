@@ -239,8 +239,10 @@ bool Group120Var5::Write(openpal::WriteBufferView& buffer) const
   UInt8::WriteBuffer(buffer, KeyStatusToType(this->keyStatus));
   UInt8::WriteBuffer(buffer, HMACTypeToType(this->hmacAlgo));
 
-  UInt16::WriteBuffer(buffer, static_cast<uint16_t>(challengeData.Size()));
-  challengeData.CopyTo(buffer);
+  if(!PrefixFields::Write(buffer, challengeData))
+  {
+    return false;
+  }
 
   hmacValue.CopyTo(buffer);
 
