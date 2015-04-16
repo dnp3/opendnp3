@@ -46,7 +46,7 @@ bool Group120Var1::Read(const ReadBufferView& buffer)
 
 bool Group120Var1::Write(openpal::WriteBufferView& buffer) const
 {
-  if(buffer.Size() < this->Size())
+  if(this->Size() > buffer.Size())
   {
     return false;
   }
@@ -55,7 +55,9 @@ bool Group120Var1::Write(openpal::WriteBufferView& buffer) const
   openpal::UInt16::WriteBuffer(buffer, this->userNum);
   openpal::UInt8::WriteBuffer(buffer, HMACTypeToType(this->macAlgo));
   openpal::UInt8::WriteBuffer(buffer, ChallengeReasonToType(this->challengeReason));
+
   challengeData.CopyTo(buffer);
+
   return true;
 }
 
@@ -77,14 +79,16 @@ bool Group120Var2::Read(const ReadBufferView& buffer)
 
 bool Group120Var2::Write(openpal::WriteBufferView& buffer) const
 {
-  if(buffer.Size() < this->Size())
+  if(this->Size() > buffer.Size())
   {
     return false;
   }
 
   openpal::UInt32::WriteBuffer(buffer, this->challengeSeqNum);
   openpal::UInt16::WriteBuffer(buffer, this->userNum);
+
   hmac.CopyTo(buffer);
+
   return true;
 }
 
@@ -130,7 +134,12 @@ bool Group120Var5::Read(const ReadBufferView& buffer)
 
 bool Group120Var5::Write(openpal::WriteBufferView& buffer) const
 {
-  if(buffer.Size() < this->Size())
+  if(this->Size() > buffer.Size())
+  {
+    return false;
+  }
+
+  if(challengeData.Size() > openpal::MaxValue<uint16_t>())
   {
     return false;
   }
@@ -140,8 +149,12 @@ bool Group120Var5::Write(openpal::WriteBufferView& buffer) const
   openpal::UInt8::WriteBuffer(buffer, KeyWrapAlgorithmToType(this->keyWrapAlgo));
   openpal::UInt8::WriteBuffer(buffer, KeyStatusToType(this->keyStatus));
   openpal::UInt8::WriteBuffer(buffer, HMACTypeToType(this->macAlgo));
+
+  UInt16::WriteBuffer(buffer, static_cast<uint16_t>(challengeData.Size()));
   challengeData.CopyTo(buffer);
+
   hmac.CopyTo(buffer);
+
   return true;
 }
 
@@ -163,14 +176,16 @@ bool Group120Var6::Read(const ReadBufferView& buffer)
 
 bool Group120Var6::Write(openpal::WriteBufferView& buffer) const
 {
-  if(buffer.Size() < this->Size())
+  if(this->Size() > buffer.Size())
   {
     return false;
   }
 
   openpal::UInt32::WriteBuffer(buffer, this->keyChangeSeqNum);
   openpal::UInt16::WriteBuffer(buffer, this->userNum);
+
   keyWrapData.CopyTo(buffer);
+
   return true;
 }
 
@@ -192,7 +207,7 @@ bool Group120Var7::Read(const ReadBufferView& buffer)
 
 bool Group120Var7::Write(openpal::WriteBufferView& buffer) const
 {
-  if(buffer.Size() < this->Size())
+  if(this->Size() > buffer.Size())
   {
     return false;
   }
@@ -202,7 +217,9 @@ bool Group120Var7::Write(openpal::WriteBufferView& buffer) const
   openpal::UInt16::WriteBuffer(buffer, this->assocId);
   openpal::UInt8::WriteBuffer(buffer, AuthErrorCodeToType(this->errorCode));
   openpal::UInt48::WriteBuffer(buffer, this->time);
+
   errorText.CopyTo(buffer);
+
   return true;
 }
 
@@ -223,12 +240,13 @@ bool Group120Var9::Read(const ReadBufferView& buffer)
 
 bool Group120Var9::Write(openpal::WriteBufferView& buffer) const
 {
-  if(buffer.Size() < this->Size())
+  if(this->Size() > buffer.Size())
   {
     return false;
   }
 
   hmac.CopyTo(buffer);
+
   return true;
 }
 

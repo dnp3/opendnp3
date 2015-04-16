@@ -70,7 +70,16 @@ object AuthVariableSizeGenerator {
 
     def writeFunction: Iterator[String] = {
 
-      def sizeBailout = Iterator("if(buffer.Size() < this->Size())") ++ bracket(Iterator("return false;"))
+      def vsizeBailout(x: VariableField) : String = "%s.Size() > openpal::MaxValue<uint16_t>()".format(x.name)
+
+      def minSizeBailout = "this->Size() > buffer.Size()"
+
+      def bailouts : List[String] = minSizeBailout :: x.lengthFields.map(vsizeBailout)
+
+      def bailoutClauses : Iterator[String] = bailouts.map { b =>
+        Iterator("if(%s)".format(b)) ++ bracket(Iterator("return false;")) ++
+        space
+      }.toIterator.flatten
 
       def fixedWrites : Iterator[String] = {
 
@@ -88,17 +97,29 @@ object AuthVariableSizeGenerator {
           case _ => toNumericWriteOp(fs)
         }
 
-        x.fixedFields.map(toWriteOp).iterator
+        if(x.fixedFields.isEmpty) Iterator.empty else x.fixedFields.map(toWriteOp).iterator ++ space
       }
 
-      def variableWrites: Iterator[String] = variableFields.map(f => "%s.CopyTo(buffer);".format(f.name)).toIterator
+      def prefixedWrite(x : VariableField) : Iterator[String] = Iterator(
+        "UInt16::WriteBuffer(buffer, static_cast<uint16_t>(%s.Size()));".format(x.name),
+        "%s.CopyTo(buffer);".format(x.name)
+      )
 
+      def prefixedWrites : Iterator[String] = if(x.lengthFields.isEmpty) Iterator.empty else {
+        x.lengthFields.map(prefixedWrite).flatten.toIterator ++ space
+      }
+
+      def remainderWrite: Iterator[String] = x.remainder match {
+        case Some(x) => Iterator("%s.CopyTo(buffer);".format(x.name))
+        case None => Iterator.empty
+      }
 
       writeSignature ++ bracket {
-          sizeBailout ++
-          space ++
+          bailoutClauses ++
           fixedWrites ++
-          variableWrites ++ // TODO - need to write length fields and enforce UInt16 lengths
+          prefixedWrites ++
+          remainderWrite ++
+          space ++
           Iterator("return true;")
       }
     }
