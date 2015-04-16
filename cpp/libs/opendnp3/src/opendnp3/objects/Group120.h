@@ -31,6 +31,8 @@
 #include "opendnp3/gen/KeyWrapAlgorithm.h"
 #include "opendnp3/gen/KeyStatus.h"
 #include "opendnp3/gen/AuthErrorCode.h"
+#include "opendnp3/gen/KeyChangeMethod.h"
+#include "opendnp3/gen/CertificateType.h"
 
 namespace opendnp3 {
 
@@ -211,9 +213,30 @@ struct Group120Var7 : public IVariableLength
 };
 
 // Authentication - User Certificate
-struct Group120Var8
+struct Group120Var8 : public IVariableLength
 {
   static GroupVariationID ID() { return GroupVariationID(120,8); }
+
+  virtual GroupVariationID InstanceID() const override final { return Group120Var8::ID(); }
+
+  Group120Var8();
+
+  Group120Var8(
+    KeyChangeMethod keyChangeMethod,
+    CertificateType certificateType,
+    const openpal::ReadBufferView& certificate
+  );
+
+  virtual uint32_t Size() const override final;
+  virtual bool Read(const openpal::ReadBufferView&) override final;
+  virtual bool Write(openpal::WriteBufferView&) const override final;
+
+  static const uint32_t MIN_SIZE = 2;
+
+  // member variables
+  KeyChangeMethod keyChangeMethod;
+  CertificateType certificateType;
+  openpal::ReadBufferView certificate;
 };
 
 // Authentication - HMAC

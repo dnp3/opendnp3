@@ -37,6 +37,8 @@ object FixedSizeField {
   val keyStatus = FixedSizeField("keyStatus", EnumFieldType(KeyStatus()))
   val challengeReason = FixedSizeField("challengeReason", EnumFieldType(ChallengeReason()))
   val errorCode = FixedSizeField("errorCode", EnumFieldType(AuthErrorCode()))
+  val keyChangeMethod = FixedSizeField("keyChangeMethod", EnumFieldType(KeyChangeMethod()))
+  val certificateType = FixedSizeField("certificateType", EnumFieldType(CertificateType()))
 
 
   // timestamps

@@ -105,6 +105,7 @@
     <ClInclude Include="src\opendnp3\gen\HMACType.h" />
     <ClInclude Include="src\opendnp3\gen\IndexMode.h" />
     <ClInclude Include="src\opendnp3\gen\IntervalUnits.h" />
+    <ClInclude Include="src\opendnp3\gen\KeyChangeMethod.h" />
     <ClInclude Include="src\opendnp3\gen\KeyStatus.h" />
     <ClInclude Include="src\opendnp3\gen\KeyWrapAlgorithm.h" />
     <ClInclude Include="src\opendnp3\gen\LinkFunction.h" />
@@ -210,7 +211,6 @@
     <ClInclude Include="src\opendnp3\objects\Group60.h" />
     <ClInclude Include="src\opendnp3\objects\Group70.h" />
     <ClInclude Include="src\opendnp3\objects\Group80.h" />
-    <ClInclude Include="src\opendnp3\objects\SeqUserData.h" />
     <ClInclude Include="src\opendnp3\outstation\ApplicationIIN.h" />
     <ClInclude Include="src\opendnp3\outstation\AssignClassHandler.h" />
     <ClInclude Include="src\opendnp3\outstation\Cell.h" />
@@ -318,6 +318,7 @@
     <ClCompile Include="src\opendnp3\gen\GroupVariation.cpp" />
     <ClCompile Include="src\opendnp3\gen\HMACType.cpp" />
     <ClCompile Include="src\opendnp3\gen\IntervalUnits.cpp" />
+    <ClCompile Include="src\opendnp3\gen\KeyChangeMethod.cpp" />
     <ClCompile Include="src\opendnp3\gen\KeyStatus.cpp" />
     <ClCompile Include="src\opendnp3\gen\KeyWrapAlgorithm.cpp" />
     <ClCompile Include="src\opendnp3\gen\LinkFunction.cpp" />
@@ -380,7 +381,6 @@
     <ClCompile Include="src\opendnp3\objects\Group50.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group51.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group52.cpp" />
-    <ClCompile Include="src\opendnp3\objects\SeqUserData.cpp" />
     <ClCompile Include="src\opendnp3\outstation\ApplicationIIN.cpp" />
     <ClCompile Include="src\opendnp3\outstation\AssignClassHandler.cpp" />
     <ClCompile Include="src\opendnp3\outstation\ClassBasedRequestHandler.cpp" />

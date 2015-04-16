@@ -364,6 +364,59 @@ bool Group120Var7::Write(openpal::WriteBufferView& buffer) const
   return true;
 }
 
+// ------- Group120Var8 -------
+
+Group120Var8::Group120Var8() : 
+  keyChangeMethod(KeyChangeMethod::UNDEFINED), certificateType(CertificateType::UNKNOWN)
+{}
+
+Group120Var8::Group120Var8(
+  KeyChangeMethod keyChangeMethod_,
+  CertificateType certificateType_,
+  const openpal::ReadBufferView& certificate_
+) : 
+  keyChangeMethod(keyChangeMethod_),
+  certificateType(certificateType_),
+  certificate(certificate_)
+{}
+
+uint32_t Group120Var8::Size() const
+{
+  return MIN_SIZE + certificate.Size();
+}
+
+bool Group120Var8::Read(const ReadBufferView& buffer)
+{
+  if(buffer.Size() < Group120Var8::MIN_SIZE)
+  {
+    return false;
+  }
+
+  ReadBufferView copy(buffer); //mutable copy for parsing
+
+  this->keyChangeMethod = KeyChangeMethodFromType(UInt8::ReadBuffer(copy));
+  this->certificateType = CertificateTypeFromType(UInt8::ReadBuffer(copy));
+
+  this->certificate = copy; // whatever is left over
+
+  return true;
+}
+
+bool Group120Var8::Write(openpal::WriteBufferView& buffer) const
+{
+  if(this->Size() > buffer.Size())
+  {
+    return false;
+  }
+
+  UInt8::WriteBuffer(buffer, KeyChangeMethodToType(this->keyChangeMethod));
+  UInt8::WriteBuffer(buffer, CertificateTypeToType(this->certificateType));
+
+  certificate.CopyTo(buffer);
+
+  return true;
+}
+
 // ------- Group120Var9 -------
 
 Group120Var9::Group120Var9()

@@ -495,9 +495,6 @@
     <ClInclude Include="src\opendnp3\objects\Group120.h">
       <Filter>Header\objects</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\objects\SeqUserData.h">
-      <Filter>Header\objects</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\master\AssignClassTask.h">
       <Filter>Header\master</Filter>
     </ClInclude>
@@ -888,6 +885,9 @@
     <ClInclude Include="src\opendnp3\app\IVariableLength.h">
       <Filter>Header\app</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\KeyChangeMethod.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\TimeAndInterval.cpp">
@@ -1148,9 +1148,6 @@
     <ClCompile Include="src\opendnp3\objects\Group120.cpp">
       <Filter>Source\objects</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\objects\SeqUserData.cpp">
-      <Filter>Source\objects</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\ApplicationIIN.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
@@ -1315,6 +1312,9 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\app\HeaderWriter.cpp">
       <Filter>Source\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\gen\KeyChangeMethod.cpp">
+      <Filter>Source\gen</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
