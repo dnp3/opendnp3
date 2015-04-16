@@ -35,7 +35,7 @@ namespace opendnp3
 		template <typename... Args>
 		static bool Read(openpal::ReadBufferView& input, Args&... fields)
 		{						
-			if (input.Size() < (sizeof...(Args)*UInt16::SIZE))
+			if (input.Size() < (sizeof...(Args)*openpal::UInt16::SIZE))
 			{
 				// not enough in the buffer to even read the length prefixes
 				return false;
