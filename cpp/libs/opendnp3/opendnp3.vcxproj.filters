@@ -896,9 +896,6 @@
     <ClCompile Include="src\opendnp3\app\OctetData.cpp">
       <Filter>Source\app</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\app\ObjectWriter.cpp">
-      <Filter>Source\app</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\app\MeasurementTypes.cpp">
       <Filter>Source\app</Filter>
     </ClCompile>
@@ -1314,6 +1311,9 @@
       <Filter>Source\objects</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\app\IVariableLength.cpp">
+      <Filter>Source\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\app\HeaderWriter.cpp">
       <Filter>Source\app</Filter>
     </ClCompile>
   </ItemGroup>
