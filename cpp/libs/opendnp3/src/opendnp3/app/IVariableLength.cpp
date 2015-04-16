@@ -18,36 +18,36 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_IVARIABLELENGTH_H
-#define OPENDNP3_IVARIABLELENGTH_H
 
-#include <openpal/container/WriteBufferView.h>
+#include "IVariableLength.h"
+
+#include <openpal/serialization/Serialization.h>
+
+using namespace openpal;
 
 namespace opendnp3
 {
 
-class IVariableLength
-{	
+bool IVariableLength::ReadUInt16PrefixedField(ReadBufferView& input, ReadBufferView& dest)
+{
+	if (input.Size() < UInt16::SIZE)
+	{
+		return false;
+	}
 
-public:
+	uint16_t length = UInt16::ReadBuffer(input);
 
-	virtual ~IVariableLength() {}
+	if (input.Size() < length)
+	{
+		return false;
+	}
 
-	// The size of the object in its current configuration
-	virtual uint32_t Size() const = 0;
+	dest = input.Take(length);
+	input.Advance(length);
 
-	// attempt to write the object to the destination buffer
-	virtual bool Write(openpal::WriteBufferView& dest) const = 0;
-
-	// attempt to read the object from the input buffer
-	virtual bool Read(const openpal::ReadBufferView& input) = 0;
-
-protected:
-
-	static bool ReadUInt16PrefixedField(openpal::ReadBufferView& input, openpal::ReadBufferView& dest);
-
-};
+	return true;
+}
 
 }
 
-#endif
+

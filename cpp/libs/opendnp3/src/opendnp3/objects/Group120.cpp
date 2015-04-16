@@ -46,6 +46,15 @@ bool Group120Var1::Read(const ReadBufferView& buffer)
     return false;
   }
 
+  ReadBufferView copy(buffer); //mutable copy for parsing
+
+  this->challengeSeqNum = UInt32::ReadBuffer(copy);
+  this->userNum = UInt16::ReadBuffer(copy);
+  this->macAlgo = HMACTypeFromType(UInt8::ReadBuffer(copy));
+  this->challengeReason = ChallengeReasonFromType(UInt8::ReadBuffer(copy));
+
+  this->challengeData = copy; // whatever is left over
+
   return true;
 }
 
@@ -56,10 +65,10 @@ bool Group120Var1::Write(openpal::WriteBufferView& buffer) const
     return false;
   }
 
-  openpal::UInt32::WriteBuffer(buffer, this->challengeSeqNum);
-  openpal::UInt16::WriteBuffer(buffer, this->userNum);
-  openpal::UInt8::WriteBuffer(buffer, HMACTypeToType(this->macAlgo));
-  openpal::UInt8::WriteBuffer(buffer, ChallengeReasonToType(this->challengeReason));
+  UInt32::WriteBuffer(buffer, this->challengeSeqNum);
+  UInt16::WriteBuffer(buffer, this->userNum);
+  UInt8::WriteBuffer(buffer, HMACTypeToType(this->macAlgo));
+  UInt8::WriteBuffer(buffer, ChallengeReasonToType(this->challengeReason));
 
   challengeData.CopyTo(buffer);
 
@@ -84,6 +93,13 @@ bool Group120Var2::Read(const ReadBufferView& buffer)
     return false;
   }
 
+  ReadBufferView copy(buffer); //mutable copy for parsing
+
+  this->challengeSeqNum = UInt32::ReadBuffer(copy);
+  this->userNum = UInt16::ReadBuffer(copy);
+
+  this->hmac = copy; // whatever is left over
+
   return true;
 }
 
@@ -94,8 +110,8 @@ bool Group120Var2::Write(openpal::WriteBufferView& buffer) const
     return false;
   }
 
-  openpal::UInt32::WriteBuffer(buffer, this->challengeSeqNum);
-  openpal::UInt16::WriteBuffer(buffer, this->userNum);
+  UInt32::WriteBuffer(buffer, this->challengeSeqNum);
+  UInt16::WriteBuffer(buffer, this->userNum);
 
   hmac.CopyTo(buffer);
 
@@ -144,6 +160,21 @@ bool Group120Var5::Read(const ReadBufferView& buffer)
     return false;
   }
 
+  ReadBufferView copy(buffer); //mutable copy for parsing
+
+  this->keyChangeSeqNum = UInt32::ReadBuffer(copy);
+  this->userNum = UInt16::ReadBuffer(copy);
+  this->keyWrapAlgo = KeyWrapAlgorithmFromType(UInt8::ReadBuffer(copy));
+  this->keyStatus = KeyStatusFromType(UInt8::ReadBuffer(copy));
+  this->macAlgo = HMACTypeFromType(UInt8::ReadBuffer(copy));
+
+  if(!IVariableLength::ReadUInt16PrefixedField(copy, this->challengeData))
+  {
+    return false;
+  }
+
+  this->hmac = copy; // whatever is left over
+
   return true;
 }
 
@@ -159,11 +190,11 @@ bool Group120Var5::Write(openpal::WriteBufferView& buffer) const
     return false;
   }
 
-  openpal::UInt32::WriteBuffer(buffer, this->keyChangeSeqNum);
-  openpal::UInt16::WriteBuffer(buffer, this->userNum);
-  openpal::UInt8::WriteBuffer(buffer, KeyWrapAlgorithmToType(this->keyWrapAlgo));
-  openpal::UInt8::WriteBuffer(buffer, KeyStatusToType(this->keyStatus));
-  openpal::UInt8::WriteBuffer(buffer, HMACTypeToType(this->macAlgo));
+  UInt32::WriteBuffer(buffer, this->keyChangeSeqNum);
+  UInt16::WriteBuffer(buffer, this->userNum);
+  UInt8::WriteBuffer(buffer, KeyWrapAlgorithmToType(this->keyWrapAlgo));
+  UInt8::WriteBuffer(buffer, KeyStatusToType(this->keyStatus));
+  UInt8::WriteBuffer(buffer, HMACTypeToType(this->macAlgo));
 
   UInt16::WriteBuffer(buffer, static_cast<uint16_t>(challengeData.Size()));
   challengeData.CopyTo(buffer);
@@ -191,6 +222,13 @@ bool Group120Var6::Read(const ReadBufferView& buffer)
     return false;
   }
 
+  ReadBufferView copy(buffer); //mutable copy for parsing
+
+  this->keyChangeSeqNum = UInt32::ReadBuffer(copy);
+  this->userNum = UInt16::ReadBuffer(copy);
+
+  this->keyWrapData = copy; // whatever is left over
+
   return true;
 }
 
@@ -201,8 +239,8 @@ bool Group120Var6::Write(openpal::WriteBufferView& buffer) const
     return false;
   }
 
-  openpal::UInt32::WriteBuffer(buffer, this->keyChangeSeqNum);
-  openpal::UInt16::WriteBuffer(buffer, this->userNum);
+  UInt32::WriteBuffer(buffer, this->keyChangeSeqNum);
+  UInt16::WriteBuffer(buffer, this->userNum);
 
   keyWrapData.CopyTo(buffer);
 
@@ -227,6 +265,16 @@ bool Group120Var7::Read(const ReadBufferView& buffer)
     return false;
   }
 
+  ReadBufferView copy(buffer); //mutable copy for parsing
+
+  this->challengeSeqNum = UInt32::ReadBuffer(copy);
+  this->userNum = UInt16::ReadBuffer(copy);
+  this->assocId = UInt16::ReadBuffer(copy);
+  this->errorCode = AuthErrorCodeFromType(UInt8::ReadBuffer(copy));
+  this->time = UInt48::ReadBuffer(copy);
+
+  this->errorText = copy; // whatever is left over
+
   return true;
 }
 
@@ -237,11 +285,11 @@ bool Group120Var7::Write(openpal::WriteBufferView& buffer) const
     return false;
   }
 
-  openpal::UInt32::WriteBuffer(buffer, this->challengeSeqNum);
-  openpal::UInt16::WriteBuffer(buffer, this->userNum);
-  openpal::UInt16::WriteBuffer(buffer, this->assocId);
-  openpal::UInt8::WriteBuffer(buffer, AuthErrorCodeToType(this->errorCode));
-  openpal::UInt48::WriteBuffer(buffer, this->time);
+  UInt32::WriteBuffer(buffer, this->challengeSeqNum);
+  UInt16::WriteBuffer(buffer, this->userNum);
+  UInt16::WriteBuffer(buffer, this->assocId);
+  UInt8::WriteBuffer(buffer, AuthErrorCodeToType(this->errorCode));
+  UInt48::WriteBuffer(buffer, this->time);
 
   errorText.CopyTo(buffer);
 
@@ -264,6 +312,10 @@ bool Group120Var9::Read(const ReadBufferView& buffer)
   {
     return false;
   }
+
+  ReadBufferView copy(buffer); //mutable copy for parsing
+
+  this->hmac = copy; // whatever is left over
 
   return true;
 }

@@ -6,6 +6,8 @@ import com.automatak.render.dnp3.objects._
 
 object AuthVariableSizeGenerator {
 
+  def bailoutIf(condition: String)(implicit i: Indentation) : Iterator[String] = Iterator("if(%s)".format(condition)) ++ bracket(Iterator("return false;"))
+
   def header(x: AuthVariableSize)(implicit i: Indentation): Iterator[String] = {
 
     def getFieldString(x: FixedSizeField): String = "%s %s;".format(FixedSizeHelpers.getCppFieldType(x.typ), x.name)
@@ -66,11 +68,50 @@ object AuthVariableSizeGenerator {
 
     def readFunction: Iterator[String] = {
 
-      def minSizeBailout = Iterator("if(buffer.Size() < %s::MIN_SIZE)".format(x.name)) ++ bracket(Iterator("return false;"))
+      def minSizeBailout = bailoutIf("buffer.Size() < %s::MIN_SIZE".format(x.name))
+
+      def copy = Iterator("ReadBufferView copy(buffer); //mutable copy for parsing")
+
+      def fixedReads : Iterator[String] = {
+
+        def toNumericReadOp(fs: FixedSizeField) : String = {
+          "this->%s = %s::ReadBuffer(copy);".format(fs.name, FixedSizeHelpers.getCppFieldTypeParser(fs.typ))
+        }
+
+        def toEnumReadOp(fs: FixedSizeField, e: EnumFieldType) : String = {
+          "this->%s = %sFromType(UInt8::ReadBuffer(copy));".format(fs.name, e.model.name)
+        }
+
+
+        def toReadOp(fs: FixedSizeField) : String = fs.typ match {
+          case x : EnumFieldType => toEnumReadOp(fs, x)
+          case _ => toNumericReadOp(fs)
+        }
+
+        if(x.fixedFields.isEmpty) Iterator.empty else x.fixedFields.map(toReadOp).iterator ++ space
+      }
+
+      def prefixedRead(x : VariableField) : Iterator[String] =  {
+        bailoutIf("!IVariableLength::ReadUInt16PrefixedField(copy, this->%s)".format(x.name)) ++ space
+      }
+
+      def prefixedReads : Iterator[String] = if(x.lengthFields.isEmpty) Iterator.empty else {
+        x.lengthFields.map(prefixedRead).flatten.toIterator
+      }
+
+      def remainderRead: Iterator[String] = x.remainder match {
+        case Some(x) => Iterator("this->%s = copy; // whatever is left over".format(x.name)) ++ space
+        case None => Iterator.empty
+      }
 
       readSignature ++ bracket {
         minSizeBailout ++
         space ++
+        copy ++
+        space ++
+        fixedReads ++
+        prefixedReads ++
+        remainderRead ++
         Iterator("return true;")
       }
     }
@@ -91,13 +132,12 @@ object AuthVariableSizeGenerator {
       def fixedWrites : Iterator[String] = {
 
         def toNumericWriteOp(fs: FixedSizeField) : String = {
-          "openpal::%s::WriteBuffer(buffer, this->%s);".format(FixedSizeHelpers.getCppFieldTypeParser(fs.typ), fs.name)
+          "%s::WriteBuffer(buffer, this->%s);".format(FixedSizeHelpers.getCppFieldTypeParser(fs.typ), fs.name)
         }
 
         def toEnumWriteOp(fs: FixedSizeField, e: EnumFieldType) : String = {
-          "openpal::UInt8::WriteBuffer(buffer, %sToType(this->%s));".format(e.model.name, fs.name)
+          "UInt8::WriteBuffer(buffer, %sToType(this->%s));".format(e.model.name, fs.name)
         }
-
 
         def toWriteOp(fs: FixedSizeField) : String = fs.typ match {
           case x : EnumFieldType => toEnumWriteOp(fs, x)
