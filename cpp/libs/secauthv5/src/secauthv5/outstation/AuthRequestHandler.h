@@ -36,9 +36,9 @@ class AuthRequestHandler : public opendnp3::APDUHandlerBase, private openpal::Un
 		AuthRequestHandler(const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, opendnp3::OState& ostate, IAuthRequestHandler& handler);
 
 		virtual opendnp3::IINField ProcessCountOf(const opendnp3::HeaderRecord& record, const opendnp3::IterableBuffer<opendnp3::Group120Var4>& values) override final;
-		virtual opendnp3::IINField ProcessFreeFormat(const opendnp3::HeaderRecord& record, const opendnp3::Group120Var1Def& value) override final;
-		virtual opendnp3::IINField ProcessFreeFormat(const opendnp3::HeaderRecord& record, const opendnp3::Group120Var2Def& value) override final;
-		virtual opendnp3::IINField ProcessFreeFormat(const opendnp3::HeaderRecord& record, const opendnp3::Group120Var6Def& value) override final;
+		virtual opendnp3::IINField ProcessFreeFormat(const opendnp3::HeaderRecord& record, const opendnp3::Group120Var1& value) override final;
+		virtual opendnp3::IINField ProcessFreeFormat(const opendnp3::HeaderRecord& record, const opendnp3::Group120Var2& value) override final;
+		virtual opendnp3::IINField ProcessFreeFormat(const opendnp3::HeaderRecord& record, const opendnp3::Group120Var6& value) override final;
 
 		static bool WhiteList(uint32_t count, opendnp3::GroupVariation gv, opendnp3::QualifierCode qc);
 

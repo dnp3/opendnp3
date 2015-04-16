@@ -44,7 +44,7 @@ struct Group120Var1 : public IVariableLength
   Group120Var1(
     uint32_t challengeSeqNum,
     uint16_t userNum,
-    HMACType macAlgo,
+    HMACType hmacAlgo,
     ChallengeReason challengeReason,
     const openpal::ReadBufferView& challengeData
   );
@@ -58,7 +58,7 @@ struct Group120Var1 : public IVariableLength
   // member variables
   uint32_t challengeSeqNum;
   uint16_t userNum;
-  HMACType macAlgo;
+  HMACType hmacAlgo;
   ChallengeReason challengeReason;
   openpal::ReadBufferView challengeData;
 };
@@ -73,7 +73,7 @@ struct Group120Var2 : public IVariableLength
   Group120Var2(
     uint32_t challengeSeqNum,
     uint16_t userNum,
-    const openpal::ReadBufferView& hmac
+    const openpal::ReadBufferView& hmacValue
   );
 
   virtual uint32_t Size() const override final;
@@ -85,7 +85,7 @@ struct Group120Var2 : public IVariableLength
   // member variables
   uint32_t challengeSeqNum;
   uint16_t userNum;
-  openpal::ReadBufferView hmac;
+  openpal::ReadBufferView hmacValue;
 };
 
 // Authentication - Aggressive Mode Request
@@ -123,9 +123,9 @@ struct Group120Var5 : public IVariableLength
     uint16_t userNum,
     KeyWrapAlgorithm keyWrapAlgo,
     KeyStatus keyStatus,
-    HMACType macAlgo,
+    HMACType hmacAlgo,
     const openpal::ReadBufferView& challengeData,
-    const openpal::ReadBufferView& hmac
+    const openpal::ReadBufferView& hmacValue
   );
 
   virtual uint32_t Size() const override final;
@@ -139,9 +139,9 @@ struct Group120Var5 : public IVariableLength
   uint16_t userNum;
   KeyWrapAlgorithm keyWrapAlgo;
   KeyStatus keyStatus;
-  HMACType macAlgo;
+  HMACType hmacAlgo;
   openpal::ReadBufferView challengeData;
-  openpal::ReadBufferView hmac;
+  openpal::ReadBufferView hmacValue;
 };
 
 // Authentication - Session Key Change
@@ -214,7 +214,7 @@ struct Group120Var9 : public IVariableLength
   Group120Var9();
 
   Group120Var9(
-    const openpal::ReadBufferView& hmac
+    const openpal::ReadBufferView& hmacValue
   );
 
   virtual uint32_t Size() const override final;
@@ -224,7 +224,7 @@ struct Group120Var9 : public IVariableLength
   static const uint32_t MIN_SIZE = 0;
 
   // member variables
-  openpal::ReadBufferView hmac;
+  openpal::ReadBufferView hmacValue;
 };
 
 // Authentication - User Status Change

@@ -317,25 +317,25 @@ public:
 		records.push_back(record);
 	}
 
-	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var1Def& value) override
+	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var1& value) override
 	{
 		records.push_back(record);
 		authChallenges.push_back(value);
 	}
 
-	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var2Def& value) override
+	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var2& value) override
 	{
 		records.push_back(record);
 		authReplys.push_back(value);
 	}
 
-	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var5Def& value) override
+	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var5& value) override
 	{
 		records.push_back(record);
 		authKeyStatusResponses.push_back(value);
 	}
 
-	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var6Def& value) override
+	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var6& value) override
 	{
 		records.push_back(record);
 		authChanges.push_back(value);
@@ -343,11 +343,11 @@ public:
 
 	std::vector<HeaderRecord> records;
 
-	std::vector<Group120Var1Def> authChallenges;
-	std::vector<Group120Var2Def> authReplys;
+	std::vector<Group120Var1> authChallenges;
+	std::vector<Group120Var2> authReplys;
 	std::vector<Group120Var4> authStatusRequsts;
-	std::vector<Group120Var5Def> authKeyStatusResponses;
-	std::vector<Group120Var6Def> authChanges;
+	std::vector<Group120Var5> authKeyStatusResponses;
+	std::vector<Group120Var6> authChanges;
 
 	std::vector<IndexedValue<IINValue, uint16_t>> iinBits;
 

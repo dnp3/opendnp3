@@ -25,9 +25,6 @@
 #include <opendnp3/outstation/OutstationState.h>
 
 #include <opendnp3/objects/Group120.h>
-#include <opendnp3/objects/Group120Var1.h>
-#include <opendnp3/objects/Group120Var2.h>
-#include <opendnp3/objects/Group120Var6.h>
 
 namespace secauthv5
 {
@@ -37,10 +34,10 @@ class IAuthRequestHandler
 {
 	public:
 
-		virtual void OnAuthChallenge(opendnp3::OState& ostate, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var1Def& challenge) = 0;
-		virtual void OnAuthReply(opendnp3::OState& ostate, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var2Def& reply) = 0;
+		virtual void OnAuthChallenge(opendnp3::OState& ostate, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge) = 0;
+		virtual void OnAuthReply(opendnp3::OState& ostate, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var2& reply) = 0;
 		virtual void OnRequestKeyStatus(opendnp3::OState& ostate, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var4& status) = 0;
-		virtual void OnChangeSessionKeys(opendnp3::OState& ostate, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6Def& change) = 0;
+		virtual void OnChangeSessionKeys(opendnp3::OState& ostate, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change) = 0;
 };
 
 }

@@ -54,7 +54,7 @@ class FreeFormatParser : private openpal::PureStatic
 		static bool ParseAny(const HeaderRecord& record, openpal::ReadBufferView& objects, IAPDUHandler* pHandler)
 		{			
 			T value;
-			auto success = T::Read(objects, value);
+			auto success = value.Read(objects);
 			if (success && pHandler)
 			{
 				pHandler->OnFreeFormat(record, value);					

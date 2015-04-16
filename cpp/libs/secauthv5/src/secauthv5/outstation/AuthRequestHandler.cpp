@@ -63,19 +63,19 @@ bool AuthRequestHandler::WhiteList(uint32_t count, GroupVariation gv, QualifierC
 	}
 }
 
-IINField AuthRequestHandler::ProcessFreeFormat(const HeaderRecord& record, const Group120Var1Def& value)
+IINField AuthRequestHandler::ProcessFreeFormat(const HeaderRecord& record, const Group120Var1& value)
 {
 	pHandler->OnAuthChallenge(*pOState, fragment, header, value);
 	return IINField::Empty();
 }
 
-IINField AuthRequestHandler::ProcessFreeFormat(const HeaderRecord& record, const Group120Var2Def& value)
+IINField AuthRequestHandler::ProcessFreeFormat(const HeaderRecord& record, const Group120Var2& value)
 {
 	pHandler->OnAuthReply(*pOState, fragment, header, value);
 	return IINField::Empty();
 }
 
-IINField AuthRequestHandler::ProcessFreeFormat(const HeaderRecord& record, const Group120Var6Def& value)
+IINField AuthRequestHandler::ProcessFreeFormat(const HeaderRecord& record, const Group120Var6& value)
 {
 	pHandler->OnChangeSessionKeys(*pOState, fragment, header, value);
 	return IINField::Empty();

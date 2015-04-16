@@ -27,8 +27,7 @@
 #include <openpal/container/StaticBuffer.h>
 #include <openpal/serialization/Serialization.h>
 
-
-#include <opendnp3/objects/Group120Var6.h>
+#include <opendnp3/objects/Group120.h>
 
 #include "secauthv5/AuthConstants.h"
 #include "secauthv5/SessionKeysView.h"
@@ -62,7 +61,7 @@ namespace secauthv5
 		static const uint32_t MAX_REQUIRED_BUFFER_SIZE = 
 			openpal::UInt16::SIZE +
 			2 * AuthConstants::MAX_SESSION_KEY_SIZE_BYTES + 
-			opendnp3::Group120Var5Def::FIXED_BASE_SIZE +
+			opendnp3::Group120Var5::MIN_SIZE +
 			AuthConstants::MAX_CHALLENGE_DATA_SIZE;
 
 		openpal::StaticBuffer<MAX_REQUIRED_BUFFER_SIZE> buffer;		

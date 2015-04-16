@@ -23,7 +23,7 @@
 #include <testlib/BufferHelpers.h>
 #include <testlib/HexConversions.h>
 
-#include <opendnp3/objects/Group120Var1.h>
+#include <opendnp3/objects/Group120.h>
 
 #include <openpal/util/ToHex.h>
 #include <openpal/container/DynamicBuffer.h>
@@ -38,9 +38,8 @@ TEST_CASE(SUITE("Parser rejects empty buffer"))
 {
 	HexSequence buffer("");
 
-	Group120Var1Def output;
-	bool success = Group120Var1Def::Read(buffer.ToReadOnly(), output);
-	REQUIRE(!success);
+	Group120Var1 output;
+	REQUIRE_FALSE(output.Read(buffer.ToReadOnly()));	
 }
 
 TEST_CASE(SUITE("Parser correctly interprets challenge data"))
@@ -48,12 +47,12 @@ TEST_CASE(SUITE("Parser correctly interprets challenge data"))
 	// SEQ = 1, USER = 7, HMAC = 5 (SHA-1-8), REASON = 1, challenge = 0xDEADBEEF
 	HexSequence buffer("01 00 00 00 07 00 05 01 DE AD BE EF");
 
-	Group120Var1Def output;
-	REQUIRE(Group120Var1Def::Read(buffer.ToReadOnly(), output));
+	Group120Var1 output;
+	REQUIRE(output.Read(buffer.ToReadOnly()));
 	REQUIRE(output.challengeSeqNum == 1);
 	REQUIRE(output.userNum == 7);
-	REQUIRE(output.hmacType == HMACType::HMAC_SHA1_TRUNC_8);
-	REQUIRE(output.reason == ChallengeReason::CRITICAL);
+	REQUIRE(output.hmacAlgo == HMACType::HMAC_SHA1_TRUNC_8);
+	REQUIRE(output.challengeReason == ChallengeReason::CRITICAL);
 	REQUIRE(ToHex(output.challengeData) == "DE AD BE EF");
 }
 
@@ -62,8 +61,8 @@ TEST_CASE(SUITE("Parser accepts empty challenge data"))
 	// SEQ = 1, USER = 7, HMAC = 5 (SHA-1-8), REASON = 1, challenge length of 3
 	HexSequence buffer("01 00 00 00 07 00 05 01");
 
-	Group120Var1Def output;
-	REQUIRE(Group120Var1Def::Read(buffer.ToReadOnly(), output));
+	Group120Var1 output;
+	REQUIRE(output.Read(buffer.ToReadOnly()));
 	REQUIRE(output.challengeData.Size() == 0);
 }
 
@@ -72,20 +71,20 @@ TEST_CASE(SUITE("Parser rejects one less than minimum required data"))
 	// SEQ = 1, USER = 7, HMAC = 5 (SHA-1-8), REASON = ???? missing
 	HexSequence buffer("01 00 00 00 07 00 05");
 
-	Group120Var1Def output;
-	REQUIRE(!Group120Var1Def::Read(buffer.ToReadOnly(), output));
+	Group120Var1 output;
+	REQUIRE_FALSE(output.Read(buffer.ToReadOnly()));
 }
 
 TEST_CASE(SUITE("Formatter correctly writes when sufficient space"))
 {
 	HexSequence challengeData("DE AD BE EF AB BA"); // 6 bytes
 		
-	Group120Var1Def challenge(9, 3, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, challengeData.ToReadOnly());
+	Group120Var1 challenge(9, 3, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, challengeData.ToReadOnly());
 	const uint32_t SIZE = challenge.Size();	
 
 	DynamicBuffer output(64);
 	auto dest = output.GetWriteBufferView();
-	REQUIRE(Group120Var1Def::Write(challenge, dest));
+	REQUIRE(challenge.Write(dest));
 	auto written = output.Size() - dest.Size();
 
 	REQUIRE(written == SIZE);
@@ -96,10 +95,10 @@ TEST_CASE(SUITE("Formatter return false when insufficient space"))
 {	
 	HexSequence challengeData("DE AD BE EF AB BA"); // 6 bytes
 		
-	Group120Var1Def challenge(9, 3, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, challengeData.ToReadOnly());
+	Group120Var1 challenge(9, 3, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, challengeData.ToReadOnly());
 	const uint32_t SIZE = challenge.Size();
 
 	DynamicBuffer output(SIZE - 1);		
 	auto dest = output.GetWriteBufferView();
-	REQUIRE(!Group120Var1Def::Write(challenge, dest));
+	REQUIRE_FALSE(challenge.Write(dest));
 }

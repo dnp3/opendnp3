@@ -24,7 +24,7 @@
 
 #include <opendnp3/LogLevels.h>
 #include <opendnp3/outstation/OutstationActions.h>
-#include <opendnp3/objects/Group120Var7.h>
+#include <opendnp3/objects/Group120.h>
 
 #include <openpal/logging/LogMacros.h>
 
@@ -33,13 +33,13 @@ using namespace opendnp3;
 
 namespace secauthv5
 {
-	void OSecActions::ProcessChangeSessionKeys(SecurityState& sstate, opendnp3::OState& ostate, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6Def& change)
+	void OSecActions::ProcessChangeSessionKeys(SecurityState& sstate, opendnp3::OState& ostate, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change)
 	{
-		User user(change.user);
+		User user(change.userNum);
 
-		if (!sstate.keyChangeState.CheckUserAndKSQMatches(user, change.seq))
+		if (!sstate.keyChangeState.CheckUserAndKSQMatches(user, change.keyChangeSeqNum))
 		{			
-			OSecActions::RespondWithAuthError(header, sstate, ostate, change.seq, user, AuthErrorCode::UNKNOWN_USER);
+			OSecActions::RespondWithAuthError(header, sstate, ostate, change.keyChangeSeqNum, user, AuthErrorCode::UNKNOWN_USER);
 			return;
 		}
 
@@ -48,8 +48,8 @@ namespace secauthv5
 		
 		if (!sstate.pUserDatabase->GetUpdateKey(user, updateKeyType, updateKey))
 		{
-			FORMAT_LOG_BLOCK(ostate.logger, flags::WARN, "Ignoring session key change request for unknown user %u", change.user);
-			OSecActions::RespondWithAuthError(header, sstate, ostate, change.seq, user, AuthErrorCode::UNKNOWN_USER);
+			FORMAT_LOG_BLOCK(ostate.logger, flags::WARN, "Ignoring session key change request for unknown user %u", change.userNum);
+			OSecActions::RespondWithAuthError(header, sstate, ostate, change.keyChangeSeqNum, user, AuthErrorCode::UNKNOWN_USER);
 			return;
 		}
 				
@@ -59,7 +59,7 @@ namespace secauthv5
 		auto unwrapSuccess = buffer.Unwrap(
 			GetKeyWrapAlgo(*sstate.pCrypto, updateKeyType),
 			updateKey,
-			change.data,
+			change.keyWrapData,
 			unwrapped,
 			&ostate.logger
 		);
@@ -67,13 +67,13 @@ namespace secauthv5
 		if (!unwrapSuccess)
 		{
 			SIMPLE_LOG_BLOCK(ostate.logger, flags::WARN, "Failed to unwrap key data");
-			OSecActions::RespondWithAuthError(header, sstate, ostate, change.seq, user, AuthErrorCode::AUTHENTICATION_FAILED);
+			OSecActions::RespondWithAuthError(header, sstate, ostate, change.keyChangeSeqNum, user, AuthErrorCode::AUTHENTICATION_FAILED);
 			return;
 		}
 	
 		if (!sstate.keyChangeState.EqualsLastStatusResponse(unwrapped.keyStatusObject))
 		{			
-			OSecActions::RespondWithAuthError(header, sstate, ostate, change.seq, user, AuthErrorCode::AUTHENTICATION_FAILED);
+			OSecActions::RespondWithAuthError(header, sstate, ostate, change.keyChangeSeqNum, user, AuthErrorCode::AUTHENTICATION_FAILED);
 			return;
 		}		
 
@@ -152,21 +152,21 @@ namespace secauthv5
 		}		
 	}	
 
-	void OSecActions::ProcessAuthReply(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var2Def& reply)
+	void OSecActions::ProcessAuthReply(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var2& reply)
 	{
 		// first look-up the session for the specified user
-		User user(reply.user);
+		User user(reply.userNum);
 		SessionKeysView view;
 		if (sstate.sessions.GetSessionKeys(user, view) != KeyStatus::OK)
 		{
-			OSecActions::RespondWithAuthError(header, sstate, ostate, reply.seq, user, AuthErrorCode::AUTHENTICATION_FAILED); // TODO - check this code
+			OSecActions::RespondWithAuthError(header, sstate, ostate, reply.challengeSeqNum, user, AuthErrorCode::AUTHENTICATION_FAILED); // TODO - check this code
 			return;
 		}
 
-		if (!sstate.challenge.VerifyAuthenticity(view.controlKey, sstate.hmac, reply.data, ostate.logger))
+		if (!sstate.challenge.VerifyAuthenticity(view.controlKey, sstate.hmac, reply.hmacValue, ostate.logger))
 		{
 			// TODO  - log an auth failure
-			OSecActions::RespondWithAuthError(header, sstate, ostate, reply.seq, user, AuthErrorCode::AUTHENTICATION_FAILED);
+			OSecActions::RespondWithAuthError(header, sstate, ostate, reply.challengeSeqNum, user, AuthErrorCode::AUTHENTICATION_FAILED);
 			return;
 		}
 			
@@ -180,7 +180,7 @@ namespace secauthv5
 		else
 		{
 			FORMAT_LOG_BLOCK(ostate.logger, flags::WARN, "Verified user %u is not authorized for function %s", user.GetId(), FunctionCodeToString(criticalHeader.function));
-			OSecActions::RespondWithAuthError(header, sstate, ostate, reply.seq, user, AuthErrorCode::AUTHORIZATION_FAILED);			
+			OSecActions::RespondWithAuthError(header, sstate, ostate, reply.challengeSeqNum, user, AuthErrorCode::AUTHORIZATION_FAILED);			
 		}				
 	}
 
@@ -220,12 +220,12 @@ namespace secauthv5
 		rsp.SetControl(header.control);
 		auto writer = rsp.GetWriter();
 		
-		Group120Var7Def error;
-		error.seqNum = seqNum;
+		Group120Var7 error;
+		error.challengeSeqNum = seqNum;
 		error.userNum = user.GetId();
-		error.associationID = sstate.settings.assocId;
+		error.assocId = sstate.settings.assocId;
 		error.errorCode = code;
-		error.timeOfError = openpal::UInt48Type(sstate.pTimeSource->Now().msSinceEpoch);
+		error.time = openpal::UInt48Type(sstate.pTimeSource->Now().msSinceEpoch);
 
 		writer.WriteFreeFormat(error);
 		

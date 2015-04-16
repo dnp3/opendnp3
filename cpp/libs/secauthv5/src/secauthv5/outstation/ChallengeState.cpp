@@ -66,7 +66,7 @@ namespace secauthv5
 
 		++seqNumber; //increment the CSQ
 
-		Group120Var1Def challenge(
+		Group120Var1 challenge(
 			seqNumber,
 			User::DEFAULT_ID,
 			hmacType,

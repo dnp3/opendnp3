@@ -27,9 +27,6 @@
 #include <opendnp3/app/AppConstants.h>
 
 #include <opendnp3/objects/Group120.h>
-#include <opendnp3/objects/Group120Var1.h>
-#include <opendnp3/objects/Group120Var5.h>
-#include <opendnp3/objects/Group120Var6.h>
 
 #include <openpal/container/DynamicBuffer.h>
 
@@ -152,7 +149,7 @@ namespace hex
 
 		HexSequence challengeBuff(challengeDataHex);
 
-		Group120Var1Def rsp(
+		Group120Var1 rsp(
 			csq,
 			user,
 			hmacType,
@@ -186,12 +183,12 @@ namespace hex
 		HexSequence challengeBuff(challenge);
 		HexSequence hmacBuff(hmac);
 
-		Group120Var5Def rsp;
+		Group120Var5 rsp;
 		rsp.keyChangeSeqNum = ksq;
 		rsp.userNum = user;
-		rsp.keywrapAlgorithm = keyWrap;
+		rsp.keyWrapAlgo = keyWrap;
 		rsp.keyStatus = status;
-		rsp.hmacType = hmacType;
+		rsp.hmacAlgo = hmacType;
 		rsp.challengeData = challengeBuff.ToReadOnly();
 		rsp.hmacValue = hmacBuff.ToReadOnly();
 		
@@ -214,10 +211,10 @@ namespace hex
 
 		HexSequence keyBuffer(keyWrapData);
 		
-		Group120Var6Def rsp;
-		rsp.seq = ksq;
-		rsp.user = user;
-		rsp.data = keyBuffer.ToReadOnly();		
+		Group120Var6 rsp;
+		rsp.keyChangeSeqNum = ksq;
+		rsp.userNum = user;
+		rsp.keyWrapData = keyBuffer.ToReadOnly();		
 
 		apdu.GetWriter().WriteFreeFormat(rsp);
 

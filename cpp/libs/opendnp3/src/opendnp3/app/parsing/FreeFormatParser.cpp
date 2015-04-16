@@ -71,16 +71,16 @@ namespace opendnp3
 		switch (record.enumeration)
 		{
 		case(GroupVariation::Group120Var1) :
-			return ParseFreeFormat(ParseAny<Group120Var1Def>, record, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
+			return ParseFreeFormat(ParseAny<Group120Var1>, record, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
 
 		case(GroupVariation::Group120Var2) :
-			return ParseFreeFormat(ParseAny<Group120Var2Def>, record, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
+			return ParseFreeFormat(ParseAny<Group120Var2>, record, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
 
 		case(GroupVariation::Group120Var5) :
-			return ParseFreeFormat(ParseAny<Group120Var5Def>, record, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
+			return ParseFreeFormat(ParseAny<Group120Var5>, record, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
 
 		case(GroupVariation::Group120Var6) :
-			return ParseFreeFormat(ParseAny<Group120Var6Def>, record, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
+			return ParseFreeFormat(ParseAny<Group120Var6>, record, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
 
 		default:
 			FORMAT_LOGGER_BLOCK(

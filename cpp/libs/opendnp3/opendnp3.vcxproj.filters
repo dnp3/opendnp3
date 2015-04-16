@@ -495,21 +495,6 @@
     <ClInclude Include="src\opendnp3\objects\Group120.h">
       <Filter>Header\objects</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\objects\Group120Var1.h">
-      <Filter>Header\objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\objects\Group120Var2.h">
-      <Filter>Header\objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\objects\Group120Var5.h">
-      <Filter>Header\objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\objects\Group120Var6.h">
-      <Filter>Header\objects</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\objects\Group120Var7.h">
-      <Filter>Header\objects</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\objects\SeqUserData.h">
       <Filter>Header\objects</Filter>
     </ClInclude>
@@ -870,9 +855,6 @@
     <ClInclude Include="src\opendnp3\app\ITransactable.h">
       <Filter>Source\app</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\objects\Group120Var9.h">
-      <Filter>Header\objects</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\OutstationAuthWrapper.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
@@ -1169,15 +1151,6 @@
     <ClCompile Include="src\opendnp3\objects\Group120.cpp">
       <Filter>Source\objects</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\objects\Group120Var1.cpp">
-      <Filter>Source\objects</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\objects\Group120Var5.cpp">
-      <Filter>Source\objects</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\objects\Group120Var7.cpp">
-      <Filter>Source\objects</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\objects\SeqUserData.cpp">
       <Filter>Source\objects</Filter>
     </ClCompile>
@@ -1330,9 +1303,6 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\app\parsing\FreeFormatParser.cpp">
       <Filter>Source\app\parsing</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\objects\Group120Var9.cpp">
-      <Filter>Source\objects</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\OutstationAuthWrapper.cpp">
       <Filter>Source\outstation</Filter>

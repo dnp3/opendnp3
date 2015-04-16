@@ -58,7 +58,7 @@ namespace secauthv5
 	}
 
 	// success constructor
-	AggModeHMACResult::AggModeHMACResult(const opendnp3::Group120Var9Def& hmac_, const openpal::ReadBufferView& objects_) :
+	AggModeHMACResult::AggModeHMACResult(const opendnp3::Group120Var9& hmac_, const openpal::ReadBufferView& objects_) :
 		result(ParseResult::OK),
 		hmac(hmac_),
 		objects(objects_)
@@ -168,7 +168,7 @@ namespace secauthv5
 
 		if (size == hmacSize)
 		{
-			Group120Var9Def hmac(trailer);
+			Group120Var9 hmac(trailer);
 			return AggModeHMACResult(hmac, objects);
 		}
 		else

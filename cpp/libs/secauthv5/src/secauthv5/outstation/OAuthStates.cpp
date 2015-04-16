@@ -74,12 +74,12 @@ namespace secauthv5
 		return this->IgnoreAggModeRequest(ostate.logger);
 	}
 
-	IOAuthState* OAuthStateIdle::OnAuthChallenge(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var1Def& challenge)
+	IOAuthState* OAuthStateIdle::OnAuthChallenge(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge)
 	{		
 		return this->IgnoreAuthChallenge(ostate.logger);
 	}
 	
-	IOAuthState* OAuthStateIdle::OnAuthReply(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var2Def& reply)
+	IOAuthState* OAuthStateIdle::OnAuthReply(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var2& reply)
 	{
 		return this->IgnoreAuthReply(ostate.logger);
 	}
@@ -90,7 +90,7 @@ namespace secauthv5
 		return this;
 	}
 
-	IOAuthState* OAuthStateIdle::OnChangeSessionKeys(SecurityState& sstate, opendnp3::OState& ostate, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6Def& change)
+	IOAuthState* OAuthStateIdle::OnChangeSessionKeys(SecurityState& sstate, opendnp3::OState& ostate, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change)
 	{
 		OSecActions::ProcessChangeSessionKeys(sstate, ostate, fragment, header, change);		
 		return this;
@@ -115,12 +115,12 @@ namespace secauthv5
 		return this->IgnoreAggModeRequest(ostate.logger);
 	}
 
-	IOAuthState* OAuthStateWaitForReply::OnAuthChallenge(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var1Def& challenge)
+	IOAuthState* OAuthStateWaitForReply::OnAuthChallenge(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge)
 	{
 		return this->IgnoreAuthChallenge(ostate.logger);
 	}
 
-	IOAuthState* OAuthStateWaitForReply::OnAuthReply(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var2Def& reply)
+	IOAuthState* OAuthStateWaitForReply::OnAuthReply(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var2& reply)
 	{
 		sstate.challengeTimer.Cancel();
 		OSecActions::ProcessAuthReply(sstate, ostate, header, reply);		
@@ -132,9 +132,9 @@ namespace secauthv5
 		return this->IgnoreRequestKeyStatus(ostate.logger, status.userNum);
 	}
 
-	IOAuthState* OAuthStateWaitForReply::OnChangeSessionKeys(SecurityState& sstate, opendnp3::OState& ostate, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6Def& change)
+	IOAuthState* OAuthStateWaitForReply::OnChangeSessionKeys(SecurityState& sstate, opendnp3::OState& ostate, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change)
 	{
-		return this->IgnoreChangeSessionKeys(ostate.logger, change.user);
+		return this->IgnoreChangeSessionKeys(ostate.logger, change.userNum);
 	}
 
 	IOAuthState* OAuthStateWaitForReply::OnChallengeTimeout(SecurityState& sstate, opendnp3::OState& ostate)

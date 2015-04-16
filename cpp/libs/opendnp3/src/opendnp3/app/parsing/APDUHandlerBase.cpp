@@ -60,22 +60,22 @@ void APDUHandlerBase::OnCountRequest(const HeaderRecord& record, uint16_t count)
 	Record(this->ProcessCountRequest(record, count));	
 }
 
-void APDUHandlerBase::OnFreeFormat(const HeaderRecord& record, const Group120Var1Def& value)
+void APDUHandlerBase::OnFreeFormat(const HeaderRecord& record, const Group120Var1& value)
 {
 	Record(this->ProcessFreeFormat(record, value));
 }
 
-void APDUHandlerBase::OnFreeFormat(const HeaderRecord& record, const Group120Var2Def& value)
+void APDUHandlerBase::OnFreeFormat(const HeaderRecord& record, const Group120Var2& value)
 {
 	Record(this->ProcessFreeFormat(record, value));
 }
 
-void APDUHandlerBase::OnFreeFormat(const HeaderRecord& record, const Group120Var5Def& value)
+void APDUHandlerBase::OnFreeFormat(const HeaderRecord& record, const Group120Var5& value)
 {
 	Record(this->ProcessFreeFormat(record, value));
 }
 
-void APDUHandlerBase::OnFreeFormat(const HeaderRecord& record, const Group120Var6Def& value)
+void APDUHandlerBase::OnFreeFormat(const HeaderRecord& record, const Group120Var6& value)
 {
 	Record(this->ProcessFreeFormat(record, value));
 }
@@ -265,22 +265,22 @@ IINField APDUHandlerBase::ProcessIIN(const HeaderRecord& record, const IterableB
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessFreeFormat(const HeaderRecord& record, const Group120Var1Def& value)
+IINField APDUHandlerBase::ProcessFreeFormat(const HeaderRecord& record, const Group120Var1& value)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessFreeFormat(const HeaderRecord& record, const Group120Var2Def& value)
+IINField APDUHandlerBase::ProcessFreeFormat(const HeaderRecord& record, const Group120Var2& value)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessFreeFormat(const HeaderRecord& record, const Group120Var5Def& value)
+IINField APDUHandlerBase::ProcessFreeFormat(const HeaderRecord& record, const Group120Var5& value)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessFreeFormat(const HeaderRecord& record, const Group120Var6Def& value)
+IINField APDUHandlerBase::ProcessFreeFormat(const HeaderRecord& record, const Group120Var6& value)
 {
 	return ProcessUnsupportedHeader();
 }

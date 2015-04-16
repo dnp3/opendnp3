@@ -25,7 +25,7 @@
 #include <openpal/crypto/ICryptoProvider.h>
 #include <openpal/logging/Logger.h>
 
-#include <opendnp3/objects/Group120Var5.h>
+#include <opendnp3/objects/Group120.h>
 #include <opendnp3/app/APDUResponse.h>
 
 #include "secauthv5/AuthConstants.h"
@@ -64,7 +64,7 @@ class KeyChangeState
 	openpal::ICryptoProvider* pProvider;
 	uint32_t keyChangeSeqNum;
 	openpal::StaticBuffer<AuthConstants::MAX_CHALLENGE_DATA_SIZE> challengeData;
-	opendnp3::Group120Var5Def statusRsp;
+	opendnp3::Group120Var5 statusRsp;
 	
 	
 };

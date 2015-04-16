@@ -31,19 +31,19 @@ namespace opendnp3 {
 // ------- Group120Var1 -------
 
 Group120Var1::Group120Var1() : 
-  challengeSeqNum(0), userNum(0), macAlgo(HMACType::UNKNOWN), challengeReason(ChallengeReason::UNKNOWN)
+  challengeSeqNum(0), userNum(0), hmacAlgo(HMACType::UNKNOWN), challengeReason(ChallengeReason::UNKNOWN)
 {}
 
 Group120Var1::Group120Var1(
   uint32_t challengeSeqNum_,
   uint16_t userNum_,
-  HMACType macAlgo_,
+  HMACType hmacAlgo_,
   ChallengeReason challengeReason_,
   const openpal::ReadBufferView& challengeData_
 ) : 
   challengeSeqNum(challengeSeqNum_),
   userNum(userNum_),
-  macAlgo(macAlgo_),
+  hmacAlgo(hmacAlgo_),
   challengeReason(challengeReason_),
   challengeData(challengeData_)
 {}
@@ -64,7 +64,7 @@ bool Group120Var1::Read(const ReadBufferView& buffer)
 
   this->challengeSeqNum = UInt32::ReadBuffer(copy);
   this->userNum = UInt16::ReadBuffer(copy);
-  this->macAlgo = HMACTypeFromType(UInt8::ReadBuffer(copy));
+  this->hmacAlgo = HMACTypeFromType(UInt8::ReadBuffer(copy));
   this->challengeReason = ChallengeReasonFromType(UInt8::ReadBuffer(copy));
 
   this->challengeData = copy; // whatever is left over
@@ -81,7 +81,7 @@ bool Group120Var1::Write(openpal::WriteBufferView& buffer) const
 
   UInt32::WriteBuffer(buffer, this->challengeSeqNum);
   UInt16::WriteBuffer(buffer, this->userNum);
-  UInt8::WriteBuffer(buffer, HMACTypeToType(this->macAlgo));
+  UInt8::WriteBuffer(buffer, HMACTypeToType(this->hmacAlgo));
   UInt8::WriteBuffer(buffer, ChallengeReasonToType(this->challengeReason));
 
   challengeData.CopyTo(buffer);
@@ -98,16 +98,16 @@ Group120Var2::Group120Var2() :
 Group120Var2::Group120Var2(
   uint32_t challengeSeqNum_,
   uint16_t userNum_,
-  const openpal::ReadBufferView& hmac_
+  const openpal::ReadBufferView& hmacValue_
 ) : 
   challengeSeqNum(challengeSeqNum_),
   userNum(userNum_),
-  hmac(hmac_)
+  hmacValue(hmacValue_)
 {}
 
 uint32_t Group120Var2::Size() const
 {
-  return MIN_SIZE + hmac.Size();
+  return MIN_SIZE + hmacValue.Size();
 }
 
 bool Group120Var2::Read(const ReadBufferView& buffer)
@@ -122,7 +122,7 @@ bool Group120Var2::Read(const ReadBufferView& buffer)
   this->challengeSeqNum = UInt32::ReadBuffer(copy);
   this->userNum = UInt16::ReadBuffer(copy);
 
-  this->hmac = copy; // whatever is left over
+  this->hmacValue = copy; // whatever is left over
 
   return true;
 }
@@ -137,7 +137,7 @@ bool Group120Var2::Write(openpal::WriteBufferView& buffer) const
   UInt32::WriteBuffer(buffer, this->challengeSeqNum);
   UInt16::WriteBuffer(buffer, this->userNum);
 
-  hmac.CopyTo(buffer);
+  hmacValue.CopyTo(buffer);
 
   return true;
 }
@@ -169,7 +169,7 @@ bool Group120Var4::Write(const Group120Var4& arg, openpal::WriteBufferView& buff
 // ------- Group120Var5 -------
 
 Group120Var5::Group120Var5() : 
-  keyChangeSeqNum(0), userNum(0), keyWrapAlgo(KeyWrapAlgorithm::UNDEFINED), keyStatus(KeyStatus::UNDEFINED), macAlgo(HMACType::UNKNOWN)
+  keyChangeSeqNum(0), userNum(0), keyWrapAlgo(KeyWrapAlgorithm::UNDEFINED), keyStatus(KeyStatus::UNDEFINED), hmacAlgo(HMACType::UNKNOWN)
 {}
 
 Group120Var5::Group120Var5(
@@ -177,22 +177,22 @@ Group120Var5::Group120Var5(
   uint16_t userNum_,
   KeyWrapAlgorithm keyWrapAlgo_,
   KeyStatus keyStatus_,
-  HMACType macAlgo_,
+  HMACType hmacAlgo_,
   const openpal::ReadBufferView& challengeData_,
-  const openpal::ReadBufferView& hmac_
+  const openpal::ReadBufferView& hmacValue_
 ) : 
   keyChangeSeqNum(keyChangeSeqNum_),
   userNum(userNum_),
   keyWrapAlgo(keyWrapAlgo_),
   keyStatus(keyStatus_),
-  macAlgo(macAlgo_),
+  hmacAlgo(hmacAlgo_),
   challengeData(challengeData_),
-  hmac(hmac_)
+  hmacValue(hmacValue_)
 {}
 
 uint32_t Group120Var5::Size() const
 {
-  return MIN_SIZE + challengeData.Size() + hmac.Size();
+  return MIN_SIZE + challengeData.Size() + hmacValue.Size();
 }
 
 bool Group120Var5::Read(const ReadBufferView& buffer)
@@ -208,14 +208,14 @@ bool Group120Var5::Read(const ReadBufferView& buffer)
   this->userNum = UInt16::ReadBuffer(copy);
   this->keyWrapAlgo = KeyWrapAlgorithmFromType(UInt8::ReadBuffer(copy));
   this->keyStatus = KeyStatusFromType(UInt8::ReadBuffer(copy));
-  this->macAlgo = HMACTypeFromType(UInt8::ReadBuffer(copy));
+  this->hmacAlgo = HMACTypeFromType(UInt8::ReadBuffer(copy));
 
   if(!IVariableLength::ReadUInt16PrefixedField(copy, this->challengeData))
   {
     return false;
   }
 
-  this->hmac = copy; // whatever is left over
+  this->hmacValue = copy; // whatever is left over
 
   return true;
 }
@@ -236,12 +236,12 @@ bool Group120Var5::Write(openpal::WriteBufferView& buffer) const
   UInt16::WriteBuffer(buffer, this->userNum);
   UInt8::WriteBuffer(buffer, KeyWrapAlgorithmToType(this->keyWrapAlgo));
   UInt8::WriteBuffer(buffer, KeyStatusToType(this->keyStatus));
-  UInt8::WriteBuffer(buffer, HMACTypeToType(this->macAlgo));
+  UInt8::WriteBuffer(buffer, HMACTypeToType(this->hmacAlgo));
 
   UInt16::WriteBuffer(buffer, static_cast<uint16_t>(challengeData.Size()));
   challengeData.CopyTo(buffer);
 
-  hmac.CopyTo(buffer);
+  hmacValue.CopyTo(buffer);
 
   return true;
 }
@@ -370,14 +370,14 @@ Group120Var9::Group120Var9()
 {}
 
 Group120Var9::Group120Var9(
-  const openpal::ReadBufferView& hmac_
+  const openpal::ReadBufferView& hmacValue_
 ) : 
-  hmac(hmac_)
+  hmacValue(hmacValue_)
 {}
 
 uint32_t Group120Var9::Size() const
 {
-  return MIN_SIZE + hmac.Size();
+  return MIN_SIZE + hmacValue.Size();
 }
 
 bool Group120Var9::Read(const ReadBufferView& buffer)
@@ -389,7 +389,7 @@ bool Group120Var9::Read(const ReadBufferView& buffer)
 
   ReadBufferView copy(buffer); //mutable copy for parsing
 
-  this->hmac = copy; // whatever is left over
+  this->hmacValue = copy; // whatever is left over
 
   return true;
 }
@@ -401,7 +401,7 @@ bool Group120Var9::Write(openpal::WriteBufferView& buffer) const
     return false;
   }
 
-  hmac.CopyTo(buffer);
+  hmacValue.CopyTo(buffer);
 
   return true;
 }

@@ -24,8 +24,7 @@
 #include <openpal/util/Uncopyable.h>
 #include <openpal/util/Comparisons.h>
 
-#include <opendnp3/objects/Group120Var1.h>
-#include <opendnp3/objects/Group120Var5.h>
+#include <opendnp3/objects/Group120.h>
 
 #include <cstdint>
 
@@ -45,7 +44,7 @@ struct AuthConstants : openpal::PureStatic
 
 	// the maximum size of an outstation challenge response
 	// 4 bytes header + 6 bytes obj header  = 10	
-	const static uint32_t MAX_CHALLENGE_RESPONSE_FRAGMENT_SIZE = 10 + opendnp3::Group120Var1Def::MINIMUM_SIZE + MAX_CHALLENGE_DATA_SIZE;
+	const static uint32_t MAX_CHALLENGE_RESPONSE_FRAGMENT_SIZE = 10 + opendnp3::Group120Var1::MIN_SIZE + MAX_CHALLENGE_DATA_SIZE;
 
 	static uint32_t GetBoundedSessionKeySize(uint32_t size)
 	{

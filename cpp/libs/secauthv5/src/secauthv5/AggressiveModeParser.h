@@ -26,12 +26,9 @@
 #include <openpal/logging/Logger.h>
 
 #include <opendnp3/app/parsing/ParseResult.h>
-#include <opendnp3/objects/Group120Var5.h>
+#include <opendnp3/objects/Group120.h>
 
 #include <cstdint>
-
-#include <opendnp3/objects/Group120.h>
-#include <opendnp3/objects/Group120Var9.h>
 
 namespace secauthv5
 {
@@ -59,11 +56,11 @@ struct AggModeHMACResult
 	AggModeHMACResult(opendnp3::ParseResult result_);
 
 	// success constructor
-	AggModeHMACResult(const opendnp3::Group120Var9Def& hmac, const openpal::ReadBufferView& objects);
+	AggModeHMACResult(const opendnp3::Group120Var9& hmac, const openpal::ReadBufferView& objects);
 
 
 	opendnp3::ParseResult result;	
-	opendnp3::Group120Var9Def hmac;
+	opendnp3::Group120Var9 hmac;
 	openpal::ReadBufferView objects;
 
 	AggModeHMACResult() = delete;

@@ -166,7 +166,7 @@ bool HeaderWriter::WriteFreeFormat(const ValueType& value)
 	{	
 		openpal::UInt8::WriteBuffer(*position, 1);
 		openpal::UInt16::WriteBuffer(*position, value.Size());
-		ValueType::Write(value, *position);
+		value.Write(*position);		
 		return true;
 	}
 	else

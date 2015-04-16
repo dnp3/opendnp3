@@ -32,7 +32,7 @@ object FixedSizeField {
   val ksq = FixedSizeField("keyChangeSeqNum", UInt32Field)
   val user = FixedSizeField("userNum", UInt16Field)
   val assocId = FixedSizeField("assocId", UInt16Field)
-  val macAlgo = FixedSizeField("macAlgo", EnumFieldType(HMACType()))
+  val macAlgo = FixedSizeField("hmacAlgo", EnumFieldType(HMACType()))
   val keyWrapAlgo = FixedSizeField("keyWrapAlgo", EnumFieldType(KeyWrapAlgorithm()))
   val keyStatus = FixedSizeField("keyStatus", EnumFieldType(KeyStatus()))
   val challengeReason = FixedSizeField("challengeReason", EnumFieldType(ChallengeReason()))
@@ -61,7 +61,7 @@ object FixedSizeField {
 
 object VariableFields {
   val challengeData = VariableField("challengeData")
-  val hmac = VariableField("hmac")
+  val hmac = VariableField("hmacValue")
   val keyWrapData = VariableField("keyWrapData")
   val errorText = VariableField("errorText")
   val certificate = VariableField("certificate")
