@@ -21,6 +21,7 @@
 #include "Group120.h"
 
 #include <openpal/serialization/Serialization.h>
+#include "opendnp3/app/parsing/PrefixFields.h"
 #include <openpal/serialization/Format.h>
 #include <openpal/serialization/Parse.h>
 
@@ -210,7 +211,7 @@ bool Group120Var5::Read(const ReadBufferView& buffer)
   this->keyStatus = KeyStatusFromType(UInt8::ReadBuffer(copy));
   this->hmacAlgo = HMACTypeFromType(UInt8::ReadBuffer(copy));
 
-  if(!IVariableLength::ReadUInt16PrefixedField(copy, this->challengeData))
+  if(!PrefixFields::Read(copy, challengeData))
   {
     return false;
   }

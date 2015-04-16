@@ -46,10 +46,6 @@ public:
 	// attempt to read the object from the input buffer
 	virtual bool Read(const openpal::ReadBufferView& input) = 0;
 
-protected:
-
-	static bool ReadUInt16PrefixedField(openpal::ReadBufferView& input, openpal::ReadBufferView& dest);
-
 };
 
 }

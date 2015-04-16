@@ -888,6 +888,9 @@
     <ClInclude Include="src\opendnp3\gen\KeyChangeMethod.h">
       <Filter>Header\gen</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\app\parsing\PrefixFields.h">
+      <Filter>Header\app\parsing</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\TimeAndInterval.cpp">
@@ -1306,9 +1309,6 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\objects\Group122.cpp">
       <Filter>Source\objects</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\app\IVariableLength.cpp">
-      <Filter>Source\app</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\app\HeaderWriter.cpp">
       <Filter>Source\app</Filter>

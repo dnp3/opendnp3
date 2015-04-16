@@ -18,7 +18,8 @@ object GroupVariationIncludes {
   )
 
   def implVariableLength: Iterator[String] = Iterator(
-    "<openpal/serialization/Serialization.h>"
+    "<openpal/serialization/Serialization.h>",
+    """"opendnp3/app/parsing/PrefixFields.h""""
   )
 
  }

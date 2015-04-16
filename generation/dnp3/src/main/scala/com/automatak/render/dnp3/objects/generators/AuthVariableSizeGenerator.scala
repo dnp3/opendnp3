@@ -139,13 +139,14 @@ object AuthVariableSizeGenerator {
         if(x.fixedFields.isEmpty) Iterator.empty else x.fixedFields.map(toReadOp).iterator ++ space
       }
 
-      def prefixedRead(x : VariableField) : Iterator[String] =  {
-        bailoutIf("!IVariableLength::ReadUInt16PrefixedField(copy, this->%s)".format(x.name)) ++ space
+      def prefixedRead(x : List[VariableField]) : Iterator[String] =  {
+
+        def names = x.map(_.name).mkString(", ")
+
+        bailoutIf("!PrefixFields::Read(copy, %s)".format(names)) ++ space
       }
 
-      def prefixedReads : Iterator[String] = if(x.lengthFields.isEmpty) Iterator.empty else {
-        x.lengthFields.map(prefixedRead).flatten.toIterator
-      }
+      def prefixedReads : Iterator[String] = if(x.lengthFields.isEmpty) Iterator.empty else prefixedRead(x.lengthFields)
 
       def remainderRead: Iterator[String] = x.remainder match {
         case Some(x) => Iterator("this->%s = copy; // whatever is left over".format(x.name)) ++ space
