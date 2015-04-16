@@ -2,6 +2,7 @@ package com.automatak.render.dnp3.objects
 
 import com.automatak.render.EnumModel
 import com.automatak.render.dnp3.enums._
+import com.automatak.render.dnp3.objects.generators.FixedSizeHelpers
 
 sealed trait FieldType
 sealed class FixedSizeFieldType(val numBytes: Int) extends FieldType {
@@ -16,7 +17,7 @@ case object SInt16Field extends FixedSizeFieldType(2)
 case object SInt32Field extends FixedSizeFieldType(4)
 case object Float32Field extends FixedSizeFieldType(4)
 case object Float64Field extends FixedSizeFieldType(8)
-case class EnumFieldType(model: EnumModel) extends FixedSizeFieldType(1) {
+sealed case class EnumFieldType(model: EnumModel) extends FixedSizeFieldType(1) {
   override def defaultValue: String = "%s::%s".format(model.name, model.default.displayName)
 }
 
@@ -66,8 +67,30 @@ object VariableFields {
   val certificate = VariableField("certificate")
 }
 
-case class FixedSizeField(name: String, typ: FixedSizeFieldType)
+sealed trait Field {
+  def name: String
+  def cppType: String
+  def cppArgument: String = cppType
+}
 
-case class VariableField(name: String)
+sealed case class FixedSizeField(name: String, typ: FixedSizeFieldType) extends Field {
+
+  def cppType: String = typ match {
+    case UInt8Field => "uint8_t"
+    case UInt16Field => "uint16_t"
+    case UInt32Field => "uint32_t"
+    case UInt48Field => "DNPTime"
+    case SInt16Field => "int16_t"
+    case SInt32Field => "int32_t"
+    case Float32Field => "float"
+    case Float64Field => "double"
+    case EnumFieldType(model: EnumModel) => model.name
+  }
+
+}
+sealed case class VariableField(name: String) extends Field {
+  def cppType: String = "openpal::ReadBufferView"
+  override def cppArgument = "const openpal::ReadBufferView&"
+}
 
 

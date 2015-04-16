@@ -6,11 +6,15 @@ import com.automatak.render.dnp3.objects._
 
 object AuthVariableSizeGenerator {
 
+  case class FieldInfo(name: String, typ: String)
+
   def bailoutIf(condition: String)(implicit i: Indentation) : Iterator[String] = Iterator("if(%s)".format(condition)) ++ bracket(Iterator("return false;"))
+
+  def fields(x: AuthVariableSize): List[Field] = x.fixedFields ::: x.lengthFields ::: x.remainder.toList
 
   def header(x: AuthVariableSize)(implicit i: Indentation): Iterator[String] = {
 
-    def getFieldString(x: FixedSizeField): String = "%s %s;".format(FixedSizeHelpers.getCppFieldType(x.typ), x.name)
+    def getFieldString(x: FixedSizeField): String = "%s %s;".format(x.cppType, x.name)
 
     def getVariableFieldString(name: String): String = "openpal::ReadBufferView %s;".format(name)
 
@@ -22,13 +26,32 @@ object AuthVariableSizeGenerator {
 
     def defaultConstructor = Iterator("%s();".format(x.name))
 
+    def primaryConstructor(implicit indent: Indentation) : Iterator[String] = {
+
+      val all = fields(x)
+      val count = all.count(_ => true)
+      val last = all.last
+      val front = all.take(count-1)
+
+      def firstArgs : Iterator[String] = front.map(f => "%s %s,".format(f.cppArgument, f.name)).toIterator
+      def lastArg : Iterator[String] = Iterator("%s %s".format(last.cppArgument, last.name))
+
+      Iterator("%s(".format(x.name)) ++ indent {
+        firstArgs ++ lastArg
+      } ++ Iterator(");")
+    }
+
     def sizeSignature: Iterator[String] = Iterator("virtual uint32_t Size() const override final;")
 
     def readSignature: Iterator[String] = Iterator("virtual bool Read(const openpal::ReadBufferView&) override final;")
 
     def writeSignature: Iterator[String] = Iterator("virtual bool Write(openpal::WriteBufferView&) const override final;")
 
+    space ++
     defaultConstructor ++
+    space ++
+    primaryConstructor ++
+    space ++
     sizeSignature ++
     readSignature ++
     writeSignature ++
@@ -48,6 +71,27 @@ object AuthVariableSizeGenerator {
 
       if(x.fixedFields.isEmpty) Iterator("%s::%s()".format(x.name, x.name),"{}")
       else Iterator("%s::%s() : ".format(x.name, x.name)) ++ initializers ++ Iterator("{}")
+    }
+
+    def primaryConstructor(implicit indent: Indentation) : Iterator[String] = {
+
+      val all = fields(x)
+      val count = all.count(_ => true)
+      val last = all.last
+      val front = all.take(count-1)
+
+      def firstArgs : Iterator[String] = front.map(f => "%s %s_,".format(f.cppArgument, f.name)).toIterator
+      def lastArg : Iterator[String] = Iterator("%s %s_".format(last.cppArgument, last.name))
+
+      def firstDefs : Iterator[String] = front.map(f => "%s(%s_),".format(f.name, f.name)).toIterator
+      def lastDefs : Iterator[String] = Iterator("%s(%s_)".format(last.name, last.name))
+
+      Iterator("%s::%s(".format(x.name, x.name)) ++ indent {
+        firstArgs ++ lastArg
+      } ++ Iterator(") : ") ++ indent {
+        firstDefs ++ lastDefs
+      } ++
+      Iterator("{}")
     }
 
     def readSignature: Iterator[String] = Iterator("bool %s::Read(const ReadBufferView& buffer)".format(x.name))
@@ -172,6 +216,8 @@ object AuthVariableSizeGenerator {
     }
 
     defaultConstructor ++
+    space ++
+    primaryConstructor ++
     space ++
     sizeFunction ++
     space ++

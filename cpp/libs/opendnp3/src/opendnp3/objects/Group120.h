@@ -38,7 +38,17 @@ namespace opendnp3 {
 struct Group120Var1 : public IVariableLength
 {
   static GroupVariationID ID() { return GroupVariationID(120,1); }
+
   Group120Var1();
+
+  Group120Var1(
+    uint32_t challengeSeqNum,
+    uint16_t userNum,
+    HMACType macAlgo,
+    ChallengeReason challengeReason,
+    const openpal::ReadBufferView& challengeData
+  );
+
   virtual uint32_t Size() const override final;
   virtual bool Read(const openpal::ReadBufferView&) override final;
   virtual bool Write(openpal::WriteBufferView&) const override final;
@@ -57,7 +67,15 @@ struct Group120Var1 : public IVariableLength
 struct Group120Var2 : public IVariableLength
 {
   static GroupVariationID ID() { return GroupVariationID(120,2); }
+
   Group120Var2();
+
+  Group120Var2(
+    uint32_t challengeSeqNum,
+    uint16_t userNum,
+    const openpal::ReadBufferView& hmac
+  );
+
   virtual uint32_t Size() const override final;
   virtual bool Read(const openpal::ReadBufferView&) override final;
   virtual bool Write(openpal::WriteBufferView&) const override final;
@@ -97,7 +115,19 @@ struct Group120Var4
 struct Group120Var5 : public IVariableLength
 {
   static GroupVariationID ID() { return GroupVariationID(120,5); }
+
   Group120Var5();
+
+  Group120Var5(
+    uint32_t keyChangeSeqNum,
+    uint16_t userNum,
+    KeyWrapAlgorithm keyWrapAlgo,
+    KeyStatus keyStatus,
+    HMACType macAlgo,
+    const openpal::ReadBufferView& challengeData,
+    const openpal::ReadBufferView& hmac
+  );
+
   virtual uint32_t Size() const override final;
   virtual bool Read(const openpal::ReadBufferView&) override final;
   virtual bool Write(openpal::WriteBufferView&) const override final;
@@ -118,7 +148,15 @@ struct Group120Var5 : public IVariableLength
 struct Group120Var6 : public IVariableLength
 {
   static GroupVariationID ID() { return GroupVariationID(120,6); }
+
   Group120Var6();
+
+  Group120Var6(
+    uint32_t keyChangeSeqNum,
+    uint16_t userNum,
+    const openpal::ReadBufferView& keyWrapData
+  );
+
   virtual uint32_t Size() const override final;
   virtual bool Read(const openpal::ReadBufferView&) override final;
   virtual bool Write(openpal::WriteBufferView&) const override final;
@@ -135,7 +173,18 @@ struct Group120Var6 : public IVariableLength
 struct Group120Var7 : public IVariableLength
 {
   static GroupVariationID ID() { return GroupVariationID(120,7); }
+
   Group120Var7();
+
+  Group120Var7(
+    uint32_t challengeSeqNum,
+    uint16_t userNum,
+    uint16_t assocId,
+    AuthErrorCode errorCode,
+    DNPTime time,
+    const openpal::ReadBufferView& errorText
+  );
+
   virtual uint32_t Size() const override final;
   virtual bool Read(const openpal::ReadBufferView&) override final;
   virtual bool Write(openpal::WriteBufferView&) const override final;
@@ -161,7 +210,13 @@ struct Group120Var8
 struct Group120Var9 : public IVariableLength
 {
   static GroupVariationID ID() { return GroupVariationID(120,9); }
+
   Group120Var9();
+
+  Group120Var9(
+    const openpal::ReadBufferView& hmac
+  );
+
   virtual uint32_t Size() const override final;
   virtual bool Read(const openpal::ReadBufferView&) override final;
   virtual bool Write(openpal::WriteBufferView&) const override final;

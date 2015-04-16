@@ -7,10 +7,10 @@ object FixedSizeGenerator {
 
   def header(x: FixedSize)(implicit i: Indentation): Iterator[String] = {
 
-    def getFieldString(x: FixedSizeField): String = FixedSizeHelpers.getCppFieldType(x.typ) + " " + x.name + ";"
+    def getFieldString(x: FixedSizeField): String = x.cppType + " " + x.name + ";"
 
     def typedefs(x: FixedSizeField): Iterator[String] = {
-      if(x.name == "value") Iterator("typedef %s ValueType;".format(FixedSizeHelpers.getCppFieldType(x.typ)))
+      if(x.name == "value") Iterator("typedef %s ValueType;".format(x.cppType))
       else Iterator.empty
     }
 

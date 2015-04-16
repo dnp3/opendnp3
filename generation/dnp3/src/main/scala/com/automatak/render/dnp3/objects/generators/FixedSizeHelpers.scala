@@ -6,18 +6,6 @@ import com.automatak.render.dnp3.objects._
 
 object FixedSizeHelpers {
 
-  def getCppFieldType(x: FixedSizeFieldType): String = x match {
-    case UInt8Field => "uint8_t"
-    case UInt16Field => "uint16_t"
-    case UInt32Field => "uint32_t"
-    case UInt48Field => "DNPTime"
-    case SInt16Field => "int16_t"
-    case SInt32Field => "int32_t"
-    case Float32Field => "float"
-    case Float64Field => "double"
-    case EnumFieldType(model: EnumModel) => model.name
-  }
-
   def getCppFieldTypeParser(x: FixedSizeFieldType): String = x match {
     case UInt8Field => "UInt8"
     case UInt16Field => "UInt16"
