@@ -41,7 +41,12 @@ uint32_t Group120Var1::Size() const
 
 bool Group120Var1::Read(const ReadBufferView& buffer)
 {
-  return false;
+  if(buffer.Size() < Group120Var1::MIN_SIZE)
+  {
+    return false;
+  }
+
+  return true;
 }
 
 bool Group120Var1::Write(openpal::WriteBufferView& buffer) const
@@ -74,7 +79,12 @@ uint32_t Group120Var2::Size() const
 
 bool Group120Var2::Read(const ReadBufferView& buffer)
 {
-  return false;
+  if(buffer.Size() < Group120Var2::MIN_SIZE)
+  {
+    return false;
+  }
+
+  return true;
 }
 
 bool Group120Var2::Write(openpal::WriteBufferView& buffer) const
@@ -129,7 +139,12 @@ uint32_t Group120Var5::Size() const
 
 bool Group120Var5::Read(const ReadBufferView& buffer)
 {
-  return false;
+  if(buffer.Size() < Group120Var5::MIN_SIZE)
+  {
+    return false;
+  }
+
+  return true;
 }
 
 bool Group120Var5::Write(openpal::WriteBufferView& buffer) const
@@ -171,7 +186,12 @@ uint32_t Group120Var6::Size() const
 
 bool Group120Var6::Read(const ReadBufferView& buffer)
 {
-  return false;
+  if(buffer.Size() < Group120Var6::MIN_SIZE)
+  {
+    return false;
+  }
+
+  return true;
 }
 
 bool Group120Var6::Write(openpal::WriteBufferView& buffer) const
@@ -202,7 +222,12 @@ uint32_t Group120Var7::Size() const
 
 bool Group120Var7::Read(const ReadBufferView& buffer)
 {
-  return false;
+  if(buffer.Size() < Group120Var7::MIN_SIZE)
+  {
+    return false;
+  }
+
+  return true;
 }
 
 bool Group120Var7::Write(openpal::WriteBufferView& buffer) const
@@ -235,7 +260,12 @@ uint32_t Group120Var9::Size() const
 
 bool Group120Var9::Read(const ReadBufferView& buffer)
 {
-  return false;
+  if(buffer.Size() < Group120Var9::MIN_SIZE)
+  {
+    return false;
+  }
+
+  return true;
 }
 
 bool Group120Var9::Write(openpal::WriteBufferView& buffer) const

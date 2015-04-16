@@ -64,8 +64,15 @@ object AuthVariableSizeGenerator {
       Iterator("return MIN_SIZE + %s;".format(variableFieldSizeSumation))
     }
 
-    def readFunction: Iterator[String] = readSignature ++ bracket {
-      Iterator("return false;")
+    def readFunction: Iterator[String] = {
+
+      def minSizeBailout = Iterator("if(buffer.Size() < %s::MIN_SIZE)".format(x.name)) ++ bracket(Iterator("return false;"))
+
+      readSignature ++ bracket {
+        minSizeBailout ++
+        space ++
+        Iterator("return true;")
+      }
     }
 
     def writeFunction: Iterator[String] = {
