@@ -39,6 +39,8 @@ struct Group120Var1 : public IVariableLength
 {
   static GroupVariationID ID() { return GroupVariationID(120,1); }
 
+  virtual GroupVariationID InstanceID() const override final { return Group120Var1::ID(); }
+
   Group120Var1();
 
   Group120Var1(
@@ -67,6 +69,8 @@ struct Group120Var1 : public IVariableLength
 struct Group120Var2 : public IVariableLength
 {
   static GroupVariationID ID() { return GroupVariationID(120,2); }
+
+  virtual GroupVariationID InstanceID() const override final { return Group120Var2::ID(); }
 
   Group120Var2();
 
@@ -116,6 +120,8 @@ struct Group120Var5 : public IVariableLength
 {
   static GroupVariationID ID() { return GroupVariationID(120,5); }
 
+  virtual GroupVariationID InstanceID() const override final { return Group120Var5::ID(); }
+
   Group120Var5();
 
   Group120Var5(
@@ -149,6 +155,8 @@ struct Group120Var6 : public IVariableLength
 {
   static GroupVariationID ID() { return GroupVariationID(120,6); }
 
+  virtual GroupVariationID InstanceID() const override final { return Group120Var6::ID(); }
+
   Group120Var6();
 
   Group120Var6(
@@ -173,6 +181,8 @@ struct Group120Var6 : public IVariableLength
 struct Group120Var7 : public IVariableLength
 {
   static GroupVariationID ID() { return GroupVariationID(120,7); }
+
+  virtual GroupVariationID InstanceID() const override final { return Group120Var7::ID(); }
 
   Group120Var7();
 
@@ -210,6 +220,8 @@ struct Group120Var8
 struct Group120Var9 : public IVariableLength
 {
   static GroupVariationID ID() { return GroupVariationID(120,9); }
+
+  virtual GroupVariationID InstanceID() const override final { return Group120Var9::ID(); }
 
   Group120Var9();
 

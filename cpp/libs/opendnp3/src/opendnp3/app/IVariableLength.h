@@ -23,6 +23,8 @@
 
 #include <openpal/container/WriteBufferView.h>
 
+#include "opendnp3/app/GroupVariationID.h"
+
 namespace opendnp3
 {
 
@@ -32,6 +34,8 @@ class IVariableLength
 public:
 
 	virtual ~IVariableLength() {}
+
+	virtual GroupVariationID InstanceID() const = 0;
 
 	// The size of the object in its current configuration
 	virtual uint32_t Size() const = 0;

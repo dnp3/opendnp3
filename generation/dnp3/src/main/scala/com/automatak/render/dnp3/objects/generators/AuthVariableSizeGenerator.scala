@@ -26,6 +26,8 @@ object AuthVariableSizeGenerator {
 
     def defaultConstructor = Iterator("%s();".format(x.name))
 
+    def Id = Iterator("virtual GroupVariationID InstanceID() const override final { return %s::ID(); }".format(x.name))
+
     def primaryConstructor(implicit indent: Indentation) : Iterator[String] = {
 
       val all = fields(x)
@@ -47,6 +49,8 @@ object AuthVariableSizeGenerator {
 
     def writeSignature: Iterator[String] = Iterator("virtual bool Write(openpal::WriteBufferView&) const override final;")
 
+    space ++
+    Id ++
     space ++
     defaultConstructor ++
     space ++

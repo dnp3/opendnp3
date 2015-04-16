@@ -77,4 +77,19 @@ bool HeaderWriter::WriteHeaderWithReserve(GroupVariationID id, QualifierCode qc,
 	return (position->Size() < (3 + reserve)) ? false : WriteHeader(id, qc);
 }
 
+bool HeaderWriter::WriteFreeFormat(const IVariableLength& value)
+{
+	uint32_t reserveSize = 1 + openpal::UInt16::SIZE + value.Size();
+	if (this->WriteHeaderWithReserve(value.InstanceID(), QualifierCode::UINT16_FREE_FORMAT, reserveSize))
+	{
+		openpal::UInt8::WriteBuffer(*position, 1);
+		openpal::UInt16::WriteBuffer(*position, value.Size());
+		return value.Write(*position);		
+	}
+	else
+	{
+		return false;
+	}
+}
+
 }
