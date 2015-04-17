@@ -40,24 +40,14 @@ TEST_CASE(SUITE("ChangeSessionKeys-AES128-SHA256-16"))
 {	
 	OutstationSecAuthTest test;	
 	test.AddUser(User::Default(), UpdateKeyMode::AES128, 0xFF);
-	TestSessionKeyChange(
-		test, 
-		User::Default(),
-		KeyWrapAlgorithm::AES_128,
-		HMACMode::SHA256_TRUNC_16
-	);
+	TestSessionKeyChange(test, User::Default(), KeyWrapAlgorithm::AES_128,HMACMode::SHA256_TRUNC_16);
 }
 
 TEST_CASE(SUITE("ChangeSessionKeys-AES256-SHA256-16"))
 {
 	OutstationSecAuthTest test;	
 	test.AddUser(User::Default(), UpdateKeyMode::AES256, 0xFF);
-	TestSessionKeyChange(
-		test,
-		User::Default(),
-		KeyWrapAlgorithm::AES_256,
-		HMACMode::SHA256_TRUNC_16
-	);
+	TestSessionKeyChange(test, User::Default(), KeyWrapAlgorithm::AES_256, HMACMode::SHA256_TRUNC_16);
 }
 
 TEST_CASE(SUITE("ChangeSessionKeys-AES256-SHA1-8"))
@@ -67,12 +57,7 @@ TEST_CASE(SUITE("ChangeSessionKeys-AES256-SHA1-8"))
 
 	OutstationSecAuthTest test(settings);
 	test.AddUser(User::Default(), UpdateKeyMode::AES256, 0xFF);
-	TestSessionKeyChange(
-		test,
-		User::Default(),
-		KeyWrapAlgorithm::AES_256,
-		HMACMode::SHA1_TRUNC_8
-	);
+	TestSessionKeyChange(test, User::Default(), KeyWrapAlgorithm::AES_256, HMACMode::SHA1_TRUNC_8);
 }
 
 TEST_CASE(SUITE("Critical requests are challenged when session keys are not initialized"))
@@ -151,7 +136,7 @@ void TestSessionKeyChange(OutstationSecAuthTest& test, User user, KeyWrapAlgorit
 	test.SendToOutstation(hex::RequestKeyStatus(0, 1));
 
 	auto keyStatusRsp = hex::KeyStatusResponse(
-		IINField(IINBit::DEVICE_RESTART),
+		IINBit::DEVICE_RESTART,
 		0, // seq
 		1, // ksq
 		user.GetId(),
@@ -173,7 +158,7 @@ void TestSessionKeyChange(OutstationSecAuthTest& test, User user, KeyWrapAlgorit
 	test.SendToOutstation(hex::KeyChangeRequest(0, 1, 1, "DE AD BE EF"));
 
 	auto keyStatusRspFinal = hex::KeyStatusResponse(
-		IINField(IINBit::DEVICE_RESTART),
+		IINBit::DEVICE_RESTART,
 		0, // seq
 		2, // ksq
 		user.GetId(), // user
