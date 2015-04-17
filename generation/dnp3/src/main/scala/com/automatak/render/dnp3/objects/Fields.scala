@@ -31,7 +31,7 @@ object FixedSizeField {
   val csq = FixedSizeField("challengeSeqNum", UInt32Field)
   val ksq = FixedSizeField("keyChangeSeqNum", UInt32Field)
   val scsq = FixedSizeField("statusChangeSeqNum", UInt32Field)
-  val user = FixedSizeField("userNum", UInt16Field)
+  val userNum = FixedSizeField("userNum", UInt16Field)
   val assocId = FixedSizeField("assocId", UInt16Field)
   val macAlgo = FixedSizeField("hmacAlgo", EnumFieldType(HMACType()))
   val keyWrapAlgo = FixedSizeField("keyWrapAlgo", EnumFieldType(KeyWrapAlgorithm()))
@@ -75,6 +75,8 @@ object VariableFields {
   val userName = VariableField("userName")
   val userPublicKey = VariableField("userPublicKey")
   val certificationData = VariableField("certificationData")
+  val encryptedUpdateKey = VariableField("encryptedUpdateKey")
+  val signature = VariableField("Signature")
 }
 
 sealed trait Field {
@@ -95,6 +97,7 @@ sealed case class FixedSizeField(name: String, typ: FixedSizeFieldType) extends 
     case Float32Field => "float"
     case Float64Field => "double"
     case EnumFieldType(model: EnumModel) => model.name
+    case _ => throw new Exception("Unknown field type")
   }
 
 }

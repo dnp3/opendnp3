@@ -301,33 +301,130 @@ struct Group120Var10 : public IVariableLength
 };
 
 // Authentication - Update Key Change Request
-struct Group120Var11
+struct Group120Var11 : public IVariableLength
 {
   static GroupVariationID ID() { return GroupVariationID(120,11); }
+
+  virtual GroupVariationID InstanceID() const override final { return Group120Var11::ID(); }
+
+  Group120Var11();
+
+  Group120Var11(
+    KeyChangeMethod keyChangeMethod,
+    const openpal::ReadBufferView& userName,
+    const openpal::ReadBufferView& challengeData
+  );
+
+  virtual uint32_t Size() const override final;
+  virtual bool Read(const openpal::ReadBufferView&) override final;
+  virtual bool Write(openpal::WriteBufferView&) const override final;
+
+  static const uint32_t MIN_SIZE = 5;
+
+  // member variables
+  KeyChangeMethod keyChangeMethod;
+  openpal::ReadBufferView userName;
+  openpal::ReadBufferView challengeData;
 };
 
 // Authentication - Update Key Change Reply
-struct Group120Var12
+struct Group120Var12 : public IVariableLength
 {
   static GroupVariationID ID() { return GroupVariationID(120,12); }
+
+  virtual GroupVariationID InstanceID() const override final { return Group120Var12::ID(); }
+
+  Group120Var12();
+
+  Group120Var12(
+    uint32_t keyChangeSeqNum,
+    uint16_t userNum,
+    const openpal::ReadBufferView& challengeData
+  );
+
+  virtual uint32_t Size() const override final;
+  virtual bool Read(const openpal::ReadBufferView&) override final;
+  virtual bool Write(openpal::WriteBufferView&) const override final;
+
+  static const uint32_t MIN_SIZE = 8;
+
+  // member variables
+  uint32_t keyChangeSeqNum;
+  uint16_t userNum;
+  openpal::ReadBufferView challengeData;
 };
 
 // Authentication - Update Key Change
-struct Group120Var13
+struct Group120Var13 : public IVariableLength
 {
   static GroupVariationID ID() { return GroupVariationID(120,13); }
+
+  virtual GroupVariationID InstanceID() const override final { return Group120Var13::ID(); }
+
+  Group120Var13();
+
+  Group120Var13(
+    uint32_t keyChangeSeqNum,
+    uint16_t userNum,
+    const openpal::ReadBufferView& encryptedUpdateKey
+  );
+
+  virtual uint32_t Size() const override final;
+  virtual bool Read(const openpal::ReadBufferView&) override final;
+  virtual bool Write(openpal::WriteBufferView&) const override final;
+
+  static const uint32_t MIN_SIZE = 8;
+
+  // member variables
+  uint32_t keyChangeSeqNum;
+  uint16_t userNum;
+  openpal::ReadBufferView encryptedUpdateKey;
 };
 
 // Authentication - Update Key Change Signature
-struct Group120Var14
+struct Group120Var14 : public IVariableLength
 {
   static GroupVariationID ID() { return GroupVariationID(120,14); }
+
+  virtual GroupVariationID InstanceID() const override final { return Group120Var14::ID(); }
+
+  Group120Var14();
+
+  Group120Var14(
+    const openpal::ReadBufferView& Signature
+  );
+
+  virtual uint32_t Size() const override final;
+  virtual bool Read(const openpal::ReadBufferView&) override final;
+  virtual bool Write(openpal::WriteBufferView&) const override final;
+
+  static const uint32_t MIN_SIZE = 0;
+
+  // member variables
+  openpal::ReadBufferView Signature;
 };
 
 // Authentication - Update Key Change Confirmation
-struct Group120Var15
+struct Group120Var15 : public IVariableLength
 {
   static GroupVariationID ID() { return GroupVariationID(120,15); }
+
+  virtual GroupVariationID InstanceID() const override final { return Group120Var15::ID(); }
+
+  Group120Var15();
+
+  Group120Var15(
+    const openpal::ReadBufferView& hmacValue
+  );
+
+  virtual uint32_t Size() const override final;
+  virtual bool Read(const openpal::ReadBufferView&) override final;
+  virtual bool Write(openpal::WriteBufferView&) const override final;
+
+  static const uint32_t MIN_SIZE = 0;
+
+  // member variables
+  openpal::ReadBufferView hmacValue;
 };
 
 

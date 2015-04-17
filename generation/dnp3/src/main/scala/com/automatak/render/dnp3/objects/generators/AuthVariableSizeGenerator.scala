@@ -6,7 +6,7 @@ import com.automatak.render.dnp3.objects._
 
 object AuthVariableSizeGenerator {
 
-  def bailoutIf(condition: String)(implicit i: Indentation) : Iterator[String] = Iterator("if(%s)".format(condition)) ++ bracket(Iterator("return false;"))
+  def bailoutIf(condition: String)(implicit i: Indentation) : Iterator[String] = Iterator("if(%s)".format(condition)) ++ bracket(Iterator("return false;")) ++ space
 
   def fields(x: AuthVariableSize): List[Field] = x.fixedFields ::: x.lengthFields ::: x.remainder.toList
 
@@ -138,22 +138,22 @@ object AuthVariableSizeGenerator {
       }
 
       def prefixedRead(x : List[VariableField]) : Iterator[String] =  {
-
-        def names = x.map(_.name).mkString(", ")
-
-        bailoutIf("!PrefixFields::Read(copy, %s)".format(names)) ++ space
+        bailoutIf("!PrefixFields::Read(copy, %s)".format(x.map(_.name).mkString(", ")))
       }
 
       def prefixedReads : Iterator[String] = if(x.lengthFields.isEmpty) Iterator.empty else prefixedRead(x.lengthFields)
 
       def remainderRead: Iterator[String] = x.remainder match {
-        case Some(x) => Iterator("this->%s = copy; // whatever is left over".format(x.name)) ++ space
-        case None => Iterator.empty
+        case Some(x) => Iterator("this->%s = copy; // whatever is left over".format(x.name))
+        case None => {
+          comment("object does not have a remainder field so it should be fully consumed") ++
+          comment("The header length disagrees with object encoding so abort") ++
+          bailoutIf("copy.IsNotEmpty()")
+        }
       }
 
       readSignature ++ bracket {
         minSizeBailout ++
-        space ++
         copy ++
         space ++
         fixedReads ++
@@ -165,16 +165,17 @@ object AuthVariableSizeGenerator {
 
     def writeFunction: Iterator[String] = {
 
-      def vsizeBailout(x: VariableField) : String = "%s.Size() > openpal::MaxValue<uint16_t>()".format(x.name)
-
       def minSizeBailout = "this->Size() > buffer.Size()"
 
-      def bailouts : List[String] = minSizeBailout :: x.lengthFields.map(vsizeBailout)
+      def uint16Bailouts : Iterator[String] = if(x.lengthFields.isEmpty) Iterator.empty
+      else
+      {
+        comment("All of the fields that have a uint16_t length must have the proper size") ++
+        bailoutIf("!PrefixFields::LengthFitsInUInt16(%s)".format(x.lengthFields.map(f => f.name).mkString(", ")))
+      }
 
-      def bailoutClauses : Iterator[String] = bailouts.map { b =>
-        Iterator("if(%s)".format(b)) ++ bracket(Iterator("return false;")) ++
-        space
-      }.toIterator.flatten
+
+      def bailoutClauses : Iterator[String] = bailoutIf(minSizeBailout) ++ uint16Bailouts
 
       def fixedWrites : Iterator[String] = {
 
@@ -194,14 +195,9 @@ object AuthVariableSizeGenerator {
         if(x.fixedFields.isEmpty) Iterator.empty else x.fixedFields.map(toWriteOp).iterator ++ space
       }
 
-      def prefixedWriteClause : Iterator[String] = {
+      def prefixedWrites : Iterator[String] = if(x.lengthFields.isEmpty) Iterator.empty else {
         val fields = x.lengthFields.map(f => f.name).mkString(", ")
         bailoutIf("!PrefixFields::Write(buffer, %s)".format(fields))
-      }
-
-
-      def prefixedWrites : Iterator[String] = if(x.lengthFields.isEmpty) Iterator.empty else {
-        prefixedWriteClause ++ space
       }
 
       def remainderWrite: Iterator[String] = x.remainder match {
@@ -214,7 +210,6 @@ object AuthVariableSizeGenerator {
           fixedWrites ++
           prefixedWrites ++
           remainderWrite ++
-          space ++
           Iterator("return true;")
       }
     }

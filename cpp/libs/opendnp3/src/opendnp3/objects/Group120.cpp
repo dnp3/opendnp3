@@ -69,7 +69,6 @@ bool Group120Var1::Read(const ReadBufferView& buffer)
   this->challengeReason = ChallengeReasonFromType(UInt8::ReadBuffer(copy));
 
   this->challengeData = copy; // whatever is left over
-
   return true;
 }
 
@@ -86,7 +85,6 @@ bool Group120Var1::Write(openpal::WriteBufferView& buffer) const
   UInt8::WriteBuffer(buffer, ChallengeReasonToType(this->challengeReason));
 
   challengeData.CopyTo(buffer);
-
   return true;
 }
 
@@ -124,7 +122,6 @@ bool Group120Var2::Read(const ReadBufferView& buffer)
   this->userNum = UInt16::ReadBuffer(copy);
 
   this->hmacValue = copy; // whatever is left over
-
   return true;
 }
 
@@ -139,7 +136,6 @@ bool Group120Var2::Write(openpal::WriteBufferView& buffer) const
   UInt16::WriteBuffer(buffer, this->userNum);
 
   hmacValue.CopyTo(buffer);
-
   return true;
 }
 
@@ -217,7 +213,6 @@ bool Group120Var5::Read(const ReadBufferView& buffer)
   }
 
   this->hmacValue = copy; // whatever is left over
-
   return true;
 }
 
@@ -228,7 +223,8 @@ bool Group120Var5::Write(openpal::WriteBufferView& buffer) const
     return false;
   }
 
-  if(challengeData.Size() > openpal::MaxValue<uint16_t>())
+  // All of the fields that have a uint16_t length must have the proper size
+  if(!PrefixFields::LengthFitsInUInt16(challengeData))
   {
     return false;
   }
@@ -245,7 +241,6 @@ bool Group120Var5::Write(openpal::WriteBufferView& buffer) const
   }
 
   hmacValue.CopyTo(buffer);
-
   return true;
 }
 
@@ -283,7 +278,6 @@ bool Group120Var6::Read(const ReadBufferView& buffer)
   this->userNum = UInt16::ReadBuffer(copy);
 
   this->keyWrapData = copy; // whatever is left over
-
   return true;
 }
 
@@ -298,7 +292,6 @@ bool Group120Var6::Write(openpal::WriteBufferView& buffer) const
   UInt16::WriteBuffer(buffer, this->userNum);
 
   keyWrapData.CopyTo(buffer);
-
   return true;
 }
 
@@ -345,7 +338,6 @@ bool Group120Var7::Read(const ReadBufferView& buffer)
   this->time = UInt48::ReadBuffer(copy);
 
   this->errorText = copy; // whatever is left over
-
   return true;
 }
 
@@ -363,7 +355,6 @@ bool Group120Var7::Write(openpal::WriteBufferView& buffer) const
   UInt48::WriteBuffer(buffer, this->time);
 
   errorText.CopyTo(buffer);
-
   return true;
 }
 
@@ -401,7 +392,6 @@ bool Group120Var8::Read(const ReadBufferView& buffer)
   this->certificateType = CertificateTypeFromType(UInt8::ReadBuffer(copy));
 
   this->certificate = copy; // whatever is left over
-
   return true;
 }
 
@@ -416,7 +406,6 @@ bool Group120Var8::Write(openpal::WriteBufferView& buffer) const
   UInt8::WriteBuffer(buffer, CertificateTypeToType(this->certificateType));
 
   certificate.CopyTo(buffer);
-
   return true;
 }
 
@@ -446,7 +435,6 @@ bool Group120Var9::Read(const ReadBufferView& buffer)
   ReadBufferView copy(buffer); //mutable copy for parsing
 
   this->hmacValue = copy; // whatever is left over
-
   return true;
 }
 
@@ -458,7 +446,6 @@ bool Group120Var9::Write(openpal::WriteBufferView& buffer) const
   }
 
   hmacValue.CopyTo(buffer);
-
   return true;
 }
 
@@ -513,6 +500,13 @@ bool Group120Var10::Read(const ReadBufferView& buffer)
     return false;
   }
 
+  // object does not have a remainder field so it should be fully consumed
+  // The header length disagrees with object encoding so abort
+  if(copy.IsNotEmpty())
+  {
+    return false;
+  }
+
   return true;
 }
 
@@ -523,17 +517,8 @@ bool Group120Var10::Write(openpal::WriteBufferView& buffer) const
     return false;
   }
 
-  if(userName.Size() > openpal::MaxValue<uint16_t>())
-  {
-    return false;
-  }
-
-  if(userPublicKey.Size() > openpal::MaxValue<uint16_t>())
-  {
-    return false;
-  }
-
-  if(certificationData.Size() > openpal::MaxValue<uint16_t>())
+  // All of the fields that have a uint16_t length must have the proper size
+  if(!PrefixFields::LengthFitsInUInt16(userName, userPublicKey, certificationData))
   {
     return false;
   }
@@ -549,7 +534,300 @@ bool Group120Var10::Write(openpal::WriteBufferView& buffer) const
     return false;
   }
 
+  return true;
+}
 
+// ------- Group120Var11 -------
+
+Group120Var11::Group120Var11() : 
+  keyChangeMethod(KeyChangeMethod::UNDEFINED)
+{}
+
+Group120Var11::Group120Var11(
+  KeyChangeMethod keyChangeMethod_,
+  const openpal::ReadBufferView& userName_,
+  const openpal::ReadBufferView& challengeData_
+) : 
+  keyChangeMethod(keyChangeMethod_),
+  userName(userName_),
+  challengeData(challengeData_)
+{}
+
+uint32_t Group120Var11::Size() const
+{
+  return MIN_SIZE + userName.Size() + challengeData.Size();
+}
+
+bool Group120Var11::Read(const ReadBufferView& buffer)
+{
+  if(buffer.Size() < Group120Var11::MIN_SIZE)
+  {
+    return false;
+  }
+
+  ReadBufferView copy(buffer); //mutable copy for parsing
+
+  this->keyChangeMethod = KeyChangeMethodFromType(UInt8::ReadBuffer(copy));
+
+  if(!PrefixFields::Read(copy, userName, challengeData))
+  {
+    return false;
+  }
+
+  // object does not have a remainder field so it should be fully consumed
+  // The header length disagrees with object encoding so abort
+  if(copy.IsNotEmpty())
+  {
+    return false;
+  }
+
+  return true;
+}
+
+bool Group120Var11::Write(openpal::WriteBufferView& buffer) const
+{
+  if(this->Size() > buffer.Size())
+  {
+    return false;
+  }
+
+  // All of the fields that have a uint16_t length must have the proper size
+  if(!PrefixFields::LengthFitsInUInt16(userName, challengeData))
+  {
+    return false;
+  }
+
+  UInt8::WriteBuffer(buffer, KeyChangeMethodToType(this->keyChangeMethod));
+
+  if(!PrefixFields::Write(buffer, userName, challengeData))
+  {
+    return false;
+  }
+
+  return true;
+}
+
+// ------- Group120Var12 -------
+
+Group120Var12::Group120Var12() : 
+  keyChangeSeqNum(0), userNum(0)
+{}
+
+Group120Var12::Group120Var12(
+  uint32_t keyChangeSeqNum_,
+  uint16_t userNum_,
+  const openpal::ReadBufferView& challengeData_
+) : 
+  keyChangeSeqNum(keyChangeSeqNum_),
+  userNum(userNum_),
+  challengeData(challengeData_)
+{}
+
+uint32_t Group120Var12::Size() const
+{
+  return MIN_SIZE + challengeData.Size();
+}
+
+bool Group120Var12::Read(const ReadBufferView& buffer)
+{
+  if(buffer.Size() < Group120Var12::MIN_SIZE)
+  {
+    return false;
+  }
+
+  ReadBufferView copy(buffer); //mutable copy for parsing
+
+  this->keyChangeSeqNum = UInt32::ReadBuffer(copy);
+  this->userNum = UInt16::ReadBuffer(copy);
+
+  if(!PrefixFields::Read(copy, challengeData))
+  {
+    return false;
+  }
+
+  // object does not have a remainder field so it should be fully consumed
+  // The header length disagrees with object encoding so abort
+  if(copy.IsNotEmpty())
+  {
+    return false;
+  }
+
+  return true;
+}
+
+bool Group120Var12::Write(openpal::WriteBufferView& buffer) const
+{
+  if(this->Size() > buffer.Size())
+  {
+    return false;
+  }
+
+  // All of the fields that have a uint16_t length must have the proper size
+  if(!PrefixFields::LengthFitsInUInt16(challengeData))
+  {
+    return false;
+  }
+
+  UInt32::WriteBuffer(buffer, this->keyChangeSeqNum);
+  UInt16::WriteBuffer(buffer, this->userNum);
+
+  if(!PrefixFields::Write(buffer, challengeData))
+  {
+    return false;
+  }
+
+  return true;
+}
+
+// ------- Group120Var13 -------
+
+Group120Var13::Group120Var13() : 
+  keyChangeSeqNum(0), userNum(0)
+{}
+
+Group120Var13::Group120Var13(
+  uint32_t keyChangeSeqNum_,
+  uint16_t userNum_,
+  const openpal::ReadBufferView& encryptedUpdateKey_
+) : 
+  keyChangeSeqNum(keyChangeSeqNum_),
+  userNum(userNum_),
+  encryptedUpdateKey(encryptedUpdateKey_)
+{}
+
+uint32_t Group120Var13::Size() const
+{
+  return MIN_SIZE + encryptedUpdateKey.Size();
+}
+
+bool Group120Var13::Read(const ReadBufferView& buffer)
+{
+  if(buffer.Size() < Group120Var13::MIN_SIZE)
+  {
+    return false;
+  }
+
+  ReadBufferView copy(buffer); //mutable copy for parsing
+
+  this->keyChangeSeqNum = UInt32::ReadBuffer(copy);
+  this->userNum = UInt16::ReadBuffer(copy);
+
+  if(!PrefixFields::Read(copy, encryptedUpdateKey))
+  {
+    return false;
+  }
+
+  // object does not have a remainder field so it should be fully consumed
+  // The header length disagrees with object encoding so abort
+  if(copy.IsNotEmpty())
+  {
+    return false;
+  }
+
+  return true;
+}
+
+bool Group120Var13::Write(openpal::WriteBufferView& buffer) const
+{
+  if(this->Size() > buffer.Size())
+  {
+    return false;
+  }
+
+  // All of the fields that have a uint16_t length must have the proper size
+  if(!PrefixFields::LengthFitsInUInt16(encryptedUpdateKey))
+  {
+    return false;
+  }
+
+  UInt32::WriteBuffer(buffer, this->keyChangeSeqNum);
+  UInt16::WriteBuffer(buffer, this->userNum);
+
+  if(!PrefixFields::Write(buffer, encryptedUpdateKey))
+  {
+    return false;
+  }
+
+  return true;
+}
+
+// ------- Group120Var14 -------
+
+Group120Var14::Group120Var14()
+{}
+
+Group120Var14::Group120Var14(
+  const openpal::ReadBufferView& Signature_
+) : 
+  Signature(Signature_)
+{}
+
+uint32_t Group120Var14::Size() const
+{
+  return MIN_SIZE + Signature.Size();
+}
+
+bool Group120Var14::Read(const ReadBufferView& buffer)
+{
+  if(buffer.Size() < Group120Var14::MIN_SIZE)
+  {
+    return false;
+  }
+
+  ReadBufferView copy(buffer); //mutable copy for parsing
+
+  this->Signature = copy; // whatever is left over
+  return true;
+}
+
+bool Group120Var14::Write(openpal::WriteBufferView& buffer) const
+{
+  if(this->Size() > buffer.Size())
+  {
+    return false;
+  }
+
+  Signature.CopyTo(buffer);
+  return true;
+}
+
+// ------- Group120Var15 -------
+
+Group120Var15::Group120Var15()
+{}
+
+Group120Var15::Group120Var15(
+  const openpal::ReadBufferView& hmacValue_
+) : 
+  hmacValue(hmacValue_)
+{}
+
+uint32_t Group120Var15::Size() const
+{
+  return MIN_SIZE + hmacValue.Size();
+}
+
+bool Group120Var15::Read(const ReadBufferView& buffer)
+{
+  if(buffer.Size() < Group120Var15::MIN_SIZE)
+  {
+    return false;
+  }
+
+  ReadBufferView copy(buffer); //mutable copy for parsing
+
+  this->hmacValue = copy; // whatever is left over
+  return true;
+}
+
+bool Group120Var15::Write(openpal::WriteBufferView& buffer) const
+{
+  if(this->Size() > buffer.Size())
+  {
+    return false;
+  }
+
+  hmacValue.CopyTo(buffer);
   return true;
 }
 

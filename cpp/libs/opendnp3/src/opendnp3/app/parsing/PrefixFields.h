@@ -68,12 +68,7 @@ namespace opendnp3
 
 		template <typename... Args>
 		static bool Write(openpal::WriteBufferView& dest, const Args&... fields)
-		{
-			if (!IsUInt16(fields...))
-			{
-				return false;
-			}
-
+		{			
 			const uint32_t TOTAL_SIZE = (sizeof...(Args)*openpal::UInt16::SIZE) + SumSizes(fields...);
 
 			if (dest.Size() < TOTAL_SIZE)
@@ -86,6 +81,12 @@ namespace opendnp3
 
 			return true;
 		}
+
+		template <typename... Args>
+		static bool LengthFitsInUInt16(const openpal::ReadBufferView& arg1, Args&... fields)
+		{
+			return (arg1.Size() <= openpal::MaxValue<uint16_t>()) && LengthFitsInUInt16(fields...);
+		}
 		
 		private:
 
@@ -93,15 +94,9 @@ namespace opendnp3
 		static uint32_t SumSizes(const openpal::ReadBufferView& arg1, Args&... fields)
 		{
 			return arg1.Size() + SumSizes(fields...);
-		}
+		}		
 
-		template <typename... Args>
-		static bool IsUInt16(const openpal::ReadBufferView& arg1, Args&... fields)
-		{
-			return (arg1.Size() <= openpal::MaxValue<uint16_t>()) && IsUInt16(fields...);
-		}
-
-		static bool IsUInt16() { return true; }		
+		static bool LengthFitsInUInt16() { return true; }
 
 		static uint32_t SumSizes() { return 0; }
 		
