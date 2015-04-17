@@ -36,6 +36,10 @@
 
 namespace hex
 {
+	// ----------- simple helpers --------
+
+	std::string repeat(uint8_t value, uint16_t count);
+
 	// ----------- requests --------------
 
 	std::string IntegrityPoll(uint8_t seq, const opendnp3::ClassField& field = opendnp3::ClassField::AllClasses());
@@ -76,6 +80,13 @@ namespace hex
 		opendnp3::HMACType hmacType,
 		opendnp3::ChallengeReason reason,
 		std::string challengeDataHex
+	);
+
+	std::string ChallengeReply(	
+		uint8_t appSeq,
+		uint32_t challengeSeqNum,
+		uint16_t userNum,
+		std::string hmacHex		
 	);
 
 	std::string KeyStatusResponse(

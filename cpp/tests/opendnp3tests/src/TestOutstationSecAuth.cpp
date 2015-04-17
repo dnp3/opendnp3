@@ -75,7 +75,7 @@ TEST_CASE(SUITE("ChangeSessionKeys-AES256-SHA1-8"))
 	);
 }
 
-TEST_CASE(SUITE("CriticalRequestChallengedWithSessionKeysNotInit"))
+TEST_CASE(SUITE("Critical requests are challenged when session keys are not initialized"))
 {
 	OutstationAuthSettings settings;
 	settings.challengeSize = 5; // try a non-default challenge size
@@ -99,6 +99,49 @@ TEST_CASE(SUITE("CriticalRequestChallengedWithSessionKeysNotInit"))
 	REQUIRE(test.lower.PopWriteAsHex() == challenge);
 }
 
+TEST_CASE(SUITE("Non-critical requests are not challenged"))
+{
+	OutstationAuthSettings settings;
+	settings.functions.authRead = false;
+
+	OutstationSecAuthTest test(settings);
+	test.LowerLayerUp();
+
+	test.SendToOutstation(hex::EventPoll(0));
+	REQUIRE(test.lower.PopWriteAsHex() == hex::EmptyResponse(0, IINField(IINBit::DEVICE_RESTART)));
+}
+
+TEST_CASE(SUITE("Critical requests can be challenged and processed"))
+{
+	OutstationAuthSettings settings;	
+	OutstationSecAuthTest test(settings);
+
+	test.AddUser(User::Default(), UpdateKeyMode::AES256, 0xFF);
+	
+	test.LowerLayerUp();
+
+	TestSessionKeyChange(test, User::Default(), KeyWrapAlgorithm::AES_256, HMACMode::SHA256_TRUNC_16);
+
+	test.SendToOutstation(hex::ClassTask(FunctionCode::READ, 1, ClassField::AllEventClasses()));
+
+	auto challenge = hex::ChallengeResponse(
+		IINBit::DEVICE_RESTART,
+		1, // app-seq
+		1, // csq
+		User::DEFAULT_ID,
+		HMACType::HMAC_SHA256_TRUNC_16,
+		ChallengeReason::CRITICAL,
+		hex::repeat(0xAA, 4)
+	);
+
+	REQUIRE(test.lower.PopWriteAsHex() == challenge);
+	test.outstation.OnSendResult(true);
+	
+	test.SendToOutstation(hex::ChallengeReply(1, 1, User::DEFAULT_ID, hex::repeat(0xFF, 16)));
+
+	REQUIRE(test.lower.PopWriteAsHex() == hex::EmptyResponse(1, IINField(IINBit::DEVICE_RESTART)));
+}
+
 void TestSessionKeyChange(OutstationSecAuthTest& test, User user, KeyWrapAlgorithm keyWrap, HMACMode hmacMode)
 {
 	test.LowerLayerUp();
@@ -115,7 +158,7 @@ void TestSessionKeyChange(OutstationSecAuthTest& test, User user, KeyWrapAlgorit
 		keyWrap,
 		KeyStatus::NOT_INIT,
 		HMACType::NO_MAC_VALUE,
-		"AA AA AA AA", // challenge
+		hex::repeat(0xAA, 4), // challenge
 		"");  // no hmac
 
 
@@ -137,7 +180,7 @@ void TestSessionKeyChange(OutstationSecAuthTest& test, User user, KeyWrapAlgorit
 		keyWrap,
 		KeyStatus::OK,
 		ToHMACType(hmacMode),
-		"AA AA AA AA", // challenge
+		hex::repeat(0xAA, 4), // challenge
 		RepeatHex(0xFF, GetTruncationSize(hmacMode)));  // fixed value from hmac mock
 
 	REQUIRE(test.lower.PopWriteAsHex() == keyStatusRspFinal);

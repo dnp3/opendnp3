@@ -71,16 +71,19 @@ namespace secauthv5
 
 	IOAuthState* OAuthStateIdle::OnAggModeRequest(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const openpal::ReadBufferView& objects, const opendnp3::Group120Var3& aggModeRequest)
 	{
+		// TODO
 		return this->IgnoreAggModeRequest(ostate.logger);
 	}
 
 	IOAuthState* OAuthStateIdle::OnAuthChallenge(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge)
-	{		
+	{	
+		// TODO
 		return this->IgnoreAuthChallenge(ostate.logger);
 	}
 	
 	IOAuthState* OAuthStateIdle::OnAuthReply(SecurityState& sstate, opendnp3::OState& ostate, const opendnp3::APDUHeader& header, const opendnp3::Group120Var2& reply)
 	{
+		// TODO
 		return this->IgnoreAuthReply(ostate.logger);
 	}
 	

@@ -40,6 +40,13 @@ using namespace testlib;
 
 namespace hex
 {
+	std::string repeat(uint8_t value, uint16_t count)
+	{
+		DynamicBuffer buffer(count);
+		buffer.GetWriteBufferView().SetAllTo(value);
+		return ToHex(buffer.ToReadOnly());
+	}
+
 	std::string ClassTask(FunctionCode fc, uint8_t seq, const ClassField& field)
 	{		
 		DynamicBuffer buffer(DEFAULT_MAX_APDU_SIZE);
@@ -157,6 +164,28 @@ namespace hex
 			challengeBuff.ToReadOnly()
 		);
 
+		apdu.GetWriter().WriteFreeFormat(rsp);
+
+		return ToHex(apdu.ToReadOnly());
+	}
+
+	std::string ChallengeReply(
+		uint8_t appSeq,
+		uint32_t challengeSeqNum,
+		uint16_t userNum,
+		std::string hmacHex
+		)
+	{
+		DynamicBuffer buffer(DEFAULT_MAX_APDU_SIZE);
+		APDURequest apdu(buffer.GetWriteBufferView());
+
+		apdu.SetControl(AppControlField(true, true, false, false, appSeq));
+		apdu.SetFunction(FunctionCode::AUTH_REQUEST);
+
+		HexSequence hmacBuff(hmacHex);
+
+		Group120Var2 rsp(challengeSeqNum, userNum, hmacBuff.ToReadOnly());
+			
 		apdu.GetWriter().WriteFreeFormat(rsp);
 
 		return ToHex(apdu.ToReadOnly());
