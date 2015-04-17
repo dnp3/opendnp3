@@ -18,33 +18,41 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef OPENDNP3_KEYCHANGEMETHOD_H
-#define OPENDNP3_KEYCHANGEMETHOD_H
-
-#include <cstdint>
+#include "UserOperation.h"
 
 namespace opendnp3 {
 
-/**
-  Enumerates possible algorithms for changing the update key
-*/
-enum class KeyChangeMethod : uint8_t
+uint8_t UserOperationToType(UserOperation arg)
 {
-  AES_128_SHA1_HMAC = 0x3,
-  AES_256_SHA256_HMAC = 0x4,
-  AES_256_AES_GMAC = 0x5,
-  RSA_1024_DSA_SHA1_HMAC_SHA1 = 0x43,
-  RSA_2048_DSA_SHA256_HMAC_SHA256 = 0x44,
-  RSA_3072_DSA_SHA256_HMAC_SHA256 = 0x45,
-  RSA_2048_DSA_SHA256_AES_GMAC = 0x46,
-  RSA_3072_DSA_SHA256_AES_GMAC = 0x47,
-  UNDEFINED = 0x0
-};
-
-uint8_t KeyChangeMethodToType(KeyChangeMethod arg);
-KeyChangeMethod KeyChangeMethodFromType(uint8_t arg);
-char const* KeyChangeMethodToString(KeyChangeMethod arg);
-
+  return static_cast<uint8_t>(arg);
+}
+UserOperation UserOperationFromType(uint8_t arg)
+{
+  switch(arg)
+  {
+    case(0x1):
+      return UserOperation::OP_ADD;
+    case(0x2):
+      return UserOperation::OP_DELETE;
+    case(0x3):
+      return UserOperation::OP_CHANGE;
+    default:
+      return UserOperation::OP_UNDEFINED;
+  }
+}
+char const* UserOperationToString(UserOperation arg)
+{
+  switch(arg)
+  {
+    case(UserOperation::OP_ADD):
+      return "OP_ADD";
+    case(UserOperation::OP_DELETE):
+      return "OP_DELETE";
+    case(UserOperation::OP_CHANGE):
+      return "OP_CHANGE";
+    default:
+      return "OP_UNDEFINED";
+  }
 }
 
-#endif
+}

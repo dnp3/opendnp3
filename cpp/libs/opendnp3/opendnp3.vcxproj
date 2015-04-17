@@ -126,6 +126,7 @@
     <ClInclude Include="src\opendnp3\gen\TaskCompletion.h" />
     <ClInclude Include="src\opendnp3\gen\TimestampMode.h" />
     <ClInclude Include="src\opendnp3\gen\TimeSyncMode.h" />
+    <ClInclude Include="src\opendnp3\gen\UserOperation.h" />
     <ClInclude Include="src\opendnp3\LayerInterfaces.h" />
     <ClInclude Include="src\opendnp3\link\CRC.h" />
     <ClInclude Include="src\opendnp3\link\IChannelStateListener.h" />
@@ -324,6 +325,7 @@
     <ClCompile Include="src\opendnp3\gen\LinkFunction.cpp" />
     <ClCompile Include="src\opendnp3\gen\QualifierCode.cpp" />
     <ClCompile Include="src\opendnp3\gen\TaskCompletion.cpp" />
+    <ClCompile Include="src\opendnp3\gen\UserOperation.cpp" />
     <ClCompile Include="src\opendnp3\link\CRC.cpp" />
     <ClCompile Include="src\opendnp3\link\IOpenDelayStrategy.cpp" />
     <ClCompile Include="src\opendnp3\link\LinkFrame.cpp" />

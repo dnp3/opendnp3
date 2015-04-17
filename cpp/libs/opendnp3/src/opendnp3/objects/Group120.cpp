@@ -462,5 +462,96 @@ bool Group120Var9::Write(openpal::WriteBufferView& buffer) const
   return true;
 }
 
+// ------- Group120Var10 -------
+
+Group120Var10::Group120Var10() : 
+  keyChangeMethod(KeyChangeMethod::UNDEFINED), userOperation(UserOperation::OP_UNDEFINED), statusChangeSeqNum(0), userRole(0), userRoleExpDays(0)
+{}
+
+Group120Var10::Group120Var10(
+  KeyChangeMethod keyChangeMethod_,
+  UserOperation userOperation_,
+  uint32_t statusChangeSeqNum_,
+  uint16_t userRole_,
+  uint16_t userRoleExpDays_,
+  const openpal::ReadBufferView& userName_,
+  const openpal::ReadBufferView& userPublicKey_,
+  const openpal::ReadBufferView& certificationData_
+) : 
+  keyChangeMethod(keyChangeMethod_),
+  userOperation(userOperation_),
+  statusChangeSeqNum(statusChangeSeqNum_),
+  userRole(userRole_),
+  userRoleExpDays(userRoleExpDays_),
+  userName(userName_),
+  userPublicKey(userPublicKey_),
+  certificationData(certificationData_)
+{}
+
+uint32_t Group120Var10::Size() const
+{
+  return MIN_SIZE + userName.Size() + userPublicKey.Size() + certificationData.Size();
+}
+
+bool Group120Var10::Read(const ReadBufferView& buffer)
+{
+  if(buffer.Size() < Group120Var10::MIN_SIZE)
+  {
+    return false;
+  }
+
+  ReadBufferView copy(buffer); //mutable copy for parsing
+
+  this->keyChangeMethod = KeyChangeMethodFromType(UInt8::ReadBuffer(copy));
+  this->userOperation = UserOperationFromType(UInt8::ReadBuffer(copy));
+  this->statusChangeSeqNum = UInt32::ReadBuffer(copy);
+  this->userRole = UInt16::ReadBuffer(copy);
+  this->userRoleExpDays = UInt16::ReadBuffer(copy);
+
+  if(!PrefixFields::Read(copy, userName, userPublicKey, certificationData))
+  {
+    return false;
+  }
+
+  return true;
+}
+
+bool Group120Var10::Write(openpal::WriteBufferView& buffer) const
+{
+  if(this->Size() > buffer.Size())
+  {
+    return false;
+  }
+
+  if(userName.Size() > openpal::MaxValue<uint16_t>())
+  {
+    return false;
+  }
+
+  if(userPublicKey.Size() > openpal::MaxValue<uint16_t>())
+  {
+    return false;
+  }
+
+  if(certificationData.Size() > openpal::MaxValue<uint16_t>())
+  {
+    return false;
+  }
+
+  UInt8::WriteBuffer(buffer, KeyChangeMethodToType(this->keyChangeMethod));
+  UInt8::WriteBuffer(buffer, UserOperationToType(this->userOperation));
+  UInt32::WriteBuffer(buffer, this->statusChangeSeqNum);
+  UInt16::WriteBuffer(buffer, this->userRole);
+  UInt16::WriteBuffer(buffer, this->userRoleExpDays);
+
+  if(!PrefixFields::Write(buffer, userName, userPublicKey, certificationData))
+  {
+    return false;
+  }
+
+
+  return true;
+}
+
 
 }

@@ -30,6 +30,12 @@ KeyChangeMethod KeyChangeMethodFromType(uint8_t arg)
 {
   switch(arg)
   {
+    case(0x3):
+      return KeyChangeMethod::AES_128_SHA1_HMAC;
+    case(0x4):
+      return KeyChangeMethod::AES_256_SHA256_HMAC;
+    case(0x5):
+      return KeyChangeMethod::AES_256_AES_GMAC;
     case(0x43):
       return KeyChangeMethod::RSA_1024_DSA_SHA1_HMAC_SHA1;
     case(0x44):
@@ -48,6 +54,12 @@ char const* KeyChangeMethodToString(KeyChangeMethod arg)
 {
   switch(arg)
   {
+    case(KeyChangeMethod::AES_128_SHA1_HMAC):
+      return "AES_128_SHA1_HMAC";
+    case(KeyChangeMethod::AES_256_SHA256_HMAC):
+      return "AES_256_SHA256_HMAC";
+    case(KeyChangeMethod::AES_256_AES_GMAC):
+      return "AES_256_AES_GMAC";
     case(KeyChangeMethod::RSA_1024_DSA_SHA1_HMAC_SHA1):
       return "RSA_1024_DSA_SHA1_HMAC_SHA1";
     case(KeyChangeMethod::RSA_2048_DSA_SHA256_HMAC_SHA256):

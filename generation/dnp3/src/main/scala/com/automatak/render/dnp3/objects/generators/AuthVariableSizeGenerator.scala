@@ -6,8 +6,6 @@ import com.automatak.render.dnp3.objects._
 
 object AuthVariableSizeGenerator {
 
-  case class FieldInfo(name: String, typ: String)
-
   def bailoutIf(condition: String)(implicit i: Indentation) : Iterator[String] = Iterator("if(%s)".format(condition)) ++ bracket(Iterator("return false;"))
 
   def fields(x: AuthVariableSize): List[Field] = x.fixedFields ::: x.lengthFields ::: x.remainder.toList

@@ -30,6 +30,7 @@ object FixedSizeField {
   // SA stuff
   val csq = FixedSizeField("challengeSeqNum", UInt32Field)
   val ksq = FixedSizeField("keyChangeSeqNum", UInt32Field)
+  val scsq = FixedSizeField("statusChangeSeqNum", UInt32Field)
   val user = FixedSizeField("userNum", UInt16Field)
   val assocId = FixedSizeField("assocId", UInt16Field)
   val macAlgo = FixedSizeField("hmacAlgo", EnumFieldType(HMACType()))
@@ -39,6 +40,10 @@ object FixedSizeField {
   val errorCode = FixedSizeField("errorCode", EnumFieldType(AuthErrorCode()))
   val keyChangeMethod = FixedSizeField("keyChangeMethod", EnumFieldType(KeyChangeMethod()))
   val certificateType = FixedSizeField("certificateType", EnumFieldType(CertificateType()))
+  val userOperation = FixedSizeField("userOperation", EnumFieldType(UserOperation()))
+  val userRole = FixedSizeField("userRole", UInt16Field)
+  val userRoleExpDays = FixedSizeField("userRoleExpDays", UInt16Field)
+
 
 
   // timestamps
@@ -67,6 +72,9 @@ object VariableFields {
   val keyWrapData = VariableField("keyWrapData")
   val errorText = VariableField("errorText")
   val certificate = VariableField("certificate")
+  val userName = VariableField("userName")
+  val userPublicKey = VariableField("userPublicKey")
+  val certificationData = VariableField("certificationData")
 }
 
 sealed trait Field {

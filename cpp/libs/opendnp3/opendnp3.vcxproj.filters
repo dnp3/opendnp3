@@ -891,6 +891,9 @@
     <ClInclude Include="src\opendnp3\app\parsing\PrefixFields.h">
       <Filter>Header\app\parsing</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\UserOperation.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\TimeAndInterval.cpp">
@@ -1314,6 +1317,9 @@
       <Filter>Source\app</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\gen\KeyChangeMethod.cpp">
+      <Filter>Source\gen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\gen\UserOperation.cpp">
       <Filter>Source\gen</Filter>
     </ClCompile>
   </ItemGroup>

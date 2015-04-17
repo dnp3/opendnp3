@@ -33,6 +33,7 @@
 #include "opendnp3/gen/AuthErrorCode.h"
 #include "opendnp3/gen/KeyChangeMethod.h"
 #include "opendnp3/gen/CertificateType.h"
+#include "opendnp3/gen/UserOperation.h"
 
 namespace opendnp3 {
 
@@ -263,9 +264,40 @@ struct Group120Var9 : public IVariableLength
 };
 
 // Authentication - User Status Change
-struct Group120Var10
+struct Group120Var10 : public IVariableLength
 {
   static GroupVariationID ID() { return GroupVariationID(120,10); }
+
+  virtual GroupVariationID InstanceID() const override final { return Group120Var10::ID(); }
+
+  Group120Var10();
+
+  Group120Var10(
+    KeyChangeMethod keyChangeMethod,
+    UserOperation userOperation,
+    uint32_t statusChangeSeqNum,
+    uint16_t userRole,
+    uint16_t userRoleExpDays,
+    const openpal::ReadBufferView& userName,
+    const openpal::ReadBufferView& userPublicKey,
+    const openpal::ReadBufferView& certificationData
+  );
+
+  virtual uint32_t Size() const override final;
+  virtual bool Read(const openpal::ReadBufferView&) override final;
+  virtual bool Write(openpal::WriteBufferView&) const override final;
+
+  static const uint32_t MIN_SIZE = 16;
+
+  // member variables
+  KeyChangeMethod keyChangeMethod;
+  UserOperation userOperation;
+  uint32_t statusChangeSeqNum;
+  uint16_t userRole;
+  uint16_t userRoleExpDays;
+  openpal::ReadBufferView userName;
+  openpal::ReadBufferView userPublicKey;
+  openpal::ReadBufferView certificationData;
 };
 
 // Authentication - Update Key Change Request
