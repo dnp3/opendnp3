@@ -40,6 +40,7 @@ TEST_CASE(SUITE("ChangeSessionKeys-AES128-SHA256-16"))
 {	
 	OutstationSecAuthTest test;	
 	test.AddUser(User::Default(), UpdateKeyMode::AES128, 0xFF);
+	test.LowerLayerUp();
 	TestSessionKeyChange(test, User::Default(), KeyWrapAlgorithm::AES_128,HMACMode::SHA256_TRUNC_16);
 }
 
@@ -47,6 +48,7 @@ TEST_CASE(SUITE("ChangeSessionKeys-AES256-SHA256-16"))
 {
 	OutstationSecAuthTest test;	
 	test.AddUser(User::Default(), UpdateKeyMode::AES256, 0xFF);
+	test.LowerLayerUp();
 	TestSessionKeyChange(test, User::Default(), KeyWrapAlgorithm::AES_256, HMACMode::SHA256_TRUNC_16);
 }
 
@@ -57,6 +59,7 @@ TEST_CASE(SUITE("ChangeSessionKeys-AES256-SHA1-8"))
 
 	OutstationSecAuthTest test(settings);
 	test.AddUser(User::Default(), UpdateKeyMode::AES256, 0xFF);
+	test.LowerLayerUp();
 	TestSessionKeyChange(test, User::Default(), KeyWrapAlgorithm::AES_256, HMACMode::SHA1_TRUNC_8);
 }
 
@@ -129,8 +132,6 @@ TEST_CASE(SUITE("Critical requests can be challenged and processed"))
 
 void TestSessionKeyChange(OutstationSecAuthTest& test, User user, KeyWrapAlgorithm keyWrap, HMACMode hmacMode)
 {
-	test.LowerLayerUp();
-
 	REQUIRE(test.lower.HasNoData());
 
 	test.SendToOutstation(hex::RequestKeyStatus(0, 1));
