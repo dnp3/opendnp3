@@ -18,27 +18,16 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef OPENDNP3_STATICTYPEBITMASK_H
-#define OPENDNP3_STATICTYPEBITMASK_H
+#ifndef OPENDNP3_STATICSECURITYSTATVARIATION_H
+#define OPENDNP3_STATICSECURITYSTATVARIATION_H
 
 #include <cstdint>
 
 namespace opendnp3 {
 
-/**
-  Bitmask values for all the static types
-*/
-enum class StaticTypeBitmask : uint16_t
+enum class StaticSecurityStatVariation : uint8_t
 {
-  BinaryInput = 0x1,
-  DoubleBinaryInput = 0x2,
-  Counter = 0x4,
-  FrozenCounter = 0x8,
-  AnalogInput = 0x10,
-  BinaryOutputStatus = 0x20,
-  AnalogOutputStatus = 0x40,
-  TimeAndInterval = 0x80,
-  SecurityStat = 0x100
+  Group121Var1 = 0
 };
 
 

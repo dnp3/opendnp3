@@ -45,6 +45,9 @@ object EnumModel {
   case object UInt16 extends Type { def sizeInBytes = 2 }
   case object UInt32 extends Type { def sizeInBytes = 4 }
 
+  def BitfieldValues(names: List[String]) : List[EnumValue] = names.zipWithIndex.map { pair =>
+    EnumValue(pair._1, 1 << pair._2)
+  }
 }
 
 sealed trait IntRender { def apply(i: Int): String }

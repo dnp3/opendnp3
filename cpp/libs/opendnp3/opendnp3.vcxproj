@@ -101,6 +101,7 @@
     <ClInclude Include="src\opendnp3\gen\EventDoubleBinaryVariation.h" />
     <ClInclude Include="src\opendnp3\gen\EventFrozenCounterVariation.h" />
     <ClInclude Include="src\opendnp3\gen\EventMode.h" />
+    <ClInclude Include="src\opendnp3\gen\EventSecurityStatVariation.h" />
     <ClInclude Include="src\opendnp3\gen\FunctionCode.h" />
     <ClInclude Include="src\opendnp3\gen\GroupVariation.h" />
     <ClInclude Include="src\opendnp3\gen\HMACType.h" />
@@ -121,6 +122,7 @@
     <ClInclude Include="src\opendnp3\gen\StaticCounterVariation.h" />
     <ClInclude Include="src\opendnp3\gen\StaticDoubleBinaryVariation.h" />
     <ClInclude Include="src\opendnp3\gen\StaticFrozenCounterVariation.h" />
+    <ClInclude Include="src\opendnp3\gen\StaticSecurityStatVariation.h" />
     <ClInclude Include="src\opendnp3\gen\StaticTimeAndIntervalVariation.h" />
     <ClInclude Include="src\opendnp3\gen\StaticTypeBitmask.h" />
     <ClInclude Include="src\opendnp3\gen\TaskCompletion.h" />
