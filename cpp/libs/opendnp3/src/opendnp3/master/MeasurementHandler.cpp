@@ -140,16 +140,6 @@ IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, const Iter
 	return this->LoadAny(record, ModeFromType(record.enumeration), meas);
 }
 
-IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryCommandEvent, uint16_t>>& meas)
-{
-	return this->LoadAny(record, ModeFromType(record.enumeration), meas);
-}
-
-IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogCommandEvent, uint16_t>>& meas)
-{
-	return this->LoadAny(record, ModeFromType(record.enumeration), meas);
-}
-
 IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)
 {
 	if (record.enumeration == GroupVariation::Group2Var3)

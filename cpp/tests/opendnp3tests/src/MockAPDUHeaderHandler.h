@@ -30,315 +30,248 @@
 namespace opendnp3
 {
 
-class MockApduHeaderHandler : public IAPDUHandler, public LogTester
+class MockApduHeaderHandler : public LogTester, public APDUHandlerBase
 {
 public:
 
-	MockApduHeaderHandler()		
+	MockApduHeaderHandler() : LogTester(), APDUHandlerBase(this->GetLogger())
 	{}
 
-	virtual void AllObjects(const HeaderRecord& record) override
-	{
-		records.push_back(record);		
-	}
-
-	virtual void OnRangeRequest(const HeaderRecord& record, const Range& range) override
-	{
-		records.push_back(record);		
-	}
-
-	virtual void OnCountRequest(const HeaderRecord& record, uint16_t count) override
-	{
-		records.push_back(record);		
-	}
-
-	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<IINValue, uint16_t>>& meas) override
+	virtual void OnHeaderResult(const HeaderRecord& record, const IINField& result) override final
 	{
 		records.push_back(record);
+	}
+	
+
+	virtual IINField ProcessIIN(const HeaderRecord& record, const IterableBuffer<IndexedValue<IINValue, uint16_t>>& meas) override final
+	{
 		meas.foreach([&](const IndexedValue<IINValue, uint16_t>& v)
 		{
 			iinBits.push_back(v);
-		});		
-	}
+		});	
+		return IINField::Empty();
+	}	
 
-	virtual void OnCountOf(const HeaderRecord& record, const IterableBuffer<Group50Var1>& times) override
-	{
-		records.push_back(record);		
-	}
-
-	virtual void OnCountOf(const HeaderRecord& record, const IterableBuffer<Group51Var1>& times) override
-	{
-		records.push_back(record);		
-	}
-
-	virtual void OnCountOf(const HeaderRecord& record, const IterableBuffer<Group51Var2>& times) override
-	{
-		records.push_back(record);		
-	}
-
-	virtual void OnCountOf(const HeaderRecord& record, const IterableBuffer<Group52Var2>& times) override
-	{
-		records.push_back(record);		
-	}
-
-	virtual void OnCountOf(const HeaderRecord& record, const IterableBuffer<Group120Var4>& values) override
-	{
-		records.push_back(record);
+	virtual IINField ProcessCountOf(const HeaderRecord& record, const IterableBuffer<Group120Var4>& values) override final
+	{		
 		values.foreach([this](const Group120Var4& v) {
 			authStatusRequsts.push_back(v);
 		});
-		
+		return IINField::Empty();
 	}
 
-	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override
-	{
-		records.push_back(record);
+	virtual IINField ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override final
+	{	
 		meas.foreach([this](const IndexedValue<Binary, uint16_t>& v)
 		{
 			staticBinaries.push_back(v);
-		});		
+		});
+		return IINField::Empty();
 	}
 
-	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) override
-	{
-		records.push_back(record);
+	virtual IINField ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) override final
+	{		
 		meas.foreach([this](const IndexedValue<DoubleBitBinary, uint16_t>& v)
 		{
 			staticDoubleBinaries.push_back(v);
 		});		
+		return IINField::Empty();
 	}
 
-	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) override
-	{
-		records.push_back(record);
+	virtual IINField ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) override final
+	{		
 		meas.foreach([this](const IndexedValue<BinaryOutputStatus, uint16_t>& v)
 		{
 			staticControlStatii.push_back(v);
 		});		
+		return IINField::Empty();
 	}
 
-	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) override
-	{
-		records.push_back(record);
+	virtual IINField ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) override final
+	{		
 		meas.foreach([this](const IndexedValue<Counter, uint16_t>& v)
 		{
 			staticCounters.push_back(v);
-		});		
+		});	
+		return IINField::Empty();
 	}
 
-	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) override
-	{
-		records.push_back(record);
+	virtual IINField ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) override final
+	{		
 		meas.foreach([this](const IndexedValue<FrozenCounter, uint16_t>& v)
 		{
 			staticFrozenCounters.push_back(v);
 		});
+		return IINField::Empty();
 	}
 
-	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)  override
-	{
-		records.push_back(record);
+	virtual IINField ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)  override final
+	{		
 		meas.foreach([this](const IndexedValue<Analog, uint16_t>& v)
 		{
 			eventAnalogs.push_back(v);
-		});		
+		});	
+		return IINField::Empty();
 	}
 
-	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas) override
-	{
-		records.push_back(record);
+	virtual IINField ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas) override final
+	{		
 		meas.foreach([this](const IndexedValue<AnalogOutputStatus, uint16_t>& v)
 		{
 			staticSetpointStatii.push_back(v);
-		});		
+		});	
+		return IINField::Empty();
 	}
 
-	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) override
-	{
-		records.push_back(record);
+	virtual IINField ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) override final
+	{		
 		meas.foreach([this](const IndexedValue<OctetString, uint16_t>& v)
 		{
 			rangedOctets.push_back(v);
-		});		
+		});
+		return IINField::Empty();
 	}
+	
 
-	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryCommandEvent, uint16_t>>& meas) override
-	{
-		records.push_back(record);
-		meas.foreach([this](const IndexedValue<BinaryCommandEvent, uint16_t>& v)
-		{
-			binaryCommandEvents.push_back(v);
-		});		
-	}
-
-	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogCommandEvent, uint16_t>>& meas) override
-	{
-		records.push_back(record);
-		meas.foreach([this](const IndexedValue<AnalogCommandEvent, uint16_t>& v)
-		{
-			analogCommandEvents.push_back(v);
-		});		
-	}
-
-	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas) override
-	{
-		records.push_back(record);
-	}
-
-	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override
-	{
-		records.push_back(record);
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override final
+	{		
 		meas.foreach([this](const IndexedValue<Binary, uint16_t>& v)
 		{
 			eventBinaries.push_back(v);
 		});		
+		return IINField::Empty();
 	}
 
-	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) override
-	{
-		records.push_back(record);
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) override final
+	{		
 		meas.foreach([&](const IndexedValue<DoubleBitBinary, uint16_t>& v)
 		{
 			eventDoubleBinaries.push_back(v);
 		});		
+		return IINField::Empty();
 	}
 
-	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)  override
-	{
-		records.push_back(record);
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)  override final
+	{		
 		meas.foreach([&](const IndexedValue<Counter, uint16_t>& v)
 		{
 			eventCounters.push_back(v);
 		});		
+		return IINField::Empty();
 	}
 
-	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas)  override
-	{
-		records.push_back(record);
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas)  override final
+	{		
 		meas.foreach([&](const IndexedValue<FrozenCounter, uint16_t>& v)
 		{
 			eventFrozenCounters.push_back(v);
 		});
+		return IINField::Empty();
 	}
 
-	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)  override
-	{
-		records.push_back(record);
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)  override final
+	{		
 		meas.foreach([&](const IndexedValue<Analog, uint16_t>& v)
 		{
 			eventAnalogs.push_back(v);
 		});		
+		return IINField::Empty();
 	}
 
-	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) override
-	{
-		records.push_back(record);
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) override final
+	{		
 		meas.foreach([&](const IndexedValue<OctetString, uint16_t>& v)
 		{
 			indexPrefixedOctets.push_back(v);
 		});		
+		return IINField::Empty();
 	}
 
-	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryCommandEvent, uint16_t>>& meas) override
-	{
-		records.push_back(record);
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryCommandEvent, uint16_t>>& meas) override final
+	{		
 		meas.foreach([&](const IndexedValue<BinaryCommandEvent, uint16_t>& v)
 		{
 			binaryCommandEvents.push_back(v);
 		});		
+		return IINField::Empty();
 	}
 
-	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogCommandEvent, uint16_t>>& meas) override
-	{
-		records.push_back(record);
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogCommandEvent, uint16_t>>& meas) override final
+	{		
 		meas.foreach([&](const IndexedValue<AnalogCommandEvent, uint16_t>& v)
 		{
 			analogCommandEvents.push_back(v);
 		});		
+		return IINField::Empty();
 	}
 
-	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint16_t>>& meas) override
-	{
-		records.push_back(record);
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint16_t>>& meas) override final
+	{		
 		meas.foreach([&](const IndexedValue<ControlRelayOutputBlock, uint16_t>& v)
 		{
 			crobRequests.push_back(v);
-		});		
+		});	
+		return IINField::Empty();
 	}
 
-	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint16_t>>& meas) override
-	{
-		records.push_back(record);
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint16_t>>& meas) override final
+	{		
 		meas.foreach([&](const IndexedValue<AnalogOutputInt16, uint16_t>& v)
 		{
 			aoInt16Requests.push_back(v);
-		});		
+		});	
+		return IINField::Empty();
 	}
 
-	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt32, uint16_t>>& meas) override
-	{
-		records.push_back(record);
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt32, uint16_t>>& meas) override final
+	{		
 		meas.foreach([&](const IndexedValue<AnalogOutputInt32, uint16_t>& v)
 		{
 			aoInt32Requests.push_back(v);
-		});		
+		});	
+		return IINField::Empty();
 	}
 
-	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint16_t>>& meas) override
-	{
-		records.push_back(record);
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint16_t>>& meas) override final
+	{		
 		meas.foreach([&](const IndexedValue<AnalogOutputFloat32, uint16_t>& v)
 		{
 			aoFloat32Requests.push_back(v);
-		});		
+		});	
+		return IINField::Empty();
 	}
 
-	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint16_t>>& meas) override
-	{
-		records.push_back(record);
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint16_t>>& meas) override final
+	{		
 		meas.foreach([&](const IndexedValue<AnalogOutputDouble64, uint16_t>& v)
 		{
 			aoDouble64Requests.push_back(v);
-		});		
-	}
+		});	
+		return IINField::Empty();
+	}	
 
-	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) override
-	{
-		records.push_back(record);
-	}
-
-	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas) override
-	{
-		records.push_back(record);
-	}
-
-	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas) override
-	{
-		records.push_back(record);
-	}
-
-	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var1& value) override
-	{
-		records.push_back(record);
+	virtual IINField ProcessFreeFormat(const HeaderRecord& record, const Group120Var1& value) override final
+	{	
 		authChallenges.push_back(value);
+		return IINField::Empty();
 	}
 
-	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var2& value) override
-	{
-		records.push_back(record);
+	virtual IINField ProcessFreeFormat(const HeaderRecord& record, const Group120Var2& value) override final
+	{	
 		authReplys.push_back(value);
+		return IINField::Empty();
 	}
 
-	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var5& value) override
-	{
-		records.push_back(record);
+	virtual IINField ProcessFreeFormat(const HeaderRecord& record, const Group120Var5& value) override final
+	{	
 		authKeyStatusResponses.push_back(value);
+		return IINField::Empty();
 	}
 
-	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var6& value) override
+	virtual IINField ProcessFreeFormat(const HeaderRecord& record, const Group120Var6& value) override final
 	{
-		records.push_back(record);
 		authChanges.push_back(value);
+		return IINField::Empty();
 	}
 
 	std::vector<HeaderRecord> records;
