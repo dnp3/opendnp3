@@ -52,19 +52,6 @@
 namespace opendnp3
 {
 
-namespace quality {
-
-	enum Quality : uint8_t
-	{
-		ONLINE = 0x01,
-		RESTART = 0x02
-	};
-
-	bool GetBinaryValue(uint8_t quality);
-	
-	uint8_t GetBinaryQuality(uint8_t q, bool value);
-}
-
 /**
 	The Binary data type is for describing on-off (boolean) type values. Good examples of
 	binaries are alarms, mode settings, enabled/disabled flags etc. Think of it as a status

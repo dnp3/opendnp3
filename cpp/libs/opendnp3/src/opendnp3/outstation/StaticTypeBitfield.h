@@ -39,7 +39,7 @@ struct StaticTypeBitField
 	static StaticTypeBitField AllTypes()
 	{
 		return StaticTypeBitField(~0);
-	}
+	}	
 
 	bool IsSet(StaticTypeBitmask type) const
 	{

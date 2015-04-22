@@ -900,6 +900,12 @@
     <ClInclude Include="src\opendnp3\gen\StaticSecurityStatVariation.h">
       <Filter>Header\gen</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\app\SecurityStat.h">
+      <Filter>Header\app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\app\QualityFlags.h">
+      <Filter>Source\app</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\TimeAndInterval.cpp">
@@ -1327,6 +1333,12 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\gen\UserOperation.cpp">
       <Filter>Source\gen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\app\SecurityStat.cpp">
+      <Filter>Source\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\app\QualityFlags.cpp">
+      <Filter>Source\app</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

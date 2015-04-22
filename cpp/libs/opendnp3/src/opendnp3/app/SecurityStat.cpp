@@ -19,35 +19,29 @@
  * to you under the terms of the License.
  */
 
-#ifndef OPENDNP3_EVENTTYPE_H
-#define OPENDNP3_EVENTTYPE_H
+#include "SecurityStat.h"
 
-#include <cstdint>
+#include "QualityFlags.h"
 
 namespace opendnp3
 {
 
-static const int NUM_OUTSTATION_EVENT_TYPES = 8;
+	SecurityStat::SecurityStat() : flags(flags::RESTART)
+	{}
 
-enum class EventType : uint16_t
-{
-    Binary = 0,
-    Analog = 1,
-    Counter = 2,
-    FrozenCounter = 3,
-    DoubleBitBinary = 4,
-    BinaryOutputStatus = 5,
-    AnalogOutputStatus = 6,
-	SecurityStat = 7
-};
+	SecurityStat::SecurityStat(uint8_t flags_, uint16_t assocId_, uint32_t count_) : 
+		flags(flags_),
+		assocId(assocId_),
+		count(count_),
+		time(0)
+	{}
 
-enum class EventClass: uint8_t
-{
-    EC1 = 0,
-    EC2 = 1,
-    EC3 = 2
-};
+	SecurityStat::SecurityStat(uint8_t flags_, uint16_t assocId_, uint32_t count_, DNPTime time_) :
+		flags(flags_),
+		assocId(assocId_),
+		count(count_),
+		time(time_)
+	{}
 
 }
 
-#endif

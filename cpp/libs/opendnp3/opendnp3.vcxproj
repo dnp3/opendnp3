@@ -71,9 +71,11 @@
     <ClInclude Include="src\opendnp3\app\parsing\PrefixFields.h" />
     <ClInclude Include="src\opendnp3\app\parsing\RangeParser.h" />
     <ClInclude Include="src\opendnp3\app\PrefixedWriteIterator.h" />
+    <ClInclude Include="src\opendnp3\app\QualityFlags.h" />
     <ClInclude Include="src\opendnp3\app\QualityMasks.h" />
     <ClInclude Include="src\opendnp3\app\Range.h" />
     <ClInclude Include="src\opendnp3\app\RangeWriteIterator.h" />
+    <ClInclude Include="src\opendnp3\app\SecurityStat.h" />
     <ClInclude Include="src\opendnp3\app\SequenceInfo.h" />
     <ClInclude Include="src\opendnp3\app\TimeAndInterval.h" />
     <ClInclude Include="src\opendnp3\app\WriteConversions.h" />
@@ -309,6 +311,8 @@
     <ClCompile Include="src\opendnp3\app\parsing\NumParser.cpp" />
     <ClCompile Include="src\opendnp3\app\parsing\ObjectHeaderParser.cpp" />
     <ClCompile Include="src\opendnp3\app\parsing\RangeParser.cpp" />
+    <ClCompile Include="src\opendnp3\app\QualityFlags.cpp" />
+    <ClCompile Include="src\opendnp3\app\SecurityStat.cpp" />
     <ClCompile Include="src\opendnp3\app\TimeAndInterval.cpp" />
     <ClCompile Include="src\opendnp3\gen\AuthErrorCode.cpp" />
     <ClCompile Include="src\opendnp3\gen\CertificateType.cpp" />

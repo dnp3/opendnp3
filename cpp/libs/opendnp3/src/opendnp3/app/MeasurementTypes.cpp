@@ -21,42 +21,29 @@
 
 #include "MeasurementTypes.h"
 
+#include "opendnp3/app/QualityFlags.h"
+
 namespace opendnp3
 {
 
-namespace quality {	
-
-	bool GetBinaryValue(uint8_t quality)
-	{
-		return (quality & static_cast<uint8_t>(BinaryQuality::STATE)) != 0;
-	}
-
-	uint8_t GetBinaryQuality(uint8_t q, bool value)
-	{
-		return (value) ? (q | static_cast<uint8_t>(BinaryQuality::STATE)) : (q & (~static_cast<uint8_t>(BinaryQuality::STATE)));
-	}
-
-}
-
-
 // ------------ Binary ---------------
 
-Binary::Binary() : TypedMeasurement(false, quality::RESTART)
+Binary::Binary() : TypedMeasurement(false, flags::RESTART)
 {}
 
-Binary::Binary(bool value) : TypedMeasurement(value, quality::GetBinaryQuality(quality::ONLINE, value))
+Binary::Binary(bool value) : TypedMeasurement(value, flags::GetBinaryQuality(flags::ONLINE, value))
 {}
 
-Binary::Binary(uint8_t quality) : TypedMeasurement(quality::GetBinaryValue(quality), quality)
+Binary::Binary(uint8_t quality) : TypedMeasurement(flags::GetBinaryValue(quality), quality)
 {}
 
-Binary::Binary(uint8_t quality, DNPTime time) : TypedMeasurement(quality::GetBinaryValue(quality), quality, time)
+Binary::Binary(uint8_t quality, DNPTime time) : TypedMeasurement(flags::GetBinaryValue(quality), quality, time)
 {}
 
-Binary::Binary(bool value, uint8_t quality) : TypedMeasurement(value, quality::GetBinaryQuality(quality, value))
+Binary::Binary(bool value, uint8_t quality) : TypedMeasurement(value, flags::GetBinaryQuality(quality, value))
 {}
 
-Binary::Binary(bool value, uint8_t quality, DNPTime time) : TypedMeasurement(value, quality::GetBinaryQuality(quality, value), time)
+Binary::Binary(bool value, uint8_t quality, DNPTime time) : TypedMeasurement(value, flags::GetBinaryQuality(quality, value), time)
 {}
 
 bool Binary::IsQualityOnlineOnly() const
@@ -76,10 +63,10 @@ bool Binary::IsEvent(const Binary& newValue) const
 
 // ------------ Double Bit Binary ---------------
 
-DoubleBitBinary::DoubleBitBinary() : TypedMeasurement(DoubleBit::INDETERMINATE, quality::RESTART)
+DoubleBitBinary::DoubleBitBinary() : TypedMeasurement(DoubleBit::INDETERMINATE, flags::RESTART)
 {}
 
-DoubleBitBinary::DoubleBitBinary(DoubleBit value) : TypedMeasurement(value, GetQual(quality::ONLINE, value))
+DoubleBitBinary::DoubleBitBinary(DoubleBit value) : TypedMeasurement(value, GetQual(flags::ONLINE, value))
 {}
 
 DoubleBitBinary::DoubleBitBinary(uint8_t quality) : TypedMeasurement(GetValue(quality), quality)
@@ -115,22 +102,22 @@ uint8_t DoubleBitBinary::GetQual(uint8_t quality, DoubleBit state)
 // ------------ Binary Output Status ---------------
 
 
-BinaryOutputStatus::BinaryOutputStatus() : TypedMeasurement(false, quality::RESTART)
+BinaryOutputStatus::BinaryOutputStatus() : TypedMeasurement(false, flags::RESTART)
 {}
 
-BinaryOutputStatus::BinaryOutputStatus(bool value) : TypedMeasurement(value, quality::GetBinaryQuality(quality::ONLINE, value))
+BinaryOutputStatus::BinaryOutputStatus(bool value) : TypedMeasurement(value, flags::GetBinaryQuality(flags::ONLINE, value))
 {}
 
-BinaryOutputStatus::BinaryOutputStatus(uint8_t quality) : TypedMeasurement(quality::GetBinaryValue(quality), quality)
+BinaryOutputStatus::BinaryOutputStatus(uint8_t quality) : TypedMeasurement(flags::GetBinaryValue(quality), quality)
 {}
 
-BinaryOutputStatus::BinaryOutputStatus(uint8_t quality, DNPTime time) : TypedMeasurement(quality::GetBinaryValue(quality), quality, time)
+BinaryOutputStatus::BinaryOutputStatus(uint8_t quality, DNPTime time) : TypedMeasurement(flags::GetBinaryValue(quality), quality, time)
 {}
 
-BinaryOutputStatus::BinaryOutputStatus(bool value, uint8_t quality) : TypedMeasurement(value, quality::GetBinaryQuality(quality, value))
+BinaryOutputStatus::BinaryOutputStatus(bool value, uint8_t quality) : TypedMeasurement(value, flags::GetBinaryQuality(quality, value))
 {}
 
-BinaryOutputStatus::BinaryOutputStatus(bool value, uint8_t quality, DNPTime time) : TypedMeasurement(value, quality::GetBinaryQuality(quality, value), time)
+BinaryOutputStatus::BinaryOutputStatus(bool value, uint8_t quality, DNPTime time) : TypedMeasurement(value, flags::GetBinaryQuality(quality, value), time)
 {}
 
 bool BinaryOutputStatus::IsEvent(const BinaryOutputStatus& newValue) const
@@ -140,10 +127,10 @@ bool BinaryOutputStatus::IsEvent(const BinaryOutputStatus& newValue) const
 
 // ------------ Analog ---------------
 
-Analog::Analog() : TypedMeasurement(quality::RESTART)
+Analog::Analog() : TypedMeasurement(flags::RESTART)
 {}
 
-Analog::Analog(double value) : TypedMeasurement(value, quality::ONLINE)
+Analog::Analog(double value) : TypedMeasurement(value, flags::ONLINE)
 {}
 
 Analog::Analog(double value, uint8_t quality) : TypedMeasurement(value, quality)
@@ -161,9 +148,9 @@ bool Analog::IsEvent(const Analog& newValue, double deadband) const
 
 
 
-Counter::Counter() : TypedMeasurement(0, quality::RESTART) {}
+Counter::Counter() : TypedMeasurement(0, flags::RESTART) {}
 
-Counter::Counter(uint32_t value) : TypedMeasurement<uint32_t>(value, quality::ONLINE)
+Counter::Counter(uint32_t value) : TypedMeasurement<uint32_t>(value, flags::ONLINE)
 {}
 
 Counter::Counter(uint32_t value, uint8_t quality) : TypedMeasurement<uint32_t>(value, quality)
@@ -184,9 +171,9 @@ bool Counter::IsEvent(const Counter& newValue, uint32_t aDeadband) const
 // ------------ Frozen Counter ---------------
 
 
-FrozenCounter::FrozenCounter() : TypedMeasurement(0, quality::RESTART) {}
+FrozenCounter::FrozenCounter() : TypedMeasurement(0, flags::RESTART) {}
 
-FrozenCounter::FrozenCounter(uint32_t value) : TypedMeasurement<uint32_t>(value, quality::ONLINE)
+FrozenCounter::FrozenCounter(uint32_t value) : TypedMeasurement<uint32_t>(value, flags::ONLINE)
 {}
 
 FrozenCounter::FrozenCounter(uint32_t value, uint8_t quality) : TypedMeasurement<uint32_t>(value, quality)
@@ -208,10 +195,10 @@ bool FrozenCounter::IsEvent(const FrozenCounter& newValue, uint32_t aDeadband) c
 
 
 
-AnalogOutputStatus::AnalogOutputStatus() : TypedMeasurement<double>(quality::RESTART) {}
+AnalogOutputStatus::AnalogOutputStatus() : TypedMeasurement<double>(flags::RESTART) {}
 
 
-AnalogOutputStatus::AnalogOutputStatus(double value) : TypedMeasurement<double>(value, quality::ONLINE)
+AnalogOutputStatus::AnalogOutputStatus(double value) : TypedMeasurement<double>(value, flags::ONLINE)
 {}
 
 AnalogOutputStatus::AnalogOutputStatus(double value, uint8_t quality) : TypedMeasurement<double>(value, quality)

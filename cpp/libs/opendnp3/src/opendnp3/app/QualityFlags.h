@@ -18,35 +18,28 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-
-#ifndef OPENDNP3_EVENTTYPE_H
-#define OPENDNP3_EVENTTYPE_H
+#ifndef OPENDNP3_QUALITYFLAGS_H
+#define OPENDNP3_QUALITYFLAGS_H
 
 #include <cstdint>
 
 namespace opendnp3
 {
 
-static const int NUM_OUTSTATION_EVENT_TYPES = 8;
-
-enum class EventType : uint16_t
+namespace flags 
 {
-    Binary = 0,
-    Analog = 1,
-    Counter = 2,
-    FrozenCounter = 3,
-    DoubleBitBinary = 4,
-    BinaryOutputStatus = 5,
-    AnalogOutputStatus = 6,
-	SecurityStat = 7
+
+enum Quality : uint8_t
+{
+	ONLINE = 0x01,
+	RESTART = 0x02
 };
 
-enum class EventClass: uint8_t
-{
-    EC1 = 0,
-    EC2 = 1,
-    EC3 = 2
-};
+bool GetBinaryValue(uint8_t quality);
+	
+uint8_t GetBinaryQuality(uint8_t q, bool value);
+
+}
 
 }
 
