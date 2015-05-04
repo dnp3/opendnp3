@@ -26,18 +26,18 @@
 namespace opendnp3
 {
 
-	SecurityStat::SecurityStat() : flags(flags::RESTART)
+	SecurityStat::SecurityStat() : quality(flags::RESTART)
 	{}
 
-	SecurityStat::SecurityStat(uint8_t flags_, uint16_t assocId_, uint32_t count_) : 
-		flags(flags_),
+	SecurityStat::SecurityStat(uint8_t quality_, uint16_t assocId_, uint32_t count_) :
+		quality(quality_),
 		assocId(assocId_),
 		count(count_),
 		time(0)
 	{}
 
-	SecurityStat::SecurityStat(uint8_t flags_, uint16_t assocId_, uint32_t count_, DNPTime time_) :
-		flags(flags_),
+	SecurityStat::SecurityStat(uint8_t quality_, uint16_t assocId_, uint32_t count_, DNPTime time_) :
+		quality(quality_),
 		assocId(assocId_),
 		count(count_),
 		time(time_)

@@ -41,11 +41,11 @@ public:
 
 	SecurityStat();
 
-	SecurityStat(uint8_t flags, uint16_t assocId, uint32_t count);
+	SecurityStat(uint8_t quality, uint16_t assocId, uint32_t count);
 
-	SecurityStat(uint8_t flags, uint16_t assocId, uint32_t count, DNPTime time);			
+	SecurityStat(uint8_t quality, uint16_t assocId, uint32_t count, DNPTime time);
 
-	uint8_t flags;		//	bitfield that stores type specific quality information
+	uint8_t quality;	//	bitfield that stores type specific quality flags
 	uint16_t assocId;	//	the association that the stat came from
 	uint32_t count;		//	the actualy value of the statistic
 	DNPTime time;		//	timestamp associated with the measurement (may not be set)

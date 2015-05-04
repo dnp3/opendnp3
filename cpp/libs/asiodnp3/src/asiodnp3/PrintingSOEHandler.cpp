@@ -115,4 +115,19 @@ void PrintingSOEHandler::OnReceiveHeader(const HeaderInfo& info, const IterableB
 	});
 }
 
+void PrintingSOEHandler::OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<SecurityStat, uint16_t>>& meas)
+{
+	this->PrintHeaderInfo(info);
+
+	meas.foreach([&](const IndexedValue<SecurityStat, uint16_t>& pair)
+	{
+		/* - TODO
+		std::cout << "[" << pair.index << "] : " <<
+			ValueToString(pair.value.count) << " : " <<
+			static_cast<int>(pair.value.quality) << " : " <<
+			pair.value.time << std::endl;
+		*/
+	});
+}
+
 }

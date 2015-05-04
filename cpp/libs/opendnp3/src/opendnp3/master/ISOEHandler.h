@@ -29,6 +29,7 @@
 #include "opendnp3/app/BinaryCommandEvent.h"
 #include "opendnp3/app/AnalogCommandEvent.h"
 #include "opendnp3/app/OctetString.h"
+#include "opendnp3/app/SecurityStat.h"
 
 #include "opendnp3/master/HeaderInfo.h"
 
@@ -57,6 +58,7 @@ public:
 	virtual void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas) = 0;
 	virtual void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<BinaryCommandEvent, uint16_t>>& meas) = 0;
 	virtual void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<AnalogCommandEvent, uint16_t>>& meas) = 0;
+	virtual void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<SecurityStat, uint16_t>>& meas) = 0;
 
 	virtual ~ISOEHandler() {}
 };
@@ -83,6 +85,7 @@ public:
 	virtual void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas) override final {}
 	virtual void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<BinaryCommandEvent, uint16_t>>& meas) override final {}
 	virtual void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<AnalogCommandEvent, uint16_t>>& meas) override final {}
+	virtual void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<SecurityStat, uint16_t>>& meas) override final {}
 
 protected:
 

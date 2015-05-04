@@ -118,6 +118,10 @@ public:
 		this->RecordAny(info, meas, analogCommandEventSOE);
 	}
 
+	void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<SecurityStat, uint16_t>>& meas) override final
+	{
+		// TODO
+	}
 
 
 	void Clear()
