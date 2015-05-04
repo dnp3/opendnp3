@@ -70,7 +70,7 @@ public:
 	virtual void OnCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group52Var2& value) override final;
 	virtual void OnCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group120Var4& value) override final;
 
-	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<IINValue, uint16_t>>& meas) override final;
+	virtual void OnRange(const HeaderRecord& record, uint16_t index, uint32_t count, const IINValue& value) override final;
 
 	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override final;
 	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) override final;
@@ -133,7 +133,7 @@ protected:
 	virtual IINField ProcessFreeFormat(const HeaderRecord& record, const Group120Var5& value);
 	virtual IINField ProcessFreeFormat(const HeaderRecord& record, const Group120Var6& value);
 
-	virtual IINField ProcessIIN(const HeaderRecord& record, const IterableBuffer<IndexedValue<IINValue, uint16_t>>& meas);
+	virtual IINField ProcessIIN(const HeaderRecord& record, uint16_t index, uint32_t count, const IINValue& value);
 
 	virtual IINField ProcessCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group50Var1& value);
 	virtual IINField ProcessCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group51Var1& value);

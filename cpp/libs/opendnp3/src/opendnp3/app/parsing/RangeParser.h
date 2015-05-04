@@ -72,6 +72,9 @@ private:
 	template <class Conversion>
 	static RangeParser FromBitfield(const Range& range);
 
+	template <class Type>
+	static RangeParser FromBitfieldType(const Range& range);
+
 	template <class Conversion>
 	static RangeParser FromDoubleBitfield(const Range& range);
 
@@ -87,6 +90,9 @@ private:
 
 	template <class Conversion>
 	static void InvokeRangeBitfield(const HeaderRecord& record, const Range& range, const openpal::ReadBufferView& buffer, IAPDUHandler& handler);
+
+	template <class Type>
+	static void InvokeRangeBitfieldType(const HeaderRecord& record, const Range& range, const openpal::ReadBufferView& buffer, IAPDUHandler& handler);
 
 	template <class Conversion>
 	static void InvokeRangeDoubleBitfield(const HeaderRecord& record, const Range& range, const openpal::ReadBufferView& buffer, IAPDUHandler& handler);
@@ -145,8 +151,15 @@ void RangeParser::InvokeRangeOfRaw(const HeaderRecord& record, const Range& rang
 template <class Conversion>
 RangeParser RangeParser::FromBitfield(const Range& range)
 {
-	uint32_t size = NumBytesInBits(range.Count());
-	return RangeParser(range, size, &InvokeRangeBitfield<Conversion>);
+	const uint32_t SIZE = NumBytesInBits(range.Count());
+	return RangeParser(range, SIZE, &InvokeRangeBitfield<Conversion>);
+}
+
+template <class Type>
+RangeParser RangeParser::FromBitfieldType(const Range& range)
+{
+	const uint32_t SIZE = NumBytesInBits(range.Count());
+	return RangeParser(range, SIZE, &InvokeRangeBitfieldType<Type>);
 }
 
 template <class Conversion>
@@ -159,6 +172,23 @@ void RangeParser::InvokeRangeBitfield(const HeaderRecord& record, const Range& r
 
 	auto collection = CreateLazyIterable<typename Conversion::Target>(buffer, range.Count(), read);
 	handler.OnRange(record, collection);			
+}
+
+template <class Type>
+void RangeParser::InvokeRangeBitfieldType(const HeaderRecord& record, const Range& range, const openpal::ReadBufferView& buffer, IAPDUHandler& handler)
+{
+	const uint32_t COUNT = range.Count();
+
+	openpal::ReadBufferView copy(buffer);
+
+	uint32_t pos = 0;
+
+	for (uint16_t i = range.start; i <= range.stop; ++i)
+	{
+		Type value(GetBit(buffer, pos));
+		handler.OnRange(record, i, COUNT, value);
+		++pos;
+	}
 }
 
 template <class Conversion>

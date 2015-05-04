@@ -38,40 +38,31 @@ WriteHandler::WriteHandler(openpal::Logger& aLogger, IOutstationApplication& app
 	wroteIIN(false)
 {}
 
-IINField WriteHandler::ProcessIIN(const HeaderRecord&, const IterableBuffer<IndexedValue<IINValue, uint16_t>>& meas)
-{
-	IndexedValue<IINValue, uint16_t> v;
-	if(meas.ReadOnlyValue(v))
-	{
-		if (wroteIIN)
-		{
-			return IINBit::PARAM_ERROR;
-		}
-		else
-		{
-			if (v.index == static_cast<int>(IINBit::DEVICE_RESTART))
-			{
-				if (v.value.value)
-				{
-					return IINBit::PARAM_ERROR;
-				}
-				else
-				{
-					wroteIIN = true;
-					pWriteIIN->ClearBit(IINBit::DEVICE_RESTART);
-					return IINField();
-				}
-			}
-			else
-			{
-				return IINBit::PARAM_ERROR;
-			}
-		}
-	}
-	else
+IINField WriteHandler::ProcessIIN(const HeaderRecord& record, uint16_t index, uint32_t count, const IINValue& bit)
+{	
+	if (count != 1)
 	{
 		return IINBit::PARAM_ERROR;
 	}
+
+	if (wroteIIN)
+	{
+		return IINBit::PARAM_ERROR;
+	}
+	
+	if (index != static_cast<int>(IINBit::DEVICE_RESTART))
+	{
+		return IINBit::PARAM_ERROR;
+	}
+
+	if (bit.value)
+	{
+		return IINBit::PARAM_ERROR;
+	}
+			
+	wroteIIN = true;
+	pWriteIIN->ClearBit(IINBit::DEVICE_RESTART);
+	return IINField();		
 }
 
 IINField WriteHandler::ProcessCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group50Var1& value)

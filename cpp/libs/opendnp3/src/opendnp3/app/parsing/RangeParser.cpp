@@ -159,7 +159,7 @@ ParseResult RangeParser::ParseRangeOfObjects(openpal::ReadBufferView& buffer, co
 		MACRO_PARSE_OBJECTS_WITH_RANGE(Group50Var4);
 				
 	case(GroupVariation::Group80Var1) :
-		return RangeParser::FromBitfield<BitfieldConversion<IINValue>>(range).Process(record, buffer, pHandler, pLogger);
+		return RangeParser::FromBitfieldType<IINValue>(range).Process(record, buffer, pHandler, pLogger);
 		
 	case(GroupVariation::Group110Var0) :
 		return ParseRangeOfOctetData(buffer, record, range, pLogger, pHandler);

@@ -74,7 +74,9 @@ public:
 	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var5& value) = 0;
 	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var6& value) = 0;
 
-	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<IINValue, uint16_t>>& meas) = 0;
+	// ------ Special ranged values like IIN (group 80) ------
+
+	virtual void OnRange(const HeaderRecord& record, uint16_t index, uint32_t count, const IINValue& value) = 0;
 
 	// static values by range
 	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) = 0;

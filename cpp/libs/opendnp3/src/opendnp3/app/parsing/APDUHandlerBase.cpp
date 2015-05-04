@@ -80,9 +80,9 @@ void APDUHandlerBase::OnFreeFormat(const HeaderRecord& record, const Group120Var
 	Record(record, this->ProcessFreeFormat(record, value));
 }
 
-void APDUHandlerBase::OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<IINValue, uint16_t>>& values)
+void APDUHandlerBase::OnRange(const HeaderRecord& record, uint16_t index, uint32_t count, const IINValue& value)
 {
-	Record(record, this->ProcessIIN(record, values));
+	Record(record, this->ProcessIIN(record, index, count, value));
 }
 
 void APDUHandlerBase::OnCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group50Var1& value)
@@ -265,7 +265,7 @@ IINField APDUHandlerBase::ProcessCountRequest(const HeaderRecord& record, uint16
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessIIN(const HeaderRecord& record, const IterableBuffer<IndexedValue<IINValue, uint16_t>>& values)
+IINField APDUHandlerBase::ProcessIIN(const HeaderRecord& record, uint16_t index, uint32_t count, const IINValue& value)
 {
 	return ProcessUnsupportedHeader();
 }
