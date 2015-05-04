@@ -57,159 +57,115 @@ namespace Automatak.DNP3.Interface
             Console.WriteLine(String.Format("{0} : {1} : timestamps {2}", info.variation, info.qualifier, info.tsmode));
         }
 
-        private void Print(IEnumerable<IndexedValue<Binary>> values)
+        private void Print(Binary value, UInt16 index)
         {
-            foreach (var pair in values)
-            {
-                Console.WriteLine("Binary[" + pair.Index + "] " + pair.Value.ToString());             
-            }           
+            Console.WriteLine("Binary[" + index + "] " + value.ToString());                         
         }
 
-        private void Print(IEnumerable<IndexedValue<DoubleBitBinary>> values)
-        {
-            foreach (var pair in values)
-            {
-                Console.WriteLine("DoubleBit[" + pair.Index + "] " + pair.Value.ToString());
-            }
+        private void Print(DoubleBitBinary value, UInt16 index)
+        {            
+            Console.WriteLine("DoubleBit[" + index + "] " + value.ToString());            
         }
 
-        private void Print(IEnumerable<IndexedValue<Analog>> values)
-        {
-            foreach (var pair in values)
-            {
-                Console.WriteLine("Analog[" + pair.Index + "] " + pair.Value.ToString());
-            }
+        private void Print(Analog value, UInt16 index)
+        {          
+            Console.WriteLine("Analog[" + index + "] " + value.ToString());         
         }
 
-        private void Print(IEnumerable<IndexedValue<Counter>> values)
+        private void Print(Counter value, UInt16 index)
         {
-            foreach (var pair in values)
-            {
-                Console.WriteLine("Counter[" + pair.Index + "] " + pair.Value.ToString());
-            }
+            Console.WriteLine("Counter[" + index + "] " + value.ToString());            
         }
 
-        private void Print(IEnumerable<IndexedValue<FrozenCounter>> values)
-        {
-            foreach (var pair in values)
-            {
-                Console.WriteLine("FrozenCounter[" + pair.Index + "] " + pair.Value.ToString());
-            }
+        private void Print(FrozenCounter value, UInt16 index)
+        {            
+            Console.WriteLine("FrozenCounter[" + index + "] " + value.ToString());            
         }
 
-        private void Print(IEnumerable<IndexedValue<BinaryOutputStatus>> values)
-        {
-            foreach (var pair in values)
-            {
-                Console.WriteLine("BinaryOutputStatus[" + pair.Index + "] " + pair.Value.ToString());
-            }
+        private void Print(BinaryOutputStatus value, UInt16 index)
+        {            
+            Console.WriteLine("BinaryOutputStatus[" + index + "] " + value.ToString());            
         }
 
-        private void Print(IEnumerable<IndexedValue<AnalogOutputStatus>> values)
-        {
-            foreach (var pair in values)
-            {
-                Console.WriteLine("AnalogOutputStatus[" + pair.Index + "] " + pair.Value.ToString());
-            }
+        private void Print(AnalogOutputStatus value, UInt16 index)
+        {            
+            Console.WriteLine("AnalogOutputStatus[" + index + "] " + value.ToString());            
         }
 
-        private void Print(IEnumerable<IndexedValue<OctetString>> values)
-        {
-            foreach (var pair in values)
-            {
-                Console.WriteLine("OctetString[" + pair.Index + "] lemgth: " + pair.Value.Bytes.Length);
-            }
+        private void Print(OctetString value, UInt16 index)
+        {            
+            Console.WriteLine("OctetString[" + index + "] lemgth: " + value.Bytes.Length);            
         }
 
-        private void Print(IEnumerable<IndexedValue<TimeAndInterval>> values)
-        {
-            foreach (var pair in values)
-            {
-                Console.WriteLine(String.Format("TimeAndInterval[{0}] {1}", pair.Index, pair.Value));
-            }
+        private void Print(TimeAndInterval value, UInt16 index)
+        {            
+            Console.WriteLine(String.Format("TimeAndInterval[{0}] {1}", index, value));           
         }
 
-        private void Print(IEnumerable<IndexedValue<BinaryCommandEvent>> values)
-        {
-            foreach (var pair in values)
-            {
-                Console.WriteLine(String.Format("BinaryCommandEvent[{0}] {1}", pair.Index, pair.Value));
-            }
+        private void Print(BinaryCommandEvent value, UInt16 index)
+        {            
+            Console.WriteLine(String.Format("BinaryCommandEvent[{0}] {1}", index, value));            
         }
 
-        private void Print(IEnumerable<IndexedValue<AnalogCommandEvent>> values)
-        {
-            foreach (var pair in values)
-            {
-                Console.WriteLine(String.Format("AnalogCommandEvent[{0}] {1}", pair.Index, pair.Value));
-            }
+        private void Print(AnalogCommandEvent value, UInt16 index)
+        {            
+            Console.WriteLine(String.Format("AnalogCommandEvent[{0}] {1}", index, value));            
         }
 
 
-        void ISOEHandler.OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<Binary>> values)
+        void ISOEHandler.OnValue(HeaderInfo info, Binary value, ushort index)
         {
-            this.PrintHeaderInfo(info);
-            this.Print(values);
+            Print(value, index);
         }
 
-        void ISOEHandler.OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<DoubleBitBinary>> values)
+        void ISOEHandler.OnValue(HeaderInfo info, DoubleBitBinary value, ushort index)
         {
-            this.PrintHeaderInfo(info);
-            this.Print(values);
+            Print(value, index);
         }
 
-        void ISOEHandler.OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<Analog>> values)
+        void ISOEHandler.OnValue(HeaderInfo info, Analog value, ushort index)
         {
-            this.PrintHeaderInfo(info);
-            this.Print(values);
+            Print(value, index);
         }
 
-        void ISOEHandler.OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<Counter>> values)
+        void ISOEHandler.OnValue(HeaderInfo info, Counter value, ushort index)
         {
-            this.PrintHeaderInfo(info);
-            this.Print(values);
+            Print(value, index);
         }
 
-        void ISOEHandler.OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<FrozenCounter>> values)
+        void ISOEHandler.OnValue(HeaderInfo info, FrozenCounter value, ushort index)
         {
-            this.PrintHeaderInfo(info);
-            this.Print(values);
+            Print(value, index);
         }
 
-        void ISOEHandler.OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<BinaryOutputStatus>> values)
+        void ISOEHandler.OnValue(HeaderInfo info, BinaryOutputStatus value, ushort index)
         {
-            this.PrintHeaderInfo(info);
-            this.Print(values);
+            Print(value, index);
         }
 
-        void ISOEHandler.OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<AnalogOutputStatus>> values)
+        void ISOEHandler.OnValue(HeaderInfo info, AnalogOutputStatus value, ushort index)
         {
-            this.PrintHeaderInfo(info);
-            this.Print(values);
+            Print(value, index);
         }
 
-        void ISOEHandler.OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<OctetString>> values)
+        void ISOEHandler.OnValue(HeaderInfo info, OctetString value, ushort index)
         {
-            this.PrintHeaderInfo(info);
-            this.Print(values);
+            Print(value, index);
         }
 
-        void ISOEHandler.OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<TimeAndInterval>> values)
+        void ISOEHandler.OnValue(HeaderInfo info, TimeAndInterval value, ushort index)
         {
-            this.PrintHeaderInfo(info);
-            this.Print(values);
+            Print(value, index);
         }
 
-        void ISOEHandler.OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<BinaryCommandEvent>> values)
+        void ISOEHandler.OnValue(HeaderInfo info, BinaryCommandEvent value, ushort index)
         {
-            this.PrintHeaderInfo(info);
-            this.Print(values);
+            Print(value, index);
         }
 
-        void ISOEHandler.OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<AnalogCommandEvent>> values)
+        void ISOEHandler.OnValue(HeaderInfo info, AnalogCommandEvent value, ushort index)
         {
-            this.PrintHeaderInfo(info);
-            this.Print(values);
+            Print(value, index);
         }
     }    
 }

@@ -2,8 +2,6 @@
 #include "Stdafx.h"
 #include "OutstationApplicationAdapter.h"
 
-#include "EnumerableConversions.h"
-
 using namespace Automatak::DNP3::Interface;
 
 namespace Automatak
@@ -36,8 +34,10 @@ namespace Automatak
 
 			bool OutstationApplicationAdapter::WriteTimeAndInterval(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::TimeAndInterval, uint16_t>>& values)
 			{
-				auto enumerable = ToEnumerable<TimeAndInterval^>(values);
-				return proxy->WriteTimeAndInterval(enumerable);
+				// TODO
+				// auto enumerable = ToEnumerable<TimeAndInterval^>(values);
+				// return proxy->WriteTimeAndInterval(enumerable);
+				return false;
 			}
 
 			bool OutstationApplicationAdapter::SupportsAssignClass()

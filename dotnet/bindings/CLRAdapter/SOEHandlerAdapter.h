@@ -6,8 +6,6 @@ using namespace System::Collections::ObjectModel;
 #include <opendnp3/master/ISOEHandler.h>
 #include <vcclr.h>
 
-#include "EnumerableConversions.h"
-
 using namespace Automatak::DNP3::Interface;
 
 namespace Automatak
@@ -26,18 +24,18 @@ namespace Automatak
 				virtual void Start() override final;
 				virtual void End() override final;
 
-				virtual void OnReceiveHeader(const opendnp3::HeaderInfo& info, const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::Binary, uint16_t>>& meas) override final;
-				virtual void OnReceiveHeader(const opendnp3::HeaderInfo& info, const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::DoubleBitBinary, uint16_t>>& meas) override final;
-				virtual void OnReceiveHeader(const opendnp3::HeaderInfo& info, const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::Analog, uint16_t>>& meas) override final;
-				virtual void OnReceiveHeader(const opendnp3::HeaderInfo& info, const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::Counter, uint16_t>>& meas) override final;
-				virtual void OnReceiveHeader(const opendnp3::HeaderInfo& info, const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::FrozenCounter, uint16_t>>& meas) override final;
-				virtual void OnReceiveHeader(const opendnp3::HeaderInfo& info, const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::BinaryOutputStatus, uint16_t>>& meas) override final;
-				virtual void OnReceiveHeader(const opendnp3::HeaderInfo& info, const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::AnalogOutputStatus, uint16_t>>& meas) override final;
-				virtual void OnReceiveHeader(const opendnp3::HeaderInfo& info, const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::OctetString, uint16_t>>& meas) override final;
-				virtual void OnReceiveHeader(const opendnp3::HeaderInfo& info, const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::TimeAndInterval, uint16_t>>& meas) override final;
-				virtual void OnReceiveHeader(const opendnp3::HeaderInfo& info, const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::BinaryCommandEvent, uint16_t>>& meas) override final;
-				virtual void OnReceiveHeader(const opendnp3::HeaderInfo& info, const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::AnalogCommandEvent, uint16_t>>& meas) override final;
-				virtual void OnReceiveHeader(const opendnp3::HeaderInfo& info, const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::SecurityStat, uint16_t>>& meas) override final;
+				virtual void OnValue(const opendnp3::HeaderInfo& info, const opendnp3::Binary& meas, uint16_t index) override final;
+				virtual void OnValue(const opendnp3::HeaderInfo& info, const opendnp3::DoubleBitBinary& meas, uint16_t index) override final;
+				virtual void OnValue(const opendnp3::HeaderInfo& info, const opendnp3::Analog& meas, uint16_t index) override final;
+				virtual void OnValue(const opendnp3::HeaderInfo& info, const opendnp3::Counter& meas, uint16_t index) override final;
+				virtual void OnValue(const opendnp3::HeaderInfo& info, const opendnp3::FrozenCounter& meas, uint16_t index) override final;
+				virtual void OnValue(const opendnp3::HeaderInfo& info, const opendnp3::BinaryOutputStatus& meas, uint16_t index) override final;
+				virtual void OnValue(const opendnp3::HeaderInfo& info, const opendnp3::AnalogOutputStatus& meas, uint16_t index) override final;
+				virtual void OnValue(const opendnp3::HeaderInfo& info, const opendnp3::OctetString& meas, uint16_t index) override final;
+				virtual void OnValue(const opendnp3::HeaderInfo& info, const opendnp3::TimeAndInterval& meas, uint16_t index) override final;
+				virtual void OnValue(const opendnp3::HeaderInfo& info, const opendnp3::BinaryCommandEvent& meas, uint16_t index) override final;
+				virtual void OnValue(const opendnp3::HeaderInfo& info, const opendnp3::AnalogCommandEvent& meas, uint16_t index) override final;
+				virtual void OnValue(const opendnp3::HeaderInfo& info, const opendnp3::SecurityStat& meas, uint16_t index) override final;
 
 			private:
 

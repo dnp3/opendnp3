@@ -170,7 +170,6 @@
     <ClInclude Include="Conversions.h" />
     <ClInclude Include="DNP3ManagerAdapter.h" />
     <ClInclude Include="EnumerableAdapter.h" />
-    <ClInclude Include="EnumerableConversions.h" />
     <ClInclude Include="EventConverter.h" />
     <ClInclude Include="Lock.h" />
     <ClInclude Include="LogAdapter.h" />

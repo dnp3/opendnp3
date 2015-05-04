@@ -61,66 +61,66 @@ public:
 	uint32_t TotalReceived() const
 	{
 		return soeCount;
-	}	
+	}		
 
-	void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override final
+	virtual void OnValue(const HeaderInfo& info, const Binary& meas, uint16_t index) override final
 	{
-		this->RecordAny(info, meas, binarySOE);
+		this->RecordAny(info, meas, index, binarySOE);
 	}
 
-	void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) override final
+	virtual void OnValue(const HeaderInfo& info, const DoubleBitBinary& meas, uint16_t index) override final
 	{
-		this->RecordAny(info, meas, doubleBinarySOE);
+		this->RecordAny(info, meas, index, doubleBinarySOE);
 	}
 
-	void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) override final
+	virtual void OnValue(const HeaderInfo& info, const Analog& meas, uint16_t index) override final
 	{
-		this->RecordAny(info, meas, analogSOE);
+		this->RecordAny(info, meas, index, analogSOE);
 	}
 
-	void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) override final
+	virtual void OnValue(const HeaderInfo& info, const Counter& meas, uint16_t index) override final
 	{
-		this->RecordAny(info, meas, counterSOE);
+		this->RecordAny(info, meas, index, counterSOE);
 	}
 
-	void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) override final
+	virtual void OnValue(const HeaderInfo& info, const FrozenCounter& meas, uint16_t index) override final
 	{
-		this->RecordAny(info, meas, frozenCounterSOE);
+		this->RecordAny(info, meas, index, frozenCounterSOE);
 	}
 
-	void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) override final
+	virtual void OnValue(const HeaderInfo& info, const BinaryOutputStatus& meas, uint16_t index) override final
 	{
-		this->RecordAny(info, meas, binaryOutputStatusSOE);
+		this->RecordAny(info, meas, index, binaryOutputStatusSOE);
 	}
 
-	void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas) override final
+	virtual void OnValue(const HeaderInfo& info, const AnalogOutputStatus& meas, uint16_t index) override final
 	{
-		this->RecordAny(info, meas, analogOutputStatusSOE);
+		this->RecordAny(info, meas, index, analogOutputStatusSOE);
 	}
 
-	void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) override final
+	virtual void OnValue(const HeaderInfo& info, const OctetString& meas, uint16_t index) override final
 	{
-		this->RecordAny(info, meas, octetStringSOE);
+		this->RecordAny(info, meas, index, octetStringSOE);
 	}
 
-	void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas) override final
+	virtual void OnValue(const HeaderInfo& info, const TimeAndInterval& meas, uint16_t index) override final
 	{
-		this->RecordAny(info, meas, timeAndIntervalSOE);
+		this->RecordAny(info, meas, index, timeAndIntervalSOE);
 	}
 
-	void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<BinaryCommandEvent, uint16_t>>& meas) override final
+	virtual void OnValue(const HeaderInfo& info, const BinaryCommandEvent& meas, uint16_t index) override final
 	{
-		this->RecordAny(info, meas, binaryCommandEventSOE);
+		this->RecordAny(info, meas, index, binaryCommandEventSOE);
 	}
 
-	void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<AnalogCommandEvent, uint16_t>>& meas) override final
+	virtual void OnValue(const HeaderInfo& info, const AnalogCommandEvent& meas, uint16_t index) override final
 	{
-		this->RecordAny(info, meas, analogCommandEventSOE);
+		this->RecordAny(info, meas, index, analogCommandEventSOE);
 	}
 
-	void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<SecurityStat, uint16_t>>& meas) override final
-	{		
-		this->RecordAny(info, meas, securityStatSOE);
+	virtual void OnValue(const HeaderInfo& info, const SecurityStat& meas, uint16_t index) override final
+	{
+		this->RecordAny(info, meas, index, securityStatSOE);
 	}
 
 
@@ -165,14 +165,11 @@ private:
 	uint32_t soeCount;
 
 	template <class T>
-	void RecordAny(const HeaderInfo& info, const IterableBuffer<IndexedValue<T, uint16_t>>& meas, std::map<uint16_t, Record<T> >& records)
-	{
-		meas.foreach([this, &info, &records](const IndexedValue<T, uint16_t>& value)
-		{
-			Record<T> record(value.value, info, soeCount);
-			records[value.index] = record;
-			++soeCount;
-		});
+	void RecordAny(const HeaderInfo& info, const T& value, uint16_t index, std::map<uint16_t, Record<T> >& records)
+	{		
+			Record<T> record(value, info, soeCount);
+			records[index] = record;
+			++soeCount;		
 	}
 
 

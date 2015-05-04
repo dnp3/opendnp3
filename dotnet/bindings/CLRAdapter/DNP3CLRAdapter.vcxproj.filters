@@ -66,9 +66,6 @@
     <ClInclude Include="MasterScanAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="EnumerableConversions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="TaskCallbackAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>

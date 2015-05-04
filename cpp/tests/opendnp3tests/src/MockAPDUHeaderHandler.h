@@ -42,7 +42,6 @@ public:
 		records.push_back(record);
 	}
 	
-
 	virtual IINField ProcessIIN(const HeaderRecord& record, uint16_t index, uint32_t count, const IINValue& value) override final
 	{
 		iinBits.push_back(IndexedValue<IINValue, uint16_t>(value, index));

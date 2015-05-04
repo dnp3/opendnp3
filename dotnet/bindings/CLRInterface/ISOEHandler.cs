@@ -75,16 +75,16 @@ namespace Automatak.DNP3.Interface
             void Start();
             void End();
 
-            void OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<Binary>> values);
-            void OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<DoubleBitBinary>> values);
-            void OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<Analog>> values);
-            void OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<Counter>> values);
-            void OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<FrozenCounter>> values);
-            void OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<BinaryOutputStatus>> values);
-            void OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<AnalogOutputStatus>> values);
-            void OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<OctetString>> values);
-            void OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<TimeAndInterval>> values);
-            void OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<BinaryCommandEvent>> values);
-            void OnReceiveHeader(HeaderInfo info, IEnumerable<IndexedValue<AnalogCommandEvent>> values);	 
+            void OnValue(HeaderInfo info, Binary value, UInt16 index);
+            void OnValue(HeaderInfo info, DoubleBitBinary value, UInt16 index);
+            void OnValue(HeaderInfo info, Analog value, UInt16 index);
+            void OnValue(HeaderInfo info, Counter value, UInt16 index);
+            void OnValue(HeaderInfo info, FrozenCounter value, UInt16 index);
+            void OnValue(HeaderInfo info, BinaryOutputStatus value, UInt16 index);
+            void OnValue(HeaderInfo info, AnalogOutputStatus value, UInt16 index);
+            void OnValue(HeaderInfo info, OctetString value, UInt16 index);
+            void OnValue(HeaderInfo info, TimeAndInterval value, UInt16 index);
+            void OnValue(HeaderInfo info, BinaryCommandEvent value, UInt16 index);
+            void OnValue(HeaderInfo info, AnalogCommandEvent value, UInt16 index);	 
 	}
 }

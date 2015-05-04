@@ -28,75 +28,64 @@ namespace Automatak
 				return gcnew HeaderInfo((GroupVariation)info.gv, (QualifierCode)info.qualifier, (TimestampMode)info.tsmode);
 			}
 
-			void SOEHandlerAdapter::OnReceiveHeader(const opendnp3::HeaderInfo& info, const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::Binary, uint16_t>>& meas)
+			void SOEHandlerAdapter::OnValue(const opendnp3::HeaderInfo& info, const opendnp3::Binary& meas, uint16_t index)
 			{
-				auto values = ToEnumerable<Binary^>(meas);
-				proxy->OnReceiveHeader(GetInfo(info), values);
+				proxy->OnValue(GetInfo(info), Conversions::ConvertMeas(meas), index);
 			}
 
-			void SOEHandlerAdapter::OnReceiveHeader(const opendnp3::HeaderInfo& info, const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::DoubleBitBinary, uint16_t>>& meas)
+			void SOEHandlerAdapter::OnValue(const opendnp3::HeaderInfo& info, const opendnp3::DoubleBitBinary& meas, uint16_t index)
 			{
-				auto values = ToEnumerable<DoubleBitBinary^>(meas);
-				proxy->OnReceiveHeader(GetInfo(info), values);
+				proxy->OnValue(GetInfo(info), Conversions::ConvertMeas(meas), index);
 			}
 
-			void SOEHandlerAdapter::OnReceiveHeader(const opendnp3::HeaderInfo& info, const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::Analog, uint16_t>>& meas)
+			void SOEHandlerAdapter::OnValue(const opendnp3::HeaderInfo& info, const opendnp3::Analog& meas, uint16_t index)
 			{
-				auto values = ToEnumerable<Analog^>(meas);
-				proxy->OnReceiveHeader(GetInfo(info), values);
+				proxy->OnValue(GetInfo(info), Conversions::ConvertMeas(meas), index);
 			}
 			
-			void SOEHandlerAdapter::OnReceiveHeader(const opendnp3::HeaderInfo& info, const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::Counter, uint16_t>>& meas)
+			void SOEHandlerAdapter::OnValue(const opendnp3::HeaderInfo& info, const opendnp3::Counter& meas, uint16_t index)
 			{
-				auto values = ToEnumerable<Counter^>(meas);
-				proxy->OnReceiveHeader(GetInfo(info), values);
-			}
-			
-			void SOEHandlerAdapter::OnReceiveHeader(const opendnp3::HeaderInfo& info, const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::FrozenCounter, uint16_t>>& meas)
-			{
-				auto values = ToEnumerable<FrozenCounter^>(meas);
-				proxy->OnReceiveHeader(GetInfo(info), values);
-			}
-			
-			void SOEHandlerAdapter::OnReceiveHeader(const opendnp3::HeaderInfo& info, const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::BinaryOutputStatus, uint16_t>>& meas)
-			{
-				auto values = ToEnumerable<BinaryOutputStatus^>(meas);
-				proxy->OnReceiveHeader(GetInfo(info), values);
-			}
-			
-			void SOEHandlerAdapter::OnReceiveHeader(const opendnp3::HeaderInfo& info, const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::AnalogOutputStatus, uint16_t>>& meas)
-			{
-				auto values = ToEnumerable<AnalogOutputStatus^>(meas);
-				proxy->OnReceiveHeader(GetInfo(info), values);
-			}
-			
-			void SOEHandlerAdapter::OnReceiveHeader(const opendnp3::HeaderInfo& info, const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::OctetString, uint16_t>>& meas)
-			{
-				auto values = ToEnumerable<OctetString^>(meas);
-				proxy->OnReceiveHeader(GetInfo(info), values);
+				proxy->OnValue(GetInfo(info), Conversions::ConvertMeas(meas), index);
 			}
 
-			void SOEHandlerAdapter::OnReceiveHeader(const opendnp3::HeaderInfo& info, const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::TimeAndInterval, uint16_t>>& meas)
+			void SOEHandlerAdapter::OnValue(const opendnp3::HeaderInfo& info, const opendnp3::FrozenCounter& meas, uint16_t index)
 			{
-				auto values = ToEnumerable<TimeAndInterval^>(meas);
-				proxy->OnReceiveHeader(GetInfo(info), values);
+				proxy->OnValue(GetInfo(info), Conversions::ConvertMeas(meas), index);
 			}
 
-			void SOEHandlerAdapter::OnReceiveHeader(const opendnp3::HeaderInfo& info, const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::BinaryCommandEvent, uint16_t>>& meas)
+			void SOEHandlerAdapter::OnValue(const opendnp3::HeaderInfo& info, const opendnp3::BinaryOutputStatus& meas, uint16_t index)
 			{
-				auto values = ToEnumerable<BinaryCommandEvent^>(meas);
-				proxy->OnReceiveHeader(GetInfo(info), values);
+				proxy->OnValue(GetInfo(info), Conversions::ConvertMeas(meas), index);
 			}
 
-			void SOEHandlerAdapter::OnReceiveHeader(const opendnp3::HeaderInfo& info, const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::AnalogCommandEvent, uint16_t>>& meas)
+			void SOEHandlerAdapter::OnValue(const opendnp3::HeaderInfo& info, const opendnp3::AnalogOutputStatus& meas, uint16_t index)
 			{
-				auto values = ToEnumerable<AnalogCommandEvent^>(meas);
-				proxy->OnReceiveHeader(GetInfo(info), values);
+				proxy->OnValue(GetInfo(info), Conversions::ConvertMeas(meas), index);
 			}
 
-			void SOEHandlerAdapter::OnReceiveHeader(const opendnp3::HeaderInfo& info, const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::SecurityStat, uint16_t>>& meas)
+			void SOEHandlerAdapter::OnValue(const opendnp3::HeaderInfo& info, const opendnp3::OctetString& meas, uint16_t index)
 			{
-				// TODO
+				proxy->OnValue(GetInfo(info), Conversions::ConvertMeas(meas), index);
+			}
+
+			void SOEHandlerAdapter::OnValue(const opendnp3::HeaderInfo& info, const opendnp3::TimeAndInterval& meas, uint16_t index)
+			{
+				proxy->OnValue(GetInfo(info), Conversions::ConvertMeas(meas), index);
+			}
+
+			void SOEHandlerAdapter::OnValue(const opendnp3::HeaderInfo& info, const opendnp3::BinaryCommandEvent& meas, uint16_t index)
+			{
+				proxy->OnValue(GetInfo(info), Conversions::ConvertMeas(meas), index);
+			}
+
+			void SOEHandlerAdapter::OnValue(const opendnp3::HeaderInfo& info, const opendnp3::AnalogCommandEvent& meas, uint16_t index)
+			{
+				proxy->OnValue(GetInfo(info), Conversions::ConvertMeas(meas), index);
+			}
+
+			void SOEHandlerAdapter::OnValue(const opendnp3::HeaderInfo& info, const opendnp3::SecurityStat& meas, uint16_t index)
+			{
+				// TODO - create type and convert
 			}
 		}
 	}

@@ -22,8 +22,7 @@
 #define OPENDNP3_ISOEHANDLER_H
 
 #include "opendnp3/app/ITransactable.h"
-#include "opendnp3/app/parsing/IterableBuffer.h"
-#include "opendnp3/app/IndexedValue.h"
+
 #include "opendnp3/app/MeasurementTypes.h"
 #include "opendnp3/app/TimeAndInterval.h"
 #include "opendnp3/app/BinaryCommandEvent.h"
@@ -46,19 +45,19 @@ namespace opendnp3
 class ISOEHandler : public ITransactable
 {
 public:
-
-	virtual void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) = 0;
-	virtual void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) = 0;
-	virtual void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) = 0;
-	virtual void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) = 0;
-	virtual void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) = 0;
-	virtual void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) = 0;
-	virtual void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas) = 0;
-	virtual void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) = 0;
-	virtual void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas) = 0;
-	virtual void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<BinaryCommandEvent, uint16_t>>& meas) = 0;
-	virtual void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<AnalogCommandEvent, uint16_t>>& meas) = 0;
-	virtual void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<SecurityStat, uint16_t>>& meas) = 0;
+	
+	virtual void OnValue(const HeaderInfo& info, const Binary& meas, uint16_t index) = 0;
+	virtual void OnValue(const HeaderInfo& info, const DoubleBitBinary& meas, uint16_t index) = 0;
+	virtual void OnValue(const HeaderInfo& info, const Analog& meas, uint16_t index) = 0;
+	virtual void OnValue(const HeaderInfo& info, const Counter& meas, uint16_t index) = 0;
+	virtual void OnValue(const HeaderInfo& info, const FrozenCounter& meas, uint16_t index) = 0;
+	virtual void OnValue(const HeaderInfo& info, const BinaryOutputStatus& meas, uint16_t index) = 0;
+	virtual void OnValue(const HeaderInfo& info, const AnalogOutputStatus& meas, uint16_t index) = 0;
+	virtual void OnValue(const HeaderInfo& info, const OctetString& meas, uint16_t index) = 0;
+	virtual void OnValue(const HeaderInfo& info, const TimeAndInterval& meas, uint16_t index) = 0;
+	virtual void OnValue(const HeaderInfo& info, const BinaryCommandEvent& meas, uint16_t index) = 0;
+	virtual void OnValue(const HeaderInfo& info, const AnalogCommandEvent& meas, uint16_t index) = 0;
+	virtual void OnValue(const HeaderInfo& info, const SecurityStat& meas, uint16_t index) = 0;
 
 	virtual ~ISOEHandler() {}
 };
@@ -74,18 +73,18 @@ public:
 		return instance;
 	}
 
-	virtual void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override final {}
-	virtual void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) override final {}
-	virtual void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) override final {}
-	virtual void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)  override final {}
-	virtual void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas)  override final {}
-	virtual void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas)  override final {}
-	virtual void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas)  override final {}
-	virtual void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas)  override final {}
-	virtual void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas) override final {}
-	virtual void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<BinaryCommandEvent, uint16_t>>& meas) override final {}
-	virtual void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<AnalogCommandEvent, uint16_t>>& meas) override final {}
-	virtual void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<SecurityStat, uint16_t>>& meas) override final {}
+	virtual void OnValue(const HeaderInfo& info, const Binary& meas, uint16_t index) override final {}
+	virtual void OnValue(const HeaderInfo& info, const DoubleBitBinary& meas, uint16_t index) override final {}
+	virtual void OnValue(const HeaderInfo& info, const Analog& meas, uint16_t index) override final {}
+	virtual void OnValue(const HeaderInfo& info, const Counter& meas, uint16_t index) override final {}
+	virtual void OnValue(const HeaderInfo& info, const FrozenCounter& meas, uint16_t index) override final {}
+	virtual void OnValue(const HeaderInfo& info, const BinaryOutputStatus& meas, uint16_t index) override final {}
+	virtual void OnValue(const HeaderInfo& info, const AnalogOutputStatus& meas, uint16_t index) override final {}
+	virtual void OnValue(const HeaderInfo& info, const OctetString& meas, uint16_t index) override final {}
+	virtual void OnValue(const HeaderInfo& info, const TimeAndInterval& meas, uint16_t index) override final {}
+	virtual void OnValue(const HeaderInfo& info, const BinaryCommandEvent& meas, uint16_t index) override final {}
+	virtual void OnValue(const HeaderInfo& info, const AnalogCommandEvent& meas, uint16_t index) override final {}
+	virtual void OnValue(const HeaderInfo& info, const SecurityStat& meas, uint16_t index) override final {}
 
 protected:
 

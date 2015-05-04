@@ -91,13 +91,17 @@ private:
 	IINField LoadAny(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<T, uint16_t>>& meas)
 	{		
 		this->CheckForTxStart();
-		pSOEHandler->OnReceiveHeader(HeaderInfo(record.enumeration, record.GetQualifierCode(), tsmode), meas);
+		HeaderInfo info(record.enumeration, record.GetQualifierCode(), tsmode);
+		auto iterate = [info, this](const IndexedValue<T, uint16_t>& pair) 
+		{
+			this->pSOEHandler->OnValue(info, pair.value, pair.index);			
+		};
+		meas.foreach(iterate);		
 		return IINField();
 	}
 
 	template <class T>
 	IINField ProcessWithCTO(const HeaderRecord& record, const IterableBuffer<IndexedValue<T, uint16_t>>& meas);
-
 
 	bool txInitiated;
 	ISOEHandler* pSOEHandler;
