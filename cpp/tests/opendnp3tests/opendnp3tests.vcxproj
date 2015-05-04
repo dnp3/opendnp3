@@ -260,6 +260,7 @@
     <ClCompile Include="src\TestMasterAssignClass.cpp" />
     <ClCompile Include="src\TestMasterMultidrop.cpp" />
     <ClCompile Include="src\TestMasterUnsolBehaviors.cpp" />
+    <ClCompile Include="src\TestMeasurementHandler.cpp" />
     <ClCompile Include="src\TestObject.cpp" />
     <ClCompile Include="src\TestObjectASIO.cpp" />
     <ClCompile Include="src\BufferTestObject.cpp" />
