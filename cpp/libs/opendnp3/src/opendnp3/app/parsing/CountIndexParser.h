@@ -59,12 +59,19 @@ private:
 	template <class Descriptor>
 	static CountIndexParser From(uint16_t count, const NumParser& numparser);
 
+	// Create a count handler from a fixed size descriptor
+	template <class Type>
+	static CountIndexParser FromType(uint16_t count, const NumParser& numparser);
+
 	static ParseResult ParseCountOfObjects(openpal::ReadBufferView& buffer, const HeaderRecord& record, const NumParser& numparser, uint16_t count, openpal::Logger* pLogger, IAPDUHandler* pHandler);
 
 	static ParseResult ParseIndexPrefixedOctetData(openpal::ReadBufferView& buffer, const HeaderRecord& record, const NumParser& numParser, uint32_t count, openpal::Logger* pLogger, IAPDUHandler* pHandler);
 		
 	template <class Descriptor>
 	static void InvokeCountOf(const HeaderRecord& record, uint16_t count, const NumParser& numparser, const openpal::ReadBufferView& buffer, IAPDUHandler& handler);
+
+	template <class Type>
+	static void InvokeCountOfType(const HeaderRecord& record, uint16_t count, const NumParser& numparser, const openpal::ReadBufferView& buffer, IAPDUHandler& handler);
 
 	CountIndexParser(uint16_t count, uint32_t requiredSize, const NumParser& numparser, HandleFun handler);
 		
@@ -79,8 +86,15 @@ private:
 template <class Descriptor>
 CountIndexParser CountIndexParser::From(uint16_t count, const NumParser& numparser)
 {
-	uint32_t size = static_cast<uint32_t>(count) * (Descriptor::Size() + numparser.NumBytes());
-	return CountIndexParser(count, size, numparser, &InvokeCountOf<Descriptor>);
+	const uint32_t SIZE = static_cast<uint32_t>(count) * (Descriptor::Size() + numparser.NumBytes());
+	return CountIndexParser(count, SIZE, numparser, &InvokeCountOf<Descriptor>);
+}
+
+template <class Type>
+CountIndexParser CountIndexParser::FromType(uint16_t count, const NumParser& numparser)
+{
+	const uint32_t SIZE = static_cast<uint32_t>(count) * (Type::Size() + numparser.NumBytes());
+	return CountIndexParser(count, SIZE, numparser, &InvokeCountOfType<Type>);
 }
 
 template <class Descriptor>
@@ -94,6 +108,20 @@ void CountIndexParser::InvokeCountOf(const HeaderRecord& record, uint16_t count,
 		return IndexedValue<typename Descriptor::Target, uint16_t>(target, index);
 	};		
 	auto collection = CreateLazyIterable<IndexedValue<typename Descriptor::Target, uint16_t>>(buffer, count, reader);
+	handler.OnIndexPrefix(record, collection);
+}
+
+template <class Type>
+void CountIndexParser::InvokeCountOfType(const HeaderRecord& record, uint16_t count, const NumParser& numparser, const openpal::ReadBufferView& buffer, IAPDUHandler& handler)
+{
+	auto reader = [numparser](openpal::ReadBufferView & buffer, uint32_t)
+	{
+		auto index = numparser.ReadNum(buffer);
+		Type value;
+		Type::Read(buffer, value);
+		return IndexedValue<Type, uint16_t>(value, index);
+	};
+	auto collection = CreateLazyIterable<IndexedValue<Type, uint16_t>>(buffer, count, reader);
 	handler.OnIndexPrefix(record, collection);
 }
 

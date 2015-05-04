@@ -39,7 +39,7 @@ using namespace testlib;
 #define SUITE(name) "MeasurementHandlerTestSuite - " name
 
 // Parse some input and verify that the ISOEHandler is invoked with expected results
-ParseResult TestObjectHeaders(const std::string& objects, const std::function<void(MockSOEHandler&)>& verify);
+ParseResult TestObjectHeaders(const std::string& objects, ParseResult expectedResult, const std::function<void(MockSOEHandler&)>& verify);
 
 TEST_CASE(SUITE("accepts empty response"))
 {
@@ -48,7 +48,7 @@ TEST_CASE(SUITE("accepts empty response"))
 		REQUIRE(soe.TotalReceived() == 0);
 	};
 
-	REQUIRE(TestObjectHeaders("", verify) == ParseResult::OK);
+	TestObjectHeaders("", ParseResult::OK, verify);
 }
 
 TEST_CASE(SUITE("parses g121v1 correctly"))
@@ -56,15 +56,63 @@ TEST_CASE(SUITE("parses g121v1 correctly"))
 	auto verify = [](MockSOEHandler& soe) 
 	{
 		REQUIRE(soe.TotalReceived() == 1);
+
+		auto& stat = soe.securityStatSOE[2];
+
+		REQUIRE(stat.info.tsmode == TimestampMode::INVALID);
+		REQUIRE(stat.info.gv == GroupVariation::Group121Var1);
+		REQUIRE(stat.meas.count == 8);
+		REQUIRE(stat.meas.assocId == 7);
 	};
 
-	// g120v1 - 1 byte start/stop - 2->2 - flags: 0x01, assoc = 0x0007, count = 0x00000008
+	// g121v1 - 1 byte start/stop - 2->2 - flags: 0x01, assoc = 0x0007, count = 0x00000008
 	auto header = "79 01 00 02 02 01 07 00 08 00 00 00";
 
-	REQUIRE(TestObjectHeaders(header, verify) == ParseResult::OK);
+	TestObjectHeaders(header, ParseResult::OK, verify);
 }
 
-ParseResult TestObjectHeaders(const std::string& objects, const std::function<void(MockSOEHandler&)>& verify)
+TEST_CASE(SUITE("parses g122v1 correctly"))
+{
+	auto verify = [](MockSOEHandler& soe)
+	{
+		REQUIRE(soe.TotalReceived() == 1);
+
+		auto& stat = soe.securityStatSOE[3];
+
+		REQUIRE(stat.info.tsmode == TimestampMode::INVALID);
+		REQUIRE(stat.info.gv == GroupVariation::Group122Var1);
+		REQUIRE(stat.meas.count == 8);
+		REQUIRE(stat.meas.assocId == 7);
+	};
+
+	// g122v1 - 1 byte count and prefix - 1 count - index: 3, flags: 0x01, assoc = 7, count = 8
+	auto header = "7A 01 17 01 03 01 07 00 08 00 00 00";
+
+	TestObjectHeaders(header, ParseResult::OK, verify);
+}
+
+TEST_CASE(SUITE("parses g122v2 correctly"))
+{
+	auto verify = [](MockSOEHandler& soe)
+	{
+		REQUIRE(soe.TotalReceived() == 1);
+
+		auto& stat = soe.securityStatSOE[3];
+
+		REQUIRE(stat.info.tsmode == TimestampMode::SYNCHRONIZED);
+		REQUIRE(stat.info.gv == GroupVariation::Group122Var2);
+		REQUIRE(stat.meas.count == 8);
+		REQUIRE(stat.meas.assocId == 7);
+		REQUIRE(stat.meas.time == 9);
+	};
+
+	// g122v1 - 1 byte count and prefix - 1 count - index: 3, flags: 0x01, assoc = 7, count = 8, time = 9
+	auto header = "7A 02 17 01 03 01 07 00 08 00 00 00 09 00 00 00 00 00";
+
+	TestObjectHeaders(header, ParseResult::OK, verify);
+}
+
+ParseResult TestObjectHeaders(const std::string& objects, ParseResult expectedResult, const std::function<void(MockSOEHandler&)>& verify)
 {
 	MockSOEHandler soe;
 	LogTester log;
@@ -73,6 +121,7 @@ ParseResult TestObjectHeaders(const std::string& objects, const std::function<vo
 	HexSequence hex(objects);
 
 	auto result = MeasurementHandler::ProcessMeasurements(hex.ToReadOnly(), logger, &soe);
+	REQUIRE(result == expectedResult);
 	verify(soe);
 	return result;
 }

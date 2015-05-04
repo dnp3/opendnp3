@@ -233,7 +233,7 @@ IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, cons
 {
 	auto convert = [](const IndexedValue<Group122Var2, uint16_t>& pair)
 	{
-		SecurityStat ss(pair.value.flags, pair.value.assocId, pair.value.value);
+		SecurityStat ss(pair.value.flags, pair.value.assocId, pair.value.value, pair.value.time);
 		return IndexedValue<SecurityStat, uint16_t>(ss, pair.index);
 	};
 
