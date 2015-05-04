@@ -41,8 +41,10 @@ public:
 
 	/**
 	* Static helper function for interpreting a response as a measurement response
+	*
+	* @return true if parsing was successful, false otherwise
 	*/
-	static bool ProcessMeasurements(const openpal::ReadBufferView& objects, openpal::Logger* pLogger, ISOEHandler* pHandler);	
+	static bool ProcessMeasurements(const openpal::ReadBufferView& objects, openpal::Logger& logger, ISOEHandler* pHandler);
 
 	/**
 	* Creates a new ResponseLoader instance.

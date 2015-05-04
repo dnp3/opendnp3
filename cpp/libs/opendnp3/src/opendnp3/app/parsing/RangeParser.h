@@ -64,6 +64,8 @@ private:
 	template <class Descriptor>
 	static RangeParser FromFixedSize(const Range& range);
 
+	template <class Descriptor>
+	static RangeParser FromFixedSizeRaw(const Range& range);
 	
 
 	// Create a range parser from a bitfield and a function to map the bitfield to values
@@ -78,7 +80,10 @@ private:
 	static ParseResult ParseRangeOfOctetData(openpal::ReadBufferView& buffer, const HeaderRecord& record, const Range& range, openpal::Logger* pLogger, IAPDUHandler* pHandler);	
 	
 	template <class Descriptor>
-	static void InvokeRangeOf(const HeaderRecord& record, const Range& range, const openpal::ReadBufferView& buffer, IAPDUHandler& handler);	
+	static void InvokeRangeOf(const HeaderRecord& record, const Range& range, const openpal::ReadBufferView& buffer, IAPDUHandler& handler);
+
+	template <class Type>
+	static void InvokeRangeOfRaw(const HeaderRecord& record, const Range& range, const openpal::ReadBufferView& buffer, IAPDUHandler& handler);
 
 	template <class Conversion>
 	static void InvokeRangeBitfield(const HeaderRecord& record, const Range& range, const openpal::ReadBufferView& buffer, IAPDUHandler& handler);
@@ -103,6 +108,13 @@ RangeParser RangeParser::FromFixedSize(const Range& range)
 }
 
 template <class Descriptor>
+RangeParser RangeParser::FromFixedSizeRaw(const Range& range)
+{
+	uint32_t size = range.Count() * Descriptor::Size();
+	return RangeParser(range, size, &InvokeRangeOfRaw<Descriptor>);
+}
+
+template <class Descriptor>
 void RangeParser::InvokeRangeOf(const HeaderRecord& record, const Range& range, const openpal::ReadBufferView& buffer, IAPDUHandler& handler)
 {	
 	auto reader = [range](openpal::ReadBufferView &buffer, uint32_t pos) 
@@ -113,6 +125,20 @@ void RangeParser::InvokeRangeOf(const HeaderRecord& record, const Range& range, 
 	};		
 	
 	auto collection = CreateLazyIterable<IndexedValue<typename Descriptor::Target, uint16_t>>(buffer, range.Count(), reader);
+	handler.OnRange(record, collection);
+}
+
+template <class Type>
+void RangeParser::InvokeRangeOfRaw(const HeaderRecord& record, const Range& range, const openpal::ReadBufferView& buffer, IAPDUHandler& handler)
+{
+	auto reader = [range](openpal::ReadBufferView &buffer, uint32_t pos)
+	{
+		Type value;
+		Type::Read(buffer, value);		
+		return IndexedValue<Type, uint16_t>(value, range.start + pos);
+	};
+
+	auto collection = CreateLazyIterable<IndexedValue<Type, uint16_t>>(buffer, range.Count(), reader);
 	handler.OnRange(record, collection);
 }
 

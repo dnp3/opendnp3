@@ -77,7 +77,7 @@ IMasterTask::ResponseResult PollTaskBase::ProcessMeasurements(const APDUResponse
 {	
 	++rxCount;
 
-	if (MeasurementHandler::ProcessMeasurements(objects, &logger, pSOEHandler))
+	if (MeasurementHandler::ProcessMeasurements(objects, logger, pSOEHandler))
 	{	
 		if (header.control.FIN)
 		{											

@@ -22,17 +22,57 @@
 
 #include <opendnp3/master/MeasurementHandler.h>
 
+#include <testlib/BufferHelpers.h>
+
+#include "LogTester.h"
+#include "MockSOEHandler.h"
+
+#include <functional>
+
 using namespace openpal;
 using namespace opendnp3;
-//using namespace testlib;
+using namespace testlib;
 
 /**
 * Test that the measurement handler correctly interprets measurement values in response data
 */
 #define SUITE(name) "MeasurementHandlerTestSuite - " name
 
-TEST_CASE(SUITE("TestGroup121Var1"))
+// Parse some input and verify that the ISOEHandler is invoked with expected results
+bool TestObjectHeaders(const std::string& objects, const std::function<void(MockSOEHandler&)>& verify);
+
+TEST_CASE(SUITE("accepts empty response"))
 {
-	//MeasurementHandler handler()
+	auto verify = [](MockSOEHandler& soe) 
+	{
+		REQUIRE(soe.TotalReceived() == 0);
+	};
+
+	REQUIRE(TestObjectHeaders("", verify));
 }
 
+TEST_CASE(SUITE("parses g121v1 correctly"))
+{
+	auto verify = [](MockSOEHandler& soe) 
+	{
+		REQUIRE(soe.TotalReceived() == 1);
+	};
+
+	// g120v1 - 1 byte start/stop - 2->2 - flags: 0x01, assoc = 0x0007, count = 0x00000008
+	auto header = "79 01 00 02 02 01 07 00 08 00 00 00";
+
+	REQUIRE(TestObjectHeaders(header, verify));
+}
+
+bool TestObjectHeaders(const std::string& objects, const std::function<void(MockSOEHandler&)>& verify)
+{
+	MockSOEHandler soe;
+	LogTester log;
+	auto logger = log.GetLogger();
+
+	HexSequence hex(objects);
+
+	auto result = MeasurementHandler::ProcessMeasurements(hex.ToReadOnly(), logger, &soe);
+	verify(soe);
+	return result;
+}

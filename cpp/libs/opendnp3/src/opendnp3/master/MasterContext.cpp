@@ -248,7 +248,7 @@ void MasterContext::OnUnsolicitedResponse(const APDUResponseHeader& header, cons
 {
 	if (header.control.UNS)
 	{		
-		auto success = MeasurementHandler::ProcessMeasurements(objects, &logger, pSOEHandler);
+		auto success = MeasurementHandler::ProcessMeasurements(objects, logger, pSOEHandler);
 
 		if (success && header.control.CON)
 		{

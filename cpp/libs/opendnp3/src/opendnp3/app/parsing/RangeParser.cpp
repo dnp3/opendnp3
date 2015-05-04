@@ -164,6 +164,9 @@ ParseResult RangeParser::ParseRangeOfObjects(openpal::ReadBufferView& buffer, co
 	case(GroupVariation::Group110Var0) :
 		return ParseRangeOfOctetData(buffer, record, range, pLogger, pHandler);
 
+	case(GroupVariation::Group121Var1) :
+		return RangeParser::FromFixedSizeRaw<Group121Var1>(range).Process(record, buffer, pHandler, pLogger);
+
 	default:
 		FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_ILLEGAL_QUALIFIER_AND_OBJECT,
 			"Unsupported qualifier/object - %s - %i / %i",
