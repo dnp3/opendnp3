@@ -119,8 +119,8 @@ public:
 	}
 
 	void OnReceiveHeader(const HeaderInfo& info, const IterableBuffer<IndexedValue<SecurityStat, uint16_t>>& meas) override final
-	{
-		// TODO
+	{		
+		this->RecordAny(info, meas, securityStatSOE);
 	}
 
 
@@ -139,6 +139,7 @@ public:
 		timeAndIntervalSOE.clear();
 		binaryCommandEventSOE.clear();
 		analogCommandEventSOE.clear();
+		securityStatSOE.clear();
 	}	
 
 	std::map<uint16_t, Record<Binary>> binarySOE;
@@ -152,6 +153,7 @@ public:
 	std::map<uint16_t, Record<TimeAndInterval>> timeAndIntervalSOE;
 	std::map<uint16_t, Record<BinaryCommandEvent>> binaryCommandEventSOE;
 	std::map<uint16_t, Record<AnalogCommandEvent>> analogCommandEventSOE;
+	std::map<uint16_t, Record<SecurityStat>> securityStatSOE;
 
 protected:
 

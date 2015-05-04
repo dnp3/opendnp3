@@ -64,7 +64,9 @@ bool TypeHasTimestamp(GroupVariation gv)
 	case(GroupVariation::Group43Var7) :
 	case(GroupVariation::Group43Var8) :
 
+	case(GroupVariation::Group122Var2) :
 		return true;
+
 	default:
 		return false;
 	}

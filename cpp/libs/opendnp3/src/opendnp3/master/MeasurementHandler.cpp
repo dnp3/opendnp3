@@ -140,6 +140,19 @@ IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, const Iter
 	return this->LoadAny(record, ModeFromType(record.enumeration), meas);
 }
 
+IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Group121Var1, uint16_t>>& meas)
+{
+	auto convert = [](const IndexedValue<Group121Var1, uint16_t>& pair)
+	{
+		SecurityStat ss(pair.value.flags, pair.value.assocId, pair.value.value);		
+		return IndexedValue<SecurityStat, uint16_t>(ss, pair.index);
+	};
+
+	auto transformed = MapIterableBuffer< IndexedValue<Group121Var1, uint16_t>, IndexedValue<SecurityStat, uint16_t> >(&meas, convert);
+
+	return this->LoadAny(record, ModeFromType(record.enumeration), transformed);
+}
+
 IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)
 {
 	if (record.enumeration == GroupVariation::Group2Var3)
@@ -202,6 +215,32 @@ IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, cons
 IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogCommandEvent, uint16_t>>& meas)
 {
 	return this->LoadAny(record, ModeFromType(record.enumeration), meas);
+}
+
+IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Group122Var1, uint16_t>>& meas)
+{
+	auto convert = [](const IndexedValue<Group122Var1, uint16_t>& pair)
+	{
+		SecurityStat ss(pair.value.flags, pair.value.assocId, pair.value.value);
+		return IndexedValue<SecurityStat, uint16_t>(ss, pair.index);
+	};
+
+	auto transformed = MapIterableBuffer< IndexedValue<Group122Var1, uint16_t>, IndexedValue<SecurityStat, uint16_t> >(&meas, convert);
+
+	return this->LoadAny(record, ModeFromType(record.enumeration), transformed);
+}
+
+IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Group122Var2, uint16_t>>& meas)
+{
+	auto convert = [](const IndexedValue<Group122Var2, uint16_t>& pair)
+	{
+		SecurityStat ss(pair.value.flags, pair.value.assocId, pair.value.value);
+		return IndexedValue<SecurityStat, uint16_t>(ss, pair.index);
+	};
+
+	auto transformed = MapIterableBuffer< IndexedValue<Group122Var2, uint16_t>, IndexedValue<SecurityStat, uint16_t> >(&meas, convert);
+
+	return this->LoadAny(record, ModeFromType(record.enumeration), transformed);
 }
 
 }
