@@ -248,9 +248,9 @@ void MasterContext::OnUnsolicitedResponse(const APDUResponseHeader& header, cons
 {
 	if (header.control.UNS)
 	{		
-		auto success = MeasurementHandler::ProcessMeasurements(objects, logger, pSOEHandler);
+		auto result = MeasurementHandler::ProcessMeasurements(objects, logger, pSOEHandler);
 
-		if (success && header.control.CON)
+		if ((result == ParseResult::OK) && header.control.CON)
 		{
 			this->QueueConfirm(APDUHeader::UnsolicitedConfirm(header.control.SEQ));
 		}

@@ -39,7 +39,7 @@ using namespace testlib;
 #define SUITE(name) "MeasurementHandlerTestSuite - " name
 
 // Parse some input and verify that the ISOEHandler is invoked with expected results
-bool TestObjectHeaders(const std::string& objects, const std::function<void(MockSOEHandler&)>& verify);
+ParseResult TestObjectHeaders(const std::string& objects, const std::function<void(MockSOEHandler&)>& verify);
 
 TEST_CASE(SUITE("accepts empty response"))
 {
@@ -48,7 +48,7 @@ TEST_CASE(SUITE("accepts empty response"))
 		REQUIRE(soe.TotalReceived() == 0);
 	};
 
-	REQUIRE(TestObjectHeaders("", verify));
+	REQUIRE(TestObjectHeaders("", verify) == ParseResult::OK);
 }
 
 TEST_CASE(SUITE("parses g121v1 correctly"))
@@ -61,10 +61,10 @@ TEST_CASE(SUITE("parses g121v1 correctly"))
 	// g120v1 - 1 byte start/stop - 2->2 - flags: 0x01, assoc = 0x0007, count = 0x00000008
 	auto header = "79 01 00 02 02 01 07 00 08 00 00 00";
 
-	REQUIRE(TestObjectHeaders(header, verify));
+	REQUIRE(TestObjectHeaders(header, verify) == ParseResult::OK);
 }
 
-bool TestObjectHeaders(const std::string& objects, const std::function<void(MockSOEHandler&)>& verify)
+ParseResult TestObjectHeaders(const std::string& objects, const std::function<void(MockSOEHandler&)>& verify)
 {
 	MockSOEHandler soe;
 	LogTester log;

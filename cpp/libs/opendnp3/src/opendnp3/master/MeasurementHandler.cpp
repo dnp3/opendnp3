@@ -29,11 +29,10 @@ using namespace openpal;
 namespace opendnp3
 {
 
-bool MeasurementHandler::ProcessMeasurements(const openpal::ReadBufferView& objects, openpal::Logger& logger, ISOEHandler* pHandler)
+ParseResult MeasurementHandler::ProcessMeasurements(const openpal::ReadBufferView& objects, openpal::Logger& logger, ISOEHandler* pHandler)
 {
 	MeasurementHandler handler(logger, pHandler);
-	auto result = APDUParser::ParseAll(objects, handler, &logger);
-	return (result == ParseResult::OK);
+	return APDUParser::ParseAll(objects, handler, &logger);	
 }
 
 MeasurementHandler::MeasurementHandler(const openpal::Logger& logger, ISOEHandler* pSOEHandler_) : 

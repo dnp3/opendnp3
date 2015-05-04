@@ -24,9 +24,11 @@
 #include <openpal/logging/Logger.h>
 
 #include "opendnp3/master/ISOEHandler.h"
+
+#include "opendnp3/app/APDUHeader.h"
+#include "opendnp3/app/parsing/ParseResult.h"
 #include "opendnp3/app/parsing/APDUHandlerBase.h"
 #include "opendnp3/app/parsing/IterableTransforms.h"
-#include "opendnp3/app/APDUHeader.h"
 
 namespace opendnp3
 {
@@ -40,11 +42,9 @@ class MeasurementHandler : public APDUHandlerBase
 public:
 
 	/**
-	* Static helper function for interpreting a response as a measurement response
-	*
-	* @return true if parsing was successful, false otherwise
+	* Static helper function for interpreting a response as a measurement response	
 	*/
-	static bool ProcessMeasurements(const openpal::ReadBufferView& objects, openpal::Logger& logger, ISOEHandler* pHandler);
+	static ParseResult ProcessMeasurements(const openpal::ReadBufferView& objects, openpal::Logger& logger, ISOEHandler* pHandler);
 
 	/**
 	* Creates a new ResponseLoader instance.
