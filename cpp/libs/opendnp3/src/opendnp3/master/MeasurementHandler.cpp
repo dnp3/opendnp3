@@ -69,28 +69,26 @@ void MeasurementHandler::CheckForTxStart()
 	}
 }
 
-IINField MeasurementHandler::ProcessCountOf(const HeaderRecord& record, const IterableBuffer<Group51Var1>& values)
-{
-	Group51Var1 object;
-	if (values.ReadOnlyValue(object))
+IINField MeasurementHandler::ProcessCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group51Var1& cto)
+{	
+	if (pos == 0 && total == 1)
 	{
 		ctoMode = TimestampMode::SYNCHRONIZED;
-		commonTimeOccurence = object.time;
-		ctoHeader = this->GetCurrentHeader();
-		
+		commonTimeOccurence = cto.time;
+		ctoHeader = this->GetCurrentHeader();		
 	}
 	return IINField::Empty();
 }
 
-IINField MeasurementHandler::ProcessCountOf(const HeaderRecord& record, const IterableBuffer<Group51Var2>& values)
-{
-	Group51Var2 object;
-	if (values.ReadOnlyValue(object))
+IINField MeasurementHandler::ProcessCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group51Var2& cto)
+{	
+	if (pos == 0 && total == 1)
 	{
 		ctoMode = TimestampMode::UNSYNCHRONIZED;
-		commonTimeOccurence = object.time;
+		commonTimeOccurence = cto.time;
 		ctoHeader = this->GetCurrentHeader();
 	}
+
 	return IINField::Empty();
 }
 

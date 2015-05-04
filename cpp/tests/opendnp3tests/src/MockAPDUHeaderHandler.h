@@ -52,11 +52,9 @@ public:
 		return IINField::Empty();
 	}	
 
-	virtual IINField ProcessCountOf(const HeaderRecord& record, const IterableBuffer<Group120Var4>& values) override final
-	{		
-		values.foreach([this](const Group120Var4& v) {
-			authStatusRequsts.push_back(v);
-		});
+	virtual IINField ProcessCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group120Var4& value) override final
+	{				
+		authStatusRequsts.push_back(value);		
 		return IINField::Empty();
 	}
 

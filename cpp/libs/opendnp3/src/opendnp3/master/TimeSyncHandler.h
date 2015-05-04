@@ -69,16 +69,16 @@ public:
 
 private:
 
-	virtual IINField ProcessCountOf(const HeaderRecord& record, const IterableBuffer<Group52Var2>& times) override final
+	virtual IINField ProcessCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group52Var2& time) override final
 	{		
-		if (times.ReadOnlyValue(value))
+		if (pos == 0 && total == 1)
 		{
 			valid = true;
+			value = time;
 			return IINField::Empty();
 		}
 		else
-		{
-			FORMAT_LOG_BLOCK(logger, flags::WARN, "Ignoring count of %i", times.Count());
+		{		
 			return IINBit::PARAM_ERROR;
 		}
 	}

@@ -85,29 +85,29 @@ void APDUHandlerBase::OnRange(const HeaderRecord& record, const IterableBuffer<I
 	Record(record, this->ProcessIIN(record, values));
 }
 
-void APDUHandlerBase::OnCountOf(const HeaderRecord& record, const IterableBuffer<Group50Var1>& values)
+void APDUHandlerBase::OnCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group50Var1& value)
 {
-	Record(record, ProcessCountOf(record, values));
+	Record(record, this->ProcessCount(record, pos, total, value));
 }
 
-void APDUHandlerBase::OnCountOf(const HeaderRecord& record, const opendnp3::IterableBuffer<Group51Var1>& values)
+void APDUHandlerBase::OnCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group51Var1& value)
 {
-	Record(record, ProcessCountOf(record, values));
+	Record(record, this->ProcessCount(record, pos, total, value));
 }
 
-void APDUHandlerBase::OnCountOf(const HeaderRecord& record, const opendnp3::IterableBuffer<Group51Var2>& values)
+void APDUHandlerBase::OnCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group51Var2& value)
 {
-	Record(record, ProcessCountOf(record, values));
+	Record(record, this->ProcessCount(record, pos, total, value));
 }
 
-void APDUHandlerBase::OnCountOf(const HeaderRecord& record, const IterableBuffer<Group52Var2>& values)
+void APDUHandlerBase::OnCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group52Var2& value)
 {
-	Record(record, ProcessCountOf(record, values));
+	Record(record, this->ProcessCount(record, pos, total, value));
 }
 
-void APDUHandlerBase::OnCountOf(const HeaderRecord& record, const IterableBuffer<Group120Var4>& values)
+void APDUHandlerBase::OnCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group120Var4& value)
 {
-	Record(record, ProcessCountOf(record, values));
+	Record(record, this->ProcessCount(record, pos, total, value));
 }
 
 void APDUHandlerBase::OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& values)
@@ -290,27 +290,27 @@ IINField APDUHandlerBase::ProcessFreeFormat(const HeaderRecord& record, const Gr
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessCountOf(const HeaderRecord& record, const IterableBuffer<Group50Var1>& values)
+IINField APDUHandlerBase::ProcessCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group50Var1& value)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessCountOf(const HeaderRecord& record, const opendnp3::IterableBuffer<Group51Var1>&)
+IINField APDUHandlerBase::ProcessCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group51Var1& value)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessCountOf(const HeaderRecord& record, const opendnp3::IterableBuffer<Group51Var2>&)
+IINField APDUHandlerBase::ProcessCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group51Var2& value)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessCountOf(const HeaderRecord& record, const IterableBuffer<Group52Var2>&)
+IINField APDUHandlerBase::ProcessCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group52Var2& value)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessCountOf(const HeaderRecord& record, const IterableBuffer<Group120Var4>& values)
+IINField APDUHandlerBase::ProcessCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group120Var4& value)
 {
 	return ProcessUnsupportedHeader();
 }

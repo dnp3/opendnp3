@@ -74,7 +74,7 @@ IINField WriteHandler::ProcessIIN(const HeaderRecord&, const IterableBuffer<Inde
 	}
 }
 
-IINField WriteHandler::ProcessCountOf(const HeaderRecord&, const IterableBuffer<Group50Var1>& times)
+IINField WriteHandler::ProcessCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group50Var1& value)
 {
 	if (wroteTime)
 	{
@@ -82,13 +82,12 @@ IINField WriteHandler::ProcessCountOf(const HeaderRecord&, const IterableBuffer<
 	}
 	else
 	{		
-		Group50Var1 time;
-		if (times.ReadOnlyValue(time))
+		if (pos == 0 && total == 1)
 		{
 			if (pApplication->SupportsWriteAbsoluteTime())
 			{
 				wroteTime = true;												
-				return pApplication->WriteAbsoluteTime(UTCTimestamp(time.time)) ? IINField::Empty() : IINBit::PARAM_ERROR;
+				return pApplication->WriteAbsoluteTime(UTCTimestamp(value.time)) ? IINField::Empty() : IINBit::PARAM_ERROR;
 			}
 			else
 			{

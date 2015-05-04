@@ -81,12 +81,11 @@ IINField AuthRequestHandler::ProcessFreeFormat(const HeaderRecord& record, const
 	return IINField::Empty();
 }
 
-IINField AuthRequestHandler::ProcessCountOf(const HeaderRecord& record, const IterableBuffer<Group120Var4>& values)
-{		
-	Group120Var4 single;
-	if (values.ReadOnlyValue(single))
+IINField AuthRequestHandler::ProcessCount(const opendnp3::HeaderRecord& record, uint16_t pos, uint16_t total, const opendnp3::Group120Var4& value)
+{			
+	if (pos == 0 && total == 1)
 	{
-		pHandler->OnRequestKeyStatus(*pOState, fragment, header, single);
+		pHandler->OnRequestKeyStatus(*pOState, fragment, header, value);
 		return IINField::Empty();
 	}
 	else

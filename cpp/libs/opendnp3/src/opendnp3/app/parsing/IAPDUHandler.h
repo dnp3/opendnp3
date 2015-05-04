@@ -59,11 +59,15 @@ public:
 	virtual void OnRangeRequest(const HeaderRecord& record, const Range& range) = 0;
 	virtual void OnCountRequest(const HeaderRecord& record, uint16_t count) = 0;
 
-	virtual void OnCountOf(const HeaderRecord& record, const IterableBuffer<Group50Var1>& times) = 0;
-	virtual void OnCountOf(const HeaderRecord& record, const IterableBuffer<Group51Var1>& times) = 0;
-	virtual void OnCountOf(const HeaderRecord& record, const IterableBuffer<Group51Var2>& times) = 0;
-	virtual void OnCountOf(const HeaderRecord& record, const IterableBuffer<Group52Var2>& times) = 0;	
-	virtual void OnCountOf(const HeaderRecord& record, const IterableBuffer<Group120Var4>& values) = 0;	
+	// ------	Count callbacks for qualifiers 0x07 and 0x08 ------
+	
+	virtual void OnCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group50Var1& value) = 0;
+	virtual void OnCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group51Var1& value) = 0;
+	virtual void OnCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group51Var2& value) = 0;
+	virtual void OnCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group52Var2& value) = 0;
+	virtual void OnCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group120Var4& value) = 0;
+
+	// ------ Variable-length free-format types  ------
 
 	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var1& value) = 0;
 	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var2& value) = 0;
