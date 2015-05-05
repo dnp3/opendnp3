@@ -38,7 +38,7 @@ WriteHandler::WriteHandler(openpal::Logger& aLogger, IOutstationApplication& app
 	wroteIIN(false)
 {}
 
-IINField WriteHandler::ProcessIIN(const HeaderRecord& record, uint16_t index, uint32_t count, const IINValue& bit)
+IINField WriteHandler::ProcessRange(const HeaderRecord& record, uint32_t count, const IINValue& bit, uint16_t index)
 {	
 	if (count != 1)
 	{

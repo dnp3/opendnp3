@@ -92,62 +92,55 @@ IINField MeasurementHandler::ProcessCount(const HeaderRecord& record, uint16_t p
 	return IINField::Empty();
 }
 
-IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)
+IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, uint32_t count, const Binary& meas, uint16_t index)
 {
-	return this->LoadAny(record, ModeFromType(record.enumeration), meas);
+	return this->LoadSingleValue(record, ModeFromType(record.enumeration), meas, index);
 }
 
-IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas)
+IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, uint32_t count, const DoubleBitBinary& meas, uint16_t index)
 {
-	return this->LoadAny(record, ModeFromType(record.enumeration), meas);
+	return this->LoadSingleValue(record, ModeFromType(record.enumeration), meas, index);
 }
 
-IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas)
+IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, uint32_t count, const BinaryOutputStatus& meas, uint16_t index)
 {
-	return this->LoadAny(record, ModeFromType(record.enumeration), meas);
+	return this->LoadSingleValue(record, ModeFromType(record.enumeration), meas, index);
 }
 
-IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)
+IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, uint32_t count, const Counter& meas, uint16_t index)
 {
-	return this->LoadAny(record, ModeFromType(record.enumeration), meas);
+	return this->LoadSingleValue(record, ModeFromType(record.enumeration), meas, index);
 }
 
-IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas)
+IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, uint32_t count, const FrozenCounter& meas, uint16_t index)
 {
-	return this->LoadAny(record, ModeFromType(record.enumeration), meas);
+	return this->LoadSingleValue(record, ModeFromType(record.enumeration), meas, index);
 }
 
-IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)
+IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, uint32_t count, const Analog& meas, uint16_t index)
 {
-	return this->LoadAny(record, ModeFromType(record.enumeration), meas);
+	return this->LoadSingleValue(record, ModeFromType(record.enumeration), meas, index);
 }
 
-IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas)
+IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, uint32_t count, const AnalogOutputStatus& meas, uint16_t index)
 {
-	return this->LoadAny(record, ModeFromType(record.enumeration), meas);
+	return this->LoadSingleValue(record, ModeFromType(record.enumeration), meas, index);
 }
 
-IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas)
+IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, uint32_t count, const OctetString& meas, uint16_t index)
 {
-	return this->LoadAny(record, ModeFromType(record.enumeration), meas);
+	return this->LoadSingleValue(record, ModeFromType(record.enumeration), meas, index);
 }
 
-IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas)
+IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, uint32_t count, const TimeAndInterval& meas, uint16_t index)
 {
-	return this->LoadAny(record, ModeFromType(record.enumeration), meas);
+	return this->LoadSingleValue(record, ModeFromType(record.enumeration), meas, index);
 }
 
-IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Group121Var1, uint16_t>>& meas)
+IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, uint32_t count, const Group121Var1& meas, uint16_t index)
 {
-	auto convert = [](const IndexedValue<Group121Var1, uint16_t>& pair)
-	{
-		SecurityStat ss(pair.value.flags, pair.value.assocId, pair.value.value);		
-		return IndexedValue<SecurityStat, uint16_t>(ss, pair.index);
-	};
-
-	auto transformed = MapIterableBuffer< IndexedValue<Group121Var1, uint16_t>, IndexedValue<SecurityStat, uint16_t> >(&meas, convert);
-
-	return this->LoadAny(record, ModeFromType(record.enumeration), transformed);
+	SecurityStat value(meas.flags, meas.assocId, meas.value);
+	return this->LoadSingleValue(record, ModeFromType(record.enumeration), value, index);
 }
 
 IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)

@@ -70,18 +70,18 @@ public:
 	virtual void OnCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group52Var2& value) override final;
 	virtual void OnCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group120Var4& value) override final;
 
-	virtual void OnRange(const HeaderRecord& record, uint16_t index, uint32_t count, const IINValue& value) override final;
+	virtual void OnRange(const HeaderRecord& record, uint32_t count, const IINValue& value, uint16_t index) override final;
 
-	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override final;
-	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) override final;
-	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) override final;
-	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) override final;
-	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) override final;
-	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) override final;
-	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas) override final;
-	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) override final;
-	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas) override final;	
-	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Group121Var1, uint16_t>>& meas) override final;
+	virtual void OnRange(const HeaderRecord& record, uint32_t count, const Binary& meas, uint16_t index) override final;
+	virtual void OnRange(const HeaderRecord& record, uint32_t count, const DoubleBitBinary& meas, uint16_t index) override final;
+	virtual void OnRange(const HeaderRecord& record, uint32_t count, const BinaryOutputStatus& meas, uint16_t index) override final;
+	virtual void OnRange(const HeaderRecord& record, uint32_t count, const Counter& meas, uint16_t index) override final;
+	virtual void OnRange(const HeaderRecord& record, uint32_t count, const FrozenCounter& meas, uint16_t index) override final;
+	virtual void OnRange(const HeaderRecord& record, uint32_t count, const Analog& meas, uint16_t index) override final;
+	virtual void OnRange(const HeaderRecord& record, uint32_t count, const AnalogOutputStatus& meas, uint16_t index) override final;
+	virtual void OnRange(const HeaderRecord& record, uint32_t count, const OctetString& meas, uint16_t index) override final;
+	virtual void OnRange(const HeaderRecord& record, uint32_t count, const TimeAndInterval& meas, uint16_t index) override final;
+	virtual void OnRange(const HeaderRecord& record, uint32_t count, const Group121Var1& meas, uint16_t index) override final;
 
 	// events
 
@@ -132,25 +132,24 @@ protected:
 	virtual IINField ProcessFreeFormat(const HeaderRecord& record, const Group120Var2& value);
 	virtual IINField ProcessFreeFormat(const HeaderRecord& record, const Group120Var5& value);
 	virtual IINField ProcessFreeFormat(const HeaderRecord& record, const Group120Var6& value);
-
-	virtual IINField ProcessIIN(const HeaderRecord& record, uint16_t index, uint32_t count, const IINValue& value);
-
+	
 	virtual IINField ProcessCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group50Var1& value);
 	virtual IINField ProcessCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group51Var1& value);
 	virtual IINField ProcessCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group51Var2& value);
 	virtual IINField ProcessCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group52Var2& value);
 	virtual IINField ProcessCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group120Var4& value);
 	
-	virtual IINField ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas);
-	virtual IINField ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas);
-	virtual IINField ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas);
-	virtual IINField ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas);
-	virtual IINField ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas);
-	virtual IINField ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas);
-	virtual IINField ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas);
-	virtual IINField ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas);
-	virtual IINField ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas);	
-	virtual IINField ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Group121Var1, uint16_t>>& meas);
+	virtual IINField ProcessRange(const HeaderRecord& record, uint32_t count, const IINValue& value, uint16_t index);
+	virtual IINField ProcessRange(const HeaderRecord& record, uint32_t count, const Binary& meas, uint16_t index);
+	virtual IINField ProcessRange(const HeaderRecord& record, uint32_t count, const DoubleBitBinary& meas, uint16_t index);
+	virtual IINField ProcessRange(const HeaderRecord& record, uint32_t count, const BinaryOutputStatus& meas, uint16_t index);
+	virtual IINField ProcessRange(const HeaderRecord& record, uint32_t count, const Counter& meas, uint16_t index);
+	virtual IINField ProcessRange(const HeaderRecord& record, uint32_t count, const FrozenCounter& meas, uint16_t index);
+	virtual IINField ProcessRange(const HeaderRecord& record, uint32_t count, const Analog& meas, uint16_t index);
+	virtual IINField ProcessRange(const HeaderRecord& record, uint32_t count, const AnalogOutputStatus& meas, uint16_t index);
+	virtual IINField ProcessRange(const HeaderRecord& record, uint32_t count, const OctetString& meas, uint16_t index);
+	virtual IINField ProcessRange(const HeaderRecord& record, uint32_t count, const TimeAndInterval& meas, uint16_t index);
+	virtual IINField ProcessRange(const HeaderRecord& record, uint32_t count, const Group121Var1& meas, uint16_t index);
 
 	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas);
 	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas);

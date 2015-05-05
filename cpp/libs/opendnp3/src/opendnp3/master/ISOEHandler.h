@@ -39,7 +39,8 @@ namespace opendnp3
 * An interface for Sequence-Of-Events (SOE) callbacks from a master stack to
 * the application layer.
 *
-* A call is made to the appropriate member method for every header in a APDU
+* A call is made to the appropriate member method for every measurement value in an ASDU.
+* The HeaderInfo class provides information about the object header associated with the value.
 *
 */
 class ISOEHandler : public ITransactable

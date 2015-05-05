@@ -120,14 +120,14 @@ ParseResult RangeParser::ParseRangeOfObjects(openpal::ReadBufferView& buffer, co
 	switch (record.enumeration)
 	{		
 		case(GroupVariation::Group1Var1) :
-			return RangeParser::FromBitfield<BitfieldConversion<Binary>>(range).Process(record, buffer, pHandler, pLogger);	
+			return RangeParser::FromBitfieldType<Binary>(range).Process(record, buffer, pHandler, pLogger);	
 		
 		MACRO_PARSE_OBJECTS_WITH_RANGE(Group1Var2);
 		
 		case(GroupVariation::Group3Var1) :
-			return RangeParser::FromDoubleBitfield<DoubleBitfieldConversion<DoubleBitBinary>>(range).Process(record, buffer, pHandler, pLogger);	
+			return RangeParser::FromDoubleBitfield<DoubleBitBinary>(range).Process(record, buffer, pHandler, pLogger);	
 		case(GroupVariation::Group10Var1):
-			return RangeParser::FromBitfield<BitfieldConversion<BinaryOutputStatus>>(range).Process(record, buffer, pHandler, pLogger);
+			return RangeParser::FromBitfieldType<BinaryOutputStatus>(range).Process(record, buffer, pHandler, pLogger);
 		
 		MACRO_PARSE_OBJECTS_WITH_RANGE(Group3Var2);
 		MACRO_PARSE_OBJECTS_WITH_RANGE(Group10Var2);
@@ -180,7 +180,8 @@ ParseResult RangeParser::ParseRangeOfOctetData(openpal::ReadBufferView& buffer, 
 {
 	if (record.variation > 0)
 	{
-		uint32_t size = record.variation * range.Count();
+		const auto COUNT = range.Count();
+		uint32_t size = record.variation * COUNT;
 		if (buffer.Size() < size)
 		{
 			SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified octet objects");
@@ -190,17 +191,16 @@ ParseResult RangeParser::ParseRangeOfOctetData(openpal::ReadBufferView& buffer, 
 		{
 			if (pHandler)
 			{
-				auto reader = [record, range](openpal::ReadBufferView & buff, uint32_t pos)
+				openpal::ReadBufferView copy(buffer);
+				
+				for (uint16_t index = range.start; index <= range.stop; ++index)
 				{
-					OctetString octets(buff.Take(record.variation));
-					IndexedValue<OctetString, uint16_t> value(octets, range.start + pos);
-					buff.Advance(record.variation);
-					return value;
-				};
-
-				auto collection = CreateLazyIterable<IndexedValue<OctetString, uint16_t>>(buffer, range.Count(), reader);
-				pHandler->OnRange(record, collection);
+					OctetString octets(copy.Take(record.variation));
+					copy.Advance(record.variation);
+					pHandler->OnRange(record, COUNT, octets, index);
+				}				
 			}
+
 			buffer.Advance(size);
 			return ParseResult::OK;
 		}

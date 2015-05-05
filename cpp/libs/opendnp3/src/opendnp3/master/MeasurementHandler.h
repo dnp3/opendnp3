@@ -63,16 +63,16 @@ private:
 	IINField ProcessCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group51Var1& cto) override final;
 	IINField ProcessCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group51Var2& cto) override final;
 
-	IINField ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override final;
-	IINField ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) override final;
-	IINField ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) override final;
-	IINField ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) override final;
-	IINField ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) override final;
-	IINField ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) override final;
-	IINField ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas)  final;
-	IINField ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) override final;
-	IINField ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas) override final;
-	IINField ProcessRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Group121Var1, uint16_t>>& meas) override final;
+	IINField ProcessRange(const HeaderRecord& record, uint32_t count, const Binary& meas, uint16_t index) override final;
+	IINField ProcessRange(const HeaderRecord& record, uint32_t count, const DoubleBitBinary& meas, uint16_t index) override final;
+	IINField ProcessRange(const HeaderRecord& record, uint32_t count, const BinaryOutputStatus& meas, uint16_t index) override final;
+	IINField ProcessRange(const HeaderRecord& record, uint32_t count, const Counter& meas, uint16_t index) override final;
+	IINField ProcessRange(const HeaderRecord& record, uint32_t count, const FrozenCounter& meas, uint16_t index) override final;
+	IINField ProcessRange(const HeaderRecord& record, uint32_t count, const Analog& meas, uint16_t index) override final;
+	IINField ProcessRange(const HeaderRecord& record, uint32_t count, const AnalogOutputStatus& meas, uint16_t index)  final;
+	IINField ProcessRange(const HeaderRecord& record, uint32_t count, const OctetString& meas, uint16_t index) override final;
+	IINField ProcessRange(const HeaderRecord& record, uint32_t count, const TimeAndInterval& meas, uint16_t index) override final;
+	IINField ProcessRange(const HeaderRecord& record, uint32_t count, const Group121Var1& meas, uint16_t index) override final;
 
 	IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override final;
 	IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) override final;
@@ -97,6 +97,15 @@ private:
 			this->pSOEHandler->OnValue(info, pair.value, pair.index);			
 		};
 		meas.foreach(iterate);		
+		return IINField();
+	}
+
+	template <class T>
+	IINField LoadSingleValue(const HeaderRecord& record, TimestampMode tsmode, const T& meas, uint16_t index)
+	{
+		this->CheckForTxStart();
+		HeaderInfo info(record.enumeration, record.GetQualifierCode(), tsmode, record.headerCount);
+		this->pSOEHandler->OnValue(info, meas, index);
 		return IINField();
 	}
 

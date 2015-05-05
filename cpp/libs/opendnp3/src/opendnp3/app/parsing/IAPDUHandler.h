@@ -76,21 +76,23 @@ public:
 
 	// ------ Special ranged values like IIN (group 80) ------
 
-	virtual void OnRange(const HeaderRecord& record, uint16_t index, uint32_t count, const IINValue& value) = 0;
+	virtual void OnRange(const HeaderRecord& record, uint32_t count, const IINValue& value, uint16_t index) = 0;
 
-	// static values by range
-	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) = 0;
-	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) = 0;
-	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) = 0;
-	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) = 0;
-	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) = 0;
-	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) = 0;
-	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas) = 0;
-	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) = 0;
-	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas) = 0;	
-	virtual void OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Group121Var1, uint16_t>>& meas) = 0;
+	// ------ range callbacks for qualifiers 0x00 and 0x01 ------
 
-	// event values
+	virtual void OnRange(const HeaderRecord& record, uint32_t count, const Binary& meas, uint16_t index) = 0;
+	virtual void OnRange(const HeaderRecord& record, uint32_t count, const DoubleBitBinary& meas, uint16_t index) = 0;
+	virtual void OnRange(const HeaderRecord& record, uint32_t count, const BinaryOutputStatus& meas, uint16_t index) = 0;
+	virtual void OnRange(const HeaderRecord& record, uint32_t count, const Counter& meas, uint16_t index) = 0;
+	virtual void OnRange(const HeaderRecord& record, uint32_t count, const FrozenCounter& meas, uint16_t index) = 0;
+	virtual void OnRange(const HeaderRecord& record, uint32_t count, const Analog& meas, uint16_t index) = 0;
+	virtual void OnRange(const HeaderRecord& record, uint32_t count, const AnalogOutputStatus& meas, uint16_t index) = 0;
+	virtual void OnRange(const HeaderRecord& record, uint32_t count, const OctetString& meas, uint16_t index) = 0;
+	virtual void OnRange(const HeaderRecord& record, uint32_t count, const TimeAndInterval& meas, uint16_t index) = 0;
+	virtual void OnRange(const HeaderRecord& record, uint32_t count, const Group121Var1& meas, uint16_t index) = 0;
+
+	// ------ index-prefix callbacks for qualifiers 0x17 and 0x28 ------
+
 	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) = 0;
 	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) = 0;
 	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) = 0;
@@ -103,11 +105,13 @@ public:
 	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryCommandEvent, uint16_t>>& meas) = 0;
 	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogCommandEvent, uint16_t>>& meas) = 0;	
 
-	// security stat events
+	// --- security stat events ---
+
 	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Group122Var1, uint16_t>>& meas) = 0;
 	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Group122Var2, uint16_t>>& meas) = 0;
 
-	// commmands
+	// --- commmands ---
+
 	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint16_t>>& meas) = 0;
 	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint16_t>>& meas) = 0;
 	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt32, uint16_t>>& meas) = 0;

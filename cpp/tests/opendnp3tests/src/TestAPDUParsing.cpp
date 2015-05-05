@@ -146,7 +146,7 @@ TEST_CASE(SUITE("NotEnoughDataForObjects"))
 TEST_CASE(SUITE("Group1Var2Range"))
 {
 	// 1 byte start/stop  3->5, 3 octests data
-	TestComplex("01 02 00 03 05 81 01 81", ParseResult::OK, 1, [](MockApduHeaderHandler & mock)
+	TestComplex("01 02 00 03 05 81 01 81", ParseResult::OK, 3, [](MockApduHeaderHandler & mock)
 	{
 		REQUIRE(3 ==  mock.staticBinaries.size());
 		{
@@ -181,10 +181,10 @@ TEST_CASE(SUITE("Group1Var2CountOfZero"))
 
 TEST_CASE(SUITE("Group1Var2With2Headers"))
 {		
-	// 1 -> 2 & 2 -> 3
-	TestComplex("01 02 00 01 01 81 01 02 00 02 03 81 81", ParseResult::OK, 2, [](MockApduHeaderHandler & mock)
+	// 1 -> 1 & 2 -> 3
+	TestComplex("01 02 00 01 01 81 01 02 00 02 03 81 81", ParseResult::OK, 3, [](MockApduHeaderHandler & mock)
 	{
-		REQUIRE(2 == mock.records.size());
+		REQUIRE(3 == mock.records.size());
 	});
 }
 
@@ -192,7 +192,7 @@ TEST_CASE(SUITE("Group1Var2With2Headers"))
 TEST_CASE(SUITE("Group1Var2Range1to3"))
 {
 	// 1 byte start / stop, 1 -> 3, 3 octets data
-	TestComplex("01 02 00 01 03 81 01 81", ParseResult::OK, 1, [](MockApduHeaderHandler & mock)
+	TestComplex("01 02 00 01 03 81 01 81", ParseResult::OK, 3, [](MockApduHeaderHandler & mock)
 	{
 		REQUIRE(3 ==  mock.staticBinaries.size());
 		{
@@ -236,8 +236,8 @@ TEST_CASE(SUITE("Group1Var2AllCountQualifiers"))
 		}
 	};
 
-	TestComplex("01 02 00 00 01 81 01", ParseResult::OK, 1, validator);
-	TestComplex("01 02 01 00 00 01 00 81 01", ParseResult::OK, 1, validator);
+	TestComplex("01 02 00 00 01 81 01", ParseResult::OK, 2, validator);
+	TestComplex("01 02 01 00 00 01 00 81 01", ParseResult::OK, 2, validator);
 	TestSimple("01 02 09 02 00 00 00 81 01", ParseResult::UNKNOWN_QUALIFIER, 0);
 }
 
@@ -288,7 +288,7 @@ TEST_CASE(SUITE("Group2Var1CountWithAllIndexSizes"))
 TEST_CASE(SUITE("Group1Var1ByRange"))
 {
 	// 1 byte start/stop 3 -> 6
-	TestComplex("01 01 00 03 06 09", ParseResult::OK, 1, [](MockApduHeaderHandler & mock)
+	TestComplex("01 01 00 03 06 09", ParseResult::OK, 4, [](MockApduHeaderHandler & mock)
 	{
 		REQUIRE(4 ==  mock.staticBinaries.size());
 		{
@@ -399,7 +399,7 @@ TEST_CASE(SUITE("OctetStrings"))
 	});
 	
 	// Group 110 (0x6E) Variation (length == 5), 1 byte start/stop (7), count of 1, "hello" == [0x68, 0x65, 0x6C, 0x6C, 0x6F]
-	TestComplex("6E 05 00 07 08 68 65 6C 6C 6F 77 6F 72 6C 64", ParseResult::OK, 1, [&](MockApduHeaderHandler & mock)
+	TestComplex("6E 05 00 07 08 68 65 6C 6C 6F 77 6F 72 6C 64", ParseResult::OK, 2, [&](MockApduHeaderHandler & mock)
 	{
 		REQUIRE(2 ==  mock.rangedOctets.size());
 		REQUIRE(7 ==  mock.rangedOctets[0].index);
