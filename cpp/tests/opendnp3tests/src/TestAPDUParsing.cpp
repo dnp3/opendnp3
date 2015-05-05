@@ -370,9 +370,9 @@ TEST_CASE(SUITE("Group60Var1Var2Var3Var4"))
 
 TEST_CASE(SUITE("TestDoubleBitCTO"))
 {
-	TestComplex("04 03 17 02 03 C1 07 00 05 41 09 00", ParseResult::OK, 1, [&](MockApduHeaderHandler & mock)
+	TestComplex("04 03 17 02 03 C1 07 00 05 41 09 00", ParseResult::OK, 2, [&](MockApduHeaderHandler & mock)
 	{
-		REQUIRE(1 == mock.records.size());
+		REQUIRE(2 == mock.records.size());
 		REQUIRE(2 ==  mock.eventDoubleBinaries.size());
 
 		IndexedValue<DoubleBitBinary, uint16_t> event1(DoubleBitBinary(DoubleBit::INDETERMINATE, 0x01, DNPTime(7)), 3);
@@ -383,21 +383,24 @@ TEST_CASE(SUITE("TestDoubleBitCTO"))
 	});
 }
 
-TEST_CASE(SUITE("OctetStrings"))
-{
-	// "hello" == [0x68, 0x65, 0x6C, 0x6C, 0x6F]
-	// "world" == [0x77, 0x6F, 0x72, 0x6C, 0x64]
+// "hello" == [0x68, 0x65, 0x6C, 0x6C, 0x6F]
+// "world" == [0x77, 0x6F, 0x72, 0x6C, 0x64]
 
+TEST_CASE(SUITE("OctetStringEvents"))
+{
 	// Group 111 (0x6F) Variation (length == 5), 1 byte count / 1 byte index (4), count of 1, "hello" == [0x68, 0x65, 0x6C, 0x6C, 0x6F]
-	TestComplex("6F 05 17 02 04 68 65 6C 6C 6F FF 77 6F 72 6C 64", ParseResult::OK, 1, [&](MockApduHeaderHandler & mock)
+	TestComplex("6F 05 17 02 04 68 65 6C 6C 6F FF 77 6F 72 6C 64", ParseResult::OK, 2, [&](MockApduHeaderHandler & mock)
 	{
-		REQUIRE(2 ==  mock.indexPrefixedOctets.size());
-		REQUIRE(4 ==  mock.indexPrefixedOctets[0].index);
-		REQUIRE("hello" ==  BufferToString(mock.indexPrefixedOctets[0].value.ToReadOnly()));
-		REQUIRE(255 ==  mock.indexPrefixedOctets[1].index);
-		REQUIRE("world" ==  BufferToString(mock.indexPrefixedOctets[1].value.ToReadOnly()));
+		REQUIRE(2 == mock.indexPrefixedOctets.size());
+		REQUIRE(4 == mock.indexPrefixedOctets[0].index);
+		REQUIRE("hello" == BufferToString(mock.indexPrefixedOctets[0].value.ToReadOnly()));
+		REQUIRE(255 == mock.indexPrefixedOctets[1].index);
+		REQUIRE("world" == BufferToString(mock.indexPrefixedOctets[1].value.ToReadOnly()));
 	});
-	
+}
+
+TEST_CASE(SUITE("OctetStringStatic"))
+{
 	// Group 110 (0x6E) Variation (length == 5), 1 byte start/stop (7), count of 1, "hello" == [0x68, 0x65, 0x6C, 0x6C, 0x6F]
 	TestComplex("6E 05 00 07 08 68 65 6C 6C 6F 77 6F 72 6C 64", ParseResult::OK, 2, [&](MockApduHeaderHandler & mock)
 	{

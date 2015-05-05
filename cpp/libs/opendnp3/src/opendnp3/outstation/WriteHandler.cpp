@@ -92,25 +92,14 @@ IINField WriteHandler::ProcessCount(const HeaderRecord& record, uint16_t pos, ui
 	}
 }
 
-IINField  WriteHandler::ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas)
+IINField  WriteHandler::ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const TimeAndInterval& value, uint16_t index)
 {
-	if (pApplication->SupportsWriteTimeAndInterval())
-	{
-		IINField ret;
-
-		auto process = [&ret, this](const IndexedValue<TimeAndInterval, uint16_t>& pair) 
-		{
-			ret |= pApplication->WriteTimeAndInterval(pair.value, pair.index) ? IINField::Empty() : IINBit::PARAM_ERROR;
-		};
-
-		meas.foreach(process);		
-
-		return ret;
-	}
-	else
+	if (!pApplication->SupportsWriteTimeAndInterval())
 	{
 		return IINBit::FUNC_NOT_SUPPORTED;
 	}
+
+	return pApplication->WriteTimeAndInterval(value, index) ? IINField::Empty() : IINBit::PARAM_ERROR;	
 }
 
 }

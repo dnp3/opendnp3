@@ -119,7 +119,7 @@ ParseResult CountIndexParser::ParseCountOfObjects(openpal::ReadBufferView& buffe
 		return CountIndexParser::From<Group11Var2>(count, numparser).Process(record, buffer, pHandler, pLogger);
 
 	case(GroupVariation::Group12Var1) :
-		return CountIndexParser::From<Group12Var1>(count, numparser).Process(record, buffer, pHandler, pLogger);
+		return CountIndexParser::FromCollection<Group12Var1>(count, numparser).Process(record, buffer, pHandler, pLogger);
 
 	case(GroupVariation::Group13Var1) :
 		return CountIndexParser::From<Group13Var1>(count, numparser).Process(record, buffer, pHandler, pLogger);
@@ -160,16 +160,15 @@ ParseResult CountIndexParser::ParseCountOfObjects(openpal::ReadBufferView& buffe
 		return CountIndexParser::From<Group32Var7>(count, numparser).Process(record, buffer, pHandler, pLogger);
 	case(GroupVariation::Group32Var8) :
 		return CountIndexParser::From<Group32Var8>(count, numparser).Process(record, buffer, pHandler, pLogger);
-
 		
 	case(GroupVariation::Group41Var1) :
-		return CountIndexParser::From<Group41Var1>(count, numparser).Process(record, buffer, pHandler, pLogger);
+		return CountIndexParser::FromCollection<Group41Var1>(count, numparser).Process(record, buffer, pHandler, pLogger);
 	case(GroupVariation::Group41Var2) :
-		return CountIndexParser::From<Group41Var2>(count, numparser).Process(record, buffer, pHandler, pLogger);
+		return CountIndexParser::FromCollection<Group41Var2>(count, numparser).Process(record, buffer, pHandler, pLogger);
 	case(GroupVariation::Group41Var3) :
-		return CountIndexParser::From<Group41Var3>(count, numparser).Process(record, buffer, pHandler, pLogger);
+		return CountIndexParser::FromCollection<Group41Var3>(count, numparser).Process(record, buffer, pHandler, pLogger);
 	case(GroupVariation::Group41Var4) :
-		return CountIndexParser::From<Group41Var4>(count, numparser).Process(record, buffer, pHandler, pLogger);
+		return CountIndexParser::FromCollection<Group41Var4>(count, numparser).Process(record, buffer, pHandler, pLogger);
 
 	case(GroupVariation::Group42Var1) :
 		return CountIndexParser::From<Group42Var1>(count, numparser).Process(record, buffer, pHandler, pLogger);
@@ -226,39 +225,35 @@ ParseResult CountIndexParser::ParseCountOfObjects(openpal::ReadBufferView& buffe
 
 ParseResult CountIndexParser::ParseIndexPrefixedOctetData(openpal::ReadBufferView& buffer, const HeaderRecord& record, const NumParser& numparser, uint32_t count, openpal::Logger* pLogger, IAPDUHandler* pHandler)
 {
-	if (record.variation > 0)
-	{
-		uint32_t size = count * (numparser.NumBytes() + record.variation);
-		if (buffer.Size() < size)
-		{
-			SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified bitfield objects");
-			return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
-		}
-		else
-		{
-			if (pHandler)
-			{
-				auto reader = [record, numparser](openpal::ReadBufferView & buff, uint32_t position)
-				{					
-					uint16_t index = numparser.ReadNum(buff);
-					OctetString octets(buff.Take(record.variation));
-					buff.Advance(record.variation);
-					return IndexedValue<OctetString, uint16_t>(octets, index);
-				};
-
-				auto iterable = CreateLazyIterable<IndexedValue<OctetString, uint16_t>>(buffer, count, reader);					
-				pHandler->OnIndexPrefix(record, iterable);
-			}
-
-			buffer.Advance(size);
-			return ParseResult::OK;
-		}
-	}
-	else
+	if (record.variation == 0)
 	{
 		SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Octet string variation 0 may only be used in requests");
 		return ParseResult::INVALID_OBJECT;
 	}
+
+	const uint32_t TOTAL_SIZE = count * (numparser.NumBytes() + record.variation);
+
+	if (buffer.Size() < TOTAL_SIZE)
+	{
+		SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified bitfield objects");
+		return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
+	}
+	
+	if (pHandler)
+	{
+		openpal::ReadBufferView copy(buffer);
+
+		for (uint16_t i = 0; i < count; ++i)
+		{
+			uint16_t index = numparser.ReadNum(copy);
+			OctetString octets(copy.Take(record.variation));
+			copy.Advance(record.variation);
+			pHandler->OnIndexPrefix(record, count, octets, index);
+		}
+	}
+
+	buffer.Advance(TOTAL_SIZE);
+	return ParseResult::OK;		
 }
 
 }

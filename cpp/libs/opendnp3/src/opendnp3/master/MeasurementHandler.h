@@ -74,18 +74,18 @@ private:
 	IINField ProcessRange(const HeaderRecord& record, uint32_t count, const TimeAndInterval& meas, uint16_t index) override final;
 	IINField ProcessRange(const HeaderRecord& record, uint32_t count, const Group121Var1& meas, uint16_t index) override final;
 
-	IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override final;
-	IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) override final;
-	IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) override final;
-	IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) override final;
-	IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) override final;
-	IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) override final;
-	IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas) override final;
-	IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) override final;
-	IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryCommandEvent, uint16_t>>& meas) override final;
-	IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogCommandEvent, uint16_t>>& meas) override final;
-	IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Group122Var1, uint16_t>>& meas) override final;
-	IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Group122Var2, uint16_t>>& meas) override final;
+	IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const Binary& meas, uint16_t index) override final;
+	IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const BinaryOutputStatus& meas, uint16_t index) override final;
+	IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const DoubleBitBinary& meas, uint16_t index) override final;
+	IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const Counter& meas, uint16_t index) override final;
+	IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const FrozenCounter& meas, uint16_t index) override final;
+	IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const Analog& meas, uint16_t index) override final;
+	IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const AnalogOutputStatus& meas, uint16_t index) override final;
+	IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const OctetString& meas, uint16_t index) override final;
+	IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const BinaryCommandEvent& meas, uint16_t index) override final;
+	IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const AnalogCommandEvent& meas, uint16_t index) override final;
+	IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const Group122Var1& meas, uint16_t index) override final;
+	IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const Group122Var2& meas, uint16_t index) override final;
 
 	template <class T>
 	IINField LoadAny(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<T, uint16_t>>& meas)
@@ -110,7 +110,7 @@ private:
 	}
 
 	template <class T>
-	IINField ProcessWithCTO(const HeaderRecord& record, const IterableBuffer<IndexedValue<T, uint16_t>>& meas);
+	IINField ProcessWithCTO(const HeaderRecord& record, const T& meas, uint16_t index);
 
 	bool txInitiated;
 	ISOEHandler* pSOEHandler;
@@ -124,31 +124,20 @@ private:
 };
 
 template <class T>
-IINField MeasurementHandler::ProcessWithCTO(const HeaderRecord& record, const IterableBuffer<IndexedValue<T, uint16_t>>& meas)
+IINField MeasurementHandler::ProcessWithCTO(const HeaderRecord& record, const T& meas, uint16_t index)
 {	
-	if (ctoMode != TimestampMode::INVALID && ((ctoHeader+1) == GetCurrentHeader()))
-	{
-		auto mode = this->ctoMode;
-		auto timestamp = this->commonTimeOccurence;
-
-		auto addTime = [timestamp](const IndexedValue<T, uint16_t>& value)
-		{
-			T copy(value.value);
-			copy.time = DNPTime(copy.time + timestamp);
-			return IndexedValue<T, uint16_t>(copy, value.index);
-		};
-
-		auto transform = MapIterableBuffer< IndexedValue<T, uint16_t>, IndexedValue<T, uint16_t> >(&meas, addTime);
-
-		this->ctoMode = TimestampMode::INVALID;
-
-		return this->LoadAny(record, mode, transform);
-	}
-	else
+	if (ctoMode == TimestampMode::INVALID || ((ctoHeader + 1) != GetCurrentHeader()))
 	{
 		FORMAT_LOG_BLOCK(logger, flags::WARN, "No prior CTO objects for %s", GroupVariationToString(record.enumeration));
 		return IINField(IINBit::PARAM_ERROR);
 	}
+
+	const auto MODE = this->ctoMode;
+	
+	T copy(meas);
+	copy.time = DNPTime(meas.time + this->commonTimeOccurence);	
+
+	return this->LoadSingleValue(record, MODE, copy, index);
 }
 
 }

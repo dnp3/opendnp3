@@ -104,120 +104,98 @@ public:
 	}
 	
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override final
-	{		
-		meas.foreach([this](const IndexedValue<Binary, uint16_t>& v)
-		{
-			eventBinaries.push_back(v);
-		});		
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const Binary& meas, uint16_t index) override final
+	{				
+		eventBinaries.push_back(WithIndex(meas, index));			
 		return IINField::Empty();
 	}
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) override final
-	{		
-		meas.foreach([&](const IndexedValue<DoubleBitBinary, uint16_t>& v)
-		{
-			eventDoubleBinaries.push_back(v);
-		});		
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const DoubleBitBinary& meas, uint16_t index) override final
+	{				
+		eventDoubleBinaries.push_back(WithIndex(meas, index));
 		return IINField::Empty();
 	}
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)  override final
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const Counter& meas, uint16_t index)  override final
 	{		
-		meas.foreach([&](const IndexedValue<Counter, uint16_t>& v)
-		{
-			eventCounters.push_back(v);
-		});		
+		eventCounters.push_back(WithIndex(meas, index));
 		return IINField::Empty();
 	}
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas)  override final
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const FrozenCounter& meas, uint16_t index)  override final
 	{		
-		meas.foreach([&](const IndexedValue<FrozenCounter, uint16_t>& v)
+		eventFrozenCounters.push_back(WithIndex(meas, index));
+		return IINField::Empty();
+	}
+
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const Analog& meas, uint16_t index)  override final
+	{		
+		eventAnalogs.push_back(WithIndex(meas, index));
+		return IINField::Empty();
+	}
+
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const OctetString& meas, uint16_t index) override final
+	{				
+		indexPrefixedOctets.push_back(WithIndex(meas, index));
+		return IINField::Empty();
+	}
+
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const BinaryCommandEvent& meas, uint16_t index) override final
+	{				
+		binaryCommandEvents.push_back(WithIndex(meas, index));
+		return IINField::Empty();
+	}
+
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const AnalogCommandEvent& meas, uint16_t index) override final
+	{				
+		analogCommandEvents.push_back(WithIndex(meas, index));
+		return IINField::Empty();
+	}
+
+	/// --- controls ----
+
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint16_t>>& meas) override final
+	{				
+		meas.foreach([&](const IndexedValue<ControlRelayOutputBlock, uint16_t>& v)
 		{
-			eventFrozenCounters.push_back(v);
+			crobRequests.push_back(v);
 		});
 		return IINField::Empty();
 	}
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)  override final
-	{		
-		meas.foreach([&](const IndexedValue<Analog, uint16_t>& v)
-		{
-			eventAnalogs.push_back(v);
-		});		
-		return IINField::Empty();
-	}
-
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) override final
-	{		
-		meas.foreach([&](const IndexedValue<OctetString, uint16_t>& v)
-		{
-			indexPrefixedOctets.push_back(v);
-		});		
-		return IINField::Empty();
-	}
-
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryCommandEvent, uint16_t>>& meas) override final
-	{		
-		meas.foreach([&](const IndexedValue<BinaryCommandEvent, uint16_t>& v)
-		{
-			binaryCommandEvents.push_back(v);
-		});		
-		return IINField::Empty();
-	}
-
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogCommandEvent, uint16_t>>& meas) override final
-	{		
-		meas.foreach([&](const IndexedValue<AnalogCommandEvent, uint16_t>& v)
-		{
-			analogCommandEvents.push_back(v);
-		});		
-		return IINField::Empty();
-	}
-
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint16_t>>& meas) override final
-	{		
-		meas.foreach([&](const IndexedValue<ControlRelayOutputBlock, uint16_t>& v)
-		{
-			crobRequests.push_back(v);
-		});	
-		return IINField::Empty();
-	}
-
 	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint16_t>>& meas) override final
-	{		
+	{				
 		meas.foreach([&](const IndexedValue<AnalogOutputInt16, uint16_t>& v)
 		{
 			aoInt16Requests.push_back(v);
-		});	
+		});
 		return IINField::Empty();
 	}
 
 	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt32, uint16_t>>& meas) override final
-	{		
+	{				
 		meas.foreach([&](const IndexedValue<AnalogOutputInt32, uint16_t>& v)
 		{
 			aoInt32Requests.push_back(v);
-		});	
+		});
 		return IINField::Empty();
 	}
 
 	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint16_t>>& meas) override final
-	{		
+	{				
 		meas.foreach([&](const IndexedValue<AnalogOutputFloat32, uint16_t>& v)
 		{
 			aoFloat32Requests.push_back(v);
-		});	
+		});
 		return IINField::Empty();
 	}
 
 	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint16_t>>& meas) override final
-	{		
+	{				
 		meas.foreach([&](const IndexedValue<AnalogOutputDouble64, uint16_t>& v)
 		{
 			aoDouble64Requests.push_back(v);
-		});	
+		});
 		return IINField::Empty();
 	}	
 
