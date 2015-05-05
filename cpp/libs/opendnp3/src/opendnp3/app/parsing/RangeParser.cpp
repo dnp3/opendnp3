@@ -125,7 +125,7 @@ ParseResult RangeParser::ParseRangeOfObjects(openpal::ReadBufferView& buffer, co
 		MACRO_PARSE_OBJECTS_WITH_RANGE(Group1Var2);
 		
 		case(GroupVariation::Group3Var1) :
-			return RangeParser::FromDoubleBitfield<DoubleBitBinary>(range).Process(record, buffer, pHandler, pLogger);	
+			return RangeParser::FromDoubleBitfieldType<DoubleBitBinary>(range).Process(record, buffer, pHandler, pLogger);	
 		case(GroupVariation::Group10Var1):
 			return RangeParser::FromBitfieldType<BinaryOutputStatus>(range).Process(record, buffer, pHandler, pLogger);
 		

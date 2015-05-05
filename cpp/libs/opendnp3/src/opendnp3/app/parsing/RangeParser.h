@@ -65,19 +65,14 @@ private:
 	static RangeParser FromFixedSize(const Range& range);
 
 	template <class Descriptor>
-	static RangeParser FromFixedSizeRaw(const Range& range);
-	
-	/*
-	template <class Conversion>
-	static RangeParser FromBitfield(const Range& range);
-	*/
+	static RangeParser FromFixedSizeRaw(const Range& range);	
 
 	// Create a range parser from a bitfield and a function to map the bitfield to values
 	template <class Type>
 	static RangeParser FromBitfieldType(const Range& range);
 
-	template <class Conversion>
-	static RangeParser FromDoubleBitfield(const Range& range);
+	template <class Type>
+	static RangeParser FromDoubleBitfieldType(const Range& range);
 
 	static ParseResult ParseRangeOfObjects(openpal::ReadBufferView& buffer, const HeaderRecord& record, const Range& range, openpal::Logger* pLogger, IAPDUHandler* pHandler);
 
@@ -89,16 +84,11 @@ private:
 	template <class Type>
 	static void InvokeRangeOfRaw(const HeaderRecord& record, const Range& range, const openpal::ReadBufferView& buffer, IAPDUHandler& handler);
 
-	/*
-	template <class Conversion>
-	static void InvokeRangeBitfield(const HeaderRecord& record, const Range& range, const openpal::ReadBufferView& buffer, IAPDUHandler& handler);
-	*/
-
 	template <class Type>
 	static void InvokeRangeBitfieldType(const HeaderRecord& record, const Range& range, const openpal::ReadBufferView& buffer, IAPDUHandler& handler);
 
-	template <class Conversion>
-	static void InvokeRangeDoubleBitfield(const HeaderRecord& record, const Range& range, const openpal::ReadBufferView& buffer, IAPDUHandler& handler);
+	template <class Type>
+	static void InvokeRangeDoubleBitfieldType(const HeaderRecord& record, const Range& range, const openpal::ReadBufferView& buffer, IAPDUHandler& handler);
 
 	RangeParser(const Range& range, uint32_t requiredSize, HandleFun handler);
 		
@@ -153,14 +143,6 @@ void RangeParser::InvokeRangeOfRaw(const HeaderRecord& record, const Range& rang
 	}
 }
 
-/*
-template <class Conversion>
-RangeParser RangeParser::FromBitfield(const Range& range)
-{
-	const uint32_t SIZE = NumBytesInBits(range.Count());
-	return RangeParser(range, SIZE, &InvokeRangeBitfield<Conversion>);
-}
-*/
 
 template <class Type>
 RangeParser RangeParser::FromBitfieldType(const Range& range)
@@ -168,21 +150,6 @@ RangeParser RangeParser::FromBitfieldType(const Range& range)
 	const uint32_t SIZE = NumBytesInBits(range.Count());
 	return RangeParser(range, SIZE, &InvokeRangeBitfieldType<Type>);
 }
-
-/*
-template <class Conversion>
-void RangeParser::InvokeRangeBitfield(const HeaderRecord& record, const Range& range, const openpal::ReadBufferView& buffer, IAPDUHandler& handler)
-{
-
-	auto read = [range](openpal::ReadBufferView & buffer, uint32_t pos)
-	{
-		return Conversion::Convert(GetBit(buffer, pos), pos + range.start);
-	};
-
-	auto collection = CreateLazyIterable<typename Conversion::Target>(buffer, range.Count(), read);
-	handler.OnRange(record, collection);			
-}
-*/
 
 template <class Type>
 void RangeParser::InvokeRangeBitfieldType(const HeaderRecord& record, const Range& range, const openpal::ReadBufferView& buffer, IAPDUHandler& handler)
@@ -202,14 +169,14 @@ void RangeParser::InvokeRangeBitfieldType(const HeaderRecord& record, const Rang
 }
 
 template <class Type>
-RangeParser RangeParser::FromDoubleBitfield(const Range& range)
+RangeParser RangeParser::FromDoubleBitfieldType(const Range& range)
 {
 	uint32_t size = NumBytesInDoubleBits(range.Count());
-	return RangeParser(range, size, &InvokeRangeDoubleBitfield<Type>);
+	return RangeParser(range, size, &InvokeRangeDoubleBitfieldType<Type>);
 }
 
 template <class Type>
-void RangeParser::InvokeRangeDoubleBitfield(const HeaderRecord& record, const Range& range, const openpal::ReadBufferView& buffer, IAPDUHandler& handler)
+void RangeParser::InvokeRangeDoubleBitfieldType(const HeaderRecord& record, const Range& range, const openpal::ReadBufferView& buffer, IAPDUHandler& handler)
 {
 	const uint32_t COUNT = range.Count();
 
