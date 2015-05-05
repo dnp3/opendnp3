@@ -81,14 +81,15 @@ class HeaderRecord : public GroupVariationRecord
 {
 public:
 
-	HeaderRecord() : qualifier(0)
+	HeaderRecord() : qualifier(0), headerCount(0)
 	{}
 
-	HeaderRecord(const GroupVariationRecord& gv, uint8_t qualifier);
+	HeaderRecord(const GroupVariationRecord& gv, uint8_t qualifier, uint32_t headerCount);
 
 	QualifierCode GetQualifierCode() const;	
 
-	uint8_t qualifier;	
+	uint8_t qualifier;
+	uint32_t headerCount;
 };
 
 }

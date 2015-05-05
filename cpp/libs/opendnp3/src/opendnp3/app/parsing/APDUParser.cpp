@@ -108,7 +108,7 @@ ParseResult APDUParser::ParseHeader(ReadBufferView& buffer, openpal::Logger* pLo
 			}
 			else
 			{
-				return APDUParser::ParseQualifier(buffer, pLogger, HeaderRecord(gv, header.qualifier), settings, pHandler);
+				return APDUParser::ParseQualifier(buffer, pLogger, HeaderRecord(gv, header.qualifier, count), settings, pHandler);
 			}					
 		}
 	}	

@@ -91,7 +91,7 @@ private:
 	IINField LoadAny(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<T, uint16_t>>& meas)
 	{		
 		this->CheckForTxStart();
-		HeaderInfo info(record.enumeration, record.GetQualifierCode(), tsmode);
+		HeaderInfo info(record.enumeration, record.GetQualifierCode(), tsmode, record.headerCount);
 		auto iterate = [info, this](const IndexedValue<T, uint16_t>& pair) 
 		{
 			this->pSOEHandler->OnValue(info, pair.value, pair.index);			

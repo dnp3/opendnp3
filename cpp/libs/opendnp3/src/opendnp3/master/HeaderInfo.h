@@ -35,13 +35,15 @@ public:
 	HeaderInfo() : 
 		gv(GroupVariation::UNKNOWN),
 		qualifier(QualifierCode::UNDEFINED),
-		tsmode(TimestampMode::INVALID)
+		tsmode(TimestampMode::INVALID),
+		headerCount(0)
 	{}
 	
 	HeaderInfo(
 		GroupVariation gv_,
 		QualifierCode qualifier_,
-		TimestampMode tsmode_
+		TimestampMode tsmode_,
+		uint32_t headerCount_
 	) : 
 		gv(gv_),
 		qualifier(qualifier_),
@@ -51,6 +53,7 @@ public:
 	GroupVariation gv;
 	QualifierCode qualifier;
 	TimestampMode tsmode;
+	uint32_t headerCount;
 };
 
 }

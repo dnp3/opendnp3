@@ -25,7 +25,7 @@ namespace Automatak
 
 			HeaderInfo^ SOEHandlerAdapter::GetInfo(const opendnp3::HeaderInfo& info)
 			{				
-				return gcnew HeaderInfo((GroupVariation)info.gv, (QualifierCode)info.qualifier, (TimestampMode)info.tsmode);
+				return gcnew HeaderInfo((GroupVariation)info.gv, (QualifierCode)info.qualifier, (TimestampMode)info.tsmode, info.headerCount);
 			}
 
 			void SOEHandlerAdapter::OnValue(const opendnp3::HeaderInfo& info, const opendnp3::Binary& meas, uint16_t index)
