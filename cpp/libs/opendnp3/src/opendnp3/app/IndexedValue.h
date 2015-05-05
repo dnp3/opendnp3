@@ -59,6 +59,12 @@ public:
 	ValueType value;
 };
 
+template <class ValueType, class IndexType>
+IndexedValue<ValueType, IndexType> WithIndex(const ValueType& value, IndexType index)
+{
+	return IndexedValue<ValueType, IndexType>(value, index);
+}
+
 }
 
 #endif

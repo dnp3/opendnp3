@@ -29,7 +29,7 @@ namespace Automatak
 				
 				virtual bool SupportsWriteTimeAndInterval() override final;
 				
-				virtual bool WriteTimeAndInterval(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::TimeAndInterval, uint16_t>>& meas) override final;
+				virtual bool WriteTimeAndInterval(const opendnp3::TimeAndInterval& value, uint16_t index) override final;
 
 				virtual bool SupportsAssignClass() override final;
 

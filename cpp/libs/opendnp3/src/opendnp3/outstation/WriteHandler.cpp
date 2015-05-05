@@ -96,7 +96,16 @@ IINField  WriteHandler::ProcessIndexPrefix(const HeaderRecord& record, const Ite
 {
 	if (pApplication->SupportsWriteTimeAndInterval())
 	{
-		return pApplication->WriteTimeAndInterval(meas) ? IINField::Empty() : IINBit::PARAM_ERROR;		
+		IINField ret;
+
+		auto process = [&ret, this](const IndexedValue<TimeAndInterval, uint16_t>& pair) 
+		{
+			ret |= pApplication->WriteTimeAndInterval(pair.value, pair.index) ? IINField::Empty() : IINBit::PARAM_ERROR;
+		};
+
+		meas.foreach(process);		
+
+		return ret;
 	}
 	else
 	{

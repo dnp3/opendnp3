@@ -66,13 +66,9 @@ public:
 		return supportsWriteTimeAndInterval;
 	}
 
-	virtual bool WriteTimeAndInterval(const IterableBuffer<IndexedValue<TimeAndInterval, uint16_t>>& meas) override final
-	{
-		auto record = [this](const IndexedValue<TimeAndInterval, uint16_t>& pair) 
-		{
-			timeAndIntervals.push_back(pair);
-		};
-		meas.foreach(record);
+	virtual bool WriteTimeAndInterval(const TimeAndInterval& meas, uint16_t index) override final
+	{		
+		timeAndIntervals.push_back(WithIndex(meas, index));		
 		return true;
 	}
 
