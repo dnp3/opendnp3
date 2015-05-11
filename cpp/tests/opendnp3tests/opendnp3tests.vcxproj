@@ -254,6 +254,7 @@
     <ClCompile Include="src\TestAggressiveModeHMACParsing.cpp" />
     <ClCompile Include="src\TestAggressiveModeParsing.cpp" />
     <ClCompile Include="src\TestAuthRequestParser.cpp" />
+    <ClCompile Include="src\TestCollectionTransform.cpp" />
     <ClCompile Include="src\TestGroup120Var2.cpp" />
     <ClCompile Include="src\TestGroup120Var5.cpp" />
     <ClCompile Include="src\TestIndexSearch.cpp" />

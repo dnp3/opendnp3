@@ -61,6 +61,7 @@
     <ClInclude Include="src\opendnp3\app\parsing\CountParser.h" />
     <ClInclude Include="src\opendnp3\app\parsing\FreeFormatParser.h" />
     <ClInclude Include="src\opendnp3\app\parsing\IAPDUHandler.h" />
+    <ClInclude Include="src\opendnp3\app\parsing\ICollection.h" />
     <ClInclude Include="src\opendnp3\app\parsing\IterableBuffer.h" />
     <ClInclude Include="src\opendnp3\app\parsing\IterableTransforms.h" />
     <ClInclude Include="src\opendnp3\app\parsing\LazyIterable.h" />
