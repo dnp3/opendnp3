@@ -28,7 +28,6 @@
 #include "opendnp3/app/APDUHeader.h"
 #include "opendnp3/app/parsing/ParseResult.h"
 #include "opendnp3/app/parsing/APDUHandlerBase.h"
-#include "opendnp3/app/parsing/IterableTransforms.h"
 
 namespace opendnp3
 {
@@ -88,7 +87,7 @@ private:
 	IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const Group122Var2& meas, uint16_t index) override final;
 
 	template <class T>
-	IINField LoadAny(const HeaderRecord& record, TimestampMode tsmode, const IterableBuffer<IndexedValue<T, uint16_t>>& meas)
+	IINField LoadAny(const HeaderRecord& record, TimestampMode tsmode, const ICollection<IndexedValue<T, uint16_t>>& meas)
 	{		
 		this->CheckForTxStart();
 		HeaderInfo info(record.enumeration, record.GetQualifierCode(), tsmode, record.headerCount);

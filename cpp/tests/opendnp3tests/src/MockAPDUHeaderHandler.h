@@ -154,45 +154,45 @@ public:
 
 	/// --- controls ----
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint16_t>>& meas) override final
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<IndexedValue<ControlRelayOutputBlock, uint16_t>>& meas) override final
 	{				
-		meas.foreach([&](const IndexedValue<ControlRelayOutputBlock, uint16_t>& v)
+		meas.ForeachItem([&](const IndexedValue<ControlRelayOutputBlock, uint16_t>& v)
 		{
 			crobRequests.push_back(v);
 		});
 		return IINField::Empty();
 	}
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint16_t>>& meas) override final
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<IndexedValue<AnalogOutputInt16, uint16_t>>& meas) override final
 	{				
-		meas.foreach([&](const IndexedValue<AnalogOutputInt16, uint16_t>& v)
+		meas.ForeachItem([&](const IndexedValue<AnalogOutputInt16, uint16_t>& v)
 		{
 			aoInt16Requests.push_back(v);
 		});
 		return IINField::Empty();
 	}
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt32, uint16_t>>& meas) override final
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<IndexedValue<AnalogOutputInt32, uint16_t>>& meas) override final
 	{				
-		meas.foreach([&](const IndexedValue<AnalogOutputInt32, uint16_t>& v)
+		meas.ForeachItem([&](const IndexedValue<AnalogOutputInt32, uint16_t>& v)
 		{
 			aoInt32Requests.push_back(v);
 		});
 		return IINField::Empty();
 	}
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint16_t>>& meas) override final
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<IndexedValue<AnalogOutputFloat32, uint16_t>>& meas) override final
 	{				
-		meas.foreach([&](const IndexedValue<AnalogOutputFloat32, uint16_t>& v)
+		meas.ForeachItem([&](const IndexedValue<AnalogOutputFloat32, uint16_t>& v)
 		{
 			aoFloat32Requests.push_back(v);
 		});
 		return IINField::Empty();
 	}
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint16_t>>& meas) override final
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<IndexedValue<AnalogOutputDouble64, uint16_t>>& meas) override final
 	{				
-		meas.foreach([&](const IndexedValue<AnalogOutputDouble64, uint16_t>& v)
+		meas.ForeachItem([&](const IndexedValue<AnalogOutputDouble64, uint16_t>& v)
 		{
 			aoDouble64Requests.push_back(v);
 		});

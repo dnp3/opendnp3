@@ -21,20 +21,20 @@
 #ifndef OPENDNP3_EVENT_H
 #define OPENDNP3_EVENT_H
 
-#include "opendnp3/app/IndexedValue.h"
 #include "opendnp3/app/EventType.h"
 
 namespace opendnp3
 {
 
-struct Evented : public Indexed<uint16_t>
+struct Evented
 {
-	Evented(uint16_t index_, EventClass clazz_) : Indexed<uint16_t>(index_), clazz(clazz_)
+	Evented(uint16_t index_, EventClass clazz_) : index(index_), clazz(clazz_)
 	{}
 
 	Evented() : clazz(EventClass::EC1)
 	{}
 
+	uint16_t index;
 	EventClass clazz;	// class of the event (CLASS<1-3>)
 };
 

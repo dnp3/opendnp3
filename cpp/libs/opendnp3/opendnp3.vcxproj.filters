@@ -831,15 +831,6 @@
     <ClInclude Include="src\opendnp3\app\parsing\BitReader.h">
       <Filter>Header\app\parsing</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\app\parsing\IterableBuffer.h">
-      <Filter>Header\app\parsing</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\app\parsing\IterableTransforms.h">
-      <Filter>Header\app\parsing</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\app\parsing\LazyIterable.h">
-      <Filter>Header\app\parsing</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\app\parsing\ObjectHeaderParser.h">
       <Filter>Header\app\parsing</Filter>
     </ClInclude>
@@ -907,6 +898,9 @@
       <Filter>Source\app</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\app\parsing\ICollection.h">
+      <Filter>Header\app\parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\app\parsing\BufferedCollection.h">
       <Filter>Header\app\parsing</Filter>
     </ClInclude>
   </ItemGroup>

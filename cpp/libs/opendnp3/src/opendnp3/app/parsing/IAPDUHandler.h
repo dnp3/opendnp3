@@ -23,7 +23,7 @@
 
 #include "opendnp3/app/GroupVariationRecord.h"
 
-#include "opendnp3/app/parsing/IterableBuffer.h"
+#include "opendnp3/app/parsing/ICollection.h"
 
 #include "opendnp3/app/MeasurementTypes.h"
 #include "opendnp3/app/IINValue.h"
@@ -112,11 +112,11 @@ public:
 
 	// --- commmands ---
 
-	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint16_t>>& meas) = 0;
-	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint16_t>>& meas) = 0;
-	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt32, uint16_t>>& meas) = 0;
-	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint16_t>>& meas) = 0;
-	virtual void OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint16_t>>& meas) = 0;
+	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<IndexedValue<ControlRelayOutputBlock, uint16_t>>& meas) = 0;
+	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<IndexedValue<AnalogOutputInt16, uint16_t>>& meas) = 0;
+	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<IndexedValue<AnalogOutputInt32, uint16_t>>& meas) = 0;
+	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<IndexedValue<AnalogOutputFloat32, uint16_t>>& meas) = 0;
+	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<IndexedValue<AnalogOutputDouble64, uint16_t>>& meas) = 0;
 	
 };
 

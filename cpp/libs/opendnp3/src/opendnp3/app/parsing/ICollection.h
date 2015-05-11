@@ -21,6 +21,8 @@
 #ifndef OPENDNP3_ICOLLECTION_H
 #define OPENDNP3_ICOLLECTION_H
 
+#include <openpal/util/Uncopyable.h>
+
 namespace opendnp3
 {
 
@@ -56,14 +58,19 @@ private:
 };
 
 /*
-	An interface representing an abstract collection of things of type T.
+	An interface representing an abstract immutable collection of things of type T.
 
-	The user can only process these values via callback to receive each element.
+	The user can only read these values via callback to receive each element.
 */
 template <class T>
-class ICollection
+class ICollection : private openpal::Uncopyable
 {
 public:
+
+	/**
+	* The number of elements in the collection
+	*/
+	virtual uint32_t Count() const = 0;
 
 	/**
 	* Visit all the elements of a collection
@@ -78,7 +85,24 @@ public:
 	{
 		FunctorVisitor<T, Fun> visitor(fun);
 		this->Foreach(visitor);
-	}	
+	}
+	
+	/**
+		Retrieve the only value from the collection.
+	*/
+	bool ReadOnlyValue(T& value) const
+	{
+		if (this->Count() == 1)
+		{
+			auto assignValue = [&value](const T& item) { value = item; };
+			this->ForeachItem(assignValue);
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 };
 
 /**
@@ -89,12 +113,18 @@ class ArrayCollection : public opendnp3::ICollection<T>
 {
 	public:
 	
-	ArrayCollection(const T* pArray_, size_t count) : pArray(pArray_), COUNT(count)
+	ArrayCollection(const T* pArray_, uint32_t count) : pArray(pArray_), COUNT(count)
 	{}
+
+
+	virtual uint32_t Count() const override final
+	{
+		return COUNT;
+	}
 
 	virtual void Foreach(IVisitor<T>& visitor) const override final
 	{
-		for (size_t i = 0; i < COUNT; ++i)
+		for (uint32_t i = 0; i < COUNT; ++i)
 		{
 			visitor.OnValue(pArray[i]);
 		}
@@ -103,7 +133,7 @@ class ArrayCollection : public opendnp3::ICollection<T>
 	private:
 	
 	const T* pArray;
-	const size_t COUNT;
+	const uint32_t COUNT;
 };
 
 template <class T, class U, class Transform>
@@ -115,6 +145,11 @@ public:
 		input(&input_),
 		transform(transform_)
 	{}
+
+	virtual uint32_t Count() const override final
+	{
+		return input->Count();
+	}
 
 	virtual void Foreach(IVisitor<U>& visitor) const override final
 	{

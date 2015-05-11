@@ -55,7 +55,7 @@ public:
 		response(CommandResponse(TaskCompletion::FAILURE_BAD_RESPONSE))
 	{}	
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord&, const IterableBuffer<IndexedValue<CommandType, uint16_t>>& meas) override final
+	virtual IINField ProcessIndexPrefix(const HeaderRecord&, const ICollection<IndexedValue<CommandType, uint16_t>>& meas) override final
 	{
 		IndexedValue<CommandType, uint16_t> received;
 		if (this->IsFirstHeader() && meas.ReadOnlyValue(received))

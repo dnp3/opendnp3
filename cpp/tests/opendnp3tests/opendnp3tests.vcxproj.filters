@@ -238,9 +238,6 @@
     <ClCompile Include="src\TestDNP3Manager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\TestLazyCollection.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\TestLinkLayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

@@ -30,7 +30,7 @@
 #include "opendnp3/app/parsing/NumParser.h"
 #include "opendnp3/app/parsing/ParserSettings.h"
 
-#include "opendnp3/app/parsing/LazyIterable.h"
+#include "opendnp3/app/parsing/BufferedCollection.h"
 
 namespace opendnp3
 {
@@ -122,7 +122,7 @@ void CountIndexParser::InvokeCountOfCollection(const HeaderRecord& record, uint1
 		return IndexedValue<typename Descriptor::Target, uint16_t>(target, index);
 	};		
 
-	auto collection = CreateLazyIterable<IndexedValue<typename Descriptor::Target, uint16_t>>(buffer, count, reader);
+	auto collection = CreateBufferedCollection<IndexedValue<typename Descriptor::Target, uint16_t>>(buffer, count, reader);
 	handler.OnIndexPrefix(record, collection);
 }
 

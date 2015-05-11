@@ -18,40 +18,49 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_LAZYITERABLE_H
-#define OPENDNP3_LAZYITERABLE_H
+#ifndef OPENDNP3_BUFFEREDCOLLECTION_H
+#define OPENDNP3_BUFFEREDCOLLECTION_H
 
-#include "IterableBuffer.h"
+#include "ICollection.h"
 
 namespace opendnp3
 {
 
 template <class T, class ReadFunc>
-class LazyIterable : public IterableBuffer<T>
+class BufferedCollection : public ICollection<T>
 {
 public:
 
-	LazyIterable(const openpal::ReadBufferView& buffer, uint32_t aSize, const ReadFunc& aReadFunc):
-		IterableBuffer<T>(buffer, aSize),
-		readFunc(aReadFunc)
+	BufferedCollection(const openpal::ReadBufferView& buffer_, uint32_t count, const ReadFunc& readFunc_) :	
+		buffer(buffer_),
+		COUNT(count),
+		readFunc(readFunc_)
 	{}
 
-protected:
+	virtual uint32_t Count() const override final { return COUNT; }
 
-	virtual T ValueAt(openpal::ReadBufferView& buff, uint32_t aPos) const final
+
+	virtual void Foreach(IVisitor<T>& visitor) const final
 	{
-		return readFunc(buff, aPos);
+		openpal::ReadBufferView copy(buffer);
+
+		for (uint32_t pos = 0; pos < COUNT; ++pos)
+		{
+			visitor.OnValue(readFunc(copy, pos));
+		}		
 	}
 
 private:
 
+	openpal::ReadBufferView buffer;
+	const uint32_t COUNT;
 	ReadFunc readFunc;
 };
 
 template <class T, class ReadFunc>
-LazyIterable<T, ReadFunc> CreateLazyIterable(const openpal::ReadBufferView& buffer, uint32_t aSize, const ReadFunc& aReadFunc)
+BufferedCollection<T, ReadFunc> CreateBufferedCollection(const openpal::ReadBufferView& buffer, uint32_t count, const ReadFunc& readFunc)
 {
-	return LazyIterable<T, ReadFunc>(buffer, aSize, aReadFunc);
+	return BufferedCollection<T, ReadFunc>(buffer, count, readFunc);
 }
 
 }

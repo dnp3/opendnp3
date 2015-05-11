@@ -293,7 +293,6 @@
     <ClCompile Include="src\TestCRC.cpp" />
     <ClCompile Include="src\TestDatabase.cpp" />
     <ClCompile Include="src\TestDNP3Manager.cpp" />
-    <ClCompile Include="src\TestLazyCollection.cpp" />
     <ClCompile Include="src\TestLinkFrame.cpp" />
     <ClCompile Include="src\TestLinkLayer.cpp" />
     <ClCompile Include="src\TestLinkLayerRouter.cpp" />
