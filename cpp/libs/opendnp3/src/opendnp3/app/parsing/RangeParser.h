@@ -153,9 +153,7 @@ RangeParser RangeParser::FromBitfieldType(const Range& range)
 template <class Type>
 void RangeParser::InvokeRangeBitfieldType(const HeaderRecord& record, const Range& range, const openpal::ReadBufferView& buffer, IAPDUHandler& handler)
 {
-	const uint32_t COUNT = range.Count();
-
-	openpal::ReadBufferView copy(buffer);
+	const uint32_t COUNT = range.Count();	
 
 	uint32_t pos = 0;
 
@@ -177,9 +175,7 @@ RangeParser RangeParser::FromDoubleBitfieldType(const Range& range)
 template <class Type>
 void RangeParser::InvokeRangeDoubleBitfieldType(const HeaderRecord& record, const Range& range, const openpal::ReadBufferView& buffer, IAPDUHandler& handler)
 {
-	const uint32_t COUNT = range.Count();
-
-	openpal::ReadBufferView copy(buffer);
+	const uint32_t COUNT = range.Count();	
 
 	uint32_t pos = 0;
 
