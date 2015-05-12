@@ -155,48 +155,28 @@ public:
 	/// --- controls ----
 
 	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<ControlRelayOutputBlock>>& meas) override final
-	{				
-		meas.ForeachItem([&](const Indexed<ControlRelayOutputBlock>& v)
-		{
-			crobRequests.push_back(v);
-		});
-		return IINField::Empty();
+	{			
+		return this->ProcessAny(record, meas, crobRequests);
 	}
 
 	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputInt16>>& meas) override final
 	{				
-		meas.ForeachItem([&](const Indexed<AnalogOutputInt16>& v)
-		{
-			aoInt16Requests.push_back(v);
-		});
-		return IINField::Empty();
+		return this->ProcessAny(record, meas, aoInt16Requests);
 	}
 
 	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputInt32>>& meas) override final
 	{				
-		meas.ForeachItem([&](const Indexed<AnalogOutputInt32>& v)
-		{
-			aoInt32Requests.push_back(v);
-		});
-		return IINField::Empty();
+		return this->ProcessAny(record, meas, aoInt32Requests);
 	}
 
 	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputFloat32>>& meas) override final
 	{				
-		meas.ForeachItem([&](const Indexed<AnalogOutputFloat32>& v)
-		{
-			aoFloat32Requests.push_back(v);
-		});
-		return IINField::Empty();
+		return this->ProcessAny(record, meas, aoFloat32Requests);
 	}
 
 	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputDouble64>>& meas) override final
 	{				
-		meas.ForeachItem([&](const Indexed<AnalogOutputDouble64>& v)
-		{
-			aoDouble64Requests.push_back(v);
-		});
-		return IINField::Empty();
+		return this->ProcessAny(record, meas, aoDouble64Requests);
 	}	
 
 	virtual IINField ProcessFreeFormat(const HeaderRecord& record, const Group120Var1& value) override final
@@ -265,6 +245,16 @@ public:
 	std::vector<Indexed<BinaryCommandEvent>> binaryCommandEvents;
 
 	std::vector<Indexed<AnalogCommandEvent>> analogCommandEvents;
+
+	private:
+
+	template <class T>
+	IINField ProcessAny(const HeaderRecord& record, const ICollection<Indexed<T>>& meas, std::vector<Indexed<T>>& items)
+	{
+		auto add = [&items](const Indexed<T>& v) { items.push_back(v); };
+		meas.ForeachItem(add);
+		return IINField::Empty();
+	}
 };
 
 }

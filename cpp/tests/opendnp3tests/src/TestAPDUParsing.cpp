@@ -20,10 +20,10 @@
  */
 #include <catch.hpp>
 
-
-#include <testlib/BufferHelpers.h>
 #include "MockAPDUHeaderHandler.h"
 #include "MeasurementComparisons.h"
+
+#include <testlib/BufferHelpers.h>
 #include <testlib/HexConversions.h>
 
 #include <openpal/util/ToHex.h>
