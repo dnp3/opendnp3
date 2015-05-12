@@ -427,14 +427,7 @@ uint32_t Group120Var9::Size() const
 
 bool Group120Var9::Read(const ReadBufferView& buffer)
 {
-  if(buffer.Size() < Group120Var9::MIN_SIZE)
-  {
-    return false;
-  }
-
-  ReadBufferView copy(buffer); //mutable copy for parsing
-
-  this->hmacValue = copy; // whatever is left over
+  this->hmacValue = buffer; // the object is just the remainder field
   return true;
 }
 
@@ -769,14 +762,7 @@ uint32_t Group120Var14::Size() const
 
 bool Group120Var14::Read(const ReadBufferView& buffer)
 {
-  if(buffer.Size() < Group120Var14::MIN_SIZE)
-  {
-    return false;
-  }
-
-  ReadBufferView copy(buffer); //mutable copy for parsing
-
-  this->Signature = copy; // whatever is left over
+  this->Signature = buffer; // the object is just the remainder field
   return true;
 }
 
@@ -809,14 +795,7 @@ uint32_t Group120Var15::Size() const
 
 bool Group120Var15::Read(const ReadBufferView& buffer)
 {
-  if(buffer.Size() < Group120Var15::MIN_SIZE)
-  {
-    return false;
-  }
-
-  ReadBufferView copy(buffer); //mutable copy for parsing
-
-  this->hmacValue = copy; // whatever is left over
+  this->hmacValue = buffer; // the object is just the remainder field
   return true;
 }
 
