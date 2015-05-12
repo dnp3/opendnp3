@@ -24,7 +24,7 @@
 #include <opendnp3/link/LinkLayerParser.h>
 #include <opendnp3/LogLevels.h>
 
-#include "LogTester.h"
+#include <testlib/MockLogHandler.h>
 #include <testlib/BufferHelpers.h>
 #include "MockFrameSink.h"
 
@@ -60,7 +60,7 @@ public:
 		parser.OnRead(hs.Size(), &sink);
 	}
 
-	LogTester log;
+	testlib::MockLogHandler log;
 	MockFrameSink sink;
 	LinkLayerParser parser;
 };

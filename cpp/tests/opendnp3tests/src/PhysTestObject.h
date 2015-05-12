@@ -23,7 +23,7 @@
 
 #include "TestObjectASIO.h"
 #include "MockUpperLayer.h"
-#include "LogTester.h"
+#include <testlib/MockLogHandler.h>
 
 #include <asiopal/PhysicalLayerTCPClient.h>
 #include <asiopal/PhysicalLayerTCPServer.h>
@@ -40,7 +40,7 @@ class PhysTestObject : public TestObjectASIO
 public:
 	PhysTestObject(uint32_t levels = levels::NORMAL, bool aAutoRead = true);
 
-	LogTester log;
+	testlib::MockLogHandler log;
 
 	asiopal::PhysicalLayerTCPClient mTCPClient;
 	asiopal::PhysicalLayerTCPServer mTCPServer;

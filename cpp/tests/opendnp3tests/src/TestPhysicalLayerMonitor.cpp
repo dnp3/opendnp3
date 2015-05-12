@@ -28,7 +28,7 @@
 #include "MockExecutor.h"
 #include "MockPhysicalLayer.h"
 
-#include "LogTester.h"
+#include <testlib/MockLogHandler.h>
 
 using namespace opendnp3;
 using namespace openpal;
@@ -91,7 +91,7 @@ public:
 		monitor(log.root, exe, &phys)
 	{}
 
-	LogTester log;
+	testlib::MockLogHandler log;
 	MockExecutor exe;
 	MockPhysicalLayer phys;
 	ConcretePhysicalLayerMonitor monitor;

@@ -22,11 +22,10 @@
 
 #include <testlib/BufferHelpers.h>
 #include <testlib/HexConversions.h>
+#include <testlib/MockLogHandler.h>
+
 #include <secauthv5/AggressiveModeParser.h>
-
 #include <functional>
-
-#include "LogTester.h"
 
 using namespace std;
 using namespace openpal;
@@ -34,60 +33,51 @@ using namespace opendnp3;
 using namespace secauthv5;
 using namespace testlib;
 
-void TestAggModeHMAC(const std::string& data, uint32_t hmacSize, function<void(AggModeHMACResult result)> validate)
+void TestAggMode(const std::string& data, function<void(AggModeResult result)> validate)
 {
 	HexSequence objects(data);	
-	auto result = AggressiveModeParser::ParseHMAC(objects.ToReadOnly(), hmacSize, nullptr);
+	auto result = AggressiveModeParser::IsAggressiveMode(objects.ToReadOnly(), nullptr);
 	validate(result);
 }
 
-#define SUITE(name) "AggressiveModeHMACParsingTestSuite - " name
+#define SUITE(name) "AggressiveModeParsingTestSuite - " name
 
 TEST_CASE(SUITE("AcceptsValidInput"))
 {
-	auto objects = "DE AD BE EF";
-	auto trailer = "78 09 5B 01 04 00";
-	auto hmac = "AB BA AB BA";
-	auto input = AppendHex({ objects, trailer, hmac });
-
-	TestAggModeHMAC(input, 4, [=](AggModeHMACResult result)
+	TestAggMode("78 03 07 01 04 00 00 00 09 00 DE AD BE EF", [](AggModeResult result)
 	{	
 		REQUIRE(result.result == ParseResult::OK);
-		REQUIRE(ToHex(result.hmac.hmacValue) == hmac);
-		REQUIRE(ToHex(result.objects) == objects);
+		REQUIRE(result.isAggMode);		
+		REQUIRE(result.request.challengeSeqNum == 4);
+		REQUIRE(result.request.userNum == 9);
+		REQUIRE(ToHex(result.remainder) == "DE AD BE EF");
 	});	
 }
 
-TEST_CASE(SUITE("RejectsBadAlignment"))
+TEST_CASE(SUITE("RejectsBadHeader"))
 {
-	auto input = "DE AD BE EF 78 09 5B 01 04 00 AB BA AB BA";	
-
-	// this causes an unknown object
-	TestAggModeHMAC(input, 3, [=](AggModeHMACResult result)
-	{
-		REQUIRE(result.result == ParseResult::UNKNOWN_OBJECT);
-	});
-}
-
-TEST_CASE(SUITE("RejectsSizeMismatch"))
-{
-	auto input = "DE AD BE EF 78 09 5B 01 03 00 AB BA AB BA";
-
-	// this causes an unknown object
-	TestAggModeHMAC(input, 4, [=](AggModeHMACResult result)
-	{
-		REQUIRE(result.result == ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS);
-	});
-}
-
-TEST_CASE(SUITE("RejectsInsufficient"))
-{
-	auto input = "DE AD BE EF 78 09 5B 01 03";
-
-	// this causes an unknown object
-	TestAggModeHMAC(input, 4, [=](AggModeHMACResult result)
+	TestAggMode("78 03", [](AggModeResult result)
 	{
 		REQUIRE(result.result == ParseResult::NOT_ENOUGH_DATA_FOR_HEADER);
+		REQUIRE(!result.isAggMode);		
+	});
+}
+
+TEST_CASE(SUITE("RejectsNormalObject"))
+{
+	TestAggMode("02 01 01", [](AggModeResult result)
+	{
+		REQUIRE(result.result == ParseResult::OK);
+		REQUIRE(!result.isAggMode);		
+	});
+}
+
+TEST_CASE(SUITE("RejectsInsufficientData"))
+{
+	TestAggMode("78 03 07 01 FF FF FF FF FF", [](AggModeResult result)
+	{
+		REQUIRE(result.result == ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS);
+		REQUIRE(!result.isAggMode);		
 	});
 }
 

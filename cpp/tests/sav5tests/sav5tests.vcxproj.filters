@@ -11,30 +11,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\testlib\HexConversions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\testlib\BufferHelpers.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\testlib\CopyableBuffer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\testlib\MockLogHandler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\testlib\HexConversions.cpp">
+    <ClCompile Include="src\TestAggressiveModeHMACParsing.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\testlib\BufferHelpers.cpp">
+    <ClCompile Include="src\TestAggressiveModeParsing.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\testlib\CopyableBuffer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\testlib\MockLogHandler.cpp">
+    <ClCompile Include="src\CatchTestStart.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

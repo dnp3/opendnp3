@@ -23,7 +23,7 @@
 
 #include "TransportStackPair.h"
 #include "TestObjectASIO.h"
-#include "LogTester.h"
+#include <testlib/MockLogHandler.h>
 
 #include <opendnp3/LogLevels.h>
 #include <asiopal/ASIOExecutor.h>
@@ -54,7 +54,7 @@ public:
 
 	void SendToAll(const openpal::ReadBufferView& arBuffer);
 
-	LogTester log;
+	testlib::MockLogHandler log;
 	std::vector<TransportStackPair*> mPairs;
 };
 

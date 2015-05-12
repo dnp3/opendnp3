@@ -23,12 +23,10 @@
 
 #include <openpal/logging/LogRoot.h>
 
-#include <opendnp3/LogLevels.h>
-
 #include <string>
 #include <queue>
 
-namespace opendnp3
+namespace testlib
 {
 
 class LogRecord
@@ -45,11 +43,11 @@ class LogRecord
 	int				errorCode;
 };
 
-class LogTester : public openpal::ILogHandler
+class MockLogHandler : public openpal::ILogHandler
 {
 
 public:
-	LogTester(uint32_t filters = ~0);
+	MockLogHandler(uint32_t filters = ~0);
 
 	void WriteToStdIo();
 

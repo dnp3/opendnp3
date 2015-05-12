@@ -18,15 +18,15 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "LogTester.h"
+#include "MockLogHandler.h"
 
-#include <asiodnp3/ConsoleLogger.h>
+#include <openpal/logging/LogLevels.h>
 
 #include <iostream>
 
 using namespace openpal;
 
-namespace opendnp3
+namespace testlib
 {
 
 LogRecord::LogRecord() :
@@ -47,7 +47,7 @@ LogRecord::LogRecord(const LogEntry& entry) :
 
 }
 
-LogTester::LogTester(uint32_t filters) : 
+MockLogHandler::MockLogHandler(uint32_t filters) :
 	root(this, "test", filters), 
 	outputToStdIO(false),
 	logger(root.GetLogger())
@@ -56,17 +56,17 @@ LogTester::LogTester(uint32_t filters) :
 }
 
 
-void LogTester::Log( const LogEntry& entry )
+void MockLogHandler::Log(const LogEntry& entry)
 {
 	if (outputToStdIO)
 	{
-		asiodnp3::ConsoleLogger::Instance().Log(entry);
+		std::cout << entry.GetMessage() << std::endl;
 	}
 
 	messages.push_back(entry);
 }
 
-int32_t LogTester::PopFilter()
+int32_t MockLogHandler::PopFilter()
 {
 	if (messages.size() > 0)
 	{
@@ -80,7 +80,7 @@ int32_t LogTester::PopFilter()
 	}
 }
 
-bool LogTester::PopOneEntry(int32_t filter)
+bool MockLogHandler::PopOneEntry(int32_t filter)
 {
 	if (messages.size() == 1)
 	{
@@ -94,7 +94,7 @@ bool LogTester::PopOneEntry(int32_t filter)
 	else return false;
 }
 
-bool LogTester::PopErrorCode(int code)
+bool MockLogHandler::PopErrorCode(int code)
 {
 	while (!messages.empty())
 	{
@@ -109,7 +109,7 @@ bool LogTester::PopErrorCode(int code)
 	return false;
 }
 
-bool LogTester::PopUntil(int32_t filter)
+bool MockLogHandler::PopUntil(int32_t filter)
 {
 	while (!messages.empty())
 	{
@@ -124,7 +124,7 @@ bool LogTester::PopUntil(int32_t filter)
 	return false;
 }
 
-int LogTester::ClearLog()
+int MockLogHandler::ClearLog()
 {
 	int max = -1;
 	LogEntry le;
@@ -137,17 +137,17 @@ int LogTester::ClearLog()
 	return max;
 }
 
-void LogTester::Log(const std::string& location, const std::string& message)
+void MockLogHandler::Log(const std::string& location, const std::string& message)
 {
-	logger.Log(flags::EVENT, location.c_str(), message.c_str());
+	logger.Log(openpal::logflags::EVENT, location.c_str(), message.c_str());
 }
 
-void LogTester::WriteToStdIo()
+void MockLogHandler::WriteToStdIo()
 {
 	this->outputToStdIO = true;
 }
 
-int LogTester::NextErrorCode()
+int MockLogHandler::NextErrorCode()
 {
 	LogRecord rec;
 	while (!messages.empty())
@@ -162,7 +162,7 @@ int LogTester::NextErrorCode()
 	return -1;
 }
 
-bool LogTester::GetNextEntry(LogRecord& record)
+bool MockLogHandler::GetNextEntry(LogRecord& record)
 {
 	if (messages.empty()) return false;
 	else
@@ -173,7 +173,7 @@ bool LogTester::GetNextEntry(LogRecord& record)
 	}
 }
 
-void LogTester::Pop(openpal::ILogHandler& log)
+void MockLogHandler::Pop(openpal::ILogHandler& log)
 {
 	LogRecord record;
 	while (GetNextEntry(record))
@@ -183,12 +183,12 @@ void LogTester::Pop(openpal::ILogHandler& log)
 	}
 }
 
-openpal::Logger LogTester::GetLogger()
+openpal::Logger MockLogHandler::GetLogger()
 {
 	return root.GetLogger();
 }
 
-bool LogTester::IsLogErrorFree()
+bool MockLogHandler::IsLogErrorFree()
 {
 	return ClearLog() < 0;
 }

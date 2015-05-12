@@ -25,7 +25,7 @@
 
 #include "LowerLayerToPhysAdapter.h"
 #include "TestObjectASIO.h"
-#include "LogTester.h"
+#include <testlib/MockLogHandler.h>
 #include "MockUpperLayer.h"
 
 #include <opendnp3/LogLevels.h>
@@ -39,7 +39,7 @@ public:
 	SerialTestObject(asiopal::SerialSettings cfg, uint32_t filters = levels::NORMAL, bool aImmediate = false);
 	virtual ~SerialTestObject() {}
 
-	LogTester log;
+	testlib::MockLogHandler log;
 	asiopal::PhysicalLayerSerial mPort;
 	LowerLayerToPhysAdapter mAdapter;
 	MockUpperLayer mUpper;

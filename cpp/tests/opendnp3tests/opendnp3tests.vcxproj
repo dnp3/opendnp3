@@ -207,7 +207,6 @@
     <ClInclude Include="src\LinkLayerRouterTest.h" />
     <ClInclude Include="src\LinkLayerTest.h" />
     <ClInclude Include="src\LinkReceiverTest.h" />
-    <ClInclude Include="src\LogTester.h" />
     <ClInclude Include="src\LoopbackPhysicalLayer.h" />
     <ClInclude Include="src\LowerLayerToPhysAdapter.h" />
     <ClInclude Include="src\MeasurementComparisons.h" />
@@ -251,8 +250,6 @@
     <ClCompile Include="src\PhysBaseTest.cpp" />
     <ClCompile Include="src\PhysTestObject.cpp" />
     <ClCompile Include="src\SerialTestObject.cpp" />
-    <ClCompile Include="src\TestAggressiveModeHMACParsing.cpp" />
-    <ClCompile Include="src\TestAggressiveModeParsing.cpp" />
     <ClCompile Include="src\TestAuthRequestParser.cpp" />
     <ClCompile Include="src\TestCollectionTransform.cpp" />
     <ClCompile Include="src\TestGroup120Var2.cpp" />
@@ -269,7 +266,6 @@
     <ClCompile Include="src\DNPHelpers.cpp" />
     <ClCompile Include="src\LinkLayerRouterTest.cpp" />
     <ClCompile Include="src\LinkLayerTest.cpp" />
-    <ClCompile Include="src\LogTester.cpp" />
     <ClCompile Include="src\LoopbackPhysicalLayer.cpp" />
     <ClCompile Include="src\LowerLayerToPhysAdapter.cpp" />
     <ClCompile Include="src\MockExecutor.cpp" />

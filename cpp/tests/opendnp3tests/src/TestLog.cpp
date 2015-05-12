@@ -24,7 +24,7 @@
 
 #include <openpal/logging/LogMacros.h>
 
-#include "LogTester.h"
+#include <testlib/MockLogHandler.h>
 
 #include <iostream>
 #include <vector>
@@ -36,7 +36,7 @@ using namespace openpal;
 
 TEST_CASE(SUITE("LogErrorCounting"))
 {
-	LogTester log;
+	testlib::MockLogHandler log;
 	auto logger = log.GetLogger();
 	logger.Log( flags::EVENT, "location", "MessageMessage", 5 );
 

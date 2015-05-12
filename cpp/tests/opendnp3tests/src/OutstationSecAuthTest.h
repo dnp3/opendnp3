@@ -33,7 +33,7 @@
 #include <functional>
 
 #include "MockExecutor.h"
-#include "LogTester.h"
+#include <testlib/MockLogHandler.h>
 #include "MockCommandHandler.h"
 #include "MockLowerLayer.h"
 #include "MockOutstationApplication.h"
@@ -68,7 +68,7 @@ public:
 
 	uint32_t AdvanceTime(const openpal::TimeDuration& td);
 
-	LogTester log;
+	testlib::MockLogHandler log;
 	MockExecutor exe;
 	MockLowerLayer lower;	
 	MockCommandHandler cmdHandler;

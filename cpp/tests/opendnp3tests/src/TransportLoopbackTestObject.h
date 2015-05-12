@@ -22,7 +22,7 @@
 #define __TRANSPORT_LOOPBACK_TEST_OBJECT_H_
 
 #include "TestObjectASIO.h"
-#include "LogTester.h"
+#include <testlib/MockLogHandler.h>
 #include "MockUpperLayer.h"
 
 #include <opendnp3/LogLevels.h>

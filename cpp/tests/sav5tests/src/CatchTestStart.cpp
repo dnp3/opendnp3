@@ -18,32 +18,6 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __PHYS_BASE_TEST_H_
-#define __PHYS_BASE_TEST_H_
 
-#include "LowerLayerToPhysAdapter.h"
-#include "MockUpperLayer.h"
-#include "MockPhysicalLayer.h"
-#include "MockExecutor.h"
-
-#include <testlib/MockLogHandler.h>
-#include <opendnp3/LogLevels.h>
-
-namespace opendnp3
-{
-
-class PhysBaseTest
-{
-public:
-	PhysBaseTest(uint32_t filter = levels::NORMAL, bool aImmediate = false);
-
-	testlib::MockLogHandler log;
-	MockExecutor exe;
-	MockPhysicalLayer phys;
-	LowerLayerToPhysAdapter adapter;
-	MockUpperLayer upper;
-};
-
-}
-
-#endif
+#define CATCH_CONFIG_MAIN
+#include <catch.hpp>

@@ -22,7 +22,7 @@
 
 #include "ProtocolUtil.h"
 #include "TransportTestObject.h"
-#include "LogTester.h"
+#include <testlib/MockLogHandler.h>
 
 #include <asiodnp3/ConsoleLogger.h>
 
@@ -39,7 +39,7 @@ using namespace testlib;
 
 TEST_CASE(SUITE("RepeatSendsDoNotLogOrChangeStatistics"))
 {
-	LogTester log;
+	MockLogHandler log;
 	StackStatistics stats;
 	TransportTx transmitter(log.GetLogger(), &stats);
 	HexSequence hs("12 34 56");

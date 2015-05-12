@@ -38,9 +38,6 @@
     <ClInclude Include="src\LinkReceiverTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\LogTester.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\LowerLayerToPhysAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -197,9 +194,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\LinkLayerTest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LogTester.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\LowerLayerToPhysAdapter.cpp">
@@ -425,12 +419,6 @@
       <Filter>Source Files\Mocks</Filter>
     </ClCompile>
     <ClCompile Include="src\OutstationSecAuthTest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\TestAggressiveModeParsing.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\TestAggressiveModeHMACParsing.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\TestMeasurementHandler.cpp">

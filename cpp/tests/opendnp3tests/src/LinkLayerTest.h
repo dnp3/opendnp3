@@ -21,7 +21,7 @@
 #ifndef __LINK_LAYER_TEST_H_
 #define __LINK_LAYER_TEST_H_
 
-#include "LogTester.h"
+#include <testlib/MockLogHandler.h>
 #include "MockTransportLayer.h"
 #include "MockExecutor.h"
 
@@ -45,7 +45,7 @@ public:
 
 	static LinkConfig DefaultConfig();
 
-	LogTester log;
+	testlib::MockLogHandler log;
 	MockExecutor exe;
 	LinkLayer link;
 	MockTransportLayer upper;

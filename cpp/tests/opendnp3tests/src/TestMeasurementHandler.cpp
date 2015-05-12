@@ -24,7 +24,7 @@
 
 #include <testlib/BufferHelpers.h>
 
-#include "LogTester.h"
+#include <testlib/MockLogHandler.h>
 #include "MockSOEHandler.h"
 
 #include <functional>
@@ -115,7 +115,7 @@ TEST_CASE(SUITE("parses g122v2 correctly"))
 ParseResult TestObjectHeaders(const std::string& objects, ParseResult expectedResult, const std::function<void(MockSOEHandler&)>& verify)
 {
 	MockSOEHandler soe;
-	LogTester log;
+	testlib::MockLogHandler log;
 	auto logger = log.GetLogger();
 
 	HexSequence hex(objects);

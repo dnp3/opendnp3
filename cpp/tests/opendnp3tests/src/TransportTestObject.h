@@ -30,7 +30,7 @@
 #include "MockLinkLayer.h"
 #include "MockUpperLayer.h"
 #include "MockExecutor.h"
-#include "LogTester.h"
+#include <testlib/MockLogHandler.h>
 
 namespace opendnp3
 {
@@ -47,7 +47,7 @@ public:
 	// Get a Sequence of data w/ optional header
 	std::string GetData(const std::string& arHdr, uint8_t aSeed = 0, uint32_t aLength = MAX_TPDU_PAYLOAD);
 
-	LogTester log;
+	testlib::MockLogHandler log;
 	MockExecutor exe;
 	TransportLayer transport;
 	MockLinkLayer link;
