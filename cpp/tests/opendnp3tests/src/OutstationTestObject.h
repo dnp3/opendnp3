@@ -29,8 +29,9 @@
 
 #include <functional>
 
-#include "MockExecutor.h"
+#include <testlib/MockExecutor.h>
 #include <testlib/MockLogHandler.h>
+
 #include "MockCommandHandler.h"
 #include "MockLowerLayer.h"
 #include "MockOutstationApplication.h"
@@ -73,7 +74,7 @@ public:
 
 private:
 
-	MockExecutor exe;
+	testlib::MockExecutor exe;
 
 public:
 

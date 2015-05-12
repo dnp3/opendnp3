@@ -22,7 +22,8 @@
 #define __LINK_LAYER_ROUTER_TEST_H_
 
 #include <testlib/MockLogHandler.h>
-#include "MockExecutor.h"
+#include <testlib/MockExecutor.h>
+
 #include "MockPhysicalLayer.h"
 
 #include <asiodnp3/impl/LinkLayerRouter.h>
@@ -37,7 +38,7 @@ public:
 	LinkLayerRouterTest(uint32_t filters = levels::NORMAL);
 
 	testlib::MockLogHandler log;
-	MockExecutor exe;
+	testlib::MockExecutor exe;
 	MockPhysicalLayer phys;
 	asiodnp3::LinkLayerRouter router;
 };

@@ -24,8 +24,8 @@
 #include "LowerLayerToPhysAdapter.h"
 #include "MockUpperLayer.h"
 #include "MockPhysicalLayer.h"
-#include "MockExecutor.h"
 
+#include <testlib/MockExecutor.h>
 #include <testlib/MockLogHandler.h>
 #include <opendnp3/LogLevels.h>
 
@@ -38,7 +38,7 @@ public:
 	PhysBaseTest(uint32_t filter = levels::NORMAL, bool aImmediate = false);
 
 	testlib::MockLogHandler log;
-	MockExecutor exe;
+	testlib::MockExecutor exe;
 	MockPhysicalLayer phys;
 	LowerLayerToPhysAdapter adapter;
 	MockUpperLayer upper;

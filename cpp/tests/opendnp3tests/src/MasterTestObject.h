@@ -21,7 +21,7 @@
 #ifndef __MASTER_TEST_OBJECT_H_
 #define __MASTER_TEST_OBJECT_H_
 
-#include "MockExecutor.h"
+#include <testlib/MockExecutor.h>
 #include <testlib/MockLogHandler.h>
 
 #include <opendnp3/master/Master.h>
@@ -46,7 +46,7 @@ namespace opendnp3
 		void SendToMaster(const std::string& hex);		
 
 		testlib::MockLogHandler log;
-		MockExecutor exe;
+		testlib::MockExecutor exe;
 		MockSOEHandler meas;
 		MockLowerLayer lower;
 		MockMasterApplication application;

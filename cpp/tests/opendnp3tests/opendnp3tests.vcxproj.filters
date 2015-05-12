@@ -113,9 +113,6 @@
     <ClInclude Include="src\MockCommandHandler.h">
       <Filter>Header Files\Mocks</Filter>
     </ClInclude>
-    <ClInclude Include="src\MockExecutor.h">
-      <Filter>Header Files\Mocks</Filter>
-    </ClInclude>
     <ClInclude Include="src\MockFrameSink.h">
       <Filter>Header Files\Mocks</Filter>
     </ClInclude>
@@ -330,9 +327,6 @@
     </ClCompile>
     <ClCompile Include="src\OutstationTestObject.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\MockExecutor.cpp">
-      <Filter>Source Files\Mocks</Filter>
     </ClCompile>
     <ClCompile Include="src\MockFrameSink.cpp">
       <Filter>Source Files\Mocks</Filter>

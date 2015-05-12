@@ -28,7 +28,7 @@
 #include <limits>
 #include <stddef.h>
 
-namespace opendnp3
+namespace testlib
 {
 
 class MockTimer;

@@ -213,7 +213,6 @@
     <ClInclude Include="src\MockAPDUHeaderHandler.h" />
     <ClInclude Include="src\MockCommandCallback.h" />
     <ClInclude Include="src\MockCommandHandler.h" />
-    <ClInclude Include="src\MockExecutor.h" />
     <ClInclude Include="src\MockFrameSink.h" />
     <ClInclude Include="src\MockLinkLayer.h" />
     <ClInclude Include="src\MockLowerLayer.h" />
@@ -268,7 +267,6 @@
     <ClCompile Include="src\LinkLayerTest.cpp" />
     <ClCompile Include="src\LoopbackPhysicalLayer.cpp" />
     <ClCompile Include="src\LowerLayerToPhysAdapter.cpp" />
-    <ClCompile Include="src\MockExecutor.cpp" />
     <ClCompile Include="src\MockFrameSink.cpp" />
     <ClCompile Include="src\MockLowerLayer.cpp" />
     <ClCompile Include="src\MockPhysicalLayer.cpp" />

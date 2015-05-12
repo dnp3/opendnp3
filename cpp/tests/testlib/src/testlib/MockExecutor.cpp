@@ -25,7 +25,7 @@
 
 using namespace openpal;
 
-namespace opendnp3
+namespace testlib
 {
 
 MockExecutor::MockExecutor() :

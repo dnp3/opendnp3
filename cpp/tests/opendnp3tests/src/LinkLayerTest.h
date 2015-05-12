@@ -22,8 +22,9 @@
 #define __LINK_LAYER_TEST_H_
 
 #include <testlib/MockLogHandler.h>
+#include <testlib/MockExecutor.h>
+
 #include "MockTransportLayer.h"
-#include "MockExecutor.h"
 
 #include <opendnp3/link/LinkLayer.h>
 #include <opendnp3/link/ILinkRouter.h>
@@ -46,7 +47,7 @@ public:
 	static LinkConfig DefaultConfig();
 
 	testlib::MockLogHandler log;
-	MockExecutor exe;
+	testlib::MockExecutor exe;
 	LinkLayer link;
 	MockTransportLayer upper;
 

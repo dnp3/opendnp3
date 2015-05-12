@@ -23,6 +23,9 @@
     <ClInclude Include="src\testlib\MockLogHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\testlib\MockExecutor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\testlib\HexConversions.cpp">
@@ -35,6 +38,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\testlib\MockLogHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\testlib\MockExecutor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

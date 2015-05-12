@@ -22,12 +22,14 @@
     <ClInclude Include="src\testlib\BufferHelpers.h" />
     <ClInclude Include="src\testlib\CopyableBuffer.h" />
     <ClInclude Include="src\testlib\HexConversions.h" />
+    <ClInclude Include="src\testlib\MockExecutor.h" />
     <ClInclude Include="src\testlib\MockLogHandler.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\testlib\BufferHelpers.cpp" />
     <ClCompile Include="src\testlib\CopyableBuffer.cpp" />
     <ClCompile Include="src\testlib\HexConversions.cpp" />
+    <ClCompile Include="src\testlib\MockExecutor.cpp" />
     <ClCompile Include="src\testlib\MockLogHandler.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

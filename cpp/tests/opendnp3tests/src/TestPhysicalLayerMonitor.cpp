@@ -25,9 +25,9 @@
 
 #include <asiodnp3/impl/PhysicalLayerMonitor.h>
 
-#include "MockExecutor.h"
 #include "MockPhysicalLayer.h"
 
+#include <testlib/MockExecutor.h>
 #include <testlib/MockLogHandler.h>
 
 using namespace opendnp3;
@@ -92,7 +92,7 @@ public:
 	{}
 
 	testlib::MockLogHandler log;
-	MockExecutor exe;
+	testlib::MockExecutor exe;
 	MockPhysicalLayer phys;
 	ConcretePhysicalLayerMonitor monitor;
 };
