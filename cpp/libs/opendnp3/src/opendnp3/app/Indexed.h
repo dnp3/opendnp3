@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_INDEXEDVALUE_H
-#define OPENDNP3_INDEXEDVALUE_H
+#ifndef OPENDNP3_INDEXED_H
+#define OPENDNP3_INDEXED_H
 
 #include <cstdint>
 
@@ -29,11 +29,11 @@ namespace opendnp3
 /**
 * A simple tuple for pairing Values with an index
 */
-template <class ValueType>
+template <class T>
 class Indexed
 {
 public:
-	Indexed(const ValueType& value_, uint16_t index_) :
+	Indexed(const T& value_, uint16_t index_) :
 		value(value_),
 		index(index_)		
 	{}	
@@ -41,14 +41,14 @@ public:
 	Indexed(): value(), index(0)
 	{}
 
-	ValueType value;
+	T value;
 	uint16_t index;
 };
 
-template <class ValueType>
-Indexed<ValueType> WithIndex(const ValueType& value, uint16_t index)
+template <class T>
+Indexed<T> WithIndex(const T& value, uint16_t index)
 {
-	return Indexed<ValueType>(value, index);
+	return Indexed<T>(value, index);
 }
 
 }

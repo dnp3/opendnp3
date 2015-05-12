@@ -141,9 +141,6 @@
     <ClInclude Include="src\opendnp3\app\IINField.h">
       <Filter>Header\app</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\app\IndexedValue.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\app\ITransactable.h">
       <Filter>Header\app</Filter>
     </ClInclude>
@@ -902,6 +899,9 @@
     </ClInclude>
     <ClInclude Include="src\opendnp3\app\parsing\BufferedCollection.h">
       <Filter>Header\app\parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\app\Indexed.h">
+      <Filter>Header\app</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

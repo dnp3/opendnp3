@@ -32,7 +32,7 @@
 #include <opendnp3/app/parsing/APDUParser.h>
 #include <opendnp3/app/parsing/APDUHeaderParser.h>
 #include <opendnp3/app/ControlRelayOutputBlock.h>
-#include <opendnp3/app/IndexedValue.h>
+#include <opendnp3/app/Indexed.h>
 
 #include <asiodnp3/ConsoleLogger.h>
 

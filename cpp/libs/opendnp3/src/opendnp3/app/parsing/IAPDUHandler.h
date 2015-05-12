@@ -31,7 +31,7 @@
 #include "opendnp3/app/AnalogOutput.h"
 #include "opendnp3/app/BinaryCommandEvent.h"
 #include "opendnp3/app/AnalogCommandEvent.h"
-#include "opendnp3/app/IndexedValue.h"
+#include "opendnp3/app/Indexed.h"
 #include "opendnp3/app/OctetString.h"
 #include "opendnp3/app/Range.h"
 

@@ -75,6 +75,9 @@ private:
 
 	template <class Target, class IndexType>
 	IINField RespondToHeaderWithIterator(QualifierCode qualifier, const DNP3Serializer<Target>& serializer, const ICollection<Indexed<Target>>& values, PrefixedWriteIterator<IndexType, Target>* pIterator = nullptr);
+
+	template <class Target>
+	CommandStatus ProcessCommand(const Target& command, uint16_t index);
 };
 
 template <class T>
@@ -96,16 +99,12 @@ IINField CommandResponseHandler::RespondToHeaderWithIterator(QualifierCode quali
 {
 	IINField ret;
 
-	auto process = [this, pIterator, &ret](const Indexed<Target>& command)
-	{		
-		auto result = CommandStatus::TOO_MANY_OPS;
+	auto process = [this, pIterator, &ret](const Indexed<Target>& pair)
+	{				
+		Target response(pair.value);
+		response.status = this->ProcessCommand(pair.value, pair.index);
 
-		if (numRequests < maxCommands)
-		{
-			result = pCommandAction->Action(command.value, command.index);
-		}
-
-		switch (result)
+		switch (response.status)
 		{
 			case(CommandStatus::SUCCESS) :
 				++this->numSuccess;
@@ -116,16 +115,11 @@ IINField CommandResponseHandler::RespondToHeaderWithIterator(QualifierCode quali
 			default:
 				break;
 		}
-
-		Target response(command.value);
-		response.status = result;
-		
+				
 		if (pIterator)
 		{
-			pIterator->Write(response, command.index);
-		}		
-
-		++this->numRequests;
+			pIterator->Write(response, static_cast<typename IndexType::Type>(pair.index));
+		}				
 	};
 	
 	values.ForeachItem(process);
@@ -133,6 +127,19 @@ IINField CommandResponseHandler::RespondToHeaderWithIterator(QualifierCode quali
 	return ret;
 }
 
+template <class Target>
+CommandStatus CommandResponseHandler::ProcessCommand(const Target& command, uint16_t index)
+{	
+	if (numRequests < maxCommands)
+	{
+		++numRequests;
+		return pCommandAction->Action(command, index);
+	}
+	else
+	{
+		return CommandStatus::TOO_MANY_OPS;
+	}
+}
 
 template <class Target, class IndexType>
 IINField CommandResponseHandler::RespondToHeader(QualifierCode qualifier, const DNP3Serializer<Target>& serializer, const ICollection<Indexed<Target>>& values)

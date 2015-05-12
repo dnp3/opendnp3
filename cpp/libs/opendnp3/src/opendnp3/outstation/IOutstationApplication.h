@@ -28,7 +28,7 @@
 #include "opendnp3/gen/RestartMode.h"
 #include "opendnp3/gen/AssignClassType.h"
 
-#include "opendnp3/app/IndexedValue.h"
+#include "opendnp3/app/Indexed.h"
 #include "opendnp3/app/TimeAndInterval.h"
 
 #include "opendnp3/outstation/ApplicationIIN.h"

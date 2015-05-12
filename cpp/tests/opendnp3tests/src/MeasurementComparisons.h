@@ -22,7 +22,7 @@
 #define __MEASUREMENT_COMPARISONS_H_
 
 #include <opendnp3/outstation/Event.h>
-#include <opendnp3/app/IndexedValue.h>
+#include <opendnp3/app/Indexed.h>
 
 #include <opendnp3/app/MeasurementTypes.h>
 
