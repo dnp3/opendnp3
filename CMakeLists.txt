@@ -157,10 +157,14 @@ if(TESTS)
   target_link_libraries (testopenpal LINK_PUBLIC testlib pthread)
 
   # ----- opendnp3 tests -----
-
   file(GLOB_RECURSE opendnp3_TESTSRC ./cpp/tests/opendnp3tests/src/*.cpp)
   add_executable (testopendnp3 ${opendnp3_TESTSRC})
-  target_link_libraries (testopendnp3 LINK_PUBLIC asiodnp3 secauthv5 testlib pthread)
+  target_link_libraries (testopendnp3 LINK_PUBLIC asiodnp3 secauthv5 dnp3mocks pthread)
+
+  # ----- sav5 tests -----
+  file(GLOB_RECURSE sav5_TESTSRC ./cpp/tests/sav5tests/src/*.cpp)
+  add_executable (testsav5 ${sav5_TESTSRC})
+  target_link_libraries (testsav5 LINK_PUBLIC secauthv5 dnp3mocks)
 
   # ----- opensslcrypto tests -----
   if(OSSL)
