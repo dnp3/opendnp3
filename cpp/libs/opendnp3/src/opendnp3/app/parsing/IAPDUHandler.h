@@ -112,11 +112,11 @@ public:
 
 	// --- commmands ---
 
-	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<IndexedValue<ControlRelayOutputBlock, uint16_t>>& meas) = 0;
-	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<IndexedValue<AnalogOutputInt16, uint16_t>>& meas) = 0;
-	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<IndexedValue<AnalogOutputInt32, uint16_t>>& meas) = 0;
-	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<IndexedValue<AnalogOutputFloat32, uint16_t>>& meas) = 0;
-	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<IndexedValue<AnalogOutputDouble64, uint16_t>>& meas) = 0;
+	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<ControlRelayOutputBlock>>& meas) = 0;
+	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputInt16>>& meas) = 0;
+	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputInt32>>& meas) = 0;
+	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputFloat32>>& meas) = 0;
+	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputDouble64>>& meas) = 0;
 	
 };
 

@@ -43,23 +43,23 @@ public:
 
 private:
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<IndexedValue<ControlRelayOutputBlock, uint16_t>>& meas) override final;
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<IndexedValue<AnalogOutputInt16, uint16_t>>& meas) override final;
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<IndexedValue<AnalogOutputInt32, uint16_t>>& meas) override final;
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<IndexedValue<AnalogOutputFloat32, uint16_t>>& meas) override final;
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<IndexedValue<AnalogOutputDouble64, uint16_t>>& meas) override final;
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<ControlRelayOutputBlock>>& meas) override final;
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputInt16>>& meas) override final;
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputInt32>>& meas) override final;
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputFloat32>>& meas) override final;
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputDouble64>>& meas) override final;
 	
-	IINField ProcessIndexPrefixTwoByte(const HeaderRecord& record, const ICollection<IndexedValue<ControlRelayOutputBlock, uint16_t>>& meas);
-	IINField ProcessIndexPrefixTwoByte(const HeaderRecord& record, const ICollection<IndexedValue<AnalogOutputInt16, uint16_t>>& meas);
-	IINField ProcessIndexPrefixTwoByte(const HeaderRecord& record, const ICollection<IndexedValue<AnalogOutputInt32, uint16_t>>& meas);
-	IINField ProcessIndexPrefixTwoByte(const HeaderRecord& record, const ICollection<IndexedValue<AnalogOutputFloat32, uint16_t>>& meas);
-	IINField ProcessIndexPrefixTwoByte(const HeaderRecord& record, const ICollection<IndexedValue<AnalogOutputDouble64, uint16_t>>& meas);
+	IINField ProcessIndexPrefixTwoByte(const HeaderRecord& record, const ICollection<Indexed<ControlRelayOutputBlock>>& meas);
+	IINField ProcessIndexPrefixTwoByte(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputInt16>>& meas);
+	IINField ProcessIndexPrefixTwoByte(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputInt32>>& meas);
+	IINField ProcessIndexPrefixTwoByte(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputFloat32>>& meas);
+	IINField ProcessIndexPrefixTwoByte(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputDouble64>>& meas);
 
-	IINField ProcessIndexPrefixOneByte(const HeaderRecord& record, const ICollection<IndexedValue<ControlRelayOutputBlock, uint8_t>>& meas);
-	IINField ProcessIndexPrefixOneByte(const HeaderRecord& record, const ICollection<IndexedValue<AnalogOutputInt16, uint8_t>>& meas);
-	IINField ProcessIndexPrefixOneByte(const HeaderRecord& record, const ICollection<IndexedValue<AnalogOutputInt32, uint8_t>>& meas);
-	IINField ProcessIndexPrefixOneByte(const HeaderRecord& record, const ICollection<IndexedValue<AnalogOutputFloat32, uint8_t>>& meas);
-	IINField ProcessIndexPrefixOneByte(const HeaderRecord& record, const ICollection<IndexedValue<AnalogOutputDouble64, uint8_t>>& meas);
+	IINField ProcessIndexPrefixOneByte(const HeaderRecord& record, const ICollection<Indexed<ControlRelayOutputBlock>>& meas);
+	IINField ProcessIndexPrefixOneByte(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputInt16>>& meas);
+	IINField ProcessIndexPrefixOneByte(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputInt32>>& meas);
+	IINField ProcessIndexPrefixOneByte(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputFloat32>>& meas);
+	IINField ProcessIndexPrefixOneByte(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputDouble64>>& meas);
 
 	ICommandAction* pCommandAction;
 	uint32_t numRequests;
@@ -68,23 +68,21 @@ private:
 	HeaderWriter* pWriter;
 
 	template <class T>
-	IINField ProcessAny(const HeaderRecord& record, const ICollection<IndexedValue<T, uint16_t>>& meas);
+	IINField ProcessAny(const HeaderRecord& record, const ICollection<Indexed<T>>& meas);
 
 	template <class Target, class IndexType>
-	IINField RespondToHeader(QualifierCode qualifier, const DNP3Serializer<Target>& serializer, const ICollection<IndexedValue<Target, typename IndexType::Type>>& values);
+	IINField RespondToHeader(QualifierCode qualifier, const DNP3Serializer<Target>& serializer, const ICollection<Indexed<Target>>& values);
 
 	template <class Target, class IndexType>
-	IINField RespondToHeaderWithIterator(QualifierCode qualifier, const DNP3Serializer<Target>& serializer, const ICollection<IndexedValue<Target, typename IndexType::Type>>& values, PrefixedWriteIterator<IndexType, Target>* pIterator = nullptr);
+	IINField RespondToHeaderWithIterator(QualifierCode qualifier, const DNP3Serializer<Target>& serializer, const ICollection<Indexed<Target>>& values, PrefixedWriteIterator<IndexType, Target>* pIterator = nullptr);
 };
 
 template <class T>
-IINField CommandResponseHandler::ProcessAny(const HeaderRecord& record, const ICollection<IndexedValue<T, uint16_t>>& meas)
+IINField CommandResponseHandler::ProcessAny(const HeaderRecord& record, const ICollection<Indexed<T>>& meas)
 {
 	if (record.GetQualifierCode() == QualifierCode::UINT8_CNT_UINT8_INDEX)
-	{
-		auto narrow = [](const IndexedValue<T, uint16_t>& x) { return IndexedValue<T, uint8_t>(x.value, static_cast<uint8_t>(x.index)); };
-		auto transformed = Map<IndexedValue<T, uint16_t>, IndexedValue<T, uint8_t>>(meas, narrow);
-		return ProcessIndexPrefixOneByte(record, transformed);		
+	{		
+		return ProcessIndexPrefixOneByte(record, meas);		
 	}
 	else
 	{
@@ -94,11 +92,11 @@ IINField CommandResponseHandler::ProcessAny(const HeaderRecord& record, const IC
 
 
 template <class Target, class IndexType>
-IINField CommandResponseHandler::RespondToHeaderWithIterator(QualifierCode qualifier, const DNP3Serializer<Target>& serializer, const ICollection<IndexedValue<Target, typename IndexType::Type>>& values, PrefixedWriteIterator<IndexType, Target>* pIterator)
+IINField CommandResponseHandler::RespondToHeaderWithIterator(QualifierCode qualifier, const DNP3Serializer<Target>& serializer, const ICollection<Indexed<Target>>& values, PrefixedWriteIterator<IndexType, Target>* pIterator)
 {
 	IINField ret;
 
-	auto process = [this, pIterator, &ret](const IndexedValue<Target, typename IndexType::Type>& command)
+	auto process = [this, pIterator, &ret](const Indexed<Target>& command)
 	{		
 		auto result = CommandStatus::TOO_MANY_OPS;
 
@@ -137,7 +135,7 @@ IINField CommandResponseHandler::RespondToHeaderWithIterator(QualifierCode quali
 
 
 template <class Target, class IndexType>
-IINField CommandResponseHandler::RespondToHeader(QualifierCode qualifier, const DNP3Serializer<Target>& serializer, const ICollection<IndexedValue<Target, typename IndexType::Type>>& values)
+IINField CommandResponseHandler::RespondToHeader(QualifierCode qualifier, const DNP3Serializer<Target>& serializer, const ICollection<Indexed<Target>>& values)
 {
 	if (pWriter)
 	{

@@ -154,45 +154,45 @@ public:
 
 	/// --- controls ----
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<IndexedValue<ControlRelayOutputBlock, uint16_t>>& meas) override final
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<ControlRelayOutputBlock>>& meas) override final
 	{				
-		meas.ForeachItem([&](const IndexedValue<ControlRelayOutputBlock, uint16_t>& v)
+		meas.ForeachItem([&](const Indexed<ControlRelayOutputBlock>& v)
 		{
 			crobRequests.push_back(v);
 		});
 		return IINField::Empty();
 	}
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<IndexedValue<AnalogOutputInt16, uint16_t>>& meas) override final
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputInt16>>& meas) override final
 	{				
-		meas.ForeachItem([&](const IndexedValue<AnalogOutputInt16, uint16_t>& v)
+		meas.ForeachItem([&](const Indexed<AnalogOutputInt16>& v)
 		{
 			aoInt16Requests.push_back(v);
 		});
 		return IINField::Empty();
 	}
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<IndexedValue<AnalogOutputInt32, uint16_t>>& meas) override final
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputInt32>>& meas) override final
 	{				
-		meas.ForeachItem([&](const IndexedValue<AnalogOutputInt32, uint16_t>& v)
+		meas.ForeachItem([&](const Indexed<AnalogOutputInt32>& v)
 		{
 			aoInt32Requests.push_back(v);
 		});
 		return IINField::Empty();
 	}
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<IndexedValue<AnalogOutputFloat32, uint16_t>>& meas) override final
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputFloat32>>& meas) override final
 	{				
-		meas.ForeachItem([&](const IndexedValue<AnalogOutputFloat32, uint16_t>& v)
+		meas.ForeachItem([&](const Indexed<AnalogOutputFloat32>& v)
 		{
 			aoFloat32Requests.push_back(v);
 		});
 		return IINField::Empty();
 	}
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<IndexedValue<AnalogOutputDouble64, uint16_t>>& meas) override final
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputDouble64>>& meas) override final
 	{				
-		meas.ForeachItem([&](const IndexedValue<AnalogOutputDouble64, uint16_t>& v)
+		meas.ForeachItem([&](const Indexed<AnalogOutputDouble64>& v)
 		{
 			aoDouble64Requests.push_back(v);
 		});
@@ -231,40 +231,40 @@ public:
 	std::vector<Group120Var5> authKeyStatusResponses;
 	std::vector<Group120Var6> authChanges;
 
-	std::vector<IndexedValue<IINValue, uint16_t>> iinBits;
+	std::vector<Indexed<IINValue>> iinBits;
 
-	std::vector<IndexedValue<Binary, uint16_t>> eventBinaries;
-	std::vector<IndexedValue<Binary, uint16_t>> staticBinaries;
+	std::vector<Indexed<Binary>> eventBinaries;
+	std::vector<Indexed<Binary>> staticBinaries;
 
-	std::vector<IndexedValue<DoubleBitBinary, uint16_t>> eventDoubleBinaries;
-	std::vector<IndexedValue<DoubleBitBinary, uint16_t>> staticDoubleBinaries;
+	std::vector<Indexed<DoubleBitBinary>> eventDoubleBinaries;
+	std::vector<Indexed<DoubleBitBinary>> staticDoubleBinaries;
 
-	std::vector<IndexedValue<BinaryOutputStatus, uint16_t>> staticControlStatii;
+	std::vector<Indexed<BinaryOutputStatus>> staticControlStatii;
 
-	std::vector<IndexedValue<Counter, uint16_t>> eventCounters;
-	std::vector<IndexedValue<Counter, uint16_t>> staticCounters;
+	std::vector<Indexed<Counter>> eventCounters;
+	std::vector<Indexed<Counter>> staticCounters;
 
-	std::vector<IndexedValue<FrozenCounter, uint16_t>> eventFrozenCounters;
-	std::vector<IndexedValue<FrozenCounter, uint16_t>> staticFrozenCounters;
+	std::vector<Indexed<FrozenCounter>> eventFrozenCounters;
+	std::vector<Indexed<FrozenCounter>> staticFrozenCounters;
 
-	std::vector<IndexedValue<Analog, uint16_t>> eventAnalogs;
-	std::vector<IndexedValue<Analog, uint16_t>> staticAnalogs;
+	std::vector<Indexed<Analog>> eventAnalogs;
+	std::vector<Indexed<Analog>> staticAnalogs;
 
-	std::vector<IndexedValue<AnalogOutputStatus, uint16_t>> staticSetpointStatii;
+	std::vector<Indexed<AnalogOutputStatus>> staticSetpointStatii;
 
-	std::vector<IndexedValue<ControlRelayOutputBlock, uint16_t>> crobRequests;
+	std::vector<Indexed<ControlRelayOutputBlock>> crobRequests;
 
-	std::vector<IndexedValue<AnalogOutputInt16, uint16_t>> aoInt16Requests;
-	std::vector<IndexedValue<AnalogOutputInt32, uint16_t>> aoInt32Requests;
-	std::vector<IndexedValue<AnalogOutputFloat32, uint16_t>> aoFloat32Requests;
-	std::vector<IndexedValue<AnalogOutputDouble64, uint16_t>> aoDouble64Requests;
+	std::vector<Indexed<AnalogOutputInt16>> aoInt16Requests;
+	std::vector<Indexed<AnalogOutputInt32>> aoInt32Requests;
+	std::vector<Indexed<AnalogOutputFloat32>> aoFloat32Requests;
+	std::vector<Indexed<AnalogOutputDouble64>> aoDouble64Requests;
 
-	std::vector<IndexedValue<OctetString, uint16_t>> indexPrefixedOctets;
-	std::vector<IndexedValue<OctetString, uint16_t>> rangedOctets;
+	std::vector<Indexed<OctetString>> indexPrefixedOctets;
+	std::vector<Indexed<OctetString>> rangedOctets;
 
-	std::vector<IndexedValue<BinaryCommandEvent, uint16_t>> binaryCommandEvents;
+	std::vector<Indexed<BinaryCommandEvent>> binaryCommandEvents;
 
-	std::vector<IndexedValue<AnalogCommandEvent, uint16_t>> analogCommandEvents;
+	std::vector<Indexed<AnalogCommandEvent>> analogCommandEvents;
 };
 
 }

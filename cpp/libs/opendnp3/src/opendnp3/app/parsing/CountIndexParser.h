@@ -119,10 +119,10 @@ void CountIndexParser::InvokeCountOfCollection(const HeaderRecord& record, uint1
 		auto index = numparser.ReadNum(buffer);
 		typename Descriptor::Target target;
 		Descriptor::ReadTarget(buffer, target);
-		return IndexedValue<typename Descriptor::Target, uint16_t>(target, index);
+		return WithIndex(target, index);
 	};		
 
-	auto collection = CreateBufferedCollection<IndexedValue<typename Descriptor::Target, uint16_t>>(buffer, count, reader);
+	auto collection = CreateBufferedCollection<Indexed<typename Descriptor::Target>>(buffer, count, reader);
 	handler.OnIndexPrefix(record, collection);
 }
 

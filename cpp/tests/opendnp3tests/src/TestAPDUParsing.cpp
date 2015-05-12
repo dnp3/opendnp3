@@ -150,15 +150,15 @@ TEST_CASE(SUITE("Group1Var2Range"))
 	{
 		REQUIRE(3 ==  mock.staticBinaries.size());
 		{
-			IndexedValue<Binary, uint16_t> value(Binary(true), 3);
+			Indexed<Binary> value(Binary(true), 3);
 			REQUIRE((value == mock.staticBinaries[0]));
 		}
 		{
-			IndexedValue<Binary, uint16_t> value(Binary(false), 4);
+			Indexed<Binary> value(Binary(false), 4);
 			REQUIRE((value == mock.staticBinaries[1]));
 		}
 		{
-			IndexedValue<Binary, uint16_t> value(Binary(true), 5);
+			Indexed<Binary> value(Binary(true), 5);
 			REQUIRE((value == mock.staticBinaries[2]));
 		}
 	});
@@ -196,15 +196,15 @@ TEST_CASE(SUITE("Group1Var2Range1to3"))
 	{
 		REQUIRE(3 ==  mock.staticBinaries.size());
 		{
-			IndexedValue<Binary, uint16_t> value(Binary(true), 1);
+			Indexed<Binary> value(Binary(true), 1);
 			REQUIRE((value == mock.staticBinaries[0]));
 		}
 		{
-			IndexedValue<Binary, uint16_t> value(Binary(false), 2);
+			Indexed<Binary> value(Binary(false), 2);
 			REQUIRE((value == mock.staticBinaries[1]));
 		}
 		{
-			IndexedValue<Binary, uint16_t> value(Binary(true), 3);
+			Indexed<Binary> value(Binary(true), 3);
 			REQUIRE((value == mock.staticBinaries[2]));
 		}
 	});
@@ -216,7 +216,7 @@ TEST_CASE(SUITE("Group1Var2Range16"))
 	TestComplex("01 02 01 03 00 03 00 81", ParseResult::OK, 1, [](MockApduHeaderHandler & mock)
 	{
 		REQUIRE(1 ==  mock.staticBinaries.size());
-		IndexedValue<Binary, uint16_t> value(Binary(true), 3);
+		Indexed<Binary> value(Binary(true), 3);
 		REQUIRE((value == mock.staticBinaries[0]));
 	});
 }
@@ -227,11 +227,11 @@ TEST_CASE(SUITE("Group1Var2AllCountQualifiers"))
 	{
 		REQUIRE(2 ==  mock.staticBinaries.size());
 		{
-			IndexedValue<Binary, uint16_t> value(Binary(true), 0);
+			Indexed<Binary> value(Binary(true), 0);
 			REQUIRE((value == mock.staticBinaries[0]));
 		}
 		{
-			IndexedValue<Binary, uint16_t> value(Binary(false), 1);
+			Indexed<Binary> value(Binary(false), 1);
 			REQUIRE((value == mock.staticBinaries[1]));
 		}
 	};
@@ -276,7 +276,7 @@ TEST_CASE(SUITE("Group2Var1CountWithAllIndexSizes"))
 	auto validator = [](MockApduHeaderHandler & mock)
 	{
 		REQUIRE(1 ==  mock.eventBinaries.size());
-		IndexedValue<Binary, uint16_t> value(Binary(true), 9);
+		Indexed<Binary> value(Binary(true), 9);
 		REQUIRE((value == mock.eventBinaries[0]));
 	};
 
@@ -292,19 +292,19 @@ TEST_CASE(SUITE("Group1Var1ByRange"))
 	{
 		REQUIRE(4 ==  mock.staticBinaries.size());
 		{
-			IndexedValue<Binary, uint16_t> value(Binary(true), 3);
+			Indexed<Binary> value(Binary(true), 3);
 			REQUIRE((value == mock.staticBinaries[0]));
 		}
 		{
-			IndexedValue<Binary, uint16_t> value(Binary(false), 4);
+			Indexed<Binary> value(Binary(false), 4);
 			REQUIRE((value == mock.staticBinaries[1]));
 		}
 		{
-			IndexedValue<Binary, uint16_t> value(Binary(false), 5);
+			Indexed<Binary> value(Binary(false), 5);
 			REQUIRE((value == mock.staticBinaries[2]));
 		}
 		{
-			IndexedValue<Binary, uint16_t> value(Binary(true), 6);
+			Indexed<Binary> value(Binary(true), 6);
 			REQUIRE((value == mock.staticBinaries[3]));
 		}
 	});
@@ -318,7 +318,7 @@ TEST_CASE(SUITE("Group12Var1WithIndexSizesLatchOn"))
 	{
 		REQUIRE(1 ==  mock.crobRequests.size());
 		ControlRelayOutputBlock crob(ControlCode::LATCH_ON, 1, 100, 200);
-		IndexedValue<ControlRelayOutputBlock, uint16_t> value(crob, 9);
+		Indexed<ControlRelayOutputBlock> value(crob, 9);
 		REQUIRE((value == mock.crobRequests[0]));
 
 		REQUIRE(1 == mock.records.size());
@@ -336,7 +336,7 @@ TEST_CASE(SUITE("Group12Var1WithIndexSizesLatchOff"))
 	{
 		REQUIRE(1 == mock.crobRequests.size());
 		ControlRelayOutputBlock crob(ControlCode::LATCH_OFF, 1, 100, 200);
-		IndexedValue<ControlRelayOutputBlock, uint16_t> value(crob, 9);
+		Indexed<ControlRelayOutputBlock> value(crob, 9);
 		REQUIRE((value == mock.crobRequests[0]));
 
 		REQUIRE(1 == mock.records.size());
@@ -350,9 +350,8 @@ TEST_CASE(SUITE("TestIINValue"))
 {
 	TestComplex("50 01 00 07 07 00", ParseResult::OK, 1, [&](MockApduHeaderHandler & mock)
 	{
-		REQUIRE(1 ==  mock.iinBits.size());
-		IndexedValue<IINValue, uint16_t> value(false, 7);
-		REQUIRE((value.value.value == mock.iinBits[0].value.value));
+		REQUIRE(1 ==  mock.iinBits.size());		
+		REQUIRE_FALSE(mock.iinBits[0].value.value);
 	});
 }
 
@@ -375,8 +374,8 @@ TEST_CASE(SUITE("TestDoubleBitCTO"))
 		REQUIRE(2 == mock.records.size());
 		REQUIRE(2 ==  mock.eventDoubleBinaries.size());
 
-		IndexedValue<DoubleBitBinary, uint16_t> event1(DoubleBitBinary(DoubleBit::INDETERMINATE, 0x01, DNPTime(7)), 3);
-		IndexedValue<DoubleBitBinary, uint16_t> event2(DoubleBitBinary(DoubleBit::DETERMINED_OFF, 0x01, DNPTime(9)), 5);
+		Indexed<DoubleBitBinary> event1(DoubleBitBinary(DoubleBit::INDETERMINATE, 0x01, DNPTime(7)), 3);
+		Indexed<DoubleBitBinary> event2(DoubleBitBinary(DoubleBit::DETERMINED_OFF, 0x01, DNPTime(9)), 5);
 
 		REQUIRE((event1 == mock.eventDoubleBinaries[0]));
 		REQUIRE((event2 == mock.eventDoubleBinaries[1]));
@@ -417,7 +416,7 @@ TEST_CASE(SUITE("Group13Var1CountWithAllIndexSizes"))
 	auto validator = [](MockApduHeaderHandler & mock)
 	{
 		REQUIRE(1 == mock.binaryCommandEvents.size());
-		IndexedValue<BinaryCommandEvent, uint16_t> value(BinaryCommandEvent(true, CommandStatus::TIMEOUT), 9);
+		Indexed<BinaryCommandEvent> value(BinaryCommandEvent(true, CommandStatus::TIMEOUT), 9);
 		REQUIRE((value == mock.binaryCommandEvents[0]));
 	};
 
@@ -431,7 +430,7 @@ TEST_CASE(SUITE("Group13Var2CountWithAllIndexSizes"))
 	auto validator = [](MockApduHeaderHandler & mock)
 	{
 		REQUIRE(1 == mock.binaryCommandEvents.size());
-		IndexedValue<BinaryCommandEvent, uint16_t> value(BinaryCommandEvent(true, CommandStatus::TIMEOUT, DNPTime(1419802341000)), 9);
+		Indexed<BinaryCommandEvent> value(BinaryCommandEvent(true, CommandStatus::TIMEOUT, DNPTime(1419802341000)), 9);
 		REQUIRE((value == mock.binaryCommandEvents[0]));
 	};
 
@@ -445,7 +444,7 @@ TEST_CASE(SUITE("Group43Var1CountWithAllIndexSizes"))
 	auto validator = [](MockApduHeaderHandler & mock)
 	{
 		REQUIRE(1 == mock.analogCommandEvents.size());
-		IndexedValue<AnalogCommandEvent, uint16_t> value(AnalogCommandEvent(50, CommandStatus::TIMEOUT), 9);
+		Indexed<AnalogCommandEvent> value(AnalogCommandEvent(50, CommandStatus::TIMEOUT), 9);
 		REQUIRE((value == mock.analogCommandEvents[0]));
 	};
 
@@ -459,7 +458,7 @@ TEST_CASE(SUITE("Group43Var3CountWithAllIndexSizes"))
 	auto validator = [](MockApduHeaderHandler & mock)
 	{
 		REQUIRE(1 == mock.analogCommandEvents.size());
-		IndexedValue<AnalogCommandEvent, uint16_t> value(AnalogCommandEvent(50, CommandStatus::TIMEOUT, DNPTime(1419802341000)), 9);
+		Indexed<AnalogCommandEvent> value(AnalogCommandEvent(50, CommandStatus::TIMEOUT, DNPTime(1419802341000)), 9);
 		REQUIRE((value == mock.analogCommandEvents[0]));
 	};
 

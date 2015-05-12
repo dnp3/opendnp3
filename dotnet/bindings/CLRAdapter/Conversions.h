@@ -128,7 +128,7 @@ namespace Automatak
 
 
 				template <class Target, class Source>
-				static IndexedValue<Target^>^ ConvertIndexValue(const opendnp3::IndexedValue<Source, uint16_t>& pair)
+				static IndexedValue<Target^>^ ConvertIndexValue(const opendnp3::Indexed<Source>& pair)
 				{
 					return gcnew IndexedValue<Target^>(ConvertMeas(pair.value), pair.index);
 				}

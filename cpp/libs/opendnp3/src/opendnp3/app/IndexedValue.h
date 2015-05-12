@@ -29,26 +29,26 @@ namespace opendnp3
 /**
 * A simple tuple for pairing Values with an index
 */
-template <class ValueType, class IndexType>
-class IndexedValue
+template <class ValueType>
+class Indexed
 {
 public:
-	IndexedValue(const ValueType& value_, IndexType index_) :
+	Indexed(const ValueType& value_, uint16_t index_) :
 		value(value_),
 		index(index_)		
 	{}	
 
-	IndexedValue(): value(), index(0)
+	Indexed(): value(), index(0)
 	{}
 
 	ValueType value;
-	IndexType index;
+	uint16_t index;
 };
 
-template <class ValueType, class IndexType>
-IndexedValue<ValueType, IndexType> WithIndex(const ValueType& value, IndexType index)
+template <class ValueType>
+Indexed<ValueType> WithIndex(const ValueType& value, uint16_t index)
 {
-	return IndexedValue<ValueType, IndexType>(value, index);
+	return Indexed<ValueType>(value, index);
 }
 
 }

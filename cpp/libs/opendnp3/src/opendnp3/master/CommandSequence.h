@@ -55,9 +55,9 @@ public:
 		response(CommandResponse(TaskCompletion::FAILURE_BAD_RESPONSE))
 	{}	
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord&, const ICollection<IndexedValue<CommandType, uint16_t>>& meas) override final
+	virtual IINField ProcessIndexPrefix(const HeaderRecord&, const ICollection<Indexed<CommandType>>& meas) override final
 	{
-		IndexedValue<CommandType, uint16_t> received;
+		Indexed<CommandType> received;
 		if (this->IsFirstHeader() && meas.ReadOnlyValue(received))
 		{			
 			if(received.index == command.index && received.value.ValuesEqual(command.value))
@@ -101,7 +101,7 @@ public:
 
 private:
 	DNP3Serializer<CommandType> serializer;
-	IndexedValue<CommandType, uint16_t> command;
+	Indexed<CommandType> command;
 	CommandResponse response;	
 };
 

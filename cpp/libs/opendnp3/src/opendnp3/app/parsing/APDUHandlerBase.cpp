@@ -229,27 +229,27 @@ void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, uint32_t count, 
 
 // --- controls ----
 
-void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const ICollection<IndexedValue<ControlRelayOutputBlock, uint16_t>>& values)
+void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<ControlRelayOutputBlock>>& values)
 {		
 	Record(record, ProcessIndexPrefix(record, values));
 }
 
-void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const ICollection<IndexedValue<AnalogOutputInt16, uint16_t>>& values)
+void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputInt16>>& values)
 {
 	Record(record, ProcessIndexPrefix(record, values));
 }
 
-void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const ICollection<IndexedValue<AnalogOutputInt32, uint16_t>>& values)
+void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputInt32>>& values)
 {
 	Record(record, ProcessIndexPrefix(record, values));
 }
 
-void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const ICollection<IndexedValue<AnalogOutputFloat32, uint16_t>>& values)
+void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputFloat32>>& values)
 {
 	Record(record, ProcessIndexPrefix(record, values));
 }
 
-void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const ICollection<IndexedValue<AnalogOutputDouble64, uint16_t>>& values)
+void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputDouble64>>& values)
 {
 	Record(record, ProcessIndexPrefix(record, values));
 }
@@ -442,27 +442,27 @@ IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, uint32_
 
 //// --- controls ----
 
-IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<IndexedValue<ControlRelayOutputBlock, uint16_t>>& values)
+IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<ControlRelayOutputBlock>>& values)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<IndexedValue<AnalogOutputInt16, uint16_t>>& values)
+IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputInt16>>& values)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<IndexedValue<AnalogOutputInt32, uint16_t>>& values)
+IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputInt32>>& values)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<IndexedValue<AnalogOutputFloat32, uint16_t>>& values)
+IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputFloat32>>& values)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<IndexedValue<AnalogOutputDouble64, uint16_t>>& values)
+IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputDouble64>>& values)
 {
 	return ProcessUnsupportedHeader();
 }

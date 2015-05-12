@@ -84,20 +84,7 @@ private:
 	IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const BinaryCommandEvent& meas, uint16_t index) override final;
 	IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const AnalogCommandEvent& meas, uint16_t index) override final;
 	IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const Group122Var1& meas, uint16_t index) override final;
-	IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const Group122Var2& meas, uint16_t index) override final;
-
-	template <class T>
-	IINField LoadAny(const HeaderRecord& record, TimestampMode tsmode, const ICollection<IndexedValue<T, uint16_t>>& meas)
-	{		
-		this->CheckForTxStart();
-		HeaderInfo info(record.enumeration, record.GetQualifierCode(), tsmode, record.headerCount);
-		auto iterate = [info, this](const IndexedValue<T, uint16_t>& pair) 
-		{
-			this->pSOEHandler->OnValue(info, pair.value, pair.index);			
-		};
-		meas.foreach(iterate);		
-		return IINField();
-	}
+	IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const Group122Var2& meas, uint16_t index) override final;	
 
 	template <class T>
 	IINField LoadSingleValue(const HeaderRecord& record, TimestampMode tsmode, const T& meas, uint16_t index)

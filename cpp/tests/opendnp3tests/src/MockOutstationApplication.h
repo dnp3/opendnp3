@@ -123,7 +123,7 @@ public:
 
 	std::deque<openpal::UTCTimestamp> timestamps;
 	std::deque<std::tuple<AssignClassType, PointClass, uint16_t, uint16_t>> classAssignments;
-	std::deque<IndexedValue<TimeAndInterval, uint16_t>> timeAndIntervals;
+	std::deque<Indexed<TimeAndInterval>> timeAndIntervals;
 
 };
 
