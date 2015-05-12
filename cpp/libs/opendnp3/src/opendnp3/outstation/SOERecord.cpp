@@ -67,7 +67,7 @@ void SOERecord::SelectDefault()
 			break;
 		case(EventType::AnalogOutputStatus) :
 			value.analogOutputStatus.SelectDefaultVariation();
-			break;
+			break;		
 	}
 }
 

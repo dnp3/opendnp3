@@ -71,7 +71,7 @@ object Group120Var8 extends AuthVariableSize(Group120, 8, "User Certificate",
   Some(certificate)
 )
 
-object Group120Var9 extends AuthVariableSize(Group120, 9, "HMAC", Nil, Nil, Some(hmac))
+object Group120Var9 extends RemainderOnly(Group120, 9, "HMAC", hmac)
 
 object Group120Var10 extends AuthVariableSize(Group120, 10, "User Status Change",
   List(keyChangeMethod, userOperation, scsq, userRole, userRoleExpDays),
@@ -97,7 +97,7 @@ object Group120Var13 extends AuthVariableSize(Group120, 13, "Update Key Change",
   None
 )
 
-object Group120Var14 extends AuthVariableSize(Group120, 14, "Update Key Change Signature", Nil, Nil, Some(signature))
+object Group120Var14 extends RemainderOnly(Group120, 14, "Update Key Change Signature", signature)
 
 
-object Group120Var15 extends AuthVariableSize(Group120, 15, "Update Key Change Confirmation", Nil, Nil, Some(hmac))
+object Group120Var15 extends RemainderOnly(Group120, 15, "Update Key Change Confirmation", hmac)

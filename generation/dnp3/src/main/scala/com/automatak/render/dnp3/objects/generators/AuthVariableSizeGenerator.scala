@@ -162,12 +162,16 @@ object AuthVariableSizeGenerator {
         Iterator("return true;")
       }
 
-      def simpleRead = readSignature ++ bracket {
-        Iterator("this->%s = buffer; // the object is just the remainder field".format(x.remainder.get.name)) ++
+      def simpleRead(remainder: VariableField) = readSignature ++ bracket {
+        Iterator("this->%s = buffer; // the object is just the remainder field".format(remainder.name)) ++
         Iterator("return true;")
       }
 
-      if(x.minimumSize > 0) fullRead else simpleRead
+      x match {
+        case r : RemainderOnly => simpleRead(r.remainderValue)
+        case _ => fullRead
+      }
+
     }
 
     def writeFunction: Iterator[String] = {

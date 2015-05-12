@@ -78,6 +78,10 @@ class AuthVariableSize( g: ObjectGroup,
 
 }
 
+class RemainderOnly( g: ObjectGroup,  v: Byte, description: String, remainder: VariableField) extends AuthVariableSize(g, v, description, Nil, Nil, Some(remainder)) {
+  def remainderValue : VariableField = remainder
+}
+
 class FixedSize(g: ObjectGroup, v: Byte, description: String)(fs: FixedSizeField*) extends BasicGroupVariation(g,v, description) {
 
   override def headerIncludes = super.headerIncludes ++ GroupVariationIncludes.headerReadWrite
