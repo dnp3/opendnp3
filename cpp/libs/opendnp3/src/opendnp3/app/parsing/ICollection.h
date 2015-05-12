@@ -79,7 +79,7 @@ public:
 		visit all of the elements of a collection
 	*/
 	template <class Fun>
-	void ForeachItem(Fun& fun) const
+	void ForeachItem(const Fun& fun) const
 	{
 		FunctorVisitor<T, Fun> visitor(fun);
 		this->Foreach(visitor);
