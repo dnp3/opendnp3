@@ -21,8 +21,6 @@
 #ifndef OPENDNP3_ICOLLECTION_H
 #define OPENDNP3_ICOLLECTION_H
 
-#include <openpal/util/Uncopyable.h>
-
 namespace opendnp3
 {
 
@@ -63,7 +61,7 @@ private:
 	The user can only read these values via callback to receive each element.
 */
 template <class T>
-class ICollection : private openpal::Uncopyable
+class ICollection
 {
 public:
 
