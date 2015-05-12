@@ -55,6 +55,7 @@ include_directories(./cpp/libs/opendnp3/src)
 include_directories(./cpp/libs/asiopal/src)
 include_directories(./cpp/libs/asiodnp3/src)
 include_directories(./cpp/tests/testlib/src)
+include_directories(./cpp/tests/dnp3mocks/src)
 include_directories(./cpp/tests/catch)
 include_directories(./cpp/libs/osslcrypto/src)
 
@@ -105,24 +106,6 @@ target_link_libraries(secauthv5 opendnp3)
 install(TARGETS secauthv5 DESTINATION lib)
 install(DIRECTORY ./cpp/libs/secauthv5/src/secauthv5/ DESTINATION include/secauthv5 ${INSTALL_ARGS})
 
-# ---- osslcrypto library ----
-if(OSSL)
-  file(GLOB_RECURSE osslcrypto_SRC ./cpp/libs/osslcrypto/src/osslcrypto/*.cpp)
-  add_library(osslcrypto ${LIB_TYPE} ${osslcrypto_SRC})
-  target_link_libraries(osslcrypto openpal)
-  target_link_libraries(osslcrypto crypto)
-  target_link_libraries(osslcrypto pthread)
-  install(TARGETS osslcrypto DESTINATION lib)
-  install(DIRECTORY ./cpp/libs/osslcrypto/src/osslcrypto/ DESTINATION include/osslcrypto ${INSTALL_ARGS})
-endif()
-
-# ---- testlib library ----
-if(TESTS)
-  file(GLOB_RECURSE testlib_SRC ./cpp/tests/testlib/src/testlib/*.cpp)
-  add_library(testlib ${testlib_SRC})
-  target_link_libraries(testlib openpal)
-endif()
-
 if(DEMOS)
 
   # ----- master demo executable -----
@@ -136,12 +119,37 @@ if(DEMOS)
 endif()
 
 if(OSSL)
+
+  # ---- osslcrypto library ----
+  file(GLOB_RECURSE osslcrypto_SRC ./cpp/libs/osslcrypto/src/osslcrypto/*.cpp)
+  add_library(osslcrypto ${LIB_TYPE} ${osslcrypto_SRC})
+  target_link_libraries(osslcrypto openpal)
+  target_link_libraries(osslcrypto crypto)
+  target_link_libraries(osslcrypto pthread)
+  install(TARGETS osslcrypto DESTINATION lib)
+  install(DIRECTORY ./cpp/libs/osslcrypto/src/osslcrypto/ DESTINATION include/osslcrypto ${INSTALL_ARGS})
+
+  if(DEMOS)
+
   # ----- outstation SAv5 demo executable -----
   add_executable (outstationdemoSAv5 ./cpp/examples/sav5/outstation/DemoMain.cpp)
   target_link_libraries (outstationdemoSAv5 LINK_PUBLIC asiodnp3 secauthv5 osslcrypto)
+
+  endif()
+
 endif()
 
 if(TESTS)
+
+  # ----- testlib library ------
+  file(GLOB_RECURSE testlib_SRC ./cpp/tests/testlib/src/testlib/*.cpp)
+  add_library(testlib ${testlib_SRC})
+  target_link_libraries(testlib openpal)
+
+  # ----- dnp3mocks library ------
+  file(GLOB_RECURSE dnp3mocks_SRC ./cpp/tests/dnp3mocks/src/dnp3mocks/*.cpp)
+  add_library(dnp3mocks ${dnp3mocks_SRC})
+  target_link_libraries(dnp3mocks opendnp3 testlib)
 
   # ----- openpal tests -----
   file(GLOB_RECURSE openpal_TESTSRC ./cpp/tests/openpaltests/src/*.cpp)
