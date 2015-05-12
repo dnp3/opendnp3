@@ -11,39 +11,36 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\testlib\HexConversions.h">
+    <ClInclude Include="src\dnp3mocks\MockCommandHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\testlib\BufferHelpers.h">
+    <ClInclude Include="src\dnp3mocks\MockLowerLayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\testlib\CopyableBuffer.h">
+    <ClInclude Include="src\dnp3mocks\MockCryptoProvider.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\testlib\MockLogHandler.h">
+    <ClInclude Include="src\dnp3mocks\MockHMAC.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\testlib\MockExecutor.h">
+    <ClInclude Include="src\dnp3mocks\MockKeyWrap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\testlib\MockUTCTimeSource.h">
+    <ClInclude Include="src\dnp3mocks\MockOutstationApplication.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\dnp3mocks\APDUHexBuilders.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\testlib\HexConversions.cpp">
+    <ClCompile Include="src\dnp3mocks\MockLowerLayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\testlib\BufferHelpers.cpp">
+    <ClCompile Include="src\dnp3mocks\MockCryptoProvider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\testlib\CopyableBuffer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\testlib\MockLogHandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\testlib\MockExecutor.cpp">
+    <ClCompile Include="src\dnp3mocks\APDUHexBuilders.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -9,6 +9,12 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
+    <Filter Include="Source Files\Mocks">
+      <UniqueIdentifier>{eea3b9f7-e41d-4de0-b41d-56ea03a22d92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Mocks">
+      <UniqueIdentifier>{dbce321d-2435-4231-b1bf-e17fba7fc219}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\TestAggressiveModeHMACParsing.cpp">
@@ -20,5 +26,16 @@
     <ClCompile Include="src\CatchTestStart.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\TestOutstationSecAuth.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OutstationSecAuthTest.cpp">
+      <Filter>Source Files\Mocks</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\OutstationSecAuthTest.h">
+      <Filter>Header Files\Mocks</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

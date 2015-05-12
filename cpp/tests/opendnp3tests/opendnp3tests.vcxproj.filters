@@ -95,9 +95,6 @@
     <ClInclude Include="src\MockLinkLayer.h">
       <Filter>Header Files\Mocks</Filter>
     </ClInclude>
-    <ClInclude Include="src\APDUHexBuilders.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\MasterTestObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -110,13 +107,7 @@
     <ClInclude Include="src\MockCommandCallback.h">
       <Filter>Header Files\Mocks</Filter>
     </ClInclude>
-    <ClInclude Include="src\MockCommandHandler.h">
-      <Filter>Header Files\Mocks</Filter>
-    </ClInclude>
     <ClInclude Include="src\MockFrameSink.h">
-      <Filter>Header Files\Mocks</Filter>
-    </ClInclude>
-    <ClInclude Include="src\MockLowerLayer.h">
       <Filter>Header Files\Mocks</Filter>
     </ClInclude>
     <ClInclude Include="src\MockPhysicalLayerMonitor.h">
@@ -152,9 +143,6 @@
     <ClInclude Include="src\MockPhysicalLayer.h">
       <Filter>Header Files\Mocks</Filter>
     </ClInclude>
-    <ClInclude Include="src\MockOutstationApplication.h">
-      <Filter>Header Files\Mocks</Filter>
-    </ClInclude>
     <ClInclude Include="src\MockMasterApplication.h">
       <Filter>Header Files\Mocks</Filter>
     </ClInclude>
@@ -164,19 +152,7 @@
     <ClInclude Include="src\BufferSegment.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\MockUTCTimeSource.h">
-      <Filter>Header Files\Mocks</Filter>
-    </ClInclude>
-    <ClInclude Include="src\MockCryptoProvider.h">
-      <Filter>Header Files\Mocks</Filter>
-    </ClInclude>
-    <ClInclude Include="src\MockHMAC.h">
-      <Filter>Header Files\Mocks</Filter>
-    </ClInclude>
     <ClInclude Include="src\MockKeyWrap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\OutstationSecAuthTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -316,9 +292,6 @@
     <ClCompile Include="src\TestMasterCommandRequests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\APDUHexBuilders.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\TestMaster.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -329,9 +302,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\MockFrameSink.cpp">
-      <Filter>Source Files\Mocks</Filter>
-    </ClCompile>
-    <ClCompile Include="src\MockLowerLayer.cpp">
       <Filter>Source Files\Mocks</Filter>
     </ClCompile>
     <ClCompile Include="src\MockPhysicalLayerMonitor.cpp">
@@ -404,15 +374,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\BufferSegment.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\TestOutstationSecAuth.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\MockCryptoProvider.cpp">
-      <Filter>Source Files\Mocks</Filter>
-    </ClCompile>
-    <ClCompile Include="src\OutstationSecAuthTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\TestMeasurementHandler.cpp">

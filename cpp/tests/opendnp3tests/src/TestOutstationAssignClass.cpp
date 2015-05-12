@@ -21,7 +21,7 @@
 #include <catch.hpp>
 
 #include "OutstationTestObject.h"
-#include "APDUHexBuilders.h"
+#include <dnp3mocks/APDUHexBuilders.h>
 #include <testlib/HexConversions.h>
 
 #include <opendnp3/ErrorCodes.h>

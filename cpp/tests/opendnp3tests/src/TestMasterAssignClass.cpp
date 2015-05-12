@@ -21,7 +21,7 @@
 #include <catch.hpp>
 
 #include "MasterTestObject.h"
-#include "APDUHexBuilders.h"
+#include <dnp3mocks/APDUHexBuilders.h>
 #include <testlib/HexConversions.h>
 
 using namespace std;

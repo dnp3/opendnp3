@@ -21,7 +21,8 @@
 #include <catch.hpp>
 
 #include "OutstationSecAuthTest.h"
-#include "APDUHexBuilders.h"
+
+#include <dnp3mocks/APDUHexBuilders.h>
 
 #include <testlib/HexConversions.h>
 

@@ -18,15 +18,12 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __MOCK_UTCTIMESOURCE_H_
-#define __MOCK_UTCTIMESOURCE_H_
+#ifndef TESTLIB_MOCKUTCTIMESOURCE_H_
+#define TESTLIB_MOCKUTCTIMESOURCE_H_
 
 #include <openpal/executor/IUTCTimeSource.h>
 
-#include <vector>
-#include <functional>
-
-namespace opendnp3
+namespace testlib
 {
 
 class MockUTCTimeSource : public openpal::IUTCTimeSource

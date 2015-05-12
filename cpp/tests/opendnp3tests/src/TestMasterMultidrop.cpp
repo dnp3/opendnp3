@@ -22,7 +22,7 @@
 
 #include "MasterTestObject.h"
 #include <testlib/HexConversions.h>
-#include "APDUHexBuilders.h"
+#include <dnp3mocks/APDUHexBuilders.h>
 
 #include <asiodnp3/MultidropTaskLock.h>
 

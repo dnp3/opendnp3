@@ -32,9 +32,9 @@
 #include <testlib/MockExecutor.h>
 #include <testlib/MockLogHandler.h>
 
-#include "MockCommandHandler.h"
-#include "MockLowerLayer.h"
-#include "MockOutstationApplication.h"
+#include <dnp3mocks/MockCommandHandler.h>
+#include <dnp3mocks/MockLowerLayer.h>
+#include <dnp3mocks/MockOutstationApplication.h>
 
 #include <functional>
 

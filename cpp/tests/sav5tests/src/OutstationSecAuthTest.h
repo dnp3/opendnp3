@@ -34,12 +34,13 @@
 
 #include <testlib/MockExecutor.h>
 #include <testlib/MockLogHandler.h>
+#include <testlib/MockUTCTimeSource.h>
 
-#include "MockCommandHandler.h"
-#include "MockLowerLayer.h"
-#include "MockOutstationApplication.h"
-#include "MockCryptoProvider.h"
-#include "MockUTCTimeSource.h"
+#include <dnp3mocks/MockCommandHandler.h>
+#include <dnp3mocks/MockLowerLayer.h>
+#include <dnp3mocks/MockCryptoProvider.h>
+#include <dnp3mocks/MockOutstationApplication.h>
+
 
 namespace opendnp3
 {
@@ -71,10 +72,10 @@ public:
 
 	testlib::MockLogHandler log;
 	testlib::MockExecutor exe;
-	MockLowerLayer lower;	
+	MockLowerLayer lower;
 	MockCommandHandler cmdHandler;
 	MockOutstationApplication application;
-	MockUTCTimeSource utc;
+	testlib::MockUTCTimeSource utc;
 	secauthv5::SimpleUserDatabase users;
 	MockCryptoProvider crypto;	
 	secauthv5::OutstationAuthProvider auth;

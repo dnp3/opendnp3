@@ -28,8 +28,9 @@
 #include <opendnp3/LogLevels.h>
 #include <deque>
 
+#include <dnp3mocks/MockLowerLayer.h>
+
 #include "MockSOEHandler.h"
-#include "MockLowerLayer.h"
 #include "MockMasterApplication.h"
 
 namespace opendnp3

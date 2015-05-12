@@ -64,6 +64,7 @@
     <Import Project="$(SolutionDir)\config\asiodnp3_include.props" />
     <Import Project="..\..\..\config\testlib-include.props" />
     <Import Project="..\..\..\config\authv5-include.props" />
+    <Import Project="..\..\..\config\dnp3mocks-include.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -76,6 +77,7 @@
     <Import Project="$(SolutionDir)\config\asiodnp3_include.props" />
     <Import Project="..\..\..\config\testlib-include.props" />
     <Import Project="..\..\..\config\authv5-include.props" />
+    <Import Project="..\..\..\config\dnp3mocks-include.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -88,6 +90,7 @@
     <Import Project="$(SolutionDir)\config\asiodnp3_include.props" />
     <Import Project="..\..\..\config\testlib-include.props" />
     <Import Project="..\..\..\config\authv5-include.props" />
+    <Import Project="..\..\..\config\dnp3mocks-include.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -100,6 +103,7 @@
     <Import Project="$(SolutionDir)\config\asiodnp3_include.props" />
     <Import Project="..\..\..\config\testlib-include.props" />
     <Import Project="..\..\..\config\authv5-include.props" />
+    <Import Project="..\..\..\config\dnp3mocks-include.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -186,15 +190,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\APDUHelpers.h" />
-    <ClInclude Include="src\APDUHexBuilders.h" />
     <ClInclude Include="src\BufferSegment.h" />
-    <ClInclude Include="src\MockCryptoProvider.h" />
-    <ClInclude Include="src\MockHMAC.h" />
     <ClInclude Include="src\MockKeyWrap.h" />
     <ClInclude Include="src\MockMasterApplication.h" />
     <ClInclude Include="src\MockTaskCallback.h" />
-    <ClInclude Include="src\MockUTCTimeSource.h" />
-    <ClInclude Include="src\OutstationSecAuthTest.h" />
     <ClInclude Include="src\PhysBaseTest.h" />
     <ClInclude Include="src\PhysTestObject.h" />
     <ClInclude Include="src\SerialTestObject.h" />
@@ -212,14 +211,11 @@
     <ClInclude Include="src\MeasurementComparisons.h" />
     <ClInclude Include="src\MockAPDUHeaderHandler.h" />
     <ClInclude Include="src\MockCommandCallback.h" />
-    <ClInclude Include="src\MockCommandHandler.h" />
     <ClInclude Include="src\MockFrameSink.h" />
     <ClInclude Include="src\MockLinkLayer.h" />
-    <ClInclude Include="src\MockLowerLayer.h" />
     <ClInclude Include="src\MockPhysicalLayer.h" />
     <ClInclude Include="src\MockPhysicalLayerMonitor.h" />
     <ClInclude Include="src\MockSOEHandler.h" />
-    <ClInclude Include="src\MockOutstationApplication.h" />
     <ClInclude Include="src\MockTransportLayer.h" />
     <ClInclude Include="src\MockUpperLayer.h" />
     <ClInclude Include="src\MasterTestObject.h" />
@@ -242,10 +238,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\APDUHelpers.cpp" />
-    <ClCompile Include="src\APDUHexBuilders.cpp" />
     <ClCompile Include="src\BufferSegment.cpp" />
-    <ClCompile Include="src\MockCryptoProvider.cpp" />
-    <ClCompile Include="src\OutstationSecAuthTest.cpp" />
     <ClCompile Include="src\PhysBaseTest.cpp" />
     <ClCompile Include="src\PhysTestObject.cpp" />
     <ClCompile Include="src\SerialTestObject.cpp" />
@@ -268,7 +261,6 @@
     <ClCompile Include="src\LoopbackPhysicalLayer.cpp" />
     <ClCompile Include="src\LowerLayerToPhysAdapter.cpp" />
     <ClCompile Include="src\MockFrameSink.cpp" />
-    <ClCompile Include="src\MockLowerLayer.cpp" />
     <ClCompile Include="src\MockPhysicalLayer.cpp" />
     <ClCompile Include="src\MockPhysicalLayerMonitor.cpp" />
     <ClCompile Include="src\MockTransportLayer.cpp" />
@@ -299,7 +291,6 @@
     <ClCompile Include="src\TestOutstationAssignClass.cpp" />
     <ClCompile Include="src\TestOutstationCommandResponses.cpp" />
     <ClCompile Include="src\TestOutstationEventResponses.cpp" />
-    <ClCompile Include="src\TestOutstationSecAuth.cpp" />
     <ClCompile Include="src\TestOutstationUnsolicitedResponses.cpp" />
     <ClCompile Include="src\TestPhysicalLayerAsyncBase.cpp" />
     <ClCompile Include="src\TestPhysicalLayerAsyncSerial.cpp" />
@@ -337,6 +328,9 @@
     </ProjectReference>
     <ProjectReference Include="..\..\libs\secauthv5\secauthv5.vcxproj">
       <Project>{d4b3a5cb-be31-44fc-ba64-977615980740}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\dnp3mocks\dnp3mocks.vcxproj">
+      <Project>{ee642737-20a1-49cd-862a-030b23685b1a}</Project>
     </ProjectReference>
     <ProjectReference Include="..\testlib\testlib.vcxproj">
       <Project>{17e1d388-be92-48ad-b082-345cf9bf603d}</Project>

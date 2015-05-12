@@ -53,6 +53,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "secauthv5", "cpp\libs\secau
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sav5tests", "cpp\tests\sav5tests\sav5tests.vcxproj", "{56B47703-4344-48AE-890A-70CFFD71F5A5}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dnp3mocks", "cpp\tests\dnp3mocks\dnp3mocks.vcxproj", "{EE642737-20A1-49CD-862A-030B23685B1A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -397,6 +399,24 @@ Global
 		{56B47703-4344-48AE-890A-70CFFD71F5A5}.Release|x64.Build.0 = Release|x64
 		{56B47703-4344-48AE-890A-70CFFD71F5A5}.Release|x86.ActiveCfg = Release|Win32
 		{56B47703-4344-48AE-890A-70CFFD71F5A5}.Release|x86.Build.0 = Release|Win32
+		{EE642737-20A1-49CD-862A-030B23685B1A}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{EE642737-20A1-49CD-862A-030B23685B1A}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{EE642737-20A1-49CD-862A-030B23685B1A}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{EE642737-20A1-49CD-862A-030B23685B1A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{EE642737-20A1-49CD-862A-030B23685B1A}.Debug|Win32.Build.0 = Debug|Win32
+		{EE642737-20A1-49CD-862A-030B23685B1A}.Debug|x64.ActiveCfg = Debug|x64
+		{EE642737-20A1-49CD-862A-030B23685B1A}.Debug|x64.Build.0 = Debug|x64
+		{EE642737-20A1-49CD-862A-030B23685B1A}.Debug|x86.ActiveCfg = Debug|Win32
+		{EE642737-20A1-49CD-862A-030B23685B1A}.Debug|x86.Build.0 = Debug|Win32
+		{EE642737-20A1-49CD-862A-030B23685B1A}.Release|Any CPU.ActiveCfg = Release|Win32
+		{EE642737-20A1-49CD-862A-030B23685B1A}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{EE642737-20A1-49CD-862A-030B23685B1A}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{EE642737-20A1-49CD-862A-030B23685B1A}.Release|Win32.ActiveCfg = Release|Win32
+		{EE642737-20A1-49CD-862A-030B23685B1A}.Release|Win32.Build.0 = Release|Win32
+		{EE642737-20A1-49CD-862A-030B23685B1A}.Release|x64.ActiveCfg = Release|x64
+		{EE642737-20A1-49CD-862A-030B23685B1A}.Release|x64.Build.0 = Release|x64
+		{EE642737-20A1-49CD-862A-030B23685B1A}.Release|x86.ActiveCfg = Release|Win32
+		{EE642737-20A1-49CD-862A-030B23685B1A}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -425,5 +445,6 @@ Global
 		{17E1D388-BE92-48AD-B082-345CF9BF603D} = {A8B11537-25B4-4893-9444-BC5C0D213157}
 		{D4B3A5CB-BE31-44FC-BA64-977615980740} = {2D704312-6653-4338-A589-03F509718D12}
 		{56B47703-4344-48AE-890A-70CFFD71F5A5} = {A8B11537-25B4-4893-9444-BC5C0D213157}
+		{EE642737-20A1-49CD-862A-030B23685B1A} = {A8B11537-25B4-4893-9444-BC5C0D213157}
 	EndGlobalSection
 EndGlobal
