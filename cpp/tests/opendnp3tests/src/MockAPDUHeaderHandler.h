@@ -42,10 +42,10 @@ public:
 		records.push_back(record);
 	}	
 
-	virtual IINField ProcessCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group120Var4& value) override final
-	{				
-		authStatusRequsts.push_back(value);		
-		return IINField::Empty();
+	virtual IINField ProcessCount(const HeaderRecord& record, const ICollection<Group120Var4>& values) override final
+	{	
+		return ProcessAny(record, values, authStatusRequests);
+		
 	}
 
 	virtual IINField ProcessRange(const HeaderRecord& record, uint32_t count, const IINValue& meas, uint16_t index) override final
@@ -207,7 +207,7 @@ public:
 
 	std::vector<Group120Var1> authChallenges;
 	std::vector<Group120Var2> authReplys;
-	std::vector<Group120Var4> authStatusRequsts;
+	std::vector<Group120Var4> authStatusRequests;
 	std::vector<Group120Var5> authKeyStatusResponses;
 	std::vector<Group120Var6> authChanges;
 
@@ -249,9 +249,9 @@ public:
 	private:
 
 	template <class T>
-	IINField ProcessAny(const HeaderRecord& record, const ICollection<Indexed<T>>& meas, std::vector<Indexed<T>>& items)
+	IINField ProcessAny(const HeaderRecord& record, const ICollection<T>& meas, std::vector<T>& items)
 	{
-		auto add = [&items](const Indexed<T>& v) { items.push_back(v); };
+		auto add = [&items](const T& v) { items.push_back(v); };
 		meas.ForeachItem(add);
 		return IINField::Empty();
 	}

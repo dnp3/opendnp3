@@ -65,7 +65,7 @@ IINField WriteHandler::ProcessRange(const HeaderRecord& record, uint32_t count, 
 	return IINField();		
 }
 
-IINField WriteHandler::ProcessCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group50Var1& value)
+IINField WriteHandler::ProcessCount(const HeaderRecord& record, const ICollection<Group50Var1>& values)
 {
 	if (wroteTime)
 	{
@@ -73,7 +73,8 @@ IINField WriteHandler::ProcessCount(const HeaderRecord& record, uint16_t pos, ui
 	}
 	else
 	{		
-		if (pos == 0 && total == 1)
+		Group50Var1 value;
+		if (values.ReadOnlyValue(value))
 		{
 			if (pApplication->SupportsWriteAbsoluteTime())
 			{

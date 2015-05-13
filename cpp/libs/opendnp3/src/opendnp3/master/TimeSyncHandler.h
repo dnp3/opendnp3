@@ -69,12 +69,11 @@ public:
 
 private:
 
-	virtual IINField ProcessCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group52Var2& time) override final
-	{		
-		if (pos == 0 && total == 1)
+	virtual IINField ProcessCount(const HeaderRecord& record, const ICollection<Group52Var2>& times) override final
+	{				
+		if (times.ReadOnlyValue(value))
 		{
-			valid = true;
-			value = time;
+			valid = true;			
 			return IINField::Empty();
 		}
 		else

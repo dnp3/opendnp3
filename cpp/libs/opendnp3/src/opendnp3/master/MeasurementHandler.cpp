@@ -69,9 +69,10 @@ void MeasurementHandler::CheckForTxStart()
 	}
 }
 
-IINField MeasurementHandler::ProcessCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group51Var1& cto)
+IINField MeasurementHandler::ProcessCount(const HeaderRecord& record, const ICollection<Group51Var1>& values)
 {	
-	if (pos == 0 && total == 1)
+	Group51Var1 cto;
+	if (values.ReadOnlyValue(cto))
 	{
 		ctoMode = TimestampMode::SYNCHRONIZED;
 		commonTimeOccurence = cto.time;
@@ -80,9 +81,10 @@ IINField MeasurementHandler::ProcessCount(const HeaderRecord& record, uint16_t p
 	return IINField::Empty();
 }
 
-IINField MeasurementHandler::ProcessCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group51Var2& cto)
+IINField MeasurementHandler::ProcessCount(const HeaderRecord& record, const ICollection<Group51Var2>& values)
 {	
-	if (pos == 0 && total == 1)
+	Group51Var2 cto;
+	if (values.ReadOnlyValue(cto))
 	{
 		ctoMode = TimestampMode::UNSYNCHRONIZED;
 		commonTimeOccurence = cto.time;

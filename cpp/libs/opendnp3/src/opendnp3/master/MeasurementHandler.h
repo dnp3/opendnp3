@@ -59,8 +59,8 @@ private:
 	static TimestampMode ModeFromType(GroupVariation gv);
 
 	// Handle the CTO objects
-	IINField ProcessCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group51Var1& cto) override final;
-	IINField ProcessCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group51Var2& cto) override final;
+	IINField ProcessCount(const HeaderRecord& record, const ICollection<Group51Var1>& cto) override final;
+	IINField ProcessCount(const HeaderRecord& record, const ICollection<Group51Var2>& cto) override final;
 
 	IINField ProcessRange(const HeaderRecord& record, uint32_t count, const Binary& meas, uint16_t index) override final;
 	IINField ProcessRange(const HeaderRecord& record, uint32_t count, const DoubleBitBinary& meas, uint16_t index) override final;

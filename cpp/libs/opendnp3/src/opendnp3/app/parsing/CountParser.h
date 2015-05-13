@@ -24,11 +24,13 @@
 #include <openpal/container/ReadBufferView.h>
 #include <openpal/logging/Logger.h>
 
+#include "opendnp3/app/parsing/Functions.h"
 #include "opendnp3/app/parsing/ParseResult.h"
 #include "opendnp3/app/parsing/IAPDUHandler.h"
 #include "opendnp3/app/parsing/ParseResult.h"
 #include "opendnp3/app/parsing/NumParser.h"
 #include "opendnp3/app/parsing/ParserSettings.h"
+#include "opendnp3/app/parsing/UniformBufferedCollection.h"
 
 namespace opendnp3
 {
@@ -78,17 +80,11 @@ CountParser CountParser::From(uint16_t count)
 	return CountParser(count, size, &InvokeCountOf<Descriptor>);
 }
 
-template <class Descriptor>
+template <class T>
 void CountParser::InvokeCountOf(const HeaderRecord& record, uint16_t count, const openpal::ReadBufferView& buffer, IAPDUHandler& handler)
 {	
-	openpal::ReadBufferView copy(buffer);
-
-	for (uint16_t pos = 0; pos < count; ++pos)
-	{
-		Descriptor value;
-		Descriptor::Read(copy, value);
-		handler.OnCount(record, pos, count, value);
-	}	
+	auto collection = CreateUniformBufferedCollection(buffer, count, &T::Read);
+	handler.OnCount(record, collection);
 }
 
 }

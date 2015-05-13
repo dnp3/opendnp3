@@ -64,11 +64,11 @@ public:
 	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var5& value) override final;
 	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var6& value) override final;
 
-	virtual void OnCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group50Var1& value) override final;
-	virtual void OnCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group51Var1& value) override final;
-	virtual void OnCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group51Var2& value) override final;
-	virtual void OnCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group52Var2& value) override final;
-	virtual void OnCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group120Var4& value) override final;
+	virtual void OnCount(const HeaderRecord& record, const ICollection<Group50Var1>& values) override final;
+	virtual void OnCount(const HeaderRecord& record, const ICollection<Group51Var1>& values) override final;
+	virtual void OnCount(const HeaderRecord& record, const ICollection<Group51Var2>& values) override final;
+	virtual void OnCount(const HeaderRecord& record, const ICollection<Group52Var2>& values) override final;
+	virtual void OnCount(const HeaderRecord& record, const ICollection<Group120Var4>& values) override final;
 
 	virtual void OnRange(const HeaderRecord& record, uint32_t count, const IINValue& value, uint16_t index) override final;
 
@@ -131,11 +131,11 @@ protected:
 	virtual IINField ProcessFreeFormat(const HeaderRecord& record, const Group120Var5& value);
 	virtual IINField ProcessFreeFormat(const HeaderRecord& record, const Group120Var6& value);
 	
-	virtual IINField ProcessCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group50Var1& value);
-	virtual IINField ProcessCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group51Var1& value);
-	virtual IINField ProcessCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group51Var2& value);
-	virtual IINField ProcessCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group52Var2& value);
-	virtual IINField ProcessCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group120Var4& value);
+	virtual IINField ProcessCount(const HeaderRecord& record, const ICollection<Group50Var1>& values);
+	virtual IINField ProcessCount(const HeaderRecord& record, const ICollection<Group51Var1>& values);
+	virtual IINField ProcessCount(const HeaderRecord& record, const ICollection<Group51Var2>& values);
+	virtual IINField ProcessCount(const HeaderRecord& record, const ICollection<Group52Var2>& values);
+	virtual IINField ProcessCount(const HeaderRecord& record, const ICollection<Group120Var4>& values);
 	
 	virtual IINField ProcessRange(const HeaderRecord& record, uint32_t count, const IINValue& value, uint16_t index);
 	virtual IINField ProcessRange(const HeaderRecord& record, uint32_t count, const Binary& meas, uint16_t index);

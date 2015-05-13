@@ -85,29 +85,29 @@ void APDUHandlerBase::OnRange(const HeaderRecord& record, uint32_t count, const 
 	Record(record, this->ProcessRange(record, count, value, index));
 }
 
-void APDUHandlerBase::OnCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group50Var1& value)
+void APDUHandlerBase::OnCount(const HeaderRecord& record, const ICollection<Group50Var1>& values)
 {
-	Record(record, this->ProcessCount(record, pos, total, value));
+	Record(record, this->ProcessCount(record, values));
 }
 
-void APDUHandlerBase::OnCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group51Var1& value)
+void APDUHandlerBase::OnCount(const HeaderRecord& record, const ICollection<Group51Var1>& values)
 {
-	Record(record, this->ProcessCount(record, pos, total, value));
+	Record(record, this->ProcessCount(record, values));
 }
 
-void APDUHandlerBase::OnCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group51Var2& value)
+void APDUHandlerBase::OnCount(const HeaderRecord& record, const ICollection<Group51Var2>& values)
 {
-	Record(record, this->ProcessCount(record, pos, total, value));
+	Record(record, this->ProcessCount(record, values));
 }
 
-void APDUHandlerBase::OnCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group52Var2& value)
+void APDUHandlerBase::OnCount(const HeaderRecord& record, const ICollection<Group52Var2>& values)
 {
-	Record(record, this->ProcessCount(record, pos, total, value));
+	Record(record, this->ProcessCount(record, values));
 }
 
-void APDUHandlerBase::OnCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group120Var4& value)
+void APDUHandlerBase::OnCount(const HeaderRecord& record, const ICollection<Group120Var4>& values)
 {
-	Record(record, this->ProcessCount(record, pos, total, value));
+	Record(record, this->ProcessCount(record, values));
 }
 
 void APDUHandlerBase::OnRange(const HeaderRecord& record, uint32_t count, const Binary& value, uint16_t index)
@@ -291,27 +291,27 @@ IINField APDUHandlerBase::ProcessFreeFormat(const HeaderRecord& record, const Gr
 
 /// ---- counts -----
 
-IINField APDUHandlerBase::ProcessCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group50Var1& value)
+IINField APDUHandlerBase::ProcessCount(const HeaderRecord& record, const ICollection<Group50Var1>&)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group51Var1& value)
+IINField APDUHandlerBase::ProcessCount(const HeaderRecord& record, const ICollection<Group51Var1>&)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group51Var2& value)
+IINField APDUHandlerBase::ProcessCount(const HeaderRecord& record, const ICollection<Group51Var2>&)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group52Var2& value)
+IINField APDUHandlerBase::ProcessCount(const HeaderRecord& record, const ICollection<Group52Var2>&)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group120Var4& value)
+IINField APDUHandlerBase::ProcessCount(const HeaderRecord& record, const ICollection<Group120Var4>&)
 {
 	return ProcessUnsupportedHeader();
 }

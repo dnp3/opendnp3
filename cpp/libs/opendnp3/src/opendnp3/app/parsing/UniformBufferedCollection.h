@@ -18,43 +18,55 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_WRITEHANDLER_H
-#define OPENDNP3_WRITEHANDLER_H
+#ifndef OPENDNP3_UNIFORMBUFFEREDCOLLECTION_H
+#define OPENDNP3_UNIFORMBUFFEREDCOLLECTION_H
 
-#include "opendnp3/app/parsing/APDUHandlerBase.h"
-#include "opendnp3/app/IINField.h"
-
-#include "opendnp3/outstation/IOutstationApplication.h"
-
-#include <openpal/logging/Logger.h>
+#include "opendnp3/app/parsing/ICollection.h"
+#include "opendnp3/app/parsing/Functions.h"
 
 namespace opendnp3
 {
 
-class WriteHandler : public APDUHandlerBase
+template <class T>
+class UniformBufferedCollection : public ICollection<T>
 {
-public:
+public:	
 
-	WriteHandler(openpal::Logger& logger, IOutstationApplication& application, IINField* pWriteIIN_);
-	
+	UniformBufferedCollection(const openpal::ReadBufferView& buffer_, uint32_t count, ReadFunction<T> readFunc_) :
+		buffer(buffer_),
+		COUNT(count),
+		readFunc(readFunc_)
+	{}
+
+	virtual uint32_t Count() const override final { return COUNT; }
+
+
+	virtual void Foreach(IVisitor<T>& visitor) const final
+	{
+		openpal::ReadBufferView copy(buffer);
+
+		T value;
+
+		for (uint32_t pos = 0; pos < COUNT; ++pos)
+		{
+			readFunc(copy, value);
+			visitor.OnValue(value);
+		}		
+	}
+
 private:
 
-	virtual IINField ProcessRange(const HeaderRecord& record, uint32_t count, const IINValue& value, uint16_t index) override final;
-
-	virtual IINField ProcessCount(const HeaderRecord& record, const ICollection<Group50Var1>& times) override final;
-
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const TimeAndInterval& value, uint16_t index) override final;
-
-	IOutstationApplication* pApplication;
-	IINField* pWriteIIN;
-
-	bool wroteTime;
-	bool wroteIIN;
+	openpal::ReadBufferView buffer;
+	const uint32_t COUNT;
+	ReadFunction<T> readFunc;
 };
+
+template <class T>
+UniformBufferedCollection<T> CreateUniformBufferedCollection(const openpal::ReadBufferView& buffer, uint32_t count, ReadFunction<T> readFunc)
+{
+	return UniformBufferedCollection<T>(buffer, count, readFunc);
+}
 
 }
 
-
-
 #endif
-

@@ -111,6 +111,6 @@ TEST_CASE(SUITE("AcceptsKeyStatusRequest"))
 	MockApduHeaderHandler handler;
 	auto result = APDUParser::ParseSome(buffer.ToReadOnly(), handler, AuthRequestHandler::WhiteList, nullptr);
 	REQUIRE(result == ParseResult::OK);
-	REQUIRE(handler.authStatusRequsts.size() == 1);
-	REQUIRE(handler.authStatusRequsts[0].userNum == 9);
+	REQUIRE(handler.authStatusRequests.size() == 1);
+	REQUIRE(handler.authStatusRequests[0].userNum == 9);
 }

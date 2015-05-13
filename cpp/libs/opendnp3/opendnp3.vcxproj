@@ -60,6 +60,7 @@
     <ClInclude Include="src\opendnp3\app\parsing\CountIndexParser.h" />
     <ClInclude Include="src\opendnp3\app\parsing\CountParser.h" />
     <ClInclude Include="src\opendnp3\app\parsing\FreeFormatParser.h" />
+    <ClInclude Include="src\opendnp3\app\parsing\Functions.h" />
     <ClInclude Include="src\opendnp3\app\parsing\IAPDUHandler.h" />
     <ClInclude Include="src\opendnp3\app\parsing\ICollection.h" />
     <ClInclude Include="src\opendnp3\app\parsing\BufferedCollection.h" />
@@ -69,6 +70,7 @@
     <ClInclude Include="src\opendnp3\app\parsing\ParserSettings.h" />
     <ClInclude Include="src\opendnp3\app\parsing\PrefixFields.h" />
     <ClInclude Include="src\opendnp3\app\parsing\RangeParser.h" />
+    <ClInclude Include="src\opendnp3\app\parsing\UniformBufferedCollection.h" />
     <ClInclude Include="src\opendnp3\app\PrefixedWriteIterator.h" />
     <ClInclude Include="src\opendnp3\app\QualityFlags.h" />
     <ClInclude Include="src\opendnp3\app\QualityMasks.h" />

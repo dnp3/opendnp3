@@ -61,11 +61,11 @@ public:
 
 	// ------	Count callbacks for qualifiers 0x07 and 0x08 ------
 	
-	virtual void OnCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group50Var1& value) = 0;
-	virtual void OnCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group51Var1& value) = 0;
-	virtual void OnCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group51Var2& value) = 0;
-	virtual void OnCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group52Var2& value) = 0;
-	virtual void OnCount(const HeaderRecord& record, uint16_t pos, uint16_t total, const Group120Var4& value) = 0;
+	virtual void OnCount(const HeaderRecord& record, const ICollection<Group50Var1>& values) = 0;
+	virtual void OnCount(const HeaderRecord& record, const ICollection<Group51Var1>& values) = 0;
+	virtual void OnCount(const HeaderRecord& record, const ICollection<Group51Var2>& values) = 0;
+	virtual void OnCount(const HeaderRecord& record, const ICollection<Group52Var2>& values) = 0;
+	virtual void OnCount(const HeaderRecord& record, const ICollection<Group120Var4>& values) = 0;
 
 	// ------ Variable-length free-format types  ------
 
