@@ -50,9 +50,9 @@ IINField ReadHandler::ProcessRangeRequest(const HeaderRecord& record, const Rang
 	return pStaticSelector->SelectRange(record.enumeration, range);
 }
 
-IINField ReadHandler::ProcessCountRequest(const HeaderRecord& record, uint16_t count)
+IINField ReadHandler::ProcessHeader(const CountHeader& header)
 {
-	return pEventSelector->SelectCount(record.enumeration, count);
+	return pEventSelector->SelectCount(header.enumeration, header.count);
 }
 
 }

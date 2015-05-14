@@ -77,7 +77,7 @@ ParseResult CountParser::ParseHeader(openpal::ReadBufferView& buffer, const NumP
 		{
 			if (pHandler)
 			{
-				pHandler->OnCountRequest(record, count);
+				pHandler->OnHeader(CountHeader(record, count));
 			}
 
 			return ParseResult::OK;

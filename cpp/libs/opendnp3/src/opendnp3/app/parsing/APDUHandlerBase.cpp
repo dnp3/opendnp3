@@ -55,9 +55,9 @@ void APDUHandlerBase::OnRangeRequest(const HeaderRecord& record, const Range& ra
 	Record(record, this->ProcessRangeRequest(record, range));
 }
 
-void APDUHandlerBase::OnCountRequest(const HeaderRecord& record, uint16_t count)
+void APDUHandlerBase::OnHeader(const CountHeader& header)
 {
-	Record(record, this->ProcessCountRequest(record, count));
+	Record(header, this->ProcessHeader(header));
 }
 
 void APDUHandlerBase::OnFreeFormat(const HeaderRecord& record, const Group120Var1& value)
@@ -264,7 +264,7 @@ IINField APDUHandlerBase::ProcessRangeRequest(const HeaderRecord& record, const 
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessCountRequest(const HeaderRecord& record, uint16_t count)
+IINField APDUHandlerBase::ProcessHeader(const CountHeader& header)
 {
 	return ProcessUnsupportedHeader();
 }

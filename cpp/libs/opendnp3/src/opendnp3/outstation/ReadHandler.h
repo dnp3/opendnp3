@@ -43,7 +43,7 @@ private:
 
 	virtual IINField ProcessRangeRequest(const HeaderRecord& record, const Range& range) override final;
 
-	virtual IINField ProcessCountRequest(const HeaderRecord& record, uint16_t count) override final;
+	virtual IINField ProcessHeader(const CountHeader& header) override final;
 	
 	IStaticSelector* pStaticSelector;
 	IEventSelector* pEventSelector;
