@@ -36,16 +36,16 @@ class AuthRequestHandler : public opendnp3::IAPDUHandler, private openpal::Uncop
 		AuthRequestHandler(const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, opendnp3::OState& ostate, IAuthRequestHandler& handler);
 
 		virtual opendnp3::IINField ProcessHeader(const opendnp3::CountHeader& header, const opendnp3::ICollection<opendnp3::Group120Var4>& values) override final;
-		virtual opendnp3::IINField ProcessHeader(const opendnp3::HeaderRecord& record, const opendnp3::Group120Var1& value) override final;
-		virtual opendnp3::IINField ProcessHeader(const opendnp3::HeaderRecord& record, const opendnp3::Group120Var2& value) override final;
-		virtual opendnp3::IINField ProcessHeader(const opendnp3::HeaderRecord& record, const opendnp3::Group120Var6& value) override final;
+		virtual opendnp3::IINField ProcessHeader(const opendnp3::FreeFormatHeader& header, const opendnp3::Group120Var1& value) override final;
+		virtual opendnp3::IINField ProcessHeader(const opendnp3::FreeFormatHeader& header, const opendnp3::Group120Var2& value) override final;
+		virtual opendnp3::IINField ProcessHeader(const opendnp3::FreeFormatHeader& header, const opendnp3::Group120Var6& value) override final;
 
 		static bool WhiteList(uint32_t count, opendnp3::GroupVariation gv, opendnp3::QualifierCode qc);
 
 	private:
 		openpal::Logger logger;
 		openpal::ReadBufferView fragment;
-		opendnp3::APDUHeader header;
+		opendnp3::APDUHeader apduheader;
 		opendnp3::OState* pOState;
 		IAuthRequestHandler* pHandler;
 };

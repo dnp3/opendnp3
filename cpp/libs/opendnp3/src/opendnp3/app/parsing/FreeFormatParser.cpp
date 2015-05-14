@@ -68,19 +68,21 @@ namespace opendnp3
 		ReadBufferView copy(buffer.Take(FREE_FORMAT_SIZE));
 		buffer.Advance(FREE_FORMAT_SIZE);
 
+		FreeFormatHeader header(record, FREE_FORMAT_COUNT);
+
 		switch (record.enumeration)
 		{
 		case(GroupVariation::Group120Var1) :
-			return ParseFreeFormat(ParseAny<Group120Var1>, record, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
+			return ParseFreeFormat(ParseAny<Group120Var1>, header, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
 
 		case(GroupVariation::Group120Var2) :
-			return ParseFreeFormat(ParseAny<Group120Var2>, record, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
+			return ParseFreeFormat(ParseAny<Group120Var2>, header, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
 
 		case(GroupVariation::Group120Var5) :
-			return ParseFreeFormat(ParseAny<Group120Var5>, record, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
+			return ParseFreeFormat(ParseAny<Group120Var5>, header, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
 
 		case(GroupVariation::Group120Var6) :
-			return ParseFreeFormat(ParseAny<Group120Var6>, record, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
+			return ParseFreeFormat(ParseAny<Group120Var6>, header, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
 
 		default:
 			FORMAT_LOGGER_BLOCK(
@@ -95,15 +97,15 @@ namespace opendnp3
 		
 	}
 
-	ParseResult FreeFormatParser::ParseFreeFormat(FreeFormatHandler parser, const HeaderRecord& record, uint16_t size, openpal::ReadBufferView& objects, IAPDUHandler* pHandler, openpal::Logger* pLogger)
+	ParseResult FreeFormatParser::ParseFreeFormat(FreeFormatHandler parser, const FreeFormatHeader& header, uint16_t size, openpal::ReadBufferView& objects, IAPDUHandler* pHandler, openpal::Logger* pLogger)
 	{				
-		if (parser(record, objects, pHandler))
+		if (parser(header, objects, pHandler))
 		{
 			return ParseResult::OK;
 		}
 		else
 		{
-			FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Error parsing free-format (%i, %i)", record.group, record.variation);
+			FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Error parsing free-format (%i, %i)", header.group, header.variation);
 			return ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS;
 		}		
 	}

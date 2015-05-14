@@ -64,10 +64,10 @@ public:
 	void OnHeader(const RangeHeader& header);
 	void OnHeader(const CountHeader& header);
 
-	void OnHeader(const HeaderRecord& record, const Group120Var1& value);
-	void OnHeader(const HeaderRecord& record, const Group120Var2& value);
-	void OnHeader(const HeaderRecord& record, const Group120Var5& value);
-	void OnHeader(const HeaderRecord& record, const Group120Var6& value);
+	void OnHeader(const FreeFormatHeader& header, const Group120Var1& value);
+	void OnHeader(const FreeFormatHeader& header, const Group120Var2& value);
+	void OnHeader(const FreeFormatHeader& header, const Group120Var5& value);
+	void OnHeader(const FreeFormatHeader& header, const Group120Var6& value);
 
 	void OnHeader(const CountHeader& header, const ICollection<Group50Var1>& values);
 	void OnHeader(const CountHeader& header, const ICollection<Group51Var1>& values);
@@ -135,10 +135,10 @@ protected:
 	virtual IINField ProcessHeader(const RangeHeader& header);
 	virtual IINField ProcessHeader(const CountHeader& header);
 
-	virtual IINField ProcessHeader(const HeaderRecord& record, const Group120Var1& value);
-	virtual IINField ProcessHeader(const HeaderRecord& record, const Group120Var2& value);
-	virtual IINField ProcessHeader(const HeaderRecord& record, const Group120Var5& value);
-	virtual IINField ProcessHeader(const HeaderRecord& record, const Group120Var6& value);
+	virtual IINField ProcessHeader(const FreeFormatHeader& header, const Group120Var1& value);
+	virtual IINField ProcessHeader(const FreeFormatHeader& header, const Group120Var2& value);
+	virtual IINField ProcessHeader(const FreeFormatHeader& header, const Group120Var5& value);
+	virtual IINField ProcessHeader(const FreeFormatHeader& header, const Group120Var6& value);
 	
 	virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group50Var1>& values);
 	virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group51Var1>& values);

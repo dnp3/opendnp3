@@ -33,7 +33,7 @@ namespace secauthv5
 AuthRequestHandler::AuthRequestHandler(const openpal::ReadBufferView& fragment_, const APDUHeader& header_, OState& ostate, IAuthRequestHandler& handler) :
 	logger(ostate.logger),
 	fragment(fragment_),
-	header(header_),
+	apduheader(header_),
 	pOState(&ostate),
 	pHandler(&handler)
 {
@@ -63,21 +63,21 @@ bool AuthRequestHandler::WhiteList(uint32_t count, GroupVariation gv, QualifierC
 	}
 }
 
-IINField AuthRequestHandler::ProcessHeader(const HeaderRecord& record, const Group120Var1& value)
+IINField AuthRequestHandler::ProcessHeader(const opendnp3::FreeFormatHeader& header, const Group120Var1& value)
 {
-	pHandler->OnAuthChallenge(*pOState, fragment, header, value);
+	pHandler->OnAuthChallenge(*pOState, fragment, apduheader, value);
 	return IINField::Empty();
 }
 
-IINField AuthRequestHandler::ProcessHeader(const HeaderRecord& record, const Group120Var2& value)
+IINField AuthRequestHandler::ProcessHeader(const opendnp3::FreeFormatHeader& header, const Group120Var2& value)
 {
-	pHandler->OnAuthReply(*pOState, fragment, header, value);
+	pHandler->OnAuthReply(*pOState, fragment, apduheader, value);
 	return IINField::Empty();
 }
 
-IINField AuthRequestHandler::ProcessHeader(const HeaderRecord& record, const Group120Var6& value)
+IINField AuthRequestHandler::ProcessHeader(const opendnp3::FreeFormatHeader& header, const Group120Var6& value)
 {
-	pHandler->OnChangeSessionKeys(*pOState, fragment, header, value);
+	pHandler->OnChangeSessionKeys(*pOState, fragment, apduheader, value);
 	return IINField::Empty();
 }
 
@@ -86,7 +86,7 @@ IINField AuthRequestHandler::ProcessHeader(const opendnp3::CountHeader& record, 
 	Group120Var4 value;
 	if (values.ReadOnlyValue(value))
 	{
-		pHandler->OnRequestKeyStatus(*pOState, fragment, header, value);
+		pHandler->OnRequestKeyStatus(*pOState, fragment, apduheader, value);
 		return IINField::Empty();
 	}
 	else

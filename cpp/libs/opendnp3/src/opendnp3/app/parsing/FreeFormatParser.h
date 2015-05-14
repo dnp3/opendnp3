@@ -44,20 +44,20 @@ class FreeFormatParser : private openpal::PureStatic
 
 	private:
 
-		typedef bool(&FreeFormatHandler)(const HeaderRecord& record, openpal::ReadBufferView& objects, IAPDUHandler* pHandler);
+		typedef bool(&FreeFormatHandler)(const FreeFormatHeader& header, openpal::ReadBufferView& objects, IAPDUHandler* pHandler);
 
-		static ParseResult ParseFreeFormat(FreeFormatHandler handler, const HeaderRecord& record, uint16_t size, openpal::ReadBufferView& objects, IAPDUHandler* pHandler, openpal::Logger* pLogger);
+		static ParseResult ParseFreeFormat(FreeFormatHandler handler, const FreeFormatHeader& header, uint16_t size, openpal::ReadBufferView& objects, IAPDUHandler* pHandler, openpal::Logger* pLogger);
 
 		// Free format handlers
 
 		template <class T>
-		static bool ParseAny(const HeaderRecord& record, openpal::ReadBufferView& objects, IAPDUHandler* pHandler)
+		static bool ParseAny(const FreeFormatHeader& header, openpal::ReadBufferView& objects, IAPDUHandler* pHandler)
 		{			
 			T value;
 			auto success = value.Read(objects);
 			if (success && pHandler)
 			{
-				pHandler->OnHeader(record, value);					
+				pHandler->OnHeader(header, value);					
 			}
 			return success;
 		}

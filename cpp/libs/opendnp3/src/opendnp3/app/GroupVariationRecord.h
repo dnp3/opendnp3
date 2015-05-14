@@ -115,6 +115,16 @@ public:
 	uint16_t count;
 };
 
+class FreeFormatHeader : public HeaderRecord
+{
+public:
+
+	FreeFormatHeader(const HeaderRecord& record, uint16_t count_) : HeaderRecord(record), count(count_)
+	{}
+
+	uint16_t count;
+};
+
 class RangeHeader : public HeaderRecord
 {
 public:

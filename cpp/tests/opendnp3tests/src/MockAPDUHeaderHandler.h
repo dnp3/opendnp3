@@ -154,25 +154,25 @@ public:
 		return this->ProcessAny(header, meas, aoDouble64Requests);
 	}	
 
-	virtual IINField ProcessHeader(const HeaderRecord& record, const Group120Var1& value) override final
+	virtual IINField ProcessHeader(const opendnp3::FreeFormatHeader& header, const Group120Var1& value) override final
 	{	
 		authChallenges.push_back(value);
 		return IINField::Empty();
 	}
 
-	virtual IINField ProcessHeader(const HeaderRecord& record, const Group120Var2& value) override final
+	virtual IINField ProcessHeader(const opendnp3::FreeFormatHeader& header, const Group120Var2& value) override final
 	{	
 		authReplys.push_back(value);
 		return IINField::Empty();
 	}
 
-	virtual IINField ProcessHeader(const HeaderRecord& record, const Group120Var5& value) override final
+	virtual IINField ProcessHeader(const opendnp3::FreeFormatHeader& header, const Group120Var5& value) override final
 	{	
 		authKeyStatusResponses.push_back(value);
 		return IINField::Empty();
 	}
 
-	virtual IINField ProcessHeader(const HeaderRecord& record, const Group120Var6& value) override final
+	virtual IINField ProcessHeader(const opendnp3::FreeFormatHeader& header, const Group120Var6& value) override final
 	{
 		authChanges.push_back(value);
 		return IINField::Empty();
