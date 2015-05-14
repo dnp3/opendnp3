@@ -76,26 +76,26 @@ public:
 
 	// ------ Special ranged values like IIN (group 80) ------
 
-	virtual void OnRange(const HeaderRecord& record, uint32_t count, const IINValue& value, uint16_t index) = 0;
+	virtual void OnRange(const HeaderRecord& record, const ICollection<Indexed<IINValue>> &values) = 0;
 
 	// ------ range callbacks for qualifiers 0x00 and 0x01 ------
 
-	virtual void OnRange(const HeaderRecord& record, uint32_t count, const Binary& meas, uint16_t index) = 0;
-	virtual void OnRange(const HeaderRecord& record, uint32_t count, const DoubleBitBinary& meas, uint16_t index) = 0;
-	virtual void OnRange(const HeaderRecord& record, uint32_t count, const BinaryOutputStatus& meas, uint16_t index) = 0;
-	virtual void OnRange(const HeaderRecord& record, uint32_t count, const Counter& meas, uint16_t index) = 0;
-	virtual void OnRange(const HeaderRecord& record, uint32_t count, const FrozenCounter& meas, uint16_t index) = 0;
-	virtual void OnRange(const HeaderRecord& record, uint32_t count, const Analog& meas, uint16_t index) = 0;
-	virtual void OnRange(const HeaderRecord& record, uint32_t count, const AnalogOutputStatus& meas, uint16_t index) = 0;
-	virtual void OnRange(const HeaderRecord& record, uint32_t count, const OctetString& meas, uint16_t index) = 0;
-	virtual void OnRange(const HeaderRecord& record, uint32_t count, const TimeAndInterval& meas, uint16_t index) = 0;
-	virtual void OnRange(const HeaderRecord& record, uint32_t count, const Group121Var1& meas, uint16_t index) = 0;
+	virtual void OnRange(const HeaderRecord& record, const ICollection<Indexed<Binary>>& values) = 0;
+	virtual void OnRange(const HeaderRecord& record, const ICollection<Indexed<DoubleBitBinary>>& values) = 0;
+	virtual void OnRange(const HeaderRecord& record, const ICollection<Indexed<BinaryOutputStatus>>& values) = 0;
+	virtual void OnRange(const HeaderRecord& record, const ICollection<Indexed<Counter>>& values) = 0;
+	virtual void OnRange(const HeaderRecord& record, const ICollection<Indexed<FrozenCounter>>& values) = 0;
+	virtual void OnRange(const HeaderRecord& record, const ICollection<Indexed<Analog>>& values) = 0;
+	virtual void OnRange(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputStatus>>& values) = 0;
+	virtual void OnRange(const HeaderRecord& record, const ICollection<Indexed<OctetString>>& values) = 0;
+	virtual void OnRange(const HeaderRecord& record, const ICollection<Indexed<TimeAndInterval>>& values) = 0;
+	virtual void OnRange(const HeaderRecord& record, const ICollection<Indexed<Group121Var1>>& values) = 0;
 
 	// ------ index-prefix callbacks for qualifiers 0x17 and 0x28 ------
 
 	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Binary>>& values) = 0;
 	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<BinaryOutputStatus>>& values) = 0;
-	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection <Indexed<DoubleBitBinary>>& values) = 0;
+	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<DoubleBitBinary>>& values) = 0;
 	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Counter>>& values) = 0;
 	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<FrozenCounter>>& values) = 0;
 	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Analog>>& values) = 0;

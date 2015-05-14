@@ -38,24 +38,26 @@ WriteHandler::WriteHandler(openpal::Logger& aLogger, IOutstationApplication& app
 	wroteIIN(false)
 {}
 
-IINField WriteHandler::ProcessRange(const HeaderRecord& record, uint32_t count, const IINValue& bit, uint16_t index)
+IINField WriteHandler::ProcessRange(const HeaderRecord& record, const ICollection<Indexed<IINValue>>& values)
 {	
-	if (count != 1)
+	Indexed<IINValue> pair;
+
+	if (!values.ReadOnlyValue(pair))
 	{
 		return IINBit::PARAM_ERROR;
-	}
+	}	
 
 	if (wroteIIN)
 	{
 		return IINBit::PARAM_ERROR;
 	}
 	
-	if (index != static_cast<int>(IINBit::DEVICE_RESTART))
+	if (pair.index != static_cast<uint16_t>(IINBit::DEVICE_RESTART))
 	{
 		return IINBit::PARAM_ERROR;
 	}
 
-	if (bit.value)
+	if (pair.value.value)
 	{
 		return IINBit::PARAM_ERROR;
 	}

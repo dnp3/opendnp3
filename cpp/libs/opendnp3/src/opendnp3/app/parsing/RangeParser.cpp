@@ -35,13 +35,7 @@
 #include "opendnp3/objects/Group40.h"
 #include "opendnp3/objects/Group50.h"
 
-/*
-#include "opendnp3/objects/Group41.h"
-#include "opendnp3/objects/Group42.h"
-#include "opendnp3/objects/Group43.h"
-#include "opendnp3/objects/Group51.h"
-#include "opendnp3/objects/Group52.h"
-*/
+#include "opendnp3/app/parsing/BufferedCollection.h"
 
 
 #include <openpal/logging/LogMacros.h>
@@ -165,7 +159,7 @@ ParseResult RangeParser::ParseRangeOfObjects(openpal::ReadBufferView& buffer, co
 		return ParseRangeOfOctetData(buffer, record, range, pLogger, pHandler);
 
 	case(GroupVariation::Group121Var1) :
-		return RangeParser::FromFixedSizeRaw<Group121Var1>(range).Process(record, buffer, pHandler, pLogger);
+		return RangeParser::FromFixedSizeType<Group121Var1>(range).Process(record, buffer, pHandler, pLogger);
 
 	default:
 		FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_ILLEGAL_QUALIFIER_AND_OBJECT,
@@ -190,15 +184,16 @@ ParseResult RangeParser::ParseRangeOfOctetData(openpal::ReadBufferView& buffer, 
 		else
 		{
 			if (pHandler)
-			{
-				openpal::ReadBufferView copy(buffer);
-				
-				for (uint16_t index = range.start; index <= range.stop; ++index)
-				{
-					OctetString octets(copy.Take(record.variation));
-					copy.Advance(record.variation);
-					pHandler->OnRange(record, COUNT, octets, index);
-				}				
+			{								
+				auto read = [range, record](openpal::ReadBufferView& buffer, uint32_t pos) -> Indexed<OctetString> {
+					OctetString octets(buffer.Take(record.variation));
+					buffer.Advance(record.variation);
+					return WithIndex(octets, range.start + pos);
+				};
+
+				auto collection = CreateBufferedCollection<Indexed<OctetString>>(buffer, COUNT, read);
+
+				pHandler->OnRange(record, collection);
 			}
 
 			buffer.Advance(size);

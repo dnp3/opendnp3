@@ -94,58 +94,55 @@ IINField MeasurementHandler::ProcessCount(const HeaderRecord& record, const ICol
 	return IINField::Empty();
 }
 
-/*
-IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, uint32_t count, const Binary& meas, uint16_t index)
+IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, const ICollection<Indexed<Binary>>& values)
 {
-	return this->LoadSingleValue(record, ModeFromType(record.enumeration), meas, index);
+	return this->LoadValues(record, ModeFromType(record.enumeration), values);
 }
 
-IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, uint32_t count, const DoubleBitBinary& meas, uint16_t index)
+IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, const ICollection<Indexed<DoubleBitBinary>>& values)
 {
-	return this->LoadSingleValue(record, ModeFromType(record.enumeration), meas, index);
+	return this->LoadValues(record, ModeFromType(record.enumeration), values);
 }
 
-IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, uint32_t count, const BinaryOutputStatus& meas, uint16_t index)
+IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, const ICollection<Indexed<BinaryOutputStatus>>& values)
 {
-	return this->LoadSingleValue(record, ModeFromType(record.enumeration), meas, index);
+	return this->LoadValues(record, ModeFromType(record.enumeration), values);
 }
 
-IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, uint32_t count, const Counter& meas, uint16_t index)
+IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, const ICollection<Indexed<Counter>>& values)
 {
-	return this->LoadSingleValue(record, ModeFromType(record.enumeration), meas, index);
+	return this->LoadValues(record, ModeFromType(record.enumeration), values);
 }
 
-IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, uint32_t count, const FrozenCounter& meas, uint16_t index)
+IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, const ICollection<Indexed<FrozenCounter>>& values)
 {
-	return this->LoadSingleValue(record, ModeFromType(record.enumeration), meas, index);
+	return this->LoadValues(record, ModeFromType(record.enumeration), values);
 }
 
-IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, uint32_t count, const Analog& meas, uint16_t index)
+IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, const ICollection<Indexed<Analog>>& values)
 {
-	return this->LoadSingleValue(record, ModeFromType(record.enumeration), meas, index);
+	return this->LoadValues(record, ModeFromType(record.enumeration), values);
 }
 
-IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, uint32_t count, const AnalogOutputStatus& meas, uint16_t index)
+IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputStatus>>& values)
 {
-	return this->LoadSingleValue(record, ModeFromType(record.enumeration), meas, index);
+	return this->LoadValues(record, ModeFromType(record.enumeration), values);
 }
 
-IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, uint32_t count, const OctetString& meas, uint16_t index)
+IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, const ICollection<Indexed<OctetString>>& values)
 {
-	return this->LoadSingleValue(record, ModeFromType(record.enumeration), meas, index);
+	return this->LoadValues(record, ModeFromType(record.enumeration), values);
 }
 
-IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, uint32_t count, const TimeAndInterval& meas, uint16_t index)
+IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, const ICollection<Indexed<TimeAndInterval>>& values)
 {
-	return this->LoadSingleValue(record, ModeFromType(record.enumeration), meas, index);
+	return this->LoadValues(record, ModeFromType(record.enumeration), values);
 }
 
-IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, uint32_t count, const Group121Var1& meas, uint16_t index)
+IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, const ICollection<Indexed<Group121Var1>>& values)
 {
-	SecurityStat value(meas.flags, meas.assocId, meas.value);
-	return this->LoadSingleValue(record, ModeFromType(record.enumeration), value, index);
+	return this->LoadValuesWithTransformTo<SecurityStat>(record, values);
 }
-*/
 
 IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Binary>>& values)
 {
@@ -219,6 +216,13 @@ IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, cons
 IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Group122Var2>>& values)
 {
 	return this->LoadValuesWithTransformTo<SecurityStat>(record, values);
+}
+
+// ----------- Conversion routines from DNP3 types to API types -----------
+
+SecurityStat MeasurementHandler::Convert(const Group121Var1& meas)
+{
+	return SecurityStat(meas.flags, meas.assocId, meas.value);
 }
 
 SecurityStat MeasurementHandler::Convert(const Group122Var1& meas)

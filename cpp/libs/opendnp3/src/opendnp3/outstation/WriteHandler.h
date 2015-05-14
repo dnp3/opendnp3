@@ -39,7 +39,7 @@ public:
 	
 private:
 
-	virtual IINField ProcessRange(const HeaderRecord& record, uint32_t count, const IINValue& value, uint16_t index) override final;
+	virtual IINField ProcessRange(const HeaderRecord& record, const ICollection<Indexed<IINValue>>& values) override final;
 
 	virtual IINField ProcessCount(const HeaderRecord& record, const ICollection<Group50Var1>& times) override final;
 

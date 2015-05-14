@@ -245,10 +245,10 @@ ParseResult CountIndexParser::ParseIndexPrefixedOctetData(openpal::ReadBufferVie
 	
 	if (pHandler)
 	{
-		auto read = [&](ReadBufferView& buff, uint32_t pos) -> Indexed<OctetString> {
+		auto read = [&numparser, record](ReadBufferView& buffer, uint32_t pos) -> Indexed<OctetString> {
 			auto index = numparser.ReadNum(buffer);
-			OctetString octets(buff.Take(record.variation));
-			buff.Advance(record.variation);
+			OctetString octets(buffer.Take(record.variation));
+			buffer.Advance(record.variation);
 			return WithIndex(octets, index);
 		};
 
