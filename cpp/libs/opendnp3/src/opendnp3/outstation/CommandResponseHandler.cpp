@@ -40,29 +40,29 @@ namespace opendnp3
 	
 }
 
-IINField CommandResponseHandler::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<ControlRelayOutputBlock>>& meas)
+IINField CommandResponseHandler::ProcessValues(const PrefixHeader& header, const ICollection<Indexed<ControlRelayOutputBlock>>& meas)
 {
-	return this->ProcessAny(record, meas);
+	return this->ProcessAny(header, meas);
 }
 
-IINField CommandResponseHandler::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputInt16>>& meas)
+IINField CommandResponseHandler::ProcessValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt16>>& meas)
 {
-	return this->ProcessAny(record, meas);
+	return this->ProcessAny(header, meas);
 }
 
-IINField CommandResponseHandler::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputInt32>>& meas)
+IINField CommandResponseHandler::ProcessValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt32>>& meas)
 {
-	return this->ProcessAny(record, meas);
+	return this->ProcessAny(header, meas);
 }
 
-IINField CommandResponseHandler::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputFloat32>>& meas)
+IINField CommandResponseHandler::ProcessValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputFloat32>>& meas)
 {
-	return this->ProcessAny(record, meas);
+	return this->ProcessAny(header, meas);
 }
 
-IINField CommandResponseHandler::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputDouble64>>& meas)
+IINField CommandResponseHandler::ProcessValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputDouble64>>& meas)
 {
-	return this->ProcessAny(record, meas);
+	return this->ProcessAny(header, meas);
 }
 
 IINField CommandResponseHandler::ProcessIndexPrefixTwoByte(const HeaderRecord&, const ICollection<Indexed<ControlRelayOutputBlock>>& meas)

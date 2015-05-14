@@ -43,11 +43,11 @@ public:
 
 private:
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<ControlRelayOutputBlock>>& meas) override final;
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputInt16>>& meas) override final;
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputInt32>>& meas) override final;
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputFloat32>>& meas) override final;
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputDouble64>>& meas) override final;
+	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<ControlRelayOutputBlock>>& meas) override final;
+	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt16>>& meas) override final;
+	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt32>>& meas) override final;
+	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputFloat32>>& meas) override final;
+	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputDouble64>>& meas) override final;
 	
 	IINField ProcessIndexPrefixTwoByte(const HeaderRecord& record, const ICollection<Indexed<ControlRelayOutputBlock>>& meas);
 	IINField ProcessIndexPrefixTwoByte(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputInt16>>& meas);

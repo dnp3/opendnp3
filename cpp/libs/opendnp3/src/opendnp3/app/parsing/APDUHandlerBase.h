@@ -70,41 +70,41 @@ public:
 	virtual void OnValues(const CountHeader& header, const ICollection<Group52Var2>& values) override final;
 	virtual void OnValues(const CountHeader& header, const ICollection<Group120Var4>& values) override final;
 
-	virtual void OnRange(const HeaderRecord& record, const ICollection<Indexed<IINValue>> &values) override final;
-	virtual void OnRange(const HeaderRecord& record, const ICollection<Indexed<Binary>>& values) override final;
-	virtual void OnRange(const HeaderRecord& record, const ICollection<Indexed<DoubleBitBinary>>& values) override final;
-	virtual void OnRange(const HeaderRecord& record, const ICollection<Indexed<BinaryOutputStatus>>& values) override final;
-	virtual void OnRange(const HeaderRecord& record, const ICollection<Indexed<Counter>>& values) override final;
-	virtual void OnRange(const HeaderRecord& record, const ICollection<Indexed<FrozenCounter>>& values) override final;
-	virtual void OnRange(const HeaderRecord& record, const ICollection<Indexed<Analog>>& values)  override final;
-	virtual void OnRange(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputStatus>>& values) override final;
-	virtual void OnRange(const HeaderRecord& record, const ICollection<Indexed<OctetString>>& values) override final;
-	virtual void OnRange(const HeaderRecord& record, const ICollection<Indexed<TimeAndInterval>>& values) override final;
-	virtual void OnRange(const HeaderRecord& record, const ICollection<Indexed<Group121Var1>>& values) override final;
+	virtual void OnValues(const RangeHeader& header, const ICollection<Indexed<IINValue>> &values) override final;
+	virtual void OnValues(const RangeHeader& header, const ICollection<Indexed<Binary>>& values) override final;
+	virtual void OnValues(const RangeHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values) override final;
+	virtual void OnValues(const RangeHeader& header, const ICollection<Indexed<BinaryOutputStatus>>& values) override final;
+	virtual void OnValues(const RangeHeader& header, const ICollection<Indexed<Counter>>& values) override final;
+	virtual void OnValues(const RangeHeader& header, const ICollection<Indexed<FrozenCounter>>& values) override final;
+	virtual void OnValues(const RangeHeader& header, const ICollection<Indexed<Analog>>& values)  override final;
+	virtual void OnValues(const RangeHeader& header, const ICollection<Indexed<AnalogOutputStatus>>& values) override final;
+	virtual void OnValues(const RangeHeader& header, const ICollection<Indexed<OctetString>>& values) override final;
+	virtual void OnValues(const RangeHeader& header, const ICollection<Indexed<TimeAndInterval>>& values) override final;
+	virtual void OnValues(const RangeHeader& header, const ICollection<Indexed<Group121Var1>>& values) override final;
 
 	// events
 
-	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Binary>>& values) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<BinaryOutputStatus>>& values) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<DoubleBitBinary>>& values) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Counter>>& values) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<FrozenCounter>>& values) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Analog>>& values) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputStatus>>& values) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<OctetString>>& values) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<TimeAndInterval>>& values) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<BinaryCommandEvent>>& values) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogCommandEvent>>& values) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Group122Var1>>& values) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Group122Var2>>& values) override final;
+	virtual void OnValues(const PrefixHeader& header, const ICollection<Indexed<Binary>>& values) override final;
+	virtual void OnValues(const PrefixHeader& header, const ICollection<Indexed<BinaryOutputStatus>>& values) override final;
+	virtual void OnValues(const PrefixHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values) override final;
+	virtual void OnValues(const PrefixHeader& header, const ICollection<Indexed<Counter>>& values) override final;
+	virtual void OnValues(const PrefixHeader& header, const ICollection<Indexed<FrozenCounter>>& values) override final;
+	virtual void OnValues(const PrefixHeader& header, const ICollection<Indexed<Analog>>& values) override final;
+	virtual void OnValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputStatus>>& values) override final;
+	virtual void OnValues(const PrefixHeader& header, const ICollection<Indexed<OctetString>>& values) override final;
+	virtual void OnValues(const PrefixHeader& header, const ICollection<Indexed<TimeAndInterval>>& values) override final;
+	virtual void OnValues(const PrefixHeader& header, const ICollection<Indexed<BinaryCommandEvent>>& values) override final;
+	virtual void OnValues(const PrefixHeader& header, const ICollection<Indexed<AnalogCommandEvent>>& values) override final;
+	virtual void OnValues(const PrefixHeader& header, const ICollection<Indexed<Group122Var1>>& values) override final;
+	virtual void OnValues(const PrefixHeader& header, const ICollection<Indexed<Group122Var2>>& values) override final;
 
 	// commands
 
-	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<ControlRelayOutputBlock>>& values) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputInt16>>& values) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputInt32>>& values) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputFloat32>>& values) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputDouble64>>& values) override final;
+	virtual void OnValues(const PrefixHeader& header, const ICollection<Indexed<ControlRelayOutputBlock>>& values) override final;
+	virtual void OnValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt16>>& values) override final;
+	virtual void OnValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt32>>& values) override final;
+	virtual void OnValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputFloat32>>& values) override final;
+	virtual void OnValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputDouble64>>& values) override final;
 
 protected:
 
@@ -136,37 +136,37 @@ protected:
 	virtual IINField ProcessValues(const CountHeader& header, const ICollection<Group52Var2>& values);
 	virtual IINField ProcessValues(const CountHeader& header, const ICollection<Group120Var4>& values);
 	
-	virtual IINField ProcessRange(const HeaderRecord& record, const ICollection<Indexed<IINValue>>& values);
-	virtual IINField ProcessRange(const HeaderRecord& record, const ICollection<Indexed<Binary>>& values);
-	virtual IINField ProcessRange(const HeaderRecord& record, const ICollection<Indexed<DoubleBitBinary>>& values);
-	virtual IINField ProcessRange(const HeaderRecord& record, const ICollection<Indexed<BinaryOutputStatus>>& values);
-	virtual IINField ProcessRange(const HeaderRecord& record, const ICollection<Indexed<Counter>>& values);
-	virtual IINField ProcessRange(const HeaderRecord& record, const ICollection<Indexed<FrozenCounter>>& values);
-	virtual IINField ProcessRange(const HeaderRecord& record, const ICollection<Indexed<Analog>>& values);
-	virtual IINField ProcessRange(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputStatus>>& values);
-	virtual IINField ProcessRange(const HeaderRecord& record, const ICollection<Indexed<OctetString>>& values);
-	virtual IINField ProcessRange(const HeaderRecord& record, const ICollection<Indexed<TimeAndInterval>>& values);
-	virtual IINField ProcessRange(const HeaderRecord& record, const ICollection<Indexed<Group121Var1>>& values);
+	virtual IINField ProcessValues(const RangeHeader& header, const ICollection<Indexed<IINValue>>& values);
+	virtual IINField ProcessValues(const RangeHeader& header, const ICollection<Indexed<Binary>>& values);
+	virtual IINField ProcessValues(const RangeHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values);
+	virtual IINField ProcessValues(const RangeHeader& header, const ICollection<Indexed<BinaryOutputStatus>>& values);
+	virtual IINField ProcessValues(const RangeHeader& header, const ICollection<Indexed<Counter>>& values);
+	virtual IINField ProcessValues(const RangeHeader& header, const ICollection<Indexed<FrozenCounter>>& values);
+	virtual IINField ProcessValues(const RangeHeader& header, const ICollection<Indexed<Analog>>& values);
+	virtual IINField ProcessValues(const RangeHeader& header, const ICollection<Indexed<AnalogOutputStatus>>& values);
+	virtual IINField ProcessValues(const RangeHeader& header, const ICollection<Indexed<OctetString>>& values);
+	virtual IINField ProcessValues(const RangeHeader& header, const ICollection<Indexed<TimeAndInterval>>& values);
+	virtual IINField ProcessValues(const RangeHeader& header, const ICollection<Indexed<Group121Var1>>& values);
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Binary>>& values);
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<BinaryOutputStatus>>& values);
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<DoubleBitBinary>>& values);
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Counter>>& values);
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<FrozenCounter>>& values);
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Analog>>& values);
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputStatus>>& values);
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<OctetString>>& values);
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<TimeAndInterval>>& values);
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<BinaryCommandEvent>>& values);
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogCommandEvent>>& values);
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Group122Var1>>& values);
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Group122Var2>>& values);
+	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<Binary>>& values);
+	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<BinaryOutputStatus>>& values);
+	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values);
+	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<Counter>>& values);
+	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<FrozenCounter>>& values);
+	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<Analog>>& values);
+	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputStatus>>& values);
+	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<OctetString>>& values);
+	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<TimeAndInterval>>& values);
+	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<BinaryCommandEvent>>& values);
+	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<AnalogCommandEvent>>& values);
+	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<Group122Var1>>& values);
+	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<Group122Var2>>& values);
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<ControlRelayOutputBlock>>& values);
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputInt16>> &values);
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputInt32>>& values);
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputFloat32>>& values);
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputDouble64>>& values);
+	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<ControlRelayOutputBlock>>& values);
+	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt16>> &values);
+	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt32>>& values);
+	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputFloat32>>& values);
+	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputDouble64>>& values);
 
 protected:
 

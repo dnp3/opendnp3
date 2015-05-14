@@ -94,6 +94,8 @@ public:
 	uint32_t headerCount;
 };
 
+// ---- Specific header types  ---
+
 class AllObjectsHeader : public HeaderRecord
 {
 public:
@@ -121,6 +123,16 @@ public:
 	{}
 
 	Range range;
+};
+
+class PrefixHeader : public HeaderRecord
+{
+public:
+
+	PrefixHeader(const HeaderRecord& record, uint16_t count_) : HeaderRecord(record), count(count_)
+	{}
+
+	uint16_t count;
 };
 
 }

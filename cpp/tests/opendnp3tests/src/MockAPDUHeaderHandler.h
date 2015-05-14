@@ -47,116 +47,116 @@ public:
 		return ProcessAny(header, values, authStatusRequests);		
 	}
 
-	virtual IINField ProcessRange(const HeaderRecord& record, const ICollection<Indexed<IINValue>>& values) override final
+	virtual IINField ProcessValues(const RangeHeader& header, const ICollection<Indexed<IINValue>>& values) override final
 	{
-		return ProcessAny(record, values, iinBits);		
+		return ProcessAny(header, values, iinBits);		
 	}
 
-	virtual IINField ProcessRange(const HeaderRecord& record, const ICollection<Indexed<Binary>>& values) override final
+	virtual IINField ProcessValues(const RangeHeader& header, const ICollection<Indexed<Binary>>& values) override final
 	{	
-		return ProcessAny(record, values, staticBinaries);		
+		return ProcessAny(header, values, staticBinaries);
 	}
 
-	virtual IINField ProcessRange(const HeaderRecord& record, const ICollection<Indexed<DoubleBitBinary>>& values) override final
+	virtual IINField ProcessValues(const RangeHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values) override final
 	{				
-		return ProcessAny(record, values, staticDoubleBinaries);		
+		return ProcessAny(header, values, staticDoubleBinaries);
 	}
 
-	virtual IINField ProcessRange(const HeaderRecord& record, const ICollection<Indexed<BinaryOutputStatus>>& values) override final
+	virtual IINField ProcessValues(const RangeHeader& header, const ICollection<Indexed<BinaryOutputStatus>>& values) override final
 	{		
-		return ProcessAny(record, values, staticControlStatii);		
+		return ProcessAny(header, values, staticControlStatii);
 	}
 
-	virtual IINField ProcessRange(const HeaderRecord& record, const ICollection<Indexed<Counter>>& values) override final
+	virtual IINField ProcessValues(const RangeHeader& header, const ICollection<Indexed<Counter>>& values) override final
 	{				
-		return ProcessAny(record, values, staticCounters);		
+		return ProcessAny(header, values, staticCounters);
 	}
 
-	virtual IINField ProcessRange(const HeaderRecord& record, const ICollection<Indexed<FrozenCounter>>& values) override final
+	virtual IINField ProcessValues(const RangeHeader& header, const ICollection<Indexed<FrozenCounter>>& values) override final
 	{				
-		return ProcessAny(record, values, staticFrozenCounters);		
+		return ProcessAny(header, values, staticFrozenCounters);
 	}
 
-	virtual IINField ProcessRange(const HeaderRecord& record, const ICollection<Indexed<Analog>>& values) override final
+	virtual IINField ProcessValues(const RangeHeader& header, const ICollection<Indexed<Analog>>& values) override final
 	{		
-		return ProcessAny(record, values, eventAnalogs);		
+		return ProcessAny(header, values, eventAnalogs);
 	}
 
-	virtual IINField ProcessRange(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputStatus>>& values) override final
+	virtual IINField ProcessValues(const RangeHeader& header, const ICollection<Indexed<AnalogOutputStatus>>& values) override final
 	{		
-		return ProcessAny(record, values, staticSetpointStatii);
+		return ProcessAny(header, values, staticSetpointStatii);
 	}
 
-	virtual IINField ProcessRange(const HeaderRecord& record, const ICollection<Indexed<OctetString>>& values) override final
+	virtual IINField ProcessValues(const RangeHeader& header, const ICollection<Indexed<OctetString>>& values) override final
 	{				
-		return ProcessAny(record, values, rangedOctets);		
+		return ProcessAny(header, values, rangedOctets);
 	}
 	
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Binary>>& values) override final
+	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<Binary>>& values) override final
 	{			
-		return this->ProcessAny(record, values, eventBinaries);		
+		return this->ProcessAny(header, values, eventBinaries);		
 	}
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<DoubleBitBinary>>& values) override final
+	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values) override final
 	{				
-		return this->ProcessAny(record, values, eventDoubleBinaries);
+		return this->ProcessAny(header, values, eventDoubleBinaries);
 	}
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Counter>>& values) override final
+	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<Counter>>& values) override final
 	{		
-		return this->ProcessAny(record, values, eventCounters);
+		return this->ProcessAny(header, values, eventCounters);
 	}
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<FrozenCounter>>& values) override final
+	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<FrozenCounter>>& values) override final
 	{		
-		return this->ProcessAny(record, values, eventFrozenCounters);
+		return this->ProcessAny(header, values, eventFrozenCounters);
 	}
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Analog>>& values) override final
+	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<Analog>>& values) override final
 	{		
-		return this->ProcessAny(record, values, eventAnalogs);
+		return this->ProcessAny(header, values, eventAnalogs);
 	}
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<OctetString>>& values) override final
+	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<OctetString>>& values) override final
 	{				
-		return this->ProcessAny(record, values, indexPrefixedOctets);
+		return this->ProcessAny(header, values, indexPrefixedOctets);
 	}
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<BinaryCommandEvent>>& values) override final
+	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<BinaryCommandEvent>>& values) override final
 	{				
-		return this->ProcessAny(record, values, binaryCommandEvents);		
+		return this->ProcessAny(header, values, binaryCommandEvents);		
 	}
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogCommandEvent>>& values) override final
+	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<AnalogCommandEvent>>& values) override final
 	{				
-		return this->ProcessAny(record, values, analogCommandEvents);
+		return this->ProcessAny(header, values, analogCommandEvents);
 	}
 
 	/// --- controls ----
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<ControlRelayOutputBlock>>& meas) override final
+	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<ControlRelayOutputBlock>>& meas) override final
 	{			
-		return this->ProcessAny(record, meas, crobRequests);
+		return this->ProcessAny(header, meas, crobRequests);
 	}
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputInt16>>& meas) override final
+	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt16>>& meas) override final
 	{				
-		return this->ProcessAny(record, meas, aoInt16Requests);
+		return this->ProcessAny(header, meas, aoInt16Requests);
 	}
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputInt32>>& meas) override final
+	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt32>>& meas) override final
 	{				
-		return this->ProcessAny(record, meas, aoInt32Requests);
+		return this->ProcessAny(header, meas, aoInt32Requests);
 	}
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputFloat32>>& meas) override final
+	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputFloat32>>& meas) override final
 	{				
-		return this->ProcessAny(record, meas, aoFloat32Requests);
+		return this->ProcessAny(header, meas, aoFloat32Requests);
 	}
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputDouble64>>& meas) override final
+	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputDouble64>>& meas) override final
 	{				
-		return this->ProcessAny(record, meas, aoDouble64Requests);
+		return this->ProcessAny(header, meas, aoDouble64Requests);
 	}	
 
 	virtual IINField ProcessFreeFormat(const HeaderRecord& record, const Group120Var1& value) override final

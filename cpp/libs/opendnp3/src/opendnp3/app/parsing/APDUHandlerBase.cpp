@@ -105,153 +105,153 @@ void APDUHandlerBase::OnValues(const CountHeader& header, const ICollection<Grou
 	Record(header, this->ProcessValues(header, values));
 }
 
-void APDUHandlerBase::OnRange(const HeaderRecord& record, const ICollection<Indexed<IINValue>>& values)
+void APDUHandlerBase::OnValues(const RangeHeader& header, const ICollection<Indexed<IINValue>>& values)
 {
-	Record(record, this->ProcessRange(record, values));
+	Record(header, this->ProcessValues(header, values));
 }
 
-void APDUHandlerBase::OnRange(const HeaderRecord& record, const ICollection<Indexed<Binary>>& values)
+void APDUHandlerBase::OnValues(const RangeHeader& header, const ICollection<Indexed<Binary>>& values)
 {
-	Record(record, this->ProcessRange(record, values));
+	Record(header, this->ProcessValues(header, values));
 }
 
-void APDUHandlerBase::OnRange(const HeaderRecord& record, const ICollection<Indexed<DoubleBitBinary>>& values)
+void APDUHandlerBase::OnValues(const RangeHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values)
 {
-	Record(record, this->ProcessRange(record, values));
+	Record(header, this->ProcessValues(header, values));
 }
 
-void APDUHandlerBase::OnRange(const HeaderRecord& record, const ICollection<Indexed<BinaryOutputStatus>>& values)
+void APDUHandlerBase::OnValues(const RangeHeader& header, const ICollection<Indexed<BinaryOutputStatus>>& values)
 {
-	Record(record, this->ProcessRange(record, values));
+	Record(header, this->ProcessValues(header, values));
 }
 
-void APDUHandlerBase::OnRange(const HeaderRecord& record, const ICollection<Indexed<Counter>>& values)
+void APDUHandlerBase::OnValues(const RangeHeader& header, const ICollection<Indexed<Counter>>& values)
 {
-	Record(record, this->ProcessRange(record, values));
+	Record(header, this->ProcessValues(header, values));
 }
 
-void APDUHandlerBase::OnRange(const HeaderRecord& record, const ICollection<Indexed<FrozenCounter>>& values)
+void APDUHandlerBase::OnValues(const RangeHeader& header, const ICollection<Indexed<FrozenCounter>>& values)
 {
-	Record(record, this->ProcessRange(record, values));
+	Record(header, this->ProcessValues(header, values));
 }
 
-void APDUHandlerBase::OnRange(const HeaderRecord& record, const ICollection<Indexed<Analog>>& values)
+void APDUHandlerBase::OnValues(const RangeHeader& header, const ICollection<Indexed<Analog>>& values)
 {
-	Record(record, this->ProcessRange(record, values));
+	Record(header, this->ProcessValues(header, values));
 }
 
-void APDUHandlerBase::OnRange(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputStatus>>& values)
+void APDUHandlerBase::OnValues(const RangeHeader& header, const ICollection<Indexed<AnalogOutputStatus>>& values)
 {
-	Record(record, this->ProcessRange(record, values));
+	Record(header, this->ProcessValues(header, values));
 }
 
-void APDUHandlerBase::OnRange(const HeaderRecord& record, const ICollection<Indexed<OctetString>>& values)
+void APDUHandlerBase::OnValues(const RangeHeader& header, const ICollection<Indexed<OctetString>>& values)
 {
-	Record(record, this->ProcessRange(record, values));
+	Record(header, this->ProcessValues(header, values));
 }
 
-void APDUHandlerBase::OnRange(const HeaderRecord& record, const ICollection<Indexed<TimeAndInterval>>& values)
+void APDUHandlerBase::OnValues(const RangeHeader& header, const ICollection<Indexed<TimeAndInterval>>& values)
 {
-	Record(record, this->ProcessRange(record, values));
+	Record(header, this->ProcessValues(header, values));
 }
 
-void APDUHandlerBase::OnRange(const HeaderRecord& record, const ICollection<Indexed<Group121Var1>>& values)
+void APDUHandlerBase::OnValues(const RangeHeader& header, const ICollection<Indexed<Group121Var1>>& values)
 {
-	Record(record, this->ProcessRange(record, values));
+	Record(header, this->ProcessValues(header, values));
 }
 
 // --- index prefixes ----
 
-void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Binary>>& values)
+void APDUHandlerBase::OnValues(const PrefixHeader& header, const ICollection<Indexed<Binary>>& values)
 {
-	Record(record, ProcessIndexPrefix(record, values));
+	Record(header, this->ProcessValues(header, values));
 }
 
-void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<BinaryOutputStatus>>& values)
+void APDUHandlerBase::OnValues(const PrefixHeader& header, const ICollection<Indexed<BinaryOutputStatus>>& values)
 {
-	Record(record, ProcessIndexPrefix(record, values));
+	Record(header, this->ProcessValues(header, values));
 }
 
-void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<DoubleBitBinary>>& values)
+void APDUHandlerBase::OnValues(const PrefixHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values)
 {
-	Record(record, ProcessIndexPrefix(record, values));
+	Record(header, this->ProcessValues(header, values));
 }
 
-void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Counter>>& values)
+void APDUHandlerBase::OnValues(const PrefixHeader& header, const ICollection<Indexed<Counter>>& values)
 {
-	Record(record, ProcessIndexPrefix(record, values));
+	Record(header, this->ProcessValues(header, values));
 }
 
-void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<FrozenCounter>>& values)
+void APDUHandlerBase::OnValues(const PrefixHeader& header, const ICollection<Indexed<FrozenCounter>>& values)
 {
-	Record(record, ProcessIndexPrefix(record, values));
+	Record(header, this->ProcessValues(header, values));
 }
 
-void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Analog>>& values)
+void APDUHandlerBase::OnValues(const PrefixHeader& header, const ICollection<Indexed<Analog>>& values)
 {
-	Record(record, ProcessIndexPrefix(record, values));
+	Record(header, this->ProcessValues(header, values));
 }
 
-void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputStatus>>& values)
+void APDUHandlerBase::OnValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputStatus>>& values)
 {
-	Record(record, ProcessIndexPrefix(record, values));
+	Record(header, this->ProcessValues(header, values));
 }
 
-void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<OctetString>>& values)
+void APDUHandlerBase::OnValues(const PrefixHeader& header, const ICollection<Indexed<OctetString>>& values)
 {
-	Record(record, ProcessIndexPrefix(record, values));
+	Record(header, this->ProcessValues(header, values));
 }
 
-void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<TimeAndInterval>>& values)
+void APDUHandlerBase::OnValues(const PrefixHeader& header, const ICollection<Indexed<TimeAndInterval>>& values)
 {
-	Record(record, ProcessIndexPrefix(record, values));
+	Record(header, this->ProcessValues(header, values));
 }
 
-void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<BinaryCommandEvent>>& values)
+void APDUHandlerBase::OnValues(const PrefixHeader& header, const ICollection<Indexed<BinaryCommandEvent>>& values)
 {
-	Record(record, ProcessIndexPrefix(record, values));
+	Record(header, this->ProcessValues(header, values));
 }
 
-void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogCommandEvent>>& values)
+void APDUHandlerBase::OnValues(const PrefixHeader& header, const ICollection<Indexed<AnalogCommandEvent>>& values)
 {
-	Record(record, ProcessIndexPrefix(record, values));
+	Record(header, this->ProcessValues(header, values));
 }
 
-void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Group122Var1>>& values)
+void APDUHandlerBase::OnValues(const PrefixHeader& header, const ICollection<Indexed<Group122Var1>>& values)
 {
-	Record(record, ProcessIndexPrefix(record, values));
+	Record(header, this->ProcessValues(header, values));
 }
 
-void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Group122Var2>>& values)
+void APDUHandlerBase::OnValues(const PrefixHeader& header, const ICollection<Indexed<Group122Var2>>& values)
 {
-	Record(record, ProcessIndexPrefix(record, values));
+	Record(header, this->ProcessValues(header, values));
 }
 
 // --- controls ----
 
-void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<ControlRelayOutputBlock>>& values)
+void APDUHandlerBase::OnValues(const PrefixHeader& header, const ICollection<Indexed<ControlRelayOutputBlock>>& values)
 {		
-	Record(record, ProcessIndexPrefix(record, values));
+	Record(header, this->ProcessValues(header, values));
 }
 
-void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputInt16>>& values)
+void APDUHandlerBase::OnValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt16>>& values)
 {
-	Record(record, ProcessIndexPrefix(record, values));
+	Record(header, this->ProcessValues(header, values));
 }
 
-void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputInt32>>& values)
+void APDUHandlerBase::OnValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt32>>& values)
 {
-	Record(record, ProcessIndexPrefix(record, values));
+	Record(header, this->ProcessValues(header, values));
 }
 
-void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputFloat32>>& values)
+void APDUHandlerBase::OnValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputFloat32>>& values)
 {
-	Record(record, ProcessIndexPrefix(record, values));
+	Record(header, this->ProcessValues(header, values));
 }
 
-void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputDouble64>>& values)
+void APDUHandlerBase::OnValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputDouble64>>& values)
 {
-	Record(record, ProcessIndexPrefix(record, values));
+	Record(header, this->ProcessValues(header, values));
 }
 
 IINField APDUHandlerBase::ProcessHeader(const AllObjectsHeader& record)
@@ -318,151 +318,151 @@ IINField APDUHandlerBase::ProcessValues(const CountHeader& header, const ICollec
 
 /// ---- ranges -----
 
-IINField APDUHandlerBase::ProcessRange(const HeaderRecord& record, const ICollection<Indexed<IINValue>>& values)
+IINField APDUHandlerBase::ProcessValues(const RangeHeader& header, const ICollection<Indexed<IINValue>>& values)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessRange(const HeaderRecord& record, const ICollection<Indexed<Binary>>& values)
+IINField APDUHandlerBase::ProcessValues(const RangeHeader& header, const ICollection<Indexed<Binary>>& values)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessRange(const HeaderRecord& record, const ICollection<Indexed<DoubleBitBinary>>& values)
+IINField APDUHandlerBase::ProcessValues(const RangeHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessRange(const HeaderRecord& record, const ICollection<Indexed<BinaryOutputStatus>>& values)
+IINField APDUHandlerBase::ProcessValues(const RangeHeader& header, const ICollection<Indexed<BinaryOutputStatus>>& values)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessRange(const HeaderRecord& record, const ICollection<Indexed<Counter>>& values)
+IINField APDUHandlerBase::ProcessValues(const RangeHeader& header, const ICollection<Indexed<Counter>>& values)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessRange(const HeaderRecord& record, const ICollection<Indexed<FrozenCounter>>& values)
+IINField APDUHandlerBase::ProcessValues(const RangeHeader& header, const ICollection<Indexed<FrozenCounter>>& values)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessRange(const HeaderRecord& record, const ICollection<Indexed<Analog>>& values)
+IINField APDUHandlerBase::ProcessValues(const RangeHeader& header, const ICollection<Indexed<Analog>>& values)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessRange(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputStatus>>& values)
+IINField APDUHandlerBase::ProcessValues(const RangeHeader& header, const ICollection<Indexed<AnalogOutputStatus>>& values)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessRange(const HeaderRecord& record, const ICollection<Indexed<OctetString>>& values)
+IINField APDUHandlerBase::ProcessValues(const RangeHeader& header, const ICollection<Indexed<OctetString>>& values)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessRange(const HeaderRecord& record, const ICollection<Indexed<TimeAndInterval>>& values)
+IINField APDUHandlerBase::ProcessValues(const RangeHeader& header, const ICollection<Indexed<TimeAndInterval>>& values)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessRange(const HeaderRecord& record, const ICollection<Indexed<Group121Var1>>& values)
+IINField APDUHandlerBase::ProcessValues(const RangeHeader& header, const ICollection<Indexed<Group121Var1>>& values)
 {
 	return ProcessUnsupportedHeader();
 }
 
 /// ---- index prefixes -----
 
-IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Counter>>& values)
+IINField APDUHandlerBase::ProcessValues(const PrefixHeader& header, const ICollection<Indexed<Counter>>& values)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<FrozenCounter>>& values)
+IINField APDUHandlerBase::ProcessValues(const PrefixHeader& header, const ICollection<Indexed<FrozenCounter>>& values)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Binary>>& values)
+IINField APDUHandlerBase::ProcessValues(const PrefixHeader& header, const ICollection<Indexed<Binary>>& values)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<BinaryOutputStatus>>& values)
+IINField APDUHandlerBase::ProcessValues(const PrefixHeader& header, const ICollection<Indexed<BinaryOutputStatus>>& values)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<DoubleBitBinary>>& values)
+IINField APDUHandlerBase::ProcessValues(const PrefixHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Analog>>& values)
+IINField APDUHandlerBase::ProcessValues(const PrefixHeader& header, const ICollection<Indexed<Analog>>& values)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputStatus>>& values)
+IINField APDUHandlerBase::ProcessValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputStatus>>& values)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<OctetString>>& values)
+IINField APDUHandlerBase::ProcessValues(const PrefixHeader& header, const ICollection<Indexed<OctetString>>& values)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<TimeAndInterval>>& values)
+IINField APDUHandlerBase::ProcessValues(const PrefixHeader& header, const ICollection<Indexed<TimeAndInterval>>& values)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<BinaryCommandEvent>>& values)
+IINField APDUHandlerBase::ProcessValues(const PrefixHeader& header, const ICollection<Indexed<BinaryCommandEvent>>& values)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogCommandEvent>>& values)
+IINField APDUHandlerBase::ProcessValues(const PrefixHeader& header, const ICollection<Indexed<AnalogCommandEvent>>& values)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Group122Var1>>& values)
+IINField APDUHandlerBase::ProcessValues(const PrefixHeader& header, const ICollection<Indexed<Group122Var1>>& values)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Group122Var2>>& values)
+IINField APDUHandlerBase::ProcessValues(const PrefixHeader& header, const ICollection<Indexed<Group122Var2>>& values)
 {
 	return ProcessUnsupportedHeader();
 }
 
 //// --- controls ----
 
-IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<ControlRelayOutputBlock>>& values)
+IINField APDUHandlerBase::ProcessValues(const PrefixHeader& header, const ICollection<Indexed<ControlRelayOutputBlock>>& values)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputInt16>>& values)
+IINField APDUHandlerBase::ProcessValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt16>>& values)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputInt32>>& values)
+IINField APDUHandlerBase::ProcessValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt32>>& values)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputFloat32>>& values)
+IINField APDUHandlerBase::ProcessValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputFloat32>>& values)
 {
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputDouble64>>& values)
+IINField APDUHandlerBase::ProcessValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputDouble64>>& values)
 {
 	return ProcessUnsupportedHeader();
 }

@@ -126,7 +126,7 @@ void RangeParser::InvokeRangeOf(const HeaderRecord& record, const Range& range, 
 
 	auto collection = CreateBufferedCollection<Indexed<typename Descriptor::Target>>(buffer, COUNT, read);
 
-	handler.OnRange(record, collection);
+	handler.OnValues(RangeHeader(record, range), collection);
 }
 
 template <class Type>
@@ -142,7 +142,7 @@ void RangeParser::InvokeRangeOfType(const HeaderRecord& record, const Range& ran
 
 	auto collection = CreateBufferedCollection<Indexed<Type>>(buffer, COUNT, read);
 
-	handler.OnRange(record, collection);
+	handler.OnValues(RangeHeader(record, range), collection);
 }
 
 
@@ -165,7 +165,7 @@ void RangeParser::InvokeRangeBitfieldType(const HeaderRecord& record, const Rang
 
 	auto collection = CreateBufferedCollection<Indexed<Type>>(buffer, COUNT, read);
 
-	handler.OnRange(record, collection);
+	handler.OnValues(RangeHeader(record, range), collection);
 }
 
 template <class Type>
@@ -187,7 +187,7 @@ void RangeParser::InvokeRangeDoubleBitfieldType(const HeaderRecord& record, cons
 
 	auto collection = CreateBufferedCollection<Indexed<Type>>(buffer, COUNT, read);
 
-	handler.OnRange(record, collection);
+	handler.OnValues(RangeHeader(record, range), collection);
 }
 
 }

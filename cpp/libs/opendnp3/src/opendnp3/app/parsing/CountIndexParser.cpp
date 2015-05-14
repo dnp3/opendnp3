@@ -253,7 +253,7 @@ ParseResult CountIndexParser::ParseIndexPrefixedOctetData(openpal::ReadBufferVie
 		};
 
 		auto collection = CreateBufferedCollection<Indexed<OctetString>>(buffer, count, read);
-		pHandler->OnIndexPrefix(record, collection);
+		pHandler->OnValues(PrefixHeader(record, count), collection);
 	}
 
 	buffer.Advance(TOTAL_SIZE);
