@@ -44,7 +44,7 @@ private:
 
 	virtual IINField ProcessHeader(const AllObjectsHeader& header) override final;
 
-	virtual IINField ProcessRangeRequest(const HeaderRecord& record, const Range& range) override final;
+	virtual IINField ProcessHeader(const RangeHeader& header) override final;
 
 	IINField RecordClass(GroupVariation gv);	
 

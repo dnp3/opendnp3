@@ -55,7 +55,7 @@ public:
 
 	virtual void OnHeader(const AllObjectsHeader& header) override final;
 
-	virtual void OnRangeRequest(const HeaderRecord& record, const Range& range) override final;
+	virtual void OnHeader(const RangeHeader& header) override final;
 
 	virtual void OnHeader(const CountHeader& header) override final;
 
@@ -122,7 +122,7 @@ protected:
 
 
 	virtual IINField ProcessHeader(const AllObjectsHeader& record);
-	virtual IINField ProcessRangeRequest(const HeaderRecord& record, const Range& range);
+	virtual IINField ProcessHeader(const RangeHeader& header);
 	virtual IINField ProcessHeader(const CountHeader& header);
 
 	virtual IINField ProcessFreeFormat(const HeaderRecord& record, const Group120Var1& value);

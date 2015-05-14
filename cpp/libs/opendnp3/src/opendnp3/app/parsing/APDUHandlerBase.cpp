@@ -50,9 +50,9 @@ void APDUHandlerBase::OnHeader(const AllObjectsHeader& header)
 	Record(header, this->ProcessHeader(header));	
 }
 
-void APDUHandlerBase::OnRangeRequest(const HeaderRecord& record, const Range& range)
+void APDUHandlerBase::OnHeader(const RangeHeader& header)
 {
-	Record(record, this->ProcessRangeRequest(record, range));
+	Record(header, this->ProcessHeader(header));
 }
 
 void APDUHandlerBase::OnHeader(const CountHeader& header)
@@ -259,7 +259,7 @@ IINField APDUHandlerBase::ProcessHeader(const AllObjectsHeader& record)
 	return ProcessUnsupportedHeader();
 }
 
-IINField APDUHandlerBase::ProcessRangeRequest(const HeaderRecord& record, const Range& range)
+IINField APDUHandlerBase::ProcessHeader(const RangeHeader& header)
 {
 	return ProcessUnsupportedHeader();
 }

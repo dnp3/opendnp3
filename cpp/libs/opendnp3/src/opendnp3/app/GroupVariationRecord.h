@@ -29,6 +29,8 @@
 #include "opendnp3/gen/TimestampMode.h"
 #include "opendnp3/gen/GroupVariation.h"
 
+#include "opendnp3/app/Range.h"
+
 
 namespace opendnp3
 {
@@ -109,6 +111,16 @@ public:
 	{}
 
 	uint16_t count;
+};
+
+class RangeHeader : public HeaderRecord
+{
+public:
+
+	RangeHeader(const HeaderRecord& record, const Range& range_) : HeaderRecord(record), range(range_)
+	{}
+
+	Range range;
 };
 
 }

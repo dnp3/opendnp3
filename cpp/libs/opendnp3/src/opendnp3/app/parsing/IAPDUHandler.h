@@ -58,7 +58,7 @@ public:
 	// ----- header only callbacks ----
 
 	virtual void OnHeader(const AllObjectsHeader& header) = 0;
-	virtual void OnRangeRequest(const HeaderRecord& record, const Range& range) = 0;
+	virtual void OnHeader(const RangeHeader& header) = 0;
 	virtual void OnHeader(const CountHeader& header) = 0;
 
 	// ------	Count callbacks for qualifiers 0x07 and 0x08 ------

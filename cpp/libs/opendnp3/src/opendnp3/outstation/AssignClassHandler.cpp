@@ -72,27 +72,27 @@ IINField AssignClassHandler::ProcessHeader(const AllObjectsHeader& header)
 
 
 
-IINField AssignClassHandler::ProcessRangeRequest(const HeaderRecord& record, const Range& range)
+IINField AssignClassHandler::ProcessHeader(const RangeHeader& header)
 {	
 	if (IsExpectingAssignment())
 	{
-		switch (record.enumeration)
+		switch (header.enumeration)
 		{
 			
 		case(GroupVariation::Group1Var0) :			
-			return ProcessAssignRange(AssignClassType::BinaryInput, clazz, range);
+			return ProcessAssignRange(AssignClassType::BinaryInput, clazz, header.range);
 		case(GroupVariation::Group3Var0) :
-			return ProcessAssignRange(AssignClassType::DoubleBinaryInput, clazz, range);
+			return ProcessAssignRange(AssignClassType::DoubleBinaryInput, clazz, header.range);
 		case(GroupVariation::Group10Var0) :
-			return ProcessAssignRange(AssignClassType::BinaryOutputStatus, clazz, range);            
+			return ProcessAssignRange(AssignClassType::BinaryOutputStatus, clazz, header.range);
 		case(GroupVariation::Group20Var0) :
-			return ProcessAssignRange(AssignClassType::Counter, clazz, range);            
+			return ProcessAssignRange(AssignClassType::Counter, clazz, header.range);
 		case(GroupVariation::Group21Var0) :
-			return ProcessAssignRange(AssignClassType::FrozenCounter, clazz, range);            
+			return ProcessAssignRange(AssignClassType::FrozenCounter, clazz, header.range);
 		case(GroupVariation::Group30Var0) :
-			return ProcessAssignRange(AssignClassType::AnalogInput, clazz, range);
+			return ProcessAssignRange(AssignClassType::AnalogInput, clazz, header.range);
 		case(GroupVariation::Group40Var0) :
-			return ProcessAssignRange(AssignClassType::AnalogOutputStatus, clazz, range);
+			return ProcessAssignRange(AssignClassType::AnalogOutputStatus, clazz, header.range);
 		default:
 			return IINBit::FUNC_NOT_SUPPORTED;
 		}

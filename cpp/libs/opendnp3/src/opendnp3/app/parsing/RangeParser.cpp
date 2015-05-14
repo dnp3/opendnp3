@@ -76,7 +76,7 @@ ParseResult RangeParser::ParseHeader(openpal::ReadBufferView& buffer, const NumP
 		{
 			if (pHandler)
 			{
-				pHandler->OnRangeRequest(record, range);
+				pHandler->OnHeader(RangeHeader(record, range));
 			}
 			return ParseResult::OK;
 		}

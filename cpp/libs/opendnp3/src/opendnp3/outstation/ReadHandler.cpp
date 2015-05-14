@@ -45,9 +45,9 @@ IINField ReadHandler::ProcessHeader(const AllObjectsHeader& header)
 	}	
 }
 
-IINField ReadHandler::ProcessRangeRequest(const HeaderRecord& record, const Range& range)
+IINField ReadHandler::ProcessHeader(const RangeHeader& header)
 {
-	return pStaticSelector->SelectRange(record.enumeration, range);
+	return pStaticSelector->SelectRange(header.enumeration, header.range);
 }
 
 IINField ReadHandler::ProcessHeader(const CountHeader& header)
