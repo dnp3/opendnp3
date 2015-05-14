@@ -63,25 +63,25 @@ bool AuthRequestHandler::WhiteList(uint32_t count, GroupVariation gv, QualifierC
 	}
 }
 
-IINField AuthRequestHandler::ProcessFreeFormat(const HeaderRecord& record, const Group120Var1& value)
+IINField AuthRequestHandler::ProcessHeader(const HeaderRecord& record, const Group120Var1& value)
 {
 	pHandler->OnAuthChallenge(*pOState, fragment, header, value);
 	return IINField::Empty();
 }
 
-IINField AuthRequestHandler::ProcessFreeFormat(const HeaderRecord& record, const Group120Var2& value)
+IINField AuthRequestHandler::ProcessHeader(const HeaderRecord& record, const Group120Var2& value)
 {
 	pHandler->OnAuthReply(*pOState, fragment, header, value);
 	return IINField::Empty();
 }
 
-IINField AuthRequestHandler::ProcessFreeFormat(const HeaderRecord& record, const Group120Var6& value)
+IINField AuthRequestHandler::ProcessHeader(const HeaderRecord& record, const Group120Var6& value)
 {
 	pHandler->OnChangeSessionKeys(*pOState, fragment, header, value);
 	return IINField::Empty();
 }
 
-IINField AuthRequestHandler::ProcessValues(const opendnp3::CountHeader& record, const ICollection<opendnp3::Group120Var4>& values)
+IINField AuthRequestHandler::ProcessHeader(const opendnp3::CountHeader& record, const ICollection<opendnp3::Group120Var4>& values)
 {			
 	Group120Var4 value;
 	if (values.ReadOnlyValue(value))

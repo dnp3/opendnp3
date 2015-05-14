@@ -90,7 +90,7 @@ void CountParser::InvokeCountOf(const HeaderRecord& record, uint16_t count, cons
 	};
 
 	auto collection = CreateBufferedCollection<T>(buffer, count, read);
-	handler.OnValues(CountHeader(record, count), collection);
+	handler.OnHeader(CountHeader(record, count), collection);
 }
 
 }

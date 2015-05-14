@@ -21,7 +21,7 @@
 #ifndef OPENDNP3_COMMANDRESPONSEHANDLER_H
 #define OPENDNP3_COMMANDRESPONSEHANDLER_H
 
-#include "opendnp3/app/parsing/APDUHandlerBase.h"
+#include "opendnp3/app/parsing/IAPDUHandler.h"
 #include "opendnp3/app/APDUResponse.h"
 #include "opendnp3/outstation/ICommandAction.h"
 
@@ -30,7 +30,7 @@
 namespace opendnp3
 {
 
-class CommandResponseHandler : public APDUHandlerBase
+class CommandResponseHandler : public IAPDUHandler
 {
 public:
 
@@ -43,11 +43,11 @@ public:
 
 private:
 
-	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<ControlRelayOutputBlock>>& meas) override final;
-	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt16>>& meas) override final;
-	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt32>>& meas) override final;
-	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputFloat32>>& meas) override final;
-	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputDouble64>>& meas) override final;
+	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<ControlRelayOutputBlock>>& meas) override final;
+	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt16>>& meas) override final;
+	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt32>>& meas) override final;
+	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputFloat32>>& meas) override final;
+	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputDouble64>>& meas) override final;
 	
 	IINField ProcessIndexPrefixTwoByte(const HeaderRecord& record, const ICollection<Indexed<ControlRelayOutputBlock>>& meas);
 	IINField ProcessIndexPrefixTwoByte(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputInt16>>& meas);

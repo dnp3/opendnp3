@@ -22,7 +22,6 @@
 #define OPENDNP3_IAPDUHANDLER_H
 
 #include "opendnp3/app/GroupVariationRecord.h"
-
 #include "opendnp3/app/parsing/ICollection.h"
 
 #include "opendnp3/app/MeasurementTypes.h"
@@ -44,84 +43,169 @@
 #include "opendnp3/objects/Group120.h"
 #include "opendnp3/objects/Group121.h"
 #include "opendnp3/objects/Group122.h"
+#include "opendnp3/app/IINField.h"
 
 namespace opendnp3
 {
 
 /**
-* Callbacks for the various kinds of headers in an APDU
-*/
+ * Base class used to handle APDU object headers
+ */
 class IAPDUHandler
 {
 public:
-
-	// ----- header only callbacks ----
-
-	virtual void OnHeader(const AllObjectsHeader& header) = 0;
-	virtual void OnHeader(const RangeHeader& header) = 0;
-	virtual void OnHeader(const CountHeader& header) = 0;
-
-	// ------	Count callbacks for qualifiers 0x07 and 0x08 ------
 	
-	virtual void OnValues(const CountHeader& header, const ICollection<Group50Var1>& values) = 0;
-	virtual void OnValues(const CountHeader& header, const ICollection<Group51Var1>& values) = 0;
-	virtual void OnValues(const CountHeader& header, const ICollection<Group51Var2>& values) = 0;
-	virtual void OnValues(const CountHeader& header, const ICollection<Group52Var2>& values) = 0;
-	virtual void OnValues(const CountHeader& header, const ICollection<Group120Var4>& values) = 0;
+	IAPDUHandler();
 
-	// ------ Variable-length free-format types  ------
+	// read any accumulated errors
+	IINField Errors() const;
 
-	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var1& value) = 0;
-	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var2& value) = 0;
-	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var5& value) = 0;
-	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var6& value) = 0;
+	void OnHeader(const AllObjectsHeader& header);
+	void OnHeader(const RangeHeader& header);
+	void OnHeader(const CountHeader& header);
 
-	// ------ Special ranged values like IIN (group 80) ------
+	void OnHeader(const HeaderRecord& record, const Group120Var1& value);
+	void OnHeader(const HeaderRecord& record, const Group120Var2& value);
+	void OnHeader(const HeaderRecord& record, const Group120Var5& value);
+	void OnHeader(const HeaderRecord& record, const Group120Var6& value);
 
-	virtual void OnValues(const RangeHeader& header, const ICollection<Indexed<IINValue>> &values) = 0;
+	void OnHeader(const CountHeader& header, const ICollection<Group50Var1>& values);
+	void OnHeader(const CountHeader& header, const ICollection<Group51Var1>& values);
+	void OnHeader(const CountHeader& header, const ICollection<Group51Var2>& values);
+	void OnHeader(const CountHeader& header, const ICollection<Group52Var2>& values);
+	void OnHeader(const CountHeader& header, const ICollection<Group120Var4>& values);
 
-	// ------ range callbacks for qualifiers 0x00 and 0x01 ------
+	void OnHeader(const RangeHeader& header, const ICollection<Indexed<IINValue>> &values);
+	void OnHeader(const RangeHeader& header, const ICollection<Indexed<Binary>>& values);
+	void OnHeader(const RangeHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values);
+	void OnHeader(const RangeHeader& header, const ICollection<Indexed<BinaryOutputStatus>>& values);
+	void OnHeader(const RangeHeader& header, const ICollection<Indexed<Counter>>& values);
+	void OnHeader(const RangeHeader& header, const ICollection<Indexed<FrozenCounter>>& values);
+	void OnHeader(const RangeHeader& header, const ICollection<Indexed<Analog>>& values) ;
+	void OnHeader(const RangeHeader& header, const ICollection<Indexed<AnalogOutputStatus>>& values);
+	void OnHeader(const RangeHeader& header, const ICollection<Indexed<OctetString>>& values);
+	void OnHeader(const RangeHeader& header, const ICollection<Indexed<TimeAndInterval>>& values);
+	void OnHeader(const RangeHeader& header, const ICollection<Indexed<Group121Var1>>& values);
 
-	virtual void OnValues(const RangeHeader& header, const ICollection<Indexed<Binary>>& values) = 0;
-	virtual void OnValues(const RangeHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values) = 0;
-	virtual void OnValues(const RangeHeader& header, const ICollection<Indexed<BinaryOutputStatus>>& values) = 0;
-	virtual void OnValues(const RangeHeader& header, const ICollection<Indexed<Counter>>& values) = 0;
-	virtual void OnValues(const RangeHeader& header, const ICollection<Indexed<FrozenCounter>>& values) = 0;
-	virtual void OnValues(const RangeHeader& header, const ICollection<Indexed<Analog>>& values) = 0;
-	virtual void OnValues(const RangeHeader& header, const ICollection<Indexed<AnalogOutputStatus>>& values) = 0;
-	virtual void OnValues(const RangeHeader& header, const ICollection<Indexed<OctetString>>& values) = 0;
-	virtual void OnValues(const RangeHeader& header, const ICollection<Indexed<TimeAndInterval>>& values) = 0;
-	virtual void OnValues(const RangeHeader& header, const ICollection<Indexed<Group121Var1>>& values) = 0;
+	// events
 
-	// ------ index-prefix callbacks for qualifiers 0x17 and 0x28 ------
+	void OnHeader(const PrefixHeader& header, const ICollection<Indexed<Binary>>& values);
+	void OnHeader(const PrefixHeader& header, const ICollection<Indexed<BinaryOutputStatus>>& values);
+	void OnHeader(const PrefixHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values);
+	void OnHeader(const PrefixHeader& header, const ICollection<Indexed<Counter>>& values);
+	void OnHeader(const PrefixHeader& header, const ICollection<Indexed<FrozenCounter>>& values);
+	void OnHeader(const PrefixHeader& header, const ICollection<Indexed<Analog>>& values);
+	void OnHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputStatus>>& values);
+	void OnHeader(const PrefixHeader& header, const ICollection<Indexed<OctetString>>& values);
+	void OnHeader(const PrefixHeader& header, const ICollection<Indexed<TimeAndInterval>>& values);
+	void OnHeader(const PrefixHeader& header, const ICollection<Indexed<BinaryCommandEvent>>& values);
+	void OnHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogCommandEvent>>& values);
+	void OnHeader(const PrefixHeader& header, const ICollection<Indexed<Group122Var1>>& values);
+	void OnHeader(const PrefixHeader& header, const ICollection<Indexed<Group122Var2>>& values);
 
-	virtual void OnValues(const PrefixHeader& header, const ICollection<Indexed<Binary>>& values) = 0;
-	virtual void OnValues(const PrefixHeader& header, const ICollection<Indexed<BinaryOutputStatus>>& values) = 0;
-	virtual void OnValues(const PrefixHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values) = 0;
-	virtual void OnValues(const PrefixHeader& header, const ICollection<Indexed<Counter>>& values) = 0;
-	virtual void OnValues(const PrefixHeader& header, const ICollection<Indexed<FrozenCounter>>& values) = 0;
-	virtual void OnValues(const PrefixHeader& header, const ICollection<Indexed<Analog>>& values) = 0;
-	virtual void OnValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputStatus>>& values) = 0;
-	virtual void OnValues(const PrefixHeader& header, const ICollection<Indexed<OctetString>>& values) = 0;
-	virtual void OnValues(const PrefixHeader& header, const ICollection<Indexed<TimeAndInterval>>& values) = 0;
-	virtual void OnValues(const PrefixHeader& header, const ICollection<Indexed<BinaryCommandEvent>>& values) = 0;
-	virtual void OnValues(const PrefixHeader& header, const ICollection<Indexed<AnalogCommandEvent>>& values) = 0;
+	// commands
 
-	// --- security stat events ---
+	void OnHeader(const PrefixHeader& header, const ICollection<Indexed<ControlRelayOutputBlock>>& values);
+	void OnHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt16>>& values);
+	void OnHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt32>>& values);
+	void OnHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputFloat32>>& values);
+	void OnHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputDouble64>>& values);
 
-	virtual void OnValues(const PrefixHeader& header, const ICollection<Indexed<Group122Var1>> &values) = 0;
-	virtual void OnValues(const PrefixHeader& header, const ICollection<Indexed<Group122Var2>> &values) = 0;
+protected:
 
-	// --- commmands ---
+	void Reset();
 
-	virtual void OnValues(const PrefixHeader& header, const ICollection<Indexed<ControlRelayOutputBlock>>& meas) = 0;
-	virtual void OnValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt16>>& meas) = 0;
-	virtual void OnValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt32>>& meas) = 0;
-	virtual void OnValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputFloat32>>& meas) = 0;
-	virtual void OnValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputDouble64>>& meas) = 0;
+	uint32_t NumIgnoredHeaders() const
+	{
+		return numIgnoredHeaders;
+	}
+
+	inline uint32_t GetCurrentHeader()
+	{
+		return numTotalHeaders;
+	}
+
+	inline bool IsFirstHeader()
+	{
+		return numTotalHeaders == 0;
+	}
+
+
+	virtual IINField ProcessHeader(const AllObjectsHeader& record);
+	virtual IINField ProcessHeader(const RangeHeader& header);
+	virtual IINField ProcessHeader(const CountHeader& header);
+
+	virtual IINField ProcessHeader(const HeaderRecord& record, const Group120Var1& value);
+	virtual IINField ProcessHeader(const HeaderRecord& record, const Group120Var2& value);
+	virtual IINField ProcessHeader(const HeaderRecord& record, const Group120Var5& value);
+	virtual IINField ProcessHeader(const HeaderRecord& record, const Group120Var6& value);
 	
+	virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group50Var1>& values);
+	virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group51Var1>& values);
+	virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group51Var2>& values);
+	virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group52Var2>& values);
+	virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group120Var4>& values);
+	
+	virtual IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<IINValue>>& values);
+	virtual IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Binary>>& values);
+	virtual IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values);
+	virtual IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<BinaryOutputStatus>>& values);
+	virtual IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Counter>>& values);
+	virtual IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<FrozenCounter>>& values);
+	virtual IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Analog>>& values);
+	virtual IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<AnalogOutputStatus>>& values);
+	virtual IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<OctetString>>& values);
+	virtual IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<TimeAndInterval>>& values);
+	virtual IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Group121Var1>>& values);
+
+	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Binary>>& values);
+	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<BinaryOutputStatus>>& values);
+	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values);
+	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Counter>>& values);
+	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<FrozenCounter>>& values);
+	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Analog>>& values);
+	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputStatus>>& values);
+	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<OctetString>>& values);
+	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<TimeAndInterval>>& values);
+	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<BinaryCommandEvent>>& values);
+	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogCommandEvent>>& values);
+	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Group122Var1>>& values);
+	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Group122Var2>>& values);
+
+	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<ControlRelayOutputBlock>>& values);
+	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt16>> &values);
+	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt32>>& values);
+	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputFloat32>>& values);
+	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputDouble64>>& values);
+
+protected:	
+
+	// overridable to receive events for every header
+	virtual void OnHeaderResult(const HeaderRecord& record, const IINField& result) {}
+	
+private:
+
+	inline void Record(const HeaderRecord& record, const IINField& result)
+	{
+		errors |= result;
+		++numTotalHeaders;
+		this->OnHeaderResult(record, result);
+	}
+
+	inline IINField ProcessUnsupportedHeader()
+	{
+		++numIgnoredHeaders;
+		return IINField(IINBit::FUNC_NOT_SUPPORTED);
+	}
+
+	IINField errors;
+	uint32_t numTotalHeaders;
+	uint32_t numIgnoredHeaders;		
 };
 
 }
 
+
+
 #endif
+

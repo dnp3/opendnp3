@@ -109,7 +109,7 @@ void CountIndexParser::InvokeCountOf(const HeaderRecord& record, uint16_t count,
 	};
 
 	auto collection = CreateBufferedCollection<Indexed<typename Descriptor::Target>>(buffer, count, read);
-	handler.OnValues(PrefixHeader(record, count), collection);
+	handler.OnHeader(PrefixHeader(record, count), collection);
 }
 
 template <class Type>
@@ -124,7 +124,7 @@ void CountIndexParser::InvokeCountOfType(const HeaderRecord& record, uint16_t co
 	};
 
 	auto collection = CreateBufferedCollection<Indexed<Type>>(buffer, count, read);
-	handler.OnValues(PrefixHeader(record, count), collection);
+	handler.OnHeader(PrefixHeader(record, count), collection);
 }
 
 }

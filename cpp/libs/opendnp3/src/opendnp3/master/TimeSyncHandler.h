@@ -21,7 +21,7 @@
 #ifndef OPENDNP3_TIMESYNCHANDLER_H
 #define OPENDNP3_TIMESYNCHANDLER_H
 
-#include "opendnp3/app/parsing/APDUHandlerBase.h"
+#include "opendnp3/app/parsing/IAPDUHandler.h"
 
 #include "opendnp3/LogLevels.h"
 
@@ -33,7 +33,7 @@ namespace opendnp3
 /**
  * Dedicated class for processing response data in the master.
  */
-class TimeSyncHandler : public APDUHandlerBase
+class TimeSyncHandler : public IAPDUHandler
 {
 
 public:
@@ -71,7 +71,7 @@ private:
 
 	openpal::Logger logger;
 
-	virtual IINField ProcessValues(const CountHeader& header, const ICollection<Group52Var2>& times) override final
+	virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group52Var2>& times) override final
 	{				
 		if (times.ReadOnlyValue(value))
 		{

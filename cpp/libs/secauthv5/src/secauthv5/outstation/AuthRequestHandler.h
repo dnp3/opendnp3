@@ -21,7 +21,7 @@
 #ifndef SECAUTHV5_AUTHREQUESTHANDLER_H
 #define SECAUTHV5_AUTHREQUESTHANDLER_H
 
-#include <opendnp3/app/parsing/APDUHandlerBase.h>
+#include <opendnp3/app/parsing/IAPDUHandler.h>
 #include <opendnp3/outstation/OutstationState.h>
 
 #include "IAuthRequestHandler.h"
@@ -29,16 +29,16 @@
 namespace secauthv5
 {
 
-class AuthRequestHandler : public opendnp3::APDUHandlerBase, private openpal::Uncopyable
+class AuthRequestHandler : public opendnp3::IAPDUHandler, private openpal::Uncopyable
 {
 	public:
 
 		AuthRequestHandler(const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, opendnp3::OState& ostate, IAuthRequestHandler& handler);
 
-		virtual opendnp3::IINField ProcessValues(const opendnp3::CountHeader& header, const opendnp3::ICollection<opendnp3::Group120Var4>& values) override final;
-		virtual opendnp3::IINField ProcessFreeFormat(const opendnp3::HeaderRecord& record, const opendnp3::Group120Var1& value) override final;
-		virtual opendnp3::IINField ProcessFreeFormat(const opendnp3::HeaderRecord& record, const opendnp3::Group120Var2& value) override final;
-		virtual opendnp3::IINField ProcessFreeFormat(const opendnp3::HeaderRecord& record, const opendnp3::Group120Var6& value) override final;
+		virtual opendnp3::IINField ProcessHeader(const opendnp3::CountHeader& header, const opendnp3::ICollection<opendnp3::Group120Var4>& values) override final;
+		virtual opendnp3::IINField ProcessHeader(const opendnp3::HeaderRecord& record, const opendnp3::Group120Var1& value) override final;
+		virtual opendnp3::IINField ProcessHeader(const opendnp3::HeaderRecord& record, const opendnp3::Group120Var2& value) override final;
+		virtual opendnp3::IINField ProcessHeader(const opendnp3::HeaderRecord& record, const opendnp3::Group120Var6& value) override final;
 
 		static bool WhiteList(uint32_t count, opendnp3::GroupVariation gv, opendnp3::QualifierCode qc);
 

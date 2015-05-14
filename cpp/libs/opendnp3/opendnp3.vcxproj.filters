@@ -801,12 +801,6 @@
     <ClInclude Include="src\opendnp3\app\parsing\APDUParser.h">
       <Filter>Header\app\parsing</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\app\parsing\APDUHandlerBase.h">
-      <Filter>Header\app\parsing</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\app\parsing\IAPDUHandler.h">
-      <Filter>Header\app\parsing</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\app\parsing\CountIndexParser.h">
       <Filter>Header\app\parsing</Filter>
     </ClInclude>
@@ -904,6 +898,9 @@
       <Filter>Header\app</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\app\parsing\Functions.h">
+      <Filter>Header\app\parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\app\parsing\IAPDUHandler.h">
       <Filter>Header\app\parsing</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1292,9 +1289,6 @@
     <ClCompile Include="src\opendnp3\app\parsing\APDUParser.cpp">
       <Filter>Source\app\parsing</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\app\parsing\APDUHandlerBase.cpp">
-      <Filter>Source\app\parsing</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\app\parsing\CountIndexParser.cpp">
       <Filter>Source\app\parsing</Filter>
     </ClCompile>
@@ -1339,6 +1333,9 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\app\QualityFlags.cpp">
       <Filter>Source\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\app\parsing\IAPDUHandler.cpp">
+      <Filter>Source\app\parsing</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

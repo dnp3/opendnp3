@@ -21,7 +21,7 @@
 #ifndef OPENDNP3_ASSIGNCLASSHANDLER_H
 #define OPENDNP3_ASSIGNCLASSHANDLER_H
 
-#include "opendnp3/app/parsing/APDUHandlerBase.h"
+#include "opendnp3/app/parsing/IAPDUHandler.h"
 
 #include "opendnp3/gen/AssignClassType.h"
 
@@ -34,7 +34,7 @@
 namespace opendnp3
 {
 
-class AssignClassHandler : public APDUHandlerBase
+class AssignClassHandler : public IAPDUHandler
 {
 public:
 

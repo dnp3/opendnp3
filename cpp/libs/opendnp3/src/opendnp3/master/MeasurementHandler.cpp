@@ -69,7 +69,7 @@ void MeasurementHandler::CheckForTxStart()
 	}
 }
 
-IINField MeasurementHandler::ProcessValues(const CountHeader& header, const ICollection<Group51Var1>& values)
+IINField MeasurementHandler::ProcessHeader(const CountHeader& header, const ICollection<Group51Var1>& values)
 {	
 	Group51Var1 cto;
 	if (values.ReadOnlyValue(cto))
@@ -81,7 +81,7 @@ IINField MeasurementHandler::ProcessValues(const CountHeader& header, const ICol
 	return IINField::Empty();
 }
 
-IINField MeasurementHandler::ProcessValues(const CountHeader& header, const ICollection<Group51Var2>& values)
+IINField MeasurementHandler::ProcessHeader(const CountHeader& header, const ICollection<Group51Var2>& values)
 {	
 	Group51Var2 cto;
 	if (values.ReadOnlyValue(cto))
@@ -94,57 +94,57 @@ IINField MeasurementHandler::ProcessValues(const CountHeader& header, const ICol
 	return IINField::Empty();
 }
 
-IINField MeasurementHandler::ProcessValues(const RangeHeader& header, const ICollection<Indexed<Binary>>& values)
+IINField MeasurementHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Binary>>& values)
 {
 	return this->LoadValues(header, ModeFromType(header.enumeration), values);
 }
 
-IINField MeasurementHandler::ProcessValues(const RangeHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values)
+IINField MeasurementHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values)
 {
 	return this->LoadValues(header, ModeFromType(header.enumeration), values);
 }
 
-IINField MeasurementHandler::ProcessValues(const RangeHeader& header, const ICollection<Indexed<BinaryOutputStatus>>& values)
+IINField MeasurementHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<BinaryOutputStatus>>& values)
 {
 	return this->LoadValues(header, ModeFromType(header.enumeration), values);
 }
 
-IINField MeasurementHandler::ProcessValues(const RangeHeader& header, const ICollection<Indexed<Counter>>& values)
+IINField MeasurementHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Counter>>& values)
 {
 	return this->LoadValues(header, ModeFromType(header.enumeration), values);
 }
 
-IINField MeasurementHandler::ProcessValues(const RangeHeader& header, const ICollection<Indexed<FrozenCounter>>& values)
+IINField MeasurementHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<FrozenCounter>>& values)
 {
 	return this->LoadValues(header, ModeFromType(header.enumeration), values);
 }
 
-IINField MeasurementHandler::ProcessValues(const RangeHeader& header, const ICollection<Indexed<Analog>>& values)
+IINField MeasurementHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Analog>>& values)
 {
 	return this->LoadValues(header, ModeFromType(header.enumeration), values);
 }
 
-IINField MeasurementHandler::ProcessValues(const RangeHeader& header, const ICollection<Indexed<AnalogOutputStatus>>& values)
+IINField MeasurementHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<AnalogOutputStatus>>& values)
 {
 	return this->LoadValues(header, ModeFromType(header.enumeration), values);
 }
 
-IINField MeasurementHandler::ProcessValues(const RangeHeader& header, const ICollection<Indexed<OctetString>>& values)
+IINField MeasurementHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<OctetString>>& values)
 {
 	return this->LoadValues(header, ModeFromType(header.enumeration), values);
 }
 
-IINField MeasurementHandler::ProcessValues(const RangeHeader& header, const ICollection<Indexed<TimeAndInterval>>& values)
+IINField MeasurementHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<TimeAndInterval>>& values)
 {
 	return this->LoadValues(header, ModeFromType(header.enumeration), values);
 }
 
-IINField MeasurementHandler::ProcessValues(const RangeHeader& header, const ICollection<Indexed<Group121Var1>>& values)
+IINField MeasurementHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Group121Var1>>& values)
 {
 	return this->LoadValuesWithTransformTo<SecurityStat>(header, values);
 }
 
-IINField MeasurementHandler::ProcessValues(const PrefixHeader& header, const ICollection<Indexed<Binary>>& values)
+IINField MeasurementHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Binary>>& values)
 {
 	if (header.enumeration == GroupVariation::Group2Var3)
 	{
@@ -156,12 +156,12 @@ IINField MeasurementHandler::ProcessValues(const PrefixHeader& header, const ICo
 	}
 }
 
-IINField MeasurementHandler::ProcessValues(const PrefixHeader& header, const ICollection<Indexed<BinaryOutputStatus>>& values)
+IINField MeasurementHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<BinaryOutputStatus>>& values)
 {
 	return this->LoadValues(header, ModeFromType(header.enumeration), values);
 }
 
-IINField MeasurementHandler::ProcessValues(const PrefixHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values)
+IINField MeasurementHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values)
 {
 	if (header.enumeration == GroupVariation::Group4Var3)
 	{
@@ -173,47 +173,47 @@ IINField MeasurementHandler::ProcessValues(const PrefixHeader& header, const ICo
 	}
 }
 
-IINField MeasurementHandler::ProcessValues(const PrefixHeader& header, const ICollection<Indexed<Counter>>& values)
+IINField MeasurementHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Counter>>& values)
 {
 	return this->LoadValues(header, ModeFromType(header.enumeration), values);
 }
 
-IINField MeasurementHandler::ProcessValues(const PrefixHeader& header, const ICollection<Indexed<FrozenCounter>>& values)
+IINField MeasurementHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<FrozenCounter>>& values)
 {
 	return this->LoadValues(header, ModeFromType(header.enumeration), values);
 }
 
-IINField MeasurementHandler::ProcessValues(const PrefixHeader& header, const ICollection<Indexed<Analog>>& values)
+IINField MeasurementHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Analog>>& values)
 {
 	return this->LoadValues(header, ModeFromType(header.enumeration), values);
 }
 
-IINField MeasurementHandler::ProcessValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputStatus>>& values)
+IINField MeasurementHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputStatus>>& values)
 {
 	return this->LoadValues(header, ModeFromType(header.enumeration), values);
 }
 
-IINField MeasurementHandler::ProcessValues(const PrefixHeader& header, const ICollection<Indexed<OctetString>>& values)
+IINField MeasurementHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<OctetString>>& values)
 {
 	return this->LoadValues(header, ModeFromType(header.enumeration), values);
 }
 
-IINField MeasurementHandler::ProcessValues(const PrefixHeader& header, const ICollection<Indexed<BinaryCommandEvent>>& values)
+IINField MeasurementHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<BinaryCommandEvent>>& values)
 {
 	return this->LoadValues(header, ModeFromType(header.enumeration), values);
 }
 
-IINField MeasurementHandler::ProcessValues(const PrefixHeader& header, const ICollection<Indexed<AnalogCommandEvent>>& values)
+IINField MeasurementHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogCommandEvent>>& values)
 {
 	return this->LoadValues(header, ModeFromType(header.enumeration), values);
 }
 
-IINField MeasurementHandler::ProcessValues(const PrefixHeader& header, const ICollection<Indexed<Group122Var1>>& values)
+IINField MeasurementHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Group122Var1>>& values)
 {			
 	return this->LoadValuesWithTransformTo<SecurityStat>(header, values);
 }
 
-IINField MeasurementHandler::ProcessValues(const PrefixHeader& header, const ICollection<Indexed<Group122Var2>>& values)
+IINField MeasurementHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Group122Var2>>& values)
 {
 	return this->LoadValuesWithTransformTo<SecurityStat>(header, values);
 }

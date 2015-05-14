@@ -38,7 +38,7 @@ WriteHandler::WriteHandler(openpal::Logger logger_, IOutstationApplication& appl
 	wroteIIN(false)
 {}
 
-IINField WriteHandler::ProcessValues(const RangeHeader& header, const ICollection<Indexed<IINValue>>& values)
+IINField WriteHandler::ProcessHeader(const RangeHeader& header, const ICollection<Indexed<IINValue>>& values)
 {	
 	Indexed<IINValue> pair;
 
@@ -67,7 +67,7 @@ IINField WriteHandler::ProcessValues(const RangeHeader& header, const ICollectio
 	return IINField();		
 }
 
-IINField WriteHandler::ProcessValues(const CountHeader& header, const ICollection<Group50Var1>& values)
+IINField WriteHandler::ProcessHeader(const CountHeader& header, const ICollection<Group50Var1>& values)
 {
 	if (wroteTime)
 	{
@@ -95,7 +95,7 @@ IINField WriteHandler::ProcessValues(const CountHeader& header, const ICollectio
 	}
 }
 
-IINField  WriteHandler::ProcessValues(const PrefixHeader& header, const ICollection<Indexed<TimeAndInterval>>& values)
+IINField  WriteHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<TimeAndInterval>>& values)
 {
 	if (!pApplication->SupportsWriteTimeAndInterval())
 	{

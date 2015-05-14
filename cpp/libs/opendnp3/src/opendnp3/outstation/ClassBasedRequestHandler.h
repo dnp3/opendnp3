@@ -21,7 +21,7 @@
 #ifndef OPENDNP3_CLASSBASEDREQUESTHANDLER_H
 #define OPENDNP3_CLASSBASEDREQUESTHANDLER_H
 
-#include "opendnp3/app/parsing/APDUHandlerBase.h"
+#include "opendnp3/app/parsing/IAPDUHandler.h"
 
 #include "opendnp3/app/IINField.h"
 #include "opendnp3/app/ClassField.h"
@@ -31,7 +31,7 @@
 namespace opendnp3
 {
 
-class ClassBasedRequestHandler : public APDUHandlerBase
+class ClassBasedRequestHandler : public IAPDUHandler
 {
 public:
 

@@ -57,7 +57,7 @@ class FreeFormatParser : private openpal::PureStatic
 			auto success = value.Read(objects);
 			if (success && pHandler)
 			{
-				pHandler->OnFreeFormat(record, value);					
+				pHandler->OnHeader(record, value);					
 			}
 			return success;
 		}

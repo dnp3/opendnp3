@@ -22,6 +22,9 @@
 #include "IMasterState.h"
 #include "MasterContext.h"
 
+#include <openpal/logging/LogMacros.h>
+#include <opendnp3/LogLevels.h>
+
 namespace opendnp3
 {
 

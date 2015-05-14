@@ -22,12 +22,12 @@
 #define OPENDNP3_MEASUREMENTHANDLER_H
 
 #include <openpal/logging/Logger.h>
+#include <openpal/logging/LogMacros.h>
 
 #include "opendnp3/master/ISOEHandler.h"
-
 #include "opendnp3/app/APDUHeader.h"
 #include "opendnp3/app/parsing/ParseResult.h"
-#include "opendnp3/app/parsing/APDUHandlerBase.h"
+#include "opendnp3/app/parsing/IAPDUHandler.h"
 
 namespace opendnp3
 {
@@ -35,7 +35,7 @@ namespace opendnp3
 /**
  * Dedicated class for processing response data in the master.
  */
-class MeasurementHandler : public APDUHandlerBase
+class MeasurementHandler : public IAPDUHandler
 {
 
 public:
@@ -61,32 +61,32 @@ private:
 	static TimestampMode ModeFromType(GroupVariation gv);
 
 	// Handle the CTO objects
-	IINField ProcessValues(const CountHeader& header, const ICollection<Group51Var1>& cto) override final;
-	IINField ProcessValues(const CountHeader& header, const ICollection<Group51Var2>& cto) override final;
+	IINField ProcessHeader(const CountHeader& header, const ICollection<Group51Var1>& cto) override final;
+	IINField ProcessHeader(const CountHeader& header, const ICollection<Group51Var2>& cto) override final;
 	
-	IINField ProcessValues(const RangeHeader& header, const ICollection<Indexed<Binary>>& values) override final;
-	IINField ProcessValues(const RangeHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values) override final;
-	IINField ProcessValues(const RangeHeader& header, const ICollection<Indexed<BinaryOutputStatus>>& values) override final;
-	IINField ProcessValues(const RangeHeader& header, const ICollection<Indexed<Counter>>& values) override final;
-	IINField ProcessValues(const RangeHeader& header, const ICollection<Indexed<FrozenCounter>>& values) override final;
-	IINField ProcessValues(const RangeHeader& header, const ICollection<Indexed<Analog>>& values) override final;
-	IINField ProcessValues(const RangeHeader& header, const ICollection<Indexed<AnalogOutputStatus>>& values) override final;
-	IINField ProcessValues(const RangeHeader& header, const ICollection<Indexed<OctetString>>& values) override final;
-	IINField ProcessValues(const RangeHeader& header, const ICollection<Indexed<TimeAndInterval>>& values) override final;
-	IINField ProcessValues(const RangeHeader& header, const ICollection<Indexed<Group121Var1>>& values) override final;
+	IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Binary>>& values) override final;
+	IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values) override final;
+	IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<BinaryOutputStatus>>& values) override final;
+	IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Counter>>& values) override final;
+	IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<FrozenCounter>>& values) override final;
+	IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Analog>>& values) override final;
+	IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<AnalogOutputStatus>>& values) override final;
+	IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<OctetString>>& values) override final;
+	IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<TimeAndInterval>>& values) override final;
+	IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Group121Var1>>& values) override final;
 
-	IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<Binary>>& values) override final;
-	IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<BinaryOutputStatus>>& values) override final;
-	IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values) override final;
-	IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<Counter>>& values) override final;
-	IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<FrozenCounter>>& values) override final;
-	IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<Analog>>& values) override final;
-	IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputStatus>>& values) override final;
-	IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<OctetString>>& values) override final;
-	IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<BinaryCommandEvent>>& values) override final;
-	IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<AnalogCommandEvent>>& values) override final;
-	IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<Group122Var1>>& values) override final;
-	IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<Group122Var2>>& values) override final;
+	IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Binary>>& values) override final;
+	IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<BinaryOutputStatus>>& values) override final;
+	IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values) override final;
+	IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Counter>>& values) override final;
+	IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<FrozenCounter>>& values) override final;
+	IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Analog>>& values) override final;
+	IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputStatus>>& values) override final;
+	IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<OctetString>>& values) override final;
+	IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<BinaryCommandEvent>>& values) override final;
+	IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogCommandEvent>>& values) override final;
+	IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Group122Var1>>& values) override final;
+	IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Group122Var2>>& values) override final;
 
 
 	template <class Target, class Source>

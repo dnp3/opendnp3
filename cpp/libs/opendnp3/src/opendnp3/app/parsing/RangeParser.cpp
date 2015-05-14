@@ -193,7 +193,7 @@ ParseResult RangeParser::ParseRangeOfOctetData(openpal::ReadBufferView& buffer, 
 
 				auto collection = CreateBufferedCollection<Indexed<OctetString>>(buffer, COUNT, read);
 
-				pHandler->OnValues(RangeHeader(record, range), collection);
+				pHandler->OnHeader(RangeHeader(record, range), collection);
 			}
 
 			buffer.Advance(size);

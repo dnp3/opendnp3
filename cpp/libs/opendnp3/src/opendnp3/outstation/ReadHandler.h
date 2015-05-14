@@ -22,16 +22,18 @@
 #define OPENDNP3_READHANDLER_H
 
 
-#include "opendnp3/app/parsing/APDUHandlerBase.h"
+#include "opendnp3/app/parsing/IAPDUHandler.h"
 
 #include "opendnp3/outstation/IEventSelector.h"
 #include "opendnp3/outstation/IStaticSelector.h"
 #include "opendnp3/outstation/StaticTypeBitfield.h"
 
+#include <openpal/logging/Logger.h>
+
 namespace opendnp3
 {
 
-class ReadHandler : public APDUHandlerBase
+class ReadHandler : public IAPDUHandler
 {
 public:
 

@@ -53,7 +53,7 @@
     <ClInclude Include="src\opendnp3\app\MeasurementTypes.h" />
     <ClInclude Include="src\opendnp3\app\OctetData.h" />
     <ClInclude Include="src\opendnp3\app\OctetString.h" />
-    <ClInclude Include="src\opendnp3\app\parsing\APDUHandlerBase.h" />
+    <ClInclude Include="src\opendnp3\app\parsing\IAPDUHandler.h" />
     <ClInclude Include="src\opendnp3\app\parsing\APDUHeaderParser.h" />
     <ClInclude Include="src\opendnp3\app\parsing\APDUParser.h" />
     <ClInclude Include="src\opendnp3\app\parsing\BitReader.h" />
@@ -61,7 +61,6 @@
     <ClInclude Include="src\opendnp3\app\parsing\CountParser.h" />
     <ClInclude Include="src\opendnp3\app\parsing\FreeFormatParser.h" />
     <ClInclude Include="src\opendnp3\app\parsing\Functions.h" />
-    <ClInclude Include="src\opendnp3\app\parsing\IAPDUHandler.h" />
     <ClInclude Include="src\opendnp3\app\parsing\ICollection.h" />
     <ClInclude Include="src\opendnp3\app\parsing\BufferedCollection.h" />
     <ClInclude Include="src\opendnp3\app\parsing\NumParser.h" />
@@ -301,7 +300,7 @@
     <ClCompile Include="src\opendnp3\app\MeasurementTypes.cpp" />
     <ClCompile Include="src\opendnp3\app\HeaderWriter.cpp" />
     <ClCompile Include="src\opendnp3\app\OctetData.cpp" />
-    <ClCompile Include="src\opendnp3\app\parsing\APDUHandlerBase.cpp" />
+    <ClCompile Include="src\opendnp3\app\parsing\IAPDUHandler.cpp" />
     <ClCompile Include="src\opendnp3\app\parsing\APDUHeaderParser.cpp" />
     <ClCompile Include="src\opendnp3\app\parsing\APDUParser.cpp" />
     <ClCompile Include="src\opendnp3\app\parsing\BitReader.cpp" />

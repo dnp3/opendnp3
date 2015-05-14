@@ -21,7 +21,7 @@
 #ifndef OPENDNP3_WRITEHANDLER_H
 #define OPENDNP3_WRITEHANDLER_H
 
-#include "opendnp3/app/parsing/APDUHandlerBase.h"
+#include "opendnp3/app/parsing/IAPDUHandler.h"
 #include "opendnp3/app/IINField.h"
 
 #include "opendnp3/outstation/IOutstationApplication.h"
@@ -31,7 +31,7 @@
 namespace opendnp3
 {
 
-class WriteHandler : public APDUHandlerBase
+class WriteHandler : public IAPDUHandler
 {
 public:
 
@@ -39,11 +39,11 @@ public:
 	
 private:
 
-	virtual IINField ProcessValues(const RangeHeader& header, const ICollection<Indexed<IINValue>>& values) override final;
+	virtual IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<IINValue>>& values) override final;
 
-	virtual IINField ProcessValues(const CountHeader& header, const ICollection<Group50Var1>& times) override final;
+	virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group50Var1>& times) override final;
 
-	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<TimeAndInterval>>& values) override final;
+	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<TimeAndInterval>>& values) override final;
 
 	openpal::Logger logger;
 	IOutstationApplication* pApplication;

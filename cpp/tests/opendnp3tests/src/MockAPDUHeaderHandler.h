@@ -21,14 +21,14 @@
 #ifndef __MOCK_APDU_HEADER_HANDLER_H_
 #define __MOCK_APDU_HEADER_HANDLER_H_
 
-#include <opendnp3/app/parsing/APDUHandlerBase.h>
+#include <opendnp3/app/parsing/IAPDUHandler.h>
 
 #include <vector>
 
 namespace opendnp3
 {
 
-class MockApduHeaderHandler : public APDUHandlerBase
+class MockApduHeaderHandler : public IAPDUHandler
 {
 public:	
 
@@ -37,142 +37,142 @@ public:
 		records.push_back(record);
 	}	
 
-	virtual IINField ProcessValues(const CountHeader& header, const ICollection<Group120Var4>& values) override final
+	virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group120Var4>& values) override final
 	{	
 		return ProcessAny(header, values, authStatusRequests);		
 	}
 
-	virtual IINField ProcessValues(const RangeHeader& header, const ICollection<Indexed<IINValue>>& values) override final
+	virtual IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<IINValue>>& values) override final
 	{
 		return ProcessAny(header, values, iinBits);		
 	}
 
-	virtual IINField ProcessValues(const RangeHeader& header, const ICollection<Indexed<Binary>>& values) override final
+	virtual IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Binary>>& values) override final
 	{	
 		return ProcessAny(header, values, staticBinaries);
 	}
 
-	virtual IINField ProcessValues(const RangeHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values) override final
+	virtual IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values) override final
 	{				
 		return ProcessAny(header, values, staticDoubleBinaries);
 	}
 
-	virtual IINField ProcessValues(const RangeHeader& header, const ICollection<Indexed<BinaryOutputStatus>>& values) override final
+	virtual IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<BinaryOutputStatus>>& values) override final
 	{		
 		return ProcessAny(header, values, staticControlStatii);
 	}
 
-	virtual IINField ProcessValues(const RangeHeader& header, const ICollection<Indexed<Counter>>& values) override final
+	virtual IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Counter>>& values) override final
 	{				
 		return ProcessAny(header, values, staticCounters);
 	}
 
-	virtual IINField ProcessValues(const RangeHeader& header, const ICollection<Indexed<FrozenCounter>>& values) override final
+	virtual IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<FrozenCounter>>& values) override final
 	{				
 		return ProcessAny(header, values, staticFrozenCounters);
 	}
 
-	virtual IINField ProcessValues(const RangeHeader& header, const ICollection<Indexed<Analog>>& values) override final
+	virtual IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<Analog>>& values) override final
 	{		
 		return ProcessAny(header, values, eventAnalogs);
 	}
 
-	virtual IINField ProcessValues(const RangeHeader& header, const ICollection<Indexed<AnalogOutputStatus>>& values) override final
+	virtual IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<AnalogOutputStatus>>& values) override final
 	{		
 		return ProcessAny(header, values, staticSetpointStatii);
 	}
 
-	virtual IINField ProcessValues(const RangeHeader& header, const ICollection<Indexed<OctetString>>& values) override final
+	virtual IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<OctetString>>& values) override final
 	{				
 		return ProcessAny(header, values, rangedOctets);
 	}
 	
-	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<Binary>>& values) override final
+	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Binary>>& values) override final
 	{			
 		return this->ProcessAny(header, values, eventBinaries);		
 	}
 
-	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values) override final
+	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<DoubleBitBinary>>& values) override final
 	{				
 		return this->ProcessAny(header, values, eventDoubleBinaries);
 	}
 
-	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<Counter>>& values) override final
+	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Counter>>& values) override final
 	{		
 		return this->ProcessAny(header, values, eventCounters);
 	}
 
-	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<FrozenCounter>>& values) override final
+	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<FrozenCounter>>& values) override final
 	{		
 		return this->ProcessAny(header, values, eventFrozenCounters);
 	}
 
-	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<Analog>>& values) override final
+	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<Analog>>& values) override final
 	{		
 		return this->ProcessAny(header, values, eventAnalogs);
 	}
 
-	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<OctetString>>& values) override final
+	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<OctetString>>& values) override final
 	{				
 		return this->ProcessAny(header, values, indexPrefixedOctets);
 	}
 
-	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<BinaryCommandEvent>>& values) override final
+	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<BinaryCommandEvent>>& values) override final
 	{				
 		return this->ProcessAny(header, values, binaryCommandEvents);		
 	}
 
-	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<AnalogCommandEvent>>& values) override final
+	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogCommandEvent>>& values) override final
 	{				
 		return this->ProcessAny(header, values, analogCommandEvents);
 	}
 
 	/// --- controls ----
 
-	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<ControlRelayOutputBlock>>& meas) override final
+	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<ControlRelayOutputBlock>>& meas) override final
 	{			
 		return this->ProcessAny(header, meas, crobRequests);
 	}
 
-	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt16>>& meas) override final
+	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt16>>& meas) override final
 	{				
 		return this->ProcessAny(header, meas, aoInt16Requests);
 	}
 
-	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt32>>& meas) override final
+	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt32>>& meas) override final
 	{				
 		return this->ProcessAny(header, meas, aoInt32Requests);
 	}
 
-	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputFloat32>>& meas) override final
+	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputFloat32>>& meas) override final
 	{				
 		return this->ProcessAny(header, meas, aoFloat32Requests);
 	}
 
-	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputDouble64>>& meas) override final
+	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputDouble64>>& meas) override final
 	{				
 		return this->ProcessAny(header, meas, aoDouble64Requests);
 	}	
 
-	virtual IINField ProcessFreeFormat(const HeaderRecord& record, const Group120Var1& value) override final
+	virtual IINField ProcessHeader(const HeaderRecord& record, const Group120Var1& value) override final
 	{	
 		authChallenges.push_back(value);
 		return IINField::Empty();
 	}
 
-	virtual IINField ProcessFreeFormat(const HeaderRecord& record, const Group120Var2& value) override final
+	virtual IINField ProcessHeader(const HeaderRecord& record, const Group120Var2& value) override final
 	{	
 		authReplys.push_back(value);
 		return IINField::Empty();
 	}
 
-	virtual IINField ProcessFreeFormat(const HeaderRecord& record, const Group120Var5& value) override final
+	virtual IINField ProcessHeader(const HeaderRecord& record, const Group120Var5& value) override final
 	{	
 		authKeyStatusResponses.push_back(value);
 		return IINField::Empty();
 	}
 
-	virtual IINField ProcessFreeFormat(const HeaderRecord& record, const Group120Var6& value) override final
+	virtual IINField ProcessHeader(const HeaderRecord& record, const Group120Var6& value) override final
 	{
 		authChanges.push_back(value);
 		return IINField::Empty();

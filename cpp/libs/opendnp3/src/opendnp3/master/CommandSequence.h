@@ -21,7 +21,7 @@
 #ifndef OPENDNP3_COMMANDSEQUENCE_H
 #define OPENDNP3_COMMANDSEQUENCE_H
 
-#include "opendnp3/app/parsing/APDUHandlerBase.h"
+#include "opendnp3/app/parsing/IAPDUHandler.h"
 
 #include <openpal/serialization/Serialization.h>
 
@@ -31,7 +31,7 @@ namespace opendnp3
 /**
 *  Abstracts information for
 */
-class ICommandSequence : public APDUHandlerBase
+class ICommandSequence : public IAPDUHandler
 {
 public:		
 
@@ -53,7 +53,7 @@ public:
 		response(CommandResponse(TaskCompletion::FAILURE_BAD_RESPONSE))
 	{}	
 
-	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<CommandType>>& meas) override final
+	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<CommandType>>& meas) override final
 	{
 		Indexed<CommandType> received;
 		if (this->IsFirstHeader() && meas.ReadOnlyValue(received))

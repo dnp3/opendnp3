@@ -40,27 +40,27 @@ CommandResponseHandler::CommandResponseHandler(openpal::Logger logger_, uint8_t 
 	
 }
 
-IINField CommandResponseHandler::ProcessValues(const PrefixHeader& header, const ICollection<Indexed<ControlRelayOutputBlock>>& meas)
+IINField CommandResponseHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<ControlRelayOutputBlock>>& meas)
 {
 	return this->ProcessAny(header, meas);
 }
 
-IINField CommandResponseHandler::ProcessValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt16>>& meas)
+IINField CommandResponseHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt16>>& meas)
 {
 	return this->ProcessAny(header, meas);
 }
 
-IINField CommandResponseHandler::ProcessValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt32>>& meas)
+IINField CommandResponseHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputInt32>>& meas)
 {
 	return this->ProcessAny(header, meas);
 }
 
-IINField CommandResponseHandler::ProcessValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputFloat32>>& meas)
+IINField CommandResponseHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputFloat32>>& meas)
 {
 	return this->ProcessAny(header, meas);
 }
 
-IINField CommandResponseHandler::ProcessValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputDouble64>>& meas)
+IINField CommandResponseHandler::ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputDouble64>>& meas)
 {
 	return this->ProcessAny(header, meas);
 }
