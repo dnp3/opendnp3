@@ -35,8 +35,8 @@ ParseResult MeasurementHandler::ProcessMeasurements(const openpal::ReadBufferVie
 	return APDUParser::ParseAll(objects, handler, &logger);	
 }
 
-MeasurementHandler::MeasurementHandler(const openpal::Logger& logger, ISOEHandler* pSOEHandler_) : 
-	APDUHandlerBase(logger),
+MeasurementHandler::MeasurementHandler(const openpal::Logger& logger_, ISOEHandler* pSOEHandler_) : 
+	logger(logger_),
 	txInitiated(false),
 	pSOEHandler(pSOEHandler_),
 	ctoMode(TimestampMode::INVALID),

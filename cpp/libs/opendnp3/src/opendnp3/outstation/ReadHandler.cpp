@@ -24,8 +24,8 @@
 namespace opendnp3
 {
 
-ReadHandler::ReadHandler(openpal::Logger logger, IStaticSelector& staticSelector, IEventSelector& eventSelector) :
-	APDUHandlerBase(logger),	
+ReadHandler::ReadHandler(openpal::Logger logger_, IStaticSelector& staticSelector, IEventSelector& eventSelector) :
+	logger(logger_),
 	pStaticSelector(&staticSelector),
 	pEventSelector(&eventSelector)
 {

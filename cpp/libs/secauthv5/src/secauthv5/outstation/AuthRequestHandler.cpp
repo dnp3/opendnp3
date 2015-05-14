@@ -31,7 +31,7 @@ namespace secauthv5
 
 
 AuthRequestHandler::AuthRequestHandler(const openpal::ReadBufferView& fragment_, const APDUHeader& header_, OState& ostate, IAuthRequestHandler& handler) :
-	APDUHandlerBase(ostate.logger),
+	logger(ostate.logger),
 	fragment(fragment_),
 	header(header_),
 	pOState(&ostate),

@@ -29,8 +29,8 @@
 namespace opendnp3
 {
 
-AssignClassHandler::AssignClassHandler(openpal::Logger& logger, openpal::IExecutor& executor, IOutstationApplication& application, IClassAssigner& assigner) :
-	APDUHandlerBase(logger),
+AssignClassHandler::AssignClassHandler(openpal::Logger logger_, openpal::IExecutor& executor, IOutstationApplication& application, IClassAssigner& assigner) :
+	logger(logger_),
 	classHeader(-1),
 	clazz(PointClass::Class0),
 	pExecutor(&executor),

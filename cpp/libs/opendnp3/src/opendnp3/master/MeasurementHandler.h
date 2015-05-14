@@ -56,6 +56,8 @@ public:
 
 private:
 
+	openpal::Logger logger;
+
 	static TimestampMode ModeFromType(GroupVariation gv);
 
 	// Handle the CTO objects

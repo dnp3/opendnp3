@@ -30,8 +30,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-WriteHandler::WriteHandler(openpal::Logger& aLogger, IOutstationApplication& application, IINField* pWriteIIN_) :
-	APDUHandlerBase(aLogger),
+WriteHandler::WriteHandler(openpal::Logger logger_, IOutstationApplication& application, IINField* pWriteIIN_) :
+	logger(logger_),
 	pApplication(&application),
 	pWriteIIN(pWriteIIN_),
 	wroteTime(false),

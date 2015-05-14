@@ -41,8 +41,8 @@ public:
 	/**
 	* @param arLogger the Logger that the loader should use for message reporting
 	*/
-	TimeSyncHandler(openpal::Logger& aLogger) :
-		APDUHandlerBase(aLogger),
+	TimeSyncHandler(openpal::Logger logger_) :
+		logger(logger_),
 		valid(false)		
 	{}
 
@@ -68,6 +68,8 @@ public:
 	}
 
 private:
+
+	openpal::Logger logger;
 
 	virtual IINField ProcessValues(const CountHeader& header, const ICollection<Group52Var2>& times) override final
 	{				

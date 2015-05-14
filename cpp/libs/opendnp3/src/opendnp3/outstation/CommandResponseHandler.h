@@ -61,6 +61,7 @@ private:
 	IINField ProcessIndexPrefixOneByte(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputFloat32>>& meas);
 	IINField ProcessIndexPrefixOneByte(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputDouble64>>& meas);
 
+	openpal::Logger logger;
 	ICommandAction* pCommandAction;
 	uint32_t numRequests;
 	uint32_t numSuccess;

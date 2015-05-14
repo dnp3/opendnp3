@@ -43,6 +43,7 @@ class AuthRequestHandler : public opendnp3::APDUHandlerBase, private openpal::Un
 		static bool WhiteList(uint32_t count, opendnp3::GroupVariation gv, opendnp3::QualifierCode qc);
 
 	private:
+		openpal::Logger logger;
 		openpal::ReadBufferView fragment;
 		opendnp3::APDUHeader header;
 		opendnp3::OState* pOState;

@@ -23,19 +23,14 @@
 
 #include <opendnp3/app/parsing/APDUHandlerBase.h>
 
-#include <testlib/MockLogHandler.h>
-
 #include <vector>
 
 namespace opendnp3
 {
 
-class MockApduHeaderHandler : public testlib::MockLogHandler, public APDUHandlerBase
+class MockApduHeaderHandler : public APDUHandlerBase
 {
-public:
-
-	MockApduHeaderHandler() : MockLogHandler(), APDUHandlerBase(this->GetLogger())
-	{}
+public:	
 
 	virtual void OnHeaderResult(const HeaderRecord& record, const IINField& result) override final
 	{

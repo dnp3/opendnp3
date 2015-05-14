@@ -25,6 +25,7 @@
 
 #include <testlib/BufferHelpers.h>
 #include <testlib/HexConversions.h>
+#include <testlib/MockLogHandler.h>
 
 #include <openpal/util/ToHex.h>
 
@@ -48,12 +49,13 @@ void TestComplex(const std::string& hex, ParseResult expected, size_t numCalls, 
 {
 	HexSequence buffer(hex);
 	MockApduHeaderHandler mock;	
-	auto logger = mock.GetLogger();
+	testlib::MockLogHandler log;
+	auto logger = log.GetLogger();
 	auto result = APDUParser::ParseAll(buffer.ToReadOnly(), mock, &logger);
 
 	if (result != expected)
 	{
-		mock.Pop(ConsoleLogger::Instance());
+		log.Pop(ConsoleLogger::Instance());
 	}
 
 	REQUIRE((result == expected));

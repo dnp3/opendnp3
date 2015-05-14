@@ -24,7 +24,7 @@
 namespace opendnp3
 {
 
-ClassBasedRequestHandler::ClassBasedRequestHandler(openpal::Logger& logger) : APDUHandlerBase(logger)
+ClassBasedRequestHandler::ClassBasedRequestHandler(openpal::Logger logger_) : logger(logger_)
 {
 
 }

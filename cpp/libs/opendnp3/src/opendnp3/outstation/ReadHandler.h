@@ -45,6 +45,7 @@ private:
 
 	virtual IINField ProcessHeader(const CountHeader& header) override final;
 	
+	openpal::Logger logger;
 	IStaticSelector* pStaticSelector;
 	IEventSelector* pEventSelector;
 

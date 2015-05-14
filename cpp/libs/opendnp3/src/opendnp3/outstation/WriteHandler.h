@@ -35,7 +35,7 @@ class WriteHandler : public APDUHandlerBase
 {
 public:
 
-	WriteHandler(openpal::Logger& logger, IOutstationApplication& application, IINField* pWriteIIN_);
+	WriteHandler(openpal::Logger logger, IOutstationApplication& application, IINField* pWriteIIN_);
 	
 private:
 
@@ -45,6 +45,7 @@ private:
 
 	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<TimeAndInterval>>& values) override final;
 
+	openpal::Logger logger;
 	IOutstationApplication* pApplication;
 	IINField* pWriteIIN;
 

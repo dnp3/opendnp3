@@ -38,7 +38,7 @@ class AssignClassHandler : public APDUHandlerBase
 {
 public:
 
-	AssignClassHandler(openpal::Logger& logger, openpal::IExecutor& executor, IOutstationApplication& application, IClassAssigner& assigner);
+	AssignClassHandler(openpal::Logger logger, openpal::IExecutor& executor, IOutstationApplication& application, IClassAssigner& assigner);
 
 private:
 
@@ -56,6 +56,7 @@ private:
 
 	void NotifyApplicationOfAssignment(AssignClassType type, PointClass clazz, const Range& range);	
 	
+	openpal::Logger logger;
 	int32_t classHeader;
 	PointClass clazz;
 

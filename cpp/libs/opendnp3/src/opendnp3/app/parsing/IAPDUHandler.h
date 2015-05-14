@@ -49,7 +49,7 @@ namespace opendnp3
 {
 
 /**
-* Second stage of dealing with
+* Callbacks for the various kinds of headers in an APDU
 */
 class IAPDUHandler
 {

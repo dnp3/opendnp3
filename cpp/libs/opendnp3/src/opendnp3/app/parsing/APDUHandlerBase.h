@@ -44,7 +44,7 @@ public:
 	/**
 	 * @param logger the Logger that the loader should use for message reporting
 	 */
-	APDUHandlerBase(openpal::Logger logger);
+	APDUHandlerBase();
 
 	uint32_t NumIgnoredHeaders() const
 	{
@@ -168,9 +168,7 @@ protected:
 	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputFloat32>>& values);
 	virtual IINField ProcessValues(const PrefixHeader& header, const ICollection<Indexed<AnalogOutputDouble64>>& values);
 
-protected:
-
-	openpal::Logger logger;	
+protected:	
 
 	// overridable to receive events for every header
 	virtual void OnHeaderResult(const HeaderRecord& record, const IINField& result) {}

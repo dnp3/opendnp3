@@ -35,11 +35,13 @@ class ClassBasedRequestHandler : public APDUHandlerBase
 {
 public:
 
-	ClassBasedRequestHandler(openpal::Logger& logger);
+	ClassBasedRequestHandler(openpal::Logger logger);
 
 	ClassField GetClassField() const { return classField; }
 
 private:
+
+	openpal::Logger logger;
 
 	virtual IINField ProcessHeader(const AllObjectsHeader& header) override final;
 	

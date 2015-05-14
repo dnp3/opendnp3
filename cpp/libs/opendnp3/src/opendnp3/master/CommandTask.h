@@ -102,7 +102,7 @@ private:
 template <class T>
 IMasterTask* CommandTask::FDirectOperate(const T& command, uint16_t index, IMasterApplication& app, ICommandCallback& callback, const DNP3Serializer<T>& serializer, openpal::Logger logger)
 {
-	auto pSequence = new CommandSequence<T>(logger, serializer, command, index);
+	auto pSequence = new CommandSequence<T>(serializer, command, index);
 	auto pCommand = new CommandTask(app, pSequence, callback, logger);
 	pCommand->LoadDirectOperate();
 	return pCommand;
@@ -111,7 +111,7 @@ IMasterTask* CommandTask::FDirectOperate(const T& command, uint16_t index, IMast
 template <class T>
 IMasterTask* CommandTask::FSelectAndOperate(const T& command, uint16_t index, IMasterApplication& app, ICommandCallback& callback, const DNP3Serializer<T>& serializer, openpal::Logger logger)
 {
-	auto pSequence = new CommandSequence<T>(logger, serializer, command, index);
+	auto pSequence = new CommandSequence<T>(serializer, command, index);
 	auto pCommand = new CommandTask(app, pSequence, callback, logger);
 	pCommand->LoadSelectAndOperate();
 	return pCommand;

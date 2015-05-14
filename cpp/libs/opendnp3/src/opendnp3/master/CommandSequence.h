@@ -33,9 +33,7 @@ namespace opendnp3
 */
 class ICommandSequence : public APDUHandlerBase
 {
-public:	
-
-	ICommandSequence(openpal::Logger logger) : APDUHandlerBase(logger) {}
+public:		
 
 	// Given an APDU and function code, configure the request
 	virtual void FormatRequestHeader(APDURequest& request) = 0;
@@ -48,8 +46,8 @@ template <class CommandType>
 class CommandSequence : public ICommandSequence
 {
 public:
-	CommandSequence(openpal::Logger logger, const DNP3Serializer<CommandType>& serializer_, const CommandType& value, uint16_t index) :		
-		ICommandSequence(logger),
+	CommandSequence(const DNP3Serializer<CommandType>& serializer_, const CommandType& value, uint16_t index) :		
+		ICommandSequence(),
 		serializer(serializer_),
 		command(value, index),
 		response(CommandResponse(TaskCompletion::FAILURE_BAD_RESPONSE))
