@@ -66,9 +66,13 @@ public:
 		return supportsWriteTimeAndInterval;
 	}
 
-	virtual bool WriteTimeAndInterval(const TimeAndInterval& meas, uint16_t index) override final
+	virtual bool WriteTimeAndInterval(const ICollection<Indexed<TimeAndInterval>>& meas) override final
 	{		
-		timeAndIntervals.push_back(WithIndex(meas, index));		
+		auto push = [this](const Indexed<TimeAndInterval>& value) {
+			this->timeAndIntervals.push_back(value);
+		};
+
+		meas.ForeachItem(push);		
 		return true;
 	}
 

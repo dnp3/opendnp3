@@ -72,40 +72,40 @@ public:
 
 	virtual void OnRange(const HeaderRecord& record, uint32_t count, const IINValue& value, uint16_t index) override final;
 
-	virtual void OnRange(const HeaderRecord& record, uint32_t count, const Binary& meas, uint16_t index) override final;
-	virtual void OnRange(const HeaderRecord& record, uint32_t count, const DoubleBitBinary& meas, uint16_t index) override final;
-	virtual void OnRange(const HeaderRecord& record, uint32_t count, const BinaryOutputStatus& meas, uint16_t index) override final;
-	virtual void OnRange(const HeaderRecord& record, uint32_t count, const Counter& meas, uint16_t index) override final;
-	virtual void OnRange(const HeaderRecord& record, uint32_t count, const FrozenCounter& meas, uint16_t index) override final;
-	virtual void OnRange(const HeaderRecord& record, uint32_t count, const Analog& meas, uint16_t index) override final;
-	virtual void OnRange(const HeaderRecord& record, uint32_t count, const AnalogOutputStatus& meas, uint16_t index) override final;
-	virtual void OnRange(const HeaderRecord& record, uint32_t count, const OctetString& meas, uint16_t index) override final;
-	virtual void OnRange(const HeaderRecord& record, uint32_t count, const TimeAndInterval& meas, uint16_t index) override final;
-	virtual void OnRange(const HeaderRecord& record, uint32_t count, const Group121Var1& meas, uint16_t index) override final;
+	virtual void OnRange(const HeaderRecord& record, uint32_t count, const Binary& values, uint16_t index) override final;
+	virtual void OnRange(const HeaderRecord& record, uint32_t count, const DoubleBitBinary& values, uint16_t index) override final;
+	virtual void OnRange(const HeaderRecord& record, uint32_t count, const BinaryOutputStatus& values, uint16_t index) override final;
+	virtual void OnRange(const HeaderRecord& record, uint32_t count, const Counter& values, uint16_t index) override final;
+	virtual void OnRange(const HeaderRecord& record, uint32_t count, const FrozenCounter& values, uint16_t index) override final;
+	virtual void OnRange(const HeaderRecord& record, uint32_t count, const Analog& values, uint16_t index) override final;
+	virtual void OnRange(const HeaderRecord& record, uint32_t count, const AnalogOutputStatus& values, uint16_t index) override final;
+	virtual void OnRange(const HeaderRecord& record, uint32_t count, const OctetString& values, uint16_t index) override final;
+	virtual void OnRange(const HeaderRecord& record, uint32_t count, const TimeAndInterval& values, uint16_t index) override final;
+	virtual void OnRange(const HeaderRecord& record, uint32_t count, const Group121Var1& values, uint16_t index) override final;
 
 	// events
 
-	virtual void OnIndexPrefix(const HeaderRecord& record, uint32_t count, const Binary& meas, uint16_t index) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, uint32_t count, const BinaryOutputStatus& meas, uint16_t index) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, uint32_t count, const DoubleBitBinary& meas, uint16_t index) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, uint32_t count, const Counter& meas, uint16_t index) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, uint32_t count, const FrozenCounter& meas, uint16_t index) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, uint32_t count, const Analog& meas, uint16_t index) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, uint32_t count, const AnalogOutputStatus& meas, uint16_t index) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, uint32_t count, const OctetString& meas, uint16_t index) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, uint32_t count, const TimeAndInterval& meas, uint16_t index) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, uint32_t count, const BinaryCommandEvent& meas, uint16_t index) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, uint32_t count, const AnalogCommandEvent& meas, uint16_t index) override final;	
-	virtual void OnIndexPrefix(const HeaderRecord& record, uint32_t count, const Group122Var1& meas, uint16_t index) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, uint32_t count, const Group122Var2& meas, uint16_t index) override final;
+	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Binary>>& values) override final;
+	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<BinaryOutputStatus>>& values) override final;
+	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<DoubleBitBinary>>& values) override final;
+	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Counter>>& values) override final;
+	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<FrozenCounter>>& values) override final;
+	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Analog>>& values) override final;
+	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputStatus>>& values) override final;
+	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<OctetString>>& values) override final;
+	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<TimeAndInterval>>& values) override final;
+	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<BinaryCommandEvent>>& values) override final;
+	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogCommandEvent>>& values) override final;
+	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Group122Var1>>& values) override final;
+	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Group122Var2>>& values) override final;
 
 	// commands
 
-	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<ControlRelayOutputBlock>>& meas) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputInt16>>& meas) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputInt32>>& meas) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputFloat32>>& meas) override final;
-	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputDouble64>>& meas) override final;
+	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<ControlRelayOutputBlock>>& values) override final;
+	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputInt16>>& values) override final;
+	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputInt32>>& values) override final;
+	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputFloat32>>& values) override final;
+	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputDouble64>>& values) override final;
 
 protected:
 
@@ -138,36 +138,36 @@ protected:
 	virtual IINField ProcessCount(const HeaderRecord& record, const ICollection<Group120Var4>& values);
 	
 	virtual IINField ProcessRange(const HeaderRecord& record, uint32_t count, const IINValue& value, uint16_t index);
-	virtual IINField ProcessRange(const HeaderRecord& record, uint32_t count, const Binary& meas, uint16_t index);
-	virtual IINField ProcessRange(const HeaderRecord& record, uint32_t count, const DoubleBitBinary& meas, uint16_t index);
-	virtual IINField ProcessRange(const HeaderRecord& record, uint32_t count, const BinaryOutputStatus& meas, uint16_t index);
-	virtual IINField ProcessRange(const HeaderRecord& record, uint32_t count, const Counter& meas, uint16_t index);
-	virtual IINField ProcessRange(const HeaderRecord& record, uint32_t count, const FrozenCounter& meas, uint16_t index);
-	virtual IINField ProcessRange(const HeaderRecord& record, uint32_t count, const Analog& meas, uint16_t index);
-	virtual IINField ProcessRange(const HeaderRecord& record, uint32_t count, const AnalogOutputStatus& meas, uint16_t index);
-	virtual IINField ProcessRange(const HeaderRecord& record, uint32_t count, const OctetString& meas, uint16_t index);
-	virtual IINField ProcessRange(const HeaderRecord& record, uint32_t count, const TimeAndInterval& meas, uint16_t index);
-	virtual IINField ProcessRange(const HeaderRecord& record, uint32_t count, const Group121Var1& meas, uint16_t index);
+	virtual IINField ProcessRange(const HeaderRecord& record, uint32_t count, const Binary& value, uint16_t index);
+	virtual IINField ProcessRange(const HeaderRecord& record, uint32_t count, const DoubleBitBinary& value, uint16_t index);
+	virtual IINField ProcessRange(const HeaderRecord& record, uint32_t count, const BinaryOutputStatus& value, uint16_t index);
+	virtual IINField ProcessRange(const HeaderRecord& record, uint32_t count, const Counter& value, uint16_t index);
+	virtual IINField ProcessRange(const HeaderRecord& record, uint32_t count, const FrozenCounter& value, uint16_t index);
+	virtual IINField ProcessRange(const HeaderRecord& record, uint32_t count, const Analog& value, uint16_t index);
+	virtual IINField ProcessRange(const HeaderRecord& record, uint32_t count, const AnalogOutputStatus& value, uint16_t index);
+	virtual IINField ProcessRange(const HeaderRecord& record, uint32_t count, const OctetString& value, uint16_t index);
+	virtual IINField ProcessRange(const HeaderRecord& record, uint32_t count, const TimeAndInterval& value, uint16_t index);
+	virtual IINField ProcessRange(const HeaderRecord& record, uint32_t count, const Group121Var1& value, uint16_t index);
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const Binary& meas, uint16_t index);
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const BinaryOutputStatus& meas, uint16_t index);
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const DoubleBitBinary& meas, uint16_t index);
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const Counter& meas, uint16_t index);
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const FrozenCounter& meas, uint16_t index);
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const Analog& meas, uint16_t index);
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const AnalogOutputStatus& meas, uint16_t index);
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const OctetString& meas, uint16_t index);
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const TimeAndInterval& meas, uint16_t index);
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const BinaryCommandEvent& meas, uint16_t index);
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const AnalogCommandEvent& meas, uint16_t index);	
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const Group122Var1& meas, uint16_t index);
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const Group122Var2& meas, uint16_t index);
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Binary>>& values);
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<BinaryOutputStatus>>& values);
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<DoubleBitBinary>>& values);
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Counter>>& values);
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<FrozenCounter>>& values);
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Analog>>& values);
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputStatus>>& values);
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<OctetString>>& values);
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<TimeAndInterval>>& values);
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<BinaryCommandEvent>>& values);
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogCommandEvent>>& values);
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Group122Var1>>& values);
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Group122Var2>>& values);
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<ControlRelayOutputBlock>>& meas);
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputInt16>> &meas);
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputInt32>>& meas);
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputFloat32>>& meas);
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputDouble64>>& meas);
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<ControlRelayOutputBlock>>& values);
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputInt16>> &values);
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputInt32>>& values);
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputFloat32>>& values);
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputDouble64>>& values);
 
 protected:
 

@@ -18,6 +18,7 @@
 #include <opendnp3/app/Indexed.h>
 #include <opendnp3/app/BinaryCommandEvent.h>
 #include <opendnp3/app/AnalogCommandEvent.h>
+#include <opendnp3/app/parsing/ICollection.h>
 
 #include <opendnp3/master/CommandResponse.h>
 #include <opendnp3/master/MasterStackConfig.h>
@@ -25,10 +26,11 @@
 #include <opendnp3/outstation/OutstationStackConfig.h>
 #include <opendnp3/link/LinkChannelStatistics.h>
 
-
+#include "CollectionAdapter.h"
 
 #include <asiopal/SerialTypes.h>
 
+using namespace System::Collections::Generic;
 using namespace Automatak::DNP3::Interface;
 
 namespace Automatak
@@ -128,9 +130,22 @@ namespace Automatak
 
 
 				template <class Target, class Source>
-				static IndexedValue<Target^>^ ConvertIndexValue(const opendnp3::Indexed<Source>& pair)
+				static IndexedValue<Target>^ ConvertIndexValue(const opendnp3::Indexed<Source>& pair)
 				{
-					return gcnew IndexedValue<Target^>(ConvertMeas(pair.value), pair.index);
+					return gcnew IndexedValue<Target>(ConvertMeas(pair.value), pair.index);
+				}
+
+				template <class Target, class Source>
+				static IEnumerable<IndexedValue<Target>^>^ ToIndexedEnumerable(const opendnp3::ICollection<opendnp3::Indexed<Source>>& values)
+				{
+					auto convert = [](const opendnp3::Indexed <Source> &value) -> IndexedValue<Target>^ {
+						return ConvertIndexValue<Target, Source>(value);
+					};
+
+					auto adapter = CreateAdapter<opendnp3::Indexed<Source>, IndexedValue<Target>^>(convert);
+
+					values.Foreach(adapter);
+					return adapter.GetValues();
 				}
 
 			};

@@ -30,7 +30,7 @@
 #include "opendnp3/app/parsing/NumParser.h"
 #include "opendnp3/app/parsing/ParserSettings.h"
 
-#include "opendnp3/app/parsing/BufferedCollection.h"
+#include "opendnp3/app/parsing/UniformBufferedCollection.h"
 
 namespace opendnp3
 {
@@ -63,10 +63,6 @@ private:
 	template <class Type>
 	static CountIndexParser FromType(uint16_t count, const NumParser& numparser);
 
-	// Create a count handler from a fixed size descriptor, handle it with a lazy collection
-	template <class Descriptor>
-	static CountIndexParser FromCollection(uint16_t count, const NumParser& numparser);
-
 	static ParseResult ParseCountOfObjects(openpal::ReadBufferView& buffer, const HeaderRecord& record, const NumParser& numparser, uint16_t count, openpal::Logger* pLogger, IAPDUHandler* pHandler);
 
 	static ParseResult ParseIndexPrefixedOctetData(openpal::ReadBufferView& buffer, const HeaderRecord& record, const NumParser& numParser, uint32_t count, openpal::Logger* pLogger, IAPDUHandler* pHandler);
@@ -75,12 +71,9 @@ private:
 	static void InvokeCountOf(const HeaderRecord& record, uint16_t count, const NumParser& numparser, const openpal::ReadBufferView& buffer, IAPDUHandler& handler);
 
 	template <class Type>
-	static void InvokeCountOfType(const HeaderRecord& record, uint16_t count, const NumParser& numparser, const openpal::ReadBufferView& buffer, IAPDUHandler& handler);
+	static void InvokeCountOfType(const HeaderRecord& record, uint16_t count, const NumParser& numparser, const openpal::ReadBufferView& buffer, IAPDUHandler& handler);	
 
-	template <class Descriptor>
-	static void InvokeCountOfCollection(const HeaderRecord& record, uint16_t count, const NumParser& numparser, const openpal::ReadBufferView& buffer, IAPDUHandler& handler);
-
-	CountIndexParser(uint16_t count, uint32_t requiredSize, const NumParser& numparser, HandleFun handler);
+	CountIndexParser(uint16_t count, uint32_t requiredSize, const NumParser& numparser, HandleFun handler);	
 		
 	uint16_t count;
 	uint32_t requiredSize;
@@ -105,53 +98,33 @@ CountIndexParser CountIndexParser::FromType(uint16_t count, const NumParser& num
 }
 
 template <class Descriptor>
-CountIndexParser CountIndexParser::FromCollection(uint16_t count, const NumParser& numparser)
-{
-	const uint32_t SIZE = static_cast<uint32_t>(count)* (Descriptor::Size() + numparser.NumBytes());
-	return CountIndexParser(count, SIZE, numparser, &InvokeCountOfCollection<Descriptor>);
-}
-
-template <class Descriptor>
-void CountIndexParser::InvokeCountOfCollection(const HeaderRecord& record, uint16_t count, const NumParser& numparser, const openpal::ReadBufferView& buffer, IAPDUHandler& handler)
-{	
-	auto reader = [numparser](openpal::ReadBufferView & buffer, uint32_t) 
-	{ 		
-		auto index = numparser.ReadNum(buffer);
-		typename Descriptor::Target target;
-		Descriptor::ReadTarget(buffer, target);
-		return WithIndex(target, index);
-	};		
-
-	auto collection = CreateBufferedCollection<Indexed<typename Descriptor::Target>>(buffer, count, reader);
-	handler.OnIndexPrefix(record, collection);
-}
-
-template <class Descriptor>
 void CountIndexParser::InvokeCountOf(const HeaderRecord& record, uint16_t count, const NumParser& numparser, const openpal::ReadBufferView& buffer, IAPDUHandler& handler)
-{
-	openpal::ReadBufferView copy(buffer);
-
-	for (uint16_t i = 0; i < count; ++i)
+{	
+	auto read = [&numparser](openpal::ReadBufferView &buffer) -> Indexed<typename Descriptor::Target>
 	{
-		auto index = numparser.ReadNum(copy);
-		typename Descriptor::Target target;
-		Descriptor::ReadTarget(copy, target);
-		handler.OnIndexPrefix(record, count, target, index);
-	}	
+		Indexed<typename Descriptor::Target> pair;
+		pair.index = numparser.ReadNum(buffer);		
+		Descriptor::ReadTarget(buffer, pair.value);
+		return pair;
+	};
+
+	auto collection = CreateUniformBufferedCollection<Indexed<typename Descriptor::Target>>(buffer, count, read);
+	handler.OnIndexPrefix(record, collection);
 }
 
 template <class Type>
 void CountIndexParser::InvokeCountOfType(const HeaderRecord& record, uint16_t count, const NumParser& numparser, const openpal::ReadBufferView& buffer, IAPDUHandler& handler)
 {
-	openpal::ReadBufferView copy(buffer);
-
-	for (uint16_t i = 0; i < count; ++i)
+	auto read = [&numparser](openpal::ReadBufferView &buffer) -> Indexed<Type>
 	{
-		auto index = numparser.ReadNum(copy);
-		Type value;
-		Type::Read(copy, value);
-		handler.OnIndexPrefix(record, count, value, index);
-	}
+		Indexed<Type> pair;
+		pair.index = numparser.ReadNum(buffer);
+		Type::Read(buffer, pair.value);
+		return pair;
+	};
+
+	auto collection = CreateUniformBufferedCollection<Indexed<Type>>(buffer, count, read);
+	handler.OnIndexPrefix(record, collection);
 }
 
 }

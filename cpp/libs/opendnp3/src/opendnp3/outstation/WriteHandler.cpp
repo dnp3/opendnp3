@@ -93,14 +93,14 @@ IINField WriteHandler::ProcessCount(const HeaderRecord& record, const ICollectio
 	}
 }
 
-IINField  WriteHandler::ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const TimeAndInterval& value, uint16_t index)
+IINField  WriteHandler::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<TimeAndInterval>>& values)
 {
 	if (!pApplication->SupportsWriteTimeAndInterval())
 	{
 		return IINBit::FUNC_NOT_SUPPORTED;
 	}
 
-	return pApplication->WriteTimeAndInterval(value, index) ? IINField::Empty() : IINBit::PARAM_ERROR;	
+	return pApplication->WriteTimeAndInterval(values) ? IINField::Empty() : IINBit::PARAM_ERROR;	
 }
 
 }

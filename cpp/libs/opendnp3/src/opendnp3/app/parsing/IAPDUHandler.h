@@ -93,22 +93,22 @@ public:
 
 	// ------ index-prefix callbacks for qualifiers 0x17 and 0x28 ------
 
-	virtual void OnIndexPrefix(const HeaderRecord& record, uint32_t count, const Binary& meas, uint16_t index) = 0;
-	virtual void OnIndexPrefix(const HeaderRecord& record, uint32_t count, const BinaryOutputStatus& meas, uint16_t index) = 0;
-	virtual void OnIndexPrefix(const HeaderRecord& record, uint32_t count, const DoubleBitBinary& meas, uint16_t index) = 0;
-	virtual void OnIndexPrefix(const HeaderRecord& record, uint32_t count, const Counter& meas, uint16_t index) = 0;
-	virtual void OnIndexPrefix(const HeaderRecord& record, uint32_t count, const FrozenCounter& meas, uint16_t index) = 0;
-	virtual void OnIndexPrefix(const HeaderRecord& record, uint32_t count, const Analog& meas, uint16_t index) = 0;
-	virtual void OnIndexPrefix(const HeaderRecord& record, uint32_t count, const AnalogOutputStatus& meas, uint16_t index) = 0;
-	virtual void OnIndexPrefix(const HeaderRecord& record, uint32_t count, const OctetString& meas, uint16_t index) = 0;
-	virtual void OnIndexPrefix(const HeaderRecord& record, uint32_t count, const TimeAndInterval& meas, uint16_t index) = 0;
-	virtual void OnIndexPrefix(const HeaderRecord& record, uint32_t count, const BinaryCommandEvent& meas, uint16_t index) = 0;
-	virtual void OnIndexPrefix(const HeaderRecord& record, uint32_t count, const AnalogCommandEvent& meas, uint16_t index) = 0;
+	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Binary>>& values) = 0;
+	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<BinaryOutputStatus>>& values) = 0;
+	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection <Indexed<DoubleBitBinary>>& values) = 0;
+	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Counter>>& values) = 0;
+	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<FrozenCounter>>& values) = 0;
+	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Analog>>& values) = 0;
+	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputStatus>>& values) = 0;
+	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<OctetString>>& values) = 0;
+	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<TimeAndInterval>>& values) = 0;
+	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<BinaryCommandEvent>>& values) = 0;
+	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogCommandEvent>>& values) = 0;
 
 	// --- security stat events ---
 
-	virtual void OnIndexPrefix(const HeaderRecord& record, uint32_t count, const Group122Var1& meas, uint16_t index) = 0;
-	virtual void OnIndexPrefix(const HeaderRecord& record, uint32_t count, const Group122Var2& meas, uint16_t index) = 0;
+	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Group122Var1>> &values) = 0;
+	virtual void OnIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Group122Var2>> &values) = 0;
 
 	// --- commmands ---
 

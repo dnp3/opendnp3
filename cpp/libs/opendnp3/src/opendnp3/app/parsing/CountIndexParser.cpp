@@ -37,6 +37,10 @@
 #include "opendnp3/objects/Group42.h"
 #include "opendnp3/objects/Group43.h"
 
+#include "opendnp3/app/parsing/BufferedCollection.h"
+
+using namespace openpal;
+
 namespace opendnp3
 {
 
@@ -119,7 +123,7 @@ ParseResult CountIndexParser::ParseCountOfObjects(openpal::ReadBufferView& buffe
 		return CountIndexParser::From<Group11Var2>(count, numparser).Process(record, buffer, pHandler, pLogger);
 
 	case(GroupVariation::Group12Var1) :
-		return CountIndexParser::FromCollection<Group12Var1>(count, numparser).Process(record, buffer, pHandler, pLogger);
+		return CountIndexParser::From<Group12Var1>(count, numparser).Process(record, buffer, pHandler, pLogger);
 
 	case(GroupVariation::Group13Var1) :
 		return CountIndexParser::From<Group13Var1>(count, numparser).Process(record, buffer, pHandler, pLogger);
@@ -162,13 +166,13 @@ ParseResult CountIndexParser::ParseCountOfObjects(openpal::ReadBufferView& buffe
 		return CountIndexParser::From<Group32Var8>(count, numparser).Process(record, buffer, pHandler, pLogger);
 		
 	case(GroupVariation::Group41Var1) :
-		return CountIndexParser::FromCollection<Group41Var1>(count, numparser).Process(record, buffer, pHandler, pLogger);
+		return CountIndexParser::From<Group41Var1>(count, numparser).Process(record, buffer, pHandler, pLogger);
 	case(GroupVariation::Group41Var2) :
-		return CountIndexParser::FromCollection<Group41Var2>(count, numparser).Process(record, buffer, pHandler, pLogger);
+		return CountIndexParser::From<Group41Var2>(count, numparser).Process(record, buffer, pHandler, pLogger);
 	case(GroupVariation::Group41Var3) :
-		return CountIndexParser::FromCollection<Group41Var3>(count, numparser).Process(record, buffer, pHandler, pLogger);
+		return CountIndexParser::From<Group41Var3>(count, numparser).Process(record, buffer, pHandler, pLogger);
 	case(GroupVariation::Group41Var4) :
-		return CountIndexParser::FromCollection<Group41Var4>(count, numparser).Process(record, buffer, pHandler, pLogger);
+		return CountIndexParser::From<Group41Var4>(count, numparser).Process(record, buffer, pHandler, pLogger);
 
 	case(GroupVariation::Group42Var1) :
 		return CountIndexParser::From<Group42Var1>(count, numparser).Process(record, buffer, pHandler, pLogger);
@@ -241,15 +245,15 @@ ParseResult CountIndexParser::ParseIndexPrefixedOctetData(openpal::ReadBufferVie
 	
 	if (pHandler)
 	{
-		openpal::ReadBufferView copy(buffer);
+		auto read = [&](ReadBufferView& buff, uint32_t pos) -> Indexed<OctetString> {
+			auto index = numparser.ReadNum(buffer);
+			OctetString octets(buff.Take(record.variation));
+			buff.Advance(record.variation);
+			return WithIndex(octets, index);
+		};
 
-		for (uint16_t i = 0; i < count; ++i)
-		{
-			uint16_t index = numparser.ReadNum(copy);
-			OctetString octets(copy.Take(record.variation));
-			copy.Advance(record.variation);
-			pHandler->OnIndexPrefix(record, count, octets, index);
-		}
+		auto collection = CreateBufferedCollection<Indexed<OctetString>>(buffer, count, read);
+		pHandler->OnIndexPrefix(record, collection);
 	}
 
 	buffer.Advance(TOTAL_SIZE);

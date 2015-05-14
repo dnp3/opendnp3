@@ -22,17 +22,16 @@
 #define OPENDNP3_UNIFORMBUFFEREDCOLLECTION_H
 
 #include "opendnp3/app/parsing/ICollection.h"
-#include "opendnp3/app/parsing/Functions.h"
 
 namespace opendnp3
 {
 
-template <class T>
+template <class T, class ReadFunc>
 class UniformBufferedCollection : public ICollection<T>
 {
 public:	
 
-	UniformBufferedCollection(const openpal::ReadBufferView& buffer_, uint32_t count, ReadFunction<T> readFunc_) :
+	UniformBufferedCollection(const openpal::ReadBufferView& buffer_, uint32_t count, const ReadFunc& readFunc_) :
 		buffer(buffer_),
 		COUNT(count),
 		readFunc(readFunc_)
@@ -43,14 +42,11 @@ public:
 
 	virtual void Foreach(IVisitor<T>& visitor) const final
 	{
-		openpal::ReadBufferView copy(buffer);
-
-		T value;
+		openpal::ReadBufferView copy(buffer);		
 
 		for (uint32_t pos = 0; pos < COUNT; ++pos)
-		{
-			readFunc(copy, value);
-			visitor.OnValue(value);
+		{			
+			visitor.OnValue(readFunc(copy));
 		}		
 	}
 
@@ -58,13 +54,13 @@ private:
 
 	openpal::ReadBufferView buffer;
 	const uint32_t COUNT;
-	ReadFunction<T> readFunc;
+	ReadFunc readFunc;
 };
 
-template <class T>
-UniformBufferedCollection<T> CreateUniformBufferedCollection(const openpal::ReadBufferView& buffer, uint32_t count, ReadFunction<T> readFunc)
+template <class T, class ReadFunc>
+UniformBufferedCollection<T, ReadFunc> CreateUniformBufferedCollection(const openpal::ReadBufferView& buffer, uint32_t count, const ReadFunc& readFunc)
 {
-	return UniformBufferedCollection<T>(buffer, count, readFunc);
+	return UniformBufferedCollection<T, ReadFunc>(buffer, count, readFunc);
 }
 
 }

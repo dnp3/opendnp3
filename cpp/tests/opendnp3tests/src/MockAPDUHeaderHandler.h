@@ -104,52 +104,44 @@ public:
 	}
 	
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const Binary& meas, uint16_t index) override final
-	{				
-		eventBinaries.push_back(WithIndex(meas, index));			
-		return IINField::Empty();
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Binary>>& values) override final
+	{			
+		return this->ProcessAny(record, values, eventBinaries);		
 	}
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const DoubleBitBinary& meas, uint16_t index) override final
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<DoubleBitBinary>>& values) override final
 	{				
-		eventDoubleBinaries.push_back(WithIndex(meas, index));
-		return IINField::Empty();
+		return this->ProcessAny(record, values, eventDoubleBinaries);
 	}
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const Counter& meas, uint16_t index)  override final
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Counter>>& values) override final
 	{		
-		eventCounters.push_back(WithIndex(meas, index));
-		return IINField::Empty();
+		return this->ProcessAny(record, values, eventCounters);
 	}
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const FrozenCounter& meas, uint16_t index)  override final
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<FrozenCounter>>& values) override final
 	{		
-		eventFrozenCounters.push_back(WithIndex(meas, index));
-		return IINField::Empty();
+		return this->ProcessAny(record, values, eventFrozenCounters);
 	}
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const Analog& meas, uint16_t index)  override final
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Analog>>& values) override final
 	{		
-		eventAnalogs.push_back(WithIndex(meas, index));
-		return IINField::Empty();
+		return this->ProcessAny(record, values, eventAnalogs);
 	}
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const OctetString& meas, uint16_t index) override final
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<OctetString>>& values) override final
 	{				
-		indexPrefixedOctets.push_back(WithIndex(meas, index));
-		return IINField::Empty();
+		return this->ProcessAny(record, values, indexPrefixedOctets);
 	}
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const BinaryCommandEvent& meas, uint16_t index) override final
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<BinaryCommandEvent>>& values) override final
 	{				
-		binaryCommandEvents.push_back(WithIndex(meas, index));
-		return IINField::Empty();
+		return this->ProcessAny(record, values, binaryCommandEvents);		
 	}
 
-	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const AnalogCommandEvent& meas, uint16_t index) override final
+	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogCommandEvent>>& values) override final
 	{				
-		analogCommandEvents.push_back(WithIndex(meas, index));
-		return IINField::Empty();
+		return this->ProcessAny(record, values, analogCommandEvents);
 	}
 
 	/// --- controls ----

@@ -94,6 +94,7 @@ IINField MeasurementHandler::ProcessCount(const HeaderRecord& record, const ICol
 	return IINField::Empty();
 }
 
+/*
 IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, uint32_t count, const Binary& meas, uint16_t index)
 {
 	return this->LoadSingleValue(record, ModeFromType(record.enumeration), meas, index);
@@ -144,81 +145,90 @@ IINField MeasurementHandler::ProcessRange(const HeaderRecord& record, uint32_t c
 	SecurityStat value(meas.flags, meas.assocId, meas.value);
 	return this->LoadSingleValue(record, ModeFromType(record.enumeration), value, index);
 }
+*/
 
-IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const Binary& meas, uint16_t index)
+IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Binary>>& values)
 {
 	if (record.enumeration == GroupVariation::Group2Var3)
 	{
-		return this->ProcessWithCTO(record, meas, index);
+		return this->ProcessWithCTO(record, values);
 	}
 	else
 	{
-		return this->LoadSingleValue(record, ModeFromType(record.enumeration), meas, index);
+		return this->LoadValues(record, ModeFromType(record.enumeration), values);
 	}
 }
 
-IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const BinaryOutputStatus& meas, uint16_t index)
+IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<BinaryOutputStatus>>& values)
 {
-	return this->LoadSingleValue(record, ModeFromType(record.enumeration), meas, index);
+	return this->LoadValues(record, ModeFromType(record.enumeration), values);
 }
 
-IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const DoubleBitBinary& meas, uint16_t index)
+IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<DoubleBitBinary>>& values)
 {
 	if (record.enumeration == GroupVariation::Group4Var3)
 	{
-		return this->ProcessWithCTO(record, meas, index);
+		return this->ProcessWithCTO(record, values);
 	}
 	else
 	{
-		return this->LoadSingleValue(record, ModeFromType(record.enumeration), meas, index);
+		return this->LoadValues(record, ModeFromType(record.enumeration), values);
 	}
 }
 
-IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const Counter& meas, uint16_t index)
+IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Counter>>& values)
 {
-	return this->LoadSingleValue(record, ModeFromType(record.enumeration), meas, index);
+	return this->LoadValues(record, ModeFromType(record.enumeration), values);
 }
 
-IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const FrozenCounter& meas, uint16_t index)
+IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<FrozenCounter>>& values)
 {
-	return this->LoadSingleValue(record, ModeFromType(record.enumeration), meas, index);
+	return this->LoadValues(record, ModeFromType(record.enumeration), values);
 }
 
-IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const Analog& meas, uint16_t index)
+IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Analog>>& values)
 {
-	return this->LoadSingleValue(record, ModeFromType(record.enumeration), meas, index);
+	return this->LoadValues(record, ModeFromType(record.enumeration), values);
 }
 
-IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const AnalogOutputStatus& meas, uint16_t index)
+IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputStatus>>& values)
 {
-	return this->LoadSingleValue(record, ModeFromType(record.enumeration), meas, index);
+	return this->LoadValues(record, ModeFromType(record.enumeration), values);
 }
 
-IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const OctetString& meas, uint16_t index)
+IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<OctetString>>& values)
 {
-	return this->LoadSingleValue(record, ModeFromType(record.enumeration), meas, index);
+	return this->LoadValues(record, ModeFromType(record.enumeration), values);
 }
 
-IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const BinaryCommandEvent& meas, uint16_t index)
+IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<BinaryCommandEvent>>& values)
 {
-	return this->LoadSingleValue(record, ModeFromType(record.enumeration), meas, index);
+	return this->LoadValues(record, ModeFromType(record.enumeration), values);
 }
 
-IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const AnalogCommandEvent& meas, uint16_t index)
+IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogCommandEvent>>& values)
 {
-	return this->LoadSingleValue(record, ModeFromType(record.enumeration), meas, index);
+	return this->LoadValues(record, ModeFromType(record.enumeration), values);
 }
 
-IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const Group122Var1& meas, uint16_t index)
-{	
-	SecurityStat ss(meas.flags, meas.assocId, meas.value);
-	return this->LoadSingleValue(record, ModeFromType(record.enumeration), ss, index);
+IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Group122Var1>>& values)
+{			
+	return this->LoadValuesWithTransformTo<SecurityStat>(record, values);
 }
 
-IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const Group122Var2& meas, uint16_t index)
+IINField MeasurementHandler::ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Group122Var2>>& values)
 {
-	SecurityStat ss(meas.flags, meas.assocId, meas.value, meas.time);
-	return this->LoadSingleValue(record, ModeFromType(record.enumeration), ss, index);
+	return this->LoadValuesWithTransformTo<SecurityStat>(record, values);
+}
+
+SecurityStat MeasurementHandler::Convert(const Group122Var1& meas)
+{
+	return SecurityStat(meas.flags, meas.assocId, meas.value);
+}
+
+SecurityStat MeasurementHandler::Convert(const Group122Var2& meas)
+{
+	return SecurityStat(meas.flags, meas.assocId, meas.value, meas.time);
 }
 
 }

@@ -62,6 +62,7 @@ private:
 	IINField ProcessCount(const HeaderRecord& record, const ICollection<Group51Var1>& cto) override final;
 	IINField ProcessCount(const HeaderRecord& record, const ICollection<Group51Var2>& cto) override final;
 
+	/*
 	IINField ProcessRange(const HeaderRecord& record, uint32_t count, const Binary& meas, uint16_t index) override final;
 	IINField ProcessRange(const HeaderRecord& record, uint32_t count, const DoubleBitBinary& meas, uint16_t index) override final;
 	IINField ProcessRange(const HeaderRecord& record, uint32_t count, const BinaryOutputStatus& meas, uint16_t index) override final;
@@ -72,31 +73,51 @@ private:
 	IINField ProcessRange(const HeaderRecord& record, uint32_t count, const OctetString& meas, uint16_t index) override final;
 	IINField ProcessRange(const HeaderRecord& record, uint32_t count, const TimeAndInterval& meas, uint16_t index) override final;
 	IINField ProcessRange(const HeaderRecord& record, uint32_t count, const Group121Var1& meas, uint16_t index) override final;
+	*/
 
-	IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const Binary& meas, uint16_t index) override final;
-	IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const BinaryOutputStatus& meas, uint16_t index) override final;
-	IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const DoubleBitBinary& meas, uint16_t index) override final;
-	IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const Counter& meas, uint16_t index) override final;
-	IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const FrozenCounter& meas, uint16_t index) override final;
-	IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const Analog& meas, uint16_t index) override final;
-	IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const AnalogOutputStatus& meas, uint16_t index) override final;
-	IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const OctetString& meas, uint16_t index) override final;
-	IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const BinaryCommandEvent& meas, uint16_t index) override final;
-	IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const AnalogCommandEvent& meas, uint16_t index) override final;
-	IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const Group122Var1& meas, uint16_t index) override final;
-	IINField ProcessIndexPrefix(const HeaderRecord& record, uint32_t count, const Group122Var2& meas, uint16_t index) override final;	
+	IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Binary>>& values) override final;
+	IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<BinaryOutputStatus>>& values) override final;
+	IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<DoubleBitBinary>>& values) override final;
+	IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Counter>>& values) override final;
+	IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<FrozenCounter>>& values) override final;
+	IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Analog>>& values) override final;
+	IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogOutputStatus>>& values) override final;
+	IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<OctetString>>& values) override final;
+	IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<BinaryCommandEvent>>& values) override final;
+	IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<AnalogCommandEvent>>& values) override final;
+	IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Group122Var1>>& values) override final;
+	IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<Group122Var2>>& values) override final;
+
+
+	template <class Target, class Source>
+	IINField LoadValuesWithTransformTo(const HeaderRecord& record, const ICollection<Indexed<Source>>& values)
+	{
+		auto transform = [](const Indexed<Source>& input) -> Indexed<Target> {
+			return Convert<Source, Target>(input);
+		};
+
+		auto collection = Map<Indexed<Source>, Indexed<Target>>(values, transform);
+
+		return this->LoadValues(record, ModeFromType(record.enumeration), collection);
+	}
 
 	template <class T>
-	IINField LoadSingleValue(const HeaderRecord& record, TimestampMode tsmode, const T& meas, uint16_t index)
+	IINField LoadValues(const HeaderRecord& record, TimestampMode tsmode, const ICollection<Indexed<T>>& values)
 	{
 		this->CheckForTxStart();
 		HeaderInfo info(record.enumeration, record.GetQualifierCode(), tsmode, record.headerCount);
-		this->pSOEHandler->OnValue(info, meas, index);
+		
+		auto process = [&](const Indexed<T>& pair) 
+		{
+			this->pSOEHandler->OnValue(info, pair.value, pair.index);
+		};
+		values.ForeachItem(process);
+
 		return IINField();
 	}
 
 	template <class T>
-	IINField ProcessWithCTO(const HeaderRecord& record, const T& meas, uint16_t index);
+	IINField ProcessWithCTO(const HeaderRecord& record, const ICollection<Indexed<T>>& values);
 
 	bool txInitiated;
 	ISOEHandler* pSOEHandler;
@@ -107,10 +128,19 @@ private:
 
 	void CheckForTxStart();
 
+	static SecurityStat Convert(const Group122Var1& value);
+	static SecurityStat Convert(const Group122Var2& value);
+
+	template <class T, class U>
+	static Indexed<U> Convert(const Indexed<T>& input)
+	{		
+		return WithIndex(Convert(input.value), input.index);
+	}
+
 };
 
 template <class T>
-IINField MeasurementHandler::ProcessWithCTO(const HeaderRecord& record, const T& meas, uint16_t index)
+IINField MeasurementHandler::ProcessWithCTO(const HeaderRecord& record, const ICollection<Indexed<T>>& values)
 {	
 	if (ctoMode == TimestampMode::INVALID || ((ctoHeader + 1) != GetCurrentHeader()))
 	{
@@ -119,11 +149,17 @@ IINField MeasurementHandler::ProcessWithCTO(const HeaderRecord& record, const T&
 	}
 
 	const auto MODE = this->ctoMode;
-	
-	T copy(meas);
-	copy.time = DNPTime(meas.time + this->commonTimeOccurence);	
+	const auto cto = this->commonTimeOccurence;
 
-	return this->LoadSingleValue(record, MODE, copy, index);
+	auto transform = [cto](const Indexed<T>& input) -> Indexed<T> {
+		Indexed<T> copy(input);
+		copy.value.time = DNPTime(input.value.time + cto);
+		return copy;
+	};
+
+	auto adjusted = Map<Indexed<T>, Indexed<T>>(values, transform);
+
+	return this->LoadValues(record, MODE, adjusted);
 }
 
 }

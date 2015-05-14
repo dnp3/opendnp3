@@ -34,9 +34,11 @@ namespace Automatak
 				return proxy->SupportsWriteTimeAndInterval();
 			}
 
-			bool OutstationApplicationAdapter::WriteTimeAndInterval(const opendnp3::TimeAndInterval& value, uint16_t index)
+			bool OutstationApplicationAdapter::WriteTimeAndInterval(const opendnp3::ICollection<opendnp3::Indexed<opendnp3::TimeAndInterval>>& values)
 			{
-				return proxy->WriteTimeAndInterval(Conversions::ConvertMeas(value), index);
+				auto list = Conversions::ToIndexedEnumerable<TimeAndInterval^>(values);
+
+				return proxy->WriteTimeAndInterval(list);
 			}
 
 			bool OutstationApplicationAdapter::SupportsAssignClass()

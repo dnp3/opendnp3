@@ -30,8 +30,10 @@
 
 #include "opendnp3/app/Indexed.h"
 #include "opendnp3/app/TimeAndInterval.h"
+#include "opendnp3/app/parsing/ICollection.h"
 
 #include "opendnp3/outstation/ApplicationIIN.h"
+
 
 
 namespace opendnp3
@@ -60,12 +62,12 @@ class IOutstationApplication
 	/// and the outstation will return IIN 2.1 (FUNC_NOT_SUPPORTED) when it receives this request
 	virtual bool SupportsWriteTimeAndInterval() = 0;
 
-	/// Write a single TimeAndInterval value. Only called if SupportsWriteTimeAndInterval returns true.
+	/// Write one or more TimeAndInterval values. Only called if SupportsWriteTimeAndInterval returns true.
 	/// The outstation application code is reponsible for updating TimeAndInterval values in the database if this behavior
 	/// is desired
 	/// @return boolean value indicating if the values supplied were accepted. Returning
 	/// false will cause the outstation to set IIN 2.3 (PARAM_ERROR) in its response.	
-	virtual bool WriteTimeAndInterval(const TimeAndInterval& meas, uint16_t index) = 0;
+	virtual bool WriteTimeAndInterval(const ICollection<Indexed<TimeAndInterval>>& values) = 0;
 
 	/// True if the outstation supports the assign class function code
 	/// If this function returns false, the assign class callbacks will never be called
@@ -113,7 +115,7 @@ class DefaultOutstationApplication : public IOutstationApplication
 	
 	virtual bool SupportsWriteTimeAndInterval() override final { return false; }
 	
-	virtual bool WriteTimeAndInterval(const TimeAndInterval& meas, uint16_t index) override final { return false; }
+	virtual bool WriteTimeAndInterval(const ICollection<Indexed<TimeAndInterval>>& values) override final { return false; }
 
 	virtual bool SupportsAssignClass() override final { return false; }
 	

@@ -38,7 +38,7 @@ namespace Automatak.DNP3.Interface
 
         bool SupportsWriteTimeAndInterval();
 
-        bool WriteTimeAndInterval(TimeAndInterval value, UInt16 index);
+        bool WriteTimeAndInterval(IEnumerable<IndexedValue<TimeAndInterval>> values);
 
         bool SupportsAssignClass();
 
@@ -100,7 +100,7 @@ namespace Automatak.DNP3.Interface
             return false;
         }
 
-        bool IOutstationApplication.WriteTimeAndInterval(TimeAndInterval value, UInt16 index)
+        bool IOutstationApplication.WriteTimeAndInterval(IEnumerable<IndexedValue<TimeAndInterval>> values)
         {
             return false;
         }

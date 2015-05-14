@@ -83,7 +83,13 @@ CountParser CountParser::From(uint16_t count)
 template <class T>
 void CountParser::InvokeCountOf(const HeaderRecord& record, uint16_t count, const openpal::ReadBufferView& buffer, IAPDUHandler& handler)
 {	
-	auto collection = CreateUniformBufferedCollection(buffer, count, &T::Read);
+	auto read = [](openpal::ReadBufferView& buffer) -> T {
+		T value;
+		T::Read(buffer, value);
+		return value;
+	};
+
+	auto collection = CreateUniformBufferedCollection<T>(buffer, count, read);
 	handler.OnCount(record, collection);
 }
 
