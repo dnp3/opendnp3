@@ -32,6 +32,7 @@
 #include "opendnp3/app/parsing/BitReader.h"
 
 #include "opendnp3/app/Range.h"
+#include "opendnp3/app/parsing/BufferedCollection.h"
 
 
 namespace opendnp3
