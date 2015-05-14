@@ -32,14 +32,14 @@ ReadHandler::ReadHandler(openpal::Logger logger, IStaticSelector& staticSelector
 	
 }
 
-IINField ReadHandler::ProcessAllObjects(const HeaderRecord& record)
+IINField ReadHandler::ProcessHeader(const AllObjectsHeader& header)
 {
-	switch (record.type)
+	switch (header.type)
 	{
 		case(GroupVariationType::STATIC) :
-			return pStaticSelector->SelectAll(record.enumeration);
+			return pStaticSelector->SelectAll(header.enumeration);
 		case(GroupVariationType::EVENT) :
-			return pEventSelector->SelectAll(record.enumeration);
+			return pEventSelector->SelectAll(header.enumeration);
 		default:
 			return IINField(IINBit::FUNC_NOT_SUPPORTED);
 	}	

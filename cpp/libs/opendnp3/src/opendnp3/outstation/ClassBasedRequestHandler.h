@@ -41,7 +41,7 @@ public:
 
 private:
 
-	virtual IINField ProcessAllObjects(const HeaderRecord& record) override final;
+	virtual IINField ProcessHeader(const AllObjectsHeader& header) override final;
 	
 	ClassField classField;
 };

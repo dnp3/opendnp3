@@ -41,7 +41,7 @@ private:
 
 	virtual IINField ProcessRange(const HeaderRecord& record, const ICollection<Indexed<IINValue>>& values) override final;
 
-	virtual IINField ProcessCount(const HeaderRecord& record, const ICollection<Group50Var1>& times) override final;
+	virtual IINField ProcessValues(const CountHeader& header, const ICollection<Group50Var1>& times) override final;
 
 	virtual IINField ProcessIndexPrefix(const HeaderRecord& record, const ICollection<Indexed<TimeAndInterval>>& values) override final;
 

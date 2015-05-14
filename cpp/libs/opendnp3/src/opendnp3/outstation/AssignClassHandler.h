@@ -42,7 +42,7 @@ public:
 
 private:
 
-	virtual IINField ProcessAllObjects(const HeaderRecord& record) override final;
+	virtual IINField ProcessHeader(const AllObjectsHeader& header) override final;
 
 	virtual IINField ProcessRangeRequest(const HeaderRecord& record, const Range& range) override final;
 

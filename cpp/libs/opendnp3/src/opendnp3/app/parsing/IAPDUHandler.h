@@ -55,17 +55,17 @@ class IAPDUHandler
 {
 public:
 
-	virtual void AllObjects(const HeaderRecord& record) = 0;
+	virtual void OnHeader(const AllObjectsHeader& header) = 0;
 	virtual void OnRangeRequest(const HeaderRecord& record, const Range& range) = 0;
 	virtual void OnCountRequest(const HeaderRecord& record, uint16_t count) = 0;
 
 	// ------	Count callbacks for qualifiers 0x07 and 0x08 ------
 	
-	virtual void OnCount(const HeaderRecord& record, const ICollection<Group50Var1>& values) = 0;
-	virtual void OnCount(const HeaderRecord& record, const ICollection<Group51Var1>& values) = 0;
-	virtual void OnCount(const HeaderRecord& record, const ICollection<Group51Var2>& values) = 0;
-	virtual void OnCount(const HeaderRecord& record, const ICollection<Group52Var2>& values) = 0;
-	virtual void OnCount(const HeaderRecord& record, const ICollection<Group120Var4>& values) = 0;
+	virtual void OnValues(const CountHeader& header, const ICollection<Group50Var1>& values) = 0;
+	virtual void OnValues(const CountHeader& header, const ICollection<Group51Var1>& values) = 0;
+	virtual void OnValues(const CountHeader& header, const ICollection<Group51Var2>& values) = 0;
+	virtual void OnValues(const CountHeader& header, const ICollection<Group52Var2>& values) = 0;
+	virtual void OnValues(const CountHeader& header, const ICollection<Group120Var4>& values) = 0;
 
 	// ------ Variable-length free-format types  ------
 

@@ -29,9 +29,9 @@ ClassBasedRequestHandler::ClassBasedRequestHandler(openpal::Logger& logger) : AP
 
 }
 
-IINField ClassBasedRequestHandler::ProcessAllObjects(const HeaderRecord& record)
+IINField ClassBasedRequestHandler::ProcessHeader(const AllObjectsHeader& header)
 {
-	switch (record.enumeration)
+	switch (header.enumeration)
 	{
 		case(GroupVariation::Group60Var2) :
 			classField.Set(PointClass::Class1);

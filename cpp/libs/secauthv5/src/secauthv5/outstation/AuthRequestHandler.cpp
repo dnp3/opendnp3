@@ -81,7 +81,7 @@ IINField AuthRequestHandler::ProcessFreeFormat(const HeaderRecord& record, const
 	return IINField::Empty();
 }
 
-IINField AuthRequestHandler::ProcessCount(const opendnp3::HeaderRecord& record, const ICollection<opendnp3::Group120Var4>& values)
+IINField AuthRequestHandler::ProcessValues(const opendnp3::CountHeader& record, const ICollection<opendnp3::Group120Var4>& values)
 {			
 	Group120Var4 value;
 	if (values.ReadOnlyValue(value))

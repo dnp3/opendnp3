@@ -69,7 +69,7 @@ void MeasurementHandler::CheckForTxStart()
 	}
 }
 
-IINField MeasurementHandler::ProcessCount(const HeaderRecord& record, const ICollection<Group51Var1>& values)
+IINField MeasurementHandler::ProcessValues(const CountHeader& header, const ICollection<Group51Var1>& values)
 {	
 	Group51Var1 cto;
 	if (values.ReadOnlyValue(cto))
@@ -81,7 +81,7 @@ IINField MeasurementHandler::ProcessCount(const HeaderRecord& record, const ICol
 	return IINField::Empty();
 }
 
-IINField MeasurementHandler::ProcessCount(const HeaderRecord& record, const ICollection<Group51Var2>& values)
+IINField MeasurementHandler::ProcessValues(const CountHeader& header, const ICollection<Group51Var2>& values)
 {	
 	Group51Var2 cto;
 	if (values.ReadOnlyValue(cto))

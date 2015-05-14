@@ -42,10 +42,9 @@ public:
 		records.push_back(record);
 	}	
 
-	virtual IINField ProcessCount(const HeaderRecord& record, const ICollection<Group120Var4>& values) override final
+	virtual IINField ProcessValues(const CountHeader& header, const ICollection<Group120Var4>& values) override final
 	{	
-		return ProcessAny(record, values, authStatusRequests);
-		
+		return ProcessAny(header, values, authStatusRequests);		
 	}
 
 	virtual IINField ProcessRange(const HeaderRecord& record, const ICollection<Indexed<IINValue>>& values) override final

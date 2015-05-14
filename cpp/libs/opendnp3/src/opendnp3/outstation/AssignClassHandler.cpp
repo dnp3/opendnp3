@@ -40,11 +40,11 @@ AssignClassHandler::AssignClassHandler(openpal::Logger& logger, openpal::IExecut
 
 }
 
-IINField AssignClassHandler::ProcessAllObjects(const HeaderRecord& record)
+IINField AssignClassHandler::ProcessHeader(const AllObjectsHeader& header)
 {		
 	if (IsExpectingAssignment())
 	{		
-		switch (record.enumeration)
+		switch (header.enumeration)
 		{
 			case(GroupVariation::Group1Var0) :
 				return this->ProcessAssignAll(AssignClassType::BinaryInput, clazz);
@@ -66,7 +66,7 @@ IINField AssignClassHandler::ProcessAllObjects(const HeaderRecord& record)
 	}
 	else
 	{	
-		return this->RecordClass(record.enumeration);
+		return this->RecordClass(header.enumeration);
 	}	
 }
 

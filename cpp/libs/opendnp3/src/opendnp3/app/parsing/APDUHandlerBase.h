@@ -53,7 +53,7 @@ public:
 
 	IINField Errors() const;
 
-	virtual void AllObjects(const HeaderRecord& record) override final;
+	virtual void OnHeader(const AllObjectsHeader& header) override final;
 
 	virtual void OnRangeRequest(const HeaderRecord& record, const Range& range) override final;
 
@@ -64,11 +64,11 @@ public:
 	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var5& value) override final;
 	virtual void OnFreeFormat(const HeaderRecord& record, const Group120Var6& value) override final;
 
-	virtual void OnCount(const HeaderRecord& record, const ICollection<Group50Var1>& values) override final;
-	virtual void OnCount(const HeaderRecord& record, const ICollection<Group51Var1>& values) override final;
-	virtual void OnCount(const HeaderRecord& record, const ICollection<Group51Var2>& values) override final;
-	virtual void OnCount(const HeaderRecord& record, const ICollection<Group52Var2>& values) override final;
-	virtual void OnCount(const HeaderRecord& record, const ICollection<Group120Var4>& values) override final;
+	virtual void OnValues(const CountHeader& header, const ICollection<Group50Var1>& values) override final;
+	virtual void OnValues(const CountHeader& header, const ICollection<Group51Var1>& values) override final;
+	virtual void OnValues(const CountHeader& header, const ICollection<Group51Var2>& values) override final;
+	virtual void OnValues(const CountHeader& header, const ICollection<Group52Var2>& values) override final;
+	virtual void OnValues(const CountHeader& header, const ICollection<Group120Var4>& values) override final;
 
 	virtual void OnRange(const HeaderRecord& record, const ICollection<Indexed<IINValue>> &values) override final;
 	virtual void OnRange(const HeaderRecord& record, const ICollection<Indexed<Binary>>& values) override final;
@@ -121,7 +121,7 @@ protected:
 	}
 
 
-	virtual IINField ProcessAllObjects(const HeaderRecord& record);
+	virtual IINField ProcessHeader(const AllObjectsHeader& record);
 	virtual IINField ProcessRangeRequest(const HeaderRecord& record, const Range& range);
 	virtual IINField ProcessCountRequest(const HeaderRecord& record, uint16_t count);
 
@@ -130,11 +130,11 @@ protected:
 	virtual IINField ProcessFreeFormat(const HeaderRecord& record, const Group120Var5& value);
 	virtual IINField ProcessFreeFormat(const HeaderRecord& record, const Group120Var6& value);
 	
-	virtual IINField ProcessCount(const HeaderRecord& record, const ICollection<Group50Var1>& values);
-	virtual IINField ProcessCount(const HeaderRecord& record, const ICollection<Group51Var1>& values);
-	virtual IINField ProcessCount(const HeaderRecord& record, const ICollection<Group51Var2>& values);
-	virtual IINField ProcessCount(const HeaderRecord& record, const ICollection<Group52Var2>& values);
-	virtual IINField ProcessCount(const HeaderRecord& record, const ICollection<Group120Var4>& values);
+	virtual IINField ProcessValues(const CountHeader& header, const ICollection<Group50Var1>& values);
+	virtual IINField ProcessValues(const CountHeader& header, const ICollection<Group51Var1>& values);
+	virtual IINField ProcessValues(const CountHeader& header, const ICollection<Group51Var2>& values);
+	virtual IINField ProcessValues(const CountHeader& header, const ICollection<Group52Var2>& values);
+	virtual IINField ProcessValues(const CountHeader& header, const ICollection<Group120Var4>& values);
 	
 	virtual IINField ProcessRange(const HeaderRecord& record, const ICollection<Indexed<IINValue>>& values);
 	virtual IINField ProcessRange(const HeaderRecord& record, const ICollection<Indexed<Binary>>& values);

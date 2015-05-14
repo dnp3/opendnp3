@@ -163,7 +163,7 @@ ParseResult APDUParser::HandleAllObjectsHeader(openpal::Logger* pLogger, const H
 
 	if (pHandler)
 	{
-		pHandler->AllObjects(record);
+		pHandler->OnHeader(AllObjectsHeader(record));
 	}
 
 	return ParseResult::OK;

@@ -67,7 +67,7 @@ IINField WriteHandler::ProcessRange(const HeaderRecord& record, const ICollectio
 	return IINField();		
 }
 
-IINField WriteHandler::ProcessCount(const HeaderRecord& record, const ICollection<Group50Var1>& values)
+IINField WriteHandler::ProcessValues(const CountHeader& header, const ICollection<Group50Var1>& values)
 {
 	if (wroteTime)
 	{

@@ -69,7 +69,7 @@ public:
 
 private:
 
-	virtual IINField ProcessCount(const HeaderRecord& record, const ICollection<Group52Var2>& times) override final
+	virtual IINField ProcessValues(const CountHeader& header, const ICollection<Group52Var2>& times) override final
 	{				
 		if (times.ReadOnlyValue(value))
 		{
