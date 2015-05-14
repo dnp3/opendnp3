@@ -30,7 +30,7 @@
 #include "opendnp3/app/parsing/ParseResult.h"
 #include "opendnp3/app/parsing/NumParser.h"
 #include "opendnp3/app/parsing/ParserSettings.h"
-#include "opendnp3/app/parsing/UniformBufferedCollection.h"
+#include "opendnp3/app/parsing/BufferedCollection.h"
 
 namespace opendnp3
 {
@@ -83,13 +83,13 @@ CountParser CountParser::From(uint16_t count)
 template <class T>
 void CountParser::InvokeCountOf(const HeaderRecord& record, uint16_t count, const openpal::ReadBufferView& buffer, IAPDUHandler& handler)
 {	
-	auto read = [](openpal::ReadBufferView& buffer) -> T {
+	auto read = [](openpal::ReadBufferView& buffer, uint32_t) -> T {
 		T value;
 		T::Read(buffer, value);
 		return value;
 	};
 
-	auto collection = CreateUniformBufferedCollection<T>(buffer, count, read);
+	auto collection = CreateBufferedCollection<T>(buffer, count, read);
 	handler.OnCount(record, collection);
 }
 

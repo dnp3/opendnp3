@@ -903,9 +903,6 @@
     <ClInclude Include="src\opendnp3\app\Indexed.h">
       <Filter>Header\app</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\app\parsing\UniformBufferedCollection.h">
-      <Filter>Header\app\parsing</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\app\parsing\Functions.h">
       <Filter>Header\app\parsing</Filter>
     </ClInclude>

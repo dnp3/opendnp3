@@ -30,7 +30,7 @@
 #include "opendnp3/app/parsing/NumParser.h"
 #include "opendnp3/app/parsing/ParserSettings.h"
 
-#include "opendnp3/app/parsing/UniformBufferedCollection.h"
+#include "opendnp3/app/parsing/BufferedCollection.h"
 
 namespace opendnp3
 {
@@ -100,7 +100,7 @@ CountIndexParser CountIndexParser::FromType(uint16_t count, const NumParser& num
 template <class Descriptor>
 void CountIndexParser::InvokeCountOf(const HeaderRecord& record, uint16_t count, const NumParser& numparser, const openpal::ReadBufferView& buffer, IAPDUHandler& handler)
 {	
-	auto read = [&numparser](openpal::ReadBufferView &buffer) -> Indexed<typename Descriptor::Target>
+	auto read = [&numparser](openpal::ReadBufferView &buffer, uint32_t) -> Indexed<typename Descriptor::Target>
 	{
 		Indexed<typename Descriptor::Target> pair;
 		pair.index = numparser.ReadNum(buffer);		
@@ -108,14 +108,14 @@ void CountIndexParser::InvokeCountOf(const HeaderRecord& record, uint16_t count,
 		return pair;
 	};
 
-	auto collection = CreateUniformBufferedCollection<Indexed<typename Descriptor::Target>>(buffer, count, read);
+	auto collection = CreateBufferedCollection<Indexed<typename Descriptor::Target>>(buffer, count, read);
 	handler.OnIndexPrefix(record, collection);
 }
 
 template <class Type>
 void CountIndexParser::InvokeCountOfType(const HeaderRecord& record, uint16_t count, const NumParser& numparser, const openpal::ReadBufferView& buffer, IAPDUHandler& handler)
 {
-	auto read = [&numparser](openpal::ReadBufferView &buffer) -> Indexed<Type>
+	auto read = [&numparser](openpal::ReadBufferView &buffer, uint32_t) -> Indexed<Type>
 	{
 		Indexed<Type> pair;
 		pair.index = numparser.ReadNum(buffer);
@@ -123,7 +123,7 @@ void CountIndexParser::InvokeCountOfType(const HeaderRecord& record, uint16_t co
 		return pair;
 	};
 
-	auto collection = CreateUniformBufferedCollection<Indexed<Type>>(buffer, count, read);
+	auto collection = CreateBufferedCollection<Indexed<Type>>(buffer, count, read);
 	handler.OnIndexPrefix(record, collection);
 }
 

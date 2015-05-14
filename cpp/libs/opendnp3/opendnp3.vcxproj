@@ -70,7 +70,6 @@
     <ClInclude Include="src\opendnp3\app\parsing\ParserSettings.h" />
     <ClInclude Include="src\opendnp3\app\parsing\PrefixFields.h" />
     <ClInclude Include="src\opendnp3\app\parsing\RangeParser.h" />
-    <ClInclude Include="src\opendnp3\app\parsing\UniformBufferedCollection.h" />
     <ClInclude Include="src\opendnp3\app\PrefixedWriteIterator.h" />
     <ClInclude Include="src\opendnp3\app\QualityFlags.h" />
     <ClInclude Include="src\opendnp3\app\QualityMasks.h" />
