@@ -24,18 +24,18 @@ namespace Automatak
 				virtual void Start() override final;
 				virtual void End() override final;
 
-				virtual void OnValue(const opendnp3::HeaderInfo& info, const opendnp3::Binary& meas, uint16_t index) override final;
-				virtual void OnValue(const opendnp3::HeaderInfo& info, const opendnp3::DoubleBitBinary& meas, uint16_t index) override final;
-				virtual void OnValue(const opendnp3::HeaderInfo& info, const opendnp3::Analog& meas, uint16_t index) override final;
-				virtual void OnValue(const opendnp3::HeaderInfo& info, const opendnp3::Counter& meas, uint16_t index) override final;
-				virtual void OnValue(const opendnp3::HeaderInfo& info, const opendnp3::FrozenCounter& meas, uint16_t index) override final;
-				virtual void OnValue(const opendnp3::HeaderInfo& info, const opendnp3::BinaryOutputStatus& meas, uint16_t index) override final;
-				virtual void OnValue(const opendnp3::HeaderInfo& info, const opendnp3::AnalogOutputStatus& meas, uint16_t index) override final;
-				virtual void OnValue(const opendnp3::HeaderInfo& info, const opendnp3::OctetString& meas, uint16_t index) override final;
-				virtual void OnValue(const opendnp3::HeaderInfo& info, const opendnp3::TimeAndInterval& meas, uint16_t index) override final;
-				virtual void OnValue(const opendnp3::HeaderInfo& info, const opendnp3::BinaryCommandEvent& meas, uint16_t index) override final;
-				virtual void OnValue(const opendnp3::HeaderInfo& info, const opendnp3::AnalogCommandEvent& meas, uint16_t index) override final;
-				virtual void OnValue(const opendnp3::HeaderInfo& info, const opendnp3::SecurityStat& meas, uint16_t index) override final;
+				virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Binary>>& values) override final;
+				virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::DoubleBitBinary>>& values) override final;
+				virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Analog>>& values) override final;
+				virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Counter>>& values) override final;
+				virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::FrozenCounter>>& values) override final;
+				virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::BinaryOutputStatus>>& values) override final;
+				virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::AnalogOutputStatus>>& values) override final;
+				virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::OctetString>>& values) override final;
+				virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::TimeAndInterval>>& values) override final;
+				virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::BinaryCommandEvent>>& values) override final;
+				virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::AnalogCommandEvent>>& values) override final;
+				virtual void Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::SecurityStat>>& values) override final;
 
 			private:
 

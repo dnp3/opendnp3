@@ -52,120 +52,152 @@ namespace Automatak.DNP3.Interface
         void ISOEHandler.End()
         {}
 
-        private void PrintHeaderInfo(HeaderInfo info)
+        private static void PrintHeaderInfo(HeaderInfo info)
         {
             Console.WriteLine(String.Format("{0} : {1} : timestamps {2}", info.variation, info.qualifier, info.tsmode));
         }
 
-        private void Print(Binary value, UInt16 index)
+        void ISOEHandler.Process(HeaderInfo info, IEnumerable<IndexedValue<Binary>> values)
+        {
+            foreach(var pair in values)
+            {
+                Print(pair.Value, pair.Index);
+            }
+        }
+
+        void ISOEHandler.Process(HeaderInfo info, IEnumerable<IndexedValue<DoubleBitBinary>> values)
+        {
+            foreach (var pair in values)
+            {
+                Print(pair.Value, pair.Index);
+            }
+        }
+
+        void ISOEHandler.Process(HeaderInfo info, IEnumerable<IndexedValue<Analog>> values)
+        {
+            foreach (var pair in values)
+            {
+                Print(pair.Value, pair.Index);
+            }
+        }
+
+        void ISOEHandler.Process(HeaderInfo info, IEnumerable<IndexedValue<Counter>> values)
+        {
+            foreach (var pair in values)
+            {
+                Print(pair.Value, pair.Index);
+            }
+        }
+
+        void ISOEHandler.Process(HeaderInfo info, IEnumerable<IndexedValue<FrozenCounter>> values)
+        {
+            foreach (var pair in values)
+            {
+                Print(pair.Value, pair.Index);
+            }
+        }
+
+        void ISOEHandler.Process(HeaderInfo info, IEnumerable<IndexedValue<BinaryOutputStatus>> values)
+        {
+            foreach (var pair in values)
+            {
+                Print(pair.Value, pair.Index);
+            }
+        }
+
+        void ISOEHandler.Process(HeaderInfo info, IEnumerable<IndexedValue<AnalogOutputStatus>> values)
+        {
+            foreach (var pair in values)
+            {
+                Print(pair.Value, pair.Index);
+            }
+        }
+
+        void ISOEHandler.Process(HeaderInfo info, IEnumerable<IndexedValue<OctetString>> values)
+        {
+            foreach (var pair in values)
+            {
+                Print(pair.Value, pair.Index);
+            }
+        }
+
+        void ISOEHandler.Process(HeaderInfo info, IEnumerable<IndexedValue<TimeAndInterval>> values)
+        {
+            foreach (var pair in values)
+            {
+                Print(pair.Value, pair.Index);
+            }
+        }
+
+        void ISOEHandler.Process(HeaderInfo info, IEnumerable<IndexedValue<BinaryCommandEvent>> values)
+        {
+            foreach (var pair in values)
+            {
+                Print(pair.Value, pair.Index);
+            }
+        }
+
+        void ISOEHandler.Process(HeaderInfo info, IEnumerable<IndexedValue<AnalogCommandEvent>> values)
+        {
+            foreach (var pair in values)
+            {
+                Print(pair.Value, pair.Index);
+            }
+        }
+
+        private static void Print(Binary value, UInt16 index)
         {
             Console.WriteLine("Binary[" + index + "] " + value.ToString());                         
         }
 
-        private void Print(DoubleBitBinary value, UInt16 index)
+        private static void Print(DoubleBitBinary value, UInt16 index)
         {            
             Console.WriteLine("DoubleBit[" + index + "] " + value.ToString());            
         }
 
-        private void Print(Analog value, UInt16 index)
+        private static void Print(Analog value, UInt16 index)
         {          
             Console.WriteLine("Analog[" + index + "] " + value.ToString());         
         }
 
-        private void Print(Counter value, UInt16 index)
+        private static void Print(Counter value, UInt16 index)
         {
             Console.WriteLine("Counter[" + index + "] " + value.ToString());            
         }
 
-        private void Print(FrozenCounter value, UInt16 index)
+        private static void Print(FrozenCounter value, UInt16 index)
         {            
             Console.WriteLine("FrozenCounter[" + index + "] " + value.ToString());            
         }
 
-        private void Print(BinaryOutputStatus value, UInt16 index)
+        private static void Print(BinaryOutputStatus value, UInt16 index)
         {            
             Console.WriteLine("BinaryOutputStatus[" + index + "] " + value.ToString());            
         }
 
-        private void Print(AnalogOutputStatus value, UInt16 index)
+        private static void Print(AnalogOutputStatus value, UInt16 index)
         {            
             Console.WriteLine("AnalogOutputStatus[" + index + "] " + value.ToString());            
         }
 
-        private void Print(OctetString value, UInt16 index)
+        private static void Print(OctetString value, UInt16 index)
         {            
             Console.WriteLine("OctetString[" + index + "] lemgth: " + value.Bytes.Length);            
         }
 
-        private void Print(TimeAndInterval value, UInt16 index)
+        private static void Print(TimeAndInterval value, UInt16 index)
         {            
             Console.WriteLine(String.Format("TimeAndInterval[{0}] {1}", index, value));           
         }
 
-        private void Print(BinaryCommandEvent value, UInt16 index)
+        private static void Print(BinaryCommandEvent value, UInt16 index)
         {            
             Console.WriteLine(String.Format("BinaryCommandEvent[{0}] {1}", index, value));            
         }
 
-        private void Print(AnalogCommandEvent value, UInt16 index)
+        private static void Print(AnalogCommandEvent value, UInt16 index)
         {            
             Console.WriteLine(String.Format("AnalogCommandEvent[{0}] {1}", index, value));            
-        }
-
-
-        void ISOEHandler.OnValue(HeaderInfo info, Binary value, ushort index)
-        {
-            Print(value, index);
-        }
-
-        void ISOEHandler.OnValue(HeaderInfo info, DoubleBitBinary value, ushort index)
-        {
-            Print(value, index);
-        }
-
-        void ISOEHandler.OnValue(HeaderInfo info, Analog value, ushort index)
-        {
-            Print(value, index);
-        }
-
-        void ISOEHandler.OnValue(HeaderInfo info, Counter value, ushort index)
-        {
-            Print(value, index);
-        }
-
-        void ISOEHandler.OnValue(HeaderInfo info, FrozenCounter value, ushort index)
-        {
-            Print(value, index);
-        }
-
-        void ISOEHandler.OnValue(HeaderInfo info, BinaryOutputStatus value, ushort index)
-        {
-            Print(value, index);
-        }
-
-        void ISOEHandler.OnValue(HeaderInfo info, AnalogOutputStatus value, ushort index)
-        {
-            Print(value, index);
-        }
-
-        void ISOEHandler.OnValue(HeaderInfo info, OctetString value, ushort index)
-        {
-            Print(value, index);
-        }
-
-        void ISOEHandler.OnValue(HeaderInfo info, TimeAndInterval value, ushort index)
-        {
-            Print(value, index);
-        }
-
-        void ISOEHandler.OnValue(HeaderInfo info, BinaryCommandEvent value, ushort index)
-        {
-            Print(value, index);
-        }
-
-        void ISOEHandler.OnValue(HeaderInfo info, AnalogCommandEvent value, ushort index)
-        {
-            Print(value, index);
-        }
+        }       
     }    
 }

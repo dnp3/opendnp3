@@ -63,66 +63,65 @@ public:
 		return soeCount;
 	}		
 
-	virtual void OnValue(const HeaderInfo& info, const Binary& meas, uint16_t index) override final
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Binary>>& values) override final
 	{
-		this->RecordAny(info, meas, index, binarySOE);
+		this->RecordAny(info, values, this->binarySOE);
+	}
+	
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<DoubleBitBinary>>& values) override final
+	{
+		this->RecordAny(info, values, this->doubleBinarySOE);
 	}
 
-	virtual void OnValue(const HeaderInfo& info, const DoubleBitBinary& meas, uint16_t index) override final
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Analog>>& values) override final
 	{
-		this->RecordAny(info, meas, index, doubleBinarySOE);
+		this->RecordAny(info, values, this->analogSOE);
 	}
 
-	virtual void OnValue(const HeaderInfo& info, const Analog& meas, uint16_t index) override final
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Counter>>& values) override final
 	{
-		this->RecordAny(info, meas, index, analogSOE);
+		this->RecordAny(info, values, this->counterSOE);
 	}
 
-	virtual void OnValue(const HeaderInfo& info, const Counter& meas, uint16_t index) override final
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<FrozenCounter>>& values) override final 
 	{
-		this->RecordAny(info, meas, index, counterSOE);
+		this->RecordAny(info, values, this->frozenCounterSOE);
 	}
 
-	virtual void OnValue(const HeaderInfo& info, const FrozenCounter& meas, uint16_t index) override final
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<BinaryOutputStatus>>& values) override final
 	{
-		this->RecordAny(info, meas, index, frozenCounterSOE);
+		this->RecordAny(info, values, this->binaryOutputStatusSOE);
 	}
 
-	virtual void OnValue(const HeaderInfo& info, const BinaryOutputStatus& meas, uint16_t index) override final
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogOutputStatus>>& values) override final
 	{
-		this->RecordAny(info, meas, index, binaryOutputStatusSOE);
+		this->RecordAny(info, values, this->analogOutputStatusSOE);
 	}
 
-	virtual void OnValue(const HeaderInfo& info, const AnalogOutputStatus& meas, uint16_t index) override final
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<OctetString>>& values) override final
 	{
-		this->RecordAny(info, meas, index, analogOutputStatusSOE);
+		this->RecordAny(info, values, this->octetStringSOE);
 	}
 
-	virtual void OnValue(const HeaderInfo& info, const OctetString& meas, uint16_t index) override final
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<TimeAndInterval>>& values) override final
 	{
-		this->RecordAny(info, meas, index, octetStringSOE);
+		this->RecordAny(info, values, this->timeAndIntervalSOE);
 	}
 
-	virtual void OnValue(const HeaderInfo& info, const TimeAndInterval& meas, uint16_t index) override final
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<BinaryCommandEvent>>& values) override final
 	{
-		this->RecordAny(info, meas, index, timeAndIntervalSOE);
+		this->RecordAny(info, values, this->binaryCommandEventSOE);
 	}
 
-	virtual void OnValue(const HeaderInfo& info, const BinaryCommandEvent& meas, uint16_t index) override final
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogCommandEvent>>& values) override final
 	{
-		this->RecordAny(info, meas, index, binaryCommandEventSOE);
+		this->RecordAny(info, values, this->analogCommandEventSOE);
 	}
 
-	virtual void OnValue(const HeaderInfo& info, const AnalogCommandEvent& meas, uint16_t index) override final
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<SecurityStat>>& values) override final
 	{
-		this->RecordAny(info, meas, index, analogCommandEventSOE);
+		this->RecordAny(info, values, this->securityStatSOE);
 	}
-
-	virtual void OnValue(const HeaderInfo& info, const SecurityStat& meas, uint16_t index) override final
-	{
-		this->RecordAny(info, meas, index, securityStatSOE);
-	}
-
 
 	void Clear()
 	{
@@ -165,11 +164,15 @@ private:
 	uint32_t soeCount;
 
 	template <class T>
-	void RecordAny(const HeaderInfo& info, const T& value, uint16_t index, std::map<uint16_t, Record<T> >& records)
+	void RecordAny(const HeaderInfo& info, const ICollection<Indexed<T>>& values, std::map<uint16_t, Record<T> >& records)
 	{		
-			Record<T> record(value, info, soeCount);
-			records[index] = record;
-			++soeCount;		
+		auto process = [this, info, &records](const Indexed<T>& pair) {
+			Record<T> record(pair.value, info, soeCount);
+			records[pair.index] = record;
+			++this->soeCount;
+		};
+
+		values.ForeachItem(process);
 	}
 
 

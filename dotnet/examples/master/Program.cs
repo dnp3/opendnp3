@@ -60,7 +60,7 @@ namespace DotNetMasterDemo
             
             master.Enable(); // enable communications
 
-            Console.WriteLine("Enter an index to send a command");
+            Console.WriteLine("Enter a command");
 
             while (true)
             {                

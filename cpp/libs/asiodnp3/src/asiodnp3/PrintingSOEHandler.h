@@ -39,18 +39,18 @@ public:
 		return instance;
 	}
 
-	virtual void OnValue(const HeaderInfo& info, const Binary& meas, uint16_t index) override final;
-	virtual void OnValue(const HeaderInfo& info, const DoubleBitBinary& meas, uint16_t index) override final;
-	virtual void OnValue(const HeaderInfo& info, const Analog& meas, uint16_t index) override final;
-	virtual void OnValue(const HeaderInfo& info, const Counter& meas, uint16_t index) override final;
-	virtual void OnValue(const HeaderInfo& info, const FrozenCounter& meas, uint16_t index) override final;
-	virtual void OnValue(const HeaderInfo& info, const BinaryOutputStatus& meas, uint16_t index) override final;
-	virtual void OnValue(const HeaderInfo& info, const AnalogOutputStatus& meas, uint16_t index) override final;
-	virtual void OnValue(const HeaderInfo& info, const OctetString& meas, uint16_t index) override final;
-	virtual void OnValue(const HeaderInfo& info, const TimeAndInterval& meas, uint16_t index) override final;
-	virtual void OnValue(const HeaderInfo& info, const BinaryCommandEvent& meas, uint16_t index) override final;
-	virtual void OnValue(const HeaderInfo& info, const AnalogCommandEvent& meas, uint16_t index) override final;
-	virtual void OnValue(const HeaderInfo& info, const SecurityStat& meas, uint16_t index) override final;
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Binary>>& values) override final;
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<DoubleBitBinary>>& values) override final;
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Analog>>& values) override final;
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Counter>>& values) override final;
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<FrozenCounter>>& values) override final;
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<BinaryOutputStatus>>& values) override final;
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogOutputStatus>>& values) override final;
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<OctetString>>& values) override final;
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<TimeAndInterval>>& values) override final;
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<BinaryCommandEvent>>& values) override final;
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogCommandEvent>>& values) override final;
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<SecurityStat>>& values) override final;
 	
 
 protected:
@@ -59,6 +59,13 @@ protected:
 	void End() final {}
 
 private:	
+
+	template <class T>
+	static void PrintAll(const HeaderInfo& info, const ICollection<Indexed<T>>& values)
+	{
+		auto print = [&](const Indexed<T>& pair) { Print<T>(info, pair.value, pair.index); };
+		values.ForeachItem(print);
+	}
 
 	template <class T>
 	static void Print(const HeaderInfo& info, const T& value, uint16_t index)

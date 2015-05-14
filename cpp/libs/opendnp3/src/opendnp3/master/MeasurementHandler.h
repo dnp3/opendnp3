@@ -103,14 +103,8 @@ private:
 	IINField LoadValues(const HeaderRecord& record, TimestampMode tsmode, const ICollection<Indexed<T>>& values)
 	{
 		this->CheckForTxStart();
-		HeaderInfo info(record.enumeration, record.GetQualifierCode(), tsmode, record.headerCount);
-		
-		auto process = [&](const Indexed<T>& pair) 
-		{
-			this->pSOEHandler->OnValue(info, pair.value, pair.index);
-		};
-		values.ForeachItem(process);
-
+		HeaderInfo info(record.enumeration, record.GetQualifierCode(), tsmode, record.headerCount);				
+		this->pSOEHandler->Process(info, values);
 		return IINField();
 	}
 

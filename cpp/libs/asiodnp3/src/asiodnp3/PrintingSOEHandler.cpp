@@ -28,54 +28,105 @@ namespace opendnp3
 
 PrintingSOEHandler PrintingSOEHandler::instance;
 
-void PrintingSOEHandler::OnValue(const HeaderInfo& info, const Binary& meas, uint16_t index)
+void PrintingSOEHandler::Process(const HeaderInfo& info, const ICollection<Indexed<Binary>>& values)
 {
-	Print(info, meas, index);
+	return PrintAll(info, values);
 }
 
-void PrintingSOEHandler::OnValue(const HeaderInfo& info, const DoubleBitBinary& meas, uint16_t index)
+void PrintingSOEHandler::Process(const HeaderInfo& info, const ICollection<Indexed<DoubleBitBinary>>& values)
 {
-	Print(info, meas, index);
+	return PrintAll(info, values);
 }
 
-void PrintingSOEHandler::OnValue(const HeaderInfo& info, const Analog& meas, uint16_t index)
+void PrintingSOEHandler::Process(const HeaderInfo& info, const ICollection<Indexed<Analog>>& values)
 {
-	Print(info, meas, index);
+	return PrintAll(info, values);
 }
 
-void PrintingSOEHandler::OnValue(const HeaderInfo& info, const Counter& meas, uint16_t index)
+void PrintingSOEHandler::Process(const HeaderInfo& info, const ICollection<Indexed<Counter>>& values)
 {
-	Print(info, meas, index);
+	return PrintAll(info, values);
 }
 
-void PrintingSOEHandler::OnValue(const HeaderInfo& info, const FrozenCounter& meas, uint16_t index)
+void PrintingSOEHandler::Process(const HeaderInfo& info, const ICollection<Indexed<FrozenCounter>>& values)
 {
-	Print(info, meas, index);
+	return PrintAll(info, values);
 }
 
-void PrintingSOEHandler::OnValue(const HeaderInfo& info, const BinaryOutputStatus& meas, uint16_t index)
+void PrintingSOEHandler::Process(const HeaderInfo& info, const ICollection<Indexed<BinaryOutputStatus>>& values)
 {
-	Print(info, meas, index);
+	return PrintAll(info, values);
 }
 
-void PrintingSOEHandler::OnValue(const HeaderInfo& info, const AnalogOutputStatus& meas, uint16_t index)
+void PrintingSOEHandler::Process(const HeaderInfo& info, const ICollection<Indexed<AnalogOutputStatus>>& values)
 {
-	Print(info, meas, index);
+	return PrintAll(info, values);
 }
 
-void PrintingSOEHandler::OnValue(const HeaderInfo& info, const OctetString& meas, uint16_t index)
+void PrintingSOEHandler::Process(const HeaderInfo& info, const ICollection<Indexed<OctetString>>& values)
 {
-	std::cout << "OctetString " << " [" << index << "] : Size : " << meas.ToReadOnly().Size() << std::endl;
+	auto print = [](const Indexed<OctetString>& pair) {
+		std::cout << "OctetString " << " [" << pair.index << "] : Size : " << pair.value.ToReadOnly().Size() << std::endl;
+	};
+
+	values.ForeachItem(print);
 }
 
-void PrintingSOEHandler::OnValue(const HeaderInfo& info, const TimeAndInterval& meas, uint16_t index)
+void PrintingSOEHandler::Process(const HeaderInfo& info, const ICollection<Indexed<TimeAndInterval>>& values)
 {
-	std::cout << "TimeAndInterval: " <<
-		"[" << index << "] : " <<
-		meas.time << " : " <<
-		meas.interval << " : " <<
-		IntervalUnitsToString(meas.GetUnitsEnum()) << std::endl;
+	auto print = [](const Indexed<TimeAndInterval>& pair) {
+		std::cout << "TimeAndInterval: " <<
+			"[" << pair.index << "] : " <<
+			pair.value.time << " : " <<
+			pair.value.interval << " : " <<
+			IntervalUnitsToString(pair.value.GetUnitsEnum()) << std::endl;
+	};
+
+	values.ForeachItem(print);
 }
+
+void PrintingSOEHandler::Process(const HeaderInfo& info, const ICollection<Indexed<BinaryCommandEvent>>& values)
+{
+	auto print = [](const Indexed<BinaryCommandEvent>& pair) {
+		std::cout << "BinaryCommandEvent: " <<
+			"[" << pair.index << "] : " <<
+			pair.value.time << " : " <<
+			pair.value.value << " : " <<
+			CommandStatusToString(pair.value.status) << std::endl;
+	};
+
+	values.ForeachItem(print);
+}
+
+void PrintingSOEHandler::Process(const HeaderInfo& info, const ICollection<Indexed<AnalogCommandEvent>>& values)
+{
+	auto print = [](const Indexed<AnalogCommandEvent>& pair) {
+		std::cout << "AnalogCommandEvent: " <<
+			"[" << pair.index << "] : " <<
+			pair.value.time << " : " <<
+			pair.value.value << " : " <<
+			CommandStatusToString(pair.value.status) << std::endl;
+	};
+
+	values.ForeachItem(print);
+}
+
+void PrintingSOEHandler::Process(const HeaderInfo& info, const ICollection<Indexed<SecurityStat>>& values)
+{
+	auto print = [](const Indexed<SecurityStat>& pair) {
+		std::cout << "SecurityStat: " <<
+			"[" << pair.index << "] : " <<
+			pair.value.time << " : " <<
+			pair.value.count << " : " <<
+			static_cast<int>(pair.value.quality) << " : " <<
+			pair.value.assocId << std::endl;
+	};
+
+	values.ForeachItem(print);
+}
+
+
+/*
 
 void PrintingSOEHandler::OnValue(const HeaderInfo& info, const BinaryCommandEvent& meas, uint16_t index)
 {
@@ -104,5 +155,6 @@ void PrintingSOEHandler::OnValue(const HeaderInfo& info, const SecurityStat& mea
 		static_cast<int>(meas.quality) << " : " <<
 		meas.assocId << std::endl;
 }
+*/
 
 }

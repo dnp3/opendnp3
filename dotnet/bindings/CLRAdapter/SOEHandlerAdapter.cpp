@@ -28,65 +28,78 @@ namespace Automatak
 				return gcnew HeaderInfo((GroupVariation)info.gv, (QualifierCode)info.qualifier, (TimestampMode)info.tsmode, info.headerCount);
 			}
 
-			void SOEHandlerAdapter::OnValue(const opendnp3::HeaderInfo& info, const opendnp3::Binary& meas, uint16_t index)
+			void SOEHandlerAdapter::Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Binary>>& values)
 			{
-				proxy->OnValue(GetInfo(info), Conversions::ConvertMeas(meas), index);
+				auto enumerable = Conversions::ToIndexedEnumerable<Binary^>(values);
+				proxy->Process(GetInfo(info), enumerable);
 			}
 
-			void SOEHandlerAdapter::OnValue(const opendnp3::HeaderInfo& info, const opendnp3::DoubleBitBinary& meas, uint16_t index)
+			void SOEHandlerAdapter::Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::DoubleBitBinary>>& values)
 			{
-				proxy->OnValue(GetInfo(info), Conversions::ConvertMeas(meas), index);
+				auto enumerable = Conversions::ToIndexedEnumerable<DoubleBitBinary^>(values);
+				proxy->Process(GetInfo(info), enumerable);
 			}
 
-			void SOEHandlerAdapter::OnValue(const opendnp3::HeaderInfo& info, const opendnp3::Analog& meas, uint16_t index)
+			void SOEHandlerAdapter::Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Analog>>& values)
 			{
-				proxy->OnValue(GetInfo(info), Conversions::ConvertMeas(meas), index);
-			}
-			
-			void SOEHandlerAdapter::OnValue(const opendnp3::HeaderInfo& info, const opendnp3::Counter& meas, uint16_t index)
-			{
-				proxy->OnValue(GetInfo(info), Conversions::ConvertMeas(meas), index);
+				auto enumerable = Conversions::ToIndexedEnumerable<Analog^>(values);
+				proxy->Process(GetInfo(info), enumerable);
+
 			}
 
-			void SOEHandlerAdapter::OnValue(const opendnp3::HeaderInfo& info, const opendnp3::FrozenCounter& meas, uint16_t index)
+			void SOEHandlerAdapter::Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::Counter>>& values)
 			{
-				proxy->OnValue(GetInfo(info), Conversions::ConvertMeas(meas), index);
+				auto enumerable = Conversions::ToIndexedEnumerable<Counter^>(values);
+				proxy->Process(GetInfo(info), enumerable);
 			}
 
-			void SOEHandlerAdapter::OnValue(const opendnp3::HeaderInfo& info, const opendnp3::BinaryOutputStatus& meas, uint16_t index)
+			void SOEHandlerAdapter::Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::FrozenCounter>>& values)
 			{
-				proxy->OnValue(GetInfo(info), Conversions::ConvertMeas(meas), index);
+				auto enumerable = Conversions::ToIndexedEnumerable<FrozenCounter^>(values);
+				proxy->Process(GetInfo(info), enumerable);
 			}
 
-			void SOEHandlerAdapter::OnValue(const opendnp3::HeaderInfo& info, const opendnp3::AnalogOutputStatus& meas, uint16_t index)
+			void SOEHandlerAdapter::Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::BinaryOutputStatus>>& values)
 			{
-				proxy->OnValue(GetInfo(info), Conversions::ConvertMeas(meas), index);
+				auto enumerable = Conversions::ToIndexedEnumerable<BinaryOutputStatus^>(values);
+				proxy->Process(GetInfo(info), enumerable);
 			}
 
-			void SOEHandlerAdapter::OnValue(const opendnp3::HeaderInfo& info, const opendnp3::OctetString& meas, uint16_t index)
+			void SOEHandlerAdapter::Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::AnalogOutputStatus>>& values)
 			{
-				proxy->OnValue(GetInfo(info), Conversions::ConvertMeas(meas), index);
+				auto enumerable = Conversions::ToIndexedEnumerable<AnalogOutputStatus^>(values);
+				proxy->Process(GetInfo(info), enumerable);
 			}
 
-			void SOEHandlerAdapter::OnValue(const opendnp3::HeaderInfo& info, const opendnp3::TimeAndInterval& meas, uint16_t index)
+			void SOEHandlerAdapter::Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::OctetString>>& values)
 			{
-				proxy->OnValue(GetInfo(info), Conversions::ConvertMeas(meas), index);
+				auto enumerable = Conversions::ToIndexedEnumerable<OctetString^>(values);
+				proxy->Process(GetInfo(info), enumerable);
 			}
 
-			void SOEHandlerAdapter::OnValue(const opendnp3::HeaderInfo& info, const opendnp3::BinaryCommandEvent& meas, uint16_t index)
+			void SOEHandlerAdapter::Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::TimeAndInterval>>& values)
 			{
-				proxy->OnValue(GetInfo(info), Conversions::ConvertMeas(meas), index);
+				auto enumerable = Conversions::ToIndexedEnumerable<TimeAndInterval^>(values);
+				proxy->Process(GetInfo(info), enumerable);
 			}
 
-			void SOEHandlerAdapter::OnValue(const opendnp3::HeaderInfo& info, const opendnp3::AnalogCommandEvent& meas, uint16_t index)
+			void SOEHandlerAdapter::Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::BinaryCommandEvent>>& values)
 			{
-				proxy->OnValue(GetInfo(info), Conversions::ConvertMeas(meas), index);
+				auto enumerable = Conversions::ToIndexedEnumerable<BinaryCommandEvent^>(values);
+				proxy->Process(GetInfo(info), enumerable);
 			}
 
-			void SOEHandlerAdapter::OnValue(const opendnp3::HeaderInfo& info, const opendnp3::SecurityStat& meas, uint16_t index)
+			void SOEHandlerAdapter::Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::AnalogCommandEvent>>& values)
 			{
-				// TODO - create type and convert
+				auto enumerable = Conversions::ToIndexedEnumerable<AnalogCommandEvent^>(values);
+				proxy->Process(GetInfo(info), enumerable);
 			}
+
+			void SOEHandlerAdapter::Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::SecurityStat>>& values)
+			{
+				// TODO
+			}
+
 		}
 	}
 }

@@ -30,6 +30,9 @@
 #include "opendnp3/app/OctetString.h"
 #include "opendnp3/app/SecurityStat.h"
 
+#include "opendnp3/app/Indexed.h"
+#include "opendnp3/app/parsing/ICollection.h"
+
 #include "opendnp3/master/HeaderInfo.h"
 
 namespace opendnp3
@@ -47,18 +50,18 @@ class ISOEHandler : public ITransactable
 {
 public:
 	
-	virtual void OnValue(const HeaderInfo& info, const Binary& meas, uint16_t index) = 0;
-	virtual void OnValue(const HeaderInfo& info, const DoubleBitBinary& meas, uint16_t index) = 0;
-	virtual void OnValue(const HeaderInfo& info, const Analog& meas, uint16_t index) = 0;
-	virtual void OnValue(const HeaderInfo& info, const Counter& meas, uint16_t index) = 0;
-	virtual void OnValue(const HeaderInfo& info, const FrozenCounter& meas, uint16_t index) = 0;
-	virtual void OnValue(const HeaderInfo& info, const BinaryOutputStatus& meas, uint16_t index) = 0;
-	virtual void OnValue(const HeaderInfo& info, const AnalogOutputStatus& meas, uint16_t index) = 0;
-	virtual void OnValue(const HeaderInfo& info, const OctetString& meas, uint16_t index) = 0;
-	virtual void OnValue(const HeaderInfo& info, const TimeAndInterval& meas, uint16_t index) = 0;
-	virtual void OnValue(const HeaderInfo& info, const BinaryCommandEvent& meas, uint16_t index) = 0;
-	virtual void OnValue(const HeaderInfo& info, const AnalogCommandEvent& meas, uint16_t index) = 0;
-	virtual void OnValue(const HeaderInfo& info, const SecurityStat& meas, uint16_t index) = 0;
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Binary>>& values) = 0;
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<DoubleBitBinary>>& values) = 0;
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Analog>>& values) = 0;
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Counter>>& values) = 0;
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<FrozenCounter>>& values) = 0;
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<BinaryOutputStatus>>& values) = 0;
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogOutputStatus>>& values) = 0;
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<OctetString>>& values) = 0;
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<TimeAndInterval>>& values) = 0;
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<BinaryCommandEvent>>& values) = 0;
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogCommandEvent>>& values) = 0;
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<SecurityStat>>& values) = 0;
 
 	virtual ~ISOEHandler() {}
 };
@@ -74,18 +77,18 @@ public:
 		return instance;
 	}
 
-	virtual void OnValue(const HeaderInfo& info, const Binary& meas, uint16_t index) override final {}
-	virtual void OnValue(const HeaderInfo& info, const DoubleBitBinary& meas, uint16_t index) override final {}
-	virtual void OnValue(const HeaderInfo& info, const Analog& meas, uint16_t index) override final {}
-	virtual void OnValue(const HeaderInfo& info, const Counter& meas, uint16_t index) override final {}
-	virtual void OnValue(const HeaderInfo& info, const FrozenCounter& meas, uint16_t index) override final {}
-	virtual void OnValue(const HeaderInfo& info, const BinaryOutputStatus& meas, uint16_t index) override final {}
-	virtual void OnValue(const HeaderInfo& info, const AnalogOutputStatus& meas, uint16_t index) override final {}
-	virtual void OnValue(const HeaderInfo& info, const OctetString& meas, uint16_t index) override final {}
-	virtual void OnValue(const HeaderInfo& info, const TimeAndInterval& meas, uint16_t index) override final {}
-	virtual void OnValue(const HeaderInfo& info, const BinaryCommandEvent& meas, uint16_t index) override final {}
-	virtual void OnValue(const HeaderInfo& info, const AnalogCommandEvent& meas, uint16_t index) override final {}
-	virtual void OnValue(const HeaderInfo& info, const SecurityStat& meas, uint16_t index) override final {}
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Binary>>& values) override final {}
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<DoubleBitBinary>>& values) override final {}
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Analog>>& values) override final {}
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<Counter>>& values) override final {}
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<FrozenCounter>>& values) override final {}
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<BinaryOutputStatus>>& values) override final {}
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogOutputStatus>>& values) override final {}
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<OctetString>>& values) override final {}
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<TimeAndInterval>>& values) override final {}
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<BinaryCommandEvent>>& values) override final {}
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<AnalogCommandEvent>>& values) override final {}
+	virtual void Process(const HeaderInfo& info, const ICollection<Indexed<SecurityStat>>& values) override final {}
 
 protected:
 
