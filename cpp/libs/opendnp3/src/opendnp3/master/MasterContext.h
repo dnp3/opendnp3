@@ -22,6 +22,7 @@
 #define OPENDNP3_MASTERCONTEXT_H
 
 #include "MasterState.h"
+#include "opendnp3/master/MasterActions.h"
 
 namespace opendnp3
 {
