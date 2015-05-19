@@ -21,20 +21,7 @@
 #ifndef OPENDNP3_MASTERCONTEXT_H
 #define OPENDNP3_MASTERCONTEXT_H
 
-#include "opendnp3/LayerInterfaces.h"
-
-#include <openpal/executor/IExecutor.h>
-#include <openpal/logging/LogRoot.h>
-#include <openpal/container/DynamicBuffer.h>
-
-#include "opendnp3/master/ICommandProcessor.h"
-#include "opendnp3/master/MasterScheduler.h"
-#include "opendnp3/master/MasterTasks.h"
-#include "opendnp3/master/IMasterState.h"
-#include "opendnp3/master/ITaskLock.h"
-#include "opendnp3/master/IMasterApplication.h"
-
-#include <deque>
+#include "MasterState.h"
 
 namespace opendnp3
 {
@@ -51,32 +38,9 @@ class MasterContext : public ICommandProcessor, public IScheduleCallback
 					const MasterParams& params,
 					ITaskLock& taskLock
 				);
-	
-	openpal::Logger logger;
-	openpal::IExecutor* pExecutor;
-	ILowerLayer* pLower;
 
-	// ------- configuration --------
-	MasterParams params;
-	ISOEHandler* pSOEHandler;
-	ITaskLock* pTaskLock;
-	opendnp3::IMasterApplication* pApplication;
-
-	// ------- dynamic state ---------
-	bool isOnline;
-	bool isSending;
-	uint8_t solSeq;
-	uint8_t unsolSeq;
-	openpal::ManagedPtr<IMasterTask> pActiveTask;
-	IMasterState* pState;
-	openpal::ITimer* pResponseTimer;
-	MasterTasks tasks;
-	MasterScheduler scheduler;
-
-	std::deque<APDUHeader> confirmQueue;
-	
-
-	openpal::DynamicBuffer txBuffer;
+	MasterState mstate;
+		
 	
 	void PostCheckForTask();
 
@@ -109,8 +73,7 @@ class MasterContext : public ICommandProcessor, public IScheduleCallback
 	virtual void DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback) override final;
 
 	// ----- Helpers accessible by the state objects -----
-	void StartTask(IMasterTask& task);
-	bool CancelResponseTimer();
+	void StartTask(IMasterTask& task);	
 	void QueueConfirm(const APDUHeader& header);
 	void StartResponseTimer();
 	void ReleaseActiveTask();
@@ -143,9 +106,9 @@ class MasterContext : public ICommandProcessor, public IScheduleCallback
 template <class T>
 void MasterContext::SelectAndOperateT(const T& command, uint16_t index, ICommandCallback& callback, const DNP3Serializer<T>& serializer)
 {
-	if (isOnline)
+	if (mstate.isOnline)
 	{
-		scheduler.Schedule(openpal::ManagedPtr<IMasterTask>::Deleted(CommandTask::FSelectAndOperate(command, index, *pApplication, callback, serializer, logger)));
+		mstate.scheduler.Schedule(openpal::ManagedPtr<IMasterTask>::Deleted(CommandTask::FSelectAndOperate(command, index, *mstate.pApplication, callback, serializer, mstate.logger)));
 		this->PostCheckForTask();
 	}
 	else
@@ -157,9 +120,9 @@ void MasterContext::SelectAndOperateT(const T& command, uint16_t index, ICommand
 template <class T>
 void MasterContext::DirectOperateT(const T& command, uint16_t index, ICommandCallback& callback, const DNP3Serializer<T>& serializer)
 {
-	if (isOnline)
+	if (mstate.isOnline)
 	{		
-		scheduler.Schedule(openpal::ManagedPtr<IMasterTask>::Deleted(CommandTask::FDirectOperate(command, index, *pApplication, callback, serializer, logger)));
+		mstate.scheduler.Schedule(openpal::ManagedPtr<IMasterTask>::Deleted(CommandTask::FDirectOperate(command, index, *mstate.pApplication, callback, serializer, mstate.logger)));
 		this->PostCheckForTask();
 	}
 	else

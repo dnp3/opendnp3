@@ -43,120 +43,80 @@ MasterContext::MasterContext(
 	ILowerLayer& lower,
 	ISOEHandler& SOEHandler,	
 	IMasterApplication& application,
-	const MasterParams& params_,
+	const MasterParams& params,
 	ITaskLock& taskLock
 	) :
 
-	logger(root.GetLogger()),
-	pExecutor(&executor),
-	pLower(&lower),
-	params(params_),
-	pSOEHandler(&SOEHandler),
-	pTaskLock(&taskLock),
-	pApplication(&application),
-	isOnline(false),
-	isSending(false),
-	solSeq(0),
-	unsolSeq(0),	
-	pState(&MasterStateIdle::Instance()),
-	pResponseTimer(nullptr),
-	tasks(params, logger, application, SOEHandler, application),
-	scheduler(executor, *this),
-	txBuffer(params.maxTxFragSize)
+	mstate(executor, root, lower, SOEHandler, application, *this, params, taskLock)
 {
 	
 }
 
 bool MasterContext::OnLayerUp()
 {
-	if (isOnline)
+	if (mstate.isOnline)
 	{		
 		return false;
 	}
 	else
 	{
-		isOnline = true;
-		pTaskLock->OnLayerUp();
-		tasks.Initialize(scheduler);
-		scheduler.OnLowerLayerUp();
+		mstate.isOnline = true;
+		mstate.pTaskLock->OnLayerUp();
+		mstate.tasks.Initialize(mstate.scheduler);
+		mstate.scheduler.OnLowerLayerUp();
 		return true;
 	}
 }
 
 bool MasterContext::OnLayerDown()
 {
-	if (isOnline)
-	{
-		auto now = pExecutor->GetTime();
-
-		if (pActiveTask.IsDefined())
-		{			
-			pActiveTask->OnLowerLayerClose(now);			
-			pActiveTask.Release();
-		}
-
-		pState = &MasterStateIdle::Instance();
-
-		pTaskLock->OnLayerDown();
-
-		scheduler.OnLowerLayerDown();
-
-		this->CancelResponseTimer();
-
-		solSeq = unsolSeq = 0;
-		isOnline = isSending = false;		 		
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	return mstate.GoOffline();
 }
 
 void MasterContext::PostCheckForTask()
 {
 	auto callback = [this]() { this->CheckForTask(); };
-	pExecutor->PostLambda(callback);
+	mstate.pExecutor->PostLambda(callback);
 }
 
 void MasterContext::CheckForTask()
 {
-	if (isOnline)
+	if (mstate.isOnline)
 	{
-		pState = pState->OnStart(this);		
+		mstate.pState = mstate.pState->OnStart(this);
 	}
 }
 
 void MasterContext::StartTask(IMasterTask& task)
 {				
-	APDURequest request(txBuffer.GetWriteBufferView());
-	task.BuildRequest(request, solSeq);
+	APDURequest request(mstate.txBuffer.GetWriteBufferView());
+	task.BuildRequest(request, mstate.solSeq);
 	this->StartResponseTimer();
 	this->Transmit(request.ToReadOnly());	
 }
 
 void MasterContext::ReleaseActiveTask()
 {
-	if (pActiveTask.IsDefined())
+	if (mstate.pActiveTask.IsDefined())
 	{
-		if (pActiveTask->IsRecurring())
+		if (mstate.pActiveTask->IsRecurring())
 		{
-			scheduler.Schedule(std::move(pActiveTask));
+			mstate.scheduler.Schedule(std::move(mstate.pActiveTask));
 		}
 		else
 		{
-			pActiveTask.Release();
+			mstate.pActiveTask.Release();
 		}
 	}
 }
 
 void MasterContext::ScheduleRecurringPollTask(IMasterTask* pTask)
 {
-	tasks.BindTask(pTask);
+	mstate.tasks.BindTask(pTask);
 
-	if (isOnline)
+	if (mstate.isOnline)
 	{
-		scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(pTask));
+		mstate.scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(pTask));
 		this->PostCheckForTask();
 	}	
 }
@@ -164,15 +124,15 @@ void MasterContext::ScheduleRecurringPollTask(IMasterTask* pTask)
 void MasterContext::ScheduleAdhocTask(IMasterTask* pTask)
 {
 	auto task = ManagedPtr<IMasterTask>::Deleted(pTask);
-	if (isOnline)
+	if (mstate.isOnline)
 	{
-		scheduler.Schedule(std::move(task));
+		mstate.scheduler.Schedule(std::move(task));
 		this->PostCheckForTask();
 	}
 	else
 	{
 		// can't run this task since we're offline so fail it immediately
-		pTask->OnLowerLayerClose(pExecutor->GetTime());		
+		pTask->OnLowerLayerClose(mstate.pExecutor->GetTime());
 	}
 }
 
@@ -183,14 +143,14 @@ void MasterContext::OnPendingTask()
 
 void MasterContext::OnResponseTimeout()
 {
-	pState = pState->OnResponseTimeout(this);
+	mstate.pState = mstate.pState->OnResponseTimeout(this);
 }
 
 void MasterContext::OnSendResult(bool isSucccess)
 {
-	if (isOnline && isSending)
+	if (mstate.isOnline && mstate.isSending)
 	{
-		isSending = false;
+		mstate.isSending = false;
 
 		this->CheckConfirmTransmit();
 		this->CheckForTask();						
@@ -199,12 +159,12 @@ void MasterContext::OnSendResult(bool isSucccess)
 
 void MasterContext::OnReceive(const ReadBufferView& apdu)
 {
-	if (isOnline)
+	if (mstate.isOnline)
 	{
 		APDUResponseHeader header;		
-		if (APDUHeaderParser::ParseResponse(apdu, header, &logger))
+		if (APDUHeaderParser::ParseResponse(apdu, header, &mstate.logger))
 		{
-			FORMAT_LOG_BLOCK(logger, flags::APP_HEADER_RX,
+			FORMAT_LOG_BLOCK(mstate.logger, flags::APP_HEADER_RX,
 				"FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s IIN: [0x%02x, 0x%02x]",
 				header.control.FIR,
 				header.control.FIN,
@@ -224,19 +184,19 @@ void MasterContext::OnReceive(const ReadBufferView& apdu)
 				}
 				else
 				{
-					FORMAT_LOG_BLOCK(logger, flags::WARN, "Ignoring unsupported function with UNS bit set: %s", FunctionCodeToString(header.function));
+					FORMAT_LOG_BLOCK(mstate.logger, flags::WARN, "Ignoring unsupported function with UNS bit set: %s", FunctionCodeToString(header.function));
 				}
 			}
 			else
 			{
 				if (header.function == FunctionCode::RESPONSE)
 				{
-					this->pState = pState->OnResponse(this, header, apdu.Skip(APDU_RESPONSE_HEADER_SIZE));
+					this->mstate.pState = mstate.pState->OnResponse(this, header, apdu.Skip(APDU_RESPONSE_HEADER_SIZE));
 					this->OnReceiveIIN(header.IIN);
 				}
 				else
 				{
-					FORMAT_LOG_BLOCK(logger, flags::WARN, "Ignoring unsupported solicited function code: %s", FunctionCodeToString(header.function));
+					FORMAT_LOG_BLOCK(mstate.logger, flags::WARN, "Ignoring unsupported solicited function code: %s", FunctionCodeToString(header.function));
 				}
 			}						
 		}
@@ -248,7 +208,7 @@ void MasterContext::OnUnsolicitedResponse(const APDUResponseHeader& header, cons
 {
 	if (header.control.UNS)
 	{		
-		auto result = MeasurementHandler::ProcessMeasurements(objects, logger, pSOEHandler);
+		auto result = MeasurementHandler::ProcessMeasurements(objects, mstate.logger, mstate.pSOEHandler);
 
 		if ((result == ParseResult::OK) && header.control.CON)
 		{
@@ -259,73 +219,56 @@ void MasterContext::OnUnsolicitedResponse(const APDUResponseHeader& header, cons
 
 void MasterContext::OnReceiveIIN(const IINField& iin)
 {
-	pApplication->OnReceiveIIN(iin);
+	mstate.pApplication->OnReceiveIIN(iin);
 	
 	if (iin.IsSet(IINBit::DEVICE_RESTART))
 	{
-		tasks.clearRestart.Demand();
-		tasks.assignClass.Demand();
-		tasks.startupIntegrity.Demand();
-		tasks.enableUnsol.Demand();		
+		mstate.tasks.clearRestart.Demand();
+		mstate.tasks.assignClass.Demand();
+		mstate.tasks.startupIntegrity.Demand();
+		mstate.tasks.enableUnsol.Demand();
 	}
 
-	if (iin.IsSet(IINBit::EVENT_BUFFER_OVERFLOW) && params.integrityOnEventOverflowIIN)
+	if (iin.IsSet(IINBit::EVENT_BUFFER_OVERFLOW) && mstate.params.integrityOnEventOverflowIIN)
 	{		
-		tasks.startupIntegrity.Demand();		
+		mstate.tasks.startupIntegrity.Demand();
 	}
 
 	if (iin.IsSet(IINBit::NEED_TIME))
 	{
-		tasks.timeSync.Demand();
+		mstate.tasks.timeSync.Demand();
 	}	
 
-	if ((iin.IsSet(IINBit::CLASS1_EVENTS) && params.eventScanOnEventsAvailableClassMask.HasClass1()) ||
-		(iin.IsSet(IINBit::CLASS2_EVENTS) && params.eventScanOnEventsAvailableClassMask.HasClass2()) ||
-		(iin.IsSet(IINBit::CLASS3_EVENTS) && params.eventScanOnEventsAvailableClassMask.HasClass3()))
+	if ((iin.IsSet(IINBit::CLASS1_EVENTS) && mstate.params.eventScanOnEventsAvailableClassMask.HasClass1()) ||
+		(iin.IsSet(IINBit::CLASS2_EVENTS) && mstate.params.eventScanOnEventsAvailableClassMask.HasClass2()) ||
+		(iin.IsSet(IINBit::CLASS3_EVENTS) && mstate.params.eventScanOnEventsAvailableClassMask.HasClass3()))
 	{
-		tasks.eventScan.Demand();
+		mstate.tasks.eventScan.Demand();
 	}
 }
 
 void MasterContext::StartResponseTimer()
-{
-	if (pResponseTimer == nullptr)
-	{
-		auto timeout = [this](){ this->OnResponseTimeout(); };
-		pResponseTimer = pExecutor->Start(params.responseTimeout, Action0::Bind(timeout));
-	}	
+{	
+	auto timeout = [this](){ this->OnResponseTimeout(); };
+	mstate.responseTimer.Start(mstate.params.responseTimeout, timeout);	
 }
-
-bool MasterContext::CancelResponseTimer()
-{
-	if (pResponseTimer)
-	{
-		pResponseTimer->Cancel();
-		pResponseTimer = nullptr;
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}	
 
 void MasterContext::QueueConfirm(const APDUHeader& header)
 {
-	this->confirmQueue.push_back(header);
+	this->mstate.confirmQueue.push_back(header);
 	this->CheckConfirmTransmit();
 }
 
 bool MasterContext::CheckConfirmTransmit()
 {
-	if (!isSending && !confirmQueue.empty())
+	if (!mstate.isSending && !mstate.confirmQueue.empty())
 	{
-		auto pConfirm = confirmQueue.front();
-		APDUWrapper wrapper(txBuffer.GetWriteBufferView());
+		auto pConfirm = mstate.confirmQueue.front();
+		APDUWrapper wrapper(mstate.txBuffer.GetWriteBufferView());
 		wrapper.SetFunction(pConfirm.function);
 		wrapper.SetControl(pConfirm.control);
 		this->Transmit(wrapper.ToReadOnly());
-		confirmQueue.pop_front();
+		mstate.confirmQueue.pop_front();
 		return true;
 	}
 	else
@@ -336,10 +279,10 @@ bool MasterContext::CheckConfirmTransmit()
 
 void MasterContext::Transmit(const ReadBufferView& output)
 {
-	logging::ParseAndLogRequestTx(logger, output);	
-	assert(!isSending);
-	isSending = true;
-	pLower->BeginTransmit(output);	
+	logging::ParseAndLogRequestTx(mstate.logger, output);
+	assert(!mstate.isSending);
+	mstate.isSending = true;
+	mstate.pLower->BeginTransmit(output);
 }
 
 void MasterContext::SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback& callback)

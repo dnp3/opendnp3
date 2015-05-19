@@ -75,10 +75,10 @@ ICommandProcessor& Master::GetCommandProcessor()
 
 MasterScan Master::AddScan(openpal::TimeDuration period, const std::function<void(HeaderWriter&)>& builder, ITaskCallback* pCallback, int userId)
 {
-	auto pTask = new UserPollTask(builder, true, period, context.params.taskRetryPeriod, *context.pApplication, *context.pSOEHandler, pCallback, userId, context.logger);
+	auto pTask = new UserPollTask(builder, true, period, context.mstate.params.taskRetryPeriod, *context.mstate.pApplication, *context.mstate.pSOEHandler, pCallback, userId, context.mstate.logger);
 	context.ScheduleRecurringPollTask(pTask);	
 	auto callback = [this]() { this->context.PostCheckForTask(); };
-	return MasterScan(*context.pExecutor, pTask, callback);
+	return MasterScan(*context.mstate.pExecutor, pTask, callback);
 }
 
 MasterScan Master::AddClassScan(const ClassField& field, openpal::TimeDuration period, ITaskCallback* pCallback, int userId)
@@ -110,7 +110,7 @@ MasterScan Master::AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t 
 
 void Master::Scan(const std::function<void(HeaderWriter&)>& builder, ITaskCallback* pCallback, int userId)
 {
-	auto pTask = new UserPollTask(builder, false, TimeDuration::Max(), context.params.taskRetryPeriod, *context.pApplication, *context.pSOEHandler, pCallback, userId, context.logger);
+	auto pTask = new UserPollTask(builder, false, TimeDuration::Max(), context.mstate.params.taskRetryPeriod, *context.mstate.pApplication, *context.mstate.pSOEHandler, pCallback, userId, context.mstate.logger);
 	context.ScheduleAdhocTask(pTask);	
 }
 
@@ -148,7 +148,7 @@ void Master::Write(const TimeAndInterval& value, uint16_t index, ITaskCallback* 
 		writer.WriteSingleIndexedValue<UInt16, TimeAndInterval>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group50Var4::Inst(), value, index);
 	};
 
-	auto pTask = new WriteTask(*context.pApplication, format, context.logger, pCallback, userId);
+	auto pTask = new WriteTask(*context.mstate.pApplication, format, context.mstate.logger, pCallback, userId);
 	context.ScheduleAdhocTask(pTask);
 }
 	

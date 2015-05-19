@@ -30,20 +30,20 @@ namespace opendnp3
 
 // --------- Default Actions -------------
 
-IMasterState* IMasterState::OnStart(MasterContext*pContext)
+IMasterState* IMasterState::OnStart(MasterContext* pContext)
 {
 	return this;
 }
 
-IMasterState* IMasterState::OnResponse(MasterContext*pContext, const APDUResponseHeader& response, const openpal::ReadBufferView& objects)
+IMasterState* IMasterState::OnResponse(MasterContext* pContext, const APDUResponseHeader& response, const openpal::ReadBufferView& objects)
 {
-	FORMAT_LOG_BLOCK(pContext->logger, flags::WARN, "Not expecting a response, sequence: %u", response.control.SEQ);
+	FORMAT_LOG_BLOCK(pContext->mstate.logger, flags::WARN, "Not expecting a response, sequence: %u", response.control.SEQ);
 	return this;
 }
 
 IMasterState* IMasterState::OnResponseTimeout(MasterContext* pContext)
 {
-	SIMPLE_LOG_BLOCK(pContext->logger, flags::ERR, "Unexpected response timeout");
+	SIMPLE_LOG_BLOCK(pContext->mstate.logger, flags::ERR, "Unexpected response timeout");
 	return this;
 }
 
@@ -53,23 +53,23 @@ MasterStateIdle MasterStateIdle::instance;
 
 IMasterState* MasterStateIdle::OnStart(MasterContext* pContext)
 {
-	if (pContext->isSending)
+	if (pContext->mstate.isSending)
 	{
 		return this;
 	}
 	else
 	{
-		auto pTask = pContext->scheduler.Start();
+		auto pTask = pContext->mstate.scheduler.Start();
 		
 		if (pTask.IsDefined())
 		{		
-			pContext->pActiveTask = std::move(pTask);
+			pContext->mstate.pActiveTask = std::move(pTask);
 
-			if (pContext->pTaskLock->Acquire(*pContext))
+			if (pContext->mstate.pTaskLock->Acquire(*pContext))
 			{
-				FORMAT_LOG_BLOCK(pContext->logger, flags::INFO, "Begining task: %s", pContext->pActiveTask->Name());
-				pContext->pActiveTask->OnStart();
-				pContext->StartTask(*pContext->pActiveTask);								
+				FORMAT_LOG_BLOCK(pContext->mstate.logger, flags::INFO, "Begining task: %s", pContext->mstate.pActiveTask->Name());
+				pContext->mstate.pActiveTask->OnStart();
+				pContext->StartTask(*pContext->mstate.pActiveTask);
 				return &MasterStateWaitForResponse::Instance();
 			}
 			else
@@ -90,15 +90,15 @@ MasterStateTaskReady MasterStateTaskReady::instance;
 
 IMasterState* MasterStateTaskReady::OnStart(MasterContext* pContext)
 {
-	if (pContext->isSending)
+	if (pContext->mstate.isSending)
 	{
 		return this;
 	}
 	else
 	{
-		if (pContext->pTaskLock->Acquire(*pContext))
+		if (pContext->mstate.pTaskLock->Acquire(*pContext))
 		{
-			pContext->StartTask(*pContext->pActiveTask);
+			pContext->StartTask(*pContext->mstate.pActiveTask);
 			return &MasterStateWaitForResponse::Instance();
 		}
 		else
@@ -114,15 +114,15 @@ MasterStateWaitForResponse MasterStateWaitForResponse::instance;
 
 IMasterState* MasterStateWaitForResponse::OnResponse(MasterContext* pContext, const APDUResponseHeader& response, const openpal::ReadBufferView& objects)
 {
-	if (response.control.SEQ == pContext->solSeq)
+	if (response.control.SEQ == pContext->mstate.solSeq)
 	{
-		pContext->CancelResponseTimer();
+		pContext->mstate.responseTimer.Cancel();
 
-		pContext->solSeq = AppControlField::NextSeq(pContext->solSeq);	
+		pContext->mstate.solSeq = AppControlField::NextSeq(pContext->mstate.solSeq);
 
-		auto now = pContext->pExecutor->GetTime();
+		auto now = pContext->mstate.pExecutor->GetTime();
 		
-		auto result = pContext->pActiveTask->OnResponse(response, objects, now);
+		auto result = pContext->mstate.pActiveTask->OnResponse(response, objects, now);
 
 		if (response.control.CON)
 		{
@@ -139,26 +139,25 @@ IMasterState* MasterStateWaitForResponse::OnResponse(MasterContext* pContext, co
 			default:
 				// task completed or failed, either way go back to idle
 				pContext->ReleaseActiveTask();												
-				pContext->pTaskLock->Release(*pContext);
+				pContext->mstate.pTaskLock->Release(*pContext);
 				pContext->PostCheckForTask();								
 				return &MasterStateIdle::Instance();
 		}
 	}
 	else
 	{
-		FORMAT_LOG_BLOCK(pContext->logger, flags::WARN, "Response with bad sequence: %u", response.control.SEQ);
+		FORMAT_LOG_BLOCK(pContext->mstate.logger, flags::WARN, "Response with bad sequence: %u", response.control.SEQ);
 		return this;
 	}
 }
 
 IMasterState* MasterStateWaitForResponse::OnResponseTimeout(MasterContext* pContext)
-{		
-	pContext->pResponseTimer = nullptr;
-	auto now = pContext->pExecutor->GetTime();
-	pContext->pActiveTask->OnResponseTimeout(now);
+{			
+	auto now = pContext->mstate.pExecutor->GetTime();
+	pContext->mstate.pActiveTask->OnResponseTimeout(now);
 	pContext->ReleaseActiveTask();	
-	pContext->pTaskLock->Release(*pContext);
-	pContext->solSeq = AppControlField::NextSeq(pContext->solSeq);
+	pContext->mstate.pTaskLock->Release(*pContext);
+	pContext->mstate.solSeq = AppControlField::NextSeq(pContext->mstate.solSeq);
 	pContext->PostCheckForTask();
 	return &MasterStateIdle::Instance();
 }

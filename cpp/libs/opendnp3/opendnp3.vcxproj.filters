@@ -903,6 +903,9 @@
     <ClInclude Include="src\opendnp3\app\parsing\IAPDUHandler.h">
       <Filter>Header\app\parsing</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\master\MasterState.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\TimeAndInterval.cpp">
@@ -1336,6 +1339,9 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\app\parsing\IAPDUHandler.cpp">
       <Filter>Source\app\parsing</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\MasterState.cpp">
+      <Filter>Source\master</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
