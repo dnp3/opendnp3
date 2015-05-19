@@ -47,8 +47,7 @@ MasterContext::MasterContext(
 	ITaskLock& taskLock
 	) :
 
-	mstate(executor, root, lower, SOEHandler, application, *this, params, taskLock),
-	commandProcessor(mstate)
+	mstate(executor, root, lower, SOEHandler, application, *this, params, taskLock)	
 {
 	
 }

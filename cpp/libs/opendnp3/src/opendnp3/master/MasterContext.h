@@ -51,13 +51,9 @@ class MasterContext : public IScheduleCallback
 	void OnReceiveIIN(const IINField& iin);	
 	
 
-	MasterState mstate;
+	MasterState mstate;	
 
-	ICommandProcessor& GetCommandProcessor()  { return commandProcessor; }
-
-	private:	
-
-	MasterCommandProcessor commandProcessor;
+	private:		
 	
 	// callback from the scheduler that a task is ready to run	
 	virtual void OnPendingTask() override final;				
