@@ -49,11 +49,7 @@ class MasterContext : public IScheduleCallback
 	
 	void OnUnsolicitedResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects);
 	void OnReceiveIIN(const IINField& iin);	
-
-	// ----- Helpers accessible by the state objects -----			
 	
-	void ScheduleRecurringPollTask(IMasterTask* pTask);
-	void ScheduleAdhocTask(IMasterTask* pTask);
 
 	MasterState mstate;
 

@@ -153,7 +153,6 @@
     <ClInclude Include="src\opendnp3\LogLevels.h" />
     <ClInclude Include="src\opendnp3\master\AssignClassTask.h" />
     <ClInclude Include="src\opendnp3\master\ClearRestartTask.h" />
-    <ClInclude Include="src\opendnp3\master\CommandMarshaller.h" />
     <ClInclude Include="src\opendnp3\master\CommandResponse.h" />
     <ClInclude Include="src\opendnp3\master\CommandSequence.h" />
     <ClInclude Include="src\opendnp3\master\CommandTask.h" />
@@ -345,7 +344,6 @@
     <ClCompile Include="src\opendnp3\link\ShiftableBuffer.cpp" />
     <ClCompile Include="src\opendnp3\master\AssignClassTask.cpp" />
     <ClCompile Include="src\opendnp3\master\ClearRestartTask.cpp" />
-    <ClCompile Include="src\opendnp3\master\CommandMarshaller.cpp" />
     <ClCompile Include="src\opendnp3\master\CommandResponse.cpp" />
     <ClCompile Include="src\opendnp3\master\CommandTask.cpp" />
     <ClCompile Include="src\opendnp3\master\DisableUnsolicitedTask.cpp" />

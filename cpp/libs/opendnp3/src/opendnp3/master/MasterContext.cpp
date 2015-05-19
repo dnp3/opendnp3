@@ -63,32 +63,6 @@ bool MasterContext::OnLayerDown()
 	return mstate.GoOffline();
 }
 
-void MasterContext::ScheduleRecurringPollTask(IMasterTask* pTask)
-{
-	mstate.tasks.BindTask(pTask);
-
-	if (mstate.isOnline)
-	{
-		mstate.scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(pTask));
-		MasterActions::PostCheckForTask(mstate);
-	}	
-}
-
-void MasterContext::ScheduleAdhocTask(IMasterTask* pTask)
-{
-	auto task = ManagedPtr<IMasterTask>::Deleted(pTask);
-	if (mstate.isOnline)
-	{
-		mstate.scheduler.Schedule(std::move(task));
-		MasterActions::PostCheckForTask(mstate);
-	}
-	else
-	{
-		// can't run this task since we're offline so fail it immediately
-		pTask->OnLowerLayerClose(mstate.pExecutor->GetTime());
-	}
-}
-
 void MasterContext::OnPendingTask()
 {
 	MasterActions::PostCheckForTask(mstate);

@@ -28,7 +28,7 @@
 // but can be reduced for embedded systems.
 
 #ifndef OPENPAL_ERASURE_MULTIPLE
-#define OPENPAL_ERASURE_MULTIPLE 8
+#define OPENPAL_ERASURE_MULTIPLE 12
 #endif
 
 namespace openpal { namespace sizes {

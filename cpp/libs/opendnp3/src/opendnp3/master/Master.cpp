@@ -46,7 +46,7 @@ Master::Master(
 	ITaskLock& taskLock
 	) : 
 	context(executor, root, lower, SOEHandler, application, params, taskLock),
-	commandMarshaller(executor, context.GetCommandProcessor())
+	commandProcessor(context.mstate)
 {}
 	
 void Master::OnLowerLayerUp()
@@ -71,13 +71,13 @@ void Master::OnSendResult(bool isSucccess)
 
 ICommandProcessor& Master::GetCommandProcessor()
 {
-	return commandMarshaller;
+	return commandProcessor;
 }
 
 MasterScan Master::AddScan(openpal::TimeDuration period, const std::function<void(HeaderWriter&)>& builder, ITaskCallback* pCallback, int userId)
 {
 	auto pTask = new UserPollTask(builder, true, period, context.mstate.params.taskRetryPeriod, *context.mstate.pApplication, *context.mstate.pSOEHandler, pCallback, userId, context.mstate.logger);
-	context.ScheduleRecurringPollTask(pTask);	
+	this->ScheduleRecurringPollTask(pTask);	
 	auto callback = [this]() { MasterActions::PostCheckForTask(this->context.mstate); };
 	return MasterScan(*context.mstate.pExecutor, pTask, callback);
 }
@@ -112,7 +112,7 @@ MasterScan Master::AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t 
 void Master::Scan(const std::function<void(HeaderWriter&)>& builder, ITaskCallback* pCallback, int userId)
 {
 	auto pTask = new UserPollTask(builder, false, TimeDuration::Max(), context.mstate.params.taskRetryPeriod, *context.mstate.pApplication, *context.mstate.pSOEHandler, pCallback, userId, context.mstate.logger);
-	context.ScheduleAdhocTask(pTask);	
+	this->ScheduleAdhocTask(pTask);	
 }
 
 void Master::ScanClasses(const ClassField& field, ITaskCallback* pCallback, int userId)
@@ -150,7 +150,35 @@ void Master::Write(const TimeAndInterval& value, uint16_t index, ITaskCallback* 
 	};
 
 	auto pTask = new WriteTask(*context.mstate.pApplication, format, context.mstate.logger, pCallback, userId);
-	context.ScheduleAdhocTask(pTask);
+	this->ScheduleAdhocTask(pTask);
+}
+
+/// ------ private helpers ----------
+
+void Master::ScheduleRecurringPollTask(IMasterTask* pTask)
+{
+	context.mstate.tasks.BindTask(pTask);
+
+	if (context.mstate.isOnline)
+	{
+		context.mstate.scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(pTask));
+		MasterActions::PostCheckForTask(context.mstate);
+	}
+}
+
+void Master::ScheduleAdhocTask(IMasterTask* pTask)
+{
+	auto task = ManagedPtr<IMasterTask>::Deleted(pTask);
+	if (context.mstate.isOnline)
+	{
+		context.mstate.scheduler.Schedule(std::move(task));
+		MasterActions::PostCheckForTask(context.mstate);
+	}
+	else
+	{
+		// can't run this task since we're offline so fail it immediately
+		pTask->OnLowerLayerClose(context.mstate.pExecutor->GetTime());
+	}
 }
 	
 }

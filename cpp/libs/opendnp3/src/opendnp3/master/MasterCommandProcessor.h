@@ -63,10 +63,32 @@ class MasterCommandProcessor : public ICommandProcessor
 
 	template <class T>
 	void DirectOperateT(const T& command, uint16_t index, ICommandCallback& callback, const DNP3Serializer<T>& serializer);
+
+	template <class T>
+	void ProcessSelectAndOperate(const T& command, uint16_t index, ICommandCallback& callback, const DNP3Serializer<T>& serializer);
+
+	template <class T>
+	void ProcessDirectOperate(const T& command, uint16_t index, ICommandCallback& callback, const DNP3Serializer<T>& serializer);	
 };
 
 template <class T>
 void MasterCommandProcessor::SelectAndOperateT(const T& command, uint16_t index, ICommandCallback& callback, const DNP3Serializer<T>& serializer)
+{
+	auto pCallback = &callback;
+	auto action = [command, index, pCallback, serializer, this]() { this->ProcessSelectAndOperate(command, index, *pCallback, serializer); };
+	pState->pExecutor->PostLambda(action);
+}
+
+template <class T>
+void MasterCommandProcessor::DirectOperateT(const T& command, uint16_t index, ICommandCallback& callback, const DNP3Serializer<T>& serializer)
+{
+	auto pCallback = &callback;
+	auto action = [command, index, pCallback, serializer, this]() { this->ProcessDirectOperate(command, index, *pCallback, serializer); };
+	pState->pExecutor->PostLambda(action);
+}
+
+template <class T>
+void MasterCommandProcessor::ProcessSelectAndOperate(const T& command, uint16_t index, ICommandCallback& callback, const DNP3Serializer<T>& serializer)
 {
 	if (pState->isOnline)
 	{
@@ -80,7 +102,7 @@ void MasterCommandProcessor::SelectAndOperateT(const T& command, uint16_t index,
 }
 
 template <class T>
-void MasterCommandProcessor::DirectOperateT(const T& command, uint16_t index, ICommandCallback& callback, const DNP3Serializer<T>& serializer)
+void MasterCommandProcessor::ProcessDirectOperate(const T& command, uint16_t index, ICommandCallback& callback, const DNP3Serializer<T>& serializer)
 {
 	if (pState->isOnline)
 	{		
