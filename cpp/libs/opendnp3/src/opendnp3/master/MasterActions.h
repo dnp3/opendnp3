@@ -18,37 +18,23 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENPAL_UNCOPYABLE_H
-#define OPENPAL_UNCOPYABLE_H
+#ifndef OPENDNP3_MASTERACTIONS_H
+#define OPENDNP3_MASTERACTIONS_H
 
-namespace openpal
+#include "MasterState.h"
+
+#include <openpal/util/Uncopyable.h>
+
+namespace opendnp3
 {
 
-/** Inherited classes will not have default copy/assignment.
-*/
-class Uncopyable
-{
-protected:
-	Uncopyable() {} //allow construction/destruction
-	~Uncopyable() {}
+	class MasterActions : private openpal::StaticOnly
+	{
+	public:
 
-private:
-	// prevent these functions
-	Uncopyable(const Uncopyable&) = delete;
-	Uncopyable& operator=(const Uncopyable&) = delete;
-};
 
-class StaticOnly
-{
-
-private:
-	// prevent these functions
-	StaticOnly() = delete;
-	StaticOnly(const StaticOnly&) = delete;
-	StaticOnly& operator=(const StaticOnly&) = delete;
-};
+	};
 
 }
 
 #endif
-

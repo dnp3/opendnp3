@@ -67,7 +67,7 @@ struct AggModeHMACResult
 };
 
 
-struct AggressiveModeParser : openpal::PureStatic
+struct AggressiveModeParser : openpal::StaticOnly
 {	
 	static AggModeResult IsAggressiveMode(openpal::ReadBufferView objects, openpal::Logger* pLogger);
 		

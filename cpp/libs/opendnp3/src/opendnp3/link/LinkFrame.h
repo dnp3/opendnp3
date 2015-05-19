@@ -36,7 +36,7 @@ namespace openpal
 namespace opendnp3
 {
 
-class LinkFrame : private openpal::PureStatic
+class LinkFrame : private openpal::StaticOnly
 {
 
 public:

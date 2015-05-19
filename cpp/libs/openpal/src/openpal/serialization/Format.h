@@ -27,7 +27,7 @@
 
 namespace openpal
 {
-	class Format : private PureStatic
+	class Format : private StaticOnly
 	{
 		public:
 

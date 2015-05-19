@@ -34,7 +34,7 @@ namespace openpal
 {
 
 template <class T>
-class Float : private PureStatic
+class Float : private StaticOnly
 {
 public:
 	typedef T Type;

@@ -30,7 +30,7 @@ namespace opendnp3
 {
 
 /// Reusable actions that operate on oustation state
-class OFunctions : private openpal::PureStatic
+class OFunctions : private openpal::StaticOnly
 {
 	
 	public:			

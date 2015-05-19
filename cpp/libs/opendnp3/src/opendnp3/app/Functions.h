@@ -28,7 +28,7 @@
 namespace opendnp3
 {
 
-class Functions : private openpal::PureStatic
+class Functions : private openpal::StaticOnly
 {
 public:
 

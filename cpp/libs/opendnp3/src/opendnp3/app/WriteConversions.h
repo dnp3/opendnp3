@@ -71,7 +71,7 @@ typedef ConvertQ<Group11Var1, BinaryOutputStatus> ConvertGroup11Var1;
 typedef ConvertQT<Group11Var2, BinaryOutputStatus> ConvertGroup11Var2;
 
 // Group 12
-struct ConvertGroup12Var1 : private openpal::PureStatic
+struct ConvertGroup12Var1 : private openpal::StaticOnly
 {
 	static Group12Var1 Apply(const ControlRelayOutputBlock& crob)
 	{
@@ -86,7 +86,7 @@ struct ConvertGroup12Var1 : private openpal::PureStatic
 };
 
 // Group 13
-struct ConvertGroup13Var1 : private openpal::PureStatic
+struct ConvertGroup13Var1 : private openpal::StaticOnly
 {
 	static Group13Var1 Apply(const BinaryCommandEvent& ev)
 	{
@@ -96,7 +96,7 @@ struct ConvertGroup13Var1 : private openpal::PureStatic
 	}
 };
 
-struct ConvertGroup13Var2 : private openpal::PureStatic
+struct ConvertGroup13Var2 : private openpal::StaticOnly
 {
 	static Group13Var2 Apply(const BinaryCommandEvent& ev)
 	{
@@ -178,7 +178,7 @@ typedef ConvertQVT<Group42Var8, AnalogOutputStatus> ConvertGroup42Var8;
 
 // Group 43
 template <class Target>
-struct ConvertGroup43RangeCheck : private openpal::PureStatic
+struct ConvertGroup43RangeCheck : private openpal::StaticOnly
 {
 	static Target Apply(const AnalogCommandEvent& src)
 	{
@@ -190,7 +190,7 @@ struct ConvertGroup43RangeCheck : private openpal::PureStatic
 };
 
 template <class Target>
-struct ConvertGroup43WithTimeRangeCheck : private openpal::PureStatic
+struct ConvertGroup43WithTimeRangeCheck : private openpal::StaticOnly
 {
 	static Target Apply(const AnalogCommandEvent& src)
 	{
@@ -208,7 +208,7 @@ typedef ConvertGroup43WithTimeRangeCheck<Group43Var3> ConvertGroup43Var3;
 typedef ConvertGroup43WithTimeRangeCheck<Group43Var4> ConvertGroup43Var4;
 typedef ConvertGroup43RangeCheck<Group43Var5> ConvertGroup43Var5;
 
-struct ConvertGroup43Var6 : private openpal::PureStatic
+struct ConvertGroup43Var6 : private openpal::StaticOnly
 {
 	static Group43Var6 Apply(const AnalogCommandEvent& src)
 	{
@@ -221,7 +221,7 @@ struct ConvertGroup43Var6 : private openpal::PureStatic
 
 typedef ConvertGroup43WithTimeRangeCheck<Group43Var7> ConvertGroup43Var7;
 
-struct ConvertGroup43Var8 : private openpal::PureStatic
+struct ConvertGroup43Var8 : private openpal::StaticOnly
 {
 	static Group43Var8 Apply(const AnalogCommandEvent& src)
 	{
@@ -234,7 +234,7 @@ struct ConvertGroup43Var8 : private openpal::PureStatic
 };
 
 // Group 50
-struct ConvertGroup50Var4 : private openpal::PureStatic
+struct ConvertGroup50Var4 : private openpal::StaticOnly
 {
 	static Group50Var4 Apply(const TimeAndInterval& value)
 	{

@@ -36,7 +36,7 @@ namespace opendnp3
 /**
 	Parser for free format (0x5B) 
 */
-class FreeFormatParser : private openpal::PureStatic
+class FreeFormatParser : private openpal::StaticOnly
 {
 	public:		
 

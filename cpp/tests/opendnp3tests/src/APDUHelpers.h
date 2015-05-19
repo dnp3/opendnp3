@@ -28,7 +28,7 @@
 
 #include <assert.h>
 
-class APDUHelpers : private openpal::PureStatic
+class APDUHelpers : private openpal::StaticOnly
 {
 private:
 	static const uint32_t SIZE = 2048;

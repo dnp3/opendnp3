@@ -33,7 +33,7 @@
 namespace opendnp3
 {
 
-class EventWriter : openpal::PureStatic
+class EventWriter : openpal::StaticOnly
 {
 	public:	
 

@@ -31,7 +31,7 @@
 namespace secauthv5
 {
 
-struct AuthConstants : openpal::PureStatic
+struct AuthConstants : openpal::StaticOnly
 {	
 	const static uint16_t MIN_CHALLENGE_DATA_SIZE = 4;
 	const static uint16_t MAX_CHALLENGE_DATA_SIZE = 16;

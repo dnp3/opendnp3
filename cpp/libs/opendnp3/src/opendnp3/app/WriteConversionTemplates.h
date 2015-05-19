@@ -30,7 +30,7 @@
 namespace opendnp3
 {
 template <class Target, class Source>
-struct ConvertQ : private openpal::PureStatic
+struct ConvertQ : private openpal::StaticOnly
 {
 	static Target Apply(const Source& src)
 	{
@@ -41,7 +41,7 @@ struct ConvertQ : private openpal::PureStatic
 };
 
 template <class Target, class Source>
-struct ConvertQV : private openpal::PureStatic
+struct ConvertQV : private openpal::StaticOnly
 {
 	static Target Apply(const Source& src)
 	{
@@ -53,7 +53,7 @@ struct ConvertQV : private openpal::PureStatic
 };
 
 template <class Target, class Source>
-struct ConvertV : private openpal::PureStatic
+struct ConvertV : private openpal::StaticOnly
 {
 	static Target Apply(const Source& src)
 	{
@@ -64,7 +64,7 @@ struct ConvertV : private openpal::PureStatic
 };
 
 template <class Target, class Source>
-struct ConvertVandTruncate : private openpal::PureStatic
+struct ConvertVandTruncate : private openpal::StaticOnly
 {
 	static Target Apply(const Source& src)
 	{
@@ -75,7 +75,7 @@ struct ConvertVandTruncate : private openpal::PureStatic
 };
 
 template <class Target, class Source>
-struct ConvertVRangeCheck : private openpal::PureStatic
+struct ConvertVRangeCheck : private openpal::StaticOnly
 {
 	static Target Apply(const Source& src)
 	{
@@ -86,7 +86,7 @@ struct ConvertVRangeCheck : private openpal::PureStatic
 };
 
 template <class Target, class Source, uint8_t Overrange>
-struct ConvertQVRangeCheck : private openpal::PureStatic
+struct ConvertQVRangeCheck : private openpal::StaticOnly
 {
 	static Target Apply(const Source& src)
 	{
@@ -99,7 +99,7 @@ struct ConvertQVRangeCheck : private openpal::PureStatic
 };
 
 template <class Target, class Source>
-struct ConvertQVandTruncate : private openpal::PureStatic
+struct ConvertQVandTruncate : private openpal::StaticOnly
 {
 	static Target Apply(const Source& src)
 	{
@@ -111,7 +111,7 @@ struct ConvertQVandTruncate : private openpal::PureStatic
 };
 
 template <class Target, class Source>
-struct ConvertQVT : private openpal::PureStatic
+struct ConvertQVT : private openpal::StaticOnly
 {
 	static Target Apply(const Source& src)
 	{
@@ -124,7 +124,7 @@ struct ConvertQVT : private openpal::PureStatic
 };
 
 template <class Target, class Source>
-struct ConvertQVTandTruncate : private openpal::PureStatic
+struct ConvertQVTandTruncate : private openpal::StaticOnly
 {
 	static Target Apply(const Source& src)
 	{
@@ -137,7 +137,7 @@ struct ConvertQVTandTruncate : private openpal::PureStatic
 };
 
 template <class Target, class Source, uint8_t Overrange>
-struct ConvertQVTRangeCheck : private openpal::PureStatic
+struct ConvertQVTRangeCheck : private openpal::StaticOnly
 {
 	static Target Apply(const Source& src)
 	{
@@ -151,7 +151,7 @@ struct ConvertQVTRangeCheck : private openpal::PureStatic
 };
 
 template <class Target, class Source>
-struct ConvertQT : private openpal::PureStatic
+struct ConvertQT : private openpal::StaticOnly
 {
 	static Target Apply(const Source& src)
 	{
@@ -163,7 +163,7 @@ struct ConvertQT : private openpal::PureStatic
 };
 
 template <class Target, class Source, class Downcast>
-struct ConvertQTDowncast : private openpal::PureStatic
+struct ConvertQTDowncast : private openpal::StaticOnly
 {
 	static Target Apply(const Source& src)
 	{
@@ -175,7 +175,7 @@ struct ConvertQTDowncast : private openpal::PureStatic
 };
 
 template <class Target, class Source>
-struct ConvertQS : private openpal::PureStatic
+struct ConvertQS : private openpal::StaticOnly
 {
 	static Target Apply(const Source& src)
 	{

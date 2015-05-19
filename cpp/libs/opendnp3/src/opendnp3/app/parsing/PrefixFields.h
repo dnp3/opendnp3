@@ -28,7 +28,7 @@
 namespace opendnp3
 {
 
-	class PrefixFields : private openpal::PureStatic
+	class PrefixFields : private openpal::StaticOnly
 	{
 		public:
 

@@ -170,6 +170,7 @@
     <ClInclude Include="src\opendnp3\master\ITaskCallback.h" />
     <ClInclude Include="src\opendnp3\master\ITaskLock.h" />
     <ClInclude Include="src\opendnp3\master\Master.h" />
+    <ClInclude Include="src\opendnp3\master\MasterActions.h" />
     <ClInclude Include="src\opendnp3\master\MasterContext.h" />
     <ClInclude Include="src\opendnp3\master\MasterParams.h" />
     <ClInclude Include="src\opendnp3\master\MasterScan.h" />

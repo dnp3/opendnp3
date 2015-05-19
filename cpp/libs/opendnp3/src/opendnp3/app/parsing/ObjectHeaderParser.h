@@ -40,7 +40,7 @@ public:
 	uint8_t qualifier;
 };
 
-class ObjectHeaderParser : private openpal::PureStatic
+class ObjectHeaderParser : private openpal::StaticOnly
 {
 public:
 

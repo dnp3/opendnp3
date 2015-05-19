@@ -32,7 +32,7 @@
 namespace opendnp3
 {
 
-class APDUParser : private openpal::PureStatic
+class APDUParser : private openpal::StaticOnly
 {
 public:
 

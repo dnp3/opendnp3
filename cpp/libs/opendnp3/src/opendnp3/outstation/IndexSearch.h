@@ -36,7 +36,7 @@ namespace opendnp3
 /**
 * Implements a binary search for virtual indices in a discontiguous database
 */
-class IndexSearch : private openpal::PureStatic
+class IndexSearch : private openpal::StaticOnly
 {
 
 public:

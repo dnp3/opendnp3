@@ -33,7 +33,7 @@
 
 namespace secauthv5
 {
-	class OSecActions : private openpal::PureStatic
+	class OSecActions : private openpal::StaticOnly
 	{
 		public:
 								

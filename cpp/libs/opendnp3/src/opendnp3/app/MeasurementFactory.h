@@ -32,7 +32,7 @@
 namespace opendnp3
 {
 
-struct BinaryFactory: private openpal::PureStatic
+struct BinaryFactory: private openpal::StaticOnly
 {
 	inline static Binary From(uint8_t flags)
 	{
@@ -50,7 +50,7 @@ struct BinaryFactory: private openpal::PureStatic
 	}
 };
 
-struct DoubleBitBinaryFactory : private openpal::PureStatic
+struct DoubleBitBinaryFactory : private openpal::StaticOnly
 {
 	inline static DoubleBitBinary From(uint8_t flags)
 	{
@@ -68,7 +68,7 @@ struct DoubleBitBinaryFactory : private openpal::PureStatic
 	}
 };
 
-struct AnalogFactory: private openpal::PureStatic
+struct AnalogFactory: private openpal::StaticOnly
 {
 	static Analog From(int32_t count)
 	{
@@ -84,7 +84,7 @@ struct AnalogFactory: private openpal::PureStatic
 	}
 };
 
-struct CounterFactory: private openpal::PureStatic
+struct CounterFactory: private openpal::StaticOnly
 {
 	inline static Counter From(uint32_t count)
 	{
@@ -100,7 +100,7 @@ struct CounterFactory: private openpal::PureStatic
 	}
 };
 
-struct FrozenCounterFactory: private openpal::PureStatic
+struct FrozenCounterFactory: private openpal::StaticOnly
 {
 	inline static FrozenCounter From(uint32_t count)
 	{
@@ -116,7 +116,7 @@ struct FrozenCounterFactory: private openpal::PureStatic
 	}
 };
 
-struct TimeAndIntervalFactory : private openpal::PureStatic
+struct TimeAndIntervalFactory : private openpal::StaticOnly
 {	
 	inline static TimeAndInterval From(DNPTime time, uint32_t interval, uint8_t units)
 	{
@@ -124,7 +124,7 @@ struct TimeAndIntervalFactory : private openpal::PureStatic
 	}
 };
 
-struct ControlRelayOutputBlockFactory: private openpal::PureStatic
+struct ControlRelayOutputBlockFactory: private openpal::StaticOnly
 {
 	inline static ControlRelayOutputBlock From(
 	    uint8_t code,
@@ -137,7 +137,7 @@ struct ControlRelayOutputBlockFactory: private openpal::PureStatic
 	}
 };
 
-struct BinaryOutputStatusFactory: private openpal::PureStatic
+struct BinaryOutputStatusFactory: private openpal::StaticOnly
 {
 	inline static BinaryOutputStatus From(uint8_t flags)
 	{
@@ -150,7 +150,7 @@ struct BinaryOutputStatusFactory: private openpal::PureStatic
 	}
 };
 
-struct BinaryCommandEventFactory : private openpal::PureStatic
+struct BinaryCommandEventFactory : private openpal::StaticOnly
 {
 	inline static BinaryCommandEvent From(uint8_t flags)
 	{
@@ -163,7 +163,7 @@ struct BinaryCommandEventFactory : private openpal::PureStatic
 	}
 };
 
-struct AnalogOutputStatusFactory: private openpal::PureStatic
+struct AnalogOutputStatusFactory: private openpal::StaticOnly
 {
 	inline static AnalogOutputStatus From(uint8_t flags, double value)
 	{
@@ -176,7 +176,7 @@ struct AnalogOutputStatusFactory: private openpal::PureStatic
 	}
 };
 
-struct AnalogCommandEventFactory : private openpal::PureStatic
+struct AnalogCommandEventFactory : private openpal::StaticOnly
 {
 	inline static AnalogCommandEvent From(uint8_t status, double value)
 	{
@@ -190,7 +190,7 @@ struct AnalogCommandEventFactory : private openpal::PureStatic
 };
 
 template <class Target, class ValueType>
-struct AnalogOutputFactory: private openpal::PureStatic
+struct AnalogOutputFactory: private openpal::StaticOnly
 {
 	inline static Target From(ValueType value, uint8_t status)
 	{

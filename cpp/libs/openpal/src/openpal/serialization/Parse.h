@@ -27,7 +27,7 @@
 
 namespace openpal
 {
-	class Parse : private PureStatic
+	class Parse : private StaticOnly
 	{
 		public:
 
