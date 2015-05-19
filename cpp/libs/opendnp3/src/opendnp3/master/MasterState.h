@@ -62,7 +62,8 @@ namespace opendnp3
 		MasterParams params;
 		ISOEHandler* pSOEHandler;
 		ITaskLock* pTaskLock;
-		opendnp3::IMasterApplication* pApplication;
+		IMasterApplication* pApplication;
+		IScheduleCallback* pScheduleCallback;
 
 		// ------- dynamic state ---------
 		bool isOnline;
@@ -82,6 +83,8 @@ namespace opendnp3
 		// ------- helper functions --------
 
 		bool GoOffline();
+
+		bool GoOnline();
 
 
 	};

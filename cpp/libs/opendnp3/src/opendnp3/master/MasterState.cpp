@@ -41,6 +41,7 @@ namespace opendnp3
 		pSOEHandler(&SOEHandler),
 		pTaskLock(&taskLock),
 		pApplication(&application),
+		pScheduleCallback(&scheduleCallback),
 		isOnline(false),
 		isSending(false),
 		solSeq(0),
@@ -81,6 +82,22 @@ namespace opendnp3
 		{
 			return false;
 		}		
+	}
+
+	bool MasterState::GoOnline()
+	{
+		if (isOnline)
+		{
+			return false;
+		}
+		else
+		{
+			isOnline = true;
+			pTaskLock->OnLayerUp();
+			tasks.Initialize(scheduler);
+			scheduler.OnLowerLayerUp();
+			return true;
+		}
 	}
 }
 

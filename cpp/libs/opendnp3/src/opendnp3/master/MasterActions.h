@@ -24,15 +24,36 @@
 #include "MasterState.h"
 
 #include <openpal/util/Uncopyable.h>
+#include <openpal/container/ReadBufferView.h>
+
+#include "opendnp3/master/MasterState.h"
 
 namespace opendnp3
 {
 
-	class MasterActions : private openpal::StaticOnly
+	class MasterActions : private openpal::Uncopyable
 	{
 	public:
 
+		static void StartTask(MasterState& mstate, IMasterTask& task);
 
+		static void QueueConfirm(MasterState& mstate, const APDUHeader& header);
+
+		static void StartResponseTimer(MasterState& mstate);
+
+		static void PostCheckForTask(MasterState& mstate);
+
+		static void ReleaseActiveTask(MasterState& mstate);		
+
+		static bool CheckConfirmTransmit(MasterState& mstate);
+
+		static void CheckForTask(MasterState& mstate);
+
+	private:		
+
+		static void ProcessResponseTimeout(MasterState& mstate);
+	
+		static void Transmit(MasterState& mstate, const openpal::ReadBufferView& data);
 	};
 
 }

@@ -39,10 +39,7 @@ class MasterContext : public ICommandProcessor, public IScheduleCallback
 					ITaskLock& taskLock
 				);
 
-	MasterState mstate;
-		
-	
-	void PostCheckForTask();
+	MasterState mstate;			
 
 	// ------- external events ----------
 	bool OnLayerUp();
@@ -72,11 +69,7 @@ class MasterContext : public ICommandProcessor, public IScheduleCallback
 	virtual void SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback) override final;
 	virtual void DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback) override final;
 
-	// ----- Helpers accessible by the state objects -----
-	void StartTask(IMasterTask& task);	
-	void QueueConfirm(const APDUHeader& header);
-	void StartResponseTimer();
-	void ReleaseActiveTask();
+	// ----- Helpers accessible by the state objects -----			
 	
 	void ScheduleRecurringPollTask(IMasterTask* pTask);
 	void ScheduleAdhocTask(IMasterTask* pTask);
@@ -84,17 +77,9 @@ class MasterContext : public ICommandProcessor, public IScheduleCallback
 	private:
 	
 	// callback from the scheduler that a task is ready to run	
-	virtual void OnPendingTask() override final;	
+	virtual void OnPendingTask() override final;			
 
-	void OnResponseTimeout();
-
-	void CheckForTask();	
-
-	// -------- helpers --------
-
-	bool CheckConfirmTransmit();
-
-	void Transmit(const openpal::ReadBufferView& output);	
+	// -------- helpers --------	
 
 	template <class T>
 	void SelectAndOperateT(const T& command, uint16_t index, ICommandCallback& callback, const DNP3Serializer<T>& serializer);
@@ -109,7 +94,7 @@ void MasterContext::SelectAndOperateT(const T& command, uint16_t index, ICommand
 	if (mstate.isOnline)
 	{
 		mstate.scheduler.Schedule(openpal::ManagedPtr<IMasterTask>::Deleted(CommandTask::FSelectAndOperate(command, index, *mstate.pApplication, callback, serializer, mstate.logger)));
-		this->PostCheckForTask();
+		MasterActions::PostCheckForTask(mstate);
 	}
 	else
 	{
@@ -123,7 +108,7 @@ void MasterContext::DirectOperateT(const T& command, uint16_t index, ICommandCal
 	if (mstate.isOnline)
 	{		
 		mstate.scheduler.Schedule(openpal::ManagedPtr<IMasterTask>::Deleted(CommandTask::FDirectOperate(command, index, *mstate.pApplication, callback, serializer, mstate.logger)));
-		this->PostCheckForTask();
+		MasterActions::PostCheckForTask(mstate);
 	}
 	else
 	{

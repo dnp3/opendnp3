@@ -1346,5 +1346,8 @@
     <ClCompile Include="src\opendnp3\master\MasterState.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
+    <ClCompile Include="src\opendnp3\master\MasterActions.cpp">
+      <Filter>Source\master</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -355,6 +355,7 @@
     <ClCompile Include="src\opendnp3\master\ISOEHandler.cpp" />
     <ClCompile Include="src\opendnp3\master\ITaskLock.cpp" />
     <ClCompile Include="src\opendnp3\master\Master.cpp" />
+    <ClCompile Include="src\opendnp3\master\MasterActions.cpp" />
     <ClCompile Include="src\opendnp3\master\MasterContext.cpp" />
     <ClCompile Include="src\opendnp3\master\MasterParams.cpp" />
     <ClCompile Include="src\opendnp3\master\MasterScan.cpp" />

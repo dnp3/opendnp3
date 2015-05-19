@@ -26,6 +26,7 @@
 #include "opendnp3/app/parsing/APDUHeaderParser.h"
 #include "opendnp3/app/APDULogging.h"
 #include "opendnp3/master/MeasurementHandler.h"
+#include "opendnp3/master/MasterActions.h"
 
 #include "opendnp3/objects/Group12.h"
 #include "opendnp3/objects/Group41.h"
@@ -54,60 +55,12 @@ MasterContext::MasterContext(
 
 bool MasterContext::OnLayerUp()
 {
-	if (mstate.isOnline)
-	{		
-		return false;
-	}
-	else
-	{
-		mstate.isOnline = true;
-		mstate.pTaskLock->OnLayerUp();
-		mstate.tasks.Initialize(mstate.scheduler);
-		mstate.scheduler.OnLowerLayerUp();
-		return true;
-	}
+	return mstate.GoOnline();
 }
 
 bool MasterContext::OnLayerDown()
 {
 	return mstate.GoOffline();
-}
-
-void MasterContext::PostCheckForTask()
-{
-	auto callback = [this]() { this->CheckForTask(); };
-	mstate.pExecutor->PostLambda(callback);
-}
-
-void MasterContext::CheckForTask()
-{
-	if (mstate.isOnline)
-	{
-		mstate.pState = mstate.pState->OnStart(this);
-	}
-}
-
-void MasterContext::StartTask(IMasterTask& task)
-{				
-	APDURequest request(mstate.txBuffer.GetWriteBufferView());
-	task.BuildRequest(request, mstate.solSeq);
-	this->StartResponseTimer();
-	this->Transmit(request.ToReadOnly());	
-}
-
-void MasterContext::ReleaseActiveTask()
-{
-	if (mstate.pActiveTask.IsDefined())
-	{
-		if (mstate.pActiveTask->IsRecurring())
-		{
-			mstate.scheduler.Schedule(std::move(mstate.pActiveTask));
-		}
-		else
-		{
-			mstate.pActiveTask.Release();
-		}
-	}
 }
 
 void MasterContext::ScheduleRecurringPollTask(IMasterTask* pTask)
@@ -117,7 +70,7 @@ void MasterContext::ScheduleRecurringPollTask(IMasterTask* pTask)
 	if (mstate.isOnline)
 	{
 		mstate.scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(pTask));
-		this->PostCheckForTask();
+		MasterActions::PostCheckForTask(mstate);
 	}	
 }
 
@@ -127,7 +80,7 @@ void MasterContext::ScheduleAdhocTask(IMasterTask* pTask)
 	if (mstate.isOnline)
 	{
 		mstate.scheduler.Schedule(std::move(task));
-		this->PostCheckForTask();
+		MasterActions::PostCheckForTask(mstate);
 	}
 	else
 	{
@@ -138,12 +91,7 @@ void MasterContext::ScheduleAdhocTask(IMasterTask* pTask)
 
 void MasterContext::OnPendingTask()
 {
-	this->PostCheckForTask();
-}
-
-void MasterContext::OnResponseTimeout()
-{
-	mstate.pState = mstate.pState->OnResponseTimeout(this);
+	MasterActions::PostCheckForTask(mstate);
 }
 
 void MasterContext::OnSendResult(bool isSucccess)
@@ -152,8 +100,8 @@ void MasterContext::OnSendResult(bool isSucccess)
 	{
 		mstate.isSending = false;
 
-		this->CheckConfirmTransmit();
-		this->CheckForTask();						
+		MasterActions::CheckConfirmTransmit(mstate);
+		MasterActions::CheckForTask(mstate);
 	}
 }
 
@@ -191,7 +139,7 @@ void MasterContext::OnReceive(const ReadBufferView& apdu)
 			{
 				if (header.function == FunctionCode::RESPONSE)
 				{
-					this->mstate.pState = mstate.pState->OnResponse(this, header, apdu.Skip(APDU_RESPONSE_HEADER_SIZE));
+					this->mstate.pState = mstate.pState->OnResponse(mstate, header, apdu.Skip(APDU_RESPONSE_HEADER_SIZE));
 					this->OnReceiveIIN(header.IIN);
 				}
 				else
@@ -211,8 +159,8 @@ void MasterContext::OnUnsolicitedResponse(const APDUResponseHeader& header, cons
 		auto result = MeasurementHandler::ProcessMeasurements(objects, mstate.logger, mstate.pSOEHandler);
 
 		if ((result == ParseResult::OK) && header.control.CON)
-		{
-			this->QueueConfirm(APDUHeader::UnsolicitedConfirm(header.control.SEQ));
+		{			
+			MasterActions::QueueConfirm(mstate, APDUHeader::UnsolicitedConfirm(header.control.SEQ));			
 		}
 	}	
 }
@@ -245,44 +193,6 @@ void MasterContext::OnReceiveIIN(const IINField& iin)
 	{
 		mstate.tasks.eventScan.Demand();
 	}
-}
-
-void MasterContext::StartResponseTimer()
-{	
-	auto timeout = [this](){ this->OnResponseTimeout(); };
-	mstate.responseTimer.Start(mstate.params.responseTimeout, timeout);	
-}
-
-void MasterContext::QueueConfirm(const APDUHeader& header)
-{
-	this->mstate.confirmQueue.push_back(header);
-	this->CheckConfirmTransmit();
-}
-
-bool MasterContext::CheckConfirmTransmit()
-{
-	if (!mstate.isSending && !mstate.confirmQueue.empty())
-	{
-		auto pConfirm = mstate.confirmQueue.front();
-		APDUWrapper wrapper(mstate.txBuffer.GetWriteBufferView());
-		wrapper.SetFunction(pConfirm.function);
-		wrapper.SetControl(pConfirm.control);
-		this->Transmit(wrapper.ToReadOnly());
-		mstate.confirmQueue.pop_front();
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-
-void MasterContext::Transmit(const ReadBufferView& output)
-{
-	logging::ParseAndLogRequestTx(mstate.logger, output);
-	assert(!mstate.isSending);
-	mstate.isSending = true;
-	mstate.pLower->BeginTransmit(output);
 }
 
 void MasterContext::SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback& callback)

@@ -27,6 +27,7 @@
 
 #include "opendnp3/master/UserPollTask.h"
 #include "opendnp3/master/WriteTask.h"
+#include "opendnp3/master/MasterActions.h"
 
 #include <openpal/logging/LogMacros.h>
 
@@ -77,7 +78,7 @@ MasterScan Master::AddScan(openpal::TimeDuration period, const std::function<voi
 {
 	auto pTask = new UserPollTask(builder, true, period, context.mstate.params.taskRetryPeriod, *context.mstate.pApplication, *context.mstate.pSOEHandler, pCallback, userId, context.mstate.logger);
 	context.ScheduleRecurringPollTask(pTask);	
-	auto callback = [this]() { this->context.PostCheckForTask(); };
+	auto callback = [this]() { MasterActions::PostCheckForTask(this->context.mstate); };
 	return MasterScan(*context.mstate.pExecutor, pTask, callback);
 }
 

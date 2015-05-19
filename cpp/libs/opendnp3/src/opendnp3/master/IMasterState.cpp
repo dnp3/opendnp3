@@ -20,7 +20,7 @@
 */
 
 #include "IMasterState.h"
-#include "MasterContext.h"
+#include "MasterActions.h"
 
 #include <openpal/logging/LogMacros.h>
 #include <opendnp3/LogLevels.h>
@@ -30,20 +30,20 @@ namespace opendnp3
 
 // --------- Default Actions -------------
 
-IMasterState* IMasterState::OnStart(MasterContext* pContext)
+IMasterState* IMasterState::OnStart(MasterState& mstate)
 {
 	return this;
 }
 
-IMasterState* IMasterState::OnResponse(MasterContext* pContext, const APDUResponseHeader& response, const openpal::ReadBufferView& objects)
+IMasterState* IMasterState::OnResponse(MasterState& mstate, const APDUResponseHeader& response, const openpal::ReadBufferView& objects)
 {
-	FORMAT_LOG_BLOCK(pContext->mstate.logger, flags::WARN, "Not expecting a response, sequence: %u", response.control.SEQ);
+	FORMAT_LOG_BLOCK(mstate.logger, flags::WARN, "Not expecting a response, sequence: %u", response.control.SEQ);
 	return this;
 }
 
-IMasterState* IMasterState::OnResponseTimeout(MasterContext* pContext)
+IMasterState* IMasterState::OnResponseTimeout(MasterState& mstate)
 {
-	SIMPLE_LOG_BLOCK(pContext->mstate.logger, flags::ERR, "Unexpected response timeout");
+	SIMPLE_LOG_BLOCK(mstate.logger, flags::ERR, "Unexpected response timeout");
 	return this;
 }
 
@@ -51,25 +51,25 @@ IMasterState* IMasterState::OnResponseTimeout(MasterContext* pContext)
 
 MasterStateIdle MasterStateIdle::instance;
 
-IMasterState* MasterStateIdle::OnStart(MasterContext* pContext)
+IMasterState* MasterStateIdle::OnStart(MasterState& mstate)
 {
-	if (pContext->mstate.isSending)
+	if(mstate.isSending)
 	{
 		return this;
 	}
 	else
 	{
-		auto pTask = pContext->mstate.scheduler.Start();
+		auto pTask = mstate.scheduler.Start();
 		
 		if (pTask.IsDefined())
 		{		
-			pContext->mstate.pActiveTask = std::move(pTask);
+			mstate.pActiveTask = std::move(pTask);
 
-			if (pContext->mstate.pTaskLock->Acquire(*pContext))
+			if (mstate.pTaskLock->Acquire(*mstate.pScheduleCallback))
 			{
-				FORMAT_LOG_BLOCK(pContext->mstate.logger, flags::INFO, "Begining task: %s", pContext->mstate.pActiveTask->Name());
-				pContext->mstate.pActiveTask->OnStart();
-				pContext->StartTask(*pContext->mstate.pActiveTask);
+				FORMAT_LOG_BLOCK(mstate.logger, flags::INFO, "Begining task: %s", mstate.pActiveTask->Name());
+				mstate.pActiveTask->OnStart();
+				MasterActions::StartTask(mstate, *mstate.pActiveTask);
 				return &MasterStateWaitForResponse::Instance();
 			}
 			else
@@ -88,17 +88,17 @@ IMasterState* MasterStateIdle::OnStart(MasterContext* pContext)
 
 MasterStateTaskReady MasterStateTaskReady::instance;
 
-IMasterState* MasterStateTaskReady::OnStart(MasterContext* pContext)
+IMasterState* MasterStateTaskReady::OnStart(MasterState& mstate)
 {
-	if (pContext->mstate.isSending)
+	if (mstate.isSending)
 	{
 		return this;
 	}
 	else
 	{
-		if (pContext->mstate.pTaskLock->Acquire(*pContext))
+		if (mstate.pTaskLock->Acquire(*mstate.pScheduleCallback))
 		{
-			pContext->StartTask(*pContext->mstate.pActiveTask);
+			MasterActions::StartTask(mstate, *mstate.pActiveTask);
 			return &MasterStateWaitForResponse::Instance();
 		}
 		else
@@ -112,53 +112,53 @@ IMasterState* MasterStateTaskReady::OnStart(MasterContext* pContext)
 
 MasterStateWaitForResponse MasterStateWaitForResponse::instance;
 
-IMasterState* MasterStateWaitForResponse::OnResponse(MasterContext* pContext, const APDUResponseHeader& response, const openpal::ReadBufferView& objects)
+IMasterState* MasterStateWaitForResponse::OnResponse(MasterState& mstate, const APDUResponseHeader& response, const openpal::ReadBufferView& objects)
 {
-	if (response.control.SEQ == pContext->mstate.solSeq)
+	if (response.control.SEQ ==mstate.solSeq)
 	{
-		pContext->mstate.responseTimer.Cancel();
+		mstate.responseTimer.Cancel();
 
-		pContext->mstate.solSeq = AppControlField::NextSeq(pContext->mstate.solSeq);
+		mstate.solSeq = AppControlField::NextSeq(mstate.solSeq);
 
-		auto now = pContext->mstate.pExecutor->GetTime();
+		auto now = mstate.pExecutor->GetTime();
 		
-		auto result = pContext->mstate.pActiveTask->OnResponse(response, objects, now);
+		auto result = mstate.pActiveTask->OnResponse(response, objects, now);
 
 		if (response.control.CON)
 		{
-			pContext->QueueConfirm(APDUHeader::SolicitedConfirm(response.control.SEQ));
+			MasterActions::QueueConfirm(mstate, APDUHeader::SolicitedConfirm(response.control.SEQ));			
 		}
 
 		switch (result)
 		{
 			case(IMasterTask::ResponseResult::OK_CONTINUE) :
-				pContext->StartResponseTimer();
+				MasterActions::StartResponseTimer(mstate);
 				return this;
 			case(IMasterTask::ResponseResult::OK_REPEAT) :
-				return MasterStateTaskReady::Instance().OnStart(pContext);
+				return MasterStateTaskReady::Instance().OnStart(mstate);
 			default:
 				// task completed or failed, either way go back to idle
-				pContext->ReleaseActiveTask();												
-				pContext->mstate.pTaskLock->Release(*pContext);
-				pContext->PostCheckForTask();								
+				MasterActions::ReleaseActiveTask(mstate);
+				mstate.pTaskLock->Release(*mstate.pScheduleCallback);
+				MasterActions::PostCheckForTask(mstate);									
 				return &MasterStateIdle::Instance();
 		}
 	}
 	else
 	{
-		FORMAT_LOG_BLOCK(pContext->mstate.logger, flags::WARN, "Response with bad sequence: %u", response.control.SEQ);
+		FORMAT_LOG_BLOCK(mstate.logger, flags::WARN, "Response with bad sequence: %u", response.control.SEQ);
 		return this;
 	}
 }
 
-IMasterState* MasterStateWaitForResponse::OnResponseTimeout(MasterContext* pContext)
+IMasterState* MasterStateWaitForResponse::OnResponseTimeout(MasterState& mstate)
 {			
-	auto now = pContext->mstate.pExecutor->GetTime();
-	pContext->mstate.pActiveTask->OnResponseTimeout(now);
-	pContext->ReleaseActiveTask();	
-	pContext->mstate.pTaskLock->Release(*pContext);
-	pContext->mstate.solSeq = AppControlField::NextSeq(pContext->mstate.solSeq);
-	pContext->PostCheckForTask();
+	auto now = mstate.pExecutor->GetTime();
+	mstate.pActiveTask->OnResponseTimeout(now);
+	MasterActions::ReleaseActiveTask(mstate);
+	mstate.pTaskLock->Release(*mstate.pScheduleCallback);
+	mstate.solSeq = AppControlField::NextSeq(mstate.solSeq);
+	MasterActions::PostCheckForTask(mstate);	
 	return &MasterStateIdle::Instance();
 }
 
