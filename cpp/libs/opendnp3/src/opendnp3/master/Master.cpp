@@ -28,6 +28,7 @@
 #include "opendnp3/master/UserPollTask.h"
 #include "opendnp3/master/WriteTask.h"
 #include "opendnp3/master/MasterActions.h"
+#include "opendnp3/master/MeasurementHandler.h"
 
 #include <openpal/logging/LogMacros.h>
 
@@ -45,33 +46,122 @@ Master::Master(
 	const MasterParams& params,
 	ITaskLock& taskLock
 	) : 
-	context(executor, root, lower, SOEHandler, application, params, taskLock),
-	commandProcessor(context.mstate)
+	mstate(executor, root, lower, SOEHandler, application, *this, params, taskLock),
+	commandProcessor(mstate)
 {}
 	
 void Master::OnLowerLayerUp()
 {
-	context.mstate.GoOnline();
+	mstate.GoOnline();
 }
 
 void Master::OnLowerLayerDown()
 {
-	context.mstate.GoOffline();
+	mstate.GoOffline();
 }
 
 void Master::OnReceive(const openpal::ReadBufferView& apdu)
 {
-	context.OnReceive(apdu);
+	if (mstate.isOnline)
+	{
+		APDUResponseHeader header;
+		if (APDUHeaderParser::ParseResponse(apdu, header, &mstate.logger))
+		{
+			FORMAT_LOG_BLOCK(mstate.logger, flags::APP_HEADER_RX,
+				"FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s IIN: [0x%02x, 0x%02x]",
+				header.control.FIR,
+				header.control.FIN,
+				header.control.CON,
+				header.control.UNS,
+				header.control.SEQ,
+				FunctionCodeToString(header.function),
+				header.IIN.LSB,
+				header.IIN.MSB);
+
+			if (header.control.UNS)
+			{
+				if (header.function == FunctionCode::UNSOLICITED_RESPONSE)
+				{
+					this->OnUnsolicitedResponse(header, apdu.Skip(APDU_RESPONSE_HEADER_SIZE));
+					this->OnReceiveIIN(header.IIN);
+				}
+				else
+				{
+					FORMAT_LOG_BLOCK(mstate.logger, flags::WARN, "Ignoring unsupported function with UNS bit set: %s", FunctionCodeToString(header.function));
+				}
+			}
+			else
+			{
+				if (header.function == FunctionCode::RESPONSE)
+				{
+					this->mstate.pState = mstate.pState->OnResponse(mstate, header, apdu.Skip(APDU_RESPONSE_HEADER_SIZE));
+					this->OnReceiveIIN(header.IIN);
+				}
+				else
+				{
+					FORMAT_LOG_BLOCK(mstate.logger, flags::WARN, "Ignoring unsupported solicited function code: %s", FunctionCodeToString(header.function));
+				}
+			}
+		}
+	}
+}
+
+void Master::OnUnsolicitedResponse(const APDUResponseHeader& header, const ReadBufferView& objects)
+{
+	if (header.control.UNS)
+	{
+		auto result = MeasurementHandler::ProcessMeasurements(objects, mstate.logger, mstate.pSOEHandler);
+
+		if ((result == ParseResult::OK) && header.control.CON)
+		{
+			MasterActions::QueueConfirm(mstate, APDUHeader::UnsolicitedConfirm(header.control.SEQ));
+		}
+	}
+}
+
+void Master::OnReceiveIIN(const IINField& iin)
+{
+	mstate.pApplication->OnReceiveIIN(iin);
+
+	if (iin.IsSet(IINBit::DEVICE_RESTART))
+	{
+		mstate.tasks.clearRestart.Demand();
+		mstate.tasks.assignClass.Demand();
+		mstate.tasks.startupIntegrity.Demand();
+		mstate.tasks.enableUnsol.Demand();
+	}
+
+	if (iin.IsSet(IINBit::EVENT_BUFFER_OVERFLOW) && mstate.params.integrityOnEventOverflowIIN)
+	{
+		mstate.tasks.startupIntegrity.Demand();
+	}
+
+	if (iin.IsSet(IINBit::NEED_TIME))
+	{
+		mstate.tasks.timeSync.Demand();
+	}
+
+	if ((iin.IsSet(IINBit::CLASS1_EVENTS) && mstate.params.eventScanOnEventsAvailableClassMask.HasClass1()) ||
+		(iin.IsSet(IINBit::CLASS2_EVENTS) && mstate.params.eventScanOnEventsAvailableClassMask.HasClass2()) ||
+		(iin.IsSet(IINBit::CLASS3_EVENTS) && mstate.params.eventScanOnEventsAvailableClassMask.HasClass3()))
+	{
+		mstate.tasks.eventScan.Demand();
+	}
+}
+
+void Master::OnPendingTask()
+{
+	MasterActions::PostCheckForTask(mstate);
 }
 
 void Master::OnSendResult(bool isSucccess)
 {
-	if (context.mstate.isOnline && context.mstate.isSending)
+	if (mstate.isOnline && mstate.isSending)
 	{
-		context.mstate.isSending = false;
+		mstate.isSending = false;
 
-		MasterActions::CheckConfirmTransmit(context.mstate);
-		MasterActions::CheckForTask(context.mstate);
+		MasterActions::CheckConfirmTransmit(mstate);
+		MasterActions::CheckForTask(mstate);
 	}
 }
 
@@ -82,10 +172,10 @@ ICommandProcessor& Master::GetCommandProcessor()
 
 MasterScan Master::AddScan(openpal::TimeDuration period, const std::function<void(HeaderWriter&)>& builder, ITaskCallback* pCallback, int userId)
 {
-	auto pTask = new UserPollTask(builder, true, period, context.mstate.params.taskRetryPeriod, *context.mstate.pApplication, *context.mstate.pSOEHandler, pCallback, userId, context.mstate.logger);
+	auto pTask = new UserPollTask(builder, true, period, mstate.params.taskRetryPeriod, *mstate.pApplication, *mstate.pSOEHandler, pCallback, userId, mstate.logger);
 	this->ScheduleRecurringPollTask(pTask);	
-	auto callback = [this]() { MasterActions::PostCheckForTask(this->context.mstate); };
-	return MasterScan(*context.mstate.pExecutor, pTask, callback);
+	auto callback = [this]() { MasterActions::PostCheckForTask(this->mstate); };
+	return MasterScan(*mstate.pExecutor, pTask, callback);
 }
 
 MasterScan Master::AddClassScan(const ClassField& field, openpal::TimeDuration period, ITaskCallback* pCallback, int userId)
@@ -117,7 +207,7 @@ MasterScan Master::AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t 
 
 void Master::Scan(const std::function<void(HeaderWriter&)>& builder, ITaskCallback* pCallback, int userId)
 {
-	auto pTask = new UserPollTask(builder, false, TimeDuration::Max(), context.mstate.params.taskRetryPeriod, *context.mstate.pApplication, *context.mstate.pSOEHandler, pCallback, userId, context.mstate.logger);
+	auto pTask = new UserPollTask(builder, false, TimeDuration::Max(), mstate.params.taskRetryPeriod, *mstate.pApplication, *mstate.pSOEHandler, pCallback, userId, mstate.logger);
 	this->ScheduleAdhocTask(pTask);	
 }
 
@@ -155,7 +245,7 @@ void Master::Write(const TimeAndInterval& value, uint16_t index, ITaskCallback* 
 		writer.WriteSingleIndexedValue<UInt16, TimeAndInterval>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group50Var4::Inst(), value, index);
 	};
 
-	auto pTask = new WriteTask(*context.mstate.pApplication, format, context.mstate.logger, pCallback, userId);
+	auto pTask = new WriteTask(*mstate.pApplication, format, mstate.logger, pCallback, userId);
 	this->ScheduleAdhocTask(pTask);
 }
 
@@ -163,27 +253,27 @@ void Master::Write(const TimeAndInterval& value, uint16_t index, ITaskCallback* 
 
 void Master::ScheduleRecurringPollTask(IMasterTask* pTask)
 {
-	context.mstate.tasks.BindTask(pTask);
+	mstate.tasks.BindTask(pTask);
 
-	if (context.mstate.isOnline)
+	if (mstate.isOnline)
 	{
-		context.mstate.scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(pTask));
-		MasterActions::PostCheckForTask(context.mstate);
+		mstate.scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(pTask));
+		MasterActions::PostCheckForTask(mstate);
 	}
 }
 
 void Master::ScheduleAdhocTask(IMasterTask* pTask)
 {
 	auto task = ManagedPtr<IMasterTask>::Deleted(pTask);
-	if (context.mstate.isOnline)
+	if (mstate.isOnline)
 	{
-		context.mstate.scheduler.Schedule(std::move(task));
-		MasterActions::PostCheckForTask(context.mstate);
+		mstate.scheduler.Schedule(std::move(task));
+		MasterActions::PostCheckForTask(mstate);
 	}
 	else
 	{
 		// can't run this task since we're offline so fail it immediately
-		pTask->OnLowerLayerClose(context.mstate.pExecutor->GetTime());
+		pTask->OnLowerLayerClose(mstate.pExecutor->GetTime());
 	}
 }
 	

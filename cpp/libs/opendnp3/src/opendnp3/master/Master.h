@@ -23,7 +23,7 @@
 
 #include "opendnp3/app/HeaderWriter.h"
 
-#include "opendnp3/master/MasterContext.h"
+#include "opendnp3/master/MasterState.h"
 #include "opendnp3/master/MasterCommandProcessor.h"
 #include "opendnp3/master/MasterScan.h"
 #include "opendnp3/master/IMasterApplication.h"
@@ -31,7 +31,7 @@
 namespace opendnp3
 {
 
-class Master : public IUpperLayer
+class Master : public IUpperLayer, private IScheduleCallback
 {
 	public:
 
@@ -85,10 +85,18 @@ class Master : public IUpperLayer
 	
 	private:
 
+	// callback from the scheduler that a task is ready to run	
+	virtual void OnPendingTask() override final;
+
+	/// --- internal events ----
+
+	void OnUnsolicitedResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects);
+	void OnReceiveIIN(const IINField& iin);
+
 	void ScheduleRecurringPollTask(IMasterTask* pTask);
 	void ScheduleAdhocTask(IMasterTask* pTask);
 
-	MasterContext context;
+	MasterState mstate;
 	MasterCommandProcessor commandProcessor;
 };
 
