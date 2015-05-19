@@ -353,6 +353,44 @@ namespace Automatak.DNP3.Interface
         public readonly Byte units;	
     }
 
+    /// <summary>
+    /// Represents the status of analog output on an outstation.
+    /// </summary>    
+    public class SecurityStat : TypedMeasurementBase<System.UInt32>
+    {
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="value">value of the measurement</param>
+        /// <param name="quality">quality enumeration as a bitfield</param>
+        /// <param name="time">timestamp</param>
+        public SecurityStat(uint value, ushort assocId, byte quality, DateTime time)
+            : base(value, quality, time)
+        { }
+
+        /// <summary>
+        /// Constructor without a timestamp
+        /// </summary>
+        /// <param name="value">value of the measurement</param>
+        /// <param name="quality">quality enumeration as a bitfield</param>
+        public SecurityStat(uint count, ushort assocId, byte quality)
+            : base(count, quality)
+        { }
+
+        UInt16 AssociationId
+        {
+            get
+            {
+                return assocId;
+            }
+        }
+
+        private readonly UInt16 assocId;
+    }
+
+    
+
     public class BinaryCommandEvent
     {
         public BinaryCommandEvent(bool value, CommandStatus status, DateTime time)
