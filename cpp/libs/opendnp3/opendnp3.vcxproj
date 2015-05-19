@@ -171,6 +171,7 @@
     <ClInclude Include="src\opendnp3\master\ITaskLock.h" />
     <ClInclude Include="src\opendnp3\master\Master.h" />
     <ClInclude Include="src\opendnp3\master\MasterActions.h" />
+    <ClInclude Include="src\opendnp3\master\MasterCommandProcessor.h" />
     <ClInclude Include="src\opendnp3\master\MasterContext.h" />
     <ClInclude Include="src\opendnp3\master\MasterParams.h" />
     <ClInclude Include="src\opendnp3\master\MasterScan.h" />
@@ -356,6 +357,7 @@
     <ClCompile Include="src\opendnp3\master\ITaskLock.cpp" />
     <ClCompile Include="src\opendnp3\master\Master.cpp" />
     <ClCompile Include="src\opendnp3\master\MasterActions.cpp" />
+    <ClCompile Include="src\opendnp3\master\MasterCommandProcessor.cpp" />
     <ClCompile Include="src\opendnp3\master\MasterContext.cpp" />
     <ClCompile Include="src\opendnp3\master\MasterParams.cpp" />
     <ClCompile Include="src\opendnp3\master\MasterScan.cpp" />

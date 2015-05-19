@@ -47,7 +47,8 @@ MasterContext::MasterContext(
 	ITaskLock& taskLock
 	) :
 
-	mstate(executor, root, lower, SOEHandler, application, *this, params, taskLock)
+	mstate(executor, root, lower, SOEHandler, application, *this, params, taskLock),
+	commandProcessor(mstate)
 {
 	
 }
@@ -192,56 +193,6 @@ void MasterContext::OnReceiveIIN(const IINField& iin)
 	{
 		mstate.tasks.eventScan.Demand();
 	}
-}
-
-void MasterContext::SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback& callback)
-{	
-	this->SelectAndOperateT(command, index, callback, Group12Var1::Inst());
-}
-
-void MasterContext::DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback& callback)
-{
-	this->DirectOperateT(command, index, callback, Group12Var1::Inst());
-}
-
-void MasterContext::SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback& callback)
-{
-	this->SelectAndOperateT(command, index, callback, Group41Var2::Inst());
-}
-
-void MasterContext::DirectOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback& callback)
-{
-	this->DirectOperateT(command, index, callback, Group41Var2::Inst());
-}
-
-void MasterContext::SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback& callback)
-{
-	this->SelectAndOperateT(command, index, callback, Group41Var1::Inst());
-}
-
-void MasterContext::DirectOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback& callback)
-{
-	this->DirectOperateT(command, index, callback, Group41Var1::Inst());
-}
-
-void MasterContext::SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback& callback)
-{
-	this->SelectAndOperateT(command, index, callback, Group41Var3::Inst());
-}
-
-void MasterContext::DirectOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback& callback)
-{
-	this->DirectOperateT(command, index, callback, Group41Var3::Inst());
-}
-
-void MasterContext::SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback)
-{
-	this->SelectAndOperateT(command, index, callback, Group41Var4::Inst());
-}
-
-void MasterContext::DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback)
-{
-	this->DirectOperateT(command, index, callback, Group41Var4::Inst());
 }
 
 }

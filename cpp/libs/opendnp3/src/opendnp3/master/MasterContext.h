@@ -21,13 +21,12 @@
 #ifndef OPENDNP3_MASTERCONTEXT_H
 #define OPENDNP3_MASTERCONTEXT_H
 
-#include "MasterState.h"
-#include "opendnp3/master/MasterActions.h"
+#include "opendnp3/master/MasterCommandProcessor.h"
 
 namespace opendnp3
 {
 
-class MasterContext : public ICommandProcessor, public IScheduleCallback
+class MasterContext : public IScheduleCallback
 {
 	public:	
 
@@ -38,9 +37,7 @@ class MasterContext : public ICommandProcessor, public IScheduleCallback
 					opendnp3::IMasterApplication& application,
 					const MasterParams& params,
 					ITaskLock& taskLock
-				);
-
-	MasterState mstate;			
+				);	
 
 	// ------- external events ----------
 	bool OnLayerUp();
@@ -51,71 +48,24 @@ class MasterContext : public ICommandProcessor, public IScheduleCallback
 	// ------- internal events -------
 	
 	void OnUnsolicitedResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects);
-	void OnReceiveIIN(const IINField& iin);
-
-	// ------- command events ----------
-
-	virtual void SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback& callback) override final;
-	virtual void DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback& callback) override final;
-
-	virtual void SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback& callback) override final;
-	virtual void DirectOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback& callback) override final;
-
-	virtual void SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback& callback) override final;
-	virtual void DirectOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback& callback) override final;
-
-	virtual void SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback& callback) override final;
-	virtual void DirectOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback& callback) override final;
-
-	virtual void SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback) override final;
-	virtual void DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback& callback) override final;
+	void OnReceiveIIN(const IINField& iin);	
 
 	// ----- Helpers accessible by the state objects -----			
 	
 	void ScheduleRecurringPollTask(IMasterTask* pTask);
 	void ScheduleAdhocTask(IMasterTask* pTask);
 
-	private:
+	MasterState mstate;
+
+	ICommandProcessor& GetCommandProcessor()  { return commandProcessor; }
+
+	private:	
+
+	MasterCommandProcessor commandProcessor;
 	
 	// callback from the scheduler that a task is ready to run	
-	virtual void OnPendingTask() override final;			
-
-	// -------- helpers --------	
-
-	template <class T>
-	void SelectAndOperateT(const T& command, uint16_t index, ICommandCallback& callback, const DNP3Serializer<T>& serializer);
-
-	template <class T>
-	void DirectOperateT(const T& command, uint16_t index, ICommandCallback& callback, const DNP3Serializer<T>& serializer);
+	virtual void OnPendingTask() override final;				
 };
-
-template <class T>
-void MasterContext::SelectAndOperateT(const T& command, uint16_t index, ICommandCallback& callback, const DNP3Serializer<T>& serializer)
-{
-	if (mstate.isOnline)
-	{
-		mstate.scheduler.Schedule(openpal::ManagedPtr<IMasterTask>::Deleted(CommandTask::FSelectAndOperate(command, index, *mstate.pApplication, callback, serializer, mstate.logger)));
-		MasterActions::PostCheckForTask(mstate);
-	}
-	else
-	{
-		callback.OnComplete(CommandResponse(TaskCompletion::FAILURE_NO_COMMS));
-	}	
-}
-
-template <class T>
-void MasterContext::DirectOperateT(const T& command, uint16_t index, ICommandCallback& callback, const DNP3Serializer<T>& serializer)
-{
-	if (mstate.isOnline)
-	{		
-		mstate.scheduler.Schedule(openpal::ManagedPtr<IMasterTask>::Deleted(CommandTask::FDirectOperate(command, index, *mstate.pApplication, callback, serializer, mstate.logger)));
-		MasterActions::PostCheckForTask(mstate);
-	}
-	else
-	{
-		callback.OnComplete(CommandResponse(TaskCompletion::FAILURE_NO_COMMS));
-	}
-}
 
 }
 

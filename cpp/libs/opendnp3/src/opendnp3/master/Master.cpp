@@ -46,7 +46,7 @@ Master::Master(
 	ITaskLock& taskLock
 	) : 
 	context(executor, root, lower, SOEHandler, application, params, taskLock),
-	commandMarshaller(executor, context)
+	commandMarshaller(executor, context.GetCommandProcessor())
 {}
 	
 void Master::OnLowerLayerUp()
