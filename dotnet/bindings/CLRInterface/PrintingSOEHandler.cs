@@ -145,6 +145,14 @@ namespace Automatak.DNP3.Interface
             }
         }
 
+        void ISOEHandler.Process(HeaderInfo info, IEnumerable<IndexedValue<SecurityStat>> values)
+        {
+            foreach (var pair in values)
+            {
+                Print(pair.Value, pair.Index);
+            }
+        }
+
         private static void Print(Binary value, UInt16 index)
         {
             Console.WriteLine("Binary[" + index + "] " + value.ToString());                         
@@ -198,6 +206,12 @@ namespace Automatak.DNP3.Interface
         private static void Print(AnalogCommandEvent value, UInt16 index)
         {            
             Console.WriteLine(String.Format("AnalogCommandEvent[{0}] {1}", index, value));            
-        }       
+        }
+
+        private static void Print(SecurityStat value, UInt16 index)
+        {
+            Console.WriteLine(String.Format("SecurityStat[{0}] {1}", index, value.Value));
+        }
+        
     }    
 }

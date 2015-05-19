@@ -367,16 +367,7 @@ namespace Automatak.DNP3.Interface
         /// <param name="time">timestamp</param>
         public SecurityStat(uint value, ushort assocId, byte quality, DateTime time)
             : base(value, quality, time)
-        { }
-
-        /// <summary>
-        /// Constructor without a timestamp
-        /// </summary>
-        /// <param name="value">value of the measurement</param>
-        /// <param name="quality">quality enumeration as a bitfield</param>
-        public SecurityStat(uint count, ushort assocId, byte quality)
-            : base(count, quality)
-        { }
+        { }        
 
         UInt16 AssociationId
         {

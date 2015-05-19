@@ -190,6 +190,11 @@ namespace Automatak
 				return gcnew AnalogCommandEvent(meas.value, ConvertCommandStatus(meas.status), TimeStamp::Convert(meas.time));
 			}
 
+			SecurityStat^ Conversions::ConvertMeas(const opendnp3::SecurityStat& meas)
+			{
+				return gcnew SecurityStat(meas.count, meas.assocId, meas.quality, TimeStamp::Convert(meas.time));
+			}
+
 			opendnp3::Binary Conversions::ConvertMeas(Binary^ meas)
 			{
 				return opendnp3::Binary(meas->Value, meas->Quality, opendnp3::DNPTime(TimeStamp::Convert(meas->Timestamp)));

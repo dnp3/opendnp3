@@ -88,5 +88,6 @@ namespace Automatak.DNP3.Interface
             void Process(HeaderInfo info, IEnumerable<IndexedValue<TimeAndInterval>> values);
             void Process(HeaderInfo info, IEnumerable<IndexedValue<BinaryCommandEvent>> values);
             void Process(HeaderInfo info, IEnumerable<IndexedValue<AnalogCommandEvent>> values);
+            void Process(HeaderInfo info, IEnumerable<IndexedValue<SecurityStat>> values);
 	}
 }

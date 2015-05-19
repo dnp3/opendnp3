@@ -18,6 +18,7 @@
 #include <opendnp3/app/Indexed.h>
 #include <opendnp3/app/BinaryCommandEvent.h>
 #include <opendnp3/app/AnalogCommandEvent.h>
+#include <opendnp3/app/SecurityStat.h>
 #include <opendnp3/app/parsing/ICollection.h>
 
 #include <opendnp3/master/CommandResponse.h>
@@ -102,6 +103,7 @@ namespace Automatak
 				static TimeAndInterval^ Conversions::ConvertMeas(const opendnp3::TimeAndInterval& meas);
 				static BinaryCommandEvent^ Conversions::ConvertMeas(const opendnp3::BinaryCommandEvent& meas);
 				static AnalogCommandEvent^ Conversions::ConvertMeas(const opendnp3::AnalogCommandEvent& meas);
+				static SecurityStat^ Conversions::ConvertMeas(const opendnp3::SecurityStat& meas);
 
 
 				static opendnp3::Binary ConvertMeas(Binary^ meas);

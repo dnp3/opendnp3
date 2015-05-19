@@ -97,7 +97,8 @@ namespace Automatak
 
 			void SOEHandlerAdapter::Process(const opendnp3::HeaderInfo& info, const opendnp3::ICollection<opendnp3::Indexed<opendnp3::SecurityStat>>& values)
 			{
-				// TODO
+				auto enumerable = Conversions::ToIndexedEnumerable<SecurityStat^>(values);
+				proxy->Process(GetInfo(info), enumerable);
 			}
 
 		}
