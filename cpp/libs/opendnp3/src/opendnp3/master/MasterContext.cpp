@@ -52,30 +52,9 @@ MasterContext::MasterContext(
 	
 }
 
-bool MasterContext::OnLayerUp()
-{
-	return mstate.GoOnline();
-}
-
-bool MasterContext::OnLayerDown()
-{
-	return mstate.GoOffline();
-}
-
 void MasterContext::OnPendingTask()
 {
 	MasterActions::PostCheckForTask(mstate);
-}
-
-void MasterContext::OnSendResult(bool isSucccess)
-{
-	if (mstate.isOnline && mstate.isSending)
-	{
-		mstate.isSending = false;
-
-		MasterActions::CheckConfirmTransmit(mstate);
-		MasterActions::CheckForTask(mstate);
-	}
 }
 
 void MasterContext::OnReceive(const ReadBufferView& apdu)

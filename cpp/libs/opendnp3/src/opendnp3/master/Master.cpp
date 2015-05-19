@@ -51,12 +51,12 @@ Master::Master(
 	
 void Master::OnLowerLayerUp()
 {
-	context.OnLayerUp();
+	context.mstate.GoOnline();
 }
 
 void Master::OnLowerLayerDown()
 {
-	context.OnLayerDown();
+	context.mstate.GoOffline();
 }
 
 void Master::OnReceive(const openpal::ReadBufferView& apdu)
@@ -66,7 +66,13 @@ void Master::OnReceive(const openpal::ReadBufferView& apdu)
 
 void Master::OnSendResult(bool isSucccess)
 {
-	context.OnSendResult(isSucccess);	
+	if (context.mstate.isOnline && context.mstate.isSending)
+	{
+		context.mstate.isSending = false;
+
+		MasterActions::CheckConfirmTransmit(context.mstate);
+		MasterActions::CheckForTask(context.mstate);
+	}
 }
 
 ICommandProcessor& Master::GetCommandProcessor()

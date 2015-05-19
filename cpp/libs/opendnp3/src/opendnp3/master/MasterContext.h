@@ -39,10 +39,7 @@ class MasterContext : public IScheduleCallback
 					ITaskLock& taskLock
 				);	
 
-	// ------- external events ----------
-	bool OnLayerUp();
-	bool OnLayerDown();
-	void OnSendResult(bool isSucccess);
+	// ------- external events ----------			
 	void OnReceive(const openpal::ReadBufferView& apdu);
 
 	// ------- internal events -------
