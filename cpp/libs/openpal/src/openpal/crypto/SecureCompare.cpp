@@ -30,16 +30,15 @@ namespace openpal
 			return false;
 		}
 
-		// Mark this volatile so that the compiler doesn't try
-		//  to optimize away anything and return early
-		volatile bool equals = true;
+		uint8_t result = 0;
 
+		// accumulate all the different bit in each byte
 		for (uint32_t i = 0; i < lhs.Size(); ++i)
 		{
-			equals &= (lhs[i] == rhs[i]);
+			result |= lhs[i] ^ rhs[i];
 		}
 
-		return equals;
+		return result == 0;
 	}
 }
 
