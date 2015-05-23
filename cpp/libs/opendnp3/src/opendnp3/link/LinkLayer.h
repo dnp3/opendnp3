@@ -75,6 +75,7 @@ public:
 	// Functions called by the primary and secondary station states
 	void ChangeState(PriStateBase*);
 	void ChangeState(SecStateBase*);
+	void CallStatusCallback(opendnp3::LinkStatus status);
 
 	openpal::Logger& GetLogger()
 	{

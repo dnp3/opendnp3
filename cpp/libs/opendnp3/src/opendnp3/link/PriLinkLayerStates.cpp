@@ -179,6 +179,7 @@ void PLLS_ResetLinkWait::Ack(LinkLayer* pLinkLayer, bool receiveBuffFull)
 	auto buffer = pLinkLayer->FormatPrimaryBufferWithConfirmed(pLinkLayer->pSegments->GetSegment(), pLinkLayer->NextWriteFCB());
 	pLinkLayer->QueueTransmit(buffer, true);
 	pLinkLayer->ChangeState(PLLS_ConfUserDataTransmitWait::Inst());
+	pLinkLayer->CallStatusCallback(opendnp3::LinkStatus::RESET);
 }
 
 void PLLS_ResetLinkWait::OnTimeout(LinkLayer* pLinkLayer)
@@ -264,6 +265,7 @@ void PLLS_ConfDataWait::OnTimeout(LinkLayer* pLinkLayer)
 		SIMPLE_LOG_BLOCK(pLinkLayer->GetLogger(), flags::WARN, "Confirmed data final timeout, no retries remain");
 		pLinkLayer->ChangeState(PLLS_SecNotReset::Inst());
 		pLinkLayer->DoSendResult(false);
+		pLinkLayer->CallStatusCallback(opendnp3::LinkStatus::UNRESET);
 	}
 }
 

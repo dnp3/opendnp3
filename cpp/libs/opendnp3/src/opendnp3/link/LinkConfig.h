@@ -22,6 +22,8 @@
 #define OPENDNP3_LINKCONFIG_H
 
 #include <openpal/executor/TimeDuration.h>
+#include <opendnp3/link/LinkStatus.h>
+#include <functional>
 
 namespace opendnp3
 {
@@ -56,7 +58,8 @@ struct LinkConfig
 		NumRetry(0),
 		LocalAddr(aIsMaster ? 1 : 1024),
 		RemoteAddr(aIsMaster ? 1024 : 1),
-		Timeout(openpal::TimeDuration::Seconds(1))
+		Timeout(openpal::TimeDuration::Seconds(1)),
+		StatusCallback([](opendnp3::LinkStatus){})
 	{}
 
 	/// The master/outstation bit set on all messages
@@ -76,6 +79,9 @@ struct LinkConfig
 
 	/// the response timeout in milliseconds for confirmed requests
 	openpal::TimeDuration Timeout;
+
+	/// callback for listening to the status of the link
+	std::function<void(opendnp3::LinkStatus)> StatusCallback;
 
 private:
 
