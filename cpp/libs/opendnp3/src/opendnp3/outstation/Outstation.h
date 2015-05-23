@@ -39,8 +39,7 @@ class Outstation : public IUpperLayer
 					openpal::IExecutor& executor, 					
 					ILowerLayer& lower,
 					ICommandHandler& commandHandler,
-					IOutstationApplication& application,
-					IOutstationAuthProvider* pAuthProvider);
+					IOutstationApplication& application);
 	
 	/// ----- Implement IUpperLayer ------
 
@@ -61,8 +60,9 @@ class Outstation : public IUpperLayer
 	IDatabase& GetDatabase();
 
 	DatabaseConfigView GetConfigView();
-	
-	
+
+	void SetAuthProvider(IOutstationAuthProvider& provider);
+		
 	private:			
 
 	OState ostate;

@@ -27,8 +27,13 @@
 namespace opendnp3
 {
 
-OutstationAuthWrapper::OutstationAuthWrapper(IOutstationAuthProvider* pProvider_) : pProvider(pProvider_)
+OutstationAuthWrapper::OutstationAuthWrapper() : pProvider(nullptr)
 {}
+
+void OutstationAuthWrapper::SetProvider(IOutstationAuthProvider& auth)
+{
+	pProvider = &auth;
+}
 
 	/// Reset the state of the auth provider when lower layer goes offline
 void OutstationAuthWrapper::Reset()

@@ -53,8 +53,7 @@ public:
 		opendnp3::ICommandHandler& commandHandler,
 		opendnp3::IOutstationApplication& application,		
 		const opendnp3::OutstationStackConfig& config,
-	    const StackActionHandler& handler,
-		opendnp3::IOutstationAuthFactory* pAuthFactory);
+	    const StackActionHandler& handler);
 
 	virtual opendnp3::DatabaseConfigView GetConfigView() override final;	
 
@@ -88,7 +87,6 @@ private:
 	opendnp3::StackStatistics statistics;	
 	StackActionHandler handler;
 	opendnp3::TransportStack stack;	
-	std::unique_ptr<opendnp3::IOutstationAuthProvider> auth;
 	opendnp3::Outstation outstation;
 };
 

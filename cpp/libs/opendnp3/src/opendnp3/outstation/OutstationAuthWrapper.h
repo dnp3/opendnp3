@@ -35,7 +35,11 @@ class OutstationAuthWrapper : private openpal::Uncopyable
 {
 	public:
 
-	OutstationAuthWrapper(IOutstationAuthProvider* pProvider);
+	OutstationAuthWrapper();
+
+	void SetProvider(IOutstationAuthProvider& auth);
+
+	/// ----- mirror of IOutstationAuthProvider methods -----
 
 	/// Reset the state of the auth provider when lower layer goes offline
 	void Reset();
@@ -47,8 +51,6 @@ class OutstationAuthWrapper : private openpal::Uncopyable
 	void OnReceive(OState& ostate, const openpal::ReadBufferView& fragment, const APDUHeader& header, const openpal::ReadBufferView& objects);
 
 	private:
-
-	OutstationAuthWrapper() = delete;
 
 	IOutstationAuthProvider* pProvider;
 };

@@ -33,15 +33,13 @@ namespace opendnp3
 		openpal::IExecutor& executor,		
 		ILowerLayer& lower,
 		ICommandHandler& commandHandler,
-		IOutstationApplication& application,
-		IOutstationAuthProvider* pAuthProvider) :
+		IOutstationApplication& application) :
 	
 	logger(logger_),
 	pExecutor(&executor),
 	pLower(&lower),	
 	pCommandHandler(&commandHandler),
 	pApplication(&application),
-	auth(pAuthProvider),
 	eventBuffer(config.eventBufferConfig),
 	database(dbTemplate, eventBuffer, config.params.indexMode, config.params.typesAllowedInClass0),
 	rspContext(database.GetStaticLoader(), eventBuffer),

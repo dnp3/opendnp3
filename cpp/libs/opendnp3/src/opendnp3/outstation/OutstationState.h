@@ -57,8 +57,7 @@ class OState
 			openpal::IExecutor& executor,			
 			ILowerLayer& lower,
 			ICommandHandler& commandHandler,
-			IOutstationApplication& application,
-			IOutstationAuthProvider* pAuthProvider);
+			IOutstationApplication& application);
 
 	// reset important variables to their initial state
 	void Reset();	

@@ -147,11 +147,11 @@ IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler& SOEHandler, IMaster
 	return asiopal::SynchronouslyGet<IMaster*>(pExecutor->strand, add);
 }
 
-IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler& commandHandler, IOutstationApplication& application, const OutstationStackConfig& config, opendnp3::IOutstationAuthFactory* pAuthFactory)
+IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler& commandHandler, IOutstationApplication& application, const OutstationStackConfig& config)
 {
-	auto add = [this, id, pAuthFactory, &commandHandler, &application, config]() 
+	auto add = [this, id, &commandHandler, &application, config]() 
 	{ 				
-		return this->_AddOutstation(id, commandHandler, application, pAuthFactory, config);
+		return this->_AddOutstation(id, commandHandler, application, config);
 	};
 	return asiopal::SynchronouslyGet<IOutstation*>(pExecutor->strand, add);
 }
@@ -188,7 +188,6 @@ IMaster* DNP3Channel::_AddMaster(char const* id,
 IOutstation* DNP3Channel::_AddOutstation(char const* id,
 	opendnp3::ICommandHandler& commandHandler,
 	opendnp3::IOutstationApplication& application,
-	opendnp3::IOutstationAuthFactory* pAuthFactory,
 	const opendnp3::OutstationStackConfig& config)
 {
 	Route route(config.link.RemoteAddr, config.link.LocalAddr);
@@ -208,8 +207,7 @@ IOutstation* DNP3Channel::_AddOutstation(char const* id,
 			commandHandler, 
 			application, 			
 			config, 
-			handler,
-			pAuthFactory
+			handler
 		);
 				
 		auto onShutdown = [this, pOutstation](){ this->OnShutdown(pOutstation); };

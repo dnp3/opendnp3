@@ -28,7 +28,7 @@ namespace asiodnp3
 		opendnp3::IOutstationApplication& application,
 		const opendnp3::OutstationStackConfig& config)
 	{		
-		return this->AddOutstation(id, commandHandler, application, config, nullptr);
+		return this->AddOutstation(id, commandHandler, application, config);
 	}
 };
 

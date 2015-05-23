@@ -39,9 +39,8 @@ Outstation::Outstation(
 		IExecutor& executor,		
 		ILowerLayer& lower,
 		ICommandHandler& commandHandler,
-		IOutstationApplication& application,
-		IOutstationAuthProvider* pAuthProvider) :
-		ostate(config, dbTemplate, logger, executor, lower, commandHandler, application, pAuthProvider)
+		IOutstationApplication& application) :
+		ostate(config, dbTemplate, logger, executor, lower, commandHandler, application)
 {
 	
 }
@@ -114,6 +113,11 @@ IDatabase& Outstation::GetDatabase()
 DatabaseConfigView Outstation::GetConfigView()
 {
 	return ostate.database.GetConfigView();
+}
+
+void Outstation::SetAuthProvider(IOutstationAuthProvider& provider)
+{
+	ostate.auth.SetProvider(provider);
 }
 	
 }

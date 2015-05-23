@@ -127,8 +127,7 @@ int main(int argc, char* argv[])
 		"outstation",
 		SuccessCommandHandler::Instance(),
 		DefaultOutstationApplication::Instance(),
-		config,
-		&authFactory);	
+		config);	
 
 	// Enable the outstation and start communications
 	pOutstation->Enable();	

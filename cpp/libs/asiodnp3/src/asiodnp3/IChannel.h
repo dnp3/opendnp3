@@ -101,23 +101,16 @@ public:
 	* Add an outstation to the channel
 	*
 	* @param id An ID that gets used for logging
-	* @param pCmdHandler Callback object for handling command requests
-	* @param pTimeWriteHandler Interface used to receive time synchronization requests
+	* @param commandHandler Callback object for handling command requests
+	* @param application Callback object for user code
 	* @param config Configuration object that controls how the outstation behaves
 	* @return interface representing the running outstations
 	*/
 	virtual IOutstation* AddOutstation( char const* id,
 										opendnp3::ICommandHandler& commandHandler,
 										opendnp3::IOutstationApplication& application,
-										const opendnp3::OutstationStackConfig& config,
-										opendnp3::IOutstationAuthFactory* pAuthFactory) = 0;
+										const opendnp3::OutstationStackConfig& config) = 0;
 
-	// over load that uses NULL authentication
-
-	IOutstation* AddOutstation(	char const* id,
-								opendnp3::ICommandHandler& commandHandler,
-								opendnp3::IOutstationApplication& application,
-								const opendnp3::OutstationStackConfig& config);
 };
 
 }
