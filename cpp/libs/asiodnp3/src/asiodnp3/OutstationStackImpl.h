@@ -27,7 +27,6 @@
 #include <opendnp3/outstation/Database.h>
 #include <opendnp3/outstation/Outstation.h>
 #include <opendnp3/outstation/IOutstationApplication.h>
-#include <opendnp3/outstation/IOutstationAuthFactory.h>
 #include <opendnp3/link/ILinkRouter.h>
 #include <opendnp3/transport/TransportStack.h>
 

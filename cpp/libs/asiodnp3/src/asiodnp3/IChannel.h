@@ -32,7 +32,6 @@
 #include <opendnp3/outstation/ICommandHandler.h>
 #include <opendnp3/outstation/IOutstationApplication.h>
 #include <opendnp3/outstation/IOutstationAuthProvider.h>
-#include <opendnp3/outstation/IOutstationAuthFactory.h>
 
 #include <openpal/executor/IUTCTimeSource.h>
 #include <openpal/logging/LogFilters.h>

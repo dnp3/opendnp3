@@ -30,10 +30,9 @@
 #include <opendnp3/outstation/Database.h>
 #include <opendnp3/LogLevels.h>
 
-#include <asiopal/UTCTimeSource.h>
+#include <openpal/container/StaticBuffer.h>
 
 #include <osslcrypto/CryptoProvider.h>
-#include <secauthv5/outstation/OutstationAuthFactory.h>
 #include <secauthv5/SimpleUserDatabase.h>
 
 #include <string>
@@ -113,12 +112,14 @@ int main(int argc, char* argv[])
 	// passing that factory into an overloaded version of AddOutstation.
 	// This object can disappear after the call to add outstation, it doesn't
 	// need to persist on the stack
+	/*
 	secauthv5::OutstationAuthFactory authFactory(
 		secauthv5::OutstationAuthSettings(config.outstation.params),
 		asiopal::UTCTimeSource::Instance(), 
 		userDatabase,
 		crypto		
 	);
+	*/
 	
 	// Create a new outstation with a log level, command handler, and
 	// config info this	returns a thread-safe interface used for

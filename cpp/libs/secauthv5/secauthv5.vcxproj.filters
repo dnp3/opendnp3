@@ -41,9 +41,6 @@
     <ClInclude Include="src\secauthv5\outstation\OutstationAuthProvider.h">
       <Filter>Header Files\outstation</Filter>
     </ClInclude>
-    <ClInclude Include="src\secauthv5\outstation\OutstationAuthFactory.h">
-      <Filter>Header Files\outstation</Filter>
-    </ClInclude>
     <ClInclude Include="src\secauthv5\outstation\OutstationAuthSettings.h">
       <Filter>Header Files\outstation</Filter>
     </ClInclude>
@@ -119,9 +116,6 @@
       <Filter>Source Files\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\secauthv5\outstation\KeyUnwrap.cpp">
-      <Filter>Source Files\outstation</Filter>
-    </ClCompile>
-    <ClCompile Include="src\secauthv5\outstation\OutstationAuthFactory.cpp">
       <Filter>Source Files\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\secauthv5\SimpleUserDatabase.cpp">
