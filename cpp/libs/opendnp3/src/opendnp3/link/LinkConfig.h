@@ -37,14 +37,16 @@ struct LinkConfig
 	    uint32_t aNumRetry,
 	    uint16_t aLocalAddr,
 	    uint16_t aRemoteAddr,
-	    openpal::TimeDuration aTimeout) :
+	    openpal::TimeDuration aTimeout,
+        openpal::TimeDuration aKeepAlive) :
 
 		IsMaster(aIsMaster),
 		UseConfirms(aUseConfirms),
 		NumRetry(aNumRetry),
 		LocalAddr(aLocalAddr),
 		RemoteAddr(aRemoteAddr),
-		Timeout(aTimeout)
+		Timeout(aTimeout),
+        KeepAlive(aKeepAlive)
 	{}
 
 	LinkConfig(
@@ -56,7 +58,8 @@ struct LinkConfig
 		NumRetry(0),
 		LocalAddr(aIsMaster ? 1 : 1024),
 		RemoteAddr(aIsMaster ? 1024 : 1),
-		Timeout(openpal::TimeDuration::Seconds(1))
+		Timeout(openpal::TimeDuration::Seconds(1)),
+        KeepAlive(openpal::TimeDuration::Seconds(60))
 	{}
 
 	/// The master/outstation bit set on all messages
@@ -77,6 +80,9 @@ struct LinkConfig
 	/// the response timeout in milliseconds for confirmed requests
 	openpal::TimeDuration Timeout;
 
+    /// the idle time in milliseconds to transmit request link status keep alive
+    openpal::TimeDuration KeepAlive;
+    
 private:
 
 	LinkConfig() {}

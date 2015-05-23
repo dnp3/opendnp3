@@ -95,6 +95,7 @@ bool LinkLayer::Validate(bool aIsMaster, uint16_t aSrc, uint16_t aDest)
 			{
 				if (aSrc == config.RemoteAddr)
 				{
+                    ResetKeepAlive();
 					return true;
 				}
 				else
@@ -173,6 +174,11 @@ void LinkLayer::OnLowerLayerDown()
 		if (pTimer)
 		{
 			this->CancelTimer();
+		}
+
+		if (pKeepAliveTimer)
+		{
+			this->CancelKeepAlive();
 		}
 
 		pPriState = PLLS_SecNotReset::Inst();
@@ -270,6 +276,14 @@ void LinkLayer::QueueAck()
 	this->QueueTransmit(buffer, false);
 }
 
+void LinkLayer::QueueRequestLinkStatus()
+{
+    auto writeTo = WriteBufferView(secTxBuffer, LPDU_HEADER_SIZE);
+    auto buffer = LinkFrame::FormatRequestLinkStatus(writeTo, config.IsMaster, config.RemoteAddr, config.LocalAddr, &logger);
+    FORMAT_HEX_BLOCK(logger, flags::LINK_TX_HEX, buffer, 10, 18);
+    this->QueueTransmit(buffer, true);
+}
+    
 void LinkLayer::QueueLinkStatus()
 {
 	auto writeTo = WriteBufferView(secTxBuffer, LPDU_HEADER_SIZE);
@@ -317,7 +331,26 @@ bool LinkLayer::Retry()
 		return false;
 	}
 }
-
+    
+void LinkLayer::ResetKeepAlive()
+{
+    this->CancelKeepAlive();
+    if(!config.KeepAlive) return;
+    auto lambda = [this]() {
+        if(pTimer) return; // already waiting for a response
+        this->QueueRequestLinkStatus();
+        this->ChangeState(PLLS_RequestLinkStatusTransmitWait::Inst());
+    };
+    pKeepAliveTimer = this->pExecutor->Start(TimeDuration(config.KeepAlive), Action0::Bind(lambda));
+}
+    
+void LinkLayer::CancelKeepAlive()
+{
+	if(pKeepAliveTimer == nullptr) return;
+    pKeepAliveTimer->Cancel();
+	pKeepAliveTimer = nullptr;
+}
+    
 ////////////////////////////////
 // IFrameSink
 ////////////////////////////////

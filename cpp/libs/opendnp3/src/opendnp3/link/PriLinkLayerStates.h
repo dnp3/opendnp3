@@ -104,6 +104,17 @@ class PLLS_LinkResetTransmitWait : public PriStateBase
 };
 
 /////////////////////////////////////////////////////////////////////////////
+//  Wait for the link layer to transmit the request link status
+/////////////////////////////////////////////////////////////////////////////
+
+class PLLS_RequestLinkStatusTransmitWait : public PriStateBase
+{
+	MACRO_STATE_SINGLETON_INSTANCE(PLLS_RequestLinkStatusTransmitWait);
+
+	virtual void OnTransmitResult(LinkLayer* apLL, bool success);
+};
+    
+/////////////////////////////////////////////////////////////////////////////
 //  Wait for the link layer to transmit confirmed user data
 /////////////////////////////////////////////////////////////////////////////
 
@@ -141,6 +152,31 @@ class PLLS_ResetLinkWait : public PriStateBase
 	{
 		Failure(apLL);
 	}
+	void NotSupported (LinkLayer*  apLL, bool)
+	{
+		Failure(apLL);
+	}
+
+	void OnTimeout(LinkLayer*);
+
+private:
+	void Failure(LinkLayer*);
+};
+
+//	@section desc As soon as we get a link status, return to base state
+class PLLS_LinkStatusWait : public PriStateBase
+{
+	MACRO_STATE_SINGLETON_INSTANCE(PLLS_LinkStatusWait);
+
+	void Ack(LinkLayer* apLL, bool)
+	{
+		Failure(apLL);
+	}
+	void Nack(LinkLayer*  apLL, bool)
+	{
+		Failure(apLL);
+	}
+	void LinkStatus(LinkLayer* apLL, bool);
 	void NotSupported (LinkLayer*  apLL, bool)
 	{
 		Failure(apLL);

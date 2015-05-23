@@ -68,7 +68,7 @@ public:
 	virtual void RequestLinkStatus(bool aIsMaster, uint16_t aDest, uint16_t aSrc) override final;
 	virtual void ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const openpal::ReadBufferView& arBuffer) override final;
 	virtual void UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const openpal::ReadBufferView& arBuffer) override final;
-
+    
 	// ------------- ILinkLayer --------------------
 	virtual void Send(ITransportSegment& segments) override final;
 
@@ -131,6 +131,7 @@ public:
 
 	// Helpers for sending frames
 	void QueueAck();
+    void QueueRequestLinkStatus();
 	void QueueLinkStatus();
 	void QueueResetLinks();
 
@@ -148,8 +149,11 @@ public:
 	{
 		return numRetryRemaining;
 	}
-
-	void QueueTransmit(const openpal::ReadBufferView& buffer, bool primary);	
+    
+    void ResetKeepAlive();
+    void CancelKeepAlive();
+    
+	void QueueTransmit(const openpal::ReadBufferView& buffer, bool primary);
 
 	// buffers used for primary and secondary requests	
 	uint8_t priTxBuffer[LPDU_MAX_FRAME_SIZE];
@@ -174,6 +178,7 @@ private:
 
 	openpal::IExecutor* pExecutor;
 	openpal::ITimer* pTimer;
+    openpal::ITimer* pKeepAliveTimer;
 
 	// callback from the active timer
 	void OnTimeout();
