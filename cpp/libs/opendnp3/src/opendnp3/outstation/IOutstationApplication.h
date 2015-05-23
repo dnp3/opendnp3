@@ -22,8 +22,6 @@
 #ifndef OPENDNP3_IOUTSTATIONAPPLICATION_H
 #define OPENDNP3_IOUTSTATIONAPPLICATION_H
 
-#include <openpal/executor/UTCTimestamp.h>
-
 #include "opendnp3/gen/PointClass.h"
 #include "opendnp3/gen/RestartMode.h"
 #include "opendnp3/gen/AssignClassType.h"
@@ -34,8 +32,6 @@
 
 #include "opendnp3/outstation/ApplicationIIN.h"
 
-
-
 namespace opendnp3
 {
 
@@ -45,6 +41,7 @@ namespace opendnp3
 class IOutstationApplication
 {
 	public:
+
 
 	/// Queries whether the the outstation supports absolute time writes
 	/// If this function returns false, WriteAbsoluteTime will never be called
@@ -108,6 +105,8 @@ class IOutstationApplication
 class DefaultOutstationApplication : public IOutstationApplication
 {
 	public:
+
+
 
 	virtual bool SupportsWriteAbsoluteTime() override final { return false; }
 

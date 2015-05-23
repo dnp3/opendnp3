@@ -80,6 +80,7 @@ private:
 	virtual openpal::IExecutor& GetExecutor() override final;
 	virtual void CheckForUpdates() override final;
 
+protected:
 
 	openpal::LogRoot root;
 	openpal::Action0 shutdownAction;
