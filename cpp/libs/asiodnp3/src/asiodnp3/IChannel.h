@@ -36,6 +36,10 @@
 #include <openpal/executor/IUTCTimeSource.h>
 #include <openpal/logging/LogFilters.h>
 #include <openpal/executor/IExecutor.h>
+#include <openpal/crypto/ICryptoProvider.h>
+
+#include <secauthv5/outstation/OutstationAuthSettings.h>
+#include <secauthv5/IUserDatabase.h>
 
 #include "IMaster.h"
 #include "IOutstation.h"
@@ -110,6 +114,17 @@ public:
 										opendnp3::IOutstationApplication& application,
 										const opendnp3::OutstationStackConfig& config) = 0;
 
+	/**
+	* Add an SA-enabled outstation to the channel
+	*/
+	virtual IOutstation* AddOutstation(char const* id,
+		opendnp3::ICommandHandler& commandHandler,
+		opendnp3::IOutstationApplication& application,
+		const opendnp3::OutstationStackConfig& config,
+		const secauthv5::OutstationAuthSettings& authSettings,
+		openpal::IUTCTimeSource& timeSource,
+		secauthv5::IUserDatabase& userDB,
+		openpal::ICryptoProvider& crypto) = 0;
 };
 
 }

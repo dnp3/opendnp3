@@ -91,6 +91,15 @@ public:
 								opendnp3::IOutstationApplication& application,
 								const opendnp3::OutstationStackConfig& config) override final;
 
+	virtual IOutstation* AddOutstation(char const* id,
+								opendnp3::ICommandHandler& commandHandler,
+								opendnp3::IOutstationApplication& application,
+								const opendnp3::OutstationStackConfig& config,
+								const secauthv5::OutstationAuthSettings& authSettings,
+								openpal::IUTCTimeSource& timeSource,
+								secauthv5::IUserDatabase& userDB,
+								openpal::ICryptoProvider& crypto) override final;
+
 	// Helper functions only available inside DNP3Manager
 	void SetShutdownHandler(const openpal::Action0& action);
 
@@ -106,6 +115,15 @@ private:
 		opendnp3::ICommandHandler& commandHandler,
 		opendnp3::IOutstationApplication& application,
 		const opendnp3::OutstationStackConfig& config);
+
+	IOutstation* _AddOutstation(char const* id,
+		opendnp3::ICommandHandler& commandHandler,
+		opendnp3::IOutstationApplication& application,
+		const opendnp3::OutstationStackConfig& config,
+		const secauthv5::OutstationAuthSettings& authSettings,
+		openpal::IUTCTimeSource& timeSource,
+		secauthv5::IUserDatabase& userDB,
+		openpal::ICryptoProvider& crypto);
 
 	void InitiateShutdown(asiopal::Synchronized<bool>& handler);
 

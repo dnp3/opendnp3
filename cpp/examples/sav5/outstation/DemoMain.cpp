@@ -108,18 +108,8 @@ int main(int argc, char* argv[])
 	config.link.LocalAddr = 10;
 	config.link.RemoteAddr = 1;
 
-	// authentication is configured by simply creating an auth factory and then 
-	// passing that factory into an overloaded version of AddOutstation.
-	// This object can disappear after the call to add outstation, it doesn't
-	// need to persist on the stack
-	/*
-	secauthv5::OutstationAuthFactory authFactory(
-		secauthv5::OutstationAuthSettings(config.outstation.params),
-		asiopal::UTCTimeSource::Instance(), 
-		userDatabase,
-		crypto		
-	);
-	*/
+	// configure the authentication settings based on the outstation settings (buffer sizes, etc)
+	secauthv5::OutstationAuthSettings authSettings(config.outstation.params);
 	
 	// Create a new outstation with a log level, command handler, and
 	// config info this	returns a thread-safe interface used for
@@ -128,7 +118,11 @@ int main(int argc, char* argv[])
 		"outstation",
 		SuccessCommandHandler::Instance(),
 		DefaultOutstationApplication::Instance(),
-		config);	
+		config,
+		authSettings,
+		asiopal::UTCTimeSource::Instance(),
+		userDatabase,
+		crypto);	
 
 	// Enable the outstation and start communications
 	pOutstation->Enable();	

@@ -24,7 +24,7 @@
 #include <asiopal/StrandGetters.h>
 
 #include "MasterStackImpl.h"
-#include "OutstationStackImpl.h"
+#include "OutstationAuthStack.h"
 
 #include <openpal/logging/LogMacros.h>
 
@@ -156,6 +156,22 @@ IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler& command
 	return asiopal::SynchronouslyGet<IOutstation*>(pExecutor->strand, add);
 }
 
+IOutstation* DNP3Channel::AddOutstation(char const* id,
+	opendnp3::ICommandHandler& commandHandler,
+	opendnp3::IOutstationApplication& application,
+	const opendnp3::OutstationStackConfig& config,
+	const secauthv5::OutstationAuthSettings& authSettings,
+	openpal::IUTCTimeSource& timeSource,
+	secauthv5::IUserDatabase& userDB,
+	openpal::ICryptoProvider& crypto)
+{
+	auto add = [&]()
+	{
+		return this->_AddOutstation(id, commandHandler, application, config, authSettings, timeSource, userDB, crypto);
+	};
+	return asiopal::SynchronouslyGet<IOutstation*>(pExecutor->strand, add);
+}
+
 void DNP3Channel::SetShutdownHandler(const openpal::Action0& action)
 {
 	shutdownHandler = action;
@@ -210,6 +226,48 @@ IOutstation* DNP3Channel::_AddOutstation(char const* id,
 			handler
 		);
 				
+		auto onShutdown = [this, pOutstation](){ this->OnShutdown(pOutstation); };
+		pOutstation->SetShutdownAction(Action0::Bind(onShutdown));
+		pOutstation->SetLinkRouter(router);
+		stacks.insert(pOutstation);
+		router.AddContext(pOutstation->GetLinkContext(), route);
+		return pOutstation;
+	}
+}
+
+IOutstation* DNP3Channel::_AddOutstation(char const* id,
+	opendnp3::ICommandHandler& commandHandler,
+	opendnp3::IOutstationApplication& application,
+	const opendnp3::OutstationStackConfig& config,
+	const secauthv5::OutstationAuthSettings& authSettings,
+	openpal::IUTCTimeSource& timeSource,
+	secauthv5::IUserDatabase& userDB,
+	openpal::ICryptoProvider& crypto)
+{
+	Route route(config.link.RemoteAddr, config.link.LocalAddr);
+	if (router.IsRouteInUse(route))
+	{
+		FORMAT_LOG_BLOCK(logger, flags::ERR, "Route already in use: %i -> %i", route.source, route.destination);
+		return nullptr;
+	}
+	else
+	{
+		StackActionHandler handler(router, *pExecutor);
+
+		auto pOutstation = new OutstationAuthStack(
+			id,
+			*pLogRoot,
+			*pExecutor,
+			commandHandler,
+			application,
+			config,
+			handler,
+			authSettings,
+			timeSource,
+			userDB,
+			crypto
+			);
+
 		auto onShutdown = [this, pOutstation](){ this->OnShutdown(pOutstation); };
 		pOutstation->SetShutdownAction(Action0::Bind(onShutdown));
 		pOutstation->SetLinkRouter(router);
