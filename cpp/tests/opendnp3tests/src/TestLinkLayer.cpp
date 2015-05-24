@@ -303,6 +303,50 @@ TEST_CASE(SUITE("CloseBehavior"))
 
 }
 
+// Send request link status after keep alive timer expiry
+TEST_CASE(SUITE("KeepAliveExpiry"))
+{
+    LinkConfig cfg = LinkLayerTest::DefaultConfig();
+    
+	DynamicBuffer buffer(292);
+
+	LinkLayerTest t(cfg);
+	t.link.OnLowerLayerUp();
+
+    t.exe.AdvanceTime(cfg.KeepAlive);
+	REQUIRE(t.exe.RunOne()); // trigger the keep alive timer callback
+	REQUIRE(t.numWrites ==  1);
+	t.link.OnTransmitResult(true);
+    {
+        auto writeTo = buffer.GetWriteBufferView();
+        auto frame = LinkFrame::FormatRequestLinkStatus(writeTo, true, 1024, 1, nullptr);
+        REQUIRE(toHex(t.lastWrite) == toHex(frame));
+    }
+
+    t.link.LinkStatus(false, false, 1, 1024);
+    t.exe.AdvanceTime(cfg.KeepAlive);
+    t.exe.AdvanceTime(cfg.KeepAlive);
+	REQUIRE(t.exe.RunOne()); // trigger the keep alive timer callback
+	REQUIRE(t.numWrites ==  2);
+	t.link.OnTransmitResult(true);
+    {
+        auto writeTo = buffer.GetWriteBufferView();
+        auto frame = LinkFrame::FormatRequestLinkStatus(writeTo, true, 1024, 1, nullptr);
+        REQUIRE(toHex(t.lastWrite) == toHex(frame));
+    }
+    t.exe.AdvanceTime(cfg.Timeout);
+	REQUIRE(t.exe.RunOne()); // trigger the keep alive timer callback
+	REQUIRE(t.numWrites ==  2);
+	t.link.OnTransmitResult(true);
+    {
+        auto writeTo = buffer.GetWriteBufferView();
+        auto frame = LinkFrame::FormatRequestLinkStatus(writeTo, true, 1024, 1, nullptr);
+        REQUIRE(toHex(t.lastWrite) == toHex(frame));
+    }
+
+
+}
+
 TEST_CASE(SUITE("ResetLinkTimerExpiration"))
 {
 	LinkConfig cfg = LinkLayerTest::DefaultConfig();
