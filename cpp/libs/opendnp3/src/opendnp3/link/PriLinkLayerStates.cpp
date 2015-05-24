@@ -256,7 +256,6 @@ void PLLS_LinkStatusWait::Failure(LinkLayer* pLinkLayer)
 {
 	pLinkLayer->CancelTimer();
 	pLinkLayer->ChangeState(PLLS_SecNotReset::Inst());
-	pLinkLayer->DoSendResult(false);
 }
 
 ////////////////////////////////////////////////////////
