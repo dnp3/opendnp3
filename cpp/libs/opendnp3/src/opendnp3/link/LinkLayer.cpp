@@ -46,6 +46,7 @@ LinkLayer::LinkLayer(openpal::LogRoot& root, openpal::IExecutor* pExecutor_, con
 	numRetryRemaining(0),
 	pExecutor(pExecutor_),
 	pTimer(nullptr),
+    pKeepAliveTimer(nullptr),
 	nextReadFCB(false),
 	nextWriteFCB(false),
 	isOnline(false),
@@ -154,6 +155,7 @@ void LinkLayer::OnLowerLayerUp()
 	else
 	{
 		isOnline = true;
+        this->ResetKeepAlive();
 
 		if (pUpperLayer)
 		{
