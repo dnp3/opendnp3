@@ -29,6 +29,7 @@
     <ClInclude Include="src\opendnp3\app\APDUWrapper.h" />
     <ClInclude Include="src\opendnp3\app\AppConstants.h" />
     <ClInclude Include="src\opendnp3\app\AppControlField.h" />
+    <ClInclude Include="src\opendnp3\app\AppSeqNum.h" />
     <ClInclude Include="src\opendnp3\app\BaseMeasurementTypes.h" />
     <ClInclude Include="src\opendnp3\app\BinaryCommandEvent.h" />
     <ClInclude Include="src\opendnp3\app\BitfieldRangeWriteIterator.h" />

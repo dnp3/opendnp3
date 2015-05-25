@@ -23,6 +23,8 @@
 
 #include <cstdint>
 
+#include "opendnp3/app/AppSeqNum.h"
+
 namespace opendnp3
 {
 
@@ -33,11 +35,11 @@ class OutstationSeqNum
 {	
 	public:		
 
-	OutstationSeqNum() : num(0), confirmNum(0)
+	OutstationSeqNum()
 	{}
 
-	uint8_t num;
-	uint8_t confirmNum;	
+	AppSeqNum num;
+	AppSeqNum confirmNum;
 };
 
 

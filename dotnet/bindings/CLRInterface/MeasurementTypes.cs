@@ -367,7 +367,9 @@ namespace Automatak.DNP3.Interface
         /// <param name="time">timestamp</param>
         public SecurityStat(uint value, ushort assocId, byte quality, DateTime time)
             : base(value, quality, time)
-        { }        
+        {
+            this.assocId = assocId;
+        }        
 
         UInt16 AssociationId
         {

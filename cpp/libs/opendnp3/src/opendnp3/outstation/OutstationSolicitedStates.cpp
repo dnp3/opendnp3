@@ -129,14 +129,14 @@ OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnNewNonReadR
 
 OutstationSolicitedStateBase* OutstationStateSolicitedConfirmWait::OnConfirm(OState& ostate, const APDUHeader& header)
 {	
-	if (header.control.SEQ == ostate.sol.seq.confirmNum)
+	if (ostate.sol.seq.confirmNum.Equals(header.control.SEQ))
 	{
 		ostate.confirmTimer.Cancel();					
 		ostate.eventBuffer.ClearWritten();
 
 		if (ostate.rspContext.HasSelection())
 		{						
-			return OActions::ContinueMultiFragResponse(ostate, AppControlField::NextSeq(header.control.SEQ));
+			return OActions::ContinueMultiFragResponse(ostate, AppSeqNum(header.control.SEQ).Next());
 		}
 		else 
 		{

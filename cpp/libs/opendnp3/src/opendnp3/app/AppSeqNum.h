@@ -18,45 +18,56 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_APPCONTROLFIELD_H
-#define OPENDNP3_APPCONTROLFIELD_H
+#ifndef OPENDNP3_APPSEQNUM_H
+#define OPENDNP3_APPSEQNUM_H
 
 #include <cstdint>
 
 namespace opendnp3
 {
 
-/** Represents the first byte in every APDU
+/** represents an application-layer sequence number
 */
-struct AppControlField
+class AppSeqNum
 {
-	const static AppControlField DEFAULT;	
+public:
 
-	static AppControlField Request(uint8_t seq);
+	static uint8_t Next(uint8_t seq) { return (seq + 1) % 16; }
 
-	AppControlField();
+	AppSeqNum() : seq(0)
+	{}
 
-	AppControlField(uint8_t byte);
+	AppSeqNum(uint8_t value) : seq(value)
+	{}
 
-	AppControlField(bool aFIR, bool aFIN, bool aCON, bool aUNS, uint8_t aSEQ = 0);
+	uint8_t Value() const
+	{
+		return seq;
+	}
 
-	uint8_t ToByte() const;
+	operator uint8_t() const
+	{
+		return seq;
+	}	
 
-	bool IsFirAndFin() const { return FIR && FIN; }
+	bool Equals(uint8_t other) const
+	{
+		return other == this->seq;
+	}
 
-	bool FIR;
-	bool FIN;
-	bool CON;
-	bool UNS;
-	uint8_t  SEQ;
+	void Increment()
+	{
+		this->seq = Next(this->seq);
+	}
+	
+	AppSeqNum Next() const
+	{
+		return AppSeqNum(Next(this->seq));
+	}
 
 private:
 
-	static const uint8_t FIR_MASK = 0x80;
-	static const uint8_t FIN_MASK = 0x40;
-	static const uint8_t CON_MASK = 0x20;
-	static const uint8_t UNS_MASK = 0x10;
-	static const uint8_t SEQ_MASK = 0x0F;
+	uint8_t seq;
 };
 
 }

@@ -114,41 +114,40 @@ MasterStateWaitForResponse MasterStateWaitForResponse::instance;
 
 IMasterState* MasterStateWaitForResponse::OnResponse(MasterState& mstate, const APDUResponseHeader& response, const openpal::ReadBufferView& objects)
 {
-	if (response.control.SEQ ==mstate.solSeq)
-	{
-		mstate.responseTimer.Cancel();
-
-		mstate.solSeq = AppControlField::NextSeq(mstate.solSeq);
-
-		auto now = mstate.pExecutor->GetTime();
-		
-		auto result = mstate.pActiveTask->OnResponse(response, objects, now);
-
-		if (response.control.CON)
-		{
-			MasterActions::QueueConfirm(mstate, APDUHeader::SolicitedConfirm(response.control.SEQ));			
-		}
-
-		switch (result)
-		{
-			case(IMasterTask::ResponseResult::OK_CONTINUE) :
-				MasterActions::StartResponseTimer(mstate);
-				return this;
-			case(IMasterTask::ResponseResult::OK_REPEAT) :
-				return MasterStateTaskReady::Instance().OnStart(mstate);
-			default:
-				// task completed or failed, either way go back to idle
-				MasterActions::ReleaseActiveTask(mstate);
-				mstate.pTaskLock->Release(*mstate.pScheduleCallback);
-				MasterActions::PostCheckForTask(mstate);									
-				return &MasterStateIdle::Instance();
-		}
-	}
-	else
+	if (response.control.SEQ != mstate.solSeq)
 	{
 		FORMAT_LOG_BLOCK(mstate.logger, flags::WARN, "Response with bad sequence: %u", response.control.SEQ);
 		return this;
 	}
+
+
+	mstate.responseTimer.Cancel();
+
+	mstate.solSeq.Increment();
+
+	auto now = mstate.pExecutor->GetTime();
+		
+	auto result = mstate.pActiveTask->OnResponse(response, objects, now);
+
+	if (response.control.CON)
+	{
+		MasterActions::QueueConfirm(mstate, APDUHeader::SolicitedConfirm(response.control.SEQ));			
+	}
+
+	switch (result)
+	{
+		case(IMasterTask::ResponseResult::OK_CONTINUE) :
+			MasterActions::StartResponseTimer(mstate);
+			return this;
+		case(IMasterTask::ResponseResult::OK_REPEAT) :
+			return MasterStateTaskReady::Instance().OnStart(mstate);
+		default:
+			// task completed or failed, either way go back to idle
+			MasterActions::ReleaseActiveTask(mstate);
+			mstate.pTaskLock->Release(*mstate.pScheduleCallback);
+			MasterActions::PostCheckForTask(mstate);									
+			return &MasterStateIdle::Instance();
+	}	
 }
 
 IMasterState* MasterStateWaitForResponse::OnResponseTimeout(MasterState& mstate)
@@ -157,7 +156,7 @@ IMasterState* MasterStateWaitForResponse::OnResponseTimeout(MasterState& mstate)
 	mstate.pActiveTask->OnResponseTimeout(now);
 	MasterActions::ReleaseActiveTask(mstate);
 	mstate.pTaskLock->Release(*mstate.pScheduleCallback);
-	mstate.solSeq = AppControlField::NextSeq(mstate.solSeq);
+	mstate.solSeq.Increment();
 	MasterActions::PostCheckForTask(mstate);	
 	return &MasterStateIdle::Instance();
 }

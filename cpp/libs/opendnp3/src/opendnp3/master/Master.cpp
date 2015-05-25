@@ -158,7 +158,7 @@ void Master::OnSendResult(bool isSucccess)
 		mstate.isSending = false;
 
 		MasterActions::CheckConfirmTransmit(mstate);
-		MasterActions::CheckForTask(mstate);
+		mstate.OnStart();		
 	}
 }
 

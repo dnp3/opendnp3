@@ -26,6 +26,7 @@
 
 #include "opendnp3/gen/CommandStatus.h"
 #include "opendnp3/link/CRC.h"
+#include "opendnp3/app/AppSeqNum.h"
 
 
 namespace opendnp3
@@ -39,12 +40,12 @@ class ControlState
 	
 	public:	
 	
-	ControlState() : expectedSeq(0), digest(0), length(0)
+	ControlState() : digest(0), length(0)
 	{}	
 
-	CommandStatus ValidateSelection(uint8_t seqN, const openpal::MonotonicTimestamp& now, const openpal::TimeDuration& timeout, const openpal::ReadBufferView& objects) const
+	CommandStatus ValidateSelection(const AppSeqNum& seq, const openpal::MonotonicTimestamp& now, const openpal::TimeDuration& timeout, const openpal::ReadBufferView& objects) const
 	{
-		if (seqN == expectedSeq)
+		if (expectedSeq.Equals(seq))
 		{
 			if (selectTime.milliseconds <= now.milliseconds)
 			{
@@ -76,17 +77,17 @@ class ControlState
 		}
 	}
 
-	void Select(uint8_t currentSeqN, const openpal::MonotonicTimestamp& now, const openpal::ReadBufferView& objects)
+	void Select(const AppSeqNum& currentSeqN, const openpal::MonotonicTimestamp& now, const openpal::ReadBufferView& objects)
 	{
 		selectTime = now;
-		expectedSeq = AppControlField::NextSeq(currentSeqN);
+		expectedSeq = currentSeqN.Next();
 		digest = CRC::CalcCrc(objects);
 		length = objects.Size();
 	}
 
 	private:
 	
-	uint8_t expectedSeq;
+	AppSeqNum expectedSeq;
 	openpal::MonotonicTimestamp selectTime;
 	uint16_t digest;
 	uint32_t length;

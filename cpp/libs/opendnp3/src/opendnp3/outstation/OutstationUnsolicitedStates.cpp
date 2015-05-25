@@ -57,7 +57,7 @@ OutstationUnsolicitedStateConfirmWait OutstationUnsolicitedStateConfirmWait::ins
 
 OutstationUnsolicitedStateBase* OutstationUnsolicitedStateConfirmWait::OnConfirm(OState& ostate, const APDUHeader& header)
 {
-	if (header.control.SEQ == ostate.unsol.seq.confirmNum)
+	if (ostate.unsol.seq.confirmNum.Equals(header.control.SEQ))
 	{
 		ostate.confirmTimer.Cancel();
 

@@ -45,9 +45,7 @@ namespace opendnp3
 
 		static void ReleaseActiveTask(MasterState& mstate);		
 
-		static bool CheckConfirmTransmit(MasterState& mstate);
-
-		static void CheckForTask(MasterState& mstate);
+		static bool CheckConfirmTransmit(MasterState& mstate);		
 
 	private:		
 

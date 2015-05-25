@@ -147,7 +147,7 @@ OutstationSolicitedStateBase* OActions::OnReceiveSolRequest(OState& ostate, cons
 	// analyze this request to see how it compares to the last request
 	if (ostate.history.HasLastRequest())
 	{		
-		if (ostate.sol.seq.num == header.control.SEQ)
+		if (ostate.sol.seq.num.Equals(header.control.SEQ))
 		{			
 			if (ostate.history.FullyEqualsLastRequest(header, objects))
 			{
@@ -240,7 +240,7 @@ void OActions::BeginUnsolTx(OState& ostate, const ReadBufferView& response)
 {				
 	ostate.unsol.tx.Record(response);
 	ostate.unsol.seq.confirmNum = ostate.unsol.seq.num;
-	ostate.unsol.seq.num = AppControlField::NextSeq(ostate.unsol.seq.num);
+	ostate.unsol.seq.num.Increment();
 	BeginTx(ostate, response);	
 }
 
@@ -261,13 +261,13 @@ void OActions::ProcessUnsolicitedConfirm(OState& ostate, const APDUHeader& heade
 	ostate.unsol.pState = ostate.unsol.pState->OnConfirm(ostate, header);
 }
 
-OutstationSolicitedStateBase* OActions::ContinueMultiFragResponse(OState& ostate, uint8_t seq)
+OutstationSolicitedStateBase* OActions::ContinueMultiFragResponse(OState& ostate, const AppSeqNum& seq)
 {	
 	auto response = ostate.sol.tx.Start();	
 	auto writer = response.GetWriter();
 	response.SetFunction(FunctionCode::RESPONSE);
 	auto control = ostate.rspContext.LoadResponse(writer);
-	control.SEQ = seq;
+	control.SEQ = seq.Value();
 	ostate.sol.seq.confirmNum = seq;
 	response.SetControl(control);
 	response.SetIIN(GetResponseIIN(ostate));

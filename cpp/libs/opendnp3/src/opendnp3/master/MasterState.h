@@ -27,6 +27,8 @@
 #include <openpal/executor/TimerRef.h>
 
 #include "opendnp3/LayerInterfaces.h"
+
+#include "opendnp3/app/AppSeqNum.h"
 #include "opendnp3/master/MasterScheduler.h"
 #include "opendnp3/master/MasterTasks.h"
 #include "opendnp3/master/IMasterState.h"
@@ -71,8 +73,8 @@ namespace opendnp3
 		// ------- dynamic state ---------
 		bool isOnline;
 		bool isSending;
-		uint8_t solSeq;
-		uint8_t unsolSeq;
+		AppSeqNum solSeq;
+		AppSeqNum unsolSeq;
 		openpal::ManagedPtr<IMasterTask> pActiveTask;		
 		openpal::TimerRef responseTimer;
 		MasterTasks tasks;

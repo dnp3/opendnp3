@@ -70,7 +70,7 @@ class OActions : private openpal::StaticOnly
 
 	static OutstationSolicitedStateBase* OnReceiveSolRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
 
-	static OutstationSolicitedStateBase* ContinueMultiFragResponse(OState& ostate, uint8_t seq);
+	static OutstationSolicitedStateBase* ContinueMultiFragResponse(OState& ostate, const AppSeqNum& seq);
 	
 	static OutstationSolicitedStateBase* RespondToNonReadRequest(OState& ostate, const APDUHeader& header, const openpal::ReadBufferView& objects);
 

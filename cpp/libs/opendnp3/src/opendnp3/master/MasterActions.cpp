@@ -58,13 +58,8 @@ bool MasterActions::CheckConfirmTransmit(MasterState& mstate)
 
 void MasterActions::PostCheckForTask(MasterState& mstate)
 {	
-	auto callback = [&mstate]() { MasterActions::CheckForTask(mstate); };
+	auto callback = [&mstate]() { mstate.OnStart(); };
 	mstate.pExecutor->PostLambda(callback);
-}
-
-void MasterActions::CheckForTask(MasterState& mstate)
-{
-	mstate.OnStart();
 }
 
 void MasterActions::StartResponseTimer(MasterState& mstate)
