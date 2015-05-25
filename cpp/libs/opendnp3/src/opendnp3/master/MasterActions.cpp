@@ -42,20 +42,18 @@ void MasterActions::QueueConfirm(MasterState& mstate, const APDUHeader& header)
 
 bool MasterActions::CheckConfirmTransmit(MasterState& mstate)
 {
-	if (!mstate.isSending && !mstate.confirmQueue.empty())
-	{
-		auto pConfirm = mstate.confirmQueue.front();
-		APDUWrapper wrapper(mstate.txBuffer.GetWriteBufferView());
-		wrapper.SetFunction(pConfirm.function);
-		wrapper.SetControl(pConfirm.control);
-		MasterActions::Transmit(mstate, wrapper.ToReadOnly());
-		mstate.confirmQueue.pop_front();
-		return true;
-	}
-	else
+	if (mstate.isSending || mstate.confirmQueue.empty())
 	{
 		return false;
 	}
+
+	auto confirm = mstate.confirmQueue.front();
+	APDUWrapper wrapper(mstate.txBuffer.GetWriteBufferView());
+	wrapper.SetFunction(confirm.function);
+	wrapper.SetControl(confirm.control);
+	MasterActions::Transmit(mstate, wrapper.ToReadOnly());
+	mstate.confirmQueue.pop_front();
+	return true;	
 }
 
 void MasterActions::PostCheckForTask(MasterState& mstate)

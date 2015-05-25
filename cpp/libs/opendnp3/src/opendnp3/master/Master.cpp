@@ -117,9 +117,7 @@ void Master::OnUnsolicitedResponse(const APDUResponseHeader& header, const ReadB
 }
 
 void Master::OnReceiveIIN(const IINField& iin)
-{
-	mstate.pApplication->OnReceiveIIN(iin);
-
+{	
 	if (iin.IsSet(IINBit::DEVICE_RESTART))
 	{
 		mstate.tasks.clearRestart.Demand();
@@ -144,6 +142,8 @@ void Master::OnReceiveIIN(const IINField& iin)
 	{
 		mstate.tasks.eventScan.Demand();
 	}
+
+	mstate.pApplication->OnReceiveIIN(iin);
 }
 
 void Master::OnPendingTask()
