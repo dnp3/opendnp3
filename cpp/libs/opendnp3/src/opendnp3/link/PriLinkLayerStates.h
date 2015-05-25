@@ -103,6 +103,49 @@ class PLLS_LinkResetTransmitWait : public PriStateBase
 	virtual void OnTransmitResult(LinkLayer* apLL, bool success);
 };
 
+//	@section desc As soon as we get a link status, return to base state
+template <class ReturnToState>
+class PLLS_LinkStatusWait : public PriStateBase
+{
+	MACRO_STATE_SINGLETON_INSTANCE(PLLS_LinkStatusWait<ReturnToState>);
+
+	void Ack(LinkLayer* apLL, bool)
+	{
+		Failure(apLL);
+	}
+	void Nack(LinkLayer*  apLL, bool)
+	{
+		Failure(apLL);
+	}
+	void LinkStatus(LinkLayer* apLL, bool);
+	void NotSupported (LinkLayer*  apLL, bool)
+	{
+		Failure(apLL);
+	}
+
+	void OnTimeout(LinkLayer*);
+
+private:
+	void Failure(LinkLayer*);
+};
+
+template <class ReturnToState>
+PLLS_LinkStatusWait<ReturnToState> PLLS_LinkStatusWait<ReturnToState>::instance;
+
+template <class ReturnToState>
+void PLLS_LinkStatusWait<ReturnToState>::LinkStatus(LinkLayer* pLinkLayer, bool receiveBuffFull)
+{
+	pLinkLayer->CancelTimer();
+	pLinkLayer->ChangeState(ReturnToState::Inst());
+}
+
+template <class ReturnToState>
+void PLLS_LinkStatusWait<ReturnToState>::Failure(LinkLayer* pLinkLayer)
+{
+	pLinkLayer->CancelTimer();
+	pLinkLayer->ChangeState(ReturnToState::Inst());
+}
+
 /////////////////////////////////////////////////////////////////////////////
 //  Wait for the link layer to transmit the request link status
 /////////////////////////////////////////////////////////////////////////////
@@ -182,49 +225,6 @@ class PLLS_ResetLinkWait : public PriStateBase
 private:
 	void Failure(LinkLayer*);
 };
-
-//	@section desc As soon as we get a link status, return to base state
-template <class ReturnToState>
-class PLLS_LinkStatusWait : public PriStateBase
-{
-	MACRO_STATE_SINGLETON_INSTANCE(PLLS_LinkStatusWait<ReturnToState>);
-
-	void Ack(LinkLayer* apLL, bool)
-	{
-		Failure(apLL);
-	}
-	void Nack(LinkLayer*  apLL, bool)
-	{
-		Failure(apLL);
-	}
-	void LinkStatus(LinkLayer* apLL, bool);
-	void NotSupported (LinkLayer*  apLL, bool)
-	{
-		Failure(apLL);
-	}
-
-	void OnTimeout(LinkLayer*);
-
-private:
-	void Failure(LinkLayer*);
-};
-
-template <class ReturnToState>
-PLLS_LinkStatusWait<ReturnToState> PLLS_LinkStatusWait<ReturnToState>::instance;
-
-template <class ReturnToState>
-void PLLS_LinkStatusWait<ReturnToState>::LinkStatus(LinkLayer* pLinkLayer, bool receiveBuffFull)
-{
-	pLinkLayer->CancelTimer();
-	pLinkLayer->ChangeState(ReturnToState::Inst());
-}
-
-template <class ReturnToState>
-void PLLS_LinkStatusWait<ReturnToState>::Failure(LinkLayer* pLinkLayer)
-{
-	pLinkLayer->CancelTimer();
-	pLinkLayer->ChangeState(ReturnToState::Inst());
-}
 
 //	@section desc As soon as we get an ACK, send the delayed pri frame
 class PLLS_ConfDataWait : public PriStateBase

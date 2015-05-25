@@ -322,9 +322,9 @@ TEST_CASE(SUITE("KeepAliveExpiry"))
         auto frame = LinkFrame::FormatRequestLinkStatus(writeTo, true, 1024, 1, nullptr);
         REQUIRE(toHex(t.lastWrite) == toHex(frame));
     }
-
     t.link.LinkStatus(false, false, 1, 1024);
-    t.exe.AdvanceTime(cfg.KeepAlive);
+    
+    
     t.exe.AdvanceTime(cfg.KeepAlive);
 	REQUIRE(t.exe.RunOne()); // trigger the keep alive timer callback
 	REQUIRE(t.numWrites ==  2);
@@ -334,16 +334,13 @@ TEST_CASE(SUITE("KeepAliveExpiry"))
         auto frame = LinkFrame::FormatRequestLinkStatus(writeTo, true, 1024, 1, nullptr);
         REQUIRE(toHex(t.lastWrite) == toHex(frame));
     }
+	REQUIRE(t.upper.CountersEqual(0, 0));
+        
+    REQUIRE(t.log.IsLogErrorFree());
     t.exe.AdvanceTime(cfg.Timeout);
 	REQUIRE(t.exe.RunOne()); // trigger the keep alive timer callback
-	REQUIRE(t.numWrites ==  2);
-	t.link.OnTransmitResult(true);
-    {
-        auto writeTo = buffer.GetWriteBufferView();
-        auto frame = LinkFrame::FormatRequestLinkStatus(writeTo, true, 1024, 1, nullptr);
-        REQUIRE(toHex(t.lastWrite) == toHex(frame));
-    }
-
+	REQUIRE(t.upper.CountersEqual(0, 1));
+	REQUIRE(t.log.PopOneEntry(flags::WARN));
 
 }
 

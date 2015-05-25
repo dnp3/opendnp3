@@ -339,6 +339,7 @@ void LinkLayer::ResetKeepAlive()
     this->CancelKeepAlive();
     if(!config.KeepAlive) return;
     auto lambda = [this]() {
+        pKeepAliveTimer = nullptr;
 		if (pPriState == PLLS_SecNotReset::Inst())
 		{
 			this->QueueRequestLinkStatus();
