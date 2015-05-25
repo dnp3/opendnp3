@@ -184,6 +184,7 @@
     <ClInclude Include="src\opendnp3\master\ScanResult.h" />
     <ClInclude Include="src\opendnp3\master\SerialTimeSyncTask.h" />
     <ClInclude Include="src\opendnp3\master\StartupIntegrityPoll.h" />
+    <ClInclude Include="src\opendnp3\master\TaskComparison.h" />
     <ClInclude Include="src\opendnp3\master\TaskPriority.h" />
     <ClInclude Include="src\opendnp3\master\TimeSyncHandler.h" />
     <ClInclude Include="src\opendnp3\master\UserPollTask.h" />
@@ -366,6 +367,7 @@
     <ClCompile Include="src\opendnp3\master\PollTaskBase.cpp" />
     <ClCompile Include="src\opendnp3\master\SerialTimeSyncTask.cpp" />
     <ClCompile Include="src\opendnp3\master\StartupIntegrityPoll.cpp" />
+    <ClCompile Include="src\opendnp3\master\TaskComparison.cpp" />
     <ClCompile Include="src\opendnp3\master\UserPollTask.cpp" />
     <ClCompile Include="src\opendnp3\master\WriteTask.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group1.cpp" />

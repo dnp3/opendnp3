@@ -21,6 +21,8 @@
 
 #include "MasterScheduler.h"
 
+#include "opendnp3/master/TaskComparison.h"
+
 #include <openpal/executor/MonotonicTimestamp.h>
 
 #include <algorithm>
@@ -30,10 +32,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-MasterScheduler::MasterScheduler(
-									openpal::IExecutor& executor,
-									IScheduleCallback& callback
-									) :	
+MasterScheduler::MasterScheduler(openpal::IExecutor& executor, IScheduleCallback& callback) :	
 	pExecutor(&executor),
 	pCallback(&callback),	
 	isOnline(false),	
@@ -52,57 +51,6 @@ openpal::ManagedPtr<IMasterTask> MasterScheduler::Start()
 	return PopNextTask();	
 }
 
-int MasterScheduler::Compare(const MonotonicTimestamp& now, const IMasterTask& lhs, const IMasterTask& rhs)
-{
-	// if they're both enabled we compare based on
-	// blocking/priority/expiration time
-	if (Enabled(lhs) && Enabled(rhs))
-	{
-		if ((lhs.Priority() > rhs.Priority()) && rhs.BlocksLowerPriority())
-		{
-			return 1; // rhs greater
-		}
-		else if (rhs.Priority() > lhs.Priority() && lhs.BlocksLowerPriority())
-		{
-			return -1; // lhs greater
-		}
-		else // equal priority or neither task blocks lower priority tasks, compare based on time
-		{
-			auto tlhs = lhs.ExpirationTime();
-			auto trhs = rhs.ExpirationTime();
-			auto lhsExpired = tlhs.milliseconds <= now.milliseconds;
-			auto rhsExpired = trhs.milliseconds <= now.milliseconds;
-
-			if (lhsExpired && rhsExpired)
-			{
-				// both expired, compare based on priority				
-				return lhs.Priority() - rhs.Priority();
-			}
-			else
-			{
-				if (tlhs.milliseconds < trhs.milliseconds)
-				{
-					return -1;
-				}
-				else if (trhs.milliseconds < tlhs.milliseconds)
-				{
-					return 1;
-				}
-				else
-				{
-					// if equal times, compare based on priority
-					return lhs.Priority() - rhs.Priority();
-				}
-			}			
-		}
-	}
-	else 
-	{
-		// always prefer the enabled task over the one that isn't
-		return Enabled(rhs) ? 1 : -1;
-	}
-}
-
 std::vector<openpal::ManagedPtr<IMasterTask>>::iterator MasterScheduler::GetNextTask(const MonotonicTimestamp& now)
 {
 	auto runningBest = tasks.begin();
@@ -114,8 +62,8 @@ std::vector<openpal::ManagedPtr<IMasterTask>>::iterator MasterScheduler::GetNext
 
 		for (; current != tasks.end(); ++current)
 		{
-			auto cmp = Compare(now, **runningBest, **current);
-			if (cmp > 0)
+			auto result = TaskComparison::SelectHigherPriority(now, **runningBest, **current);
+			if (result == TaskComparison::Result::Right)
 			{
 				runningBest = current;
 			}
@@ -153,40 +101,6 @@ openpal::ManagedPtr<IMasterTask> MasterScheduler::PopNextTask()
 	}	
 }
 
-/*
-void MasterScheduler::ProcessRxIIN(const IINField& iin, const MasterParams& params)
-{	
-	if (iin.IsSet(IINBit::DEVICE_RESTART))
-	{		
-		if (!this->IsTaskActive(&pStaticTasks->clearRestartTask))
-		{
-			scheduledTaskMask |= tasks::CLEAR_RESTART_SEQUENCE;				
-		}
-	}
-
-	if (iin.IsSet(IINBit::EVENT_BUFFER_OVERFLOW) && params.integrityOnEventOverflowIIN)
-	{		
-		if (!this->IsTaskActive(&pStaticTasks->startupIntegrity))
-		{
-			scheduledTaskMask |= tasks::STARTUP_INTEGRITY;
-		}
-	}
-
-	if (iin.IsSet(IINBit::NEED_TIME))
-	{		
-		if (!this->IsTaskActive(&pStaticTasks->serialTimeSync))
-		{
-			scheduledTaskMask |= tasks::TIME_SYNC;
-		}
-	}
-	
-	if (scheduledTaskMask)
-	{
-		this->CancelScheduleTimer();
-	}	
-}
-*/
-
 void MasterScheduler::OnLowerLayerUp()
 {
 	if (!isOnline)
@@ -195,8 +109,6 @@ void MasterScheduler::OnLowerLayerUp()
 		pCallback->OnPendingTask();
 	}	
 }
-
-
 
 void MasterScheduler::OnLowerLayerDown()
 {
