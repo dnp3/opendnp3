@@ -93,8 +93,8 @@ void Master::OnReceive(const openpal::ReadBufferView& apdu)
 			else
 			{
 				if (header.function == FunctionCode::RESPONSE)
-				{
-					this->mstate.pState = mstate.pState->OnResponse(mstate, header, apdu.Skip(APDU_RESPONSE_HEADER_SIZE));
+				{					
+					mstate.OnResponse(header, apdu.Skip(APDU_RESPONSE_HEADER_SIZE));
 					this->OnReceiveIIN(header.IIN);
 				}
 				else

@@ -53,6 +53,30 @@ namespace opendnp3
 		txBuffer(params.maxTxFragSize)
 	{}
 
+	void MasterState::OnStart()
+	{
+		if (isOnline)
+		{
+			this->pState = pState->OnStart(*this);
+		}
+	}
+
+	void MasterState::OnResponseTimeout()
+	{
+		if (isOnline)
+		{
+			this->pState = pState->OnResponseTimeout(*this);
+		}
+	}
+
+	void MasterState::OnResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects)
+	{
+		if (isOnline)
+		{
+			this->pState = pState->OnResponse(*this, response, objects);
+		}
+	}
+
 	bool MasterState::GoOffline()
 	{
 		if (isOnline)

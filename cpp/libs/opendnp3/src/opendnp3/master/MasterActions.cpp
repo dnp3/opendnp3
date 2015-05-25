@@ -64,10 +64,7 @@ void MasterActions::PostCheckForTask(MasterState& mstate)
 
 void MasterActions::CheckForTask(MasterState& mstate)
 {
-	if (mstate.isOnline)
-	{
-		mstate.pState = mstate.pState->OnStart(mstate);
-	}
+	mstate.OnStart();
 }
 
 void MasterActions::StartResponseTimer(MasterState& mstate)
@@ -78,7 +75,7 @@ void MasterActions::StartResponseTimer(MasterState& mstate)
 
 void MasterActions::ProcessResponseTimeout(MasterState& mstate)
 {
-	mstate.pState = mstate.pState->OnResponseTimeout(mstate);
+	mstate.OnResponseTimeout();
 }
 
 void MasterActions::ReleaseActiveTask(MasterState& mstate)

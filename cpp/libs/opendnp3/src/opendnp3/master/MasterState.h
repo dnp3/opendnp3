@@ -73,15 +73,26 @@ namespace opendnp3
 		bool isSending;
 		uint8_t solSeq;
 		uint8_t unsolSeq;
-		openpal::ManagedPtr<IMasterTask> pActiveTask;
-		IMasterState* pState;
+		openpal::ManagedPtr<IMasterTask> pActiveTask;		
 		openpal::TimerRef responseTimer;
 		MasterTasks tasks;
 		MasterScheduler scheduler;
-
 		std::deque<APDUHeader> confirmQueue;
+		openpal::DynamicBuffer txBuffer;		
 
-		openpal::DynamicBuffer txBuffer;
+
+	private:
+
+		IMasterState* pState;
+
+	public:
+
+		// ------- state actions --------
+
+		void OnStart();
+		void OnResponseTimeout();
+		void OnResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects);
+		
 
 		// ------- helper functions --------
 
