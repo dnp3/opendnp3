@@ -94,8 +94,9 @@ openpal::ManagedPtr<IMasterTask> MasterScheduler::PopNextTask()
 		{
 			if (!(*elem)->ExpirationTime().IsMax())
 			{
-				this->StartOrRestartTimer((*elem)->ExpirationTime());
-			}			
+				this->RestartTimer((*elem)->ExpirationTime());
+			}	
+
 			return ManagedPtr<IMasterTask>();
 		}		
 	}	
@@ -128,26 +129,11 @@ void MasterScheduler::OnLowerLayerDown()
 	}	
 }
 
-void MasterScheduler::OnTimerExpiration()
-{	
-	pCallback->OnPendingTask();
-}
-
-void MasterScheduler::StartOrRestartTimer(const openpal::MonotonicTimestamp& expiration)
+void MasterScheduler::RestartTimer(const openpal::MonotonicTimestamp& expiration)
 {
-	auto callback = [this](){ this->OnTimerExpiration(); };
-
-	if (timer.IsActive()) 				
-	{
-		if (timer.ExpiresAt() > expiration)
-		{
-			timer.Restart(expiration, callback);			
-		}		
-	}
-	else
-	{
-		timer.Start(expiration, callback);
-	}	
+	auto pCallback = this->pCallback;
+	auto callback = [pCallback](){ pCallback->OnPendingTask(); };
+	timer.Restart(expiration, callback);
 }
 
 }

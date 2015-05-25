@@ -72,9 +72,7 @@ private:
 
 	openpal::ManagedPtr<IMasterTask> PopNextTask();
 	
-	void StartOrRestartTimer(const openpal::MonotonicTimestamp& expiration);	
-
-	void OnTimerExpiration();		
+	void RestartTimer(const openpal::MonotonicTimestamp& expiration);		
 
 	// ----------- static configuration ---------
 
