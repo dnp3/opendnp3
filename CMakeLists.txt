@@ -95,6 +95,7 @@ install(DIRECTORY ./cpp/libs/asiopal/src/asiopal/ DESTINATION include/asiopal ${
 file(GLOB_RECURSE asiodnp3_SRC ./cpp/libs/asiodnp3/src/asiodnp3/*.cpp)
 add_library(asiodnp3 ${LIB_TYPE} ${asiodnp3_SRC})
 target_link_libraries(asiodnp3 opendnp3)
+target_link_libraries(asiodnp3 secauthv5)
 target_link_libraries(asiodnp3 asiopal)
 install(TARGETS asiodnp3 DESTINATION lib)
 install(DIRECTORY ./cpp/libs/asiodnp3/src/asiodnp3/ DESTINATION include/asiodnp3 ${INSTALL_ARGS})
