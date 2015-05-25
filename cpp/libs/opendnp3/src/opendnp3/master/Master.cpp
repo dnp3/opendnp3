@@ -107,16 +107,13 @@ void Master::OnReceive(const openpal::ReadBufferView& apdu)
 }
 
 void Master::OnUnsolicitedResponse(const APDUResponseHeader& header, const ReadBufferView& objects)
-{
-	if (header.control.UNS)
-	{
-		auto result = MeasurementHandler::ProcessMeasurements(objects, mstate.logger, mstate.pSOEHandler);
+{		
+	auto result = MeasurementHandler::ProcessMeasurements(objects, mstate.logger, mstate.pSOEHandler);
 
-		if ((result == ParseResult::OK) && header.control.CON)
-		{
-			MasterActions::QueueConfirm(mstate, APDUHeader::UnsolicitedConfirm(header.control.SEQ));
-		}
-	}
+	if ((result == ParseResult::OK) && header.control.CON)
+	{
+		MasterActions::QueueConfirm(mstate, APDUHeader::UnsolicitedConfirm(header.control.SEQ));
+	}	
 }
 
 void Master::OnReceiveIIN(const IINField& iin)
