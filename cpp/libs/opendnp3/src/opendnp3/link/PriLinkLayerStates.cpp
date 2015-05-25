@@ -124,20 +124,36 @@ void PLLS_LinkResetTransmitWait::OnTransmitResult(LinkLayer* pLinkLayer, bool su
 //  Wait for the link layer to transmit the request link status
 /////////////////////////////////////////////////////////////////////////////
 
-PLLS_RequestLinkStatusTransmitWait PLLS_RequestLinkStatusTransmitWait::instance;
-
-void PLLS_RequestLinkStatusTransmitWait::OnTransmitResult(LinkLayer* pLinkLayer, bool success)
+template <>
+void PLLS_LinkStatusWait<PLLS_SecNotReset>::OnTimeout(LinkLayer* pLinkLayer)
 {
-	if (success)
+	if (pLinkLayer->Retry())
 	{
-		// now we're waiting for a link status response
-		pLinkLayer->StartTimer();
-		pLinkLayer->ChangeState(PLLS_LinkStatusWait::Inst());
+		FORMAT_LOG_BLOCK(pLinkLayer->GetLogger(), flags::WARN, "Request link status timeout, retrying %i remaining", pLinkLayer->RetryRemaining());
+		pLinkLayer->QueueRequestLinkStatus();
+		pLinkLayer->ChangeState(PLLS_RequestLinkStatusTransmitWait<PLLS_SecNotReset>::Inst());
 	}
 	else
 	{
+		SIMPLE_LOG_BLOCK(pLinkLayer->GetLogger(), flags::WARN, "Request link status final timeout, no retries remain");
 		pLinkLayer->ChangeState(PLLS_SecNotReset::Inst());
-		pLinkLayer->DoSendResult(success);
+	}
+}
+
+template <>
+void PLLS_LinkStatusWait<PLLS_SecReset>::OnTimeout(LinkLayer* pLinkLayer)
+{
+	if (pLinkLayer->Retry())
+	{
+		FORMAT_LOG_BLOCK(pLinkLayer->GetLogger(), flags::WARN, "Request link status timeout, retrying %i remaining", pLinkLayer->RetryRemaining());
+		pLinkLayer->QueueRequestLinkStatus();
+		pLinkLayer->ChangeState(PLLS_RequestLinkStatusTransmitWait<PLLS_SecReset>::Inst());
+	}
+	else
+	{
+		//Call PLLS Callback to notify transition to UNRESET
+		SIMPLE_LOG_BLOCK(pLinkLayer->GetLogger(), flags::WARN, "Request link status final timeout, no retries remain");
+		pLinkLayer->ChangeState(PLLS_SecNotReset::Inst());
 	}
 }
 
@@ -223,39 +239,6 @@ void PLLS_ResetLinkWait::Failure(LinkLayer* pLinkLayer)
 	pLinkLayer->CancelTimer();
 	pLinkLayer->ChangeState(PLLS_SecNotReset::Inst());
 	pLinkLayer->DoSendResult(false);
-}
-
-////////////////////////////////////////////////////////
-//	Class PLLS_LinkStatusWait
-////////////////////////////////////////////////////////
-
-PLLS_LinkStatusWait PLLS_LinkStatusWait::instance;
-
-void PLLS_LinkStatusWait::LinkStatus(LinkLayer* pLinkLayer, bool receiveBuffFull)
-{
-	pLinkLayer->CancelTimer();
-    pLinkLayer->ChangeState(PLLS_SecReset::Inst());
-}
-
-void PLLS_LinkStatusWait::OnTimeout(LinkLayer* pLinkLayer)
-{
-	if(pLinkLayer->Retry())
-	{
-		FORMAT_LOG_BLOCK(pLinkLayer->GetLogger(), flags::WARN, "Request link status timeout, retrying %i remaining", pLinkLayer->RetryRemaining());
-		pLinkLayer->QueueRequestLinkStatus();
-		pLinkLayer->ChangeState(PLLS_RequestLinkStatusTransmitWait::Inst());
-	}
-	else
-	{
-		SIMPLE_LOG_BLOCK(pLinkLayer->GetLogger(), flags::WARN, "Request link status final timeout, no retries remain");
-		pLinkLayer->ChangeState(PLLS_SecNotReset::Inst());
-	}
-}
-
-void PLLS_LinkStatusWait::Failure(LinkLayer* pLinkLayer)
-{
-	pLinkLayer->CancelTimer();
-	pLinkLayer->ChangeState(PLLS_SecNotReset::Inst());
 }
 
 ////////////////////////////////////////////////////////

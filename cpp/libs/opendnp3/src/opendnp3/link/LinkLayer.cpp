@@ -339,16 +339,26 @@ void LinkLayer::ResetKeepAlive()
     this->CancelKeepAlive();
     if(!config.KeepAlive) return;
     auto lambda = [this]() {
-        if(pTimer) return; // already waiting for a response
-        this->QueueRequestLinkStatus();
-        this->ChangeState(PLLS_RequestLinkStatusTransmitWait::Inst());
+		if (pPriState == PLLS_SecNotReset::Inst())
+		{
+			this->QueueRequestLinkStatus();
+			this->ChangeState(PLLS_RequestLinkStatusTransmitWait<PLLS_SecNotReset>::Inst());
+		}
+		else if (pPriState == PLLS_SecReset::Inst())
+		{
+			this->QueueRequestLinkStatus();
+			this->ChangeState(PLLS_RequestLinkStatusTransmitWait<PLLS_SecReset>::Inst());
+		}
     };
     pKeepAliveTimer = this->pExecutor->Start(TimeDuration(config.KeepAlive), Action0::Bind(lambda));
 }
     
 void LinkLayer::CancelKeepAlive()
 {
-	if(pKeepAliveTimer == nullptr) return;
+	if (pKeepAliveTimer == nullptr)
+	{
+		return;
+	}
     pKeepAliveTimer->Cancel();
 	pKeepAliveTimer = nullptr;
 }
