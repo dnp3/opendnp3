@@ -25,7 +25,7 @@
 #include "opendnp3/StackStatistics.h"
 
 #include <openpal/container/ReadBufferView.h>
-#include <openpal/container/DynamicBuffer.h>
+#include <openpal/container/Buffer.h>
 #include <openpal/logging/Logger.h>
 
 namespace opendnp3
@@ -53,7 +53,7 @@ private:
 	openpal::Logger logger;
 	StackStatistics* pStatistics;
 	
-	openpal::DynamicBuffer rxBuffer;
+	openpal::Buffer rxBuffer;
 	uint32_t numBytesRead;
 	uint8_t sequence;
 };

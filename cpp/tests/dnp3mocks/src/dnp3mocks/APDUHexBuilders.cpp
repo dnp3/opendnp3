@@ -28,7 +28,7 @@
 
 #include <opendnp3/objects/Group120.h>
 
-#include <openpal/container/DynamicBuffer.h>
+#include <openpal/container/Buffer.h>
 
 #include <testlib/HexConversions.h>
 #include <testlib/BufferHelpers.h>
@@ -42,14 +42,14 @@ namespace hex
 {
 	std::string repeat(uint8_t value, uint16_t count)
 	{
-		DynamicBuffer buffer(count);
+		Buffer buffer(count);
 		buffer.GetWriteBufferView().SetAllTo(value);
 		return ToHex(buffer.ToReadOnly());
 	}
 
 	std::string ClassTask(FunctionCode fc, uint8_t seq, const ClassField& field)
 	{		
-		DynamicBuffer buffer(DEFAULT_MAX_APDU_SIZE);
+		Buffer buffer(DEFAULT_MAX_APDU_SIZE);
 		APDURequest request(buffer.GetWriteBufferView());
 		opendnp3::build::ClassRequest(request, fc, field, seq);
 		return ToHex(request.ToReadOnly());
@@ -72,7 +72,7 @@ namespace hex
 
 	std::string ClearRestartIIN(uint8_t seq)
 	{
-		DynamicBuffer buffer(DEFAULT_MAX_APDU_SIZE);
+		Buffer buffer(DEFAULT_MAX_APDU_SIZE);
 		APDURequest request(buffer.GetWriteBufferView());
 		build::ClearRestartIIN(request, seq);
 		return ToHex(request.ToReadOnly());
@@ -80,7 +80,7 @@ namespace hex
 
 	std::string MeasureDelay(uint8_t seq)
 	{
-		DynamicBuffer buffer(DEFAULT_MAX_APDU_SIZE);
+		Buffer buffer(DEFAULT_MAX_APDU_SIZE);
 		APDURequest request(buffer.GetWriteBufferView());
 		build::MeasureDelay(request, seq);
 		return ToHex(request.ToReadOnly());
@@ -88,7 +88,7 @@ namespace hex
 
 	std::string EmptyResponse(uint8_t seq, const opendnp3::IINField& iin)
 	{
-		DynamicBuffer buffer(DEFAULT_MAX_APDU_SIZE);
+		Buffer buffer(DEFAULT_MAX_APDU_SIZE);
 		APDUResponse response(buffer.GetWriteBufferView());
 		response.SetFunction(FunctionCode::RESPONSE);
 		response.SetControl(AppControlField(true, true, false, false, seq));
@@ -98,7 +98,7 @@ namespace hex
 
 	std::string NullUnsolicited(uint8_t seq, const IINField& iin)
 	{
-		DynamicBuffer buffer(DEFAULT_MAX_APDU_SIZE);
+		Buffer buffer(DEFAULT_MAX_APDU_SIZE);
 		APDUResponse response(buffer.GetWriteBufferView());
 		build::NullUnsolicited(response, seq, iin);
 		return ToHex(response.ToReadOnly());
@@ -116,7 +116,7 @@ namespace hex
 
 	std::string Confirm(uint8_t seq, bool unsol)
 	{
-		DynamicBuffer buffer(DEFAULT_MAX_APDU_SIZE);
+		Buffer buffer(DEFAULT_MAX_APDU_SIZE);
 		APDURequest apdu(buffer.GetWriteBufferView());
 		apdu.SetControl(AppControlField(true, true, false, unsol, seq));
 		apdu.SetFunction(FunctionCode::CONFIRM);
@@ -127,7 +127,7 @@ namespace hex
 
 	std::string RequestKeyStatus(uint8_t seq, uint16_t user)
 	{
-		DynamicBuffer buffer(DEFAULT_MAX_APDU_SIZE);
+		Buffer buffer(DEFAULT_MAX_APDU_SIZE);
 		APDURequest apdu(buffer.GetWriteBufferView());
 		apdu.SetControl(AppControlField(true, true, false, false, seq));
 		apdu.SetFunction(FunctionCode::AUTH_REQUEST);		
@@ -147,7 +147,7 @@ namespace hex
 		std::string challengeDataHex
 		)
 	{
-		DynamicBuffer buffer(DEFAULT_MAX_APDU_SIZE);
+		Buffer buffer(DEFAULT_MAX_APDU_SIZE);
 		APDUResponse apdu(buffer.GetWriteBufferView());
 
 		apdu.SetControl(AppControlField(true, true, false, false, seq));
@@ -176,7 +176,7 @@ namespace hex
 		std::string hmacHex
 		)
 	{
-		DynamicBuffer buffer(DEFAULT_MAX_APDU_SIZE);
+		Buffer buffer(DEFAULT_MAX_APDU_SIZE);
 		APDURequest apdu(buffer.GetWriteBufferView());
 
 		apdu.SetControl(AppControlField(true, true, false, false, appSeq));
@@ -203,7 +203,7 @@ namespace hex
 		const std::string& hmac
 		)
 	{
-		DynamicBuffer buffer(DEFAULT_MAX_APDU_SIZE);
+		Buffer buffer(DEFAULT_MAX_APDU_SIZE);
 		APDUResponse apdu(buffer.GetWriteBufferView());
 		apdu.SetControl(AppControlField(true, true, false, false, seq));
 		apdu.SetFunction(FunctionCode::AUTH_RESPONSE);
@@ -233,7 +233,7 @@ namespace hex
 		const std::string& keyWrapData
 		)
 	{
-		DynamicBuffer buffer(DEFAULT_MAX_APDU_SIZE);
+		Buffer buffer(DEFAULT_MAX_APDU_SIZE);
 		APDURequest apdu(buffer.GetWriteBufferView());
 		apdu.SetControl(AppControlField(true, true, false, false, seq));
 		apdu.SetFunction(FunctionCode::AUTH_REQUEST);
@@ -257,12 +257,12 @@ namespace hex
 		std::string keyStatusMsg
 		)
 	{
-		DynamicBuffer key(keyLengthBytes);
+		Buffer key(keyLengthBytes);
 		key.GetWriteBufferView().SetAllTo(keyRepeatValue);			
 		auto keyHex = ToHex(key.ToReadOnly());
 		HexSequence statusBuffer(keyStatusMsg);
 
-		DynamicBuffer lengthBuff(2);
+		Buffer lengthBuff(2);
 		auto lenDest = lengthBuff.GetWriteBufferView();
 		UInt16::WriteBuffer(lenDest, keyLengthBytes);
 		auto lengthHex = ToHex(lengthBuff.ToReadOnly());

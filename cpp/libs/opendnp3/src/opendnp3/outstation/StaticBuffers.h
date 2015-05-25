@@ -26,7 +26,7 @@
 #include "opendnp3/outstation/Cell.h"
 #include "opendnp3/outstation/DatabaseTemplate.h"
 
-#include <openpal/container/DynamicArray.h>
+#include <openpal/container/Array.h>
 #include <openpal/util/Uncopyable.h>
 
 namespace opendnp3
@@ -60,14 +60,14 @@ private:
 		}
 	}
 		
-	openpal::DynamicArray<Cell<Binary>, uint16_t> binaries;
-	openpal::DynamicArray<Cell<DoubleBitBinary>, uint16_t> doubleBinaries;
-	openpal::DynamicArray<Cell<Analog>, uint16_t> analogs;
-	openpal::DynamicArray<Cell<Counter>, uint16_t> counters;
-	openpal::DynamicArray<Cell<FrozenCounter>, uint16_t> frozenCounters;
-	openpal::DynamicArray<Cell<BinaryOutputStatus>, uint16_t> binaryOutputStatii;
-	openpal::DynamicArray<Cell<AnalogOutputStatus>, uint16_t> analogOutputStatii;
-	openpal::DynamicArray<Cell<TimeAndInterval>, uint16_t> timeAndIntervals;
+	openpal::Array<Cell<Binary>, uint16_t> binaries;
+	openpal::Array<Cell<DoubleBitBinary>, uint16_t> doubleBinaries;
+	openpal::Array<Cell<Analog>, uint16_t> analogs;
+	openpal::Array<Cell<Counter>, uint16_t> counters;
+	openpal::Array<Cell<FrozenCounter>, uint16_t> frozenCounters;
+	openpal::Array<Cell<BinaryOutputStatus>, uint16_t> binaryOutputStatii;
+	openpal::Array<Cell<AnalogOutputStatus>, uint16_t> analogOutputStatii;
+	openpal::Array<Cell<TimeAndInterval>, uint16_t> timeAndIntervals;
 };
 
 }

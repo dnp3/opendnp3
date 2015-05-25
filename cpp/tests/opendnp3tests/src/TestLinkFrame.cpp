@@ -25,7 +25,7 @@
 #include <opendnp3/link/LinkHeader.h>
 
 #include <openpal/util/ToHex.h>
-#include <openpal/container/DynamicBuffer.h>
+#include <openpal/container/Buffer.h>
 
 #include <testlib/BufferHelpers.h>
 #include "DNPHelpers.h"
@@ -69,7 +69,7 @@ TEST_CASE(SUITE("LinkHeaderChangeFCB"))
 
 TEST_CASE(SUITE("ResetLinks"))
 {
-	DynamicBuffer buffer(292);
+	Buffer buffer(292);
 
 	// ResetLinkStates - Master
 	auto write = buffer.GetWriteBufferView();
@@ -79,7 +79,7 @@ TEST_CASE(SUITE("ResetLinks"))
 
 TEST_CASE(SUITE("RequestLinkStates"))
 {
-	DynamicBuffer buffer(292);
+	Buffer buffer(292);
 
 	// ResetLinkStates - Master
 	auto write = buffer.GetWriteBufferView();
@@ -89,7 +89,7 @@ TEST_CASE(SUITE("RequestLinkStates"))
 
 TEST_CASE(SUITE("ACK"))
 {
-	DynamicBuffer buffer(292);
+	Buffer buffer(292);
 
 
 	{
@@ -124,7 +124,7 @@ TEST_CASE(SUITE("ACK"))
 
 TEST_CASE(SUITE("ConfirmedUserData"))
 {
-	DynamicBuffer buffer(292);
+	Buffer buffer(292);
 
 	// Confirmed User Data - Master (FCB = true)
 	auto hex = FormatUserData(true, true, 1, 1024, "C0 C3 01 3C 02 06 3C 03 06 3C 04 06 3C 01 06", true);
@@ -137,7 +137,7 @@ TEST_CASE(SUITE("ConfirmedUserData"))
 
 TEST_CASE(SUITE("ResetLinkStates"))
 {
-	DynamicBuffer buffer(292);
+	Buffer buffer(292);
 
 	// Reset Link States - Outstation
 	auto writeTo = buffer.GetWriteBufferView();
@@ -154,7 +154,7 @@ TEST_CASE(SUITE("UnconfirmedUserData"))
 
 TEST_CASE(SUITE("LinkStatus"))
 {
-	DynamicBuffer buffer(292);
+	Buffer buffer(292);
 
 	// LinkStatus - Master (DFC = true)
 	auto writeTo = buffer.GetWriteBufferView();
@@ -165,7 +165,7 @@ TEST_CASE(SUITE("LinkStatus"))
 
 TEST_CASE(SUITE("NotSupported"))
 {
-	DynamicBuffer buffer(292);
+	Buffer buffer(292);
 
 	// Not Supported - Outstation (DFC = true)
 	auto writeTo = buffer.GetWriteBufferView();

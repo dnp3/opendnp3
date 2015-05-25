@@ -24,7 +24,7 @@
 
 #include "opendnp3/app/APDUHeader.h"
 
-#include <openpal/container/DynamicBuffer.h>
+#include <openpal/container/Buffer.h>
 #include <openpal/util/Uncopyable.h>
 
 namespace opendnp3
@@ -60,7 +60,7 @@ class DeferredRequest : private openpal::Uncopyable
 	bool isSet;	
 	APDUHeader header;
 	openpal::ReadBufferView objects;
-	openpal::DynamicBuffer buffer;
+	openpal::Buffer buffer;
 	
 };
 

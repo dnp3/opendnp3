@@ -23,7 +23,7 @@
 
 #include "ArrayView.h"
 
-#include "openpal/container/DynamicArray.h"
+#include "openpal/container/Array.h"
 
 namespace openpal
 {
@@ -246,7 +246,7 @@ private:
 	ListNode<ValueType>* pTail;
 	ListNode<ValueType>* pFree;
 
-	DynamicArray<ListNode<ValueType>, IndexType> underlying;
+	Array<ListNode<ValueType>, IndexType> underlying;
 
 	ListNode<ValueType>* Insert(const ValueType& value, ListNode<ValueType>* left, ListNode<ValueType>* right);
 

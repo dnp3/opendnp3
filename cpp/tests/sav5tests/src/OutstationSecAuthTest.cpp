@@ -49,7 +49,7 @@ namespace opendnp3
 	void OutstationSecAuthTest::AddUser(secauthv5::User, secauthv5::UpdateKeyMode mode, uint8_t keyRepeat)
 	{
 		auto keySize = (mode == UpdateKeyMode::AES128) ? 16 : 32;
-		openpal::DynamicBuffer key(keySize);
+		openpal::Buffer key(keySize);
 		key.GetWriteBufferView().SetAllTo(keyRepeat);
 		users.ConfigureUser(
 			secauthv5::User::Default(),

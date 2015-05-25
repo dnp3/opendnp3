@@ -67,9 +67,6 @@
     <ClInclude Include="src\openpal\container\Settable.h">
       <Filter>Header\container</Filter>
     </ClInclude>
-    <ClInclude Include="src\openpal\container\DynamicArray.h">
-      <Filter>Header\container</Filter>
-    </ClInclude>
     <ClInclude Include="src\openpal\executor\Erasure.h">
       <Filter>Header\executor</Filter>
     </ClInclude>
@@ -157,9 +154,6 @@
     <ClInclude Include="src\openpal\executor\Function1.h">
       <Filter>Header\executor</Filter>
     </ClInclude>
-    <ClInclude Include="src\openpal\container\DynamicBuffer.h">
-      <Filter>Header\container</Filter>
-    </ClInclude>
     <ClInclude Include="src\openpal\serialization\Serializer.h">
       <Filter>Header\serialization</Filter>
     </ClInclude>
@@ -214,6 +208,12 @@
     <ClInclude Include="src\openpal\serialization\Format.h">
       <Filter>Header\serialization</Filter>
     </ClInclude>
+    <ClInclude Include="src\openpal\container\Buffer.h">
+      <Filter>Header\container</Filter>
+    </ClInclude>
+    <ClInclude Include="src\openpal\container\Array.h">
+      <Filter>Header\container</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\openpal\executor\MonotonicTimestamp.cpp">
@@ -249,9 +249,6 @@
     <ClCompile Include="src\openpal\executor\Erasure.cpp">
       <Filter>Source\executor</Filter>
     </ClCompile>
-    <ClCompile Include="src\openpal\container\DynamicBuffer.cpp">
-      <Filter>Source\container</Filter>
-    </ClCompile>
     <ClCompile Include="src\openpal\container\ReadBufferView.cpp">
       <Filter>Source\container</Filter>
     </ClCompile>
@@ -272,6 +269,9 @@
     </ClCompile>
     <ClCompile Include="src\openpal\serialization\Format.cpp">
       <Filter>Source\serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="src\openpal\container\Buffer.cpp">
+      <Filter>Source\container</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

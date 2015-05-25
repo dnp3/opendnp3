@@ -26,7 +26,7 @@
 #include <opendnp3/objects/Group120.h>
 
 #include <openpal/util/ToHex.h>
-#include <openpal/container/DynamicBuffer.h>
+#include <openpal/container/Buffer.h>
 
 using namespace openpal;
 using namespace opendnp3;
@@ -82,7 +82,7 @@ TEST_CASE(SUITE("Formatter correctly writes when sufficient space"))
 	Group120Var1 challenge(9, 3, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, challengeData.ToReadOnly());
 	const uint32_t SIZE = challenge.Size();	
 
-	DynamicBuffer output(64);
+	Buffer output(64);
 	auto dest = output.GetWriteBufferView();
 	REQUIRE(challenge.Write(dest));
 	auto written = output.Size() - dest.Size();
@@ -98,7 +98,7 @@ TEST_CASE(SUITE("Formatter return false when insufficient space"))
 	Group120Var1 challenge(9, 3, HMACType::HMAC_SHA256_TRUNC_16, ChallengeReason::CRITICAL, challengeData.ToReadOnly());
 	const uint32_t SIZE = challenge.Size();
 
-	DynamicBuffer output(SIZE - 1);		
+	Buffer output(SIZE - 1);		
 	auto dest = output.GetWriteBufferView();
 	REQUIRE_FALSE(challenge.Write(dest));
 }

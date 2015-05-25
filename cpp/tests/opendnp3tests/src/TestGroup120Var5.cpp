@@ -26,7 +26,7 @@
 #include <opendnp3/objects/Group120.h>
 
 #include <openpal/util/ToHex.h>
-#include <openpal/container/DynamicBuffer.h>
+#include <openpal/container/Buffer.h>
 
 using namespace openpal;
 using namespace opendnp3;
@@ -97,7 +97,7 @@ TEST_CASE(SUITE("Formatter correctly writes when sufficient space"))
 
 	REQUIRE(SIZE == 15);
 
-	DynamicBuffer output(SIZE);
+	Buffer output(SIZE);
 
 	auto dest = output.GetWriteBufferView();
 	REQUIRE(status.Write(dest));
@@ -117,7 +117,7 @@ TEST_CASE(SUITE("Formatter rejects when one less than required space"))
 
 	REQUIRE(SIZE == 17);
 
-	DynamicBuffer output(SIZE - 1);
+	Buffer output(SIZE - 1);
 
 	auto dest = output.GetWriteBufferView();
 	REQUIRE_FALSE(status.Write(dest));

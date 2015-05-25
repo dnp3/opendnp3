@@ -24,7 +24,7 @@
 
 #include <opendnp3/app/APDUHeader.h>
 
-#include <openpal/container/DynamicBuffer.h>
+#include <openpal/container/Buffer.h>
 #include <openpal/util/Uncopyable.h>
 
 namespace secauthv5
@@ -57,7 +57,7 @@ class DeferredASDU : private openpal::Uncopyable
 	bool isSet;	
 	opendnp3::APDUHeader header;
 	openpal::ReadBufferView asdu;
-	openpal::DynamicBuffer buffer;
+	openpal::Buffer buffer;
 	
 };
 

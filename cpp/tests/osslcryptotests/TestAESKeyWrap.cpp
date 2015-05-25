@@ -22,7 +22,7 @@
 
 #include <osslcrypto/CryptoProvider.h>
 
-#include <openpal/container/DynamicBuffer.h>
+#include <openpal/container/Buffer.h>
 
 #include <testlib/HexConversions.h>
 #include <testlib/BufferHelpers.h>
@@ -88,7 +88,7 @@ void TestKeyWrap(
 
 	const uint32_t OUTPUT_SIZE = inputBuffer.Size() + 8;
 
-	DynamicBuffer out(OUTPUT_SIZE);
+	Buffer out(OUTPUT_SIZE);
 	auto outputBuffer = out.GetWriteBufferView();
 	auto result = algo.WrapKey(kekBuffer, inputBuffer, outputBuffer, nullptr);
 	REQUIRE(result.IsNotEmpty());	
@@ -108,7 +108,7 @@ void TestKeyUnwrap(
 
 	const uint32_t OUTPUT_SIZE = inputBuffer.Size() - 8;
 
-	DynamicBuffer out(OUTPUT_SIZE);
+	Buffer out(OUTPUT_SIZE);
 	auto outputBuffer = out.GetWriteBufferView();
 	auto result = algo.UnwrapKey(kekBuffer, inputBuffer, outputBuffer, nullptr);
 	REQUIRE(result.IsNotEmpty());	

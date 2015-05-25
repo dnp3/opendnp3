@@ -23,7 +23,7 @@
 #include <functional>
 
 #include <openpal/util/ToHex.h>
-#include <openpal/container/DynamicBuffer.h>
+#include <openpal/container/Buffer.h>
 
 #include <opendnp3/Route.h>
 
@@ -136,7 +136,7 @@ TEST_CASE(SUITE("ReentrantCloseWorks"))
 	REQUIRE(mfs.mLowerOnline);
 	mfs.AddAction(std::bind(&asiodnp3::LinkLayerRouter::Shutdown, &t.router));
 
-	DynamicBuffer buffer(292);
+	Buffer buffer(292);
 	auto writeTo = buffer.GetWriteBufferView();
 	auto frame = LinkFrame::FormatAck(writeTo, true, false, 1024, 1, nullptr);
 	t.phys.TriggerRead(ToHex(frame));
@@ -178,7 +178,7 @@ TEST_CASE(SUITE("MultiContextSend"))
 	t.router.AddContext(&mfs2, route2);
 	t.router.Enable(&mfs2);
 
-	DynamicBuffer buffer(292);
+	Buffer buffer(292);
 
 	t.phys.SignalOpenSuccess();
 	t.router.BeginTransmit(buffer.ToReadOnly(), &mfs1);
@@ -209,7 +209,7 @@ TEST_CASE(SUITE("LinkLayerRouterClearsBufferOnLowerLayerDown"))
 	t.phys.ClearBuffer();
 	t.phys.SignalOpenSuccess();
 
-	DynamicBuffer buffer(292);
+	Buffer buffer(292);
 	auto writeTo = buffer.GetWriteBufferView();
 	auto frame = LinkFrame::FormatAck(writeTo, true, false, 1024, 1, nullptr);
 	t.phys.TriggerRead(ToHex(frame));

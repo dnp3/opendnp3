@@ -26,7 +26,7 @@
 #include <opendnp3/objects/Group120.h>
 
 #include <openpal/util/ToHex.h>
-#include <openpal/container/DynamicBuffer.h>
+#include <openpal/container/Buffer.h>
 
 using namespace openpal;
 using namespace opendnp3;

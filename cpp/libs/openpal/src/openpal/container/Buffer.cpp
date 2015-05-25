@@ -18,40 +18,40 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENPAL_DYNAMICBUFFER_H
-#define OPENPAL_DYNAMICBUFFER_H
 
-#include "DynamicArray.h"
-
-#include "openpal/container/WriteBufferView.h"
-#include "openpal/container/ReadBufferView.h"
-
-#include <cstdint>
+#include "Buffer.h"
 
 namespace openpal
 {
+	Buffer::Buffer(uint32_t size) : Array<uint8_t, uint32_t>(size)
+	{}
 
-class DynamicBuffer : public DynamicArray<uint8_t, uint32_t>
-{
+	Buffer::Buffer(const ReadBufferView& input) : Array<uint8_t, uint32_t>(input.Size())
+	{
+		auto dest = this->GetWriteBufferView();
+		input.CopyTo(dest);
+	}
 
-public:
+	ReadBufferView Buffer::ToReadOnly() const
+	{
+		return ReadBufferView(this->buffer, this->size);
+	}
 
-	DynamicBuffer(uint32_t size);
+	WriteBufferView Buffer::GetWriteBufferView()
+	{
+		return WriteBufferView(this->buffer, this->Size());
+	}
 
-	// initialize with the exact size and contents of the view
-	DynamicBuffer(const ReadBufferView& input);
-
-	ReadBufferView ToReadOnly() const;
-
-	WriteBufferView GetWriteBufferView();
-
-	WriteBufferView GetWriteBufferView(uint32_t maxSize);
-
-	const uint8_t* operator()() const { return buffer; }
-
-	uint8_t* operator()() { return buffer; }
-};
-
+	WriteBufferView Buffer::GetWriteBufferView(uint32_t maxSize)
+	{		
+		if (maxSize <= this->Size())
+		{
+			return WriteBufferView(this->buffer, maxSize);
+		}
+		else
+		{
+			return GetWriteBufferView();
+		}
+	}
 }
 
-#endif

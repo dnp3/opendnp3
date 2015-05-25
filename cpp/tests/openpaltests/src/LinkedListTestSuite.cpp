@@ -20,7 +20,7 @@
  */
 #include <catch.hpp>
 
-#include <openpal/container/DynamicArray.h>
+#include <openpal/container/Array.h>
 #include <openpal/container/LinkedList.h>
 
 using namespace openpal;

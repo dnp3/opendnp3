@@ -69,7 +69,7 @@ bool SimpleUserDatabase::UserExists(const User& user) const
 
 void SimpleUserDatabase::ConfigureUser(const User& user, UpdateKeyMode type, const openpal::ReadBufferView& key)
 {
-	userMap[user.GetId()] = StoredUserData(type, std::unique_ptr<DynamicBuffer>(new DynamicBuffer(key)));
+	userMap[user.GetId()] = StoredUserData(type, std::unique_ptr<openpal::Buffer>(new openpal::Buffer(key)));
 }
 
 }

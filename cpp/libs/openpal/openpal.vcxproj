@@ -23,8 +23,8 @@
     <ClInclude Include="src\openpal\channel\IPhysicalLayer.h" />
     <ClInclude Include="src\openpal\channel\IPhysicalLayerCallbacks.h" />
     <ClInclude Include="src\openpal\Configure.h" />
-    <ClInclude Include="src\openpal\container\DynamicArray.h" />
-    <ClInclude Include="src\openpal\container\DynamicBuffer.h" />
+    <ClInclude Include="src\openpal\container\Array.h" />
+    <ClInclude Include="src\openpal\container\Buffer.h" />
     <ClInclude Include="src\openpal\container\HasSize.h" />
     <ClInclude Include="src\openpal\container\ArrayView.h" />
     <ClInclude Include="src\openpal\container\LinkedList.h" />
@@ -76,7 +76,7 @@
     <ClInclude Include="src\openpal\util\Uncopyable.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\openpal\container\DynamicBuffer.cpp" />
+    <ClCompile Include="src\openpal\container\Buffer.cpp" />
     <ClCompile Include="src\openpal\container\ReadBufferView.cpp" />
     <ClCompile Include="src\openpal\container\WriteBufferView.cpp" />
     <ClCompile Include="src\openpal\crypto\SecureCompare.cpp" />

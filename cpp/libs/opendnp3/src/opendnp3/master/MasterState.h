@@ -23,7 +23,7 @@
 
 #include <openpal/executor/IExecutor.h>
 #include <openpal/logging/LogRoot.h>
-#include <openpal/container/DynamicBuffer.h>
+#include <openpal/container/Buffer.h>
 #include <openpal/executor/TimerRef.h>
 
 #include "opendnp3/LayerInterfaces.h"
@@ -80,7 +80,7 @@ namespace opendnp3
 		MasterTasks tasks;
 		MasterScheduler scheduler;
 		std::deque<APDUHeader> confirmQueue;
-		openpal::DynamicBuffer txBuffer;		
+		openpal::Buffer txBuffer;		
 
 
 	private:

@@ -23,7 +23,7 @@
 #include "BufferHelpers.h"
 
 #include <openpal/util/ToHex.h>
-#include <openpal/container/DynamicBuffer.h>
+#include <openpal/container/Buffer.h>
 
 #include <sstream>
 
@@ -77,7 +77,7 @@ std::string SkipBytesHex(const std::string& input, uint32_t bytes)
 
 std::string RepeatHex(uint8_t byte, uint16_t count)
 {
-	DynamicBuffer buffer(count);
+	Buffer buffer(count);
 	buffer.GetWriteBufferView().SetAllTo(byte);
 	return ToHex(buffer.ToReadOnly());
 }

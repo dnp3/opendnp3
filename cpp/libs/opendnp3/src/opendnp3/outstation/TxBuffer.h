@@ -21,7 +21,7 @@
 #ifndef OPENDNP3_TXBUFFER_H
 #define OPENDNP3_TXBUFFER_H
 
-#include <openpal/container/DynamicBuffer.h>
+#include <openpal/container/Buffer.h>
 #include <opendnp3/app/APDUResponse.h>
 
 namespace opendnp3
@@ -53,7 +53,7 @@ class TxBuffer
 	private:
 			
 	openpal::ReadBufferView lastResponse;	
-	openpal::DynamicBuffer buffer;	
+	openpal::Buffer buffer;	
 };
 
 }

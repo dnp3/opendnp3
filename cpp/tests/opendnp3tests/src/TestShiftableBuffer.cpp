@@ -22,7 +22,7 @@
 
 #include <opendnp3/link/ShiftableBuffer.h>
 
-#include <openpal/container/DynamicBuffer.h>
+#include <openpal/container/Buffer.h>
 
 #include <cstring>
 
@@ -36,13 +36,13 @@ const static uint8_t SYNC[] = {0x05, 0x64};
 
 TEST_CASE(SUITE("ConstructDestruct"))
 {
-	DynamicBuffer buffer(100);
+	Buffer buffer(100);
 	ShiftableBuffer b(buffer(), buffer.Size());
 }
 
 TEST_CASE(SUITE("InitialState"))
 {
-	DynamicBuffer buffer(100);
+	Buffer buffer(100);
 	ShiftableBuffer b(buffer(), buffer.Size());
 
 	REQUIRE(b.NumBytesRead() == 0);
@@ -52,7 +52,7 @@ TEST_CASE(SUITE("InitialState"))
 
 TEST_CASE(SUITE("ReadingWriting"))
 {
-	DynamicBuffer buffer(100);
+	Buffer buffer(100);
 	ShiftableBuffer b(buffer(), buffer.Size());
 
 	b.AdvanceWrite(40);
@@ -74,7 +74,7 @@ TEST_CASE(SUITE("ReadingWriting"))
 
 TEST_CASE(SUITE("Shifting"))
 {
-	DynamicBuffer buffer(100);
+	Buffer buffer(100);
 	ShiftableBuffer b(buffer(), buffer.Size());
 
 	//initialize buffer to all zeros
@@ -91,7 +91,7 @@ TEST_CASE(SUITE("Shifting"))
 
 TEST_CASE(SUITE("SyncNoPattern"))
 {
-	DynamicBuffer buffer(100);
+	Buffer buffer(100);
 	ShiftableBuffer b(buffer(), buffer.Size());
 
 	for (size_t i = 0; i < b.NumWriteBytes(); ++i)
@@ -108,7 +108,7 @@ TEST_CASE(SUITE("SyncNoPattern"))
 
 TEST_CASE(SUITE("SyncBeginning"))
 {
-	DynamicBuffer buffer(100);
+	Buffer buffer(100);
 	ShiftableBuffer b(buffer(), buffer.Size());
 
 	for(size_t i = 0; i < b.NumWriteBytes(); ++i) b.WriteBuff()[i] = 0;
@@ -124,7 +124,7 @@ TEST_CASE(SUITE("SyncBeginning"))
 
 TEST_CASE(SUITE("SyncFullPattern"))
 {
-	DynamicBuffer buffer(100);
+	Buffer buffer(100);
 	ShiftableBuffer b(buffer(), buffer.Size());
 
 	//initialize buffer to all zeros
@@ -140,7 +140,7 @@ TEST_CASE(SUITE("SyncFullPattern"))
 
 TEST_CASE(SUITE("SyncPartialPattern"))
 {
-	DynamicBuffer buffer(100);
+	Buffer buffer(100);
 	ShiftableBuffer b(buffer(), buffer.Size());
 
 	//initialize buffer to all zeros

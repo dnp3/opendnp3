@@ -23,7 +23,7 @@
 
 #include "IUserDatabase.h"
 
-#include <openpal/container/DynamicBuffer.h>
+#include <openpal/container/Buffer.h>
 
 #include <map>
 #include <memory>
@@ -51,7 +51,7 @@ class SimpleUserDatabase : public IUserDatabase
 
 	private:
 
-		typedef std::pair<UpdateKeyMode, std::unique_ptr<openpal::DynamicBuffer>> StoredUserData;
+		typedef std::pair<UpdateKeyMode, std::unique_ptr<openpal::Buffer>> StoredUserData;
 		std::map<uint16_t, StoredUserData> userMap;
 };
 

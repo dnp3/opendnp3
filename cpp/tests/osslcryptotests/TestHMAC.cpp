@@ -22,7 +22,7 @@
 
 #include <osslcrypto/CryptoProvider.h>
 
-#include <openpal/container/DynamicBuffer.h>
+#include <openpal/container/Buffer.h>
 
 #include <testlib/HexConversions.h>
 #include <testlib/BufferHelpers.h>
@@ -39,7 +39,7 @@ using namespace testlib;
 
 void TestHMACSuccess(IHMACAlgo& algo, const openpal::ReadBufferView& key, const openpal::ReadBufferView& data, const std::string& expected)
 {
-	DynamicBuffer output(algo.OutputSize());
+	Buffer output(algo.OutputSize());
 	auto dest = output.GetWriteBufferView();
 	REQUIRE(algo.Calculate(key, { data }, dest));
 	auto resultStr = ToHex(output.ToReadOnly(), false);
@@ -48,7 +48,7 @@ void TestHMACSuccess(IHMACAlgo& algo, const openpal::ReadBufferView& key, const 
 
 void TestInsufficientOutputSizeFails(IHMACAlgo& algo)
 {	
-	DynamicBuffer output(algo.OutputSize() - 1);
+	Buffer output(algo.OutputSize() - 1);
 	auto dest = output.GetWriteBufferView();
 	auto success = algo.Calculate(ReadBufferView(), { ReadBufferView() }, dest);
 	REQUIRE(!success);

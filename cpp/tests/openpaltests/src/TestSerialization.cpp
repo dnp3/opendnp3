@@ -23,7 +23,7 @@
 #include <testlib/BufferHelpers.h>
 #include <testlib/HexConversions.h>
 
-#include <openpal/container/DynamicBuffer.h>
+#include <openpal/container/Buffer.h>
 #include <openpal/serialization/Parse.h>
 #include <openpal/serialization/Format.h>
 #include <openpal/serialization/Serialization.h>
@@ -39,7 +39,7 @@ using namespace std;
 template <class T>
 bool TestReadWrite(T value)
 {
-	DynamicBuffer buffer(2 * sizeof(T));
+	Buffer buffer(2 * sizeof(T));
 
 	for (uint32_t i = 0; i < sizeof(T); ++i)
 	{
@@ -64,7 +64,7 @@ bool TestReadWrite(T value)
 template <class T>
 bool TestReadWriteFloat(T value)
 {
-	DynamicBuffer buffer(2 * sizeof(T));
+	Buffer buffer(2 * sizeof(T));
 
 	for (uint32_t i = 0; i < sizeof(T); ++i)
 	{
@@ -93,7 +93,7 @@ bool TestFloatParsing(std::string hex, typename T::Type value)
 	const uint32_t TYPE_SIZE = static_cast<uint32_t>(sizeof(typename T::Type));
 	REQUIRE(hs.Size() == TYPE_SIZE);
 
-	DynamicBuffer buffer(2 * TYPE_SIZE);
+	Buffer buffer(2 * TYPE_SIZE);
 
 	for (uint32_t i = 0; i < TYPE_SIZE; ++i)
 	{
@@ -227,7 +227,7 @@ TEST_CASE(SUITE("FormatMany"))
 
 	const uint32_t SIZE = 7;
 
-	DynamicBuffer output(SIZE + 3);
+	Buffer output(SIZE + 3);
 
 	{
 		auto dest = output.GetWriteBufferView();

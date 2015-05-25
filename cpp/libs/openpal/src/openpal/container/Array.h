@@ -24,6 +24,7 @@
 #include "ArrayView.h"
 
 #include "openpal/Configure.h"
+#include "openpal/util/Uncopyable.h"
 
 #include <assert.h>
 #include <cstdint>
@@ -32,22 +33,22 @@ namespace openpal
 {
 
 template <class ValueType, class IndexType>
-class DynamicArray : public HasSize<IndexType>
+class Array : public HasSize<IndexType>, private openpal::Uncopyable
 {
 
 public:
 
-	DynamicArray(IndexType size) :
+	Array(IndexType size) :
 		HasSize<IndexType>(size),
 		buffer(new ValueType[size]())
 	{}
 
-	DynamicArray() :
+	Array() :
 		HasSize<IndexType>(0),
 		buffer(nullptr)
 	{}
 
-	DynamicArray(const DynamicArray& copy) :
+	Array(const Array& copy) :
 		HasSize<IndexType>(copy.Size()),
 		buffer(new ValueType[copy.Size()])
 	{
@@ -108,7 +109,7 @@ public:
 		for(uint32_t i = 0; i < this->size; ++i) action(buffer[i], i);
 	}
 
-	virtual ~DynamicArray()
+	virtual ~Array()
 	{
 		delete[] buffer;
 	}
@@ -119,7 +120,7 @@ protected:
 
 private:
 	
-	DynamicArray& operator=(const DynamicArray&);
+	Array& operator=(const Array&);
 };
 
 }

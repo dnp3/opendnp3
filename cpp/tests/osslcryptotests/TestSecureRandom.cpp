@@ -22,7 +22,7 @@
 
 #include <osslcrypto/CryptoProvider.h>
 
-#include <openpal/container/DynamicBuffer.h>
+#include <openpal/container/Buffer.h>
 #include <openpal/util/ToHex.h>
 
 #include <thread>
@@ -38,7 +38,7 @@ TEST_CASE(SUITE("BasicInstantiationAndRequestRandomWorks"))
 {
 	CryptoProvider provider;
 
-	DynamicBuffer buffer(10);
+	Buffer buffer(10);
 
 	const int NUM_RAND_FETCH = 100;
 
@@ -68,7 +68,7 @@ TEST_CASE(SUITE("TestThatMultiThreadingDoesNotCrash"))
 
 	auto runner = [&]()
 	{
-		DynamicBuffer buffer(100);
+		Buffer buffer(100);
 		for (int i = 0; i < NUM_RAND_FETCH; ++i)
 		{
 			auto dest = buffer.GetWriteBufferView();
