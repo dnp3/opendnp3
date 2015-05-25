@@ -5,13 +5,17 @@ set(OPENDNP3_MINOR_VERSION 0)
 set(OPENDNP3_MICRO_VERSION 1)
 set(OPENDNP3_VERSION ${OPENDNP3_MAJOR_VERSION}.${OPENDNP3_MINOR_VERSION}.${OPENDNP3_MICRO_VERSION})
 
-# options for the project you can enable
-option(LIBCPP "link with libc++ (required for clang)" OFF)
-option(OSSL "build the openssl crypto wrapper for SA" OFF)
+# options on-by-default that you can disable
+option(OSSL "build the openssl crypto wrapper for SA" ON)
+option(DEMO "Build demo applications" ON)
+option(TEST "Build tests" ON)
+
+# options off-by-default that you can enable
+option(LIBCPP "manually link with libc++ (required for clang in some configurations)" OFF)
 option(WERROR "Set all warnings to errors" OFF)
 option(STATICLIBS "Builds static versions of all installed libraries" OFF)
 option(FUZZCOV "Builds openpal and opendnp3 with clang coverage flags" OFF)
-option(DEMOS "Builds demo applications" OFF)
+
 
 # only used for opendnp3/openpal when FUZZCOV=ON
 set(FUZZ_LINK_FLAGS "-fsanitize=address")
