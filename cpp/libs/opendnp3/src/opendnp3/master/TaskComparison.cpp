@@ -28,53 +28,51 @@ namespace opendnp3
 
 TaskComparison::Result TaskComparison::SelectHigherPriority(const openpal::MonotonicTimestamp& now, const IMasterTask& lhs, const IMasterTask& rhs)
 {
-	// if they're both enabled we compare based on
-	// blocking/priority/expiration time
-	if (TaskComparison::Enabled(lhs) && TaskComparison::Enabled(rhs))
-	{
-		if ((lhs.Priority() > rhs.Priority()) && rhs.BlocksLowerPriority())
-		{
-			return Result::Right;
-		}
-		else if (rhs.Priority() > lhs.Priority() && lhs.BlocksLowerPriority())
-		{
-			return Result::Left;
-		}
-		else // equal priority or neither task blocks lower priority tasks, compare based on time
-		{
-			auto tlhs = lhs.ExpirationTime();
-			auto trhs = rhs.ExpirationTime();
-			auto lhsExpired = tlhs.milliseconds <= now.milliseconds;
-			auto rhsExpired = trhs.milliseconds <= now.milliseconds;
-
-			if (lhsExpired && rhsExpired)
-			{
-				// both expired, compare based on priority				
-				return HigherPriority(lhs, rhs);
-			}
-			else
-			{
-				if (tlhs.milliseconds < trhs.milliseconds)
-				{
-					return Result::Left;
-				}
-				else if (trhs.milliseconds < tlhs.milliseconds)
-				{
-					return Result::Right;
-				}
-				else
-				{
-					// if equal times, compare based on priority
-					return HigherPriority(lhs, rhs);
-				}
-			}
-		}
-	}
-	else
+	// if one of the tasks is disabled, pick the enabled one
+	
+	if (!TaskComparison::Enabled(lhs) || !TaskComparison::Enabled(rhs))
 	{
 		// always prefer the enabled task over the one that isn't
 		return Enabled(rhs) ? Result::Right : Result::Left;
 	}
+
+	if ((lhs.Priority() > rhs.Priority()) && rhs.BlocksLowerPriority())
+	{
+		return Result::Right;
+	}
+	else if (rhs.Priority() > lhs.Priority() && lhs.BlocksLowerPriority())
+	{
+		return Result::Left;
+	}
+	else // equal priority or neither task blocks lower priority tasks, compare based on time
+	{
+		auto tlhs = lhs.ExpirationTime();
+		auto trhs = rhs.ExpirationTime();
+		auto lhsExpired = tlhs.milliseconds <= now.milliseconds;
+		auto rhsExpired = trhs.milliseconds <= now.milliseconds;
+
+		if (lhsExpired && rhsExpired)
+		{
+			// both expired, compare based on priority				
+			return HigherPriority(lhs, rhs);
+		}
+		else
+		{
+			if (tlhs.milliseconds < trhs.milliseconds)
+			{
+				return Result::Left;
+			}
+			else if (trhs.milliseconds < tlhs.milliseconds)
+			{
+				return Result::Right;
+			}
+			else
+			{
+				// if equal times, compare based on priority
+				return HigherPriority(lhs, rhs);
+			}
+		}
+	}	
 }
 
 TaskComparison::Result TaskComparison::HigherPriority(const IMasterTask& lhs, const IMasterTask& rhs)
