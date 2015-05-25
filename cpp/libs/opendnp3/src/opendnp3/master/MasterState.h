@@ -32,6 +32,7 @@
 #include "opendnp3/master/IMasterState.h"
 #include "opendnp3/master/ITaskLock.h"
 #include "opendnp3/master/IMasterApplication.h"
+#include "opendnp3/master/MasterAuthWrapper.h"
 
 #include <deque>
 
@@ -64,6 +65,8 @@ namespace opendnp3
 		ITaskLock* pTaskLock;
 		IMasterApplication* pApplication;
 		IScheduleCallback* pScheduleCallback;
+		MasterAuthWrapper auth;
+
 
 		// ------- dynamic state ---------
 		bool isOnline;

@@ -117,14 +117,14 @@ public:
 	/**
 	* Add an SA-enabled outstation to the channel
 	*/
-	virtual IOutstation* AddOutstation(char const* id,
-		opendnp3::ICommandHandler& commandHandler,
-		opendnp3::IOutstationApplication& application,
-		const opendnp3::OutstationStackConfig& config,
-		const secauthv5::OutstationAuthSettings& authSettings,
-		openpal::IUTCTimeSource& timeSource,
-		secauthv5::IUserDatabase& userDB,
-		openpal::ICryptoProvider& crypto) = 0;
+	virtual IOutstation* AddOutstation(	char const* id,
+										opendnp3::ICommandHandler& commandHandler,
+										opendnp3::IOutstationApplication& application,
+										const opendnp3::OutstationStackConfig& config,
+										const secauthv5::OutstationAuthSettings& authSettings,
+										openpal::IUTCTimeSource& timeSource,
+										secauthv5::IUserDatabase& userDB,
+										openpal::ICryptoProvider& crypto) = 0;
 };
 
 }

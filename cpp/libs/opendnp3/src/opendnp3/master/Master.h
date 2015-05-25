@@ -58,6 +58,8 @@ class Master : public IUpperLayer, private IScheduleCallback
 	
 	ICommandProcessor& GetCommandProcessor();
 
+	void SetAuthProvider(IMasterAuthProvider& provider);
+
 	/// ---- Permanently bound scans ----
 
 	MasterScan AddScan(openpal::TimeDuration period, const std::function<void(HeaderWriter&)>& builder, ITaskCallback* pCallback = nullptr, int userId = -1);
