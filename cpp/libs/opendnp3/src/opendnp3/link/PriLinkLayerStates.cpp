@@ -242,6 +242,7 @@ void PLLS_ConfDataWait::Nack(LinkLayer* pLinkLayer, bool receiveBuffFull)
 		pLinkLayer->ChangeState(PLLS_LinkResetTransmitWait::Inst());
 		pLinkLayer->QueueResetLinks();
 	}
+	pLinkLayer->CallStatusCallback(opendnp3::LinkStatus::UNRESET);
 }
 
 void PLLS_ConfDataWait::Failure(LinkLayer* pLinkLayer)
