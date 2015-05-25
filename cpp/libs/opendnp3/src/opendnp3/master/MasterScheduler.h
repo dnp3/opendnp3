@@ -22,6 +22,7 @@
 #ifndef OPENDNP3_MASTERSCHEDULER_H
 #define OPENDNP3_MASTERSCHEDULER_H
 
+#include <openpal/executor/TimerRef.h>
 #include <openpal/executor/IExecutor.h>
 #include <openpal/container/Settable.h>
 #include <openpal/container/ManagedPtr.h>
@@ -71,15 +72,9 @@ private:
 
 	openpal::ManagedPtr<IMasterTask> PopNextTask();
 	
-	void StartOrRestartTimer(const openpal::MonotonicTimestamp& expiration);
+	void StartOrRestartTimer(const openpal::MonotonicTimestamp& expiration);	
 
-	void StartTimer(const openpal::TimeDuration& timeout);
-
-	void StartTimer(const openpal::MonotonicTimestamp& expiration);
-
-	void OnTimerExpiration();	
-
-	bool CancelScheduleTimer();		
+	void OnTimerExpiration();		
 
 	// ----------- static configuration ---------
 
@@ -89,7 +84,7 @@ private:
 	// ----------- dynamic state -----------
 
 	bool isOnline;	
-	openpal::ITimer* pTimer;	
+	openpal::TimerRef timer;
 	std::vector<openpal::ManagedPtr<IMasterTask>> tasks;
 };
 

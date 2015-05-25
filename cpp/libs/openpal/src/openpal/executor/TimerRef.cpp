@@ -38,6 +38,11 @@ bool TimerRef::IsActive() const
 	return (pTimer != nullptr); 
 }
 
+MonotonicTimestamp TimerRef::ExpiresAt() const
+{	
+	return pTimer ? pTimer->ExpiresAt() : MonotonicTimestamp::Max();
+}
+
 bool TimerRef::Cancel()
 {
 	if (pTimer)
@@ -52,7 +57,20 @@ bool TimerRef::Cancel()
 	}
 }
 
-bool TimerRef::Start(TimeDuration expiration, const openpal::Action0& action)
+bool TimerRef::Start(const TimeDuration& timeout, const openpal::Action0& action)
+{
+	if (pTimer)
+	{
+		return false;
+	}
+	else
+	{
+		pTimer = pExecutor->Start(timeout, action);
+		return true;
+	}
+}
+
+bool TimerRef::Start(const MonotonicTimestamp& expiration, const openpal::Action0& action)
 {
 	if (pTimer)
 	{
@@ -65,7 +83,17 @@ bool TimerRef::Start(TimeDuration expiration, const openpal::Action0& action)
 	}
 }
 
-void TimerRef::Restart(TimeDuration expiration, const openpal::Action0& action)
+void TimerRef::Restart(const TimeDuration& timeout, const openpal::Action0& action)
+{
+	if (pTimer)
+	{
+		pTimer->Cancel();
+	}
+
+	pTimer = pExecutor->Start(timeout, action);
+}
+
+void TimerRef::Restart(const MonotonicTimestamp& expiration, const openpal::Action0& action)
 {
 	if (pTimer)
 	{

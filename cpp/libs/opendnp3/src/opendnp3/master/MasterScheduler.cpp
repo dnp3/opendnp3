@@ -36,7 +36,7 @@ MasterScheduler::MasterScheduler(openpal::IExecutor& executor, IScheduleCallback
 	pExecutor(&executor),
 	pCallback(&callback),	
 	isOnline(false),	
-	pTimer(nullptr)	
+	timer(executor)
 {
 
 }
@@ -115,7 +115,7 @@ void MasterScheduler::OnLowerLayerDown()
 	if (isOnline)
 	{
 		isOnline = false;
-		this->CancelScheduleTimer();
+		timer.Cancel();		
 
 		auto now = pExecutor->GetTime();			
 		
@@ -129,54 +129,26 @@ void MasterScheduler::OnLowerLayerDown()
 }
 
 void MasterScheduler::OnTimerExpiration()
-{
-	pTimer = nullptr;
+{	
 	pCallback->OnPendingTask();
 }
 
 void MasterScheduler::StartOrRestartTimer(const openpal::MonotonicTimestamp& expiration)
 {
-	if (pTimer)
+	auto callback = [this](){ this->OnTimerExpiration(); };
+
+	if (timer.IsActive()) 				
 	{
-		if (pTimer->ExpiresAt() > expiration)
+		if (timer.ExpiresAt() > expiration)
 		{
-			this->CancelScheduleTimer();
-			this->StartTimer(expiration);
-		}
+			timer.Restart(expiration, callback);			
+		}		
 	}
 	else
 	{
-		this->StartTimer(expiration);
-	}
+		timer.Start(expiration, callback);
+	}	
 }
-
-void MasterScheduler::StartTimer(const openpal::TimeDuration& timeout)
-{
-	auto callback = [this](){ this->OnTimerExpiration(); };
-	pTimer = pExecutor->Start(timeout, Action0::Bind(callback));
-}
-
-void MasterScheduler::StartTimer(const openpal::MonotonicTimestamp& expiration)
-{
-	auto callback = [this](){ this->OnTimerExpiration(); };
-	pTimer = pExecutor->Start(expiration, Action0::Bind(callback));
-}
-
-
-bool MasterScheduler::CancelScheduleTimer()
-{
-	if (pTimer)
-	{
-		pTimer->Cancel();
-		pTimer = nullptr;
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-
 
 }
 
