@@ -111,7 +111,7 @@ target_link_libraries(secauthv5 opendnp3)
 install(TARGETS secauthv5 DESTINATION lib)
 install(DIRECTORY ./cpp/libs/secauthv5/src/secauthv5/ DESTINATION include/secauthv5 ${INSTALL_ARGS})
 
-if(DEMOS)
+if(DEMO)
 
   # ----- master demo executable -----
   add_executable (masterdemo ./cpp/examples/master/DemoMain.cpp)
@@ -134,7 +134,7 @@ if(OSSL)
   install(TARGETS osslcrypto DESTINATION lib)
   install(DIRECTORY ./cpp/libs/osslcrypto/src/osslcrypto/ DESTINATION include/osslcrypto ${INSTALL_ARGS})
 
-  if(DEMOS)
+  if(DEMO)
 
   # ----- outstation SAv5 demo executable -----
   add_executable (outstationdemoSAv5 ./cpp/examples/sav5/outstation/DemoMain.cpp)
@@ -144,7 +144,7 @@ if(OSSL)
 
 endif()
 
-if(TESTS)
+if(TEST)
 
   # ----- testlib library ------
   file(GLOB_RECURSE testlib_SRC ./cpp/tests/testlib/src/testlib/*.cpp)

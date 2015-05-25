@@ -44,11 +44,11 @@ namespace opendnp3
 		pScheduleCallback(&scheduleCallback),
 		isOnline(false),
 		isSending(false),		
-		pState(&MasterStateIdle::Instance()),
 		responseTimer(executor),
 		tasks(params, logger, application, SOEHandler, application),
 		scheduler(executor, scheduleCallback),
-		txBuffer(params.maxTxFragSize)
+		txBuffer(params.maxTxFragSize),
+		pState(&MasterStateIdle::Instance())
 	{}
 
 	void MasterState::OnStart()
