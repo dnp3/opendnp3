@@ -304,10 +304,10 @@ TEST_CASE(SUITE("CloseBehavior"))
 }
 
 // Send request link status after keep alive timer expiry
-TEST_CASE(SUITE("KeepAliveExpiry"))
+TEST_CASE(SUITE("NotResetKeepAliveExpiry"))
 {
     LinkConfig cfg = LinkLayerTest::DefaultConfig();
-    
+	cfg.NumRetry = 1;
 	DynamicBuffer buffer(292);
 
 	LinkLayerTest t(cfg);
@@ -324,8 +324,9 @@ TEST_CASE(SUITE("KeepAliveExpiry"))
     }
     t.link.LinkStatus(false, false, 1, 1024);
     
-    
     t.exe.AdvanceTime(cfg.KeepAlive);
+	REQUIRE(t.log.IsLogErrorFree());
+
 	REQUIRE(t.exe.RunOne()); // trigger the keep alive timer callback
 	REQUIRE(t.numWrites ==  2);
 	t.link.OnTransmitResult(true);
@@ -334,15 +335,96 @@ TEST_CASE(SUITE("KeepAliveExpiry"))
         auto frame = LinkFrame::FormatRequestLinkStatus(writeTo, true, 1024, 1, nullptr);
         REQUIRE(toHex(t.lastWrite) == toHex(frame));
     }
-	REQUIRE(t.upper.CountersEqual(0, 0));
         
     REQUIRE(t.log.IsLogErrorFree());
     t.exe.AdvanceTime(cfg.Timeout);
-	REQUIRE(t.exe.RunOne()); // trigger the keep alive timer callback
-	REQUIRE(t.upper.CountersEqual(0, 1));
+	REQUIRE(t.exe.RunOne()); // trigger the timeout retry timer callback
+	REQUIRE(t.numWrites == 3);
+	t.link.OnTransmitResult(true);
+	{
+		auto writeTo = buffer.GetWriteBufferView();
+		auto frame = LinkFrame::FormatRequestLinkStatus(writeTo, true, 1024, 1, nullptr);
+		REQUIRE(toHex(t.lastWrite) == toHex(frame));
+	}
 	REQUIRE(t.log.PopOneEntry(flags::WARN));
 
+	t.exe.AdvanceTime(cfg.Timeout);
+	REQUIRE(t.exe.RunOne()); // trigger the final timeout retry timer callback
+	REQUIRE(t.numWrites == 3);
+	REQUIRE(t.log.PopOneEntry(flags::WARN));
 }
+
+// Send request link status after keep alive timer expiry
+TEST_CASE(SUITE("ResetKeepAliveExpiry"))
+{
+	LinkConfig cfg = LinkLayerTest::DefaultConfig();
+	cfg.NumRetry = 1;
+	cfg.UseConfirms = true;
+	DynamicBuffer buffer(292);
+
+	LinkLayerTest t(cfg);
+	t.link.OnLowerLayerUp();
+
+	ByteStr bytes(250, 0);
+	BufferSegment segments(250, bytes.ToHex());
+	t.link.Send(segments); // Reset link
+	REQUIRE(t.numWrites == 1);
+	t.link.OnTransmitResult(true);
+	t.link.Ack(false, false, 1, 1024); // Ack it
+
+	REQUIRE(t.numWrites == 2);
+	{
+		auto writeTo = buffer.GetWriteBufferView();
+		auto result = LinkFrame::FormatConfirmedUserData(writeTo, true, true, 1024, 1, bytes, bytes.Size(), nullptr);
+		REQUIRE(toHex(t.lastWrite) == toHex(result)); // check that the data got sent
+	}
+	t.link.OnTransmitResult(true);
+	t.link.Ack(false, false, 1, 1024); // Ack it
+
+	REQUIRE(t.numWrites == 2);
+	t.link.OnTransmitResult(true);
+
+	t.exe.AdvanceTime(cfg.KeepAlive);
+	REQUIRE(t.exe.RunOne()); // trigger the keep alive timer callback
+	REQUIRE(t.numWrites == 3);
+	t.link.OnTransmitResult(true);
+	{
+		auto writeTo = buffer.GetWriteBufferView();
+		auto frame = LinkFrame::FormatRequestLinkStatus(writeTo, true, 1024, 1, nullptr);
+		REQUIRE(toHex(t.lastWrite) == toHex(frame));
+	}
+	t.link.LinkStatus(false, false, 1, 1024);
+
+	t.exe.AdvanceTime(cfg.KeepAlive);
+	REQUIRE(t.log.IsLogErrorFree());
+
+	REQUIRE(t.exe.RunOne()); // trigger the keep alive timer callback
+	REQUIRE(t.numWrites == 4);
+	t.link.OnTransmitResult(true);
+	{
+		auto writeTo = buffer.GetWriteBufferView();
+		auto frame = LinkFrame::FormatRequestLinkStatus(writeTo, true, 1024, 1, nullptr);
+		REQUIRE(toHex(t.lastWrite) == toHex(frame));
+	}
+
+	REQUIRE(t.log.IsLogErrorFree());
+	t.exe.AdvanceTime(cfg.Timeout);
+	REQUIRE(t.exe.RunOne()); // trigger the timeout retry timer callback
+	REQUIRE(t.numWrites == 5);
+	t.link.OnTransmitResult(true);
+	{
+		auto writeTo = buffer.GetWriteBufferView();
+		auto frame = LinkFrame::FormatRequestLinkStatus(writeTo, true, 1024, 1, nullptr);
+		REQUIRE(toHex(t.lastWrite) == toHex(frame));
+	}
+	REQUIRE(t.log.PopOneEntry(flags::WARN));
+
+	t.exe.AdvanceTime(cfg.Timeout);
+	REQUIRE(t.exe.RunOne()); // trigger the final timeout retry timer callback
+	REQUIRE(t.numWrites == 5);
+	REQUIRE(t.log.PopOneEntry(flags::WARN));
+}
+
 
 TEST_CASE(SUITE("ResetLinkTimerExpiration"))
 {
