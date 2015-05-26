@@ -37,7 +37,8 @@ enum class MasterTaskType : uint8_t
   SERIAL_TIME_SYNC = 4,
   ENABLE_UNSOLICITED = 5,
   AUTO_EVENT_SCAN = 6,
-  USER_TASK = 7
+  USER_TASK = 7,
+  SET_SESSION_KEYS = 8
 };
 
 

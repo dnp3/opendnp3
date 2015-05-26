@@ -26,6 +26,7 @@
     <ClInclude Include="src\secauthv5\HMACMode.h" />
     <ClInclude Include="src\secauthv5\HMACProvider.h" />
     <ClInclude Include="src\secauthv5\IUserDatabase.h" />
+    <ClInclude Include="src\secauthv5\master\SessionKeyTask.h" />
     <ClInclude Include="src\secauthv5\outstation\AuthRequestHandler.h" />
     <ClInclude Include="src\secauthv5\outstation\ChallengeState.h" />
     <ClInclude Include="src\secauthv5\outstation\IAuthRequestHandler.h" />

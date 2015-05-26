@@ -23,29 +23,29 @@
 
 namespace opendnp3
 {
-
 	namespace priority
 	{
-		const int COMMAND = 0;
+		const int SESSION_KEY = 50;
 
-		const int USER_WRITE = 1;
-		
-		const int CLEAR_RESTART = 10;
-		
-		const int DISABLE_UNSOLICITED = 20;
+		const int COMMAND = 100;
 
-		const int ASSIGN_CLASS = 30;
+		const int USER_WRITE = 110;
+		
+		const int CLEAR_RESTART = 120;
+		
+		const int DISABLE_UNSOLICITED = 130;
+
+		const int ASSIGN_CLASS = 140;
 				
-		const int INTEGRITY_POLL = 40;
+		const int INTEGRITY_POLL = 150;
 
-		const int TIME_SYNC = 50;		
+		const int TIME_SYNC = 160;		
 
-		const int ENABLE_UNSOLICITED = 60;
+		const int ENABLE_UNSOLICITED = 170;
 
-		const int EVENT_SCAN = 70;
+		const int EVENT_SCAN = 180;
 
-		const int USER_POLL = 80;
-
+		const int USER_POLL = 190;
 	}
 
 }
