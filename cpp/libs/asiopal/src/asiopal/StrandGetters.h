@@ -24,7 +24,7 @@
 
 #include <asio.hpp>
 
-#include <future>
+#include "Synchronized.h"
 
 namespace asiopal
 {
@@ -38,15 +38,15 @@ namespace asiopal
 		}
 		else
 		{
-			std::promise<T> promise;
-			auto pointer = &promise;
+			Synchronized<T> sync;
+			auto pointer = &sync;
 			auto lambda = [action, pointer]()
 			{
 				T tmp = action();
-				pointer->set_value(tmp);
+				pointer->SetValue(tmp);
 			};
 			strand.post(lambda);
-			return promise.get_future().get();
+			return sync.WaitForValue();
 		}
 	}
 
@@ -59,15 +59,15 @@ namespace asiopal
 		}
 		else
 		{
-			std::promise<void> promise;
-			auto pointer = &promise;
+			Synchronized<bool> sync;
+			auto pointer = &sync;
 			auto lambda = [action, pointer]()
 			{
 				action();
-				pointer->set_value();
+				pointer->SetValue(true);
 			};
 			strand.post(lambda);
-			promise.get_future().wait();
+			sync.WaitForValue();
 		}
 	}
 
