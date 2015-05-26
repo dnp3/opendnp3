@@ -24,6 +24,8 @@
 #include <openpal/executor/IExecutor.h>
 #include <openpal/logging/LogRoot.h>
 #include <openpal/container/Settable.h>
+#include <opendnp3/gen/LinkStatus.h>
+#include <opendnp3/link/ILinkStatusListener.h>
 
 #include "opendnp3/link/ILinkLayer.h"
 #include "opendnp3/link/ILinkSession.h"
@@ -75,6 +77,10 @@ public:
 	// Functions called by the primary and secondary station states
 	void ChangeState(PriStateBase*);
 	void ChangeState(SecStateBase*);
+	void CallStatusCallback(opendnp3::LinkStatus status);
+
+	// For registering a callback to listen to link status
+	void SetLinkStatusListener(opendnp3::ILinkStatusListener* Listener);
 
 	openpal::Logger& GetLogger()
 	{
@@ -187,6 +193,9 @@ private:
 	ILinkRouter* pRouter;
 	PriStateBase* pPriState;
 	SecStateBase* pSecState;
+
+	/// callback for listening to the status of the link
+	ILinkStatusListener* pStatusCallback;
 };
 
 }
