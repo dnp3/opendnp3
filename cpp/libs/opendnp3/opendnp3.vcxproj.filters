@@ -726,6 +726,12 @@
     <ClInclude Include="src\opendnp3\app\ITransactable.h">
       <Filter>Source\app</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\LinkStatus.h">
+      <Filter>Header\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\link\ILinkStatusListener.h">
+      <Filter>Header\link</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\AnalogOutput.cpp">
@@ -1090,6 +1096,9 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\objects\Group43.cpp">
       <Filter>Source\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\gen\LinkStatus.cpp">
+      <Filter>Source\link</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

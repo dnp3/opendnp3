@@ -91,6 +91,7 @@
     <ClInclude Include="src\opendnp3\gen\GroupVariation.h" />
     <ClInclude Include="src\opendnp3\gen\IndexMode.h" />
     <ClInclude Include="src\opendnp3\gen\IntervalUnits.h" />
+    <ClInclude Include="src\opendnp3\gen\LinkStatus.h" />
     <ClInclude Include="src\opendnp3\gen\MasterTaskType.h" />
     <ClInclude Include="src\opendnp3\gen\PointClass.h" />
     <ClInclude Include="src\opendnp3\gen\RestartMode.h" />
@@ -108,6 +109,7 @@
     <ClInclude Include="src\opendnp3\gen\TimeSyncMode.h" />
     <ClInclude Include="src\opendnp3\LayerInterfaces.h" />
     <ClInclude Include="src\opendnp3\link\IChannelStateListener.h" />
+    <ClInclude Include="src\opendnp3\link\ILinkStatusListener.h" />
     <ClInclude Include="src\opendnp3\link\LinkChannelStatistics.h" />
     <ClInclude Include="src\opendnp3\ErrorCodes.h" />
     <ClInclude Include="src\opendnp3\gen\ChannelState.h" />
@@ -278,6 +280,7 @@
     <ClCompile Include="src\opendnp3\gen\GroupVariation.cpp" />
     <ClCompile Include="src\opendnp3\gen\IntervalUnits.cpp" />
     <ClCompile Include="src\opendnp3\gen\LinkFunction.cpp" />
+    <ClCompile Include="src\opendnp3\gen\LinkStatus.cpp" />
     <ClCompile Include="src\opendnp3\gen\PointClass.cpp" />
     <ClCompile Include="src\opendnp3\gen\QualifierCode.cpp" />
     <ClCompile Include="src\opendnp3\gen\TaskCompletion.cpp" />
