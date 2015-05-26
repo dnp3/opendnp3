@@ -342,11 +342,13 @@ void LinkLayer::ResetKeepAlive()
         pKeepAliveTimer = nullptr;
 		if (pPriState == PLLS_SecNotReset::Inst())
 		{
+			this->ResetRetry();
 			this->QueueRequestLinkStatus();
 			this->ChangeState(PLLS_RequestLinkStatusTransmitWait<PLLS_SecNotReset>::Inst());
 		}
 		else if (pPriState == PLLS_SecReset::Inst())
 		{
+			this->ResetRetry();
 			this->QueueRequestLinkStatus();
 			this->ChangeState(PLLS_RequestLinkStatusTransmitWait<PLLS_SecReset>::Inst());
 		}
