@@ -46,6 +46,7 @@ MasterStackImpl::MasterStackImpl(
 		master(executor, root, stack.transport, SOEHandler, application, config.master, taskLock)
 {
 	stack.transport.SetAppLayer(&master);
+	stack.link.SetLinkStatusListener(this);
 }
 
 ICommandProcessor* MasterStackImpl::GetCommandProcessor()

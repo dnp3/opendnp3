@@ -43,6 +43,7 @@ OutstationStackImpl::OutstationStackImpl(
 	outstation(config.outstation, config.dbTemplate, executor, root, stack.transport, commandHandler, application)
 {
 	stack.transport.SetAppLayer(&outstation);
+	stack.link.SetLinkStatusListener(this);
 }
 
 opendnp3::DatabaseConfigView OutstationStackImpl::GetConfigView()

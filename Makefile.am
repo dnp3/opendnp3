@@ -96,7 +96,7 @@ cpp/libs/opendnp3/src/opendnp3/link/IOpenDelayStrategy.cpp \
 cpp/libs/opendnp3/src/opendnp3/link/LinkFrame.cpp \
 cpp/libs/opendnp3/src/opendnp3/link/LinkHeader.cpp \
 cpp/libs/opendnp3/src/opendnp3/link/LinkLayer.cpp \
-cpp/libs/opendnp3/src/opendnp3/link/LinkStatus.cpp \
+cpp/libs/opendnp3/src/opendnp3/gen/LinkStatus.cpp \
 cpp/libs/opendnp3/src/opendnp3/link/LinkLayerParser.cpp \
 cpp/libs/opendnp3/src/opendnp3/link/PriLinkLayerStates.cpp \
 cpp/libs/opendnp3/src/opendnp3/link/SecLinkLayerStates.cpp \
