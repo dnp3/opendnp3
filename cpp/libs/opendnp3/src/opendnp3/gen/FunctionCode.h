@@ -60,7 +60,7 @@ enum class FunctionCode : uint8_t
   COLD_RESTART = 0xD,
   /// Outstation shall reset only portions of the device
   WARM_RESTART = 0xE,
-  /// Obsoleteâ€”Do not use for new designs
+  /// Obsolete—Do not use for new designs
   INITIALIZE_DATA = 0xF,
   /// Outstation shall place the applications specified by the objects in the request into the ready to run state
   INITIALIZE_APPLICATION = 0x10,
@@ -68,7 +68,7 @@ enum class FunctionCode : uint8_t
   START_APPLICATION = 0x11,
   /// Outstation shall stop running the applications specified by the objects in the request
   STOP_APPLICATION = 0x12,
-  /// This code is deprecatedâ€”Do not use for new designs
+  /// This code is deprecated—Do not use for new designs
   SAVE_CONFIGURATION = 0x13,
   /// Enables outstation to initiate unsolicited responses from points specified by the objects in the request
   ENABLE_UNSOLICITED = 0x14,
