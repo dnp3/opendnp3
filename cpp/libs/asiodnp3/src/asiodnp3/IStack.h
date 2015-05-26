@@ -26,6 +26,10 @@
 #include <openpal/executor/IExecutor.h>
 
 #include <opendnp3/StackStatistics.h>
+#include <opendnp3/link/ILinkStatusListener.h>
+
+#include <vector>
+#include <functional>
 
 
 namespace asiodnp3
@@ -34,7 +38,7 @@ namespace asiodnp3
 /**
 * Base class for masters or outstations
 */
-class IStack : public DestructorHook
+class IStack : public DestructorHook , public opendnp3::ILinkStatusListener
 {
 public:	
 
@@ -54,6 +58,25 @@ public:
 	* Synchronously shutdown the endpoint. No more calls are allowed after this call.
 	*/
 	virtual void Shutdown() = 0;
+
+	/*
+	* Receive callbacks for link reset/unreset transitions
+	*/
+	void AddLinkStatusListener(const std::function<void(opendnp3::LinkStatus)>& listener)
+	{
+		callbacks.push_back(listener);
+	};
+
+	virtual void OnStateChange(opendnp3::LinkStatus state)
+	{
+		for (auto& cb : callbacks)
+		{
+			cb(state);
+		}
+	}
+
+private:
+	std::vector<std::function<void(opendnp3::LinkStatus)>> callbacks;
 
 };
 

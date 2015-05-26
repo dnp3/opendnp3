@@ -48,7 +48,7 @@ enum class IntervalUnits : uint8_t
   Months7 = 0x7,
   /// At the same time of day on the same day of the week after the beginning of the month as the day specified in the start time
   Months8 = 0x8,
-  /// Months on Same Day of Week from End of Monthâ€”The outstation shall interpret this setting as in Months8, but the day of the week shall be measured from the end of the month,
+  /// Months on Same Day of Week from End of Month—The outstation shall interpret this setting as in Months8, but the day of the week shall be measured from the end of the month,
   Months9 = 0x9,
   /// The definition of a season is specific to the outstation
   Seasons = 0xA,
