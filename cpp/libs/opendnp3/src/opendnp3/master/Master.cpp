@@ -157,7 +157,7 @@ void Master::OnSendResult(bool isSucccess)
 		mstate.isSending = false;
 
 		mstate.CheckConfirmTransmit();		
-		mstate.OnStart();		
+		mstate.CheckForTask();
 	}
 }
 

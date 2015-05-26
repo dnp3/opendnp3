@@ -87,29 +87,33 @@ namespace opendnp3
 
 	public:
 
-		bool BeginNewTask(openpal::ManagedPtr<IMasterTask>& task);
-
-		bool ResumeActiveTask();
-
-		void QueueConfirm(const APDUHeader& header);
-
-		void StartResponseTimer();
-
-		void CompleteActiveTask();
+		/// public state manipulation actions
 
 		bool GoOnline();
 
 		bool GoOffline();		
 
+		bool BeginNewTask(openpal::ManagedPtr<IMasterTask>& task);
+
+		bool ResumeActiveTask();
+
+		void CompleteActiveTask();
+
+		void QueueConfirm(const APDUHeader& header);
+
+		void StartResponseTimer();
+				
 		void OnResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects);
 
-		void OnStart();
+		void CheckForTask();
 
 		bool CheckConfirmTransmit();
 
 		void PostCheckForTask();
 
-	private:		
+	private:	
+
+		/// private state manipulation actions used from the public actions
 							
 		void OnResponseTimeout();		
 

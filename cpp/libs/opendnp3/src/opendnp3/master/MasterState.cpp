@@ -59,7 +59,7 @@ namespace opendnp3
 		pState(&MasterStateIdle::Instance())
 	{}
 
-	void MasterState::OnStart()
+	void MasterState::CheckForTask()
 	{
 		if (isOnline)
 		{
@@ -139,7 +139,7 @@ namespace opendnp3
 
 	void MasterState::PostCheckForTask()
 	{
-		auto callback = [this]() { this->OnStart(); };
+		auto callback = [this]() { this->CheckForTask(); };
 		this->pExecutor->PostLambda(callback);
 	}
 
