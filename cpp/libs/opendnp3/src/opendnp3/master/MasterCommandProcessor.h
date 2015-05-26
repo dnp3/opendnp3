@@ -21,10 +21,8 @@
 #ifndef OPENDNP3_MASTERCOMMANDPROCESSOR_H
 #define OPENDNP3_MASTERCOMMANDPROCESSOR_H
 
-#include "MasterState.h"
-
+#include "opendnp3/master/MasterState.h"
 #include "opendnp3/master/ICommandProcessor.h"
-#include "opendnp3/master/MasterActions.h"
 
 namespace opendnp3
 {
@@ -93,7 +91,7 @@ void MasterCommandProcessor::ProcessSelectAndOperate(const T& command, uint16_t 
 	if (pState->isOnline)
 	{
 		pState->scheduler.Schedule(openpal::ManagedPtr<IMasterTask>::Deleted(CommandTask::FSelectAndOperate(command, index, *(pState->pApplication), callback, serializer, pState->logger)));
-		MasterActions::PostCheckForTask(*pState);
+		pState->PostCheckForTask();
 	}
 	else
 	{
@@ -107,7 +105,7 @@ void MasterCommandProcessor::ProcessDirectOperate(const T& command, uint16_t ind
 	if (pState->isOnline)
 	{		
 		pState->scheduler.Schedule(openpal::ManagedPtr<IMasterTask>::Deleted(CommandTask::FDirectOperate(command, index, *(pState->pApplication), callback, serializer, pState->logger)));
-		MasterActions::PostCheckForTask(*pState);
+		pState->PostCheckForTask();		
 	}
 	else
 	{

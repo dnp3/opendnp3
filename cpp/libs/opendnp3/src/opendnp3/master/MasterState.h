@@ -91,18 +91,35 @@ namespace opendnp3
 
 		// ------- state actions --------
 
-		void OnStart();
-		void OnResponseTimeout();
+		void OnStart();		
 		void OnResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects);
 		
 
 		// ------- helper functions --------
 
+		void QueueConfirm(const APDUHeader& header);
+
+		bool CheckConfirmTransmit();
+
+		void PostCheckForTask();		
+
 		bool GoOffline();
 
 		bool GoOnline();
 
+		void StartTask(IMasterTask& task);
 
+		void StartResponseTimer();
+
+		void ReleaseActiveTask();
+
+	private:		
+
+		
+
+		void OnResponseTimeout();		
+
+		void Transmit(const openpal::ReadBufferView& data);
 	};
 
 }

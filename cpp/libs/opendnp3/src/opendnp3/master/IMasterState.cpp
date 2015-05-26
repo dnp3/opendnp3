@@ -20,10 +20,11 @@
 */
 
 #include "IMasterState.h"
-#include "MasterActions.h"
 
 #include <openpal/logging/LogMacros.h>
-#include <opendnp3/LogLevels.h>
+
+#include "opendnp3/LogLevels.h"
+#include "opendnp3/master/MasterState.h"
 
 namespace opendnp3
 {
@@ -69,7 +70,7 @@ IMasterState* MasterStateIdle::OnStart(MasterState& mstate)
 			{
 				FORMAT_LOG_BLOCK(mstate.logger, flags::INFO, "Begining task: %s", mstate.pActiveTask->Name());
 				mstate.pActiveTask->OnStart();
-				MasterActions::StartTask(mstate, *mstate.pActiveTask);
+				mstate.StartTask(*mstate.pActiveTask);				
 				return &MasterStateWaitForResponse::Instance();
 			}
 			else
@@ -98,7 +99,7 @@ IMasterState* MasterStateTaskReady::OnStart(MasterState& mstate)
 	{
 		if (mstate.pTaskLock->Acquire(*mstate.pScheduleCallback))
 		{
-			MasterActions::StartTask(mstate, *mstate.pActiveTask);
+			mstate.StartTask(*mstate.pActiveTask);			
 			return &MasterStateWaitForResponse::Instance();
 		}
 		else
@@ -131,21 +132,21 @@ IMasterState* MasterStateWaitForResponse::OnResponse(MasterState& mstate, const 
 
 	if (response.control.CON)
 	{
-		MasterActions::QueueConfirm(mstate, APDUHeader::SolicitedConfirm(response.control.SEQ));			
+		mstate.QueueConfirm(APDUHeader::SolicitedConfirm(response.control.SEQ));
 	}
 
 	switch (result)
 	{
 		case(IMasterTask::ResponseResult::OK_CONTINUE) :
-			MasterActions::StartResponseTimer(mstate);
+			mstate.StartResponseTimer();			
 			return this;
 		case(IMasterTask::ResponseResult::OK_REPEAT) :
 			return MasterStateTaskReady::Instance().OnStart(mstate);
 		default:
-			// task completed or failed, either way go back to idle
-			MasterActions::ReleaseActiveTask(mstate);
+			// task completed or failed, either way go back to idle			
+			mstate.ReleaseActiveTask();
 			mstate.pTaskLock->Release(*mstate.pScheduleCallback);
-			MasterActions::PostCheckForTask(mstate);									
+			mstate.PostCheckForTask();			
 			return &MasterStateIdle::Instance();
 	}	
 }
@@ -153,11 +154,11 @@ IMasterState* MasterStateWaitForResponse::OnResponse(MasterState& mstate, const 
 IMasterState* MasterStateWaitForResponse::OnResponseTimeout(MasterState& mstate)
 {			
 	auto now = mstate.pExecutor->GetTime();
-	mstate.pActiveTask->OnResponseTimeout(now);
-	MasterActions::ReleaseActiveTask(mstate);
+	mstate.pActiveTask->OnResponseTimeout(now);	
+	mstate.ReleaseActiveTask();
 	mstate.pTaskLock->Release(*mstate.pScheduleCallback);
 	mstate.solSeq.Increment();
-	MasterActions::PostCheckForTask(mstate);	
+	mstate.PostCheckForTask();
 	return &MasterStateIdle::Instance();
 }
 

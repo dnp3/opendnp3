@@ -21,6 +21,10 @@
 
 #include "MasterState.h"
 
+#include "opendnp3/app/APDULogging.h"
+
+#include <assert.h>
+
 namespace opendnp3
 {
 	MasterState::MasterState(
@@ -67,12 +71,69 @@ namespace opendnp3
 		}
 	}
 
+	void MasterState::ReleaseActiveTask()
+	{
+		if (this->pActiveTask.IsDefined())
+		{
+			if (this->pActiveTask->IsRecurring())
+			{
+				this->scheduler.Schedule(std::move(this->pActiveTask));
+			}
+			else
+			{
+				this->pActiveTask.Release();
+			}
+		}
+	}
+
 	void MasterState::OnResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects)
 	{
 		if (isOnline)
 		{
 			this->pState = pState->OnResponse(*this, response, objects);
 		}
+	}
+
+	void MasterState::QueueConfirm(const APDUHeader& header)
+	{
+		this->confirmQueue.push_back(header);
+		this->CheckConfirmTransmit();
+	}
+
+	bool MasterState::CheckConfirmTransmit()
+	{
+		if (this->isSending || this->confirmQueue.empty())
+		{
+			return false;
+		}
+
+		auto confirm = this->confirmQueue.front();
+		APDUWrapper wrapper(this->txBuffer.GetWriteBufferView());
+		wrapper.SetFunction(confirm.function);
+		wrapper.SetControl(confirm.control);
+		this->Transmit(wrapper.ToReadOnly());	
+		this->confirmQueue.pop_front();
+		return true;
+	}
+
+	void MasterState::Transmit(const openpal::ReadBufferView& data)
+	{
+		logging::ParseAndLogRequestTx(this->logger, data);
+		assert(!this->isSending);
+		this->isSending = true;
+		this->pLower->BeginTransmit(data);
+	}
+
+	void MasterState::StartResponseTimer()
+	{
+		auto timeout = [this](){ this->OnResponseTimeout(); };
+		this->responseTimer.Start(this->params.responseTimeout, timeout);
+	}
+
+	void MasterState::PostCheckForTask()
+	{
+		auto callback = [this]() { this->OnStart(); };
+		this->pExecutor->PostLambda(callback);
 	}
 
 	bool MasterState::GoOffline()
@@ -121,6 +182,14 @@ namespace opendnp3
 			return true;
 		}
 	}
+	void MasterState::StartTask(IMasterTask& task)
+	{
+		APDURequest request(this->txBuffer.GetWriteBufferView());
+		task.BuildRequest(request, this->solSeq);
+		this->StartResponseTimer();		
+		this->Transmit(request.ToReadOnly());
+	}
+
 }
 
 

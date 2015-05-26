@@ -27,7 +27,6 @@
 
 #include "opendnp3/master/UserPollTask.h"
 #include "opendnp3/master/WriteTask.h"
-#include "opendnp3/master/MasterActions.h"
 #include "opendnp3/master/MeasurementHandler.h"
 
 #include <openpal/logging/LogMacros.h>
@@ -112,7 +111,7 @@ void Master::OnUnsolicitedResponse(const APDUResponseHeader& header, const ReadB
 
 	if ((result == ParseResult::OK) && header.control.CON)
 	{
-		MasterActions::QueueConfirm(mstate, APDUHeader::UnsolicitedConfirm(header.control.SEQ));
+		mstate.QueueConfirm(APDUHeader::UnsolicitedConfirm(header.control.SEQ));
 	}	
 }
 
@@ -147,8 +146,8 @@ void Master::OnReceiveIIN(const IINField& iin)
 }
 
 void Master::OnPendingTask()
-{
-	MasterActions::PostCheckForTask(mstate);
+{	
+	mstate.PostCheckForTask();
 }
 
 void Master::OnSendResult(bool isSucccess)
@@ -157,7 +156,7 @@ void Master::OnSendResult(bool isSucccess)
 	{
 		mstate.isSending = false;
 
-		MasterActions::CheckConfirmTransmit(mstate);
+		mstate.CheckConfirmTransmit();		
 		mstate.OnStart();		
 	}
 }
@@ -176,7 +175,7 @@ MasterScan Master::AddScan(openpal::TimeDuration period, const std::function<voi
 {
 	auto pTask = new UserPollTask(builder, true, period, mstate.params.taskRetryPeriod, *mstate.pApplication, *mstate.pSOEHandler, pCallback, userId, mstate.logger);
 	this->ScheduleRecurringPollTask(pTask);	
-	auto callback = [this]() { MasterActions::PostCheckForTask(this->mstate); };
+	auto callback = [this]() { this->mstate.PostCheckForTask(); };
 	return MasterScan(*mstate.pExecutor, pTask, callback);
 }
 
@@ -260,7 +259,7 @@ void Master::ScheduleRecurringPollTask(IMasterTask* pTask)
 	if (mstate.isOnline)
 	{
 		mstate.scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(pTask));
-		MasterActions::PostCheckForTask(mstate);
+		mstate.PostCheckForTask();		
 	}
 }
 
@@ -270,7 +269,7 @@ void Master::ScheduleAdhocTask(IMasterTask* pTask)
 	if (mstate.isOnline)
 	{
 		mstate.scheduler.Schedule(std::move(task));
-		MasterActions::PostCheckForTask(mstate);
+		mstate.PostCheckForTask();		
 	}
 	else
 	{
