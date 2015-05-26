@@ -45,6 +45,7 @@ namespace opendnp3
 	*/
 	class MasterState
 	{
+
 	public:
 
 		MasterState(openpal::IExecutor& executor,
@@ -55,7 +56,7 @@ namespace opendnp3
 			IScheduleCallback& scheduleCallback,
 			const MasterParams& params,
 			ITaskLock& taskLock
-			);
+			);	
 
 		openpal::Logger logger;
 		openpal::IExecutor* pExecutor;
@@ -80,43 +81,36 @@ namespace opendnp3
 		MasterTasks tasks;
 		MasterScheduler scheduler;
 		std::deque<APDUHeader> confirmQueue;
-		openpal::Buffer txBuffer;		
+		openpal::Buffer txBuffer;
+		IMasterState* pState;	
 
-
-	private:
-
-		IMasterState* pState;
 
 	public:
 
-		// ------- state actions --------
+		bool BeginNewTask(openpal::ManagedPtr<IMasterTask>& task);
 
-		void OnStart();		
-		void OnResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects);
-		
-
-		// ------- helper functions --------
+		bool ResumeActiveTask();
 
 		void QueueConfirm(const APDUHeader& header);
 
-		bool CheckConfirmTransmit();
+		void StartResponseTimer();
 
-		void PostCheckForTask();		
-
-		bool GoOffline();
+		void CompleteActiveTask();
 
 		bool GoOnline();
 
-		void StartTask(IMasterTask& task);
+		bool GoOffline();		
 
-		void StartResponseTimer();
+		void OnResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects);
 
-		void ReleaseActiveTask();
+		void OnStart();
+
+		bool CheckConfirmTransmit();
+
+		void PostCheckForTask();
 
 	private:		
-
-		
-
+							
 		void OnResponseTimeout();		
 
 		void Transmit(const openpal::ReadBufferView& data);

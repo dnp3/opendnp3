@@ -22,6 +22,10 @@
 #include "MasterState.h"
 
 #include "opendnp3/app/APDULogging.h"
+#include "opendnp3/LogLevels.h"
+
+#include <openpal/logging/LogMacros.h>
+
 
 #include <assert.h>
 
@@ -71,7 +75,7 @@ namespace opendnp3
 		}
 	}
 
-	void MasterState::ReleaseActiveTask()
+	void MasterState::CompleteActiveTask()
 	{
 		if (this->pActiveTask.IsDefined())
 		{
@@ -83,7 +87,10 @@ namespace opendnp3
 			{
 				this->pActiveTask.Release();
 			}
-		}
+
+			pTaskLock->Release(*pScheduleCallback);
+			this->PostCheckForTask();
+		}		
 	}
 
 	void MasterState::OnResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects)
@@ -182,14 +189,30 @@ namespace opendnp3
 			return true;
 		}
 	}
-	void MasterState::StartTask(IMasterTask& task)
+
+	bool MasterState::BeginNewTask(openpal::ManagedPtr<IMasterTask>& task)
 	{
-		APDURequest request(this->txBuffer.GetWriteBufferView());
-		task.BuildRequest(request, this->solSeq);
-		this->StartResponseTimer();		
-		this->Transmit(request.ToReadOnly());
+		this->pActiveTask = std::move(task);				
+		this->pActiveTask->OnStart();
+		FORMAT_LOG_BLOCK(logger, flags::INFO, "Begining task: %s", this->pActiveTask->Name());
+		return this->ResumeActiveTask();
 	}
 
+	bool MasterState::ResumeActiveTask()
+	{		
+		if (this->pTaskLock->Acquire(*pScheduleCallback))
+		{
+			APDURequest request(this->txBuffer.GetWriteBufferView());
+			this->pActiveTask->BuildRequest(request, this->solSeq);
+			this->StartResponseTimer();
+			this->Transmit(request.ToReadOnly());
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 }
 
 

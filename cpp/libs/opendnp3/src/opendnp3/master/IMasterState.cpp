@@ -60,21 +60,16 @@ IMasterState* MasterStateIdle::OnStart(MasterState& mstate)
 	}
 	else
 	{
-		auto pTask = mstate.scheduler.Start();
+		auto task = mstate.scheduler.Start();
 		
-		if (pTask.IsDefined())
-		{		
-			mstate.pActiveTask = std::move(pTask);
-
-			if (mstate.pTaskLock->Acquire(*mstate.pScheduleCallback))
+		if (task.IsDefined())
+		{				
+			if (mstate.BeginNewTask(task))
 			{
-				FORMAT_LOG_BLOCK(mstate.logger, flags::INFO, "Begining task: %s", mstate.pActiveTask->Name());
-				mstate.pActiveTask->OnStart();
-				mstate.StartTask(*mstate.pActiveTask);				
 				return &MasterStateWaitForResponse::Instance();
 			}
 			else
-			{				
+			{
 				return &MasterStateTaskReady::Instance();
 			}
 		}
@@ -97,9 +92,8 @@ IMasterState* MasterStateTaskReady::OnStart(MasterState& mstate)
 	}
 	else
 	{
-		if (mstate.pTaskLock->Acquire(*mstate.pScheduleCallback))
-		{
-			mstate.StartTask(*mstate.pActiveTask);			
+		if (mstate.ResumeActiveTask())
+		{			
 			return &MasterStateWaitForResponse::Instance();
 		}
 		else
@@ -144,9 +138,7 @@ IMasterState* MasterStateWaitForResponse::OnResponse(MasterState& mstate, const 
 			return MasterStateTaskReady::Instance().OnStart(mstate);
 		default:
 			// task completed or failed, either way go back to idle			
-			mstate.ReleaseActiveTask();
-			mstate.pTaskLock->Release(*mstate.pScheduleCallback);
-			mstate.PostCheckForTask();			
+			mstate.CompleteActiveTask();
 			return &MasterStateIdle::Instance();
 	}	
 }
@@ -155,10 +147,8 @@ IMasterState* MasterStateWaitForResponse::OnResponseTimeout(MasterState& mstate)
 {			
 	auto now = mstate.pExecutor->GetTime();
 	mstate.pActiveTask->OnResponseTimeout(now);	
-	mstate.ReleaseActiveTask();
-	mstate.pTaskLock->Release(*mstate.pScheduleCallback);
 	mstate.solSeq.Increment();
-	mstate.PostCheckForTask();
+	mstate.CompleteActiveTask();
 	return &MasterStateIdle::Instance();
 }
 
