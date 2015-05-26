@@ -18,53 +18,17 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_TRANSPORTRX_H
-#define OPENDNP3_TRANSPORTRX_H
+#ifndef OPENDNP3_TRANSPORTSEQNUM_H
+#define OPENDNP3_TRANSPORTSEQNUM_H
 
-#include "opendnp3/StackStatistics.h"
-#include "opendnp3/transport/TransportConstants.h"
-#include "opendnp3/transport/TransportSeqNum.h"
-
-#include <openpal/container/ReadBufferView.h>
-#include <openpal/container/Buffer.h>
-#include <openpal/logging/Logger.h>
+#include <cstdint>
+#include <openpal/util/SequenceNum.h>
 
 namespace opendnp3
 {
 
-class TransportLayer;
-
-/**
-State/validation for the DNP3 transport layer's receive channel.
-*/
-class TransportRx
-{
-
-public:
-	TransportRx(const openpal::Logger&, uint32_t maxRxFragSize, StackStatistics* pStatistics);
-
-	openpal::ReadBufferView ProcessReceive(const openpal::ReadBufferView& input);
-
-	void Reset();
-
-private:
-
-	openpal::WriteBufferView GetAvailable();
-
-	void ClearRxBuffer();
-
-	bool ValidateHeader(bool fir, bool fin, uint8_t sequence);
-
-	openpal::Logger logger;
-	StackStatistics* pStatistics;
-	
-	openpal::Buffer rxBuffer;
-	uint32_t numBytesRead;
-	
-	TransportSeqNum sequence;
-};
+typedef openpal::SequenceNum<uint8_t, 64> TransportSeqNum;
 
 }
 
 #endif
-

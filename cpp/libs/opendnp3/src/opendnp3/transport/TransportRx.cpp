@@ -37,16 +37,25 @@ TransportRx::TransportRx(const Logger& logger_, uint32_t maxRxFragSize, StackSta
 	logger(logger_),	
 	pStatistics(pStatistics_),
 	rxBuffer(maxRxFragSize),	
-	numBytesRead(0),
-	sequence(0)	
+	numBytesRead(0)	
 {
 	
 }
 
 void TransportRx::Reset()
 {
+	sequence.Reset();
+	this->ClearRxBuffer();	
+}
+
+void TransportRx::ClearRxBuffer()
+{
 	numBytesRead = 0;
-	sequence = 0;
+}
+
+openpal::WriteBufferView TransportRx::GetAvailable()
+{
+	return rxBuffer.GetWriteBufferView().Skip(numBytesRead);
 }
 
 ReadBufferView TransportRx::ProcessReceive(const ReadBufferView& input)
@@ -64,66 +73,67 @@ ReadBufferView TransportRx::ProcessReceive(const ReadBufferView& input)
 		bool last = (hdr & TL_HDR_FIN) != 0;
 		int seq = hdr & TL_HDR_SEQ;
 
-		uint32_t payloadLength = input.Size() - 1;
+		auto payload = input.Skip(1);		
 
-		FORMAT_LOG_BLOCK(logger, flags::TRANSPORT_RX, "FIR: %d FIN: %d SEQ: %u LEN: %u", first, last, seq, payloadLength);
+		FORMAT_LOG_BLOCK(logger, flags::TRANSPORT_RX, "FIR: %d FIN: %d SEQ: %u LEN: %u", first, last, seq, payload.Size());
 
-		if (this->ValidateHeader(first, last, seq, payloadLength))
-		{
-			auto remainder = rxBuffer.Size() - numBytesRead;
-
-			if (remainder < payloadLength)
-			{
-				if (pStatistics) ++pStatistics->numTransportErrorRx;
-				SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, TLERR_BUFFER_FULL, "Exceeded the buffer size before a complete fragment was read");
-				numBytesRead = 0;
-				return ReadBufferView::Empty();
-			}
-			else   //passed all validation
-			{
-				if (pStatistics) ++pStatistics->numTransportRx;
-
-				memcpy(rxBuffer() + numBytesRead, input + 1, payloadLength);
-				numBytesRead += payloadLength;
-				sequence = (sequence + 1) % 64;
-
-				if(last)
-				{				
-					ReadBufferView ret(rxBuffer(), numBytesRead);
-					numBytesRead = 0;					
-					return ret;
-				}
-				else
-				{
-					return ReadBufferView::Empty();
-				}
-			}
-		}
-		else
+		if (!this->ValidateHeader(first, last, seq))
 		{
 			if (pStatistics) ++pStatistics->numTransportErrorRx;
 			return ReadBufferView::Empty();
 		}
+
+		auto available = this->GetAvailable();
+
+		if (payload.Size() > available.Size())
+		{
+			if (pStatistics) ++pStatistics->numTransportErrorRx;
+			SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, TLERR_BUFFER_FULL, "Exceeded the buffer size before a complete fragment was read");
+			this->ClearRxBuffer();
+			return ReadBufferView::Empty();
+		}
+		else   //passed all validation
+		{
+			if (pStatistics) ++pStatistics->numTransportRx;
+
+			auto payload = input.Skip(1);
+				
+			payload.CopyTo(available);
+
+			this->numBytesRead += payload.Size();
+			this->sequence.Increment();
+
+			if(last)
+			{			
+				ReadBufferView ret = rxBuffer.ToReadOnly().Take(numBytesRead);					
+				this->ClearRxBuffer();
+				return ret;
+			}
+			else
+			{
+				return ReadBufferView::Empty();
+			}
+		}		
 	}
 
 
 }
 
-bool TransportRx::ValidateHeader(bool fir, bool fin, uint8_t sequence_, uint32_t payloadSize)
-{
-	//get the transport byte and parse it
-
+bool TransportRx::ValidateHeader(bool fir, bool fin, uint8_t sequence_)
+{	
 	if(fir)
 	{
 		sequence = sequence_; //always accept the sequence on FIR
-		if(numBytesRead > 0)
+		if (numBytesRead > 0)
 		{
 			// drop existing received bytes from segment
 			SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, TLERR_NEW_FIR_MID_SEQUENCE, "FIR received mid-fragment, discarding previous bytes");
 			numBytesRead = 0;
 		}
+		return true;
 	}
-	else if(numBytesRead == 0)   //non-first packet with 0 prior bytes
+	
+	if(numBytesRead == 0)   //non-first packet with 0 prior bytes
 	{
 		SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, TLERR_MESSAGE_WITHOUT_FIR, "non-FIR packet with 0 prior bytes");
 		return false;

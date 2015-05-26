@@ -915,6 +915,9 @@
     <ClInclude Include="src\opendnp3\app\AppSeqNum.h">
       <Filter>Header\app</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\transport\TransportSeqNum.h">
+      <Filter>Header\transport</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\TimeAndInterval.cpp">

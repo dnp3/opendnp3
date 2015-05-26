@@ -65,6 +65,12 @@ uint32_t WriteBufferView::Advance(uint32_t count)
 	return num;
 }
 
+WriteBufferView WriteBufferView::Skip(uint32_t count) const
+{
+	auto num = openpal::Min(count, size);
+	return WriteBufferView(pBuffer + num, size - num);
+}
+
 ReadBufferView WriteBufferView::ToReadOnly() const
 {
 	return ReadBufferView(pBuffer, size);

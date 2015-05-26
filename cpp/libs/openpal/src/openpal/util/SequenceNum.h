@@ -18,53 +18,57 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_TRANSPORTRX_H
-#define OPENDNP3_TRANSPORTRX_H
+#ifndef OPENPAL_SEQUENCENUM_H
+#define OPENPAL_SEQUENCENUM_H
 
-#include "opendnp3/StackStatistics.h"
-#include "opendnp3/transport/TransportConstants.h"
-#include "opendnp3/transport/TransportSeqNum.h"
-
-#include <openpal/container/ReadBufferView.h>
-#include <openpal/container/Buffer.h>
-#include <openpal/logging/Logger.h>
-
-namespace opendnp3
+namespace openpal
 {
 
-class TransportLayer;
-
-/**
-State/validation for the DNP3 transport layer's receive channel.
+/** represents a sequence number
 */
-class TransportRx
+template <class T, T Modulus>
+class SequenceNum
 {
-
 public:
-	TransportRx(const openpal::Logger&, uint32_t maxRxFragSize, StackStatistics* pStatistics);
 
-	openpal::ReadBufferView ProcessReceive(const openpal::ReadBufferView& input);
+	static T Next(T seq) { return (seq + 1) % Modulus; }
 
-	void Reset();
+	operator uint8_t() const
+	{
+		return this->seq;
+	}
 
-private:
+	SequenceNum() : seq(0)
+	{}
 
-	openpal::WriteBufferView GetAvailable();
+	SequenceNum(T value) : seq(value)
+	{}	
 
-	void ClearRxBuffer();
+	bool Equals(T other) const
+	{
+		return other == this->seq;
+	}
 
-	bool ValidateHeader(bool fir, bool fin, uint8_t sequence);
+	void Increment()
+	{
+		this->seq = Next(this->seq);
+	}	
 
-	openpal::Logger logger;
-	StackStatistics* pStatistics;
-	
-	openpal::Buffer rxBuffer;
-	uint32_t numBytesRead;
-	
-	TransportSeqNum sequence;
+	void Reset()
+	{
+		this->seq = 0;
+	}
+
+	SequenceNum Next() const
+	{
+		return SequenceNum(Next(seq));
+	}
+
+protected:
+
+	T seq;
 };
 
 }
 
 #endif
-

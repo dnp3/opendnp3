@@ -214,6 +214,9 @@
     <ClInclude Include="src\openpal\container\Array.h">
       <Filter>Header\container</Filter>
     </ClInclude>
+    <ClInclude Include="src\openpal\util\SequenceNum.h">
+      <Filter>Header\util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\openpal\executor\MonotonicTimestamp.cpp">

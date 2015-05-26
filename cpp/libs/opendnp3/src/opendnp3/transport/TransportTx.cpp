@@ -26,8 +26,6 @@
 #include <openpal/logging/LogMacros.h>
 
 #include <assert.h>
-#include <cstring>
-
 
 using namespace std;
 using namespace openpal;
@@ -37,8 +35,7 @@ namespace opendnp3
 
 TransportTx::TransportTx(const openpal::Logger& logger_, StackStatistics* pStatistics_) :
 	logger(logger_),
-	pStatistics(pStatistics_),
-	sequence(0),
+	pStatistics(pStatistics_),	
 	tpduCount(0)
 {}
 
@@ -64,10 +61,14 @@ openpal::ReadBufferView TransportTx::GetSegment()
 	else
 	{
 		uint32_t numToSend = (apdu.Size() < MAX_TPDU_PAYLOAD) ? apdu.Size() : MAX_TPDU_PAYLOAD;
-		memcpy(tpduBuffer + 1, apdu, numToSend);
+		
+		auto dest = tpduBuffer.GetWriteBuffer().Skip(1);
+		apdu.Take(numToSend).CopyTo(dest);		
+
 		bool fir = (tpduCount == 0);
 		bool fin = (numToSend == apdu.Size());
-		tpduBuffer[0] = GetHeader(fir, fin, sequence);
+		tpduBuffer()[0] = GetHeader(fir, fin, sequence);
+
 		FORMAT_LOG_BLOCK(logger, flags::TRANSPORT_TX, "FIR: %d FIN: %d SEQ: %u LEN: %u", fir, fin, sequence, numToSend);
 		
 		if (pStatistics)
@@ -75,7 +76,7 @@ openpal::ReadBufferView TransportTx::GetSegment()
 			++pStatistics->numTransportTx;
 		}
 
-		ReadBufferView segment(tpduBuffer, numToSend + 1);
+		auto segment = tpduBuffer.ToReadOnly(numToSend + 1);
 		txSegment.Set(segment);
 		return segment;
 	}
@@ -88,7 +89,7 @@ bool TransportTx::Advance()
 	uint32_t numToSend = apdu.Size() < MAX_TPDU_PAYLOAD ? apdu.Size() : MAX_TPDU_PAYLOAD;
 	apdu.Advance(numToSend);
 	++tpduCount;
-	sequence = (sequence + 1) % 64;
+	sequence.Increment();
 	return apdu.IsNotEmpty();
 }
 

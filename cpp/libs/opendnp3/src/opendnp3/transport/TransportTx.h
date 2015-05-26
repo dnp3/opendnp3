@@ -23,10 +23,12 @@
 
 #include <openpal/logging/Logger.h>
 #include <openpal/container/Settable.h>
+#include <openpal/container/StaticBuffer.h>
 
 #include "opendnp3/StackStatistics.h"
 #include "opendnp3/link/ITransportSegment.h"
 #include "opendnp3/transport/TransportConstants.h"
+#include "opendnp3/transport/TransportSeqNum.h"
 
 namespace opendnp3
 {
@@ -63,11 +65,11 @@ private:
 	openpal::Settable<openpal::ReadBufferView> txSegment;
 
 	// Static buffer where we store tpdus that are being transmitted
-	uint8_t tpduBuffer[MAX_TPDU_LENGTH];	
+	openpal::StaticBuffer<MAX_TPDU_LENGTH> tpduBuffer;
 
 	openpal::Logger logger;
 	StackStatistics* pStatistics;
-	uint8_t sequence;
+	TransportSeqNum sequence;
 	uint32_t tpduCount;
 };
 

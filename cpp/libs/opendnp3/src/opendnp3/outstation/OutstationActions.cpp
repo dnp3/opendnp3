@@ -267,7 +267,7 @@ OutstationSolicitedStateBase* OActions::ContinueMultiFragResponse(OState& ostate
 	auto writer = response.GetWriter();
 	response.SetFunction(FunctionCode::RESPONSE);
 	auto control = ostate.rspContext.LoadResponse(writer);
-	control.SEQ = seq.Value();
+	control.SEQ = seq;
 	ostate.sol.seq.confirmNum = seq;
 	response.SetControl(control);
 	response.SetIIN(GetResponseIIN(ostate));

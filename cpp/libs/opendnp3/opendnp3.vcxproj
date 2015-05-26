@@ -281,6 +281,7 @@
     <ClInclude Include="src\opendnp3\transport\TransportConstants.h" />
     <ClInclude Include="src\opendnp3\transport\TransportLayer.h" />
     <ClInclude Include="src\opendnp3\transport\TransportRx.h" />
+    <ClInclude Include="src\opendnp3\transport\TransportSeqNum.h" />
     <ClInclude Include="src\opendnp3\transport\TransportStack.h" />
     <ClInclude Include="src\opendnp3\transport\TransportTx.h" />
   </ItemGroup>

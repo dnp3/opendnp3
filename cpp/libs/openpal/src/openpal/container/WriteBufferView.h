@@ -45,6 +45,8 @@ public:
 
 	uint32_t Advance(uint32_t count);
 
+	WriteBufferView Skip(uint32_t count) const;
+
 	ReadBufferView ToReadOnly() const;
 
 	operator uint8_t* ()

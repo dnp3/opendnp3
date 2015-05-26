@@ -23,52 +23,12 @@
 
 #include <cstdint>
 
+#include <openpal/util/SequenceNum.h>
+
 namespace opendnp3
 {
 
-/** represents an application-layer sequence number
-*/
-class AppSeqNum
-{
-public:
-
-	static uint8_t Next(uint8_t seq) { return (seq + 1) % 16; }
-
-	AppSeqNum() : seq(0)
-	{}
-
-	AppSeqNum(uint8_t value) : seq(value)
-	{}
-
-	uint8_t Value() const
-	{
-		return seq;
-	}
-
-	operator uint8_t() const
-	{
-		return seq;
-	}	
-
-	bool Equals(uint8_t other) const
-	{
-		return other == this->seq;
-	}
-
-	void Increment()
-	{
-		this->seq = Next(this->seq);
-	}
-	
-	AppSeqNum Next() const
-	{
-		return AppSeqNum(Next(this->seq));
-	}
-
-private:
-
-	uint8_t seq;
-};
+typedef openpal::SequenceNum<uint8_t, 16> AppSeqNum;
 
 }
 
