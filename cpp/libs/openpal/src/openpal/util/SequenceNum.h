@@ -29,9 +29,9 @@ namespace openpal
 template <class T, T Modulus>
 class SequenceNum
 {
-public:
+	inline static T Next(T seq) { return (seq + 1) % Modulus; }
 
-	static T Next(T seq) { return (seq + 1) % Modulus; }
+public:	
 
 	operator uint8_t() const
 	{
