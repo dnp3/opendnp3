@@ -18,8 +18,8 @@
 * may have been made to this file. Automatak, LLC licenses these modifications
 * to you under the terms of the License.
 */
-#ifndef OPENDNP3_SESSIONKEYTASK_H
-#define OPENDNP3_SESSIONKEYTASK_H
+#ifndef SECAUTHV5_SESSIONKEYTASK_H
+#define SECAUTHV5_SESSIONKEYTASK_H
 
 #include <opendnp3/master/IMasterTask.h>
 #include <opendnp3/master/TaskPriority.h>

@@ -98,6 +98,9 @@
     <ClInclude Include="src\secauthv5\master\SessionKeyTask.h">
       <Filter>Header Files\master</Filter>
     </ClInclude>
+    <ClInclude Include="src\secauthv5\master\MasterAuthProvider.h">
+      <Filter>Header Files\master</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\secauthv5\outstation\AuthRequestHandler.cpp">
@@ -161,6 +164,9 @@
       <Filter>Source Files\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\secauthv5\master\SessionKeyTask.cpp">
+      <Filter>Source Files\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\secauthv5\master\MasterAuthProvider.cpp">
       <Filter>Source Files\master</Filter>
     </ClCompile>
   </ItemGroup>
