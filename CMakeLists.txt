@@ -53,7 +53,7 @@ else()
 endif()
 
 # include paths for all the local libraries
-include_directories(./cpp/libs/secauthv5/src)
+include_directories(./cpp/libs/secauth/src)
 include_directories(./cpp/libs/openpal/src)
 include_directories(./cpp/libs/opendnp3/src)
 include_directories(./cpp/libs/asiopal/src)
@@ -99,17 +99,17 @@ install(DIRECTORY ./cpp/libs/asiopal/src/asiopal/ DESTINATION include/asiopal ${
 file(GLOB_RECURSE asiodnp3_SRC ./cpp/libs/asiodnp3/src/asiodnp3/*.cpp)
 add_library(asiodnp3 ${LIB_TYPE} ${asiodnp3_SRC})
 target_link_libraries(asiodnp3 opendnp3)
-target_link_libraries(asiodnp3 secauthv5)
+target_link_libraries(asiodnp3 secauth)
 target_link_libraries(asiodnp3 asiopal)
 install(TARGETS asiodnp3 DESTINATION lib)
 install(DIRECTORY ./cpp/libs/asiodnp3/src/asiodnp3/ DESTINATION include/asiodnp3 ${INSTALL_ARGS})
 
-# ---- secauthv5 library ----
-file(GLOB_RECURSE secauthv5_SRC ./cpp/libs/secauthv5/src/secauthv5/*.cpp)
-add_library(secauthv5 ${LIB_TYPE} ${secauthv5_SRC})
-target_link_libraries(secauthv5 opendnp3)
-install(TARGETS secauthv5 DESTINATION lib)
-install(DIRECTORY ./cpp/libs/secauthv5/src/secauthv5/ DESTINATION include/secauthv5 ${INSTALL_ARGS})
+# ---- secauth library ----
+file(GLOB_RECURSE secauth_SRC ./cpp/libs/secauth/src/secauth/*.cpp)
+add_library(secauth ${LIB_TYPE} ${secauth_SRC})
+target_link_libraries(secauth opendnp3)
+install(TARGETS secauth DESTINATION lib)
+install(DIRECTORY ./cpp/libs/secauth/src/secauth/ DESTINATION include/secauth ${INSTALL_ARGS})
 
 if(DEMO)
 
@@ -137,8 +137,8 @@ if(OSSL)
   if(DEMO)
 
   # ----- outstation SAv5 demo executable -----
-  add_executable (outstationdemoSAv5 ./cpp/examples/sav5/outstation/DemoMain.cpp)
-  target_link_libraries (outstationdemoSAv5 LINK_PUBLIC asiodnp3 secauthv5 osslcrypto)
+  add_executable (outstationdemoSA ./cpp/examples/sav5/outstation/DemoMain.cpp)
+  target_link_libraries (outstationdemoSA LINK_PUBLIC asiodnp3 secauth osslcrypto)
 
   endif()
 
@@ -164,12 +164,12 @@ if(TEST)
   # ----- opendnp3 tests -----
   file(GLOB_RECURSE opendnp3_TESTSRC ./cpp/tests/opendnp3tests/src/*.cpp)
   add_executable (testopendnp3 ${opendnp3_TESTSRC})
-  target_link_libraries (testopendnp3 LINK_PUBLIC asiodnp3 secauthv5 dnp3mocks pthread)
+  target_link_libraries (testopendnp3 LINK_PUBLIC asiodnp3 secauth dnp3mocks pthread)
 
-  # ----- sav5 tests -----
-  file(GLOB_RECURSE sav5_TESTSRC ./cpp/tests/sav5tests/src/*.cpp)
-  add_executable (testsav5 ${sav5_TESTSRC})
-  target_link_libraries (testsav5 LINK_PUBLIC secauthv5 dnp3mocks)
+  # ----- sa tests -----
+  file(GLOB_RECURSE secauth_TESTSRC ./cpp/tests/secauthtests/src/*.cpp)
+  add_executable (testsecauth ${secauth_TESTSRC})
+  target_link_libraries (testsecauth LINK_PUBLIC secauth dnp3mocks)
 
   # ----- opensslcrypto tests -----
   if(OSSL)

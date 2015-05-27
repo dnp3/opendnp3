@@ -37,7 +37,7 @@ libopenpal.*
 libasiopal.*
 libopendnp3.*
 libasiodnp3.*
-libsecauthv5.*
+libsecauth.*
 libosslcrypto.*
 libtestlib.*
 libclangfuzzer.*
@@ -45,11 +45,11 @@ libdnp3mocks.*
 testopenpal
 testopendnp3
 testosslcrypto
-testsav5
+testsecauth
 dnp3fuzzer
 outstationdemo
 masterdemo
-outstationdemoSAv5
+outstationdemoSA
 
 openpaltest.log
 openpaltest.trs
