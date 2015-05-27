@@ -113,9 +113,6 @@
     <ClInclude Include="src\MockPhysicalLayerMonitor.h">
       <Filter>Header Files\Mocks</Filter>
     </ClInclude>
-    <ClInclude Include="src\MockSOEHandler.h">
-      <Filter>Header Files\Mocks</Filter>
-    </ClInclude>
     <ClInclude Include="src\MockTransportLayer.h">
       <Filter>Header Files\Mocks</Filter>
     </ClInclude>
@@ -141,9 +138,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\MockPhysicalLayer.h">
-      <Filter>Header Files\Mocks</Filter>
-    </ClInclude>
-    <ClInclude Include="src\MockMasterApplication.h">
       <Filter>Header Files\Mocks</Filter>
     </ClInclude>
     <ClInclude Include="src\MockTaskCallback.h">

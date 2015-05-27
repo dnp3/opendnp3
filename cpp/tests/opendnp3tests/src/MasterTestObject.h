@@ -29,9 +29,8 @@
 #include <deque>
 
 #include <dnp3mocks/MockLowerLayer.h>
-
-#include "MockSOEHandler.h"
-#include "MockMasterApplication.h"
+#include <dnp3mocks/MockSOEHandler.h>
+#include <dnp3mocks/MockMasterApplication.h>
 
 namespace opendnp3
 {

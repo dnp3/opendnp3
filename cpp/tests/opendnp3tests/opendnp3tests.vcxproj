@@ -192,7 +192,6 @@
     <ClInclude Include="src\APDUHelpers.h" />
     <ClInclude Include="src\BufferSegment.h" />
     <ClInclude Include="src\MockKeyWrap.h" />
-    <ClInclude Include="src\MockMasterApplication.h" />
     <ClInclude Include="src\MockTaskCallback.h" />
     <ClInclude Include="src\PhysBaseTest.h" />
     <ClInclude Include="src\PhysTestObject.h" />
@@ -215,7 +214,6 @@
     <ClInclude Include="src\MockLinkLayer.h" />
     <ClInclude Include="src\MockPhysicalLayer.h" />
     <ClInclude Include="src\MockPhysicalLayerMonitor.h" />
-    <ClInclude Include="src\MockSOEHandler.h" />
     <ClInclude Include="src\MockTransportLayer.h" />
     <ClInclude Include="src\MockUpperLayer.h" />
     <ClInclude Include="src\MasterTestObject.h" />

@@ -32,6 +32,12 @@
     <ClInclude Include="src\dnp3mocks\APDUHexBuilders.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\dnp3mocks\MockMasterApplication.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\dnp3mocks\MockSOEHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dnp3mocks\MockLowerLayer.cpp">

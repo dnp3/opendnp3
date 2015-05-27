@@ -25,7 +25,7 @@
 #include <testlib/BufferHelpers.h>
 
 #include <testlib/MockLogHandler.h>
-#include "MockSOEHandler.h"
+#include <dnp3mocks/MockSOEHandler.h>
 
 #include <functional>
 
