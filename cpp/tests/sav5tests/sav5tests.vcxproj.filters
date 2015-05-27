@@ -32,6 +32,9 @@
     <ClCompile Include="src\fixtures\OutstationSecAuthFixture.cpp">
       <Filter>Source Files\fixtures</Filter>
     </ClCompile>
+    <ClCompile Include="src\fixtures\MasterSecAuthFixture.cpp">
+      <Filter>Source Files\fixtures</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\fixtures\OutstationSecAuthFixture.h">

@@ -18,33 +18,34 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTHV5_MASTERAUTHPROVIDER_H
-#define SECAUTHV5_MASTERAUTHPROVIDER_H
 
-#include <opendnp3/master/IMasterAuthProvider.h>
+#include "MasterSecAuthFixture.h"
 
-#include <openpal/util/Uncopyable.h>
+#include <testlib/BufferHelpers.h>
 
-namespace secauthv5
-{
+using namespace testlib;
 
-class MasterAuthProvider final : public opendnp3::IMasterAuthProvider, private openpal::Uncopyable
+namespace opendnp3
 {	
+	MasterSecAuthFixture::MasterSecAuthFixture(const MasterParams& params, ITaskLock& lock) :
+		log(),
+		exe(),
+		meas(),
+		lower(log.root),
+		application(),
+		master(exe, log.root, lower, meas, application, params, lock),
+		auth()
+	{
+		master.SetAuthProvider(auth);
+	}
 
-public:	
-
-	// ------ Implement IMasterAuthProvider ------	
-
-
-	virtual void GoOnline(opendnp3::MState& mstate) override final;	
-
-	virtual void GoOffline(opendnp3::MState& mstate) override final;
-
-
-
-};
-
+	void MasterSecAuthFixture::SendToMaster(const std::string& hex)
+	{
+		HexSequence hs(hex);
+		master.OnReceive(hs.ToReadOnly());
+	}
 
 }
 
-#endif
+
+

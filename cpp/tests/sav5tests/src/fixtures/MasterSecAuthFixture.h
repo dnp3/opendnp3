@@ -26,11 +26,12 @@
 
 #include <opendnp3/master/Master.h>
 #include <opendnp3/LogLevels.h>
-#include <deque>
 
 #include <dnp3mocks/MockLowerLayer.h>
 #include <dnp3mocks/MockSOEHandler.h>
 #include <dnp3mocks/MockMasterApplication.h>
+
+#include <secauthv5/master/MasterAuthProvider.h>
 
 namespace opendnp3
 {
@@ -51,6 +52,8 @@ namespace opendnp3
 		MockLowerLayer lower;
 		MockMasterApplication application;
 		Master master;
+		secauthv5::MasterAuthProvider auth;
+
 	};
 
 }

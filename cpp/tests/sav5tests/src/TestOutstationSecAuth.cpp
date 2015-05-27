@@ -34,23 +34,23 @@ using namespace testlib;
 
 #define SUITE(name) "OutstationSecAuthFixtureSuite - " name\
 
-void TestSessionKeyChange(OutstationSecAuthFixture& test, User user, KeyWrapAlgorithm keyWrap, HMACMode hmacMode);
+void TestSessionKeyChange(OutstationSecAuthFixture& fixture, User user, KeyWrapAlgorithm keyWrap, HMACMode hmacMode);
 void SetMockKeyWrapData(MockCryptoProvider& crypto, KeyWrapAlgorithm keyWrap, const std::string& lastStatusRsp);
 
 TEST_CASE(SUITE("ChangeSessionKeys-AES128-SHA256-16"))
 {	
-	OutstationSecAuthFixture test;	
-	test.AddUser(User::Default(), UpdateKeyMode::AES128, 0xFF);
-	test.LowerLayerUp();
-	TestSessionKeyChange(test, User::Default(), KeyWrapAlgorithm::AES_128,HMACMode::SHA256_TRUNC_16);
+	OutstationSecAuthFixture fixture;	
+	fixture.AddUser(User::Default(), UpdateKeyMode::AES128, 0xFF);
+	fixture.LowerLayerUp();
+	TestSessionKeyChange(fixture, User::Default(), KeyWrapAlgorithm::AES_128,HMACMode::SHA256_TRUNC_16);
 }
 
 TEST_CASE(SUITE("ChangeSessionKeys-AES256-SHA256-16"))
 {
-	OutstationSecAuthFixture test;	
-	test.AddUser(User::Default(), UpdateKeyMode::AES256, 0xFF);
-	test.LowerLayerUp();
-	TestSessionKeyChange(test, User::Default(), KeyWrapAlgorithm::AES_256, HMACMode::SHA256_TRUNC_16);
+	OutstationSecAuthFixture fixture;	
+	fixture.AddUser(User::Default(), UpdateKeyMode::AES256, 0xFF);
+	fixture.LowerLayerUp();
+	TestSessionKeyChange(fixture, User::Default(), KeyWrapAlgorithm::AES_256, HMACMode::SHA256_TRUNC_16);
 }
 
 TEST_CASE(SUITE("ChangeSessionKeys-AES256-SHA1-8"))
@@ -58,10 +58,10 @@ TEST_CASE(SUITE("ChangeSessionKeys-AES256-SHA1-8"))
 	OutstationAuthSettings settings;
 	settings.hmacMode = HMACMode::SHA1_TRUNC_8; // use a non-default HMAC mode
 
-	OutstationSecAuthFixture test(settings);
-	test.AddUser(User::Default(), UpdateKeyMode::AES256, 0xFF);
-	test.LowerLayerUp();
-	TestSessionKeyChange(test, User::Default(), KeyWrapAlgorithm::AES_256, HMACMode::SHA1_TRUNC_8);
+	OutstationSecAuthFixture fixture(settings);
+	fixture.AddUser(User::Default(), UpdateKeyMode::AES256, 0xFF);
+	fixture.LowerLayerUp();
+	TestSessionKeyChange(fixture, User::Default(), KeyWrapAlgorithm::AES_256, HMACMode::SHA1_TRUNC_8);
 }
 
 TEST_CASE(SUITE("Critical requests are challenged when session keys are not initialized"))
@@ -69,11 +69,11 @@ TEST_CASE(SUITE("Critical requests are challenged when session keys are not init
 	OutstationAuthSettings settings;
 	settings.challengeSize = 5; // try a non-default challenge size
 
-	OutstationSecAuthFixture test(settings);
+	OutstationSecAuthFixture fixture(settings);
 	
-	test.LowerLayerUp();
+	fixture.LowerLayerUp();
 
-	test.SendToOutstation(hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ClassField::AllEventClasses()));
+	fixture.SendToOutstation(hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 0, ClassField::AllEventClasses()));
 
 	auto challenge = hex::ChallengeResponse(
 		IINBit::DEVICE_RESTART,
@@ -85,7 +85,7 @@ TEST_CASE(SUITE("Critical requests are challenged when session keys are not init
 		"AA AA AA AA AA"
 	);
 
-	REQUIRE(test.lower.PopWriteAsHex() == challenge);
+	REQUIRE(fixture.lower.PopWriteAsHex() == challenge);
 }
 
 TEST_CASE(SUITE("Non-critical requests are not challenged"))
@@ -93,25 +93,25 @@ TEST_CASE(SUITE("Non-critical requests are not challenged"))
 	OutstationAuthSettings settings;
 	settings.functions.authRead = false;
 
-	OutstationSecAuthFixture test(settings);
-	test.LowerLayerUp();
+	OutstationSecAuthFixture fixture(settings);
+	fixture.LowerLayerUp();
 
-	test.SendToOutstation(hex::EventPoll(0));
-	REQUIRE(test.lower.PopWriteAsHex() == hex::EmptyResponse(0, IINField(IINBit::DEVICE_RESTART)));
+	fixture.SendToOutstation(hex::EventPoll(0));
+	REQUIRE(fixture.lower.PopWriteAsHex() == hex::EmptyResponse(0, IINField(IINBit::DEVICE_RESTART)));
 }
 
 TEST_CASE(SUITE("Critical requests can be challenged and processed"))
 {
 	OutstationAuthSettings settings;	
-	OutstationSecAuthFixture test(settings);
+	OutstationSecAuthFixture fixture(settings);
 
-	test.AddUser(User::Default(), UpdateKeyMode::AES256, 0xFF);
+	fixture.AddUser(User::Default(), UpdateKeyMode::AES256, 0xFF);
 	
-	test.LowerLayerUp();
+	fixture.LowerLayerUp();
 
-	TestSessionKeyChange(test, User::Default(), KeyWrapAlgorithm::AES_256, HMACMode::SHA256_TRUNC_16);
+	TestSessionKeyChange(fixture, User::Default(), KeyWrapAlgorithm::AES_256, HMACMode::SHA256_TRUNC_16);
 
-	test.SendToOutstation(hex::ClassTask(FunctionCode::READ, 1, ClassField::AllEventClasses()));
+	fixture.SendToOutstation(hex::ClassTask(FunctionCode::READ, 1, ClassField::AllEventClasses()));
 
 	auto challenge = hex::ChallengeResponse(
 		IINBit::DEVICE_RESTART,
@@ -123,19 +123,19 @@ TEST_CASE(SUITE("Critical requests can be challenged and processed"))
 		hex::repeat(0xAA, 4)
 	);
 
-	REQUIRE(test.lower.PopWriteAsHex() == challenge);
-	test.outstation.OnSendResult(true);
+	REQUIRE(fixture.lower.PopWriteAsHex() == challenge);
+	fixture.outstation.OnSendResult(true);
 	
-	test.SendToOutstation(hex::ChallengeReply(1, 1, User::DEFAULT_ID, hex::repeat(0xFF, 16)));
+	fixture.SendToOutstation(hex::ChallengeReply(1, 1, User::DEFAULT_ID, hex::repeat(0xFF, 16)));
 
-	REQUIRE(test.lower.PopWriteAsHex() == hex::EmptyResponse(1, IINField(IINBit::DEVICE_RESTART)));
+	REQUIRE(fixture.lower.PopWriteAsHex() == hex::EmptyResponse(1, IINField(IINBit::DEVICE_RESTART)));
 }
 
-void TestSessionKeyChange(OutstationSecAuthFixture& test, User user, KeyWrapAlgorithm keyWrap, HMACMode hmacMode)
+void TestSessionKeyChange(OutstationSecAuthFixture& fixture, User user, KeyWrapAlgorithm keyWrap, HMACMode hmacMode)
 {
-	REQUIRE(test.lower.HasNoData());
+	REQUIRE(fixture.lower.HasNoData());
 
-	test.SendToOutstation(hex::RequestKeyStatus(0, 1));
+	fixture.SendToOutstation(hex::RequestKeyStatus(0, 1));
 
 	auto keyStatusRsp = hex::KeyStatusResponse(
 		IINBit::DEVICE_RESTART,
@@ -149,15 +149,15 @@ void TestSessionKeyChange(OutstationSecAuthFixture& test, User user, KeyWrapAlgo
 		"");  // no hmac
 
 
-	REQUIRE(test.lower.PopWriteAsHex() == keyStatusRsp);
-	test.outstation.OnSendResult(true);
-	REQUIRE(test.lower.HasNoData());	
+	REQUIRE(fixture.lower.PopWriteAsHex() == keyStatusRsp);
+	fixture.outstation.OnSendResult(true);
+	REQUIRE(fixture.lower.HasNoData());	
 
-	SetMockKeyWrapData(test.crypto, keyWrap, SkipBytesHex(keyStatusRsp, 10));
+	SetMockKeyWrapData(fixture.crypto, keyWrap, SkipBytesHex(keyStatusRsp, 10));
 
 	// --- session key change request ---	
 	// the key wrap data doesn't matter b/c we've mocked the unwrap call above
-	test.SendToOutstation(hex::KeyChangeRequest(0, 1, 1, "DE AD BE EF"));
+	fixture.SendToOutstation(hex::KeyChangeRequest(0, 1, 1, "DE AD BE EF"));
 
 	auto keyStatusRspFinal = hex::KeyStatusResponse(
 		IINBit::DEVICE_RESTART,
@@ -170,9 +170,9 @@ void TestSessionKeyChange(OutstationSecAuthFixture& test, User user, KeyWrapAlgo
 		hex::repeat(0xAA, 4), // challenge
 		RepeatHex(0xFF, GetTruncationSize(hmacMode)));  // fixed value from hmac mock
 
-	REQUIRE(test.lower.PopWriteAsHex() == keyStatusRspFinal);
-	test.outstation.OnSendResult(true);
-	REQUIRE(test.lower.HasNoData());
+	REQUIRE(fixture.lower.PopWriteAsHex() == keyStatusRspFinal);
+	fixture.outstation.OnSendResult(true);
+	REQUIRE(fixture.lower.HasNoData());
 }
 
 void SetMockKeyWrapData(MockCryptoProvider& crypto, KeyWrapAlgorithm keyWrap, const std::string& statusData)
