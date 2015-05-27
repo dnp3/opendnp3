@@ -34,7 +34,8 @@ namespace opendnp3
 		lower(log.root),
 		application(),
 		master(exe, log.root, lower, meas, application, params, lock),
-		auth()
+		crypto(),
+		auth(application, crypto)
 	{
 		master.SetAuthProvider(auth);
 	}

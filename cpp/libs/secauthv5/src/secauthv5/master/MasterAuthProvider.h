@@ -25,6 +25,8 @@
 
 #include <openpal/util/Uncopyable.h>
 
+#include "MasterSecurityState.h"
+
 namespace secauthv5
 {
 
@@ -33,6 +35,12 @@ class MasterAuthProvider final : public opendnp3::IMasterAuthProvider, private o
 
 public:	
 
+	MasterAuthProvider(
+		openpal::IUTCTimeSource& timeSource,
+		openpal::ICryptoProvider& crypto
+	);
+
+
 	// ------ Implement IMasterAuthProvider ------	
 
 
@@ -40,7 +48,9 @@ public:
 
 	virtual void GoOffline(opendnp3::MState& mstate) override final;
 
+private:
 
+	MSState msstate;
 
 };
 

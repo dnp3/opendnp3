@@ -19,29 +19,35 @@
  * to you under the terms of the License.
  */
 
-#include "MasterAuthProvider.h"
+#ifndef SECAUTH_MASTERSECURITYSTATE_H
+#define SECAUTH_MASTERSECURITYSTATE_H
+
+
+#include <openpal/util/Uncopyable.h>
+
+#include <openpal/crypto/ICryptoProvider.h>
+#include <openpal/executor/IUTCTimeSource.h>
 
 namespace secauthv5
 {
 
-MasterAuthProvider::MasterAuthProvider(
-	openpal::IUTCTimeSource& timeSource,
-	openpal::ICryptoProvider& crypto
-	) : 
-	msstate(timeSource, crypto)
-{
+class MSState : private openpal::Uncopyable
+{	
+
+public:	
+
+	MSState(
+		openpal::IUTCTimeSource& timeSource,
+		openpal::ICryptoProvider& crypto
+	);
+
+private:
+
+	openpal::IUTCTimeSource*		pTimeSource;
+	openpal::ICryptoProvider*		pCrypto;
+};
+
 
 }
 
-void MasterAuthProvider::GoOnline(opendnp3::MState& mstate)
-{
-	
-}
-
-void MasterAuthProvider::GoOffline(opendnp3::MState& mstate)
-{
-
-}
-
-}
-
+#endif

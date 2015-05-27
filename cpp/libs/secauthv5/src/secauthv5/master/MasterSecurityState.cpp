@@ -19,29 +19,19 @@
  * to you under the terms of the License.
  */
 
-#include "MasterAuthProvider.h"
+#include "MasterSecurityState.h"
 
 namespace secauthv5
 {
 
-MasterAuthProvider::MasterAuthProvider(
-	openpal::IUTCTimeSource& timeSource,
-	openpal::ICryptoProvider& crypto
-	) : 
-	msstate(timeSource, crypto)
-{
+	MSState::MSState(
+		openpal::IUTCTimeSource& timeSource,
+		openpal::ICryptoProvider& crypto
+		) :
+		pTimeSource(&timeSource),
+		pCrypto(&crypto)
+	{}
 
 }
 
-void MasterAuthProvider::GoOnline(opendnp3::MState& mstate)
-{
-	
-}
-
-void MasterAuthProvider::GoOffline(opendnp3::MState& mstate)
-{
-
-}
-
-}
 

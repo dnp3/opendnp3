@@ -27,6 +27,7 @@
     <ClInclude Include="src\secauthv5\HMACProvider.h" />
     <ClInclude Include="src\secauthv5\IUserDatabase.h" />
     <ClInclude Include="src\secauthv5\master\MasterAuthProvider.h" />
+    <ClInclude Include="src\secauthv5\master\MasterSecurityState.h" />
     <ClInclude Include="src\secauthv5\master\SessionKeyTask.h" />
     <ClInclude Include="src\secauthv5\outstation\AuthRequestHandler.h" />
     <ClInclude Include="src\secauthv5\outstation\ChallengeState.h" />
@@ -53,6 +54,7 @@
     <ClCompile Include="src\secauthv5\HMACMode.cpp" />
     <ClCompile Include="src\secauthv5\HMACProvider.cpp" />
     <ClCompile Include="src\secauthv5\master\MasterAuthProvider.cpp" />
+    <ClCompile Include="src\secauthv5\master\MasterSecurityState.cpp" />
     <ClCompile Include="src\secauthv5\master\SessionKeyTask.cpp" />
     <ClCompile Include="src\secauthv5\outstation\AuthRequestHandler.cpp" />
     <ClCompile Include="src\secauthv5\outstation\ChallengeState.cpp" />

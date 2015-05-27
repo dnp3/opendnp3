@@ -30,6 +30,7 @@
 #include <dnp3mocks/MockLowerLayer.h>
 #include <dnp3mocks/MockSOEHandler.h>
 #include <dnp3mocks/MockMasterApplication.h>
+#include <dnp3mocks/MockCryptoProvider.h>
 
 #include <secauthv5/master/MasterAuthProvider.h>
 
@@ -52,6 +53,8 @@ namespace opendnp3
 		MockLowerLayer lower;
 		MockMasterApplication application;
 		Master master;
+
+		MockCryptoProvider crypto;
 		secauthv5::MasterAuthProvider auth;
 
 	};
