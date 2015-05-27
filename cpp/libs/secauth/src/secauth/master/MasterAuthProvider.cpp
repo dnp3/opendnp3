@@ -18,47 +18,30 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_OUTSTATIONAUTHSTACK_H
-#define ASIODNP3_OUTSTATIONAUTHSTACK_H
 
-#include "OutstationStackImpl.h"
-#include <secauth/outstation/OutstationAuthSettings.h>
+#include "MasterAuthProvider.h"
 
-#include <secauth/outstation/OutstationAuthProvider.h>
-
-namespace asiodnp3
+namespace secauth
 {
 
-class ILinkSession;
-
-/** @section desc A stack object for an SA outstation */
-class OutstationAuthStack : public OutstationStackImpl
+MasterAuthProvider::MasterAuthProvider(
+	openpal::IUTCTimeSource& timeSource,
+	openpal::ICryptoProvider& crypto
+	) : 
+	msstate(timeSource, crypto)
 {
-public:
-
-	OutstationAuthStack(
-		const char* id,
-	    openpal::LogRoot&,
-		openpal::IExecutor& executor,		
-		opendnp3::ICommandHandler& commandHandler,
-		opendnp3::IOutstationApplication& application,		
-		const opendnp3::OutstationStackConfig& config,
-	    const StackActionHandler& handler,
-		const secauth::OutstationAuthSettings& authSettings,
-		openpal::IUTCTimeSource& timeSource,
-		secauth::IUserDatabase& userDB,
-		openpal::ICryptoProvider& crypto);
-
-	
-
-private:		
-
-	secauth::OutstationAuthProvider auth;
-
-
-};
 
 }
 
-#endif
+void MasterAuthProvider::GoOnline(opendnp3::MState& mstate)
+{
+	
+}
+
+void MasterAuthProvider::GoOffline(opendnp3::MState& mstate)
+{
+
+}
+
+}
 

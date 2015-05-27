@@ -18,47 +18,43 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_OUTSTATIONAUTHSTACK_H
-#define ASIODNP3_OUTSTATIONAUTHSTACK_H
+#ifndef SECAUTH_MASTERAUTHPROVIDER_H
+#define SECAUTH_MASTERAUTHPROVIDER_H
 
-#include "OutstationStackImpl.h"
-#include <secauth/outstation/OutstationAuthSettings.h>
+#include <opendnp3/master/IMasterAuthProvider.h>
 
-#include <secauth/outstation/OutstationAuthProvider.h>
+#include <openpal/util/Uncopyable.h>
 
-namespace asiodnp3
+#include "MasterSecurityState.h"
+
+namespace secauth
 {
 
-class ILinkSession;
+class MasterAuthProvider final : public opendnp3::IMasterAuthProvider, private openpal::Uncopyable
+{	
 
-/** @section desc A stack object for an SA outstation */
-class OutstationAuthStack : public OutstationStackImpl
-{
-public:
+public:	
 
-	OutstationAuthStack(
-		const char* id,
-	    openpal::LogRoot&,
-		openpal::IExecutor& executor,		
-		opendnp3::ICommandHandler& commandHandler,
-		opendnp3::IOutstationApplication& application,		
-		const opendnp3::OutstationStackConfig& config,
-	    const StackActionHandler& handler,
-		const secauth::OutstationAuthSettings& authSettings,
+	MasterAuthProvider(
 		openpal::IUTCTimeSource& timeSource,
-		secauth::IUserDatabase& userDB,
-		openpal::ICryptoProvider& crypto);
+		openpal::ICryptoProvider& crypto
+	);
 
-	
 
-private:		
+	// ------ Implement IMasterAuthProvider ------	
 
-	secauth::OutstationAuthProvider auth;
 
+	virtual void GoOnline(opendnp3::MState& mstate) override final;	
+
+	virtual void GoOffline(opendnp3::MState& mstate) override final;
+
+private:
+
+	MSState msstate;
 
 };
+
 
 }
 
 #endif
-

@@ -18,46 +18,24 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_OUTSTATIONAUTHSTACK_H
-#define ASIODNP3_OUTSTATIONAUTHSTACK_H
+#ifndef SECAUTH_UPDATEKEYTYPE_H
+#define SECAUTH_UPDATEKEYTYPE_H
 
-#include "OutstationStackImpl.h"
-#include <secauth/outstation/OutstationAuthSettings.h>
+#include <cstdint>
 
-#include <secauth/outstation/OutstationAuthProvider.h>
+#include <opendnp3/gen/KeyWrapAlgorithm.h>
 
-namespace asiodnp3
+namespace secauth
 {
+	// Specifies a type of update key
+	// represents a subset of possible update key types in the spec
+	enum class UpdateKeyMode : uint8_t
+	{
+		AES128,
+		AES256
+	};
 
-class ILinkSession;
-
-/** @section desc A stack object for an SA outstation */
-class OutstationAuthStack : public OutstationStackImpl
-{
-public:
-
-	OutstationAuthStack(
-		const char* id,
-	    openpal::LogRoot&,
-		openpal::IExecutor& executor,		
-		opendnp3::ICommandHandler& commandHandler,
-		opendnp3::IOutstationApplication& application,		
-		const opendnp3::OutstationStackConfig& config,
-	    const StackActionHandler& handler,
-		const secauth::OutstationAuthSettings& authSettings,
-		openpal::IUTCTimeSource& timeSource,
-		secauth::IUserDatabase& userDB,
-		openpal::ICryptoProvider& crypto);
-
-	
-
-private:		
-
-	secauth::OutstationAuthProvider auth;
-
-
-};
-
+	opendnp3::KeyWrapAlgorithm ToKeyWrapAlgorithm(UpdateKeyMode keyType);
 }
 
 #endif

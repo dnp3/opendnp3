@@ -18,47 +18,33 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_OUTSTATIONAUTHSTACK_H
-#define ASIODNP3_OUTSTATIONAUTHSTACK_H
 
-#include "OutstationStackImpl.h"
-#include <secauth/outstation/OutstationAuthSettings.h>
+#include "OutstationAuthSettings.h"
 
-#include <secauth/outstation/OutstationAuthProvider.h>
+#include <opendnp3/app/AppConstants.h>
 
-namespace asiodnp3
+namespace secauth
 {
 
-class ILinkSession;
+	OutstationAuthSettings::OutstationAuthSettings(const opendnp3::OutstationParams& params) :
+		maxRxASDUSize(params.maxRxFragSize),
+		maxTxASDUSize(params.maxTxFragSize),
+		challengeTimeout(params.unsolConfirmTimeout),
+		challengeSize(4),
+		assocId(0),
+		hmacMode(HMACMode::SHA256_TRUNC_16), // strongest by default
+		functions(CriticalFunctions::AuthEverything())
+	{}
 
-/** @section desc A stack object for an SA outstation */
-class OutstationAuthStack : public OutstationStackImpl
-{
-public:
-
-	OutstationAuthStack(
-		const char* id,
-	    openpal::LogRoot&,
-		openpal::IExecutor& executor,		
-		opendnp3::ICommandHandler& commandHandler,
-		opendnp3::IOutstationApplication& application,		
-		const opendnp3::OutstationStackConfig& config,
-	    const StackActionHandler& handler,
-		const secauth::OutstationAuthSettings& authSettings,
-		openpal::IUTCTimeSource& timeSource,
-		secauth::IUserDatabase& userDB,
-		openpal::ICryptoProvider& crypto);
-
-	
-
-private:		
-
-	secauth::OutstationAuthProvider auth;
-
-
-};
+	OutstationAuthSettings::OutstationAuthSettings() :
+		maxRxASDUSize(opendnp3::DEFAULT_MAX_APDU_SIZE),
+		maxTxASDUSize(opendnp3::DEFAULT_MAX_APDU_SIZE),
+		challengeTimeout(opendnp3::DEFAULT_APP_TIMEOUT),
+		challengeSize(4),
+		assocId(0),
+		hmacMode(HMACMode::SHA256_TRUNC_16), // strongest by default
+		functions(CriticalFunctions::AuthEverything())
+	{}
 
 }
-
-#endif
 

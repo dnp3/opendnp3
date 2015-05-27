@@ -18,43 +18,35 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_OUTSTATIONAUTHSTACK_H
-#define ASIODNP3_OUTSTATIONAUTHSTACK_H
+#ifndef SECAUTH_OUTSTATIONAUTHSETTINGS_H
+#define SECAUTH_OUTSTATIONAUTHSETTINGS_H
 
-#include "OutstationStackImpl.h"
-#include <secauth/outstation/OutstationAuthSettings.h>
+#include <opendnp3/outstation/OutstationParams.h>
 
-#include <secauth/outstation/OutstationAuthProvider.h>
+#include "secauth/HMACMode.h"
+#include "secauth/CriticalFunctions.h"
 
-namespace asiodnp3
+namespace secauth
 {
 
-class ILinkSession;
+/**
+	SAv5 outstation authentication provider
+*/
+struct OutstationAuthSettings
+{	
+	OutstationAuthSettings();
 
-/** @section desc A stack object for an SA outstation */
-class OutstationAuthStack : public OutstationStackImpl
-{
-public:
-
-	OutstationAuthStack(
-		const char* id,
-	    openpal::LogRoot&,
-		openpal::IExecutor& executor,		
-		opendnp3::ICommandHandler& commandHandler,
-		opendnp3::IOutstationApplication& application,		
-		const opendnp3::OutstationStackConfig& config,
-	    const StackActionHandler& handler,
-		const secauth::OutstationAuthSettings& authSettings,
-		openpal::IUTCTimeSource& timeSource,
-		secauth::IUserDatabase& userDB,
-		openpal::ICryptoProvider& crypto);
+	OutstationAuthSettings(const opendnp3::OutstationParams&);
 
 	
 
-private:		
-
-	secauth::OutstationAuthProvider auth;
-
+	uint32_t maxRxASDUSize;
+	uint32_t maxTxASDUSize;	
+	openpal::TimeDuration challengeTimeout;
+	uint16_t challengeSize;
+	uint16_t assocId;
+	HMACMode hmacMode;
+	CriticalFunctions functions;
 
 };
 

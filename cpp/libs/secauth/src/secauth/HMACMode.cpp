@@ -18,47 +18,42 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_OUTSTATIONAUTHSTACK_H
-#define ASIODNP3_OUTSTATIONAUTHSTACK_H
 
-#include "OutstationStackImpl.h"
-#include <secauth/outstation/OutstationAuthSettings.h>
+#include "HMACMode.h"
 
-#include <secauth/outstation/OutstationAuthProvider.h>
+using namespace opendnp3;
 
-namespace asiodnp3
+namespace secauth
 {
+	opendnp3::HMACType ToHMACType(HMACMode mode)
+	{
+		switch (mode)
+		{
+		case(HMACMode::SHA1_TRUNC_8) :
+			return HMACType::HMAC_SHA1_TRUNC_8;
+		case(HMACMode::SHA1_TRUNC_10) :
+			return HMACType::HMAC_SHA1_TRUNC_10;
+		case(HMACMode::SHA256_TRUNC_8) :
+			return HMACType::HMAC_SHA256_TRUNC_8;
+		default:
+			return HMACType::HMAC_SHA256_TRUNC_16;
+		}
+	}	
 
-class ILinkSession;
-
-/** @section desc A stack object for an SA outstation */
-class OutstationAuthStack : public OutstationStackImpl
-{
-public:
-
-	OutstationAuthStack(
-		const char* id,
-	    openpal::LogRoot&,
-		openpal::IExecutor& executor,		
-		opendnp3::ICommandHandler& commandHandler,
-		opendnp3::IOutstationApplication& application,		
-		const opendnp3::OutstationStackConfig& config,
-	    const StackActionHandler& handler,
-		const secauth::OutstationAuthSettings& authSettings,
-		openpal::IUTCTimeSource& timeSource,
-		secauth::IUserDatabase& userDB,
-		openpal::ICryptoProvider& crypto);
-
-	
-
-private:		
-
-	secauth::OutstationAuthProvider auth;
-
-
-};
-
+	uint32_t GetTruncationSize(HMACMode mode)
+	{
+		switch (mode)
+		{
+			case(HMACMode::SHA1_TRUNC_8) :
+				return 8;
+			case(HMACMode::SHA1_TRUNC_10) :
+				return 10;
+			case(HMACMode::SHA256_TRUNC_8) :
+				return 8;
+			default:
+				return 16;
+		}
+	}
 }
 
-#endif
 

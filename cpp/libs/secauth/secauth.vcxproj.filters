@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files\outstation">
+      <UniqueIdentifier>{a428039b-52bd-467b-a90e-497383a1c444}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\outstation">
+      <UniqueIdentifier>{3496c871-23d7-4901-b49a-3849c7662daf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\master">
+      <UniqueIdentifier>{ead7dc37-19e5-46d9-ac44-9d137b70ac98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\master">
+      <UniqueIdentifier>{078272eb-90a5-45b7-9286-f10e6d48f9b6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\secauth\master\MasterAuthProvider.h">
+      <Filter>Header Files\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\secauth\master\MasterSecurityState.h">
+      <Filter>Header Files\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\secauth\master\SessionKeyTask.h">
+      <Filter>Header Files\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\secauth\outstation\AuthRequestHandler.h">
+      <Filter>Header Files\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\secauth\outstation\ChallengeState.h">
+      <Filter>Header Files\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\secauth\outstation\IAuthRequestHandler.h">
+      <Filter>Header Files\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\secauth\outstation\IOAuthState.h">
+      <Filter>Header Files\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\secauth\outstation\KeyChangeState.h">
+      <Filter>Header Files\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\secauth\outstation\KeyUnwrap.h">
+      <Filter>Header Files\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\secauth\outstation\OAuthStates.h">
+      <Filter>Header Files\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\secauth\outstation\OSecActions.h">
+      <Filter>Header Files\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\secauth\outstation\OutstationAuthProvider.h">
+      <Filter>Header Files\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\secauth\outstation\OutstationAuthSettings.h">
+      <Filter>Header Files\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\secauth\outstation\SecurityState.h">
+      <Filter>Header Files\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\secauth\AggressiveModeParser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\secauth\AuthConstants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\secauth\CriticalFunctions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\secauth\DeferredASDU.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\secauth\HMACMode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\secauth\HMACProvider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\secauth\IUserDatabase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\secauth\SessionKeys.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\secauth\SessionKeysView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\secauth\SessionStore.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\secauth\SimpleUserDatabase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\secauth\UpdateKeyMode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\secauth\User.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\secauth\master\MasterAuthProvider.cpp">
+      <Filter>Source Files\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\secauth\master\MasterSecurityState.cpp">
+      <Filter>Source Files\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\secauth\master\SessionKeyTask.cpp">
+      <Filter>Source Files\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\secauth\outstation\AuthRequestHandler.cpp">
+      <Filter>Source Files\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\secauth\outstation\ChallengeState.cpp">
+      <Filter>Source Files\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\secauth\outstation\IOAuthState.cpp">
+      <Filter>Source Files\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\secauth\outstation\KeyChangeState.cpp">
+      <Filter>Source Files\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\secauth\outstation\KeyUnwrap.cpp">
+      <Filter>Source Files\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\secauth\outstation\OAuthStates.cpp">
+      <Filter>Source Files\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\secauth\outstation\OSecActions.cpp">
+      <Filter>Source Files\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\secauth\outstation\OutstationAuthProvider.cpp">
+      <Filter>Source Files\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\secauth\outstation\OutstationAuthSettings.cpp">
+      <Filter>Source Files\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\secauth\outstation\SecurityState.cpp">
+      <Filter>Source Files\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\secauth\AggressiveModeParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\secauth\CriticalFunctions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\secauth\DeferredASDU.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\secauth\HMACMode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\secauth\HMACProvider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\secauth\SessionKeys.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\secauth\SessionKeysView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\secauth\SessionStore.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\secauth\SimpleUserDatabase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\secauth\UpdateKeyMode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

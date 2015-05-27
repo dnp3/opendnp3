@@ -18,45 +18,46 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_OUTSTATIONAUTHSTACK_H
-#define ASIODNP3_OUTSTATIONAUTHSTACK_H
+#ifndef SECAUTH_MASTERSECAUTHFIXTURE_H_
+#define SECAUTH_MASTERSECAUTHFIXTURE_H_
 
-#include "OutstationStackImpl.h"
-#include <secauth/outstation/OutstationAuthSettings.h>
+#include <testlib/MockExecutor.h>
+#include <testlib/MockLogHandler.h>
 
-#include <secauth/outstation/OutstationAuthProvider.h>
+#include <opendnp3/master/Master.h>
+#include <opendnp3/LogLevels.h>
 
-namespace asiodnp3
+#include <dnp3mocks/MockLowerLayer.h>
+#include <dnp3mocks/MockSOEHandler.h>
+#include <dnp3mocks/MockMasterApplication.h>
+#include <dnp3mocks/MockCryptoProvider.h>
+
+#include <secauth/master/MasterAuthProvider.h>
+
+namespace opendnp3
 {
 
-class ILinkSession;
+	MasterParams NoStartupTasks();
 
-/** @section desc A stack object for an SA outstation */
-class OutstationAuthStack : public OutstationStackImpl
-{
-public:
+	class MasterSecAuthFixture
+	{
+	public:
 
-	OutstationAuthStack(
-		const char* id,
-	    openpal::LogRoot&,
-		openpal::IExecutor& executor,		
-		opendnp3::ICommandHandler& commandHandler,
-		opendnp3::IOutstationApplication& application,		
-		const opendnp3::OutstationStackConfig& config,
-	    const StackActionHandler& handler,
-		const secauth::OutstationAuthSettings& authSettings,
-		openpal::IUTCTimeSource& timeSource,
-		secauth::IUserDatabase& userDB,
-		openpal::ICryptoProvider& crypto);
+		MasterSecAuthFixture(const MasterParams& params, ITaskLock& lock = NullTaskLock::Instance());
 
-	
+		void SendToMaster(const std::string& hex);		
 
-private:		
+		testlib::MockLogHandler log;
+		testlib::MockExecutor exe;
+		MockSOEHandler meas;
+		MockLowerLayer lower;
+		MockMasterApplication application;
+		Master master;
 
-	secauth::OutstationAuthProvider auth;
+		MockCryptoProvider crypto;
+		secauth::MasterAuthProvider auth;
 
-
-};
+	};
 
 }
 

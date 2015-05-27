@@ -193,7 +193,7 @@
     <ProjectReference Include="..\..\..\libs\osslcrypto\osslcryptoprovider.vcxproj">
       <Project>{6571dd15-d2f7-4d3f-a580-fdc5e55b2844}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\libs\secauthv5\secauthv5.vcxproj">
+    <ProjectReference Include="..\..\..\libs\secauth\secauth.vcxproj">
       <Project>{d4b3a5cb-be31-44fc-ba64-977615980740}</Project>
     </ProjectReference>
   </ItemGroup>

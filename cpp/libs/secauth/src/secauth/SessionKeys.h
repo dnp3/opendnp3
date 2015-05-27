@@ -18,46 +18,34 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_OUTSTATIONAUTHSTACK_H
-#define ASIODNP3_OUTSTATIONAUTHSTACK_H
+#ifndef SECAUTH_SESSIONKEYS_H
+#define SECAUTH_SESSIONKEYS_H
 
-#include "OutstationStackImpl.h"
-#include <secauth/outstation/OutstationAuthSettings.h>
+#include "AuthConstants.h"
 
-#include <secauth/outstation/OutstationAuthProvider.h>
+#include "SessionKeysView.h"
 
-namespace asiodnp3
+#include <openpal/container/StaticBuffer.h>
+#include <openpal/util/Uncopyable.h>
+
+namespace secauth
 {
+	/// Stores bi-directional session key data in internal buffers
+	class SessionKeys : private openpal::Uncopyable
+	{
+		public:
 
-class ILinkSession;
+			void SetKeys(const SessionKeysView& view);
+			SessionKeysView GetView() const;			
 
-/** @section desc A stack object for an SA outstation */
-class OutstationAuthStack : public OutstationStackImpl
-{
-public:
+		private:
 
-	OutstationAuthStack(
-		const char* id,
-	    openpal::LogRoot&,
-		openpal::IExecutor& executor,		
-		opendnp3::ICommandHandler& commandHandler,
-		opendnp3::IOutstationApplication& application,		
-		const opendnp3::OutstationStackConfig& config,
-	    const StackActionHandler& handler,
-		const secauth::OutstationAuthSettings& authSettings,
-		openpal::IUTCTimeSource& timeSource,
-		secauth::IUserDatabase& userDB,
-		openpal::ICryptoProvider& crypto);
+			openpal::ReadBufferView controlKey;
+			openpal::ReadBufferView monitorKey;
 
-	
-
-private:		
-
-	secauth::OutstationAuthProvider auth;
-
-
-};
-
+			openpal::StaticBuffer<AuthConstants::MAX_SESSION_KEY_SIZE_BYTES> controlBuffer;
+			openpal::StaticBuffer<AuthConstants::MAX_SESSION_KEY_SIZE_BYTES> monitorBuffer;
+	};
 }
 
 #endif

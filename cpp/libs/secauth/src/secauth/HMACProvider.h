@@ -18,46 +18,39 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_OUTSTATIONAUTHSTACK_H
-#define ASIODNP3_OUTSTATIONAUTHSTACK_H
+#ifndef SECAUTH_HMACPROVIDER_H
+#define SECAUTH_HMACPROVIDER_H
 
-#include "OutstationStackImpl.h"
-#include <secauth/outstation/OutstationAuthSettings.h>
+#include <cstdint>
 
-#include <secauth/outstation/OutstationAuthProvider.h>
+#include "HMACMode.h"
+#include "AuthConstants.h"
 
-namespace asiodnp3
+#include <openpal/crypto/ICryptoProvider.h>
+#include <openpal/container/StaticBuffer.h>
+
+namespace secauth
 {
+	class HMACProvider
+	{
+		public:
+			HMACProvider(openpal::ICryptoProvider& provider, HMACMode mode);
+			
+			opendnp3::HMACType GetType() const;
+			
+			openpal::ReadBufferView Compute(const openpal::ReadBufferView& key, std::initializer_list<openpal::ReadBufferView> buffers);
 
-class ILinkSession;
+			uint32_t OutputSize() const { return TRUNC_SIZE; }
 
-/** @section desc A stack object for an SA outstation */
-class OutstationAuthStack : public OutstationStackImpl
-{
-public:
+		private:
 
-	OutstationAuthStack(
-		const char* id,
-	    openpal::LogRoot&,
-		openpal::IExecutor& executor,		
-		opendnp3::ICommandHandler& commandHandler,
-		opendnp3::IOutstationApplication& application,		
-		const opendnp3::OutstationStackConfig& config,
-	    const StackActionHandler& handler,
-		const secauth::OutstationAuthSettings& authSettings,
-		openpal::IUTCTimeSource& timeSource,
-		secauth::IUserDatabase& userDB,
-		openpal::ICryptoProvider& crypto);
+			static openpal::IHMACAlgo& GetHMAC(openpal::ICryptoProvider& provider, HMACMode mode);
 
-	
-
-private:		
-
-	secauth::OutstationAuthProvider auth;
-
-
-};
-
+			HMACMode mode;
+			openpal::IHMACAlgo* pHMAC;
+			const uint32_t TRUNC_SIZE;
+			openpal::StaticBuffer<AuthConstants::MAX_HMAC_OUTPUT_SIZE> buffer;
+	};
 }
 
 #endif

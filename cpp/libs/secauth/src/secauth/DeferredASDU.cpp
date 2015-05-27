@@ -18,47 +18,37 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_OUTSTATIONAUTHSTACK_H
-#define ASIODNP3_OUTSTATIONAUTHSTACK_H
 
-#include "OutstationStackImpl.h"
-#include <secauth/outstation/OutstationAuthSettings.h>
+#include "DeferredASDU.h"
 
-#include <secauth/outstation/OutstationAuthProvider.h>
+using namespace openpal;
+using namespace opendnp3;
 
-namespace asiodnp3
+
+namespace secauth
 {
 
-class ILinkSession;
+DeferredASDU::DeferredASDU(uint32_t maxAPDUSize) : isSet(false), buffer(maxAPDUSize)
+{}
 
-/** @section desc A stack object for an SA outstation */
-class OutstationAuthStack : public OutstationStackImpl
+void DeferredASDU::Reset()
 {
-public:
+	isSet = false;
+}
 
-	OutstationAuthStack(
-		const char* id,
-	    openpal::LogRoot&,
-		openpal::IExecutor& executor,		
-		opendnp3::ICommandHandler& commandHandler,
-		opendnp3::IOutstationApplication& application,		
-		const opendnp3::OutstationStackConfig& config,
-	    const StackActionHandler& handler,
-		const secauth::OutstationAuthSettings& authSettings,
-		openpal::IUTCTimeSource& timeSource,
-		secauth::IUserDatabase& userDB,
-		openpal::ICryptoProvider& crypto);
+bool DeferredASDU::IsSet() const
+{
+	return isSet;
+}
 
-	
-
-private:		
-
-	secauth::OutstationAuthProvider auth;
-
-
-};
+void DeferredASDU::SetASDU(APDUHeader header_, openpal::ReadBufferView asdu_)
+{
+	this->isSet = true;
+	this->header = header_;
+	auto dest = buffer.GetWriteBufferView();
+	this->asdu = asdu_.CopyTo(dest);	
+}
 
 }
 
-#endif
 

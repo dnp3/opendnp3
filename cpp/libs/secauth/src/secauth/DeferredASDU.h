@@ -18,47 +18,64 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_OUTSTATIONAUTHSTACK_H
-#define ASIODNP3_OUTSTATIONAUTHSTACK_H
 
-#include "OutstationStackImpl.h"
-#include <secauth/outstation/OutstationAuthSettings.h>
+#ifndef SECAUTH_DEFERREDASDU_H
+#define SECAUTH_DEFERREDASDU_H
 
-#include <secauth/outstation/OutstationAuthProvider.h>
+#include <opendnp3/app/APDUHeader.h>
 
-namespace asiodnp3
+#include <openpal/container/Buffer.h>
+#include <openpal/util/Uncopyable.h>
+
+namespace secauth
 {
 
-class ILinkSession;
-
-/** @section desc A stack object for an SA outstation */
-class OutstationAuthStack : public OutstationStackImpl
+class DeferredASDU : private openpal::Uncopyable
 {
-public:
 
-	OutstationAuthStack(
-		const char* id,
-	    openpal::LogRoot&,
-		openpal::IExecutor& executor,		
-		opendnp3::ICommandHandler& commandHandler,
-		opendnp3::IOutstationApplication& application,		
-		const opendnp3::OutstationStackConfig& config,
-	    const StackActionHandler& handler,
-		const secauth::OutstationAuthSettings& authSettings,
-		openpal::IUTCTimeSource& timeSource,
-		secauth::IUserDatabase& userDB,
-		openpal::ICryptoProvider& crypto);
+	public:	
 
+	DeferredASDU(uint32_t maxAPDUSize);
+
+	void Reset();
+
+	bool IsSet() const;	
+
+	void SetASDU(opendnp3::APDUHeader header, openpal::ReadBufferView asdu);
+
+	openpal::ReadBufferView GetFragment() const { return asdu; }
+
+	opendnp3::APDUHeader GetHeader() const { return header; }
 	
+	template <class Handler>
+	bool Process(const Handler& handler);
+	
+	private:
 
-private:		
+	DeferredASDU() = delete;
 
-	secauth::OutstationAuthProvider auth;
-
-
+	bool isSet;	
+	opendnp3::APDUHeader header;
+	openpal::ReadBufferView asdu;
+	openpal::Buffer buffer;
+	
 };
+
+template <class Handler>
+bool DeferredASDU::Process(const Handler& handler)
+{
+	if (isSet)
+	{
+		bool processed = handler(asdu, header, asdu.Skip(opendnp3::APDU_REQUEST_HEADER_SIZE));
+		isSet = !processed;
+		return processed;
+	}
+	else
+	{
+		return false;
+	}
+}
 
 }
 
 #endif
-

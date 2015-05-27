@@ -18,44 +18,26 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_OUTSTATIONAUTHSTACK_H
-#define ASIODNP3_OUTSTATIONAUTHSTACK_H
+#ifndef SECAUTH_IAUTHREQUESTHANDLER_H
+#define SECAUTH_IAUTHREQUESTHANDLER_H
 
-#include "OutstationStackImpl.h"
-#include <secauth/outstation/OutstationAuthSettings.h>
+#include <opendnp3/app/APDUHeader.h>
+#include <opendnp3/outstation/OutstationState.h>
 
-#include <secauth/outstation/OutstationAuthProvider.h>
+#include <opendnp3/objects/Group120.h>
 
-namespace asiodnp3
+namespace secauth
 {
 
-class ILinkSession;
-
-/** @section desc A stack object for an SA outstation */
-class OutstationAuthStack : public OutstationStackImpl
+// handles auth request types
+class IAuthRequestHandler
 {
-public:
+	public:
 
-	OutstationAuthStack(
-		const char* id,
-	    openpal::LogRoot&,
-		openpal::IExecutor& executor,		
-		opendnp3::ICommandHandler& commandHandler,
-		opendnp3::IOutstationApplication& application,		
-		const opendnp3::OutstationStackConfig& config,
-	    const StackActionHandler& handler,
-		const secauth::OutstationAuthSettings& authSettings,
-		openpal::IUTCTimeSource& timeSource,
-		secauth::IUserDatabase& userDB,
-		openpal::ICryptoProvider& crypto);
-
-	
-
-private:		
-
-	secauth::OutstationAuthProvider auth;
-
-
+		virtual void OnAuthChallenge(opendnp3::OState& ostate, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge) = 0;
+		virtual void OnAuthReply(opendnp3::OState& ostate, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var2& reply) = 0;
+		virtual void OnRequestKeyStatus(opendnp3::OState& ostate, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var4& status) = 0;
+		virtual void OnChangeSessionKeys(opendnp3::OState& ostate, const openpal::ReadBufferView& fragment, const opendnp3::APDUHeader& header, const opendnp3::Group120Var6& change) = 0;
 };
 
 }

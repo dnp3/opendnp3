@@ -18,47 +18,49 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_OUTSTATIONAUTHSTACK_H
-#define ASIODNP3_OUTSTATIONAUTHSTACK_H
 
-#include "OutstationStackImpl.h"
-#include <secauth/outstation/OutstationAuthSettings.h>
+#include "HMACProvider.h"
 
-#include <secauth/outstation/OutstationAuthProvider.h>
+namespace secauth
+{	
+	openpal::IHMACAlgo& HMACProvider::GetHMAC(openpal::ICryptoProvider& crypto, HMACMode mode)
+	{
+		switch (mode)
+		{
+		case(HMACMode::SHA1_TRUNC_8) :
+		case(HMACMode::SHA1_TRUNC_10) :
+			return crypto.GetSHA1HMAC();
+		default:
+			return crypto.GetSHA256HMAC();
+		}
+	}
 
-namespace asiodnp3
-{
+	HMACProvider::HMACProvider(openpal::ICryptoProvider& crypto, HMACMode mode_) :
+		mode(mode_),
+		pHMAC(&GetHMAC(crypto, mode_)),
+		TRUNC_SIZE(GetTruncationSize(mode_))
+	{
+		
+	}
 
-class ILinkSession;
+	opendnp3::HMACType HMACProvider::GetType() const
+	{
+		return ToHMACType(mode);
+	}	
 
-/** @section desc A stack object for an SA outstation */
-class OutstationAuthStack : public OutstationStackImpl
-{
-public:
-
-	OutstationAuthStack(
-		const char* id,
-	    openpal::LogRoot&,
-		openpal::IExecutor& executor,		
-		opendnp3::ICommandHandler& commandHandler,
-		opendnp3::IOutstationApplication& application,		
-		const opendnp3::OutstationStackConfig& config,
-	    const StackActionHandler& handler,
-		const secauth::OutstationAuthSettings& authSettings,
-		openpal::IUTCTimeSource& timeSource,
-		secauth::IUserDatabase& userDB,
-		openpal::ICryptoProvider& crypto);
-
-	
-
-private:		
-
-	secauth::OutstationAuthProvider auth;
-
-
-};
-
+	openpal::ReadBufferView HMACProvider::Compute(const openpal::ReadBufferView& key, std::initializer_list<openpal::ReadBufferView> buffers)
+	{
+		auto dest = buffer.GetWriteBuffer();
+		if (pHMAC->Calculate(key, buffers, dest))
+		{
+			return buffer.ToReadOnly(TRUNC_SIZE);
+		}
+		else
+		{
+			return openpal::ReadBufferView::Empty();
+		}		
+	}
 }
 
-#endif
+
 

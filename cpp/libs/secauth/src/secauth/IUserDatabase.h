@@ -18,44 +18,38 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_OUTSTATIONAUTHSTACK_H
-#define ASIODNP3_OUTSTATIONAUTHSTACK_H
+#ifndef SECAUTH_IUSERDATABASE_H
+#define SECAUTH_IUSERDATABASE_H
 
-#include "OutstationStackImpl.h"
-#include <secauth/outstation/OutstationAuthSettings.h>
+#include "secauth/User.h"
+#include "UpdateKeyMode.h"
 
-#include <secauth/outstation/OutstationAuthProvider.h>
+#include <opendnp3/gen/FunctionCode.h>
 
-namespace asiodnp3
+#include <openpal/container/ReadBufferView.h>
+
+#include <functional>
+
+namespace secauth
+{	
+
+/** 
+	An interface for retrieving info about users
+
+	This interface may be given out to multiple outstation instances on multiple threads, 
+	and therefore should be thread-safe (or immutable).
+*/
+class IUserDatabase
 {
+	public:		
 
-class ILinkSession;
+		virtual bool GetUpdateKeyType(const User& user, UpdateKeyMode& type) const = 0;
 
-/** @section desc A stack object for an SA outstation */
-class OutstationAuthStack : public OutstationStackImpl
-{
-public:
+		virtual bool IsAuthorized(const User& user, opendnp3::FunctionCode code) const = 0;
+		
+		virtual bool GetUpdateKey(const User& user, UpdateKeyMode& type, openpal::ReadBufferView& key) const = 0;
 
-	OutstationAuthStack(
-		const char* id,
-	    openpal::LogRoot&,
-		openpal::IExecutor& executor,		
-		opendnp3::ICommandHandler& commandHandler,
-		opendnp3::IOutstationApplication& application,		
-		const opendnp3::OutstationStackConfig& config,
-	    const StackActionHandler& handler,
-		const secauth::OutstationAuthSettings& authSettings,
-		openpal::IUTCTimeSource& timeSource,
-		secauth::IUserDatabase& userDB,
-		openpal::ICryptoProvider& crypto);
-
-	
-
-private:		
-
-	secauth::OutstationAuthProvider auth;
-
-
+		virtual bool UserExists(const User& user) const = 0;
 };
 
 }

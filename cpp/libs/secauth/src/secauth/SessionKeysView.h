@@ -18,46 +18,29 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_OUTSTATIONAUTHSTACK_H
-#define ASIODNP3_OUTSTATIONAUTHSTACK_H
+#ifndef SECAUTH_SESSIONKEYSVIEW_H
+#define SECAUTH_SESSIONKEYSVIEW_H
 
-#include "OutstationStackImpl.h"
-#include <secauth/outstation/OutstationAuthSettings.h>
+#include <openpal/container/ReadBufferView.h>
 
-#include <secauth/outstation/OutstationAuthProvider.h>
+namespace secauth
+{	
+	// A view of session keys stored elsewhere
+	class SessionKeysView
+	{
+	public:
+		SessionKeysView() {}
 
-namespace asiodnp3
-{
+		SessionKeysView(
+			const openpal::ReadBufferView& controlKey,
+			const openpal::ReadBufferView& monitorKey
+		);
 
-class ILinkSession;
+		bool IsValid() const;
 
-/** @section desc A stack object for an SA outstation */
-class OutstationAuthStack : public OutstationStackImpl
-{
-public:
-
-	OutstationAuthStack(
-		const char* id,
-	    openpal::LogRoot&,
-		openpal::IExecutor& executor,		
-		opendnp3::ICommandHandler& commandHandler,
-		opendnp3::IOutstationApplication& application,		
-		const opendnp3::OutstationStackConfig& config,
-	    const StackActionHandler& handler,
-		const secauth::OutstationAuthSettings& authSettings,
-		openpal::IUTCTimeSource& timeSource,
-		secauth::IUserDatabase& userDB,
-		openpal::ICryptoProvider& crypto);
-
-	
-
-private:		
-
-	secauth::OutstationAuthProvider auth;
-
-
-};
-
+		openpal::ReadBufferView controlKey;
+		openpal::ReadBufferView monitorKey;		
+	};
 }
 
 #endif

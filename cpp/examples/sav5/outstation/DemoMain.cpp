@@ -33,7 +33,7 @@
 #include <openpal/container/StaticBuffer.h>
 
 #include <osslcrypto/CryptoProvider.h>
-#include <secauthv5/SimpleUserDatabase.h>
+#include <secauth/SimpleUserDatabase.h>
 
 #include <string>
 #include <thread>
@@ -46,14 +46,14 @@ using namespace asiopal;
 using namespace asiodnp3;
 
 // Hard-wired configuration of the default user update key for demo purposes
-void AddDefaultUser(secauthv5::SimpleUserDatabase& db)
+void AddDefaultUser(secauth::SimpleUserDatabase& db)
 {
 	// add a 128-bit demo key of all 0xFF
 	openpal::StaticBuffer<16> key;
 	key.GetWriteBuffer().SetAllTo(0xFF);
 	db.ConfigureUser(
-		secauthv5::User::Default(), 
-		secauthv5::UpdateKeyMode::AES128, 
+		secauth::User::Default(), 
+		secauth::UpdateKeyMode::AES128, 
 		key.ToReadOnly()
 	);
 }
@@ -69,7 +69,7 @@ int main(int argc, char* argv[])
 	osslcrypto::CryptoProvider crypto;
 
 	// Create a user database
-	secauthv5::SimpleUserDatabase userDatabase;
+	secauth::SimpleUserDatabase userDatabase;
 	// setup the default user
 	AddDefaultUser(userDatabase);
 
@@ -109,7 +109,7 @@ int main(int argc, char* argv[])
 	config.link.RemoteAddr = 1;
 
 	// configure the authentication settings based on the outstation settings (buffer sizes, etc)
-	secauthv5::OutstationAuthSettings authSettings(config.outstation.params);
+	secauth::OutstationAuthSettings authSettings(config.outstation.params);
 	
 	// Create a new outstation with a log level, command handler, and
 	// config info this	returns a thread-safe interface used for

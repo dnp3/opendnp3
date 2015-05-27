@@ -18,44 +18,41 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_OUTSTATIONAUTHSTACK_H
-#define ASIODNP3_OUTSTATIONAUTHSTACK_H
+#ifndef SECAUTH_SIMPLEUPDATEKEYSTORE_H
+#define SECAUTH_SIMPLEUPDATEKEYSTORE_H
 
-#include "OutstationStackImpl.h"
-#include <secauth/outstation/OutstationAuthSettings.h>
+#include "IUserDatabase.h"
 
-#include <secauth/outstation/OutstationAuthProvider.h>
+#include <openpal/container/Buffer.h>
 
-namespace asiodnp3
+#include <map>
+#include <memory>
+
+namespace secauth
 {
 
-class ILinkSession;
-
-/** @section desc A stack object for an SA outstation */
-class OutstationAuthStack : public OutstationStackImpl
+/** 
+	A very simple update key store for the default user
+*/
+class SimpleUserDatabase : public IUserDatabase
 {
-public:
+	public:		
+		
+		virtual bool GetUpdateKey(const User& user, UpdateKeyMode& type, openpal::ReadBufferView& key) const override final;
 
-	OutstationAuthStack(
-		const char* id,
-	    openpal::LogRoot&,
-		openpal::IExecutor& executor,		
-		opendnp3::ICommandHandler& commandHandler,
-		opendnp3::IOutstationApplication& application,		
-		const opendnp3::OutstationStackConfig& config,
-	    const StackActionHandler& handler,
-		const secauth::OutstationAuthSettings& authSettings,
-		openpal::IUTCTimeSource& timeSource,
-		secauth::IUserDatabase& userDB,
-		openpal::ICryptoProvider& crypto);
+		virtual bool GetUpdateKeyType(const User& user, UpdateKeyMode& type) const override final;
 
-	
+		virtual bool IsAuthorized(const User& user, opendnp3::FunctionCode code) const override final;
 
-private:		
+		virtual bool UserExists(const User& user) const override final;
 
-	secauth::OutstationAuthProvider auth;
+		// copies the update key into the key store permanently
+		void ConfigureUser(const User& user, UpdateKeyMode type, const openpal::ReadBufferView& key);
 
+	private:
 
+		typedef std::pair<UpdateKeyMode, std::unique_ptr<openpal::Buffer>> StoredUserData;
+		std::map<uint16_t, StoredUserData> userMap;
 };
 
 }

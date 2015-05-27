@@ -18,47 +18,36 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_OUTSTATIONAUTHSTACK_H
-#define ASIODNP3_OUTSTATIONAUTHSTACK_H
 
-#include "OutstationStackImpl.h"
-#include <secauth/outstation/OutstationAuthSettings.h>
+#ifndef SECAUTH_MASTERSECURITYSTATE_H
+#define SECAUTH_MASTERSECURITYSTATE_H
 
-#include <secauth/outstation/OutstationAuthProvider.h>
 
-namespace asiodnp3
+#include <openpal/util/Uncopyable.h>
+
+#include <openpal/crypto/ICryptoProvider.h>
+#include <openpal/executor/IUTCTimeSource.h>
+
+namespace secauth
 {
 
-class ILinkSession;
+class MSState : private openpal::Uncopyable
+{	
 
-/** @section desc A stack object for an SA outstation */
-class OutstationAuthStack : public OutstationStackImpl
-{
-public:
+public:	
 
-	OutstationAuthStack(
-		const char* id,
-	    openpal::LogRoot&,
-		openpal::IExecutor& executor,		
-		opendnp3::ICommandHandler& commandHandler,
-		opendnp3::IOutstationApplication& application,		
-		const opendnp3::OutstationStackConfig& config,
-	    const StackActionHandler& handler,
-		const secauth::OutstationAuthSettings& authSettings,
+	MSState(
 		openpal::IUTCTimeSource& timeSource,
-		secauth::IUserDatabase& userDB,
-		openpal::ICryptoProvider& crypto);
+		openpal::ICryptoProvider& crypto
+	);
 
-	
+private:
 
-private:		
-
-	secauth::OutstationAuthProvider auth;
-
-
+	openpal::IUTCTimeSource*		pTimeSource;
+	openpal::ICryptoProvider*		pCrypto;
 };
+
 
 }
 
 #endif
-

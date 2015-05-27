@@ -18,43 +18,40 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_OUTSTATIONAUTHSTACK_H
-#define ASIODNP3_OUTSTATIONAUTHSTACK_H
+#ifndef SECAUTH_CRITICAL_FUNCTIONS_H
+#define SECAUTH_CRITICAL_FUNCTIONS_H
 
-#include "OutstationStackImpl.h"
-#include <secauth/outstation/OutstationAuthSettings.h>
+#include <opendnp3/gen/FunctionCode.h>
 
-#include <secauth/outstation/OutstationAuthProvider.h>
-
-namespace asiodnp3
+namespace secauth
 {
 
-class ILinkSession;
-
-/** @section desc A stack object for an SA outstation */
-class OutstationAuthStack : public OutstationStackImpl
-{
+class CriticalFunctions
+{	
 public:
-
-	OutstationAuthStack(
-		const char* id,
-	    openpal::LogRoot&,
-		openpal::IExecutor& executor,		
-		opendnp3::ICommandHandler& commandHandler,
-		opendnp3::IOutstationApplication& application,		
-		const opendnp3::OutstationStackConfig& config,
-	    const StackActionHandler& handler,
-		const secauth::OutstationAuthSettings& authSettings,
-		openpal::IUTCTimeSource& timeSource,
-		secauth::IUserDatabase& userDB,
-		openpal::ICryptoProvider& crypto);
-
 	
+	static CriticalFunctions AuthOptional();
+	static CriticalFunctions AuthEverything();
 
-private:		
+	bool authConfirm;
+	bool authRead;
+	bool authImmediateFreeze;
+	bool authImmediateFreezeNR;
+	bool authFreezeClear;
+	bool authFreezeClearNR;
+	bool authFreezeAtTime;
+	bool authFreezeAtTimeNR;
+	bool authInitData;
+	bool authAssignClass;
+	bool authDelayMeasure;
+	bool authResponse;
+	bool authUnsolicited;	
 
-	secauth::OutstationAuthProvider auth;
+	bool IsCritical(opendnp3::FunctionCode code) const;
 
+private:
+	CriticalFunctions() = delete;
+	CriticalFunctions(bool authOptionalCodes);
 
 };
 

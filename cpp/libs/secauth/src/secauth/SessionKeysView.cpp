@@ -18,47 +18,29 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_OUTSTATIONAUTHSTACK_H
-#define ASIODNP3_OUTSTATIONAUTHSTACK_H
 
-#include "OutstationStackImpl.h"
-#include <secauth/outstation/OutstationAuthSettings.h>
+#include "SessionKeysView.h"
 
-#include <secauth/outstation/OutstationAuthProvider.h>
+#include "secauth/AuthConstants.h"
 
-namespace asiodnp3
-{
+namespace secauth
+{	
+		SessionKeysView::SessionKeysView(
+			const openpal::ReadBufferView& controlKey_,
+			const openpal::ReadBufferView& monitorKey_
+			) : 
+			controlKey(controlKey_), 
+			monitorKey(monitorKey_)
+		{
+		
+		}
 
-class ILinkSession;
-
-/** @section desc A stack object for an SA outstation */
-class OutstationAuthStack : public OutstationStackImpl
-{
-public:
-
-	OutstationAuthStack(
-		const char* id,
-	    openpal::LogRoot&,
-		openpal::IExecutor& executor,		
-		opendnp3::ICommandHandler& commandHandler,
-		opendnp3::IOutstationApplication& application,		
-		const opendnp3::OutstationStackConfig& config,
-	    const StackActionHandler& handler,
-		const secauth::OutstationAuthSettings& authSettings,
-		openpal::IUTCTimeSource& timeSource,
-		secauth::IUserDatabase& userDB,
-		openpal::ICryptoProvider& crypto);
-
-	
-
-private:		
-
-	secauth::OutstationAuthProvider auth;
-
-
-};
-
+		bool SessionKeysView::IsValid() const
+		{
+			return AuthConstants::SessionKeySizeWithinLimits(controlKey.Size()) &&
+				   AuthConstants::SessionKeySizeWithinLimits(monitorKey.Size());
+		}			
 }
 
-#endif
+
 

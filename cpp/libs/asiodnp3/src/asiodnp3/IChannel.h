@@ -38,8 +38,8 @@
 #include <openpal/executor/IExecutor.h>
 #include <openpal/crypto/ICryptoProvider.h>
 
-#include <secauthv5/outstation/OutstationAuthSettings.h>
-#include <secauthv5/IUserDatabase.h>
+#include <secauth/outstation/OutstationAuthSettings.h>
+#include <secauth/IUserDatabase.h>
 
 #include "IMaster.h"
 #include "IOutstation.h"
@@ -121,9 +121,9 @@ public:
 										opendnp3::ICommandHandler& commandHandler,
 										opendnp3::IOutstationApplication& application,
 										const opendnp3::OutstationStackConfig& config,
-										const secauthv5::OutstationAuthSettings& authSettings,
+										const secauth::OutstationAuthSettings& authSettings,
 										openpal::IUTCTimeSource& timeSource,
-										secauthv5::IUserDatabase& userDB,
+										secauth::IUserDatabase& userDB,
 										openpal::ICryptoProvider& crypto) = 0;
 };
 

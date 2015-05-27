@@ -21,7 +21,7 @@
 
 #include "OutstationAuthStack.h"
 
-using namespace secauthv5;
+using namespace secauth;
 
 namespace asiodnp3
 {
@@ -36,7 +36,7 @@ namespace asiodnp3
 		const StackActionHandler& handler,
 		const OutstationAuthSettings& authSettings,
 		openpal::IUTCTimeSource& timeSource,
-		secauthv5::IUserDatabase& userDB,
+		secauth::IUserDatabase& userDB,
 		openpal::ICryptoProvider& crypto) :
 		OutstationStackImpl(id, root_, executor, commandHandler, application, config, handler),
 		auth(authSettings, root.GetLogger(), executor, timeSource, userDB, crypto)

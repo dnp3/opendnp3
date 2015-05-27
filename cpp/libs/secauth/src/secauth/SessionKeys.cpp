@@ -18,47 +18,27 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_OUTSTATIONAUTHSTACK_H
-#define ASIODNP3_OUTSTATIONAUTHSTACK_H
 
-#include "OutstationStackImpl.h"
-#include <secauth/outstation/OutstationAuthSettings.h>
+#include "SessionKeys.h"
 
-#include <secauth/outstation/OutstationAuthProvider.h>
-
-namespace asiodnp3
+namespace secauth
 {
-
-class ILinkSession;
-
-/** @section desc A stack object for an SA outstation */
-class OutstationAuthStack : public OutstationStackImpl
-{
-public:
-
-	OutstationAuthStack(
-		const char* id,
-	    openpal::LogRoot&,
-		openpal::IExecutor& executor,		
-		opendnp3::ICommandHandler& commandHandler,
-		opendnp3::IOutstationApplication& application,		
-		const opendnp3::OutstationStackConfig& config,
-	    const StackActionHandler& handler,
-		const secauth::OutstationAuthSettings& authSettings,
-		openpal::IUTCTimeSource& timeSource,
-		secauth::IUserDatabase& userDB,
-		openpal::ICryptoProvider& crypto);
-
 	
+	void SessionKeys::SetKeys (
+		const SessionKeysView& view
+		)
+	{
+		auto controlDest = controlBuffer.GetWriteBuffer();
+		controlKey = view.controlKey.CopyTo(controlDest);
 
-private:		
+		auto monitorDest = monitorBuffer.GetWriteBuffer();
+		monitorKey = view.monitorKey.CopyTo(monitorDest);
+	}
 
-	secauth::OutstationAuthProvider auth;
-
-
-};
-
+	SessionKeysView SessionKeys::GetView() const
+	{
+		return SessionKeysView(controlKey, monitorKey);
+	}	
 }
 
-#endif
 
