@@ -137,7 +137,7 @@ if(OSSL)
   if(DEMO)
 
   # ----- outstation SAv5 demo executable -----
-  add_executable (outstationdemoSA ./cpp/examples/sav5/outstation/DemoMain.cpp)
+  add_executable (outstationdemoSA ./cpp/examples/secauth/outstation/DemoMain.cpp)
   target_link_libraries (outstationdemoSA LINK_PUBLIC asiodnp3 secauth osslcrypto)
 
   endif()
