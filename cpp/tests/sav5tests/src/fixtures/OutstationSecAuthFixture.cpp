@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "OutstationSecAuthTest.h"
+#include "OutstationSecAuthFixture.h"
 
 #include <testlib/BufferHelpers.h>
 
@@ -27,7 +27,7 @@ using namespace secauthv5;
 
 namespace opendnp3
 {
-	OutstationSecAuthTest::OutstationSecAuthTest(
+	OutstationSecAuthFixture::OutstationSecAuthFixture(
 		const secauthv5::OutstationAuthSettings& authConfig,
 		const OutstationConfig& config
 	) : 
@@ -46,7 +46,7 @@ namespace opendnp3
 		outstation.SetAuthProvider(auth);
 	}
 
-	void OutstationSecAuthTest::AddUser(secauthv5::User, secauthv5::UpdateKeyMode mode, uint8_t keyRepeat)
+	void OutstationSecAuthFixture::AddUser(secauthv5::User, secauthv5::UpdateKeyMode mode, uint8_t keyRepeat)
 	{
 		auto keySize = (mode == UpdateKeyMode::AES128) ? 16 : 32;
 		openpal::Buffer key(keySize);
@@ -58,37 +58,37 @@ namespace opendnp3
 		);		
 	}
 
-	uint32_t OutstationSecAuthTest::LowerLayerUp()
+	uint32_t OutstationSecAuthFixture::LowerLayerUp()
 	{
 		outstation.OnLowerLayerUp();
 		return exe.RunMany();
 	}
 
-	uint32_t OutstationSecAuthTest::LowerLayerDown()
+	uint32_t OutstationSecAuthFixture::LowerLayerDown()
 	{
 		outstation.OnLowerLayerDown();
 		return exe.RunMany();
 	}
 
-	uint32_t OutstationSecAuthTest::OnSendResult(bool isSuccess)
+	uint32_t OutstationSecAuthFixture::OnSendResult(bool isSuccess)
 	{
 		outstation.OnSendResult(isSuccess);
 		return exe.RunMany();
 	}
 
-	uint32_t OutstationSecAuthTest::SendToOutstation(const std::string& hex)
+	uint32_t OutstationSecAuthFixture::SendToOutstation(const std::string& hex)
 	{
 		testlib::HexSequence hs(hex);
 		outstation.OnReceive(hs.ToReadOnly());
 		return exe.RunMany();
 	}
 
-	size_t OutstationSecAuthTest::NumPendingTimers() const
+	size_t OutstationSecAuthFixture::NumPendingTimers() const
 	{
 		return exe.NumPendingTimers();
 	}
 
-	bool OutstationSecAuthTest::AdvanceToNextTimer()
+	bool OutstationSecAuthFixture::AdvanceToNextTimer()
 	{
 		if (exe.AdvanceToNextTimer())
 		{
@@ -100,7 +100,7 @@ namespace opendnp3
 		}
 	}
 
-	uint32_t OutstationSecAuthTest::AdvanceTime(const openpal::TimeDuration& td)
+	uint32_t OutstationSecAuthFixture::AdvanceTime(const openpal::TimeDuration& td)
 	{
 		exe.AdvanceTime(td);
 		return exe.RunMany();

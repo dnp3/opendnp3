@@ -168,7 +168,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\CatchTestStart.cpp" />
-    <ClCompile Include="src\OutstationSecAuthTest.cpp" />
+    <ClCompile Include="src\fixtures\OutstationSecAuthFixture.cpp" />
     <ClCompile Include="src\TestAggressiveModeHMACParsing.cpp" />
     <ClCompile Include="src\TestAggressiveModeParsing.cpp" />
     <ClCompile Include="src\TestOutstationSecAuth.cpp" />
@@ -191,7 +191,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\OutstationSecAuthTest.h" />
+    <ClInclude Include="src\fixtures\MasterSecAuthFixture.h" />
+    <ClInclude Include="src\fixtures\OutstationSecAuthFixture.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

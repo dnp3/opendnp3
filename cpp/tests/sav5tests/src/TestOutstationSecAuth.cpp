@@ -20,7 +20,7 @@
  */
 #include <catch.hpp>
 
-#include "OutstationSecAuthTest.h"
+#include "fixtures/OutstationSecAuthFixture.h"
 
 #include <dnp3mocks/APDUHexBuilders.h>
 
@@ -32,14 +32,14 @@ using namespace secauthv5;
 using namespace openpal;
 using namespace testlib;
 
-#define SUITE(name) "OutstationSecAuthTestSuite - " name\
+#define SUITE(name) "OutstationSecAuthFixtureSuite - " name\
 
-void TestSessionKeyChange(OutstationSecAuthTest& test, User user, KeyWrapAlgorithm keyWrap, HMACMode hmacMode);
+void TestSessionKeyChange(OutstationSecAuthFixture& test, User user, KeyWrapAlgorithm keyWrap, HMACMode hmacMode);
 void SetMockKeyWrapData(MockCryptoProvider& crypto, KeyWrapAlgorithm keyWrap, const std::string& lastStatusRsp);
 
 TEST_CASE(SUITE("ChangeSessionKeys-AES128-SHA256-16"))
 {	
-	OutstationSecAuthTest test;	
+	OutstationSecAuthFixture test;	
 	test.AddUser(User::Default(), UpdateKeyMode::AES128, 0xFF);
 	test.LowerLayerUp();
 	TestSessionKeyChange(test, User::Default(), KeyWrapAlgorithm::AES_128,HMACMode::SHA256_TRUNC_16);
@@ -47,7 +47,7 @@ TEST_CASE(SUITE("ChangeSessionKeys-AES128-SHA256-16"))
 
 TEST_CASE(SUITE("ChangeSessionKeys-AES256-SHA256-16"))
 {
-	OutstationSecAuthTest test;	
+	OutstationSecAuthFixture test;	
 	test.AddUser(User::Default(), UpdateKeyMode::AES256, 0xFF);
 	test.LowerLayerUp();
 	TestSessionKeyChange(test, User::Default(), KeyWrapAlgorithm::AES_256, HMACMode::SHA256_TRUNC_16);
@@ -58,7 +58,7 @@ TEST_CASE(SUITE("ChangeSessionKeys-AES256-SHA1-8"))
 	OutstationAuthSettings settings;
 	settings.hmacMode = HMACMode::SHA1_TRUNC_8; // use a non-default HMAC mode
 
-	OutstationSecAuthTest test(settings);
+	OutstationSecAuthFixture test(settings);
 	test.AddUser(User::Default(), UpdateKeyMode::AES256, 0xFF);
 	test.LowerLayerUp();
 	TestSessionKeyChange(test, User::Default(), KeyWrapAlgorithm::AES_256, HMACMode::SHA1_TRUNC_8);
@@ -69,7 +69,7 @@ TEST_CASE(SUITE("Critical requests are challenged when session keys are not init
 	OutstationAuthSettings settings;
 	settings.challengeSize = 5; // try a non-default challenge size
 
-	OutstationSecAuthTest test(settings);
+	OutstationSecAuthFixture test(settings);
 	
 	test.LowerLayerUp();
 
@@ -93,7 +93,7 @@ TEST_CASE(SUITE("Non-critical requests are not challenged"))
 	OutstationAuthSettings settings;
 	settings.functions.authRead = false;
 
-	OutstationSecAuthTest test(settings);
+	OutstationSecAuthFixture test(settings);
 	test.LowerLayerUp();
 
 	test.SendToOutstation(hex::EventPoll(0));
@@ -103,7 +103,7 @@ TEST_CASE(SUITE("Non-critical requests are not challenged"))
 TEST_CASE(SUITE("Critical requests can be challenged and processed"))
 {
 	OutstationAuthSettings settings;	
-	OutstationSecAuthTest test(settings);
+	OutstationSecAuthFixture test(settings);
 
 	test.AddUser(User::Default(), UpdateKeyMode::AES256, 0xFF);
 	
@@ -131,7 +131,7 @@ TEST_CASE(SUITE("Critical requests can be challenged and processed"))
 	REQUIRE(test.lower.PopWriteAsHex() == hex::EmptyResponse(1, IINField(IINBit::DEVICE_RESTART)));
 }
 
-void TestSessionKeyChange(OutstationSecAuthTest& test, User user, KeyWrapAlgorithm keyWrap, HMACMode hmacMode)
+void TestSessionKeyChange(OutstationSecAuthFixture& test, User user, KeyWrapAlgorithm keyWrap, HMACMode hmacMode)
 {
 	REQUIRE(test.lower.HasNoData());
 

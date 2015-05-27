@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __OUTSTATION_SECAUTH_TEST_H_
-#define __OUTSTATION_SECAUTH_TEST_H_
+#ifndef SECAUTH_OUTSTATION_SECAUTH_FIXTURE_H_
+#define SECAUTH_OUTSTATION_SECAUTH_FIXTURE_H_
 
 #include <opendnp3/LogLevels.h>
 #include <opendnp3/app/ITransactable.h>
@@ -44,11 +44,11 @@
 namespace opendnp3
 {
 
-class OutstationSecAuthTest
+class OutstationSecAuthFixture
 {
 
 public:
-	OutstationSecAuthTest(
+	OutstationSecAuthFixture(
 		const secauthv5::OutstationAuthSettings& authConfig = secauthv5::OutstationAuthSettings(),
 		const OutstationConfig& config = OutstationConfig()		
 	);
