@@ -41,6 +41,10 @@ class MasterAuthWrapper : private openpal::Uncopyable
 
 	/// ----- mirror of IMasterAuthProvider methods -----	
 
+	void GoOnline(MState& mstate);
+
+	void GoOffline(MState& mstate);
+
 	private:
 
 	IMasterAuthProvider* pProvider;

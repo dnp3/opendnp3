@@ -31,7 +31,7 @@ class MasterCommandProcessor : public ICommandProcessor
 {
 	public:	
 
-	MasterCommandProcessor(MasterState& state);
+	MasterCommandProcessor(MState& state);
 			
 	// ------- command events ----------
 
@@ -52,7 +52,7 @@ class MasterCommandProcessor : public ICommandProcessor
 
 	private:
 
-	MasterState* pState;	
+	MState* pState;	
 
 	// -------- helpers --------	
 

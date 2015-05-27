@@ -51,6 +51,7 @@
     <ClCompile Include="src\secauthv5\DeferredASDU.cpp" />
     <ClCompile Include="src\secauthv5\HMACMode.cpp" />
     <ClCompile Include="src\secauthv5\HMACProvider.cpp" />
+    <ClCompile Include="src\secauthv5\master\SessionKeyTask.cpp" />
     <ClCompile Include="src\secauthv5\outstation\AuthRequestHandler.cpp" />
     <ClCompile Include="src\secauthv5\outstation\ChallengeState.cpp" />
     <ClCompile Include="src\secauthv5\outstation\IOAuthState.cpp" />

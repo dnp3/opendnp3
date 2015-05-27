@@ -30,17 +30,17 @@
 namespace opendnp3
 {
 
-class MasterState;
+class MState;
 
 class IMasterState : private openpal::Uncopyable
 {
 	public:
 
-	virtual IMasterState* OnStart(MasterState& mstate);
+	virtual IMasterState* OnStart(MState& mstate);
 	
-	virtual IMasterState* OnResponse(MasterState& mstate, const APDUResponseHeader& response, const openpal::ReadBufferView& objects);
+	virtual IMasterState* OnResponse(MState& mstate, const APDUResponseHeader& response, const openpal::ReadBufferView& objects);
 
-	virtual IMasterState* OnResponseTimeout(MasterState& mstate);
+	virtual IMasterState* OnResponseTimeout(MState& mstate);
 };
 
 class MasterStateIdle : public IMasterState
@@ -49,7 +49,7 @@ class MasterStateIdle : public IMasterState
 
 	static IMasterState& Instance() { return instance; }
 
-	virtual IMasterState* OnStart(MasterState& mstate);
+	virtual IMasterState* OnStart(MState& mstate);
 
 	private:
 
@@ -65,7 +65,7 @@ public:
 
 	static IMasterState& Instance() { return instance; }
 
-	virtual IMasterState* OnStart(MasterState& mstate) override final;
+	virtual IMasterState* OnStart(MState& mstate) override final;
 
 private:
 
@@ -81,9 +81,9 @@ public:
 
 	static IMasterState& Instance() { return instance; }	
 
-	virtual IMasterState* OnResponse(MasterState& mstate, const APDUResponseHeader& response, const openpal::ReadBufferView& objects) override final;
+	virtual IMasterState* OnResponse(MState& mstate, const APDUResponseHeader& response, const openpal::ReadBufferView& objects) override final;
 
-	virtual IMasterState* OnResponseTimeout(MasterState& mstate)  override final;
+	virtual IMasterState* OnResponseTimeout(MState& mstate)  override final;
 
 private:
 

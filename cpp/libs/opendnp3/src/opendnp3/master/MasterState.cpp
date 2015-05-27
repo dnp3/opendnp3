@@ -31,7 +31,7 @@
 
 namespace opendnp3
 {
-	MasterState::MasterState(
+	MState::MState(
 		openpal::IExecutor& executor,
 		openpal::LogRoot& root,
 		ILowerLayer& lower,
@@ -59,7 +59,7 @@ namespace opendnp3
 		pState(&MasterStateIdle::Instance())
 	{}
 
-	void MasterState::CheckForTask()
+	void MState::CheckForTask()
 	{
 		if (isOnline)
 		{
@@ -67,7 +67,7 @@ namespace opendnp3
 		}
 	}
 
-	void MasterState::OnResponseTimeout()
+	void MState::OnResponseTimeout()
 	{
 		if (isOnline)
 		{
@@ -75,7 +75,7 @@ namespace opendnp3
 		}
 	}
 
-	void MasterState::CompleteActiveTask()
+	void MState::CompleteActiveTask()
 	{
 		if (this->pActiveTask.IsDefined())
 		{
@@ -93,7 +93,7 @@ namespace opendnp3
 		}		
 	}
 
-	void MasterState::OnResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects)
+	void MState::OnResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects)
 	{
 		if (isOnline)
 		{
@@ -101,13 +101,13 @@ namespace opendnp3
 		}
 	}
 
-	void MasterState::QueueConfirm(const APDUHeader& header)
+	void MState::QueueConfirm(const APDUHeader& header)
 	{
 		this->confirmQueue.push_back(header);
 		this->CheckConfirmTransmit();
 	}
 
-	bool MasterState::CheckConfirmTransmit()
+	bool MState::CheckConfirmTransmit()
 	{
 		if (this->isSending || this->confirmQueue.empty())
 		{
@@ -123,7 +123,7 @@ namespace opendnp3
 		return true;
 	}
 
-	void MasterState::Transmit(const openpal::ReadBufferView& data)
+	void MState::Transmit(const openpal::ReadBufferView& data)
 	{
 		logging::ParseAndLogRequestTx(this->logger, data);
 		assert(!this->isSending);
@@ -131,19 +131,19 @@ namespace opendnp3
 		this->pLower->BeginTransmit(data);
 	}
 
-	void MasterState::StartResponseTimer()
+	void MState::StartResponseTimer()
 	{
 		auto timeout = [this](){ this->OnResponseTimeout(); };
 		this->responseTimer.Start(this->params.responseTimeout, timeout);
 	}
 
-	void MasterState::PostCheckForTask()
+	void MState::PostCheckForTask()
 	{
 		auto callback = [this]() { this->CheckForTask(); };
 		this->pExecutor->PostLambda(callback);
 	}
 
-	bool MasterState::GoOffline()
+	bool MState::GoOffline()
 	{
 		if (isOnline)
 		{
@@ -158,6 +158,8 @@ namespace opendnp3
 			pState = &MasterStateIdle::Instance();
 
 			pTaskLock->OnLayerDown();
+
+			auth.GoOffline(*this);
 
 			scheduler.OnLowerLayerDown();
 
@@ -174,7 +176,7 @@ namespace opendnp3
 		}		
 	}
 
-	bool MasterState::GoOnline()
+	bool MState::GoOnline()
 	{
 		if (isOnline)
 		{
@@ -184,13 +186,14 @@ namespace opendnp3
 		{
 			isOnline = true;
 			pTaskLock->OnLayerUp();
+			auth.GoOnline(*this);
 			tasks.Initialize(scheduler);
 			scheduler.OnLowerLayerUp();
 			return true;
 		}
 	}
 
-	bool MasterState::BeginNewTask(openpal::ManagedPtr<IMasterTask>& task)
+	bool MState::BeginNewTask(openpal::ManagedPtr<IMasterTask>& task)
 	{
 		this->pActiveTask = std::move(task);				
 		this->pActiveTask->OnStart();
@@ -198,7 +201,7 @@ namespace opendnp3
 		return this->ResumeActiveTask();
 	}
 
-	bool MasterState::ResumeActiveTask()
+	bool MState::ResumeActiveTask()
 	{		
 		if (this->pTaskLock->Acquire(*pScheduleCallback))
 		{

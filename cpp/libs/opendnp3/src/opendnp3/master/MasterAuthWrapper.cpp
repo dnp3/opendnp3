@@ -32,6 +32,22 @@ void MasterAuthWrapper::SetProvider(IMasterAuthProvider& auth)
 	pProvider = &auth;
 }
 
+void MasterAuthWrapper::GoOnline(MState& mstate)
+{
+	if (pProvider)
+	{
+		pProvider->GoOnline(mstate);
+	}
+}
+
+void MasterAuthWrapper::GoOffline(MState& mstate)
+{
+	if (pProvider)
+	{
+		pProvider->GoOffline(mstate);
+	}
+}
+
 }
 
 

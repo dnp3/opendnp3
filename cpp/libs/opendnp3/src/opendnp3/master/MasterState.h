@@ -43,12 +43,12 @@ namespace opendnp3
 	/*
 		All of the mutable state and configuration for a master
 	*/
-	class MasterState
+	class MState
 	{
 
 	public:
 
-		MasterState(openpal::IExecutor& executor,
+		MState(openpal::IExecutor& executor,
 			openpal::LogRoot& root,
 			ILowerLayer& lower,
 			ISOEHandler& SOEHandler,

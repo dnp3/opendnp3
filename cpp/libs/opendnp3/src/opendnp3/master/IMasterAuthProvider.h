@@ -24,6 +24,8 @@
 namespace opendnp3
 {
 
+class MState;
+
 /**
 * @desc Interface for an arbitrary master authentication provider
 */
@@ -32,7 +34,19 @@ class IMasterAuthProvider
 
 public:	
 
+	/**
+	* Lifecycle callback invoked when the master comes online
+	*/
+	virtual void GoOnline(MState& mstate) = 0;
+
+	/**
+	* Lifecycle callback invoked when the master goes offline
+	*/
+	virtual void GoOffline(MState& mstate) = 0;
+
 	virtual ~IMasterAuthProvider() {}
+
+
 };
 
 

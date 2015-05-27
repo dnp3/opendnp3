@@ -18,6 +18,9 @@
     <Filter Include="Header Files\master">
       <UniqueIdentifier>{ead7dc37-19e5-46d9-ac44-9d137b70ac98}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\master">
+      <UniqueIdentifier>{078272eb-90a5-45b7-9286-f10e6d48f9b6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\secauthv5\outstation\AuthRequestHandler.h">
@@ -156,6 +159,9 @@
     </ClCompile>
     <ClCompile Include="src\secauthv5\outstation\ChallengeState.cpp">
       <Filter>Source Files\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\secauthv5\master\SessionKeyTask.cpp">
+      <Filter>Source Files\master</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

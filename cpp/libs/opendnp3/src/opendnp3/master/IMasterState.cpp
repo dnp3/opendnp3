@@ -31,18 +31,18 @@ namespace opendnp3
 
 // --------- Default Actions -------------
 
-IMasterState* IMasterState::OnStart(MasterState& mstate)
+IMasterState* IMasterState::OnStart(MState& mstate)
 {
 	return this;
 }
 
-IMasterState* IMasterState::OnResponse(MasterState& mstate, const APDUResponseHeader& response, const openpal::ReadBufferView& objects)
+IMasterState* IMasterState::OnResponse(MState& mstate, const APDUResponseHeader& response, const openpal::ReadBufferView& objects)
 {
 	FORMAT_LOG_BLOCK(mstate.logger, flags::WARN, "Not expecting a response, sequence: %u", response.control.SEQ);
 	return this;
 }
 
-IMasterState* IMasterState::OnResponseTimeout(MasterState& mstate)
+IMasterState* IMasterState::OnResponseTimeout(MState& mstate)
 {
 	SIMPLE_LOG_BLOCK(mstate.logger, flags::ERR, "Unexpected response timeout");
 	return this;
@@ -52,7 +52,7 @@ IMasterState* IMasterState::OnResponseTimeout(MasterState& mstate)
 
 MasterStateIdle MasterStateIdle::instance;
 
-IMasterState* MasterStateIdle::OnStart(MasterState& mstate)
+IMasterState* MasterStateIdle::OnStart(MState& mstate)
 {
 	if(mstate.isSending)
 	{
@@ -84,7 +84,7 @@ IMasterState* MasterStateIdle::OnStart(MasterState& mstate)
 
 MasterStateTaskReady MasterStateTaskReady::instance;
 
-IMasterState* MasterStateTaskReady::OnStart(MasterState& mstate)
+IMasterState* MasterStateTaskReady::OnStart(MState& mstate)
 {
 	if (mstate.isSending)
 	{
@@ -107,7 +107,7 @@ IMasterState* MasterStateTaskReady::OnStart(MasterState& mstate)
 
 MasterStateWaitForResponse MasterStateWaitForResponse::instance;
 
-IMasterState* MasterStateWaitForResponse::OnResponse(MasterState& mstate, const APDUResponseHeader& response, const openpal::ReadBufferView& objects)
+IMasterState* MasterStateWaitForResponse::OnResponse(MState& mstate, const APDUResponseHeader& response, const openpal::ReadBufferView& objects)
 {
 	if (response.control.SEQ != mstate.solSeq)
 	{
@@ -143,7 +143,7 @@ IMasterState* MasterStateWaitForResponse::OnResponse(MasterState& mstate, const 
 	}	
 }
 
-IMasterState* MasterStateWaitForResponse::OnResponseTimeout(MasterState& mstate)
+IMasterState* MasterStateWaitForResponse::OnResponseTimeout(MState& mstate)
 {			
 	auto now = mstate.pExecutor->GetTime();
 	mstate.pActiveTask->OnResponseTimeout(now);	
