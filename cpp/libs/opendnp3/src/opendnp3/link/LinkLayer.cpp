@@ -50,6 +50,7 @@ LinkLayer::LinkLayer(openpal::LogRoot& root, openpal::IExecutor* pExecutor_, con
 	nextReadFCB(false),
 	nextWriteFCB(false),
 	isOnline(false),
+	TimedOut(true),
 	pRouter(nullptr),
 	pPriState(PLLS_SecNotReset::Inst()),
 	pSecState(SLLS_NotReset::Inst()),
@@ -65,6 +66,11 @@ void LinkLayer::SetRouter(ILinkRouter& router)
 void LinkLayer::ChangeState(PriStateBase* pState)
 {
 	pPriState = pState;
+	// Keep alive only when in an idle state
+	if ((pPriState == PLLS_SecNotReset::Inst()) || (pPriState == PLLS_SecReset::Inst()))
+	{
+		ResetKeepAlive();
+	}
 }
 
 void LinkLayer::ChangeState(SecStateBase* pState)
@@ -79,6 +85,12 @@ void LinkLayer::SetLinkStatusListener(opendnp3::ILinkStatusListener* Listener)
 
 void LinkLayer::CallStatusCallback(opendnp3::LinkStatus status)
 {
+	if (status == opendnp3::LinkStatus::TIMEOUT)
+	{
+		if (TimedOut)
+			return;
+		TimedOut = true;
+	}
 	if(pStatusCallback != nullptr)
 		pStatusCallback->OnStateChange(status);
 }
@@ -107,6 +119,11 @@ bool LinkLayer::Validate(bool aIsMaster, uint16_t aSrc, uint16_t aDest)
 				if (aSrc == config.RemoteAddr)
 				{
                     ResetKeepAlive();
+					if (TimedOut)
+					{
+						TimedOut = false;
+						CallStatusCallback(opendnp3::LinkStatus::UNRESET);
+					}
 					return true;
 				}
 				else
@@ -171,7 +188,6 @@ void LinkLayer::OnLowerLayerUp()
 		{
 			pUpperLayer->OnLowerLayerUp();
 		}
-		CallStatusCallback(opendnp3::LinkStatus::UNRESET);
 	}
 }
 
@@ -202,7 +218,7 @@ void LinkLayer::OnLowerLayerDown()
 			pUpperLayer->OnLowerLayerDown();
 		}
 
-		CallStatusCallback(opendnp3::LinkStatus::UNRESET);
+		CallStatusCallback(opendnp3::LinkStatus::TIMEOUT);
 	}
 	else
 	{
@@ -353,6 +369,7 @@ void LinkLayer::ResetKeepAlive()
     if(!config.KeepAlive) return;
     auto lambda = [this]() {
         pKeepAliveTimer = nullptr;
+		// Keep alive only when in an idle state
 		if (pPriState == PLLS_SecNotReset::Inst())
 		{
 			this->ResetRetry();

@@ -192,6 +192,7 @@ private:
 	bool nextReadFCB;
 	bool nextWriteFCB;
 	bool isOnline;
+	bool TimedOut;
 
 	bool Validate(bool isMaster, uint16_t src, uint16_t dest);	
 

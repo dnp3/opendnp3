@@ -135,6 +135,7 @@ void PLLS_LinkStatusWait<PLLS_SecNotReset>::OnTimeout(LinkLayer* pLinkLayer)
 	}
 	else
 	{
+		pLinkLayer->CallStatusCallback(opendnp3::LinkStatus::TIMEOUT);
 		SIMPLE_LOG_BLOCK(pLinkLayer->GetLogger(), flags::WARN, "Request link status final timeout, no retries remain");
 		pLinkLayer->ChangeState(PLLS_SecNotReset::Inst());
 	}
@@ -151,7 +152,7 @@ void PLLS_LinkStatusWait<PLLS_SecReset>::OnTimeout(LinkLayer* pLinkLayer)
 	}
 	else
 	{
-		pLinkLayer->CallStatusCallback(opendnp3::LinkStatus::UNRESET);
+		pLinkLayer->CallStatusCallback(opendnp3::LinkStatus::TIMEOUT);
 		SIMPLE_LOG_BLOCK(pLinkLayer->GetLogger(), flags::WARN, "Request link status final timeout, no retries remain");
 		pLinkLayer->ChangeState(PLLS_SecNotReset::Inst());
 	}
@@ -229,6 +230,7 @@ void PLLS_ResetLinkWait::OnTimeout(LinkLayer* pLinkLayer)
 	}
 	else
 	{
+		pLinkLayer->CallStatusCallback(opendnp3::LinkStatus::TIMEOUT);
 		SIMPLE_LOG_BLOCK(pLinkLayer->GetLogger(), flags::WARN, "Link reset final timeout, no retries remain");
 		pLinkLayer->ChangeState(PLLS_SecNotReset::Inst());
 		pLinkLayer->DoSendResult(false);
@@ -268,6 +270,7 @@ void PLLS_ConfDataWait::Ack(LinkLayer* pLinkLayer, bool receiveBuffFull)
 
 void PLLS_ConfDataWait::Nack(LinkLayer* pLinkLayer, bool receiveBuffFull)
 {
+	pLinkLayer->CallStatusCallback(opendnp3::LinkStatus::UNRESET);
 	if (receiveBuffFull)
 	{
 		Failure(pLinkLayer);
@@ -279,7 +282,6 @@ void PLLS_ConfDataWait::Nack(LinkLayer* pLinkLayer, bool receiveBuffFull)
 		pLinkLayer->ChangeState(PLLS_LinkResetTransmitWait::Inst());
 		pLinkLayer->QueueResetLinks();
 	}
-	pLinkLayer->CallStatusCallback(opendnp3::LinkStatus::UNRESET);
 }
 
 void PLLS_ConfDataWait::Failure(LinkLayer* pLinkLayer)
@@ -300,10 +302,10 @@ void PLLS_ConfDataWait::OnTimeout(LinkLayer* pLinkLayer)
 	}
 	else
 	{
+		pLinkLayer->CallStatusCallback(opendnp3::LinkStatus::TIMEOUT);
 		SIMPLE_LOG_BLOCK(pLinkLayer->GetLogger(), flags::WARN, "Confirmed data final timeout, no retries remain");
 		pLinkLayer->ChangeState(PLLS_SecNotReset::Inst());
 		pLinkLayer->DoSendResult(false);
-		pLinkLayer->CallStatusCallback(opendnp3::LinkStatus::UNRESET);
 	}
 }
 

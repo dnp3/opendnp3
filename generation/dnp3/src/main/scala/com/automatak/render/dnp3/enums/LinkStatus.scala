@@ -9,8 +9,9 @@ object LinkStatus {
   def apply(): EnumModel = EnumModel("LinkStatus", comments, EnumModel.Integer, codes, Base10)
 
   private val codes = List(
-    EnumValue("UNRESET", 0, "DOWN"),
-    EnumValue("RESET", 1, "UP")
+    EnumValue("UNRESET", 0, "Transition to UNRESET state"),
+    EnumValue("RESET", 1, "Transition to RESET state"),
+    EnumValue("TIMEOUT", 2, "Timeout Transition")
   )
 
 }

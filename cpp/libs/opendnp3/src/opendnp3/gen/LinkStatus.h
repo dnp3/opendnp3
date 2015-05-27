@@ -30,10 +30,12 @@ namespace opendnp3 {
 */
 enum class LinkStatus : int
 {
-  /// DOWN
+  /// Transition to UnReset
   UNRESET = 0,
-  /// UP
-  RESET = 1
+  /// Transition to Reset
+  RESET = 1,
+  /// Timeout transition
+  TIMEOUT = 2
 };
 
 char const* LinkStatusToString(LinkStatus arg);
