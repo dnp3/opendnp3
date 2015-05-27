@@ -24,6 +24,9 @@
 #include <opendnp3/master/IMasterTask.h>
 #include <opendnp3/master/TaskPriority.h>
 
+#include "secauth/User.h"
+#include "secauth/master/MasterSecurityState.h"
+
 namespace secauth
 {
 
@@ -32,10 +35,21 @@ namespace secauth
 	*/
 	class SessionKeyTask : public opendnp3::IMasterTask
 	{
+		enum State
+		{
+			GetStatus,
+			ChangeKey
+		};
+
 
 	public:
-		
 
+		SessionKeyTask(	opendnp3::IMasterApplication& application, 
+						openpal::TimeDuration retryPeriod, 
+						openpal::Logger logger, 
+						const User& user, 
+						MSState& msstate);
+		
 		virtual bool IsRecurring() const override final { return true; }
 
 		virtual void BuildRequest(opendnp3::APDURequest& request, uint8_t seq) override final;
@@ -47,6 +61,11 @@ namespace secauth
 	private:	
 
 		openpal::TimeDuration retryPeriod;
+		User user;
+		MSState* pmsstate;
+		State state;
+
+		virtual void Initialize() override final;
 
 		virtual opendnp3::MasterTaskType GetTaskType() const override final { return opendnp3::MasterTaskType::SET_SESSION_KEYS; }
 

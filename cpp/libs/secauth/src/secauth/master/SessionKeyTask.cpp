@@ -21,12 +21,45 @@
 
 #include "SessionKeyTask.h"
 
+#include <opendnp3/objects/Group120.h>
+
+using namespace opendnp3;
+using namespace openpal;
+
 namespace secauth
 {
 
-void SessionKeyTask::BuildRequest(opendnp3::APDURequest& request, uint8_t seq)
+SessionKeyTask::SessionKeyTask(	opendnp3::IMasterApplication& application,
+								openpal::TimeDuration retryPeriod_,
+								openpal::Logger logger,
+								const User& user_,
+								MSState& msstate) :
+
+							opendnp3::IMasterTask(application, openpal::MonotonicTimestamp::Min(), logger, nullptr, -1),
+							retryPeriod(retryPeriod_),
+							user(user_),
+							pmsstate(&msstate)
 {
 	
+}
+
+void SessionKeyTask::BuildRequest(opendnp3::APDURequest& request, uint8_t seq)
+{
+	if (state == State::GetStatus)
+	{
+		Group120Var4 ksrequest;
+		ksrequest.userNum = user.GetId();
+		request.GetWriter().WriteSingleValue<UInt8, Group120Var4>(QualifierCode::UINT8_CNT, ksrequest);
+	}
+	else
+	{
+		// TODO
+	}
+}
+
+void SessionKeyTask::Initialize()
+{
+	this->state = State::GetStatus;
 }
 
 bool SessionKeyTask::IsEnabled() const
