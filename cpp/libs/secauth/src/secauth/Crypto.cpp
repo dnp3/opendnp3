@@ -40,6 +40,20 @@ openpal::IKeyWrapAlgo* Crypto::TryGetKeyWrap(openpal::ICryptoProvider& crypto, o
 	}
 }
 
+bool Crypto::KeyLengthMatchesRequestedAlgorithm(opendnp3::KeyWrapAlgorithm algorithm, uint32_t updateKeyLength)
+{
+	switch (algorithm)
+	{
+	case(KeyWrapAlgorithm::AES_128) :
+		return updateKeyLength == 16;
+	case(KeyWrapAlgorithm::AES_256) :
+		return updateKeyLength == 32;
+	default:
+		return false;
+	}
+
+}
+
 	
 }
 

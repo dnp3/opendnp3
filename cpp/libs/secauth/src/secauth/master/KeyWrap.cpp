@@ -44,7 +44,7 @@ bool KeyWrapBuffer::Wrap(
 	if (!sessionKeys.IsValid())
 	{
 		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Cannot wrap invalid session keys");
-		return ReadBufferView::Empty();
+		return false;
 	}
 
 	const uint32_t WRAPPED_DATA_SIZE = 2 + sessionKeys.TotalSize() + keyStatus.Size();

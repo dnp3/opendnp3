@@ -37,7 +37,8 @@ public:
 
 	MasterAuthProvider(
 		openpal::IUTCTimeSource& timeSource,
-		openpal::ICryptoProvider& crypto
+		openpal::ICryptoProvider& crypto,
+		IMasterUserDatabase& userDB
 	);
 
 

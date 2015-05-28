@@ -157,12 +157,29 @@ IMasterTask::ResponseResult SessionKeyTask::OnStatusResponse(const APDUResponseH
 		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Unable to derive session keys");
 		return ResponseResult::ERROR_BAD_RESPONSE; // TODO - add a different return code or is this good enough?
 	}
+
+	// try to get the users update key
+	openpal::ReadBufferView updateKey;
+	UpdateKeyMode updateKeyMode;
+	if (!this->pmsstate->pUserDB->GetUpdateKey(this->user, updateKeyMode, updateKey))
+	{
+		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Unable to acquired update key");
+		return ResponseResult::ERROR_BAD_RESPONSE;
+	}
+
+	if (!Crypto::KeyLengthMatchesRequestedAlgorithm(status.keyWrapAlgo, updateKey.Size()))
+	{
+		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Update key length does not match outstation KeyWrapAlgorithm");
+		return ResponseResult::ERROR_BAD_RESPONSE;
+	}
 	
-	if (!this->keyWrapBuffer.Wrap(*pKeyWrapAlgo, ReadBufferView::Empty() /*  TODO update key */, this->keys.GetView(), rawObject, this->logger))
+	if (!this->keyWrapBuffer.Wrap(*pKeyWrapAlgo, updateKey, this->keys.GetView(), rawObject, this->logger))
 	{
 		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Unable to wrap session keys");
 		return ResponseResult::ERROR_BAD_RESPONSE;
 	}
+
+	// The wrapped key data is now stored in the keyWrapBuffer until we can send it out
 
 	this->state = State::ChangeKey; // we're now ready to try changing the key itself
 

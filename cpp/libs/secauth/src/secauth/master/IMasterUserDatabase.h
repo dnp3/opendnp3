@@ -19,35 +19,35 @@
  * to you under the terms of the License.
  */
 
-#include "MasterSecAuthFixture.h"
+#ifndef SECAUTH_IMASTERUSERDATABASE_H
+#define SECAUTH_IMASTERUSERDATABASE_H
 
-#include <testlib/BufferHelpers.h>
+#include "secauth/User.h"
+#include "secauth/UpdateKeyMode.h"
 
-using namespace testlib;
+#include <openpal/container/ReadBufferView.h>
 
-namespace opendnp3
+namespace secauth
 {	
-	MasterSecAuthFixture::MasterSecAuthFixture(const MasterParams& params, ITaskLock& lock) :
-		log(),
-		exe(),
-		meas(),
-		lower(log.root),
-		application(),
-		master(exe, log.root, lower, meas, application, params, lock),
-		crypto(),
-		userDB(),
-		auth(application, crypto, userDB)
-	{
-		master.SetAuthProvider(auth);
-	}
 
-	void MasterSecAuthFixture::SendToMaster(const std::string& hex)
-	{
-		HexSequence hs(hex);
-		master.OnReceive(hs.ToReadOnly());
-	}
+/** 
+	An interface for retrieving info about users on the master
+
+	This interface may be given out to multiple master instances on multiple threads, 
+	and therefore should be thread-safe.
+*/
+class IMasterUserDatabase
+{
+	public:		
+
+		virtual bool GetUpdateKeyType(const User& user, UpdateKeyMode& type) const = 0;		
+		
+		virtual bool GetUpdateKey(const User& user, UpdateKeyMode& type, openpal::ReadBufferView& key) const = 0;
+
+		virtual bool UserExists(const User& user) const = 0;
+};
 
 }
 
-
+#endif
 

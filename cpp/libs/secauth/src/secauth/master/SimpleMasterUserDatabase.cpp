@@ -19,30 +19,54 @@
  * to you under the terms of the License.
  */
 
-#include "MasterAuthProvider.h"
+#include "SimpleMasterUserDatabase.h"
+
+using namespace openpal;
 
 namespace secauth
 {
 
-MasterAuthProvider::MasterAuthProvider(
-	openpal::IUTCTimeSource& timeSource,
-	openpal::ICryptoProvider& crypto,
-	IMasterUserDatabase& userDB
-	) : 
-	msstate(timeSource, crypto, userDB)
-{
+	bool SimpleMasterUserDatabase::GetUpdateKey(const User& user, UpdateKeyMode& type, openpal::ReadBufferView& key) const
+	{
+		auto iter = this->userMap.find(user.GetId());
+		if (iter == userMap.end())
+		{
+			return false;
+		}
+		else
+		{
+			type = iter->second.first;
+			key = iter->second.second->ToReadOnly();
+			return true;
+		}
+	}
+
+	bool SimpleMasterUserDatabase::GetUpdateKeyType(const User& user, UpdateKeyMode& type) const
+	{
+		auto iter = this->userMap.find(user.GetId());
+		if (iter == userMap.end())
+		{
+			return false;
+		}
+		else
+		{
+			type = iter->second.first;
+			return true;
+		}
+	}
+
+	bool SimpleMasterUserDatabase::UserExists(const User& user) const
+	{
+		auto iter = this->userMap.find(user.GetId());
+		return iter != userMap.end();
+	}
+
+	void SimpleMasterUserDatabase::ConfigureUser(const User& user, UpdateKeyMode type, const openpal::ReadBufferView& key)
+	{
+		userMap[user.GetId()] = StoredUserData(type, std::unique_ptr<openpal::Buffer>(new openpal::Buffer(key)));
+	}
 
 }
 
-void MasterAuthProvider::GoOnline(opendnp3::MState& mstate)
-{
-	
-}
 
-void MasterAuthProvider::GoOffline(opendnp3::MState& mstate)
-{
-
-}
-
-}
 

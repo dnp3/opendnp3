@@ -113,6 +113,12 @@
     <ClInclude Include="src\secauth\outstation\SimpleOutstationUserDatabase.h">
       <Filter>Header Files\outstation</Filter>
     </ClInclude>
+    <ClInclude Include="src\secauth\master\IMasterUserDatabase.h">
+      <Filter>Header Files\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\secauth\master\SimpleMasterUserDatabase.h">
+      <Filter>Header Files\master</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\secauth\master\MasterAuthProvider.cpp">
@@ -192,6 +198,9 @@
     </ClCompile>
     <ClCompile Include="src\secauth\outstation\SimpleOutstationUserDatabase.cpp">
       <Filter>Source Files\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\secauth\master\SimpleMasterUserDatabase.cpp">
+      <Filter>Source Files\master</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

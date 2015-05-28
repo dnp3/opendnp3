@@ -28,6 +28,8 @@
 #include <openpal/crypto/ICryptoProvider.h>
 #include <openpal/executor/IUTCTimeSource.h>
 
+#include "IMasterUserDatabase.h"
+
 namespace secauth
 {
 
@@ -38,11 +40,13 @@ public:
 
 	MSState(
 		openpal::IUTCTimeSource& timeSource,
-		openpal::ICryptoProvider& crypto
+		openpal::ICryptoProvider& crypto,
+		IMasterUserDatabase& userDB
 	);
 
 	openpal::IUTCTimeSource*	pTimeSource;
 	openpal::ICryptoProvider*	pCrypto;
+	IMasterUserDatabase*		pUserDB;
 };
 
 

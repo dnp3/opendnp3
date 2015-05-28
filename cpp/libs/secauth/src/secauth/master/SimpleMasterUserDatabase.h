@@ -18,36 +18,41 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef SECAUTH_SIMPLEMASTERUSERDATABASE_H
+#define SECAUTH_SIMPLEMASTERUSERDATABASE_H
 
-#include "MasterSecAuthFixture.h"
+#include "IMasterUserDatabase.h"
 
-#include <testlib/BufferHelpers.h>
+#include <openpal/container/Buffer.h>
 
-using namespace testlib;
+#include <map>
+#include <memory>
 
-namespace opendnp3
-{	
-	MasterSecAuthFixture::MasterSecAuthFixture(const MasterParams& params, ITaskLock& lock) :
-		log(),
-		exe(),
-		meas(),
-		lower(log.root),
-		application(),
-		master(exe, log.root, lower, meas, application, params, lock),
-		crypto(),
-		userDB(),
-		auth(application, crypto, userDB)
-	{
-		master.SetAuthProvider(auth);
-	}
+namespace secauth
+{
 
-	void MasterSecAuthFixture::SendToMaster(const std::string& hex)
-	{
-		HexSequence hs(hex);
-		master.OnReceive(hs.ToReadOnly());
-	}
+/** 
+	A very simple update key store for the default user
+*/
+class SimpleMasterUserDatabase : public IMasterUserDatabase
+{
+	public:			
+		
+		virtual bool GetUpdateKey(const User& user, UpdateKeyMode& type, openpal::ReadBufferView& key) const override final;
+
+		virtual bool GetUpdateKeyType(const User& user, UpdateKeyMode& type) const override final;	
+
+		virtual bool UserExists(const User& user) const override final;		
+
+		void ConfigureUser(const User& user, UpdateKeyMode type, const openpal::ReadBufferView& key);
+
+	private:
+
+		typedef std::pair<UpdateKeyMode, std::unique_ptr<openpal::Buffer>> StoredUserData;
+		std::map<uint16_t, StoredUserData> userMap;
+};
 
 }
 
-
+#endif
 

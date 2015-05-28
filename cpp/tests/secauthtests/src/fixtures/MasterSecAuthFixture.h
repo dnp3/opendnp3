@@ -33,6 +33,7 @@
 #include <dnp3mocks/MockCryptoProvider.h>
 
 #include <secauth/master/MasterAuthProvider.h>
+#include <secauth/master/SimpleMasterUserDatabase.h>
 
 namespace opendnp3
 {
@@ -55,8 +56,8 @@ namespace opendnp3
 		Master master;
 
 		MockCryptoProvider crypto;
+		secauth::SimpleMasterUserDatabase userDB;
 		secauth::MasterAuthProvider auth;
-
 	};
 
 }

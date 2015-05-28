@@ -40,7 +40,10 @@ namespace secauth
 								
 			// return nullptr if the specified KeyWrapAlgorithm isn't supported
 			static openpal::IKeyWrapAlgo* TryGetKeyWrap(openpal::ICryptoProvider& crypto, opendnp3::KeyWrapAlgorithm algorithm);
-						
+			
+
+			static bool KeyLengthMatchesRequestedAlgorithm(opendnp3::KeyWrapAlgorithm algorithm, uint32_t updateKeyLength);
+
 	};
 
 	
