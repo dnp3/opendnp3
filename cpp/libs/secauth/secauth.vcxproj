@@ -26,6 +26,7 @@
     <ClInclude Include="src\secauth\HMACMode.h" />
     <ClInclude Include="src\secauth\HMACProvider.h" />
     <ClInclude Include="src\secauth\IUserDatabase.h" />
+    <ClInclude Include="src\secauth\master\KeyStatusHandler.h" />
     <ClInclude Include="src\secauth\master\MasterAuthProvider.h" />
     <ClInclude Include="src\secauth\master\MasterSecurityState.h" />
     <ClInclude Include="src\secauth\master\SessionKeyTask.h" />
@@ -53,6 +54,7 @@
     <ClCompile Include="src\secauth\DeferredASDU.cpp" />
     <ClCompile Include="src\secauth\HMACMode.cpp" />
     <ClCompile Include="src\secauth\HMACProvider.cpp" />
+    <ClCompile Include="src\secauth\master\KeyStatusHandler.cpp" />
     <ClCompile Include="src\secauth\master\MasterAuthProvider.cpp" />
     <ClCompile Include="src\secauth\master\MasterSecurityState.cpp" />
     <ClCompile Include="src\secauth\master\SessionKeyTask.cpp" />

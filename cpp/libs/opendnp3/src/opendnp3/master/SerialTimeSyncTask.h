@@ -62,9 +62,9 @@ private:
 
 	virtual ResponseResult _OnResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects) override final;
 
-	ResponseResult OnResponseDelayMeas(const APDUResponseHeader& response, const openpal::ReadBufferView& objects);
+	ResponseResult OnResponseDelayMeas(const APDUResponseHeader& header, const openpal::ReadBufferView& objects);
 
-	ResponseResult OnResponseWriteTime(const APDUResponseHeader& response, const openpal::ReadBufferView& objects);
+	ResponseResult OnResponseWriteTime(const APDUResponseHeader& header, const openpal::ReadBufferView& objects);
 
 	virtual void Initialize() override final;
 

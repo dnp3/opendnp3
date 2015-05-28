@@ -131,10 +131,10 @@ public:
 	// called during OnStart() to initialize any state for a new run
 	virtual void Initialize() {}
 
-	// called when _OnResponse() returns ERROR. Use this to reconfigurre the state.
+	// called when _OnResponse() returns ERROR. Use this to reconfigure the state.
 	virtual void OnResponseError(openpal::MonotonicTimestamp now) = 0;
 
-	// called when _OnResponse() returns OK_FINAL. Use this to reconfigurre the state.
+	// called when _OnResponse() returns OK_FINAL. Use this to reconfigure the state.
 	virtual void OnResponseOK(openpal::MonotonicTimestamp now) = 0;
 
 	virtual ResponseResult _OnResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects) = 0;

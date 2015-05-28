@@ -18,24 +18,48 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef SECAUTH_KEYSTATUSHANDLER_H
+#define SECAUTH_KEYSTATUSHANDLER_H
 
-#include "APDURequest.h"
+#include <opendnp3/app/parsing/IAPDUHandler.h>
 
-using namespace openpal;
+#include <opendnp3/LogLevels.h>
+
+#include <openpal/logging/LogMacros.h>
 
 namespace opendnp3
 {
 
-APDURequest::APDURequest(const openpal::WriteBufferView& aBuffer) : APDUWrapper(aBuffer)
+/**
+ * Handles key-status responses
+ */
+class KeyStatusHandler : public IAPDUHandler
 {
 
+public:
+	
+	KeyStatusHandler(openpal::Logger logger);
+
+	static bool WhiteList(uint32_t headerCount, GroupVariation gv, QualifierCode)
+	{
+		return (headerCount == 0) && (gv == GroupVariation::Group120Var5);
+	}
+
+	bool GetStatus(Group120Var5& status) const;
+
+private:
+		
+	openpal::Logger logger;
+	bool valid;
+	Group120Var5 status;
+
+	virtual IINField ProcessHeader(const FreeFormatHeader& header, const Group120Var5& status) override final;
+
+};
+
 }
 
-void APDURequest::ConfigureHeader(FunctionCode code, uint8_t seq)
-{
-	this->SetFunction(FunctionCode::AUTH_REQUEST);
-	this->SetControl(AppControlField::Request(seq));
-}
 
-}
+
+#endif
 

@@ -36,6 +36,8 @@ public:
 
 	APDURequest(const openpal::WriteBufferView& aBuffer);
 
+	void ConfigureHeader(FunctionCode code, uint8_t seq);
+
 private:
 
 	APDURequest();

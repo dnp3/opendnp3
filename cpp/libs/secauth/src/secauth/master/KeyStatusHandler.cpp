@@ -19,23 +19,33 @@
  * to you under the terms of the License.
  */
 
-#include "APDURequest.h"
-
-using namespace openpal;
+#include "KeyStatusHandler.h"
 
 namespace opendnp3
 {
+	
+KeyStatusHandler::KeyStatusHandler(openpal::Logger logger_) : logger(logger_), valid(false)
+{}	
 
-APDURequest::APDURequest(const openpal::WriteBufferView& aBuffer) : APDUWrapper(aBuffer)
+
+bool KeyStatusHandler::GetStatus(Group120Var5& status) const
 {
+	if (valid)
+	{
+		status = this->status;
+	}
+
+	return valid;
+}
+
+IINField KeyStatusHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var5& status)
+{							
+	this->valid = true;
+	this->status = status;
+	return IINField::Empty();		
+}	
+
 
 }
 
-void APDURequest::ConfigureHeader(FunctionCode code, uint8_t seq)
-{
-	this->SetFunction(FunctionCode::AUTH_REQUEST);
-	this->SetControl(AppControlField::Request(seq));
-}
-
-}
 

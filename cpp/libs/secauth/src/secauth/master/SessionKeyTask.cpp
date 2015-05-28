@@ -47,13 +47,11 @@ void SessionKeyTask::BuildRequest(opendnp3::APDURequest& request, uint8_t seq)
 {
 	if (state == State::GetStatus)
 	{
-		Group120Var4 ksrequest;
-		ksrequest.userNum = user.GetId();
-		request.GetWriter().WriteSingleValue<UInt8, Group120Var4>(QualifierCode::UINT8_CNT, ksrequest);
+		this->BuildStatusRequest(request, seq);
 	}
 	else
 	{
-		// TODO
+		this->BuildSessionKeyRequest(request, seq);
 	}
 }
 
@@ -67,24 +65,61 @@ bool SessionKeyTask::IsEnabled() const
 	return false;
 }
 
+IMasterTask::ResponseResult SessionKeyTask::_OnResponse(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+{
+	if (ValidateSingleResponse(header))
+	{
+		return (state == State::GetStatus) ? OnStatusResponse(header, objects) : OnChangeResponse(header, objects);
+	}
+	else
+	{
+		return ResponseResult::ERROR_BAD_RESPONSE;
+	}
+}
+
 void SessionKeyTask::OnResponseError(openpal::MonotonicTimestamp now)
 {
-
+	expiration = now.Add(this->retryPeriod);
 }
 
 void SessionKeyTask::OnResponseOK(openpal::MonotonicTimestamp now)
 {
-
+	expiration = MonotonicTimestamp::Max();
 }
 
 void SessionKeyTask::_OnResponseTimeout(openpal::MonotonicTimestamp now)
 {
-
+	expiration = now.Add(this->retryPeriod);
 }
 
 void SessionKeyTask::_OnLowerLayerClose(openpal::MonotonicTimestamp now)
 {
+	expiration = 0;
+}
 
+void SessionKeyTask::BuildStatusRequest(opendnp3::APDURequest& request, uint8_t seq)
+{
+	request.ConfigureHeader(FunctionCode::AUTH_REQUEST, seq);
+
+	Group120Var4 ksrequest;
+	ksrequest.userNum = user.GetId();
+
+	request.GetWriter().WriteSingleValue<UInt8, Group120Var4>(QualifierCode::UINT8_CNT, ksrequest);
+}
+
+void SessionKeyTask::BuildSessionKeyRequest(opendnp3::APDURequest& request, uint8_t seq)
+{
+	
+}
+
+IMasterTask::ResponseResult SessionKeyTask::OnStatusResponse(const APDUResponseHeader& response, const ReadBufferView& objects)
+{
+	return ResponseResult::ERROR_BAD_RESPONSE; // TODO
+}
+
+IMasterTask::ResponseResult SessionKeyTask::OnChangeResponse(const APDUResponseHeader& response, const ReadBufferView& objects)
+{
+	return ResponseResult::ERROR_BAD_RESPONSE; // TODO
 }
 
 }

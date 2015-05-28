@@ -104,6 +104,9 @@
     <ClInclude Include="src\secauth\User.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\secauth\master\KeyStatusHandler.h">
+      <Filter>Header Files\master</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\secauth\master\MasterAuthProvider.cpp">
@@ -174,6 +177,9 @@
     </ClCompile>
     <ClCompile Include="src\secauth\UpdateKeyMode.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\secauth\master\KeyStatusHandler.cpp">
+      <Filter>Source Files\master</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

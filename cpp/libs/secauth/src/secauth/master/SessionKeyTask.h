@@ -71,6 +71,8 @@ namespace secauth
 
 		virtual bool IsEnabled() const override final;
 
+		virtual opendnp3::IMasterTask::ResponseResult _OnResponse(const opendnp3::APDUResponseHeader& response, const openpal::ReadBufferView& objects) override final;
+
 		virtual void OnResponseError(openpal::MonotonicTimestamp now) override final;
 
 		virtual void OnResponseOK(openpal::MonotonicTimestamp now) override final;
@@ -78,6 +80,16 @@ namespace secauth
 		virtual void _OnResponseTimeout(openpal::MonotonicTimestamp now) override final;
 
 		virtual void _OnLowerLayerClose(openpal::MonotonicTimestamp now) override final;
+
+		/// ----- private helpers ------
+
+		void BuildStatusRequest(opendnp3::APDURequest& request, uint8_t seq);
+
+		void BuildSessionKeyRequest(opendnp3::APDURequest& request, uint8_t seq);
+
+		opendnp3::IMasterTask::ResponseResult OnStatusResponse(const opendnp3::APDUResponseHeader& response, const openpal::ReadBufferView& objects);
+
+		opendnp3::IMasterTask::ResponseResult OnChangeResponse(const opendnp3::APDUResponseHeader& response, const openpal::ReadBufferView& objects);
 	};
 
 
