@@ -40,27 +40,26 @@ AuthRequestHandler::AuthRequestHandler(const openpal::ReadBufferView& fragment_,
 	
 }
 
-bool AuthRequestHandler::WhiteList(uint32_t count, GroupVariation gv, QualifierCode qc)
+bool AuthRequestHandler::IsAllowed(uint32_t count, GroupVariation gv, QualifierCode qc)
 {
 	// only 1 header allowed regardless of type
-	if (count == 0)
-	{
-		switch (gv)
-		{
-		case(GroupVariation::Group120Var4) :
-			return qc == QualifierCode::UINT8_CNT;
-		case(GroupVariation::Group120Var1) :
-		case(GroupVariation::Group120Var2) :
-		case(GroupVariation::Group120Var6) :
-			return qc == QualifierCode::UINT16_FREE_FORMAT;
-		default:
-			return false;
-		}
-	}
-	else
+	if (count != 0)
 	{
 		return false;
 	}
+
+	// certain types allowed with certain qualifiers
+	switch (gv)
+	{
+	case(GroupVariation::Group120Var4) :
+		return qc == QualifierCode::UINT8_CNT;
+	case(GroupVariation::Group120Var1) :
+	case(GroupVariation::Group120Var2) :
+	case(GroupVariation::Group120Var6) :
+		return qc == QualifierCode::UINT16_FREE_FORMAT;
+	default:
+		return false;
+	}	
 }
 
 IINField AuthRequestHandler::ProcessHeader(const opendnp3::FreeFormatHeader& header, const Group120Var1& value)

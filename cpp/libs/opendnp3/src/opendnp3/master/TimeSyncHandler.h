@@ -62,7 +62,7 @@ public:
 		}
 	}
 
-	static bool WhiteList(uint32_t headerCount, GroupVariation gv, QualifierCode)
+	virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override final
 	{
 		return (headerCount == 0) && (gv == GroupVariation::Group52Var2);
 	}

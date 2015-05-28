@@ -41,6 +41,10 @@ public:
 		return numRequests == numSuccess;
 	}
 
+
+	// TODO - make this more restrictive?
+	virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override final { return true; }
+
 private:
 
 	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<ControlRelayOutputBlock>>& meas) override final;

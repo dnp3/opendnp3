@@ -32,6 +32,8 @@ class MockApduHeaderHandler : public IAPDUHandler
 {
 public:	
 
+	virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) { return true; }
+
 	virtual void OnHeaderResult(const HeaderRecord& record, const IINField& result) override final
 	{
 		records.push_back(record);

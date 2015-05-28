@@ -40,6 +40,8 @@ public:
 
 	AssignClassHandler(openpal::Logger logger, openpal::IExecutor& executor, IOutstationApplication& application, IClassAssigner& assigner);
 
+	virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override final { return true; }
+
 private:
 
 	virtual IINField ProcessHeader(const AllObjectsHeader& header) override final;

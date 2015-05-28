@@ -39,6 +39,8 @@ public:
 
 	ClassField GetClassField() const { return classField; }
 
+	virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override final { return true; }
+
 private:
 
 	openpal::Logger logger;

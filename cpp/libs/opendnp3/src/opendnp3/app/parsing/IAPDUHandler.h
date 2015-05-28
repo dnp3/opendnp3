@@ -21,6 +21,8 @@
 #ifndef OPENDNP3_IAPDUHANDLER_H
 #define OPENDNP3_IAPDUHANDLER_H
 
+#include "opendnp3/app/parsing/IWhiteList.h"
+
 #include "opendnp3/app/GroupVariationRecord.h"
 #include "opendnp3/app/parsing/ICollection.h"
 
@@ -51,11 +53,11 @@ namespace opendnp3
 /**
  * Base class used to handle APDU object headers
  */
-class IAPDUHandler
+class IAPDUHandler : public IWhiteList
 {
 public:
 	
-	IAPDUHandler();
+	IAPDUHandler();	
 
 	// read any accumulated errors
 	IINField Errors() const;

@@ -18,41 +18,23 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_WRITEHANDLER_H
-#define OPENDNP3_WRITEHANDLER_H
+#ifndef OPENDNP3_IWHITELIST_H
+#define OPENDNP3_IWHITELIST_H
 
-#include "opendnp3/app/parsing/IAPDUHandler.h"
-#include "opendnp3/app/IINField.h"
-
-#include "opendnp3/outstation/IOutstationApplication.h"
-
-#include <openpal/logging/Logger.h>
+#include "opendnp3/gen/GroupVariation.h"
+#include "opendnp3/gen/QualifierCode.h"
 
 namespace opendnp3
 {
 
-class WriteHandler : public IAPDUHandler
+/**
+ * Whitelist interface for APDU object headers
+ */
+class IWhiteList
 {
 public:
-
-	WriteHandler(openpal::Logger logger, IOutstationApplication& application, IINField* pWriteIIN_);
-
-	virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override final { return true; }
 	
-private:
-
-	virtual IINField ProcessHeader(const RangeHeader& header, const ICollection<Indexed<IINValue>>& values) override final;
-
-	virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group50Var1>& times) override final;
-
-	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<TimeAndInterval>>& values) override final;
-
-	openpal::Logger logger;
-	IOutstationApplication* pApplication;
-	IINField* pWriteIIN;
-
-	bool wroteTime;
-	bool wroteIIN;
+	virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) = 0;
 };
 
 }

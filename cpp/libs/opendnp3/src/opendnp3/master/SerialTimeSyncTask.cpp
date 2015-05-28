@@ -93,7 +93,7 @@ IMasterTask::ResponseResult SerialTimeSyncTask::OnResponseDelayMeas(const APDURe
 	if (ValidateSingleResponse(response))
 	{
 		TimeSyncHandler handler(logger);
-		auto result = APDUParser::ParseSome(objects, handler, TimeSyncHandler::WhiteList, &logger);
+		auto result = APDUParser::Parse(objects, handler, &logger);
 		if (result == ParseResult::OK)
 		{
 			uint16_t rtuTurnAroundTime;

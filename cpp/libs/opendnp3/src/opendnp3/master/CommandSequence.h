@@ -53,6 +53,9 @@ public:
 		response(CommandResponse(TaskCompletion::FAILURE_BAD_RESPONSE))
 	{}	
 
+	// TODO - make this restrictive to the type in use?
+	virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override final { return true; }
+
 	virtual IINField ProcessHeader(const PrefixHeader& header, const ICollection<Indexed<CommandType>>& meas) override final
 	{
 		Indexed<CommandType> received;

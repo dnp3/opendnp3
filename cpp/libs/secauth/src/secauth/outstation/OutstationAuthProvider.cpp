@@ -114,7 +114,7 @@ void OutstationAuthProvider::OnAuthRequest(OState& ostate, const openpal::ReadBu
 	else
 	{
 		AuthRequestHandler handler(fragment, header, ostate, *this);
-		APDUParser::ParseSome(objects, handler, AuthRequestHandler::WhiteList, &ostate.logger);
+		APDUParser::Parse(objects, handler, &ostate.logger);
 	}
 }
 

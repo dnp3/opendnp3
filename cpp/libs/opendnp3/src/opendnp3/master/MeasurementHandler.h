@@ -46,6 +46,9 @@ public:
 	*/
 	static ParseResult ProcessMeasurements(const openpal::ReadBufferView& objects, openpal::Logger& logger, ISOEHandler* pHandler);
 
+	// TODO
+	virtual bool IsAllowed(uint32_t headerCount, GroupVariation gv, QualifierCode qc) override final { return true; };
+
 	/**
 	* Creates a new ResponseLoader instance.
 	*

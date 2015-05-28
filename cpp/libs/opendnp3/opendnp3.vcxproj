@@ -64,6 +64,7 @@
     <ClInclude Include="src\opendnp3\app\parsing\Functions.h" />
     <ClInclude Include="src\opendnp3\app\parsing\ICollection.h" />
     <ClInclude Include="src\opendnp3\app\parsing\BufferedCollection.h" />
+    <ClInclude Include="src\opendnp3\app\parsing\IWhiteList.h" />
     <ClInclude Include="src\opendnp3\app\parsing\NumParser.h" />
     <ClInclude Include="src\opendnp3\app\parsing\ObjectHeaderParser.h" />
     <ClInclude Include="src\opendnp3\app\parsing\ParseResult.h" />

@@ -50,23 +50,23 @@ TEST_CASE(SUITE("RejectsInsufficientDataForHeader"))
 {
 	HexSequence buffer("78 01");
 	MockApduHeaderHandler handler;
-	auto result = APDUParser::ParseSome(buffer.ToReadOnly(), handler, AuthRequestHandler::WhiteList, nullptr);
+	auto result = APDUParser::Parse(buffer.ToReadOnly(), handler, nullptr);
 	REQUIRE(result == ParseResult::NOT_ENOUGH_DATA_FOR_HEADER);
 }
 
-TEST_CASE(SUITE("RejectsUnknownQualifierWithWhiteListError"))
+TEST_CASE(SUITE("RejectsUnknownQualifier"))
 {
 	HexSequence buffer("78 01 FF FF");
 	MockApduHeaderHandler handler;
-	auto result = APDUParser::ParseSome(buffer.ToReadOnly(), handler, AuthRequestHandler::WhiteList, nullptr);
-	REQUIRE(result == ParseResult::NOT_ON_WHITELIST);
+	auto result = APDUParser::Parse(buffer.ToReadOnly(), handler, nullptr);
+	REQUIRE(result == ParseResult::UNKNOWN_QUALIFIER);
 }
 
 TEST_CASE(SUITE("RejectsInsufficientFreeFormatData"))
 {
 	HexSequence buffer("78 01 5B 01 08 00 FF FF FF FF FF FF FF");
 	MockApduHeaderHandler handler;
-	auto result = APDUParser::ParseSome(buffer.ToReadOnly(), handler, AuthRequestHandler::WhiteList, nullptr);
+	auto result = APDUParser::Parse(buffer.ToReadOnly(), handler, nullptr);
 	REQUIRE(result == ParseResult::NOT_ENOUGH_DATA_FOR_OBJECTS);
 }
 
@@ -74,7 +74,7 @@ TEST_CASE(SUITE("RejectsTrailingData"))
 {
 	HexSequence buffer("78 01 5B 01 08 00 FF FF FF FF FF FF FF FF FF");
 	MockApduHeaderHandler handler;
-	auto result = APDUParser::ParseSome(buffer.ToReadOnly(), handler, AuthRequestHandler::WhiteList, nullptr);
+	auto result = APDUParser::Parse(buffer.ToReadOnly(), handler, nullptr);
 	REQUIRE(result == ParseResult::NOT_ENOUGH_DATA_FOR_HEADER);
 }
 
@@ -82,7 +82,7 @@ TEST_CASE(SUITE("AcceptsMatchingFreeFormatData"))
 {
 	HexSequence buffer("78 01 5B 01 08 00 11 22 33 44 FF FF FF FF");
 	MockApduHeaderHandler handler;
-	auto result = APDUParser::ParseSome(buffer.ToReadOnly(), handler, AuthRequestHandler::WhiteList, nullptr);
+	auto result = APDUParser::Parse(buffer.ToReadOnly(), handler, nullptr);
 	REQUIRE(result == ParseResult::OK);
 	REQUIRE(handler.records.size() == 1);
 	REQUIRE(handler.authChallenges.size() == 1);
@@ -93,23 +93,15 @@ TEST_CASE(SUITE("ParsersKeyStatusRequest"))
 {
 	HexSequence buffer("78 04 07 01 00 00");
 	MockApduHeaderHandler handler;
-	auto result = APDUParser::ParseSome(buffer.ToReadOnly(), handler, AuthRequestHandler::WhiteList, nullptr);
+	auto result = APDUParser::Parse(buffer.ToReadOnly(), handler, nullptr);
 	REQUIRE(result == ParseResult::OK);
-}
-
-TEST_CASE(SUITE("RejectsDuplicateKeyStatusRequestViaWhitelistError"))
-{
-	HexSequence buffer("78 04 07 01 00 00 78 04 07 01 00 00");
-	MockApduHeaderHandler handler;
-	auto result = APDUParser::ParseSome(buffer.ToReadOnly(), handler, AuthRequestHandler::WhiteList, nullptr);
-	REQUIRE(result == ParseResult::NOT_ON_WHITELIST);		
 }
 
 TEST_CASE(SUITE("AcceptsKeyStatusRequest"))
 {
 	HexSequence buffer("78 04 07 01 09 00");
 	MockApduHeaderHandler handler;
-	auto result = APDUParser::ParseSome(buffer.ToReadOnly(), handler, AuthRequestHandler::WhiteList, nullptr);
+	auto result = APDUParser::Parse(buffer.ToReadOnly(), handler, nullptr);
 	REQUIRE(result == ParseResult::OK);
 	REQUIRE(handler.authStatusRequests.size() == 1);
 	REQUIRE(handler.authStatusRequests[0].userNum == 9);
