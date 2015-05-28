@@ -19,33 +19,28 @@
  * to you under the terms of the License.
  */
 
-#ifndef SECAUTH_MASTERSECURITYSTATE_H
-#define SECAUTH_MASTERSECURITYSTATE_H
+#include "Crypto.h"
 
-
-#include <openpal/util/Uncopyable.h>
-
-#include <openpal/crypto/ICryptoProvider.h>
-#include <openpal/executor/IUTCTimeSource.h>
+using namespace opendnp3;
 
 namespace secauth
 {
+	
 
-class MSState : private openpal::Uncopyable
-{	
-
-public:	
-
-	MSState(
-		openpal::IUTCTimeSource& timeSource,
-		openpal::ICryptoProvider& crypto
-	);
-
-	openpal::IUTCTimeSource*	pTimeSource;
-	openpal::ICryptoProvider*	pCrypto;
-};
-
-
+openpal::IKeyWrapAlgo* Crypto::TryGetKeyWrap(openpal::ICryptoProvider& crypto, opendnp3::KeyWrapAlgorithm algorithm)
+{
+	switch (algorithm)
+	{
+		case(KeyWrapAlgorithm::AES_128) :
+			return &crypto.GetAES128KeyWrap();
+		case(KeyWrapAlgorithm::AES_256) :
+			return &crypto.GetAES256KeyWrap();
+		default:
+			return nullptr;
+	}
 }
 
-#endif
+	
+}
+
+

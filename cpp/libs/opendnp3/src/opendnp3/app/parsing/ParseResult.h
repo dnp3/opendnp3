@@ -40,7 +40,11 @@ namespace opendnp3
 		INVALID_OBJECT,
 		BAD_START_STOP,
 		COUNT_OF_ZERO
-	};
+	};	
+
+	inline bool IsSuccess(ParseResult result) { return result == ParseResult::OK; }
+	inline bool IsFailure(ParseResult result) { return result != ParseResult::OK; }
+	
 
 }
 

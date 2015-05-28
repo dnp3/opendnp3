@@ -68,7 +68,7 @@ public:
 
 	void OnHeader(const FreeFormatHeader& header, const Group120Var1& value);
 	void OnHeader(const FreeFormatHeader& header, const Group120Var2& value);
-	void OnHeader(const FreeFormatHeader& header, const Group120Var5& value);
+	void OnHeader(const FreeFormatHeader& header, const Group120Var5& value, const openpal::ReadBufferView& rawValue);
 	void OnHeader(const FreeFormatHeader& header, const Group120Var6& value);
 
 	void OnHeader(const CountHeader& header, const ICollection<Group50Var1>& values);
@@ -139,7 +139,7 @@ protected:
 
 	virtual IINField ProcessHeader(const FreeFormatHeader& header, const Group120Var1& value);
 	virtual IINField ProcessHeader(const FreeFormatHeader& header, const Group120Var2& value);
-	virtual IINField ProcessHeader(const FreeFormatHeader& header, const Group120Var5& value);
+	virtual IINField ProcessHeader(const FreeFormatHeader& header, const Group120Var5& value, const openpal::ReadBufferView& rawValue);
 	virtual IINField ProcessHeader(const FreeFormatHeader& header, const Group120Var6& value);
 	
 	virtual IINField ProcessHeader(const CountHeader& header, const ICollection<Group50Var1>& values);

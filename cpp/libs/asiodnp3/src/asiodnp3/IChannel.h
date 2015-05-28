@@ -39,7 +39,7 @@
 #include <openpal/crypto/ICryptoProvider.h>
 
 #include <secauth/outstation/OutstationAuthSettings.h>
-#include <secauth/IUserDatabase.h>
+#include <secauth/outstation/IOutstationUserDatabase.h>
 
 #include "IMaster.h"
 #include "IOutstation.h"
@@ -123,7 +123,7 @@ public:
 										const opendnp3::OutstationStackConfig& config,
 										const secauth::OutstationAuthSettings& authSettings,
 										openpal::IUTCTimeSource& timeSource,
-										secauth::IUserDatabase& userDB,
+										secauth::IOutstationUserDatabase& userDB,
 										openpal::ICryptoProvider& crypto) = 0;
 };
 

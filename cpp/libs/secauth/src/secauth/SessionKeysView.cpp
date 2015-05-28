@@ -37,9 +37,17 @@ namespace secauth
 
 		bool SessionKeysView::IsValid() const
 		{
-			return AuthConstants::SessionKeySizeWithinLimits(controlKey.Size()) &&
+			return (controlKey.Size() == monitorKey.Size()) &&
+				   AuthConstants::SessionKeySizeWithinLimits(controlKey.Size()) &&
 				   AuthConstants::SessionKeySizeWithinLimits(monitorKey.Size());
-		}			
+		}	
+
+		uint32_t SessionKeysView::TotalSize() const
+		{
+			return controlKey.Size() + monitorKey.Size();
+		}
+
+
 }
 
 

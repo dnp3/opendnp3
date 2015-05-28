@@ -38,6 +38,7 @@
     <ClInclude Include="src\openpal\crypto\ICryptoProvider.h" />
     <ClInclude Include="src\openpal\crypto\IHMACAlgo.h" />
     <ClInclude Include="src\openpal\crypto\IKeyWrapAlgo.h" />
+    <ClInclude Include="src\openpal\crypto\ISecureRandom.h" />
     <ClInclude Include="src\openpal\crypto\SecureCompare.h" />
     <ClInclude Include="src\openpal\executor\Erasure.h" />
     <ClInclude Include="src\openpal\executor\Function1.h" />

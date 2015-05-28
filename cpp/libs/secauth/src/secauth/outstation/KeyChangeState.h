@@ -46,7 +46,7 @@ class KeyChangeState
 		const User& user,
 		opendnp3::HMACType hmacType,
 		opendnp3::KeyWrapAlgorithm keyWrapAlgo,
-		opendnp3::KeyStatus status,		
+		opendnp3::KeyStatus status,	
 		const openpal::ReadBufferView& hmac = openpal::ReadBufferView::Empty()
 	);
 

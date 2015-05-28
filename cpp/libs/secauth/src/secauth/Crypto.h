@@ -18,34 +18,32 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-
-#ifndef SECAUTH_MASTERSECURITYSTATE_H
-#define SECAUTH_MASTERSECURITYSTATE_H
-
-
-#include <openpal/util/Uncopyable.h>
+#ifndef SECAUTH_CRYPTO_H
+#define SECAUTH_CRYPTO_H
 
 #include <openpal/crypto/ICryptoProvider.h>
-#include <openpal/executor/IUTCTimeSource.h>
+#include <openpal/util/Uncopyable.h>
+#include <openpal/container/Buffer.h>
+
+#include <opendnp3/gen/KeyWrapAlgorithm.h>
+
+#include "SessionKeysView.h"
+
+#include <memory>
 
 namespace secauth
 {
+	// set of helpers on top of ICryptoProvider
+	class Crypto : private openpal::StaticOnly
+	{
+		public:
+								
+			// return nullptr if the specified KeyWrapAlgorithm isn't supported
+			static openpal::IKeyWrapAlgo* TryGetKeyWrap(openpal::ICryptoProvider& crypto, opendnp3::KeyWrapAlgorithm algorithm);
+						
+	};
 
-class MSState : private openpal::Uncopyable
-{	
-
-public:	
-
-	MSState(
-		openpal::IUTCTimeSource& timeSource,
-		openpal::ICryptoProvider& crypto
-	);
-
-	openpal::IUTCTimeSource*	pTimeSource;
-	openpal::ICryptoProvider*	pCrypto;
-};
-
-
+	
 }
 
 #endif

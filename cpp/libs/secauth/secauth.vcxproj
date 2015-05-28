@@ -22,11 +22,12 @@
     <ClInclude Include="src\secauth\AggressiveModeParser.h" />
     <ClInclude Include="src\secauth\AuthConstants.h" />
     <ClInclude Include="src\secauth\CriticalFunctions.h" />
+    <ClInclude Include="src\secauth\Crypto.h" />
     <ClInclude Include="src\secauth\DeferredASDU.h" />
     <ClInclude Include="src\secauth\HMACMode.h" />
     <ClInclude Include="src\secauth\HMACProvider.h" />
-    <ClInclude Include="src\secauth\IUserDatabase.h" />
     <ClInclude Include="src\secauth\master\KeyStatusHandler.h" />
+    <ClInclude Include="src\secauth\master\KeyWrap.h" />
     <ClInclude Include="src\secauth\master\MasterAuthProvider.h" />
     <ClInclude Include="src\secauth\master\MasterSecurityState.h" />
     <ClInclude Include="src\secauth\master\SessionKeyTask.h" />
@@ -34,6 +35,7 @@
     <ClInclude Include="src\secauth\outstation\ChallengeState.h" />
     <ClInclude Include="src\secauth\outstation\IAuthRequestHandler.h" />
     <ClInclude Include="src\secauth\outstation\IOAuthState.h" />
+    <ClInclude Include="src\secauth\outstation\IOutstationUserDatabase.h" />
     <ClInclude Include="src\secauth\outstation\KeyChangeState.h" />
     <ClInclude Include="src\secauth\outstation\KeyUnwrap.h" />
     <ClInclude Include="src\secauth\outstation\OAuthStates.h" />
@@ -41,20 +43,22 @@
     <ClInclude Include="src\secauth\outstation\OutstationAuthProvider.h" />
     <ClInclude Include="src\secauth\outstation\OutstationAuthSettings.h" />
     <ClInclude Include="src\secauth\outstation\SecurityState.h" />
+    <ClInclude Include="src\secauth\outstation\SimpleOutstationUserDatabase.h" />
     <ClInclude Include="src\secauth\SessionKeys.h" />
     <ClInclude Include="src\secauth\SessionKeysView.h" />
     <ClInclude Include="src\secauth\SessionStore.h" />
-    <ClInclude Include="src\secauth\SimpleUserDatabase.h" />
     <ClInclude Include="src\secauth\UpdateKeyMode.h" />
     <ClInclude Include="src\secauth\User.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\secauth\AggressiveModeParser.cpp" />
     <ClCompile Include="src\secauth\CriticalFunctions.cpp" />
+    <ClCompile Include="src\secauth\Crypto.cpp" />
     <ClCompile Include="src\secauth\DeferredASDU.cpp" />
     <ClCompile Include="src\secauth\HMACMode.cpp" />
     <ClCompile Include="src\secauth\HMACProvider.cpp" />
     <ClCompile Include="src\secauth\master\KeyStatusHandler.cpp" />
+    <ClCompile Include="src\secauth\master\KeyWrap.cpp" />
     <ClCompile Include="src\secauth\master\MasterAuthProvider.cpp" />
     <ClCompile Include="src\secauth\master\MasterSecurityState.cpp" />
     <ClCompile Include="src\secauth\master\SessionKeyTask.cpp" />
@@ -68,10 +72,10 @@
     <ClCompile Include="src\secauth\outstation\OutstationAuthProvider.cpp" />
     <ClCompile Include="src\secauth\outstation\OutstationAuthSettings.cpp" />
     <ClCompile Include="src\secauth\outstation\SecurityState.cpp" />
+    <ClCompile Include="src\secauth\outstation\SimpleOutstationUserDatabase.cpp" />
     <ClCompile Include="src\secauth\SessionKeys.cpp" />
     <ClCompile Include="src\secauth\SessionKeysView.cpp" />
     <ClCompile Include="src\secauth\SessionStore.cpp" />
-    <ClCompile Include="src\secauth\SimpleUserDatabase.cpp" />
     <ClCompile Include="src\secauth\UpdateKeyMode.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

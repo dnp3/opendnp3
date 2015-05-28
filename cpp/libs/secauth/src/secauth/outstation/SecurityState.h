@@ -30,11 +30,11 @@
 #include <openpal/executor/IUTCTimeSource.h>
 #include <openpal/executor/TimerRef.h>
 
-#include "secauth/IUserDatabase.h"
 #include "secauth/HMACProvider.h"
 #include "secauth/DeferredASDU.h"
 #include "secauth/SessionStore.h"
 
+#include "IOutstationUserDatabase.h"
 #include "KeyChangeState.h"
 #include "OutstationAuthSettings.h"
 #include "ChallengeState.h"
@@ -53,7 +53,7 @@ class SecurityState
 		openpal::Logger logger, 
 		openpal::IExecutor& executor,
 		openpal::IUTCTimeSource& timeSource, 
-		IUserDatabase& userdb, 
+		IOutstationUserDatabase& userdb, 
 		openpal::ICryptoProvider& crypto
 	);
 
@@ -66,7 +66,7 @@ class SecurityState
 	DeferredASDU deferred;
 	openpal::IExecutor* pExecutor;
 	openpal::IUTCTimeSource* pTimeSource;
-	IUserDatabase* pUserDatabase;
+	IOutstationUserDatabase* pUserDatabase;
 	openpal::ICryptoProvider* pCrypto;
 	opendnp3::KeyStatus keyStatus;
 	IOAuthState* pState;

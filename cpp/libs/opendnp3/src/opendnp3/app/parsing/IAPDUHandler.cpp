@@ -69,9 +69,9 @@ void IAPDUHandler::OnHeader(const FreeFormatHeader& header, const Group120Var2& 
 	Record(header, this->ProcessHeader(header, value));
 }
 
-void IAPDUHandler::OnHeader(const FreeFormatHeader& header, const Group120Var5& value)
+void IAPDUHandler::OnHeader(const FreeFormatHeader& header, const Group120Var5& value, const openpal::ReadBufferView& rawValue)
 {
-	Record(header, this->ProcessHeader(header, value));
+	Record(header, this->ProcessHeader(header, value, rawValue));
 }
 
 void IAPDUHandler::OnHeader(const FreeFormatHeader& header, const Group120Var6& value)
@@ -278,7 +278,7 @@ IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& header, const Group
 	return ProcessUnsupportedHeader();
 }
 
-IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var5& value)
+IINField IAPDUHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var5& value, const openpal::ReadBufferView& rawValue)
 {
 	return ProcessUnsupportedHeader();
 }

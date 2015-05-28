@@ -21,27 +21,31 @@
 
 #include "KeyStatusHandler.h"
 
-namespace opendnp3
+using namespace opendnp3;
+
+namespace secauth
 {
 	
 KeyStatusHandler::KeyStatusHandler(openpal::Logger logger_) : logger(logger_), valid(false)
 {}	
 
 
-bool KeyStatusHandler::GetStatus(Group120Var5& status) const
+bool KeyStatusHandler::GetStatus(Group120Var5& status, openpal::ReadBufferView& rawObject) const
 {
 	if (valid)
 	{
 		status = this->status;
+		rawObject = this->rawObject;
 	}
 
 	return valid;
 }
 
-IINField KeyStatusHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var5& status)
+IINField KeyStatusHandler::ProcessHeader(const FreeFormatHeader& header, const Group120Var5& status, const openpal::ReadBufferView& rawObject)
 {							
 	this->valid = true;
 	this->status = status;
+	this->rawObject = rawObject;
 	return IINField::Empty();		
 }	
 

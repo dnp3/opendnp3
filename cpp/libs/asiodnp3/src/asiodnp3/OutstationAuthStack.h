@@ -46,7 +46,7 @@ public:
 	    const StackActionHandler& handler,
 		const secauth::OutstationAuthSettings& authSettings,
 		openpal::IUTCTimeSource& timeSource,
-		secauth::IUserDatabase& userDB,
+		secauth::IOutstationUserDatabase& userDB,
 		openpal::ICryptoProvider& crypto);
 
 	

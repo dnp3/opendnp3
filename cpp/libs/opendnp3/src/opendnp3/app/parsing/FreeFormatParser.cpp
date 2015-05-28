@@ -35,7 +35,7 @@ namespace opendnp3
 {
 	ParseResult FreeFormatParser::ParseHeader(openpal::ReadBufferView& buffer, const ParserSettings& settings, const HeaderRecord& record, openpal::Logger* pLogger, IAPDUHandler* pHandler)
 	{
-		if (buffer.Size() < (UInt8::SIZE + UInt16::SIZE))
+		if (buffer.Size() < 3)
 		{
 			SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Not enough data for free format data");
 			return ParseResult::NOT_ENOUGH_DATA_FOR_HEADER;
@@ -79,7 +79,7 @@ namespace opendnp3
 			return ParseFreeFormat(ParseAny<Group120Var2>, header, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
 
 		case(GroupVariation::Group120Var5) :
-			return ParseFreeFormat(ParseAny<Group120Var5>, header, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
+			return ParseFreeFormat(ParseAnyWithRawData<Group120Var5>, header, FREE_FORMAT_SIZE, copy, pHandler, pLogger);
 
 		case(GroupVariation::Group120Var6) :
 			return ParseFreeFormat(ParseAny<Group120Var6>, header, FREE_FORMAT_SIZE, copy, pHandler, pLogger);

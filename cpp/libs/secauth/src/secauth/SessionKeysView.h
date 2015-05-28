@@ -36,6 +36,8 @@ namespace secauth
 			const openpal::ReadBufferView& monitorKey
 		);
 
+		uint32_t TotalSize() const;
+
 		bool IsValid() const;
 
 		openpal::ReadBufferView controlKey;

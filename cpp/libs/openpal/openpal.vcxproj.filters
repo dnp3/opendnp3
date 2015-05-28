@@ -217,6 +217,9 @@
     <ClInclude Include="src\openpal\util\SequenceNum.h">
       <Filter>Header\util</Filter>
     </ClInclude>
+    <ClInclude Include="src\openpal\crypto\ISecureRandom.h">
+      <Filter>Header\crypto</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\openpal\executor\MonotonicTimestamp.cpp">

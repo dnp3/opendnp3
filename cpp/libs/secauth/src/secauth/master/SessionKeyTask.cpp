@@ -21,7 +21,15 @@
 
 #include "SessionKeyTask.h"
 
-#include <opendnp3/objects/Group120.h>
+#include "KeyStatusHandler.h"
+#include "KeyWrap.h"
+
+#include "secauth/AuthConstants.h"
+
+#include <opendnp3/app/parsing/APDUParser.h>
+
+#include "secauth/Crypto.h"
+
 
 using namespace opendnp3;
 using namespace openpal;
@@ -114,8 +122,52 @@ void SessionKeyTask::BuildSessionKeyRequest(opendnp3::APDURequest& request, uint
 
 IMasterTask::ResponseResult SessionKeyTask::OnStatusResponse(const APDUResponseHeader& response, const ReadBufferView& objects)
 {
-	return ResponseResult::ERROR_BAD_RESPONSE; // TODO
-}
+	KeyStatusHandler handler(this->logger);
+	if (IsFailure(APDUParser::Parse(objects, handler, this->logger)))
+	{
+		return ResponseResult::ERROR_BAD_RESPONSE;
+	}
+
+	Group120Var5 status;
+	ReadBufferView rawObject;
+	
+	if (!handler.GetStatus(status, rawObject))
+	{
+		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Response did not contain a key status object");
+		return ResponseResult::ERROR_BAD_RESPONSE;
+	}
+	
+	if (!AuthConstants::ChallengeDataSizeWithinLimits(status.challengeData.Size()))
+	{
+		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Bad challenge data size");
+		return ResponseResult::ERROR_BAD_RESPONSE;
+	}
+
+	// before we derive keys, make sure we support the specified key wrap algorithm
+	const auto pKeyWrapAlgo = Crypto::TryGetKeyWrap(*pmsstate->pCrypto, status.keyWrapAlgo);
+	if (!pKeyWrapAlgo)
+	{
+		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Unsupported key wrap algorithm: %s", KeyWrapAlgorithmToString(status.keyWrapAlgo));
+		return ResponseResult::ERROR_BAD_RESPONSE;
+	}
+
+	// TODO - make the session key size configurable
+	if (!keys.DeriveFrom(*(pmsstate->pCrypto), AuthConstants::MIN_SESSION_KEY_SIZE_BYTES))
+	{
+		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Unable to derive session keys");
+		return ResponseResult::ERROR_BAD_RESPONSE; // TODO - add a different return code or is this good enough?
+	}
+	
+	if (!this->keyWrapBuffer.Wrap(*pKeyWrapAlgo, ReadBufferView::Empty() /*  TODO update key */, this->keys.GetView(), rawObject, this->logger))
+	{
+		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Unable to wrap session keys");
+		return ResponseResult::ERROR_BAD_RESPONSE;
+	}
+
+	this->state = State::ChangeKey; // we're now ready to try changing the key itself
+
+	return ResponseResult::OK_REPEAT;
+ }
 
 IMasterTask::ResponseResult SessionKeyTask::OnChangeResponse(const APDUResponseHeader& response, const ReadBufferView& objects)
 {

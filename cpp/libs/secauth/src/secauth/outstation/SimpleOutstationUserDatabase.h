@@ -18,38 +18,41 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTH_IUSERDATABASE_H
-#define SECAUTH_IUSERDATABASE_H
+#ifndef SECAUTH_SIMPLEOUTSTATIONUSERDATABASE_H
+#define SECAUTH_SIMPLEOUTSTATIONUSERDATABASE_H
 
-#include "secauth/User.h"
-#include "UpdateKeyMode.h"
+#include "IOutstationUserDatabase.h"
 
-#include <opendnp3/gen/FunctionCode.h>
+#include <openpal/container/Buffer.h>
 
-#include <openpal/container/ReadBufferView.h>
-
-#include <functional>
+#include <map>
+#include <memory>
 
 namespace secauth
-{	
+{
 
 /** 
-	An interface for retrieving info about users
-
-	This interface may be given out to multiple outstation instances on multiple threads, 
-	and therefore should be thread-safe (or immutable).
+	A very simple update key store for the default user
 */
-class IUserDatabase
+class SimpleOutstationUserDatabase : public IOutstationUserDatabase
 {
 	public:		
-
-		virtual bool GetUpdateKeyType(const User& user, UpdateKeyMode& type) const = 0;
-
-		virtual bool IsAuthorized(const User& user, opendnp3::FunctionCode code) const = 0;
 		
-		virtual bool GetUpdateKey(const User& user, UpdateKeyMode& type, openpal::ReadBufferView& key) const = 0;
+		virtual bool GetUpdateKey(const User& user, UpdateKeyMode& type, openpal::ReadBufferView& key) const override final;
 
-		virtual bool UserExists(const User& user) const = 0;
+		virtual bool GetUpdateKeyType(const User& user, UpdateKeyMode& type) const override final;
+
+		virtual bool IsAuthorized(const User& user, opendnp3::FunctionCode code) const override final;
+
+		virtual bool UserExists(const User& user) const override final;
+
+		// copies the update key into the key store permanently
+		void ConfigureUser(const User& user, UpdateKeyMode type, const openpal::ReadBufferView& key);
+
+	private:
+
+		typedef std::pair<UpdateKeyMode, std::unique_ptr<openpal::Buffer>> StoredUserData;
+		std::map<uint16_t, StoredUserData> userMap;
 };
 
 }

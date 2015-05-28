@@ -19,14 +19,14 @@
  * to you under the terms of the License.
  */
 
-#include "SimpleUserDatabase.h"
+#include "SimpleOutstationUserDatabase.h"
 
 using namespace openpal;
 
 namespace secauth
 {
 		
-bool SimpleUserDatabase::GetUpdateKey(const User& user, UpdateKeyMode& type, openpal::ReadBufferView& key) const
+bool SimpleOutstationUserDatabase::GetUpdateKey(const User& user, UpdateKeyMode& type, openpal::ReadBufferView& key) const
 {
 	auto iter = this->userMap.find(user.GetId());
 	if (iter == userMap.end())
@@ -41,7 +41,7 @@ bool SimpleUserDatabase::GetUpdateKey(const User& user, UpdateKeyMode& type, ope
 	}
 }
 
-bool SimpleUserDatabase::GetUpdateKeyType(const User& user, UpdateKeyMode& type) const
+bool SimpleOutstationUserDatabase::GetUpdateKeyType(const User& user, UpdateKeyMode& type) const
 {
 	auto iter = this->userMap.find(user.GetId());
 	if (iter == userMap.end())
@@ -55,19 +55,19 @@ bool SimpleUserDatabase::GetUpdateKeyType(const User& user, UpdateKeyMode& type)
 	}
 }
 
-bool SimpleUserDatabase::IsAuthorized(const User& user, opendnp3::FunctionCode code) const
+bool SimpleOutstationUserDatabase::IsAuthorized(const User& user, opendnp3::FunctionCode code) const
 {
 	// for the time being, if the user exists they are authorized
 	return UserExists(user);
 }
 
-bool SimpleUserDatabase::UserExists(const User& user) const
+bool SimpleOutstationUserDatabase::UserExists(const User& user) const
 {
 	auto iter = this->userMap.find(user.GetId());
 	return iter != userMap.end();
 }
 
-void SimpleUserDatabase::ConfigureUser(const User& user, UpdateKeyMode type, const openpal::ReadBufferView& key)
+void SimpleOutstationUserDatabase::ConfigureUser(const User& user, UpdateKeyMode type, const openpal::ReadBufferView& key)
 {
 	userMap[user.GetId()] = StoredUserData(type, std::unique_ptr<openpal::Buffer>(new openpal::Buffer(key)));
 }

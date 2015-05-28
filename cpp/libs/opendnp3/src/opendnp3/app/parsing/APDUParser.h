@@ -36,6 +36,8 @@ class APDUParser : private openpal::StaticOnly
 {
 public:	
 
+	static ParseResult Parse(const openpal::ReadBufferView& buffer, IAPDUHandler& handler, openpal::Logger& logger, ParserSettings settings = ParserSettings::Default());
+
 	static ParseResult Parse(const openpal::ReadBufferView& buffer, IAPDUHandler& handler, openpal::Logger* pLogger, ParserSettings settings = ParserSettings::Default());
 
 	static ParseResult ParseAndLogAll(const openpal::ReadBufferView& buffer, openpal::Logger* pLogger, ParserSettings settings = ParserSettings::Default());	

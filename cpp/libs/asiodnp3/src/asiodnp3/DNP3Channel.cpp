@@ -162,7 +162,7 @@ IOutstation* DNP3Channel::AddOutstation(char const* id,
 	const opendnp3::OutstationStackConfig& config,
 	const secauth::OutstationAuthSettings& authSettings,
 	openpal::IUTCTimeSource& timeSource,
-	secauth::IUserDatabase& userDB,
+	secauth::IOutstationUserDatabase& userDB,
 	openpal::ICryptoProvider& crypto)
 {
 	auto add = [&]()
@@ -241,7 +241,7 @@ IOutstation* DNP3Channel::_AddOutstation(char const* id,
 	const opendnp3::OutstationStackConfig& config,
 	const secauth::OutstationAuthSettings& authSettings,
 	openpal::IUTCTimeSource& timeSource,
-	secauth::IUserDatabase& userDB,
+	secauth::IOutstationUserDatabase& userDB,
 	openpal::ICryptoProvider& crypto)
 {
 	Route route(config.link.RemoteAddr, config.link.LocalAddr);

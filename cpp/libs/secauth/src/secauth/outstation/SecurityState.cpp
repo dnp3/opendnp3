@@ -33,7 +33,7 @@ namespace secauth
 			openpal::Logger logger, 
 			openpal::IExecutor& executor, 
 			openpal::IUTCTimeSource& timeSource, 
-			IUserDatabase& userdb, 
+			IOutstationUserDatabase& userdb,
 			openpal::ICryptoProvider& crypto) :
 
 		settings(settings_),

@@ -18,34 +18,41 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef SECAUTH_IOUTSTATIONUSERDATABASE_H
+#define SECAUTH_IOUTSTATIONUSERDATABASE_H
 
-#ifndef SECAUTH_MASTERSECURITYSTATE_H
-#define SECAUTH_MASTERSECURITYSTATE_H
+#include "secauth/User.h"
+#include "secauth/UpdateKeyMode.h"
 
+#include <opendnp3/gen/FunctionCode.h>
 
-#include <openpal/util/Uncopyable.h>
+#include <openpal/container/ReadBufferView.h>
 
-#include <openpal/crypto/ICryptoProvider.h>
-#include <openpal/executor/IUTCTimeSource.h>
+#include <functional>
 
 namespace secauth
-{
-
-class MSState : private openpal::Uncopyable
 {	
 
-public:	
+/** 
+	An interface for retrieving info about users
 
-	MSState(
-		openpal::IUTCTimeSource& timeSource,
-		openpal::ICryptoProvider& crypto
-	);
+	This interface may be given out to multiple outstation instances on multiple threads, 
+	and therefore should be thread-safe.
+*/
+class IOutstationUserDatabase
+{
+	public:		
 
-	openpal::IUTCTimeSource*	pTimeSource;
-	openpal::ICryptoProvider*	pCrypto;
+		virtual bool GetUpdateKeyType(const User& user, UpdateKeyMode& type) const = 0;
+
+		virtual bool IsAuthorized(const User& user, opendnp3::FunctionCode code) const = 0;
+		
+		virtual bool GetUpdateKey(const User& user, UpdateKeyMode& type, openpal::ReadBufferView& key) const = 0;
+
+		virtual bool UserExists(const User& user) const = 0;
 };
-
 
 }
 
 #endif
+

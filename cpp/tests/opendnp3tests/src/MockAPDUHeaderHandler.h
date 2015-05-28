@@ -168,7 +168,7 @@ public:
 		return IINField::Empty();
 	}
 
-	virtual IINField ProcessHeader(const opendnp3::FreeFormatHeader& header, const Group120Var5& value) override final
+	virtual IINField ProcessHeader(const opendnp3::FreeFormatHeader& header, const Group120Var5& value, const openpal::ReadBufferView& rawObject) override final
 	{	
 		authKeyStatusResponses.push_back(value);
 		return IINField::Empty();

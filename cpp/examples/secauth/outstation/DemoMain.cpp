@@ -33,7 +33,7 @@
 #include <openpal/container/StaticBuffer.h>
 
 #include <osslcrypto/CryptoProvider.h>
-#include <secauth/SimpleUserDatabase.h>
+#include <secauth/outstation/SimpleOutstationUserDatabase.h>
 
 #include <string>
 #include <thread>
@@ -46,7 +46,7 @@ using namespace asiopal;
 using namespace asiodnp3;
 
 // Hard-wired configuration of the default user update key for demo purposes
-void AddDefaultUser(secauth::SimpleUserDatabase& db)
+void AddDefaultUser(secauth::SimpleOutstationUserDatabase& db)
 {
 	// add a 128-bit demo key of all 0xFF
 	openpal::StaticBuffer<16> key;
@@ -69,7 +69,7 @@ int main(int argc, char* argv[])
 	osslcrypto::CryptoProvider crypto;
 
 	// Create a user database
-	secauth::SimpleUserDatabase userDatabase;
+	secauth::SimpleOutstationUserDatabase userDatabase;
 	// setup the default user
 	AddDefaultUser(userDatabase);
 

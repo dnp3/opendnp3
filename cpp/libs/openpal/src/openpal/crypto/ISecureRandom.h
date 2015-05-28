@@ -18,34 +18,31 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef OPENPAL_ISECURERANDOM_H
+#define OPENPAL_ISECURERANDOM_H
 
-#ifndef SECAUTH_MASTERSECURITYSTATE_H
-#define SECAUTH_MASTERSECURITYSTATE_H
+#include <openpal/container/WriteBufferView.h>
 
-
-#include <openpal/util/Uncopyable.h>
-
-#include <openpal/crypto/ICryptoProvider.h>
-#include <openpal/executor/IUTCTimeSource.h>
-
-namespace secauth
+namespace openpal
 {
+	/**
+	* A provider of cryptographic services. All function are assumed to be thread-safe
+	* such that multiple threads can safely share a single instance of this class.
+	*/
+	class ISecureRandom
+	{
+	public:
+		
+		virtual ~ISecureRandom() {}
 
-class MSState : private openpal::Uncopyable
-{	
-
-public:	
-
-	MSState(
-		openpal::IUTCTimeSource& timeSource,
-		openpal::ICryptoProvider& crypto
-	);
-
-	openpal::IUTCTimeSource*	pTimeSource;
-	openpal::ICryptoProvider*	pCrypto;
-};
-
+		/** 
+		 * Fill the specified buffer with secure random bytes
+		 * @return false if the destination buffer cannot be completely filled, true otherwise.
+		*/
+		virtual bool GetSecureRandom(WriteBufferView& dest) = 0;		
+	};
 
 }
 
 #endif
+

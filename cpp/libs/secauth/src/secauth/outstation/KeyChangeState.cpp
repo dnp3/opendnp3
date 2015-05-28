@@ -50,27 +50,26 @@ namespace secauth
 		)
 	{				
 		auto dest = challengeData.GetWriteBuffer(challengeSize);
-		if (pProvider->GetSecureRandom(dest))
-		{
-			++keyChangeSeqNum;			
 
-			this->lastUser = user;
-
-			statusRsp.keyChangeSeqNum = keyChangeSeqNum;
-			statusRsp.userNum = user.GetId();
-			statusRsp.keyWrapAlgo = keyWrapAlgo;
-			statusRsp.keyStatus = status;
-			statusRsp.hmacAlgo = hmacType;
-			statusRsp.challengeData = challengeData.ToReadOnly(challengeSize);
-			statusRsp.hmacValue = hmac;
-
-			return writer.WriteFreeFormat(statusRsp);
-		}
-		else
+		if (!pProvider->GetSecureRandom(dest))
 		{
 			SIMPLE_LOG_BLOCK(logger, flags::ERR, "Unable to get secure random data for KeyStatus response");
 			return false;
 		}
+
+		++keyChangeSeqNum;			
+
+		this->lastUser = user;
+
+		statusRsp.keyChangeSeqNum = keyChangeSeqNum;
+		statusRsp.userNum = user.GetId();
+		statusRsp.keyWrapAlgo = keyWrapAlgo;
+		statusRsp.keyStatus = status;
+		statusRsp.hmacAlgo = hmacType;
+		statusRsp.challengeData = challengeData.ToReadOnly(challengeSize);
+		statusRsp.hmacValue = hmac;
+
+		return writer.WriteFreeFormat(statusRsp);		
 	}
 
 	bool KeyChangeState::EqualsLastStatusResponse(const openpal::ReadBufferView& unwrappedKeyStatus)
@@ -87,22 +86,19 @@ namespace secauth
 			SIMPLE_LOG_BLOCK(logger, flags::ERR, "Unable to write last response to buffer");
 			return false;
 		}
-		else
-		{	
-			// this is what we sent
-			auto sent = buffer.ToReadOnly(copy.Size());
-			// the unwrapped data may be larger due to padding so truncate it to the length of what we're expecting before comparing
-			auto unwrappedTrunc = unwrappedKeyStatus.Take(sent.Size());
-
-			auto equal = SecureEquals(sent, unwrappedTrunc);
-			
-			if (!equal)
-			{
-				SIMPLE_LOG_BLOCK(logger, flags::ERR, "Unwrapped key data did not equal last response");
-			}
-
-			return equal;
+		
+		// this is what we sent
+		auto sent = buffer.ToReadOnly(copy.Size());
+		// the unwrapped data may be larger due to padding so truncate it to the length of what we're expecting before comparing
+		auto unwrappedTrunc = unwrappedKeyStatus.Take(sent.Size());
+					
+		if (!SecureEquals(sent, unwrappedTrunc))
+		{
+			SIMPLE_LOG_BLOCK(logger, flags::ERR, "Unwrapped key data did not equal last response");
+			return false;
 		}
+
+		return true;
 	}
 
 	bool KeyChangeState::CheckUserAndKSQMatches(const User& user, uint32_t keyChangeSeq)

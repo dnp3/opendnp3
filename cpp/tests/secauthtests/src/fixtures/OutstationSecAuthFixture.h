@@ -27,7 +27,7 @@
 #include <opendnp3/outstation/Database.h>
 
 #include <secauth/outstation/OutstationAuthProvider.h>
-#include <secauth/SimpleUserDatabase.h>
+#include <secauth/outstation/SimpleOutstationUserDatabase.h>
 
 #include <functional>
 
@@ -75,7 +75,7 @@ public:
 	MockCommandHandler cmdHandler;
 	MockOutstationApplication application;
 	testlib::MockUTCTimeSource utc;
-	secauth::SimpleUserDatabase users;
+	secauth::SimpleOutstationUserDatabase users;
 	MockCryptoProvider crypto;	
 	secauth::OutstationAuthProvider auth;
 	Outstation outstation;	

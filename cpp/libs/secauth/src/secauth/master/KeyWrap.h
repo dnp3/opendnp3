@@ -18,42 +18,39 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTH_SIMPLEUPDATEKEYSTORE_H
-#define SECAUTH_SIMPLEUPDATEKEYSTORE_H
+#ifndef SECAUTH_KEYWRAP_H
+#define SECAUTH_KEYWRAP_H
 
-#include "IUserDatabase.h"
+#include <openpal/logging/Logger.h>
+#include <openpal/crypto/IKeyWrapAlgo.h>
+#include <openpal/container/ReadBufferView.h>
+#include <openpal/container/StaticBuffer.h>
 
-#include <openpal/container/Buffer.h>
+#include "secauth/AuthConstants.h"
+#include "secauth/SessionKeysView.h"
 
-#include <map>
-#include <memory>
 
 namespace secauth
 {
+	class KeyWrapBuffer
+	{
+	public:
 
-/** 
-	A very simple update key store for the default user
-*/
-class SimpleUserDatabase : public IUserDatabase
-{
-	public:		
-		
-		virtual bool GetUpdateKey(const User& user, UpdateKeyMode& type, openpal::ReadBufferView& key) const override final;
+		bool Wrap(
+							openpal::IKeyWrapAlgo& algo,
+							const openpal::ReadBufferView& updateKey,
+							const SessionKeysView& sessionKeys,
+							const openpal::ReadBufferView& keyStatus,									
+							const openpal::Logger logger
+				);
 
-		virtual bool GetUpdateKeyType(const User& user, UpdateKeyMode& type) const override final;
-
-		virtual bool IsAuthorized(const User& user, opendnp3::FunctionCode code) const override final;
-
-		virtual bool UserExists(const User& user) const override final;
-
-		// copies the update key into the key store permanently
-		void ConfigureUser(const User& user, UpdateKeyMode type, const openpal::ReadBufferView& key);
+		openpal::ReadBufferView GetWrappedData() const;
 
 	private:
-
-		typedef std::pair<UpdateKeyMode, std::unique_ptr<openpal::Buffer>> StoredUserData;
-		std::map<uint16_t, StoredUserData> userMap;
-};
+		
+		openpal::ReadBufferView data;
+		openpal::StaticBuffer<AuthConstants::MAX_KEY_WRAP_BUFFER_SIZE> buffer;		
+	};
 
 }
 

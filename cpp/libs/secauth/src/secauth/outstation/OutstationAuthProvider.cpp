@@ -46,7 +46,7 @@ OutstationAuthProvider::OutstationAuthProvider(
 		openpal::Logger logger,
 		openpal::IExecutor& executor,
 		openpal::IUTCTimeSource& timeSource,
-		IUserDatabase& userDatabase,
+		IOutstationUserDatabase& userDatabase,
 		openpal::ICryptoProvider& crypto
 		) :
 		sstate(settings, logger, executor, timeSource, userDatabase, crypto)

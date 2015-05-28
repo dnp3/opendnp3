@@ -26,8 +26,7 @@
 #include "SecurityState.h"
 #include "OutstationAuthSettings.h"
 #include "IAuthRequestHandler.h"
-
-#include "secauth/IUserDatabase.h"
+#include "IOutstationUserDatabase.h"
 
 #include <openpal/util/Uncopyable.h>
 #include <openpal/executor/IUTCTimeSource.h>
@@ -47,7 +46,7 @@ class OutstationAuthProvider : public opendnp3::IOutstationAuthProvider, private
 		openpal::Logger logger, 
 		openpal::IExecutor& executor,
 		openpal::IUTCTimeSource& timeSource,
-		IUserDatabase& userDatabase,
+		IOutstationUserDatabase& userDatabase,
 		openpal::ICryptoProvider& crypto
 	);
 

@@ -25,7 +25,10 @@
 #include <opendnp3/master/TaskPriority.h>
 
 #include "secauth/User.h"
+#include "secauth/SessionKeys.h"
 #include "secauth/master/MasterSecurityState.h"
+#include "secauth/master/KeyWrap.h"
+
 
 namespace secauth
 {
@@ -64,6 +67,8 @@ namespace secauth
 		User user;
 		MSState* pmsstate;
 		State state;
+		SessionKeys keys;
+		KeyWrapBuffer keyWrapBuffer;		
 
 		virtual void Initialize() override final;
 

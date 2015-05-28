@@ -22,21 +22,37 @@
 #define SECAUTH_SESSIONKEYS_H
 
 #include "AuthConstants.h"
-
 #include "SessionKeysView.h"
+
+#include <openpal/crypto/ISecureRandom.h>
 
 #include <openpal/container/StaticBuffer.h>
 #include <openpal/util/Uncopyable.h>
 
 namespace secauth
 {
+	class SessionKeySize
+	{
+		public:
+
+		SessionKeySize(uint32_t size_) : size(AuthConstants::GetBoundedSessionKeySize(size_)) {}
+
+		operator uint32_t() const { return size; }
+
+		private:
+		uint32_t size;
+	};
+
 	/// Stores bi-directional session key data in internal buffers
 	class SessionKeys : private openpal::Uncopyable
 	{
 		public:
 
 			void SetKeys(const SessionKeysView& view);
-			SessionKeysView GetView() const;			
+
+			SessionKeysView GetView() const;	
+
+			bool DeriveFrom(openpal::ISecureRandom& rs, const SessionKeySize& size);
 
 		private:
 

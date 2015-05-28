@@ -21,6 +21,8 @@
 
 #include "SessionKeys.h"
 
+using namespace openpal;
+
 namespace secauth
 {
 	
@@ -38,7 +40,19 @@ namespace secauth
 	SessionKeysView SessionKeys::GetView() const
 	{
 		return SessionKeysView(controlKey, monitorKey);
-	}	
+	}
+
+	bool SessionKeys::DeriveFrom(ISecureRandom& rs, const SessionKeySize& size)
+	{
+		auto dest1 = controlBuffer.GetWriteBuffer(size);
+		auto dest2 = monitorBuffer.GetWriteBuffer(size);
+
+		this->controlKey = controlBuffer.ToReadOnly(size);
+		this->monitorKey = monitorBuffer.ToReadOnly(size);
+		
+		return rs.GetSecureRandom(dest1) && rs.GetSecureRandom(dest2);
+	}
+
 }
 
 

@@ -56,15 +56,8 @@ namespace secauth
 			openpal::Logger* pLogger);
 
 	private:
-
-		// The takes into account the fields in the unwrapped data
-		static const uint32_t MAX_REQUIRED_BUFFER_SIZE = 
-			openpal::UInt16::SIZE +
-			2 * AuthConstants::MAX_SESSION_KEY_SIZE_BYTES + 
-			opendnp3::Group120Var5::MIN_SIZE +
-			AuthConstants::MAX_CHALLENGE_DATA_SIZE;
-
-		openpal::StaticBuffer<MAX_REQUIRED_BUFFER_SIZE> buffer;		
+		
+		openpal::StaticBuffer<AuthConstants::MAX_KEY_WRAP_BUFFER_SIZE> buffer;		
 	};
 
 }

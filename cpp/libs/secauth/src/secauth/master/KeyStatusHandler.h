@@ -27,33 +27,34 @@
 
 #include <openpal/logging/LogMacros.h>
 
-namespace opendnp3
+namespace secauth
 {
 
 /**
  * Handles key-status responses
  */
-class KeyStatusHandler : public IAPDUHandler
+class KeyStatusHandler : public opendnp3::IAPDUHandler
 {
 
 public:
 	
 	KeyStatusHandler(openpal::Logger logger);
 
-	static bool WhiteList(uint32_t headerCount, GroupVariation gv, QualifierCode)
+	virtual bool IsAllowed(uint32_t headerCount, opendnp3::GroupVariation gv, opendnp3::QualifierCode) override final
 	{
-		return (headerCount == 0) && (gv == GroupVariation::Group120Var5);
+		return (headerCount == 0) && (gv == opendnp3::GroupVariation::Group120Var5);
 	}
 
-	bool GetStatus(Group120Var5& status) const;
+	bool GetStatus(opendnp3::Group120Var5& status, openpal::ReadBufferView& rawObject) const;
 
 private:
 		
 	openpal::Logger logger;
 	bool valid;
-	Group120Var5 status;
+	opendnp3::Group120Var5 status;
+	openpal::ReadBufferView rawObject;
 
-	virtual IINField ProcessHeader(const FreeFormatHeader& header, const Group120Var5& status) override final;
+	virtual opendnp3::IINField ProcessHeader(const opendnp3::FreeFormatHeader& header, const opendnp3::Group120Var5& status, const openpal::ReadBufferView& rawObject) override final;
 
 };
 

@@ -43,6 +43,11 @@ using namespace openpal;
 namespace opendnp3
 {
 
+ParseResult APDUParser::Parse(const openpal::ReadBufferView& buffer, IAPDUHandler& handler, openpal::Logger& logger, ParserSettings settings)
+{
+	return Parse(buffer, handler, &logger, settings);
+}
+
 ParseResult APDUParser::Parse(const openpal::ReadBufferView& buffer, IAPDUHandler& handler, openpal::Logger* pLogger, ParserSettings settings)
 {	
 	// do two state parsing process with logging and white-listing first but no handling on the first pass

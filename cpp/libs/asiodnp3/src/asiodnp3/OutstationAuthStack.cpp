@@ -36,7 +36,7 @@ namespace asiodnp3
 		const StackActionHandler& handler,
 		const OutstationAuthSettings& authSettings,
 		openpal::IUTCTimeSource& timeSource,
-		secauth::IUserDatabase& userDB,
+		secauth::IOutstationUserDatabase& userDB,
 		openpal::ICryptoProvider& crypto) :
 		OutstationStackImpl(id, root_, executor, commandHandler, application, config, handler),
 		auth(authSettings, root.GetLogger(), executor, timeSource, userDB, crypto)

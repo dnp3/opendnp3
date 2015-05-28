@@ -21,9 +21,9 @@
 #ifndef OPENPAL_ICRYPTOPROVIDER_H
 #define OPENPAL_ICRYPTOPROVIDER_H
 
+#include "ISecureRandom.h"
 #include "IHMACAlgo.h"
 #include "IKeyWrapAlgo.h"
-
 
 namespace openpal
 {
@@ -31,18 +31,12 @@ namespace openpal
 	* A provider of cryptographic services. All function are assumed to be thread-safe
 	* such that multiple threads can safely share a single instance of this class.
 	*/
-	class ICryptoProvider
+	class ICryptoProvider : public ISecureRandom
 	{
 	public:
 		
 		virtual ~ICryptoProvider() {}
-
-		/** 
-		 * Fill the specified buffer with secure random bytes
-		 * @return false if the destination buffer cannot be completely filled, true otherwise.
-		*/
-		virtual bool GetSecureRandom(WriteBufferView& dest) = 0;
-
+		
 		/// --- Getters for HMAC algorithms ----
 
 		virtual IHMACAlgo& GetSHA1HMAC() = 0;

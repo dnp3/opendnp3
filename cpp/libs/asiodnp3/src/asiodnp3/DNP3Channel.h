@@ -97,7 +97,7 @@ public:
 								const opendnp3::OutstationStackConfig& config,
 								const secauth::OutstationAuthSettings& authSettings,
 								openpal::IUTCTimeSource& timeSource,
-								secauth::IUserDatabase& userDB,
+								secauth::IOutstationUserDatabase& userDB,
 								openpal::ICryptoProvider& crypto) override final;
 
 	// Helper functions only available inside DNP3Manager
@@ -122,7 +122,7 @@ private:
 		const opendnp3::OutstationStackConfig& config,
 		const secauth::OutstationAuthSettings& authSettings,
 		openpal::IUTCTimeSource& timeSource,
-		secauth::IUserDatabase& userDB,
+		secauth::IOutstationUserDatabase& userDB,
 		openpal::ICryptoProvider& crypto);
 
 	void InitiateShutdown(asiopal::Synchronized<bool>& handler);
