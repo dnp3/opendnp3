@@ -52,6 +52,8 @@ namespace secauth
 						openpal::Logger logger, 
 						const User& user, 
 						MSState& msstate);
+
+		virtual char const* Name() const override final { return "Change Session Keys"; }
 		
 		virtual bool IsRecurring() const override final { return true; }
 

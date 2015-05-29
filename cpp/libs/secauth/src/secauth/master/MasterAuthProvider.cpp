@@ -21,25 +21,36 @@
 
 #include "MasterAuthProvider.h"
 
+
+using namespace openpal;
 using namespace opendnp3;
 
 namespace secauth
 {
 
 MasterAuthProvider::MasterAuthProvider(
-	openpal::IUTCTimeSource& timeSource,
+	opendnp3::IMasterApplication& application,
 	openpal::IExecutor& executor,
+	openpal::Logger logger,
 	openpal::ICryptoProvider& crypto,
 	IMasterUserDatabase& userDB
 	) : 
-	msstate(timeSource, executor, crypto, userDB)
+	msstate(application, executor, crypto, userDB),
+	sessionKeyTask(application, TimeDuration::Seconds(5), logger, User::Default(), msstate)
 {
 
 }
 
-openpal::ManagedPtr<opendnp3::IMasterTask> TryStartTask()
+openpal::ManagedPtr<opendnp3::IMasterTask> MasterAuthProvider::TryStartTask()
 {
-	return openpal::ManagedPtr<IMasterTask>();
+	if (sessionKeyTask.ExpirationTime().IsMax())
+	{
+		return openpal::ManagedPtr<IMasterTask>();
+	}
+	else
+	{
+		return openpal::ManagedPtr<IMasterTask>::WrapperOnly(&sessionKeyTask);
+	}	
 }
 
 void MasterAuthProvider::GoOnline(opendnp3::MState& mstate)
@@ -49,7 +60,7 @@ void MasterAuthProvider::GoOnline(opendnp3::MState& mstate)
 
 void MasterAuthProvider::GoOffline(opendnp3::MState& mstate)
 {
-
+	// TODO reset the sessions?
 }
 
 }

@@ -44,7 +44,7 @@ namespace secauth
 							const openpal::Logger logger
 				);
 
-		openpal::ReadBufferView GetWrappedData() const;
+		openpal::ReadBufferView GetWrappedData() const { return data; }
 
 	private:
 		

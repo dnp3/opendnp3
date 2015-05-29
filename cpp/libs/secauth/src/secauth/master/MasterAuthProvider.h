@@ -26,6 +26,7 @@
 #include <openpal/util/Uncopyable.h>
 
 #include "MasterSecurityState.h"
+#include "SessionKeyTask.h"
 
 namespace secauth
 {
@@ -36,8 +37,9 @@ class MasterAuthProvider final : public opendnp3::IMasterAuthProvider, private o
 public:	
 
 	MasterAuthProvider(
-		openpal::IUTCTimeSource& timeSource,
+		opendnp3::IMasterApplication& application,
 		openpal::IExecutor& executor,
+		openpal::Logger logger,		
 		openpal::ICryptoProvider& crypto,
 		IMasterUserDatabase& userDB
 	);
@@ -54,6 +56,7 @@ public:
 private:
 	
 	MSState msstate;
+	SessionKeyTask sessionKeyTask;
 
 };
 
