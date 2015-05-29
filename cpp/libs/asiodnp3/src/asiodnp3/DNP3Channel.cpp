@@ -23,7 +23,7 @@
 #include <asiopal/PhysicalLayerBase.h>
 #include <asiopal/StrandGetters.h>
 
-#include "MasterStackImpl.h"
+#include "MasterAuthStack.h"
 #include "OutstationAuthStack.h"
 
 #include <openpal/logging/LogMacros.h>
@@ -147,6 +147,20 @@ IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler& SOEHandler, IMaster
 	return asiopal::SynchronouslyGet<IMaster*>(pExecutor->strand, add);
 }
 
+IMaster* DNP3Channel::AddMaster(	char const* id,
+									opendnp3::ISOEHandler& SOEHandler,
+									opendnp3::IMasterApplication& application,
+									const opendnp3::MasterStackConfig& config,
+									secauth::IMasterUserDatabase& userDB,
+									openpal::ICryptoProvider& crypto)
+{
+	auto add = [&]()
+	{
+		return this->_AddMaster(id, SOEHandler, application, config, userDB, crypto);
+	};
+	return asiopal::SynchronouslyGet<IMaster*>(pExecutor->strand, add);
+}
+
 IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler& commandHandler, IOutstationApplication& application, const OutstationStackConfig& config)
 {
 	auto add = [this, id, &commandHandler, &application, config]() 
@@ -192,6 +206,32 @@ IMaster* DNP3Channel::_AddMaster(char const* id,
 	{
 		StackActionHandler handler(router, *pExecutor);
 		auto pMaster = new MasterStackImpl(id, *pLogRoot, *pExecutor, SOEHandler, application, config, handler, taskLock);
+		auto onShutdown = [this, pMaster](){ this->OnShutdown(pMaster); };
+		pMaster->SetShutdownAction(Action0::Bind(onShutdown));
+		pMaster->SetLinkRouter(router);
+		stacks.insert(pMaster);
+		router.AddContext(pMaster->GetLinkContext(), route);
+		return pMaster;
+	}
+}
+
+IMaster* DNP3Channel::_AddMaster(char const* id,
+	opendnp3::ISOEHandler& SOEHandler,
+	opendnp3::IMasterApplication& application,
+	const opendnp3::MasterStackConfig& config,
+	secauth::IMasterUserDatabase& userDB,
+	openpal::ICryptoProvider& crypto)
+{
+	Route route(config.link.RemoteAddr, config.link.LocalAddr);
+	if (router.IsRouteInUse(route))
+	{
+		FORMAT_LOG_BLOCK(logger, flags::ERR, "Route already in use: %i -> %i", route.source, route.destination);
+		return nullptr;
+	}
+	else
+	{
+		StackActionHandler handler(router, *pExecutor);
+		auto pMaster = new MasterAuthStack(id, *pLogRoot, *pExecutor, SOEHandler, application, config, handler, taskLock, userDB, crypto);
 		auto onShutdown = [this, pMaster](){ this->OnShutdown(pMaster); };
 		pMaster->SetShutdownAction(Action0::Bind(onShutdown));
 		pMaster->SetLinkRouter(router);

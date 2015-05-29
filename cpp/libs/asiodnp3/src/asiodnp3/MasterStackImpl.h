@@ -97,7 +97,7 @@ public:
 	opendnp3::ILinkSession* GetLinkContext();
 
 
-private:
+protected:
 
 	static std::function<void(opendnp3::HeaderWriter&)> ConvertToLambda(const std::vector<Header>& headers);	
 

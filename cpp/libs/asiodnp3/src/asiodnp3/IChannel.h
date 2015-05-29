@@ -41,6 +41,8 @@
 #include <secauth/outstation/OutstationAuthSettings.h>
 #include <secauth/outstation/IOutstationUserDatabase.h>
 
+#include <secauth/master/IMasterUserDatabase.h>
+
 #include "IMaster.h"
 #include "IOutstation.h"
 #include "DestructorHook.h"
@@ -95,10 +97,20 @@ public:
 	*
 	* @return interface representing the running master
 	*/
-	virtual IMaster* AddMaster(char const* id,
-							   opendnp3::ISOEHandler& SOEHandler,							   
-							   opendnp3::IMasterApplication& application,
-							   const opendnp3::MasterStackConfig& config) = 0;
+	virtual IMaster* AddMaster(		char const* id,
+									opendnp3::ISOEHandler& SOEHandler,							   
+									opendnp3::IMasterApplication& application,
+									const opendnp3::MasterStackConfig& config) = 0;
+
+	/**
+	* SA enabled version of the master
+	*/
+	virtual IMaster* AddMaster(		char const* id,
+									opendnp3::ISOEHandler& SOEHandler,
+									opendnp3::IMasterApplication& application,
+									const opendnp3::MasterStackConfig& config,
+									secauth::IMasterUserDatabase& userDB,
+									openpal::ICryptoProvider& crypto) = 0;
 
 	/**
 	* Add an outstation to the channel

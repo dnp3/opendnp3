@@ -86,6 +86,13 @@ public:
 								opendnp3::IMasterApplication& application,
 								const opendnp3::MasterStackConfig& config) override final;
 
+	virtual IMaster* AddMaster(	char const* id,
+								opendnp3::ISOEHandler& SOEHandler,
+								opendnp3::IMasterApplication& application,
+								const opendnp3::MasterStackConfig& config,
+								secauth::IMasterUserDatabase& userDB,
+								openpal::ICryptoProvider& crypto) override final;
+
 	virtual IOutstation* AddOutstation(char const* id,
 								opendnp3::ICommandHandler& commandHandler,
 								opendnp3::IOutstationApplication& application,
@@ -110,6 +117,13 @@ private:
 		opendnp3::ISOEHandler& SOEHandler,		
 		opendnp3::IMasterApplication& application,
 		const opendnp3::MasterStackConfig& config);
+
+	IMaster* _AddMaster(char const* id,
+		opendnp3::ISOEHandler& SOEHandler,
+		opendnp3::IMasterApplication& application,
+		const opendnp3::MasterStackConfig& config,
+		secauth::IMasterUserDatabase& userDB,
+		openpal::ICryptoProvider& crypto);
 
 	IOutstation* _AddOutstation(char const* id,
 		opendnp3::ICommandHandler& commandHandler,

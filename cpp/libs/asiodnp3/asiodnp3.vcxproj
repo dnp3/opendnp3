@@ -32,6 +32,7 @@
     <ClCompile Include="src\asiodnp3\impl\LinkLayerRouter.cpp" />
     <ClCompile Include="src\asiodnp3\impl\PhysicalLayerMonitor.cpp" />
     <ClCompile Include="src\asiodnp3\impl\PhysicalLayerMonitorStates.cpp" />
+    <ClCompile Include="src\asiodnp3\MasterAuthStack.cpp" />
     <ClCompile Include="src\asiodnp3\MasterStackImpl.cpp" />
     <ClCompile Include="src\asiodnp3\MultidropTaskLock.cpp" />
     <ClCompile Include="src\asiodnp3\OutstationAuthStack.cpp" />
@@ -57,6 +58,7 @@
     <ClInclude Include="src\asiodnp3\impl\PhysicalLayerMonitorStates.h" />
     <ClInclude Include="src\asiodnp3\IOutstation.h" />
     <ClInclude Include="src\asiodnp3\IStack.h" />
+    <ClInclude Include="src\asiodnp3\MasterAuthStack.h" />
     <ClInclude Include="src\asiodnp3\MasterStackImpl.h" />
     <ClInclude Include="src\asiodnp3\MultidropTaskLock.h" />
     <ClInclude Include="src\asiodnp3\OutstationAuthStack.h" />
