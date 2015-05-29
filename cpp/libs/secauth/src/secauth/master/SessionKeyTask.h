@@ -78,7 +78,7 @@ namespace secauth
 
 		virtual opendnp3::MasterTaskType GetTaskType() const override final { return opendnp3::MasterTaskType::SET_SESSION_KEYS; }
 
-		virtual bool IsEnabled() const override final;
+		virtual bool IsEnabled() const override final { return true; }
 
 		virtual opendnp3::IMasterTask::ResponseResult _OnResponse(const opendnp3::APDUResponseHeader& response, const openpal::ReadBufferView& objects) override final;
 

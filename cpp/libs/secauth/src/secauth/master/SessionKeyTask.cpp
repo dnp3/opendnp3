@@ -72,11 +72,6 @@ void SessionKeyTask::Initialize()
 	this->state = State::GetStatus;
 }
 
-bool SessionKeyTask::IsEnabled() const
-{
-	return false;
-}
-
 IMasterTask::ResponseResult SessionKeyTask::_OnResponse(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
 {
 	if (ValidateSingleResponse(header))

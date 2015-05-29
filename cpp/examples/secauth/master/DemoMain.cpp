@@ -29,14 +29,23 @@
 #include <opendnp3/LogLevels.h>
 #include <opendnp3/app/ControlRelayOutputBlock.h>
 
+#include <osslcrypto/CryptoProvider.h>
+#include <secauth/master/SimpleMasterUserDatabase.h>
+
 using namespace std;
 using namespace openpal;
 using namespace asiopal;
 using namespace asiodnp3;
 using namespace opendnp3;
+using namespace secauth;
 
 int main(int argc, char* argv[])
 {
+	// The cryptography provider we'll use 
+	osslcrypto::CryptoProvider crypto;
+
+	// The user database for master user
+	SimpleMasterUserDatabase userDB;
 
 	// Specify what log levels to use. NORMAL is warning and above
 	// You can add all the comms logging by uncommenting below
@@ -70,7 +79,7 @@ int main(int argc, char* argv[])
 	// You can override the default link layer settings here
 	// in this example we've changed the default link layer addressing
 	stackConfig.link.LocalAddr = 1;
-	stackConfig.link.RemoteAddr = 10;
+	stackConfig.link.RemoteAddr = 1024;
 
 	// Create a new master on a previously declared port, with a
 	// name, log level, command acceptor, and config info. This
@@ -79,7 +88,9 @@ int main(int argc, char* argv[])
 	                   "master",										// id for logging
 	                   PrintingSOEHandler::Instance(),					// callback for data processing                
 					   asiodnp3::DefaultMasterApplication::Instance(),	// master application instance
-	                   stackConfig										// stack configuration
+	                   stackConfig,										// stack configuration
+					   userDB,
+					   crypto
 	               );
 	
 	
