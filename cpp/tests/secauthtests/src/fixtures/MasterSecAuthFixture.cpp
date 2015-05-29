@@ -36,7 +36,7 @@ namespace opendnp3
 		master(exe, log.root, lower, meas, application, params, lock),
 		crypto(),
 		userDB(),
-		auth(application, crypto, userDB)
+		auth(application, exe, crypto, userDB)
 	{
 		master.SetAuthProvider(auth);
 	}

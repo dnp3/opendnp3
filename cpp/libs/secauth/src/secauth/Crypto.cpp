@@ -51,7 +51,27 @@ bool Crypto::KeyLengthMatchesRequestedAlgorithm(opendnp3::KeyWrapAlgorithm algor
 	default:
 		return false;
 	}
+}
 
+bool Crypto::TryGetHMACMode(HMACType type, HMACMode& mode)
+{
+	switch (type)
+	{
+	case(HMACType::HMAC_SHA1_TRUNC_10) :
+		mode = HMACMode::SHA1_TRUNC_10;
+		return true;
+	case(HMACType::HMAC_SHA1_TRUNC_8) :
+		mode = HMACMode::SHA1_TRUNC_8;
+		return true;
+	case(HMACType::HMAC_SHA256_TRUNC_16) :
+		mode = HMACMode::SHA256_TRUNC_16;
+		return true;
+	case(HMACType::HMAC_SHA256_TRUNC_8) :
+		mode = HMACMode::SHA256_TRUNC_8;
+		return true;
+	default:
+		return false;
+	}
 }
 
 	

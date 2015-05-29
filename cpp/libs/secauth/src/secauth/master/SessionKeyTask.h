@@ -68,7 +68,9 @@ namespace secauth
 		MSState* pmsstate;
 		State state;
 		SessionKeys keys;
-		KeyWrapBuffer keyWrapBuffer;		
+		uint32_t keyChangeSeqNum;
+		KeyWrapBuffer keyWrapBuffer;
+		openpal::ReadBufferView txKeyWrapASDU;
 
 		virtual void Initialize() override final;
 

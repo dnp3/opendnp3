@@ -26,8 +26,11 @@
 #include <openpal/container/Buffer.h>
 
 #include <opendnp3/gen/KeyWrapAlgorithm.h>
+#include <opendnp3/gen/HMACType.h>
 
 #include "SessionKeysView.h"
+
+#include "HMACMode.h"
 
 #include <memory>
 
@@ -43,6 +46,8 @@ namespace secauth
 			
 
 			static bool KeyLengthMatchesRequestedAlgorithm(opendnp3::KeyWrapAlgorithm algorithm, uint32_t updateKeyLength);
+
+			static bool TryGetHMACMode(opendnp3::HMACType type, HMACMode& mode);
 
 	};
 

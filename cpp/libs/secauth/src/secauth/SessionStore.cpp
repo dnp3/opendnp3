@@ -53,12 +53,12 @@ namespace secauth
 		}
 	}
 
-	void SessionStore::SetSessionKeys(const User& user, const SessionKeysView& view, const openpal::ReadBufferView& keyUpdateHMAC)
+	void SessionStore::SetSessionKeys(const User& user, const SessionKeysView& view)
 	{
 		auto iter = sessionMap.find(user.GetId());
 		if (iter != sessionMap.end())
 		{
-			this->ConfigureSession(*iter->second, view, keyUpdateHMAC);
+			this->ConfigureSession(*iter->second, view);
 		}		
 	}
 
@@ -81,7 +81,7 @@ namespace secauth
 		}
 	}
 
-	opendnp3::KeyStatus SessionStore::GetSessionKeyStatus(const User& user, openpal::ReadBufferView& lastKeyChangeHMAC)
+	opendnp3::KeyStatus SessionStore::GetSessionKeyStatus(const User& user)
 	{
 		auto iter = sessionMap.find(user.GetId());
 		if (iter == sessionMap.end())
@@ -92,22 +92,15 @@ namespace secauth
 		}
 		else
 		{
-			auto status = this->CheckTimeValidity(*iter->second);
-			if (status == KeyStatus::OK)
-			{				
-				lastKeyChangeHMAC = iter->second->lastKeyUpdateHMAC;				
-			}
-
-			return status;
+			return this->CheckTimeValidity(*iter->second);						
 		}
 	}
 
-	void SessionStore::ConfigureSession(Session& session, const SessionKeysView& view, const ReadBufferView& keyUpdateHMAC)
+	void SessionStore::ConfigureSession(Session& session, const SessionKeysView& view)
 	{
 		session.authCount = 0;
 		session.expirationTime = pTimeSource->GetTime().Add(TimeDuration::Minutes(SESSION_KEY_EXP_MINUTES));
-		session.keys.SetKeys(view);
-		session.lastKeyUpdateHMAC = keyUpdateHMAC;
+		session.keys.SetKeys(view);		
 		session.status = KeyStatus::OK;
 	}
 

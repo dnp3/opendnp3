@@ -27,6 +27,9 @@
 
 #include <openpal/crypto/ICryptoProvider.h>
 #include <openpal/executor/IUTCTimeSource.h>
+#include <openpal/executor/IExecutor.h>
+
+#include "secauth/SessionStore.h"
 
 #include "IMasterUserDatabase.h"
 
@@ -40,6 +43,7 @@ public:
 
 	MSState(
 		openpal::IUTCTimeSource& timeSource,
+		openpal::IExecutor& executor,
 		openpal::ICryptoProvider& crypto,
 		IMasterUserDatabase& userDB
 	);
@@ -47,6 +51,7 @@ public:
 	openpal::IUTCTimeSource*	pTimeSource;
 	openpal::ICryptoProvider*	pCrypto;
 	IMasterUserDatabase*		pUserDB;
+	SessionStore				sessions;
 };
 
 

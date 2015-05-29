@@ -42,11 +42,7 @@ namespace secauth
 		opendnp3::KeyStatus status;
 		SessionKeys keys;
 		openpal::MonotonicTimestamp expirationTime;
-		uint32_t authCount;		
-		openpal::ReadBufferView lastKeyUpdateHMAC;
-
-		private:
-		openpal::StaticBuffer<AuthConstants::MAX_HMAC_TRUNC_SIZE> hmacBuffer;
+		uint32_t authCount;						
 	};
 
 
@@ -59,13 +55,13 @@ namespace secauth
 			openpal::IMonotonicTimeSource& timeSource			
 		);
 
-		void SetSessionKeys(const User& user, const SessionKeysView& view, const openpal::ReadBufferView& keyUpdateHMAC);
+		void SetSessionKeys(const User& user, const SessionKeysView& view);
 
 		// Session keys are only set if KeyStatus == OK
 		opendnp3::KeyStatus GetSessionKeys(const User& user, SessionKeysView& view);
 		
 		// Retrieves the session key status for a user. Creates a new session if no info exists.
-		opendnp3::KeyStatus GetSessionKeyStatus(const User& user, openpal::ReadBufferView& lastKeyChangeHMAC);
+		opendnp3::KeyStatus GetSessionKeyStatus(const User& user);
 
 		// Increments the auth count for the specified users session keys
 		// this may invalidate the session keys
@@ -81,7 +77,7 @@ namespace secauth
 
 		opendnp3::KeyStatus IncrementAuthCount(Session& session);
 
-		void ConfigureSession(Session& session, const SessionKeysView& view, const openpal::ReadBufferView& keyUpdateHMAC);
+		void ConfigureSession(Session& session, const SessionKeysView& view);
 
 		openpal::IMonotonicTimeSource* pTimeSource;
 

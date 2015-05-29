@@ -26,10 +26,11 @@ namespace secauth
 
 MasterAuthProvider::MasterAuthProvider(
 	openpal::IUTCTimeSource& timeSource,
+	openpal::IExecutor& executor,
 	openpal::ICryptoProvider& crypto,
 	IMasterUserDatabase& userDB
 	) : 
-	msstate(timeSource, crypto, userDB)
+	msstate(timeSource, executor, crypto, userDB)
 {
 
 }

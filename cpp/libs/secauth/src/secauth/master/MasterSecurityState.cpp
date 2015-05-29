@@ -26,12 +26,14 @@ namespace secauth
 
 	MSState::MSState(
 			openpal::IUTCTimeSource& timeSource,
+			openpal::IExecutor& executor,
 			openpal::ICryptoProvider& crypto,		
 			IMasterUserDatabase& userDB
 		) :
 		pTimeSource(&timeSource),
 		pCrypto(&crypto),
-		pUserDB(&userDB)
+		pUserDB(&userDB),
+		sessions(executor)
 	{}
 
 }

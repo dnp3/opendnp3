@@ -26,9 +26,12 @@
 
 #include "secauth/AuthConstants.h"
 
+#include "secauth/Crypto.h"
+#include "secauth/HMACProvider.h"
+
 #include <opendnp3/app/parsing/APDUParser.h>
 
-#include "secauth/Crypto.h"
+#include <openpal/crypto/SecureCompare.h>
 
 
 using namespace opendnp3;
@@ -46,7 +49,8 @@ SessionKeyTask::SessionKeyTask(	opendnp3::IMasterApplication& application,
 							opendnp3::IMasterTask(application, openpal::MonotonicTimestamp::Min(), logger, nullptr, -1),
 							retryPeriod(retryPeriod_),
 							user(user_),
-							pmsstate(&msstate)
+							pmsstate(&msstate),
+							keyChangeSeqNum(0)
 {
 	
 }
@@ -117,7 +121,17 @@ void SessionKeyTask::BuildStatusRequest(opendnp3::APDURequest& request, uint8_t 
 
 void SessionKeyTask::BuildSessionKeyRequest(opendnp3::APDURequest& request, uint8_t seq)
 {
+	request.ConfigureHeader(FunctionCode::AUTH_REQUEST, seq);
+
+	Group120Var6 sessionKeyChange;
+	sessionKeyChange.keyChangeSeqNum = this->keyChangeSeqNum;
+	sessionKeyChange.userNum = user.GetId();
+	sessionKeyChange.keyWrapData = this->keyWrapBuffer.GetWrappedData();
 	
+	request.GetWriter().WriteFreeFormat(sessionKeyChange);
+
+	// save a view of what we're transmitting as we'll need it to validate the HMAC
+	this->txKeyWrapASDU = request.ToReadOnly();
 }
 
 IMasterTask::ResponseResult SessionKeyTask::OnStatusResponse(const APDUResponseHeader& response, const ReadBufferView& objects)
@@ -136,6 +150,9 @@ IMasterTask::ResponseResult SessionKeyTask::OnStatusResponse(const APDUResponseH
 		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Response did not contain a key status object");
 		return ResponseResult::ERROR_BAD_RESPONSE;
 	}
+
+	// save the KSQ
+	this->keyChangeSeqNum = status.keyChangeSeqNum;
 	
 	if (!AuthConstants::ChallengeDataSizeWithinLimits(status.challengeData.Size()))
 	{
@@ -188,7 +205,46 @@ IMasterTask::ResponseResult SessionKeyTask::OnStatusResponse(const APDUResponseH
 
 IMasterTask::ResponseResult SessionKeyTask::OnChangeResponse(const APDUResponseHeader& response, const ReadBufferView& objects)
 {
-	return ResponseResult::ERROR_BAD_RESPONSE; // TODO
+	KeyStatusHandler handler(this->logger);
+	if (IsFailure(APDUParser::Parse(objects, handler, this->logger)))
+	{
+		return ResponseResult::ERROR_BAD_RESPONSE;
+	}
+
+	Group120Var5 status;
+	ReadBufferView rawObject;
+
+	if (!handler.GetStatus(status, rawObject))
+	{
+		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Response did not contain a key status object");
+		return ResponseResult::ERROR_BAD_RESPONSE;
+	}
+	
+	HMACMode hmacMode;
+	if (!Crypto::TryGetHMACMode(status.hmacAlgo, hmacMode))
+	{
+		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Outstation requested unsupported HMAC algorithm: %s", HMACTypeToString(status.hmacAlgo));
+		return ResponseResult::ERROR_BAD_RESPONSE;
+	}
+
+	HMACProvider hmac(*pmsstate->pCrypto, hmacMode);
+	auto hmacValue = hmac.Compute(keys.GetView().monitorKey, { this->txKeyWrapASDU });
+	if (hmacValue.IsEmpty())
+	{
+		SIMPLE_LOG_BLOCK(this->logger, flags::ERR, "Unable to calculate HMAC value");
+		return ResponseResult::ERROR_BAD_RESPONSE;
+	}	
+
+	if (!SecureEquals(hmacValue, status.hmacValue))
+	{
+		SIMPLE_LOG_BLOCK(this->logger, flags::ERR, "Invalid HMAC received from outstation during session key swap");
+		return ResponseResult::ERROR_BAD_RESPONSE;
+	}
+
+	// Set the session keys and return!
+	pmsstate->sessions.SetSessionKeys(user, keys.GetView());
+
+	return ResponseResult::OK_FINAL;
 }
 
 }

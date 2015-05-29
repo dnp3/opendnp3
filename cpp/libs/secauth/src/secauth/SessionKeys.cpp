@@ -53,6 +53,12 @@ namespace secauth
 		return rs.GetSecureRandom(dest1) && rs.GetSecureRandom(dest2);
 	}
 
+	void SessionKeys::ClearMemory()
+	{
+		controlBuffer.GetWriteBuffer().SetAllTo(0);
+		monitorBuffer.GetWriteBuffer().SetAllTo(0);
+	}
+
 }
 
 

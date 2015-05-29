@@ -93,7 +93,7 @@ namespace secauth
 		FORMAT_HEX_BLOCK(ostate.logger, flags::INFO, hmac, 17, 17);		
 		*/
 
-		sstate.sessions.SetSessionKeys(user, unwrapped.keys, hmac);
+		sstate.sessions.SetSessionKeys(user, unwrapped.keys);
 		
 		auto rsp = sstate.StartResponse(ostate);
 		rsp.SetFunction(FunctionCode::AUTH_RESPONSE);
@@ -126,16 +126,14 @@ namespace secauth
 			FORMAT_LOG_BLOCK(ostate.logger, flags::WARN, "User %u does not exist", user.GetId());
 			return;
 		}
-
-
-		ReadBufferView lastKeyChangeHMAC;
-		auto keyStatus = sstate.sessions.GetSessionKeyStatus(user, lastKeyChangeHMAC);
+		
+		auto keyStatus = sstate.sessions.GetSessionKeyStatus(user);
 			
 		auto rsp = sstate.StartResponse(ostate);
 		rsp.SetFunction(FunctionCode::AUTH_RESPONSE);
 		rsp.SetControl(header.control);
 		auto writer = rsp.GetWriter();
-		auto hmacType = (keyStatus == KeyStatus::NOT_INIT) ? HMACType::NO_MAC_VALUE : sstate.hmac.GetType();
+		auto hmacType = HMACType::NO_MAC_VALUE;
 
 		auto success = sstate.keyChangeState.FormatKeyStatusResponse(
 			writer,
@@ -143,7 +141,7 @@ namespace secauth
 			hmacType,
 			ToKeyWrapAlgorithm(type),
 			keyStatus,
-			lastKeyChangeHMAC
+			ReadBufferView::Empty()
 			);
 
 		if (!success)

@@ -54,6 +54,8 @@ namespace secauth
 
 			bool DeriveFrom(openpal::ISecureRandom& rs, const SessionKeySize& size);
 
+			void ClearMemory();
+
 		private:
 
 			openpal::ReadBufferView controlKey;

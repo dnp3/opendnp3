@@ -37,6 +37,7 @@ public:
 
 	MasterAuthProvider(
 		openpal::IUTCTimeSource& timeSource,
+		openpal::IExecutor& executor,
 		openpal::ICryptoProvider& crypto,
 		IMasterUserDatabase& userDB
 	);
@@ -50,7 +51,7 @@ public:
 	virtual void GoOffline(opendnp3::MState& mstate) override final;
 
 private:
-
+	
 	MSState msstate;
 
 };
