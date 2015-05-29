@@ -46,12 +46,7 @@ public:
 	/**
 	* Lifecycle callback invoked when the master goes offline
 	*/
-	virtual void GoOffline(MState& mstate) = 0;
-
-	/*
-	* Try to start a task
-	*/
-	virtual openpal::ManagedPtr<IMasterTask> TryStartTask() = 0;
+	virtual void GoOffline(MState& mstate) = 0;	
 
 	virtual ~IMasterAuthProvider() {}
 

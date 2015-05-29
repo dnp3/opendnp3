@@ -21,6 +21,8 @@
 
 #include "MasterAuthProvider.h"
 
+#include <opendnp3/master/MasterState.h>
+
 
 using namespace openpal;
 using namespace opendnp3;
@@ -41,21 +43,10 @@ MasterAuthProvider::MasterAuthProvider(
 
 }
 
-openpal::ManagedPtr<opendnp3::IMasterTask> MasterAuthProvider::TryStartTask()
-{
-	if (sessionKeyTask.ExpirationTime().IsMax())
-	{
-		return openpal::ManagedPtr<IMasterTask>();
-	}
-	else
-	{
-		return openpal::ManagedPtr<IMasterTask>::WrapperOnly(&sessionKeyTask);
-	}	
-}
-
 void MasterAuthProvider::GoOnline(opendnp3::MState& mstate)
 {
-	
+	// add the session key task to the scheduler
+	mstate.scheduler.Schedule(openpal::ManagedPtr<IMasterTask>::WrapperOnly(&sessionKeyTask));
 }
 
 void MasterAuthProvider::GoOffline(opendnp3::MState& mstate)

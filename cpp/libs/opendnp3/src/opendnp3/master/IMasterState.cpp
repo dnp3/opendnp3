@@ -59,26 +59,6 @@ IMasterState* MasterStateIdle::OnStart(MState& mstate)
 		return this;
 	}
 
-	auto authTask = mstate.auth.TryStartTask();
-	if (authTask.IsDefined())
-	{
-		if (mstate.BeginNewTask(authTask))
-		{
-			return &MasterStateWaitForResponse::Instance();
-		}
-		else
-		{
-			return &MasterStateTaskReady::Instance();
-		}
-	}
-	else
-	{
-		return this->TryStartSchedulerTask(mstate);
-	}	
-}
-
-IMasterState* MasterStateIdle::TryStartSchedulerTask(MState& mstate)
-{
 	auto task = mstate.scheduler.Start();
 
 	if (task.IsDefined())

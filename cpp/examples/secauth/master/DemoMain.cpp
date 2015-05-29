@@ -79,7 +79,7 @@ int main(int argc, char* argv[])
 	// You can override the default link layer settings here
 	// in this example we've changed the default link layer addressing
 	stackConfig.link.LocalAddr = 1;
-	stackConfig.link.RemoteAddr = 1024;
+	stackConfig.link.RemoteAddr = 10;
 
 	// Create a new master on a previously declared port, with a
 	// name, log level, command acceptor, and config info. This

@@ -45,9 +45,7 @@ public:
 	);
 
 
-	// ------ Implement IMasterAuthProvider ------	
-
-	virtual openpal::ManagedPtr<opendnp3::IMasterTask> TryStartTask() override final;
+	// ------ Implement IMasterAuthProvider ------		
 
 	virtual void GoOnline(opendnp3::MState& mstate) override final;	
 

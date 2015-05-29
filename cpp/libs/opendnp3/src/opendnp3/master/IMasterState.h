@@ -51,9 +51,7 @@ class MasterStateIdle : public IMasterState
 
 	virtual IMasterState* OnStart(MState& mstate);
 
-	private:
-
-	IMasterState* TryStartSchedulerTask(MState& mstate);
+	private:	
 
 	MasterStateIdle() {}
 
