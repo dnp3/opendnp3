@@ -53,6 +53,8 @@ class MasterStateIdle : public IMasterState
 
 	private:
 
+	IMasterState* TryStartSchedulerTask(MState& mstate);
+
 	MasterStateIdle() {}
 
 	static MasterStateIdle instance;

@@ -21,6 +21,10 @@
 #ifndef OPENDNP3_IMASTERAUTHPROVIDER_H
 #define OPENDNP3_IMASTERAUTHPROVIDER_H
 
+#include <openpal/container/ManagedPtr.h>
+
+#include "opendnp3/master/IMasterTask.h"
+
 namespace opendnp3
 {
 
@@ -43,6 +47,11 @@ public:
 	* Lifecycle callback invoked when the master goes offline
 	*/
 	virtual void GoOffline(MState& mstate) = 0;
+
+	/*
+	* Try to start a task
+	*/
+	virtual openpal::ManagedPtr<IMasterTask> TryStartTask() = 0;
 
 	virtual ~IMasterAuthProvider() {}
 

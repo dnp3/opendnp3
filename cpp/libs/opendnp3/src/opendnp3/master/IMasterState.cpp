@@ -54,29 +54,47 @@ MasterStateIdle MasterStateIdle::instance;
 
 IMasterState* MasterStateIdle::OnStart(MState& mstate)
 {
-	if(mstate.isSending)
+	if (mstate.isSending)
 	{
 		return this;
 	}
-	else
+
+	auto authTask = mstate.auth.TryStartTask();
+	if (authTask.IsDefined())
 	{
-		auto task = mstate.scheduler.Start();
-		
-		if (task.IsDefined())
-		{				
-			if (mstate.BeginNewTask(task))
-			{
-				return &MasterStateWaitForResponse::Instance();
-			}
-			else
-			{
-				return &MasterStateTaskReady::Instance();
-			}
+		if (mstate.BeginNewTask(authTask))
+		{
+			return &MasterStateWaitForResponse::Instance();
 		}
 		else
 		{
-			return this;
+			return &MasterStateTaskReady::Instance();
 		}
+	}
+	else
+	{
+		return this->TryStartSchedulerTask(mstate);
+	}	
+}
+
+IMasterState* MasterStateIdle::TryStartSchedulerTask(MState& mstate)
+{
+	auto task = mstate.scheduler.Start();
+
+	if (task.IsDefined())
+	{
+		if (mstate.BeginNewTask(task))
+		{
+			return &MasterStateWaitForResponse::Instance();
+		}
+		else
+		{
+			return &MasterStateTaskReady::Instance();
+		}
+	}
+	else
+	{
+		return this;
 	}
 }
 

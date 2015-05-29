@@ -37,7 +37,7 @@ namespace secauth
 	{
 		public:
 
-		Session();
+		Session();		
 
 		opendnp3::KeyStatus status;
 		SessionKeys keys;
@@ -54,6 +54,8 @@ namespace secauth
 		SessionStore(			
 			openpal::IMonotonicTimeSource& timeSource			
 		);
+
+		void DefineUser(const User& user);
 
 		void SetSessionKeys(const User& user, const SessionKeysView& view);
 
@@ -77,7 +79,7 @@ namespace secauth
 
 		opendnp3::KeyStatus IncrementAuthCount(Session& session);
 
-		void ConfigureSession(Session& session, const SessionKeysView& view);
+		void ConfigureSession(Session& session, const SessionKeysView& view);		
 
 		openpal::IMonotonicTimeSource* pTimeSource;
 

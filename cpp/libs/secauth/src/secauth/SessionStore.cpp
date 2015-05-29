@@ -29,7 +29,7 @@ namespace secauth
 	Session::Session() :		
 		status(KeyStatus::NOT_INIT),
 		authCount(0)
-	{}		
+	{}			
 	
 	SessionStore::SessionStore(
 			IMonotonicTimeSource& timeSource			
@@ -50,6 +50,16 @@ namespace secauth
 		else
 		{
 			return this->IncrementAuthCount(*iter->second);
+		}
+	}
+
+	void SessionStore::DefineUser(const User& user)
+	{
+		auto iter = sessionMap.find(user.GetId());
+		if (iter == sessionMap.end())
+		{
+			// initialize new session info
+			sessionMap[user.GetId()] = std::unique_ptr<Session>(new Session());			
 		}
 	}
 
@@ -102,7 +112,7 @@ namespace secauth
 		session.expirationTime = pTimeSource->GetTime().Add(TimeDuration::Minutes(SESSION_KEY_EXP_MINUTES));
 		session.keys.SetKeys(view);		
 		session.status = KeyStatus::OK;
-	}
+	}	
 
 	opendnp3::KeyStatus SessionStore::CheckTimeValidity(Session& session)
 	{

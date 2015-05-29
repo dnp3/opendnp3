@@ -21,6 +21,8 @@
 
 #include "MasterAuthProvider.h"
 
+using namespace opendnp3;
+
 namespace secauth
 {
 
@@ -33,6 +35,11 @@ MasterAuthProvider::MasterAuthProvider(
 	msstate(timeSource, executor, crypto, userDB)
 {
 
+}
+
+openpal::ManagedPtr<opendnp3::IMasterTask> TryStartTask()
+{
+	return openpal::ManagedPtr<IMasterTask>();
 }
 
 void MasterAuthProvider::GoOnline(opendnp3::MState& mstate)

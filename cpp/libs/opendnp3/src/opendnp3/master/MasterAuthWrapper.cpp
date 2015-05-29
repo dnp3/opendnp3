@@ -48,6 +48,11 @@ void MasterAuthWrapper::GoOffline(MState& mstate)
 	}
 }
 
+openpal::ManagedPtr<IMasterTask> MasterAuthWrapper::TryStartTask()
+{
+	return pProvider ? pProvider->TryStartTask() : openpal::ManagedPtr<IMasterTask>();
+}
+
 }
 
 

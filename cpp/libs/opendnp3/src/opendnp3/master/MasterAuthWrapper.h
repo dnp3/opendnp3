@@ -45,6 +45,8 @@ class MasterAuthWrapper : private openpal::Uncopyable
 
 	void GoOffline(MState& mstate);
 
+	openpal::ManagedPtr<IMasterTask> TryStartTask();
+
 	private:
 
 	IMasterAuthProvider* pProvider;
