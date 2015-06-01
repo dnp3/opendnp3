@@ -94,9 +94,9 @@ namespace opendnp3
 		}		
 	}
 
-	void MState::OnReceive(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+	void MState::OnReceive(const openpal::ReadBufferView& apdu, const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
 	{
-		auth.OnReceive(*this, header, objects);
+		auth.OnReceive(*this, apdu, header, objects);
 	}
 
 	void MState::ProcessAPDU(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)

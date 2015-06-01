@@ -68,6 +68,11 @@ namespace secauth
 
 	AggModeResult AggressiveModeParser::IsAggressiveMode(openpal::ReadBufferView objects, openpal::Logger* pLogger)
 	{		
+		if (objects.IsEmpty())
+		{
+			return AggModeResult(ParseResult::OK);
+		}
+
 		ObjectHeader header;
 		auto result = ObjectHeaderParser::ParseObjectHeader(header, objects, pLogger);
 		if (result != ParseResult::OK)

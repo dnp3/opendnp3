@@ -103,7 +103,7 @@ namespace opendnp3
 
 		void StartResponseTimer();
 
-		void OnReceive(const APDUResponseHeader& header, const openpal::ReadBufferView& objects);
+		void OnReceive(const openpal::ReadBufferView& apdu, const APDUResponseHeader& header, const openpal::ReadBufferView& objects);
 
 		void ProcessAPDU(const APDUResponseHeader& header, const openpal::ReadBufferView& objects);
 

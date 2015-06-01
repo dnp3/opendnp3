@@ -51,11 +51,11 @@ void MasterAuthWrapper::GoOffline()
 	}
 }
 
-void MasterAuthWrapper::OnReceive(MState& mstate, const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+void MasterAuthWrapper::OnReceive(MState& mstate, const openpal::ReadBufferView& apdu, const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
 {
 	if (pProvider)
 	{
-		pProvider->OnReceive(header, objects);
+		pProvider->OnReceive(apdu, header, objects);
 	}
 	else
 	{

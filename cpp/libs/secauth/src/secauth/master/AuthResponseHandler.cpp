@@ -28,9 +28,11 @@ namespace secauth
 	
 
 AuthResponseHandler::AuthResponseHandler(
+	const openpal::ReadBufferView& apdu_,
 	const APDUResponseHeader& header,	
 	IAuthResponseReceiver& authRespReceiver
 	) :
+	apdu(apdu_),
 	apduheader(header),	
 	pAuthRespReceiver(&authRespReceiver)
 {}
@@ -38,13 +40,13 @@ AuthResponseHandler::AuthResponseHandler(
 
 IINField AuthResponseHandler::ProcessHeader(const opendnp3::FreeFormatHeader& header, const opendnp3::Group120Var1& value)
 {
-	pAuthRespReceiver->OnAuthChallenge(apduheader, value);
+	pAuthRespReceiver->OnAuthChallenge(apdu, apduheader, value);
 	return IINField::Empty();
 }
 
 IINField AuthResponseHandler::ProcessHeader(const opendnp3::FreeFormatHeader& header, const opendnp3::Group120Var7& value)
 {
-	pAuthRespReceiver->OnAuthError(apduheader, value);
+	pAuthRespReceiver->OnAuthError(apdu, apduheader, value);
 	return IINField::Empty();
 }
 

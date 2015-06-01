@@ -86,7 +86,7 @@ void Master::OnReceive(const openpal::ReadBufferView& apdu)
 		header.IIN.MSB);
 
 
-	mstate.OnReceive(header, apdu.Skip(APDU_RESPONSE_HEADER_SIZE));
+	mstate.OnReceive(apdu, header, apdu.Skip(APDU_RESPONSE_HEADER_SIZE));
 }
 
 void Master::OnPendingTask()

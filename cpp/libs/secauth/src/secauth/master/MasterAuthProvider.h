@@ -52,19 +52,19 @@ public:
 
 	virtual void GoOffline() override final;
 
-	virtual void OnReceive(const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects) override final;
+	virtual void OnReceive(const openpal::ReadBufferView& apdu, const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects) override final;
 
 	virtual void RecordLastRequest(const openpal::ReadBufferView& apdu) override final;
 
 private:
 
-	void OnReceiveAuthResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects);
+	void OnReceiveAuthResponse(const openpal::ReadBufferView& apdu, const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects);
 
 	// ------ Implement IAuthResponseReceiver ------	
 
-	virtual void OnAuthChallenge(const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge) override final;
+	virtual void OnAuthChallenge(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge) override final;
 
-	virtual void OnAuthError(const opendnp3::APDUHeader& header, const opendnp3::Group120Var7& error) override final;
+	virtual void OnAuthError(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const opendnp3::Group120Var7& error) override final;
 
 	
 	MSState msstate;

@@ -33,8 +33,8 @@ class IAuthResponseReceiver
 {
 	public:
 
-		virtual void OnAuthChallenge(const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge) = 0;
-		virtual void OnAuthError(const opendnp3::APDUHeader& header, const opendnp3::Group120Var7& error) = 0;
+		virtual void OnAuthChallenge(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge) = 0;
+		virtual void OnAuthError(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const opendnp3::Group120Var7& error) = 0;
 		
 };
 

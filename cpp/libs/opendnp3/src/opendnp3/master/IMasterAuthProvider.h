@@ -60,7 +60,7 @@ public:
 	/**
 	* Handle an APDU
 	*/
-	virtual void OnReceive(const APDUResponseHeader& header, const openpal::ReadBufferView& objects) = 0;
+	virtual void OnReceive(const openpal::ReadBufferView& apdu, const APDUResponseHeader& header, const openpal::ReadBufferView& objects) = 0;
 
 
 	/**

@@ -62,12 +62,12 @@ void MasterAuthProvider::GoOffline()
 	// TODO reset the sessions?
 }
 
-void MasterAuthProvider::OnReceive(const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+void MasterAuthProvider::OnReceive(const openpal::ReadBufferView& apdu, const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects)
 {	
 	switch (header.function)
 	{
 	case(FunctionCode::AUTH_RESPONSE) :
-		this->OnReceiveAuthResponse(header, objects);
+		this->OnReceiveAuthResponse(apdu, header, objects);
 		break;
 	case(FunctionCode::RESPONSE) :
 		pMState->ProcessResponse(header, objects);
@@ -86,7 +86,7 @@ void MasterAuthProvider::RecordLastRequest(const openpal::ReadBufferView& apdu)
 	this->lastRequest = apdu;
 }
 
-void MasterAuthProvider::OnReceiveAuthResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+void MasterAuthProvider::OnReceiveAuthResponse(const openpal::ReadBufferView& apdu, const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects)
 {
 	// need to determine the context of the auth response
 	
@@ -99,7 +99,7 @@ void MasterAuthProvider::OnReceiveAuthResponse(const opendnp3::APDUResponseHeade
 		}
 		else
 		{
-			AuthResponseHandler handler(header, *this);
+			AuthResponseHandler handler(apdu, header, *this);
 			APDUParser::Parse(objects, handler, pMState->logger);
 		}		
 	}
@@ -110,7 +110,7 @@ void MasterAuthProvider::OnReceiveAuthResponse(const opendnp3::APDUResponseHeade
 
 }
 
-void  MasterAuthProvider::OnAuthChallenge(const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge)
+void  MasterAuthProvider::OnAuthChallenge(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge)
 {
 	if (pMState->isSending)
 	{
@@ -141,7 +141,7 @@ void  MasterAuthProvider::OnAuthChallenge(const opendnp3::APDUHeader& header, co
 
 	HMACProvider hmacProvider(*msstate.pCrypto, hmacMode);
 
-	auto hmacValue = hmacProvider.Compute(keys.controlKey, { lastRequest, challenge.challengeData });
+	auto hmacValue = hmacProvider.Compute(keys.controlKey, { apdu, lastRequest });
 
 	if (hmacValue.IsEmpty())
 	{
@@ -168,7 +168,7 @@ void  MasterAuthProvider::OnAuthChallenge(const opendnp3::APDUHeader& header, co
 	pMState->Transmit(reply.ToReadOnly());
 }
 
-void  MasterAuthProvider::OnAuthError(const opendnp3::APDUHeader& header, const opendnp3::Group120Var7& error)
+void  MasterAuthProvider::OnAuthError(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const opendnp3::Group120Var7& error)
 {
 	FORMAT_LOG_BLOCK(pMState->logger, flags::WARN,
 		"Received auth error from outstation w/ code: %s",
