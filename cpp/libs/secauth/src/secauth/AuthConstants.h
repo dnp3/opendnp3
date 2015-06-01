@@ -51,7 +51,11 @@ public:
 
 	// the maximum size of an outstation challenge response
 	// 4 bytes header + 6 bytes obj header  = 10	
-	const static uint32_t MAX_CHALLENGE_RESPONSE_FRAGMENT_SIZE = 10 + opendnp3::Group120Var1::MIN_SIZE + MAX_CHALLENGE_DATA_SIZE;
+	const static uint32_t MAX_OUTSTATION_CHALLENGE_RESPONSE_FRAGMENT_SIZE = 10 + opendnp3::Group120Var1::MIN_SIZE + MAX_CHALLENGE_DATA_SIZE;
+
+	// the maximum size of a master challenge reply
+	// 2 bytes header + 6 bytes obj header = 8
+	const static uint32_t MAX_MASTER_CHALLENGE_REPLY_FRAG_SIZE = 8 + opendnp3::Group120Var2::MIN_SIZE + MAX_HMAC_TRUNC_SIZE;
 
 #define MACRO_MAX_KEY_WRAP_BUFFER (2 + 2 * AuthConstants::MAX_SESSION_KEY_SIZE_BYTES + opendnp3::Group120Var5::MIN_SIZE + AuthConstants::MAX_CHALLENGE_DATA_SIZE)
 #define MACRO_MAX_KEY_WRAP_BUFFER_MOD8 (MACRO_MAX_KEY_WRAP_BUFFER % 8)	
@@ -70,7 +74,7 @@ public:
 
 	static bool ChallengeDataSizeWithinLimits(uint32_t size)
 	{
-		return openpal::WithinLimits(size, MIN_CHALLENGE_DATA_SIZE, MIN_CHALLENGE_DATA_SIZE);
+		return openpal::WithinLimits(size, MIN_CHALLENGE_DATA_SIZE, MAX_CHALLENGE_DATA_SIZE);
 	}
 
 	static uint32_t GetBoundedChallengeSize(uint32_t size)

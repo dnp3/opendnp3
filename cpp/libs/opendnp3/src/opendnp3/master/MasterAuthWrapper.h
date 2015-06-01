@@ -47,6 +47,8 @@ class MasterAuthWrapper : private openpal::Uncopyable
 
 	void OnReceive(MState& mstate, const APDUResponseHeader& header, const openpal::ReadBufferView& objects);
 
+	void RecordLastRequest(const openpal::ReadBufferView& asdu);
+
 	private:
 
 	IMasterAuthProvider* pProvider;

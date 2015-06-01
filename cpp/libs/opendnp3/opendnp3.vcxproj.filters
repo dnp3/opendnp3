@@ -777,9 +777,6 @@
     <ClInclude Include="src\opendnp3\outstation\OutstationFunctions.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\TxBuffer.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\app\Functions.h">
       <Filter>Header\app</Filter>
     </ClInclude>
@@ -917,6 +914,9 @@
     </ClInclude>
     <ClInclude Include="src\opendnp3\app\parsing\IWhiteList.h">
       <Filter>Header\app\parsing</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\app\TxBuffer.h">
+      <Filter>Header\app</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

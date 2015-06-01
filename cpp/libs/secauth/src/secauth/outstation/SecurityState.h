@@ -22,7 +22,7 @@
 #define SECAUTH_SECURITYSTATE_H
 
 #include <opendnp3/gen/KeyStatus.h>
-#include <opendnp3/outstation/TxBuffer.h>
+#include <opendnp3/app/TxBuffer.h>
 #include <opendnp3/outstation/OutstationState.h>
 
 #include <openpal/executor/IExecutor.h>

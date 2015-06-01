@@ -79,6 +79,7 @@
     <ClInclude Include="src\opendnp3\app\SecurityStat.h" />
     <ClInclude Include="src\opendnp3\app\SequenceInfo.h" />
     <ClInclude Include="src\opendnp3\app\TimeAndInterval.h" />
+    <ClInclude Include="src\opendnp3\app\TxBuffer.h" />
     <ClInclude Include="src\opendnp3\app\WriteConversions.h" />
     <ClInclude Include="src\opendnp3\app\WriteConversionTemplates.h" />
     <ClInclude Include="src\opendnp3\ErrorCodes.h" />
@@ -273,7 +274,6 @@
     <ClInclude Include="src\opendnp3\outstation\StaticBuffers.h" />
     <ClInclude Include="src\opendnp3\outstation\StaticLoadFunctions.h" />
     <ClInclude Include="src\opendnp3\outstation\StaticTypeBitfield.h" />
-    <ClInclude Include="src\opendnp3\outstation\TxBuffer.h" />
     <ClInclude Include="src\opendnp3\outstation\ValueMetadataPair.h" />
     <ClInclude Include="src\opendnp3\outstation\WriteHandler.h" />
     <ClInclude Include="src\opendnp3\Route.h" />

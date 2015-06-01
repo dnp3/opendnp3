@@ -117,6 +117,7 @@ namespace opendnp3
 
 		void ProcessUnsolicitedResponse(const APDUResponseHeader& header, const openpal::ReadBufferView& objects);
 
+		void Transmit(const openpal::ReadBufferView& data);
 
 	private:
 
@@ -126,7 +127,7 @@ namespace opendnp3
 							
 		void OnResponseTimeout();		
 
-		void Transmit(const openpal::ReadBufferView& data);
+		
 	};
 
 }

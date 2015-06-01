@@ -66,7 +66,13 @@ namespace secauth
 	void SessionStore::SetSessionKeys(const User& user, const SessionKeysView& view)
 	{
 		auto iter = sessionMap.find(user.GetId());
-		if (iter != sessionMap.end())
+		if (iter == sessionMap.end())
+		{
+			std::unique_ptr<Session> newSession = std::unique_ptr<Session>(new Session());			
+			this->ConfigureSession(*newSession, view);
+			sessionMap[user.GetId()] = std::move(newSession);
+		}
+		else
 		{
 			this->ConfigureSession(*iter->second, view);
 		}		

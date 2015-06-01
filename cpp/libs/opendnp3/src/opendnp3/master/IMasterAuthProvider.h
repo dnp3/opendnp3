@@ -63,6 +63,12 @@ public:
 	virtual void OnReceive(const APDUResponseHeader& header, const openpal::ReadBufferView& objects) = 0;
 
 
+	/**
+	*  Record a view of the last request made
+	*/
+	virtual void RecordLastRequest(const openpal::ReadBufferView& asdu) = 0;
+
+
 	virtual ~IMasterAuthProvider() {}
 
 protected:

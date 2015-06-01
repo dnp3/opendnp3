@@ -29,6 +29,9 @@
 #include "secauth/master/AuthResponseHandler.h"
 #include "opendnp3/app/parsing/APDUParser.h"
 
+#include "secauth/Crypto.h"
+#include "secauth/HMACProvider.h"
+
 using namespace openpal;
 using namespace opendnp3;
 
@@ -78,6 +81,11 @@ void MasterAuthProvider::OnReceive(const opendnp3::APDUResponseHeader& header, c
 	}	
 }
 
+void MasterAuthProvider::RecordLastRequest(const openpal::ReadBufferView& apdu)
+{
+	this->lastRequest = apdu;
+}
+
 void MasterAuthProvider::OnReceiveAuthResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects)
 {
 	// need to determine the context of the auth response
@@ -104,8 +112,60 @@ void MasterAuthProvider::OnReceiveAuthResponse(const opendnp3::APDUResponseHeade
 
 void  MasterAuthProvider::OnAuthChallenge(const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge)
 {
-	// TODO - handle an authenticaiton challenge
-	SIMPLE_LOG_BLOCK(pMState->logger, flags::WARN, "Ignoring authentication challenge");
+	if (pMState->isSending)
+	{
+		SIMPLE_LOG_BLOCK(pMState->logger, flags::WARN, "Ignoring authentication challenge while transmitting");
+		return;
+	}
+
+	if (!AuthConstants::ChallengeDataSizeWithinLimits(challenge.Size()))
+	{
+		FORMAT_LOG_BLOCK(pMState->logger, flags::WARN, "Challenge data size outside of limits: %u", challenge.Size());
+		return;
+	}
+
+	// lookup the session keys
+	SessionKeysView keys;
+	if (msstate.sessions.GetSessionKeys(User::Default(), keys) != KeyStatus::OK)
+	{		
+		SIMPLE_LOG_BLOCK(pMState->logger, flags::WARN, "No valid session keys for default user");
+		return;
+	}
+
+	HMACMode hmacMode;
+	if (!Crypto::TryGetHMACMode(challenge.hmacAlgo, hmacMode))
+	{
+		FORMAT_LOG_BLOCK(pMState->logger, flags::WARN, "Outstation requested unsupported HMAC type: %s", HMACTypeToString(challenge.hmacAlgo));
+		return;
+	}	
+
+	HMACProvider hmacProvider(*msstate.pCrypto, hmacMode);
+
+	auto hmacValue = hmacProvider.Compute(keys.controlKey, { lastRequest, challenge.challengeData });
+
+	if (hmacValue.IsEmpty())
+	{
+		SIMPLE_LOG_BLOCK(pMState->logger, flags::ERR, "Unable to calculate HMAC value");
+		return;
+	}
+	
+	
+	Group120Var2 challengeReply;
+	challengeReply.challengeSeqNum = challenge.challengeSeqNum;
+	challengeReply.userNum = User::DEFAULT_ID;
+	challengeReply.hmacValue = hmacValue;
+	
+	APDURequest reply(msstate.challengeReplyBuffer.GetWriteBufferView());
+	reply.SetFunction(FunctionCode::AUTH_REQUEST);
+	reply.SetControl(AppControlField::Request(header.control.SEQ));
+	
+	if (!reply.GetWriter().WriteFreeFormat(challengeReply))
+	{
+		SIMPLE_LOG_BLOCK(pMState->logger, flags::ERR, "Unable to write challenge reply");
+		return;
+	}
+
+	pMState->Transmit(reply.ToReadOnly());
 }
 
 void  MasterAuthProvider::OnAuthError(const opendnp3::APDUHeader& header, const opendnp3::Group120Var7& error)
@@ -114,6 +174,8 @@ void  MasterAuthProvider::OnAuthError(const opendnp3::APDUHeader& header, const 
 		"Received auth error from outstation w/ code: %s",
 		AuthErrorCodeToString(error.errorCode)
 	);		
+
+	// TODO - invalidate the session keys for the user?
 }
 
 }

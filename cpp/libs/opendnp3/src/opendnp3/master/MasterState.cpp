@@ -276,7 +276,9 @@ namespace opendnp3
 			APDURequest request(this->txBuffer.GetWriteBufferView());
 			this->pActiveTask->BuildRequest(request, this->solSeq);
 			this->StartResponseTimer();
-			this->Transmit(request.ToReadOnly());
+			auto apdu = request.ToReadOnly();
+			auth.RecordLastRequest(apdu);
+			this->Transmit(apdu);
 			return true;
 		}
 		else

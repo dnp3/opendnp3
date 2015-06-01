@@ -28,10 +28,13 @@
 #include <openpal/crypto/ICryptoProvider.h>
 #include <openpal/executor/IUTCTimeSource.h>
 #include <openpal/executor/IExecutor.h>
+#include <openpal/container/Buffer.h>
+
 
 #include "secauth/SessionStore.h"
 
 #include "IMasterUserDatabase.h"
+
 
 namespace secauth
 {
@@ -52,6 +55,8 @@ public:
 	openpal::ICryptoProvider*	pCrypto;
 	IMasterUserDatabase*		pUserDB;
 	SessionStore				sessions;
+	openpal::Buffer				challengeReplyBuffer;
+
 };
 
 

@@ -54,6 +54,8 @@ public:
 
 	virtual void OnReceive(const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects) override final;
 
+	virtual void RecordLastRequest(const openpal::ReadBufferView& apdu) override final;
+
 private:
 
 	void OnReceiveAuthResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects);
@@ -67,6 +69,7 @@ private:
 	
 	MSState msstate;
 	SessionKeyTask sessionKeyTask;
+	openpal::ReadBufferView lastRequest;
 
 };
 

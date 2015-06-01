@@ -33,7 +33,8 @@ namespace secauth
 		pTimeSource(&timeSource),
 		pCrypto(&crypto),
 		pUserDB(&userDB),
-		sessions(executor)
+		sessions(executor),
+		challengeReplyBuffer(AuthConstants::MAX_MASTER_CHALLENGE_REPLY_FRAG_SIZE)
 	{}
 
 }

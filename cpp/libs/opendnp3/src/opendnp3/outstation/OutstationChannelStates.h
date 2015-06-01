@@ -24,7 +24,7 @@
 #include "opendnp3/outstation/OutstationSeqNum.h"
 #include "opendnp3/outstation/OutstationSolicitedStates.h"
 #include "opendnp3/outstation/OutstationUnsolicitedStates.h"
-#include "opendnp3/outstation/TxBuffer.h"
+#include "opendnp3/app/TxBuffer.h"
 
 #include <openpal/util/Uncopyable.h>
 

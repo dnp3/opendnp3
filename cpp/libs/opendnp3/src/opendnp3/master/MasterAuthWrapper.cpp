@@ -63,6 +63,14 @@ void MasterAuthWrapper::OnReceive(MState& mstate, const APDUResponseHeader& head
 	}
 }
 
+void MasterAuthWrapper::RecordLastRequest(const openpal::ReadBufferView& asdu)
+{
+	if (pProvider)
+	{
+		pProvider->RecordLastRequest(asdu);
+	}
+}
+
 }
 
 
