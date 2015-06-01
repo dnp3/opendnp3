@@ -125,6 +125,9 @@
     <ClInclude Include="src\secauth\master\IAuthResponseReceiver.h">
       <Filter>Header Files\master</Filter>
     </ClInclude>
+    <ClInclude Include="src\secauth\Session.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\secauth\master\MasterAuthProvider.cpp">
@@ -210,6 +213,9 @@
     </ClCompile>
     <ClCompile Include="src\secauth\master\AuthResponseHandler.cpp">
       <Filter>Source Files\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\secauth\Session.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

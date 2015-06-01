@@ -25,12 +25,7 @@ using namespace opendnp3;
 using namespace openpal;
 
 namespace secauth
-{
-	Session::Session() :		
-		status(KeyStatus::NOT_INIT),
-		authCount(0)
-	{}			
-	
+{				
 	SessionStore::SessionStore(
 			IMonotonicTimeSource& timeSource			
 	) :		
@@ -49,7 +44,7 @@ namespace secauth
 		}
 		else
 		{
-			return this->IncrementAuthCount(*iter->second);
+			return iter->second->IncrementAuthCount();
 		}
 	}
 
@@ -59,7 +54,7 @@ namespace secauth
 		if (iter == sessionMap.end())
 		{
 			// initialize new session info
-			sessionMap[user.GetId()] = std::unique_ptr<Session>(new Session());			
+			sessionMap[user.GetId()] = std::unique_ptr<Session>(new Session(*pTimeSource));			
 		}
 	}
 
@@ -67,14 +62,14 @@ namespace secauth
 	{
 		auto iter = sessionMap.find(user.GetId());
 		if (iter == sessionMap.end())
-		{
-			std::unique_ptr<Session> newSession = std::unique_ptr<Session>(new Session());			
-			this->ConfigureSession(*newSession, view);
-			sessionMap[user.GetId()] = std::move(newSession);
+		{			
+			auto session = std::unique_ptr<Session>(new Session(*pTimeSource));
+			session->SetKeys(view);
+			sessionMap[user.GetId()] = std::move(session);
 		}
 		else
 		{
-			this->ConfigureSession(*iter->second, view);
+			iter->second->SetKeys(view);			
 		}		
 	}
 
@@ -87,13 +82,7 @@ namespace secauth
 		}
 		else
 		{
-			auto status = this->CheckTimeValidity(*iter->second);
-			if (status == KeyStatus::OK)
-			{
-				view = iter->second->keys.GetView();
-			}
-
-			return status;
+			return iter->second->GetKeys(view);			
 		}
 	}
 
@@ -103,49 +92,15 @@ namespace secauth
 		if (iter == sessionMap.end())
 		{			
 			// initialize new session info
-			sessionMap[user.GetId()] = std::unique_ptr<Session>(new Session());
+			sessionMap[user.GetId()] = std::unique_ptr<Session>(new Session(*pTimeSource));
 			return KeyStatus::NOT_INIT;			
 		}
 		else
 		{
-			return this->CheckTimeValidity(*iter->second);						
+			return iter->second->GetKeyStatus();			
 		}
 	}
-
-	void SessionStore::ConfigureSession(Session& session, const SessionKeysView& view)
-	{
-		session.authCount = 0;
-		session.expirationTime = pTimeSource->GetTime().Add(TimeDuration::Minutes(SESSION_KEY_EXP_MINUTES));
-		session.keys.SetKeys(view);		
-		session.status = KeyStatus::OK;
-	}	
-
-	opendnp3::KeyStatus SessionStore::CheckTimeValidity(Session& session)
-	{
-		if (session.status == KeyStatus::OK)
-		{
-			if (session.expirationTime < pTimeSource->GetTime())
-			{
-				session.status = KeyStatus::COMM_FAIL;
-			}
-		}
-
-		return session.status;
-	}
-
-	opendnp3::KeyStatus SessionStore::IncrementAuthCount(Session& session)
-	{
-		if (session.status == KeyStatus::OK)
-		{
-			++session.authCount;
-			if (session.authCount > AUTH_COUNT_MAX)
-			{
-				session.status = KeyStatus::COMM_FAIL;
-			}
-		}
-
-		return session.status;
-	}
+				
 }
 
 

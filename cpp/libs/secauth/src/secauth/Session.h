@@ -18,52 +18,49 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTH_SESSIONSTORE_H
-#define SECAUTH_SESSIONSTORE_H
+#ifndef SECAUTH_SESSION_H
+#define SECAUTH_SESSION_H
 
 #include "secauth/SessionKeys.h"
-#include "secauth/User.h"
-#include "secauth/Session.h"
-
 
 #include <opendnp3/gen/KeyStatus.h>
-#include <openpal/executor/IMonotonicTimeSource.h>
-
-#include <map>
-#include <memory>
+#include <openpal/executor/IMonotonicTimesource.h>
 
 namespace secauth
 {
-
-	/// Stores session key info for all users
-	class SessionStore : private openpal::Uncopyable
+	// All the info for a session
+	class Session
 	{
 		public:
 
-		SessionStore(			
-			openpal::IMonotonicTimeSource& timeSource			
-		);
+		// construct an uninitialized session
+		Session(openpal::IMonotonicTimeSource& timeSource);			
 
-		void DefineUser(const User& user);
+		void Session::SetKeys(const SessionKeysView& view);
 
-		void SetSessionKeys(const User& user, const SessionKeysView& view);
+		opendnp3::KeyStatus GetKeyStatus();
 
-		// Session keys are only set if KeyStatus == OK
-		opendnp3::KeyStatus GetSessionKeys(const User& user, SessionKeysView& view);
+		opendnp3::KeyStatus GetKeys(SessionKeysView& view);
 		
-		// Retrieves the session key status for a user. Creates a new session if no info exists.
-		opendnp3::KeyStatus GetSessionKeyStatus(const User& user);
+		opendnp3::KeyStatus IncrementAuthCount();
 
-		// Increments the auth count for the specified users session keys
-		// this may invalidate the session keys
-		opendnp3::KeyStatus IncrementAuthCount(const User& user);
+		private:
 
-		private:		
-				
+		opendnp3::KeyStatus CheckTimeValidity();
+
+		// TODO - make these configurable and change them
+		static const uint32_t AUTH_COUNT_MAX = 100;
+		static const uint8_t SESSION_KEY_EXP_MINUTES = 10;
+
 		openpal::IMonotonicTimeSource* pTimeSource;
+		
 
-		std::map<uint16_t, std::unique_ptr<Session>> sessionMap;
+		opendnp3::KeyStatus status;
+		SessionKeys keys;
+		openpal::MonotonicTimestamp expirationTime;
+		uint32_t authCount;						
 	};
+
 }
 
 #endif
