@@ -126,9 +126,9 @@ void  MasterAuthProvider::OnAuthChallenge(const openpal::ReadBufferView& apdu, c
 
 	// lookup the session keys
 	SessionKeysView keys;
-	if (msstate.sessions.GetSessionKeys(User::Default(), keys) != KeyStatus::OK)
+	if (msstate.session.GetKeys(keys) != KeyStatus::OK)
 	{		
-		SIMPLE_LOG_BLOCK(pMState->logger, flags::WARN, "No valid session keys for default user");
+		SIMPLE_LOG_BLOCK(pMState->logger, flags::WARN, "Session for default user is not valid");
 		return;
 	}
 

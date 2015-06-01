@@ -54,7 +54,7 @@ public:
 	openpal::IUTCTimeSource*	pTimeSource;
 	openpal::ICryptoProvider*	pCrypto;
 	IMasterUserDatabase*		pUserDB;
-	SessionStore				sessions;
+	Session						session;
 	openpal::Buffer				challengeReplyBuffer;
 
 };

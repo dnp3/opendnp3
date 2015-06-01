@@ -237,7 +237,7 @@ IMasterTask::ResponseResult SessionKeyTask::OnChangeResponse(const APDUResponseH
 	}
 
 	// Set the session keys and return!
-	pmsstate->sessions.SetSessionKeys(user, keys.GetView());
+	pmsstate->session.SetKeys(keys.GetView());
 
 	return ResponseResult::OK_FINAL;
 }
