@@ -41,7 +41,7 @@
 #include <secauth/outstation/OutstationAuthSettings.h>
 #include <secauth/outstation/IOutstationUserDatabase.h>
 
-#include <secauth/master/IMasterUserDatabase.h>
+#include <secauth/master/IMasterUser.h>
 
 #include "IMaster.h"
 #include "IOutstation.h"
@@ -109,7 +109,7 @@ public:
 									opendnp3::ISOEHandler& SOEHandler,
 									opendnp3::IMasterApplication& application,
 									const opendnp3::MasterStackConfig& config,
-									secauth::IMasterUserDatabase& userDB,
+									secauth::IMasterUser& user,
 									openpal::ICryptoProvider& crypto) = 0;
 
 	/**

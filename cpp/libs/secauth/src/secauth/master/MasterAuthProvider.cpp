@@ -43,9 +43,9 @@ MasterAuthProvider::MasterAuthProvider(
 	openpal::IExecutor& executor,
 	openpal::Logger logger,
 	openpal::ICryptoProvider& crypto,
-	IMasterUserDatabase& userDB
+	IMasterUser& user
 	) : 
-	msstate(application, executor, crypto, userDB),
+	msstate(application, executor, crypto, user),
 	sessionKeyTask(application, TimeDuration::Seconds(5), logger, User::Default(), msstate)
 {
 

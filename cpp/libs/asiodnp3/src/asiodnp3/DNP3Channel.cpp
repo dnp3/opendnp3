@@ -151,12 +151,12 @@ IMaster* DNP3Channel::AddMaster(	char const* id,
 									opendnp3::ISOEHandler& SOEHandler,
 									opendnp3::IMasterApplication& application,
 									const opendnp3::MasterStackConfig& config,
-									secauth::IMasterUserDatabase& userDB,
+									secauth::IMasterUser& user,
 									openpal::ICryptoProvider& crypto)
 {
 	auto add = [&]()
 	{
-		return this->_AddMaster(id, SOEHandler, application, config, userDB, crypto);
+		return this->_AddMaster(id, SOEHandler, application, config, user, crypto);
 	};
 	return asiopal::SynchronouslyGet<IMaster*>(pExecutor->strand, add);
 }
@@ -219,7 +219,7 @@ IMaster* DNP3Channel::_AddMaster(char const* id,
 	opendnp3::ISOEHandler& SOEHandler,
 	opendnp3::IMasterApplication& application,
 	const opendnp3::MasterStackConfig& config,
-	secauth::IMasterUserDatabase& userDB,
+	secauth::IMasterUser& user,
 	openpal::ICryptoProvider& crypto)
 {
 	Route route(config.link.RemoteAddr, config.link.LocalAddr);
@@ -231,7 +231,7 @@ IMaster* DNP3Channel::_AddMaster(char const* id,
 	else
 	{
 		StackActionHandler handler(router, *pExecutor);
-		auto pMaster = new MasterAuthStack(id, *pLogRoot, *pExecutor, SOEHandler, application, config, handler, taskLock, userDB, crypto);
+		auto pMaster = new MasterAuthStack(id, *pLogRoot, *pExecutor, SOEHandler, application, config, handler, taskLock, user, crypto);
 		auto onShutdown = [this, pMaster](){ this->OnShutdown(pMaster); };
 		pMaster->SetShutdownAction(Action0::Bind(onShutdown));
 		pMaster->SetLinkRouter(router);

@@ -170,14 +170,9 @@ IMasterTask::ResponseResult SessionKeyTask::OnStatusResponse(const APDUResponseH
 		return ResponseResult::ERROR_BAD_RESPONSE; // TODO - add a different return code or is this good enough?
 	}
 
-	// try to get the users update key
+	// get the users update key
 	openpal::ReadBufferView updateKey;
-	UpdateKeyMode updateKeyMode;
-	if (!this->pmsstate->pUserDB->GetUpdateKey(this->user, updateKeyMode, updateKey))
-	{
-		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Unable to acquired update key");
-		return ResponseResult::ERROR_BAD_RESPONSE;
-	}
+	UpdateKeyMode updateKeyMode = this->pmsstate->pUser->GetUpdateKey(updateKey);
 
 	if (!Crypto::KeyLengthMatchesRequestedAlgorithm(status.keyWrapAlgo, updateKey.Size()))
 	{

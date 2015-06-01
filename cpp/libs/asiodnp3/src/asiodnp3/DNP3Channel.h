@@ -90,7 +90,7 @@ public:
 								opendnp3::ISOEHandler& SOEHandler,
 								opendnp3::IMasterApplication& application,
 								const opendnp3::MasterStackConfig& config,
-								secauth::IMasterUserDatabase& userDB,
+								secauth::IMasterUser& user,
 								openpal::ICryptoProvider& crypto) override final;
 
 	virtual IOutstation* AddOutstation(char const* id,
@@ -122,7 +122,7 @@ private:
 		opendnp3::ISOEHandler& SOEHandler,
 		opendnp3::IMasterApplication& application,
 		const opendnp3::MasterStackConfig& config,
-		secauth::IMasterUserDatabase& userDB,
+		secauth::IMasterUser& user,
 		openpal::ICryptoProvider& crypto);
 
 	IOutstation* _AddOutstation(char const* id,

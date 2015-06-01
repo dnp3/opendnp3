@@ -42,7 +42,7 @@ public:
 		openpal::IExecutor& executor,
 		openpal::Logger logger,		
 		openpal::ICryptoProvider& crypto,
-		IMasterUserDatabase& userDB
+		IMasterUser& user
 	);
 
 

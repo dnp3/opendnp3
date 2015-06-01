@@ -18,10 +18,10 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTH_SIMPLEMASTERUSERDATABASE_H
-#define SECAUTH_SIMPLEMASTERUSERDATABASE_H
+#ifndef SECAUTH_SIMPLEMASTERUSER_H
+#define SECAUTH_SIMPLEMASTERUSER_H
 
-#include "IMasterUserDatabase.h"
+#include "IMasterUser.h"
 
 #include <openpal/container/Buffer.h>
 
@@ -34,22 +34,33 @@ namespace secauth
 /** 
 	A very simple update key store for the default user
 */
-class SimpleMasterUserDatabase : public IMasterUserDatabase
+class SimpleMasterUser : public IMasterUser
 {
-	public:			
+	public:		
+
+		SimpleMasterUser() : updateKeyMode(UpdateKeyMode::AES128), buffer(32)
+		{
+			buffer.GetWriteBufferView().SetAllTo(0xFF);
+			this->updateKey = buffer.ToReadOnly().Take(16);
+		}
+
+		virtual UpdateKeyMode GetUpdateKey(openpal::ReadBufferView& key) const override final
+		{
+			key;
+			return updateKeyMode;
+		}
 		
-		virtual bool GetUpdateKey(const User& user, UpdateKeyMode& type, openpal::ReadBufferView& key) const override final;
-
-		virtual bool GetUpdateKeyType(const User& user, UpdateKeyMode& type) const override final;	
-
-		virtual bool UserExists(const User& user) const override final;		
-
-		void ConfigureUser(const User& user, UpdateKeyMode type, const openpal::ReadBufferView& key);
+		void SetUpdateKey(const openpal::ReadBufferView& key, UpdateKeyMode mode)
+		{
+			this->updateKeyMode = mode;
+			this->updateKey = key.CopyTo(buffer.GetWriteBufferView());
+		}
 
 	private:
 
-		typedef std::pair<UpdateKeyMode, std::unique_ptr<openpal::Buffer>> StoredUserData;
-		std::map<uint16_t, StoredUserData> userMap;
+		UpdateKeyMode updateKeyMode;
+		openpal::ReadBufferView updateKey;
+		openpal::Buffer buffer;		
 };
 
 }

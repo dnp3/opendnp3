@@ -24,7 +24,7 @@
 #include "MasterStackImpl.h"
 
 #include <secauth/master/MasterAuthProvider.h>
-#include <secauth/master/IMasterUserDatabase.h>
+#include <secauth/master/IMasterUser.h>
 
 #include <openpal/crypto/ICryptoProvider.h>
 
@@ -44,7 +44,7 @@ public:
 		const opendnp3::MasterStackConfig& config,
 		const StackActionHandler& handler,
 		opendnp3::ITaskLock& taskLock,
-		secauth::IMasterUserDatabase& userDB,
+		secauth::IMasterUser& user,
 		openpal::ICryptoProvider& crypto
 	);	
 

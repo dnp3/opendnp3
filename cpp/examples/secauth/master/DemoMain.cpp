@@ -32,7 +32,7 @@
 #include <opendnp3/app/ControlRelayOutputBlock.h>
 
 #include <osslcrypto/CryptoProvider.h>
-#include <secauth/master/SimpleMasterUserDatabase.h>
+#include <secauth/master/SimpleMasterUser.h>
 
 using namespace std;
 using namespace openpal;
@@ -41,16 +41,12 @@ using namespace asiodnp3;
 using namespace opendnp3;
 using namespace secauth;
 
-void AddDefaultUser(secauth::SimpleMasterUserDatabase& db)
+void AddDefaultUser(secauth::SimpleMasterUser& user)
 {
 	// add a 128-bit demo key of all 0xFF
 	openpal::StaticBuffer<16> key;
 	key.GetWriteBuffer().SetAllTo(0xFF);
-	db.ConfigureUser(
-		secauth::User::Default(),
-		secauth::UpdateKeyMode::AES128,
-		key.ToReadOnly()
-		);
+	user.SetUpdateKey(key.ToReadOnly(), secauth::UpdateKeyMode::AES128);
 }
 
 int main(int argc, char* argv[])
@@ -58,10 +54,9 @@ int main(int argc, char* argv[])
 	// The cryptography provider we'll use 
 	osslcrypto::CryptoProvider crypto;
 
-	// The user database for master user
-	SimpleMasterUserDatabase userDB;
-
-	AddDefaultUser(userDB);
+	// The user interface for the master
+	SimpleMasterUser user;
+	AddDefaultUser(user);
 
 	// Specify what log levels to use. NORMAL is warning and above
 	// You can add all the comms logging by uncommenting below
@@ -105,7 +100,7 @@ int main(int argc, char* argv[])
 	                   PrintingSOEHandler::Instance(),					// callback for data processing                
 					   asiodnp3::DefaultMasterApplication::Instance(),	// master application instance
 	                   stackConfig,										// stack configuration
-					   userDB,
+					   user,
 					   crypto
 	               );
 	

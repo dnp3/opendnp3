@@ -19,8 +19,8 @@
  * to you under the terms of the License.
  */
 
-#ifndef SECAUTH_IMASTERUSERDATABASE_H
-#define SECAUTH_IMASTERUSERDATABASE_H
+#ifndef SECAUTH_IMASTERUSER_H
+#define SECAUTH_IMASTERUSER_H
 
 #include "secauth/User.h"
 #include "secauth/UpdateKeyMode.h"
@@ -36,15 +36,11 @@ namespace secauth
 	This interface may be given out to multiple master instances on multiple threads, 
 	and therefore should be thread-safe.
 */
-class IMasterUserDatabase
+class IMasterUser
 {
-	public:		
-
-		virtual bool GetUpdateKeyType(const User& user, UpdateKeyMode& type) const = 0;		
+	public:				
 		
-		virtual bool GetUpdateKey(const User& user, UpdateKeyMode& type, openpal::ReadBufferView& key) const = 0;
-
-		virtual bool UserExists(const User& user) const = 0;
+		virtual UpdateKeyMode GetUpdateKey(openpal::ReadBufferView& key) const = 0;		
 };
 
 }

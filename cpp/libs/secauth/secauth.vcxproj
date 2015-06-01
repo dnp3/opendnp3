@@ -28,13 +28,13 @@
     <ClInclude Include="src\secauth\HMACProvider.h" />
     <ClInclude Include="src\secauth\master\AuthResponseHandler.h" />
     <ClInclude Include="src\secauth\master\IAuthResponseReceiver.h" />
-    <ClInclude Include="src\secauth\master\IMasterUserDatabase.h" />
+    <ClInclude Include="src\secauth\master\IMasterUser.h" />
     <ClInclude Include="src\secauth\master\KeyStatusHandler.h" />
     <ClInclude Include="src\secauth\master\KeyWrap.h" />
     <ClInclude Include="src\secauth\master\MasterAuthProvider.h" />
     <ClInclude Include="src\secauth\master\MasterSecurityState.h" />
     <ClInclude Include="src\secauth\master\SessionKeyTask.h" />
-    <ClInclude Include="src\secauth\master\SimpleMasterUserDatabase.h" />
+    <ClInclude Include="src\secauth\master\SimpleMasterUser.h" />
     <ClInclude Include="src\secauth\outstation\AuthRequestHandler.h" />
     <ClInclude Include="src\secauth\outstation\ChallengeState.h" />
     <ClInclude Include="src\secauth\outstation\IAuthRequestHandler.h" />
@@ -68,7 +68,6 @@
     <ClCompile Include="src\secauth\master\MasterAuthProvider.cpp" />
     <ClCompile Include="src\secauth\master\MasterSecurityState.cpp" />
     <ClCompile Include="src\secauth\master\SessionKeyTask.cpp" />
-    <ClCompile Include="src\secauth\master\SimpleMasterUserDatabase.cpp" />
     <ClCompile Include="src\secauth\outstation\AuthRequestHandler.cpp" />
     <ClCompile Include="src\secauth\outstation\ChallengeState.cpp" />
     <ClCompile Include="src\secauth\outstation\IOAuthState.cpp" />

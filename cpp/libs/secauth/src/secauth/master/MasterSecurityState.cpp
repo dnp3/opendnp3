@@ -28,11 +28,11 @@ namespace secauth
 			openpal::IUTCTimeSource& timeSource,
 			openpal::IExecutor& executor,
 			openpal::ICryptoProvider& crypto,		
-			IMasterUserDatabase& userDB
+			IMasterUser& user
 		) :
 		pTimeSource(&timeSource),
 		pCrypto(&crypto),
-		pUserDB(&userDB),
+		pUser(&user),
 		session(executor),
 		challengeReplyBuffer(AuthConstants::MAX_MASTER_CHALLENGE_REPLY_FRAG_SIZE)
 	{}

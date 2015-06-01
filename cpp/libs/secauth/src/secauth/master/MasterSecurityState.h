@@ -33,7 +33,7 @@
 
 #include "secauth/SessionStore.h"
 
-#include "IMasterUserDatabase.h"
+#include "IMasterUser.h"
 
 
 namespace secauth
@@ -48,12 +48,12 @@ public:
 		openpal::IUTCTimeSource& timeSource,
 		openpal::IExecutor& executor,
 		openpal::ICryptoProvider& crypto,
-		IMasterUserDatabase& userDB
+		IMasterUser& masterUser
 	);
 
 	openpal::IUTCTimeSource*	pTimeSource;
 	openpal::ICryptoProvider*	pCrypto;
-	IMasterUserDatabase*		pUserDB;
+	IMasterUser*				pUser;
 	Session						session;
 	openpal::Buffer				challengeReplyBuffer;
 

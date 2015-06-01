@@ -35,11 +35,11 @@ namespace asiodnp3
 		const opendnp3::MasterStackConfig& config,
 		const StackActionHandler& handler,
 		opendnp3::ITaskLock& taskLock,
-		secauth::IMasterUserDatabase& userDB,
+		secauth::IMasterUser& user,
 		openpal::ICryptoProvider& crypto
 		) :
 		MasterStackImpl(id, root_, executor, SOEHandler, application, config, handler, taskLock),
-		auth(application, executor, root.GetLogger(), crypto, userDB)
+		auth(application, executor, root.GetLogger(), crypto, user)
 	{
 		this->master.SetAuthProvider(auth);
 	}
