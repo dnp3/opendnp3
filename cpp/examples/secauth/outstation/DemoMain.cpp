@@ -110,6 +110,9 @@ int main(int argc, char* argv[])
 
 	// configure the authentication settings based on the outstation settings (buffer sizes, etc)
 	secauth::OutstationAuthSettings authSettings(config.outstation.params);
+
+	// don't challenge confirms, as the master can't authenticate these yet
+	authSettings.functions.authConfirm = false;
 	
 	// Create a new outstation with a log level, command handler, and
 	// config info this	returns a thread-safe interface used for
