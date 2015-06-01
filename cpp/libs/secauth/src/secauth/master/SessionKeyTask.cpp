@@ -52,7 +52,7 @@ SessionKeyTask::SessionKeyTask(	opendnp3::IMasterApplication& application,
 							pmsstate(&msstate),
 							keyChangeSeqNum(0)
 {
-	
+
 }
 
 void SessionKeyTask::BuildRequest(opendnp3::APDURequest& request, uint8_t seq)
@@ -122,7 +122,7 @@ void SessionKeyTask::BuildSessionKeyRequest(opendnp3::APDURequest& request, uint
 	sessionKeyChange.keyChangeSeqNum = this->keyChangeSeqNum;
 	sessionKeyChange.userNum = user.GetId();
 	sessionKeyChange.keyWrapData = this->keyWrapBuffer.GetWrappedData();
-	
+
 	request.GetWriter().WriteFreeFormat(sessionKeyChange);
 
 	// save a view of what we're transmitting as we'll need it to validate the HMAC
@@ -139,7 +139,7 @@ IMasterTask::ResponseResult SessionKeyTask::OnStatusResponse(const APDUResponseH
 
 	Group120Var5 status;
 	ReadBufferView rawObject;
-	
+
 	if (!handler.GetStatus(status, rawObject))
 	{
 		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Response did not contain a key status object");
@@ -148,7 +148,7 @@ IMasterTask::ResponseResult SessionKeyTask::OnStatusResponse(const APDUResponseH
 
 	// save the KSQ
 	this->keyChangeSeqNum = status.keyChangeSeqNum;
-	
+
 	if (!AuthConstants::ChallengeDataSizeWithinLimits(status.challengeData.Size()))
 	{
 		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Bad challenge data size");
@@ -172,14 +172,14 @@ IMasterTask::ResponseResult SessionKeyTask::OnStatusResponse(const APDUResponseH
 
 	// get the users update key
 	openpal::ReadBufferView updateKey;
-	UpdateKeyMode updateKeyMode = this->pmsstate->pUser->GetUpdateKey(updateKey);
+	this->pmsstate->pUser->GetUpdateKey(updateKey);
 
 	if (!Crypto::KeyLengthMatchesRequestedAlgorithm(status.keyWrapAlgo, updateKey.Size()))
 	{
 		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Update key length does not match outstation KeyWrapAlgorithm");
 		return ResponseResult::ERROR_BAD_RESPONSE;
 	}
-	
+
 	if (!this->keyWrapBuffer.Wrap(*pKeyWrapAlgo, updateKey, this->keys.GetView(), rawObject, this->logger))
 	{
 		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Unable to wrap session keys");

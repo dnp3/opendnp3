@@ -31,12 +31,12 @@
 namespace secauth
 {
 
-/** 
+/**
 	A very simple update key store for the default user
 */
 class SimpleMasterUser : public IMasterUser
 {
-	public:		
+	public:
 
 		SimpleMasterUser() : updateKeyMode(UpdateKeyMode::AES128), buffer(32)
 		{
@@ -46,21 +46,22 @@ class SimpleMasterUser : public IMasterUser
 
 		virtual UpdateKeyMode GetUpdateKey(openpal::ReadBufferView& key) const override final
 		{
-			key;
+			key = updateKey;
 			return updateKeyMode;
 		}
-		
+
 		void SetUpdateKey(const openpal::ReadBufferView& key, UpdateKeyMode mode)
 		{
 			this->updateKeyMode = mode;
-			this->updateKey = key.CopyTo(buffer.GetWriteBufferView());
+			auto dest = buffer.GetWriteBufferView();
+			this->updateKey = key.CopyTo(dest);
 		}
 
 	private:
 
 		UpdateKeyMode updateKeyMode;
 		openpal::ReadBufferView updateKey;
-		openpal::Buffer buffer;		
+		openpal::Buffer buffer;
 };
 
 }

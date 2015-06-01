@@ -24,7 +24,7 @@
 #include "secauth/SessionKeys.h"
 
 #include <opendnp3/gen/KeyStatus.h>
-#include <openpal/executor/IMonotonicTimesource.h>
+#include <openpal/executor/IMonotonicTimeSource.h>
 
 namespace secauth
 {
@@ -34,14 +34,14 @@ namespace secauth
 		public:
 
 		// construct an uninitialized session
-		Session(openpal::IMonotonicTimeSource& timeSource);			
+		Session(openpal::IMonotonicTimeSource& timeSource);
 
-		void Session::SetKeys(const SessionKeysView& view);
+		void SetKeys(const SessionKeysView& view);
 
 		opendnp3::KeyStatus GetKeyStatus();
 
 		opendnp3::KeyStatus GetKeys(SessionKeysView& view);
-		
+
 		opendnp3::KeyStatus IncrementAuthCount();
 
 		private:
@@ -53,12 +53,12 @@ namespace secauth
 		static const uint8_t SESSION_KEY_EXP_MINUTES = 10;
 
 		openpal::IMonotonicTimeSource* pTimeSource;
-		
+
 
 		opendnp3::KeyStatus status;
 		SessionKeys keys;
 		openpal::MonotonicTimestamp expirationTime;
-		uint32_t authCount;						
+		uint32_t authCount;
 	};
 
 }
