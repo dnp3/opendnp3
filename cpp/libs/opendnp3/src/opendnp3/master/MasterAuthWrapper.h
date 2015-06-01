@@ -37,13 +37,13 @@ class MasterAuthWrapper : private openpal::Uncopyable
 
 	MasterAuthWrapper();
 
-	void SetProvider(IMasterAuthProvider& auth);
+	void SetProvider(MState& mstate, IMasterAuthProvider& auth);
 
 	/// ----- mirror of IMasterAuthProvider methods -----	
 
-	void GoOnline(MState& mstate);
+	void GoOnline();
 
-	void GoOffline(MState& mstate);	
+	void GoOffline();	
 
 	void OnReceive(MState& mstate, const APDUResponseHeader& header, const openpal::ReadBufferView& objects);
 

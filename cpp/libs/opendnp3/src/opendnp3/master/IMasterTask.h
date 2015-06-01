@@ -63,6 +63,12 @@ public:
 
 	virtual ~IMasterTask();
 
+	/**
+	* 
+	* Overridable for auth tasks
+	*/
+	virtual bool AcceptsFunction(FunctionCode fc) const { return fc == FunctionCode::RESPONSE; }
+
 	/**	
 	*
 	* @return	the name of the task

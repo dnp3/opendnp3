@@ -18,60 +18,27 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_IMASTERAUTHPROVIDER_H
-#define OPENDNP3_IMASTERAUTHPROVIDER_H
+#ifndef SECAUTH_IAUTHRESPONSERECEIVER_H
+#define SECAUTH_IAUTHRESPONSERECEIVER_H
 
-#include <openpal/container/ManagedPtr.h>
+#include <opendnp3/app/APDUHeader.h>
+#include <opendnp3/master/MasterState.h>
+#include <opendnp3/objects/Group120.h>
 
-#include "opendnp3/app/APDUHeader.h"
-#include "opendnp3/master/IMasterTask.h"
-
-namespace opendnp3
+namespace secauth
 {
 
-class MState;
+// handles auth response types
+class IAuthResponseReceiver
+{
+	public:
 
-/**
-* @desc Interface for an arbitrary master authentication provider
-*/
-class IMasterAuthProvider
-{	
-
-public:	
-
-	IMasterAuthProvider() : pMState(nullptr)
-	{}
-
-	void SetMasterState(MState& mstate)
-	{
-		pMState = &mstate;
-	}
-
-	/**
-	* Lifecycle callback invoked when the master comes online
-	*/
-	virtual void GoOnline() = 0;
-
-	/**
-	* Lifecycle callback invoked when the master goes offline
-	*/
-	virtual void GoOffline() = 0;	
-
-	/**
-	* Handle an APDU
-	*/
-	virtual void OnReceive(const APDUResponseHeader& header, const openpal::ReadBufferView& objects) = 0;
-
-
-	virtual ~IMasterAuthProvider() {}
-
-protected:
-
-	MState* pMState;
-
+		virtual void OnAuthChallenge(const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge) = 0;
+		virtual void OnAuthError(const opendnp3::APDUHeader& header, const opendnp3::Group120Var7& error) = 0;
+		
 };
-
 
 }
 
 #endif
+

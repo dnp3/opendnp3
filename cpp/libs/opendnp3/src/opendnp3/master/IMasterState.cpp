@@ -105,26 +105,35 @@ IMasterState* MasterStateTaskReady::OnStart(MState& mstate)
 
 MasterStateWaitForResponse MasterStateWaitForResponse::instance;
 
-IMasterState* MasterStateWaitForResponse::OnResponse(MState& mstate, const APDUResponseHeader& response, const openpal::ReadBufferView& objects)
+IMasterState* MasterStateWaitForResponse::OnResponse(MState& mstate, const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
 {
-	if (response.control.SEQ != mstate.solSeq)
+	if (header.control.SEQ != mstate.solSeq)
 	{
-		FORMAT_LOG_BLOCK(mstate.logger, flags::WARN, "Response with bad sequence: %u", response.control.SEQ);
+		FORMAT_LOG_BLOCK(mstate.logger, flags::WARN, "Response with bad sequence: %u", header.control.SEQ);
 		return this;
 	}
 
+	if (!mstate.pActiveTask->AcceptsFunction(header.function))
+	{
+		FORMAT_LOG_BLOCK(mstate.logger, flags::WARN,
+			"Task %s does not accept function code in responses: %s",
+			mstate.pActiveTask->Name(),
+			FunctionCodeToString(header.function));
 
+		return this;
+	}
+	
 	mstate.responseTimer.Cancel();
 
 	mstate.solSeq.Increment();
 
 	auto now = mstate.pExecutor->GetTime();
 		
-	auto result = mstate.pActiveTask->OnResponse(response, objects, now);
+	auto result = mstate.pActiveTask->OnResponse(header, objects, now);
 
-	if (response.control.CON)
+	if (header.control.CON)
 	{
-		mstate.QueueConfirm(APDUHeader::SolicitedConfirm(response.control.SEQ));
+		mstate.QueueConfirm(APDUHeader::SolicitedConfirm(header.control.SEQ));
 	}
 
 	switch (result)

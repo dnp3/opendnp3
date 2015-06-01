@@ -41,6 +41,8 @@ class IMasterState : private openpal::Uncopyable
 	virtual IMasterState* OnResponse(MState& mstate, const APDUResponseHeader& response, const openpal::ReadBufferView& objects);
 
 	virtual IMasterState* OnResponseTimeout(MState& mstate);
+
+	virtual bool ExpectingResponse() const { return false; }
 };
 
 class MasterStateIdle : public IMasterState
@@ -83,7 +85,9 @@ public:
 
 	virtual IMasterState* OnResponse(MState& mstate, const APDUResponseHeader& response, const openpal::ReadBufferView& objects) override final;
 
-	virtual IMasterState* OnResponseTimeout(MState& mstate)  override final;
+	virtual IMasterState* OnResponseTimeout(MState& mstate)  override final;	
+
+	virtual bool ExpectingResponse() const { return true; }
 
 private:
 

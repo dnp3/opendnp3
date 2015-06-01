@@ -53,6 +53,8 @@ namespace secauth
 						const User& user, 
 						MSState& msstate);
 
+		virtual bool AcceptsFunction(opendnp3::FunctionCode fc) const override final { return fc == opendnp3::FunctionCode::AUTH_RESPONSE; }
+
 		virtual char const* Name() const override final { return "Change Session Keys"; }
 		
 		virtual bool IsRecurring() const override final { return true; }

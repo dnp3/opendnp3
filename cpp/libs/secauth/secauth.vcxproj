@@ -26,6 +26,8 @@
     <ClInclude Include="src\secauth\DeferredASDU.h" />
     <ClInclude Include="src\secauth\HMACMode.h" />
     <ClInclude Include="src\secauth\HMACProvider.h" />
+    <ClInclude Include="src\secauth\master\AuthResponseHandler.h" />
+    <ClInclude Include="src\secauth\master\IAuthResponseReceiver.h" />
     <ClInclude Include="src\secauth\master\IMasterUserDatabase.h" />
     <ClInclude Include="src\secauth\master\KeyStatusHandler.h" />
     <ClInclude Include="src\secauth\master\KeyWrap.h" />
@@ -59,6 +61,7 @@
     <ClCompile Include="src\secauth\DeferredASDU.cpp" />
     <ClCompile Include="src\secauth\HMACMode.cpp" />
     <ClCompile Include="src\secauth\HMACProvider.cpp" />
+    <ClCompile Include="src\secauth\master\AuthResponseHandler.cpp" />
     <ClCompile Include="src\secauth\master\KeyStatusHandler.cpp" />
     <ClCompile Include="src\secauth\master\KeyWrap.cpp" />
     <ClCompile Include="src\secauth\master\MasterAuthProvider.cpp" />

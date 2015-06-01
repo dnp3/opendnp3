@@ -29,24 +29,25 @@ namespace opendnp3
 MasterAuthWrapper::MasterAuthWrapper() : pProvider(nullptr)
 {}
 
-void MasterAuthWrapper::SetProvider(IMasterAuthProvider& auth)
+void MasterAuthWrapper::SetProvider(MState& mstate, IMasterAuthProvider& auth)
 {
 	pProvider = &auth;
+	pProvider->SetMasterState(mstate);
 }
 
-void MasterAuthWrapper::GoOnline(MState& mstate)
+void MasterAuthWrapper::GoOnline()
 {
 	if (pProvider)
 	{
-		pProvider->GoOnline(mstate);
+		pProvider->GoOnline();
 	}
 }
 
-void MasterAuthWrapper::GoOffline(MState& mstate)
+void MasterAuthWrapper::GoOffline()
 {
 	if (pProvider)
 	{
-		pProvider->GoOffline(mstate);
+		pProvider->GoOffline();
 	}
 }
 
@@ -54,7 +55,7 @@ void MasterAuthWrapper::OnReceive(MState& mstate, const APDUResponseHeader& head
 {
 	if (pProvider)
 	{
-		pProvider->OnReceive(mstate, header, objects);
+		pProvider->OnReceive(header, objects);
 	}
 	else
 	{

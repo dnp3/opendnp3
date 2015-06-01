@@ -103,9 +103,9 @@ namespace opendnp3
 
 		void StartResponseTimer();
 
-		void OnReceive(const APDUResponseHeader& response, const openpal::ReadBufferView& objects);
+		void OnReceive(const APDUResponseHeader& header, const openpal::ReadBufferView& objects);
 
-		void ProcessAPDU(const APDUResponseHeader& response, const openpal::ReadBufferView& objects);					
+		void ProcessAPDU(const APDUResponseHeader& header, const openpal::ReadBufferView& objects);
 
 		void CheckForTask();
 
@@ -113,9 +113,9 @@ namespace opendnp3
 
 		void PostCheckForTask();
 
-		void ProcessResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects);
+		void ProcessResponse(const APDUResponseHeader& header, const openpal::ReadBufferView& objects);
 
-		void ProcessUnsolicitedResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects);
+		void ProcessUnsolicitedResponse(const APDUResponseHeader& header, const openpal::ReadBufferView& objects);
 
 
 	private:

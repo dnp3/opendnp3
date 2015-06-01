@@ -47,13 +47,15 @@ public:
 
 	// ------ Implement IMasterAuthProvider ------		
 
-	virtual void GoOnline(opendnp3::MState& mstate) override final;	
+	virtual void GoOnline() override final;	
 
-	virtual void GoOffline(opendnp3::MState& mstate) override final;
+	virtual void GoOffline() override final;
 
-	virtual void OnReceive(opendnp3::MState& mstate, const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects) override final;
+	virtual void OnReceive(const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects) override final;
 
 private:
+
+	void OnReceiveAuthResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects);
 	
 	MSState msstate;
 	SessionKeyTask sessionKeyTask;

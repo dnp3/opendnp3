@@ -21,7 +21,10 @@
 
 #include "MasterAuthProvider.h"
 
+#include <opendnp3/LogLevels.h>
 #include <opendnp3/master/MasterState.h>
+
+#include <openpal/logging/LogMacros.h>
 
 
 using namespace openpal;
@@ -43,27 +46,57 @@ MasterAuthProvider::MasterAuthProvider(
 
 }
 
-void MasterAuthProvider::GoOnline(opendnp3::MState& mstate)
+void MasterAuthProvider::GoOnline()
 {
 	// add the session key task to the scheduler
-	mstate.scheduler.Schedule(openpal::ManagedPtr<IMasterTask>::WrapperOnly(&sessionKeyTask));
+	pMState->scheduler.Schedule(openpal::ManagedPtr<IMasterTask>::WrapperOnly(&sessionKeyTask));
 }
 
-void MasterAuthProvider::GoOffline(opendnp3::MState& mstate)
+void MasterAuthProvider::GoOffline()
 {
 	// TODO reset the sessions?
 }
 
-void MasterAuthProvider::OnReceive(opendnp3::MState& mstate, const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+void MasterAuthProvider::OnReceive(const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects)
 {	
-	if (header.function == FunctionCode::AUTH_RESPONSE)
+	switch (header.function)
 	{
-		mstate.ProcessResponse(header, objects);
+	case(FunctionCode::AUTH_RESPONSE) :
+		this->OnReceiveAuthResponse(header, objects);
+		break;
+	case(FunctionCode::RESPONSE) :
+		pMState->ProcessResponse(header, objects);
+		break;
+	case(FunctionCode::UNSOLICITED_RESPONSE) :
+		pMState->ProcessUnsolicitedResponse(header, objects);
+		break;
+	default:
+		FORMAT_LOG_BLOCK(pMState->logger, opendnp3::flags::WARN, "Ignoring unsupported function code: %s", FunctionCodeToString(header.function));
+		break;
+	}	
+}
+
+void MasterAuthProvider::OnReceiveAuthResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+{
+	// need to determine the context of the auth response
+	
+	if (pMState->pState->ExpectingResponse())
+	{
+		// an auth-based task is running and needs to receive this directly
+		if (pMState->pActiveTask->AcceptsFunction(FunctionCode::AUTH_RESPONSE))
+		{
+			pMState->ProcessResponse(header, objects);
+		}
+		else
+		{
+			// example the 
+		}		
 	}
 	else
 	{
-		mstate.ProcessAPDU(header, objects);
+		SIMPLE_LOG_BLOCK(pMState->logger, flags::WARN, "Igorning AuthResponse"); // TODO - better error message?
 	}
+
 }
 
 }

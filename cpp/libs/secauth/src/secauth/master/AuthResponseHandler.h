@@ -18,60 +18,36 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_IMASTERAUTHPROVIDER_H
-#define OPENDNP3_IMASTERAUTHPROVIDER_H
+#ifndef SECAUTH_AUTHRESPONSEHANDLER_H
+#define SECAUTH_AUTHRESPONSEHANDLER_H
 
-#include <openpal/container/ManagedPtr.h>
+#include <opendnp3/app/parsing/IAPDUHandler.h>
+#include <opendnp3/master/MasterState.h>
 
-#include "opendnp3/app/APDUHeader.h"
-#include "opendnp3/master/IMasterTask.h"
+#include "secauth/master/IAuthResponseReceiver.h"
 
-namespace opendnp3
+namespace secauth
 {
 
-class MState;
+class AuthResponseHandler : public opendnp3::IAPDUHandler, private openpal::Uncopyable
+{
+	public:
 
-/**
-* @desc Interface for an arbitrary master authentication provider
-*/
-class IMasterAuthProvider
-{	
+		AuthResponseHandler(const opendnp3::APDUResponseHeader& header, IAuthResponseReceiver& authRespReceiver);
+		
+		virtual opendnp3::IINField ProcessHeader(const opendnp3::FreeFormatHeader& header, const opendnp3::Group120Var1& value) override final;		
+		virtual opendnp3::IINField ProcessHeader(const opendnp3::FreeFormatHeader& header, const opendnp3::Group120Var7& value) override final;
 
-public:	
+		virtual bool IsAllowed(uint32_t headerCount, opendnp3::GroupVariation gv, opendnp3::QualifierCode qc) override final;		
 
-	IMasterAuthProvider() : pMState(nullptr)
-	{}
-
-	void SetMasterState(MState& mstate)
-	{
-		pMState = &mstate;
-	}
-
-	/**
-	* Lifecycle callback invoked when the master comes online
-	*/
-	virtual void GoOnline() = 0;
-
-	/**
-	* Lifecycle callback invoked when the master goes offline
-	*/
-	virtual void GoOffline() = 0;	
-
-	/**
-	* Handle an APDU
-	*/
-	virtual void OnReceive(const APDUResponseHeader& header, const openpal::ReadBufferView& objects) = 0;
-
-
-	virtual ~IMasterAuthProvider() {}
-
-protected:
-
-	MState* pMState;
-
+	private:
+		
+		opendnp3::APDUResponseHeader apduheader;				
+		IAuthResponseReceiver* pAuthRespReceiver;
 };
 
 
 }
 
 #endif
+

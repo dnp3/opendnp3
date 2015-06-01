@@ -119,6 +119,12 @@
     <ClInclude Include="src\secauth\master\KeyWrap.h">
       <Filter>Header Files\master</Filter>
     </ClInclude>
+    <ClInclude Include="src\secauth\master\AuthResponseHandler.h">
+      <Filter>Header Files\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\secauth\master\IAuthResponseReceiver.h">
+      <Filter>Header Files\master</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\secauth\master\MasterAuthProvider.cpp">
@@ -200,6 +206,9 @@
       <Filter>Source Files\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\secauth\master\SimpleMasterUserDatabase.cpp">
+      <Filter>Source Files\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\secauth\master\AuthResponseHandler.cpp">
       <Filter>Source Files\master</Filter>
     </ClCompile>
   </ItemGroup>

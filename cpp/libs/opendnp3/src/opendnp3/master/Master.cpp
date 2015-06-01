@@ -112,7 +112,7 @@ ICommandProcessor& Master::GetCommandProcessor()
 
 void Master::SetAuthProvider(IMasterAuthProvider& provider)
 {
-	this->mstate.auth.SetProvider(provider);
+	this->mstate.auth.SetProvider(mstate, provider);
 }
 
 MasterScan Master::AddScan(openpal::TimeDuration period, const std::function<void(HeaderWriter&)>& builder, ITaskCallback* pCallback, int userId)

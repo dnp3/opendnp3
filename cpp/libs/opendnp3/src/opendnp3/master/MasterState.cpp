@@ -224,7 +224,7 @@ namespace opendnp3
 
 			pTaskLock->OnLayerDown();
 
-			auth.GoOffline(*this);
+			auth.GoOffline();
 
 			scheduler.OnLowerLayerDown();
 
@@ -251,7 +251,7 @@ namespace opendnp3
 		{
 			isOnline = true;
 			pTaskLock->OnLayerUp();
-			auth.GoOnline(*this);
+			auth.GoOnline();
 			tasks.Initialize(scheduler);
 			scheduler.OnLowerLayerUp();
 			return true;
