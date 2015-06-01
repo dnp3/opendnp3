@@ -27,11 +27,12 @@
 
 #include "MasterSecurityState.h"
 #include "SessionKeyTask.h"
+#include "IAuthResponseReceiver.h"
 
 namespace secauth
 {
 
-class MasterAuthProvider final : public opendnp3::IMasterAuthProvider, private openpal::Uncopyable
+class MasterAuthProvider final : public opendnp3::IMasterAuthProvider, private IAuthResponseReceiver, private openpal::Uncopyable
 {	
 
 public:	
@@ -56,6 +57,13 @@ public:
 private:
 
 	void OnReceiveAuthResponse(const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects);
+
+	// ------ Implement IAuthResponseReceiver ------	
+
+	virtual void OnAuthChallenge(const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge) override final;
+
+	virtual void OnAuthError(const opendnp3::APDUHeader& header, const opendnp3::Group120Var7& error) override final;
+
 	
 	MSState msstate;
 	SessionKeyTask sessionKeyTask;

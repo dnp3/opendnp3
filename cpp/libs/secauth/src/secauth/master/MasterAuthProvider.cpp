@@ -26,6 +26,8 @@
 
 #include <openpal/logging/LogMacros.h>
 
+#include "secauth/master/AuthResponseHandler.h"
+#include "opendnp3/app/parsing/APDUParser.h"
 
 using namespace openpal;
 using namespace opendnp3;
@@ -89,14 +91,29 @@ void MasterAuthProvider::OnReceiveAuthResponse(const opendnp3::APDUResponseHeade
 		}
 		else
 		{
-			// example the 
+			AuthResponseHandler handler(header, *this);
+			APDUParser::Parse(objects, handler, pMState->logger);
 		}		
 	}
 	else
 	{
-		SIMPLE_LOG_BLOCK(pMState->logger, flags::WARN, "Igorning AuthResponse"); // TODO - better error message?
+		SIMPLE_LOG_BLOCK(pMState->logger, flags::WARN, "Ignoring AuthResponse"); // TODO - better error message?
 	}
 
+}
+
+void  MasterAuthProvider::OnAuthChallenge(const opendnp3::APDUHeader& header, const opendnp3::Group120Var1& challenge)
+{
+	// TODO - handle an authenticaiton challenge
+	SIMPLE_LOG_BLOCK(pMState->logger, flags::WARN, "Ignoring authentication challenge");
+}
+
+void  MasterAuthProvider::OnAuthError(const opendnp3::APDUHeader& header, const opendnp3::Group120Var7& error)
+{
+	FORMAT_LOG_BLOCK(pMState->logger, flags::WARN,
+		"Received auth error from outstation w/ code: %s",
+		AuthErrorCodeToString(error.errorCode)
+	);		
 }
 
 }
