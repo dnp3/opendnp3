@@ -159,11 +159,14 @@ namespace opendnp3
 		{
 			this->QueueConfirm(APDUHeader::UnsolicitedConfirm(header.control.SEQ));
 		}
+
+		this->ProcessIIN(header.IIN);
 	}
 
 	void MState::ProcessResponse(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
 	{
 		this->pState = pState->OnResponse(*this, header, objects);
+		this->ProcessIIN(header.IIN);
 	}
 
 	void MState::QueueConfirm(const APDUHeader& header)
