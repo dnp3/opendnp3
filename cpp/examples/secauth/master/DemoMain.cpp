@@ -26,6 +26,8 @@
 
 #include <asiopal/UTCTimeSource.h>
 
+#include <openpal/container/StaticBuffer.h>
+
 #include <opendnp3/LogLevels.h>
 #include <opendnp3/app/ControlRelayOutputBlock.h>
 
@@ -39,6 +41,18 @@ using namespace asiodnp3;
 using namespace opendnp3;
 using namespace secauth;
 
+void AddDefaultUser(secauth::SimpleMasterUserDatabase& db)
+{
+	// add a 128-bit demo key of all 0xFF
+	openpal::StaticBuffer<16> key;
+	key.GetWriteBuffer().SetAllTo(0xFF);
+	db.ConfigureUser(
+		secauth::User::Default(),
+		secauth::UpdateKeyMode::AES128,
+		key.ToReadOnly()
+		);
+}
+
 int main(int argc, char* argv[])
 {
 	// The cryptography provider we'll use 
@@ -46,6 +60,8 @@ int main(int argc, char* argv[])
 
 	// The user database for master user
 	SimpleMasterUserDatabase userDB;
+
+	AddDefaultUser(userDB);
 
 	// Specify what log levels to use. NORMAL is warning and above
 	// You can add all the comms logging by uncommenting below

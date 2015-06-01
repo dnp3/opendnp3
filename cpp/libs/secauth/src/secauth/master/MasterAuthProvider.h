@@ -51,6 +51,8 @@ public:
 
 	virtual void GoOffline(opendnp3::MState& mstate) override final;
 
+	virtual void OnReceive(opendnp3::MState& mstate, const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects) override final;
+
 private:
 	
 	MSState msstate;

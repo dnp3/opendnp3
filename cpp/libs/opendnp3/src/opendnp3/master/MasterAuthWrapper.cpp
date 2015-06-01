@@ -21,6 +21,8 @@
 
 #include "MasterAuthWrapper.h"
 
+#include <opendnp3/master/MasterState.h>
+
 namespace opendnp3
 {
 
@@ -45,6 +47,18 @@ void MasterAuthWrapper::GoOffline(MState& mstate)
 	if (pProvider)
 	{
 		pProvider->GoOffline(mstate);
+	}
+}
+
+void MasterAuthWrapper::OnReceive(MState& mstate, const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+{
+	if (pProvider)
+	{
+		pProvider->OnReceive(mstate, header, objects);
+	}
+	else
+	{
+		mstate.ProcessAPDU(header, objects);
 	}
 }
 

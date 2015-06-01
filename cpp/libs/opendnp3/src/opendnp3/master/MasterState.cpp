@@ -23,6 +23,7 @@
 
 #include "opendnp3/app/APDULogging.h"
 #include "opendnp3/LogLevels.h"
+#include "opendnp3/master/MeasurementHandler.h"
 
 #include <openpal/logging/LogMacros.h>
 
@@ -93,12 +94,76 @@ namespace opendnp3
 		}		
 	}
 
-	void MState::OnResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects)
+	void MState::OnReceive(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
 	{
-		if (isOnline)
+		auth.OnReceive(*this, header, objects);
+	}
+
+	void MState::ProcessAPDU(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+	{
+		switch (header.function)
 		{
-			this->pState = pState->OnResponse(*this, response, objects);
+		case(FunctionCode::UNSOLICITED_RESPONSE) :
+			this->ProcessUnsolicitedResponse(header, objects);
+			break;
+		case(FunctionCode::RESPONSE) :
+			this->ProcessResponse(header, objects);
+			break;
+		default:
+			FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Ignoring unsupported function code: %s", FunctionCodeToString(header.function));
+			break;
 		}
+	}
+
+	void MState::ProcessIIN(const IINField& iin)
+	{
+		if (iin.IsSet(IINBit::DEVICE_RESTART))
+		{
+			this->tasks.clearRestart.Demand();
+			this->tasks.assignClass.Demand();
+			this->tasks.startupIntegrity.Demand();
+			this->tasks.enableUnsol.Demand();
+		}
+
+		if (iin.IsSet(IINBit::EVENT_BUFFER_OVERFLOW) && this->params.integrityOnEventOverflowIIN)
+		{
+			this->tasks.startupIntegrity.Demand();
+		}
+
+		if (iin.IsSet(IINBit::NEED_TIME))
+		{
+			this->tasks.timeSync.Demand();
+		}
+
+		if ((iin.IsSet(IINBit::CLASS1_EVENTS) && this->params.eventScanOnEventsAvailableClassMask.HasClass1()) ||
+			(iin.IsSet(IINBit::CLASS2_EVENTS) && this->params.eventScanOnEventsAvailableClassMask.HasClass2()) ||
+			(iin.IsSet(IINBit::CLASS3_EVENTS) && this->params.eventScanOnEventsAvailableClassMask.HasClass3()))
+		{
+			this->tasks.eventScan.Demand();
+		}
+
+		this->pApplication->OnReceiveIIN(iin);
+	}
+
+	void MState::ProcessUnsolicitedResponse(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+	{
+		if (!header.control.UNS)
+		{
+			SIMPLE_LOG_BLOCK(logger, flags::WARN, "Ignoring unsolicited response without UNS bit set");
+			return;
+		}
+
+		auto result = MeasurementHandler::ProcessMeasurements(objects, logger, pSOEHandler);
+
+		if ((result == ParseResult::OK) && header.control.CON)
+		{
+			this->QueueConfirm(APDUHeader::UnsolicitedConfirm(header.control.SEQ));
+		}
+	}
+
+	void MState::ProcessResponse(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+	{
+		this->pState = pState->OnResponse(*this, header, objects);
 	}
 
 	void MState::QueueConfirm(const APDUHeader& header)

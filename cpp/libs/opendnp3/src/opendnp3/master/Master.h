@@ -92,9 +92,6 @@ class Master : public IUpperLayer, private IScheduleCallback
 
 	/// --- internal events ----
 
-	void OnUnsolicitedResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects);
-	void OnReceiveIIN(const IINField& iin);
-
 	void ScheduleRecurringPollTask(IMasterTask* pTask);
 	void ScheduleAdhocTask(IMasterTask* pTask);
 

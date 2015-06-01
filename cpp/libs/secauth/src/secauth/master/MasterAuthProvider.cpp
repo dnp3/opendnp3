@@ -54,5 +54,17 @@ void MasterAuthProvider::GoOffline(opendnp3::MState& mstate)
 	// TODO reset the sessions?
 }
 
+void MasterAuthProvider::OnReceive(opendnp3::MState& mstate, const opendnp3::APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+{	
+	if (header.function == FunctionCode::AUTH_RESPONSE)
+	{
+		mstate.ProcessResponse(header, objects);
+	}
+	else
+	{
+		mstate.ProcessAPDU(header, objects);
+	}
+}
+
 }
 

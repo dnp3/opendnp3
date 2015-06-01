@@ -102,8 +102,10 @@ namespace opendnp3
 		void QueueConfirm(const APDUHeader& header);
 
 		void StartResponseTimer();
-				
-		void OnResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects);
+
+		void OnReceive(const APDUResponseHeader& response, const openpal::ReadBufferView& objects);
+
+		void ProcessAPDU(const APDUResponseHeader& response, const openpal::ReadBufferView& objects);					
 
 		void CheckForTask();
 
@@ -111,7 +113,14 @@ namespace opendnp3
 
 		void PostCheckForTask();
 
-	private:	
+		void ProcessResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects);
+
+		void ProcessUnsolicitedResponse(const APDUResponseHeader& response, const openpal::ReadBufferView& objects);
+
+
+	private:
+
+		void ProcessIIN(const IINField& iin);
 
 		/// private state manipulation actions used from the public actions
 							

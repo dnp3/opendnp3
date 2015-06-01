@@ -49,8 +49,7 @@ bool APDUHeaderParser::ParseRequest(const openpal::ReadBufferView& apdu, APDUHea
 bool APDUHeaderParser::ParseResponse(const openpal::ReadBufferView& apdu, APDUResponseHeader& header, openpal::Logger* pLogger)
 {
 	if (apdu.Size() < APDU_RESPONSE_HEADER_SIZE)
-	{
-		FORMAT_LOGGER_BLOCK(pLogger, flags::WARN, "Response fragment with insufficient size of %u bytes", apdu.Size());
+	{		
 		return false;
 	}
 	else

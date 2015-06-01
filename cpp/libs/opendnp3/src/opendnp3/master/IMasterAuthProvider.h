@@ -23,6 +23,7 @@
 
 #include <openpal/container/ManagedPtr.h>
 
+#include "opendnp3/app/APDUHeader.h"
 #include "opendnp3/master/IMasterTask.h"
 
 namespace opendnp3
@@ -47,6 +48,11 @@ public:
 	* Lifecycle callback invoked when the master goes offline
 	*/
 	virtual void GoOffline(MState& mstate) = 0;	
+
+	/**
+	* Handle an APDU
+	*/
+	virtual void OnReceive(MState& mstate, const APDUResponseHeader& header, const openpal::ReadBufferView& objects) = 0;
 
 	virtual ~IMasterAuthProvider() {}
 
