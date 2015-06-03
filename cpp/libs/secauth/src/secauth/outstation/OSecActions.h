@@ -48,7 +48,7 @@ namespace secauth
 
 		private:
 		
-			static openpal::IKeyWrapAlgo& GetKeyWrapAlgo(openpal::ICryptoProvider& crypto, UpdateKeyMode type);
+			static openpal::IKeyWrapAlgo& GetKeyWrapAlgo(openpal::ICryptoProvider& crypto, opendnp3::UpdateKeyMode type);
 
 			static void RespondWithAuthError(
 				const opendnp3::APDUHeader& header,

@@ -46,7 +46,7 @@ void AddDefaultUser(secauth::SimpleMasterUser& user)
 	// add a 128-bit demo key of all 0xFF
 	openpal::StaticBuffer<16> key;
 	key.GetWriteBuffer().SetAllTo(0xFF);
-	user.SetUpdateKey(key.ToReadOnly(), secauth::UpdateKeyMode::AES128);
+	user.SetUpdateKey(key.ToReadOnly(), opendnp3::UpdateKeyMode::AES128);
 }
 
 int main(int argc, char* argv[])

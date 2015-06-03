@@ -27,6 +27,17 @@ namespace secauth
 {
 	
 
+opendnp3::KeyWrapAlgorithm Crypto::ToKeyWrapAlgorithm(UpdateKeyMode keyType)
+{
+	switch (keyType)
+	{
+	case(UpdateKeyMode::AES128) :
+		return opendnp3::KeyWrapAlgorithm::AES_128;
+	default:
+		return opendnp3::KeyWrapAlgorithm::AES_256;
+	}
+}
+
 openpal::IKeyWrapAlgo* Crypto::TryGetKeyWrap(openpal::ICryptoProvider& crypto, opendnp3::KeyWrapAlgorithm algorithm)
 {
 	switch (algorithm)

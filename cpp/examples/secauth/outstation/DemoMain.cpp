@@ -53,7 +53,7 @@ void AddDefaultUser(secauth::SimpleOutstationUserDatabase& db)
 	key.GetWriteBuffer().SetAllTo(0xFF);
 	db.ConfigureUser(
 		secauth::User::Default(), 
-		secauth::UpdateKeyMode::AES128, 
+		opendnp3::UpdateKeyMode::AES128,
 		key.ToReadOnly()
 	);
 }

@@ -22,6 +22,7 @@
 #include "SimpleOutstationUserDatabase.h"
 
 using namespace openpal;
+using namespace opendnp3;
 
 namespace secauth
 {

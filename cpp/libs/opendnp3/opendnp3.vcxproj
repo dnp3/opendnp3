@@ -132,6 +132,7 @@
     <ClInclude Include="src\opendnp3\gen\TaskCompletion.h" />
     <ClInclude Include="src\opendnp3\gen\TimestampMode.h" />
     <ClInclude Include="src\opendnp3\gen\TimeSyncMode.h" />
+    <ClInclude Include="src\opendnp3\gen\UpdateKeyMode.h" />
     <ClInclude Include="src\opendnp3\gen\UserOperation.h" />
     <ClInclude Include="src\opendnp3\LayerInterfaces.h" />
     <ClInclude Include="src\opendnp3\link\CRC.h" />

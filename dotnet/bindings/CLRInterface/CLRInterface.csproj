@@ -118,6 +118,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="IMasterApplication.cs" />
+    <Compile Include="IMasterUser.cs" />
     <Compile Include="IOutstationApplication.cs">
       <SubType>Code</SubType>
     </Compile>

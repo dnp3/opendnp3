@@ -38,19 +38,19 @@ class SimpleMasterUser : public IMasterUser
 {
 	public:
 
-		SimpleMasterUser() : updateKeyMode(UpdateKeyMode::AES128), buffer(32)
+		SimpleMasterUser() : updateKeyMode(opendnp3::UpdateKeyMode::AES128), buffer(32)
 		{
 			buffer.GetWriteBufferView().SetAllTo(0xFF);
 			this->updateKey = buffer.ToReadOnly().Take(16);
 		}
 
-		virtual UpdateKeyMode GetUpdateKey(openpal::ReadBufferView& key) const override final
+		virtual opendnp3::UpdateKeyMode GetUpdateKey(openpal::ReadBufferView& key) const override final
 		{
 			key = updateKey;
 			return updateKeyMode;
 		}
-
-		void SetUpdateKey(const openpal::ReadBufferView& key, UpdateKeyMode mode)
+		
+		void SetUpdateKey(const openpal::ReadBufferView& key, opendnp3::UpdateKeyMode mode)
 		{
 			this->updateKeyMode = mode;
 			auto dest = buffer.GetWriteBufferView();
@@ -59,7 +59,7 @@ class SimpleMasterUser : public IMasterUser
 
 	private:
 
-		UpdateKeyMode updateKeyMode;
+		opendnp3::UpdateKeyMode updateKeyMode;
 		openpal::ReadBufferView updateKey;
 		openpal::Buffer buffer;
 };

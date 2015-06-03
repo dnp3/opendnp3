@@ -46,7 +46,7 @@ namespace opendnp3
 		outstation.SetAuthProvider(auth);
 	}
 
-	void OutstationSecAuthFixture::AddUser(secauth::User, secauth::UpdateKeyMode mode, uint8_t keyRepeat)
+	void OutstationSecAuthFixture::AddUser(secauth::User, opendnp3::UpdateKeyMode mode, uint8_t keyRepeat)
 	{
 		auto keySize = (mode == UpdateKeyMode::AES128) ? 16 : 32;
 		openpal::Buffer key(keySize);

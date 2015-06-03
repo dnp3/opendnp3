@@ -22,6 +22,8 @@
 #include "OSecActions.h"
 #include "KeyUnwrap.h"
 
+#include "secauth/Crypto.h"
+
 #include <opendnp3/LogLevels.h>
 #include <opendnp3/outstation/OutstationActions.h>
 #include <opendnp3/objects/Group120.h>
@@ -105,7 +107,7 @@ namespace secauth
 			writer,
 			user,
 			hmacType,
-			ToKeyWrapAlgorithm(updateKeyType),
+			Crypto::ToKeyWrapAlgorithm(updateKeyType),
 			KeyStatus::OK,
 			hmac
 		);
@@ -139,7 +141,7 @@ namespace secauth
 			writer,
 			user,
 			hmacType,
-			ToKeyWrapAlgorithm(type),
+			Crypto::ToKeyWrapAlgorithm(type),
 			keyStatus,
 			ReadBufferView::Empty()
 			);

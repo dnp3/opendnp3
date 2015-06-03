@@ -23,7 +23,8 @@
 #define SECAUTH_IMASTERUSER_H
 
 #include "secauth/User.h"
-#include "secauth/UpdateKeyMode.h"
+
+#include <opendnp3/gen/UpdateKeyMode.h>
 
 #include <openpal/container/ReadBufferView.h>
 
@@ -40,7 +41,7 @@ class IMasterUser
 {
 	public:				
 		
-		virtual UpdateKeyMode GetUpdateKey(openpal::ReadBufferView& key) const = 0;		
+		virtual opendnp3::UpdateKeyMode GetUpdateKey(openpal::ReadBufferView& key) const = 0;
 };
 
 }

@@ -38,20 +38,20 @@ class SimpleOutstationUserDatabase : public IOutstationUserDatabase
 {
 	public:		
 		
-		virtual bool GetUpdateKey(const User& user, UpdateKeyMode& type, openpal::ReadBufferView& key) const override final;
+		virtual bool GetUpdateKey(const User& user, opendnp3::UpdateKeyMode& type, openpal::ReadBufferView& key) const override final;
 
-		virtual bool GetUpdateKeyType(const User& user, UpdateKeyMode& type) const override final;
+		virtual bool GetUpdateKeyType(const User& user, opendnp3::UpdateKeyMode& type) const override final;
 
 		virtual bool IsAuthorized(const User& user, opendnp3::FunctionCode code) const override final;
 
 		virtual bool UserExists(const User& user) const override final;
 
 		// copies the update key into the key store permanently
-		void ConfigureUser(const User& user, UpdateKeyMode type, const openpal::ReadBufferView& key);
+		void ConfigureUser(const User& user, opendnp3::UpdateKeyMode type, const openpal::ReadBufferView& key);
 
 	private:
 
-		typedef std::pair<UpdateKeyMode, std::unique_ptr<openpal::Buffer>> StoredUserData;
+		typedef std::pair<opendnp3::UpdateKeyMode, std::unique_ptr<openpal::Buffer>> StoredUserData;
 		std::map<uint16_t, StoredUserData> userMap;
 };
 

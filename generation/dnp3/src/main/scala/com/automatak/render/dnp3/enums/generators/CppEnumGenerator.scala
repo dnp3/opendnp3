@@ -50,7 +50,8 @@ object CppEnumGenerator {
       TimestampMode(),
       EventMode(),
       IndexMode(),
-      ConfigAuthMode()
+      ConfigAuthMode(),
+      UpdateKeyMode()
     ) ::: DefaultVariations.enums ::: QualityMasks.enums).map(x => EnumConfig(x, false, false))
 
     def stringOnlyEnums = List(TaskCompletion(), ChannelState()).map(x => EnumConfig(x, false, true))
