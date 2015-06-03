@@ -10,6 +10,7 @@
 #include "MasterAdapter.h"
 #include "OutstationAdapter.h"
 #include "EventConverter.h"
+#include "MasterUserAdapter.h"
 
 #include <opendnp3/outstation/Database.h>
 
@@ -80,6 +81,34 @@ namespace Automatak
 					return gcnew MasterAdapter(pMaster);
 				}
 			}
+
+			IMaster^ ChannelAdapter::AddMaster(System::String^ loggerId, ISOEHandler^ handler, IMasterApplication^ application, MasterStackConfig^ config, IMasterUser^ masterUser)
+			{
+				std::string stdLoggerId = Conversions::ConvertString(loggerId);
+
+				opendnp3::MasterStackConfig cfg = Conversions::ConvertConfig(config);
+
+				auto pSOEHandler = new SOEHandlerAdapter(handler);
+				auto pApplication = new MasterApplicationAdapter(application);
+				auto pMasterUser = new MasterUserAdapter(masterUser);
+
+				auto pMaster = pChannel->AddMaster(stdLoggerId.c_str(), *pSOEHandler, *pApplication, cfg, *pMasterUser, *pCrypto);
+				if (pMaster == nullptr)
+				{
+					delete pSOEHandler;
+					delete pApplication;
+					delete pMasterUser;
+					return nullptr;
+				}
+				else
+				{
+					pMaster->DeleteOnDestruct(pSOEHandler);
+					pMaster->DeleteOnDestruct(pApplication);
+					pMaster->DeleteOnDestruct(pMasterUser);
+					return gcnew MasterAdapter(pMaster);
+				}
+			}
+
 
 			IOutstation^ ChannelAdapter::AddOutstation(System::String^ loggerId, ICommandHandler^ cmdHandler, IOutstationApplication^ application, OutstationStackConfig^ config)
 			{

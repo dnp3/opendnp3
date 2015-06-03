@@ -7,6 +7,7 @@
 #include "ChannelAdapter.h"
 
 #include <asiodnp3/DNP3Manager.h>
+#include <osslcrypto/CryptoProvider.h>
 
 using namespace asiopal;
 
@@ -28,7 +29,9 @@ namespace Automatak
 			}
 
 
-			DNP3ManagerAdapter::DNP3ManagerAdapter(System::Int32 aConcurrency) : pManager(new asiodnp3::DNP3Manager(aConcurrency))
+			DNP3ManagerAdapter::DNP3ManagerAdapter(System::Int32 aConcurrency) : 
+				pManager(new asiodnp3::DNP3Manager(aConcurrency)),
+				pCrypto(new osslcrypto::CryptoProvider())
 			{
 
 			}
@@ -36,6 +39,7 @@ namespace Automatak
 			DNP3ManagerAdapter::~DNP3ManagerAdapter()
 			{
 				delete pManager;
+				delete pCrypto;
 			}
 
 			void DNP3ManagerAdapter::Shutdown()
@@ -53,7 +57,7 @@ namespace Automatak
 				auto pChannel = pManager->AddTCPClient(stdName.c_str(), filters, Conversions::ConvertTimespan(minRetryDelay), Conversions::ConvertTimespan(maxRetryDelay), stdAddress, "", stdPort);
 				if (pChannel)
 				{
-					auto adapter = gcnew ChannelAdapter(pChannel);
+					auto adapter = gcnew ChannelAdapter(pChannel, pCrypto);
 					pChannel->DeleteOnDestruct(new gcroot<ChannelAdapter^>(adapter));
 					return adapter;
 				}
@@ -72,7 +76,7 @@ namespace Automatak
 				auto pChannel = pManager->AddTCPServer(stdName.c_str(), filters, Conversions::ConvertTimespan(minRetryDelay), Conversions::ConvertTimespan(maxRetryDelay), stdEndpoint, stdPort);
 				if (pChannel)
 				{
-					auto adapter = gcnew ChannelAdapter(pChannel);
+					auto adapter = gcnew ChannelAdapter(pChannel, pCrypto);
 					pChannel->DeleteOnDestruct(new gcroot<ChannelAdapter^>(adapter));
 					return adapter;
 				}
@@ -90,7 +94,7 @@ namespace Automatak
 				auto pChannel = pManager->AddSerial(stdName.c_str(), filters, Conversions::ConvertTimespan(minRetryDelay), Conversions::ConvertTimespan(maxRetryDelay), s);
 				if (pChannel)
 				{
-					auto adapter = gcnew ChannelAdapter(pChannel);
+					auto adapter = gcnew ChannelAdapter(pChannel, pCrypto);
 					pChannel->DeleteOnDestruct(new gcroot<ChannelAdapter^>(adapter));
 					return adapter;
 				}

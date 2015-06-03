@@ -23,7 +23,7 @@ namespace Automatak.DNP3.Interface
   /// <summary>
   /// Enumeration for possible states of a channel
   /// </summary>
-  public enum ChannelState : int
+  public enum ChannelState : byte
   {
     /// <summary>
     /// offline and idle

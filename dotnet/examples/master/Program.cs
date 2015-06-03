@@ -46,7 +46,15 @@ namespace DotNetMasterDemo
             config.link.localAddr = 1;
             config.link.remoteAddr = 10;
 
-            var master = channel.AddMaster("master", PrintingSOEHandler.Instance, DefaultMasterApplication.Instance, config);            
+            var key = new byte[16];
+            for(int i=0; i < key.Length; ++i)
+            {
+                key[i] = 0xFF;
+            }
+
+            var user = new SimpleMasterUser(UpdateKeyMode.AES128, key);
+
+            var master = channel.AddMaster("master", PrintingSOEHandler.Instance, DefaultMasterApplication.Instance, config, user);            
             
             // you a can optionally add various kinds of polls
             var integrityPoll = master.AddClassScan(ClassField.AllClasses, TimeSpan.FromMinutes(1));            

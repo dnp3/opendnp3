@@ -27,12 +27,46 @@ using System.Text;
 
 namespace Automatak.DNP3.Interface
 {
+    public class UpdateKey
+    {
+        public UpdateKey(UpdateKeyMode keyMode, byte[] key)
+        {
+            this.keyMode = keyMode;
+            this.key = key;
+        }
+
+        public readonly UpdateKeyMode keyMode;
+        public readonly byte[] key;
+        
+    };
+
+
     /// <summary>
     /// Straw-man interface for a single-user SA enabled master
     /// </summary>
     public interface IMasterUser
     {
-       
+        UpdateKey DefaultUserUpdateKey
+        {
+            get;
+        }
+    }
+
+    public class SimpleMasterUser : IMasterUser
+    {
+        readonly UpdateKey key;
+
+        public SimpleMasterUser(UpdateKeyMode keyMode, byte[] key)
+        {
+            this.key = new UpdateKey(keyMode, key);
+        }
+
+
+
+        UpdateKey IMasterUser.DefaultUserUpdateKey
+        {
+            get { return key; }
+        }
     }
 
    

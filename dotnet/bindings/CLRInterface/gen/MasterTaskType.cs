@@ -23,7 +23,7 @@ namespace Automatak.DNP3.Interface
   /// <summary>
   /// Enumeration of internal tasks
   /// </summary>
-  public enum MasterTaskType : int
+  public enum MasterTaskType : byte
   {
     CLEAR_RESTART = 0,
     DISABLE_UNSOLICITED = 1,
@@ -32,6 +32,7 @@ namespace Automatak.DNP3.Interface
     SERIAL_TIME_SYNC = 4,
     ENABLE_UNSOLICITED = 5,
     AUTO_EVENT_SCAN = 6,
-    USER_TASK = 7
+    USER_TASK = 7,
+    SET_SESSION_KEYS = 8
   }
 }

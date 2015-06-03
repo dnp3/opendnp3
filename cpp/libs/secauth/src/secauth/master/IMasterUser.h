@@ -41,7 +41,7 @@ class IMasterUser
 {
 	public:				
 		
-		virtual opendnp3::UpdateKeyMode GetUpdateKey(openpal::ReadBufferView& key) const = 0;
+		virtual opendnp3::UpdateKeyMode GetUpdateKey(openpal::ReadBufferView& key) = 0;
 };
 
 }

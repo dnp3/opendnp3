@@ -44,7 +44,7 @@ class SimpleMasterUser : public IMasterUser
 			this->updateKey = buffer.ToReadOnly().Take(16);
 		}
 
-		virtual opendnp3::UpdateKeyMode GetUpdateKey(openpal::ReadBufferView& key) const override final
+		virtual opendnp3::UpdateKeyMode GetUpdateKey(openpal::ReadBufferView& key) override final
 		{
 			key = updateKey;
 			return updateKeyMode;

@@ -101,6 +101,7 @@
     <Compile Include="gen\TaskCompletion.cs" />
     <Compile Include="gen\TimestampMode.cs" />
     <Compile Include="gen\TimeSyncMode.cs" />
+    <Compile Include="gen\UpdateKeyMode.cs" />
     <Compile Include="Header.cs" />
     <Compile Include="IChannelStatistics.cs" />
     <Compile Include="ICommandHandler.cs">

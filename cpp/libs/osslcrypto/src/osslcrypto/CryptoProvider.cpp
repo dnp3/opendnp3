@@ -28,6 +28,7 @@
 #include <openssl/crypto.h>
 
 #include <assert.h>
+#include <mutex>
 
 using namespace openpal;
 

@@ -4,6 +4,11 @@
 using namespace System;
 using namespace Automatak::DNP3::Interface;
 
+namespace osslcrypto
+{
+	class CryptoProvider;
+}
+
 namespace asiodnp3
 {
 	class DNP3Manager;
@@ -55,6 +60,8 @@ namespace Automatak
 
 			private:
 				asiodnp3::DNP3Manager* pManager;
+				osslcrypto::CryptoProvider* pCrypto;
+				
 			};
 
 		}

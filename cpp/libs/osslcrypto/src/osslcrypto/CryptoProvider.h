@@ -29,9 +29,13 @@
 #include "SHA1HMAC.h"
 #include "SHA256HMAC.h"
 
-#include <mutex>
 #include <vector>
 #include <memory>
+
+namespace std
+{
+	class mutex;
+}
 
 namespace osslcrypto
 {

@@ -62,7 +62,7 @@ namespace Automatak.DNP3.Interface
     /// </summary>
     Months8 = 0x8,
     /// <summary>
-    /// Months on Same Day of Week from End of Month—The outstation shall interpret this setting as in Months8, but the day of the week shall be measured from the end of the month,
+    /// Months on Same Day of Week from End of Month - The outstation shall interpret this setting as in Months8, but the day of the week shall be measured from the end of the month,
     /// </summary>
     Months9 = 0x9,
     /// <summary>

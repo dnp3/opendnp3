@@ -21,18 +21,11 @@
 namespace Automatak.DNP3.Interface
 {
   /// <summary>
-  /// Bitmask values for all the static types
+  /// Enumerates types of update keys
   /// </summary>
-  public enum StaticTypeBitmask : ushort
+  public enum UpdateKeyMode : byte
   {
-    BinaryInput = 0x1,
-    DoubleBinaryInput = 0x2,
-    Counter = 0x4,
-    FrozenCounter = 0x8,
-    AnalogInput = 0x10,
-    BinaryOutputStatus = 0x20,
-    AnalogOutputStatus = 0x40,
-    TimeAndInterval = 0x80,
-    SecurityStat = 0x100
+    AES128 = 0x0,
+    AES256 = 0x1
   }
 }

@@ -23,7 +23,7 @@ namespace Automatak.DNP3.Interface
   /// <summary>
   /// Enum that describes if a master task succeeded or failed
   /// </summary>
-  public enum TaskCompletion : int
+  public enum TaskCompletion : byte
   {
     /// <summary>
     /// A valid response was received from the outstation

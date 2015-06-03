@@ -65,6 +65,9 @@
     <Import Project="..\..\..\config\openpal_include.props" />
     <Import Project="..\..\..\config\output_dirs.props" />
     <Import Project="..\..\..\config\authv5-include.props" />
+    <Import Project="..\..\..\config\osslcrypto-include.props" />
+    <Import Project="..\..\..\config\ossl_props\libeay-MDd.props" />
+    <Import Project="..\..\..\config\ossl_props\ossl-lib32.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -74,6 +77,9 @@
     <Import Project="..\..\..\config\openpal_include.props" />
     <Import Project="..\..\..\config\output_dirs.props" />
     <Import Project="..\..\..\config\authv5-include.props" />
+    <Import Project="..\..\..\config\osslcrypto-include.props" />
+    <Import Project="..\..\..\config\ossl_props\libeay-MDd.props" />
+    <Import Project="..\..\..\config\ossl_props\ossl-lib64.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -83,6 +89,9 @@
     <Import Project="..\..\..\config\openpal_include.props" />
     <Import Project="..\..\..\config\output_dirs.props" />
     <Import Project="..\..\..\config\authv5-include.props" />
+    <Import Project="..\..\..\config\osslcrypto-include.props" />
+    <Import Project="..\..\..\config\ossl_props\libeay-MD.props" />
+    <Import Project="..\..\..\config\ossl_props\ossl-lib32.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -92,6 +101,9 @@
     <Import Project="..\..\..\config\openpal_include.props" />
     <Import Project="..\..\..\config\output_dirs.props" />
     <Import Project="..\..\..\config\authv5-include.props" />
+    <Import Project="..\..\..\config\osslcrypto-include.props" />
+    <Import Project="..\..\..\config\ossl_props\libeay-MD.props" />
+    <Import Project="..\..\..\config\ossl_props\ossl-lib64.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -121,7 +133,6 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies />
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -180,6 +191,7 @@
     <ClInclude Include="MasterAdapter.h" />
     <ClInclude Include="MasterApplicationAdapter.h" />
     <ClInclude Include="MasterScanAdapter.h" />
+    <ClInclude Include="MasterUserAdapter.h" />
     <ClInclude Include="OutstationAdapter.h" />
     <ClInclude Include="OutstationApplicationAdapter.h" />
     <ClInclude Include="OutstationCommandHandlerAdapter.h" />
@@ -200,6 +212,7 @@
     <ClCompile Include="MasterAdapter.cpp" />
     <ClCompile Include="MasterApplicationAdapter.cpp" />
     <ClCompile Include="MasterScanAdapter.cpp" />
+    <ClCompile Include="MasterUserAdapter.cpp" />
     <ClCompile Include="OutstationAdapter.cpp" />
     <ClCompile Include="OutstationApplicationAdapter.cpp" />
     <ClCompile Include="OutstationCommandHandlerAdapter.cpp" />
@@ -229,6 +242,9 @@
     </ProjectReference>
     <ProjectReference Include="..\..\..\cpp\libs\openpal\openpal.vcxproj">
       <Project>{abf09bda-75a5-47d7-9f15-d7b7ec69f1e7}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\cpp\libs\osslcrypto\osslcryptoprovider.vcxproj">
+      <Project>{6571dd15-d2f7-4d3f-a580-fdc5e55b2844}</Project>
     </ProjectReference>
     <ProjectReference Include="..\..\..\cpp\libs\secauth\secauth.vcxproj">
       <Project>{d4b3a5cb-be31-44fc-ba64-977615980740}</Project>

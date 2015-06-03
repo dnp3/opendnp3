@@ -23,7 +23,7 @@ namespace Automatak.DNP3.Interface
   /// <summary>
   /// Enumeration describing restart mode support of an outstation
   /// </summary>
-  public enum RestartMode : int
+  public enum RestartMode : byte
   {
     /// <summary>
     /// Device does not support restart
