@@ -57,9 +57,7 @@ void PriStateBase::NotSupported (LinkLayer* pLinkLayer, bool receiveBuffFull)
 }
 
 void PriStateBase::OtherFunction (LinkLayer* pLinkLayer)
-{
-	SIMPLE_LOG_BLOCK_WITH_CODE(pLinkLayer->GetLogger(), flags::WARN, DLERR_UNEXPECTED_LPDU, "Frame context not understood");
-}
+{}
 
 void PriStateBase::OnTransmitResult(LinkLayer* pLinkLayer, bool success)
 {
