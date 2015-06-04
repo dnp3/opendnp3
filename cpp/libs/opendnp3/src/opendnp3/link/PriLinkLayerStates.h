@@ -40,6 +40,7 @@ public:
 	virtual void Nack(LinkLayer*, bool receiveBuffFull);
 	virtual void LinkStatus(LinkLayer*, bool receiveBuffFull);
 	virtual void NotSupported(LinkLayer*, bool receiveBuffFull);
+	virtual void OtherFunction(LinkLayer*);
 
 	virtual void OnTransmitResult(LinkLayer*, bool success);
 
@@ -119,6 +120,10 @@ class PLLS_LinkStatusWait : public PriStateBase
 	}
 	void LinkStatus(LinkLayer* apLL, bool);
 	void NotSupported (LinkLayer*  apLL, bool)
+	{
+		Failure(apLL);
+	}
+	void OtherFunction (LinkLayer*  apLL, bool)
 	{
 		Failure(apLL);
 	}
@@ -219,6 +224,10 @@ class PLLS_ResetLinkWait : public PriStateBase
 	{
 		Failure(apLL);
 	}
+	void OtherFunction (LinkLayer*  apLL, bool)
+	{
+		Failure(apLL);
+	}
 
 	void OnTimeout(LinkLayer*);
 
@@ -240,6 +249,10 @@ class PLLS_ConfDataWait : public PriStateBase
 	void NotSupported (LinkLayer* apLL, bool)
 	{
 		Failure(apLL);
+	}
+	void OtherFunction(LinkLayer* pLinkLayer)
+	{
+		Failure(pLinkLayer);
 	}
 	void OnTimeout(LinkLayer*);
 

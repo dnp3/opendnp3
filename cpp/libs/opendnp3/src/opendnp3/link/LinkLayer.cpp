@@ -437,6 +437,7 @@ void LinkLayer::TestLinkStatus(bool aIsMaster, bool aFcb, uint16_t aDest, uint16
 	if (this->Validate(aIsMaster, aSrc, aDest))
 	{
 		pSecState->TestLinkStatus(this, aFcb);
+		pPriState->OtherFunction(this);
 	}
 }
 
@@ -445,6 +446,7 @@ void LinkLayer::ResetLinkStates(bool aIsMaster, uint16_t aDest, uint16_t aSrc)
 	if (this->Validate(aIsMaster, aSrc, aDest))
 	{
 		pSecState->ResetLinkStates(this);
+		pPriState->OtherFunction(this);
 	}
 }
 
@@ -453,6 +455,7 @@ void LinkLayer::RequestLinkStatus(bool aIsMaster, uint16_t aDest, uint16_t aSrc)
 	if (this->Validate(aIsMaster, aSrc, aDest))
 	{
 		pSecState->RequestLinkStatus(this);
+		pPriState->OtherFunction(this);
 	}
 }
 
@@ -461,6 +464,7 @@ void LinkLayer::ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uin
 	if (this->Validate(aIsMaster, aSrc, aDest))
 	{
 		pSecState->ConfirmedUserData(this, aFcb, input);
+		pPriState->OtherFunction(this);
 	}
 }
 
@@ -468,6 +472,7 @@ void LinkLayer::UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSr
 {
 	if (this->Validate(aIsMaster, aSrc, aDest))
 	{
+		pPriState->OtherFunction(this);
 		this->DoDataUp(input);
 	}
 }
