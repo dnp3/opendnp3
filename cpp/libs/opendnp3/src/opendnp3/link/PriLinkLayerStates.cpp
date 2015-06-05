@@ -25,7 +25,6 @@
 
 #include "opendnp3/ErrorCodes.h"
 #include "opendnp3/link/LinkLayer.h"
-#include "opendnp3/LogLevels.h"
 
 using namespace openpal;
 
@@ -120,44 +119,6 @@ void PLLS_LinkResetTransmitWait::OnTransmitResult(LinkLayer* pLinkLayer, bool su
 	{
 		pLinkLayer->ChangeState(PLLS_SecNotReset::Inst());
 		pLinkLayer->DoSendResult(success);
-	}
-}
-
-/////////////////////////////////////////////////////////////////////////////
-//  Wait for the link layer to transmit the request link status
-/////////////////////////////////////////////////////////////////////////////
-
-template <>
-void PLLS_LinkStatusWait<PLLS_SecNotReset>::OnTimeout(LinkLayer* pLinkLayer)
-{
-	if (pLinkLayer->Retry())
-	{
-		FORMAT_LOG_BLOCK(pLinkLayer->GetLogger(), flags::WARN, "Request link status timeout, retrying %i remaining", pLinkLayer->RetryRemaining());
-		pLinkLayer->QueueRequestLinkStatus();
-		pLinkLayer->ChangeState(PLLS_RequestLinkStatusTransmitWait<PLLS_SecNotReset>::Inst());
-	}
-	else
-	{
-		pLinkLayer->CallStatusCallback(opendnp3::LinkStatus::TIMEOUT);
-		SIMPLE_LOG_BLOCK(pLinkLayer->GetLogger(), flags::WARN, "Request link status final timeout, no retries remain");
-		pLinkLayer->ChangeState(PLLS_SecNotReset::Inst());
-	}
-}
-
-template <>
-void PLLS_LinkStatusWait<PLLS_SecReset>::OnTimeout(LinkLayer* pLinkLayer)
-{
-	if (pLinkLayer->Retry())
-	{
-		FORMAT_LOG_BLOCK(pLinkLayer->GetLogger(), flags::WARN, "Request link status timeout, retrying %i remaining", pLinkLayer->RetryRemaining());
-		pLinkLayer->QueueRequestLinkStatus();
-		pLinkLayer->ChangeState(PLLS_RequestLinkStatusTransmitWait<PLLS_SecReset>::Inst());
-	}
-	else
-	{
-		pLinkLayer->CallStatusCallback(opendnp3::LinkStatus::TIMEOUT);
-		SIMPLE_LOG_BLOCK(pLinkLayer->GetLogger(), flags::WARN, "Request link status final timeout, no retries remain");
-		pLinkLayer->ChangeState(PLLS_SecNotReset::Inst());
 	}
 }
 

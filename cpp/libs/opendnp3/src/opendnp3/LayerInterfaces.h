@@ -67,6 +67,10 @@ public:
 	// Layers can only have 1 outstanding send operation. The callback is guaranteed
 	// unless the the OnLowerLayerDown() function is called beforehand
 	virtual void OnSendResult(bool isSucccess) = 0;
+	// Called by lower layer to notify of a send operation originating from a lower layer
+	// Layers can only have 1 outstanding send operation. So higher layers need to know not to
+	// request another send - return false if a request is already started, so the lower layer can abort
+	virtual bool OnLowerSend() = 0;
 
 };
 

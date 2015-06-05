@@ -54,6 +54,8 @@ class Master : public IUpperLayer
 	
 	virtual void OnSendResult(bool isSucccess) override final;
 
+	virtual bool OnLowerSend() override final;
+
 	/// ----- Misc public members -------
 	
 	ICommandProcessor& GetCommandProcessor();

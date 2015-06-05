@@ -84,6 +84,7 @@ class MasterContext : public ICommandProcessor, public IScheduleCallback
 	bool OnLayerUp();
 	bool OnLayerDown();
 	void OnSendResult(bool isSucccess);
+	bool OnLowerSend();
 	void OnReceive(const openpal::ReadBufferView& apdu);
 
 	// ------- internal events -------

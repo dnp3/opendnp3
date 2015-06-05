@@ -124,6 +124,7 @@ class OutstationContext
 	void OnReceiveAPDU(const openpal::ReadBufferView& apdu);
 
 	void OnSendResult(bool isSuccess);
+	bool OnLowerSend();
 
 	OutstationSolicitedStateBase* OnReceiveSolRequest(const APDUHeader& header, const openpal::ReadBufferView& apdu);	
 

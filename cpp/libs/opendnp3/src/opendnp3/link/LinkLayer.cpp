@@ -118,7 +118,7 @@ bool LinkLayer::Validate(bool aIsMaster, uint16_t aSrc, uint16_t aDest)
 			{
 				if (aSrc == config.RemoteAddr)
 				{
-                    ResetKeepAlive();
+					ResetKeepAlive();
 					if (TimedOut)
 					{
 						TimedOut = false;
@@ -365,25 +365,30 @@ bool LinkLayer::Retry()
     
 void LinkLayer::ResetKeepAlive()
 {
-    this->CancelKeepAlive();
-    if(!config.KeepAlive) return;
-    auto lambda = [this]() {
-        pKeepAliveTimer = nullptr;
-		// Keep alive only when in an idle state
+	this->CancelKeepAlive();
+	if(!config.KeepAlive) return;
+	auto lambda = [this]()
+	{
+		pKeepAliveTimer = nullptr;
+		// Keep alive only when in an idle state, and get the OK from upper layers
 		if (pPriState == PLLS_SecNotReset::Inst())
 		{
+			if(!DoLowerSend())
+				return;
 			this->ResetRetry();
 			this->QueueRequestLinkStatus();
 			this->ChangeState(PLLS_RequestLinkStatusTransmitWait<PLLS_SecNotReset>::Inst());
 		}
 		else if (pPriState == PLLS_SecReset::Inst())
 		{
+			if(!DoLowerSend())
+				return;
 			this->ResetRetry();
 			this->QueueRequestLinkStatus();
 			this->ChangeState(PLLS_RequestLinkStatusTransmitWait<PLLS_SecReset>::Inst());
 		}
-    };
-    pKeepAliveTimer = this->pExecutor->Start(TimeDuration(config.KeepAlive), Action0::Bind(lambda));
+	};
+	pKeepAliveTimer = this->pExecutor->Start(TimeDuration(config.KeepAlive), Action0::Bind(lambda));
 }
     
 void LinkLayer::CancelKeepAlive()
@@ -392,7 +397,7 @@ void LinkLayer::CancelKeepAlive()
 	{
 		return;
 	}
-    pKeepAliveTimer->Cancel();
+	pKeepAliveTimer->Cancel();
 	pKeepAliveTimer = nullptr;
 }
     

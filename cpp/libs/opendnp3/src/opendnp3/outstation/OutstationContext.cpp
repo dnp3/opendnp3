@@ -246,6 +246,17 @@ void OutstationContext::OnSendResult(bool isSuccess)
 	}	
 }
 
+bool OutstationContext::OnLowerSend()
+{
+	if (isTransmitting)
+	{
+		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Lower layer send blocked - send request already in progress");
+		return false;
+	}
+	isTransmitting = true;
+	return isTransmitting;
+}
+
 OutstationSolicitedStateBase* OutstationContext::OnReceiveSolRequest(const APDUHeader& header, const openpal::ReadBufferView& apdu)
 {
 	// analyze this request to see how it compares to the last request

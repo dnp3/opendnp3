@@ -103,6 +103,15 @@ public:
 		}
 	}
 
+	bool DoLowerSend()
+	{
+		if (pUpperLayer)
+		{
+			return pUpperLayer->OnLowerSend();
+		}
+		return true;
+	}
+
 	void PostSendResult(bool isSuccess);
 
 	void ResetReadFCB()
@@ -137,7 +146,7 @@ public:
 
 	// Helpers for sending frames
 	void QueueAck();
-    void QueueRequestLinkStatus();
+	void QueueRequestLinkStatus();
 	void QueueLinkStatus();
 	void QueueResetLinks();
 
@@ -156,8 +165,8 @@ public:
 		return numRetryRemaining;
 	}
     
-    void ResetKeepAlive();
-    void CancelKeepAlive();
+	void ResetKeepAlive();
+	void CancelKeepAlive();
     
 	void QueueTransmit(const openpal::ReadBufferView& buffer, bool primary);
 

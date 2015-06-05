@@ -92,6 +92,11 @@ void Outstation::OnSendResult(bool isSuccess)
 	}	
 }
 
+bool Outstation::OnLowerSend()
+{
+	return context.OnLowerSend();
+}
+
 void Outstation::SetRestartIIN()
 {
 	context.staticIIN.SetBit(IINBit::DEVICE_RESTART);
