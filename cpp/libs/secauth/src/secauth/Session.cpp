@@ -31,9 +31,9 @@ namespace secauth
 	
 
 	Session::Session(openpal::IMonotonicTimeSource& timeSource) :
+		pTimeSource(&timeSource),
 		status(KeyStatus::NOT_INIT),
-		authCount(0),
-		pTimeSource(&timeSource)
+		authCount(0)
 	{
 	
 	}	

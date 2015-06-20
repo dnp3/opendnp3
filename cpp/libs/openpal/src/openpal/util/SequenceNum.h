@@ -33,6 +33,11 @@ class SequenceNum
 
 public:	
 
+	uint8_t Get() const
+	{
+		return this->seq;
+	}
+  
 	operator uint8_t() const
 	{
 		return this->seq;

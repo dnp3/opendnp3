@@ -141,7 +141,7 @@ bool TransportRx::ValidateHeader(bool fir, bool fin, uint8_t sequence_)
 
 	if(sequence_ != sequence)
 	{
-		FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::WARN, TLERR_BAD_SEQUENCE, "Ignoring bad sequence, got %i, expected %i", sequence_, sequence);
+		FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::WARN, TLERR_BAD_SEQUENCE, "Ignoring bad sequence, got %u, expected %u", sequence_, sequence.Get());
 		return false;
 	}
 

@@ -68,6 +68,9 @@ void SOERecord::SelectDefault()
 		case(EventType::AnalogOutputStatus) :
 			value.analogOutputStatus.SelectDefaultVariation();
 			break;		
+		case(EventType::SecurityStat) :
+			// TODO - handle
+			break;
 	}
 }
 

@@ -38,7 +38,7 @@ enum class EventType : uint16_t
     DoubleBitBinary = 4,
     BinaryOutputStatus = 5,
     AnalogOutputStatus = 6,
-	SecurityStat = 7
+    SecurityStat = 7
 };
 
 enum class EventClass: uint8_t

@@ -5,12 +5,23 @@ set(OPENDNP3_MINOR_VERSION 0)
 set(OPENDNP3_MICRO_VERSION 1)
 set(OPENDNP3_VERSION ${OPENDNP3_MAJOR_VERSION}.${OPENDNP3_MINOR_VERSION}.${OPENDNP3_MICRO_VERSION})
 
-# options on-by-default that you can disable
-option(OSSL "build the openssl crypto wrapper for SA" ON)
-option(DEMO "Build demo applications" ON)
-option(TEST "Build tests" ON)
+
 
 # options off-by-default that you can enable
+option(ALL  "build everything, including the options below" OFF)
+
+set(DEFAULT_ENABLE OFF)
+
+if(ALL)
+  set(DEFAULT_ENABLE ON)
+endif()
+
+option(OSSL "build the openssl crypto wrapper for SA" ${DEFAULT_ENABLE})
+option(DEMO "Build demo applications" ${DEFAULT_ENABLE})
+option(TEST "Build tests" ${DEFAULT_ENABLE})
+
+
+# other options off-by-default that you can enable
 option(LIBCPP "manually link with libc++ (required for clang in some configurations)" OFF)
 option(WERROR "Set all warnings to errors" OFF)
 option(STATICLIBS "Builds static versions of all installed libraries" OFF)
@@ -111,7 +122,7 @@ target_link_libraries(secauth opendnp3)
 install(TARGETS secauth DESTINATION lib)
 install(DIRECTORY ./cpp/libs/secauth/src/secauth/ DESTINATION include/secauth ${INSTALL_ARGS})
 
-if(DEMO)
+if(ALL OR DEMO)
 
   # ----- master demo executable -----
   add_executable (masterdemo ./cpp/examples/master/DemoMain.cpp)
@@ -123,7 +134,7 @@ if(DEMO)
 
 endif()
 
-if(OSSL)
+if(ALL OR OSSL)
 
   # ---- osslcrypto library ----
   file(GLOB_RECURSE osslcrypto_SRC ./cpp/libs/osslcrypto/src/osslcrypto/*.cpp)
@@ -134,7 +145,7 @@ if(OSSL)
   install(TARGETS osslcrypto DESTINATION lib)
   install(DIRECTORY ./cpp/libs/osslcrypto/src/osslcrypto/ DESTINATION include/osslcrypto ${INSTALL_ARGS})
 
-  if(DEMO)
+  if(ALL OR DEMO)
 
   # ----- outstation SAv5 demo executable -----
   add_executable (outstationdemoSA ./cpp/examples/secauth/outstation/DemoMain.cpp)
@@ -148,7 +159,7 @@ if(OSSL)
 
 endif()
 
-if(TEST)
+if(ALL OR TEST)
 
   # ----- testlib library ------
   file(GLOB_RECURSE testlib_SRC ./cpp/tests/testlib/src/testlib/*.cpp)

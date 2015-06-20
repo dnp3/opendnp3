@@ -69,7 +69,7 @@ openpal::ReadBufferView TransportTx::GetSegment()
 		bool fin = (numToSend == apdu.Size());
 		tpduBuffer()[0] = GetHeader(fir, fin, sequence);
 
-		FORMAT_LOG_BLOCK(logger, flags::TRANSPORT_TX, "FIR: %d FIN: %d SEQ: %u LEN: %u", fir, fin, sequence, numToSend);
+		FORMAT_LOG_BLOCK(logger, flags::TRANSPORT_TX, "FIR: %d FIN: %d SEQ: %u LEN: %u", fir, fin, sequence.Get(), numToSend);
 		
 		if (pStatistics)
 		{
