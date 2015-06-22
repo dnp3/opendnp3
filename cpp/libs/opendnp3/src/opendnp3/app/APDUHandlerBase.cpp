@@ -30,7 +30,6 @@ APDUHandlerBase::APDUHandlerBase(openpal::Logger logger_) :
 	ignoredHeaders(0),
 	errors(),
 	cto(0),
-	ctoHeader(-1),
 	ctoMode(TimestampMode::INVALID),
 	currentHeader(0)
 {
@@ -47,7 +46,6 @@ void APDUHandlerBase::Reset()
 	ignoredHeaders = 0;
 	errors.Clear();
 	cto = 0;
-	ctoHeader = 0;
 	ctoMode = TimestampMode::INVALID;
 	currentHeader = 0;
 }
@@ -93,7 +91,6 @@ void APDUHandlerBase::OnCountOf(const HeaderRecord& record, const opendnp3::Iter
 	if (times.ReadOnlyValue(object))
 	{
 		cto = object.time;
-		ctoHeader = currentHeader;
 		ctoMode = TimestampMode::SYNCHRONIZED;
 	}
 	++currentHeader;
@@ -105,7 +102,6 @@ void APDUHandlerBase::OnCountOf(const HeaderRecord& record, const opendnp3::Iter
 	if (times.ReadOnlyValue(object))
 	{
 		cto = object.time;
-		ctoHeader = currentHeader;
 		ctoMode = TimestampMode::UNSYNCHRONIZED;
 	}
 	++currentHeader;
@@ -644,9 +640,9 @@ IINField APDUHandlerBase::ProcessIndexPrefix(const HeaderRecord& record, const I
 	return ProcessUnsupportedHeader();
 }
 
-TimestampMode APDUHandlerBase::GetCTO(uint64_t& cto_)
+TimestampMode APDUHandlerBase::GetPriorCTO(uint64_t& cto_)
 {
-	if((ctoMode != TimestampMode::INVALID) && (currentHeader == (ctoHeader + 1)))
+	if(ctoMode != TimestampMode::INVALID)
 	{
 		cto_ = cto;
 		return ctoMode;

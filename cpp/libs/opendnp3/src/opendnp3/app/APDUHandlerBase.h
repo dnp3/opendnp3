@@ -130,7 +130,7 @@ public:
 protected:
 
 	void Reset();
-	TimestampMode GetCTO(uint64_t& cto);
+	TimestampMode GetPriorCTO(uint64_t& cto);
 
 	inline uint32_t GetCurrentHeader()
 	{
@@ -204,7 +204,6 @@ private:
 	static TimestampMode ModeFromType(GroupVariation gv);
 
 	uint64_t cto;
-	uint32_t ctoHeader;
 	TimestampMode ctoMode;
 
 	uint32_t currentHeader;
@@ -223,7 +222,7 @@ template <class T>
 IINField APDUHandlerBase::ProcessIndexPrefixCTO(const HeaderRecord& record, const IterableBuffer<IndexedValue<T, uint16_t>>& meas)
 {
 	uint64_t commonTime;
-	auto mode = GetCTO(commonTime);
+	auto mode = GetPriorCTO(commonTime);
 	if (mode != TimestampMode::INVALID)
 	{
 		auto transform = MapIterableBuffer< IndexedValue<T, uint16_t>, IndexedValue<T, uint16_t> >(&meas,
