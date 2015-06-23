@@ -35,7 +35,7 @@ namespace opendnp3
 		application(),
 		master(exe, log.root, lower, meas, application, params, lock),
 		crypto(),
-		user(),
+		user(secauth::User::Default()),
 		auth(application, exe, log.GetLogger(), crypto, user)
 	{
 		master.SetAuthProvider(auth);

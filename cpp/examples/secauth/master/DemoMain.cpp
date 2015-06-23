@@ -41,7 +41,7 @@ using namespace asiodnp3;
 using namespace opendnp3;
 using namespace secauth;
 
-void AddDefaultUser(secauth::SimpleMasterUser& user)
+void SetUpdateKey(secauth::SimpleMasterUser& user)
 {
 	// add a 128-bit demo key of all 0xFF
 	openpal::StaticBuffer<16> key;
@@ -55,8 +55,8 @@ int main(int argc, char* argv[])
 	osslcrypto::CryptoProvider crypto;
 
 	// The user interface for the master
-	SimpleMasterUser user;
-	AddDefaultUser(user);
+	SimpleMasterUser user(User::Default());
+	SetUpdateKey(user);
 
 	// Specify what log levels to use. NORMAL is warning and above
 	// You can add all the comms logging by uncommenting below
