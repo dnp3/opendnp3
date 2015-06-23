@@ -30,7 +30,7 @@ using Automatak.DNP3.Interface;
 namespace DotNetMasterDemo
 {
     class Program
-    {
+    {        
         static int Main(string[] args)
         {
             IDNP3Manager mgr = DNP3ManagerFactory.CreateManager();            
@@ -52,7 +52,8 @@ namespace DotNetMasterDemo
                 key[i] = 0xFF;
             }
 
-            var user = new SimpleMasterUser(UpdateKeyMode.AES128, key);
+            
+            var user = new SimpleMasterUser(User.Default, GetHardwiredUpdateKey(0xFF));
 
             var master = channel.AddMaster("master", PrintingSOEHandler.Instance, DefaultMasterApplication.Instance, config, user);            
             
@@ -103,6 +104,16 @@ namespace DotNetMasterDemo
                         break;
                 }                           
             }                            
+        }
+
+        static byte[] GetHardwiredUpdateKey(byte fill)
+        {
+            var key = new byte[16];
+            for (int i = 0; i < key.Length; ++i)
+            {
+                key[i] = fill;
+            }
+            return key;
         }
     }
 }

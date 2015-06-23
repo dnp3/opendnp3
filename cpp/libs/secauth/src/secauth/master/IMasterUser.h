@@ -32,16 +32,17 @@ namespace secauth
 {	
 
 /** 
-	An interface for retrieving info about users on the master
+	An interface for retrieving info the configured user on the master
 
-	This interface may be given out to multiple master instances on multiple threads, 
-	and therefore should be thread-safe.
+	TODO: make this a multi-user interface	
 */
 class IMasterUser
 {
 	public:				
+
+		virtual User GetUser() = 0;
 		
-		virtual opendnp3::UpdateKeyMode GetUpdateKey(openpal::ReadBufferView& key) = 0;
+		virtual opendnp3::UpdateKeyMode GetUpdateKey(openpal::ReadBufferView& key) = 0;		
 };
 
 }

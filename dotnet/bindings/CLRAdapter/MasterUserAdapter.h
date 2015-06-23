@@ -28,6 +28,8 @@ namespace Automatak
 				
 				virtual opendnp3::UpdateKeyMode GetUpdateKey(openpal::ReadBufferView& key) sealed;
 
+				virtual secauth::User GetUser() sealed;
+
 			private:
 
 				std::unique_ptr<openpal::Buffer> keyBuffer;

@@ -29,15 +29,27 @@ namespace Automatak.DNP3.Interface
 {
     public class UpdateKey
     {
-        public UpdateKey(UpdateKeyMode keyMode, byte[] key)
+        public UpdateKey(byte[] key)
         {
-            this.keyMode = keyMode;
-            this.key = key;
+            this.keyMode = GetModeFromKeyLength(key.Length);
+            this.key = key;            
         }
 
-        public readonly UpdateKeyMode keyMode;
-        public readonly byte[] key;
+        static UpdateKeyMode GetModeFromKeyLength(int length)
+        {
+            switch (length)
+            { 
+                case(16):
+                    return UpdateKeyMode.AES128;
+                case(32):
+                    return UpdateKeyMode.AES128;
+                default:
+                    throw new ArgumentException(String.Format("Invalid update key length: {0}", length));
+            }
+        }
         
+        public readonly UpdateKeyMode keyMode;
+        public readonly byte[] key;        
     };
 
 
@@ -46,7 +58,12 @@ namespace Automatak.DNP3.Interface
     /// </summary>
     public interface IMasterUser
     {
-        UpdateKey DefaultUserUpdateKey
+        User UserNumber
+        {
+            get;
+        }
+
+        UpdateKey UpdateKey
         {
             get;
         }
@@ -55,17 +72,22 @@ namespace Automatak.DNP3.Interface
     public class SimpleMasterUser : IMasterUser
     {
         readonly UpdateKey key;
+        readonly User user;
 
-        public SimpleMasterUser(UpdateKeyMode keyMode, byte[] key)
+        public SimpleMasterUser(User user, byte[] key)
         {
-            this.key = new UpdateKey(keyMode, key);
+            this.user = user;
+            this.key = new UpdateKey(key);
         }
 
-
-
-        UpdateKey IMasterUser.DefaultUserUpdateKey
+        UpdateKey IMasterUser.UpdateKey
         {
             get { return key; }
+        }     
+
+        User IMasterUser.UserNumber
+        {
+            get { return user; }
         }
     }
 

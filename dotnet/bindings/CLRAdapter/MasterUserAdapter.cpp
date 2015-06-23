@@ -5,17 +5,17 @@
 
 namespace Automatak
 {
-	namespace DNP3
-	{
-		namespace Adapter
-		{
+namespace DNP3
+{
+namespace Adapter
+{
 			
 MasterUserAdapter::MasterUserAdapter(Automatak::DNP3::Interface::IMasterUser^ proxy_) : proxy(proxy_)
 {}
 				
 opendnp3::UpdateKeyMode MasterUserAdapter::GetUpdateKey(openpal::ReadBufferView& key)
 {
-	auto keyInfo = proxy->DefaultUserUpdateKey;
+	auto keyInfo = proxy->UpdateKey;
 	
 	this->keyBuffer = std::make_unique<openpal::Buffer>(keyInfo->key->Length);
 	
@@ -29,11 +29,12 @@ opendnp3::UpdateKeyMode MasterUserAdapter::GetUpdateKey(openpal::ReadBufferView&
 	return (opendnp3::UpdateKeyMode) keyInfo->keyMode;	
 }
 
-		
-
-
-		}
-	}
+secauth::User MasterUserAdapter::GetUser()
+{
+	return secauth::User(proxy->UserNumber->Number);
 }
+	
+}}} //end ns
+
 
 
