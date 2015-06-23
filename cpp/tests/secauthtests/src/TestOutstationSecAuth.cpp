@@ -32,7 +32,7 @@ using namespace secauth;
 using namespace openpal;
 using namespace testlib;
 
-#define SUITE(name) "OutstationSecAuthFixtureSuite - " name\
+#define SUITE(name) "OutstationSecAuthSuite - " name
 
 void TestSessionKeyChange(OutstationSecAuthFixture& fixture, User user, KeyWrapAlgorithm keyWrap, HMACMode hmacMode);
 void SetMockKeyWrapData(MockCryptoProvider& crypto, KeyWrapAlgorithm keyWrap, const std::string& lastStatusRsp);

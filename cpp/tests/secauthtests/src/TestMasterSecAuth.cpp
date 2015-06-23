@@ -18,36 +18,32 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#include <catch.hpp>
 
-#include "MasterSecAuthFixture.h"
+#include "fixtures/MasterSecAuthFixture.h"
 
-#include <testlib/BufferHelpers.h>
+#include <dnp3mocks/APDUHexBuilders.h>
 
+#include <testlib/HexConversions.h>
+
+using namespace std;
+using namespace opendnp3;
+using namespace secauth;
+using namespace openpal;
 using namespace testlib;
 
-namespace opendnp3
-{	
-	MasterSecAuthFixture::MasterSecAuthFixture(const MasterParams& params, secauth::User user_, ITaskLock& lock) :
-		log(),
-		exe(),
-		meas(),
-		lower(log.root),
-		application(),
-		master(exe, log.root, lower, meas, application, params, lock),
-		crypto(),
-		user(user_),
-		auth(application, exe, log.GetLogger(), crypto, user)
-	{
-		master.SetAuthProvider(auth);
-	}
+#define SUITE(name) "MasterSecAuthSuite - " name
 
-	void MasterSecAuthFixture::SendToMaster(const std::string& hex)
-	{
-		HexSequence hs(hex);
-		master.OnReceive(hs.ToReadOnly());
-	}
+TEST_CASE(SUITE("ChangeSessionKeys-AES128-SHA256-16"))
+{		
+	MasterParams params;
+	User user(5);
+	MasterSecAuthFixture fixture(params, user);
+	
+	fixture.master.OnLowerLayerUp();
 
+	REQUIRE(fixture.exe.RunMany() > 0);
+	
+	REQUIRE(fixture.lower.PopWriteAsHex() == hex::RequestKeyStatus(0, user.GetId()));
 }
-
-
 

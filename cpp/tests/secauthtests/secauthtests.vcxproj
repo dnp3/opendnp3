@@ -173,6 +173,7 @@
     <ClCompile Include="src\fixtures\OutstationSecAuthFixture.cpp" />
     <ClCompile Include="src\TestAggressiveModeHMACParsing.cpp" />
     <ClCompile Include="src\TestAggressiveModeParsing.cpp" />
+    <ClCompile Include="src\TestMasterSecAuth.cpp" />
     <ClCompile Include="src\TestOutstationSecAuth.cpp" />
   </ItemGroup>
   <ItemGroup>

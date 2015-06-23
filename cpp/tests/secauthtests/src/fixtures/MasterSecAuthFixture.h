@@ -44,7 +44,7 @@ namespace opendnp3
 	{
 	public:
 
-		MasterSecAuthFixture(const MasterParams& params, ITaskLock& lock = NullTaskLock::Instance());
+		MasterSecAuthFixture(const MasterParams& params, secauth::User user = secauth::User::Default(), ITaskLock& lock = NullTaskLock::Instance());
 
 		void SendToMaster(const std::string& hex);		
 

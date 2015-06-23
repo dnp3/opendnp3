@@ -46,7 +46,7 @@ MasterAuthProvider::MasterAuthProvider(
 	IMasterUser& user
 	) : 
 	msstate(application, executor, crypto, user),
-	sessionKeyTask(application, TimeDuration::Seconds(5), logger, User::Default(), msstate)
+	sessionKeyTask(application, TimeDuration::Seconds(5), logger, user.GetUser(), msstate)
 {
 
 }
@@ -148,11 +148,10 @@ void  MasterAuthProvider::OnAuthChallenge(const openpal::ReadBufferView& apdu, c
 		SIMPLE_LOG_BLOCK(pMState->logger, flags::ERR, "Unable to calculate HMAC value");
 		return;
 	}
-	
-	
+		
 	Group120Var2 challengeReply;
 	challengeReply.challengeSeqNum = challenge.challengeSeqNum;
-	challengeReply.userNum = User::DEFAULT_ID;
+	challengeReply.userNum = msstate.pUser->GetUser().GetId();
 	challengeReply.hmacValue = hmacValue;
 	
 	APDURequest reply(msstate.challengeReplyBuffer.GetWriteBufferView());
@@ -168,7 +167,7 @@ void  MasterAuthProvider::OnAuthChallenge(const openpal::ReadBufferView& apdu, c
 	pMState->Transmit(reply.ToReadOnly());
 }
 
-void  MasterAuthProvider::OnAuthError(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const opendnp3::Group120Var7& error)
+void MasterAuthProvider::OnAuthError(const openpal::ReadBufferView& apdu, const opendnp3::APDUHeader& header, const opendnp3::Group120Var7& error)
 {
 	FORMAT_LOG_BLOCK(pMState->logger, flags::WARN,
 		"Received auth error from outstation w/ code: %s",
