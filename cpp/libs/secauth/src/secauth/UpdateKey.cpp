@@ -18,52 +18,44 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTH_SIMPLEMASTERUSER_H
-#define SECAUTH_SIMPLEMASTERUSER_H
 
-#include "IMasterUser.h"
-#include "secauth/UpdateKey.h"
-
-#include <openpal/container/Buffer.h>
-
-#include <map>
-#include <memory>
+#include "UpdateKey.h"
 
 namespace secauth
 {
 
-/**
-	A very simple update key store for the default user
-*/
-class SimpleMasterUser : public IMasterUser
+UpdateKey::UpdateKey() :
+	updateKeyMode(opendnp3::UpdateKeyMode::AES128),			
+	buffer(32),
+	updateKeyView(buffer.ToReadOnly().Take(16))
 {
-	public:
+	buffer.GetWriteBufferView().SetAllTo(0xFF);
+}
 
-		SimpleMasterUser(User user_) :  user(user_)
-		{}
-
-		virtual opendnp3::UpdateKeyMode GetUpdateKey(openpal::ReadBufferView& key) override final
-		{
-			return this->key.GetKeyInfo(key);
-		}
-
-		virtual User GetUser() override final
-		{
-			return user;
-		}
-		
-		bool SetUpdateKey(const openpal::ReadBufferView& key)
-		{
-			return this->key.SetUpdateKey(key);
-		}
-
-	private:
-
-		User user;
-		UpdateKey key;
-};
+opendnp3::UpdateKeyMode UpdateKey::GetKeyInfo(openpal::ReadBufferView& key) const
+{
+	key = updateKeyView;
+	return updateKeyMode;
+}
+				
+bool UpdateKey::SetUpdateKey(const openpal::ReadBufferView& key)
+{
+	switch (key.Size())
+	{
+	case(16) :
+		this->updateKeyMode = opendnp3::UpdateKeyMode::AES128;
+		this->updateKeyView = key.CopyTo(buffer.GetWriteBufferView());
+		return true;
+	case(32):
+		this->updateKeyMode = opendnp3::UpdateKeyMode::AES256;
+		this->updateKeyView = key.CopyTo(buffer.GetWriteBufferView());
+		return true;
+	default:
+		return false;
+	}
+}
 
 }
 
-#endif
+
 

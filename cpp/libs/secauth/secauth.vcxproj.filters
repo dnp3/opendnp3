@@ -125,6 +125,9 @@
     <ClInclude Include="src\secauth\master\SimpleMasterUser.h">
       <Filter>Header Files\master</Filter>
     </ClInclude>
+    <ClInclude Include="src\secauth\UpdateKey.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\secauth\master\MasterAuthProvider.cpp">
@@ -206,6 +209,9 @@
       <Filter>Source Files\master</Filter>
     </ClCompile>
     <ClCompile Include="src\secauth\Session.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\secauth\UpdateKey.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -52,6 +52,7 @@
     <ClInclude Include="src\secauth\SessionKeys.h" />
     <ClInclude Include="src\secauth\SessionKeysView.h" />
     <ClInclude Include="src\secauth\SessionStore.h" />
+    <ClInclude Include="src\secauth\UpdateKey.h" />
     <ClInclude Include="src\secauth\User.h" />
   </ItemGroup>
   <ItemGroup>
@@ -82,6 +83,7 @@
     <ClCompile Include="src\secauth\SessionKeys.cpp" />
     <ClCompile Include="src\secauth\SessionKeysView.cpp" />
     <ClCompile Include="src\secauth\SessionStore.cpp" />
+    <ClCompile Include="src\secauth\UpdateKey.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D4B3A5CB-BE31-44FC-BA64-977615980740}</ProjectGuid>

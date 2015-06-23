@@ -103,7 +103,7 @@ TEST_CASE(SUITE("Non-critical requests are not challenged"))
 TEST_CASE(SUITE("Critical requests can be challenged and processed"))
 {
 	OutstationAuthSettings settings;	
-	OutstationSecAuthFixture fixture(settings);
+	OutstationSecAuthFixture fixture(settings);	
 
 	fixture.AddUser(User::Default(), UpdateKeyMode::AES256, 0xFF);
 	

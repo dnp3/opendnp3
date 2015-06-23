@@ -18,49 +18,46 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTH_SIMPLEMASTERUSER_H
-#define SECAUTH_SIMPLEMASTERUSER_H
-
-#include "IMasterUser.h"
-#include "secauth/UpdateKey.h"
+#ifndef SECAUTH_UPDATEKEY_H
+#define SECAUTH_UPDATEKEY_H
 
 #include <openpal/container/Buffer.h>
+#include <opendnp3/gen/UpdateKeyMode.h>
 
-#include <map>
-#include <memory>
+#include "secauth/User.h"
 
 namespace secauth
 {
 
 /**
-	A very simple update key store for the default user
+	Stores and provides read/write access to an update key
 */
-class SimpleMasterUser : public IMasterUser
+class UpdateKey
 {
 	public:
-
-		SimpleMasterUser(User user_) :  user(user_)
-		{}
-
-		virtual opendnp3::UpdateKeyMode GetUpdateKey(openpal::ReadBufferView& key) override final
-		{
-			return this->key.GetKeyInfo(key);
-		}
-
-		virtual User GetUser() override final
-		{
-			return user;
-		}
 		
-		bool SetUpdateKey(const openpal::ReadBufferView& key)
-		{
-			return this->key.SetUpdateKey(key);
-		}
+		/**
+		* Construct a default update key of all 0xFF
+		*/
+		UpdateKey();
+
+		/**
+		* Retrieve update key information
+		*/
+		opendnp3::UpdateKeyMode GetKeyInfo(openpal::ReadBufferView& key) const;
+				
+		/**
+		* Only accepts 128 or 256 bit update keys
+		*
+		* returns true if the key was of valid size, false otherwise		
+		*/
+		bool SetUpdateKey(const openpal::ReadBufferView& key);
 
 	private:
-
-		User user;
-		UpdateKey key;
+		
+		opendnp3::UpdateKeyMode updateKeyMode;
+		openpal::Buffer buffer;
+		openpal::ReadBufferView updateKeyView;		
 };
 
 }

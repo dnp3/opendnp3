@@ -39,11 +39,28 @@ TEST_CASE(SUITE("ChangeSessionKeys-AES128-SHA256-16"))
 	MasterParams params;
 	User user(5);
 	MasterSecAuthFixture fixture(params, user);
-	
+
+	auto MOCK_KEY_WRAP_DATA = "DEADBEEF";	
+	fixture.crypto.aes128.hexOutput = MOCK_KEY_WRAP_DATA; // set mock key wrap data
+
 	fixture.master.OnLowerLayerUp();
 
-	REQUIRE(fixture.exe.RunMany() > 0);
-	
+	REQUIRE(fixture.exe.RunMany() > 0);	
 	REQUIRE(fixture.lower.PopWriteAsHex() == hex::RequestKeyStatus(0, user.GetId()));
+	fixture.master.OnSendResult(true);
+
+	fixture.SendToMaster(hex::KeyStatusResponse(
+		IINField::Empty(),
+		0,
+		0,
+		user.GetId(),
+		KeyWrapAlgorithm::AES_128,
+		KeyStatus::NOT_INIT,
+		HMACType::HMAC_SHA1_TRUNC_10,
+		"FF FF FF FF", // challenge
+		"" // no hmac
+	));
+
+	REQUIRE(fixture.lower.PopWriteAsHex() == hex::KeyChangeRequest(1, 0, user.GetId(), MOCK_KEY_WRAP_DATA));
 }
 

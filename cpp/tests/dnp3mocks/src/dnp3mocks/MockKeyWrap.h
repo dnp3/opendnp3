@@ -31,31 +31,38 @@ namespace opendnp3
 {
 	class MockKeyWrap : public openpal::IKeyWrapAlgo
 	{
-	public:		
+	public:				
 
 		virtual openpal::ReadBufferView WrapKey(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output, openpal::Logger* pLogger) const
 		{
-			throw std::logic_error("not implemented");
+			return WrapOrUnwrap(kek, input, output, pLogger);
 		}
 		
 		virtual openpal::ReadBufferView UnwrapKey(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output, openpal::Logger* pLogger) const
 		{
-			if (kek.Size() < 16 || kek.Size() > 32)
+			return WrapOrUnwrap(kek, input, output, pLogger);
+		}
+			
+		std::string hexOutput;		
+
+	private:
+
+		openpal::ReadBufferView WrapOrUnwrap(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output, openpal::Logger* pLogger) const
+		{
+			if (!(kek.Size() == 16 || kek.Size() == 32))
 			{
-				throw std::logic_error("bad key size");
+				throw std::logic_error("MockKeyWrap: bad key size");
 			}
 
 			testlib::HexSequence hex(hexOutput);
 			auto data = hex.ToReadOnly();
 			if (output.Size() < data.Size())
 			{
-				throw std::logic_error("Output buffer too small");
+				throw std::logic_error("MockKeyWrap: Output buffer too small");
 			}
 
 			return data.CopyTo(output);
 		}
-
-		std::string hexOutput;		
 	};
 }
 
