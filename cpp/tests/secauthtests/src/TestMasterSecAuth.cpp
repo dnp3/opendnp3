@@ -41,6 +41,7 @@ TEST_CASE(SUITE("ChangeSessionKeys-AES128-SHA256-16"))
 	MasterSecAuthFixture fixture(params, user);
 
 	auto MOCK_KEY_WRAP_DATA = "DEADBEEF";	
+	auto MOCK_HMAC_VALUE = "FFFFFFFFFFFFFFFFFFFF";
 	fixture.crypto.aes128.hexOutput = MOCK_KEY_WRAP_DATA; // set mock key wrap data
 
 	fixture.master.OnLowerLayerUp();
@@ -51,8 +52,8 @@ TEST_CASE(SUITE("ChangeSessionKeys-AES128-SHA256-16"))
 
 	fixture.SendToMaster(hex::KeyStatusResponse(
 		IINField::Empty(),
-		0,
-		0,
+		0, // seq
+		0, // ksq
 		user.GetId(),
 		KeyWrapAlgorithm::AES_128,
 		KeyStatus::NOT_INIT,
@@ -62,5 +63,21 @@ TEST_CASE(SUITE("ChangeSessionKeys-AES128-SHA256-16"))
 	));
 
 	REQUIRE(fixture.lower.PopWriteAsHex() == hex::KeyChangeRequest(1, 0, user.GetId(), MOCK_KEY_WRAP_DATA));
+	fixture.master.OnSendResult(true);
+
+	fixture.SendToMaster(hex::KeyStatusResponse(
+		IINField::Empty(),
+		1, // seq
+		0, // ksq
+		user.GetId(),
+		KeyWrapAlgorithm::AES_128,
+		KeyStatus::OK,
+		HMACType::HMAC_SHA1_TRUNC_10,
+		"FF FF FF FF",	// challenge
+		MOCK_HMAC_VALUE
+	));
+	REQUIRE(fixture.exe.RunMany() > 0);
+
+	REQUIRE(fixture.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 2, ClassField::AllEventClasses()));
 }
 
