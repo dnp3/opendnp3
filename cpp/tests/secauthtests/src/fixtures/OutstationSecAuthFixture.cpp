@@ -46,15 +46,16 @@ namespace opendnp3
 		outstation.SetAuthProvider(auth);
 	}
 
-	void OutstationSecAuthFixture::AddUser(secauth::User, opendnp3::UpdateKeyMode mode, uint8_t keyRepeat)
+	void OutstationSecAuthFixture::AddUser(secauth::User, opendnp3::UpdateKeyMode mode, uint8_t keyRepeat, const Permissions& permissions)
 	{
 		auto keySize = (mode == UpdateKeyMode::AES128) ? 16 : 32;
-		openpal::Buffer key(keySize);
-		key.GetWriteBufferView().SetAllTo(keyRepeat);
+		openpal::Buffer buffer(keySize);
+		buffer.GetWriteBufferView().SetAllTo(keyRepeat);
+				
 		users.ConfigureUser(
 			secauth::User::Default(),
-			mode,
-			key.ToReadOnly()
+			UpdateKey(buffer.ToReadOnly()),
+			permissions			
 		);		
 	}
 

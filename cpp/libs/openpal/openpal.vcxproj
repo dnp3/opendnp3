@@ -32,6 +32,7 @@
     <ClInclude Include="src\openpal\container\Pair.h" />
     <ClInclude Include="src\openpal\container\ReadBufferView.h" />
     <ClInclude Include="src\openpal\container\RingBuffer.h" />
+    <ClInclude Include="src\openpal\container\SecureBuffer.h" />
     <ClInclude Include="src\openpal\container\Settable.h" />
     <ClInclude Include="src\openpal\container\StaticBuffer.h" />
     <ClInclude Include="src\openpal\container\WriteBufferView.h" />
@@ -80,6 +81,7 @@
   <ItemGroup>
     <ClCompile Include="src\openpal\container\Buffer.cpp" />
     <ClCompile Include="src\openpal\container\ReadBufferView.cpp" />
+    <ClCompile Include="src\openpal\container\SecureBuffer.cpp" />
     <ClCompile Include="src\openpal\container\WriteBufferView.cpp" />
     <ClCompile Include="src\openpal\crypto\SecureCompare.cpp" />
     <ClCompile Include="src\openpal\executor\Erasure.cpp" />

@@ -53,7 +53,7 @@ public:
 		const OutstationConfig& config = OutstationConfig()		
 	);
 
-	void AddUser(secauth::User, opendnp3::UpdateKeyMode mode, uint8_t keyRepeat);
+	void AddUser(secauth::User, opendnp3::UpdateKeyMode mode, uint8_t keyRepeat, const secauth::Permissions& permissions = secauth::Permissions::AllowAll());
 														
 	uint32_t SendToOutstation(const std::string& hex);
 

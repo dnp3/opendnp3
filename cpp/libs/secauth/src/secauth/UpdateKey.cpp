@@ -25,32 +25,49 @@ namespace secauth
 {
 
 UpdateKey::UpdateKey() :
+	isValid(false),
 	updateKeyMode(opendnp3::UpdateKeyMode::AES128),			
-	buffer(32),
+	buffer(32, 0xFF),
 	updateKeyView(buffer.ToReadOnly().Take(16))
 {
-	buffer.GetWriteBufferView().SetAllTo(0xFF);
+	
 }
 
-opendnp3::UpdateKeyMode UpdateKey::GetKeyInfo(openpal::ReadBufferView& key) const
+UpdateKey::UpdateKey(const openpal::ReadBufferView& key) : UpdateKey()
 {
-	key = updateKeyView;
+	this->Initialize(key);
+}
+
+bool UpdateKey::IsValid() const
+{
+	return isValid;
+}
+
+openpal::ReadBufferView UpdateKey::GetKeyView() const
+{
+	return updateKeyView;
+}
+
+opendnp3::UpdateKeyMode UpdateKey::GetKeyMode() const
+{
 	return updateKeyMode;
 }
 				
-bool UpdateKey::SetUpdateKey(const openpal::ReadBufferView& key)
+bool UpdateKey::Initialize(const openpal::ReadBufferView& key)
 {
 	switch (key.Size())
 	{
 	case(16) :
+		this->isValid = true;
 		this->updateKeyMode = opendnp3::UpdateKeyMode::AES128;
 		this->updateKeyView = key.CopyTo(buffer.GetWriteBufferView());
 		return true;
 	case(32):
+		this->isValid = true;
 		this->updateKeyMode = opendnp3::UpdateKeyMode::AES256;
 		this->updateKeyView = key.CopyTo(buffer.GetWriteBufferView());
 		return true;
-	default:
+	default:		
 		return false;
 	}
 }

@@ -36,8 +36,8 @@ bool SimpleOutstationUserDatabase::GetUpdateKey(const User& user, UpdateKeyMode&
 	}
 	else
 	{
-		type = iter->second.first;
-		key = iter->second.second->ToReadOnly();
+		type = iter->second.key.GetKeyMode();
+		key = iter->second.key.GetKeyView();
 		return true;
 	}
 }
@@ -51,15 +51,22 @@ bool SimpleOutstationUserDatabase::GetUpdateKeyType(const User& user, UpdateKeyM
 	}
 	else
 	{
-		type = iter->second.first;		
+		type = iter->second.key.GetKeyMode();
 		return true;
 	}
 }
 
 bool SimpleOutstationUserDatabase::IsAuthorized(const User& user, opendnp3::FunctionCode code) const
 {
-	// for the time being, if the user exists they are authorized
-	return UserExists(user);
+	auto iter = this->userMap.find(user.GetId());
+	if (iter == userMap.end())
+	{
+		return false;
+	}
+	else
+	{
+		return iter->second.permissions.IsAllowed(code);
+	}	
 }
 
 bool SimpleOutstationUserDatabase::UserExists(const User& user) const
@@ -68,9 +75,17 @@ bool SimpleOutstationUserDatabase::UserExists(const User& user) const
 	return iter != userMap.end();
 }
 
-void SimpleOutstationUserDatabase::ConfigureUser(const User& user, UpdateKeyMode type, const openpal::ReadBufferView& key)
+bool SimpleOutstationUserDatabase::ConfigureUser(const User& user, const UpdateKey& key, const Permissions& permissions)
 {
-	userMap[user.GetId()] = StoredUserData(type, std::unique_ptr<openpal::Buffer>(new openpal::Buffer(key)));
+	if (key.IsValid())
+	{
+		userMap[user.GetId()] = UserData(key, permissions);
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 }

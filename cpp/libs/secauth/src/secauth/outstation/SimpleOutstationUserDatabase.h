@@ -23,6 +23,9 @@
 
 #include "IOutstationUserDatabase.h"
 
+#include "secauth/UpdateKey.h"
+#include "secauth/outstation/Permissions.h"
+
 #include <openpal/container/Buffer.h>
 
 #include <map>
@@ -36,6 +39,21 @@ namespace secauth
 */
 class SimpleOutstationUserDatabase : public IOutstationUserDatabase
 {
+	struct UserData
+	{
+	
+		UserData(const UpdateKey& key_, const Permissions& permissions_) :
+			key(key_),
+			permissions(permissions_)
+		{}
+
+		UserData() : key(), permissions(Permissions::AllowNothing())
+		{}
+
+		UpdateKey key;
+		Permissions permissions;
+	};
+
 	public:		
 		
 		virtual bool GetUpdateKey(const User& user, opendnp3::UpdateKeyMode& type, openpal::ReadBufferView& key) const override final;
@@ -47,12 +65,12 @@ class SimpleOutstationUserDatabase : public IOutstationUserDatabase
 		virtual bool UserExists(const User& user) const override final;
 
 		// copies the update key into the key store permanently
-		void ConfigureUser(const User& user, opendnp3::UpdateKeyMode type, const openpal::ReadBufferView& key);
+		// fails if the update key is invalid
+		bool ConfigureUser(const User& user, const UpdateKey& key, const Permissions& permissions);
 
-	private:
+	private:		
 
-		typedef std::pair<opendnp3::UpdateKeyMode, std::unique_ptr<openpal::Buffer>> StoredUserData;
-		std::map<uint16_t, StoredUserData> userMap;
+		std::map<uint16_t, UserData> userMap;
 };
 
 }

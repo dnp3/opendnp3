@@ -128,6 +128,9 @@
     <ClInclude Include="src\secauth\UpdateKey.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\secauth\outstation\Permissions.h">
+      <Filter>Header Files\outstation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\secauth\master\MasterAuthProvider.cpp">
@@ -213,6 +216,9 @@
     </ClCompile>
     <ClCompile Include="src\secauth\UpdateKey.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\secauth\outstation\Permissions.cpp">
+      <Filter>Source Files\outstation</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

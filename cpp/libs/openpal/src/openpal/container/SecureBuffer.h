@@ -18,53 +18,51 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef SECAUTH_SIMPLEMASTERUSER_H
-#define SECAUTH_SIMPLEMASTERUSER_H
+#ifndef OPENPAL_SECUREBUFFER_H
+#define OPENPAL_SECUREBUFFER_H
 
-#include "IMasterUser.h"
-#include "secauth/UpdateKey.h"
+#include "openpal/container/WriteBufferView.h"
+#include "openpal/container/ReadBufferView.h"
 
-#include <openpal/container/Buffer.h>
+#include <cstdint>
 
-#include <map>
-#include <memory>
-
-namespace secauth
+namespace openpal
 {
 
 /**
-	A very simple update key store for the default user
+* A buffer that guarantees that its contents are zero-ed on destruction
 */
-class SimpleMasterUser : public IMasterUser
+class SecureBuffer final
 {
-	public:
 
-		SimpleMasterUser(User user_) : user(user_)			
-		{}
+public:
 
-		virtual opendnp3::UpdateKeyMode GetUpdateKey(openpal::ReadBufferView& key) override final
-		{
-			key = this->key.GetKeyView();
-			return this->key.GetKeyMode();			
-		}
+	SecureBuffer();
 
-		virtual User GetUser() override final
-		{
-			return user;
-		}
-		
-		bool SetUpdateKey(const openpal::ReadBufferView& key)
-		{
-			return this->key.Initialize(key);
-		}
+	SecureBuffer(uint32_t size, uint8_t initialValue);
 
-	private:
+	// manually defined copy/ assignment
+	SecureBuffer(const SecureBuffer&);
+	SecureBuffer& operator= (const SecureBuffer& other);
 
-		User user;
-		UpdateKey key;
+	// initialize with the exact size and contents of the view
+	SecureBuffer(const ReadBufferView& input);
+
+	~SecureBuffer();	
+
+	uint32_t Size() const { return size;  }
+
+	ReadBufferView ToReadOnly() const;
+
+	WriteBufferView GetWriteBufferView();
+	
+private:			
+	
+	uint8_t* pBuffer;
+	uint32_t size;
+
 };
 
 }
 
 #endif
-

@@ -44,17 +44,21 @@ using namespace opendnp3;
 using namespace openpal;
 using namespace asiopal;
 using namespace asiodnp3;
+using namespace secauth;
 
 // Hard-wired configuration of the default user update key for demo purposes
-void AddDefaultUser(secauth::SimpleOutstationUserDatabase& db)
+void AddDefaultUser(SimpleOutstationUserDatabase& db)
 {
 	// add a 128-bit demo key of all 0xFF
-	openpal::StaticBuffer<16> key;
-	key.GetWriteBuffer().SetAllTo(0xFF);
+	openpal::StaticBuffer<16> data;
+	data.GetWriteBuffer().SetAllTo(0xFF);
+
+	UpdateKey key(data.ToReadOnly());	
+
 	db.ConfigureUser(
-		secauth::User::Default(), 
-		opendnp3::UpdateKeyMode::AES128,
-		key.ToReadOnly()
+		secauth::User::Default(),
+		key,
+		Permissions::AllowAll()		
 	);
 }
 

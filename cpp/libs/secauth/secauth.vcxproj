@@ -36,6 +36,7 @@
     <ClInclude Include="src\secauth\master\SessionKeyTask.h" />
     <ClInclude Include="src\secauth\master\SimpleMasterUser.h" />
     <ClInclude Include="src\secauth\outstation\AuthRequestHandler.h" />
+    <ClInclude Include="src\secauth\outstation\Permissions.h" />
     <ClInclude Include="src\secauth\outstation\ChallengeState.h" />
     <ClInclude Include="src\secauth\outstation\IAuthRequestHandler.h" />
     <ClInclude Include="src\secauth\outstation\IOAuthState.h" />
@@ -69,6 +70,7 @@
     <ClCompile Include="src\secauth\master\MasterSecurityState.cpp" />
     <ClCompile Include="src\secauth\master\SessionKeyTask.cpp" />
     <ClCompile Include="src\secauth\outstation\AuthRequestHandler.cpp" />
+    <ClCompile Include="src\secauth\outstation\Permissions.cpp" />
     <ClCompile Include="src\secauth\outstation\ChallengeState.cpp" />
     <ClCompile Include="src\secauth\outstation\IOAuthState.cpp" />
     <ClCompile Include="src\secauth\outstation\KeyChangeState.cpp" />

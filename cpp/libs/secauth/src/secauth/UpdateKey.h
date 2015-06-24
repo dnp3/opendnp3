@@ -21,7 +21,7 @@
 #ifndef SECAUTH_UPDATEKEY_H
 #define SECAUTH_UPDATEKEY_H
 
-#include <openpal/container/Buffer.h>
+#include <openpal/container/SecureBuffer.h>
 #include <opendnp3/gen/UpdateKeyMode.h>
 
 #include "secauth/User.h"
@@ -37,26 +37,42 @@ class UpdateKey
 	public:
 		
 		/**
-		* Construct a default update key of all 0xFF
+		* Construct an invalid default key
 		*/
 		UpdateKey();
 
 		/**
-		* Retrieve update key information
+		* Initialize the key base on a view
 		*/
-		opendnp3::UpdateKeyMode GetKeyInfo(openpal::ReadBufferView& key) const;
-				
+		UpdateKey(const openpal::ReadBufferView& key);
+
+		/**
+		* Retrieve update key view
+		*/
+		openpal::ReadBufferView GetKeyView() const;
+
+		/**
+		* Retrieve the key mode
+		*/
+		opendnp3::UpdateKeyMode GetKeyMode() const;					
+
+		/**
+		* returns true if the key is valid, false otherwise
+		*/
+		bool IsValid() const;
+
 		/**
 		* Only accepts 128 or 256 bit update keys
 		*
-		* returns true if the key was of valid size, false otherwise		
+		* returns true if the key was of valid size, false otherwise
 		*/
-		bool SetUpdateKey(const openpal::ReadBufferView& key);
+		bool Initialize(const openpal::ReadBufferView& key);
 
-	private:
-		
+	private:		
+
+		bool isValid;		
 		opendnp3::UpdateKeyMode updateKeyMode;
-		openpal::Buffer buffer;
+		openpal::SecureBuffer buffer;
 		openpal::ReadBufferView updateKeyView;		
 };
 
