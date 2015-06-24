@@ -131,6 +131,51 @@ TEST_CASE(SUITE("Critical requests can be challenged and processed"))
 	REQUIRE(fixture.lower.PopWriteAsHex() == hex::EmptyResponse(1, IINField(IINBit::DEVICE_RESTART)));
 }
 
+TEST_CASE(SUITE("Outstation enforces permissions for critical functions"))
+{
+	OutstationAuthSettings settings;
+	OutstationSecAuthFixture fixture(settings);
+
+	auto permissions = Permissions::AllowAll();
+	permissions.Deny(FunctionCode::READ);
+
+	fixture.AddUser(User::Default(), UpdateKeyMode::AES256, 0xFF, permissions);
+
+	fixture.LowerLayerUp();
+
+	TestSessionKeyChange(fixture, User::Default(), KeyWrapAlgorithm::AES_256, HMACMode::SHA256_TRUNC_16);
+
+	fixture.SendToOutstation(hex::ClassTask(FunctionCode::READ, 1, ClassField::AllEventClasses()));
+
+	auto challenge = hex::ChallengeResponse(
+		IINBit::DEVICE_RESTART,
+		1, // app-seq
+		1, // csq
+		User::DEFAULT_ID,
+		HMACType::HMAC_SHA256_TRUNC_16,
+		ChallengeReason::CRITICAL,
+		hex::repeat(0xAA, 4)
+		);
+
+	REQUIRE(fixture.lower.PopWriteAsHex() == challenge);
+	fixture.outstation.OnSendResult(true);
+
+	fixture.SendToOutstation(hex::ChallengeReply(1, 1, User::DEFAULT_ID, hex::repeat(0xFF, 16)));
+
+	auto error = hex::AuthErrorResponse(
+		IINBit::DEVICE_RESTART,
+		1,
+		1,
+		User::DEFAULT_ID,
+		0,
+		AuthErrorCode::AUTHORIZATION_FAILED,
+		DNPTime(0),
+		""
+	);
+
+	REQUIRE(fixture.lower.PopWriteAsHex() == error);
+}
+
 void TestSessionKeyChange(OutstationSecAuthFixture& fixture, User user, KeyWrapAlgorithm keyWrap, HMACMode hmacMode)
 {
 	REQUIRE(fixture.lower.HasNoData());

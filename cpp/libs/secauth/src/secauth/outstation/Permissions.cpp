@@ -54,7 +54,7 @@ void Permissions::Deny(FunctionCode code)
 	auto mask = GetMask(code);
 	if (mask.VALID)
 	{
-		this->permissions &= mask.VALUE;
+		this->permissions &= ~mask.VALUE;
 	}
 }
 

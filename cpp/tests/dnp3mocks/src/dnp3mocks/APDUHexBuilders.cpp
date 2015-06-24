@@ -137,6 +137,39 @@ namespace hex
 		return ToHex(apdu.ToReadOnly());
 	}
 
+	std::string AuthErrorResponse(
+		opendnp3::IINField iin,
+		uint8_t appSeq,
+		uint32_t challengeSeqNum,
+		uint16_t user,
+		uint16_t assocId,
+		opendnp3::AuthErrorCode code,
+		opendnp3::DNPTime timestamp,
+		std::string hexErrorText)
+	{
+		Buffer buffer(DEFAULT_MAX_APDU_SIZE);
+		APDUResponse apdu(buffer.GetWriteBufferView());
+
+		apdu.SetControl(AppControlField(true, true, false, false, appSeq));
+		apdu.SetFunction(FunctionCode::AUTH_RESPONSE);
+		apdu.SetIIN(iin);
+
+		HexSequence hexErrorTextBuff(hexErrorText);
+
+		Group120Var7 error(
+			challengeSeqNum,
+			user,
+			assocId,
+			code,
+			timestamp,
+			hexErrorTextBuff.ToReadOnly()
+			);
+
+		apdu.GetWriter().WriteFreeFormat(error);
+
+		return ToHex(apdu.ToReadOnly());
+	}
+
 	std::string ChallengeResponse(
 		opendnp3::IINField iin,
 		uint8_t seq,

@@ -25,6 +25,8 @@
 #include <string>
 #include <cstdint>
 
+#include <opendnp3/Types.h>
+
 #include <opendnp3/gen/PointClass.h>
 #include <opendnp3/app/IINField.h>
 #include <opendnp3/gen/FunctionCode.h>
@@ -33,6 +35,8 @@
 #include <opendnp3/gen/KeyStatus.h>
 #include <opendnp3/gen/HMACType.h>
 #include <opendnp3/gen/ChallengeReason.h>
+#include <opendnp3/gen/AuthErrorCode.h>
+
 
 namespace hex
 {
@@ -72,11 +76,21 @@ namespace hex
 
 	std::string RequestKeyStatus(uint8_t seq, uint16_t user);
 
+	std::string AuthErrorResponse(
+		opendnp3::IINField iin,
+		uint8_t appSeq,
+		uint32_t challengeSeqNum,
+		uint16_t user,
+		uint16_t assocId,
+		opendnp3::AuthErrorCode code,
+		opendnp3::DNPTime timestamp,
+		std::string hexText);
+
 	std::string ChallengeResponse(
 		opendnp3::IINField iin,
 		uint8_t seq,
 		uint32_t csq,
-		uint16_t user,
+		uint16_t user,		
 		opendnp3::HMACType hmacType,
 		opendnp3::ChallengeReason reason,
 		std::string challengeDataHex
