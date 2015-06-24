@@ -34,19 +34,66 @@ using namespace testlib;
 
 #define SUITE(name) "MasterSecAuthSuite - " name
 
-TEST_CASE(SUITE("ChangeSessionKeys-AES128-SHA256-16"))
+auto MOCK_KEY_WRAP_DATA = "DEADBEEF";
+auto MOCK_HMAC_VALUE = "FFFFFFFFFFFFFFFFFFFF";
+
+void TestSessionKeyExchange(MasterSecAuthFixture& fixture, User user);
+
+TEST_CASE(SUITE("ChangeSessionKeys-AES128-SHA1-10"))
 {		
 	MasterParams params;
 	User user(5);
 	MasterSecAuthFixture fixture(params, user);
+		
+	fixture.master.OnLowerLayerUp();
 
-	auto MOCK_KEY_WRAP_DATA = "DEADBEEF";	
-	auto MOCK_HMAC_VALUE = "FFFFFFFFFFFFFFFFFFFF";
-	fixture.crypto.aes128.hexOutput = MOCK_KEY_WRAP_DATA; // set mock key wrap data
+	TestSessionKeyExchange(fixture, user);
+
+	// next task should be diable unsol w/ this configuration
+	REQUIRE(fixture.exe.RunMany() > 0);
+	REQUIRE(fixture.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 2, ClassField::AllEventClasses()));
+}
+
+TEST_CASE(SUITE("Master authenticates using configured user"))
+{
+	MasterParams params;
+	User user(7);
+	MasterSecAuthFixture fixture(params, user);
 
 	fixture.master.OnLowerLayerUp();
 
-	REQUIRE(fixture.exe.RunMany() > 0);	
+	TestSessionKeyExchange(fixture, user);
+	// next task should be diable unsol w/ this configuration
+	REQUIRE(fixture.exe.RunMany() > 0);
+	REQUIRE(fixture.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 2, ClassField::AllEventClasses()));
+	fixture.master.OnSendResult(true);
+
+	// respond w/ a challenge
+	fixture.SendToMaster(hex::ChallengeResponse(
+		IINField::Empty(),
+		2, // seq
+		0, // csq
+		0, // unknown user
+		HMACType::HMAC_SHA1_TRUNC_10,
+		ChallengeReason::CRITICAL,
+		"AA AA AA AA"
+	));
+
+	REQUIRE(fixture.lower.PopWriteAsHex() == hex::ChallengeReply(2, 0, user.GetId(), MOCK_HMAC_VALUE));
+	fixture.master.OnSendResult(true);
+
+	fixture.SendToMaster(hex::EmptyResponse(2));
+	REQUIRE(fixture.exe.RunMany() > 0);
+
+	// next task should be integrity poll
+	REQUIRE(fixture.lower.PopWriteAsHex() == hex::IntegrityPoll(3));
+}
+
+void TestSessionKeyExchange(MasterSecAuthFixture& fixture, User user)
+{
+	fixture.crypto.aes128.hexOutput = MOCK_KEY_WRAP_DATA; // set mock key wrap data
+
+	REQUIRE(fixture.exe.RunMany() > 0);
 	REQUIRE(fixture.lower.PopWriteAsHex() == hex::RequestKeyStatus(0, user.GetId()));
 	fixture.master.OnSendResult(true);
 
@@ -60,7 +107,7 @@ TEST_CASE(SUITE("ChangeSessionKeys-AES128-SHA256-16"))
 		HMACType::HMAC_SHA1_TRUNC_10,
 		"FF FF FF FF", // challenge
 		"" // no hmac
-	));
+		));
 
 	REQUIRE(fixture.lower.PopWriteAsHex() == hex::KeyChangeRequest(1, 0, user.GetId(), MOCK_KEY_WRAP_DATA));
 	fixture.master.OnSendResult(true);
@@ -75,9 +122,5 @@ TEST_CASE(SUITE("ChangeSessionKeys-AES128-SHA256-16"))
 		HMACType::HMAC_SHA1_TRUNC_10,
 		"FF FF FF FF",	// challenge
 		MOCK_HMAC_VALUE
-	));
-	REQUIRE(fixture.exe.RunMany() > 0);
-
-	REQUIRE(fixture.lower.PopWriteAsHex() == hex::ClassTask(FunctionCode::DISABLE_UNSOLICITED, 2, ClassField::AllEventClasses()));
+		));
 }
-
