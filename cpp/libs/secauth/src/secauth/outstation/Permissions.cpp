@@ -26,38 +26,7 @@ using namespace opendnp3;
 namespace secauth
 {
 	
-Permissions::Permissions(bool allowByDefault) :
-	confirm(allowByDefault),
-	read(allowByDefault),
-	write(allowByDefault),
-	select(allowByDefault),
-	operate(allowByDefault),
-	directOperate(allowByDefault),
-	directOperateNR(allowByDefault),
-	immediateFreeze(allowByDefault),
-	immediateFreezeNR(allowByDefault),
-	freezeClear(allowByDefault),
-	freezeClearNR(allowByDefault),
-	freezeAtTime(allowByDefault),
-	freezeAtTimeNR(allowByDefault),
-	coldRestart(allowByDefault),
-	warmRestart(allowByDefault),
-	initializeData(allowByDefault),
-	initializeApplication(allowByDefault),
-	startApplication(allowByDefault),
-	stopApplication(allowByDefault),
-	saveConfiguration(allowByDefault),
-	enableUnsolicited(allowByDefault),
-	disableUnsolicited(allowByDefault),
-	assignClass(allowByDefault),
-	delayMeasure(allowByDefault),
-	recordCurrentTime(allowByDefault),
-	openFile(allowByDefault),
-	closeFile(allowByDefault),
-	deleteFile(allowByDefault),
-	getFileInfo(allowByDefault),
-	authenticateFile(allowByDefault),
-	abortFile(allowByDefault)
+Permissions::Permissions(bool allowByDefault) : permissions(allowByDefault ? ALL : NOTHING)
 {}
 
 	
@@ -73,96 +42,101 @@ Permissions Permissions::AllowAll()
 	
 void Permissions::Allow(FunctionCode code)
 {
-	auto perm = GetPermission(code);
-	if(perm) {
-		perm->allowed = true;
+	auto mask = GetMask(code);
+	if (mask.VALID) 
+	{
+		this->permissions |= mask.VALUE;		
 	}
 }
 
 void Permissions::Deny(FunctionCode code)
 {
-	auto perm = GetPermission(code);
-	if (perm) {
-		perm->allowed = false;
+	auto mask = GetMask(code);
+	if (mask.VALID)
+	{
+		this->permissions &= mask.VALUE;
 	}
 }
 
 bool Permissions::IsAllowed(opendnp3::FunctionCode code) const
 {
-	// dirty dirty hack, but a private dirty dirty hack
-	auto perm = const_cast<Permissions*>(this)->GetPermission(code);
-	
-	return perm ? perm->allowed : false;	
+	auto mask = GetMask(code);
+	if (!mask.VALID)
+	{
+		return false;		
+	}
+		
+	return (this->permissions & mask.VALUE) != 0;	
 }
 
-Permissions::Permission* Permissions::GetPermission(FunctionCode code)
-{
+Permissions::Mask Permissions::GetMask(opendnp3::FunctionCode code)
+{	
 	switch (code)
-	{
+	{		
 		case(FunctionCode::CONFIRM) :
-			return &confirm;
-		case(FunctionCode::READ) :
-			return &read;
+			return Mask::Bit(0);						
+		case(FunctionCode::READ):
+			return Mask::Bit(1);
 		case(FunctionCode::WRITE) :
-			return &write;
+			return Mask::Bit(2);
 		case(FunctionCode::SELECT) :
-			return &select;
+			return Mask::Bit(3);
 		case(FunctionCode::OPERATE) :
-			return &operate;
+			return Mask::Bit(4);
 		case(FunctionCode::DIRECT_OPERATE) :
-			return &directOperate;
+			return Mask::Bit(5);
 		case(FunctionCode::DIRECT_OPERATE_NR) :
-			return &directOperateNR;
+			return Mask::Bit(6);
 		case(FunctionCode::IMMED_FREEZE) :
-			return &immediateFreeze;
+			return Mask::Bit(7);
 		case(FunctionCode::IMMED_FREEZE_NR) :
-			return &immediateFreezeNR;
+			return Mask::Bit(8);
 		case(FunctionCode::FREEZE_CLEAR) :
-			return &freezeClear;
+			return Mask::Bit(9);
 		case(FunctionCode::FREEZE_CLEAR_NR) :
-			return &freezeClearNR;
+			return Mask::Bit(10);
 		case(FunctionCode::FREEZE_AT_TIME) :
-			return &freezeAtTime;
+			return Mask::Bit(11);
 		case(FunctionCode::FREEZE_AT_TIME_NR) :
-			return &freezeAtTimeNR;
+			return Mask::Bit(12);
 		case(FunctionCode::COLD_RESTART) :
-			return &coldRestart;
+			return Mask::Bit(13);
 		case(FunctionCode::WARM_RESTART) :
-			return &warmRestart;
+			return Mask::Bit(14);
 		case(FunctionCode::INITIALIZE_DATA) :
-			return &initializeData;
+			return Mask::Bit(15);
 		case(FunctionCode::INITIALIZE_APPLICATION) :
-			return &initializeApplication;
+			return Mask::Bit(16);
 		case(FunctionCode::START_APPLICATION) :
-			return &startApplication;
+			return Mask::Bit(17);
 		case(FunctionCode::STOP_APPLICATION) :
-			return &stopApplication;
+			return Mask::Bit(18);
 		case(FunctionCode::SAVE_CONFIGURATION) :
-			return &saveConfiguration;
+			return Mask::Bit(19);
 		case(FunctionCode::ENABLE_UNSOLICITED) :
-			return &enableUnsolicited;
+			return Mask::Bit(20);
 		case(FunctionCode::DISABLE_UNSOLICITED) :
-			return &disableUnsolicited;
+			return Mask::Bit(21);
 		case(FunctionCode::ASSIGN_CLASS) :
-			return &assignClass;
+			return Mask::Bit(22);
 		case(FunctionCode::DELAY_MEASURE) :
-			return &delayMeasure;
+			return Mask::Bit(23);
 		case(FunctionCode::RECORD_CURRENT_TIME) :
-			return &recordCurrentTime;
+			return Mask::Bit(24);
 		case(FunctionCode::OPEN_FILE) :
-			return &openFile;
+			return Mask::Bit(25);
 		case(FunctionCode::CLOSE_FILE) :
-			return &closeFile;
+			return Mask::Bit(26);
 		case(FunctionCode::DELETE_FILE) :
-			return &deleteFile;
+			return Mask::Bit(27);
 		case(FunctionCode::GET_FILE_INFO) :
-			return &getFileInfo;
+			return Mask::Bit(28);
 		case(FunctionCode::AUTHENTICATE_FILE) :
-			return &authenticateFile;
+			return Mask::Bit(29);
 		case(FunctionCode::ABORT_FILE) :
-			return &abortFile;			
+			return Mask::Bit(30);
 		default:
-			return nullptr;
+			return Mask::None();
 	}
 }
 

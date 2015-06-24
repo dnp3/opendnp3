@@ -31,21 +31,26 @@ namespace secauth
 */
 class Permissions
 {	
-	// helper class to force explicit initialization
-	struct Permission
-	{		
-		Permission(bool allowed_) : allowed(allowed_) {}
+	class Mask
+	{
+	public:
+		static Mask None() { return Mask(false, 0); }
+		static Mask Bit(uint8_t bit) {  return Mask(true, 1ull << bit); }		
+			
+		const bool VALID;
+		const uint64_t VALUE;
 
-		bool allowed;
-
-		private:
-
-		Permission() = delete;
+	private:
+		Mask(bool valid, uint64_t value) : VALID(valid), VALUE(value) {}
+		Mask() = delete;
 	};
+
 
 public:
 
-	Permissions() : Permissions(false)
+
+
+	Permissions() : permissions(0)
 	{}
 	
 	static Permissions AllowNothing();
@@ -58,39 +63,12 @@ public:
 
 private:
 
-	Permission* GetPermission(opendnp3::FunctionCode code);
+	static Mask GetMask(opendnp3::FunctionCode code);
 
-	Permission confirm;
-	Permission read;
-	Permission write;
-	Permission select;
-	Permission operate;
-	Permission directOperate;
-	Permission directOperateNR;
-	Permission immediateFreeze;
-	Permission immediateFreezeNR;
-	Permission freezeClear;
-	Permission freezeClearNR;
-	Permission freezeAtTime;
-	Permission freezeAtTimeNR;
-	Permission coldRestart;
-	Permission warmRestart;
-	Permission initializeData;
-	Permission initializeApplication;
-	Permission startApplication;
-	Permission stopApplication;
-	Permission saveConfiguration;
-	Permission enableUnsolicited;
-	Permission disableUnsolicited;
-	Permission assignClass;
-	Permission delayMeasure;
-	Permission recordCurrentTime;
-	Permission openFile;
-	Permission closeFile;
-	Permission deleteFile;
-	Permission getFileInfo;
-	Permission authenticateFile;
-	Permission abortFile;
+	static const uint64_t NOTHING = 0;
+	static const uint64_t ALL = ~NOTHING;
+
+	uint64_t permissions;
 		
 	Permissions(bool allowByDefault);
 
