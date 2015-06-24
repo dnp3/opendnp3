@@ -52,7 +52,7 @@ namespace DotNetMasterDemo
                 key[i] = 0xFF;
             }
 
-            
+            // configure the user that the master will use
             var user = new SimpleMasterUser(User.Default, GetHardwiredUpdateKey(0xFF));
 
             var master = channel.AddMaster("master", PrintingSOEHandler.Instance, DefaultMasterApplication.Instance, config, user);            
