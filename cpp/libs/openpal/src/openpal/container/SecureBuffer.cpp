@@ -40,7 +40,8 @@ SecureBuffer::SecureBuffer(const SecureBuffer& other) :
 	pBuffer(new uint8_t[other.Size()]),
 	size(other.Size())
 {
-	other.ToReadOnly().CopyTo(this->GetWriteBufferView());
+	auto dest = this->GetWriteBufferView();
+	other.ToReadOnly().CopyTo(dest);
 }
 
 SecureBuffer& SecureBuffer::operator=(const SecureBuffer& other)
@@ -54,7 +55,8 @@ SecureBuffer& SecureBuffer::operator=(const SecureBuffer& other)
 		this->pBuffer = new uint8_t[view.Size()];
 		this->size = view.Size();
 
-		view.CopyTo(this->GetWriteBufferView());
+		auto dest = this->GetWriteBufferView();
+		view.CopyTo(dest);
 	}	
 
 	return *this;
@@ -65,7 +67,8 @@ SecureBuffer::SecureBuffer(const ReadBufferView& input) :
 	pBuffer(new uint8_t[input.Size()]),
 	size(input.Size())
 {
-	input.CopyTo(this->GetWriteBufferView());
+	auto dest = this->GetWriteBufferView();
+	input.CopyTo(dest);
 }
 
 SecureBuffer::~SecureBuffer()

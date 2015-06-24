@@ -58,18 +58,22 @@ bool UpdateKey::Initialize(const openpal::ReadBufferView& key)
 	switch (key.Size())
 	{
 	case(16) :
-		this->isValid = true;
-		this->updateKeyMode = opendnp3::UpdateKeyMode::AES128;
-		this->updateKeyView = key.CopyTo(buffer.GetWriteBufferView());
+		this->Initialize(key, opendnp3::UpdateKeyMode::AES128);
 		return true;
 	case(32):
-		this->isValid = true;
-		this->updateKeyMode = opendnp3::UpdateKeyMode::AES256;
-		this->updateKeyView = key.CopyTo(buffer.GetWriteBufferView());
+		this->Initialize(key, opendnp3::UpdateKeyMode::AES256);
 		return true;
 	default:		
 		return false;
 	}
+}
+
+void UpdateKey::Initialize(const openpal::ReadBufferView& key, opendnp3::UpdateKeyMode mode)
+{
+  this->isValid = true;
+  this->updateKeyMode = mode;
+  auto dest = buffer.GetWriteBufferView();
+  this->updateKeyView = key.CopyTo(dest);  
 }
 
 }

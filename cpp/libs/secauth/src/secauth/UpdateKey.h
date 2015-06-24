@@ -69,6 +69,8 @@ class UpdateKey
 		bool Initialize(const openpal::ReadBufferView& key);
 
 	private:		
+	  
+		void Initialize(const openpal::ReadBufferView& key, opendnp3::UpdateKeyMode mode);
 
 		bool isValid;		
 		opendnp3::UpdateKeyMode updateKeyMode;
