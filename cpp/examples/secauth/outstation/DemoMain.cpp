@@ -53,7 +53,7 @@ void AddDefaultUser(SimpleOutstationUserDatabase& db)
 	openpal::StaticBuffer<16> data;
 	data.GetWriteBuffer().SetAllTo(0xFF);
 
-	UpdateKey key(data.ToReadOnly());	
+	UpdateKey key(data.ToReadOnly());
 
 	db.ConfigureUser(
 		secauth::User::Default(),

@@ -37,22 +37,27 @@ class Permissions
 		static Mask None() { return Mask(false, 0); }
 		static Mask Bit(uint8_t bit) {  return Mask(true, 1ull << bit); }		
 			
-		const bool VALID;
-		const uint64_t VALUE;
+		bool valid;
+		uint64_t value;
 
 	private:
-		Mask(bool valid, uint64_t value) : VALID(valid), VALUE(value) {}
+		Mask(bool valid, uint64_t value) : valid(valid), value(value) {}
 		Mask() = delete;
 	};
 
 
 public:
 
-
-
 	Permissions() : permissions(0)
 	{}
 	
+	template <typename... Args>
+	static Permissions Allowed(opendnp3::FunctionCode fc, Args... args)
+	{
+		auto value = GetMask(fc).value | Allowed(args...).permissions;
+		return Permissions(value);
+	}
+
 	static Permissions AllowNothing();
 	static Permissions AllowAll();
 	
@@ -63,6 +68,9 @@ public:
 
 private:
 
+	// base case for variadic method
+	static Permissions Allowed() { return Permissions::AllowNothing(); }
+
 	static Mask GetMask(opendnp3::FunctionCode code);
 
 	static const uint64_t NOTHING = 0;
@@ -70,7 +78,7 @@ private:
 
 	uint64_t permissions;
 		
-	Permissions(bool allowByDefault);
+	Permissions(uint64_t mask);
 
 };
 

@@ -26,47 +26,47 @@ using namespace opendnp3;
 namespace secauth
 {
 	
-Permissions::Permissions(bool allowByDefault) : permissions(allowByDefault ? ALL : NOTHING)
+Permissions::Permissions(uint64_t mask) : permissions(mask)
 {}
 
 	
 Permissions Permissions::AllowNothing()
 {
-	return Permissions(false);
+	return Permissions(NOTHING);
 }
 
 Permissions Permissions::AllowAll()
 {
-	return Permissions(true);
+	return Permissions(ALL);
 }
 	
 void Permissions::Allow(FunctionCode code)
 {
 	auto mask = GetMask(code);
-	if (mask.VALID) 
+	if (mask.valid) 
 	{
-		this->permissions |= mask.VALUE;		
+		this->permissions |= mask.value;		
 	}
 }
 
 void Permissions::Deny(FunctionCode code)
 {
 	auto mask = GetMask(code);
-	if (mask.VALID)
+	if (mask.valid)
 	{
-		this->permissions &= ~mask.VALUE;
+		this->permissions &= ~mask.value;
 	}
 }
 
 bool Permissions::IsAllowed(opendnp3::FunctionCode code) const
 {
 	auto mask = GetMask(code);
-	if (!mask.VALID)
+	if (!mask.valid)
 	{
 		return false;		
 	}
 		
-	return (this->permissions & mask.VALUE) != 0;	
+	return (this->permissions & mask.value) != 0;	
 }
 
 Permissions::Mask Permissions::GetMask(opendnp3::FunctionCode code)
