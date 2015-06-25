@@ -34,6 +34,14 @@ UpdateKey::UpdateKey() :
 	
 }
 
+UpdateKey::UpdateKey(uint8_t repeat, UpdateKeyMode mode) :
+	isValid(true),
+	updateKeyMode(mode),
+	buffer(repeat)
+{
+
+}
+
 UpdateKey::UpdateKey(const openpal::ReadBufferView& key) : UpdateKey()
 {
 	this->Initialize(key);

@@ -45,6 +45,11 @@ class UpdateKey
 		UpdateKey();
 
 		/**
+		* Test constructor that initializes a key with the same value for every byte
+		*/
+		UpdateKey(uint8_t repeat, opendnp3::UpdateKeyMode mode);
+
+		/**
 		* Initialize the key base on a view
 		*/
 		UpdateKey(const openpal::ReadBufferView& key);
