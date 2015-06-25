@@ -66,7 +66,7 @@ namespace osslcrypto
 		}
 
 		// If iv is null, the default IV is used
-		const int LEN = AES_wrap_key(&key, nullptr, output, input, input.Size()) > 0;
+		const int LEN = AES_wrap_key(&key, nullptr, output, input, input.Size());
 		if (LEN > 0)
 		{
 			auto ret = output.ToReadOnly().Take(OUTPUT_SIZE);
@@ -116,7 +116,7 @@ namespace osslcrypto
 		}
 
 		// If iv is null, the default IV is used
-		const int LEN = AES_unwrap_key(&key, nullptr, output, input, input.Size()) > 0;
+		const int LEN = AES_unwrap_key(&key, nullptr, output, input, input.Size());
 		if (LEN > 0)
 		{
 			auto ret = output.ToReadOnly().Take(OUTPUT_SIZE);
