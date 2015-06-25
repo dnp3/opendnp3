@@ -52,7 +52,7 @@ namespace secauth
 
 			SessionKeysView GetView() const;	
 
-			bool DeriveFrom(openpal::ISecureRandom& rs, const SessionKeySize& size);
+			void DeriveFrom(openpal::ISecureRandom& rs, const SessionKeySize& size, std::error_code& ec);
 
 			void ClearMemory();
 

@@ -141,9 +141,10 @@ void  MasterAuthProvider::OnAuthChallenge(const openpal::ReadBufferView& apdu, c
 
 	HMACProvider hmacProvider(*msstate.pCrypto, hmacMode);
 
-	auto hmacValue = hmacProvider.Compute(keys.controlKey, { apdu, lastRequest });
+	std::error_code ec;
+	auto hmacValue = hmacProvider.Compute(keys.controlKey, { apdu, lastRequest }, ec);
 
-	if (hmacValue.IsEmpty())
+	if (ec)
 	{
 		SIMPLE_LOG_BLOCK(pMState->logger, flags::ERR, "Unable to calculate HMAC value");
 		return;

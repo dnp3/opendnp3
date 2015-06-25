@@ -48,17 +48,17 @@ namespace secauth
 		return ToHMACType(mode);
 	}	
 
-	openpal::ReadBufferView HMACProvider::Compute(const openpal::ReadBufferView& key, std::initializer_list<openpal::ReadBufferView> buffers)
+	openpal::ReadBufferView HMACProvider::Compute(const openpal::ReadBufferView& key, std::initializer_list<openpal::ReadBufferView> buffers, std::error_code& ec)
 	{
-		auto dest = buffer.GetWriteBuffer();
-		if (pHMAC->Calculate(key, buffers, dest))
+		auto dest = buffer.GetWriteBuffer();		
+		auto result = pHMAC->Calculate(key, buffers, dest, ec);
+
+		if (ec)
 		{
-			return buffer.ToReadOnly(TRUNC_SIZE);
+			return openpal::ReadBufferView();
 		}
-		else
-		{
-			return openpal::ReadBufferView::Empty();
-		}		
+
+		return result.Take(TRUNC_SIZE);
 	}
 }
 

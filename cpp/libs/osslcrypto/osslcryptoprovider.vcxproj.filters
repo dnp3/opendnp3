@@ -26,6 +26,9 @@
     <ClInclude Include="src\osslcrypto\GenericHMAC.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\osslcrypto\ErrorCodes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\osslcrypto\CryptoProvider.cpp">
@@ -41,6 +44,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\osslcrypto\GenericHMAC.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\osslcrypto\ErrorCodes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

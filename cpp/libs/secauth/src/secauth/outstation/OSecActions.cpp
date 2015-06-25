@@ -81,7 +81,15 @@ namespace secauth
 
 		// At this point, we've successfully authenticated the session key change for this user
 		// We compute the HMAC based on the full ASDU and the monitoring direction session key		
-		auto hmac = sstate.hmac.Compute(unwrapped.keys.monitorKey,  { fragment });
+
+		std::error_code ec;
+		auto hmac = sstate.hmac.Compute(unwrapped.keys.monitorKey,  { fragment }, ec);
+
+		if (ec)
+		{
+			SIMPLE_LOG_BLOCK(ostate.logger, flags::ERR, ec.message().c_str());
+			return;
+		}
 		
 		/*
 		SIMPLE_LOG_BLOCK(ostate.logger, flags::INFO, "control key: ");

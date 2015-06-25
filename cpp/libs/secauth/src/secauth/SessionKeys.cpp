@@ -42,15 +42,16 @@ namespace secauth
 		return SessionKeysView(controlKey, monitorKey);
 	}
 
-	bool SessionKeys::DeriveFrom(ISecureRandom& rs, const SessionKeySize& size)
+	void SessionKeys::DeriveFrom(ISecureRandom& rs, const SessionKeySize& size, std::error_code& ec)
 	{
 		auto dest1 = controlBuffer.GetWriteBuffer(size);
 		auto dest2 = monitorBuffer.GetWriteBuffer(size);
 
 		this->controlKey = controlBuffer.ToReadOnly(size);
 		this->monitorKey = monitorBuffer.ToReadOnly(size);
-		
-		return rs.GetSecureRandom(dest1) && rs.GetSecureRandom(dest2);
+
+		rs.GetSecureRandom(dest1, ec);
+		rs.GetSecureRandom(dest2, ec);				
 	}
 
 	void SessionKeys::ClearMemory()

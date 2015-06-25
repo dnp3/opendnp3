@@ -23,6 +23,8 @@
 
 #include <openpal/container/WriteBufferView.h>
 
+#include <system_error>
+
 namespace openpal
 {
 	/**
@@ -36,10 +38,9 @@ namespace openpal
 		virtual ~ISecureRandom() {}
 
 		/** 
-		 * Fill the specified buffer with secure random bytes
-		 * @return false if the destination buffer cannot be completely filled, true otherwise.
+		 * Fill the specified buffer with secure random bytes		 
 		*/
-		virtual bool GetSecureRandom(WriteBufferView& dest) = 0;		
+		virtual openpal::ReadBufferView GetSecureRandom(WriteBufferView& dest, std::error_code& ec) = 0;		
 	};
 
 }

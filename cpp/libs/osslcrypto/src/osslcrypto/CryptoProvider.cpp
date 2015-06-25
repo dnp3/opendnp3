@@ -23,6 +23,7 @@
 
 #include "SHA1HMAC.h"
 #include "SHA256HMAC.h"
+#include "ErrorCodes.h"
 
 #include <openssl/rand.h>
 #include <openssl/crypto.h>
@@ -76,14 +77,20 @@ void CryptoProvider::LockingFunction(int mode, int n, const char *file, int line
 	}
 }
 
-bool CryptoProvider::GetSecureRandom(WriteBufferView& buffer)
+openpal::ReadBufferView CryptoProvider::GetSecureRandom(WriteBufferView& buffer, std::error_code& ec)
 {	
-	auto success  = RAND_bytes(buffer, buffer.Size()) > 0;	
-	if (success)
+	int result  = RAND_bytes(buffer, buffer.Size()) > 0;	
+
+	if (!result)
 	{
-		buffer.Advance(buffer.Size());
+		ec = errors::OPENSSL_RAND_BYTES_ERROR;
+		return ReadBufferView();
 	}
-	return success;
+
+
+	auto ret = buffer.ToReadOnly();
+	buffer.Advance(buffer.Size());
+	return ret;	
 }
 
 }

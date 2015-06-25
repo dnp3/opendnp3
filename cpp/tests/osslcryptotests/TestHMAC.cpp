@@ -21,6 +21,7 @@
 #include <catch.hpp>
 
 #include <osslcrypto/CryptoProvider.h>
+#include <osslcrypto/ErrorCodes.h>
 
 #include <openpal/container/Buffer.h>
 
@@ -41,17 +42,20 @@ void TestHMACSuccess(IHMACAlgo& algo, const openpal::ReadBufferView& key, const 
 {
 	Buffer output(algo.OutputSize());
 	auto dest = output.GetWriteBufferView();
-	REQUIRE(algo.Calculate(key, { data }, dest));
-	auto resultStr = ToHex(output.ToReadOnly(), false);
+	error_code ec;
+	auto result = algo.Calculate(key, { data }, dest, ec);
+	REQUIRE_FALSE(ec);
+	auto resultStr = ToHex(result, false);
 	REQUIRE(resultStr == expected);
 }
 
 void TestInsufficientOutputSizeFails(IHMACAlgo& algo)
 {	
-	Buffer output(algo.OutputSize() - 1);
-	auto dest = output.GetWriteBufferView();
-	auto success = algo.Calculate(ReadBufferView(), { ReadBufferView() }, dest);
-	REQUIRE(!success);
+	Buffer buffer(algo.OutputSize() - 1);
+	auto dest = buffer.GetWriteBufferView();
+	error_code ec;
+	auto output = algo.Calculate(ReadBufferView(), { ReadBufferView() }, dest, ec);
+	REQUIRE(ec == errors::HMAC_INSUFFICIENT_OUTPUT_BUFFER_SIZE);
 }
 
 TEST_CASE(SUITE("SHA1-SHA256-SHORTKEY"))

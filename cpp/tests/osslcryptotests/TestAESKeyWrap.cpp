@@ -90,8 +90,9 @@ void TestKeyWrap(
 
 	Buffer out(OUTPUT_SIZE);
 	auto outputBuffer = out.GetWriteBufferView();
-	auto result = algo.WrapKey(kekBuffer, inputBuffer, outputBuffer, nullptr);
-	REQUIRE(result.IsNotEmpty());	
+	std::error_code ec;
+	auto result = algo.WrapKey(kekBuffer, inputBuffer, outputBuffer, ec);
+	REQUIRE_FALSE(ec);	
 	REQUIRE(outputBuffer.IsEmpty());
 	REQUIRE(ToHex(result, false) == ciphertext);
 }
@@ -110,7 +111,9 @@ void TestKeyUnwrap(
 
 	Buffer out(OUTPUT_SIZE);
 	auto outputBuffer = out.GetWriteBufferView();
-	auto result = algo.UnwrapKey(kekBuffer, inputBuffer, outputBuffer, nullptr);
+	std::error_code ec;
+	auto result = algo.UnwrapKey(kekBuffer, inputBuffer, outputBuffer, ec);
+	REQUIRE_FALSE(ec);
 	REQUIRE(result.IsNotEmpty());	
 	REQUIRE(outputBuffer.IsEmpty());
 	REQUIRE(ToHex(result, false) == input);

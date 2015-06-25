@@ -23,21 +23,25 @@
 
 #include <openpal/util/Finally.h>
 
+#include "ErrorCodes.h"
+
 using namespace openpal;
 
 namespace osslcrypto
 {
-	bool CalculateHMAC(
+	ReadBufferView CalculateHMAC(
 		const EVP_MD* md,
 		uint32_t outputSize,
 		const openpal::ReadBufferView& key,
 		std::initializer_list<openpal::ReadBufferView> data,
-		openpal::WriteBufferView& output
+		openpal::WriteBufferView& output,
+		std::error_code& ec
 		)
 	{
 		if (output.Size() < outputSize)
 		{
-			return false;
+			ec = errors::HMAC_INSUFFICIENT_OUTPUT_BUFFER_SIZE;
+			return ReadBufferView();
 		}
 
 		HMAC_CTX ctx;
@@ -46,24 +50,27 @@ namespace osslcrypto
 
 		if (HMAC_Init_ex(&ctx, key, key.Size(), md, nullptr) == 0)
 		{
-			return false;
+			ec = errors::OPENSSL_HMAC_INIT_EX_ERROR;
+			return ReadBufferView();
 		}
 					
 		for (auto& bytes : data)
 		{
 			if (HMAC_Update(&ctx, bytes, bytes.Size()) == 0)
 			{
-				return false;
+				ec = errors::OPENSSL_HMAC_UPDATE_ERROR;
+				return ReadBufferView();
 			}
 		}
 
 		unsigned int length = 0;
 		if (HMAC_Final(&ctx, output, &length) == 0)
 		{
-			return false;
+			ec = errors::OPENSSL_HMAC_FINAL_ERROR;
+			return ReadBufferView();
 		}
 
-		return true;
+		return output.ToReadOnly().Take(outputSize);
 	}
 }
 

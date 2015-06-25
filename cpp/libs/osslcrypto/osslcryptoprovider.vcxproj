@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="src\osslcrypto\AESKeyWrap.h" />
     <ClInclude Include="src\osslcrypto\CryptoProvider.h" />
+    <ClInclude Include="src\osslcrypto\ErrorCodes.h" />
     <ClInclude Include="src\osslcrypto\GenericHMAC.h" />
     <ClInclude Include="src\osslcrypto\SHA1HMAC.h" />
     <ClInclude Include="src\osslcrypto\SHA256HMAC.h" />
@@ -28,6 +29,7 @@
   <ItemGroup>
     <ClCompile Include="src\osslcrypto\AESKeyWrap.cpp" />
     <ClCompile Include="src\osslcrypto\CryptoProvider.cpp" />
+    <ClCompile Include="src\osslcrypto\ErrorCodes.cpp" />
     <ClCompile Include="src\osslcrypto\GenericHMAC.cpp" />
     <ClCompile Include="src\osslcrypto\SHA1HMAC.cpp" />
     <ClCompile Include="src\osslcrypto\SHA256HMAC.cpp" />

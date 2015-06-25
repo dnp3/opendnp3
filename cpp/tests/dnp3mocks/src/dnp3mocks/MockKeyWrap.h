@@ -33,21 +33,21 @@ namespace opendnp3
 	{
 	public:				
 
-		virtual openpal::ReadBufferView WrapKey(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output, openpal::Logger* pLogger) const
+		virtual openpal::ReadBufferView WrapKey(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output, std::error_code& ec) const
 		{
-			return WrapOrUnwrap(kek, input, output, pLogger);
+			return WrapOrUnwrap(kek, input, output, ec);
 		}
 		
-		virtual openpal::ReadBufferView UnwrapKey(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output, openpal::Logger* pLogger) const
+		virtual openpal::ReadBufferView UnwrapKey(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output, std::error_code& ec) const
 		{
-			return WrapOrUnwrap(kek, input, output, pLogger);
+			return WrapOrUnwrap(kek, input, output, ec);
 		}
 			
 		std::string hexOutput;		
 
 	private:
 
-		openpal::ReadBufferView WrapOrUnwrap(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output, openpal::Logger* pLogger) const
+		openpal::ReadBufferView WrapOrUnwrap(const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output, std::error_code& ec) const
 		{
 			if (!(kek.Size() == 16 || kek.Size() == 32))
 			{

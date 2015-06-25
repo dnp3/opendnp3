@@ -26,18 +26,20 @@
 #include <openpal/container/WriteBufferView.h>
 
 #include <initializer_list>
+#include <system_error>
 
 #include <openssl/hmac.h>
 
 
 namespace osslcrypto
 {
-	bool CalculateHMAC(
+	openpal::ReadBufferView CalculateHMAC(
 		const EVP_MD* md,
 		uint32_t outputSize,
 		const openpal::ReadBufferView& key,
 		std::initializer_list<openpal::ReadBufferView> data, 
-		openpal::WriteBufferView& output
+		openpal::WriteBufferView& output,
+		std::error_code& ec
 	);
 }
 

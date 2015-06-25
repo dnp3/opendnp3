@@ -24,6 +24,7 @@
 #include <cstdint>
 
 #include <openpal/container/StaticBuffer.h>
+#include <openpal/logging/Logger.h>
 
 #include <opendnp3/app/APDUResponse.h>
 #include <opendnp3/app/APDUHeader.h>

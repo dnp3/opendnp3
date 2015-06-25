@@ -38,7 +38,7 @@ namespace secauth
 			
 			opendnp3::HMACType GetType() const;
 			
-			openpal::ReadBufferView Compute(const openpal::ReadBufferView& key, std::initializer_list<openpal::ReadBufferView> buffers);
+			openpal::ReadBufferView Compute(const openpal::ReadBufferView& key, std::initializer_list<openpal::ReadBufferView> buffers, std::error_code& ec);
 
 			uint32_t OutputSize() const { return TRUNC_SIZE; }
 

@@ -38,10 +38,13 @@ namespace secauth
 		openpal::Logger* pLogger)
 	{		
 		auto dest = buffer.GetWriteBuffer();
-		auto unwrapped = algo.UnwrapKey(updateKey, inputData, dest, pLogger);
 
-		if (unwrapped.IsEmpty())
+		std::error_code ec;
+		auto unwrapped = algo.UnwrapKey(updateKey, inputData, dest, ec);
+
+		if (ec)
 		{
+			SIMPLE_LOGGER_BLOCK(pLogger, logflags::WARN, ec.message().c_str());
 			return false;
 		}
 

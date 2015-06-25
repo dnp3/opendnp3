@@ -30,14 +30,12 @@ namespace opendnp3
 	{}
 	
 
-	bool MockCryptoProvider::GetSecureRandom(openpal::WriteBufferView& buffer)
+	openpal::ReadBufferView MockCryptoProvider::GetSecureRandom(openpal::WriteBufferView& buffer, std::error_code& ec)
 	{
-		while (buffer.IsNotEmpty())
-		{
-			buffer[0] = secureFill;
-			buffer.Advance(1);
-		}
-		return true;
+		memset(buffer, secureFill, buffer.Size());
+		auto ret = buffer.ToReadOnly();
+		buffer.Advance(buffer.Size());
+		return ret;		
 	}
 
 	openpal::IHMACAlgo& MockCryptoProvider::GetSHA1HMAC()

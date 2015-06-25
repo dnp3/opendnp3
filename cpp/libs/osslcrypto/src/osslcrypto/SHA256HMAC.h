@@ -32,7 +32,7 @@ namespace osslcrypto
 		public:
 		
 		virtual uint16_t OutputSize() const override final { return OUTPUT_SIZE; }
-		virtual bool Calculate(const openpal::ReadBufferView& key, std::initializer_list<openpal::ReadBufferView> data, openpal::WriteBufferView& output) override final;		
+		virtual openpal::ReadBufferView Calculate(const openpal::ReadBufferView& key, std::initializer_list<openpal::ReadBufferView> data, openpal::WriteBufferView& output, std::error_code& ec) override final;
 
 		private:
 

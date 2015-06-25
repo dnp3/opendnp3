@@ -24,7 +24,7 @@
 #include <openpal/container/ReadBufferView.h>
 #include <openpal/container/WriteBufferView.h>
 
-#include <openpal/logging/Logger.h>
+#include <system_error>
 
 namespace openpal
 {
@@ -33,10 +33,11 @@ namespace openpal
 	*/
 	class IKeyWrapAlgo
 	{
-		public:		
+		public:	
 
-		virtual openpal::ReadBufferView WrapKey(const ReadBufferView& kek, const ReadBufferView& input, WriteBufferView& output, openpal::Logger* pLogger) const = 0;
-		virtual openpal::ReadBufferView UnwrapKey(const ReadBufferView& kek, const ReadBufferView& input, WriteBufferView& output, openpal::Logger* pLogger) const = 0;
+		virtual openpal::ReadBufferView WrapKey(const ReadBufferView& kek, const ReadBufferView& input, WriteBufferView& output, std::error_code& ec) const = 0;
+
+		virtual openpal::ReadBufferView UnwrapKey(const ReadBufferView& kek, const ReadBufferView& input, WriteBufferView& output, std::error_code& ec) const = 0;
 	};
 }
 

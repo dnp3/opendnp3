@@ -56,13 +56,15 @@ namespace secauth
 		response.SetControl(header.control);		
 		
 		auto challengeDest = challengeDataBuffer.GetWriteBuffer(CHALLENGE_SIZE);
-		if (!crypto.GetSecureRandom(challengeDest))
+		std::error_code ec;
+		auto random = crypto.GetSecureRandom(challengeDest, ec);
+		if (ec)
 		{
-			SIMPLE_LOGGER_BLOCK(pLogger, flags::ERR, "Unable to get secure random data for challenge");
+			SIMPLE_LOGGER_BLOCK(pLogger, flags::ERR, ec.message().c_str());
 			return false;
 		}		
 
-		this->challengeData = challengeDataBuffer.ToReadOnly(CHALLENGE_SIZE);
+		this->challengeData = random;
 
 		++seqNumber; //increment the CSQ
 
@@ -103,10 +105,12 @@ namespace secauth
 		}		
 
 		// calculate the hmac we expect		
-		auto hmacCalc = provider.Compute(key, { challengeFragment, criticalASDU.GetFragment() });
-		if (hmacCalc.IsEmpty())
+		std::error_code ec;
+		auto hmacCalc = provider.Compute(key, { challengeFragment, criticalASDU.GetFragment() }, ec);
+
+		if (ec)
 		{
-			SIMPLE_LOG_BLOCK(logger, flags::ERR, "HMAC calculation failed");
+			SIMPLE_LOG_BLOCK(logger, flags::ERR, ec.message().c_str());
 			return false;
 		}
 		

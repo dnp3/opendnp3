@@ -51,9 +51,11 @@ namespace secauth
 	{				
 		auto dest = challengeData.GetWriteBuffer(challengeSize);
 
-		if (!pProvider->GetSecureRandom(dest))
+		std::error_code ec;
+		auto random = pProvider->GetSecureRandom(dest, ec);
+		if (ec)
 		{
-			SIMPLE_LOG_BLOCK(logger, flags::ERR, "Unable to get secure random data for KeyStatus response");
+			SIMPLE_LOG_BLOCK(logger, flags::ERR, ec.message().c_str());
 			return false;
 		}
 

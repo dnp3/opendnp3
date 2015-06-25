@@ -69,8 +69,16 @@ bool KeyWrapBuffer::Wrap(
 	auto output = this->buffer.GetWriteBuffer();
 
 	// save the view of the wrapped data internally
-	this->data = algo.WrapKey(updateKey, input, output, &logger);
+	std::error_code ec;
 
+	this->data = algo.WrapKey(updateKey, input, output, ec);
+
+	if (ec)
+	{
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, ec.message().c_str());
+		return false;
+	}
+	
 	return data.IsNotEmpty();
 }
 

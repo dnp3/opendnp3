@@ -44,10 +44,13 @@ TEST_CASE(SUITE("BasicInstantiationAndRequestRandomWorks"))
 
 	int count = 0;
 
+	error_code ec;
+
 	for (int i = 0; i < NUM_RAND_FETCH; ++i)
 	{
 		auto dest = buffer.GetWriteBufferView();
-		if (provider.GetSecureRandom(dest) && dest.IsEmpty())
+		auto output = provider.GetSecureRandom(dest, ec);
+		if (!ec && output.IsNotEmpty())
 		{
 			++count;
 		}
@@ -68,11 +71,13 @@ TEST_CASE(SUITE("TestThatMultiThreadingDoesNotCrash"))
 
 	auto runner = [&]()
 	{
+		error_code ec;
 		Buffer buffer(100);
 		for (int i = 0; i < NUM_RAND_FETCH; ++i)
 		{
 			auto dest = buffer.GetWriteBufferView();
-			if (provider.GetSecureRandom(dest))
+			auto output = provider.GetSecureRandom(dest, ec);
+			if (!ec)
 			{
 				++randCount;
 			}

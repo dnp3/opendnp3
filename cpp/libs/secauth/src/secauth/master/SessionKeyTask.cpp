@@ -163,10 +163,12 @@ IMasterTask::ResponseResult SessionKeyTask::OnStatusResponse(const APDUResponseH
 		return ResponseResult::ERROR_BAD_RESPONSE;
 	}
 
-	// TODO - make the session key size configurable
-	if (!keys.DeriveFrom(*(pmsstate->pCrypto), AuthConstants::MIN_SESSION_KEY_SIZE_BYTES))
+	std::error_code ec;
+	
+	keys.DeriveFrom(*(pmsstate->pCrypto), AuthConstants::MIN_SESSION_KEY_SIZE_BYTES, ec); // TODO - make the session key size configurable	
+	if (ec)
 	{
-		SIMPLE_LOG_BLOCK(this->logger, flags::WARN, "Unable to derive session keys");
+		FORMAT_LOG_BLOCK(this->logger, flags::WARN, "Unable to derive session keys: %s", ec.message().c_str());
 		return ResponseResult::ERROR_BAD_RESPONSE; // TODO - add a different return code or is this good enough?
 	}
 
@@ -218,10 +220,11 @@ IMasterTask::ResponseResult SessionKeyTask::OnChangeResponse(const APDUResponseH
 	}
 
 	HMACProvider hmac(*pmsstate->pCrypto, hmacMode);
-	auto hmacValue = hmac.Compute(keys.GetView().monitorKey, { this->txKeyWrapASDU });
-	if (hmacValue.IsEmpty())
+	std::error_code ec;
+	auto hmacValue = hmac.Compute(keys.GetView().monitorKey, { this->txKeyWrapASDU }, ec);
+	if (ec)
 	{
-		SIMPLE_LOG_BLOCK(this->logger, flags::ERR, "Unable to calculate HMAC value");
+		SIMPLE_LOG_BLOCK(this->logger, flags::ERR, ec.message().c_str());
 		return ResponseResult::ERROR_BAD_RESPONSE;
 	}	
 

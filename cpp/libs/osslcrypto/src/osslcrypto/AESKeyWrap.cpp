@@ -23,14 +23,13 @@
 
 #include <openssl/aes.h>
 
-#include <openpal/logging/LogMacros.h>
-#include <openpal/logging/LogLevels.h>
+#include "ErrorCodes.h"
 
 using namespace openpal;
 
 namespace osslcrypto
 {		
-	openpal::ReadBufferView AESKeyWrap::WrapKeyAES(AESKeyLength length, const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output, openpal::Logger* pLogger)
+	openpal::ReadBufferView AESKeyWrap::WrapKeyAES(AESKeyLength length, const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output, std::error_code& ec)
 	{
 		const uint32_t KEY_SIZE_BYTES = (length == AESKeyLength::L128) ? 16 : 32;
 		const int KEY_SIZE_BITS = static_cast<int>(KEY_SIZE_BYTES*8);
@@ -38,14 +37,14 @@ namespace osslcrypto
 		// the key size must match
 		if (kek.Size() != KEY_SIZE_BYTES)
 		{
-			FORMAT_LOGGER_BLOCK(pLogger, logflags::WARN, "KEK size (%u) does not match expected size (%u)", kek.Size(), KEY_SIZE_BYTES);
+			ec = errors::AES_WRAPKEY_KEK_SIZE_MISMATCH;
 			return ReadBufferView::Empty();
 		}
 
 		// can only wrap things pre-padded into 8-byte blocks
 		if (input.Size() % 8 != 0)
 		{
-			FORMAT_LOGGER_BLOCK(pLogger, logflags::WARN, "Input data size (%u) not evenly divisible by 8", input.Size());
+			ec = errors::AES_WRAPKEY_INPUT_NOT_DIV8;
 			return ReadBufferView::Empty();
 		}
 
@@ -54,14 +53,14 @@ namespace osslcrypto
 		// the wrapped data is always 8 bytes larger than the input
 		if (output.Size() < OUTPUT_SIZE)
 		{
-			FORMAT_LOGGER_BLOCK(pLogger, logflags::WARN, "Not enough space in buffer (%u) to write output (%u)", output.Size(), OUTPUT_SIZE);
+			ec = errors::AES_WRAPKEY_INSUFFICIENT_OUTPUT_BUFFER_SIZE;
 			return ReadBufferView::Empty();
 		}
 
 		AES_KEY key;
 		if (AES_set_encrypt_key(kek, KEY_SIZE_BITS, &key))
 		{
-			SIMPLE_LOGGER_BLOCK(pLogger, logflags::WARN, "Unable to create AES encryption key from kek");
+			ec = errors::AES_WRAPKEY_AES_SET_ENCRYPT_KEY_ERROR;
 			return ReadBufferView::Empty();
 		}
 
@@ -75,12 +74,12 @@ namespace osslcrypto
 		}
 		else
 		{
-			SIMPLE_LOGGER_BLOCK(pLogger, logflags::WARN, "AES_wrap_key() returned 0 length");
+			ec = errors::AES_WRAPKEY_AES_WRAP_KEY_ERROR;
 			return ReadBufferView::Empty();
 		}		
 	}
 	
-	openpal::ReadBufferView AESKeyWrap::UnwrapKeyAES(AESKeyLength length, const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output, openpal::Logger* pLogger)
+	openpal::ReadBufferView AESKeyWrap::UnwrapKeyAES(AESKeyLength length, const openpal::ReadBufferView& kek, const openpal::ReadBufferView& input, openpal::WriteBufferView& output, std::error_code& ec)
 	{
 		const uint32_t KEY_SIZE_BYTES = (length == AESKeyLength::L128) ? 16 : 32;	
 		const int KEY_SIZE_BITS = static_cast<int>(KEY_SIZE_BYTES*8);	
@@ -88,14 +87,14 @@ namespace osslcrypto
 		// the key size must match
 		if (kek.Size() != KEY_SIZE_BYTES)
 		{
-			FORMAT_LOGGER_BLOCK(pLogger, logflags::WARN, "KEK size (%u) does not match expected size (%u)", kek.Size(), KEY_SIZE_BYTES);
+			errors::AES_UNWRAPKEY_KEK_SIZE_MISMATCH;
 			return ReadBufferView::Empty();
 		}
 
 		// can only unwrap things pre-padded into 64-bit blocks
 		if ((input.Size() < 8) && input.Size() % 8 != 0)
 		{
-			FORMAT_LOGGER_BLOCK(pLogger, logflags::WARN, "Input data size (%u) not evenly divisible by 8", input.Size());
+			errors::AES_UNWRAPKEY_INPUT_NOT_DIV8;
 			return ReadBufferView::Empty();
 		}
 
@@ -104,14 +103,14 @@ namespace osslcrypto
 
 		if (output.Size() < OUTPUT_SIZE)
 		{
-			FORMAT_LOGGER_BLOCK(pLogger, logflags::WARN, "Not enough space in buffer (%u) to write output (%u)", output.Size(), OUTPUT_SIZE);
+			errors::AES_UNWRAPKEY_INSUFFICIENT_OUTPUT_BUFFER_SIZE;
 			return ReadBufferView::Empty();
 		}
 
 		AES_KEY key;
 		if (AES_set_decrypt_key(kek, KEY_SIZE_BITS, &key))
 		{
-			SIMPLE_LOGGER_BLOCK(pLogger, logflags::WARN, "Unable to create AES decryption key from kek");
+			errors::AES_UNWRAPKEY_AES_SET_DECRYPT_KEY_ERROR;
 			return ReadBufferView::Empty();
 		}
 
@@ -127,16 +126,8 @@ namespace osslcrypto
 		}		
 		else
 		{
-			if (RESULT < 0)
-			{
-				SIMPLE_LOGGER_BLOCK(pLogger, logflags::WARN, "AES_unwrap_key(): parameter error");
-			}
-			else
-			{
-				// equal to zero
-				SIMPLE_LOGGER_BLOCK(pLogger, logflags::WARN, "AES_unwrap_key(): IV didn't match. Do you have the correct update key?");
-			}
-			
+			ec = (RESULT == 0) ? errors::AES_UNWRAPKEY_AES_UNWRAP_KEY_IV_ERROR : errors::AES_UNWRAPKEY_AES_UNWRAP_KEY_PARAM_ERROR;
+
 			return ReadBufferView::Empty();
 		}				
 	}

@@ -33,15 +33,17 @@ namespace opendnp3
 
 		virtual uint16_t OutputSize() const { return SIZE; }
 
-		virtual bool Calculate(
+		virtual openpal::ReadBufferView Calculate(
 			const openpal::ReadBufferView& key,
 			std::initializer_list<openpal::ReadBufferView> data,
-			openpal::WriteBufferView& output
+			openpal::WriteBufferView& output,
+			std::error_code& ec
 			)
 		{
 			if (output.Size() < SIZE)
 			{
-				return false;
+				ec = std::error_code(1, std::generic_category());
+				return openpal::ReadBufferView();
 			}
 			else
 			{
@@ -49,8 +51,9 @@ namespace opendnp3
 				{
 					output[i] = fillByte;
 				}
+				auto ret = output.ToReadOnly().Take(SIZE);
 				output.Advance(SIZE);
-				return true;
+				return ret;
 			}			
 		}
 

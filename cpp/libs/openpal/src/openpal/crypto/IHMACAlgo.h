@@ -25,6 +25,7 @@
 #include <openpal/container/WriteBufferView.h>
 
 #include <initializer_list>
+#include <system_error>
 
 namespace openpal
 {
@@ -39,12 +40,12 @@ namespace openpal
 		// Describes the required output size
 		virtual uint16_t OutputSize() const = 0;
 
-		// Calculate the HMAC value, writing the result into 'output'
-		// return true if successful, false otherwise
-		virtual bool Calculate(
+		// Calculate the HMAC value, writing the result into 'output'		
+		virtual openpal::ReadBufferView Calculate(
 			const ReadBufferView& key,
 			std::initializer_list<ReadBufferView> data,
-			WriteBufferView& output
+			WriteBufferView& output,
+			std::error_code& ec
 		) = 0;
 
 
