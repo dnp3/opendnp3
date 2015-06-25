@@ -45,9 +45,7 @@ public:
 
 	static openpal::ILogHandler& Instance() { return instance; };
 
-private:
-
-	static std::string FilterToString(const openpal::LogFilters& filters);
+private:	
 
 	ConsoleLogger();	
 

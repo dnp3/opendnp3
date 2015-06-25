@@ -346,6 +346,7 @@
     <ClCompile Include="src\opendnp3\link\PriLinkLayerStates.cpp" />
     <ClCompile Include="src\opendnp3\link\SecLinkLayerStates.cpp" />
     <ClCompile Include="src\opendnp3\link\ShiftableBuffer.cpp" />
+    <ClCompile Include="src\opendnp3\LogLevels.cpp" />
     <ClCompile Include="src\opendnp3\master\AssignClassTask.cpp" />
     <ClCompile Include="src\opendnp3\master\ClearRestartTask.cpp" />
     <ClCompile Include="src\opendnp3\master\CommandResponse.cpp" />

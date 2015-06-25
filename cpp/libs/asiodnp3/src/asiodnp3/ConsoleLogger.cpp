@@ -54,7 +54,7 @@ void ConsoleLogger::Log(const openpal::LogEntry& entry)
 
 	ostringstream oss;
 
-	oss << "ms(" << num << ") " << FilterToString(entry.GetFilters());
+	oss << "ms(" << num << ") " << LogFlagToString(entry.GetFilters().GetBitfield());
 	oss << " " << entry.GetAlias();
 	if (printLocation)
 	{
@@ -69,44 +69,6 @@ void ConsoleLogger::Log(const openpal::LogEntry& entry)
 
 	std::unique_lock<std::mutex> lock(mutex);
 	std::cout << oss.str() << std::endl;
-}
-
-std::string ConsoleLogger::FilterToString(const openpal::LogFilters& filters)
-{
-	switch (filters.GetBitfield())
-	{
-		
-		case(flags::EVENT) :
-			return "EVENT";
-		case(flags::ERR) :
-			return "ERROR";
-		case(flags::WARN) :
-			return "WARN";
-		case(flags::INFO) :
-			return "INFO";
-		case(flags::DBG) :
-			return "DEBUG";
-		case(flags::LINK_RX) :			
-		case(flags::LINK_RX_HEX) :
-			return "<-LL--";
-		case(flags::LINK_TX) :			
-		case(flags::LINK_TX_HEX) :
-			return "--LL->";
-		case(flags::TRANSPORT_RX) :
-			return "<-TL--";
-		case(flags::TRANSPORT_TX) :
-			return "--TL->";
-		case(flags::APP_HEADER_RX) :
-		case(flags::APP_OBJECT_RX) :
-		case(flags::APP_HEX_RX) :
-			return "<-AL--";
-		case(flags::APP_HEADER_TX) :
-		case(flags::APP_OBJECT_TX) :
-		case(flags::APP_HEX_TX):
-			return "--AL->";		
-		default:
-			return "UNKNOWN";
-	}
 }
 
 } //end ns

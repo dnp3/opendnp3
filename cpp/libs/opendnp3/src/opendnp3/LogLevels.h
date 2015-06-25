@@ -27,6 +27,8 @@
 namespace opendnp3
 {
 
+const char* LogFlagToString(int32_t flag);
+
 namespace flags
 {
 

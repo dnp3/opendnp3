@@ -1361,5 +1361,8 @@
     <ClCompile Include="src\opendnp3\master\TaskComparison.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
+    <ClCompile Include="src\opendnp3\LogLevels.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
