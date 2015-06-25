@@ -66,8 +66,8 @@ namespace osslcrypto
 		}
 
 		// If iv is null, the default IV is used
-		bool success = AES_wrap_key(&key, nullptr, output, input, input.Size()) > 0;
-		if (success)
+		const int LEN = AES_wrap_key(&key, nullptr, output, input, input.Size()) > 0;
+		if (LEN > 0)
 		{
 			auto ret = output.ToReadOnly().Take(OUTPUT_SIZE);
 			output.Advance(OUTPUT_SIZE);
@@ -75,7 +75,7 @@ namespace osslcrypto
 		}
 		else
 		{
-			SIMPLE_LOGGER_BLOCK(pLogger, logflags::WARN, "Unspecified error wrapping key data");
+			SIMPLE_LOGGER_BLOCK(pLogger, logflags::WARN, "AES_wrap_key() returned 0 length");
 			return ReadBufferView::Empty();
 		}		
 	}
@@ -116,8 +116,8 @@ namespace osslcrypto
 		}
 
 		// If iv is null, the default IV is used
-		bool success = AES_unwrap_key(&key, nullptr, output, input, input.Size()) > 0;
-		if (success)
+		const int LEN = AES_unwrap_key(&key, nullptr, output, input, input.Size()) > 0;
+		if (LEN > 0)
 		{
 			auto ret = output.ToReadOnly().Take(OUTPUT_SIZE);
 			output.Advance(OUTPUT_SIZE);
@@ -125,7 +125,7 @@ namespace osslcrypto
 		}		
 		else
 		{
-			SIMPLE_LOGGER_BLOCK(pLogger, logflags::WARN, "Unspecified error wrapping key data");
+			SIMPLE_LOGGER_BLOCK(pLogger, logflags::WARN, "AES_unwrap_key() returned 0 length");
 			return ReadBufferView::Empty();
 		}				
 	}
