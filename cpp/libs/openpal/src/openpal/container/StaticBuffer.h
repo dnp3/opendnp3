@@ -23,7 +23,6 @@
 
 #include "openpal/container/WriteBufferView.h"
 #include "openpal/container/ReadBufferView.h"
-#include "openpal/util/Uncopyable.h"
 #include "openpal/util/Comparisons.h"
 
 #include <cstdint>
@@ -32,7 +31,7 @@ namespace openpal
 {
 
 template <uint32_t SIZE>
-class StaticBuffer : private Uncopyable
+class StaticBuffer
 {
 
 public:	

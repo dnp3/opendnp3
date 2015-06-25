@@ -18,32 +18,47 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "OctetData.h"
+#include <catch.hpp>
 
-#include <openpal/container/WriteBufferView.h>
-#include <openpal/util/Comparisons.h>
+#include <openpal/container/StaticBuffer.h>
 
 using namespace openpal;
 
-namespace opendnp3
+using namespace std;
+
+
+#define SUITE(name) "StaticBuffer - " name
+
+TEST_CASE(SUITE("Static buffers can be copied"))
 {
+	StaticBuffer<4> buffer;
 
-OctetData::OctetData() :  size(0) {}
+	buffer()[0] = 0xDE;
+	buffer()[1] = 0xAD;
+	buffer()[2] = 0xBE;
+	buffer()[3] = 0xEF;
 
-OctetData::OctetData(const ReadBufferView& input) : 
-	size(openpal::Min<uint32_t>(MAX_SIZE, input.Size()))
-{	
-	auto dest = buffer.GetWriteBuffer();
-	input.Take(size).CopyTo(dest);
+	StaticBuffer<4> copy(buffer);
+	REQUIRE(copy()[0] == 0xDE);
+	REQUIRE(copy()[1] == 0xAD);
+	REQUIRE(copy()[2] == 0xBE);
+	REQUIRE(copy()[3] == 0xEF);
 }
 
-openpal::ReadBufferView OctetData::ToReadOnly() const
+TEST_CASE(SUITE("Static buffers can be assigned"))
 {
-	return buffer.ToReadOnly(size);
+	StaticBuffer<4> buffer;
+
+	buffer()[0] = 0xDE;
+	buffer()[1] = 0xAD;
+	buffer()[2] = 0xBE;
+	buffer()[3] = 0xEF;
+
+	StaticBuffer<4> copy;
+	copy = buffer;
+	REQUIRE(copy()[0] == 0xDE);
+	REQUIRE(copy()[1] == 0xAD);
+	REQUIRE(copy()[2] == 0xBE);
+	REQUIRE(copy()[3] == 0xEF);
 }
-
-}
-
-
-
 

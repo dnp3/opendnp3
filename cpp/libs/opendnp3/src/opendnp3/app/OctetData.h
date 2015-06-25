@@ -24,6 +24,7 @@
 #include <cstdint>
 
 #include <openpal/container/ReadBufferView.h>
+#include <openpal/container/StaticBuffer.h>
 
 namespace opendnp3
 {
@@ -35,9 +36,7 @@ public:
 	const static uint8_t MAX_SIZE = 255;
 
 	OctetData();
-	OctetData(const openpal::ReadBufferView& buffer);
-	OctetData(const OctetData&);
-	OctetData& operator=( const OctetData& rhs );
+	OctetData(const openpal::ReadBufferView& input);
 
 	openpal::ReadBufferView ToReadOnly() const;	
 
@@ -45,7 +44,7 @@ private:
 
 	void Initialize(const openpal::ReadBufferView& buffer);
 
-	uint8_t pData[MAX_SIZE];
+	openpal::StaticBuffer<MAX_SIZE> buffer;	
 	uint8_t size;
 };
 

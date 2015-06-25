@@ -166,6 +166,7 @@
     <ClCompile Include="src\LinkedListTestSuite.cpp" />
     <ClCompile Include="src\ManagedPointerTestSuite.cpp" />
     <ClCompile Include="src\TestSerialization.cpp" />
+    <ClCompile Include="src\TestStaticBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\libs\openpal\openpal.vcxproj">
