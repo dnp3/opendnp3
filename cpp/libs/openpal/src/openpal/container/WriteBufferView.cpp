@@ -40,10 +40,7 @@ WriteBufferView::WriteBufferView():
 
 void WriteBufferView::SetAllTo(uint8_t value)
 {
-	for (uint32_t i = 0; i < size; ++i)
-	{
-		pBuffer[i] = value;
-	}
+	memset(pBuffer, value, size);
 }
 
 WriteBufferView::WriteBufferView(uint8_t* pBuffer_, uint32_t size) :

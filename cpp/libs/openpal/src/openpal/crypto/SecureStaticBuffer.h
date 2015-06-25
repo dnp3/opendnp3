@@ -18,11 +18,10 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENPAL_SECUREBUFFER_H
-#define OPENPAL_SECUREBUFFER_H
+#ifndef OPENPAL_SECURESTATICBUFFER_H
+#define OPENPAL_SECURESTATICBUFFER_H
 
-#include "openpal/container/WriteBufferView.h"
-#include "openpal/container/ReadBufferView.h"
+#include "openpal/container/StaticBuffer.h"
 
 #include <cstdint>
 
@@ -32,35 +31,21 @@ namespace openpal
 /**
 * A buffer that guarantees that its contents are zero-ed on destruction
 */
-class SecureBuffer final
+template <uint32_t SIZE>
+class SecureStaticBuffer final : public StaticBuffer<SIZE>
 {
 
 public:
-
-	SecureBuffer();
-
-	SecureBuffer(uint32_t size, uint8_t initialValue);
-
-	// manually defined copy/ assignment
-	SecureBuffer(const SecureBuffer&);
-	SecureBuffer& operator= (const SecureBuffer& other);
-
-	// initialize with the exact size and contents of the view
-	SecureBuffer(const ReadBufferView& input);
-
-	~SecureBuffer();	
-
-	uint32_t Size() const { return size;  }
-
-	ReadBufferView ToReadOnly() const;
-
-	WriteBufferView GetWriteBufferView();
 	
-private:			
-	
-	uint8_t* pBuffer;
-	uint32_t size;
+	SecureStaticBuffer(uint8_t initialValue)
+	{
+		this->GetWriteBuffer().SetAllTo(initialValue);
+	}
 
+	~SecureStaticBuffer() 
+	{
+		this->GetWriteBuffer().SetAllTo(0x00);
+	}
 };
 
 }

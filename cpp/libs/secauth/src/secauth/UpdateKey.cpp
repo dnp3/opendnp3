@@ -21,14 +21,15 @@
 
 #include "UpdateKey.h"
 
+using namespace opendnp3;
+
 namespace secauth
 {
 
 UpdateKey::UpdateKey() :
 	isValid(false),
-	updateKeyMode(opendnp3::UpdateKeyMode::AES128),			
-	buffer(32, 0xFF),
-	updateKeyView(buffer.ToReadOnly().Take(16))
+	updateKeyMode(UpdateKeyMode::AES128),			
+	buffer(0xFF)	
 {
 	
 }
@@ -45,7 +46,8 @@ bool UpdateKey::IsValid() const
 
 openpal::ReadBufferView UpdateKey::GetKeyView() const
 {
-	return updateKeyView;
+	const auto SIZE = (updateKeyMode == UpdateKeyMode::AES128) ? UPDATE_KEY_SIZE_128 : UPDATE_KEY_SIZE_256;	
+	return buffer.ToReadOnly().Take(SIZE);	
 }
 
 opendnp3::UpdateKeyMode UpdateKey::GetKeyMode() const
@@ -57,10 +59,10 @@ bool UpdateKey::Initialize(const openpal::ReadBufferView& key)
 {
 	switch (key.Size())
 	{
-	case(16) :
+	case(UPDATE_KEY_SIZE_128) :
 		this->Initialize(key, opendnp3::UpdateKeyMode::AES128);
 		return true;
-	case(32):
+	case(UPDATE_KEY_SIZE_256):
 		this->Initialize(key, opendnp3::UpdateKeyMode::AES256);
 		return true;
 	default:		
@@ -72,8 +74,8 @@ void UpdateKey::Initialize(const openpal::ReadBufferView& key, opendnp3::UpdateK
 {
   this->isValid = true;
   this->updateKeyMode = mode;
-  auto dest = buffer.GetWriteBufferView();
-  this->updateKeyView = key.CopyTo(dest);  
+  auto dest = buffer.GetWriteBuffer();
+  key.CopyTo(dest);  
 }
 
 }

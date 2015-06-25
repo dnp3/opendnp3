@@ -39,6 +39,8 @@ public:
 	StaticBuffer()
 	{}	
 
+	virtual ~StaticBuffer() {}
+
 	ReadBufferView ToReadOnly() const
 	{
 		return ReadBufferView(buffer, SIZE);

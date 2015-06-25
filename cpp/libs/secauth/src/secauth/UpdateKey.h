@@ -21,7 +21,7 @@
 #ifndef SECAUTH_UPDATEKEY_H
 #define SECAUTH_UPDATEKEY_H
 
-#include <openpal/container/SecureBuffer.h>
+#include <openpal/crypto/SecureStaticBuffer.h>
 #include <opendnp3/gen/UpdateKeyMode.h>
 
 #include "secauth/User.h"
@@ -35,6 +35,9 @@ namespace secauth
 class UpdateKey
 {
 	public:
+
+		static const uint8_t UPDATE_KEY_SIZE_128 = 16;
+		static const uint8_t UPDATE_KEY_SIZE_256 = 32;
 		
 		/**
 		* Construct an invalid default key
@@ -74,8 +77,7 @@ class UpdateKey
 
 		bool isValid;		
 		opendnp3::UpdateKeyMode updateKeyMode;
-		openpal::SecureBuffer buffer;
-		openpal::ReadBufferView updateKeyView;		
+		openpal::SecureStaticBuffer<UPDATE_KEY_SIZE_256> buffer;		
 };
 
 }

@@ -220,8 +220,8 @@
     <ClInclude Include="src\openpal\crypto\ISecureRandom.h">
       <Filter>Header\crypto</Filter>
     </ClInclude>
-    <ClInclude Include="src\openpal\container\SecureBuffer.h">
-      <Filter>Header\container</Filter>
+    <ClInclude Include="src\openpal\crypto\SecureStaticBuffer.h">
+      <Filter>Header\crypto</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -280,9 +280,6 @@
       <Filter>Source\serialization</Filter>
     </ClCompile>
     <ClCompile Include="src\openpal\container\Buffer.cpp">
-      <Filter>Source\container</Filter>
-    </ClCompile>
-    <ClCompile Include="src\openpal\container\SecureBuffer.cpp">
       <Filter>Source\container</Filter>
     </ClCompile>
   </ItemGroup>
