@@ -24,8 +24,14 @@
 
 #include <system_error>
 
+#ifndef _MSC_VER
+#define NOEXCEPT noexcept
+#else
+#define NOEXCEPT
+#endif
+
 namespace osslcrypto
-{
+{	  
 	namespace errors
 	{
 		enum Error : int
@@ -62,7 +68,7 @@ namespace osslcrypto
 
 		static const std::error_category& Instance() { return instance; }
 
-		virtual const char* name() const { return "OSSL Errors"; }
+		virtual const char* name() const NOEXCEPT { return "OSSL Errors"; }
 		virtual std::string message(int ev) const;
 
 	private:
@@ -72,14 +78,17 @@ namespace osslcrypto
 
 		static CryptoErrorCategory instance;
 	};
+	
+	std::error_code make_error_code(osslcrypto::errors::Error err);
 }
 
 namespace std
-{	
-	std::error_code make_error_code(osslcrypto::errors::Error err);
-
-	template <>
-	struct is_error_code_enum<osslcrypto::errors::Error> : public true_type {};
+{	          
+    template <>
+    struct is_error_code_enum<osslcrypto::errors::Error> : public true_type {};            
 }
+
+
+
 
 #endif

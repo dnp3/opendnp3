@@ -21,6 +21,8 @@
 
 #include "MockCryptoProvider.h"
 
+#include <cstring>
+
 namespace opendnp3
 {	
 	MockCryptoProvider::MockCryptoProvider() :

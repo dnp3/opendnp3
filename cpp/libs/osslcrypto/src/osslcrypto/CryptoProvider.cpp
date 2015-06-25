@@ -83,7 +83,7 @@ openpal::ReadBufferView CryptoProvider::GetSecureRandom(WriteBufferView& buffer,
 
 	if (!result)
 	{
-		ec = errors::OPENSSL_RAND_BYTES_ERROR;
+		ec = make_error_code(errors::OPENSSL_RAND_BYTES_ERROR);
 		return ReadBufferView();
 	}
 

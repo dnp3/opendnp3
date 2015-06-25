@@ -77,7 +77,7 @@ TEST_CASE(SUITE("TestThatMultiThreadingDoesNotCrash"))
 		{
 			auto dest = buffer.GetWriteBufferView();
 			auto output = provider.GetSecureRandom(dest, ec);
-			if (!ec)
+			if (!ec && output.IsNotEmpty())
 			{
 				++randCount;
 			}

@@ -40,7 +40,7 @@ namespace osslcrypto
 	{
 		if (output.Size() < outputSize)
 		{
-			ec = errors::HMAC_INSUFFICIENT_OUTPUT_BUFFER_SIZE;
+			ec = make_error_code(errors::HMAC_INSUFFICIENT_OUTPUT_BUFFER_SIZE);
 			return ReadBufferView();
 		}
 
@@ -50,7 +50,7 @@ namespace osslcrypto
 
 		if (HMAC_Init_ex(&ctx, key, key.Size(), md, nullptr) == 0)
 		{
-			ec = errors::OPENSSL_HMAC_INIT_EX_ERROR;
+			ec = make_error_code(errors::OPENSSL_HMAC_INIT_EX_ERROR);
 			return ReadBufferView();
 		}
 					
@@ -58,7 +58,7 @@ namespace osslcrypto
 		{
 			if (HMAC_Update(&ctx, bytes, bytes.Size()) == 0)
 			{
-				ec = errors::OPENSSL_HMAC_UPDATE_ERROR;
+				ec = make_error_code(errors::OPENSSL_HMAC_UPDATE_ERROR);
 				return ReadBufferView();
 			}
 		}
@@ -66,7 +66,7 @@ namespace osslcrypto
 		unsigned int length = 0;
 		if (HMAC_Final(&ctx, output, &length) == 0)
 		{
-			ec = errors::OPENSSL_HMAC_FINAL_ERROR;
+			ec = make_error_code(errors::OPENSSL_HMAC_FINAL_ERROR);
 			return ReadBufferView();
 		}
 

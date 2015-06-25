@@ -37,14 +37,14 @@ namespace osslcrypto
 		// the key size must match
 		if (kek.Size() != KEY_SIZE_BYTES)
 		{
-			ec = errors::AES_WRAPKEY_KEK_SIZE_MISMATCH;
+			ec =   make_error_code(errors::AES_WRAPKEY_KEK_SIZE_MISMATCH);
 			return ReadBufferView::Empty();
 		}
 
 		// can only wrap things pre-padded into 8-byte blocks
 		if (input.Size() % 8 != 0)
 		{
-			ec = errors::AES_WRAPKEY_INPUT_NOT_DIV8;
+			ec = make_error_code(errors::AES_WRAPKEY_INPUT_NOT_DIV8);
 			return ReadBufferView::Empty();
 		}
 
@@ -53,14 +53,14 @@ namespace osslcrypto
 		// the wrapped data is always 8 bytes larger than the input
 		if (output.Size() < OUTPUT_SIZE)
 		{
-			ec = errors::AES_WRAPKEY_INSUFFICIENT_OUTPUT_BUFFER_SIZE;
+			ec = make_error_code(errors::AES_WRAPKEY_INSUFFICIENT_OUTPUT_BUFFER_SIZE);
 			return ReadBufferView::Empty();
 		}
 
 		AES_KEY key;
 		if (AES_set_encrypt_key(kek, KEY_SIZE_BITS, &key))
 		{
-			ec = errors::AES_WRAPKEY_AES_SET_ENCRYPT_KEY_ERROR;
+			ec = make_error_code(errors::AES_WRAPKEY_AES_SET_ENCRYPT_KEY_ERROR);
 			return ReadBufferView::Empty();
 		}
 
@@ -74,7 +74,7 @@ namespace osslcrypto
 		}
 		else
 		{
-			ec = errors::AES_WRAPKEY_AES_WRAP_KEY_ERROR;
+			ec = make_error_code(errors::AES_WRAPKEY_AES_WRAP_KEY_ERROR);
 			return ReadBufferView::Empty();
 		}		
 	}
@@ -87,14 +87,14 @@ namespace osslcrypto
 		// the key size must match
 		if (kek.Size() != KEY_SIZE_BYTES)
 		{
-			errors::AES_UNWRAPKEY_KEK_SIZE_MISMATCH;
+			ec = make_error_code(errors::AES_UNWRAPKEY_KEK_SIZE_MISMATCH);
 			return ReadBufferView::Empty();
 		}
 
 		// can only unwrap things pre-padded into 64-bit blocks
 		if ((input.Size() < 8) && input.Size() % 8 != 0)
 		{
-			errors::AES_UNWRAPKEY_INPUT_NOT_DIV8;
+			ec = make_error_code(errors::AES_UNWRAPKEY_INPUT_NOT_DIV8);
 			return ReadBufferView::Empty();
 		}
 
@@ -103,14 +103,14 @@ namespace osslcrypto
 
 		if (output.Size() < OUTPUT_SIZE)
 		{
-			errors::AES_UNWRAPKEY_INSUFFICIENT_OUTPUT_BUFFER_SIZE;
+			ec = make_error_code(errors::AES_UNWRAPKEY_INSUFFICIENT_OUTPUT_BUFFER_SIZE);
 			return ReadBufferView::Empty();
 		}
 
 		AES_KEY key;
 		if (AES_set_decrypt_key(kek, KEY_SIZE_BITS, &key))
 		{
-			errors::AES_UNWRAPKEY_AES_SET_DECRYPT_KEY_ERROR;
+			ec = make_error_code(errors::AES_UNWRAPKEY_AES_SET_DECRYPT_KEY_ERROR);
 			return ReadBufferView::Empty();
 		}
 
@@ -126,8 +126,8 @@ namespace osslcrypto
 		}		
 		else
 		{
-			ec = (RESULT == 0) ? errors::AES_UNWRAPKEY_AES_UNWRAP_KEY_IV_ERROR : errors::AES_UNWRAPKEY_AES_UNWRAP_KEY_PARAM_ERROR;
-
+			auto code = (RESULT == 0) ? errors::AES_UNWRAPKEY_AES_UNWRAP_KEY_IV_ERROR : errors::AES_UNWRAPKEY_AES_UNWRAP_KEY_PARAM_ERROR;
+			ec = make_error_code(code);
 			return ReadBufferView::Empty();
 		}				
 	}

@@ -52,7 +52,7 @@ namespace secauth
 		auto dest = challengeData.GetWriteBuffer(challengeSize);
 
 		std::error_code ec;
-		auto random = pProvider->GetSecureRandom(dest, ec);
+		auto challenge = pProvider->GetSecureRandom(dest, ec);
 		if (ec)
 		{
 			SIMPLE_LOG_BLOCK(logger, flags::ERR, ec.message().c_str());
@@ -68,7 +68,7 @@ namespace secauth
 		statusRsp.keyWrapAlgo = keyWrapAlgo;
 		statusRsp.keyStatus = status;
 		statusRsp.hmacAlgo = hmacType;
-		statusRsp.challengeData = challengeData.ToReadOnly(challengeSize);
+		statusRsp.challengeData = challenge;
 		statusRsp.hmacValue = hmac;
 
 		return writer.WriteFreeFormat(statusRsp);		

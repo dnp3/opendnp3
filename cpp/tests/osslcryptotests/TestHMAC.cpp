@@ -55,7 +55,8 @@ void TestInsufficientOutputSizeFails(IHMACAlgo& algo)
 	auto dest = buffer.GetWriteBufferView();
 	error_code ec;
 	auto output = algo.Calculate(ReadBufferView(), { ReadBufferView() }, dest, ec);
-	REQUIRE(ec == errors::HMAC_INSUFFICIENT_OUTPUT_BUFFER_SIZE);
+	REQUIRE(ec == make_error_code(errors::HMAC_INSUFFICIENT_OUTPUT_BUFFER_SIZE));
+	REQUIRE(output.IsEmpty());
 }
 
 TEST_CASE(SUITE("SHA1-SHA256-SHORTKEY"))

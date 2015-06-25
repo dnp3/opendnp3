@@ -69,15 +69,13 @@ namespace osslcrypto
 				return "unknown error";
 		};
 	}
-}
-
-namespace std
-{
+	
 	std::error_code make_error_code(osslcrypto::errors::Error err)
 	{
-		return std::error_code(err, osslcrypto::CryptoErrorCategory::Instance());
+	  return std::error_code(err, osslcrypto::CryptoErrorCategory::Instance());
 	}
 }
+
 
 
 
