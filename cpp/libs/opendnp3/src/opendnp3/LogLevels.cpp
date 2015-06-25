@@ -30,33 +30,33 @@ namespace opendnp3
 		{
 
 		case(flags::EVENT) :
-			return "EVENT";
+			return "EVENT  ";
 		case(flags::ERR) :
-			return "ERROR";
+			return "ERROR  ";
 		case(flags::WARN) :
-			return "WARN";
+			return "WARN   ";
 		case(flags::INFO) :
-			return "INFO";
+			return "INFO   ";
 		case(flags::DBG) :
-			return "DEBUG";
+			return "DEBUG  ";
 		case(flags::LINK_RX) :
 		case(flags::LINK_RX_HEX) :
-			return "<-LL--";
+			return "<-LL-- ";
 		case(flags::LINK_TX) :
 		case(flags::LINK_TX_HEX) :
-			return "--LL->";
+			return "--LL-> ";
 		case(flags::TRANSPORT_RX) :
-			return "<-TL--";
+			return "<-TL-- ";
 		case(flags::TRANSPORT_TX) :
-			return "--TL->";
+			return "--TL-> ";
 		case(flags::APP_HEADER_RX) :
 		case(flags::APP_OBJECT_RX) :
 		case(flags::APP_HEX_RX) :
-			return "<-AL--";
+			return "<-AL-- ";
 		case(flags::APP_HEADER_TX) :
 		case(flags::APP_OBJECT_TX) :
 		case(flags::APP_HEX_TX) :
-			return "--AL->";
+			return "--AL-> ";
 		default:
 			return "UNKNOWN";
 		}

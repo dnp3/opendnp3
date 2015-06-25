@@ -116,8 +116,10 @@ namespace osslcrypto
 		}
 
 		// If iv is null, the default IV is used
-		const int LEN = AES_unwrap_key(&key, nullptr, output, input, input.Size());
-		if (LEN > 0)
+		const int RESULT = AES_unwrap_key(&key, nullptr, output, input, input.Size());
+
+
+		if (RESULT > 0)
 		{
 			auto ret = output.ToReadOnly().Take(OUTPUT_SIZE);
 			output.Advance(OUTPUT_SIZE);
@@ -125,7 +127,16 @@ namespace osslcrypto
 		}		
 		else
 		{
-			SIMPLE_LOGGER_BLOCK(pLogger, logflags::WARN, "AES_unwrap_key() returned 0 length");
+			if (RESULT < 0)
+			{
+				SIMPLE_LOGGER_BLOCK(pLogger, logflags::WARN, "AES_unwrap_key(): parameter error");
+			}
+			else
+			{
+				// equal to zero
+				SIMPLE_LOGGER_BLOCK(pLogger, logflags::WARN, "AES_unwrap_key(): IV didn't match. Do you have the correct update key?");
+			}
+			
 			return ReadBufferView::Empty();
 		}				
 	}
