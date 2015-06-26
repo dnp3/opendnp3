@@ -52,6 +52,7 @@
     <ClInclude Include="src\asiodnp3\ChannelSet.h" />
     <ClInclude Include="src\asiodnp3\HeaderTypes.h" />
     <ClInclude Include="src\asiodnp3\IChannel.h" />
+    <ClInclude Include="src\asiodnp3\ILinkBind.h" />
     <ClInclude Include="src\asiodnp3\IMaster.h" />
     <ClInclude Include="src\asiodnp3\impl\LinkLayerRouter.h" />
     <ClInclude Include="src\asiodnp3\impl\PhysicalLayerMonitor.h" />
@@ -60,6 +61,7 @@
     <ClInclude Include="src\asiodnp3\IStack.h" />
     <ClInclude Include="src\asiodnp3\IStackLifecycle.h" />
     <ClInclude Include="src\asiodnp3\MasterAuthStack.h" />
+    <ClInclude Include="src\asiodnp3\MasterBase.h" />
     <ClInclude Include="src\asiodnp3\MasterStackImpl.h" />
     <ClInclude Include="src\asiodnp3\MultidropTaskLock.h" />
     <ClInclude Include="src\asiodnp3\OutstationAuthStack.h" />

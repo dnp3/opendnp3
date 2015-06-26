@@ -157,5 +157,11 @@
     <ClInclude Include="src\asiodnp3\StackLifecycle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\asiodnp3\ILinkBind.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\asiodnp3\MasterBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

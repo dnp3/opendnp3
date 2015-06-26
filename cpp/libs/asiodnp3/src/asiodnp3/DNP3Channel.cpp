@@ -199,7 +199,7 @@ IMaster* DNP3Channel::_AddMaster(char const* id,
 		auto pMaster = new MasterStackImpl(id, *pLogRoot, *pExecutor, SOEHandler, application, config, stacks, taskLock);
 		stacks.Add(pMaster);
 		pMaster->SetLinkRouter(router);		
-		router.AddContext(pMaster->GetLinkContext(), route);
+		router.AddContext(&pMaster->GetLinkContext(), route);
 		return pMaster;
 	}
 }
@@ -222,7 +222,7 @@ IMaster* DNP3Channel::_AddMaster(char const* id,
 		auto pMaster = new MasterAuthStack(id, *pLogRoot, *pExecutor, SOEHandler, application, config, stacks, taskLock, user, crypto);		
 		stacks.Add(pMaster);
 		pMaster->SetLinkRouter(router);		
-		router.AddContext(pMaster->GetLinkContext(), route);
+		router.AddContext(&pMaster->GetLinkContext(), route);
 		return pMaster;
 	}
 }

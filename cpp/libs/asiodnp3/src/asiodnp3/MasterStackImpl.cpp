@@ -79,9 +79,9 @@ void MasterStackImpl::SetLinkRouter(opendnp3::ILinkRouter& router)
 	stack.link.SetRouter(router);
 }
 
-opendnp3::ILinkSession* MasterStackImpl::GetLinkContext()
+opendnp3::ILinkSession& MasterStackImpl::GetLinkContext()
 {
-	return &stack.link;
+	return stack.link;
 }
 
 opendnp3::MasterScan MasterStackImpl::AddScan(openpal::TimeDuration period, const std::vector<Header>& headers, opendnp3::ITaskCallback* pCallback, int userId)

@@ -21,7 +21,7 @@
 #ifndef ASIODNP3_MASTERSTACKIMPL_H
 #define ASIODNP3_MASTERSTACKIMPL_H
 
-#include "IMaster.h"
+#include "MasterBase.h"
 #include "IStackLifecycle.h"
 
 #include <opendnp3/link/ILinkSession.h>
@@ -36,7 +36,7 @@ namespace asiodnp3
 
 
 /** @section desc A stack object for a master */
-class MasterStackImpl : public IMaster
+class MasterStackImpl : public MasterBase
 {
 public:
 
@@ -91,9 +91,9 @@ public:
 
 	// ------- Non-interface public members ---------
 
-	void SetLinkRouter(opendnp3::ILinkRouter& router);	
+	virtual void SetLinkRouter(opendnp3::ILinkRouter& router) override final;
 
-	opendnp3::ILinkSession* GetLinkContext();
+	virtual opendnp3::ILinkSession& GetLinkContext() override final;
 
 
 protected:
