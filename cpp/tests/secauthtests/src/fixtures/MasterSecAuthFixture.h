@@ -53,6 +53,7 @@ namespace opendnp3
 		MockSOEHandler meas;
 		MockLowerLayer lower;
 		MockMasterApplication application;
+		MContext context;
 		Master master;
 
 		MockCryptoProvider crypto;

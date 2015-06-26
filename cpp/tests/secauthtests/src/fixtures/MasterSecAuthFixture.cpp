@@ -33,7 +33,8 @@ namespace opendnp3
 		meas(),
 		lower(log.root),
 		application(),
-		master(exe, log.root, lower, meas, application, params, lock),
+		context(exe, log.root, lower, meas, application, params, lock),
+		master(context),
 		crypto(),
 		user(user_),
 		auth(application, exe, log.GetLogger(), crypto, user)

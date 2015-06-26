@@ -37,8 +37,7 @@ namespace opendnp3
 		openpal::LogRoot& root,
 		ILowerLayer& lower,
 		ISOEHandler& SOEHandler,
-		opendnp3::IMasterApplication& application,
-		IScheduleCallback& scheduleCallback,
+		opendnp3::IMasterApplication& application,		
 		const MasterParams& params_,
 		ITaskLock& taskLock
 		) :
@@ -49,13 +48,12 @@ namespace opendnp3
 		params(params_),
 		pSOEHandler(&SOEHandler),
 		pTaskLock(&taskLock),
-		pApplication(&application),
-		pScheduleCallback(&scheduleCallback),
+		pApplication(&application),		
 		isOnline(false),
 		isSending(false),		
 		responseTimer(executor),
 		tasks(params, logger, application, SOEHandler, application),
-		scheduler(executor, scheduleCallback),
+		scheduler(executor, *this),
 		txBuffer(params.maxTxFragSize),
 		pState(&MasterStateIdle::Instance())
 	{}

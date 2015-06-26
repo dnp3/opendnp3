@@ -43,7 +43,7 @@ namespace opendnp3
 	/*
 		All of the mutable state and configuration for a master
 	*/
-	class MContext
+	class MContext : private IScheduleCallback
 	{
 
 	public:
@@ -52,8 +52,7 @@ namespace opendnp3
 			openpal::LogRoot& root,
 			ILowerLayer& lower,
 			ISOEHandler& SOEHandler,
-			opendnp3::IMasterApplication& application,
-			IScheduleCallback& scheduleCallback,
+			opendnp3::IMasterApplication& application,			
 			const MasterParams& params,
 			ITaskLock& taskLock
 			);	
@@ -86,6 +85,7 @@ namespace opendnp3
 
 
 	public:
+
 
 		/// public state manipulation actions
 
@@ -120,6 +120,8 @@ namespace opendnp3
 		void Transmit(const openpal::ReadBufferView& data);
 
 	private:
+
+		virtual void OnPendingTask() override { this->PostCheckForTask(); }
 
 		void ProcessIIN(const IINField& iin);
 

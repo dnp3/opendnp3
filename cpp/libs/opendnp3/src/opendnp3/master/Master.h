@@ -31,18 +31,12 @@
 namespace opendnp3
 {
 
-class Master : public IUpperLayer, private IScheduleCallback
+class Master : public IUpperLayer
 {
 	public:
 
-	Master(	openpal::IExecutor& executor, 				
-			openpal::LogRoot& root, 
-			ILowerLayer& lower,
-			ISOEHandler& SOEHandler,			
-			opendnp3::IMasterApplication& application,
-			const MasterParams& params,
-			ITaskLock& taskLock = NullTaskLock::Instance()
-			);
+	Master(MContext& mcontext);
+	
 	
 	/// ----- Implement IUpperLayer ------
 
@@ -85,17 +79,14 @@ class Master : public IUpperLayer, private IScheduleCallback
 	void Write(const TimeAndInterval& value, uint16_t index, ITaskCallback* pCallback = nullptr, int userId = -1);
 
 	
-	private:
-
-	// callback from the scheduler that a task is ready to run	
-	virtual void OnPendingTask() override final;
+	private:	
 
 	/// --- internal events ----
 
 	void ScheduleRecurringPollTask(IMasterTask* pTask);
 	void ScheduleAdhocTask(IMasterTask* pTask);
 
-	MContext mcontext;
+	MContext* pMContext;
 	MasterCommandProcessor commandProcessor;
 };
 

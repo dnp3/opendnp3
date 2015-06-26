@@ -104,6 +104,7 @@ protected:
 	opendnp3::StackStatistics statistics;
 	IStackLifecycle* pLifecycle;
 	opendnp3::TransportStack stack;
+	opendnp3::MContext mcontext;
 	opendnp3::Master master;
 };
 

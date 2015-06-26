@@ -42,7 +42,8 @@ MasterStackImpl::MasterStackImpl(
 		root(root_, id),		
 		pLifecycle(&lifecycle),
 		stack(root, &executor, config.master.maxRxFragSize, &statistics, config.link),
-		master(executor, root, stack.transport, SOEHandler, application, config.master, taskLock)
+		mcontext(executor, root, stack.transport, SOEHandler, application,  config.master, taskLock),
+		master(mcontext)
 {
 	stack.transport.SetAppLayer(&master);
 }

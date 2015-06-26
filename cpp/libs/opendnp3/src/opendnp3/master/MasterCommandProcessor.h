@@ -31,7 +31,7 @@ class MasterCommandProcessor : public ICommandProcessor
 {
 	public:	
 
-	MasterCommandProcessor(MContext& state);
+	MasterCommandProcessor(MContext& context);
 			
 	// ------- command events ----------
 
