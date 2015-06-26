@@ -25,10 +25,7 @@ using namespace openpal;
 
 namespace secauth
 {
-	
-	void SessionKeys::SetKeys (
-		const SessionKeysView& view
-		)
+	void SessionKeys::SetKeys(const SessionKeysView& view)
 	{
 		auto controlDest = controlBuffer.GetWriteBuffer();
 		controlKey = view.controlKey.CopyTo(controlDest);
@@ -53,13 +50,7 @@ namespace secauth
 		rs.GetSecureRandom(dest1, ec);
 		rs.GetSecureRandom(dest2, ec);				
 	}
-
-	void SessionKeys::ClearMemory()
-	{
-		controlBuffer.GetWriteBuffer().SetAllTo(0);
-		monitorBuffer.GetWriteBuffer().SetAllTo(0);
-	}
-
+	
 }
 
 

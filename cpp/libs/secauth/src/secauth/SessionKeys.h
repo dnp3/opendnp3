@@ -26,7 +26,7 @@
 
 #include <openpal/crypto/ISecureRandom.h>
 
-#include <openpal/container/StaticBuffer.h>
+#include <openpal/crypto/SecureStaticBuffer.h>
 #include <openpal/util/Uncopyable.h>
 
 namespace secauth
@@ -35,7 +35,9 @@ namespace secauth
 	{
 		public:
 
-		SessionKeySize(uint32_t size_) : size(AuthConstants::GetBoundedSessionKeySize(size_)) {}
+		SessionKeySize(uint32_t size_) : 
+			size(AuthConstants::GetBoundedSessionKeySize(size_))
+		{}
 
 		operator uint32_t() const { return size; }
 
@@ -54,15 +56,13 @@ namespace secauth
 
 			void DeriveFrom(openpal::ISecureRandom& rs, const SessionKeySize& size, std::error_code& ec);
 
-			void ClearMemory();
-
 		private:
 
 			openpal::ReadBufferView controlKey;
 			openpal::ReadBufferView monitorKey;
 
-			openpal::StaticBuffer<AuthConstants::MAX_SESSION_KEY_SIZE_BYTES> controlBuffer;
-			openpal::StaticBuffer<AuthConstants::MAX_SESSION_KEY_SIZE_BYTES> monitorBuffer;
+			openpal::SecureStaticBuffer<AuthConstants::MAX_SESSION_KEY_SIZE_BYTES> controlBuffer;
+			openpal::SecureStaticBuffer<AuthConstants::MAX_SESSION_KEY_SIZE_BYTES> monitorBuffer;
 	};
 }
 

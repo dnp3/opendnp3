@@ -36,6 +36,9 @@ class SecureStaticBuffer final : public StaticBuffer<SIZE>
 {
 
 public:
+
+	SecureStaticBuffer()
+	{}
 	
 	SecureStaticBuffer(uint8_t initialValue)
 	{
