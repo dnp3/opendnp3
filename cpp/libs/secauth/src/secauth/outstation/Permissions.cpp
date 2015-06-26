@@ -49,15 +49,6 @@ void Permissions::Allow(FunctionCode code)
 	}
 }
 
-void Permissions::Deny(FunctionCode code)
-{
-	auto mask = GetMask(code);
-	if (mask.valid)
-	{
-		this->permissions &= ~mask.value;
-	}
-}
-
 bool Permissions::IsAllowed(opendnp3::FunctionCode code) const
 {
 	return GetMask(code).And(permissions);

@@ -136,8 +136,7 @@ TEST_CASE(SUITE("Outstation enforces permissions for critical functions"))
 	OutstationAuthSettings settings;
 	OutstationSecAuthFixture fixture(settings);
 
-	auto permissions = Permissions::AllowAll();
-	permissions.Deny(FunctionCode::READ);
+	auto permissions = Permissions::Allowed(FunctionCode::WRITE);
 
 	fixture.AddUser(User::Default(), UpdateKeyMode::AES256, 0xFF, permissions);
 
