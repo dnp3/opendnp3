@@ -28,7 +28,7 @@
 #include <opendnp3/link/ILinkRouter.h>
 #include <opendnp3/transport/TransportStack.h>
 
-#include "IOutstation.h"
+#include "OutstationBase.h"
 #include "IStackLifecycle.h"
 
 #include <memory>
@@ -39,7 +39,7 @@ namespace asiodnp3
 class ILinkSession;
 
 /** @section desc A stack object for a master */
-class OutstationStackImpl : public IOutstation
+class OutstationStackImpl : public OutstationBase
 {
 public:
 
@@ -64,11 +64,11 @@ public:
 
 	virtual opendnp3::StackStatistics GetStackStatistics() override final;	
 
-	// ------- Non-interface public members ---------
+	// ------- implement ILinkBind ---------
 
-	void SetLinkRouter(opendnp3::ILinkRouter& router);
+	virtual void SetLinkRouter(opendnp3::ILinkRouter& router) override final;
 
-	opendnp3::ILinkSession* GetLinkContext();
+	virtual opendnp3::ILinkSession& GetLinkContext() override final;
 
 private:		
 

@@ -163,5 +163,8 @@
     <ClInclude Include="src\asiodnp3\MasterBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\asiodnp3\OutstationBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

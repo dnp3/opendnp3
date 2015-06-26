@@ -65,6 +65,7 @@
     <ClInclude Include="src\asiodnp3\MasterStackImpl.h" />
     <ClInclude Include="src\asiodnp3\MultidropTaskLock.h" />
     <ClInclude Include="src\asiodnp3\OutstationAuthStack.h" />
+    <ClInclude Include="src\asiodnp3\OutstationBase.h" />
     <ClInclude Include="src\asiodnp3\OutstationStackImpl.h" />
     <ClInclude Include="src\asiodnp3\PrintingSOEHandler.h" />
     <ClInclude Include="src\asiodnp3\StackLifecycle.h" />

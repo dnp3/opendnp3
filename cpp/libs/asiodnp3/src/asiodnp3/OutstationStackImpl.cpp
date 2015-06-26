@@ -83,9 +83,9 @@ void OutstationStackImpl::SetLinkRouter(opendnp3::ILinkRouter& router)
 	stack.link.SetRouter(router);
 }
 
-opendnp3::ILinkSession* OutstationStackImpl::GetLinkContext()
+opendnp3::ILinkSession& OutstationStackImpl::GetLinkContext()
 {
-	return &stack.link;
+	return stack.link;
 }
 
 openpal::IExecutor& OutstationStackImpl::GetExecutor()

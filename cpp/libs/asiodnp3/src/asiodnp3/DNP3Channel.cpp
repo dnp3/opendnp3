@@ -252,7 +252,7 @@ IOutstation* DNP3Channel::_AddOutstation(char const* id,
 		
 		stacks.Add(pOutstation);
 		pOutstation->SetLinkRouter(router);		
-		router.AddContext(pOutstation->GetLinkContext(), route);
+		router.AddContext(&pOutstation->GetLinkContext(), route);
 		return pOutstation;
 	}
 }
@@ -290,7 +290,7 @@ IOutstation* DNP3Channel::_AddOutstation(char const* id,
 		
 		stacks.Add(pOutstation);
 		pOutstation->SetLinkRouter(router);		
-		router.AddContext(pOutstation->GetLinkContext(), route);
+		router.AddContext(&pOutstation->GetLinkContext(), route);
 		return pOutstation;
 	}
 }
