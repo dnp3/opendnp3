@@ -205,9 +205,7 @@ IMaster* DNP3Channel::_AddMaster(char const* id,
 	else
 	{
 		StackActionHandler handler(router, *pExecutor);
-		auto pMaster = new MasterStackImpl(id, *pLogRoot, *pExecutor, SOEHandler, application, config, handler, taskLock);
-		auto onShutdown = [this, pMaster](){ this->OnShutdown(pMaster); };
-		pMaster->SetShutdownAction(Action0::Bind(onShutdown));
+		auto pMaster = new MasterStackImpl(id, *pLogRoot, *pExecutor, SOEHandler, application, config, *this, handler, taskLock);		
 		pMaster->SetLinkRouter(router);
 		stacks.insert(pMaster);
 		router.AddContext(pMaster->GetLinkContext(), route);
@@ -231,9 +229,7 @@ IMaster* DNP3Channel::_AddMaster(char const* id,
 	else
 	{
 		StackActionHandler handler(router, *pExecutor);
-		auto pMaster = new MasterAuthStack(id, *pLogRoot, *pExecutor, SOEHandler, application, config, handler, taskLock, user, crypto);
-		auto onShutdown = [this, pMaster](){ this->OnShutdown(pMaster); };
-		pMaster->SetShutdownAction(Action0::Bind(onShutdown));
+		auto pMaster = new MasterAuthStack(id, *pLogRoot, *pExecutor, SOEHandler, application, config, *this, handler, taskLock, user, crypto);		
 		pMaster->SetLinkRouter(router);
 		stacks.insert(pMaster);
 		router.AddContext(pMaster->GetLinkContext(), route);
@@ -319,7 +315,7 @@ IOutstation* DNP3Channel::_AddOutstation(char const* id,
 
 // these always happen on the strand
 void DNP3Channel::OnShutdown(IStack* pStack)
-{
+{	
 	stacks.erase(pStack);
 	auto deleteStack = [pStack]() { delete pStack; };
 	pExecutor->strand.post(deleteStack);	

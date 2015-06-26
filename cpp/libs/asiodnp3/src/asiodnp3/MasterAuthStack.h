@@ -42,6 +42,7 @@ public:
 		opendnp3::ISOEHandler& SOEHandler,	    
 		opendnp3::IMasterApplication& application,
 		const opendnp3::MasterStackConfig& config,
+		IStackShutdown& shutdown,
 		const StackActionHandler& handler,
 		opendnp3::ITaskLock& taskLock,
 		secauth::IMasterUser& user,

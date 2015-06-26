@@ -38,9 +38,11 @@ MasterStackImpl::MasterStackImpl(
 	opendnp3::ISOEHandler& SOEHandler,                                    
 	opendnp3::IMasterApplication& application,
     const MasterStackConfig& config,
+	IStackShutdown& shutdown,
     const StackActionHandler& handler_,									
 	opendnp3::ITaskLock& taskLock) :
 		root(root_, id),
+		pShutdown(&shutdown),
 		handler(handler_),
 		stack(root, &executor, config.master.maxRxFragSize, &statistics, config.link),
 		master(executor, root, stack.transport, SOEHandler, application, config.master, taskLock)
@@ -66,7 +68,7 @@ bool MasterStackImpl::Disable()
 void MasterStackImpl::Shutdown()
 {
 	handler.Shutdown(&stack.link);
-	shutdownAction.Apply();
+	pShutdown->OnShutdown(this);
 }
 
 StackStatistics MasterStackImpl::GetStackStatistics()
@@ -78,11 +80,6 @@ StackStatistics MasterStackImpl::GetStackStatistics()
 void MasterStackImpl::SetLinkRouter(opendnp3::ILinkRouter& router)
 {
 	stack.link.SetRouter(router);
-}
-
-void MasterStackImpl::SetShutdownAction(const openpal::Action0& action)
-{
-	shutdownAction = action;
 }
 
 opendnp3::ILinkSession* MasterStackImpl::GetLinkContext()

@@ -46,6 +46,7 @@ public:
 		opendnp3::ISOEHandler& SOEHandler,	    
 		opendnp3::IMasterApplication& application,
 		const opendnp3::MasterStackConfig& config,
+		IStackShutdown& shutdown,
 		const StackActionHandler& handler,
 		opendnp3::ITaskLock& taskLock
 	);
@@ -90,9 +91,7 @@ public:
 
 	// ------- Non-interface public members ---------
 
-	void SetLinkRouter(opendnp3::ILinkRouter& router);
-
-	void SetShutdownAction(const openpal::Action0& action);
+	void SetLinkRouter(opendnp3::ILinkRouter& router);	
 
 	opendnp3::ILinkSession* GetLinkContext();
 
@@ -102,7 +101,7 @@ protected:
 	static std::function<void(opendnp3::HeaderWriter&)> ConvertToLambda(const std::vector<Header>& headers);	
 
 	openpal::LogRoot root;
-	openpal::Action0 shutdownAction;
+	IStackShutdown* pShutdown;
 	opendnp3::StackStatistics statistics;
 	StackActionHandler handler;
 	opendnp3::TransportStack stack;

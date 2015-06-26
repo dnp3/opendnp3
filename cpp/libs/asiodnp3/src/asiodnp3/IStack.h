@@ -30,7 +30,7 @@
 
 namespace asiodnp3
 {
-
+	
 /**
 * Base class for masters or outstations
 */
@@ -55,6 +55,13 @@ public:
 	*/
 	virtual void Shutdown() = 0;
 
+};
+
+// callback invoked when a stack shuts down
+class IStackShutdown
+{
+public:
+	virtual void OnShutdown(IStack* pStack) = 0;
 };
 
 }

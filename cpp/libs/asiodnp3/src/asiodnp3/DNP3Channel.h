@@ -57,7 +57,7 @@ namespace asiodnp3
 class IStack;
 class IOutstation;
 
-class DNP3Channel : public IChannel, private opendnp3::IChannelStateListener
+class DNP3Channel : public IChannel, private opendnp3::IChannelStateListener, private IStackShutdown
 {
 	
 public:
@@ -144,7 +144,7 @@ private:
 	virtual void OnStateChange(opendnp3::ChannelState state) override final;	
 
 	// shutdown from the stack
-	void OnShutdown(IStack* apStack);
+	virtual void OnShutdown(IStack* pStack) override final;
 
 	void CheckForFinalShutdown();
 
