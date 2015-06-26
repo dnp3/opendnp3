@@ -72,6 +72,8 @@ public:
 		openpal::IPhysicalLayer* pPhys_	    	
 	);
 
+	// ----------------------- Implement IChannel -----------------------
+
 	virtual opendnp3::LinkChannelStatistics GetChannelStatistics() override final;
 	
 	void Shutdown() override final;	
@@ -107,6 +109,8 @@ public:
 								openpal::IUTCTimeSource& timeSource,
 								secauth::IOutstationUserDatabase& userDB,
 								openpal::ICryptoProvider& crypto) override final;
+
+	// -----------------------------------------------------------------------
 
 	// Helper functions only available inside DNP3Manager
 	void SetShutdownHandler(const openpal::Action0& action);
