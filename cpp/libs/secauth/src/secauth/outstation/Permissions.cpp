@@ -46,7 +46,7 @@ void Permissions::Allow(FunctionCode code)
 
 bool Permissions::IsAllowed(opendnp3::FunctionCode code) const
 {
-	return GetMask(code) & permissions;
+	return (GetMask(code) & permissions) != 0;
 }
 
 Permissions::bitfield_t Permissions::GetMask(opendnp3::FunctionCode code)
