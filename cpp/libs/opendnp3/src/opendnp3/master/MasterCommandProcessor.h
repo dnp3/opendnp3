@@ -52,7 +52,7 @@ class MasterCommandProcessor : public ICommandProcessor
 
 	private:
 
-	MContext* pState;	
+	MContext* pContext;	
 
 	// -------- helpers --------	
 
@@ -74,7 +74,7 @@ void MasterCommandProcessor::SelectAndOperateT(const T& command, uint16_t index,
 {
 	auto pCallback = &callback;
 	auto action = [command, index, pCallback, serializer, this]() { this->ProcessSelectAndOperate(command, index, *pCallback, serializer); };
-	pState->pExecutor->PostLambda(action);
+	pContext->pExecutor->PostLambda(action);
 }
 
 template <class T>
@@ -82,16 +82,16 @@ void MasterCommandProcessor::DirectOperateT(const T& command, uint16_t index, IC
 {
 	auto pCallback = &callback;
 	auto action = [command, index, pCallback, serializer, this]() { this->ProcessDirectOperate(command, index, *pCallback, serializer); };
-	pState->pExecutor->PostLambda(action);
+	pContext->pExecutor->PostLambda(action);
 }
 
 template <class T>
 void MasterCommandProcessor::ProcessSelectAndOperate(const T& command, uint16_t index, ICommandCallback& callback, const DNP3Serializer<T>& serializer)
 {
-	if (pState->isOnline)
+	if (pContext->isOnline)
 	{
-		pState->scheduler.Schedule(openpal::ManagedPtr<IMasterTask>::Deleted(CommandTask::FSelectAndOperate(command, index, *(pState->pApplication), callback, serializer, pState->logger)));
-		pState->PostCheckForTask();
+		pContext->scheduler.Schedule(openpal::ManagedPtr<IMasterTask>::Deleted(CommandTask::FSelectAndOperate(command, index, *(pContext->pApplication), callback, serializer, pContext->logger)));
+		pContext->PostCheckForTask();
 	}
 	else
 	{
@@ -102,10 +102,10 @@ void MasterCommandProcessor::ProcessSelectAndOperate(const T& command, uint16_t 
 template <class T>
 void MasterCommandProcessor::ProcessDirectOperate(const T& command, uint16_t index, ICommandCallback& callback, const DNP3Serializer<T>& serializer)
 {
-	if (pState->isOnline)
+	if (pContext->isOnline)
 	{		
-		pState->scheduler.Schedule(openpal::ManagedPtr<IMasterTask>::Deleted(CommandTask::FDirectOperate(command, index, *(pState->pApplication), callback, serializer, pState->logger)));
-		pState->PostCheckForTask();		
+		pContext->scheduler.Schedule(openpal::ManagedPtr<IMasterTask>::Deleted(CommandTask::FDirectOperate(command, index, *(pContext->pApplication), callback, serializer, pContext->logger)));
+		pContext->PostCheckForTask();
 	}
 	else
 	{

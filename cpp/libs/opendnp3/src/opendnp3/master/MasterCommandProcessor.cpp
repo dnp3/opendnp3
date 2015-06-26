@@ -26,7 +26,7 @@
 
 namespace opendnp3
 {
-	MasterCommandProcessor::MasterCommandProcessor(MContext& state) : pState(&state)
+	MasterCommandProcessor::MasterCommandProcessor(MContext& mcontext) : pContext(&mcontext)
 	{}
 
 	void MasterCommandProcessor::SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback& callback)
