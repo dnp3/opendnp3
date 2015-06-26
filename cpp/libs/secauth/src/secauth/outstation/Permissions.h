@@ -61,6 +61,11 @@ public:
 	{
 		return Permissions(GetBitfield(args...));
 	}
+	
+	Permissions operator|(const Permissions& other)
+	{
+	  return Permissions(this->permissions | other.permissions); 
+	}
 
 	static Permissions AllowNothing();
 	static Permissions AllowAll();
