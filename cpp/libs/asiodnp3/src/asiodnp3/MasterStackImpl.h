@@ -45,8 +45,7 @@ public:
 	    asiopal::ASIOExecutor& executor,
 		opendnp3::ISOEHandler& SOEHandler,	    
 		opendnp3::IMasterApplication& application,
-		const opendnp3::MasterStackConfig& config,
-		IStackShutdown& shutdown,
+		const opendnp3::MasterStackConfig& config,		
 		const StackActionHandler& handler,
 		opendnp3::ITaskLock& taskLock
 	);
@@ -100,8 +99,7 @@ protected:
 
 	static std::function<void(opendnp3::HeaderWriter&)> ConvertToLambda(const std::vector<Header>& headers);	
 
-	openpal::LogRoot root;
-	IStackShutdown* pShutdown;
+	openpal::LogRoot root;	
 	opendnp3::StackStatistics statistics;
 	StackActionHandler handler;
 	opendnp3::TransportStack stack;

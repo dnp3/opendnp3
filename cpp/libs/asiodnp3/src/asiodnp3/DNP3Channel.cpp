@@ -204,8 +204,8 @@ IMaster* DNP3Channel::_AddMaster(char const* id,
 	}
 	else
 	{
-		StackActionHandler handler(router, *pExecutor);
-		auto pMaster = new MasterStackImpl(id, *pLogRoot, *pExecutor, SOEHandler, application, config, *this, handler, taskLock);		
+		StackActionHandler handler(router, *pExecutor, *this);
+		auto pMaster = new MasterStackImpl(id, *pLogRoot, *pExecutor, SOEHandler, application, config, handler, taskLock);		
 		pMaster->SetLinkRouter(router);
 		stacks.insert(pMaster);
 		router.AddContext(pMaster->GetLinkContext(), route);
@@ -228,8 +228,8 @@ IMaster* DNP3Channel::_AddMaster(char const* id,
 	}
 	else
 	{
-		StackActionHandler handler(router, *pExecutor);
-		auto pMaster = new MasterAuthStack(id, *pLogRoot, *pExecutor, SOEHandler, application, config, *this, handler, taskLock, user, crypto);		
+		StackActionHandler handler(router, *pExecutor, *this);
+		auto pMaster = new MasterAuthStack(id, *pLogRoot, *pExecutor, SOEHandler, application, config, handler, taskLock, user, crypto);		
 		pMaster->SetLinkRouter(router);
 		stacks.insert(pMaster);
 		router.AddContext(pMaster->GetLinkContext(), route);
@@ -250,7 +250,7 @@ IOutstation* DNP3Channel::_AddOutstation(char const* id,
 	}
 	else
 	{
-		StackActionHandler handler(router, *pExecutor);
+		StackActionHandler handler(router, *pExecutor, *this);
 
 		auto pOutstation = new OutstationStackImpl(
 			id, 
@@ -261,9 +261,7 @@ IOutstation* DNP3Channel::_AddOutstation(char const* id,
 			config, 
 			handler
 		);
-				
-		auto onShutdown = [this, pOutstation](){ this->OnShutdown(pOutstation); };
-		pOutstation->SetShutdownAction(Action0::Bind(onShutdown));
+						
 		pOutstation->SetLinkRouter(router);
 		stacks.insert(pOutstation);
 		router.AddContext(pOutstation->GetLinkContext(), route);
@@ -288,7 +286,7 @@ IOutstation* DNP3Channel::_AddOutstation(char const* id,
 	}
 	else
 	{
-		StackActionHandler handler(router, *pExecutor);
+		StackActionHandler handler(router, *pExecutor, *this);
 
 		auto pOutstation = new OutstationAuthStack(
 			id,
@@ -302,10 +300,8 @@ IOutstation* DNP3Channel::_AddOutstation(char const* id,
 			timeSource,
 			userDB,
 			crypto
-			);
-
-		auto onShutdown = [this, pOutstation](){ this->OnShutdown(pOutstation); };
-		pOutstation->SetShutdownAction(Action0::Bind(onShutdown));
+		);
+		
 		pOutstation->SetLinkRouter(router);
 		stacks.insert(pOutstation);
 		router.AddContext(pOutstation->GetLinkContext(), route);

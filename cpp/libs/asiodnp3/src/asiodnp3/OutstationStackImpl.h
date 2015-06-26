@@ -21,8 +21,6 @@
 #ifndef ASIODNP3_OUTSTATIONSTACKIMPL_H
 #define ASIODNP3_OUTSTATIONSTACKIMPL_H
 
-#include <openpal/crypto/ICryptoProvider.h>
-
 #include <opendnp3/outstation/OutstationStackConfig.h>
 #include <opendnp3/outstation/Database.h>
 #include <opendnp3/outstation/Outstation.h>
@@ -51,7 +49,7 @@ public:
 		openpal::IExecutor& executor,		
 		opendnp3::ICommandHandler& commandHandler,
 		opendnp3::IOutstationApplication& application,		
-		const opendnp3::OutstationStackConfig& config,
+		const opendnp3::OutstationStackConfig& config,		
 	    const StackActionHandler& handler);
 
 	virtual opendnp3::DatabaseConfigView GetConfigView() override final;	
@@ -70,8 +68,6 @@ public:
 
 	void SetLinkRouter(opendnp3::ILinkRouter& router);
 
-	void SetShutdownAction(const openpal::Action0& action);
-
 	opendnp3::ILinkSession* GetLinkContext();
 
 private:		
@@ -82,8 +78,7 @@ private:
 
 protected:
 
-	openpal::LogRoot root;
-	openpal::Action0 shutdownAction;
+	openpal::LogRoot root;	
 	opendnp3::StackStatistics statistics;	
 	StackActionHandler handler;
 	opendnp3::TransportStack stack;	

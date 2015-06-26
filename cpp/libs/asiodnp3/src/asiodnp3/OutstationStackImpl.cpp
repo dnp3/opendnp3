@@ -69,8 +69,7 @@ bool OutstationStackImpl::Disable()
 
 void OutstationStackImpl::Shutdown()
 {
-	handler.Shutdown(&stack.link);
-	shutdownAction.Apply();
+	handler.Shutdown(&stack.link, this);	
 }
 
 StackStatistics OutstationStackImpl::GetStackStatistics()
@@ -82,11 +81,6 @@ StackStatistics OutstationStackImpl::GetStackStatistics()
 void OutstationStackImpl::SetLinkRouter(opendnp3::ILinkRouter& router)
 {
 	stack.link.SetRouter(router);
-}
-
-void OutstationStackImpl::SetShutdownAction(const openpal::Action0& action)
-{
-	shutdownAction = action;
 }
 
 opendnp3::ILinkSession* OutstationStackImpl::GetLinkContext()

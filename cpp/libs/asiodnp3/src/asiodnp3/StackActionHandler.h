@@ -21,6 +21,7 @@
 #ifndef ASIODNP3_STACKACTIONHANDLER_H
 #define ASIODNP3_STACKACTIONHANDLER_H
 
+#include "IStack.h"
 
 namespace opendnp3
 {	
@@ -42,7 +43,7 @@ class StackActionHandler
 {
 public:
 
-	StackActionHandler(LinkLayerRouter& router, asiopal::ASIOExecutor& executor);
+	StackActionHandler(LinkLayerRouter& router, asiopal::ASIOExecutor& executor, IStackShutdown& shutdown);
 
 	asiopal::ASIOExecutor* GetExecutor();
 
@@ -50,12 +51,13 @@ public:
 
 	bool DisableRoute(opendnp3::ILinkSession*);
 
-	void Shutdown(opendnp3::ILinkSession* pContext);
+	void Shutdown(opendnp3::ILinkSession* pContext, IStack* pStack);
 
 private:
 
 	LinkLayerRouter* pRouter;
 	asiopal::ASIOExecutor* pExecutor;
+	IStackShutdown* pShutdown;
 
 };
 

@@ -37,12 +37,10 @@ MasterStackImpl::MasterStackImpl(
 	asiopal::ASIOExecutor& executor,
 	opendnp3::ISOEHandler& SOEHandler,                                    
 	opendnp3::IMasterApplication& application,
-    const MasterStackConfig& config,
-	IStackShutdown& shutdown,
+    const MasterStackConfig& config,	
     const StackActionHandler& handler_,									
 	opendnp3::ITaskLock& taskLock) :
-		root(root_, id),
-		pShutdown(&shutdown),
+		root(root_, id),		
 		handler(handler_),
 		stack(root, &executor, config.master.maxRxFragSize, &statistics, config.link),
 		master(executor, root, stack.transport, SOEHandler, application, config.master, taskLock)
@@ -67,8 +65,7 @@ bool MasterStackImpl::Disable()
 
 void MasterStackImpl::Shutdown()
 {
-	handler.Shutdown(&stack.link);
-	pShutdown->OnShutdown(this);
+	handler.Shutdown(&stack.link, this);	
 }
 
 StackStatistics MasterStackImpl::GetStackStatistics()
