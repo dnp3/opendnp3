@@ -18,46 +18,44 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_ISTACK_H
-#define ASIODNP3_ISTACK_H
+#ifndef ASIODNP3_ISTACKLIFECYCLE_H
+#define ASIODNP3_ISTACKLIFECYCLE_H
 
-#include "DestructorHook.h"
+#include "IStack.h"
+#include <opendnp3/link/ILinkSession.h>
 
-#include <openpal/executor/IExecutor.h>
-
-#include <opendnp3/StackStatistics.h>
-
+namespace asiopal { class ASIOExecutor; }
 
 namespace asiodnp3
 {
-	
-/**
-* Base class for masters or outstations
-*/
-class IStack : public DestructorHook
+
+// callback invoked when a stack shuts down
+class IStackLifecycle
 {
-public:	
-
-	virtual ~IStack() {}	
+public:
 
 	/**
-	* Synchronously enable communications
+	* Get a reference to the underlying ASIOExecutor
 	*/
-	virtual bool Enable() = 0;
+	virtual asiopal::ASIOExecutor& GetExecutor() = 0;
+	
+	/**
+	*	Invoked from user code. Synchronously start the session
+	*/
+	virtual bool EnableRoute(opendnp3::ILinkSession*) = 0;
 
 	/**
-	* Synchronously disable communications
+	*	Invoked from user code. Synchronously stop the session
 	*/
-	virtual bool Disable() = 0;
+	virtual bool DisableRoute(opendnp3::ILinkSession*) = 0;
 
 	/**
-	* Synchronously shutdown the endpoint. No more calls are allowed after this call.
+	*	Invoked from user code. Synchronously stop the session and then
+	*	asynchronously delete the stack.
 	*/
-	virtual void Shutdown() = 0;
-
+	virtual void Shutdown(opendnp3::ILinkSession* pContext, IStack* pStack) = 0;
 };
-
-
+	
 }
 
 #endif

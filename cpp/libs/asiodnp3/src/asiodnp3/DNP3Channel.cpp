@@ -50,7 +50,8 @@ DNP3Channel::DNP3Channel(
 		logger(pLogRoot->GetLogger()),		
 		pShutdownHandler(nullptr),
 		channelState(ChannelState::CLOSED),
-		router(*pLogRoot, executor, pPhys.get(), minOpenRetry, maxOpenRetry, this, strategy, &statistics)	
+		router(*pLogRoot, executor, pPhys.get(), minOpenRetry, maxOpenRetry, this, strategy, &statistics),
+		stacks(router, executor)
 {
 	pPhys->SetChannelStatistics(&statistics);
 
@@ -81,18 +82,9 @@ void DNP3Channel::AddStateListener(const std::function<void(opendnp3::ChannelSta
 // comes from the outside, so we need to synchronize
 void DNP3Channel::Shutdown()
 {
-	// make a copy of all the stacks
-	std::vector<IStack*> stackscopy;
-	
-	for (auto pStack : stacks) stackscopy.push_back(pStack);
-	
-	for (auto pStack : stackscopy)
-	{
-		pStack->Shutdown();
-	}
+	stacks.ShutdownAll(); // shutdown all the stacks
 
-	assert(stacks.empty());
-
+	// shutdown router
 	asiopal::Synchronized<bool> blocking;
 	auto initiate = [this, &blocking]() { this->InitiateShutdown(blocking); };
 	pExecutor->strand.post(initiate);
@@ -203,11 +195,10 @@ IMaster* DNP3Channel::_AddMaster(char const* id,
 		return nullptr;
 	}
 	else
-	{
-		StackActionHandler handler(router, *pExecutor, *this);
-		auto pMaster = new MasterStackImpl(id, *pLogRoot, *pExecutor, SOEHandler, application, config, handler, taskLock);		
-		pMaster->SetLinkRouter(router);
-		stacks.insert(pMaster);
+	{		
+		auto pMaster = new MasterStackImpl(id, *pLogRoot, *pExecutor, SOEHandler, application, config, stacks, taskLock);
+		stacks.Add(pMaster);
+		pMaster->SetLinkRouter(router);		
 		router.AddContext(pMaster->GetLinkContext(), route);
 		return pMaster;
 	}
@@ -227,11 +218,10 @@ IMaster* DNP3Channel::_AddMaster(char const* id,
 		return nullptr;
 	}
 	else
-	{
-		StackActionHandler handler(router, *pExecutor, *this);
-		auto pMaster = new MasterAuthStack(id, *pLogRoot, *pExecutor, SOEHandler, application, config, handler, taskLock, user, crypto);		
-		pMaster->SetLinkRouter(router);
-		stacks.insert(pMaster);
+	{		
+		auto pMaster = new MasterAuthStack(id, *pLogRoot, *pExecutor, SOEHandler, application, config, stacks, taskLock, user, crypto);		
+		stacks.Add(pMaster);
+		pMaster->SetLinkRouter(router);		
 		router.AddContext(pMaster->GetLinkContext(), route);
 		return pMaster;
 	}
@@ -249,9 +239,7 @@ IOutstation* DNP3Channel::_AddOutstation(char const* id,
 		return nullptr;
 	}
 	else
-	{
-		StackActionHandler handler(router, *pExecutor, *this);
-
+	{		
 		auto pOutstation = new OutstationStackImpl(
 			id, 
 			*pLogRoot, 
@@ -259,11 +247,11 @@ IOutstation* DNP3Channel::_AddOutstation(char const* id,
 			commandHandler, 
 			application, 			
 			config, 
-			handler
+			stacks
 		);
-						
-		pOutstation->SetLinkRouter(router);
-		stacks.insert(pOutstation);
+		
+		stacks.Add(pOutstation);
+		pOutstation->SetLinkRouter(router);		
 		router.AddContext(pOutstation->GetLinkContext(), route);
 		return pOutstation;
 	}
@@ -285,9 +273,7 @@ IOutstation* DNP3Channel::_AddOutstation(char const* id,
 		return nullptr;
 	}
 	else
-	{
-		StackActionHandler handler(router, *pExecutor, *this);
-
+	{		
 		auto pOutstation = new OutstationAuthStack(
 			id,
 			*pLogRoot,
@@ -295,26 +281,18 @@ IOutstation* DNP3Channel::_AddOutstation(char const* id,
 			commandHandler,
 			application,
 			config,
-			handler,
+			stacks,
 			authSettings,
 			timeSource,
 			userDB,
 			crypto
 		);
 		
-		pOutstation->SetLinkRouter(router);
-		stacks.insert(pOutstation);
+		stacks.Add(pOutstation);
+		pOutstation->SetLinkRouter(router);		
 		router.AddContext(pOutstation->GetLinkContext(), route);
 		return pOutstation;
 	}
-}
-
-// these always happen on the strand
-void DNP3Channel::OnShutdown(IStack* pStack)
-{	
-	stacks.erase(pStack);
-	auto deleteStack = [pStack]() { delete pStack; };
-	pExecutor->strand.post(deleteStack);	
 }
 
 }

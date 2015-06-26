@@ -23,9 +23,6 @@
     <ClCompile Include="src\asiodnp3\DNP3Channel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\asiodnp3\StackActionHandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\asiodnp3\MasterStackImpl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -80,6 +77,9 @@
     <ClCompile Include="src\asiodnp3\MasterAuthStack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\asiodnp3\StackLifecycle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\asiodnp3\DestructorHook.h">
@@ -98,9 +98,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\asiodnp3\IStack.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\asiodnp3\StackActionHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\asiodnp3\MasterStackImpl.h">
@@ -152,6 +149,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\asiodnp3\MasterAuthStack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\asiodnp3\IStackLifecycle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\asiodnp3\StackLifecycle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -33,11 +33,11 @@
 
 #include "IChannel.h"
 #include "MultidropTaskLock.h"
+#include "StackLifecycle.h"
 
 #include "asiodnp3/impl/LinkLayerRouter.h"
 
 #include <memory>
-#include <set>
 
 namespace openpal
 {
@@ -57,7 +57,7 @@ namespace asiodnp3
 class IStack;
 class IOutstation;
 
-class DNP3Channel : public IChannel, private opendnp3::IChannelStateListener, private IStackShutdown
+class DNP3Channel : public IChannel, private opendnp3::IChannelStateListener
 {
 	
 public:
@@ -141,10 +141,7 @@ private:
 
 	void InitiateShutdown(asiopal::Synchronized<bool>& handler);
 
-	virtual void OnStateChange(opendnp3::ChannelState state) override final;	
-
-	// shutdown from the stack
-	virtual void OnShutdown(IStack* pStack) override final;
+	virtual void OnStateChange(opendnp3::ChannelState state) override final;		
 
 	void CheckForFinalShutdown();
 
@@ -157,15 +154,13 @@ private:
 	asiopal::ASIOExecutor* pExecutor;	
 	openpal::Logger logger;
 	
-	asiopal::Synchronized<bool>* pShutdownHandler;
-		
-	std::set<IStack*> stacks;
+	asiopal::Synchronized<bool>* pShutdownHandler;		
 
 	opendnp3::ChannelState channelState;
 	std::vector<std::function<void(opendnp3::ChannelState)>> callbacks;
 	
 	LinkLayerRouter router;
-
+	StackLifecycle stacks;
 	
 };
 

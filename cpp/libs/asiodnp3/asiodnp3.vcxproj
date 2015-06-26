@@ -38,7 +38,7 @@
     <ClCompile Include="src\asiodnp3\OutstationAuthStack.cpp" />
     <ClCompile Include="src\asiodnp3\OutstationStackImpl.cpp" />
     <ClCompile Include="src\asiodnp3\PrintingSOEHandler.cpp" />
-    <ClCompile Include="src\asiodnp3\StackActionHandler.cpp" />
+    <ClCompile Include="src\asiodnp3\StackLifecycle.cpp" />
     <ClCompile Include="src\asiodnp3\MeasUpdate.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -58,13 +58,14 @@
     <ClInclude Include="src\asiodnp3\impl\PhysicalLayerMonitorStates.h" />
     <ClInclude Include="src\asiodnp3\IOutstation.h" />
     <ClInclude Include="src\asiodnp3\IStack.h" />
+    <ClInclude Include="src\asiodnp3\IStackLifecycle.h" />
     <ClInclude Include="src\asiodnp3\MasterAuthStack.h" />
     <ClInclude Include="src\asiodnp3\MasterStackImpl.h" />
     <ClInclude Include="src\asiodnp3\MultidropTaskLock.h" />
     <ClInclude Include="src\asiodnp3\OutstationAuthStack.h" />
     <ClInclude Include="src\asiodnp3\OutstationStackImpl.h" />
     <ClInclude Include="src\asiodnp3\PrintingSOEHandler.h" />
-    <ClInclude Include="src\asiodnp3\StackActionHandler.h" />
+    <ClInclude Include="src\asiodnp3\StackLifecycle.h" />
     <ClInclude Include="src\asiodnp3\MeasUpdate.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -22,7 +22,6 @@
 #define ASIODNP3_IMASTER_H
 
 #include "IStack.h"
-#include "StackActionHandler.h"
 #include "HeaderTypes.h"
 
 #include <opendnp3/app/ClassField.h>

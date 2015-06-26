@@ -43,7 +43,7 @@ public:
 		opendnp3::ICommandHandler& commandHandler,
 		opendnp3::IOutstationApplication& application,		
 		const opendnp3::OutstationStackConfig& config,
-	    const StackActionHandler& handler,
+	    IStackLifecycle& lifecycle,
 		const secauth::OutstationAuthSettings& authSettings,
 		openpal::IUTCTimeSource& timeSource,
 		secauth::IOutstationUserDatabase& userDB,

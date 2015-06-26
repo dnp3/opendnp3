@@ -22,6 +22,7 @@
 #define ASIODNP3_MASTERSTACKIMPL_H
 
 #include "IMaster.h"
+#include "IStackLifecycle.h"
 
 #include <opendnp3/link/ILinkSession.h>
 #include <opendnp3/master/MasterStackConfig.h>
@@ -46,7 +47,7 @@ public:
 		opendnp3::ISOEHandler& SOEHandler,	    
 		opendnp3::IMasterApplication& application,
 		const opendnp3::MasterStackConfig& config,		
-		const StackActionHandler& handler,
+		IStackLifecycle& lifecycle,
 		opendnp3::ITaskLock& taskLock
 	);
 
@@ -101,7 +102,7 @@ protected:
 
 	openpal::LogRoot root;	
 	opendnp3::StackStatistics statistics;
-	StackActionHandler handler;
+	IStackLifecycle* pLifecycle;
 	opendnp3::TransportStack stack;
 	opendnp3::Master master;
 };

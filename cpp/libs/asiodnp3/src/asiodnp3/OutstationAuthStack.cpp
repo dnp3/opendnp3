@@ -33,12 +33,12 @@ namespace asiodnp3
 		opendnp3::ICommandHandler& commandHandler,
 		opendnp3::IOutstationApplication& application,
 		const opendnp3::OutstationStackConfig& config,
-		const StackActionHandler& handler,
+		IStackLifecycle& lifecycle,
 		const OutstationAuthSettings& authSettings,
 		openpal::IUTCTimeSource& timeSource,
 		secauth::IOutstationUserDatabase& userDB,
 		openpal::ICryptoProvider& crypto) :
-		OutstationStackImpl(id, root_, executor, commandHandler, application, config, handler),
+		OutstationStackImpl(id, root_, executor, commandHandler, application, config, lifecycle),
 		auth(authSettings, root.GetLogger(), executor, timeSource, userDB, crypto)
 	{
 		// configure the authentication

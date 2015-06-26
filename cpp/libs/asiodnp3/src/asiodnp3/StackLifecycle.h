@@ -18,46 +18,48 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef ASIODNP3_STACKACTIONHANDLER_H
-#define ASIODNP3_STACKACTIONHANDLER_H
+#ifndef ASIODNP3_STACKLIFECYCLE_H
+#define ASIODNP3_STACKLIFECYCLE_H
 
-#include "IStack.h"
+#include "IStackLifecycle.h"
 
-namespace opendnp3
-{	
-	class ILinkSession;
-}
+#include <set>
 
-namespace asiopal
-{
-	class ASIOExecutor;
-}
+namespace asiopal { class ASIOExecutor; }
 
 namespace asiodnp3
 {
 
-class IStack;
 class LinkLayerRouter;
 
-class StackActionHandler
+class StackLifecycle final : public IStackLifecycle
 {
 public:
 
-	StackActionHandler(LinkLayerRouter& router, asiopal::ASIOExecutor& executor, IStackShutdown& shutdown);
+	StackLifecycle(LinkLayerRouter& router, asiopal::ASIOExecutor& executor);	
 
-	asiopal::ASIOExecutor* GetExecutor();
+	/// --- helper methods uses within the channel ----
 
-	bool EnableRoute(opendnp3::ILinkSession*);
+	void Add(IStack* pStack);
 
-	bool DisableRoute(opendnp3::ILinkSession*);
+	void ShutdownAll();
 
-	void Shutdown(opendnp3::ILinkSession* pContext, IStack* pStack);
+	/// --- implement IStackLifecycle ----
+	
+	virtual asiopal::ASIOExecutor& GetExecutor() override { return *pExecutor; }
+
+	virtual bool EnableRoute(opendnp3::ILinkSession* pContext) override;
+
+	virtual bool DisableRoute(opendnp3::ILinkSession* pContext) override;
+
+	virtual void Shutdown(opendnp3::ILinkSession* pContext, IStack* pStack) override;
+
 
 private:
 
 	LinkLayerRouter* pRouter;
 	asiopal::ASIOExecutor* pExecutor;
-	IStackShutdown* pShutdown;
+	std::set<IStack*> stacks;
 
 };
 

@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "StackActionHandler.h"
+#include "StackLifecycle.h"
 
 #include <openpal/executor/IExecutor.h>
 #include <asiopal/ASIOExecutor.h>
@@ -27,42 +27,63 @@
 
 #include "asiodnp3/impl/LinkLayerRouter.h"
 
+#include <vector>
+
 using namespace openpal;
 using namespace opendnp3;
 
 namespace asiodnp3
 {
 
-StackActionHandler::StackActionHandler(LinkLayerRouter& router, asiopal::ASIOExecutor& executor, IStackShutdown& shutdown) :
+StackLifecycle::StackLifecycle(LinkLayerRouter& router, asiopal::ASIOExecutor& executor) :
 	pRouter(&router),
-	pExecutor(&executor),
-	pShutdown(&shutdown)
+	pExecutor(&executor)	
 {
 
 }
 
-asiopal::ASIOExecutor* StackActionHandler::GetExecutor()
+void StackLifecycle::Add(IStack* pStack)
 {
-	return pExecutor;
+	stacks.insert(pStack);
 }
 
-bool StackActionHandler::EnableRoute(ILinkSession* pContext)
+void StackLifecycle::ShutdownAll()
+{
+	// make a copy of all the stacks
+	std::vector<IStack*> stackscopy;
+	for (auto pStack : stacks) stackscopy.push_back(pStack);
+
+	for (auto pStack : stackscopy)
+	{
+		pStack->Shutdown();
+	}
+
+	assert(stacks.empty());
+}
+
+bool StackLifecycle::EnableRoute(ILinkSession* pContext)
 {
 	auto enable = [this, pContext]() { return pRouter->Enable(pContext); };
 	return asiopal::SynchronouslyGet<bool>(pExecutor->strand, enable);
 }
 
-bool StackActionHandler::DisableRoute(ILinkSession* pContext)
+bool StackLifecycle::DisableRoute(ILinkSession* pContext)
 {
 	auto disable = [this, pContext]() { return pRouter->Disable(pContext); };
 	return asiopal::SynchronouslyGet<bool>(pExecutor->strand, disable);
 }
 
-void StackActionHandler::Shutdown(ILinkSession* pContext, IStack* pStack)
+void StackLifecycle::Shutdown(ILinkSession* pContext, IStack* pStack)
 {
+	// synchronously remove the stack from the running strand
 	auto action = [this, pContext](){ pRouter->Remove(pContext); };
 	asiopal::SynchronouslyExecute(pExecutor->strand, action);
-	pShutdown->OnShutdown(pStack);
+	
+	stacks.erase(pStack);
+
+	// post the deletion of the stack to the strand
+	auto deleteStack = [pStack]() { delete pStack; };
+	pExecutor->strand.post(deleteStack);
 }
 
 }

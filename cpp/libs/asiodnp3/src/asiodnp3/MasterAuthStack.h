@@ -42,7 +42,7 @@ public:
 		opendnp3::ISOEHandler& SOEHandler,	    
 		opendnp3::IMasterApplication& application,
 		const opendnp3::MasterStackConfig& config,		
-		const StackActionHandler& handler,
+		IStackLifecycle& lifecycle,
 		opendnp3::ITaskLock& taskLock,
 		secauth::IMasterUser& user,
 		openpal::ICryptoProvider& crypto

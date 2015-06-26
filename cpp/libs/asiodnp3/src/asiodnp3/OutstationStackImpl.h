@@ -29,7 +29,7 @@
 #include <opendnp3/transport/TransportStack.h>
 
 #include "IOutstation.h"
-#include "StackActionHandler.h"
+#include "IStackLifecycle.h"
 
 #include <memory>
 
@@ -50,7 +50,7 @@ public:
 		opendnp3::ICommandHandler& commandHandler,
 		opendnp3::IOutstationApplication& application,		
 		const opendnp3::OutstationStackConfig& config,		
-	    const StackActionHandler& handler);
+		IStackLifecycle& lifecycle);
 
 	virtual opendnp3::DatabaseConfigView GetConfigView() override final;	
 
@@ -80,7 +80,7 @@ protected:
 
 	openpal::LogRoot root;	
 	opendnp3::StackStatistics statistics;	
-	StackActionHandler handler;
+	IStackLifecycle* pLifecycle;
 	opendnp3::TransportStack stack;	
 	opendnp3::Outstation outstation;
 };

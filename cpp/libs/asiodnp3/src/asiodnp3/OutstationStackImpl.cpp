@@ -35,10 +35,10 @@ OutstationStackImpl::OutstationStackImpl(
 	opendnp3::ICommandHandler& commandHandler,
 	IOutstationApplication& application,	
     const OutstationStackConfig& config,
-    const StackActionHandler& handler_) :
+	IStackLifecycle& lifecycle) :
 	
 	root(root_, id),
-	handler(handler_),
+	pLifecycle(&lifecycle),	
 	stack(root, &executor, config.outstation.params.maxRxFragSize, &statistics, config.link),		
 	outstation(config.outstation, config.dbTemplate, root.GetLogger(), executor, stack.transport, commandHandler, application)   
 {
@@ -54,28 +54,28 @@ void OutstationStackImpl::SetRestartIIN()
 {
 	// this doesn't need to be synchronous, just post it
 	auto lambda = [this]() { outstation.SetRestartIIN(); };
-	handler.GetExecutor()->strand.post(lambda);	
+	pLifecycle->GetExecutor().strand.post(lambda);	
 }
 
 bool OutstationStackImpl::Enable()
 {
-	return handler.EnableRoute(&stack.link);
+	return pLifecycle->EnableRoute(&stack.link);
 }
 
 bool OutstationStackImpl::Disable()
 {
-	return handler.DisableRoute(&stack.link);
+	return pLifecycle->DisableRoute(&stack.link);
 }
 
 void OutstationStackImpl::Shutdown()
 {
-	handler.Shutdown(&stack.link, this);	
+	pLifecycle->Shutdown(&stack.link, this);	
 }
 
 StackStatistics OutstationStackImpl::GetStackStatistics()
 {	
 	auto getter = [this]() { return statistics; };
-	return asiopal::SynchronouslyGet<StackStatistics>(handler.GetExecutor()->strand, getter);
+	return asiopal::SynchronouslyGet<StackStatistics>(pLifecycle->GetExecutor().strand, getter);
 }
 
 void OutstationStackImpl::SetLinkRouter(opendnp3::ILinkRouter& router)
@@ -90,7 +90,7 @@ opendnp3::ILinkSession* OutstationStackImpl::GetLinkContext()
 
 openpal::IExecutor& OutstationStackImpl::GetExecutor()
 {
-	return *handler.GetExecutor();
+	return pLifecycle->GetExecutor();
 }
 
 void OutstationStackImpl::CheckForUpdates()
