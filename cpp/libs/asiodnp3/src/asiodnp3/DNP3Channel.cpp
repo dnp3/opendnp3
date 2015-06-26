@@ -41,9 +41,11 @@ DNP3Channel::DNP3Channel(
     openpal::TimeDuration minOpenRetry,
     openpal::TimeDuration maxOpenRetry,
     IOpenDelayStrategy& strategy,
-    openpal::IPhysicalLayer* pPhys_) :
+    openpal::IPhysicalLayer* pPhys_,
+	openpal::ICryptoProvider* pCrypto_) :
 		
 		pPhys(pPhys_),
+		pCrypto(pCrypto_),
 		pLogRoot(pLogRoot_),
 		pExecutor(&executor),		
 		logger(pLogRoot->GetLogger()),		
@@ -147,14 +149,20 @@ IMaster* DNP3Channel::AddMaster(	char const* id,
 									opendnp3::ISOEHandler& SOEHandler,
 									opendnp3::IMasterApplication& application,
 									const opendnp3::MasterStackConfig& config,
-									secauth::IMasterUser& user,
-									openpal::ICryptoProvider& crypto)
+									secauth::IMasterUser& user)
 {	
+	if (!pCrypto)
+	{
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Manager was not initialized with a crypto provider");
+		return nullptr;
+	}
+
+
 	auto add = [&]() -> IMaster*
 	{
 		auto factory = [&]() -> MasterBase*
 		{
-			return new MasterAuthStack(id, *pLogRoot, *pExecutor, SOEHandler, application, config, stacks, taskLock, user, crypto);			
+			return new MasterAuthStack(id, *pLogRoot, *pExecutor, SOEHandler, application, config, stacks, taskLock, user, *pCrypto);			
 		};
 
 		return this->AddStack<MasterBase>(config.link, factory);
@@ -184,14 +192,19 @@ IOutstation* DNP3Channel::AddOutstation(char const* id,
 	const opendnp3::OutstationStackConfig& config,
 	const secauth::OutstationAuthSettings& authSettings,
 	openpal::IUTCTimeSource& timeSource,
-	secauth::IOutstationUserDatabase& userDB,
-	openpal::ICryptoProvider& crypto)
+	secauth::IOutstationUserDatabase& userDB)
 {
+	if (!pCrypto)
+	{
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Manager was not initialized with a crypto provider");
+		return nullptr;
+	}
+
 	auto add = [&]() -> IOutstation*
 	{
 		auto factory = [&]() -> OutstationBase* 
 		{
-			return new OutstationAuthStack(id, *pLogRoot, *pExecutor, commandHandler, application, config, stacks, authSettings, timeSource, userDB, crypto);
+			return new OutstationAuthStack(id, *pLogRoot, *pExecutor, commandHandler, application, config, stacks, authSettings, timeSource, userDB, *pCrypto);
 		};
 
 		return this->AddStack<OutstationBase>(config.link, factory);

@@ -51,19 +51,21 @@ void SetUpdateKey(secauth::SimpleMasterUser& user)
 
 int main(int argc, char* argv[])
 {
-	// The cryptography provider we'll use 
-	osslcrypto::CryptoProvider crypto;
+	
 
 	// The user interface for the master
 	SimpleMasterUser user(User::Default());
 	SetUpdateKey(user);
+
+	// The cryptography provider we'll use 
+	osslcrypto::CryptoProvider crypto;
 
 	// Specify what log levels to use. NORMAL is warning and above
 	// You can add all the comms logging by uncommenting below
 	const uint32_t FILTERS = levels::NORMAL; // | levels::ALL_COMMS;
 
 	// This is the main point of interaction with the stack
-	DNP3Manager manager(1);
+	DNP3Manager manager(1, &crypto);
 
 	// send log messages to the console
 	manager.AddLogSubscriber(&ConsoleLogger::Instance());	
@@ -100,8 +102,7 @@ int main(int argc, char* argv[])
 	                   PrintingSOEHandler::Instance(),					// callback for data processing                
 					   asiodnp3::DefaultMasterApplication::Instance(),	// master application instance
 	                   stackConfig,										// stack configuration
-					   user,
-					   crypto
+					   user					   
 	               );
 	
 	

@@ -59,9 +59,8 @@ namespace Automatak
 				virtual void AddLogHandler(ILogHandler^ logHandler);
 
 			private:
-				asiodnp3::DNP3Manager* pManager;
 				osslcrypto::CryptoProvider* pCrypto;
-				
+				asiodnp3::DNP3Manager* pManager;								
 			};
 
 		}

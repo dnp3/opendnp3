@@ -68,18 +68,20 @@ int main(int argc, char* argv[])
 	// You can add all the communication logging by uncommenting below.
 	const uint32_t FILTERS = levels::NORMAL | levels::ALL_APP_COMMS;
 	
-	// crypto provider we will use to create the outstation
-	// clean this up last since everything running in the manager depends on it
-	osslcrypto::CryptoProvider crypto;
+	
 
 	// Create a user database
 	secauth::SimpleOutstationUserDatabase userDatabase;
 	// setup the default user
 	AddDefaultUser(userDatabase);
 
+	// crypto provider we will use to create the outstation
+	// clean this up last since everything running in the manager depends on it
+	osslcrypto::CryptoProvider crypto;
+
 	// This is the main point of interaction with the stack
 	// Allocate a single thread to the pool since this is a single outstation
-	DNP3Manager manager(1);
+	DNP3Manager manager(1, &crypto);
 
 	// send log messages to the console
 	manager.AddLogSubscriber(&ConsoleLogger::Instance());
@@ -128,8 +130,7 @@ int main(int argc, char* argv[])
 		config,
 		authSettings,
 		asiopal::UTCTimeSource::Instance(),
-		userDatabase,
-		crypto);	
+		userDatabase);	
 
 	// Enable the outstation and start communications
 	pOutstation->Enable();	

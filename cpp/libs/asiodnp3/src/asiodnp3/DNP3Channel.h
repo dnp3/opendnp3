@@ -69,7 +69,8 @@ public:
 	    openpal::TimeDuration minOpenRetry,
 	    openpal::TimeDuration maxOpenRetry,
 		opendnp3::IOpenDelayStrategy& strategy,
-		openpal::IPhysicalLayer* pPhys_	    	
+		openpal::IPhysicalLayer* pPhys,
+		openpal::ICryptoProvider* pCrypto
 	);
 
 	// ----------------------- Implement IChannel -----------------------
@@ -93,8 +94,7 @@ public:
 								opendnp3::ISOEHandler& SOEHandler,
 								opendnp3::IMasterApplication& application,
 								const opendnp3::MasterStackConfig& config,
-								secauth::IMasterUser& user,
-								openpal::ICryptoProvider& crypto) override final;
+								secauth::IMasterUser& user) override final;
 
 	virtual IOutstation* AddOutstation(char const* id,
 								opendnp3::ICommandHandler& commandHandler,
@@ -107,8 +107,7 @@ public:
 								const opendnp3::OutstationStackConfig& config,
 								const secauth::OutstationAuthSettings& authSettings,
 								openpal::IUTCTimeSource& timeSource,
-								secauth::IOutstationUserDatabase& userDB,
-								openpal::ICryptoProvider& crypto) override final;
+								secauth::IOutstationUserDatabase& userDB) override final;
 
 	// -----------------------------------------------------------------------
 
@@ -133,6 +132,7 @@ private:
 	openpal::Action0 shutdownHandler;
 	opendnp3::LinkChannelStatistics statistics;
 	std::unique_ptr<openpal::IPhysicalLayer> pPhys;
+	openpal::ICryptoProvider* pCrypto;
 	std::unique_ptr<openpal::LogRoot> pLogRoot;
 	asiopal::ASIOExecutor* pExecutor;	
 	openpal::Logger logger;

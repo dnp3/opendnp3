@@ -31,6 +31,7 @@
 
 #include <opendnp3/link/IOpenDelayStrategy.h>
 
+namespace openpal { class ICryptoProvider; }
 
 namespace asiopal
 {
@@ -56,6 +57,7 @@ public:
 	                            openpal::TimeDuration minOpenRetry,
 	                            openpal::TimeDuration maxOpenRetry,
 								asiopal::PhysicalLayerBase* pPhys,	                            
+								openpal::ICryptoProvider* pCrypto,
 								opendnp3::IOpenDelayStrategy& strategy = opendnp3::ExponentialBackoffStrategy::Instance());
 
 	/// Synchronously shutdown all channels. Block until complete.

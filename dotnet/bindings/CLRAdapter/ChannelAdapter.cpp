@@ -92,7 +92,7 @@ namespace Automatak
 				auto pApplication = new MasterApplicationAdapter(application);
 				auto pMasterUser = new MasterUserAdapter(masterUser);
 
-				auto pMaster = pChannel->AddMaster(stdLoggerId.c_str(), *pSOEHandler, *pApplication, cfg, *pMasterUser, *pCrypto);
+				auto pMaster = pChannel->AddMaster(stdLoggerId.c_str(), *pSOEHandler, *pApplication, cfg, *pMasterUser);
 				if (pMaster == nullptr)
 				{
 					delete pSOEHandler;

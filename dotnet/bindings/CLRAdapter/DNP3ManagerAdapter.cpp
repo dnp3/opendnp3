@@ -30,8 +30,8 @@ namespace Automatak
 
 
 			DNP3ManagerAdapter::DNP3ManagerAdapter(System::Int32 aConcurrency) : 
-				pManager(new asiodnp3::DNP3Manager(aConcurrency)),
-				pCrypto(new osslcrypto::CryptoProvider())
+				pCrypto(new osslcrypto::CryptoProvider()),
+				pManager(new asiodnp3::DNP3Manager(aConcurrency, pCrypto))				
 			{
 
 			}

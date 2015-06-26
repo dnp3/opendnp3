@@ -109,8 +109,7 @@ public:
 									opendnp3::ISOEHandler& SOEHandler,
 									opendnp3::IMasterApplication& application,
 									const opendnp3::MasterStackConfig& config,
-									secauth::IMasterUser& user,
-									openpal::ICryptoProvider& crypto) = 0;
+									secauth::IMasterUser& user) = 0;
 
 	/**
 	* Add an outstation to the channel
@@ -135,8 +134,7 @@ public:
 										const opendnp3::OutstationStackConfig& config,
 										const secauth::OutstationAuthSettings& authSettings,
 										openpal::IUTCTimeSource& timeSource,
-										secauth::IOutstationUserDatabase& userDB,
-										openpal::ICryptoProvider& crypto) = 0;
+										secauth::IOutstationUserDatabase& userDB) = 0;
 };
 
 }
