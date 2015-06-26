@@ -45,36 +45,36 @@ Master::Master(
 	const MasterParams& params,
 	ITaskLock& taskLock
 	) : 
-	mstate(executor, root, lower, SOEHandler, application, *this, params, taskLock),
-	commandProcessor(mstate)
+	mcontext(executor, root, lower, SOEHandler, application, *this, params, taskLock),
+	commandProcessor(mcontext)
 {}
 	
 void Master::OnLowerLayerUp()
 {
-	mstate.GoOnline();
+	mcontext.GoOnline();
 }
 
 void Master::OnLowerLayerDown()
 {
-	mstate.GoOffline();
+	mcontext.GoOffline();
 }
 
 void Master::OnReceive(const openpal::ReadBufferView& apdu)
 {
-	if (!mstate.isOnline)
+	if (!mcontext.isOnline)
 	{
-		SIMPLE_LOG_BLOCK(mstate.logger, flags::ERR, "Ignorning rx data while offline");
+		SIMPLE_LOG_BLOCK(mcontext.logger, flags::ERR, "Ignorning rx data while offline");
 		return;
 	}
 
 	APDUResponseHeader header;
-	if (!APDUHeaderParser::ParseResponse(apdu, header, &mstate.logger))
+	if (!APDUHeaderParser::ParseResponse(apdu, header, &mcontext.logger))
 	{
 		return;
 	}
 
 
-	FORMAT_LOG_BLOCK(mstate.logger, flags::APP_HEADER_RX,
+	FORMAT_LOG_BLOCK(mcontext.logger, flags::APP_HEADER_RX,
 		"FIR: %i FIN: %i CON: %i UNS: %i SEQ: %i FUNC: %s IIN: [0x%02x, 0x%02x]",
 		header.control.FIR,
 		header.control.FIN,
@@ -86,22 +86,22 @@ void Master::OnReceive(const openpal::ReadBufferView& apdu)
 		header.IIN.MSB);
 
 
-	mstate.OnReceive(apdu, header, apdu.Skip(APDU_RESPONSE_HEADER_SIZE));
+	mcontext.OnReceive(apdu, header, apdu.Skip(APDU_RESPONSE_HEADER_SIZE));
 }
 
 void Master::OnPendingTask()
 {	
-	mstate.PostCheckForTask();
+	mcontext.PostCheckForTask();
 }
 
 void Master::OnSendResult(bool isSucccess)
 {
-	if (mstate.isOnline && mstate.isSending)
+	if (mcontext.isOnline && mcontext.isSending)
 	{
-		mstate.isSending = false;
+		mcontext.isSending = false;
 
-		mstate.CheckConfirmTransmit();		
-		mstate.CheckForTask();
+		mcontext.CheckConfirmTransmit();
+		mcontext.CheckForTask();
 	}
 }
 
@@ -112,15 +112,15 @@ ICommandProcessor& Master::GetCommandProcessor()
 
 void Master::SetAuthProvider(IMasterAuthProvider& provider)
 {
-	this->mstate.auth.SetProvider(mstate, provider);
+	this->mcontext.auth.SetProvider(mcontext, provider);
 }
 
 MasterScan Master::AddScan(openpal::TimeDuration period, const std::function<void(HeaderWriter&)>& builder, ITaskCallback* pCallback, int userId)
 {
-	auto pTask = new UserPollTask(builder, true, period, mstate.params.taskRetryPeriod, *mstate.pApplication, *mstate.pSOEHandler, pCallback, userId, mstate.logger);
+	auto pTask = new UserPollTask(builder, true, period, mcontext.params.taskRetryPeriod, *mcontext.pApplication, *mcontext.pSOEHandler, pCallback, userId, mcontext.logger);
 	this->ScheduleRecurringPollTask(pTask);	
-	auto callback = [this]() { this->mstate.PostCheckForTask(); };
-	return MasterScan(*mstate.pExecutor, pTask, callback);
+	auto callback = [this]() { this->mcontext.PostCheckForTask(); };
+	return MasterScan(*mcontext.pExecutor, pTask, callback);
 }
 
 MasterScan Master::AddClassScan(const ClassField& field, openpal::TimeDuration period, ITaskCallback* pCallback, int userId)
@@ -152,7 +152,7 @@ MasterScan Master::AddRangeScan(GroupVariationID gvId, uint16_t start, uint16_t 
 
 void Master::Scan(const std::function<void(HeaderWriter&)>& builder, ITaskCallback* pCallback, int userId)
 {
-	auto pTask = new UserPollTask(builder, false, TimeDuration::Max(), mstate.params.taskRetryPeriod, *mstate.pApplication, *mstate.pSOEHandler, pCallback, userId, mstate.logger);
+	auto pTask = new UserPollTask(builder, false, TimeDuration::Max(), mcontext.params.taskRetryPeriod, *mcontext.pApplication, *mcontext.pSOEHandler, pCallback, userId, mcontext.logger);
 	this->ScheduleAdhocTask(pTask);	
 }
 
@@ -190,7 +190,7 @@ void Master::Write(const TimeAndInterval& value, uint16_t index, ITaskCallback* 
 		writer.WriteSingleIndexedValue<UInt16, TimeAndInterval>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group50Var4::Inst(), value, index);
 	};
 
-	auto pTask = new WriteTask(*mstate.pApplication, format, mstate.logger, pCallback, userId);
+	auto pTask = new WriteTask(*mcontext.pApplication, format, mcontext.logger, pCallback, userId);
 	this->ScheduleAdhocTask(pTask);
 }
 
@@ -198,27 +198,27 @@ void Master::Write(const TimeAndInterval& value, uint16_t index, ITaskCallback* 
 
 void Master::ScheduleRecurringPollTask(IMasterTask* pTask)
 {
-	mstate.tasks.BindTask(pTask);
+	mcontext.tasks.BindTask(pTask);
 
-	if (mstate.isOnline)
+	if (mcontext.isOnline)
 	{
-		mstate.scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(pTask));
-		mstate.PostCheckForTask();		
+		mcontext.scheduler.Schedule(ManagedPtr<IMasterTask>::WrapperOnly(pTask));
+		mcontext.PostCheckForTask();
 	}
 }
 
 void Master::ScheduleAdhocTask(IMasterTask* pTask)
 {
 	auto task = ManagedPtr<IMasterTask>::Deleted(pTask);
-	if (mstate.isOnline)
+	if (mcontext.isOnline)
 	{
-		mstate.scheduler.Schedule(std::move(task));
-		mstate.PostCheckForTask();		
+		mcontext.scheduler.Schedule(std::move(task));
+		mcontext.PostCheckForTask();
 	}
 	else
 	{
 		// can't run this task since we're offline so fail it immediately
-		pTask->OnLowerLayerClose(mstate.pExecutor->GetTime());
+		pTask->OnLowerLayerClose(mcontext.pExecutor->GetTime());
 	}
 }
 	

@@ -95,7 +95,7 @@ class Master : public IUpperLayer, private IScheduleCallback
 	void ScheduleRecurringPollTask(IMasterTask* pTask);
 	void ScheduleAdhocTask(IMasterTask* pTask);
 
-	MContext mstate;
+	MContext mcontext;
 	MasterCommandProcessor commandProcessor;
 };
 
