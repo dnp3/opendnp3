@@ -34,9 +34,10 @@
 #include "IChannel.h"
 #include "MultidropTaskLock.h"
 #include "StackLifecycle.h"
+#include "OutstationBase.h"
+#include "MasterBase.h"
 
 #include "asiodnp3/impl/LinkLayerRouter.h"
-
 #include <memory>
 
 namespace openpal
@@ -123,21 +124,9 @@ private:
 		opendnp3::IMasterApplication& application,
 		const opendnp3::MasterStackConfig& config,
 		secauth::IMasterUser& user,
-		openpal::ICryptoProvider& crypto);
+		openpal::ICryptoProvider& crypto);	
 
-	IOutstation* _AddOutstation(char const* id,
-		opendnp3::ICommandHandler& commandHandler,
-		opendnp3::IOutstationApplication& application,
-		const opendnp3::OutstationStackConfig& config);
-
-	IOutstation* _AddOutstation(char const* id,
-		opendnp3::ICommandHandler& commandHandler,
-		opendnp3::IOutstationApplication& application,
-		const opendnp3::OutstationStackConfig& config,
-		const secauth::OutstationAuthSettings& authSettings,
-		openpal::IUTCTimeSource& timeSource,
-		secauth::IOutstationUserDatabase& userDB,
-		openpal::ICryptoProvider& crypto);
+	IOutstation* AddOutstation(const opendnp3::LinkConfig& link, const std::function<OutstationBase* ()>& factory);
 
 	void InitiateShutdown(asiopal::Synchronized<bool>& handler);
 

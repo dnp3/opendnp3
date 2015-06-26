@@ -157,7 +157,12 @@ IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler& command
 {
 	auto add = [this, id, &commandHandler, &application, config]() 
 	{ 				
-		return this->_AddOutstation(id, commandHandler, application, config);
+		auto factory = [&]() -> OutstationBase*
+		{
+			return new OutstationStackImpl(id, *pLogRoot, *pExecutor, commandHandler, application, config, stacks);
+		};
+
+		return this->AddOutstation(config.link, factory);
 	};
 	return asiopal::SynchronouslyGet<IOutstation*>(pExecutor->strand, add);
 }
@@ -173,7 +178,12 @@ IOutstation* DNP3Channel::AddOutstation(char const* id,
 {
 	auto add = [&]()
 	{
-		return this->_AddOutstation(id, commandHandler, application, config, authSettings, timeSource, userDB, crypto);
+		auto factory = [&]() -> OutstationBase* 
+		{
+			return new OutstationAuthStack(id, *pLogRoot, *pExecutor, commandHandler, application, config, stacks, authSettings, timeSource, userDB, crypto);
+		};
+
+		return this->AddOutstation(config.link, factory);
 	};
 	return asiopal::SynchronouslyGet<IOutstation*>(pExecutor->strand, add);
 }
@@ -227,6 +237,7 @@ IMaster* DNP3Channel::_AddMaster(char const* id,
 	}
 }
 
+/*
 IOutstation* DNP3Channel::_AddOutstation(char const* id,
 	opendnp3::ICommandHandler& commandHandler,
 	opendnp3::IOutstationApplication& application,
@@ -256,6 +267,8 @@ IOutstation* DNP3Channel::_AddOutstation(char const* id,
 		return pOutstation;
 	}
 }
+
+
 
 IOutstation* DNP3Channel::_AddOutstation(char const* id,
 	opendnp3::ICommandHandler& commandHandler,
@@ -290,6 +303,25 @@ IOutstation* DNP3Channel::_AddOutstation(char const* id,
 		
 		stacks.Add(pOutstation);
 		pOutstation->SetLinkRouter(router);		
+		router.AddContext(&pOutstation->GetLinkContext(), route);
+		return pOutstation;
+	}
+}
+*/
+
+IOutstation* DNP3Channel::AddOutstation(const LinkConfig& link, const std::function<OutstationBase* ()>& factory)
+{
+	Route route(link.RemoteAddr, link.LocalAddr);
+	if (router.IsRouteInUse(route))
+	{
+		FORMAT_LOG_BLOCK(logger, flags::ERR, "Route already in use: %i -> %i", route.source, route.destination);
+		return nullptr;
+	}
+	else
+	{
+		auto pOutstation = factory();
+		stacks.Add(pOutstation);
+		pOutstation->SetLinkRouter(router);
 		router.AddContext(&pOutstation->GetLinkContext(), route);
 		return pOutstation;
 	}
