@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef OPENDNP3_MASTERSTATE_H
-#define OPENDNP3_MASTERSTATE_H
+#ifndef OPENDNP3_MASTERCONTEXT_H
+#define OPENDNP3_MASTERCONTEXT_H
 
 #include <openpal/executor/IExecutor.h>
 #include <openpal/logging/LogRoot.h>
@@ -43,12 +43,12 @@ namespace opendnp3
 	/*
 		All of the mutable state and configuration for a master
 	*/
-	class MState
+	class MContext
 	{
 
 	public:
 
-		MState(openpal::IExecutor& executor,
+		MContext(openpal::IExecutor& executor,
 			openpal::LogRoot& root,
 			ILowerLayer& lower,
 			ISOEHandler& SOEHandler,

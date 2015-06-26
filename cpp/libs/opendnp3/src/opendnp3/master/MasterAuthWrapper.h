@@ -37,7 +37,7 @@ class MasterAuthWrapper : private openpal::Uncopyable
 
 	MasterAuthWrapper();
 
-	void SetProvider(MState& mstate, IMasterAuthProvider& auth);
+	void SetProvider(MContext& mcontext, IMasterAuthProvider& auth);
 
 	/// ----- mirror of IMasterAuthProvider methods -----	
 
@@ -45,7 +45,7 @@ class MasterAuthWrapper : private openpal::Uncopyable
 
 	void GoOffline();	
 
-	void OnReceive(MState& mstate, const openpal::ReadBufferView& apdu, const APDUResponseHeader& header, const openpal::ReadBufferView& objects);
+	void OnReceive(MContext& mcontext, const openpal::ReadBufferView& apdu, const APDUResponseHeader& header, const openpal::ReadBufferView& objects);
 
 	void RecordLastRequest(const openpal::ReadBufferView& asdu);
 

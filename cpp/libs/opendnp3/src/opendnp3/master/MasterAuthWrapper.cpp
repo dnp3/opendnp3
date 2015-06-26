@@ -21,7 +21,7 @@
 
 #include "MasterAuthWrapper.h"
 
-#include <opendnp3/master/MasterState.h>
+#include <opendnp3/master/MasterContext.h>
 
 namespace opendnp3
 {
@@ -29,10 +29,10 @@ namespace opendnp3
 MasterAuthWrapper::MasterAuthWrapper() : pProvider(nullptr)
 {}
 
-void MasterAuthWrapper::SetProvider(MState& mstate, IMasterAuthProvider& auth)
+void MasterAuthWrapper::SetProvider(MContext& mcontext, IMasterAuthProvider& auth)
 {
 	pProvider = &auth;
-	pProvider->SetMasterState(mstate);
+	pProvider->SetMasterState(mcontext);
 }
 
 void MasterAuthWrapper::GoOnline()
@@ -51,7 +51,7 @@ void MasterAuthWrapper::GoOffline()
 	}
 }
 
-void MasterAuthWrapper::OnReceive(MState& mstate, const openpal::ReadBufferView& apdu, const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+void MasterAuthWrapper::OnReceive(MContext& mcontext, const openpal::ReadBufferView& apdu, const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
 {
 	if (pProvider)
 	{
@@ -59,7 +59,7 @@ void MasterAuthWrapper::OnReceive(MState& mstate, const openpal::ReadBufferView&
 	}
 	else
 	{
-		mstate.ProcessAPDU(header, objects);
+		mcontext.ProcessAPDU(header, objects);
 	}
 }
 

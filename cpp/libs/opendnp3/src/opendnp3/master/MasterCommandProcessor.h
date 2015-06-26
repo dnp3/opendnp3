@@ -21,7 +21,7 @@
 #ifndef OPENDNP3_MASTERCOMMANDPROCESSOR_H
 #define OPENDNP3_MASTERCOMMANDPROCESSOR_H
 
-#include "opendnp3/master/MasterState.h"
+#include "opendnp3/master/MasterContext.h"
 #include "opendnp3/master/ICommandProcessor.h"
 
 namespace opendnp3
@@ -31,7 +31,7 @@ class MasterCommandProcessor : public ICommandProcessor
 {
 	public:	
 
-	MasterCommandProcessor(MState& state);
+	MasterCommandProcessor(MContext& state);
 			
 	// ------- command events ----------
 
@@ -52,7 +52,7 @@ class MasterCommandProcessor : public ICommandProcessor
 
 	private:
 
-	MState* pState;	
+	MContext* pState;	
 
 	// -------- helpers --------	
 

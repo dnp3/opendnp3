@@ -24,27 +24,27 @@
 #include <openpal/logging/LogMacros.h>
 
 #include "opendnp3/LogLevels.h"
-#include "opendnp3/master/MasterState.h"
+#include "opendnp3/master/MasterContext.h"
 
 namespace opendnp3
 {
 
 // --------- Default Actions -------------
 
-IMasterState* IMasterState::OnStart(MState& mstate)
+IMasterState* IMasterState::OnStart(MContext& mcontext)
 {
 	return this;
 }
 
-IMasterState* IMasterState::OnResponse(MState& mstate, const APDUResponseHeader& response, const openpal::ReadBufferView& objects)
+IMasterState* IMasterState::OnResponse(MContext& mcontext, const APDUResponseHeader& response, const openpal::ReadBufferView& objects)
 {
-	FORMAT_LOG_BLOCK(mstate.logger, flags::WARN, "Not expecting a response, sequence: %u", response.control.SEQ);
+	FORMAT_LOG_BLOCK(mcontext.logger, flags::WARN, "Not expecting a response, sequence: %u", response.control.SEQ);
 	return this;
 }
 
-IMasterState* IMasterState::OnResponseTimeout(MState& mstate)
+IMasterState* IMasterState::OnResponseTimeout(MContext& mcontext)
 {
-	SIMPLE_LOG_BLOCK(mstate.logger, flags::ERR, "Unexpected response timeout");
+	SIMPLE_LOG_BLOCK(mcontext.logger, flags::ERR, "Unexpected response timeout");
 	return this;
 }
 
@@ -52,18 +52,18 @@ IMasterState* IMasterState::OnResponseTimeout(MState& mstate)
 
 MasterStateIdle MasterStateIdle::instance;
 
-IMasterState* MasterStateIdle::OnStart(MState& mstate)
+IMasterState* MasterStateIdle::OnStart(MContext& mcontext)
 {
-	if (mstate.isSending)
+	if (mcontext.isSending)
 	{
 		return this;
 	}
 
-	auto task = mstate.scheduler.Start();
+	auto task = mcontext.scheduler.Start();
 
 	if (task.IsDefined())
 	{
-		if (mstate.BeginNewTask(task))
+		if (mcontext.BeginNewTask(task))
 		{
 			return &MasterStateWaitForResponse::Instance();
 		}
@@ -82,15 +82,15 @@ IMasterState* MasterStateIdle::OnStart(MState& mstate)
 
 MasterStateTaskReady MasterStateTaskReady::instance;
 
-IMasterState* MasterStateTaskReady::OnStart(MState& mstate)
+IMasterState* MasterStateTaskReady::OnStart(MContext& mcontext)
 {
-	if (mstate.isSending)
+	if (mcontext.isSending)
 	{
 		return this;
 	}
 	else
 	{
-		if (mstate.ResumeActiveTask())
+		if (mcontext.ResumeActiveTask())
 		{			
 			return &MasterStateWaitForResponse::Instance();
 		}
@@ -105,57 +105,57 @@ IMasterState* MasterStateTaskReady::OnStart(MState& mstate)
 
 MasterStateWaitForResponse MasterStateWaitForResponse::instance;
 
-IMasterState* MasterStateWaitForResponse::OnResponse(MState& mstate, const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+IMasterState* MasterStateWaitForResponse::OnResponse(MContext& mcontext, const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
 {
-	if (header.control.SEQ != mstate.solSeq)
+	if (header.control.SEQ != mcontext.solSeq)
 	{
-		FORMAT_LOG_BLOCK(mstate.logger, flags::WARN, "Response with bad sequence: %u", header.control.SEQ);
+		FORMAT_LOG_BLOCK(mcontext.logger, flags::WARN, "Response with bad sequence: %u", header.control.SEQ);
 		return this;
 	}
 
-	if (!mstate.pActiveTask->AcceptsFunction(header.function))
+	if (!mcontext.pActiveTask->AcceptsFunction(header.function))
 	{
-		FORMAT_LOG_BLOCK(mstate.logger, flags::WARN,
+		FORMAT_LOG_BLOCK(mcontext.logger, flags::WARN,
 			"Task %s does not accept function code in responses: %s",
-			mstate.pActiveTask->Name(),
+			mcontext.pActiveTask->Name(),
 			FunctionCodeToString(header.function));
 
 		return this;
 	}
 	
-	mstate.responseTimer.Cancel();
+	mcontext.responseTimer.Cancel();
 
-	mstate.solSeq.Increment();
+	mcontext.solSeq.Increment();
 
-	auto now = mstate.pExecutor->GetTime();
+	auto now = mcontext.pExecutor->GetTime();
 		
-	auto result = mstate.pActiveTask->OnResponse(header, objects, now);
+	auto result = mcontext.pActiveTask->OnResponse(header, objects, now);
 
 	if (header.control.CON)
 	{
-		mstate.QueueConfirm(APDUHeader::SolicitedConfirm(header.control.SEQ));
+		mcontext.QueueConfirm(APDUHeader::SolicitedConfirm(header.control.SEQ));
 	}
 
 	switch (result)
 	{
 		case(IMasterTask::ResponseResult::OK_CONTINUE) :
-			mstate.StartResponseTimer();			
+			mcontext.StartResponseTimer();
 			return this;
 		case(IMasterTask::ResponseResult::OK_REPEAT) :
-			return MasterStateTaskReady::Instance().OnStart(mstate);
+			return MasterStateTaskReady::Instance().OnStart(mcontext);
 		default:
 			// task completed or failed, either way go back to idle			
-			mstate.CompleteActiveTask();
+			mcontext.CompleteActiveTask();
 			return &MasterStateIdle::Instance();
 	}	
 }
 
-IMasterState* MasterStateWaitForResponse::OnResponseTimeout(MState& mstate)
+IMasterState* MasterStateWaitForResponse::OnResponseTimeout(MContext& mcontext)
 {			
-	auto now = mstate.pExecutor->GetTime();
-	mstate.pActiveTask->OnResponseTimeout(now);	
-	mstate.solSeq.Increment();
-	mstate.CompleteActiveTask();
+	auto now = mcontext.pExecutor->GetTime();
+	mcontext.pActiveTask->OnResponseTimeout(now);
+	mcontext.solSeq.Increment();
+	mcontext.CompleteActiveTask();
 	return &MasterStateIdle::Instance();
 }
 

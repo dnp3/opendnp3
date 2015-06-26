@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "MasterState.h"
+#include "MasterContext.h"
 
 #include "opendnp3/app/APDULogging.h"
 #include "opendnp3/LogLevels.h"
@@ -32,7 +32,7 @@
 
 namespace opendnp3
 {
-	MState::MState(
+	MContext::MContext(
 		openpal::IExecutor& executor,
 		openpal::LogRoot& root,
 		ILowerLayer& lower,
@@ -60,7 +60,7 @@ namespace opendnp3
 		pState(&MasterStateIdle::Instance())
 	{}
 
-	void MState::CheckForTask()
+	void MContext::CheckForTask()
 	{
 		if (isOnline)
 		{
@@ -68,7 +68,7 @@ namespace opendnp3
 		}
 	}
 
-	void MState::OnResponseTimeout()
+	void MContext::OnResponseTimeout()
 	{
 		if (isOnline)
 		{
@@ -76,7 +76,7 @@ namespace opendnp3
 		}
 	}
 
-	void MState::CompleteActiveTask()
+	void MContext::CompleteActiveTask()
 	{
 		if (this->pActiveTask.IsDefined())
 		{
@@ -94,12 +94,12 @@ namespace opendnp3
 		}		
 	}
 
-	void MState::OnReceive(const openpal::ReadBufferView& apdu, const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+	void MContext::OnReceive(const openpal::ReadBufferView& apdu, const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
 	{
 		auth.OnReceive(*this, apdu, header, objects);
 	}
 
-	void MState::ProcessAPDU(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+	void MContext::ProcessAPDU(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
 	{
 		switch (header.function)
 		{
@@ -115,7 +115,7 @@ namespace opendnp3
 		}
 	}
 
-	void MState::ProcessIIN(const IINField& iin)
+	void MContext::ProcessIIN(const IINField& iin)
 	{
 		if (iin.IsSet(IINBit::DEVICE_RESTART))
 		{
@@ -145,7 +145,7 @@ namespace opendnp3
 		this->pApplication->OnReceiveIIN(iin);
 	}
 
-	void MState::ProcessUnsolicitedResponse(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+	void MContext::ProcessUnsolicitedResponse(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
 	{
 		if (!header.control.UNS)
 		{
@@ -163,19 +163,19 @@ namespace opendnp3
 		this->ProcessIIN(header.IIN);
 	}
 
-	void MState::ProcessResponse(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
+	void MContext::ProcessResponse(const APDUResponseHeader& header, const openpal::ReadBufferView& objects)
 	{
 		this->pState = pState->OnResponse(*this, header, objects);
 		this->ProcessIIN(header.IIN);
 	}
 
-	void MState::QueueConfirm(const APDUHeader& header)
+	void MContext::QueueConfirm(const APDUHeader& header)
 	{
 		this->confirmQueue.push_back(header);
 		this->CheckConfirmTransmit();
 	}
 
-	bool MState::CheckConfirmTransmit()
+	bool MContext::CheckConfirmTransmit()
 	{
 		if (this->isSending || this->confirmQueue.empty())
 		{
@@ -191,7 +191,7 @@ namespace opendnp3
 		return true;
 	}
 
-	void MState::Transmit(const openpal::ReadBufferView& data)
+	void MContext::Transmit(const openpal::ReadBufferView& data)
 	{
 		logging::ParseAndLogRequestTx(this->logger, data);
 		assert(!this->isSending);
@@ -199,19 +199,19 @@ namespace opendnp3
 		this->pLower->BeginTransmit(data);
 	}
 
-	void MState::StartResponseTimer()
+	void MContext::StartResponseTimer()
 	{
 		auto timeout = [this](){ this->OnResponseTimeout(); };
 		this->responseTimer.Start(this->params.responseTimeout, timeout);
 	}
 
-	void MState::PostCheckForTask()
+	void MContext::PostCheckForTask()
 	{
 		auto callback = [this]() { this->CheckForTask(); };
 		this->pExecutor->PostLambda(callback);
 	}
 
-	bool MState::GoOffline()
+	bool MContext::GoOffline()
 	{
 		if (isOnline)
 		{
@@ -244,7 +244,7 @@ namespace opendnp3
 		}		
 	}
 
-	bool MState::GoOnline()
+	bool MContext::GoOnline()
 	{
 		if (isOnline)
 		{
@@ -261,7 +261,7 @@ namespace opendnp3
 		}
 	}
 
-	bool MState::BeginNewTask(openpal::ManagedPtr<IMasterTask>& task)
+	bool MContext::BeginNewTask(openpal::ManagedPtr<IMasterTask>& task)
 	{
 		this->pActiveTask = std::move(task);				
 		this->pActiveTask->OnStart();
@@ -269,7 +269,7 @@ namespace opendnp3
 		return this->ResumeActiveTask();
 	}
 
-	bool MState::ResumeActiveTask()
+	bool MContext::ResumeActiveTask()
 	{		
 		if (this->pTaskLock->Acquire(*pScheduleCallback))
 		{

@@ -23,7 +23,7 @@
 
 #include "opendnp3/app/HeaderWriter.h"
 
-#include "opendnp3/master/MasterState.h"
+#include "opendnp3/master/MasterContext.h"
 #include "opendnp3/master/MasterCommandProcessor.h"
 #include "opendnp3/master/MasterScan.h"
 #include "opendnp3/master/IMasterApplication.h"
@@ -95,7 +95,7 @@ class Master : public IUpperLayer, private IScheduleCallback
 	void ScheduleRecurringPollTask(IMasterTask* pTask);
 	void ScheduleAdhocTask(IMasterTask* pTask);
 
-	MState mstate;
+	MContext mstate;
 	MasterCommandProcessor commandProcessor;
 };
 

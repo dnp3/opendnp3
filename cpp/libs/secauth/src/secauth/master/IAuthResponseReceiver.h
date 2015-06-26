@@ -22,7 +22,7 @@
 #define SECAUTH_IAUTHRESPONSERECEIVER_H
 
 #include <opendnp3/app/APDUHeader.h>
-#include <opendnp3/master/MasterState.h>
+#include <opendnp3/master/MasterContext.h>
 #include <opendnp3/objects/Group120.h>
 
 namespace secauth

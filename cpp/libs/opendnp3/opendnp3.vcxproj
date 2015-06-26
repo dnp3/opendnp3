@@ -180,7 +180,7 @@
     <ClInclude Include="src\opendnp3\master\MasterScan.h" />
     <ClInclude Include="src\opendnp3\master\MasterScheduler.h" />
     <ClInclude Include="src\opendnp3\master\MasterStackConfig.h" />
-    <ClInclude Include="src\opendnp3\master\MasterState.h" />
+    <ClInclude Include="src\opendnp3\master\MasterContext.h" />
     <ClInclude Include="src\opendnp3\master\MasterTasks.h" />
     <ClInclude Include="src\opendnp3\master\MeasurementHandler.h" />
     <ClInclude Include="src\opendnp3\master\PollTaskBase.h" />
@@ -364,7 +364,7 @@
     <ClCompile Include="src\opendnp3\master\MasterParams.cpp" />
     <ClCompile Include="src\opendnp3\master\MasterScan.cpp" />
     <ClCompile Include="src\opendnp3\master\MasterScheduler.cpp" />
-    <ClCompile Include="src\opendnp3\master\MasterState.cpp" />
+    <ClCompile Include="src\opendnp3\master\MasterContext.cpp" />
     <ClCompile Include="src\opendnp3\master\MasterTasks.cpp" />
     <ClCompile Include="src\opendnp3\master\MeasurementHandler.cpp" />
     <ClCompile Include="src\opendnp3\master\PollTaskBase.cpp" />

@@ -29,7 +29,7 @@
 namespace opendnp3
 {
 
-class MState;
+class MContext;
 
 /**
 * @desc Interface for an arbitrary master authentication provider
@@ -39,12 +39,12 @@ class IMasterAuthProvider
 
 public:	
 
-	IMasterAuthProvider() : pMState(nullptr)
+	IMasterAuthProvider() : pMContext(nullptr)
 	{}
 
-	void SetMasterState(MState& mstate)
+	void SetMasterState(MContext& mcontext)
 	{
-		pMState = &mstate;
+		pMContext = &mcontext;
 	}
 
 	/**
@@ -73,7 +73,7 @@ public:
 
 protected:
 
-	MState* pMState;
+	MContext* pMContext;
 
 };
 

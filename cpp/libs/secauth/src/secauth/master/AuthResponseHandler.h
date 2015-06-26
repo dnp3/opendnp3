@@ -22,7 +22,7 @@
 #define SECAUTH_AUTHRESPONSEHANDLER_H
 
 #include <opendnp3/app/parsing/IAPDUHandler.h>
-#include <opendnp3/master/MasterState.h>
+#include <opendnp3/master/MasterContext.h>
 
 #include "secauth/master/IAuthResponseReceiver.h"
 
