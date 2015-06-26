@@ -53,6 +53,26 @@ void ASIOExecutor::WaitForShutdown()
 	sync.WaitForValue();
 }
 
+void ASIOExecutor::BlockFor(const std::function<void()>& action)
+{
+	if (strand.running_in_this_thread())
+	{
+		action();
+	}
+	else
+	{
+		Synchronized<bool> sync;
+		auto pointer = &sync;
+		auto lambda = [action, pointer]()
+		{
+			action();
+			pointer->SetValue(true);
+		};
+		strand.post(lambda);
+		sync.WaitForValue();
+	}
+}
+
 void ASIOExecutor::InitiateShutdown(Synchronized<bool>& handler)
 {		
 	pShutdownSignal = &handler;

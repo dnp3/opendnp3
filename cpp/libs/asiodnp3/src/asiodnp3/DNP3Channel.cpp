@@ -21,7 +21,6 @@
 #include "DNP3Channel.h"
 
 #include <asiopal/PhysicalLayerBase.h>
-#include <asiopal/StrandGetters.h>
 
 #include "MasterAuthStack.h"
 #include "OutstationAuthStack.h"
@@ -98,8 +97,8 @@ void DNP3Channel::Shutdown()
 
 LinkChannelStatistics DNP3Channel::GetChannelStatistics()
 {	
-	auto getter = [this]() { return statistics; };
-	return asiopal::SynchronouslyGet<LinkChannelStatistics>(pExecutor->strand, getter);	
+	auto get = [this]() { return statistics; };
+	return pExecutor->ReturnBlockFor<LinkChannelStatistics>(get);
 }
 
 void DNP3Channel::InitiateShutdown(asiopal::Synchronized<bool>& handler)
@@ -120,13 +119,13 @@ void DNP3Channel::CheckForFinalShutdown()
 openpal::LogFilters DNP3Channel::GetLogFilters() const
 {
 	auto get = [this](){ return pLogRoot->GetFilters(); };
-	return asiopal::SynchronouslyGet<LogFilters>(pExecutor->strand, get);	
+	return pExecutor->ReturnBlockFor<LogFilters>(get);
 }
 
 void DNP3Channel::SetLogFilters(const openpal::LogFilters& filters)
 {	
 	auto set = [this, filters]() { this->pLogRoot->SetFilters(filters); };
-	asiopal::SynchronouslyExecute(pExecutor->strand, set);
+	pExecutor->BlockFor(set);	
 }
 
 IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler& SOEHandler, IMasterApplication& application, const MasterStackConfig& config)
@@ -141,7 +140,7 @@ IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler& SOEHandler, IMaster
 		return this->AddStack<MasterBase>(config.link, factory);
 	};
 
-	return asiopal::SynchronouslyGet<IMaster*>(pExecutor->strand, add);
+	return pExecutor->ReturnBlockFor<IMaster*>(add);	
 }
 
 IMaster* DNP3Channel::AddMaster(	char const* id,
@@ -160,7 +159,8 @@ IMaster* DNP3Channel::AddMaster(	char const* id,
 
 		return this->AddStack<MasterBase>(config.link, factory);
 	};
-	return asiopal::SynchronouslyGet<IMaster*>(pExecutor->strand, add);
+	
+	return pExecutor->ReturnBlockFor<IMaster*>(add);
 }
 
 IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler& commandHandler, IOutstationApplication& application, const OutstationStackConfig& config)
@@ -174,7 +174,8 @@ IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler& command
 
 		return this->AddStack<OutstationBase>(config.link, factory);
 	};
-	return asiopal::SynchronouslyGet<IOutstation*>(pExecutor->strand, add);
+
+	return pExecutor->ReturnBlockFor<IOutstation*>(add);
 }
 
 IOutstation* DNP3Channel::AddOutstation(char const* id,
@@ -195,7 +196,8 @@ IOutstation* DNP3Channel::AddOutstation(char const* id,
 
 		return this->AddStack<OutstationBase>(config.link, factory);
 	};
-	return asiopal::SynchronouslyGet<IOutstation*>(pExecutor->strand, add);
+
+	return pExecutor->ReturnBlockFor<IOutstation*>(add);
 }
 
 void DNP3Channel::SetShutdownHandler(const openpal::Action0& action)

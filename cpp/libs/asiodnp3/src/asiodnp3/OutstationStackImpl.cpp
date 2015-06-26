@@ -21,7 +21,6 @@
 #include "OutstationStackImpl.h"
 
 #include <asiopal/ASIOExecutor.h>
-#include <asiopal/StrandGetters.h>
 
 using namespace opendnp3;
 
@@ -74,8 +73,8 @@ void OutstationStackImpl::Shutdown()
 
 StackStatistics OutstationStackImpl::GetStackStatistics()
 {	
-	auto getter = [this]() { return statistics; };
-	return asiopal::SynchronouslyGet<StackStatistics>(pLifecycle->GetExecutor().strand, getter);
+	auto get = [this]() { return statistics; };
+	return pLifecycle->GetExecutor().ReturnBlockFor<StackStatistics>(get);	
 }
 
 void OutstationStackImpl::SetLinkRouter(opendnp3::ILinkRouter& router)

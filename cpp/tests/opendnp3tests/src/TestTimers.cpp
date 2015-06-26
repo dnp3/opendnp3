@@ -25,7 +25,6 @@
 #include <asiopal/LogFanoutHandler.h>
 #include <asiopal/ASIOExecutor.h>
 #include <asiopal/IOServiceThreadPool.h>
-#include <asiopal/StrandGetters.h>
 
 #include <opendnp3/LogLevels.h>
 
@@ -90,7 +89,7 @@ TEST_CASE(SUITE("TestOrderedDispatch"))
 
 	// post a null event to flush all prior posts
 	auto nothing = []() { };
-	asiopal::SynchronouslyExecute(executor.strand, nothing);
+	executor.BlockFor(nothing);
 
 	REQUIRE(count ==  NUM);
 	REQUIRE(monotonic);

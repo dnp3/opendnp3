@@ -50,9 +50,6 @@
     <ClInclude Include="src\asiopal\LogFanoutHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\asiopal\StrandGetters.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\asiopal\Synchronized.h">
       <Filter>Header Files</Filter>
     </ClInclude>

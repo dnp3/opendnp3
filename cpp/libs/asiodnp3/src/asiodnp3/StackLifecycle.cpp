@@ -23,7 +23,6 @@
 
 #include <openpal/executor/IExecutor.h>
 #include <asiopal/ASIOExecutor.h>
-#include <asiopal/StrandGetters.h>
 
 #include "asiodnp3/impl/LinkLayerRouter.h"
 
@@ -64,20 +63,20 @@ void StackLifecycle::ShutdownAll()
 bool StackLifecycle::EnableRoute(ILinkSession* pContext)
 {
 	auto enable = [this, pContext]() { return pRouter->Enable(pContext); };
-	return asiopal::SynchronouslyGet<bool>(pExecutor->strand, enable);
+	return pExecutor->ReturnBlockFor<bool>(enable);	
 }
 
 bool StackLifecycle::DisableRoute(ILinkSession* pContext)
 {
 	auto disable = [this, pContext]() { return pRouter->Disable(pContext); };
-	return asiopal::SynchronouslyGet<bool>(pExecutor->strand, disable);
+	return pExecutor->ReturnBlockFor<bool>(disable);	
 }
 
 void StackLifecycle::Shutdown(ILinkSession* pContext, IStack* pStack)
 {
 	// synchronously remove the stack from the running strand
 	auto action = [this, pContext](){ pRouter->Remove(pContext); };
-	asiopal::SynchronouslyExecute(pExecutor->strand, action);
+	pExecutor->BlockFor(action);	
 	
 	stacks.erase(pStack);
 
