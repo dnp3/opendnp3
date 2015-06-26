@@ -52,10 +52,9 @@ public:
 	{}
 	
 	template <typename... Args>
-	static Permissions Allowed(opendnp3::FunctionCode fc, Args... args)
+	static Permissions Allowed(Args... args)
 	{
-		auto value = GetMask(fc).value | Allowed(args...).permissions;
-		return Permissions(value);
+		return Permissions(GetBitfield(args...));
 	}
 
 	static Permissions AllowNothing();
@@ -65,11 +64,17 @@ public:
 	void Deny(opendnp3::FunctionCode code);
 
 	bool IsAllowed(opendnp3::FunctionCode) const;
-
+	
 private:
+  
+	template <typename... Args>
+	static uint64_t GetBitfield(opendnp3::FunctionCode fc, Args... args)
+	{
+		return GetBitfield(fc) | GetBitfield(args...);
+	}
 
 	// base case for variadic method
-	static Permissions Allowed() { return Permissions::AllowNothing(); }
+	static uint64_t GetBitfield() { return 0; }
 
 	static Mask GetMask(opendnp3::FunctionCode code);
 
