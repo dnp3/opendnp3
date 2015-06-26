@@ -26,10 +26,9 @@ using namespace opendnp3;
 namespace secauth
 {
 	
-Permissions::Permissions(uint64_t mask) : permissions(mask)
+Permissions::Permissions(bitfield_t mask) : permissions(mask)
 {}
 
-	
 Permissions Permissions::AllowNothing()
 {
 	return Permissions();
@@ -37,91 +36,87 @@ Permissions Permissions::AllowNothing()
 
 Permissions Permissions::AllowAll()
 {
-	return Permissions(~static_cast<uint64_t>(0));
+	return Permissions(~static_cast<bitfield_t>(0));
 }
 	
 void Permissions::Allow(FunctionCode code)
 {
-	auto mask = GetMask(code);
-	if (mask.valid) 
-	{
-		this->permissions |= mask.value;		
-	}
+	this->permissions |= GetMask(code);
 }
 
 bool Permissions::IsAllowed(opendnp3::FunctionCode code) const
 {
-	return GetMask(code).And(permissions);
+	return GetMask(code) & permissions;
 }
 
-Permissions::Mask Permissions::GetMask(opendnp3::FunctionCode code)
+Permissions::bitfield_t Permissions::GetMask(opendnp3::FunctionCode code)
 {	
 	switch (code)
 	{		
 		case(FunctionCode::CONFIRM) :
-			return Mask::Bit(0);						
+			return Bit(0);						
 		case(FunctionCode::READ):
-			return Mask::Bit(1);
+			return Bit(1);
 		case(FunctionCode::WRITE) :
-			return Mask::Bit(2);
+			return Bit(2);
 		case(FunctionCode::SELECT) :
-			return Mask::Bit(3);
+			return Bit(3);
 		case(FunctionCode::OPERATE) :
-			return Mask::Bit(4);
+			return Bit(4);
 		case(FunctionCode::DIRECT_OPERATE) :
-			return Mask::Bit(5);
+			return Bit(5);
 		case(FunctionCode::DIRECT_OPERATE_NR) :
-			return Mask::Bit(6);
+			return Bit(6);
 		case(FunctionCode::IMMED_FREEZE) :
-			return Mask::Bit(7);
+			return Bit(7);
 		case(FunctionCode::IMMED_FREEZE_NR) :
-			return Mask::Bit(8);
+			return Bit(8);
 		case(FunctionCode::FREEZE_CLEAR) :
-			return Mask::Bit(9);
+			return Bit(9);
 		case(FunctionCode::FREEZE_CLEAR_NR) :
-			return Mask::Bit(10);
+			return Bit(10);
 		case(FunctionCode::FREEZE_AT_TIME) :
-			return Mask::Bit(11);
+			return Bit(11);
 		case(FunctionCode::FREEZE_AT_TIME_NR) :
-			return Mask::Bit(12);
+			return Bit(12);
 		case(FunctionCode::COLD_RESTART) :
-			return Mask::Bit(13);
+			return Bit(13);
 		case(FunctionCode::WARM_RESTART) :
-			return Mask::Bit(14);
+			return Bit(14);
 		case(FunctionCode::INITIALIZE_DATA) :
-			return Mask::Bit(15);
+			return Bit(15);
 		case(FunctionCode::INITIALIZE_APPLICATION) :
-			return Mask::Bit(16);
+			return Bit(16);
 		case(FunctionCode::START_APPLICATION) :
-			return Mask::Bit(17);
+			return Bit(17);
 		case(FunctionCode::STOP_APPLICATION) :
-			return Mask::Bit(18);
+			return Bit(18);
 		case(FunctionCode::SAVE_CONFIGURATION) :
-			return Mask::Bit(19);
+			return Bit(19);
 		case(FunctionCode::ENABLE_UNSOLICITED) :
-			return Mask::Bit(20);
+			return Bit(20);
 		case(FunctionCode::DISABLE_UNSOLICITED) :
-			return Mask::Bit(21);
+			return Bit(21);
 		case(FunctionCode::ASSIGN_CLASS) :
-			return Mask::Bit(22);
+			return Bit(22);
 		case(FunctionCode::DELAY_MEASURE) :
-			return Mask::Bit(23);
+			return Bit(23);
 		case(FunctionCode::RECORD_CURRENT_TIME) :
-			return Mask::Bit(24);
+			return Bit(24);
 		case(FunctionCode::OPEN_FILE) :
-			return Mask::Bit(25);
+			return Bit(25);
 		case(FunctionCode::CLOSE_FILE) :
-			return Mask::Bit(26);
+			return Bit(26);
 		case(FunctionCode::DELETE_FILE) :
-			return Mask::Bit(27);
+			return Bit(27);
 		case(FunctionCode::GET_FILE_INFO) :
-			return Mask::Bit(28);
+			return Bit(28);
 		case(FunctionCode::AUTHENTICATE_FILE) :
-			return Mask::Bit(29);
+			return Bit(29);
 		case(FunctionCode::ABORT_FILE) :
-			return Mask::Bit(30);
+			return Bit(30);
 		default:
-			return Mask::None();
+			return 0;
 	}
 }
 

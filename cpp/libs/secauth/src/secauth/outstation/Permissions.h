@@ -31,27 +31,8 @@ namespace secauth
 */
 class Permissions
 {	
-	class Mask
-	{
-	public:
-		static Mask None() { return Mask(false, 0); }
-		static Mask Bit(uint8_t bit) {  return Mask(true, static_cast<uint64_t>(1) << bit); }		
-			
-		bool valid;
-		uint64_t value;
-		
-		inline uint64_t And(uint64_t other) const 
-		{ 
-		  return valid ? (other & value) : 0;
-		}
-		
-
-	private:
-		Mask(bool valid, uint64_t value) : valid(valid), value(value) {}
-		Mask() = delete;
-	};
-
-
+	typedef uint64_t bitfield_t;
+	
 public:
 
 	Permissions() : permissions(0) {}
@@ -77,20 +58,24 @@ public:
 private:
   
 	template <typename... Args>
-	static uint64_t GetBitfield(opendnp3::FunctionCode fc, Args... args)
+	static bitfield_t GetBitfield(opendnp3::FunctionCode fc, Args... args)
 	{
-		return GetMask(fc).value | GetBitfield(args...);
+		return GetMask(fc) | GetBitfield(args...);
 	}
 
 	// base case for variadic method
-	static uint64_t GetBitfield() { return 0; }
+	static bitfield_t GetBitfield() { return 0; }
 	
+	inline static bitfield_t Bit(uint8_t bit) 
+	{ 
+	  return static_cast<bitfield_t>(1 << bit); 
+	}
 	
-	static Mask GetMask(opendnp3::FunctionCode code);
+	static bitfield_t GetMask(opendnp3::FunctionCode code);
 
-	uint64_t permissions;
+	bitfield_t permissions;
 		
-	Permissions(uint64_t mask);
+	Permissions(bitfield_t mask);
 
 };
 
