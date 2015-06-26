@@ -35,10 +35,16 @@ class Permissions
 	{
 	public:
 		static Mask None() { return Mask(false, 0); }
-		static Mask Bit(uint8_t bit) {  return Mask(true, 1ull << bit); }		
+		static Mask Bit(uint8_t bit) {  return Mask(true, static_cast<uint64_t>(1) << bit); }		
 			
 		bool valid;
 		uint64_t value;
+		
+		inline uint64_t And(uint64_t other) const 
+		{ 
+		  return valid ? (other & value) : 0;
+		}
+		
 
 	private:
 		Mask(bool valid, uint64_t value) : valid(valid), value(value) {}
@@ -48,8 +54,7 @@ class Permissions
 
 public:
 
-	Permissions() : permissions(0)
-	{}
+	Permissions() : permissions(0) {}
 	
 	template <typename... Args>
 	static Permissions Allowed(Args... args)
@@ -70,16 +75,17 @@ private:
 	template <typename... Args>
 	static uint64_t GetBitfield(opendnp3::FunctionCode fc, Args... args)
 	{
-		return GetBitfield(fc) | GetBitfield(args...);
+		return GetSingleBitfield(fc) | GetBitfield(args...);
 	}
 
 	// base case for variadic method
 	static uint64_t GetBitfield() { return 0; }
-
+	static uint64_t GetSingleBitfield(opendnp3::FunctionCode code)
+	{
+	  return GetMask(code).value;
+	}
+	
 	static Mask GetMask(opendnp3::FunctionCode code);
-
-	static const uint64_t NOTHING = 0;
-	static const uint64_t ALL = ~NOTHING;
 
 	uint64_t permissions;
 		

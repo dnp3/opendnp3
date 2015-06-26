@@ -32,12 +32,12 @@ Permissions::Permissions(uint64_t mask) : permissions(mask)
 	
 Permissions Permissions::AllowNothing()
 {
-	return Permissions(NOTHING);
+	return Permissions();
 }
 
 Permissions Permissions::AllowAll()
 {
-	return Permissions(ALL);
+	return Permissions(~static_cast<uint64_t>(0));
 }
 	
 void Permissions::Allow(FunctionCode code)
@@ -60,13 +60,7 @@ void Permissions::Deny(FunctionCode code)
 
 bool Permissions::IsAllowed(opendnp3::FunctionCode code) const
 {
-	auto mask = GetMask(code);
-	if (!mask.valid)
-	{
-		return false;		
-	}
-		
-	return (this->permissions & mask.value) != 0;	
+	return GetMask(code).And(permissions);
 }
 
 Permissions::Mask Permissions::GetMask(opendnp3::FunctionCode code)
