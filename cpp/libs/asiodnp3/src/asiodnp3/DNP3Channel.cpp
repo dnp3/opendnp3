@@ -131,9 +131,14 @@ void DNP3Channel::SetLogFilters(const openpal::LogFilters& filters)
 
 IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler& SOEHandler, IMasterApplication& application, const MasterStackConfig& config)
 {
-	auto add = [this, id, &SOEHandler, &application, config]()
-	{ 
-		return this->_AddMaster(id, SOEHandler, application, config);
+	auto add = [&]() -> IMaster*
+	{
+		auto factory = [&]() -> MasterBase*
+		{
+			return new MasterStackImpl(id, *pLogRoot, *pExecutor, SOEHandler, application, config, stacks, taskLock);
+		};
+
+		return this->AddStack<MasterBase>(config.link, factory);
 	};
 
 	return asiopal::SynchronouslyGet<IMaster*>(pExecutor->strand, add);
@@ -145,24 +150,29 @@ IMaster* DNP3Channel::AddMaster(	char const* id,
 									const opendnp3::MasterStackConfig& config,
 									secauth::IMasterUser& user,
 									openpal::ICryptoProvider& crypto)
-{
-	auto add = [&]()
+{	
+	auto add = [&]() -> IMaster*
 	{
-		return this->_AddMaster(id, SOEHandler, application, config, user, crypto);
+		auto factory = [&]() -> MasterBase*
+		{
+			return new MasterAuthStack(id, *pLogRoot, *pExecutor, SOEHandler, application, config, stacks, taskLock, user, crypto);			
+		};
+
+		return this->AddStack<MasterBase>(config.link, factory);
 	};
 	return asiopal::SynchronouslyGet<IMaster*>(pExecutor->strand, add);
 }
 
 IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler& commandHandler, IOutstationApplication& application, const OutstationStackConfig& config)
 {
-	auto add = [this, id, &commandHandler, &application, config]() 
+	auto add = [this, id, &commandHandler, &application, config]() -> IOutstation*
 	{ 				
 		auto factory = [&]() -> OutstationBase*
 		{
 			return new OutstationStackImpl(id, *pLogRoot, *pExecutor, commandHandler, application, config, stacks);
 		};
 
-		return this->AddOutstation(config.link, factory);
+		return this->AddStack<OutstationBase>(config.link, factory);
 	};
 	return asiopal::SynchronouslyGet<IOutstation*>(pExecutor->strand, add);
 }
@@ -176,14 +186,14 @@ IOutstation* DNP3Channel::AddOutstation(char const* id,
 	secauth::IOutstationUserDatabase& userDB,
 	openpal::ICryptoProvider& crypto)
 {
-	auto add = [&]()
+	auto add = [&]() -> IOutstation*
 	{
 		auto factory = [&]() -> OutstationBase* 
 		{
 			return new OutstationAuthStack(id, *pLogRoot, *pExecutor, commandHandler, application, config, stacks, authSettings, timeSource, userDB, crypto);
 		};
 
-		return this->AddOutstation(config.link, factory);
+		return this->AddStack<OutstationBase>(config.link, factory);
 	};
 	return asiopal::SynchronouslyGet<IOutstation*>(pExecutor->strand, add);
 }
@@ -193,123 +203,8 @@ void DNP3Channel::SetShutdownHandler(const openpal::Action0& action)
 	shutdownHandler = action;
 }
 
-IMaster* DNP3Channel::_AddMaster(char const* id,
-	ISOEHandler& SOEHandler,	
-	opendnp3::IMasterApplication& application,
-	const opendnp3::MasterStackConfig& config)
-{
-	Route route(config.link.RemoteAddr, config.link.LocalAddr);
-	if (router.IsRouteInUse(route))
-	{
-		FORMAT_LOG_BLOCK(logger, flags::ERR, "Route already in use: %i -> %i", route.source, route.destination);
-		return nullptr;
-	}
-	else
-	{		
-		auto pMaster = new MasterStackImpl(id, *pLogRoot, *pExecutor, SOEHandler, application, config, stacks, taskLock);
-		stacks.Add(pMaster);
-		pMaster->SetLinkRouter(router);		
-		router.AddContext(&pMaster->GetLinkContext(), route);
-		return pMaster;
-	}
-}
-
-IMaster* DNP3Channel::_AddMaster(char const* id,
-	opendnp3::ISOEHandler& SOEHandler,
-	opendnp3::IMasterApplication& application,
-	const opendnp3::MasterStackConfig& config,
-	secauth::IMasterUser& user,
-	openpal::ICryptoProvider& crypto)
-{
-	Route route(config.link.RemoteAddr, config.link.LocalAddr);
-	if (router.IsRouteInUse(route))
-	{
-		FORMAT_LOG_BLOCK(logger, flags::ERR, "Route already in use: %i -> %i", route.source, route.destination);
-		return nullptr;
-	}
-	else
-	{		
-		auto pMaster = new MasterAuthStack(id, *pLogRoot, *pExecutor, SOEHandler, application, config, stacks, taskLock, user, crypto);		
-		stacks.Add(pMaster);
-		pMaster->SetLinkRouter(router);		
-		router.AddContext(&pMaster->GetLinkContext(), route);
-		return pMaster;
-	}
-}
-
-/*
-IOutstation* DNP3Channel::_AddOutstation(char const* id,
-	opendnp3::ICommandHandler& commandHandler,
-	opendnp3::IOutstationApplication& application,
-	const opendnp3::OutstationStackConfig& config)
-{
-	Route route(config.link.RemoteAddr, config.link.LocalAddr);
-	if (router.IsRouteInUse(route))
-	{
-		FORMAT_LOG_BLOCK(logger, flags::ERR, "Route already in use: %i -> %i", route.source, route.destination);
-		return nullptr;
-	}
-	else
-	{		
-		auto pOutstation = new OutstationStackImpl(
-			id, 
-			*pLogRoot, 
-			*pExecutor,
-			commandHandler, 
-			application, 			
-			config, 
-			stacks
-		);
-		
-		stacks.Add(pOutstation);
-		pOutstation->SetLinkRouter(router);		
-		router.AddContext(&pOutstation->GetLinkContext(), route);
-		return pOutstation;
-	}
-}
-
-
-
-IOutstation* DNP3Channel::_AddOutstation(char const* id,
-	opendnp3::ICommandHandler& commandHandler,
-	opendnp3::IOutstationApplication& application,
-	const opendnp3::OutstationStackConfig& config,
-	const secauth::OutstationAuthSettings& authSettings,
-	openpal::IUTCTimeSource& timeSource,
-	secauth::IOutstationUserDatabase& userDB,
-	openpal::ICryptoProvider& crypto)
-{
-	Route route(config.link.RemoteAddr, config.link.LocalAddr);
-	if (router.IsRouteInUse(route))
-	{
-		FORMAT_LOG_BLOCK(logger, flags::ERR, "Route already in use: %i -> %i", route.source, route.destination);
-		return nullptr;
-	}
-	else
-	{		
-		auto pOutstation = new OutstationAuthStack(
-			id,
-			*pLogRoot,
-			*pExecutor,
-			commandHandler,
-			application,
-			config,
-			stacks,
-			authSettings,
-			timeSource,
-			userDB,
-			crypto
-		);
-		
-		stacks.Add(pOutstation);
-		pOutstation->SetLinkRouter(router);		
-		router.AddContext(&pOutstation->GetLinkContext(), route);
-		return pOutstation;
-	}
-}
-*/
-
-IOutstation* DNP3Channel::AddOutstation(const LinkConfig& link, const std::function<OutstationBase* ()>& factory)
+template <class T>
+T* DNP3Channel::AddStack(const opendnp3::LinkConfig& link, const std::function<T* ()>& factory)
 {
 	Route route(link.RemoteAddr, link.LocalAddr);
 	if (router.IsRouteInUse(route))
@@ -319,11 +214,11 @@ IOutstation* DNP3Channel::AddOutstation(const LinkConfig& link, const std::funct
 	}
 	else
 	{
-		auto pOutstation = factory();
-		stacks.Add(pOutstation);
-		pOutstation->SetLinkRouter(router);
-		router.AddContext(&pOutstation->GetLinkContext(), route);
-		return pOutstation;
+		auto pStack = factory();
+		stacks.Add(pStack);
+		pStack->SetLinkRouter(router);
+		router.AddContext(&pStack->GetLinkContext(), route);
+		return pStack;
 	}
 }
 

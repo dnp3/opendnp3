@@ -113,20 +113,10 @@ public:
 
 
 private:
-
-	IMaster* _AddMaster(char const* id,
-		opendnp3::ISOEHandler& SOEHandler,		
-		opendnp3::IMasterApplication& application,
-		const opendnp3::MasterStackConfig& config);
-
-	IMaster* _AddMaster(char const* id,
-		opendnp3::ISOEHandler& SOEHandler,
-		opendnp3::IMasterApplication& application,
-		const opendnp3::MasterStackConfig& config,
-		secauth::IMasterUser& user,
-		openpal::ICryptoProvider& crypto);	
-
-	IOutstation* AddOutstation(const opendnp3::LinkConfig& link, const std::function<OutstationBase* ()>& factory);
+	
+	// ----- generic method for adding a stack ------
+	template <class T>
+	T* AddStack(const opendnp3::LinkConfig& link, const std::function<T* ()>& factory);
 
 	void InitiateShutdown(asiopal::Synchronized<bool>& handler);
 
